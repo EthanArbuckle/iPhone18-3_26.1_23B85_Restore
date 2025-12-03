@@ -1,21 +1,21 @@
 @interface GKCloudKitMultiplayerUtils
-+ (BOOL)isCloudDriveEnabledForBundleID:(id)a3;
-+ (BOOL)shouldRetryForError:(id)a3 andRetryCount:(int)a4;
-+ (id)cloudKitOperationConfigurationForContainer:(id)a3;
++ (BOOL)isCloudDriveEnabledForBundleID:(id)d;
++ (BOOL)shouldRetryForError:(id)error andRetryCount:(int)count;
++ (id)cloudKitOperationConfigurationForContainer:(id)container;
 + (id)cloudKitOperationConfigurationForSocialGamingSessionsContainer;
 + (id)privateDatabase;
 + (id)sharedDatabase;
-+ (void)createZoneWithName:(id)a3 handler:(id)a4;
-+ (void)fetchShareRecordsWithRecordIDs:(id)a3 inDatabase:(id)a4 handler:(id)a5;
-+ (void)fetchUserRecordIDWithCompletionHandler:(id)a3;
-+ (void)saveInviteRecord:(id)a3 database:(id)a4 retryCount:(int)a5 completionHandler:(id)a6;
++ (void)createZoneWithName:(id)name handler:(id)handler;
++ (void)fetchShareRecordsWithRecordIDs:(id)ds inDatabase:(id)database handler:(id)handler;
++ (void)fetchUserRecordIDWithCompletionHandler:(id)handler;
++ (void)saveInviteRecord:(id)record database:(id)database retryCount:(int)count completionHandler:(id)handler;
 @end
 
 @implementation GKCloudKitMultiplayerUtils
 
-+ (BOOL)isCloudDriveEnabledForBundleID:(id)a3
++ (BOOL)isCloudDriveEnabledForBundleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = TCCAccessCopyInformation();
   if (![v4 count])
   {
@@ -57,12 +57,12 @@
         if (v12)
         {
           v14 = CFBundleGetIdentifier(v12);
-          if ([v14 isEqualToString:v3])
+          if ([v14 isEqualToString:dCopy])
           {
             v15 = [v11 objectForKeyedSubscript:kTCCInfoGranted];
-            v16 = [v15 BOOLValue];
+            bOOLValue = [v15 BOOLValue];
 
-            if (!v16)
+            if (!bOOLValue)
             {
 
               v17 = 0;
@@ -95,12 +95,12 @@ LABEL_18:
   return v17;
 }
 
-+ (void)createZoneWithName:(id)a3 handler:(id)a4
++ (void)createZoneWithName:(id)name handler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[CKRecordZoneID alloc] initWithZoneName:v7 ownerName:CKCurrentUserDefaultName];
-  v9 = [[CKRecordZone alloc] initWithZoneName:v7];
+  handlerCopy = handler;
+  nameCopy = name;
+  v8 = [[CKRecordZoneID alloc] initWithZoneName:nameCopy ownerName:CKCurrentUserDefaultName];
+  v9 = [[CKRecordZone alloc] initWithZoneName:nameCopy];
 
   [v9 setZoneID:v8];
   v10 = [CKModifyRecordZonesOperation alloc];
@@ -114,18 +114,18 @@ LABEL_18:
   v16[1] = 3221225472;
   v16[2] = sub_10015F494;
   v16[3] = &unk_100369128;
-  v17 = v6;
-  v14 = v6;
+  v17 = handlerCopy;
+  v14 = handlerCopy;
   [v12 setModifyRecordZonesCompletionBlock:v16];
-  v15 = [a1 privateDatabase];
-  [v15 addOperation:v12];
+  privateDatabase = [self privateDatabase];
+  [privateDatabase addOperation:v12];
 }
 
-+ (id)cloudKitOperationConfigurationForContainer:(id)a3
++ (id)cloudKitOperationConfigurationForContainer:(id)container
 {
-  v3 = a3;
+  containerCopy = container;
   v4 = objc_alloc_init(CKOperationConfiguration);
-  [v4 setContainer:v3];
+  [v4 setContainer:containerCopy];
 
   [v4 setDiscretionaryNetworkBehavior:0];
   [v4 setAutomaticallyRetryNetworkFailures:0];
@@ -140,7 +140,7 @@ LABEL_18:
   block[1] = 3221225472;
   block[2] = sub_10015F5CC;
   block[3] = &unk_100368998;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1003B9378 != -1)
   {
     dispatch_once(&qword_1003B9378, block);
@@ -151,34 +151,34 @@ LABEL_18:
   return v2;
 }
 
-+ (void)fetchShareRecordsWithRecordIDs:(id)a3 inDatabase:(id)a4 handler:(id)a5
++ (void)fetchShareRecordsWithRecordIDs:(id)ds inDatabase:(id)database handler:(id)handler
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v12 count])
+  dsCopy = ds;
+  databaseCopy = database;
+  handlerCopy = handler;
+  if ([dsCopy count])
   {
-    v10 = [[CKFetchRecordsOperation alloc] initWithRecordIDs:v12];
-    v11 = [a1 cloudKitOperationConfigurationForSocialGamingSessionsContainer];
-    [v10 setConfiguration:v11];
+    v10 = [[CKFetchRecordsOperation alloc] initWithRecordIDs:dsCopy];
+    cloudKitOperationConfigurationForSocialGamingSessionsContainer = [self cloudKitOperationConfigurationForSocialGamingSessionsContainer];
+    [v10 setConfiguration:cloudKitOperationConfigurationForSocialGamingSessionsContainer];
 
-    [v10 setFetchRecordsCompletionBlock:v9];
-    [v8 addOperation:v10];
+    [v10 setFetchRecordsCompletionBlock:handlerCopy];
+    [databaseCopy addOperation:v10];
   }
 
-  else if (v9)
+  else if (handlerCopy)
   {
-    (*(v9 + 2))(v9, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
-+ (void)fetchUserRecordIDWithCompletionHandler:(id)a3
++ (void)fetchUserRecordIDWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = +[GKPreferences shared];
-  v5 = [v4 forceDeadlockFetchingUserRecordID];
+  forceDeadlockFetchingUserRecordID = [v4 forceDeadlockFetchingUserRecordID];
 
-  if (v5)
+  if (forceDeadlockFetchingUserRecordID)
   {
     if (!os_log_GKGeneral)
     {
@@ -195,33 +195,33 @@ LABEL_18:
   else
   {
     v8 = [CKContainer containerWithIdentifier:@"com.apple.socialgaming.sessions"];
-    [v8 fetchUserRecordIDWithCompletionHandler:v3];
+    [v8 fetchUserRecordIDWithCompletionHandler:handlerCopy];
   }
 }
 
 + (id)privateDatabase
 {
   v2 = [CKContainer containerWithIdentifier:@"com.apple.socialgaming.sessions"];
-  v3 = [v2 privateCloudDatabase];
+  privateCloudDatabase = [v2 privateCloudDatabase];
 
-  return v3;
+  return privateCloudDatabase;
 }
 
 + (id)sharedDatabase
 {
   v2 = [CKContainer containerWithIdentifier:@"com.apple.socialgaming.sessions"];
-  v3 = [v2 sharedCloudDatabase];
+  sharedCloudDatabase = [v2 sharedCloudDatabase];
 
-  return v3;
+  return sharedCloudDatabase;
 }
 
-+ (void)saveInviteRecord:(id)a3 database:(id)a4 retryCount:(int)a5 completionHandler:(id)a6
++ (void)saveInviteRecord:(id)record database:(id)database retryCount:(int)count completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  recordCopy = record;
+  databaseCopy = database;
+  handlerCopy = handler;
   v13 = [CKModifyRecordsOperation alloc];
-  v35 = v10;
+  v35 = recordCopy;
   v14 = [NSArray arrayWithObjects:&v35 count:1];
   v15 = [v13 initWithRecordsToSave:v14 recordIDsToDelete:0];
 
@@ -240,13 +240,13 @@ LABEL_18:
   v28 = v19;
   v20 = v18;
   v29 = v20;
-  v21 = v10;
+  v21 = recordCopy;
   v30 = v21;
-  v22 = v11;
+  v22 = databaseCopy;
   v31 = v22;
-  v33 = a1;
-  v34 = a5;
-  v23 = v12;
+  selfCopy = self;
+  countCopy = count;
+  v23 = handlerCopy;
   v32 = v23;
   [v20 perform:v27];
   if (v23)
@@ -261,30 +261,30 @@ LABEL_18:
   }
 }
 
-+ (BOOL)shouldRetryForError:(id)a3 andRetryCount:(int)a4
++ (BOOL)shouldRetryForError:(id)error andRetryCount:(int)count
 {
-  v5 = a3;
-  v6 = [v5 domain];
-  v7 = [v6 isEqualToString:CKErrorDomain];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v7 = [domain isEqualToString:CKErrorDomain];
 
   v8 = 0;
-  if (a4 < 1 || !v7)
+  if (count < 1 || !v7)
   {
     goto LABEL_26;
   }
 
-  v9 = [v5 code];
-  if (v9 == 2)
+  code = [errorCopy code];
+  if (code == 2)
   {
-    v12 = [v5 userInfo];
-    v13 = [v12 objectForKeyedSubscript:CKPartialErrorsByItemIDKey];
+    userInfo = [errorCopy userInfo];
+    v13 = [userInfo objectForKeyedSubscript:CKPartialErrorsByItemIDKey];
 
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v14 = [v13 allValues];
-    v15 = [v14 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    allValues = [v13 allValues];
+    v15 = [allValues countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v15)
     {
       v16 = v15;
@@ -295,7 +295,7 @@ LABEL_18:
         {
           if (*v26 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(allValues);
           }
 
           v19 = *(*(&v25 + 1) + 8 * i);
@@ -312,7 +312,7 @@ LABEL_18:
               *buf = 138412546;
               v31 = v19;
               v32 = 1024;
-              v33 = a4;
+              countCopy2 = count;
               _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, "should retry for partialError: %@. retryCount: %d", buf, 0x12u);
             }
 
@@ -321,7 +321,7 @@ LABEL_18:
           }
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v25 objects:v29 count:16];
+        v16 = [allValues countByEnumeratingWithState:&v25 objects:v29 count:16];
         if (v16)
         {
           continue;
@@ -334,11 +334,11 @@ LABEL_18:
     goto LABEL_20;
   }
 
-  if (v9 != 23 && v9 != 7)
+  if (code != 23 && code != 7)
   {
 LABEL_20:
-    v20 = [v5 userInfo];
-    v21 = [v20 objectForKeyedSubscript:CKErrorRetryAfterKey];
+    userInfo2 = [errorCopy userInfo];
+    v21 = [userInfo2 objectForKeyedSubscript:CKErrorRetryAfterKey];
     v8 = v21 != 0;
 
     goto LABEL_26;
@@ -354,9 +354,9 @@ LABEL_20:
   if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v31 = v5;
+    v31 = errorCopy;
     v32 = 1024;
-    v33 = a4;
+    countCopy2 = count;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "should retry for error: %@. retryCount: %d", buf, 0x12u);
   }
 

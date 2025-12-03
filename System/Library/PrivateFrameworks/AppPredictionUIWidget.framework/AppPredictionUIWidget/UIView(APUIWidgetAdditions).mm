@@ -8,16 +8,16 @@
 {
   if (objc_opt_isKindOfClass())
   {
-    v5 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = [a1 superview];
-    v5 = [v6 apuiFindInnermostSuperviewOfClass:a3];
+    superview = [self superview];
+    selfCopy = [superview apuiFindInnermostSuperviewOfClass:a3];
   }
 
-  return v5;
+  return selfCopy;
 }
 
 @end

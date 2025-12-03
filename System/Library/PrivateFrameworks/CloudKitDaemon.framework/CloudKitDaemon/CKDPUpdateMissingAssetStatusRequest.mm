@@ -1,17 +1,17 @@
 @interface CKDPUpdateMissingAssetStatusRequest
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int64_t)packageAssetSizeAtIndex:(unint64_t)a3;
+- (int64_t)packageAssetSizeAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)addPackagePutReceipts:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addPackagePutReceipts:(id)receipts;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasRecovered:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasRecovered:(BOOL)recovered;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPUpdateMissingAssetStatusRequest
@@ -36,9 +36,9 @@
   return v3;
 }
 
-- (void)setHasRecovered:(BOOL)a3
+- (void)setHasRecovered:(BOOL)recovered
 {
-  if (a3)
+  if (recovered)
   {
     v3 = 2;
   }
@@ -51,38 +51,38 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int64_t)packageAssetSizeAtIndex:(unint64_t)a3
+- (int64_t)packageAssetSizeAtIndex:(unint64_t)index
 {
   p_packageAssetSizes = &self->_packageAssetSizes;
   count = self->_packageAssetSizes.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"idx (%lu) is out of range (%lu)", a3, count);
+    v8 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"idx (%lu) is out of range (%lu)", index, count);
     v10 = objc_msgSend_exceptionWithName_reason_userInfo_(v6, v9, v7, v8, 0);
     objc_msgSend_raise(v10, v11, v12);
   }
 
-  return p_packageAssetSizes->list[a3];
+  return p_packageAssetSizes->list[index];
 }
 
-- (void)addPackagePutReceipts:(id)a3
+- (void)addPackagePutReceipts:(id)receipts
 {
-  v4 = a3;
+  receiptsCopy = receipts;
   packagePutReceipts = self->_packagePutReceipts;
-  v8 = v4;
+  v8 = receiptsCopy;
   if (!packagePutReceipts)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_packagePutReceipts;
     self->_packagePutReceipts = v6;
 
-    v4 = v8;
+    receiptsCopy = v8;
     packagePutReceipts = self->_packagePutReceipts;
   }
 
-  objc_msgSend_addObject_(packagePutReceipts, v4, v4);
+  objc_msgSend_addObject_(packagePutReceipts, receiptsCopy, receiptsCopy);
 }
 
 - (id)description
@@ -140,10 +140,10 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_missingAssetStatusRecordID)
   {
     PBDataWriterWriteSubmessage();
@@ -213,29 +213,29 @@
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   missingAssetStatusRecordID = self->_missingAssetStatusRecordID;
-  v28 = v4;
+  v28 = toCopy;
   if (missingAssetStatusRecordID)
   {
-    objc_msgSend_setMissingAssetStatusRecordID_(v4, v5, missingAssetStatusRecordID);
-    v4 = v28;
+    objc_msgSend_setMissingAssetStatusRecordID_(toCopy, v5, missingAssetStatusRecordID);
+    toCopy = v28;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 64) = self->_recovered;
-    *(v4 + 68) |= 2u;
+    *(toCopy + 64) = self->_recovered;
+    *(toCopy + 68) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 4) = self->_assetSize;
-    *(v4 + 68) |= 1u;
+    *(toCopy + 4) = self->_assetSize;
+    *(toCopy + 68) |= 1u;
   }
 
   assetPutReceipt = self->_assetPutReceipt;
@@ -275,13 +275,13 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v34 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_missingAssetStatusRecordID, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_missingAssetStatusRecordID, v11, zone);
   v13 = *(v10 + 48);
   *(v10 + 48) = v12;
 
@@ -299,7 +299,7 @@
     *(v10 + 68) |= 1u;
   }
 
-  v16 = objc_msgSend_copyWithZone_(self->_assetPutReceipt, v14, a3);
+  v16 = objc_msgSend_copyWithZone_(self->_assetPutReceipt, v14, zone);
   v17 = *(v10 + 40);
   *(v10 + 40) = v16;
 
@@ -323,7 +323,7 @@
           objc_enumerationMutation(v18);
         }
 
-        v25 = objc_msgSend_copyWithZone_(*(*(&v29 + 1) + 8 * i), v21, a3, v29);
+        v25 = objc_msgSend_copyWithZone_(*(*(&v29 + 1) + 8 * i), v21, zone, v29);
         objc_msgSend_addPackagePutReceipts_(v10, v26, v25);
       }
 
@@ -337,17 +337,17 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_21;
   }
 
   missingAssetStatusRecordID = self->_missingAssetStatusRecordID;
-  v9 = v4[6];
+  v9 = equalCopy[6];
   if (missingAssetStatusRecordID | v9)
   {
     if (!objc_msgSend_isEqual_(missingAssetStatusRecordID, v7, v9))
@@ -356,10 +356,10 @@
     }
   }
 
-  v10 = *(v4 + 68);
+  v10 = *(equalCopy + 68);
   if ((*&self->_has & 2) == 0)
   {
-    if ((*(v4 + 68) & 2) == 0)
+    if ((*(equalCopy + 68) & 2) == 0)
     {
       goto LABEL_6;
     }
@@ -369,21 +369,21 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if ((*(v4 + 68) & 2) == 0)
+  if ((*(equalCopy + 68) & 2) == 0)
   {
     goto LABEL_21;
   }
 
-  v11 = *(v4 + 64);
+  v11 = *(equalCopy + 64);
   if (self->_recovered)
   {
-    if ((v4[8] & 1) == 0)
+    if ((equalCopy[8] & 1) == 0)
     {
       goto LABEL_21;
     }
   }
 
-  else if (v4[8])
+  else if (equalCopy[8])
   {
     goto LABEL_21;
   }
@@ -391,26 +391,26 @@ LABEL_21:
 LABEL_6:
   if (*&self->_has)
   {
-    if ((*(v4 + 68) & 1) == 0 || self->_assetSize != v4[4])
+    if ((*(equalCopy + 68) & 1) == 0 || self->_assetSize != equalCopy[4])
     {
       goto LABEL_21;
     }
   }
 
-  else if (*(v4 + 68))
+  else if (*(equalCopy + 68))
   {
     goto LABEL_21;
   }
 
   assetPutReceipt = self->_assetPutReceipt;
-  v13 = v4[5];
+  v13 = equalCopy[5];
   if (assetPutReceipt | v13 && !objc_msgSend_isEqual_(assetPutReceipt, v7, v13) || !PBRepeatedInt64IsEqual())
   {
     goto LABEL_21;
   }
 
   packagePutReceipts = self->_packagePutReceipts;
-  v16 = v4[7];
+  v16 = equalCopy[7];
   if (packagePutReceipts | v16)
   {
     isEqual = objc_msgSend_isEqual_(packagePutReceipts, v14, v16);
@@ -456,12 +456,12 @@ LABEL_6:
   return v9 ^ v10 ^ objc_msgSend_hash(self->_packagePutReceipts, v11, v12);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  fromCopy = from;
   missingAssetStatusRecordID = self->_missingAssetStatusRecordID;
-  v7 = *(v5 + 6);
+  v7 = *(fromCopy + 6);
   if (missingAssetStatusRecordID)
   {
     if (v7)
@@ -475,33 +475,33 @@ LABEL_6:
     objc_msgSend_setMissingAssetStatusRecordID_(self, v4, v7);
   }
 
-  v8 = *(v5 + 68);
+  v8 = *(fromCopy + 68);
   if ((v8 & 2) != 0)
   {
-    self->_recovered = *(v5 + 64);
+    self->_recovered = *(fromCopy + 64);
     *&self->_has |= 2u;
-    v8 = *(v5 + 68);
+    v8 = *(fromCopy + 68);
   }
 
   if (v8)
   {
-    self->_assetSize = *(v5 + 4);
+    self->_assetSize = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 
-  v9 = *(v5 + 5);
+  v9 = *(fromCopy + 5);
   if (v9)
   {
     objc_msgSend_setAssetPutReceipt_(self, v4, v9);
   }
 
-  v10 = objc_msgSend_packageAssetSizesCount(v5, v4, v9);
+  v10 = objc_msgSend_packageAssetSizesCount(fromCopy, v4, v9);
   if (v10)
   {
     v12 = v10;
     for (i = 0; i != v12; ++i)
     {
-      v14 = objc_msgSend_packageAssetSizeAtIndex_(v5, v11, i);
+      v14 = objc_msgSend_packageAssetSizeAtIndex_(fromCopy, v11, i);
       objc_msgSend_addPackageAssetSize_(self, v15, v14);
     }
   }
@@ -510,7 +510,7 @@ LABEL_6:
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v16 = *(v5 + 7);
+  v16 = *(fromCopy + 7);
   v18 = objc_msgSend_countByEnumeratingWithState_objects_count_(v16, v17, &v24, v28, 16);
   if (v18)
   {

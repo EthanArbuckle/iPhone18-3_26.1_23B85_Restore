@@ -1,32 +1,32 @@
 @interface NTKWidgetComplicationMigrationDefines
-+ (BOOL)hasMigratedComplicationType:(unint64_t)a3 family:(int64_t)a4 forDevice:(id)a5;
-+ (BOOL)hasMigratedComplicationType:(unint64_t)a3 forDevice:(id)a4;
++ (BOOL)hasMigratedComplicationType:(unint64_t)type family:(int64_t)family forDevice:(id)device;
++ (BOOL)hasMigratedComplicationType:(unint64_t)type forDevice:(id)device;
 + (id)_complicationTypeToWidgetMigrations;
-+ (id)migrateComplication:(id)a3 forFamily:(int64_t)a4;
++ (id)migrateComplication:(id)complication forFamily:(int64_t)family;
 @end
 
 @implementation NTKWidgetComplicationMigrationDefines
 
-+ (id)migrateComplication:(id)a3 forFamily:(int64_t)a4
++ (id)migrateComplication:(id)complication forFamily:(int64_t)family
 {
-  v6 = a3;
+  complicationCopy = complication;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 complication];
+    complication = [complicationCopy complication];
 
-    v6 = v7;
+    complicationCopy = complication;
   }
 
-  v8 = [a1 _complicationTypeToWidgetMigrations];
-  v9 = [v8 migrationMap];
+  _complicationTypeToWidgetMigrations = [self _complicationTypeToWidgetMigrations];
+  migrationMap = [_complicationTypeToWidgetMigrations migrationMap];
   v10 = [NTKWidgetComplicationMigrationKey alloc];
-  v11 = [v6 complicationType];
-  v12 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
-  v13 = [(NTKWidgetComplicationMigrationKey *)v10 initWithComplicationType:v11 family:v12];
-  v14 = [v9 objectForKey:v13];
+  complicationType = [complicationCopy complicationType];
+  v12 = [MEMORY[0x277CCABB0] numberWithInteger:family];
+  v13 = [(NTKWidgetComplicationMigrationKey *)v10 initWithComplicationType:complicationType family:v12];
+  v14 = [migrationMap objectForKey:v13];
 
-  if (v14 || ([a1 _complicationTypeToWidgetMigrations], v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "migrationMap"), v16 = objc_claimAutoreleasedReturnValue(), v17 = -[NTKWidgetComplicationMigrationKey initWithComplicationType:family:]([NTKWidgetComplicationMigrationKey alloc], "initWithComplicationType:family:", objc_msgSend(v6, "complicationType"), 0), objc_msgSend(v16, "objectForKey:", v17), v14 = objc_claimAutoreleasedReturnValue(), v17, v16, v15, v14))
+  if (v14 || ([self _complicationTypeToWidgetMigrations], v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "migrationMap"), v16 = objc_claimAutoreleasedReturnValue(), v17 = -[NTKWidgetComplicationMigrationKey initWithComplicationType:family:]([NTKWidgetComplicationMigrationKey alloc], "initWithComplicationType:family:", objc_msgSend(complicationCopy, "complicationType"), 0), objc_msgSend(v16, "objectForKey:", v17), v14 = objc_claimAutoreleasedReturnValue(), v17, v16, v15, v14))
   {
     v18 = [NTKWidgetComplication complicationWithDescriptor:v14];
   }
@@ -39,11 +39,11 @@
   return v18;
 }
 
-+ (BOOL)hasMigratedComplicationType:(unint64_t)a3 forDevice:(id)a4
++ (BOOL)hasMigratedComplicationType:(unint64_t)type forDevice:(id)device
 {
-  v6 = a4;
-  v7 = [v6 supportsWidgetMigration];
-  v8 = [a1 _complicationTypeToWidgetMigrations];
+  deviceCopy = device;
+  supportsWidgetMigration = [deviceCopy supportsWidgetMigration];
+  _complicationTypeToWidgetMigrations = [self _complicationTypeToWidgetMigrations];
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -52,24 +52,24 @@
   v22 = &v21;
   v23 = 0x2020000000;
   v24 = 0;
-  v9 = [v8 migrationMap];
-  v10 = [v9 allKeys];
+  migrationMap = [_complicationTypeToWidgetMigrations migrationMap];
+  allKeys = [migrationMap allKeys];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __79__NTKWidgetComplicationMigrationDefines_hasMigratedComplicationType_forDevice___block_invoke;
   v15[3] = &unk_2787818D8;
-  v20 = a3;
+  typeCopy = type;
   v18 = &v25;
-  v11 = v8;
+  v11 = _complicationTypeToWidgetMigrations;
   v16 = v11;
   v19 = &v21;
-  v12 = v6;
+  v12 = deviceCopy;
   v17 = v12;
-  [v10 enumerateObjectsUsingBlock:v15];
+  [allKeys enumerateObjectsUsingBlock:v15];
 
   if (*(v26 + 24) == 1)
   {
-    v13 = v22[3] & v7;
+    v13 = v22[3] & supportsWidgetMigration;
   }
 
   else
@@ -97,11 +97,11 @@ void __79__NTKWidgetComplicationMigrationDefines_hasMigratedComplicationType_for
   }
 }
 
-+ (BOOL)hasMigratedComplicationType:(unint64_t)a3 family:(int64_t)a4 forDevice:(id)a5
++ (BOOL)hasMigratedComplicationType:(unint64_t)type family:(int64_t)family forDevice:(id)device
 {
-  v8 = a5;
-  v9 = [v8 supportsWidgetMigration];
-  v10 = [a1 _complicationTypeToWidgetMigrations];
+  deviceCopy = device;
+  supportsWidgetMigration = [deviceCopy supportsWidgetMigration];
+  _complicationTypeToWidgetMigrations = [self _complicationTypeToWidgetMigrations];
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
@@ -110,25 +110,25 @@ void __79__NTKWidgetComplicationMigrationDefines_hasMigratedComplicationType_for
   v25 = &v24;
   v26 = 0x2020000000;
   v27 = 0;
-  v11 = [v10 migrationMap];
-  v12 = [v11 allKeys];
+  migrationMap = [_complicationTypeToWidgetMigrations migrationMap];
+  allKeys = [migrationMap allKeys];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __86__NTKWidgetComplicationMigrationDefines_hasMigratedComplicationType_family_forDevice___block_invoke;
   v17[3] = &unk_278781900;
-  v22 = a3;
-  v23 = a4;
+  typeCopy = type;
+  familyCopy = family;
   v20 = &v28;
-  v13 = v10;
+  v13 = _complicationTypeToWidgetMigrations;
   v18 = v13;
   v21 = &v24;
-  v14 = v8;
+  v14 = deviceCopy;
   v19 = v14;
-  [v12 enumerateObjectsUsingBlock:v17];
+  [allKeys enumerateObjectsUsingBlock:v17];
 
   if (*(v29 + 24) == 1)
   {
-    v15 = v25[3] & v9;
+    v15 = v25[3] & supportsWidgetMigration;
   }
 
   else

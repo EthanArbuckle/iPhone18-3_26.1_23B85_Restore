@@ -1,19 +1,19 @@
 @interface _UIDatePickerComponent
-+ (id)componentsFromDateFormatString:(id)a3 locale:(id)a4 followsSystemHourCycle:(BOOL)a5 desiredUnits:(int64_t)a6;
++ (id)componentsFromDateFormatString:(id)string locale:(id)locale followsSystemHourCycle:(BOOL)cycle desiredUnits:(int64_t)units;
 - (_NSRange)unitRange;
-- (id)_initWithFormatString:(id)a3 calendarUnit:(unint64_t)a4;
+- (id)_initWithFormatString:(id)string calendarUnit:(unint64_t)unit;
 - (id)description;
 @end
 
 @implementation _UIDatePickerComponent
 
-+ (id)componentsFromDateFormatString:(id)a3 locale:(id)a4 followsSystemHourCycle:(BOOL)a5 desiredUnits:(int64_t)a6
++ (id)componentsFromDateFormatString:(id)string locale:(id)locale followsSystemHourCycle:(BOOL)cycle desiredUnits:(int64_t)units
 {
-  v11 = a4;
+  localeCopy = locale;
   v12 = MEMORY[0x1E695DF70];
-  v13 = a3;
-  v14 = [v12 array];
-  v15 = _UIDateFormatReplaceKoreanYearFormatIfNeeded(v13, v11);
+  stringCopy = string;
+  array = [v12 array];
+  v15 = _UIDateFormatReplaceKoreanYearFormatIfNeeded(stringCopy, localeCopy);
 
   v48[0] = 0;
   v48[1] = v48;
@@ -24,16 +24,16 @@
   v38 = __100___UIDatePickerComponent_componentsFromDateFormatString_locale_followsSystemHourCycle_desiredUnits___block_invoke;
   v39 = &unk_1E711BEE8;
   v43 = v48;
-  v44 = a6;
+  unitsCopy = units;
   v16 = v15;
   v40 = v16;
-  v36 = v11;
+  v36 = localeCopy;
   v41 = v36;
-  v47 = a5;
-  v17 = v14;
+  cycleCopy = cycle;
+  v17 = array;
   v42 = v17;
   v45 = a2;
-  v46 = a1;
+  selfCopy = self;
   v18 = v16;
   v19 = v37;
   v20 = [v18 length];
@@ -135,18 +135,18 @@ LABEL_21:
   return v32;
 }
 
-- (id)_initWithFormatString:(id)a3 calendarUnit:(unint64_t)a4
+- (id)_initWithFormatString:(id)string calendarUnit:(unint64_t)unit
 {
-  v7 = a3;
+  stringCopy = string;
   v12.receiver = self;
   v12.super_class = _UIDatePickerComponent;
   v8 = [(_UIDatePickerComponent *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_formatString, a3);
-    v9->_calendarUnit = a4;
-    v9->_equivalentUnit = _UIDateComponentsEquivalentUnit(a4);
+    objc_storeStrong(&v8->_formatString, string);
+    v9->_calendarUnit = unit;
+    v9->_equivalentUnit = _UIDateComponentsEquivalentUnit(unit);
     v9->_width = 0.0;
     v10 = v9;
   }

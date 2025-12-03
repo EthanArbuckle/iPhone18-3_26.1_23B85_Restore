@@ -1,40 +1,40 @@
 @interface CDPSOSCircleProxyImpl
-+ (unint64_t)syncingStatusForAltDSID:(id)a3;
-- (BOOL)_performSOSCBlock:(id)a3 error:(id *)a4;
-- (BOOL)_registerCredentialsOnlyIfNeeded:(BOOL)a3;
-- (BOOL)_viewMemberForView:(__CFString *)a3 error:(id *)a4;
-- (BOOL)anyPeerHasEnabledViewsInSet:(id)a3 error:(id *)a4;
++ (unint64_t)syncingStatusForAltDSID:(id)d;
+- (BOOL)_performSOSCBlock:(id)block error:(id *)error;
+- (BOOL)_registerCredentialsOnlyIfNeeded:(BOOL)needed;
+- (BOOL)_viewMemberForView:(__CFString *)view error:(id *)error;
+- (BOOL)anyPeerHasEnabledViewsInSet:(id)set error:(id *)error;
 - (BOOL)canAuthenticate;
-- (BOOL)fetchUserControllableViewsSyncingEnabled:(id *)a3;
+- (BOOL)fetchUserControllableViewsSyncingEnabled:(id *)enabled;
 - (BOOL)hasNonViewAwarePeers;
-- (BOOL)removeNonViewAwarePeers:(id *)a3;
-- (BOOL)removeThisDeviceFromCircle:(id *)a3;
-- (BOOL)requestToResetCloudKitDataForReason:(id)a3 error:(id *)a4;
-- (BOOL)resetToOffering:(id *)a3;
-- (BOOL)setUserControllableViewsSyncStatus:(BOOL)a3 error:(id *)a4;
+- (BOOL)removeNonViewAwarePeers:(id *)peers;
+- (BOOL)removeThisDeviceFromCircle:(id *)circle;
+- (BOOL)requestToResetCloudKitDataForReason:(id)reason error:(id *)error;
+- (BOOL)resetToOffering:(id *)offering;
+- (BOOL)setUserControllableViewsSyncStatus:(BOOL)status error:(id *)error;
 - (BOOL)synchronizeCircleViews;
 - (BOOL)tryRegisteringCredentials;
-- (BOOL)viewMemberForAllUserFacingViews:(id *)a3;
-- (CDPSOSCircleProxyImpl)initWithContext:(id)a3;
-- (id)generateVerifierWithRecoveryKey:(id)a3 error:(id *)a4;
+- (BOOL)viewMemberForAllUserFacingViews:(id *)views;
+- (CDPSOSCircleProxyImpl)initWithContext:(id)context;
+- (id)generateVerifierWithRecoveryKey:(id)key error:(id *)error;
 - (id)peerDeviceNamesByPeerID;
 - (id)peerId;
-- (id)requestToResetProtectedData:(id *)a3;
-- (int)_authenticatedCircleStatus:(id *)a3;
-- (int)_circleStatus:(id *)a3;
-- (int)cachedSOSCircleStatus:(id *)a3;
-- (int64_t)cliqueStatus:(id *)a3;
-- (unint64_t)cachedCliqueStatus:(id *)a3;
-- (unint64_t)cdpStatusFromSOS:(int)a3;
-- (unint64_t)combinedCachedCircleStatus:(id *)a3;
-- (unint64_t)combinedCircleStatus:(id *)a3;
+- (id)requestToResetProtectedData:(id *)data;
+- (int)_authenticatedCircleStatus:(id *)status;
+- (int)_circleStatus:(id *)status;
+- (int)cachedSOSCircleStatus:(id *)status;
+- (int64_t)cliqueStatus:(id *)status;
+- (unint64_t)cachedCliqueStatus:(id *)status;
+- (unint64_t)cdpStatusFromSOS:(int)s;
+- (unint64_t)combinedCachedCircleStatus:(id *)status;
+- (unint64_t)combinedCircleStatus:(id *)status;
 - (unint64_t)peerCount;
 - (void)hasNonViewAwarePeers;
 - (void)peerCount;
 - (void)peerDeviceNamesByPeerID;
 - (void)peerId;
-- (void)recoverOctagonUsingCustodianInfo:(id)a3 completion:(id)a4;
-- (void)reportFailure:(id)a3;
+- (void)recoverOctagonUsingCustodianInfo:(id)info completion:(id)completion;
+- (void)reportFailure:(id)failure;
 - (void)reportSuccess;
 - (void)synchronizeCircleViews;
 - (void)waitForUpdate;
@@ -42,13 +42,13 @@
 
 @implementation CDPSOSCircleProxyImpl
 
-- (CDPSOSCircleProxyImpl)initWithContext:(id)a3
+- (CDPSOSCircleProxyImpl)initWithContext:(id)context
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 dsid];
+  contextCopy = context;
+  dsid = [contextCopy dsid];
 
-  if (v6)
+  if (dsid)
   {
     v17.receiver = self;
     v17.super_class = CDPSOSCircleProxyImpl;
@@ -56,30 +56,30 @@
     v8 = v7;
     if (v7)
     {
-      objc_storeStrong(&v7->_cdpContext, a3);
+      objc_storeStrong(&v7->_cdpContext, context);
     }
 
     v9 = _CDPLogSystem();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v5 appleID];
-      v11 = [v5 dsid];
-      v12 = [v5 type];
+      appleID = [contextCopy appleID];
+      dsid2 = [contextCopy dsid];
+      type = [contextCopy type];
       *buf = 141559042;
       v19 = 1752392040;
       v20 = 2112;
-      v21 = v10;
+      v21 = appleID;
       v22 = 2160;
       v23 = 1752392040;
       v24 = 2112;
-      v25 = v11;
+      v25 = dsid2;
       v26 = 2048;
-      v27 = v12;
+      v27 = type;
       _os_log_impl(&dword_1DED99000, v9, OS_LOG_TYPE_DEFAULT, "CDPSOSCircleProxyImpl: appleID:%{mask.hash}@, dsid: %{mask.hash}@, type: %ld", buf, 0x34u);
     }
 
     self = v8;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
@@ -90,23 +90,23 @@
       [CDPSOSCircleProxyImpl initWithContext:];
     }
 
-    v13 = 0;
+    selfCopy = 0;
   }
 
   v15 = *MEMORY[0x1E69E9840];
-  return v13;
+  return selfCopy;
 }
 
-- (unint64_t)cdpStatusFromSOS:(int)a3
+- (unint64_t)cdpStatusFromSOS:(int)s
 {
-  if ((a3 + 1) > 4)
+  if ((s + 1) > 4)
   {
     return 0;
   }
 
   else
   {
-    return qword_1DEDEDF08[a3 + 1];
+    return qword_1DEDEDF08[s + 1];
   }
 }
 
@@ -117,14 +117,14 @@
   _os_log_debug_impl(v0, v1, v2, v3, v4, 2u);
 }
 
-- (unint64_t)combinedCircleStatus:(id *)a3
+- (unint64_t)combinedCircleStatus:(id *)status
 {
-  v4 = [(CDPSOSCircleProxyImpl *)self _authenticatedCircleStatus:a3];
+  v4 = [(CDPSOSCircleProxyImpl *)self _authenticatedCircleStatus:status];
 
   return [(CDPSOSCircleProxyImpl *)self cdpStatusFromSOS:v4];
 }
 
-- (int)cachedSOSCircleStatus:(id *)a3
+- (int)cachedSOSCircleStatus:(id *)status
 {
   v13 = *MEMORY[0x1E69E9840];
   if ([(CDPContext *)self->_cdpContext isBeneficiaryAccount])
@@ -158,9 +158,9 @@
       _os_log_impl(&dword_1DED99000, v7, OS_LOG_TYPE_DEFAULT, "Call to SOSCCThisDeviceIsInCircle returned a status: %d", buf, 8u);
     }
 
-    if (a3)
+    if (status)
     {
-      *a3 = v10[0];
+      *status = v10[0];
     }
 
     else if (v10[0])
@@ -173,14 +173,14 @@
   return v5;
 }
 
-- (unint64_t)combinedCachedCircleStatus:(id *)a3
+- (unint64_t)combinedCachedCircleStatus:(id *)status
 {
-  v4 = [(CDPSOSCircleProxyImpl *)self cachedSOSCircleStatus:a3];
+  v4 = [(CDPSOSCircleProxyImpl *)self cachedSOSCircleStatus:status];
 
   return [(CDPSOSCircleProxyImpl *)self cdpStatusFromSOS:v4];
 }
 
-- (int)_circleStatus:(id *)a3
+- (int)_circleStatus:(id *)status
 {
   v28 = *MEMORY[0x1E69E9840];
   if ([(CDPContext *)self->_cdpContext isBeneficiaryAccount])
@@ -234,9 +234,9 @@
       _os_log_impl(&dword_1DED99000, v14, OS_LOG_TYPE_DEFAULT, "Call to SOSCCThisDeviceIsInCircle returned a status: %d", buf, 8u);
     }
 
-    if (a3)
+    if (status)
     {
-      *a3 = v21;
+      *status = v21;
     }
 
     else if (v21)
@@ -271,7 +271,7 @@
   return v5;
 }
 
-- (int)_authenticatedCircleStatus:(id *)a3
+- (int)_authenticatedCircleStatus:(id *)status
 {
   v12 = 0;
   v5 = [(CDPSOSCircleProxyImpl *)self _circleStatus:&v12];
@@ -290,10 +290,10 @@
     v6 = v8;
   }
 
-  if (a3)
+  if (status)
   {
     v9 = v6;
-    *a3 = v6;
+    *status = v6;
   }
 
   return v5;
@@ -343,7 +343,7 @@
 
 - (id)peerDeviceNamesByPeerID
 {
-  v2 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   cf = 0;
   v3 = SOSCCCopyPeerPeerInfo();
   if (v3)
@@ -358,7 +358,7 @@
         v6 = SOSPeerInfoGetPeerName();
         v7 = SOSPeerInfoGetPeerID();
         v8 = [v6 copy];
-        [v2 setObject:v8 forKey:v7];
+        [dictionary setObject:v8 forKey:v7];
 
         ++v5;
       }
@@ -369,7 +369,7 @@
     CFRelease(v4);
   }
 
-  return v2;
+  return dictionary;
 }
 
 - (BOOL)synchronizeCircleViews
@@ -456,7 +456,7 @@
   return v13;
 }
 
-- (BOOL)removeThisDeviceFromCircle:(id *)a3
+- (BOOL)removeThisDeviceFromCircle:(id *)circle
 {
   v5 = _CDPLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -465,7 +465,7 @@
     _os_log_impl(&dword_1DED99000, v5, OS_LOG_TYPE_DEFAULT, "Attempting to remove self from circle", buf, 2u);
   }
 
-  v6 = [(CDPSOSCircleProxyImpl *)self _performSOSCBlock:&__block_literal_global_18 error:a3];
+  v6 = [(CDPSOSCircleProxyImpl *)self _performSOSCBlock:&__block_literal_global_18 error:circle];
   v7 = _CDPLogSystem();
   v8 = v7;
   if (v6)
@@ -483,15 +483,15 @@ LABEL_11:
 
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
-    [CDPSOSCircleProxyImpl removeThisDeviceFromCircle:a3];
+    [CDPSOSCircleProxyImpl removeThisDeviceFromCircle:circle];
   }
 
-  if (a3)
+  if (circle)
   {
     v8 = _CDPLogSystem();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [CDPCircleProxyImpl removeThisDeviceFromCircle:a3];
+      [CDPCircleProxyImpl removeThisDeviceFromCircle:circle];
     }
 
     goto LABEL_11;
@@ -500,7 +500,7 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)resetToOffering:(id *)a3
+- (BOOL)resetToOffering:(id *)offering
 {
   v5 = _CDPLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -509,7 +509,7 @@ LABEL_11:
     _os_log_impl(&dword_1DED99000, v5, OS_LOG_TYPE_DEFAULT, "Attempting to reset to offering", buf, 2u);
   }
 
-  v6 = [(CDPSOSCircleProxyImpl *)self _performSOSCBlock:&__block_literal_global_20 error:a3];
+  v6 = [(CDPSOSCircleProxyImpl *)self _performSOSCBlock:&__block_literal_global_20 error:offering];
   v7 = _CDPLogSystem();
   v8 = v7;
   if (v6)
@@ -523,15 +523,15 @@ LABEL_11:
 
   else if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
-    [CDPSOSCircleProxyImpl resetToOffering:a3];
+    [CDPSOSCircleProxyImpl resetToOffering:offering];
   }
 
   return v6;
 }
 
-- (BOOL)requestToResetCloudKitDataForReason:(id)a3 error:(id *)a4
+- (BOOL)requestToResetCloudKitDataForReason:(id)reason error:(id *)error
 {
-  v5 = a3;
+  reasonCopy = reason;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -556,7 +556,7 @@ LABEL_11:
     v19 = &v25;
     v9 = v8;
     v17 = v9;
-    [v6 rpcResetCloudKit:0 reason:v5 reply:v16];
+    [v6 rpcResetCloudKit:0 reason:reasonCopy reply:v16];
     dispatch_semaphore_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
   }
 
@@ -583,9 +583,9 @@ LABEL_11:
       [CDPSOSCircleProxyImpl requestToResetCloudKitDataForReason:v23 error:?];
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = *(v23[0] + 40);
+      *error = *(v23[0] + 40);
     }
   }
 
@@ -620,17 +620,17 @@ void __67__CDPSOSCircleProxyImpl_requestToResetCloudKitDataForReason_error___blo
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (BOOL)viewMemberForAllUserFacingViews:(id *)a3
+- (BOOL)viewMemberForAllUserFacingViews:(id *)views
 {
-  if (![(CDPSOSCircleProxyImpl *)self viewMemberForWiFi:?]|| ![(CDPSOSCircleProxyImpl *)self viewMemberForCreditCards:a3]|| ![(CDPSOSCircleProxyImpl *)self viewMemberForAutofillPasswords:a3])
+  if (![(CDPSOSCircleProxyImpl *)self viewMemberForWiFi:?]|| ![(CDPSOSCircleProxyImpl *)self viewMemberForCreditCards:views]|| ![(CDPSOSCircleProxyImpl *)self viewMemberForAutofillPasswords:views])
   {
     return 0;
   }
 
-  return [(CDPSOSCircleProxyImpl *)self viewMemberForOtherSyncable:a3];
+  return [(CDPSOSCircleProxyImpl *)self viewMemberForOtherSyncable:views];
 }
 
-- (BOOL)_viewMemberForView:(__CFString *)a3 error:(id *)a4
+- (BOOL)_viewMemberForView:(__CFString *)view error:(id *)error
 {
   v16 = *MEMORY[0x1E69E9840];
   v6 = SOSCCView();
@@ -644,7 +644,7 @@ void __67__CDPSOSCircleProxyImpl_requestToResetCloudKitDataForReason_error___blo
     }
 
     *buf = 138412546;
-    *v15 = a3;
+    *v15 = view;
     *&v15[8] = 2112;
     *&v15[10] = 0;
     v9 = "Calling SOSCCView for view %@ reported device is MEMBER - (error: %@)";
@@ -662,7 +662,7 @@ void __67__CDPSOSCircleProxyImpl_requestToResetCloudKitDataForReason_error___blo
     *buf = 67109634;
     *v15 = v6;
     *&v15[4] = 2112;
-    *&v15[6] = a3;
+    *&v15[6] = view;
     *&v15[14] = 2112;
     *&v15[16] = 0;
     v9 = "Calling SOSCCView returned status %i for view %@ - (error: %@)";
@@ -673,9 +673,9 @@ void __67__CDPSOSCircleProxyImpl_requestToResetCloudKitDataForReason_error___blo
   _os_log_impl(&dword_1DED99000, v10, OS_LOG_TYPE_DEFAULT, v9, buf, v11);
 LABEL_7:
 
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   result = v6 == 1;
@@ -683,18 +683,18 @@ LABEL_7:
   return result;
 }
 
-- (BOOL)anyPeerHasEnabledViewsInSet:(id)a3 error:(id *)a4
+- (BOOL)anyPeerHasEnabledViewsInSet:(id)set error:(id *)error
 {
-  v6 = a3;
+  setCopy = set;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __59__CDPSOSCircleProxyImpl_anyPeerHasEnabledViewsInSet_error___block_invoke;
   v9[3] = &unk_1E869D190;
-  v10 = v6;
-  v7 = v6;
-  LOBYTE(a4) = [(CDPSOSCircleProxyImpl *)self _performSOSCBlock:v9 error:a4];
+  v10 = setCopy;
+  v7 = setCopy;
+  LOBYTE(error) = [(CDPSOSCircleProxyImpl *)self _performSOSCBlock:v9 error:error];
 
-  return a4;
+  return error;
 }
 
 - (BOOL)hasNonViewAwarePeers
@@ -711,7 +711,7 @@ LABEL_7:
   return v3;
 }
 
-- (BOOL)removeNonViewAwarePeers:(id *)a3
+- (BOOL)removeNonViewAwarePeers:(id *)peers
 {
   [(CDPSOSCircleProxyImpl *)self registerCredentials];
   v4 = SOSCCCopyViewUnawarePeerInfo();
@@ -736,11 +736,11 @@ LABEL_7:
     }
 
     CFRelease(v5);
-    if (a3)
+    if (peers)
     {
 LABEL_12:
       v9 = 0;
-      *a3 = 0;
+      *peers = 0;
     }
   }
 
@@ -753,7 +753,7 @@ LABEL_12:
     }
 
     LOBYTE(v6) = 0;
-    if (a3)
+    if (peers)
     {
       goto LABEL_12;
     }
@@ -762,7 +762,7 @@ LABEL_12:
   return v6;
 }
 
-- (BOOL)setUserControllableViewsSyncStatus:(BOOL)a3 error:(id *)a4
+- (BOOL)setUserControllableViewsSyncStatus:(BOOL)status error:(id *)error
 {
   v24 = *MEMORY[0x1E69E9840];
   v6 = _os_activity_create(&dword_1DED99000, "cdp: Updating keychain views", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -772,7 +772,7 @@ LABEL_12:
   v7 = *MEMORY[0x1E697AB40];
   v8 = [MEMORY[0x1E695DFD8] setWithObjects:{*MEMORY[0x1E697AB68], *MEMORY[0x1E697AB40], *MEMORY[0x1E697AB60], *MEMORY[0x1E697AB50], 0}];
   v9 = v8;
-  if (a3)
+  if (status)
   {
     v10 = v8;
     v11 = [MEMORY[0x1E695DFD8] set];
@@ -803,11 +803,11 @@ LABEL_12:
   return v13;
 }
 
-- (BOOL)_performSOSCBlock:(id)a3 error:(id *)a4
+- (BOOL)_performSOSCBlock:(id)block error:(id *)error
 {
-  v6 = a3;
+  blockCopy = block;
   err = 0;
-  if (v6[2](v6, &err))
+  if (blockCopy[2](blockCopy, &err))
   {
     v7 = 1;
   }
@@ -816,7 +816,7 @@ LABEL_12:
   {
     CFRelease(err);
     err = 0;
-    v7 = v6[2](v6, &err);
+    v7 = blockCopy[2](blockCopy, &err);
   }
 
   else
@@ -824,9 +824,9 @@ LABEL_12:
     v7 = 0;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = err;
+    *error = err;
   }
 
   else if (err)
@@ -837,38 +837,38 @@ LABEL_12:
   return v7;
 }
 
-- (BOOL)_registerCredentialsOnlyIfNeeded:(BOOL)a3
+- (BOOL)_registerCredentialsOnlyIfNeeded:(BOOL)needed
 {
-  v3 = a3;
+  neededCopy = needed;
   v49 = *MEMORY[0x1E69E9840];
   v5 = self->_cdpContext;
   v6 = _CDPLogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(CDPContext *)v5 appleID];
-    v8 = [(CDPContext *)v5 dsid];
+    appleID = [(CDPContext *)v5 appleID];
+    dsid = [(CDPContext *)v5 dsid];
     *buf = 141559042;
     v40 = 1752392040;
     v41 = 2112;
-    v42 = *&v7;
+    v42 = *&appleID;
     v43 = 2160;
     v44 = 1752392040;
     v45 = 2112;
-    v46 = v8;
+    v46 = dsid;
     v47 = 2048;
-    v48 = [(CDPContext *)v5 type];
+    type = [(CDPContext *)v5 type];
     _os_log_impl(&dword_1DED99000, v6, OS_LOG_TYPE_DEFAULT, "_registerCredentialsOnlyIfNeeded: appleID:%{mask.hash}@, dsid: %{mask.hash}@, type: %ld", buf, 0x34u);
   }
 
-  v9 = [(CDPContext *)v5 appleID];
-  if (!v9)
+  appleID2 = [(CDPContext *)v5 appleID];
+  if (!appleID2)
   {
     goto LABEL_11;
   }
 
-  v10 = v9;
-  v11 = [(CDPContext *)v5 password];
-  if (!v11)
+  v10 = appleID2;
+  password = [(CDPContext *)v5 password];
+  if (!password)
   {
 
 LABEL_11:
@@ -881,15 +881,15 @@ LABEL_11:
     goto LABEL_13;
   }
 
-  v12 = v11;
-  v13 = [(CDPContext *)v5 dsid];
+  v12 = password;
+  dsid2 = [(CDPContext *)v5 dsid];
 
-  if (!v13)
+  if (!dsid2)
   {
     goto LABEL_11;
   }
 
-  if (v3 && [(CDPSOSCircleProxyImpl *)self canAuthenticate])
+  if (neededCopy && [(CDPSOSCircleProxyImpl *)self canAuthenticate])
   {
     v14 = _CDPLogSystem();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -912,8 +912,8 @@ LABEL_13:
   }
 
   cf = 0;
-  v19 = [(CDPContext *)v5 password];
-  v20 = [v19 dataUsingEncoding:4];
+  password2 = [(CDPContext *)v5 password];
+  v20 = [password2 dataUsingEncoding:4];
 
   v21 = _CDPSignpostLogSystem();
   v22 = _CDPSignpostCreate(v21);
@@ -935,9 +935,9 @@ LABEL_13:
     _os_log_impl(&dword_1DED99000, v27, OS_LOG_TYPE_DEFAULT, "BEGIN [%lld]: SetUserCredentialsAndDSID  enableTelemetry=YES ", buf, 0xCu);
   }
 
-  v28 = [(CDPContext *)v5 appleID];
-  v29 = [(CDPContext *)v5 dsid];
-  [v29 stringValue];
+  appleID3 = [(CDPContext *)v5 appleID];
+  dsid3 = [(CDPContext *)v5 dsid];
+  [dsid3 stringValue];
   v15 = SOSCCSetUserCredentialsAndDSID();
 
   if ((v15 & 1) == 0)
@@ -955,22 +955,22 @@ LABEL_13:
   v34 = v33;
   if (v22 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v33))
   {
-    v35 = [v31 code];
+    code = [v31 code];
     *buf = 67240192;
-    LODWORD(v40) = v35;
+    LODWORD(v40) = code;
     _os_signpost_emit_with_name_impl(&dword_1DED99000, v34, OS_SIGNPOST_INTERVAL_END, v22, "SetUserCredentialsAndDSID", " Error=%{public,signpost.telemetry:number1,name=Error}d ", buf, 8u);
   }
 
   v36 = _CDPSignpostLogSystem();
   if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
   {
-    v37 = [v31 code];
+    code2 = [v31 code];
     *buf = 134218496;
     v40 = v22;
     v41 = 2048;
     v42 = Nanoseconds / 1000000000.0;
     v43 = 1026;
-    LODWORD(v44) = v37;
+    LODWORD(v44) = code2;
     _os_log_impl(&dword_1DED99000, v36, OS_LOG_TYPE_DEFAULT, "END [%lld] %fs: SetUserCredentialsAndDSID  Error=%{public,signpost.telemetry:number1,name=Error}d ", buf, 0x1Cu);
   }
 
@@ -989,21 +989,21 @@ LABEL_14:
 {
   v39 = *MEMORY[0x1E69E9840];
   v2 = self->_cdpContext;
-  v3 = [(CDPContext *)v2 appleID];
-  if (v3)
+  appleID = [(CDPContext *)v2 appleID];
+  if (appleID)
   {
-    v4 = v3;
-    v5 = [(CDPContext *)v2 dsid];
-    if (v5)
+    v4 = appleID;
+    dsid = [(CDPContext *)v2 dsid];
+    if (dsid)
     {
-      v6 = v5;
-      v7 = [(CDPContext *)v2 password];
+      v6 = dsid;
+      password = [(CDPContext *)v2 password];
 
-      if (v7)
+      if (password)
       {
         cf = 0;
-        v8 = [(CDPContext *)v2 password];
-        v9 = [v8 dataUsingEncoding:4];
+        password2 = [(CDPContext *)v2 password];
+        v9 = [password2 dataUsingEncoding:4];
 
         v10 = _CDPSignpostLogSystem();
         v11 = _CDPSignpostCreate(v10);
@@ -1025,9 +1025,9 @@ LABEL_14:
           _os_log_impl(&dword_1DED99000, v16, OS_LOG_TYPE_DEFAULT, "BEGIN [%lld]: TryUserCredentialsAndDSID  enableTelemetry=YES ", buf, 0xCu);
         }
 
-        v17 = [(CDPContext *)v2 appleID];
-        v18 = [(CDPContext *)v2 dsid];
-        [v18 stringValue];
+        appleID2 = [(CDPContext *)v2 appleID];
+        dsid2 = [(CDPContext *)v2 dsid];
+        [dsid2 stringValue];
         v19 = SOSCCTryUserCredentialsAndDSID();
 
         v20 = _CDPLogSystem();
@@ -1052,22 +1052,22 @@ LABEL_14:
         v26 = v25;
         if (v11 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v25))
         {
-          v27 = [v23 code];
+          code = [v23 code];
           *buf = 67240192;
-          LODWORD(v34) = v27;
+          LODWORD(v34) = code;
           _os_signpost_emit_with_name_impl(&dword_1DED99000, v26, OS_SIGNPOST_INTERVAL_END, v11, "TryUserCredentialsAndDSID", " Error=%{public,signpost.telemetry:number1,name=Error}d ", buf, 8u);
         }
 
         v28 = _CDPSignpostLogSystem();
         if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
         {
-          v29 = [v23 code];
+          code2 = [v23 code];
           *buf = 134218496;
           v34 = v11;
           v35 = 2048;
           v36 = Nanoseconds / 1000000000.0;
           v37 = 1026;
-          v38 = v29;
+          v38 = code2;
           _os_log_impl(&dword_1DED99000, v28, OS_LOG_TYPE_DEFAULT, "END [%lld] %fs: TryUserCredentialsAndDSID  Error=%{public,signpost.telemetry:number1,name=Error}d ", buf, 0x1Cu);
         }
 
@@ -1130,7 +1130,7 @@ LABEL_26:
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reportFailure:(id)a3
+- (void)reportFailure:(id)failure
 {
   v9 = *MEMORY[0x1E69E9840];
   v3 = _CDPLogSystem();
@@ -1146,11 +1146,11 @@ LABEL_26:
   v4 = *MEMORY[0x1E69E9840];
 }
 
-+ (unint64_t)syncingStatusForAltDSID:(id)a3
++ (unint64_t)syncingStatusForAltDSID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = SOSCCFetchCompatibilityMode();
-  v5 = [CDPContext contextForAccountWithAltDSID:v3];
+  v5 = [CDPContext contextForAccountWithAltDSID:dCopy];
 
   if (v4)
   {
@@ -1182,62 +1182,62 @@ LABEL_26:
   return v7;
 }
 
-- (int64_t)cliqueStatus:(id *)a3
+- (int64_t)cliqueStatus:(id *)status
 {
-  if (a3)
+  if (status)
   {
-    *a3 = [MEMORY[0x1E696ABC0] cdp_errorWithCode:-5004];
+    *status = [MEMORY[0x1E696ABC0] cdp_errorWithCode:-5004];
   }
 
   return -1;
 }
 
-- (BOOL)fetchUserControllableViewsSyncingEnabled:(id *)a3
+- (BOOL)fetchUserControllableViewsSyncingEnabled:(id *)enabled
 {
-  if (a3)
+  if (enabled)
   {
-    *a3 = [MEMORY[0x1E696ABC0] cdp_errorWithCode:-5004];
+    *enabled = [MEMORY[0x1E696ABC0] cdp_errorWithCode:-5004];
   }
 
   return 0;
 }
 
-- (unint64_t)cachedCliqueStatus:(id *)a3
+- (unint64_t)cachedCliqueStatus:(id *)status
 {
-  if (a3)
+  if (status)
   {
-    *a3 = [MEMORY[0x1E696ABC0] cdp_errorWithCode:-5004];
+    *status = [MEMORY[0x1E696ABC0] cdp_errorWithCode:-5004];
   }
 
   return -1;
 }
 
-- (id)generateVerifierWithRecoveryKey:(id)a3 error:(id *)a4
+- (id)generateVerifierWithRecoveryKey:(id)key error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = [MEMORY[0x1E696ABC0] cdp_errorWithCode:-5004];
+    *error = [MEMORY[0x1E696ABC0] cdp_errorWithCode:-5004];
   }
 
   return 0;
 }
 
-- (void)recoverOctagonUsingCustodianInfo:(id)a3 completion:(id)a4
+- (void)recoverOctagonUsingCustodianInfo:(id)info completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
     v5 = MEMORY[0x1E696ABC0];
-    v6 = a4;
+    completionCopy = completion;
     v7 = [v5 cdp_errorWithCode:-5004];
-    (*(a4 + 2))(v6, v7);
+    (*(completion + 2))(completionCopy, v7);
   }
 }
 
-- (id)requestToResetProtectedData:(id *)a3
+- (id)requestToResetProtectedData:(id *)data
 {
-  if (a3)
+  if (data)
   {
-    *a3 = [MEMORY[0x1E696ABC0] cdp_errorWithCode:-5004];
+    *data = [MEMORY[0x1E696ABC0] cdp_errorWithCode:-5004];
   }
 
   return 0;
@@ -1245,7 +1245,7 @@ LABEL_26:
 
 - (void)peerId
 {
-  OUTLINED_FUNCTION_4_0(a1, *MEMORY[0x1E69E9840]);
+  OUTLINED_FUNCTION_4_0(self, *MEMORY[0x1E69E9840]);
   OUTLINED_FUNCTION_5_0();
   OUTLINED_FUNCTION_0_3(&dword_1DED99000, v1, v2, "Failed to get peer ID: %@", v3, v4, v5, v6, v8);
   v7 = *MEMORY[0x1E69E9840];
@@ -1253,7 +1253,7 @@ LABEL_26:
 
 - (void)peerCount
 {
-  OUTLINED_FUNCTION_4_0(a1, *MEMORY[0x1E69E9840]);
+  OUTLINED_FUNCTION_4_0(self, *MEMORY[0x1E69E9840]);
   OUTLINED_FUNCTION_5_0();
   OUTLINED_FUNCTION_0_3(&dword_1DED99000, v1, v2, "Failed to get peer info from circle: %@", v3, v4, v5, v6, v8);
   v7 = *MEMORY[0x1E69E9840];
@@ -1261,7 +1261,7 @@ LABEL_26:
 
 - (void)peerDeviceNamesByPeerID
 {
-  OUTLINED_FUNCTION_4_0(a1, *MEMORY[0x1E69E9840]);
+  OUTLINED_FUNCTION_4_0(self, *MEMORY[0x1E69E9840]);
   OUTLINED_FUNCTION_5_0();
   OUTLINED_FUNCTION_0_3(&dword_1DED99000, v1, v2, "Failed to get peer info to find device names: %@", v3, v4, v5, v6, v8);
   v7 = *MEMORY[0x1E69E9840];
@@ -1313,7 +1313,7 @@ LABEL_26:
 
 - (void)hasNonViewAwarePeers
 {
-  OUTLINED_FUNCTION_4_0(a1, *MEMORY[0x1E69E9840]);
+  OUTLINED_FUNCTION_4_0(self, *MEMORY[0x1E69E9840]);
   OUTLINED_FUNCTION_5_0();
   OUTLINED_FUNCTION_0_3(&dword_1DED99000, v1, v2, "Failed to check for non-view-aware peers with error %@", v3, v4, v5, v6, v8);
   v7 = *MEMORY[0x1E69E9840];

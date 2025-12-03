@@ -1,19 +1,19 @@
 @interface VCMediaNegotiationBlobV2StreamGroupEncodeDecodeFeatures
-- (BOOL)isEqual:(id)a3;
-- (VCMediaNegotiationBlobV2StreamGroupEncodeDecodeFeatures)initWithPayload:(id)a3 encodeDecodeFeatures:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (VCMediaNegotiationBlobV2StreamGroupEncodeDecodeFeatures)initWithPayload:(id)payload encodeDecodeFeatures:(id)features;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCMediaNegotiationBlobV2StreamGroupEncodeDecodeFeatures
 
-- (VCMediaNegotiationBlobV2StreamGroupEncodeDecodeFeatures)initWithPayload:(id)a3 encodeDecodeFeatures:(id)a4
+- (VCMediaNegotiationBlobV2StreamGroupEncodeDecodeFeatures)initWithPayload:(id)payload encodeDecodeFeatures:(id)features
 {
   v6 = [(VCMediaNegotiationBlobV2StreamGroupEncodeDecodeFeatures *)self init];
   v7 = v6;
@@ -25,20 +25,20 @@ LABEL_9:
     return 0;
   }
 
-  if (!a3)
+  if (!payload)
   {
     [VCMediaNegotiationBlobV2StreamGroupEncodeDecodeFeatures(Utils) initWithPayload:encodeDecodeFeatures:];
     goto LABEL_9;
   }
 
-  if (!a4)
+  if (!features)
   {
     [VCMediaNegotiationBlobV2StreamGroupEncodeDecodeFeatures(Utils) initWithPayload:encodeDecodeFeatures:];
     goto LABEL_9;
   }
 
-  [(VCMediaNegotiationBlobV2StreamGroupEncodeDecodeFeatures *)v6 setEncodeDecodeFeatures:a4];
-  -[VCMediaNegotiationBlobV2StreamGroupEncodeDecodeFeatures setRtpPayload:](v7, "setRtpPayload:", [a3 intValue]);
+  [(VCMediaNegotiationBlobV2StreamGroupEncodeDecodeFeatures *)v6 setEncodeDecodeFeatures:features];
+  -[VCMediaNegotiationBlobV2StreamGroupEncodeDecodeFeatures setRtpPayload:](v7, "setRtpPayload:", [payload intValue]);
   return v7;
 }
 
@@ -61,22 +61,22 @@ LABEL_9:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_rtpPayload), @"rtpPayload"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_rtpPayload), @"rtpPayload"}];
   }
 
   encodeDecodeFeatures = self->_encodeDecodeFeatures;
   if (encodeDecodeFeatures)
   {
-    [v3 setObject:encodeDecodeFeatures forKey:@"encodeDecodeFeatures"];
+    [dictionary setObject:encodeDecodeFeatures forKey:@"encodeDecodeFeatures"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -90,24 +90,24 @@ LABEL_9:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 4) = self->_rtpPayload;
-    *(a3 + 20) |= 1u;
+    *(to + 4) = self->_rtpPayload;
+    *(to + 20) |= 1u;
   }
 
   encodeDecodeFeatures = self->_encodeDecodeFeatures;
   if (encodeDecodeFeatures)
   {
-    [a3 setEncodeDecodeFeatures:encodeDecodeFeatures];
+    [to setEncodeDecodeFeatures:encodeDecodeFeatures];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -115,24 +115,24 @@ LABEL_9:
     *(v5 + 20) |= 1u;
   }
 
-  v6[1] = [(NSData *)self->_encodeDecodeFeatures copyWithZone:a3];
+  v6[1] = [(NSData *)self->_encodeDecodeFeatures copyWithZone:zone];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     if (*&self->_has)
     {
-      if ((*(a3 + 20) & 1) == 0 || self->_rtpPayload != *(a3 + 4))
+      if ((*(equal + 20) & 1) == 0 || self->_rtpPayload != *(equal + 4))
       {
         goto LABEL_9;
       }
     }
 
-    else if (*(a3 + 20))
+    else if (*(equal + 20))
     {
 LABEL_9:
       LOBYTE(v5) = 0;
@@ -140,7 +140,7 @@ LABEL_9:
     }
 
     encodeDecodeFeatures = self->_encodeDecodeFeatures;
-    if (encodeDecodeFeatures | *(a3 + 1))
+    if (encodeDecodeFeatures | *(equal + 1))
     {
 
       LOBYTE(v5) = [(NSData *)encodeDecodeFeatures isEqual:?];
@@ -170,15 +170,15 @@ LABEL_9:
   return [(NSData *)self->_encodeDecodeFeatures hash]^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 20))
+  if (*(from + 20))
   {
-    self->_rtpPayload = *(a3 + 4);
+    self->_rtpPayload = *(from + 4);
     *&self->_has |= 1u;
   }
 
-  if (*(a3 + 1))
+  if (*(from + 1))
   {
     [(VCMediaNegotiationBlobV2StreamGroupEncodeDecodeFeatures *)self setEncodeDecodeFeatures:?];
   }

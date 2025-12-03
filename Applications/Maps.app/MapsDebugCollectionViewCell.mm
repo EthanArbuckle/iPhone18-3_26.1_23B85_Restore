@@ -1,5 +1,5 @@
 @interface MapsDebugCollectionViewCell
-- (MapsDebugCollectionViewCell)initWithFrame:(CGRect)a3;
+- (MapsDebugCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)setupContentView;
 @end
 
@@ -11,10 +11,10 @@
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v3 = [(MapsDebugCollectionViewCell *)self contentView];
-  v4 = [v3 subviews];
+  contentView = [(MapsDebugCollectionViewCell *)self contentView];
+  subviews = [contentView subviews];
 
-  v5 = [v4 countByEnumeratingWithState:&v19 objects:v24 count:16];
+  v5 = [subviews countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v5)
   {
     v6 = v5;
@@ -26,7 +26,7 @@
       {
         if (*v20 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subviews);
         }
 
         [*(*(&v19 + 1) + 8 * v8) removeFromSuperview];
@@ -34,7 +34,7 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v19 objects:v24 count:16];
+      v6 = [subviews countByEnumeratingWithState:&v19 objects:v24 count:16];
     }
 
     while (v6);
@@ -53,8 +53,8 @@
   [v12 setDistribution:2];
   [v12 setSpacing:1.0];
   [v12 setAccessibilityIdentifier:@"MapsDebugCollectionViewCellTextStack"];
-  v13 = [(MapsDebugCollectionViewCell *)self contentView];
-  [v13 addSubview:v12];
+  contentView2 = [(MapsDebugCollectionViewCell *)self contentView];
+  [contentView2 addSubview:v12];
 
   if (sub_10000FA08(self) == 5)
   {
@@ -66,18 +66,18 @@
     v14 = 10.0;
   }
 
-  v15 = [(MapsDebugCollectionViewCell *)self contentView];
+  contentView3 = [(MapsDebugCollectionViewCell *)self contentView];
   LODWORD(v16) = 1148846080;
-  v17 = [v12 _maps_constraintsEqualToEdgesOfView:v15 insets:v14 priority:{16.0, v14, 16.0, v16}];
-  v18 = [v17 allConstraints];
-  [NSLayoutConstraint activateConstraints:v18];
+  v17 = [v12 _maps_constraintsEqualToEdgesOfView:contentView3 insets:v14 priority:{16.0, v14, 16.0, v16}];
+  allConstraints = [v17 allConstraints];
+  [NSLayoutConstraint activateConstraints:allConstraints];
 }
 
-- (MapsDebugCollectionViewCell)initWithFrame:(CGRect)a3
+- (MapsDebugCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v18.receiver = self;
   v18.super_class = MapsDebugCollectionViewCell;
-  v3 = [(MapsDebugCollectionViewCell *)&v18 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MapsDebugCollectionViewCell *)&v18 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

@@ -3,21 +3,21 @@
 - (BOOL)hasCustomOmissionErrorScores;
 - (BOOL)hasCustomReplacementErrorScores;
 - (BOOL)hasCustomTranspositionErrorScores;
-- (PRErrorModel)initWithCustomErrorModel:(id)a3;
-- (double)errorScoreForType:(unint64_t)a3;
+- (PRErrorModel)initWithCustomErrorModel:(id)model;
+- (double)errorScoreForType:(unint64_t)type;
 - (void)dealloc;
 @end
 
 @implementation PRErrorModel
 
-- (PRErrorModel)initWithCustomErrorModel:(id)a3
+- (PRErrorModel)initWithCustomErrorModel:(id)model
 {
   v6.receiver = self;
   v6.super_class = PRErrorModel;
   v4 = [(PRErrorModel *)&v6 init];
   if (v4)
   {
-    v4->_customErrorModel = a3;
+    v4->_customErrorModel = model;
   }
 
   return v4;
@@ -30,12 +30,12 @@
   [(PRErrorModel *)&v3 dealloc];
 }
 
-- (double)errorScoreForType:(unint64_t)a3
+- (double)errorScoreForType:(unint64_t)type
 {
   result = -5.0;
-  if (a3 <= 0xD)
+  if (type <= 0xD)
   {
-    return errorScoreForType__errorScores[a3];
+    return errorScoreForType__errorScores[type];
   }
 
   return result;

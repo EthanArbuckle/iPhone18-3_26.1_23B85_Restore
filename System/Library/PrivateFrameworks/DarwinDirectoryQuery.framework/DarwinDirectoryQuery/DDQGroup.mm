@@ -1,10 +1,10 @@
 @interface DDQGroup
 + (NSSet)mutableGroups;
-+ (id)groupWithGID:(unsigned int)a3;
-+ (id)groupWithName:(id)a3;
-+ (id)groupWithUUID:(id)a3;
-- (DDQGroup)groupWithGID:(unsigned int)a3;
-- (DDQGroup)groupWithName:(id)a3;
++ (id)groupWithGID:(unsigned int)d;
++ (id)groupWithName:(id)name;
++ (id)groupWithUUID:(id)d;
+- (DDQGroup)groupWithGID:(unsigned int)d;
+- (DDQGroup)groupWithName:(id)name;
 - (DDQGroup)init;
 - (NSSet)members;
 - (int64_t)hash;
@@ -33,7 +33,7 @@
   MEMORY[0x28223BE20](v3);
   v6 = &v15[-((v5 + 15) & 0xFFFFFFFFFFFFFFF0)];
   sub_248135858(self + OBJC_IVAR___DDQGroup__group, v15);
-  v7 = self;
+  selfCopy = self;
   swift_dynamicCast();
   v8 = *&v6[*(v3 + 28)];
 
@@ -49,14 +49,14 @@
   return v12;
 }
 
-- (DDQGroup)groupWithGID:(unsigned int)a3
+- (DDQGroup)groupWithGID:(unsigned int)d
 {
   result = sub_248143D00();
   __break(1u);
   return result;
 }
 
-- (DDQGroup)groupWithName:(id)a3
+- (DDQGroup)groupWithName:(id)name
 {
   result = sub_248143D00();
   __break(1u);
@@ -70,7 +70,7 @@
   return result;
 }
 
-+ (id)groupWithUUID:(id)a3
++ (id)groupWithUUID:(id)d
 {
   v3 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EE8AEB8, &qword_2481444D0);
   v4 = *(*(v3 - 8) + 64);
@@ -89,19 +89,19 @@
   return v12;
 }
 
-+ (id)groupWithGID:(unsigned int)a3
++ (id)groupWithGID:(unsigned int)d
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EE8AEB8, &qword_2481444D0);
   v5 = *(*(v4 - 8) + 64);
   MEMORY[0x28223BE20](v4 - 8);
   v7 = &v10 - v6;
-  static Group.with(gid:)(a3, &v10 - v6);
+  static Group.with(gid:)(d, &v10 - v6);
   v8 = sub_248137C1C(v7);
 
   return v8;
 }
 
-+ (id)groupWithName:(id)a3
++ (id)groupWithName:(id)name
 {
   v3 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EE8AEB8, &qword_2481444D0);
   v4 = *(*(v3 - 8) + 64);
@@ -117,7 +117,7 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DDQGroup.hash.getter();
 
   return v3;

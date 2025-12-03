@@ -1,16 +1,16 @@
 @interface APPBOptOutRequest
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasOptedOutStatus:(BOOL)a3;
-- (void)setHasTimezone:(BOOL)a3;
-- (void)setHasTransmitTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasOptedOutStatus:(BOOL)status;
+- (void)setHasTimezone:(BOOL)timezone;
+- (void)setHasTransmitTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation APPBOptOutRequest
@@ -27,9 +27,9 @@
   return v3;
 }
 
-- (void)setHasOptedOutStatus:(BOOL)a3
+- (void)setHasOptedOutStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 8;
   }
@@ -42,9 +42,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasTransmitTimestamp:(BOOL)a3
+- (void)setHasTransmitTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }
@@ -57,9 +57,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasTimezone:(BOOL)a3
+- (void)setHasTimezone:(BOOL)timezone
 {
-  if (a3)
+  if (timezone)
   {
     v3 = 4;
   }
@@ -77,8 +77,8 @@
   v7.receiver = self;
   v7.super_class = APPBOptOutRequest;
   v3 = [(APPBOptOutRequest *)&v7 description];
-  v4 = [(APPBOptOutRequest *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(APPBOptOutRequest *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -154,21 +154,21 @@ LABEL_8:
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_iAdID)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 8) != 0)
   {
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -188,7 +188,7 @@ LABEL_5:
   }
 
   PBDataWriterWriteDoubleField();
-  v4 = v6;
+  toCopy = v6;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -203,37 +203,37 @@ LABEL_6:
 
 LABEL_15:
   PBDataWriterWriteDoubleField();
-  v4 = v6;
+  toCopy = v6;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_7:
     PBDataWriterWriteFloatField();
-    v4 = v6;
+    toCopy = v6;
   }
 
 LABEL_8:
   if (self->_dPID)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_iAdID)
   {
-    [v4 setIAdID:?];
-    v4 = v6;
+    [toCopy setIAdID:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 8) != 0)
   {
-    *(v4 + 44) = self->_optedOutStatus;
-    *(v4 + 48) |= 8u;
+    *(toCopy + 44) = self->_optedOutStatus;
+    *(toCopy + 48) |= 8u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -252,8 +252,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 2) = *&self->_transmitTimestamp;
-  *(v4 + 48) |= 2u;
+  *(toCopy + 2) = *&self->_transmitTimestamp;
+  *(toCopy + 48) |= 2u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -267,27 +267,27 @@ LABEL_6:
   }
 
 LABEL_15:
-  *(v4 + 1) = *&self->_statusChangeTimestamp;
-  *(v4 + 48) |= 1u;
+  *(toCopy + 1) = *&self->_statusChangeTimestamp;
+  *(toCopy + 48) |= 1u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_7:
-    *(v4 + 10) = LODWORD(self->_timezone);
-    *(v4 + 48) |= 4u;
+    *(toCopy + 10) = LODWORD(self->_timezone);
+    *(toCopy + 48) |= 4u;
   }
 
 LABEL_8:
   if (self->_dPID)
   {
     [v6 setDPID:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_iAdID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_iAdID copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
@@ -339,23 +339,23 @@ LABEL_5:
   }
 
 LABEL_6:
-  v9 = [(NSData *)self->_dPID copyWithZone:a3];
+  v9 = [(NSData *)self->_dPID copyWithZone:zone];
   v10 = v5[3];
   v5[3] = v9;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_29;
   }
 
   iAdID = self->_iAdID;
-  if (iAdID | *(v4 + 4))
+  if (iAdID | *(equalCopy + 4))
   {
     if (![(NSData *)iAdID isEqual:?])
     {
@@ -365,7 +365,7 @@ LABEL_6:
 
   if ((*&self->_has & 8) == 0)
   {
-    if ((*(v4 + 48) & 8) == 0)
+    if ((*(equalCopy + 48) & 8) == 0)
     {
       goto LABEL_6;
     }
@@ -375,20 +375,20 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  if ((*(v4 + 48) & 8) == 0)
+  if ((*(equalCopy + 48) & 8) == 0)
   {
     goto LABEL_29;
   }
 
   if (self->_optedOutStatus)
   {
-    if ((*(v4 + 44) & 1) == 0)
+    if ((*(equalCopy + 44) & 1) == 0)
     {
       goto LABEL_29;
     }
   }
 
-  else if (*(v4 + 44))
+  else if (*(equalCopy + 44))
   {
     goto LABEL_29;
   }
@@ -396,45 +396,45 @@ LABEL_29:
 LABEL_6:
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 48) & 2) == 0 || self->_transmitTimestamp != *(v4 + 2))
+    if ((*(equalCopy + 48) & 2) == 0 || self->_transmitTimestamp != *(equalCopy + 2))
     {
       goto LABEL_29;
     }
   }
 
-  else if ((*(v4 + 48) & 2) != 0)
+  else if ((*(equalCopy + 48) & 2) != 0)
   {
     goto LABEL_29;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_statusChangeTimestamp != *(v4 + 1))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_statusChangeTimestamp != *(equalCopy + 1))
     {
       goto LABEL_29;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
     goto LABEL_29;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 48) & 4) == 0 || self->_timezone != *(v4 + 10))
+    if ((*(equalCopy + 48) & 4) == 0 || self->_timezone != *(equalCopy + 10))
     {
       goto LABEL_29;
     }
   }
 
-  else if ((*(v4 + 48) & 4) != 0)
+  else if ((*(equalCopy + 48) & 4) != 0)
   {
     goto LABEL_29;
   }
 
   dPID = self->_dPID;
-  if (dPID | *(v4 + 3))
+  if (dPID | *(equalCopy + 3))
   {
     v7 = [(NSData *)dPID isEqual:?];
   }
@@ -569,22 +569,22 @@ LABEL_9:
   return v6 ^ v3 ^ v10 ^ v11 ^ v15 ^ [(NSData *)self->_dPID hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 4))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(APPBOptOutRequest *)self setIAdID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 8) != 0)
   {
-    self->_optedOutStatus = *(v4 + 44);
+    self->_optedOutStatus = *(fromCopy + 44);
     *&self->_has |= 8u;
-    v5 = *(v4 + 48);
+    v5 = *(fromCopy + 48);
     if ((v5 & 2) == 0)
     {
 LABEL_5:
@@ -597,14 +597,14 @@ LABEL_5:
     }
   }
 
-  else if ((*(v4 + 48) & 2) == 0)
+  else if ((*(fromCopy + 48) & 2) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_transmitTimestamp = *(v4 + 2);
+  self->_transmitTimestamp = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 1) == 0)
   {
 LABEL_6:
@@ -617,20 +617,20 @@ LABEL_6:
   }
 
 LABEL_15:
-  self->_statusChangeTimestamp = *(v4 + 1);
+  self->_statusChangeTimestamp = *(fromCopy + 1);
   *&self->_has |= 1u;
-  if ((*(v4 + 48) & 4) != 0)
+  if ((*(fromCopy + 48) & 4) != 0)
   {
 LABEL_7:
-    self->_timezone = *(v4 + 10);
+    self->_timezone = *(fromCopy + 10);
     *&self->_has |= 4u;
   }
 
 LABEL_8:
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(APPBOptOutRequest *)self setDPID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

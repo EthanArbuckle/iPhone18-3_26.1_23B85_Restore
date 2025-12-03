@@ -1,21 +1,21 @@
 @interface VKVenueGroup
-- (StrokeBufferSizing)bufferSizingForStrokesOnSection:(SEL)a3 styles:(const void *)a4 edges:(const void *)a5;
-- (VKVenueGroup)initWithStyleQuery:(void *)a3 tileZoom:(float)a4 layer:(int)a5 buildingId:(unint64_t)a6 contentScale:(float)a7;
-- (VKVenueGroup)initWithStyleQuery:(void *)a3 tileZoom:(float)a4 layer:(int)a5 buildingId:(unint64_t)a6 contentScale:(float)a7 storage:(shared_ptr<md::MeshSetStorage>)a8;
+- (StrokeBufferSizing)bufferSizingForStrokesOnSection:(SEL)section styles:(const void *)styles edges:(const void *)edges;
+- (VKVenueGroup)initWithStyleQuery:(void *)query tileZoom:(float)zoom layer:(int)layer buildingId:(unint64_t)id contentScale:(float)scale;
+- (VKVenueGroup)initWithStyleQuery:(void *)query tileZoom:(float)zoom layer:(int)layer buildingId:(unint64_t)id contentScale:(float)scale storage:(shared_ptr<md::MeshSetStorage>)storage;
 - (__n128)addWallStrokesForSection:edges:attributes:styles:cullingMask:accessor:;
 - (__n128)addWallsForSection:edges:attributes:styles:cullingMask:accessor:;
-- (const)generateEdgeListForPolygonSection:(const void *)a3 key:(const void *)a4;
+- (const)generateEdgeListForPolygonSection:(const void *)section key:(const void *)key;
 - (id).cxx_construct;
-- (unint64_t)verticalStrokeCountForSection:(const void *)a3 styles:(const void *)a4 edges:(const void *)a5;
-- (void)addStrokeForSection:(const void *)a3 paddedCount:(unsigned int)a4 key:(pair<const void *) attributes:(unsigned long>)a5 styles:(const void *)a6 cullingMask:(void *)a7 accessor:(unsigned int)a8;
+- (unint64_t)verticalStrokeCountForSection:(const void *)section styles:(const void *)styles edges:(const void *)edges;
+- (void)addStrokeForSection:(const void *)section paddedCount:(unsigned int)count key:(pair<const void *) attributes:(unsigned long>)attributes styles:(const void *)styles cullingMask:(void *)mask accessor:(unsigned int)accessor;
 - (void)addWallStrokesForSection:edges:attributes:styles:cullingMask:accessor:;
 - (void)addWallsForSection:edges:attributes:styles:cullingMask:accessor:;
 - (void)didFinishAddingData;
-- (void)prepareToGenerateWallStrokesForSection:(const void *)a3 styles:(const void *)a4 edges:(const void *)a5;
-- (void)prepareToGenerateWallsForSection:(const void *)a3 styles:(void *)a4 edges:(const void *)a5;
-- (void)prepareToStrokeSection:(const void *)a3 key:(const void *)a4 styles:(void *)a5 paddedCount:(unsigned int)a6;
-- (void)updateTextures:(unsigned __int8)a3 textureManager:(void *)a4;
-- (void)willAddDataWithAccessor:(ResourceAccessor *)a3;
+- (void)prepareToGenerateWallStrokesForSection:(const void *)section styles:(const void *)styles edges:(const void *)edges;
+- (void)prepareToGenerateWallsForSection:(const void *)section styles:(void *)styles edges:(const void *)edges;
+- (void)prepareToStrokeSection:(const void *)section key:(const void *)key styles:(void *)styles paddedCount:(unsigned int)count;
+- (void)updateTextures:(unsigned __int8)textures textureManager:(void *)manager;
+- (void)willAddDataWithAccessor:(ResourceAccessor *)accessor;
 @end
 
 @implementation VKVenueGroup
@@ -50,9 +50,9 @@
   return self;
 }
 
-- (void)updateTextures:(unsigned __int8)a3 textureManager:(void *)a4
+- (void)updateTextures:(unsigned __int8)textures textureManager:(void *)manager
 {
-  v5 = a3;
+  texturesCopy = textures;
   v21.receiver = self;
   v21.super_class = VKVenueGroup;
   [VKPolygonGroup updateTextures:sel_updateTextures_textureManager_ textureManager:?];
@@ -73,14 +73,14 @@
 
   if (v20 == 1)
   {
-    if (v5 >= 0x17)
+    if (texturesCopy >= 0x17)
     {
       v10 = 23;
     }
 
     else
     {
-      v10 = v5;
+      v10 = texturesCopy;
     }
 
     gss::RenderStyle<gss::PropertyID>::valueForKeyAtZ<std::string>(&__p, v17[3], 0x152u, v10, 2);
@@ -92,7 +92,7 @@
 
     if (size)
     {
-      [(VKPolygonGroup *)self _textureForName:&__p textureManager:a4];
+      [(VKPolygonGroup *)self _textureForName:&__p textureManager:manager];
       v12 = v15;
     }
 
@@ -141,27 +141,27 @@
   }
 }
 
-- (void)addStrokeForSection:(const void *)a3 paddedCount:(unsigned int)a4 key:(pair<const void *) attributes:(unsigned long>)a5 styles:(const void *)a6 cullingMask:(void *)a7 accessor:(unsigned int)a8
+- (void)addStrokeForSection:(const void *)section paddedCount:(unsigned int)count key:(pair<const void *) attributes:(unsigned long>)attributes styles:(const void *)styles cullingMask:(void *)mask accessor:(unsigned int)accessor
 {
-  var1 = a5.var1;
-  var0 = a5.var0;
-  v18 = a5;
+  var1 = attributes.var1;
+  var0 = attributes.var0;
+  attributesCopy = attributes;
   v17.receiver = self;
   v17.super_class = VKVenueGroup;
-  [VKPolygonGroup addStrokeForSection:sel_addStrokeForSection_paddedCount_key_attributes_styles_cullingMask_accessor_ paddedCount:a3 key:*&a4 attributes:a8 styles:a9 cullingMask:? accessor:?];
-  v19 = &v18;
+  [VKPolygonGroup addStrokeForSection:sel_addStrokeForSection_paddedCount_key_attributes_styles_cullingMask_accessor_ paddedCount:section key:*&count attributes:accessor styles:a9 cullingMask:? accessor:?];
+  v19 = &attributesCopy;
   v15 = std::__hash_table<std::__hash_value_type<std::pair<void const*,unsigned long>,std::vector<md::Edge>>,std::__unordered_map_hasher<std::pair<void const*,unsigned long>,std::__hash_value_type<std::pair<void const*,unsigned long>,std::vector<md::Edge>>,std::hash<std::pair<void const*,unsigned long>>,std::equal_to<std::pair<void const*,unsigned long>>,true>,std::__unordered_map_equal<std::pair<void const*,unsigned long>,std::__hash_value_type<std::pair<void const*,unsigned long>,std::vector<md::Edge>>,std::equal_to<std::pair<void const*,unsigned long>>,std::hash<std::pair<void const*,unsigned long>>,true>,std::allocator<std::__hash_value_type<std::pair<void const*,unsigned long>,std::vector<md::Edge>>>>::__emplace_unique_key_args<std::pair<void const*,unsigned long>,std::piecewise_construct_t const&,std::tuple<std::pair<void const*,unsigned long> const&>,std::tuple<>>(&self->_venueWalls.__table_.__bucket_list_.__ptr_, var0, var1);
   v16 = v15 + 4;
   if (v15[5] != v15[4])
   {
-    [(VKVenueGroup *)self addWallsForSection:a3 edges:v16 attributes:a6 styles:a7 cullingMask:a8 accessor:a9];
-    [(VKVenueGroup *)self addWallStrokesForSection:a3 edges:v16 attributes:a6 styles:a7 cullingMask:a8 accessor:a9];
+    [(VKVenueGroup *)self addWallsForSection:section edges:v16 attributes:styles styles:mask cullingMask:accessor accessor:a9];
+    [(VKVenueGroup *)self addWallStrokesForSection:section edges:v16 attributes:styles styles:mask cullingMask:accessor accessor:a9];
   }
 }
 
 - (void)addWallStrokesForSection:edges:attributes:styles:cullingMask:accessor:
 {
-  v6 = *(a1 + 8);
+  v6 = *(self + 8);
   v7 = *v6;
   if (*v6 != v6[1])
   {
@@ -173,21 +173,21 @@
       v60 = v9;
       v61 = v8;
       v10 = *(v7 + 24);
-      v11 = *(a1 + 24);
-      v12 = **(a1 + 16);
+      v11 = *(self + 24);
+      v12 = **(self + 16);
       v13 = (v10 + 1) % v12;
       v14 = v11[2];
       v15 = v11[11];
       v57 = *a2;
       v58 = v11[5];
       v59 = *a3;
-      v16 = [**(a1 + 32) styleIndexForAttributes:*(a1 + 40) edgePair:{**(a1 + 48) + 12 * ((v10 + v12 - 1) % v12) + 4, *&v52}];
-      v17 = [**(a1 + 32) styleIndexForAttributes:*(a1 + 40) edgePair:**(a1 + 48) + 12 * v10 + 4];
+      v16 = [**(self + 32) styleIndexForAttributes:*(self + 40) edgePair:{**(self + 48) + 12 * ((v10 + v12 - 1) % v12) + 4, *&v52}];
+      v17 = [**(self + 32) styleIndexForAttributes:*(self + 40) edgePair:**(self + 48) + 12 * v10 + 4];
       v18 = v17;
-      v19 = (**(a1 + 48) + 12 * v13);
+      v19 = (**(self + 48) + 12 * v13);
       if (*v19 == 1)
       {
-        v17 = [**(a1 + 32) styleIndexForAttributes:*(a1 + 40) edgePair:v19 + 4];
+        v17 = [**(self + 32) styleIndexForAttributes:*(self + 40) edgePair:v19 + 4];
       }
 
       v20 = (v14 + 8 * ((v10 + 1) % v15));
@@ -279,12 +279,12 @@
       v9 = v60 + 4;
     }
 
-    while (v7 != *(*(a1 + 8) + 8));
+    while (v7 != *(*(self + 8) + 8));
   }
 
-  v48 = *(a1 + 24);
-  v49 = **(a1 + 32);
-  v50 = **(a1 + 56);
+  v48 = *(self + 24);
+  v49 = **(self + 32);
+  v50 = **(self + 56);
   v51 = *(v49 + 3656);
   v62 = *a3;
   v63 = *(v48 + 104);
@@ -294,10 +294,10 @@
 - (__n128)addWallStrokesForSection:edges:attributes:styles:cullingMask:accessor:
 {
   *a2 = &unk_1F2A3C5E8;
-  result = *(a1 + 8);
-  v3 = *(a1 + 24);
-  v4 = *(a1 + 40);
-  *(a2 + 56) = *(a1 + 56);
+  result = *(self + 8);
+  v3 = *(self + 24);
+  v4 = *(self + 40);
+  *(a2 + 56) = *(self + 56);
   *(a2 + 40) = v4;
   *(a2 + 24) = v3;
   *(a2 + 8) = result;
@@ -306,9 +306,9 @@
 
 - (void)addWallsForSection:edges:attributes:styles:cullingMask:accessor:
 {
-  v7 = a1;
-  v8 = [**(a1 + 8) styleIndexForAttributes:*(a1 + 16) edgePair:**(v7 + 24) + 12 * *(*(v7 + 32) + 88) - 8];
-  v9 = *(v7 + 32);
+  selfCopy = self;
+  v8 = [**(self + 8) styleIndexForAttributes:*(self + 16) edgePair:**(selfCopy + 24) + 12 * *(*(selfCopy + 32) + 88) - 8];
+  v9 = *(selfCopy + 32);
   if (v9[11])
   {
     v10 = v8;
@@ -328,16 +328,16 @@
     v53 = _Q5;
     v54 = _Q4;
     v52 = v22;
-    v51 = v7;
+    v51 = selfCopy;
     do
     {
       v24 = v9[2];
       v25 = v9[5];
-      v26 = **(v7 + 24);
+      v26 = **(selfCopy + 24);
       if (*(v26 + v11) == 1)
       {
-        v27 = *(v7 + 16);
-        v28 = **(v7 + 8);
+        v27 = *(selfCopy + 16);
+        v28 = **(selfCopy + 8);
         v29 = a4;
         v30 = a2;
         v31 = v15;
@@ -348,7 +348,7 @@
         v15 = v31;
         a2 = v30;
         a4 = v29;
-        v7 = v51;
+        selfCopy = v51;
         v9 = *(v51 + 32);
       }
 
@@ -358,7 +358,7 @@
       *v32.f32 = vmovn_s32(vcvtq_s32_f32(vmulq_f32(vminnmq_f32(vmaxnmq_f32(v32, _Q4), _Q5), v22)));
       v34 = fminf(fmaxf(v33[1], 0.0), 1.0) * 65535.0;
       LODWORD(v33) = (fminf(fmaxf(*v33, 0.0), 1.0) * 65535.0);
-      v35 = ((v23 * 65535.0) / *(**(v7 + 8) + v15[162]));
+      v35 = ((v23 * 65535.0) / *(**(selfCopy + 8) + v15[162]));
       v36 = (*(a4 + 40) + 24 * *a2 + v13);
       *(v36 - 44) = v33;
       *(v36 - 43) = v34;
@@ -388,7 +388,7 @@
       *(v36 - 4) = -1;
       *(v36 - 3) = v35;
       *v36 = v32.i64[0];
-      v9 = *(v7 + 32);
+      v9 = *(selfCopy + 32);
       v37 = v9[11];
       v38 = vsub_f32(*(v9[1] + 8 * (v14 % v37)), *(v9[1] + v12));
       v23 = sqrtf(vaddv_f32(vmul_f32(v38, v38))) + v23;
@@ -401,7 +401,7 @@
     while (v14++ < v37);
   }
 
-  v39 = *(v7 + 40);
+  v39 = *(selfCopy + 40);
   v40 = *v39;
   v41 = v39[1];
   if (v40 != v41)
@@ -426,8 +426,8 @@
     while (v40 != v41);
   }
 
-  v46 = **(v7 + 8);
-  v47 = **(v7 + 48);
+  v46 = **(selfCopy + 8);
+  v47 = **(selfCopy + 48);
   v48 = *(v46 + 3272);
   v55 = *a3;
   v56 = v9[13];
@@ -437,9 +437,9 @@
 - (__n128)addWallsForSection:edges:attributes:styles:cullingMask:accessor:
 {
   *a2 = &unk_1F2A3C558;
-  result = *(a1 + 8);
-  v3 = *(a1 + 24);
-  *(a2 + 40) = *(a1 + 40);
+  result = *(self + 8);
+  v3 = *(self + 24);
+  *(a2 + 40) = *(self + 40);
   *(a2 + 24) = v3;
   *(a2 + 8) = result;
   return result;
@@ -653,7 +653,7 @@
   }
 }
 
-- (void)willAddDataWithAccessor:(ResourceAccessor *)a3
+- (void)willAddDataWithAccessor:(ResourceAccessor *)accessor
 {
   v29 = *MEMORY[0x1E69E9840];
   v25.receiver = self;
@@ -663,7 +663,7 @@
   ptr = self->_venueWallMeshInfo.var0.__val_._internalStorage.__ptr_;
   if (ptr)
   {
-    md::MeshSetStorage::prepareStorage(ptr, a3);
+    md::MeshSetStorage::prepareStorage(ptr, accessor);
   }
 
   begin = p_venueWallMeshInfo->var0.__val_._vertexAndIndexCounts.__begin_;
@@ -693,10 +693,10 @@
   v8 = self->_venueWallMeshInfo.var0.__val_._meshes.__begin_;
   if (v8 != self->_venueWallMeshInfo.var0.__val_._meshes.__end_)
   {
-    ggl::DataAccess<ggl::TrafficBase::DefaultVbo>::DataAccess(v28, **(*v8 + 64), 0, *p_venueWallMeshInfo->var0.__val_._vertexAndIndexCounts.__begin_, a3);
+    ggl::DataAccess<ggl::TrafficBase::DefaultVbo>::DataAccess(v28, **(*v8 + 64), 0, *p_venueWallMeshInfo->var0.__val_._vertexAndIndexCounts.__begin_, accessor);
     ggl::BufferMemory::operator=(&self->_venueWallMeshInfo.var0.__val_._vertexDataWrite, v28);
     ggl::BufferMemory::~BufferMemory(v28);
-    ggl::DataAccess<ggl::DaVinci::TexturedCompressedVbo>::DataAccess(v28, *(*self->_venueWallMeshInfo.var0.__val_._meshes.__begin_ + 96), 0, *(self->_venueWallMeshInfo.var0.__val_._vertexAndIndexCounts.__begin_ + 1), 1, 1, a3);
+    ggl::DataAccess<ggl::DaVinci::TexturedCompressedVbo>::DataAccess(v28, *(*self->_venueWallMeshInfo.var0.__val_._meshes.__begin_ + 96), 0, *(self->_venueWallMeshInfo.var0.__val_._vertexAndIndexCounts.__begin_ + 1), 1, 1, accessor);
     ggl::BufferMemory::operator=(&self->_venueWallMeshInfo.var0.__val_._indexDataWrite, v28);
     ggl::BufferMemory::~BufferMemory(v28);
   }
@@ -705,7 +705,7 @@
   v10 = self->_venueWallEndCapMeshInfo.var0.__val_._internalStorage.__ptr_;
   if (v10)
   {
-    md::MeshSetStorage::prepareStorage(v10, a3);
+    md::MeshSetStorage::prepareStorage(v10, accessor);
   }
 
   v12 = p_venueWallEndCapMeshInfo->var0.__val_._vertexAndIndexCounts.__begin_;
@@ -735,10 +735,10 @@
   v13 = self->_venueWallEndCapMeshInfo.var0.__val_._meshes.__begin_;
   if (v13 != self->_venueWallEndCapMeshInfo.var0.__val_._meshes.__end_)
   {
-    ggl::DataAccess<ggl::TrafficBase::DefaultVbo>::DataAccess(v28, **(*v13 + 64), 0, *p_venueWallEndCapMeshInfo->var0.__val_._vertexAndIndexCounts.__begin_, a3);
+    ggl::DataAccess<ggl::TrafficBase::DefaultVbo>::DataAccess(v28, **(*v13 + 64), 0, *p_venueWallEndCapMeshInfo->var0.__val_._vertexAndIndexCounts.__begin_, accessor);
     ggl::BufferMemory::operator=(&self->_venueWallEndCapMeshInfo.var0.__val_._vertexDataWrite, v28);
     ggl::BufferMemory::~BufferMemory(v28);
-    ggl::DataAccess<ggl::DaVinci::TexturedCompressedVbo>::DataAccess(v28, *(*self->_venueWallEndCapMeshInfo.var0.__val_._meshes.__begin_ + 96), 0, *(self->_venueWallEndCapMeshInfo.var0.__val_._vertexAndIndexCounts.__begin_ + 1), 1, 1, a3);
+    ggl::DataAccess<ggl::DaVinci::TexturedCompressedVbo>::DataAccess(v28, *(*self->_venueWallEndCapMeshInfo.var0.__val_._meshes.__begin_ + 96), 0, *(self->_venueWallEndCapMeshInfo.var0.__val_._vertexAndIndexCounts.__begin_ + 1), 1, 1, accessor);
     ggl::BufferMemory::operator=(&self->_venueWallEndCapMeshInfo.var0.__val_._indexDataWrite, v28);
     ggl::BufferMemory::~BufferMemory(v28);
   }
@@ -747,7 +747,7 @@
   v15 = self->_venueWallHorizontalStrokeMeshInfo.var0.__val_._internalStorage.__ptr_;
   if (v15)
   {
-    md::MeshSetStorage::prepareStorage(v15, a3);
+    md::MeshSetStorage::prepareStorage(v15, accessor);
   }
 
   v17 = p_venueWallHorizontalStrokeMeshInfo->var0.__val_._vertexAndIndexCounts.__begin_;
@@ -777,10 +777,10 @@
   v18 = self->_venueWallHorizontalStrokeMeshInfo.var0.__val_._meshes.__begin_;
   if (v18 != self->_venueWallHorizontalStrokeMeshInfo.var0.__val_._meshes.__end_)
   {
-    ggl::DataAccess<ggl::TrafficBase::DefaultVbo>::DataAccess(v28, **(*v18 + 64), 0, *p_venueWallHorizontalStrokeMeshInfo->var0.__val_._vertexAndIndexCounts.__begin_, a3);
+    ggl::DataAccess<ggl::TrafficBase::DefaultVbo>::DataAccess(v28, **(*v18 + 64), 0, *p_venueWallHorizontalStrokeMeshInfo->var0.__val_._vertexAndIndexCounts.__begin_, accessor);
     ggl::BufferMemory::operator=(&self->_venueWallHorizontalStrokeMeshInfo.var0.__val_._vertexDataWrite, v28);
     ggl::BufferMemory::~BufferMemory(v28);
-    ggl::DataAccess<ggl::DaVinci::TexturedCompressedVbo>::DataAccess(v28, *(*self->_venueWallHorizontalStrokeMeshInfo.var0.__val_._meshes.__begin_ + 96), 0, *(self->_venueWallHorizontalStrokeMeshInfo.var0.__val_._vertexAndIndexCounts.__begin_ + 1), 1, 1, a3);
+    ggl::DataAccess<ggl::DaVinci::TexturedCompressedVbo>::DataAccess(v28, *(*self->_venueWallHorizontalStrokeMeshInfo.var0.__val_._meshes.__begin_ + 96), 0, *(self->_venueWallHorizontalStrokeMeshInfo.var0.__val_._vertexAndIndexCounts.__begin_ + 1), 1, 1, accessor);
     ggl::BufferMemory::operator=(&self->_venueWallHorizontalStrokeMeshInfo.var0.__val_._indexDataWrite, v28);
     ggl::BufferMemory::~BufferMemory(v28);
   }
@@ -789,7 +789,7 @@
   v20 = self->_venueWallVerticalStrokeMeshInfo.var0.__val_._internalStorage.__ptr_;
   if (v20)
   {
-    md::MeshSetStorage::prepareStorage(v20, a3);
+    md::MeshSetStorage::prepareStorage(v20, accessor);
   }
 
   v22 = p_venueWallVerticalStrokeMeshInfo->var0.__val_._vertexAndIndexCounts.__begin_;
@@ -819,28 +819,28 @@
   v23 = self->_venueWallVerticalStrokeMeshInfo.var0.__val_._meshes.__begin_;
   if (v23 != self->_venueWallVerticalStrokeMeshInfo.var0.__val_._meshes.__end_)
   {
-    ggl::DataAccess<ggl::TrafficBase::DefaultVbo>::DataAccess(v28, **(*v23 + 64), 0, *p_venueWallVerticalStrokeMeshInfo->var0.__val_._vertexAndIndexCounts.__begin_, a3);
+    ggl::DataAccess<ggl::TrafficBase::DefaultVbo>::DataAccess(v28, **(*v23 + 64), 0, *p_venueWallVerticalStrokeMeshInfo->var0.__val_._vertexAndIndexCounts.__begin_, accessor);
     ggl::BufferMemory::operator=(&self->_venueWallVerticalStrokeMeshInfo.var0.__val_._vertexDataWrite, v28);
     ggl::BufferMemory::~BufferMemory(v28);
-    ggl::DataAccess<ggl::DaVinci::TexturedCompressedVbo>::DataAccess(v28, *(*self->_venueWallVerticalStrokeMeshInfo.var0.__val_._meshes.__begin_ + 96), 0, *(self->_venueWallVerticalStrokeMeshInfo.var0.__val_._vertexAndIndexCounts.__begin_ + 1), 1, 1, a3);
+    ggl::DataAccess<ggl::DaVinci::TexturedCompressedVbo>::DataAccess(v28, *(*self->_venueWallVerticalStrokeMeshInfo.var0.__val_._meshes.__begin_ + 96), 0, *(self->_venueWallVerticalStrokeMeshInfo.var0.__val_._vertexAndIndexCounts.__begin_ + 1), 1, 1, accessor);
     ggl::BufferMemory::operator=(&self->_venueWallVerticalStrokeMeshInfo.var0.__val_._indexDataWrite, v28);
     ggl::BufferMemory::~BufferMemory(v28);
   }
 }
 
-- (void)prepareToStrokeSection:(const void *)a3 key:(const void *)a4 styles:(void *)a5 paddedCount:(unsigned int)a6
+- (void)prepareToStrokeSection:(const void *)section key:(const void *)key styles:(void *)styles paddedCount:(unsigned int)count
 {
   v11.receiver = self;
   v11.super_class = VKVenueGroup;
-  [(VKPolygonGroup *)&v11 prepareToStrokeSection:a3 key:a4 styles:a5 paddedCount:*&a6];
-  v10 = [(VKVenueGroup *)self generateEdgeListForPolygonSection:a3 key:a4];
-  [(VKVenueGroup *)self prepareToGenerateWallsForSection:a3 styles:a5 edges:v10];
-  [(VKVenueGroup *)self prepareToGenerateWallStrokesForSection:a3 styles:a5 edges:v10];
+  [(VKPolygonGroup *)&v11 prepareToStrokeSection:section key:key styles:styles paddedCount:*&count];
+  v10 = [(VKVenueGroup *)self generateEdgeListForPolygonSection:section key:key];
+  [(VKVenueGroup *)self prepareToGenerateWallsForSection:section styles:styles edges:v10];
+  [(VKVenueGroup *)self prepareToGenerateWallStrokesForSection:section styles:styles edges:v10];
 }
 
-- (void)prepareToGenerateWallStrokesForSection:(const void *)a3 styles:(const void *)a4 edges:(const void *)a5
+- (void)prepareToGenerateWallStrokesForSection:(const void *)section styles:(const void *)styles edges:(const void *)edges
 {
-  [(VKVenueGroup *)self bufferSizingForStrokesOnSection:a3 styles:a4 edges:a5];
+  [(VKVenueGroup *)self bufferSizingForStrokesOnSection:section styles:styles edges:edges];
   end = self->_venueWallHorizontalStrokeMeshInfo.var0.__val_._vertexAndIndexCounts.__end_;
   *(end - 4) = *(end - 4);
   *(end - 1) = *(end - 1);
@@ -868,11 +868,11 @@
   }
 }
 
-- (void)prepareToGenerateWallsForSection:(const void *)a3 styles:(void *)a4 edges:(const void *)a5
+- (void)prepareToGenerateWallsForSection:(const void *)section styles:(void *)styles edges:(const void *)edges
 {
-  v8 = *(a3 + 11);
-  v9 = numberOfStyleChanges(*(a3 + 8), v8, *a4);
-  v10 = *(a5 + 1) - *a5;
+  v8 = *(section + 11);
+  v9 = numberOfStyleChanges(*(section + 8), v8, *styles);
+  v10 = *(edges + 1) - *edges;
   if (v10)
   {
     v11 = 4 * v8;
@@ -883,11 +883,11 @@
     v11 = 0;
   }
 
-  v12 = *(a3 + 34);
+  v12 = *(section + 34);
   if (v12 == 0.0 && v8 >= 2)
   {
     v14 = 0;
-    v15 = *(a3 + 1);
+    v15 = *(section + 1);
     do
     {
       if (v8 - 1 == v14)
@@ -902,7 +902,7 @@
 
       v17 = vsub_f32(*(v15 + 8 * v16), *(v15 + 8 * v14));
       v12 = sqrtf(vaddv_f32(vmul_f32(v17, v17))) + v12;
-      *(a3 + 34) = v12;
+      *(section + 34) = v12;
       ++v14;
     }
 
@@ -1142,9 +1142,9 @@ LABEL_66:
   }
 }
 
-- (StrokeBufferSizing)bufferSizingForStrokesOnSection:(SEL)a3 styles:(const void *)a4 edges:(const void *)a5
+- (StrokeBufferSizing)bufferSizingForStrokesOnSection:(SEL)section styles:(const void *)styles edges:(const void *)edges
 {
-  result = [(VKVenueGroup *)self verticalStrokeCountForSection:a4 styles:a5 edges:?];
+  result = [(VKVenueGroup *)self verticalStrokeCountForSection:styles styles:edges edges:?];
   v9 = (*(a6 + 1) - *a6) >> 3;
   retstr->var0 = 0xB6DB6DB6DB6DB6DCLL * v9;
   retstr->var1 = 0x924924924924924ALL * v9;
@@ -1153,11 +1153,11 @@ LABEL_66:
   return result;
 }
 
-- (unint64_t)verticalStrokeCountForSection:(const void *)a3 styles:(const void *)a4 edges:(const void *)a5
+- (unint64_t)verticalStrokeCountForSection:(const void *)section styles:(const void *)styles edges:(const void *)edges
 {
-  v5 = *a5;
-  v6 = *(a5 + 1);
-  if (*a5 == v6)
+  v5 = *edges;
+  v6 = *(edges + 1);
+  if (*edges == v6)
   {
     return 0;
   }
@@ -1166,10 +1166,10 @@ LABEL_66:
   do
   {
     v8 = *(v5 + 24);
-    if (fabsf(vaddv_f32(vmul_f32(*(*(a3 + 2) + 8 * v8), *(*(a3 + 5) + 8 * v8)))) <= 0.93969 || *(*a4 + 12 * v8) == 1)
+    if (fabsf(vaddv_f32(vmul_f32(*(*(section + 2) + 8 * v8), *(*(section + 5) + 8 * v8)))) <= 0.93969 || *(*styles + 12 * v8) == 1)
     {
-      v9 = (v8 + *(a3 + 11) - 1) % *(a3 + 11);
-      v10 = (~*(*(a3 + 8) + ((v9 >> 3) & 0x1FFFFFFFFFFFFFF8)) >> (v9 & 0x3F)) & 1;
+      v9 = (v8 + *(section + 11) - 1) % *(section + 11);
+      v10 = (~*(*(section + 8) + ((v9 >> 3) & 0x1FFFFFFFFFFFFFF8)) >> (v9 & 0x3F)) & 1;
     }
 
     else
@@ -1185,24 +1185,24 @@ LABEL_66:
   return result;
 }
 
-- (const)generateEdgeListForPolygonSection:(const void *)a3 key:(const void *)a4
+- (const)generateEdgeListForPolygonSection:(const void *)section key:(const void *)key
 {
-  v5 = std::__hash_table<std::__hash_value_type<std::pair<void const*,unsigned long>,std::vector<md::Edge>>,std::__unordered_map_hasher<std::pair<void const*,unsigned long>,std::__hash_value_type<std::pair<void const*,unsigned long>,std::vector<md::Edge>>,std::hash<std::pair<void const*,unsigned long>>,std::equal_to<std::pair<void const*,unsigned long>>,true>,std::__unordered_map_equal<std::pair<void const*,unsigned long>,std::__hash_value_type<std::pair<void const*,unsigned long>,std::vector<md::Edge>>,std::equal_to<std::pair<void const*,unsigned long>>,std::hash<std::pair<void const*,unsigned long>>,true>,std::allocator<std::__hash_value_type<std::pair<void const*,unsigned long>,std::vector<md::Edge>>>>::__emplace_unique_key_args<std::pair<void const*,unsigned long>,std::piecewise_construct_t const&,std::tuple<std::pair<void const*,unsigned long> const&>,std::tuple<>>(&self->_venueWalls.__table_.__bucket_list_.__ptr_, *a4, *(a4 + 1));
-  std::vector<md::Edge>::reserve(v5 + 4, *(a3 + 11));
-  v6 = *(a3 + 11);
+  v5 = std::__hash_table<std::__hash_value_type<std::pair<void const*,unsigned long>,std::vector<md::Edge>>,std::__unordered_map_hasher<std::pair<void const*,unsigned long>,std::__hash_value_type<std::pair<void const*,unsigned long>,std::vector<md::Edge>>,std::hash<std::pair<void const*,unsigned long>>,std::equal_to<std::pair<void const*,unsigned long>>,true>,std::__unordered_map_equal<std::pair<void const*,unsigned long>,std::__hash_value_type<std::pair<void const*,unsigned long>,std::vector<md::Edge>>,std::equal_to<std::pair<void const*,unsigned long>>,std::hash<std::pair<void const*,unsigned long>>,true>,std::allocator<std::__hash_value_type<std::pair<void const*,unsigned long>,std::vector<md::Edge>>>>::__emplace_unique_key_args<std::pair<void const*,unsigned long>,std::piecewise_construct_t const&,std::tuple<std::pair<void const*,unsigned long> const&>,std::tuple<>>(&self->_venueWalls.__table_.__bucket_list_.__ptr_, *key, *(key + 1));
+  std::vector<md::Edge>::reserve(v5 + 4, *(section + 11));
+  v6 = *(section + 11);
   if (v6)
   {
     v7 = 0;
     do
     {
-      if ((*(*(a3 + 8) + ((v7 >> 3) & 0x1FFFFFFFFFFFFFF8)) >> v7))
+      if ((*(*(section + 8) + ((v7 >> 3) & 0x1FFFFFFFFFFFFFF8)) >> v7))
       {
         v8 = v7 + 1;
       }
 
       else
       {
-        v9 = *(a3 + 1);
+        v9 = *(section + 1);
         v10 = *(v9 + 8 * v7);
         v8 = v7 + 1;
         v11 = (v7 + 1) % v6;
@@ -1296,7 +1296,7 @@ LABEL_66:
         }
 
         v5[5] = v15;
-        v6 = *(a3 + 11);
+        v6 = *(section + 11);
       }
 
       v7 = v8;
@@ -1308,11 +1308,11 @@ LABEL_66:
   return v5 + 4;
 }
 
-- (VKVenueGroup)initWithStyleQuery:(void *)a3 tileZoom:(float)a4 layer:(int)a5 buildingId:(unint64_t)a6 contentScale:(float)a7
+- (VKVenueGroup)initWithStyleQuery:(void *)query tileZoom:(float)zoom layer:(int)layer buildingId:(unint64_t)id contentScale:(float)scale
 {
   v9 = 0;
   v10 = 0;
-  v7 = [VKPolygonGroup initWithStyleQuery:"initWithStyleQuery:tileZoom:fixedAroundCentroid:contentScale:storage:" tileZoom:a3 fixedAroundCentroid:0 contentScale:&v9 storage:?];
+  v7 = [VKPolygonGroup initWithStyleQuery:"initWithStyleQuery:tileZoom:fixedAroundCentroid:contentScale:storage:" tileZoom:query fixedAroundCentroid:0 contentScale:&v9 storage:?];
   if (v10)
   {
     std::__shared_weak_count::__release_shared[abi:nn200100](v10);
@@ -1321,12 +1321,12 @@ LABEL_66:
   return v7;
 }
 
-- (VKVenueGroup)initWithStyleQuery:(void *)a3 tileZoom:(float)a4 layer:(int)a5 buildingId:(unint64_t)a6 contentScale:(float)a7 storage:(shared_ptr<md::MeshSetStorage>)a8
+- (VKVenueGroup)initWithStyleQuery:(void *)query tileZoom:(float)zoom layer:(int)layer buildingId:(unint64_t)id contentScale:(float)scale storage:(shared_ptr<md::MeshSetStorage>)storage
 {
-  ptr = a8.__ptr_;
+  ptr = storage.__ptr_;
   v23 = *MEMORY[0x1E69E9840];
-  v11 = *(a8.__ptr_ + 1);
-  v21 = *a8.__ptr_;
+  v11 = *(storage.__ptr_ + 1);
+  v21 = *storage.__ptr_;
   v22 = v11;
   if (v11)
   {
@@ -1335,7 +1335,7 @@ LABEL_66:
 
   v20.receiver = self;
   v20.super_class = VKVenueGroup;
-  v12 = [VKPolygonGroup initWithStyleQuery:sel_initWithStyleQuery_tileZoom_fixedAroundCentroid_contentScale_storage_ tileZoom:a3 fixedAroundCentroid:0 contentScale:&v21 storage:?];
+  v12 = [VKPolygonGroup initWithStyleQuery:sel_initWithStyleQuery_tileZoom_fixedAroundCentroid_contentScale_storage_ tileZoom:query fixedAroundCentroid:0 contentScale:&v21 storage:?];
   if (v22)
   {
     std::__shared_weak_count::__release_shared[abi:nn200100](v22);
@@ -1343,8 +1343,8 @@ LABEL_66:
 
   if (v12)
   {
-    v12->_layer = a5;
-    v12->_buildingId = a6;
+    v12->_layer = layer;
+    v12->_buildingId = id;
     v13 = *ptr;
     ggl::BufferMemory::BufferMemory(v15);
     ggl::BufferMemory::BufferMemory(v16);

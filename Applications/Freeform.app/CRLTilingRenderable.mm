@@ -1,34 +1,34 @@
 @interface CRLTilingRenderable
 + (id)renderable;
-+ (id)renderableFromTilingLayer:(id)a3;
++ (id)renderableFromTilingLayer:(id)layer;
 - (BOOL)forceTiled;
-- (CRLTilingRenderable)initWithTilingLayer:(id)a3;
+- (CRLTilingRenderable)initWithTilingLayer:(id)layer;
 - (id)p_tilingLayer;
 - (int64_t)tilingMode;
-- (void)setForceTiled:(BOOL)a3;
-- (void)setTilingMode:(int64_t)a3;
+- (void)setForceTiled:(BOOL)tiled;
+- (void)setTilingMode:(int64_t)mode;
 @end
 
 @implementation CRLTilingRenderable
 
-- (CRLTilingRenderable)initWithTilingLayer:(id)a3
+- (CRLTilingRenderable)initWithTilingLayer:(id)layer
 {
   v4.receiver = self;
   v4.super_class = CRLTilingRenderable;
-  return [(CRLCanvasRenderable *)&v4 initWithCALayer:a3];
+  return [(CRLCanvasRenderable *)&v4 initWithCALayer:layer];
 }
 
-+ (id)renderableFromTilingLayer:(id)a3
++ (id)renderableFromTilingLayer:(id)layer
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithTilingLayer:v4];
+  layerCopy = layer;
+  v5 = [[self alloc] initWithTilingLayer:layerCopy];
 
   return v5;
 }
 
 + (id)renderable
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = +[CRLTilingLayer layer];
   v4 = [v2 initWithTilingLayer:v3];
 
@@ -38,39 +38,39 @@
 - (id)p_tilingLayer
 {
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasRenderable *)self layer];
-  v5 = sub_100014370(v3, v4);
+  layer = [(CRLCanvasRenderable *)self layer];
+  v5 = sub_100014370(v3, layer);
 
   return v5;
 }
 
 - (int64_t)tilingMode
 {
-  v2 = [(CRLTilingRenderable *)self p_tilingLayer];
-  v3 = [v2 tilingMode];
+  p_tilingLayer = [(CRLTilingRenderable *)self p_tilingLayer];
+  tilingMode = [p_tilingLayer tilingMode];
 
-  return v3;
+  return tilingMode;
 }
 
-- (void)setTilingMode:(int64_t)a3
+- (void)setTilingMode:(int64_t)mode
 {
-  v4 = [(CRLTilingRenderable *)self p_tilingLayer];
-  [v4 setTilingMode:a3];
+  p_tilingLayer = [(CRLTilingRenderable *)self p_tilingLayer];
+  [p_tilingLayer setTilingMode:mode];
 }
 
 - (BOOL)forceTiled
 {
-  v2 = [(CRLTilingRenderable *)self p_tilingLayer];
-  v3 = [v2 forceTiled];
+  p_tilingLayer = [(CRLTilingRenderable *)self p_tilingLayer];
+  forceTiled = [p_tilingLayer forceTiled];
 
-  return v3;
+  return forceTiled;
 }
 
-- (void)setForceTiled:(BOOL)a3
+- (void)setForceTiled:(BOOL)tiled
 {
-  v3 = a3;
-  v4 = [(CRLTilingRenderable *)self p_tilingLayer];
-  [v4 setForceTiled:v3];
+  tiledCopy = tiled;
+  p_tilingLayer = [(CRLTilingRenderable *)self p_tilingLayer];
+  [p_tilingLayer setForceTiled:tiledCopy];
 }
 
 @end

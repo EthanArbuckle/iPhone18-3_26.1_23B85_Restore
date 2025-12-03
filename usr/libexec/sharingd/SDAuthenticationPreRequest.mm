@@ -1,20 +1,20 @@
 @interface SDAuthenticationPreRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SDAuthenticationPreRequest
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 2;
   }
@@ -32,8 +32,8 @@
   v7.receiver = self;
   v7.super_class = SDAuthenticationPreRequest;
   v3 = [(SDAuthenticationPreRequest *)&v7 description];
-  v4 = [(SDAuthenticationPreRequest *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(SDAuthenticationPreRequest *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -71,16 +71,16 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v8 = v4;
+  v8 = toCopy;
   if ((has & 2) != 0)
   {
     version = self->_version;
     PBDataWriterWriteUint32Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -88,56 +88,56 @@
   {
     type = self->_type;
     PBDataWriterWriteUint32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_sessionID)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_awdlInfo)
   {
     PBDataWriterWriteDataField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[7] = self->_version;
-    *(v4 + 32) |= 2u;
+    toCopy[7] = self->_version;
+    *(toCopy + 32) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    v4[6] = self->_type;
-    *(v4 + 32) |= 1u;
+    toCopy[6] = self->_type;
+    *(toCopy + 32) |= 1u;
   }
 
-  v6 = v4;
+  v6 = toCopy;
   if (self->_sessionID)
   {
-    [v4 setSessionID:?];
-    v4 = v6;
+    [toCopy setSessionID:?];
+    toCopy = v6;
   }
 
   if (self->_awdlInfo)
   {
     [v6 setAwdlInfo:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -153,35 +153,35 @@
     *(v5 + 32) |= 1u;
   }
 
-  v8 = [(NSString *)self->_sessionID copyWithZone:a3];
+  v8 = [(NSString *)self->_sessionID copyWithZone:zone];
   v9 = v6[2];
   v6[2] = v8;
 
-  v10 = [(NSData *)self->_awdlInfo copyWithZone:a3];
+  v10 = [(NSData *)self->_awdlInfo copyWithZone:zone];
   v11 = v6[1];
   v6[1] = v10;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
-  v5 = *(v4 + 32);
+  v5 = *(equalCopy + 32);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0 || self->_version != *(v4 + 7))
+    if ((*(equalCopy + 32) & 2) == 0 || self->_version != *(equalCopy + 7))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 32) & 2) != 0)
+  else if ((*(equalCopy + 32) & 2) != 0)
   {
 LABEL_16:
     v8 = 0;
@@ -190,25 +190,25 @@ LABEL_16:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_type != *(v4 + 6))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_type != *(equalCopy + 6))
     {
       goto LABEL_16;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
     goto LABEL_16;
   }
 
   sessionID = self->_sessionID;
-  if (sessionID | *(v4 + 2) && ![(NSString *)sessionID isEqual:?])
+  if (sessionID | *(equalCopy + 2) && ![(NSString *)sessionID isEqual:?])
   {
     goto LABEL_16;
   }
 
   awdlInfo = self->_awdlInfo;
-  if (awdlInfo | *(v4 + 1))
+  if (awdlInfo | *(equalCopy + 1))
   {
     v8 = [(NSData *)awdlInfo isEqual:?];
   }
@@ -251,34 +251,34 @@ LABEL_6:
   return v5 ^ [(NSData *)self->_awdlInfo hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 32);
+  fromCopy = from;
+  v5 = *(fromCopy + 32);
   if ((v5 & 2) != 0)
   {
-    self->_version = *(v4 + 7);
+    self->_version = *(fromCopy + 7);
     *&self->_has |= 2u;
-    v5 = *(v4 + 32);
+    v5 = *(fromCopy + 32);
   }
 
   if (v5)
   {
-    self->_type = *(v4 + 6);
+    self->_type = *(fromCopy + 6);
     *&self->_has |= 1u;
   }
 
-  v6 = v4;
-  if (*(v4 + 2))
+  v6 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(SDAuthenticationPreRequest *)self setSessionID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(SDAuthenticationPreRequest *)self setAwdlInfo:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

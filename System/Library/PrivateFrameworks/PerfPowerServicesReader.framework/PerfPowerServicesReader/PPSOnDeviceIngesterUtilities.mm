@@ -1,23 +1,23 @@
 @interface PPSOnDeviceIngesterUtilities
-+ (id)allDataSourcesForSubsystem:(id)a3 category:(id)a4;
-+ (id)dataSourceForSubsystem:(id)a3 category:(id)a4;
-+ (id)filepathForMetricDefinition:(id)a3;
-+ (id)filepathForSubsystem:(id)a3 category:(id)a4;
-+ (id)metricDefinitionHistoryForSubsystem:(id)a3 category:(id)a4 metricName:(id)a5;
++ (id)allDataSourcesForSubsystem:(id)subsystem category:(id)category;
++ (id)dataSourceForSubsystem:(id)subsystem category:(id)category;
++ (id)filepathForMetricDefinition:(id)definition;
++ (id)filepathForSubsystem:(id)subsystem category:(id)category;
++ (id)metricDefinitionHistoryForSubsystem:(id)subsystem category:(id)category metricName:(id)name;
 @end
 
 @implementation PPSOnDeviceIngesterUtilities
 
-+ (id)dataSourceForSubsystem:(id)a3 category:(id)a4
++ (id)dataSourceForSubsystem:(id)subsystem category:(id)category
 {
-  v5 = a3;
-  v6 = a4;
+  subsystemCopy = subsystem;
+  categoryCopy = category;
   v7 = objc_autoreleasePoolPush();
-  v8 = [MEMORY[0x277D3A120] getMetadataForSubsystem:v5 category:v6];
+  v8 = [MEMORY[0x277D3A120] getMetadataForSubsystem:subsystemCopy category:categoryCopy];
   if ([v8 count])
   {
-    v9 = [v8 firstObject];
-    v10 = [PPSDataIngesterCommonUtilities dataSourceForMetricDefinition:v9];
+    firstObject = [v8 firstObject];
+    v10 = [PPSDataIngesterCommonUtilities dataSourceForMetricDefinition:firstObject];
   }
 
   else
@@ -30,21 +30,21 @@
   return v10;
 }
 
-+ (id)allDataSourcesForSubsystem:(id)a3 category:(id)a4
++ (id)allDataSourcesForSubsystem:(id)subsystem category:(id)category
 {
   v36 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  subsystemCopy = subsystem;
+  categoryCopy = category;
   v7 = objc_autoreleasePoolPush();
-  v8 = [MEMORY[0x277D3A120] getMetadataForSubsystem:v5 category:v6];
+  v8 = [MEMORY[0x277D3A120] getMetadataForSubsystem:subsystemCopy category:categoryCopy];
   if ([v8 count])
   {
     v27 = v7;
-    v28 = v6;
-    v29 = v5;
+    v28 = categoryCopy;
+    v29 = subsystemCopy;
     v9 = objc_opt_new();
-    v10 = [v8 firstObject];
-    v11 = [PPSDataIngesterCommonUtilities dataSourceForMetricDefinition:v10];
+    firstObject = [v8 firstObject];
+    v11 = [PPSDataIngesterCommonUtilities dataSourceForMetricDefinition:firstObject];
 
     [v9 addObject:v11];
     v33 = 0u;
@@ -106,8 +106,8 @@ LABEL_12:
       {
 LABEL_16:
 
-        v6 = v28;
-        v5 = v29;
+        categoryCopy = v28;
+        subsystemCopy = v29;
         v8 = v26;
         v7 = v27;
         goto LABEL_18;
@@ -124,34 +124,34 @@ LABEL_18:
   return v9;
 }
 
-+ (id)filepathForMetricDefinition:(id)a3
++ (id)filepathForMetricDefinition:(id)definition
 {
-  v3 = [a3 storage];
+  storage = [definition storage];
   v4 = 0;
-  if (v3 > 2)
+  if (storage > 2)
   {
-    switch(v3)
+    switch(storage)
     {
       case 3:
         v5 = MEMORY[0x277CBEBC0];
-        v6 = [MEMORY[0x277D3A128] containerPath];
-        v7 = [v6 stringByAppendingString:@"/Library/PerfPowerTelemetry/"];
+        containerPath = [MEMORY[0x277D3A128] containerPath];
+        v7 = [containerPath stringByAppendingString:@"/Library/PerfPowerTelemetry/"];
         v8 = [v7 stringByAppendingString:@"CleanEnergy/"];
         v9 = v8;
         v10 = @"CurrentCleanEnergyDB.CESQL";
         break;
       case 4:
         v5 = MEMORY[0x277CBEBC0];
-        v6 = [MEMORY[0x277D3A128] containerPath];
-        v7 = [v6 stringByAppendingString:@"/Library/PerfPowerTelemetry/"];
+        containerPath = [MEMORY[0x277D3A128] containerPath];
+        v7 = [containerPath stringByAppendingString:@"/Library/PerfPowerTelemetry/"];
         v8 = [v7 stringByAppendingString:@"XcodeOrganizer/"];
         v9 = v8;
         v10 = @"CurrentXcodeOrganizerDB.XCSQL";
         break;
       case 5:
         v5 = MEMORY[0x277CBEBC0];
-        v6 = [MEMORY[0x277D3A128] containerPath];
-        v7 = [v6 stringByAppendingString:@"/Library/PerfPowerTelemetry/"];
+        containerPath = [MEMORY[0x277D3A128] containerPath];
+        v7 = [containerPath stringByAppendingString:@"/Library/PerfPowerTelemetry/"];
         v8 = [v7 stringByAppendingString:@"BackgroundProcessing/"];
         v9 = v8;
         v10 = @"CurrentBackgroundProcessingDB.BGSQL";
@@ -163,11 +163,11 @@ LABEL_18:
     goto LABEL_12;
   }
 
-  if (v3 == 1)
+  if (storage == 1)
   {
     v5 = MEMORY[0x277CBEBC0];
-    v6 = [MEMORY[0x277D3A128] containerPath];
-    v7 = [v6 stringByAppendingString:@"/Library/PerfPowerTelemetry/"];
+    containerPath = [MEMORY[0x277D3A128] containerPath];
+    v7 = [containerPath stringByAppendingString:@"/Library/PerfPowerTelemetry/"];
     v8 = [v7 stringByAppendingString:@"ExtendedPersistence/"];
     v9 = v8;
     v10 = @"CurrentLog.EPSQL";
@@ -178,14 +178,14 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (v3 != 2)
+  if (storage != 2)
   {
     goto LABEL_14;
   }
 
   v11 = MEMORY[0x277CBEBC0];
-  v6 = [MEMORY[0x277D3A128] containerPath];
-  v7 = [v6 stringByAppendingString:@"/Library/BatteryLife/"];
+  containerPath = [MEMORY[0x277D3A128] containerPath];
+  v7 = [containerPath stringByAppendingString:@"/Library/BatteryLife/"];
   v9 = [v7 stringByAppendingString:@"CurrentPowerlog.PLSQL"];
   v4 = [v11 fileURLWithPath:v9 isDirectory:0];
 LABEL_13:
@@ -195,17 +195,17 @@ LABEL_14:
   return v4;
 }
 
-+ (id)filepathForSubsystem:(id)a3 category:(id)a4
++ (id)filepathForSubsystem:(id)subsystem category:(id)category
 {
-  v5 = a3;
-  v6 = a4;
+  subsystemCopy = subsystem;
+  categoryCopy = category;
   v7 = objc_autoreleasePoolPush();
-  v8 = [MEMORY[0x277D3A120] getMetadataForSubsystem:v5 category:v6];
+  v8 = [MEMORY[0x277D3A120] getMetadataForSubsystem:subsystemCopy category:categoryCopy];
   if ([v8 count])
   {
     v9 = objc_opt_class();
-    v10 = [v8 firstObject];
-    v11 = [v9 filepathForMetricDefinition:v10];
+    firstObject = [v8 firstObject];
+    v11 = [v9 filepathForMetricDefinition:firstObject];
   }
 
   else
@@ -218,14 +218,14 @@ LABEL_14:
   return v11;
 }
 
-+ (id)metricDefinitionHistoryForSubsystem:(id)a3 category:(id)a4 metricName:(id)a5
++ (id)metricDefinitionHistoryForSubsystem:(id)subsystem category:(id)category metricName:(id)name
 {
   v7 = MEMORY[0x277D3A120];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [objc_opt_class() filepathForSubsystem:v10 category:v9];
-  v12 = [v7 getMetadataHistoryForFilepath:v11 subsystem:v10 category:v9 name:v8];
+  nameCopy = name;
+  categoryCopy = category;
+  subsystemCopy = subsystem;
+  v11 = [objc_opt_class() filepathForSubsystem:subsystemCopy category:categoryCopy];
+  v12 = [v7 getMetadataHistoryForFilepath:v11 subsystem:subsystemCopy category:categoryCopy name:nameCopy];
 
   return v12;
 }

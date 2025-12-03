@@ -1,8 +1,8 @@
 @interface BRKMetricsLogger
 + (id)sharedInstance;
-- (id)_coreAnalyticsKeyForMetricKey:(id)a3;
+- (id)_coreAnalyticsKeyForMetricKey:(id)key;
 - (id)_init;
-- (void)logEventName:(id)a3 eventPayLoad:(id)a4;
+- (void)logEventName:(id)name eventPayLoad:(id)load;
 @end
 
 @implementation BRKMetricsLogger
@@ -33,17 +33,17 @@ uint64_t __34__BRKMetricsLogger_sharedInstance__block_invoke()
   return [(BRKMetricsLogger *)&v3 init];
 }
 
-- (void)logEventName:(id)a3 eventPayLoad:(id)a4
+- (void)logEventName:(id)name eventPayLoad:(id)load
 {
-  v6 = a4;
-  v7 = [(BRKMetricsLogger *)self _coreAnalyticsKeyForMetricKey:a3];
+  loadCopy = load;
+  v7 = [(BRKMetricsLogger *)self _coreAnalyticsKeyForMetricKey:name];
   AnalyticsSendEvent();
 }
 
-- (id)_coreAnalyticsKeyForMetricKey:(id)a3
+- (id)_coreAnalyticsKeyForMetricKey:(id)key
 {
-  v3 = [a3 lowercaseString];
-  v4 = [@"com.apple.brook." stringByAppendingString:v3];
+  lowercaseString = [key lowercaseString];
+  v4 = [@"com.apple.brook." stringByAppendingString:lowercaseString];
 
   return v4;
 }

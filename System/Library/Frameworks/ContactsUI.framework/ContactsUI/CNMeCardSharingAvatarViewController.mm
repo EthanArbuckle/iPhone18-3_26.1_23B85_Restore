@@ -3,12 +3,12 @@
 - (BOOL)showsPosterAnimation;
 - (CGRect)frameForContainerView;
 - (CGSize)portraitScreenSize;
-- (CNMeCardSharingAvatarViewController)initWithAvatarProvider:(id)a3 mode:(int64_t)a4;
+- (CNMeCardSharingAvatarViewController)initWithAvatarProvider:(id)provider mode:(int64_t)mode;
 - (CNMeCardSharingAvatarViewControllerDelegate)delegate;
-- (void)addPosterAnimationController:(id)a3;
+- (void)addPosterAnimationController:(id)controller;
 - (void)addPosterAnimationLoadingSpinner;
 - (void)configureSubviews;
-- (void)didTapAvatarView:(id)a3;
+- (void)didTapAvatarView:(id)view;
 - (void)loadView;
 - (void)reload;
 - (void)reloadAvatarImage;
@@ -16,11 +16,11 @@
 - (void)removePosterAnimationController;
 - (void)removePosterAnimationLoadingSpinner;
 - (void)togglePosterAnimation;
-- (void)updateImageAnimated:(BOOL)a3 newImage:(id)a4 placeHolder:(BOOL)a5 additionalAnimatedChanges:(id)a6;
-- (void)updateViewsToUseGeneratedImage:(id)a3 forSize:(CGSize)a4 usingFallback:(BOOL)a5;
-- (void)updateWithAvatarProvider:(id)a3;
+- (void)updateImageAnimated:(BOOL)animated newImage:(id)image placeHolder:(BOOL)holder additionalAnimatedChanges:(id)changes;
+- (void)updateViewsToUseGeneratedImage:(id)image forSize:(CGSize)size usingFallback:(BOOL)fallback;
+- (void)updateWithAvatarProvider:(id)provider;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -35,20 +35,20 @@
 
 - (void)togglePosterAnimation
 {
-  v2 = [(CNMeCardSharingAvatarViewController *)self posterAnimationController];
-  [v2 toggleAnimation];
+  posterAnimationController = [(CNMeCardSharingAvatarViewController *)self posterAnimationController];
+  [posterAnimationController toggleAnimation];
 }
 
 - (BOOL)isPosterAnimationPaused
 {
-  v3 = [(CNMeCardSharingAvatarViewController *)self posterAnimationController];
+  posterAnimationController = [(CNMeCardSharingAvatarViewController *)self posterAnimationController];
 
-  if (v3)
+  if (posterAnimationController)
   {
-    v4 = [(CNMeCardSharingAvatarViewController *)self posterAnimationController];
-    v5 = [v4 isAnimationPaused];
+    posterAnimationController2 = [(CNMeCardSharingAvatarViewController *)self posterAnimationController];
+    isAnimationPaused = [posterAnimationController2 isAnimationPaused];
 
-    return v5;
+    return isAnimationPaused;
   }
 
   else
@@ -60,10 +60,10 @@
 
 - (BOOL)showsPosterAnimation
 {
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v4 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     return 0;
   }
@@ -74,26 +74,26 @@
   }
 }
 
-- (void)didTapAvatarView:(id)a3
+- (void)didTapAvatarView:(id)view
 {
-  v4 = [(CNMeCardSharingAvatarViewController *)self delegate];
-  [v4 avatarViewControllerWasTapped:self];
+  delegate = [(CNMeCardSharingAvatarViewController *)self delegate];
+  [delegate avatarViewControllerWasTapped:self];
 }
 
-- (void)updateImageAnimated:(BOOL)a3 newImage:(id)a4 placeHolder:(BOOL)a5 additionalAnimatedChanges:(id)a6
+- (void)updateImageAnimated:(BOOL)animated newImage:(id)image placeHolder:(BOOL)holder additionalAnimatedChanges:(id)changes
 {
-  v7 = a5;
-  v8 = a3;
-  v10 = a4;
-  v11 = a6;
-  if (v7)
+  holderCopy = holder;
+  animatedCopy = animated;
+  imageCopy = image;
+  changesCopy = changes;
+  if (holderCopy)
   {
     v12 = 0;
   }
 
   else
   {
-    v12 = v10;
+    v12 = imageCopy;
   }
 
   v13 = v12;
@@ -102,14 +102,14 @@
   aBlock[2] = __106__CNMeCardSharingAvatarViewController_updateImageAnimated_newImage_placeHolder_additionalAnimatedChanges___block_invoke;
   aBlock[3] = &unk_1E74E5608;
   v14 = v13;
-  v26 = v8;
+  v26 = animatedCopy;
   v23 = v14;
-  v24 = self;
-  v15 = v11;
+  selfCopy = self;
+  v15 = changesCopy;
   v25 = v15;
   v16 = _Block_copy(aBlock);
   v17 = v16;
-  if (v8)
+  if (animatedCopy)
   {
     v18 = MEMORY[0x1E69DD250];
     imageView = self->_imageView;
@@ -168,28 +168,28 @@ uint64_t __106__CNMeCardSharingAvatarViewController_updateImageAnimated_newImage
   return result;
 }
 
-- (void)updateViewsToUseGeneratedImage:(id)a3 forSize:(CGSize)a4 usingFallback:(BOOL)a5
+- (void)updateViewsToUseGeneratedImage:(id)image forSize:(CGSize)size usingFallback:(BOOL)fallback
 {
-  v5 = a5;
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
-  v18 = v9;
-  if (v9)
+  fallbackCopy = fallback;
+  height = size.height;
+  width = size.width;
+  imageCopy = image;
+  v18 = imageCopy;
+  if (imageCopy)
   {
     self->_hasImage = 1;
-    v10 = v9;
-    v11 = [(CNMeCardSharingAvatarViewController *)self showsPosterAnimation];
+    v10 = imageCopy;
+    showsPosterAnimation = [(CNMeCardSharingAvatarViewController *)self showsPosterAnimation];
   }
 
   else
   {
     self->_hasImage = 0;
-    if (v5)
+    if (fallbackCopy)
     {
       fallbackImageProvider = self->_fallbackImageProvider;
-      v13 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v13 scale];
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen scale];
       v10 = [(CNAvatarImageProvider *)fallbackImageProvider imageForSize:width scale:height, v14];
     }
 
@@ -198,21 +198,21 @@ uint64_t __106__CNMeCardSharingAvatarViewController_updateImageAnimated_newImage
       v10 = 0;
     }
 
-    v11 = 0;
+    showsPosterAnimation = 0;
   }
 
-  v15 = [(CNMeCardSharingAvatarViewController *)self viewIfLoaded];
-  v16 = [v15 superview];
-  [(CNMeCardSharingAvatarViewController *)self updateImageAnimated:v16 != 0 newImage:v10 placeHolder:v11 additionalAnimatedChanges:&__block_literal_global_28_49302];
+  viewIfLoaded = [(CNMeCardSharingAvatarViewController *)self viewIfLoaded];
+  superview = [viewIfLoaded superview];
+  [(CNMeCardSharingAvatarViewController *)self updateImageAnimated:superview != 0 newImage:v10 placeHolder:showsPosterAnimation additionalAnimatedChanges:&__block_literal_global_28_49302];
 
-  v17 = [(CNMeCardSharingAvatarViewController *)self delegate];
-  [v17 avatarViewControllerDidUpdateImage:self needsLayout:{-[CNMeCardSharingAvatarViewController posterPreviewsGenerationTimedOut](self, "posterPreviewsGenerationTimedOut")}];
+  delegate = [(CNMeCardSharingAvatarViewController *)self delegate];
+  [delegate avatarViewControllerDidUpdateImage:self needsLayout:{-[CNMeCardSharingAvatarViewController posterPreviewsGenerationTimedOut](self, "posterPreviewsGenerationTimedOut")}];
 }
 
 - (void)removePosterAnimationController
 {
-  v3 = [(CNMeCardSharingAvatarViewController *)self childViewControllers];
-  [v3 _cn_each:&__block_literal_global_49304];
+  childViewControllers = [(CNMeCardSharingAvatarViewController *)self childViewControllers];
+  [childViewControllers _cn_each:&__block_literal_global_49304];
 
   [(CNMeCardSharingAvatarViewController *)self setPosterAnimationController:0];
 }
@@ -228,52 +228,52 @@ void __70__CNMeCardSharingAvatarViewController_removePosterAnimationController__
   [v3 didMoveToParentViewController:0];
 }
 
-- (void)addPosterAnimationController:(id)a3
+- (void)addPosterAnimationController:(id)controller
 {
   v38[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(CNMeCardSharingAvatarViewController *)self setPosterAnimationController:v4];
-  v5 = [v4 view];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  controllerCopy = controller;
+  [(CNMeCardSharingAvatarViewController *)self setPosterAnimationController:controllerCopy];
+  view = [controllerCopy view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v6 = [v4 view];
-  [v6 setAlpha:0.0];
+  view2 = [controllerCopy view];
+  [view2 setAlpha:0.0];
 
-  v7 = [(CNMeCardSharingAvatarViewController *)self avatarContainerView];
-  v8 = [v4 view];
-  [v7 addSubview:v8];
+  avatarContainerView = [(CNMeCardSharingAvatarViewController *)self avatarContainerView];
+  view3 = [controllerCopy view];
+  [avatarContainerView addSubview:view3];
 
-  v35 = [v4 view];
-  v33 = [v35 leadingAnchor];
-  v34 = [(CNMeCardSharingAvatarViewController *)self avatarContainerView];
-  v32 = [v34 leadingAnchor];
-  v31 = [v33 constraintEqualToAnchor:v32];
+  view4 = [controllerCopy view];
+  leadingAnchor = [view4 leadingAnchor];
+  avatarContainerView2 = [(CNMeCardSharingAvatarViewController *)self avatarContainerView];
+  leadingAnchor2 = [avatarContainerView2 leadingAnchor];
+  v31 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v38[0] = v31;
-  v30 = [v4 view];
-  v28 = [v30 trailingAnchor];
-  v29 = [(CNMeCardSharingAvatarViewController *)self avatarContainerView];
-  v27 = [v29 trailingAnchor];
-  v26 = [v28 constraintEqualToAnchor:v27];
+  view5 = [controllerCopy view];
+  trailingAnchor = [view5 trailingAnchor];
+  avatarContainerView3 = [(CNMeCardSharingAvatarViewController *)self avatarContainerView];
+  trailingAnchor2 = [avatarContainerView3 trailingAnchor];
+  v26 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v38[1] = v26;
-  v25 = [v4 view];
-  v23 = [v25 topAnchor];
-  v9 = [(CNMeCardSharingAvatarViewController *)self avatarContainerView];
-  v10 = [v9 topAnchor];
-  v11 = [v23 constraintEqualToAnchor:v10];
+  view6 = [controllerCopy view];
+  topAnchor = [view6 topAnchor];
+  avatarContainerView4 = [(CNMeCardSharingAvatarViewController *)self avatarContainerView];
+  topAnchor2 = [avatarContainerView4 topAnchor];
+  v11 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v38[2] = v11;
-  v12 = [v4 view];
-  v13 = [v12 bottomAnchor];
-  v14 = [(CNMeCardSharingAvatarViewController *)self avatarContainerView];
-  v15 = [v14 bottomAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15];
+  view7 = [controllerCopy view];
+  bottomAnchor = [view7 bottomAnchor];
+  avatarContainerView5 = [(CNMeCardSharingAvatarViewController *)self avatarContainerView];
+  bottomAnchor2 = [avatarContainerView5 bottomAnchor];
+  v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v38[3] = v16;
   v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:4];
 
   [MEMORY[0x1E696ACD8] activateConstraints:v24];
-  [(CNMeCardSharingAvatarViewController *)self addChildViewController:v4];
+  [(CNMeCardSharingAvatarViewController *)self addChildViewController:controllerCopy];
   self->_hasImage = 1;
-  v17 = [(CNMeCardSharingAvatarViewController *)self viewIfLoaded];
-  v18 = [v17 superview];
+  viewIfLoaded = [(CNMeCardSharingAvatarViewController *)self viewIfLoaded];
+  superview = [viewIfLoaded superview];
   mode = self->_mode;
   v36[0] = MEMORY[0x1E69E9820];
   v36[1] = 3221225472;
@@ -281,12 +281,12 @@ void __70__CNMeCardSharingAvatarViewController_removePosterAnimationController__
   v36[3] = &unk_1E74E77C0;
   v20 = mode == 1;
   v36[4] = self;
-  v37 = v4;
-  v21 = v4;
-  [(CNMeCardSharingAvatarViewController *)self updateImageAnimated:v18 != 0 newImage:0 placeHolder:v20 additionalAnimatedChanges:v36];
+  v37 = controllerCopy;
+  v21 = controllerCopy;
+  [(CNMeCardSharingAvatarViewController *)self updateImageAnimated:superview != 0 newImage:0 placeHolder:v20 additionalAnimatedChanges:v36];
 
-  v22 = [(CNMeCardSharingAvatarViewController *)self delegate];
-  [v22 avatarViewControllerDidUpdateImage:self needsLayout:0];
+  delegate = [(CNMeCardSharingAvatarViewController *)self delegate];
+  [delegate avatarViewControllerDidUpdateImage:self needsLayout:0];
 }
 
 void __68__CNMeCardSharingAvatarViewController_addPosterAnimationController___block_invoke(uint64_t a1)
@@ -300,12 +300,12 @@ void __68__CNMeCardSharingAvatarViewController_addPosterAnimationController___bl
 
 - (CGSize)portraitScreenSize
 {
-  v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v2 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v4 = v3;
 
-  v5 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v5 bounds];
+  mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen2 bounds];
   v7 = v6;
 
   if (v4 <= v7)
@@ -335,15 +335,15 @@ void __68__CNMeCardSharingAvatarViewController_addPosterAnimationController___bl
 
 - (void)removePosterAnimationLoadingSpinner
 {
-  v3 = [(CNMeCardSharingAvatarViewController *)self activityIndicator];
+  activityIndicator = [(CNMeCardSharingAvatarViewController *)self activityIndicator];
 
-  if (v3)
+  if (activityIndicator)
   {
-    v4 = [(CNMeCardSharingAvatarViewController *)self activityIndicator];
-    [v4 stopAnimating];
+    activityIndicator2 = [(CNMeCardSharingAvatarViewController *)self activityIndicator];
+    [activityIndicator2 stopAnimating];
 
-    v5 = [(CNMeCardSharingAvatarViewController *)self activityIndicator];
-    [v5 removeFromSuperview];
+    activityIndicator3 = [(CNMeCardSharingAvatarViewController *)self activityIndicator];
+    [activityIndicator3 removeFromSuperview];
 
     [(CNMeCardSharingAvatarViewController *)self setActivityIndicator:0];
   }
@@ -352,51 +352,51 @@ void __68__CNMeCardSharingAvatarViewController_addPosterAnimationController___bl
 - (void)addPosterAnimationLoadingSpinner
 {
   v30[4] = *MEMORY[0x1E69E9840];
-  v3 = [(CNMeCardSharingAvatarViewController *)self activityIndicator];
+  activityIndicator = [(CNMeCardSharingAvatarViewController *)self activityIndicator];
 
-  if (!v3)
+  if (!activityIndicator)
   {
     v4 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
     [(CNMeCardSharingAvatarViewController *)self setActivityIndicator:v4];
 
-    v5 = [(CNMeCardSharingAvatarViewController *)self activityIndicator];
-    [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+    activityIndicator2 = [(CNMeCardSharingAvatarViewController *)self activityIndicator];
+    [activityIndicator2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v6 = [(CNMeCardSharingAvatarViewController *)self avatarContainerView];
-    v7 = [(CNMeCardSharingAvatarViewController *)self activityIndicator];
-    [v6 addSubview:v7];
+    avatarContainerView = [(CNMeCardSharingAvatarViewController *)self avatarContainerView];
+    activityIndicator3 = [(CNMeCardSharingAvatarViewController *)self activityIndicator];
+    [avatarContainerView addSubview:activityIndicator3];
 
-    v29 = [(CNMeCardSharingAvatarViewController *)self activityIndicator];
-    v27 = [v29 centerXAnchor];
-    v28 = [(CNMeCardSharingAvatarViewController *)self avatarContainerView];
-    v26 = [v28 centerXAnchor];
-    v25 = [v27 constraintEqualToAnchor:v26];
+    activityIndicator4 = [(CNMeCardSharingAvatarViewController *)self activityIndicator];
+    centerXAnchor = [activityIndicator4 centerXAnchor];
+    avatarContainerView2 = [(CNMeCardSharingAvatarViewController *)self avatarContainerView];
+    centerXAnchor2 = [avatarContainerView2 centerXAnchor];
+    v25 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v30[0] = v25;
-    v24 = [(CNMeCardSharingAvatarViewController *)self activityIndicator];
-    v22 = [v24 centerYAnchor];
-    v23 = [(CNMeCardSharingAvatarViewController *)self avatarContainerView];
-    v21 = [v23 centerYAnchor];
-    v20 = [v22 constraintEqualToAnchor:v21];
+    activityIndicator5 = [(CNMeCardSharingAvatarViewController *)self activityIndicator];
+    centerYAnchor = [activityIndicator5 centerYAnchor];
+    avatarContainerView3 = [(CNMeCardSharingAvatarViewController *)self avatarContainerView];
+    centerYAnchor2 = [avatarContainerView3 centerYAnchor];
+    v20 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v30[1] = v20;
-    v19 = [(CNMeCardSharingAvatarViewController *)self activityIndicator];
-    v18 = [v19 widthAnchor];
-    v8 = [(CNMeCardSharingAvatarViewController *)self avatarContainerView];
-    v9 = [v8 widthAnchor];
-    v10 = [v18 constraintEqualToAnchor:v9];
+    activityIndicator6 = [(CNMeCardSharingAvatarViewController *)self activityIndicator];
+    widthAnchor = [activityIndicator6 widthAnchor];
+    avatarContainerView4 = [(CNMeCardSharingAvatarViewController *)self avatarContainerView];
+    widthAnchor2 = [avatarContainerView4 widthAnchor];
+    v10 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     v30[2] = v10;
-    v11 = [(CNMeCardSharingAvatarViewController *)self activityIndicator];
-    v12 = [v11 heightAnchor];
-    v13 = [(CNMeCardSharingAvatarViewController *)self avatarContainerView];
-    v14 = [v13 heightAnchor];
-    v15 = [v12 constraintEqualToAnchor:v14];
+    activityIndicator7 = [(CNMeCardSharingAvatarViewController *)self activityIndicator];
+    heightAnchor = [activityIndicator7 heightAnchor];
+    avatarContainerView5 = [(CNMeCardSharingAvatarViewController *)self avatarContainerView];
+    heightAnchor2 = [avatarContainerView5 heightAnchor];
+    v15 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
     v30[3] = v15;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:4];
 
     [MEMORY[0x1E696ACD8] activateConstraints:v16];
   }
 
-  v17 = [(CNMeCardSharingAvatarViewController *)self activityIndicator];
-  [v17 startAnimating];
+  activityIndicator8 = [(CNMeCardSharingAvatarViewController *)self activityIndicator];
+  [activityIndicator8 startAnimating];
 }
 
 - (void)reloadPosterImage
@@ -685,11 +685,11 @@ void __56__CNMeCardSharingAvatarViewController_reloadAvatarImage__block_invoke(u
     goto LABEL_5;
   }
 
-  v3 = [(CNMeCardSharingAvatarViewController *)self view];
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
+  view = [(CNMeCardSharingAvatarViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
 
-  if (v5)
+  if (windowScene)
   {
     [(CNMeCardSharingAvatarViewController *)self reloadPosterImage];
 LABEL_5:
@@ -703,28 +703,28 @@ LABEL_6:
   [(CNMeCardSharingAvatarViewController *)self setNeedsReload:v6];
 }
 
-- (void)updateWithAvatarProvider:(id)a3
+- (void)updateWithAvatarProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_avatarProvider != v5)
+  providerCopy = provider;
+  if (self->_avatarProvider != providerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_avatarProvider, a3);
+    v6 = providerCopy;
+    objc_storeStrong(&self->_avatarProvider, provider);
     [(CNMeCardSharingAvatarViewController *)self reload];
-    v5 = v6;
+    providerCopy = v6;
   }
 }
 
 - (CGRect)frameForContainerView
 {
-  v3 = [(CNMeCardSharingAvatarViewController *)self showsPosterAnimation];
-  v4 = [(CNMeCardSharingAvatarViewController *)self view];
-  [v4 bounds];
+  showsPosterAnimation = [(CNMeCardSharingAvatarViewController *)self showsPosterAnimation];
+  view = [(CNMeCardSharingAvatarViewController *)self view];
+  [view bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  if (v3)
+  if (showsPosterAnimation)
   {
   }
 
@@ -790,11 +790,11 @@ LABEL_6:
   [(UILabel *)self->_addPhotoLabel setFrame:v7.origin.x, v7.origin.y, v7.size.width, v7.size.height];
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v4.receiver = self;
   v4.super_class = CNMeCardSharingAvatarViewController;
-  [(CNMeCardSharingAvatarViewController *)&v4 viewIsAppearing:a3];
+  [(CNMeCardSharingAvatarViewController *)&v4 viewIsAppearing:appearing];
   if ([(CNMeCardSharingAvatarViewController *)self needsReload])
   {
     [(CNMeCardSharingAvatarViewController *)self reload];
@@ -817,35 +817,35 @@ LABEL_6:
 {
   if ([(CNMeCardSharingAvatarViewController *)self showsPosterAnimation])
   {
-    v3 = [MEMORY[0x1E69DC888] clearColor];
-    [(UIView *)self->_avatarContainerView setBackgroundColor:v3];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UIView *)self->_avatarContainerView setBackgroundColor:clearColor];
 
-    v4 = [MEMORY[0x1E69DC888] clearColor];
-    [(UIImageView *)self->_imageView setBackgroundColor:v4];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    [(UIImageView *)self->_imageView setBackgroundColor:clearColor2];
 
     self->_isWaitingForPosterPreviews = [(CNMeCardSharingAvatarViewController *)self showsPosterAnimation];
   }
 
   else
   {
-    v5 = [MEMORY[0x1E69794A0] layer];
+    layer = [MEMORY[0x1E69794A0] layer];
     circularLayer = self->_circularLayer;
-    self->_circularLayer = v5;
+    self->_circularLayer = layer;
 
     v7 = self->_circularLayer;
-    v8 = [(UIView *)self->_avatarContainerView layer];
-    [v8 setMask:v7];
+    layer2 = [(UIView *)self->_avatarContainerView layer];
+    [layer2 setMask:v7];
 
     [(UIView *)self->_avatarContainerView setClipsToBounds:1];
-    v9 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
-    [(UIView *)self->_avatarContainerView setBackgroundColor:v9];
+    secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+    [(UIView *)self->_avatarContainerView setBackgroundColor:secondarySystemBackgroundColor];
   }
 }
 
 - (void)loadView
 {
-  v3 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v3 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -872,23 +872,23 @@ LABEL_6:
   [(CNMeCardSharingAvatarViewController *)self setView:v21];
 }
 
-- (CNMeCardSharingAvatarViewController)initWithAvatarProvider:(id)a3 mode:(int64_t)a4
+- (CNMeCardSharingAvatarViewController)initWithAvatarProvider:(id)provider mode:(int64_t)mode
 {
-  v7 = a3;
+  providerCopy = provider;
   v16.receiver = self;
   v16.super_class = CNMeCardSharingAvatarViewController;
   v8 = [(CNMeCardSharingAvatarViewController *)&v16 initWithNibName:0 bundle:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_avatarProvider, a3);
+    objc_storeStrong(&v8->_avatarProvider, provider);
     v10 = +[CNAvatarImageRendererSettings defaultSettings];
     v11 = [[CNAvatarImageRenderer alloc] initWithSettings:v10];
-    v12 = [(CNAvatarImageRenderer *)v11 placeholderImageProvider];
+    placeholderImageProvider = [(CNAvatarImageRenderer *)v11 placeholderImageProvider];
     fallbackImageProvider = v9->_fallbackImageProvider;
-    v9->_fallbackImageProvider = v12;
+    v9->_fallbackImageProvider = placeholderImageProvider;
 
-    v9->_mode = a4;
+    v9->_mode = mode;
     v9->_needsReload = 1;
     v14 = v9;
   }

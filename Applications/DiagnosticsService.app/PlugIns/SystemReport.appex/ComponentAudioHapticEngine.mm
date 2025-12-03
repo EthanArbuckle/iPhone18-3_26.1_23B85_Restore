@@ -3,7 +3,7 @@
 - (id)arcSerialNumber;
 - (id)getArcModuleClass;
 - (id)getArcModuleSerialNumberKey;
-- (void)populateAttributes:(id)a3;
+- (void)populateAttributes:(id)attributes;
 @end
 
 @implementation ComponentAudioHapticEngine
@@ -19,14 +19,14 @@
   return DeviceWithName & findDeviceWithName("maggie-arc");
 }
 
-- (void)populateAttributes:(id)a3
+- (void)populateAttributes:(id)attributes
 {
-  v6 = a3;
-  v4 = [(ComponentAudioHapticEngine *)self arcSerialNumber];
-  v5 = v4;
-  if (v4 && [v4 length])
+  attributesCopy = attributes;
+  arcSerialNumber = [(ComponentAudioHapticEngine *)self arcSerialNumber];
+  v5 = arcSerialNumber;
+  if (arcSerialNumber && [arcSerialNumber length])
   {
-    [v6 setObject:v5 forKeyedSubscript:@"arcSerialNumber"];
+    [attributesCopy setObject:v5 forKeyedSubscript:@"arcSerialNumber"];
   }
 }
 
@@ -45,9 +45,9 @@
 
 - (id)getArcModuleSerialNumberKey
 {
-  v2 = [(ComponentAudioHapticEngine *)self getArcModuleClass];
+  getArcModuleClass = [(ComponentAudioHapticEngine *)self getArcModuleClass];
 
-  if (v2 == @"AppleHapticsSupportArcEEPROM")
+  if (getArcModuleClass == @"AppleHapticsSupportArcEEPROM")
   {
     return @"ArcSerialNumber";
   }
@@ -60,9 +60,9 @@
 
 - (id)arcSerialNumber
 {
-  v3 = [(ComponentAudioHapticEngine *)self getArcModuleClass];
-  v4 = [(ComponentAudioHapticEngine *)self getArcModuleSerialNumberKey];
-  v5 = [DAComponentUtil getIORegistryClass:v3 property:v4 optionalKey:0];
+  getArcModuleClass = [(ComponentAudioHapticEngine *)self getArcModuleClass];
+  getArcModuleSerialNumberKey = [(ComponentAudioHapticEngine *)self getArcModuleSerialNumberKey];
+  v5 = [DAComponentUtil getIORegistryClass:getArcModuleClass property:getArcModuleSerialNumberKey optionalKey:0];
 
   if (v5)
   {

@@ -1,15 +1,15 @@
 @interface PDDPCompletionStatus
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsStatus:(id)a3;
+- (int)StringAsStatus:(id)status;
 - (int)status;
 - (unint64_t)hash;
-- (void)addClassIds:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addClassIds:(id)ids;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPCompletionStatus
@@ -27,35 +27,35 @@
   }
 }
 
-- (int)StringAsStatus:(id)a3
+- (int)StringAsStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_TYPE"])
+  statusCopy = status;
+  if ([statusCopy isEqualToString:@"UNKNOWN_TYPE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"COMPLETED"])
+  else if ([statusCopy isEqualToString:@"COMPLETED"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"NOT_COMPLETED"])
+  else if ([statusCopy isEqualToString:@"NOT_COMPLETED"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"MARKED_FOR_COMPLETION"])
+  else if ([statusCopy isEqualToString:@"MARKED_FOR_COMPLETION"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"MARKED_FOR_INCOMPLETION"])
+  else if ([statusCopy isEqualToString:@"MARKED_FOR_INCOMPLETION"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"RETURNED"])
+  else if ([statusCopy isEqualToString:@"RETURNED"])
   {
     v4 = 5;
   }
@@ -68,22 +68,22 @@
   return v4;
 }
 
-- (void)addClassIds:(id)a3
+- (void)addClassIds:(id)ids
 {
-  v4 = a3;
+  idsCopy = ids;
   classIds = self->_classIds;
-  v8 = v4;
+  v8 = idsCopy;
   if (!classIds)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_classIds;
     self->_classIds = v6;
 
-    v4 = v8;
+    idsCopy = v8;
     classIds = self->_classIds;
   }
 
-  [(NSMutableArray *)classIds addObject:v4];
+  [(NSMutableArray *)classIds addObject:idsCopy];
 }
 
 - (id)description
@@ -91,8 +91,8 @@
   v7.receiver = self;
   v7.super_class = PDDPCompletionStatus;
   v3 = [(PDDPCompletionStatus *)&v7 description];
-  v4 = [(PDDPCompletionStatus *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPCompletionStatus *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -126,15 +126,15 @@
   dateLastCompleted = self->_dateLastCompleted;
   if (dateLastCompleted)
   {
-    v9 = [(PDDPDate *)dateLastCompleted dictionaryRepresentation];
-    [v4 setObject:v9 forKey:@"date_last_completed"];
+    dictionaryRepresentation = [(PDDPDate *)dateLastCompleted dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"date_last_completed"];
   }
 
   dateLastModified = self->_dateLastModified;
   if (dateLastModified)
   {
-    v11 = [(PDDPDate *)dateLastModified dictionaryRepresentation];
-    [v4 setObject:v11 forKey:@"date_last_modified"];
+    dictionaryRepresentation2 = [(PDDPDate *)dateLastModified dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"date_last_modified"];
   }
 
   personId = self->_personId;
@@ -152,9 +152,9 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_parentObjectId)
   {
     PBDataWriterWriteStringField();
@@ -214,20 +214,20 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_parentObjectId)
   {
-    [v4 setParentObjectId:?];
-    v4 = v9;
+    [toCopy setParentObjectId:?];
+    toCopy = v9;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 12) = self->_status;
-    *(v4 + 52) |= 1u;
+    *(toCopy + 12) = self->_status;
+    *(toCopy + 52) |= 1u;
   }
 
   if (self->_dateLastCompleted)
@@ -248,10 +248,10 @@
   if ([(PDDPCompletionStatus *)self classIdsCount])
   {
     [v9 clearClassIds];
-    v5 = [(PDDPCompletionStatus *)self classIdsCount];
-    if (v5)
+    classIdsCount = [(PDDPCompletionStatus *)self classIdsCount];
+    if (classIdsCount)
     {
-      v6 = v5;
+      v6 = classIdsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(PDDPCompletionStatus *)self classIdsAtIndex:i];
@@ -261,10 +261,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_parentObjectId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_parentObjectId copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
@@ -274,15 +274,15 @@
     *(v5 + 52) |= 1u;
   }
 
-  v8 = [(PDDPDate *)self->_dateLastCompleted copyWithZone:a3];
+  v8 = [(PDDPDate *)self->_dateLastCompleted copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(NSString *)self->_personId copyWithZone:a3];
+  v10 = [(NSString *)self->_personId copyWithZone:zone];
   v11 = v5[5];
   v5[5] = v10;
 
-  v12 = [(PDDPDate *)self->_dateLastModified copyWithZone:a3];
+  v12 = [(PDDPDate *)self->_dateLastModified copyWithZone:zone];
   v13 = v5[3];
   v5[3] = v12;
 
@@ -305,7 +305,7 @@
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v21 + 1) + 8 * i) copyWithZone:{a3, v21}];
+        v19 = [*(*(&v21 + 1) + 8 * i) copyWithZone:{zone, v21}];
         [v5 addClassIds:v19];
       }
 
@@ -318,16 +318,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
   parentObjectId = self->_parentObjectId;
-  if (parentObjectId | *(v4 + 4))
+  if (parentObjectId | *(equalCopy + 4))
   {
     if (![(NSString *)parentObjectId isEqual:?])
     {
@@ -335,16 +335,16 @@
     }
   }
 
-  v6 = *(v4 + 52);
+  v6 = *(equalCopy + 52);
   if (*&self->_has)
   {
-    if ((*(v4 + 52) & 1) == 0 || self->_status != *(v4 + 12))
+    if ((*(equalCopy + 52) & 1) == 0 || self->_status != *(equalCopy + 12))
     {
       goto LABEL_17;
     }
   }
 
-  else if (*(v4 + 52))
+  else if (*(equalCopy + 52))
   {
 LABEL_17:
     v11 = 0;
@@ -352,13 +352,13 @@ LABEL_17:
   }
 
   dateLastCompleted = self->_dateLastCompleted;
-  if (dateLastCompleted | *(v4 + 2) && ![(PDDPDate *)dateLastCompleted isEqual:?])
+  if (dateLastCompleted | *(equalCopy + 2) && ![(PDDPDate *)dateLastCompleted isEqual:?])
   {
     goto LABEL_17;
   }
 
   personId = self->_personId;
-  if (personId | *(v4 + 5))
+  if (personId | *(equalCopy + 5))
   {
     if (![(NSString *)personId isEqual:?])
     {
@@ -367,7 +367,7 @@ LABEL_17:
   }
 
   dateLastModified = self->_dateLastModified;
-  if (dateLastModified | *(v4 + 3))
+  if (dateLastModified | *(equalCopy + 3))
   {
     if (![(PDDPDate *)dateLastModified isEqual:?])
     {
@@ -376,7 +376,7 @@ LABEL_17:
   }
 
   classIds = self->_classIds;
-  if (classIds | *(v4 + 1))
+  if (classIds | *(equalCopy + 1))
   {
     v11 = [(NSMutableArray *)classIds isEqual:?];
   }
@@ -411,22 +411,22 @@ LABEL_18:
   return v7 ^ v8 ^ [(NSMutableArray *)self->_classIds hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 4))
+  fromCopy = from;
+  if (*(fromCopy + 4))
   {
     [(PDDPCompletionStatus *)self setParentObjectId:?];
   }
 
-  if (*(v4 + 52))
+  if (*(fromCopy + 52))
   {
-    self->_status = *(v4 + 12);
+    self->_status = *(fromCopy + 12);
     *&self->_has |= 1u;
   }
 
   dateLastCompleted = self->_dateLastCompleted;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   if (dateLastCompleted)
   {
     if (v6)
@@ -440,13 +440,13 @@ LABEL_18:
     [(PDDPCompletionStatus *)self setDateLastCompleted:?];
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(PDDPCompletionStatus *)self setPersonId:?];
   }
 
   dateLastModified = self->_dateLastModified;
-  v8 = *(v4 + 3);
+  v8 = *(fromCopy + 3);
   if (dateLastModified)
   {
     if (v8)
@@ -464,7 +464,7 @@ LABEL_18:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v9 = *(v4 + 1);
+  v9 = *(fromCopy + 1);
   v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v10)
   {

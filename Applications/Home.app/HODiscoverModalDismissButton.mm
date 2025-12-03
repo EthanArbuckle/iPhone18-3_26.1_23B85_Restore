@@ -1,15 +1,15 @@
 @interface HODiscoverModalDismissButton
-+ (id)effectMappingColors:(id)a3 whitePoint:(id)a4;
-+ (id)vibrancyEffectMappingColorsToColors:(id)a3 blackPointOut:(id)a4 whitePointIn:(id)a5 whitePointOut:(id)a6;
++ (id)effectMappingColors:(id)colors whitePoint:(id)point;
++ (id)vibrancyEffectMappingColorsToColors:(id)colors blackPointOut:(id)out whitePointIn:(id)in whitePointOut:(id)pointOut;
 - (HODiscoverModalDismissButton)init;
-- (HODiscoverModalDismissButton)initWithCoder:(id)a3;
-- (HODiscoverModalDismissButton)initWithFrame:(CGRect)a3;
+- (HODiscoverModalDismissButton)initWithCoder:(id)coder;
+- (HODiscoverModalDismissButton)initWithFrame:(CGRect)frame;
 - (void)updateConstraints;
 @end
 
 @implementation HODiscoverModalDismissButton
 
-- (HODiscoverModalDismissButton)initWithCoder:(id)a3
+- (HODiscoverModalDismissButton)initWithCoder:(id)coder
 {
   v5 = +[NSAssertionHandler currentHandler];
   v6 = NSStringFromSelector("initWithURL:");
@@ -27,19 +27,19 @@
   return 0;
 }
 
-- (HODiscoverModalDismissButton)initWithFrame:(CGRect)a3
+- (HODiscoverModalDismissButton)initWithFrame:(CGRect)frame
 {
   v27.receiver = self;
   v27.super_class = HODiscoverModalDismissButton;
-  v3 = [(HODiscoverModalDismissButton *)&v27 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HODiscoverModalDismissButton *)&v27 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(HODiscoverModalDismissButton *)v3 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(HODiscoverModalDismissButton *)v4 setClipsToBounds:1];
     [(HODiscoverModalDismissButton *)v4 setUserInteractionEnabled:1];
-    v5 = [(HODiscoverModalDismissButton *)v4 layer];
-    [v5 setCornerRadius:17.5];
+    layer = [(HODiscoverModalDismissButton *)v4 layer];
+    [layer setCornerRadius:17.5];
 
     v6 = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.3];
     v23 = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.8];
@@ -80,8 +80,8 @@
     [(UIView *)v4->_dismissButtonForegroundView setTintColor:v20];
 
     [(UIView *)v4->_dismissButtonForegroundView setUserInteractionEnabled:0];
-    v21 = [(UIVisualEffectView *)v4->_dismissButtonEffectView contentView];
-    [v21 addSubview:v4->_dismissButtonForegroundView];
+    contentView = [(UIVisualEffectView *)v4->_dismissButtonEffectView contentView];
+    [contentView addSubview:v4->_dismissButtonForegroundView];
   }
 
   return v4;
@@ -89,53 +89,53 @@
 
 - (void)updateConstraints
 {
-  v3 = [(HODiscoverModalDismissButton *)self layoutConstraints];
+  layoutConstraints = [(HODiscoverModalDismissButton *)self layoutConstraints];
 
-  if (!v3)
+  if (!layoutConstraints)
   {
     v4 = +[NSMutableArray array];
-    v5 = [(HODiscoverModalDismissButton *)self dismissButtonEffectView];
-    v6 = [v5 contentView];
-    v7 = [v6 topAnchor];
-    v8 = [(HODiscoverModalDismissButton *)self topAnchor];
-    v9 = [v7 constraintEqualToAnchor:v8];
+    dismissButtonEffectView = [(HODiscoverModalDismissButton *)self dismissButtonEffectView];
+    contentView = [dismissButtonEffectView contentView];
+    topAnchor = [contentView topAnchor];
+    topAnchor2 = [(HODiscoverModalDismissButton *)self topAnchor];
+    v9 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v4 addObject:v9];
 
-    v10 = [(HODiscoverModalDismissButton *)self dismissButtonEffectView];
-    v11 = [v10 contentView];
-    v12 = [v11 bottomAnchor];
-    v13 = [(HODiscoverModalDismissButton *)self bottomAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13];
+    dismissButtonEffectView2 = [(HODiscoverModalDismissButton *)self dismissButtonEffectView];
+    contentView2 = [dismissButtonEffectView2 contentView];
+    bottomAnchor = [contentView2 bottomAnchor];
+    bottomAnchor2 = [(HODiscoverModalDismissButton *)self bottomAnchor];
+    v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v4 addObject:v14];
 
-    v15 = [(HODiscoverModalDismissButton *)self dismissButtonEffectView];
-    v16 = [v15 contentView];
-    v17 = [v16 trailingAnchor];
-    v18 = [(HODiscoverModalDismissButton *)self trailingAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    dismissButtonEffectView3 = [(HODiscoverModalDismissButton *)self dismissButtonEffectView];
+    contentView3 = [dismissButtonEffectView3 contentView];
+    trailingAnchor = [contentView3 trailingAnchor];
+    trailingAnchor2 = [(HODiscoverModalDismissButton *)self trailingAnchor];
+    v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v4 addObject:v19];
 
-    v20 = [(HODiscoverModalDismissButton *)self dismissButtonEffectView];
-    v21 = [v20 contentView];
-    v22 = [v21 leadingAnchor];
-    v23 = [(HODiscoverModalDismissButton *)self leadingAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23];
+    dismissButtonEffectView4 = [(HODiscoverModalDismissButton *)self dismissButtonEffectView];
+    contentView4 = [dismissButtonEffectView4 contentView];
+    leadingAnchor = [contentView4 leadingAnchor];
+    leadingAnchor2 = [(HODiscoverModalDismissButton *)self leadingAnchor];
+    v24 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v4 addObject:v24];
 
-    v25 = [(HODiscoverModalDismissButton *)self dismissButtonForegroundView];
-    v26 = [v25 centerXAnchor];
-    v27 = [(HODiscoverModalDismissButton *)self dismissButtonEffectView];
-    v28 = [v27 contentView];
-    v29 = [v28 centerXAnchor];
-    v30 = [v26 constraintEqualToAnchor:v29];
+    dismissButtonForegroundView = [(HODiscoverModalDismissButton *)self dismissButtonForegroundView];
+    centerXAnchor = [dismissButtonForegroundView centerXAnchor];
+    dismissButtonEffectView5 = [(HODiscoverModalDismissButton *)self dismissButtonEffectView];
+    contentView5 = [dismissButtonEffectView5 contentView];
+    centerXAnchor2 = [contentView5 centerXAnchor];
+    v30 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v4 addObject:v30];
 
-    v31 = [(HODiscoverModalDismissButton *)self dismissButtonForegroundView];
-    v32 = [v31 centerYAnchor];
-    v33 = [(HODiscoverModalDismissButton *)self dismissButtonEffectView];
-    v34 = [v33 contentView];
-    v35 = [v34 centerYAnchor];
-    v36 = [v32 constraintEqualToAnchor:v35];
+    dismissButtonForegroundView2 = [(HODiscoverModalDismissButton *)self dismissButtonForegroundView];
+    centerYAnchor = [dismissButtonForegroundView2 centerYAnchor];
+    dismissButtonEffectView6 = [(HODiscoverModalDismissButton *)self dismissButtonEffectView];
+    contentView6 = [dismissButtonEffectView6 contentView];
+    centerYAnchor2 = [contentView6 centerYAnchor];
+    v36 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v4 addObject:v36];
 
     [NSLayoutConstraint activateConstraints:v4];
@@ -147,19 +147,19 @@
   [(HODiscoverModalDismissButton *)&v37 updateConstraints];
 }
 
-+ (id)effectMappingColors:(id)a3 whitePoint:(id)a4
++ (id)effectMappingColors:(id)colors whitePoint:(id)point
 {
   v28 = 0.0;
   v29 = 0.0;
   v26 = 0.0;
   v27 = 0.0;
-  v5 = a4;
-  [a3 getRed:&v29 green:&v28 blue:&v27 alpha:&v26];
+  pointCopy = point;
+  [colors getRed:&v29 green:&v28 blue:&v27 alpha:&v26];
   v24 = 0.0;
   v25 = 0.0;
   v22 = 0.0;
   v23 = 0.0;
-  [v5 getRed:&v25 green:&v24 blue:&v23 alpha:&v22];
+  [pointCopy getRed:&v25 green:&v24 blue:&v23 alpha:&v22];
 
   v30 = 0uLL;
   v31 = 0uLL;
@@ -182,19 +182,19 @@
   return v6;
 }
 
-+ (id)vibrancyEffectMappingColorsToColors:(id)a3 blackPointOut:(id)a4 whitePointIn:(id)a5 whitePointOut:(id)a6
++ (id)vibrancyEffectMappingColorsToColors:(id)colors blackPointOut:(id)out whitePointIn:(id)in whitePointOut:(id)pointOut
 {
   v40 = 0.0;
   v41 = 0.0;
   v38 = 0.0;
   v39 = 0.0;
-  v7 = a6;
-  [a4 getRed:&v41 green:&v40 blue:&v39 alpha:&v38];
+  pointOutCopy = pointOut;
+  [out getRed:&v41 green:&v40 blue:&v39 alpha:&v38];
   v36 = 0.0;
   v37 = 0.0;
   v35 = 0.0;
   v34 = 0.0;
-  [v7 getRed:&v37 green:&v36 blue:&v35 alpha:&v34];
+  [pointOutCopy getRed:&v37 green:&v36 blue:&v35 alpha:&v34];
 
   v8 = v37 - v41;
   v9 = v41 * v38;

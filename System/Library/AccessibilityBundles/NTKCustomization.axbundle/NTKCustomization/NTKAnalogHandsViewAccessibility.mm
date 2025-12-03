@@ -1,31 +1,31 @@
 @interface NTKAnalogHandsViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)canBecomeFocused;
 - (BOOL)isAccessibilityElement;
 - (CGRect)accessibilityFrame;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 - (id)accessibilityLabel;
 @end
 
 @implementation NTKAnalogHandsViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NTKAnalogHandsView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"UIView" hasInstanceMethod:@"canBecomeFocused" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NTKAnalogHandsView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"UIView" hasInstanceMethod:@"canBecomeFocused" withFullSignature:{"B", 0}];
 }
 
 - (BOOL)isAccessibilityElement
 {
-  v3 = [(NTKAnalogHandsViewAccessibility *)self isAccessibilityUserDefinedElement];
+  isAccessibilityUserDefinedElement = [(NTKAnalogHandsViewAccessibility *)self isAccessibilityUserDefinedElement];
 
-  if (v3)
+  if (isAccessibilityUserDefinedElement)
   {
-    v4 = [(NTKAnalogHandsViewAccessibility *)self isAccessibilityUserDefinedElement];
-    v5 = [v4 BOOLValue];
+    isAccessibilityUserDefinedElement2 = [(NTKAnalogHandsViewAccessibility *)self isAccessibilityUserDefinedElement];
+    bOOLValue = [isAccessibilityUserDefinedElement2 BOOLValue];
 
-    return v5;
+    return bOOLValue;
   }
 
   else
@@ -37,9 +37,9 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [(NTKAnalogHandsViewAccessibility *)self accessibilityUserDefinedLabel];
+  accessibilityUserDefinedLabel = [(NTKAnalogHandsViewAccessibility *)self accessibilityUserDefinedLabel];
 
-  if (v3)
+  if (accessibilityUserDefinedLabel)
   {
     [(NTKAnalogHandsViewAccessibility *)self accessibilityUserDefinedLabel];
   }
@@ -55,8 +55,8 @@
 
 - (CGRect)accessibilityFrame
 {
-  v2 = [(NTKAnalogHandsViewAccessibility *)self accessibilityPath];
-  [v2 bounds];
+  accessibilityPath = [(NTKAnalogHandsViewAccessibility *)self accessibilityPath];
+  [accessibilityPath bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -73,36 +73,36 @@
   return result;
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(NTKAnalogHandsViewAccessibility *)self _accessibilityParentView];
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  _accessibilityParentView = [(NTKAnalogHandsViewAccessibility *)self _accessibilityParentView];
   UIAccessibilityPointForPoint();
   v10 = v9;
   v12 = v11;
 
-  v13 = [(NTKAnalogHandsViewAccessibility *)self accessibilityPath];
-  if (v13)
+  accessibilityPath = [(NTKAnalogHandsViewAccessibility *)self accessibilityPath];
+  if (accessibilityPath)
   {
-    if (!-[NTKAnalogHandsViewAccessibility isAccessibilityElement](self, "isAccessibilityElement") || ![v13 containsPoint:{x, y}])
+    if (!-[NTKAnalogHandsViewAccessibility isAccessibilityElement](self, "isAccessibilityElement") || ![accessibilityPath containsPoint:{x, y}])
     {
       v15 = 0;
       goto LABEL_8;
     }
 
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
     v17.receiver = self;
     v17.super_class = NTKAnalogHandsViewAccessibility;
-    v14 = [(NTKAnalogHandsViewAccessibility *)&v17 _accessibilityHitTest:v7 withEvent:v10, v12];
+    selfCopy = [(NTKAnalogHandsViewAccessibility *)&v17 _accessibilityHitTest:eventCopy withEvent:v10, v12];
   }
 
-  v15 = v14;
+  v15 = selfCopy;
 LABEL_8:
 
   return v15;

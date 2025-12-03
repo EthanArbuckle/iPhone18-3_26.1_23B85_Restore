@@ -1,11 +1,11 @@
 @interface CNiOSEncodedPeopleFetcher
-- (BOOL)fetchEncodedPeopleWithError:(id *)a3 cancelationToken:(id)a4 batchHandler:(id)a5;
-- (CNiOSEncodedPeopleFetcher)initWithFetchRequest:(id)a3 addressBook:(void *)a4 managedConfiguration:(id)a5 addressBookCompletionHandler:(id)a6 cursorCompletionHandler:(id)a7 environment:(id)a8 identifierAuditMode:(int64_t)a9 authorizationContext:(id)a10;
-- (id)cursorWithError:(id *)a1;
+- (BOOL)fetchEncodedPeopleWithError:(id *)error cancelationToken:(id)token batchHandler:(id)handler;
+- (CNiOSEncodedPeopleFetcher)initWithFetchRequest:(id)request addressBook:(void *)book managedConfiguration:(id)configuration addressBookCompletionHandler:(id)handler cursorCompletionHandler:(id)completionHandler environment:(id)environment identifierAuditMode:(int64_t)mode authorizationContext:(id)self0;
+- (id)cursorWithError:(id *)error;
 - (void)dealloc;
-- (void)fetchNextBatchWithReply:(id)a3;
-- (void)queryCursorForABSQLPredicate:(void *)a3 fetchRequest:;
-- (void)setCursor:(uint64_t)a1;
+- (void)fetchNextBatchWithReply:(id)reply;
+- (void)queryCursorForABSQLPredicate:(void *)predicate fetchRequest:;
+- (void)setCursor:(uint64_t)cursor;
 @end
 
 @implementation CNiOSEncodedPeopleFetcher
@@ -29,22 +29,22 @@
   [(CNiOSEncodedPeopleFetcher *)&v5 dealloc];
 }
 
-- (CNiOSEncodedPeopleFetcher)initWithFetchRequest:(id)a3 addressBook:(void *)a4 managedConfiguration:(id)a5 addressBookCompletionHandler:(id)a6 cursorCompletionHandler:(id)a7 environment:(id)a8 identifierAuditMode:(int64_t)a9 authorizationContext:(id)a10
+- (CNiOSEncodedPeopleFetcher)initWithFetchRequest:(id)request addressBook:(void *)book managedConfiguration:(id)configuration addressBookCompletionHandler:(id)handler cursorCompletionHandler:(id)completionHandler environment:(id)environment identifierAuditMode:(int64_t)mode authorizationContext:(id)self0
 {
-  v33 = a3;
-  v32 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a10;
+  requestCopy = request;
+  configurationCopy = configuration;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  environmentCopy = environment;
+  contextCopy = context;
   v34.receiver = self;
   v34.super_class = CNiOSEncodedPeopleFetcher;
   v21 = [(CNiOSEncodedPeopleFetcher *)&v34 init];
   if (v21)
   {
-    if (a4)
+    if (book)
     {
-      v22 = CFRetain(a4);
+      v22 = CFRetain(book);
     }
 
     else
@@ -53,34 +53,34 @@
     }
 
     v21->_addressBook = v22;
-    objc_storeStrong(&v21->_contactFetchRequest, a3);
-    objc_storeStrong(&v21->_environment, a8);
-    v23 = _Block_copy(v18);
+    objc_storeStrong(&v21->_contactFetchRequest, request);
+    objc_storeStrong(&v21->_environment, environment);
+    v23 = _Block_copy(completionHandlerCopy);
     cursorCompletionHandler = v21->_cursorCompletionHandler;
     v21->_cursorCompletionHandler = v23;
 
-    v25 = _Block_copy(v17);
+    v25 = _Block_copy(handlerCopy);
     addressBookCompletionHandler = v21->_addressBookCompletionHandler;
     v21->_addressBookCompletionHandler = v25;
 
-    v27 = [v19 loggerProvider];
-    v28 = [v27 contactsLogger];
+    loggerProvider = [environmentCopy loggerProvider];
+    contactsLogger = [loggerProvider contactsLogger];
     logger = v21->_logger;
-    v21->_logger = v28;
+    v21->_logger = contactsLogger;
 
-    objc_storeStrong(&v21->_managedConfiguration, a5);
-    v21->_identifierAuditMode = a9;
-    objc_storeStrong(&v21->_authorizationContext, a10);
+    objc_storeStrong(&v21->_managedConfiguration, configuration);
+    v21->_identifierAuditMode = mode;
+    objc_storeStrong(&v21->_authorizationContext, context);
     v30 = v21;
   }
 
   return v21;
 }
 
-- (BOOL)fetchEncodedPeopleWithError:(id *)a3 cancelationToken:(id)a4 batchHandler:(id)a5
+- (BOOL)fetchEncodedPeopleWithError:(id *)error cancelationToken:(id)token batchHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  tokenCopy = token;
+  handlerCopy = handler;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -100,7 +100,7 @@
     v15[3] = &unk_1E74137A8;
     v17 = &v19;
     v18 = &v25;
-    v11 = v9;
+    v11 = handlerCopy;
     v16 = v11;
     [(CNiOSEncodedPeopleFetcher *)self fetchNextBatchWithReply:v15];
 
@@ -110,16 +110,16 @@
       break;
     }
 
-    if ([v8 isCanceled])
+    if ([tokenCopy isCanceled])
     {
       v12 = v20;
       break;
     }
   }
 
-  if (a3)
+  if (error)
   {
-    *a3 = v12[5];
+    *error = v12[5];
     v12 = v20;
   }
 
@@ -160,64 +160,64 @@ void __53__CNiOSEncodedPeopleFetcher_fetchNextBatchWithReply___block_invoke_2(vo
   *(*(a1[6] + 8) + 24) = a3;
 }
 
-- (void)queryCursorForABSQLPredicate:(void *)a3 fetchRequest:
+- (void)queryCursorForABSQLPredicate:(void *)predicate fetchRequest:
 {
-  v3 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v5 = a3;
+    predicateCopy = predicate;
     v6 = a2;
-    v7 = [v5 keysToFetch];
-    v8 = [CNiOSABConversions requiredABPropertyIDSetForKeysToFetch:v7];
+    keysToFetch = [predicateCopy keysToFetch];
+    v8 = [CNiOSABConversions requiredABPropertyIDSetForKeysToFetch:keysToFetch];
 
     v9 = objc_alloc(MEMORY[0x1E698A100]);
-    v10 = v3[2];
-    v11 = [v5 unifiedFetch];
-    v12 = [v5 sortOrderIncludingNone];
-    v13 = [v5 batchSize];
-    v14 = [v5 managedConfiguration];
+    v10 = selfCopy[2];
+    unifiedFetch = [predicateCopy unifiedFetch];
+    sortOrderIncludingNone = [predicateCopy sortOrderIncludingNone];
+    batchSize = [predicateCopy batchSize];
+    managedConfiguration = [predicateCopy managedConfiguration];
 
-    v3 = [v9 initWithAddressBook:v10 predicate:v6 propertyIdentifierSet:v8 includeLinkedContacts:v11 sortOrder:v12 suggestedContactsPerBatch:v13 managedConfiguration:v14 identifierAuditMode:v3[10] authorizationContext:v3[11]];
+    selfCopy = [v9 initWithAddressBook:v10 predicate:v6 propertyIdentifierSet:v8 includeLinkedContacts:unifiedFetch sortOrder:sortOrderIncludingNone suggestedContactsPerBatch:batchSize managedConfiguration:managedConfiguration identifierAuditMode:selfCopy[10] authorizationContext:selfCopy[11]];
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (id)cursorWithError:(id *)a1
+- (id)cursorWithError:(id *)error
 {
-  if (a1)
+  if (error)
   {
-    v3 = a1;
-    if (a1[7])
+    errorCopy = error;
+    if (error[7])
     {
 LABEL_3:
-      a1 = v3[7];
+      error = errorCopy[7];
 LABEL_11:
       v2 = vars8;
       goto LABEL_12;
     }
 
-    v5 = [a1[3] effectivePredicate];
-    if (objc_opt_respondsToSelector() & 1) != 0 && ([v5 cn_supportsEncodedFetching])
+    effectivePredicate = [error[3] effectivePredicate];
+    if (objc_opt_respondsToSelector() & 1) != 0 && ([effectivePredicate cn_supportsEncodedFetching])
     {
-      v5 = v5;
-      v6 = v3[9];
-      v7 = v3[3];
+      effectivePredicate = effectivePredicate;
+      v6 = errorCopy[9];
+      v7 = errorCopy[3];
       v8 = [CNiOSPersonFetchRequest fetchRequestFromCNFetchRequest:v7 managedConfiguration:v6 error:a2];
 
       if (v8)
       {
         v9 = objc_opt_respondsToSelector();
-        v10 = v3[2];
+        v10 = errorCopy[2];
         if (v9)
         {
-          v11 = v3[4];
-          v12 = [v5 cn_cursorForEncodedPeopleFromAddressBook:v10 fetchRequest:v8 environment:v11 error:a2];
+          v11 = errorCopy[4];
+          v12 = [effectivePredicate cn_cursorForEncodedPeopleFromAddressBook:v10 fetchRequest:v8 environment:v11 error:a2];
         }
 
         else
         {
-          v19 = [v5 cn_ABQSLPredicateForAddressBook:v3[2] fetchRequest:v8 error:a2];
+          v19 = [effectivePredicate cn_ABQSLPredicateForAddressBook:errorCopy[2] fetchRequest:v8 error:a2];
           v11 = v19;
           if (!v19)
           {
@@ -233,12 +233,12 @@ LABEL_20:
 
           else
           {
-            v12 = [(CNiOSEncodedPeopleFetcher *)v3 queryCursorForABSQLPredicate:v11 fetchRequest:v8];
+            v12 = [(CNiOSEncodedPeopleFetcher *)errorCopy queryCursorForABSQLPredicate:v11 fetchRequest:v8];
           }
         }
 
-        v20 = v3[7];
-        v3[7] = v12;
+        v20 = errorCopy[7];
+        errorCopy[7] = v12;
 
         goto LABEL_20;
       }
@@ -254,26 +254,26 @@ LABEL_20:
       [v13 raise:v14 format:{@"Cannot use %@ with a predicate not supporting %@", v16, v17}];
     }
 
-    a1 = 0;
+    error = 0;
     goto LABEL_11;
   }
 
 LABEL_12:
 
-  return a1;
+  return error;
 }
 
-- (void)setCursor:(uint64_t)a1
+- (void)setCursor:(uint64_t)cursor
 {
-  if (a1)
+  if (cursor)
   {
-    objc_storeStrong((a1 + 56), a2);
+    objc_storeStrong((cursor + 56), a2);
   }
 }
 
-- (void)fetchNextBatchWithReply:(id)a3
+- (void)fetchNextBatchWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   if (self)
   {
     addressBook = self->_addressBook;
@@ -291,9 +291,9 @@ LABEL_12:
   v8[2] = __53__CNiOSEncodedPeopleFetcher_fetchNextBatchWithReply___block_invoke;
   v8[3] = &unk_1E74137F8;
   v8[4] = self;
-  v9 = v4;
+  v9 = replyCopy;
   v10 = addressBook;
-  v7 = v4;
+  v7 = replyCopy;
   [(CNContactsLogger *)logger fetchingContactsBatch:v8];
 }
 

@@ -1,18 +1,18 @@
 @interface FCFeedTransformationSort
-+ (id)transformationWithSortMethod:(int64_t)a3;
-+ (id)transformationWithSortMethod:(int64_t)a3 configurationSet:(int64_t)a4 personalizer:(id)a5;
-- (id)transformFeedItems:(id)a3;
++ (id)transformationWithSortMethod:(int64_t)method;
++ (id)transformationWithSortMethod:(int64_t)method configurationSet:(int64_t)set personalizer:(id)personalizer;
+- (id)transformFeedItems:(id)items;
 @end
 
 @implementation FCFeedTransformationSort
 
-+ (id)transformationWithSortMethod:(int64_t)a3
++ (id)transformationWithSortMethod:(int64_t)method
 {
   v3 = 0;
   v15 = *MEMORY[0x1E69E9840];
-  if (a3 <= 1)
+  if (method <= 1)
   {
-    if (a3 > 1)
+    if (method > 1)
     {
       goto LABEL_10;
     }
@@ -20,14 +20,14 @@
     goto LABEL_9;
   }
 
-  if (a3 == 2)
+  if (method == 2)
   {
 LABEL_9:
     v3 = objc_opt_new();
     goto LABEL_10;
   }
 
-  if (a3 == 3)
+  if (method == 3)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -52,10 +52,10 @@ LABEL_10:
   return v3;
 }
 
-+ (id)transformationWithSortMethod:(int64_t)a3 configurationSet:(int64_t)a4 personalizer:(id)a5
++ (id)transformationWithSortMethod:(int64_t)method configurationSet:(int64_t)set personalizer:(id)personalizer
 {
-  v7 = a5;
-  if (a3 == 3)
+  personalizerCopy = personalizer;
+  if (method == 3)
   {
     if (NSClassFromString(&cfstr_Xctest.isa))
     {
@@ -64,13 +64,13 @@ LABEL_10:
 
     else
     {
-      v8 = [FCFeedTransformationPersonalizedSort transformationWithPersonalizer:v7 configurationSet:a4];
+      v8 = [FCFeedTransformationPersonalizedSort transformationWithPersonalizer:personalizerCopy configurationSet:set];
     }
   }
 
   else
   {
-    v8 = [FCFeedTransformationSort transformationWithSortMethod:a3];
+    v8 = [FCFeedTransformationSort transformationWithSortMethod:method];
   }
 
   v9 = v8;
@@ -78,10 +78,10 @@ LABEL_10:
   return v9;
 }
 
-- (id)transformFeedItems:(id)a3
+- (id)transformFeedItems:(id)items
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  itemsCopy = items;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Abstract method"];

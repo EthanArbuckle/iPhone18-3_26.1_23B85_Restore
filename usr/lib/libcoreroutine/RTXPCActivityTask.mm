@@ -1,16 +1,16 @@
 @interface RTXPCActivityTask
-- (RTXPCActivityTask)initWithIdentifier:(id)a3 activity:(id)a4 handler:(id)a5;
+- (RTXPCActivityTask)initWithIdentifier:(id)identifier activity:(id)activity handler:(id)handler;
 @end
 
 @implementation RTXPCActivityTask
 
-- (RTXPCActivityTask)initWithIdentifier:(id)a3 activity:(id)a4 handler:(id)a5
+- (RTXPCActivityTask)initWithIdentifier:(id)identifier activity:(id)activity handler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (!v9)
+  identifierCopy = identifier;
+  activityCopy = activity;
+  handlerCopy = handler;
+  v12 = handlerCopy;
+  if (!identifierCopy)
   {
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -25,7 +25,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (!v10)
+  if (!activityCopy)
   {
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -38,7 +38,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if (!v11)
+  if (!handlerCopy)
   {
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -50,7 +50,7 @@ LABEL_13:
 
 LABEL_14:
 
-    v17 = 0;
+    selfCopy = 0;
     goto LABEL_15;
   }
 
@@ -60,18 +60,18 @@ LABEL_14:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_identifier, a3);
-    objc_storeStrong(&v14->_activity, a4);
+    objc_storeStrong(&v13->_identifier, identifier);
+    objc_storeStrong(&v14->_activity, activity);
     v15 = [v12 copy];
     handler = v14->_handler;
     v14->_handler = v15;
   }
 
   self = v14;
-  v17 = self;
+  selfCopy = self;
 LABEL_15:
 
-  return v17;
+  return selfCopy;
 }
 
 @end

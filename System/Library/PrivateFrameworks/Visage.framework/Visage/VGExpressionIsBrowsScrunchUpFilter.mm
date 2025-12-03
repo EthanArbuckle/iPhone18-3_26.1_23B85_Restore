@@ -1,12 +1,12 @@
 @interface VGExpressionIsBrowsScrunchUpFilter
-- (float)filter:(id)a3;
+- (float)filter:(id)filter;
 @end
 
 @implementation VGExpressionIsBrowsScrunchUpFilter
 
-- (float)filter:(id)a3
+- (float)filter:(id)filter
 {
-  v3 = [VGExpressionFilterLegacy getBlendshapes:a3];
+  v3 = [VGExpressionFilterLegacy getBlendshapes:filter];
   v4 = v3;
   if (v3)
   {

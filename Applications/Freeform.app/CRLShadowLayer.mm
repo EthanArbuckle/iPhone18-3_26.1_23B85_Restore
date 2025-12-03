@@ -2,9 +2,9 @@
 - (CGRect)bounds;
 - (CGRect)frame;
 - (_TtC8Freeform14CRLShadowLayer)init;
-- (_TtC8Freeform14CRLShadowLayer)initWithLayer:(id)a3;
+- (_TtC8Freeform14CRLShadowLayer)initWithLayer:(id)layer;
 - (double)cornerRadius;
-- (void)setCornerRadius:(double)a3;
+- (void)setCornerRadius:(double)radius;
 @end
 
 @implementation CRLShadowLayer
@@ -37,12 +37,12 @@
   return result;
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
   v16.receiver = self;
   v16.super_class = type metadata accessor for CRLShadowLayer();
   v4 = v16.receiver;
-  [(CRLShadowLayer *)&v16 setCornerRadius:a3];
+  [(CRLShadowLayer *)&v16 setCornerRadius:radius];
   [v4 bounds];
   v6 = v5;
   v8 = v7;
@@ -50,9 +50,9 @@
   v12 = v11;
   [v4 cornerRadius];
   v14 = [objc_opt_self() bezierPathWithContinuousCornerRoundedRect:v6 cornerRadius:{v8, v10, v12, v13}];
-  v15 = [v14 CGPath];
+  cGPath = [v14 CGPath];
 
-  [v4 setShadowPath:v15];
+  [v4 setShadowPath:cGPath];
 }
 
 - (_TtC8Freeform14CRLShadowLayer)init
@@ -62,7 +62,7 @@
   return [(CRLShadowLayer *)&v3 init];
 }
 
-- (_TtC8Freeform14CRLShadowLayer)initWithLayer:(id)a3
+- (_TtC8Freeform14CRLShadowLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   _bridgeAnyObjectToAny(_:)();

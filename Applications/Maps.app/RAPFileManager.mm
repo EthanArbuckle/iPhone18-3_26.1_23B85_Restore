@@ -1,35 +1,35 @@
 @interface RAPFileManager
-+ (BOOL)haveContentsOfFilePathExpired:(id)a3 withSuggestedRetryDate:(id)a4;
-+ (BOOL)haveContentsOfFilePathExpired:(id)a3 withSuggestedRetryDate:(id)a4 withTimeToLive:(double)a5;
-+ (BOOL)removeAllItemsInDirectory:(id)a3;
-+ (BOOL)removeItemAtFilePath:(id)a3;
-+ (BOOL)saveData:(id)a3 toDirectory:(id)a4 filename:(id)a5;
-+ (id)baseFilePath:(id *)a3;
++ (BOOL)haveContentsOfFilePathExpired:(id)expired withSuggestedRetryDate:(id)date;
++ (BOOL)haveContentsOfFilePathExpired:(id)expired withSuggestedRetryDate:(id)date withTimeToLive:(double)live;
++ (BOOL)removeAllItemsInDirectory:(id)directory;
++ (BOOL)removeItemAtFilePath:(id)path;
++ (BOOL)saveData:(id)data toDirectory:(id)directory filename:(id)filename;
++ (id)baseFilePath:(id *)path;
 + (id)baseLayoutFilePath;
 + (id)baseSubmissionFilePath;
-+ (id)dataAtFileURL:(id)a3;
-+ (unint64_t)numberOfItemsInDirectory:(id)a3;
++ (id)dataAtFileURL:(id)l;
++ (unint64_t)numberOfItemsInDirectory:(id)directory;
 @end
 
 @implementation RAPFileManager
 
-+ (id)dataAtFileURL:(id)a3
++ (id)dataAtFileURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = +[NSFileManager defaultManager];
-  v5 = [v3 path];
+  path = [lCopy path];
 
-  v6 = [v4 contentsAtPath:v5];
+  v6 = [v4 contentsAtPath:path];
 
   return v6;
 }
 
-+ (BOOL)haveContentsOfFilePathExpired:(id)a3 withSuggestedRetryDate:(id)a4 withTimeToLive:(double)a5
++ (BOOL)haveContentsOfFilePathExpired:(id)expired withSuggestedRetryDate:(id)date withTimeToLive:(double)live
 {
-  v7 = a4;
+  dateCopy = date;
   v16 = 0;
   v15 = 0;
-  [a3 getResourceValue:&v16 forKey:NSURLCreationDateKey error:&v15];
+  [expired getResourceValue:&v16 forKey:NSURLCreationDateKey error:&v15];
   v8 = v16;
   v9 = v15;
   if (v9)
@@ -47,8 +47,8 @@
 
   else
   {
-    v10 = [v8 dateByAddingTimeInterval:a5];
-    v12 = [v10 compare:v7];
+    v10 = [v8 dateByAddingTimeInterval:live];
+    v12 = [v10 compare:dateCopy];
     v11 = v12 == -1;
     v13 = sub_10002E924();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
@@ -56,11 +56,11 @@
       *buf = 138413058;
       v18 = v10;
       v19 = 2112;
-      v20 = v7;
+      v20 = dateCopy;
       v21 = 1024;
       v22 = v12 == -1;
       v23 = 2048;
-      v24 = a5;
+      liveCopy = live;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "The latest date is %@, the retry date is %@, hasContentExpired = %d and the standard time to live is %f", buf, 0x26u);
     }
   }
@@ -68,21 +68,21 @@
   return v11;
 }
 
-+ (BOOL)haveContentsOfFilePathExpired:(id)a3 withSuggestedRetryDate:(id)a4
++ (BOOL)haveContentsOfFilePathExpired:(id)expired withSuggestedRetryDate:(id)date
 {
-  v6 = a4;
-  v7 = a3;
-  [a1 standardTimeToLive];
-  LOBYTE(a1) = [a1 haveContentsOfFilePathExpired:v7 withSuggestedRetryDate:v6 withTimeToLive:?];
+  dateCopy = date;
+  expiredCopy = expired;
+  [self standardTimeToLive];
+  LOBYTE(self) = [self haveContentsOfFilePathExpired:expiredCopy withSuggestedRetryDate:dateCopy withTimeToLive:?];
 
-  return a1;
+  return self;
 }
 
-+ (BOOL)removeAllItemsInDirectory:(id)a3
++ (BOOL)removeAllItemsInDirectory:(id)directory
 {
-  v4 = a3;
+  directoryCopy = directory;
   v5 = +[NSFileManager defaultManager];
-  v6 = [v5 contentsOfDirectoryAtURL:v4 includingPropertiesForKeys:0 options:0 error:0];
+  v6 = [v5 contentsOfDirectoryAtURL:directoryCopy includingPropertiesForKeys:0 options:0 error:0];
 
   v16 = 0u;
   v17 = 0u;
@@ -106,7 +106,7 @@
 
         if (v11)
         {
-          v11 = [a1 removeItemAtFilePath:{*(*(&v14 + 1) + 8 * i), v14}];
+          v11 = [self removeItemAtFilePath:{*(*(&v14 + 1) + 8 * i), v14}];
         }
 
         else
@@ -129,34 +129,34 @@
   return v11;
 }
 
-+ (BOOL)removeItemAtFilePath:(id)a3
++ (BOOL)removeItemAtFilePath:(id)path
 {
-  if (!a3)
+  if (!path)
   {
     return 0;
   }
 
-  v3 = a3;
+  pathCopy = path;
   v4 = +[NSFileManager defaultManager];
   v14 = 0;
-  v5 = [v4 removeItemAtURL:v3 error:&v14];
+  v5 = [v4 removeItemAtURL:pathCopy error:&v14];
   v6 = v14;
 
-  v7 = [v3 URLByDeletingLastPathComponent];
+  uRLByDeletingLastPathComponent = [pathCopy URLByDeletingLastPathComponent];
 
-  if (![RAPFileManager numberOfItemsInDirectory:v7])
+  if (![RAPFileManager numberOfItemsInDirectory:uRLByDeletingLastPathComponent])
   {
     v8 = sub_10002E924();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v16 = v7;
+      v16 = uRLByDeletingLastPathComponent;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Deleting directory %@", buf, 0xCu);
     }
 
     v9 = +[NSFileManager defaultManager];
     v13 = v6;
-    v10 = [v9 removeItemAtURL:v7 error:&v13];
+    v10 = [v9 removeItemAtURL:uRLByDeletingLastPathComponent error:&v13];
     v11 = v13;
 
     v5 &= v10;
@@ -166,12 +166,12 @@
   return v5;
 }
 
-+ (unint64_t)numberOfItemsInDirectory:(id)a3
++ (unint64_t)numberOfItemsInDirectory:(id)directory
 {
-  v3 = a3;
+  directoryCopy = directory;
   v4 = +[NSFileManager defaultManager];
   v11 = 0;
-  v5 = [v4 contentsOfDirectoryAtURL:v3 includingPropertiesForKeys:0 options:0 error:&v11];
+  v5 = [v4 contentsOfDirectoryAtURL:directoryCopy includingPropertiesForKeys:0 options:0 error:&v11];
   v6 = v11;
 
   v7 = sub_10002E924();
@@ -181,7 +181,7 @@
     *buf = 134218242;
     v13 = v8;
     v14 = 2112;
-    v15 = v3;
+    v15 = directoryCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Found %lu items at directory %@", buf, 0x16u);
   }
 
@@ -189,16 +189,16 @@
   return v9;
 }
 
-+ (BOOL)saveData:(id)a3 toDirectory:(id)a4 filename:(id)a5
++ (BOOL)saveData:(id)data toDirectory:(id)directory filename:(id)filename
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v8)
+  dataCopy = data;
+  directoryCopy = directory;
+  filenameCopy = filename;
+  if (directoryCopy)
   {
     v10 = +[NSFileManager defaultManager];
     v39 = 0;
-    v11 = [v10 createDirectoryAtURL:v8 withIntermediateDirectories:1 attributes:0 error:&v39];
+    v11 = [v10 createDirectoryAtURL:directoryCopy withIntermediateDirectories:1 attributes:0 error:&v39];
     v12 = v39;
 
     if (!v11)
@@ -209,7 +209,7 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    v13 = [v8 URLByAppendingPathComponent:v9];
+    v13 = [directoryCopy URLByAppendingPathComponent:filenameCopy];
     v14 = +[NSData data];
     v38 = v12;
     v15 = [v14 writeToURL:v13 options:0 error:&v38];
@@ -240,7 +240,7 @@ LABEL_16:
       if (v19)
       {
         v32 = v16;
-        v20 = [v7 writeToURL:v13 options:0 error:&v32];
+        v20 = [dataCopy writeToURL:v13 options:0 error:&v32];
         v18 = v32;
 
         v21 = +[NSFileManager defaultManager];
@@ -252,9 +252,9 @@ LABEL_16:
           v43 = v29;
           v23 = 1;
           v24 = [NSDictionary dictionaryWithObjects:&v43 forKeys:&v42 count:1];
-          v25 = [v13 path];
+          path = [v13 path];
           v30 = v18;
-          [v22 setAttributes:v24 ofItemAtPath:v25 error:&v30];
+          [v22 setAttributes:v24 ofItemAtPath:path error:&v30];
           v12 = v30;
 
           if (!v12)
@@ -314,7 +314,7 @@ LABEL_21:
 + (id)baseSubmissionFilePath
 {
   v6 = 0;
-  v2 = [a1 baseFilePath:&v6];
+  v2 = [self baseFilePath:&v6];
   v3 = v2;
   v4 = 0;
   if (!v6)
@@ -328,7 +328,7 @@ LABEL_21:
 + (id)baseLayoutFilePath
 {
   v6 = 0;
-  v2 = [a1 baseFilePath:&v6];
+  v2 = [self baseFilePath:&v6];
   v3 = v2;
   v4 = 0;
   if (!v6)
@@ -339,7 +339,7 @@ LABEL_21:
   return v4;
 }
 
-+ (id)baseFilePath:(id *)a3
++ (id)baseFilePath:(id *)path
 {
   v4 = +[NSFileManager defaultManager];
   v11 = 0;
@@ -352,11 +352,11 @@ LABEL_21:
     v8 = [v7 URLByAppendingPathComponent:@"ReportAProblem" isDirectory:1];
   }
 
-  else if (a3)
+  else if (path)
   {
     v9 = v6;
     v8 = 0;
-    *a3 = v6;
+    *path = v6;
   }
 
   else

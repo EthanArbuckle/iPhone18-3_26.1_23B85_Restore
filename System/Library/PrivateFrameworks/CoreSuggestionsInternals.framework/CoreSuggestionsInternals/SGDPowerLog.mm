@@ -1,94 +1,94 @@
 @interface SGDPowerLog
-+ (void)logPrewarmWithLastPrewarmTime:(double)a3;
-+ (void)pluginEndDeletion:(id)a3;
-+ (void)pluginEndProcessingSearchableItem:(id)a3;
-+ (void)pluginEndSetup:(id)a3;
-+ (void)pluginStartDeletion:(id)a3;
-+ (void)pluginStartProcessingSearchableItem:(id)a3;
-+ (void)pluginStartSetup:(id)a3;
++ (void)logPrewarmWithLastPrewarmTime:(double)time;
++ (void)pluginEndDeletion:(id)deletion;
++ (void)pluginEndProcessingSearchableItem:(id)item;
++ (void)pluginEndSetup:(id)setup;
++ (void)pluginStartDeletion:(id)deletion;
++ (void)pluginStartProcessingSearchableItem:(id)item;
++ (void)pluginStartSetup:(id)setup;
 @end
 
 @implementation SGDPowerLog
 
-+ (void)pluginEndDeletion:(id)a3
++ (void)pluginEndDeletion:(id)deletion
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v7 = @"plugin";
-  v8[0] = a3;
+  v8[0] = deletion;
   v3 = MEMORY[0x277CBEAC0];
-  v4 = a3;
+  deletionCopy = deletion;
   v5 = [v3 dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
   PLLogRegisteredEvent();
   v6 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)pluginStartDeletion:(id)a3
++ (void)pluginStartDeletion:(id)deletion
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v7 = @"plugin";
-  v8[0] = a3;
+  v8[0] = deletion;
   v3 = MEMORY[0x277CBEAC0];
-  v4 = a3;
+  deletionCopy = deletion;
   v5 = [v3 dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
   PLLogRegisteredEvent();
   v6 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)pluginEndProcessingSearchableItem:(id)a3
++ (void)pluginEndProcessingSearchableItem:(id)item
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v7 = @"plugin";
-  v8[0] = a3;
+  v8[0] = item;
   v3 = MEMORY[0x277CBEAC0];
-  v4 = a3;
+  itemCopy = item;
   v5 = [v3 dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
   PLLogRegisteredEvent();
   v6 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)pluginStartProcessingSearchableItem:(id)a3
++ (void)pluginStartProcessingSearchableItem:(id)item
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v7 = @"plugin";
-  v8[0] = a3;
+  v8[0] = item;
   v3 = MEMORY[0x277CBEAC0];
-  v4 = a3;
+  itemCopy = item;
   v5 = [v3 dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
   PLLogRegisteredEvent();
   v6 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)pluginEndSetup:(id)a3
++ (void)pluginEndSetup:(id)setup
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v7 = @"plugin";
-  v8[0] = a3;
+  v8[0] = setup;
   v3 = MEMORY[0x277CBEAC0];
-  v4 = a3;
+  setupCopy = setup;
   v5 = [v3 dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
   PLLogRegisteredEvent();
   v6 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)pluginStartSetup:(id)a3
++ (void)pluginStartSetup:(id)setup
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v7 = @"plugin";
-  v8[0] = a3;
+  v8[0] = setup;
   v3 = MEMORY[0x277CBEAC0];
-  v4 = a3;
+  setupCopy = setup;
   v5 = [v3 dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
   PLLogRegisteredEvent();
   v6 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)logPrewarmWithLastPrewarmTime:(double)a3
++ (void)logPrewarmWithLastPrewarmTime:(double)time
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v4 = sgLogHandle();
@@ -100,7 +100,7 @@
 
   v12 = @"secondsSinceLast";
   v5 = MEMORY[0x277CCABB0];
-  if (a3 == 0.0)
+  if (time == 0.0)
   {
     v7 = -1.0;
   }
@@ -109,14 +109,14 @@
   {
     v4 = objc_opt_new();
     [v4 timeIntervalSinceReferenceDate];
-    v7 = v6 - a3;
+    v7 = v6 - time;
   }
 
   v8 = [v5 numberWithDouble:v7];
   v13[0] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
 
-  if (a3 != 0.0)
+  if (time != 0.0)
   {
   }
 

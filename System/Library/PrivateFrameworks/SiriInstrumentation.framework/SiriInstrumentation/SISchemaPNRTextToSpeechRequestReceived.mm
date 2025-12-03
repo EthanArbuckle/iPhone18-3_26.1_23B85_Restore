@@ -1,28 +1,28 @@
 @interface SISchemaPNRTextToSpeechRequestReceived
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaPNRTextToSpeechRequestReceived)initWithDictionary:(id)a3;
-- (SISchemaPNRTextToSpeechRequestReceived)initWithJSON:(id)a3;
+- (SISchemaPNRTextToSpeechRequestReceived)initWithDictionary:(id)dictionary;
+- (SISchemaPNRTextToSpeechRequestReceived)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasIsSynthesisCached:(BOOL)a3;
-- (void)setHasSourceOfTTS:(BOOL)a3;
-- (void)setHasSpeechError:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasIsSynthesisCached:(BOOL)cached;
+- (void)setHasSourceOfTTS:(BOOL)s;
+- (void)setHasSpeechError:(BOOL)error;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaPNRTextToSpeechRequestReceived
 
-- (SISchemaPNRTextToSpeechRequestReceived)initWithDictionary:(id)a3
+- (SISchemaPNRTextToSpeechRequestReceived)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = SISchemaPNRTextToSpeechRequestReceived;
   v5 = [(SISchemaPNRTextToSpeechRequestReceived *)&v16 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"voiceAssetKey"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"voiceAssetKey"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -30,7 +30,7 @@
       [(SISchemaPNRTextToSpeechRequestReceived *)v5 setVoiceAssetKey:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"voiceResourceAssetKey"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"voiceResourceAssetKey"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -38,28 +38,28 @@
       [(SISchemaPNRTextToSpeechRequestReceived *)v5 setVoiceResourceAssetKey:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"isWarmStart"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"isWarmStart"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaPNRTextToSpeechRequestReceived setIsWarmStart:](v5, "setIsWarmStart:", [v10 BOOLValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"isSynthesisCached"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"isSynthesisCached"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaPNRTextToSpeechRequestReceived setIsSynthesisCached:](v5, "setIsSynthesisCached:", [v11 BOOLValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"sourceOfTTS"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"sourceOfTTS"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaPNRTextToSpeechRequestReceived setSourceOfTTS:](v5, "setSourceOfTTS:", [v12 intValue]);
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"speechError"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"speechError"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -72,30 +72,30 @@
   return v5;
 }
 
-- (SISchemaPNRTextToSpeechRequestReceived)initWithJSON:(id)a3
+- (SISchemaPNRTextToSpeechRequestReceived)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaPNRTextToSpeechRequestReceived *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaPNRTextToSpeechRequestReceived *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaPNRTextToSpeechRequestReceived *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -108,12 +108,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaPNRTextToSpeechRequestReceived isSynthesisCached](self, "isSynthesisCached")}];
-    [v3 setObject:v5 forKeyedSubscript:@"isSynthesisCached"];
+    [dictionary setObject:v5 forKeyedSubscript:@"isSynthesisCached"];
 
     has = self->_has;
     if ((has & 1) == 0)
@@ -134,7 +134,7 @@ LABEL_3:
   }
 
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaPNRTextToSpeechRequestReceived isWarmStart](self, "isWarmStart")}];
-  [v3 setObject:v6 forKeyedSubscript:@"isWarmStart"];
+  [dictionary setObject:v6 forKeyedSubscript:@"isWarmStart"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -160,7 +160,7 @@ LABEL_8:
     v8 = off_1E78E6128[v7];
   }
 
-  [v3 setObject:v8 forKeyedSubscript:@"sourceOfTTS"];
+  [dictionary setObject:v8 forKeyedSubscript:@"sourceOfTTS"];
   if ((*&self->_has & 8) != 0)
   {
 LABEL_12:
@@ -175,27 +175,27 @@ LABEL_12:
       v10 = off_1E78E6150[v9];
     }
 
-    [v3 setObject:v10 forKeyedSubscript:@"speechError"];
+    [dictionary setObject:v10 forKeyedSubscript:@"speechError"];
   }
 
 LABEL_16:
   if (self->_voiceAssetKey)
   {
-    v11 = [(SISchemaPNRTextToSpeechRequestReceived *)self voiceAssetKey];
-    v12 = [v11 copy];
-    [v3 setObject:v12 forKeyedSubscript:@"voiceAssetKey"];
+    voiceAssetKey = [(SISchemaPNRTextToSpeechRequestReceived *)self voiceAssetKey];
+    v12 = [voiceAssetKey copy];
+    [dictionary setObject:v12 forKeyedSubscript:@"voiceAssetKey"];
   }
 
   if (self->_voiceResourceAssetKey)
   {
-    v13 = [(SISchemaPNRTextToSpeechRequestReceived *)self voiceResourceAssetKey];
-    v14 = [v13 copy];
-    [v3 setObject:v14 forKeyedSubscript:@"voiceResourceAssetKey"];
+    voiceResourceAssetKey = [(SISchemaPNRTextToSpeechRequestReceived *)self voiceResourceAssetKey];
+    v14 = [voiceResourceAssetKey copy];
+    [dictionary setObject:v14 forKeyedSubscript:@"voiceResourceAssetKey"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -254,28 +254,28 @@ LABEL_5:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(SISchemaPNRTextToSpeechRequestReceived *)self voiceAssetKey];
-  v6 = [v4 voiceAssetKey];
-  if ((v5 != 0) == (v6 == 0))
+  voiceAssetKey = [(SISchemaPNRTextToSpeechRequestReceived *)self voiceAssetKey];
+  voiceAssetKey2 = [equalCopy voiceAssetKey];
+  if ((voiceAssetKey != 0) == (voiceAssetKey2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(SISchemaPNRTextToSpeechRequestReceived *)self voiceAssetKey];
-  if (v7)
+  voiceAssetKey3 = [(SISchemaPNRTextToSpeechRequestReceived *)self voiceAssetKey];
+  if (voiceAssetKey3)
   {
-    v8 = v7;
-    v9 = [(SISchemaPNRTextToSpeechRequestReceived *)self voiceAssetKey];
-    v10 = [v4 voiceAssetKey];
-    v11 = [v9 isEqual:v10];
+    v8 = voiceAssetKey3;
+    voiceAssetKey4 = [(SISchemaPNRTextToSpeechRequestReceived *)self voiceAssetKey];
+    voiceAssetKey5 = [equalCopy voiceAssetKey];
+    v11 = [voiceAssetKey4 isEqual:voiceAssetKey5];
 
     if (!v11)
     {
@@ -287,22 +287,22 @@ LABEL_5:
   {
   }
 
-  v5 = [(SISchemaPNRTextToSpeechRequestReceived *)self voiceResourceAssetKey];
-  v6 = [v4 voiceResourceAssetKey];
-  if ((v5 != 0) == (v6 == 0))
+  voiceAssetKey = [(SISchemaPNRTextToSpeechRequestReceived *)self voiceResourceAssetKey];
+  voiceAssetKey2 = [equalCopy voiceResourceAssetKey];
+  if ((voiceAssetKey != 0) == (voiceAssetKey2 == 0))
   {
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v12 = [(SISchemaPNRTextToSpeechRequestReceived *)self voiceResourceAssetKey];
-  if (v12)
+  voiceResourceAssetKey = [(SISchemaPNRTextToSpeechRequestReceived *)self voiceResourceAssetKey];
+  if (voiceResourceAssetKey)
   {
-    v13 = v12;
-    v14 = [(SISchemaPNRTextToSpeechRequestReceived *)self voiceResourceAssetKey];
-    v15 = [v4 voiceResourceAssetKey];
-    v16 = [v14 isEqual:v15];
+    v13 = voiceResourceAssetKey;
+    voiceResourceAssetKey2 = [(SISchemaPNRTextToSpeechRequestReceived *)self voiceResourceAssetKey];
+    voiceResourceAssetKey3 = [equalCopy voiceResourceAssetKey];
+    v16 = [voiceResourceAssetKey2 isEqual:voiceResourceAssetKey3];
 
     if (!v16)
     {
@@ -315,19 +315,19 @@ LABEL_11:
   }
 
   has = self->_has;
-  v20 = v4[36];
+  v20 = equalCopy[36];
   if ((*&has & 1) == (v20 & 1))
   {
     if (*&has)
     {
       isWarmStart = self->_isWarmStart;
-      if (isWarmStart != [v4 isWarmStart])
+      if (isWarmStart != [equalCopy isWarmStart])
       {
         goto LABEL_12;
       }
 
       has = self->_has;
-      v20 = v4[36];
+      v20 = equalCopy[36];
     }
 
     v22 = (*&has >> 1) & 1;
@@ -336,13 +336,13 @@ LABEL_11:
       if (v22)
       {
         isSynthesisCached = self->_isSynthesisCached;
-        if (isSynthesisCached != [v4 isSynthesisCached])
+        if (isSynthesisCached != [equalCopy isSynthesisCached])
         {
           goto LABEL_12;
         }
 
         has = self->_has;
-        v20 = v4[36];
+        v20 = equalCopy[36];
       }
 
       v24 = (*&has >> 2) & 1;
@@ -351,19 +351,19 @@ LABEL_11:
         if (v24)
         {
           sourceOfTTS = self->_sourceOfTTS;
-          if (sourceOfTTS != [v4 sourceOfTTS])
+          if (sourceOfTTS != [equalCopy sourceOfTTS])
           {
             goto LABEL_12;
           }
 
           has = self->_has;
-          v20 = v4[36];
+          v20 = equalCopy[36];
         }
 
         v26 = (*&has >> 3) & 1;
         if (v26 == ((v20 >> 3) & 1))
         {
-          if (!v26 || (speechError = self->_speechError, speechError == [v4 speechError]))
+          if (!v26 || (speechError = self->_speechError, speechError == [equalCopy speechError]))
           {
             v17 = 1;
             goto LABEL_13;
@@ -380,29 +380,29 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(SISchemaPNRTextToSpeechRequestReceived *)self voiceAssetKey];
+  toCopy = to;
+  voiceAssetKey = [(SISchemaPNRTextToSpeechRequestReceived *)self voiceAssetKey];
 
-  if (v4)
+  if (voiceAssetKey)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(SISchemaPNRTextToSpeechRequestReceived *)self voiceResourceAssetKey];
+  voiceResourceAssetKey = [(SISchemaPNRTextToSpeechRequestReceived *)self voiceResourceAssetKey];
 
-  if (v5)
+  if (voiceResourceAssetKey)
   {
     PBDataWriterWriteStringField();
   }
 
   has = self->_has;
-  v7 = v8;
+  v7 = toCopy;
   if (has)
   {
     PBDataWriterWriteBOOLField();
-    v7 = v8;
+    v7 = toCopy;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -422,7 +422,7 @@ LABEL_7:
   }
 
   PBDataWriterWriteBOOLField();
-  v7 = v8;
+  v7 = toCopy;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -437,20 +437,20 @@ LABEL_8:
 
 LABEL_15:
   PBDataWriterWriteInt32Field();
-  v7 = v8;
+  v7 = toCopy;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_9:
     PBDataWriterWriteInt32Field();
-    v7 = v8;
+    v7 = toCopy;
   }
 
 LABEL_10:
 }
 
-- (void)setHasSpeechError:(BOOL)a3
+- (void)setHasSpeechError:(BOOL)error
 {
-  if (a3)
+  if (error)
   {
     v3 = 8;
   }
@@ -463,9 +463,9 @@ LABEL_10:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasSourceOfTTS:(BOOL)a3
+- (void)setHasSourceOfTTS:(BOOL)s
 {
-  if (a3)
+  if (s)
   {
     v3 = 4;
   }
@@ -478,9 +478,9 @@ LABEL_10:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasIsSynthesisCached:(BOOL)a3
+- (void)setHasIsSynthesisCached:(BOOL)cached
 {
-  if (a3)
+  if (cached)
   {
     v3 = 2;
   }

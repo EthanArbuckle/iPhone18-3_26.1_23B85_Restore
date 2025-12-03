@@ -1,32 +1,32 @@
 @interface _WKWebExtensionSQLiteRow
-- (BOOL)_isNullAtIndex:(unint64_t)a3;
-- (RawData)uncopiedRawDataAtIndex:(SEL)a3;
-- (_WKWebExtensionSQLiteRow)initWithCurrentRowOfEnumerator:(id)a3;
-- (_WKWebExtensionSQLiteRow)initWithStatement:(id)a3;
-- (double)doubleAtIndex:(unint64_t)a3;
-- (id)dataAtIndex:(unint64_t)a3;
-- (id)objectAtIndex:(unint64_t)a3;
-- (id)stringAtIndex:(unint64_t)a3;
-- (id)uncopiedDataAtIndex:(unint64_t)a3;
-- (int)intAtIndex:(unint64_t)a3;
-- (int64_t)int64AtIndex:(unint64_t)a3;
+- (BOOL)_isNullAtIndex:(unint64_t)index;
+- (RawData)uncopiedRawDataAtIndex:(SEL)index;
+- (_WKWebExtensionSQLiteRow)initWithCurrentRowOfEnumerator:(id)enumerator;
+- (_WKWebExtensionSQLiteRow)initWithStatement:(id)statement;
+- (double)doubleAtIndex:(unint64_t)index;
+- (id)dataAtIndex:(unint64_t)index;
+- (id)objectAtIndex:(unint64_t)index;
+- (id)stringAtIndex:(unint64_t)index;
+- (id)uncopiedDataAtIndex:(unint64_t)index;
+- (int)intAtIndex:(unint64_t)index;
+- (int64_t)int64AtIndex:(unint64_t)index;
 @end
 
 @implementation _WKWebExtensionSQLiteRow
 
-- (_WKWebExtensionSQLiteRow)initWithStatement:(id)a3
+- (_WKWebExtensionSQLiteRow)initWithStatement:(id)statement
 {
-  v5 = a3;
+  statementCopy = statement;
   v11.receiver = self;
   v11.super_class = _WKWebExtensionSQLiteRow;
   v6 = [(_WKWebExtensionSQLiteRow *)&v11 init];
   if (v6)
   {
-    v6->_handle = [v5 handle];
-    objc_storeStrong(&v6->_statement, a3);
-    v7 = [(_WKWebExtensionSQLiteStatement *)v6->_statement database];
-    v8 = [v7 queue];
-    dispatch_assert_queue_V2(v8);
+    v6->_handle = [statementCopy handle];
+    objc_storeStrong(&v6->_statement, statement);
+    database = [(_WKWebExtensionSQLiteStatement *)v6->_statement database];
+    queue = [database queue];
+    dispatch_assert_queue_V2(queue);
 
     v9 = v6;
   }
@@ -34,21 +34,21 @@
   return v6;
 }
 
-- (_WKWebExtensionSQLiteRow)initWithCurrentRowOfEnumerator:(id)a3
+- (_WKWebExtensionSQLiteRow)initWithCurrentRowOfEnumerator:(id)enumerator
 {
-  v4 = [a3 statement];
-  v5 = [(_WKWebExtensionSQLiteRow *)self initWithStatement:v4];
+  statement = [enumerator statement];
+  v5 = [(_WKWebExtensionSQLiteRow *)self initWithStatement:statement];
 
   return v5;
 }
 
-- (id)stringAtIndex:(unint64_t)a3
+- (id)stringAtIndex:(unint64_t)index
 {
-  v5 = [(_WKWebExtensionSQLiteStatement *)self->_statement database];
-  v6 = [v5 queue];
-  dispatch_assert_queue_V2(v6);
+  database = [(_WKWebExtensionSQLiteStatement *)self->_statement database];
+  queue = [database queue];
+  dispatch_assert_queue_V2(queue);
 
-  if ([(_WKWebExtensionSQLiteRow *)self _isNullAtIndex:a3])
+  if ([(_WKWebExtensionSQLiteRow *)self _isNullAtIndex:index])
   {
     v7 = 0;
   }
@@ -56,8 +56,8 @@
   else
   {
     handle = self->_handle;
-    sqlite3_column_text(handle, a3);
-    sqlite3_column_bytes(handle, a3);
+    sqlite3_column_text(handle, index);
+    sqlite3_column_bytes(handle, index);
     WTF::String::fromUTF8();
     if (v11)
     {
@@ -85,45 +85,45 @@
   return v7;
 }
 
-- (int)intAtIndex:(unint64_t)a3
+- (int)intAtIndex:(unint64_t)index
 {
-  v3 = a3;
-  v5 = [(_WKWebExtensionSQLiteStatement *)self->_statement database];
-  v6 = [v5 queue];
-  dispatch_assert_queue_V2(v6);
+  indexCopy = index;
+  database = [(_WKWebExtensionSQLiteStatement *)self->_statement database];
+  queue = [database queue];
+  dispatch_assert_queue_V2(queue);
 
   handle = self->_handle;
 
-  return sqlite3_column_int(handle, v3);
+  return sqlite3_column_int(handle, indexCopy);
 }
 
-- (int64_t)int64AtIndex:(unint64_t)a3
+- (int64_t)int64AtIndex:(unint64_t)index
 {
-  v3 = a3;
-  v5 = [(_WKWebExtensionSQLiteStatement *)self->_statement database];
-  v6 = [v5 queue];
-  dispatch_assert_queue_V2(v6);
+  indexCopy = index;
+  database = [(_WKWebExtensionSQLiteStatement *)self->_statement database];
+  queue = [database queue];
+  dispatch_assert_queue_V2(queue);
 
   handle = self->_handle;
 
-  return sqlite3_column_int64(handle, v3);
+  return sqlite3_column_int64(handle, indexCopy);
 }
 
-- (double)doubleAtIndex:(unint64_t)a3
+- (double)doubleAtIndex:(unint64_t)index
 {
-  v3 = a3;
-  v5 = [(_WKWebExtensionSQLiteStatement *)self->_statement database];
-  v6 = [v5 queue];
-  dispatch_assert_queue_V2(v6);
+  indexCopy = index;
+  database = [(_WKWebExtensionSQLiteStatement *)self->_statement database];
+  queue = [database queue];
+  dispatch_assert_queue_V2(queue);
 
   handle = self->_handle;
 
-  return sqlite3_column_double(handle, v3);
+  return sqlite3_column_double(handle, indexCopy);
 }
 
-- (id)dataAtIndex:(unint64_t)a3
+- (id)dataAtIndex:(unint64_t)index
 {
-  [(_WKWebExtensionSQLiteRow *)self uncopiedRawDataAtIndex:a3];
+  [(_WKWebExtensionSQLiteRow *)self uncopiedRawDataAtIndex:index];
   if (v5)
   {
     v3 = 0;
@@ -137,9 +137,9 @@
   return v3;
 }
 
-- (id)uncopiedDataAtIndex:(unint64_t)a3
+- (id)uncopiedDataAtIndex:(unint64_t)index
 {
-  [(_WKWebExtensionSQLiteRow *)self uncopiedRawDataAtIndex:a3];
+  [(_WKWebExtensionSQLiteRow *)self uncopiedRawDataAtIndex:index];
   if (v5)
   {
     v3 = 0;
@@ -153,11 +153,11 @@
   return v3;
 }
 
-- (RawData)uncopiedRawDataAtIndex:(SEL)a3
+- (RawData)uncopiedRawDataAtIndex:(SEL)index
 {
-  v7 = [(_WKWebExtensionSQLiteStatement *)self->_statement database];
-  v8 = [v7 queue];
-  dispatch_assert_queue_V2(v8);
+  database = [(_WKWebExtensionSQLiteStatement *)self->_statement database];
+  queue = [database queue];
+  dispatch_assert_queue_V2(queue);
 
   result = [(_WKWebExtensionSQLiteRow *)self _isNullAtIndex:a4];
   if (result)
@@ -206,30 +206,30 @@
   return result;
 }
 
-- (BOOL)_isNullAtIndex:(unint64_t)a3
+- (BOOL)_isNullAtIndex:(unint64_t)index
 {
-  v3 = a3;
-  v5 = [(_WKWebExtensionSQLiteStatement *)self->_statement database];
-  v6 = [v5 queue];
-  dispatch_assert_queue_V2(v6);
+  indexCopy = index;
+  database = [(_WKWebExtensionSQLiteStatement *)self->_statement database];
+  queue = [database queue];
+  dispatch_assert_queue_V2(queue);
 
-  return sqlite3_column_type(self->_handle, v3) == 5;
+  return sqlite3_column_type(self->_handle, indexCopy) == 5;
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
-  v5 = sqlite3_column_type(self->_handle, a3);
-  v6 = 0;
+  v5 = sqlite3_column_type(self->_handle, index);
+  null = 0;
   if (v5 <= 2)
   {
     if (v5 == 1)
     {
-      v6 = [MEMORY[0x1E696AD98] numberWithLongLong:{sqlite3_column_int64(self->_handle, a3)}];
+      null = [MEMORY[0x1E696AD98] numberWithLongLong:{sqlite3_column_int64(self->_handle, index)}];
     }
 
     else if (v5 == 2)
     {
-      v6 = [MEMORY[0x1E696AD98] numberWithDouble:{sqlite3_column_double(self->_handle, a3)}];
+      null = [MEMORY[0x1E696AD98] numberWithDouble:{sqlite3_column_double(self->_handle, index)}];
     }
   }
 
@@ -238,18 +238,18 @@
     switch(v5)
     {
       case 3:
-        v6 = [(_WKWebExtensionSQLiteRow *)self stringAtIndex:a3];
+        null = [(_WKWebExtensionSQLiteRow *)self stringAtIndex:index];
         break;
       case 4:
-        v6 = [(_WKWebExtensionSQLiteRow *)self dataAtIndex:a3];
+        null = [(_WKWebExtensionSQLiteRow *)self dataAtIndex:index];
         break;
       case 5:
-        v6 = [MEMORY[0x1E695DFB0] null];
+        null = [MEMORY[0x1E695DFB0] null];
         break;
     }
   }
 
-  return v6;
+  return null;
 }
 
 @end

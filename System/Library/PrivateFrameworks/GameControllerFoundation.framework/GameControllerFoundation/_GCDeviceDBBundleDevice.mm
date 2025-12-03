@@ -1,23 +1,23 @@
 @interface _GCDeviceDBBundleDevice
 - (_GCDeviceDBBundleDevice)init;
-- (_GCDeviceDBBundleDevice)initWithBundle:(id)a3 dictionary:(id)a4 error:(id *)a5;
+- (_GCDeviceDBBundleDevice)initWithBundle:(id)bundle dictionary:(id)dictionary error:(id *)error;
 - (id)personalities;
 @end
 
 @implementation _GCDeviceDBBundleDevice
 
-- (_GCDeviceDBBundleDevice)initWithBundle:(id)a3 dictionary:(id)a4 error:(id *)a5
+- (_GCDeviceDBBundleDevice)initWithBundle:(id)bundle dictionary:(id)dictionary error:(id *)error
 {
   v98[7] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v71 = v9;
-  if (!v9)
+  bundleCopy = bundle;
+  dictionaryCopy = dictionary;
+  v71 = bundleCopy;
+  if (!bundleCopy)
   {
     [_GCDeviceDBBundleDevice initWithBundle:a2 dictionary:self error:?];
   }
 
-  if (!v10)
+  if (!dictionaryCopy)
   {
     [_GCDeviceDBBundleDevice initWithBundle:a2 dictionary:self error:?];
   }
@@ -25,14 +25,14 @@
   v88.receiver = self;
   v88.super_class = _GCDeviceDBBundleDevice;
   v11 = [(_GCDeviceDBBundleDevice *)&v88 init];
-  objc_storeStrong(&v11->_bundle, a3);
+  objc_storeStrong(&v11->_bundle, bundle);
   v87 = 0;
-  v12 = [v10 gc_objectForKey:@"CompatibilityVersion" ofClass:objc_opt_class() error:&v87];
+  v12 = [dictionaryCopy gc_objectForKey:@"CompatibilityVersion" ofClass:objc_opt_class() error:&v87];
   v13 = v87;
   v14 = v13;
   if (!v12 && v13)
   {
-    [_GCDeviceDBBundleDevice initWithBundle:a5 dictionary:v13 error:?];
+    [_GCDeviceDBBundleDevice initWithBundle:error dictionary:v13 error:?];
     goto LABEL_47;
   }
 
@@ -41,7 +41,7 @@
     v15 = [[GCVersion alloc] initWithString:v12];
     if (!v15)
     {
-      if (!a5)
+      if (!error)
       {
         goto LABEL_13;
       }
@@ -59,7 +59,7 @@
       v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v96 count:1];
       v98[2] = v22;
       v62 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v98 forKeys:v97 count:3];
-      *a5 = [(NSError *)v59 gc_deviceDBError:v62 userInfo:?];
+      *error = [(NSError *)v59 gc_deviceDBError:v62 userInfo:?];
 
       goto LABEL_12;
     }
@@ -69,7 +69,7 @@
 
     if (v17)
     {
-      if (!a5)
+      if (!error)
       {
 LABEL_13:
 
@@ -87,7 +87,7 @@ LABEL_47:
       v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Device definition requires version '%@'.", v15];
       v95[1] = v21;
       v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v95 forKeys:v94 count:2];
-      *a5 = [(NSError *)v18 gc_deviceDBError:v22 userInfo:?];
+      *error = [(NSError *)v18 gc_deviceDBError:v22 userInfo:?];
 LABEL_12:
 
       goto LABEL_13;
@@ -100,18 +100,18 @@ LABEL_12:
   }
 
   v86 = 0;
-  v23 = [v10 gc_requiredObjectForKey:@"Identifier" ofClass:objc_opt_class() error:&v86];
+  v23 = [dictionaryCopy gc_requiredObjectForKey:@"Identifier" ofClass:objc_opt_class() error:&v86];
   v24 = v86;
   if (!v23)
   {
-    [_GCDeviceDBBundleDevice initWithBundle:a5 dictionary:v24 error:?];
+    [_GCDeviceDBBundleDevice initWithBundle:error dictionary:v24 error:?];
     goto LABEL_47;
   }
 
   identifier = v11->_identifier;
   v11->_identifier = v23;
 
-  v26 = [v10 gc_objectForKey:@"IOPropertyMatch" ofClass:objc_opt_class() error:0];
+  v26 = [dictionaryCopy gc_objectForKey:@"IOPropertyMatch" ofClass:objc_opt_class() error:0];
   v27 = v26;
   if (v26)
   {
@@ -123,11 +123,11 @@ LABEL_12:
   else
   {
     v85 = 0;
-    v28 = [v10 gc_requiredObjectForKey:@"IOPropertyMatch" ofClass:objc_opt_class() error:&v85];
+    v28 = [dictionaryCopy gc_requiredObjectForKey:@"IOPropertyMatch" ofClass:objc_opt_class() error:&v85];
     v29 = v85;
     if (!v28)
     {
-      [_GCDeviceDBBundleDevice initWithBundle:a5 dictionary:v29 error:?];
+      [_GCDeviceDBBundleDevice initWithBundle:error dictionary:v29 error:?];
       goto LABEL_47;
     }
   }
@@ -159,7 +159,7 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if (a5)
+  if (error)
   {
     v65 = MEMORY[0x1E696ABC0];
     v53 = *MEMORY[0x1E696A578];
@@ -167,27 +167,27 @@ LABEL_21:
     v54 = *MEMORY[0x1E696A588];
     v91[0] = v53;
     v91[1] = v54;
-    v55 = [v80[5] localizedFailureReason];
-    ioMatchingPredicates = v55;
+    localizedFailureReason = [v80[5] localizedFailureReason];
+    ioMatchingPredicates = localizedFailureReason;
     v56 = &stru_1F4E1BE30;
-    if (v55)
+    if (localizedFailureReason)
     {
-      v56 = v55;
+      v56 = localizedFailureReason;
     }
 
     v92[1] = v56;
     v91[2] = @"GCFailingKeyPathErrorKey";
-    v57 = [v80[5] gc_failingKeyPath];
-    v69 = v57;
-    if (!v57)
+    gc_failingKeyPath = [v80[5] gc_failingKeyPath];
+    v69 = gc_failingKeyPath;
+    if (!gc_failingKeyPath)
     {
-      v57 = MEMORY[0x1E695E0F0];
+      gc_failingKeyPath = MEMORY[0x1E695E0F0];
     }
 
-    v67 = [v57 arrayByAddingObject:@"IOPropertyMatch"];
+    v67 = [gc_failingKeyPath arrayByAddingObject:@"IOPropertyMatch"];
     v92[2] = v67;
     v58 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v92 forKeys:v91 count:3];
-    *a5 = [(NSError *)v65 gc_deviceDBError:v58 userInfo:?];
+    *error = [(NSError *)v65 gc_deviceDBError:v58 userInfo:?];
 
     goto LABEL_21;
   }
@@ -201,11 +201,11 @@ LABEL_22:
   }
 
   v75 = 0;
-  v36 = [v10 gc_requiredObjectForKey:@"Personalities" ofClass:objc_opt_class() error:&v75];
+  v36 = [dictionaryCopy gc_requiredObjectForKey:@"Personalities" ofClass:objc_opt_class() error:&v75];
   v37 = v75;
   if (!v36)
   {
-    [_GCDeviceDBBundleDevice initWithBundle:a5 dictionary:v37 error:?];
+    [_GCDeviceDBBundleDevice initWithBundle:error dictionary:v37 error:?];
     goto LABEL_47;
   }
 
@@ -236,7 +236,7 @@ LABEL_22:
 
   else
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_33;
     }
@@ -247,27 +247,27 @@ LABEL_22:
     v45 = *MEMORY[0x1E696A588];
     v89[0] = v44;
     v89[1] = v45;
-    v46 = [v80[5] localizedFailureReason];
-    personalityPaths = v46;
+    localizedFailureReason2 = [v80[5] localizedFailureReason];
+    personalityPaths = localizedFailureReason2;
     v47 = &stru_1F4E1BE30;
-    if (v46)
+    if (localizedFailureReason2)
     {
-      v47 = v46;
+      v47 = localizedFailureReason2;
     }
 
     v90[1] = v47;
     v89[2] = 0x1F4E1C010;
-    v48 = [(NSError *)v80[5] gc_dbFailingPath];
-    v49 = v48;
-    if (!v48)
+    gc_dbFailingPath = [(NSError *)v80[5] gc_dbFailingPath];
+    v49 = gc_dbFailingPath;
+    if (!gc_dbFailingPath)
     {
-      v48 = MEMORY[0x1E695E0F0];
+      gc_dbFailingPath = MEMORY[0x1E695E0F0];
     }
 
-    v50 = [v48 arrayByAddingObject:@"Personalities"];
+    v50 = [gc_dbFailingPath arrayByAddingObject:@"Personalities"];
     v90[2] = v50;
     v51 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v90 forKeys:v89 count:3];
-    *a5 = [(NSError *)v66 gc_deviceDBError:v51 userInfo:?];
+    *error = [(NSError *)v66 gc_deviceDBError:v51 userInfo:?];
   }
 
 LABEL_33:
@@ -296,8 +296,8 @@ LABEL_48:
 {
   v3 = [_GCDeviceDBBundleDevicePersonalitiesEnumerator alloc];
   bundle = self->_bundle;
-  v5 = [(NSArray *)self->_personalityPaths objectEnumerator];
-  v6 = [(_GCDeviceDBBundleDevicePersonalitiesEnumerator *)v3 initWithBundle:bundle personalityPaths:v5];
+  objectEnumerator = [(NSArray *)self->_personalityPaths objectEnumerator];
+  v6 = [(_GCDeviceDBBundleDevicePersonalitiesEnumerator *)v3 initWithBundle:bundle personalityPaths:objectEnumerator];
 
   return v6;
 }

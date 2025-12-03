@@ -1,6 +1,6 @@
 @interface _EXDiscoveryController
 + (_EXDiscoveryController)sharedInstance;
-- (void)observerDidObserveDatabaseChange:(id)a3;
+- (void)observerDidObserveDatabaseChange:(id)change;
 @end
 
 @implementation _EXDiscoveryController
@@ -17,10 +17,10 @@
   return v3;
 }
 
-- (void)observerDidObserveDatabaseChange:(id)a3
+- (void)observerDidObserveDatabaseChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
+  changeCopy = change;
+  selfCopy = self;
   _EXDiscoveryController.observerDidObserveSettingsChange()();
 }
 

@@ -1,35 +1,35 @@
 @interface TUIRenderReferenceIdentifier
-- (BOOL)isEqual:(id)a3;
-- (TUIRenderReferenceIdentifier)initWithUUID:(id)a3 uid:(id)a4 refId:(id)a5 refInstance:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (TUIRenderReferenceIdentifier)initWithUUID:(id)d uid:(id)uid refId:(id)id refInstance:(id)instance;
 - (unint64_t)hash;
 @end
 
 @implementation TUIRenderReferenceIdentifier
 
-- (TUIRenderReferenceIdentifier)initWithUUID:(id)a3 uid:(id)a4 refId:(id)a5 refInstance:(id)a6
+- (TUIRenderReferenceIdentifier)initWithUUID:(id)d uid:(id)uid refId:(id)id refInstance:(id)instance
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  uidCopy = uid;
+  idCopy = id;
+  instanceCopy = instance;
   v24.receiver = self;
   v24.super_class = TUIRenderReferenceIdentifier;
   v14 = [(TUIRenderReferenceIdentifier *)&v24 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [dCopy copy];
     UUID = v14->_UUID;
     v14->_UUID = v15;
 
-    v17 = [v11 copy];
+    v17 = [uidCopy copy];
     uid = v14->_uid;
     v14->_uid = v17;
 
-    v19 = [v12 copy];
+    v19 = [idCopy copy];
     refId = v14->_refId;
     v14->_refId = v19;
 
-    v21 = [v13 copy];
+    v21 = [instanceCopy copy];
     refInstance = v14->_refInstance;
     v14->_refInstance = v21;
   }
@@ -37,21 +37,21 @@
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4)
+  equalCopy = equal;
+  if (equalCopy)
   {
     v5 = objc_opt_class();
     if (v5 == objc_opt_class())
     {
-      v7 = v4;
+      v7 = equalCopy;
     }
 
     else
     {
       v6 = objc_opt_class();
-      v7 = TUIDynamicCast(v6, v4);
+      v7 = TUIDynamicCast(v6, equalCopy);
       if (!v7)
       {
         goto LABEL_15;

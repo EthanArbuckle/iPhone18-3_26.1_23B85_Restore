@@ -1,12 +1,12 @@
 @interface _REAudioFileAssetReader
-- (_REAudioFileAssetReader)initWithStream:(SeekableInputStream *)a3 ownsStream:(BOOL)a4;
+- (_REAudioFileAssetReader)initWithStream:(SeekableInputStream *)stream ownsStream:(BOOL)ownsStream;
 - (id).cxx_construct;
 - (id)getBackingData;
 @end
 
 @implementation _REAudioFileAssetReader
 
-- (_REAudioFileAssetReader)initWithStream:(SeekableInputStream *)a3 ownsStream:(BOOL)a4
+- (_REAudioFileAssetReader)initWithStream:(SeekableInputStream *)stream ownsStream:(BOOL)ownsStream
 {
   v9.receiver = self;
   v9.super_class = _REAudioFileAssetReader;
@@ -14,7 +14,7 @@
   v7 = v6;
   if (v6)
   {
-    re::audio::AudioFileAssetReader::init(&v6->_reader, a3, a4);
+    re::audio::AudioFileAssetReader::init(&v6->_reader, stream, ownsStream);
   }
 
   return v7;

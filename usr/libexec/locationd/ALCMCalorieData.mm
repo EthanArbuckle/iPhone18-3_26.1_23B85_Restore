@@ -1,46 +1,46 @@
 @interface ALCMCalorieData
-- (BOOL)isEqual:(id)a3;
-- (id)activityTypeAsString:(int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)activityTypeAsString:(int)string;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)truthMetsSourceAsString:(int)a3;
-- (id)userMetsSourceAsString:(int)a3;
-- (int)StringAsActivityType:(id)a3;
-- (int)StringAsTruthMetsSource:(id)a3;
-- (int)StringAsUserMetsSource:(id)a3;
+- (id)truthMetsSourceAsString:(int)string;
+- (id)userMetsSourceAsString:(int)string;
+- (int)StringAsActivityType:(id)type;
+- (int)StringAsTruthMetsSource:(id)source;
+- (int)StringAsUserMetsSource:(id)source;
 - (int)truthMetsSource;
 - (int)userMetsSource;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasMetsHR:(BOOL)a3;
-- (void)setHasMetsWR:(BOOL)a3;
-- (void)setHasTruthMetsSource:(BOOL)a3;
-- (void)setHasUserMetsSource:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasMetsHR:(BOOL)r;
+- (void)setHasMetsWR:(BOOL)r;
+- (void)setHasTruthMetsSource:(BOOL)source;
+- (void)setHasUserMetsSource:(BOOL)source;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ALCMCalorieData
 
-- (id)activityTypeAsString:(int)a3
+- (id)activityTypeAsString:(int)string
 {
-  if (a3 > 15029)
+  if (string > 15029)
   {
-    if (a3 > 15652)
+    if (string > 15652)
     {
-      if (a3 > 18224)
+      if (string > 18224)
       {
-        if (a3 <= 19149)
+        if (string <= 19149)
         {
-          if (a3 > 19029)
+          if (string > 19029)
           {
-            if (a3 == 19030)
+            if (string == 19030)
             {
               return @"kTypeIndoorSkatingSports";
             }
 
-            if (a3 == 19090)
+            if (string == 19090)
             {
               return @"kTypeCrossCountrySkiing";
             }
@@ -48,26 +48,26 @@
 
           else
           {
-            if (a3 == 18225)
+            if (string == 18225)
             {
               return @"kTypePaddleSports";
             }
 
-            if (a3 == 18240)
+            if (string == 18240)
             {
               return @"kTypeSwimming";
             }
           }
         }
 
-        else if (a3 <= 90120)
+        else if (string <= 90120)
         {
-          if (a3 == 19150)
+          if (string == 19150)
           {
             return @"kTypeSummer";
           }
 
-          if (a3 == 19160)
+          if (string == 19160)
           {
             return @"kTypeSnowboarding";
           }
@@ -75,7 +75,7 @@
 
         else
         {
-          switch(a3)
+          switch(string)
           {
             case 90121:
               return @"kTypeOutdoorHandCycling";
@@ -87,16 +87,16 @@
         }
       }
 
-      else if (a3 <= 15709)
+      else if (string <= 15709)
       {
-        if (a3 > 15669)
+        if (string > 15669)
         {
-          if (a3 == 15670)
+          if (string == 15670)
           {
             return @"kTypeTaiChi";
           }
 
-          if (a3 == 15675)
+          if (string == 15675)
           {
             return @"kTypeTennis";
           }
@@ -104,26 +104,26 @@
 
         else
         {
-          if (a3 == 15653)
+          if (string == 15653)
           {
             return @"kTypeRacquetball";
           }
 
-          if (a3 == 15660)
+          if (string == 15660)
           {
             return @"kTypeTableTennis";
           }
         }
       }
 
-      else if (a3 <= 17149)
+      else if (string <= 17149)
       {
-        if (a3 == 15710)
+        if (string == 15710)
         {
           return @"kTypeVolleyball";
         }
 
-        if (a3 == 15733)
+        if (string == 15733)
         {
           return @"kTypeTrackAndField";
         }
@@ -131,7 +131,7 @@
 
       else
       {
-        switch(a3)
+        switch(string)
         {
           case 17150:
             return @"kTypeIndoorWalking";
@@ -143,18 +143,18 @@
       }
     }
 
-    else if (a3 > 15349)
+    else if (string > 15349)
     {
-      if (a3 <= 15591)
+      if (string <= 15591)
       {
-        if (a3 > 15459)
+        if (string > 15459)
         {
-          if (a3 == 15460)
+          if (string == 15460)
           {
             return @"kTypeLacrosse";
           }
 
-          if (a3 == 15562)
+          if (string == 15562)
           {
             return @"kTypeRugby";
           }
@@ -162,26 +162,26 @@
 
         else
         {
-          if (a3 == 15350)
+          if (string == 15350)
           {
             return @"kTypeOutdoorHockey";
           }
 
-          if (a3 == 15360)
+          if (string == 15360)
           {
             return @"kTypeIndoorHockey";
           }
         }
       }
 
-      else if (a3 <= 15619)
+      else if (string <= 15619)
       {
-        if (a3 == 15592)
+        if (string == 15592)
         {
           return @"kTypeOutdoorSkatingSports";
         }
 
-        if (a3 == 15610)
+        if (string == 15610)
         {
           return @"kTypeOutdoorSoccer";
         }
@@ -189,7 +189,7 @@
 
       else
       {
-        switch(a3)
+        switch(string)
         {
           case 15620:
             return @"kTypeSoftball";
@@ -201,16 +201,16 @@
       }
     }
 
-    else if (a3 <= 15149)
+    else if (string <= 15149)
     {
-      if (a3 > 15099)
+      if (string > 15099)
       {
-        if (a3 == 15100)
+        if (string == 15100)
         {
           return @"kTypeBoxing";
         }
 
-        if (a3 == 15110)
+        if (string == 15110)
         {
           return @"kTypeKickboxing";
         }
@@ -218,26 +218,26 @@
 
       else
       {
-        if (a3 == 15030)
+        if (string == 15030)
         {
           return @"kTypeBadminton";
         }
 
-        if (a3 == 15055)
+        if (string == 15055)
         {
           return @"kTypeBasketball";
         }
       }
     }
 
-    else if (a3 <= 15239)
+    else if (string <= 15239)
     {
-      if (a3 == 15150)
+      if (string == 15150)
       {
         return @"kTypeCricket";
       }
 
-      if (a3 == 15230)
+      if (string == 15230)
       {
         return @"kTypeAmericanFootball";
       }
@@ -245,7 +245,7 @@
 
     else
     {
-      switch(a3)
+      switch(string)
       {
         case 15240:
           return @"kTypeDiscSports";
@@ -256,23 +256,23 @@
       }
     }
 
-    return [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    return [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
-  if (a3 > 65)
+  if (string > 65)
   {
-    if (a3 > 2067)
+    if (string > 2067)
     {
-      if (a3 <= 2149)
+      if (string <= 2149)
       {
-        if (a3 > 2100)
+        if (string > 2100)
         {
-          if (a3 == 2101)
+          if (string == 2101)
           {
             return @"kTypeCoolDown";
           }
 
-          if (a3 == 2105)
+          if (string == 2105)
           {
             return @"kTypePilates";
           }
@@ -280,26 +280,26 @@
 
         else
         {
-          if (a3 == 2068)
+          if (string == 2068)
           {
             return @"kTypeJumpRope";
           }
 
-          if (a3 == 2071)
+          if (string == 2071)
           {
             return @"kTypeRowing";
           }
         }
       }
 
-      else if (a3 <= 3015)
+      else if (string <= 3015)
       {
-        if (a3 == 2150)
+        if (string == 2150)
         {
           return @"kTypeYoga";
         }
 
-        if (a3 == 3015)
+        if (string == 3015)
         {
           return @"kTypeDancing";
         }
@@ -307,7 +307,7 @@
 
       else
       {
-        switch(a3)
+        switch(string)
         {
           case 3016:
             return @"kTypeStepTraining";
@@ -319,16 +319,16 @@
       }
     }
 
-    else if (a3 <= 2021)
+    else if (string <= 2021)
     {
-      if (a3 > 2009)
+      if (string > 2009)
       {
-        if (a3 == 2010)
+        if (string == 2010)
         {
           return @"kTypeStationaryCycling";
         }
 
-        if (a3 == 2020)
+        if (string == 2020)
         {
           return @"kTypeCalisthenics";
         }
@@ -336,26 +336,26 @@
 
       else
       {
-        if (a3 == 66)
+        if (string == 66)
         {
           return @"kTypePickleball";
         }
 
-        if (a3 == 100)
+        if (string == 100)
         {
           return @"kTypeCyclingLeg";
         }
       }
     }
 
-    else if (a3 <= 2047)
+    else if (string <= 2047)
     {
-      if (a3 == 2022)
+      if (string == 2022)
       {
         return @"kTypeFunctionalStrength";
       }
 
-      if (a3 == 2024)
+      if (string == 2024)
       {
         return @"kTypeCoreTraining";
       }
@@ -363,7 +363,7 @@
 
     else
     {
-      switch(a3)
+      switch(string)
       {
         case 2048:
           return @"kTypeElliptical";
@@ -374,29 +374,29 @@
       }
     }
 
-    return [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    return [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
-  if (a3 > 8)
+  if (string > 8)
   {
-    if (a3 <= 51)
+    if (string <= 51)
     {
-      if (a3 > 10)
+      if (string > 10)
       {
-        if (a3 == 11)
+        if (string == 11)
         {
           return @"kTypeInVehicleStatic";
         }
 
-        if (a3 == 41)
+        if (string == 41)
         {
           return @"kTypeWalkingSlow";
         }
 
-        return [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+        return [NSString stringWithFormat:@"(unknown: %i)", *&string];
       }
 
-      if (a3 == 9)
+      if (string == 9)
       {
         return @"kTypeMovingCoarse";
       }
@@ -409,27 +409,27 @@
 
     else
     {
-      if (a3 <= 62)
+      if (string <= 62)
       {
-        if (a3 == 52)
+        if (string == 52)
         {
           return @"kTypeVehicularInHand";
         }
 
-        if (a3 == 56)
+        if (string == 56)
         {
           return @"kTypeDrivingOther";
         }
 
-        return [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+        return [NSString stringWithFormat:@"(unknown: %i)", *&string];
       }
 
-      if (a3 == 63)
+      if (string == 63)
       {
         return @"kTypeMultiSportTransition";
       }
 
-      else if (a3 == 64)
+      else if (string == 64)
       {
         return @"kTypeIndoorSoccer";
       }
@@ -443,11 +443,11 @@
 
   else
   {
-    if (a3 > 3)
+    if (string > 3)
     {
-      if (a3 <= 5)
+      if (string <= 5)
       {
-        if (a3 == 4)
+        if (string == 4)
         {
           return @"kTypeWalking";
         }
@@ -458,12 +458,12 @@
         }
       }
 
-      else if (a3 == 6)
+      else if (string == 6)
       {
         return @"kTypeCycling";
       }
 
-      else if (a3 == 7)
+      else if (string == 7)
       {
         return @"kTypeSemiStationary";
       }
@@ -474,22 +474,22 @@
       }
     }
 
-    if (a3 <= 1)
+    if (string <= 1)
     {
-      if (!a3)
+      if (!string)
       {
         return @"kTypeUnknown";
       }
 
-      if (a3 == 1)
+      if (string == 1)
       {
         return @"kTypeFrozen";
       }
 
-      return [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+      return [NSString stringWithFormat:@"(unknown: %i)", *&string];
     }
 
-    if (a3 == 2)
+    if (string == 2)
     {
       return @"kTypeStatic";
     }
@@ -501,364 +501,364 @@
   }
 }
 
-- (int)StringAsActivityType:(id)a3
+- (int)StringAsActivityType:(id)type
 {
-  if ([a3 isEqualToString:@"kTypeUnknown"])
+  if ([type isEqualToString:@"kTypeUnknown"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"kTypeFrozen"])
+  if ([type isEqualToString:@"kTypeFrozen"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"kTypeStatic"])
+  if ([type isEqualToString:@"kTypeStatic"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"kTypeMoving"])
+  if ([type isEqualToString:@"kTypeMoving"])
   {
     return 3;
   }
 
-  if ([a3 isEqualToString:@"kTypeWalking"])
+  if ([type isEqualToString:@"kTypeWalking"])
   {
     return 4;
   }
 
-  if ([a3 isEqualToString:@"kTypeDriving"])
+  if ([type isEqualToString:@"kTypeDriving"])
   {
     return 5;
   }
 
-  if ([a3 isEqualToString:@"kTypeCycling"])
+  if ([type isEqualToString:@"kTypeCycling"])
   {
     return 6;
   }
 
-  if ([a3 isEqualToString:@"kTypeSemiStationary"])
+  if ([type isEqualToString:@"kTypeSemiStationary"])
   {
     return 7;
   }
 
-  if ([a3 isEqualToString:@"kTypeRunning"])
+  if ([type isEqualToString:@"kTypeRunning"])
   {
     return 8;
   }
 
-  if ([a3 isEqualToString:@"kTypeMovingCoarse"])
+  if ([type isEqualToString:@"kTypeMovingCoarse"])
   {
     return 9;
   }
 
-  if ([a3 isEqualToString:@"kTypeInVehicleFrozen"])
+  if ([type isEqualToString:@"kTypeInVehicleFrozen"])
   {
     return 10;
   }
 
-  if ([a3 isEqualToString:@"kTypeInVehicleStatic"])
+  if ([type isEqualToString:@"kTypeInVehicleStatic"])
   {
     return 11;
   }
 
-  if ([a3 isEqualToString:@"kTypeWalkingSlow"])
+  if ([type isEqualToString:@"kTypeWalkingSlow"])
   {
     return 41;
   }
 
-  if ([a3 isEqualToString:@"kTypeVehicularInHand"])
+  if ([type isEqualToString:@"kTypeVehicularInHand"])
   {
     return 52;
   }
 
-  if ([a3 isEqualToString:@"kTypeDrivingOther"])
+  if ([type isEqualToString:@"kTypeDrivingOther"])
   {
     return 56;
   }
 
-  if ([a3 isEqualToString:@"kTypeCyclingLeg"])
+  if ([type isEqualToString:@"kTypeCyclingLeg"])
   {
     return 100;
   }
 
-  if ([a3 isEqualToString:@"kTypeStationaryCycling"])
+  if ([type isEqualToString:@"kTypeStationaryCycling"])
   {
     return 2010;
   }
 
-  if ([a3 isEqualToString:@"kTypeCalisthenics"])
+  if ([type isEqualToString:@"kTypeCalisthenics"])
   {
     return 2020;
   }
 
-  if ([a3 isEqualToString:@"kTypeElliptical"])
+  if ([type isEqualToString:@"kTypeElliptical"])
   {
     return 2048;
   }
 
-  if ([a3 isEqualToString:@"kTypeCrossTraining"])
+  if ([type isEqualToString:@"kTypeCrossTraining"])
   {
     return 2061;
   }
 
-  if ([a3 isEqualToString:@"kTypeStairClimbing"])
+  if ([type isEqualToString:@"kTypeStairClimbing"])
   {
     return 2065;
   }
 
-  if ([a3 isEqualToString:@"kTypeRowing"])
+  if ([type isEqualToString:@"kTypeRowing"])
   {
     return 2071;
   }
 
-  if ([a3 isEqualToString:@"kTypeYoga"])
+  if ([type isEqualToString:@"kTypeYoga"])
   {
     return 2150;
   }
 
-  if ([a3 isEqualToString:@"kTypeDancing"])
+  if ([type isEqualToString:@"kTypeDancing"])
   {
     return 3015;
   }
 
-  if ([a3 isEqualToString:@"kTypePushingWheelchair"])
+  if ([type isEqualToString:@"kTypePushingWheelchair"])
   {
     return 11805;
   }
 
-  if ([a3 isEqualToString:@"kTypeIndoorRunning"])
+  if ([type isEqualToString:@"kTypeIndoorRunning"])
   {
     return 12150;
   }
 
-  if ([a3 isEqualToString:@"kTypeGolfing"])
+  if ([type isEqualToString:@"kTypeGolfing"])
   {
     return 15255;
   }
 
-  if ([a3 isEqualToString:@"kTypeIndoorWalking"])
+  if ([type isEqualToString:@"kTypeIndoorWalking"])
   {
     return 17150;
   }
 
-  if ([a3 isEqualToString:@"kTypeSwimming"])
+  if ([type isEqualToString:@"kTypeSwimming"])
   {
     return 18240;
   }
 
-  if ([a3 isEqualToString:@"kTypeSummer"])
+  if ([type isEqualToString:@"kTypeSummer"])
   {
     return 19150;
   }
 
-  if ([a3 isEqualToString:@"kTypeOutdoorWheelchair"])
+  if ([type isEqualToString:@"kTypeOutdoorWheelchair"])
   {
     return 90603;
   }
 
-  if ([a3 isEqualToString:@"kTypeFunctionalStrength"])
+  if ([type isEqualToString:@"kTypeFunctionalStrength"])
   {
     return 2022;
   }
 
-  if ([a3 isEqualToString:@"kTypeCoolDown"])
+  if ([type isEqualToString:@"kTypeCoolDown"])
   {
     return 2101;
   }
 
-  if ([a3 isEqualToString:@"kTypeCoreTraining"])
+  if ([type isEqualToString:@"kTypeCoreTraining"])
   {
     return 2024;
   }
 
-  if ([a3 isEqualToString:@"kTypeTaiChi"])
+  if ([type isEqualToString:@"kTypeTaiChi"])
   {
     return 15670;
   }
 
-  if ([a3 isEqualToString:@"kTypePilates"])
+  if ([type isEqualToString:@"kTypePilates"])
   {
     return 2105;
   }
 
-  if ([a3 isEqualToString:@"kTypeMultiSportTransition"])
+  if ([type isEqualToString:@"kTypeMultiSportTransition"])
   {
     return 63;
   }
 
-  if ([a3 isEqualToString:@"kTypeScubaDiving"])
+  if ([type isEqualToString:@"kTypeScubaDiving"])
   {
     return 18200;
   }
 
-  if ([a3 isEqualToString:@"kTypeKickboxing"])
+  if ([type isEqualToString:@"kTypeKickboxing"])
   {
     return 15110;
   }
 
-  if ([a3 isEqualToString:@"kTypeOutdoorRowing"])
+  if ([type isEqualToString:@"kTypeOutdoorRowing"])
   {
     return 18070;
   }
 
-  if ([a3 isEqualToString:@"kTypeCrossCountrySkiing"])
+  if ([type isEqualToString:@"kTypeCrossCountrySkiing"])
   {
     return 19090;
   }
 
-  if ([a3 isEqualToString:@"kTypeSnowboarding"])
+  if ([type isEqualToString:@"kTypeSnowboarding"])
   {
     return 19160;
   }
 
-  if ([a3 isEqualToString:@"kTypePaddleSports"])
+  if ([type isEqualToString:@"kTypePaddleSports"])
   {
     return 18225;
   }
 
-  if ([a3 isEqualToString:@"kTypeOutdoorSoccer"])
+  if ([type isEqualToString:@"kTypeOutdoorSoccer"])
   {
     return 15610;
   }
 
-  if ([a3 isEqualToString:@"kTypeIndoorSoccer"])
+  if ([type isEqualToString:@"kTypeIndoorSoccer"])
   {
     return 64;
   }
 
-  if ([a3 isEqualToString:@"kTypeAustralianFootball"])
+  if ([type isEqualToString:@"kTypeAustralianFootball"])
   {
     return 65;
   }
 
-  if ([a3 isEqualToString:@"kTypeAmericanFootball"])
+  if ([type isEqualToString:@"kTypeAmericanFootball"])
   {
     return 15230;
   }
 
-  if ([a3 isEqualToString:@"kTypeDiscSports"])
+  if ([type isEqualToString:@"kTypeDiscSports"])
   {
     return 15240;
   }
 
-  if ([a3 isEqualToString:@"kTypeRugby"])
+  if ([type isEqualToString:@"kTypeRugby"])
   {
     return 15562;
   }
 
-  if ([a3 isEqualToString:@"kTypeLacrosse"])
+  if ([type isEqualToString:@"kTypeLacrosse"])
   {
     return 15460;
   }
 
-  if ([a3 isEqualToString:@"kTypeOutdoorSkatingSports"])
+  if ([type isEqualToString:@"kTypeOutdoorSkatingSports"])
   {
     return 15592;
   }
 
-  if ([a3 isEqualToString:@"kTypeIndoorSkatingSports"])
+  if ([type isEqualToString:@"kTypeIndoorSkatingSports"])
   {
     return 19030;
   }
 
-  if ([a3 isEqualToString:@"kTypeIndoorHockey"])
+  if ([type isEqualToString:@"kTypeIndoorHockey"])
   {
     return 15360;
   }
 
-  if ([a3 isEqualToString:@"kTypeOutdoorHockey"])
+  if ([type isEqualToString:@"kTypeOutdoorHockey"])
   {
     return 15350;
   }
 
-  if ([a3 isEqualToString:@"kTypeBasketball"])
+  if ([type isEqualToString:@"kTypeBasketball"])
   {
     return 15055;
   }
 
-  if ([a3 isEqualToString:@"kTypeTennis"])
+  if ([type isEqualToString:@"kTypeTennis"])
   {
     return 15675;
   }
 
-  if ([a3 isEqualToString:@"kTypeBadminton"])
+  if ([type isEqualToString:@"kTypeBadminton"])
   {
     return 15030;
   }
 
-  if ([a3 isEqualToString:@"kTypeRacquetball"])
+  if ([type isEqualToString:@"kTypeRacquetball"])
   {
     return 15653;
   }
 
-  if ([a3 isEqualToString:@"kTypePickleball"])
+  if ([type isEqualToString:@"kTypePickleball"])
   {
     return 66;
   }
 
-  if ([a3 isEqualToString:@"kTypeVolleyball"])
+  if ([type isEqualToString:@"kTypeVolleyball"])
   {
     return 15710;
   }
 
-  if ([a3 isEqualToString:@"kTypeSquash"])
+  if ([type isEqualToString:@"kTypeSquash"])
   {
     return 15652;
   }
 
-  if ([a3 isEqualToString:@"kTypeHandball"])
+  if ([type isEqualToString:@"kTypeHandball"])
   {
     return 15320;
   }
 
-  if ([a3 isEqualToString:@"kTypeTrackAndField"])
+  if ([type isEqualToString:@"kTypeTrackAndField"])
   {
     return 15733;
   }
 
-  if ([a3 isEqualToString:@"kTypeSoftball"])
+  if ([type isEqualToString:@"kTypeSoftball"])
   {
     return 15620;
   }
 
-  if ([a3 isEqualToString:@"kTypeBaseball"])
+  if ([type isEqualToString:@"kTypeBaseball"])
   {
     return 15621;
   }
 
-  if ([a3 isEqualToString:@"kTypeCricket"])
+  if ([type isEqualToString:@"kTypeCricket"])
   {
     return 15150;
   }
 
-  if ([a3 isEqualToString:@"kTypeTableTennis"])
+  if ([type isEqualToString:@"kTypeTableTennis"])
   {
     return 15660;
   }
 
-  if ([a3 isEqualToString:@"kTypeJumpRope"])
+  if ([type isEqualToString:@"kTypeJumpRope"])
   {
     return 2068;
   }
 
-  if ([a3 isEqualToString:@"kTypeBoxing"])
+  if ([type isEqualToString:@"kTypeBoxing"])
   {
     return 15100;
   }
 
-  if ([a3 isEqualToString:@"kTypeStepTraining"])
+  if ([type isEqualToString:@"kTypeStepTraining"])
   {
     return 3016;
   }
 
-  if ([a3 isEqualToString:@"kTypeIndoorHandCycling"])
+  if ([type isEqualToString:@"kTypeIndoorHandCycling"])
   {
     return 90122;
   }
 
-  if ([a3 isEqualToString:@"kTypeOutdoorHandCycling"])
+  if ([type isEqualToString:@"kTypeOutdoorHandCycling"])
   {
     return 90121;
   }
@@ -879,9 +879,9 @@
   }
 }
 
-- (void)setHasUserMetsSource:(BOOL)a3
+- (void)setHasUserMetsSource:(BOOL)source
 {
-  if (a3)
+  if (source)
   {
     v3 = 16;
   }
@@ -894,42 +894,42 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (id)userMetsSourceAsString:(int)a3
+- (id)userMetsSourceAsString:(int)string
 {
-  if (a3 >= 5)
+  if (string >= 5)
   {
-    return [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    return [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    return off_10246F0F8[a3];
+    return off_10246F0F8[string];
   }
 }
 
-- (int)StringAsUserMetsSource:(id)a3
+- (int)StringAsUserMetsSource:(id)source
 {
-  if ([a3 isEqualToString:@"kWorkRate"])
+  if ([source isEqualToString:@"kWorkRate"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"kHeartRate"])
+  if ([source isEqualToString:@"kHeartRate"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"kCalibratedWorkRate"])
+  if ([source isEqualToString:@"kCalibratedWorkRate"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"kDefaultValue"])
+  if ([source isEqualToString:@"kDefaultValue"])
   {
     return 3;
   }
 
-  if ([a3 isEqualToString:@"kFitnessMachine"])
+  if ([source isEqualToString:@"kFitnessMachine"])
   {
     return 4;
   }
@@ -950,9 +950,9 @@
   }
 }
 
-- (void)setHasTruthMetsSource:(BOOL)a3
+- (void)setHasTruthMetsSource:(BOOL)source
 {
-  if (a3)
+  if (source)
   {
     v3 = 8;
   }
@@ -965,42 +965,42 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (id)truthMetsSourceAsString:(int)a3
+- (id)truthMetsSourceAsString:(int)string
 {
-  if (a3 >= 5)
+  if (string >= 5)
   {
-    return [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    return [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    return off_10246F0F8[a3];
+    return off_10246F0F8[string];
   }
 }
 
-- (int)StringAsTruthMetsSource:(id)a3
+- (int)StringAsTruthMetsSource:(id)source
 {
-  if ([a3 isEqualToString:@"kWorkRate"])
+  if ([source isEqualToString:@"kWorkRate"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"kHeartRate"])
+  if ([source isEqualToString:@"kHeartRate"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"kCalibratedWorkRate"])
+  if ([source isEqualToString:@"kCalibratedWorkRate"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"kDefaultValue"])
+  if ([source isEqualToString:@"kDefaultValue"])
   {
     return 3;
   }
 
-  if ([a3 isEqualToString:@"kFitnessMachine"])
+  if ([source isEqualToString:@"kFitnessMachine"])
   {
     return 4;
   }
@@ -1008,9 +1008,9 @@
   return 0;
 }
 
-- (void)setHasMetsHR:(BOOL)a3
+- (void)setHasMetsHR:(BOOL)r
 {
-  if (a3)
+  if (r)
   {
     v3 = 2;
   }
@@ -1023,9 +1023,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasMetsWR:(BOOL)a3
+- (void)setHasMetsWR:(BOOL)r
 {
-  if (a3)
+  if (r)
   {
     v3 = 4;
   }
@@ -1678,7 +1678,7 @@ LABEL_177:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   PBDataWriterWriteInt32Field();
   PBDataWriterWriteBOOLField();
@@ -1745,17 +1745,17 @@ LABEL_11:
   PBDataWriterWriteFloatField();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  *(a3 + 6) = self->_activityType;
-  *(a3 + 48) = self->_isStanding;
-  *(a3 + 2) = *&self->_userMets;
-  *(a3 + 1) = *&self->_truthMets;
+  *(to + 6) = self->_activityType;
+  *(to + 48) = self->_isStanding;
+  *(to + 2) = *&self->_userMets;
+  *(to + 1) = *&self->_truthMets;
   has = self->_has;
   if ((has & 0x10) != 0)
   {
-    *(a3 + 11) = self->_userMetsSource;
-    *(a3 + 52) |= 0x10u;
+    *(to + 11) = self->_userMetsSource;
+    *(to + 52) |= 0x10u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -1774,8 +1774,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 10) = self->_truthMetsSource;
-  *(a3 + 52) |= 8u;
+  *(to + 10) = self->_truthMetsSource;
+  *(to + 52) |= 8u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -1789,8 +1789,8 @@ LABEL_4:
   }
 
 LABEL_9:
-  *(a3 + 8) = LODWORD(self->_metsHR);
-  *(a3 + 52) |= 2u;
+  *(to + 8) = LODWORD(self->_metsHR);
+  *(to + 52) |= 2u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -1801,23 +1801,23 @@ LABEL_5:
     }
 
 LABEL_11:
-    *(a3 + 7) = LODWORD(self->_metsFM);
-    *(a3 + 52) |= 1u;
+    *(to + 7) = LODWORD(self->_metsFM);
+    *(to + 52) |= 1u;
     return;
   }
 
 LABEL_10:
-  *(a3 + 9) = LODWORD(self->_metsWR);
-  *(a3 + 52) |= 4u;
+  *(to + 9) = LODWORD(self->_metsWR);
+  *(to + 52) |= 4u;
   if (*&self->_has)
   {
     goto LABEL_11;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 6) = self->_activityType;
   *(result + 48) = self->_isStanding;
   *(result + 2) = *&self->_userMets;
@@ -1888,22 +1888,22 @@ LABEL_6:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (!v5)
   {
     return v5;
   }
 
-  if (self->_activityType != *(a3 + 6))
+  if (self->_activityType != *(equal + 6))
   {
     goto LABEL_33;
   }
 
   if (self->_isStanding)
   {
-    if ((*(a3 + 48) & 1) == 0)
+    if ((*(equal + 48) & 1) == 0)
     {
       goto LABEL_33;
     }
@@ -1911,7 +1911,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (*(a3 + 48))
+  if (*(equal + 48))
   {
 LABEL_33:
     LOBYTE(v5) = 0;
@@ -1919,67 +1919,67 @@ LABEL_33:
   }
 
 LABEL_7:
-  if (self->_userMets != *(a3 + 2) || self->_truthMets != *(a3 + 1))
+  if (self->_userMets != *(equal + 2) || self->_truthMets != *(equal + 1))
   {
     goto LABEL_33;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(a3 + 52) & 0x10) == 0 || self->_userMetsSource != *(a3 + 11))
+    if ((*(equal + 52) & 0x10) == 0 || self->_userMetsSource != *(equal + 11))
     {
       goto LABEL_33;
     }
   }
 
-  else if ((*(a3 + 52) & 0x10) != 0)
+  else if ((*(equal + 52) & 0x10) != 0)
   {
     goto LABEL_33;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(a3 + 52) & 8) == 0 || self->_truthMetsSource != *(a3 + 10))
+    if ((*(equal + 52) & 8) == 0 || self->_truthMetsSource != *(equal + 10))
     {
       goto LABEL_33;
     }
   }
 
-  else if ((*(a3 + 52) & 8) != 0)
+  else if ((*(equal + 52) & 8) != 0)
   {
     goto LABEL_33;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(a3 + 52) & 2) == 0 || self->_metsHR != *(a3 + 8))
+    if ((*(equal + 52) & 2) == 0 || self->_metsHR != *(equal + 8))
     {
       goto LABEL_33;
     }
   }
 
-  else if ((*(a3 + 52) & 2) != 0)
+  else if ((*(equal + 52) & 2) != 0)
   {
     goto LABEL_33;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(a3 + 52) & 4) == 0 || self->_metsWR != *(a3 + 9))
+    if ((*(equal + 52) & 4) == 0 || self->_metsWR != *(equal + 9))
     {
       goto LABEL_33;
     }
   }
 
-  else if ((*(a3 + 52) & 4) != 0)
+  else if ((*(equal + 52) & 4) != 0)
   {
     goto LABEL_33;
   }
 
-  LOBYTE(v5) = (*(a3 + 52) & 1) == 0;
+  LOBYTE(v5) = (*(equal + 52) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(a3 + 52) & 1) == 0 || self->_metsFM != *(a3 + 7))
+    if ((*(equal + 52) & 1) == 0 || self->_metsFM != *(equal + 7))
     {
       goto LABEL_33;
     }
@@ -2168,18 +2168,18 @@ LABEL_7:
   return (2654435761 * isStanding) ^ (2654435761 * activityType) ^ v12 ^ v18 ^ v19 ^ v20 ^ v21 ^ v26 ^ v31;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  self->_activityType = *(a3 + 6);
-  self->_isStanding = *(a3 + 48);
-  self->_userMets = *(a3 + 2);
-  self->_truthMets = *(a3 + 1);
-  v3 = *(a3 + 52);
+  self->_activityType = *(from + 6);
+  self->_isStanding = *(from + 48);
+  self->_userMets = *(from + 2);
+  self->_truthMets = *(from + 1);
+  v3 = *(from + 52);
   if ((v3 & 0x10) != 0)
   {
-    self->_userMetsSource = *(a3 + 11);
+    self->_userMetsSource = *(from + 11);
     *&self->_has |= 0x10u;
-    v3 = *(a3 + 52);
+    v3 = *(from + 52);
     if ((v3 & 8) == 0)
     {
 LABEL_3:
@@ -2192,14 +2192,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 52) & 8) == 0)
+  else if ((*(from + 52) & 8) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_truthMetsSource = *(a3 + 10);
+  self->_truthMetsSource = *(from + 10);
   *&self->_has |= 8u;
-  v3 = *(a3 + 52);
+  v3 = *(from + 52);
   if ((v3 & 2) == 0)
   {
 LABEL_4:
@@ -2212,9 +2212,9 @@ LABEL_4:
   }
 
 LABEL_9:
-  self->_metsHR = *(a3 + 8);
+  self->_metsHR = *(from + 8);
   *&self->_has |= 2u;
-  v3 = *(a3 + 52);
+  v3 = *(from + 52);
   if ((v3 & 4) == 0)
   {
 LABEL_5:
@@ -2224,15 +2224,15 @@ LABEL_5:
     }
 
 LABEL_11:
-    self->_metsFM = *(a3 + 7);
+    self->_metsFM = *(from + 7);
     *&self->_has |= 1u;
     return;
   }
 
 LABEL_10:
-  self->_metsWR = *(a3 + 9);
+  self->_metsWR = *(from + 9);
   *&self->_has |= 4u;
-  if (*(a3 + 52))
+  if (*(from + 52))
   {
     goto LABEL_11;
   }

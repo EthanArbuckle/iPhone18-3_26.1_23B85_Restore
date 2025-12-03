@@ -1,21 +1,21 @@
 @interface UGCGlyphButtonAppearance
-+ (id)_sharedThumbButtonConfigForInlineMode:(BOOL)a3;
-+ (id)thumbsDownButtonAppearanceForInlineMode:(BOOL)a3;
-+ (id)thumbsUpButtonAppearanceForInlineMode:(BOOL)a3;
++ (id)_sharedThumbButtonConfigForInlineMode:(BOOL)mode;
++ (id)thumbsDownButtonAppearanceForInlineMode:(BOOL)mode;
++ (id)thumbsUpButtonAppearanceForInlineMode:(BOOL)mode;
 @end
 
 @implementation UGCGlyphButtonAppearance
 
-+ (id)thumbsDownButtonAppearanceForInlineMode:(BOOL)a3
++ (id)thumbsDownButtonAppearanceForInlineMode:(BOOL)mode
 {
-  v4 = [a1 _sharedThumbButtonConfigForInlineMode:?];
+  v4 = [self _sharedThumbButtonConfigForInlineMode:?];
   v5 = @"hand.thumbsdown.fill";
-  if (!a3)
+  if (!mode)
   {
     v6 = +[UIDevice currentDevice];
-    v7 = [v6 userInterfaceIdiom];
+    userInterfaceIdiom = [v6 userInterfaceIdiom];
 
-    if (v7 == 5)
+    if (userInterfaceIdiom == 5)
     {
       v5 = @"hand.thumbsdown";
     }
@@ -28,16 +28,16 @@
   return v4;
 }
 
-+ (id)thumbsUpButtonAppearanceForInlineMode:(BOOL)a3
++ (id)thumbsUpButtonAppearanceForInlineMode:(BOOL)mode
 {
-  v4 = [a1 _sharedThumbButtonConfigForInlineMode:?];
+  v4 = [self _sharedThumbButtonConfigForInlineMode:?];
   v5 = @"hand.thumbsup.fill";
-  if (!a3)
+  if (!mode)
   {
     v6 = +[UIDevice currentDevice];
-    v7 = [v6 userInterfaceIdiom];
+    userInterfaceIdiom = [v6 userInterfaceIdiom];
 
-    if (v7 == 5)
+    if (userInterfaceIdiom == 5)
     {
       v5 = @"hand.thumbsup";
     }
@@ -50,10 +50,10 @@
   return v4;
 }
 
-+ (id)_sharedThumbButtonConfigForInlineMode:(BOOL)a3
++ (id)_sharedThumbButtonConfigForInlineMode:(BOOL)mode
 {
   v4 = objc_alloc_init(UGCGlyphButtonAppearance);
-  if (a3)
+  if (mode)
   {
     v5 = +[UIColor clearColor];
     [(UGCGlyphButtonAppearance *)v4 setMutedBackgroundColor:v5];

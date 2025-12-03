@@ -1,34 +1,34 @@
 @interface CSUTaxonomy
-+ (id)taxonomyWithManifestPath:(id)a3 error:(id *)a4;
-- (BOOL)_hasVocabularyNamed:(id)a3;
-- (CSUTaxonomy)initWithManifestPath:(id)a3 error:(id *)a4;
++ (id)taxonomyWithManifestPath:(id)path error:(id *)error;
+- (BOOL)_hasVocabularyNamed:(id)named;
+- (CSUTaxonomy)initWithManifestPath:(id)path error:(id *)error;
 - (id).cxx_construct;
-- (id)_vocabularyNamed:(id)a3;
+- (id)_vocabularyNamed:(id)named;
 - (optional<csu::TaxonomyRelations>)relations;
-- (unint64_t)countLabelsInVocabularyNamed:(id)a3;
-- (void)enumerateLabelsInTaxonomyUsingBlock:(id)a3;
-- (void)enumerateLabelsInVocabularyNamed:(id)a3 usingBlock:(id)a4;
+- (unint64_t)countLabelsInVocabularyNamed:(id)named;
+- (void)enumerateLabelsInTaxonomyUsingBlock:(id)block;
+- (void)enumerateLabelsInVocabularyNamed:(id)named usingBlock:(id)block;
 @end
 
 @implementation CSUTaxonomy
 
-- (CSUTaxonomy)initWithManifestPath:(id)a3 error:(id *)a4
+- (CSUTaxonomy)initWithManifestPath:(id)path error:(id *)error
 {
   v225 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v221 = &v222;
-  v222 = a4;
+  pathCopy = path;
+  v221 = &errorCopy;
+  errorCopy = error;
   v220.receiver = self;
   v220.super_class = CSUTaxonomy;
   v11 = [(CSUTaxonomy *)&v220 init];
   if (!v11)
   {
-    if (v222)
+    if (errorCopy)
     {
       v142 = objc_msgSend_errorForMemoryAllocationFailure(CSUError, v7, v8, v9, v10);
 LABEL_41:
       v143 = 0;
-      *v222 = v142;
+      *errorCopy = v142;
       goto LABEL_59;
     }
 
@@ -37,9 +37,9 @@ LABEL_42:
     goto LABEL_59;
   }
 
-  if (!v6)
+  if (!pathCopy)
   {
-    if (v222)
+    if (errorCopy)
     {
       v142 = objc_msgSend_errorForInvalidArgument_named_(CSUError, v7, 0, @"taxonomy manifest path", v10);
       goto LABEL_41;
@@ -49,8 +49,8 @@ LABEL_42:
   }
 
   v12 = MEMORY[0x1E695DF20];
-  v204 = v6;
-  v13 = objc_msgSend_fileURLWithPath_(MEMORY[0x1E695DFF8], v7, v6, v9, v10);
+  v204 = pathCopy;
+  v13 = objc_msgSend_fileURLWithPath_(MEMORY[0x1E695DFF8], v7, pathCopy, v9, v10);
   v219 = 0;
   v16 = objc_msgSend_dictionaryWithContentsOfURL_error_(v12, v14, v13, &v219, v15);
   v203 = v219;
@@ -59,12 +59,12 @@ LABEL_42:
 
   if (!v11->_manifest)
   {
-    if (v222)
+    if (errorCopy)
     {
-      v201 = objc_msgSend_stringByAppendingString_(@"Could not load taxonomy manifest file ", v18, v6, v20, v21);
+      v201 = objc_msgSend_stringByAppendingString_(@"Could not load taxonomy manifest file ", v18, pathCopy, v20, v21);
       v145 = objc_msgSend_errorWithCode_message_underlyingError_(CSUError, v144, 1, v201, v203);
       v143 = 0;
-      *v222 = v145;
+      *errorCopy = v145;
     }
 
     else
@@ -75,7 +75,7 @@ LABEL_42:
     goto LABEL_58;
   }
 
-  v22 = objc_msgSend_stringByDeletingLastPathComponent(v6, v18, v19, v20, v21);
+  v22 = objc_msgSend_stringByDeletingLastPathComponent(pathCopy, v18, v19, v20, v21);
   v217[0] = MEMORY[0x1E69E9820];
   v217[1] = 3221225472;
   v217[2] = sub_1AC08C664;
@@ -96,12 +96,12 @@ LABEL_42:
   v198 = objc_msgSend_objectForKeyedSubscript_(v11->_manifest, v39, @"vocabularies", v40, v41);
   if (!v202)
   {
-    if (v222)
+    if (errorCopy)
     {
       v146 = objc_msgSend_errorWithCode_message_(CSUError, v42, 6, @"Invalid manifest file, does not have the format version", v44);
 LABEL_53:
       v143 = 0;
-      *v222 = v146;
+      *errorCopy = v146;
       goto LABEL_56;
     }
 
@@ -113,10 +113,10 @@ LABEL_55:
   if ((objc_msgSend_isEqualToString_(v202, v42, @"1.0.0", v43, v44) & 1) == 0)
   {
     v149 = objc_msgSend_stringByAppendingString_(@"Unhandled taxonomy manifest format version ", v45, v202, v47, v48);
-    if (v222)
+    if (errorCopy)
     {
       v150 = objc_msgSend_errorWithCode_message_(CSUError, v147, 6, v149, v148);
-      *v222 = v150;
+      *errorCopy = v150;
     }
 
     goto LABEL_55;
@@ -124,7 +124,7 @@ LABEL_55:
 
   if (!v11->_name || !v11->_version || !v199 || !v198)
   {
-    if (v222)
+    if (errorCopy)
     {
       v146 = objc_msgSend_errorWithCode_message_(CSUError, v45, 6, @"Invalid manifest file, missing required information", v48);
       goto LABEL_53;
@@ -215,10 +215,10 @@ LABEL_63:
         objc_msgSend_setObject_forKeyedSubscript_(v189, v108, started, v66, v111);
       }
 
-      else if (v222)
+      else if (errorCopy)
       {
         v112 = objc_msgSend_errorForMemoryAllocationFailure(CSUError, v108, v109, v110, v111);
-        *v222 = v112;
+        *errorCopy = v112;
       }
 
       if (!started)
@@ -263,7 +263,7 @@ LABEL_34:
     v134 = v205[2](v205, v133);
     v135 = MEMORY[0x1E696AE40];
     v139 = objc_msgSend_dataWithContentsOfFile_(MEMORY[0x1E695DEF0], v136, v134, v137, v138);
-    v210 = objc_msgSend_propertyListWithData_options_format_error_(v135, v140, v139, 0, 0, v222);
+    v210 = objc_msgSend_propertyListWithData_options_format_error_(v135, v140, v139, 0, 0, errorCopy);
 
     if (v210)
     {
@@ -346,40 +346,40 @@ LABEL_78:
 LABEL_56:
 LABEL_58:
 
-  v6 = v204;
+  pathCopy = v204;
 LABEL_59:
 
   v151 = *MEMORY[0x1E69E9840];
   return v143;
 }
 
-+ (id)taxonomyWithManifestPath:(id)a3 error:(id *)a4
++ (id)taxonomyWithManifestPath:(id)path error:(id *)error
 {
-  v5 = a3;
+  pathCopy = path;
   v6 = [CSUTaxonomy alloc];
-  v9 = objc_msgSend_initWithManifestPath_error_(v6, v7, v5, a4, v8);
+  v9 = objc_msgSend_initWithManifestPath_error_(v6, v7, pathCopy, error, v8);
 
   return v9;
 }
 
-- (id)_vocabularyNamed:(id)a3
+- (id)_vocabularyNamed:(id)named
 {
-  v5 = objc_msgSend_objectForKey_(self->_vocabularies, a2, a3, v3, v4);
+  v5 = objc_msgSend_objectForKey_(self->_vocabularies, a2, named, v3, v4);
 
   return v5;
 }
 
-- (BOOL)_hasVocabularyNamed:(id)a3
+- (BOOL)_hasVocabularyNamed:(id)named
 {
-  v5 = objc_msgSend__vocabularyNamed_(self, a2, a3, v3, v4);
+  v5 = objc_msgSend__vocabularyNamed_(self, a2, named, v3, v4);
   v6 = v5 != 0;
 
   return v6;
 }
 
-- (unint64_t)countLabelsInVocabularyNamed:(id)a3
+- (unint64_t)countLabelsInVocabularyNamed:(id)named
 {
-  v5 = objc_msgSend__vocabularyNamed_(self, a2, a3, v3, v4);
+  v5 = objc_msgSend__vocabularyNamed_(self, a2, named, v3, v4);
   v10 = v5;
   if (v5)
   {
@@ -395,21 +395,21 @@ LABEL_59:
   }
 }
 
-- (void)enumerateLabelsInVocabularyNamed:(id)a3 usingBlock:(id)a4
+- (void)enumerateLabelsInVocabularyNamed:(id)named usingBlock:(id)block
 {
-  v14 = a4;
-  v9 = objc_msgSend__vocabularyNamed_(self, v6, a3, v7, v8);
+  blockCopy = block;
+  v9 = objc_msgSend__vocabularyNamed_(self, v6, named, v7, v8);
   v13 = v9;
   if (v9)
   {
-    objc_msgSend__enumerateVisibleLabelsInVocabularyUsingBlock_(v9, v10, v14, v11, v12);
+    objc_msgSend__enumerateVisibleLabelsInVocabularyUsingBlock_(v9, v10, blockCopy, v11, v12);
   }
 }
 
-- (void)enumerateLabelsInTaxonomyUsingBlock:(id)a3
+- (void)enumerateLabelsInTaxonomyUsingBlock:(id)block
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -437,7 +437,7 @@ LABEL_3:
       v15[1] = 3221225472;
       v15[2] = sub_1AC08CC6C;
       v15[3] = &unk_1E7968078;
-      v16 = v4;
+      v16 = blockCopy;
       v17 = &v22;
       objc_msgSend_enumerateLabelsInVocabularyNamed_usingBlock_(self, v10, v9, v15, v11);
       LOBYTE(v9) = *(v23 + 24);
@@ -470,9 +470,9 @@ LABEL_3:
   retstr->__engaged_ = 0;
   if (LOBYTE(self[3].var0.__val_._count) == 1)
   {
-    v4 = self;
+    selfCopy = self;
     self = *&self[2].__engaged_;
-    data = v4[3].var0.__val_._data;
+    data = selfCopy[3].var0.__val_._data;
     retstr->var0.__val_._data = self;
     retstr->var0.__val_._count = data;
     retstr->__engaged_ = 1;

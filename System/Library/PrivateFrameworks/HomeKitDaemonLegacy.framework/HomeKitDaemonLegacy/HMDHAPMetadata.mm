@@ -1,101 +1,101 @@
 @interface HMDHAPMetadata
-+ (BOOL)isAdminPrivilegeRequiredForWritingCharacteristicType:(id)a3 serviceType:(id)a4;
-+ (BOOL)isHomedVersionSupported:(id)a3;
-+ (BOOL)isOwnerPrivilegeRequiredForWritingCharacteristicType:(id)a3 serviceType:(id)a4;
-+ (BOOL)isServiceType:(id)a3 compatibleWithAccessoryCategoryType:(id)a4;
-+ (HMDHAPMetadata)metadataWithDictionary:(id)a3 error:(id *)a4;
-+ (HMDHAPMetadata)metadataWithPath:(id)a3 error:(id *)a4;
-+ (id)dataFromMetadataDictionaryWithKey:(id)a3;
++ (BOOL)isAdminPrivilegeRequiredForWritingCharacteristicType:(id)type serviceType:(id)serviceType;
++ (BOOL)isHomedVersionSupported:(id)supported;
++ (BOOL)isOwnerPrivilegeRequiredForWritingCharacteristicType:(id)type serviceType:(id)serviceType;
++ (BOOL)isServiceType:(id)type compatibleWithAccessoryCategoryType:(id)categoryType;
++ (HMDHAPMetadata)metadataWithDictionary:(id)dictionary error:(id *)error;
++ (HMDHAPMetadata)metadataWithPath:(id)path error:(id *)error;
++ (id)dataFromMetadataDictionaryWithKey:(id)key;
 + (id)getBuiltinInstance;
 + (id)getSharedInstance;
-+ (id)getSharedInstanceWithLockedCache:(id)a3;
++ (id)getSharedInstanceWithLockedCache:(id)cache;
 + (id)metadataCache;
 + (void)_logCurrentMetadata;
 + (void)prepareMetadata;
 + (void)updateLocalMetadataWithBuiltinMetadata;
-+ (void)updateLocalMetadataWithMetadata:(id)a3;
-- (BOOL)allowsSecuringWriteFor:(id)a3 withValue:(id)a4;
-- (BOOL)checkTupleExistsInSet:(id)a3 forChrType:(id)a4 svcType:(id)a5;
-- (BOOL)disallowsAssistantServiceType:(id)a3 characteristicType:(id)a4;
-- (BOOL)generateNotificationOnConfigurationForCharacteristicType:(id)a3 serviceType:(id)a4;
-- (BOOL)isSecondsDownCounterCharacteristicType:(id)a3;
-- (BOOL)isStandardCharacteristicType:(id)a3;
-- (BOOL)isStandardServiceType:(id)a3;
-- (BOOL)isTargetCharacteristic:(id)a3;
-- (BOOL)parseAndSetAssistantCharacteristics:(id)a3;
-- (BOOL)parseAndSetAssistantMetadataWithAssistantPlist:(id)a3;
-- (BOOL)parseAndSetAssistantServices:(id)a3;
-- (BOOL)parseAndSetAssistantUnits:(id)a3;
-- (BOOL)parseAndSetHMMetadataWithHMPlist:(id)a3;
-- (BOOL)requiresDeviceUnlock:(id)a3 forService:(id)a4;
-- (BOOL)requiresTimedWrite:(id)a3 forService:(id)a4;
-- (BOOL)shouldAllowToWakeSuspendedAccessoryForOperation:(int64_t)a3 service:(id)a4 characteristicType:(id)a5 value:(id)a6;
-- (BOOL)shouldAutoEnableNotificationForCharacteristic:(id)a3 ofService:(id)a4;
-- (BOOL)shouldCoalesceCharacteristicNotifications:(id)a3 forService:(id)a4;
-- (BOOL)shouldEnableHomeNotificationForCharacteristicType:(id)a3 serviceType:(id)a4;
-- (BOOL)shouldFilterChangeNotificationsForCharacteristicType:(id)a3 serviceType:(id)a4;
-- (BOOL)shouldFilterCharacteristicOfType:(id)a3;
-- (BOOL)shouldFilterCharacteristicOfTypeFromApp:(id)a3;
-- (BOOL)shouldFilterEnableNotificationsForCharacteristicType:(id)a3 serviceType:(id)a4;
-- (BOOL)shouldFilterServiceOfType:(id)a3;
-- (BOOL)shouldFilterServiceOfTypeFromApp:(id)a3;
-- (BOOL)shouldHomeAppShowTileForServiceType:(id)a3;
-- (BOOL)shouldNotCacheCharacteristicOfType:(id)a3;
-- (BOOL)shouldRefreshValueForCharacteristicWithType:(id)a3 serviceType:(id)a4;
-- (BOOL)supportsAuthorizationData:(id)a3 forService:(id)a4;
-- (BOOL)supportsLocalization:(id)a3;
-- (HMDHAPMetadata)initWithDictionary:(id)a3 hapMetadata:(id)a4 error:(id *)a5;
-- (HMDHAPMetadata)initWithFullPlist:(id)a3 hapMetadata:(id)a4;
-- (HMDHAPMetadata)initWithFullPlist:(id)a3 hapMetadata:(id)a4 error:(id *)a5;
++ (void)updateLocalMetadataWithMetadata:(id)metadata;
+- (BOOL)allowsSecuringWriteFor:(id)for withValue:(id)value;
+- (BOOL)checkTupleExistsInSet:(id)set forChrType:(id)type svcType:(id)svcType;
+- (BOOL)disallowsAssistantServiceType:(id)type characteristicType:(id)characteristicType;
+- (BOOL)generateNotificationOnConfigurationForCharacteristicType:(id)type serviceType:(id)serviceType;
+- (BOOL)isSecondsDownCounterCharacteristicType:(id)type;
+- (BOOL)isStandardCharacteristicType:(id)type;
+- (BOOL)isStandardServiceType:(id)type;
+- (BOOL)isTargetCharacteristic:(id)characteristic;
+- (BOOL)parseAndSetAssistantCharacteristics:(id)characteristics;
+- (BOOL)parseAndSetAssistantMetadataWithAssistantPlist:(id)plist;
+- (BOOL)parseAndSetAssistantServices:(id)services;
+- (BOOL)parseAndSetAssistantUnits:(id)units;
+- (BOOL)parseAndSetHMMetadataWithHMPlist:(id)plist;
+- (BOOL)requiresDeviceUnlock:(id)unlock forService:(id)service;
+- (BOOL)requiresTimedWrite:(id)write forService:(id)service;
+- (BOOL)shouldAllowToWakeSuspendedAccessoryForOperation:(int64_t)operation service:(id)service characteristicType:(id)type value:(id)value;
+- (BOOL)shouldAutoEnableNotificationForCharacteristic:(id)characteristic ofService:(id)service;
+- (BOOL)shouldCoalesceCharacteristicNotifications:(id)notifications forService:(id)service;
+- (BOOL)shouldEnableHomeNotificationForCharacteristicType:(id)type serviceType:(id)serviceType;
+- (BOOL)shouldFilterChangeNotificationsForCharacteristicType:(id)type serviceType:(id)serviceType;
+- (BOOL)shouldFilterCharacteristicOfType:(id)type;
+- (BOOL)shouldFilterCharacteristicOfTypeFromApp:(id)app;
+- (BOOL)shouldFilterEnableNotificationsForCharacteristicType:(id)type serviceType:(id)serviceType;
+- (BOOL)shouldFilterServiceOfType:(id)type;
+- (BOOL)shouldFilterServiceOfTypeFromApp:(id)app;
+- (BOOL)shouldHomeAppShowTileForServiceType:(id)type;
+- (BOOL)shouldNotCacheCharacteristicOfType:(id)type;
+- (BOOL)shouldRefreshValueForCharacteristicWithType:(id)type serviceType:(id)serviceType;
+- (BOOL)supportsAuthorizationData:(id)data forService:(id)service;
+- (BOOL)supportsLocalization:(id)localization;
+- (HMDHAPMetadata)initWithDictionary:(id)dictionary hapMetadata:(id)metadata error:(id *)error;
+- (HMDHAPMetadata)initWithFullPlist:(id)plist hapMetadata:(id)metadata;
+- (HMDHAPMetadata)initWithFullPlist:(id)plist hapMetadata:(id)metadata error:(id *)error;
 - (id)aliasedHAPCharacteristicTypes;
 - (id)aliasedHAPServiceTypes;
 - (id)audioAccessoryCategory;
-- (id)autoApplyPolicyConfigurationForService:(id)a3 category:(id)a4;
-- (id)categoryForIdentifier:(id)a3;
+- (id)autoApplyPolicyConfigurationForService:(id)service category:(id)category;
+- (id)categoryForIdentifier:(id)identifier;
 - (id)categoryForOther;
-- (id)categoryForType:(id)a3;
-- (id)categoryTypeFromName:(id)a3;
-- (id)characteristicNameFromType:(id)a3;
-- (id)characteristicTypeFromName:(id)a3;
-- (id)characteristicValueUnit:(id)a3;
-- (id)descriptionForCharacteristicType:(id)a3;
-- (id)descriptionForServiceType:(id)a3;
+- (id)categoryForType:(id)type;
+- (id)categoryTypeFromName:(id)name;
+- (id)characteristicNameFromType:(id)type;
+- (id)characteristicTypeFromName:(id)name;
+- (id)characteristicValueUnit:(id)unit;
+- (id)descriptionForCharacteristicType:(id)type;
+- (id)descriptionForServiceType:(id)type;
 - (id)disallowedAssistantCharacteristicTypesByServiceType;
-- (id)getAliasedCharacteristicTypes:(id)a3;
-- (id)getAliasedServiceType:(id)a3;
-- (id)getCharacteristicTypeAlias:(id)a3;
-- (id)getServiceTypeAlias:(id)a3;
-- (id)getStatusCharacteristicTypes:(id)a3 forServiceType:(id)a4;
-- (id)mapCharacteristicValueType:(id)a3;
-- (id)mapFromAssistantCharacteristicValue:(id)a3 name:(id)a4;
-- (id)mapFromAssistantServiceName:(id)a3;
-- (id)mapFromAssistantUnitName:(id)a3;
-- (id)mapReadCharacteristicFromAssistantName:(id)a3;
-- (id)mapToAssistantCharacteristicName:(id)a3;
-- (id)mapToAssistantCharacteristicValue:(id)a3 name:(id)a4 getActionType:(BOOL)a5;
-- (id)mapToAssistantServiceName:(id)a3;
-- (id)mapToAssistantServiceSubtypeName:(id)a3;
-- (id)mapToAssistantServiceSubtypeName:(id)a3 accessoryCategory:(id)a4;
-- (id)mapToAssistantUnitName:(id)a3;
-- (id)mapWriteCharacteristicFromAssistantName:(id)a3;
-- (id)parseAndSetRawPlist:(id)a3;
-- (id)parseCharacteristicArray:(id)a3;
-- (id)parseHMAccessoryFirmwareUpdatePolicyCharacteristics:(id)a3;
-- (id)parseHMAccessoryFirmwareUpdatePolicyCriteria:(id)a3;
-- (id)parseHMAccessoryFirmwareUpdatePolicyServices:(id)a3;
-- (id)parseMetadataTupleSetFromPlist:(id)a3;
-- (id)parseServiceArray:(id)a3;
-- (id)serviceNameFromType:(id)a3;
-- (id)serviceSubtypeForValue:(id)a3 forServiceType:(id)a4;
-- (id)serviceTypeFromName:(id)a3;
-- (id)stagingPolicyConfigurationForService:(id)a3 category:(id)a4;
+- (id)getAliasedCharacteristicTypes:(id)types;
+- (id)getAliasedServiceType:(id)type;
+- (id)getCharacteristicTypeAlias:(id)alias;
+- (id)getServiceTypeAlias:(id)alias;
+- (id)getStatusCharacteristicTypes:(id)types forServiceType:(id)type;
+- (id)mapCharacteristicValueType:(id)type;
+- (id)mapFromAssistantCharacteristicValue:(id)value name:(id)name;
+- (id)mapFromAssistantServiceName:(id)name;
+- (id)mapFromAssistantUnitName:(id)name;
+- (id)mapReadCharacteristicFromAssistantName:(id)name;
+- (id)mapToAssistantCharacteristicName:(id)name;
+- (id)mapToAssistantCharacteristicValue:(id)value name:(id)name getActionType:(BOOL)type;
+- (id)mapToAssistantServiceName:(id)name;
+- (id)mapToAssistantServiceSubtypeName:(id)name;
+- (id)mapToAssistantServiceSubtypeName:(id)name accessoryCategory:(id)category;
+- (id)mapToAssistantUnitName:(id)name;
+- (id)mapWriteCharacteristicFromAssistantName:(id)name;
+- (id)parseAndSetRawPlist:(id)plist;
+- (id)parseCharacteristicArray:(id)array;
+- (id)parseHMAccessoryFirmwareUpdatePolicyCharacteristics:(id)characteristics;
+- (id)parseHMAccessoryFirmwareUpdatePolicyCriteria:(id)criteria;
+- (id)parseHMAccessoryFirmwareUpdatePolicyServices:(id)services;
+- (id)parseMetadataTupleSetFromPlist:(id)plist;
+- (id)parseServiceArray:(id)array;
+- (id)serviceNameFromType:(id)type;
+- (id)serviceSubtypeForValue:(id)value forServiceType:(id)type;
+- (id)serviceTypeFromName:(id)name;
+- (id)stagingPolicyConfigurationForService:(id)service category:(id)category;
 - (id)statusHAPCharacteristicTypesForServiceType;
-- (id)validateAssociatedServiceType:(id)a3 forService:(id)a4;
-- (id)xpcData:(BOOL)a3;
-- (void)parseAndSetAllowableSecuringWrites:(id)a3;
-- (void)parseAndSetHMAccessoryFirmwareUpdatePolicies:(id)a3;
-- (void)parseAndSetHMCategories:(id)a3;
-- (void)parseAndSetWakeOnOperationsFilter:(id)a3;
+- (id)validateAssociatedServiceType:(id)type forService:(id)service;
+- (id)xpcData:(BOOL)data;
+- (void)parseAndSetAllowableSecuringWrites:(id)writes;
+- (void)parseAndSetHMAccessoryFirmwareUpdatePolicies:(id)policies;
+- (void)parseAndSetHMCategories:(id)categories;
+- (void)parseAndSetWakeOnOperationsFilter:(id)filter;
 @end
 
 @implementation HMDHAPMetadata
@@ -275,28 +275,28 @@ void __47__HMDHAPMetadata_aliasedHAPCharacteristicTypes__block_invoke()
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)checkTupleExistsInSet:(id)a3 forChrType:(id)a4 svcType:(id)a5
+- (BOOL)checkTupleExistsInSet:(id)set forChrType:(id)type svcType:(id)svcType
 {
   v7 = MEMORY[0x277CFEBB0];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[v7 alloc] initWithCharacteristicType:v9 serviceType:v8];
+  svcTypeCopy = svcType;
+  typeCopy = type;
+  setCopy = set;
+  v11 = [[v7 alloc] initWithCharacteristicType:typeCopy serviceType:svcTypeCopy];
 
-  LOBYTE(v9) = [v10 containsObject:v11];
-  return v9;
+  LOBYTE(typeCopy) = [setCopy containsObject:v11];
+  return typeCopy;
 }
 
-- (BOOL)parseAndSetAssistantUnits:(id)a3
+- (BOOL)parseAndSetAssistantUnits:(id)units
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v4, "count")}];
+  unitsCopy = units;
+  v5 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(unitsCopy, "count")}];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = v4;
+  v6 = unitsCopy;
   v7 = [v6 countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v7)
   {
@@ -313,8 +313,8 @@ void __47__HMDHAPMetadata_aliasedHAPCharacteristicTypes__block_invoke()
 
         v11 = *(*(&v22 + 1) + 8 * i);
         v12 = [v6 objectForKeyedSubscript:{v11, v22}];
-        v13 = [(HMDHAPMetadata *)self hapMetadata];
-        v14 = [v13 isStandardHAPUnitName:v12];
+        hapMetadata = [(HMDHAPMetadata *)self hapMetadata];
+        v14 = [hapMetadata isStandardHAPUnitName:v12];
 
         if ((v14 & 1) == 0)
         {
@@ -359,17 +359,17 @@ LABEL_13:
   return v16;
 }
 
-- (BOOL)parseAndSetAssistantCharacteristics:(id)a3
+- (BOOL)parseAndSetAssistantCharacteristics:(id)characteristics
 {
   v66 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v3, "count")}];
-  v5 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v3, "count")}];
+  characteristicsCopy = characteristics;
+  v4 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(characteristicsCopy, "count")}];
+  v5 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(characteristicsCopy, "count")}];
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v6 = v3;
+  v6 = characteristicsCopy;
   v50 = [v6 countByEnumeratingWithState:&v55 objects:v65 count:16];
   if (!v50)
   {
@@ -408,8 +408,8 @@ LABEL_13:
         v13 = v11;
         v14 = v13;
 LABEL_9:
-        v16 = [(HMDHAPMetadata *)self hapMetadata];
-        v17 = [v16 isStandardHAPCharacteristicName:v13];
+        hapMetadata = [(HMDHAPMetadata *)self hapMetadata];
+        v17 = [hapMetadata isStandardHAPCharacteristicName:v13];
 
         if (v17)
         {
@@ -420,8 +420,8 @@ LABEL_9:
           }
 
 LABEL_11:
-          v19 = [(HMDHAPMetadata *)self hapMetadata];
-          v20 = [v19 isStandardHAPCharacteristicName:v14];
+          hapMetadata2 = [(HMDHAPMetadata *)self hapMetadata];
+          v20 = [hapMetadata2 isStandardHAPCharacteristicName:v14];
 
           if (v20)
           {
@@ -499,15 +499,15 @@ LABEL_12:
         [v47 setObject:v23 forKeyedSubscript:v9];
         if ((v18 & 1) == 0)
         {
-          v27 = [(HMDHAPMetadata *)self hapMetadata];
-          v28 = [v27 characteristicTypeFromUTI:v13];
+          hapMetadata3 = [(HMDHAPMetadata *)self hapMetadata];
+          v28 = [hapMetadata3 characteristicTypeFromUTI:v13];
           [v21 setObject:v9 forKey:v28];
         }
 
         if (v14)
         {
-          v29 = [(HMDHAPMetadata *)self hapMetadata];
-          v30 = [v29 characteristicTypeFromUTI:v14];
+          hapMetadata4 = [(HMDHAPMetadata *)self hapMetadata];
+          v30 = [hapMetadata4 characteristicTypeFromUTI:v14];
           [v21 setObject:v9 forKey:v30];
         }
       }
@@ -564,17 +564,17 @@ LABEL_36:
   return v22;
 }
 
-- (BOOL)parseAndSetAssistantServices:(id)a3
+- (BOOL)parseAndSetAssistantServices:(id)services
 {
   v36 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v3, "count")}];
-  v5 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v3, "count")}];
+  servicesCopy = services;
+  v4 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(servicesCopy, "count")}];
+  v5 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(servicesCopy, "count")}];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v6 = v3;
+  v6 = servicesCopy;
   v7 = [v6 countByEnumeratingWithState:&v25 objects:v35 count:16];
   if (v7)
   {
@@ -592,8 +592,8 @@ LABEL_36:
 
         v12 = *(*(&v25 + 1) + 8 * i);
         v13 = [v6 objectForKeyedSubscript:v12];
-        v14 = [(HMDHAPMetadata *)self hapMetadata];
-        v15 = [v14 serviceTypeFromUTI:v13];
+        hapMetadata = [(HMDHAPMetadata *)self hapMetadata];
+        v15 = [hapMetadata serviceTypeFromUTI:v13];
 
         if (!v15)
         {
@@ -645,16 +645,16 @@ LABEL_13:
   return v18;
 }
 
-- (id)parseCharacteristicArray:(id)a3
+- (id)parseCharacteristicArray:(id)array
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v4, "count")}];
+  arrayCopy = array;
+  v5 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(arrayCopy, "count")}];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = v4;
+  v6 = arrayCopy;
   v7 = [v6 countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v7)
   {
@@ -670,8 +670,8 @@ LABEL_13:
         }
 
         v11 = *(*(&v20 + 1) + 8 * i);
-        v12 = [(HMDHAPMetadata *)self hapMetadata];
-        v13 = [v12 characteristicTypeFromUTI:v11];
+        hapMetadata = [(HMDHAPMetadata *)self hapMetadata];
+        v13 = [hapMetadata characteristicTypeFromUTI:v11];
 
         if (!v13)
         {
@@ -713,16 +713,16 @@ LABEL_13:
   return v14;
 }
 
-- (id)parseServiceArray:(id)a3
+- (id)parseServiceArray:(id)array
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v4, "count")}];
+  arrayCopy = array;
+  v5 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(arrayCopy, "count")}];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = v4;
+  v6 = arrayCopy;
   v7 = [v6 countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v7)
   {
@@ -738,8 +738,8 @@ LABEL_13:
         }
 
         v11 = *(*(&v20 + 1) + 8 * i);
-        v12 = [(HMDHAPMetadata *)self hapMetadata];
-        v13 = [v12 serviceTypeFromUTI:v11];
+        hapMetadata = [(HMDHAPMetadata *)self hapMetadata];
+        v13 = [hapMetadata serviceTypeFromUTI:v11];
 
         if (!v13)
         {
@@ -781,16 +781,16 @@ LABEL_13:
   return v14;
 }
 
-- (id)parseHMAccessoryFirmwareUpdatePolicyCharacteristics:(id)a3
+- (id)parseHMAccessoryFirmwareUpdatePolicyCharacteristics:(id)characteristics
 {
   v59 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  characteristicsCopy = characteristics;
+  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(characteristicsCopy, "count")}];
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v6 = v4;
+  v6 = characteristicsCopy;
   v48 = [v6 countByEnumeratingWithState:&v50 objects:v58 count:16];
   if (v48)
   {
@@ -813,7 +813,7 @@ LABEL_3:
       if (!v9)
       {
         v28 = objc_autoreleasePoolPush();
-        v29 = self;
+        selfCopy = self;
         v30 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
         {
@@ -842,7 +842,7 @@ LABEL_3:
       if (!v13 || ![v13 count])
       {
         v24 = objc_autoreleasePoolPush();
-        v25 = self;
+        selfCopy2 = self;
         v26 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
         {
@@ -859,14 +859,14 @@ LABEL_3:
       }
 
       v15 = [v12 hmf_numberForKey:v45];
-      v16 = [(HMDHAPMetadata *)self hapMetadata];
-      v17 = [v16 hapCharacteristicFromType:v10];
-      v18 = [v17 format];
+      hapMetadata = [(HMDHAPMetadata *)self hapMetadata];
+      v17 = [hapMetadata hapCharacteristicFromType:v10];
+      format = [v17 format];
 
-      if (!v18)
+      if (!format)
       {
         v36 = objc_autoreleasePoolPush();
-        v37 = self;
+        selfCopy3 = self;
         v38 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
         {
@@ -883,8 +883,8 @@ LABEL_3:
         goto LABEL_33;
       }
 
-      v19 = self;
-      v20 = [[HMDAccessoryFirmwareUpdatePolicyCharacteristicConfiguration alloc] initWithType:v10 format:v18 values:v14 settlingTime:v15];
+      selfCopy4 = self;
+      v20 = [[HMDAccessoryFirmwareUpdatePolicyCharacteristicConfiguration alloc] initWithType:v10 format:format values:v14 settlingTime:v15];
       if (v20)
       {
         [v5 addObject:v20];
@@ -893,7 +893,7 @@ LABEL_3:
       else
       {
         context = objc_autoreleasePoolPush();
-        v21 = v19;
+        v21 = selfCopy4;
         v22 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
         {
@@ -916,7 +916,7 @@ LABEL_3:
       }
 
       ++v7;
-      self = v19;
+      self = selfCopy4;
       if (v48 == v7)
       {
         v48 = [v46 countByEnumeratingWithState:&v50 objects:v58 count:16];
@@ -930,7 +930,7 @@ LABEL_3:
     }
 
     v32 = objc_autoreleasePoolPush();
-    v33 = self;
+    selfCopy5 = self;
     v34 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
     {
@@ -960,26 +960,26 @@ LABEL_34:
   return v23;
 }
 
-- (id)parseHMAccessoryFirmwareUpdatePolicyCriteria:(id)a3
+- (id)parseHMAccessoryFirmwareUpdatePolicyCriteria:(id)criteria
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  criteriaCopy = criteria;
   v5 = objc_alloc_init(HMDAccessoryFirmwareUpdatePolicyCriteria);
-  -[HMDAccessoryFirmwareUpdatePolicyCriteria setAnyUserAtHome:](v5, "setAnyUserAtHome:", [v4 hmf_BOOLForKey:*MEMORY[0x277CFE788]]);
-  -[HMDAccessoryFirmwareUpdatePolicyCriteria setNoUserAtHome:](v5, "setNoUserAtHome:", [v4 hmf_BOOLForKey:*MEMORY[0x277CFE7B8]]);
-  -[HMDAccessoryFirmwareUpdatePolicyCriteria setCheckForScheduledAutomation:](v5, "setCheckForScheduledAutomation:", [v4 hmf_BOOLForKey:*MEMORY[0x277CFE7A8]]);
-  v6 = [v4 hmf_dictionaryForKey:*MEMORY[0x277CFE7A0]];
+  -[HMDAccessoryFirmwareUpdatePolicyCriteria setAnyUserAtHome:](v5, "setAnyUserAtHome:", [criteriaCopy hmf_BOOLForKey:*MEMORY[0x277CFE788]]);
+  -[HMDAccessoryFirmwareUpdatePolicyCriteria setNoUserAtHome:](v5, "setNoUserAtHome:", [criteriaCopy hmf_BOOLForKey:*MEMORY[0x277CFE7B8]]);
+  -[HMDAccessoryFirmwareUpdatePolicyCriteria setCheckForScheduledAutomation:](v5, "setCheckForScheduledAutomation:", [criteriaCopy hmf_BOOLForKey:*MEMORY[0x277CFE7A8]]);
+  v6 = [criteriaCopy hmf_dictionaryForKey:*MEMORY[0x277CFE7A0]];
   v7 = [(HMDHAPMetadata *)self parseHMAccessoryFirmwareUpdatePolicyCharacteristics:v6];
   [(HMDAccessoryFirmwareUpdatePolicyCriteria *)v5 setCharacteristicConfigurations:v7];
 
   if (v6)
   {
-    v8 = [(HMDAccessoryFirmwareUpdatePolicyCriteria *)v5 characteristicConfigurations];
+    characteristicConfigurations = [(HMDAccessoryFirmwareUpdatePolicyCriteria *)v5 characteristicConfigurations];
 
-    if (!v8)
+    if (!characteristicConfigurations)
     {
       v22 = objc_autoreleasePoolPush();
-      v23 = self;
+      selfCopy = self;
       v24 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
@@ -994,7 +994,7 @@ LABEL_34:
     }
   }
 
-  v9 = [v4 hmf_dictionaryForKey:*MEMORY[0x277CFE7D0]];
+  v9 = [criteriaCopy hmf_dictionaryForKey:*MEMORY[0x277CFE7D0]];
   v10 = v9;
   if (!v9)
   {
@@ -1019,7 +1019,7 @@ LABEL_8:
     }
 
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy3 = self;
     v19 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -1034,7 +1034,7 @@ LABEL_8:
   }
 
   v17 = objc_autoreleasePoolPush();
-  v18 = self;
+  selfCopy3 = self;
   v19 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
   {
@@ -1058,22 +1058,22 @@ LABEL_19:
   return v16;
 }
 
-- (id)parseHMAccessoryFirmwareUpdatePolicyServices:(id)a3
+- (id)parseHMAccessoryFirmwareUpdatePolicyServices:(id)services
 {
   v95 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  servicesCopy = services;
+  v5 = servicesCopy;
+  if (!servicesCopy)
   {
-    v37 = [MEMORY[0x277CBEAC0] dictionary];
+    dictionary = [MEMORY[0x277CBEAC0] dictionary];
     goto LABEL_48;
   }
 
-  v75 = self;
-  v6 = [v4 hmf_dictionaryForKey:*MEMORY[0x277CFE7C0]];
+  selfCopy = self;
+  v6 = [servicesCopy hmf_dictionaryForKey:*MEMORY[0x277CFE7C0]];
   v7 = 0x277CBE000uLL;
   v8 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v5, "count")}];
-  v76 = [MEMORY[0x277CBEAC0] dictionary];
+  dictionary2 = [MEMORY[0x277CBEAC0] dictionary];
   v83 = 0u;
   v84 = 0u;
   v85 = 0u;
@@ -1090,7 +1090,7 @@ LABEL_19:
   v68 = v9;
 LABEL_4:
   v11 = 0;
-  v12 = v75;
+  v12 = selfCopy;
 LABEL_5:
   if (*v84 != v67)
   {
@@ -1115,7 +1115,7 @@ LABEL_5:
     }
 
     objc_autoreleasePoolPop(v51);
-    v37 = v76;
+    dictionary = dictionary2;
     goto LABEL_46;
   }
 
@@ -1138,13 +1138,13 @@ LABEL_5:
         [v18 setValue:v35 forKey:v19];
 
         v9 = v68;
-        v12 = v75;
+        v12 = selfCopy;
         goto LABEL_32;
       }
 
       v59 = v19;
       v60 = objc_autoreleasePoolPush();
-      v61 = v75;
+      v61 = selfCopy;
       v62 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v62, OS_LOG_TYPE_ERROR))
       {
@@ -1159,7 +1159,7 @@ LABEL_5:
       }
 
       objc_autoreleasePoolPop(v60);
-      v37 = v76;
+      dictionary = dictionary2;
 
       v19 = v59;
       v48 = v70;
@@ -1232,7 +1232,7 @@ LABEL_12:
         }
 
         objc_autoreleasePoolPop(v44);
-        v37 = v76;
+        dictionary = dictionary2;
 
 LABEL_42:
         v19 = v74;
@@ -1272,11 +1272,11 @@ LABEL_42:
         }
 
         objc_autoreleasePoolPop(v30);
-        v71 = v76;
+        v71 = dictionary2;
         v15 = v29;
         v18 = v73;
         v19 = v74;
-        v12 = v75;
+        v12 = selfCopy;
       }
 
       if (!v27)
@@ -1284,7 +1284,7 @@ LABEL_42:
         v48 = v19;
         v8 = v64;
         v5 = v65;
-        v37 = v71;
+        dictionary = v71;
         goto LABEL_44;
       }
 
@@ -1314,7 +1314,7 @@ LABEL_32:
           {
 LABEL_34:
 
-            v37 = [v8 copy];
+            dictionary = [v8 copy];
             goto LABEL_47;
           }
 
@@ -1339,7 +1339,7 @@ LABEL_34:
     }
 
     objc_autoreleasePoolPop(v38);
-    v37 = v76;
+    dictionary = dictionary2;
     goto LABEL_42;
   }
 
@@ -1357,7 +1357,7 @@ LABEL_34:
   }
 
   objc_autoreleasePoolPop(v55);
-  v37 = v76;
+  dictionary = dictionary2;
 LABEL_45:
 
 LABEL_46:
@@ -1368,17 +1368,17 @@ LABEL_48:
 
   v49 = *MEMORY[0x277D85DE8];
 
-  return v37;
+  return dictionary;
 }
 
-- (void)parseAndSetHMAccessoryFirmwareUpdatePolicies:(id)a3
+- (void)parseAndSetHMAccessoryFirmwareUpdatePolicies:(id)policies
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  policiesCopy = policies;
+  v5 = policiesCopy;
+  if (policiesCopy)
   {
-    v6 = [v4 hmf_dictionaryForKey:*MEMORY[0x277CFE7E0]];
+    v6 = [policiesCopy hmf_dictionaryForKey:*MEMORY[0x277CFE7E0]];
     v7 = [(HMDHAPMetadata *)self parseHMAccessoryFirmwareUpdatePolicyServices:v6];
     [(HMDHAPMetadata *)self setFirmwareUpdateStagingPolicies:v7];
 
@@ -1390,7 +1390,7 @@ LABEL_48:
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -1406,17 +1406,17 @@ LABEL_48:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)parseAndSetHMCategories:(id)a3
+- (void)parseAndSetHMCategories:(id)categories
 {
-  v25 = self;
+  selfCopy = self;
   v37 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v27 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v3, "count")}];
+  categoriesCopy = categories;
+  v27 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(categoriesCopy, "count")}];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v4 = v3;
+  v4 = categoriesCopy;
   v5 = [v4 countByEnumeratingWithState:&v30 objects:v36 count:16];
   if (v5)
   {
@@ -1436,7 +1436,7 @@ LABEL_48:
 
         v10 = *(*(&v30 + 1) + 8 * i);
         v11 = v4;
-        v12 = [v4 hmf_dictionaryForKey:{v10, v25}];
+        v12 = [v4 hmf_dictionaryForKey:{v10, selfCopy}];
         v13 = [v12 hmf_numberForKey:v28];
         v14 = [v12 hmf_stringForKey:v7];
         v15 = [v12 hmf_stringForKey:v8];
@@ -1490,19 +1490,19 @@ LABEL_48:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)parseAndSetWakeOnOperationsFilter:(id)a3
+- (void)parseAndSetWakeOnOperationsFilter:(id)filter
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  filterCopy = filter;
+  if (filterCopy)
   {
     v21 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v19 = v4;
-    obj = v4;
+    v19 = filterCopy;
+    obj = filterCopy;
     v22 = [obj countByEnumeratingWithState:&v28 objects:v33 count:16];
     if (v22)
     {
@@ -1562,22 +1562,22 @@ LABEL_48:
     v17 = [v21 copy];
     [(HMDHAPMetadata *)self setHmWakeOnOperationsFilter:v17];
 
-    v4 = v19;
+    filterCopy = v19;
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)parseAndSetAllowableSecuringWrites:(id)a3
+- (void)parseAndSetAllowableSecuringWrites:(id)writes
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v4, "count")}];
+  writesCopy = writes;
+  v5 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(writesCopy, "count")}];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v6 = v4;
+  v6 = writesCopy;
   v7 = [v6 countByEnumeratingWithState:&v31 objects:v39 count:16];
   if (v7)
   {
@@ -1597,8 +1597,8 @@ LABEL_48:
         }
 
         v12 = *(*(&v31 + 1) + 8 * v11);
-        v13 = [(HMDHAPMetadata *)self hapMetadata];
-        v14 = [v13 characteristicTypeFromUTI:v12];
+        hapMetadata = [(HMDHAPMetadata *)self hapMetadata];
+        v14 = [hapMetadata characteristicTypeFromUTI:v12];
 
         if (v14)
         {
@@ -1614,7 +1614,7 @@ LABEL_48:
         {
           v17 = v10;
           v18 = v6;
-          v19 = self;
+          selfCopy = self;
           v20 = v5;
           v21 = objc_autoreleasePoolPush();
           v22 = HMFGetOSLogHandle();
@@ -1630,7 +1630,7 @@ LABEL_48:
 
           objc_autoreleasePoolPop(v21);
           v5 = v20;
-          self = v19;
+          self = selfCopy;
           v6 = v18;
           v10 = v17;
           v9 = v30;
@@ -1667,12 +1667,12 @@ LABEL_48:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (id)parseMetadataTupleSetFromPlist:(id)a3
+- (id)parseMetadataTupleSetFromPlist:(id)plist
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDHAPMetadata *)self hapMetadata];
-  v6 = [v5 parseCharacteristicServiceTuples:v4];
+  plistCopy = plist;
+  hapMetadata = [(HMDHAPMetadata *)self hapMetadata];
+  v6 = [hapMetadata parseCharacteristicServiceTuples:plistCopy];
 
   if (v6)
   {
@@ -1689,7 +1689,7 @@ LABEL_48:
       v13 = 138543618;
       v14 = v10;
       v15 = 2112;
-      v16 = v4;
+      v16 = plistCopy;
       _os_log_impl(&dword_2531F8000, v9, OS_LOG_TYPE_ERROR, "%{public}@Failed to parse characteristic/service tuples: %@", &v13, 0x16u);
     }
 
@@ -1701,11 +1701,11 @@ LABEL_48:
   return v6;
 }
 
-- (BOOL)parseAndSetAssistantMetadataWithAssistantPlist:(id)a3
+- (BOOL)parseAndSetAssistantMetadataWithAssistantPlist:(id)plist
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 hmf_dictionaryForKey:*MEMORY[0x277CFEDC8]];
+  plistCopy = plist;
+  v5 = [plistCopy hmf_dictionaryForKey:*MEMORY[0x277CFEDC8]];
   v6 = [(HMDHAPMetadata *)self parseAndSetAssistantServices:v5];
 
   if (!v6)
@@ -1727,7 +1727,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v7 = [v4 hmf_dictionaryForKey:*MEMORY[0x277CFED40]];
+  v7 = [plistCopy hmf_dictionaryForKey:*MEMORY[0x277CFED40]];
   v8 = [(HMDHAPMetadata *)self parseAndSetAssistantCharacteristics:v7];
 
   if (!v8)
@@ -1746,7 +1746,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v9 = [v4 hmf_dictionaryForKey:*MEMORY[0x277CFEDE0]];
+  v9 = [plistCopy hmf_dictionaryForKey:*MEMORY[0x277CFEDE0]];
   v10 = [(HMDHAPMetadata *)self parseAndSetAssistantUnits:v9];
 
   if (!v10)
@@ -1776,27 +1776,27 @@ LABEL_13:
   return v11;
 }
 
-- (BOOL)parseAndSetHMMetadataWithHMPlist:(id)a3
+- (BOOL)parseAndSetHMMetadataWithHMPlist:(id)plist
 {
-  v4 = a3;
-  v5 = [v4 hmf_dictionaryForKey:*MEMORY[0x277CFEDB8]];
+  plistCopy = plist;
+  v5 = [plistCopy hmf_dictionaryForKey:*MEMORY[0x277CFEDB8]];
   v6 = [(HMDHAPMetadata *)self parseMetadataTupleSetFromPlist:v5];
   [(HMDHAPMetadata *)self setHmRequiresDeviceUnlockTuples:v6];
 
-  v7 = [(HMDHAPMetadata *)self hmRequiresDeviceUnlockTuples];
+  hmRequiresDeviceUnlockTuples = [(HMDHAPMetadata *)self hmRequiresDeviceUnlockTuples];
 
-  if (v7)
+  if (hmRequiresDeviceUnlockTuples)
   {
-    v8 = [v4 hmf_dictionaryForKey:*MEMORY[0x277CFED20]];
+    v8 = [plistCopy hmf_dictionaryForKey:*MEMORY[0x277CFED20]];
     [(HMDHAPMetadata *)self parseAndSetAllowableSecuringWrites:v8];
 
-    v9 = [v4 hmf_dictionaryForKey:*MEMORY[0x277CFEDF8]];
+    v9 = [plistCopy hmf_dictionaryForKey:*MEMORY[0x277CFEDF8]];
     [(HMDHAPMetadata *)self parseAndSetWakeOnOperationsFilter:v9];
 
-    v10 = [v4 hmf_dictionaryForKey:*MEMORY[0x277CFED38]];
+    v10 = [plistCopy hmf_dictionaryForKey:*MEMORY[0x277CFED38]];
     [(HMDHAPMetadata *)self parseAndSetHMCategories:v10];
 
-    v11 = [v4 hmf_dictionaryForKey:*MEMORY[0x277CFED60]];
+    v11 = [plistCopy hmf_dictionaryForKey:*MEMORY[0x277CFED60]];
     v12 = *MEMORY[0x277CFEDC8];
     v13 = [v11 hmf_arrayForKey:*MEMORY[0x277CFEDC8]];
     v14 = [(HMDHAPMetadata *)self parseServiceArray:v13];
@@ -1807,7 +1807,7 @@ LABEL_13:
     v17 = [(HMDHAPMetadata *)self parseCharacteristicArray:v16];
     [(HMDHAPMetadata *)self setHmBlacklistedCharacteristics:v17];
 
-    v18 = [v4 hmf_dictionaryForKey:*MEMORY[0x277CFED58]];
+    v18 = [plistCopy hmf_dictionaryForKey:*MEMORY[0x277CFED58]];
 
     v19 = [v18 hmf_arrayForKey:v12];
     v20 = [(HMDHAPMetadata *)self parseServiceArray:v19];
@@ -1817,15 +1817,15 @@ LABEL_13:
     v22 = [(HMDHAPMetadata *)self parseCharacteristicArray:v21];
     [(HMDHAPMetadata *)self setHmBlacklistedCharacteristicsFromApp:v22];
 
-    v23 = [(HMDHAPMetadata *)self hmBlacklistedServices];
-    if (!v23)
+    hmBlacklistedServices = [(HMDHAPMetadata *)self hmBlacklistedServices];
+    if (!hmBlacklistedServices)
     {
       goto LABEL_11;
     }
 
-    v24 = v23;
-    v25 = [(HMDHAPMetadata *)self hmBlacklistedCharacteristics];
-    if (!v25)
+    v24 = hmBlacklistedServices;
+    hmBlacklistedCharacteristics = [(HMDHAPMetadata *)self hmBlacklistedCharacteristics];
+    if (!hmBlacklistedCharacteristics)
     {
       v40 = 0;
 LABEL_20:
@@ -1833,9 +1833,9 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    v26 = v25;
-    v27 = [(HMDHAPMetadata *)self hmBlacklistedServicesFromApp];
-    if (!v27)
+    v26 = hmBlacklistedCharacteristics;
+    hmBlacklistedServicesFromApp = [(HMDHAPMetadata *)self hmBlacklistedServicesFromApp];
+    if (!hmBlacklistedServicesFromApp)
     {
       v40 = 0;
 LABEL_19:
@@ -1843,10 +1843,10 @@ LABEL_19:
       goto LABEL_20;
     }
 
-    v28 = v27;
-    v29 = [(HMDHAPMetadata *)self hmBlacklistedCharacteristicsFromApp];
+    v28 = hmBlacklistedServicesFromApp;
+    hmBlacklistedCharacteristicsFromApp = [(HMDHAPMetadata *)self hmBlacklistedCharacteristicsFromApp];
 
-    if (!v29)
+    if (!hmBlacklistedCharacteristicsFromApp)
     {
 LABEL_11:
       v40 = 0;
@@ -1855,7 +1855,7 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    v24 = [v4 hmf_dictionaryForKey:*MEMORY[0x277CFED90]];
+    v24 = [plistCopy hmf_dictionaryForKey:*MEMORY[0x277CFED90]];
     v26 = [v24 hmf_dictionaryForKey:*MEMORY[0x277CFED88]];
     v30 = [v24 hmf_dictionaryForKey:*MEMORY[0x277CFED30]];
     v31 = [v24 hmf_dictionaryForKey:*MEMORY[0x277CFED48]];
@@ -1868,25 +1868,25 @@ LABEL_21:
     v34 = [(HMDHAPMetadata *)self parseMetadataTupleSetFromPlist:v31];
     [(HMDHAPMetadata *)self setHmCoalesceNotificationsTuples:v34];
 
-    v35 = [(HMDHAPMetadata *)self hmNotificationAutoEnabledTuples];
-    if (v35)
+    hmNotificationAutoEnabledTuples = [(HMDHAPMetadata *)self hmNotificationAutoEnabledTuples];
+    if (hmNotificationAutoEnabledTuples)
     {
-      v36 = v35;
-      v37 = [(HMDHAPMetadata *)self hmBulletinBoardEnabledTuples];
-      if (v37)
+      v36 = hmNotificationAutoEnabledTuples;
+      hmBulletinBoardEnabledTuples = [(HMDHAPMetadata *)self hmBulletinBoardEnabledTuples];
+      if (hmBulletinBoardEnabledTuples)
       {
-        v38 = v37;
+        v38 = hmBulletinBoardEnabledTuples;
         v42 = v30;
-        v39 = [(HMDHAPMetadata *)self hmCoalesceNotificationsTuples];
+        hmCoalesceNotificationsTuples = [(HMDHAPMetadata *)self hmCoalesceNotificationsTuples];
 
-        if (!v39)
+        if (!hmCoalesceNotificationsTuples)
         {
           v40 = 0;
           v30 = v42;
           goto LABEL_18;
         }
 
-        v36 = [v4 hmf_dictionaryForKey:*MEMORY[0x277CFE780]];
+        v36 = [plistCopy hmf_dictionaryForKey:*MEMORY[0x277CFE780]];
         [(HMDHAPMetadata *)self parseAndSetHMAccessoryFirmwareUpdatePolicies:v36];
         v40 = 1;
         v30 = v42;
@@ -1914,14 +1914,14 @@ LABEL_22:
   return v40;
 }
 
-- (id)parseAndSetRawPlist:(id)a3
+- (id)parseAndSetRawPlist:(id)plist
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  plistCopy = plist;
+  v5 = plistCopy;
+  if (plistCopy)
   {
-    v6 = [v4 hmf_dictionaryForKey:*MEMORY[0x277CFED18]];
+    v6 = [plistCopy hmf_dictionaryForKey:*MEMORY[0x277CFED18]];
     if ([(HMDHAPMetadata *)self parseAndSetHMMetadataWithHMPlist:v6])
     {
       v7 = [v5 hmf_dictionaryForKey:*MEMORY[0x277CFED28]];
@@ -1989,19 +1989,19 @@ LABEL_22:
   return v8;
 }
 
-- (id)autoApplyPolicyConfigurationForService:(id)a3 category:(id)a4
+- (id)autoApplyPolicyConfigurationForService:(id)service category:(id)category
 {
-  if (a3)
+  if (service)
   {
-    v6 = a4;
-    v7 = a3;
-    v8 = [(HMDHAPMetadata *)self firmwareUpdateAutoApplyPolicies];
-    v9 = [v8 valueForKey:v7];
+    categoryCopy = category;
+    serviceCopy = service;
+    firmwareUpdateAutoApplyPolicies = [(HMDHAPMetadata *)self firmwareUpdateAutoApplyPolicies];
+    v9 = [firmwareUpdateAutoApplyPolicies valueForKey:serviceCopy];
 
     v10 = *MEMORY[0x277CFE7B0];
-    if (v6)
+    if (categoryCopy)
     {
-      v11 = v6;
+      v11 = categoryCopy;
     }
 
     else
@@ -2020,19 +2020,19 @@ LABEL_22:
   return v12;
 }
 
-- (id)stagingPolicyConfigurationForService:(id)a3 category:(id)a4
+- (id)stagingPolicyConfigurationForService:(id)service category:(id)category
 {
-  if (a3)
+  if (service)
   {
-    v6 = a4;
-    v7 = a3;
-    v8 = [(HMDHAPMetadata *)self firmwareUpdateStagingPolicies];
-    v9 = [v8 valueForKey:v7];
+    categoryCopy = category;
+    serviceCopy = service;
+    firmwareUpdateStagingPolicies = [(HMDHAPMetadata *)self firmwareUpdateStagingPolicies];
+    v9 = [firmwareUpdateStagingPolicies valueForKey:serviceCopy];
 
     v10 = *MEMORY[0x277CFE7B0];
-    if (v6)
+    if (categoryCopy)
     {
-      v11 = v6;
+      v11 = categoryCopy;
     }
 
     else
@@ -2051,54 +2051,54 @@ LABEL_22:
   return v12;
 }
 
-- (BOOL)disallowsAssistantServiceType:(id)a3 characteristicType:(id)a4
+- (BOOL)disallowsAssistantServiceType:(id)type characteristicType:(id)characteristicType
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HMDHAPMetadata *)self disallowedAssistantCharacteristicTypesByServiceType];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  characteristicTypeCopy = characteristicType;
+  typeCopy = type;
+  disallowedAssistantCharacteristicTypesByServiceType = [(HMDHAPMetadata *)self disallowedAssistantCharacteristicTypesByServiceType];
+  v9 = [disallowedAssistantCharacteristicTypesByServiceType objectForKeyedSubscript:typeCopy];
 
-  LOBYTE(v7) = [v9 containsObject:v6];
-  return v7;
+  LOBYTE(typeCopy) = [v9 containsObject:characteristicTypeCopy];
+  return typeCopy;
 }
 
-- (id)mapToAssistantCharacteristicValue:(id)a3 name:(id)a4 getActionType:(BOOL)a5
+- (id)mapToAssistantCharacteristicValue:(id)value name:(id)name getActionType:(BOOL)type
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HMDHAPMetadata *)self assistantCharacteristics];
-  v11 = [v10 objectForKeyedSubscript:v9];
+  typeCopy = type;
+  valueCopy = value;
+  nameCopy = name;
+  assistantCharacteristics = [(HMDHAPMetadata *)self assistantCharacteristics];
+  v11 = [assistantCharacteristics objectForKeyedSubscript:nameCopy];
 
   if (v11)
   {
-    v12 = [v11 outValues];
-    v13 = [v12 count];
+    outValues = [v11 outValues];
+    v13 = [outValues count];
 
-    if (v13 && v5)
+    if (v13 && typeCopy)
     {
-      v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v8];
-      v15 = [v11 outValues];
-      v16 = [v15 objectForKeyedSubscript:v14];
+      valueCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", valueCopy];
+      outValues2 = [v11 outValues];
+      v16 = [outValues2 objectForKeyedSubscript:valueCopy];
       goto LABEL_16;
     }
 
-    v17 = [v11 values];
-    v18 = [v17 count];
+    values = [v11 values];
+    v18 = [values count];
 
     if (v18)
     {
-      v19 = [v11 values];
-      v14 = [v19 allKeysForObject:v8];
+      values2 = [v11 values];
+      valueCopy = [values2 allKeysForObject:valueCopy];
 
-      if (![v14 count])
+      if (![valueCopy count])
       {
         v16 = 0;
         goto LABEL_17;
       }
 
-      v15 = [v14 firstObject];
-      v20 = [MEMORY[0x277CCAC80] scannerWithString:v15];
+      outValues2 = [valueCopy firstObject];
+      v20 = [MEMORY[0x277CCAC80] scannerWithString:outValues2];
       v24 = 0;
       v25 = 0.0;
       v23 = 0;
@@ -2119,7 +2119,7 @@ LABEL_22:
 
       else
       {
-        v21 = v15;
+        v21 = outValues2;
       }
 
       v16 = v21;
@@ -2134,123 +2134,123 @@ LABEL_17:
     }
   }
 
-  v16 = v8;
+  v16 = valueCopy;
 LABEL_19:
 
   return v16;
 }
 
-- (id)mapFromAssistantCharacteristicValue:(id)a3 name:(id)a4
+- (id)mapFromAssistantCharacteristicValue:(id)value name:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDHAPMetadata *)self assistantCharacteristics];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  valueCopy = value;
+  nameCopy = name;
+  assistantCharacteristics = [(HMDHAPMetadata *)self assistantCharacteristics];
+  v9 = [assistantCharacteristics objectForKeyedSubscript:nameCopy];
 
   if (!v9)
   {
     goto LABEL_4;
   }
 
-  v10 = [v9 values];
-  v11 = [v10 count];
+  values = [v9 values];
+  v11 = [values count];
 
   if (!v11)
   {
     goto LABEL_4;
   }
 
-  v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v6];
-  v13 = [v9 values];
-  v14 = [v13 objectForKeyedSubscript:v12];
+  valueCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", valueCopy];
+  values2 = [v9 values];
+  v14 = [values2 objectForKeyedSubscript:valueCopy];
 
   if (!v14)
   {
 LABEL_4:
-    v14 = v6;
+    v14 = valueCopy;
   }
 
   return v14;
 }
 
-- (id)mapFromAssistantUnitName:(id)a3
+- (id)mapFromAssistantUnitName:(id)name
 {
-  v4 = a3;
-  v5 = [(HMDHAPMetadata *)self assistantUnits];
-  v6 = [v5 hmf_stringForKey:v4];
+  nameCopy = name;
+  assistantUnits = [(HMDHAPMetadata *)self assistantUnits];
+  v6 = [assistantUnits hmf_stringForKey:nameCopy];
 
   return v6;
 }
 
-- (id)mapToAssistantUnitName:(id)a3
+- (id)mapToAssistantUnitName:(id)name
 {
-  v4 = a3;
-  v5 = [(HMDHAPMetadata *)self assistantUnits];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  nameCopy = name;
+  assistantUnits = [(HMDHAPMetadata *)self assistantUnits];
+  v6 = [assistantUnits objectForKeyedSubscript:nameCopy];
 
   return v6;
 }
 
-- (id)mapCharacteristicValueType:(id)a3
+- (id)mapCharacteristicValueType:(id)type
 {
-  if (a3)
+  if (type)
   {
-    v4 = a3;
-    v5 = [(HMDHAPMetadata *)self assistantCharacteristics];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    typeCopy = type;
+    assistantCharacteristics = [(HMDHAPMetadata *)self assistantCharacteristics];
+    v6 = [assistantCharacteristics objectForKeyedSubscript:typeCopy];
 
-    v7 = [v6 format];
+    format = [v6 format];
   }
 
   else
   {
-    v7 = 0;
+    format = 0;
   }
 
-  return v7;
+  return format;
 }
 
-- (id)characteristicValueUnit:(id)a3
+- (id)characteristicValueUnit:(id)unit
 {
-  v4 = a3;
-  v5 = [(HMDHAPMetadata *)self hapMetadata];
-  v6 = [v5 characteristicValueUnitOfType:v4];
+  unitCopy = unit;
+  hapMetadata = [(HMDHAPMetadata *)self hapMetadata];
+  v6 = [hapMetadata characteristicValueUnitOfType:unitCopy];
 
   return v6;
 }
 
-- (id)getStatusCharacteristicTypes:(id)a3 forServiceType:(id)a4
+- (id)getStatusCharacteristicTypes:(id)types forServiceType:(id)type
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HMDHAPMetadata *)self statusHAPCharacteristicTypesForServiceType];
-  v9 = [v8 objectForKey:v6];
+  typeCopy = type;
+  typesCopy = types;
+  statusHAPCharacteristicTypesForServiceType = [(HMDHAPMetadata *)self statusHAPCharacteristicTypesForServiceType];
+  v9 = [statusHAPCharacteristicTypesForServiceType objectForKey:typeCopy];
 
-  v10 = [v9 objectForKey:v7];
+  v10 = [v9 objectForKey:typesCopy];
 
   return v10;
 }
 
-- (id)getCharacteristicTypeAlias:(id)a3
+- (id)getCharacteristicTypeAlias:(id)alias
 {
-  v4 = a3;
-  v5 = [(HMDHAPMetadata *)self aliasedHAPCharacteristicTypes];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  aliasCopy = alias;
+  aliasedHAPCharacteristicTypes = [(HMDHAPMetadata *)self aliasedHAPCharacteristicTypes];
+  v6 = [aliasedHAPCharacteristicTypes objectForKeyedSubscript:aliasCopy];
 
   return v6;
 }
 
-- (id)getAliasedCharacteristicTypes:(id)a3
+- (id)getAliasedCharacteristicTypes:(id)types
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDHAPMetadata *)self aliasedHAPCharacteristicTypes];
-  v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  typesCopy = types;
+  aliasedHAPCharacteristicTypes = [(HMDHAPMetadata *)self aliasedHAPCharacteristicTypes];
+  v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(aliasedHAPCharacteristicTypes, "count")}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = v5;
+  v7 = aliasedHAPCharacteristicTypes;
   v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
@@ -2267,7 +2267,7 @@ LABEL_4:
 
         v12 = *(*(&v17 + 1) + 8 * i);
         v13 = [v7 objectForKeyedSubscript:{v12, v17}];
-        v14 = [v13 isEqual:v4];
+        v14 = [v13 isEqual:typesCopy];
 
         if (v14)
         {
@@ -2286,19 +2286,19 @@ LABEL_4:
   return v6;
 }
 
-- (id)getServiceTypeAlias:(id)a3
+- (id)getServiceTypeAlias:(id)alias
 {
-  v4 = a3;
-  v5 = [(HMDHAPMetadata *)self aliasedHAPServiceTypes];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  aliasCopy = alias;
+  aliasedHAPServiceTypes = [(HMDHAPMetadata *)self aliasedHAPServiceTypes];
+  v6 = [aliasedHAPServiceTypes objectForKeyedSubscript:aliasCopy];
 
   return v6;
 }
 
-- (id)getAliasedServiceType:(id)a3
+- (id)getAliasedServiceType:(id)type
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  typeCopy = type;
   [(HMDHAPMetadata *)self aliasedHAPServiceTypes];
   v14 = 0u;
   v15 = 0u;
@@ -2319,7 +2319,7 @@ LABEL_4:
 
         v9 = *(*(&v14 + 1) + 8 * i);
         v10 = [v5 objectForKeyedSubscript:{v9, v14}];
-        v11 = [v10 isEqual:v4];
+        v11 = [v10 isEqual:typeCopy];
 
         if (v11)
         {
@@ -2345,53 +2345,53 @@ LABEL_11:
   return v6;
 }
 
-- (id)mapWriteCharacteristicFromAssistantName:(id)a3
+- (id)mapWriteCharacteristicFromAssistantName:(id)name
 {
-  v4 = a3;
-  v5 = [(HMDHAPMetadata *)self assistantCharacteristics];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  nameCopy = name;
+  assistantCharacteristics = [(HMDHAPMetadata *)self assistantCharacteristics];
+  v6 = [assistantCharacteristics objectForKeyedSubscript:nameCopy];
 
-  v7 = [(HMDHAPMetadata *)self hapMetadata];
-  v8 = [v6 writeHAPCharacteristicName];
-  v9 = [v7 characteristicTypeFromUTI:v8];
+  hapMetadata = [(HMDHAPMetadata *)self hapMetadata];
+  writeHAPCharacteristicName = [v6 writeHAPCharacteristicName];
+  v9 = [hapMetadata characteristicTypeFromUTI:writeHAPCharacteristicName];
 
   return v9;
 }
 
-- (id)mapReadCharacteristicFromAssistantName:(id)a3
+- (id)mapReadCharacteristicFromAssistantName:(id)name
 {
-  v4 = a3;
-  v5 = [(HMDHAPMetadata *)self assistantCharacteristics];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  nameCopy = name;
+  assistantCharacteristics = [(HMDHAPMetadata *)self assistantCharacteristics];
+  v6 = [assistantCharacteristics objectForKeyedSubscript:nameCopy];
 
-  v7 = [(HMDHAPMetadata *)self hapMetadata];
-  v8 = [v6 readHAPCharacteristicName];
-  v9 = [v7 characteristicTypeFromUTI:v8];
+  hapMetadata = [(HMDHAPMetadata *)self hapMetadata];
+  readHAPCharacteristicName = [v6 readHAPCharacteristicName];
+  v9 = [hapMetadata characteristicTypeFromUTI:readHAPCharacteristicName];
 
   return v9;
 }
 
-- (id)mapToAssistantCharacteristicName:(id)a3
+- (id)mapToAssistantCharacteristicName:(id)name
 {
-  v4 = a3;
-  if (v4)
+  nameCopy = name;
+  if (nameCopy)
   {
-    v5 = v4;
-    v6 = [(HMDHAPMetadata *)self aliasedHAPCharacteristicTypes];
+    v5 = nameCopy;
+    aliasedHAPCharacteristicTypes = [(HMDHAPMetadata *)self aliasedHAPCharacteristicTypes];
     if (([v5 isEqual:*MEMORY[0x277CFE6A8]] & 1) == 0 && (objc_msgSend(v5, "isEqual:", *MEMORY[0x277CFE6A0]) & 1) == 0)
     {
-      v7 = [v6 objectForKey:v5];
+      v7 = [aliasedHAPCharacteristicTypes objectForKey:v5];
 
       if (v7)
       {
-        v8 = [v6 objectForKey:v5];
+        v8 = [aliasedHAPCharacteristicTypes objectForKey:v5];
 
         v5 = v8;
       }
     }
 
-    v9 = [(HMDHAPMetadata *)self assistantChrHAPTypeNameMap];
-    v10 = [v9 objectForKeyedSubscript:v5];
+    assistantChrHAPTypeNameMap = [(HMDHAPMetadata *)self assistantChrHAPTypeNameMap];
+    v10 = [assistantChrHAPTypeNameMap objectForKeyedSubscript:v5];
   }
 
   else
@@ -2402,14 +2402,14 @@ LABEL_11:
   return v10;
 }
 
-- (id)mapToAssistantServiceSubtypeName:(id)a3 accessoryCategory:(id)a4
+- (id)mapToAssistantServiceSubtypeName:(id)name accessoryCategory:(id)category
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  nameCopy = name;
+  categoryCopy = category;
+  v7 = categoryCopy;
   if (mapToAssistantServiceSubtypeName_accessoryCategory__onceToken == -1)
   {
-    if (v6)
+    if (categoryCopy)
     {
       goto LABEL_3;
     }
@@ -2429,9 +2429,9 @@ LABEL_3:
   v8 = [mapToAssistantServiceSubtypeName_accessoryCategory__accessoryCategoryMap objectForKeyedSubscript:v7];
   v9 = v8;
   v10 = 0;
-  if (v5 && v8)
+  if (nameCopy && v8)
   {
-    v10 = [v8 objectForKeyedSubscript:v5];
+    v10 = [v8 objectForKeyedSubscript:nameCopy];
   }
 
 LABEL_9:
@@ -2503,16 +2503,16 @@ void __69__HMDHAPMetadata_mapToAssistantServiceSubtypeName_accessoryCategory___b
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)mapToAssistantServiceSubtypeName:(id)a3
+- (id)mapToAssistantServiceSubtypeName:(id)name
 {
   v3 = mapToAssistantServiceSubtypeName__onceToken;
-  v4 = a3;
+  nameCopy = name;
   if (v3 != -1)
   {
     dispatch_once(&mapToAssistantServiceSubtypeName__onceToken, &__block_literal_global_256);
   }
 
-  v5 = [mapToAssistantServiceSubtypeName__assistantServiceSubtypeNameMap objectForKey:v4];
+  v5 = [mapToAssistantServiceSubtypeName__assistantServiceSubtypeNameMap objectForKey:nameCopy];
 
   return v5;
 }
@@ -2561,20 +2561,20 @@ void __51__HMDHAPMetadata_mapToAssistantServiceSubtypeName___block_invoke()
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)mapFromAssistantServiceName:(id)a3
+- (id)mapFromAssistantServiceName:(id)name
 {
-  v4 = a3;
-  v5 = [(HMDHAPMetadata *)self assistantServiceNameHAPTypeMap];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  nameCopy = name;
+  assistantServiceNameHAPTypeMap = [(HMDHAPMetadata *)self assistantServiceNameHAPTypeMap];
+  v6 = [assistantServiceNameHAPTypeMap objectForKeyedSubscript:nameCopy];
 
   return v6;
 }
 
-- (id)mapToAssistantServiceName:(id)a3
+- (id)mapToAssistantServiceName:(id)name
 {
-  v4 = a3;
-  v5 = [(HMDHAPMetadata *)self aliasedHAPServiceTypes];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  nameCopy = name;
+  aliasedHAPServiceTypes = [(HMDHAPMetadata *)self aliasedHAPServiceTypes];
+  v6 = [aliasedHAPServiceTypes objectForKeyedSubscript:nameCopy];
   v7 = v6;
   if (v6)
   {
@@ -2583,44 +2583,44 @@ void __51__HMDHAPMetadata_mapToAssistantServiceSubtypeName___block_invoke()
 
   else
   {
-    v8 = v4;
+    v8 = nameCopy;
   }
 
   v9 = v8;
 
-  v10 = [(HMDHAPMetadata *)self assistantServiceHAPTypeNameMap];
-  v11 = [v10 objectForKeyedSubscript:v9];
+  assistantServiceHAPTypeNameMap = [(HMDHAPMetadata *)self assistantServiceHAPTypeNameMap];
+  v11 = [assistantServiceHAPTypeNameMap objectForKeyedSubscript:v9];
 
   return v11;
 }
 
-- (BOOL)supportsLocalization:(id)a3
+- (BOOL)supportsLocalization:(id)localization
 {
-  v4 = a3;
-  v5 = [(HMDHAPMetadata *)self assistantCharacteristics];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  localizationCopy = localization;
+  assistantCharacteristics = [(HMDHAPMetadata *)self assistantCharacteristics];
+  v6 = [assistantCharacteristics objectForKeyedSubscript:localizationCopy];
 
-  LOBYTE(v5) = [v6 supportsLocalization];
-  return v5;
+  LOBYTE(assistantCharacteristics) = [v6 supportsLocalization];
+  return assistantCharacteristics;
 }
 
-- (id)serviceSubtypeForValue:(id)a3 forServiceType:(id)a4
+- (id)serviceSubtypeForValue:(id)value forServiceType:(id)type
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  valueCopy = value;
+  typeCopy = type;
+  if (valueCopy)
   {
     if (serviceSubtypeForValue_forServiceType__onceToken != -1)
     {
       dispatch_once(&serviceSubtypeForValue_forServiceType__onceToken, &__block_literal_global_246);
     }
 
-    v7 = [serviceSubtypeForValue_forServiceType__subServiceTypeMap objectForKey:v6];
-    v8 = [v7 objectForKey:v5];
+    v7 = [serviceSubtypeForValue_forServiceType__subServiceTypeMap objectForKey:typeCopy];
+    v8 = [v7 objectForKey:valueCopy];
 
     if (!v8)
     {
-      v9 = [v6 isEqualToString:*MEMORY[0x277CFE910]];
+      v9 = [typeCopy isEqualToString:*MEMORY[0x277CFE910]];
       v10 = MEMORY[0x277CD0DA0];
       if (!v9)
       {
@@ -2663,41 +2663,41 @@ void __56__HMDHAPMetadata_serviceSubtypeForValue_forServiceType___block_invoke()
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)categoryTypeFromName:(id)a3
+- (id)categoryTypeFromName:(id)name
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(HMDHAPMetadata *)self hmAccessoryCategories];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
-  if (v6)
+  hmAccessoryCategories = [(HMDHAPMetadata *)self hmAccessoryCategories];
+  uuidStr = [hmAccessoryCategories countByEnumeratingWithState:&v14 objects:v18 count:16];
+  if (uuidStr)
   {
     v7 = *v15;
     while (2)
     {
-      for (i = 0; i != v6; i = i + 1)
+      for (i = 0; i != uuidStr; i = i + 1)
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(hmAccessoryCategories);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 name];
-        v11 = [v10 isEqualToString:v4];
+        name = [v9 name];
+        v11 = [name isEqualToString:nameCopy];
 
         if (v11)
         {
-          v6 = [v9 uuidStr];
+          uuidStr = [v9 uuidStr];
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
-      if (v6)
+      uuidStr = [hmAccessoryCategories countByEnumeratingWithState:&v14 objects:v18 count:16];
+      if (uuidStr)
       {
         continue;
       }
@@ -2710,21 +2710,21 @@ LABEL_11:
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return uuidStr;
 }
 
-- (id)categoryForType:(id)a3
+- (id)categoryForType:(id)type
 {
-  v4 = a3;
-  v5 = [(HMDHAPMetadata *)self hmAccessoryCategories];
-  v6 = [v5 allValues];
-  v7 = [v6 hmf_firstObjectWithValue:v4 forKeyPath:@"uuidStr"];
+  typeCopy = type;
+  hmAccessoryCategories = [(HMDHAPMetadata *)self hmAccessoryCategories];
+  allValues = [hmAccessoryCategories allValues];
+  v7 = [allValues hmf_firstObjectWithValue:typeCopy forKeyPath:@"uuidStr"];
 
   if (!v7)
   {
-    v8 = [(HMDHAPMetadata *)self audioAccessoryCategory];
-    v9 = [v8 uuidStr];
-    v10 = [v4 isEqual:v9];
+    audioAccessoryCategory = [(HMDHAPMetadata *)self audioAccessoryCategory];
+    uuidStr = [audioAccessoryCategory uuidStr];
+    v10 = [typeCopy isEqual:uuidStr];
 
     if (v10)
     {
@@ -2732,23 +2732,23 @@ LABEL_11:
     }
   }
 
-  v8 = v7;
+  audioAccessoryCategory = v7;
 LABEL_5:
 
-  return v8;
+  return audioAccessoryCategory;
 }
 
-- (id)categoryForIdentifier:(id)a3
+- (id)categoryForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(HMDHAPMetadata *)self hmAccessoryCategories];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  hmAccessoryCategories = [(HMDHAPMetadata *)self hmAccessoryCategories];
+  v6 = [hmAccessoryCategories objectForKeyedSubscript:identifierCopy];
 
   if (!v6)
   {
-    v7 = [(HMDHAPMetadata *)self audioAccessoryCategory];
-    v8 = [v7 identifier];
-    v9 = [v4 isEqual:v8];
+    audioAccessoryCategory = [(HMDHAPMetadata *)self audioAccessoryCategory];
+    identifier = [audioAccessoryCategory identifier];
+    v9 = [identifierCopy isEqual:identifier];
 
     if (v9)
     {
@@ -2756,10 +2756,10 @@ LABEL_5:
     }
   }
 
-  v7 = v6;
+  audioAccessoryCategory = v6;
 LABEL_5:
 
-  return v7;
+  return audioAccessoryCategory;
 }
 
 - (id)audioAccessoryCategory
@@ -2772,25 +2772,25 @@ LABEL_5:
 
 - (id)categoryForOther
 {
-  v2 = [(HMDHAPMetadata *)self hmAccessoryCategories];
-  v3 = [v2 objectForKeyedSubscript:&unk_2866279E8];
+  hmAccessoryCategories = [(HMDHAPMetadata *)self hmAccessoryCategories];
+  v3 = [hmAccessoryCategories objectForKeyedSubscript:&unk_2866279E8];
 
   return v3;
 }
 
-- (BOOL)shouldRefreshValueForCharacteristicWithType:(id)a3 serviceType:(id)a4
+- (BOOL)shouldRefreshValueForCharacteristicWithType:(id)type serviceType:(id)serviceType
 {
   v5 = shouldRefreshValueForCharacteristicWithType_serviceType__onceToken;
-  v6 = a4;
-  v7 = a3;
+  serviceTypeCopy = serviceType;
+  typeCopy = type;
   if (v5 != -1)
   {
     dispatch_once(&shouldRefreshValueForCharacteristicWithType_serviceType__onceToken, &__block_literal_global_229);
   }
 
-  v8 = [shouldRefreshValueForCharacteristicWithType_serviceType__refreshCharacteristicMapping hmf_arrayForKey:v6];
+  v8 = [shouldRefreshValueForCharacteristicWithType_serviceType__refreshCharacteristicMapping hmf_arrayForKey:serviceTypeCopy];
 
-  v9 = [v8 containsObject:v7];
+  v9 = [v8 containsObject:typeCopy];
   return v9;
 }
 
@@ -2826,39 +2826,39 @@ void __74__HMDHAPMetadata_shouldRefreshValueForCharacteristicWithType_serviceTyp
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldFilterEnableNotificationsForCharacteristicType:(id)a3 serviceType:(id)a4
+- (BOOL)shouldFilterEnableNotificationsForCharacteristicType:(id)type serviceType:(id)serviceType
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  serviceTypeCopy = serviceType;
   if (shouldFilterEnableNotificationsForCharacteristicType_serviceType__onceToken != -1)
   {
     dispatch_once(&shouldFilterEnableNotificationsForCharacteristicType_serviceType__onceToken, &__block_literal_global_227);
   }
 
-  if ([shouldFilterEnableNotificationsForCharacteristicType_serviceType__servicesToFilterEnableNotifications containsObject:v7])
+  if ([shouldFilterEnableNotificationsForCharacteristicType_serviceType__servicesToFilterEnableNotifications containsObject:serviceTypeCopy])
   {
     v8 = 1;
   }
 
   else
   {
-    v9 = [(HMDHAPMetadata *)self hmBlacklistedServices];
-    if ([v9 containsObject:v7])
+    hmBlacklistedServices = [(HMDHAPMetadata *)self hmBlacklistedServices];
+    if ([hmBlacklistedServices containsObject:serviceTypeCopy])
     {
       v8 = 1;
     }
 
     else
     {
-      v10 = [(HMDHAPMetadata *)self hmBlacklistedCharacteristics];
-      if ([v10 containsObject:v6])
+      hmBlacklistedCharacteristics = [(HMDHAPMetadata *)self hmBlacklistedCharacteristics];
+      if ([hmBlacklistedCharacteristics containsObject:typeCopy])
       {
         v8 = 1;
       }
 
       else
       {
-        v8 = [shouldFilterEnableNotificationsForCharacteristicType_serviceType__characteristicsToFilterEnableNotifications containsObject:v6];
+        v8 = [shouldFilterEnableNotificationsForCharacteristicType_serviceType__characteristicsToFilterEnableNotifications containsObject:typeCopy];
       }
     }
   }
@@ -2888,39 +2888,39 @@ void __83__HMDHAPMetadata_shouldFilterEnableNotificationsForCharacteristicType_s
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldFilterChangeNotificationsForCharacteristicType:(id)a3 serviceType:(id)a4
+- (BOOL)shouldFilterChangeNotificationsForCharacteristicType:(id)type serviceType:(id)serviceType
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  serviceTypeCopy = serviceType;
   if (shouldFilterChangeNotificationsForCharacteristicType_serviceType__onceToken != -1)
   {
     dispatch_once(&shouldFilterChangeNotificationsForCharacteristicType_serviceType__onceToken, &__block_literal_global_225);
   }
 
-  if ([shouldFilterChangeNotificationsForCharacteristicType_serviceType__servicesToFilterChangeNotifications containsObject:v7])
+  if ([shouldFilterChangeNotificationsForCharacteristicType_serviceType__servicesToFilterChangeNotifications containsObject:serviceTypeCopy])
   {
     v8 = 1;
   }
 
   else
   {
-    v9 = [(HMDHAPMetadata *)self hmBlacklistedServices];
-    if ([v9 containsObject:v7])
+    hmBlacklistedServices = [(HMDHAPMetadata *)self hmBlacklistedServices];
+    if ([hmBlacklistedServices containsObject:serviceTypeCopy])
     {
       v8 = 1;
     }
 
     else
     {
-      v10 = [(HMDHAPMetadata *)self hmBlacklistedCharacteristics];
-      if ([v10 containsObject:v6])
+      hmBlacklistedCharacteristics = [(HMDHAPMetadata *)self hmBlacklistedCharacteristics];
+      if ([hmBlacklistedCharacteristics containsObject:typeCopy])
       {
         v8 = 1;
       }
 
       else
       {
-        v8 = [shouldFilterChangeNotificationsForCharacteristicType_serviceType__characteristicsToFilterChangeNotifications containsObject:v6];
+        v8 = [shouldFilterChangeNotificationsForCharacteristicType_serviceType__characteristicsToFilterChangeNotifications containsObject:typeCopy];
       }
     }
   }
@@ -2950,16 +2950,16 @@ void __83__HMDHAPMetadata_shouldFilterChangeNotificationsForCharacteristicType_s
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldHomeAppShowTileForServiceType:(id)a3
+- (BOOL)shouldHomeAppShowTileForServiceType:(id)type
 {
   v3 = shouldHomeAppShowTileForServiceType__onceToken;
-  v4 = a3;
+  typeCopy = type;
   if (v3 != -1)
   {
     dispatch_once(&shouldHomeAppShowTileForServiceType__onceToken, &__block_literal_global_223);
   }
 
-  v5 = [shouldHomeAppShowTileForServiceType__servicesShowTilesInHomeApp containsObject:v4];
+  v5 = [shouldHomeAppShowTileForServiceType__servicesShowTilesInHomeApp containsObject:typeCopy];
 
   return v5;
 }
@@ -3019,17 +3019,17 @@ void __54__HMDHAPMetadata_shouldHomeAppShowTileForServiceType___block_invoke()
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldEnableHomeNotificationForCharacteristicType:(id)a3 serviceType:(id)a4
+- (BOOL)shouldEnableHomeNotificationForCharacteristicType:(id)type serviceType:(id)serviceType
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  serviceTypeCopy = serviceType;
   if (shouldEnableHomeNotificationForCharacteristicType_serviceType__onceToken != -1)
   {
     dispatch_once(&shouldEnableHomeNotificationForCharacteristicType_serviceType__onceToken, &__block_literal_global_221);
   }
 
-  v8 = [shouldEnableHomeNotificationForCharacteristicType_serviceType__homedInternalHomeNotifications hmf_arrayForKey:v7];
-  v9 = [v8 containsObject:v6];
+  v8 = [shouldEnableHomeNotificationForCharacteristicType_serviceType__homedInternalHomeNotifications hmf_arrayForKey:serviceTypeCopy];
+  v9 = [v8 containsObject:typeCopy];
 
   if (v9)
   {
@@ -3038,18 +3038,18 @@ void __54__HMDHAPMetadata_shouldHomeAppShowTileForServiceType___block_invoke()
 
   else
   {
-    v11 = [(HMDHAPMetadata *)self hapMetadata];
-    if ([v11 isStandardHAPService:v7])
+    hapMetadata = [(HMDHAPMetadata *)self hapMetadata];
+    if ([hapMetadata isStandardHAPService:serviceTypeCopy])
     {
-      v12 = [(HMDHAPMetadata *)self hapMetadata];
-      if (![v12 isStandardHAPCharacteristic:v6] || (objc_msgSend(shouldEnableHomeNotificationForCharacteristicType_serviceType__serviceTypesNotAllowingHomeNotifications, "containsObject:", v7) & 1) != 0 || (objc_msgSend(shouldEnableHomeNotificationForCharacteristicType_serviceType__characteristicTypesNotAllowingHomeNotifications, "containsObject:", v6) & 1) != 0 || -[HMDHAPMetadata shouldFilterServiceOfTypeFromApp:](self, "shouldFilterServiceOfTypeFromApp:", v7))
+      hapMetadata2 = [(HMDHAPMetadata *)self hapMetadata];
+      if (![hapMetadata2 isStandardHAPCharacteristic:typeCopy] || (objc_msgSend(shouldEnableHomeNotificationForCharacteristicType_serviceType__serviceTypesNotAllowingHomeNotifications, "containsObject:", serviceTypeCopy) & 1) != 0 || (objc_msgSend(shouldEnableHomeNotificationForCharacteristicType_serviceType__characteristicTypesNotAllowingHomeNotifications, "containsObject:", typeCopy) & 1) != 0 || -[HMDHAPMetadata shouldFilterServiceOfTypeFromApp:](self, "shouldFilterServiceOfTypeFromApp:", serviceTypeCopy))
       {
         LOBYTE(v10) = 0;
       }
 
       else
       {
-        v10 = ![(HMDHAPMetadata *)self shouldFilterCharacteristicOfTypeFromApp:v6];
+        v10 = ![(HMDHAPMetadata *)self shouldFilterCharacteristicOfTypeFromApp:typeCopy];
       }
     }
 
@@ -3101,25 +3101,25 @@ void __80__HMDHAPMetadata_shouldEnableHomeNotificationForCharacteristicType_serv
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldAutoEnableNotificationForCharacteristic:(id)a3 ofService:(id)a4
+- (BOOL)shouldAutoEnableNotificationForCharacteristic:(id)characteristic ofService:(id)service
 {
-  v6 = a3;
-  v7 = a4;
+  characteristicCopy = characteristic;
+  serviceCopy = service;
   if (shouldAutoEnableNotificationForCharacteristic_ofService__onceToken != -1)
   {
     dispatch_once(&shouldAutoEnableNotificationForCharacteristic_ofService__onceToken, &__block_literal_global_219);
   }
 
-  v8 = [(HMDHAPMetadata *)self hmNotificationAutoEnabledTuples];
-  if ([(HMDHAPMetadata *)self checkTupleExistsInSet:v8 forChrType:v6 svcType:v7])
+  hmNotificationAutoEnabledTuples = [(HMDHAPMetadata *)self hmNotificationAutoEnabledTuples];
+  if ([(HMDHAPMetadata *)self checkTupleExistsInSet:hmNotificationAutoEnabledTuples forChrType:characteristicCopy svcType:serviceCopy])
   {
     v9 = 1;
   }
 
   else
   {
-    v10 = [shouldAutoEnableNotificationForCharacteristic_ofService__autoEnableNotifications hmf_arrayForKey:v7];
-    v9 = [v10 containsObject:v6];
+    v10 = [shouldAutoEnableNotificationForCharacteristic_ofService__autoEnableNotifications hmf_arrayForKey:serviceCopy];
+    v9 = [v10 containsObject:characteristicCopy];
   }
 
   return v9;
@@ -3139,16 +3139,16 @@ void __74__HMDHAPMetadata_shouldAutoEnableNotificationForCharacteristic_ofServic
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isSecondsDownCounterCharacteristicType:(id)a3
+- (BOOL)isSecondsDownCounterCharacteristicType:(id)type
 {
   v3 = isSecondsDownCounterCharacteristicType__onceToken;
-  v4 = a3;
+  typeCopy = type;
   if (v3 != -1)
   {
     dispatch_once(&isSecondsDownCounterCharacteristicType__onceToken, &__block_literal_global_217);
   }
 
-  v5 = [isSecondsDownCounterCharacteristicType__secondsDownCounterCharacteristicTypes containsObject:v4];
+  v5 = [isSecondsDownCounterCharacteristicType__secondsDownCounterCharacteristicTypes containsObject:typeCopy];
 
   return v5;
 }
@@ -3166,19 +3166,19 @@ void __57__HMDHAPMetadata_isSecondsDownCounterCharacteristicType___block_invoke(
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)generateNotificationOnConfigurationForCharacteristicType:(id)a3 serviceType:(id)a4
+- (BOOL)generateNotificationOnConfigurationForCharacteristicType:(id)type serviceType:(id)serviceType
 {
   v5 = generateNotificationOnConfigurationForCharacteristicType_serviceType__onceToken;
-  v6 = a4;
-  v7 = a3;
+  serviceTypeCopy = serviceType;
+  typeCopy = type;
   if (v5 != -1)
   {
     dispatch_once(&generateNotificationOnConfigurationForCharacteristicType_serviceType__onceToken, &__block_literal_global_215);
   }
 
-  v8 = [generateNotificationOnConfigurationForCharacteristicType_serviceType__generateNotificationMapping hmf_arrayForKey:v7];
+  v8 = [generateNotificationOnConfigurationForCharacteristicType_serviceType__generateNotificationMapping hmf_arrayForKey:typeCopy];
 
-  v9 = [v8 containsObject:v6];
+  v9 = [v8 containsObject:serviceTypeCopy];
   return v9;
 }
 
@@ -3196,16 +3196,16 @@ void __87__HMDHAPMetadata_generateNotificationOnConfigurationForCharacteristicTy
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldNotCacheCharacteristicOfType:(id)a3
+- (BOOL)shouldNotCacheCharacteristicOfType:(id)type
 {
   v3 = shouldNotCacheCharacteristicOfType__onceToken;
-  v4 = a3;
+  typeCopy = type;
   if (v3 != -1)
   {
     dispatch_once(&shouldNotCacheCharacteristicOfType__onceToken, &__block_literal_global_213);
   }
 
-  v5 = [shouldNotCacheCharacteristicOfType__noCacheCharacteristicTypes containsObject:v4];
+  v5 = [shouldNotCacheCharacteristicOfType__noCacheCharacteristicTypes containsObject:typeCopy];
 
   return v5;
 }
@@ -3223,41 +3223,41 @@ void __53__HMDHAPMetadata_shouldNotCacheCharacteristicOfType___block_invoke()
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldFilterCharacteristicOfTypeFromApp:(id)a3
+- (BOOL)shouldFilterCharacteristicOfTypeFromApp:(id)app
 {
-  v4 = a3;
-  v5 = [(HMDHAPMetadata *)self hmBlacklistedCharacteristicsFromApp];
-  v6 = [v5 containsObject:v4];
+  appCopy = app;
+  hmBlacklistedCharacteristicsFromApp = [(HMDHAPMetadata *)self hmBlacklistedCharacteristicsFromApp];
+  v6 = [hmBlacklistedCharacteristicsFromApp containsObject:appCopy];
 
   return v6;
 }
 
-- (BOOL)shouldFilterServiceOfTypeFromApp:(id)a3
+- (BOOL)shouldFilterServiceOfTypeFromApp:(id)app
 {
-  v4 = a3;
-  v5 = [(HMDHAPMetadata *)self hmBlacklistedServicesFromApp];
-  v6 = [v5 containsObject:v4];
+  appCopy = app;
+  hmBlacklistedServicesFromApp = [(HMDHAPMetadata *)self hmBlacklistedServicesFromApp];
+  v6 = [hmBlacklistedServicesFromApp containsObject:appCopy];
 
   return v6;
 }
 
-- (BOOL)shouldFilterCharacteristicOfType:(id)a3
+- (BOOL)shouldFilterCharacteristicOfType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   if (shouldFilterCharacteristicOfType__pred != -1)
   {
     dispatch_once(&shouldFilterCharacteristicOfType__pred, &__block_literal_global_211);
   }
 
-  if ([shouldFilterCharacteristicOfType___allowedCharacteristics containsObject:v4])
+  if ([shouldFilterCharacteristicOfType___allowedCharacteristics containsObject:typeCopy])
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [(HMDHAPMetadata *)self hmBlacklistedCharacteristics];
-    v5 = [v6 containsObject:v4];
+    hmBlacklistedCharacteristics = [(HMDHAPMetadata *)self hmBlacklistedCharacteristics];
+    v5 = [hmBlacklistedCharacteristics containsObject:typeCopy];
   }
 
   return v5;
@@ -3276,23 +3276,23 @@ void __51__HMDHAPMetadata_shouldFilterCharacteristicOfType___block_invoke()
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldFilterServiceOfType:(id)a3
+- (BOOL)shouldFilterServiceOfType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   if (shouldFilterServiceOfType__pred != -1)
   {
     dispatch_once(&shouldFilterServiceOfType__pred, &__block_literal_global_209);
   }
 
-  if ([shouldFilterServiceOfType___allowedServices containsObject:v4])
+  if ([shouldFilterServiceOfType___allowedServices containsObject:typeCopy])
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [(HMDHAPMetadata *)self hmBlacklistedServices];
-    v5 = [v6 containsObject:v4];
+    hmBlacklistedServices = [(HMDHAPMetadata *)self hmBlacklistedServices];
+    v5 = [hmBlacklistedServices containsObject:typeCopy];
   }
 
   return v5;
@@ -3311,26 +3311,26 @@ void __44__HMDHAPMetadata_shouldFilterServiceOfType___block_invoke()
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldCoalesceCharacteristicNotifications:(id)a3 forService:(id)a4
+- (BOOL)shouldCoalesceCharacteristicNotifications:(id)notifications forService:(id)service
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HMDHAPMetadata *)self hmCoalesceNotificationsTuples];
-  LOBYTE(self) = [(HMDHAPMetadata *)self checkTupleExistsInSet:v8 forChrType:v7 svcType:v6];
+  serviceCopy = service;
+  notificationsCopy = notifications;
+  hmCoalesceNotificationsTuples = [(HMDHAPMetadata *)self hmCoalesceNotificationsTuples];
+  LOBYTE(self) = [(HMDHAPMetadata *)self checkTupleExistsInSet:hmCoalesceNotificationsTuples forChrType:notificationsCopy svcType:serviceCopy];
 
   return self;
 }
 
-- (BOOL)isTargetCharacteristic:(id)a3
+- (BOOL)isTargetCharacteristic:(id)characteristic
 {
   v3 = isTargetCharacteristic__onceToken;
-  v4 = a3;
+  characteristicCopy = characteristic;
   if (v3 != -1)
   {
     dispatch_once(&isTargetCharacteristic__onceToken, &__block_literal_global_168);
   }
 
-  v5 = [isTargetCharacteristic__targetCharacteristic containsObject:v4];
+  v5 = [isTargetCharacteristic__targetCharacteristic containsObject:characteristicCopy];
 
   return v5;
 }
@@ -3341,16 +3341,16 @@ void __41__HMDHAPMetadata_isTargetCharacteristic___block_invoke()
   isTargetCharacteristic__targetCharacteristic = &unk_286626CC8;
 }
 
-- (BOOL)requiresTimedWrite:(id)a3 forService:(id)a4
+- (BOOL)requiresTimedWrite:(id)write forService:(id)service
 {
-  v6 = a3;
-  v7 = a4;
+  writeCopy = write;
+  serviceCopy = service;
   if (requiresTimedWrite_forService__onceToken != -1)
   {
     dispatch_once(&requiresTimedWrite_forService__onceToken, &__block_literal_global_165);
   }
 
-  v8 = -[HMDHAPMetadata requiresDeviceUnlock:forService:](self, "requiresDeviceUnlock:forService:", v6, v7) || v6 && ([requiresTimedWrite_forService__timedWriteRequiringCharacteristic containsObject:v6] & 1) != 0;
+  v8 = -[HMDHAPMetadata requiresDeviceUnlock:forService:](self, "requiresDeviceUnlock:forService:", writeCopy, serviceCopy) || writeCopy && ([requiresTimedWrite_forService__timedWriteRequiringCharacteristic containsObject:writeCopy] & 1) != 0;
 
   return v8;
 }
@@ -3372,36 +3372,36 @@ void __48__HMDHAPMetadata_requiresTimedWrite_forService___block_invoke()
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)requiresDeviceUnlock:(id)a3 forService:(id)a4
+- (BOOL)requiresDeviceUnlock:(id)unlock forService:(id)service
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HMDHAPMetadata *)self hmRequiresDeviceUnlockTuples];
-  LOBYTE(self) = [(HMDHAPMetadata *)self checkTupleExistsInSet:v8 forChrType:v7 svcType:v6];
+  serviceCopy = service;
+  unlockCopy = unlock;
+  hmRequiresDeviceUnlockTuples = [(HMDHAPMetadata *)self hmRequiresDeviceUnlockTuples];
+  LOBYTE(self) = [(HMDHAPMetadata *)self checkTupleExistsInSet:hmRequiresDeviceUnlockTuples forChrType:unlockCopy svcType:serviceCopy];
 
   return self;
 }
 
-- (BOOL)shouldAllowToWakeSuspendedAccessoryForOperation:(int64_t)a3 service:(id)a4 characteristicType:(id)a5 value:(id)a6
+- (BOOL)shouldAllowToWakeSuspendedAccessoryForOperation:(int64_t)operation service:(id)service characteristicType:(id)type value:(id)value
 {
   v71 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  serviceCopy = service;
+  typeCopy = type;
+  valueCopy = value;
   v13 = objc_autoreleasePoolPush();
-  v14 = self;
+  selfCopy = self;
   v15 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
     v16 = HMFGetLogIdentifier();
-    if (a3 > 0xA)
+    if (operation > 0xA)
     {
       v17 = @"Undefined";
     }
 
     else
     {
-      v17 = off_279727458[a3];
+      v17 = off_279727458[operation];
     }
 
     v18 = v17;
@@ -3410,33 +3410,33 @@ void __48__HMDHAPMetadata_requiresTimedWrite_forService___block_invoke()
     v63 = 2112;
     v64 = v18;
     v65 = 2112;
-    v66 = v10;
+    v66 = serviceCopy;
     v67 = 2112;
-    v68 = v11;
+    v68 = typeCopy;
     v69 = 2112;
-    v70 = v12;
+    v70 = valueCopy;
     _os_log_impl(&dword_2531F8000, v15, OS_LOG_TYPE_DEBUG, "%{public}@Checking if operation: '%@' is allowed to wake accessory for service: '%@' characteristic: '%@' with value '%@'", buf, 0x34u);
   }
 
   objc_autoreleasePoolPop(v13);
-  v19 = [(HMDHAPMetadata *)v14 hmWakeOnOperationsFilter];
-  v20 = [v19 hmf_dictionaryForKey:v11];
+  hmWakeOnOperationsFilter = [(HMDHAPMetadata *)selfCopy hmWakeOnOperationsFilter];
+  v20 = [hmWakeOnOperationsFilter hmf_dictionaryForKey:typeCopy];
 
   if (v20)
   {
-    v21 = [v20 hmf_dictionaryForKey:v10];
+    v21 = [v20 hmf_dictionaryForKey:serviceCopy];
     v22 = v21;
     if (v21)
     {
       v23 = [v21 hmf_arrayForKey:*MEMORY[0x277CFEE00]];
-      if (a3 > 0xA)
+      if (operation > 0xA)
       {
         v24 = @"Undefined";
       }
 
       else
       {
-        v24 = off_279727458[a3];
+        v24 = off_279727458[operation];
       }
 
       v26 = v24;
@@ -3444,7 +3444,7 @@ void __48__HMDHAPMetadata_requiresTimedWrite_forService___block_invoke()
 
       if (v27)
       {
-        if (a3 == 3)
+        if (operation == 3)
         {
           v28 = [v22 hmf_arrayForKey:*MEMORY[0x277CFEDE8]];
           v29 = v28;
@@ -3471,10 +3471,10 @@ void __48__HMDHAPMetadata_requiresTimedWrite_forService___block_invoke()
                     objc_enumerationMutation(v30);
                   }
 
-                  if (v12 && [*(*(&v56 + 1) + 8 * i) isEqual:v12])
+                  if (valueCopy && [*(*(&v56 + 1) + 8 * i) isEqual:valueCopy])
                   {
                     v45 = objc_autoreleasePoolPush();
-                    v46 = v14;
+                    v46 = selfCopy;
                     v47 = HMFGetOSLogHandle();
                     if (os_log_type_enabled(v47, OS_LOG_TYPE_DEBUG))
                     {
@@ -3486,11 +3486,11 @@ void __48__HMDHAPMetadata_requiresTimedWrite_forService___block_invoke()
                       v63 = 2112;
                       v64 = @"Write";
                       v65 = 2112;
-                      v66 = v10;
+                      v66 = serviceCopy;
                       v67 = 2112;
-                      v68 = v11;
+                      v68 = typeCopy;
                       v69 = 2112;
-                      v70 = v12;
+                      v70 = valueCopy;
                       _os_log_impl(&dword_2531F8000, v47, OS_LOG_TYPE_DEBUG, "%{public}@Operation: %@ on service '%@' and characteristic '%@' with value '%@' is allowed to wake accessory", buf, 0x34u);
 
                       v45 = v52;
@@ -3513,7 +3513,7 @@ void __48__HMDHAPMetadata_requiresTimedWrite_forService___block_invoke()
             }
 
             v35 = objc_autoreleasePoolPush();
-            v36 = v14;
+            v36 = selfCopy;
             v37 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
             {
@@ -3524,9 +3524,9 @@ void __48__HMDHAPMetadata_requiresTimedWrite_forService___block_invoke()
               v63 = 2112;
               v64 = @"Write";
               v65 = 2112;
-              v66 = v10;
+              v66 = serviceCopy;
               v67 = 2112;
-              v68 = v11;
+              v68 = typeCopy;
               _os_log_impl(&dword_2531F8000, v37, OS_LOG_TYPE_DEBUG, "%{public}@Operation: %@ on service '%@' and characteristic '%@' is not allowed to wake accessory", buf, 0x2Au);
             }
 
@@ -3540,7 +3540,7 @@ LABEL_36:
           else
           {
             v40 = objc_autoreleasePoolPush();
-            v41 = v14;
+            v41 = selfCopy;
             v42 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v42, OS_LOG_TYPE_DEBUG))
             {
@@ -3552,9 +3552,9 @@ LABEL_36:
               v63 = 2112;
               v64 = @"Write";
               v65 = 2112;
-              v66 = v10;
+              v66 = serviceCopy;
               v67 = 2112;
-              v68 = v11;
+              v68 = typeCopy;
               _os_log_impl(&dword_2531F8000, v42, OS_LOG_TYPE_DEBUG, "%{public}@Operation: %@ on service '%@' and characteristic '%@' is allowed to wake accessory", buf, 0x2Au);
 
               v40 = v54;
@@ -3592,16 +3592,16 @@ LABEL_36:
   return v25;
 }
 
-- (BOOL)allowsSecuringWriteFor:(id)a3 withValue:(id)a4
+- (BOOL)allowsSecuringWriteFor:(id)for withValue:(id)value
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HMDHAPMetadata *)self hmAllowableSecuringWrites];
-  v9 = [v8 objectForKey:v7];
+  valueCopy = value;
+  forCopy = for;
+  hmAllowableSecuringWrites = [(HMDHAPMetadata *)self hmAllowableSecuringWrites];
+  v9 = [hmAllowableSecuringWrites objectForKey:forCopy];
 
   if (v9)
   {
-    v10 = [v9 containsObject:v6];
+    v10 = [v9 containsObject:valueCopy];
   }
 
   else
@@ -3612,37 +3612,37 @@ LABEL_36:
   return v10;
 }
 
-- (id)descriptionForCharacteristicType:(id)a3
+- (id)descriptionForCharacteristicType:(id)type
 {
-  v4 = a3;
-  v5 = [(HMDHAPMetadata *)self hapMetadata];
-  v6 = [v5 descriptionFromCharacteristicType:v4];
+  typeCopy = type;
+  hapMetadata = [(HMDHAPMetadata *)self hapMetadata];
+  v6 = [hapMetadata descriptionFromCharacteristicType:typeCopy];
 
   return v6;
 }
 
-- (id)descriptionForServiceType:(id)a3
+- (id)descriptionForServiceType:(id)type
 {
-  v4 = a3;
-  v5 = [(HMDHAPMetadata *)self hapMetadata];
-  v6 = [v5 descriptionFromServiceType:v4];
+  typeCopy = type;
+  hapMetadata = [(HMDHAPMetadata *)self hapMetadata];
+  v6 = [hapMetadata descriptionFromServiceType:typeCopy];
 
   return v6;
 }
 
-- (id)validateAssociatedServiceType:(id)a3 forService:(id)a4
+- (id)validateAssociatedServiceType:(id)type forService:(id)service
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (![v6 length])
+  typeCopy = type;
+  serviceCopy = service;
+  if (![typeCopy length])
   {
     v19 = 0;
     goto LABEL_14;
   }
 
-  v8 = [(HMDHAPMetadata *)self hapMetadata];
-  if (([v8 isStandardHAPService:v7] & 1) == 0)
+  hapMetadata = [(HMDHAPMetadata *)self hapMetadata];
+  if (([hapMetadata isStandardHAPService:serviceCopy] & 1) == 0)
   {
 
 LABEL_10:
@@ -3654,9 +3654,9 @@ LABEL_10:
       v38 = 138543874;
       v39 = v17;
       v40 = 2112;
-      v41 = v7;
+      v41 = serviceCopy;
       v42 = 2112;
-      v43 = v6;
+      v43 = typeCopy;
       v18 = "%{public}@Unknown service types %@ %@";
       v20 = v16;
       v21 = 32;
@@ -3669,16 +3669,16 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v9 = [(HMDHAPMetadata *)self hapMetadata];
-  v10 = [v9 isStandardHAPService:v6];
+  hapMetadata2 = [(HMDHAPMetadata *)self hapMetadata];
+  v10 = [hapMetadata2 isStandardHAPService:typeCopy];
 
   if ((v10 & 1) == 0)
   {
     goto LABEL_10;
   }
 
-  v11 = [(HMDHAPMetadata *)self hapMetadata];
-  v12 = [v11 allowAssociatedService:v7];
+  hapMetadata3 = [(HMDHAPMetadata *)self hapMetadata];
+  v12 = [hapMetadata3 allowAssociatedService:serviceCopy];
 
   if ((v12 & 1) == 0)
   {
@@ -3693,13 +3693,13 @@ LABEL_12:
     v38 = 138543618;
     v39 = v17;
     v40 = 2112;
-    v41 = v7;
+    v41 = serviceCopy;
     v18 = "%{public}@Service %@ does not other services to be associated";
     goto LABEL_19;
   }
 
-  v13 = [(HMDHAPMetadata *)self hapMetadata];
-  v14 = [v13 allowAssociatedService:v6];
+  hapMetadata4 = [(HMDHAPMetadata *)self hapMetadata];
+  v14 = [hapMetadata4 allowAssociatedService:typeCopy];
 
   if (v14)
   {
@@ -3711,7 +3711,7 @@ LABEL_12:
       v38 = 138543618;
       v39 = v17;
       v40 = 2112;
-      v41 = v6;
+      v41 = typeCopy;
       v18 = "%{public}@Service being associated %@ itself allows other services to be associated";
 LABEL_19:
       v20 = v16;
@@ -3727,19 +3727,19 @@ LABEL_13:
   }
 
   v24 = *MEMORY[0x277CFE698];
-  v25 = [(HMDHAPMetadata *)self hapMetadata];
-  if (([v25 isMandatoryCharacteristic:v24 forService:v7] & 1) == 0)
+  hapMetadata5 = [(HMDHAPMetadata *)self hapMetadata];
+  if (([hapMetadata5 isMandatoryCharacteristic:v24 forService:serviceCopy] & 1) == 0)
   {
 
 LABEL_24:
     v28 = *MEMORY[0x277CFE5D8];
     v29 = *MEMORY[0x277CFE5E8];
     v30 = *MEMORY[0x277CFE610];
-    v31 = [(HMDHAPMetadata *)self hapMetadata];
-    if ([v31 isMandatoryCharacteristic:v28 forService:v7])
+    hapMetadata6 = [(HMDHAPMetadata *)self hapMetadata];
+    if ([hapMetadata6 isMandatoryCharacteristic:v28 forService:serviceCopy])
     {
-      v32 = [(HMDHAPMetadata *)self hapMetadata];
-      if ([v32 isMandatoryCharacteristic:v29 forService:v6])
+      hapMetadata7 = [(HMDHAPMetadata *)self hapMetadata];
+      if ([hapMetadata7 isMandatoryCharacteristic:v29 forService:typeCopy])
       {
 
 LABEL_32:
@@ -3749,8 +3749,8 @@ LABEL_33:
         goto LABEL_34;
       }
 
-      v36 = [(HMDHAPMetadata *)self hapMetadata];
-      v37 = [v36 isMandatoryCharacteristic:v30 forService:v6];
+      hapMetadata8 = [(HMDHAPMetadata *)self hapMetadata];
+      v37 = [hapMetadata8 isMandatoryCharacteristic:v30 forService:typeCopy];
 
       if (v37)
       {
@@ -3770,9 +3770,9 @@ LABEL_33:
       v38 = 138543874;
       v39 = v35;
       v40 = 2112;
-      v41 = v7;
+      v41 = serviceCopy;
       v42 = 2112;
-      v43 = v6;
+      v43 = typeCopy;
       _os_log_impl(&dword_2531F8000, v34, OS_LOG_TYPE_ERROR, "%{public}@Service %@ or service being associated %@ are not compatible", &v38, 0x20u);
     }
 
@@ -3781,8 +3781,8 @@ LABEL_33:
     goto LABEL_33;
   }
 
-  v26 = [(HMDHAPMetadata *)self hapMetadata];
-  v27 = [v26 isMandatoryCharacteristic:v24 forService:v6];
+  hapMetadata9 = [(HMDHAPMetadata *)self hapMetadata];
+  v27 = [hapMetadata9 isMandatoryCharacteristic:v24 forService:typeCopy];
 
   if ((v27 & 1) == 0)
   {
@@ -3798,104 +3798,104 @@ LABEL_14:
   return v19;
 }
 
-- (BOOL)supportsAuthorizationData:(id)a3 forService:(id)a4
+- (BOOL)supportsAuthorizationData:(id)data forService:(id)service
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HMDHAPMetadata *)self hapMetadata];
-  v9 = [v8 supportsAdditionalAuthorizationData:v7 forService:v6];
+  serviceCopy = service;
+  dataCopy = data;
+  hapMetadata = [(HMDHAPMetadata *)self hapMetadata];
+  v9 = [hapMetadata supportsAdditionalAuthorizationData:dataCopy forService:serviceCopy];
 
   return v9;
 }
 
-- (BOOL)isStandardServiceType:(id)a3
+- (BOOL)isStandardServiceType:(id)type
 {
-  v4 = a3;
-  v5 = [(HMDHAPMetadata *)self hapMetadata];
-  v6 = [v5 isStandardHAPService:v4];
+  typeCopy = type;
+  hapMetadata = [(HMDHAPMetadata *)self hapMetadata];
+  v6 = [hapMetadata isStandardHAPService:typeCopy];
 
   return v6;
 }
 
-- (BOOL)isStandardCharacteristicType:(id)a3
+- (BOOL)isStandardCharacteristicType:(id)type
 {
-  v4 = a3;
-  v5 = [(HMDHAPMetadata *)self hapMetadata];
-  v6 = [v5 isStandardHAPCharacteristic:v4];
+  typeCopy = type;
+  hapMetadata = [(HMDHAPMetadata *)self hapMetadata];
+  v6 = [hapMetadata isStandardHAPCharacteristic:typeCopy];
 
   return v6;
 }
 
-- (id)serviceTypeFromName:(id)a3
+- (id)serviceTypeFromName:(id)name
 {
-  v4 = a3;
-  v5 = [(HMDHAPMetadata *)self hapMetadata];
-  v6 = [v5 serviceTypeFromUTI:v4];
+  nameCopy = name;
+  hapMetadata = [(HMDHAPMetadata *)self hapMetadata];
+  v6 = [hapMetadata serviceTypeFromUTI:nameCopy];
 
   return v6;
 }
 
-- (id)serviceNameFromType:(id)a3
+- (id)serviceNameFromType:(id)type
 {
-  v4 = a3;
-  v5 = [(HMDHAPMetadata *)self hapMetadata];
-  v6 = [v5 serviceUTIFromType:v4];
+  typeCopy = type;
+  hapMetadata = [(HMDHAPMetadata *)self hapMetadata];
+  v6 = [hapMetadata serviceUTIFromType:typeCopy];
 
   return v6;
 }
 
-- (id)characteristicTypeFromName:(id)a3
+- (id)characteristicTypeFromName:(id)name
 {
-  v4 = a3;
-  v5 = [(HMDHAPMetadata *)self hapMetadata];
-  v6 = [v5 characteristicTypeFromUTI:v4];
+  nameCopy = name;
+  hapMetadata = [(HMDHAPMetadata *)self hapMetadata];
+  v6 = [hapMetadata characteristicTypeFromUTI:nameCopy];
 
   return v6;
 }
 
-- (id)characteristicNameFromType:(id)a3
+- (id)characteristicNameFromType:(id)type
 {
-  v4 = a3;
-  v5 = [(HMDHAPMetadata *)self hapMetadata];
-  v6 = [v5 characteristicUTIFromType:v4];
+  typeCopy = type;
+  hapMetadata = [(HMDHAPMetadata *)self hapMetadata];
+  v6 = [hapMetadata characteristicUTIFromType:typeCopy];
 
   return v6;
 }
 
-- (id)xpcData:(BOOL)a3
+- (id)xpcData:(BOOL)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = [(HMDHAPMetadata *)self hmAccessoryCategories];
-    v5 = [v4 allValues];
+    hmAccessoryCategories = [(HMDHAPMetadata *)self hmAccessoryCategories];
+    allValues = [hmAccessoryCategories allValues];
   }
 
   else
   {
-    v5 = 0;
+    allValues = 0;
   }
 
   v6 = MEMORY[0x277CD1A50];
-  v7 = [(HMDHAPMetadata *)self version];
-  v8 = [(HMDHAPMetadata *)self hapMetadata];
-  v9 = [v8 hapCharacteristics];
-  v10 = [(HMDHAPMetadata *)self hapMetadata];
-  v11 = [v10 hapServices];
-  v12 = [v6 encodeProtobufWithVersion:v7 characteristics:v9 services:v11 categories:v5];
+  version = [(HMDHAPMetadata *)self version];
+  hapMetadata = [(HMDHAPMetadata *)self hapMetadata];
+  hapCharacteristics = [hapMetadata hapCharacteristics];
+  hapMetadata2 = [(HMDHAPMetadata *)self hapMetadata];
+  hapServices = [hapMetadata2 hapServices];
+  v12 = [v6 encodeProtobufWithVersion:version characteristics:hapCharacteristics services:hapServices categories:allValues];
 
   return v12;
 }
 
-- (HMDHAPMetadata)initWithFullPlist:(id)a3 hapMetadata:(id)a4
+- (HMDHAPMetadata)initWithFullPlist:(id)plist hapMetadata:(id)metadata
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  plistCopy = plist;
+  metadataCopy = metadata;
+  if (plistCopy)
   {
-    v8 = v7;
-    if (v7)
+    v8 = metadataCopy;
+    if (metadataCopy)
     {
-      v9 = [(HMDHAPMetadata *)self initWithFullPlist:v6 hapMetadata:v7 error:0];
+      v9 = [(HMDHAPMetadata *)self initWithFullPlist:plistCopy hapMetadata:metadataCopy error:0];
 
       return v9;
     }
@@ -3910,53 +3910,53 @@ LABEL_14:
   return [(HMDHAPMetadata *)v11 initWithDictionary:v12 hapMetadata:v13 error:v14, v15];
 }
 
-- (HMDHAPMetadata)initWithDictionary:(id)a3 hapMetadata:(id)a4 error:(id *)a5
+- (HMDHAPMetadata)initWithDictionary:(id)dictionary hapMetadata:(id)metadata error:(id *)error
 {
-  v6 = 0;
-  if (a3 && a4)
+  selfCopy = 0;
+  if (dictionary && metadata)
   {
     v9 = MEMORY[0x277CBEB38];
-    v10 = a4;
-    v11 = [v9 dictionaryWithDictionary:a3];
-    v12 = [v10 rawPlist];
-    [v11 setObject:v12 forKeyedSubscript:*MEMORY[0x277CFED08]];
+    metadataCopy = metadata;
+    v11 = [v9 dictionaryWithDictionary:dictionary];
+    rawPlist = [metadataCopy rawPlist];
+    [v11 setObject:rawPlist forKeyedSubscript:*MEMORY[0x277CFED08]];
 
-    v13 = [(HMDHAPMetadata *)self initWithFullPlist:v11 hapMetadata:v10 error:a5];
+    v13 = [(HMDHAPMetadata *)self initWithFullPlist:v11 hapMetadata:metadataCopy error:error];
     self = v13;
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (HMDHAPMetadata)initWithFullPlist:(id)a3 hapMetadata:(id)a4 error:(id *)a5
+- (HMDHAPMetadata)initWithFullPlist:(id)plist hapMetadata:(id)metadata error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  plistCopy = plist;
+  metadataCopy = metadata;
   v21.receiver = self;
   v21.super_class = HMDHAPMetadata;
   v10 = [(HMDHAPMetadata *)&v21 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_hapMetadata, a4);
-    v12 = [v9 version];
+    objc_storeStrong(&v10->_hapMetadata, metadata);
+    version = [metadataCopy version];
     version = v11->_version;
-    v11->_version = v12;
+    v11->_version = version;
 
-    v14 = [v9 schemaVersion];
+    schemaVersion = [metadataCopy schemaVersion];
     schemaVersion = v11->_schemaVersion;
-    v11->_schemaVersion = v14;
+    v11->_schemaVersion = schemaVersion;
 
-    v16 = [v8 copy];
+    v16 = [plistCopy copy];
     rawPlist = v11->_rawPlist;
     v11->_rawPlist = v16;
 
     v18 = v11->_rawPlist;
-    if (a5)
+    if (error)
     {
-      *a5 = [(HMDHAPMetadata *)v11 parseAndSetRawPlist:v18];
+      *error = [(HMDHAPMetadata *)v11 parseAndSetRawPlist:v18];
     }
 
     else
@@ -3968,18 +3968,18 @@ LABEL_14:
   return v11;
 }
 
-+ (BOOL)isHomedVersionSupported:(id)a3
++ (BOOL)isHomedVersionSupported:(id)supported
 {
   v3 = MEMORY[0x277D0F940];
-  v4 = a3;
+  supportedCopy = supported;
   v5 = [v3 alloc];
-  v6 = [v4 stringValue];
+  stringValue = [supportedCopy stringValue];
 
-  v7 = [v5 initWithString:v6];
+  v7 = [v5 initWithString:stringValue];
   v8 = +[HMDHomeKitVersion version4];
-  LOBYTE(v6) = [v7 isAtLeastVersion:v8];
+  LOBYTE(stringValue) = [v7 isAtLeastVersion:v8];
 
-  return v6;
+  return stringValue;
 }
 
 + (void)prepareMetadata
@@ -3987,10 +3987,10 @@ LABEL_14:
   v58 = *MEMORY[0x277D85DE8];
   [MEMORY[0x277CFEBA0] setCurrentMetadataHook:&__block_literal_global_159];
   v3 = +[HMDHAPMetadata getBuiltinInstance];
-  v4 = [v3 version];
-  v5 = [v4 unsignedIntegerValue];
+  version = [v3 version];
+  unsignedIntegerValue = [version unsignedIntegerValue];
 
-  if (v5 - 881 <= 2)
+  if (unsignedIntegerValue - 881 <= 2)
   {
     v6 = objc_autoreleasePoolPush();
     v7 = HMFGetOSLogHandle();
@@ -4000,7 +4000,7 @@ LABEL_14:
       *buf = 138543618;
       v51 = v8;
       v52 = 2048;
-      v53 = v5;
+      v53 = unsignedIntegerValue;
       _os_log_impl(&dword_2531F8000, v7, OS_LOG_TYPE_ERROR, "%{public}@Invalid builtin metadata version %lu", buf, 0x16u);
     }
 
@@ -4010,7 +4010,7 @@ LABEL_14:
   v9 = +[HMDPersistentStore loadPlainMetadataDictionary];
   v10 = *MEMORY[0x277CFEDF0];
   v11 = [v9 objectForKeyedSubscript:*MEMORY[0x277CFEDF0]];
-  v12 = [v11 unsignedIntegerValue];
+  unsignedIntegerValue2 = [v11 unsignedIntegerValue];
 
   v13 = [v9 objectForKeyedSubscript:v10];
   if (!v13)
@@ -4027,15 +4027,15 @@ LABEL_14:
   }
 
   v17 = v16;
-  v48 = v12;
-  v49 = a1;
+  v48 = unsignedIntegerValue2;
+  selfCopy = self;
   v18 = *MEMORY[0x277CFEDA0];
   v19 = [v9 objectForKeyedSubscript:*MEMORY[0x277CFEDA0]];
   if (!v19)
   {
 LABEL_18:
 
-    a1 = v49;
+    self = selfCopy;
 LABEL_19:
 
     goto LABEL_20;
@@ -4043,7 +4043,7 @@ LABEL_19:
 
   v20 = v19;
   v21 = [v9 objectForKeyedSubscript:v10];
-  if ([v21 unsignedIntegerValue] <= v5)
+  if ([v21 unsignedIntegerValue] <= unsignedIntegerValue)
   {
 
     goto LABEL_18;
@@ -4051,13 +4051,13 @@ LABEL_19:
 
   v47 = v18;
   v22 = [v9 objectForKeyedSubscript:v15];
-  v23 = [v22 unsignedIntegerValue];
+  unsignedIntegerValue3 = [v22 unsignedIntegerValue];
 
-  a1 = v49;
-  if (v23 == 1)
+  self = selfCopy;
+  if (unsignedIntegerValue3 == 1)
   {
     v24 = v47;
-    if (isInternalBuild() && v5 == 880 && (v48 - 881) <= 1)
+    if (isInternalBuild() && unsignedIntegerValue == 880 && (v48 - 881) <= 1)
     {
       v25 = +[HMDPersistentStore loadBuiltinPlainMetadataDictionary];
       v26 = [v25 mutableCopy];
@@ -4069,21 +4069,21 @@ LABEL_19:
       {
         v29 = HMFGetLogIdentifier();
         v30 = [v26 objectForKeyedSubscript:v10];
-        v31 = [v30 unsignedIntegerValue];
+        unsignedIntegerValue4 = [v30 unsignedIntegerValue];
         v32 = [v26 objectForKeyedSubscript:v47];
         v33 = [v32 objectForKeyedSubscript:v10];
-        v34 = [v33 unsignedIntegerValue];
+        unsignedIntegerValue5 = [v33 unsignedIntegerValue];
         *buf = 138544130;
         v51 = v29;
         v52 = 2048;
-        v53 = v31;
+        v53 = unsignedIntegerValue4;
         v54 = 2048;
-        v55 = v34;
+        v55 = unsignedIntegerValue5;
         v56 = 2048;
         v57 = v48;
         _os_log_impl(&dword_2531F8000, v28, OS_LOG_TYPE_INFO, "%{public}@Metadata fix - Constructing version 883 metadata from current builtin version %lu, current builtin plist version %lu, archived version %lu", buf, 0x2Au);
 
-        a1 = v49;
+        self = selfCopy;
         v24 = v47;
       }
 
@@ -4092,10 +4092,10 @@ LABEL_19:
       v35 = [v26 objectForKeyedSubscript:v24];
       [v35 setObject:&unk_2866279D0 forKeyedSubscript:v10];
 
-      [a1 updateLocalMetadataWithMetadata:v26];
+      [self updateLocalMetadataWithMetadata:v26];
     }
 
-    [a1 _logCurrentMetadata];
+    [self _logCurrentMetadata];
     goto LABEL_27;
   }
 
@@ -4112,11 +4112,11 @@ LABEL_20:
 
   objc_autoreleasePoolPop(v36);
   v39 = [v9 objectForKeyedSubscript:v10];
-  v40 = [v39 unsignedIntegerValue];
-  v41 = [0 version];
-  v42 = [v41 unsignedIntegerValue];
+  unsignedIntegerValue6 = [v39 unsignedIntegerValue];
+  version2 = [0 version];
+  unsignedIntegerValue7 = [version2 unsignedIntegerValue];
 
-  if (v40 < v42)
+  if (unsignedIntegerValue6 < unsignedIntegerValue7)
   {
     v43 = objc_autoreleasePoolPush();
     v44 = HMFGetOSLogHandle();
@@ -4132,7 +4132,7 @@ LABEL_20:
     _shouldUploadToCloudAfterHomedReady = 1;
   }
 
-  [a1 updateLocalMetadataWithBuiltinMetadata];
+  [self updateLocalMetadataWithBuiltinMetadata];
 LABEL_27:
 
   v46 = *MEMORY[0x277D85DE8];
@@ -4146,36 +4146,36 @@ id __33__HMDHAPMetadata_prepareMetadata__block_invoke()
   return v1;
 }
 
-+ (BOOL)isAdminPrivilegeRequiredForWritingCharacteristicType:(id)a3 serviceType:(id)a4
++ (BOOL)isAdminPrivilegeRequiredForWritingCharacteristicType:(id)type serviceType:(id)serviceType
 {
-  v4 = a4;
-  if ([v4 isEqualToString:*MEMORY[0x277CD0DF8]])
+  serviceTypeCopy = serviceType;
+  if ([serviceTypeCopy isEqualToString:*MEMORY[0x277CD0DF8]])
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [v4 isEqualToString:*MEMORY[0x277CD0E08]];
+    v5 = [serviceTypeCopy isEqualToString:*MEMORY[0x277CD0E08]];
   }
 
   return v5;
 }
 
-+ (BOOL)isOwnerPrivilegeRequiredForWritingCharacteristicType:(id)a3 serviceType:(id)a4
++ (BOOL)isOwnerPrivilegeRequiredForWritingCharacteristicType:(id)type serviceType:(id)serviceType
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = ([v5 isEqualToString:@"00000264-0000-1000-8000-0026BB765291"] & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"00000262-0000-1000-8000-0026BB765291") & 1) != 0 || objc_msgSend(v6, "isEqualToString:", *MEMORY[0x277CD0E08]) && !objc_msgSend(v5, "isEqualToString:", *MEMORY[0x277CCFA00]);
+  typeCopy = type;
+  serviceTypeCopy = serviceType;
+  v7 = ([typeCopy isEqualToString:@"00000264-0000-1000-8000-0026BB765291"] & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", @"00000262-0000-1000-8000-0026BB765291") & 1) != 0 || objc_msgSend(serviceTypeCopy, "isEqualToString:", *MEMORY[0x277CD0E08]) && !objc_msgSend(typeCopy, "isEqualToString:", *MEMORY[0x277CCFA00]);
 
   return v7;
 }
 
-+ (id)dataFromMetadataDictionaryWithKey:(id)a3
++ (id)dataFromMetadataDictionaryWithKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = +[HMDPersistentStore loadPlainMetadataDictionary];
-  v5 = [v4 hmf_dataForKey:v3];
+  v5 = [v4 hmf_dataForKey:keyCopy];
   if (v5)
   {
     v6 = v5;
@@ -4185,26 +4185,26 @@ id __33__HMDHAPMetadata_prepareMetadata__block_invoke()
   {
     v7 = +[HMDPersistentStore loadBuiltinPlainMetadataDictionary];
 
-    v6 = [v7 hmf_dataForKey:v3];
+    v6 = [v7 hmf_dataForKey:keyCopy];
     v4 = v7;
   }
 
   return v6;
 }
 
-+ (BOOL)isServiceType:(id)a3 compatibleWithAccessoryCategoryType:(id)a4
++ (BOOL)isServiceType:(id)type compatibleWithAccessoryCategoryType:(id)categoryType
 {
   v5 = isServiceType_compatibleWithAccessoryCategoryType__onceToken;
-  v6 = a4;
-  v7 = a3;
+  categoryTypeCopy = categoryType;
+  typeCopy = type;
   if (v5 != -1)
   {
     dispatch_once(&isServiceType_compatibleWithAccessoryCategoryType__onceToken, &__block_literal_global_147);
   }
 
-  v8 = [isServiceType_compatibleWithAccessoryCategoryType__accessoryCategoryToServiceTypesMap objectForKeyedSubscript:v6];
+  v8 = [isServiceType_compatibleWithAccessoryCategoryType__accessoryCategoryToServiceTypesMap objectForKeyedSubscript:categoryTypeCopy];
 
-  v9 = [v8 containsObject:v7];
+  v9 = [v8 containsObject:typeCopy];
   return v9;
 }
 
@@ -4299,19 +4299,19 @@ void __68__HMDHAPMetadata_isServiceType_compatibleWithAccessoryCategoryType___bl
   v17 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)updateLocalMetadataWithMetadata:(id)a3
++ (void)updateLocalMetadataWithMetadata:(id)metadata
 {
-  v5 = a3;
+  metadataCopy = metadata;
   if ([HMDPersistentStore archiveMetadata:?])
   {
     os_unfair_lock_lock_with_options();
-    v4 = [a1 metadataCache];
-    [v4 setObject:0 forKeyedSubscript:@"current"];
+    metadataCache = [self metadataCache];
+    [metadataCache setObject:0 forKeyedSubscript:@"current"];
 
     os_unfair_lock_unlock(&_lock);
   }
 
-  [a1 _logCurrentMetadata];
+  [self _logCurrentMetadata];
 }
 
 + (void)updateLocalMetadataWithBuiltinMetadata
@@ -4322,35 +4322,35 @@ void __68__HMDHAPMetadata_isServiceType_compatibleWithAccessoryCategoryType___bl
   if (v4)
   {
     os_unfair_lock_lock_with_options();
-    v5 = [a1 metadataCache];
-    [v5 setObject:0 forKeyedSubscript:@"builtin"];
+    metadataCache = [self metadataCache];
+    [metadataCache setObject:0 forKeyedSubscript:@"builtin"];
 
-    v6 = [a1 metadataCache];
-    [v6 setObject:0 forKeyedSubscript:@"current"];
+    metadataCache2 = [self metadataCache];
+    [metadataCache2 setObject:0 forKeyedSubscript:@"current"];
 
     os_unfair_lock_unlock(&_lock);
   }
 
-  [a1 _logCurrentMetadata];
+  [self _logCurrentMetadata];
 }
 
 + (void)_logCurrentMetadata
 {
   v15 = *MEMORY[0x277D85DE8];
-  v2 = [a1 getSharedInstance];
+  getSharedInstance = [self getSharedInstance];
   v3 = objc_autoreleasePoolPush();
   v4 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v5 = HMFGetLogIdentifier();
-    v6 = [v2 version];
-    v7 = [v2 schemaVersion];
+    version = [getSharedInstance version];
+    schemaVersion = [getSharedInstance schemaVersion];
     v9 = 138543874;
     v10 = v5;
     v11 = 2112;
-    v12 = v6;
+    v12 = version;
     v13 = 2112;
-    v14 = v7;
+    v14 = schemaVersion;
     _os_log_impl(&dword_2531F8000, v4, OS_LOG_TYPE_INFO, "%{public}@Switching to HMDHAPMetadata version %@ schemaVersion %@", &v9, 0x20u);
   }
 
@@ -4361,18 +4361,18 @@ void __68__HMDHAPMetadata_isServiceType_compatibleWithAccessoryCategoryType___bl
 + (id)getSharedInstance
 {
   os_unfair_lock_lock_with_options();
-  v3 = [a1 metadataCache];
-  v4 = [a1 getSharedInstanceWithLockedCache:v3];
+  metadataCache = [self metadataCache];
+  v4 = [self getSharedInstanceWithLockedCache:metadataCache];
 
   os_unfair_lock_unlock(&_lock);
 
   return v4;
 }
 
-+ (id)getSharedInstanceWithLockedCache:(id)a3
++ (id)getSharedInstanceWithLockedCache:(id)cache
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  cacheCopy = cache;
   if (os_unfair_lock_trylock(&_lock))
   {
     v4 = objc_autoreleasePoolPush();
@@ -4391,7 +4391,7 @@ void __68__HMDHAPMetadata_isServiceType_compatibleWithAccessoryCategoryType___bl
 
   else
   {
-    v8 = [v3 objectForKeyedSubscript:@"current"];
+    v8 = [cacheCopy objectForKeyedSubscript:@"current"];
     if (v8)
     {
       v9 = v8;
@@ -4430,19 +4430,19 @@ void __68__HMDHAPMetadata_isServiceType_compatibleWithAccessoryCategoryType___bl
           if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
           {
             v15 = HMFGetLogIdentifier();
-            v16 = [v9 version];
-            v17 = [v9 schemaVersion];
+            version = [v9 version];
+            schemaVersion = [v9 schemaVersion];
             *buf = 138543874;
             v26 = v15;
             v27 = 2112;
-            v28 = v16;
+            v28 = version;
             v29 = 2112;
-            v30 = v17;
+            v30 = schemaVersion;
             _os_log_impl(&dword_2531F8000, v14, OS_LOG_TYPE_INFO, "%{public}@Current HMDHAPMetadata version %@ schemaVersion %@", buf, 0x20u);
           }
 
           objc_autoreleasePoolPop(v12);
-          [v3 setObject:v9 forKeyedSubscript:@"current"];
+          [cacheCopy setObject:v9 forKeyedSubscript:@"current"];
           v7 = v9;
         }
       }
@@ -4475,8 +4475,8 @@ void __68__HMDHAPMetadata_isServiceType_compatibleWithAccessoryCategoryType___bl
 {
   v44 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock_with_options();
-  v3 = [a1 metadataCache];
-  v4 = [v3 objectForKeyedSubscript:@"builtin"];
+  metadataCache = [self metadataCache];
+  v4 = [metadataCache objectForKeyedSubscript:@"builtin"];
   if (v4)
   {
     v5 = v4;
@@ -4515,27 +4515,27 @@ void __68__HMDHAPMetadata_isServiceType_compatibleWithAccessoryCategoryType___bl
     v10 = v36;
     if (!v10 && v5)
     {
-      v11 = [a1 getSharedInstanceWithLockedCache:v3];
+      v11 = [self getSharedInstanceWithLockedCache:metadataCache];
       if (([v11 incomplete] & 1) != 0 || -[HMDHAPMetadata incomplete](v5, "incomplete"))
       {
         goto LABEL_20;
       }
 
-      v12 = [v11 version];
-      v13 = [(HMDHAPMetadata *)v5 version];
-      v14 = v13;
-      if (v12 == v13)
+      version = [v11 version];
+      version2 = [(HMDHAPMetadata *)v5 version];
+      v14 = version2;
+      if (version == version2)
       {
-        v21 = [v11 schemaVersion];
-        v22 = [(HMDHAPMetadata *)v5 schemaVersion];
-        v23 = v21 == v22;
+        schemaVersion = [v11 schemaVersion];
+        schemaVersion2 = [(HMDHAPMetadata *)v5 schemaVersion];
+        v23 = schemaVersion == schemaVersion2;
 
         if (!v23)
         {
           goto LABEL_20;
         }
 
-        v12 = v5;
+        version = v5;
         v5 = v11;
       }
 
@@ -4544,20 +4544,20 @@ void __68__HMDHAPMetadata_isServiceType_compatibleWithAccessoryCategoryType___bl
       }
 
 LABEL_20:
-      [v3 setObject:v5 forKeyedSubscript:@"builtin"];
+      [metadataCache setObject:v5 forKeyedSubscript:@"builtin"];
       v24 = objc_autoreleasePoolPush();
       v25 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
       {
         v26 = HMFGetLogIdentifier();
-        v27 = [v9 version];
-        v28 = [v9 schemaVersion];
+        version3 = [v9 version];
+        schemaVersion3 = [v9 schemaVersion];
         *buf = 138543874;
         v39 = v26;
         v40 = 2112;
-        v41 = v27;
+        v41 = version3;
         v42 = 2112;
-        v43 = v28;
+        v43 = schemaVersion3;
         _os_log_impl(&dword_2531F8000, v25, OS_LOG_TYPE_INFO, "%{public}@Builtin HAPMetadata version %@ schemaVersion %@", buf, 0x20u);
       }
 
@@ -4567,14 +4567,14 @@ LABEL_20:
       if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
       {
         v31 = HMFGetLogIdentifier();
-        v32 = [(HMDHAPMetadata *)v5 version];
-        v33 = [(HMDHAPMetadata *)v5 schemaVersion];
+        version4 = [(HMDHAPMetadata *)v5 version];
+        schemaVersion4 = [(HMDHAPMetadata *)v5 schemaVersion];
         *buf = 138543874;
         v39 = v31;
         v40 = 2112;
-        v41 = v32;
+        v41 = version4;
         v42 = 2112;
-        v43 = v33;
+        v43 = schemaVersion4;
         _os_log_impl(&dword_2531F8000, v30, OS_LOG_TYPE_INFO, "%{public}@Builtin HMDHAPMetadata version %@ schemaVersion %@", buf, 0x20u);
       }
 
@@ -4632,23 +4632,23 @@ uint64_t __31__HMDHAPMetadata_metadataCache__block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-+ (HMDHAPMetadata)metadataWithDictionary:(id)a3 error:(id *)a4
++ (HMDHAPMetadata)metadataWithDictionary:(id)dictionary error:(id *)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v16 = 0;
-  v6 = [objc_alloc(MEMORY[0x277CFEBA0]) initWithDictionary:v5 error:&v16];
+  v6 = [objc_alloc(MEMORY[0x277CFEBA0]) initWithDictionary:dictionaryCopy error:&v16];
   v7 = v16;
   v8 = v7;
-  if (a4)
+  if (error)
   {
     v9 = v7;
-    *a4 = v8;
+    *error = v8;
   }
 
   if (v6)
   {
-    v10 = [[HMDHAPMetadata alloc] initWithDictionary:v5 hapMetadata:v6 error:a4];
+    v10 = [[HMDHAPMetadata alloc] initWithDictionary:dictionaryCopy hapMetadata:v6 error:error];
   }
 
   else
@@ -4661,7 +4661,7 @@ uint64_t __31__HMDHAPMetadata_metadataCache__block_invoke()
       *buf = 138543874;
       v18 = v13;
       v19 = 2112;
-      v20 = v5;
+      v20 = dictionaryCopy;
       v21 = 2112;
       v22 = v8;
       _os_log_impl(&dword_2531F8000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@Failed to parse HAP metadata from %@ - error %@", buf, 0x20u);
@@ -4676,12 +4676,12 @@ uint64_t __31__HMDHAPMetadata_metadataCache__block_invoke()
   return v10;
 }
 
-+ (HMDHAPMetadata)metadataWithPath:(id)a3 error:(id *)a4
++ (HMDHAPMetadata)metadataWithPath:(id)path error:(id *)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [MEMORY[0x277CBEBC0] fileURLWithPath:v6];
-  v8 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfURL:v7 error:a4];
+  pathCopy = path;
+  v7 = [MEMORY[0x277CBEBC0] fileURLWithPath:pathCopy];
+  v8 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfURL:v7 error:error];
   v9 = v8;
   if (v8)
   {
@@ -4689,13 +4689,13 @@ uint64_t __31__HMDHAPMetadata_metadataCache__block_invoke()
     v11 = [v8 hmf_dictionaryForKey:*MEMORY[0x277CFEDA0]];
     if (v11)
     {
-      v12 = [HMDHAPMetadata metadataWithDictionary:v11 error:a4];
+      v12 = [HMDHAPMetadata metadataWithDictionary:v11 error:error];
     }
 
     else
     {
       v13 = objc_autoreleasePoolPush();
-      v14 = a1;
+      selfCopy = self;
       v15 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {

@@ -1,28 +1,28 @@
 @interface UVPropertyList
 - (NSData)data;
 - (NSDictionary)dictionary;
-- (UVPropertyList)initWithData:(id)a3;
-- (UVPropertyList)initWithDictionary:(id)a3;
-- (UVPropertyList)initWithXpcDictionary:(id)a3;
-- (id)_initWithAnyCoder:(id)a3;
-- (void)_encodeWithAnyCoder:(id)a3;
+- (UVPropertyList)initWithData:(id)data;
+- (UVPropertyList)initWithDictionary:(id)dictionary;
+- (UVPropertyList)initWithXpcDictionary:(id)dictionary;
+- (id)_initWithAnyCoder:(id)coder;
+- (void)_encodeWithAnyCoder:(id)coder;
 - (void)data;
 - (void)dictionary;
-- (void)encodeToXpcDictionary:(id)a3;
+- (void)encodeToXpcDictionary:(id)dictionary;
 @end
 
 @implementation UVPropertyList
 
-- (UVPropertyList)initWithDictionary:(id)a3
+- (UVPropertyList)initWithDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = UVPropertyList;
   v6 = [(UVPropertyList *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dictionary, a3);
+    objc_storeStrong(&v6->_dictionary, dictionary);
     data = v7->_data;
     v7->_data = 0;
   }
@@ -30,9 +30,9 @@
   return v7;
 }
 
-- (UVPropertyList)initWithData:(id)a3
+- (UVPropertyList)initWithData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v10.receiver = self;
   v10.super_class = UVPropertyList;
   v6 = [(UVPropertyList *)&v10 init];
@@ -42,7 +42,7 @@
     dictionary = v6->_dictionary;
     v6->_dictionary = 0;
 
-    objc_storeStrong(&v7->_data, a3);
+    objc_storeStrong(&v7->_data, data);
   }
 
   return v7;
@@ -54,7 +54,7 @@
   dictionary = self->_dictionary;
   if (dictionary)
   {
-    v3 = dictionary;
+    dictionary2 = dictionary;
   }
 
   else
@@ -67,7 +67,7 @@
     {
       objc_opt_class();
       objc_opt_class();
-      v3 = v5;
+      dictionary2 = v5;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -75,8 +75,8 @@
         v30 = 0u;
         v27 = 0u;
         v28 = 0u;
-        v7 = [(NSDictionary *)v3 allKeys];
-        v8 = [v7 countByEnumeratingWithState:&v27 objects:v31 count:16];
+        allKeys = [(NSDictionary *)dictionary2 allKeys];
+        v8 = [allKeys countByEnumeratingWithState:&v27 objects:v31 count:16];
         if (v8)
         {
           v9 = v8;
@@ -87,13 +87,13 @@
             {
               if (*v28 != v10)
               {
-                objc_enumerationMutation(v7);
+                objc_enumerationMutation(allKeys);
               }
 
               v12 = *(*(&v27 + 1) + 8 * i);
               if (objc_opt_isKindOfClass())
               {
-                v13 = [(NSDictionary *)v3 objectForKey:v12];
+                v13 = [(NSDictionary *)dictionary2 objectForKey:v12];
                 isKindOfClass = objc_opt_isKindOfClass();
 
                 if (isKindOfClass)
@@ -105,7 +105,7 @@
               goto LABEL_20;
             }
 
-            v9 = [v7 countByEnumeratingWithState:&v27 objects:v31 count:16];
+            v9 = [allKeys countByEnumeratingWithState:&v27 objects:v31 count:16];
             if (v9)
             {
               continue;
@@ -126,9 +126,9 @@ LABEL_20:
           [(UVPropertyList *)v22 dictionary];
         }
 
-        v23 = [MEMORY[0x277CBEAC0] dictionary];
+        dictionary = [MEMORY[0x277CBEAC0] dictionary];
 
-        v3 = v23;
+        dictionary2 = dictionary;
       }
     }
 
@@ -140,13 +140,13 @@ LABEL_20:
         [(UVPropertyList *)v6 dictionary:v15];
       }
 
-      v3 = [MEMORY[0x277CBEAC0] dictionary];
+      dictionary2 = [MEMORY[0x277CBEAC0] dictionary];
     }
   }
 
   v24 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary2;
 }
 
 - (NSData)data
@@ -154,16 +154,16 @@ LABEL_20:
   data = self->_data;
   if (data)
   {
-    v3 = data;
+    data = data;
   }
 
   else
   {
     dictionary = self->_dictionary;
     v14 = 0;
-    v3 = [MEMORY[0x277CCAC58] dataWithPropertyList:dictionary format:200 options:0 error:&v14];
+    data = [MEMORY[0x277CCAC58] dataWithPropertyList:dictionary format:200 options:0 error:&v14];
     v5 = v14;
-    if (!v3)
+    if (!data)
     {
       v6 = UVLog();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -171,24 +171,24 @@ LABEL_20:
         [(UVPropertyList *)v5 data:v6];
       }
 
-      v3 = [MEMORY[0x277CBEA90] data];
+      data = [MEMORY[0x277CBEA90] data];
     }
   }
 
-  return v3;
+  return data;
 }
 
-- (void)_encodeWithAnyCoder:(id)a3
+- (void)_encodeWithAnyCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(UVPropertyList *)self data];
-  [v4 encodeObject:v5 forKey:@"data"];
+  coderCopy = coder;
+  data = [(UVPropertyList *)self data];
+  [coderCopy encodeObject:data forKey:@"data"];
 }
 
-- (id)_initWithAnyCoder:(id)a3
+- (id)_initWithAnyCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"data"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"data"];
 
   if (!v5)
   {
@@ -200,18 +200,18 @@ LABEL_20:
   return v6;
 }
 
-- (void)encodeToXpcDictionary:(id)a3
+- (void)encodeToXpcDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [[UVRawXPCCoder alloc] initWithXpcDictionary:v4];
+  dictionaryCopy = dictionary;
+  v5 = [[UVRawXPCCoder alloc] initWithXpcDictionary:dictionaryCopy];
 
   [(UVPropertyList *)self _encodeWithAnyCoder:v5];
 }
 
-- (UVPropertyList)initWithXpcDictionary:(id)a3
+- (UVPropertyList)initWithXpcDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [[UVRawXPCDecoder alloc] initWithXpcDictionary:v4];
+  dictionaryCopy = dictionary;
+  v5 = [[UVRawXPCDecoder alloc] initWithXpcDictionary:dictionaryCopy];
   v6 = [(UVPropertyList *)self _initWithAnyCoder:v5];
 
   return v6;

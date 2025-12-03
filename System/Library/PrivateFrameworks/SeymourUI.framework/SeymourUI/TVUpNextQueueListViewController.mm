@@ -1,11 +1,11 @@
 @interface TVUpNextQueueListViewController
 - (NSArray)preferredFocusEnvironments;
-- (_TtC9SeymourUI31TVUpNextQueueListViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)handleBackButtonPressed:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC9SeymourUI31TVUpNextQueueListViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)handleBackButtonPressed:(id)pressed;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -28,13 +28,13 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_20B9F5370();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5 = sub_20C1333A4();
   v6 = *(v5 - 8);
   MEMORY[0x28223BE20](v5);
@@ -42,18 +42,18 @@
   QueueListViewController = type metadata accessor for TVUpNextQueueListViewController();
   v12.receiver = self;
   v12.super_class = QueueListViewController;
-  v10 = self;
-  [(TVUpNextQueueListViewController *)&v12 viewDidAppear:v3];
-  v11[1] = v10;
-  (*(v6 + 16))(v8, *(&v10->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI31TVUpNextQueueListViewController_dataProvider) + OBJC_IVAR____TtC9SeymourUI29TVUpNextQueueListDataProvider_metricPage, v5);
+  selfCopy = self;
+  [(TVUpNextQueueListViewController *)&v12 viewDidAppear:appearCopy];
+  v11[1] = selfCopy;
+  (*(v6 + 16))(v8, *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI31TVUpNextQueueListViewController_dataProvider) + OBJC_IVAR____TtC9SeymourUI29TVUpNextQueueListDataProvider_metricPage, v5);
   sub_20B9F66D4(&qword_27C769020);
   sub_20C138C54();
   (*(v6 + 8))(v8, v5);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5 = sub_20C132E94();
   v6 = *(v5 - 8);
   MEMORY[0x28223BE20](v5);
@@ -61,9 +61,9 @@
   QueueListViewController = type metadata accessor for TVUpNextQueueListViewController();
   v12.receiver = self;
   v12.super_class = QueueListViewController;
-  v10 = self;
-  [(TVUpNextQueueListViewController *)&v12 viewWillDisappear:v3];
-  v11[1] = v10;
+  selfCopy = self;
+  [(TVUpNextQueueListViewController *)&v12 viewWillDisappear:disappearCopy];
+  v11[1] = selfCopy;
   sub_20C132E84();
   sub_20B9F66D4(&qword_27C769018);
   sub_20C139274();
@@ -93,13 +93,13 @@
   sub_20B9D8614(v6, v7, v8, v9);
 }
 
-- (void)handleBackButtonPressed:(id)a3
+- (void)handleBackButtonPressed:(id)pressed
 {
-  v3 = self;
+  selfCopy = self;
   sub_20B83B504();
 }
 
-- (_TtC9SeymourUI31TVUpNextQueueListViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9SeymourUI31TVUpNextQueueListViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

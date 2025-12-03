@@ -1,24 +1,24 @@
 @interface AWDPowerApMetrics
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasApAwakeDuration:(BOOL)a3;
-- (void)setHasCpuPowerMicroWatt:(BOOL)a3;
-- (void)setHasDramPowerMicroWatt:(BOOL)a3;
-- (void)setHasGpuPowerMicroWatt:(BOOL)a3;
-- (void)setHasSocPowerMicroWatt:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasApAwakeDuration:(BOOL)duration;
+- (void)setHasCpuPowerMicroWatt:(BOOL)watt;
+- (void)setHasDramPowerMicroWatt:(BOOL)watt;
+- (void)setHasGpuPowerMicroWatt:(BOOL)watt;
+- (void)setHasSocPowerMicroWatt:(BOOL)watt;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDPowerApMetrics
 
-- (void)setHasCpuPowerMicroWatt:(BOOL)a3
+- (void)setHasCpuPowerMicroWatt:(BOOL)watt
 {
-  if (a3)
+  if (watt)
   {
     v3 = 4;
   }
@@ -31,9 +31,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasSocPowerMicroWatt:(BOOL)a3
+- (void)setHasSocPowerMicroWatt:(BOOL)watt
 {
-  if (a3)
+  if (watt)
   {
     v3 = 32;
   }
@@ -46,9 +46,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasGpuPowerMicroWatt:(BOOL)a3
+- (void)setHasGpuPowerMicroWatt:(BOOL)watt
 {
-  if (a3)
+  if (watt)
   {
     v3 = 16;
   }
@@ -61,9 +61,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasDramPowerMicroWatt:(BOOL)a3
+- (void)setHasDramPowerMicroWatt:(BOOL)watt
 {
-  if (a3)
+  if (watt)
   {
     v3 = 8;
   }
@@ -76,9 +76,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasApAwakeDuration:(BOOL)a3
+- (void)setHasApAwakeDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 2;
   }
@@ -100,11 +100,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -123,7 +123,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_cpuPowerMicroWatt), @"cpuPowerMicroWatt"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_cpuPowerMicroWatt), @"cpuPowerMicroWatt"}];
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -137,7 +137,7 @@ LABEL_4:
   }
 
 LABEL_11:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_socPowerMicroWatt), @"socPowerMicroWatt"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_socPowerMicroWatt), @"socPowerMicroWatt"}];
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -148,17 +148,17 @@ LABEL_5:
     }
 
 LABEL_13:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_dramPowerMicroWatt), @"dramPowerMicroWatt"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_dramPowerMicroWatt), @"dramPowerMicroWatt"}];
     if ((*&self->_has & 2) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_7;
   }
 
 LABEL_12:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_gpuPowerMicroWatt), @"gpuPowerMicroWatt"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_gpuPowerMicroWatt), @"gpuPowerMicroWatt"}];
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -169,13 +169,13 @@ LABEL_6:
   if ((has & 2) != 0)
   {
 LABEL_7:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_apAwakeDuration), @"apAwakeDuration"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_apAwakeDuration), @"apAwakeDuration"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if (has)
@@ -258,13 +258,13 @@ LABEL_13:
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if (has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 36) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 36) |= 1u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -283,8 +283,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 5) = self->_cpuPowerMicroWatt;
-  *(a3 + 36) |= 4u;
+  *(to + 5) = self->_cpuPowerMicroWatt;
+  *(to + 36) |= 4u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -298,8 +298,8 @@ LABEL_4:
   }
 
 LABEL_10:
-  *(a3 + 8) = self->_socPowerMicroWatt;
-  *(a3 + 36) |= 0x20u;
+  *(to + 8) = self->_socPowerMicroWatt;
+  *(to + 36) |= 0x20u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -313,8 +313,8 @@ LABEL_5:
   }
 
 LABEL_11:
-  *(a3 + 7) = self->_gpuPowerMicroWatt;
-  *(a3 + 36) |= 0x10u;
+  *(to + 7) = self->_gpuPowerMicroWatt;
+  *(to + 36) |= 0x10u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -325,23 +325,23 @@ LABEL_6:
     }
 
 LABEL_13:
-    *(a3 + 4) = self->_apAwakeDuration;
-    *(a3 + 36) |= 2u;
+    *(to + 4) = self->_apAwakeDuration;
+    *(to + 36) |= 2u;
     return;
   }
 
 LABEL_12:
-  *(a3 + 6) = self->_dramPowerMicroWatt;
-  *(a3 + 36) |= 8u;
+  *(to + 6) = self->_dramPowerMicroWatt;
+  *(to + 36) |= 8u;
   if ((*&self->_has & 2) != 0)
   {
     goto LABEL_13;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -423,20 +423,20 @@ LABEL_7:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     if (*&self->_has)
     {
-      if ((*(a3 + 36) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 36) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_31;
       }
     }
 
-    else if (*(a3 + 36))
+    else if (*(equal + 36))
     {
 LABEL_31:
       LOBYTE(v5) = 0;
@@ -445,60 +445,60 @@ LABEL_31:
 
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 36) & 4) == 0 || self->_cpuPowerMicroWatt != *(a3 + 5))
+      if ((*(equal + 36) & 4) == 0 || self->_cpuPowerMicroWatt != *(equal + 5))
       {
         goto LABEL_31;
       }
     }
 
-    else if ((*(a3 + 36) & 4) != 0)
+    else if ((*(equal + 36) & 4) != 0)
     {
       goto LABEL_31;
     }
 
     if ((*&self->_has & 0x20) != 0)
     {
-      if ((*(a3 + 36) & 0x20) == 0 || self->_socPowerMicroWatt != *(a3 + 8))
+      if ((*(equal + 36) & 0x20) == 0 || self->_socPowerMicroWatt != *(equal + 8))
       {
         goto LABEL_31;
       }
     }
 
-    else if ((*(a3 + 36) & 0x20) != 0)
+    else if ((*(equal + 36) & 0x20) != 0)
     {
       goto LABEL_31;
     }
 
     if ((*&self->_has & 0x10) != 0)
     {
-      if ((*(a3 + 36) & 0x10) == 0 || self->_gpuPowerMicroWatt != *(a3 + 7))
+      if ((*(equal + 36) & 0x10) == 0 || self->_gpuPowerMicroWatt != *(equal + 7))
       {
         goto LABEL_31;
       }
     }
 
-    else if ((*(a3 + 36) & 0x10) != 0)
+    else if ((*(equal + 36) & 0x10) != 0)
     {
       goto LABEL_31;
     }
 
     if ((*&self->_has & 8) != 0)
     {
-      if ((*(a3 + 36) & 8) == 0 || self->_dramPowerMicroWatt != *(a3 + 6))
+      if ((*(equal + 36) & 8) == 0 || self->_dramPowerMicroWatt != *(equal + 6))
       {
         goto LABEL_31;
       }
     }
 
-    else if ((*(a3 + 36) & 8) != 0)
+    else if ((*(equal + 36) & 8) != 0)
     {
       goto LABEL_31;
     }
 
-    LOBYTE(v5) = (*(a3 + 36) & 2) == 0;
+    LOBYTE(v5) = (*(equal + 36) & 2) == 0;
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 36) & 2) == 0 || self->_apAwakeDuration != *(a3 + 4))
+      if ((*(equal + 36) & 2) == 0 || self->_apAwakeDuration != *(equal + 4))
       {
         goto LABEL_31;
       }
@@ -592,14 +592,14 @@ LABEL_7:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 36);
+  v3 = *(from + 36);
   if (v3)
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
-    v3 = *(a3 + 36);
+    v3 = *(from + 36);
     if ((v3 & 4) == 0)
     {
 LABEL_3:
@@ -612,14 +612,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 36) & 4) == 0)
+  else if ((*(from + 36) & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_cpuPowerMicroWatt = *(a3 + 5);
+  self->_cpuPowerMicroWatt = *(from + 5);
   *&self->_has |= 4u;
-  v3 = *(a3 + 36);
+  v3 = *(from + 36);
   if ((v3 & 0x20) == 0)
   {
 LABEL_4:
@@ -632,9 +632,9 @@ LABEL_4:
   }
 
 LABEL_10:
-  self->_socPowerMicroWatt = *(a3 + 8);
+  self->_socPowerMicroWatt = *(from + 8);
   *&self->_has |= 0x20u;
-  v3 = *(a3 + 36);
+  v3 = *(from + 36);
   if ((v3 & 0x10) == 0)
   {
 LABEL_5:
@@ -647,9 +647,9 @@ LABEL_5:
   }
 
 LABEL_11:
-  self->_gpuPowerMicroWatt = *(a3 + 7);
+  self->_gpuPowerMicroWatt = *(from + 7);
   *&self->_has |= 0x10u;
-  v3 = *(a3 + 36);
+  v3 = *(from + 36);
   if ((v3 & 8) == 0)
   {
 LABEL_6:
@@ -659,15 +659,15 @@ LABEL_6:
     }
 
 LABEL_13:
-    self->_apAwakeDuration = *(a3 + 4);
+    self->_apAwakeDuration = *(from + 4);
     *&self->_has |= 2u;
     return;
   }
 
 LABEL_12:
-  self->_dramPowerMicroWatt = *(a3 + 6);
+  self->_dramPowerMicroWatt = *(from + 6);
   *&self->_has |= 8u;
-  if ((*(a3 + 36) & 2) != 0)
+  if ((*(from + 36) & 2) != 0)
   {
     goto LABEL_13;
   }

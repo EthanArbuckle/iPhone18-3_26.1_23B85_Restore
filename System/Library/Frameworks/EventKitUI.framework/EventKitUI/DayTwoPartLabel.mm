@@ -1,33 +1,33 @@
 @interface DayTwoPartLabel
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (DayTwoPartLabel)initWithFrame:(CGRect)a3;
-- (DayTwoPartLabel)initWithFrame:(CGRect)a3 useSeparateFormat:(BOOL)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (DayTwoPartLabel)initWithFrame:(CGRect)frame;
+- (DayTwoPartLabel)initWithFrame:(CGRect)frame useSeparateFormat:(BOOL)format;
 - (UIFont)font;
-- (double)_heightIncludingAscenderDescenderForLabel:(id)a3 outOutsetHeightDiff:(double *)a4;
-- (double)_verticalSpacingForOutsetHeightDiff:(double)a3;
+- (double)_heightIncludingAscenderDescenderForLabel:(id)label outOutsetHeightDiff:(double *)diff;
+- (double)_verticalSpacingForOutsetHeightDiff:(double)diff;
 - (double)baselineOffsetFromBoundsTop;
 - (id)createCopy;
 - (id)dateYearString;
 - (id)dayOfWeekString;
-- (void)_copyLabelParametersFrom:(id)a3 to:(id)a4;
+- (void)_copyLabelParametersFrom:(id)from to:(id)to;
 - (void)_createSubviews;
 - (void)_resetUI;
 - (void)_updateOverlayLabel;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setDate:(id)a3;
-- (void)setDateYearString:(id)a3;
-- (void)setDayOfWeekString:(id)a3;
-- (void)setFont:(id)a3;
-- (void)setShowOverlayDate:(BOOL)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setDate:(id)date;
+- (void)setDateYearString:(id)string;
+- (void)setDayOfWeekString:(id)string;
+- (void)setFont:(id)font;
+- (void)setShowOverlayDate:(BOOL)date;
 @end
 
 @implementation DayTwoPartLabel
 
 - (void)_createSubviews
 {
-  v15 = [MEMORY[0x1E695DF58] currentLocale];
-  v3 = [v15 objectForKey:*MEMORY[0x1E695D9B0]];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v3 = [currentLocale objectForKey:*MEMORY[0x1E695D9B0]];
   if ([MEMORY[0x1E695DF58] characterDirectionForLanguage:v3] == 2)
   {
     self->_useSeparateFormat = 0;
@@ -39,23 +39,23 @@
     firstLabel = self->_firstLabel;
     self->_firstLabel = v4;
 
-    v6 = [(UILabel *)self->_firstLabel layer];
-    [v6 setMasksToBounds:0];
+    layer = [(UILabel *)self->_firstLabel layer];
+    [layer setMasksToBounds:0];
 
     [(UILabel *)self->_firstLabel setTextAlignment:2];
-    v7 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)self->_firstLabel setTextColor:v7];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)self->_firstLabel setTextColor:labelColor];
 
     v8 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     secondLabel = self->_secondLabel;
     self->_secondLabel = v8;
 
-    v10 = [(UILabel *)self->_secondLabel layer];
-    [v10 setMasksToBounds:0];
+    layer2 = [(UILabel *)self->_secondLabel layer];
+    [layer2 setMasksToBounds:0];
 
     [(UILabel *)self->_secondLabel setTextAlignment:0];
-    v11 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)self->_secondLabel setTextColor:v11];
+    labelColor2 = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)self->_secondLabel setTextColor:labelColor2];
 
     [(DayTwoPartLabel *)self addSubview:self->_firstLabel];
     [(DayTwoPartLabel *)self addSubview:self->_secondLabel];
@@ -67,8 +67,8 @@
   entireString = self->_entireString;
   self->_entireString = v12;
 
-  v14 = [(UILabel *)self->_entireString layer];
-  [v14 setMasksToBounds:0];
+  layer3 = [(UILabel *)self->_entireString layer];
+  [layer3 setMasksToBounds:0];
 
   [(UILabel *)self->_entireString setAccessibilityIdentifier:@"current-day"];
   [(UILabel *)self->_entireString setTextAlignment:1];
@@ -88,14 +88,14 @@ LABEL_6:
       v6 = self->_overlayLabel;
       self->_overlayLabel = v5;
 
-      v7 = [(UILabel *)self->_overlayLabel layer];
-      [v7 setMasksToBounds:0];
+      layer = [(UILabel *)self->_overlayLabel layer];
+      [layer setMasksToBounds:0];
 
-      v8 = [(UILabel *)self->_entireString font];
-      [(UILabel *)self->_overlayLabel setFont:v8];
+      font = [(UILabel *)self->_entireString font];
+      [(UILabel *)self->_overlayLabel setFont:font];
 
-      v9 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-      [(UILabel *)self->_overlayLabel setTextColor:v9];
+      secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+      [(UILabel *)self->_overlayLabel setTextColor:secondaryLabelColor];
 
       [(DayTwoPartLabel *)self addSubview:self->_overlayLabel];
     }
@@ -115,8 +115,8 @@ LABEL_6:
     v13 = CUIKGetOverlayCalendar();
     v15 = [v11 yearMonthDayStringForDate:date inCalendar:v13];
 
-    v14 = [(UILabel *)self->_overlayLabel text];
-    LOBYTE(date) = [v14 isEqualToString:v15];
+    text = [(UILabel *)self->_overlayLabel text];
+    LOBYTE(date) = [text isEqualToString:v15];
 
     if ((date & 1) == 0)
     {
@@ -236,28 +236,28 @@ LABEL_6:
   [(UILabel *)overlayLabel setFrame:v36, v37, v33, v34, *&MaxX];
 }
 
-- (DayTwoPartLabel)initWithFrame:(CGRect)a3
+- (DayTwoPartLabel)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = CUIKIsWeekdayNameFirst();
 
   return [(DayTwoPartLabel *)self initWithFrame:v8 useSeparateFormat:x, y, width, height];
 }
 
-- (DayTwoPartLabel)initWithFrame:(CGRect)a3 useSeparateFormat:(BOOL)a4
+- (DayTwoPartLabel)initWithFrame:(CGRect)frame useSeparateFormat:(BOOL)format
 {
   v9.receiver = self;
   v9.super_class = DayTwoPartLabel;
-  v5 = [(DayTwoPartLabel *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(DayTwoPartLabel *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    v5->_useSeparateFormat = a4;
-    v7 = [MEMORY[0x1E69DC888] clearColor];
-    [(DayTwoPartLabel *)v6 setBackgroundColor:v7];
+    v5->_useSeparateFormat = format;
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(DayTwoPartLabel *)v6 setBackgroundColor:clearColor];
 
     [(DayTwoPartLabel *)v6 _createSubviews];
   }
@@ -267,7 +267,7 @@ LABEL_6:
 
 - (void)_resetUI
 {
-  v8 = [(DayTwoPartLabel *)self backgroundColor];
+  backgroundColor = [(DayTwoPartLabel *)self backgroundColor];
   if (self->_useSeparateFormat)
   {
     v3 = &OBJC_IVAR___DayTwoPartLabel__firstLabel;
@@ -278,7 +278,7 @@ LABEL_6:
     v3 = &OBJC_IVAR___DayTwoPartLabel__entireString;
   }
 
-  v4 = [*(&self->super.super.super.isa + *v3) font];
+  font = [*(&self->super.super.super.isa + *v3) font];
   if (self->_useSeparateFormat)
   {
     [(UILabel *)self->_firstLabel removeFromSuperview];
@@ -299,8 +299,8 @@ LABEL_6:
 
   [(DayTwoPartLabel *)self _createSubviews];
   [(DayTwoPartLabel *)self _updateOverlayLabel];
-  [(DayTwoPartLabel *)self setBackgroundColor:v8];
-  [(DayTwoPartLabel *)self setFont:v4];
+  [(DayTwoPartLabel *)self setBackgroundColor:backgroundColor];
+  [(DayTwoPartLabel *)self setFont:font];
   [(DayTwoPartLabel *)self setDate:self->_date];
   [(DayTwoPartLabel *)self setNeedsLayout];
 }
@@ -317,12 +317,12 @@ LABEL_6:
     v2 = &OBJC_IVAR___DayTwoPartLabel__secondLabel;
   }
 
-  v3 = [*(&self->super.super.super.isa + *v2) text];
+  text = [*(&self->super.super.super.isa + *v2) text];
 
-  return v3;
+  return text;
 }
 
-- (void)setDayOfWeekString:(id)a3
+- (void)setDayOfWeekString:(id)string
 {
   if (self->_dayNameOnLeft)
   {
@@ -334,7 +334,7 @@ LABEL_6:
     v3 = &OBJC_IVAR___DayTwoPartLabel__secondLabel;
   }
 
-  [*(&self->super.super.super.isa + *v3) setText:a3];
+  [*(&self->super.super.super.isa + *v3) setText:string];
 }
 
 - (id)dateYearString
@@ -349,12 +349,12 @@ LABEL_6:
     v2 = &OBJC_IVAR___DayTwoPartLabel__firstLabel;
   }
 
-  v3 = [*(&self->super.super.super.isa + *v2) text];
+  text = [*(&self->super.super.super.isa + *v2) text];
 
-  return v3;
+  return text;
 }
 
-- (void)setDateYearString:(id)a3
+- (void)setDateYearString:(id)string
 {
   if (self->_dayNameOnLeft)
   {
@@ -366,19 +366,19 @@ LABEL_6:
     v3 = &OBJC_IVAR___DayTwoPartLabel__firstLabel;
   }
 
-  [*(&self->super.super.super.isa + *v3) setText:a3];
+  [*(&self->super.super.super.isa + *v3) setText:string];
 }
 
-- (void)setDate:(id)a3
+- (void)setDate:(id)date
 {
-  v10 = a3;
-  objc_storeStrong(&self->_date, a3);
+  dateCopy = date;
+  objc_storeStrong(&self->_date, date);
   if (self->_date)
   {
     if (self->_useSeparateFormat)
     {
       v5 = CUIKCalendar();
-      v6 = [v5 components:512 fromDate:v10];
+      v6 = [v5 components:512 fromDate:dateCopy];
 
       [v6 weekday];
       v7 = CUIKStringForDayOfWeek();
@@ -420,29 +420,29 @@ LABEL_6:
   }
 }
 
-- (void)setShowOverlayDate:(BOOL)a3
+- (void)setShowOverlayDate:(BOOL)date
 {
-  if (self->_showOverlayDate != a3)
+  if (self->_showOverlayDate != date)
   {
-    self->_showOverlayDate = a3;
+    self->_showOverlayDate = date;
     [(DayTwoPartLabel *)self _resetUI];
   }
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v4 = a3;
-  v7 = v4;
+  fontCopy = font;
+  v7 = fontCopy;
   if (self->_useSeparateFormat)
   {
-    [(UILabel *)self->_firstLabel setFont:v4];
+    [(UILabel *)self->_firstLabel setFont:fontCopy];
     v5 = v7;
     v6 = &OBJC_IVAR___DayTwoPartLabel__secondLabel;
   }
 
   else
   {
-    v5 = v4;
+    v5 = fontCopy;
     v6 = &OBJC_IVAR___DayTwoPartLabel__entireString;
   }
 
@@ -467,20 +467,20 @@ LABEL_6:
     v2 = &OBJC_IVAR___DayTwoPartLabel__entireString;
   }
 
-  v3 = [*(&self->super.super.super.isa + *v2) font];
+  font = [*(&self->super.super.super.isa + *v2) font];
 
-  return v3;
+  return font;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v6.receiver = self;
   v6.super_class = DayTwoPartLabel;
-  [(DayTwoPartLabel *)&v6 setBackgroundColor:v4];
+  [(DayTwoPartLabel *)&v6 setBackgroundColor:colorCopy];
   if (self->_useSeparateFormat)
   {
-    [(UILabel *)self->_firstLabel setBackgroundColor:v4];
+    [(UILabel *)self->_firstLabel setBackgroundColor:colorCopy];
     v5 = &OBJC_IVAR___DayTwoPartLabel__secondLabel;
   }
 
@@ -489,16 +489,16 @@ LABEL_6:
     v5 = &OBJC_IVAR___DayTwoPartLabel__entireString;
   }
 
-  [*(&self->super.super.super.isa + *v5) setBackgroundColor:v4];
+  [*(&self->super.super.super.isa + *v5) setBackgroundColor:colorCopy];
   if (self->_showOverlayDate)
   {
-    [(UILabel *)self->_overlayLabel setBackgroundColor:v4];
+    [(UILabel *)self->_overlayLabel setBackgroundColor:colorCopy];
   }
 }
 
-- (double)_verticalSpacingForOutsetHeightDiff:(double)a3
+- (double)_verticalSpacingForOutsetHeightDiff:(double)diff
 {
-  v3 = a3 <= 0.0;
+  v3 = diff <= 0.0;
   result = 6.0;
   if (!v3)
   {
@@ -508,24 +508,24 @@ LABEL_6:
   return result;
 }
 
-- (double)_heightIncludingAscenderDescenderForLabel:(id)a3 outOutsetHeightDiff:(double *)a4
+- (double)_heightIncludingAscenderDescenderForLabel:(id)label outOutsetHeightDiff:(double *)diff
 {
-  v5 = a3;
-  [v5 sizeThatFits:{1.79769313e308, 1.79769313e308}];
+  labelCopy = label;
+  [labelCopy sizeThatFits:{1.79769313e308, 1.79769313e308}];
   v7 = v6;
   v8 = objc_alloc(MEMORY[0x1E696AD40]);
-  v9 = [v5 text];
-  v10 = [v8 initWithString:v9];
+  text = [labelCopy text];
+  v10 = [v8 initWithString:text];
 
   v11 = *MEMORY[0x1E69DB648];
-  v12 = [v5 font];
+  font = [labelCopy font];
 
-  [v10 addAttribute:v11 value:v12 range:{0, objc_msgSend(v10, "length")}];
+  [v10 addAttribute:v11 value:font range:{0, objc_msgSend(v10, "length")}];
   [v10 boundingRectWithSize:8 options:0 context:{1.79769313e308, 1.79769313e308}];
   v15 = v14 - v13;
-  if (a4)
+  if (diff)
   {
-    *a4 = v15 - v7;
+    *diff = v15 - v7;
   }
 
   v16 = fmax(v7, v15);
@@ -533,7 +533,7 @@ LABEL_6:
   return v16;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   if (self->_useSeparateFormat)
   {
@@ -558,9 +558,9 @@ LABEL_6:
     overlayLabel = self->_overlayLabel;
     if (overlayLabel)
     {
-      v15 = [(UILabel *)overlayLabel text];
+      text = [(UILabel *)overlayLabel text];
 
-      if (v15)
+      if (text)
       {
         [(UILabel *)self->_overlayLabel sizeThatFits:1.79769313e308, 1.79769313e308];
         v17 = v16;
@@ -586,8 +586,8 @@ LABEL_6:
   v3 = objc_alloc_init(DayTwoPartLabel);
   [(DayTwoPartLabel *)self frame];
   [(DayTwoPartLabel *)v3 setFrame:?];
-  v4 = [(DayTwoPartLabel *)self backgroundColor];
-  [(DayTwoPartLabel *)v3 setBackgroundColor:v4];
+  backgroundColor = [(DayTwoPartLabel *)self backgroundColor];
+  [(DayTwoPartLabel *)v3 setBackgroundColor:backgroundColor];
 
   v3->_showOverlayDate = self->_showOverlayDate;
   objc_storeStrong(&v3->_date, self->_date);
@@ -603,21 +603,21 @@ LABEL_6:
   return v3;
 }
 
-- (void)_copyLabelParametersFrom:(id)a3 to:(id)a4
+- (void)_copyLabelParametersFrom:(id)from to:(id)to
 {
-  v5 = a4;
-  v6 = a3;
-  [v6 frame];
-  [v5 setFrame:?];
-  v7 = [v6 font];
-  [v5 setFont:v7];
+  toCopy = to;
+  fromCopy = from;
+  [fromCopy frame];
+  [toCopy setFrame:?];
+  font = [fromCopy font];
+  [toCopy setFont:font];
 
-  v8 = [v6 text];
-  [v5 setText:v8];
+  text = [fromCopy text];
+  [toCopy setText:text];
 
-  v9 = [v6 backgroundColor];
+  backgroundColor = [fromCopy backgroundColor];
 
-  [v5 setBackgroundColor:v9];
+  [toCopy setBackgroundColor:backgroundColor];
 }
 
 - (double)baselineOffsetFromBoundsTop

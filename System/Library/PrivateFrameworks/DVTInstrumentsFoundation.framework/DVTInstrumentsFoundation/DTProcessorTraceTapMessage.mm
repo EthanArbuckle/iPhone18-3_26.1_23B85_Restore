@@ -1,19 +1,19 @@
 @interface DTProcessorTraceTapMessage
 - (DTProcessorTraceTapMessage)init;
-- (id)initAsKind:(int)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)initAsKind:(int)kind;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DTProcessorTraceTapMessage
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_2480257F8(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_2480257F8(coderCopy);
 }
 
-- (id)initAsKind:(int)a3
+- (id)initAsKind:(int)kind
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

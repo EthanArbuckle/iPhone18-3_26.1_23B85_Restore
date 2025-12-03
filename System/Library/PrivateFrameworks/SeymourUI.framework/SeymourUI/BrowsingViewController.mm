@@ -1,12 +1,12 @@
 @interface BrowsingViewController
-- (_TtC9SeymourUI22BrowsingViewController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4;
-- (_TtC9SeymourUI22BrowsingViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC9SeymourUI22BrowsingViewController)initWithRootViewController:(id)a3;
+- (_TtC9SeymourUI22BrowsingViewController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass;
+- (_TtC9SeymourUI22BrowsingViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC9SeymourUI22BrowsingViewController)initWithRootViewController:(id)controller;
 - (int64_t)preferredStatusBarStyle;
 - (void)scrollToTop;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation BrowsingViewController
@@ -23,66 +23,66 @@
   swift_unknownObjectWeakAssign();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_20C12986C(a3);
+  selfCopy = self;
+  sub_20C12986C(appear);
 }
 
 - (int64_t)preferredStatusBarStyle
 {
-  v2 = self;
-  v3 = [(BrowsingViewController *)v2 topViewController];
-  if (v3)
+  selfCopy = self;
+  topViewController = [(BrowsingViewController *)selfCopy topViewController];
+  if (topViewController)
   {
-    v4 = v3;
-    v5 = [v3 preferredStatusBarStyle];
+    v4 = topViewController;
+    preferredStatusBarStyle = [topViewController preferredStatusBarStyle];
   }
 
   else
   {
-    v5 = 1;
+    preferredStatusBarStyle = 1;
   }
 
-  return v5;
+  return preferredStatusBarStyle;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = type metadata accessor for BrowsingViewController();
   swift_unknownObjectRetain();
   v7 = v9.receiver;
-  [(BrowsingViewController *)&v9 viewWillTransitionToSize:a4 withTransitionCoordinator:width, height];
+  [(BrowsingViewController *)&v9 viewWillTransitionToSize:coordinator withTransitionCoordinator:width, height];
   v8 = *&v7[OBJC_IVAR____TtC9SeymourUI22BrowsingViewController_paletteViewController];
-  [v8 viewWillTransitionToSize:a4 withTransitionCoordinator:{width, height, v9.receiver, v9.super_class}];
+  [v8 viewWillTransitionToSize:coordinator withTransitionCoordinator:{width, height, v9.receiver, v9.super_class}];
 
   swift_unknownObjectRelease();
 }
 
 - (void)scrollToTop
 {
-  v2 = self;
+  selfCopy = self;
   sub_20C12AAB8();
 }
 
-- (_TtC9SeymourUI22BrowsingViewController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4
+- (_TtC9SeymourUI22BrowsingViewController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC9SeymourUI22BrowsingViewController)initWithRootViewController:(id)a3
+- (_TtC9SeymourUI22BrowsingViewController)initWithRootViewController:(id)controller
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC9SeymourUI22BrowsingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9SeymourUI22BrowsingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,12 +1,12 @@
 @interface NSUnitConverterLinear
-- (BOOL)isEqual:(id)a3;
-- (NSUnitConverterLinear)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NSUnitConverterLinear)initWithCoder:(id)coder;
 - (NSUnitConverterLinear)initWithCoefficient:(double)coefficient constant:(double)constant;
-- (double)baseUnitValueFromValue:(double)a3;
-- (double)valueFromBaseUnitValue:(double)a3;
+- (double)baseUnitValueFromValue:(double)value;
+- (double)valueFromBaseUnitValue:(double)value;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSUnitConverterLinear
@@ -85,32 +85,32 @@
   return result;
 }
 
-- (double)baseUnitValueFromValue:(double)a3
+- (double)baseUnitValueFromValue:(double)value
 {
   [(NSUnitConverterLinear *)self coefficient];
   v6 = v5;
   [(NSUnitConverterLinear *)self constant];
-  return v7 + a3 * v6;
+  return v7 + value * v6;
 }
 
-- (double)valueFromBaseUnitValue:(double)a3
+- (double)valueFromBaseUnitValue:(double)value
 {
   [(NSUnitConverterLinear *)self constant];
-  v6 = a3 - v5;
+  v6 = value - v5;
   [(NSUnitConverterLinear *)self coefficient];
   return v6 / v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
   [(NSUnitConverterLinear *)self coefficient];
   v6 = v5;
-  [a3 coefficient];
+  [equal coefficient];
   if (v6 != v7)
   {
     return 0;
@@ -118,7 +118,7 @@
 
   [(NSUnitConverterLinear *)self constant];
   v10 = v9;
-  [a3 constant];
+  [equal constant];
   return v10 == v11;
 }
 
@@ -134,33 +134,33 @@
   return [v3 stringByAppendingString:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @" coefficient = %f, constant = %f", v5, v6)}];
 }
 
-- (NSUnitConverterLinear)initWithCoder:(id)a3
+- (NSUnitConverterLinear)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
 
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSUnitConverterLinear cannot be decoded by non-keyed archivers" userInfo:0]);
   }
 
-  [a3 decodeDoubleForKey:@"NS.coefficient"];
+  [coder decodeDoubleForKey:@"NS.coefficient"];
   v6 = v5;
-  [a3 decodeDoubleForKey:@"NS.constant"];
+  [coder decodeDoubleForKey:@"NS.constant"];
 
   return [(NSUnitConverterLinear *)self initWithCoefficient:v6 constant:v7];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (![a3 allowsKeyedCoding])
+  if (![coder allowsKeyedCoding])
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSUnitConverterLinear encoder does not allow non-keyed coding!" userInfo:0]);
   }
 
   [(NSUnitConverterLinear *)self coefficient];
-  [a3 encodeDouble:@"NS.coefficient" forKey:?];
+  [coder encodeDouble:@"NS.coefficient" forKey:?];
   [(NSUnitConverterLinear *)self constant];
 
-  [a3 encodeDouble:@"NS.constant" forKey:?];
+  [coder encodeDouble:@"NS.constant" forKey:?];
 }
 
 @end

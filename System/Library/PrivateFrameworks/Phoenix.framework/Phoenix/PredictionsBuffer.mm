@@ -1,46 +1,46 @@
 @interface PredictionsBuffer
-- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)bestPredictionUsingPolicyOption:(int)a3;
-- (PredictionsBuffer)initWithConfiguration:(id)a3;
+- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)bestPredictionUsingPolicyOption:(int)option;
+- (PredictionsBuffer)initWithConfiguration:(id)configuration;
 - (id)description;
 - (id)logBuffer;
-- (void)addPrediction:(id)a3;
+- (void)addPrediction:(id)prediction;
 - (void)reset;
 @end
 
 @implementation PredictionsBuffer
 
-- (PredictionsBuffer)initWithConfiguration:(id)a3
+- (PredictionsBuffer)initWithConfiguration:(id)configuration
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v13;
-  v13 = 0;
+  objc_storeStrong(location, configuration);
+  v3 = selfCopy;
+  selfCopy = 0;
   v11.receiver = v3;
   v11.super_class = PredictionsBuffer;
-  v13 = [(PredictionsBuffer *)&v11 init];
-  objc_storeStrong(&v13, v13);
-  if (v13)
+  selfCopy = [(PredictionsBuffer *)&v11 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     v10 = objc_alloc(MEMORY[0x277CBEB18]);
     v4 = [v10 initWithCapacity:{objc_msgSend(location[0], "maxPredictionBufferSize")}];
-    predictions = v13->_predictions;
-    v13->_predictions = v4;
+    predictions = selfCopy->_predictions;
+    selfCopy->_predictions = v4;
     MEMORY[0x277D82BD8](predictions);
-    objc_storeStrong(&v13->_configuration, location[0]);
+    objc_storeStrong(&selfCopy->_configuration, location[0]);
     v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:3];
-    counts = v13->_counts;
-    v13->_counts = v6;
+    counts = selfCopy->_counts;
+    selfCopy->_counts = v6;
     MEMORY[0x277D82BD8](counts);
     [NSMutableArray setObject:"setObject:atIndexedSubscript:" atIndexedSubscript:?];
-    [(NSMutableArray *)v13->_counts setObject:&unk_287037BD0 atIndexedSubscript:1];
-    [(NSMutableArray *)v13->_counts setObject:&unk_287037BD0 atIndexedSubscript:2];
+    [(NSMutableArray *)selfCopy->_counts setObject:&unk_287037BD0 atIndexedSubscript:1];
+    [(NSMutableArray *)selfCopy->_counts setObject:&unk_287037BD0 atIndexedSubscript:2];
   }
 
-  v9 = MEMORY[0x277D82BE0](v13);
+  v9 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v13, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v9;
 }
 
@@ -52,30 +52,30 @@
   [(NSMutableArray *)self->_counts setObject:&unk_287037BD0 atIndexedSubscript:2];
 }
 
-- (void)addPrediction:(id)a3
+- (void)addPrediction:(id)prediction
 {
-  v48 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v45 = [(NSMutableArray *)v48->_predictions count];
-  if (v45 >= [(AXPhoenixClassifierConfiguration *)v48->_configuration maxPredictionBufferSize])
+  objc_storeStrong(location, prediction);
+  v45 = [(NSMutableArray *)selfCopy->_predictions count];
+  if (v45 >= [(AXPhoenixClassifierConfiguration *)selfCopy->_configuration maxPredictionBufferSize])
   {
-    v46 = [(NSMutableArray *)v48->_predictions objectAtIndex:0];
-    v44 = [v46 predictedClass];
-    if (v44)
+    v46 = [(NSMutableArray *)selfCopy->_predictions objectAtIndex:0];
+    predictedClass = [v46 predictedClass];
+    if (predictedClass)
     {
-      if (v44 == 1)
+      if (predictedClass == 1)
       {
         [v46 maxConfidence];
         v39 = v7;
-        [(AXPhoenixClassifierConfiguration *)v48->_configuration predictionConfidenceThreshold];
+        [(AXPhoenixClassifierConfiguration *)selfCopy->_configuration predictionConfidenceThreshold];
         v9 = v8;
         v3 = v39;
         if (v39 > v9)
         {
           v36 = MEMORY[0x277CCABB0];
-          v38 = [(NSMutableArray *)v48->_counts objectAtIndex:v39];
+          v38 = [(NSMutableArray *)selfCopy->_counts objectAtIndex:v39];
           v37 = [v36 numberWithUnsignedInteger:{objc_msgSend(v38, "unsignedIntegerValue") - 1}];
           [NSMutableArray setObject:"setObject:atIndexedSubscript:" atIndexedSubscript:?];
           MEMORY[0x277D82BD8](v37);
@@ -83,17 +83,17 @@
         }
       }
 
-      else if (v44 == 2)
+      else if (predictedClass == 2)
       {
         [v46 maxConfidence];
         v35 = v10;
-        [(AXPhoenixClassifierConfiguration *)v48->_configuration predictionConfidenceThreshold];
+        [(AXPhoenixClassifierConfiguration *)selfCopy->_configuration predictionConfidenceThreshold];
         v12 = v11;
         v3 = v35;
         if (v35 > v12)
         {
           v32 = MEMORY[0x277CCABB0];
-          v34 = [(NSMutableArray *)v48->_counts objectAtIndex:v35];
+          v34 = [(NSMutableArray *)selfCopy->_counts objectAtIndex:v35];
           v33 = [v32 numberWithUnsignedInteger:{objc_msgSend(v34, "unsignedIntegerValue") - 1}];
           [NSMutableArray setObject:"setObject:atIndexedSubscript:" atIndexedSubscript:?];
           MEMORY[0x277D82BD8](v33);
@@ -106,13 +106,13 @@
     {
       [v46 maxConfidence];
       v43 = v4;
-      [(AXPhoenixClassifierConfiguration *)v48->_configuration predictionConfidenceThreshold];
+      [(AXPhoenixClassifierConfiguration *)selfCopy->_configuration predictionConfidenceThreshold];
       v6 = v5;
       v3 = v43;
       if (v43 > v6)
       {
         v40 = MEMORY[0x277CCABB0];
-        v42 = [(NSMutableArray *)v48->_counts objectAtIndex:v43];
+        v42 = [(NSMutableArray *)selfCopy->_counts objectAtIndex:v43];
         v41 = [v40 numberWithUnsignedInteger:{objc_msgSend(v42, "unsignedIntegerValue") - 1}];
         [NSMutableArray setObject:"setObject:atIndexedSubscript:" atIndexedSubscript:?];
         MEMORY[0x277D82BD8](v41);
@@ -120,23 +120,23 @@
       }
     }
 
-    [(NSMutableArray *)v48->_predictions removeObjectAtIndex:0, v3];
+    [(NSMutableArray *)selfCopy->_predictions removeObjectAtIndex:0, v3];
     objc_storeStrong(&v46, 0);
   }
 
-  [(NSMutableArray *)v48->_predictions addObject:location[0]];
-  v31 = [location[0] predictedClass];
-  if (v31)
+  [(NSMutableArray *)selfCopy->_predictions addObject:location[0]];
+  predictedClass2 = [location[0] predictedClass];
+  if (predictedClass2)
   {
-    if (v31 == 1)
+    if (predictedClass2 == 1)
     {
       [location[0] maxConfidence];
       v26 = v15;
-      [(AXPhoenixClassifierConfiguration *)v48->_configuration predictionConfidenceThreshold];
+      [(AXPhoenixClassifierConfiguration *)selfCopy->_configuration predictionConfidenceThreshold];
       if (v26 > v16)
       {
         v23 = MEMORY[0x277CCABB0];
-        v25 = [(NSMutableArray *)v48->_counts objectAtIndex:v26];
+        v25 = [(NSMutableArray *)selfCopy->_counts objectAtIndex:v26];
         v24 = [v23 numberWithUnsignedInteger:{objc_msgSend(v25, "unsignedIntegerValue") + 1}];
         [NSMutableArray setObject:"setObject:atIndexedSubscript:" atIndexedSubscript:?];
         MEMORY[0x277D82BD8](v24);
@@ -144,15 +144,15 @@
       }
     }
 
-    else if (v31 == 2)
+    else if (predictedClass2 == 2)
     {
       [location[0] maxConfidence];
       v22 = v17;
-      [(AXPhoenixClassifierConfiguration *)v48->_configuration predictionConfidenceThreshold];
+      [(AXPhoenixClassifierConfiguration *)selfCopy->_configuration predictionConfidenceThreshold];
       if (v22 > v18)
       {
         v19 = MEMORY[0x277CCABB0];
-        v21 = [(NSMutableArray *)v48->_counts objectAtIndex:v22];
+        v21 = [(NSMutableArray *)selfCopy->_counts objectAtIndex:v22];
         v20 = [v19 numberWithUnsignedInteger:{objc_msgSend(v21, "unsignedIntegerValue") + 1}];
         [NSMutableArray setObject:"setObject:atIndexedSubscript:" atIndexedSubscript:?];
         MEMORY[0x277D82BD8](v20);
@@ -165,11 +165,11 @@
   {
     [location[0] maxConfidence];
     v30 = v13;
-    [(AXPhoenixClassifierConfiguration *)v48->_configuration predictionConfidenceThreshold];
+    [(AXPhoenixClassifierConfiguration *)selfCopy->_configuration predictionConfidenceThreshold];
     if (v30 > v14)
     {
       v27 = MEMORY[0x277CCABB0];
-      v29 = [(NSMutableArray *)v48->_counts objectAtIndex:v30];
+      v29 = [(NSMutableArray *)selfCopy->_counts objectAtIndex:v30];
       v28 = [v27 numberWithUnsignedInteger:{objc_msgSend(v29, "unsignedIntegerValue") + 1}];
       [NSMutableArray setObject:"setObject:atIndexedSubscript:" atIndexedSubscript:?];
       MEMORY[0x277D82BD8](v28);
@@ -180,34 +180,34 @@
   objc_storeStrong(location, 0);
 }
 
-- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)bestPredictionUsingPolicyOption:(int)a3
+- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)bestPredictionUsingPolicyOption:(int)option
 {
-  v13 = a3;
+  optionCopy = option;
   v12 = 0;
   v9 = [(NSMutableArray *)self->_counts objectAtIndexedSubscript:0];
-  v10 = [v9 unsignedIntegerValue];
+  unsignedIntegerValue = [v9 unsignedIntegerValue];
   MEMORY[0x277D82BD8](v9);
-  v11 = v10;
-  if (v13)
+  v11 = unsignedIntegerValue;
+  if (optionCopy)
   {
     v7 = [(NSMutableArray *)self->_counts objectAtIndexedSubscript:1];
-    v8 = [v7 unsignedIntegerValue];
+    unsignedIntegerValue2 = [v7 unsignedIntegerValue];
     MEMORY[0x277D82BD8](v7);
-    if (v8 > v10)
+    if (unsignedIntegerValue2 > unsignedIntegerValue)
     {
-      v11 = v8;
+      v11 = unsignedIntegerValue2;
       v12 = 1;
     }
   }
 
-  if ((v13 & 2) != 0)
+  if ((optionCopy & 2) != 0)
   {
     v5 = [(NSMutableArray *)self->_counts objectAtIndexedSubscript:2];
-    v6 = [v5 unsignedIntegerValue];
+    unsignedIntegerValue3 = [v5 unsignedIntegerValue];
     MEMORY[0x277D82BD8](v5);
-    if (v6 > v11)
+    if (unsignedIntegerValue3 > v11)
     {
-      v11 = v6;
+      v11 = unsignedIntegerValue3;
       v12 = 2;
     }
   }
@@ -221,10 +221,10 @@
 
 - (id)logBuffer
 {
-  v7 = self;
+  selfCopy = self;
   v6[1] = a2;
   v6[0] = objc_alloc_init(MEMORY[0x277CBEB18]);
-  predictions = v7->_predictions;
+  predictions = selfCopy->_predictions;
   v5 = MEMORY[0x277D82BE0](v6[0]);
   [(NSMutableArray *)predictions enumerateObjectsUsingBlock:?];
   v4 = MEMORY[0x277D82BE0](v6[0]);
@@ -275,11 +275,11 @@ void __30__PredictionsBuffer_logBuffer__block_invoke(id *a1, void *a2, void *a3,
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v5 = [(PredictionsBuffer *)self logBuffer];
-  v4 = [v5 componentsJoinedByString:@":"];
+  logBuffer = [(PredictionsBuffer *)self logBuffer];
+  v4 = [logBuffer componentsJoinedByString:@":"];
   v6 = [v3 stringWithFormat:@"predictions[none, double, triple, class]: %@", v4];
   MEMORY[0x277D82BD8](v4);
-  MEMORY[0x277D82BD8](v5);
+  MEMORY[0x277D82BD8](logBuffer);
 
   return v6;
 }

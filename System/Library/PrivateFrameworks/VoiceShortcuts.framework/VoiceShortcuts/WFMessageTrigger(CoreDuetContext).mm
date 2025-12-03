@@ -6,17 +6,17 @@
 
 - (id)contextStorePredicate
 {
-  v2 = [a1 contextStoreKeyPathForCurrentState];
+  contextStoreKeyPathForCurrentState = [self contextStoreKeyPathForCurrentState];
   v3 = MEMORY[0x277CFE360];
-  v4 = [a1 selectedContents];
-  v5 = [MEMORY[0x277CFE338] contentKey];
-  v6 = [a1 selectedContents];
-  v7 = [a1 selectedSendersStrings];
-  v8 = [a1 selectedSendersStrings];
-  v9 = [a1 selectedSendersStrings];
-  v10 = [MEMORY[0x277CFE338] senderHandlesKey];
-  v11 = [MEMORY[0x277CFE338] senderContactIDKey];
-  v12 = [v3 predicateForKeyPath:v2 withFormat:@"SUBQUERY(SELF.%@.value, $message, (%@ = NULL OR $message.%K CONTAINS[cd] %@) AND                 (%@ = NULL OR %@.@count = 0 OR SUBQUERY(%@, $sender, $sender IN[cd] $message.%K OR $message.%K = $sender).@count > 0)            ).@count > 0", v2, v4, v5, v6, v7, v8, v9, v10, v11];
+  selectedContents = [self selectedContents];
+  contentKey = [MEMORY[0x277CFE338] contentKey];
+  selectedContents2 = [self selectedContents];
+  selectedSendersStrings = [self selectedSendersStrings];
+  selectedSendersStrings2 = [self selectedSendersStrings];
+  selectedSendersStrings3 = [self selectedSendersStrings];
+  senderHandlesKey = [MEMORY[0x277CFE338] senderHandlesKey];
+  senderContactIDKey = [MEMORY[0x277CFE338] senderContactIDKey];
+  v12 = [v3 predicateForKeyPath:contextStoreKeyPathForCurrentState withFormat:@"SUBQUERY(SELF.%@.value, $message, (%@ = NULL OR $message.%K CONTAINS[cd] %@) AND                 (%@ = NULL OR %@.@count = 0 OR SUBQUERY(%@, $sender, $sender IN[cd] $message.%K OR $message.%K = $sender).@count > 0)            ).@count > 0", contextStoreKeyPathForCurrentState, selectedContents, contentKey, selectedContents2, selectedSendersStrings, selectedSendersStrings2, selectedSendersStrings3, senderHandlesKey, senderContactIDKey];
 
   [v12 setEvaluateOnEveryKeyPathUpdate:1];
 

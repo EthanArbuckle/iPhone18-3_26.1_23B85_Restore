@@ -1,14 +1,14 @@
 @interface _UIStatusBarDataAggregatorUpdate
-+ (id)updateWithEntry:(id)a3;
++ (id)updateWithEntry:(id)entry;
 @end
 
 @implementation _UIStatusBarDataAggregatorUpdate
 
-+ (id)updateWithEntry:(id)a3
++ (id)updateWithEntry:(id)entry
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  [v5 setEntry:v4];
+  entryCopy = entry;
+  v5 = objc_alloc_init(self);
+  [v5 setEntry:entryCopy];
 
   [v5 setAnimated:{+[UIView areAnimationsEnabled](UIView, "areAnimationsEnabled")}];
 

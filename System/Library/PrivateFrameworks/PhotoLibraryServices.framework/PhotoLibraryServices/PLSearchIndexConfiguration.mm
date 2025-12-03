@@ -1,12 +1,12 @@
 @interface PLSearchIndexConfiguration
 + (BOOL)shouldIndexFilenames;
 + (unint64_t)currentEmbeddingModelVersion;
-+ (void)setShouldIndexFilenames:(BOOL)a3;
++ (void)setShouldIndexFilenames:(BOOL)filenames;
 - (CSUSearchableKnowledgeObjectStore)csuTaxonomyObjectStore;
-- (PLSearchIndexConfiguration)initWithPathManager:(id)a3;
+- (PLSearchIndexConfiguration)initWithPathManager:(id)manager;
 - (PLSearchIndexSceneTaxonomyProvider)sceneTaxonomyProvider;
 - (PLSearchIndexingContext)indexingContext;
-- (void)inLibraryPerform_refreshSharedLibraryEnabledWithManagedObjectContext:(id)a3;
+- (void)inLibraryPerform_refreshSharedLibraryEnabledWithManagedObjectContext:(id)context;
 - (void)releaseIndexingContext;
 @end
 
@@ -18,9 +18,9 @@
   self->_indexingContext = 0;
 }
 
-- (void)inLibraryPerform_refreshSharedLibraryEnabledWithManagedObjectContext:(id)a3
+- (void)inLibraryPerform_refreshSharedLibraryEnabledWithManagedObjectContext:(id)context
 {
-  v4 = [PLLibraryScope activeLibraryScopeInManagedObjectContext:a3];
+  v4 = [PLLibraryScope activeLibraryScopeInManagedObjectContext:context];
   self->_isSharedLibraryEnabled = v4 != 0;
 }
 
@@ -30,9 +30,9 @@
   csuTaxonomyObjectStore = self->_csuTaxonomyObjectStore;
   if (!csuTaxonomyObjectStore)
   {
-    v4 = [(PLSearchIndexConfiguration *)self pathManager];
+    pathManager = [(PLSearchIndexConfiguration *)self pathManager];
     v13 = 0;
-    v5 = [v4 internalDirectoryWithSubType:6 additionalPathComponents:0 createIfNeeded:0 error:&v13];
+    v5 = [pathManager internalDirectoryWithSubType:6 additionalPathComponents:0 createIfNeeded:0 error:&v13];
     v6 = v13;
 
     v12 = v6;
@@ -82,11 +82,11 @@
     v4 = objc_alloc_init(PLSearchIndexDateFormatter);
     v5 = objc_alloc_init(PLSearchIndexCountrySynonymProvider);
     v6 = [PLSearchIndexingContext alloc];
-    v7 = [(PLSearchIndexConfiguration *)self sceneTaxonomyProvider];
-    v8 = [(PLSearchIndexConfiguration *)self csuTaxonomyObjectStore];
+    sceneTaxonomyProvider = [(PLSearchIndexConfiguration *)self sceneTaxonomyProvider];
+    csuTaxonomyObjectStore = [(PLSearchIndexConfiguration *)self csuTaxonomyObjectStore];
     v9 = +[PLSearchIndexConfiguration locale];
     v10 = +[PLSearchIndexConfiguration calendar];
-    v11 = [(PLSearchIndexingContext *)v6 initWithSceneTaxonomyProvider:v7 csuTaxonomyObjectStore:v8 locale:v9 calendar:v10 indexDateFormatter:v4 countrySynonymProvider:v5 delegate:self];
+    v11 = [(PLSearchIndexingContext *)v6 initWithSceneTaxonomyProvider:sceneTaxonomyProvider csuTaxonomyObjectStore:csuTaxonomyObjectStore locale:v9 calendar:v10 indexDateFormatter:v4 countrySynonymProvider:v5 delegate:self];
     v12 = self->_indexingContext;
     self->_indexingContext = v11;
 
@@ -96,13 +96,13 @@
   return indexingContext;
 }
 
-- (PLSearchIndexConfiguration)initWithPathManager:(id)a3
+- (PLSearchIndexConfiguration)initWithPathManager:(id)manager
 {
-  v6 = a3;
-  if (!v6)
+  managerCopy = manager;
+  if (!managerCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PLSearchIndexConfiguration.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"pathManager"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLSearchIndexConfiguration.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"pathManager"}];
   }
 
   v11.receiver = self;
@@ -111,15 +111,15 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_pathManager, a3);
+    objc_storeStrong(&v7->_pathManager, manager);
   }
 
   return v8;
 }
 
-+ (void)setShouldIndexFilenames:(BOOL)a3
++ (void)setShouldIndexFilenames:(BOOL)filenames
 {
-  v3 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v3 = [MEMORY[0x1E696AD98] numberWithBool:filenames];
   v4 = _shouldIndexFilenamesNumber;
   _shouldIndexFilenamesNumber = v3;
 }

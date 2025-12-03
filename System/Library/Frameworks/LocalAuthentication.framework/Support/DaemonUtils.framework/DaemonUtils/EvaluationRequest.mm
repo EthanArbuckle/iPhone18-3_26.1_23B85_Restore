@@ -3,14 +3,14 @@
 - (BOOL)isInteractive;
 - (BOOL)isPurposeInAppPayment;
 - (BOOL)isRecoveringFromBiolockout;
-- (EvaluationRequest)initWithAcl:(id)a3 operation:(id)a4 options:(id)a5 uiDelegate:(id)a6 contextID:(id)a7;
-- (EvaluationRequest)initWithPolicy:(int64_t)a3 options:(id)a4 uiDelegate:(id)a5 contextID:(id)a6;
+- (EvaluationRequest)initWithAcl:(id)acl operation:(id)operation options:(id)options uiDelegate:(id)delegate contextID:(id)d;
+- (EvaluationRequest)initWithPolicy:(int64_t)policy options:(id)options uiDelegate:(id)delegate contextID:(id)d;
 - (LACXPCClient)client;
 - (id)initSimulatedForBiolockoutPreflight;
 - (id)shallowCopy;
 - (void)_updateDTOStatus;
-- (void)updateOptions:(id)a3;
-- (void)updatePayload:(id)a3;
+- (void)updateOptions:(id)options;
+- (void)updatePayload:(id)payload;
 @end
 
 @implementation EvaluationRequest
@@ -24,7 +24,7 @@
 
 + (id)current
 {
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___EvaluationRequest;
   v2 = objc_msgSendSuper2(&v6, sel_current);
   objc_opt_class();
@@ -46,16 +46,16 @@
 - (BOOL)isInteractive
 {
   v2 = [(NSDictionary *)self->_options objectForKeyedSubscript:&unk_284B71DC8];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3 ^ 1;
+  return bOOLValue ^ 1;
 }
 
-- (EvaluationRequest)initWithPolicy:(int64_t)a3 options:(id)a4 uiDelegate:(id)a5 contextID:(id)a6
+- (EvaluationRequest)initWithPolicy:(int64_t)policy options:(id)options uiDelegate:(id)delegate contextID:(id)d
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  optionsCopy = options;
+  delegateCopy = delegate;
+  dCopy = d;
   v13 = +[Caller current];
   v22.receiver = self;
   v22.super_class = EvaluationRequest;
@@ -63,9 +63,9 @@
 
   if (v14)
   {
-    v14->_policy = a3;
-    v14->_customUI = v11 != 0;
-    [(EvaluationRequest *)v14 updateOptions:v10];
+    v14->_policy = policy;
+    v14->_customUI = delegateCopy != 0;
+    [(EvaluationRequest *)v14 updateOptions:optionsCopy];
     policy = v14->_policy;
     options = v14->_options;
     v17 = LALogForPolicy();
@@ -78,19 +78,19 @@
     analytics = v14->_analytics;
     v14->_analytics = v19;
 
-    objc_storeStrong(&v14->_contextID, a6);
+    objc_storeStrong(&v14->_contextID, d);
   }
 
   return v14;
 }
 
-- (EvaluationRequest)initWithAcl:(id)a3 operation:(id)a4 options:(id)a5 uiDelegate:(id)a6 contextID:(id)a7
+- (EvaluationRequest)initWithAcl:(id)acl operation:(id)operation options:(id)options uiDelegate:(id)delegate contextID:(id)d
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  aclCopy = acl;
+  operationCopy = operation;
+  optionsCopy = options;
+  delegateCopy = delegate;
+  dCopy = d;
   v18 = +[Caller current];
   v26.receiver = self;
   v26.super_class = EvaluationRequest;
@@ -98,10 +98,10 @@
 
   if (v19)
   {
-    objc_storeStrong(&v19->_acl, a3);
-    objc_storeStrong(&v19->_aclOperation, a4);
-    v19->_customUI = v16 != 0;
-    [(EvaluationRequest *)v19 updateOptions:v15];
+    objc_storeStrong(&v19->_acl, acl);
+    objc_storeStrong(&v19->_aclOperation, operation);
+    v19->_customUI = delegateCopy != 0;
+    [(EvaluationRequest *)v19 updateOptions:optionsCopy];
     options = v19->_options;
     v21 = LALogForPolicy();
     [(Request *)v19 setLog:v21];
@@ -113,7 +113,7 @@
     analytics = v19->_analytics;
     v19->_analytics = v23;
 
-    objc_storeStrong(&v19->_contextID, a7);
+    objc_storeStrong(&v19->_contextID, d);
   }
 
   return v19;
@@ -134,27 +134,27 @@
   return v4;
 }
 
-- (void)updateOptions:(id)a3
+- (void)updateOptions:(id)options
 {
-  v21 = a3;
-  objc_storeStrong(&self->_options, a3);
-  v5 = [v21 objectForKeyedSubscript:&unk_284B71D98];
+  optionsCopy = options;
+  objc_storeStrong(&self->_options, options);
+  v5 = [optionsCopy objectForKeyedSubscript:&unk_284B71D98];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v7 = 0;
+    bOOLValue = 0;
   }
 
   v8 = [MEMORY[0x277D240C0] isApplePayPolicy:{-[EvaluationRequest policy](self, "policy")}];
-  v9 = [(EvaluationRequest *)self options];
+  options = [(EvaluationRequest *)self options];
   v10 = [MEMORY[0x277CCABB0] numberWithInteger:*MEMORY[0x277D23FB8]];
-  v11 = [v9 objectForKeyedSubscript:v10];
-  v12 = [v11 BOOLValue];
+  v11 = [options objectForKeyedSubscript:v10];
+  bOOLValue2 = [v11 BOOLValue];
 
   v13 = 2;
   if (!v8)
@@ -162,15 +162,15 @@
     v13 = 0;
   }
 
-  v14 = v13 | v7;
+  v14 = v13 | bOOLValue;
   v15 = 8;
-  if (!v12)
+  if (!bOOLValue2)
   {
     v15 = 0;
   }
 
   self->_purpose = v14 | v15;
-  v16 = [v21 objectForKeyedSubscript:&unk_284B71DB0];
+  v16 = [optionsCopy objectForKeyedSubscript:&unk_284B71DB0];
   v17 = v16;
   if (v16)
   {
@@ -180,8 +180,8 @@
   else
   {
     v18 = MEMORY[0x277CCABB0];
-    v19 = [(Request *)self caller];
-    v20 = [v18 numberWithUnsignedInt:{objc_msgSend(v19, "euid")}];
+    caller = [(Request *)self caller];
+    v20 = [v18 numberWithUnsignedInt:{objc_msgSend(caller, "euid")}];
     self->_evaluationUserId = [v20 unsignedIntValue];
   }
 }
@@ -189,84 +189,84 @@
 - (id)shallowCopy
 {
   v3 = [EvaluationRequest alloc];
-  v4 = [(Request *)self identifier];
-  v5 = [(Request *)self caller];
-  v6 = [(Request *)self received];
-  v7 = [(Request *)v3 initWithID:v4 caller:v5 received:v6];
+  identifier = [(Request *)self identifier];
+  caller = [(Request *)self caller];
+  received = [(Request *)self received];
+  v7 = [(Request *)v3 initWithID:identifier caller:caller received:received];
 
   v8 = [(EvaluationRequest *)self acl];
   [(EvaluationRequest *)v7 setAcl:v8];
 
-  v9 = [(EvaluationRequest *)self aclOperation];
-  [(EvaluationRequest *)v7 setAclOperation:v9];
+  aclOperation = [(EvaluationRequest *)self aclOperation];
+  [(EvaluationRequest *)v7 setAclOperation:aclOperation];
 
-  v10 = [(EvaluationRequest *)self analytics];
-  [(EvaluationRequest *)v7 setAnalytics:v10];
+  analytics = [(EvaluationRequest *)self analytics];
+  [(EvaluationRequest *)v7 setAnalytics:analytics];
 
-  v11 = [(EvaluationRequest *)self analyticsData];
-  [(EvaluationRequest *)v7 setAnalyticsData:v11];
+  analyticsData = [(EvaluationRequest *)self analyticsData];
+  [(EvaluationRequest *)v7 setAnalyticsData:analyticsData];
 
-  v12 = [(EvaluationRequest *)self client];
-  [(EvaluationRequest *)v7 setClient:v12];
+  client = [(EvaluationRequest *)self client];
+  [(EvaluationRequest *)v7 setClient:client];
 
-  v13 = [(EvaluationRequest *)self contextID];
-  [(EvaluationRequest *)v7 setContextID:v13];
+  contextID = [(EvaluationRequest *)self contextID];
+  [(EvaluationRequest *)v7 setContextID:contextID];
 
   [(EvaluationRequest *)v7 setCustomUI:[(EvaluationRequest *)self customUI]];
-  v14 = [(EvaluationRequest *)self dtoAnalytics];
-  [(EvaluationRequest *)v7 setDtoAnalytics:v14];
+  dtoAnalytics = [(EvaluationRequest *)self dtoAnalytics];
+  [(EvaluationRequest *)v7 setDtoAnalytics:dtoAnalytics];
 
-  v15 = [(EvaluationRequest *)self dtoEnvironment];
-  [(EvaluationRequest *)v7 setDtoEnvironment:v15];
+  dtoEnvironment = [(EvaluationRequest *)self dtoEnvironment];
+  [(EvaluationRequest *)v7 setDtoEnvironment:dtoEnvironment];
 
-  v16 = [(EvaluationRequest *)self dtoRequestIdentifier];
-  [(EvaluationRequest *)v7 setDtoRequestIdentifier:v16];
+  dtoRequestIdentifier = [(EvaluationRequest *)self dtoRequestIdentifier];
+  [(EvaluationRequest *)v7 setDtoRequestIdentifier:dtoRequestIdentifier];
 
   [(EvaluationRequest *)v7 setEvaluationUserId:[(EvaluationRequest *)self evaluationUserId]];
-  v17 = [(EvaluationRequest *)self externalizedContext];
-  [(EvaluationRequest *)v7 setExternalizedContext:v17];
+  externalizedContext = [(EvaluationRequest *)self externalizedContext];
+  [(EvaluationRequest *)v7 setExternalizedContext:externalizedContext];
 
   [(EvaluationRequest *)v7 setImmediateSuccess:[(EvaluationRequest *)self isImmediateSuccess]];
-  v18 = [(EvaluationRequest *)self options];
-  v19 = [v18 copy];
+  options = [(EvaluationRequest *)self options];
+  v19 = [options copy];
   [(EvaluationRequest *)v7 setOptions:v19];
 
-  v20 = [(EvaluationRequest *)self payload];
-  v21 = [v20 copy];
+  payload = [(EvaluationRequest *)self payload];
+  v21 = [payload copy];
   [(EvaluationRequest *)v7 setPayload:v21];
 
   [(EvaluationRequest *)v7 setPolicy:[(EvaluationRequest *)self policy]];
   [(EvaluationRequest *)v7 setPurpose:[(EvaluationRequest *)self purpose]];
   [(EvaluationRequest *)v7 setSecureIntentRequested:[(EvaluationRequest *)self secureIntentRequested]];
-  v22 = [(Request *)self serviceLocator];
-  [(Request *)v7 setServiceLocator:v22];
+  serviceLocator = [(Request *)self serviceLocator];
+  [(Request *)v7 setServiceLocator:serviceLocator];
 
   return v7;
 }
 
-- (void)updatePayload:(id)a3
+- (void)updatePayload:(id)payload
 {
-  v11 = a3;
+  payloadCopy = payload;
   v4 = +[DaemonUtils queue];
   dispatch_assert_queue_V2(v4);
 
-  [(EvaluationRequest *)self setPayload:v11];
-  v5 = [v11 objectForKeyedSubscript:*MEMORY[0x277D23EE0]];
+  [(EvaluationRequest *)self setPayload:payloadCopy];
+  v5 = [payloadCopy objectForKeyedSubscript:*MEMORY[0x277D23EE0]];
   if (v5)
   {
     objc_storeStrong(&self->_dtoEnvironment, v5);
   }
 
-  v6 = [v11 objectForKeyedSubscript:*MEMORY[0x277D23EE8]];
+  v6 = [payloadCopy objectForKeyedSubscript:*MEMORY[0x277D23EE8]];
   if (v6)
   {
     objc_storeStrong(&self->_dtoRequestIdentifier, v6);
   }
 
   v7 = MEMORY[0x277D240C0];
-  v8 = [(EvaluationRequest *)self policy];
-  v9 = [(EvaluationRequest *)self options];
-  if ([v7 isDTOPolicy:v8 options:v9])
+  policy = [(EvaluationRequest *)self policy];
+  options = [(EvaluationRequest *)self options];
+  if ([v7 isDTOPolicy:policy options:options])
   {
     v10 = [(EvaluationRequest *)self acl];
 
@@ -312,20 +312,20 @@
 
 - (BOOL)isPurposeInAppPayment
 {
-  v3 = [(EvaluationRequest *)self isPurposeApplePay];
-  if (v3)
+  isPurposeApplePay = [(EvaluationRequest *)self isPurposeApplePay];
+  if (isPurposeApplePay)
   {
-    LOBYTE(v3) = [(EvaluationRequest *)self policy]!= 1004;
+    LOBYTE(isPurposeApplePay) = [(EvaluationRequest *)self policy]!= 1004;
   }
 
-  return v3;
+  return isPurposeApplePay;
 }
 
 - (BOOL)isRecoveringFromBiolockout
 {
   v2 = MEMORY[0x277CD47F0];
-  v3 = [(EvaluationRequest *)self retryingForError];
-  LOBYTE(v2) = [v2 error:v3 hasCode:-8];
+  retryingForError = [(EvaluationRequest *)self retryingForError];
+  LOBYTE(v2) = [v2 error:retryingForError hasCode:-8];
 
   return v2;
 }

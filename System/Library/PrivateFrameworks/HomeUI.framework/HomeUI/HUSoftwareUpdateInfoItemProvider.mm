@@ -1,23 +1,23 @@
 @interface HUSoftwareUpdateInfoItemProvider
 - (HUSoftwareUpdateInfoItemProvider)init;
-- (HUSoftwareUpdateInfoItemProvider)initWithHome:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HUSoftwareUpdateInfoItemProvider)initWithHome:(id)home;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)invalidationReasons;
 - (id)reloadItems;
 @end
 
 @implementation HUSoftwareUpdateInfoItemProvider
 
-- (HUSoftwareUpdateInfoItemProvider)initWithHome:(id)a3
+- (HUSoftwareUpdateInfoItemProvider)initWithHome:(id)home
 {
-  v5 = a3;
+  homeCopy = home;
   v11.receiver = self;
   v11.super_class = HUSoftwareUpdateInfoItemProvider;
   v6 = [(HFItemProvider *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_home, a3);
+    objc_storeStrong(&v6->_home, home);
     v8 = objc_opt_new();
     softwareUpdateItems = v7->_softwareUpdateItems;
     v7->_softwareUpdateItems = v8;
@@ -28,18 +28,18 @@
 
 - (HUSoftwareUpdateInfoItemProvider)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithHome_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HUSoftwareUpdateInfoItemProvider.m" lineNumber:33 description:{@"%s is unavailable; use %@ instead", "-[HUSoftwareUpdateInfoItemProvider init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUSoftwareUpdateInfoItemProvider.m" lineNumber:33 description:{@"%s is unavailable; use %@ instead", "-[HUSoftwareUpdateInfoItemProvider init]", v5}];
 
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HUSoftwareUpdateInfoItemProvider *)self home];
-  v6 = [v4 initWithHome:v5];
+  home = [(HUSoftwareUpdateInfoItemProvider *)self home];
+  v6 = [v4 initWithHome:home];
 
   return v6;
 }
@@ -47,15 +47,15 @@
 - (id)reloadItems
 {
   v39 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v34 = 0u;
   v35 = 0u;
   v33 = 0u;
   v32 = 0u;
-  v4 = [(HUSoftwareUpdateInfoItemProvider *)self home];
-  v5 = [v4 accessories];
+  home = [(HUSoftwareUpdateInfoItemProvider *)self home];
+  accessories = [home accessories];
 
-  v6 = [v5 countByEnumeratingWithState:&v32 objects:v38 count:16];
+  v6 = [accessories countByEnumeratingWithState:&v32 objects:v38 count:16];
   if (v6)
   {
     v8 = *v33;
@@ -67,57 +67,57 @@
       {
         if (*v33 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(accessories);
         }
 
         v10 = *(*(&v32 + 1) + 8 * i);
         if ([v10 hf_hasSoftwareUpdate])
         {
-          v11 = [(HUSoftwareUpdateInfoItemProvider *)self filter];
-          if (!v11 || ([(HUSoftwareUpdateInfoItemProvider *)self filter], v12 = objc_claimAutoreleasedReturnValue(), v13 = (v12)[2](v12, v10), v12, v11, v13))
+          filter = [(HUSoftwareUpdateInfoItemProvider *)self filter];
+          if (!filter || ([(HUSoftwareUpdateInfoItemProvider *)self filter], v12 = objc_claimAutoreleasedReturnValue(), v13 = (v12)[2](v12, v10), v12, filter, v13))
           {
             if ([v10 hf_isReadyToInstallSoftwareUpdate] && (objc_msgSend(v10, "hf_hasNewValidSoftwareUpdate") & 1) == 0)
             {
-              v14 = HFLogForCategory();
-              if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+              hf_softwareUpdateHash = HFLogForCategory();
+              if (os_log_type_enabled(hf_softwareUpdateHash, OS_LOG_TYPE_ERROR))
               {
                 *buf = v25;
                 v37 = v10;
-                _os_log_error_impl(&dword_20CEB6000, v14, OS_LOG_TYPE_ERROR, "Software update is ready to install but controller not controllable: %@", buf, 0xCu);
+                _os_log_error_impl(&dword_20CEB6000, hf_softwareUpdateHash, OS_LOG_TYPE_ERROR, "Software update is ready to install but controller not controllable: %@", buf, 0xCu);
               }
             }
 
             else
             {
-              v14 = [v10 hf_softwareUpdateHash];
+              hf_softwareUpdateHash = [v10 hf_softwareUpdateHash];
               if ([v10 hf_isSoftwareUpdateInstalled])
               {
-                v15 = [v14 stringByAppendingString:@"-Installed"];
+                v15 = [hf_softwareUpdateHash stringByAppendingString:@"-Installed"];
 
-                v14 = v15;
+                hf_softwareUpdateHash = v15;
               }
 
-              v16 = [v3 na_objectForKey:v14 withDefaultValue:&__block_literal_global_161];
+              v16 = [dictionary na_objectForKey:hf_softwareUpdateHash withDefaultValue:&__block_literal_global_161];
               [v16 addObject:v10];
             }
           }
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v32 objects:v38 count:16];
+      v6 = [accessories countByEnumeratingWithState:&v32 objects:v38 count:16];
     }
 
     while (v6);
   }
 
-  v17 = [v3 allKeys];
-  v18 = [v17 sortedArrayUsingSelector:sel_compare_];
+  allKeys = [dictionary allKeys];
+  v18 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __47__HUSoftwareUpdateInfoItemProvider_reloadItems__block_invoke_2;
   v30[3] = &unk_277DBAC58;
-  v19 = v3;
+  v19 = dictionary;
   v31 = v19;
   v20 = [v18 na_map:v30];
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -205,12 +205,12 @@ id __47__HUSoftwareUpdateInfoItemProvider_reloadItems__block_invoke_7(uint64_t a
   v8[2] = *MEMORY[0x277D85DE8];
   v7.receiver = self;
   v7.super_class = HUSoftwareUpdateInfoItemProvider;
-  v2 = [(HFItemProvider *)&v7 invalidationReasons];
+  invalidationReasons = [(HFItemProvider *)&v7 invalidationReasons];
   v3 = *MEMORY[0x277D13B78];
   v8[0] = *MEMORY[0x277D13B28];
   v8[1] = v3;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:2];
-  v5 = [v2 setByAddingObjectsFromArray:v4];
+  v5 = [invalidationReasons setByAddingObjectsFromArray:v4];
 
   return v5;
 }

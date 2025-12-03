@@ -1,7 +1,7 @@
 @interface ASDBackgroundAssets
 + (id)interface;
-+ (id)testFlightDownloadManifestRequestForStoreItemIdentifier:(id)a3 bundleIdentifier:(id)a4 error:(id *)a5;
-+ (void)didReachAssetPackTerminalPhaseForStoreItemIdentifier:(id)a3 bundleIdentifier:(id)a4 assetPackIdentifier:(id)a5 assetPackVersion:(id)a6 internalBeta:(BOOL)a7 terminalPhase:(int64_t)a8 error:(id)a9 completionHandler:(id)a10;
++ (id)testFlightDownloadManifestRequestForStoreItemIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier error:(id *)error;
++ (void)didReachAssetPackTerminalPhaseForStoreItemIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier assetPackIdentifier:(id)packIdentifier assetPackVersion:(id)version internalBeta:(BOOL)beta terminalPhase:(int64_t)phase error:(id)error completionHandler:(id)self0;
 @end
 
 @implementation ASDBackgroundAssets
@@ -18,10 +18,10 @@
   return v2;
 }
 
-+ (id)testFlightDownloadManifestRequestForStoreItemIdentifier:(id)a3 bundleIdentifier:(id)a4 error:(id *)a5
++ (id)testFlightDownloadManifestRequestForStoreItemIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -29,7 +29,7 @@
   v28 = __Block_byref_object_dispose__6;
   v29 = 0;
   v9 = +[ASDServiceBroker defaultBroker];
-  v10 = [v9 getBackgroundAssetsServiceWithError:a5];
+  v10 = [v9 getBackgroundAssetsServiceWithError:error];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __102__ASDBackgroundAssets_testFlightDownloadManifestRequestForStoreItemIdentifier_bundleIdentifier_error___block_invoke;
@@ -40,7 +40,7 @@
   v12 = v25[5];
   if (v12)
   {
-    *a5 = v12;
+    *error = v12;
   }
 
   v17 = 0;
@@ -55,11 +55,11 @@
   v16[3] = &unk_1E7CDCB80;
   v16[4] = &v17;
   v16[5] = &v24;
-  [v11 getTestFlightDownloadManifestRequestForStoreItemIdentifier:v7 bundleIdentifier:v8 replyHandler:v16];
+  [v11 getTestFlightDownloadManifestRequestForStoreItemIdentifier:identifierCopy bundleIdentifier:bundleIdentifierCopy replyHandler:v16];
   v13 = v25[5];
   if (v13)
   {
-    *a5 = v13;
+    *error = v13;
   }
 
   v14 = v18[5];
@@ -84,33 +84,33 @@ void __102__ASDBackgroundAssets_testFlightDownloadManifestRequestForStoreItemIde
   *(v9 + 40) = v6;
 }
 
-+ (void)didReachAssetPackTerminalPhaseForStoreItemIdentifier:(id)a3 bundleIdentifier:(id)a4 assetPackIdentifier:(id)a5 assetPackVersion:(id)a6 internalBeta:(BOOL)a7 terminalPhase:(int64_t)a8 error:(id)a9 completionHandler:(id)a10
++ (void)didReachAssetPackTerminalPhaseForStoreItemIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier assetPackIdentifier:(id)packIdentifier assetPackVersion:(id)version internalBeta:(BOOL)beta terminalPhase:(int64_t)phase error:(id)error completionHandler:(id)self0
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a9;
-  v20 = a10;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  packIdentifierCopy = packIdentifier;
+  versionCopy = version;
+  errorCopy = error;
+  handlerCopy = handler;
   v21 = +[ASDServiceBroker defaultBroker];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __181__ASDBackgroundAssets_didReachAssetPackTerminalPhaseForStoreItemIdentifier_bundleIdentifier_assetPackIdentifier_assetPackVersion_internalBeta_terminalPhase_error_completionHandler___block_invoke;
   v28[3] = &unk_1E7CDCBA8;
-  v29 = v15;
-  v30 = v16;
-  v31 = v17;
-  v32 = v18;
-  v36 = a7;
-  v34 = v20;
-  v35 = a8;
-  v33 = v19;
-  v22 = v20;
-  v23 = v19;
-  v24 = v18;
-  v25 = v17;
-  v26 = v16;
-  v27 = v15;
+  v29 = identifierCopy;
+  v30 = bundleIdentifierCopy;
+  v31 = packIdentifierCopy;
+  v32 = versionCopy;
+  betaCopy = beta;
+  v34 = handlerCopy;
+  phaseCopy = phase;
+  v33 = errorCopy;
+  v22 = handlerCopy;
+  v23 = errorCopy;
+  v24 = versionCopy;
+  v25 = packIdentifierCopy;
+  v26 = bundleIdentifierCopy;
+  v27 = identifierCopy;
   [v21 getBackgroundAssetsServiceWithCompletionHandler:v28];
 }
 

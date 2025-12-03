@@ -1,21 +1,21 @@
 @interface TSCEQuotedRefPathWord
-- (TSCEQuotedRefPathWord)initWithRawString:(id)a3;
+- (TSCEQuotedRefPathWord)initWithRawString:(id)string;
 - (id)description;
 - (id)quoteStringIfNeeded;
-- (id)trimmedStringWithPreserveFlag:(BOOL)a3;
+- (id)trimmedStringWithPreserveFlag:(BOOL)flag;
 @end
 
 @implementation TSCEQuotedRefPathWord
 
-- (TSCEQuotedRefPathWord)initWithRawString:(id)a3
+- (TSCEQuotedRefPathWord)initWithRawString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v13.receiver = self;
   v13.super_class = TSCEQuotedRefPathWord;
   v9 = [(TSCEQuotedRefPathWord *)&v13 init];
   if (v9)
   {
-    v10 = objc_msgSend_copy(v4, v5, v6, v7, v8);
+    v10 = objc_msgSend_copy(stringCopy, v5, v6, v7, v8);
     rawString = v9->_rawString;
     v9->_rawString = v10;
 
@@ -25,11 +25,11 @@
   return v9;
 }
 
-- (id)trimmedStringWithPreserveFlag:(BOOL)a3
+- (id)trimmedStringWithPreserveFlag:(BOOL)flag
 {
-  v5 = a3;
+  flagCopy = flag;
   rawString = self->_rawString;
-  v8 = objc_msgSend_tsce_internationalWhitespaceCharacterSet(MEMORY[0x277CCA900], a2, a3, v3, v4);
+  v8 = objc_msgSend_tsce_internationalWhitespaceCharacterSet(MEMORY[0x277CCA900], a2, flag, v3, v4);
   v12 = objc_msgSend_stringByTrimmingCharactersInSet_(rawString, v9, v8, v10, v11);
 
   if (objc_msgSend_length(v12, v13, v14, v15, v16) >= 2)
@@ -61,7 +61,7 @@ LABEL_5:
   }
 
 LABEL_6:
-  if (self->_hasPreserveFlag && v5)
+  if (self->_hasPreserveFlag && flagCopy)
   {
     v48 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v17, @"$%@", v19, v20, v12);
 

@@ -1,5 +1,5 @@
 @interface BRCiWorkPublishingOperation
-- (BRCiWorkPublishingOperation)initWithDocumentItem:(id)a3 sessionContext:(id)a4 forPublish:(BOOL)a5 readonly:(BOOL)a6;
+- (BRCiWorkPublishingOperation)initWithDocumentItem:(id)item sessionContext:(id)context forPublish:(BOOL)publish readonly:(BOOL)readonly;
 - (id)createActivity;
 - (void)_updateItemAfterShareCompleted;
 - (void)main;
@@ -7,42 +7,42 @@
 
 @implementation BRCiWorkPublishingOperation
 
-- (BRCiWorkPublishingOperation)initWithDocumentItem:(id)a3 sessionContext:(id)a4 forPublish:(BOOL)a5 readonly:(BOOL)a6
+- (BRCiWorkPublishingOperation)initWithDocumentItem:(id)item sessionContext:(id)context forPublish:(BOOL)publish readonly:(BOOL)readonly
 {
   v28[2] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = [v10 serverZone];
-  v13 = [v12 metadataSyncContext];
+  itemCopy = item;
+  contextCopy = context;
+  serverZone = [itemCopy serverZone];
+  metadataSyncContext = [serverZone metadataSyncContext];
   v27.receiver = self;
   v27.super_class = BRCiWorkPublishingOperation;
-  v14 = [(_BRCOperation *)&v27 initWithName:@"sharing/iWork-publishing" syncContext:v13 sessionContext:v11];
+  v14 = [(_BRCOperation *)&v27 initWithName:@"sharing/iWork-publishing" syncContext:metadataSyncContext sessionContext:contextCopy];
 
   if (v14)
   {
-    v15 = [v10 itemID];
+    itemID = [itemCopy itemID];
     itemID = v14->_itemID;
-    v14->_itemID = v15;
+    v14->_itemID = itemID;
 
-    v17 = [v10 structureRecordID];
-    v28[0] = v17;
-    v18 = [v10 documentRecordID];
-    v28[1] = v18;
+    structureRecordID = [itemCopy structureRecordID];
+    v28[0] = structureRecordID;
+    documentRecordID = [itemCopy documentRecordID];
+    v28[1] = documentRecordID;
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:2];
     recordIDs = v14->_recordIDs;
     v14->_recordIDs = v19;
 
-    v14->_forPublish = a5;
-    v14->_readonly = a6;
-    v21 = [v10 serverZone];
+    v14->_forPublish = publish;
+    v14->_readonly = readonly;
+    serverZone2 = [itemCopy serverZone];
     serverZone = v14->_serverZone;
-    v14->_serverZone = v21;
+    v14->_serverZone = serverZone2;
 
     [(_BRCOperation *)v14 setNonDiscretionary:1];
-    v23 = [v10 st];
-    v24 = [v23 iWorkShareable];
+    v23 = [itemCopy st];
+    iWorkShareable = [v23 iWorkShareable];
 
-    if ((v24 & 1) == 0)
+    if ((iWorkShareable & 1) == 0)
     {
       [BRCiWorkPublishingOperation initWithDocumentItem:sessionContext:forPublish:readonly:];
     }
@@ -61,8 +61,8 @@
 
 - (void)_updateItemAfterShareCompleted
 {
-  v3 = [(BRCServerZone *)self->_serverZone clientZone];
-  v7 = [v3 itemByItemID:self->_itemID];
+  clientZone = [(BRCServerZone *)self->_serverZone clientZone];
+  v7 = [clientZone itemByItemID:self->_itemID];
 
   if (v7)
   {
@@ -74,8 +74,8 @@
   else
   {
     v4 = MEMORY[0x277CCA9B8];
-    v5 = [(BRCItemID *)self->_itemID itemIDString];
-    v6 = [v4 brc_errorItemNotFound:v5];
+    itemIDString = [(BRCItemID *)self->_itemID itemIDString];
+    v6 = [v4 brc_errorItemNotFound:itemIDString];
     [(_BRCOperation *)self completedWithResult:0 error:v6];
   }
 }

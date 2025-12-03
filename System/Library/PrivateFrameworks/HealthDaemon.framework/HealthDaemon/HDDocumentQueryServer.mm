@@ -1,27 +1,27 @@
 @interface HDDocumentQueryServer
-- (BOOL)validateConfiguration:(id *)a3;
-- (HDDocumentQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
+- (BOOL)validateConfiguration:(id *)configuration;
+- (HDDocumentQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
 - (id)_unsupportedDocumentTypeError;
-- (uint64_t)_deliverAuthorizedSamplesToClient:(uint64_t)a3 errorOut:;
+- (uint64_t)_deliverAuthorizedSamplesToClient:(uint64_t)client errorOut:;
 - (void)_queue_start;
 @end
 
 @implementation HDDocumentQueryServer
 
-- (HDDocumentQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDDocumentQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
-  v10 = a4;
+  configurationCopy = configuration;
   v16.receiver = self;
   v16.super_class = HDDocumentQueryServer;
-  v11 = [(HDQueryServer *)&v16 initWithUUID:a3 configuration:v10 client:a5 delegate:a6];
+  v11 = [(HDQueryServer *)&v16 initWithUUID:d configuration:configurationCopy client:client delegate:delegate];
   if (v11)
   {
-    v11->_maxResults = [v10 limit];
-    v12 = [v10 sortDescriptors];
+    v11->_maxResults = [configurationCopy limit];
+    sortDescriptors = [configurationCopy sortDescriptors];
     sortDescriptors = v11->_sortDescriptors;
-    v11->_sortDescriptors = v12;
+    v11->_sortDescriptors = sortDescriptors;
 
-    v11->_includeDocumentData = [v10 includeDocumentData];
+    v11->_includeDocumentData = [configurationCopy includeDocumentData];
     v11->_suspended = 0;
     authorizedSamples = v11->_authorizedSamples;
     v11->_authorizedSamples = 0;
@@ -32,27 +32,27 @@
   return v11;
 }
 
-- (BOOL)validateConfiguration:(id *)a3
+- (BOOL)validateConfiguration:(id *)configuration
 {
-  v5 = [(HDQueryServer *)self objectType];
-  v6 = [v5 code];
+  objectType = [(HDQueryServer *)self objectType];
+  code = [objectType code];
 
-  if (v6 == 107)
+  if (code == 107)
   {
     v10.receiver = self;
     v10.super_class = HDDocumentQueryServer;
-    return [(HDQueryServer *)&v10 validateConfiguration:a3];
+    return [(HDQueryServer *)&v10 validateConfiguration:configuration];
   }
 
   else
   {
-    v8 = [(HDDocumentQueryServer *)self _unsupportedDocumentTypeError];
-    if (v8)
+    _unsupportedDocumentTypeError = [(HDDocumentQueryServer *)self _unsupportedDocumentTypeError];
+    if (_unsupportedDocumentTypeError)
     {
-      if (a3)
+      if (configuration)
       {
-        v9 = v8;
-        *a3 = v8;
+        v9 = _unsupportedDocumentTypeError;
+        *configuration = _unsupportedDocumentTypeError;
       }
 
       else
@@ -67,17 +67,17 @@
 
 - (id)_unsupportedDocumentTypeError
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v2 = MEMORY[0x277CCA9B8];
     v3 = objc_opt_class();
     v4 = objc_opt_class();
-    v5 = [v1 objectType];
-    v1 = [v2 hk_errorForInvalidArgument:@"@" class:v3 selector:sel__unsupportedDocumentTypeError format:{@"[%@] Unsupported document type: %@", v4, v5}];
+    objectType = [selfCopy objectType];
+    selfCopy = [v2 hk_errorForInvalidArgument:@"@" class:v3 selector:sel__unsupportedDocumentTypeError format:{@"[%@] Unsupported document type: %@", v4, objectType}];
   }
 
-  return v1;
+  return selfCopy;
 }
 
 uint64_t __81__HDDocumentQueryServer__samplesBeforeAuthorizationWithSortDescriptors_errorOut___block_invoke(uint64_t a1, void *a2)
@@ -111,29 +111,29 @@ LABEL_7:
   return v9;
 }
 
-- (uint64_t)_deliverAuthorizedSamplesToClient:(uint64_t)a3 errorOut:
+- (uint64_t)_deliverAuthorizedSamplesToClient:(uint64_t)client errorOut:
 {
   v4 = a2;
-  if (a1)
+  if (self)
   {
-    v5 = [*(a1 + 216) count];
-    if (*(a1 + 224) < v5)
+    v5 = [*(self + 216) count];
+    if (*(self + 224) < v5)
     {
       v21 = 0x283C2F1E8;
       while (1)
       {
-        if ([a1 _shouldStopProcessingQuery])
+        if ([self _shouldStopProcessingQuery])
         {
           goto LABEL_17;
         }
 
-        if ([a1 _shouldSuspendQuery])
+        if ([self _shouldSuspendQuery])
         {
-          *(a1 + 208) = 1;
+          *(self + 208) = 1;
           goto LABEL_17;
         }
 
-        v6 = [*(a1 + 216) objectAtIndex:*(a1 + 224)];
+        v6 = [*(self + 216) objectAtIndex:*(self + 224)];
         v7 = v4;
         v24 = 0;
         v25 = &v24;
@@ -143,23 +143,23 @@ LABEL_7:
         v8 = v6;
         v9 = v8;
         v29 = v8;
-        if (*(a1 + 232) != 1)
+        if (*(self + 232) != 1)
         {
           break;
         }
 
-        v10 = [v8 UUID];
+        uUID = [v8 UUID];
         v11 = HDDataEntityPredicateForDataUUID();
 
-        v12 = [a1 newDataEntityEnumerator];
-        [v12 setPredicate:v11];
-        v13 = [a1 objectType];
-        v14 = [v13 code];
+        newDataEntityEnumerator = [self newDataEntityEnumerator];
+        [newDataEntityEnumerator setPredicate:v11];
+        objectType = [self objectType];
+        code = [objectType code];
 
-        if (v14 == 107)
+        if (code == 107)
         {
-          [v12 setEncodingOption:MEMORY[0x277CBEC38] forKey:0x283C2F1C8];
-          [v12 setEncodingOption:MEMORY[0x277CBEC38] forKey:v21];
+          [newDataEntityEnumerator setEncodingOption:MEMORY[0x277CBEC38] forKey:0x283C2F1C8];
+          [newDataEntityEnumerator setEncodingOption:MEMORY[0x277CBEC38] forKey:v21];
         }
 
         v23[0] = MEMORY[0x277D85DD0];
@@ -167,7 +167,7 @@ LABEL_7:
         v23[2] = __59__HDDocumentQueryServer__deliverOneSample_client_errorOut___block_invoke;
         v23[3] = &unk_278613718;
         v23[4] = &v24;
-        v15 = [v12 enumerateWithError:a3 handler:v23];
+        v15 = [newDataEntityEnumerator enumerateWithError:client handler:v23];
 
         v16 = v25[5];
         if (v16)
@@ -180,12 +180,12 @@ LABEL_13:
 
         if (!v15)
         {
-          a1 = 0;
+          self = 0;
           goto LABEL_20;
         }
 
-        v18 = *(a1 + 224) + 1;
-        *(a1 + 224) = v18;
+        v18 = *(self + 224) + 1;
+        *(self + 224) = v18;
         if (v18 >= v5)
         {
           goto LABEL_17;
@@ -200,25 +200,25 @@ LABEL_13:
       }
 
 LABEL_12:
-      v17 = [a1 queryUUID];
-      [v7 client_deliverDocument:v16 query:v17];
+      queryUUID = [self queryUUID];
+      [v7 client_deliverDocument:v16 query:queryUUID];
 
       goto LABEL_13;
     }
 
 LABEL_17:
-    if (*(a1 + 224) >= v5)
+    if (*(self + 224) >= v5)
     {
-      v19 = [a1 queryUUID];
-      [v4 client_deliverDocument:0 query:v19];
+      queryUUID2 = [self queryUUID];
+      [v4 client_deliverDocument:0 query:queryUUID2];
     }
 
-    a1 = 1;
+    self = 1;
   }
 
 LABEL_20:
 
-  return a1;
+  return self;
 }
 
 - (void)_queue_start
@@ -227,7 +227,7 @@ LABEL_20:
   v42.receiver = self;
   v42.super_class = HDDocumentQueryServer;
   [(HDQueryServer *)&v42 _queue_start];
-  v4 = [(HDQueryServer *)self clientProxy];
+  clientProxy = [(HDQueryServer *)self clientProxy];
   if (!self->_suspended)
   {
     sortDescriptors = self->_sortDescriptors;
@@ -239,35 +239,35 @@ LABEL_20:
     v46 = __Block_byref_object_copy__1;
     v47 = __Block_byref_object_dispose__1;
     v48 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v10 = [(HDQueryServer *)self objectType];
-    v11 = [v10 code];
+    objectType = [(HDQueryServer *)self objectType];
+    code = [objectType code];
 
-    if (v11 == 107)
+    if (code == 107)
     {
-      v12 = [(HDQueryServer *)self sampleType];
-      v13 = [(HDQueryServer *)self authorizationStatusRecordForType:v12 error:&v41];
+      sampleType = [(HDQueryServer *)self sampleType];
+      v13 = [(HDQueryServer *)self authorizationStatusRecordForType:sampleType error:&v41];
 
       if (v13)
       {
         if ([v13 canRead])
         {
-          v14 = [(HDQueryServer *)self newDataEntityEnumerator];
-          v15 = [(HDQueryServer *)self filter];
-          [v14 setFilter:v15];
+          newDataEntityEnumerator = [(HDQueryServer *)self newDataEntityEnumerator];
+          filter = [(HDQueryServer *)self filter];
+          [newDataEntityEnumerator setFilter:filter];
 
-          v16 = [v13 restrictedSourceEntities];
-          [v14 setRestrictedSourceEntities:v16];
+          restrictedSourceEntities = [v13 restrictedSourceEntities];
+          [newDataEntityEnumerator setRestrictedSourceEntities:restrictedSourceEntities];
 
-          v17 = [(HDQueryServer *)self sampleAuthorizationFilter];
-          [v14 setAuthorizationFilter:v17];
+          sampleAuthorizationFilter = [(HDQueryServer *)self sampleAuthorizationFilter];
+          [newDataEntityEnumerator setAuthorizationFilter:sampleAuthorizationFilter];
 
-          [v14 setSortDescriptors:v9];
-          v18 = [(HDQueryServer *)self objectType];
-          v19 = [v18 code] == 107;
+          [newDataEntityEnumerator setSortDescriptors:v9];
+          objectType2 = [(HDQueryServer *)self objectType];
+          v19 = [objectType2 code] == 107;
 
           if (v19)
           {
-            [v14 setEncodingOption:MEMORY[0x277CBEC38] forKey:0x283C2F1C8];
+            [newDataEntityEnumerator setEncodingOption:MEMORY[0x277CBEC38] forKey:0x283C2F1C8];
           }
 
           v43[0] = MEMORY[0x277D85DD0];
@@ -276,7 +276,7 @@ LABEL_20:
           v43[3] = &unk_2786136F0;
           v43[4] = self;
           v43[5] = &buf;
-          [v14 enumerateWithError:&v41 handler:v43];
+          [newDataEntityEnumerator enumerateWithError:&v41 handler:v43];
         }
 
         v6 = *(*(&buf + 1) + 40);
@@ -286,11 +286,11 @@ LABEL_20:
 
     else
     {
-      v20 = [(HDDocumentQueryServer *)self _unsupportedDocumentTypeError];
-      v21 = v20;
-      if (v20)
+      _unsupportedDocumentTypeError = [(HDDocumentQueryServer *)self _unsupportedDocumentTypeError];
+      v21 = _unsupportedDocumentTypeError;
+      if (_unsupportedDocumentTypeError)
       {
-        v22 = v20;
+        v22 = _unsupportedDocumentTypeError;
         v41 = v21;
       }
 
@@ -305,8 +305,8 @@ LABEL_17:
     if (v23)
     {
       v24 = v23;
-      v7 = [(HDQueryServer *)self queryUUID];
-      [v4 client_deliverError:v24 forQuery:v7];
+      queryUUID = [(HDQueryServer *)self queryUUID];
+      [clientProxy client_deliverError:v24 forQuery:queryUUID];
     }
 
     else
@@ -316,32 +316,32 @@ LABEL_17:
       v35[1] = 3221225472;
       v36 = __37__HDDocumentQueryServer__queue_start__block_invoke;
       v37 = &unk_278613740;
-      v38 = self;
-      v39 = v4;
+      selfCopy = self;
+      v39 = clientProxy;
       v40 = a2;
       v6 = v6;
       v25 = v35;
-      v26 = [(HDQueryServer *)self objectType];
-      v27 = [v26 code];
+      objectType3 = [(HDQueryServer *)self objectType];
+      code2 = [objectType3 code];
 
-      if (v27 == 107)
+      if (code2 == 107)
       {
-        v28 = [(HDQueryServer *)self delegate];
+        delegate = [(HDQueryServer *)self delegate];
         v29 = v6;
         v30 = [[HDObjectAuthorizationRequestContext alloc] initWithSamples:v29 metadata:0];
 
         [(HDObjectAuthorizationRequestContext *)v30 setPersistSession:0];
         [(HDObjectAuthorizationRequestContext *)v30 setPromptWithNoSamples:0];
-        [v28 queryServer:self requestsAuthorizationWithContext:v30 completion:v25];
+        [delegate queryServer:self requestsAuthorizationWithContext:v30 completion:v25];
       }
 
       else
       {
-        v28 = [(HDDocumentQueryServer *)self _unsupportedDocumentTypeError];
-        v36(v25, 0, v28);
+        delegate = [(HDDocumentQueryServer *)self _unsupportedDocumentTypeError];
+        v36(v25, 0, delegate);
       }
 
-      v7 = 0;
+      queryUUID = 0;
     }
 
     goto LABEL_23;
@@ -353,19 +353,19 @@ LABEL_17:
   if (os_log_type_enabled(*MEMORY[0x277CCC308], OS_LOG_TYPE_DEBUG))
   {
     v32 = v5;
-    v33 = [(HDQueryServer *)self queryUUID];
+    queryUUID2 = [(HDQueryServer *)self queryUUID];
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v33;
+    *(&buf + 4) = queryUUID2;
     _os_log_debug_impl(&dword_228986000, v32, OS_LOG_TYPE_DEBUG, "resume query %{public}@.", &buf, 0xCu);
   }
 
   v34 = 0;
-  [(HDDocumentQueryServer *)self _deliverAuthorizedSamplesToClient:v4 errorOut:&v34];
+  [(HDDocumentQueryServer *)self _deliverAuthorizedSamplesToClient:clientProxy errorOut:&v34];
   v6 = v34;
   if (v6)
   {
-    v7 = [(HDQueryServer *)self queryUUID];
-    [v4 client_deliverError:v6 forQuery:v7];
+    queryUUID = [(HDQueryServer *)self queryUUID];
+    [clientProxy client_deliverError:v6 forQuery:queryUUID];
 LABEL_23:
   }
 

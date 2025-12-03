@@ -31,11 +31,11 @@ uint64_t __48__ASFLockScreenSuggestionManager_sharedInstance__block_invoke()
   disabledLockScreenBundleIds = self->_disabledLockScreenBundleIds;
   if (!disabledLockScreenBundleIds)
   {
-    v4 = [(ASFLockScreenSuggestionManager *)self _serializedBundles];
-    v5 = [MEMORY[0x277CBEB18] arrayWithArray:v4];
+    _serializedBundles = [(ASFLockScreenSuggestionManager *)self _serializedBundles];
+    v5 = [MEMORY[0x277CBEB18] arrayWithArray:_serializedBundles];
     [v5 removeObject:@"com.apple.application"];
     [v5 removeObject:@"com.apple.CloudDocs.MobileDocumentsFileProvider"];
-    if ([v4 containsObject:@"com.apple.DocumentsApp"])
+    if ([_serializedBundles containsObject:@"com.apple.DocumentsApp"])
     {
       [v5 addObject:@"com.apple.CloudDocs.MobileDocumentsFileProvider"];
     }

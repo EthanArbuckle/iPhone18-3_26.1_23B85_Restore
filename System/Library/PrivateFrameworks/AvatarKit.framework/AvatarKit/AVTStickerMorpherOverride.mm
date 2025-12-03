@@ -1,15 +1,15 @@
 @interface AVTStickerMorpherOverride
-+ (id)morpherOverrideFromDictionary:(id)a3;
-- (AVTStickerMorpherOverride)initWithNodeNames:(id)a3 morphTargetName:(id)a4 weight:(float)a5;
-- (void)applyToAvatar:(id)a3 inHierarchy:(id)a4 reversionContext:(id)a5;
++ (id)morpherOverrideFromDictionary:(id)dictionary;
+- (AVTStickerMorpherOverride)initWithNodeNames:(id)names morphTargetName:(id)name weight:(float)weight;
+- (void)applyToAvatar:(id)avatar inHierarchy:(id)hierarchy reversionContext:(id)context;
 @end
 
 @implementation AVTStickerMorpherOverride
 
-+ (id)morpherOverrideFromDictionary:(id)a3
++ (id)morpherOverrideFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"node"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"node"];
   v5 = v4;
   if (v4)
   {
@@ -18,43 +18,43 @@
 
   else
   {
-    v6 = [v3 objectForKeyedSubscript:@"geometry"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"geometry"];
   }
 
   v7 = v6;
 
   v8 = [AVTStickerMorpherOverride alloc];
-  v9 = [v3 objectForKeyedSubscript:@"morpher"];
-  v10 = [v3 objectForKeyedSubscript:@"value"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"morpher"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"value"];
   [v10 floatValue];
   v11 = [(AVTStickerMorpherOverride *)v8 initWithNodeNames:v7 morphTargetName:v9 weight:?];
 
   return v11;
 }
 
-- (AVTStickerMorpherOverride)initWithNodeNames:(id)a3 morphTargetName:(id)a4 weight:(float)a5
+- (AVTStickerMorpherOverride)initWithNodeNames:(id)names morphTargetName:(id)name weight:(float)weight
 {
-  v9 = a3;
-  v10 = a4;
+  namesCopy = names;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = AVTStickerMorpherOverride;
   v11 = [(AVTStickerMorpherOverride *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_nodeNames, a3);
-    objc_storeStrong(&v12->_morphTargetName, a4);
-    v12->_weight = a5;
+    objc_storeStrong(&v11->_nodeNames, names);
+    objc_storeStrong(&v12->_morphTargetName, name);
+    v12->_weight = weight;
   }
 
   return v12;
 }
 
-- (void)applyToAvatar:(id)a3 inHierarchy:(id)a4 reversionContext:(id)a5
+- (void)applyToAvatar:(id)avatar inHierarchy:(id)hierarchy reversionContext:(id)context
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = [a3 nodesMatchingStickerPattern:self->_nodeNames inHierarchy:a4 options:1 includingDerivedNodes:1];
+  contextCopy = context;
+  v9 = [avatar nodesMatchingStickerPattern:self->_nodeNames inHierarchy:hierarchy options:1 includingDerivedNodes:1];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -74,25 +74,25 @@
           objc_enumerationMutation(v9);
         }
 
-        v15 = [*(*(&v25 + 1) + 8 * i) morpher];
-        v16 = [v15 _weightIndexForTargetNamed:self->_morphTargetName];
+        morpher = [*(*(&v25 + 1) + 8 * i) morpher];
+        v16 = [morpher _weightIndexForTargetNamed:self->_morphTargetName];
         if (v16 != 0x7FFFFFFFFFFFFFFFLL)
         {
           v18 = v16;
-          if (!((v8 == 0) | v12 & 1))
+          if (!((contextCopy == 0) | v12 & 1))
           {
-            [v15 weightForTargetAtIndex:v16];
+            [morpher weightForTargetAtIndex:v16];
             v20 = v19;
             v21 = [AVTStickerMorpherOverride alloc];
             LODWORD(v22) = v20;
             v23 = [(AVTStickerMorpherOverride *)v21 initWithNodeNames:self->_nodeNames morphTargetName:self->_morphTargetName weight:v22];
-            [v8 saveMorpherOverride:v23];
+            [contextCopy saveMorpherOverride:v23];
 
             v12 = 1;
           }
 
           *&v17 = self->_weight;
-          [v15 setWeight:v18 forTargetAtIndex:v17];
+          [morpher setWeight:v18 forTargetAtIndex:v17];
         }
       }
 

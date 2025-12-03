@@ -1,12 +1,12 @@
 @interface CPMemoryPool
-- (CPMemoryPool)initWithLabel:(const char *)a3 slotLength:(unint64_t)a4;
-- (id)nextSlotWithBytes:(const void *)a3 length:(unint64_t)a4;
+- (CPMemoryPool)initWithLabel:(const char *)label slotLength:(unint64_t)length;
+- (id)nextSlotWithBytes:(const void *)bytes length:(unint64_t)length;
 - (void)dealloc;
 @end
 
 @implementation CPMemoryPool
 
-- (CPMemoryPool)initWithLabel:(const char *)a3 slotLength:(unint64_t)a4
+- (CPMemoryPool)initWithLabel:(const char *)label slotLength:(unint64_t)length
 {
   v10.receiver = self;
   v10.super_class = CPMemoryPool;
@@ -16,24 +16,24 @@
   {
     pthread_mutex_init(&v6->_lock, 0);
     v7->_files = objc_alloc_init(MEMORY[0x1E695DF70]);
-    if (a3)
+    if (label)
     {
-      v8 = a3;
+      labelCopy = label;
     }
 
     else
     {
-      v8 = "memorypool";
+      labelCopy = "memorypool";
     }
 
-    v7->_label = strdup(v8);
-    v7->_slotLength = a4;
+    v7->_label = strdup(labelCopy);
+    v7->_slotLength = length;
   }
 
   return v7;
 }
 
-- (id)nextSlotWithBytes:(const void *)a3 length:(unint64_t)a4
+- (id)nextSlotWithBytes:(const void *)bytes length:(unint64_t)length
 {
   v22 = *MEMORY[0x1E69E9840];
   pthread_mutex_lock(&self->_lock);
@@ -56,7 +56,7 @@
           objc_enumerationMutation(files);
         }
 
-        v12 = [*(*(&v17 + 1) + 8 * i) nextSlotWithBytes:a3 length:a4];
+        v12 = [*(*(&v17 + 1) + 8 * i) nextSlotWithBytes:bytes length:length];
         if (v12)
         {
           v14 = v12;
@@ -78,7 +78,7 @@
   if (v13)
   {
     [(NSMutableArray *)self->_files addObject:v13];
-    v14 = [(CPMemoryPoolFile *)v13 nextSlotWithBytes:a3 length:a4];
+    v14 = [(CPMemoryPoolFile *)v13 nextSlotWithBytes:bytes length:length];
   }
 
   else

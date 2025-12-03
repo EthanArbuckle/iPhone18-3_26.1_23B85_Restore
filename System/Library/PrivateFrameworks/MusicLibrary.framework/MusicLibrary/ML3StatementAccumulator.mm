@@ -1,22 +1,22 @@
 @interface ML3StatementAccumulator
-- (BOOL)_onQueueFlushAndWait:(BOOL)a3;
-- (BOOL)enqueueStatement:(id)a3;
-- (BOOL)flushAndWait:(BOOL)a3;
+- (BOOL)_onQueueFlushAndWait:(BOOL)wait;
+- (BOOL)enqueueStatement:(id)statement;
+- (BOOL)flushAndWait:(BOOL)wait;
 - (ML3StatementAccumulator)init;
-- (ML3StatementAccumulator)initWithConnection:(id)a3;
+- (ML3StatementAccumulator)initWithConnection:(id)connection;
 - (void)dealloc;
 @end
 
 @implementation ML3StatementAccumulator
 
-- (BOOL)_onQueueFlushAndWait:(BOOL)a3
+- (BOOL)_onQueueFlushAndWait:(BOOL)wait
 {
-  v3 = a3;
+  waitCopy = wait;
   v30[1] = *MEMORY[0x277D85DE8];
   if (!self->_databasePath)
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"ML3StatementAccumulator.m" lineNumber:84 description:@"Attempted to flush database statements without a specified database path."];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ML3StatementAccumulator.m" lineNumber:84 description:@"Attempted to flush database statements without a specified database path."];
   }
 
   v5 = 1;
@@ -47,7 +47,7 @@
     }
 
     v13 = 0;
-    if (v3)
+    if (waitCopy)
     {
       v13 = dispatch_semaphore_create(0);
     }
@@ -58,11 +58,11 @@
     v19[2] = __48__ML3StatementAccumulator__onQueueFlushAndWait___block_invoke;
     v19[3] = &unk_278765F90;
     v21 = &v23;
-    v22 = v3;
+    v22 = waitCopy;
     v15 = v13;
     v20 = v15;
     [(MLMediaLibraryService *)xpcService performDatabaseOperation:2 withAttributes:v7 options:v11 completionHandler:v19];
-    if (v3)
+    if (waitCopy)
     {
       dispatch_semaphore_wait(v15, 0xFFFFFFFFFFFFFFFFLL);
     }
@@ -98,7 +98,7 @@ void __48__ML3StatementAccumulator__onQueueFlushAndWait___block_invoke(uint64_t 
   }
 }
 
-- (BOOL)flushAndWait:(BOOL)a3
+- (BOOL)flushAndWait:(BOOL)wait
 {
   v8 = 0;
   v9 = &v8;
@@ -111,7 +111,7 @@ void __48__ML3StatementAccumulator__onQueueFlushAndWait___block_invoke(uint64_t 
   block[3] = &unk_278765F50;
   block[4] = self;
   block[5] = &v8;
-  v7 = a3;
+  waitCopy = wait;
   dispatch_sync(serialQueue, block);
   v4 = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
@@ -125,10 +125,10 @@ uint64_t __40__ML3StatementAccumulator_flushAndWait___block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)enqueueStatement:(id)a3
+- (BOOL)enqueueStatement:(id)statement
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  statementCopy = statement;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -139,7 +139,7 @@ uint64_t __40__ML3StatementAccumulator_flushAndWait___block_invoke(uint64_t a1)
     v5 = os_log_create("com.apple.amp.medialibrary", "Default");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [v4 sql];
+      v6 = [statementCopy sql];
       *buf = 138543362;
       v18 = v6;
       _os_log_impl(&dword_22D2FA000, v5, OS_LOG_TYPE_DEFAULT, "failing to enque statement inside a transaction marked for rollback. sql=%{public}@", buf, 0xCu);
@@ -154,7 +154,7 @@ uint64_t __40__ML3StatementAccumulator_flushAndWait___block_invoke(uint64_t a1)
     block[2] = __44__ML3StatementAccumulator_enqueueStatement___block_invoke;
     block[3] = &unk_278765F28;
     block[4] = self;
-    v11 = v4;
+    v11 = statementCopy;
     v12 = &v13;
     dispatch_sync(serialQueue, block);
   }
@@ -194,9 +194,9 @@ void *__44__ML3StatementAccumulator_enqueueStatement___block_invoke(void *a1)
   return 0;
 }
 
-- (ML3StatementAccumulator)initWithConnection:(id)a3
+- (ML3StatementAccumulator)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v19.receiver = self;
   v19.super_class = ML3StatementAccumulator;
   v6 = [(ML3StatementAccumulator *)&v19 init];
@@ -208,9 +208,9 @@ void *__44__ML3StatementAccumulator_enqueueStatement___block_invoke(void *a1)
     statementQueue = v7->_statementQueue;
     v7->_statementQueue = v8;
 
-    objc_storeStrong(&v7->_connection, a3);
-    v10 = [v5 databasePath];
-    v11 = [v10 copy];
+    objc_storeStrong(&v7->_connection, connection);
+    databasePath = [connectionCopy databasePath];
+    v11 = [databasePath copy];
     databasePath = v7->_databasePath;
     v7->_databasePath = v11;
 

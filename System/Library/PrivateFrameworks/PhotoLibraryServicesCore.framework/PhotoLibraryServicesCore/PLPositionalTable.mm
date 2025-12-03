@@ -1,17 +1,17 @@
 @interface PLPositionalTable
-- (BOOL)_increaseEntryCapacityIfNeededToStoreIndex:(int64_t)a3;
-- (BOOL)_setEntryCapacity:(int64_t)a3;
-- (BOOL)deleteEntryAtIndex:(unint64_t)a3;
-- (BOOL)isEmptyAtIndex:(unint64_t)a3;
-- (BOOL)readDataAtIndex:(unint64_t)a3 intoBuffer:(void *)a4 bytesRead:(unint64_t *)a5;
-- (BOOL)writeEntryData:(id)a3 toIndex:(unint64_t)a4;
-- (PLPositionalTable)initWithPath:(id)a3 readOnly:(BOOL)a4 entryLength:(unint64_t)a5;
+- (BOOL)_increaseEntryCapacityIfNeededToStoreIndex:(int64_t)index;
+- (BOOL)_setEntryCapacity:(int64_t)capacity;
+- (BOOL)deleteEntryAtIndex:(unint64_t)index;
+- (BOOL)isEmptyAtIndex:(unint64_t)index;
+- (BOOL)readDataAtIndex:(unint64_t)index intoBuffer:(void *)buffer bytesRead:(unint64_t *)read;
+- (BOOL)writeEntryData:(id)data toIndex:(unint64_t)index;
+- (PLPositionalTable)initWithPath:(id)path readOnly:(BOOL)only entryLength:(unint64_t)length;
 - (id)fileStatistics;
-- (id)readEntriesAtIndexes:(id)a3;
+- (id)readEntriesAtIndexes:(id)indexes;
 - (int64_t)fileLength;
 - (void)dealloc;
 - (void)flush;
-- (void)touchEntriesInRange:(_NSRange)a3;
+- (void)touchEntriesInRange:(_NSRange)range;
 @end
 
 @implementation PLPositionalTable
@@ -28,7 +28,7 @@
   }
 }
 
-- (BOOL)deleteEntryAtIndex:(unint64_t)a3
+- (BOOL)deleteEntryAtIndex:(unint64_t)index
 {
   v22 = *MEMORY[0x1E69E9840];
   if (self->_readOnly)
@@ -36,7 +36,7 @@
     goto LABEL_18;
   }
 
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     v4 = PLThumbnailsGetLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -54,14 +54,14 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (self->_entryCapacity <= a3)
+  if (self->_entryCapacity <= index)
   {
     v4 = PLThumbnailsGetLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       entryCapacity = self->_entryCapacity;
       v18 = 134218240;
-      v19 = a3;
+      indexCopy2 = index;
       v20 = 2048;
       v21 = entryCapacity;
       v5 = "Unable to delete thumbnail index: %lu that is out of range of the file (capacity: %lu)";
@@ -85,7 +85,7 @@ LABEL_18:
     descriptor = self->_descriptor;
     entryLength = self->_entryLength;
     flushAfterWrite = self->_flushAfterWrite;
-    v15 = pwrite(descriptor, v10, entryLength, entryLength * a3);
+    v15 = pwrite(descriptor, v10, entryLength, entryLength * index);
     if (v15 == entryLength && flushAfterWrite)
     {
       fsync(descriptor);
@@ -98,7 +98,7 @@ LABEL_18:
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
       {
         v18 = 134217984;
-        v19 = a3;
+        indexCopy2 = index;
         v5 = "Unable to write empty data to index: %lu";
         v6 = v4;
         v7 = OS_LOG_TYPE_DEBUG;
@@ -115,22 +115,22 @@ LABEL_18:
   return v10;
 }
 
-- (BOOL)writeEntryData:(id)a3 toIndex:(unint64_t)a4
+- (BOOL)writeEntryData:(id)data toIndex:(unint64_t)index
 {
-  v7 = a3;
-  if (!v7)
+  dataCopy = data;
+  if (!dataCopy)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PLPositionalTable.m" lineNumber:389 description:{@"Invalid parameter not satisfying: %@", @"data"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPositionalTable.m" lineNumber:389 description:{@"Invalid parameter not satisfying: %@", @"data"}];
   }
 
-  if ([v7 length] != self->_entryLength)
+  if ([dataCopy length] != self->_entryLength)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"PLPositionalTable.m" lineNumber:390 description:@"Data length must equal entry length."];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLPositionalTable.m" lineNumber:390 description:@"Data length must equal entry length."];
   }
 
-  if (a4 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = PLThumbnailsGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -142,7 +142,7 @@ LABEL_18:
     goto LABEL_13;
   }
 
-  if (![(PLPositionalTable *)self _increaseEntryCapacityIfNeededToStoreIndex:a4])
+  if (![(PLPositionalTable *)self _increaseEntryCapacityIfNeededToStoreIndex:index])
   {
 LABEL_13:
     v15 = 0;
@@ -151,10 +151,10 @@ LABEL_13:
 
   descriptor = self->_descriptor;
   entryLength = self->_entryLength;
-  v11 = [v7 bytes];
-  v12 = entryLength * a4;
+  bytes = [dataCopy bytes];
+  v12 = entryLength * index;
   flushAfterWrite = self->_flushAfterWrite;
-  v14 = pwrite(descriptor, v11, entryLength, v12);
+  v14 = pwrite(descriptor, bytes, entryLength, v12);
   v15 = v14 == entryLength;
   if (v14 == entryLength && flushAfterWrite)
   {
@@ -167,15 +167,15 @@ LABEL_14:
   return v15;
 }
 
-- (void)touchEntriesInRange:(_NSRange)a3
+- (void)touchEntriesInRange:(_NSRange)range
 {
   v18 = *MEMORY[0x1E69E9840];
   descriptor = self->_descriptor;
   if (descriptor)
   {
     entryLength = self->_entryLength;
-    v11[0] = entryLength * a3.location;
-    v11[1] = (entryLength * LODWORD(a3.length));
+    v11[0] = entryLength * range.location;
+    v11[1] = (entryLength * LODWORD(range.length));
     if (fcntl(descriptor, 44, v11) == -1)
     {
       v6 = PLThumbnailsGetLog();
@@ -197,14 +197,14 @@ LABEL_14:
   }
 }
 
-- (id)readEntriesAtIndexes:(id)a3
+- (id)readEntriesAtIndexes:(id)indexes
 {
-  v4 = a3;
-  v5 = [v4 rangeCount];
+  indexesCopy = indexes;
+  rangeCount = [indexesCopy rangeCount];
   v6 = objc_alloc_init(MEMORY[0x1E696AD50]);
-  if (v5)
+  if (rangeCount)
   {
-    v5 = malloc_type_calloc(1uLL, 8 * v5, 0x80040B8603338uLL);
+    rangeCount = malloc_type_calloc(1uLL, 8 * rangeCount, 0x80040B8603338uLL);
   }
 
   v10[0] = MEMORY[0x1E69E9820];
@@ -212,10 +212,10 @@ LABEL_14:
   v10[2] = __42__PLPositionalTable_readEntriesAtIndexes___block_invoke;
   v10[3] = &unk_1E7932428;
   v11 = v6;
-  v12 = v5;
+  v12 = rangeCount;
   v10[4] = self;
   v7 = v6;
-  [v4 enumerateRangesWithOptions:0 usingBlock:v10];
+  [indexesCopy enumerateRangesWithOptions:0 usingBlock:v10];
   v8 = [objc_alloc(-[PLPositionalTable entriesClass](self "entriesClass"))];
 
   return v8;
@@ -262,23 +262,23 @@ void __42__PLPositionalTable_readEntriesAtIndexes___block_invoke(uint64_t a1, NS
   }
 }
 
-- (BOOL)readDataAtIndex:(unint64_t)a3 intoBuffer:(void *)a4 bytesRead:(unint64_t *)a5
+- (BOOL)readDataAtIndex:(unint64_t)index intoBuffer:(void *)buffer bytesRead:(unint64_t *)read
 {
   entryLength = self->_entryLength;
-  v7 = pread(self->_descriptor, a4, entryLength, entryLength * a3);
-  if (a5 && v7 == entryLength)
+  v7 = pread(self->_descriptor, buffer, entryLength, entryLength * index);
+  if (read && v7 == entryLength)
   {
-    *a5 = entryLength;
+    *read = entryLength;
   }
 
   return v7 == entryLength;
 }
 
-- (BOOL)isEmptyAtIndex:(unint64_t)a3
+- (BOOL)isEmptyAtIndex:(unint64_t)index
 {
   [(PLPositionalTable *)self entryLength];
   [(PLPositionalTable *)self entryLength];
-  if (self->_entryCapacity <= a3)
+  if (self->_entryCapacity <= index)
   {
     return 0;
   }
@@ -291,38 +291,38 @@ void __42__PLPositionalTable_readEntriesAtIndexes___block_invoke(uint64_t a1, NS
 
   v6 = v5;
   v9 = 0;
-  v7 = [(PLPositionalTable *)self readDataAtIndex:a3 intoBuffer:v5 bytesRead:&v9]&& !*v6 && memcmp(v6, v6 + 1, v9 - 1) == 0;
+  v7 = [(PLPositionalTable *)self readDataAtIndex:index intoBuffer:v5 bytesRead:&v9]&& !*v6 && memcmp(v6, v6 + 1, v9 - 1) == 0;
   free(v6);
   return v7;
 }
 
 - (id)fileStatistics
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(PLPositionalTable *)self entryCapacity];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  entryCapacity = [(PLPositionalTable *)self entryCapacity];
   v6 = 0;
-  if (v4)
+  if (entryCapacity)
   {
-    for (i = 0; i != v4; ++i)
+    for (i = 0; i != entryCapacity; ++i)
     {
       v6 += [(PLPositionalTable *)self isEmptyAtIndex:i];
     }
   }
 
-  *&v5 = (v4 - v6) / v4;
+  *&v5 = (entryCapacity - v6) / entryCapacity;
   v8 = [MEMORY[0x1E696AD98] numberWithFloat:v5];
-  [v3 setObject:v8 forKeyedSubscript:@"spaceUtilization"];
+  [dictionary setObject:v8 forKeyedSubscript:@"spaceUtilization"];
 
-  v9 = [MEMORY[0x1E696AD98] numberWithInteger:v4];
-  [v3 setObject:v9 forKeyedSubscript:@"capacity"];
+  v9 = [MEMORY[0x1E696AD98] numberWithInteger:entryCapacity];
+  [dictionary setObject:v9 forKeyedSubscript:@"capacity"];
 
   v10 = [MEMORY[0x1E696AD98] numberWithInteger:v6];
-  [v3 setObject:v10 forKeyedSubscript:@"countEmpty"];
+  [dictionary setObject:v10 forKeyedSubscript:@"countEmpty"];
 
-  v11 = [MEMORY[0x1E696AD98] numberWithInteger:v4 - v6];
-  [v3 setObject:v11 forKeyedSubscript:@"countFilled"];
+  v11 = [MEMORY[0x1E696AD98] numberWithInteger:entryCapacity - v6];
+  [dictionary setObject:v11 forKeyedSubscript:@"countFilled"];
 
-  return v3;
+  return dictionary;
 }
 
 - (int64_t)fileLength
@@ -353,19 +353,19 @@ void __42__PLPositionalTable_readEntriesAtIndexes___block_invoke(uint64_t a1, NS
   [(PLPositionalTable *)&v4 dealloc];
 }
 
-- (PLPositionalTable)initWithPath:(id)a3 readOnly:(BOOL)a4 entryLength:(unint64_t)a5
+- (PLPositionalTable)initWithPath:(id)path readOnly:(BOOL)only entryLength:(unint64_t)length
 {
-  v6 = a4;
+  onlyCopy = only;
   v39 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  pathCopy = path;
   v37.receiver = self;
   v37.super_class = PLPositionalTable;
   v10 = [(PLPositionalTable *)&v37 init];
   if (v10)
   {
-    if (v9)
+    if (pathCopy)
     {
-      if (a5)
+      if (length)
       {
         goto LABEL_4;
       }
@@ -373,36 +373,36 @@ void __42__PLPositionalTable_readEntriesAtIndexes___block_invoke(uint64_t a1, NS
 
     else
     {
-      v35 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v35 handleFailureInMethod:a2 object:v10 file:@"PLPositionalTable.m" lineNumber:222 description:{@"Invalid parameter not satisfying: %@", @"path"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v10 file:@"PLPositionalTable.m" lineNumber:222 description:{@"Invalid parameter not satisfying: %@", @"path"}];
 
-      if (a5)
+      if (length)
       {
         goto LABEL_4;
       }
     }
 
-    v36 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v36 handleFailureInMethod:a2 object:v10 file:@"PLPositionalTable.m" lineNumber:223 description:{@"Invalid parameter not satisfying: %@", @"entryLength > 0"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:v10 file:@"PLPositionalTable.m" lineNumber:223 description:{@"Invalid parameter not satisfying: %@", @"entryLength > 0"}];
 
 LABEL_4:
     v10->_flushAfterWrite = 1;
-    v10->_readOnly = v6;
-    v11 = [v9 fileSystemRepresentation];
-    if (v6)
+    v10->_readOnly = onlyCopy;
+    fileSystemRepresentation = [pathCopy fileSystemRepresentation];
+    if (onlyCopy)
     {
-      v12 = open(v11, 0, 438);
+      v12 = open(fileSystemRepresentation, 0, 438);
     }
 
     else
     {
-      v12 = open(v11, 514, 438);
+      v12 = open(fileSystemRepresentation, 514, 438);
     }
 
     if (v12 != -1)
     {
       v13 = v12;
-      v14 = [v9 copy];
+      v14 = [pathCopy copy];
       path = v10->_path;
       v10->_path = v14;
 
@@ -427,7 +427,7 @@ LABEL_4:
         }
       }
 
-      v10->_entryLength = a5;
+      v10->_entryLength = length;
       v21 = v10->_descriptor;
       memset(&buf, 0, sizeof(buf));
       v22 = fstat(v21, &buf);
@@ -442,7 +442,7 @@ LABEL_4:
     }
 
     v25 = *__error();
-    if (v6)
+    if (onlyCopy)
     {
       v26 = PLThumbnailsGetLog();
       v27 = v26;
@@ -451,7 +451,7 @@ LABEL_4:
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
         {
           buf.st_dev = 138412290;
-          *&buf.st_mode = v9;
+          *&buf.st_mode = pathCopy;
           v28 = "No PLPositionalImageTable file found at path %@";
           v29 = v27;
           v30 = OS_LOG_TYPE_DEFAULT;
@@ -473,7 +473,7 @@ LABEL_26:
 
       v33 = strerror(v25);
       buf.st_dev = 138412802;
-      *&buf.st_mode = v9;
+      *&buf.st_mode = pathCopy;
       WORD2(buf.st_ino) = 2080;
       *(&buf.st_ino + 6) = v33;
       HIWORD(buf.st_gid) = 1024;
@@ -491,7 +491,7 @@ LABEL_26:
 
       v32 = strerror(v25);
       buf.st_dev = 138412802;
-      *&buf.st_mode = v9;
+      *&buf.st_mode = pathCopy;
       WORD2(buf.st_ino) = 2080;
       *(&buf.st_ino + 6) = v32;
       HIWORD(buf.st_gid) = 1024;
@@ -512,19 +512,19 @@ LABEL_27:
   return v24;
 }
 
-- (BOOL)_setEntryCapacity:(int64_t)a3
+- (BOOL)_setEntryCapacity:(int64_t)capacity
 {
   v29 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_expansionLock);
   entryCapacity = self->_entryCapacity;
-  if (entryCapacity == a3 || entryCapacity >= a3)
+  if (entryCapacity == capacity || entryCapacity >= capacity)
   {
     v13 = 1;
   }
 
   else
   {
-    v6 = self->_entryLength * a3;
+    v6 = self->_entryLength * capacity;
     v20[0] = 12;
     v20[1] = 0;
     v20[2] = v6;
@@ -575,7 +575,7 @@ LABEL_27:
 
     else
     {
-      self->_entryCapacity = a3;
+      self->_entryCapacity = capacity;
     }
   }
 
@@ -583,16 +583,16 @@ LABEL_27:
   return v13;
 }
 
-- (BOOL)_increaseEntryCapacityIfNeededToStoreIndex:(int64_t)a3
+- (BOOL)_increaseEntryCapacityIfNeededToStoreIndex:(int64_t)index
 {
-  if (a3 < 0)
+  if (index < 0)
   {
     return 1;
   }
 
   entryCapacity = self->_entryCapacity;
-  v4 = a3 - entryCapacity;
-  if (a3 < entryCapacity)
+  v4 = index - entryCapacity;
+  if (index < entryCapacity)
   {
     return 1;
   }

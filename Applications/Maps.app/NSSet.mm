@@ -1,22 +1,22 @@
 @interface NSSet
-- (BOOL)_maps_containsSearchResultEqualToResult:(id)a3 forPurpose:(int64_t)a4;
-- (id)_maps_searchResultMemberEqualToResult:(id)a3 forPurpose:(int64_t)a4;
+- (BOOL)_maps_containsSearchResultEqualToResult:(id)result forPurpose:(int64_t)purpose;
+- (id)_maps_searchResultMemberEqualToResult:(id)result forPurpose:(int64_t)purpose;
 @end
 
 @implementation NSSet
 
-- (id)_maps_searchResultMemberEqualToResult:(id)a3 forPurpose:(int64_t)a4
+- (id)_maps_searchResultMemberEqualToResult:(id)result forPurpose:(int64_t)purpose
 {
-  v6 = a3;
-  v7 = self;
-  v8 = v6;
+  resultCopy = result;
+  selfCopy = self;
+  v8 = resultCopy;
   if (v8)
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v9 = v7;
+    v9 = selfCopy;
     v10 = [(NSSet *)v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v10)
     {
@@ -33,7 +33,7 @@
 
           v14 = *(*(&v17 + 1) + 8 * i);
           objc_opt_class();
-          if (objc_opt_isKindOfClass() & 1) != 0 && ([v8 isEqualToSearchResult:v14 forPurpose:{a4, v17}])
+          if (objc_opt_isKindOfClass() & 1) != 0 && ([v8 isEqualToSearchResult:v14 forPurpose:{purpose, v17}])
           {
             v15 = v14;
             goto LABEL_14;
@@ -62,18 +62,18 @@ LABEL_14:
   return v15;
 }
 
-- (BOOL)_maps_containsSearchResultEqualToResult:(id)a3 forPurpose:(int64_t)a4
+- (BOOL)_maps_containsSearchResultEqualToResult:(id)result forPurpose:(int64_t)purpose
 {
-  v6 = a3;
-  v7 = self;
-  v8 = v6;
+  resultCopy = result;
+  selfCopy = self;
+  v8 = resultCopy;
   if (v8)
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v9 = v7;
+    v9 = selfCopy;
     v10 = [(NSSet *)v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v10)
     {
@@ -90,7 +90,7 @@ LABEL_14:
 
           v14 = *(*(&v17 + 1) + 8 * i);
           objc_opt_class();
-          if (objc_opt_isKindOfClass() & 1) != 0 && ([v8 isEqualToSearchResult:v14 forPurpose:{a4, v17}])
+          if (objc_opt_isKindOfClass() & 1) != 0 && ([v8 isEqualToSearchResult:v14 forPurpose:{purpose, v17}])
           {
             v15 = v14;
 

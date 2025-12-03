@@ -1,27 +1,27 @@
 @interface CVAPortraitVideoPipeline_Impl
-+ (void)drawDisparity:(const __CVBuffer *)a3 onColor:(__CVBuffer *)a4 canonical:(BOOL)a5 rawShiftInvalidThreshold:(int)a6 focusMachineState:(int)a7 offsetX:(unint64_t)a8 offsetY:(unint64_t)a9;
-- (BOOL)validateDisparityPostprocessingRequest:(id)a3 error:(id *)a4;
-- (BOOL)validateMattingRequest:(id)a3 error:(id *)a4;
-- (BOOL)validatePortraitRequest:(id)a3 error:(id *)a4;
-- (BOOL)validateSegmentationPixelBuffer:(__CVBuffer *)a3 matchFormat:(id)a4 error:(id *)a5;
-- (CVAPortraitVideoPipeline_Impl)initWithProperties:(id)a3 commandQueue:(id)a4 notificationQueue:(id)a5 error:(id *)a6;
++ (void)drawDisparity:(const __CVBuffer *)disparity onColor:(__CVBuffer *)color canonical:(BOOL)canonical rawShiftInvalidThreshold:(int)threshold focusMachineState:(int)state offsetX:(unint64_t)x offsetY:(unint64_t)y;
+- (BOOL)validateDisparityPostprocessingRequest:(id)request error:(id *)error;
+- (BOOL)validateMattingRequest:(id)request error:(id *)error;
+- (BOOL)validatePortraitRequest:(id)request error:(id *)error;
+- (BOOL)validateSegmentationPixelBuffer:(__CVBuffer *)buffer matchFormat:(id)format error:(id *)error;
+- (CVAPortraitVideoPipeline_Impl)initWithProperties:(id)properties commandQueue:(id)queue notificationQueue:(id)notificationQueue error:(id *)error;
 - (CVAVideoPipelineProperties)videoPipelineProperties;
 - (id).cxx_construct;
-- (id)internal_extractMatteWithRequest:(id)a3 disparityPostprocessingResult:(id)a4 usePostprocessedDisparity:(BOOL)a5 dilateForegroundMask:(BOOL)a6 gravity:(CVAVector)a7 transitionData:(const TransitionData *)a8 isMattingNeeded:(BOOL)a9 mattingCompletionHandler:(id)a10 isFinalStage:(BOOL)a11 status:(int *)a12;
-- (id)internal_postprocessDisparityWithRequest:(id)a3 disparityPostprocessingCompletionHandler:(id)a4 isFinalStage:(BOOL)a5 status:(int *)a6;
-- (int)extractMatteWithRequest:(id)a3;
-- (int)extractMatteWithRequest:(id)a3 disparityPostprocessingCompletionHandler:(id)a4 mattingCompletionHandler:(id)a5;
-- (int)internal_fixFocusPositionWithDisparityPostprocessingRequest:(id)a3;
-- (int)makeMetalContextWithOptionalCommandQueue:(id)a3 error:(id *)a4;
-- (int)postprocessDisparityWithRequest:(id)a3;
-- (int)postprocessDisparityWithRequest:(id)a3 disparityPostprocessingCompletionHandler:(id)a4;
-- (int)renderSingleEffectWithRequest:(id)a3 destinationColorPixelBuffer:(__CVBuffer *)a4 error:(id *)a5 disparityPostprocessingCompletionHandler:(id)a6 mattingCompletionHandler:(id)a7 portraitCompletionHandler:(id)a8 requestFrom:(id)a9 requestTo:(id)a10;
-- (int)renderWithRequest:(id)a3 disparityPostprocessingCompletionHandler:(id)a4 mattingCompletionHandler:(id)a5 portraitCompletionHandler:(id)a6;
+- (id)internal_extractMatteWithRequest:(id)request disparityPostprocessingResult:(id)result usePostprocessedDisparity:(BOOL)disparity dilateForegroundMask:(BOOL)mask gravity:(CVAVector)gravity transitionData:(const TransitionData *)data isMattingNeeded:(BOOL)needed mattingCompletionHandler:(id)self0 isFinalStage:(BOOL)self1 status:(int *)self2;
+- (id)internal_postprocessDisparityWithRequest:(id)request disparityPostprocessingCompletionHandler:(id)handler isFinalStage:(BOOL)stage status:(int *)status;
+- (int)extractMatteWithRequest:(id)request;
+- (int)extractMatteWithRequest:(id)request disparityPostprocessingCompletionHandler:(id)handler mattingCompletionHandler:(id)completionHandler;
+- (int)internal_fixFocusPositionWithDisparityPostprocessingRequest:(id)request;
+- (int)makeMetalContextWithOptionalCommandQueue:(id)queue error:(id *)error;
+- (int)postprocessDisparityWithRequest:(id)request;
+- (int)postprocessDisparityWithRequest:(id)request disparityPostprocessingCompletionHandler:(id)handler;
+- (int)renderSingleEffectWithRequest:(id)request destinationColorPixelBuffer:(__CVBuffer *)buffer error:(id *)error disparityPostprocessingCompletionHandler:(id)handler mattingCompletionHandler:(id)completionHandler portraitCompletionHandler:(id)portraitCompletionHandler requestFrom:(id)from requestTo:(id)self0;
+- (int)renderWithRequest:(id)request disparityPostprocessingCompletionHandler:(id)handler mattingCompletionHandler:(id)completionHandler portraitCompletionHandler:(id)portraitCompletionHandler;
 - (void)dealloc;
-- (void)internal_relightWithRequest:(id)a3 intermediateSourceBuffer:(__CVBuffer *)a4 faceKitProcessOutput:(id)a5 portraitStyleStrength:(float)a6 mattingResult:(id)a7 singleCubeData:(id)a8 portraitCompletionHandler:(id)a9 timestamp:(int64_t)a10 status:(int *)a11;
-- (void)internal_renderStageLightWithRequest:(id)a3 mattingResult:(id)a4 portraitCompletionHandler:(id)a5 status:(int *)a6;
-- (void)internal_renderWithRequest:(id)a3 dstBuffer:(__CVBuffer *)a4 mattingResult:(id)a5 portraitCompletionHandler:(id)a6 status:(int *)a7 timestamp:(int64_t)a8;
-- (void)setVideoPipelineProperties:(id)a3;
+- (void)internal_relightWithRequest:(id)request intermediateSourceBuffer:(__CVBuffer *)buffer faceKitProcessOutput:(id)output portraitStyleStrength:(float)strength mattingResult:(id)result singleCubeData:(id)data portraitCompletionHandler:(id)handler timestamp:(int64_t)self0 status:(int *)self1;
+- (void)internal_renderStageLightWithRequest:(id)request mattingResult:(id)result portraitCompletionHandler:(id)handler status:(int *)status;
+- (void)internal_renderWithRequest:(id)request dstBuffer:(__CVBuffer *)buffer mattingResult:(id)result portraitCompletionHandler:(id)handler status:(int *)status timestamp:(int64_t)timestamp;
+- (void)setVideoPipelineProperties:(id)properties;
 @end
 
 @implementation CVAPortraitVideoPipeline_Impl
@@ -193,83 +193,83 @@
   operator new();
 }
 
-- (int)renderSingleEffectWithRequest:(id)a3 destinationColorPixelBuffer:(__CVBuffer *)a4 error:(id *)a5 disparityPostprocessingCompletionHandler:(id)a6 mattingCompletionHandler:(id)a7 portraitCompletionHandler:(id)a8 requestFrom:(id)a9 requestTo:(id)a10
+- (int)renderSingleEffectWithRequest:(id)request destinationColorPixelBuffer:(__CVBuffer *)buffer error:(id *)error disparityPostprocessingCompletionHandler:(id)handler mattingCompletionHandler:(id)completionHandler portraitCompletionHandler:(id)portraitCompletionHandler requestFrom:(id)from requestTo:(id)self0
 {
-  v15 = a3;
-  v91 = a6;
-  v90 = a7;
-  v89 = a8;
-  v16 = a9;
-  v17 = a10;
-  v18 = [v15 post];
-  if (v18 && ([v15 post], v19 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v19, v18, (isKindOfClass & 1) != 0))
+  requestCopy = request;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  portraitCompletionHandlerCopy = portraitCompletionHandler;
+  fromCopy = from;
+  toCopy = to;
+  post = [requestCopy post];
+  if (post && ([requestCopy post], v19 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v19, post, (isKindOfClass & 1) != 0))
   {
-    v21 = [v15 post];
+    post2 = [requestCopy post];
   }
 
   else
   {
-    v21 = 0;
+    post2 = 0;
   }
 
-  v22 = [v15 background];
+  background = [requestCopy background];
   objc_opt_class();
   v23 = objc_opt_isKindOfClass();
 
   if (v23)
   {
-    v24 = [v15 background];
-    v25 = [v24 sourceColorPixelBuffer];
-    if (v21)
+    background2 = [requestCopy background];
+    sourceColorPixelBuffer = [background2 sourceColorPixelBuffer];
+    if (post2)
     {
-      v26 = [v21 singleColorCube];
+      singleColorCube = [post2 singleColorCube];
     }
 
     else
     {
-      v26 = 0;
+      singleColorCube = 0;
     }
 
-    v29 = [CVAVideoPipelineLibrary colorCubePortraitRequestForPortraitVideoPipeline:self withWithSourceColorPixelBuffer:v25 destinationColorPixelBuffer:a4 cubeData:v26];
-    if (v21)
+    singleColorCube3 = [CVAVideoPipelineLibrary colorCubePortraitRequestForPortraitVideoPipeline:self withWithSourceColorPixelBuffer:sourceColorPixelBuffer destinationColorPixelBuffer:buffer cubeData:singleColorCube];
+    if (post2)
     {
     }
 
-    [v29 setParentGenericRequestFrom:v16];
-    [v29 setParentGenericRequestTo:v17];
-    v30 = self;
-    v32 = v90;
-    v31 = v91;
-    v33 = v89;
-    v34 = [(CVAPortraitVideoPipeline_Impl *)v30 renderWithRequest:v29 disparityPostprocessingCompletionHandler:v91 mattingCompletionHandler:v90 portraitCompletionHandler:v89];
+    [singleColorCube3 setParentGenericRequestFrom:fromCopy];
+    [singleColorCube3 setParentGenericRequestTo:toCopy];
+    selfCopy = self;
+    v32 = completionHandlerCopy;
+    v31 = handlerCopy;
+    v33 = portraitCompletionHandlerCopy;
+    v34 = [(CVAPortraitVideoPipeline_Impl *)selfCopy renderWithRequest:singleColorCube3 disparityPostprocessingCompletionHandler:handlerCopy mattingCompletionHandler:completionHandlerCopy portraitCompletionHandler:portraitCompletionHandlerCopy];
     v35 = v34;
-    if (a5 && v34 == -22914)
+    if (error && v34 == -22914)
     {
-      *a5 = +[CVAPhotoExceptionMetalResourceUnavailable error];
+      *error = +[CVAPhotoExceptionMetalResourceUnavailable error];
       v35 = -22914;
     }
 
     goto LABEL_64;
   }
 
-  v27 = [v15 background];
+  background3 = [requestCopy background];
   objc_opt_class();
   v85 = objc_opt_isKindOfClass();
 
-  if (v21)
+  if (post2)
   {
-    v28 = [v21 singleColorCube];
+    singleColorCube2 = [post2 singleColorCube];
 
-    if (v28)
+    if (singleColorCube2)
     {
-      v29 = [v21 singleColorCube];
-      [v21 singleColorCube];
+      singleColorCube3 = [post2 singleColorCube];
+      [post2 singleColorCube];
     }
 
     else
     {
-      v29 = [v21 foregroundColorCube];
-      [v21 backgroundColorCube];
+      singleColorCube3 = [post2 foregroundColorCube];
+      [post2 backgroundColorCube];
     }
     v87 = ;
   }
@@ -277,26 +277,26 @@
   else
   {
     v87 = 0;
-    v29 = 0;
+    singleColorCube3 = 0;
   }
 
-  v86 = [v15 background];
-  v36 = [v86 mattingRequest];
-  self->_vmDynamicParams.applyRotation = [v36 applyRotation];
+  background4 = [requestCopy background];
+  mattingRequest = [background4 mattingRequest];
+  self->_vmDynamicParams.applyRotation = [mattingRequest applyRotation];
 
-  v37 = [v15 background];
+  background5 = [requestCopy background];
   objc_opt_class();
-  LOBYTE(v36) = objc_opt_isKindOfClass();
+  LOBYTE(mattingRequest) = objc_opt_isKindOfClass();
 
-  if (v36)
+  if (mattingRequest)
   {
-    v38 = [v15 background];
-    v39 = [v38 sbufMetadata];
+    background6 = [requestCopy background];
+    sbufMetadata = [background6 sbufMetadata];
     metadata = self->_metadata;
-    self->_metadata = v39;
+    self->_metadata = sbufMetadata;
 
     [(VideoMattingMetal *)self->_vmAccelerator setSbufMetadata:self->_metadata];
-    [v38 simulatedFocalRatio];
+    [background6 simulatedFocalRatio];
     v42 = v41;
     if ((atomic_load_explicit(&qword_1ECDE1368, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_1ECDE1368))
     {
@@ -307,9 +307,9 @@
       __cxa_guard_release(&qword_1ECDE1368);
     }
 
-    if (byte_1ECDE1360 == 1 && ([v15 light], v43 = objc_claimAutoreleasedReturnValue(), v43, v43))
+    if (byte_1ECDE1360 == 1 && ([requestCopy light], v43 = objc_claimAutoreleasedReturnValue(), v43, v43))
     {
-      [v38 simulatedFocalRatio];
+      [background6 simulatedFocalRatio];
       v45 = (v44 + -1.4) / 14.6;
       v46 = fminf(v45 + 0.0, 1.0);
       if (v45 >= 0.0)
@@ -330,62 +330,62 @@
       v47 = NAN;
     }
 
-    [v38 primaryCaptureRect];
+    [background6 primaryCaptureRect];
     if (CGRectIsNull(v92))
     {
-      v50 = [(CVAVideoPipelinePropertiesSPI *)self->_properties colorPixelBufferWidth];
-      v51 = [(CVAVideoPipelinePropertiesSPI *)self->_properties colorPixelBufferHeight];
-      v52 = v50;
-      v53 = v51;
+      colorPixelBufferWidth = [(CVAVideoPipelinePropertiesSPI *)self->_properties colorPixelBufferWidth];
+      colorPixelBufferHeight = [(CVAVideoPipelinePropertiesSPI *)self->_properties colorPixelBufferHeight];
+      v52 = colorPixelBufferWidth;
+      v53 = colorPixelBufferHeight;
       v54 = 0.0;
       v55 = 0.0;
     }
 
     else
     {
-      [v38 primaryCaptureRect];
+      [background6 primaryCaptureRect];
     }
 
     [(VideoMattingMetal *)self->_vmAccelerator setPrimaryCaptureRect:v54, v55, v52, v53];
-    v48 = [v38 mattingRequest];
-    [v38 sourceColorGain];
+    mattingRequest2 = [background6 mattingRequest];
+    [background6 sourceColorGain];
     v57 = v56;
-    [v38 sourceColorLux];
+    [background6 sourceColorLux];
     LODWORD(v59) = v58;
     LODWORD(v60) = 0.5;
     *&v61 = v42;
     LODWORD(v62) = v57;
-    v24 = [CVAVideoPipelineLibrary syntheticDepthOfFieldPortraitRequestWithMattingRequest:v48 destinationColorPixelBuffer:a4 backgroundColorCube:v87 foregroundColorCube:v29 colorCubeIntensity:v60 simulatedFocalRatio:v61 sourceColorGain:v62 sourceColorLux:v59];
+    background2 = [CVAVideoPipelineLibrary syntheticDepthOfFieldPortraitRequestWithMattingRequest:mattingRequest2 destinationColorPixelBuffer:buffer backgroundColorCube:v87 foregroundColorCube:singleColorCube3 colorCubeIntensity:v60 simulatedFocalRatio:v61 sourceColorGain:v62 sourceColorLux:v59];
   }
 
   else
   {
     if ((v85 & 1) == 0)
     {
-      v24 = 0;
+      background2 = 0;
       v47 = NAN;
       goto LABEL_37;
     }
 
-    v38 = [v15 background];
-    v48 = [v38 mattingRequest];
+    background6 = [requestCopy background];
+    mattingRequest2 = [background6 mattingRequest];
     LODWORD(v49) = 1.0;
-    v24 = [CVAVideoPipelineLibrary syntheticDepthOfFieldPortraitRequestWithMattingRequest:v48 destinationColorPixelBuffer:a4 backgroundColorCube:0 foregroundColorCube:v29 colorCubeIntensity:0.0 simulatedFocalRatio:v49 sourceColorGain:0.0 sourceColorLux:0.0];
+    background2 = [CVAVideoPipelineLibrary syntheticDepthOfFieldPortraitRequestWithMattingRequest:mattingRequest2 destinationColorPixelBuffer:buffer backgroundColorCube:0 foregroundColorCube:singleColorCube3 colorCubeIntensity:0.0 simulatedFocalRatio:v49 sourceColorGain:0.0 sourceColorLux:0.0];
     v47 = NAN;
   }
 
 LABEL_37:
-  v63 = [v15 light];
+  light = [requestCopy light];
 
-  if (v63)
+  if (light)
   {
-    v64 = [v15 light];
-    v65 = [v64 faceKitProcessOutput];
+    light2 = [requestCopy light];
+    faceKitProcessOutput = [light2 faceKitProcessOutput];
     faceKitProcessOutput = self->_faceKitProcessOutput;
-    self->_faceKitProcessOutput = v65;
+    self->_faceKitProcessOutput = faceKitProcessOutput;
 
     self->_portraitStyleStrength = v47;
-    v67 = [v15 light];
+    light3 = [requestCopy light];
     objc_opt_class();
     v68 = objc_opt_isKindOfClass();
 
@@ -406,7 +406,7 @@ LABEL_55:
       goto LABEL_56;
     }
 
-    v71 = [v15 light];
+    light4 = [requestCopy light];
     objc_opt_class();
     v72 = objc_opt_isKindOfClass();
 
@@ -423,13 +423,13 @@ LABEL_55:
 
       if (byte_1ECDE1370 == 1)
       {
-        v73 = [v15 post];
-        if (!v73)
+        post3 = [requestCopy post];
+        if (!post3)
         {
           goto LABEL_48;
         }
 
-        v74 = [v15 post];
+        post4 = [requestCopy post];
         objc_opt_class();
         v75 = objc_opt_isKindOfClass();
 
@@ -441,10 +441,10 @@ LABEL_55:
 
       else
       {
-        v77 = [v15 post];
-        v78 = [v77 isMono];
+        post5 = [requestCopy post];
+        isMono = [post5 isMono];
 
-        if (!v78)
+        if (!isMono)
         {
 LABEL_48:
           v76 = 3;
@@ -478,22 +478,22 @@ LABEL_52:
 
   [(CVAVideoPipelinePropertiesSPI *)self->_properties setRelightDisplayMode:0];
 LABEL_56:
-  if ([v15 isTmpConfig])
+  if ([requestCopy isTmpConfig])
   {
     [(CVAVideoPipelinePropertiesSPI *)self->_properties setRelightDisplayMode:0x7FFFFFFFLL];
   }
 
-  [v24 setParentGenericRequestFrom:v16];
-  [v24 setParentGenericRequestTo:v17];
-  if (v24)
+  [background2 setParentGenericRequestFrom:fromCopy];
+  [background2 setParentGenericRequestTo:toCopy];
+  if (background2)
   {
-    v35 = [(CVAPortraitVideoPipeline_Impl *)self renderWithRequest:v24 disparityPostprocessingCompletionHandler:v91 mattingCompletionHandler:v90 portraitCompletionHandler:v89];
+    v35 = [(CVAPortraitVideoPipeline_Impl *)self renderWithRequest:background2 disparityPostprocessingCompletionHandler:handlerCopy mattingCompletionHandler:completionHandlerCopy portraitCompletionHandler:portraitCompletionHandlerCopy];
     v79 = self->_faceKitProcessOutput;
     self->_faceKitProcessOutput = 0;
 
-    if (a5 && v35 == -22914)
+    if (error && v35 == -22914)
     {
-      *a5 = +[CVAPhotoExceptionMetalResourceUnavailable error];
+      *error = +[CVAPhotoExceptionMetalResourceUnavailable error];
       v35 = -22914;
     }
   }
@@ -503,21 +503,21 @@ LABEL_56:
     v35 = -22913;
   }
 
-  v32 = v90;
-  v31 = v91;
-  v33 = v89;
+  v32 = completionHandlerCopy;
+  v31 = handlerCopy;
+  v33 = portraitCompletionHandlerCopy;
 LABEL_64:
 
   return v35;
 }
 
-- (int)renderWithRequest:(id)a3 disparityPostprocessingCompletionHandler:(id)a4 mattingCompletionHandler:(id)a5 portraitCompletionHandler:(id)a6
+- (int)renderWithRequest:(id)request disparityPostprocessingCompletionHandler:(id)handler mattingCompletionHandler:(id)completionHandler portraitCompletionHandler:(id)portraitCompletionHandler
 {
   v125 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v118 = a4;
-  v117 = a5;
-  v115 = a6;
+  requestCopy = request;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  portraitCompletionHandlerCopy = portraitCompletionHandler;
   sub_1DED70280(v123, &self->_metalContext, self->_debugGPUCaptureFrameNumber);
   v114.__d_.__rep_ = std::chrono::system_clock::now().__d_.__rep_;
   if ((atomic_load_explicit(&qword_1ECDE12F8, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_1ECDE12F8))
@@ -569,10 +569,10 @@ LABEL_64:
     operator new();
   }
 
-  v11 = [(CVAVideoPipelinePropertiesSPI *)self->_properties relightDisplayMode];
+  relightDisplayMode = [(CVAVideoPipelinePropertiesSPI *)self->_properties relightDisplayMode];
   if ((byte_1ECDE1649 & 1) == 0)
   {
-    v12 = v11;
+    v12 = relightDisplayMode;
     if ((atomic_load_explicit(&qword_1ECDE1188, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_1ECDE1188))
     {
       sub_1DED2E5B4();
@@ -650,24 +650,24 @@ LABEL_25:
 
 LABEL_27:
   sub_1DED2CAE8();
-  v22 = [(CVAVideoPipelinePropertiesSPI *)self->_properties colorPixelBufferWidth];
-  v23 = [(CVAVideoPipelinePropertiesSPI *)self->_properties colorPixelBufferHeight];
-  v24 = [v10 mattingRequest];
-  [v24 primaryCaptureRect];
+  colorPixelBufferWidth = [(CVAVideoPipelinePropertiesSPI *)self->_properties colorPixelBufferWidth];
+  colorPixelBufferHeight = [(CVAVideoPipelinePropertiesSPI *)self->_properties colorPixelBufferHeight];
+  mattingRequest = [requestCopy mattingRequest];
+  [mattingRequest primaryCaptureRect];
   IsEmpty = CGRectIsEmpty(v126);
 
   if (IsEmpty)
   {
-    v26 = v22;
-    v27 = v23;
+    v26 = colorPixelBufferWidth;
+    v27 = colorPixelBufferHeight;
     v28 = 0.0;
     v29 = 0.0;
   }
 
   else
   {
-    v30 = [v10 mattingRequest];
-    [v30 primaryCaptureRect];
+    mattingRequest2 = [requestCopy mattingRequest];
+    [mattingRequest2 primaryCaptureRect];
     v28 = v31;
     v29 = v32;
     v26 = v33;
@@ -682,22 +682,22 @@ LABEL_27:
   objc_opt_class();
   v36 = objc_opt_isKindOfClass();
   v120 = 0;
-  v37 = [(CVAPortraitVideoPipeline_Impl *)self validatePortraitRequest:v10 error:&v120];
+  v37 = [(CVAPortraitVideoPipeline_Impl *)self validatePortraitRequest:requestCopy error:&v120];
   v116 = v120;
   if (v37)
   {
-    v38 = [qword_1ECDE12F0 BOOLValue];
+    bOOLValue = [qword_1ECDE12F0 BOOLValue];
     if (isKindOfClass)
     {
       v39 = [qword_1ECDE1308 BOOLValue] & (v36 ^ 1);
       if (!(v36 & 1 | ((v39 & 1) == 0)))
       {
-        v40 = [qword_1ECDE1320 BOOLValue];
-        v112 = v38;
+        bOOLValue2 = [qword_1ECDE1320 BOOLValue];
+        v112 = bOOLValue;
         if ((v36 & 1) == 0)
         {
 LABEL_34:
-          v41 = v39 & (v38 ^ 1);
+          v41 = v39 & (bOOLValue ^ 1);
           goto LABEL_41;
         }
 
@@ -714,11 +714,11 @@ LABEL_41:
           v111 = sub_1DED2E054("enableSDoF");
         }
 
-        if (v40)
+        if (bOOLValue2)
         {
-          v43 = [v10 mattingRequest];
-          v44 = [v43 disparityPostprocessingRequest];
-          [v44 sourceColorPixelBufferGravity];
+          mattingRequest3 = [requestCopy mattingRequest];
+          disparityPostprocessingRequest = [mattingRequest3 disparityPostprocessingRequest];
+          [disparityPostprocessingRequest sourceColorPixelBufferGravity];
           __p[0] = v45;
           __p[1] = v46;
           __p[2] = v47;
@@ -735,23 +735,23 @@ LABEL_41:
           v52 = NAN;
         }
 
-        v53 = [v10 mattingRequest];
-        if ([v53 segmentationPixelBuffer])
+        mattingRequest4 = [requestCopy mattingRequest];
+        if ([mattingRequest4 segmentationPixelBuffer])
         {
-          v54 = [(CVAVideoPipelinePropertiesSPI *)self->_properties sceneMonitorUsesDisparityStatistics];
+          sceneMonitorUsesDisparityStatistics = [(CVAVideoPipelinePropertiesSPI *)self->_properties sceneMonitorUsesDisparityStatistics];
 
-          if ((v54 & 1) == 0)
+          if ((sceneMonitorUsesDisparityStatistics & 1) == 0)
           {
             vmAccelerator = self->_vmAccelerator;
-            v56 = [v10 mattingRequest];
-            v57 = [v56 segmentationPixelBuffer];
+            mattingRequest5 = [requestCopy mattingRequest];
+            segmentationPixelBuffer = [mattingRequest5 segmentationPixelBuffer];
             notificationQueue = self->_notificationQueue;
             v119[0] = MEMORY[0x1E69E9820];
             v119[1] = 3221225472;
             v119[2] = sub_1DED2E31C;
             v119[3] = &unk_1E869AB58;
             v119[4] = self;
-            [(VideoMattingMetal *)vmAccelerator segmentationAverage:v57 callbackQueue:notificationQueue callback:v119];
+            [(VideoMattingMetal *)vmAccelerator segmentationAverage:segmentationPixelBuffer callbackQueue:notificationQueue callback:v119];
 
             if (v41 & 1 | ((isKindOfClass & 1) == 0))
             {
@@ -775,9 +775,9 @@ LABEL_56:
             v62 = self->_vmAccelerator;
             if (v36)
             {
-              v63 = [v10 proxyCubeData];
-              v64 = [v10 cubeData];
-              [(VideoMattingMetal *)v62 setStageLightProxyCubeData:v63 cubeData:v64];
+              proxyCubeData = [requestCopy proxyCubeData];
+              cubeData = [requestCopy cubeData];
+              [(VideoMattingMetal *)v62 setStageLightProxyCubeData:proxyCubeData cubeData:cubeData];
             }
 
             else
@@ -786,9 +786,9 @@ LABEL_56:
             }
           }
 
-          v65 = [v10 mattingRequest];
-          v66 = [v65 disparityPostprocessingRequest];
-          v113 = [(CVAPortraitVideoPipeline_Impl *)self internal_postprocessDisparityWithRequest:v66 disparityPostprocessingCompletionHandler:v118 isFinalStage:0 status:&v121];
+          mattingRequest6 = [requestCopy mattingRequest];
+          disparityPostprocessingRequest2 = [mattingRequest6 disparityPostprocessingRequest];
+          v113 = [(CVAPortraitVideoPipeline_Impl *)self internal_postprocessDisparityWithRequest:disparityPostprocessingRequest2 disparityPostprocessingCompletionHandler:handlerCopy isFinalStage:0 status:&v121];
 
           v67 = sub_1DED2E328([(CVAVideoPipelinePropertiesSPI *)self->_properties videoPipelineDevice]);
           v68 = (v67 >> 40) & (v67 == 1);
@@ -804,14 +804,14 @@ LABEL_56:
 
           else
           {
-            v70 = [v10 mattingRequest];
-            v69 = [v70 segmentationPixelBuffer] == 0;
+            mattingRequest7 = [requestCopy mattingRequest];
+            v69 = [mattingRequest7 segmentationPixelBuffer] == 0;
           }
 
           v71 = ((v41 | v39) & 1) != 0 || !self->_renderForegroundBlur;
-          v72 = [v10 mattingRequest];
+          mattingRequest8 = [requestCopy mattingRequest];
           LOBYTE(v110) = v41 & 1;
-          v73 = [(CVAPortraitVideoPipeline_Impl *)self internal_extractMatteWithRequest:v72 disparityPostprocessingResult:v113 usePostprocessedDisparity:v69 dilateForegroundMask:v68 gravity:&self->_transitionData transitionData:v71 isMattingNeeded:v48 mattingCompletionHandler:v50 isFinalStage:v52 status:v117, v110, &v121];
+          v73 = [(CVAPortraitVideoPipeline_Impl *)self internal_extractMatteWithRequest:mattingRequest8 disparityPostprocessingResult:v113 usePostprocessedDisparity:v69 dilateForegroundMask:v68 gravity:&self->_transitionData transitionData:v71 isMattingNeeded:v48 mattingCompletionHandler:v50 isFinalStage:v52 status:completionHandlerCopy, v110, &v121];
 
           if ((atomic_load_explicit(&qword_1ECDE1338, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_1ECDE1338))
           {
@@ -824,43 +824,43 @@ LABEL_56:
 
           if (byte_1ECDE1331 == 1)
           {
-            v74 = [v73 disparityPostprocessingResult];
-            v75 = [v10 mattingRequest];
-            v76 = [v75 disparityPostprocessingRequest];
-            sub_1DED2E4D4(@"IN.colorPixelBuffer", [v76 sourceColorPixelBuffer]);
+            disparityPostprocessingResult = [v73 disparityPostprocessingResult];
+            mattingRequest9 = [requestCopy mattingRequest];
+            disparityPostprocessingRequest3 = [mattingRequest9 disparityPostprocessingRequest];
+            sub_1DED2E4D4(@"IN.colorPixelBuffer", [disparityPostprocessingRequest3 sourceColorPixelBuffer]);
 
-            v77 = [v10 mattingRequest];
-            v78 = [v77 disparityPostprocessingRequest];
-            v79 = [v78 fixedPointDisparityPixelBuffer] == 0;
+            mattingRequest10 = [requestCopy mattingRequest];
+            disparityPostprocessingRequest4 = [mattingRequest10 disparityPostprocessingRequest];
+            v79 = [disparityPostprocessingRequest4 fixedPointDisparityPixelBuffer] == 0;
 
             if (!v79)
             {
-              v80 = [v10 mattingRequest];
-              v81 = [v80 disparityPostprocessingRequest];
-              sub_1DED2E4D4(@"IN.fixedPointDisparityPixelBuffer", [v81 fixedPointDisparityPixelBuffer]);
+              mattingRequest11 = [requestCopy mattingRequest];
+              disparityPostprocessingRequest5 = [mattingRequest11 disparityPostprocessingRequest];
+              sub_1DED2E4D4(@"IN.fixedPointDisparityPixelBuffer", [disparityPostprocessingRequest5 fixedPointDisparityPixelBuffer]);
             }
 
-            v82 = [v10 mattingRequest];
-            v83 = [v82 segmentationPixelBuffer] == 0;
+            mattingRequest12 = [requestCopy mattingRequest];
+            v83 = [mattingRequest12 segmentationPixelBuffer] == 0;
 
             if (!v83)
             {
-              v84 = [v10 mattingRequest];
-              sub_1DED2E4D4(@"IN.segmentationPixelBuffer", [v84 segmentationPixelBuffer]);
+              mattingRequest13 = [requestCopy mattingRequest];
+              sub_1DED2E4D4(@"IN.segmentationPixelBuffer", [mattingRequest13 segmentationPixelBuffer]);
             }
 
-            v85 = [v10 mattingRequest];
-            v86 = [v85 skinSegmentationPixelBuffer] == 0;
+            mattingRequest14 = [requestCopy mattingRequest];
+            v86 = [mattingRequest14 skinSegmentationPixelBuffer] == 0;
 
             if (!v86)
             {
-              v87 = [v10 mattingRequest];
-              sub_1DED2E4D4(@"IN.skinSegmentationPixelBuffer", [v87 skinSegmentationPixelBuffer]);
+              mattingRequest15 = [requestCopy mattingRequest];
+              sub_1DED2E4D4(@"IN.skinSegmentationPixelBuffer", [mattingRequest15 skinSegmentationPixelBuffer]);
             }
 
-            if (v74 && [v74 postprocessedDisparityPixelBuffer])
+            if (disparityPostprocessingResult && [disparityPostprocessingResult postprocessedDisparityPixelBuffer])
             {
-              sub_1DED2E4D4(@"OUT.postprocessedDisparityPixelBuffer", [v74 postprocessedDisparityPixelBuffer]);
+              sub_1DED2E4D4(@"OUT.postprocessedDisparityPixelBuffer", [disparityPostprocessingResult postprocessedDisparityPixelBuffer]);
             }
 
             if ([v73 alphaMattePixelBuffer])
@@ -868,9 +868,9 @@ LABEL_56:
               sub_1DED2E4D4(@"OUT.alphaMattePixelBuffer", [v73 alphaMattePixelBuffer]);
             }
 
-            if ([v10 destinationColorPixelBuffer])
+            if ([requestCopy destinationColorPixelBuffer])
             {
-              sub_1DED2E4D4(@"OUT.colorPixelBuffer", [v10 destinationColorPixelBuffer]);
+              sub_1DED2E4D4(@"OUT.colorPixelBuffer", [requestCopy destinationColorPixelBuffer]);
             }
           }
 
@@ -896,8 +896,8 @@ LABEL_56:
 
             if ((sub_1DED2E328([(CVAVideoPipelinePropertiesSPI *)self->_properties videoPipelineDevice]) & 0x1000000000000) != 0)
             {
-              v88 = [v10 mattingRequest];
-              v89 = [v88 segmentationPixelBuffer] == 0;
+              mattingRequest16 = [requestCopy mattingRequest];
+              v89 = [mattingRequest16 segmentationPixelBuffer] == 0;
 
               if (v89)
               {
@@ -918,7 +918,7 @@ LABEL_56:
             {
               if (!self->_intermediateRelightSourceBuffer.m_ptr)
               {
-                sub_1DED2A664(__p, [v10 destinationColorPixelBuffer]);
+                sub_1DED2A664(__p, [requestCopy destinationColorPixelBuffer]);
                 m_ptr = self->_intermediateRelightSourceBuffer.m_ptr;
                 self->_intermediateRelightSourceBuffer.m_ptr = __p[0];
                 if (m_ptr)
@@ -928,7 +928,7 @@ LABEL_56:
                 }
               }
 
-              [CVAPortraitVideoPipeline_Impl internal_renderWithRequest:"internal_renderWithRequest:dstBuffer:mattingResult:portraitCompletionHandler:status:timestamp:" dstBuffer:v10 mattingResult:? portraitCompletionHandler:? status:? timestamp:?];
+              [CVAPortraitVideoPipeline_Impl internal_renderWithRequest:"internal_renderWithRequest:dstBuffer:mattingResult:portraitCompletionHandler:status:timestamp:" dstBuffer:requestCopy mattingResult:? portraitCompletionHandler:? status:? timestamp:?];
               v93 = self->_intermediateRelightSourceBuffer.m_ptr;
             }
 
@@ -937,8 +937,8 @@ LABEL_56:
               v93 = 0;
             }
 
-            v94 = [(CVAVideoPipelinePropertiesSPI *)self->_properties faceKitProcessOutputOverride];
-            if (v94)
+            faceKitProcessOutputOverride = [(CVAVideoPipelinePropertiesSPI *)self->_properties faceKitProcessOutputOverride];
+            if (faceKitProcessOutputOverride)
             {
               faceKitProcessOutput = [(CVAVideoPipelinePropertiesSPI *)self->_properties faceKitProcessOutputOverride];
             }
@@ -951,11 +951,11 @@ LABEL_56:
             [(CVAVideoPipelinePropertiesSPI *)self->_properties portraitStyleStrengthOverride];
             [(CVAVideoPipelinePropertiesSPI *)self->_properties portraitStyleStrengthOverride];
             v97 = v96;
-            v98 = [v10 foregroundColorCube];
+            foregroundColorCube = [requestCopy foregroundColorCube];
             LODWORD(v99) = v97;
-            [(CVAPortraitVideoPipeline_Impl *)self internal_relightWithRequest:v10 intermediateSourceBuffer:v93 faceKitProcessOutput:faceKitProcessOutput portraitStyleStrength:v73 mattingResult:v98 singleCubeData:v115 portraitCompletionHandler:v99 timestamp:v90 status:&v121];
+            [(CVAPortraitVideoPipeline_Impl *)self internal_relightWithRequest:requestCopy intermediateSourceBuffer:v93 faceKitProcessOutput:faceKitProcessOutput portraitStyleStrength:v73 mattingResult:foregroundColorCube singleCubeData:portraitCompletionHandlerCopy portraitCompletionHandler:v99 timestamp:v90 status:&v121];
 
-            if (v94)
+            if (faceKitProcessOutputOverride)
             {
             }
           }
@@ -964,16 +964,16 @@ LABEL_56:
           {
             if (isKindOfClass)
             {
-              -[CVAPortraitVideoPipeline_Impl internal_renderWithRequest:dstBuffer:mattingResult:portraitCompletionHandler:status:timestamp:](self, "internal_renderWithRequest:dstBuffer:mattingResult:portraitCompletionHandler:status:timestamp:", v10, [v10 destinationColorPixelBuffer], v73, v115, &v121, v90);
+              -[CVAPortraitVideoPipeline_Impl internal_renderWithRequest:dstBuffer:mattingResult:portraitCompletionHandler:status:timestamp:](self, "internal_renderWithRequest:dstBuffer:mattingResult:portraitCompletionHandler:status:timestamp:", requestCopy, [requestCopy destinationColorPixelBuffer], v73, portraitCompletionHandlerCopy, &v121, v90);
             }
 
             else if (v36)
             {
-              [(CVAPortraitVideoPipeline_Impl *)self internal_renderStageLightWithRequest:v10 mattingResult:v73 portraitCompletionHandler:v115 status:&v121];
+              [(CVAPortraitVideoPipeline_Impl *)self internal_renderStageLightWithRequest:requestCopy mattingResult:v73 portraitCompletionHandler:portraitCompletionHandlerCopy status:&v121];
             }
           }
 
-          v42 = v121;
+          code = v121;
 
           goto LABEL_109;
         }
@@ -987,9 +987,9 @@ LABEL_53:
 
         else
         {
-          v60 = [v10 foregroundColorCube];
-          v61 = [v10 backgroundColorCube];
-          [(VideoMattingMetal *)v59 setPortraitForegroundCubeData:v60 backgroundCubeData:v61];
+          foregroundColorCube2 = [requestCopy foregroundColorCube];
+          backgroundColorCube = [requestCopy backgroundColorCube];
+          [(VideoMattingMetal *)v59 setPortraitForegroundCubeData:foregroundColorCube2 backgroundCubeData:backgroundColorCube];
         }
 
         goto LABEL_56;
@@ -1001,8 +1001,8 @@ LABEL_53:
       v39 = 0;
     }
 
-    v40 = v36;
-    v112 = v38;
+    bOOLValue2 = v36;
+    v112 = bOOLValue;
     if ((v36 & 1) == 0)
     {
       goto LABEL_34;
@@ -1018,7 +1018,7 @@ LABEL_53:
     _os_log_fault_impl(&dword_1DED23000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT, "%@", __p, 0xCu);
   }
 
-  v42 = [v116 code];
+  code = [v116 code];
 LABEL_109:
 
   if (!v124)
@@ -1043,26 +1043,26 @@ LABEL_109:
   }
 
   v100 = *MEMORY[0x1E69E9840];
-  return v42;
+  return code;
 }
 
-- (int)extractMatteWithRequest:(id)a3
+- (int)extractMatteWithRequest:(id)request
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestCopy = request;
   v15 = 0;
   v14 = 0;
-  v5 = [(CVAPortraitVideoPipeline_Impl *)self validateMattingRequest:v4 error:&v14];
+  v5 = [(CVAPortraitVideoPipeline_Impl *)self validateMattingRequest:requestCopy error:&v14];
   v6 = v14;
   if (v5)
   {
-    v7 = [v4 disparityPostprocessingRequest];
-    v8 = [(CVAPortraitVideoPipeline_Impl *)self internal_postprocessDisparityWithRequest:v7 disparityPostprocessingCompletionHandler:0 isFinalStage:0 status:&v15];
+    disparityPostprocessingRequest = [requestCopy disparityPostprocessingRequest];
+    v8 = [(CVAPortraitVideoPipeline_Impl *)self internal_postprocessDisparityWithRequest:disparityPostprocessingRequest disparityPostprocessingCompletionHandler:0 isFinalStage:0 status:&v15];
 
     buf[0] = 0;
     LOBYTE(v13) = 1;
-    v9 = [(CVAPortraitVideoPipeline_Impl *)self internal_extractMatteWithRequest:v4 disparityPostprocessingResult:v8 usePostprocessedDisparity:1 dilateForegroundMask:0 gravity:buf transitionData:0 mattingCompletionHandler:NAN isFinalStage:NAN status:NAN, v13, &v15];
-    v10 = v15;
+    v9 = [(CVAPortraitVideoPipeline_Impl *)self internal_extractMatteWithRequest:requestCopy disparityPostprocessingResult:v8 usePostprocessedDisparity:1 dilateForegroundMask:0 gravity:buf transitionData:0 mattingCompletionHandler:NAN isFinalStage:NAN status:NAN, v13, &v15];
+    code = v15;
   }
 
   else
@@ -1074,32 +1074,32 @@ LABEL_109:
       _os_log_fault_impl(&dword_1DED23000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT, "%@", buf, 0xCu);
     }
 
-    v10 = [v6 code];
+    code = [v6 code];
   }
 
   v11 = *MEMORY[0x1E69E9840];
-  return v10;
+  return code;
 }
 
-- (int)extractMatteWithRequest:(id)a3 disparityPostprocessingCompletionHandler:(id)a4 mattingCompletionHandler:(id)a5
+- (int)extractMatteWithRequest:(id)request disparityPostprocessingCompletionHandler:(id)handler mattingCompletionHandler:(id)completionHandler
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v21 = 0;
   v20 = 0;
-  v11 = [(CVAPortraitVideoPipeline_Impl *)self validateMattingRequest:v8 error:&v20];
+  v11 = [(CVAPortraitVideoPipeline_Impl *)self validateMattingRequest:requestCopy error:&v20];
   v12 = v20;
   if (v11)
   {
-    v13 = [v8 disparityPostprocessingRequest];
-    v14 = [(CVAPortraitVideoPipeline_Impl *)self internal_postprocessDisparityWithRequest:v13 disparityPostprocessingCompletionHandler:v9 isFinalStage:0 status:&v21];
+    disparityPostprocessingRequest = [requestCopy disparityPostprocessingRequest];
+    v14 = [(CVAPortraitVideoPipeline_Impl *)self internal_postprocessDisparityWithRequest:disparityPostprocessingRequest disparityPostprocessingCompletionHandler:handlerCopy isFinalStage:0 status:&v21];
 
     buf[0] = 0;
     LOBYTE(v19) = 1;
-    v15 = [(CVAPortraitVideoPipeline_Impl *)self internal_extractMatteWithRequest:v8 disparityPostprocessingResult:v14 usePostprocessedDisparity:1 dilateForegroundMask:0 gravity:buf transitionData:v10 mattingCompletionHandler:NAN isFinalStage:NAN status:NAN, v19, &v21];
-    v16 = v21;
+    v15 = [(CVAPortraitVideoPipeline_Impl *)self internal_extractMatteWithRequest:requestCopy disparityPostprocessingResult:v14 usePostprocessedDisparity:1 dilateForegroundMask:0 gravity:buf transitionData:completionHandlerCopy mattingCompletionHandler:NAN isFinalStage:NAN status:NAN, v19, &v21];
+    code = v21;
   }
 
   else
@@ -1111,25 +1111,25 @@ LABEL_109:
       _os_log_fault_impl(&dword_1DED23000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT, "%@", buf, 0xCu);
     }
 
-    v16 = [v12 code];
+    code = [v12 code];
   }
 
   v17 = *MEMORY[0x1E69E9840];
-  return v16;
+  return code;
 }
 
-- (int)postprocessDisparityWithRequest:(id)a3
+- (int)postprocessDisparityWithRequest:(id)request
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestCopy = request;
   v12 = 0;
   v11 = 0;
-  v5 = [(CVAPortraitVideoPipeline_Impl *)self validateDisparityPostprocessingRequest:v4 error:&v11];
+  v5 = [(CVAPortraitVideoPipeline_Impl *)self validateDisparityPostprocessingRequest:requestCopy error:&v11];
   v6 = v11;
   if (v5)
   {
-    v7 = [(CVAPortraitVideoPipeline_Impl *)self internal_postprocessDisparityWithRequest:v4 disparityPostprocessingCompletionHandler:0 isFinalStage:1 status:&v12];
-    v8 = v12;
+    v7 = [(CVAPortraitVideoPipeline_Impl *)self internal_postprocessDisparityWithRequest:requestCopy disparityPostprocessingCompletionHandler:0 isFinalStage:1 status:&v12];
+    code = v12;
   }
 
   else
@@ -1141,26 +1141,26 @@ LABEL_109:
       _os_log_fault_impl(&dword_1DED23000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT, "%@", buf, 0xCu);
     }
 
-    v8 = [v6 code];
+    code = [v6 code];
   }
 
   v9 = *MEMORY[0x1E69E9840];
-  return v8;
+  return code;
 }
 
-- (int)postprocessDisparityWithRequest:(id)a3 disparityPostprocessingCompletionHandler:(id)a4
+- (int)postprocessDisparityWithRequest:(id)request disparityPostprocessingCompletionHandler:(id)handler
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v15 = 0;
   v14 = 0;
-  v8 = [(CVAPortraitVideoPipeline_Impl *)self validateDisparityPostprocessingRequest:v6 error:&v14];
+  v8 = [(CVAPortraitVideoPipeline_Impl *)self validateDisparityPostprocessingRequest:requestCopy error:&v14];
   v9 = v14;
   if (v8)
   {
-    v10 = [(CVAPortraitVideoPipeline_Impl *)self internal_postprocessDisparityWithRequest:v6 disparityPostprocessingCompletionHandler:v7 isFinalStage:1 status:&v15];
-    v11 = v15;
+    v10 = [(CVAPortraitVideoPipeline_Impl *)self internal_postprocessDisparityWithRequest:requestCopy disparityPostprocessingCompletionHandler:handlerCopy isFinalStage:1 status:&v15];
+    code = v15;
   }
 
   else
@@ -1172,27 +1172,27 @@ LABEL_109:
       _os_log_fault_impl(&dword_1DED23000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT, "%@", buf, 0xCu);
     }
 
-    v11 = [v9 code];
+    code = [v9 code];
   }
 
   v12 = *MEMORY[0x1E69E9840];
-  return v11;
+  return code;
 }
 
-- (void)internal_relightWithRequest:(id)a3 intermediateSourceBuffer:(__CVBuffer *)a4 faceKitProcessOutput:(id)a5 portraitStyleStrength:(float)a6 mattingResult:(id)a7 singleCubeData:(id)a8 portraitCompletionHandler:(id)a9 timestamp:(int64_t)a10 status:(int *)a11
+- (void)internal_relightWithRequest:(id)request intermediateSourceBuffer:(__CVBuffer *)buffer faceKitProcessOutput:(id)output portraitStyleStrength:(float)strength mattingResult:(id)result singleCubeData:(id)data portraitCompletionHandler:(id)handler timestamp:(int64_t)self0 status:(int *)self1
 {
-  v17 = a3;
-  v18 = a5;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = [v19 disparityPostprocessingResult];
+  requestCopy = request;
+  outputCopy = output;
+  resultCopy = result;
+  dataCopy = data;
+  handlerCopy = handler;
+  disparityPostprocessingResult = [resultCopy disparityPostprocessingResult];
   v23 = [CVAPortraitResult_Impl alloc];
-  v24 = [v17 destinationColorPixelBuffer];
+  destinationColorPixelBuffer = [requestCopy destinationColorPixelBuffer];
   [(VideoRelightingMetal *)self->_vrAccelerator relightingStability];
   LODWORD(v26) = v25;
   LODWORD(v27) = 1.0;
-  v64 = [(CVAPortraitResult_Impl *)v23 initWithMattingResult:v19 portraitPixelBuffer:v24 portraitStability:v27 relightingStability:v26];
+  v64 = [(CVAPortraitResult_Impl *)v23 initWithMattingResult:resultCopy portraitPixelBuffer:destinationColorPixelBuffer portraitStability:v27 relightingStability:v26];
   if ((atomic_load_explicit(&qword_1ECDE12E0, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_1ECDE12E0))
   {
     qword_1ECDE12D8 = [MEMORY[0x1E696AD98] numberWithBool:0];
@@ -1214,12 +1214,12 @@ LABEL_109:
 
   if (sub_1DED2E054("drawDisparityOverride"))
   {
-    v28 = [qword_1ECDE12D8 BOOLValue];
+    bOOLValue = [qword_1ECDE12D8 BOOLValue];
   }
 
   else
   {
-    v28 = self->_preferences.overlayShiftOnRendering != 0;
+    bOOLValue = self->_preferences.overlayShiftOnRendering != 0;
   }
 
   v65[0] = MEMORY[0x1E69E9820];
@@ -1227,16 +1227,16 @@ LABEL_109:
   v65[2] = sub_1DED30478;
   v65[3] = &unk_1E869AB08;
   v65[4] = self;
-  v29 = v17;
+  v29 = requestCopy;
   v66 = v29;
-  v71 = v28;
-  v30 = v22;
+  v71 = bOOLValue;
+  v30 = disparityPostprocessingResult;
   v67 = v30;
-  v31 = v21;
+  v31 = handlerCopy;
   v69 = v31;
   v32 = v64;
   v68 = v32;
-  v70 = a10;
+  timestampCopy = timestamp;
   v33 = MEMORY[0x1E12C94B0](v65);
   v34 = v33;
   if (self->_preferences.bypassGPUProcessing)
@@ -1248,22 +1248,22 @@ LABEL_109:
   else
   {
     v58 = v33;
-    v59 = v19;
-    v61 = v20;
-    v62 = v18;
+    v59 = resultCopy;
+    v61 = dataCopy;
+    v62 = outputCopy;
     v36 = sub_1DED2E328([(CVAVideoPipelinePropertiesSPI *)self->_properties videoPipelineDevice]);
     v56 = v37;
     v38 = v36;
     vrAccelerator = self->_vrAccelerator;
-    v60 = a4;
-    if (!a4)
+    bufferCopy = buffer;
+    if (!buffer)
     {
-      v49 = [v29 mattingRequest];
-      v48 = [v49 disparityPostprocessingRequest];
-      v60 = [v48 sourceColorPixelBuffer];
+      mattingRequest = [v29 mattingRequest];
+      disparityPostprocessingRequest = [mattingRequest disparityPostprocessingRequest];
+      bufferCopy = [disparityPostprocessingRequest sourceColorPixelBuffer];
     }
 
-    v54 = [v19 alphaMattePixelBuffer];
+    alphaMattePixelBuffer = [resultCopy alphaMattePixelBuffer];
     v57 = v38;
     if (v38 == 1)
     {
@@ -1272,59 +1272,59 @@ LABEL_109:
 
     else
     {
-      v50 = [v29 mattingRequest];
-      v53 = [v50 segmentationPixelBuffer] != 0;
+      mattingRequest2 = [v29 mattingRequest];
+      v53 = [mattingRequest2 segmentationPixelBuffer] != 0;
     }
 
     applyRotation = self->_vmDynamicParams.applyRotation;
     yuvSourceDownsampledAlias = self->_yuvSourceDownsampledAlias;
-    v39 = [v29 mattingRequest];
-    v40 = [v39 skinSegmentationPixelBuffer];
-    v41 = [v29 destinationColorPixelBuffer];
-    v42 = [(VideoMattingMetal *)self->_vmAccelerator colorSim];
-    v43 = [(VideoMattingMetal *)self->_vmAccelerator filteredBeforeSmoothDisparity];
+    mattingRequest3 = [v29 mattingRequest];
+    skinSegmentationPixelBuffer = [mattingRequest3 skinSegmentationPixelBuffer];
+    destinationColorPixelBuffer2 = [v29 destinationColorPixelBuffer];
+    colorSim = [(VideoMattingMetal *)self->_vmAccelerator colorSim];
+    filteredBeforeSmoothDisparity = [(VideoMattingMetal *)self->_vmAccelerator filteredBeforeSmoothDisparity];
     notificationQueue = self->_notificationQueue;
     properties = self->_properties;
     *&v46 = 1.0 / self->_vmDynamicParams.focusCanonicalDisparity;
     v35 = v58;
-    *&v47 = a6;
-    [(VideoRelightingMetal *)vrAccelerator renderWithSrcImage:v60 srcAlpha:v54 trustAlpha:v53 isAfterPreviewStitcher:v56 & 1 applyRotation:applyRotation yuvSourceDownsampled:yuvSourceDownsampledAlias skinSegmentation:v47 dstImage:v46 faceKitProcessOutput:v40 portraitStyleStrength:v41 colorSim:v62 disparity:v42 focusDistance:v43 singleCubeData:v61 properties:properties callbackQueue:notificationQueue callback:v58];
+    *&v47 = strength;
+    [(VideoRelightingMetal *)vrAccelerator renderWithSrcImage:bufferCopy srcAlpha:alphaMattePixelBuffer trustAlpha:v53 isAfterPreviewStitcher:v56 & 1 applyRotation:applyRotation yuvSourceDownsampled:yuvSourceDownsampledAlias skinSegmentation:v47 dstImage:v46 faceKitProcessOutput:skinSegmentationPixelBuffer portraitStyleStrength:destinationColorPixelBuffer2 colorSim:v62 disparity:colorSim focusDistance:filteredBeforeSmoothDisparity singleCubeData:v61 properties:properties callbackQueue:notificationQueue callback:v58];
 
     if (v57 != 1)
     {
     }
 
-    v20 = v61;
-    v18 = v62;
-    v19 = v59;
-    if (!a4)
+    dataCopy = v61;
+    outputCopy = v62;
+    resultCopy = v59;
+    if (!buffer)
     {
     }
   }
 
-  if (a11)
+  if (status)
   {
-    *a11 = 0;
+    *status = 0;
   }
 }
 
-- (void)internal_renderStageLightWithRequest:(id)a3 mattingResult:(id)a4 portraitCompletionHandler:(id)a5 status:(int *)a6
+- (void)internal_renderStageLightWithRequest:(id)request mattingResult:(id)result portraitCompletionHandler:(id)handler status:(int *)status
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v10 disparityPostprocessingResult];
+  requestCopy = request;
+  resultCopy = result;
+  handlerCopy = handler;
+  disparityPostprocessingResult = [resultCopy disparityPostprocessingResult];
   v13 = *(self->_stageLightStateMachine.__ptr_ + 5);
-  [v9 vignetteIntensity];
-  [v9 vignetteIntensity];
+  [requestCopy vignetteIntensity];
+  [requestCopy vignetteIntensity];
   v15 = v14;
-  [v9 stageLightIntensity];
-  [v9 stageLightIntensity];
+  [requestCopy stageLightIntensity];
+  [requestCopy stageLightIntensity];
   v17 = v16;
   v18 = [CVAPortraitResult_Impl alloc];
-  v19 = [v9 destinationColorPixelBuffer];
+  destinationColorPixelBuffer = [requestCopy destinationColorPixelBuffer];
   LODWORD(v20) = v13;
-  v40 = [(CVAPortraitResult_Impl *)v18 initWithMattingResult:v10 portraitPixelBuffer:v19 portraitStability:v20];
+  v40 = [(CVAPortraitResult_Impl *)v18 initWithMattingResult:resultCopy portraitPixelBuffer:destinationColorPixelBuffer portraitStability:v20];
   if ((atomic_load_explicit(&qword_1ECDE12C8, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_1ECDE12C8))
   {
     qword_1ECDE12C0 = [MEMORY[0x1E696AD98] numberWithBool:0];
@@ -1346,12 +1346,12 @@ LABEL_109:
 
   if (sub_1DED2E054("drawDisparityOverride"))
   {
-    v21 = [qword_1ECDE12C0 BOOLValue];
+    bOOLValue = [qword_1ECDE12C0 BOOLValue];
   }
 
   else
   {
-    v21 = self->_preferences.overlayShiftOnRendering != 0;
+    bOOLValue = self->_preferences.overlayShiftOnRendering != 0;
   }
 
   v41[0] = MEMORY[0x1E69E9820];
@@ -1359,12 +1359,12 @@ LABEL_109:
   v41[2] = sub_1DED30AEC;
   v41[3] = &unk_1E869AB30;
   v41[4] = self;
-  v22 = v9;
+  v22 = requestCopy;
   v42 = v22;
-  v46 = v21;
-  v23 = v12;
+  v46 = bOOLValue;
+  v23 = disparityPostprocessingResult;
   v43 = v23;
-  v24 = v11;
+  v24 = handlerCopy;
   v45 = v24;
   v25 = v40;
   v44 = v25;
@@ -1372,21 +1372,21 @@ LABEL_109:
   if (!self->_preferences.bypassGPUProcessing)
   {
     vmAccelerator = self->_vmAccelerator;
-    v38 = v10;
+    v38 = resultCopy;
     [v22 mattingRequest];
     v37 = v36 = vmAccelerator;
-    v29 = [v37 disparityPostprocessingRequest];
-    v30 = [v29 sourceColorPixelBuffer];
-    v31 = [v10 alphaMattePixelBuffer];
-    v32 = [v23 canonicalDisparityPixelBuffer];
-    v33 = [v22 destinationColorPixelBuffer];
+    disparityPostprocessingRequest = [v37 disparityPostprocessingRequest];
+    sourceColorPixelBuffer = [disparityPostprocessingRequest sourceColorPixelBuffer];
+    alphaMattePixelBuffer = [resultCopy alphaMattePixelBuffer];
+    canonicalDisparityPixelBuffer = [v23 canonicalDisparityPixelBuffer];
+    destinationColorPixelBuffer2 = [v22 destinationColorPixelBuffer];
     LODWORD(v34) = v17;
     LODWORD(v35) = v15;
-    [(VideoMattingMetal *)v36 renderStageLightWithSource:v30 alpha:v31 canonicalDisparity:v32 dstColor:v33 blackBackgroundIntensity:1 vignetteIntensity:self->_notificationQueue isFinalStage:v34 callbackQueue:v35 withCallback:v26];
+    [(VideoMattingMetal *)v36 renderStageLightWithSource:sourceColorPixelBuffer alpha:alphaMattePixelBuffer canonicalDisparity:canonicalDisparityPixelBuffer dstColor:destinationColorPixelBuffer2 blackBackgroundIntensity:1 vignetteIntensity:self->_notificationQueue isFinalStage:v34 callbackQueue:v35 withCallback:v26];
 
-    v10 = v38;
-    v27 = a6;
-    if (!a6)
+    resultCopy = v38;
+    statusCopy2 = status;
+    if (!status)
     {
       goto LABEL_12;
     }
@@ -1395,39 +1395,39 @@ LABEL_109:
   }
 
   dispatch_async(self->_notificationQueue, v26);
-  v27 = a6;
-  if (a6)
+  statusCopy2 = status;
+  if (status)
   {
 LABEL_11:
-    *v27 = 0;
+    *statusCopy2 = 0;
   }
 
 LABEL_12:
 }
 
-- (void)internal_renderWithRequest:(id)a3 dstBuffer:(__CVBuffer *)a4 mattingResult:(id)a5 portraitCompletionHandler:(id)a6 status:(int *)a7 timestamp:(int64_t)a8
+- (void)internal_renderWithRequest:(id)request dstBuffer:(__CVBuffer *)buffer mattingResult:(id)result portraitCompletionHandler:(id)handler status:(int *)status timestamp:(int64_t)timestamp
 {
-  v12 = a3;
-  v13 = a5;
-  v128 = a6;
-  v129 = v13;
-  v131 = v12;
-  v132 = [v13 disparityPostprocessingResult];
+  requestCopy = request;
+  resultCopy = result;
+  handlerCopy = handler;
+  v129 = resultCopy;
+  v131 = requestCopy;
+  disparityPostprocessingResult = [resultCopy disparityPostprocessingResult];
   [(CVAVideoPipelinePropertiesSPI *)self->_properties offsetNoiseBitCalculation];
   v15 = v14;
   [(CVAVideoPipelinePropertiesSPI *)self->_properties gainMultiplierNoiseBitCalculation];
   v17 = v16;
   [(CVAVideoPipelinePropertiesSPI *)self->_properties luxMultiplierNoiseBitCalculation];
   v19 = v18;
-  [v12 sourceColorGain];
+  [requestCopy sourceColorGain];
   v21 = v20;
-  [v12 sourceColorLux];
+  [requestCopy sourceColorLux];
   v23 = v22;
   v24 = log2f(fmaxf(v21, 1.0));
   v25 = log2f(fmaxf(v23, 1.0));
   focusCanonicalDisparity = self->_vmDynamicParams.focusCanonicalDisparity;
   sdofDeltaCanonicalDisparity = self->_vmDynamicParams.sdofDeltaCanonicalDisparity;
-  [v132 focusDisparity];
+  [disparityPostprocessingResult focusDisparity];
   v28 = v27;
   if (sub_1DED573AC())
   {
@@ -1437,7 +1437,7 @@ LABEL_12:
   fNumber_tenths = self->_preferences.fNumber_tenths;
   if (fNumber_tenths < 1)
   {
-    [v12 simulatedFocalRatio];
+    [requestCopy simulatedFocalRatio];
   }
 
   else
@@ -1447,13 +1447,13 @@ LABEL_12:
 
   v124 = v30;
   ptr = self->_sdofIntensityStateMachine.__ptr_;
-  v32 = [v12 mattingRequest];
-  v33 = [v32 disparityPostprocessingRequest];
-  v34 = [v33 isFocalPlaneLocked];
+  mattingRequest = [requestCopy mattingRequest];
+  disparityPostprocessingRequest = [mattingRequest disparityPostprocessingRequest];
+  isFocalPlaneLocked = [disparityPostprocessingRequest isFocalPlaneLocked];
   v35 = *self->_focusStateMachine.__ptr_;
-  v36 = [v131 mattingRequest];
-  v37 = [v36 disparityPostprocessingRequest];
-  [v37 sourceColorPixelBufferOrientation];
+  mattingRequest2 = [v131 mattingRequest];
+  disparityPostprocessingRequest2 = [mattingRequest2 disparityPostprocessingRequest];
+  [disparityPostprocessingRequest2 sourceColorPixelBufferOrientation];
   v140[0] = v38;
   v140[1] = v39;
   v140[2] = v40;
@@ -1463,7 +1463,7 @@ LABEL_12:
   v141[2] = v43;
   v141[3] = v44;
   v45 = sub_1DED26C1C(ptr + 3, v141);
-  if (((v35 != 0) & ~v34) != 0 || (v46 = ptr, v45 >= *(ptr + 1)))
+  if (((v35 != 0) & ~isFocalPlaneLocked) != 0 || (v46 = ptr, v45 >= *(ptr + 1)))
   {
     v46 = (ptr + 4);
   }
@@ -1475,22 +1475,22 @@ LABEL_12:
   *(ptr + 6) = v49;
   v50 = *(ptr + 4);
 
-  v51 = [v131 mattingRequest];
-  [v51 primaryCaptureRect];
+  mattingRequest3 = [v131 mattingRequest];
+  [mattingRequest3 primaryCaptureRect];
   self->_vmDynamicParams.primaryCaptureRect.origin.x = v52;
   self->_vmDynamicParams.primaryCaptureRect.origin.y = v53;
   self->_vmDynamicParams.primaryCaptureRect.size.width = v54;
   self->_vmDynamicParams.primaryCaptureRect.size.height = v55;
 
-  v56 = [v131 mattingRequest];
+  mattingRequest4 = [v131 mattingRequest];
   v120 = v25;
   v121 = focusCanonicalDisparity;
   v122 = v24;
   v123 = v19;
-  self->_vmDynamicParams.applyRotation = [v56 applyRotation];
+  self->_vmDynamicParams.applyRotation = [mattingRequest4 applyRotation];
 
   v57 = v131;
-  [v132 backgroundDisparitySumVariance];
+  [disparityPostprocessingResult backgroundDisparitySumVariance];
   v59 = v58;
   [(CVAVideoPipelinePropertiesSPI *)self->_properties stableBackgroundDisparitySumVariance];
   v61 = v60;
@@ -1505,7 +1505,7 @@ LABEL_12:
   }
 
   v119 = v66;
-  [v132 invalidDisparityRatio];
+  [disparityPostprocessingResult invalidDisparityRatio];
   v68 = v67;
   [(CVAVideoPipelinePropertiesSPI *)self->_properties stableInvalidDisparityRatio];
   v70 = v69;
@@ -1535,7 +1535,7 @@ LABEL_12:
 
   v77 = [CVAPortraitResult_Impl alloc];
   *&v78 = v50;
-  v126 = [(CVAPortraitResult_Impl *)v77 initWithMattingResult:v13 portraitPixelBuffer:a4 portraitStability:v78];
+  v126 = [(CVAPortraitResult_Impl *)v77 initWithMattingResult:resultCopy portraitPixelBuffer:buffer portraitStability:v78];
   if ((atomic_load_explicit(&qword_1ECDE12B0, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_1ECDE12B0))
   {
     qword_1ECDE12A8 = [MEMORY[0x1E696AD98] numberWithBool:0];
@@ -1558,12 +1558,12 @@ LABEL_12:
 
   if (sub_1DED2E054("drawDisparityOverride"))
   {
-    v79 = [qword_1ECDE12A8 BOOLValue];
+    bOOLValue = [qword_1ECDE12A8 BOOLValue];
   }
 
   else
   {
-    v79 = self->_preferences.overlayShiftOnRendering != 0;
+    bOOLValue = self->_preferences.overlayShiftOnRendering != 0;
   }
 
   v133[0] = MEMORY[0x1E69E9820];
@@ -1573,18 +1573,18 @@ LABEL_12:
   v133[4] = self;
   v80 = v57;
   v134 = v80;
-  v139 = v79;
-  v81 = v132;
+  v139 = bOOLValue;
+  v81 = disparityPostprocessingResult;
   v135 = v81;
-  v82 = v128;
+  v82 = handlerCopy;
   v137 = v82;
   v83 = v126;
   v136 = v83;
-  v138 = a8;
+  timestampCopy = timestamp;
   v84 = MEMORY[0x1E12C94B0](v133);
   if (self->_preferences.bypassGPUProcessing)
   {
-    if ([v80 destinationColorPixelBuffer] == a4)
+    if ([v80 destinationColorPixelBuffer] == buffer)
     {
       dispatch_async(self->_notificationQueue, v84);
     }
@@ -1612,25 +1612,25 @@ LABEL_12:
 
     if (self->_deadzoneInCinematic)
     {
-      v87 = [v81 canonicalDisparityPixelBuffer];
+      canonicalDisparityPixelBuffer = [v81 canonicalDisparityPixelBuffer];
     }
 
     else
     {
-      v87 = [v81 postprocessedDisparityPixelBuffer];
+      canonicalDisparityPixelBuffer = [v81 postprocessedDisparityPixelBuffer];
     }
 
-    v88 = v87;
+    v88 = canonicalDisparityPixelBuffer;
     vmAccelerator = self->_vmAccelerator;
-    v117 = [v80 mattingRequest];
-    v90 = [v117 disparityPostprocessingRequest];
+    mattingRequest5 = [v80 mattingRequest];
+    disparityPostprocessingRequest3 = [mattingRequest5 disparityPostprocessingRequest];
     v114 = vmAccelerator;
     v115 = v88;
     v91 = v28;
-    v113 = [v90 sourceColorPixelBuffer];
-    v92 = [v80 mattingRequest];
-    v93 = [v92 segmentationPixelBuffer];
-    v94 = [v129 alphaMattePixelBuffer];
+    sourceColorPixelBuffer = [disparityPostprocessingRequest3 sourceColorPixelBuffer];
+    mattingRequest6 = [v80 mattingRequest];
+    segmentationPixelBuffer = [mattingRequest6 segmentationPixelBuffer];
+    alphaMattePixelBuffer = [v129 alphaMattePixelBuffer];
     [(CVAVideoPipelinePropertiesSPI *)self->_properties focusThresholdHardness];
     v96 = v95;
     [v80 colorCubeIntensity];
@@ -1638,11 +1638,11 @@ LABEL_12:
     p_notificationQueue = &self->_notificationQueue;
     notificationQueue = self->_notificationQueue;
     v100 = p_notificationQueue[1];
-    v102 = [v80 destinationColorPixelBuffer];
+    destinationColorPixelBuffer = [v80 destinationColorPixelBuffer];
     *&v109 = fmaxf((v15 + (v17 * v122)) + (v123 * v120), 1.0);
     LODWORD(v110) = 1.0;
     v111 = v118;
-    if (v102 != a4)
+    if (destinationColorPixelBuffer != buffer)
     {
       v111 = 0;
     }
@@ -1654,32 +1654,32 @@ LABEL_12:
     *&v103 = v121 - sdofDeltaCanonicalDisparity;
     *&v105 = v124 * v75;
     *&v108 = ((v50 * (1.0 - ((v119 * v119) * ((v119 * -2.0) + 3.0)))) * (1.0 - ((v116 * v116) * ((v116 * -2.0) + 3.0)))) * v98;
-    [(VideoMattingMetal *)v114 renderContinuousWithSource:v113 segmentationPixelBuffer:v93 alpha:v94 canonicalDisparity:v115 disparityInFocus:1 focusCanonicalDisparity:v103 fNumber:v104 infConvolutionScale:v105 noiseBits:v110 disparityUpdateRate:v109 focusThresholdHardness:v106 cubeIntensity:v107 usePostprocessedDisparity:v108 dstColor:v112 isFinalStage:v100 properties:notificationQueue callbackQueue:v111 withCallback:?];
+    [(VideoMattingMetal *)v114 renderContinuousWithSource:sourceColorPixelBuffer segmentationPixelBuffer:segmentationPixelBuffer alpha:alphaMattePixelBuffer canonicalDisparity:v115 disparityInFocus:1 focusCanonicalDisparity:v103 fNumber:v104 infConvolutionScale:v105 noiseBits:v110 disparityUpdateRate:v109 focusThresholdHardness:v106 cubeIntensity:v107 usePostprocessedDisparity:v108 dstColor:v112 isFinalStage:v100 properties:notificationQueue callbackQueue:v111 withCallback:?];
 
     v84 = v118;
   }
 
-  if (a7)
+  if (status)
   {
-    *a7 = 0;
+    *status = 0;
   }
 }
 
-- (id)internal_extractMatteWithRequest:(id)a3 disparityPostprocessingResult:(id)a4 usePostprocessedDisparity:(BOOL)a5 dilateForegroundMask:(BOOL)a6 gravity:(CVAVector)a7 transitionData:(const TransitionData *)a8 isMattingNeeded:(BOOL)a9 mattingCompletionHandler:(id)a10 isFinalStage:(BOOL)a11 status:(int *)a12
+- (id)internal_extractMatteWithRequest:(id)request disparityPostprocessingResult:(id)result usePostprocessedDisparity:(BOOL)disparity dilateForegroundMask:(BOOL)mask gravity:(CVAVector)gravity transitionData:(const TransitionData *)data isMattingNeeded:(BOOL)needed mattingCompletionHandler:(id)self0 isFinalStage:(BOOL)self1 status:(int *)self2
 {
-  v12 = a9;
-  z = a7.z;
-  x = a7.x;
-  y = a7.y;
-  v17 = a3;
-  v18 = a4;
-  v73 = a10;
+  neededCopy = needed;
+  z = gravity.z;
+  x = gravity.x;
+  y = gravity.y;
+  requestCopy = request;
+  resultCopy = result;
+  handlerCopy = handler;
   mattingCoeffUpdateRate = self->_vmDynamicMetaParams.mattingCoeffUpdateRate;
   mattingCoeffColorStd = self->_vmDynamicMetaParams.mattingCoeffColorStd;
-  v21 = [v17 disparityPostprocessingRequest];
-  v22 = [v21 isFocalPlaneLocked];
+  disparityPostprocessingRequest = [requestCopy disparityPostprocessingRequest];
+  isFocalPlaneLocked = [disparityPostprocessingRequest isFocalPlaneLocked];
 
-  if ((v22 & 1) == 0)
+  if ((isFocalPlaneLocked & 1) == 0)
   {
     if (*self->_focusStateMachine.__ptr_ == 1 || *(self->_sdofIntensityStateMachine.__ptr_ + 4) < 0.5)
     {
@@ -1781,7 +1781,7 @@ LABEL_24:
     [MEMORY[0x1E696AEC0] stringWithFormat:@"mattingColorStd = %.3f", mattingCoeffColorStd];
   }
 
-  if (a8->_inTransition)
+  if (data->_inTransition)
   {
     mattingCoeffUpdateRate = 1.0;
   }
@@ -1793,7 +1793,7 @@ LABEL_24:
 
   self->_vmDynamicParams.updateRate = mattingCoeffUpdateRate;
   self->_vmDynamicParams.alphaCoeffFilterColorStd = mattingCoeffColorStd;
-  [v18 focusDisparity];
+  [resultCopy focusDisparity];
   self->_vmDynamicParams.focusCanonicalDisparity = v26;
   [(CVAVideoPipelinePropertiesSPI *)self->_properties focusThresholdHardness];
   self->_vmDynamicParams.thresholdHardness = v27;
@@ -1802,7 +1802,7 @@ LABEL_24:
   v29 = z;
   *self->_vmDynamicParams.gravity.__elems_ = vneg_f32(vcvt_f32_f64(v28));
   self->_vmDynamicParams.gravity.__elems_[2] = -v29;
-  v30 = -[CVAMattingResult_Impl initWithDisparityPostprocessingResult:alphaMattePixelBuffer:]([CVAMattingResult_Impl alloc], "initWithDisparityPostprocessingResult:alphaMattePixelBuffer:", v18, [v17 destinationAlphaMattePixelBuffer]);
+  v30 = -[CVAMattingResult_Impl initWithDisparityPostprocessingResult:alphaMattePixelBuffer:]([CVAMattingResult_Impl alloc], "initWithDisparityPostprocessingResult:alphaMattePixelBuffer:", resultCopy, [requestCopy destinationAlphaMattePixelBuffer]);
   if ((atomic_load_explicit(&qword_1ECDE12A0, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_1ECDE12A0))
   {
     v60 = +[CVAPreferenceManager defaults];
@@ -1815,45 +1815,45 @@ LABEL_24:
   if (byte_1ECDE1298 == 1)
   {
     v31 = MEMORY[0x1E696AEC0];
-    [v18 backgroundDisparitySum];
+    [resultCopy backgroundDisparitySum];
     [v31 stringWithFormat:@"backgroundDisparitySum: %f", v32];
 
     v33 = MEMORY[0x1E696AEC0];
-    [v18 invalidDisparityRatio];
+    [resultCopy invalidDisparityRatio];
     [v33 stringWithFormat:@"invalidDisparityRatio: %f", v34];
 
     v35 = MEMORY[0x1E696AEC0];
-    [v18 closeCanonicalDisparityAverage];
+    [resultCopy closeCanonicalDisparityAverage];
     [v35 stringWithFormat:@"closeCanonicalDisparityAverage: %f", v36];
 
     v37 = MEMORY[0x1E696AEC0];
-    v38 = [v18 faceCanonicalDisparityAverage];
-    [v37 stringWithFormat:@"faceCanonicalDisparityAverage: %@", v38];
+    faceCanonicalDisparityAverage = [resultCopy faceCanonicalDisparityAverage];
+    [v37 stringWithFormat:@"faceCanonicalDisparityAverage: %@", faceCanonicalDisparityAverage];
 
     v39 = MEMORY[0x1E696AEC0];
-    [v18 erodedForegroundRatio];
+    [resultCopy erodedForegroundRatio];
     [v39 stringWithFormat:@"erodedForegroundRatio: %f", v40];
 
     v41 = MEMORY[0x1E696AEC0];
-    [v18 foregroundRatio];
+    [resultCopy foregroundRatio];
     [v41 stringWithFormat:@"foregroundRatio: %f", v42];
   }
 
-  if ([v17 segmentationPixelBuffer])
+  if ([requestCopy segmentationPixelBuffer])
   {
-    v43 = [(CVAVideoPipelinePropertiesSPI *)self->_properties supportedInputSegmentationPixelBufferPixelFormats];
-    v44 = [MEMORY[0x1E696AD98] numberWithInt:{CVPixelBufferGetPixelFormatType(objc_msgSend(v17, "segmentationPixelBuffer"))}];
-    if ([v43 containsObject:v44])
+    supportedInputSegmentationPixelBufferPixelFormats = [(CVAVideoPipelinePropertiesSPI *)self->_properties supportedInputSegmentationPixelBufferPixelFormats];
+    v44 = [MEMORY[0x1E696AD98] numberWithInt:{CVPixelBufferGetPixelFormatType(objc_msgSend(requestCopy, "segmentationPixelBuffer"))}];
+    if ([supportedInputSegmentationPixelBufferPixelFormats containsObject:v44])
     {
-      v45 = [v17 segmentationPixelBuffer];
+      segmentationPixelBuffer = [requestCopy segmentationPixelBuffer];
     }
 
     else
     {
-      v45 = 0;
+      segmentationPixelBuffer = 0;
     }
 
-    if (!v12)
+    if (!neededCopy)
     {
       goto LABEL_44;
     }
@@ -1861,8 +1861,8 @@ LABEL_24:
 
   else
   {
-    v45 = 0;
-    if (!v12)
+    segmentationPixelBuffer = 0;
+    if (!neededCopy)
     {
       goto LABEL_44;
     }
@@ -1871,30 +1871,30 @@ LABEL_24:
   if (!self->_preferences.bypassGPUProcessing)
   {
     vmAccelerator = self->_vmAccelerator;
-    v47 = [v18 postprocessedDisparityPixelBuffer];
-    v48 = [v17 disparityPostprocessingRequest];
+    postprocessedDisparityPixelBuffer = [resultCopy postprocessedDisparityPixelBuffer];
+    disparityPostprocessingRequest2 = [requestCopy disparityPostprocessingRequest];
     v72 = v30;
-    v67 = v18;
-    v49 = [v48 sourceColorPixelBuffer];
-    v50 = [v17 destinationAlphaMattePixelBuffer];
+    v67 = resultCopy;
+    sourceColorPixelBuffer = [disparityPostprocessingRequest2 sourceColorPixelBuffer];
+    destinationAlphaMattePixelBuffer = [requestCopy destinationAlphaMattePixelBuffer];
     notificationQueue = self->_notificationQueue;
     properties = self->_properties;
     v74[0] = MEMORY[0x1E69E9820];
     v74[1] = 3221225472;
     v74[2] = sub_1DED323E0;
     v74[3] = &unk_1E869AAE0;
-    v77 = v73;
-    v75 = v17;
+    v77 = handlerCopy;
+    v75 = requestCopy;
     v76 = v72;
-    BYTE2(v66) = a6;
-    BYTE1(v66) = a11;
-    LOBYTE(v66) = a5;
-    [VideoMattingMetal alphaMattingWithPostprocessedDisparity:"alphaMattingWithPostprocessedDisparity:source:inSegmentation:alpha:staticParams:dynamicParams:usePostprocessedDisparity:isFinalStage:dilateForegroundMask:properties:callbackQueue:callback:" source:v47 inSegmentation:v49 alpha:v45 staticParams:v50 dynamicParams:&self->_vmStaticParams usePostprocessedDisparity:&self->_vmDynamicParams isFinalStage:v66 dilateForegroundMask:properties properties:notificationQueue callbackQueue:v74 callback:?];
+    BYTE2(v66) = mask;
+    BYTE1(v66) = stage;
+    LOBYTE(v66) = disparity;
+    [VideoMattingMetal alphaMattingWithPostprocessedDisparity:"alphaMattingWithPostprocessedDisparity:source:inSegmentation:alpha:staticParams:dynamicParams:usePostprocessedDisparity:isFinalStage:dilateForegroundMask:properties:callbackQueue:callback:" source:postprocessedDisparityPixelBuffer inSegmentation:sourceColorPixelBuffer alpha:segmentationPixelBuffer staticParams:destinationAlphaMattePixelBuffer dynamicParams:&self->_vmStaticParams usePostprocessedDisparity:&self->_vmDynamicParams isFinalStage:v66 dilateForegroundMask:properties properties:notificationQueue callbackQueue:v74 callback:?];
     v53 = &v77;
     v54 = &v75;
     v55 = &v76;
 
-    v18 = v67;
+    resultCopy = v67;
     v30 = v72;
     goto LABEL_45;
   }
@@ -1906,31 +1906,31 @@ LABEL_44:
   block[2] = sub_1DED323C0;
   block[3] = &unk_1E869AAE0;
   v53 = &v81;
-  v81 = v73;
+  v81 = handlerCopy;
   v54 = &v79;
-  v79 = v17;
+  v79 = requestCopy;
   v55 = &v80;
   v80 = v30;
   dispatch_async(v56, block);
 LABEL_45:
 
-  [v17 segmentationPixelBuffer];
-  [v17 skinSegmentationPixelBuffer];
-  if (a12)
+  [requestCopy segmentationPixelBuffer];
+  [requestCopy skinSegmentationPixelBuffer];
+  if (status)
   {
-    *a12 = 0;
+    *status = 0;
   }
 
   return v30;
 }
 
-- (int)internal_fixFocusPositionWithDisparityPostprocessingRequest:(id)a3
+- (int)internal_fixFocusPositionWithDisparityPostprocessingRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   [(CVAVideoPipelinePropertiesSPI *)self->_properties focusUpdateRateFast];
   v6 = v5;
-  v7 = [(CVAVideoPipelinePropertiesSPI *)self->_properties maxFramesWithoutFace];
-  [v4 currentFocusPosition];
+  maxFramesWithoutFace = [(CVAVideoPipelinePropertiesSPI *)self->_properties maxFramesWithoutFace];
+  [requestCopy currentFocusPosition];
   v9 = v8;
   ptr = self->_focusStateMachine.__ptr_;
   if (*(ptr + 2) == INFINITY)
@@ -1949,7 +1949,7 @@ LABEL_45:
   else
   {
     v44 = v11;
-    if (![v4 isFocalPlaneLocked])
+    if (![requestCopy isFocalPlaneLocked])
     {
       if (v44 == 2)
       {
@@ -1985,8 +1985,8 @@ LABEL_45:
   }
 
 LABEL_5:
-  v12 = [v4 focusRegion];
-  if (!v12 || ([v4 focusRegion], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "count"), v13, v12, !v14))
+  focusRegion = [requestCopy focusRegion];
+  if (!focusRegion || ([requestCopy focusRegion], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "count"), v13, focusRegion, !v14))
   {
     syslog(3, "Focus region not present");
 LABEL_32:
@@ -1994,33 +1994,33 @@ LABEL_32:
     goto LABEL_33;
   }
 
-  v15 = [v4 focusRegion];
-  v16 = [v4 focusRegion];
-  v17 = [v15 objectAtIndexedSubscript:{objc_msgSend(v16, "count") - 1}];
+  focusRegion2 = [requestCopy focusRegion];
+  focusRegion3 = [requestCopy focusRegion];
+  v17 = [focusRegion2 objectAtIndexedSubscript:{objc_msgSend(focusRegion3, "count") - 1}];
   v18 = [v17 objectForKeyedSubscript:@"X"];
   [v18 floatValue];
   v20 = v19;
 
   v57 = v20;
-  v21 = [v4 focusRegion];
-  v22 = [v4 focusRegion];
-  v23 = [v21 objectAtIndexedSubscript:{objc_msgSend(v22, "count") - 1}];
+  focusRegion4 = [requestCopy focusRegion];
+  focusRegion5 = [requestCopy focusRegion];
+  v23 = [focusRegion4 objectAtIndexedSubscript:{objc_msgSend(focusRegion5, "count") - 1}];
   v24 = [v23 objectForKeyedSubscript:@"Y"];
   [v24 floatValue];
   v26 = v25;
 
   v56 = v26;
-  v27 = [v4 focusRegion];
-  v28 = [v4 focusRegion];
-  v29 = [v27 objectAtIndexedSubscript:{objc_msgSend(v28, "count") - 1}];
+  focusRegion6 = [requestCopy focusRegion];
+  focusRegion7 = [requestCopy focusRegion];
+  v29 = [focusRegion6 objectAtIndexedSubscript:{objc_msgSend(focusRegion7, "count") - 1}];
   v30 = [v29 objectForKeyedSubscript:@"Width"];
   [v30 floatValue];
   v32 = v31;
 
   v55 = v32;
-  v33 = [v4 focusRegion];
-  v34 = [v4 focusRegion];
-  v35 = [v33 objectAtIndexedSubscript:{objc_msgSend(v34, "count") - 1}];
+  focusRegion8 = [requestCopy focusRegion];
+  focusRegion9 = [requestCopy focusRegion];
+  v35 = [focusRegion8 objectAtIndexedSubscript:{objc_msgSend(focusRegion9, "count") - 1}];
   v36 = [v35 objectForKeyedSubscript:@"Height"];
   [v36 floatValue];
   v38 = v37;
@@ -2073,7 +2073,7 @@ LABEL_32:
   {
     if (self->_renderForegroundBlur)
     {
-      if ([v4 focusRegionType] == 2)
+      if ([requestCopy focusRegionType] == 2)
       {
         v47 = fmaxf(v38, 0.2);
         v48 = fmaxf(v32, 0.2);
@@ -2098,14 +2098,14 @@ LABEL_32:
     v32 = v48;
   }
 
-  if ((sub_1DED2E328(-[CVAVideoPipelinePropertiesSPI videoPipelineDevice](self->_properties, "videoPipelineDevice")) & 0x100000000) != 0 && [v4 focusRegionType] != 1)
+  if ((sub_1DED2E328(-[CVAVideoPipelinePropertiesSPI videoPipelineDevice](self->_properties, "videoPipelineDevice")) & 0x100000000) != 0 && [requestCopy focusRegionType] != 1)
   {
     if (v6 < 0.0 || v6 > 1.0)
     {
       goto LABEL_49;
     }
 
-    v53 = 0;
+    focusRegionType = 0;
     v50 = self->_disparityAutofocus.__ptr_;
     v32 = 0.5;
     v51 = 0.25;
@@ -2118,7 +2118,7 @@ LABEL_32:
     v50 = self->_disparityAutofocus.__ptr_;
     v52 = v56;
     v51 = v57;
-    v53 = [v4 focusRegionType];
+    focusRegionType = [requestCopy focusRegionType];
     if (v6 < 0.0 || v6 > 1.0)
     {
 LABEL_49:
@@ -2134,36 +2134,36 @@ LABEL_49:
   *(v50 + 23) = v32;
   *(v50 + 24) = v38;
   *(v50 + 25) = -1082130432;
-  *(v50 + 26) = v53;
+  *(v50 + 26) = focusRegionType;
   *(v50 + 27) = v6;
-  *(v50 + 28) = v7;
+  *(v50 + 28) = maxFramesWithoutFace;
 LABEL_33:
 
   return v45;
 }
 
-- (id)internal_postprocessDisparityWithRequest:(id)a3 disparityPostprocessingCompletionHandler:(id)a4 isFinalStage:(BOOL)a5 status:(int *)a6
+- (id)internal_postprocessDisparityWithRequest:(id)request disparityPostprocessingCompletionHandler:(id)handler isFinalStage:(BOOL)stage status:(int *)status
 {
   v444 = *MEMORY[0x1E69E9840];
-  v388 = a3;
-  v383 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   pixelBufferOut = 0;
   v437 = 0;
   __src = 0;
   v438 = 0;
   v8 = sub_1DED2E328([(CVAVideoPipelinePropertiesSPI *)self->_properties videoPipelineDevice]);
   v10 = v9;
-  v11 = [v388 facesArray];
+  facesArray = [requestCopy facesArray];
 
-  v389 = self;
-  if (v11)
+  selfCopy = self;
+  if (facesArray)
   {
     v434 = 0u;
     v435 = 0u;
     v432 = 0u;
     v433 = 0u;
-    v12 = [v388 facesArray];
-    v13 = [v12 countByEnumeratingWithState:&v432 objects:v443 count:16];
+    facesArray2 = [requestCopy facesArray];
+    v13 = [facesArray2 countByEnumeratingWithState:&v432 objects:v443 count:16];
     if (v13)
     {
       v14 = *v433;
@@ -2173,7 +2173,7 @@ LABEL_33:
         {
           if (*v433 != v14)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(facesArray2);
           }
 
           [*(*(&v432 + 1) + 8 * i) getValue:&v422 size:32];
@@ -2193,7 +2193,7 @@ LABEL_33:
 
             else
             {
-              v21 = sub_1DED2E328([(CVAVideoPipelinePropertiesSPI *)v389->_properties videoPipelineDevice]);
+              v21 = sub_1DED2E328([(CVAVideoPipelinePropertiesSPI *)selfCopy->_properties videoPipelineDevice]);
               v22 = ((v20 * 0.5) + v18) + -1.0;
               v23 = -v22;
               v24 = v22 + 1.0;
@@ -2208,7 +2208,7 @@ LABEL_33:
               *&v398 = ((v19 * 0.5) + v17) - (v19 * 0.5);
             }
 
-            sub_1DED32AB4(v440, &v398, &v431, &v430, v389->_metadata);
+            sub_1DED32AB4(v440, &v398, &v431, &v430, selfCopy->_metadata);
             v17 = *v440;
             v19 = v431;
           }
@@ -2291,13 +2291,13 @@ LABEL_33:
           }
         }
 
-        v13 = [v12 countByEnumeratingWithState:&v432 objects:v443 count:16];
+        v13 = [facesArray2 countByEnumeratingWithState:&v432 objects:v443 count:16];
       }
 
       while (v13);
     }
 
-    self = v389;
+    self = selfCopy;
   }
 
   v424 = 0.0;
@@ -2310,7 +2310,7 @@ LABEL_33:
   v373 = self->_disparityStatistics.__ptr_;
   if (self->_deadzoneInCinematic)
   {
-    pixelBufferOut = [v388 destinationDisparityPixelBuffer];
+    pixelBufferOut = [requestCopy destinationDisparityPixelBuffer];
   }
 
   else
@@ -2318,20 +2318,20 @@ LABEL_33:
     CVPixelBufferPoolCreatePixelBuffer(*MEMORY[0x1E695E480], self->_canonicalDisparityPixelBufferPool, &pixelBufferOut);
   }
 
-  v41 = v389;
+  v41 = selfCopy;
   v42 = sub_1DED5BDEC;
   v43 = sub_1DED6E170;
   v44 = sub_1DED5642C;
-  if (v389->_treatFixedPointDisparityAsDense && (v42 = sub_1DED5BDEC, v43 = sub_1DED6E170, v44 = sub_1DED5642C, v389->_useSixteenBitPrecisionForDenseStereoDisparityConversion))
+  if (selfCopy->_treatFixedPointDisparityAsDense && (v42 = sub_1DED5BDEC, v43 = sub_1DED6E170, v44 = sub_1DED5642C, selfCopy->_useSixteenBitPrecisionForDenseStereoDisparityConversion))
   {
-    ptr = v389->_disparityConversion.__ptr_;
-    v40 = v389->_disparityGeometricTransformation.__ptr_;
-    v381 = v389->_disparityAutofocus.__ptr_;
+    ptr = selfCopy->_disparityConversion.__ptr_;
+    v40 = selfCopy->_disparityGeometricTransformation.__ptr_;
+    v381 = selfCopy->_disparityAutofocus.__ptr_;
     v42 = sub_1DED5C7CC;
     v43 = sub_1DED6E838;
     v44 = sub_1DED57EB8;
     v372 = sub_1DED59B00;
-    v373 = v389->_disparityStatistics.__ptr_;
+    v373 = selfCopy->_disparityStatistics.__ptr_;
     v371 = sub_1DED436E8;
   }
 
@@ -2348,7 +2348,7 @@ LABEL_33:
 
     byte_1ECDE11C2 = v353;
     __cxa_guard_release(&qword_1ECDE11C8);
-    v41 = v389;
+    v41 = selfCopy;
   }
 
   if (byte_1ECDE11C2 == 1)
@@ -2365,7 +2365,7 @@ LABEL_33:
 
     [MEMORY[0x1E696AEC0] stringWithFormat:@"_treatFixedPointDisparityAsDense: %@", v45];
 
-    if (v389->_useSixteenBitPrecisionForDenseStereoDisparityConversion)
+    if (selfCopy->_useSixteenBitPrecisionForDenseStereoDisparityConversion)
     {
       v46 = @"true";
     }
@@ -2378,15 +2378,15 @@ LABEL_33:
     [MEMORY[0x1E696AEC0] stringWithFormat:@"_useSixteenBitPrecisionFor...Conversion: %@", v46];
 
     v47 = MEMORY[0x1E696AEC0];
-    [(CVAVideoPipelinePropertiesSPI *)v389->_properties depthPixelBufferMaxLeftOcclusionDisparityChange];
+    [(CVAVideoPipelinePropertiesSPI *)selfCopy->_properties depthPixelBufferMaxLeftOcclusionDisparityChange];
     [v47 stringWithFormat:@"depthPixelBufferMaxLeftOcclusionDisparityChange: %f", v48];
 
     v49 = MEMORY[0x1E696AEC0];
-    [(CVAVideoPipelinePropertiesSPI *)v389->_properties depthPixelBufferMaxRightOcclusionDisparityChange];
+    [(CVAVideoPipelinePropertiesSPI *)selfCopy->_properties depthPixelBufferMaxRightOcclusionDisparityChange];
     [v49 stringWithFormat:@"depthPixelBufferMaxRightOcclusionDisparityChange: %f", v50];
 
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"_disparityOffset: %f", v389->_disparityOffset];
-    v41 = v389;
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"_disparityOffset: %f", selfCopy->_disparityOffset];
+    v41 = selfCopy;
   }
 
   if (v41->_preferences.bypassCPUProcessing)
@@ -2398,10 +2398,10 @@ LABEL_33:
   }
 
   properties = v41->_properties;
-  v54 = v388;
+  v54 = requestCopy;
   if (sub_1DED2E328([(CVAVideoPipelinePropertiesSPI *)properties videoPipelineDevice]) != 2)
   {
-    if (sub_1DED2E328([(CVAVideoPipelinePropertiesSPI *)v389->_properties videoPipelineDevice]) == 3)
+    if (sub_1DED2E328([(CVAVideoPipelinePropertiesSPI *)selfCopy->_properties videoPipelineDevice]) == 3)
     {
       v72 = &qword_1ECDE1000;
       if ((atomic_load_explicit(&qword_1ECDE11D8, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_1ECDE11D8))
@@ -2411,39 +2411,39 @@ LABEL_33:
 
         byte_1ECDE11D0 = v357;
         __cxa_guard_release(&qword_1ECDE11D8);
-        v54 = v388;
+        v54 = requestCopy;
       }
 
       if (byte_1ECDE11D0 == 1)
       {
-        [MEMORY[0x1E696AEC0] stringWithFormat:@"properties.rawShiftInvalidThreshold: %d", -[CVAVideoPipelinePropertiesSPI rawShiftInvalidThreshold](v389->_properties, "rawShiftInvalidThreshold")];
+        [MEMORY[0x1E696AEC0] stringWithFormat:@"properties.rawShiftInvalidThreshold: %d", -[CVAVideoPipelinePropertiesSPI rawShiftInvalidThreshold](selfCopy->_properties, "rawShiftInvalidThreshold")];
 
         v73 = MEMORY[0x1E696AEC0];
-        [(CVAVideoPipelinePropertiesSPI *)v389->_properties disparityStereoFocalLengthPixels];
+        [(CVAVideoPipelinePropertiesSPI *)selfCopy->_properties disparityStereoFocalLengthPixels];
         [v73 stringWithFormat:@"properties.disparityStereoFocalLengthPixels: %f", v74];
 
         v75 = MEMORY[0x1E696AEC0];
-        [(CVAVideoPipelinePropertiesSPI *)v389->_properties disparityStereoBaselineMeters];
+        [(CVAVideoPipelinePropertiesSPI *)selfCopy->_properties disparityStereoBaselineMeters];
         [v75 stringWithFormat:@"properties.disparityStereoBaselineMeters: %f", v76];
 
-        v54 = v388;
+        v54 = requestCopy;
       }
 
-      v386 = v389->_disparityConversion.__ptr_;
-      v77 = [v54 networkDisparityPixelBuffer];
-      v78 = [v388 segmentationPixelBuffer];
-      untransformedCanonicalDisparityPixelBuffer = v389->_untransformedCanonicalDisparityPixelBuffer;
-      v80 = [(CVAVideoPipelinePropertiesSPI *)v389->_properties segmentationBinarizationThreshold];
-      v370 = [(CVAVideoPipelinePropertiesSPI *)v389->_properties depthErosionRadius];
+      v386 = selfCopy->_disparityConversion.__ptr_;
+      networkDisparityPixelBuffer = [v54 networkDisparityPixelBuffer];
+      segmentationPixelBuffer = [requestCopy segmentationPixelBuffer];
+      untransformedCanonicalDisparityPixelBuffer = selfCopy->_untransformedCanonicalDisparityPixelBuffer;
+      segmentationBinarizationThreshold = [(CVAVideoPipelinePropertiesSPI *)selfCopy->_properties segmentationBinarizationThreshold];
+      depthErosionRadius = [(CVAVideoPipelinePropertiesSPI *)selfCopy->_properties depthErosionRadius];
       v365 = v43;
       v366 = v40;
       v367 = v44;
-      CVPixelBufferLockBaseAddress(v77, 1uLL);
+      CVPixelBufferLockBaseAddress(networkDisparityPixelBuffer, 1uLL);
       CVPixelBufferLockBaseAddress(untransformedCanonicalDisparityPixelBuffer, 0);
-      BaseAddress = CVPixelBufferGetBaseAddress(v77);
-      Height = CVPixelBufferGetHeight(v77);
-      Width = CVPixelBufferGetWidth(v77);
-      BytesPerRow = CVPixelBufferGetBytesPerRow(v77);
+      BaseAddress = CVPixelBufferGetBaseAddress(networkDisparityPixelBuffer);
+      Height = CVPixelBufferGetHeight(networkDisparityPixelBuffer);
+      Width = CVPixelBufferGetWidth(networkDisparityPixelBuffer);
+      BytesPerRow = CVPixelBufferGetBytesPerRow(networkDisparityPixelBuffer);
       v85 = CVPixelBufferGetBaseAddress(untransformedCanonicalDisparityPixelBuffer);
       CVPixelBufferGetHeight(untransformedCanonicalDisparityPixelBuffer);
       CVPixelBufferGetWidth(untransformedCanonicalDisparityPixelBuffer);
@@ -2665,19 +2665,19 @@ LABEL_33:
         }
       }
 
-      if (v78)
+      if (segmentationPixelBuffer)
       {
         v191 = *(v386 + 2);
-        CVPixelBufferLockBaseAddress(v78, 1uLL);
+        CVPixelBufferLockBaseAddress(segmentationPixelBuffer, 1uLL);
         CVPixelBufferLockBaseAddress(v191, 0);
-        v379 = CVPixelBufferGetWidth(v78);
-        v376 = CVPixelBufferGetHeight(v78);
+        v379 = CVPixelBufferGetWidth(segmentationPixelBuffer);
+        v376 = CVPixelBufferGetHeight(segmentationPixelBuffer);
         v192 = CVPixelBufferGetWidth(v191);
         v193 = CVPixelBufferGetHeight(v191);
-        v194 = CVPixelBufferGetBaseAddress(v78);
-        CVPixelBufferGetHeight(v78);
-        CVPixelBufferGetWidth(v78);
-        v195 = CVPixelBufferGetBytesPerRow(v78);
+        v194 = CVPixelBufferGetBaseAddress(segmentationPixelBuffer);
+        CVPixelBufferGetHeight(segmentationPixelBuffer);
+        CVPixelBufferGetWidth(segmentationPixelBuffer);
+        v195 = CVPixelBufferGetBytesPerRow(segmentationPixelBuffer);
         v196 = CVPixelBufferGetBaseAddress(v191);
         CVPixelBufferGetHeight(v191);
         CVPixelBufferGetWidth(v191);
@@ -2691,7 +2691,7 @@ LABEL_33:
               _H6 = *&v194[2 * ((m + 0.5) * v379 / v192) + v195 * ((k + 0.5) * v376 / v193)];
               __asm { FCVT            S6, H6 }
 
-              if (v80 <= llroundf(_S6 * 255.0))
+              if (segmentationBinarizationThreshold <= llroundf(_S6 * 255.0))
               {
                 v202 = 32;
               }
@@ -2708,7 +2708,7 @@ LABEL_33:
           }
         }
 
-        CVPixelBufferUnlockBaseAddress(v78, 1uLL);
+        CVPixelBufferUnlockBaseAddress(segmentationPixelBuffer, 1uLL);
         CVPixelBufferUnlockBaseAddress(v191, 0);
         v203 = *(v386 + 2);
         CVPixelBufferLockBaseAddress(untransformedCanonicalDisparityPixelBuffer, 0);
@@ -2723,14 +2723,14 @@ LABEL_33:
         v210 = CVPixelBufferGetBytesPerRow(v203);
         v211 = v206;
         v72 = &qword_1ECDE1000;
-        v212 = v370;
+        v212 = depthErosionRadius;
         if (v205 && v211)
         {
           v368 = v205;
           v369 = v210;
           v362 = v203;
           v363 = untransformedCanonicalDisparityPixelBuffer;
-          v364 = v77;
+          v364 = networkDisparityPixelBuffer;
           v213 = 0;
           v214 = v208;
           v215 = v205;
@@ -2743,8 +2743,8 @@ LABEL_33:
             v380 = v213;
             v387 = &v204[v207 * v213];
             v220 = &v377[v369 * ((v213 + 0.5) * v214 / v215)];
-            v221 = v370 << 32;
-            v222 = -v370;
+            v221 = depthErosionRadius << 32;
+            v222 = -depthErosionRadius;
             do
             {
               v223 = v222 & ~(v222 >> 31);
@@ -2780,7 +2780,7 @@ LABEL_33:
 
             while (v211 != v219);
             v213 = v380 + 1;
-            v212 = v370;
+            v212 = depthErosionRadius;
           }
 
           while (v380 + 1 != v368);
@@ -2789,7 +2789,7 @@ LABEL_33:
           v231 = v204 + 1;
           v72 = &qword_1ECDE1000;
           untransformedCanonicalDisparityPixelBuffer = v363;
-          v77 = v364;
+          networkDisparityPixelBuffer = v364;
           v203 = v362;
           while (1)
           {
@@ -2810,8 +2810,8 @@ LABEL_161:
           }
 
           v233 = 0;
-          v234 = -v370;
-          v235 = v370;
+          v234 = -depthErosionRadius;
+          v235 = depthErosionRadius;
           v236 = &v377[v232];
           while (1)
           {
@@ -2833,14 +2833,14 @@ LABEL_161:
               v240 = v238;
             }
 
-            v241 = (v233 + v370);
+            v241 = (v233 + depthErosionRadius);
             if (v241 >= v230)
             {
               v241 = v368 - 1;
             }
 
             v242 = v241 + 1;
-            v243 = (v233 - v370) & ~((v233 - v370) >> 31);
+            v243 = (v233 - depthErosionRadius) & ~((v233 - depthErosionRadius) >> 31);
             if (v242 <= v243 + 1)
             {
               v244 = v243 + 1;
@@ -2857,8 +2857,8 @@ LABEL_161:
               goto LABEL_164;
             }
 
-            v246 = v370 + v233;
-            if (v230 < (v370 + v233))
+            v246 = depthErosionRadius + v233;
+            if (v230 < (depthErosionRadius + v233))
             {
               v246 = v368 - 1;
             }
@@ -2919,17 +2919,17 @@ LABEL_189:
         CVPixelBufferUnlockBaseAddress(untransformedCanonicalDisparityPixelBuffer, 0);
       }
 
-      CVPixelBufferUnlockBaseAddress(v77, 1uLL);
+      CVPixelBufferUnlockBaseAddress(networkDisparityPixelBuffer, 1uLL);
       CVPixelBufferUnlockBaseAddress(untransformedCanonicalDisparityPixelBuffer, 0);
-      [v388 primaryCaptureRect];
+      [requestCopy primaryCaptureRect];
       v255 = v254;
       v257 = v256;
       v259 = v258;
       v261 = v260;
-      v262 = [v388 cropDepthToPrimaryRect];
-      v365(v366, v389->_untransformedCanonicalDisparityPixelBuffer, pixelBufferOut, v262, 1, v255, v257, v259, v261);
-      [(CVAPortraitVideoPipeline_Impl *)v389 internal_fixFocusPositionWithDisparityPostprocessingRequest:v388];
-      v367(v417, v381, pixelBufferOut, v389->_vmPostprocessingParams.useFaceAsFocus, &__src, v389->_vmPostprocessingParams.faceSizeRatioInFocus);
+      cropDepthToPrimaryRect = [requestCopy cropDepthToPrimaryRect];
+      v365(v366, selfCopy->_untransformedCanonicalDisparityPixelBuffer, pixelBufferOut, cropDepthToPrimaryRect, 1, v255, v257, v259, v261);
+      [(CVAPortraitVideoPipeline_Impl *)selfCopy internal_fixFocusPositionWithDisparityPostprocessingRequest:requestCopy];
+      v367(v417, v381, pixelBufferOut, selfCopy->_vmPostprocessingParams.useFaceAsFocus, &__src, selfCopy->_vmPostprocessingParams.faceSizeRatioInFocus);
       if (v420)
       {
         v421 = v420;
@@ -2942,39 +2942,39 @@ LABEL_189:
         operator delete(v418);
       }
 
-      [(CVAVideoPipelinePropertiesSPI *)v389->_properties focusDistanceOverride];
-      v150 = v389;
+      [(CVAVideoPipelinePropertiesSPI *)selfCopy->_properties focusDistanceOverride];
+      v150 = selfCopy;
       if (*(v72 + 464) == 1)
       {
         v263 = MEMORY[0x1E696AEC0];
-        [(CVAVideoPipelinePropertiesSPI *)v389->_properties focusDistanceOverride];
+        [(CVAVideoPipelinePropertiesSPI *)selfCopy->_properties focusDistanceOverride];
         [v263 stringWithFormat:@"properties.focusDistanceOverride: %f", v264];
 
-        v150 = v389;
+        v150 = selfCopy;
       }
     }
 
     else
     {
-      if (v389->_renderForegroundBlur)
+      if (selfCopy->_renderForegroundBlur)
       {
-        v108 = [v388 fixedPointDisparityPixelBuffer];
-        [v388 primaryCaptureRect];
+        fixedPointDisparityPixelBuffer = [requestCopy fixedPointDisparityPixelBuffer];
+        [requestCopy primaryCaptureRect];
         v110 = v109;
         v112 = v111;
         v114 = v113;
         v116 = v115;
-        v117 = [v388 cropDepthToPrimaryRect];
-        v43(v40, v108, pixelBufferOut, v117, v389->_vmDynamicParams.applyRotation, v110, v112, v114, v116);
-        [(CVAPortraitVideoPipeline_Impl *)v389 internal_fixFocusPositionWithDisparityPostprocessingRequest:v388];
-        v44(v412, v381, pixelBufferOut, v389->_vmPostprocessingParams.useFaceAsFocus, &__src, v389->_vmPostprocessingParams.faceSizeRatioInFocus);
+        cropDepthToPrimaryRect2 = [requestCopy cropDepthToPrimaryRect];
+        v43(v40, fixedPointDisparityPixelBuffer, pixelBufferOut, cropDepthToPrimaryRect2, selfCopy->_vmDynamicParams.applyRotation, v110, v112, v114, v116);
+        [(CVAPortraitVideoPipeline_Impl *)selfCopy internal_fixFocusPositionWithDisparityPostprocessingRequest:requestCopy];
+        v44(v412, v381, pixelBufferOut, selfCopy->_vmPostprocessingParams.useFaceAsFocus, &__src, selfCopy->_vmPostprocessingParams.faceSizeRatioInFocus);
         if (__p)
         {
           v416 = __p;
           operator delete(__p);
         }
 
-        v118 = v389;
+        v118 = selfCopy;
         if (v413)
         {
           v414 = v413;
@@ -2984,19 +2984,19 @@ LABEL_189:
         goto LABEL_197;
       }
 
-      [v388 disparityNormalizationMultiplier];
-      [v388 disparityNormalizationMultiplier];
+      [requestCopy disparityNormalizationMultiplier];
+      [requestCopy disparityNormalizationMultiplier];
       v122 = v121;
-      [(CVAVideoPipelinePropertiesSPI *)v389->_properties disparityStereoFocalLengthPixels];
+      [(CVAVideoPipelinePropertiesSPI *)selfCopy->_properties disparityStereoFocalLengthPixels];
       v124 = v123;
-      [(CVAVideoPipelinePropertiesSPI *)v389->_properties disparityStereoBaselineMeters];
+      [(CVAVideoPipelinePropertiesSPI *)selfCopy->_properties disparityStereoBaselineMeters];
       v126 = 1.0 / ((v122 * v124) * v125);
-      [v388 disparityNormalizationOffset];
-      [v388 disparityNormalizationOffset];
+      [requestCopy disparityNormalizationOffset];
+      [requestCopy disparityNormalizationOffset];
       v128 = v127;
-      [(CVAVideoPipelinePropertiesSPI *)v389->_properties disparityStereoFocalLengthPixels];
+      [(CVAVideoPipelinePropertiesSPI *)selfCopy->_properties disparityStereoFocalLengthPixels];
       v130 = v129;
-      [(CVAVideoPipelinePropertiesSPI *)v389->_properties disparityStereoBaselineMeters];
+      [(CVAVideoPipelinePropertiesSPI *)selfCopy->_properties disparityStereoBaselineMeters];
       v132 = (v128 * v130) * v131;
       if ((atomic_load_explicit(&qword_1ECDE11E8, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_1ECDE11E8))
       {
@@ -3005,7 +3005,7 @@ LABEL_189:
 
         byte_1ECDE11E0 = v359;
         __cxa_guard_release(&qword_1ECDE11E8);
-        v54 = v388;
+        v54 = requestCopy;
       }
 
       if (byte_1ECDE11E0 == 1)
@@ -3015,31 +3015,31 @@ LABEL_189:
         [v133 stringWithFormat:@"disparityNormalizationMultiplier: %f", v134];
 
         v135 = MEMORY[0x1E696AEC0];
-        [v388 disparityNormalizationOffset];
+        [requestCopy disparityNormalizationOffset];
         [v135 stringWithFormat:@"disparityNormalizationOffset: %f", v136];
 
-        [MEMORY[0x1E696AEC0] stringWithFormat:@"properties.rawShiftInvalidThreshold: %d", -[CVAVideoPipelinePropertiesSPI rawShiftInvalidThreshold](v389->_properties, "rawShiftInvalidThreshold")];
+        [MEMORY[0x1E696AEC0] stringWithFormat:@"properties.rawShiftInvalidThreshold: %d", -[CVAVideoPipelinePropertiesSPI rawShiftInvalidThreshold](selfCopy->_properties, "rawShiftInvalidThreshold")];
         v137 = MEMORY[0x1E696AEC0];
-        [(CVAVideoPipelinePropertiesSPI *)v389->_properties disparityStereoFocalLengthPixels];
+        [(CVAVideoPipelinePropertiesSPI *)selfCopy->_properties disparityStereoFocalLengthPixels];
         [v137 stringWithFormat:@"properties.disparityStereoFocalLengthPixels: %f", v138];
 
         v139 = MEMORY[0x1E696AEC0];
-        [(CVAVideoPipelinePropertiesSPI *)v389->_properties disparityStereoBaselineMeters];
+        [(CVAVideoPipelinePropertiesSPI *)selfCopy->_properties disparityStereoBaselineMeters];
         [v139 stringWithFormat:@"properties.disparityStereoBaselineMeters: %f", v140];
 
-        v54 = v388;
+        v54 = requestCopy;
       }
 
-      v42(ptr, [v54 fixedPointDisparityPixelBuffer], -[CVAVideoPipelinePropertiesSPI rawShiftInvalidThreshold](v389->_properties, "rawShiftInvalidThreshold"), v389->_untransformedCanonicalDisparityPixelBuffer, v126, v132);
+      v42(ptr, [v54 fixedPointDisparityPixelBuffer], -[CVAVideoPipelinePropertiesSPI rawShiftInvalidThreshold](selfCopy->_properties, "rawShiftInvalidThreshold"), selfCopy->_untransformedCanonicalDisparityPixelBuffer, v126, v132);
       [v54 primaryCaptureRect];
       v142 = v141;
       v144 = v143;
       v146 = v145;
       v148 = v147;
-      v149 = [v54 cropDepthToPrimaryRect];
-      v43(v40, v389->_untransformedCanonicalDisparityPixelBuffer, pixelBufferOut, v149, 1, v142, v144, v146, v148);
-      [(CVAPortraitVideoPipeline_Impl *)v389 internal_fixFocusPositionWithDisparityPostprocessingRequest:v54];
-      v44(v407, v381, pixelBufferOut, v389->_vmPostprocessingParams.useFaceAsFocus, &__src, v389->_vmPostprocessingParams.faceSizeRatioInFocus);
+      cropDepthToPrimaryRect3 = [v54 cropDepthToPrimaryRect];
+      v43(v40, selfCopy->_untransformedCanonicalDisparityPixelBuffer, pixelBufferOut, cropDepthToPrimaryRect3, 1, v142, v144, v146, v148);
+      [(CVAPortraitVideoPipeline_Impl *)selfCopy internal_fixFocusPositionWithDisparityPostprocessingRequest:v54];
+      v44(v407, v381, pixelBufferOut, selfCopy->_vmPostprocessingParams.useFaceAsFocus, &__src, selfCopy->_vmPostprocessingParams.faceSizeRatioInFocus);
       if (v410)
       {
         v411 = v410;
@@ -3052,45 +3052,45 @@ LABEL_189:
         operator delete(v408);
       }
 
-      [(CVAVideoPipelinePropertiesSPI *)v389->_properties focusDistanceOverride];
-      v150 = v389;
+      [(CVAVideoPipelinePropertiesSPI *)selfCopy->_properties focusDistanceOverride];
+      v150 = selfCopy;
       if (byte_1ECDE11E0 == 1)
       {
         v151 = MEMORY[0x1E696AEC0];
-        [(CVAVideoPipelinePropertiesSPI *)v389->_properties focusDistanceOverride];
+        [(CVAVideoPipelinePropertiesSPI *)selfCopy->_properties focusDistanceOverride];
         [v151 stringWithFormat:@"properties.focusDistanceOverride: %f", v152];
 
-        v150 = v389;
+        v150 = selfCopy;
       }
     }
 
     [(CVAVideoPipelinePropertiesSPI *)v150->_properties focusDistanceOverride];
-    v118 = v389;
-    *v389->_disparityAutofocus.__ptr_ = 1.0 / v265;
+    v118 = selfCopy;
+    *selfCopy->_disparityAutofocus.__ptr_ = 1.0 / v265;
     goto LABEL_197;
   }
 
   LODWORD(v440[0]) = 0;
-  v55 = v389->_focusStatsPostprocessing.__ptr_;
-  v385 = [v388 focusTileXOffset];
-  v378 = [v388 focusTileYOffset];
-  v375 = [v388 focusTileWidth];
-  v56 = [v388 focusTileHeight];
-  v57 = [v388 focusMapWidth];
-  v58 = [v388 focusMapHeight];
-  v59 = [v388 totalSensorCropXOffset];
-  v60 = [v388 totalSensorCropYOffset];
-  v61 = [v388 totalSensorCropWidth];
-  v62 = [v388 totalSensorCropHeight];
-  [v388 phaseToBlurFactor];
+  v55 = selfCopy->_focusStatsPostprocessing.__ptr_;
+  focusTileXOffset = [requestCopy focusTileXOffset];
+  focusTileYOffset = [requestCopy focusTileYOffset];
+  focusTileWidth = [requestCopy focusTileWidth];
+  focusTileHeight = [requestCopy focusTileHeight];
+  focusMapWidth = [requestCopy focusMapWidth];
+  focusMapHeight = [requestCopy focusMapHeight];
+  totalSensorCropXOffset = [requestCopy totalSensorCropXOffset];
+  totalSensorCropYOffset = [requestCopy totalSensorCropYOffset];
+  totalSensorCropWidth = [requestCopy totalSensorCropWidth];
+  totalSensorCropHeight = [requestCopy totalSensorCropHeight];
+  [requestCopy phaseToBlurFactor];
   v64 = v63;
-  [v388 focusDistanceToMaxAllowedFocusDistanceRatio];
+  [requestCopy focusDistanceToMaxAllowedFocusDistanceRatio];
   v66 = v65;
-  v67 = [v388 focusTileData];
-  v68 = [v388 segmentationPixelBuffer];
-  sub_1DED5D418(v55, v385, v378, v375, v56, v57, v58, v59, v64, v66, v60, v61, v62, v67, v68, pixelBufferOut, v440);
+  focusTileData = [requestCopy focusTileData];
+  segmentationPixelBuffer2 = [requestCopy segmentationPixelBuffer];
+  sub_1DED5D418(v55, focusTileXOffset, focusTileYOffset, focusTileWidth, focusTileHeight, focusMapWidth, focusMapHeight, totalSensorCropXOffset, v64, v66, totalSensorCropYOffset, totalSensorCropWidth, totalSensorCropHeight, focusTileData, segmentationPixelBuffer2, pixelBufferOut, v440);
 
-  v69 = v389->_disparityAutofocus.__ptr_;
+  v69 = selfCopy->_disparityAutofocus.__ptr_;
   *v69 = v440[0];
   v71 = *(v69 + 3);
   v70 = *(v69 + 4);
@@ -3117,7 +3117,7 @@ LABEL_265:
     sub_1DED35334();
   }
 
-  v118 = v389;
+  v118 = selfCopy;
 LABEL_197:
   (v372)(v402, v381, pixelBufferOut, 0);
   if (v405)
@@ -3156,7 +3156,7 @@ LABEL_197:
 
       byte_1ECDE11F0 = v355;
       __cxa_guard_release(&qword_1ECDE11F8);
-      v118 = v389;
+      v118 = selfCopy;
     }
 
     if (byte_1ECDE11F0 == 1)
@@ -3175,7 +3175,7 @@ LABEL_197:
       [MEMORY[0x1E696AEC0] stringWithFormat:@"backgroundSeparationLikelihood: %f", *&v425];
       [MEMORY[0x1E696AEC0] stringWithFormat:@"closeCanonicalDisparityAverage: %f", *(&v425 + 1)];
 
-      v118 = v389;
+      v118 = selfCopy;
     }
   }
 
@@ -3187,7 +3187,7 @@ LABEL_197:
   {
     qword_1ECDE1200 = [MEMORY[0x1E696AD98] numberWithBool:0];
     __cxa_guard_release(&qword_1ECDE1208);
-    v118 = v389;
+    v118 = selfCopy;
   }
 
   if ((byte_1ECDE1210 & 1) == 0)
@@ -3195,9 +3195,9 @@ LABEL_197:
     operator new();
   }
 
-  v271 = [qword_1ECDE1200 BOOLValue];
+  bOOLValue = [qword_1ECDE1200 BOOLValue];
   v272 = v118->_disparityAutofocus.__ptr_;
-  if (v271)
+  if (bOOLValue)
   {
     v273 = fmaxf(*(v272 + 3), *(v272 + 1));
   }
@@ -3212,7 +3212,7 @@ LABEL_197:
   {
     qword_1ECDE1218 = [MEMORY[0x1E696AD98] numberWithBool:0];
     __cxa_guard_release(&qword_1ECDE1220);
-    v118 = v389;
+    v118 = selfCopy;
   }
 
   if ((byte_1ECDE1228 & 1) == 0)
@@ -3220,10 +3220,10 @@ LABEL_197:
     operator new();
   }
 
-  v274 = [qword_1ECDE1218 BOOLValue];
+  bOOLValue2 = [qword_1ECDE1218 BOOLValue];
   v275 = v118->_disparityAutofocus.__ptr_;
   v276 = *(v275 + 1);
-  if (v274)
+  if (bOOLValue2)
   {
     v277 = fmaxf(*(v275 + 3), v276);
   }
@@ -3235,9 +3235,9 @@ LABEL_197:
 
   v118->_vmDynamicParams.sdofDeltaCanonicalDisparity = v277;
   v278 = v118->_stageLightStateMachine.__ptr_;
-  v279 = [v388 isFocalPlaneLocked];
+  isFocalPlaneLocked = [requestCopy isFocalPlaneLocked];
   v280 = *v118->_focusStateMachine.__ptr_;
-  [v388 sourceColorPixelBufferOrientation];
+  [requestCopy sourceColorPixelBufferOrientation];
   v398 = v281;
   v399 = v282;
   v400 = v283;
@@ -3248,7 +3248,7 @@ LABEL_197:
   v441 = v287;
   v442 = v288;
   v289 = sub_1DED26C1C(v278 + 3, v440);
-  if (((v280 != 0) & ~v279) != 0 || v289 >= *(v278 + 1) || (v290 = v278, *(v278 + 4) >= v285))
+  if (((v280 != 0) & ~isFocalPlaneLocked) != 0 || v289 >= *(v278 + 1) || (v290 = v278, *(v278 + 4) >= v285))
   {
     v290 = (v278 + 4);
   }
@@ -3259,9 +3259,9 @@ LABEL_197:
   *(v278 + 5) = v292;
   *(v278 + 6) = v293;
   v294 = v118->_sdofIntensityStateMachine.__ptr_;
-  v295 = [v388 isFocalPlaneLocked];
+  isFocalPlaneLocked2 = [requestCopy isFocalPlaneLocked];
   v296 = *v118->_focusStateMachine.__ptr_;
-  [v388 sourceColorPixelBufferOrientation];
+  [requestCopy sourceColorPixelBufferOrientation];
   v398 = v297;
   v399 = v298;
   v400 = v299;
@@ -3271,7 +3271,7 @@ LABEL_197:
   v441 = v302;
   v442 = v303;
   v304 = sub_1DED26C1C(v294 + 3, v440);
-  if (((v296 != 0) & ~v295) != 0 || (v305 = v294, v304 >= *(v294 + 1)))
+  if (((v296 != 0) & ~isFocalPlaneLocked2) != 0 || (v305 = v294, v304 >= *(v294 + 1)))
   {
     v305 = (v294 + 4);
   }
@@ -3281,15 +3281,15 @@ LABEL_197:
   *(v294 + 4) = v306;
   *(v294 + 5) = v307;
   *(v294 + 6) = v308;
-  v309 = [MEMORY[0x1E695DF70] array];
-  v310 = v309;
-  v311 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  v310 = array;
+  array2 = [MEMORY[0x1E695DF70] array];
   v313 = v427[0];
   for (n = v427[1]; v313 != n; ++v313)
   {
     LODWORD(v312) = *v313;
     v315 = [MEMORY[0x1E696AD98] numberWithFloat:v312];
-    [v309 addObject:v315];
+    [array addObject:v315];
   }
 
   v316 = v428[1];
@@ -3297,12 +3297,12 @@ LABEL_197:
   {
     LODWORD(v312) = *v316;
     v318 = [MEMORY[0x1E696AD98] numberWithFloat:v312];
-    [v311 addObject:v318];
+    [array2 addObject:v318];
   }
 
-  if ([v309 count])
+  if ([array count])
   {
-    v319 = v309;
+    v319 = array;
   }
 
   else
@@ -3312,9 +3312,9 @@ LABEL_197:
 
   v52 = v319;
 
-  if ([v311 count])
+  if ([array2 count])
   {
-    v320 = v311;
+    v320 = array2;
   }
 
   else
@@ -3325,10 +3325,10 @@ LABEL_197:
   v51 = v320;
 
   v384 = v276;
-  v41 = v389;
+  v41 = selfCopy;
 LABEL_237:
   v321 = [CVADisparityPostprocessingResult_Impl alloc];
-  v322 = [v388 destinationDisparityPixelBuffer];
+  destinationDisparityPixelBuffer = [requestCopy destinationDisparityPixelBuffer];
   v323 = pixelBufferOut;
   focusCanonicalDisparity = v41->_vmDynamicParams.focusCanonicalDisparity;
   v325 = v426;
@@ -3347,26 +3347,26 @@ LABEL_237:
   LODWORD(v335) = LODWORD(v327);
   *&v337 = v384;
   LODWORD(v338) = v328;
-  v339 = [CVADisparityPostprocessingResult_Impl initWithPostprocessedDisparityBuffer:v321 canonicalDisparityPixelBuffer:"initWithPostprocessedDisparityBuffer:canonicalDisparityPixelBuffer:focusCanonicalDisparity:backgroundDisparitySum:backgroundDisparitySumVariance:backgroundDisparityRatio:invalidDisparityRatio:invalidDisparityRatioVariance:deltaCanonicalDisparity:backgroundSeparationLikelihood:closeCanonicalDisparityAverage:faceCanonicalDisparityAverage:faceInvalidDisparityRatio:foregroundRatio:erodedForegroundRatio:personSegmentationRatio:" focusCanonicalDisparity:v322 backgroundDisparitySum:v323 backgroundDisparitySumVariance:v329 backgroundDisparityRatio:v330 invalidDisparityRatio:v331 invalidDisparityRatioVariance:v332 deltaCanonicalDisparity:v333 backgroundSeparationLikelihood:v334 closeCanonicalDisparityAverage:v335 faceCanonicalDisparityAverage:v336 faceInvalidDisparityRatio:v337 foregroundRatio:v338 erodedForegroundRatio:HIDWORD(v328) personSegmentationRatio:v360];
+  v339 = [CVADisparityPostprocessingResult_Impl initWithPostprocessedDisparityBuffer:v321 canonicalDisparityPixelBuffer:"initWithPostprocessedDisparityBuffer:canonicalDisparityPixelBuffer:focusCanonicalDisparity:backgroundDisparitySum:backgroundDisparitySumVariance:backgroundDisparityRatio:invalidDisparityRatio:invalidDisparityRatioVariance:deltaCanonicalDisparity:backgroundSeparationLikelihood:closeCanonicalDisparityAverage:faceCanonicalDisparityAverage:faceInvalidDisparityRatio:foregroundRatio:erodedForegroundRatio:personSegmentationRatio:" focusCanonicalDisparity:destinationDisparityPixelBuffer backgroundDisparitySum:v323 backgroundDisparitySumVariance:v329 backgroundDisparityRatio:v330 invalidDisparityRatio:v331 invalidDisparityRatioVariance:v332 deltaCanonicalDisparity:v333 backgroundSeparationLikelihood:v334 closeCanonicalDisparityAverage:v335 faceCanonicalDisparityAverage:v336 faceInvalidDisparityRatio:v337 foregroundRatio:v338 erodedForegroundRatio:HIDWORD(v328) personSegmentationRatio:v360];
 
-  if (v389->_preferences.bypassGPUProcessing)
+  if (selfCopy->_preferences.bypassGPUProcessing)
   {
-    notificationQueue = v389->_notificationQueue;
+    notificationQueue = selfCopy->_notificationQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = sub_1DED352B0;
     block[3] = &unk_1E869AAE0;
-    v397 = v383;
-    v395 = v388;
+    v397 = handlerCopy;
+    v395 = requestCopy;
     v396 = v339;
     dispatch_async(notificationQueue, block);
   }
 
   else
   {
-    *v440 = *&v389->_vmPostprocessingParams.useFaceAsFocus;
-    v441 = *&v389->_vmPostprocessingParams.backgroundFillMarginFromValidDisparity_px;
-    if (v389->_transitionData._inTransition)
+    *v440 = *&selfCopy->_vmPostprocessingParams.useFaceAsFocus;
+    v441 = *&selfCopy->_vmPostprocessingParams.backgroundFillMarginFromValidDisparity_px;
+    if (selfCopy->_transitionData._inTransition)
     {
       BYTE4(v441) = 0;
     }
@@ -3376,34 +3376,34 @@ LABEL_237:
       NSLog(&cfstr_CvaphotoTransi.isa, BYTE4(v441));
     }
 
-    vmAccelerator = v389->_vmAccelerator;
+    vmAccelerator = selfCopy->_vmAccelerator;
     v342 = pixelBufferOut;
-    v343 = [v388 sourceColorPixelBuffer];
-    v344 = [v388 destinationDisparityPixelBuffer];
-    v345 = [v388 facesArray];
-    v346 = v389->_notificationQueue;
+    sourceColorPixelBuffer = [requestCopy sourceColorPixelBuffer];
+    destinationDisparityPixelBuffer2 = [requestCopy destinationDisparityPixelBuffer];
+    facesArray3 = [requestCopy facesArray];
+    v346 = selfCopy->_notificationQueue;
     v390[0] = MEMORY[0x1E69E9820];
     v390[1] = 3221225472;
     v390[2] = sub_1DED352D0;
     v390[3] = &unk_1E869AAE0;
-    v393 = v383;
-    v391 = v388;
+    v393 = handlerCopy;
+    v391 = requestCopy;
     v392 = v339;
-    LOBYTE(v361) = a5;
-    v347 = [(VideoMattingMetal *)vmAccelerator disparityPostprocessingWithCanonicalDisparity:v342 color:v343 postProcessedDisparity:v344 staticParams:&v389->_vmStaticParams dynamicParams:&v389->_vmDynamicParams postProcessingParams:v440 facesArray:v345 faceModel:0 isFinalStage:v361 callbackQueue:v346 callback:v390];
-    yuvSourceDownsampledAlias = v389->_yuvSourceDownsampledAlias;
-    v389->_yuvSourceDownsampledAlias = v347;
+    LOBYTE(v361) = stage;
+    v347 = [(VideoMattingMetal *)vmAccelerator disparityPostprocessingWithCanonicalDisparity:v342 color:sourceColorPixelBuffer postProcessedDisparity:destinationDisparityPixelBuffer2 staticParams:&selfCopy->_vmStaticParams dynamicParams:&selfCopy->_vmDynamicParams postProcessingParams:v440 facesArray:facesArray3 faceModel:0 isFinalStage:v361 callbackQueue:v346 callback:v390];
+    yuvSourceDownsampledAlias = selfCopy->_yuvSourceDownsampledAlias;
+    selfCopy->_yuvSourceDownsampledAlias = v347;
   }
 
-  if (a6)
+  if (status)
   {
-    *a6 = 0;
+    *status = 0;
   }
 
-  [v388 fixedPointDisparityPixelBuffer];
-  [v388 networkDisparityPixelBuffer];
-  [v388 sourceColorPixelBuffer];
-  if (!v389->_deadzoneInCinematic)
+  [requestCopy fixedPointDisparityPixelBuffer];
+  [requestCopy networkDisparityPixelBuffer];
+  [requestCopy sourceColorPixelBuffer];
+  if (!selfCopy->_deadzoneInCinematic)
   {
     CVPixelBufferRelease(pixelBufferOut);
   }
@@ -3433,72 +3433,72 @@ LABEL_237:
   return v349;
 }
 
-- (BOOL)validatePortraitRequest:(id)a3 error:(id *)a4
+- (BOOL)validatePortraitRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 mattingRequest];
+  requestCopy = request;
+  mattingRequest = [requestCopy mattingRequest];
   v8 = MEMORY[0x1E696AEC0];
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CVAPortraitRequest.mattingRequest is nil"];
   v10 = [v8 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[CVAPortraitVideoPipeline_Impl validatePortraitRequest:error:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/src/CVAVideoPipeline.mm", 1423, v9];
-  sub_1DED25D64(v7 == 0, a4, 4294944393, v10);
+  sub_1DED25D64(mattingRequest == 0, error, 4294944393, v10);
 
-  if (!v7)
+  if (!mattingRequest)
   {
     goto LABEL_35;
   }
 
-  v11 = [v6 mattingRequest];
-  v12 = [(CVAPortraitVideoPipeline_Impl *)self validateMattingRequest:v11 error:a4];
+  mattingRequest2 = [requestCopy mattingRequest];
+  v12 = [(CVAPortraitVideoPipeline_Impl *)self validateMattingRequest:mattingRequest2 error:error];
 
   if (!v12)
   {
     goto LABEL_35;
   }
 
-  v13 = [v6 destinationColorPixelBuffer];
+  destinationColorPixelBuffer = [requestCopy destinationColorPixelBuffer];
   v14 = MEMORY[0x1E696AEC0];
   v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CVAPortraitRequest.destinationColorPixelBuffer is nil"];
   v16 = [v14 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[CVAPortraitVideoPipeline_Impl validatePortraitRequest:error:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/src/CVAVideoPipeline.mm", 1437, v15];
-  sub_1DED25D64(v13 == 0, a4, 4294944393, v16);
+  sub_1DED25D64(destinationColorPixelBuffer == 0, error, 4294944393, v16);
 
-  if (!v13)
+  if (!destinationColorPixelBuffer)
   {
     goto LABEL_35;
   }
 
-  v17 = [(CVAVideoPipelinePropertiesSPI *)self->_properties colorPixelBufferWidth];
-  Width = CVPixelBufferGetWidth([v6 destinationColorPixelBuffer]);
+  colorPixelBufferWidth = [(CVAVideoPipelinePropertiesSPI *)self->_properties colorPixelBufferWidth];
+  Width = CVPixelBufferGetWidth([requestCopy destinationColorPixelBuffer]);
   v19 = MEMORY[0x1E696AEC0];
   v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unexpected width of destinationColor"];
   v21 = [v19 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[CVAPortraitVideoPipeline_Impl validatePortraitRequest:error:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/src/CVAVideoPipeline.mm", 1448, v20];
-  sub_1DED25D64(v17 != Width, a4, 4294944393, v21);
+  sub_1DED25D64(colorPixelBufferWidth != Width, error, 4294944393, v21);
 
-  if (v17 != Width)
+  if (colorPixelBufferWidth != Width)
   {
     goto LABEL_35;
   }
 
-  v22 = [(CVAVideoPipelinePropertiesSPI *)self->_properties colorPixelBufferHeight];
-  Height = CVPixelBufferGetHeight([v6 destinationColorPixelBuffer]);
+  colorPixelBufferHeight = [(CVAVideoPipelinePropertiesSPI *)self->_properties colorPixelBufferHeight];
+  Height = CVPixelBufferGetHeight([requestCopy destinationColorPixelBuffer]);
   v24 = MEMORY[0x1E696AEC0];
   v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unexpected height of destinationColor"];
   v26 = [v24 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[CVAPortraitVideoPipeline_Impl validatePortraitRequest:error:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/src/CVAVideoPipeline.mm", 1457, v25];
-  sub_1DED25D64(v22 != Height, a4, 4294944393, v26);
+  sub_1DED25D64(colorPixelBufferHeight != Height, error, 4294944393, v26);
 
-  if (v22 != Height)
+  if (colorPixelBufferHeight != Height)
   {
     goto LABEL_35;
   }
 
-  v27 = [(CVAVideoPipelinePropertiesSPI *)self->_properties supportedColorPixelBufferPixelFormats];
-  v28 = [MEMORY[0x1E696AD98] numberWithInt:{CVPixelBufferGetPixelFormatType(objc_msgSend(v6, "destinationColorPixelBuffer"))}];
-  v29 = [v27 containsObject:v28];
+  supportedColorPixelBufferPixelFormats = [(CVAVideoPipelinePropertiesSPI *)self->_properties supportedColorPixelBufferPixelFormats];
+  v28 = [MEMORY[0x1E696AD98] numberWithInt:{CVPixelBufferGetPixelFormatType(objc_msgSend(requestCopy, "destinationColorPixelBuffer"))}];
+  foregroundColorCube2 = [supportedColorPixelBufferPixelFormats containsObject:v28];
   v30 = MEMORY[0x1E696AEC0];
   v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unexpected pixel format for destinationColor"];
   v32 = [v30 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[CVAPortraitVideoPipeline_Impl validatePortraitRequest:error:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/src/CVAVideoPipeline.mm", 1467, v31];
-  sub_1DED25D64(v29 ^ 1, a4, 4294944393, v32);
+  sub_1DED25D64(foregroundColorCube2 ^ 1, error, 4294944393, v32);
 
-  if ((v29 & 1) == 0)
+  if ((foregroundColorCube2 & 1) == 0)
   {
     goto LABEL_35;
   }
@@ -3506,13 +3506,13 @@ LABEL_237:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v33 = v6;
+    v33 = requestCopy;
     [v33 simulatedFocalRatio];
     v35 = v34;
     v36 = MEMORY[0x1E696AEC0];
     v37 = [MEMORY[0x1E696AEC0] stringWithFormat:@"simulatedFocalRatio outside allowable range"];
     v38 = [v36 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[CVAPortraitVideoPipeline_Impl validatePortraitRequest:error:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/src/CVAVideoPipeline.mm", 1480, v37];
-    sub_1DED25D64(v35 < 1.0, a4, 4294944393, v38);
+    sub_1DED25D64(v35 < 1.0, error, 4294944393, v38);
 
     if (v35 >= 1.0)
     {
@@ -3521,7 +3521,7 @@ LABEL_237:
       v41 = MEMORY[0x1E696AEC0];
       v42 = [MEMORY[0x1E696AEC0] stringWithFormat:@"srcColorGain outside allowable range [0, inf"]);
       v43 = [v41 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[CVAPortraitVideoPipeline_Impl validatePortraitRequest:error:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/src/CVAVideoPipeline.mm", 1488, v42];
-      sub_1DED25D64(v40 < 0.0, a4, 4294944393, v43);
+      sub_1DED25D64(v40 < 0.0, error, 4294944393, v43);
 
       if (v40 >= 0.0)
       {
@@ -3530,15 +3530,15 @@ LABEL_237:
         v46 = MEMORY[0x1E696AEC0];
         v47 = [MEMORY[0x1E696AEC0] stringWithFormat:@"srcColorLux outside allowable range [0, inf"]);
         v48 = [v46 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[CVAPortraitVideoPipeline_Impl validatePortraitRequest:error:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/src/CVAVideoPipeline.mm", 1496, v47];
-        sub_1DED25D64(v45 < 0.0, a4, 4294944393, v48);
+        sub_1DED25D64(v45 < 0.0, error, 4294944393, v48);
 
         if (v45 >= 0.0)
         {
-          v49 = [v33 backgroundColorCube];
-          if (v49)
+          backgroundColorCube = [v33 backgroundColorCube];
+          if (backgroundColorCube)
           {
-            v67 = [v33 backgroundColorCube];
-            v50 = sub_1DED35C5C(v67);
+            backgroundColorCube2 = [v33 backgroundColorCube];
+            v50 = sub_1DED35C5C(backgroundColorCube2);
           }
 
           else
@@ -3548,20 +3548,20 @@ LABEL_237:
 
           v63 = MEMORY[0x1E696AEC0];
           v64 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid background color cube data"];
-          v29 = [v63 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[CVAPortraitVideoPipeline_Impl validatePortraitRequest:error:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/src/CVAVideoPipeline.mm", 1504, v64];
-          sub_1DED25D64(!v50, a4, 4294944393, v29);
+          foregroundColorCube2 = [v63 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[CVAPortraitVideoPipeline_Impl validatePortraitRequest:error:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/src/CVAVideoPipeline.mm", 1504, v64];
+          sub_1DED25D64(!v50, error, 4294944393, foregroundColorCube2);
 
-          if (v49)
+          if (backgroundColorCube)
           {
           }
 
           if (v50)
           {
-            v57 = [v33 foregroundColorCube];
-            if (v57)
+            foregroundColorCube = [v33 foregroundColorCube];
+            if (foregroundColorCube)
             {
-              v29 = [v33 foregroundColorCube];
-              v58 = sub_1DED35C5C(v29);
+              foregroundColorCube2 = [v33 foregroundColorCube];
+              v58 = sub_1DED35C5C(foregroundColorCube2);
             }
 
             else
@@ -3572,10 +3572,10 @@ LABEL_237:
             v66 = MEMORY[0x1E696AEC0];
             v60 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid foreground color cube data"];
             v61 = [v66 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[CVAPortraitVideoPipeline_Impl validatePortraitRequest:error:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/src/CVAVideoPipeline.mm", 1512, v60];
-            sub_1DED25D64(!v58, a4, 4294944393, v61);
+            sub_1DED25D64(!v58, error, 4294944393, v61);
 LABEL_24:
 
-            if (v57)
+            if (foregroundColorCube)
             {
             }
 
@@ -3598,13 +3598,13 @@ LABEL_35:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v51 = v6;
+    v51 = requestCopy;
     v68 = v51;
-    v52 = [v51 proxyCubeData];
-    if (v52)
+    proxyCubeData = [v51 proxyCubeData];
+    if (proxyCubeData)
     {
-      v29 = [v51 proxyCubeData];
-      v53 = sub_1DED35C5C(v29);
+      foregroundColorCube2 = [v51 proxyCubeData];
+      v53 = sub_1DED35C5C(foregroundColorCube2);
     }
 
     else
@@ -3615,20 +3615,20 @@ LABEL_35:
     v54 = MEMORY[0x1E696AEC0];
     v55 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid background color cube data"];
     v56 = [v54 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[CVAPortraitVideoPipeline_Impl validatePortraitRequest:error:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/src/CVAVideoPipeline.mm", 1524, v55];
-    sub_1DED25D64(!v53, a4, 4294944393, v56);
+    sub_1DED25D64(!v53, error, 4294944393, v56);
 
-    if (v52)
+    if (proxyCubeData)
     {
     }
 
     v33 = v68;
     if (v53)
     {
-      v57 = [v68 proxyCubeData];
-      if (v57)
+      foregroundColorCube = [v68 proxyCubeData];
+      if (foregroundColorCube)
       {
-        v29 = [v68 cubeData];
-        v58 = sub_1DED35C5C(v29);
+        foregroundColorCube2 = [v68 cubeData];
+        v58 = sub_1DED35C5C(foregroundColorCube2);
       }
 
       else
@@ -3639,7 +3639,7 @@ LABEL_35:
       v59 = MEMORY[0x1E696AEC0];
       v60 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid background color cube data"];
       v61 = [v59 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[CVAPortraitVideoPipeline_Impl validatePortraitRequest:error:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/src/CVAVideoPipeline.mm", 1532, v60];
-      sub_1DED25D64(!v58, a4, 4294944393, v61);
+      sub_1DED25D64(!v58, error, 4294944393, v61);
       goto LABEL_24;
     }
 
@@ -3655,85 +3655,85 @@ LABEL_36:
   return v62;
 }
 
-- (BOOL)validateMattingRequest:(id)a3 error:(id *)a4
+- (BOOL)validateMattingRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 disparityPostprocessingRequest];
+  requestCopy = request;
+  disparityPostprocessingRequest = [requestCopy disparityPostprocessingRequest];
   v8 = MEMORY[0x1E696AEC0];
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CVAMattingRequest.disparityPostprocessingRequest is nil"];
   v10 = [v8 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[CVAPortraitVideoPipeline_Impl validateMattingRequest:error:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/src/CVAVideoPipeline.mm", 1335, v9];
-  sub_1DED25D64(v7 == 0, a4, 4294944393, v10);
+  sub_1DED25D64(disparityPostprocessingRequest == 0, error, 4294944393, v10);
 
-  if (!v7)
+  if (!disparityPostprocessingRequest)
   {
     goto LABEL_8;
   }
 
-  v11 = [v6 disparityPostprocessingRequest];
-  v12 = [(CVAPortraitVideoPipeline_Impl *)self validateDisparityPostprocessingRequest:v11 error:a4];
+  disparityPostprocessingRequest2 = [requestCopy disparityPostprocessingRequest];
+  v12 = [(CVAPortraitVideoPipeline_Impl *)self validateDisparityPostprocessingRequest:disparityPostprocessingRequest2 error:error];
 
   if (!v12)
   {
     goto LABEL_8;
   }
 
-  v13 = [v6 segmentationPixelBuffer];
-  v14 = [(CVAVideoPipelinePropertiesSPI *)self->_properties supportedInputSegmentationPixelBufferPixelFormats];
-  LOBYTE(v13) = [(CVAPortraitVideoPipeline_Impl *)self validateSegmentationPixelBuffer:v13 matchFormat:v14 error:a4];
+  segmentationPixelBuffer = [requestCopy segmentationPixelBuffer];
+  supportedInputSegmentationPixelBufferPixelFormats = [(CVAVideoPipelinePropertiesSPI *)self->_properties supportedInputSegmentationPixelBufferPixelFormats];
+  LOBYTE(segmentationPixelBuffer) = [(CVAPortraitVideoPipeline_Impl *)self validateSegmentationPixelBuffer:segmentationPixelBuffer matchFormat:supportedInputSegmentationPixelBufferPixelFormats error:error];
 
-  if ((v13 & 1) == 0)
+  if ((segmentationPixelBuffer & 1) == 0)
   {
     goto LABEL_8;
   }
 
-  v15 = [v6 skinSegmentationPixelBuffer];
-  v16 = [(CVAVideoPipelinePropertiesSPI *)self->_properties supportedInputSegmentationPixelBufferPixelFormats];
-  LOBYTE(v15) = [(CVAPortraitVideoPipeline_Impl *)self validateSegmentationPixelBuffer:v15 matchFormat:v16 error:a4];
+  skinSegmentationPixelBuffer = [requestCopy skinSegmentationPixelBuffer];
+  supportedInputSegmentationPixelBufferPixelFormats2 = [(CVAVideoPipelinePropertiesSPI *)self->_properties supportedInputSegmentationPixelBufferPixelFormats];
+  LOBYTE(skinSegmentationPixelBuffer) = [(CVAPortraitVideoPipeline_Impl *)self validateSegmentationPixelBuffer:skinSegmentationPixelBuffer matchFormat:supportedInputSegmentationPixelBufferPixelFormats2 error:error];
 
-  if ((v15 & 1) == 0)
+  if ((skinSegmentationPixelBuffer & 1) == 0)
   {
     goto LABEL_8;
   }
 
-  v17 = [v6 destinationAlphaMattePixelBuffer];
+  destinationAlphaMattePixelBuffer = [requestCopy destinationAlphaMattePixelBuffer];
   v18 = MEMORY[0x1E696AEC0];
   v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CVAMattingRequest.destinationAlphaMattePixelBuffer is nil"];
   v20 = [v18 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[CVAPortraitVideoPipeline_Impl validateMattingRequest:error:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/src/CVAVideoPipeline.mm", 1364, v19];
-  sub_1DED25D64(v17 == 0, a4, 4294944393, v20);
+  sub_1DED25D64(destinationAlphaMattePixelBuffer == 0, error, 4294944393, v20);
 
-  if (!v17)
+  if (!destinationAlphaMattePixelBuffer)
   {
     goto LABEL_8;
   }
 
-  v21 = [(CVAVideoPipelinePropertiesSPI *)self->_properties alphaMattePixelBufferWidth];
-  Width = CVPixelBufferGetWidth([v6 destinationAlphaMattePixelBuffer]);
+  alphaMattePixelBufferWidth = [(CVAVideoPipelinePropertiesSPI *)self->_properties alphaMattePixelBufferWidth];
+  Width = CVPixelBufferGetWidth([requestCopy destinationAlphaMattePixelBuffer]);
   v23 = MEMORY[0x1E696AEC0];
   v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unexpected width of destinationAlpha"];
   v25 = [v23 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[CVAPortraitVideoPipeline_Impl validateMattingRequest:error:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/src/CVAVideoPipeline.mm", 1374, v24];
-  sub_1DED25D64(v21 != Width, a4, 4294944393, v25);
+  sub_1DED25D64(alphaMattePixelBufferWidth != Width, error, 4294944393, v25);
 
-  if (v21 != Width)
+  if (alphaMattePixelBufferWidth != Width)
   {
     goto LABEL_8;
   }
 
-  v26 = [(CVAVideoPipelinePropertiesSPI *)self->_properties alphaMattePixelBufferHeight];
-  Height = CVPixelBufferGetHeight([v6 destinationAlphaMattePixelBuffer]);
+  alphaMattePixelBufferHeight = [(CVAVideoPipelinePropertiesSPI *)self->_properties alphaMattePixelBufferHeight];
+  Height = CVPixelBufferGetHeight([requestCopy destinationAlphaMattePixelBuffer]);
   v28 = MEMORY[0x1E696AEC0];
   v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unexpected height of destinationAlpha"];
   v30 = [v28 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[CVAPortraitVideoPipeline_Impl validateMattingRequest:error:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/src/CVAVideoPipeline.mm", 1382, v29];
-  sub_1DED25D64(v26 != Height, a4, 4294944393, v30);
+  sub_1DED25D64(alphaMattePixelBufferHeight != Height, error, 4294944393, v30);
 
-  if (v26 == Height)
+  if (alphaMattePixelBufferHeight == Height)
   {
-    v33 = [(CVAVideoPipelinePropertiesSPI *)self->_properties alphaMattePixelBufferPixelFormat];
-    PixelFormatType = CVPixelBufferGetPixelFormatType([v6 destinationAlphaMattePixelBuffer]);
+    alphaMattePixelBufferPixelFormat = [(CVAVideoPipelinePropertiesSPI *)self->_properties alphaMattePixelBufferPixelFormat];
+    PixelFormatType = CVPixelBufferGetPixelFormatType([requestCopy destinationAlphaMattePixelBuffer]);
     v35 = MEMORY[0x1E696AEC0];
     v36 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unexpected pixel format for destinationAlpha"];
     v37 = [v35 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[CVAPortraitVideoPipeline_Impl validateMattingRequest:error:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/src/CVAVideoPipeline.mm", 1391, v36];
-    sub_1DED25D64(v33 != PixelFormatType, a4, 4294944393, v37);
-    v31 = v33 == PixelFormatType;
+    sub_1DED25D64(alphaMattePixelBufferPixelFormat != PixelFormatType, error, 4294944393, v37);
+    v31 = alphaMattePixelBufferPixelFormat == PixelFormatType;
   }
 
   else
@@ -3745,40 +3745,40 @@ LABEL_8:
   return v31;
 }
 
-- (BOOL)validateDisparityPostprocessingRequest:(id)a3 error:(id *)a4
+- (BOOL)validateDisparityPostprocessingRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 sourceColorPixelBuffer];
+  requestCopy = request;
+  sourceColorPixelBuffer = [requestCopy sourceColorPixelBuffer];
   v8 = MEMORY[0x1E696AEC0];
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CVADisparityPostprocessingRequest.sourceColorPixelBuffer is nil"];
   v10 = [v8 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[CVAPortraitVideoPipeline_Impl validateDisparityPostprocessingRequest:error:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/src/CVAVideoPipeline.mm", 1158, v9];
-  sub_1DED25D64(v7 == 0, a4, 4294944393, v10);
+  sub_1DED25D64(sourceColorPixelBuffer == 0, error, 4294944393, v10);
 
-  if (!v7)
+  if (!sourceColorPixelBuffer)
   {
     goto LABEL_24;
   }
 
   if (sub_1DED2E328([(CVAVideoPipelinePropertiesSPI *)self->_properties videoPipelineDevice]) == 2)
   {
-    v11 = [v6 segmentationPixelBuffer];
+    segmentationPixelBuffer = [requestCopy segmentationPixelBuffer];
     v12 = MEMORY[0x1E696AEC0];
     v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CVADisparityPostprocessingRequest.segmentationPixelBuffer is nil"];
     v14 = [v12 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[CVAPortraitVideoPipeline_Impl validateDisparityPostprocessingRequest:error:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/src/CVAVideoPipeline.mm", 1169, v13];
-    sub_1DED25D64(v11 == 0, a4, 4294944393, v14);
+    sub_1DED25D64(segmentationPixelBuffer == 0, error, 4294944393, v14);
 
-    if (!v11)
+    if (!segmentationPixelBuffer)
     {
       goto LABEL_24;
     }
 
-    v15 = [v6 focusTileData];
+    focusTileData = [requestCopy focusTileData];
     v16 = MEMORY[0x1E696AEC0];
     v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CVADisparityPostprocessingRequest.focusTileData is nil"];
     v18 = [v16 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[CVAPortraitVideoPipeline_Impl validateDisparityPostprocessingRequest:error:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/src/CVAVideoPipeline.mm", 1178, v17];
-    sub_1DED25D64(v15 == 0, a4, 4294944393, v18);
+    sub_1DED25D64(focusTileData == 0, error, 4294944393, v18);
 
-    if (!v15)
+    if (!focusTileData)
     {
       goto LABEL_24;
     }
@@ -3788,148 +3788,148 @@ LABEL_8:
   {
     if (sub_1DED2E328([(CVAVideoPipelinePropertiesSPI *)self->_properties videoPipelineDevice]) == 3)
     {
-      v19 = [v6 networkDisparityPixelBuffer];
+      networkDisparityPixelBuffer = [requestCopy networkDisparityPixelBuffer];
       v20 = MEMORY[0x1E696AEC0];
       v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CVADisparityPostprocessingRequest.networkDisparityPixelBuffer is nil"];
       v22 = [v20 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[CVAPortraitVideoPipeline_Impl validateDisparityPostprocessingRequest:error:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/src/CVAVideoPipeline.mm", 1190, v21];
-      sub_1DED25D64(v19 == 0, a4, 4294944393, v22);
+      sub_1DED25D64(networkDisparityPixelBuffer == 0, error, 4294944393, v22);
 
-      if (!v19)
+      if (!networkDisparityPixelBuffer)
       {
         goto LABEL_24;
       }
 
-      v23 = [v6 segmentationPixelBuffer];
+      segmentationPixelBuffer2 = [requestCopy segmentationPixelBuffer];
       v24 = MEMORY[0x1E696AEC0];
       v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CVADisparityPostprocessingRequest.segmentationPixelBuffer is nil"];
       v26 = [v24 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[CVAPortraitVideoPipeline_Impl validateDisparityPostprocessingRequest:error:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/src/CVAVideoPipeline.mm", 1199, v25];
-      sub_1DED25D64(v23 == 0, a4, 4294944393, v26);
+      sub_1DED25D64(segmentationPixelBuffer2 == 0, error, 4294944393, v26);
     }
 
     else
     {
-      v23 = [v6 fixedPointDisparityPixelBuffer];
+      segmentationPixelBuffer2 = [requestCopy fixedPointDisparityPixelBuffer];
       v27 = MEMORY[0x1E696AEC0];
       v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CVADisparityPostprocessingRequest.fixedPointDisparityPixelBuffer is nil"];
       v26 = [v27 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[CVAPortraitVideoPipeline_Impl validateDisparityPostprocessingRequest:error:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/src/CVAVideoPipeline.mm", 1211, v25];
-      sub_1DED25D64(v23 == 0, a4, 4294944393, v26);
+      sub_1DED25D64(segmentationPixelBuffer2 == 0, error, 4294944393, v26);
     }
 
-    if (!v23)
+    if (!segmentationPixelBuffer2)
     {
       goto LABEL_24;
     }
   }
 
-  v28 = [v6 destinationDisparityPixelBuffer];
+  destinationDisparityPixelBuffer = [requestCopy destinationDisparityPixelBuffer];
   v29 = MEMORY[0x1E696AEC0];
   v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CVADisparityPostprocessingRequest.destinationDisparityPixelBuffer is nil"];
   v31 = [v29 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[CVAPortraitVideoPipeline_Impl validateDisparityPostprocessingRequest:error:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/src/CVAVideoPipeline.mm", 1221, v30];
-  sub_1DED25D64(v28 == 0, a4, 4294944393, v31);
+  sub_1DED25D64(destinationDisparityPixelBuffer == 0, error, 4294944393, v31);
 
-  if (v28)
+  if (destinationDisparityPixelBuffer)
   {
-    v32 = [(CVAVideoPipelinePropertiesSPI *)self->_properties colorPixelBufferWidth];
-    Width = CVPixelBufferGetWidth([v6 sourceColorPixelBuffer]);
+    colorPixelBufferWidth = [(CVAVideoPipelinePropertiesSPI *)self->_properties colorPixelBufferWidth];
+    Width = CVPixelBufferGetWidth([requestCopy sourceColorPixelBuffer]);
     v34 = MEMORY[0x1E696AEC0];
     v35 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unexpected width of srcColor"];
     v36 = [v34 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[CVAPortraitVideoPipeline_Impl validateDisparityPostprocessingRequest:error:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/src/CVAVideoPipeline.mm", 1232, v35];
-    sub_1DED25D64(v32 != Width, a4, 4294944393, v36);
+    sub_1DED25D64(colorPixelBufferWidth != Width, error, 4294944393, v36);
 
-    if (v32 == Width)
+    if (colorPixelBufferWidth == Width)
     {
-      v37 = [(CVAVideoPipelinePropertiesSPI *)self->_properties colorPixelBufferHeight];
-      Height = CVPixelBufferGetHeight([v6 sourceColorPixelBuffer]);
+      colorPixelBufferHeight = [(CVAVideoPipelinePropertiesSPI *)self->_properties colorPixelBufferHeight];
+      Height = CVPixelBufferGetHeight([requestCopy sourceColorPixelBuffer]);
       v39 = MEMORY[0x1E696AEC0];
       v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unexpected height of srcColor"];
       v41 = [v39 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[CVAPortraitVideoPipeline_Impl validateDisparityPostprocessingRequest:error:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/src/CVAVideoPipeline.mm", 1241, v40];
-      sub_1DED25D64(v37 != Height, a4, 4294944393, v41);
+      sub_1DED25D64(colorPixelBufferHeight != Height, error, 4294944393, v41);
 
-      if (v37 == Height)
+      if (colorPixelBufferHeight == Height)
       {
-        v42 = [v6 segmentationPixelBuffer];
-        v43 = [(CVAVideoPipelinePropertiesSPI *)self->_properties supportedInputSegmentationPixelBufferPixelFormats];
-        LOBYTE(v42) = [(CVAPortraitVideoPipeline_Impl *)self validateSegmentationPixelBuffer:v42 matchFormat:v43 error:a4];
+        segmentationPixelBuffer3 = [requestCopy segmentationPixelBuffer];
+        supportedInputSegmentationPixelBufferPixelFormats = [(CVAVideoPipelinePropertiesSPI *)self->_properties supportedInputSegmentationPixelBufferPixelFormats];
+        LOBYTE(segmentationPixelBuffer3) = [(CVAPortraitVideoPipeline_Impl *)self validateSegmentationPixelBuffer:segmentationPixelBuffer3 matchFormat:supportedInputSegmentationPixelBufferPixelFormats error:error];
 
-        if (v42)
+        if (segmentationPixelBuffer3)
         {
           if (sub_1DED2E328([(CVAVideoPipelinePropertiesSPI *)self->_properties videoPipelineDevice]) != 1 && (sub_1DED2E328([(CVAVideoPipelinePropertiesSPI *)self->_properties videoPipelineDevice]) & 0xFFFFFFFBLL) != 0)
           {
             goto LABEL_29;
           }
 
-          v44 = [(CVAVideoPipelinePropertiesSPI *)self->_properties inputDisparityPixelBufferWidth];
-          v45 = CVPixelBufferGetWidth([v6 fixedPointDisparityPixelBuffer]);
+          inputDisparityPixelBufferWidth = [(CVAVideoPipelinePropertiesSPI *)self->_properties inputDisparityPixelBufferWidth];
+          v45 = CVPixelBufferGetWidth([requestCopy fixedPointDisparityPixelBuffer]);
           v46 = MEMORY[0x1E696AEC0];
-          v47 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unexpected width of fixedPointDisparity: %zu != %zu", -[CVAVideoPipelinePropertiesSPI inputDisparityPixelBufferWidth](self->_properties, "inputDisparityPixelBufferWidth"), CVPixelBufferGetWidth(objc_msgSend(v6, "fixedPointDisparityPixelBuffer"))];
+          v47 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unexpected width of fixedPointDisparity: %zu != %zu", -[CVAVideoPipelinePropertiesSPI inputDisparityPixelBufferWidth](self->_properties, "inputDisparityPixelBufferWidth"), CVPixelBufferGetWidth(objc_msgSend(requestCopy, "fixedPointDisparityPixelBuffer"))];
           v48 = [v46 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[CVAPortraitVideoPipeline_Impl validateDisparityPostprocessingRequest:error:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/src/CVAVideoPipeline.mm", 1259, v47];
-          sub_1DED25D64(v44 != v45, a4, 4294944393, v48);
+          sub_1DED25D64(inputDisparityPixelBufferWidth != v45, error, 4294944393, v48);
 
-          if (v44 == v45)
+          if (inputDisparityPixelBufferWidth == v45)
           {
-            v49 = [(CVAVideoPipelinePropertiesSPI *)self->_properties inputDisparityPixelBufferHeight];
-            v50 = CVPixelBufferGetHeight([v6 fixedPointDisparityPixelBuffer]);
+            inputDisparityPixelBufferHeight = [(CVAVideoPipelinePropertiesSPI *)self->_properties inputDisparityPixelBufferHeight];
+            v50 = CVPixelBufferGetHeight([requestCopy fixedPointDisparityPixelBuffer]);
             v51 = MEMORY[0x1E696AEC0];
             v52 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unexpected height of fixedPointDisparity"];
             v53 = [v51 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[CVAPortraitVideoPipeline_Impl validateDisparityPostprocessingRequest:error:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/src/CVAVideoPipeline.mm", 1267, v52];
-            sub_1DED25D64(v49 != v50, a4, 4294944393, v53);
+            sub_1DED25D64(inputDisparityPixelBufferHeight != v50, error, 4294944393, v53);
 
-            if (v49 == v50)
+            if (inputDisparityPixelBufferHeight == v50)
             {
-              v54 = [(CVAVideoPipelinePropertiesSPI *)self->_properties inputDisparityPixelBufferPixelFormat];
-              PixelFormatType = CVPixelBufferGetPixelFormatType([v6 fixedPointDisparityPixelBuffer]);
+              inputDisparityPixelBufferPixelFormat = [(CVAVideoPipelinePropertiesSPI *)self->_properties inputDisparityPixelBufferPixelFormat];
+              PixelFormatType = CVPixelBufferGetPixelFormatType([requestCopy fixedPointDisparityPixelBuffer]);
               v56 = MEMORY[0x1E696AEC0];
               v57 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unexpected pixel format for fixedPointDisparity"];
               v58 = [v56 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[CVAPortraitVideoPipeline_Impl validateDisparityPostprocessingRequest:error:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/src/CVAVideoPipeline.mm", 1275, v57];
-              sub_1DED25D64(v54 != PixelFormatType, a4, 4294944393, v58);
+              sub_1DED25D64(inputDisparityPixelBufferPixelFormat != PixelFormatType, error, 4294944393, v58);
 
-              if (v54 == PixelFormatType)
+              if (inputDisparityPixelBufferPixelFormat == PixelFormatType)
               {
 LABEL_29:
-                v59 = [(CVAVideoPipelinePropertiesSPI *)self->_properties outputDisparityPixelBufferWidth];
-                v60 = CVPixelBufferGetWidth([v6 destinationDisparityPixelBuffer]);
+                outputDisparityPixelBufferWidth = [(CVAVideoPipelinePropertiesSPI *)self->_properties outputDisparityPixelBufferWidth];
+                v60 = CVPixelBufferGetWidth([requestCopy destinationDisparityPixelBuffer]);
                 v61 = MEMORY[0x1E696AEC0];
                 v62 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unexpected width of destinationDisparity"];
                 v63 = [v61 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[CVAPortraitVideoPipeline_Impl validateDisparityPostprocessingRequest:error:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/src/CVAVideoPipeline.mm", 1284, v62];
-                sub_1DED25D64(v59 != v60, a4, 4294944393, v63);
+                sub_1DED25D64(outputDisparityPixelBufferWidth != v60, error, 4294944393, v63);
 
-                if (v59 == v60)
+                if (outputDisparityPixelBufferWidth == v60)
                 {
-                  v64 = [(CVAVideoPipelinePropertiesSPI *)self->_properties outputDisparityPixelBufferHeight];
-                  v65 = CVPixelBufferGetHeight([v6 destinationDisparityPixelBuffer]);
+                  outputDisparityPixelBufferHeight = [(CVAVideoPipelinePropertiesSPI *)self->_properties outputDisparityPixelBufferHeight];
+                  v65 = CVPixelBufferGetHeight([requestCopy destinationDisparityPixelBuffer]);
                   v66 = MEMORY[0x1E696AEC0];
                   v67 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unexpected height of destinationDisparity"];
                   v68 = [v66 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[CVAPortraitVideoPipeline_Impl validateDisparityPostprocessingRequest:error:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/src/CVAVideoPipeline.mm", 1292, v67];
-                  sub_1DED25D64(v64 != v65, a4, 4294944393, v68);
+                  sub_1DED25D64(outputDisparityPixelBufferHeight != v65, error, 4294944393, v68);
 
-                  if (v64 == v65)
+                  if (outputDisparityPixelBufferHeight == v65)
                   {
-                    v88 = [(CVAVideoPipelinePropertiesSPI *)self->_properties supportedColorPixelBufferPixelFormats];
-                    v69 = [MEMORY[0x1E696AD98] numberWithInt:{CVPixelBufferGetPixelFormatType(objc_msgSend(v6, "sourceColorPixelBuffer"))}];
-                    v70 = [v88 containsObject:v69];
+                    supportedColorPixelBufferPixelFormats = [(CVAVideoPipelinePropertiesSPI *)self->_properties supportedColorPixelBufferPixelFormats];
+                    v69 = [MEMORY[0x1E696AD98] numberWithInt:{CVPixelBufferGetPixelFormatType(objc_msgSend(requestCopy, "sourceColorPixelBuffer"))}];
+                    v70 = [supportedColorPixelBufferPixelFormats containsObject:v69];
                     v71 = MEMORY[0x1E696AEC0];
                     v72 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unexpected pixel format for srcColor"];
                     v73 = [v71 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[CVAPortraitVideoPipeline_Impl validateDisparityPostprocessingRequest:error:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/src/CVAVideoPipeline.mm", 1300, v72];
-                    sub_1DED25D64(v70 ^ 1u, a4, 4294944393, v73);
+                    sub_1DED25D64(v70 ^ 1u, error, 4294944393, v73);
 
                     if (v70)
                     {
-                      v74 = [(CVAVideoPipelinePropertiesSPI *)self->_properties outputDisparityPixelBufferPixelFormat];
-                      v75 = CVPixelBufferGetPixelFormatType([v6 destinationDisparityPixelBuffer]);
+                      outputDisparityPixelBufferPixelFormat = [(CVAVideoPipelinePropertiesSPI *)self->_properties outputDisparityPixelBufferPixelFormat];
+                      v75 = CVPixelBufferGetPixelFormatType([requestCopy destinationDisparityPixelBuffer]);
                       v76 = MEMORY[0x1E696AEC0];
                       v77 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unexpected pixel format for destinationDisparity"];
                       v78 = [v76 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[CVAPortraitVideoPipeline_Impl validateDisparityPostprocessingRequest:error:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/src/CVAVideoPipeline.mm", 1308, v77];
-                      sub_1DED25D64(v74 != v75, a4, 4294944393, v78);
+                      sub_1DED25D64(outputDisparityPixelBufferPixelFormat != v75, error, 4294944393, v78);
 
-                      if (v74 == v75)
+                      if (outputDisparityPixelBufferPixelFormat == v75)
                       {
-                        [v6 sourceColorPixelBufferGravity];
-                        [v6 sourceColorPixelBufferGravity];
+                        [requestCopy sourceColorPixelBufferGravity];
+                        [requestCopy sourceColorPixelBufferGravity];
                         v84 = sqrt(v81 * v81 + v82 * v82 + v83 * v83) <= 0.00000011920929;
                         v85 = MEMORY[0x1E696AEC0];
                         v86 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Gravity vector should be NAN or have nonzero length"];
                         v87 = [v85 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[CVAPortraitVideoPipeline_Impl validateDisparityPostprocessingRequest:error:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/src/CVAVideoPipeline.mm", 1317, v86];
-                        sub_1DED25D64(v84, a4, 4294944393, v87);
+                        sub_1DED25D64(v84, error, 4294944393, v87);
 
                         v79 = !v84;
                         goto LABEL_25;
@@ -3952,20 +3952,20 @@ LABEL_25:
   return v79;
 }
 
-- (BOOL)validateSegmentationPixelBuffer:(__CVBuffer *)a3 matchFormat:(id)a4 error:(id *)a5
+- (BOOL)validateSegmentationPixelBuffer:(__CVBuffer *)buffer matchFormat:(id)format error:(id *)error
 {
-  v7 = a4;
-  if (a3)
+  formatCopy = format;
+  if (buffer)
   {
-    PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+    PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
     v9 = [MEMORY[0x1E696AD98] numberWithInt:PixelFormatType];
-    v10 = [v7 containsObject:v9];
+    v10 = [formatCopy containsObject:v9];
     v11 = MEMORY[0x1E696AEC0];
-    v12 = [v7 componentsJoinedByString:{@", "}];
+    v12 = [formatCopy componentsJoinedByString:{@", "}];
     v13 = [MEMORY[0x1E696AD98] numberWithInt:PixelFormatType];
     v14 = [v11 stringWithFormat:@"Unexpected pixel format for inputSegmentation. Supported formats: %@ was %@", v12, v13];
     v15 = [v11 stringWithFormat:@"Assertion failure in %s at %s:%d -- %@", "-[CVAPortraitVideoPipeline_Impl validateSegmentationPixelBuffer:matchFormat:error:]", "/Library/Caches/com.apple.xbs/Sources/AppleCVAPhoto/src/CVAVideoPipeline.mm", 1139, v14];
-    sub_1DED25D64(v10 ^ 1u, a5, 4294944393, v15);
+    sub_1DED25D64(v10 ^ 1u, error, 4294944393, v15);
   }
 
   else
@@ -3983,13 +3983,13 @@ LABEL_25:
   return v2;
 }
 
-- (void)setVideoPipelineProperties:(id)a3
+- (void)setVideoPipelineProperties:(id)properties
 {
   v103 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if ([v5 conformsToProtocol:&unk_1F5A0FF30])
+  propertiesCopy = properties;
+  if ([propertiesCopy conformsToProtocol:&unk_1F5A0FF30])
   {
-    v6 = v5;
+    v6 = propertiesCopy;
   }
 
   else
@@ -3997,57 +3997,57 @@ LABEL_25:
     v6 = 0;
   }
 
-  v7 = [v5 colorPixelBufferWidth];
-  if (v7 != [(CVAVideoPipelinePropertiesSPI *)self->_properties colorPixelBufferWidth])
+  colorPixelBufferWidth = [propertiesCopy colorPixelBufferWidth];
+  if (colorPixelBufferWidth != [(CVAVideoPipelinePropertiesSPI *)self->_properties colorPixelBufferWidth])
   {
-    v79 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v79 handleFailureInMethod:a2 object:self file:@"CVAVideoPipeline.mm" lineNumber:1010 description:@"Dynamic resolution change is unsupported"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CVAVideoPipeline.mm" lineNumber:1010 description:@"Dynamic resolution change is unsupported"];
   }
 
-  v8 = [v5 colorPixelBufferHeight];
-  if (v8 != [(CVAVideoPipelinePropertiesSPI *)self->_properties colorPixelBufferHeight])
+  colorPixelBufferHeight = [propertiesCopy colorPixelBufferHeight];
+  if (colorPixelBufferHeight != [(CVAVideoPipelinePropertiesSPI *)self->_properties colorPixelBufferHeight])
   {
-    v80 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v80 handleFailureInMethod:a2 object:self file:@"CVAVideoPipeline.mm" lineNumber:1012 description:@"Dynamic resolution change is unsupported"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"CVAVideoPipeline.mm" lineNumber:1012 description:@"Dynamic resolution change is unsupported"];
   }
 
-  v9 = [v5 alphaMattePixelBufferWidth];
-  if (v9 != [(CVAVideoPipelinePropertiesSPI *)self->_properties alphaMattePixelBufferWidth])
+  alphaMattePixelBufferWidth = [propertiesCopy alphaMattePixelBufferWidth];
+  if (alphaMattePixelBufferWidth != [(CVAVideoPipelinePropertiesSPI *)self->_properties alphaMattePixelBufferWidth])
   {
-    v81 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v81 handleFailureInMethod:a2 object:self file:@"CVAVideoPipeline.mm" lineNumber:1014 description:@"Dynamic resolution change is unsupported"];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"CVAVideoPipeline.mm" lineNumber:1014 description:@"Dynamic resolution change is unsupported"];
   }
 
-  v10 = [v5 alphaMattePixelBufferHeight];
-  if (v10 != [(CVAVideoPipelinePropertiesSPI *)self->_properties alphaMattePixelBufferHeight])
+  alphaMattePixelBufferHeight = [propertiesCopy alphaMattePixelBufferHeight];
+  if (alphaMattePixelBufferHeight != [(CVAVideoPipelinePropertiesSPI *)self->_properties alphaMattePixelBufferHeight])
   {
-    v82 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v82 handleFailureInMethod:a2 object:self file:@"CVAVideoPipeline.mm" lineNumber:1016 description:@"Dynamic resolution change is unsupported"];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"CVAVideoPipeline.mm" lineNumber:1016 description:@"Dynamic resolution change is unsupported"];
   }
 
-  v11 = [v5 inputDisparityPixelBufferWidth];
-  if (v11 != [(CVAVideoPipelinePropertiesSPI *)self->_properties inputDisparityPixelBufferWidth])
+  inputDisparityPixelBufferWidth = [propertiesCopy inputDisparityPixelBufferWidth];
+  if (inputDisparityPixelBufferWidth != [(CVAVideoPipelinePropertiesSPI *)self->_properties inputDisparityPixelBufferWidth])
   {
-    v83 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v83 handleFailureInMethod:a2 object:self file:@"CVAVideoPipeline.mm" lineNumber:1018 description:@"Dynamic resolution change is unsupported"];
+    currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler5 handleFailureInMethod:a2 object:self file:@"CVAVideoPipeline.mm" lineNumber:1018 description:@"Dynamic resolution change is unsupported"];
   }
 
-  v12 = [v5 inputDisparityPixelBufferHeight];
-  if (v12 != [(CVAVideoPipelinePropertiesSPI *)self->_properties inputDisparityPixelBufferHeight])
+  inputDisparityPixelBufferHeight = [propertiesCopy inputDisparityPixelBufferHeight];
+  if (inputDisparityPixelBufferHeight != [(CVAVideoPipelinePropertiesSPI *)self->_properties inputDisparityPixelBufferHeight])
   {
-    v84 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v84 handleFailureInMethod:a2 object:self file:@"CVAVideoPipeline.mm" lineNumber:1020 description:@"Dynamic resolution change is unsupported"];
+    currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler6 handleFailureInMethod:a2 object:self file:@"CVAVideoPipeline.mm" lineNumber:1020 description:@"Dynamic resolution change is unsupported"];
   }
 
-  v13 = [v5 outputDisparityPixelBufferWidth];
-  if (v13 != [(CVAVideoPipelinePropertiesSPI *)self->_properties outputDisparityPixelBufferWidth])
+  outputDisparityPixelBufferWidth = [propertiesCopy outputDisparityPixelBufferWidth];
+  if (outputDisparityPixelBufferWidth != [(CVAVideoPipelinePropertiesSPI *)self->_properties outputDisparityPixelBufferWidth])
   {
-    v85 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v85 handleFailureInMethod:a2 object:self file:@"CVAVideoPipeline.mm" lineNumber:1022 description:@"Dynamic resolution change is unsupported"];
+    currentHandler7 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler7 handleFailureInMethod:a2 object:self file:@"CVAVideoPipeline.mm" lineNumber:1022 description:@"Dynamic resolution change is unsupported"];
   }
 
-  v14 = [v5 outputDisparityPixelBufferHeight];
-  if (v14 == [(CVAVideoPipelinePropertiesSPI *)self->_properties outputDisparityPixelBufferHeight])
+  outputDisparityPixelBufferHeight = [propertiesCopy outputDisparityPixelBufferHeight];
+  if (outputDisparityPixelBufferHeight == [(CVAVideoPipelinePropertiesSPI *)self->_properties outputDisparityPixelBufferHeight])
   {
     if (!v6)
     {
@@ -4124,8 +4124,8 @@ LABEL_48:
 
   else
   {
-    v86 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v86 handleFailureInMethod:a2 object:self file:@"CVAVideoPipeline.mm" lineNumber:1024 description:@"Dynamic resolution change is unsupported"];
+    currentHandler8 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler8 handleFailureInMethod:a2 object:self file:@"CVAVideoPipeline.mm" lineNumber:1024 description:@"Dynamic resolution change is unsupported"];
 
     if (!v6)
     {
@@ -4138,15 +4138,15 @@ LABEL_48:
   [(CVAVideoPipelinePropertiesSPI *)self->_properties backgroundDisparityUpdateRate];
   if (v16 != v17)
   {
-    v87 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v87 handleFailureInMethod:a2 object:self file:@"CVAVideoPipeline.mm" lineNumber:1032 description:@"Dynamic change to backgroundDisparityUpdateRate is unsupported"];
+    currentHandler9 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler9 handleFailureInMethod:a2 object:self file:@"CVAVideoPipeline.mm" lineNumber:1032 description:@"Dynamic change to backgroundDisparityUpdateRate is unsupported"];
   }
 
-  v18 = [v6 backgroundDisparityStatsWindowSize];
-  if (v18 != [(CVAVideoPipelinePropertiesSPI *)self->_properties backgroundDisparityStatsWindowSize])
+  backgroundDisparityStatsWindowSize = [v6 backgroundDisparityStatsWindowSize];
+  if (backgroundDisparityStatsWindowSize != [(CVAVideoPipelinePropertiesSPI *)self->_properties backgroundDisparityStatsWindowSize])
   {
-    v88 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v88 handleFailureInMethod:a2 object:self file:@"CVAVideoPipeline.mm" lineNumber:1034 description:@"Dynamic change to backgroundDisparityStatsWindowSize is unsupported"];
+    currentHandler10 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler10 handleFailureInMethod:a2 object:self file:@"CVAVideoPipeline.mm" lineNumber:1034 description:@"Dynamic change to backgroundDisparityStatsWindowSize is unsupported"];
   }
 
   [v6 minDeltaCanonicalDisparity];
@@ -4154,8 +4154,8 @@ LABEL_48:
   [(CVAVideoPipelinePropertiesSPI *)self->_properties minDeltaCanonicalDisparity];
   if (v20 != v21)
   {
-    v89 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v89 handleFailureInMethod:a2 object:self file:@"CVAVideoPipeline.mm" lineNumber:1036 description:@"Dynamic change to minDeltaCanonicalDisparity is unsupported"];
+    currentHandler11 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler11 handleFailureInMethod:a2 object:self file:@"CVAVideoPipeline.mm" lineNumber:1036 description:@"Dynamic change to minDeltaCanonicalDisparity is unsupported"];
   }
 
   [v6 maxDeltaCanonicalDisparity];
@@ -4163,8 +4163,8 @@ LABEL_48:
   [(CVAVideoPipelinePropertiesSPI *)self->_properties maxDeltaCanonicalDisparity];
   if (v23 != v24)
   {
-    v90 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v90 handleFailureInMethod:a2 object:self file:@"CVAVideoPipeline.mm" lineNumber:1038 description:@"Dynamic change to maxDeltaCanonicalDisparity is unsupported"];
+    currentHandler12 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler12 handleFailureInMethod:a2 object:self file:@"CVAVideoPipeline.mm" lineNumber:1038 description:@"Dynamic change to maxDeltaCanonicalDisparity is unsupported"];
   }
 
   [v6 dsCanonicalLowThld];
@@ -4172,8 +4172,8 @@ LABEL_48:
   [(CVAVideoPipelinePropertiesSPI *)self->_properties dsCanonicalLowThld];
   if (v26 != v27)
   {
-    v91 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v91 handleFailureInMethod:a2 object:self file:@"CVAVideoPipeline.mm" lineNumber:1040 description:@"Dynamic change to dsCanonicalLowThld is unsupported"];
+    currentHandler13 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler13 handleFailureInMethod:a2 object:self file:@"CVAVideoPipeline.mm" lineNumber:1040 description:@"Dynamic change to dsCanonicalLowThld is unsupported"];
   }
 
   [v6 dsCanonicalLowScale];
@@ -4181,8 +4181,8 @@ LABEL_48:
   [(CVAVideoPipelinePropertiesSPI *)self->_properties dsCanonicalLowScale];
   if (v29 != v30)
   {
-    v92 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v92 handleFailureInMethod:a2 object:self file:@"CVAVideoPipeline.mm" lineNumber:1042 description:@"Dynamic change to dsCanonicalLowScale is unsupported"];
+    currentHandler14 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler14 handleFailureInMethod:a2 object:self file:@"CVAVideoPipeline.mm" lineNumber:1042 description:@"Dynamic change to dsCanonicalLowScale is unsupported"];
   }
 
   [v6 dsCanonicalHighThld];
@@ -4190,8 +4190,8 @@ LABEL_48:
   [(CVAVideoPipelinePropertiesSPI *)self->_properties dsCanonicalHighThld];
   if (v32 != v33)
   {
-    v93 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v93 handleFailureInMethod:a2 object:self file:@"CVAVideoPipeline.mm" lineNumber:1044 description:@"Dynamic change to dsCanonicalHighThld is unsupported"];
+    currentHandler15 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler15 handleFailureInMethod:a2 object:self file:@"CVAVideoPipeline.mm" lineNumber:1044 description:@"Dynamic change to dsCanonicalHighThld is unsupported"];
   }
 
   [v6 dsCanonicalHighScale];
@@ -4199,22 +4199,22 @@ LABEL_48:
   [(CVAVideoPipelinePropertiesSPI *)self->_properties dsCanonicalHighScale];
   if (v35 != v36)
   {
-    v94 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v94 handleFailureInMethod:a2 object:self file:@"CVAVideoPipeline.mm" lineNumber:1046 description:@"Dynamic change to dsCanonicalHighScale is unsupported"];
+    currentHandler16 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler16 handleFailureInMethod:a2 object:self file:@"CVAVideoPipeline.mm" lineNumber:1046 description:@"Dynamic change to dsCanonicalHighScale is unsupported"];
   }
 
-  v37 = [v6 depthPixelBufferXPadding];
-  if (v37 != [(CVAVideoPipelinePropertiesSPI *)self->_properties depthPixelBufferXPadding])
+  depthPixelBufferXPadding = [v6 depthPixelBufferXPadding];
+  if (depthPixelBufferXPadding != [(CVAVideoPipelinePropertiesSPI *)self->_properties depthPixelBufferXPadding])
   {
-    v95 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v95 handleFailureInMethod:a2 object:self file:@"CVAVideoPipeline.mm" lineNumber:1048 description:@"Dynamic change to depthPixelBufferXPadding is unsupported"];
+    currentHandler17 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler17 handleFailureInMethod:a2 object:self file:@"CVAVideoPipeline.mm" lineNumber:1048 description:@"Dynamic change to depthPixelBufferXPadding is unsupported"];
   }
 
-  v38 = [v6 depthPixelBufferYPadding];
-  if (v38 != [(CVAVideoPipelinePropertiesSPI *)self->_properties depthPixelBufferYPadding])
+  depthPixelBufferYPadding = [v6 depthPixelBufferYPadding];
+  if (depthPixelBufferYPadding != [(CVAVideoPipelinePropertiesSPI *)self->_properties depthPixelBufferYPadding])
   {
-    v96 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v96 handleFailureInMethod:a2 object:self file:@"CVAVideoPipeline.mm" lineNumber:1050 description:@"Dynamic change to depthPixelBufferYPadding is unsupported"];
+    currentHandler18 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler18 handleFailureInMethod:a2 object:self file:@"CVAVideoPipeline.mm" lineNumber:1050 description:@"Dynamic change to depthPixelBufferYPadding is unsupported"];
   }
 
   [v6 foregroundPercentile];
@@ -4222,8 +4222,8 @@ LABEL_48:
   [(CVAVideoPipelinePropertiesSPI *)self->_properties foregroundPercentile];
   if (v40 != v41)
   {
-    v97 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v97 handleFailureInMethod:a2 object:self file:@"CVAVideoPipeline.mm" lineNumber:1052 description:@"Dynamic change to foregroundPercentile is unsupported"];
+    currentHandler19 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler19 handleFailureInMethod:a2 object:self file:@"CVAVideoPipeline.mm" lineNumber:1052 description:@"Dynamic change to foregroundPercentile is unsupported"];
   }
 
   [v6 closeDisparityPercentile];
@@ -4231,8 +4231,8 @@ LABEL_48:
   [(CVAVideoPipelinePropertiesSPI *)self->_properties closeDisparityPercentile];
   if (v43 != v44)
   {
-    v98 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v98 handleFailureInMethod:a2 object:self file:@"CVAVideoPipeline.mm" lineNumber:1054 description:@"Dynamic change to closeDisparityPercentile is unsupported"];
+    currentHandler20 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler20 handleFailureInMethod:a2 object:self file:@"CVAVideoPipeline.mm" lineNumber:1054 description:@"Dynamic change to closeDisparityPercentile is unsupported"];
   }
 
   [v6 deltaDepth];
@@ -4240,8 +4240,8 @@ LABEL_48:
   [(CVAVideoPipelinePropertiesSPI *)self->_properties deltaDepth];
   if (v46 != v47)
   {
-    v99 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v99 handleFailureInMethod:a2 object:self file:@"CVAVideoPipeline.mm" lineNumber:1056 description:@"Dynamic change to deltaDepth is unsupported"];
+    currentHandler21 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler21 handleFailureInMethod:a2 object:self file:@"CVAVideoPipeline.mm" lineNumber:1056 description:@"Dynamic change to deltaDepth is unsupported"];
   }
 
   v100 = 0;
@@ -4276,19 +4276,19 @@ LABEL_56:
   [(CVAPortraitVideoPipeline_Impl *)&v3 dealloc];
 }
 
-- (CVAPortraitVideoPipeline_Impl)initWithProperties:(id)a3 commandQueue:(id)a4 notificationQueue:(id)a5 error:(id *)a6
+- (CVAPortraitVideoPipeline_Impl)initWithProperties:(id)properties commandQueue:(id)queue notificationQueue:(id)notificationQueue error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  propertiesCopy = properties;
+  queueCopy = queue;
+  notificationQueueCopy = notificationQueue;
   v39.receiver = self;
   v39.super_class = CVAPortraitVideoPipeline_Impl;
   v13 = [(CVAPortraitVideoPipeline_Impl *)&v39 init];
   if (v13)
   {
-    if (v12)
+    if (notificationQueueCopy)
     {
-      v14 = v12;
+      v14 = notificationQueueCopy;
       v15 = *(v13 + 2);
       *(v13 + 2) = v14;
     }
@@ -4301,18 +4301,18 @@ LABEL_56:
       *(v13 + 2) = v16;
     }
 
-    if (![v13 makeMetalContextWithOptionalCommandQueue:v11 error:a6])
+    if (![v13 makeMetalContextWithOptionalCommandQueue:queueCopy error:error])
     {
-      if (([v10 conformsToProtocol:&unk_1F5A0FF30] & 1) == 0)
+      if (([propertiesCopy conformsToProtocol:&unk_1F5A0FF30] & 1) == 0)
       {
-        v36 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       }
 
-      v18 = [v10 copy];
+      v18 = [propertiesCopy copy];
       v19 = *(v13 + 3);
       *(v13 + 3) = v18;
 
-      if ([*(v13 + 3) validateWithError:a6])
+      if ([*(v13 + 3) validateWithError:error])
       {
         v37 = sub_1DED2E328([*(v13 + 3) videoPipelineDevice]);
         v20 = sub_1DED5D1F8(@"guided_depth_restoration_enabled", @"com.apple.coremedia", 0);
@@ -4341,7 +4341,7 @@ LABEL_56:
         v13[34] = v24;
         if (v37 == 1 && v20)
         {
-          v25 = [*(v13 + 3) canSkipDisparityHoleFillingAndTemporalRejection];
+          canSkipDisparityHoleFillingAndTemporalRejection = [*(v13 + 3) canSkipDisparityHoleFillingAndTemporalRejection];
           if (v21)
           {
             v26 = 1;
@@ -4349,7 +4349,7 @@ LABEL_56:
 
           else
           {
-            v26 = v25;
+            v26 = canSkipDisparityHoleFillingAndTemporalRejection;
           }
 
           if ((v26 & 1) == 0)
@@ -4372,34 +4372,34 @@ LABEL_28:
         v13[548] = v27;
         if (v13[32] == 1 && v13[33] == 1)
         {
-          v28 = [*(v13 + 3) inputDisparityPixelBufferWidth];
-          v29 = [*(v13 + 3) inputDisparityPixelBufferHeight];
+          inputDisparityPixelBufferWidth = [*(v13 + 3) inputDisparityPixelBufferWidth];
+          inputDisparityPixelBufferHeight = [*(v13 + 3) inputDisparityPixelBufferHeight];
           v30 = 1751411059;
         }
 
         else
         {
-          v28 = [*(v13 + 3) inputDisparityPixelBufferWidth];
-          v29 = [*(v13 + 3) inputDisparityPixelBufferHeight];
+          inputDisparityPixelBufferWidth = [*(v13 + 3) inputDisparityPixelBufferWidth];
+          inputDisparityPixelBufferHeight = [*(v13 + 3) inputDisparityPixelBufferHeight];
           v30 = 1278226534;
         }
 
-        CVPixelBufferCreate(0, v28, v29, v30, 0, v13 + 5);
+        CVPixelBufferCreate(0, inputDisparityPixelBufferWidth, inputDisparityPixelBufferHeight, v30, 0, v13 + 5);
         if (v13[32] == 1 && v13[33] == 1)
         {
-          v31 = [*(v13 + 3) outputDisparityPixelBufferWidth];
-          v32 = [*(v13 + 3) outputDisparityPixelBufferHeight];
+          outputDisparityPixelBufferWidth = [*(v13 + 3) outputDisparityPixelBufferWidth];
+          outputDisparityPixelBufferHeight = [*(v13 + 3) outputDisparityPixelBufferHeight];
           v33 = 1751411059;
         }
 
         else
         {
-          v31 = [*(v13 + 3) outputDisparityPixelBufferWidth];
-          v32 = [*(v13 + 3) outputDisparityPixelBufferHeight];
+          outputDisparityPixelBufferWidth = [*(v13 + 3) outputDisparityPixelBufferWidth];
+          outputDisparityPixelBufferHeight = [*(v13 + 3) outputDisparityPixelBufferHeight];
           v33 = 1278226534;
         }
 
-        [CVAPortraitVideoPipeline_Impl pixelBufferPoolCreateWithWidth:v31 height:v32 pixelFormat:v33 pool:v13 + 48];
+        [CVAPortraitVideoPipeline_Impl pixelBufferPoolCreateWithWidth:outputDisparityPixelBufferWidth height:outputDisparityPixelBufferHeight pixelFormat:v33 pool:v13 + 48];
         [*(v13 + 3) inputDisparityPixelBufferWidth];
         [*(v13 + 3) inputDisparityPixelBufferHeight];
         [*(v13 + 3) outputDisparityPixelBufferWidth];
@@ -4418,7 +4418,7 @@ LABEL_28:
         [*(v13 + 3) depthPixelBufferMaxRightOcclusionDisparityChange];
         [*(v13 + 3) depthPixelBufferMaxLeftOcclusionDisparityChange];
         v13[32];
-        [v10 outputDisparityOffset];
+        [propertiesCopy outputDisparityOffset];
         *(v13 + 9) = v34;
         [*(v13 + 3) disparityStereoFocalLengthPixels];
         [*(v13 + 3) disparityStereoBaselineMeters];
@@ -4427,54 +4427,54 @@ LABEL_28:
     }
   }
 
-  else if (a6)
+  else if (error)
   {
-    *a6 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-22900 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-22900 userInfo:0];
   }
 
   return 0;
 }
 
-- (int)makeMetalContextWithOptionalCommandQueue:(id)a3 error:(id *)a4
+- (int)makeMetalContextWithOptionalCommandQueue:(id)queue error:(id *)error
 {
-  v5 = a3;
+  queueCopy = queue;
   v6 = objc_alloc(MEMORY[0x1E6991778]);
   v7 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-  v8 = [v6 initWithbundle:v7 andOptionalCommandQueue:v5];
+  v8 = [v6 initWithbundle:v7 andOptionalCommandQueue:queueCopy];
   figMetalContext = self->_metalContext.figMetalContext;
   self->_metalContext.figMetalContext = v8;
 
-  v10 = [(FigMetalContext *)self->_metalContext.figMetalContext device];
+  device = [(FigMetalContext *)self->_metalContext.figMetalContext device];
   device = self->_metalContext.device;
-  self->_metalContext.device = v10;
+  self->_metalContext.device = device;
 
-  v12 = [(FigMetalContext *)self->_metalContext.figMetalContext commandQueue];
+  commandQueue = [(FigMetalContext *)self->_metalContext.figMetalContext commandQueue];
   commandQueue = self->_metalContext.commandQueue;
-  self->_metalContext.commandQueue = v12;
+  self->_metalContext.commandQueue = commandQueue;
 
-  v14 = [(FigMetalContext *)self->_metalContext.figMetalContext library];
+  library = [(FigMetalContext *)self->_metalContext.figMetalContext library];
   library = self->_metalContext.library;
-  self->_metalContext.library = v14;
+  self->_metalContext.library = library;
 
   return 0;
 }
 
-+ (void)drawDisparity:(const __CVBuffer *)a3 onColor:(__CVBuffer *)a4 canonical:(BOOL)a5 rawShiftInvalidThreshold:(int)a6 focusMachineState:(int)a7 offsetX:(unint64_t)a8 offsetY:(unint64_t)a9
++ (void)drawDisparity:(const __CVBuffer *)disparity onColor:(__CVBuffer *)color canonical:(BOOL)canonical rawShiftInvalidThreshold:(int)threshold focusMachineState:(int)state offsetX:(unint64_t)x offsetY:(unint64_t)y
 {
-  v57 = a5;
-  CVPixelBufferLockBaseAddress(a3, 0);
-  CVPixelBufferLockBaseAddress(a4, 0);
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
-  HeightOfPlane = CVPixelBufferGetHeightOfPlane(a4, 0);
-  v16 = CVPixelBufferGetHeightOfPlane(a4, 1uLL);
-  BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(a4, 0);
-  v18 = CVPixelBufferGetBytesPerRowOfPlane(a4, 1uLL);
-  pixelBuffer = a3;
-  BaseAddress = CVPixelBufferGetBaseAddress(a3);
-  BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(a4, 0);
-  v20 = CVPixelBufferGetBaseAddressOfPlane(a4, 1uLL);
+  canonicalCopy = canonical;
+  CVPixelBufferLockBaseAddress(disparity, 0);
+  CVPixelBufferLockBaseAddress(color, 0);
+  Width = CVPixelBufferGetWidth(disparity);
+  Height = CVPixelBufferGetHeight(disparity);
+  BytesPerRow = CVPixelBufferGetBytesPerRow(disparity);
+  HeightOfPlane = CVPixelBufferGetHeightOfPlane(color, 0);
+  v16 = CVPixelBufferGetHeightOfPlane(color, 1uLL);
+  BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(color, 0);
+  v18 = CVPixelBufferGetBytesPerRowOfPlane(color, 1uLL);
+  pixelBuffer = disparity;
+  BaseAddress = CVPixelBufferGetBaseAddress(disparity);
+  BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(color, 0);
+  v20 = CVPixelBufferGetBaseAddressOfPlane(color, 1uLL);
   if (BaseAddress)
   {
     if (BaseAddressOfPlane)
@@ -4491,7 +4491,7 @@ LABEL_28:
             {
               v53 = BytesPerRow;
               v54 = v20;
-              if (v57)
+              if (canonicalCopy)
               {
                 if (Width < 89 || Height < 24)
                 {
@@ -4502,7 +4502,7 @@ LABEL_28:
                 else
                 {
                   v24 = 0;
-                  if (a7)
+                  if (state)
                   {
                     v25 = 102;
                   }
@@ -4512,7 +4512,7 @@ LABEL_28:
                     v25 = 115;
                   }
 
-                  if (a7)
+                  if (state)
                   {
                     v26 = 97;
                   }
@@ -4522,7 +4522,7 @@ LABEL_28:
                     v26 = 108;
                   }
 
-                  if (a7)
+                  if (state)
                   {
                     v27 = 115;
                   }
@@ -4532,7 +4532,7 @@ LABEL_28:
                     v27 = 111;
                   }
 
-                  if (a7)
+                  if (state)
                   {
                     v28 = 116;
                   }
@@ -4645,10 +4645,10 @@ LABEL_28:
                 }
               }
 
-              v38 = a9 >> 1;
+              v38 = y >> 1;
               if (v22 >= 2)
               {
-                v39 = &v54[a8 + v18 * v38];
+                v39 = &v54[x + v18 * v38];
                 do
                 {
                   memset(v39, 128, Width);
@@ -4661,11 +4661,11 @@ LABEL_28:
 
               if (Height && Width)
               {
-                v40 = &v54[a8];
-                if (v57)
+                v40 = &v54[x];
+                if (canonicalCopy)
                 {
                   v41 = 0;
-                  v42 = &BaseAddressOfPlane[a8 + BytesPerRowOfPlane * a9];
+                  v42 = &BaseAddressOfPlane[x + BytesPerRowOfPlane * y];
                   while (1)
                   {
                     for (i = 0; i != Width; ++i)
@@ -4713,13 +4713,13 @@ LABEL_60:
                 }
 
                 v49 = 0;
-                v50 = &BaseAddressOfPlane[a8 + BytesPerRowOfPlane * a9];
+                v50 = &BaseAddressOfPlane[x + BytesPerRowOfPlane * y];
                 do
                 {
                   for (j = 0; j != Width; ++j)
                   {
                     LOWORD(v21) = *(BaseAddress + j);
-                    v21 = LODWORD(v21) / a6;
+                    v21 = LODWORD(v21) / threshold;
                     v52 = (v21 * 255.0);
                     if (v21 > 1.0)
                     {
@@ -4732,7 +4732,7 @@ LABEL_60:
                     }
 
                     v50[j] = v52;
-                    if (*(BaseAddress + j) >= a6)
+                    if (*(BaseAddress + j) >= threshold)
                     {
                       v50[j] = 105;
                       *&v40[(v38 + (v49 >> 1)) * v18 + (j & 0xFFFFFFFFFFFFFFFELL)] = -5420;
@@ -4754,7 +4754,7 @@ LABEL_60:
   }
 
 LABEL_79:
-  CVPixelBufferUnlockBaseAddress(a4, 0);
+  CVPixelBufferUnlockBaseAddress(color, 0);
 
   CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
 }

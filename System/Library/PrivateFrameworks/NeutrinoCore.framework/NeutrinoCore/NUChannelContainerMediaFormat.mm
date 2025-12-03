@@ -1,15 +1,15 @@
 @interface NUChannelContainerMediaFormat
-+ (id)imageContainerWithChannels:(id)a3 error:(id *)a4;
-+ (id)livePhotoContainerWithImageChannels:(id)a3 videoChannels:(id)a4 error:(id *)a5;
-+ (id)livePhotoContainerWithImageFormat:(id)a3 videoFormat:(id)a4;
-+ (id)videoContainerWithChannels:(id)a3 error:(id *)a4;
-- (BOOL)isCompatibleWithContainerMediaFormat:(id)a3;
-- (BOOL)isCompatibleWithMediaFormat:(id)a3;
-- (BOOL)isEqualToChannelFormat:(id)a3;
++ (id)imageContainerWithChannels:(id)channels error:(id *)error;
++ (id)livePhotoContainerWithImageChannels:(id)channels videoChannels:(id)videoChannels error:(id *)error;
++ (id)livePhotoContainerWithImageFormat:(id)format videoFormat:(id)videoFormat;
++ (id)videoContainerWithChannels:(id)channels error:(id *)error;
+- (BOOL)isCompatibleWithContainerMediaFormat:(id)format;
+- (BOOL)isCompatibleWithMediaFormat:(id)format;
+- (BOOL)isEqualToChannelFormat:(id)format;
 - (NUChannelComponentMediaFormat)componentFormat;
-- (NUChannelContainerMediaFormat)initWithContainerMediaType:(int64_t)a3 components:(id)a4;
-- (NUChannelContainerMediaFormat)initWithMediaTemporality:(int64_t)a3;
-- (id)channelMatching:(id)a3;
+- (NUChannelContainerMediaFormat)initWithContainerMediaType:(int64_t)type components:(id)components;
+- (NUChannelContainerMediaFormat)initWithMediaTemporality:(int64_t)temporality;
+- (id)channelMatching:(id)matching;
 - (id)debugDescription;
 - (id)description;
 - (id)elementChannel;
@@ -23,8 +23,8 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = [(NUChannelContainerMediaFormat *)self description];
-  v6 = [(NUChannelContainerMediaFormat *)self components];
-  v7 = [v3 stringWithFormat:@"<%@:%p %@ components:%@>", v4, self, v5, v6];
+  components = [(NUChannelContainerMediaFormat *)self components];
+  v7 = [v3 stringWithFormat:@"<%@:%p %@ components:%@>", v4, self, v5, components];
 
   return v7;
 }
@@ -47,9 +47,9 @@
       v5 = off_1E8109AD8[v4];
     }
 
-    v6 = [(NUChannelContainerMediaFormat *)self components];
-    v7 = [v6 allValues];
-    v8 = [v7 componentsJoinedByString:{@", "}];
+    components = [(NUChannelContainerMediaFormat *)self components];
+    allValues = [components allValues];
+    v8 = [allValues componentsJoinedByString:{@", "}];
     v9 = [v3 stringByAppendingFormat:@":%@[%@]", v5, v8];
 
     v3 = v9;
@@ -58,11 +58,11 @@
   return v3;
 }
 
-- (BOOL)isCompatibleWithContainerMediaFormat:(id)a3
+- (BOOL)isCompatibleWithContainerMediaFormat:(id)format
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  formatCopy = format;
+  if (formatCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -89,8 +89,8 @@
           v27 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
           v28 = MEMORY[0x1E696AF00];
           v29 = v27;
-          v30 = [v28 callStackSymbols];
-          v31 = [v30 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v28 callStackSymbols];
+          v31 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v44 = v27;
           v45 = 2114;
@@ -101,8 +101,8 @@
 
       else if (v24)
       {
-        v25 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v26 = [v25 componentsJoinedByString:@"\n"];
+        callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v26 = [callStackSymbols2 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v44 = v26;
         _os_log_error_impl(&dword_1C0184000, v23, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -114,15 +114,15 @@
     }
   }
 
-  v5 = [v4 containerMediaType];
-  if (v5 == [(NUChannelContainerMediaFormat *)self containerMediaType])
+  containerMediaType = [formatCopy containerMediaType];
+  if (containerMediaType == [(NUChannelContainerMediaFormat *)self containerMediaType])
   {
     v40 = 0u;
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v6 = [v4 components];
-    v7 = [v6 countByEnumeratingWithState:&v38 objects:v42 count:16];
+    components = [formatCopy components];
+    v7 = [components countByEnumeratingWithState:&v38 objects:v42 count:16];
     if (v7)
     {
       v8 = v7;
@@ -133,23 +133,23 @@ LABEL_6:
       {
         if (*v39 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(components);
         }
 
         v11 = *(*(&v38 + 1) + 8 * v10);
-        v12 = [(NUChannelContainerMediaFormat *)self components];
-        v13 = [v12 objectForKeyedSubscript:v11];
+        components2 = [(NUChannelContainerMediaFormat *)self components];
+        v13 = [components2 objectForKeyedSubscript:v11];
 
         if (!v13)
         {
           break;
         }
 
-        v14 = [v4 components];
-        v15 = [v14 objectForKeyedSubscript:v11];
+        components3 = [formatCopy components];
+        v15 = [components3 objectForKeyedSubscript:v11];
 
-        LODWORD(v14) = [v13 isCompatibleWithChannelFormat:v15];
-        if (!v14)
+        LODWORD(components3) = [v13 isCompatibleWithChannelFormat:v15];
+        if (!components3)
         {
           LOBYTE(v13) = 0;
           break;
@@ -157,7 +157,7 @@ LABEL_6:
 
         if (v8 == ++v10)
         {
-          v8 = [v6 countByEnumeratingWithState:&v38 objects:v42 count:16];
+          v8 = [components countByEnumeratingWithState:&v38 objects:v42 count:16];
           LOBYTE(v13) = 1;
           if (v8)
           {
@@ -183,11 +183,11 @@ LABEL_6:
   return v13;
 }
 
-- (BOOL)isCompatibleWithMediaFormat:(id)a3
+- (BOOL)isCompatibleWithMediaFormat:(id)format
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  formatCopy = format;
+  if (formatCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -214,8 +214,8 @@ LABEL_6:
           v17 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
           v18 = MEMORY[0x1E696AF00];
           v19 = v17;
-          v20 = [v18 callStackSymbols];
-          v21 = [v20 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v18 callStackSymbols];
+          v21 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v29 = v17;
           v30 = 2114;
@@ -226,8 +226,8 @@ LABEL_6:
 
       else if (v14)
       {
-        v15 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v16 = [v15 componentsJoinedByString:@"\n"];
+        callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v16 = [callStackSymbols2 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v29 = v16;
         _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -239,20 +239,20 @@ LABEL_6:
     }
   }
 
-  v5 = [v4 mediaType] == 4 && -[NUChannelContainerMediaFormat isCompatibleWithContainerMediaFormat:](self, "isCompatibleWithContainerMediaFormat:", v4);
+  v5 = [formatCopy mediaType] == 4 && -[NUChannelContainerMediaFormat isCompatibleWithContainerMediaFormat:](self, "isCompatibleWithContainerMediaFormat:", formatCopy);
 
   return v5;
 }
 
-- (BOOL)isEqualToChannelFormat:(id)a3
+- (BOOL)isEqualToChannelFormat:(id)format
 {
-  v4 = a3;
+  formatCopy = format;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = [v4 containerMediaType], v5 == -[NUChannelContainerMediaFormat containerMediaType](self, "containerMediaType")))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = [formatCopy containerMediaType], v5 == -[NUChannelContainerMediaFormat containerMediaType](self, "containerMediaType")))
   {
-    v6 = [v4 components];
-    v7 = [(NUChannelContainerMediaFormat *)self components];
-    v8 = [v6 isEqualToDictionary:v7];
+    components = [formatCopy components];
+    components2 = [(NUChannelContainerMediaFormat *)self components];
+    v8 = [components isEqualToDictionary:components2];
   }
 
   else
@@ -266,8 +266,8 @@ LABEL_6:
 - (id)elementChannel
 {
   v3 = [NUChannelElementFormat alloc];
-  v4 = [(NUChannelContainerMediaFormat *)self componentFormat];
-  v5 = [(NUChannelElementFormat *)v3 initWithRepresentedFormat:v4];
+  componentFormat = [(NUChannelContainerMediaFormat *)self componentFormat];
+  v5 = [(NUChannelElementFormat *)v3 initWithRepresentedFormat:componentFormat];
 
   v6 = [[NUChannel alloc] initWithName:@"$component" format:v5];
 
@@ -276,17 +276,17 @@ LABEL_6:
 
 - (NUChannelComponentMediaFormat)componentFormat
 {
-  v2 = [(NUChannelContainerMediaFormat *)self containerMediaType];
+  containerMediaType = [(NUChannelContainerMediaFormat *)self containerMediaType];
   v3 = 0;
-  if (v2 > 1)
+  if (containerMediaType > 1)
   {
-    if (v2 == 2)
+    if (containerMediaType == 2)
     {
       v3 = +[NUChannelComponentMediaFormat genericVideoComponentFormat];
       goto LABEL_9;
     }
 
-    if (v2 != 3)
+    if (containerMediaType != 3)
     {
       goto LABEL_9;
     }
@@ -296,12 +296,12 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  if (!v2)
+  if (!containerMediaType)
   {
     goto LABEL_7;
   }
 
-  if (v2 == 1)
+  if (containerMediaType == 1)
   {
     v3 = +[NUChannelComponentMediaFormat genericImageComponentFormat];
   }
@@ -320,9 +320,9 @@ LABEL_9:
   return v4 ^ v3 ^ (0x22148EB71A6EE7 * NUDeepDictionaryHash(self->_components));
 }
 
-- (id)channelMatching:(id)a3
+- (id)channelMatching:(id)matching
 {
-  v4 = a3;
+  matchingCopy = matching;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -334,7 +334,7 @@ LABEL_9:
   v9[1] = 3221225472;
   v9[2] = __49__NUChannelContainerMediaFormat_channelMatching___block_invoke;
   v9[3] = &unk_1E8109A08;
-  v6 = v4;
+  v6 = matchingCopy;
   v10 = v6;
   v11 = &v12;
   [(NSDictionary *)components enumerateKeysAndObjectsUsingBlock:v9];
@@ -358,11 +358,11 @@ void __49__NUChannelContainerMediaFormat_channelMatching___block_invoke(uint64_t
   }
 }
 
-- (NUChannelContainerMediaFormat)initWithContainerMediaType:(int64_t)a3 components:(id)a4
+- (NUChannelContainerMediaFormat)initWithContainerMediaType:(int64_t)type components:(id)components
 {
   v50 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (!a3)
+  componentsCopy = components;
+  if (!type)
   {
     v13 = NUAssertLogger_4187();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -383,8 +383,8 @@ void __49__NUChannelContainerMediaFormat_channelMatching___block_invoke(uint64_t
         v27 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v28 = MEMORY[0x1E696AF00];
         v29 = v27;
-        v30 = [v28 callStackSymbols];
-        v31 = [v30 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v28 callStackSymbols];
+        v31 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v47 = v27;
         v48 = 2114;
@@ -395,8 +395,8 @@ void __49__NUChannelContainerMediaFormat_channelMatching___block_invoke(uint64_t
 
     else if (v17)
     {
-      v18 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v47 = v19;
       _os_log_error_impl(&dword_1C0184000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -405,8 +405,8 @@ void __49__NUChannelContainerMediaFormat_channelMatching___block_invoke(uint64_t
     _NUAssertFailHandler("[NUChannelContainerMediaFormat initWithContainerMediaType:components:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUChannel.m", 1095, @"Invalid parameter not satisfying: %s", v32, v33, v34, v35, "containerMediaType != NUContainerMediaTypeUnknown");
   }
 
-  v7 = v6;
-  if (!v6)
+  v7 = componentsCopy;
+  if (!componentsCopy)
   {
     v20 = NUAssertLogger_4187();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -427,8 +427,8 @@ void __49__NUChannelContainerMediaFormat_channelMatching___block_invoke(uint64_t
         v36 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v37 = MEMORY[0x1E696AF00];
         v38 = v36;
-        v39 = [v37 callStackSymbols];
-        v40 = [v39 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v37 callStackSymbols];
+        v40 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v47 = v36;
         v48 = 2114;
@@ -439,8 +439,8 @@ void __49__NUChannelContainerMediaFormat_channelMatching___block_invoke(uint64_t
 
     else if (v24)
     {
-      v25 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v26 = [v25 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v26 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v47 = v26;
       _os_log_error_impl(&dword_1C0184000, v23, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -449,20 +449,20 @@ void __49__NUChannelContainerMediaFormat_channelMatching___block_invoke(uint64_t
     _NUAssertFailHandler("[NUChannelContainerMediaFormat initWithContainerMediaType:components:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUChannel.m", 1096, @"Invalid parameter not satisfying: %s", v41, v42, v43, v44, "components != nil");
   }
 
-  if (a3 > 3)
+  if (type > 3)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = qword_1C03C2EA8[a3 - 1];
+    v8 = qword_1C03C2EA8[type - 1];
   }
 
   v45.receiver = self;
   v45.super_class = NUChannelContainerMediaFormat;
   v9 = [(NUChannelMediaFormat *)&v45 initWithMediaTemporality:v8];
-  v9->_containerMediaType = a3;
+  v9->_containerMediaType = type;
   v10 = [v7 copy];
   components = v9->_components;
   v9->_components = v10;
@@ -470,7 +470,7 @@ void __49__NUChannelContainerMediaFormat_channelMatching___block_invoke(uint64_t
   return v9;
 }
 
-- (NUChannelContainerMediaFormat)initWithMediaTemporality:(int64_t)a3
+- (NUChannelContainerMediaFormat)initWithMediaTemporality:(int64_t)temporality
 {
   v34 = *MEMORY[0x1E69E9840];
   if (_NULogOnceToken != -1)
@@ -516,8 +516,8 @@ LABEL_8:
     {
       v13 = MEMORY[0x1E696AF00];
       v14 = v12;
-      v15 = [v13 callStackSymbols];
-      v16 = [v15 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v13 callStackSymbols];
+      v16 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v31 = v16;
       _os_log_error_impl(&dword_1C0184000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -533,8 +533,8 @@ LABEL_8:
     v19 = MEMORY[0x1E696AF00];
     v20 = specific;
     v21 = v17;
-    v22 = [v19 callStackSymbols];
-    v23 = [v22 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v19 callStackSymbols];
+    v23 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v31 = specific;
     v32 = 2114;
@@ -550,12 +550,12 @@ LABEL_14:
   _NUAssertFailHandler("[NUChannelContainerMediaFormat initWithMediaTemporality:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUChannel.m", 1091, @"Initializer not available: [%@ %@], use designated initializer instead.", v26, v27, v28, v29, v25);
 }
 
-+ (id)livePhotoContainerWithImageFormat:(id)a3 videoFormat:(id)a4
++ (id)livePhotoContainerWithImageFormat:(id)format videoFormat:(id)videoFormat
 {
   v50 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 containerMediaType] != 1)
+  formatCopy = format;
+  videoFormatCopy = videoFormat;
+  if ([formatCopy containerMediaType] != 1)
   {
     v12 = NUAssertLogger_4187();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -576,8 +576,8 @@ LABEL_14:
         v26 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v27 = MEMORY[0x1E696AF00];
         v28 = v26;
-        v29 = [v27 callStackSymbols];
-        v30 = [v29 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v27 callStackSymbols];
+        v30 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v47 = v26;
         v48 = 2114;
@@ -588,8 +588,8 @@ LABEL_14:
 
     else if (v16)
     {
-      v17 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v18 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v47 = v18;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -598,7 +598,7 @@ LABEL_14:
     _NUAssertFailHandler("+[NUChannelContainerMediaFormat livePhotoContainerWithImageFormat:videoFormat:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUChannel.m", 1082, @"Invalid parameter not satisfying: %s", v31, v32, v33, v34, "photoFormat.containerMediaType == NUContainerMediaTypeImage");
   }
 
-  if ([v7 containerMediaType] != 2)
+  if ([videoFormatCopy containerMediaType] != 2)
   {
     v19 = NUAssertLogger_4187();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -619,8 +619,8 @@ LABEL_14:
         v35 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v36 = MEMORY[0x1E696AF00];
         v37 = v35;
-        v38 = [v36 callStackSymbols];
-        v39 = [v38 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v36 callStackSymbols];
+        v39 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v47 = v35;
         v48 = 2114;
@@ -631,8 +631,8 @@ LABEL_14:
 
     else if (v23)
     {
-      v24 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v25 = [v24 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v25 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v47 = v25;
       _os_log_error_impl(&dword_1C0184000, v22, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -641,23 +641,23 @@ LABEL_14:
     _NUAssertFailHandler("+[NUChannelContainerMediaFormat livePhotoContainerWithImageFormat:videoFormat:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUChannel.m", 1083, @"Invalid parameter not satisfying: %s", v40, v41, v42, v43, "videoFormat.containerMediaType == NUContainerMediaTypeVideo");
   }
 
-  v8 = [a1 alloc];
+  v8 = [self alloc];
   v44[0] = @"image";
   v44[1] = @"video";
-  v45[0] = v6;
-  v45[1] = v7;
+  v45[0] = formatCopy;
+  v45[1] = videoFormatCopy;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v45 forKeys:v44 count:2];
   v10 = [v8 initWithContainerMediaType:3 components:v9];
 
   return v10;
 }
 
-+ (id)livePhotoContainerWithImageChannels:(id)a3 videoChannels:(id)a4 error:(id *)a5
++ (id)livePhotoContainerWithImageChannels:(id)channels videoChannels:(id)videoChannels error:(id *)error
 {
   v71 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  channelsCopy = channels;
+  videoChannelsCopy = videoChannels;
+  if (!channelsCopy)
   {
     v17 = NUAssertLogger_4187();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -678,8 +678,8 @@ LABEL_14:
         v38 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v39 = MEMORY[0x1E696AF00];
         v40 = v38;
-        v41 = [v39 callStackSymbols];
-        v42 = [v41 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v39 callStackSymbols];
+        v42 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v68 = v38;
         v69 = 2114;
@@ -690,8 +690,8 @@ LABEL_14:
 
     else if (v21)
     {
-      v22 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v23 = [v22 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v23 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v68 = v23;
       _os_log_error_impl(&dword_1C0184000, v20, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -700,8 +700,8 @@ LABEL_14:
     _NUAssertFailHandler("+[NUChannelContainerMediaFormat livePhotoContainerWithImageChannels:videoChannels:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUChannel.m", 1061, @"Invalid parameter not satisfying: %s", v43, v44, v45, v46, "imageChannels != nil");
   }
 
-  v10 = v9;
-  if (!v9)
+  v10 = videoChannelsCopy;
+  if (!videoChannelsCopy)
   {
     v24 = NUAssertLogger_4187();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -722,8 +722,8 @@ LABEL_14:
         v47 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v48 = MEMORY[0x1E696AF00];
         v49 = v47;
-        v50 = [v48 callStackSymbols];
-        v51 = [v50 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v48 callStackSymbols];
+        v51 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v68 = v47;
         v69 = 2114;
@@ -734,8 +734,8 @@ LABEL_14:
 
     else if (v28)
     {
-      v29 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v30 = [v29 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v30 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v68 = v30;
       _os_log_error_impl(&dword_1C0184000, v27, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -744,7 +744,7 @@ LABEL_14:
     _NUAssertFailHandler("+[NUChannelContainerMediaFormat livePhotoContainerWithImageChannels:videoChannels:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUChannel.m", 1062, @"Invalid parameter not satisfying: %s", v52, v53, v54, v55, "videoChannels != nil");
   }
 
-  if (!a5)
+  if (!error)
   {
     v31 = NUAssertLogger_4187();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -765,8 +765,8 @@ LABEL_14:
         v56 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v57 = MEMORY[0x1E696AF00];
         v58 = v56;
-        v59 = [v57 callStackSymbols];
-        v60 = [v59 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [v57 callStackSymbols];
+        v60 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v68 = v56;
         v69 = 2114;
@@ -777,8 +777,8 @@ LABEL_14:
 
     else if (v35)
     {
-      v36 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v37 = [v36 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v37 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v68 = v37;
       _os_log_error_impl(&dword_1C0184000, v34, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -788,41 +788,41 @@ LABEL_14:
   }
 
   v66 = 0;
-  v11 = [a1 imageContainerWithChannels:v8 error:&v66];
+  v11 = [self imageContainerWithChannels:channelsCopy error:&v66];
   v12 = v66;
   if (v11)
   {
     v65 = 0;
-    v13 = [a1 videoContainerWithChannels:v8 error:&v65];
+    v13 = [self videoContainerWithChannels:channelsCopy error:&v65];
     v14 = v65;
 
     if (v13)
     {
-      v15 = [a1 livePhotoContainerWithImageFormat:v11 videoFormat:v13];
+      v15 = [self livePhotoContainerWithImageFormat:v11 videoFormat:v13];
     }
 
     else
     {
       [NUError errorWithCode:1 reason:@"Failed to generate video container format" object:v10 underlyingError:v14];
-      *a5 = v15 = 0;
+      *error = v15 = 0;
     }
   }
 
   else
   {
-    [NUError errorWithCode:1 reason:@"Failed to generate image container format" object:v8 underlyingError:v12];
-    *a5 = v15 = 0;
+    [NUError errorWithCode:1 reason:@"Failed to generate image container format" object:channelsCopy underlyingError:v12];
+    *error = v15 = 0;
     v14 = v12;
   }
 
   return v15;
 }
 
-+ (id)videoContainerWithChannels:(id)a3 error:(id *)a4
++ (id)videoContainerWithChannels:(id)channels error:(id *)error
 {
   v63 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  channelsCopy = channels;
+  if (!channelsCopy)
   {
     v22 = NUAssertLogger_4187();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -843,8 +843,8 @@ LABEL_14:
         v36 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v37 = MEMORY[0x1E696AF00];
         v38 = v36;
-        v39 = [v37 callStackSymbols];
-        v40 = [v39 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v37 callStackSymbols];
+        v40 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v60 = v36;
         v61 = 2114;
@@ -855,8 +855,8 @@ LABEL_14:
 
     else if (v26)
     {
-      v27 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v28 = [v27 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v28 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v60 = v28;
       _os_log_error_impl(&dword_1C0184000, v25, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -865,7 +865,7 @@ LABEL_14:
     _NUAssertFailHandler("+[NUChannelContainerMediaFormat videoContainerWithChannels:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUChannel.m", 1031, @"Invalid parameter not satisfying: %s", v41, v42, v43, v44, "channels != nil");
   }
 
-  if (!a4)
+  if (!error)
   {
     v29 = NUAssertLogger_4187();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -886,8 +886,8 @@ LABEL_14:
         v45 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v46 = MEMORY[0x1E696AF00];
         v47 = v45;
-        v48 = [v46 callStackSymbols];
-        v49 = [v48 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v46 callStackSymbols];
+        v49 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v60 = v45;
         v61 = 2114;
@@ -898,8 +898,8 @@ LABEL_14:
 
     else if (v33)
     {
-      v34 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v35 = [v34 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v35 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v60 = v35;
       _os_log_error_impl(&dword_1C0184000, v32, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -908,8 +908,8 @@ LABEL_14:
     _NUAssertFailHandler("+[NUChannelContainerMediaFormat videoContainerWithChannels:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUChannel.m", 1032, @"Invalid parameter not satisfying: %s", v50, v51, v52, v53, "error != NULL");
   }
 
-  v7 = v6;
-  v8 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v6, "count")}];
+  v7 = channelsCopy;
+  v8 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(channelsCopy, "count")}];
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
@@ -933,14 +933,14 @@ LABEL_14:
         if ([v14 type] != 1)
         {
           [NUError invalidError:@"Invalid channel type for video container" object:v14];
-          *a4 = v19 = 0;
+          *error = v19 = 0;
           v18 = v9;
           goto LABEL_18;
         }
 
-        v15 = [v14 format];
-        v16 = [v14 name];
-        [v8 setObject:v15 forKeyedSubscript:v16];
+        format = [v14 format];
+        name = [v14 name];
+        [v8 setObject:format forKeyedSubscript:name];
       }
 
       v11 = [v9 countByEnumeratingWithState:&v54 objects:v58 count:16];
@@ -959,7 +959,7 @@ LABEL_14:
   {
     if ([v17 mediaType] == 1)
     {
-      v19 = [[a1 alloc] initWithContainerMediaType:2 components:v8];
+      v19 = [[self alloc] initWithContainerMediaType:2 components:v8];
       goto LABEL_18;
     }
 
@@ -972,17 +972,17 @@ LABEL_14:
   }
 
   v19 = 0;
-  *a4 = v20;
+  *error = v20;
 LABEL_18:
 
   return v19;
 }
 
-+ (id)imageContainerWithChannels:(id)a3 error:(id *)a4
++ (id)imageContainerWithChannels:(id)channels error:(id *)error
 {
   v65 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  channelsCopy = channels;
+  if (!channelsCopy)
   {
     v23 = NUAssertLogger_4187();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -1003,8 +1003,8 @@ LABEL_18:
         v37 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v38 = MEMORY[0x1E696AF00];
         v39 = v37;
-        v40 = [v38 callStackSymbols];
-        v41 = [v40 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v38 callStackSymbols];
+        v41 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v62 = v37;
         v63 = 2114;
@@ -1015,8 +1015,8 @@ LABEL_18:
 
     else if (v27)
     {
-      v28 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v29 = [v28 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v29 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v62 = v29;
       _os_log_error_impl(&dword_1C0184000, v26, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1025,7 +1025,7 @@ LABEL_18:
     _NUAssertFailHandler("+[NUChannelContainerMediaFormat imageContainerWithChannels:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUChannel.m", 991, @"Invalid parameter not satisfying: %s", v42, v43, v44, v45, "channels != nil");
   }
 
-  if (!a4)
+  if (!error)
   {
     v30 = NUAssertLogger_4187();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -1046,8 +1046,8 @@ LABEL_18:
         v46 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v47 = MEMORY[0x1E696AF00];
         v48 = v46;
-        v49 = [v47 callStackSymbols];
-        v50 = [v49 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v47 callStackSymbols];
+        v50 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v62 = v46;
         v63 = 2114;
@@ -1058,8 +1058,8 @@ LABEL_18:
 
     else if (v34)
     {
-      v35 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v36 = [v35 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v36 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v62 = v36;
       _os_log_error_impl(&dword_1C0184000, v33, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1068,7 +1068,7 @@ LABEL_18:
     _NUAssertFailHandler("+[NUChannelContainerMediaFormat imageContainerWithChannels:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUChannel.m", 992, @"Invalid parameter not satisfying: %s", v51, v52, v53, v54, "error != NULL");
   }
 
-  v7 = v6;
+  v7 = channelsCopy;
   v8 = [NUChannelImageMediaFormat stillImageFormat:0];
   v9 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v7, "count")}];
   v56 = 0u;
@@ -1081,7 +1081,7 @@ LABEL_18:
   {
     v12 = v11;
     v13 = *v57;
-    v55 = a1;
+    selfCopy = self;
     while (2)
     {
       for (i = 0; i != v12; ++i)
@@ -1095,29 +1095,29 @@ LABEL_18:
         if ([v15 type] != 1)
         {
           [NUError invalidError:@"Invalid channel type" object:v15];
-          *a4 = v20 = 0;
+          *error = v20 = 0;
           goto LABEL_22;
         }
 
-        v16 = [v15 format];
-        if (([v8 isCompatibleWithChannelFormat:v16] & 1) == 0)
+        format = [v15 format];
+        if (([v8 isCompatibleWithChannelFormat:format] & 1) == 0)
         {
           v21 = @"Incompatible channel format";
           goto LABEL_21;
         }
 
-        if ([v16 isGeneric] && objc_msgSend(v8, "canSpecializeFormat:", v16))
+        if ([format isGeneric] && objc_msgSend(v8, "canSpecializeFormat:", format))
         {
-          v17 = [v16 specializedWithFormat:v8];
+          v17 = [format specializedWithFormat:v8];
 
-          v16 = v17;
+          format = v17;
         }
 
-        if ([v16 isGeneric])
+        if ([format isGeneric])
         {
           v21 = @"Channel format is generic";
 LABEL_21:
-          *a4 = [NUError invalidError:v21 object:v16];
+          *error = [NUError invalidError:v21 object:format];
 
           v20 = 0;
 LABEL_22:
@@ -1125,12 +1125,12 @@ LABEL_22:
           goto LABEL_23;
         }
 
-        v18 = [v15 name];
-        [v9 setObject:v16 forKeyedSubscript:v18];
+        name = [v15 name];
+        [v9 setObject:format forKeyedSubscript:name];
       }
 
       v12 = [v10 countByEnumeratingWithState:&v56 objects:v60 count:16];
-      a1 = v55;
+      self = selfCopy;
       if (v12)
       {
         continue;
@@ -1143,13 +1143,13 @@ LABEL_22:
   v19 = [v9 objectForKeyedSubscript:@"primary"];
   if (v19)
   {
-    v20 = [[a1 alloc] initWithContainerMediaType:1 components:v9];
+    v20 = [[self alloc] initWithContainerMediaType:1 components:v9];
   }
 
   else
   {
     [NUError missingError:@"Missing primary component" object:v9];
-    *a4 = v20 = 0;
+    *error = v20 = 0;
   }
 
 LABEL_23:

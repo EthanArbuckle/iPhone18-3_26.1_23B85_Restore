@@ -1,8 +1,8 @@
 @interface SBHSimpleApplicationPolicyMonitor
 + (SBHSimpleApplicationPolicyMonitor)sharedInstance;
 - (SBHSimpleApplicationPolicyMonitor)init;
-- (void)registerApplication:(id)a3;
-- (void)unregisterApplication:(id)a3;
+- (void)registerApplication:(id)application;
+- (void)unregisterApplication:(id)application;
 - (void)updateAllPolicies;
 @end
 
@@ -22,9 +22,9 @@ uint64_t __51__SBHSimpleApplicationPolicyMonitor_sharedInstance__block_invoke()
   v2 = [(SBHSimpleApplicationPolicyMonitor *)&v14 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     registeredApplications = v2->_registeredApplications;
-    v2->_registeredApplications = v3;
+    v2->_registeredApplications = weakObjectsHashTable;
 
     v16 = 0;
     v17 = &v16;
@@ -71,26 +71,26 @@ uint64_t __51__SBHSimpleApplicationPolicyMonitor_sharedInstance__block_invoke()
   return v3;
 }
 
-- (void)registerApplication:(id)a3
+- (void)registerApplication:(id)application
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  applicationCopy = application;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_registeredApplications addObject:v4];
+  [(NSHashTable *)self->_registeredApplications addObject:applicationCopy];
   os_unfair_lock_unlock(&self->_lock);
-  v5 = [v4 bundleIdentifier];
-  v6 = [(SBHSimpleApplicationPolicyMonitor *)self policyMonitor];
-  v13[0] = v5;
+  bundleIdentifier = [applicationCopy bundleIdentifier];
+  policyMonitor = [(SBHSimpleApplicationPolicyMonitor *)self policyMonitor];
+  v13[0] = bundleIdentifier;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __57__SBHSimpleApplicationPolicyMonitor_registerApplication___block_invoke;
   v10[3] = &unk_1E808AA38;
-  v11 = v5;
-  v12 = v4;
-  v8 = v4;
-  v9 = v5;
-  [v6 requestPoliciesForBundleIdentifiers:v7 completionHandler:v10];
+  v11 = bundleIdentifier;
+  v12 = applicationCopy;
+  v8 = applicationCopy;
+  v9 = bundleIdentifier;
+  [policyMonitor requestPoliciesForBundleIdentifiers:v7 completionHandler:v10];
 }
 
 void __57__SBHSimpleApplicationPolicyMonitor_registerApplication___block_invoke(uint64_t a1, void *a2)
@@ -101,11 +101,11 @@ void __57__SBHSimpleApplicationPolicyMonitor_registerApplication___block_invoke(
   BSDispatchMain();
 }
 
-- (void)unregisterApplication:(id)a3
+- (void)unregisterApplication:(id)application
 {
-  v4 = a3;
+  applicationCopy = application;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_registeredApplications removeObject:v4];
+  [(NSHashTable *)self->_registeredApplications removeObject:applicationCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -114,14 +114,14 @@ void __57__SBHSimpleApplicationPolicyMonitor_registerApplication___block_invoke(
 {
   v22 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSHashTable *)self->_registeredApplications allObjects];
+  allObjects = [(NSHashTable *)self->_registeredApplications allObjects];
   os_unfair_lock_unlock(&self->_lock);
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = v3;
+  v5 = allObjects;
   v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
@@ -137,10 +137,10 @@ void __57__SBHSimpleApplicationPolicyMonitor_registerApplication___block_invoke(
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [v10 bundleIdentifier];
-        if (v11)
+        bundleIdentifier = [v10 bundleIdentifier];
+        if (bundleIdentifier)
         {
-          [v4 setObject:v10 forKey:v11];
+          [v4 setObject:v10 forKey:bundleIdentifier];
         }
       }
 
@@ -150,15 +150,15 @@ void __57__SBHSimpleApplicationPolicyMonitor_registerApplication___block_invoke(
     while (v7);
   }
 
-  v12 = [v4 allKeys];
-  v13 = [(SBHSimpleApplicationPolicyMonitor *)self policyMonitor];
+  allKeys = [v4 allKeys];
+  policyMonitor = [(SBHSimpleApplicationPolicyMonitor *)self policyMonitor];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __54__SBHSimpleApplicationPolicyMonitor_updateAllPolicies__block_invoke;
   v15[3] = &unk_1E808AA88;
   v16 = v4;
   v14 = v4;
-  [v13 requestPoliciesForBundleIdentifiers:v12 completionHandler:v15];
+  [policyMonitor requestPoliciesForBundleIdentifiers:allKeys completionHandler:v15];
 }
 
 void __54__SBHSimpleApplicationPolicyMonitor_updateAllPolicies__block_invoke(uint64_t a1, void *a2)

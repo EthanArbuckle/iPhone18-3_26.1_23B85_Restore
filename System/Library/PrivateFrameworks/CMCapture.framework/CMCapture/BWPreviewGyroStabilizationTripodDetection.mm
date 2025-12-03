@@ -1,9 +1,9 @@
 @interface BWPreviewGyroStabilizationTripodDetection
 - (BOOL)_isCameraStationary;
-- (BWPreviewGyroStabilizationTripodDetection)initWithTripodDetectionThresholds:(float)a3 tripodMaxAngleThresholdAccumulate:(float)a4 physicalTripodLikelyMaxAngleThreshold:(float)a5 physicalTripodGuaranteedMaxAngleThreshold:(float)a6;
-- (void)_detectPhysicalTripodUsingMaxAngleInstant:(float)a3 frameRateNormalization:(float)a4;
-- (void)_updateWithMaxAngleInstant:(float)a3 maxAngleAccumulate:(float)a4;
-- (void)detectTripodStateUsingMaxAngleInstant:(float)a3 maxAngleAccumulate:(float)a4 frameRateNormalizationFactor:(float)a5;
+- (BWPreviewGyroStabilizationTripodDetection)initWithTripodDetectionThresholds:(float)thresholds tripodMaxAngleThresholdAccumulate:(float)accumulate physicalTripodLikelyMaxAngleThreshold:(float)threshold physicalTripodGuaranteedMaxAngleThreshold:(float)angleThreshold;
+- (void)_detectPhysicalTripodUsingMaxAngleInstant:(float)instant frameRateNormalization:(float)normalization;
+- (void)_updateWithMaxAngleInstant:(float)instant maxAngleAccumulate:(float)accumulate;
+- (void)detectTripodStateUsingMaxAngleInstant:(float)instant maxAngleAccumulate:(float)accumulate frameRateNormalizationFactor:(float)factor;
 - (void)reset;
 @end
 
@@ -46,7 +46,7 @@
   return v2;
 }
 
-- (BWPreviewGyroStabilizationTripodDetection)initWithTripodDetectionThresholds:(float)a3 tripodMaxAngleThresholdAccumulate:(float)a4 physicalTripodLikelyMaxAngleThreshold:(float)a5 physicalTripodGuaranteedMaxAngleThreshold:(float)a6
+- (BWPreviewGyroStabilizationTripodDetection)initWithTripodDetectionThresholds:(float)thresholds tripodMaxAngleThresholdAccumulate:(float)accumulate physicalTripodLikelyMaxAngleThreshold:(float)threshold physicalTripodGuaranteedMaxAngleThreshold:(float)angleThreshold
 {
   v13.receiver = self;
   v13.super_class = BWPreviewGyroStabilizationTripodDetection;
@@ -55,18 +55,18 @@
   if (v10)
   {
     [(BWPreviewGyroStabilizationTripodDetection *)v10 reset];
-    v11->_tripodMaxAngleThresholdInstant = a3;
-    v11->_tripodMaxAngleThresholdAccumulate = a4;
-    v11->_physicalTripodLikelyMaxAngleThreshold = a5;
-    v11->_physicalTripodGuaranteedMaxAngleThreshold = a6;
+    v11->_tripodMaxAngleThresholdInstant = thresholds;
+    v11->_tripodMaxAngleThresholdAccumulate = accumulate;
+    v11->_physicalTripodLikelyMaxAngleThreshold = threshold;
+    v11->_physicalTripodGuaranteedMaxAngleThreshold = angleThreshold;
   }
 
   return v11;
 }
 
-- (void)_updateWithMaxAngleInstant:(float)a3 maxAngleAccumulate:(float)a4
+- (void)_updateWithMaxAngleInstant:(float)instant maxAngleAccumulate:(float)accumulate
 {
-  v5 = self->_tripodMaxAngleThresholdAccumulate >= a4 && self->_tripodMaxAngleThresholdInstant >= a3;
+  v5 = self->_tripodMaxAngleThresholdAccumulate >= accumulate && self->_tripodMaxAngleThresholdInstant >= instant;
   ringCount = self->_ringCount;
   inputIndex = self->_inputIndex;
   self->_stationary[inputIndex] = v5;
@@ -86,11 +86,11 @@
   self->_inputIndex = (v10 - v9 + 60) % 0x3Cu - (60 - v9) + 1;
 }
 
-- (void)_detectPhysicalTripodUsingMaxAngleInstant:(float)a3 frameRateNormalization:(float)a4
+- (void)_detectPhysicalTripodUsingMaxAngleInstant:(float)instant frameRateNormalization:(float)normalization
 {
   physicalTripodLikelyMaxAngleThreshold = self->_physicalTripodLikelyMaxAngleThreshold;
-  self->_isLikelyPhysicalTripod = physicalTripodLikelyMaxAngleThreshold > a3;
-  if (physicalTripodLikelyMaxAngleThreshold <= a3)
+  self->_isLikelyPhysicalTripod = physicalTripodLikelyMaxAngleThreshold > instant;
+  if (physicalTripodLikelyMaxAngleThreshold <= instant)
   {
     v8 = 0;
   }
@@ -98,13 +98,13 @@
   else
   {
     previousLikelyPhysicalTripodCount = self->_previousLikelyPhysicalTripodCount;
-    v6 = llroundf(a4);
+    v6 = llroundf(normalization);
     if (v6 <= 1)
     {
       v6 = 1;
     }
 
-    v7 = previousLikelyPhysicalTripodCount >= v6 && self->_physicalTripodGuaranteedMaxAngleThreshold > a3;
+    v7 = previousLikelyPhysicalTripodCount >= v6 && self->_physicalTripodGuaranteedMaxAngleThreshold > instant;
     self->_isPhysicalTripod = v7;
     v8 = previousLikelyPhysicalTripodCount + 1;
   }
@@ -112,12 +112,12 @@
   self->_previousLikelyPhysicalTripodCount = v8;
 }
 
-- (void)detectTripodStateUsingMaxAngleInstant:(float)a3 maxAngleAccumulate:(float)a4 frameRateNormalizationFactor:(float)a5
+- (void)detectTripodStateUsingMaxAngleInstant:(float)instant maxAngleAccumulate:(float)accumulate frameRateNormalizationFactor:(float)factor
 {
   [BWPreviewGyroStabilizationTripodDetection _updateWithMaxAngleInstant:"_updateWithMaxAngleInstant:maxAngleAccumulate:" maxAngleAccumulate:?];
   [(BWPreviewGyroStabilizationTripodDetection *)self _isCameraStationary];
-  *&v8 = a3;
-  *&v9 = a5;
+  *&v8 = instant;
+  *&v9 = factor;
 
   [(BWPreviewGyroStabilizationTripodDetection *)self _detectPhysicalTripodUsingMaxAngleInstant:v8 frameRateNormalization:v9];
 }

@@ -1,8 +1,8 @@
 @interface FloatingSearchController
 - (UISearchBar)searchBar;
-- (_TtC13FitnessCoreUI24FloatingSearchController)initWithCoder:(id)a3;
-- (_TtC13FitnessCoreUI24FloatingSearchController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC13FitnessCoreUI24FloatingSearchController)initWithSearchResultsController:(id)a3;
+- (_TtC13FitnessCoreUI24FloatingSearchController)initWithCoder:(id)coder;
+- (_TtC13FitnessCoreUI24FloatingSearchController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC13FitnessCoreUI24FloatingSearchController)initWithSearchResultsController:(id)controller;
 @end
 
 @implementation FloatingSearchController
@@ -22,7 +22,7 @@
   return v3;
 }
 
-- (_TtC13FitnessCoreUI24FloatingSearchController)initWithSearchResultsController:(id)a3
+- (_TtC13FitnessCoreUI24FloatingSearchController)initWithSearchResultsController:(id)controller
 {
   sub_20C3E8E3C();
   sub_20C3E8E2C();
@@ -35,16 +35,16 @@
   v5 = OBJC_IVAR____TtC13FitnessCoreUI24FloatingSearchController_floatingSearchBar;
   type metadata accessor for FloatingSearchBar();
   v6 = objc_allocWithZone(swift_getObjCClassFromMetadata());
-  v7 = a3;
+  controllerCopy = controller;
   *(&self->super.super.super.super.isa + v5) = [v6 init];
   v10.receiver = self;
   v10.super_class = type metadata accessor for FloatingSearchController();
-  v8 = [(FloatingSearchController *)&v10 initWithSearchResultsController:v7];
+  v8 = [(FloatingSearchController *)&v10 initWithSearchResultsController:controllerCopy];
 
   return v8;
 }
 
-- (_TtC13FitnessCoreUI24FloatingSearchController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC13FitnessCoreUI24FloatingSearchController)initWithNibName:(id)name bundle:(id)bundle
 {
   sub_20C3E8E3C();
   sub_20C3E8E2C();
@@ -54,18 +54,18 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a3)
+  if (name)
   {
     sub_20C3E8C2C();
-    a3 = v7;
+    name = v7;
   }
 
   v8 = OBJC_IVAR____TtC13FitnessCoreUI24FloatingSearchController_floatingSearchBar;
   type metadata accessor for FloatingSearchBar();
   v9 = objc_allocWithZone(swift_getObjCClassFromMetadata());
-  v10 = a4;
+  bundleCopy = bundle;
   *(&self->super.super.super.super.isa + v8) = [v9 init];
-  if (a3)
+  if (name)
   {
     v11 = sub_20C3E8BFC();
   }
@@ -77,12 +77,12 @@
 
   v14.receiver = self;
   v14.super_class = type metadata accessor for FloatingSearchController();
-  v12 = [(FloatingSearchController *)&v14 initWithNibName:v11 bundle:v10];
+  v12 = [(FloatingSearchController *)&v14 initWithNibName:v11 bundle:bundleCopy];
 
   return v12;
 }
 
-- (_TtC13FitnessCoreUI24FloatingSearchController)initWithCoder:(id)a3
+- (_TtC13FitnessCoreUI24FloatingSearchController)initWithCoder:(id)coder
 {
   sub_20C3E8E3C();
   sub_20C3E8E2C();
@@ -95,11 +95,11 @@
   v5 = OBJC_IVAR____TtC13FitnessCoreUI24FloatingSearchController_floatingSearchBar;
   type metadata accessor for FloatingSearchBar();
   v6 = objc_allocWithZone(swift_getObjCClassFromMetadata());
-  v7 = a3;
+  coderCopy = coder;
   *(&self->super.super.super.super.isa + v5) = [v6 init];
   v10.receiver = self;
   v10.super_class = type metadata accessor for FloatingSearchController();
-  v8 = [(FloatingSearchController *)&v10 initWithCoder:v7];
+  v8 = [(FloatingSearchController *)&v10 initWithCoder:coderCopy];
 
   if (v8)
   {

@@ -1,44 +1,44 @@
 @interface CAMFullscreenViewfinderLayout
-- ($3B1716E7537CC2F16D6737AAC3CCCADB)geometryForElapsedTimeView:(SEL)a3 viewportFrame:(id)a4 orientation:(CGRect)a5 systemOverlayVisible:(int64_t)a6;
-- (CAMFullscreenViewfinderLayout)initWithReferenceBounds:(CGRect)a3 shutterIntrinsicSize:(CGSize)a4;
-- (CGRect)alignmentRectForBottomRightControlOfSize:(CGSize)a3;
+- ($3B1716E7537CC2F16D6737AAC3CCCADB)geometryForElapsedTimeView:(SEL)view viewportFrame:(id)frame orientation:(CGRect)orientation systemOverlayVisible:(int64_t)visible;
+- (CAMFullscreenViewfinderLayout)initWithReferenceBounds:(CGRect)bounds shutterIntrinsicSize:(CGSize)size;
+- (CGRect)alignmentRectForBottomRightControlOfSize:(CGSize)size;
 - (CGRect)alignmentRectForShutterControl;
-- (CGRect)frameForBottomControl:(id)a3 betweenShutterAndLeftControl:(id)a4;
-- (CGRect)frameForBottomControl:(id)a3 betweenShutterAndRightControl:(id)a4;
-- (CGRect)frameForBottomLeftControl:(id)a3;
-- (CGRect)frameForBottomRightControl:(id)a3;
+- (CGRect)frameForBottomControl:(id)control betweenShutterAndLeftControl:(id)leftControl;
+- (CGRect)frameForBottomControl:(id)control betweenShutterAndRightControl:(id)rightControl;
+- (CGRect)frameForBottomLeftControl:(id)control;
+- (CGRect)frameForBottomRightControl:(id)control;
 - (CGRect)frameForContentClippingContainer;
 - (CGRect)frameForControlStatusBar;
-- (CGRect)frameForShutterControl:(id)a3;
+- (CGRect)frameForShutterControl:(id)control;
 - (CGRect)referenceBounds;
-- (CGRect)viewportFrameForAspectRatio:(int64_t)a3 accessoryAreaExpanded:(BOOL)a4 smartStyleControlsExpanded:(BOOL)a5;
-- (CGRect)viewportFrameForAspectRatio:(int64_t)a3 usingAppDrawer:(BOOL)a4 accessoryAreaExpanded:(BOOL)a5;
+- (CGRect)viewportFrameForAspectRatio:(int64_t)ratio accessoryAreaExpanded:(BOOL)expanded smartStyleControlsExpanded:(BOOL)controlsExpanded;
+- (CGRect)viewportFrameForAspectRatio:(int64_t)ratio usingAppDrawer:(BOOL)drawer accessoryAreaExpanded:(BOOL)expanded;
 - (CGSize)shutterIntrinsicSize;
-- (CGSize)viewportSizeForAspectRatio:(int64_t)a3;
+- (CGSize)viewportSizeForAspectRatio:(int64_t)ratio;
 - (UIEdgeInsets)_safeAreaInsets;
 - (void)_updateSafeAreaInsets;
-- (void)setFrontCameraInset:(double)a3;
-- (void)setReferenceBounds:(CGRect)a3;
-- (void)setScreenScale:(double)a3;
+- (void)setFrontCameraInset:(double)inset;
+- (void)setReferenceBounds:(CGRect)bounds;
+- (void)setScreenScale:(double)scale;
 @end
 
 @implementation CAMFullscreenViewfinderLayout
 
-- (CAMFullscreenViewfinderLayout)initWithReferenceBounds:(CGRect)a3 shutterIntrinsicSize:(CGSize)a4
+- (CAMFullscreenViewfinderLayout)initWithReferenceBounds:(CGRect)bounds shutterIntrinsicSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3.size.height;
-  v7 = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = size.height;
+  width = size.width;
+  v6 = bounds.size.height;
+  v7 = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v16.receiver = self;
   v16.super_class = CAMFullscreenViewfinderLayout;
   v10 = [(CAMFullscreenViewfinderLayout *)&v16 init];
   if (v10)
   {
-    v11 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v11 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v10->_screenScale = v12;
 
     v10->_referenceBounds.origin.x = x;
@@ -57,13 +57,13 @@
   return v10;
 }
 
-- (void)setReferenceBounds:(CGRect)a3
+- (void)setReferenceBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!CGRectEqualToRect(a3, self->_referenceBounds))
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  if (!CGRectEqualToRect(bounds, self->_referenceBounds))
   {
     self->_referenceBounds.origin.x = x;
     self->_referenceBounds.origin.y = y;
@@ -74,20 +74,20 @@
   }
 }
 
-- (void)setScreenScale:(double)a3
+- (void)setScreenScale:(double)scale
 {
-  if (self->_screenScale != a3)
+  if (self->_screenScale != scale)
   {
-    self->_screenScale = a3;
+    self->_screenScale = scale;
     [(CAMFullscreenViewfinderLayout *)self _updateSafeAreaInsets];
   }
 }
 
-- (void)setFrontCameraInset:(double)a3
+- (void)setFrontCameraInset:(double)inset
 {
-  if (self->_frontCameraInset != a3)
+  if (self->_frontCameraInset != inset)
   {
-    self->_frontCameraInset = a3;
+    self->_frontCameraInset = inset;
     [(CAMFullscreenViewfinderLayout *)self _updateSafeAreaInsets];
   }
 }
@@ -132,7 +132,7 @@
   self->__safeAreaInsets.right = v9;
 }
 
-- (CGSize)viewportSizeForAspectRatio:(int64_t)a3
+- (CGSize)viewportSizeForAspectRatio:(int64_t)ratio
 {
   [(CAMFullscreenViewfinderLayout *)self referenceBounds];
   v5 = v4;
@@ -145,9 +145,9 @@
   return result;
 }
 
-- (CGRect)viewportFrameForAspectRatio:(int64_t)a3 usingAppDrawer:(BOOL)a4 accessoryAreaExpanded:(BOOL)a5
+- (CGRect)viewportFrameForAspectRatio:(int64_t)ratio usingAppDrawer:(BOOL)drawer accessoryAreaExpanded:(BOOL)expanded
 {
-  [(CAMFullscreenViewfinderLayout *)self viewportFrameForAspectRatio:a3 accessoryAreaExpanded:a5 smartStyleControlsExpanded:0];
+  [(CAMFullscreenViewfinderLayout *)self viewportFrameForAspectRatio:ratio accessoryAreaExpanded:expanded smartStyleControlsExpanded:0];
   result.size.height = v8;
   result.size.width = v7;
   result.origin.y = v6;
@@ -155,16 +155,16 @@
   return result;
 }
 
-- (CGRect)viewportFrameForAspectRatio:(int64_t)a3 accessoryAreaExpanded:(BOOL)a4 smartStyleControlsExpanded:(BOOL)a5
+- (CGRect)viewportFrameForAspectRatio:(int64_t)ratio accessoryAreaExpanded:(BOOL)expanded smartStyleControlsExpanded:(BOOL)controlsExpanded
 {
-  v5 = a5;
-  [(CAMFullscreenViewfinderLayout *)self referenceBounds:a3];
+  controlsExpandedCopy = controlsExpanded;
+  [(CAMFullscreenViewfinderLayout *)self referenceBounds:ratio];
   v9 = v8;
   v11 = v10;
-  [(CAMFullscreenViewfinderLayout *)self viewportSizeForAspectRatio:a3];
+  [(CAMFullscreenViewfinderLayout *)self viewportSizeForAspectRatio:ratio];
   v14 = v12 / v13;
 
-  [CAMChromeViewSpec viewportWithAspectRatio:v5 viewSize:v14 smartStyleControlsExpanded:v9, v11];
+  [CAMChromeViewSpec viewportWithAspectRatio:controlsExpandedCopy viewSize:v14 smartStyleControlsExpanded:v9, v11];
   result.size.height = v18;
   result.size.width = v17;
   result.origin.y = v16;
@@ -184,12 +184,12 @@
   return result;
 }
 
-- (CGRect)frameForShutterControl:(id)a3
+- (CGRect)frameForShutterControl:(id)control
 {
-  v4 = a3;
+  controlCopy = control;
   [(CAMFullscreenViewfinderLayout *)self referenceBounds];
   [(CAMFullscreenViewfinderLayout *)self alignmentRectForShutterControl];
-  [v4 frameForAlignmentRect:? availableWidth:?];
+  [controlCopy frameForAlignmentRect:? availableWidth:?];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -249,13 +249,13 @@
   return result;
 }
 
-- (CGRect)frameForBottomLeftControl:(id)a3
+- (CGRect)frameForBottomLeftControl:(id)control
 {
-  v4 = a3;
+  controlCopy = control;
   [(CAMFullscreenViewfinderLayout *)self alignmentRectForShutterControl];
-  [v4 intrinsicContentSize];
+  [controlCopy intrinsicContentSize];
   UIRectCenteredYInRectScale();
-  [v4 frameForAlignmentRect:0];
+  [controlCopy frameForAlignmentRect:0];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -272,18 +272,18 @@
   return result;
 }
 
-- (CGRect)frameForBottomControl:(id)a3 betweenShutterAndLeftControl:(id)a4
+- (CGRect)frameForBottomControl:(id)control betweenShutterAndLeftControl:(id)leftControl
 {
-  v6 = a4;
-  v7 = a3;
+  leftControlCopy = leftControl;
+  controlCopy = control;
   [(CAMFullscreenViewfinderLayout *)self alignmentRectForShutterControl];
   v9 = v8;
   rect = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  [(CAMFullscreenViewfinderLayout *)self frameForBottomLeftControl:v6];
-  [v6 alignmentRectForFrame:?];
+  [(CAMFullscreenViewfinderLayout *)self frameForBottomLeftControl:leftControlCopy];
+  [leftControlCopy alignmentRectForFrame:?];
   v17 = v16;
   v19 = v18;
   v21 = v20;
@@ -304,9 +304,9 @@
   v39.size.width = v13;
   v39.size.height = v15;
   CGRectGetMidY(v39);
-  [v7 intrinsicContentSize];
+  [controlCopy intrinsicContentSize];
   UIRectCenteredAboutPointScale();
-  [v7 frameForAlignmentRect:?];
+  [controlCopy frameForAlignmentRect:?];
   v25 = v24;
   v27 = v26;
   v29 = v28;
@@ -323,12 +323,12 @@
   return result;
 }
 
-- (CGRect)frameForBottomRightControl:(id)a3
+- (CGRect)frameForBottomRightControl:(id)control
 {
-  v4 = a3;
-  [v4 intrinsicContentSize];
+  controlCopy = control;
+  [controlCopy intrinsicContentSize];
   [(CAMFullscreenViewfinderLayout *)self alignmentRectForBottomRightControlOfSize:?];
-  [v4 frameForAlignmentRect:?];
+  [controlCopy frameForAlignmentRect:?];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -345,7 +345,7 @@
   return result;
 }
 
-- (CGRect)alignmentRectForBottomRightControlOfSize:(CGSize)a3
+- (CGRect)alignmentRectForBottomRightControlOfSize:(CGSize)size
 {
   [(CAMFullscreenViewfinderLayout *)self alignmentRectForShutterControl];
   +[CAMChromeViewSpec previewOverlayButtonSideMargin];
@@ -359,18 +359,18 @@
   return result;
 }
 
-- (CGRect)frameForBottomControl:(id)a3 betweenShutterAndRightControl:(id)a4
+- (CGRect)frameForBottomControl:(id)control betweenShutterAndRightControl:(id)rightControl
 {
-  v6 = a4;
-  v7 = a3;
+  rightControlCopy = rightControl;
+  controlCopy = control;
   [(CAMFullscreenViewfinderLayout *)self alignmentRectForShutterControl];
   v9 = v8;
   rect = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  [(CAMFullscreenViewfinderLayout *)self frameForBottomRightControl:v6];
-  [v6 alignmentRectForFrame:?];
+  [(CAMFullscreenViewfinderLayout *)self frameForBottomRightControl:rightControlCopy];
+  [rightControlCopy alignmentRectForFrame:?];
   v17 = v16;
   v19 = v18;
   v21 = v20;
@@ -391,9 +391,9 @@
   v39.size.width = v13;
   v39.size.height = v15;
   CGRectGetMidY(v39);
-  [v7 intrinsicContentSize];
+  [controlCopy intrinsicContentSize];
   UIRectCenteredAboutPointScale();
-  [v7 frameForAlignmentRect:?];
+  [controlCopy frameForAlignmentRect:?];
   v25 = v24;
   v27 = v26;
   v29 = v28;
@@ -410,27 +410,27 @@
   return result;
 }
 
-- ($3B1716E7537CC2F16D6737AAC3CCCADB)geometryForElapsedTimeView:(SEL)a3 viewportFrame:(id)a4 orientation:(CGRect)a5 systemOverlayVisible:(int64_t)a6
+- ($3B1716E7537CC2F16D6737AAC3CCCADB)geometryForElapsedTimeView:(SEL)view viewportFrame:(id)frame orientation:(CGRect)orientation systemOverlayVisible:(int64_t)visible
 {
   v7 = a7;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v15 = a4;
+  height = orientation.size.height;
+  width = orientation.size.width;
+  y = orientation.origin.y;
+  x = orientation.origin.x;
+  frameCopy = frame;
   *retstr = *CAMViewGeometryZero;
-  [v15 intrinsicContentSize];
+  [frameCopy intrinsicContentSize];
   v17 = v16;
   retstr->var0.size.width = v18;
   retstr->var0.size.height = v16;
-  CAMOrientationTransform(a6, &retstr->var2);
+  CAMOrientationTransform(visible, &retstr->var2);
   UIRectGetCenter();
   v20 = v19;
   retstr->var1.x = v21;
   retstr->var1.y = v19;
   v22 = v17 * 0.5;
   UIRoundToViewScale();
-  if (a6 < 3)
+  if (visible < 3)
   {
     [(CAMFullscreenViewfinderLayout *)self frameForControlStatusBar];
     v24 = v48.origin.y;
@@ -451,7 +451,7 @@
   }
 
   v31 = v23;
-  if (a6 == 3)
+  if (visible == 3)
   {
     v50.origin.x = x;
     v50.origin.y = y;
@@ -492,7 +492,7 @@ LABEL_5:
     }
   }
 
-  else if (a6 == 4)
+  else if (visible == 4)
   {
     v49.origin.x = x;
     v49.origin.y = y;

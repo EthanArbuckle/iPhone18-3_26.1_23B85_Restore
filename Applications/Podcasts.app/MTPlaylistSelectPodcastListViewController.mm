@@ -1,11 +1,11 @@
 @interface MTPlaylistSelectPodcastListViewController
-- (id)newCellInstanceWithReuseIdentifier:(id)a3;
-- (void)configureCell:(id)a3 withObject:(id)a4 atIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)togglePodcastUuid:(id)a3;
-- (void)updateAllPodcastsTo:(BOOL)a3;
+- (id)newCellInstanceWithReuseIdentifier:(id)identifier;
+- (void)configureCell:(id)cell withObject:(id)object atIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)togglePodcastUuid:(id)uuid;
+- (void)updateAllPodcastsTo:(BOOL)to;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation MTPlaylistSelectPodcastListViewController
@@ -15,13 +15,13 @@
   v19.receiver = self;
   v19.super_class = MTPlaylistSelectPodcastListViewController;
   [(MTBasePodcastListViewController *)&v19 viewDidLoad];
-  v3 = [(MTBasePodcastListViewController *)self tableView];
-  [v3 bounds];
+  tableView = [(MTBasePodcastListViewController *)self tableView];
+  [tableView bounds];
 
   +[(MTTableViewCell *)MTPodcastPlaylistCell];
   v4 = [MTPodcastPlaylistSheetHeaderView alloc];
-  v5 = [(MTPlaylistSelectPodcastListViewController *)self view];
-  [v5 bounds];
+  view = [(MTPlaylistSelectPodcastListViewController *)self view];
+  [view bounds];
   Width = CGRectGetWidth(v20);
   +[(MTTableViewCell *)MTPodcastPlaylistCell];
   v8 = [(MTPodcastPlaylistSheetHeaderView *)v4 initWithFrame:0.0, 0.0, Width, v7];
@@ -41,59 +41,59 @@
   v11 = [v10 localizedStringForKey:@"Add Podcasts" value:&stru_1004F3018 table:0];
   [(MTPlaylistSelectPodcastListViewController *)self setTitle:v11];
 
-  v12 = [(MTPlaylistSelectPodcastListViewController *)self navigationItem];
-  [v12 setLargeTitleDisplayMode:2];
+  navigationItem = [(MTPlaylistSelectPodcastListViewController *)self navigationItem];
+  [navigationItem setLargeTitleDisplayMode:2];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = MTPlaylistSelectPodcastListViewController;
-  [(MTBasePodcastListViewController *)&v5 viewWillDisappear:a3];
-  v4 = [(MTPlaylistSelectPodcastListViewController *)self saveDelegate];
-  [v4 saveNewPlaylists];
+  [(MTBasePodcastListViewController *)&v5 viewWillDisappear:disappear];
+  saveDelegate = [(MTPlaylistSelectPodcastListViewController *)self saveDelegate];
+  [saveDelegate saveNewPlaylists];
 }
 
-- (void)updateAllPodcastsTo:(BOOL)a3
+- (void)updateAllPodcastsTo:(BOOL)to
 {
-  v3 = a3;
+  toCopy = to;
   v5 = +[MTDB sharedInstance];
-  v6 = [v5 mainQueueContext];
+  mainQueueContext = [v5 mainQueueContext];
 
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000E1CAC;
   v9[3] = &unk_1004DA0E0;
-  v12 = v3;
-  v10 = v6;
-  v11 = self;
-  v7 = v6;
+  v12 = toCopy;
+  v10 = mainQueueContext;
+  selfCopy = self;
+  v7 = mainQueueContext;
   [v7 performBlockAndWait:v9];
-  v8 = [(MTBasePodcastListViewController *)self tableView];
-  [v8 reloadData];
+  tableView = [(MTBasePodcastListViewController *)self tableView];
+  [tableView reloadData];
 
-  [(MTPlaylistSelectPodcastListViewController *)self setAllPodcastsSelected:v3];
+  [(MTPlaylistSelectPodcastListViewController *)self setAllPodcastsSelected:toCopy];
 }
 
-- (void)togglePodcastUuid:(id)a3
+- (void)togglePodcastUuid:(id)uuid
 {
-  v4 = a3;
+  uuidCopy = uuid;
   podcastUuids = self->_podcastUuids;
-  v10 = v4;
+  v10 = uuidCopy;
   if (!podcastUuids)
   {
     v6 = objc_opt_new();
     v7 = self->_podcastUuids;
     self->_podcastUuids = v6;
 
-    v4 = v10;
+    uuidCopy = v10;
     podcastUuids = self->_podcastUuids;
   }
 
-  v8 = [(NSMutableSet *)podcastUuids containsObject:v4];
+  v8 = [(NSMutableSet *)podcastUuids containsObject:uuidCopy];
   v9 = self->_podcastUuids;
   if (v8)
   {
@@ -106,36 +106,36 @@
   }
 }
 
-- (void)configureCell:(id)a3 withObject:(id)a4 atIndexPath:(id)a5
+- (void)configureCell:(id)cell withObject:(id)object atIndexPath:(id)path
 {
-  v7 = a4;
-  v10 = a3;
-  [v10 updateWithObject:v7];
+  objectCopy = object;
+  cellCopy = cell;
+  [cellCopy updateWithObject:objectCopy];
   podcastUuids = self->_podcastUuids;
-  v9 = [v7 uuid];
+  uuid = [objectCopy uuid];
 
-  [v10 setAdded:{-[NSMutableSet containsObject:](podcastUuids, "containsObject:", v9)}];
-  [v10 setEnabled:{-[MTPlaylistSelectPodcastListViewController allPodcastsSelected](self, "allPodcastsSelected") ^ 1}];
+  [cellCopy setAdded:{-[NSMutableSet containsObject:](podcastUuids, "containsObject:", uuid)}];
+  [cellCopy setEnabled:{-[MTPlaylistSelectPodcastListViewController allPodcastsSelected](self, "allPodcastsSelected") ^ 1}];
 }
 
-- (id)newCellInstanceWithReuseIdentifier:(id)a3
+- (id)newCellInstanceWithReuseIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [[MTPodcastPlaylistCell alloc] initWithStyle:0 reuseIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [[MTPodcastPlaylistCell alloc] initWithStyle:0 reuseIdentifier:identifierCopy];
 
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v8.receiver = self;
   v8.super_class = MTPlaylistSelectPodcastListViewController;
-  v5 = a4;
-  v6 = a3;
-  [(MTBasePodcastListViewController *)&v8 tableView:v6 didSelectRowAtIndexPath:v5];
-  v7 = [v6 cellForRowAtIndexPath:{v5, v8.receiver, v8.super_class}];
+  pathCopy = path;
+  viewCopy = view;
+  [(MTBasePodcastListViewController *)&v8 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  v7 = [viewCopy cellForRowAtIndexPath:{pathCopy, v8.receiver, v8.super_class}];
   [v7 setAdded:{objc_msgSend(v7, "isAdded") ^ 1}];
-  [v6 deselectRowAtIndexPath:v5 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
 @end

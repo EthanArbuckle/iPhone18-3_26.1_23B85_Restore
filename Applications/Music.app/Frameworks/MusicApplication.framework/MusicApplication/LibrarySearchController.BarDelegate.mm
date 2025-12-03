@@ -1,26 +1,26 @@
 @interface LibrarySearchController.BarDelegate
 - (_TtCC16MusicApplication23LibrarySearchControllerP33_74DC0E8E86C2700EAF59346E7D7979E311BarDelegate)init;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)searchBarCancelButtonClicked:(id)a3;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)searchBarCancelButtonClicked:(id)clicked;
 @end
 
 @implementation LibrarySearchController.BarDelegate
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
   v6 = sub_AB92A0();
   v7 = (self + OBJC_IVAR____TtCC16MusicApplication23LibrarySearchControllerP33_74DC0E8E86C2700EAF59346E7D7979E311BarDelegate_text);
   *v7 = v6;
   v7[1] = v8;
-  v11 = a4;
-  v9 = self;
+  changeCopy = change;
+  selfCopy = self;
 
-  v10 = *(&v9->super.isa + OBJC_IVAR____TtCC16MusicApplication23LibrarySearchControllerP33_74DC0E8E86C2700EAF59346E7D7979E311BarDelegate_textDidChange);
+  v10 = *(&selfCopy->super.isa + OBJC_IVAR____TtCC16MusicApplication23LibrarySearchControllerP33_74DC0E8E86C2700EAF59346E7D7979E311BarDelegate_textDidChange);
   if (v10)
   {
 
     sub_307CC(v10);
-    v10(v9);
+    v10(selfCopy);
     sub_17654(v10);
   }
 
@@ -29,11 +29,11 @@
   }
 }
 
-- (void)searchBarCancelButtonClicked:(id)a3
+- (void)searchBarCancelButtonClicked:(id)clicked
 {
-  v4 = a3;
-  v5 = self;
-  sub_430690(v4);
+  clickedCopy = clicked;
+  selfCopy = self;
+  sub_430690(clickedCopy);
 }
 
 - (_TtCC16MusicApplication23LibrarySearchControllerP33_74DC0E8E86C2700EAF59346E7D7979E311BarDelegate)init

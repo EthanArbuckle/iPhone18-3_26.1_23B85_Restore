@@ -3,41 +3,41 @@
 - (BOOL)_generateKeys;
 - (BOOL)generateKeys;
 - (BOOL)getAccountStatus;
-- (BOOL)handleXPCUnpairCommand:(id)a3;
+- (BOOL)handleXPCUnpairCommand:(id)command;
 - (BTCloudServicesClient)cloudClient;
 - (CloudPairing)init;
-- (id)_generateCloudPairingIDWithResponse:(id)a3 localKeys:(id)a4 from:(id)a5 forProtocolID:(id)a6;
-- (id)_getPairedDeviceForIDSIdentifier:(id)a3;
-- (id)createBluetoothAddressForIDSLocalDevice:(id)a3;
+- (id)_generateCloudPairingIDWithResponse:(id)response localKeys:(id)keys from:(id)from forProtocolID:(id)d;
+- (id)_getPairedDeviceForIDSIdentifier:(id)identifier;
+- (id)createBluetoothAddressForIDSLocalDevice:(id)device;
 - (id)deviceName;
-- (id)generateCloudPairingIDWithResponse:(id)a3 localKeys:(id)a4 from:(id)a5 forProtocolID:(id)a6;
-- (id)generateKeyDictForTypes:(id)a3 keyLength:(unint64_t)a4 forAddress:(id)a5;
-- (id)getIRKForRandomStaticAddress:(id)a3;
-- (id)getPairedDeviceForIDSIdentifier:(id)a3;
-- (id)readUserPreference:(id)a3;
-- (void)_handleConnectionEvent:(id)a3;
-- (void)_handleMsg:(id)a3;
-- (void)audioAccessorySmartChargeDeadlineHasChangedFromCloud:(void *)a3;
-- (void)audioAccessorySmartChargeDeadlineHasChangedFromNotification:(id)a3;
-- (void)audioAccessorySmartChargeStatusHasChangedFromCloud:(void *)a3;
-- (void)audioAccessorySmartChargeStatusHasChangedFromNotification:(id)a3;
-- (void)cloudpairdMsg:(id)a3 args:(id)a4;
-- (void)cloudpairdReplyMsg:(id)a3 args:(id)a4;
+- (id)generateCloudPairingIDWithResponse:(id)response localKeys:(id)keys from:(id)from forProtocolID:(id)d;
+- (id)generateKeyDictForTypes:(id)types keyLength:(unint64_t)length forAddress:(id)address;
+- (id)getIRKForRandomStaticAddress:(id)address;
+- (id)getPairedDeviceForIDSIdentifier:(id)identifier;
+- (id)readUserPreference:(id)preference;
+- (void)_handleConnectionEvent:(id)event;
+- (void)_handleMsg:(id)msg;
+- (void)audioAccessorySmartChargeDeadlineHasChangedFromCloud:(void *)cloud;
+- (void)audioAccessorySmartChargeDeadlineHasChangedFromNotification:(id)notification;
+- (void)audioAccessorySmartChargeStatusHasChangedFromCloud:(void *)cloud;
+- (void)audioAccessorySmartChargeStatusHasChangedFromNotification:(id)notification;
+- (void)cloudpairdMsg:(id)msg args:(id)args;
+- (void)cloudpairdReplyMsg:(id)msg args:(id)args;
 - (void)fetchSoundProfile;
-- (void)multipleAdvInstancesInitialized:(BOOL)a3;
+- (void)multipleAdvInstancesInitialized:(BOOL)initialized;
 - (void)printDebug;
-- (void)registerWithCloudPairedDevices:(id)a3 identifiers:(id)a4;
-- (void)removeuserPreference:(id)a3 sync:(BOOL)a4;
-- (void)resetDataForIDSLocalDevice:(id)a3;
+- (void)registerWithCloudPairedDevices:(id)devices identifiers:(id)identifiers;
+- (void)removeuserPreference:(id)preference sync:(BOOL)sync;
+- (void)resetDataForIDSLocalDevice:(id)device;
 - (void)resetServerConnection;
 - (void)sendCloudKitPush;
-- (void)sendCloudpairingRetry:(id)a3;
-- (void)setuserPreference:(id)a3 value:(id)a4 sync:(BOOL)a5;
+- (void)sendCloudpairingRetry:(id)retry;
+- (void)setuserPreference:(id)preference value:(id)value sync:(BOOL)sync;
 - (void)startListeningToPowerUIStatusChanges;
 - (void)startUpServices;
 - (void)stopListeningToPowerUIStatusChanges;
-- (void)updateCurrentIDSUserInfo:(id)a3;
-- (void)updateRandomAddressContinuityAdvInstance:(id)a3;
+- (void)updateCurrentIDSUserInfo:(id)info;
+- (void)updateRandomAddressContinuityAdvInstance:(id)instance;
 @end
 
 @implementation CloudPairing
@@ -107,9 +107,9 @@ LABEL_32:
     v2->_requestedKeyTypes = v14;
 
     v2->_keyLength = 16;
-    v16 = [(CloudPairing *)v2 deviceName];
+    deviceName = [(CloudPairing *)v2 deviceName];
     localDeviceName = v2->_localDeviceName;
-    v2->_localDeviceName = v16;
+    v2->_localDeviceName = deviceName;
 
     if (!v2->_localDeviceName)
     {
@@ -165,7 +165,7 @@ LABEL_32:
       v3->_currentUserRandomAddress = 0;
 
       v3->_multipleAdvInitialized = 0;
-      v31 = [(CloudPairing *)v3 cloudClient];
+      cloudClient = [(CloudPairing *)v3 cloudClient];
       v3->_accessibilityHeadTrackingEnabled = 1;
       v45 = 0;
       v32 = sub_100017E6C();
@@ -252,14 +252,14 @@ LABEL_33:
   if (_os_feature_enabled_impl() && sub_1005FCCC4())
   {
     self->_cloudSoundProfileChangedNotifyToken = -1;
-    v4 = [BTCloudSoundProfileChangedNotification UTF8String];
+    uTF8String = [BTCloudSoundProfileChangedNotification UTF8String];
     serialQueue = self->_serialQueue;
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_1005EC928;
     handler[3] = &unk_100ADF848;
     handler[4] = self;
-    v6 = notify_register_dispatch(v4, &self->_cloudSoundProfileChangedNotifyToken, serialQueue, handler);
+    v6 = notify_register_dispatch(uTF8String, &self->_cloudSoundProfileChangedNotifyToken, serialQueue, handler);
     v7 = qword_100BCE8E8;
     v8 = os_log_type_enabled(qword_100BCE8E8, OS_LOG_TYPE_DEFAULT);
     if (v6)
@@ -285,35 +285,35 @@ LABEL_33:
   }
 }
 
-- (void)multipleAdvInstancesInitialized:(BOOL)a3
+- (void)multipleAdvInstancesInitialized:(BOOL)initialized
 {
-  v3 = a3;
+  initializedCopy = initialized;
   v5 = qword_100BCE8E8;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(CloudPairing *)self multipleAdvInitialized];
-    v7 = [(CloudPairing *)self currentUserRandomAddress];
+    multipleAdvInitialized = [(CloudPairing *)self multipleAdvInitialized];
+    currentUserRandomAddress = [(CloudPairing *)self currentUserRandomAddress];
     v11[0] = 67109634;
-    v11[1] = v3;
+    v11[1] = initializedCopy;
     v12 = 1024;
-    v13 = v6;
+    v13 = multipleAdvInitialized;
     v14 = 2112;
-    v15 = v7;
+    v15 = currentUserRandomAddress;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "MUC - multiple adv instances initialized? %d, stored %d, RSA %@", v11, 0x18u);
   }
 
-  if ([(CloudPairing *)self multipleAdvInitialized]!= v3)
+  if ([(CloudPairing *)self multipleAdvInitialized]!= initializedCopy)
   {
-    [(CloudPairing *)self setMultipleAdvInitialized:v3];
+    [(CloudPairing *)self setMultipleAdvInitialized:initializedCopy];
     if ([(CloudPairing *)self multipleAdvInitialized])
     {
-      v8 = [(CloudPairing *)self currentUserRandomAddress];
-      v9 = v8 == 0;
+      currentUserRandomAddress2 = [(CloudPairing *)self currentUserRandomAddress];
+      v9 = currentUserRandomAddress2 == 0;
 
       if (!v9)
       {
-        v10 = [(CloudPairing *)self currentUserRandomAddress];
-        [(CloudPairing *)self updateRandomAddressContinuityAdvInstance:v10];
+        currentUserRandomAddress3 = [(CloudPairing *)self currentUserRandomAddress];
+        [(CloudPairing *)self updateRandomAddressContinuityAdvInstance:currentUserRandomAddress3];
       }
     }
   }
@@ -440,13 +440,13 @@ LABEL_33:
   return v17 == 0;
 }
 
-- (void)_handleConnectionEvent:(id)a3
+- (void)_handleConnectionEvent:(id)event
 {
-  v4 = a3;
-  type = xpc_get_type(v4);
+  eventCopy = event;
+  type = xpc_get_type(eventCopy);
   if (type == &_xpc_type_connection)
   {
-    if (v4 != &_xpc_error_connection_invalid)
+    if (eventCopy != &_xpc_error_connection_invalid)
     {
       objc_initWeak(buf, self);
       v8 = xpc_connection_copy_entitlement_value();
@@ -460,11 +460,11 @@ LABEL_33:
           handler[2] = sub_1005ED2D8;
           handler[3] = &unk_100B01208;
           objc_copyWeak(&v15, buf);
-          xpc_connection_set_event_handler(v4, handler);
-          v10 = [(CloudPairing *)self serialQueue];
-          xpc_connection_set_target_queue(v4, v10);
+          xpc_connection_set_event_handler(eventCopy, handler);
+          serialQueue = [(CloudPairing *)self serialQueue];
+          xpc_connection_set_target_queue(eventCopy, serialQueue);
 
-          xpc_connection_resume(v4);
+          xpc_connection_resume(eventCopy);
           objc_destroyWeak(&v15);
 
           objc_destroyWeak(buf);
@@ -491,8 +491,8 @@ LABEL_33:
       sub_10084F5D8();
     }
 
-    v13 = [(CloudPairing *)self serverConnection];
-    v12 = v13 == 0;
+    serverConnection = [(CloudPairing *)self serverConnection];
+    v12 = serverConnection == 0;
 
     goto LABEL_17;
   }
@@ -504,7 +504,7 @@ LABEL_33:
     if (v7)
     {
       *buf = 138412290;
-      v17 = v4;
+      v17 = eventCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Cloudpairing Unexpected XPC server event: %@", buf, 0xCu);
     }
 
@@ -514,14 +514,14 @@ LABEL_33:
   if (v7)
   {
     *buf = 138412290;
-    v17 = v4;
+    v17 = eventCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Cloudpairing XPC server error: %@", buf, 0xCu);
   }
 
-  if (v4 == &_xpc_error_connection_invalid)
+  if (eventCopy == &_xpc_error_connection_invalid)
   {
-    v11 = [(CloudPairing *)self serverConnection];
-    v12 = v11 == 0;
+    serverConnection2 = [(CloudPairing *)self serverConnection];
+    v12 = serverConnection2 == 0;
 
 LABEL_17:
     if (!v12)
@@ -533,12 +533,12 @@ LABEL_17:
 LABEL_24:
 }
 
-- (void)_handleMsg:(id)a3
+- (void)_handleMsg:(id)msg
 {
-  v4 = a3;
-  if (xpc_get_type(v4) == &_xpc_type_dictionary)
+  msgCopy = msg;
+  if (xpc_get_type(msgCopy) == &_xpc_type_dictionary)
   {
-    string = xpc_dictionary_get_string(v4, "kMsgId");
+    string = xpc_dictionary_get_string(msgCopy, "kMsgId");
     v6 = qword_100BCE8E8;
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
@@ -547,7 +547,7 @@ LABEL_24:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Cloudpairing got msg: %s", v575, 0xCu);
     }
 
-    v7 = xpc_dictionary_get_value(v4, "kMsgArgs");
+    v7 = xpc_dictionary_get_value(msgCopy, "kMsgArgs");
     v8 = v7;
     if (!v7)
     {
@@ -581,9 +581,9 @@ LABEL_24:
       if (!v17)
       {
         v18 = [v12 objectForKey:@"kUploadStatus"];
-        v19 = [v18 BOOLValue];
+        bOOLValue = [v18 BOOLValue];
 
-        if (v19)
+        if (bOOLValue)
         {
           [(CloudPairing *)self cloudpairdMsg:@"deleteOldContainer" args:0];
         }
@@ -601,13 +601,13 @@ LABEL_24:
       if (!v21)
       {
         v22 = [v12 objectForKey:@"srCapable"];
-        v23 = [v22 BOOLValue];
+        bOOLValue2 = [v22 BOOLValue];
 
         v24 = qword_100BCE8E8;
         if (os_log_type_enabled(qword_100BCE8E8, OS_LOG_TYPE_DEFAULT))
         {
           v25 = "No";
-          if (v23)
+          if (bOOLValue2)
           {
             v25 = "Yes";
           }
@@ -622,7 +622,7 @@ LABEL_24:
           sub_10084F6C4();
         }
 
-        sub_10056C9B8(off_100B508E8, v23);
+        sub_10056C9B8(off_100B508E8, bOOLValue2);
       }
 
       goto LABEL_117;
@@ -637,10 +637,10 @@ LABEL_24:
       if (!v27)
       {
         v28 = [v12 objectForKey:@"kSignInStatus"];
-        v29 = [v28 BOOLValue];
+        bOOLValue3 = [v28 BOOLValue];
 
         v30 = [v12 objectForKey:@"kSignInAppleID"];
-        [(CloudPairing *)self setICloudSignedIn:v29];
+        [(CloudPairing *)self setICloudSignedIn:bOOLValue3];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
@@ -651,7 +651,7 @@ LABEL_24:
         v31 = sub_100432918();
         v32 = v30;
         sub_100007E30(v563, [(__CFString *)v30 UTF8String]);
-        (*(*v31 + 80))(v31, v29, v563);
+        (*(*v31 + 80))(v31, bOOLValue3, v563);
         if (v564 < 0)
         {
           operator delete(v563[0]);
@@ -672,9 +672,9 @@ LABEL_24:
         v35 = [v12 objectForKey:@"kMasterKeyBlob"];
         v36 = [v35 length];
         v37 = v35;
-        v38 = [v35 bytes];
+        bytes = [v35 bytes];
         v39 = sub_100432918();
-        (*(*v39 + 88))(v39, v38, v36);
+        (*(*v39 + 88))(v39, bytes, v36);
       }
 
       goto LABEL_117;
@@ -760,10 +760,10 @@ LABEL_24:
       if (!v48)
       {
         v49 = [v12 objectForKey:@"kUploadStatus"];
-        v50 = [v49 BOOLValue];
+        bOOLValue4 = [v49 BOOLValue];
 
         v51 = sub_100432918();
-        (*(*v51 + 112))(v51, v50);
+        (*(*v51 + 112))(v51, bOOLValue4);
       }
 
       goto LABEL_117;
@@ -802,7 +802,7 @@ LABEL_24:
       }
 
       v67 = [v12 objectForKey:@"kDeleteSuccess"];
-      v68 = [v67 BOOLValue];
+      bOOLValue5 = [v67 BOOLValue];
 
       v69 = qword_100BCE8E8;
       if (!os_log_type_enabled(qword_100BCE8E8, OS_LOG_TYPE_DEFAULT))
@@ -811,7 +811,7 @@ LABEL_24:
       }
 
       *v575 = 67109120;
-      *&v575[4] = v68;
+      *&v575[4] = bOOLValue5;
       v70 = "Status for old container deletion %d";
       v71 = v69;
       v72 = OS_LOG_TYPE_DEFAULT;
@@ -837,9 +837,9 @@ LABEL_24:
         if (!v76)
         {
           v77 = [v12 objectForKey:@"kEncryptionSupport"];
-          v78 = [v77 BOOLValue];
+          bOOLValue6 = [v77 BOOLValue];
 
-          if (v78)
+          if (bOOLValue6)
           {
             v79 = sub_100432918();
             (*(*v79 + 136))(v79, 1);
@@ -861,10 +861,10 @@ LABEL_24:
         v12 = _CFXPCCreateCFObjectFromXPCObject();
         *&v509 = [v12 objectForKey:@"kCloudPairingKeyTypes"];
         v81 = [v12 objectForKey:@"kCloudPairingKeyLength"];
-        v82 = [v81 unsignedIntegerValue];
+        unsignedIntegerValue = [v81 unsignedIntegerValue];
 
         v83 = [v12 objectForKeyedSubscript:@"kLocalRandomAddress"];
-        v84 = [(CloudPairing *)self generateKeyDictForTypes:v509 keyLength:v82 forAddress:v83];
+        v84 = [(CloudPairing *)self generateKeyDictForTypes:v509 keyLength:unsignedIntegerValue forAddress:v83];
         v85 = qword_100BCE8E8;
         if (os_log_type_enabled(v85, OS_LOG_TYPE_INFO))
         {
@@ -883,7 +883,7 @@ LABEL_24:
           }
         }
 
-        [(CloudPairing *)self cloudpairdReplyMsg:v4 args:v84];
+        [(CloudPairing *)self cloudpairdReplyMsg:msgCopy args:v84];
         goto LABEL_117;
       }
 
@@ -916,10 +916,10 @@ LABEL_24:
           }
 
           v590 = @"kCloudPairingID";
-          v95 = [v92 UUIDString];
-          v591 = v95;
+          uUIDString = [v92 UUIDString];
+          v591 = uUIDString;
           v96 = [NSDictionary dictionaryWithObjects:&v591 forKeys:&v590 count:1];
-          [(CloudPairing *)self cloudpairdReplyMsg:v4 args:v96];
+          [(CloudPairing *)self cloudpairdReplyMsg:msgCopy args:v96];
         }
 
         else
@@ -929,7 +929,7 @@ LABEL_24:
             sub_10084F918();
           }
 
-          [(CloudPairing *)self cloudpairdReplyMsg:v4 args:&__NSDictionary0__struct];
+          [(CloudPairing *)self cloudpairdReplyMsg:msgCopy args:&__NSDictionary0__struct];
         }
 
         goto LABEL_117;
@@ -963,7 +963,7 @@ LABEL_24:
         v100 = [NSNumber numberWithBool:*(*&v575[8] + 24)];
         v589 = v100;
         v101 = [NSDictionary dictionaryWithObjects:&v589 forKeys:&v588 count:1];
-        [(CloudPairing *)self cloudpairdReplyMsg:v4 args:v101];
+        [(CloudPairing *)self cloudpairdReplyMsg:msgCopy args:v101];
 
         v102 = qword_100BCE8E8;
         if (os_log_type_enabled(qword_100BCE8E8, OS_LOG_TYPE_INFO))
@@ -985,29 +985,29 @@ LABEL_24:
           _os_log_impl(&_mh_execute_header, v103, OS_LOG_TYPE_INFO, "Process FetchPublicAddress", v575, 2u);
         }
 
-        v104 = [(CloudPairing *)self publicAddress];
-        v105 = v104 == 0;
+        publicAddress = [(CloudPairing *)self publicAddress];
+        v105 = publicAddress == 0;
 
         if (v105)
         {
-          [(CloudPairing *)self cloudpairdReplyMsg:v4 args:&__NSDictionary0__struct];
+          [(CloudPairing *)self cloudpairdReplyMsg:msgCopy args:&__NSDictionary0__struct];
         }
 
         else
         {
           v586 = @"kPublicAddress";
-          v106 = [(CloudPairing *)self publicAddress];
-          v587 = v106;
+          publicAddress2 = [(CloudPairing *)self publicAddress];
+          v587 = publicAddress2;
           v107 = [NSDictionary dictionaryWithObjects:&v587 forKeys:&v586 count:1];
-          [(CloudPairing *)self cloudpairdReplyMsg:v4 args:v107];
+          [(CloudPairing *)self cloudpairdReplyMsg:msgCopy args:v107];
         }
 
         v12 = qword_100BCE8E8;
         if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
         {
-          v119 = [(CloudPairing *)self publicAddress];
+          publicAddress3 = [(CloudPairing *)self publicAddress];
           *v575 = 138412290;
-          *&v575[4] = v119;
+          *&v575[4] = publicAddress3;
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Replying FetchPublicAddress: %@", v575, 0xCu);
         }
 
@@ -1115,27 +1115,27 @@ LABEL_24:
             }
 
             v138 = +[NSMutableDictionary dictionary];
-            v139 = [(CloudPairing *)self publicAddress];
-            v140 = v139 == 0;
+            publicAddress4 = [(CloudPairing *)self publicAddress];
+            v140 = publicAddress4 == 0;
 
             if (!v140)
             {
-              v141 = [(CloudPairing *)self publicAddress];
-              [v138 setObject:v141 forKey:@"kPublicAddress"];
+              publicAddress5 = [(CloudPairing *)self publicAddress];
+              [v138 setObject:publicAddress5 forKey:@"kPublicAddress"];
             }
 
             v142 = qword_100BCE8E8;
             if (os_log_type_enabled(v142, OS_LOG_TYPE_INFO))
             {
-              v143 = [(CloudPairing *)self publicAddress];
+              publicAddress6 = [(CloudPairing *)self publicAddress];
               *v575 = 138412290;
-              *&v575[4] = v143;
+              *&v575[4] = publicAddress6;
               _os_log_impl(&_mh_execute_header, v142, OS_LOG_TYPE_INFO, "Check in replying with Public Address: %@", v575, 0xCu);
             }
 
             [v138 setObject:v508 forKey:@"kCachedLEDevices"];
             [v138 setObject:&off_100B33978 forKey:@"kCheckInVersion"];
-            [(CloudPairing *)self cloudpairdReplyMsg:v4 args:v138];
+            [(CloudPairing *)self cloudpairdReplyMsg:msgCopy args:v138];
           }
 
           goto LABEL_117;
@@ -1192,9 +1192,9 @@ LABEL_24:
                         if (objc_opt_isKindOfClass())
                         {
                           v129 = sub_100432918();
-                          v130 = [v128 bluetoothAddress];
-                          v131 = v130;
-                          sub_100007E30(v550, [v130 UTF8String]);
+                          bluetoothAddress = [v128 bluetoothAddress];
+                          v131 = bluetoothAddress;
+                          sub_100007E30(v550, [bluetoothAddress UTF8String]);
                           (*(*v129 + 184))(v129, v550);
                           if (v551 < 0)
                           {
@@ -1372,9 +1372,9 @@ LABEL_118:
               {
                 v255 = [v12 debugDescription];
                 v256 = v255;
-                v257 = [v255 UTF8String];
+                uTF8String = [v255 UTF8String];
                 *v575 = 136446210;
-                *&v575[4] = v257;
+                *&v575[4] = uTF8String;
                 _os_log_impl(&_mh_execute_header, v254, OS_LOG_TYPE_DEFAULT, "Devices magic info updated from cloudkit = %{public}s", v575, 0xCu);
               }
 
@@ -1388,8 +1388,8 @@ LABEL_118:
                 goto LABEL_117;
               }
 
-              v258 = [(CloudPairing *)self iCloudSignedIn];
-              v259 = v12 ? v258 : 0;
+              iCloudSignedIn = [(CloudPairing *)self iCloudSignedIn];
+              v259 = v12 ? iCloudSignedIn : 0;
               if (v259 != 1)
               {
                 goto LABEL_117;
@@ -1478,9 +1478,9 @@ LABEL_118:
                           v521 = 0;
                           v520 = 0;
                           memset(v581, 0, sizeof(v581));
-                          v264 = [v509 bluetoothAddress];
-                          v265 = v264;
-                          sub_100007E30(v581, [v264 UTF8String]);
+                          bluetoothAddress2 = [v509 bluetoothAddress];
+                          v265 = bluetoothAddress2;
+                          sub_100007E30(v581, [bluetoothAddress2 UTF8String]);
 
                           if (SHIBYTE(v581[2]) >= 0)
                           {
@@ -1537,13 +1537,13 @@ LABEL_425:
                                 }
                               }
 
-                              v273 = [v509 vendorID];
-                              v274 = [v273 integerValue];
+                              vendorID = [v509 vendorID];
+                              integerValue = [vendorID integerValue];
 
-                              v275 = [v509 productID];
-                              v276 = [v275 integerValue];
+                              productID = [v509 productID];
+                              integerValue2 = [productID integerValue];
 
-                              if (v274 && v276)
+                              if (integerValue && integerValue2)
                               {
                                 if (v515 <= 1)
                                 {
@@ -1565,9 +1565,9 @@ LABEL_425:
                                     v279 = v580.__r_.__value_.__r.__words[0];
                                   }
 
-                                  *v575 = __PAIR64__(v274, v499);
+                                  *v575 = __PAIR64__(integerValue, v499);
                                   *&v575[8] = 1024;
-                                  *&v575[10] = v276;
+                                  *&v575[10] = integerValue2;
                                   *&v575[14] = 1024;
                                   *&v575[16] = v277;
                                   *&v575[20] = 2082;
@@ -1579,14 +1579,14 @@ LABEL_425:
                                   }
                                 }
 
-                                sub_10053D890(v507, v277, v274, v276, v517);
+                                sub_10053D890(v507, v277, integerValue, integerValue2, v517);
                                 sub_10053E630(v507);
                               }
 
-                              v280 = [CBProductInfo productInfoWithProductID:v276, v481];
-                              v281 = [v280 productName];
+                              v481 = [CBProductInfo productInfoWithProductID:integerValue2, v481];
+                              productName = [v481 productName];
 
-                              if (v281 && ([v281 isEqualToString:@"Unknown"] & 1) == 0 && objc_msgSend(v281, "length"))
+                              if (productName && ([productName isEqualToString:@"Unknown"] & 1) == 0 && objc_msgSend(productName, "length"))
                               {
                                 sub_1000C23E0(v507, v575);
                                 v282 = v575[23];
@@ -1599,8 +1599,8 @@ LABEL_425:
                                 if (v282)
                                 {
                                   sub_1000C23E0(v507, &v580);
-                                  v284 = v281;
-                                  v285 = std::string::compare(&v580, [v281 UTF8String]) != 0;
+                                  v284 = productName;
+                                  v285 = std::string::compare(&v580, [productName UTF8String]) != 0;
                                   if (SHIBYTE(v580.__r_.__value_.__r.__words[2]) < 0)
                                   {
                                     operator delete(v580.__r_.__value_.__l.__data_);
@@ -1621,7 +1621,7 @@ LABEL_425:
 
                                 if (v285)
                                 {
-                                  sub_100007E30(v575, [v281 utf8ValueSafe]);
+                                  sub_100007E30(v575, [productName utf8ValueSafe]);
                                   *&v570 = 0;
                                   sub_100016250(&v570);
                                   v580.__r_.__value_.__r.__words[0] = v570;
@@ -1653,8 +1653,8 @@ LABEL_425:
                                 }
                               }
 
-                              v290 = [v509 name];
-                              v291 = [v290 length] == 0;
+                              name = [v509 name];
+                              v291 = [name length] == 0;
 
                               if (!v291)
                               {
@@ -1663,13 +1663,13 @@ LABEL_425:
                                 {
                                   sub_1000E5A58(v507, v575);
                                   v293 = v575[23] >= 0 ? v575 : *v575;
-                                  v294 = [v509 name];
-                                  v295 = v294;
-                                  v296 = [v294 UTF8String];
+                                  name2 = [v509 name];
+                                  v295 = name2;
+                                  uTF8String2 = [name2 UTF8String];
                                   LODWORD(v580.__r_.__value_.__l.__data_) = v500;
                                   *(v580.__r_.__value_.__r.__words + 4) = v293;
                                   WORD2(v580.__r_.__value_.__r.__words[1]) = 2081;
-                                  *(&v580.__r_.__value_.__r.__words[1] + 6) = v296;
+                                  *(&v580.__r_.__value_.__r.__words[1] + 6) = uTF8String2;
                                   _os_log_impl(&_mh_execute_header, v292, OS_LOG_TYPE_DEFAULT, "Cloud: Magic Settings updating %{public}s username to -> %{private}s", &v580, 0x16u);
 
                                   if ((v575[23] & 0x80000000) != 0)
@@ -1678,8 +1678,8 @@ LABEL_425:
                                   }
                                 }
 
-                                v297 = [v509 name];
-                                sub_100007E30(v575, [v297 utf8ValueSafe]);
+                                name3 = [v509 name];
+                                sub_100007E30(v575, [name3 utf8ValueSafe]);
                                 sub_100538D30(v507, v575, 0);
                                 if ((v575[23] & 0x80000000) != 0)
                                 {
@@ -1687,11 +1687,11 @@ LABEL_425:
                                 }
 
                                 v298 = sub_100432918();
-                                v299 = [v509 bluetoothAddress];
-                                v300 = v299;
-                                sub_100007E30(v513, [v299 UTF8String]);
-                                v301 = [v509 name];
-                                sub_100007E30(v511, [v301 utf8ValueSafe]);
+                                bluetoothAddress3 = [v509 bluetoothAddress];
+                                v300 = bluetoothAddress3;
+                                sub_100007E30(v513, [bluetoothAddress3 UTF8String]);
+                                name4 = [v509 name];
+                                sub_100007E30(v511, [name4 utf8ValueSafe]);
                                 (*(*v298 + 176))(v298, v513, v511);
                                 if (v512 < 0)
                                 {
@@ -1737,20 +1737,20 @@ LABEL_488:
                                   }
                                 }
 
-                                v305 = [(CloudPairing *)self cloudClient];
-                                v306 = [v509 bluetoothAddress];
-                                [v305 deviceRecord:v306 completion:&stru_100B01250];
+                                cloudClient = [(CloudPairing *)self cloudClient];
+                                bluetoothAddress4 = [v509 bluetoothAddress];
+                                [cloudClient deviceRecord:bluetoothAddress4 completion:&stru_100B01250];
                               }
 
-                              v307 = [v509 deviceIDFeatureBitsV1];
-                              v308 = [v307 length] == 0;
+                              deviceIDFeatureBitsV1 = [v509 deviceIDFeatureBitsV1];
+                              v308 = [deviceIDFeatureBitsV1 length] == 0;
 
                               if (!v308)
                               {
                                 LODWORD(v580.__r_.__value_.__l.__data_) = 0;
-                                v309 = [v509 deviceIDFeatureBitsV1];
-                                v310 = v309;
-                                sub_100007E30(v575, [v309 UTF8String]);
+                                deviceIDFeatureBitsV12 = [v509 deviceIDFeatureBitsV1];
+                                v310 = deviceIDFeatureBitsV12;
+                                sub_100007E30(v575, [deviceIDFeatureBitsV12 UTF8String]);
                                 v311 = std::stoul(v575, 0, 0);
                                 if ((v575[23] & 0x80000000) != 0)
                                 {
@@ -1790,15 +1790,15 @@ LABEL_488:
                                 }
                               }
 
-                              v316 = [v509 deviceIDFeatureBitsV2];
-                              v317 = [v316 length] == 0;
+                              deviceIDFeatureBitsV2 = [v509 deviceIDFeatureBitsV2];
+                              v317 = [deviceIDFeatureBitsV2 length] == 0;
 
                               if (!v317)
                               {
                                 v580.__r_.__value_.__r.__words[0] = 0;
-                                v318 = [v509 deviceIDFeatureBitsV2];
-                                v319 = v318;
-                                sub_100007E30(v575, [v318 UTF8String]);
+                                deviceIDFeatureBitsV22 = [v509 deviceIDFeatureBitsV2];
+                                v319 = deviceIDFeatureBitsV22;
+                                sub_100007E30(v575, [deviceIDFeatureBitsV22 UTF8String]);
                                 v320 = std::stoull(v575, 0, 0);
                                 if ((v575[23] & 0x80000000) != 0)
                                 {
@@ -1831,14 +1831,14 @@ LABEL_488:
                                 }
                               }
 
-                              v323 = [v509 accessoryKey];
-                              if ([v323 length] == 16)
+                              accessoryKey = [v509 accessoryKey];
+                              if ([accessoryKey length] == 16)
                               {
-                                v324 = [v509 accessoryHint];
-                                if ([v324 length] == 16)
+                                accessoryHint = [v509 accessoryHint];
+                                if ([accessoryHint length] == 16)
                                 {
-                                  v325 = [v509 encryptionKey];
-                                  if ([v325 length] == 16)
+                                  encryptionKey = [v509 encryptionKey];
+                                  if ([encryptionKey length] == 16)
                                   {
                                     v326 = [v509 irk];
                                     if ([v326 length] == 16)
@@ -1846,38 +1846,38 @@ LABEL_488:
                                       *&v502 = [v509 ratchet];
                                       if ([v502 length])
                                       {
-                                        v493 = [v509 settingsMask];
-                                        if ([v493 length])
+                                        settingsMask = [v509 settingsMask];
+                                        if ([settingsMask length])
                                         {
-                                          v491 = [v509 supportedServices];
-                                          if ([v491 length])
+                                          supportedServices = [v509 supportedServices];
+                                          if ([supportedServices length])
                                           {
-                                            v489 = [v509 buttonModes];
-                                            if ([v489 length])
+                                            buttonModes = [v509 buttonModes];
+                                            if ([buttonModes length])
                                             {
-                                              v488 = [v509 color];
-                                              if ([v488 length])
+                                              color = [v509 color];
+                                              if ([color length])
                                               {
-                                                v327 = [v509 listeningServices];
-                                                v486 = [v327 length] == 0;
+                                                listeningServices = [v509 listeningServices];
+                                                v486 = [listeningServices length] == 0;
 
                                                 if ((v486 & 1) == 0)
                                                 {
                                                   v570 = 0uLL;
                                                   v569 = 0uLL;
-                                                  v328 = [v509 accessoryKey];
-                                                  v329 = v328;
-                                                  v570 = *[v328 bytes];
+                                                  accessoryKey2 = [v509 accessoryKey];
+                                                  v329 = accessoryKey2;
+                                                  v570 = *[accessoryKey2 bytes];
 
-                                                  v330 = [v509 accessoryHint];
-                                                  v331 = v330;
-                                                  v569 = *[v330 bytes];
+                                                  accessoryHint2 = [v509 accessoryHint];
+                                                  v331 = accessoryHint2;
+                                                  v569 = *[accessoryHint2 bytes];
 
-                                                  v332 = [v509 masterKey];
-                                                  if ([v332 length] == 16)
+                                                  masterKey = [v509 masterKey];
+                                                  if ([masterKey length] == 16)
                                                   {
-                                                    v333 = [v509 masterHint];
-                                                    v334 = [v333 length] == 16;
+                                                    masterHint = [v509 masterHint];
+                                                    v334 = [masterHint length] == 16;
 
                                                     if (v334)
                                                     {
@@ -1886,28 +1886,28 @@ LABEL_488:
                                                       v335 = qword_100BCE960;
                                                       if (os_log_type_enabled(v335, OS_LOG_TYPE_DEFAULT))
                                                       {
-                                                        v336 = [v509 masterKey];
+                                                        masterKey2 = [v509 masterKey];
                                                         *v575 = v503;
-                                                        *&v575[4] = v336;
+                                                        *&v575[4] = masterKey2;
                                                         _os_log_impl(&_mh_execute_header, v335, OS_LOG_TYPE_DEFAULT, "Cloud: Retrieved Master Key: %@", v575, 0xCu);
                                                       }
 
                                                       v337 = qword_100BCE960;
                                                       if (os_log_type_enabled(v337, OS_LOG_TYPE_DEFAULT))
                                                       {
-                                                        v338 = [v509 masterHint];
+                                                        masterHint2 = [v509 masterHint];
                                                         *v575 = v503;
-                                                        *&v575[4] = v338;
+                                                        *&v575[4] = masterHint2;
                                                         _os_log_impl(&_mh_execute_header, v337, OS_LOG_TYPE_DEFAULT, "Cloud: Retrieved Master Hint: %@", v575, 0xCu);
                                                       }
 
-                                                      v339 = [v509 masterKey];
-                                                      v340 = v339;
-                                                      *&v580.__r_.__value_.__l.__data_ = *[v339 bytes];
+                                                      masterKey3 = [v509 masterKey];
+                                                      v340 = masterKey3;
+                                                      *&v580.__r_.__value_.__l.__data_ = *[masterKey3 bytes];
 
-                                                      v341 = [v509 masterHint];
-                                                      v342 = v341;
-                                                      v568 = *[v341 bytes];
+                                                      masterHint3 = [v509 masterHint];
+                                                      v342 = masterHint3;
+                                                      v568 = *[masterHint3 bytes];
 
                                                       v567 = 0uLL;
                                                       if (!sub_1002D898C(&v568, &v569, &v567, 0x10uLL) && v567 == *(v507 + 128) && WORD2(v567) == *(v507 + 132))
@@ -1960,22 +1960,22 @@ LABEL_488:
 
                                                   v568 = 0uLL;
                                                   v567 = 0uLL;
-                                                  v347 = [v509 ratchet];
-                                                  v348 = v347;
-                                                  v349 = atol([v347 UTF8String]);
+                                                  ratchet = [v509 ratchet];
+                                                  v348 = ratchet;
+                                                  v349 = atol([ratchet UTF8String]);
 
                                                   v350 = [v509 irk];
                                                   v351 = v350;
                                                   v568 = *[v350 bytes];
 
-                                                  v352 = [v509 encryptionKey];
-                                                  v353 = v352;
-                                                  v567 = *[v352 bytes];
+                                                  encryptionKey2 = [v509 encryptionKey];
+                                                  v353 = encryptionKey2;
+                                                  v567 = *[encryptionKey2 bytes];
 
                                                   for (k = 0; k != 31; ++k)
                                                   {
-                                                    v355 = [v509 supportedServices];
-                                                    v356 = ([v355 integerValue] & (1 << k)) == 0;
+                                                    supportedServices2 = [v509 supportedServices];
+                                                    v356 = ([supportedServices2 integerValue] & (1 << k)) == 0;
 
                                                     if (!v356)
                                                     {
@@ -2073,30 +2073,30 @@ LABEL_488:
                                                   }
 
                                                   sub_10055D510(off_100B50AA8, v360);
-                                                  v366 = [v509 settingsMask];
-                                                  LODWORD(v491) = [v366 intValue];
+                                                  settingsMask2 = [v509 settingsMask];
+                                                  LODWORD(supportedServices) = [settingsMask2 intValue];
 
                                                   v367 = qword_100BCE960;
                                                   if (os_log_type_enabled(v367, OS_LOG_TYPE_DEFAULT))
                                                   {
                                                     *v575 = v487;
-                                                    *&v575[4] = v491;
+                                                    *&v575[4] = supportedServices;
                                                     _os_log_impl(&_mh_execute_header, v367, OS_LOG_TYPE_DEFAULT, "Cloud: Retrieved settings mask from cloud: %d", v575, 8u);
                                                   }
 
-                                                  v368 = [v509 color];
-                                                  LODWORD(v488) = [v368 intValue];
+                                                  color2 = [v509 color];
+                                                  LODWORD(color) = [color2 intValue];
 
                                                   v369 = qword_100BCE960;
                                                   if (os_log_type_enabled(v369, OS_LOG_TYPE_DEFAULT))
                                                   {
                                                     *v575 = v487;
-                                                    *&v575[4] = v488;
+                                                    *&v575[4] = color;
                                                     _os_log_impl(&_mh_execute_header, v369, OS_LOG_TYPE_DEFAULT, "Cloud: Retrieved color from cloud: %d", v575, 8u);
                                                   }
 
-                                                  v370 = [v509 listeningServices];
-                                                  *&v502 = [v370 integerValue];
+                                                  listeningServices2 = [v509 listeningServices];
+                                                  *&v502 = [listeningServices2 integerValue];
 
                                                   v371 = qword_100BCE960;
                                                   if (os_log_type_enabled(v371, OS_LOG_TYPE_DEFAULT))
@@ -2112,21 +2112,21 @@ LABEL_488:
                                                     v486 = v502;
                                                   }
 
-                                                  LODWORD(v489) = (v502 >> 7) & 7;
+                                                  LODWORD(buttonModes) = (v502 >> 7) & 7;
                                                   v372 = qword_100BCE960;
                                                   if (os_log_type_enabled(v372, OS_LOG_TYPE_DEFAULT))
                                                   {
-                                                    *v575 = __PAIR64__(v489, v487);
+                                                    *v575 = __PAIR64__(buttonModes, v487);
                                                     _os_log_impl(&_mh_execute_header, v372, OS_LOG_TYPE_DEFAULT, "Cloud: Retrieved listening services V1 from cloud: %d", v575, 8u);
                                                   }
 
-                                                  v373 = [v509 listeningServicesV2];
-                                                  v493 = [v373 integerValue];
+                                                  listeningServicesV2 = [v509 listeningServicesV2];
+                                                  settingsMask = [listeningServicesV2 integerValue];
 
                                                   v374 = qword_100BCE960;
                                                   if (os_log_type_enabled(v374, OS_LOG_TYPE_DEFAULT))
                                                   {
-                                                    *v575 = __PAIR64__(v493, v487);
+                                                    *v575 = __PAIR64__(settingsMask, v487);
                                                     _os_log_impl(&_mh_execute_header, v374, OS_LOG_TYPE_DEFAULT, "Cloud: Retrieved listening services V2 from cloud: %d", v575, 8u);
                                                   }
 
@@ -2142,25 +2142,25 @@ LABEL_488:
                                                     sub_100540890(v507, 1, 1);
                                                   }
 
-                                                  v376 = [v509 buttonModes];
-                                                  v377 = [v376 intValue];
+                                                  buttonModes2 = [v509 buttonModes];
+                                                  intValue = [buttonModes2 intValue];
 
                                                   v378 = qword_100BCE960;
                                                   if (os_log_type_enabled(v378, OS_LOG_TYPE_DEFAULT))
                                                   {
                                                     *v575 = v487;
-                                                    *&v575[4] = v377;
+                                                    *&v575[4] = intValue;
                                                     _os_log_impl(&_mh_execute_header, v378, OS_LOG_TYPE_DEFAULT, "Cloud: Retrieved button Modes from cloud: %d", v575, 8u);
                                                   }
 
-                                                  v379 = v377 & 0xF;
-                                                  v380 = v379 | (v377 >> 4 << 8);
+                                                  v379 = intValue & 0xF;
+                                                  v380 = v379 | (intValue >> 4 << 8);
                                                   v381 = qword_100BCE960;
                                                   if (os_log_type_enabled(v381, OS_LOG_TYPE_DEFAULT))
                                                   {
                                                     *v575 = v487;
-                                                    v575[4] = v377 & 0xF;
-                                                    v575[5] = v377 >> 4;
+                                                    v575[4] = intValue & 0xF;
+                                                    v575[5] = intValue >> 4;
                                                     _os_log_impl(&_mh_execute_header, v381, OS_LOG_TYPE_DEFAULT, "Cloud: Retrieved double tap from cloud: %d", v575, 8u);
                                                   }
 
@@ -2169,10 +2169,10 @@ LABEL_488:
                                                     sub_10084F6EC();
                                                   }
 
-                                                  v382 = sub_10033BE98(off_100B50948, v507, v377 & 0xF | ((v377 >> 4) << 8), (v491 >> 4) & 1);
+                                                  v382 = sub_10033BE98(off_100B50948, v507, intValue & 0xF | ((intValue >> 4) << 8), (supportedServices >> 4) & 1);
                                                   if (v380 == v382)
                                                   {
-                                                    v383 = v377 >> 4;
+                                                    v383 = intValue >> 4;
                                                   }
 
                                                   else
@@ -2199,7 +2199,7 @@ LABEL_488:
                                                       _os_log_impl(&_mh_execute_header, v385, OS_LOG_TYPE_DEFAULT, "Cloud: Updating double tap settings from cloud", v575, 2u);
                                                     }
 
-                                                    if ((v491 & 8) != 0)
+                                                    if ((supportedServices & 8) != 0)
                                                     {
                                                       if (qword_100B50950 != -1)
                                                       {
@@ -2210,14 +2210,14 @@ LABEL_488:
                                                     }
                                                   }
 
-                                                  if ((v491 & 3) == 2)
+                                                  if ((supportedServices & 3) == 2)
                                                   {
                                                     v386 = 2;
                                                   }
 
                                                   else
                                                   {
-                                                    v386 = (v491 & 3) == 1;
+                                                    v386 = (supportedServices & 3) == 1;
                                                   }
 
                                                   if (sub_1000E3314(v507) != v386)
@@ -2230,9 +2230,9 @@ LABEL_488:
                                                     sub_10033DA80(off_100B50948, v507, v386, 4u);
                                                   }
 
-                                                  if (v488)
+                                                  if (color)
                                                   {
-                                                    sub_10054AE4C(v507, v488);
+                                                    sub_10054AE4C(v507, color);
                                                     v387 = qword_100BCE960;
                                                     if (os_log_type_enabled(v387, OS_LOG_TYPE_DEFAULT))
                                                     {
@@ -2258,7 +2258,7 @@ LABEL_488:
                                                     }
                                                   }
 
-                                                  v392 = v491 & 4;
+                                                  v392 = supportedServices & 4;
                                                   v393 = qword_100BCE960;
                                                   if (os_log_type_enabled(v393, OS_LOG_TYPE_DEFAULT))
                                                   {
@@ -2272,7 +2272,7 @@ LABEL_488:
                                                       v397 = v395;
                                                     }
 
-                                                    if ((v491 & 4) != 0)
+                                                    if ((supportedServices & 4) != 0)
                                                     {
                                                       v398 = "Enabled";
                                                     }
@@ -2417,7 +2417,7 @@ LABEL_668:
 
                                                   v411 = qword_100BCE960;
                                                   v412 = os_log_type_enabled(v411, OS_LOG_TYPE_DEFAULT);
-                                                  if (v493 && (v493 & 7) == v489)
+                                                  if (settingsMask && (settingsMask & 7) == buttonModes)
                                                   {
                                                     if (v412)
                                                     {
@@ -2436,7 +2436,7 @@ LABEL_668:
                                                       *&v575[12] = 1024;
                                                       *&v575[14] = v415;
                                                       *&v575[18] = 1024;
-                                                      *&v575[20] = v493;
+                                                      *&v575[20] = settingsMask;
                                                       _os_log_impl(&_mh_execute_header, v411, OS_LOG_TYPE_DEFAULT, "Cloud: Listening mode config update is from new services layer for device %{public}s, current value: %d, cloud configs(LSv2): %d", v575, 0x18u);
                                                       if (SHIBYTE(v580.__r_.__value_.__r.__words[2]) < 0)
                                                       {
@@ -2458,7 +2458,7 @@ LABEL_668:
                                                       *&v575[12] = 1024;
                                                       *&v575[14] = v418;
                                                       *&v575[18] = 1024;
-                                                      *&v575[20] = v419 | v489;
+                                                      *&v575[20] = v419 | buttonModes;
                                                       _os_log_impl(&_mh_execute_header, v411, OS_LOG_TYPE_DEFAULT, "Cloud: Listening mode config update for device %{public}s, current value: %d, cloud configs(+adaptive support): %d", v575, 0x18u);
                                                       if (SHIBYTE(v580.__r_.__value_.__r.__words[2]) < 0)
                                                       {
@@ -2466,10 +2466,10 @@ LABEL_668:
                                                       }
                                                     }
 
-                                                    v493 = sub_1000E32CC(v507) | v489;
+                                                    settingsMask = sub_1000E32CC(v507) | buttonModes;
                                                   }
 
-                                                  if (!sub_100546C50(v507, v493))
+                                                  if (!sub_100546C50(v507, settingsMask))
                                                   {
                                                     v420 = qword_100BCE960;
                                                     if (os_log_type_enabled(v420, OS_LOG_TYPE_ERROR))
@@ -2491,17 +2491,17 @@ LABEL_668:
                                                       }
                                                     }
 
-                                                    v493 = 6;
+                                                    settingsMask = 6;
                                                   }
 
-                                                  if (sub_1000E32CC(v507) != v493)
+                                                  if (sub_1000E32CC(v507) != settingsMask)
                                                   {
                                                     if (qword_100B50950 != -1)
                                                     {
                                                       sub_10084F6EC();
                                                     }
 
-                                                    sub_100331844(off_100B50948, v507, 26, v493, 4u);
+                                                    sub_100331844(off_100B50948, v507, 26, settingsMask, 4u);
                                                     v421 = qword_100BCE960;
                                                     if (os_log_type_enabled(v421, OS_LOG_TYPE_DEFAULT))
                                                     {
@@ -2717,14 +2717,14 @@ LABEL_668:
                                 {
                                   sub_1000E5A58(v507, &v580);
                                   v450 = (v580.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0 ? &v580 : v580.__r_.__value_.__r.__words[0];
-                                  v451 = [v509 optimizedBatteryCharging];
-                                  v452 = [v509 optimizedBatteryFullChargeDeadline];
+                                  optimizedBatteryCharging = [v509 optimizedBatteryCharging];
+                                  optimizedBatteryFullChargeDeadline = [v509 optimizedBatteryFullChargeDeadline];
                                   *v575 = v498;
                                   *&v575[4] = v450;
                                   *&v575[12] = 2112;
-                                  *&v575[14] = v451;
+                                  *&v575[14] = optimizedBatteryCharging;
                                   *&v575[22] = 2112;
-                                  *&v575[24] = v452;
+                                  *&v575[24] = optimizedBatteryFullChargeDeadline;
                                   _os_log_impl(&_mh_execute_header, v449, OS_LOG_TYPE_DEFAULT, "Cloud: OBC PowerUI values updated for device %{public}s, optimizedBatteryCharging %@, optimizedBatteryFullChargeDeadline %@", v575, 0x20u);
 
                                   if (SHIBYTE(v580.__r_.__value_.__r.__words[2]) < 0)
@@ -2733,20 +2733,20 @@ LABEL_668:
                                   }
                                 }
 
-                                v453 = [v509 optimizedBatteryCharging];
-                                v454 = [v453 length] == 0;
+                                optimizedBatteryCharging2 = [v509 optimizedBatteryCharging];
+                                v454 = [optimizedBatteryCharging2 length] == 0;
 
                                 if (!v454)
                                 {
-                                  v455 = [v509 optimizedBatteryCharging];
-                                  v456 = [v455 longLongValue];
+                                  optimizedBatteryCharging3 = [v509 optimizedBatteryCharging];
+                                  longLongValue = [optimizedBatteryCharging3 longLongValue];
 
-                                  sub_10054B188(v507, v456);
+                                  sub_10054B188(v507, longLongValue);
                                   [(CloudPairing *)self audioAccessorySmartChargeStatusHasChangedFromCloud:v507];
                                 }
 
-                                v457 = [v509 optimizedBatteryFullChargeDeadline];
-                                v458 = [v457 length] == 0;
+                                optimizedBatteryFullChargeDeadline2 = [v509 optimizedBatteryFullChargeDeadline];
+                                v458 = [optimizedBatteryFullChargeDeadline2 length] == 0;
 
                                 if (!v458)
                                 {
@@ -2755,13 +2755,13 @@ LABEL_668:
                                   [v502 setTimeZone:v459];
 
                                   [v502 setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSSSSSZZZZZ"];
-                                  v460 = [v509 optimizedBatteryFullChargeDeadline];
-                                  v461 = [v502 dateFromString:v460];
+                                  optimizedBatteryFullChargeDeadline3 = [v509 optimizedBatteryFullChargeDeadline];
+                                  v461 = [v502 dateFromString:optimizedBatteryFullChargeDeadline3];
 
                                   v462 = [[PowerUISmartChargeClientAudioAccessories alloc] initWithClientName:@"com.apple.bluetooth"];
-                                  v463 = [v509 bluetoothAddress];
+                                  bluetoothAddress5 = [v509 bluetoothAddress];
                                   v510 = 0;
-                                  v464 = [v462 unfilteredDeadlineForDevice:v463 withError:&v510];
+                                  v464 = [v462 unfilteredDeadlineForDevice:bluetoothAddress5 withError:&v510];
                                   v465 = v510;
 
                                   if (v464 && ([v461 timeIntervalSinceDate:v464], v466 <= 0.0))
@@ -2864,8 +2864,8 @@ LABEL_771:
               goto LABEL_117;
             }
 
-            v232 = [(CloudPairing *)self iCloudSignedIn];
-            v233 = v12 ? v232 : 0;
+            iCloudSignedIn2 = [(CloudPairing *)self iCloudSignedIn];
+            v233 = v12 ? iCloudSignedIn2 : 0;
             if (v233 != 1)
             {
               goto LABEL_117;
@@ -2930,9 +2930,9 @@ LABEL_771:
                         WORD2(v570) = 0;
                         LODWORD(v570) = 0;
                         memset(v575, 0, 24);
-                        v242 = [v240 bluetoothAddress];
-                        v243 = v242;
-                        sub_100007E30(v575, [v242 UTF8String]);
+                        bluetoothAddress6 = [v240 bluetoothAddress];
+                        v243 = bluetoothAddress6;
+                        sub_100007E30(v575, [bluetoothAddress6 UTF8String]);
 
                         if (v575[23] >= 0)
                         {
@@ -3082,9 +3082,9 @@ LABEL_396:
           {
             v198 = [v12 debugDescription];
             v199 = v198;
-            v200 = [v198 UTF8String];
+            uTF8String3 = [v198 UTF8String];
             *v575 = 136446210;
-            *&v575[4] = v200;
+            *&v575[4] = uTF8String3;
             _os_log_impl(&_mh_execute_header, v197, OS_LOG_TYPE_DEFAULT, "Device support info updated from cloudkit = %{public}s", v575, 0xCu);
           }
 
@@ -3138,8 +3138,8 @@ LABEL_396:
                     objc_opt_class();
                     if (objc_opt_isKindOfClass())
                     {
-                      v206 = [v205 bluetoothAddress];
-                      v207 = sub_100777FF4(v206);
+                      bluetoothAddress7 = [v205 bluetoothAddress];
+                      v207 = sub_100777FF4(bluetoothAddress7);
 
                       if (v207)
                       {
@@ -3174,24 +3174,24 @@ LABEL_304:
                               }
                             }
 
-                            v212 = [(CloudPairing *)self cloudClient];
-                            v213 = [v205 bluetoothAddress];
+                            cloudClient2 = [(CloudPairing *)self cloudClient];
+                            bluetoothAddress8 = [v205 bluetoothAddress];
                             v532[0] = _NSConcreteStackBlock;
                             v532[1] = 3221225472;
                             v533[0] = sub_1005F4080;
                             v533[1] = &unk_100AFC8B8;
                             v533[3] = v209;
                             v533[2] = v205;
-                            [v212 deviceRecord:v213 completion:v532];
+                            [cloudClient2 deviceRecord:bluetoothAddress8 completion:v532];
 
-                            v214 = [v205 ancAssetVersion];
-                            LODWORD(v213) = [v214 length] > 1;
+                            ancAssetVersion = [v205 ancAssetVersion];
+                            LODWORD(bluetoothAddress8) = [ancAssetVersion length] > 1;
 
-                            if (v213)
+                            if (bluetoothAddress8)
                             {
-                              v215 = [v205 ancAssetVersion];
-                              v216 = v215;
-                              sub_100007E30(&v531, [v215 UTF8String]);
+                              ancAssetVersion2 = [v205 ancAssetVersion];
+                              v216 = ancAssetVersion2;
+                              sub_100007E30(&v531, [ancAssetVersion2 UTF8String]);
                               sub_100541E60(v209, &v531);
                               if (SHIBYTE(v531.__r_.__value_.__r.__words[2]) < 0)
                               {
@@ -3202,8 +3202,8 @@ LABEL_304:
                             memset(v575, 0, 56);
                             sub_100007E30(&v575[32], "");
                             sub_1000E0610(v209, v575);
-                            v217 = [v205 caseFirmwareVersion];
-                            v218 = v217 == 0;
+                            caseFirmwareVersion = [v205 caseFirmwareVersion];
+                            v218 = caseFirmwareVersion == 0;
 
                             if (v218 || ([v205 caseFirmwareVersion], v219 = objc_claimAutoreleasedReturnValue(), v220 = objc_msgSend(v219, "longLongValue"), v219, !v220))
                             {
@@ -3216,14 +3216,14 @@ LABEL_304:
                               LODWORD(v506) = 1;
                             }
 
-                            v221 = [v205 caseName];
-                            v222 = [v221 length] > 1;
+                            caseName = [v205 caseName];
+                            v222 = [caseName length] > 1;
 
                             if (v222)
                             {
-                              v223 = [v205 caseName];
-                              v224 = v223;
-                              std::string::assign(&v575[32], [v223 UTF8String]);
+                              caseName2 = [v205 caseName];
+                              v224 = caseName2;
+                              std::string::assign(&v575[32], [caseName2 UTF8String]);
 
 LABEL_328:
                               v228 = v575[0];
@@ -3316,11 +3316,11 @@ LABEL_337:
         {
           v155 = [v12 debugDescription];
           v156 = v155;
-          v157 = [v155 UTF8String];
+          uTF8String4 = [v155 UTF8String];
           *v575 = 141558275;
           *&v575[4] = 1752392040;
           *&v575[12] = 2081;
-          *&v575[14] = v157;
+          *&v575[14] = uTF8String4;
           _os_log_impl(&_mh_execute_header, v154, OS_LOG_TYPE_DEFAULT, "Devices nickname info updated from cloudkit = %{private, mask.hash}s", v575, 0x16u);
         }
 
@@ -3382,9 +3382,9 @@ LABEL_337:
                     WORD2(v569) = 0;
                     LODWORD(v569) = 0;
                     memset(v581, 0, sizeof(v581));
-                    v163 = [v162 bluetoothAddress];
-                    v164 = v163;
-                    sub_100007E30(v581, [v163 UTF8String]);
+                    bluetoothAddress9 = [v162 bluetoothAddress];
+                    v164 = bluetoothAddress9;
+                    sub_100007E30(v581, [bluetoothAddress9 UTF8String]);
 
                     if (SHIBYTE(v581[2]) >= 0)
                     {
@@ -3410,12 +3410,12 @@ LABEL_221:
                         if (v507)
                         {
                           v166 = sub_100432918();
-                          v167 = [v162 bluetoothAddress];
-                          v168 = v167;
-                          sub_100007E30(v544, [v167 UTF8String]);
-                          v169 = [v162 nickname];
-                          v170 = v169;
-                          sub_100007E30(v542, [v169 UTF8String]);
+                          bluetoothAddress10 = [v162 bluetoothAddress];
+                          v168 = bluetoothAddress10;
+                          sub_100007E30(v544, [bluetoothAddress10 UTF8String]);
+                          nickname = [v162 nickname];
+                          v170 = nickname;
+                          sub_100007E30(v542, [nickname UTF8String]);
                           (*(*v166 + 176))(v166, v544, v542);
                           if (v543 < 0)
                           {
@@ -3462,13 +3462,13 @@ LABEL_221:
                             }
                           }
 
-                          v176 = [v162 vendorID];
-                          v177 = [v176 integerValue];
+                          vendorID2 = [v162 vendorID];
+                          integerValue3 = [vendorID2 integerValue];
 
-                          v178 = [v162 productID];
-                          v179 = [v178 integerValue];
+                          productID2 = [v162 productID];
+                          integerValue4 = [productID2 integerValue];
 
-                          if (v177 && v179)
+                          if (integerValue3 && integerValue4)
                           {
                             if (v520 <= 1)
                             {
@@ -3490,9 +3490,9 @@ LABEL_221:
                                 v182 = v580.__r_.__value_.__r.__words[0];
                               }
 
-                              *v575 = __PAIR64__(v177, v502);
+                              *v575 = __PAIR64__(integerValue3, v502);
                               *&v575[8] = 1024;
-                              *&v575[10] = v179;
+                              *&v575[10] = integerValue4;
                               *&v575[14] = 1024;
                               *&v575[16] = v180;
                               *&v575[20] = 2082;
@@ -3504,14 +3504,14 @@ LABEL_221:
                               }
                             }
 
-                            sub_10053D890(v507, v180, v177, v179, v568.n128_i32[0]);
+                            sub_10053D890(v507, v180, integerValue3, integerValue4, v568.n128_i32[0]);
                             sub_10053E630(v507);
                           }
 
-                          v183 = [CBProductInfo productInfoWithProductID:v179];
-                          v184 = [v183 productName];
+                          v183 = [CBProductInfo productInfoWithProductID:integerValue4];
+                          productName2 = [v183 productName];
 
-                          if (v184 && ([v184 isEqualToString:@"Unknown"] & 1) == 0 && objc_msgSend(v184, "length"))
+                          if (productName2 && ([productName2 isEqualToString:@"Unknown"] & 1) == 0 && objc_msgSend(productName2, "length"))
                           {
                             sub_1000C23E0(v507, v575);
                             v185 = v575[23];
@@ -3524,8 +3524,8 @@ LABEL_221:
                             if (v185)
                             {
                               sub_1000C23E0(v507, &v580);
-                              v187 = v184;
-                              v188 = std::string::compare(&v580, [v184 UTF8String]) != 0;
+                              v187 = productName2;
+                              v188 = std::string::compare(&v580, [productName2 UTF8String]) != 0;
                               if (SHIBYTE(v580.__r_.__value_.__r.__words[2]) < 0)
                               {
                                 operator delete(v580.__r_.__value_.__l.__data_);
@@ -3546,7 +3546,7 @@ LABEL_221:
 
                             if (v188)
                             {
-                              sub_100007E30(v575, [v184 utf8ValueSafe]);
+                              sub_100007E30(v575, [productName2 utf8ValueSafe]);
                               *&v570 = 0;
                               sub_100016250(&v570);
                               v580.__r_.__value_.__r.__words[0] = v570;
@@ -3715,8 +3715,8 @@ LABEL_119:
 {
   if (_os_feature_enabled_impl() && (sub_1005FCCC4() & 1) != 0)
   {
-    v4 = [(CloudPairing *)self cloudClient];
-    [v4 fetchSoundProfileRecordWithCompletion:&stru_100B01290];
+    cloudClient = [(CloudPairing *)self cloudClient];
+    [cloudClient fetchSoundProfileRecordWithCompletion:&stru_100B01290];
   }
 
   else
@@ -3732,12 +3732,12 @@ LABEL_119:
 
 - (void)resetServerConnection
 {
-  v3 = [(CloudPairing *)self serverConnection];
+  serverConnection = [(CloudPairing *)self serverConnection];
 
-  if (v3)
+  if (serverConnection)
   {
-    v4 = [(CloudPairing *)self serverConnection];
-    xpc_connection_cancel(v4);
+    serverConnection2 = [(CloudPairing *)self serverConnection];
+    xpc_connection_cancel(serverConnection2);
 
     [(CloudPairing *)self setServerConnection:0];
   }
@@ -3746,11 +3746,11 @@ LABEL_119:
   mach_service = xpc_connection_create_mach_service("com.apple.BTServer.cloudpairing", v5, 0);
   [(CloudPairing *)self setServerConnection:mach_service];
 
-  v7 = [(CloudPairing *)self serverConnection];
+  serverConnection3 = [(CloudPairing *)self serverConnection];
 
   v8 = qword_100BCE8E8;
   v9 = os_log_type_enabled(qword_100BCE8E8, OS_LOG_TYPE_INFO);
-  if (v7)
+  if (serverConnection3)
   {
     if (v9)
     {
@@ -3758,11 +3758,11 @@ LABEL_119:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Connected to cloudpaird", buf, 2u);
     }
 
-    v10 = [(CloudPairing *)self serverConnection];
-    xpc_connection_set_event_handler(v10, &stru_100B012D0);
+    serverConnection4 = [(CloudPairing *)self serverConnection];
+    xpc_connection_set_event_handler(serverConnection4, &stru_100B012D0);
 
-    v11 = [(CloudPairing *)self serverConnection];
-    xpc_connection_resume(v11);
+    serverConnection5 = [(CloudPairing *)self serverConnection];
+    xpc_connection_resume(serverConnection5);
 
     if ([(NSMutableDictionary *)self->_idsMultiUsersDictionary count])
     {
@@ -3784,10 +3784,10 @@ LABEL_119:
   }
 }
 
-- (void)cloudpairdReplyMsg:(id)a3 args:(id)a4
+- (void)cloudpairdReplyMsg:(id)msg args:(id)args
 {
-  v6 = a3;
-  v7 = a4;
+  msgCopy = msg;
+  argsCopy = args;
   if ([(CloudPairing *)self isRunningInRecovery])
   {
     v8 = qword_100BCE8E8;
@@ -3800,22 +3800,22 @@ LABEL_119:
 
   else
   {
-    reply = xpc_dictionary_create_reply(v6);
-    if (v7)
+    reply = xpc_dictionary_create_reply(msgCopy);
+    if (argsCopy)
     {
       v10 = _CFXPCCreateXPCObjectFromCFObject();
       xpc_dictionary_set_value(reply, "kMsgArgs", v10);
     }
 
-    v11 = xpc_dictionary_get_remote_connection(v6);
+    v11 = xpc_dictionary_get_remote_connection(msgCopy);
     xpc_connection_send_message(v11, reply);
   }
 }
 
-- (void)cloudpairdMsg:(id)a3 args:(id)a4
+- (void)cloudpairdMsg:(id)msg args:(id)args
 {
-  v6 = a3;
-  v7 = a4;
+  msgCopy = msg;
+  argsCopy = args;
   if ([(CloudPairing *)self isRunningInRecovery])
   {
     v8 = qword_100BCE8E8;
@@ -3828,89 +3828,89 @@ LABEL_119:
 
   else
   {
-    v9 = [(CloudPairing *)self serverConnection];
+    serverConnection = [(CloudPairing *)self serverConnection];
 
-    if (!v9)
+    if (!serverConnection)
     {
       [(CloudPairing *)self resetServerConnection];
     }
 
-    v10 = [(CloudPairing *)self serverConnection];
+    serverConnection2 = [(CloudPairing *)self serverConnection];
 
     v11 = qword_100BCE8E8;
-    if (v10)
+    if (serverConnection2)
     {
       if (os_log_type_enabled(qword_100BCE8E8, OS_LOG_TYPE_DEFAULT))
       {
         v16 = 138412803;
-        v17 = v6;
+        v17 = msgCopy;
         v18 = 2160;
         v19 = 1752392040;
         v20 = 2113;
-        v21 = v7;
+        v21 = argsCopy;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "CloudPairing: Send message: %@ - %{private, mask.hash}@", &v16, 0x20u);
       }
 
       v12 = xpc_dictionary_create(0, 0, 0);
-      v13 = v6;
-      xpc_dictionary_set_string(v12, "kMsgId", [v6 UTF8String]);
-      if (v7)
+      v13 = msgCopy;
+      xpc_dictionary_set_string(v12, "kMsgId", [msgCopy UTF8String]);
+      if (argsCopy)
       {
         v14 = _CFXPCCreateXPCMessageWithCFObject();
         xpc_dictionary_set_value(v12, "kMsgArgs", v14);
       }
 
-      v15 = [(CloudPairing *)self serverConnection];
-      xpc_connection_send_message(v15, v12);
+      serverConnection3 = [(CloudPairing *)self serverConnection];
+      xpc_connection_send_message(serverConnection3, v12);
     }
 
     else
     {
-      sub_10084FA38(qword_100BCE8E8, v6, v7);
+      sub_10084FA38(qword_100BCE8E8, msgCopy, argsCopy);
     }
   }
 }
 
-- (void)registerWithCloudPairedDevices:(id)a3 identifiers:(id)a4
+- (void)registerWithCloudPairedDevices:(id)devices identifiers:(id)identifiers
 {
-  v6 = a3;
-  v7 = a4;
+  devicesCopy = devices;
+  identifiersCopy = identifiers;
   v8 = qword_100BCE8E8;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v7 componentsJoinedByString:{@", "}];
+    v9 = [identifiersCopy componentsJoinedByString:{@", "}];
     *buf = 136315138;
-    v22 = [v9 UTF8String];
+    uTF8String = [v9 UTF8String];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Locally paired iCloud identifiers: [ %s ]", buf, 0xCu);
   }
 
   v10 = qword_100BCE8E8;
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v6 componentsJoinedByString:{@", "}];
+    v11 = [devicesCopy componentsJoinedByString:{@", "}];
     v12 = v11;
-    v13 = [v11 UTF8String];
+    uTF8String2 = [v11 UTF8String];
     *buf = 136315138;
-    v22 = v13;
+    uTF8String = uTF8String2;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Locally paired iCloud BTUUIDs: [ %s ]", buf, 0xCu);
   }
 
-  v14 = [NSArray arrayWithArray:v6];
+  v14 = [NSArray arrayWithArray:devicesCopy];
   cloudLocalUUIDs = self->_cloudLocalUUIDs;
   self->_cloudLocalUUIDs = v14;
 
-  v16 = [NSArray arrayWithArray:v7];
+  v16 = [NSArray arrayWithArray:identifiersCopy];
   cloudidsIdentifiers = self->_cloudidsIdentifiers;
   self->_cloudidsIdentifiers = v16;
 
   objc_initWeak(buf, self);
-  v18 = [(CloudPairing *)self serialQueue];
+  serialQueue = [(CloudPairing *)self serialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1005F5750;
   block[3] = &unk_100AEB0C0;
   objc_copyWeak(&v20, buf);
-  dispatch_async(v18, block);
+  dispatch_async(serialQueue, block);
 
   objc_destroyWeak(&v20);
   objc_destroyWeak(buf);
@@ -3946,23 +3946,23 @@ LABEL_119:
   v7 = qword_100BCE8E8;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(CloudPairing *)self currentIDSUser];
-    if (v8)
+    currentIDSUser = [(CloudPairing *)self currentIDSUser];
+    if (currentIDSUser)
     {
-      v2 = [(CloudPairing *)self currentIDSUser];
-      v9 = v2;
-      v10 = [v2 UTF8String];
+      currentIDSUser2 = [(CloudPairing *)self currentIDSUser];
+      v9 = currentIDSUser2;
+      uTF8String = [currentIDSUser2 UTF8String];
     }
 
     else
     {
-      v10 = "none";
+      uTF8String = "none";
     }
 
     v17 = 136315138;
-    v18 = v10;
+    v18 = uTF8String;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "statedump: Current IDS user: %s", &v17, 0xCu);
-    if (v8)
+    if (currentIDSUser)
     {
     }
   }
@@ -3970,23 +3970,23 @@ LABEL_119:
   v11 = qword_100BCE8E8;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(CloudPairing *)self currentUserRandomAddress];
-    if (v12)
+    currentUserRandomAddress = [(CloudPairing *)self currentUserRandomAddress];
+    if (currentUserRandomAddress)
     {
-      v2 = [(CloudPairing *)self currentUserRandomAddress];
-      v13 = v2;
-      v14 = [v2 UTF8String];
+      currentIDSUser2 = [(CloudPairing *)self currentUserRandomAddress];
+      v13 = currentIDSUser2;
+      uTF8String2 = [currentIDSUser2 UTF8String];
     }
 
     else
     {
-      v14 = "none";
+      uTF8String2 = "none";
     }
 
     v17 = 136315138;
-    v18 = v14;
+    v18 = uTF8String2;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "statedump: Current user's RSA: %s", &v17, 0xCu);
-    if (v12)
+    if (currentUserRandomAddress)
     {
     }
   }
@@ -4029,22 +4029,22 @@ LABEL_119:
   return [(CloudPairing *)self iCloudSignedIn];
 }
 
-- (BOOL)handleXPCUnpairCommand:(id)a3
+- (BOOL)handleXPCUnpairCommand:(id)command
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"PublicAddress"];
+  commandCopy = command;
+  v4 = [commandCopy objectForKeyedSubscript:@"PublicAddress"];
   v5 = [NSString stringWithFormat:@"Public %@", v4];
   v6 = sub_100777FF4(v5);
 
-  v7 = [v3 objectForKeyedSubscript:@"RandomAddress"];
+  v7 = [commandCopy objectForKeyedSubscript:@"RandomAddress"];
   v8 = [NSString stringWithFormat:@"Random %@", v7];
   v9 = sub_100777FF4(v8);
 
   v10 = (v6 | v9) != 0;
   if (v6 | v9)
   {
-    v11 = [v3 objectForKeyedSubscript:@"kCloudDeviceUniqueID"];
-    v12 = [v3 objectForKeyedSubscript:@"kCloudPairingID"];
+    v11 = [commandCopy objectForKeyedSubscript:@"kCloudDeviceUniqueID"];
+    v12 = [commandCopy objectForKeyedSubscript:@"kCloudPairingID"];
     v13 = v12;
     if (v11 && v12)
     {
@@ -4212,8 +4212,8 @@ LABEL_53:
     goto LABEL_53;
   }
 
-  v20 = [v3 objectForKeyedSubscript:@"PublicAddress"];
-  v21 = [v3 objectForKeyedSubscript:@"RandomAddress"];
+  v20 = [commandCopy objectForKeyedSubscript:@"PublicAddress"];
+  v21 = [commandCopy objectForKeyedSubscript:@"RandomAddress"];
   v11 = [NSString stringWithFormat:@"Invalid public address %@ and Invalid random address %@", v20, v21];
 
   v22 = qword_100BCE8E8;
@@ -4229,10 +4229,10 @@ LABEL_54:
   return v10;
 }
 
-- (id)generateKeyDictForTypes:(id)a3 keyLength:(unint64_t)a4 forAddress:(id)a5
+- (id)generateKeyDictForTypes:(id)types keyLength:(unint64_t)length forAddress:(id)address
 {
-  v8 = a3;
-  v9 = a5;
+  typesCopy = types;
+  addressCopy = address;
   if (!self->_keysGenerated)
   {
     [(CloudPairing *)self generateKeys];
@@ -4243,7 +4243,7 @@ LABEL_54:
   }
 
   v10 = +[NSMutableDictionary dictionary];
-  if (![v8 containsObject:@"EncryptionKeys"])
+  if (![typesCopy containsObject:@"EncryptionKeys"])
   {
     goto LABEL_17;
   }
@@ -4270,9 +4270,9 @@ LABEL_54:
       goto LABEL_28;
     }
 
-    if (a4 != 16)
+    if (length != 16)
     {
-      bzero(v23 + a4, 16 - a4);
+      bzero(v23 + length, 16 - length);
     }
 
     if (sub_100240328(self->_encryptionRootKey, SHIWORD(__buf), 1, v22))
@@ -4288,7 +4288,7 @@ LABEL_54:
     v11 = [NSData dataWithBytes:v23 length:16];
     [v10 setObject:v11 forKeyedSubscript:@"LTK"];
 
-    v12 = [NSNumber numberWithUnsignedInteger:a4];
+    v12 = [NSNumber numberWithUnsignedInteger:length];
     [v10 setObject:v12 forKeyedSubscript:@"LTKLength"];
 
     [v10 setObject:&off_100B33990 forKeyedSubscript:@"LTKType"];
@@ -4299,7 +4299,7 @@ LABEL_54:
     [v10 setObject:v14 forKeyedSubscript:@"RAND"];
 
 LABEL_17:
-    if ([v8 containsObject:@"PublicKeys"])
+    if ([typesCopy containsObject:@"PublicKeys"])
     {
       v15 = [NSData dataWithBytes:self->_cloudPublicKey length:64];
       [v10 setObject:v15 forKeyedSubscript:@"CloudPublicKey"];
@@ -4308,11 +4308,11 @@ LABEL_17:
       [v10 setObject:v16 forKeyedSubscript:@"CloudNonce"];
     }
 
-    if ([v8 containsObject:@"IdentityKeys"])
+    if ([typesCopy containsObject:@"IdentityKeys"])
     {
-      if (v9)
+      if (addressCopy)
       {
-        v17 = [(CloudPairing *)self getIRKForRandomStaticAddress:v9];
+        v17 = [(CloudPairing *)self getIRKForRandomStaticAddress:addressCopy];
         if (!v17)
         {
           if (os_log_type_enabled(qword_100BCE8E8, OS_LOG_TYPE_ERROR))
@@ -4349,12 +4349,12 @@ LABEL_29:
   return v18;
 }
 
-- (id)generateCloudPairingIDWithResponse:(id)a3 localKeys:(id)a4 from:(id)a5 forProtocolID:(id)a6
+- (id)generateCloudPairingIDWithResponse:(id)response localKeys:(id)keys from:(id)from forProtocolID:(id)d
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  responseCopy = response;
+  keysCopy = keys;
+  fromCopy = from;
+  dCopy = d;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -4368,13 +4368,13 @@ LABEL_29:
   v21[3] = &unk_100B01338;
   v26 = &v27;
   v21[4] = self;
-  v15 = v10;
+  v15 = responseCopy;
   v22 = v15;
-  v16 = v11;
+  v16 = keysCopy;
   v23 = v16;
-  v17 = v12;
+  v17 = fromCopy;
   v24 = v17;
-  v18 = v13;
+  v18 = dCopy;
   v25 = v18;
   sub_1005711EC(v14, v21);
   v19 = v28[5];
@@ -4384,12 +4384,12 @@ LABEL_29:
   return v19;
 }
 
-- (id)_generateCloudPairingIDWithResponse:(id)a3 localKeys:(id)a4 from:(id)a5 forProtocolID:(id)a6
+- (id)_generateCloudPairingIDWithResponse:(id)response localKeys:(id)keys from:(id)from forProtocolID:(id)d
 {
-  v10 = a3;
-  v13 = a4;
-  v15 = a5;
-  v14 = a6;
+  responseCopy = response;
+  keysCopy = keys;
+  fromCopy = from;
+  dCopy = d;
   if (self->_keysGenerated || [(CloudPairing *)self _generateKeys])
   {
     v11 = qword_100BCE8E8;
@@ -4399,13 +4399,13 @@ LABEL_29:
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Keys available or generated", buf, 2u);
     }
 
-    [v10 objectForKeyedSubscript:@"DeviceName"];
+    [responseCopy objectForKeyedSubscript:@"DeviceName"];
     objc_claimAutoreleasedReturnValue();
-    [v10 objectForKeyedSubscript:@"RequestedKeyType"];
+    [responseCopy objectForKeyedSubscript:@"RequestedKeyType"];
     objc_claimAutoreleasedReturnValue();
-    [v10 objectForKeyedSubscript:@"RequestedKeys"];
+    [responseCopy objectForKeyedSubscript:@"RequestedKeys"];
     objc_claimAutoreleasedReturnValue();
-    [v10 objectForKeyedSubscript:@"IDSLocalRandomAddress"];
+    [responseCopy objectForKeyedSubscript:@"IDSLocalRandomAddress"];
     objc_claimAutoreleasedReturnValue();
     operator new();
   }
@@ -4418,19 +4418,19 @@ LABEL_29:
   return 0;
 }
 
-- (id)readUserPreference:(id)a3
+- (id)readUserPreference:(id)preference
 {
-  v3 = CFPreferencesCopyValue(a3, @"com.apple.CoreBluetooth.cloud", kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
+  v3 = CFPreferencesCopyValue(preference, @"com.apple.CoreBluetooth.cloud", kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
 
   return v3;
 }
 
-- (void)setuserPreference:(id)a3 value:(id)a4 sync:(BOOL)a5
+- (void)setuserPreference:(id)preference value:(id)value sync:(BOOL)sync
 {
-  v7 = a3;
-  v8 = a4;
-  CFPreferencesSetValue(v7, v8, @"com.apple.CoreBluetooth.cloud", kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
-  if (a5 && !CFPreferencesSynchronize(@"com.apple.CoreBluetooth.cloud", kCFPreferencesCurrentUser, kCFPreferencesAnyHost))
+  preferenceCopy = preference;
+  valueCopy = value;
+  CFPreferencesSetValue(preferenceCopy, valueCopy, @"com.apple.CoreBluetooth.cloud", kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
+  if (sync && !CFPreferencesSynchronize(@"com.apple.CoreBluetooth.cloud", kCFPreferencesCurrentUser, kCFPreferencesAnyHost))
   {
     v9 = qword_100BCE8E8;
     if (os_log_type_enabled(qword_100BCE8E8, OS_LOG_TYPE_DEFAULT))
@@ -4441,11 +4441,11 @@ LABEL_29:
   }
 }
 
-- (void)removeuserPreference:(id)a3 sync:(BOOL)a4
+- (void)removeuserPreference:(id)preference sync:(BOOL)sync
 {
-  v5 = a3;
-  CFPreferencesSetValue(v5, 0, @"com.apple.CoreBluetooth.cloud", kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
-  if (a4 && !CFPreferencesSynchronize(@"com.apple.CoreBluetooth.cloud", kCFPreferencesCurrentUser, kCFPreferencesAnyHost))
+  preferenceCopy = preference;
+  CFPreferencesSetValue(preferenceCopy, 0, @"com.apple.CoreBluetooth.cloud", kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
+  if (sync && !CFPreferencesSynchronize(@"com.apple.CoreBluetooth.cloud", kCFPreferencesCurrentUser, kCFPreferencesAnyHost))
   {
     v6 = qword_100BCE8E8;
     if (os_log_type_enabled(qword_100BCE8E8, OS_LOG_TYPE_DEFAULT))
@@ -4456,15 +4456,15 @@ LABEL_29:
   }
 }
 
-- (id)createBluetoothAddressForIDSLocalDevice:(id)a3
+- (id)createBluetoothAddressForIDSLocalDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = qword_100BCE8E8;
   if (os_log_type_enabled(qword_100BCE8E8, OS_LOG_TYPE_DEFAULT))
   {
     idsMultiUsersDictionary = self->_idsMultiUsersDictionary;
     *buf = 138412546;
-    *&buf[4] = v4;
+    *&buf[4] = deviceCopy;
     *&buf[12] = 2112;
     *&buf[14] = idsMultiUsersDictionary;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "MUC - create RSA for local IDS device: %@, current users: %@", buf, 0x16u);
@@ -4487,7 +4487,7 @@ LABEL_29:
   v28[1] = 3221225472;
   v28[2] = sub_1005F94A4;
   v28[3] = &unk_100B01360;
-  v9 = v4;
+  v9 = deviceCopy;
   v29 = v9;
   v30 = buf;
   [(NSMutableDictionary *)v8 enumerateKeysAndObjectsUsingBlock:v28];
@@ -4590,15 +4590,15 @@ LABEL_7:
   return v10;
 }
 
-- (void)resetDataForIDSLocalDevice:(id)a3
+- (void)resetDataForIDSLocalDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = qword_100BCE8E8;
   if (os_log_type_enabled(qword_100BCE8E8, OS_LOG_TYPE_DEFAULT))
   {
     idsMultiUsersDictionary = self->_idsMultiUsersDictionary;
     *buf = 138412546;
-    *&buf[4] = v4;
+    *&buf[4] = deviceCopy;
     *&buf[12] = 2112;
     *&buf[14] = idsMultiUsersDictionary;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "MUC - Reset data for local IDS device: %@, current users: %@", buf, 0x16u);
@@ -4617,7 +4617,7 @@ LABEL_7:
     v9[1] = 3221225472;
     v9[2] = sub_1005F980C;
     v9[3] = &unk_100B01360;
-    v10 = v4;
+    v10 = deviceCopy;
     v11 = buf;
     [(NSMutableDictionary *)v7 enumerateKeysAndObjectsUsingBlock:v9];
     if (*(*&buf[8] + 40))
@@ -4638,11 +4638,11 @@ LABEL_7:
   _Block_object_dispose(buf, 8);
 }
 
-- (id)getIRKForRandomStaticAddress:(id)a3
+- (id)getIRKForRandomStaticAddress:(id)address
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  addressCopy = address;
+  v5 = addressCopy;
+  if (addressCopy)
   {
     v12 = 0;
     v13 = &v12;
@@ -4655,7 +4655,7 @@ LABEL_7:
     v9[1] = 3221225472;
     v9[2] = sub_1005F9AA0;
     v9[3] = &unk_100B01360;
-    v10 = v4;
+    v10 = addressCopy;
     v11 = &v12;
     [(NSMutableDictionary *)idsMultiUsersDictionary enumerateKeysAndObjectsUsingBlock:v9];
     v7 = v13[5];
@@ -4671,14 +4671,14 @@ LABEL_7:
   return v7;
 }
 
-- (void)updateRandomAddressContinuityAdvInstance:(id)a3
+- (void)updateRandomAddressContinuityAdvInstance:(id)instance
 {
-  v4 = a3;
-  if (v4)
+  instanceCopy = instance;
+  if (instanceCopy)
   {
     if ([(CloudPairing *)self multipleAdvInitialized])
     {
-      v5 = [(CloudPairing *)self getIRKForRandomStaticAddress:v4];
+      v5 = [(CloudPairing *)self getIRKForRandomStaticAddress:instanceCopy];
       if (v5)
       {
         v10 = 0;
@@ -4736,27 +4736,27 @@ LABEL_7:
   }
 }
 
-- (void)updateCurrentIDSUserInfo:(id)a3
+- (void)updateCurrentIDSUserInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = qword_100BCE8E8;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(CloudPairing *)self currentUserRandomAddress];
+    currentUserRandomAddress = [(CloudPairing *)self currentUserRandomAddress];
     *buf = 138412546;
-    v19 = v6;
+    v19 = currentUserRandomAddress;
     v20 = 2112;
-    v21 = v4;
+    v21 = infoCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "MUC - update current -> new RSA (%@ - %@)", buf, 0x16u);
   }
 
-  v7 = [(CloudPairing *)self currentUserRandomAddress];
-  v8 = (v4 | v7) == 0;
+  currentUserRandomAddress2 = [(CloudPairing *)self currentUserRandomAddress];
+  v8 = (infoCopy | currentUserRandomAddress2) == 0;
 
   if (!v8)
   {
-    v9 = [(CloudPairing *)self currentUserRandomAddress];
-    v10 = [v9 isEqualToString:v4];
+    currentUserRandomAddress3 = [(CloudPairing *)self currentUserRandomAddress];
+    v10 = [currentUserRandomAddress3 isEqualToString:infoCopy];
 
     if (v10)
     {
@@ -4770,9 +4770,9 @@ LABEL_7:
 
     else
     {
-      [(CloudPairing *)self setCurrentUserRandomAddress:v4];
-      v12 = [(CloudPairing *)self currentUserRandomAddress];
-      v13 = v12 == 0;
+      [(CloudPairing *)self setCurrentUserRandomAddress:infoCopy];
+      currentUserRandomAddress4 = [(CloudPairing *)self currentUserRandomAddress];
+      v13 = currentUserRandomAddress4 == 0;
 
       if (v13)
       {
@@ -4803,8 +4803,8 @@ LABEL_7:
 
       else
       {
-        v14 = [(CloudPairing *)self currentUserRandomAddress];
-        v15 = [NSString stringWithFormat:@"Random %@", v14];
+        currentUserRandomAddress5 = [(CloudPairing *)self currentUserRandomAddress];
+        v15 = [NSString stringWithFormat:@"Random %@", currentUserRandomAddress5];
         sub_100777FF4(v15);
 
         if (qword_100B508C0 != -1)
@@ -4813,16 +4813,16 @@ LABEL_7:
         }
 
         nullsub_21(off_100B508B8);
-        v16 = [(CloudPairing *)self currentUserRandomAddress];
-        [(CloudPairing *)self updateRandomAddressContinuityAdvInstance:v16];
+        currentUserRandomAddress6 = [(CloudPairing *)self currentUserRandomAddress];
+        [(CloudPairing *)self updateRandomAddressContinuityAdvInstance:currentUserRandomAddress6];
       }
     }
   }
 }
 
-- (id)getPairedDeviceForIDSIdentifier:(id)a3
+- (id)getPairedDeviceForIDSIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -4836,7 +4836,7 @@ LABEL_7:
   v9[3] = &unk_100B01230;
   v11 = &v12;
   v9[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   v10 = v6;
   sub_1005711EC(v5, v9);
   v7 = v13[5];
@@ -4846,9 +4846,9 @@ LABEL_7:
   return v7;
 }
 
-- (id)_getPairedDeviceForIDSIdentifier:(id)a3
+- (id)_getPairedDeviceForIDSIdentifier:(id)identifier
 {
-  v30 = a3;
+  identifierCopy = identifier;
   v31 = +[NSMutableDictionary dictionary];
   if (qword_100B508C0 != -1)
   {
@@ -4869,7 +4869,7 @@ LABEL_7:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "MUC - Paired devices: %@, cloud local paired %@", buf, 0x16u);
   }
 
-  if (v30 && self->_supportsVirtualAddress)
+  if (identifierCopy && self->_supportsVirtualAddress)
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -4882,7 +4882,7 @@ LABEL_7:
     v40[1] = 3221225472;
     v40[2] = sub_1005FAA84;
     v40[3] = &unk_100B01360;
-    v41 = v30;
+    v41 = identifierCopy;
     v42 = buf;
     [(NSMutableDictionary *)idsMultiUsersDictionary enumerateKeysAndObjectsUsingBlock:v40];
     if (*(*&buf[8] + 40))
@@ -4896,8 +4896,8 @@ LABEL_7:
       }
 
       v9 = sub_1003CCB64(*(off_100B508B8 + 1884), v8);
-      v10 = [v9 allKeys];
-      v11 = [NSSet setWithArray:v10];
+      allKeys = [v9 allKeys];
+      v11 = [NSSet setWithArray:allKeys];
       [v29 unionSet:v11];
 
       v12 = qword_100BCE8E8;
@@ -5025,8 +5025,8 @@ LABEL_47:
             }
 
 LABEL_39:
-            v24 = [v16 UUIDString];
-            [v31 setObject:v19 forKey:v24];
+            uUIDString = [v16 UUIDString];
+            [v31 setObject:v19 forKey:uUIDString];
 
             goto LABEL_47;
           }
@@ -5059,9 +5059,9 @@ LABEL_48:
   return v31;
 }
 
-- (void)sendCloudpairingRetry:(id)a3
+- (void)sendCloudpairingRetry:(id)retry
 {
-  v4 = a3;
+  retryCopy = retry;
   if ([(CloudPairing *)self isRunningInRecovery])
   {
     v5 = qword_100BCE8E8;
@@ -5074,17 +5074,17 @@ LABEL_48:
 
   else
   {
-    v6 = [(CloudPairing *)self serverConnection];
+    serverConnection = [(CloudPairing *)self serverConnection];
 
-    if (!v6)
+    if (!serverConnection)
     {
       [(CloudPairing *)self resetServerConnection];
     }
 
-    v7 = [(CloudPairing *)self serverConnection];
-    if (v7)
+    serverConnection2 = [(CloudPairing *)self serverConnection];
+    if (serverConnection2)
     {
-      v8 = [v4 count];
+      v8 = [retryCopy count];
 
       if (v8)
       {
@@ -5092,7 +5092,7 @@ LABEL_48:
         if (os_log_type_enabled(qword_100BCE8E8, OS_LOG_TYPE_DEFAULT))
         {
           v13 = 138477827;
-          v14 = v4;
+          v14 = retryCopy;
           _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Send Cloud Pairing Retry for %{private}@", &v13, 0xCu);
         }
 
@@ -5100,8 +5100,8 @@ LABEL_48:
         xpc_dictionary_set_string(v10, "kMsgId", "cloudpairingRetry");
         v11 = _CFXPCCreateXPCObjectFromCFObject();
         xpc_dictionary_set_value(v10, "kMsgArgs", v11);
-        v12 = [(CloudPairing *)self serverConnection];
-        xpc_connection_send_message(v12, v10);
+        serverConnection3 = [(CloudPairing *)self serverConnection];
+        xpc_connection_send_message(serverConnection3, v10);
       }
     }
   }
@@ -5122,21 +5122,21 @@ LABEL_48:
   [v3 removeObserver:self];
 }
 
-- (void)audioAccessorySmartChargeStatusHasChangedFromNotification:(id)a3
+- (void)audioAccessorySmartChargeStatusHasChangedFromNotification:(id)notification
 {
-  v3 = a3;
-  v4 = [v3 object];
-  if (v4)
+  notificationCopy = notification;
+  object = [notificationCopy object];
+  if (object)
   {
     v5 = [[PowerUISmartChargeClientAudioAccessories alloc] initWithClientName:@"com.apple.bluetooth"];
     v13 = 0;
-    v6 = [v5 isSmartChargingCurrentlyEnabledForDevice:v4 withError:&v13];
+    v6 = [v5 isSmartChargingCurrentlyEnabledForDevice:object withError:&v13];
     v7 = v13;
     v8 = qword_100BCE8E8;
     if (os_log_type_enabled(qword_100BCE8E8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v15 = v4;
+      v15 = object;
       v16 = 2048;
       v17 = v6;
       v18 = 2112;
@@ -5144,7 +5144,7 @@ LABEL_48:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "PowerUI config values changed for device %@, isSmartChargingCurrentlyEnabledForDevice %lu, error %@", buf, 0x20u);
     }
 
-    v9 = [NSString stringWithFormat:@"Public %@", v4];
+    v9 = [NSString stringWithFormat:@"Public %@", object];
     v10 = sub_100777FF4(v9);
 
     if (qword_100B508F0 != -1)
@@ -5180,19 +5180,19 @@ LABEL_48:
   }
 }
 
-- (void)audioAccessorySmartChargeDeadlineHasChangedFromNotification:(id)a3
+- (void)audioAccessorySmartChargeDeadlineHasChangedFromNotification:(id)notification
 {
-  v3 = a3;
-  v4 = [v3 object];
+  notificationCopy = notification;
+  object = [notificationCopy object];
   v5 = [[PowerUISmartChargeClientAudioAccessories alloc] initWithClientName:@"com.apple.bluetooth"];
   v15 = 0;
-  v6 = [v5 unfilteredDeadlineForDevice:v4 withError:&v15];
+  v6 = [v5 unfilteredDeadlineForDevice:object withError:&v15];
   v7 = v15;
   v8 = qword_100BCE8E8;
   if (os_log_type_enabled(qword_100BCE8E8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v17 = v4;
+    v17 = object;
     v18 = 2112;
     v19 = v6;
     v20 = 2112;
@@ -5200,7 +5200,7 @@ LABEL_48:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "PowerUI config values changed for device %@, fullChargeDeadlineForDevice %@ error %@", buf, 0x20u);
   }
 
-  v9 = [NSString stringWithFormat:@"Public %@", v4];
+  v9 = [NSString stringWithFormat:@"Public %@", object];
   v10 = sub_100777FF4(v9);
 
   if (qword_100B508F0 != -1)
@@ -5231,7 +5231,7 @@ LABEL_48:
   }
 }
 
-- (void)audioAccessorySmartChargeStatusHasChangedFromCloud:(void *)a3
+- (void)audioAccessorySmartChargeStatusHasChangedFromCloud:(void *)cloud
 {
   if (!_os_feature_enabled_impl() || !NSClassFromString(@"PowerUISmartChargeClientAudioAccessories"))
   {
@@ -5240,7 +5240,7 @@ LABEL_48:
 
   v4 = [[PowerUISmartChargeClientAudioAccessories alloc] initWithClientName:@"com.apple.bluetooth"];
   v5 = sub_1007774DC();
-  v6 = sub_10054B398(a3);
+  v6 = sub_10054B398(cloud);
   v7 = v6;
   if (v6 > 1)
   {
@@ -5302,13 +5302,13 @@ LABEL_16:
   }
 }
 
-- (void)audioAccessorySmartChargeDeadlineHasChangedFromCloud:(void *)a3
+- (void)audioAccessorySmartChargeDeadlineHasChangedFromCloud:(void *)cloud
 {
   if (_os_feature_enabled_impl() && NSClassFromString(@"PowerUISmartChargeClientAudioAccessories"))
   {
     v4 = [[PowerUISmartChargeClientAudioAccessories alloc] initWithClientName:@"com.apple.bluetooth"];
     v5 = sub_1007774DC();
-    v6 = sub_10054B3E0(a3);
+    v6 = sub_10054B3E0(cloud);
     v10 = 0;
     [v4 updateOBCDeadline:v6 forDevice:v5 withError:&v10];
     v7 = v10;
@@ -5316,7 +5316,7 @@ LABEL_16:
     v8 = qword_100BCE8E8;
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = sub_10054B3E0(a3);
+      v9 = sub_10054B3E0(cloud);
       *buf = 138412802;
       v12 = v5;
       v13 = 2112;

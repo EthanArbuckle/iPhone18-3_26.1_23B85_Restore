@@ -1,104 +1,104 @@
 @interface TIProgressTracker
-- (BOOL)shouldStopAfterAddingStateString:(id)a3;
-- (TIProgressTracker)initWithIntendedString:(id)a3 repeatLimit:(int64_t)a4 timeout:(double)a5 badSentencePath:(id)a6;
+- (BOOL)shouldStopAfterAddingStateString:(id)string;
+- (TIProgressTracker)initWithIntendedString:(id)string repeatLimit:(int64_t)limit timeout:(double)timeout badSentencePath:(id)path;
 - (unint64_t)stoppageReason;
-- (void)appendStringToFile:(id)a3 atFilePath:(id)a4;
-- (void)saveBadSentenceAndTranscript:(unint64_t)a3;
+- (void)appendStringToFile:(id)file atFilePath:(id)path;
+- (void)saveBadSentenceAndTranscript:(unint64_t)transcript;
 @end
 
 @implementation TIProgressTracker
 
-- (void)appendStringToFile:(id)a3 atFilePath:(id)a4
+- (void)appendStringToFile:(id)file atFilePath:(id)path
 {
-  v12 = a4;
-  if (v12)
+  pathCopy = path;
+  if (pathCopy)
   {
     v5 = MEMORY[0x277CCAA00];
-    v6 = a3;
-    v7 = [v5 defaultManager];
-    if (([v7 fileExistsAtPath:v12] & 1) == 0 && (objc_msgSend(v7, "createFileAtPath:contents:attributes:", v12, 0, 0) & 1) == 0)
+    fileCopy = file;
+    defaultManager = [v5 defaultManager];
+    if (([defaultManager fileExistsAtPath:pathCopy] & 1) == 0 && (objc_msgSend(defaultManager, "createFileAtPath:contents:attributes:", pathCopy, 0, 0) & 1) == 0)
     {
-      fprintf(*MEMORY[0x277D85DF8], "Error: unable to write log file '%s'.\n", [v12 UTF8String]);
+      fprintf(*MEMORY[0x277D85DF8], "Error: unable to write log file '%s'.\n", [pathCopy UTF8String]);
     }
 
-    v8 = [MEMORY[0x277CCA9F8] fileHandleForWritingAtPath:v12];
-    [v8 seekToEndOfFile];
-    v9 = [v6 dataUsingEncoding:4];
+    fileHandleWithStandardOutput = [MEMORY[0x277CCA9F8] fileHandleForWritingAtPath:pathCopy];
+    [fileHandleWithStandardOutput seekToEndOfFile];
+    v9 = [fileCopy dataUsingEncoding:4];
 
-    [v8 writeData:v9];
-    [v8 closeFile];
+    [fileHandleWithStandardOutput writeData:v9];
+    [fileHandleWithStandardOutput closeFile];
   }
 
   else
   {
     v10 = MEMORY[0x277CCA9F8];
-    v11 = a3;
-    v8 = [v10 fileHandleWithStandardOutput];
-    v7 = [v11 dataUsingEncoding:4];
+    fileCopy2 = file;
+    fileHandleWithStandardOutput = [v10 fileHandleWithStandardOutput];
+    defaultManager = [fileCopy2 dataUsingEncoding:4];
 
-    [v8 writeData:v7];
+    [fileHandleWithStandardOutput writeData:defaultManager];
   }
 }
 
-- (void)saveBadSentenceAndTranscript:(unint64_t)a3
+- (void)saveBadSentenceAndTranscript:(unint64_t)transcript
 {
   v22[2] = *MEMORY[0x277D85DE8];
-  v5 = [(TIProgressTracker *)self badSentenceFilePath];
+  badSentenceFilePath = [(TIProgressTracker *)self badSentenceFilePath];
 
-  if (v5)
+  if (badSentenceFilePath)
   {
-    v6 = [(TIProgressTracker *)self intended];
-    v7 = [(TIProgressTracker *)self badSentenceFilePath];
-    [(TIProgressTracker *)self appendStringToFile:v6 atFilePath:v7];
+    intended = [(TIProgressTracker *)self intended];
+    badSentenceFilePath2 = [(TIProgressTracker *)self badSentenceFilePath];
+    [(TIProgressTracker *)self appendStringToFile:intended atFilePath:badSentenceFilePath2];
   }
 
   v8 = MEMORY[0x277CCACA8];
-  v9 = [(TIProgressTracker *)self intended];
-  v10 = [v8 stringWithFormat:@"> %-10@ >> %@", @"Intended", v9];
+  intended2 = [(TIProgressTracker *)self intended];
+  v10 = [v8 stringWithFormat:@"> %-10@ >> %@", @"Intended", intended2];
 
   v11 = MEMORY[0x277CCACA8];
-  if (a3 > 3)
+  if (transcript > 3)
   {
     v12 = 0;
   }
 
   else
   {
-    v12 = off_279DA0518[a3];
+    v12 = off_279DA0518[transcript];
   }
 
-  v13 = [(TIProgressTracker *)self stateTranscript];
-  v14 = [v13 lastObject];
-  v15 = [v11 stringWithFormat:@"> %-10@ << %@", v12, v14];
+  stateTranscript = [(TIProgressTracker *)self stateTranscript];
+  lastObject = [stateTranscript lastObject];
+  v15 = [v11 stringWithFormat:@"> %-10@ << %@", v12, lastObject];
 
   v22[0] = v10;
   v22[1] = v15;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:2];
-  v17 = [(TIProgressTracker *)self stateTranscript];
-  v18 = [v16 arrayByAddingObjectsFromArray:v17];
+  stateTranscript2 = [(TIProgressTracker *)self stateTranscript];
+  v18 = [v16 arrayByAddingObjectsFromArray:stateTranscript2];
 
   v19 = [v18 componentsJoinedByString:@"\n"];
   v20 = [v19 stringByAppendingString:@"\n\n"];
 
-  v21 = [(TIProgressTracker *)self badSentenceTranscriptFilePath];
-  [(TIProgressTracker *)self appendStringToFile:v20 atFilePath:v21];
+  badSentenceTranscriptFilePath = [(TIProgressTracker *)self badSentenceTranscriptFilePath];
+  [(TIProgressTracker *)self appendStringToFile:v20 atFilePath:badSentenceTranscriptFilePath];
 }
 
 - (unint64_t)stoppageReason
 {
-  v3 = [(TIProgressTracker *)self stateTranscript];
-  v4 = [v3 lastObject];
+  stateTranscript = [(TIProgressTracker *)self stateTranscript];
+  lastObject = [stateTranscript lastObject];
 
   v5 = [MEMORY[0x277CBEAA8] now];
-  v6 = [(TIProgressTracker *)self startTime];
-  [v5 timeIntervalSinceDate:v6];
+  startTime = [(TIProgressTracker *)self startTime];
+  [v5 timeIntervalSinceDate:startTime];
   v8 = v7;
 
-  v9 = [(TIProgressTracker *)self priorStates];
-  v10 = [v9 countForObject:v4];
+  priorStates = [(TIProgressTracker *)self priorStates];
+  v10 = [priorStates countForObject:lastObject];
 
-  v11 = [(TIProgressTracker *)self intended];
-  v12 = [v11 isEqualToString:v4];
+  intended = [(TIProgressTracker *)self intended];
+  v12 = [intended isEqualToString:lastObject];
 
   if (v12)
   {
@@ -127,22 +127,22 @@
   return v13;
 }
 
-- (BOOL)shouldStopAfterAddingStateString:(id)a3
+- (BOOL)shouldStopAfterAddingStateString:(id)string
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithString:a3];
-  v5 = [(TIProgressTracker *)self priorStates];
-  [v5 addObject:v4];
+  v4 = [MEMORY[0x277CCACA8] stringWithString:string];
+  priorStates = [(TIProgressTracker *)self priorStates];
+  [priorStates addObject:v4];
 
-  v6 = [(TIProgressTracker *)self stateTranscript];
-  [v6 addObject:v4];
+  stateTranscript = [(TIProgressTracker *)self stateTranscript];
+  [stateTranscript addObject:v4];
 
   v7 = [MEMORY[0x277CBEAA8] now];
-  v8 = [(TIProgressTracker *)self startTime];
-  [v7 timeIntervalSinceDate:v8];
+  startTime = [(TIProgressTracker *)self startTime];
+  [v7 timeIntervalSinceDate:startTime];
   v10 = v9;
 
-  v11 = [(TIProgressTracker *)self priorStates];
-  v12 = [v11 countForObject:v4];
+  priorStates2 = [(TIProgressTracker *)self priorStates];
+  v12 = [priorStates2 countForObject:v4];
 
   if (v12 <= [(TIProgressTracker *)self repeatLimit]&& ([(TIProgressTracker *)self timeout], v10 <= v13))
   {
@@ -158,19 +158,19 @@
   return v14;
 }
 
-- (TIProgressTracker)initWithIntendedString:(id)a3 repeatLimit:(int64_t)a4 timeout:(double)a5 badSentencePath:(id)a6
+- (TIProgressTracker)initWithIntendedString:(id)string repeatLimit:(int64_t)limit timeout:(double)timeout badSentencePath:(id)path
 {
-  v11 = a3;
-  v12 = a6;
+  stringCopy = string;
+  pathCopy = path;
   v24.receiver = self;
   v24.super_class = TIProgressTracker;
   v13 = [(TIProgressTracker *)&v24 init];
   v14 = v13;
   if (v13)
   {
-    v13->_repeatLimit = a4;
-    v13->_timeout = a5;
-    objc_storeStrong(&v13->_intended, a3);
+    v13->_repeatLimit = limit;
+    v13->_timeout = timeout;
+    objc_storeStrong(&v13->_intended, string);
     v15 = [MEMORY[0x277CBEAA8] now];
     startTime = v14->_startTime;
     v14->_startTime = v15;
@@ -183,7 +183,7 @@
     stateTranscript = v14->_stateTranscript;
     v14->_stateTranscript = v19;
 
-    v21 = [v12 copy];
+    v21 = [pathCopy copy];
     badSentenceFilePath = v14->_badSentenceFilePath;
     v14->_badSentenceFilePath = v21;
   }

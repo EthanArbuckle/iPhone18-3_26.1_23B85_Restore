@@ -1,15 +1,15 @@
 @interface WorkoutAlertRace
 - (_TtC11WorkoutCore16WorkoutAlertRace)init;
-- (id)spokenDescriptionWithFormattingManager:(id)a3;
-- (id)spokenUserDataWithFormattingManager:(id)a3;
+- (id)spokenDescriptionWithFormattingManager:(id)manager;
+- (id)spokenUserDataWithFormattingManager:(id)manager;
 @end
 
 @implementation WorkoutAlertRace
 
-- (id)spokenDescriptionWithFormattingManager:(id)a3
+- (id)spokenDescriptionWithFormattingManager:(id)manager
 {
-  v4 = a3;
-  v5 = self;
+  managerCopy = manager;
+  selfCopy = self;
   v6 = specialized WorkoutAlertRace.spokenDescription(with:)();
   v8 = v7;
 
@@ -18,10 +18,10 @@
   return v9;
 }
 
-- (id)spokenUserDataWithFormattingManager:(id)a3
+- (id)spokenUserDataWithFormattingManager:(id)manager
 {
-  v4 = a3;
-  v5 = self;
+  managerCopy = manager;
+  selfCopy = self;
   specialized WorkoutAlertRace.spokenUserData(with:)();
 
   v6.super.isa = Dictionary._bridgeToObjectiveC()().super.isa;

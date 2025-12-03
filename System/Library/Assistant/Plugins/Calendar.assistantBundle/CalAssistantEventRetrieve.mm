@@ -1,12 +1,12 @@
 @interface CalAssistantEventRetrieve
-- (void)performWithCompletion:(id)a3;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation CalAssistantEventRetrieve
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   sub_2334B11EC();
   v5 = qword_27DE0DD38;
   if (os_log_type_enabled(qword_27DE0DD38, OS_LOG_TYPE_DEBUG))
@@ -28,8 +28,8 @@
   v13[3] = &unk_2789D8658;
   v13[4] = self;
   v14 = v7;
-  v15 = v4;
-  v9 = v4;
+  v15 = completionCopy;
+  v9 = completionCopy;
   v10 = v7;
   objc_msgSend__ca_performBlock_(v8, v11, v13, v12);
 }

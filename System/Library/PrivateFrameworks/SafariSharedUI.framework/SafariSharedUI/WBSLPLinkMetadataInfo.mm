@@ -1,48 +1,48 @@
 @interface WBSLPLinkMetadataInfo
-- (WBSLPLinkMetadataInfo)initWithSQLiteRow:(id)a3;
-- (WBSLPLinkMetadataInfo)initWithURLString:(id)a3 uuidString:(id)a4 lastFetchDate:(id)a5 lastFetchDidSucceed:(BOOL)a6 metadataHasImage:(BOOL)a7;
+- (WBSLPLinkMetadataInfo)initWithSQLiteRow:(id)row;
+- (WBSLPLinkMetadataInfo)initWithURLString:(id)string uuidString:(id)uuidString lastFetchDate:(id)date lastFetchDidSucceed:(BOOL)succeed metadataHasImage:(BOOL)image;
 - (id)copyWithoutUUID;
 @end
 
 @implementation WBSLPLinkMetadataInfo
 
-- (WBSLPLinkMetadataInfo)initWithSQLiteRow:(id)a3
+- (WBSLPLinkMetadataInfo)initWithSQLiteRow:(id)row
 {
-  v4 = a3;
-  v5 = [v4 stringAtIndex:0];
-  v6 = [v4 stringAtIndex:1];
+  rowCopy = row;
+  v5 = [rowCopy stringAtIndex:0];
+  v6 = [rowCopy stringAtIndex:1];
   v7 = MEMORY[0x1E695DF00];
-  [v4 doubleAtIndex:2];
+  [rowCopy doubleAtIndex:2];
   v8 = [v7 dateWithTimeIntervalSinceReferenceDate:?];
-  v9 = -[WBSLPLinkMetadataInfo initWithURLString:uuidString:lastFetchDate:lastFetchDidSucceed:metadataHasImage:](self, "initWithURLString:uuidString:lastFetchDate:lastFetchDidSucceed:metadataHasImage:", v5, v6, v8, [v4 BOOLAtIndex:3], objc_msgSend(v4, "BOOLAtIndex:", 4));
+  v9 = -[WBSLPLinkMetadataInfo initWithURLString:uuidString:lastFetchDate:lastFetchDidSucceed:metadataHasImage:](self, "initWithURLString:uuidString:lastFetchDate:lastFetchDidSucceed:metadataHasImage:", v5, v6, v8, [rowCopy BOOLAtIndex:3], objc_msgSend(rowCopy, "BOOLAtIndex:", 4));
 
   return v9;
 }
 
-- (WBSLPLinkMetadataInfo)initWithURLString:(id)a3 uuidString:(id)a4 lastFetchDate:(id)a5 lastFetchDidSucceed:(BOOL)a6 metadataHasImage:(BOOL)a7
+- (WBSLPLinkMetadataInfo)initWithURLString:(id)string uuidString:(id)uuidString lastFetchDate:(id)date lastFetchDidSucceed:(BOOL)succeed metadataHasImage:(BOOL)image
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  stringCopy = string;
+  uuidStringCopy = uuidString;
+  dateCopy = date;
   v24.receiver = self;
   v24.super_class = WBSLPLinkMetadataInfo;
   v15 = [(WBSLPLinkMetadataInfo *)&v24 init];
   if (v15)
   {
-    v16 = [v12 copy];
+    v16 = [stringCopy copy];
     urlString = v15->_urlString;
     v15->_urlString = v16;
 
-    v18 = [v13 copy];
+    v18 = [uuidStringCopy copy];
     uuidString = v15->_uuidString;
     v15->_uuidString = v18;
 
-    v20 = [v14 copy];
+    v20 = [dateCopy copy];
     lastFetchDate = v15->_lastFetchDate;
     v15->_lastFetchDate = v20;
 
-    v15->_lastFetchDidSucceed = a6;
-    v15->_metadataHasImage = a7;
+    v15->_lastFetchDidSucceed = succeed;
+    v15->_metadataHasImage = image;
     v22 = v15;
   }
 

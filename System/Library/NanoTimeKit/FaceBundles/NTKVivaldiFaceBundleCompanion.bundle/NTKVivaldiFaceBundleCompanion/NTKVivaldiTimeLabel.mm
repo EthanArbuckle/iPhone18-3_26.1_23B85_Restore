@@ -1,32 +1,32 @@
 @interface NTKVivaldiTimeLabel
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (NTKVivaldiTimeLabel)initWithTimeComponent:(unint64_t)a3 color:(id)a4 font:(id)a5 fontSize:(double)a6 outline:(BOOL)a7;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (NTKVivaldiTimeLabel)initWithTimeComponent:(unint64_t)component color:(id)color font:(id)font fontSize:(double)size outline:(BOOL)outline;
 - (id)_attributedString;
 - (void)_updateLabelText;
 - (void)_updateLocale;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setDate:(id)a3;
-- (void)updateColorsForComplicationsEditingFraction:(double)a3 withColorPalette:(id)a4;
+- (void)setDate:(id)date;
+- (void)updateColorsForComplicationsEditingFraction:(double)fraction withColorPalette:(id)palette;
 @end
 
 @implementation NTKVivaldiTimeLabel
 
-- (NTKVivaldiTimeLabel)initWithTimeComponent:(unint64_t)a3 color:(id)a4 font:(id)a5 fontSize:(double)a6 outline:(BOOL)a7
+- (NTKVivaldiTimeLabel)initWithTimeComponent:(unint64_t)component color:(id)color font:(id)font fontSize:(double)size outline:(BOOL)outline
 {
-  v13 = a4;
-  v14 = a5;
+  colorCopy = color;
+  fontCopy = font;
   v27.receiver = self;
   v27.super_class = NTKVivaldiTimeLabel;
   v15 = [(NTKVivaldiTimeLabel *)&v27 init];
   v16 = v15;
   if (v15)
   {
-    v15->_outline = a7;
-    v15->_timeComponent = a3;
-    objc_storeStrong(&v15->_color, a4);
-    v16->_fontSize = a6;
-    v17 = [v14 fontWithSize:a6];
+    v15->_outline = outline;
+    v15->_timeComponent = component;
+    objc_storeStrong(&v15->_color, color);
+    v16->_fontSize = size;
+    v17 = [fontCopy fontWithSize:size];
     font = v16->_font;
     v16->_font = v17;
 
@@ -46,8 +46,8 @@
     v24 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:@"en"];
     [(NSDateFormatter *)v23 setLocale:v24];
 
-    v25 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v25 addObserver:v16 selector:sel__updateLocale name:*MEMORY[0x277CBE620] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v16 selector:sel__updateLocale name:*MEMORY[0x277CBE620] object:0];
 
     [(NTKVivaldiTimeLabel *)v16 _updateLocale];
   }
@@ -57,8 +57,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277CBE620] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CBE620] object:0];
 
   v4.receiver = self;
   v4.super_class = NTKVivaldiTimeLabel;
@@ -75,7 +75,7 @@
   [(CLKUIColoringLabel *)label setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   MEMORY[0x2821F9670](self->_label, sel_sizeThatFits_);
   result.height = v4;
@@ -83,16 +83,16 @@
   return result;
 }
 
-- (void)setDate:(id)a3
+- (void)setDate:(id)date
 {
-  objc_storeStrong(&self->_date, a3);
+  objc_storeStrong(&self->_date, date);
 
   [(NTKVivaldiTimeLabel *)self _updateLabelText];
 }
 
 - (void)_updateLocale
 {
-  v8 = [MEMORY[0x277CBEAF8] currentLocale];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
   v3 = CLKLocaleIs24HourMode();
   timeComponent = self->_timeComponent;
   if (timeComponent == 1)
@@ -146,24 +146,24 @@ LABEL_9:
 
 - (void)_updateLabelText
 {
-  v3 = [(NTKVivaldiTimeLabel *)self _attributedString];
-  [(CLKUIColoringLabel *)self->_label setAttributedText:v3];
+  _attributedString = [(NTKVivaldiTimeLabel *)self _attributedString];
+  [(CLKUIColoringLabel *)self->_label setAttributedText:_attributedString];
   [(NTKVivaldiTimeLabel *)self setNeedsLayout];
 }
 
-- (void)updateColorsForComplicationsEditingFraction:(double)a3 withColorPalette:(id)a4
+- (void)updateColorsForComplicationsEditingFraction:(double)fraction withColorPalette:(id)palette
 {
   if (self->_outline)
   {
-    [a4 numeralsOutline];
+    [palette numeralsOutline];
   }
 
   else
   {
-    [a4 numerals];
+    [palette numerals];
   }
   v9 = ;
-  v5 = [MEMORY[0x277D75348] blackColor];
+  blackColor = [MEMORY[0x277D75348] blackColor];
   v6 = *MEMORY[0x277D2BF18];
   v7 = CLKInterpolateBetweenColors();
 

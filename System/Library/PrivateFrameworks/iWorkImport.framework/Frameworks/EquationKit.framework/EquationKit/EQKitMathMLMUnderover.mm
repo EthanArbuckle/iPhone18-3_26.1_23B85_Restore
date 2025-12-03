@@ -1,16 +1,16 @@
 @interface EQKitMathMLMUnderover
 - (const)mathMLAttributes;
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4;
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser;
 - (id)layoutSchemata;
 @end
 
 @implementation EQKitMathMLMUnderover
 
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser
 {
   v5.receiver = self;
   v5.super_class = EQKitMathMLMUnderover;
-  return [(EQKitMathMLTernaryNode *)&v5 initFromXMLNode:a3 parser:a4];
+  return [(EQKitMathMLTernaryNode *)&v5 initFromXMLNode:node parser:parser];
 }
 
 - (const)mathMLAttributes
@@ -28,7 +28,7 @@
 {
   *a2 = &unk_2884CB990;
   *(a2 + 8) = 5;
-  result = a1;
+  result = self;
   *(a2 + 16) = result;
   *(a2 + 24) = 0;
   return result;

@@ -2,95 +2,95 @@
 + (id)defaultCenter;
 - (ASDSoftwareUpdatesStore)appstoredUpdatesStore;
 - (BOOL)_gratisStateIsValid;
-- (BOOL)_isPurchaseForOffDeviceContent:(id)a3;
+- (BOOL)_isPurchaseForOffDeviceContent:(id)content;
 - (BOOL)isApplicationInstallRestricted;
 - (BOOL)isGratisEligible;
 - (BOOL)isRunningInStoreDemoMode;
 - (SKUIItemStateCenter)init;
-- (id)_addState:(unint64_t)a3 forItemIdentifier:(id)a4;
+- (id)_addState:(unint64_t)state forItemIdentifier:(id)identifier;
 - (id)_appstoredUpdatesStore;
-- (id)_copyItemsStatesForLibraryItems:(id)a3;
-- (id)_downloadPhaseForJobPhase:(int64_t)a3;
+- (id)_copyItemsStatesForLibraryItems:(id)items;
+- (id)_downloadPhaseForJobPhase:(int64_t)phase;
 - (id)_jobManager;
-- (id)_newPurchaseWithItem:(id)a3 offer:(id)a4;
-- (id)_newPurchasesForSoftwareWithBundleItem:(id)a3 bundleOffer:(id)a4;
-- (id)_newPurchasesWithBundleItem:(id)a3 bundleOffer:(id)a4;
-- (id)_newPurchasesWithItems:(id)a3;
-- (id)_newSoftwarePurchaseWithItem:(id)a3 offer:(id)a4;
+- (id)_newPurchaseWithItem:(id)item offer:(id)offer;
+- (id)_newPurchasesForSoftwareWithBundleItem:(id)item bundleOffer:(id)offer;
+- (id)_newPurchasesWithBundleItem:(id)item bundleOffer:(id)offer;
+- (id)_newPurchasesWithItems:(id)items;
+- (id)_newSoftwarePurchaseWithItem:(id)item offer:(id)offer;
 - (id)_purchaseHistoryDatabase;
-- (id)_removeState:(unint64_t)a3 forItemIdentifier:(id)a4;
-- (id)_setStateFlag:(unint64_t)a3 forItemsWithIdentifiers:(id)a4 sendNotification:(BOOL)a5;
-- (id)_setStateFlag:(unint64_t)a3 forOnlyItemsWithIdentifiers:(id)a4 sendNotification:(BOOL)a5;
+- (id)_removeState:(unint64_t)state forItemIdentifier:(id)identifier;
+- (id)_setStateFlag:(unint64_t)flag forItemsWithIdentifiers:(id)identifiers sendNotification:(BOOL)notification;
+- (id)_setStateFlag:(unint64_t)flag forOnlyItemsWithIdentifiers:(id)identifiers sendNotification:(BOOL)notification;
 - (id)gratisEligibleItemIdentifiers;
-- (id)metricsActionTypeForItem:(id)a3;
-- (id)performActionForItem:(id)a3 clientContext:(id)a4;
-- (id)performActionForItem:(id)a3 clientContext:(id)a4 completionBlock:(id)a5;
-- (id)performActionForItem:(id)a3 offer:(id)a4 clientContext:(id)a5 completionBlock:(id)a6;
-- (id)performActionForSoftwareItem:(id)a3 offer:(id)a4 clientContext:(id)a5 completionBlock:(id)a6;
-- (id)stateForItemWithIdentifier:(int64_t)a3;
-- (id)stateForItemWithStoreIdentifier:(id)a3;
+- (id)metricsActionTypeForItem:(id)item;
+- (id)performActionForItem:(id)item clientContext:(id)context;
+- (id)performActionForItem:(id)item clientContext:(id)context completionBlock:(id)block;
+- (id)performActionForItem:(id)item offer:(id)offer clientContext:(id)context completionBlock:(id)block;
+- (id)performActionForSoftwareItem:(id)item offer:(id)offer clientContext:(id)context completionBlock:(id)block;
+- (id)stateForItemWithIdentifier:(int64_t)identifier;
+- (id)stateForItemWithStoreIdentifier:(id)identifier;
 - (int64_t)parentalControlsRank;
-- (void)_enumerateAvailableItemsForLibraryItems:(id)a3 usingBlock:(id)a4;
+- (void)_enumerateAvailableItemsForLibraryItems:(id)items usingBlock:(id)block;
 - (void)_fireFinishLoadBlocksIfNecessary;
-- (void)_mediaLibraryDidChangeNotification:(id)a3;
+- (void)_mediaLibraryDidChangeNotification:(id)notification;
 - (void)_notifyObserversOfMediaLibraryChange;
-- (void)_notifyObserversOfPurchasesResponses:(id)a3;
+- (void)_notifyObserversOfPurchasesResponses:(id)responses;
 - (void)_notifyObserversOfRestrictionsChange;
-- (void)_notifyObserversOfSoftwarePurchasesResponses:(id)a3;
-- (void)_notifyObserversOfStateChange:(id)a3;
-- (void)_notifyObserversOfStateChanges:(id)a3;
-- (void)_performPurchases:(id)a3 hasBundlePurchase:(BOOL)a4 withClientContext:(id)a5 completionBlock:(id)a6;
-- (void)_performSoftwarePurchases:(id)a3 withClientContext:(id)a4 completionBlock:(id)a5;
+- (void)_notifyObserversOfSoftwarePurchasesResponses:(id)responses;
+- (void)_notifyObserversOfStateChange:(id)change;
+- (void)_notifyObserversOfStateChanges:(id)changes;
+- (void)_performPurchases:(id)purchases hasBundlePurchase:(BOOL)purchase withClientContext:(id)context completionBlock:(id)block;
+- (void)_performSoftwarePurchases:(id)purchases withClientContext:(id)context completionBlock:(id)block;
 - (void)_reloadAppUpdatesStore;
 - (void)_reloadDownloadManager;
 - (void)_reloadJobManager;
-- (void)_reloadMediaLibraryStateForItems:(id)a3;
+- (void)_reloadMediaLibraryStateForItems:(id)items;
 - (void)_reloadPurchaseHistory;
 - (void)_reloadSoftwareLibrary;
 - (void)_reloadStateForObservedMediaLibraryItems;
-- (void)_removePurchasingItemsForPurchases:(id)a3;
-- (void)_replacePurchasingItem:(id)a3 withDownloadIDs:(id)a4;
-- (void)_restrictionsChangedNotification:(id)a3;
-- (void)_setAvailableAppstoredUpdatesWithUpdates:(id)a3 decrementLoadCount:(BOOL)a4;
-- (void)_setDownloads:(id)a3;
-- (void)_setFirstPartyRemovableItemsIdentifiers:(id)a3;
-- (void)_setGratisIdentifiers:(id)a3 error:(id)a4;
-- (void)_setInstalledItems:(id)a3;
-- (void)_setJobs:(id)a3;
-- (void)_setPurchaseHistoryItemsWithIdentifiers:(id)a3;
-- (void)_setPurchaseHistoryVPPItemsWithIdentifiers:(id)a3;
-- (void)_storefrontDidChangeNotification:(id)a3;
-- (void)_updatesSoftwarePurchasingItemsForPurchases:(id)a3 purchaseWasSuccessful:(BOOL)a4;
-- (void)addManifestDownloadWithURL:(id)a3 placeholderMetadata:(id)a4;
-- (void)addMediaLibrary:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)addRelationshipForParentAdamId:(id)a3 withChildAdamIds:(id)a4;
-- (void)beginObservingLibraryItems:(id)a3;
-- (void)cancelDownloadForItemWithIdentifier:(int64_t)a3;
+- (void)_removePurchasingItemsForPurchases:(id)purchases;
+- (void)_replacePurchasingItem:(id)item withDownloadIDs:(id)ds;
+- (void)_restrictionsChangedNotification:(id)notification;
+- (void)_setAvailableAppstoredUpdatesWithUpdates:(id)updates decrementLoadCount:(BOOL)count;
+- (void)_setDownloads:(id)downloads;
+- (void)_setFirstPartyRemovableItemsIdentifiers:(id)identifiers;
+- (void)_setGratisIdentifiers:(id)identifiers error:(id)error;
+- (void)_setInstalledItems:(id)items;
+- (void)_setJobs:(id)jobs;
+- (void)_setPurchaseHistoryItemsWithIdentifiers:(id)identifiers;
+- (void)_setPurchaseHistoryVPPItemsWithIdentifiers:(id)identifiers;
+- (void)_storefrontDidChangeNotification:(id)notification;
+- (void)_updatesSoftwarePurchasingItemsForPurchases:(id)purchases purchaseWasSuccessful:(BOOL)successful;
+- (void)addManifestDownloadWithURL:(id)l placeholderMetadata:(id)metadata;
+- (void)addMediaLibrary:(id)library;
+- (void)addObserver:(id)observer;
+- (void)addRelationshipForParentAdamId:(id)id withChildAdamIds:(id)ids;
+- (void)beginObservingLibraryItems:(id)items;
+- (void)cancelDownloadForItemWithIdentifier:(int64_t)identifier;
 - (void)dealloc;
-- (void)downloadManager:(id)a3 downloadStatesDidChange:(id)a4;
-- (void)downloadQueue:(id)a3 downloadStates:(id)a4 didCompleteWithError:(id)a5;
-- (void)downloadQueue:(id)a3 downloadStatesDidChange:(id)a4;
-- (void)endObservingLibraryItems:(id)a3;
-- (void)evaluatePurchaseResponseForRentals:(id)a3;
-- (void)findLibraryItemsForContentIdentifiers:(id)a3 options:(id)a4 completionBlock:(id)a5;
-- (void)finishLoadingWithCompletionBlock:(id)a3;
-- (void)getSoftwareUpdatesWithCompletionBlock:(id)a3;
+- (void)downloadManager:(id)manager downloadStatesDidChange:(id)change;
+- (void)downloadQueue:(id)queue downloadStates:(id)states didCompleteWithError:(id)error;
+- (void)downloadQueue:(id)queue downloadStatesDidChange:(id)change;
+- (void)endObservingLibraryItems:(id)items;
+- (void)evaluatePurchaseResponseForRentals:(id)rentals;
+- (void)findLibraryItemsForContentIdentifiers:(id)identifiers options:(id)options completionBlock:(id)block;
+- (void)finishLoadingWithCompletionBlock:(id)block;
+- (void)getSoftwareUpdatesWithCompletionBlock:(id)block;
 - (void)init;
-- (void)jobManager:(id)a3 completedJobs:(id)a4;
-- (void)jobManager:(id)a3 updatedProgressOfJobs:(id)a4;
-- (void)jobManager:(id)a3 updatedStateOfJobs:(id)a4;
-- (void)performActionForLibraryItem:(id)a3;
-- (void)purchaseItem:(id)a3 offer:(id)a4 clientContext:(id)a5 completionBlock:(id)a6;
-- (void)purchaseItems:(id)a3 withClientContext:(id)a4 completionBlock:(id)a5;
-- (void)purchaseSoftwareItem:(id)a3 offer:(id)a4 clientContext:(id)a5 completionBlock:(id)a6;
-- (void)purchaseTone:(id)a3 withProperties:(id)a4 clientContext:(id)a5 completionBlock:(id)a6;
-- (void)reloadGratisEligibilityWithBundleIdentifiers:(id)a3 clientContext:(id)a4;
-- (void)reloadMediaLibrary:(id)a3;
-- (void)reloadSoftwareUpdatesFromServerWithCompletionBlock:(id)a3;
-- (void)removeMediaLibrary:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)removeRelationshipsForParentAdamId:(id)a3;
+- (void)jobManager:(id)manager completedJobs:(id)jobs;
+- (void)jobManager:(id)manager updatedProgressOfJobs:(id)jobs;
+- (void)jobManager:(id)manager updatedStateOfJobs:(id)jobs;
+- (void)performActionForLibraryItem:(id)item;
+- (void)purchaseItem:(id)item offer:(id)offer clientContext:(id)context completionBlock:(id)block;
+- (void)purchaseItems:(id)items withClientContext:(id)context completionBlock:(id)block;
+- (void)purchaseSoftwareItem:(id)item offer:(id)offer clientContext:(id)context completionBlock:(id)block;
+- (void)purchaseTone:(id)tone withProperties:(id)properties clientContext:(id)context completionBlock:(id)block;
+- (void)reloadGratisEligibilityWithBundleIdentifiers:(id)identifiers clientContext:(id)context;
+- (void)reloadMediaLibrary:(id)library;
+- (void)reloadSoftwareUpdatesFromServerWithCompletionBlock:(id)block;
+- (void)removeMediaLibrary:(id)library;
+- (void)removeObserver:(id)observer;
+- (void)removeRelationshipsForParentAdamId:(id)id;
 @end
 
 @implementation SKUIItemStateCenter
@@ -143,8 +143,8 @@
     *(v3 + 19) = v17;
 
     v19 = objc_alloc_init(MEMORY[0x277D69AC8]);
-    v20 = [MEMORY[0x277D69AB8] allStoreDownloadKinds];
-    [v19 setDownloadKinds:v20];
+    allStoreDownloadKinds = [MEMORY[0x277D69AB8] allStoreDownloadKinds];
+    [v19 setDownloadKinds:allStoreDownloadKinds];
 
     v35[0] = *MEMORY[0x277D69E90];
     v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v35 count:1];
@@ -165,21 +165,21 @@
     *(v3 + 6) = v25;
 
     [*(v3 + 6) addObserver:v3];
-    v27 = [v3 _jobManager];
+    _jobManager = [v3 _jobManager];
     v28 = *(v3 + 4);
-    *(v3 + 4) = v27;
+    *(v3 + 4) = _jobManager;
 
-    v29 = [MEMORY[0x277CF32D8] sharedInstance];
-    [v29 addObserver:v3];
+    mEMORY[0x277CF32D8] = [MEMORY[0x277CF32D8] sharedInstance];
+    [mEMORY[0x277CF32D8] addObserver:v3];
 
     [v3 _reloadAppUpdatesStore];
     [v3 _reloadDownloadManager];
     [v3 _reloadJobManager];
     [v3 _reloadPurchaseHistory];
     [v3 _reloadSoftwareLibrary];
-    v30 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v30 addObserver:v3 selector:sel__restrictionsChangedNotification_ name:*MEMORY[0x277D25CA0] object:0];
-    [v30 addObserver:v3 selector:sel__storefrontDidChangeNotification_ name:*MEMORY[0x277D69D70] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__restrictionsChangedNotification_ name:*MEMORY[0x277D25CA0] object:0];
+    [defaultCenter addObserver:v3 selector:sel__storefrontDidChangeNotification_ name:*MEMORY[0x277D69D70] object:0];
     DistributedCenter = CFNotificationCenterGetDistributedCenter();
     CFNotificationCenterAddObserver(DistributedCenter, v3, __SoftwareLibraryChangeNotification, @"com.apple.LaunchServices.applicationRegistered", 0, CFNotificationSuspensionBehaviorCoalesce);
     CFNotificationCenterAddObserver(DistributedCenter, v3, __SoftwareLibraryChangeNotification, @"com.apple.LaunchServices.applicationUnregistered", 0, CFNotificationSuspensionBehaviorCoalesce);
@@ -209,13 +209,13 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D25CA0] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D69D70] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277CEC310] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D25CA0] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D69D70] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CEC310] object:0];
   v4 = SKUIMediaPlayerFramework();
   v5 = *SKUIWeakLinkedSymbolForString("MPMediaLibraryDidChangeNotification", v4);
-  [v3 removeObserver:self name:v5 object:0];
+  [defaultCenter removeObserver:self name:v5 object:0];
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, *MEMORY[0x277D69D78], 0);
   DistributedCenter = CFNotificationCenterGetDistributedCenter();
@@ -234,7 +234,7 @@
   block[1] = 3221225472;
   block[2] = __36__SKUIItemStateCenter_defaultCenter__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (defaultCenter_sOnce != -1)
   {
     dispatch_once(&defaultCenter_sOnce, block);
@@ -254,31 +254,31 @@ uint64_t __36__SKUIItemStateCenter_defaultCenter__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8](v1, v2);
 }
 
-- (void)addMediaLibrary:(id)a3
+- (void)addMediaLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __39__SKUIItemStateCenter_addMediaLibrary___block_invoke;
   v7[3] = &unk_2781F80C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = libraryCopy;
+  v6 = libraryCopy;
   dispatch_async(accessQueue, v7);
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __35__SKUIItemStateCenter_addObserver___block_invoke;
   v7[3] = &unk_2781F80C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -300,10 +300,10 @@ uint64_t __35__SKUIItemStateCenter_addObserver___block_invoke(uint64_t a1)
   return [v2 addObject:v6];
 }
 
-- (void)cancelDownloadForItemWithIdentifier:(int64_t)a3
+- (void)cancelDownloadForItemWithIdentifier:(int64_t)identifier
 {
   v5 = [SKUIStoreIdentifier alloc];
-  v6 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
+  v6 = [MEMORY[0x277CCABB0] numberWithLongLong:identifier];
   v7 = [(SKUIStoreIdentifier *)v5 initWithNumber:v6];
 
   v8 = [(NSMutableDictionary *)self->_itemStates objectForKey:v7];
@@ -316,7 +316,7 @@ uint64_t __35__SKUIItemStateCenter_addObserver___block_invoke(uint64_t a1)
     v17[1] = 3221225472;
     v17[2] = __59__SKUIItemStateCenter_cancelDownloadForItemWithIdentifier___block_invoke;
     v17[3] = &unk_2781F98A0;
-    v20[1] = a3;
+    v20[1] = identifier;
     objc_copyWeak(&v19, &location);
     objc_copyWeak(v20, &from);
     v17[4] = self;
@@ -337,7 +337,7 @@ uint64_t __35__SKUIItemStateCenter_addObserver___block_invoke(uint64_t a1)
     v14[1] = 3221225472;
     v14[2] = __59__SKUIItemStateCenter_cancelDownloadForItemWithIdentifier___block_invoke_45;
     v14[3] = &unk_2781F98C8;
-    v16[1] = a3;
+    v16[1] = identifier;
     v15 = v8;
     objc_copyWeak(v16, &location);
     [(SSDownloadManager *)downloadManager getDownloadsUsingBlock:v14];
@@ -617,17 +617,17 @@ void __59__SKUIItemStateCenter_cancelDownloadForItemWithIdentifier___block_invok
   }
 }
 
-- (void)finishLoadingWithCompletionBlock:(id)a3
+- (void)finishLoadingWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__SKUIItemStateCenter_finishLoadingWithCompletionBlock___block_invoke;
   v7[3] = &unk_2781F98F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -759,12 +759,12 @@ uint64_t __47__SKUIItemStateCenter_isRunningInStoreDemoMode__block_invoke(uint64
   return result;
 }
 
-- (id)metricsActionTypeForItem:(id)a3
+- (id)metricsActionTypeForItem:(id)item
 {
-  v4 = a3;
-  v5 = -[SKUIItemStateCenter stateForItemWithIdentifier:](self, "stateForItemWithIdentifier:", [v4 itemIdentifier]);
-  v6 = [v5 state];
-  if ((v6 & 2) != 0)
+  itemCopy = item;
+  v5 = -[SKUIItemStateCenter stateForItemWithIdentifier:](self, "stateForItemWithIdentifier:", [itemCopy itemIdentifier]);
+  state = [v5 state];
+  if ((state & 2) != 0)
   {
     v9 = MEMORY[0x277D6A440];
 LABEL_6:
@@ -772,10 +772,10 @@ LABEL_6:
     goto LABEL_13;
   }
 
-  if ((v6 & 0x24) == 4)
+  if ((state & 0x24) == 4)
   {
-    v7 = [v4 bundleIdentifier];
-    if (v7)
+    bundleIdentifier = [itemCopy bundleIdentifier];
+    if (bundleIdentifier)
     {
       v8 = *MEMORY[0x277D6A450];
     }
@@ -788,9 +788,9 @@ LABEL_6:
     goto LABEL_13;
   }
 
-  if ((v6 & 1) == 0)
+  if ((state & 1) == 0)
   {
-    if ((v6 & 8) != 0)
+    if ((state & 8) != 0)
     {
       v9 = MEMORY[0x277D6A448];
     }
@@ -854,44 +854,44 @@ void __43__SKUIItemStateCenter_parentalControlsRank__block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = v2;
 }
 
-- (id)performActionForItem:(id)a3 clientContext:(id)a4 completionBlock:(id)a5
+- (id)performActionForItem:(id)item clientContext:(id)context completionBlock:(id)block
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 primaryItemOffer];
-  v12 = [(SKUIItemStateCenter *)self performActionForItem:v10 offer:v11 clientContext:v9 completionBlock:v8];
+  blockCopy = block;
+  contextCopy = context;
+  itemCopy = item;
+  primaryItemOffer = [itemCopy primaryItemOffer];
+  v12 = [(SKUIItemStateCenter *)self performActionForItem:itemCopy offer:primaryItemOffer clientContext:contextCopy completionBlock:blockCopy];
 
   return v12;
 }
 
-- (id)performActionForItem:(id)a3 clientContext:(id)a4
+- (id)performActionForItem:(id)item clientContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = SKUIItemStateCenterUseAppstoredPurchases(v7);
-  v9 = [v7 primaryItemOffer];
+  contextCopy = context;
+  itemCopy = item;
+  v8 = SKUIItemStateCenterUseAppstoredPurchases(itemCopy);
+  primaryItemOffer = [itemCopy primaryItemOffer];
   if (v8)
   {
-    [(SKUIItemStateCenter *)self performActionForSoftwareItem:v7 offer:v9 clientContext:v6 completionBlock:0];
+    [(SKUIItemStateCenter *)self performActionForSoftwareItem:itemCopy offer:primaryItemOffer clientContext:contextCopy completionBlock:0];
   }
 
   else
   {
-    [(SKUIItemStateCenter *)self performActionForItem:v7 offer:v9 clientContext:v6 completionBlock:0];
+    [(SKUIItemStateCenter *)self performActionForItem:itemCopy offer:primaryItemOffer clientContext:contextCopy completionBlock:0];
   }
   v10 = ;
 
   return v10;
 }
 
-- (id)performActionForItem:(id)a3 offer:(id)a4 clientContext:(id)a5 completionBlock:(id)a6
+- (id)performActionForItem:(id)item offer:(id)offer clientContext:(id)context completionBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(SKUIItemStateCenter *)self metricsActionTypeForItem:v10];
+  itemCopy = item;
+  offerCopy = offer;
+  contextCopy = context;
+  blockCopy = block;
+  v14 = [(SKUIItemStateCenter *)self metricsActionTypeForItem:itemCopy];
   if (([v14 isEqualToString:*MEMORY[0x277D6A438]] & 1) != 0 || objc_msgSend(v14, "isEqualToString:", *MEMORY[0x277D6A448]))
   {
     v22[0] = MEMORY[0x277D85DD0];
@@ -899,9 +899,9 @@ void __43__SKUIItemStateCenter_parentalControlsRank__block_invoke(uint64_t a1)
     v22[2] = __80__SKUIItemStateCenter_performActionForItem_offer_clientContext_completionBlock___block_invoke;
     v22[3] = &unk_2781F9968;
     v15 = &v23;
-    v23 = v13;
-    [(SKUIItemStateCenter *)self purchaseItem:v10 offer:v11 clientContext:v12 completionBlock:v22];
-    v16 = -[SKUIItemStateCenter stateForItemWithIdentifier:](self, "stateForItemWithIdentifier:", [v10 itemIdentifier]);
+    v23 = blockCopy;
+    [(SKUIItemStateCenter *)self purchaseItem:itemCopy offer:offerCopy clientContext:contextCopy completionBlock:v22];
+    v16 = -[SKUIItemStateCenter stateForItemWithIdentifier:](self, "stateForItemWithIdentifier:", [itemCopy itemIdentifier]);
 LABEL_4:
 
     goto LABEL_5;
@@ -909,17 +909,17 @@ LABEL_4:
 
   if ([v14 isEqualToString:*MEMORY[0x277D6A450]])
   {
-    v18 = [v10 bundleIdentifier];
-    SKUIMetricsLaunchApplicationWithIdentifier(v18, 0);
-    CFRelease(v18);
+    bundleIdentifier = [itemCopy bundleIdentifier];
+    SKUIMetricsLaunchApplicationWithIdentifier(bundleIdentifier, 0);
+    CFRelease(bundleIdentifier);
   }
 
   else if ([v14 isEqualToString:*MEMORY[0x277D6A440]])
   {
-    -[SKUIItemStateCenter cancelDownloadForItemWithIdentifier:](self, "cancelDownloadForItemWithIdentifier:", [v10 itemIdentifier]);
+    -[SKUIItemStateCenter cancelDownloadForItemWithIdentifier:](self, "cancelDownloadForItemWithIdentifier:", [itemCopy itemIdentifier]);
   }
 
-  if (v13)
+  if (blockCopy)
   {
     observerQueue = self->_observerQueue;
     v20[0] = MEMORY[0x277D85DD0];
@@ -927,7 +927,7 @@ LABEL_4:
     v20[2] = __80__SKUIItemStateCenter_performActionForItem_offer_clientContext_completionBlock___block_invoke_2;
     v20[3] = &unk_2781F9990;
     v15 = &v21;
-    v21 = v13;
+    v21 = blockCopy;
     dispatch_async(observerQueue, v20);
     v16 = 0;
     goto LABEL_4;
@@ -950,16 +950,16 @@ uint64_t __80__SKUIItemStateCenter_performActionForItem_offer_clientContext_comp
   return result;
 }
 
-- (id)performActionForSoftwareItem:(id)a3 offer:(id)a4 clientContext:(id)a5 completionBlock:(id)a6
+- (id)performActionForSoftwareItem:(id)item offer:(id)offer clientContext:(id)context completionBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(SKUIItemStateCenter *)self metricsActionTypeForItem:v10];
+  itemCopy = item;
+  offerCopy = offer;
+  contextCopy = context;
+  blockCopy = block;
+  v14 = [(SKUIItemStateCenter *)self metricsActionTypeForItem:itemCopy];
   if (([v14 isEqualToString:*MEMORY[0x277D6A438]] & 1) != 0 || objc_msgSend(v14, "isEqualToString:", *MEMORY[0x277D6A448]))
   {
-    if (SKUIItemStateCenterUseAppstoredPurchases(v10))
+    if (SKUIItemStateCenterUseAppstoredPurchases(itemCopy))
     {
       v15 = v24;
       v24[0] = MEMORY[0x277D85DD0];
@@ -977,34 +977,34 @@ uint64_t __80__SKUIItemStateCenter_performActionForItem_offer_clientContext_comp
 
     v15[2] = v16;
     v15[3] = &unk_2781F99B8;
-    v15[4] = v13;
-    [(SKUIItemStateCenter *)self purchaseSoftwareItem:v10 offer:v11 clientContext:v12 completionBlock:v15];
+    v15[4] = blockCopy;
+    [(SKUIItemStateCenter *)self purchaseSoftwareItem:itemCopy offer:offerCopy clientContext:contextCopy completionBlock:v15];
 
-    v17 = -[SKUIItemStateCenter stateForItemWithIdentifier:](self, "stateForItemWithIdentifier:", [v10 itemIdentifier]);
+    v17 = -[SKUIItemStateCenter stateForItemWithIdentifier:](self, "stateForItemWithIdentifier:", [itemCopy itemIdentifier]);
   }
 
   else
   {
     if ([v14 isEqualToString:*MEMORY[0x277D6A450]])
     {
-      v18 = [v10 bundleIdentifier];
-      SKUIMetricsLaunchApplicationWithIdentifier(v18, 0);
-      CFRelease(v18);
+      bundleIdentifier = [itemCopy bundleIdentifier];
+      SKUIMetricsLaunchApplicationWithIdentifier(bundleIdentifier, 0);
+      CFRelease(bundleIdentifier);
     }
 
     else if ([v14 isEqualToString:*MEMORY[0x277D6A440]])
     {
-      -[SKUIItemStateCenter cancelDownloadForItemWithIdentifier:](self, "cancelDownloadForItemWithIdentifier:", [v10 itemIdentifier]);
+      -[SKUIItemStateCenter cancelDownloadForItemWithIdentifier:](self, "cancelDownloadForItemWithIdentifier:", [itemCopy itemIdentifier]);
     }
 
-    if (v13)
+    if (blockCopy)
     {
       observerQueue = self->_observerQueue;
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __88__SKUIItemStateCenter_performActionForSoftwareItem_offer_clientContext_completionBlock___block_invoke_3;
       block[3] = &unk_2781F9990;
-      v22 = v13;
+      v22 = blockCopy;
       dispatch_async(observerQueue, block);
     }
 
@@ -1036,26 +1036,26 @@ uint64_t __88__SKUIItemStateCenter_performActionForSoftwareItem_offer_clientCont
   return result;
 }
 
-- (void)purchaseItem:(id)a3 offer:(id)a4 clientContext:(id)a5 completionBlock:(id)a6
+- (void)purchaseItem:(id)item offer:(id)offer clientContext:(id)context completionBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  itemCopy = item;
+  offerCopy = offer;
+  contextCopy = context;
+  blockCopy = block;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __72__SKUIItemStateCenter_purchaseItem_offer_clientContext_completionBlock___block_invoke;
   block[3] = &unk_2781F9A08;
-  v20 = v10;
-  v21 = self;
-  v23 = v12;
-  v24 = v13;
-  v22 = v11;
-  v15 = v12;
-  v16 = v13;
-  v17 = v11;
-  v18 = v10;
+  v20 = itemCopy;
+  selfCopy = self;
+  v23 = contextCopy;
+  v24 = blockCopy;
+  v22 = offerCopy;
+  v15 = contextCopy;
+  v16 = blockCopy;
+  v17 = offerCopy;
+  v18 = itemCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -1139,26 +1139,26 @@ void __72__SKUIItemStateCenter_purchaseItem_offer_clientContext_completionBlock_
   }
 }
 
-- (void)purchaseSoftwareItem:(id)a3 offer:(id)a4 clientContext:(id)a5 completionBlock:(id)a6
+- (void)purchaseSoftwareItem:(id)item offer:(id)offer clientContext:(id)context completionBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  itemCopy = item;
+  offerCopy = offer;
+  contextCopy = context;
+  blockCopy = block;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __80__SKUIItemStateCenter_purchaseSoftwareItem_offer_clientContext_completionBlock___block_invoke;
   block[3] = &unk_2781F9A08;
-  v20 = v10;
-  v21 = self;
-  v23 = v12;
-  v24 = v13;
-  v22 = v11;
-  v15 = v12;
-  v16 = v13;
-  v17 = v11;
-  v18 = v10;
+  v20 = itemCopy;
+  selfCopy = self;
+  v23 = contextCopy;
+  v24 = blockCopy;
+  v22 = offerCopy;
+  v15 = contextCopy;
+  v16 = blockCopy;
+  v17 = offerCopy;
+  v18 = itemCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -1230,23 +1230,23 @@ void __80__SKUIItemStateCenter_purchaseSoftwareItem_offer_clientContext_completi
   }
 }
 
-- (void)purchaseItems:(id)a3 withClientContext:(id)a4 completionBlock:(id)a5
+- (void)purchaseItems:(id)items withClientContext:(id)context completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemsCopy = items;
+  contextCopy = context;
+  blockCopy = block;
   accessQueue = self->_accessQueue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __71__SKUIItemStateCenter_purchaseItems_withClientContext_completionBlock___block_invoke;
   v15[3] = &unk_2781F9A58;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = itemsCopy;
+  v17 = contextCopy;
+  v18 = blockCopy;
+  v12 = blockCopy;
+  v13 = contextCopy;
+  v14 = itemsCopy;
   dispatch_async(accessQueue, v15);
 }
 
@@ -1274,20 +1274,20 @@ void __71__SKUIItemStateCenter_purchaseItems_withClientContext_completionBlock__
   }
 }
 
-- (void)reloadGratisEligibilityWithBundleIdentifiers:(id)a3 clientContext:(id)a4
+- (void)reloadGratisEligibilityWithBundleIdentifiers:(id)identifiers clientContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  contextCopy = context;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __82__SKUIItemStateCenter_reloadGratisEligibilityWithBundleIdentifiers_clientContext___block_invoke;
   block[3] = &unk_2781F8680;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifiersCopy;
+  v13 = contextCopy;
+  v9 = contextCopy;
+  v10 = identifiersCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -1345,17 +1345,17 @@ void __82__SKUIItemStateCenter_reloadGratisEligibilityWithBundleIdentifiers_clie
   }
 }
 
-- (void)reloadMediaLibrary:(id)a3
+- (void)reloadMediaLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__SKUIItemStateCenter_reloadMediaLibrary___block_invoke;
   v7[3] = &unk_2781F80C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = libraryCopy;
+  v6 = libraryCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -1372,35 +1372,35 @@ uint64_t __42__SKUIItemStateCenter_reloadMediaLibrary___block_invoke(uint64_t a1
   return result;
 }
 
-- (void)removeMediaLibrary:(id)a3
+- (void)removeMediaLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__SKUIItemStateCenter_removeMediaLibrary___block_invoke;
   v7[3] = &unk_2781F80C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = libraryCopy;
+  v6 = libraryCopy;
   dispatch_async(accessQueue, v7);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__SKUIItemStateCenter_removeObserver___block_invoke;
   v7[3] = &unk_2781F80C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(accessQueue, v7);
 }
 
-- (id)stateForItemWithIdentifier:(int64_t)a3
+- (id)stateForItemWithIdentifier:(int64_t)identifier
 {
   v7 = 0;
   v8 = &v7;
@@ -1414,7 +1414,7 @@ uint64_t __42__SKUIItemStateCenter_reloadMediaLibrary___block_invoke(uint64_t a1
   block[2] = __50__SKUIItemStateCenter_stateForItemWithIdentifier___block_invoke;
   block[3] = &unk_2781F8630;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = identifier;
   block[4] = self;
   dispatch_sync(accessQueue, block);
   v4 = v8[5];
@@ -1433,9 +1433,9 @@ void __50__SKUIItemStateCenter_stateForItemWithIdentifier___block_invoke(void *a
   *(v4 + 40) = v3;
 }
 
-- (id)stateForItemWithStoreIdentifier:(id)a3
+- (id)stateForItemWithStoreIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -1447,10 +1447,10 @@ void __50__SKUIItemStateCenter_stateForItemWithIdentifier___block_invoke(void *a
   block[1] = 3221225472;
   block[2] = __55__SKUIItemStateCenter_stateForItemWithStoreIdentifier___block_invoke;
   block[3] = &unk_2781F8658;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(accessQueue, block);
   v7 = v13[5];
 
@@ -1468,17 +1468,17 @@ void __55__SKUIItemStateCenter_stateForItemWithStoreIdentifier___block_invoke(vo
   *(v3 + 40) = v2;
 }
 
-- (void)addManifestDownloadWithURL:(id)a3 placeholderMetadata:(id)a4
+- (void)addManifestDownloadWithURL:(id)l placeholderMetadata:(id)metadata
 {
-  v6 = a4;
+  metadataCopy = metadata;
   v7 = MEMORY[0x277D69AD8];
-  v8 = a3;
+  lCopy = l;
   v9 = [v7 alloc];
-  v10 = [MEMORY[0x277CBABA0] requestWithURL:v8];
+  v10 = [MEMORY[0x277CBABA0] requestWithURL:lCopy];
 
   v11 = [v9 initWithURLRequest:v10];
   [v11 setManifestFormat:1];
-  v12 = -[SKUIStoreIdentifier initWithLongLong:]([SKUIStoreIdentifier alloc], "initWithLongLong:", [v6 itemIdentifier]);
+  v12 = -[SKUIStoreIdentifier initWithLongLong:]([SKUIStoreIdentifier alloc], "initWithLongLong:", [metadataCopy itemIdentifier]);
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -1487,8 +1487,8 @@ void __55__SKUIItemStateCenter_stateForItemWithStoreIdentifier___block_invoke(vo
   block[4] = self;
   v14 = v12;
   v20 = v14;
-  v21 = v6;
-  v15 = v6;
+  v21 = metadataCopy;
+  v15 = metadataCopy;
   dispatch_async(accessQueue, block);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
@@ -1590,17 +1590,17 @@ uint64_t __44__SKUIItemStateCenter_appstoredUpdatesStore__block_invoke(uint64_t 
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (void)beginObservingLibraryItems:(id)a3
+- (void)beginObservingLibraryItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__SKUIItemStateCenter_beginObservingLibraryItems___block_invoke;
   v7[3] = &unk_2781F80C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = itemsCopy;
+  v6 = itemsCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -1682,19 +1682,19 @@ void __50__SKUIItemStateCenter_beginObservingLibraryItems___block_invoke_2(uint6
   [v10 addObserver:v7 selector:sel__mediaLibraryDidChangeNotification_ name:v8 object:v9];
 }
 
-- (void)evaluatePurchaseResponseForRentals:(id)a3
+- (void)evaluatePurchaseResponseForRentals:(id)rentals
 {
-  v4 = a3;
-  if (v4)
+  rentalsCopy = rentals;
+  if (rentalsCopy)
   {
     v5 = MEMORY[0x277CBEBC0];
-    v23 = v4;
-    v6 = [v4 purchase];
-    v7 = [v6 buyParameters];
-    v8 = [v5 copyDictionaryForQueryString:v7 unescapedValues:1];
+    v23 = rentalsCopy;
+    purchase = [rentalsCopy purchase];
+    buyParameters = [purchase buyParameters];
+    v8 = [v5 copyDictionaryForQueryString:buyParameters unescapedValues:1];
 
-    v9 = [v23 purchase];
-    v10 = [v9 valueForDownloadProperty:*MEMORY[0x277D6A080]];
+    purchase2 = [v23 purchase];
+    v10 = [purchase2 valueForDownloadProperty:*MEMORY[0x277D6A080]];
 
     if (!v10 || ![v10 unsignedLongLongValue])
     {
@@ -1708,25 +1708,25 @@ void __50__SKUIItemStateCenter_beginObservingLibraryItems___block_invoke_2(uint6
     }
 
     v13 = [[SKUIStoreIdentifier alloc] initWithNumber:v10];
-    v14 = [v23 purchase];
-    v15 = [v14 valueForDownloadProperty:*MEMORY[0x277D69FF8]];
-    v16 = [v15 BOOLValue];
+    purchase3 = [v23 purchase];
+    v15 = [purchase3 valueForDownloadProperty:*MEMORY[0x277D69FF8]];
+    bOOLValue = [v15 BOOLValue];
 
     v17 = [v8 valueForKey:@"rental"];
-    v18 = [v17 BOOLValue];
+    bOOLValue2 = [v17 BOOLValue];
 
-    v19 = [v23 error];
-    if (v19 || ([v23 cancelsPurchaseBatch] & 1) != 0)
+    error = [v23 error];
+    if (error || ([v23 cancelsPurchaseBatch] & 1) != 0)
     {
     }
 
-    else if ((v16 | v18))
+    else if ((bOOLValue | bOOLValue2))
     {
       v20 = [MEMORY[0x277CBEB98] setWithObject:v13];
       v22 = [(SKUIItemStateCenter *)self _setStateFlag:2048 forItemsWithIdentifiers:v20 sendNotification:1];
 LABEL_12:
 
-      v4 = v23;
+      rentalsCopy = v23;
       goto LABEL_13;
     }
 
@@ -1742,17 +1742,17 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)endObservingLibraryItems:(id)a3
+- (void)endObservingLibraryItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__SKUIItemStateCenter_endObservingLibraryItems___block_invoke;
   v7[3] = &unk_2781F80C8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = itemsCopy;
+  selfCopy = self;
+  v6 = itemsCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -1804,18 +1804,18 @@ void __48__SKUIItemStateCenter_endObservingLibraryItems___block_invoke(uint64_t 
   }
 }
 
-- (void)getSoftwareUpdatesWithCompletionBlock:(id)a3
+- (void)getSoftwareUpdatesWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(SKUIItemStateCenter *)self appstoredUpdatesStore];
+  blockCopy = block;
+  appstoredUpdatesStore = [(SKUIItemStateCenter *)self appstoredUpdatesStore];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __61__SKUIItemStateCenter_getSoftwareUpdatesWithCompletionBlock___block_invoke;
   v7[3] = &unk_2781F9AD0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 getUpdatesWithCompletionBlock:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [appstoredUpdatesStore getUpdatesWithCompletionBlock:v7];
 }
 
 void __61__SKUIItemStateCenter_getSoftwareUpdatesWithCompletionBlock___block_invoke(uint64_t a1, void *a2)
@@ -1826,17 +1826,17 @@ void __61__SKUIItemStateCenter_getSoftwareUpdatesWithCompletionBlock___block_inv
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)performActionForLibraryItem:(id)a3
+- (void)performActionForLibraryItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__SKUIItemStateCenter_performActionForLibraryItem___block_invoke;
   v7[3] = &unk_2781F80C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = itemCopy;
+  v6 = itemCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -1947,18 +1947,18 @@ LABEL_20:
 LABEL_21:
 }
 
-- (void)reloadSoftwareUpdatesFromServerWithCompletionBlock:(id)a3
+- (void)reloadSoftwareUpdatesFromServerWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(SKUIItemStateCenter *)self appstoredUpdatesStore];
+  blockCopy = block;
+  appstoredUpdatesStore = [(SKUIItemStateCenter *)self appstoredUpdatesStore];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __74__SKUIItemStateCenter_reloadSoftwareUpdatesFromServerWithCompletionBlock___block_invoke;
   v7[3] = &unk_2781F9AF8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 reloadFromServerWithCompletionBlock:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [appstoredUpdatesStore reloadFromServerWithCompletionBlock:v7];
 }
 
 void __74__SKUIItemStateCenter_reloadSoftwareUpdatesFromServerWithCompletionBlock___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1973,23 +1973,23 @@ void __74__SKUIItemStateCenter_reloadSoftwareUpdatesFromServerWithCompletionBloc
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)findLibraryItemsForContentIdentifiers:(id)a3 options:(id)a4 completionBlock:(id)a5
+- (void)findLibraryItemsForContentIdentifiers:(id)identifiers options:(id)options completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifiersCopy = identifiers;
+  optionsCopy = options;
+  blockCopy = block;
   accessQueue = self->_accessQueue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __85__SKUIItemStateCenter_findLibraryItemsForContentIdentifiers_options_completionBlock___block_invoke;
   v15[3] = &unk_2781F9A58;
-  v16 = v9;
-  v17 = self;
-  v18 = v8;
-  v19 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = optionsCopy;
+  selfCopy = self;
+  v18 = identifiersCopy;
+  v19 = blockCopy;
+  v12 = blockCopy;
+  v13 = identifiersCopy;
+  v14 = optionsCopy;
   dispatch_async(accessQueue, v15);
 }
 
@@ -2193,7 +2193,7 @@ void __85__SKUIItemStateCenter_findLibraryItemsForContentIdentifiers_options_com
   v9 = 0x3032000000;
   v10 = __Block_byref_object_copy__5;
   v11 = __Block_byref_object_dispose__5;
-  v12 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   accessQueue = self->_accessQueue;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
@@ -2230,26 +2230,26 @@ void __52__SKUIItemStateCenter_gratisEligibleItemIdentifiers__block_invoke_2(uin
   }
 }
 
-- (void)purchaseTone:(id)a3 withProperties:(id)a4 clientContext:(id)a5 completionBlock:(id)a6
+- (void)purchaseTone:(id)tone withProperties:(id)properties clientContext:(id)context completionBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  toneCopy = tone;
+  propertiesCopy = properties;
+  contextCopy = context;
+  blockCopy = block;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __81__SKUIItemStateCenter_purchaseTone_withProperties_clientContext_completionBlock___block_invoke;
   block[3] = &unk_2781F9B98;
   block[4] = self;
-  v20 = v10;
-  v22 = v12;
-  v23 = v13;
-  v21 = v11;
-  v15 = v12;
-  v16 = v11;
-  v17 = v13;
-  v18 = v10;
+  v20 = toneCopy;
+  v22 = contextCopy;
+  v23 = blockCopy;
+  v21 = propertiesCopy;
+  v15 = contextCopy;
+  v16 = propertiesCopy;
+  v17 = blockCopy;
+  v18 = toneCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -2328,20 +2328,20 @@ void __81__SKUIItemStateCenter_purchaseTone_withProperties_clientContext_complet
   }
 }
 
-- (void)addRelationshipForParentAdamId:(id)a3 withChildAdamIds:(id)a4
+- (void)addRelationshipForParentAdamId:(id)id withChildAdamIds:(id)ids
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  idsCopy = ids;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __71__SKUIItemStateCenter_addRelationshipForParentAdamId_withChildAdamIds___block_invoke;
   block[3] = &unk_2781F8680;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
+  v12 = idCopy;
+  v13 = idsCopy;
+  selfCopy = self;
+  v9 = idsCopy;
+  v10 = idCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -2388,17 +2388,17 @@ void __71__SKUIItemStateCenter_addRelationshipForParentAdamId_withChildAdamIds__
   [*(*(a1 + 48) + 152) addChildren:v3 forParent:v2];
 }
 
-- (void)removeRelationshipsForParentAdamId:(id)a3
+- (void)removeRelationshipsForParentAdamId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__SKUIItemStateCenter_removeRelationshipsForParentAdamId___block_invoke;
   v7[3] = &unk_2781F80C8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = idCopy;
+  selfCopy = self;
+  v6 = idCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -2408,17 +2408,17 @@ void __58__SKUIItemStateCenter_removeRelationshipsForParentAdamId___block_invoke
   [*(*(a1 + 40) + 152) removeAllRelationshipsForItem:v2];
 }
 
-- (void)jobManager:(id)a3 completedJobs:(id)a4
+- (void)jobManager:(id)manager completedJobs:(id)jobs
 {
-  v5 = a4;
+  jobsCopy = jobs;
   accessQueue = self->_accessQueue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __48__SKUIItemStateCenter_jobManager_completedJobs___block_invoke;
   v8[3] = &unk_2781F80C8;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = jobsCopy;
+  selfCopy = self;
+  v7 = jobsCopy;
   dispatch_async(accessQueue, v8);
 }
 
@@ -2725,17 +2725,17 @@ LABEL_59:
   }
 }
 
-- (void)jobManager:(id)a3 updatedProgressOfJobs:(id)a4
+- (void)jobManager:(id)manager updatedProgressOfJobs:(id)jobs
 {
-  v5 = a4;
+  jobsCopy = jobs;
   accessQueue = self->_accessQueue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __56__SKUIItemStateCenter_jobManager_updatedProgressOfJobs___block_invoke;
   v8[3] = &unk_2781F80C8;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = jobsCopy;
+  selfCopy = self;
+  v7 = jobsCopy;
   dispatch_async(accessQueue, v8);
 }
 
@@ -2837,17 +2837,17 @@ LABEL_18:
   }
 }
 
-- (void)jobManager:(id)a3 updatedStateOfJobs:(id)a4
+- (void)jobManager:(id)manager updatedStateOfJobs:(id)jobs
 {
-  v5 = a4;
+  jobsCopy = jobs;
   accessQueue = self->_accessQueue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __53__SKUIItemStateCenter_jobManager_updatedStateOfJobs___block_invoke;
   v8[3] = &unk_2781F80C8;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = jobsCopy;
+  selfCopy = self;
+  v7 = jobsCopy;
   dispatch_async(accessQueue, v8);
 }
 
@@ -2985,17 +2985,17 @@ LABEL_22:
   [*(v34 + 40) _notifyObserversOfStateChanges:v30];
 }
 
-- (void)downloadManager:(id)a3 downloadStatesDidChange:(id)a4
+- (void)downloadManager:(id)manager downloadStatesDidChange:(id)change
 {
-  v5 = a4;
+  changeCopy = change;
   accessQueue = self->_accessQueue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __63__SKUIItemStateCenter_downloadManager_downloadStatesDidChange___block_invoke;
   v8[3] = &unk_2781F80C8;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = changeCopy;
+  selfCopy = self;
+  v7 = changeCopy;
   dispatch_async(accessQueue, v8);
 }
 
@@ -3147,17 +3147,17 @@ LABEL_29:
   [*(a1 + 40) _notifyObserversOfStateChanges:v38];
 }
 
-- (void)downloadQueue:(id)a3 downloadStatesDidChange:(id)a4
+- (void)downloadQueue:(id)queue downloadStatesDidChange:(id)change
 {
-  v5 = a4;
+  changeCopy = change;
   accessQueue = self->_accessQueue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __61__SKUIItemStateCenter_downloadQueue_downloadStatesDidChange___block_invoke;
   v8[3] = &unk_2781F80C8;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = changeCopy;
+  selfCopy = self;
+  v7 = changeCopy;
   dispatch_async(accessQueue, v8);
 }
 
@@ -3315,17 +3315,17 @@ LABEL_31:
   [*(a1 + 40) _notifyObserversOfStateChanges:v2];
 }
 
-- (void)downloadQueue:(id)a3 downloadStates:(id)a4 didCompleteWithError:(id)a5
+- (void)downloadQueue:(id)queue downloadStates:(id)states didCompleteWithError:(id)error
 {
-  v6 = a4;
+  statesCopy = states;
   accessQueue = self->_accessQueue;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __73__SKUIItemStateCenter_downloadQueue_downloadStates_didCompleteWithError___block_invoke;
   v9[3] = &unk_2781F80C8;
-  v10 = v6;
-  v11 = self;
-  v8 = v6;
+  v10 = statesCopy;
+  selfCopy = self;
+  v8 = statesCopy;
   dispatch_async(accessQueue, v9);
 }
 
@@ -3566,8 +3566,8 @@ LABEL_32:
           }
 
           relationshipCouncellor = self->_relationshipCouncellor;
-          v10 = [*(*(&v27 + 1) + 8 * v8) storeIdentifier];
-          v11 = [(SKUIStoreItemRelationshipCounsellor *)relationshipCouncellor childItemsForItem:v10];
+          storeIdentifier = [*(*(&v27 + 1) + 8 * v8) storeIdentifier];
+          v11 = [(SKUIStoreItemRelationshipCounsellor *)relationshipCouncellor childItemsForItem:storeIdentifier];
 
           v25 = 0u;
           v26 = 0u;
@@ -3872,7 +3872,7 @@ LABEL_14:
   [*(a1 + 32) _notifyObserversOfMediaLibraryChange];
 }
 
-- (void)_mediaLibraryDidChangeNotification:(id)a3
+- (void)_mediaLibraryDidChangeNotification:(id)notification
 {
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -3883,7 +3883,7 @@ LABEL_14:
   dispatch_async(accessQueue, block);
 }
 
-- (void)_restrictionsChangedNotification:(id)a3
+- (void)_restrictionsChangedNotification:(id)notification
 {
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -3923,7 +3923,7 @@ uint64_t __56__SKUIItemStateCenter__restrictionsChangedNotification___block_invo
   return [v2 _notifyObserversOfRestrictionsChange];
 }
 
-- (void)_storefrontDidChangeNotification:(id)a3
+- (void)_storefrontDidChangeNotification:(id)notification
 {
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -3945,50 +3945,50 @@ uint64_t __56__SKUIItemStateCenter__storefrontDidChangeNotification___block_invo
   return result;
 }
 
-- (id)_addState:(unint64_t)a3 forItemIdentifier:(id)a4
+- (id)_addState:(unint64_t)state forItemIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self->_itemStates objectForKey:v6];
+  identifierCopy = identifier;
+  v7 = [(NSMutableDictionary *)self->_itemStates objectForKey:identifierCopy];
   if (v7)
   {
-    v8 = v7;
-    v9 = [(SKUIItemState *)v7 state];
-    if ((v9 & a3) == 0)
+    mEMORY[0x277D69B38] = v7;
+    state = [(SKUIItemState *)v7 state];
+    if ((state & state) == 0)
     {
-      [(SKUIItemState *)v8 setState:v9 | a3];
+      [(SKUIItemState *)mEMORY[0x277D69B38] setState:state | state];
       goto LABEL_16;
     }
 
     goto LABEL_15;
   }
 
-  if (v6)
+  if (identifierCopy)
   {
-    v8 = objc_alloc_init(SKUIItemState);
-    v10 = [v6 numberValue];
-    [(SKUIItemState *)v8 setItemIdentifier:v10];
+    mEMORY[0x277D69B38] = objc_alloc_init(SKUIItemState);
+    numberValue = [identifierCopy numberValue];
+    [(SKUIItemState *)mEMORY[0x277D69B38] setItemIdentifier:numberValue];
 
-    [(SKUIItemState *)v8 setStoreIdentifier:v6];
-    [(SKUIItemState *)v8 setState:a3];
-    [(NSMutableDictionary *)self->_itemStates setObject:v8 forKey:v6];
+    [(SKUIItemState *)mEMORY[0x277D69B38] setStoreIdentifier:identifierCopy];
+    [(SKUIItemState *)mEMORY[0x277D69B38] setState:state];
+    [(NSMutableDictionary *)self->_itemStates setObject:mEMORY[0x277D69B38] forKey:identifierCopy];
     goto LABEL_16;
   }
 
-  v8 = [MEMORY[0x277D69B38] sharedConfig];
-  v11 = [(SKUIItemState *)v8 shouldLog];
-  if ([(SKUIItemState *)v8 shouldLogToDisk])
+  mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
+  shouldLog = [(SKUIItemState *)mEMORY[0x277D69B38] shouldLog];
+  if ([(SKUIItemState *)mEMORY[0x277D69B38] shouldLogToDisk])
   {
-    v12 = v11 | 2;
+    v12 = shouldLog | 2;
   }
 
   else
   {
-    v12 = v11;
+    v12 = shouldLog;
   }
 
-  v13 = [(SKUIItemState *)v8 OSLogObject];
-  if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+  oSLogObject = [(SKUIItemState *)mEMORY[0x277D69B38] OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v12 &= 2u;
   }
@@ -4006,7 +4006,7 @@ uint64_t __56__SKUIItemStateCenter__storefrontDidChangeNotification___block_invo
 
   if (v15)
   {
-    v13 = [MEMORY[0x277CCACA8] stringWithCString:v15 encoding:{4, &v18, v17, v18}];
+    oSLogObject = [MEMORY[0x277CCACA8] stringWithCString:v15 encoding:{4, &v18, v17, v18}];
     free(v15);
     SSFileLog();
 LABEL_14:
@@ -4014,10 +4014,10 @@ LABEL_14:
 
 LABEL_15:
 
-  v8 = 0;
+  mEMORY[0x277D69B38] = 0;
 LABEL_16:
 
-  return v8;
+  return mEMORY[0x277D69B38];
 }
 
 - (id)_appstoredUpdatesStore
@@ -4030,8 +4030,8 @@ LABEL_16:
 
     if ([(ASDSoftwareUpdatesStore *)self->_appstoredUpdatesStore hasEntitlement])
     {
-      v5 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v5 addObserver:self selector:sel__appstoredUpdatesStoreChangeNotification_ name:*MEMORY[0x277CEC310] object:self->_appstoredUpdatesStore];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:self selector:sel__appstoredUpdatesStoreChangeNotification_ name:*MEMORY[0x277CEC310] object:self->_appstoredUpdatesStore];
     }
   }
 
@@ -4040,10 +4040,10 @@ LABEL_16:
   return v6;
 }
 
-- (id)_copyItemsStatesForLibraryItems:(id)a3
+- (id)_copyItemsStatesForLibraryItems:(id)items
 {
   v4 = MEMORY[0x277CCAB00];
-  v5 = a3;
+  itemsCopy = items;
   v6 = [[v4 alloc] initWithKeyOptions:0 valueOptions:0 capacity:0];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -4051,7 +4051,7 @@ LABEL_16:
   v9[3] = &unk_2781F9BC0;
   v7 = v6;
   v10 = v7;
-  [(SKUIItemStateCenter *)self _enumerateAvailableItemsForLibraryItems:v5 usingBlock:v9];
+  [(SKUIItemStateCenter *)self _enumerateAvailableItemsForLibraryItems:itemsCopy usingBlock:v9];
 
   return v7;
 }
@@ -4137,12 +4137,12 @@ LABEL_20:
   [*(a1 + 32) setObject:v6 forKey:v18];
 }
 
-- (void)_enumerateAvailableItemsForLibraryItems:(id)a3 usingBlock:(id)a4
+- (void)_enumerateAvailableItemsForLibraryItems:(id)items usingBlock:(id)block
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  itemsCopy = items;
+  blockCopy = block;
+  v8 = itemsCopy;
   v9 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v22 = 0u;
   v23 = 0u;
@@ -4173,7 +4173,7 @@ LABEL_20:
         v19[3] = &unk_2781F9BE8;
         v16 = v9;
         v20 = v16;
-        v21 = v7;
+        v21 = blockCopy;
         [v15 enumerateStatesForLibraryItems:v14 usingBlock:{v19, v17}];
         v8 = v16;
 
@@ -4269,98 +4269,98 @@ void __55__SKUIItemStateCenter__fireFinishLoadBlocksIfNecessary__block_invoke(ui
     return 0;
   }
 
-  v3 = [MEMORY[0x277CBEAA8] date];
-  [v3 timeIntervalSinceDate:self->_gratisStateLastUpdate];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSinceDate:self->_gratisStateLastUpdate];
   v5 = v4 <= 604800.0;
 
   return v5;
 }
 
-- (id)_downloadPhaseForJobPhase:(int64_t)a3
+- (id)_downloadPhaseForJobPhase:(int64_t)phase
 {
-  if (a3 > 6)
+  if (phase > 6)
   {
     v3 = MEMORY[0x277D69F68];
   }
 
   else
   {
-    v3 = qword_2781F9DE8[a3];
+    v3 = qword_2781F9DE8[phase];
   }
 
   return *v3;
 }
 
-- (id)_newPurchaseWithItem:(id)a3 offer:(id)a4
+- (id)_newPurchaseWithItem:(id)item offer:(id)offer
 {
   v41[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 actionParameters];
-  if (!v8)
+  itemCopy = item;
+  offerCopy = offer;
+  actionParameters = [offerCopy actionParameters];
+  if (!actionParameters)
   {
     v10 = 0;
     goto LABEL_39;
   }
 
   v9 = objc_opt_class();
-  if (SKUIItemKindIsToneKind([v6 itemKind]))
+  if (SKUIItemKindIsToneKind([itemCopy itemKind]))
   {
     v9 = objc_opt_class();
   }
 
   v10 = objc_alloc_init(v9);
-  [v10 setBuyParameters:v8];
-  [v10 setExpectedDownloadFileSize:{objc_msgSend(v7, "fileSize")}];
-  v11 = [v6 requiredCapabilities];
-  [v10 setRequiredDeviceCapabilities:v11];
+  [v10 setBuyParameters:actionParameters];
+  [v10 setExpectedDownloadFileSize:{objc_msgSend(offerCopy, "fileSize")}];
+  requiredCapabilities = [itemCopy requiredCapabilities];
+  [v10 setRequiredDeviceCapabilities:requiredCapabilities];
 
   [v10 setUsesLocalRedownloadParametersIfPossible:1];
-  v12 = [v6 bundleIdentifier];
-  [v10 setValue:v12 forDownloadProperty:*MEMORY[0x277D69F88]];
-  v13 = [objc_alloc(MEMORY[0x277CCABB0]) initWithLongLong:{objc_msgSend(v6, "itemIdentifier")}];
+  bundleIdentifier = [itemCopy bundleIdentifier];
+  [v10 setValue:bundleIdentifier forDownloadProperty:*MEMORY[0x277D69F88]];
+  v13 = [objc_alloc(MEMORY[0x277CCABB0]) initWithLongLong:{objc_msgSend(itemCopy, "itemIdentifier")}];
   [v10 setValue:v13 forDownloadProperty:*MEMORY[0x277D6A080]];
-  v14 = [v6 artistName];
-  [v10 setValue:v14 forDownloadProperty:*MEMORY[0x277D69F70]];
+  artistName = [itemCopy artistName];
+  [v10 setValue:artistName forDownloadProperty:*MEMORY[0x277D69F70]];
 
-  v15 = [v6 _downloadKind];
-  [v10 setValue:v15 forDownloadProperty:*MEMORY[0x277D6A018]];
+  _downloadKind = [itemCopy _downloadKind];
+  [v10 setValue:_downloadKind forDownloadProperty:*MEMORY[0x277D6A018]];
 
-  v16 = [v6 title];
-  [v10 setValue:v16 forDownloadProperty:*MEMORY[0x277D6A0E0]];
+  title = [itemCopy title];
+  [v10 setValue:title forDownloadProperty:*MEMORY[0x277D6A0E0]];
 
-  if ([v6 isNewsstandApp])
+  if ([itemCopy isNewsstandApp])
   {
     [v10 setValue:*MEMORY[0x277D6A0F0] forDownloadProperty:*MEMORY[0x277D6A050]];
   }
 
-  if ([v6 hasPrerenderedArtwork])
+  if ([itemCopy hasPrerenderedArtwork])
   {
     v17 = [MEMORY[0x277CCABB0] numberWithBool:1];
     [v10 setValue:v17 forDownloadProperty:*MEMORY[0x277D69F78]];
   }
 
-  v18 = [v7 variantIdentifier];
-  v19 = [v18 isEqualToString:@"HD"];
+  variantIdentifier = [offerCopy variantIdentifier];
+  v19 = [variantIdentifier isEqualToString:@"HD"];
 
   if (v19)
   {
     [v10 setValue:MEMORY[0x277CBEC38] forDownloadProperty:*MEMORY[0x277D69FE0]];
   }
 
-  if ([v6 itemKind] == 18)
+  if ([itemCopy itemKind] == 18)
   {
     [v10 setEnabledServiceType:&unk_2828D2AB0];
   }
 
-  if ([(SKUIItemStateCenter *)self _isPurchaseForOffDeviceContent:v6])
+  if ([(SKUIItemStateCenter *)self _isPurchaseForOffDeviceContent:itemCopy])
   {
     [v10 setCreatesDownloads:0];
     [v10 setCreatesJobs:0];
   }
 
-  v20 = [v7 offerType];
-  if (v20 == 3)
+  offerType = [offerCopy offerType];
+  if (offerType == 3)
   {
     v21 = *MEMORY[0x277D69FF8];
     v23 = MEMORY[0x277CBEC38];
@@ -4368,7 +4368,7 @@ void __55__SKUIItemStateCenter__fireFinishLoadBlocksIfNecessary__block_invoke(ui
     goto LABEL_19;
   }
 
-  if (v20 == 2)
+  if (offerType == 2)
   {
     v21 = *MEMORY[0x277D6A090];
     v22 = v10;
@@ -4382,18 +4382,18 @@ LABEL_19:
   v26 = v25;
   if (v25)
   {
-    v27 = [v25 state];
-    v28 = v27;
-    if ((v27 & 8) != 0)
+    state = [v25 state];
+    v28 = state;
+    if ((state & 8) != 0)
     {
       [v10 setValue:MEMORY[0x277CBEC38] forDownloadProperty:*MEMORY[0x277D69FF0]];
     }
 
-    else if ((v27 & 0x10) != 0)
+    else if ((state & 0x10) != 0)
     {
-      if (v12)
+      if (bundleIdentifier)
       {
-        v41[0] = v12;
+        v41[0] = bundleIdentifier;
         v29 = MEMORY[0x277CBEA60];
         v30 = v41;
       }
@@ -4411,8 +4411,8 @@ LABEL_19:
 
     if ((~v28 & 0x24) == 0)
     {
-      v32 = [v10 requestProperties];
-      v33 = [v32 mutableCopy];
+      requestProperties = [v10 requestProperties];
+      v33 = [requestProperties mutableCopy];
 
       if (!v33)
       {
@@ -4424,13 +4424,13 @@ LABEL_19:
     }
   }
 
-  if ([v6 hasMessagesExtension] && objc_msgSend(v7, "shouldEnableMessagesExtension"))
+  if ([itemCopy hasMessagesExtension] && objc_msgSend(offerCopy, "shouldEnableMessagesExtension"))
   {
     [v10 setValue:&unk_2828D2AC8 forDownloadProperty:*MEMORY[0x277D69FD0]];
   }
 
-  v34 = [MEMORY[0x277D759A0] mainScreen];
-  [v34 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   if (v35 <= 1.0)
   {
     v36 = 64;
@@ -4441,43 +4441,43 @@ LABEL_19:
     v36 = 128;
   }
 
-  v37 = [v6 artworkURLForSize:v36];
-  v38 = [v37 absoluteString];
-  [v10 setValue:v38 forDownloadProperty:*MEMORY[0x277D6A0D0]];
+  v37 = [itemCopy artworkURLForSize:v36];
+  absoluteString = [v37 absoluteString];
+  [v10 setValue:absoluteString forDownloadProperty:*MEMORY[0x277D6A0D0]];
 
 LABEL_39:
   return v10;
 }
 
-- (id)_newSoftwarePurchaseWithItem:(id)a3 offer:(id)a4
+- (id)_newSoftwarePurchaseWithItem:(id)item offer:(id)offer
 {
   v38[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 actionParameters];
-  if (v8)
+  itemCopy = item;
+  offerCopy = offer;
+  actionParameters = [offerCopy actionParameters];
+  if (actionParameters)
   {
     v9 = objc_alloc_init(MEMORY[0x277CEC400]);
-    [v9 setBuyParameters:v8];
-    v10 = [v6 requiredCapabilities];
+    [v9 setBuyParameters:actionParameters];
+    requiredCapabilities = [itemCopy requiredCapabilities];
 
-    if (v10)
+    if (requiredCapabilities)
     {
-      v11 = [v6 requiredCapabilities];
-      [v9 setRequiredCapabilities:v11];
+      requiredCapabilities2 = [itemCopy requiredCapabilities];
+      [v9 setRequiredCapabilities:requiredCapabilities2];
     }
 
-    v12 = [v6 bundleIdentifier];
-    [v9 setBundleID:v12];
-    v13 = [objc_alloc(MEMORY[0x277CCABB0]) initWithLongLong:{objc_msgSend(v6, "itemIdentifier")}];
+    bundleIdentifier = [itemCopy bundleIdentifier];
+    [v9 setBundleID:bundleIdentifier];
+    v13 = [objc_alloc(MEMORY[0x277CCABB0]) initWithLongLong:{objc_msgSend(itemCopy, "itemIdentifier")}];
     [v9 setItemID:v13];
-    v14 = [v6 artistName];
-    [v9 setVendorName:v14];
+    artistName = [itemCopy artistName];
+    [v9 setVendorName:artistName];
 
-    v15 = [v6 title];
-    [v9 setItemName:v15];
+    title = [itemCopy title];
+    [v9 setItemName:title];
 
-    if ([(SKUIItemStateCenter *)self _isPurchaseForOffDeviceContent:v6])
+    if ([(SKUIItemStateCenter *)self _isPurchaseForOffDeviceContent:itemCopy])
     {
       [v9 setCreatesJobs:0];
     }
@@ -4487,36 +4487,36 @@ LABEL_39:
     v18 = v17;
     if (v17)
     {
-      v19 = [v17 state];
-      v20 = v19;
-      if ((v19 & 8) != 0)
+      state = [v17 state];
+      v20 = state;
+      if ((state & 8) != 0)
       {
         [v9 setIsRedownload:1];
       }
 
-      else if ((v19 & 0x10) != 0)
+      else if ((state & 0x10) != 0)
       {
-        if (v12)
+        if (bundleIdentifier)
         {
-          v38[0] = v12;
+          v38[0] = bundleIdentifier;
           v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:1];
           [v9 setGratisIdentifiers:v21];
         }
 
         else
         {
-          v35 = [MEMORY[0x277D69B38] sharedConfig];
-          v32 = [v35 shouldLog];
-          v23 = [v35 shouldLogToDisk];
-          v24 = v32 | 2;
-          if (!v23)
+          mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
+          shouldLog = [mEMORY[0x277D69B38] shouldLog];
+          shouldLogToDisk = [mEMORY[0x277D69B38] shouldLogToDisk];
+          v24 = shouldLog | 2;
+          if (!shouldLogToDisk)
           {
-            v24 = v32;
+            v24 = shouldLog;
           }
 
           v30 = v24;
-          v33 = [v35 OSLogObject];
-          v25 = os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG);
+          oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+          v25 = os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG);
           v26 = v30 & 2;
           if (v25)
           {
@@ -4553,7 +4553,7 @@ LABEL_39:
       }
     }
 
-    if ([v6 hasMessagesExtension] && objc_msgSend(v7, "shouldEnableMessagesExtension"))
+    if ([itemCopy hasMessagesExtension] && objc_msgSend(offerCopy, "shouldEnableMessagesExtension"))
     {
       [v9 setExtensionsToEnable:1];
     }
@@ -4567,29 +4567,29 @@ LABEL_39:
   return v9;
 }
 
-- (id)_newPurchasesWithBundleItem:(id)a3 bundleOffer:(id)a4
+- (id)_newPurchasesWithBundleItem:(id)item bundleOffer:(id)offer
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  offerCopy = offer;
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v10 = [v6 childItemIdentifiers];
-  v11 = [v10 count];
+  childItemIdentifiers = [itemCopy childItemIdentifiers];
+  v11 = [childItemIdentifiers count];
 
-  v12 = [v6 loadedChildItems];
-  if ([v12 count] == v11)
+  loadedChildItems = [itemCopy loadedChildItems];
+  if ([loadedChildItems count] == v11)
   {
     v29 = v11;
-    v30 = v12;
-    v31 = v7;
+    v30 = loadedChildItems;
+    v31 = offerCopy;
     v32 = v8;
-    v33 = v6;
+    v33 = itemCopy;
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v13 = v12;
+    v13 = loadedChildItems;
     v14 = [v13 countByEnumeratingWithState:&v34 objects:v38 count:16];
     if (v14)
     {
@@ -4607,21 +4607,21 @@ LABEL_39:
 
           v19 = *(*(&v34 + 1) + 8 * i);
           itemStates = self->_itemStates;
-          v21 = [v19 storeIdentifier];
-          v22 = [(NSMutableDictionary *)itemStates objectForKey:v21];
+          storeIdentifier = [v19 storeIdentifier];
+          v22 = [(NSMutableDictionary *)itemStates objectForKey:storeIdentifier];
 
-          v23 = [v22 state];
-          if ((v23 & 1) == 0)
+          state = [v22 state];
+          if ((state & 1) == 0)
           {
-            if ((v23 & 6) != 0)
+            if ((state & 6) != 0)
             {
               ++v16;
             }
 
-            else if ((v23 & 8) != 0)
+            else if ((state & 8) != 0)
             {
-              v24 = [v19 primaryItemOffer];
-              v25 = [(SKUIItemStateCenter *)self _newPurchaseWithItem:v19 offer:v24];
+              primaryItemOffer = [v19 primaryItemOffer];
+              v25 = [(SKUIItemStateCenter *)self _newPurchaseWithItem:v19 offer:primaryItemOffer];
 
               if (v25)
               {
@@ -4643,9 +4643,9 @@ LABEL_39:
     }
 
     v8 = v32;
-    v6 = v33;
-    v12 = v30;
-    v7 = v31;
+    itemCopy = v33;
+    loadedChildItems = v30;
+    offerCopy = v31;
     v11 = v29;
   }
 
@@ -4661,7 +4661,7 @@ LABEL_39:
 
   else
   {
-    v26 = [(SKUIItemStateCenter *)self _newPurchaseWithItem:v6 offer:v7];
+    v26 = [(SKUIItemStateCenter *)self _newPurchaseWithItem:itemCopy offer:offerCopy];
     v27 = v26;
     if (v26)
     {
@@ -4673,29 +4673,29 @@ LABEL_39:
   return v8;
 }
 
-- (id)_newPurchasesForSoftwareWithBundleItem:(id)a3 bundleOffer:(id)a4
+- (id)_newPurchasesForSoftwareWithBundleItem:(id)item bundleOffer:(id)offer
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  offerCopy = offer;
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v10 = [v6 childItemIdentifiers];
-  v11 = [v10 count];
+  childItemIdentifiers = [itemCopy childItemIdentifiers];
+  v11 = [childItemIdentifiers count];
 
-  v12 = [v6 loadedChildItems];
-  if ([v12 count] == v11)
+  loadedChildItems = [itemCopy loadedChildItems];
+  if ([loadedChildItems count] == v11)
   {
     v29 = v11;
-    v30 = v12;
-    v31 = v7;
+    v30 = loadedChildItems;
+    v31 = offerCopy;
     v32 = v8;
-    v33 = v6;
+    v33 = itemCopy;
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v13 = v12;
+    v13 = loadedChildItems;
     v14 = [v13 countByEnumeratingWithState:&v34 objects:v38 count:16];
     if (v14)
     {
@@ -4713,21 +4713,21 @@ LABEL_39:
 
           v19 = *(*(&v34 + 1) + 8 * i);
           itemStates = self->_itemStates;
-          v21 = [v19 storeIdentifier];
-          v22 = [(NSMutableDictionary *)itemStates objectForKey:v21];
+          storeIdentifier = [v19 storeIdentifier];
+          v22 = [(NSMutableDictionary *)itemStates objectForKey:storeIdentifier];
 
-          v23 = [v22 state];
-          if ((v23 & 1) == 0)
+          state = [v22 state];
+          if ((state & 1) == 0)
           {
-            if ((v23 & 6) != 0)
+            if ((state & 6) != 0)
             {
               ++v16;
             }
 
-            else if ((v23 & 8) != 0)
+            else if ((state & 8) != 0)
             {
-              v24 = [v19 primaryItemOffer];
-              v25 = [(SKUIItemStateCenter *)self _newSoftwarePurchaseWithItem:v19 offer:v24];
+              primaryItemOffer = [v19 primaryItemOffer];
+              v25 = [(SKUIItemStateCenter *)self _newSoftwarePurchaseWithItem:v19 offer:primaryItemOffer];
 
               if (v25)
               {
@@ -4749,9 +4749,9 @@ LABEL_39:
     }
 
     v8 = v32;
-    v6 = v33;
-    v12 = v30;
-    v7 = v31;
+    itemCopy = v33;
+    loadedChildItems = v30;
+    offerCopy = v31;
     v11 = v29;
   }
 
@@ -4767,7 +4767,7 @@ LABEL_39:
 
   else
   {
-    v26 = [(SKUIItemStateCenter *)self _newSoftwarePurchaseWithItem:v6 offer:v7];
+    v26 = [(SKUIItemStateCenter *)self _newSoftwarePurchaseWithItem:itemCopy offer:offerCopy];
     v27 = v26;
     if (v26)
     {
@@ -4779,16 +4779,16 @@ LABEL_39:
   return v8;
 }
 
-- (id)_newPurchasesWithItems:(id)a3
+- (id)_newPurchasesWithItems:(id)items
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemsCopy = items;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v4;
+  v6 = itemsCopy;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -4805,11 +4805,11 @@ LABEL_39:
 
         v11 = *(*(&v17 + 1) + 8 * i);
         v12 = objc_autoreleasePoolPush();
-        v13 = [v11 itemKind];
-        v14 = [v11 primaryItemOffer];
-        if (v13 == 17)
+        itemKind = [v11 itemKind];
+        primaryItemOffer = [v11 primaryItemOffer];
+        if (itemKind == 17)
         {
-          v15 = [(SKUIItemStateCenter *)self _newPurchasesWithBundleItem:v11 bundleOffer:v14];
+          v15 = [(SKUIItemStateCenter *)self _newPurchasesWithBundleItem:v11 bundleOffer:primaryItemOffer];
 
           if (v15)
           {
@@ -4819,7 +4819,7 @@ LABEL_39:
 
         else
         {
-          v15 = [(SKUIItemStateCenter *)self _newPurchaseWithItem:v11 offer:v14];
+          v15 = [(SKUIItemStateCenter *)self _newPurchaseWithItem:v11 offer:primaryItemOffer];
 
           if (v15)
           {
@@ -4887,7 +4887,7 @@ LABEL_39:
     v11[2] = __59__SKUIItemStateCenter__notifyObserversOfMediaLibraryChange__block_invoke;
     v11[3] = &unk_2781F80C8;
     v12 = v3;
-    v13 = self;
+    selfCopy = self;
     dispatch_async(observerQueue, v11);
   }
 }
@@ -4926,11 +4926,11 @@ void __59__SKUIItemStateCenter__notifyObserversOfMediaLibraryChange__block_invok
   }
 }
 
-- (void)_notifyObserversOfStateChange:(id)a3
+- (void)_notifyObserversOfStateChange:(id)change
 {
   v4 = MEMORY[0x277CBEB58];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithObjects:{v5, 0}];
+  changeCopy = change;
+  v6 = [[v4 alloc] initWithObjects:{changeCopy, 0}];
 
   [(SKUIItemStateCenter *)self _notifyObserversOfStateChanges:v6];
 }
@@ -4983,7 +4983,7 @@ void __59__SKUIItemStateCenter__notifyObserversOfMediaLibraryChange__block_invok
     v11[2] = __59__SKUIItemStateCenter__notifyObserversOfRestrictionsChange__block_invoke;
     v11[3] = &unk_2781F80C8;
     v12 = v3;
-    v13 = self;
+    selfCopy = self;
     dispatch_async(observerQueue, v11);
   }
 }
@@ -5022,11 +5022,11 @@ void __59__SKUIItemStateCenter__notifyObserversOfRestrictionsChange__block_invok
   }
 }
 
-- (void)_notifyObserversOfStateChanges:(id)a3
+- (void)_notifyObserversOfStateChanges:(id)changes
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  changesCopy = changes;
+  if ([changesCopy count])
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v17 = 0u;
@@ -5073,8 +5073,8 @@ void __59__SKUIItemStateCenter__notifyObserversOfRestrictionsChange__block_invok
       block[2] = __54__SKUIItemStateCenter__notifyObserversOfStateChanges___block_invoke;
       block[3] = &unk_2781F8680;
       v14 = v5;
-      v15 = self;
-      v16 = v4;
+      selfCopy = self;
+      v16 = changesCopy;
       dispatch_async(observerQueue, block);
     }
   }
@@ -5114,17 +5114,17 @@ void __54__SKUIItemStateCenter__notifyObserversOfStateChanges___block_invoke(uin
   }
 }
 
-- (void)_notifyObserversOfPurchasesResponses:(id)a3
+- (void)_notifyObserversOfPurchasesResponses:(id)responses
 {
-  v4 = a3;
+  responsesCopy = responses;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60__SKUIItemStateCenter__notifyObserversOfPurchasesResponses___block_invoke;
   v7[3] = &unk_2781F80C8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = responsesCopy;
+  selfCopy = self;
+  v6 = responsesCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -5220,17 +5220,17 @@ void __60__SKUIItemStateCenter__notifyObserversOfPurchasesResponses___block_invo
   }
 }
 
-- (void)_notifyObserversOfSoftwarePurchasesResponses:(id)a3
+- (void)_notifyObserversOfSoftwarePurchasesResponses:(id)responses
 {
-  v4 = a3;
+  responsesCopy = responses;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __68__SKUIItemStateCenter__notifyObserversOfSoftwarePurchasesResponses___block_invoke;
   v7[3] = &unk_2781F80C8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = responsesCopy;
+  selfCopy = self;
+  v6 = responsesCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -5326,18 +5326,18 @@ void __68__SKUIItemStateCenter__notifyObserversOfSoftwarePurchasesResponses___bl
   }
 }
 
-- (void)_performPurchases:(id)a3 hasBundlePurchase:(BOOL)a4 withClientContext:(id)a5 completionBlock:(id)a6
+- (void)_performPurchases:(id)purchases hasBundlePurchase:(BOOL)purchase withClientContext:(id)context completionBlock:(id)block
 {
   v75 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v49 = a5;
-  v41 = a6;
+  purchasesCopy = purchases;
+  contextCopy = context;
+  blockCopy = block;
   v45 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v70 = 0u;
   v71 = 0u;
   v72 = 0u;
   v73 = 0u;
-  obj = v8;
+  obj = purchasesCopy;
   v9 = [obj countByEnumeratingWithState:&v70 objects:v74 count:16];
   if (v9)
   {
@@ -5364,24 +5364,24 @@ void __68__SKUIItemStateCenter__notifyObserversOfSoftwarePurchasesResponses___bl
           {
             v16 = v12;
             v17 = [v16 valueForDownloadProperty:v44];
-            v18 = [v17 BOOLValue];
+            bOOLValue = [v17 BOOLValue];
 
             v19 = [v16 valueForDownloadProperty:v43];
 
-            v20 = [v19 BOOLValue];
+            bOOLValue2 = [v19 BOOLValue];
             v21 = @"buy";
-            if (v20)
+            if (bOOLValue2)
             {
               v21 = @"rent";
             }
 
             v22 = @"buy_HD";
-            if (v20)
+            if (bOOLValue2)
             {
               v22 = @"rent_HD";
             }
 
-            if (v18)
+            if (bOOLValue)
             {
               v23 = v22;
             }
@@ -5396,7 +5396,7 @@ void __68__SKUIItemStateCenter__notifyObserversOfSoftwarePurchasesResponses___bl
           }
         }
 
-        [v49 customizePurchase:v12];
+        [contextCopy customizePurchase:v12];
       }
 
       v9 = [obj countByEnumeratingWithState:&v70 objects:v74 count:16];
@@ -5412,19 +5412,19 @@ void __68__SKUIItemStateCenter__notifyObserversOfSoftwarePurchasesResponses___bl
 
   if ([obj count] == 1)
   {
-    v24 = [obj lastObject];
-    v25 = [v24 valueForDownloadProperty:*MEMORY[0x277D69FF8]];
+    lastObject = [obj lastObject];
+    v25 = [lastObject valueForDownloadProperty:*MEMORY[0x277D69FF8]];
     [v25 BOOLValue];
   }
 
   if ([obj count] == 1)
   {
-    v26 = [obj lastObject];
-    v27 = [v26 valueForDownloadProperty:*MEMORY[0x277D6A018]];
+    lastObject2 = [obj lastObject];
+    v27 = [lastObject2 valueForDownloadProperty:*MEMORY[0x277D6A018]];
     IsSoftwareKind = SSDownloadKindIsSoftwareKind();
     if (IsSoftwareKind)
     {
-      v29 = [v26 createsJobs] ^ 1;
+      v29 = [lastObject2 createsJobs] ^ 1;
     }
 
     else
@@ -5434,7 +5434,7 @@ void __68__SKUIItemStateCenter__notifyObserversOfSoftwarePurchasesResponses___bl
 
     if (SSDownloadKindIsEBookKind())
     {
-      v31 = [v26 valueForDownloadProperty:*MEMORY[0x277D6A090]];
+      v31 = [lastObject2 valueForDownloadProperty:*MEMORY[0x277D6A090]];
       v30 = v31 == 0;
     }
 
@@ -5477,7 +5477,7 @@ void __68__SKUIItemStateCenter__notifyObserversOfSoftwarePurchasesResponses___bl
   v63 = v68;
   v64 = IsSoftwareKind;
   v65 = v30;
-  v66 = a4;
+  purchaseCopy = purchase;
   v67 = v29;
   v62 = v32;
   v50[0] = MEMORY[0x277D85DD0];
@@ -5491,10 +5491,10 @@ void __68__SKUIItemStateCenter__notifyObserversOfSoftwarePurchasesResponses___bl
   v52 = v38;
   v39 = v62;
   v53 = v39;
-  v40 = v41;
+  v40 = blockCopy;
   v56 = IsSoftwareKind;
   v57 = v36;
-  v58 = a4;
+  purchaseCopy2 = purchase;
   v59 = v29;
   v54 = v40;
   v55 = v68;
@@ -5556,18 +5556,18 @@ void __93__SKUIItemStateCenter__performPurchases_hasBundlePurchase_withClientCon
   }
 }
 
-- (void)_performSoftwarePurchases:(id)a3 withClientContext:(id)a4 completionBlock:(id)a5
+- (void)_performSoftwarePurchases:(id)purchases withClientContext:(id)context completionBlock:(id)block
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v21 = a5;
+  purchasesCopy = purchases;
+  contextCopy = context;
+  blockCopy = block;
   v22 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = v8;
+  obj = purchasesCopy;
   v10 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v10)
   {
@@ -5582,10 +5582,10 @@ void __93__SKUIItemStateCenter__performPurchases_hasBundlePurchase_withClientCon
         }
 
         v13 = *(*(&v29 + 1) + 8 * i);
-        v14 = [v13 itemID];
-        if (v14)
+        itemID = [v13 itemID];
+        if (itemID)
         {
-          v15 = [[SKUIStoreIdentifier alloc] initWithNumber:v14];
+          v15 = [[SKUIStoreIdentifier alloc] initWithNumber:itemID];
           v16 = [(SKUIItemStateCenter *)self _addState:1 forItemIdentifier:v15];
           if (v16)
           {
@@ -5593,7 +5593,7 @@ void __93__SKUIItemStateCenter__performPurchases_hasBundlePurchase_withClientCon
           }
         }
 
-        [v9 customizeSoftwarePurchase:v13];
+        [contextCopy customizeSoftwarePurchase:v13];
       }
 
       v10 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
@@ -5615,7 +5615,7 @@ void __93__SKUIItemStateCenter__performPurchases_hasBundlePurchase_withClientCon
   v24[2] = __83__SKUIItemStateCenter__performSoftwarePurchases_withClientContext_completionBlock___block_invoke;
   v24[3] = &unk_2781F9C60;
   objc_copyWeak(&v27, &location);
-  v19 = v21;
+  v19 = blockCopy;
   v26 = v19;
   v20 = obj;
   v25 = v20;
@@ -5660,8 +5660,8 @@ void __83__SKUIItemStateCenter__performSoftwarePurchases_withClientContext_compl
   canAccessPurchaseHistory = self->_canAccessPurchaseHistory;
   if (canAccessPurchaseHistory == 255)
   {
-    v4 = [MEMORY[0x277D69A30] databasePath];
-    v5 = [v4 stringByDeletingLastPathComponent];
+    databasePath = [MEMORY[0x277D69A30] databasePath];
+    stringByDeletingLastPathComponent = [databasePath stringByDeletingLastPathComponent];
     self->_canAccessPurchaseHistory = SSFileIsLocalWritable();
 
     canAccessPurchaseHistory = self->_canAccessPurchaseHistory;
@@ -5669,9 +5669,9 @@ void __83__SKUIItemStateCenter__performSoftwarePurchases_withClientContext_compl
 
   if (canAccessPurchaseHistory && !self->_purchaseHistoryDatabase)
   {
-    v6 = [MEMORY[0x277D69A28] newDefaultInstance];
+    newDefaultInstance = [MEMORY[0x277D69A28] newDefaultInstance];
     purchaseHistoryDatabase = self->_purchaseHistoryDatabase;
-    self->_purchaseHistoryDatabase = v6;
+    self->_purchaseHistoryDatabase = newDefaultInstance;
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, self, __PurchaseHistoryChangeNotification, *MEMORY[0x277D69D78], 0, CFNotificationSuspensionBehaviorCoalesce);
@@ -5776,17 +5776,17 @@ void __40__SKUIItemStateCenter__reloadJobManager__block_invoke_2(uint64_t a1, vo
   [WeakRetained _setJobs:v3];
 }
 
-- (void)_reloadMediaLibraryStateForItems:(id)a3
+- (void)_reloadMediaLibraryStateForItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__SKUIItemStateCenter__reloadMediaLibraryStateForItems___block_invoke;
   v7[3] = &unk_2781F80C8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = itemsCopy;
+  selfCopy = self;
+  v6 = itemsCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -6223,17 +6223,17 @@ void __45__SKUIItemStateCenter__reloadSoftwareLibrary__block_invoke_2(uint64_t a
   [WeakRetained _setInstalledItems:v3];
 }
 
-- (void)_removePurchasingItemsForPurchases:(id)a3
+- (void)_removePurchasingItemsForPurchases:(id)purchases
 {
-  v4 = a3;
+  purchasesCopy = purchases;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__SKUIItemStateCenter__removePurchasingItemsForPurchases___block_invoke;
   v7[3] = &unk_2781F80C8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = purchasesCopy;
+  selfCopy = self;
+  v6 = purchasesCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -6283,20 +6283,20 @@ void __58__SKUIItemStateCenter__removePurchasingItemsForPurchases___block_invoke
   }
 }
 
-- (id)_removeState:(unint64_t)a3 forItemIdentifier:(id)a4
+- (id)_removeState:(unint64_t)state forItemIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self->_itemStates objectForKey:v6];
+  identifierCopy = identifier;
+  v7 = [(NSMutableDictionary *)self->_itemStates objectForKey:identifierCopy];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 state];
-    if ((v9 & a3) != 0)
+    state = [v7 state];
+    if ((state & state) != 0)
     {
-      [v8 setState:v9 & ~a3];
+      [v8 setState:state & ~state];
       if (![v8 state])
       {
-        [(NSMutableDictionary *)self->_itemStates removeObjectForKey:v6];
+        [(NSMutableDictionary *)self->_itemStates removeObjectForKey:identifierCopy];
       }
     }
 
@@ -6310,20 +6310,20 @@ void __58__SKUIItemStateCenter__removePurchasingItemsForPurchases___block_invoke
   return v8;
 }
 
-- (void)_replacePurchasingItem:(id)a3 withDownloadIDs:(id)a4
+- (void)_replacePurchasingItem:(id)item withDownloadIDs:(id)ds
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  dsCopy = ds;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__SKUIItemStateCenter__replacePurchasingItem_withDownloadIDs___block_invoke;
   block[3] = &unk_2781F8680;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = itemCopy;
+  v13 = dsCopy;
+  v9 = dsCopy;
+  v10 = itemCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -6362,18 +6362,18 @@ void __62__SKUIItemStateCenter__replacePurchasingItem_withDownloadIDs___block_in
   }
 }
 
-- (void)_setAvailableAppstoredUpdatesWithUpdates:(id)a3 decrementLoadCount:(BOOL)a4
+- (void)_setAvailableAppstoredUpdatesWithUpdates:(id)updates decrementLoadCount:(BOOL)count
 {
-  v6 = a3;
+  updatesCopy = updates;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __83__SKUIItemStateCenter__setAvailableAppstoredUpdatesWithUpdates_decrementLoadCount___block_invoke;
   block[3] = &unk_2781F9570;
-  v10 = v6;
-  v11 = self;
-  v12 = a4;
-  v8 = v6;
+  v10 = updatesCopy;
+  selfCopy = self;
+  countCopy = count;
+  v8 = updatesCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -6546,17 +6546,17 @@ LABEL_33:
   }
 }
 
-- (void)_setDownloads:(id)a3
+- (void)_setDownloads:(id)downloads
 {
-  v4 = a3;
+  downloadsCopy = downloads;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __37__SKUIItemStateCenter__setDownloads___block_invoke;
   v7[3] = &unk_2781F80C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = downloadsCopy;
+  v6 = downloadsCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -6863,17 +6863,17 @@ LABEL_41:
   [*(v1 + 32) _fireFinishLoadBlocksIfNecessary];
 }
 
-- (void)_setJobs:(id)a3
+- (void)_setJobs:(id)jobs
 {
-  v4 = a3;
+  jobsCopy = jobs;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __32__SKUIItemStateCenter__setJobs___block_invoke;
   v7[3] = &unk_2781F80C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = jobsCopy;
+  v6 = jobsCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -7013,20 +7013,20 @@ LABEL_26:
   [*(v1 + 32) _fireFinishLoadBlocksIfNecessary];
 }
 
-- (void)_setGratisIdentifiers:(id)a3 error:(id)a4
+- (void)_setGratisIdentifiers:(id)identifiers error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  errorCopy = error;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__SKUIItemStateCenter__setGratisIdentifiers_error___block_invoke;
   block[3] = &unk_2781F8680;
-  v12 = v7;
-  v13 = self;
-  v14 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = errorCopy;
+  selfCopy = self;
+  v14 = identifiersCopy;
+  v9 = identifiersCopy;
+  v10 = errorCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -7050,19 +7050,19 @@ uint64_t __51__SKUIItemStateCenter__setGratisIdentifiers_error___block_invoke(ui
   return [v4 _fireFinishLoadBlocksIfNecessary];
 }
 
-- (void)_setInstalledItems:(id)a3
+- (void)_setInstalledItems:(id)items
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  itemsCopy = items;
+  if (itemsCopy)
   {
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v6 = objc_alloc_init(MEMORY[0x277D69C68]);
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v7 = v4;
+    v7 = itemsCopy;
     v8 = [v7 countByEnumeratingWithState:&v18 objects:v23 count:16];
     if (v8)
     {
@@ -7079,7 +7079,7 @@ uint64_t __51__SKUIItemStateCenter__setGratisIdentifiers_error___block_invoke(ui
           }
 
           v13 = [*(*(&v18 + 1) + 8 * i) valueForProperty:v11];
-          [v5 addObject:v13];
+          [array addObject:v13];
         }
 
         v9 = [v7 countByEnumeratingWithState:&v18 objects:v23 count:16];
@@ -7093,8 +7093,8 @@ uint64_t __51__SKUIItemStateCenter__setGratisIdentifiers_error___block_invoke(ui
     v15[2] = __42__SKUIItemStateCenter__setInstalledItems___block_invoke_2;
     v15[3] = &unk_2781F9DC8;
     v16 = v7;
-    v17 = self;
-    [v6 playableApplicationsWithBundleIdentifiers:v5 completionBlock:v15];
+    selfCopy = self;
+    [v6 playableApplicationsWithBundleIdentifiers:array completionBlock:v15];
   }
 
   else
@@ -7274,17 +7274,17 @@ void __42__SKUIItemStateCenter__setInstalledItems___block_invoke_5(uint64_t a1, 
   [*(a1 + 32) removeObjectForKey:v6];
 }
 
-- (void)_setPurchaseHistoryItemsWithIdentifiers:(id)a3
+- (void)_setPurchaseHistoryItemsWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __63__SKUIItemStateCenter__setPurchaseHistoryItemsWithIdentifiers___block_invoke;
   v7[3] = &unk_2781F80C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifiersCopy;
+  v6 = identifiersCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -7297,17 +7297,17 @@ uint64_t __63__SKUIItemStateCenter__setPurchaseHistoryItemsWithIdentifiers___blo
   return [v3 _fireFinishLoadBlocksIfNecessary];
 }
 
-- (void)_setPurchaseHistoryVPPItemsWithIdentifiers:(id)a3
+- (void)_setPurchaseHistoryVPPItemsWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __66__SKUIItemStateCenter__setPurchaseHistoryVPPItemsWithIdentifiers___block_invoke;
   v7[3] = &unk_2781F80C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifiersCopy;
+  v6 = identifiersCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -7319,17 +7319,17 @@ uint64_t __66__SKUIItemStateCenter__setPurchaseHistoryVPPItemsWithIdentifiers___
   return [v3 _fireFinishLoadBlocksIfNecessary];
 }
 
-- (void)_setFirstPartyRemovableItemsIdentifiers:(id)a3
+- (void)_setFirstPartyRemovableItemsIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __63__SKUIItemStateCenter__setFirstPartyRemovableItemsIdentifiers___block_invoke;
   v7[3] = &unk_2781F80C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifiersCopy;
+  v6 = identifiersCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -7341,18 +7341,18 @@ uint64_t __63__SKUIItemStateCenter__setFirstPartyRemovableItemsIdentifiers___blo
   return [v3 _fireFinishLoadBlocksIfNecessary];
 }
 
-- (id)_setStateFlag:(unint64_t)a3 forItemsWithIdentifiers:(id)a4 sendNotification:(BOOL)a5
+- (id)_setStateFlag:(unint64_t)flag forItemsWithIdentifiers:(id)identifiers sendNotification:(BOOL)notification
 {
-  v24 = a5;
+  notificationCopy = notification;
   v35 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  identifiersCopy = identifiers;
   v8 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v9 = [(NSMutableDictionary *)self->_itemStates mutableCopy];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v10 = v7;
+  v10 = identifiersCopy;
   v11 = [v10 countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v11)
   {
@@ -7368,7 +7368,7 @@ uint64_t __63__SKUIItemStateCenter__setFirstPartyRemovableItemsIdentifiers___blo
         }
 
         v15 = *(*(&v29 + 1) + 8 * i);
-        v16 = [(SKUIItemStateCenter *)self _addState:a3 forItemIdentifier:v15];
+        v16 = [(SKUIItemStateCenter *)self _addState:flag forItemIdentifier:v15];
         if (v16)
         {
           [v8 addObject:v16];
@@ -7402,7 +7402,7 @@ uint64_t __63__SKUIItemStateCenter__setFirstPartyRemovableItemsIdentifiers___blo
           objc_enumerationMutation(v17);
         }
 
-        v22 = [(SKUIItemStateCenter *)self _removeState:a3 forItemIdentifier:*(*(&v25 + 1) + 8 * j)];
+        v22 = [(SKUIItemStateCenter *)self _removeState:flag forItemIdentifier:*(*(&v25 + 1) + 8 * j)];
         if (v22)
         {
           [v8 addObject:v22];
@@ -7415,7 +7415,7 @@ uint64_t __63__SKUIItemStateCenter__setFirstPartyRemovableItemsIdentifiers___blo
     while (v19);
   }
 
-  if (v24 && [v8 count])
+  if (notificationCopy && [v8 count])
   {
     [(SKUIItemStateCenter *)self _notifyObserversOfStateChanges:v8];
   }
@@ -7423,17 +7423,17 @@ uint64_t __63__SKUIItemStateCenter__setFirstPartyRemovableItemsIdentifiers___blo
   return v8;
 }
 
-- (id)_setStateFlag:(unint64_t)a3 forOnlyItemsWithIdentifiers:(id)a4 sendNotification:(BOOL)a5
+- (id)_setStateFlag:(unint64_t)flag forOnlyItemsWithIdentifiers:(id)identifiers sendNotification:(BOOL)notification
 {
-  v5 = a5;
+  notificationCopy = notification;
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(v8, "count")}];
+  identifiersCopy = identifiers;
+  v9 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v10 = v8;
+  v10 = identifiersCopy;
   v11 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v11)
   {
@@ -7460,23 +7460,23 @@ uint64_t __63__SKUIItemStateCenter__setFirstPartyRemovableItemsIdentifiers___blo
     while (v12);
   }
 
-  v18 = [(SKUIItemStateCenter *)self _setStateFlag:a3 forItemsWithIdentifiers:v9 sendNotification:v5];
+  v18 = [(SKUIItemStateCenter *)self _setStateFlag:flag forItemsWithIdentifiers:v9 sendNotification:notificationCopy];
 
   return v18;
 }
 
-- (void)_updatesSoftwarePurchasingItemsForPurchases:(id)a3 purchaseWasSuccessful:(BOOL)a4
+- (void)_updatesSoftwarePurchasingItemsForPurchases:(id)purchases purchaseWasSuccessful:(BOOL)successful
 {
-  v6 = a3;
+  purchasesCopy = purchases;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __89__SKUIItemStateCenter__updatesSoftwarePurchasingItemsForPurchases_purchaseWasSuccessful___block_invoke;
   block[3] = &unk_2781F9570;
-  v10 = v6;
-  v11 = self;
-  v12 = a4;
-  v8 = v6;
+  v10 = purchasesCopy;
+  selfCopy = self;
+  successfulCopy = successful;
+  v8 = purchasesCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -7534,11 +7534,11 @@ void __89__SKUIItemStateCenter__updatesSoftwarePurchasingItemsForPurchases_purch
   }
 }
 
-- (BOOL)_isPurchaseForOffDeviceContent:(id)a3
+- (BOOL)_isPurchaseForOffDeviceContent:(id)content
 {
-  v3 = [a3 deviceFamilies];
+  deviceFamilies = [content deviceFamilies];
 
-  return SKUIItemDeviceFamilyIsTVOnly(v3);
+  return SKUIItemDeviceFamilyIsTVOnly(deviceFamilies);
 }
 
 - (void)init

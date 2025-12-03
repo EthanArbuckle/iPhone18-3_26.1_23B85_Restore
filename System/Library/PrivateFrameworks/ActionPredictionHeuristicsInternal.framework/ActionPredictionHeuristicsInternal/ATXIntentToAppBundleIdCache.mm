@@ -1,9 +1,9 @@
 @interface ATXIntentToAppBundleIdCache
 + (id)sharedInstance;
 - (ATXIntentToAppBundleIdCache)init;
-- (void)_appRegistrationDidChange:(id)a3;
-- (void)_slowlyFetchBundleIdsForIntent:(id)a3 completionHandler:(id)a4;
-- (void)fetchBundleIdsForIntent:(id)a3 completionHandler:(id)a4;
+- (void)_appRegistrationDidChange:(id)change;
+- (void)_slowlyFetchBundleIdsForIntent:(id)intent completionHandler:(id)handler;
+- (void)fetchBundleIdsForIntent:(id)intent completionHandler:(id)handler;
 @end
 
 @implementation ATXIntentToAppBundleIdCache
@@ -38,67 +38,67 @@ uint64_t __45__ATXIntentToAppBundleIdCache_sharedInstance__block_invoke()
     intentTypeToBundleIdsCache = v2->_intentTypeToBundleIdsCache;
     v2->_intentTypeToBundleIdsCache = v3;
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v2 selector:sel__appRegistrationDidChange_ name:@"com.apple.LaunchServices.applicationRegistered" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__appRegistrationDidChange_ name:@"com.apple.LaunchServices.applicationRegistered" object:0];
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:v2 selector:sel__appRegistrationDidChange_ name:@"com.apple.LaunchServices.applicationUnregistered" object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel__appRegistrationDidChange_ name:@"com.apple.LaunchServices.applicationUnregistered" object:0];
   }
 
   return v2;
 }
 
-- (void)_appRegistrationDidChange:(id)a3
+- (void)_appRegistrationDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = __atxlog_handle_heuristic();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [ATXIntentToAppBundleIdCache _appRegistrationDidChange:v5];
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  [(NSMutableDictionary *)v6->_intentTypeToBundleIdsCache removeAllObjects];
-  objc_sync_exit(v6);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableDictionary *)selfCopy->_intentTypeToBundleIdsCache removeAllObjects];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)fetchBundleIdsForIntent:(id)a3 completionHandler:(id)a4
+- (void)fetchBundleIdsForIntent:(id)intent completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  intentTypeToBundleIdsCache = v8->_intentTypeToBundleIdsCache;
-  v10 = [v6 _className];
-  v11 = [(NSMutableDictionary *)intentTypeToBundleIdsCache objectForKey:v10];
+  intentCopy = intent;
+  handlerCopy = handler;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  intentTypeToBundleIdsCache = selfCopy->_intentTypeToBundleIdsCache;
+  _className = [intentCopy _className];
+  v11 = [(NSMutableDictionary *)intentTypeToBundleIdsCache objectForKey:_className];
   v12 = [v11 copy];
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
   if (v12)
   {
     v13 = __atxlog_handle_heuristic();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
-      [(ATXIntentToAppBundleIdCache *)v6 fetchBundleIdsForIntent:v12 completionHandler:v13];
+      [(ATXIntentToAppBundleIdCache *)intentCopy fetchBundleIdsForIntent:v12 completionHandler:v13];
     }
 
-    v7[2](v7, v12, 0);
+    handlerCopy[2](handlerCopy, v12, 0);
   }
 
   else
   {
-    [(ATXIntentToAppBundleIdCache *)v8 _slowlyFetchBundleIdsForIntent:v6 completionHandler:v7];
+    [(ATXIntentToAppBundleIdCache *)selfCopy _slowlyFetchBundleIdsForIntent:intentCopy completionHandler:handlerCopy];
   }
 }
 
-- (void)_slowlyFetchBundleIdsForIntent:(id)a3 completionHandler:(id)a4
+- (void)_slowlyFetchBundleIdsForIntent:(id)intent completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  intentCopy = intent;
+  handlerCopy = handler;
   v8 = os_transaction_create();
-  v9 = [v6 _className];
-  v10 = [v9 copy];
+  _className = [intentCopy _className];
+  v10 = [_className copy];
 
   v11 = __atxlog_handle_heuristic();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -114,11 +114,11 @@ uint64_t __45__ATXIntentToAppBundleIdCache_sharedInstance__block_invoke()
   v16[4] = self;
   v17 = v10;
   v18 = v8;
-  v19 = v7;
+  v19 = handlerCopy;
   v13 = v8;
-  v14 = v7;
+  v14 = handlerCopy;
   v15 = v10;
-  [v12 _intents_matchExtensionsForIntent:v6 completion:v16];
+  [v12 _intents_matchExtensionsForIntent:intentCopy completion:v16];
 }
 
 void __80__ATXIntentToAppBundleIdCache__slowlyFetchBundleIdsForIntent_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)

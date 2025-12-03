@@ -1,34 +1,34 @@
 @interface PDFRenderingProperties
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3;
++ (id)keyPathsForValuesAffectingValueForKey:(id)key;
 - (PDFRenderingProperties)init;
 - (PDFView)pdfView;
 - (UIColor)pageBackgroundColor;
-- (double)adjustedPageCornerRadiusForPageSize:(CGSize)a3 magnification:(double)a4;
+- (double)adjustedPageCornerRadiusForPageSize:(CGSize)size magnification:(double)magnification;
 - (double)pageCornerRadius;
-- (id)resolvedColor:(id)a3;
-- (void)_notifyPropertyChanged:(int64_t)a3;
+- (id)resolvedColor:(id)color;
+- (void)_notifyPropertyChanged:(int64_t)changed;
 - (void)dealloc;
-- (void)setAllowsDarkMode:(BOOL)a3;
-- (void)setDeviceColorSpace:(CGColorSpace *)a3;
-- (void)setDisplayBox:(int64_t)a3;
-- (void)setEnablePageShadows:(BOOL)a3;
-- (void)setGreekingThreshold:(double)a3;
-- (void)setInterpolationQuality:(int64_t)a3;
-- (void)setLineWidthThreshold:(double)a3;
-- (void)setPageColor:(id)a3;
-- (void)setShouldAntiAlias:(BOOL)a3;
-- (void)setTraitCollection:(id)a3;
+- (void)setAllowsDarkMode:(BOOL)mode;
+- (void)setDeviceColorSpace:(CGColorSpace *)space;
+- (void)setDisplayBox:(int64_t)box;
+- (void)setEnablePageShadows:(BOOL)shadows;
+- (void)setGreekingThreshold:(double)threshold;
+- (void)setInterpolationQuality:(int64_t)quality;
+- (void)setLineWidthThreshold:(double)threshold;
+- (void)setPageColor:(id)color;
+- (void)setShouldAntiAlias:(BOOL)alias;
+- (void)setTraitCollection:(id)collection;
 @end
 
 @implementation PDFRenderingProperties
 
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3
++ (id)keyPathsForValuesAffectingValueForKey:(id)key
 {
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS___PDFRenderingProperties;
-  v3 = a3;
-  v4 = objc_msgSendSuper2(&v8, sel_keyPathsForValuesAffectingValueForKey_, v3);
-  v5 = [v3 isEqualToString:{@"darkMode", v8.receiver, v8.super_class}];
+  keyCopy = key;
+  v4 = objc_msgSendSuper2(&v8, sel_keyPathsForValuesAffectingValueForKey_, keyCopy);
+  v5 = [keyCopy isEqualToString:{@"darkMode", v8.receiver, v8.super_class}];
 
   if (v5)
   {
@@ -85,13 +85,13 @@
   return WeakRetained;
 }
 
-- (void)setDisplayBox:(int64_t)a3
+- (void)setDisplayBox:(int64_t)box
 {
-  if (a3 < 5)
+  if (box < 5)
   {
-    if (self->_displayBox != a3)
+    if (self->_displayBox != box)
     {
-      self->_displayBox = a3;
+      self->_displayBox = box;
 
       [(PDFRenderingProperties *)self _notifyPropertyChanged:0];
     }
@@ -99,35 +99,35 @@
 
   else
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695DA20] format:{@"setDisplayBox: %ld out of bounds", a3}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695DA20] format:{@"setDisplayBox: %ld out of bounds", box}];
   }
 }
 
-- (void)setShouldAntiAlias:(BOOL)a3
+- (void)setShouldAntiAlias:(BOOL)alias
 {
-  if (self->_shouldAntiAlias != a3)
+  if (self->_shouldAntiAlias != alias)
   {
-    self->_shouldAntiAlias = a3;
+    self->_shouldAntiAlias = alias;
     [(PDFRenderingProperties *)self _notifyPropertyChanged:1];
   }
 }
 
-- (void)setGreekingThreshold:(double)a3
+- (void)setGreekingThreshold:(double)threshold
 {
-  if (self->_greekingThreshold != a3)
+  if (self->_greekingThreshold != threshold)
   {
-    self->_greekingThreshold = a3;
+    self->_greekingThreshold = threshold;
     [(PDFRenderingProperties *)self _notifyPropertyChanged:2];
   }
 }
 
-- (void)setInterpolationQuality:(int64_t)a3
+- (void)setInterpolationQuality:(int64_t)quality
 {
-  if (a3 < 3)
+  if (quality < 3)
   {
-    if (self->_interpolationQuality != a3)
+    if (self->_interpolationQuality != quality)
     {
-      self->_interpolationQuality = a3;
+      self->_interpolationQuality = quality;
       [(PDFRenderingProperties *)self _notifyPropertyChanged:4];
     }
   }
@@ -138,46 +138,46 @@
   }
 }
 
-- (void)setLineWidthThreshold:(double)a3
+- (void)setLineWidthThreshold:(double)threshold
 {
-  if (self->_lineWidthThreshold != a3)
+  if (self->_lineWidthThreshold != threshold)
   {
-    self->_lineWidthThreshold = a3;
+    self->_lineWidthThreshold = threshold;
     [(PDFRenderingProperties *)self _notifyPropertyChanged:3];
   }
 }
 
-- (void)setPageColor:(id)a3
+- (void)setPageColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   p_pageColor = &self->_pageColor;
-  if (self->_pageColor != v5)
+  if (self->_pageColor != colorCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_pageColor, a3);
+    v7 = colorCopy;
+    objc_storeStrong(p_pageColor, color);
     p_pageColor = [(PDFRenderingProperties *)self _notifyPropertyChanged:5];
-    v5 = v7;
+    colorCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](p_pageColor, v5);
+  MEMORY[0x1EEE66BB8](p_pageColor, colorCopy);
 }
 
-- (void)setAllowsDarkMode:(BOOL)a3
+- (void)setAllowsDarkMode:(BOOL)mode
 {
-  if (self->_allowsDarkMode != a3)
+  if (self->_allowsDarkMode != mode)
   {
-    self->_allowsDarkMode = a3;
+    self->_allowsDarkMode = mode;
     [(PDFRenderingProperties *)self _notifyPropertyChanged:7];
   }
 }
 
 - (UIColor)pageBackgroundColor
 {
-  v3 = [(PDFRenderingProperties *)self pageColor];
+  pageColor = [(PDFRenderingProperties *)self pageColor];
 
-  if (v3)
+  if (pageColor)
   {
-    v4 = [(PDFRenderingProperties *)self pageColor];
+    pageColor2 = [(PDFRenderingProperties *)self pageColor];
   }
 
   else if ([(PDFRenderingProperties *)self isDarkMode])
@@ -188,22 +188,22 @@
       darkModePageBackgroundColor = self->_pageBackgroundColor;
     }
 
-    v4 = darkModePageBackgroundColor;
+    pageColor2 = darkModePageBackgroundColor;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E69DC888] whiteColor];
+    pageColor2 = [MEMORY[0x1E69DC888] whiteColor];
   }
 
-  return v4;
+  return pageColor2;
 }
 
-- (void)setEnablePageShadows:(BOOL)a3
+- (void)setEnablePageShadows:(BOOL)shadows
 {
-  if (self->_enablePageShadows != a3)
+  if (self->_enablePageShadows != shadows)
   {
-    self->_enablePageShadows = a3;
+    self->_enablePageShadows = shadows;
     [(PDFRenderingProperties *)self _notifyPropertyChanged:6];
   }
 }
@@ -227,13 +227,13 @@
   return v2;
 }
 
-- (double)adjustedPageCornerRadiusForPageSize:(CGSize)a3 magnification:(double)a4
+- (double)adjustedPageCornerRadiusForPageSize:(CGSize)size magnification:(double)magnification
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(PDFRenderingProperties *)self pageCornerRadius];
-  result = v7 / a4;
-  v9 = fmin(width, height) * a4;
+  result = v7 / magnification;
+  v9 = fmin(width, height) * magnification;
   if (v9 < 80.0)
   {
     return (1.0 - (80.0 - v9) / 80.0) * result;
@@ -242,34 +242,34 @@
   return result;
 }
 
-- (void)setTraitCollection:(id)a3
+- (void)setTraitCollection:(id)collection
 {
-  v5 = a3;
-  if (self->_traitCollection != v5)
+  collectionCopy = collection;
+  if (self->_traitCollection != collectionCopy)
   {
-    v9 = v5;
-    v6 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    v7 = [v6 resolvedColorWithTraitCollection:v9];
+    v9 = collectionCopy;
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    v7 = [systemBackgroundColor resolvedColorWithTraitCollection:v9];
     pageBackgroundColor = self->_pageBackgroundColor;
     self->_pageBackgroundColor = v7;
 
     self->_darkMode = [(UITraitCollection *)v9 userInterfaceStyle]== UIUserInterfaceStyleDark;
-    objc_storeStrong(&self->_traitCollection, a3);
+    objc_storeStrong(&self->_traitCollection, collection);
     [(PDFRenderingProperties *)self _notifyPropertyChanged:7];
-    v5 = v9;
+    collectionCopy = v9;
   }
 }
 
-- (id)resolvedColor:(id)a3
+- (id)resolvedColor:(id)color
 {
-  v4 = a3;
-  v5 = [(PDFRenderingProperties *)self traitCollection];
-  v6 = [v4 resolvedColorWithTraitCollection:v5];
+  colorCopy = color;
+  traitCollection = [(PDFRenderingProperties *)self traitCollection];
+  v6 = [colorCopy resolvedColorWithTraitCollection:traitCollection];
 
   return v6;
 }
 
-- (void)setDeviceColorSpace:(CGColorSpace *)a3
+- (void)setDeviceColorSpace:(CGColorSpace *)space
 {
   deviceColorSpace = self->_deviceColorSpace;
   if (deviceColorSpace)
@@ -277,24 +277,24 @@
     CGColorSpaceRelease(deviceColorSpace);
   }
 
-  self->_deviceColorSpace = a3;
-  if (a3)
+  self->_deviceColorSpace = space;
+  if (space)
   {
 
-    CGColorSpaceRetain(a3);
+    CGColorSpaceRetain(space);
   }
 }
 
-- (void)_notifyPropertyChanged:(int64_t)a3
+- (void)_notifyPropertyChanged:(int64_t)changed
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v7 = @"PDFRenderingPropertyKey";
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:changed];
   v8[0] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 postNotificationName:@"PDFRenderingPropertiesChanged" object:self userInfo:v5];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"PDFRenderingPropertiesChanged" object:self userInfo:v5];
 }
 
 @end

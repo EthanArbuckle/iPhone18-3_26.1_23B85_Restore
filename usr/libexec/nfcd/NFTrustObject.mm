@@ -1,6 +1,6 @@
 @interface NFTrustObject
 + (id)allowedXPCClasses;
-- (NFTrustObject)initWithCoder:(id)a3;
+- (NFTrustObject)initWithCoder:(id)coder;
 - (id)description;
 - (id)dictionaryRepresentation;
 @end
@@ -81,16 +81,16 @@ LABEL_12:
         goto LABEL_11;
       }
 
-      v13 = [v12 dictionaryRepresentation];
+      dictionaryRepresentation = [v12 dictionaryRepresentation];
     }
 
     else
     {
-      v13 = +[NSNull null];
+      dictionaryRepresentation = +[NSNull null];
     }
 
-    v14 = v13;
-    [v3 setObject:v13 forKeyedSubscript:v11];
+    v14 = dictionaryRepresentation;
+    [v3 setObject:dictionaryRepresentation forKeyedSubscript:v11];
 
 LABEL_11:
     goto LABEL_12;
@@ -106,13 +106,13 @@ LABEL_14:
   v3 = [NSString alloc];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(NFTrustObject *)self dictionaryRepresentation];
-  v7 = [v3 initWithFormat:@"%@ : %@", v5, v6];
+  dictionaryRepresentation = [(NFTrustObject *)self dictionaryRepresentation];
+  v7 = [v3 initWithFormat:@"%@ : %@", v5, dictionaryRepresentation];
 
   return v7;
 }
 
-- (NFTrustObject)initWithCoder:(id)a3
+- (NFTrustObject)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = NFTrustObject;

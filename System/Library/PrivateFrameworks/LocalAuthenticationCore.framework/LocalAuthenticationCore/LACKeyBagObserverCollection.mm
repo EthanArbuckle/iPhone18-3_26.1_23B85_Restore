@@ -1,11 +1,11 @@
 @interface LACKeyBagObserverCollection
-- (LACKeyBagObserverCollection)initWithState:(int64_t)a3;
-- (void)publishKeybagStateUpdate:(id)a3 state:(int64_t)a4;
+- (LACKeyBagObserverCollection)initWithState:(int64_t)state;
+- (void)publishKeybagStateUpdate:(id)update state:(int64_t)state;
 @end
 
 @implementation LACKeyBagObserverCollection
 
-- (LACKeyBagObserverCollection)initWithState:(int64_t)a3
+- (LACKeyBagObserverCollection)initWithState:(int64_t)state
 {
   v8.receiver = self;
   v8.super_class = LACKeyBagObserverCollection;
@@ -16,23 +16,23 @@
     observers = v4->_observers;
     v4->_observers = v5;
 
-    v4->_lastPublishedState = a3;
+    v4->_lastPublishedState = state;
   }
 
   return v4;
 }
 
-- (void)publishKeybagStateUpdate:(id)a3 state:(int64_t)a4
+- (void)publishKeybagStateUpdate:(id)update state:(int64_t)state
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (self->_lastPublishedState != a4)
+  updateCopy = update;
+  if (self->_lastPublishedState != state)
   {
     v7 = LACLogKeybag();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = NSStringFromLACKeyBagState(self->_lastPublishedState);
-      v9 = NSStringFromLACKeyBagState(a4);
+      v9 = NSStringFromLACKeyBagState(state);
       *buf = 138412546;
       v15 = v8;
       v16 = 2112;
@@ -40,13 +40,13 @@
       _os_log_impl(&dword_1B0233000, v7, OS_LOG_TYPE_DEFAULT, "Keybag state changed from %@ to %@", buf, 0x16u);
     }
 
-    self->_lastPublishedState = a4;
+    self->_lastPublishedState = state;
     observers = self->_observers;
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __62__LACKeyBagObserverCollection_publishKeybagStateUpdate_state___block_invoke;
     v12[3] = &unk_1E7A96038;
-    v13 = v6;
+    v13 = updateCopy;
     [(LACThreadSafeCollection *)observers forEach:v12];
   }
 

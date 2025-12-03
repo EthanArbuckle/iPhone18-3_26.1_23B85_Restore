@@ -1,5 +1,5 @@
 @interface PXLemonadeFeatureAvailabilityProcessingViewFactory
-+ (id)makeProcessingViewWithFooterViewModel:(id)a3;
++ (id)makeProcessingViewWithFooterViewModel:(id)model;
 - (PXLemonadeFeatureAvailabilityProcessingViewFactory)init;
 @end
 
@@ -12,10 +12,10 @@
   return [(PXLemonadeFeatureAvailabilityProcessingViewFactory *)&v3 init];
 }
 
-+ (id)makeProcessingViewWithFooterViewModel:(id)a3
++ (id)makeProcessingViewWithFooterViewModel:(id)model
 {
-  v3 = a3;
-  v4 = sub_1A45D8968(v3);
+  modelCopy = model;
+  v4 = sub_1A45D8968(modelCopy);
 
   return v4;
 }

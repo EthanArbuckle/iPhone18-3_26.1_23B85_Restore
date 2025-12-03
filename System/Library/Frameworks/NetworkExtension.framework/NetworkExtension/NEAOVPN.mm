@@ -1,19 +1,19 @@
 @interface NEAOVPN
-- (BOOL)checkValidityAndCollectErrors:(id)a3;
-- (NEAOVPN)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)checkValidityAndCollectErrors:(id)errors;
+- (NEAOVPN)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NEAOVPN
 
-- (BOOL)checkValidityAndCollectErrors:(id)a3
+- (BOOL)checkValidityAndCollectErrors:(id)errors
 {
   v67 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NEAOVPN *)self interfaceProtocolMapping];
+  errorsCopy = errors;
+  interfaceProtocolMapping = [(NEAOVPN *)self interfaceProtocolMapping];
 
-  if (v5)
+  if (interfaceProtocolMapping)
   {
     v61 = 0u;
     v62 = 0u;
@@ -25,7 +25,7 @@
     {
       v7 = v6;
       v8 = *v60;
-      LODWORD(v5) = 1;
+      LODWORD(interfaceProtocolMapping) = 1;
       do
       {
         for (i = 0; i != v7; ++i)
@@ -38,23 +38,23 @@
           v10 = *(*(&v59 + 1) + 8 * i);
           if ((isa_nsstring(v10) & 1) == 0)
           {
-            [NEConfiguration addError:v4 toList:?];
-            LODWORD(v5) = 0;
+            [NEConfiguration addError:errorsCopy toList:?];
+            LODWORD(interfaceProtocolMapping) = 0;
           }
 
-          v11 = [(NEAOVPN *)self interfaceProtocolMapping];
-          v12 = [v11 objectForKeyedSubscript:v10];
+          interfaceProtocolMapping2 = [(NEAOVPN *)self interfaceProtocolMapping];
+          v12 = [interfaceProtocolMapping2 objectForKeyedSubscript:v10];
 
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            LODWORD(v5) = [v12 checkValidityAndCollectErrors:v4] & v5;
+            LODWORD(interfaceProtocolMapping) = [v12 checkValidityAndCollectErrors:errorsCopy] & interfaceProtocolMapping;
           }
 
           else
           {
-            [NEConfiguration addError:v4 toList:?];
-            LODWORD(v5) = 0;
+            [NEConfiguration addError:errorsCopy toList:?];
+            LODWORD(interfaceProtocolMapping) = 0;
           }
         }
 
@@ -66,18 +66,18 @@
 
     else
     {
-      LODWORD(v5) = 1;
+      LODWORD(interfaceProtocolMapping) = 1;
     }
   }
 
   else
   {
-    [NEConfiguration addError:v4 toList:?];
+    [NEConfiguration addError:errorsCopy toList:?];
   }
 
-  v13 = [(NEAOVPN *)self serviceExceptions];
+  serviceExceptions = [(NEAOVPN *)self serviceExceptions];
 
-  if (v13)
+  if (serviceExceptions)
   {
     v57 = 0u;
     v58 = 0u;
@@ -101,23 +101,23 @@
           v18 = *(*(&v55 + 1) + 8 * j);
           if ((isa_nsstring(v18) & 1) == 0)
           {
-            [NEConfiguration addError:v4 toList:?];
-            LODWORD(v5) = 0;
+            [NEConfiguration addError:errorsCopy toList:?];
+            LODWORD(interfaceProtocolMapping) = 0;
           }
 
-          v19 = [(NEAOVPN *)self serviceExceptions];
-          v20 = [v19 objectForKeyedSubscript:v18];
+          serviceExceptions2 = [(NEAOVPN *)self serviceExceptions];
+          v20 = [serviceExceptions2 objectForKeyedSubscript:v18];
 
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            LODWORD(v5) = [v20 checkValidityAndCollectErrors:v4] & v5;
+            LODWORD(interfaceProtocolMapping) = [v20 checkValidityAndCollectErrors:errorsCopy] & interfaceProtocolMapping;
           }
 
           else
           {
-            [NEConfiguration addError:v4 toList:?];
-            LODWORD(v5) = 0;
+            [NEConfiguration addError:errorsCopy toList:?];
+            LODWORD(interfaceProtocolMapping) = 0;
           }
         }
 
@@ -128,9 +128,9 @@
     }
   }
 
-  v21 = [(NEAOVPN *)self applicationExceptions];
+  applicationExceptions = [(NEAOVPN *)self applicationExceptions];
 
-  if (v21)
+  if (applicationExceptions)
   {
     v53 = 0u;
     v54 = 0u;
@@ -154,38 +154,38 @@
           v26 = *(*(&v51 + 1) + 8 * k);
           if ((isa_nsstring(v26) & 1) == 0)
           {
-            [NEConfiguration addError:v4 toList:?];
-            LODWORD(v5) = 0;
+            [NEConfiguration addError:errorsCopy toList:?];
+            LODWORD(interfaceProtocolMapping) = 0;
           }
 
-          v27 = [(NEAOVPN *)self applicationExceptions];
-          v28 = [v27 objectForKeyedSubscript:v26];
+          applicationExceptions2 = [(NEAOVPN *)self applicationExceptions];
+          v28 = [applicationExceptions2 objectForKeyedSubscript:v26];
 
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            LODWORD(v5) = [v28 checkValidityAndCollectErrors:v4] & v5;
+            LODWORD(interfaceProtocolMapping) = [v28 checkValidityAndCollectErrors:errorsCopy] & interfaceProtocolMapping;
           }
 
           else
           {
-            [NEConfiguration addError:v4 toList:?];
-            LODWORD(v5) = 0;
+            [NEConfiguration addError:errorsCopy toList:?];
+            LODWORD(interfaceProtocolMapping) = 0;
           }
 
-          v29 = [v28 limitToProtocols];
-          if (v29)
+          limitToProtocols = [v28 limitToProtocols];
+          if (limitToProtocols)
           {
-            v30 = v29;
-            v31 = [v28 limitToProtocols];
-            if ([v31 count])
+            v30 = limitToProtocols;
+            limitToProtocols2 = [v28 limitToProtocols];
+            if ([limitToProtocols2 count])
             {
-              v32 = [v28 isLimitedToUDP];
+              isLimitedToUDP = [v28 isLimitedToUDP];
 
-              if ((v32 & 1) == 0)
+              if ((isLimitedToUDP & 1) == 0)
               {
-                [NEConfiguration addError:v4 toList:?];
-                LODWORD(v5) = 0;
+                [NEConfiguration addError:errorsCopy toList:?];
+                LODWORD(interfaceProtocolMapping) = 0;
               }
             }
 
@@ -202,9 +202,9 @@
     }
   }
 
-  v33 = [(NEAOVPN *)self allowedCaptiveNetworkPlugins];
+  allowedCaptiveNetworkPlugins = [(NEAOVPN *)self allowedCaptiveNetworkPlugins];
 
-  if (v33)
+  if (allowedCaptiveNetworkPlugins)
   {
     v49 = 0u;
     v50 = 0u;
@@ -228,23 +228,23 @@
           v38 = *(*(&v47 + 1) + 8 * m);
           if ((isa_nsstring(v38) & 1) == 0)
           {
-            [NEConfiguration addError:v4 toList:?];
-            LODWORD(v5) = 0;
+            [NEConfiguration addError:errorsCopy toList:?];
+            LODWORD(interfaceProtocolMapping) = 0;
           }
 
-          v39 = [(NEAOVPN *)self allowedCaptiveNetworkPlugins];
-          v40 = [v39 objectForKeyedSubscript:v38];
+          allowedCaptiveNetworkPlugins2 = [(NEAOVPN *)self allowedCaptiveNetworkPlugins];
+          v40 = [allowedCaptiveNetworkPlugins2 objectForKeyedSubscript:v38];
 
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            LODWORD(v5) = [v40 checkValidityAndCollectErrors:v4] & v5;
+            LODWORD(interfaceProtocolMapping) = [v40 checkValidityAndCollectErrors:errorsCopy] & interfaceProtocolMapping;
           }
 
           else
           {
-            [NEConfiguration addError:v4 toList:?];
-            LODWORD(v5) = 0;
+            [NEConfiguration addError:errorsCopy toList:?];
+            LODWORD(interfaceProtocolMapping) = 0;
           }
         }
 
@@ -256,78 +256,78 @@
   }
 
   v41 = *MEMORY[0x1E69E9840];
-  return v5;
+  return interfaceProtocolMapping;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[NEAOVPN allocWithZone:?]];
   [(NEAOVPN *)v4 setEnabled:[(NEAOVPN *)self isEnabled]];
   [(NEAOVPN *)v4 setToggleEnabled:[(NEAOVPN *)self isToggleEnabled]];
   [(NEAOVPN *)v4 setAllowCaptiveWebSheet:[(NEAOVPN *)self isAllowCaptiveWebSheet]];
   [(NEAOVPN *)v4 setAllowAllCaptiveNetworkPlugins:[(NEAOVPN *)self isAllowAllCaptiveNetworkPlugins]];
-  v5 = [(NEAOVPN *)self interfaceProtocolMapping];
-  [(NEAOVPN *)v4 setInterfaceProtocolMapping:v5];
+  interfaceProtocolMapping = [(NEAOVPN *)self interfaceProtocolMapping];
+  [(NEAOVPN *)v4 setInterfaceProtocolMapping:interfaceProtocolMapping];
 
-  v6 = [(NEAOVPN *)self activeInterfaceProtocolKey];
-  [(NEAOVPN *)v4 setActiveInterfaceProtocolKey:v6];
+  activeInterfaceProtocolKey = [(NEAOVPN *)self activeInterfaceProtocolKey];
+  [(NEAOVPN *)v4 setActiveInterfaceProtocolKey:activeInterfaceProtocolKey];
 
-  v7 = [(NEAOVPN *)self serviceExceptions];
-  [(NEAOVPN *)v4 setServiceExceptions:v7];
+  serviceExceptions = [(NEAOVPN *)self serviceExceptions];
+  [(NEAOVPN *)v4 setServiceExceptions:serviceExceptions];
 
-  v8 = [(NEAOVPN *)self applicationExceptions];
-  [(NEAOVPN *)v4 setApplicationExceptions:v8];
+  applicationExceptions = [(NEAOVPN *)self applicationExceptions];
+  [(NEAOVPN *)v4 setApplicationExceptions:applicationExceptions];
 
-  v9 = [(NEAOVPN *)self allowedCaptiveNetworkPlugins];
-  [(NEAOVPN *)v4 setAllowedCaptiveNetworkPlugins:v9];
+  allowedCaptiveNetworkPlugins = [(NEAOVPN *)self allowedCaptiveNetworkPlugins];
+  [(NEAOVPN *)v4 setAllowedCaptiveNetworkPlugins:allowedCaptiveNetworkPlugins];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[NEAOVPN isEnabled](self forKey:{"isEnabled"), @"Enabled"}];
-  [v4 encodeBool:-[NEAOVPN isToggleEnabled](self forKey:{"isToggleEnabled"), @"ToggleEnabled"}];
-  [v4 encodeBool:-[NEAOVPN isAllowCaptiveWebSheet](self forKey:{"isAllowCaptiveWebSheet"), @"AllowCaptiveWebSheet"}];
-  [v4 encodeBool:-[NEAOVPN isAllowAllCaptiveNetworkPlugins](self forKey:{"isAllowAllCaptiveNetworkPlugins"), @"AllowAllCaptiveNetworkPlugins"}];
-  v5 = [(NEAOVPN *)self interfaceProtocolMapping];
-  [v4 encodeObject:v5 forKey:@"InterfaceProtocolMapping"];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[NEAOVPN isEnabled](self forKey:{"isEnabled"), @"Enabled"}];
+  [coderCopy encodeBool:-[NEAOVPN isToggleEnabled](self forKey:{"isToggleEnabled"), @"ToggleEnabled"}];
+  [coderCopy encodeBool:-[NEAOVPN isAllowCaptiveWebSheet](self forKey:{"isAllowCaptiveWebSheet"), @"AllowCaptiveWebSheet"}];
+  [coderCopy encodeBool:-[NEAOVPN isAllowAllCaptiveNetworkPlugins](self forKey:{"isAllowAllCaptiveNetworkPlugins"), @"AllowAllCaptiveNetworkPlugins"}];
+  interfaceProtocolMapping = [(NEAOVPN *)self interfaceProtocolMapping];
+  [coderCopy encodeObject:interfaceProtocolMapping forKey:@"InterfaceProtocolMapping"];
 
-  v6 = [(NEAOVPN *)self activeInterfaceProtocolKey];
-  [v4 encodeObject:v6 forKey:@"ActiveInterfaceProtocolKey"];
+  activeInterfaceProtocolKey = [(NEAOVPN *)self activeInterfaceProtocolKey];
+  [coderCopy encodeObject:activeInterfaceProtocolKey forKey:@"ActiveInterfaceProtocolKey"];
 
-  v7 = [(NEAOVPN *)self serviceExceptions];
-  [v4 encodeObject:v7 forKey:@"ServiceExceptions"];
+  serviceExceptions = [(NEAOVPN *)self serviceExceptions];
+  [coderCopy encodeObject:serviceExceptions forKey:@"ServiceExceptions"];
 
-  v8 = [(NEAOVPN *)self applicationExceptions];
-  [v4 encodeObject:v8 forKey:@"ApplicationExceptions"];
+  applicationExceptions = [(NEAOVPN *)self applicationExceptions];
+  [coderCopy encodeObject:applicationExceptions forKey:@"ApplicationExceptions"];
 
-  v9 = [(NEAOVPN *)self allowedCaptiveNetworkPlugins];
-  [v4 encodeObject:v9 forKey:@"AllowedCaptiveNetworkPlugins"];
+  allowedCaptiveNetworkPlugins = [(NEAOVPN *)self allowedCaptiveNetworkPlugins];
+  [coderCopy encodeObject:allowedCaptiveNetworkPlugins forKey:@"AllowedCaptiveNetworkPlugins"];
 }
 
-- (NEAOVPN)initWithCoder:(id)a3
+- (NEAOVPN)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v33.receiver = self;
   v33.super_class = NEAOVPN;
   v5 = [(NEAOVPN *)&v33 init];
   if (v5)
   {
-    v5->_enabled = [v4 decodeBoolForKey:@"Enabled"];
-    v5->_toggleEnabled = [v4 decodeBoolForKey:@"ToggleEnabled"];
-    v5->_allowCaptiveWebSheet = [v4 decodeBoolForKey:@"AllowCaptiveWebSheet"];
-    v5->_allowAllCaptiveNetworkPlugins = [v4 decodeBoolForKey:@"AllowAllCaptiveNetworkPlugins"];
+    v5->_enabled = [coderCopy decodeBoolForKey:@"Enabled"];
+    v5->_toggleEnabled = [coderCopy decodeBoolForKey:@"ToggleEnabled"];
+    v5->_allowCaptiveWebSheet = [coderCopy decodeBoolForKey:@"AllowCaptiveWebSheet"];
+    v5->_allowAllCaptiveNetworkPlugins = [coderCopy decodeBoolForKey:@"AllowAllCaptiveNetworkPlugins"];
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [v6 setWithObjects:{v7, v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"InterfaceProtocolMapping"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"InterfaceProtocolMapping"];
     interfaceProtocolMapping = v5->_interfaceProtocolMapping;
     v5->_interfaceProtocolMapping = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ActiveInterfaceProtocolKey"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ActiveInterfaceProtocolKey"];
     activeInterfaceProtocolKey = v5->_activeInterfaceProtocolKey;
     v5->_activeInterfaceProtocolKey = v12;
 
@@ -335,7 +335,7 @@
     v15 = objc_opt_class();
     v16 = objc_opt_class();
     v17 = [v14 setWithObjects:{v15, v16, objc_opt_class(), 0}];
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"ServiceExceptions"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"ServiceExceptions"];
     serviceExceptions = v5->_serviceExceptions;
     v5->_serviceExceptions = v18;
 
@@ -343,7 +343,7 @@
     v21 = objc_opt_class();
     v22 = objc_opt_class();
     v23 = [v20 setWithObjects:{v21, v22, objc_opt_class(), 0}];
-    v24 = [v4 decodeObjectOfClasses:v23 forKey:@"ApplicationExceptions"];
+    v24 = [coderCopy decodeObjectOfClasses:v23 forKey:@"ApplicationExceptions"];
     applicationExceptions = v5->_applicationExceptions;
     v5->_applicationExceptions = v24;
 
@@ -351,7 +351,7 @@
     v27 = objc_opt_class();
     v28 = objc_opt_class();
     v29 = [v26 setWithObjects:{v27, v28, objc_opt_class(), 0}];
-    v30 = [v4 decodeObjectOfClasses:v29 forKey:@"AllowedCaptiveNetworkPlugins"];
+    v30 = [coderCopy decodeObjectOfClasses:v29 forKey:@"AllowedCaptiveNetworkPlugins"];
     allowedCaptiveNetworkPlugins = v5->_allowedCaptiveNetworkPlugins;
     v5->_allowedCaptiveNetworkPlugins = v30;
   }

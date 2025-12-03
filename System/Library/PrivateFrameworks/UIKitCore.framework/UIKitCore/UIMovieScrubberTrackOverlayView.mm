@@ -1,26 +1,26 @@
 @interface UIMovieScrubberTrackOverlayView
-- (UIMovieScrubberTrackOverlayView)initWithFrame:(CGRect)a3;
+- (UIMovieScrubberTrackOverlayView)initWithFrame:(CGRect)frame;
 - (void)_clampValueAndLayout;
 - (void)_updateLeftFill;
 - (void)_updateRightFill;
 - (void)animateFillFramesAway;
 - (void)layoutSubviews;
-- (void)setEditing:(BOOL)a3;
-- (void)setEndValue:(double)a3;
-- (void)setIsZoomed:(BOOL)a3;
-- (void)setMaximumValue:(double)a3;
-- (void)setMinimumValue:(double)a3;
-- (void)setStartValue:(double)a3;
-- (void)setValue:(double)a3;
+- (void)setEditing:(BOOL)editing;
+- (void)setEndValue:(double)value;
+- (void)setIsZoomed:(BOOL)zoomed;
+- (void)setMaximumValue:(double)value;
+- (void)setMinimumValue:(double)value;
+- (void)setStartValue:(double)value;
+- (void)setValue:(double)value;
 @end
 
 @implementation UIMovieScrubberTrackOverlayView
 
-- (UIMovieScrubberTrackOverlayView)initWithFrame:(CGRect)a3
+- (UIMovieScrubberTrackOverlayView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = UIMovieScrubberTrackOverlayView;
-  v3 = [(UIView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = _UIImageWithName(@"UIMovieScrubberFill.png");
@@ -111,14 +111,14 @@
   [(UIView *)self setNeedsLayout];
 }
 
-- (void)setEditing:(BOOL)a3
+- (void)setEditing:(BOOL)editing
 {
   v3 = *(self + 468);
-  if ((v3 & 1) != a3)
+  if ((v3 & 1) != editing)
   {
-    *(self + 468) = v3 & 0xFE | a3;
+    *(self + 468) = v3 & 0xFE | editing;
     rightFillView = self->_rightFillView;
-    if (a3)
+    if (editing)
     {
       v6 = 1.0;
     }
@@ -145,52 +145,52 @@
   }
 }
 
-- (void)setValue:(double)a3
+- (void)setValue:(double)value
 {
-  if (self->_value != a3)
+  if (self->_value != value)
   {
-    self->_value = a3;
+    self->_value = value;
     [(UIMovieScrubberTrackOverlayView *)self _clampValueAndLayout];
   }
 }
 
-- (void)setStartValue:(double)a3
+- (void)setStartValue:(double)value
 {
-  if (self->_startValue != a3)
+  if (self->_startValue != value)
   {
-    self->_startValue = a3;
+    self->_startValue = value;
     [(UIView *)self setNeedsLayout];
   }
 }
 
-- (void)setEndValue:(double)a3
+- (void)setEndValue:(double)value
 {
-  if (self->_endValue != a3)
+  if (self->_endValue != value)
   {
-    self->_endValue = a3;
+    self->_endValue = value;
     [(UIView *)self setNeedsLayout];
   }
 }
 
-- (void)setMinimumValue:(double)a3
+- (void)setMinimumValue:(double)value
 {
-  if (self->_minimumValue != a3)
+  if (self->_minimumValue != value)
   {
-    self->_minimumValue = a3;
+    self->_minimumValue = value;
   }
 }
 
-- (void)setMaximumValue:(double)a3
+- (void)setMaximumValue:(double)value
 {
-  if (self->_maximumValue != a3)
+  if (self->_maximumValue != value)
   {
-    self->_maximumValue = a3;
+    self->_maximumValue = value;
   }
 }
 
-- (void)setIsZoomed:(BOOL)a3
+- (void)setIsZoomed:(BOOL)zoomed
 {
-  if (a3)
+  if (zoomed)
   {
     v3 = 2;
   }

@@ -1,13 +1,13 @@
 @interface SOConfigurationClient
 + (id)defaultClient;
-- (BOOL)willHandleURL:(id)a3 responseCode:(int64_t)a4 callerBundleIdentifier:(id)a5;
+- (BOOL)willHandleURL:(id)l responseCode:(int64_t)code callerBundleIdentifier:(id)identifier;
 - (SOConfiguration)configuration;
 - (SOConfigurationClient)init;
-- (id)profileForURL:(id)a3 responseCode:(int64_t)a4;
+- (id)profileForURL:(id)l responseCode:(int64_t)code;
 - (int64_t)configVersion;
 - (void)_checkNewVersion;
 - (void)_reloadConfig;
-- (void)willHandleURL:(id)a3 responseCode:(int64_t)a4 callerBundleIdentifier:(id)a5 completion:(id)a6;
+- (void)willHandleURL:(id)l responseCode:(int64_t)code callerBundleIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation SOConfigurationClient
@@ -28,7 +28,7 @@ uint64_t __38__SOConfigurationClient_defaultClient__block_invoke()
     *buf = 136315394;
     v13 = "[SOConfigurationClient init]";
     v14 = 2112;
-    v15 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1CA238000, v3, OS_LOG_TYPE_DEFAULT, "%s  on %@", buf, 0x16u);
   }
 
@@ -121,72 +121,72 @@ void __38__SOConfigurationClient__reloadConfig__block_invoke(uint64_t a1, void *
 
 - (void)_checkNewVersion
 {
-  v3 = [(SOConfigurationVersion *)self->_configurationVersion checkVersion];
-  if (v3 == 1)
+  checkVersion = [(SOConfigurationVersion *)self->_configurationVersion checkVersion];
+  if (checkVersion == 1)
   {
 
     [(SOConfigurationClient *)self _reloadConfig];
   }
 
-  else if (v3 == 2)
+  else if (checkVersion == 2)
   {
     configuration = self->_configuration;
     self->_configuration = 0;
   }
 }
 
-- (id)profileForURL:(id)a3 responseCode:(int64_t)a4
+- (id)profileForURL:(id)l responseCode:(int64_t)code
 {
-  v6 = a3;
-  v7 = self;
-  objc_sync_enter(v7);
-  [(SOConfigurationClient *)v7 _checkNewVersion];
-  v8 = [(SOConfiguration *)v7->_configuration profileForURL:v6 responseCode:a4];
-  if (!v8 && v7->_configuration)
+  lCopy = l;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(SOConfigurationClient *)selfCopy _checkNewVersion];
+  v8 = [(SOConfiguration *)selfCopy->_configuration profileForURL:lCopy responseCode:code];
+  if (!v8 && selfCopy->_configuration)
   {
     v9 = SO_LOG_SOConfigurationClient();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [(SOConfigurationClient *)v6 profileForURL:v9 responseCode:?];
+      [(SOConfigurationClient *)lCopy profileForURL:v9 responseCode:?];
     }
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
 
-- (BOOL)willHandleURL:(id)a3 responseCode:(int64_t)a4 callerBundleIdentifier:(id)a5
+- (BOOL)willHandleURL:(id)l responseCode:(int64_t)code callerBundleIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = self;
-  objc_sync_enter(v10);
-  [(SOConfigurationClient *)v10 _checkNewVersion];
-  LOBYTE(a4) = [(SOConfiguration *)v10->_configuration willHandleURL:v8 responseCode:a4 callerBundleIdentifier:v9];
-  objc_sync_exit(v10);
+  lCopy = l;
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(SOConfigurationClient *)selfCopy _checkNewVersion];
+  LOBYTE(code) = [(SOConfiguration *)selfCopy->_configuration willHandleURL:lCopy responseCode:code callerBundleIdentifier:identifierCopy];
+  objc_sync_exit(selfCopy);
 
-  return a4;
+  return code;
 }
 
-- (void)willHandleURL:(id)a3 responseCode:(int64_t)a4 callerBundleIdentifier:(id)a5 completion:(id)a6
+- (void)willHandleURL:(id)l responseCode:(int64_t)code callerBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  lCopy = l;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v13 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __86__SOConfigurationClient_willHandleURL_responseCode_callerBundleIdentifier_completion___block_invoke;
   block[3] = &unk_1E836CD48;
   block[4] = self;
-  v18 = v10;
-  v20 = v12;
-  v21 = a4;
-  v19 = v11;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
+  v18 = lCopy;
+  v20 = completionCopy;
+  codeCopy = code;
+  v19 = identifierCopy;
+  v14 = completionCopy;
+  v15 = identifierCopy;
+  v16 = lCopy;
   dispatch_async(v13, block);
 }
 
@@ -202,23 +202,23 @@ void __86__SOConfigurationClient_willHandleURL_responseCode_callerBundleIdentifi
 
 - (SOConfiguration)configuration
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  [(SOConfigurationClient *)v2 _checkNewVersion];
-  v3 = v2->_configuration;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(SOConfigurationClient *)selfCopy _checkNewVersion];
+  v3 = selfCopy->_configuration;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (int64_t)configVersion
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(SOConfigurationVersion *)v2->_configurationVersion version];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  version = [(SOConfigurationVersion *)selfCopy->_configurationVersion version];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return version;
 }
 
 - (void)profileForURL:(os_log_t)log responseCode:.cold.1(uint64_t a1, uint64_t *a2, os_log_t log)

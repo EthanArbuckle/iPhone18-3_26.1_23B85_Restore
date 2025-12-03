@@ -1,77 +1,77 @@
 @interface THNotesDetailTableViewController
 - (BOOL)areAllNotesSelected;
-- (BOOL)isLastRowInSectionForIndexPath:(id)a3;
-- (BOOL)p_sectionHasUnrenderedAnnotations:(id)a3;
+- (BOOL)isLastRowInSectionForIndexPath:(id)path;
+- (BOOL)p_sectionHasUnrenderedAnnotations:(id)annotations;
 - (BOOL)selectAllNotes;
 - (THBookViewController)bookViewController;
-- (THNotesDetailTableViewController)initWithCoder:(id)a3;
-- (THNotesDetailTableViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (THNotesDetailTableViewController)initWithCoder:(id)coder;
+- (THNotesDetailTableViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (THNotesDetailTableViewControllerDelegate)delegate;
 - (UITableView)tableView;
-- (double)editingHighlightWidthForAnnotationRenderer:(id)a3;
-- (double)highlightWidthForAnnotationRenderer:(id)a3;
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)_thTableView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5;
-- (id)accessControllerForAnnotationRenderer:(id)a3;
-- (id)annotationRenderer:(id)a3 contentNodeForAnnotation:(id)a4;
-- (id)annotationRenderer:(id)a3 storageForAnnotationLocation:(id)a4;
+- (double)editingHighlightWidthForAnnotationRenderer:(id)renderer;
+- (double)highlightWidthForAnnotationRenderer:(id)renderer;
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)_thTableView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path;
+- (id)accessControllerForAnnotationRenderer:(id)renderer;
+- (id)annotationRenderer:(id)renderer contentNodeForAnnotation:(id)annotation;
+- (id)annotationRenderer:(id)renderer storageForAnnotationLocation:(id)location;
 - (id)author;
 - (id)bookTitle;
-- (id)cachedAnnotationForIndexPath:(id)a3;
-- (id)p_activityIndicatorCell:(id)a3;
-- (id)p_annotationAtIndexPath:(id)a3;
-- (id)p_annotationCellForIndexPath:(id)a3 withTableView:(id)a4;
-- (id)p_labelWithText:(id)a3 frame:(CGRect)a4 textColor:(id)a5 tag:(int64_t)a6;
-- (id)p_makeViewForAnnotationAtIndexPath:(id)a3 cell:(id)a4;
-- (id)pageNumberStringForAnnotation:(id)a3;
-- (id)sectionTitleForIndexPath:(id)a3;
+- (id)cachedAnnotationForIndexPath:(id)path;
+- (id)p_activityIndicatorCell:(id)cell;
+- (id)p_annotationAtIndexPath:(id)path;
+- (id)p_annotationCellForIndexPath:(id)path withTableView:(id)view;
+- (id)p_labelWithText:(id)text frame:(CGRect)frame textColor:(id)color tag:(int64_t)tag;
+- (id)p_makeViewForAnnotationAtIndexPath:(id)path cell:(id)cell;
+- (id)pageNumberStringForAnnotation:(id)annotation;
+- (id)sectionTitleForIndexPath:(id)path;
 - (id)storeURL;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)p_numberOfRowsInSection:(int64_t)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)p_numberOfRowsInSection:(int64_t)section;
 - (unint64_t)countOfItemsToDelete;
 - (unint64_t)countOfUserNotesToDelete;
-- (unint64_t)maxLinesForAnnotationRenderer:(id)a3;
+- (unint64_t)maxLinesForAnnotationRenderer:(id)renderer;
 - (unint64_t)numberOfNotes;
-- (unint64_t)p_numberOfRenderedAnnotationsInSection:(id)a3;
-- (void)_renderAnnotationsForTheme:(id)a3;
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4;
-- (void)annotationRenderer:(id)a3 didLoadContentNode:(id)a4;
-- (void)annotationRenderer:(id)a3 didRenderAnnotation:(id)a4 withResult:(id)a5;
-- (void)applicationWillEnterForeground:(id)a3;
+- (unint64_t)p_numberOfRenderedAnnotationsInSection:(id)section;
+- (void)_renderAnnotationsForTheme:(id)theme;
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection;
+- (void)annotationRenderer:(id)renderer didLoadContentNode:(id)node;
+- (void)annotationRenderer:(id)renderer didRenderAnnotation:(id)annotation withResult:(id)result;
+- (void)applicationWillEnterForeground:(id)foreground;
 - (void)clearAndReloadAnnotations;
 - (void)dealloc;
 - (void)deleteSelectedNotes;
 - (void)deselectAllNotes;
-- (void)notesDetailTableViewHeaderView:(id)a3 selected:(BOOL)a4;
-- (void)p_cacheCellHeight:(id)a3 annotation:(id)a4;
-- (void)p_deleteNotesAtIndexPaths:(id)a3;
+- (void)notesDetailTableViewHeaderView:(id)view selected:(BOOL)selected;
+- (void)p_cacheCellHeight:(id)height annotation:(id)annotation;
+- (void)p_deleteNotesAtIndexPaths:(id)paths;
 - (void)p_notifySelectionDidChange;
 - (void)p_reload;
 - (void)p_reloadFromBottom;
-- (void)paginationController:(id)a3 paginationCompleteStateChangedTo:(BOOL)a4;
-- (void)reloadWithSections:(id)a3 force:(BOOL)a4;
+- (void)paginationController:(id)controller paginationCompleteStateChangedTo:(BOOL)to;
+- (void)reloadWithSections:(id)sections force:(BOOL)force;
 - (void)scrollToTop;
-- (void)setBookViewController:(id)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
+- (void)setBookViewController:(id)controller;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
 - (void)startEditing;
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation THNotesDetailTableViewController
 
-- (THNotesDetailTableViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (THNotesDetailTableViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v10.receiver = self;
   v10.super_class = THNotesDetailTableViewController;
-  v4 = [(THNotesDetailTableViewController *)&v10 initWithNibName:a3 bundle:a4];
+  v4 = [(THNotesDetailTableViewController *)&v10 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = [[THNotesViewAnnotationRenderer alloc] initWithDelegate:v4];
@@ -85,11 +85,11 @@
   return v4;
 }
 
-- (THNotesDetailTableViewController)initWithCoder:(id)a3
+- (THNotesDetailTableViewController)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = THNotesDetailTableViewController;
-  v3 = [(THNotesDetailTableViewController *)&v7 initWithCoder:a3];
+  v3 = [(THNotesDetailTableViewController *)&v7 initWithCoder:coder];
   if (v3)
   {
     v4 = [[THNotesViewAnnotationRenderer alloc] initWithDelegate:v3];
@@ -135,9 +135,9 @@
   [(THNotesDetailTableViewController *)&v12 dealloc];
 }
 
-- (void)setBookViewController:(id)a3
+- (void)setBookViewController:(id)controller
 {
-  obj = a3;
+  obj = controller;
   WeakRetained = objc_loadWeakRetained(&self->mBookViewController);
 
   v5 = obj;
@@ -145,17 +145,17 @@
   {
     if (obj)
     {
-      v6 = [obj documentViewController];
-      v7 = [v6 reflowablePaginationController];
-      [v7 registerObserver:self];
+      documentViewController = [obj documentViewController];
+      reflowablePaginationController = [documentViewController reflowablePaginationController];
+      [reflowablePaginationController registerObserver:self];
     }
 
     else
     {
-      v6 = objc_loadWeakRetained(&self->mBookViewController);
-      v7 = [v6 documentViewController];
-      v8 = [v7 reflowablePaginationController];
-      [v8 unregisterObserver:self];
+      documentViewController = objc_loadWeakRetained(&self->mBookViewController);
+      reflowablePaginationController = [documentViewController documentViewController];
+      v7ReflowablePaginationController = [reflowablePaginationController reflowablePaginationController];
+      [v7ReflowablePaginationController unregisterObserver:self];
     }
 
     objc_storeWeak(&self->mBookViewController, obj);
@@ -163,14 +163,14 @@
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v10.receiver = self;
   v10.super_class = THNotesDetailTableViewController;
-  v7 = a4;
-  [(THNotesDetailTableViewController *)&v10 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(THNotesDetailTableViewController *)&v10 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   [(THNotesDetailTableViewController *)self setInSizeTransition:1];
   v8[4] = self;
   v9[0] = _NSConcreteStackBlock;
@@ -182,10 +182,10 @@
   v8[1] = 3221225472;
   v8[2] = sub_1019B0;
   v8[3] = &unk_45D290;
-  [v7 animateAlongsideTransition:v9 completion:v8];
+  [coordinatorCopy animateAlongsideTransition:v9 completion:v8];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   if (([(THNotesDetailTableViewController *)self isFirstResponder]& 1) == 0)
   {
@@ -199,8 +199,8 @@
   v8.receiver = self;
   v8.super_class = THNotesDetailTableViewController;
   [(THNotesDetailTableViewController *)&v8 viewDidLayoutSubviews];
-  v3 = [(THNotesDetailTableViewController *)self tableView];
-  [v3 frame];
+  tableView = [(THNotesDetailTableViewController *)self tableView];
+  [tableView frame];
   if (v5 == self->mRenderedAnnotationsSize.width && v4 == self->mRenderedAnnotationsSize.height)
   {
   }
@@ -216,13 +216,13 @@
   }
 }
 
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection
 {
-  v5 = [a4 userInterfaceStyle];
-  v6 = [(THNotesDetailTableViewController *)self traitCollection];
-  v7 = [v6 userInterfaceStyle];
+  userInterfaceStyle = [collection userInterfaceStyle];
+  traitCollection = [(THNotesDetailTableViewController *)self traitCollection];
+  userInterfaceStyle2 = [traitCollection userInterfaceStyle];
 
-  if (v5 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
 
     [(THNotesDetailTableViewController *)self clearAndReloadAnnotations];
@@ -252,8 +252,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v15 + 1) + 8 * v8) notes];
-        [v3 addObjectsFromArray:v9];
+        notes = [*(*(&v15 + 1) + 8 * v8) notes];
+        [v3 addObjectsFromArray:notes];
 
         v8 = v8 + 1;
       }
@@ -267,9 +267,9 @@
 
   [(TSUNoCopyDictionary *)self->mRenderedAnnotations removeAllObjects];
   [(TSUNoCopyDictionary *)self->mCellHeights removeAllObjects];
-  v10 = [(THNotesDetailTableViewController *)self view];
-  v11 = [v10 safeAreaLayoutGuide];
-  [v11 layoutFrame];
+  view = [(THNotesDetailTableViewController *)self view];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+  [safeAreaLayoutGuide layoutFrame];
   self->mRenderedAnnotationsSize.width = v12;
   self->mRenderedAnnotationsSize.height = v13;
 
@@ -305,8 +305,8 @@
           objc_enumerationMutation(v2);
         }
 
-        v8 = [*(*(&v10 + 1) + 8 * i) notes];
-        v5 += [v8 count];
+        notes = [*(*(&v10 + 1) + 8 * i) notes];
+        v5 += [notes count];
       }
 
       v4 = [(NSArray *)v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
@@ -323,11 +323,11 @@
   return v5;
 }
 
-- (void)reloadWithSections:(id)a3 force:(BOOL)a4
+- (void)reloadWithSections:(id)sections force:(BOOL)force
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4 || self->mSections != v6 && ![(NSArray *)v6 isEqualToArray:?])
+  sectionsCopy = sections;
+  v7 = sectionsCopy;
+  if (force || self->mSections != sectionsCopy && ![(NSArray *)sectionsCopy isEqualToArray:?])
   {
     if (self->mSections != v7)
     {
@@ -362,8 +362,8 @@
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v29 + 1) + 8 * v17) notes];
-          [v12 addObjectsFromArray:v18];
+          notes = [*(*(&v29 + 1) + 8 * v17) notes];
+          [v12 addObjectsFromArray:notes];
 
           v19 = self->mSectionSelections;
           v20 = [NSNumber numberWithBool:0];
@@ -381,14 +381,14 @@
 
     [(TSUNoCopyDictionary *)self->mRenderedAnnotations tsu_removeObjectsWithoutKeys:v12];
     [(TSUNoCopyDictionary *)self->mCellHeights tsu_removeObjectsWithoutKeys:v12];
-    v21 = [(THNotesDetailTableViewController *)self view];
-    v22 = [v21 safeAreaLayoutGuide];
-    [v22 layoutFrame];
+    view = [(THNotesDetailTableViewController *)self view];
+    safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+    [safeAreaLayoutGuide layoutFrame];
     self->mRenderedAnnotationsSize.width = v23;
     self->mRenderedAnnotationsSize.height = v24;
 
-    v25 = [(TSUNoCopyDictionary *)self->mRenderedAnnotations allKeys];
-    v26 = [v12 tsu_arrayByRemovingObjectsInArray:v25];
+    allKeys = [(TSUNoCopyDictionary *)self->mRenderedAnnotations allKeys];
+    v26 = [v12 tsu_arrayByRemovingObjectsInArray:allKeys];
 
     if ([v26 count])
     {
@@ -405,15 +405,15 @@
 
 - (void)scrollToTop
 {
-  v3 = [(THNotesDetailTableViewController *)self tableView];
-  [v3 setContentOffset:{CGPointZero.x, CGPointZero.y}];
+  tableView = [(THNotesDetailTableViewController *)self tableView];
+  [tableView setContentOffset:{CGPointZero.x, CGPointZero.y}];
   mAnnotationRenderer = self->mAnnotationRenderer;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_102174;
   v6[3] = &unk_45D928;
-  v7 = v3;
-  v5 = v3;
+  v7 = tableView;
+  v5 = tableView;
   [(THNotesViewAnnotationRenderer *)mAnnotationRenderer waitWithTimeout:v6 forCondition:0.5];
 }
 
@@ -422,30 +422,30 @@
   v8.receiver = self;
   v8.super_class = THNotesDetailTableViewController;
   [(THNotesDetailTableViewController *)&v8 viewDidLoad];
-  v3 = [(THNotesDetailTableViewController *)self tableView];
-  [v3 setShowsVerticalScrollIndicator:1];
-  [v3 setAllowsMultipleSelectionDuringEditing:0];
-  [v3 setSeparatorStyle:0];
+  tableView = [(THNotesDetailTableViewController *)self tableView];
+  [tableView setShowsVerticalScrollIndicator:1];
+  [tableView setAllowsMultipleSelectionDuringEditing:0];
+  [tableView setSeparatorStyle:0];
   v4 = +[UIColor bc_booksBackground];
-  [v3 setBackgroundColor:v4];
+  [tableView setBackgroundColor:v4];
 
-  [v3 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"notesHeaderCell"];
-  [v3 setDragDelegate:self];
+  [tableView registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"notesHeaderCell"];
+  [tableView setDragDelegate:self];
   v5 = +[UIColor bc_booksBackground];
-  v6 = [(THNotesDetailTableViewController *)self view];
-  [v6 setBackgroundColor:v5];
+  view = [(THNotesDetailTableViewController *)self view];
+  [view setBackgroundColor:v5];
 
   v7 = +[NSNotificationCenter defaultCenter];
   [v7 addObserver:self selector:"applicationWillEnterForeground:" name:UIApplicationWillEnterForegroundNotification object:0];
 }
 
-- (void)applicationWillEnterForeground:(id)a3
+- (void)applicationWillEnterForeground:(id)foreground
 {
-  v9 = [(THNotesDetailTableViewController *)self tableView];
-  [v9 contentSize];
+  tableView = [(THNotesDetailTableViewController *)self tableView];
+  [tableView contentSize];
   v5 = v4;
-  v6 = [(THNotesDetailTableViewController *)self view];
-  [v6 frame];
+  view = [(THNotesDetailTableViewController *)self view];
+  [view frame];
   if (v5 >= v7)
   {
   }
@@ -462,13 +462,13 @@
   }
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v13 = [(THNotesDetailTableViewController *)self tableView];
-  [v13 setAllowsMultipleSelectionDuringEditing:v5];
-  [v13 setEditing:v5 animated:v4];
+  animatedCopy = animated;
+  editingCopy = editing;
+  tableView = [(THNotesDetailTableViewController *)self tableView];
+  [tableView setAllowsMultipleSelectionDuringEditing:editingCopy];
+  [tableView setEditing:editingCopy animated:animatedCopy];
   if ([(NSMutableArray *)self->mSectionSelections count])
   {
     v7 = 0;
@@ -479,12 +479,12 @@
       [(NSMutableArray *)mSectionSelections replaceObjectAtIndex:v7 withObject:v9];
 
       objc_opt_class();
-      v10 = [v13 headerViewForSection:v7];
+      v10 = [tableView headerViewForSection:v7];
       v11 = TSUDynamicCast();
 
       if (v11)
       {
-        [v11 setEditing:v5];
+        [v11 setEditing:editingCopy];
       }
 
       ++v7;
@@ -499,8 +499,8 @@
 
 - (BOOL)areAllNotesSelected
 {
-  v3 = [(THNotesDetailTableViewController *)self tableView];
-  v4 = [v3 indexPathsForSelectedRows];
+  tableView = [(THNotesDetailTableViewController *)self tableView];
+  indexPathsForSelectedRows = [tableView indexPathsForSelectedRows];
   v5 = [(NSArray *)self->mSections count];
   if (v5 < 1)
   {
@@ -514,7 +514,7 @@
     v8 = 1;
     do
     {
-      v9 = [v3 numberOfRowsInSection:v7];
+      v9 = [tableView numberOfRowsInSection:v7];
       if (v9 >= 1)
       {
         v10 = v9;
@@ -522,7 +522,7 @@
         while (1)
         {
           v12 = [NSIndexPath indexPathForRow:v11 inSection:v7];
-          v13 = [v4 containsObject:v12];
+          v13 = [indexPathsForSelectedRows containsObject:v12];
 
           if ((v13 & 1) == 0)
           {
@@ -550,14 +550,14 @@ LABEL_9:
 
 - (BOOL)selectAllNotes
 {
-  v3 = [(THNotesDetailTableViewController *)self tableView];
+  tableView = [(THNotesDetailTableViewController *)self tableView];
   v16 = [(NSArray *)self->mSections count];
   v4 = 0;
   if (v16)
   {
     for (i = 0; i != v16; ++i)
     {
-      v6 = [v3 numberOfRowsInSection:i];
+      v6 = [tableView numberOfRowsInSection:i];
       if (v6)
       {
         v7 = v6;
@@ -565,7 +565,7 @@ LABEL_9:
         {
           v9 = [NSIndexPath indexPathForRow:j inSection:i];
           v10 = [(NSMutableDictionary *)self->mSelectedNotes objectForKey:v9];
-          [v3 selectRowAtIndexPath:v9 animated:0 scrollPosition:0];
+          [tableView selectRowAtIndexPath:v9 animated:0 scrollPosition:0];
           if (!v10)
           {
             [(NSMutableDictionary *)self->mSelectedNotes setObject:v9 forKey:v9];
@@ -577,7 +577,7 @@ LABEL_9:
         [(NSMutableArray *)mSectionSelections replaceObjectAtIndex:i withObject:v12];
 
         objc_opt_class();
-        v13 = [v3 headerViewForSection:i];
+        v13 = [tableView headerViewForSection:i];
         v14 = TSUDynamicCast();
 
         if (v14)
@@ -595,14 +595,14 @@ LABEL_9:
 
 - (void)deselectAllNotes
 {
-  v18 = [(THNotesDetailTableViewController *)self tableView];
+  tableView = [(THNotesDetailTableViewController *)self tableView];
   v3 = [(NSArray *)self->mSections count];
   if (v3)
   {
     v4 = v3;
     for (i = 0; i != v4; ++i)
     {
-      v6 = [v18 numberOfRowsInSection:i];
+      v6 = [tableView numberOfRowsInSection:i];
       if (v6)
       {
         v7 = v6;
@@ -610,7 +610,7 @@ LABEL_9:
         {
           v9 = [NSIndexPath indexPathForRow:j inSection:i];
           v10 = [(NSMutableDictionary *)self->mSelectedNotes objectForKey:v9];
-          [v18 deselectRowAtIndexPath:v9 animated:0];
+          [tableView deselectRowAtIndexPath:v9 animated:0];
           if (v10)
           {
             [(NSMutableDictionary *)self->mSelectedNotes removeObjectForKey:v9];
@@ -622,7 +622,7 @@ LABEL_9:
         [(NSMutableArray *)mSectionSelections replaceObjectAtIndex:i withObject:v12];
 
         objc_opt_class();
-        v13 = [v18 headerViewForSection:i];
+        v13 = [tableView headerViewForSection:i];
         v14 = TSUDynamicCast();
 
         if (v14)
@@ -644,23 +644,23 @@ LABEL_9:
   [(NSMutableDictionary *)self->mSelectedNotes removeAllObjects];
 }
 
-- (BOOL)isLastRowInSectionForIndexPath:(id)a3
+- (BOOL)isLastRowInSectionForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 section];
-  if (v5 >= [(NSArray *)self->mSections count])
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section >= [(NSArray *)self->mSections count])
   {
     v9 = 0;
   }
 
   else
   {
-    v6 = -[NSArray objectAtIndex:](self->mSections, "objectAtIndex:", [v4 section]);
+    v6 = -[NSArray objectAtIndex:](self->mSections, "objectAtIndex:", [pathCopy section]);
     if (v6)
     {
-      v7 = [v4 row];
-      v8 = [v6 notes];
-      v9 = v7 == [v8 count];
+      v7 = [pathCopy row];
+      notes = [v6 notes];
+      v9 = v7 == [notes count];
     }
 
     else
@@ -672,26 +672,26 @@ LABEL_9:
   return v9;
 }
 
-- (int64_t)p_numberOfRowsInSection:(int64_t)a3
+- (int64_t)p_numberOfRowsInSection:(int64_t)section
 {
-  if ([(NSArray *)self->mSections count]== a3)
+  if ([(NSArray *)self->mSections count]== section)
   {
     return [(THNotesViewAnnotationRenderer *)self->mAnnotationRenderer doneRendering]^ 1;
   }
 
-  v6 = [(NSArray *)self->mSections objectAtIndex:a3];
-  v7 = [v6 notes];
-  if (-[NSIndexPath section](self->mLastInsertedRow, "section") >= a3 && [v7 count])
+  v6 = [(NSArray *)self->mSections objectAtIndex:section];
+  notes = [v6 notes];
+  if (-[NSIndexPath section](self->mLastInsertedRow, "section") >= section && [notes count])
   {
-    if ([(NSIndexPath *)self->mLastInsertedRow section]<= a3)
+    if ([(NSIndexPath *)self->mLastInsertedRow section]<= section)
     {
       v5 = [(NSIndexPath *)self->mLastInsertedRow row];
     }
 
     else
     {
-      v8 = [v6 notes];
-      v5 = [v8 count];
+      notes2 = [v6 notes];
+      v5 = [notes2 count];
     }
   }
 
@@ -703,13 +703,13 @@ LABEL_9:
   return v5;
 }
 
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [v5 section];
-  if (v6 != [(NSArray *)self->mSections count])
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section != [(NSArray *)self->mSections count])
   {
-    WeakRetained = [(THNotesDetailTableViewController *)self cachedAnnotationForIndexPath:v5];
+    WeakRetained = [(THNotesDetailTableViewController *)self cachedAnnotationForIndexPath:pathCopy];
     v10 = [(TSUNoCopyDictionary *)self->mCellHeights objectForKey:WeakRetained];
     v11 = v10;
     if (v10)
@@ -738,11 +738,11 @@ LABEL_8:
   return v7;
 }
 
-- (void)p_cacheCellHeight:(id)a3 annotation:(id)a4
+- (void)p_cacheCellHeight:(id)height annotation:(id)annotation
 {
-  v6 = a4;
-  v7 = [a3 contentView];
-  v8 = [v7 viewWithTag:12];
+  annotationCopy = annotation;
+  contentView = [height contentView];
+  v8 = [contentView viewWithTag:12];
   v15 = [v8 viewWithTag:9];
 
   mCellHeights = self->mCellHeights;
@@ -758,21 +758,21 @@ LABEL_8:
   [v15 frame];
   *&v13 = v12;
   v14 = [NSNumber numberWithFloat:v13];
-  [(TSUNoCopyDictionary *)mCellHeights setObject:v14 forUncopiedKey:v6];
+  [(TSUNoCopyDictionary *)mCellHeights setObject:v14 forUncopiedKey:annotationCopy];
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 section];
-  if (v8 != [(NSArray *)self->mSections count])
+  viewCopy = view;
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section != [(NSArray *)self->mSections count])
   {
-    WeakRetained = [(THNotesDetailTableViewController *)self cachedAnnotationForIndexPath:v7];
+    WeakRetained = [(THNotesDetailTableViewController *)self cachedAnnotationForIndexPath:pathCopy];
     v12 = [(TSUNoCopyDictionary *)self->mCellHeights objectForKey:WeakRetained];
     if (!v12)
     {
-      v13 = [(THNotesDetailTableViewController *)self p_annotationCellForIndexPath:v7 withTableView:v6];
+      v13 = [(THNotesDetailTableViewController *)self p_annotationCellForIndexPath:pathCopy withTableView:viewCopy];
       [(THNotesDetailTableViewController *)self p_cacheCellHeight:v13 annotation:WeakRetained];
       v12 = [(TSUNoCopyDictionary *)self->mCellHeights objectForKey:WeakRetained];
     }
@@ -795,15 +795,15 @@ LABEL_7:
   return v9;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
   v6 = 0.0;
-  if ([(NSArray *)self->mSections count]> a4 && [(THNotesDetailTableViewController *)self p_numberOfRowsInSection:a4]>= 1)
+  if ([(NSArray *)self->mSections count]> section && [(THNotesDetailTableViewController *)self p_numberOfRowsInSection:section]>= 1)
   {
-    v7 = [(NSArray *)self->mSections objectAtIndex:a4];
-    v8 = [v7 chapterTitle];
+    v7 = [(NSArray *)self->mSections objectAtIndex:section];
+    chapterTitle = [v7 chapterTitle];
 
-    if (v8)
+    if (chapterTitle)
     {
       WeakRetained = objc_loadWeakRetained(&self->mDelegate);
       [WeakRetained chapterTitleHeightForAllChapters];
@@ -815,9 +815,9 @@ LABEL_7:
 
     else
     {
-      v14 = [v7 title];
+      title = [v7 title];
 
-      if (!v14)
+      if (!title)
       {
 LABEL_8:
 
@@ -835,10 +835,10 @@ LABEL_8:
   return v6;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  if ([(NSArray *)self->mSections count]> a4)
+  viewCopy = view;
+  if ([(NSArray *)self->mSections count]> section)
   {
     if ([(THNotesDetailTableViewController *)self inSizeTransition])
     {
@@ -847,27 +847,27 @@ LABEL_8:
 
     else
     {
-      v8 = [v6 dequeueReusableHeaderFooterViewWithIdentifier:@"notesHeaderCell"];
+      v8 = [viewCopy dequeueReusableHeaderFooterViewWithIdentifier:@"notesHeaderCell"];
       if (v8)
       {
 LABEL_8:
         [v8 setDelegate:self];
-        [v8 setSection:a4];
-        [v8 setEditing:objc_msgSend(v6 animated:{"isEditing"), 0}];
-        v9 = [(NSMutableArray *)self->mSectionSelections objectAtIndexedSubscript:a4];
+        [v8 setSection:section];
+        [v8 setEditing:objc_msgSend(viewCopy animated:{"isEditing"), 0}];
+        v9 = [(NSMutableArray *)self->mSectionSelections objectAtIndexedSubscript:section];
         [v8 setSelected:{objc_msgSend(v9, "BOOLValue")}];
-        v10 = [(NSArray *)self->mSections objectAtIndex:a4];
-        v11 = [v10 chapterTitle];
+        v10 = [(NSArray *)self->mSections objectAtIndex:section];
+        chapterTitle = [v10 chapterTitle];
 
         WeakRetained = objc_loadWeakRetained(&self->mDelegate);
         v13 = WeakRetained;
         v14 = NSArray_ptr;
-        if (v11)
+        if (chapterTitle)
         {
           [WeakRetained sectionTitleHeightForAllChapters];
           v16 = v15;
 
-          [v6 frame];
+          [viewCopy frame];
           v18 = v17;
           v19 = objc_loadWeakRetained(&self->mDelegate);
           [v19 sectionTitleHeightForAllChapters];
@@ -877,12 +877,12 @@ LABEL_8:
           v24 = v21 + v23;
 
           [v8 setFrame:{0.0, 0.0, v18, v24}];
-          v25 = [v10 chapterTitle];
+          chapterTitle2 = [v10 chapterTitle];
           v26 = objc_loadWeakRetained(&self->mDelegate);
           [v26 chapterTitleHeightForAllChapters];
           v28 = v27;
           v29 = +[UIColor bc_booksLabelColor];
-          v30 = [(THNotesDetailTableViewController *)self p_labelWithText:v25 frame:v29 textColor:14 tag:0.0, 5.0, v18, v28];
+          v30 = [(THNotesDetailTableViewController *)self p_labelWithText:chapterTitle2 frame:v29 textColor:14 tag:0.0, 5.0, v18, v28];
 
           v14 = NSArray_ptr;
           [v8 addChapterLabel:v30];
@@ -896,7 +896,7 @@ LABEL_8:
           [WeakRetained sectionTitleHeight];
           v16 = v34;
 
-          [v6 frame];
+          [viewCopy frame];
           v18 = v35;
           v36 = objc_loadWeakRetained(&self->mDelegate);
           [v36 sectionTitleHeight];
@@ -906,9 +906,9 @@ LABEL_8:
           [v8 setFrame:{0.0, 0.0, v18, v38}];
         }
 
-        v39 = [v10 title];
-        v40 = [v14[165] bc_booksLabelColor];
-        v41 = [(THNotesDetailTableViewController *)self p_labelWithText:v39 frame:v40 textColor:8 tag:0.0, v33, v18, v16];
+        title = [v10 title];
+        bc_booksLabelColor = [v14[165] bc_booksLabelColor];
+        v41 = [(THNotesDetailTableViewController *)self p_labelWithText:title frame:bc_booksLabelColor textColor:8 tag:0.0, v33, v18, v16];
 
         [v8 addSectionLabel:v41];
         goto LABEL_12;
@@ -927,12 +927,12 @@ LABEL_12:
   return v8;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 section];
-  if (v8 == [(NSArray *)self->mSections count])
+  viewCopy = view;
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section == [(NSArray *)self->mSections count])
   {
     if ([(THNotesViewAnnotationRenderer *)self->mAnnotationRenderer doneRendering])
     {
@@ -942,19 +942,19 @@ LABEL_12:
       [v9 handleFailureInFunction:v10 file:v11 lineNumber:628 description:@"shouldn't show spinner cell when done rendering"];
     }
 
-    v12 = [(THNotesDetailTableViewController *)self p_activityIndicatorCell:v6];
+    v12 = [(THNotesDetailTableViewController *)self p_activityIndicatorCell:viewCopy];
   }
 
   else
   {
-    v12 = [(THNotesDetailTableViewController *)self p_annotationCellForIndexPath:v7 withTableView:v6];
+    v12 = [(THNotesDetailTableViewController *)self p_annotationCellForIndexPath:pathCopy withTableView:viewCopy];
     v13 = +[UIColor bc_booksBackground];
     [v12 setBackgroundColor:v13];
 
-    v14 = [v12 selectedBackgroundView];
-    [v14 setHidden:1];
+    selectedBackgroundView = [v12 selectedBackgroundView];
+    [selectedBackgroundView setHidden:1];
 
-    v15 = [(THNotesDetailTableViewController *)self cachedAnnotationForIndexPath:v7];
+    v15 = [(THNotesDetailTableViewController *)self cachedAnnotationForIndexPath:pathCopy];
     v16 = [(TSUNoCopyDictionary *)self->mCellHeights objectForKey:v15];
     if (!v16)
     {
@@ -965,19 +965,19 @@ LABEL_12:
   return v12;
 }
 
-- (BOOL)p_sectionHasUnrenderedAnnotations:(id)a3
+- (BOOL)p_sectionHasUnrenderedAnnotations:(id)annotations
 {
-  v4 = a3;
-  v5 = [(THNotesDetailTableViewController *)self p_numberOfRenderedAnnotationsInSection:v4];
-  v6 = [v4 notes];
+  annotationsCopy = annotations;
+  v5 = [(THNotesDetailTableViewController *)self p_numberOfRenderedAnnotationsInSection:annotationsCopy];
+  notes = [annotationsCopy notes];
 
-  LOBYTE(v5) = v5 != [v6 count];
+  LOBYTE(v5) = v5 != [notes count];
   return v5;
 }
 
-- (unint64_t)p_numberOfRenderedAnnotationsInSection:(id)a3
+- (unint64_t)p_numberOfRenderedAnnotationsInSection:(id)section
 {
-  [a3 notes];
+  [section notes];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -1033,21 +1033,21 @@ LABEL_12:
   return v7;
 }
 
-- (id)p_labelWithText:(id)a3 frame:(CGRect)a4 textColor:(id)a5 tag:(int64_t)a6
+- (id)p_labelWithText:(id)text frame:(CGRect)frame textColor:(id)color tag:(int64_t)tag
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v13 = a5;
-  v14 = a3;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  colorCopy = color;
+  textCopy = text;
   v15 = [[UILabel alloc] initWithFrame:{x, y, width, height}];
-  [v15 setText:v14];
+  [v15 setText:textCopy];
 
   v16 = [UIFont boldSystemFontOfSize:17.0];
   [v15 setFont:v16];
 
-  [v15 setTextColor:v13];
+  [v15 setTextColor:colorCopy];
   v17 = +[UIColor clearColor];
   [v15 setBackgroundColor:v17];
 
@@ -1079,16 +1079,16 @@ LABEL_12:
   }
 
   [v15 setFrame:{v24, v25, v29, v21}];
-  [v15 setTag:a6];
+  [v15 setTag:tag];
 
   return v15;
 }
 
-- (id)p_activityIndicatorCell:(id)a3
+- (id)p_activityIndicatorCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   v5 = [[UITableViewCell alloc] initWithStyle:3 reuseIdentifier:@"ActivityIndicatorCell"];
-  [v4 frame];
+  [cellCopy frame];
   v7 = v6;
 
   WeakRetained = objc_loadWeakRetained(&self->mDelegate);
@@ -1096,15 +1096,15 @@ LABEL_12:
   [v5 setFrame:{0.0, 0.0, v7, v9}];
 
   v10 = [UIActivityIndicatorView alloc];
-  v11 = [v5 contentView];
-  [v11 frame];
+  contentView = [v5 contentView];
+  [contentView frame];
   v13 = v12;
   v14 = objc_loadWeakRetained(&self->mDelegate);
   [v14 activityIndicatorCellHeight];
   v16 = [v10 initWithFrame:{0.0, 0.0, v13, v15}];
 
-  v17 = [v5 contentView];
-  [v17 center];
+  contentView2 = [v5 contentView];
+  [contentView2 center];
   [v16 setCenter:?];
 
   [v16 setAutoresizingMask:2];
@@ -1112,50 +1112,50 @@ LABEL_12:
   [v16 setColor:v18];
 
   [v16 startAnimating];
-  v19 = [v5 contentView];
-  [v19 addSubview:v16];
+  contentView3 = [v5 contentView];
+  [contentView3 addSubview:v16];
 
   return v5;
 }
 
-- (id)p_annotationCellForIndexPath:(id)a3 withTableView:(id)a4
+- (id)p_annotationCellForIndexPath:(id)path withTableView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  viewCopy = view;
   v8 = [THNotesDetailTableViewCell alloc];
-  v9 = [(THNotesDetailTableViewController *)self delegate];
-  v10 = [(THNotesDetailTableViewCell *)v8 initWithStyle:3 reuseIdentifier:@"notesMainCell" tableView:v7 sizingDelegate:v9];
+  delegate = [(THNotesDetailTableViewController *)self delegate];
+  v10 = [(THNotesDetailTableViewCell *)v8 initWithStyle:3 reuseIdentifier:@"notesMainCell" tableView:viewCopy sizingDelegate:delegate];
 
   [(THNotesDetailTableViewCell *)v10 setMyTableViewController:self];
-  [(THNotesDetailTableViewCell *)v10 setIndexPath:v6];
-  v11 = [(THNotesDetailTableViewController *)self p_makeViewForAnnotationAtIndexPath:v6 cell:v10];
+  [(THNotesDetailTableViewCell *)v10 setIndexPath:pathCopy];
+  v11 = [(THNotesDetailTableViewController *)self p_makeViewForAnnotationAtIndexPath:pathCopy cell:v10];
 
   return v10;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v18 = a3;
-  v6 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if (([(THNotesDetailTableViewController *)self isFirstResponder]& 1) == 0)
   {
     [(THNotesDetailTableViewController *)self becomeFirstResponder];
   }
 
-  if ([(THNotesDetailTableViewController *)self p_isTableViewInEditMode:v18])
+  if ([(THNotesDetailTableViewController *)self p_isTableViewInEditMode:viewCopy])
   {
-    v7 = [(NSMutableDictionary *)self->mSelectedNotes objectForKey:v6];
+    v7 = [(NSMutableDictionary *)self->mSelectedNotes objectForKey:pathCopy];
     if (!v7)
     {
-      [(NSMutableDictionary *)self->mSelectedNotes setObject:v6 forKey:v6];
+      [(NSMutableDictionary *)self->mSelectedNotes setObject:pathCopy forKey:pathCopy];
     }
 
-    v8 = [v18 numberOfRowsInSection:{objc_msgSend(v6, "section")}];
+    v8 = [viewCopy numberOfRowsInSection:{objc_msgSend(pathCopy, "section")}];
     if (v8 < 1)
     {
 LABEL_10:
       objc_opt_class();
-      v13 = [v18 headerViewForSection:{objc_msgSend(v6, "section")}];
+      v13 = [viewCopy headerViewForSection:{objc_msgSend(pathCopy, "section")}];
       v14 = TSUDynamicCast();
 
       if (v14)
@@ -1164,9 +1164,9 @@ LABEL_10:
       }
 
       mSectionSelections = self->mSectionSelections;
-      v16 = [v6 section];
+      section = [pathCopy section];
       v17 = [NSNumber numberWithBool:1];
-      [(NSMutableArray *)mSectionSelections replaceObjectAtIndex:v16 withObject:v17];
+      [(NSMutableArray *)mSectionSelections replaceObjectAtIndex:section withObject:v17];
     }
 
     else
@@ -1175,7 +1175,7 @@ LABEL_10:
       v10 = 0;
       while (1)
       {
-        v11 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", v10, [v6 section]);
+        v11 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", v10, [pathCopy section]);
         v12 = [(NSMutableDictionary *)self->mSelectedNotes objectForKey:v11];
 
         if (!v12)
@@ -1194,20 +1194,20 @@ LABEL_10:
   }
 }
 
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path
 {
-  v13 = a3;
-  v6 = a4;
-  if ([(THNotesDetailTableViewController *)self p_isTableViewInEditMode:v13])
+  viewCopy = view;
+  pathCopy = path;
+  if ([(THNotesDetailTableViewController *)self p_isTableViewInEditMode:viewCopy])
   {
-    v7 = [(NSMutableDictionary *)self->mSelectedNotes objectForKey:v6];
+    v7 = [(NSMutableDictionary *)self->mSelectedNotes objectForKey:pathCopy];
     if (v7)
     {
-      [(NSMutableDictionary *)self->mSelectedNotes removeObjectForKey:v6];
+      [(NSMutableDictionary *)self->mSelectedNotes removeObjectForKey:pathCopy];
     }
 
     objc_opt_class();
-    v8 = [v13 headerViewForSection:{objc_msgSend(v6, "section")}];
+    v8 = [viewCopy headerViewForSection:{objc_msgSend(pathCopy, "section")}];
     v9 = TSUDynamicCast();
 
     if (v9)
@@ -1216,9 +1216,9 @@ LABEL_10:
     }
 
     mSectionSelections = self->mSectionSelections;
-    v11 = [v6 section];
+    section = [pathCopy section];
     v12 = [NSNumber numberWithBool:0];
-    [(NSMutableArray *)mSectionSelections replaceObjectAtIndex:v11 withObject:v12];
+    [(NSMutableArray *)mSectionSelections replaceObjectAtIndex:section withObject:v12];
 
     [(THNotesDetailTableViewController *)self p_notifySelectionDidChange];
   }
@@ -1232,8 +1232,8 @@ LABEL_10:
 
 - (unint64_t)countOfItemsToDelete
 {
-  v2 = [(NSMutableDictionary *)self->mSelectedNotes allKeys];
-  v3 = [v2 count];
+  allKeys = [(NSMutableDictionary *)self->mSelectedNotes allKeys];
+  v3 = [allKeys count];
 
   return v3;
 }
@@ -1257,53 +1257,53 @@ LABEL_10:
   return v3;
 }
 
-- (id)cachedAnnotationForIndexPath:(id)a3
+- (id)cachedAnnotationForIndexPath:(id)path
 {
   mSections = self->mSections;
-  v4 = a3;
-  v5 = -[NSArray objectAtIndex:](mSections, "objectAtIndex:", [v4 section]);
-  v6 = [v5 notes];
-  v7 = [v4 row];
+  pathCopy = path;
+  v5 = -[NSArray objectAtIndex:](mSections, "objectAtIndex:", [pathCopy section]);
+  notes = [v5 notes];
+  v7 = [pathCopy row];
 
-  v8 = [v6 objectAtIndex:v7];
+  v8 = [notes objectAtIndex:v7];
 
   return v8;
 }
 
-- (id)sectionTitleForIndexPath:(id)a3
+- (id)sectionTitleForIndexPath:(id)path
 {
-  v3 = -[NSArray objectAtIndex:](self->mSections, "objectAtIndex:", [a3 section]);
+  v3 = -[NSArray objectAtIndex:](self->mSections, "objectAtIndex:", [path section]);
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 title];
+    title = [v3 title];
   }
 
   else
   {
-    v5 = 0;
+    title = 0;
   }
 
-  return v5;
+  return title;
 }
 
 - (void)deleteSelectedNotes
 {
-  v4 = [(NSMutableDictionary *)self->mSelectedNotes allKeys];
-  v3 = [v4 sortedArrayUsingComparator:&stru_45D970];
+  allKeys = [(NSMutableDictionary *)self->mSelectedNotes allKeys];
+  v3 = [allKeys sortedArrayUsingComparator:&stru_45D970];
   [(THNotesDetailTableViewController *)self p_deleteNotesAtIndexPaths:v3];
   [(THNotesDetailTableViewController *)self p_reload];
 }
 
-- (void)p_deleteNotesAtIndexPaths:(id)a3
+- (void)p_deleteNotesAtIndexPaths:(id)paths
 {
-  v4 = a3;
+  pathsCopy = paths;
   v5 = objc_opt_new();
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = pathsCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -1338,10 +1338,10 @@ LABEL_10:
   if ([v5 count])
   {
     WeakRetained = objc_loadWeakRetained(&self->mBookViewController);
-    v13 = [WeakRetained documentViewController];
-    v14 = [v13 documentRoot];
-    v15 = [v14 annotationController];
-    [v15 destroyAnnotations:v5 undoContext:0];
+    documentViewController = [WeakRetained documentViewController];
+    documentRoot = [documentViewController documentRoot];
+    annotationController = [documentRoot annotationController];
+    [annotationController destroyAnnotations:v5 undoContext:0];
   }
 }
 
@@ -1358,15 +1358,15 @@ LABEL_10:
     do
     {
       v7 = [(NSArray *)self->mSections objectAtIndex:v6];
-      v8 = [v7 notes];
-      v9 = [v8 count];
+      notes = [v7 notes];
+      v9 = [notes count];
 
       if (v9)
       {
         v5 = [(THNotesDetailTableViewController *)self p_numberOfRenderedAnnotationsInSection:v7];
         ++v6;
-        v10 = [v7 notes];
-        v11 = [v10 count];
+        notes2 = [v7 notes];
+        v11 = [notes2 count];
 
         if (v5 != v11)
         {
@@ -1397,8 +1397,8 @@ LABEL_11:
   }
 
 LABEL_12:
-  v14 = [(THNotesDetailTableViewController *)self tableView];
-  [v14 reloadData];
+  tableView = [(THNotesDetailTableViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)p_reloadFromBottom
@@ -1407,19 +1407,19 @@ LABEL_12:
   mLastInsertedRow = self->mLastInsertedRow;
   if (mLastInsertedRow)
   {
-    v5 = [(NSIndexPath *)mLastInsertedRow section];
-    if (v5 < [(NSArray *)self->mSections count])
+    section = [(NSIndexPath *)mLastInsertedRow section];
+    if (section < [(NSArray *)self->mSections count])
     {
       while (1)
       {
-        v6 = [(NSArray *)self->mSections objectAtIndex:v5];
-        v7 = [v6 notes];
-        v8 = [v7 count];
+        v6 = [(NSArray *)self->mSections objectAtIndex:section];
+        notes = [v6 notes];
+        v8 = [notes count];
 
         if (v8)
         {
           v9 = [(THNotesDetailTableViewController *)self p_numberOfRenderedAnnotationsInSection:v6];
-          if (v5 == [(NSIndexPath *)self->mLastInsertedRow section])
+          if (section == [(NSIndexPath *)self->mLastInsertedRow section])
           {
             v10 = [(NSIndexPath *)self->mLastInsertedRow row];
           }
@@ -1433,7 +1433,7 @@ LABEL_12:
           {
             do
             {
-              v11 = [NSIndexPath indexPathForRow:v10 inSection:v5];
+              v11 = [NSIndexPath indexPathForRow:v10 inSection:section];
               [v3 addObject:v11];
 
               ++v10;
@@ -1442,8 +1442,8 @@ LABEL_12:
             while (v9 != v10);
           }
 
-          v12 = [v6 notes];
-          v13 = [v12 count];
+          notes2 = [v6 notes];
+          v13 = [notes2 count];
 
           if (v9 != v13)
           {
@@ -1451,7 +1451,7 @@ LABEL_12:
           }
         }
 
-        if (++v5 >= [(NSArray *)self->mSections count])
+        if (++section >= [(NSArray *)self->mSections count])
         {
           goto LABEL_13;
         }
@@ -1462,33 +1462,33 @@ LABEL_12:
 LABEL_13:
   if ([v3 count])
   {
-    v30 = [v3 lastObject];
-    v14 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [v30 row] + 1, objc_msgSend(v30, "section"));
+    lastObject = [v3 lastObject];
+    v14 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [lastObject row] + 1, objc_msgSend(lastObject, "section"));
     v15 = [v14 copy];
     v16 = self->mLastInsertedRow;
     self->mLastInsertedRow = v15;
 
     +[CATransaction begin];
     [CATransaction setDisableActions:1];
-    v17 = [(THNotesDetailTableViewController *)self tableView];
-    [v17 beginUpdates];
-    [v17 insertRowsAtIndexPaths:v3 withRowAnimation:5];
+    tableView = [(THNotesDetailTableViewController *)self tableView];
+    [tableView beginUpdates];
+    [tableView insertRowsAtIndexPaths:v3 withRowAnimation:5];
     if ([(THNotesViewAnnotationRenderer *)self->mAnnotationRenderer doneRendering])
     {
       v18 = [NSIndexPath indexPathForRow:0 inSection:[(NSArray *)self->mSections count]];
       v19 = [NSArray arrayWithObject:v18];
-      [v17 deleteRowsAtIndexPaths:v19 withRowAnimation:5];
+      [tableView deleteRowsAtIndexPaths:v19 withRowAnimation:5];
 
       WeakRetained = objc_loadWeakRetained(&self->mDelegate);
       [WeakRetained tableViewController:self renderingInProgress:0];
     }
 
-    [v17 endUpdates];
+    [tableView endUpdates];
     +[CATransaction commit];
-    v21 = [(THNotesDetailTableViewController *)self tableView];
-    v22 = [v21 isEditing];
+    tableView2 = [(THNotesDetailTableViewController *)self tableView];
+    isEditing = [tableView2 isEditing];
 
-    if (v22)
+    if (isEditing)
     {
       v33 = 0u;
       v34 = 0u;
@@ -1513,8 +1513,8 @@ LABEL_13:
 
             if (v28)
             {
-              v29 = [(THNotesDetailTableViewController *)self tableView];
-              [v29 selectRowAtIndexPath:v27 animated:0 scrollPosition:0];
+              tableView3 = [(THNotesDetailTableViewController *)self tableView];
+              [tableView3 selectRowAtIndexPath:v27 animated:0 scrollPosition:0];
             }
           }
 
@@ -1549,7 +1549,7 @@ LABEL_13:
   _objc_release_x1(v7, v8);
 }
 
-- (void)paginationController:(id)a3 paginationCompleteStateChangedTo:(BOOL)a4
+- (void)paginationController:(id)controller paginationCompleteStateChangedTo:(BOOL)to
 {
   WeakRetained = objc_loadWeakRetained(&self->mBookViewController);
 
@@ -1560,15 +1560,15 @@ LABEL_13:
   }
 }
 
-- (double)highlightWidthForAnnotationRenderer:(id)a3
+- (double)highlightWidthForAnnotationRenderer:(id)renderer
 {
-  v4 = [(THNotesDetailTableViewController *)self view];
-  v5 = [v4 safeAreaLayoutGuide];
-  [v5 layoutFrame];
+  view = [(THNotesDetailTableViewController *)self view];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+  [safeAreaLayoutGuide layoutFrame];
   Width = CGRectGetWidth(v16);
 
-  v7 = [(THNotesDetailTableViewController *)self tableView];
-  [v7 frame];
+  tableView = [(THNotesDetailTableViewController *)self tableView];
+  [tableView frame];
   v8 = CGRectGetWidth(v17);
 
   if (Width >= v8)
@@ -1586,9 +1586,9 @@ LABEL_13:
   return v14;
 }
 
-- (double)editingHighlightWidthForAnnotationRenderer:(id)a3
+- (double)editingHighlightWidthForAnnotationRenderer:(id)renderer
 {
-  [(THNotesDetailTableViewController *)self highlightWidthForAnnotationRenderer:a3];
+  [(THNotesDetailTableViewController *)self highlightWidthForAnnotationRenderer:renderer];
   v5 = v4;
   WeakRetained = objc_loadWeakRetained(&self->mDelegate);
   [WeakRetained highlightEditingWidthAdjustment];
@@ -1597,34 +1597,34 @@ LABEL_13:
   return v8;
 }
 
-- (unint64_t)maxLinesForAnnotationRenderer:(id)a3
+- (unint64_t)maxLinesForAnnotationRenderer:(id)renderer
 {
   WeakRetained = objc_loadWeakRetained(&self->mDelegate);
-  v4 = [WeakRetained maxLines];
+  maxLines = [WeakRetained maxLines];
 
-  return v4;
+  return maxLines;
 }
 
-- (id)annotationRenderer:(id)a3 contentNodeForAnnotation:(id)a4
+- (id)annotationRenderer:(id)renderer contentNodeForAnnotation:(id)annotation
 {
-  v5 = a4;
+  annotationCopy = annotation;
   WeakRetained = objc_loadWeakRetained(&self->mBookViewController);
-  v7 = [WeakRetained documentViewController];
-  v8 = [v7 documentRoot];
-  v9 = [v8 annotationController];
+  documentViewController = [WeakRetained documentViewController];
+  documentRoot = [documentViewController documentRoot];
+  annotationController = [documentRoot annotationController];
 
-  v10 = [v9 contentNodeForAnnotation:v5];
+  v10 = [annotationController contentNodeForAnnotation:annotationCopy];
 
   return v10;
 }
 
-- (id)annotationRenderer:(id)a3 storageForAnnotationLocation:(id)a4
+- (id)annotationRenderer:(id)renderer storageForAnnotationLocation:(id)location
 {
-  if (a4)
+  if (location)
   {
-    v5 = a4;
+    locationCopy = location;
     WeakRetained = objc_loadWeakRetained(&self->mBookViewController);
-    v7 = [WeakRetained storageForCFI:v5];
+    v7 = [WeakRetained storageForCFI:locationCopy];
   }
 
   else
@@ -1635,19 +1635,19 @@ LABEL_13:
   return v7;
 }
 
-- (id)accessControllerForAnnotationRenderer:(id)a3
+- (id)accessControllerForAnnotationRenderer:(id)renderer
 {
   WeakRetained = objc_loadWeakRetained(&self->mBookViewController);
-  v4 = [WeakRetained documentViewController];
-  v5 = [v4 documentRoot];
-  v6 = [v5 accessController];
+  documentViewController = [WeakRetained documentViewController];
+  documentRoot = [documentViewController documentRoot];
+  accessController = [documentRoot accessController];
 
-  return v6;
+  return accessController;
 }
 
-- (void)annotationRenderer:(id)a3 didLoadContentNode:(id)a4
+- (void)annotationRenderer:(id)renderer didLoadContentNode:(id)node
 {
-  v5 = a4;
+  nodeCopy = node;
   if (!+[NSThread isMainThread])
   {
     v6 = +[TSUAssertionHandler currentHandler];
@@ -1656,7 +1656,7 @@ LABEL_13:
     [v6 handleFailureInFunction:v7 file:v8 lineNumber:1143 description:@"This operation must only be performed on the main thread."];
   }
 
-  if (!v5)
+  if (!nodeCopy)
   {
     v9 = +[TSUAssertionHandler currentHandler];
     v10 = [NSString stringWithUTF8String:"[THNotesDetailTableViewController annotationRenderer:didLoadContentNode:]"];
@@ -1665,13 +1665,13 @@ LABEL_13:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->mDelegate);
-  [WeakRetained tableViewController:self didLoadContentNode:v5];
+  [WeakRetained tableViewController:self didLoadContentNode:nodeCopy];
 }
 
-- (void)annotationRenderer:(id)a3 didRenderAnnotation:(id)a4 withResult:(id)a5
+- (void)annotationRenderer:(id)renderer didRenderAnnotation:(id)annotation withResult:(id)result
 {
-  v24 = a4;
-  v7 = a5;
+  annotationCopy = annotation;
+  resultCopy = result;
   if (!+[NSThread isMainThread])
   {
     v8 = +[TSUAssertionHandler currentHandler];
@@ -1680,14 +1680,14 @@ LABEL_13:
     [v8 handleFailureInFunction:v9 file:v10 lineNumber:1151 description:@"This operation must only be performed on the main thread."];
   }
 
-  if (!v24)
+  if (!annotationCopy)
   {
     v18 = +[TSUAssertionHandler currentHandler];
     v19 = [NSString stringWithUTF8String:"[THNotesDetailTableViewController annotationRenderer:didRenderAnnotation:withResult:]"];
     v20 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Alder/bliss/Classes/THNotesDetailTableViewController.m"];
     [v18 handleFailureInFunction:v19 file:v20 lineNumber:1152 description:{@"invalid nil value for '%s'", "annotation"}];
 
-    if (v7)
+    if (resultCopy)
     {
       goto LABEL_12;
     }
@@ -1695,7 +1695,7 @@ LABEL_13:
     goto LABEL_11;
   }
 
-  if (!v7)
+  if (!resultCopy)
   {
 LABEL_11:
     v21 = +[TSUAssertionHandler currentHandler];
@@ -1716,7 +1716,7 @@ LABEL_11:
     mRenderedAnnotations = self->mRenderedAnnotations;
   }
 
-  v14 = [(TSUNoCopyDictionary *)mRenderedAnnotations objectForKey:v24];
+  v14 = [(TSUNoCopyDictionary *)mRenderedAnnotations objectForKey:annotationCopy];
 
   if (v14)
   {
@@ -1726,29 +1726,29 @@ LABEL_11:
     [v15 handleFailureInFunction:v16 file:v17 lineNumber:1162 description:@"already rendered this annotation"];
   }
 
-  [(TSUNoCopyDictionary *)self->mRenderedAnnotations setObject:v7 forUncopiedKey:v24];
+  [(TSUNoCopyDictionary *)self->mRenderedAnnotations setObject:resultCopy forUncopiedKey:annotationCopy];
   [(THNotesDetailTableViewController *)self p_reloadFromBottom];
 LABEL_12:
 }
 
-- (void)notesDetailTableViewHeaderView:(id)a3 selected:(BOOL)a4
+- (void)notesDetailTableViewHeaderView:(id)view selected:(BOOL)selected
 {
-  v23 = a3;
-  v6 = [(THNotesDetailTableViewController *)self tableView];
-  if ([(THNotesDetailTableViewController *)self p_isTableViewInEditMode:v6])
+  viewCopy = view;
+  tableView = [(THNotesDetailTableViewController *)self tableView];
+  if ([(THNotesDetailTableViewController *)self p_isTableViewInEditMode:tableView])
   {
-    v7 = [v23 section];
-    v8 = [v6 numberOfRowsInSection:v7];
+    section = [viewCopy section];
+    v8 = [tableView numberOfRowsInSection:section];
     v9 = v8;
-    if (a4)
+    if (selected)
     {
       if (v8 >= 1)
       {
         v10 = 0;
         do
         {
-          v11 = [NSIndexPath indexPathForRow:v10 inSection:v7];
-          [v6 deselectRowAtIndexPath:v11 animated:0];
+          v11 = [NSIndexPath indexPathForRow:v10 inSection:section];
+          [tableView deselectRowAtIndexPath:v11 animated:0];
           [(NSMutableDictionary *)self->mSelectedNotes removeObjectForKey:v11];
 
           ++v10;
@@ -1759,10 +1759,10 @@ LABEL_12:
 
       mSectionSelections = self->mSectionSelections;
       v13 = [NSNumber numberWithBool:0];
-      [(NSMutableArray *)mSectionSelections replaceObjectAtIndex:v7 withObject:v13];
+      [(NSMutableArray *)mSectionSelections replaceObjectAtIndex:section withObject:v13];
 
       objc_opt_class();
-      v14 = [v6 headerViewForSection:v7];
+      v14 = [tableView headerViewForSection:section];
       v15 = TSUDynamicCast();
 
       if (!v15)
@@ -1781,8 +1781,8 @@ LABEL_12:
         v18 = 0;
         do
         {
-          v19 = [NSIndexPath indexPathForRow:v18 inSection:v7];
-          [v6 selectRowAtIndexPath:v19 animated:0 scrollPosition:0];
+          v19 = [NSIndexPath indexPathForRow:v18 inSection:section];
+          [tableView selectRowAtIndexPath:v19 animated:0 scrollPosition:0];
           [(NSMutableDictionary *)self->mSelectedNotes setObject:v19 forKey:v19];
 
           ++v18;
@@ -1793,10 +1793,10 @@ LABEL_12:
 
       v20 = self->mSectionSelections;
       v21 = [NSNumber numberWithBool:1];
-      [(NSMutableArray *)v20 replaceObjectAtIndex:v7 withObject:v21];
+      [(NSMutableArray *)v20 replaceObjectAtIndex:section withObject:v21];
 
       objc_opt_class();
-      v22 = [v6 headerViewForSection:v7];
+      v22 = [tableView headerViewForSection:section];
       v15 = TSUDynamicCast();
 
       if (!v15)
@@ -1815,10 +1815,10 @@ LABEL_14:
   }
 }
 
-- (id)_thTableView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5
+- (id)_thTableView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path
 {
-  v6 = [(THNotesDetailTableViewController *)self p_annotationAtIndexPath:a5, a4];
-  v7 = [AEAnnotationDragItemProvider itemProviderWithAnnotation:v6 propertyProvider:self];
+  session = [(THNotesDetailTableViewController *)self p_annotationAtIndexPath:path, session];
+  v7 = [AEAnnotationDragItemProvider itemProviderWithAnnotation:session propertyProvider:self];
   v8 = [[NSItemProvider alloc] initWithObject:v7];
   v9 = [[UIDragItem alloc] initWithItemProvider:v8];
   v12 = v9;
@@ -1827,39 +1827,39 @@ LABEL_14:
   return v10;
 }
 
-- (void)_renderAnnotationsForTheme:(id)a3
+- (void)_renderAnnotationsForTheme:(id)theme
 {
-  v11 = a3;
-  v4 = [(THNotesDetailTableViewController *)self traitCollection];
-  v5 = [v4 userInterfaceStyle];
+  themeCopy = theme;
+  traitCollection = [(THNotesDetailTableViewController *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
   WeakRetained = objc_loadWeakRetained(&self->mBookViewController);
-  v7 = [WeakRetained documentViewController];
-  v8 = [v7 documentRoot];
-  v9 = [v8 themeProvider];
+  documentViewController = [WeakRetained documentViewController];
+  documentRoot = [documentViewController documentRoot];
+  themeProvider = [documentRoot themeProvider];
 
-  if (v9)
+  if (themeProvider)
   {
-    v10 = [v9 annotationPageTheme];
-    if (v10 <= 0x10 && ((0x1FFEFu >> v10) & 1) != 0)
+    annotationPageTheme = [themeProvider annotationPageTheme];
+    if (annotationPageTheme <= 0x10 && ((0x1FFEFu >> annotationPageTheme) & 1) != 0)
     {
-      v5 = qword_34A9B8[v10];
+      userInterfaceStyle = qword_34A9B8[annotationPageTheme];
     }
   }
 
-  [(THNotesViewAnnotationRenderer *)self->mAnnotationRenderer renderAnnotations:v11 withUserInterfaceStyle:v5];
+  [(THNotesViewAnnotationRenderer *)self->mAnnotationRenderer renderAnnotations:themeCopy withUserInterfaceStyle:userInterfaceStyle];
 }
 
-- (id)p_annotationAtIndexPath:(id)a3
+- (id)p_annotationAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  pathCopy = path;
+  v5 = pathCopy;
+  if (pathCopy)
   {
-    v6 = -[NSArray objectAtIndex:](self->mSections, "objectAtIndex:", [v4 section]);
+    v6 = -[NSArray objectAtIndex:](self->mSections, "objectAtIndex:", [pathCopy section]);
     v7 = [v5 row];
-    v8 = [v6 notes];
-    v9 = [v8 count];
+    notes = [v6 notes];
+    v9 = [notes count];
 
     if (v7 >= v9)
     {
@@ -1870,8 +1870,8 @@ LABEL_14:
     }
 
     v13 = [v5 row];
-    v14 = [v6 notes];
-    v15 = [v14 count];
+    notes2 = [v6 notes];
+    v15 = [notes2 count];
 
     if (v13 >= v15)
     {
@@ -1880,8 +1880,8 @@ LABEL_14:
 
     else
     {
-      v16 = [v6 notes];
-      v17 = [v16 objectAtIndex:{objc_msgSend(v5, "row")}];
+      notes3 = [v6 notes];
+      v17 = [notes3 objectAtIndex:{objc_msgSend(v5, "row")}];
     }
   }
 
@@ -1893,10 +1893,10 @@ LABEL_14:
   return v17;
 }
 
-- (id)p_makeViewForAnnotationAtIndexPath:(id)a3 cell:(id)a4
+- (id)p_makeViewForAnnotationAtIndexPath:(id)path cell:(id)cell
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  cellCopy = cell;
   v8 = [THNotesDetailTableViewCellController alloc];
   WeakRetained = objc_loadWeakRetained(&self->mDelegate);
   v10 = [(THNotesDetailTableViewCellController *)v8 initWithSizingDelegate:WeakRetained];
@@ -1913,24 +1913,24 @@ LABEL_14:
   }
 
   v15 = [(UINib *)mTableCellNIB instantiateWithOwner:v10 options:0];
-  v16 = [(THNotesDetailTableViewController *)self p_annotationAtIndexPath:v6];
+  v16 = [(THNotesDetailTableViewController *)self p_annotationAtIndexPath:pathCopy];
   if (v16)
   {
-    v42 = v7;
-    v41 = -[NSArray objectAtIndex:](self->mSections, "objectAtIndex:", [v6 section]);
+    v42 = cellCopy;
+    v41 = -[NSArray objectAtIndex:](self->mSections, "objectAtIndex:", [pathCopy section]);
     v17 = [(TSUNoCopyDictionary *)self->mRenderedAnnotations objectForKey:v16];
-    v40 = [(THNotesDetailTableViewController *)self tableView];
-    [v40 bounds];
+    tableView = [(THNotesDetailTableViewController *)self tableView];
+    [tableView bounds];
     v19 = v18;
-    v39 = [v17 highlightLayer];
+    highlightLayer = [v17 highlightLayer];
     [v17 highlightTextFrame];
     v21 = v20;
     v23 = v22;
     v25 = v24;
     v27 = v26;
-    v28 = [v17 editingHighlightLayer];
-    v29 = [v16 annotationIsOrphan];
-    if (v29)
+    editingHighlightLayer = [v17 editingHighlightLayer];
+    annotationIsOrphan = [v16 annotationIsOrphan];
+    if (annotationIsOrphan)
     {
       v30 = &stru_471858;
     }
@@ -1941,7 +1941,7 @@ LABEL_14:
       v30 = [v38 pageNumberStringForAnnotation:v16];
     }
 
-    v31 = [v6 row];
+    v31 = [pathCopy row];
     if (v31)
     {
       v32 = 0.0;
@@ -1954,17 +1954,17 @@ LABEL_14:
       v32 = v33;
     }
 
-    v34 = [v6 row];
-    v35 = [v41 notes];
-    [v42 populateWithCellController:v10 annotation:v16 cellWidth:v39 highlightLayer:v28 highlightTextFrame:v30 editingHighlightLayer:v34 < objc_msgSend(v35 pageNumberString:"count") - 1 topAdjustment:v19 showDivider:{v21, v23, v25, v27, v32}];
+    v34 = [pathCopy row];
+    notes = [v41 notes];
+    [v42 populateWithCellController:v10 annotation:v16 cellWidth:highlightLayer highlightLayer:editingHighlightLayer highlightTextFrame:v30 editingHighlightLayer:v34 < objc_msgSend(notes pageNumberString:"count") - 1 topAdjustment:v19 showDivider:{v21, v23, v25, v27, v32}];
 
     if (v31)
     {
-      if (v29)
+      if (annotationIsOrphan)
       {
 LABEL_13:
 
-        v7 = v42;
+        cellCopy = v42;
         goto LABEL_14;
       }
     }
@@ -1972,7 +1972,7 @@ LABEL_13:
     else
     {
 
-      if (v29)
+      if (annotationIsOrphan)
       {
         goto LABEL_13;
       }
@@ -1989,31 +1989,31 @@ LABEL_14:
 - (id)bookTitle
 {
   WeakRetained = objc_loadWeakRetained(&self->mBookViewController);
-  v3 = [WeakRetained bookDescription];
-  v4 = [v3 bookTitle];
+  bookDescription = [WeakRetained bookDescription];
+  bookTitle = [bookDescription bookTitle];
 
-  return v4;
+  return bookTitle;
 }
 
 - (id)author
 {
   WeakRetained = objc_loadWeakRetained(&self->mBookViewController);
-  v3 = [WeakRetained bookDescription];
-  v4 = [v3 bookAuthor];
+  bookDescription = [WeakRetained bookDescription];
+  bookAuthor = [bookDescription bookAuthor];
 
-  return v4;
+  return bookAuthor;
 }
 
 - (id)storeURL
 {
   WeakRetained = objc_loadWeakRetained(&self->mBookViewController);
-  v3 = [WeakRetained bookDescription];
-  v4 = [v3 storeID];
+  bookDescription = [WeakRetained bookDescription];
+  storeID = [bookDescription storeID];
 
-  if ([v4 length])
+  if ([storeID length])
   {
     v5 = +[AEUserPublishing sharedInstance];
-    v6 = [v5 storeShortURLForStoreId:v4 dataSource:0];
+    v6 = [v5 storeShortURLForStoreId:storeID dataSource:0];
   }
 
   else
@@ -2024,7 +2024,7 @@ LABEL_14:
   return v6;
 }
 
-- (id)pageNumberStringForAnnotation:(id)a3
+- (id)pageNumberStringForAnnotation:(id)annotation
 {
   v4 = TSUProtocolCast();
   v5 = v4;

@@ -1,11 +1,11 @@
 @interface MTLegacyDownloadNotifier
 - (MTLegacyDownloadNotifier)init;
-- (id)_listenerWithDelegate:(id)a3;
-- (void)_sendDelegateSelector:(SEL)a3 withDownload:(id)a4;
-- (void)_sendDelegateSelector:(SEL)a3 withDownloadCount:(id)a4;
-- (void)_sendDelegateSelector:(SEL)a3 withDownloads:(id)a4;
-- (void)registerForUpdates:(id)a3;
-- (void)unregisterForUpdates:(id)a3;
+- (id)_listenerWithDelegate:(id)delegate;
+- (void)_sendDelegateSelector:(SEL)selector withDownload:(id)download;
+- (void)_sendDelegateSelector:(SEL)selector withDownloadCount:(id)count;
+- (void)_sendDelegateSelector:(SEL)selector withDownloads:(id)downloads;
+- (void)registerForUpdates:(id)updates;
+- (void)unregisterForUpdates:(id)updates;
 @end
 
 @implementation MTLegacyDownloadNotifier
@@ -25,24 +25,24 @@
   return v2;
 }
 
-- (id)_listenerWithDelegate:(id)a3
+- (id)_listenerWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy_;
   v16 = __Block_byref_object_dispose_;
   v17 = 0;
-  v5 = [(MTLegacyDownloadNotifier *)self downloadListeners];
+  downloadListeners = [(MTLegacyDownloadNotifier *)self downloadListeners];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __50__MTLegacyDownloadNotifier__listenerWithDelegate___block_invoke;
   v9[3] = &unk_1E8568F88;
-  v6 = v4;
+  v6 = delegateCopy;
   v10 = v6;
   v11 = &v12;
-  [v5 enumerateObjectsUsingBlock:v9];
+  [downloadListeners enumerateObjectsUsingBlock:v9];
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -63,42 +63,42 @@ void __50__MTLegacyDownloadNotifier__listenerWithDelegate___block_invoke(uint64_
   }
 }
 
-- (void)registerForUpdates:(id)a3
+- (void)registerForUpdates:(id)updates
 {
-  v6 = a3;
+  updatesCopy = updates;
   v4 = [(MTLegacyDownloadNotifier *)self _listenerWithDelegate:?];
   if (!v4)
   {
-    v4 = [[MTLegacyDownloadListener alloc] initWithDelegate:v6];
-    v5 = [(MTLegacyDownloadNotifier *)self downloadListeners];
-    [v5 addObject:v4];
+    v4 = [[MTLegacyDownloadListener alloc] initWithDelegate:updatesCopy];
+    downloadListeners = [(MTLegacyDownloadNotifier *)self downloadListeners];
+    [downloadListeners addObject:v4];
   }
 }
 
-- (void)unregisterForUpdates:(id)a3
+- (void)unregisterForUpdates:(id)updates
 {
-  v4 = [(MTLegacyDownloadNotifier *)self _listenerWithDelegate:a3];
+  v4 = [(MTLegacyDownloadNotifier *)self _listenerWithDelegate:updates];
   if (v4)
   {
     v6 = v4;
-    v5 = [(MTLegacyDownloadNotifier *)self downloadListeners];
-    [v5 removeObject:v6];
+    downloadListeners = [(MTLegacyDownloadNotifier *)self downloadListeners];
+    [downloadListeners removeObject:v6];
 
     v4 = v6;
   }
 }
 
-- (void)_sendDelegateSelector:(SEL)a3 withDownloadCount:(id)a4
+- (void)_sendDelegateSelector:(SEL)selector withDownloadCount:(id)count
 {
-  v6 = a4;
+  countCopy = count;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __68__MTLegacyDownloadNotifier__sendDelegateSelector_withDownloadCount___block_invoke;
   aBlock[3] = &unk_1E8568FB0;
-  v10 = v6;
-  v11 = a3;
+  v10 = countCopy;
+  selectorCopy = selector;
   aBlock[4] = self;
-  v7 = v6;
+  v7 = countCopy;
   v8 = _Block_copy(aBlock);
   [MEMORY[0x1E696AF00] mainThread:v8];
 }
@@ -178,19 +178,19 @@ void __68__MTLegacyDownloadNotifier__sendDelegateSelector_withDownloadCount___bl
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_sendDelegateSelector:(SEL)a3 withDownload:(id)a4
+- (void)_sendDelegateSelector:(SEL)selector withDownload:(id)download
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  downloadCopy = download;
+  v7 = downloadCopy;
+  if (downloadCopy)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __63__MTLegacyDownloadNotifier__sendDelegateSelector_withDownload___block_invoke;
     aBlock[3] = &unk_1E8568FB0;
     aBlock[4] = self;
-    v11 = a3;
-    v10 = v6;
+    selectorCopy = selector;
+    v10 = downloadCopy;
     v8 = _Block_copy(aBlock);
     [MEMORY[0x1E696AF00] mainThread:v8];
   }
@@ -266,17 +266,17 @@ void __63__MTLegacyDownloadNotifier__sendDelegateSelector_withDownload___block_i
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_sendDelegateSelector:(SEL)a3 withDownloads:(id)a4
+- (void)_sendDelegateSelector:(SEL)selector withDownloads:(id)downloads
 {
-  v6 = a4;
+  downloadsCopy = downloads;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __64__MTLegacyDownloadNotifier__sendDelegateSelector_withDownloads___block_invoke;
   aBlock[3] = &unk_1E8568FB0;
-  v10 = v6;
-  v11 = a3;
+  v10 = downloadsCopy;
+  selectorCopy = selector;
   aBlock[4] = self;
-  v7 = v6;
+  v7 = downloadsCopy;
   v8 = _Block_copy(aBlock);
   [MEMORY[0x1E696AF00] mainThread:v8];
 }

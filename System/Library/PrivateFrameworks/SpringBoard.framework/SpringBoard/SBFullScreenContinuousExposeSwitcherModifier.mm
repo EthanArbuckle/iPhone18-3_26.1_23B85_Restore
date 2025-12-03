@@ -1,92 +1,92 @@
 @interface SBFullScreenContinuousExposeSwitcherModifier
-- (BOOL)_isAppLayoutEffectivelyOnStage:(id)a3;
+- (BOOL)_isAppLayoutEffectivelyOnStage:(id)stage;
 - (BOOL)_isStripRevealedFromHidden;
 - (BOOL)_isStripStashed;
-- (BOOL)_shouldEnableItemResizeGrabbersForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (BOOL)_shouldEnableResizingForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
+- (BOOL)_shouldEnableItemResizeGrabbersForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (BOOL)_shouldEnableResizingForLayoutRole:(int64_t)role inAppLayout:(id)layout;
 - (BOOL)_wantsContinuousExposeHoverGestureForDismissingStrip;
 - (BOOL)hasContentIntersectingMenuBarRegion;
-- (BOOL)isContainerStatusBarPart:(unint64_t)a3 hiddenByLeafAppLayout:(id)a4;
-- (BOOL)isHomeAffordanceSupportedForAppLayout:(id)a3;
-- (BOOL)isItemResizingAllowedForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)a3 inAppLayout:(id)a4;
-- (BOOL)isLayoutRoleSelectable:(int64_t)a3 inAppLayout:(id)a4;
-- (BOOL)shouldAllowContentViewTouchesForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
+- (BOOL)isContainerStatusBarPart:(unint64_t)part hiddenByLeafAppLayout:(id)layout;
+- (BOOL)isHomeAffordanceSupportedForAppLayout:(id)layout;
+- (BOOL)isItemResizingAllowedForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)scene inAppLayout:(id)layout;
+- (BOOL)isLayoutRoleSelectable:(int64_t)selectable inAppLayout:(id)layout;
+- (BOOL)shouldAllowContentViewTouchesForLayoutRole:(int64_t)role inAppLayout:(id)layout;
 - (BOOL)shouldConfigureInAppDockHiddenAssertion;
-- (BOOL)shouldPinLayoutRolesToSpace:(unint64_t)a3;
-- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)a3;
+- (BOOL)shouldPinLayoutRolesToSpace:(unint64_t)space;
+- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)space;
 - (BOOL)wantsContinuousExposeHoverGesture;
 - (BOOL)wantsMenuBar;
-- (CGPoint)adjustedSpaceAccessoryViewAnchorPoint:(CGPoint)a3 forAppLayout:(id)a4;
-- (CGPoint)anchorPointForIndex:(unint64_t)a3;
-- (CGPoint)perspectiveAngleForIndex:(unint64_t)a3;
-- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)a3 forAppLayout:(id)a4;
-- (CGRect)frameForIndex:(unint64_t)a3;
-- (CGRect)frameForSplitViewHandleDimmingView:(id)a3;
-- (CGRect)frameForSplitViewHandleNubView:(id)a3;
-- (SBFullScreenContinuousExposeSwitcherModifier)initWithFullScreenAppLayout:(id)a3;
-- (SBSwitcherWallpaperGradientAttributes)wallpaperGradientAttributesForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3;
-- (UIRectCornerRadii)cornerRadiiForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withCornerRadii:(UIRectCornerRadii)a5;
+- (CGPoint)adjustedSpaceAccessoryViewAnchorPoint:(CGPoint)point forAppLayout:(id)layout;
+- (CGPoint)anchorPointForIndex:(unint64_t)index;
+- (CGPoint)perspectiveAngleForIndex:(unint64_t)index;
+- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)frame forAppLayout:(id)layout;
+- (CGRect)frameForIndex:(unint64_t)index;
+- (CGRect)frameForSplitViewHandleDimmingView:(id)view;
+- (CGRect)frameForSplitViewHandleNubView:(id)view;
+- (SBFullScreenContinuousExposeSwitcherModifier)initWithFullScreenAppLayout:(id)layout;
+- (SBSwitcherWallpaperGradientAttributes)wallpaperGradientAttributesForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index;
+- (UIRectCornerRadii)cornerRadiiForLayoutRole:(int64_t)role inAppLayout:(id)layout withCornerRadii:(UIRectCornerRadii)radii;
 - (double)_continuousExposeStripRevealProgress;
 - (double)continuousExposeStripProgress;
 - (double)homeScreenBackdropBlurProgress;
 - (double)homeScreenDimmingAlpha;
-- (double)scaleForIndex:(unint64_t)a3;
-- (double)shadowOpacityForLayoutRole:(int64_t)a3 atIndex:(unint64_t)a4;
-- (double)titleAndIconOpacityForIndex:(unint64_t)a3;
-- (double)titleOpacityForIndex:(unint64_t)a3;
+- (double)scaleForIndex:(unint64_t)index;
+- (double)shadowOpacityForLayoutRole:(int64_t)role atIndex:(unint64_t)index;
+- (double)titleAndIconOpacityForIndex:(unint64_t)index;
+- (double)titleOpacityForIndex:(unint64_t)index;
 - (id)_responseForDismissingStrip;
 - (id)appLayoutsToCacheSnapshots;
 - (id)appLayoutsToResignActive;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)handleEvent:(id)a3;
-- (id)handleHoverEvent:(id)a3;
-- (id)handlePointerCrossedDisplayBoundaryEvent:(id)a3;
-- (id)handleTapAppLayoutEvent:(id)a3;
-- (id)handleTapAppLayoutHeaderEvent:(id)a3;
-- (id)handleTapOutsideToDismissEvent:(id)a3;
-- (id)handleTapSlideOverTongueEvent:(id)a3;
-- (id)handleTransitionEvent:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)handleEvent:(id)event;
+- (id)handleHoverEvent:(id)event;
+- (id)handlePointerCrossedDisplayBoundaryEvent:(id)event;
+- (id)handleTapAppLayoutEvent:(id)event;
+- (id)handleTapAppLayoutHeaderEvent:(id)event;
+- (id)handleTapOutsideToDismissEvent:(id)event;
+- (id)handleTapSlideOverTongueEvent:(id)event;
+- (id)handleTransitionEvent:(id)event;
 - (id)topMostLayoutElements;
 - (id)visibleAppLayouts;
 - (id)visibleHomeAffordanceLayoutElements;
 - (id)visibleSplitViewHandleDimmingViews;
 - (id)visibleSplitViewHandleNubViews;
 - (int64_t)homeScreenBackdropBlurType;
-- (int64_t)occlusionStateForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (int64_t)touchBehaviorForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (unint64_t)activeCornersForTouchResizeForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (unint64_t)footerViewIconAlignmentForAppLayout:(id)a3;
+- (int64_t)occlusionStateForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (int64_t)touchBehaviorForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (unint64_t)activeCornersForTouchResizeForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (unint64_t)footerViewIconAlignmentForAppLayout:(id)layout;
 - (unint64_t)hiddenContainerStatusBarParts;
-- (unint64_t)hiddenContentStatusBarPartsForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (unint64_t)maskedCornersForIndex:(unint64_t)a3;
-- (unint64_t)maskedCornersForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withMaskedCorners:(unint64_t)a5;
-- (unint64_t)visibleCornersForTouchResizeForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
+- (unint64_t)hiddenContentStatusBarPartsForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (unint64_t)maskedCornersForIndex:(unint64_t)index;
+- (unint64_t)maskedCornersForLayoutRole:(int64_t)role inAppLayout:(id)layout withMaskedCorners:(unint64_t)corners;
+- (unint64_t)visibleCornersForTouchResizeForLayoutRole:(int64_t)role inAppLayout:(id)layout;
 - (void)_resetKeyboardNavigationZOrder;
 - (void)_updateStripModifierIfNeeded;
-- (void)didMoveToParentModifier:(id)a3;
+- (void)didMoveToParentModifier:(id)modifier;
 @end
 
 @implementation SBFullScreenContinuousExposeSwitcherModifier
 
-- (SBFullScreenContinuousExposeSwitcherModifier)initWithFullScreenAppLayout:(id)a3
+- (SBFullScreenContinuousExposeSwitcherModifier)initWithFullScreenAppLayout:(id)layout
 {
-  v6 = a3;
+  layoutCopy = layout;
   v11.receiver = self;
   v11.super_class = SBFullScreenContinuousExposeSwitcherModifier;
   v7 = [(SBSwitcherModifier *)&v11 init];
   if (v7)
   {
-    if (!v6)
+    if (!layoutCopy)
     {
       [(SBFullScreenContinuousExposeSwitcherModifier *)a2 initWithFullScreenAppLayout:v7];
     }
 
-    objc_storeStrong(&v7->_fullScreenAppLayout, a3);
+    objc_storeStrong(&v7->_fullScreenAppLayout, layout);
     v7->_handlesTapAppLayoutEvents = 1;
     v7->_handlesTapAppLayoutHeaderEvents = 1;
-    v8 = [[SBFullScreenAppLayoutSwitcherModifier alloc] initWithActiveAppLayout:v6];
+    v8 = [[SBFullScreenAppLayoutSwitcherModifier alloc] initWithActiveAppLayout:layoutCopy];
     fullScreenAppLayoutModifier = v7->_fullScreenAppLayoutModifier;
     v7->_fullScreenAppLayoutModifier = v8;
 
@@ -97,22 +97,22 @@
   return v7;
 }
 
-- (id)handleEvent:(id)a3
+- (id)handleEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   [(SBFullScreenContinuousExposeSwitcherModifier *)self _updateStripModifierIfNeeded];
   v7.receiver = self;
   v7.super_class = SBFullScreenContinuousExposeSwitcherModifier;
-  v5 = [(SBChainableModifier *)&v7 handleEvent:v4];
+  v5 = [(SBChainableModifier *)&v7 handleEvent:eventCopy];
 
   return v5;
 }
 
 - (void)_updateStripModifierIfNeeded
 {
-  v3 = [(SBFullScreenContinuousExposeSwitcherModifier *)self prefersStripHiddenAndDisabled];
+  prefersStripHiddenAndDisabled = [(SBFullScreenContinuousExposeSwitcherModifier *)self prefersStripHiddenAndDisabled];
   stripModifier = self->_stripModifier;
-  if (v3)
+  if (prefersStripHiddenAndDisabled)
   {
     if (stripModifier)
     {
@@ -134,30 +134,30 @@
   }
 }
 
-- (void)didMoveToParentModifier:(id)a3
+- (void)didMoveToParentModifier:(id)modifier
 {
   v5.receiver = self;
   v5.super_class = SBFullScreenContinuousExposeSwitcherModifier;
   [(SBChainableModifier *)&v5 didMoveToParentModifier:?];
-  if (a3)
+  if (modifier)
   {
     [(SBFullScreenContinuousExposeSwitcherModifier *)self _resetKeyboardNavigationZOrder];
     [(SBFullScreenContinuousExposeSwitcherModifier *)self _updateStripModifierIfNeeded];
   }
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v12.receiver = self;
   v12.super_class = SBFullScreenContinuousExposeSwitcherModifier;
-  v4 = [(SBChainableModifier *)&v12 descriptionBuilderWithMultilinePrefix:a3];
+  v4 = [(SBChainableModifier *)&v12 descriptionBuilderWithMultilinePrefix:prefix];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __86__SBFullScreenContinuousExposeSwitcherModifier_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_2783A92D8;
   v5 = v4;
   v10 = v5;
-  v11 = self;
+  selfCopy = self;
   v6 = [v5 modifyProem:v9];
   v7 = v5;
 
@@ -193,21 +193,21 @@ id __86__SBFullScreenContinuousExposeSwitcherModifier_descriptionBuilderWithMult
   return result;
 }
 
-- (CGRect)frameForIndex:(unint64_t)a3
+- (CGRect)frameForIndex:(unint64_t)index
 {
-  v5 = [(SBFullScreenContinuousExposeSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBFullScreenContinuousExposeSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if ([(SBFullScreenContinuousExposeSwitcherModifier *)self _isAppLayoutEffectivelyOnStage:v6])
   {
-    [(SBFullScreenAppLayoutSwitcherModifier *)self->_fullScreenAppLayoutModifier frameForIndex:a3];
+    [(SBFullScreenAppLayoutSwitcherModifier *)self->_fullScreenAppLayoutModifier frameForIndex:index];
   }
 
   else
   {
     v19.receiver = self;
     v19.super_class = SBFullScreenContinuousExposeSwitcherModifier;
-    [(SBFullScreenContinuousExposeSwitcherModifier *)&v19 frameForIndex:a3];
+    [(SBFullScreenContinuousExposeSwitcherModifier *)&v19 frameForIndex:index];
   }
 
   v11 = v7;
@@ -226,10 +226,10 @@ id __86__SBFullScreenContinuousExposeSwitcherModifier_descriptionBuilderWithMult
   return result;
 }
 
-- (CGPoint)anchorPointForIndex:(unint64_t)a3
+- (CGPoint)anchorPointForIndex:(unint64_t)index
 {
-  v5 = [(SBFullScreenContinuousExposeSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBFullScreenContinuousExposeSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   v7 = 0.5;
   v8 = 0.5;
@@ -237,7 +237,7 @@ id __86__SBFullScreenContinuousExposeSwitcherModifier_descriptionBuilderWithMult
   {
     v13.receiver = self;
     v13.super_class = SBFullScreenContinuousExposeSwitcherModifier;
-    [(SBFullScreenContinuousExposeSwitcherModifier *)&v13 anchorPointForIndex:a3];
+    [(SBFullScreenContinuousExposeSwitcherModifier *)&v13 anchorPointForIndex:index];
     v7 = v9;
     v8 = v10;
   }
@@ -249,10 +249,10 @@ id __86__SBFullScreenContinuousExposeSwitcherModifier_descriptionBuilderWithMult
   return result;
 }
 
-- (double)scaleForIndex:(unint64_t)a3
+- (double)scaleForIndex:(unint64_t)index
 {
-  v5 = [(SBFullScreenContinuousExposeSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBFullScreenContinuousExposeSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if ([(SBFullScreenContinuousExposeSwitcherModifier *)self _isAppLayoutEffectivelyOnStage:v6])
   {
@@ -263,7 +263,7 @@ id __86__SBFullScreenContinuousExposeSwitcherModifier_descriptionBuilderWithMult
       fullScreenAppLayoutModifier = self->_fullScreenAppLayoutModifier;
     }
 
-    [fullScreenAppLayoutModifier scaleForIndex:a3];
+    [fullScreenAppLayoutModifier scaleForIndex:index];
     v10 = v11;
   }
 
@@ -271,25 +271,25 @@ id __86__SBFullScreenContinuousExposeSwitcherModifier_descriptionBuilderWithMult
   {
     v13.receiver = self;
     v13.super_class = SBFullScreenContinuousExposeSwitcherModifier;
-    [(SBFullScreenContinuousExposeSwitcherModifier *)&v13 scaleForIndex:a3];
+    [(SBFullScreenContinuousExposeSwitcherModifier *)&v13 scaleForIndex:index];
     v10 = v9;
   }
 
   return v10;
 }
 
-- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)a3 forAppLayout:(id)a4
+- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)frame forAppLayout:(id)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  if (![(SBFullScreenContinuousExposeSwitcherModifier *)self _isAppLayoutEffectivelyOnStage:v9])
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  layoutCopy = layout;
+  if (![(SBFullScreenContinuousExposeSwitcherModifier *)self _isAppLayoutEffectivelyOnStage:layoutCopy])
   {
     v18.receiver = self;
     v18.super_class = SBFullScreenContinuousExposeSwitcherModifier;
-    [(SBFullScreenContinuousExposeSwitcherModifier *)&v18 adjustedSpaceAccessoryViewFrame:v9 forAppLayout:x, y, width, height];
+    [(SBFullScreenContinuousExposeSwitcherModifier *)&v18 adjustedSpaceAccessoryViewFrame:layoutCopy forAppLayout:x, y, width, height];
     x = v10;
     y = v11;
     width = v12;
@@ -307,16 +307,16 @@ id __86__SBFullScreenContinuousExposeSwitcherModifier_descriptionBuilderWithMult
   return result;
 }
 
-- (CGPoint)adjustedSpaceAccessoryViewAnchorPoint:(CGPoint)a3 forAppLayout:(id)a4
+- (CGPoint)adjustedSpaceAccessoryViewAnchorPoint:(CGPoint)point forAppLayout:(id)layout
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  if (![(SBFullScreenContinuousExposeSwitcherModifier *)self _isAppLayoutEffectivelyOnStage:v7])
+  y = point.y;
+  x = point.x;
+  layoutCopy = layout;
+  if (![(SBFullScreenContinuousExposeSwitcherModifier *)self _isAppLayoutEffectivelyOnStage:layoutCopy])
   {
     v12.receiver = self;
     v12.super_class = SBFullScreenContinuousExposeSwitcherModifier;
-    [(SBFullScreenContinuousExposeSwitcherModifier *)&v12 adjustedSpaceAccessoryViewAnchorPoint:v7 forAppLayout:x, y];
+    [(SBFullScreenContinuousExposeSwitcherModifier *)&v12 adjustedSpaceAccessoryViewAnchorPoint:layoutCopy forAppLayout:x, y];
     x = v8;
     y = v9;
   }
@@ -332,24 +332,24 @@ id __86__SBFullScreenContinuousExposeSwitcherModifier_descriptionBuilderWithMult
 {
   v6.receiver = self;
   v6.super_class = SBFullScreenContinuousExposeSwitcherModifier;
-  v3 = [(SBFullScreenContinuousExposeSwitcherModifier *)&v6 visibleAppLayouts];
-  v4 = [v3 setByAddingObject:self->_fullScreenAppLayout];
+  visibleAppLayouts = [(SBFullScreenContinuousExposeSwitcherModifier *)&v6 visibleAppLayouts];
+  v4 = [visibleAppLayouts setByAddingObject:self->_fullScreenAppLayout];
 
   return v4;
 }
 
 - (id)appLayoutsToCacheSnapshots
 {
-  v2 = [(SBFullScreenContinuousExposeSwitcherModifier *)self visibleAppLayouts];
-  v3 = [v2 allObjects];
+  visibleAppLayouts = [(SBFullScreenContinuousExposeSwitcherModifier *)self visibleAppLayouts];
+  allObjects = [visibleAppLayouts allObjects];
 
-  return v3;
+  return allObjects;
 }
 
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index
 {
-  v5 = [(SBFullScreenContinuousExposeSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBFullScreenContinuousExposeSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if ([(SBFullScreenContinuousExposeSwitcherModifier *)self _isAppLayoutEffectivelyOnStage:v6])
   {
@@ -363,7 +363,7 @@ id __86__SBFullScreenContinuousExposeSwitcherModifier_descriptionBuilderWithMult
       [(SBFullScreenContinuousExposeSwitcherModifier *)self bestSupportedDefaultCornerRadiusForAppLayout:v6];
     }
 
-    [(SBFullScreenContinuousExposeSwitcherModifier *)self scaleForIndex:a3];
+    [(SBFullScreenContinuousExposeSwitcherModifier *)self scaleForIndex:index];
     SBRectCornerRadiiForRadius();
   }
 
@@ -371,7 +371,7 @@ id __86__SBFullScreenContinuousExposeSwitcherModifier_descriptionBuilderWithMult
   {
     v19.receiver = self;
     v19.super_class = SBFullScreenContinuousExposeSwitcherModifier;
-    [(SBFullScreenContinuousExposeSwitcherModifier *)&v19 cornerRadiiForIndex:a3];
+    [(SBFullScreenContinuousExposeSwitcherModifier *)&v19 cornerRadiiForIndex:index];
   }
 
   v11 = v7;
@@ -390,19 +390,19 @@ id __86__SBFullScreenContinuousExposeSwitcherModifier_descriptionBuilderWithMult
   return result;
 }
 
-- (UIRectCornerRadii)cornerRadiiForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withCornerRadii:(UIRectCornerRadii)a5
+- (UIRectCornerRadii)cornerRadiiForLayoutRole:(int64_t)role inAppLayout:(id)layout withCornerRadii:(UIRectCornerRadii)radii
 {
-  topRight = a5.topRight;
-  bottomRight = a5.bottomRight;
-  bottomLeft = a5.bottomLeft;
-  topLeft = a5.topLeft;
-  v11 = a4;
-  if ([(SBFullScreenContinuousExposeSwitcherModifier *)self _isAppLayoutEffectivelyOnStage:v11])
+  topRight = radii.topRight;
+  bottomRight = radii.bottomRight;
+  bottomLeft = radii.bottomLeft;
+  topLeft = radii.topLeft;
+  layoutCopy = layout;
+  if ([(SBFullScreenContinuousExposeSwitcherModifier *)self _isAppLayoutEffectivelyOnStage:layoutCopy])
   {
     [(SBFullScreenContinuousExposeSwitcherModifier *)self displayCornerRadius];
     v13 = v12;
-    [(SBFullScreenContinuousExposeSwitcherModifier *)self bestSupportedDefaultCornerRadiusForAppLayout:v11];
-    v14 = [v11 itemForLayoutRole:a3];
+    [(SBFullScreenContinuousExposeSwitcherModifier *)self bestSupportedDefaultCornerRadiusForAppLayout:layoutCopy];
+    v14 = [layoutCopy itemForLayoutRole:role];
     SBRectCornerRadiiForRadius();
     v16 = v15;
     v18 = v17;
@@ -410,26 +410,26 @@ id __86__SBFullScreenContinuousExposeSwitcherModifier_descriptionBuilderWithMult
     v22 = v21;
     if (v14)
     {
-      v23 = [(SBSwitcherModifier *)self flexibleAutoLayoutSpaceForAppLayout:v11];
+      v23 = [(SBSwitcherModifier *)self flexibleAutoLayoutSpaceForAppLayout:layoutCopy];
       v24 = [v23 flexibleAutoLayoutItemForDisplayItem:v14];
-      v25 = [v24 intersectedDisplayRectCorners];
+      intersectedDisplayRectCorners = [v24 intersectedDisplayRectCorners];
 
-      if (v25)
+      if (intersectedDisplayRectCorners)
       {
         v16 = v13;
       }
 
-      if ((v25 & 2) != 0)
+      if ((intersectedDisplayRectCorners & 2) != 0)
       {
         v22 = v13;
       }
 
-      if ((v25 & 4) != 0)
+      if ((intersectedDisplayRectCorners & 4) != 0)
       {
         v18 = v13;
       }
 
-      if ((v25 & 8) != 0)
+      if ((intersectedDisplayRectCorners & 8) != 0)
       {
         v20 = v13;
       }
@@ -440,7 +440,7 @@ id __86__SBFullScreenContinuousExposeSwitcherModifier_descriptionBuilderWithMult
   {
     v34.receiver = self;
     v34.super_class = SBFullScreenContinuousExposeSwitcherModifier;
-    [(SBFullScreenContinuousExposeSwitcherModifier *)&v34 cornerRadiiForLayoutRole:a3 inAppLayout:v11 withCornerRadii:topLeft, bottomLeft, bottomRight, topRight];
+    [(SBFullScreenContinuousExposeSwitcherModifier *)&v34 cornerRadiiForLayoutRole:role inAppLayout:layoutCopy withCornerRadii:topLeft, bottomLeft, bottomRight, topRight];
     v16 = v26;
     v18 = v27;
     v20 = v28;
@@ -458,10 +458,10 @@ id __86__SBFullScreenContinuousExposeSwitcherModifier_descriptionBuilderWithMult
   return result;
 }
 
-- (unint64_t)maskedCornersForIndex:(unint64_t)a3
+- (unint64_t)maskedCornersForIndex:(unint64_t)index
 {
-  v5 = [(SBFullScreenContinuousExposeSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBFullScreenContinuousExposeSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if ([(SBFullScreenContinuousExposeSwitcherModifier *)self _isAppLayoutEffectivelyOnStage:v6])
   {
@@ -480,47 +480,47 @@ id __86__SBFullScreenContinuousExposeSwitcherModifier_descriptionBuilderWithMult
   {
     v9.receiver = self;
     v9.super_class = SBFullScreenContinuousExposeSwitcherModifier;
-    v7 = [(SBFullScreenContinuousExposeSwitcherModifier *)&v9 maskedCornersForIndex:a3];
+    v7 = [(SBFullScreenContinuousExposeSwitcherModifier *)&v9 maskedCornersForIndex:index];
   }
 
   return v7;
 }
 
-- (unint64_t)maskedCornersForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withMaskedCorners:(unint64_t)a5
+- (unint64_t)maskedCornersForLayoutRole:(int64_t)role inAppLayout:(id)layout withMaskedCorners:(unint64_t)corners
 {
-  v8 = a4;
+  layoutCopy = layout;
   v18.receiver = self;
   v18.super_class = SBFullScreenContinuousExposeSwitcherModifier;
-  v9 = [(SBFullScreenContinuousExposeSwitcherModifier *)&v18 maskedCornersForLayoutRole:a3 inAppLayout:v8 withMaskedCorners:a5];
-  if ([(SBFullScreenContinuousExposeSwitcherModifier *)self _isAppLayoutEffectivelyOnStage:v8])
+  v9 = [(SBFullScreenContinuousExposeSwitcherModifier *)&v18 maskedCornersForLayoutRole:role inAppLayout:layoutCopy withMaskedCorners:corners];
+  if ([(SBFullScreenContinuousExposeSwitcherModifier *)self _isAppLayoutEffectivelyOnStage:layoutCopy])
   {
-    v10 = [(SBFullScreenContinuousExposeSwitcherModifier *)self windowManagementContext];
-    v11 = [v10 isFlexibleWindowingEnabled];
+    windowManagementContext = [(SBFullScreenContinuousExposeSwitcherModifier *)self windowManagementContext];
+    isFlexibleWindowingEnabled = [windowManagementContext isFlexibleWindowingEnabled];
 
-    if (v11)
+    if (isFlexibleWindowingEnabled)
     {
       v12 = [(SBSwitcherModifier *)self flexibleAutoLayoutSpaceForAppLayout:self->_fullScreenAppLayout];
-      v13 = [v8 itemForLayoutRole:a3];
+      v13 = [layoutCopy itemForLayoutRole:role];
       v14 = [v12 flexibleAutoLayoutItemForDisplayItem:v13];
 
-      v15 = [v14 intersectedDisplayRectCorners];
+      intersectedDisplayRectCorners = [v14 intersectedDisplayRectCorners];
       v16 = v9 & 0xFFFFFFFFFFFFFFFELL;
-      if ((v15 & 1) == 0)
+      if ((intersectedDisplayRectCorners & 1) == 0)
       {
         v16 = v9;
       }
 
-      if ((v15 & 2) != 0)
+      if ((intersectedDisplayRectCorners & 2) != 0)
       {
         v16 &= ~2uLL;
       }
 
-      if ((v15 & 4) != 0)
+      if ((intersectedDisplayRectCorners & 4) != 0)
       {
         v16 &= ~4uLL;
       }
 
-      if ((v15 & 8) != 0)
+      if ((intersectedDisplayRectCorners & 8) != 0)
       {
         v9 = v16 & 0xFFFFFFFFFFFFFFF7;
       }
@@ -535,27 +535,27 @@ id __86__SBFullScreenContinuousExposeSwitcherModifier_descriptionBuilderWithMult
   return v9;
 }
 
-- (double)shadowOpacityForLayoutRole:(int64_t)a3 atIndex:(unint64_t)a4
+- (double)shadowOpacityForLayoutRole:(int64_t)role atIndex:(unint64_t)index
 {
-  v7 = [(SBFullScreenContinuousExposeSwitcherModifier *)self appLayouts];
-  v8 = [v7 objectAtIndex:a4];
+  appLayouts = [(SBFullScreenContinuousExposeSwitcherModifier *)self appLayouts];
+  v8 = [appLayouts objectAtIndex:index];
 
   v9 = 1.0;
   if (![(SBFullScreenContinuousExposeSwitcherModifier *)self _isAppLayoutEffectivelyOnStage:v8])
   {
     v12.receiver = self;
     v12.super_class = SBFullScreenContinuousExposeSwitcherModifier;
-    [(SBFullScreenContinuousExposeSwitcherModifier *)&v12 shadowOpacityForLayoutRole:a3 atIndex:a4];
+    [(SBFullScreenContinuousExposeSwitcherModifier *)&v12 shadowOpacityForLayoutRole:role atIndex:index];
     v9 = v10;
   }
 
   return v9;
 }
 
-- (SBSwitcherWallpaperGradientAttributes)wallpaperGradientAttributesForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (SBSwitcherWallpaperGradientAttributes)wallpaperGradientAttributesForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
-  if ([(SBFullScreenContinuousExposeSwitcherModifier *)self _isAppLayoutEffectivelyOnStage:v6])
+  layoutCopy = layout;
+  if ([(SBFullScreenContinuousExposeSwitcherModifier *)self _isAppLayoutEffectivelyOnStage:layoutCopy])
   {
     Empty = SBSwitcherWallpaperGradientAttributesMakeEmpty();
   }
@@ -564,7 +564,7 @@ id __86__SBFullScreenContinuousExposeSwitcherModifier_descriptionBuilderWithMult
   {
     v13.receiver = self;
     v13.super_class = SBFullScreenContinuousExposeSwitcherModifier;
-    [(SBFullScreenContinuousExposeSwitcherModifier *)&v13 wallpaperGradientAttributesForLayoutRole:a3 inAppLayout:v6];
+    [(SBFullScreenContinuousExposeSwitcherModifier *)&v13 wallpaperGradientAttributesForLayoutRole:role inAppLayout:layoutCopy];
   }
 
   v9 = Empty;
@@ -577,44 +577,44 @@ id __86__SBFullScreenContinuousExposeSwitcherModifier_descriptionBuilderWithMult
   return result;
 }
 
-- (double)titleAndIconOpacityForIndex:(unint64_t)a3
+- (double)titleAndIconOpacityForIndex:(unint64_t)index
 {
-  v5 = [(SBFullScreenContinuousExposeSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBFullScreenContinuousExposeSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   v7 = 0.0;
   if (![(SBFullScreenContinuousExposeSwitcherModifier *)self _isAppLayoutEffectivelyOnStage:v6])
   {
     v10.receiver = self;
     v10.super_class = SBFullScreenContinuousExposeSwitcherModifier;
-    [(SBFullScreenContinuousExposeSwitcherModifier *)&v10 titleAndIconOpacityForIndex:a3];
+    [(SBFullScreenContinuousExposeSwitcherModifier *)&v10 titleAndIconOpacityForIndex:index];
     v7 = v8;
   }
 
   return v7;
 }
 
-- (double)titleOpacityForIndex:(unint64_t)a3
+- (double)titleOpacityForIndex:(unint64_t)index
 {
-  v5 = [(SBFullScreenContinuousExposeSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBFullScreenContinuousExposeSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   v7 = 0.0;
   if (![(SBFullScreenContinuousExposeSwitcherModifier *)self _isAppLayoutEffectivelyOnStage:v6])
   {
     v10.receiver = self;
     v10.super_class = SBFullScreenContinuousExposeSwitcherModifier;
-    [(SBFullScreenContinuousExposeSwitcherModifier *)&v10 titleOpacityForIndex:a3];
+    [(SBFullScreenContinuousExposeSwitcherModifier *)&v10 titleOpacityForIndex:index];
     v7 = v8;
   }
 
   return v7;
 }
 
-- (int64_t)touchBehaviorForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (int64_t)touchBehaviorForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
-  v7 = [v6 itemForLayoutRole:a3];
+  layoutCopy = layout;
+  v7 = [layoutCopy itemForLayoutRole:role];
   if ([(SBAppLayout *)self->_fullScreenAppLayout containsItem:v7])
   {
     v8 = [(SBSwitcherModifier *)self flexibleAutoLayoutSpaceForAppLayout:self->_fullScreenAppLayout];
@@ -635,24 +635,24 @@ id __86__SBFullScreenContinuousExposeSwitcherModifier_descriptionBuilderWithMult
   {
     v12.receiver = self;
     v12.super_class = SBFullScreenContinuousExposeSwitcherModifier;
-    v10 = [(SBFullScreenContinuousExposeSwitcherModifier *)&v12 touchBehaviorForLayoutRole:a3 inAppLayout:v6];
+    v10 = [(SBFullScreenContinuousExposeSwitcherModifier *)&v12 touchBehaviorForLayoutRole:role inAppLayout:layoutCopy];
   }
 
   return v10;
 }
 
-- (BOOL)isItemResizingAllowedForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)isItemResizingAllowedForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v5 = a4;
-  v6 = [(SBFullScreenContinuousExposeSwitcherModifier *)self appLayoutContainsOnlyResizableApps:v5]&& ([(SBFullScreenContinuousExposeSwitcherModifier *)self _continuousExposeStripRevealProgress], BSFloatIsZero()) && [(SBFullScreenContinuousExposeSwitcherModifier *)self _isAppLayoutEffectivelyOnStage:v5];
+  layoutCopy = layout;
+  v6 = [(SBFullScreenContinuousExposeSwitcherModifier *)self appLayoutContainsOnlyResizableApps:layoutCopy]&& ([(SBFullScreenContinuousExposeSwitcherModifier *)self _continuousExposeStripRevealProgress], BSFloatIsZero()) && [(SBFullScreenContinuousExposeSwitcherModifier *)self _isAppLayoutEffectivelyOnStage:layoutCopy];
 
   return v6;
 }
 
-- (unint64_t)activeCornersForTouchResizeForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (unint64_t)activeCornersForTouchResizeForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
-  if ([(SBFullScreenContinuousExposeSwitcherModifier *)self _shouldEnableResizingForLayoutRole:a3 inAppLayout:v6])
+  layoutCopy = layout;
+  if ([(SBFullScreenContinuousExposeSwitcherModifier *)self _shouldEnableResizingForLayoutRole:role inAppLayout:layoutCopy])
   {
     v7 = -1;
   }
@@ -661,19 +661,19 @@ id __86__SBFullScreenContinuousExposeSwitcherModifier_descriptionBuilderWithMult
   {
     v9.receiver = self;
     v9.super_class = SBFullScreenContinuousExposeSwitcherModifier;
-    v7 = [(SBFullScreenContinuousExposeSwitcherModifier *)&v9 activeCornersForTouchResizeForLayoutRole:a3 inAppLayout:v6];
+    v7 = [(SBFullScreenContinuousExposeSwitcherModifier *)&v9 activeCornersForTouchResizeForLayoutRole:role inAppLayout:layoutCopy];
   }
 
   return v7;
 }
 
-- (unint64_t)visibleCornersForTouchResizeForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (unint64_t)visibleCornersForTouchResizeForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
-  if ([(SBFullScreenContinuousExposeSwitcherModifier *)self _shouldEnableItemResizeGrabbersForLayoutRole:a3 inAppLayout:v6])
+  layoutCopy = layout;
+  if ([(SBFullScreenContinuousExposeSwitcherModifier *)self _shouldEnableItemResizeGrabbersForLayoutRole:role inAppLayout:layoutCopy])
   {
-    v7 = [v6 itemForLayoutRole:a3];
-    v8 = [(SBFullScreenContinuousExposeSwitcherModifier *)self maximizedCenteredAndUnoccludedDisplayItemsInAppLayout:v6 ignoreOcclusion:1 ignoreCentering:0];
+    v7 = [layoutCopy itemForLayoutRole:role];
+    v8 = [(SBFullScreenContinuousExposeSwitcherModifier *)self maximizedCenteredAndUnoccludedDisplayItemsInAppLayout:layoutCopy ignoreOcclusion:1 ignoreCentering:0];
     v9 = [v8 containsObject:v7];
 
     v10 = [(SBFullScreenContinuousExposeSwitcherModifier *)self displayItemPrefersStatusBarHidden:v7];
@@ -694,12 +694,12 @@ id __86__SBFullScreenContinuousExposeSwitcherModifier_descriptionBuilderWithMult
         v12 = 8;
       }
 
-      v13 = [(SBFullScreenContinuousExposeSwitcherModifier *)self displayItemInSlideOver];
+      displayItemInSlideOver = [(SBFullScreenContinuousExposeSwitcherModifier *)self displayItemInSlideOver];
       v14 = BSEqualObjects();
 
       if (v14)
       {
-        v15 = [(SBFullScreenContinuousExposeSwitcherModifier *)self layoutAttributesForDisplayItem:v7 inAppLayout:v6];
+        v15 = [(SBFullScreenContinuousExposeSwitcherModifier *)self layoutAttributesForDisplayItem:v7 inAppLayout:layoutCopy];
         [(SBDisplayItemLayoutAttributes *)v15 slideOverConfiguration];
         IsLeftSided = SBDisplayItemSlideOverIsLeftSided(v22);
 
@@ -716,7 +716,7 @@ id __86__SBFullScreenContinuousExposeSwitcherModifier_descriptionBuilderWithMult
 
       else
       {
-        v18 = [(SBSwitcherModifier *)self flexibleAutoLayoutSpaceForAppLayout:v6];
+        v18 = [(SBSwitcherModifier *)self flexibleAutoLayoutSpaceForAppLayout:layoutCopy];
         v19 = [v18 flexibleAutoLayoutItemForDisplayItem:v7];
         v17 = [v19 ownedDisplayRectCorners] & 0xC;
       }
@@ -741,14 +741,14 @@ id __86__SBFullScreenContinuousExposeSwitcherModifier_descriptionBuilderWithMult
   return v11;
 }
 
-- (BOOL)shouldAllowContentViewTouchesForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)shouldAllowContentViewTouchesForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
-  if ([(SBFullScreenContinuousExposeSwitcherModifier *)self _isAppLayoutEffectivelyOnStage:v6]&& ![(SBFullScreenContinuousExposeSwitcherModifier *)self _isStripRevealedFromHidden])
+  layoutCopy = layout;
+  if ([(SBFullScreenContinuousExposeSwitcherModifier *)self _isAppLayoutEffectivelyOnStage:layoutCopy]&& ![(SBFullScreenContinuousExposeSwitcherModifier *)self _isStripRevealedFromHidden])
   {
     v9.receiver = self;
     v9.super_class = SBFullScreenContinuousExposeSwitcherModifier;
-    v7 = [(SBFullScreenContinuousExposeSwitcherModifier *)&v9 shouldAllowContentViewTouchesForLayoutRole:a3 inAppLayout:v6];
+    v7 = [(SBFullScreenContinuousExposeSwitcherModifier *)&v9 shouldAllowContentViewTouchesForLayoutRole:role inAppLayout:layoutCopy];
   }
 
   else
@@ -759,28 +759,28 @@ id __86__SBFullScreenContinuousExposeSwitcherModifier_descriptionBuilderWithMult
   return v7;
 }
 
-- (BOOL)isLayoutRoleSelectable:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)isLayoutRoleSelectable:(int64_t)selectable inAppLayout:(id)layout
 {
-  v6 = a4;
-  if (![(SBFullScreenContinuousExposeSwitcherModifier *)self _isAppLayoutEffectivelyOnStage:v6]|| [(SBFullScreenContinuousExposeSwitcherModifier *)self _isStripRevealedFromHidden]|| (v10.receiver = self, v10.super_class = SBFullScreenContinuousExposeSwitcherModifier, [(SBFullScreenContinuousExposeSwitcherModifier *)&v10 isLayoutRoleSelectable:a3 inAppLayout:v6]))
+  layoutCopy = layout;
+  if (![(SBFullScreenContinuousExposeSwitcherModifier *)self _isAppLayoutEffectivelyOnStage:layoutCopy]|| [(SBFullScreenContinuousExposeSwitcherModifier *)self _isStripRevealedFromHidden]|| (v10.receiver = self, v10.super_class = SBFullScreenContinuousExposeSwitcherModifier, [(SBFullScreenContinuousExposeSwitcherModifier *)&v10 isLayoutRoleSelectable:selectable inAppLayout:layoutCopy]))
   {
     IsOccluded = 1;
   }
 
   else
   {
-    v9 = [(SBFullScreenContinuousExposeSwitcherModifier *)self appLayoutContainingAppLayout:v6];
-    IsOccluded = SBOcclusionStateIsOccluded([(SBFullScreenContinuousExposeSwitcherModifier *)self occlusionStateForLayoutRole:a3 inAppLayout:v9]);
+    v9 = [(SBFullScreenContinuousExposeSwitcherModifier *)self appLayoutContainingAppLayout:layoutCopy];
+    IsOccluded = SBOcclusionStateIsOccluded([(SBFullScreenContinuousExposeSwitcherModifier *)self occlusionStateForLayoutRole:selectable inAppLayout:v9]);
   }
 
   return IsOccluded;
 }
 
-- (int64_t)occlusionStateForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (int64_t)occlusionStateForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
-  v7 = [(SBSwitcherModifier *)self flexibleAutoLayoutSpaceForAppLayout:v6];
-  v8 = [v6 itemForLayoutRole:a3];
+  layoutCopy = layout;
+  v7 = [(SBSwitcherModifier *)self flexibleAutoLayoutSpaceForAppLayout:layoutCopy];
+  v8 = [layoutCopy itemForLayoutRole:role];
 
   v9 = [v7 flexibleAutoLayoutItemForDisplayItem:v8];
 
@@ -804,9 +804,9 @@ id __86__SBFullScreenContinuousExposeSwitcherModifier_descriptionBuilderWithMult
 
 - (int64_t)homeScreenBackdropBlurType
 {
-  v2 = [(SBFullScreenContinuousExposeSwitcherModifier *)self switcherSettings];
-  v3 = [v2 windowingSettings];
-  if ([v3 blurWallpaperInApps])
+  switcherSettings = [(SBFullScreenContinuousExposeSwitcherModifier *)self switcherSettings];
+  windowingSettings = [switcherSettings windowingSettings];
+  if ([windowingSettings blurWallpaperInApps])
   {
     v4 = 2;
   }
@@ -821,9 +821,9 @@ id __86__SBFullScreenContinuousExposeSwitcherModifier_descriptionBuilderWithMult
 
 - (double)homeScreenBackdropBlurProgress
 {
-  v2 = [(SBFullScreenContinuousExposeSwitcherModifier *)self switcherSettings];
-  v3 = [v2 windowingSettings];
-  if ([v3 blurWallpaperInApps])
+  switcherSettings = [(SBFullScreenContinuousExposeSwitcherModifier *)self switcherSettings];
+  windowingSettings = [switcherSettings windowingSettings];
+  if ([windowingSettings blurWallpaperInApps])
   {
     v4 = 1.0;
   }
@@ -845,9 +845,9 @@ id __86__SBFullScreenContinuousExposeSwitcherModifier_descriptionBuilderWithMult
   v6 = 1.0;
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    v7 = [(SBFullScreenContinuousExposeSwitcherModifier *)self switcherSettings];
-    v8 = [v7 windowingSettings];
-    [v8 maxHomeScreenDimmingAlphaForNonFullscreen];
+    switcherSettings = [(SBFullScreenContinuousExposeSwitcherModifier *)self switcherSettings];
+    windowingSettings = [switcherSettings windowingSettings];
+    [windowingSettings maxHomeScreenDimmingAlphaForNonFullscreen];
     v6 = v9;
     v10 = (v5 + -0.7) * 0.5 / 0.3;
     if (v10 <= 0.0)
@@ -871,29 +871,29 @@ id __86__SBFullScreenContinuousExposeSwitcherModifier_descriptionBuilderWithMult
 
 - (BOOL)wantsMenuBar
 {
-  v2 = [(SBFullScreenContinuousExposeSwitcherModifier *)self windowManagementContext];
-  v3 = [v2 isFlexibleWindowingEnabled];
+  windowManagementContext = [(SBFullScreenContinuousExposeSwitcherModifier *)self windowManagementContext];
+  isFlexibleWindowingEnabled = [windowManagementContext isFlexibleWindowingEnabled];
 
-  return v3;
+  return isFlexibleWindowingEnabled;
 }
 
 - (BOOL)hasContentIntersectingMenuBarRegion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(SBFullScreenContinuousExposeSwitcherModifier *)self appLayoutOnStage];
-  v4 = [(SBFullScreenContinuousExposeSwitcherModifier *)self windowManagementContext];
-  v5 = [v4 isFlexibleWindowingEnabled];
+  appLayoutOnStage = [(SBFullScreenContinuousExposeSwitcherModifier *)self appLayoutOnStage];
+  windowManagementContext = [(SBFullScreenContinuousExposeSwitcherModifier *)self windowManagementContext];
+  isFlexibleWindowingEnabled = [windowManagementContext isFlexibleWindowingEnabled];
 
-  if (v5 && v3)
+  if (isFlexibleWindowingEnabled && appLayoutOnStage)
   {
     [(SBFullScreenContinuousExposeSwitcherModifier *)self statusBarHeight];
-    v6 = [(SBSwitcherModifier *)self flexibleAutoLayoutSpaceForAppLayout:v3];
+    v6 = [(SBSwitcherModifier *)self flexibleAutoLayoutSpaceForAppLayout:appLayoutOnStage];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v7 = [v6 autoLayoutItems];
-    v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    autoLayoutItems = [v6 autoLayoutItems];
+    v8 = [autoLayoutItems countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v8)
     {
       v9 = v8;
@@ -904,7 +904,7 @@ id __86__SBFullScreenContinuousExposeSwitcherModifier_descriptionBuilderWithMult
         {
           if (*v17 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(autoLayoutItems);
           }
 
           v12 = *(*(&v16 + 1) + 8 * i);
@@ -913,12 +913,12 @@ id __86__SBFullScreenContinuousExposeSwitcherModifier_descriptionBuilderWithMult
           if (BSFloatGreaterThanFloat())
           {
 
-            v13 = 1;
+            hasContentIntersectingMenuBarRegion = 1;
             goto LABEL_14;
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v9 = [autoLayoutItems countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v9)
         {
           continue;
@@ -931,28 +931,28 @@ id __86__SBFullScreenContinuousExposeSwitcherModifier_descriptionBuilderWithMult
 
   v15.receiver = self;
   v15.super_class = SBFullScreenContinuousExposeSwitcherModifier;
-  v13 = [(SBFullScreenContinuousExposeSwitcherModifier *)&v15 hasContentIntersectingMenuBarRegion];
+  hasContentIntersectingMenuBarRegion = [(SBFullScreenContinuousExposeSwitcherModifier *)&v15 hasContentIntersectingMenuBarRegion];
 LABEL_14:
 
-  return v13;
+  return hasContentIntersectingMenuBarRegion;
 }
 
 - (unint64_t)hiddenContainerStatusBarParts
 {
   v10.receiver = self;
   v10.super_class = SBFullScreenContinuousExposeSwitcherModifier;
-  v3 = [(SBFullScreenContinuousExposeSwitcherModifier *)&v10 hiddenContainerStatusBarParts];
-  v4 = [(SBFullScreenContinuousExposeSwitcherModifier *)self windowManagementContext];
-  v5 = [v4 isFlexibleWindowingEnabled];
+  hiddenContainerStatusBarParts = [(SBFullScreenContinuousExposeSwitcherModifier *)&v10 hiddenContainerStatusBarParts];
+  windowManagementContext = [(SBFullScreenContinuousExposeSwitcherModifier *)self windowManagementContext];
+  isFlexibleWindowingEnabled = [windowManagementContext isFlexibleWindowingEnabled];
 
-  if (v5)
+  if (isFlexibleWindowingEnabled)
   {
     v6 = [(SBSwitcherModifier *)self flexibleAutoLayoutSpaceForAppLayout:self->_fullScreenAppLayout];
-    v7 = [v6 ownedDisplayRectCorners];
-    v8 = [v6 ownedDisplayRectCorners];
+    ownedDisplayRectCorners = [v6 ownedDisplayRectCorners];
+    ownedDisplayRectCorners2 = [v6 ownedDisplayRectCorners];
     if (([(SBFullScreenContinuousExposeSwitcherModifier *)self isRTLEnabled]& 1) != 0)
     {
-      if ((v7 & 1) == 0)
+      if ((ownedDisplayRectCorners & 1) == 0)
       {
         if (([(SBFullScreenContinuousExposeSwitcherModifier *)self isRTLEnabled]& 1) == 0)
         {
@@ -963,16 +963,16 @@ LABEL_14:
       }
     }
 
-    else if ((v8 & 2) == 0)
+    else if ((ownedDisplayRectCorners2 & 2) == 0)
     {
       goto LABEL_8;
     }
 
-    v3 |= 8uLL;
+    hiddenContainerStatusBarParts |= 8uLL;
 LABEL_8:
     if (([(SBFullScreenContinuousExposeSwitcherModifier *)self isRTLEnabled]& 1) == 0)
     {
-      if ((v7 & 1) == 0)
+      if ((ownedDisplayRectCorners & 1) == 0)
       {
         goto LABEL_11;
       }
@@ -981,24 +981,24 @@ LABEL_8:
     }
 
 LABEL_9:
-    if ((v8 & 2) == 0)
+    if ((ownedDisplayRectCorners2 & 2) == 0)
     {
 LABEL_11:
 
-      return v3;
+      return hiddenContainerStatusBarParts;
     }
 
 LABEL_10:
-    v3 |= 2uLL;
+    hiddenContainerStatusBarParts |= 2uLL;
     goto LABEL_11;
   }
 
-  return v3;
+  return hiddenContainerStatusBarParts;
 }
 
-- (unint64_t)hiddenContentStatusBarPartsForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (unint64_t)hiddenContentStatusBarPartsForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   if (-[SBFullScreenContinuousExposeSwitcherModifier _isStripRevealedFromHidden](self, "_isStripRevealedFromHidden") && (-[SBFullScreenContinuousExposeSwitcherModifier windowManagementContext](self, "windowManagementContext"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isFlexibleWindowingEnabled], v7, !v8))
   {
     v9 = 10;
@@ -1008,30 +1008,30 @@ LABEL_10:
   {
     v11.receiver = self;
     v11.super_class = SBFullScreenContinuousExposeSwitcherModifier;
-    v9 = [(SBFullScreenContinuousExposeSwitcherModifier *)&v11 hiddenContentStatusBarPartsForLayoutRole:a3 inAppLayout:v6];
+    v9 = [(SBFullScreenContinuousExposeSwitcherModifier *)&v11 hiddenContentStatusBarPartsForLayoutRole:role inAppLayout:layoutCopy];
   }
 
   return v9;
 }
 
-- (BOOL)isContainerStatusBarPart:(unint64_t)a3 hiddenByLeafAppLayout:(id)a4
+- (BOOL)isContainerStatusBarPart:(unint64_t)part hiddenByLeafAppLayout:(id)layout
 {
-  v6 = a4;
-  v7 = [(SBSwitcherModifier *)self flexibleAutoLayoutSpaceForAppLayout:v6];
-  v8 = [v6 allItems];
+  layoutCopy = layout;
+  v7 = [(SBSwitcherModifier *)self flexibleAutoLayoutSpaceForAppLayout:layoutCopy];
+  allItems = [layoutCopy allItems];
 
-  v9 = [v8 firstObject];
+  firstObject = [allItems firstObject];
 
-  v10 = [v7 flexibleAutoLayoutItemForDisplayItemIfExists:v9];
+  v10 = [v7 flexibleAutoLayoutItemForDisplayItemIfExists:firstObject];
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 ownedDisplayRectCorners];
-    if (a3 == 8)
+    ownedDisplayRectCorners = [v10 ownedDisplayRectCorners];
+    if (part == 8)
     {
-      v16 = [(SBFullScreenContinuousExposeSwitcherModifier *)self isRTLEnabled];
+      isRTLEnabled = [(SBFullScreenContinuousExposeSwitcherModifier *)self isRTLEnabled];
       v14 = -3;
-      if (v16)
+      if (isRTLEnabled)
       {
         v14 = -2;
       }
@@ -1039,17 +1039,17 @@ LABEL_10:
       goto LABEL_10;
     }
 
-    if (a3 == 2)
+    if (part == 2)
     {
-      v13 = [(SBFullScreenContinuousExposeSwitcherModifier *)self isRTLEnabled];
+      isRTLEnabled2 = [(SBFullScreenContinuousExposeSwitcherModifier *)self isRTLEnabled];
       v14 = -3;
-      if (!v13)
+      if (!isRTLEnabled2)
       {
         v14 = -2;
       }
 
 LABEL_10:
-      v15 = (v14 | v12) == -1;
+      v15 = (v14 | ownedDisplayRectCorners) == -1;
       goto LABEL_11;
     }
   }
@@ -1063,28 +1063,28 @@ LABEL_11:
 - (BOOL)shouldConfigureInAppDockHiddenAssertion
 {
   v3 = [(SBSwitcherModifier *)self flexibleAutoLayoutSpaceForAppLayout:self->_fullScreenAppLayout];
-  v4 = [v3 isDockVisible];
+  isDockVisible = [v3 isDockVisible];
   if (![(SBFullScreenContinuousExposeSwitcherModifier *)self isSoftwareKeyboardVisible])
   {
-    if (!v4)
+    if (!isDockVisible)
     {
-      v5 = 1;
+      prefersDockHidden = 1;
       goto LABEL_8;
     }
 
     goto LABEL_6;
   }
 
-  v5 = 1;
-  if (([(SBFullScreenContinuousExposeSwitcherModifier *)self isMedusaHostedKeyboardVisible]& 1) == 0 && ((v4 ^ 1) & 1) == 0)
+  prefersDockHidden = 1;
+  if (([(SBFullScreenContinuousExposeSwitcherModifier *)self isMedusaHostedKeyboardVisible]& 1) == 0 && ((isDockVisible ^ 1) & 1) == 0)
   {
 LABEL_6:
-    v5 = [(SBFullScreenContinuousExposeSwitcherModifier *)self prefersDockHidden];
+    prefersDockHidden = [(SBFullScreenContinuousExposeSwitcherModifier *)self prefersDockHidden];
   }
 
 LABEL_8:
 
-  return v5;
+  return prefersDockHidden;
 }
 
 - (id)appLayoutsToResignActive
@@ -1092,16 +1092,16 @@ LABEL_8:
   v31 = *MEMORY[0x277D85DE8];
   v29.receiver = self;
   v29.super_class = SBFullScreenContinuousExposeSwitcherModifier;
-  v3 = [(SBFullScreenContinuousExposeSwitcherModifier *)&v29 appLayoutsToResignActive];
-  v4 = [(SBFullScreenContinuousExposeSwitcherModifier *)self windowManagementContext];
-  v5 = [v4 isFlexibleWindowingEnabled];
+  appLayoutsToResignActive = [(SBFullScreenContinuousExposeSwitcherModifier *)&v29 appLayoutsToResignActive];
+  windowManagementContext = [(SBFullScreenContinuousExposeSwitcherModifier *)self windowManagementContext];
+  isFlexibleWindowingEnabled = [windowManagementContext isFlexibleWindowingEnabled];
 
-  if (v5)
+  if (isFlexibleWindowingEnabled)
   {
-    v23 = v3;
-    v6 = [(SBFullScreenContinuousExposeSwitcherModifier *)self switcherSettings];
-    v7 = [v6 windowingSettings];
-    v24 = [v7 resignActivePartiallyOccludedWindows];
+    v23 = appLayoutsToResignActive;
+    switcherSettings = [(SBFullScreenContinuousExposeSwitcherModifier *)self switcherSettings];
+    windowingSettings = [switcherSettings windowingSettings];
+    resignActivePartiallyOccludedWindows = [windowingSettings resignActivePartiallyOccludedWindows];
 
     v8 = [MEMORY[0x277CBEB58] set];
     [(SBFullScreenContinuousExposeSwitcherModifier *)self appLayoutOnStage];
@@ -1109,8 +1109,8 @@ LABEL_8:
     v26 = 0u;
     v27 = 0u;
     v22 = v28 = 0u;
-    v9 = [v22 leafAppLayouts];
-    v10 = [v9 countByEnumeratingWithState:&v25 objects:v30 count:16];
+    leafAppLayouts = [v22 leafAppLayouts];
+    v10 = [leafAppLayouts countByEnumeratingWithState:&v25 objects:v30 count:16];
     if (v10)
     {
       v11 = v10;
@@ -1121,22 +1121,22 @@ LABEL_8:
         {
           if (*v26 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(leafAppLayouts);
           }
 
           v14 = *(*(&v25 + 1) + 8 * i);
           v15 = [(SBSwitcherModifier *)self flexibleAutoLayoutSpaceForAppLayout:v14];
-          v16 = [v14 allItems];
-          v17 = [v16 firstObject];
+          allItems = [v14 allItems];
+          firstObject = [allItems firstObject];
 
-          v18 = [v15 flexibleAutoLayoutItemForDisplayItem:v17];
-          if (([v18 isFullyOccluded] & 1) != 0 || v24 && objc_msgSend(v18, "isOverlapped"))
+          v18 = [v15 flexibleAutoLayoutItemForDisplayItem:firstObject];
+          if (([v18 isFullyOccluded] & 1) != 0 || resignActivePartiallyOccludedWindows && objc_msgSend(v18, "isOverlapped"))
           {
             [v8 addObject:v14];
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v25 objects:v30 count:16];
+        v11 = [leafAppLayouts countByEnumeratingWithState:&v25 objects:v30 count:16];
       }
 
       while (v11);
@@ -1145,15 +1145,15 @@ LABEL_8:
     v19 = [MEMORY[0x277CBEAC0] dictionaryWithObject:v8 forKey:&unk_283370BE0];
     v20 = [v19 bs_dictionaryByAddingEntriesFromDictionary:v23];
 
-    v3 = v20;
+    appLayoutsToResignActive = v20;
   }
 
-  return v3;
+  return appLayoutsToResignActive;
 }
 
-- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)scene inAppLayout:(id)layout
 {
-  if (a3 == 4)
+  if (scene == 4)
   {
     return 1;
   }
@@ -1162,13 +1162,13 @@ LABEL_8:
   v9 = v5;
   v7.receiver = self;
   v7.super_class = SBFullScreenContinuousExposeSwitcherModifier;
-  return [(SBFullScreenContinuousExposeSwitcherModifier *)&v7 isLayoutRoleMatchMovedToScene:a3 inAppLayout:a4];
+  return [(SBFullScreenContinuousExposeSwitcherModifier *)&v7 isLayoutRoleMatchMovedToScene:scene inAppLayout:layout];
 }
 
-- (CGPoint)perspectiveAngleForIndex:(unint64_t)a3
+- (CGPoint)perspectiveAngleForIndex:(unint64_t)index
 {
-  v5 = [(SBFullScreenContinuousExposeSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBFullScreenContinuousExposeSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if ([(SBFullScreenContinuousExposeSwitcherModifier *)self _isAppLayoutEffectivelyOnStage:v6])
   {
@@ -1180,7 +1180,7 @@ LABEL_8:
   {
     v13.receiver = self;
     v13.super_class = SBFullScreenContinuousExposeSwitcherModifier;
-    [(SBFullScreenContinuousExposeSwitcherModifier *)&v13 perspectiveAngleForIndex:a3];
+    [(SBFullScreenContinuousExposeSwitcherModifier *)&v13 perspectiveAngleForIndex:index];
     v7 = v9;
     v8 = v10;
   }
@@ -1192,11 +1192,11 @@ LABEL_8:
   return result;
 }
 
-- (unint64_t)footerViewIconAlignmentForAppLayout:(id)a3
+- (unint64_t)footerViewIconAlignmentForAppLayout:(id)layout
 {
-  v4 = a3;
-  v5 = [(SBFullScreenContinuousExposeSwitcherModifier *)self appLayouts];
-  v6 = [v5 indexOfObject:v4];
+  layoutCopy = layout;
+  appLayouts = [(SBFullScreenContinuousExposeSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts indexOfObject:layoutCopy];
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL || ([(SBFullScreenContinuousExposeSwitcherModifier *)self perspectiveAngleForIndex:v6], !BSFloatIsZero()))
   {
@@ -1207,7 +1207,7 @@ LABEL_8:
   {
     v9.receiver = self;
     v9.super_class = SBFullScreenContinuousExposeSwitcherModifier;
-    v7 = [(SBFullScreenContinuousExposeSwitcherModifier *)&v9 footerViewIconAlignmentForAppLayout:v4];
+    v7 = [(SBFullScreenContinuousExposeSwitcherModifier *)&v9 footerViewIconAlignmentForAppLayout:layoutCopy];
   }
 
   return v7;
@@ -1217,36 +1217,36 @@ LABEL_8:
 {
   v30.receiver = self;
   v30.super_class = SBFullScreenContinuousExposeSwitcherModifier;
-  v3 = [(SBFullScreenContinuousExposeSwitcherModifier *)&v30 topMostLayoutElements];
-  v4 = [v3 mutableCopy];
+  topMostLayoutElements = [(SBFullScreenContinuousExposeSwitcherModifier *)&v30 topMostLayoutElements];
+  v4 = [topMostLayoutElements mutableCopy];
 
-  v5 = [(SBFullScreenContinuousExposeSwitcherModifier *)self visibleSplitViewHandleNubViews];
+  visibleSplitViewHandleNubViews = [(SBFullScreenContinuousExposeSwitcherModifier *)self visibleSplitViewHandleNubViews];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __69__SBFullScreenContinuousExposeSwitcherModifier_topMostLayoutElements__block_invoke;
   v28[3] = &unk_2783B5470;
   v6 = v4;
   v29 = v6;
-  [v5 enumerateObjectsUsingBlock:v28];
+  [visibleSplitViewHandleNubViews enumerateObjectsUsingBlock:v28];
 
-  v7 = [(SBFullScreenContinuousExposeSwitcherModifier *)self visibleSplitViewHandleDimmingViews];
+  visibleSplitViewHandleDimmingViews = [(SBFullScreenContinuousExposeSwitcherModifier *)self visibleSplitViewHandleDimmingViews];
   v23 = MEMORY[0x277D85DD0];
   v24 = 3221225472;
   v25 = __69__SBFullScreenContinuousExposeSwitcherModifier_topMostLayoutElements__block_invoke_2;
   v26 = &unk_2783B5498;
   v8 = v6;
   v27 = v8;
-  [v7 enumerateObjectsUsingBlock:&v23];
+  [visibleSplitViewHandleDimmingViews enumerateObjectsUsingBlock:&v23];
 
   v9 = [(SBFullScreenContinuousExposeSwitcherModifier *)self windowManagementContext:v23];
-  LOBYTE(v7) = [v9 isFlexibleWindowingEnabled];
+  LOBYTE(visibleSplitViewHandleDimmingViews) = [v9 isFlexibleWindowingEnabled];
 
-  if (v7)
+  if (visibleSplitViewHandleDimmingViews)
   {
     if ((-[SBFullScreenContinuousExposeSwitcherModifier prefersStripHiddenAndDisabled](self, "prefersStripHiddenAndDisabled") & 1) != 0 || (-[SBSwitcherModifier flexibleAutoLayoutSpaceForAppLayout:](self, "flexibleAutoLayoutSpaceForAppLayout:", self->_fullScreenAppLayout), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 isStripVisible], v10, v11))
     {
       fullScreenAppLayout = self->_fullScreenAppLayout;
-      v13 = self;
+      selfCopy2 = self;
       v14 = v8;
       v15 = 1;
     }
@@ -1254,12 +1254,12 @@ LABEL_8:
     else
     {
       fullScreenAppLayout = self->_fullScreenAppLayout;
-      v13 = self;
+      selfCopy2 = self;
       v14 = v8;
       v15 = 0;
     }
 
-    v16 = [(SBSwitcherModifier *)v13 topMostLayoutElementsByAddingAppLayoutAndAccessories:fullScreenAppLayout toTopMostLayoutElements:v14 orderFront:v15];
+    v16 = [(SBSwitcherModifier *)selfCopy2 topMostLayoutElementsByAddingAppLayoutAndAccessories:fullScreenAppLayout toTopMostLayoutElements:v14 orderFront:v15];
   }
 
   else
@@ -1269,37 +1269,37 @@ LABEL_8:
 
   v17 = [v16 mutableCopy];
 
-  v18 = [(SBFullScreenContinuousExposeSwitcherModifier *)self continuousExposeStripTongueBackdropCaptureLayoutElement];
-  if (v18)
+  continuousExposeStripTongueBackdropCaptureLayoutElement = [(SBFullScreenContinuousExposeSwitcherModifier *)self continuousExposeStripTongueBackdropCaptureLayoutElement];
+  if (continuousExposeStripTongueBackdropCaptureLayoutElement)
   {
     [v17 removeObject:self->_fullScreenAppLayout];
-    [v17 insertObject:v18 atIndex:0];
+    [v17 insertObject:continuousExposeStripTongueBackdropCaptureLayoutElement atIndex:0];
     v19 = [(SBSwitcherModifier *)self topMostLayoutElementsByAddingAppLayoutAndAccessories:self->_fullScreenAppLayout toTopMostLayoutElements:v17 orderFront:1];
     v20 = [v19 mutableCopy];
 
     v17 = v20;
   }
 
-  v21 = [(SBFullScreenContinuousExposeSwitcherModifier *)self slideOverTongueLayoutElement];
-  if (v21)
+  slideOverTongueLayoutElement = [(SBFullScreenContinuousExposeSwitcherModifier *)self slideOverTongueLayoutElement];
+  if (slideOverTongueLayoutElement)
   {
-    [v17 insertObject:v21 atIndex:0];
+    [v17 insertObject:slideOverTongueLayoutElement atIndex:0];
   }
 
   return v17;
 }
 
-- (BOOL)isHomeAffordanceSupportedForAppLayout:(id)a3
+- (BOOL)isHomeAffordanceSupportedForAppLayout:(id)layout
 {
-  if (![a3 isEqual:self->_fullScreenAppLayout] || !-[SBFullScreenContinuousExposeSwitcherModifier _stageContainsFullScreenItem](self, "_stageContainsFullScreenItem") || !-[SBFullScreenContinuousExposeSwitcherModifier isDisplayEmbedded](self, "isDisplayEmbedded"))
+  if (![layout isEqual:self->_fullScreenAppLayout] || !-[SBFullScreenContinuousExposeSwitcherModifier _stageContainsFullScreenItem](self, "_stageContainsFullScreenItem") || !-[SBFullScreenContinuousExposeSwitcherModifier isDisplayEmbedded](self, "isDisplayEmbedded"))
   {
     return 0;
   }
 
-  v4 = [(SBFullScreenContinuousExposeSwitcherModifier *)self homeGrabberSettings];
-  v5 = [v4 isEnabled];
+  homeGrabberSettings = [(SBFullScreenContinuousExposeSwitcherModifier *)self homeGrabberSettings];
+  isEnabled = [homeGrabberSettings isEnabled];
 
-  return v5;
+  return isEnabled;
 }
 
 - (id)visibleHomeAffordanceLayoutElements
@@ -1318,10 +1318,10 @@ LABEL_8:
   return v3;
 }
 
-- (BOOL)shouldPinLayoutRolesToSpace:(unint64_t)a3
+- (BOOL)shouldPinLayoutRolesToSpace:(unint64_t)space
 {
-  v5 = [(SBFullScreenContinuousExposeSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBFullScreenContinuousExposeSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:space];
 
   if ([(SBFullScreenContinuousExposeSwitcherModifier *)self _isAppLayoutEffectivelyOnStage:v6])
   {
@@ -1332,27 +1332,27 @@ LABEL_8:
   {
     v9.receiver = self;
     v9.super_class = SBFullScreenContinuousExposeSwitcherModifier;
-    v7 = [(SBFullScreenContinuousExposeSwitcherModifier *)&v9 shouldPinLayoutRolesToSpace:a3];
+    v7 = [(SBFullScreenContinuousExposeSwitcherModifier *)&v9 shouldPinLayoutRolesToSpace:space];
   }
 
   return v7;
 }
 
-- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)a3
+- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)space
 {
-  v4 = self;
-  v5 = [(SBFullScreenContinuousExposeSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  selfCopy = self;
+  appLayouts = [(SBFullScreenContinuousExposeSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:space];
 
-  LOBYTE(v4) = [(SBFullScreenContinuousExposeSwitcherModifier *)v4 _isAppLayoutEffectivelyOnStage:v6];
-  return v4 ^ 1;
+  LOBYTE(selfCopy) = [(SBFullScreenContinuousExposeSwitcherModifier *)selfCopy _isAppLayoutEffectivelyOnStage:v6];
+  return selfCopy ^ 1;
 }
 
 - (id)visibleSplitViewHandleNubViews
 {
   v2 = [(SBSwitcherModifier *)self flexibleAutoLayoutSpaceForAppLayout:self->_fullScreenAppLayout];
-  v3 = [v2 groups];
-  v4 = [v3 bs_map:&__block_literal_global_147];
+  groups = [v2 groups];
+  v4 = [groups bs_map:&__block_literal_global_147];
 
   return v4;
 }
@@ -1371,8 +1371,8 @@ SBSwitcherSplitViewHandleNubElement *__78__SBFullScreenContinuousExposeSwitcherM
 - (id)visibleSplitViewHandleDimmingViews
 {
   v2 = [(SBSwitcherModifier *)self flexibleAutoLayoutSpaceForAppLayout:self->_fullScreenAppLayout];
-  v3 = [v2 groups];
-  v4 = [v3 bs_map:&__block_literal_global_96_0];
+  groups = [v2 groups];
+  v4 = [groups bs_map:&__block_literal_global_96_0];
 
   return v4;
 }
@@ -1388,27 +1388,27 @@ SBSwitcherSplitViewHandleDimmingElement *__82__SBFullScreenContinuousExposeSwitc
   return v5;
 }
 
-- (CGRect)frameForSplitViewHandleNubView:(id)a3
+- (CGRect)frameForSplitViewHandleNubView:(id)view
 {
-  v8 = a3;
-  v9 = [(SBFullScreenContinuousExposeSwitcherModifier *)self visibleSplitViewHandleNubViews];
-  v10 = [v9 containsObject:v8];
+  viewCopy = view;
+  visibleSplitViewHandleNubViews = [(SBFullScreenContinuousExposeSwitcherModifier *)self visibleSplitViewHandleNubViews];
+  v10 = [visibleSplitViewHandleNubViews containsObject:viewCopy];
 
   if (!v10)
   {
     goto LABEL_5;
   }
 
-  v11 = [v8 displayItems];
+  displayItems = [viewCopy displayItems];
   v12 = [(SBSwitcherModifier *)self flexibleAutoLayoutSpaceForAppLayout:self->_fullScreenAppLayout];
-  v13 = [v12 groups];
+  groups = [v12 groups];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __79__SBFullScreenContinuousExposeSwitcherModifier_frameForSplitViewHandleNubView___block_invoke;
   v27[3] = &unk_2783B54E0;
-  v28 = v11;
-  v14 = v11;
-  v15 = [v13 bs_firstObjectPassingTest:v27];
+  v28 = displayItems;
+  v14 = displayItems;
+  v15 = [groups bs_firstObjectPassingTest:v27];
 
   if (v15)
   {
@@ -1417,8 +1417,8 @@ SBSwitcherSplitViewHandleDimmingElement *__82__SBFullScreenContinuousExposeSwitc
     v19 = v18;
     [v15 intersectionHeight];
     v3 = v20;
-    v21 = [(SBSwitcherModifier *)self windowingConfiguration];
-    [v21 splitViewHandleNubWidth];
+    windowingConfiguration = [(SBSwitcherModifier *)self windowingConfiguration];
+    [windowingConfiguration splitViewHandleNubWidth];
     v4 = v22;
 
     v5 = v17 - v4 * 0.5;
@@ -1453,27 +1453,27 @@ uint64_t __79__SBFullScreenContinuousExposeSwitcherModifier_frameForSplitViewHan
   return v3;
 }
 
-- (CGRect)frameForSplitViewHandleDimmingView:(id)a3
+- (CGRect)frameForSplitViewHandleDimmingView:(id)view
 {
-  v8 = a3;
-  v9 = [(SBFullScreenContinuousExposeSwitcherModifier *)self visibleSplitViewHandleDimmingViews];
-  v10 = [v9 containsObject:v8];
+  viewCopy = view;
+  visibleSplitViewHandleDimmingViews = [(SBFullScreenContinuousExposeSwitcherModifier *)self visibleSplitViewHandleDimmingViews];
+  v10 = [visibleSplitViewHandleDimmingViews containsObject:viewCopy];
 
   if (!v10)
   {
     goto LABEL_5;
   }
 
-  v11 = [v8 displayItems];
+  displayItems = [viewCopy displayItems];
   v12 = [(SBSwitcherModifier *)self flexibleAutoLayoutSpaceForAppLayout:self->_fullScreenAppLayout];
-  v13 = [v12 groups];
+  groups = [v12 groups];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __83__SBFullScreenContinuousExposeSwitcherModifier_frameForSplitViewHandleDimmingView___block_invoke;
   v27[3] = &unk_2783B54E0;
-  v28 = v11;
-  v14 = v11;
-  v15 = [v13 bs_firstObjectPassingTest:v27];
+  v28 = displayItems;
+  v14 = displayItems;
+  v15 = [groups bs_firstObjectPassingTest:v27];
 
   if (v15)
   {
@@ -1482,8 +1482,8 @@ uint64_t __79__SBFullScreenContinuousExposeSwitcherModifier_frameForSplitViewHan
     v19 = v18;
     [v15 intersectionHeight];
     v3 = v20;
-    v21 = [(SBSwitcherModifier *)self windowingConfiguration];
-    [v21 splitViewHandleDimmingWidth];
+    windowingConfiguration = [(SBSwitcherModifier *)self windowingConfiguration];
+    [windowingConfiguration splitViewHandleDimmingWidth];
     v4 = v22;
 
     v5 = v17 - v4 * 0.5;
@@ -1522,14 +1522,14 @@ uint64_t __83__SBFullScreenContinuousExposeSwitcherModifier_frameForSplitViewHan
 {
   v5.receiver = self;
   v5.super_class = SBFullScreenContinuousExposeSwitcherModifier;
-  v3 = [(SBFullScreenContinuousExposeSwitcherModifier *)&v5 wantsContinuousExposeHoverGesture];
-  return v3 | [(SBFullScreenContinuousExposeSwitcherModifier *)self _wantsContinuousExposeHoverGestureForDismissingStrip];
+  wantsContinuousExposeHoverGesture = [(SBFullScreenContinuousExposeSwitcherModifier *)&v5 wantsContinuousExposeHoverGesture];
+  return wantsContinuousExposeHoverGesture | [(SBFullScreenContinuousExposeSwitcherModifier *)self _wantsContinuousExposeHoverGestureForDismissingStrip];
 }
 
 - (BOOL)_wantsContinuousExposeHoverGestureForDismissingStrip
 {
-  v3 = [(SBFullScreenContinuousExposeSwitcherModifier *)self windowManagementContext];
-  if ([v3 isFlexibleWindowingEnabled] && -[SBFullScreenContinuousExposeSwitcherModifier lastTouchTypeForPresentingStrip](self, "lastTouchTypeForPresentingStrip") != 2)
+  windowManagementContext = [(SBFullScreenContinuousExposeSwitcherModifier *)self windowManagementContext];
+  if ([windowManagementContext isFlexibleWindowingEnabled] && -[SBFullScreenContinuousExposeSwitcherModifier lastTouchTypeForPresentingStrip](self, "lastTouchTypeForPresentingStrip") != 2)
   {
     v4 = 0;
   }
@@ -1565,25 +1565,25 @@ uint64_t __75__SBFullScreenContinuousExposeSwitcherModifier__responseForDismissi
   return BSFloatIsZero();
 }
 
-- (id)handleHoverEvent:(id)a3
+- (id)handleHoverEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v10.receiver = self;
   v10.super_class = SBFullScreenContinuousExposeSwitcherModifier;
-  v5 = [(SBSwitcherModifier *)&v10 handleHoverEvent:v4];
+  v5 = [(SBSwitcherModifier *)&v10 handleHoverEvent:eventCopy];
   if ([(SBFullScreenContinuousExposeSwitcherModifier *)self _wantsContinuousExposeHoverGestureForDismissingStrip])
   {
-    [v4 position];
-    v6 = [(SBSwitcherModifier *)self windowingConfiguration];
-    [v6 stripWidth];
+    [eventCopy position];
+    windowingConfiguration = [(SBSwitcherModifier *)self windowingConfiguration];
+    [windowingConfiguration stripWidth];
     if (BSFloatGreaterThanFloat())
     {
       [(SBFullScreenContinuousExposeSwitcherModifier *)self containerViewBounds];
-      [v6 stripWidth];
+      [windowingConfiguration stripWidth];
       if (BSFloatLessThanFloat())
       {
-        v7 = [(SBFullScreenContinuousExposeSwitcherModifier *)self _responseForDismissingStrip];
-        v8 = SBAppendSwitcherModifierResponse(v7, v5);
+        _responseForDismissingStrip = [(SBFullScreenContinuousExposeSwitcherModifier *)self _responseForDismissingStrip];
+        v8 = SBAppendSwitcherModifierResponse(_responseForDismissingStrip, v5);
 
         v5 = v8;
       }
@@ -1593,21 +1593,21 @@ uint64_t __75__SBFullScreenContinuousExposeSwitcherModifier__responseForDismissi
   return v5;
 }
 
-- (id)handleTapAppLayoutEvent:(id)a3
+- (id)handleTapAppLayoutEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v19.receiver = self;
   v19.super_class = SBFullScreenContinuousExposeSwitcherModifier;
-  v5 = [(SBSwitcherModifier *)&v19 handleTapAppLayoutEvent:v4];
-  if (self->_handlesTapAppLayoutEvents && ([v4 isHandled] & 1) == 0)
+  v5 = [(SBSwitcherModifier *)&v19 handleTapAppLayoutEvent:eventCopy];
+  if (self->_handlesTapAppLayoutEvents && ([eventCopy isHandled] & 1) == 0)
   {
-    v6 = [v4 appLayout];
-    if ([(SBFullScreenContinuousExposeSwitcherModifier *)self _isAppLayoutEffectivelyOnStage:v6])
+    appLayout = [eventCopy appLayout];
+    if ([(SBFullScreenContinuousExposeSwitcherModifier *)self _isAppLayoutEffectivelyOnStage:appLayout])
     {
       if ([(SBFullScreenContinuousExposeSwitcherModifier *)self _isStripRevealedFromHidden])
       {
-        v7 = [(SBFullScreenContinuousExposeSwitcherModifier *)self _responseForDismissingStrip];
-        v8 = SBAppendSwitcherModifierResponse(v7, v5);
+        _responseForDismissingStrip = [(SBFullScreenContinuousExposeSwitcherModifier *)self _responseForDismissingStrip];
+        v8 = SBAppendSwitcherModifierResponse(_responseForDismissingStrip, v5);
 
         v9 = [SBSwitcherTransitionRequest requestForActivatingAppLayout:self->_fullScreenAppLayout];
         v5 = v8;
@@ -1615,14 +1615,14 @@ uint64_t __75__SBFullScreenContinuousExposeSwitcherModifier__responseForDismissi
 
       else
       {
-        v13 = [v6 itemForLayoutRole:{objc_msgSend(v4, "layoutRole")}];
+        v13 = [appLayout itemForLayoutRole:{objc_msgSend(eventCopy, "layoutRole")}];
         v9 = objc_alloc_init(SBMutableSwitcherTransitionRequest);
-        v14 = [(SBFullScreenContinuousExposeSwitcherModifier *)self appLayoutContainingAppLayout:v6];
+        v14 = [(SBFullScreenContinuousExposeSwitcherModifier *)self appLayoutContainingAppLayout:appLayout];
         v15 = [(SBFullScreenContinuousExposeSwitcherModifier *)self appLayoutByBringingItemToFront:v13 inAppLayout:v14];
         [(SBSwitcherTransitionRequest *)v9 setAppLayout:v15];
 
         [(SBSwitcherTransitionRequest *)v9 setActivatingDisplayItem:v13];
-        if ([v4 source] == 1)
+        if ([eventCopy source] == 1)
         {
           [(SBSwitcherTransitionRequest *)v9 setSource:51];
         }
@@ -1632,15 +1632,15 @@ uint64_t __75__SBFullScreenContinuousExposeSwitcherModifier__responseForDismissi
     else
     {
       v9 = objc_alloc_init(SBMutableSwitcherTransitionRequest);
-      [(SBSwitcherTransitionRequest *)v9 setAppLayout:v6];
-      if (([v4 modifierFlags] & 0x20000) != 0)
+      [(SBSwitcherTransitionRequest *)v9 setAppLayout:appLayout];
+      if (([eventCopy modifierFlags] & 0x20000) != 0)
       {
         [(SBSwitcherTransitionRequest *)v9 setEntityInsertionPolicy:1];
       }
 
-      v10 = [v6 continuousExposeIdentifier];
-      v11 = [(SBAppLayout *)self->_fullScreenAppLayout continuousExposeIdentifier];
-      v12 = [v10 isEqualToString:v11];
+      continuousExposeIdentifier = [appLayout continuousExposeIdentifier];
+      continuousExposeIdentifier2 = [(SBAppLayout *)self->_fullScreenAppLayout continuousExposeIdentifier];
+      v12 = [continuousExposeIdentifier isEqualToString:continuousExposeIdentifier2];
 
       if (v12)
       {
@@ -1651,30 +1651,30 @@ uint64_t __75__SBFullScreenContinuousExposeSwitcherModifier__responseForDismissi
     v16 = [[SBPerformTransitionSwitcherEventResponse alloc] initWithTransitionRequest:v9 gestureInitiated:0];
     v17 = SBAppendSwitcherModifierResponse(v16, v5);
 
-    [v4 handleWithReason:@"Full Screen Continuous Expose"];
+    [eventCopy handleWithReason:@"Full Screen Continuous Expose"];
     v5 = v17;
   }
 
   return v5;
 }
 
-- (id)handleTapAppLayoutHeaderEvent:(id)a3
+- (id)handleTapAppLayoutHeaderEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v14.receiver = self;
   v14.super_class = SBFullScreenContinuousExposeSwitcherModifier;
-  v5 = [(SBSwitcherModifier *)&v14 handleTapAppLayoutHeaderEvent:v4];
-  if (self->_handlesTapAppLayoutHeaderEvents && ([v4 isHandled] & 1) == 0)
+  v5 = [(SBSwitcherModifier *)&v14 handleTapAppLayoutHeaderEvent:eventCopy];
+  if (self->_handlesTapAppLayoutHeaderEvents && ([eventCopy isHandled] & 1) == 0)
   {
-    v6 = [v4 appLayout];
-    v7 = [v6 itemForLayoutRole:{objc_msgSend(v4, "layoutRole")}];
+    appLayout = [eventCopy appLayout];
+    v7 = [appLayout itemForLayoutRole:{objc_msgSend(eventCopy, "layoutRole")}];
 
     if ([(SBFullScreenContinuousExposeSwitcherModifier *)self displayItemSupportsMultipleWindowsIndicator:v7])
     {
       v8 = objc_alloc_init(SBMutableSwitcherTransitionRequest);
       [(SBSwitcherTransitionRequest *)v8 setSource:3];
-      v9 = [v7 bundleIdentifier];
-      [(SBSwitcherTransitionRequest *)v8 setBundleIdentifierForAppExpose:v9];
+      bundleIdentifier = [v7 bundleIdentifier];
+      [(SBSwitcherTransitionRequest *)v8 setBundleIdentifierForAppExpose:bundleIdentifier];
 
       v10 = [[SBPerformTransitionSwitcherEventResponse alloc] initWithTransitionRequest:v8 gestureInitiated:0];
     }
@@ -1688,24 +1688,24 @@ uint64_t __75__SBFullScreenContinuousExposeSwitcherModifier__responseForDismissi
     v11 = v10;
     v12 = SBAppendSwitcherModifierResponse(v10, v5);
 
-    [v4 handleWithReason:@"Full Screen Continuous Expose"];
+    [eventCopy handleWithReason:@"Full Screen Continuous Expose"];
     v5 = v12;
   }
 
   return v5;
 }
 
-- (id)handleTapOutsideToDismissEvent:(id)a3
+- (id)handleTapOutsideToDismissEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v17.receiver = self;
   v17.super_class = SBFullScreenContinuousExposeSwitcherModifier;
-  v5 = [(SBSwitcherModifier *)&v17 handleTapOutsideToDismissEvent:v4];
-  v6 = [(SBFullScreenContinuousExposeSwitcherModifier *)self windowManagementContext];
+  v5 = [(SBSwitcherModifier *)&v17 handleTapOutsideToDismissEvent:eventCopy];
+  windowManagementContext = [(SBFullScreenContinuousExposeSwitcherModifier *)self windowManagementContext];
   if ([(SBFullScreenContinuousExposeSwitcherModifier *)self _isStripRevealedFromHidden])
   {
-    v7 = [(SBFullScreenContinuousExposeSwitcherModifier *)self _responseForDismissingStrip];
-    v8 = SBAppendSwitcherModifierResponse(v7, v5);
+    _responseForDismissingStrip = [(SBFullScreenContinuousExposeSwitcherModifier *)self _responseForDismissingStrip];
+    v8 = SBAppendSwitcherModifierResponse(_responseForDismissingStrip, v5);
 
     v9 = [SBSwitcherTransitionRequest requestForActivatingAppLayout:self->_fullScreenAppLayout];
     v5 = v8;
@@ -1717,13 +1717,13 @@ LABEL_3:
     goto LABEL_10;
   }
 
-  if ([v4 isPointerTouch])
+  if ([eventCopy isPointerTouch])
   {
-    v12 = [(SBFullScreenContinuousExposeSwitcherModifier *)self switcherSettings];
-    v13 = [v12 windowingSettings];
-    v14 = [v13 tapWallpaperToGoHome];
+    switcherSettings = [(SBFullScreenContinuousExposeSwitcherModifier *)self switcherSettings];
+    windowingSettings = [switcherSettings windowingSettings];
+    tapWallpaperToGoHome = [windowingSettings tapWallpaperToGoHome];
 
-    if (v14)
+    if (tapWallpaperToGoHome)
     {
       v15 = +[SBAppLayout homeScreenAppLayout];
       v9 = [SBSwitcherTransitionRequest requestForActivatingAppLayout:v15];
@@ -1731,7 +1731,7 @@ LABEL_3:
       goto LABEL_3;
     }
 
-    if ([v6 isFlexibleWindowingEnabled] && -[SBFullScreenContinuousExposeSwitcherModifier isDisplayEmbedded](self, "isDisplayEmbedded"))
+    if ([windowManagementContext isFlexibleWindowingEnabled] && -[SBFullScreenContinuousExposeSwitcherModifier isDisplayEmbedded](self, "isDisplayEmbedded"))
     {
       v9 = objc_alloc_init(SBMutableSwitcherTransitionRequest);
       [(SBSwitcherTransitionRequest *)v9 setPeekConfiguration:2];
@@ -1746,49 +1746,49 @@ LABEL_10:
   return v5;
 }
 
-- (id)handleTransitionEvent:(id)a3
+- (id)handleTransitionEvent:(id)event
 {
   v68 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v63.receiver = self;
   v63.super_class = SBFullScreenContinuousExposeSwitcherModifier;
-  v5 = [(SBSwitcherModifier *)&v63 handleTransitionEvent:v4];
-  v6 = [v4 fromAppLayout];
-  v7 = [v4 toAppLayout];
-  v8 = [v4 fromDisplayItemLayoutAttributesMap];
-  v9 = [v4 toDisplayItemLayoutAttributesMap];
-  if ([v4 phase] == 2)
+  v5 = [(SBSwitcherModifier *)&v63 handleTransitionEvent:eventCopy];
+  fromAppLayout = [eventCopy fromAppLayout];
+  toAppLayout = [eventCopy toAppLayout];
+  fromDisplayItemLayoutAttributesMap = [eventCopy fromDisplayItemLayoutAttributesMap];
+  toDisplayItemLayoutAttributesMap = [eventCopy toDisplayItemLayoutAttributesMap];
+  if ([eventCopy phase] == 2)
   {
-    v10 = [v7 allItems];
-    if ([v10 count] <= 2)
+    allItems = [toAppLayout allItems];
+    if ([allItems count] <= 2)
     {
     }
 
     else
     {
-      v11 = [v6 isEqual:v7];
+      v11 = [fromAppLayout isEqual:toAppLayout];
 
       if (v11)
       {
-        if ([v4 isKeyboardShortcutInitiated])
+        if ([eventCopy isKeyboardShortcutInitiated])
         {
-          v56 = v6;
-          v12 = [v8 allKeys];
-          v13 = SBDisplayItemDescendingInteractionTimeComparator(v8);
-          v14 = [v12 sortedArrayUsingComparator:v13];
+          v56 = fromAppLayout;
+          allKeys = [fromDisplayItemLayoutAttributesMap allKeys];
+          v13 = SBDisplayItemDescendingInteractionTimeComparator(fromDisplayItemLayoutAttributesMap);
+          v14 = [allKeys sortedArrayUsingComparator:v13];
 
-          v15 = [v9 allKeys];
-          v16 = SBDisplayItemDescendingInteractionTimeComparator(v9);
-          v17 = [v15 sortedArrayUsingComparator:v16];
+          allKeys2 = [toDisplayItemLayoutAttributesMap allKeys];
+          v16 = SBDisplayItemDescendingInteractionTimeComparator(toDisplayItemLayoutAttributesMap);
+          v17 = [allKeys2 sortedArrayUsingComparator:v16];
 
           v18 = v17;
-          v19 = [v14 firstObject];
-          v20 = [v17 firstObject];
-          if (([(SBDisplayItem *)v19 isEqualToItem:v20]& 1) != 0)
+          firstObject = [v14 firstObject];
+          firstObject2 = [v17 firstObject];
+          if (([(SBDisplayItem *)firstObject isEqualToItem:firstObject2]& 1) != 0)
           {
 
 LABEL_12:
-            v6 = v56;
+            fromAppLayout = v56;
             goto LABEL_15;
           }
 
@@ -1799,7 +1799,7 @@ LABEL_12:
           v61[1] = 3221225472;
           v61[2] = __70__SBFullScreenContinuousExposeSwitcherModifier_handleTransitionEvent___block_invoke;
           v61[3] = &unk_2783AE1A0;
-          v53 = v19;
+          v53 = firstObject;
           v62 = v53;
           v22 = [(NSArray *)zOrderedLeafAppLayoutsForKeyboardNavigation indexOfObjectPassingTest:v61];
           v23 = (v22 + 1) % [(NSArray *)self->_zOrderedLeafAppLayoutsForKeyboardNavigation count];
@@ -1809,16 +1809,16 @@ LABEL_12:
           }
 
           v24 = [(NSArray *)self->_zOrderedLeafAppLayoutsForKeyboardNavigation objectAtIndex:v23];
-          if ([v24 containsItem:v20])
+          if ([v24 containsItem:firstObject2])
           {
 
             goto LABEL_12;
           }
 
           v25 = [(NSArray *)self->_zOrderedLeafAppLayoutsForKeyboardNavigation objectAtIndex:v22 - 1];
-          v26 = [v25 containsItem:v20];
+          v26 = [v25 containsItem:firstObject2];
 
-          v6 = v56;
+          fromAppLayout = v56;
           if (v26)
           {
             goto LABEL_15;
@@ -1831,7 +1831,7 @@ LABEL_12:
   }
 
 LABEL_15:
-  if ([v4 phase] == 2 && objc_msgSend(v4, "toEnvironmentMode") != 3)
+  if ([eventCopy phase] == 2 && objc_msgSend(eventCopy, "toEnvironmentMode") != 3)
   {
     v27 = [[SBUpdateContinuousExposeStripsPresentationResponse alloc] initWithPresentationOptions:0 dismissalOptions:1];
     v28 = SBAppendSwitcherModifierResponse(v27, v5);
@@ -1839,19 +1839,19 @@ LABEL_15:
     v5 = v28;
   }
 
-  if ([v4 phase] == 1)
+  if ([eventCopy phase] == 1)
   {
-    v29 = [(SBFullScreenContinuousExposeSwitcherModifier *)self windowManagementContext];
-    v30 = [v29 isFlexibleWindowingEnabled];
+    windowManagementContext = [(SBFullScreenContinuousExposeSwitcherModifier *)self windowManagementContext];
+    isFlexibleWindowingEnabled = [windowManagementContext isFlexibleWindowingEnabled];
 
-    if (v30 && ([v9 allKeys], v57 = v6, v31 = objc_claimAutoreleasedReturnValue(), v58[0] = MEMORY[0x277D85DD0], v58[1] = 3221225472, v58[2] = __70__SBFullScreenContinuousExposeSwitcherModifier_handleTransitionEvent___block_invoke_2, v58[3] = &unk_2783AF5D8, v32 = v8, v59 = v32, v33 = v9, v60 = v33, objc_msgSend(v31, "bs_firstObjectPassingTest:", v58), v34 = objc_claimAutoreleasedReturnValue(), v31, v6 = v57, v60, v59, v34))
+    if (isFlexibleWindowingEnabled && ([toDisplayItemLayoutAttributesMap allKeys], v57 = fromAppLayout, v31 = objc_claimAutoreleasedReturnValue(), v58[0] = MEMORY[0x277D85DD0], v58[1] = 3221225472, v58[2] = __70__SBFullScreenContinuousExposeSwitcherModifier_handleTransitionEvent___block_invoke_2, v58[3] = &unk_2783AF5D8, v32 = fromDisplayItemLayoutAttributesMap, v59 = v32, v33 = toDisplayItemLayoutAttributesMap, v60 = v33, objc_msgSend(v31, "bs_firstObjectPassingTest:", v58), v34 = objc_claimAutoreleasedReturnValue(), v31, fromAppLayout = v57, v60, v59, v34))
     {
       if (os_variant_has_internal_content())
       {
-        v35 = [(SBUpdateMenuBarVisibilitySwitcherEventResponse *)v34 bundleIdentifier];
-        v36 = [v35 isEqualToString:@"com.apple.purplebuddy"];
+        bundleIdentifier = [(SBUpdateMenuBarVisibilitySwitcherEventResponse *)v34 bundleIdentifier];
+        v36 = [bundleIdentifier isEqualToString:@"com.apple.purplebuddy"];
 
-        v6 = v57;
+        fromAppLayout = v57;
         if (v36)
         {
           v37 = SBLogMenuBar();
@@ -1866,7 +1866,7 @@ LABEL_15:
             _os_log_error_impl(&dword_21ED4E000, v37, OS_LOG_TYPE_ERROR, "asked to peek menu bar for Buddy, had fromAttributes %@, to %@", buf, 0x16u);
           }
 
-          v6 = v57;
+          fromAppLayout = v57;
         }
       }
 
@@ -1892,16 +1892,16 @@ LABEL_15:
     v40 = 0;
   }
 
-  v41 = [v4 phase];
-  if ((v40 & 1) == 0 && v41 == 3)
+  phase = [eventCopy phase];
+  if ((v40 & 1) == 0 && phase == 3)
   {
-    v42 = [v9 allKeys];
-    v43 = SBDisplayItemDescendingInteractionTimeComparator(v9);
-    v44 = [v42 sortedArrayUsingComparator:v43];
+    allKeys3 = [toDisplayItemLayoutAttributesMap allKeys];
+    v43 = SBDisplayItemDescendingInteractionTimeComparator(toDisplayItemLayoutAttributesMap);
+    v44 = [allKeys3 sortedArrayUsingComparator:v43];
 
-    v45 = [v44 firstObject];
-    v46 = [v8 allKeys];
-    v47 = [v46 containsObject:v45];
+    firstObject3 = [v44 firstObject];
+    allKeys4 = [fromDisplayItemLayoutAttributesMap allKeys];
+    v47 = [allKeys4 containsObject:firstObject3];
 
     if ((v47 & 1) == 0)
     {
@@ -1933,24 +1933,24 @@ BOOL __70__SBFullScreenContinuousExposeSwitcherModifier_handleTransitionEvent___
   return v6;
 }
 
-- (id)handlePointerCrossedDisplayBoundaryEvent:(id)a3
+- (id)handlePointerCrossedDisplayBoundaryEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v11.receiver = self;
   v11.super_class = SBFullScreenContinuousExposeSwitcherModifier;
-  v5 = [(SBSwitcherModifier *)&v11 handlePointerCrossedDisplayBoundaryEvent:v4];
+  v5 = [(SBSwitcherModifier *)&v11 handlePointerCrossedDisplayBoundaryEvent:eventCopy];
   if (([(SBFullScreenContinuousExposeSwitcherModifier *)self prefersStripHiddenAndDisabled]& 1) == 0)
   {
-    v6 = [v4 edge];
-    if (v6 == [(SBFullScreenContinuousExposeSwitcherModifier *)self _continuousExposeStripEdge])
+    edge = [eventCopy edge];
+    if (edge == [(SBFullScreenContinuousExposeSwitcherModifier *)self _continuousExposeStripEdge])
     {
       [(SBFullScreenContinuousExposeSwitcherModifier *)self continuousExposeStripProgress];
       if (BSFloatIsZero())
       {
-        v7 = [v4 direction];
-        if (v7 == 1 || ![v4 direction])
+        direction = [eventCopy direction];
+        if (direction == 1 || ![eventCopy direction])
         {
-          v8 = [[SBPresentContinuousExposeStripEdgeProtectGrabberEventResponse alloc] initForInitialPresentation:v7 == 1];
+          v8 = [[SBPresentContinuousExposeStripEdgeProtectGrabberEventResponse alloc] initForInitialPresentation:direction == 1];
           v9 = SBAppendSwitcherModifierResponse(v8, v5);
 
           v5 = v9;
@@ -1962,19 +1962,19 @@ BOOL __70__SBFullScreenContinuousExposeSwitcherModifier_handleTransitionEvent___
   return v5;
 }
 
-- (id)handleTapSlideOverTongueEvent:(id)a3
+- (id)handleTapSlideOverTongueEvent:(id)event
 {
   v23[1] = *MEMORY[0x277D85DE8];
   v21.receiver = self;
   v21.super_class = SBFullScreenContinuousExposeSwitcherModifier;
-  v4 = [(SBSwitcherModifier *)&v21 handleTapSlideOverTongueEvent:a3];
-  v5 = [(SBFullScreenContinuousExposeSwitcherModifier *)self displayItemInSlideOver];
-  if (v5)
+  v4 = [(SBSwitcherModifier *)&v21 handleTapSlideOverTongueEvent:event];
+  displayItemInSlideOver = [(SBFullScreenContinuousExposeSwitcherModifier *)self displayItemInSlideOver];
+  if (displayItemInSlideOver)
   {
-    v6 = [(SBAppLayout *)self->_fullScreenAppLayout appLayoutByInsertingItem:v5];
-    v7 = [(SBFullScreenContinuousExposeSwitcherModifier *)self appLayoutByBringingItemToFront:v5 inAppLayout:v6];
+    v6 = [(SBAppLayout *)self->_fullScreenAppLayout appLayoutByInsertingItem:displayItemInSlideOver];
+    v7 = [(SBFullScreenContinuousExposeSwitcherModifier *)self appLayoutByBringingItemToFront:displayItemInSlideOver inAppLayout:v6];
 
-    v8 = [(SBFullScreenContinuousExposeSwitcherModifier *)self layoutAttributesForDisplayItem:v5 inAppLayout:v7];
+    v8 = [(SBFullScreenContinuousExposeSwitcherModifier *)self layoutAttributesForDisplayItem:displayItemInSlideOver inAppLayout:v7];
     v9 = [(SBSwitcherTransitionRequest *)SBMutableSwitcherTransitionRequest requestForActivatingAppLayout:v7];
     v20 = 0;
     v18 = 0u;
@@ -1986,7 +1986,7 @@ BOOL __70__SBFullScreenContinuousExposeSwitcherModifier_handleTransitionEvent___
     v17 = v20;
     v10 = [SBDisplayItemLayoutAttributes attributesByModifyingSlideOverConfiguration:v8];
 
-    v22 = v5;
+    v22 = displayItemInSlideOver;
     v23[0] = v10;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:&v22 count:{1, v15, v16, v17}];
     [v9 setDisplayItemLayoutAttributesMap:v11];
@@ -2003,23 +2003,23 @@ BOOL __70__SBFullScreenContinuousExposeSwitcherModifier_handleTransitionEvent___
 
 - (BOOL)_isStripStashed
 {
-  v3 = [(SBFullScreenContinuousExposeSwitcherModifier *)self appLayoutOnStage];
-  v4 = [(SBSwitcherModifier *)self flexibleAutoLayoutSpaceForAppLayout:v3];
+  appLayoutOnStage = [(SBFullScreenContinuousExposeSwitcherModifier *)self appLayoutOnStage];
+  v4 = [(SBSwitcherModifier *)self flexibleAutoLayoutSpaceForAppLayout:appLayoutOnStage];
 
-  LOBYTE(v3) = [v4 isStripVisible];
-  return v3 ^ 1;
+  LOBYTE(appLayoutOnStage) = [v4 isStripVisible];
+  return appLayoutOnStage ^ 1;
 }
 
-- (BOOL)_shouldEnableItemResizeGrabbersForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)_shouldEnableItemResizeGrabbersForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
-  v7 = [(SBFullScreenContinuousExposeSwitcherModifier *)self _shouldEnableResizingForLayoutRole:a3 inAppLayout:v6];
-  v8 = [v6 itemForLayoutRole:a3];
+  layoutCopy = layout;
+  v7 = [(SBFullScreenContinuousExposeSwitcherModifier *)self _shouldEnableResizingForLayoutRole:role inAppLayout:layoutCopy];
+  v8 = [layoutCopy itemForLayoutRole:role];
 
   if (v7)
   {
     v9 = [(SBFullScreenContinuousExposeSwitcherModifier *)self lastInteractedItemsInAppLayout:self->_fullScreenAppLayout];
-    v10 = [v9 firstObject];
+    firstObject = [v9 firstObject];
     if (BSEqualObjects())
     {
       v11 = 1;
@@ -2027,7 +2027,7 @@ BOOL __70__SBFullScreenContinuousExposeSwitcherModifier_handleTransitionEvent___
 
     else
     {
-      v12 = [(SBFullScreenContinuousExposeSwitcherModifier *)self displayItemInSlideOver];
+      displayItemInSlideOver = [(SBFullScreenContinuousExposeSwitcherModifier *)self displayItemInSlideOver];
       v11 = BSEqualObjects();
     }
   }
@@ -2040,26 +2040,26 @@ BOOL __70__SBFullScreenContinuousExposeSwitcherModifier_handleTransitionEvent___
   return v11;
 }
 
-- (BOOL)_shouldEnableResizingForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)_shouldEnableResizingForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   [(SBFullScreenContinuousExposeSwitcherModifier *)self _continuousExposeStripRevealProgress];
-  v7 = ((BSFloatIsZero() & 1) != 0 || ![(SBFullScreenContinuousExposeSwitcherModifier *)self _isStripStashed]) && [(SBFullScreenContinuousExposeSwitcherModifier *)self isDisplayEmbedded]&& [(SBFullScreenContinuousExposeSwitcherModifier *)self _isAppLayoutEffectivelyOnStage:v6]&& [(SBFullScreenContinuousExposeSwitcherModifier *)self appLayoutContainsOnlyResizableApps:v6]&& SBLayoutRoleIsValidForSplitView(a3) && [(SBFullScreenContinuousExposeSwitcherModifier *)self occlusionStateForLayoutRole:a3 inAppLayout:v6]!= 3;
+  v7 = ((BSFloatIsZero() & 1) != 0 || ![(SBFullScreenContinuousExposeSwitcherModifier *)self _isStripStashed]) && [(SBFullScreenContinuousExposeSwitcherModifier *)self isDisplayEmbedded]&& [(SBFullScreenContinuousExposeSwitcherModifier *)self _isAppLayoutEffectivelyOnStage:layoutCopy]&& [(SBFullScreenContinuousExposeSwitcherModifier *)self appLayoutContainsOnlyResizableApps:layoutCopy]&& SBLayoutRoleIsValidForSplitView(role) && [(SBFullScreenContinuousExposeSwitcherModifier *)self occlusionStateForLayoutRole:role inAppLayout:layoutCopy]!= 3;
 
   return v7;
 }
 
-- (BOOL)_isAppLayoutEffectivelyOnStage:(id)a3
+- (BOOL)_isAppLayoutEffectivelyOnStage:(id)stage
 {
-  v4 = a3;
-  if ([(SBAppLayout *)self->_fullScreenAppLayout containsAllItemsFromAppLayout:v4])
+  stageCopy = stage;
+  if ([(SBAppLayout *)self->_fullScreenAppLayout containsAllItemsFromAppLayout:stageCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [v4 containsAllItemsFromAppLayout:self->_fullScreenAppLayout];
+    v5 = [stageCopy containsAllItemsFromAppLayout:self->_fullScreenAppLayout];
   }
 
   return v5;
@@ -2080,9 +2080,9 @@ BOOL __70__SBFullScreenContinuousExposeSwitcherModifier_handleTransitionEvent___
 - (void)_resetKeyboardNavigationZOrder
 {
   v8 = [(SBFullScreenContinuousExposeSwitcherModifier *)self layoutAttributesMapForAppLayout:self->_fullScreenAppLayout];
-  v3 = [v8 allKeys];
+  allKeys = [v8 allKeys];
   v4 = SBDisplayItemDescendingInteractionTimeComparator(v8);
-  v5 = [v3 sortedArrayUsingComparator:v4];
+  v5 = [allKeys sortedArrayUsingComparator:v4];
 
   v6 = [(SBAppLayout *)self->_fullScreenAppLayout leafAppLayoutsFromDisplayItems:v5];
   zOrderedLeafAppLayoutsForKeyboardNavigation = self->_zOrderedLeafAppLayoutsForKeyboardNavigation;

@@ -1,50 +1,50 @@
 @interface UIRootWindowScenePresentationBinder
-- (UIRootWindowScenePresentationBinder)initWithPriority:(int64_t)a3 displayConfiguration:(id)a4;
-- (id)_initWithIdentifier:(id)a3 priority:(int64_t)a4 appearanceStyle:(unint64_t)a5 rootWindow:(id)a6;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (void)_noteDidStopPresentingScene:(id)a3;
-- (void)_noteWillStartPresentingScene:(id)a3;
+- (UIRootWindowScenePresentationBinder)initWithPriority:(int64_t)priority displayConfiguration:(id)configuration;
+- (id)_initWithIdentifier:(id)identifier priority:(int64_t)priority appearanceStyle:(unint64_t)style rootWindow:(id)window;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (void)_noteDidStopPresentingScene:(id)scene;
+- (void)_noteWillStartPresentingScene:(id)scene;
 - (void)invalidate;
 @end
 
 @implementation UIRootWindowScenePresentationBinder
 
-- (id)_initWithIdentifier:(id)a3 priority:(int64_t)a4 appearanceStyle:(unint64_t)a5 rootWindow:(id)a6
+- (id)_initWithIdentifier:(id)identifier priority:(int64_t)priority appearanceStyle:(unint64_t)style rootWindow:(id)window
 {
-  v11 = a6;
-  v12 = a3;
-  v13 = [v11 _sceneContainerView];
+  windowCopy = window;
+  identifierCopy = identifier;
+  _sceneContainerView = [windowCopy _sceneContainerView];
   v20.receiver = self;
   v20.super_class = UIRootWindowScenePresentationBinder;
-  v14 = [(UIScenePresentationBinder *)&v20 initWithIdentifier:v12 priority:a4 rootView:v13 appearanceStyle:a5];
+  v14 = [(UIScenePresentationBinder *)&v20 initWithIdentifier:identifierCopy priority:priority rootView:_sceneContainerView appearanceStyle:style];
 
   if (v14)
   {
-    objc_storeStrong(&v14->_rootSceneWindow, a6);
-    v14->_shouldManageWindowLifecycle = v11 == 0;
+    objc_storeStrong(&v14->_rootSceneWindow, window);
+    v14->_shouldManageWindowLifecycle = windowCopy == 0;
     v15 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     presentedScenes = v14->_presentedScenes;
     v14->_presentedScenes = v15;
 
-    v17 = [v11 displayConfiguration];
+    displayConfiguration = [windowCopy displayConfiguration];
     displayConfiguration = v14->_displayConfiguration;
-    v14->_displayConfiguration = v17;
+    v14->_displayConfiguration = displayConfiguration;
   }
 
   return v14;
 }
 
-- (UIRootWindowScenePresentationBinder)initWithPriority:(int64_t)a3 displayConfiguration:(id)a4
+- (UIRootWindowScenePresentationBinder)initWithPriority:(int64_t)priority displayConfiguration:(id)configuration
 {
-  v7 = a4;
+  configurationCopy = configuration;
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [v7 identity];
-  v10 = [v8 stringWithFormat:@"RootWindow-%@-%p", v9, self];
-  v11 = [(UIRootWindowScenePresentationBinder *)self _initWithIdentifier:v10 priority:a3 appearanceStyle:0 rootWindow:0];
+  identity = [configurationCopy identity];
+  v10 = [v8 stringWithFormat:@"RootWindow-%@-%p", identity, self];
+  v11 = [(UIRootWindowScenePresentationBinder *)self _initWithIdentifier:v10 priority:priority appearanceStyle:0 rootWindow:0];
 
   if (v11)
   {
-    objc_storeStrong(&v11->_displayConfiguration, a4);
+    objc_storeStrong(&v11->_displayConfiguration, configuration);
   }
 
   return v11;
@@ -62,25 +62,25 @@
   }
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(UIScenePresentationBinder *)self succinctDescriptionBuilder];
+  succinctDescriptionBuilder = [(UIScenePresentationBinder *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __77__UIRootWindowScenePresentationBinder_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_1E70F35B8;
-  v5 = v4;
+  v5 = succinctDescriptionBuilder;
   v10 = v5;
-  v11 = self;
+  selfCopy = self;
   v6 = [v5 modifyBody:v9];
   v7 = v5;
 
   return v5;
 }
 
-- (void)_noteWillStartPresentingScene:(id)a3
+- (void)_noteWillStartPresentingScene:(id)scene
 {
-  [(NSMutableSet *)self->_presentedScenes addObject:a3];
+  [(NSMutableSet *)self->_presentedScenes addObject:scene];
   if (self->_shouldManageWindowLifecycle && !self->_rootSceneWindow)
   {
     v4 = [[UIRootSceneWindow alloc] initWithDisplayConfiguration:self->_displayConfiguration];
@@ -96,9 +96,9 @@
   }
 }
 
-- (void)_noteDidStopPresentingScene:(id)a3
+- (void)_noteDidStopPresentingScene:(id)scene
 {
-  [(NSMutableSet *)self->_presentedScenes removeObject:a3];
+  [(NSMutableSet *)self->_presentedScenes removeObject:scene];
   if (![(NSMutableSet *)self->_presentedScenes count]&& self->_shouldManageWindowLifecycle && [(UIScenePresentationBinder *)self _delegateShouldPresentSceneOnlyWhenLayersExist])
   {
     [(_UIRootWindow *)self->_rootSceneWindow setHidden:1];

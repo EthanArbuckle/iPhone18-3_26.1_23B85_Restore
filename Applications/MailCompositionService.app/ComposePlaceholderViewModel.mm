@@ -6,11 +6,11 @@
 
 - (BOOL)shouldUseMultiField
 {
-  v3 = [(ComposePlaceholderViewModel *)self ccRecipients];
-  v4 = [v3 count];
+  ccRecipients = [(ComposePlaceholderViewModel *)self ccRecipients];
+  v4 = [ccRecipients count];
 
-  v5 = [(ComposePlaceholderViewModel *)self bccRecipients];
-  v6 = v4 | [v5 count];
+  bccRecipients = [(ComposePlaceholderViewModel *)self bccRecipients];
+  v6 = v4 | [bccRecipients count];
 
   return v6 == 0;
 }

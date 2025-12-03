@@ -1,13 +1,13 @@
 @interface ACDClientProvider
-- (id)createClientForConnection:(id)a3;
+- (id)createClientForConnection:(id)connection;
 @end
 
 @implementation ACDClientProvider
 
-- (id)createClientForConnection:(id)a3
+- (id)createClientForConnection:(id)connection
 {
-  v3 = a3;
-  v4 = [[ACDClient alloc] initWithConnection:v3];
+  connectionCopy = connection;
+  v4 = [[ACDClient alloc] initWithConnection:connectionCopy];
 
   return v4;
 }

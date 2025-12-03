@@ -1,31 +1,31 @@
 @interface AFSiriTaskExecution
-- (AFSiriTaskExecution)initWithRequest:(id)a3 taskDeliverer:(id)a4 usageResultListener:(id)a5;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (void)_completeWithResponse:(id)a3 error:(id)a4;
+- (AFSiriTaskExecution)initWithRequest:(id)request taskDeliverer:(id)deliverer usageResultListener:(id)listener;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (void)_completeWithResponse:(id)response error:(id)error;
 - (void)dealloc;
-- (void)handleFailureOfRequest:(id)a3 error:(id)a4 atTime:(unint64_t)a5;
-- (void)handleSiriResponse:(id)a3 atTime:(unint64_t)a4;
-- (void)setCompletionHandler:(id)a3;
-- (void)setDeliveryHandler:(id)a3;
+- (void)handleFailureOfRequest:(id)request error:(id)error atTime:(unint64_t)time;
+- (void)handleSiriResponse:(id)response atTime:(unint64_t)time;
+- (void)setCompletionHandler:(id)handler;
+- (void)setDeliveryHandler:(id)handler;
 - (void)start;
 @end
 
 @implementation AFSiriTaskExecution
 
-- (void)_completeWithResponse:(id)a3 error:(id)a4
+- (void)_completeWithResponse:(id)response error:(id)error
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  errorCopy = error;
   v8 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v17 = "[AFSiriTaskExecution _completeWithResponse:error:]";
     v18 = 2112;
-    v19 = v6;
+    v19 = responseCopy;
     v20 = 2112;
-    v21 = v7;
+    v21 = errorCopy;
     _os_log_impl(&dword_1912FE000, v8, OS_LOG_TYPE_INFO, "%s %@ %@", buf, 0x20u);
   }
 
@@ -35,10 +35,10 @@
   block[2] = __51__AFSiriTaskExecution__completeWithResponse_error___block_invoke;
   block[3] = &unk_1E73494B0;
   block[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v14 = responseCopy;
+  v15 = errorCopy;
+  v10 = errorCopy;
+  v11 = responseCopy;
   dispatch_async(queue, block);
 
   v12 = *MEMORY[0x1E69E9840];
@@ -140,17 +140,17 @@ void __51__AFSiriTaskExecution__completeWithResponse_error___block_invoke(void *
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setCompletionHandler:(id)a3
+- (void)setCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__AFSiriTaskExecution_setCompletionHandler___block_invoke;
   v7[3] = &unk_1E7349838;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -162,17 +162,17 @@ void __44__AFSiriTaskExecution_setCompletionHandler___block_invoke(uint64_t a1)
   *(v3 + 48) = v2;
 }
 
-- (void)setDeliveryHandler:(id)a3
+- (void)setDeliveryHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __42__AFSiriTaskExecution_setDeliveryHandler___block_invoke;
   v7[3] = &unk_1E7349838;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -375,17 +375,17 @@ LABEL_4:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   queue = self->_queue;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __58__AFSiriTaskExecution_listener_shouldAcceptNewConnection___block_invoke;
   v9[3] = &unk_1E7349860;
-  v10 = v5;
-  v11 = self;
-  v7 = v5;
+  v10 = connectionCopy;
+  selfCopy = self;
+  v7 = connectionCopy;
   dispatch_async(queue, v9);
 
   return 1;
@@ -403,21 +403,21 @@ uint64_t __58__AFSiriTaskExecution_listener_shouldAcceptNewConnection___block_in
   return [v4 resume];
 }
 
-- (void)handleFailureOfRequest:(id)a3 error:(id)a4 atTime:(unint64_t)a5
+- (void)handleFailureOfRequest:(id)request error:(id)error atTime:(unint64_t)time
 {
-  v8 = a3;
-  v9 = a4;
+  requestCopy = request;
+  errorCopy = error;
   queue = self->_queue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __59__AFSiriTaskExecution_handleFailureOfRequest_error_atTime___block_invoke;
   v13[3] = &unk_1E73464F0;
-  v14 = v8;
-  v15 = self;
-  v16 = v9;
-  v17 = a5;
-  v11 = v9;
-  v12 = v8;
+  v14 = requestCopy;
+  selfCopy = self;
+  v16 = errorCopy;
+  timeCopy = time;
+  v11 = errorCopy;
+  v12 = requestCopy;
   dispatch_async(queue, v13);
 }
 
@@ -434,18 +434,18 @@ uint64_t __59__AFSiriTaskExecution_handleFailureOfRequest_error_atTime___block_i
   return [v5 _completeWithError:v6];
 }
 
-- (void)handleSiriResponse:(id)a3 atTime:(unint64_t)a4
+- (void)handleSiriResponse:(id)response atTime:(unint64_t)time
 {
-  v6 = a3;
+  responseCopy = response;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __49__AFSiriTaskExecution_handleSiriResponse_atTime___block_invoke;
   block[3] = &unk_1E73484C0;
-  v10 = v6;
-  v11 = a4;
+  v10 = responseCopy;
+  timeCopy = time;
   block[4] = self;
-  v8 = v6;
+  v8 = responseCopy;
   dispatch_async(queue, block);
 }
 
@@ -492,7 +492,7 @@ void __49__AFSiriTaskExecution_handleSiriResponse_atTime___block_invoke(uint64_t
     *buf = 136315394;
     v7 = "[AFSiriTaskExecution dealloc]";
     v8 = 2048;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1912FE000, v3, OS_LOG_TYPE_INFO, "%s <AFSiriTaskExecution %p>", buf, 0x16u);
   }
 
@@ -504,12 +504,12 @@ void __49__AFSiriTaskExecution_handleSiriResponse_atTime___block_invoke(uint64_t
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (AFSiriTaskExecution)initWithRequest:(id)a3 taskDeliverer:(id)a4 usageResultListener:(id)a5
+- (AFSiriTaskExecution)initWithRequest:(id)request taskDeliverer:(id)deliverer usageResultListener:(id)listener
 {
   v27 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  requestCopy = request;
+  delivererCopy = deliverer;
+  listenerCopy = listener;
   v22.receiver = self;
   v22.super_class = AFSiriTaskExecution;
   v12 = [(AFSiriTaskExecution *)&v22 init];
@@ -531,16 +531,16 @@ void __49__AFSiriTaskExecution_handleSiriResponse_atTime___block_invoke(uint64_t
     queue = v12->_queue;
     v12->_queue = v15;
 
-    objc_storeStrong(&v12->_request, a3);
-    objc_storeStrong(&v12->_taskDeliverer, a4);
-    objc_storeStrong(&v12->_usageResultListener, a5);
+    objc_storeStrong(&v12->_request, request);
+    objc_storeStrong(&v12->_taskDeliverer, deliverer);
+    objc_storeStrong(&v12->_usageResultListener, listener);
     completionHandler = v12->_completionHandler;
     v12->_completionHandler = &__block_literal_global_3256;
 
     v12->_state = 1;
-    v18 = [MEMORY[0x1E696B0D8] anonymousListener];
+    anonymousListener = [MEMORY[0x1E696B0D8] anonymousListener];
     taskResponseListener = v12->_taskResponseListener;
-    v12->_taskResponseListener = v18;
+    v12->_taskResponseListener = anonymousListener;
 
     [(NSXPCListener *)v12->_taskResponseListener setDelegate:v12];
     [(NSXPCListener *)v12->_taskResponseListener resume];

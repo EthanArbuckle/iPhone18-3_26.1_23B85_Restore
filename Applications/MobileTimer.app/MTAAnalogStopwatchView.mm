@@ -1,21 +1,21 @@
 @interface MTAAnalogStopwatchView
-- (CGPoint)_minutesCircleCenter:(double *)a3;
-- (MTAAnalogStopwatchView)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
+- (CGPoint)_minutesCircleCenter:(double *)center;
+- (MTAAnalogStopwatchView)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
 - (void)handleLocaleChange;
 - (void)layoutSubviews;
-- (void)setCurrentLapTime:(double)a3;
-- (void)setDisplayAdjustedElapsedTime:(double)a3;
-- (void)setElapsedTime:(double)a3;
+- (void)setCurrentLapTime:(double)time;
+- (void)setDisplayAdjustedElapsedTime:(double)time;
+- (void)setElapsedTime:(double)time;
 @end
 
 @implementation MTAAnalogStopwatchView
 
-- (MTAAnalogStopwatchView)initWithFrame:(CGRect)a3
+- (MTAAnalogStopwatchView)initWithFrame:(CGRect)frame
 {
   v37.receiver = self;
   v37.super_class = MTAAnalogStopwatchView;
-  v3 = [(MTAAnalogStopwatchView *)&v37 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MTAAnalogStopwatchView *)&v37 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -28,111 +28,111 @@
     [(MTAAnalogStopwatchView *)v4 setTimeView:v9];
 
     v10 = +[UIColor mtui_primaryTextColor];
-    v11 = [(MTAAnalogStopwatchView *)v4 timeView];
-    [v11 setTextColor:v10];
+    timeView = [(MTAAnalogStopwatchView *)v4 timeView];
+    [timeView setTextColor:v10];
 
-    v12 = [(MTAAnalogStopwatchView *)v4 timeView];
-    [v12 setTextAlignment:1];
+    timeView2 = [(MTAAnalogStopwatchView *)v4 timeView];
+    [timeView2 setTextAlignment:1];
 
-    v13 = [(MTAAnalogStopwatchView *)v4 timeView];
-    [v13 setAdjustsFontSizeToFitWidth:1];
+    timeView3 = [(MTAAnalogStopwatchView *)v4 timeView];
+    [timeView3 setAdjustsFontSizeToFitWidth:1];
 
-    v14 = [(MTAAnalogStopwatchView *)v4 timeView];
-    [v14 setTime:0.0];
+    timeView4 = [(MTAAnalogStopwatchView *)v4 timeView];
+    [timeView4 setTime:0.0];
 
-    v15 = [(MTAAnalogStopwatchView *)v4 timeView];
-    [(MTAAnalogStopwatchView *)v4 addSubview:v15];
+    timeView5 = [(MTAAnalogStopwatchView *)v4 timeView];
+    [(MTAAnalogStopwatchView *)v4 addSubview:timeView5];
 
-    v16 = [[MTAAnalogStopwatchHandView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
-    [(MTAAnalogStopwatchView *)v4 setMinutesHand:v16];
+    height = [[MTAAnalogStopwatchHandView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+    [(MTAAnalogStopwatchView *)v4 setMinutesHand:height];
 
     v17 = +[UIColor mtui_tintColor];
-    v18 = [(MTAAnalogStopwatchView *)v4 minutesHand];
-    [v18 setColor:v17];
+    minutesHand = [(MTAAnalogStopwatchView *)v4 minutesHand];
+    [minutesHand setColor:v17];
 
-    v19 = [(MTAAnalogStopwatchView *)v4 minutesHand];
-    [v19 setAnchorStyle:1];
+    minutesHand2 = [(MTAAnalogStopwatchView *)v4 minutesHand];
+    [minutesHand2 setAnchorStyle:1];
 
-    v20 = [(MTAAnalogStopwatchView *)v4 minutesHand];
-    [(MTAAnalogStopwatchView *)v4 addSubview:v20];
+    minutesHand3 = [(MTAAnalogStopwatchView *)v4 minutesHand];
+    [(MTAAnalogStopwatchView *)v4 addSubview:minutesHand3];
 
-    v21 = [[MTAAnalogStopwatchHandView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
-    [(MTAAnalogStopwatchView *)v4 setLapSecondsHand:v21];
+    height2 = [[MTAAnalogStopwatchHandView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+    [(MTAAnalogStopwatchView *)v4 setLapSecondsHand:height2];
 
     v22 = +[UIColor systemBlueColor];
-    v23 = [(MTAAnalogStopwatchView *)v4 lapSecondsHand];
-    [v23 setColor:v22];
+    lapSecondsHand = [(MTAAnalogStopwatchView *)v4 lapSecondsHand];
+    [lapSecondsHand setColor:v22];
 
-    v24 = [(MTAAnalogStopwatchView *)v4 lapSecondsHand];
-    [v24 setHasTail:1];
+    lapSecondsHand2 = [(MTAAnalogStopwatchView *)v4 lapSecondsHand];
+    [lapSecondsHand2 setHasTail:1];
 
-    v25 = [(MTAAnalogStopwatchView *)v4 lapSecondsHand];
-    [(MTAAnalogStopwatchView *)v4 addSubview:v25];
+    lapSecondsHand3 = [(MTAAnalogStopwatchView *)v4 lapSecondsHand];
+    [(MTAAnalogStopwatchView *)v4 addSubview:lapSecondsHand3];
 
-    v26 = [[MTAAnalogStopwatchHandView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
-    [(MTAAnalogStopwatchView *)v4 setSecondsHand:v26];
+    height3 = [[MTAAnalogStopwatchHandView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+    [(MTAAnalogStopwatchView *)v4 setSecondsHand:height3];
 
     v27 = +[UIColor mtui_tintColor];
-    v28 = [(MTAAnalogStopwatchView *)v4 secondsHand];
-    [v28 setColor:v27];
+    secondsHand = [(MTAAnalogStopwatchView *)v4 secondsHand];
+    [secondsHand setColor:v27];
 
-    v29 = [(MTAAnalogStopwatchView *)v4 secondsHand];
-    [v29 setHasTail:1];
+    secondsHand2 = [(MTAAnalogStopwatchView *)v4 secondsHand];
+    [secondsHand2 setHasTail:1];
 
-    v30 = [(MTAAnalogStopwatchView *)v4 secondsHand];
-    [v30 setAnchorStyle:2];
+    secondsHand3 = [(MTAAnalogStopwatchView *)v4 secondsHand];
+    [secondsHand3 setAnchorStyle:2];
 
-    v31 = [(MTAAnalogStopwatchView *)v4 secondsHand];
-    [(MTAAnalogStopwatchView *)v4 addSubview:v31];
+    secondsHand4 = [(MTAAnalogStopwatchView *)v4 secondsHand];
+    [(MTAAnalogStopwatchView *)v4 addSubview:secondsHand4];
 
     v32 = objc_opt_new();
     [(MTAAnalogStopwatchView *)v4 setNumberFormatter:v32];
 
-    v33 = [(MTAAnalogStopwatchView *)v4 numberFormatter];
-    [v33 setNumberStyle:1];
+    numberFormatter = [(MTAAnalogStopwatchView *)v4 numberFormatter];
+    [numberFormatter setNumberStyle:1];
 
     v34 = +[NSLocale autoupdatingCurrentLocale];
-    v35 = [(MTAAnalogStopwatchView *)v4 numberFormatter];
-    [v35 setLocale:v34];
+    numberFormatter2 = [(MTAAnalogStopwatchView *)v4 numberFormatter];
+    [numberFormatter2 setLocale:v34];
   }
 
   return v4;
 }
 
-- (void)setElapsedTime:(double)a3
+- (void)setElapsedTime:(double)time
 {
-  self->_elapsedTime = a3;
+  self->_elapsedTime = time;
   [(MTAAnalogStopwatchView *)self elapsedTime];
   v5 = fmod(v4 / 60.0, 30.0) * 0.20943951;
-  v6 = [(MTAAnalogStopwatchView *)self minutesHand];
-  [v6 setAngle:v5];
+  minutesHand = [(MTAAnalogStopwatchView *)self minutesHand];
+  [minutesHand setAngle:v5];
 
   [(MTAAnalogStopwatchView *)self elapsedTime];
   v8 = fmod(v7, 60.0) * 0.104719755;
-  v9 = [(MTAAnalogStopwatchView *)self secondsHand];
-  [v9 setAngle:v8];
+  secondsHand = [(MTAAnalogStopwatchView *)self secondsHand];
+  [secondsHand setAngle:v8];
 }
 
-- (void)setDisplayAdjustedElapsedTime:(double)a3
+- (void)setDisplayAdjustedElapsedTime:(double)time
 {
-  self->_displayAdjustedElapsedTime = a3;
-  v4 = [(MTAAnalogStopwatchView *)self timeView];
-  [v4 setTime:a3];
+  self->_displayAdjustedElapsedTime = time;
+  timeView = [(MTAAnalogStopwatchView *)self timeView];
+  [timeView setTime:time];
 }
 
-- (void)setCurrentLapTime:(double)a3
+- (void)setCurrentLapTime:(double)time
 {
-  self->_currentLapTime = a3;
+  self->_currentLapTime = time;
   [(MTAAnalogStopwatchView *)self currentLapTime];
   v5 = fmod(v4, 60.0) * 0.104719755;
-  v6 = [(MTAAnalogStopwatchView *)self lapSecondsHand];
-  [v6 setAngle:v5];
+  lapSecondsHand = [(MTAAnalogStopwatchView *)self lapSecondsHand];
+  [lapSecondsHand setAngle:v5];
 }
 
 - (void)handleLocaleChange
 {
-  v3 = [(MTAAnalogStopwatchView *)self timeView];
-  [v3 handleLocaleChange];
+  timeView = [(MTAAnalogStopwatchView *)self timeView];
+  [timeView handleLocaleChange];
 
   [(MTAAnalogStopwatchView *)self setNeedsDisplay];
 }
@@ -153,73 +153,73 @@
   v10 = v5 - v55;
   v11 = v7 - v55;
   v12 = v55 + v55;
-  v13 = [(MTAAnalogStopwatchView *)self minutesHand];
-  [v13 setFrame:{v10, v11, v12, v12}];
+  minutesHand = [(MTAAnalogStopwatchView *)self minutesHand];
+  [minutesHand setFrame:{v10, v11, v12, v12}];
 
   [(MTAAnalogStopwatchView *)self bounds];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
-  v22 = [(MTAAnalogStopwatchView *)self secondsHand];
-  [v22 setFrame:{v15, v17, v19, v21}];
+  secondsHand = [(MTAAnalogStopwatchView *)self secondsHand];
+  [secondsHand setFrame:{v15, v17, v19, v21}];
 
   [(MTAAnalogStopwatchView *)self bounds];
   v24 = v23;
   v26 = v25;
   v28 = v27;
   v30 = v29;
-  v31 = [(MTAAnalogStopwatchView *)self lapSecondsHand];
-  [v31 setFrame:{v24, v26, v28, v30}];
+  lapSecondsHand = [(MTAAnalogStopwatchView *)self lapSecondsHand];
+  [lapSecondsHand setFrame:{v24, v26, v28, v30}];
 
-  v32 = [(MTAAnalogStopwatchView *)self minutesHand];
-  [v32 setWidth:v9];
+  minutesHand2 = [(MTAAnalogStopwatchView *)self minutesHand];
+  [minutesHand2 setWidth:v9];
 
-  v33 = [(MTAAnalogStopwatchView *)self secondsHand];
-  [v33 setWidth:v9];
+  secondsHand2 = [(MTAAnalogStopwatchView *)self secondsHand];
+  [secondsHand2 setWidth:v9];
 
-  v34 = [(MTAAnalogStopwatchView *)self lapSecondsHand];
-  [v34 setWidth:v9];
+  lapSecondsHand2 = [(MTAAnalogStopwatchView *)self lapSecondsHand];
+  [lapSecondsHand2 setWidth:v9];
 
   v35 = [UIFont systemFontOfSize:v3 * 20.0 weight:UIFontWeightRegular];
-  v36 = [v35 mtui_fontByAddingTimeFontAttributes];
+  mtui_fontByAddingTimeFontAttributes = [v35 mtui_fontByAddingTimeFontAttributes];
 
-  v37 = [(MTAAnalogStopwatchView *)self timeView];
-  [v37 setTime:359999.0];
+  timeView = [(MTAAnalogStopwatchView *)self timeView];
+  [timeView setTime:359999.0];
 
-  v38 = [(MTAAnalogStopwatchView *)self timeView];
-  [v38 setFont:v36];
+  timeView2 = [(MTAAnalogStopwatchView *)self timeView];
+  [timeView2 setFont:mtui_fontByAddingTimeFontAttributes];
 
-  v39 = [(MTAAnalogStopwatchView *)self timeView];
-  [v39 sizeToFit];
+  timeView3 = [(MTAAnalogStopwatchView *)self timeView];
+  [timeView3 sizeToFit];
 
   [(MTAAnalogStopwatchView *)self elapsedTime];
   v41 = v40;
-  v42 = [(MTAAnalogStopwatchView *)self timeView];
-  [v42 setTime:v41];
+  timeView4 = [(MTAAnalogStopwatchView *)self timeView];
+  [timeView4 setTime:v41];
 
-  v43 = [(MTAAnalogStopwatchView *)self timeView];
-  [v43 frame];
+  timeView5 = [(MTAAnalogStopwatchView *)self timeView];
+  [timeView5 frame];
   v45 = v44;
   v47 = v46;
   v49 = v48;
 
   [(MTAAnalogStopwatchView *)self bounds];
   v50 = CGRectGetMidX(v58) + v47 * -0.5;
-  v51 = [(MTAAnalogStopwatchView *)self timeView];
-  [v51 setFrame:{v50, v45, v47, v49}];
+  timeView6 = [(MTAAnalogStopwatchView *)self timeView];
+  [timeView6 setFrame:{v50, v45, v47, v49}];
 
   [(MTAAnalogStopwatchView *)self bounds];
   CGRectGetHeight(v59);
   UIRoundToViewScale();
   v53 = v52;
-  v54 = [(MTAAnalogStopwatchView *)self timeView];
-  [v54 _setFirstLineBaselineFrameOriginY:v53];
+  timeView7 = [(MTAAnalogStopwatchView *)self timeView];
+  [timeView7 _setFirstLineBaselineFrameOriginY:v53];
 
   [(MTAAnalogStopwatchView *)self setNeedsDisplay];
 }
 
-- (CGPoint)_minutesCircleCenter:(double *)a3
+- (CGPoint)_minutesCircleCenter:(double *)center
 {
   [(MTAAnalogStopwatchView *)self bounds];
   CGRectGetWidth(v12);
@@ -231,9 +231,9 @@
   CGRectGetMidY(v14);
   UIRoundToViewScale();
   v9 = v8;
-  if (a3)
+  if (center)
   {
-    *a3 = v6;
+    *center = v6;
   }
 
   v10 = MidX;
@@ -242,7 +242,7 @@
   return result;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   CurrentContext = UIGraphicsGetCurrentContext();
   [(MTAAnalogStopwatchView *)self bounds];
@@ -299,9 +299,9 @@
       v27 = +[UIColor mtui_stopwatchMajorTickMarkColor];
       [v27 setStroke];
       [v23 stroke];
-      v28 = [(MTAAnalogStopwatchView *)self numberFormatter];
+      numberFormatter = [(MTAAnalogStopwatchView *)self numberFormatter];
       v29 = [NSNumber numberWithUnsignedInteger:v17 >> 2];
-      v30 = [v28 stringFromNumber:v29];
+      v30 = [numberFormatter stringFromNumber:v29];
 
       v14 = &DateMaskToString_ptr;
       [v30 sizeWithAttributes:v16];
@@ -367,12 +367,12 @@
     LODWORD(v49) = HIDWORD(v49);
     if ((v49 >> 1) < 0x1999999A)
     {
-      v50 = [v48 mtui_stopwatchMajorTickMarkColor];
-      [v50 setStroke];
+      mtui_stopwatchMajorTickMarkColor = [v48 mtui_stopwatchMajorTickMarkColor];
+      [mtui_stopwatchMajorTickMarkColor setStroke];
       [v45 stroke];
-      v51 = [(MTAAnalogStopwatchView *)self numberFormatter];
+      numberFormatter2 = [(MTAAnalogStopwatchView *)self numberFormatter];
       v52 = [NSNumber numberWithUnsignedInteger:i >> 1];
-      v53 = [v51 stringFromNumber:v52];
+      v53 = [numberFormatter2 stringFromNumber:v52];
 
       v14 = &DateMaskToString_ptr;
       [v53 sizeWithAttributes:v43];
@@ -388,8 +388,8 @@
 
     else
     {
-      v50 = [v48 mtui_stopwatchMinorTickMarkColor];
-      [v50 setStroke];
+      mtui_stopwatchMajorTickMarkColor = [v48 mtui_stopwatchMinorTickMarkColor];
+      [mtui_stopwatchMajorTickMarkColor setStroke];
       [v45 stroke];
     }
   }

@@ -1,12 +1,12 @@
 @interface CNCDAllContainersPredicate
-- (CNCDAllContainersPredicate)initWithCoder:(id)a3;
-- (CNCDAllContainersPredicate)initWithIncludeDisabledContainers:(BOOL)a3;
-- (void)encodeWithCoder:(id)a3;
+- (CNCDAllContainersPredicate)initWithCoder:(id)coder;
+- (CNCDAllContainersPredicate)initWithIncludeDisabledContainers:(BOOL)containers;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNCDAllContainersPredicate
 
-- (CNCDAllContainersPredicate)initWithIncludeDisabledContainers:(BOOL)a3
+- (CNCDAllContainersPredicate)initWithIncludeDisabledContainers:(BOOL)containers
 {
   v8.receiver = self;
   v8.super_class = CNCDAllContainersPredicate;
@@ -14,35 +14,35 @@
   v5 = v4;
   if (v4)
   {
-    v4->_includeDisabledContainers = a3;
+    v4->_includeDisabledContainers = containers;
     v6 = v4;
   }
 
   return v5;
 }
 
-- (CNCDAllContainersPredicate)initWithCoder:(id)a3
+- (CNCDAllContainersPredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = CNCDAllContainersPredicate;
-  v5 = [(CNPredicate *)&v8 initWithCoder:v4];
+  v5 = [(CNPredicate *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_includeDisabledContainers = [v4 decodeBoolForKey:@"_includeDisabledContainers"];
+    v5->_includeDisabledContainers = [coderCopy decodeBoolForKey:@"_includeDisabledContainers"];
     v6 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CNCDAllContainersPredicate;
-  v4 = a3;
-  [(CNPredicate *)&v5 encodeWithCoder:v4];
-  [v4 encodeBool:self->_includeDisabledContainers forKey:{@"_includeDisabledContainers", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(CNPredicate *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:self->_includeDisabledContainers forKey:{@"_includeDisabledContainers", v5.receiver, v5.super_class}];
 }
 
 @end

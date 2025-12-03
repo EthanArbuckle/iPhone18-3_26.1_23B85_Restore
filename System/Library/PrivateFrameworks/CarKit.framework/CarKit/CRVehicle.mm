@@ -1,45 +1,45 @@
 @interface CRVehicle
-+ (id)vehicleForMessagingVehicle:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)vehicleForMessagingVehicle:(id)vehicle;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)requiresBonjour;
-- (BOOL)setHomeScreenStyle:(id)a3 forDisplayWithID:(id)a4;
-- (BOOL)setWallpaper:(id)a3 forDisplayWithID:(id)a4 requiresDarkAppearance:(BOOL)a5;
+- (BOOL)setHomeScreenStyle:(id)style forDisplayWithID:(id)d;
+- (BOOL)setWallpaper:(id)wallpaper forDisplayWithID:(id)d requiresDarkAppearance:(BOOL)appearance;
 - (CRSystemWallpaperData)previousSystemWallpaperData;
 - (CRSystemWallpaperData)systemWallpaperData;
-- (CRVehicle)initWithCoder:(id)a3;
-- (CRVehicle)initWithIdentifier:(id)a3 certificateSerial:(id)a4;
+- (CRVehicle)initWithCoder:(id)coder;
+- (CRVehicle)initWithIdentifier:(id)identifier certificateSerial:(id)serial;
 - (NSString)_axColorFiltersAnalyticsString;
 - (NSString)_axSoundRecognitionAnalyticsString;
 - (NSString)wallpaperDescription;
-- (id)_axColorFiltersIntensityStringForNumber:(id)a3;
+- (id)_axColorFiltersIntensityStringForNumber:(id)number;
 - (id)_enhancedIntegrationDebugDescription;
 - (id)_pairingDebugDescription;
 - (id)assetDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)displayName;
-- (id)homeScreenStyleDataForDisplayWithID:(id)a3;
-- (id)wallpaperForDisplayWithID:(id)a3;
+- (id)homeScreenStyleDataForDisplayWithID:(id)d;
+- (id)wallpaperForDisplayWithID:(id)d;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)mergeAttributesFromVehicle:(id)a3;
-- (void)setClusterAssetIdentifier:(id)a3;
-- (void)setPreviousSystemWallpaperData:(id)a3;
-- (void)setSystemWallpaperData:(id)a3;
-- (void)setViewAreas:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)mergeAttributesFromVehicle:(id)vehicle;
+- (void)setClusterAssetIdentifier:(id)identifier;
+- (void)setPreviousSystemWallpaperData:(id)data;
+- (void)setSystemWallpaperData:(id)data;
+- (void)setViewAreas:(id)areas;
 @end
 
 @implementation CRVehicle
 
 - (CRSystemWallpaperData)systemWallpaperData
 {
-  v3 = [(CRVehicle *)self wallpaperIdentifier];
+  wallpaperIdentifier = [(CRVehicle *)self wallpaperIdentifier];
 
-  if (v3)
+  if (wallpaperIdentifier)
   {
     v4 = [CRSystemWallpaperData alloc];
-    v5 = [(CRVehicle *)self wallpaperIdentifier];
-    v6 = [(CRSystemWallpaperData *)v4 initWithIdentifier:v5];
+    wallpaperIdentifier2 = [(CRVehicle *)self wallpaperIdentifier];
+    v6 = [(CRSystemWallpaperData *)v4 initWithIdentifier:wallpaperIdentifier2];
   }
 
   else
@@ -52,34 +52,34 @@
 
 - (unint64_t)hash
 {
-  v2 = [(CRVehicle *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(CRVehicle *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (CRVehicle)initWithIdentifier:(id)a3 certificateSerial:(id)a4
+- (CRVehicle)initWithIdentifier:(id)identifier certificateSerial:(id)serial
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  serialCopy = serial;
   v12.receiver = self;
   v12.super_class = CRVehicle;
   v8 = [(CRVehicle *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    if (v6)
+    if (identifierCopy)
     {
-      [(CRVehicle *)v8 setIdentifier:v6];
+      [(CRVehicle *)v8 setIdentifier:identifierCopy];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E696AFB0] UUID];
-      [(CRVehicle *)v9 setIdentifier:v10];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      [(CRVehicle *)v9 setIdentifier:uUID];
     }
 
-    [(CRVehicle *)v9 setCertificateSerialNumber:v7];
+    [(CRVehicle *)v9 setCertificateSerialNumber:serialCopy];
     [(CRVehicle *)v9 setPairingStatus:0];
     [(CRVehicle *)v9 setEnhancedIntegrationStatus:0];
     [(CRVehicle *)v9 setAlbumArtUserPreference:0];
@@ -96,9 +96,9 @@
   return v9;
 }
 
-- (CRVehicle)initWithCoder:(id)a3
+- (CRVehicle)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v53.receiver = self;
   v53.super_class = CRVehicle;
   v5 = [(CRVehicle *)&v53 init];
@@ -108,102 +108,102 @@
     goto LABEL_102;
   }
 
-  if ([v4 containsValueForKey:@"identifier"])
+  if ([coderCopy containsValueForKey:@"identifier"])
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     [(CRVehicle *)v5 setIdentifier:v6];
   }
 
-  if ([v4 containsValueForKey:@"vehicleName"])
+  if ([coderCopy containsValueForKey:@"vehicleName"])
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"vehicleName"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"vehicleName"];
     [(CRVehicle *)v5 setVehicleName:v7];
   }
 
-  if ([v4 containsValueForKey:@"certificateSerialNumber"])
+  if ([coderCopy containsValueForKey:@"certificateSerialNumber"])
   {
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"certificateSerialNumber"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"certificateSerialNumber"];
     [(CRVehicle *)v5 setCertificateSerialNumber:v8];
   }
 
-  if ([v4 containsValueForKey:@"pairingStatus"])
+  if ([coderCopy containsValueForKey:@"pairingStatus"])
   {
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pairingStatus"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pairingStatus"];
     -[CRVehicle setPairingStatus:](v5, "setPairingStatus:", [v9 integerValue]);
   }
 
-  if ([v4 containsValueForKey:@"enhancedIntegration"])
+  if ([coderCopy containsValueForKey:@"enhancedIntegration"])
   {
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"enhancedIntegration"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"enhancedIntegration"];
     -[CRVehicle setEnhancedIntegrationStatus:](v5, "setEnhancedIntegrationStatus:", [v10 integerValue]);
   }
 
-  if ([v4 containsValueForKey:@"supportsEnhancedIntegration"])
+  if ([coderCopy containsValueForKey:@"supportsEnhancedIntegration"])
   {
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"supportsEnhancedIntegration"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"supportsEnhancedIntegration"];
     -[CRVehicle setSupportsEnhancedIntegration:](v5, "setSupportsEnhancedIntegration:", [v11 BOOLValue]);
   }
 
-  if ([v4 containsValueForKey:@"supportsStartSessionRequest"])
+  if ([coderCopy containsValueForKey:@"supportsStartSessionRequest"])
   {
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"supportsStartSessionRequest"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"supportsStartSessionRequest"];
     [(CRVehicle *)v5 setSupportsStartSessionRequest:v12];
   }
 
-  if ([v4 containsValueForKey:@"bluetoothAddress"])
+  if ([coderCopy containsValueForKey:@"bluetoothAddress"])
   {
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bluetoothAddress"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bluetoothAddress"];
     [(CRVehicle *)v5 setBluetoothAddress:v13];
   }
 
-  if ([v4 containsValueForKey:@"carplayWiFiUUID"])
+  if ([coderCopy containsValueForKey:@"carplayWiFiUUID"])
   {
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"carplayWiFiUUID"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"carplayWiFiUUID"];
     [(CRVehicle *)v5 setCarplayWiFiUUID:v14];
   }
 
-  if ([v4 containsValueForKey:@"carplayProtocols"])
+  if ([coderCopy containsValueForKey:@"carplayProtocols"])
   {
     v15 = MEMORY[0x1E695DFD8];
     v16 = objc_opt_class();
     v17 = [v15 setWithObjects:{v16, objc_opt_class(), 0}];
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"carplayProtocols"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"carplayProtocols"];
     [(CRVehicle *)v5 setAccessoryProtocols:v18];
   }
 
-  if ([v4 containsValueForKey:@"lastConnectionTime"])
+  if ([coderCopy containsValueForKey:@"lastConnectionTime"])
   {
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastConnectionTime"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastConnectionTime"];
     [(CRVehicle *)v5 setLastConnectedDate:v19];
   }
 
-  if ([v4 containsValueForKey:@"vehicleModelName"])
+  if ([coderCopy containsValueForKey:@"vehicleModelName"])
   {
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"vehicleModelName"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"vehicleModelName"];
     [(CRVehicle *)v5 setVehicleModelName:v20];
   }
 
-  if ([v4 containsValueForKey:@"ppid"])
+  if ([coderCopy containsValueForKey:@"ppid"])
   {
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ppid"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ppid"];
     [(CRVehicle *)v5 setPPID:v21];
   }
 
-  if ([v4 containsValueForKey:@"albumArtUserPreference"])
+  if ([coderCopy containsValueForKey:@"albumArtUserPreference"])
   {
-    -[CRVehicle setAlbumArtUserPreference:](v5, "setAlbumArtUserPreference:", [v4 decodeIntegerForKey:@"albumArtUserPreference"]);
+    -[CRVehicle setAlbumArtUserPreference:](v5, "setAlbumArtUserPreference:", [coderCopy decodeIntegerForKey:@"albumArtUserPreference"]);
   }
 
-  if ([v4 containsValueForKey:@"supportsUSBCarPlay"])
+  if ([coderCopy containsValueForKey:@"supportsUSBCarPlay"])
   {
-    v22 = [v4 decodeBoolForKey:@"supportsUSBCarPlay"];
+    v22 = [coderCopy decodeBoolForKey:@"supportsUSBCarPlay"];
   }
 
   else
   {
-    v23 = [(CRVehicle *)v5 bluetoothAddress];
+    bluetoothAddress = [(CRVehicle *)v5 bluetoothAddress];
 
-    if (v23)
+    if (bluetoothAddress)
     {
       goto LABEL_35;
     }
@@ -213,200 +213,200 @@
 
   [(CRVehicle *)v5 setSupportsUSBCarPlay:v22];
 LABEL_35:
-  if ([v4 containsValueForKey:@"supportsWirelessCarPlay"])
+  if ([coderCopy containsValueForKey:@"supportsWirelessCarPlay"])
   {
-    v24 = [v4 decodeBoolForKey:@"supportsWirelessCarPlay"];
+    v24 = [coderCopy decodeBoolForKey:@"supportsWirelessCarPlay"];
 LABEL_39:
     [(CRVehicle *)v5 setSupportsWirelessCarPlay:v24];
     goto LABEL_40;
   }
 
-  v25 = [(CRVehicle *)v5 bluetoothAddress];
+  bluetoothAddress2 = [(CRVehicle *)v5 bluetoothAddress];
 
-  if (v25)
+  if (bluetoothAddress2)
   {
     v24 = 1;
     goto LABEL_39;
   }
 
 LABEL_40:
-  if ([v4 containsValueForKey:@"wallpaperIdentifierUserPreference"])
+  if ([coderCopy containsValueForKey:@"wallpaperIdentifierUserPreference"])
   {
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"wallpaperIdentifierUserPreference"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"wallpaperIdentifierUserPreference"];
     [(CRVehicle *)v5 setWallpaperIdentifier:v26];
   }
 
-  if ([v4 containsValueForKey:@"previousWallpaperIdentifierUserPreference"])
+  if ([coderCopy containsValueForKey:@"previousWallpaperIdentifierUserPreference"])
   {
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"previousWallpaperIdentifierUserPreference"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"previousWallpaperIdentifierUserPreference"];
     [(CRVehicle *)v5 setPreviousWallpaperIdentifier:v27];
   }
 
-  if ([v4 containsValueForKey:@"displayScaleModeUserPreference"])
+  if ([coderCopy containsValueForKey:@"displayScaleModeUserPreference"])
   {
-    -[CRVehicle setDisplayScaleMode:](v5, "setDisplayScaleMode:", [v4 decodeIntegerForKey:@"displayScaleModeUserPreference"]);
+    -[CRVehicle setDisplayScaleMode:](v5, "setDisplayScaleMode:", [coderCopy decodeIntegerForKey:@"displayScaleModeUserPreference"]);
   }
 
-  if ([v4 containsValueForKey:@"appearanceModeUserPreference"])
+  if ([coderCopy containsValueForKey:@"appearanceModeUserPreference"])
   {
-    -[CRVehicle setAppearanceModePreference:](v5, "setAppearanceModePreference:", [v4 decodeIntegerForKey:@"appearanceModeUserPreference"]);
+    -[CRVehicle setAppearanceModePreference:](v5, "setAppearanceModePreference:", [coderCopy decodeIntegerForKey:@"appearanceModeUserPreference"]);
   }
 
-  if ([v4 containsValueForKey:@"mapsAppearancePreference"])
+  if ([coderCopy containsValueForKey:@"mapsAppearancePreference"])
   {
-    -[CRVehicle setMapsAppearancePreference:](v5, "setMapsAppearancePreference:", [v4 decodeIntegerForKey:@"mapsAppearancePreference"]);
+    -[CRVehicle setMapsAppearancePreference:](v5, "setMapsAppearancePreference:", [coderCopy decodeIntegerForKey:@"mapsAppearancePreference"]);
   }
 
-  if ([v4 containsValueForKey:@"colorFilterPreference"])
+  if ([coderCopy containsValueForKey:@"colorFilterPreference"])
   {
-    -[CRVehicle setColorFilterPreference:](v5, "setColorFilterPreference:", [v4 decodeIntegerForKey:@"colorFilterPreference"]);
+    -[CRVehicle setColorFilterPreference:](v5, "setColorFilterPreference:", [coderCopy decodeIntegerForKey:@"colorFilterPreference"]);
   }
 
-  if ([v4 containsValueForKey:@"colorFilterIntensityPreference"])
+  if ([coderCopy containsValueForKey:@"colorFilterIntensityPreference"])
   {
     v28 = objc_opt_class();
-    v29 = [v4 decodeDictionaryWithKeysOfClass:v28 objectsOfClass:objc_opt_class() forKey:@"colorFilterIntensityPreference"];
+    v29 = [coderCopy decodeDictionaryWithKeysOfClass:v28 objectsOfClass:objc_opt_class() forKey:@"colorFilterIntensityPreference"];
     [(CRVehicle *)v5 setColorFilterIntensityPreference:v29];
   }
 
-  if ([v4 containsValueForKey:@"boldTextPreference"])
+  if ([coderCopy containsValueForKey:@"boldTextPreference"])
   {
-    -[CRVehicle setBoldTextPreference:](v5, "setBoldTextPreference:", [v4 decodeIntegerForKey:@"boldTextPreference"]);
+    -[CRVehicle setBoldTextPreference:](v5, "setBoldTextPreference:", [coderCopy decodeIntegerForKey:@"boldTextPreference"]);
   }
 
-  if ([v4 containsValueForKey:@"soundRecognitionPreference"])
+  if ([coderCopy containsValueForKey:@"soundRecognitionPreference"])
   {
-    -[CRVehicle setSoundRecognitionPreference:](v5, "setSoundRecognitionPreference:", [v4 decodeIntegerForKey:@"soundRecognitionPreference"]);
+    -[CRVehicle setSoundRecognitionPreference:](v5, "setSoundRecognitionPreference:", [coderCopy decodeIntegerForKey:@"soundRecognitionPreference"]);
   }
 
-  if ([v4 containsValueForKey:@"voiceControlPreference"])
+  if ([coderCopy containsValueForKey:@"voiceControlPreference"])
   {
-    -[CRVehicle setVoiceControlPreference:](v5, "setVoiceControlPreference:", [v4 decodeIntegerForKey:@"voiceControlPreference"]);
+    -[CRVehicle setVoiceControlPreference:](v5, "setVoiceControlPreference:", [coderCopy decodeIntegerForKey:@"voiceControlPreference"]);
   }
 
-  if ([v4 containsValueForKey:@"textSizePreference"])
+  if ([coderCopy containsValueForKey:@"textSizePreference"])
   {
-    -[CRVehicle setTextSizePreference:](v5, "setTextSizePreference:", [v4 decodeIntegerForKey:@"textSizePreference"]);
+    -[CRVehicle setTextSizePreference:](v5, "setTextSizePreference:", [coderCopy decodeIntegerForKey:@"textSizePreference"]);
   }
 
-  if ([v4 containsValueForKey:@"disabledFeaturesPreference"])
+  if ([coderCopy containsValueForKey:@"disabledFeaturesPreference"])
   {
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"disabledFeaturesPreference"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"disabledFeaturesPreference"];
     [(CRVehicle *)v5 setDisabledFeaturesPreference:v30];
   }
 
-  if ([v4 containsValueForKey:@"supportsBluetoothLE"])
+  if ([coderCopy containsValueForKey:@"supportsBluetoothLE"])
   {
-    -[CRVehicle setSupportsBluetoothLE:](v5, "setSupportsBluetoothLE:", [v4 decodeBoolForKey:@"supportsBluetoothLE"]);
+    -[CRVehicle setSupportsBluetoothLE:](v5, "setSupportsBluetoothLE:", [coderCopy decodeBoolForKey:@"supportsBluetoothLE"]);
   }
 
-  if ([v4 containsValueForKey:@"supportsThemeAssets"])
+  if ([coderCopy containsValueForKey:@"supportsThemeAssets"])
   {
-    v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"supportsThemeAssets"];
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"supportsThemeAssets"];
     [(CRVehicle *)v5 setSupportsThemeAssets:v31];
   }
 
-  if ([v4 containsValueForKey:@"clusterAssetIdentifier"])
+  if ([coderCopy containsValueForKey:@"clusterAssetIdentifier"])
   {
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clusterAssetIdentifier"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clusterAssetIdentifier"];
     [(CRVehicle *)v5 setClusterAssetIdentifier:v32];
   }
 
-  if ([v4 containsValueForKey:@"clusterAssetiOSContentVersion"])
+  if ([coderCopy containsValueForKey:@"clusterAssetiOSContentVersion"])
   {
-    v33 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clusterAssetiOSContentVersion"];
+    v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clusterAssetiOSContentVersion"];
     [(CRVehicle *)v5 setClusterAssetiOSContentVersion:v33];
   }
 
-  if ([v4 containsValueForKey:@"clusterAssetVersion"])
+  if ([coderCopy containsValueForKey:@"clusterAssetVersion"])
   {
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clusterAssetVersion"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clusterAssetVersion"];
     [(CRVehicle *)v5 setClusterAssetVersion:v34];
   }
 
-  if ([v4 containsValueForKey:@"SDKVersion"])
+  if ([coderCopy containsValueForKey:@"SDKVersion"])
   {
-    v35 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SDKVersion"];
+    v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SDKVersion"];
     [(CRVehicle *)v5 setSDKVersion:v35];
   }
 
-  if ([v4 containsValueForKey:@"clusterAssetURL"])
+  if ([coderCopy containsValueForKey:@"clusterAssetURL"])
   {
-    v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clusterAssetURL"];
+    v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clusterAssetURL"];
     [(CRVehicle *)v5 setClusterAssetURL:v36];
   }
 
-  if ([v4 containsValueForKey:@"stagedClusterAssetiOSContentVersion"])
+  if ([coderCopy containsValueForKey:@"stagedClusterAssetiOSContentVersion"])
   {
-    v37 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stagedClusterAssetiOSContentVersion"];
+    v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stagedClusterAssetiOSContentVersion"];
     [(CRVehicle *)v5 setStagedClusterAssetiOSContentVersion:v37];
   }
 
-  if ([v4 containsValueForKey:@"stagedClusterAssetVersion"])
+  if ([coderCopy containsValueForKey:@"stagedClusterAssetVersion"])
   {
-    v38 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stagedClusterAssetVersion"];
+    v38 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stagedClusterAssetVersion"];
     [(CRVehicle *)v5 setStagedClusterAssetVersion:v38];
   }
 
-  if ([v4 containsValueForKey:@"stagedClusterAssetURL"])
+  if ([coderCopy containsValueForKey:@"stagedClusterAssetURL"])
   {
-    v39 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stagedClusterAssetURL"];
+    v39 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stagedClusterAssetURL"];
     [(CRVehicle *)v5 setStagedClusterAssetURL:v39];
   }
 
-  if ([v4 containsValueForKey:@"displayThemeData"])
+  if ([coderCopy containsValueForKey:@"displayThemeData"])
   {
     v40 = objc_opt_class();
-    v41 = [v4 decodeDictionaryWithKeysOfClass:v40 objectsOfClass:objc_opt_class() forKey:@"displayThemeData"];
+    v41 = [coderCopy decodeDictionaryWithKeysOfClass:v40 objectsOfClass:objc_opt_class() forKey:@"displayThemeData"];
     [(CRVehicle *)v5 setDisplayThemeData:v41];
   }
 
-  if ([v4 containsValueForKey:@"hasGaugeClusterScreen"])
+  if ([coderCopy containsValueForKey:@"hasGaugeClusterScreen"])
   {
-    v42 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hasGaugeClusterScreen"];
+    v42 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hasGaugeClusterScreen"];
     [(CRVehicle *)v5 setHasGaugeClusterScreen:v42];
   }
 
-  if ([v4 containsValueForKey:@"finishedWelcome"])
+  if ([coderCopy containsValueForKey:@"finishedWelcome"])
   {
-    v43 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"finishedWelcome"];
+    v43 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"finishedWelcome"];
     [(CRVehicle *)v5 setFinishedWelcome:v43];
   }
 
-  if ([v4 containsValueForKey:@"oemPunchThroughsAsApp"])
+  if ([coderCopy containsValueForKey:@"oemPunchThroughsAsApp"])
   {
     v44 = objc_opt_class();
-    v45 = [v4 decodeDictionaryWithKeysOfClass:v44 objectsOfClass:objc_opt_class() forKey:@"oemPunchThroughsAsApp"];
+    v45 = [coderCopy decodeDictionaryWithKeysOfClass:v44 objectsOfClass:objc_opt_class() forKey:@"oemPunchThroughsAsApp"];
     [(CRVehicle *)v5 setOemPunchThroughsAsApp:v45];
   }
 
-  if ([v4 containsValueForKey:@"internalNotes"])
+  if ([coderCopy containsValueForKey:@"internalNotes"])
   {
-    v46 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"internalNotes"];
+    v46 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"internalNotes"];
     [(CRVehicle *)v5 setInternalNotes:v46];
   }
 
-  if ([v4 containsValueForKey:@"isSiriBargeInDisabled"])
+  if ([coderCopy containsValueForKey:@"isSiriBargeInDisabled"])
   {
-    v47 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isSiriBargeInDisabled"];
+    v47 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isSiriBargeInDisabled"];
     -[CRVehicle setSiriBargeInDisabled:](v5, "setSiriBargeInDisabled:", [v47 BOOLValue]);
   }
 
-  if ([v4 containsValueForKey:@"supportsMixableAudio"])
+  if ([coderCopy containsValueForKey:@"supportsMixableAudio"])
   {
-    v48 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"supportsMixableAudio"];
+    v48 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"supportsMixableAudio"];
     -[CRVehicle setSupportsMixableAudio:](v5, "setSupportsMixableAudio:", [v48 BOOLValue]);
   }
 
-  if ([v4 containsValueForKey:@"homeScreenStyleData"])
+  if ([coderCopy containsValueForKey:@"homeScreenStyleData"])
   {
-    v49 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"homeScreenStyleData"];
+    v49 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"homeScreenStyleData"];
     [(CRVehicle *)v5 setHomeScreenStyleData:v49];
   }
 
-  if ([v4 containsValueForKey:@"viewAreas"])
+  if ([coderCopy containsValueForKey:@"viewAreas"])
   {
-    v50 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"viewAreas"];
+    v50 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"viewAreas"];
     [(CRVehicle *)v5 setViewAreas:v50];
   }
 
@@ -416,336 +416,336 @@ LABEL_102:
   return v51;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v70 = a3;
-  v4 = [(CRVehicle *)self identifier];
+  coderCopy = coder;
+  identifier = [(CRVehicle *)self identifier];
 
-  if (v4)
+  if (identifier)
   {
-    v5 = [(CRVehicle *)self identifier];
-    [v70 encodeObject:v5 forKey:@"identifier"];
+    identifier2 = [(CRVehicle *)self identifier];
+    [coderCopy encodeObject:identifier2 forKey:@"identifier"];
   }
 
-  v6 = [(CRVehicle *)self vehicleName];
+  vehicleName = [(CRVehicle *)self vehicleName];
 
-  if (v6)
+  if (vehicleName)
   {
-    v7 = [(CRVehicle *)self vehicleName];
-    [v70 encodeObject:v7 forKey:@"vehicleName"];
+    vehicleName2 = [(CRVehicle *)self vehicleName];
+    [coderCopy encodeObject:vehicleName2 forKey:@"vehicleName"];
   }
 
-  v8 = [(CRVehicle *)self certificateSerialNumber];
+  certificateSerialNumber = [(CRVehicle *)self certificateSerialNumber];
 
-  if (v8)
+  if (certificateSerialNumber)
   {
-    v9 = [(CRVehicle *)self certificateSerialNumber];
-    [v70 encodeObject:v9 forKey:@"certificateSerialNumber"];
+    certificateSerialNumber2 = [(CRVehicle *)self certificateSerialNumber];
+    [coderCopy encodeObject:certificateSerialNumber2 forKey:@"certificateSerialNumber"];
   }
 
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[CRVehicle pairingStatus](self, "pairingStatus")}];
-  [v70 encodeObject:v10 forKey:@"pairingStatus"];
+  [coderCopy encodeObject:v10 forKey:@"pairingStatus"];
 
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[CRVehicle enhancedIntegrationStatus](self, "enhancedIntegrationStatus")}];
-  [v70 encodeObject:v11 forKey:@"enhancedIntegration"];
+  [coderCopy encodeObject:v11 forKey:@"enhancedIntegration"];
 
   v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[CRVehicle supportsEnhancedIntegration](self, "supportsEnhancedIntegration")}];
-  [v70 encodeObject:v12 forKey:@"supportsEnhancedIntegration"];
+  [coderCopy encodeObject:v12 forKey:@"supportsEnhancedIntegration"];
 
-  v13 = [(CRVehicle *)self supportsStartSessionRequest];
+  supportsStartSessionRequest = [(CRVehicle *)self supportsStartSessionRequest];
 
-  if (v13)
+  if (supportsStartSessionRequest)
   {
-    v14 = [(CRVehicle *)self supportsStartSessionRequest];
-    [v70 encodeObject:v14 forKey:@"supportsStartSessionRequest"];
+    supportsStartSessionRequest2 = [(CRVehicle *)self supportsStartSessionRequest];
+    [coderCopy encodeObject:supportsStartSessionRequest2 forKey:@"supportsStartSessionRequest"];
   }
 
-  [v70 encodeInt:-[CRVehicle albumArtUserPreference](self forKey:{"albumArtUserPreference"), @"albumArtUserPreference"}];
-  [v70 encodeBool:-[CRVehicle supportsUSBCarPlay](self forKey:{"supportsUSBCarPlay"), @"supportsUSBCarPlay"}];
-  [v70 encodeBool:-[CRVehicle supportsWirelessCarPlay](self forKey:{"supportsWirelessCarPlay"), @"supportsWirelessCarPlay"}];
-  v15 = [(CRVehicle *)self bluetoothAddress];
+  [coderCopy encodeInt:-[CRVehicle albumArtUserPreference](self forKey:{"albumArtUserPreference"), @"albumArtUserPreference"}];
+  [coderCopy encodeBool:-[CRVehicle supportsUSBCarPlay](self forKey:{"supportsUSBCarPlay"), @"supportsUSBCarPlay"}];
+  [coderCopy encodeBool:-[CRVehicle supportsWirelessCarPlay](self forKey:{"supportsWirelessCarPlay"), @"supportsWirelessCarPlay"}];
+  bluetoothAddress = [(CRVehicle *)self bluetoothAddress];
 
-  if (v15)
+  if (bluetoothAddress)
   {
-    v16 = [(CRVehicle *)self bluetoothAddress];
-    [v70 encodeObject:v16 forKey:@"bluetoothAddress"];
+    bluetoothAddress2 = [(CRVehicle *)self bluetoothAddress];
+    [coderCopy encodeObject:bluetoothAddress2 forKey:@"bluetoothAddress"];
   }
 
-  v17 = [(CRVehicle *)self carplayWiFiUUID];
+  carplayWiFiUUID = [(CRVehicle *)self carplayWiFiUUID];
 
-  if (v17)
+  if (carplayWiFiUUID)
   {
-    v18 = [(CRVehicle *)self carplayWiFiUUID];
-    [v70 encodeObject:v18 forKey:@"carplayWiFiUUID"];
+    carplayWiFiUUID2 = [(CRVehicle *)self carplayWiFiUUID];
+    [coderCopy encodeObject:carplayWiFiUUID2 forKey:@"carplayWiFiUUID"];
   }
 
-  v19 = [(CRVehicle *)self accessoryProtocols];
+  accessoryProtocols = [(CRVehicle *)self accessoryProtocols];
 
-  if (v19)
+  if (accessoryProtocols)
   {
-    v20 = [(CRVehicle *)self accessoryProtocols];
-    [v70 encodeObject:v20 forKey:@"carplayProtocols"];
+    accessoryProtocols2 = [(CRVehicle *)self accessoryProtocols];
+    [coderCopy encodeObject:accessoryProtocols2 forKey:@"carplayProtocols"];
   }
 
-  v21 = [(CRVehicle *)self lastConnectedDate];
+  lastConnectedDate = [(CRVehicle *)self lastConnectedDate];
 
-  if (v21)
+  if (lastConnectedDate)
   {
-    v22 = [(CRVehicle *)self lastConnectedDate];
-    [v70 encodeObject:v22 forKey:@"lastConnectionTime"];
+    lastConnectedDate2 = [(CRVehicle *)self lastConnectedDate];
+    [coderCopy encodeObject:lastConnectedDate2 forKey:@"lastConnectionTime"];
   }
 
-  v23 = [(CRVehicle *)self vehicleModelName];
+  vehicleModelName = [(CRVehicle *)self vehicleModelName];
 
-  if (v23)
+  if (vehicleModelName)
   {
-    v24 = [(CRVehicle *)self vehicleModelName];
-    [v70 encodeObject:v24 forKey:@"vehicleModelName"];
+    vehicleModelName2 = [(CRVehicle *)self vehicleModelName];
+    [coderCopy encodeObject:vehicleModelName2 forKey:@"vehicleModelName"];
   }
 
-  v25 = [(CRVehicle *)self PPID];
+  pPID = [(CRVehicle *)self PPID];
 
-  if (v25)
+  if (pPID)
   {
-    v26 = [(CRVehicle *)self PPID];
-    [v70 encodeObject:v26 forKey:@"ppid"];
+    pPID2 = [(CRVehicle *)self PPID];
+    [coderCopy encodeObject:pPID2 forKey:@"ppid"];
   }
 
-  v27 = [(CRVehicle *)self wallpaperIdentifier];
+  wallpaperIdentifier = [(CRVehicle *)self wallpaperIdentifier];
 
-  if (v27)
+  if (wallpaperIdentifier)
   {
-    v28 = [(CRVehicle *)self wallpaperIdentifier];
-    [v70 encodeObject:v28 forKey:@"wallpaperIdentifierUserPreference"];
+    wallpaperIdentifier2 = [(CRVehicle *)self wallpaperIdentifier];
+    [coderCopy encodeObject:wallpaperIdentifier2 forKey:@"wallpaperIdentifierUserPreference"];
   }
 
-  v29 = [(CRVehicle *)self previousWallpaperIdentifier];
+  previousWallpaperIdentifier = [(CRVehicle *)self previousWallpaperIdentifier];
 
-  if (v29)
+  if (previousWallpaperIdentifier)
   {
-    v30 = [(CRVehicle *)self previousWallpaperIdentifier];
-    [v70 encodeObject:v30 forKey:@"previousWallpaperIdentifierUserPreference"];
+    previousWallpaperIdentifier2 = [(CRVehicle *)self previousWallpaperIdentifier];
+    [coderCopy encodeObject:previousWallpaperIdentifier2 forKey:@"previousWallpaperIdentifierUserPreference"];
   }
 
-  v31 = [(CRVehicle *)self colorFilterIntensityPreference];
+  colorFilterIntensityPreference = [(CRVehicle *)self colorFilterIntensityPreference];
 
-  if (v31)
+  if (colorFilterIntensityPreference)
   {
-    v32 = [(CRVehicle *)self colorFilterIntensityPreference];
-    [v70 encodeObject:v32 forKey:@"colorFilterIntensityPreference"];
+    colorFilterIntensityPreference2 = [(CRVehicle *)self colorFilterIntensityPreference];
+    [coderCopy encodeObject:colorFilterIntensityPreference2 forKey:@"colorFilterIntensityPreference"];
   }
 
-  [v70 encodeInteger:-[CRVehicle displayScaleMode](self forKey:{"displayScaleMode"), @"displayScaleModeUserPreference"}];
-  [v70 encodeInteger:-[CRVehicle appearanceModePreference](self forKey:{"appearanceModePreference"), @"appearanceModeUserPreference"}];
-  [v70 encodeInteger:-[CRVehicle mapsAppearancePreference](self forKey:{"mapsAppearancePreference"), @"mapsAppearancePreference"}];
-  [v70 encodeInteger:-[CRVehicle colorFilterPreference](self forKey:{"colorFilterPreference"), @"colorFilterPreference"}];
-  [v70 encodeInteger:-[CRVehicle boldTextPreference](self forKey:{"boldTextPreference"), @"boldTextPreference"}];
-  [v70 encodeInteger:-[CRVehicle soundRecognitionPreference](self forKey:{"soundRecognitionPreference"), @"soundRecognitionPreference"}];
-  [v70 encodeInteger:-[CRVehicle voiceControlPreference](self forKey:{"voiceControlPreference"), @"voiceControlPreference"}];
-  [v70 encodeInteger:-[CRVehicle textSizePreference](self forKey:{"textSizePreference"), @"textSizePreference"}];
-  v33 = [(CRVehicle *)self disabledFeaturesPreference];
+  [coderCopy encodeInteger:-[CRVehicle displayScaleMode](self forKey:{"displayScaleMode"), @"displayScaleModeUserPreference"}];
+  [coderCopy encodeInteger:-[CRVehicle appearanceModePreference](self forKey:{"appearanceModePreference"), @"appearanceModeUserPreference"}];
+  [coderCopy encodeInteger:-[CRVehicle mapsAppearancePreference](self forKey:{"mapsAppearancePreference"), @"mapsAppearancePreference"}];
+  [coderCopy encodeInteger:-[CRVehicle colorFilterPreference](self forKey:{"colorFilterPreference"), @"colorFilterPreference"}];
+  [coderCopy encodeInteger:-[CRVehicle boldTextPreference](self forKey:{"boldTextPreference"), @"boldTextPreference"}];
+  [coderCopy encodeInteger:-[CRVehicle soundRecognitionPreference](self forKey:{"soundRecognitionPreference"), @"soundRecognitionPreference"}];
+  [coderCopy encodeInteger:-[CRVehicle voiceControlPreference](self forKey:{"voiceControlPreference"), @"voiceControlPreference"}];
+  [coderCopy encodeInteger:-[CRVehicle textSizePreference](self forKey:{"textSizePreference"), @"textSizePreference"}];
+  disabledFeaturesPreference = [(CRVehicle *)self disabledFeaturesPreference];
 
-  if (v33)
+  if (disabledFeaturesPreference)
   {
-    v34 = [(CRVehicle *)self disabledFeaturesPreference];
-    [v70 encodeObject:v34 forKey:@"disabledFeaturesPreference"];
+    disabledFeaturesPreference2 = [(CRVehicle *)self disabledFeaturesPreference];
+    [coderCopy encodeObject:disabledFeaturesPreference2 forKey:@"disabledFeaturesPreference"];
   }
 
-  [v70 encodeBool:-[CRVehicle supportsBluetoothLE](self forKey:{"supportsBluetoothLE"), @"supportsBluetoothLE"}];
-  v35 = [(CRVehicle *)self supportsThemeAssets];
+  [coderCopy encodeBool:-[CRVehicle supportsBluetoothLE](self forKey:{"supportsBluetoothLE"), @"supportsBluetoothLE"}];
+  supportsThemeAssets = [(CRVehicle *)self supportsThemeAssets];
 
-  if (v35)
+  if (supportsThemeAssets)
   {
-    v36 = [(CRVehicle *)self supportsThemeAssets];
-    [v70 encodeObject:v36 forKey:@"supportsThemeAssets"];
+    supportsThemeAssets2 = [(CRVehicle *)self supportsThemeAssets];
+    [coderCopy encodeObject:supportsThemeAssets2 forKey:@"supportsThemeAssets"];
   }
 
-  v37 = [(CRVehicle *)self clusterAssetIdentifier];
+  clusterAssetIdentifier = [(CRVehicle *)self clusterAssetIdentifier];
 
-  if (v37)
+  if (clusterAssetIdentifier)
   {
-    v38 = [(CRVehicle *)self clusterAssetIdentifier];
-    [v70 encodeObject:v38 forKey:@"clusterAssetIdentifier"];
+    clusterAssetIdentifier2 = [(CRVehicle *)self clusterAssetIdentifier];
+    [coderCopy encodeObject:clusterAssetIdentifier2 forKey:@"clusterAssetIdentifier"];
   }
 
-  v39 = [(CRVehicle *)self clusterAssetiOSContentVersion];
+  clusterAssetiOSContentVersion = [(CRVehicle *)self clusterAssetiOSContentVersion];
 
-  if (v39)
+  if (clusterAssetiOSContentVersion)
   {
-    v40 = [(CRVehicle *)self clusterAssetiOSContentVersion];
-    [v70 encodeObject:v40 forKey:@"clusterAssetiOSContentVersion"];
+    clusterAssetiOSContentVersion2 = [(CRVehicle *)self clusterAssetiOSContentVersion];
+    [coderCopy encodeObject:clusterAssetiOSContentVersion2 forKey:@"clusterAssetiOSContentVersion"];
   }
 
-  v41 = [(CRVehicle *)self clusterAssetVersion];
+  clusterAssetVersion = [(CRVehicle *)self clusterAssetVersion];
 
-  if (v41)
+  if (clusterAssetVersion)
   {
-    v42 = [(CRVehicle *)self clusterAssetVersion];
-    [v70 encodeObject:v42 forKey:@"clusterAssetVersion"];
+    clusterAssetVersion2 = [(CRVehicle *)self clusterAssetVersion];
+    [coderCopy encodeObject:clusterAssetVersion2 forKey:@"clusterAssetVersion"];
   }
 
-  v43 = [(CRVehicle *)self SDKVersion];
+  sDKVersion = [(CRVehicle *)self SDKVersion];
 
-  if (v43)
+  if (sDKVersion)
   {
-    v44 = [(CRVehicle *)self SDKVersion];
-    [v70 encodeObject:v44 forKey:@"SDKVersion"];
+    sDKVersion2 = [(CRVehicle *)self SDKVersion];
+    [coderCopy encodeObject:sDKVersion2 forKey:@"SDKVersion"];
   }
 
-  v45 = [(CRVehicle *)self clusterAssetURL];
+  clusterAssetURL = [(CRVehicle *)self clusterAssetURL];
 
-  if (v45)
+  if (clusterAssetURL)
   {
-    v46 = [(CRVehicle *)self clusterAssetURL];
-    [v70 encodeObject:v46 forKey:@"clusterAssetURL"];
+    clusterAssetURL2 = [(CRVehicle *)self clusterAssetURL];
+    [coderCopy encodeObject:clusterAssetURL2 forKey:@"clusterAssetURL"];
   }
 
-  v47 = [(CRVehicle *)self stagedClusterAssetiOSContentVersion];
+  stagedClusterAssetiOSContentVersion = [(CRVehicle *)self stagedClusterAssetiOSContentVersion];
 
-  if (v47)
+  if (stagedClusterAssetiOSContentVersion)
   {
-    v48 = [(CRVehicle *)self stagedClusterAssetiOSContentVersion];
-    [v70 encodeObject:v48 forKey:@"stagedClusterAssetiOSContentVersion"];
+    stagedClusterAssetiOSContentVersion2 = [(CRVehicle *)self stagedClusterAssetiOSContentVersion];
+    [coderCopy encodeObject:stagedClusterAssetiOSContentVersion2 forKey:@"stagedClusterAssetiOSContentVersion"];
   }
 
-  v49 = [(CRVehicle *)self stagedClusterAssetVersion];
+  stagedClusterAssetVersion = [(CRVehicle *)self stagedClusterAssetVersion];
 
-  if (v49)
+  if (stagedClusterAssetVersion)
   {
-    v50 = [(CRVehicle *)self stagedClusterAssetVersion];
-    [v70 encodeObject:v50 forKey:@"stagedClusterAssetVersion"];
+    stagedClusterAssetVersion2 = [(CRVehicle *)self stagedClusterAssetVersion];
+    [coderCopy encodeObject:stagedClusterAssetVersion2 forKey:@"stagedClusterAssetVersion"];
   }
 
-  v51 = [(CRVehicle *)self stagedClusterAssetURL];
+  stagedClusterAssetURL = [(CRVehicle *)self stagedClusterAssetURL];
 
-  if (v51)
+  if (stagedClusterAssetURL)
   {
-    v52 = [(CRVehicle *)self stagedClusterAssetURL];
-    [v70 encodeObject:v52 forKey:@"stagedClusterAssetURL"];
+    stagedClusterAssetURL2 = [(CRVehicle *)self stagedClusterAssetURL];
+    [coderCopy encodeObject:stagedClusterAssetURL2 forKey:@"stagedClusterAssetURL"];
   }
 
-  v53 = [(CRVehicle *)self displayThemeData];
+  displayThemeData = [(CRVehicle *)self displayThemeData];
 
-  if (v53)
+  if (displayThemeData)
   {
-    v54 = [(CRVehicle *)self displayThemeData];
-    [v70 encodeObject:v54 forKey:@"displayThemeData"];
+    displayThemeData2 = [(CRVehicle *)self displayThemeData];
+    [coderCopy encodeObject:displayThemeData2 forKey:@"displayThemeData"];
   }
 
-  v55 = [(CRVehicle *)self hasGaugeClusterScreen];
+  hasGaugeClusterScreen = [(CRVehicle *)self hasGaugeClusterScreen];
 
-  if (v55)
+  if (hasGaugeClusterScreen)
   {
-    v56 = [(CRVehicle *)self hasGaugeClusterScreen];
-    [v70 encodeObject:v56 forKey:@"hasGaugeClusterScreen"];
+    hasGaugeClusterScreen2 = [(CRVehicle *)self hasGaugeClusterScreen];
+    [coderCopy encodeObject:hasGaugeClusterScreen2 forKey:@"hasGaugeClusterScreen"];
   }
 
-  v57 = [(CRVehicle *)self finishedWelcome];
+  finishedWelcome = [(CRVehicle *)self finishedWelcome];
 
-  if (v57)
+  if (finishedWelcome)
   {
-    v58 = [(CRVehicle *)self finishedWelcome];
-    [v70 encodeObject:v58 forKey:@"finishedWelcome"];
+    finishedWelcome2 = [(CRVehicle *)self finishedWelcome];
+    [coderCopy encodeObject:finishedWelcome2 forKey:@"finishedWelcome"];
   }
 
-  v59 = [(CRVehicle *)self oemPunchThroughsAsApp];
+  oemPunchThroughsAsApp = [(CRVehicle *)self oemPunchThroughsAsApp];
 
-  if (v59)
+  if (oemPunchThroughsAsApp)
   {
-    v60 = [(CRVehicle *)self oemPunchThroughsAsApp];
-    [v70 encodeObject:v60 forKey:@"oemPunchThroughsAsApp"];
+    oemPunchThroughsAsApp2 = [(CRVehicle *)self oemPunchThroughsAsApp];
+    [coderCopy encodeObject:oemPunchThroughsAsApp2 forKey:@"oemPunchThroughsAsApp"];
   }
 
-  v61 = [(CRVehicle *)self internalNotes];
+  internalNotes = [(CRVehicle *)self internalNotes];
 
-  if (v61)
+  if (internalNotes)
   {
-    v62 = [(CRVehicle *)self internalNotes];
-    [v70 encodeObject:v62 forKey:@"internalNotes"];
+    internalNotes2 = [(CRVehicle *)self internalNotes];
+    [coderCopy encodeObject:internalNotes2 forKey:@"internalNotes"];
   }
 
   if ([(CRVehicle *)self isSiriBargeInDisabled])
   {
     v63 = [MEMORY[0x1E696AD98] numberWithBool:{-[CRVehicle isSiriBargeInDisabled](self, "isSiriBargeInDisabled")}];
-    [v70 encodeObject:v63 forKey:@"isSiriBargeInDisabled"];
+    [coderCopy encodeObject:v63 forKey:@"isSiriBargeInDisabled"];
   }
 
   if ([(CRVehicle *)self supportsMixableAudio])
   {
     v64 = [MEMORY[0x1E696AD98] numberWithBool:{-[CRVehicle supportsMixableAudio](self, "supportsMixableAudio")}];
-    [v70 encodeObject:v64 forKey:@"supportsMixableAudio"];
+    [coderCopy encodeObject:v64 forKey:@"supportsMixableAudio"];
   }
 
-  v65 = [(CRVehicle *)self homeScreenStyleData];
+  homeScreenStyleData = [(CRVehicle *)self homeScreenStyleData];
 
-  if (v65)
+  if (homeScreenStyleData)
   {
-    v66 = [(CRVehicle *)self homeScreenStyleData];
-    [v70 encodeObject:v66 forKey:@"homeScreenStyleData"];
+    homeScreenStyleData2 = [(CRVehicle *)self homeScreenStyleData];
+    [coderCopy encodeObject:homeScreenStyleData2 forKey:@"homeScreenStyleData"];
   }
 
-  v67 = [(CRVehicle *)self viewAreas];
+  viewAreas = [(CRVehicle *)self viewAreas];
 
-  v68 = v70;
-  if (v67)
+  v68 = coderCopy;
+  if (viewAreas)
   {
-    v69 = [(CRVehicle *)self viewAreas];
-    [v70 encodeObject:v69 forKey:@"viewAreas"];
+    viewAreas2 = [(CRVehicle *)self viewAreas];
+    [coderCopy encodeObject:viewAreas2 forKey:@"viewAreas"];
 
-    v68 = v70;
+    v68 = coderCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [CRVehicle allocWithZone:?];
-  v6 = [(NSUUID *)self->_identifier copyWithZone:a3];
-  v7 = [(NSData *)self->_certificateSerialNumber copyWithZone:a3];
+  v6 = [(NSUUID *)self->_identifier copyWithZone:zone];
+  v7 = [(NSData *)self->_certificateSerialNumber copyWithZone:zone];
   v8 = [(CRVehicle *)v5 initWithIdentifier:v6 certificateSerial:v7];
 
-  v9 = [(NSString *)self->_vehicleName copyWithZone:a3];
+  v9 = [(NSString *)self->_vehicleName copyWithZone:zone];
   v10 = *(v8 + 24);
   *(v8 + 24) = v9;
 
   *(v8 + 192) = self->_pairingStatus;
   *(v8 + 40) = self->_enhancedIntegrationStatus;
   *(v8 + 8) = self->_supportsEnhancedIntegration;
-  v11 = [(NSNumber *)self->_supportsStartSessionRequest copyWithZone:a3];
+  v11 = [(NSNumber *)self->_supportsStartSessionRequest copyWithZone:zone];
   v12 = *(v8 + 248);
   *(v8 + 248) = v11;
 
   *(v8 + 264) = self->_albumArtUserPreference;
   *(v8 + 9) = self->_supportsUSBCarPlay;
   *(v8 + 10) = self->_supportsWirelessCarPlay;
-  v13 = [(NSString *)self->_bluetoothAddress copyWithZone:a3];
+  v13 = [(NSString *)self->_bluetoothAddress copyWithZone:zone];
   v14 = *(v8 + 200);
   *(v8 + 200) = v13;
 
-  v15 = [(NSString *)self->_carplayWiFiUUID copyWithZone:a3];
+  v15 = [(NSString *)self->_carplayWiFiUUID copyWithZone:zone];
   v16 = *(v8 + 208);
   *(v8 + 208) = v15;
 
-  v17 = [(NSSet *)self->_accessoryProtocols copyWithZone:a3];
+  v17 = [(NSSet *)self->_accessoryProtocols copyWithZone:zone];
   v18 = *(v8 + 32);
   *(v8 + 32) = v17;
 
-  v19 = [(NSDate *)self->_lastConnectedDate copyWithZone:a3];
+  v19 = [(NSDate *)self->_lastConnectedDate copyWithZone:zone];
   v20 = *(v8 + 216);
   *(v8 + 216) = v19;
 
-  v21 = [(NSString *)self->_vehicleModelName copyWithZone:a3];
+  v21 = [(NSString *)self->_vehicleModelName copyWithZone:zone];
   v22 = *(v8 + 224);
   *(v8 + 224) = v21;
 
-  v23 = [(NSString *)self->_PPID copyWithZone:a3];
+  v23 = [(NSString *)self->_PPID copyWithZone:zone];
   v24 = *(v8 + 232);
   *(v8 + 232) = v23;
 
-  v25 = [(NSString *)self->_wallpaperIdentifier copyWithZone:a3];
+  v25 = [(NSString *)self->_wallpaperIdentifier copyWithZone:zone];
   v26 = *(v8 + 272);
   *(v8 + 272) = v25;
 
-  v27 = [(NSString *)self->_previousWallpaperIdentifier copyWithZone:a3];
+  v27 = [(NSString *)self->_previousWallpaperIdentifier copyWithZone:zone];
   v28 = *(v8 + 280);
   *(v8 + 280) = v27;
 
@@ -753,7 +753,7 @@ LABEL_102:
   *(v8 + 296) = self->_appearanceModePreference;
   *(v8 + 304) = self->_mapsAppearancePreference;
   *(v8 + 312) = self->_colorFilterPreference;
-  v29 = [(NSDictionary *)self->_colorFilterIntensityPreference copyWithZone:a3];
+  v29 = [(NSDictionary *)self->_colorFilterIntensityPreference copyWithZone:zone];
   v30 = *(v8 + 320);
   *(v8 + 320) = v29;
 
@@ -761,129 +761,129 @@ LABEL_102:
   *(v8 + 336) = self->_soundRecognitionPreference;
   *(v8 + 344) = self->_voiceControlPreference;
   *(v8 + 352) = self->_textSizePreference;
-  v31 = [(NSNumber *)self->_disabledFeaturesPreference copyWithZone:a3];
+  v31 = [(NSNumber *)self->_disabledFeaturesPreference copyWithZone:zone];
   v32 = *(v8 + 256);
   *(v8 + 256) = v31;
 
   *(v8 + 11) = self->_supportsBluetoothLE;
-  v33 = [(NSNumber *)self->_supportsThemeAssets copyWithZone:a3];
+  v33 = [(NSNumber *)self->_supportsThemeAssets copyWithZone:zone];
   v34 = *(v8 + 48);
   *(v8 + 48) = v33;
 
-  v35 = [(NSString *)self->_clusterAssetiOSContentVersion copyWithZone:a3];
+  v35 = [(NSString *)self->_clusterAssetiOSContentVersion copyWithZone:zone];
   v36 = *(v8 + 64);
   *(v8 + 64) = v35;
 
-  v37 = [(NSString *)self->_clusterAssetIdentifier copyWithZone:a3];
+  v37 = [(NSString *)self->_clusterAssetIdentifier copyWithZone:zone];
   v38 = *(v8 + 56);
   *(v8 + 56) = v37;
 
-  v39 = [(NSNumber *)self->_clusterAssetVersion copyWithZone:a3];
+  v39 = [(NSNumber *)self->_clusterAssetVersion copyWithZone:zone];
   v40 = *(v8 + 72);
   *(v8 + 72) = v39;
 
-  v41 = [(NSString *)self->_SDKVersion copyWithZone:a3];
+  v41 = [(NSString *)self->_SDKVersion copyWithZone:zone];
   v42 = *(v8 + 80);
   *(v8 + 80) = v41;
 
-  v43 = [(NSURL *)self->_clusterAssetURL copyWithZone:a3];
+  v43 = [(NSURL *)self->_clusterAssetURL copyWithZone:zone];
   v44 = *(v8 + 88);
   *(v8 + 88) = v43;
 
-  v45 = [(NSString *)self->_stagedClusterAssetiOSContentVersion copyWithZone:a3];
+  v45 = [(NSString *)self->_stagedClusterAssetiOSContentVersion copyWithZone:zone];
   v46 = *(v8 + 96);
   *(v8 + 96) = v45;
 
-  v47 = [(NSNumber *)self->_stagedClusterAssetVersion copyWithZone:a3];
+  v47 = [(NSNumber *)self->_stagedClusterAssetVersion copyWithZone:zone];
   v48 = *(v8 + 104);
   *(v8 + 104) = v47;
 
-  v49 = [(NSURL *)self->_stagedClusterAssetURL copyWithZone:a3];
+  v49 = [(NSURL *)self->_stagedClusterAssetURL copyWithZone:zone];
   v50 = *(v8 + 112);
   *(v8 + 112) = v49;
 
-  v51 = [(NSDictionary *)self->_displayThemeData copyWithZone:a3];
+  v51 = [(NSDictionary *)self->_displayThemeData copyWithZone:zone];
   v52 = *(v8 + 120);
   *(v8 + 120) = v51;
 
-  v53 = [(NSNumber *)self->_hasGaugeClusterScreen copyWithZone:a3];
+  v53 = [(NSNumber *)self->_hasGaugeClusterScreen copyWithZone:zone];
   v54 = *(v8 + 128);
   *(v8 + 128) = v53;
 
-  v55 = [(NSNumber *)self->_finishedWelcome copyWithZone:a3];
+  v55 = [(NSNumber *)self->_finishedWelcome copyWithZone:zone];
   v56 = *(v8 + 136);
   *(v8 + 136) = v55;
 
-  v57 = [(NSDictionary *)self->_oemPunchThroughsAsApp copyWithZone:a3];
+  v57 = [(NSDictionary *)self->_oemPunchThroughsAsApp copyWithZone:zone];
   v58 = *(v8 + 152);
   *(v8 + 152) = v57;
 
-  v59 = [(NSString *)self->_internalNotes copyWithZone:a3];
+  v59 = [(NSString *)self->_internalNotes copyWithZone:zone];
   v60 = *(v8 + 240);
   *(v8 + 240) = v59;
 
   *(v8 + 12) = self->_siriBargeInDisabled;
   *(v8 + 13) = self->_supportsMixableAudio;
-  v61 = [(NSArray *)self->_viewAreas copyWithZone:a3];
+  v61 = [(NSArray *)self->_viewAreas copyWithZone:zone];
   v62 = *(v8 + 160);
   *(v8 + 160) = v61;
 
-  v63 = [(CRHomeScreenStyleData *)self->_homeScreenStyleData copyWithZone:a3];
+  v63 = [(CRHomeScreenStyleData *)self->_homeScreenStyleData copyWithZone:zone];
   v64 = *(v8 + 144);
   *(v8 + 144) = v63;
 
-  v65 = [(CRSubtitleSettings *)self->_subtitleSettings copyWithZone:a3];
+  v65 = [(CRSubtitleSettings *)self->_subtitleSettings copyWithZone:zone];
   v66 = *(v8 + 168);
   *(v8 + 168) = v65;
 
-  v67 = [(NSNumber *)self->_videoDiagnosticsEnabled copyWithZone:a3];
+  v67 = [(NSNumber *)self->_videoDiagnosticsEnabled copyWithZone:zone];
   v68 = *(v8 + 176);
   *(v8 + 176) = v67;
 
   return v8;
 }
 
-+ (id)vehicleForMessagingVehicle:(id)a3
++ (id)vehicleForMessagingVehicle:(id)vehicle
 {
-  v3 = a3;
-  v4 = [v3 certificateSerialNumber];
-  if (v4)
+  vehicleCopy = vehicle;
+  certificateSerialNumber = [vehicleCopy certificateSerialNumber];
+  if (certificateSerialNumber)
   {
     v5 = [CRVehicle alloc];
-    v6 = [MEMORY[0x1E696AFB0] UUID];
-    v7 = [(CRVehicle *)v5 initWithIdentifier:v6 certificateSerial:v4];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    v7 = [(CRVehicle *)v5 initWithIdentifier:uUID certificateSerial:certificateSerialNumber];
 
-    v8 = [v3 vehicleName];
-    [(CRVehicle *)v7 setVehicleName:v8];
+    vehicleName = [vehicleCopy vehicleName];
+    [(CRVehicle *)v7 setVehicleName:vehicleName];
 
-    v9 = [v3 bluetoothAddress];
-    [(CRVehicle *)v7 setBluetoothAddress:v9];
+    bluetoothAddress = [vehicleCopy bluetoothAddress];
+    [(CRVehicle *)v7 setBluetoothAddress:bluetoothAddress];
 
     v10 = MEMORY[0x1E695DFD8];
-    v11 = [v3 accessoryProtocols];
-    v12 = [v10 setWithArray:v11];
+    accessoryProtocols = [vehicleCopy accessoryProtocols];
+    v12 = [v10 setWithArray:accessoryProtocols];
     [(CRVehicle *)v7 setAccessoryProtocols:v12];
 
-    -[CRVehicle setSupportsEnhancedIntegration:](v7, "setSupportsEnhancedIntegration:", [v3 supportsEnhancedIntegration]);
-    if ([v3 transportType] != 3)
+    -[CRVehicle setSupportsEnhancedIntegration:](v7, "setSupportsEnhancedIntegration:", [vehicleCopy supportsEnhancedIntegration]);
+    if ([vehicleCopy transportType] != 3)
     {
-      v13 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "supportsCarPlayConnectionRequest")}];
+      v13 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(vehicleCopy, "supportsCarPlayConnectionRequest")}];
       [(CRVehicle *)v7 setSupportsStartSessionRequest:v13];
     }
 
-    -[CRVehicle setSupportsBluetoothLE:](v7, "setSupportsBluetoothLE:", [v3 supportsBluetoothLE]);
-    v14 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "supportsThemeAssets")}];
+    -[CRVehicle setSupportsBluetoothLE:](v7, "setSupportsBluetoothLE:", [vehicleCopy supportsBluetoothLE]);
+    v14 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(vehicleCopy, "supportsThemeAssets")}];
     [(CRVehicle *)v7 setSupportsThemeAssets:v14];
 
-    -[CRVehicle setSupportsUSBCarPlay:](v7, "setSupportsUSBCarPlay:", [v3 supportsUSBCarPlay]);
-    -[CRVehicle setSupportsWirelessCarPlay:](v7, "setSupportsWirelessCarPlay:", [v3 supportsWirelessCarPlay]);
-    v15 = [v3 PPID];
-    [(CRVehicle *)v7 setPPID:v15];
+    -[CRVehicle setSupportsUSBCarPlay:](v7, "setSupportsUSBCarPlay:", [vehicleCopy supportsUSBCarPlay]);
+    -[CRVehicle setSupportsWirelessCarPlay:](v7, "setSupportsWirelessCarPlay:", [vehicleCopy supportsWirelessCarPlay]);
+    pPID = [vehicleCopy PPID];
+    [(CRVehicle *)v7 setPPID:pPID];
 
     if (CRIsInternalInstall())
     {
-      v16 = [MEMORY[0x1E695DF00] date];
-      [(CRVehicle *)v7 setLastConnectedDate:v16];
+      date = [MEMORY[0x1E695DF00] date];
+      [(CRVehicle *)v7 setLastConnectedDate:date];
     }
   }
 
@@ -897,28 +897,28 @@ LABEL_102:
 
 - (id)_pairingDebugDescription
 {
-  v2 = [(CRVehicle *)self pairingStatus];
-  if (v2 > 2)
+  pairingStatus = [(CRVehicle *)self pairingStatus];
+  if (pairingStatus > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_1E82FC8D8[v2];
+    return off_1E82FC8D8[pairingStatus];
   }
 }
 
 - (id)_enhancedIntegrationDebugDescription
 {
-  v2 = [(CRVehicle *)self enhancedIntegrationStatus];
+  enhancedIntegrationStatus = [(CRVehicle *)self enhancedIntegrationStatus];
   v3 = @"unknown";
-  if (v2 == 1)
+  if (enhancedIntegrationStatus == 1)
   {
     v3 = @"declined";
   }
 
-  if (v2 == 2)
+  if (enhancedIntegrationStatus == 2)
   {
     return @"accepted";
   }
@@ -929,15 +929,15 @@ LABEL_102:
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(CRVehicle *)self identifier];
-    v6 = [v4 identifier];
-    v7 = [v5 isEqual:v6];
+    identifier = [(CRVehicle *)self identifier];
+    identifier2 = [equalCopy identifier];
+    v7 = [identifier isEqual:identifier2];
   }
 
   else
@@ -951,24 +951,24 @@ LABEL_102:
 - (id)description
 {
   v33 = MEMORY[0x1E696AEC0];
-  v3 = [(CRVehicle *)self vehicleName];
+  vehicleName = [(CRVehicle *)self vehicleName];
   v4 = @"<unnamed>";
-  v37 = v3;
-  if (v3)
+  v37 = vehicleName;
+  if (vehicleName)
   {
-    v4 = v3;
+    v4 = vehicleName;
   }
 
   v31 = v4;
-  v36 = [(CRVehicle *)self identifier];
-  v5 = [v36 UUIDString];
-  v6 = [(CRVehicle *)self PPID];
-  v38 = [(CRVehicle *)self _pairingDebugDescription];
-  v35 = [(CRVehicle *)self supportsStartSessionRequest];
-  if (v35)
+  identifier = [(CRVehicle *)self identifier];
+  uUIDString = [identifier UUIDString];
+  pPID = [(CRVehicle *)self PPID];
+  _pairingDebugDescription = [(CRVehicle *)self _pairingDebugDescription];
+  supportsStartSessionRequest = [(CRVehicle *)self supportsStartSessionRequest];
+  if (supportsStartSessionRequest)
   {
-    v22 = [(CRVehicle *)self supportsStartSessionRequest];
-    if ([v22 BOOLValue])
+    supportsStartSessionRequest2 = [(CRVehicle *)self supportsStartSessionRequest];
+    if ([supportsStartSessionRequest2 BOOLValue])
     {
       v7 = @"YES";
     }
@@ -986,13 +986,13 @@ LABEL_102:
     v30 = @"unset";
   }
 
-  v32 = [(CRVehicle *)self supportsThemeAssets];
-  v39 = v6;
-  v40 = v5;
-  if (v32)
+  supportsThemeAssets = [(CRVehicle *)self supportsThemeAssets];
+  v39 = pPID;
+  v40 = uUIDString;
+  if (supportsThemeAssets)
   {
-    v21 = [(CRVehicle *)self supportsThemeAssets];
-    if ([v21 BOOLValue])
+    supportsThemeAssets2 = [(CRVehicle *)self supportsThemeAssets];
+    if ([supportsThemeAssets2 BOOLValue])
     {
       v8 = @"YES";
     }
@@ -1010,11 +1010,11 @@ LABEL_102:
     v29 = @"unset";
   }
 
-  v28 = [(CRVehicle *)self clusterAssetIdentifier];
-  v9 = [(CRVehicle *)self clusterAssetiOSContentVersion];
-  v27 = [(CRVehicle *)self clusterAssetVersion];
-  v26 = [(CRVehicle *)self _enhancedIntegrationDebugDescription];
-  v10 = [(CRVehicle *)self disabledFeaturesPreference];
+  clusterAssetIdentifier = [(CRVehicle *)self clusterAssetIdentifier];
+  clusterAssetiOSContentVersion = [(CRVehicle *)self clusterAssetiOSContentVersion];
+  clusterAssetVersion = [(CRVehicle *)self clusterAssetVersion];
+  _enhancedIntegrationDebugDescription = [(CRVehicle *)self _enhancedIntegrationDebugDescription];
+  disabledFeaturesPreference = [(CRVehicle *)self disabledFeaturesPreference];
   if ([(CRVehicle *)self isSiriBargeInDisabled])
   {
     v11 = @"YES";
@@ -1038,324 +1038,324 @@ LABEL_102:
 
   v24 = v12;
   v23 = [MEMORY[0x1E696AD98] numberWithInteger:{-[CRVehicle albumArtUserPreference](self, "albumArtUserPreference")}];
-  v13 = [(CRVehicle *)self bluetoothAddress];
-  v14 = [(CRVehicle *)self carplayWiFiUUID];
-  v15 = [(CRVehicle *)self accessoryProtocols];
-  v16 = [(CRVehicle *)self lastConnectedDate];
-  v17 = [(CRVehicle *)self vehicleModelName];
-  v18 = [(CRVehicle *)self homeScreenStyleData];
-  v19 = [(CRVehicle *)self viewAreas];
-  v34 = [v33 stringWithFormat:@"%@ (identifier: %@, PPID: %@, pairing: %@, startSessionRequest: %@, cluster{supported: %@ id: %@ versions{ %@, %@}, enhancedIntegration: %@, disabledFeatures: %@, isSiriBargeInDisabled: %@, supportsMixableAudio: %@, albumArtUserPreference: %@, %@: %@, %@: %@, %@: %@, %@: %@, %@: %@, %@: %@, %@: %@)", v31, v40, v39, v38, v30, v29, v28, v9, v27, v26, v10, v25, v24, v23, @"bluetoothAddress", v13, @"carplayWiFiUUID", v14, @"carplayProtocols", v15, @"lastConnectionTime", v16, @"vehicleModelName", v17, @"homeScreenStyleData", v18, @"viewAreas", v19];
+  bluetoothAddress = [(CRVehicle *)self bluetoothAddress];
+  carplayWiFiUUID = [(CRVehicle *)self carplayWiFiUUID];
+  accessoryProtocols = [(CRVehicle *)self accessoryProtocols];
+  lastConnectedDate = [(CRVehicle *)self lastConnectedDate];
+  vehicleModelName = [(CRVehicle *)self vehicleModelName];
+  homeScreenStyleData = [(CRVehicle *)self homeScreenStyleData];
+  viewAreas = [(CRVehicle *)self viewAreas];
+  v34 = [v33 stringWithFormat:@"%@ (identifier: %@, PPID: %@, pairing: %@, startSessionRequest: %@, cluster{supported: %@ id: %@ versions{ %@, %@}, enhancedIntegration: %@, disabledFeatures: %@, isSiriBargeInDisabled: %@, supportsMixableAudio: %@, albumArtUserPreference: %@, %@: %@, %@: %@, %@: %@, %@: %@, %@: %@, %@: %@, %@: %@)", v31, v40, v39, _pairingDebugDescription, v30, v29, clusterAssetIdentifier, clusterAssetiOSContentVersion, clusterAssetVersion, _enhancedIntegrationDebugDescription, disabledFeaturesPreference, v25, v24, v23, @"bluetoothAddress", bluetoothAddress, @"carplayWiFiUUID", carplayWiFiUUID, @"carplayProtocols", accessoryProtocols, @"lastConnectionTime", lastConnectedDate, @"vehicleModelName", vehicleModelName, @"homeScreenStyleData", homeScreenStyleData, @"viewAreas", viewAreas];
 
-  if (v32)
+  if (supportsThemeAssets)
   {
   }
 
-  if (v35)
+  if (supportsStartSessionRequest)
   {
   }
 
   return v34;
 }
 
-- (void)mergeAttributesFromVehicle:(id)a3
+- (void)mergeAttributesFromVehicle:(id)vehicle
 {
-  v65 = a3;
-  v4 = [v65 certificateSerialNumber];
+  vehicleCopy = vehicle;
+  certificateSerialNumber = [vehicleCopy certificateSerialNumber];
 
-  if (v4)
+  if (certificateSerialNumber)
   {
-    v5 = [v65 certificateSerialNumber];
-    [(CRVehicle *)self setCertificateSerialNumber:v5];
+    certificateSerialNumber2 = [vehicleCopy certificateSerialNumber];
+    [(CRVehicle *)self setCertificateSerialNumber:certificateSerialNumber2];
   }
 
-  v6 = [v65 vehicleName];
+  vehicleName = [vehicleCopy vehicleName];
 
-  if (v6)
+  if (vehicleName)
   {
-    v7 = [v65 vehicleName];
-    [(CRVehicle *)self setVehicleName:v7];
+    vehicleName2 = [vehicleCopy vehicleName];
+    [(CRVehicle *)self setVehicleName:vehicleName2];
   }
 
-  if ([v65 pairingStatus])
+  if ([vehicleCopy pairingStatus])
   {
-    -[CRVehicle setPairingStatus:](self, "setPairingStatus:", [v65 pairingStatus]);
+    -[CRVehicle setPairingStatus:](self, "setPairingStatus:", [vehicleCopy pairingStatus]);
   }
 
-  if ([v65 enhancedIntegrationStatus])
+  if ([vehicleCopy enhancedIntegrationStatus])
   {
-    -[CRVehicle setEnhancedIntegrationStatus:](self, "setEnhancedIntegrationStatus:", [v65 enhancedIntegrationStatus]);
+    -[CRVehicle setEnhancedIntegrationStatus:](self, "setEnhancedIntegrationStatus:", [vehicleCopy enhancedIntegrationStatus]);
   }
 
-  v8 = [v65 supportsStartSessionRequest];
+  supportsStartSessionRequest = [vehicleCopy supportsStartSessionRequest];
 
-  if (v8)
+  if (supportsStartSessionRequest)
   {
-    v9 = [v65 supportsStartSessionRequest];
-    [(CRVehicle *)self setSupportsStartSessionRequest:v9];
+    supportsStartSessionRequest2 = [vehicleCopy supportsStartSessionRequest];
+    [(CRVehicle *)self setSupportsStartSessionRequest:supportsStartSessionRequest2];
   }
 
-  -[CRVehicle setSupportsWirelessCarPlay:](self, "setSupportsWirelessCarPlay:", [v65 supportsWirelessCarPlay]);
-  -[CRVehicle setSupportsUSBCarPlay:](self, "setSupportsUSBCarPlay:", [v65 supportsUSBCarPlay]);
-  v10 = [v65 bluetoothAddress];
+  -[CRVehicle setSupportsWirelessCarPlay:](self, "setSupportsWirelessCarPlay:", [vehicleCopy supportsWirelessCarPlay]);
+  -[CRVehicle setSupportsUSBCarPlay:](self, "setSupportsUSBCarPlay:", [vehicleCopy supportsUSBCarPlay]);
+  bluetoothAddress = [vehicleCopy bluetoothAddress];
 
-  if (v10)
+  if (bluetoothAddress)
   {
-    v11 = [v65 bluetoothAddress];
-    [(CRVehicle *)self setBluetoothAddress:v11];
+    bluetoothAddress2 = [vehicleCopy bluetoothAddress];
+    [(CRVehicle *)self setBluetoothAddress:bluetoothAddress2];
   }
 
-  v12 = [v65 carplayWiFiUUID];
+  carplayWiFiUUID = [vehicleCopy carplayWiFiUUID];
 
-  if (v12)
+  if (carplayWiFiUUID)
   {
-    v13 = [v65 carplayWiFiUUID];
-    [(CRVehicle *)self setCarplayWiFiUUID:v13];
+    carplayWiFiUUID2 = [vehicleCopy carplayWiFiUUID];
+    [(CRVehicle *)self setCarplayWiFiUUID:carplayWiFiUUID2];
   }
 
-  v14 = [v65 accessoryProtocols];
+  accessoryProtocols = [vehicleCopy accessoryProtocols];
 
-  if (v14)
+  if (accessoryProtocols)
   {
-    v15 = [v65 accessoryProtocols];
-    [(CRVehicle *)self setAccessoryProtocols:v15];
+    accessoryProtocols2 = [vehicleCopy accessoryProtocols];
+    [(CRVehicle *)self setAccessoryProtocols:accessoryProtocols2];
   }
 
-  v16 = [v65 lastConnectedDate];
+  lastConnectedDate = [vehicleCopy lastConnectedDate];
 
-  if (v16)
+  if (lastConnectedDate)
   {
-    v17 = [v65 lastConnectedDate];
-    [(CRVehicle *)self setLastConnectedDate:v17];
+    lastConnectedDate2 = [vehicleCopy lastConnectedDate];
+    [(CRVehicle *)self setLastConnectedDate:lastConnectedDate2];
   }
 
-  v18 = [v65 vehicleModelName];
+  vehicleModelName = [vehicleCopy vehicleModelName];
 
-  if (v18)
+  if (vehicleModelName)
   {
-    v19 = [v65 vehicleModelName];
-    [(CRVehicle *)self setVehicleModelName:v19];
+    vehicleModelName2 = [vehicleCopy vehicleModelName];
+    [(CRVehicle *)self setVehicleModelName:vehicleModelName2];
   }
 
-  v20 = [v65 PPID];
+  pPID = [vehicleCopy PPID];
 
-  if (v20)
+  if (pPID)
   {
-    v21 = [v65 PPID];
-    [(CRVehicle *)self setPPID:v21];
+    pPID2 = [vehicleCopy PPID];
+    [(CRVehicle *)self setPPID:pPID2];
   }
 
-  -[CRVehicle setAlbumArtUserPreference:](self, "setAlbumArtUserPreference:", [v65 albumArtUserPreference]);
-  v22 = [v65 wallpaperIdentifier];
+  -[CRVehicle setAlbumArtUserPreference:](self, "setAlbumArtUserPreference:", [vehicleCopy albumArtUserPreference]);
+  wallpaperIdentifier = [vehicleCopy wallpaperIdentifier];
 
-  if (v22)
+  if (wallpaperIdentifier)
   {
-    v23 = [v65 wallpaperIdentifier];
-    [(CRVehicle *)self setWallpaperIdentifier:v23];
+    wallpaperIdentifier2 = [vehicleCopy wallpaperIdentifier];
+    [(CRVehicle *)self setWallpaperIdentifier:wallpaperIdentifier2];
   }
 
-  v24 = [v65 previousWallpaperIdentifier];
+  previousWallpaperIdentifier = [vehicleCopy previousWallpaperIdentifier];
 
-  if (v24)
+  if (previousWallpaperIdentifier)
   {
-    v25 = [v65 previousWallpaperIdentifier];
-    [(CRVehicle *)self setPreviousWallpaperIdentifier:v25];
+    previousWallpaperIdentifier2 = [vehicleCopy previousWallpaperIdentifier];
+    [(CRVehicle *)self setPreviousWallpaperIdentifier:previousWallpaperIdentifier2];
   }
 
-  -[CRVehicle setDisplayScaleMode:](self, "setDisplayScaleMode:", [v65 displayScaleMode]);
-  if ([v65 appearanceModePreference] != -1)
+  -[CRVehicle setDisplayScaleMode:](self, "setDisplayScaleMode:", [vehicleCopy displayScaleMode]);
+  if ([vehicleCopy appearanceModePreference] != -1)
   {
-    -[CRVehicle setAppearanceModePreference:](self, "setAppearanceModePreference:", [v65 appearanceModePreference]);
+    -[CRVehicle setAppearanceModePreference:](self, "setAppearanceModePreference:", [vehicleCopy appearanceModePreference]);
   }
 
-  if ([v65 mapsAppearancePreference] != -1)
+  if ([vehicleCopy mapsAppearancePreference] != -1)
   {
-    -[CRVehicle setMapsAppearancePreference:](self, "setMapsAppearancePreference:", [v65 mapsAppearancePreference]);
+    -[CRVehicle setMapsAppearancePreference:](self, "setMapsAppearancePreference:", [vehicleCopy mapsAppearancePreference]);
   }
 
-  if ([v65 colorFilterPreference])
+  if ([vehicleCopy colorFilterPreference])
   {
-    -[CRVehicle setColorFilterPreference:](self, "setColorFilterPreference:", [v65 colorFilterPreference]);
+    -[CRVehicle setColorFilterPreference:](self, "setColorFilterPreference:", [vehicleCopy colorFilterPreference]);
   }
 
-  v26 = [v65 colorFilterIntensityPreference];
+  colorFilterIntensityPreference = [vehicleCopy colorFilterIntensityPreference];
 
-  if (v26)
+  if (colorFilterIntensityPreference)
   {
-    v27 = [v65 colorFilterIntensityPreference];
-    [(CRVehicle *)self setColorFilterIntensityPreference:v27];
+    colorFilterIntensityPreference2 = [vehicleCopy colorFilterIntensityPreference];
+    [(CRVehicle *)self setColorFilterIntensityPreference:colorFilterIntensityPreference2];
   }
 
-  if ([v65 boldTextPreference])
+  if ([vehicleCopy boldTextPreference])
   {
-    -[CRVehicle setBoldTextPreference:](self, "setBoldTextPreference:", [v65 boldTextPreference]);
+    -[CRVehicle setBoldTextPreference:](self, "setBoldTextPreference:", [vehicleCopy boldTextPreference]);
   }
 
-  -[CRVehicle setSoundRecognitionPreference:](self, "setSoundRecognitionPreference:", [v65 soundRecognitionPreference]);
-  -[CRVehicle setVoiceControlPreference:](self, "setVoiceControlPreference:", [v65 voiceControlPreference]);
-  if ([v65 textSizePreference])
+  -[CRVehicle setSoundRecognitionPreference:](self, "setSoundRecognitionPreference:", [vehicleCopy soundRecognitionPreference]);
+  -[CRVehicle setVoiceControlPreference:](self, "setVoiceControlPreference:", [vehicleCopy voiceControlPreference]);
+  if ([vehicleCopy textSizePreference])
   {
-    -[CRVehicle setTextSizePreference:](self, "setTextSizePreference:", [v65 textSizePreference]);
+    -[CRVehicle setTextSizePreference:](self, "setTextSizePreference:", [vehicleCopy textSizePreference]);
   }
 
-  v28 = [v65 disabledFeaturesPreference];
+  disabledFeaturesPreference = [vehicleCopy disabledFeaturesPreference];
 
-  if (v28)
+  if (disabledFeaturesPreference)
   {
-    v29 = [v65 disabledFeaturesPreference];
-    [(CRVehicle *)self setDisabledFeaturesPreference:v29];
+    disabledFeaturesPreference2 = [vehicleCopy disabledFeaturesPreference];
+    [(CRVehicle *)self setDisabledFeaturesPreference:disabledFeaturesPreference2];
   }
 
-  -[CRVehicle setSupportsBluetoothLE:](self, "setSupportsBluetoothLE:", [v65 supportsBluetoothLE]);
-  v30 = [v65 supportsThemeAssets];
+  -[CRVehicle setSupportsBluetoothLE:](self, "setSupportsBluetoothLE:", [vehicleCopy supportsBluetoothLE]);
+  supportsThemeAssets = [vehicleCopy supportsThemeAssets];
 
-  if (v30)
+  if (supportsThemeAssets)
   {
-    v31 = [v65 supportsThemeAssets];
-    [(CRVehicle *)self setSupportsThemeAssets:v31];
+    supportsThemeAssets2 = [vehicleCopy supportsThemeAssets];
+    [(CRVehicle *)self setSupportsThemeAssets:supportsThemeAssets2];
   }
 
-  v32 = [v65 clusterAssetIdentifier];
+  clusterAssetIdentifier = [vehicleCopy clusterAssetIdentifier];
 
-  if (v32)
+  if (clusterAssetIdentifier)
   {
-    v33 = [v65 clusterAssetIdentifier];
-    [(CRVehicle *)self setClusterAssetIdentifier:v33];
+    clusterAssetIdentifier2 = [vehicleCopy clusterAssetIdentifier];
+    [(CRVehicle *)self setClusterAssetIdentifier:clusterAssetIdentifier2];
   }
 
-  v34 = [v65 clusterAssetiOSContentVersion];
+  clusterAssetiOSContentVersion = [vehicleCopy clusterAssetiOSContentVersion];
 
-  if (v34)
+  if (clusterAssetiOSContentVersion)
   {
-    v35 = [v65 clusterAssetiOSContentVersion];
-    [(CRVehicle *)self setClusterAssetiOSContentVersion:v35];
+    clusterAssetiOSContentVersion2 = [vehicleCopy clusterAssetiOSContentVersion];
+    [(CRVehicle *)self setClusterAssetiOSContentVersion:clusterAssetiOSContentVersion2];
   }
 
-  v36 = [v65 clusterAssetVersion];
+  clusterAssetVersion = [vehicleCopy clusterAssetVersion];
 
-  if (v36)
+  if (clusterAssetVersion)
   {
-    v37 = [v65 clusterAssetVersion];
-    [(CRVehicle *)self setClusterAssetVersion:v37];
+    clusterAssetVersion2 = [vehicleCopy clusterAssetVersion];
+    [(CRVehicle *)self setClusterAssetVersion:clusterAssetVersion2];
   }
 
-  v38 = [v65 SDKVersion];
+  sDKVersion = [vehicleCopy SDKVersion];
 
-  if (v38)
+  if (sDKVersion)
   {
-    v39 = [v65 SDKVersion];
-    [(CRVehicle *)self setSDKVersion:v39];
+    sDKVersion2 = [vehicleCopy SDKVersion];
+    [(CRVehicle *)self setSDKVersion:sDKVersion2];
   }
 
-  v40 = [v65 clusterAssetURL];
+  clusterAssetURL = [vehicleCopy clusterAssetURL];
 
-  if (v40)
+  if (clusterAssetURL)
   {
-    v41 = [v65 clusterAssetURL];
-    [(CRVehicle *)self setClusterAssetURL:v41];
+    clusterAssetURL2 = [vehicleCopy clusterAssetURL];
+    [(CRVehicle *)self setClusterAssetURL:clusterAssetURL2];
   }
 
-  v42 = [v65 stagedClusterAssetiOSContentVersion];
+  stagedClusterAssetiOSContentVersion = [vehicleCopy stagedClusterAssetiOSContentVersion];
 
-  if (v42)
+  if (stagedClusterAssetiOSContentVersion)
   {
-    v43 = [v65 stagedClusterAssetiOSContentVersion];
-    [(CRVehicle *)self setStagedClusterAssetiOSContentVersion:v43];
+    stagedClusterAssetiOSContentVersion2 = [vehicleCopy stagedClusterAssetiOSContentVersion];
+    [(CRVehicle *)self setStagedClusterAssetiOSContentVersion:stagedClusterAssetiOSContentVersion2];
   }
 
-  v44 = [v65 stagedClusterAssetVersion];
+  stagedClusterAssetVersion = [vehicleCopy stagedClusterAssetVersion];
 
-  if (v44)
+  if (stagedClusterAssetVersion)
   {
-    v45 = [v65 stagedClusterAssetVersion];
-    [(CRVehicle *)self setStagedClusterAssetVersion:v45];
+    stagedClusterAssetVersion2 = [vehicleCopy stagedClusterAssetVersion];
+    [(CRVehicle *)self setStagedClusterAssetVersion:stagedClusterAssetVersion2];
   }
 
-  v46 = [v65 stagedClusterAssetURL];
+  stagedClusterAssetURL = [vehicleCopy stagedClusterAssetURL];
 
-  if (v46)
+  if (stagedClusterAssetURL)
   {
-    v47 = [v65 stagedClusterAssetURL];
-    [(CRVehicle *)self setStagedClusterAssetURL:v47];
+    stagedClusterAssetURL2 = [vehicleCopy stagedClusterAssetURL];
+    [(CRVehicle *)self setStagedClusterAssetURL:stagedClusterAssetURL2];
   }
 
-  v48 = [v65 displayThemeData];
+  displayThemeData = [vehicleCopy displayThemeData];
 
-  if (v48)
+  if (displayThemeData)
   {
-    v49 = [v65 displayThemeData];
-    [(CRVehicle *)self setDisplayThemeData:v49];
+    displayThemeData2 = [vehicleCopy displayThemeData];
+    [(CRVehicle *)self setDisplayThemeData:displayThemeData2];
   }
 
-  v50 = [v65 hasGaugeClusterScreen];
+  hasGaugeClusterScreen = [vehicleCopy hasGaugeClusterScreen];
 
-  if (v50)
+  if (hasGaugeClusterScreen)
   {
-    v51 = [v65 hasGaugeClusterScreen];
-    [(CRVehicle *)self setHasGaugeClusterScreen:v51];
+    hasGaugeClusterScreen2 = [vehicleCopy hasGaugeClusterScreen];
+    [(CRVehicle *)self setHasGaugeClusterScreen:hasGaugeClusterScreen2];
   }
 
-  v52 = [v65 finishedWelcome];
+  finishedWelcome = [vehicleCopy finishedWelcome];
 
-  if (v52)
+  if (finishedWelcome)
   {
-    v53 = [v65 finishedWelcome];
-    [(CRVehicle *)self setFinishedWelcome:v53];
+    finishedWelcome2 = [vehicleCopy finishedWelcome];
+    [(CRVehicle *)self setFinishedWelcome:finishedWelcome2];
   }
 
-  v54 = [v65 oemPunchThroughsAsApp];
+  oemPunchThroughsAsApp = [vehicleCopy oemPunchThroughsAsApp];
 
-  if (v54)
+  if (oemPunchThroughsAsApp)
   {
-    v55 = [v65 oemPunchThroughsAsApp];
-    [(CRVehicle *)self setOemPunchThroughsAsApp:v55];
+    oemPunchThroughsAsApp2 = [vehicleCopy oemPunchThroughsAsApp];
+    [(CRVehicle *)self setOemPunchThroughsAsApp:oemPunchThroughsAsApp2];
   }
 
-  -[CRVehicle setSiriBargeInDisabled:](self, "setSiriBargeInDisabled:", [v65 isSiriBargeInDisabled]);
-  -[CRVehicle setSupportsMixableAudio:](self, "setSupportsMixableAudio:", [v65 supportsMixableAudio]);
-  v56 = [v65 subtitleSettings];
+  -[CRVehicle setSiriBargeInDisabled:](self, "setSiriBargeInDisabled:", [vehicleCopy isSiriBargeInDisabled]);
+  -[CRVehicle setSupportsMixableAudio:](self, "setSupportsMixableAudio:", [vehicleCopy supportsMixableAudio]);
+  subtitleSettings = [vehicleCopy subtitleSettings];
 
-  if (v56)
+  if (subtitleSettings)
   {
-    v57 = [v65 subtitleSettings];
-    [(CRVehicle *)self setSubtitleSettings:v57];
+    subtitleSettings2 = [vehicleCopy subtitleSettings];
+    [(CRVehicle *)self setSubtitleSettings:subtitleSettings2];
   }
 
-  v58 = [v65 videoDiagnosticsEnabled];
+  videoDiagnosticsEnabled = [vehicleCopy videoDiagnosticsEnabled];
 
-  if (v58)
+  if (videoDiagnosticsEnabled)
   {
-    v59 = [v65 videoDiagnosticsEnabled];
-    [(CRVehicle *)self setVideoDiagnosticsEnabled:v59];
+    videoDiagnosticsEnabled2 = [vehicleCopy videoDiagnosticsEnabled];
+    [(CRVehicle *)self setVideoDiagnosticsEnabled:videoDiagnosticsEnabled2];
   }
 
-  v60 = [v65 internalNotes];
+  internalNotes = [vehicleCopy internalNotes];
 
-  if (v60)
+  if (internalNotes)
   {
-    v61 = [v65 internalNotes];
-    [(CRVehicle *)self setInternalNotes:v61];
+    internalNotes2 = [vehicleCopy internalNotes];
+    [(CRVehicle *)self setInternalNotes:internalNotes2];
   }
 
-  v62 = [v65 homeScreenStyleData];
-  [(CRVehicle *)self setHomeScreenStyleData:v62];
+  homeScreenStyleData = [vehicleCopy homeScreenStyleData];
+  [(CRVehicle *)self setHomeScreenStyleData:homeScreenStyleData];
 
-  v63 = [v65 viewAreas];
+  viewAreas = [vehicleCopy viewAreas];
 
-  if (v63)
+  if (viewAreas)
   {
-    v64 = [v65 viewAreas];
-    [(CRVehicle *)self setViewAreas:v64];
+    viewAreas2 = [vehicleCopy viewAreas];
+    [(CRVehicle *)self setViewAreas:viewAreas2];
   }
 }
 
-- (void)setClusterAssetIdentifier:(id)a3
+- (void)setClusterAssetIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5 && [v5 length])
+  identifierCopy = identifier;
+  v6 = identifierCopy;
+  if (identifierCopy && [identifierCopy length])
   {
-    objc_storeStrong(&self->_clusterAssetIdentifier, a3);
+    objc_storeStrong(&self->_clusterAssetIdentifier, identifier);
   }
 
   else if (self->_clusterAssetIdentifier)
@@ -1371,35 +1371,35 @@ LABEL_102:
 
 - (id)displayName
 {
-  v3 = [(CRVehicle *)self vehicleName];
-  if (![v3 length])
+  vehicleName = [(CRVehicle *)self vehicleName];
+  if (![vehicleName length])
   {
-    v4 = [(CRVehicle *)self bluetoothAddress];
-    v5 = [v4 length];
+    bluetoothAddress = [(CRVehicle *)self bluetoothAddress];
+    v5 = [bluetoothAddress length];
 
     if (v5)
     {
-      v6 = [(CRVehicle *)self bluetoothAddress];
+      bluetoothAddress2 = [(CRVehicle *)self bluetoothAddress];
     }
 
     else
     {
-      v6 = &stru_1F47DECC0;
+      bluetoothAddress2 = &stru_1F47DECC0;
     }
 
-    v3 = v6;
+    vehicleName = bluetoothAddress2;
   }
 
-  return v3;
+  return vehicleName;
 }
 
 - (BOOL)requiresBonjour
 {
-  v3 = [(CRVehicle *)self supportsStartSessionRequest];
-  if (v3)
+  supportsStartSessionRequest = [(CRVehicle *)self supportsStartSessionRequest];
+  if (supportsStartSessionRequest)
   {
-    v4 = [(CRVehicle *)self supportsStartSessionRequest];
-    v5 = [v4 BOOLValue] ^ 1;
+    supportsStartSessionRequest2 = [(CRVehicle *)self supportsStartSessionRequest];
+    v5 = [supportsStartSessionRequest2 BOOLValue] ^ 1;
   }
 
   else
@@ -1414,27 +1414,27 @@ LABEL_102:
 {
   v3 = CFPreferencesCopyAppValue(@"AlwaysUpdateAsset", CRPreferencesNotMigratedDomain);
   v17 = MEMORY[0x1E696AEC0];
-  v24 = [(CRVehicle *)self clusterAssetIdentifier];
-  v23 = CRNullableDescriptionForString(v24);
-  v22 = [(CRVehicle *)self clusterAssetiOSContentVersion];
-  v21 = CRNullableDescriptionForString(v22);
-  v20 = [(CRVehicle *)self clusterAssetVersion];
-  v19 = [(CRVehicle *)self SDKVersion];
-  v4 = CRNullableDescriptionForString(v19);
-  v16 = [(CRVehicle *)self clusterAssetURL];
-  v15 = [v16 absoluteString];
-  v5 = CRNullableDescriptionForString(v15);
-  v14 = [(CRVehicle *)self stagedClusterAssetiOSContentVersion];
-  v6 = CRNullableDescriptionForString(v14);
-  v7 = [(CRVehicle *)self stagedClusterAssetVersion];
-  v8 = [(CRVehicle *)self stagedClusterAssetURL];
-  v9 = [v8 absoluteString];
-  v10 = CRNullableDescriptionForString(v9);
+  clusterAssetIdentifier = [(CRVehicle *)self clusterAssetIdentifier];
+  v23 = CRNullableDescriptionForString(clusterAssetIdentifier);
+  clusterAssetiOSContentVersion = [(CRVehicle *)self clusterAssetiOSContentVersion];
+  v21 = CRNullableDescriptionForString(clusterAssetiOSContentVersion);
+  clusterAssetVersion = [(CRVehicle *)self clusterAssetVersion];
+  sDKVersion = [(CRVehicle *)self SDKVersion];
+  v4 = CRNullableDescriptionForString(sDKVersion);
+  clusterAssetURL = [(CRVehicle *)self clusterAssetURL];
+  absoluteString = [clusterAssetURL absoluteString];
+  v5 = CRNullableDescriptionForString(absoluteString);
+  stagedClusterAssetiOSContentVersion = [(CRVehicle *)self stagedClusterAssetiOSContentVersion];
+  v6 = CRNullableDescriptionForString(stagedClusterAssetiOSContentVersion);
+  stagedClusterAssetVersion = [(CRVehicle *)self stagedClusterAssetVersion];
+  stagedClusterAssetURL = [(CRVehicle *)self stagedClusterAssetURL];
+  absoluteString2 = [stagedClusterAssetURL absoluteString];
+  v10 = CRNullableDescriptionForString(absoluteString2);
   if (v3)
   {
-    v11 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
     v12 = @"NO";
-    if (v11)
+    if (bOOLValue)
     {
       v12 = @"YES";
     }
@@ -1445,7 +1445,7 @@ LABEL_102:
     v12 = @"unset";
   }
 
-  v18 = [v17 stringWithFormat:@"Asset Identifier: %@\niOS Version: %@\nAccessory Version: %@\nSDK Version: %@\nAsset URL: %@\nStaged Asset iOS Version: %@\nStaged Asset Accessory Version: %@\nStaged Asset URL: %@\nAlways Update Asset preference: %@", v23, v21, v20, v4, v5, v6, v7, v10, v12];
+  v18 = [v17 stringWithFormat:@"Asset Identifier: %@\niOS Version: %@\nAccessory Version: %@\nSDK Version: %@\nAsset URL: %@\nStaged Asset iOS Version: %@\nStaged Asset Accessory Version: %@\nStaged Asset URL: %@\nAlways Update Asset preference: %@", v23, v21, clusterAssetVersion, v4, v5, v6, stagedClusterAssetVersion, v10, v12];
 
   return v18;
 }
@@ -1454,21 +1454,21 @@ LABEL_102:
 {
   v23 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(CRVehicle *)self wallpaperIdentifier];
-  v5 = [(CRVehicle *)self previousWallpaperIdentifier];
-  v6 = [v3 stringWithFormat:@"Wallpaper identifier: %@\nPrevious wallpaper identifier: %@", v4, v5];
+  wallpaperIdentifier = [(CRVehicle *)self wallpaperIdentifier];
+  previousWallpaperIdentifier = [(CRVehicle *)self previousWallpaperIdentifier];
+  v6 = [v3 stringWithFormat:@"Wallpaper identifier: %@\nPrevious wallpaper identifier: %@", wallpaperIdentifier, previousWallpaperIdentifier];
 
-  v7 = [(CRVehicle *)self displayThemeData];
+  displayThemeData = [(CRVehicle *)self displayThemeData];
 
-  if (v7)
+  if (displayThemeData)
   {
 
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v8 = [(CRVehicle *)self displayThemeData];
-    v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    displayThemeData2 = [(CRVehicle *)self displayThemeData];
+    v9 = [displayThemeData2 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v9)
     {
       v10 = v9;
@@ -1482,12 +1482,12 @@ LABEL_102:
         {
           if (*v19 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(displayThemeData2);
           }
 
           v14 = *(*(&v18 + 1) + 8 * v12);
-          v15 = [(CRVehicle *)self displayThemeData];
-          v16 = [v15 objectForKey:v14];
+          displayThemeData3 = [(CRVehicle *)self displayThemeData];
+          v16 = [displayThemeData3 objectForKey:v14];
           v6 = [(__CFString *)v13 stringByAppendingFormat:@"\nDisplay: %@\n\t%@", v14, v16];
 
           ++v12;
@@ -1495,7 +1495,7 @@ LABEL_102:
         }
 
         while (v10 != v12);
-        v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v10 = [displayThemeData2 countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v10);
@@ -1510,21 +1510,21 @@ LABEL_102:
   return v6;
 }
 
-- (void)setSystemWallpaperData:(id)a3
+- (void)setSystemWallpaperData:(id)data
 {
-  v4 = [a3 identifier];
-  [(CRVehicle *)self setWallpaperIdentifier:v4];
+  identifier = [data identifier];
+  [(CRVehicle *)self setWallpaperIdentifier:identifier];
 }
 
 - (CRSystemWallpaperData)previousSystemWallpaperData
 {
-  v3 = [(CRVehicle *)self previousWallpaperIdentifier];
+  previousWallpaperIdentifier = [(CRVehicle *)self previousWallpaperIdentifier];
 
-  if (v3)
+  if (previousWallpaperIdentifier)
   {
     v4 = [CRSystemWallpaperData alloc];
-    v5 = [(CRVehicle *)self previousWallpaperIdentifier];
-    v6 = [(CRSystemWallpaperData *)v4 initWithIdentifier:v5];
+    previousWallpaperIdentifier2 = [(CRVehicle *)self previousWallpaperIdentifier];
+    v6 = [(CRSystemWallpaperData *)v4 initWithIdentifier:previousWallpaperIdentifier2];
   }
 
   else
@@ -1535,22 +1535,22 @@ LABEL_102:
   return v6;
 }
 
-- (void)setPreviousSystemWallpaperData:(id)a3
+- (void)setPreviousSystemWallpaperData:(id)data
 {
-  v4 = [a3 identifier];
-  [(CRVehicle *)self setPreviousWallpaperIdentifier:v4];
+  identifier = [data identifier];
+  [(CRVehicle *)self setPreviousWallpaperIdentifier:identifier];
 }
 
-- (id)wallpaperForDisplayWithID:(id)a3
+- (id)wallpaperForDisplayWithID:(id)d
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CRVehicle *)self displayThemeData];
+  dCopy = d;
+  displayThemeData = [(CRVehicle *)self displayThemeData];
 
-  if (v4 && v5)
+  if (dCopy && displayThemeData)
   {
-    v6 = [(CRVehicle *)self displayThemeData];
-    v7 = [v6 objectForKey:v4];
+    displayThemeData2 = [(CRVehicle *)self displayThemeData];
+    v7 = [displayThemeData2 objectForKey:dCopy];
 
     v8 = CarGeneralLogging();
     v9 = v8;
@@ -1559,17 +1559,17 @@ LABEL_102:
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
         v13 = 138412290;
-        v14 = v4;
+        v14 = dCopy;
         _os_log_impl(&dword_1C81FC000, v9, OS_LOG_TYPE_INFO, "Returning wallpaper using themeData for display with id: %@", &v13, 0xCu);
       }
     }
 
     else if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(CRVehicle *)v4 wallpaperForDisplayWithID:v9];
+      [(CRVehicle *)dCopy wallpaperForDisplayWithID:v9];
     }
 
-    v11 = [v7 currentWallpaper];
+    currentWallpaper = [v7 currentWallpaper];
   }
 
   else
@@ -1581,44 +1581,44 @@ LABEL_102:
       _os_log_impl(&dword_1C81FC000, v10, OS_LOG_TYPE_INFO, "Returning system wallpaper", &v13, 2u);
     }
 
-    v11 = [(CRVehicle *)self systemWallpaperData];
+    currentWallpaper = [(CRVehicle *)self systemWallpaperData];
   }
 
-  return v11;
+  return currentWallpaper;
 }
 
-- (BOOL)setWallpaper:(id)a3 forDisplayWithID:(id)a4 requiresDarkAppearance:(BOOL)a5
+- (BOOL)setWallpaper:(id)wallpaper forDisplayWithID:(id)d requiresDarkAppearance:(BOOL)appearance
 {
-  v5 = a5;
+  appearanceCopy = appearance;
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(CRVehicle *)self displayThemeData];
+  wallpaperCopy = wallpaper;
+  dCopy = d;
+  displayThemeData = [(CRVehicle *)self displayThemeData];
 
-  if (v9 && v10)
+  if (dCopy && displayThemeData)
   {
     v11 = CarGeneralLogging();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v24 = 138412290;
-      v25 = v9;
+      v25 = dCopy;
       _os_log_impl(&dword_1C81FC000, v11, OS_LOG_TYPE_INFO, "Set wallpaper using themeData and display id: %@", &v24, 0xCu);
     }
 
-    v12 = [(CRVehicle *)self displayThemeData];
-    v13 = [v12 objectForKey:v9];
+    displayThemeData2 = [(CRVehicle *)self displayThemeData];
+    v13 = [displayThemeData2 objectForKey:dCopy];
 
     if (v13)
     {
-      v14 = [v13 themeDataWithCurrentWallpaper:v8];
+      v14 = [v13 themeDataWithCurrentWallpaper:wallpaperCopy];
 
-      v15 = [(CRVehicle *)self displayThemeData];
-      v16 = [v15 mutableCopy];
+      displayThemeData3 = [(CRVehicle *)self displayThemeData];
+      v16 = [displayThemeData3 mutableCopy];
 
-      [v16 setObject:v14 forKey:v9];
+      [v16 setObject:v14 forKey:dCopy];
       [(CRVehicle *)self setDisplayThemeData:v16];
 
-      if (!v5)
+      if (!appearanceCopy)
       {
 LABEL_15:
         v21 = 1;
@@ -1629,9 +1629,9 @@ LABEL_12:
       v19 = CarGeneralLogging();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
-        v20 = [v8 identifier];
+        identifier = [wallpaperCopy identifier];
         v24 = 138543362;
-        v25 = v20;
+        v25 = identifier;
         _os_log_impl(&dword_1C81FC000, v19, OS_LOG_TYPE_INFO, "Selected #wallpaper %{public}@ doesn't support dynamic appearance. Locking Appearance to Always Dark", &v24, 0xCu);
       }
 
@@ -1652,11 +1652,11 @@ LABEL_12:
         _os_log_impl(&dword_1C81FC000, v17, OS_LOG_TYPE_INFO, "Set system wallpaper", &v24, 2u);
       }
 
-      v18 = [(CRVehicle *)self systemWallpaperData];
-      [(CRVehicle *)self setPreviousSystemWallpaperData:v18];
+      systemWallpaperData = [(CRVehicle *)self systemWallpaperData];
+      [(CRVehicle *)self setPreviousSystemWallpaperData:systemWallpaperData];
 
-      [(CRVehicle *)self setSystemWallpaperData:v8];
-      if (!v5)
+      [(CRVehicle *)self setSystemWallpaperData:wallpaperCopy];
+      if (!appearanceCopy)
       {
         goto LABEL_15;
       }
@@ -1677,16 +1677,16 @@ LABEL_19:
   return v21;
 }
 
-- (id)homeScreenStyleDataForDisplayWithID:(id)a3
+- (id)homeScreenStyleDataForDisplayWithID:(id)d
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CRVehicle *)self displayThemeData];
+  dCopy = d;
+  displayThemeData = [(CRVehicle *)self displayThemeData];
 
-  if (v4 && v5)
+  if (dCopy && displayThemeData)
   {
-    v6 = [(CRVehicle *)self displayThemeData];
-    v7 = [v6 objectForKey:v4];
+    displayThemeData2 = [(CRVehicle *)self displayThemeData];
+    v7 = [displayThemeData2 objectForKey:dCopy];
 
     v8 = CarGeneralLogging();
     v9 = v8;
@@ -1695,17 +1695,17 @@ LABEL_19:
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
         v13 = 138412290;
-        v14 = v4;
+        v14 = dCopy;
         _os_log_impl(&dword_1C81FC000, v9, OS_LOG_TYPE_INFO, "Returning home screen style using themeData for display with id: %@", &v13, 0xCu);
       }
     }
 
     else if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(CRVehicle *)v4 homeScreenStyleDataForDisplayWithID:v9];
+      [(CRVehicle *)dCopy homeScreenStyleDataForDisplayWithID:v9];
     }
 
-    v11 = [v7 currentHomeScreenStyle];
+    currentHomeScreenStyle = [v7 currentHomeScreenStyle];
   }
 
   else
@@ -1717,22 +1717,22 @@ LABEL_19:
       _os_log_impl(&dword_1C81FC000, v10, OS_LOG_TYPE_INFO, "Returning system home screen style data", &v13, 2u);
     }
 
-    v11 = [(CRVehicle *)self homeScreenStyleData];
+    currentHomeScreenStyle = [(CRVehicle *)self homeScreenStyleData];
   }
 
-  return v11;
+  return currentHomeScreenStyle;
 }
 
-- (BOOL)setHomeScreenStyle:(id)a3 forDisplayWithID:(id)a4
+- (BOOL)setHomeScreenStyle:(id)style forDisplayWithID:(id)d
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CRVehicle *)self displayThemeData];
+  styleCopy = style;
+  dCopy = d;
+  displayThemeData = [(CRVehicle *)self displayThemeData];
 
   v9 = CarGeneralLogging();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_INFO);
-  if (!v7 || !v8)
+  if (!dCopy || !displayThemeData)
   {
     if (v10)
     {
@@ -1740,28 +1740,28 @@ LABEL_19:
       _os_log_impl(&dword_1C81FC000, v9, OS_LOG_TYPE_INFO, "Set system home screen style", &v19, 2u);
     }
 
-    [(CRVehicle *)self setHomeScreenStyleData:v6];
+    [(CRVehicle *)self setHomeScreenStyleData:styleCopy];
     goto LABEL_10;
   }
 
   if (v10)
   {
     v19 = 138412290;
-    v20 = v7;
+    v20 = dCopy;
     _os_log_impl(&dword_1C81FC000, v9, OS_LOG_TYPE_INFO, "Set home screen style using themeData and display id: %@", &v19, 0xCu);
   }
 
-  v11 = [(CRVehicle *)self displayThemeData];
-  v12 = [v11 objectForKey:v7];
+  displayThemeData2 = [(CRVehicle *)self displayThemeData];
+  v12 = [displayThemeData2 objectForKey:dCopy];
 
   if (v12)
   {
-    v13 = [v12 themeDataWithCurrentHomeScreenStyle:v6];
+    v13 = [v12 themeDataWithCurrentHomeScreenStyle:styleCopy];
 
-    v14 = [(CRVehicle *)self displayThemeData];
-    v15 = [v14 mutableCopy];
+    displayThemeData3 = [(CRVehicle *)self displayThemeData];
+    v15 = [displayThemeData3 mutableCopy];
 
-    [v15 setObject:v13 forKey:v7];
+    [v15 setObject:v13 forKey:dCopy];
     [(CRVehicle *)self setDisplayThemeData:v15];
 
 LABEL_10:
@@ -1781,13 +1781,13 @@ LABEL_11:
   return v16;
 }
 
-- (void)setViewAreas:(id)a3
+- (void)setViewAreas:(id)areas
 {
-  v4 = a3;
+  areasCopy = areas;
   viewAreas = self->_viewAreas;
   p_viewAreas = &self->_viewAreas;
   v5 = viewAreas;
-  if (!v4 && v5 && CRIsInternalInstall())
+  if (!areasCopy && v5 && CRIsInternalInstall())
   {
     v8 = CarGeneralLogging();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
@@ -1796,18 +1796,18 @@ LABEL_11:
     }
   }
 
-  v9 = [v4 copy];
+  v9 = [areasCopy copy];
   v10 = *p_viewAreas;
   *p_viewAreas = v9;
 }
 
 - (NSString)_axColorFiltersAnalyticsString
 {
-  v3 = [(CRVehicle *)self colorFilterIntensityPreference];
-  v4 = [(CRVehicle *)self colorFilterPreference];
-  if (v4 > 2)
+  colorFilterIntensityPreference = [(CRVehicle *)self colorFilterIntensityPreference];
+  colorFilterPreference = [(CRVehicle *)self colorFilterPreference];
+  if (colorFilterPreference > 2)
   {
-    switch(v4)
+    switch(colorFilterPreference)
     {
       case 5:
         v5 = @"BlueYellow";
@@ -1828,7 +1828,7 @@ LABEL_13:
     }
 
 LABEL_11:
-    v7 = [v3 objectForKeyedSubscript:v6];
+    v7 = [colorFilterIntensityPreference objectForKeyedSubscript:v6];
     v8 = [(CRVehicle *)self _axColorFiltersIntensityStringForNumber:v7];
 
     if (v8)
@@ -1841,9 +1841,9 @@ LABEL_11:
     goto LABEL_13;
   }
 
-  if (v4 != 1)
+  if (colorFilterPreference != 1)
   {
-    if (v4 != 2)
+    if (colorFilterPreference != 2)
     {
       goto LABEL_13;
     }
@@ -1859,20 +1859,20 @@ LABEL_15:
   return v9;
 }
 
-- (id)_axColorFiltersIntensityStringForNumber:(id)a3
+- (id)_axColorFiltersIntensityStringForNumber:(id)number
 {
-  v3 = a3;
-  if ([v3 isEqualToNumber:&unk_1F47F2658])
+  numberCopy = number;
+  if ([numberCopy isEqualToNumber:&unk_1F47F2658])
   {
     v4 = @"Low";
   }
 
-  else if ([v3 isEqualToNumber:&unk_1F47F2670])
+  else if ([numberCopy isEqualToNumber:&unk_1F47F2670])
   {
     v4 = @"Medium";
   }
 
-  else if ([v3 isEqualToNumber:&unk_1F47F2688])
+  else if ([numberCopy isEqualToNumber:&unk_1F47F2688])
   {
     v4 = @"High";
   }
@@ -1887,22 +1887,22 @@ LABEL_15:
 
 - (NSString)_axSoundRecognitionAnalyticsString
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(CRVehicle *)self soundRecognitionPreference];
-  if (v4)
+  array = [MEMORY[0x1E695DF70] array];
+  soundRecognitionPreference = [(CRVehicle *)self soundRecognitionPreference];
+  if (soundRecognitionPreference)
   {
-    [v3 addObject:@"Enabled"];
-    if ((v4 & 2) != 0)
+    [array addObject:@"Enabled"];
+    if ((soundRecognitionPreference & 2) != 0)
     {
-      [v3 addObject:@"CarHorns"];
+      [array addObject:@"CarHorns"];
     }
 
-    if ((v4 & 4) != 0)
+    if ((soundRecognitionPreference & 4) != 0)
     {
-      [v3 addObject:@"Siren"];
+      [array addObject:@"Siren"];
     }
 
-    v5 = [v3 componentsJoinedByString:{@", "}];
+    v5 = [array componentsJoinedByString:{@", "}];
   }
 
   else

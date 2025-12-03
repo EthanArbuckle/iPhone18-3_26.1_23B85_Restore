@@ -1,21 +1,21 @@
 @interface UALoggingAdvertiser
 - (BOOL)active;
 - (BOOL)resume;
-- (BOOL)shouldLog:(int)a3;
+- (BOOL)shouldLog:(int)log;
 - (BOOL)suspend;
-- (UALoggingAdvertiser)initWithManager:(id)a3;
+- (UALoggingAdvertiser)initWithManager:(id)manager;
 - (id)statusString;
-- (void)logItem:(id)a3;
-- (void)setAdvertisableItems:(id)a3;
+- (void)logItem:(id)item;
+- (void)setAdvertisableItems:(id)items;
 @end
 
 @implementation UALoggingAdvertiser
 
-- (UALoggingAdvertiser)initWithManager:(id)a3
+- (UALoggingAdvertiser)initWithManager:(id)manager
 {
   v17.receiver = self;
   v17.super_class = UALoggingAdvertiser;
-  v3 = [(UAAdvertiser *)&v17 initWithManager:a3 name:@"Logging"];
+  v3 = [(UAAdvertiser *)&v17 initWithManager:manager name:@"Logging"];
   if (v3)
   {
     v4 = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, 1uLL, 1);
@@ -24,27 +24,27 @@
     {
       if ([v4 count])
       {
-        v6 = [v5 firstObject];
+        firstObject = [v5 firstObject];
 
-        if (v6)
+        if (firstObject)
         {
-          v7 = [v5 firstObject];
-          v8 = [NSString stringWithFormat:@"%@/Logs/Handoff/", v7];
+          firstObject2 = [v5 firstObject];
+          v8 = [NSString stringWithFormat:@"%@/Logs/Handoff/", firstObject2];
           [(UALoggingAdvertiser *)v3 setLogFileDirectoryPath:v8];
 
-          v9 = [(UALoggingAdvertiser *)v3 logFileDirectoryPath];
-          v10 = [NSString stringWithFormat:@"%@/UALoggingAdvertiserItems.log", v9];
+          logFileDirectoryPath = [(UALoggingAdvertiser *)v3 logFileDirectoryPath];
+          v10 = [NSString stringWithFormat:@"%@/UALoggingAdvertiserItems.log", logFileDirectoryPath];
           [(UALoggingAdvertiser *)v3 setLogFilePath:v10];
         }
       }
     }
 
-    v11 = [(UALoggingAdvertiser *)v3 logFilePath];
-    v12 = [NSFileHandle fileHandleForUpdatingAtPath:v11];
+    logFilePath = [(UALoggingAdvertiser *)v3 logFilePath];
+    v12 = [NSFileHandle fileHandleForUpdatingAtPath:logFilePath];
     [(UALoggingAdvertiser *)v3 setOutputFile:v12];
 
-    v13 = [(UALoggingAdvertiser *)v3 logFilePath];
-    v14 = open([v13 fileSystemRepresentation], 770, 420);
+    logFilePath2 = [(UALoggingAdvertiser *)v3 logFilePath];
+    v14 = open([logFilePath2 fileSystemRepresentation], 770, 420);
 
     if (v14)
     {
@@ -56,15 +56,15 @@
   return v3;
 }
 
-- (void)setAdvertisableItems:(id)a3
+- (void)setAdvertisableItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v5 = [NSMutableString stringWithString:@"["];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = v4;
+  v6 = itemsCopy;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:buf count:16];
   if (v7)
   {
@@ -80,10 +80,10 @@
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v11 activityType];
-        v13 = [v11 uuid];
-        v14 = [v13 UUIDString];
-        [v5 appendFormat:@"(%@, %@)", v12, v14, v18];
+        activityType = [v11 activityType];
+        uuid = [v11 uuid];
+        uUIDString = [uuid UUIDString];
+        [v5 appendFormat:@"(%@, %@)", activityType, uUIDString, v18];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v18 objects:buf count:16];
@@ -107,25 +107,25 @@
   [(UALoggingAdvertiser *)self log:5 format:@"%@", v17];
 }
 
-- (void)logItem:(id)a3
+- (void)logItem:(id)item
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1000411CC;
   v5[3] = &unk_1000C4C98;
-  v6 = a3;
-  v7 = self;
-  v4 = v6;
+  itemCopy = item;
+  selfCopy = self;
+  v4 = itemCopy;
   [v4 requestPayloadWithCompletionHandler:v5];
 }
 
 - (id)statusString
 {
-  v3 = [(UALoggingAdvertiser *)self logFilePath];
-  if (v3)
+  logFilePath = [(UALoggingAdvertiser *)self logFilePath];
+  if (logFilePath)
   {
-    v4 = [(UALoggingAdvertiser *)self logFilePath];
-    v5 = [NSString stringWithFormat:@"ActivityLogger: Logging to %@.\n", v4];
+    logFilePath2 = [(UALoggingAdvertiser *)self logFilePath];
+    v5 = [NSString stringWithFormat:@"ActivityLogger: Logging to %@.\n", logFilePath2];
   }
 
   else
@@ -138,52 +138,52 @@
 
 - (BOOL)active
 {
-  v2 = [(UALoggingAdvertiser *)self logFilePath];
-  if (v2)
+  logFilePath = [(UALoggingAdvertiser *)self logFilePath];
+  if (logFilePath)
   {
     v3 = +[UAUserActivityDefaults sharedDefaults];
-    v4 = [v3 loggingAdvertiserEnabled];
+    loggingAdvertiserEnabled = [v3 loggingAdvertiserEnabled];
   }
 
   else
   {
-    v4 = 0;
+    loggingAdvertiserEnabled = 0;
   }
 
-  return v4;
+  return loggingAdvertiserEnabled;
 }
 
 - (BOOL)resume
 {
   v5.receiver = self;
   v5.super_class = UALoggingAdvertiser;
-  v3 = [(UACornerActionManagerHandler *)&v5 resume];
-  if (v3)
+  resume = [(UACornerActionManagerHandler *)&v5 resume];
+  if (resume)
   {
     [(UALoggingAdvertiser *)self log:5 format:@"UALoggingAdvertiser: ADVERTISING RESUMED."];
   }
 
-  return v3;
+  return resume;
 }
 
 - (BOOL)suspend
 {
   v5.receiver = self;
   v5.super_class = UALoggingAdvertiser;
-  v3 = [(UACornerActionManagerHandler *)&v5 suspend];
-  if (v3)
+  suspend = [(UACornerActionManagerHandler *)&v5 suspend];
+  if (suspend)
   {
     [(UALoggingAdvertiser *)self log:5 format:@"UALoggingAdvertiser: ADVERTISING SUSPENDED."];
   }
 
-  return v3;
+  return suspend;
 }
 
-- (BOOL)shouldLog:(int)a3
+- (BOOL)shouldLog:(int)log
 {
-  v4 = [(UALoggingAdvertiser *)self outputFile];
+  outputFile = [(UALoggingAdvertiser *)self outputFile];
 
-  return a3 < 7 && v4 != 0;
+  return log < 7 && outputFile != 0;
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface MCPlugProxy
-- (BOOL)isKindOfClass:(Class)a3;
+- (BOOL)isKindOfClass:(Class)class;
 - (void)dealloc;
 @end
 
@@ -13,9 +13,9 @@
   [(MCObject *)&v3 dealloc];
 }
 
-- (BOOL)isKindOfClass:(Class)a3
+- (BOOL)isKindOfClass:(Class)class
 {
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     isKindOfClass = 1;
   }

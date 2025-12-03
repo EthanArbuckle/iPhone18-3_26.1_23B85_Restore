@@ -1,7 +1,7 @@
 @interface AudioRecentlyPlayedStore
 - (_TtC7NewsUI224AudioRecentlyPlayedStore)init;
-- (void)readingHistory:(id)a3 didChangeFeaturesForArticles:(id)a4;
-- (void)readingHistoryDidClear:(id)a3;
+- (void)readingHistory:(id)history didChangeFeaturesForArticles:(id)articles;
+- (void)readingHistoryDidClear:(id)clear;
 @end
 
 @implementation AudioRecentlyPlayedStore
@@ -13,19 +13,19 @@
   return result;
 }
 
-- (void)readingHistoryDidClear:(id)a3
+- (void)readingHistoryDidClear:(id)clear
 {
-  v3 = self;
+  selfCopy = self;
 
   sub_219BE20C4();
 }
 
-- (void)readingHistory:(id)a3 didChangeFeaturesForArticles:(id)a4
+- (void)readingHistory:(id)history didChangeFeaturesForArticles:(id)articles
 {
   sub_2186C6148(0, &qword_280E8DA20);
   v6 = sub_219BF5214();
-  v7 = a3;
-  v8 = self;
+  historyCopy = history;
+  selfCopy = self;
   sub_219959A30(v6);
 }
 

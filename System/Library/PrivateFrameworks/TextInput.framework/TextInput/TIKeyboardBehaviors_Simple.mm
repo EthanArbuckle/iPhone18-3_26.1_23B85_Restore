@@ -1,15 +1,15 @@
 @interface TIKeyboardBehaviors_Simple
-- (id)keyBehaviorsForState:(id)a3;
+- (id)keyBehaviorsForState:(id)state;
 @end
 
 @implementation TIKeyboardBehaviors_Simple
 
-- (id)keyBehaviorsForState:(id)a3
+- (id)keyBehaviorsForState:(id)state
 {
-  v3 = a3;
-  if ([v3 hasCandidates])
+  stateCopy = state;
+  if ([stateCopy hasCandidates])
   {
-    if ([v3 hasCandidateSelected])
+    if ([stateCopy hasCandidateSelected])
     {
       v4 = 4;
     }

@@ -1,23 +1,23 @@
 @interface SURollbackSuggestionProcessInfo
 - (NSString)processName;
-- (SURollbackSuggestionProcessInfo)initWithCoder:(id)a3;
-- (SURollbackSuggestionProcessInfo)initWithProcessID:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SURollbackSuggestionProcessInfo)initWithCoder:(id)coder;
+- (SURollbackSuggestionProcessInfo)initWithProcessID:(id)d;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SURollbackSuggestionProcessInfo
 
-- (SURollbackSuggestionProcessInfo)initWithProcessID:(id)a3
+- (SURollbackSuggestionProcessInfo)initWithProcessID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = SURollbackSuggestionProcessInfo;
   v6 = [(SURollbackSuggestionProcessInfo *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_processID, a3);
+    objc_storeStrong(&v6->_processID, d);
     processName = v7->_processName;
     v7->_processName = 0;
 
@@ -59,51 +59,51 @@ LABEL_3:
   return v3;
 }
 
-- (SURollbackSuggestionProcessInfo)initWithCoder:(id)a3
+- (SURollbackSuggestionProcessInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = SURollbackSuggestionProcessInfo;
   v5 = [(SURollbackSuggestionProcessInfo *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ProcessID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ProcessID"];
     [(SURollbackSuggestionProcessInfo *)v5 setProcessID:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ProcessName"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ProcessName"];
     [(SURollbackSuggestionProcessInfo *)v5 setProcessName:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RollbackSuggestionError"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RollbackSuggestionError"];
     [(SURollbackSuggestionProcessInfo *)v5 setRollbackSuggestionError:v8];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SURollbackSuggestionProcessInfo *)self processID];
-  [v4 encodeObject:v5 forKey:@"ProcessID"];
+  coderCopy = coder;
+  processID = [(SURollbackSuggestionProcessInfo *)self processID];
+  [coderCopy encodeObject:processID forKey:@"ProcessID"];
 
-  v6 = [(SURollbackSuggestionProcessInfo *)self processName];
-  [v4 encodeObject:v6 forKey:@"ProcessName"];
+  processName = [(SURollbackSuggestionProcessInfo *)self processName];
+  [coderCopy encodeObject:processName forKey:@"ProcessName"];
 
-  v7 = [(SURollbackSuggestionProcessInfo *)self rollbackSuggestionError];
-  [v4 encodeObject:v7 forKey:@"RollbackSuggestionError"];
+  rollbackSuggestionError = [(SURollbackSuggestionProcessInfo *)self rollbackSuggestionError];
+  [coderCopy encodeObject:rollbackSuggestionError forKey:@"RollbackSuggestionError"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SURollbackSuggestionProcessInfo alloc];
-  v5 = [(SURollbackSuggestionProcessInfo *)self processID];
-  v6 = [(SURollbackSuggestionProcessInfo *)v4 initWithProcessID:v5];
+  processID = [(SURollbackSuggestionProcessInfo *)self processID];
+  v6 = [(SURollbackSuggestionProcessInfo *)v4 initWithProcessID:processID];
 
-  v7 = [(SURollbackSuggestionProcessInfo *)self processName];
-  [(SURollbackSuggestionProcessInfo *)v6 setProcessName:v7];
+  processName = [(SURollbackSuggestionProcessInfo *)self processName];
+  [(SURollbackSuggestionProcessInfo *)v6 setProcessName:processName];
 
-  v8 = [(SURollbackSuggestionProcessInfo *)self rollbackSuggestionError];
-  [(SURollbackSuggestionProcessInfo *)v6 setRollbackSuggestionError:v8];
+  rollbackSuggestionError = [(SURollbackSuggestionProcessInfo *)self rollbackSuggestionError];
+  [(SURollbackSuggestionProcessInfo *)v6 setRollbackSuggestionError:rollbackSuggestionError];
 
   return v6;
 }

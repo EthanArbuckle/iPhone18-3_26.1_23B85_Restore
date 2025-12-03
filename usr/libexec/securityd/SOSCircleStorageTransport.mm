@@ -1,20 +1,20 @@
 @interface SOSCircleStorageTransport
 - (SOSCircleStorageTransport)init;
-- (SOSCircleStorageTransport)initWithAccount:(id)a3;
+- (SOSCircleStorageTransport)initWithAccount:(id)account;
 @end
 
 @implementation SOSCircleStorageTransport
 
-- (SOSCircleStorageTransport)initWithAccount:(id)a3
+- (SOSCircleStorageTransport)initWithAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v8.receiver = self;
   v8.super_class = SOSCircleStorageTransport;
   v5 = [(SOSCircleStorageTransport *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(SOSCircleStorageTransport *)v5 setAccount:v4];
+    [(SOSCircleStorageTransport *)v5 setAccount:accountCopy];
   }
 
   return v6;

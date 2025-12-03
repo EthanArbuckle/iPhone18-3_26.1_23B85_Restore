@@ -1,18 +1,18 @@
 @interface AWDWiFiMetricJoinTimeout
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (unsigned)associationStateAtIndex:(unint64_t)a3;
-- (unsigned)channelAtIndex:(unint64_t)a3;
-- (unsigned)joinClassificationInfoAtIndex:(unint64_t)a3;
-- (unsigned)joinTargetClassificationInfoAtIndex:(unint64_t)a3;
-- (unsigned)totalNumberOfJoinAttemptsAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)associationStateAtIndex:(unint64_t)index;
+- (unsigned)channelAtIndex:(unint64_t)index;
+- (unsigned)joinClassificationInfoAtIndex:(unint64_t)index;
+- (unsigned)joinTargetClassificationInfoAtIndex:(unint64_t)index;
+- (unsigned)totalNumberOfJoinAttemptsAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWiFiMetricJoinTimeout
@@ -29,64 +29,64 @@
   [(AWDWiFiMetricJoinTimeout *)&v3 dealloc];
 }
 
-- (unsigned)joinClassificationInfoAtIndex:(unint64_t)a3
+- (unsigned)joinClassificationInfoAtIndex:(unint64_t)index
 {
   p_joinClassificationInfos = &self->_joinClassificationInfos;
   count = self->_joinClassificationInfos.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_joinClassificationInfos->list[a3];
+  return p_joinClassificationInfos->list[index];
 }
 
-- (unsigned)joinTargetClassificationInfoAtIndex:(unint64_t)a3
+- (unsigned)joinTargetClassificationInfoAtIndex:(unint64_t)index
 {
   p_joinTargetClassificationInfos = &self->_joinTargetClassificationInfos;
   count = self->_joinTargetClassificationInfos.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_joinTargetClassificationInfos->list[a3];
+  return p_joinTargetClassificationInfos->list[index];
 }
 
-- (unsigned)associationStateAtIndex:(unint64_t)a3
+- (unsigned)associationStateAtIndex:(unint64_t)index
 {
   p_associationStates = &self->_associationStates;
   count = self->_associationStates.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_associationStates->list[a3];
+  return p_associationStates->list[index];
 }
 
-- (unsigned)channelAtIndex:(unint64_t)a3
+- (unsigned)channelAtIndex:(unint64_t)index
 {
   p_channels = &self->_channels;
   count = self->_channels.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_channels->list[a3];
+  return p_channels->list[index];
 }
 
-- (unsigned)totalNumberOfJoinAttemptsAtIndex:(unint64_t)a3
+- (unsigned)totalNumberOfJoinAttemptsAtIndex:(unint64_t)index
 {
   p_totalNumberOfJoinAttempts = &self->_totalNumberOfJoinAttempts;
   count = self->_totalNumberOfJoinAttempts.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_totalNumberOfJoinAttempts->list[a3];
+  return p_totalNumberOfJoinAttempts->list[index];
 }
 
 - (id)description
@@ -98,21 +98,21 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_sequence), @"sequence"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_sequence), @"sequence"}];
   }
 
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"joinClassificationInfo"];
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"joinTargetClassificationInfo"];
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"associationState"];
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"channel"];
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"totalNumberOfJoinAttempts"];
-  return v3;
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"joinClassificationInfo"];
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"joinTargetClassificationInfo"];
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"associationState"];
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"channel"];
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"totalNumberOfJoinAttempts"];
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -187,88 +187,88 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 32) = self->_sequence;
-    *(a3 + 132) |= 1u;
+    *(to + 32) = self->_sequence;
+    *(to + 132) |= 1u;
   }
 
   if ([(AWDWiFiMetricJoinTimeout *)self joinClassificationInfosCount])
   {
-    [a3 clearJoinClassificationInfos];
-    v5 = [(AWDWiFiMetricJoinTimeout *)self joinClassificationInfosCount];
-    if (v5)
+    [to clearJoinClassificationInfos];
+    joinClassificationInfosCount = [(AWDWiFiMetricJoinTimeout *)self joinClassificationInfosCount];
+    if (joinClassificationInfosCount)
     {
-      v6 = v5;
+      v6 = joinClassificationInfosCount;
       for (i = 0; i != v6; ++i)
       {
-        [a3 addJoinClassificationInfo:{-[AWDWiFiMetricJoinTimeout joinClassificationInfoAtIndex:](self, "joinClassificationInfoAtIndex:", i)}];
+        [to addJoinClassificationInfo:{-[AWDWiFiMetricJoinTimeout joinClassificationInfoAtIndex:](self, "joinClassificationInfoAtIndex:", i)}];
       }
     }
   }
 
   if ([(AWDWiFiMetricJoinTimeout *)self joinTargetClassificationInfosCount])
   {
-    [a3 clearJoinTargetClassificationInfos];
-    v8 = [(AWDWiFiMetricJoinTimeout *)self joinTargetClassificationInfosCount];
-    if (v8)
+    [to clearJoinTargetClassificationInfos];
+    joinTargetClassificationInfosCount = [(AWDWiFiMetricJoinTimeout *)self joinTargetClassificationInfosCount];
+    if (joinTargetClassificationInfosCount)
     {
-      v9 = v8;
+      v9 = joinTargetClassificationInfosCount;
       for (j = 0; j != v9; ++j)
       {
-        [a3 addJoinTargetClassificationInfo:{-[AWDWiFiMetricJoinTimeout joinTargetClassificationInfoAtIndex:](self, "joinTargetClassificationInfoAtIndex:", j)}];
+        [to addJoinTargetClassificationInfo:{-[AWDWiFiMetricJoinTimeout joinTargetClassificationInfoAtIndex:](self, "joinTargetClassificationInfoAtIndex:", j)}];
       }
     }
   }
 
   if ([(AWDWiFiMetricJoinTimeout *)self associationStatesCount])
   {
-    [a3 clearAssociationStates];
-    v11 = [(AWDWiFiMetricJoinTimeout *)self associationStatesCount];
-    if (v11)
+    [to clearAssociationStates];
+    associationStatesCount = [(AWDWiFiMetricJoinTimeout *)self associationStatesCount];
+    if (associationStatesCount)
     {
-      v12 = v11;
+      v12 = associationStatesCount;
       for (k = 0; k != v12; ++k)
       {
-        [a3 addAssociationState:{-[AWDWiFiMetricJoinTimeout associationStateAtIndex:](self, "associationStateAtIndex:", k)}];
+        [to addAssociationState:{-[AWDWiFiMetricJoinTimeout associationStateAtIndex:](self, "associationStateAtIndex:", k)}];
       }
     }
   }
 
   if ([(AWDWiFiMetricJoinTimeout *)self channelsCount])
   {
-    [a3 clearChannels];
-    v14 = [(AWDWiFiMetricJoinTimeout *)self channelsCount];
-    if (v14)
+    [to clearChannels];
+    channelsCount = [(AWDWiFiMetricJoinTimeout *)self channelsCount];
+    if (channelsCount)
     {
-      v15 = v14;
+      v15 = channelsCount;
       for (m = 0; m != v15; ++m)
       {
-        [a3 addChannel:{-[AWDWiFiMetricJoinTimeout channelAtIndex:](self, "channelAtIndex:", m)}];
+        [to addChannel:{-[AWDWiFiMetricJoinTimeout channelAtIndex:](self, "channelAtIndex:", m)}];
       }
     }
   }
 
   if ([(AWDWiFiMetricJoinTimeout *)self totalNumberOfJoinAttemptsCount])
   {
-    [a3 clearTotalNumberOfJoinAttempts];
-    v17 = [(AWDWiFiMetricJoinTimeout *)self totalNumberOfJoinAttemptsCount];
-    if (v17)
+    [to clearTotalNumberOfJoinAttempts];
+    totalNumberOfJoinAttemptsCount = [(AWDWiFiMetricJoinTimeout *)self totalNumberOfJoinAttemptsCount];
+    if (totalNumberOfJoinAttemptsCount)
     {
-      v18 = v17;
+      v18 = totalNumberOfJoinAttemptsCount;
       for (n = 0; n != v18; ++n)
       {
-        [a3 addTotalNumberOfJoinAttempts:{-[AWDWiFiMetricJoinTimeout totalNumberOfJoinAttemptsAtIndex:](self, "totalNumberOfJoinAttemptsAtIndex:", n)}];
+        [to addTotalNumberOfJoinAttempts:{-[AWDWiFiMetricJoinTimeout totalNumberOfJoinAttemptsAtIndex:](self, "totalNumberOfJoinAttemptsAtIndex:", n)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (*&self->_has)
   {
@@ -284,23 +284,23 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (![a3 isMemberOfClass:objc_opt_class()])
+  if (![equal isMemberOfClass:objc_opt_class()])
   {
     return 0;
   }
 
-  v5 = *(a3 + 132);
+  v5 = *(equal + 132);
   if (*&self->_has)
   {
-    if ((*(a3 + 132) & 1) == 0 || self->_sequence != *(a3 + 32))
+    if ((*(equal + 132) & 1) == 0 || self->_sequence != *(equal + 32))
     {
       return 0;
     }
   }
 
-  else if (*(a3 + 132))
+  else if (*(equal + 132))
   {
     return 0;
   }
@@ -332,61 +332,61 @@
   return v5 ^ v6 ^ PBRepeatedUInt32Hash();
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 132))
+  if (*(from + 132))
   {
-    self->_sequence = *(a3 + 32);
+    self->_sequence = *(from + 32);
     *&self->_has |= 1u;
   }
 
-  v5 = [a3 joinClassificationInfosCount];
-  if (v5)
+  joinClassificationInfosCount = [from joinClassificationInfosCount];
+  if (joinClassificationInfosCount)
   {
-    v6 = v5;
+    v6 = joinClassificationInfosCount;
     for (i = 0; i != v6; ++i)
     {
-      -[AWDWiFiMetricJoinTimeout addJoinClassificationInfo:](self, "addJoinClassificationInfo:", [a3 joinClassificationInfoAtIndex:i]);
+      -[AWDWiFiMetricJoinTimeout addJoinClassificationInfo:](self, "addJoinClassificationInfo:", [from joinClassificationInfoAtIndex:i]);
     }
   }
 
-  v8 = [a3 joinTargetClassificationInfosCount];
-  if (v8)
+  joinTargetClassificationInfosCount = [from joinTargetClassificationInfosCount];
+  if (joinTargetClassificationInfosCount)
   {
-    v9 = v8;
+    v9 = joinTargetClassificationInfosCount;
     for (j = 0; j != v9; ++j)
     {
-      -[AWDWiFiMetricJoinTimeout addJoinTargetClassificationInfo:](self, "addJoinTargetClassificationInfo:", [a3 joinTargetClassificationInfoAtIndex:j]);
+      -[AWDWiFiMetricJoinTimeout addJoinTargetClassificationInfo:](self, "addJoinTargetClassificationInfo:", [from joinTargetClassificationInfoAtIndex:j]);
     }
   }
 
-  v11 = [a3 associationStatesCount];
-  if (v11)
+  associationStatesCount = [from associationStatesCount];
+  if (associationStatesCount)
   {
-    v12 = v11;
+    v12 = associationStatesCount;
     for (k = 0; k != v12; ++k)
     {
-      -[AWDWiFiMetricJoinTimeout addAssociationState:](self, "addAssociationState:", [a3 associationStateAtIndex:k]);
+      -[AWDWiFiMetricJoinTimeout addAssociationState:](self, "addAssociationState:", [from associationStateAtIndex:k]);
     }
   }
 
-  v14 = [a3 channelsCount];
-  if (v14)
+  channelsCount = [from channelsCount];
+  if (channelsCount)
   {
-    v15 = v14;
+    v15 = channelsCount;
     for (m = 0; m != v15; ++m)
     {
-      -[AWDWiFiMetricJoinTimeout addChannel:](self, "addChannel:", [a3 channelAtIndex:m]);
+      -[AWDWiFiMetricJoinTimeout addChannel:](self, "addChannel:", [from channelAtIndex:m]);
     }
   }
 
-  v17 = [a3 totalNumberOfJoinAttemptsCount];
-  if (v17)
+  totalNumberOfJoinAttemptsCount = [from totalNumberOfJoinAttemptsCount];
+  if (totalNumberOfJoinAttemptsCount)
   {
-    v18 = v17;
+    v18 = totalNumberOfJoinAttemptsCount;
     for (n = 0; n != v18; ++n)
     {
-      -[AWDWiFiMetricJoinTimeout addTotalNumberOfJoinAttempts:](self, "addTotalNumberOfJoinAttempts:", [a3 totalNumberOfJoinAttemptsAtIndex:n]);
+      -[AWDWiFiMetricJoinTimeout addTotalNumberOfJoinAttempts:](self, "addTotalNumberOfJoinAttempts:", [from totalNumberOfJoinAttemptsAtIndex:n]);
     }
   }
 }

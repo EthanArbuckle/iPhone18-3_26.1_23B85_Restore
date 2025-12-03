@@ -1,20 +1,20 @@
 @interface CLKSimpleProgressProvider
-+ (id)simpleProgressProviderWithProgress:(double)a3;
-- (BOOL)isEqual:(id)a3;
-- (CLKSimpleProgressProvider)initWithCoder:(id)a3;
++ (id)simpleProgressProviderWithProgress:(double)progress;
+- (BOOL)isEqual:(id)equal;
+- (CLKSimpleProgressProvider)initWithCoder:(id)coder;
 - (id)JSONObjectRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)_validate;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLKSimpleProgressProvider
 
-+ (id)simpleProgressProviderWithProgress:(double)a3
++ (id)simpleProgressProviderWithProgress:(double)progress
 {
-  v4 = objc_alloc_init(a1);
-  [v4 setProgress:a3];
+  v4 = objc_alloc_init(self);
+  [v4 setProgress:progress];
 
   return v4;
 }
@@ -26,11 +26,11 @@
   [(CLKProgressProvider *)&v2 _validate];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = CLKSimpleProgressProvider;
-  result = [(CLKProgressProvider *)&v5 copyWithZone:a3];
+  result = [(CLKProgressProvider *)&v5 copyWithZone:zone];
   if (result != self)
   {
     *(result + 7) = *&self->_progress;
@@ -39,12 +39,12 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = CLKSimpleProgressProvider;
-  v5 = [(CLKProgressProvider *)&v7 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && self->_progress == v4[7];
+  v5 = [(CLKProgressProvider *)&v7 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && self->_progress == equalCopy[7];
 
   return v5;
 }
@@ -60,25 +60,25 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CLKSimpleProgressProvider;
-  v4 = a3;
-  [(CLKProgressProvider *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CLKProgressProvider *)&v6 encodeWithCoder:coderCopy];
   v5 = [MEMORY[0x277CCABB0] numberWithDouble:{self->_progress, v6.receiver, v6.super_class}];
-  [v4 encodeObject:v5 forKey:@"_progress"];
+  [coderCopy encodeObject:v5 forKey:@"_progress"];
 }
 
-- (CLKSimpleProgressProvider)initWithCoder:(id)a3
+- (CLKSimpleProgressProvider)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = CLKSimpleProgressProvider;
-  v5 = [(CLKProgressProvider *)&v9 initWithCoder:v4];
+  v5 = [(CLKProgressProvider *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_progress"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_progress"];
     [v6 floatValue];
     v5->_progress = v7;
   }
@@ -90,11 +90,11 @@
 {
   v6.receiver = self;
   v6.super_class = CLKSimpleProgressProvider;
-  v3 = [(CLKProgressProvider *)&v6 JSONObjectRepresentation];
+  jSONObjectRepresentation = [(CLKProgressProvider *)&v6 JSONObjectRepresentation];
   v4 = [MEMORY[0x277CCABB0] numberWithDouble:self->_progress];
-  [v3 setObject:v4 forKeyedSubscript:@"progress"];
+  [jSONObjectRepresentation setObject:v4 forKeyedSubscript:@"progress"];
 
-  return v3;
+  return jSONObjectRepresentation;
 }
 
 @end

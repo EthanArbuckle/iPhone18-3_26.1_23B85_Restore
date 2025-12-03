@@ -1,36 +1,36 @@
 @interface ML3AsyncDatabaseOperation
-- (BOOL)_verifyLibraryAndAttributesProperties:(id *)a3;
+- (BOOL)_verifyLibraryAndAttributesProperties:(id *)properties;
 - (BOOL)isCancelled;
 - (BOOL)isExecuting;
 - (BOOL)isFinished;
 - (BOOL)success;
-- (ML3AsyncDatabaseOperation)initWithLibrary:(id)a3 writer:(id)a4;
+- (ML3AsyncDatabaseOperation)initWithLibrary:(id)library writer:(id)writer;
 - (id)error;
 - (void)_execute;
 - (void)cancel;
 - (void)execute;
-- (void)finishWithError:(id)a3;
+- (void)finishWithError:(id)error;
 - (void)start;
 @end
 
 @implementation ML3AsyncDatabaseOperation
 
-- (BOOL)_verifyLibraryAndAttributesProperties:(id *)a3
+- (BOOL)_verifyLibraryAndAttributesProperties:(id *)properties
 {
-  v5 = [(ML3DatabaseOperation *)self attributes];
+  attributes = [(ML3DatabaseOperation *)self attributes];
 
-  if (v5)
+  if (attributes)
   {
-    v6 = [(ML3DatabaseOperation *)self library];
+    library = [(ML3DatabaseOperation *)self library];
 
-    if (v6)
+    if (library)
     {
       v7 = 0;
       goto LABEL_9;
     }
 
     v7 = [ML3MediaLibraryWriter writerErrorWithCode:600 description:@"Operation does not have library reference."];
-    if (!a3)
+    if (!properties)
     {
       goto LABEL_9;
     }
@@ -41,7 +41,7 @@
     v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"Missing attributes for operation type: %@", self];
     v7 = [ML3MediaLibraryWriter writerErrorWithCode:500 description:v8];
 
-    if (!a3)
+    if (!properties)
     {
       goto LABEL_9;
     }
@@ -50,7 +50,7 @@
   if (v7)
   {
     v9 = v7;
-    *a3 = v7;
+    *properties = v7;
   }
 
 LABEL_9:
@@ -91,19 +91,19 @@ LABEL_9:
   return v3;
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   [(ML3AsyncDatabaseOperation *)self willChangeValueForKey:@"success"];
   [(ML3AsyncDatabaseOperation *)self willChangeValueForKey:@"error"];
   [(ML3AsyncDatabaseOperation *)self willChangeValueForKey:@"isFinished"];
   [(ML3AsyncDatabaseOperation *)self willChangeValueForKey:@"isExecuting"];
   os_unfair_lock_lock(&self->_lock);
-  self->_success = v4 == 0;
+  self->_success = errorCopy == 0;
   error = self->_error;
-  self->_error = v4;
-  v6 = v4;
+  self->_error = errorCopy;
+  v6 = errorCopy;
 
   self->_executing = 0;
   self->_finished = 1;
@@ -120,7 +120,7 @@ LABEL_9:
     if (v12)
     {
       v14 = 134218240;
-      v15 = self;
+      selfCopy2 = self;
       v16 = 2048;
       v17 = v9;
       v13 = "[ML3AsyncDatabaseOperation] Async operation %p finished successfully in %.3f seconds";
@@ -132,7 +132,7 @@ LABEL_6:
   else if (v12)
   {
     v14 = 134218240;
-    v15 = self;
+    selfCopy2 = self;
     v16 = 2048;
     v17 = v9;
     v13 = "[ML3AsyncDatabaseOperation] Async operation %p failed in %.3f seconds";
@@ -151,11 +151,11 @@ LABEL_6:
   v4 = [objc_opt_class() instanceMethodForSelector:a2];
   if (v4 == [objc_opt_class() instanceMethodForSelector:a2])
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
     v7 = NSStringFromSelector(a2);
-    [v8 handleFailureInMethod:a2 object:self file:@"ML3AsyncDatabaseOperation.m" lineNumber:91 description:{@"Subclass %@ must implement -%@ defined in %@.", v6, v7, @"[ML3AsyncDatabaseOperation class]"}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ML3AsyncDatabaseOperation.m" lineNumber:91 description:{@"Subclass %@ must implement -%@ defined in %@.", v6, v7, @"[ML3AsyncDatabaseOperation class]"}];
   }
 }
 
@@ -206,11 +206,11 @@ LABEL_6:
   [(ML3AsyncDatabaseOperation *)self didChangeValueForKey:@"isCancelled"];
 }
 
-- (ML3AsyncDatabaseOperation)initWithLibrary:(id)a3 writer:(id)a4
+- (ML3AsyncDatabaseOperation)initWithLibrary:(id)library writer:(id)writer
 {
   v5.receiver = self;
   v5.super_class = ML3AsyncDatabaseOperation;
-  result = [(ML3DatabaseOperation *)&v5 initWithLibrary:a3 writer:a4];
+  result = [(ML3DatabaseOperation *)&v5 initWithLibrary:library writer:writer];
   if (result)
   {
     result->_lock._os_unfair_lock_opaque = 0;

@@ -1,11 +1,11 @@
 @interface VFXConstantScaleConstraint
 + (id)constantScaleConstraint;
 - (VFXConstantScaleConstraint)init;
-- (VFXConstantScaleConstraint)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setScale:(float)a3;
-- (void)setScreenSpace:(BOOL)a3;
+- (VFXConstantScaleConstraint)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)setScale:(float)scale;
+- (void)setScreenSpace:(BOOL)space;
 @end
 
 @implementation VFXConstantScaleConstraint
@@ -34,31 +34,31 @@
   return v2;
 }
 
-- (void)setScale:(float)a3
+- (void)setScale:(float)scale
 {
-  self->_scale = a3;
+  self->_scale = scale;
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = sub_1AF2BCE44;
   v3[3] = &unk_1E7A7E270;
   v3[4] = self;
-  v4 = a3;
+  scaleCopy = scale;
   objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, self, v3);
 }
 
-- (void)setScreenSpace:(BOOL)a3
+- (void)setScreenSpace:(BOOL)space
 {
-  self->_screenSpace = a3;
+  self->_screenSpace = space;
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = sub_1AF2BCEF4;
   v3[3] = &unk_1E7A7E298;
   v3[4] = self;
-  v4 = a3;
+  spaceCopy = space;
   objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, self, v3);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   objc_msgSend_copyTo_(self, v5, v4, v6);
@@ -67,17 +67,17 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = VFXConstantScaleConstraint;
   [(VFXConstraint *)&v9 encodeWithCoder:?];
-  objc_msgSend_encodeBool_forKey_(a3, v5, self->_screenSpace, @"screenSpace");
+  objc_msgSend_encodeBool_forKey_(coder, v5, self->_screenSpace, @"screenSpace");
   *&v6 = self->_scale;
-  objc_msgSend_encodeFloat_forKey_(a3, v7, @"scale", v8, v6);
+  objc_msgSend_encodeFloat_forKey_(coder, v7, @"scale", v8, v6);
 }
 
-- (VFXConstantScaleConstraint)initWithCoder:(id)a3
+- (VFXConstantScaleConstraint)initWithCoder:(id)coder
 {
   v24.receiver = self;
   v24.super_class = VFXConstantScaleConstraint;
@@ -87,9 +87,9 @@
     v4->super._constraintRef = sub_1AF151568();
     v8 = objc_msgSend_immediateMode(VFXTransaction, v5, v6, v7);
     objc_msgSend_setImmediateMode_(VFXTransaction, v9, 1, v10);
-    v13 = objc_msgSend_decodeBoolForKey_(a3, v11, @"screenSpace", v12);
+    v13 = objc_msgSend_decodeBoolForKey_(coder, v11, @"screenSpace", v12);
     objc_msgSend_setScreenSpace_(v4, v14, v13, v15);
-    objc_msgSend_decodeFloatForKey_(a3, v16, @"scale", v17);
+    objc_msgSend_decodeFloatForKey_(coder, v16, @"scale", v17);
     objc_msgSend_setScale_(v4, v18, v19, v20);
     objc_msgSend_setImmediateMode_(VFXTransaction, v21, v8, v22);
   }

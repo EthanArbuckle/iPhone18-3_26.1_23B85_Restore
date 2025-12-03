@@ -1,67 +1,67 @@
 @interface PAREngagedCompletionCache
 + (id)sharedInstance;
-- (void)addCompletion:(id)a3 forInput:(id)a4;
-- (void)addEngagedResults:(id)a3;
+- (void)addCompletion:(id)completion forInput:(id)input;
+- (void)addEngagedResults:(id)results;
 - (void)clearAllEngagements;
-- (void)clearEngagementsFromDate:(id)a3 toDate:(id)a4;
-- (void)clearEngagementsWithTitle:(id)a3;
-- (void)topEngagedResultsForInput:(id)a3 maxAmount:(int64_t)a4 completion:(id)a5;
-- (void)updateParametersForSmartSearchV1:(id)a3 smartSearchV2:(id)a4;
+- (void)clearEngagementsFromDate:(id)date toDate:(id)toDate;
+- (void)clearEngagementsWithTitle:(id)title;
+- (void)topEngagedResultsForInput:(id)input maxAmount:(int64_t)amount completion:(id)completion;
+- (void)updateParametersForSmartSearchV1:(id)v1 smartSearchV2:(id)v2;
 @end
 
 @implementation PAREngagedCompletionCache
 
-- (void)updateParametersForSmartSearchV1:(id)a3 smartSearchV2:(id)a4
+- (void)updateParametersForSmartSearchV1:(id)v1 smartSearchV2:(id)v2
 {
-  v5 = a4;
-  v6 = a3;
+  v2Copy = v2;
+  v1Copy = v1;
   v7 = +[PARSession sharedSession];
-  [v7 updateParametersForSmartSearchV1:v6 smartSearchV2:v5];
+  [v7 updateParametersForSmartSearchV1:v1Copy smartSearchV2:v2Copy];
 }
 
-- (void)topEngagedResultsForInput:(id)a3 maxAmount:(int64_t)a4 completion:(id)a5
+- (void)topEngagedResultsForInput:(id)input maxAmount:(int64_t)amount completion:(id)completion
 {
-  v7 = a5;
-  v8 = a3;
+  completionCopy = completion;
+  inputCopy = input;
   v9 = +[PARSession sharedSession];
-  [v9 topEngagedResultsForInput:v8 maxAmount:a4 completion:v7];
+  [v9 topEngagedResultsForInput:inputCopy maxAmount:amount completion:completionCopy];
 }
 
-- (void)addEngagedResults:(id)a3
+- (void)addEngagedResults:(id)results
 {
-  v3 = a3;
+  resultsCopy = results;
   v4 = +[PARSession sharedSession];
-  [v4 addEngagedResults:v3 completion:0];
+  [v4 addEngagedResults:resultsCopy completion:0];
 }
 
-- (void)clearEngagementsWithTitle:(id)a3
+- (void)clearEngagementsWithTitle:(id)title
 {
-  v3 = a3;
+  titleCopy = title;
   v4 = +[PARSession sharedSession];
-  [v4 clearEngagementsWithTitle:v3 type:0];
+  [v4 clearEngagementsWithTitle:titleCopy type:0];
 }
 
 - (void)clearAllEngagements
 {
-  v4 = [MEMORY[0x1E695DF00] distantPast];
-  v3 = [MEMORY[0x1E695DF00] distantFuture];
-  [(PAREngagedCompletionCache *)self clearEngagementsFromDate:v4 toDate:v3];
+  distantPast = [MEMORY[0x1E695DF00] distantPast];
+  distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+  [(PAREngagedCompletionCache *)self clearEngagementsFromDate:distantPast toDate:distantFuture];
 }
 
-- (void)clearEngagementsFromDate:(id)a3 toDate:(id)a4
+- (void)clearEngagementsFromDate:(id)date toDate:(id)toDate
 {
-  v5 = a4;
-  v6 = a3;
+  toDateCopy = toDate;
+  dateCopy = date;
   v7 = +[PARSession sharedSession];
-  [v7 clearEngagementsFromDate:v6 toDate:v5];
+  [v7 clearEngagementsFromDate:dateCopy toDate:toDateCopy];
 }
 
-- (void)addCompletion:(id)a3 forInput:(id)a4
+- (void)addCompletion:(id)completion forInput:(id)input
 {
-  v5 = a4;
-  v6 = a3;
+  inputCopy = input;
+  completionCopy = completion;
   v7 = +[PARSession sharedSession];
-  [v7 addCompletion:v6 forInput:v5];
+  [v7 addCompletion:completionCopy forInput:inputCopy];
 }
 
 + (id)sharedInstance

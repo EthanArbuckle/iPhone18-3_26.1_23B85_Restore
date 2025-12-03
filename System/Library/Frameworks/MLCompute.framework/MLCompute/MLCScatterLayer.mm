@@ -1,64 +1,64 @@
 @interface MLCScatterLayer
-- (BOOL)compileForDevice:(id)a3 sourceTensors:(id)a4 resultTensor:(id)a5;
-- (MLCScatterLayer)initWithDimension:(unint64_t)a3 reductionType:(int)a4;
+- (BOOL)compileForDevice:(id)device sourceTensors:(id)tensors resultTensor:(id)tensor;
+- (MLCScatterLayer)initWithDimension:(unint64_t)dimension reductionType:(int)type;
 - (id)description;
-- (id)resultTensorFromSources:(id)a3;
+- (id)resultTensorFromSources:(id)sources;
 - (id)summarizedDOTDescription;
 @end
 
 @implementation MLCScatterLayer
 
-- (MLCScatterLayer)initWithDimension:(unint64_t)a3 reductionType:(int)a4
+- (MLCScatterLayer)initWithDimension:(unint64_t)dimension reductionType:(int)type
 {
   v7.receiver = self;
   v7.super_class = MLCScatterLayer;
   result = [(MLCLayer *)&v7 initWithLabel:@"Scatter"];
   if (result)
   {
-    result->_dimension = a3;
-    result->_reductionType = a4;
+    result->_dimension = dimension;
+    result->_reductionType = type;
   }
 
   return result;
 }
 
-- (BOOL)compileForDevice:(id)a3 sourceTensors:(id)a4 resultTensor:(id)a5
+- (BOOL)compileForDevice:(id)device sourceTensors:(id)tensors resultTensor:(id)tensor
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if ([v10 count] == 3)
+  deviceCopy = device;
+  tensorsCopy = tensors;
+  tensorCopy = tensor;
+  if ([tensorsCopy count] == 3)
   {
-    v12 = [v10 objectAtIndexedSubscript:0];
-    v13 = [v10 objectAtIndexedSubscript:1];
-    v14 = [v10 objectAtIndexedSubscript:2];
-    v15 = [v14 descriptor];
-    v16 = [v15 dataType];
+    v12 = [tensorsCopy objectAtIndexedSubscript:0];
+    v13 = [tensorsCopy objectAtIndexedSubscript:1];
+    v14 = [tensorsCopy objectAtIndexedSubscript:2];
+    descriptor = [v14 descriptor];
+    dataType = [descriptor dataType];
 
-    if (v16 == 1)
+    if (dataType == 1)
     {
-      v17 = [v13 descriptor];
-      v18 = [v17 dataType];
+      descriptor2 = [v13 descriptor];
+      dataType2 = [descriptor2 dataType];
 
-      if (v18 == 7)
+      if (dataType2 == 7)
       {
-        v19 = [v12 descriptor];
-        v20 = [v19 dataType];
+        descriptor3 = [v12 descriptor];
+        dataType3 = [descriptor3 dataType];
 
-        if (v20 == 1)
+        if (dataType3 == 1)
         {
-          v50 = self;
+          selfCopy = self;
           v51 = a2;
           v56 = v14;
-          v57 = v9;
-          v21 = [v10 objectAtIndexedSubscript:1];
-          v54 = [v21 descriptor];
-          v22 = [v54 shape];
-          v52 = [v22 count];
-          v23 = [v10 objectAtIndexedSubscript:0];
-          v24 = [v23 descriptor];
-          v25 = [v24 shape];
-          v26 = [v25 count];
+          v57 = deviceCopy;
+          v21 = [tensorsCopy objectAtIndexedSubscript:1];
+          descriptor4 = [v21 descriptor];
+          shape = [descriptor4 shape];
+          v52 = [shape count];
+          v23 = [tensorsCopy objectAtIndexedSubscript:0];
+          descriptor5 = [v23 descriptor];
+          shape2 = [descriptor5 shape];
+          v26 = [shape2 count];
 
           if (v52 != v26)
           {
@@ -70,34 +70,34 @@
 
             v41 = 0;
             v14 = v56;
-            v9 = v57;
+            deviceCopy = v57;
             goto LABEL_22;
           }
 
           v49 = v13;
           v53 = v12;
-          v55 = v11;
+          v55 = tensorCopy;
           v27 = 0;
           while (1)
           {
-            v28 = [v10 objectAtIndexedSubscript:2];
-            v29 = [v28 descriptor];
-            v30 = [v29 shape];
-            v31 = [v30 count];
+            v28 = [tensorsCopy objectAtIndexedSubscript:2];
+            descriptor6 = [v28 descriptor];
+            shape3 = [descriptor6 shape];
+            v31 = [shape3 count];
 
             if (v27 >= v31)
             {
               break;
             }
 
-            v32 = [v10 objectAtIndexedSubscript:1];
-            v33 = [v32 descriptor];
-            v34 = [v33 shape];
-            v35 = [v34 objectAtIndexedSubscript:v27];
-            v36 = [v10 objectAtIndexedSubscript:0];
-            v37 = [v36 descriptor];
-            v38 = [v37 shape];
-            v39 = [v38 objectAtIndexedSubscript:v27];
+            v32 = [tensorsCopy objectAtIndexedSubscript:1];
+            descriptor7 = [v32 descriptor];
+            shape4 = [descriptor7 shape];
+            v35 = [shape4 objectAtIndexedSubscript:v27];
+            v36 = [tensorsCopy objectAtIndexedSubscript:0];
+            descriptor8 = [v36 descriptor];
+            shape5 = [descriptor8 shape];
+            v39 = [shape5 objectAtIndexedSubscript:v27];
 
             ++v27;
             if (v35 != v39)
@@ -110,35 +110,35 @@
 
               v41 = 0;
               v14 = v56;
-              v9 = v57;
+              deviceCopy = v57;
               v12 = v53;
-              v11 = v55;
+              tensorCopy = v55;
               v13 = v49;
               goto LABEL_22;
             }
           }
 
-          v9 = v57;
-          v43 = [v57 computeEngine];
+          deviceCopy = v57;
+          computeEngine = [v57 computeEngine];
           v44 = objc_opt_respondsToSelector();
 
           if (v44)
           {
-            v45 = [v57 computeEngine];
-            v40 = [v45 scatterLayerWithDimension:-[MLCScatterLayer dimension](v50 reduceType:{"dimension"), -[MLCScatterLayer reductionType](v50, "reductionType")}];
+            computeEngine2 = [v57 computeEngine];
+            v40 = [computeEngine2 scatterLayerWithDimension:-[MLCScatterLayer dimension](selfCopy reduceType:{"dimension"), -[MLCScatterLayer reductionType](selfCopy, "reductionType")}];
 
             v13 = v49;
             v14 = v56;
             v46 = v51;
             if (v40)
             {
-              v11 = v55;
+              tensorCopy = v55;
               if ([v40 count])
               {
-                v47 = [v57 computeEngine];
-                v41 = [v47 compileLayerDeviceOps:v40 sourceTensors:v10 resultTensor:v55];
+                computeEngine3 = [v57 computeEngine];
+                v41 = [computeEngine3 compileLayerDeviceOps:v40 sourceTensors:tensorsCopy resultTensor:v55];
 
-                v58.receiver = v50;
+                v58.receiver = selfCopy;
                 v58.super_class = MLCScatterLayer;
                 [(MLCLayer *)&v58 bindDevice:v57 deviceOps:v40];
                 v12 = v53;
@@ -148,14 +148,14 @@
 
             else
             {
-              v11 = v55;
+              tensorCopy = v55;
             }
           }
 
           else
           {
             v40 = 0;
-            v11 = v55;
+            tensorCopy = v55;
             v14 = v56;
             v13 = v49;
             v46 = v51;
@@ -216,33 +216,33 @@ LABEL_23:
   return v41;
 }
 
-- (id)resultTensorFromSources:(id)a3
+- (id)resultTensorFromSources:(id)sources
 {
-  v3 = a3;
+  sourcesCopy = sources;
   v4 = [MEMORY[0x277CBEBF8] mutableCopy];
   for (i = 0; ; ++i)
   {
-    v6 = [v3 objectAtIndexedSubscript:2];
-    v7 = [v6 descriptor];
-    v8 = [v7 shape];
-    v9 = [v8 count];
+    v6 = [sourcesCopy objectAtIndexedSubscript:2];
+    descriptor = [v6 descriptor];
+    shape = [descriptor shape];
+    v9 = [shape count];
 
     if (i >= v9)
     {
       break;
     }
 
-    v10 = [v3 objectAtIndexedSubscript:2];
-    v11 = [v10 descriptor];
-    v12 = [v11 shape];
-    v13 = [v12 objectAtIndexedSubscript:i];
+    v10 = [sourcesCopy objectAtIndexedSubscript:2];
+    descriptor2 = [v10 descriptor];
+    shape2 = [descriptor2 shape];
+    v13 = [shape2 objectAtIndexedSubscript:i];
     [v4 setObject:v13 atIndexedSubscript:i];
   }
 
   v14 = [v4 copy];
-  v15 = [v3 objectAtIndexedSubscript:2];
-  v16 = [v15 descriptor];
-  v17 = +[MLCTensorDescriptor descriptorWithShape:dataType:](MLCTensorDescriptor, "descriptorWithShape:dataType:", v14, [v16 dataType]);
+  v15 = [sourcesCopy objectAtIndexedSubscript:2];
+  descriptor3 = [v15 descriptor];
+  v17 = +[MLCTensorDescriptor descriptorWithShape:dataType:](MLCTensorDescriptor, "descriptorWithShape:dataType:", v14, [descriptor3 dataType]);
 
   v18 = [MLCTensor tensorWithDescriptor:v17];
 
@@ -254,9 +254,9 @@ LABEL_23:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MLCScatterLayer *)self dimension];
-  v7 = [(MLCLayer *)self resultTensors];
-  v8 = [v3 stringWithFormat:@"%@: { dimension=%lu : resultTensor=%@ }", v5, v6, v7];
+  dimension = [(MLCScatterLayer *)self dimension];
+  resultTensors = [(MLCLayer *)self resultTensors];
+  v8 = [v3 stringWithFormat:@"%@: { dimension=%lu : resultTensor=%@ }", v5, dimension, resultTensors];
 
   return v8;
 }

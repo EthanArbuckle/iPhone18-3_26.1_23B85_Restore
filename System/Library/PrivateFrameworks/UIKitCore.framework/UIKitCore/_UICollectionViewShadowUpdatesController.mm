@@ -1,169 +1,169 @@
 @interface _UICollectionViewShadowUpdatesController
-- (BOOL)_collectionView:(id)a3 canEditItemAtIndexPath:(id)a4;
-- (BOOL)_collectionView:(id)a3 canFocusItemAtIndexPath:(id)a4;
-- (BOOL)_collectionView:(id)a3 canHandleDropSesson:(id)a4;
-- (BOOL)_collectionView:(id)a3 canMoveItemAtIndexPath:(id)a4;
-- (BOOL)_collectionView:(id)a3 dragSessionSupportsSystemDrag:(id)a4;
-- (BOOL)_collectionView:(id)a3 prefersFullSizePreviewsForDragSession:(id)a4;
-- (BOOL)_collectionView:(id)a3 shouldApplyTransitionContentOffset:(CGPoint)a4 contentSize:(CGSize)a5;
-- (BOOL)_collectionView:(id)a3 shouldSpringLoadItemAtIndexPath:(id)a4 withContext:(id)a5;
-- (BOOL)_rebaseForUpdateMap:(id)a3;
-- (BOOL)_shadowUpdatesAreSimpleInsertWithOptionalMoveSequenceForIndexPath:(id)a3;
-- (BOOL)collectionView:(id)a3 canEditItemAtIndexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 canFocusItemAtIndexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 canHandleDropSession:(id)a4;
-- (BOOL)collectionView:(id)a3 canHandleDropSesson:(id)a4;
-- (BOOL)collectionView:(id)a3 canMoveItemAtIndexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 canPerformAction:(SEL)a4 forItemAtIndexPath:(id)a5 withSender:(id)a6;
-- (BOOL)collectionView:(id)a3 canPerformPrimaryActionForItemAtIndexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 dragSessionAllowsMoveOperation:(id)a4;
-- (BOOL)collectionView:(id)a3 dragSessionIsRestrictedToDraggingApplication:(id)a4;
-- (BOOL)collectionView:(id)a3 selectionFollowsFocusForItemAtIndexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 shouldDeselectItemAtIndexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 shouldShowMenuForItemAtIndexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 shouldSpringLoadItemAtIndexPath:(id)a4 withContext:(id)a5;
-- (BOOL)collectionView:(id)a3 shouldUpdateFocusFromItemAtIndexPath:(id)a4 toView:(id)a5 heading:(unint64_t)a6;
-- (BOOL)collectionView:(id)a3 shouldUpdateFocusInContext:(id)a4;
-- (BOOL)collectionView:(id)a3 tableLayout:(id)a4 shouldIndentWhileEditingRowAtIndexPath:(id)a5;
-- (BOOL)rebaseForUpdates:(id)a3;
+- (BOOL)_collectionView:(id)view canEditItemAtIndexPath:(id)path;
+- (BOOL)_collectionView:(id)view canFocusItemAtIndexPath:(id)path;
+- (BOOL)_collectionView:(id)view canHandleDropSesson:(id)sesson;
+- (BOOL)_collectionView:(id)view canMoveItemAtIndexPath:(id)path;
+- (BOOL)_collectionView:(id)view dragSessionSupportsSystemDrag:(id)drag;
+- (BOOL)_collectionView:(id)view prefersFullSizePreviewsForDragSession:(id)session;
+- (BOOL)_collectionView:(id)view shouldApplyTransitionContentOffset:(CGPoint)offset contentSize:(CGSize)size;
+- (BOOL)_collectionView:(id)view shouldSpringLoadItemAtIndexPath:(id)path withContext:(id)context;
+- (BOOL)_rebaseForUpdateMap:(id)map;
+- (BOOL)_shadowUpdatesAreSimpleInsertWithOptionalMoveSequenceForIndexPath:(id)path;
+- (BOOL)collectionView:(id)view canEditItemAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view canFocusItemAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view canHandleDropSession:(id)session;
+- (BOOL)collectionView:(id)view canHandleDropSesson:(id)sesson;
+- (BOOL)collectionView:(id)view canMoveItemAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view canPerformAction:(SEL)action forItemAtIndexPath:(id)path withSender:(id)sender;
+- (BOOL)collectionView:(id)view canPerformPrimaryActionForItemAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view dragSessionAllowsMoveOperation:(id)operation;
+- (BOOL)collectionView:(id)view dragSessionIsRestrictedToDraggingApplication:(id)application;
+- (BOOL)collectionView:(id)view selectionFollowsFocusForItemAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view shouldDeselectItemAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view shouldShowMenuForItemAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view shouldSpringLoadItemAtIndexPath:(id)path withContext:(id)context;
+- (BOOL)collectionView:(id)view shouldUpdateFocusFromItemAtIndexPath:(id)path toView:(id)toView heading:(unint64_t)heading;
+- (BOOL)collectionView:(id)view shouldUpdateFocusInContext:(id)context;
+- (BOOL)collectionView:(id)view tableLayout:(id)layout shouldIndentWhileEditingRowAtIndexPath:(id)path;
+- (BOOL)rebaseForUpdates:(id)updates;
 - (BOOL)shouldRebaseForUpdates;
-- (CGPoint)_collectionView:(id)a3 targetContentOffsetForProposedContentOffset:(CGPoint)a4;
-- (CGPoint)collectionView:(id)a3 targetContentOffsetForProposedContentOffset:(CGPoint)a4;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForFooterInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
+- (CGPoint)_collectionView:(id)view targetContentOffsetForProposedContentOffset:(CGPoint)offset;
+- (CGPoint)collectionView:(id)view targetContentOffsetForProposedContentOffset:(CGPoint)offset;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForFooterInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
 - (UICollectionView)collectionView;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
-- (_UICollectionViewShadowUpdatesController)initWithCollectionView:(id)a3;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
+- (_UICollectionViewShadowUpdatesController)initWithCollectionView:(id)view;
 - (_UIDataSourceSnapshotter)initialSnapshot;
 - (_UIDataSourceUpdateMap)updateMap;
-- (double)collectionView:(id)a3 heightForFooterViewInTableLayout:(id)a4;
-- (double)collectionView:(id)a3 heightForHeaderViewInTableLayout:(id)a4;
-- (double)collectionView:(id)a3 layout:(id)a4 minimumInteritemSpacingForSectionAtIndex:(int64_t)a5;
-- (double)collectionView:(id)a3 layout:(id)a4 minimumLineSpacingForSectionAtIndex:(int64_t)a5;
-- (double)collectionView:(id)a3 tableLayout:(id)a4 estimatedHeightForFooterInSection:(int64_t)a5;
-- (double)collectionView:(id)a3 tableLayout:(id)a4 estimatedHeightForHeaderInSection:(int64_t)a5;
-- (double)collectionView:(id)a3 tableLayout:(id)a4 estimatedHeightForRowAtIndexPath:(id)a5;
-- (double)collectionView:(id)a3 tableLayout:(id)a4 heightForFooterInSection:(int64_t)a5;
-- (double)collectionView:(id)a3 tableLayout:(id)a4 heightForHeaderInSection:(int64_t)a5;
-- (double)collectionView:(id)a3 tableLayout:(id)a4 heightForRowAtIndexPath:(id)a5;
-- (id)_coalesceUpdatesIfPossible:(id)a3;
-- (id)_collectionView:(id)a3 accessoriesForContextMenuWithConfiguration:(id)a4 layoutAnchor:(id *)a5;
-- (id)_collectionView:(id)a3 dragDestinationTargetIndexPathForProposedIndexPath:(id)a4 currentIndexPath:(id)a5 dropSession:(id)a6;
-- (id)_collectionView:(id)a3 dragSessionPropertiesForSession:(id)a4;
-- (id)_collectionView:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationIndexPath:(id)a5;
-- (id)_collectionView:(id)a3 flowLayoutRowAlignmentOptionsForSection:(int64_t)a4;
-- (id)_collectionView:(id)a3 indexPathForSectionIndexTitle:(id)a4 atIndex:(int64_t)a5;
-- (id)_collectionView:(id)a3 indexPathOfReferenceItemToPreserveContentOffsetWithProposedReference:(id)a4;
-- (id)_collectionView:(id)a3 itemsForAddingToDragSession:(id)a4 atIndexPath:(id)a5 point:(CGPoint)a6;
-- (id)_collectionView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5;
-- (id)_collectionView:(id)a3 layout:(id)a4 flowLayoutRowAlignmentOptionsForSection:(int64_t)a5;
-- (id)_collectionView:(id)a3 layout:(id)a4 sizesForItemsInSection:(int64_t)a5;
-- (id)_collectionView:(id)a3 liftingPreviewParametersForItemAtIndexPath:(id)a4;
-- (id)_collectionView:(id)a3 sceneActivationConfigurationForItemAtIndexPath:(id)a4 point:(CGPoint)a5;
-- (id)_collectionView:(id)a3 sectionIndexTitlesTrimmedToCount:(unint64_t)a4;
-- (id)_collectionView:(id)a3 styleForContextMenuWithConfiguration:(id)a4;
-- (id)_collectionView:(id)a3 targetIndexPathForMoveFromItemAtIndexPath:(id)a4 toProposedIndexPath:(id)a5;
-- (id)_collectionView:(id)a3 typeSelectStringForItemAtIndexPath:(id)a4;
-- (id)_dci_collectionView:(id)a3 contextMenuConfiguration:(id)a4 previewForDismissingToItemAtIndexPath:(id)a5;
-- (id)_dci_collectionView:(id)a3 contextMenuConfiguration:(id)a4 previewForHighlightingItemAtIndexPath:(id)a5;
-- (id)_dci_collectionView:(id)a3 contextMenuConfigurationForItemsAtIndexPaths:(id)a4 point:(CGPoint)a5;
-- (id)_dci_collectionView:(id)a3 contextMenuConfigurationForSelectedItemsAtIndexPaths:(id)a4 point:(CGPoint)a5;
-- (id)_expandCollapseAnimationContextForCollectionView:(id)a3;
-- (id)_findInsertShadowUpdateForFinalIndexPath:(id)a3;
-- (id)_findShadowUpdateForIdentifier:(id)a3 inShadowUpdates:(id)a4;
-- (id)_indexPathOfReferenceItemForLayoutTransitionInCollectionView:(id)a3;
-- (id)_indexPathsBeforeShadowUpdates:(id)a3;
-- (id)_rebasedShadowUpdatesForUpdate:(id)a3 initialSnapshot:(id)a4 shadowUpdates:(id)a5;
-- (id)_rebasedUpdateMapForUpdates:(id)a3;
-- (id)_sectionIndexTitlesForCollectionView:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 contextMenuConfiguration:(id)a4 dismissalPreviewForItemAtIndexPath:(id)a5;
-- (id)collectionView:(id)a3 contextMenuConfiguration:(id)a4 highlightPreviewForItemAtIndexPath:(id)a5;
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemAtIndexPath:(id)a4 point:(CGPoint)a5;
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemsAtIndexPaths:(id)a4 point:(CGPoint)a5;
-- (id)collectionView:(id)a3 dragPreviewParametersForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 dropPreviewParametersForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationIndexPath:(id)a5;
-- (id)collectionView:(id)a3 indexPathForIndexTitle:(id)a4 atIndex:(int64_t)a5;
-- (id)collectionView:(id)a3 itemsForAddingToDragSession:(id)a4 atIndexPath:(id)a5 point:(CGPoint)a6;
-- (id)collectionView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5;
-- (id)collectionView:(id)a3 previewForDismissingContextMenuWithConfiguration:(id)a4;
-- (id)collectionView:(id)a3 previewForHighlightingContextMenuWithConfiguration:(id)a4;
-- (id)collectionView:(id)a3 sceneActivationConfigurationForItemAtIndexPath:(id)a4 point:(CGPoint)a5;
-- (id)collectionView:(id)a3 tableLayout:(id)a4 leadingSwipeActionsConfigurationForRowAtIndexPath:(id)a5;
-- (id)collectionView:(id)a3 tableLayout:(id)a4 leadingSwipeActionsForRowAtIndexPath:(id)a5;
-- (id)collectionView:(id)a3 tableLayout:(id)a4 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a5;
-- (id)collectionView:(id)a3 tableLayout:(id)a4 trailingSwipeActionsForRowAtIndexPath:(id)a5;
-- (id)collectionView:(id)a3 targetIndexPathForMoveFromItemAtIndexPath:(id)a4 toProposedIndexPath:(id)a5;
-- (id)collectionView:(id)a3 targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)a4 atCurrentIndexPath:(id)a5 toProposedIndexPath:(id)a6;
-- (id)collectionView:(id)a3 transitionLayoutForOldLayout:(id)a4 newLayout:(id)a5;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
+- (double)collectionView:(id)view heightForFooterViewInTableLayout:(id)layout;
+- (double)collectionView:(id)view heightForHeaderViewInTableLayout:(id)layout;
+- (double)collectionView:(id)view layout:(id)layout minimumInteritemSpacingForSectionAtIndex:(int64_t)index;
+- (double)collectionView:(id)view layout:(id)layout minimumLineSpacingForSectionAtIndex:(int64_t)index;
+- (double)collectionView:(id)view tableLayout:(id)layout estimatedHeightForFooterInSection:(int64_t)section;
+- (double)collectionView:(id)view tableLayout:(id)layout estimatedHeightForHeaderInSection:(int64_t)section;
+- (double)collectionView:(id)view tableLayout:(id)layout estimatedHeightForRowAtIndexPath:(id)path;
+- (double)collectionView:(id)view tableLayout:(id)layout heightForFooterInSection:(int64_t)section;
+- (double)collectionView:(id)view tableLayout:(id)layout heightForHeaderInSection:(int64_t)section;
+- (double)collectionView:(id)view tableLayout:(id)layout heightForRowAtIndexPath:(id)path;
+- (id)_coalesceUpdatesIfPossible:(id)possible;
+- (id)_collectionView:(id)view accessoriesForContextMenuWithConfiguration:(id)configuration layoutAnchor:(id *)anchor;
+- (id)_collectionView:(id)view dragDestinationTargetIndexPathForProposedIndexPath:(id)path currentIndexPath:(id)indexPath dropSession:(id)session;
+- (id)_collectionView:(id)view dragSessionPropertiesForSession:(id)session;
+- (id)_collectionView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path;
+- (id)_collectionView:(id)view flowLayoutRowAlignmentOptionsForSection:(int64_t)section;
+- (id)_collectionView:(id)view indexPathForSectionIndexTitle:(id)title atIndex:(int64_t)index;
+- (id)_collectionView:(id)view indexPathOfReferenceItemToPreserveContentOffsetWithProposedReference:(id)reference;
+- (id)_collectionView:(id)view itemsForAddingToDragSession:(id)session atIndexPath:(id)path point:(CGPoint)point;
+- (id)_collectionView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path;
+- (id)_collectionView:(id)view layout:(id)layout flowLayoutRowAlignmentOptionsForSection:(int64_t)section;
+- (id)_collectionView:(id)view layout:(id)layout sizesForItemsInSection:(int64_t)section;
+- (id)_collectionView:(id)view liftingPreviewParametersForItemAtIndexPath:(id)path;
+- (id)_collectionView:(id)view sceneActivationConfigurationForItemAtIndexPath:(id)path point:(CGPoint)point;
+- (id)_collectionView:(id)view sectionIndexTitlesTrimmedToCount:(unint64_t)count;
+- (id)_collectionView:(id)view styleForContextMenuWithConfiguration:(id)configuration;
+- (id)_collectionView:(id)view targetIndexPathForMoveFromItemAtIndexPath:(id)path toProposedIndexPath:(id)indexPath;
+- (id)_collectionView:(id)view typeSelectStringForItemAtIndexPath:(id)path;
+- (id)_dci_collectionView:(id)view contextMenuConfiguration:(id)configuration previewForDismissingToItemAtIndexPath:(id)path;
+- (id)_dci_collectionView:(id)view contextMenuConfiguration:(id)configuration previewForHighlightingItemAtIndexPath:(id)path;
+- (id)_dci_collectionView:(id)view contextMenuConfigurationForItemsAtIndexPaths:(id)paths point:(CGPoint)point;
+- (id)_dci_collectionView:(id)view contextMenuConfigurationForSelectedItemsAtIndexPaths:(id)paths point:(CGPoint)point;
+- (id)_expandCollapseAnimationContextForCollectionView:(id)view;
+- (id)_findInsertShadowUpdateForFinalIndexPath:(id)path;
+- (id)_findShadowUpdateForIdentifier:(id)identifier inShadowUpdates:(id)updates;
+- (id)_indexPathOfReferenceItemForLayoutTransitionInCollectionView:(id)view;
+- (id)_indexPathsBeforeShadowUpdates:(id)updates;
+- (id)_rebasedShadowUpdatesForUpdate:(id)update initialSnapshot:(id)snapshot shadowUpdates:(id)updates;
+- (id)_rebasedUpdateMapForUpdates:(id)updates;
+- (id)_sectionIndexTitlesForCollectionView:(id)view;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view contextMenuConfiguration:(id)configuration dismissalPreviewForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view contextMenuConfiguration:(id)configuration highlightPreviewForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view contextMenuConfigurationForItemAtIndexPath:(id)path point:(CGPoint)point;
+- (id)collectionView:(id)view contextMenuConfigurationForItemsAtIndexPaths:(id)paths point:(CGPoint)point;
+- (id)collectionView:(id)view dragPreviewParametersForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view dropPreviewParametersForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path;
+- (id)collectionView:(id)view indexPathForIndexTitle:(id)title atIndex:(int64_t)index;
+- (id)collectionView:(id)view itemsForAddingToDragSession:(id)session atIndexPath:(id)path point:(CGPoint)point;
+- (id)collectionView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path;
+- (id)collectionView:(id)view previewForDismissingContextMenuWithConfiguration:(id)configuration;
+- (id)collectionView:(id)view previewForHighlightingContextMenuWithConfiguration:(id)configuration;
+- (id)collectionView:(id)view sceneActivationConfigurationForItemAtIndexPath:(id)path point:(CGPoint)point;
+- (id)collectionView:(id)view tableLayout:(id)layout leadingSwipeActionsConfigurationForRowAtIndexPath:(id)path;
+- (id)collectionView:(id)view tableLayout:(id)layout leadingSwipeActionsForRowAtIndexPath:(id)path;
+- (id)collectionView:(id)view tableLayout:(id)layout trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path;
+- (id)collectionView:(id)view tableLayout:(id)layout trailingSwipeActionsForRowAtIndexPath:(id)path;
+- (id)collectionView:(id)view targetIndexPathForMoveFromItemAtIndexPath:(id)path toProposedIndexPath:(id)indexPath;
+- (id)collectionView:(id)view targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)path atCurrentIndexPath:(id)indexPath toProposedIndexPath:(id)proposedIndexPath;
+- (id)collectionView:(id)view transitionLayoutForOldLayout:(id)layout newLayout:(id)newLayout;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
 - (id)computeRevertShadowUpdates;
-- (id)indexPathAfterShadowUpdates:(id)a3 allowingAppendingInserts:(BOOL)a4;
-- (id)indexPathBeforeShadowUpdates:(id)a3;
-- (id)indexPathForElementWithModelIdentifier:(id)a3 inView:(id)a4;
-- (id)indexPathForPreferredFocusedItemForCollectionView:(id)a3;
-- (id)indexPathForPreferredFocusedViewInCollectionView:(id)a3;
-- (id)indexPathsAfterShadowUpdates:(id)a3;
-- (id)indexPathsBeforeShadowUpdates:(id)a3;
-- (id)indexTitlesForCollectionView:(id)a3;
-- (id)modelIdentifierForElementAtIndexPath:(id)a3 inView:(id)a4;
-- (int64_t)_collectionView:(id)a3 dataOwnerForDragSession:(id)a4 atIndexPath:(id)a5;
-- (int64_t)_collectionView:(id)a3 dataOwnerForDropSession:(id)a4 withDestinationIndexPath:(id)a5;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (int64_t)collectionView:(id)a3 tableLayout:(id)a4 editingStyleForRowAtIndexPath:(id)a5;
-- (int64_t)collectionView:(id)a3 tableLayout:(id)a4 indentationLevelForRowAtIndexPath:(id)a5;
-- (int64_t)numberOfSectionsInCollectionView:(id)a3;
-- (int64_t)sectionIndexAfterShadowUpdates:(int64_t)a3 allowingAppendingInserts:(BOOL)a4;
-- (int64_t)sectionIndexBeforeShadowUpdates:(int64_t)a3;
-- (void)_collectionView:(id)a3 didFocusItemAtIndexPath:(id)a4;
-- (void)_collectionView:(id)a3 dragSessionDidEnd:(id)a4;
-- (void)_collectionView:(id)a3 dragSessionWillBegin:(id)a4;
-- (void)_collectionView:(id)a3 dropSessionDidEnd:(id)a4;
-- (void)_collectionView:(id)a3 dropSessionDidEnter:(id)a4;
-- (void)_collectionView:(id)a3 dropSessionDidExit:(id)a4;
-- (void)_collectionView:(id)a3 horizontalIndexTitleBar:(id)a4 selectedEntry:(id)a5;
-- (void)_collectionView:(id)a3 moveItemAtIndexPath:(id)a4 toIndexPath:(id)a5;
-- (void)_collectionView:(id)a3 orthogonalScrollViewDidScroll:(id)a4 section:(int64_t)a5;
-- (void)_collectionView:(id)a3 performDropWithCoordinator:(id)a4;
-- (void)_collectionView:(id)a3 typeSelectResultDidUpdate:(id)a4;
-- (void)_collectionView:(id)a3 updateTypeSelectResultForCell:(id)a4 atIndexPath:(id)a5 withItemResult:(id)a6 animator:(id)a7;
-- (void)_collectionView:(id)a3 willPerformUpdates:(id)a4;
-- (void)_pruneAndRebaseShadowUpdatesForShadowInsertWithIdentifier:(id)a3;
+- (id)indexPathAfterShadowUpdates:(id)updates allowingAppendingInserts:(BOOL)inserts;
+- (id)indexPathBeforeShadowUpdates:(id)updates;
+- (id)indexPathForElementWithModelIdentifier:(id)identifier inView:(id)view;
+- (id)indexPathForPreferredFocusedItemForCollectionView:(id)view;
+- (id)indexPathForPreferredFocusedViewInCollectionView:(id)view;
+- (id)indexPathsAfterShadowUpdates:(id)updates;
+- (id)indexPathsBeforeShadowUpdates:(id)updates;
+- (id)indexTitlesForCollectionView:(id)view;
+- (id)modelIdentifierForElementAtIndexPath:(id)path inView:(id)view;
+- (int64_t)_collectionView:(id)view dataOwnerForDragSession:(id)session atIndexPath:(id)path;
+- (int64_t)_collectionView:(id)view dataOwnerForDropSession:(id)session withDestinationIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (int64_t)collectionView:(id)view tableLayout:(id)layout editingStyleForRowAtIndexPath:(id)path;
+- (int64_t)collectionView:(id)view tableLayout:(id)layout indentationLevelForRowAtIndexPath:(id)path;
+- (int64_t)numberOfSectionsInCollectionView:(id)view;
+- (int64_t)sectionIndexAfterShadowUpdates:(int64_t)updates allowingAppendingInserts:(BOOL)inserts;
+- (int64_t)sectionIndexBeforeShadowUpdates:(int64_t)updates;
+- (void)_collectionView:(id)view didFocusItemAtIndexPath:(id)path;
+- (void)_collectionView:(id)view dragSessionDidEnd:(id)end;
+- (void)_collectionView:(id)view dragSessionWillBegin:(id)begin;
+- (void)_collectionView:(id)view dropSessionDidEnd:(id)end;
+- (void)_collectionView:(id)view dropSessionDidEnter:(id)enter;
+- (void)_collectionView:(id)view dropSessionDidExit:(id)exit;
+- (void)_collectionView:(id)view horizontalIndexTitleBar:(id)bar selectedEntry:(id)entry;
+- (void)_collectionView:(id)view moveItemAtIndexPath:(id)path toIndexPath:(id)indexPath;
+- (void)_collectionView:(id)view orthogonalScrollViewDidScroll:(id)scroll section:(int64_t)section;
+- (void)_collectionView:(id)view performDropWithCoordinator:(id)coordinator;
+- (void)_collectionView:(id)view typeSelectResultDidUpdate:(id)update;
+- (void)_collectionView:(id)view updateTypeSelectResultForCell:(id)cell atIndexPath:(id)path withItemResult:(id)result animator:(id)animator;
+- (void)_collectionView:(id)view willPerformUpdates:(id)updates;
+- (void)_pruneAndRebaseShadowUpdatesForShadowInsertWithIdentifier:(id)identifier;
 - (void)_regenerateUpdateMap;
-- (void)appendShadowUpdate:(id)a3;
-- (void)collectionView:(id)a3 cancelPrefetchingForItemsAtIndexPaths:(id)a4;
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 didEndDisplayingSupplementaryView:(id)a4 forElementOfKind:(id)a5 atIndexPath:(id)a6;
-- (void)collectionView:(id)a3 didFocusItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didHighlightItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didUnfocusItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didUnhighlightItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didUpdateFocusInContext:(id)a4 withAnimationCoordinator:(id)a5;
-- (void)collectionView:(id)a3 dragSessionDidEnd:(id)a4;
-- (void)collectionView:(id)a3 dragSessionWillBegin:(id)a4;
-- (void)collectionView:(id)a3 dropSessionDidEnd:(id)a4;
-- (void)collectionView:(id)a3 dropSessionDidEnter:(id)a4;
-- (void)collectionView:(id)a3 dropSessionDidExit:(id)a4;
-- (void)collectionView:(id)a3 moveItemAtIndexPath:(id)a4 toIndexPath:(id)a5;
-- (void)collectionView:(id)a3 performAction:(SEL)a4 forItemAtIndexPath:(id)a5 withSender:(id)a6;
-- (void)collectionView:(id)a3 performDropWithCoordinator:(id)a4;
-- (void)collectionView:(id)a3 performPrimaryActionForItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 prefetchItemsAtIndexPaths:(id)a4;
-- (void)collectionView:(id)a3 tableLayout:(id)a4 accessoryButtonTappedForRowWithIndexPath:(id)a5;
-- (void)collectionView:(id)a3 tableLayout:(id)a4 commitEditingStyle:(int64_t)a5 forRowAtIndexPath:(id)a6;
-- (void)collectionView:(id)a3 tableLayout:(id)a4 didEndEditingRowAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 tableLayout:(id)a4 willBeginEditingRowAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 willDisplayContextMenuWithConfiguration:(id)a4 animator:(id)a5;
-- (void)collectionView:(id)a3 willDisplaySupplementaryView:(id)a4 forElementKind:(id)a5 atIndexPath:(id)a6;
-- (void)collectionView:(id)a3 willEndContextMenuInteractionWithConfiguration:(id)a4 animator:(id)a5;
-- (void)collectionView:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5;
+- (void)appendShadowUpdate:(id)update;
+- (void)collectionView:(id)view cancelPrefetchingForItemsAtIndexPaths:(id)paths;
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didEndDisplayingSupplementaryView:(id)supplementaryView forElementOfKind:(id)kind atIndexPath:(id)path;
+- (void)collectionView:(id)view didFocusItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didHighlightItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didUnfocusItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didUnhighlightItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)collectionView:(id)view dragSessionDidEnd:(id)end;
+- (void)collectionView:(id)view dragSessionWillBegin:(id)begin;
+- (void)collectionView:(id)view dropSessionDidEnd:(id)end;
+- (void)collectionView:(id)view dropSessionDidEnter:(id)enter;
+- (void)collectionView:(id)view dropSessionDidExit:(id)exit;
+- (void)collectionView:(id)view moveItemAtIndexPath:(id)path toIndexPath:(id)indexPath;
+- (void)collectionView:(id)view performAction:(SEL)action forItemAtIndexPath:(id)path withSender:(id)sender;
+- (void)collectionView:(id)view performDropWithCoordinator:(id)coordinator;
+- (void)collectionView:(id)view performPrimaryActionForItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view prefetchItemsAtIndexPaths:(id)paths;
+- (void)collectionView:(id)view tableLayout:(id)layout accessoryButtonTappedForRowWithIndexPath:(id)path;
+- (void)collectionView:(id)view tableLayout:(id)layout commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)collectionView:(id)view tableLayout:(id)layout didEndEditingRowAtIndexPath:(id)path;
+- (void)collectionView:(id)view tableLayout:(id)layout willBeginEditingRowAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayContextMenuWithConfiguration:(id)configuration animator:(id)animator;
+- (void)collectionView:(id)view willDisplaySupplementaryView:(id)supplementaryView forElementKind:(id)kind atIndexPath:(id)path;
+- (void)collectionView:(id)view willEndContextMenuInteractionWithConfiguration:(id)configuration animator:(id)animator;
+- (void)collectionView:(id)view willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator;
 - (void)reset;
 @end
 
@@ -171,8 +171,8 @@
 
 - (void)reset
 {
-  v3 = [(_UICollectionViewShadowUpdatesController *)self _shadowUpdates];
-  [v3 removeAllObjects];
+  _shadowUpdates = [(_UICollectionViewShadowUpdatesController *)self _shadowUpdates];
+  [_shadowUpdates removeAllObjects];
 
   [(_UICollectionViewShadowUpdatesController *)self setInitialSnapshot:0];
 
@@ -193,56 +193,56 @@
     return 0;
   }
 
-  v3 = [(_UICollectionViewShadowUpdatesController *)self _shadowUpdates];
-  if ([v3 count])
+  _shadowUpdates = [(_UICollectionViewShadowUpdatesController *)self _shadowUpdates];
+  if ([_shadowUpdates count])
   {
-    v4 = 1;
+    hasActiveDrag = 1;
   }
 
   else
   {
-    v5 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    if ([v5 hasActiveDrop])
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    if ([collectionView hasActiveDrop])
     {
-      v4 = 1;
+      hasActiveDrag = 1;
     }
 
     else
     {
-      v6 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-      v4 = [v6 hasActiveDrag];
+      collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+      hasActiveDrag = [collectionView2 hasActiveDrag];
     }
   }
 
-  return v4;
+  return hasActiveDrag;
 }
 
-- (_UICollectionViewShadowUpdatesController)initWithCollectionView:(id)a3
+- (_UICollectionViewShadowUpdatesController)initWithCollectionView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v10.receiver = self;
   v10.super_class = _UICollectionViewShadowUpdatesController;
   v5 = [(_UICollectionViewShadowUpdatesController *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_collectionView, v4);
+    objc_storeWeak(&v5->_collectionView, viewCopy);
     v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     shadowUpdates = v6->__shadowUpdates;
     v6->__shadowUpdates = v7;
 
-    [v4 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"com.apple.UIKit.shadowReuseCellIdentifier"];
+    [viewCopy registerClass:objc_opt_class() forCellWithReuseIdentifier:@"com.apple.UIKit.shadowReuseCellIdentifier"];
   }
 
   return v6;
 }
 
-- (BOOL)rebaseForUpdates:(id)a3
+- (BOOL)rebaseForUpdates:(id)updates
 {
-  v4 = a3;
-  if ([v4 count])
+  updatesCopy = updates;
+  if ([updatesCopy count])
   {
-    v5 = [(_UICollectionViewShadowUpdatesController *)self _rebasedUpdateMapForUpdates:v4];
+    v5 = [(_UICollectionViewShadowUpdatesController *)self _rebasedUpdateMapForUpdates:updatesCopy];
     if (v5)
     {
       v6 = [(_UICollectionViewShadowUpdatesController *)self _rebaseForUpdateMap:v5];
@@ -262,23 +262,23 @@
   return v6;
 }
 
-- (BOOL)_rebaseForUpdateMap:(id)a3
+- (BOOL)_rebaseForUpdateMap:(id)map
 {
-  v4 = a3;
-  v5 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v6 = [off_1E70ECC48 snapshotterForDataSourceBackedView:v5];
+  mapCopy = map;
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  v6 = [off_1E70ECC48 snapshotterForDataSourceBackedView:collectionView];
 
-  v7 = [(_UICollectionViewShadowUpdatesController *)self updateMap];
-  v8 = [v7 rebasedMapFromNewBaseMap:v4];
+  updateMap = [(_UICollectionViewShadowUpdatesController *)self updateMap];
+  v8 = [updateMap rebasedMapFromNewBaseMap:mapCopy];
 
   if (v8)
   {
-    v9 = [(_UICollectionViewShadowUpdatesController *)self _shadowUpdates];
-    [v9 removeAllObjects];
+    _shadowUpdates = [(_UICollectionViewShadowUpdatesController *)self _shadowUpdates];
+    [_shadowUpdates removeAllObjects];
 
-    v10 = [(_UICollectionViewShadowUpdatesController *)self _shadowUpdates];
-    v11 = [v8 updates];
-    [v10 addObjectsFromArray:v11];
+    _shadowUpdates2 = [(_UICollectionViewShadowUpdatesController *)self _shadowUpdates];
+    updates = [v8 updates];
+    [_shadowUpdates2 addObjectsFromArray:updates];
 
     [(_UICollectionViewShadowUpdatesController *)self setInitialSnapshot:v6];
     [(_UICollectionViewShadowUpdatesController *)self _regenerateUpdateMap];
@@ -287,81 +287,81 @@
   return v8 != 0;
 }
 
-- (void)appendShadowUpdate:(id)a3
+- (void)appendShadowUpdate:(id)update
 {
   v22[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  updateCopy = update;
+  if (updateCopy)
   {
-    v5 = [(_UICollectionViewShadowUpdatesController *)self _shadowUpdates];
-    v6 = [v5 count];
+    _shadowUpdates = [(_UICollectionViewShadowUpdatesController *)self _shadowUpdates];
+    v6 = [_shadowUpdates count];
 
     if (!v6)
     {
-      v7 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-      v8 = [off_1E70ECC48 snapshotterForDataSourceBackedView:v7];
+      collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+      v8 = [off_1E70ECC48 snapshotterForDataSourceBackedView:collectionView];
       [(_UICollectionViewShadowUpdatesController *)self setInitialSnapshot:v8];
     }
 
-    if (!v4[10])
+    if (!updateCopy[10])
     {
-      v9 = [(_UICollectionViewShadowUpdatesController *)self updateMap];
-      v10 = [v9 finalSnapshot];
+      updateMap = [(_UICollectionViewShadowUpdatesController *)self updateMap];
+      finalSnapshot = [updateMap finalSnapshot];
       v11 = 8;
-      if (!v4[10])
+      if (!updateCopy[10])
       {
         v11 = 9;
       }
 
-      v12 = v4[v11];
-      v13 = [v10 indexPathIsSectionAppendingInsert:v12];
+      v12 = updateCopy[v11];
+      v13 = [finalSnapshot indexPathIsSectionAppendingInsert:v12];
 
       if (v13)
       {
-        *(v4 + 56) |= 1u;
+        *(updateCopy + 56) |= 1u;
       }
     }
 
-    v14 = [(_UICollectionViewShadowUpdatesController *)self _shadowUpdates];
-    v15 = [v14 lastObject];
+    _shadowUpdates2 = [(_UICollectionViewShadowUpdatesController *)self _shadowUpdates];
+    lastObject = [_shadowUpdates2 lastObject];
 
-    if (!v15 || (v22[0] = v15, v22[1] = v4, [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:2], v16 = objc_claimAutoreleasedReturnValue(), -[_UICollectionViewShadowUpdatesController _coalesceUpdatesIfPossible:](self, "_coalesceUpdatesIfPossible:", v16), v17 = objc_claimAutoreleasedReturnValue(), v16, !v17))
+    if (!lastObject || (v22[0] = lastObject, v22[1] = updateCopy, [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:2], v16 = objc_claimAutoreleasedReturnValue(), -[_UICollectionViewShadowUpdatesController _coalesceUpdatesIfPossible:](self, "_coalesceUpdatesIfPossible:", v16), _shadowUpdates3 = objc_claimAutoreleasedReturnValue(), v16, !_shadowUpdates3))
     {
-      v17 = [(_UICollectionViewShadowUpdatesController *)self _shadowUpdates];
-      [v17 addObject:v4];
+      _shadowUpdates3 = [(_UICollectionViewShadowUpdatesController *)self _shadowUpdates];
+      [_shadowUpdates3 addObject:updateCopy];
 LABEL_22:
 
       [(_UICollectionViewShadowUpdatesController *)self _regenerateUpdateMap];
       goto LABEL_23;
     }
 
-    v18 = [(_UICollectionViewShadowUpdatesController *)self _shadowUpdates];
-    v19 = [v18 count] - 1;
+    _shadowUpdates4 = [(_UICollectionViewShadowUpdatesController *)self _shadowUpdates];
+    v19 = [_shadowUpdates4 count] - 1;
 
-    if (v17[10] == 3 && v17[2] == v17[4] && v17[1] == v17[3])
+    if (_shadowUpdates3[10] == 3 && _shadowUpdates3[2] == _shadowUpdates3[4] && _shadowUpdates3[1] == _shadowUpdates3[3])
     {
-      v20 = [(_UICollectionViewShadowUpdatesController *)self _shadowUpdates];
+      _shadowUpdates5 = [(_UICollectionViewShadowUpdatesController *)self _shadowUpdates];
 LABEL_20:
-      [v20 removeObjectAtIndex:v19];
+      [_shadowUpdates5 removeObjectAtIndex:v19];
       goto LABEL_21;
     }
 
-    if (v17[8])
+    if (_shadowUpdates3[8])
     {
-      v20 = [(_UICollectionViewShadowUpdatesController *)self _shadowUpdates];
+      _shadowUpdates5 = [(_UICollectionViewShadowUpdatesController *)self _shadowUpdates];
     }
 
     else
     {
-      v21 = v17[9];
-      v20 = [(_UICollectionViewShadowUpdatesController *)self _shadowUpdates];
+      v21 = _shadowUpdates3[9];
+      _shadowUpdates5 = [(_UICollectionViewShadowUpdatesController *)self _shadowUpdates];
       if (!v21)
       {
         goto LABEL_20;
       }
     }
 
-    [v20 replaceObjectAtIndex:v19 withObject:v17];
+    [_shadowUpdates5 replaceObjectAtIndex:v19 withObject:_shadowUpdates3];
 LABEL_21:
 
     goto LABEL_22;
@@ -378,10 +378,10 @@ LABEL_23:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(_UICollectionViewShadowUpdatesController *)self _shadowUpdates];
-  v5 = [v4 reverseObjectEnumerator];
+  _shadowUpdates = [(_UICollectionViewShadowUpdatesController *)self _shadowUpdates];
+  reverseObjectEnumerator = [_shadowUpdates reverseObjectEnumerator];
 
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [reverseObjectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -392,14 +392,14 @@ LABEL_23:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
-        v10 = [(UICollectionViewUpdateItem *)*(*(&v12 + 1) + 8 * i) revertedUpdate];
-        [v3 addObject:v10];
+        revertedUpdate = [(UICollectionViewUpdateItem *)*(*(&v12 + 1) + 8 * i) revertedUpdate];
+        [v3 addObject:revertedUpdate];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [reverseObjectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -408,71 +408,71 @@ LABEL_23:
   return v3;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v6 = [(_UICollectionViewShadowUpdatesController *)self _shadowUpdates];
-  v7 = [v6 count];
+  _shadowUpdates = [(_UICollectionViewShadowUpdatesController *)self _shadowUpdates];
+  v7 = [_shadowUpdates count];
 
   if (v7)
   {
-    v8 = [(_UICollectionViewShadowUpdatesController *)self updateMap];
-    v9 = [v8 finalSnapshot];
-    v10 = [v9 numberOfItemsInSection:a4];
+    updateMap = [(_UICollectionViewShadowUpdatesController *)self updateMap];
+    finalSnapshot = [updateMap finalSnapshot];
+    v10 = [finalSnapshot numberOfItemsInSection:section];
   }
 
   else
   {
-    v8 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v9 = [v8 _dataSourceActual];
-    v11 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v10 = [v9 collectionView:v11 numberOfItemsInSection:a4];
+    updateMap = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    finalSnapshot = [updateMap _dataSourceActual];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    v10 = [finalSnapshot collectionView:collectionView numberOfItemsInSection:section];
   }
 
   return v10;
 }
 
-- (int64_t)numberOfSectionsInCollectionView:(id)a3
+- (int64_t)numberOfSectionsInCollectionView:(id)view
 {
-  v4 = [(_UICollectionViewShadowUpdatesController *)self _shadowUpdates];
-  v5 = [v4 count];
+  _shadowUpdates = [(_UICollectionViewShadowUpdatesController *)self _shadowUpdates];
+  v5 = [_shadowUpdates count];
 
   if (v5)
   {
-    v6 = [(_UICollectionViewShadowUpdatesController *)self updateMap];
-    v7 = [v6 finalSnapshot];
-    v8 = [v7 numberOfSections];
+    updateMap = [(_UICollectionViewShadowUpdatesController *)self updateMap];
+    finalSnapshot = [updateMap finalSnapshot];
+    numberOfSections = [finalSnapshot numberOfSections];
   }
 
   else
   {
-    v6 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v7 = [v6 _dataSourceActual];
-    v9 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v8 = [v7 numberOfSectionsInCollectionView:v9];
+    updateMap = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    finalSnapshot = [updateMap _dataSourceActual];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    numberOfSections = [finalSnapshot numberOfSectionsInCollectionView:collectionView];
   }
 
-  return v8;
+  return numberOfSections;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:pathCopy];
   if (v8)
   {
-    v9 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v10 = [v9 _dataSourceActual];
-    v11 = [v10 collectionView:v7 cellForItemAtIndexPath:v8];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _dataSourceActual = [collectionView _dataSourceActual];
+    v11 = [_dataSourceActual collectionView:viewCopy cellForItemAtIndexPath:v8];
   }
 
   else
   {
-    v9 = [(_UICollectionViewShadowUpdatesController *)self _shadowUpdateReuseIdentifierForItemItemAtIndexPath:v6];
-    v11 = [v7 dequeueReusableCellWithReuseIdentifier:v9 forIndexPath:v6];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self _shadowUpdateReuseIdentifierForItemItemAtIndexPath:pathCopy];
+    v11 = [viewCopy dequeueReusableCellWithReuseIdentifier:collectionView forIndexPath:pathCopy];
 
-    [(_UICollectionViewShadowUpdatesController *)self _updateCellIfNeeded:v11 atIndexPath:v6];
-    if ([v9 isEqualToString:@"com.apple.UIKit.shadowReuseCellIdentifier"])
+    [(_UICollectionViewShadowUpdatesController *)self _updateCellIfNeeded:v11 atIndexPath:pathCopy];
+    if ([collectionView isEqualToString:@"com.apple.UIKit.shadowReuseCellIdentifier"])
     {
       [v11 _setHiddenForReordering:1];
     }
@@ -481,16 +481,16 @@ LABEL_23:
   return v11;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(_UICollectionViewShadowUpdatesController *)self _supplementaryIndexPathBeforeShadowUpdates:a5];
+  viewCopy = view;
+  kindCopy = kind;
+  v10 = [(_UICollectionViewShadowUpdatesController *)self _supplementaryIndexPathBeforeShadowUpdates:path];
   if (v10)
   {
-    v11 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v12 = [v11 _dataSourceActual];
-    v13 = [v12 collectionView:v8 viewForSupplementaryElementOfKind:v9 atIndexPath:v10];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _dataSourceActual = [collectionView _dataSourceActual];
+    v13 = [_dataSourceActual collectionView:viewCopy viewForSupplementaryElementOfKind:kindCopy atIndexPath:v10];
   }
 
   else
@@ -501,15 +501,15 @@ LABEL_23:
   return v13;
 }
 
-- (BOOL)collectionView:(id)a3 canMoveItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view canMoveItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:a4];
+  viewCopy = view;
+  v7 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:path];
   if (v7)
   {
-    v8 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v9 = [v8 _dataSourceActual];
-    v10 = [v9 collectionView:v6 canMoveItemAtIndexPath:v7];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _dataSourceActual = [collectionView _dataSourceActual];
+    v10 = [_dataSourceActual collectionView:viewCopy canMoveItemAtIndexPath:v7];
   }
 
   else
@@ -520,61 +520,61 @@ LABEL_23:
   return v10;
 }
 
-- (void)collectionView:(id)a3 moveItemAtIndexPath:(id)a4 toIndexPath:(id)a5
+- (void)collectionView:(id)view moveItemAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
-  v13 = a3;
-  v8 = a5;
-  v9 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:a4];
-  v10 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:v8];
+  viewCopy = view;
+  indexPathCopy = indexPath;
+  v9 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:path];
+  v10 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:indexPathCopy];
 
   if (v9 && v10)
   {
-    v11 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v12 = [v11 _dataSourceActual];
-    [v12 collectionView:v13 moveItemAtIndexPath:v9 toIndexPath:v10];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _dataSourceActual = [collectionView _dataSourceActual];
+    [_dataSourceActual collectionView:viewCopy moveItemAtIndexPath:v9 toIndexPath:v10];
   }
 }
 
-- (id)_expandCollapseAnimationContextForCollectionView:(id)a3
+- (id)_expandCollapseAnimationContextForCollectionView:(id)view
 {
-  v4 = a3;
-  v5 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v6 = [v5 _dataSourceActual];
-  v7 = [v6 _expandCollapseAnimationContextForCollectionView:v4];
+  viewCopy = view;
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  _dataSourceActual = [collectionView _dataSourceActual];
+  v7 = [_dataSourceActual _expandCollapseAnimationContextForCollectionView:viewCopy];
 
   return v7;
 }
 
-- (id)indexTitlesForCollectionView:(id)a3
+- (id)indexTitlesForCollectionView:(id)view
 {
-  v4 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v5 = [v4 _dataSourceActual];
-  v6 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v7 = [v5 indexTitlesForCollectionView:v6];
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  _dataSourceActual = [collectionView _dataSourceActual];
+  collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  v7 = [_dataSourceActual indexTitlesForCollectionView:collectionView2];
 
   return v7;
 }
 
-- (id)collectionView:(id)a3 indexPathForIndexTitle:(id)a4 atIndex:(int64_t)a5
+- (id)collectionView:(id)view indexPathForIndexTitle:(id)title atIndex:(int64_t)index
 {
-  v7 = a4;
-  v8 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v9 = [v8 _dataSourceActual];
-  v10 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v11 = [v9 collectionView:v10 indexPathForIndexTitle:v7 atIndex:a5];
+  titleCopy = title;
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  _dataSourceActual = [collectionView _dataSourceActual];
+  collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  v11 = [_dataSourceActual collectionView:collectionView2 indexPathForIndexTitle:titleCopy atIndex:index];
 
   return v11;
 }
 
-- (id)modelIdentifierForElementAtIndexPath:(id)a3 inView:(id)a4
+- (id)modelIdentifierForElementAtIndexPath:(id)path inView:(id)view
 {
-  v6 = a4;
-  v7 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:a3];
+  viewCopy = view;
+  v7 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:path];
   if (v7)
   {
-    v8 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v9 = [v8 _dataSourceActual];
-    v10 = [v9 modelIdentifierForElementAtIndexPath:v7 inView:v6];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _dataSourceActual = [collectionView _dataSourceActual];
+    v10 = [_dataSourceActual modelIdentifierForElementAtIndexPath:v7 inView:viewCopy];
   }
 
   else
@@ -585,28 +585,28 @@ LABEL_23:
   return v10;
 }
 
-- (id)indexPathForElementWithModelIdentifier:(id)a3 inView:(id)a4
+- (id)indexPathForElementWithModelIdentifier:(id)identifier inView:(id)view
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v9 = [v8 _dataSourceActual];
-  v10 = [v9 indexPathForElementWithModelIdentifier:v7 inView:v6];
+  viewCopy = view;
+  identifierCopy = identifier;
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  _dataSourceActual = [collectionView _dataSourceActual];
+  v10 = [_dataSourceActual indexPathForElementWithModelIdentifier:identifierCopy inView:viewCopy];
 
   v11 = [(_UICollectionViewShadowUpdatesController *)self indexPathAfterShadowUpdates:v10];
 
   return v11;
 }
 
-- (BOOL)_collectionView:(id)a3 canMoveItemAtIndexPath:(id)a4
+- (BOOL)_collectionView:(id)view canMoveItemAtIndexPath:(id)path
 {
-  v5 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:a4];
+  v5 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:path];
   if (v5)
   {
-    v6 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v7 = [v6 _dataSourceActual];
-    v8 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v9 = [v7 _collectionView:v8 canMoveItemAtIndexPath:v5];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _dataSourceActual = [collectionView _dataSourceActual];
+    collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    v9 = [_dataSourceActual _collectionView:collectionView2 canMoveItemAtIndexPath:v5];
   }
 
   else
@@ -617,30 +617,30 @@ LABEL_23:
   return v9;
 }
 
-- (void)_collectionView:(id)a3 moveItemAtIndexPath:(id)a4 toIndexPath:(id)a5
+- (void)_collectionView:(id)view moveItemAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
-  v13 = a3;
-  v8 = a5;
-  v9 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:a4];
-  v10 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:v8];
+  viewCopy = view;
+  indexPathCopy = indexPath;
+  v9 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:path];
+  v10 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:indexPathCopy];
 
   if (v9 && v10)
   {
-    v11 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v12 = [v11 _dataSourceActual];
-    [v12 _collectionView:v13 moveItemAtIndexPath:v9 toIndexPath:v10];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _dataSourceActual = [collectionView _dataSourceActual];
+    [_dataSourceActual _collectionView:viewCopy moveItemAtIndexPath:v9 toIndexPath:v10];
   }
 }
 
-- (BOOL)_collectionView:(id)a3 canEditItemAtIndexPath:(id)a4
+- (BOOL)_collectionView:(id)view canEditItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:a4];
+  viewCopy = view;
+  v7 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:path];
   if (v7)
   {
-    v8 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v9 = [v8 _dataSourceActual];
-    v10 = [v9 _collectionView:v6 canEditItemAtIndexPath:v7];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _dataSourceActual = [collectionView _dataSourceActual];
+    v10 = [_dataSourceActual _collectionView:viewCopy canEditItemAtIndexPath:v7];
   }
 
   else
@@ -651,48 +651,48 @@ LABEL_23:
   return v10;
 }
 
-- (id)_sectionIndexTitlesForCollectionView:(id)a3
+- (id)_sectionIndexTitlesForCollectionView:(id)view
 {
-  v4 = a3;
-  v5 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v6 = [v5 _dataSourceActual];
-  v7 = [v6 _sectionIndexTitlesForCollectionView:v4];
+  viewCopy = view;
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  _dataSourceActual = [collectionView _dataSourceActual];
+  v7 = [_dataSourceActual _sectionIndexTitlesForCollectionView:viewCopy];
 
   return v7;
 }
 
-- (id)_collectionView:(id)a3 sectionIndexTitlesTrimmedToCount:(unint64_t)a4
+- (id)_collectionView:(id)view sectionIndexTitlesTrimmedToCount:(unint64_t)count
 {
-  v6 = a3;
-  v7 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v8 = [v7 _dataSourceActual];
-  v9 = [v8 _collectionView:v6 sectionIndexTitlesTrimmedToCount:a4];
+  viewCopy = view;
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  _dataSourceActual = [collectionView _dataSourceActual];
+  v9 = [_dataSourceActual _collectionView:viewCopy sectionIndexTitlesTrimmedToCount:count];
 
   return v9;
 }
 
-- (id)_collectionView:(id)a3 indexPathForSectionIndexTitle:(id)a4 atIndex:(int64_t)a5
+- (id)_collectionView:(id)view indexPathForSectionIndexTitle:(id)title atIndex:(int64_t)index
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v11 = [v10 _dataSourceActual];
-  v12 = [v11 _collectionView:v9 indexPathForSectionIndexTitle:v8 atIndex:a5];
+  titleCopy = title;
+  viewCopy = view;
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  _dataSourceActual = [collectionView _dataSourceActual];
+  v12 = [_dataSourceActual _collectionView:viewCopy indexPathForSectionIndexTitle:titleCopy atIndex:index];
 
   return v12;
 }
 
-- (void)_collectionView:(id)a3 willPerformUpdates:(id)a4
+- (void)_collectionView:(id)view willPerformUpdates:(id)updates
 {
   v30 = *MEMORY[0x1E69E9840];
-  v23 = a3;
-  v6 = a4;
+  viewCopy = view;
+  updatesCopy = updates;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = v6;
+  obj = updatesCopy;
   v8 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v8)
   {
@@ -709,11 +709,11 @@ LABEL_23:
         }
 
         v12 = *(*(&v25 + 1) + 8 * v11);
-        v13 = [v12 indexPathBeforeUpdate];
-        v14 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:v13];
+        indexPathBeforeUpdate = [v12 indexPathBeforeUpdate];
+        v14 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:indexPathBeforeUpdate];
 
-        v15 = [v12 indexPathAfterUpdate];
-        v16 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:v15];
+        indexPathAfterUpdate = [v12 indexPathAfterUpdate];
+        v16 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:indexPathAfterUpdate];
 
         v17 = [UICollectionViewUpdateItem alloc];
         if (v12)
@@ -740,20 +740,20 @@ LABEL_23:
     while (v20);
   }
 
-  v21 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v22 = [v21 _dataSourceActual];
-  [v22 _collectionView:v23 willPerformUpdates:v7];
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  _dataSourceActual = [collectionView _dataSourceActual];
+  [_dataSourceActual _collectionView:viewCopy willPerformUpdates:v7];
 }
 
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:a4];
+  viewCopy = view;
+  v7 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:path];
   if (v7)
   {
-    v8 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v9 = [v8 _delegateActual];
-    v10 = [v9 collectionView:v6 shouldHighlightItemAtIndexPath:v7];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _delegateActual = [collectionView _delegateActual];
+    v10 = [_delegateActual collectionView:viewCopy shouldHighlightItemAtIndexPath:v7];
   }
 
   else
@@ -764,39 +764,39 @@ LABEL_23:
   return v10;
 }
 
-- (void)collectionView:(id)a3 didHighlightItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didHighlightItemAtIndexPath:(id)path
 {
-  v9 = a3;
-  v6 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:a4];
+  viewCopy = view;
+  v6 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:path];
   if (v6)
   {
-    v7 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v8 = [v7 _delegateActual];
-    [v8 collectionView:v9 didHighlightItemAtIndexPath:v6];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _delegateActual = [collectionView _delegateActual];
+    [_delegateActual collectionView:viewCopy didHighlightItemAtIndexPath:v6];
   }
 }
 
-- (void)collectionView:(id)a3 didUnhighlightItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didUnhighlightItemAtIndexPath:(id)path
 {
-  v9 = a3;
-  v6 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:a4];
+  viewCopy = view;
+  v6 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:path];
   if (v6)
   {
-    v7 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v8 = [v7 _delegateActual];
-    [v8 collectionView:v9 didUnhighlightItemAtIndexPath:v6];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _delegateActual = [collectionView _delegateActual];
+    [_delegateActual collectionView:viewCopy didUnhighlightItemAtIndexPath:v6];
   }
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:a4];
+  viewCopy = view;
+  v7 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:path];
   if (v7)
   {
-    v8 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v9 = [v8 _delegateActual];
-    v10 = [v9 collectionView:v6 shouldSelectItemAtIndexPath:v7];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _delegateActual = [collectionView _delegateActual];
+    v10 = [_delegateActual collectionView:viewCopy shouldSelectItemAtIndexPath:v7];
   }
 
   else
@@ -807,15 +807,15 @@ LABEL_23:
   return v10;
 }
 
-- (BOOL)collectionView:(id)a3 shouldDeselectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldDeselectItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:a4];
+  viewCopy = view;
+  v7 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:path];
   if (v7)
   {
-    v8 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v9 = [v8 _delegateActual];
-    v10 = [v9 collectionView:v6 shouldDeselectItemAtIndexPath:v7];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _delegateActual = [collectionView _delegateActual];
+    v10 = [_delegateActual collectionView:viewCopy shouldDeselectItemAtIndexPath:v7];
   }
 
   else
@@ -826,94 +826,94 @@ LABEL_23:
   return v10;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v9 = a3;
-  v6 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:a4];
+  viewCopy = view;
+  v6 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:path];
   if (v6)
   {
-    v7 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v8 = [v7 _delegateActual];
-    [v8 collectionView:v9 didSelectItemAtIndexPath:v6];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _delegateActual = [collectionView _delegateActual];
+    [_delegateActual collectionView:viewCopy didSelectItemAtIndexPath:v6];
   }
 }
 
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path
 {
-  v9 = a3;
-  v6 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:a4];
+  viewCopy = view;
+  v6 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:path];
   if (v6)
   {
-    v7 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v8 = [v7 _delegateActual];
-    [v8 collectionView:v9 didDeselectItemAtIndexPath:v6];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _delegateActual = [collectionView _delegateActual];
+    [_delegateActual collectionView:viewCopy didDeselectItemAtIndexPath:v6];
   }
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:a5];
+  viewCopy = view;
+  cellCopy = cell;
+  v9 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:path];
   if (v9)
   {
-    v10 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v11 = [v10 _delegateActual];
-    [v11 collectionView:v12 willDisplayCell:v8 forItemAtIndexPath:v9];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _delegateActual = [collectionView _delegateActual];
+    [_delegateActual collectionView:viewCopy willDisplayCell:cellCopy forItemAtIndexPath:v9];
   }
 }
 
-- (void)collectionView:(id)a3 willDisplaySupplementaryView:(id)a4 forElementKind:(id)a5 atIndexPath:(id)a6
+- (void)collectionView:(id)view willDisplaySupplementaryView:(id)supplementaryView forElementKind:(id)kind atIndexPath:(id)path
 {
-  v15 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(_UICollectionViewShadowUpdatesController *)self _supplementaryIndexPathBeforeShadowUpdates:a6];
+  viewCopy = view;
+  supplementaryViewCopy = supplementaryView;
+  kindCopy = kind;
+  v12 = [(_UICollectionViewShadowUpdatesController *)self _supplementaryIndexPathBeforeShadowUpdates:path];
   if (v12)
   {
-    v13 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v14 = [v13 _delegateActual];
-    [v14 collectionView:v15 willDisplaySupplementaryView:v10 forElementKind:v11 atIndexPath:v12];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _delegateActual = [collectionView _delegateActual];
+    [_delegateActual collectionView:viewCopy willDisplaySupplementaryView:supplementaryViewCopy forElementKind:kindCopy atIndexPath:v12];
   }
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:a5];
+  viewCopy = view;
+  cellCopy = cell;
+  v9 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:path];
   if (v9)
   {
-    v10 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v11 = [v10 _delegateActual];
-    [v11 collectionView:v12 didEndDisplayingCell:v8 forItemAtIndexPath:v9];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _delegateActual = [collectionView _delegateActual];
+    [_delegateActual collectionView:viewCopy didEndDisplayingCell:cellCopy forItemAtIndexPath:v9];
   }
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingSupplementaryView:(id)a4 forElementOfKind:(id)a5 atIndexPath:(id)a6
+- (void)collectionView:(id)view didEndDisplayingSupplementaryView:(id)supplementaryView forElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v15 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(_UICollectionViewShadowUpdatesController *)self _supplementaryIndexPathBeforeShadowUpdates:a6];
+  viewCopy = view;
+  supplementaryViewCopy = supplementaryView;
+  kindCopy = kind;
+  v12 = [(_UICollectionViewShadowUpdatesController *)self _supplementaryIndexPathBeforeShadowUpdates:path];
   if (v12)
   {
-    v13 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v14 = [v13 _delegateActual];
-    [v14 collectionView:v15 didEndDisplayingSupplementaryView:v10 forElementOfKind:v11 atIndexPath:v12];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _delegateActual = [collectionView _delegateActual];
+    [_delegateActual collectionView:viewCopy didEndDisplayingSupplementaryView:supplementaryViewCopy forElementOfKind:kindCopy atIndexPath:v12];
   }
 }
 
-- (BOOL)collectionView:(id)a3 canEditItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view canEditItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:pathCopy];
   if (v8)
   {
-    v9 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v10 = [v9 _delegateActual];
-    v11 = [v10 collectionView:v6 canEditItemAtIndexPath:v7];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _delegateActual = [collectionView _delegateActual];
+    v11 = [_delegateActual collectionView:viewCopy canEditItemAtIndexPath:pathCopy];
   }
 
   else
@@ -924,15 +924,15 @@ LABEL_23:
   return v11;
 }
 
-- (BOOL)collectionView:(id)a3 shouldShowMenuForItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldShowMenuForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:a4];
+  viewCopy = view;
+  v7 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:path];
   if (v7)
   {
-    v8 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v9 = [v8 _delegateActual];
-    v10 = [v9 collectionView:v6 shouldShowMenuForItemAtIndexPath:v7];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _delegateActual = [collectionView _delegateActual];
+    v10 = [_delegateActual collectionView:viewCopy shouldShowMenuForItemAtIndexPath:v7];
   }
 
   else
@@ -943,16 +943,16 @@ LABEL_23:
   return v10;
 }
 
-- (BOOL)collectionView:(id)a3 canPerformAction:(SEL)a4 forItemAtIndexPath:(id)a5 withSender:(id)a6
+- (BOOL)collectionView:(id)view canPerformAction:(SEL)action forItemAtIndexPath:(id)path withSender:(id)sender
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:a5];
+  viewCopy = view;
+  senderCopy = sender;
+  v12 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:path];
   if (v12)
   {
-    v13 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v14 = [v13 _delegateActual];
-    v15 = [v14 collectionView:v10 canPerformAction:a4 forItemAtIndexPath:v12 withSender:v11];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _delegateActual = [collectionView _delegateActual];
+    v15 = [_delegateActual collectionView:viewCopy canPerformAction:action forItemAtIndexPath:v12 withSender:senderCopy];
   }
 
   else
@@ -963,64 +963,64 @@ LABEL_23:
   return v15;
 }
 
-- (void)collectionView:(id)a3 performAction:(SEL)a4 forItemAtIndexPath:(id)a5 withSender:(id)a6
+- (void)collectionView:(id)view performAction:(SEL)action forItemAtIndexPath:(id)path withSender:(id)sender
 {
-  v14 = a3;
-  v10 = a6;
-  v11 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:a5];
+  viewCopy = view;
+  senderCopy = sender;
+  v11 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:path];
   if (v11)
   {
-    v12 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v13 = [v12 _delegateActual];
-    [v13 collectionView:v14 performAction:a4 forItemAtIndexPath:v11 withSender:v10];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _delegateActual = [collectionView _delegateActual];
+    [_delegateActual collectionView:viewCopy performAction:action forItemAtIndexPath:v11 withSender:senderCopy];
   }
 }
 
-- (id)collectionView:(id)a3 transitionLayoutForOldLayout:(id)a4 newLayout:(id)a5
+- (id)collectionView:(id)view transitionLayoutForOldLayout:(id)layout newLayout:(id)newLayout
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v12 = [v11 _delegateActual];
-  v13 = [v12 collectionView:v10 transitionLayoutForOldLayout:v9 newLayout:v8];
+  newLayoutCopy = newLayout;
+  layoutCopy = layout;
+  viewCopy = view;
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  _delegateActual = [collectionView _delegateActual];
+  v13 = [_delegateActual collectionView:viewCopy transitionLayoutForOldLayout:layoutCopy newLayout:newLayoutCopy];
 
   return v13;
 }
 
-- (id)collectionView:(id)a3 targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)a4 atCurrentIndexPath:(id)a5 toProposedIndexPath:(id)a6
+- (id)collectionView:(id)view targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)path atCurrentIndexPath:(id)indexPath toProposedIndexPath:(id)proposedIndexPath
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v15 = [v14 _delegateActual];
-  v16 = [v15 collectionView:v13 targetIndexPathForMoveOfItemFromOriginalIndexPath:v12 atCurrentIndexPath:v11 toProposedIndexPath:v10];
+  proposedIndexPathCopy = proposedIndexPath;
+  indexPathCopy = indexPath;
+  pathCopy = path;
+  viewCopy = view;
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  _delegateActual = [collectionView _delegateActual];
+  v16 = [_delegateActual collectionView:viewCopy targetIndexPathForMoveOfItemFromOriginalIndexPath:pathCopy atCurrentIndexPath:indexPathCopy toProposedIndexPath:proposedIndexPathCopy];
 
   return v16;
 }
 
-- (id)collectionView:(id)a3 targetIndexPathForMoveFromItemAtIndexPath:(id)a4 toProposedIndexPath:(id)a5
+- (id)collectionView:(id)view targetIndexPathForMoveFromItemAtIndexPath:(id)path toProposedIndexPath:(id)indexPath
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v12 = [v11 _delegateActual];
-  v13 = [v12 collectionView:v10 targetIndexPathForMoveFromItemAtIndexPath:v9 toProposedIndexPath:v8];
+  indexPathCopy = indexPath;
+  pathCopy = path;
+  viewCopy = view;
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  _delegateActual = [collectionView _delegateActual];
+  v13 = [_delegateActual collectionView:viewCopy targetIndexPathForMoveFromItemAtIndexPath:pathCopy toProposedIndexPath:indexPathCopy];
 
   return v13;
 }
 
-- (CGPoint)collectionView:(id)a3 targetContentOffsetForProposedContentOffset:(CGPoint)a4
+- (CGPoint)collectionView:(id)view targetContentOffsetForProposedContentOffset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  v8 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v9 = [v8 _delegateActual];
-  [v9 collectionView:v7 targetContentOffsetForProposedContentOffset:{x, y}];
+  y = offset.y;
+  x = offset.x;
+  viewCopy = view;
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  _delegateActual = [collectionView _delegateActual];
+  [_delegateActual collectionView:viewCopy targetContentOffsetForProposedContentOffset:{x, y}];
   v11 = v10;
   v13 = v12;
 
@@ -1031,15 +1031,15 @@ LABEL_23:
   return result;
 }
 
-- (BOOL)collectionView:(id)a3 canFocusItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view canFocusItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:a4];
+  viewCopy = view;
+  v7 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:path];
   if (v7)
   {
-    v8 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v9 = [v8 _delegateActual];
-    v10 = [v9 collectionView:v6 canFocusItemAtIndexPath:v7];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _delegateActual = [collectionView _delegateActual];
+    v10 = [_delegateActual collectionView:viewCopy canFocusItemAtIndexPath:v7];
   }
 
   else
@@ -1050,68 +1050,68 @@ LABEL_23:
   return v10;
 }
 
-- (BOOL)collectionView:(id)a3 shouldUpdateFocusInContext:(id)a4
+- (BOOL)collectionView:(id)view shouldUpdateFocusInContext:(id)context
 {
-  v5 = a4;
-  v6 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v7 = [v6 _delegateActual];
-  v8 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v9 = [v7 collectionView:v8 shouldUpdateFocusInContext:v5];
+  contextCopy = context;
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  _delegateActual = [collectionView _delegateActual];
+  collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  v9 = [_delegateActual collectionView:collectionView2 shouldUpdateFocusInContext:contextCopy];
 
   return v9;
 }
 
-- (void)collectionView:(id)a3 didUpdateFocusInContext:(id)a4 withAnimationCoordinator:(id)a5
+- (void)collectionView:(id)view didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v7 = a5;
-  v8 = a4;
-  v11 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v9 = [v11 _delegateActual];
-  v10 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  [v9 collectionView:v10 didUpdateFocusInContext:v8 withAnimationCoordinator:v7];
+  coordinatorCopy = coordinator;
+  contextCopy = context;
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  _delegateActual = [collectionView _delegateActual];
+  collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  [_delegateActual collectionView:collectionView2 didUpdateFocusInContext:contextCopy withAnimationCoordinator:coordinatorCopy];
 }
 
-- (BOOL)collectionView:(id)a3 selectionFollowsFocusForItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view selectionFollowsFocusForItemAtIndexPath:(id)path
 {
-  v5 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:a4];
-  v6 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v7 = v6;
+  v5 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:path];
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  v7 = collectionView;
   if (v5)
   {
-    v8 = [v6 _delegateActual];
-    v9 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v10 = [v8 collectionView:v9 selectionFollowsFocusForItemAtIndexPath:v5];
+    _delegateActual = [collectionView _delegateActual];
+    collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    selectionFollowsFocus = [_delegateActual collectionView:collectionView2 selectionFollowsFocusForItemAtIndexPath:v5];
   }
 
   else
   {
-    v10 = [v6 selectionFollowsFocus];
+    selectionFollowsFocus = [collectionView selectionFollowsFocus];
   }
 
-  return v10;
+  return selectionFollowsFocus;
 }
 
-- (id)indexPathForPreferredFocusedViewInCollectionView:(id)a3
+- (id)indexPathForPreferredFocusedViewInCollectionView:(id)view
 {
-  v4 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v5 = [v4 _delegateActual];
-  v6 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v7 = [v5 indexPathForPreferredFocusedViewInCollectionView:v6];
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  _delegateActual = [collectionView _delegateActual];
+  collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  v7 = [_delegateActual indexPathForPreferredFocusedViewInCollectionView:collectionView2];
 
   v8 = [(_UICollectionViewShadowUpdatesController *)self indexPathAfterShadowUpdates:v7];
 
   return v8;
 }
 
-- (BOOL)_collectionView:(id)a3 canFocusItemAtIndexPath:(id)a4
+- (BOOL)_collectionView:(id)view canFocusItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:a4];
+  viewCopy = view;
+  v7 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:path];
   if (v7)
   {
-    v8 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v9 = [v8 _delegateActual];
-    v10 = [v9 _collectionView:v6 canFocusItemAtIndexPath:v7];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _delegateActual = [collectionView _delegateActual];
+    v10 = [_delegateActual _collectionView:viewCopy canFocusItemAtIndexPath:v7];
   }
 
   else
@@ -1122,64 +1122,64 @@ LABEL_23:
   return v10;
 }
 
-- (id)indexPathForPreferredFocusedItemForCollectionView:(id)a3
+- (id)indexPathForPreferredFocusedItemForCollectionView:(id)view
 {
-  v4 = a3;
-  v5 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v6 = [v5 _delegateActual];
-  v7 = [v6 indexPathForPreferredFocusedItemForCollectionView:v4];
+  viewCopy = view;
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  _delegateActual = [collectionView _delegateActual];
+  v7 = [_delegateActual indexPathForPreferredFocusedItemForCollectionView:viewCopy];
 
   v8 = [(_UICollectionViewShadowUpdatesController *)self indexPathAfterShadowUpdates:v7];
 
   return v8;
 }
 
-- (void)collectionView:(id)a3 didFocusItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didFocusItemAtIndexPath:(id)path
 {
-  v9 = a3;
-  v6 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:a4];
+  viewCopy = view;
+  v6 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:path];
   if (v6)
   {
-    v7 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v8 = [v7 _delegateActual];
-    [v8 collectionView:v9 didFocusItemAtIndexPath:v6];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _delegateActual = [collectionView _delegateActual];
+    [_delegateActual collectionView:viewCopy didFocusItemAtIndexPath:v6];
   }
 }
 
-- (void)_collectionView:(id)a3 didFocusItemAtIndexPath:(id)a4
+- (void)_collectionView:(id)view didFocusItemAtIndexPath:(id)path
 {
-  v9 = a3;
-  v6 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:a4];
+  viewCopy = view;
+  v6 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:path];
   if (v6)
   {
-    v7 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v8 = [v7 _delegateActual];
-    [v8 _collectionView:v9 didFocusItemAtIndexPath:v6];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _delegateActual = [collectionView _delegateActual];
+    [_delegateActual _collectionView:viewCopy didFocusItemAtIndexPath:v6];
   }
 }
 
-- (void)collectionView:(id)a3 didUnfocusItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didUnfocusItemAtIndexPath:(id)path
 {
-  v9 = a3;
-  v6 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:a4];
+  viewCopy = view;
+  v6 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:path];
   if (v6)
   {
-    v7 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v8 = [v7 _delegateActual];
-    [v8 collectionView:v9 didUnfocusItemAtIndexPath:v6];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _delegateActual = [collectionView _delegateActual];
+    [_delegateActual collectionView:viewCopy didUnfocusItemAtIndexPath:v6];
   }
 }
 
-- (BOOL)collectionView:(id)a3 shouldUpdateFocusFromItemAtIndexPath:(id)a4 toView:(id)a5 heading:(unint64_t)a6
+- (BOOL)collectionView:(id)view shouldUpdateFocusFromItemAtIndexPath:(id)path toView:(id)toView heading:(unint64_t)heading
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:a4];
+  viewCopy = view;
+  toViewCopy = toView;
+  v12 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:path];
   if (v12)
   {
-    v13 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v14 = [v13 _delegateActual];
-    v15 = [v14 collectionView:v10 shouldUpdateFocusFromItemAtIndexPath:v12 toView:v11 heading:a6];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _delegateActual = [collectionView _delegateActual];
+    v15 = [_delegateActual collectionView:viewCopy shouldUpdateFocusFromItemAtIndexPath:v12 toView:toViewCopy heading:heading];
   }
 
   else
@@ -1190,117 +1190,117 @@ LABEL_23:
   return v15;
 }
 
-- (void)_collectionView:(id)a3 horizontalIndexTitleBar:(id)a4 selectedEntry:(id)a5
+- (void)_collectionView:(id)view horizontalIndexTitleBar:(id)bar selectedEntry:(id)entry
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v12 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v11 = [v12 _delegateActual];
-  [v11 _collectionView:v10 horizontalIndexTitleBar:v9 selectedEntry:v8];
+  entryCopy = entry;
+  barCopy = bar;
+  viewCopy = view;
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  _delegateActual = [collectionView _delegateActual];
+  [_delegateActual _collectionView:viewCopy horizontalIndexTitleBar:barCopy selectedEntry:entryCopy];
 }
 
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemsAtIndexPaths:(id)a4 point:(CGPoint)a5
+- (id)collectionView:(id)view contextMenuConfigurationForItemsAtIndexPaths:(id)paths point:(CGPoint)point
 {
-  y = a5.y;
-  x = a5.x;
-  v8 = a4;
-  v9 = a3;
-  v10 = [v9 _delegateActual];
-  v11 = [v10 collectionView:v9 contextMenuConfigurationForItemsAtIndexPaths:v8 point:{x, y}];
+  y = point.y;
+  x = point.x;
+  pathsCopy = paths;
+  viewCopy = view;
+  _delegateActual = [viewCopy _delegateActual];
+  v11 = [_delegateActual collectionView:viewCopy contextMenuConfigurationForItemsAtIndexPaths:pathsCopy point:{x, y}];
 
   return v11;
 }
 
-- (id)collectionView:(id)a3 contextMenuConfiguration:(id)a4 highlightPreviewForItemAtIndexPath:(id)a5
+- (id)collectionView:(id)view contextMenuConfiguration:(id)configuration highlightPreviewForItemAtIndexPath:(id)path
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [v9 _delegateActual];
-  v11 = [v10 collectionView:v9 contextMenuConfiguration:v8 highlightPreviewForItemAtIndexPath:v7];
+  pathCopy = path;
+  configurationCopy = configuration;
+  viewCopy = view;
+  _delegateActual = [viewCopy _delegateActual];
+  v11 = [_delegateActual collectionView:viewCopy contextMenuConfiguration:configurationCopy highlightPreviewForItemAtIndexPath:pathCopy];
 
   return v11;
 }
 
-- (id)collectionView:(id)a3 contextMenuConfiguration:(id)a4 dismissalPreviewForItemAtIndexPath:(id)a5
+- (id)collectionView:(id)view contextMenuConfiguration:(id)configuration dismissalPreviewForItemAtIndexPath:(id)path
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [v9 _delegateActual];
-  v11 = [v10 collectionView:v9 contextMenuConfiguration:v8 dismissalPreviewForItemAtIndexPath:v7];
+  pathCopy = path;
+  configurationCopy = configuration;
+  viewCopy = view;
+  _delegateActual = [viewCopy _delegateActual];
+  v11 = [_delegateActual collectionView:viewCopy contextMenuConfiguration:configurationCopy dismissalPreviewForItemAtIndexPath:pathCopy];
 
   return v11;
 }
 
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemAtIndexPath:(id)a4 point:(CGPoint)a5
+- (id)collectionView:(id)view contextMenuConfigurationForItemAtIndexPath:(id)path point:(CGPoint)point
 {
-  y = a5.y;
-  x = a5.x;
-  v8 = a4;
-  v9 = a3;
-  v10 = [v9 _delegateActual];
-  v11 = [v10 collectionView:v9 contextMenuConfigurationForItemAtIndexPath:v8 point:{x, y}];
+  y = point.y;
+  x = point.x;
+  pathCopy = path;
+  viewCopy = view;
+  _delegateActual = [viewCopy _delegateActual];
+  v11 = [_delegateActual collectionView:viewCopy contextMenuConfigurationForItemAtIndexPath:pathCopy point:{x, y}];
 
   return v11;
 }
 
-- (id)collectionView:(id)a3 previewForHighlightingContextMenuWithConfiguration:(id)a4
+- (id)collectionView:(id)view previewForHighlightingContextMenuWithConfiguration:(id)configuration
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 _delegateActual];
-  v8 = [v7 collectionView:v6 previewForHighlightingContextMenuWithConfiguration:v5];
+  configurationCopy = configuration;
+  viewCopy = view;
+  _delegateActual = [viewCopy _delegateActual];
+  v8 = [_delegateActual collectionView:viewCopy previewForHighlightingContextMenuWithConfiguration:configurationCopy];
 
   return v8;
 }
 
-- (id)collectionView:(id)a3 previewForDismissingContextMenuWithConfiguration:(id)a4
+- (id)collectionView:(id)view previewForDismissingContextMenuWithConfiguration:(id)configuration
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 _delegateActual];
-  v8 = [v7 collectionView:v6 previewForDismissingContextMenuWithConfiguration:v5];
+  configurationCopy = configuration;
+  viewCopy = view;
+  _delegateActual = [viewCopy _delegateActual];
+  v8 = [_delegateActual collectionView:viewCopy previewForDismissingContextMenuWithConfiguration:configurationCopy];
 
   return v8;
 }
 
-- (void)collectionView:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5
+- (void)collectionView:(id)view willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [v9 _delegateActual];
-  [v10 collectionView:v9 willPerformPreviewActionForMenuWithConfiguration:v8 animator:v7];
+  animatorCopy = animator;
+  configurationCopy = configuration;
+  viewCopy = view;
+  _delegateActual = [viewCopy _delegateActual];
+  [_delegateActual collectionView:viewCopy willPerformPreviewActionForMenuWithConfiguration:configurationCopy animator:animatorCopy];
 }
 
-- (void)collectionView:(id)a3 willDisplayContextMenuWithConfiguration:(id)a4 animator:(id)a5
+- (void)collectionView:(id)view willDisplayContextMenuWithConfiguration:(id)configuration animator:(id)animator
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [v9 _delegateActual];
-  [v10 collectionView:v9 willDisplayContextMenuWithConfiguration:v8 animator:v7];
+  animatorCopy = animator;
+  configurationCopy = configuration;
+  viewCopy = view;
+  _delegateActual = [viewCopy _delegateActual];
+  [_delegateActual collectionView:viewCopy willDisplayContextMenuWithConfiguration:configurationCopy animator:animatorCopy];
 }
 
-- (void)collectionView:(id)a3 willEndContextMenuInteractionWithConfiguration:(id)a4 animator:(id)a5
+- (void)collectionView:(id)view willEndContextMenuInteractionWithConfiguration:(id)configuration animator:(id)animator
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [v9 _delegateActual];
-  [v10 collectionView:v9 willEndContextMenuInteractionWithConfiguration:v8 animator:v7];
+  animatorCopy = animator;
+  configurationCopy = configuration;
+  viewCopy = view;
+  _delegateActual = [viewCopy _delegateActual];
+  [_delegateActual collectionView:viewCopy willEndContextMenuInteractionWithConfiguration:configurationCopy animator:animatorCopy];
 }
 
-- (BOOL)collectionView:(id)a3 canPerformPrimaryActionForItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view canPerformPrimaryActionForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:a4];
+  viewCopy = view;
+  v7 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:path];
   if (v7)
   {
-    v8 = [v6 _delegateActual];
-    v9 = [v8 collectionView:v6 canPerformPrimaryActionForItemAtIndexPath:v7];
+    _delegateActual = [viewCopy _delegateActual];
+    v9 = [_delegateActual collectionView:viewCopy canPerformPrimaryActionForItemAtIndexPath:v7];
   }
 
   else
@@ -1311,51 +1311,51 @@ LABEL_23:
   return v9;
 }
 
-- (void)collectionView:(id)a3 performPrimaryActionForItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view performPrimaryActionForItemAtIndexPath:(id)path
 {
-  v8 = a3;
-  v6 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:a4];
+  viewCopy = view;
+  v6 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:path];
   if (v6)
   {
-    v7 = [v8 _delegateActual];
-    [v7 collectionView:v8 performPrimaryActionForItemAtIndexPath:v6];
+    _delegateActual = [viewCopy _delegateActual];
+    [_delegateActual collectionView:viewCopy performPrimaryActionForItemAtIndexPath:v6];
   }
 }
 
-- (id)collectionView:(id)a3 sceneActivationConfigurationForItemAtIndexPath:(id)a4 point:(CGPoint)a5
+- (id)collectionView:(id)view sceneActivationConfigurationForItemAtIndexPath:(id)path point:(CGPoint)point
 {
-  y = a5.y;
-  x = a5.x;
-  v8 = a4;
-  v9 = a3;
-  v10 = [v9 _delegateActual];
-  v11 = [v10 collectionView:v9 sceneActivationConfigurationForItemAtIndexPath:v8 point:{x, y}];
+  y = point.y;
+  x = point.x;
+  pathCopy = path;
+  viewCopy = view;
+  _delegateActual = [viewCopy _delegateActual];
+  v11 = [_delegateActual collectionView:viewCopy sceneActivationConfigurationForItemAtIndexPath:pathCopy point:{x, y}];
 
   return v11;
 }
 
-- (id)_collectionView:(id)a3 sceneActivationConfigurationForItemAtIndexPath:(id)a4 point:(CGPoint)a5
+- (id)_collectionView:(id)view sceneActivationConfigurationForItemAtIndexPath:(id)path point:(CGPoint)point
 {
-  y = a5.y;
-  x = a5.x;
-  v8 = a4;
-  v9 = a3;
-  v10 = [v9 _delegateActual];
-  v11 = [v10 _collectionView:v9 sceneActivationConfigurationForItemAtIndexPath:v8 point:{x, y}];
+  y = point.y;
+  x = point.x;
+  pathCopy = path;
+  viewCopy = view;
+  _delegateActual = [viewCopy _delegateActual];
+  v11 = [_delegateActual _collectionView:viewCopy sceneActivationConfigurationForItemAtIndexPath:pathCopy point:{x, y}];
 
   return v11;
 }
 
-- (id)_collectionView:(id)a3 typeSelectStringForItemAtIndexPath:(id)a4
+- (id)_collectionView:(id)view typeSelectStringForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:pathCopy];
   if (v8)
   {
-    v9 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v10 = [v9 _delegateActual];
-    v11 = [v10 _collectionView:v6 typeSelectStringForItemAtIndexPath:v7];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _delegateActual = [collectionView _delegateActual];
+    v11 = [_delegateActual _collectionView:viewCopy typeSelectStringForItemAtIndexPath:pathCopy];
   }
 
   else
@@ -1366,49 +1366,49 @@ LABEL_23:
   return v11;
 }
 
-- (void)_collectionView:(id)a3 updateTypeSelectResultForCell:(id)a4 atIndexPath:(id)a5 withItemResult:(id)a6 animator:(id)a7
+- (void)_collectionView:(id)view updateTypeSelectResultForCell:(id)cell atIndexPath:(id)path withItemResult:(id)result animator:(id)animator
 {
-  v19 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:v13];
+  viewCopy = view;
+  cellCopy = cell;
+  pathCopy = path;
+  resultCopy = result;
+  animatorCopy = animator;
+  v16 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:pathCopy];
   if (v16)
   {
-    v17 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v18 = [v17 _delegateActual];
-    [v18 _collectionView:v19 updateTypeSelectResultForCell:v12 atIndexPath:v13 withItemResult:v14 animator:v15];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _delegateActual = [collectionView _delegateActual];
+    [_delegateActual _collectionView:viewCopy updateTypeSelectResultForCell:cellCopy atIndexPath:pathCopy withItemResult:resultCopy animator:animatorCopy];
   }
 }
 
-- (void)_collectionView:(id)a3 typeSelectResultDidUpdate:(id)a4
+- (void)_collectionView:(id)view typeSelectResultDidUpdate:(id)update
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v8 = [v9 _delegateActual];
-  [v8 _collectionView:v7 typeSelectResultDidUpdate:v6];
+  updateCopy = update;
+  viewCopy = view;
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  _delegateActual = [collectionView _delegateActual];
+  [_delegateActual _collectionView:viewCopy typeSelectResultDidUpdate:updateCopy];
 }
 
-- (id)_indexPathOfReferenceItemForLayoutTransitionInCollectionView:(id)a3
+- (id)_indexPathOfReferenceItemForLayoutTransitionInCollectionView:(id)view
 {
-  v4 = a3;
-  v5 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v6 = [v5 _delegateActual];
-  v7 = [v6 _indexPathOfReferenceItemForLayoutTransitionInCollectionView:v4];
+  viewCopy = view;
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  _delegateActual = [collectionView _delegateActual];
+  v7 = [_delegateActual _indexPathOfReferenceItemForLayoutTransitionInCollectionView:viewCopy];
 
   return v7;
 }
 
-- (CGPoint)_collectionView:(id)a3 targetContentOffsetForProposedContentOffset:(CGPoint)a4
+- (CGPoint)_collectionView:(id)view targetContentOffsetForProposedContentOffset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  v8 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v9 = [v8 _delegateActual];
-  [v9 _collectionView:v7 targetContentOffsetForProposedContentOffset:{x, y}];
+  y = offset.y;
+  x = offset.x;
+  viewCopy = view;
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  _delegateActual = [collectionView _delegateActual];
+  [_delegateActual _collectionView:viewCopy targetContentOffsetForProposedContentOffset:{x, y}];
   v11 = v10;
   v13 = v12;
 
@@ -1419,151 +1419,151 @@ LABEL_23:
   return result;
 }
 
-- (BOOL)_collectionView:(id)a3 shouldApplyTransitionContentOffset:(CGPoint)a4 contentSize:(CGSize)a5
+- (BOOL)_collectionView:(id)view shouldApplyTransitionContentOffset:(CGPoint)offset contentSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  y = a4.y;
-  x = a4.x;
-  v10 = a3;
-  v11 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v12 = [v11 _delegateActual];
-  v13 = [v12 _collectionView:v10 shouldApplyTransitionContentOffset:x contentSize:{y, width, height}];
+  height = size.height;
+  width = size.width;
+  y = offset.y;
+  x = offset.x;
+  viewCopy = view;
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  _delegateActual = [collectionView _delegateActual];
+  v13 = [_delegateActual _collectionView:viewCopy shouldApplyTransitionContentOffset:x contentSize:{y, width, height}];
 
   return v13;
 }
 
-- (void)_collectionView:(id)a3 orthogonalScrollViewDidScroll:(id)a4 section:(int64_t)a5
+- (void)_collectionView:(id)view orthogonalScrollViewDidScroll:(id)scroll section:(int64_t)section
 {
-  v8 = a4;
-  v9 = a3;
-  [(_UICollectionViewShadowUpdatesController *)self sectionIndexBeforeShadowUpdates:a5];
-  v10 = [v9 _delegateActual];
-  [v10 _collectionView:v9 orthogonalScrollViewDidScroll:v8 section:a5];
+  scrollCopy = scroll;
+  viewCopy = view;
+  [(_UICollectionViewShadowUpdatesController *)self sectionIndexBeforeShadowUpdates:section];
+  _delegateActual = [viewCopy _delegateActual];
+  [_delegateActual _collectionView:viewCopy orthogonalScrollViewDidScroll:scrollCopy section:section];
 }
 
-- (id)_collectionView:(id)a3 indexPathOfReferenceItemToPreserveContentOffsetWithProposedReference:(id)a4
+- (id)_collectionView:(id)view indexPathOfReferenceItemToPreserveContentOffsetWithProposedReference:(id)reference
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = v7;
-  if (v6)
+  referenceCopy = reference;
+  viewCopy = view;
+  v8 = viewCopy;
+  if (referenceCopy)
   {
-    v9 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:v6];
-    v10 = [v8 _delegateActual];
-    v11 = [v10 _collectionView:v8 indexPathOfReferenceItemToPreserveContentOffsetWithProposedReference:v6];
+    _delegateActual2 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:referenceCopy];
+    _delegateActual = [v8 _delegateActual];
+    v11 = [_delegateActual _collectionView:v8 indexPathOfReferenceItemToPreserveContentOffsetWithProposedReference:referenceCopy];
 
-    v8 = v10;
+    v8 = _delegateActual;
   }
 
   else
   {
-    v9 = [v7 _delegateActual];
-    v11 = [v9 _collectionView:v8 indexPathOfReferenceItemToPreserveContentOffsetWithProposedReference:0];
+    _delegateActual2 = [viewCopy _delegateActual];
+    v11 = [_delegateActual2 _collectionView:v8 indexPathOfReferenceItemToPreserveContentOffsetWithProposedReference:0];
   }
 
   return v11;
 }
 
-- (id)_collectionView:(id)a3 targetIndexPathForMoveFromItemAtIndexPath:(id)a4 toProposedIndexPath:(id)a5
+- (id)_collectionView:(id)view targetIndexPathForMoveFromItemAtIndexPath:(id)path toProposedIndexPath:(id)indexPath
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:a4];
-  v11 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:v9];
+  viewCopy = view;
+  indexPathCopy = indexPath;
+  v10 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:path];
+  v11 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:indexPathCopy];
 
   v12 = 0;
   if (v10 && v11)
   {
-    v13 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v14 = [v13 _delegateActual];
-    v12 = [v14 _collectionView:v8 targetIndexPathForMoveFromItemAtIndexPath:v10 toProposedIndexPath:v11];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _delegateActual = [collectionView _delegateActual];
+    v12 = [_delegateActual _collectionView:viewCopy targetIndexPathForMoveFromItemAtIndexPath:v10 toProposedIndexPath:v11];
   }
 
   return v12;
 }
 
-- (id)_collectionView:(id)a3 styleForContextMenuWithConfiguration:(id)a4
+- (id)_collectionView:(id)view styleForContextMenuWithConfiguration:(id)configuration
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 _delegateActual];
-  v8 = [v7 _collectionView:v6 styleForContextMenuWithConfiguration:v5];
+  configurationCopy = configuration;
+  viewCopy = view;
+  _delegateActual = [viewCopy _delegateActual];
+  v8 = [_delegateActual _collectionView:viewCopy styleForContextMenuWithConfiguration:configurationCopy];
 
   return v8;
 }
 
-- (id)_collectionView:(id)a3 accessoriesForContextMenuWithConfiguration:(id)a4 layoutAnchor:(id *)a5
+- (id)_collectionView:(id)view accessoriesForContextMenuWithConfiguration:(id)configuration layoutAnchor:(id *)anchor
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 _delegateActual];
-  v10 = *&a5->var2;
-  v13[0] = *&a5->var0;
+  configurationCopy = configuration;
+  viewCopy = view;
+  _delegateActual = [viewCopy _delegateActual];
+  v10 = *&anchor->var2;
+  v13[0] = *&anchor->var0;
   v13[1] = v10;
-  var4 = a5->var4;
-  v11 = [v9 _collectionView:v8 accessoriesForContextMenuWithConfiguration:v7 layoutAnchor:v13];
+  var4 = anchor->var4;
+  v11 = [_delegateActual _collectionView:viewCopy accessoriesForContextMenuWithConfiguration:configurationCopy layoutAnchor:v13];
 
   return v11;
 }
 
-- (id)_dci_collectionView:(id)a3 contextMenuConfigurationForItemsAtIndexPaths:(id)a4 point:(CGPoint)a5
+- (id)_dci_collectionView:(id)view contextMenuConfigurationForItemsAtIndexPaths:(id)paths point:(CGPoint)point
 {
-  y = a5.y;
-  x = a5.x;
-  v8 = a4;
-  v9 = a3;
-  v10 = [v9 _delegateActual];
-  v11 = [v10 _dci_collectionView:v9 contextMenuConfigurationForItemsAtIndexPaths:v8 point:{x, y}];
+  y = point.y;
+  x = point.x;
+  pathsCopy = paths;
+  viewCopy = view;
+  _delegateActual = [viewCopy _delegateActual];
+  v11 = [_delegateActual _dci_collectionView:viewCopy contextMenuConfigurationForItemsAtIndexPaths:pathsCopy point:{x, y}];
 
   return v11;
 }
 
-- (id)_dci_collectionView:(id)a3 contextMenuConfigurationForSelectedItemsAtIndexPaths:(id)a4 point:(CGPoint)a5
+- (id)_dci_collectionView:(id)view contextMenuConfigurationForSelectedItemsAtIndexPaths:(id)paths point:(CGPoint)point
 {
-  y = a5.y;
-  x = a5.x;
-  v8 = a4;
-  v9 = a3;
-  v10 = [v9 _delegateActual];
-  v11 = [v10 _dci_collectionView:v9 contextMenuConfigurationForSelectedItemsAtIndexPaths:v8 point:{x, y}];
+  y = point.y;
+  x = point.x;
+  pathsCopy = paths;
+  viewCopy = view;
+  _delegateActual = [viewCopy _delegateActual];
+  v11 = [_delegateActual _dci_collectionView:viewCopy contextMenuConfigurationForSelectedItemsAtIndexPaths:pathsCopy point:{x, y}];
 
   return v11;
 }
 
-- (id)_dci_collectionView:(id)a3 contextMenuConfiguration:(id)a4 previewForHighlightingItemAtIndexPath:(id)a5
+- (id)_dci_collectionView:(id)view contextMenuConfiguration:(id)configuration previewForHighlightingItemAtIndexPath:(id)path
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [v9 _delegateActual];
-  v11 = [v10 _dci_collectionView:v9 contextMenuConfiguration:v8 previewForHighlightingItemAtIndexPath:v7];
+  pathCopy = path;
+  configurationCopy = configuration;
+  viewCopy = view;
+  _delegateActual = [viewCopy _delegateActual];
+  v11 = [_delegateActual _dci_collectionView:viewCopy contextMenuConfiguration:configurationCopy previewForHighlightingItemAtIndexPath:pathCopy];
 
   return v11;
 }
 
-- (id)_dci_collectionView:(id)a3 contextMenuConfiguration:(id)a4 previewForDismissingToItemAtIndexPath:(id)a5
+- (id)_dci_collectionView:(id)view contextMenuConfiguration:(id)configuration previewForDismissingToItemAtIndexPath:(id)path
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [v9 _delegateActual];
-  v11 = [v10 _dci_collectionView:v9 contextMenuConfiguration:v8 previewForDismissingToItemAtIndexPath:v7];
+  pathCopy = path;
+  configurationCopy = configuration;
+  viewCopy = view;
+  _delegateActual = [viewCopy _delegateActual];
+  v11 = [_delegateActual _dci_collectionView:viewCopy contextMenuConfiguration:configurationCopy previewForDismissingToItemAtIndexPath:pathCopy];
 
   return v11;
 }
 
-- (void)collectionView:(id)a3 prefetchItemsAtIndexPaths:(id)a4
+- (void)collectionView:(id)view prefetchItemsAtIndexPaths:(id)paths
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathsCopy = paths;
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = v7;
+  v9 = pathsCopy;
   v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
@@ -1595,22 +1595,22 @@ LABEL_23:
     while (v11);
   }
 
-  v15 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v16 = [v15 _prefetchDataSourceActual];
-  [v16 collectionView:v6 prefetchItemsAtIndexPaths:v8];
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  _prefetchDataSourceActual = [collectionView _prefetchDataSourceActual];
+  [_prefetchDataSourceActual collectionView:viewCopy prefetchItemsAtIndexPaths:v8];
 }
 
-- (void)collectionView:(id)a3 cancelPrefetchingForItemsAtIndexPaths:(id)a4
+- (void)collectionView:(id)view cancelPrefetchingForItemsAtIndexPaths:(id)paths
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathsCopy = paths;
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = v7;
+  v9 = pathsCopy;
   v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
@@ -1642,21 +1642,21 @@ LABEL_23:
     while (v11);
   }
 
-  v15 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v16 = [v15 _prefetchDataSourceActual];
-  [v16 collectionView:v6 cancelPrefetchingForItemsAtIndexPaths:v8];
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  _prefetchDataSourceActual = [collectionView _prefetchDataSourceActual];
+  [_prefetchDataSourceActual collectionView:viewCopy cancelPrefetchingForItemsAtIndexPaths:v8];
 }
 
-- (id)_collectionView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5
+- (id)_collectionView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path
 {
-  v7 = a4;
-  v8 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:a5];
+  sessionCopy = session;
+  v8 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:path];
   if (v8)
   {
-    v9 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v10 = [v9 _dragSourceDelegateActual];
-    v11 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v12 = [v10 _collectionView:v11 itemsForBeginningDragSession:v7 atIndexPath:v8];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _dragSourceDelegateActual = [collectionView _dragSourceDelegateActual];
+    collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    v12 = [_dragSourceDelegateActual _collectionView:collectionView2 itemsForBeginningDragSession:sessionCopy atIndexPath:v8];
   }
 
   else
@@ -1667,18 +1667,18 @@ LABEL_23:
   return v12;
 }
 
-- (id)_collectionView:(id)a3 itemsForAddingToDragSession:(id)a4 atIndexPath:(id)a5 point:(CGPoint)a6
+- (id)_collectionView:(id)view itemsForAddingToDragSession:(id)session atIndexPath:(id)path point:(CGPoint)point
 {
-  y = a6.y;
-  x = a6.x;
-  v10 = a4;
-  v11 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:a5];
+  y = point.y;
+  x = point.x;
+  sessionCopy = session;
+  v11 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:path];
   if (v11)
   {
-    v12 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v13 = [v12 _dragSourceDelegateActual];
-    v14 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v15 = [v13 _collectionView:v14 itemsForAddingToDragSession:v10 atIndexPath:v11 point:{x, y}];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _dragSourceDelegateActual = [collectionView _dragSourceDelegateActual];
+    collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    v15 = [_dragSourceDelegateActual _collectionView:collectionView2 itemsForAddingToDragSession:sessionCopy atIndexPath:v11 point:{x, y}];
   }
 
   else
@@ -1689,91 +1689,91 @@ LABEL_23:
   return v15;
 }
 
-- (void)_collectionView:(id)a3 dragSessionWillBegin:(id)a4
+- (void)_collectionView:(id)view dragSessionWillBegin:(id)begin
 {
-  v5 = a4;
-  v8 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v6 = [v8 _dragSourceDelegateActual];
-  v7 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  [v6 _collectionView:v7 dragSessionWillBegin:v5];
+  beginCopy = begin;
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  _dragSourceDelegateActual = [collectionView _dragSourceDelegateActual];
+  collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  [_dragSourceDelegateActual _collectionView:collectionView2 dragSessionWillBegin:beginCopy];
 }
 
-- (void)_collectionView:(id)a3 dragSessionDidEnd:(id)a4
+- (void)_collectionView:(id)view dragSessionDidEnd:(id)end
 {
-  v5 = a4;
-  v8 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v6 = [v8 _dragSourceDelegateActual];
-  v7 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  [v6 _collectionView:v7 dragSessionDidEnd:v5];
+  endCopy = end;
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  _dragSourceDelegateActual = [collectionView _dragSourceDelegateActual];
+  collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  [_dragSourceDelegateActual _collectionView:collectionView2 dragSessionDidEnd:endCopy];
 }
 
-- (void)_collectionView:(id)a3 performDropWithCoordinator:(id)a4
+- (void)_collectionView:(id)view performDropWithCoordinator:(id)coordinator
 {
-  v5 = a4;
-  v8 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v6 = [v8 _dragDestinationDelegateActual];
-  v7 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  [v6 _collectionView:v7 performDropWithCoordinator:v5];
+  coordinatorCopy = coordinator;
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  _dragDestinationDelegateActual = [collectionView _dragDestinationDelegateActual];
+  collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  [_dragDestinationDelegateActual _collectionView:collectionView2 performDropWithCoordinator:coordinatorCopy];
 }
 
-- (BOOL)collectionView:(id)a3 canHandleDropSesson:(id)a4
+- (BOOL)collectionView:(id)view canHandleDropSesson:(id)sesson
 {
-  v5 = a4;
-  v6 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v7 = [v6 _dragDestinationDelegateActual];
-  v8 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v9 = [v7 _collectionView:v8 canHandleDropSesson:v5];
+  sessonCopy = sesson;
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  _dragDestinationDelegateActual = [collectionView _dragDestinationDelegateActual];
+  collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  v9 = [_dragDestinationDelegateActual _collectionView:collectionView2 canHandleDropSesson:sessonCopy];
 
   return v9;
 }
 
-- (void)_collectionView:(id)a3 dropSessionDidEnter:(id)a4
+- (void)_collectionView:(id)view dropSessionDidEnter:(id)enter
 {
-  v5 = a4;
-  v8 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v6 = [v8 _dragDestinationDelegateActual];
-  v7 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  [v6 _collectionView:v7 dropSessionDidEnter:v5];
+  enterCopy = enter;
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  _dragDestinationDelegateActual = [collectionView _dragDestinationDelegateActual];
+  collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  [_dragDestinationDelegateActual _collectionView:collectionView2 dropSessionDidEnter:enterCopy];
 }
 
-- (id)_collectionView:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationIndexPath:(id)a5
+- (id)_collectionView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path
 {
-  v7 = a4;
-  v8 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:a5];
-  v9 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v10 = [v9 _dragDestinationDelegateActual];
-  v11 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v12 = [v10 _collectionView:v11 dropSessionDidUpdate:v7 withDestinationIndexPath:v8];
+  updateCopy = update;
+  v8 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:path];
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  _dragDestinationDelegateActual = [collectionView _dragDestinationDelegateActual];
+  collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  v12 = [_dragDestinationDelegateActual _collectionView:collectionView2 dropSessionDidUpdate:updateCopy withDestinationIndexPath:v8];
 
   return v12;
 }
 
-- (void)_collectionView:(id)a3 dropSessionDidExit:(id)a4
+- (void)_collectionView:(id)view dropSessionDidExit:(id)exit
 {
-  v5 = a4;
-  v8 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v6 = [v8 _dragDestinationDelegateActual];
-  v7 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  [v6 _collectionView:v7 dropSessionDidExit:v5];
+  exitCopy = exit;
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  _dragDestinationDelegateActual = [collectionView _dragDestinationDelegateActual];
+  collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  [_dragDestinationDelegateActual _collectionView:collectionView2 dropSessionDidExit:exitCopy];
 }
 
-- (void)_collectionView:(id)a3 dropSessionDidEnd:(id)a4
+- (void)_collectionView:(id)view dropSessionDidEnd:(id)end
 {
-  v5 = a4;
-  v8 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v6 = [v8 _dragDestinationDelegateActual];
-  v7 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  [v6 _collectionView:v7 dropSessionDidEnd:v5];
+  endCopy = end;
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  _dragDestinationDelegateActual = [collectionView _dragDestinationDelegateActual];
+  collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  [_dragDestinationDelegateActual _collectionView:collectionView2 dropSessionDidEnd:endCopy];
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(_UICollectionViewShadowUpdatesController *)self _shouldPerformTranslationForDelegateBasedFlowLayoutSizing];
-  v10 = v8;
+  layoutCopy = layout;
+  pathCopy = path;
+  _shouldPerformTranslationForDelegateBasedFlowLayoutSizing = [(_UICollectionViewShadowUpdatesController *)self _shouldPerformTranslationForDelegateBasedFlowLayoutSizing];
+  v10 = pathCopy;
   v11 = v10;
-  if (!v9)
+  if (!_shouldPerformTranslationForDelegateBasedFlowLayoutSizing)
   {
     goto LABEL_3;
   }
@@ -1785,7 +1785,7 @@ LABEL_23:
     goto LABEL_3;
   }
 
-  v11 = [v7 layoutAttributesForInteractivelyMovingItemAtIndexPath:v10 withTargetPosition:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
+  v11 = [layoutCopy layoutAttributesForInteractivelyMovingItemAtIndexPath:v10 withTargetPosition:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
   [v11 size];
   v23 = *MEMORY[0x1E695F060];
   v22 = *(MEMORY[0x1E695F060] + 8);
@@ -1797,19 +1797,19 @@ LABEL_23:
     goto LABEL_4;
   }
 
-  v28 = [(_UICollectionViewShadowUpdatesController *)self updateMap];
-  v29 = [v28 initialSnapshot];
-  v30 = [v29 globalIndexForIndexPath:v10];
+  updateMap = [(_UICollectionViewShadowUpdatesController *)self updateMap];
+  initialSnapshot = [updateMap initialSnapshot];
+  v30 = [initialSnapshot globalIndexForIndexPath:v10];
 
   if (v30 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v11 = v10;
 LABEL_3:
-    v12 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v13 = [v12 _delegateActual];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _delegateActual = [collectionView _delegateActual];
 
-    v14 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    [v13 collectionView:v14 layout:v7 sizeForItemAtIndexPath:v11];
+    collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    [_delegateActual collectionView:collectionView2 layout:layoutCopy sizeForItemAtIndexPath:v11];
     v16 = v15;
     v18 = v17;
 
@@ -1817,13 +1817,13 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  [v7 _fallbackItemSize];
+  [layoutCopy _fallbackItemSize];
   v16 = v31;
   v18 = v32;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v7 itemSize];
+    [layoutCopy itemSize];
     if (v33 != v23 || v34 != v22)
     {
       v18 = v34;
@@ -1840,22 +1840,22 @@ LABEL_5:
   return result;
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
-  v7 = a4;
-  v8 = [(_UICollectionViewShadowUpdatesController *)self sectionIndexBeforeShadowUpdates:a5];
+  layoutCopy = layout;
+  v8 = [(_UICollectionViewShadowUpdatesController *)self sectionIndexBeforeShadowUpdates:index];
   v9 = 0.0;
   v10 = 0.0;
   v11 = 0.0;
   v12 = 0.0;
-  if (a5 != 0x7FFFFFFFFFFFFFFFLL)
+  if (index != 0x7FFFFFFFFFFFFFFFLL)
   {
     v13 = v8;
-    v14 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v15 = [v14 _delegateActual];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _delegateActual = [collectionView _delegateActual];
 
-    v16 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    [v15 collectionView:v16 layout:v7 insetForSectionAtIndex:v13];
+    collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    [_delegateActual collectionView:collectionView2 layout:layoutCopy insetForSectionAtIndex:v13];
     v12 = v17;
     v11 = v18;
     v10 = v19;
@@ -1873,48 +1873,48 @@ LABEL_5:
   return result;
 }
 
-- (double)collectionView:(id)a3 layout:(id)a4 minimumLineSpacingForSectionAtIndex:(int64_t)a5
+- (double)collectionView:(id)view layout:(id)layout minimumLineSpacingForSectionAtIndex:(int64_t)index
 {
-  v7 = a4;
-  v8 = [(_UICollectionViewShadowUpdatesController *)self sectionIndexBeforeShadowUpdates:a5];
+  layoutCopy = layout;
+  v8 = [(_UICollectionViewShadowUpdatesController *)self sectionIndexBeforeShadowUpdates:index];
   v9 = 0.0;
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v10 = v8;
-    v11 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v12 = [v11 _delegateActual];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _delegateActual = [collectionView _delegateActual];
 
-    v13 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    [v12 collectionView:v13 layout:v7 minimumLineSpacingForSectionAtIndex:v10];
+    collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    [_delegateActual collectionView:collectionView2 layout:layoutCopy minimumLineSpacingForSectionAtIndex:v10];
     v9 = v14;
   }
 
   return v9;
 }
 
-- (double)collectionView:(id)a3 layout:(id)a4 minimumInteritemSpacingForSectionAtIndex:(int64_t)a5
+- (double)collectionView:(id)view layout:(id)layout minimumInteritemSpacingForSectionAtIndex:(int64_t)index
 {
-  v7 = a4;
-  v8 = [(_UICollectionViewShadowUpdatesController *)self sectionIndexBeforeShadowUpdates:a5];
+  layoutCopy = layout;
+  v8 = [(_UICollectionViewShadowUpdatesController *)self sectionIndexBeforeShadowUpdates:index];
   v9 = 0.0;
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v10 = v8;
-    v11 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v12 = [v11 _delegateActual];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _delegateActual = [collectionView _delegateActual];
 
-    v13 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    [v12 collectionView:v13 layout:v7 minimumInteritemSpacingForSectionAtIndex:v10];
+    collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    [_delegateActual collectionView:collectionView2 layout:layoutCopy minimumInteritemSpacingForSectionAtIndex:v10];
     v9 = v14;
   }
 
   return v9;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section
 {
-  v7 = a4;
-  v8 = [(_UICollectionViewShadowUpdatesController *)self sectionIndexBeforeShadowUpdates:a5];
+  layoutCopy = layout;
+  v8 = [(_UICollectionViewShadowUpdatesController *)self sectionIndexBeforeShadowUpdates:section];
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = *MEMORY[0x1E695F060];
@@ -1924,11 +1924,11 @@ LABEL_5:
   else
   {
     v11 = v8;
-    v12 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v13 = [v12 _delegateActual];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _delegateActual = [collectionView _delegateActual];
 
-    v14 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    [v13 collectionView:v14 layout:v7 referenceSizeForHeaderInSection:v11];
+    collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    [_delegateActual collectionView:collectionView2 layout:layoutCopy referenceSizeForHeaderInSection:v11];
     v9 = v15;
     v10 = v16;
   }
@@ -1940,10 +1940,10 @@ LABEL_5:
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForFooterInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForFooterInSection:(int64_t)section
 {
-  v7 = a4;
-  v8 = [(_UICollectionViewShadowUpdatesController *)self sectionIndexBeforeShadowUpdates:a5];
+  layoutCopy = layout;
+  v8 = [(_UICollectionViewShadowUpdatesController *)self sectionIndexBeforeShadowUpdates:section];
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = *MEMORY[0x1E695F060];
@@ -1953,11 +1953,11 @@ LABEL_5:
   else
   {
     v11 = v8;
-    v12 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v13 = [v12 _delegateActual];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _delegateActual = [collectionView _delegateActual];
 
-    v14 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    [v13 collectionView:v14 layout:v7 referenceSizeForFooterInSection:v11];
+    collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    [_delegateActual collectionView:collectionView2 layout:layoutCopy referenceSizeForFooterInSection:v11];
     v9 = v15;
     v10 = v16;
   }
@@ -1969,9 +1969,9 @@ LABEL_5:
   return result;
 }
 
-- (id)_collectionView:(id)a3 flowLayoutRowAlignmentOptionsForSection:(int64_t)a4
+- (id)_collectionView:(id)view flowLayoutRowAlignmentOptionsForSection:(int64_t)section
 {
-  v5 = [(_UICollectionViewShadowUpdatesController *)self sectionIndexBeforeShadowUpdates:a4];
+  v5 = [(_UICollectionViewShadowUpdatesController *)self sectionIndexBeforeShadowUpdates:section];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = MEMORY[0x1E695E0F8];
@@ -1980,20 +1980,20 @@ LABEL_5:
   else
   {
     v7 = v5;
-    v8 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v9 = [v8 _delegateActual];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _delegateActual = [collectionView _delegateActual];
 
-    v10 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v6 = [v9 _collectionView:v10 flowLayoutRowAlignmentOptionsForSection:v7];
+    collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    v6 = [_delegateActual _collectionView:collectionView2 flowLayoutRowAlignmentOptionsForSection:v7];
   }
 
   return v6;
 }
 
-- (id)_collectionView:(id)a3 layout:(id)a4 flowLayoutRowAlignmentOptionsForSection:(int64_t)a5
+- (id)_collectionView:(id)view layout:(id)layout flowLayoutRowAlignmentOptionsForSection:(int64_t)section
 {
-  v7 = a4;
-  v8 = [(_UICollectionViewShadowUpdatesController *)self sectionIndexBeforeShadowUpdates:a5];
+  layoutCopy = layout;
+  v8 = [(_UICollectionViewShadowUpdatesController *)self sectionIndexBeforeShadowUpdates:section];
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = MEMORY[0x1E695E0F8];
@@ -2002,20 +2002,20 @@ LABEL_5:
   else
   {
     v10 = v8;
-    v11 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v12 = [v11 _delegateActual];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _delegateActual = [collectionView _delegateActual];
 
-    v13 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v9 = [v12 _collectionView:v13 layout:v7 flowLayoutRowAlignmentOptionsForSection:v10];
+    collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    v9 = [_delegateActual _collectionView:collectionView2 layout:layoutCopy flowLayoutRowAlignmentOptionsForSection:v10];
   }
 
   return v9;
 }
 
-- (id)_collectionView:(id)a3 layout:(id)a4 sizesForItemsInSection:(int64_t)a5
+- (id)_collectionView:(id)view layout:(id)layout sizesForItemsInSection:(int64_t)section
 {
-  v7 = a4;
-  v8 = [(_UICollectionViewShadowUpdatesController *)self sectionIndexBeforeShadowUpdates:a5];
+  layoutCopy = layout;
+  v8 = [(_UICollectionViewShadowUpdatesController *)self sectionIndexBeforeShadowUpdates:section];
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = MEMORY[0x1E695E0F8];
@@ -2024,52 +2024,52 @@ LABEL_5:
   else
   {
     v10 = v8;
-    v11 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v12 = [v11 _delegateActual];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _delegateActual = [collectionView _delegateActual];
 
-    v13 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v9 = [v12 _collectionView:v13 layout:v7 sizesForItemsInSection:v10];
+    collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    v9 = [_delegateActual _collectionView:collectionView2 layout:layoutCopy sizesForItemsInSection:v10];
   }
 
   return v9;
 }
 
-- (double)collectionView:(id)a3 tableLayout:(id)a4 heightForRowAtIndexPath:(id)a5
+- (double)collectionView:(id)view tableLayout:(id)layout heightForRowAtIndexPath:(id)path
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:v8];
+  layoutCopy = layout;
+  pathCopy = path;
+  v9 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:pathCopy];
   if (v9)
   {
 LABEL_2:
-    v10 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v11 = [v10 _delegateActual];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _delegateActual = [collectionView _delegateActual];
 
-    v12 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    [v11 collectionView:v12 tableLayout:v7 heightForRowAtIndexPath:v9];
+    collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    [_delegateActual collectionView:collectionView2 tableLayout:layoutCopy heightForRowAtIndexPath:v9];
     v14 = v13;
 
     goto LABEL_3;
   }
 
-  [v7 rowHeight];
+  [layoutCopy rowHeight];
   v14 = v16;
   v17 = fabs(v16) < 2.22044605e-16;
   v18 = fabs(v16 + -1.79769313e308);
   if (v17 || v18 <= 2.22044605e-16)
   {
-    v20 = [(_UICollectionViewShadowUpdatesController *)self updateMap];
-    v21 = [v20 initialSnapshot];
-    v22 = [v21 globalIndexForIndexPath:v8];
+    updateMap = [(_UICollectionViewShadowUpdatesController *)self updateMap];
+    initialSnapshot = [updateMap initialSnapshot];
+    v22 = [initialSnapshot globalIndexForIndexPath:pathCopy];
 
     if (v22 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v7 _defaultCellHeight];
+      [layoutCopy _defaultCellHeight];
       v14 = v23;
       goto LABEL_3;
     }
 
-    v9 = v8;
+    v9 = pathCopy;
     goto LABEL_2;
   }
 
@@ -2078,17 +2078,17 @@ LABEL_3:
   return v14;
 }
 
-- (double)collectionView:(id)a3 tableLayout:(id)a4 estimatedHeightForRowAtIndexPath:(id)a5
+- (double)collectionView:(id)view tableLayout:(id)layout estimatedHeightForRowAtIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:a5];
+  viewCopy = view;
+  layoutCopy = layout;
+  v10 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:path];
   if (v10)
   {
-    v11 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v12 = [v11 _delegateActual];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _delegateActual = [collectionView _delegateActual];
 
-    [v12 collectionView:v8 tableLayout:v9 estimatedHeightForRowAtIndexPath:v10];
+    [_delegateActual collectionView:viewCopy tableLayout:layoutCopy estimatedHeightForRowAtIndexPath:v10];
     v14 = v13;
   }
 
@@ -2100,135 +2100,135 @@ LABEL_3:
   return v14;
 }
 
-- (double)collectionView:(id)a3 tableLayout:(id)a4 estimatedHeightForHeaderInSection:(int64_t)a5
+- (double)collectionView:(id)view tableLayout:(id)layout estimatedHeightForHeaderInSection:(int64_t)section
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(_UICollectionViewShadowUpdatesController *)self sectionIndexBeforeShadowUpdates:a5];
+  viewCopy = view;
+  layoutCopy = layout;
+  v10 = [(_UICollectionViewShadowUpdatesController *)self sectionIndexBeforeShadowUpdates:section];
   v11 = 0.0;
   if (v10 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v12 = v10;
-    v13 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v14 = [v13 _delegateActual];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _delegateActual = [collectionView _delegateActual];
 
-    [v14 collectionView:v8 tableLayout:v9 estimatedHeightForHeaderInSection:v12];
+    [_delegateActual collectionView:viewCopy tableLayout:layoutCopy estimatedHeightForHeaderInSection:v12];
     v11 = v15;
   }
 
   return v11;
 }
 
-- (double)collectionView:(id)a3 tableLayout:(id)a4 estimatedHeightForFooterInSection:(int64_t)a5
+- (double)collectionView:(id)view tableLayout:(id)layout estimatedHeightForFooterInSection:(int64_t)section
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(_UICollectionViewShadowUpdatesController *)self sectionIndexBeforeShadowUpdates:a5];
+  viewCopy = view;
+  layoutCopy = layout;
+  v10 = [(_UICollectionViewShadowUpdatesController *)self sectionIndexBeforeShadowUpdates:section];
   v11 = 0.0;
   if (v10 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v12 = v10;
-    v13 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v14 = [v13 _delegateActual];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _delegateActual = [collectionView _delegateActual];
 
-    [v14 collectionView:v8 tableLayout:v9 estimatedHeightForFooterInSection:v12];
+    [_delegateActual collectionView:viewCopy tableLayout:layoutCopy estimatedHeightForFooterInSection:v12];
     v11 = v15;
   }
 
   return v11;
 }
 
-- (double)collectionView:(id)a3 tableLayout:(id)a4 heightForHeaderInSection:(int64_t)a5
+- (double)collectionView:(id)view tableLayout:(id)layout heightForHeaderInSection:(int64_t)section
 {
-  v7 = a4;
-  [v7 sectionHeaderHeight];
+  layoutCopy = layout;
+  [layoutCopy sectionHeaderHeight];
   v9 = v8;
-  v10 = [(_UICollectionViewShadowUpdatesController *)self sectionIndexBeforeShadowUpdates:a5];
+  v10 = [(_UICollectionViewShadowUpdatesController *)self sectionIndexBeforeShadowUpdates:section];
   if (v10 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v11 = v10;
-    v12 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v13 = [v12 _delegateActual];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _delegateActual = [collectionView _delegateActual];
 
-    v14 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    [v13 collectionView:v14 tableLayout:v7 heightForHeaderInSection:v11];
+    collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    [_delegateActual collectionView:collectionView2 tableLayout:layoutCopy heightForHeaderInSection:v11];
     v9 = v15;
   }
 
   return v9;
 }
 
-- (double)collectionView:(id)a3 tableLayout:(id)a4 heightForFooterInSection:(int64_t)a5
+- (double)collectionView:(id)view tableLayout:(id)layout heightForFooterInSection:(int64_t)section
 {
-  v7 = a4;
-  [v7 sectionFooterHeight];
+  layoutCopy = layout;
+  [layoutCopy sectionFooterHeight];
   v9 = v8;
-  v10 = [(_UICollectionViewShadowUpdatesController *)self sectionIndexBeforeShadowUpdates:a5];
+  v10 = [(_UICollectionViewShadowUpdatesController *)self sectionIndexBeforeShadowUpdates:section];
   if (v10 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v11 = v10;
-    v12 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v13 = [v12 _delegateActual];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _delegateActual = [collectionView _delegateActual];
 
-    v14 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    [v13 collectionView:v14 tableLayout:v7 heightForFooterInSection:v11];
+    collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    [_delegateActual collectionView:collectionView2 tableLayout:layoutCopy heightForFooterInSection:v11];
     v9 = v15;
   }
 
   return v9;
 }
 
-- (double)collectionView:(id)a3 heightForHeaderViewInTableLayout:(id)a4
+- (double)collectionView:(id)view heightForHeaderViewInTableLayout:(id)layout
 {
-  v5 = a4;
-  v6 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v7 = [v6 _delegateActual];
+  layoutCopy = layout;
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  _delegateActual = [collectionView _delegateActual];
 
-  v8 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  [v7 collectionView:v8 heightForHeaderViewInTableLayout:v5];
+  collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  [_delegateActual collectionView:collectionView2 heightForHeaderViewInTableLayout:layoutCopy];
   v10 = v9;
 
   return v10;
 }
 
-- (double)collectionView:(id)a3 heightForFooterViewInTableLayout:(id)a4
+- (double)collectionView:(id)view heightForFooterViewInTableLayout:(id)layout
 {
-  v5 = a4;
-  v6 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v7 = [v6 _delegateActual];
+  layoutCopy = layout;
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  _delegateActual = [collectionView _delegateActual];
 
-  v8 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  [v7 collectionView:v8 heightForFooterViewInTableLayout:v5];
+  collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  [_delegateActual collectionView:collectionView2 heightForFooterViewInTableLayout:layoutCopy];
   v10 = v9;
 
   return v10;
 }
 
-- (void)collectionView:(id)a3 tableLayout:(id)a4 accessoryButtonTappedForRowWithIndexPath:(id)a5
+- (void)collectionView:(id)view tableLayout:(id)layout accessoryButtonTappedForRowWithIndexPath:(id)path
 {
-  v11 = a4;
-  v7 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:a5];
+  layoutCopy = layout;
+  v7 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:path];
   if (v7)
   {
-    v8 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v9 = [v8 _delegateActual];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _delegateActual = [collectionView _delegateActual];
 
-    v10 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    [v9 collectionView:v10 tableLayout:v11 accessoryButtonTappedForRowWithIndexPath:v7];
+    collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    [_delegateActual collectionView:collectionView2 tableLayout:layoutCopy accessoryButtonTappedForRowWithIndexPath:v7];
   }
 }
 
-- (int64_t)collectionView:(id)a3 tableLayout:(id)a4 editingStyleForRowAtIndexPath:(id)a5
+- (int64_t)collectionView:(id)view tableLayout:(id)layout editingStyleForRowAtIndexPath:(id)path
 {
-  v7 = a4;
-  v8 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:a5];
+  layoutCopy = layout;
+  v8 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:path];
   if (v8)
   {
-    v9 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v10 = [v9 _delegateActual];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _delegateActual = [collectionView _delegateActual];
 
-    v11 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v12 = [v10 collectionView:v11 tableLayout:v7 editingStyleForRowAtIndexPath:v8];
+    collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    v12 = [_delegateActual collectionView:collectionView2 tableLayout:layoutCopy editingStyleForRowAtIndexPath:v8];
   }
 
   else
@@ -2239,31 +2239,31 @@ LABEL_3:
   return v12;
 }
 
-- (void)collectionView:(id)a3 tableLayout:(id)a4 commitEditingStyle:(int64_t)a5 forRowAtIndexPath:(id)a6
+- (void)collectionView:(id)view tableLayout:(id)layout commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  v13 = a4;
-  v9 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:a6];
+  layoutCopy = layout;
+  v9 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:path];
   if (v9)
   {
-    v10 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v11 = [v10 _delegateActual];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _delegateActual = [collectionView _delegateActual];
 
-    v12 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    [v11 collectionView:v12 tableLayout:v13 commitEditingStyle:a5 forRowAtIndexPath:v9];
+    collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    [_delegateActual collectionView:collectionView2 tableLayout:layoutCopy commitEditingStyle:style forRowAtIndexPath:v9];
   }
 }
 
-- (id)collectionView:(id)a3 tableLayout:(id)a4 leadingSwipeActionsConfigurationForRowAtIndexPath:(id)a5
+- (id)collectionView:(id)view tableLayout:(id)layout leadingSwipeActionsConfigurationForRowAtIndexPath:(id)path
 {
-  v7 = a4;
-  v8 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:a5];
+  layoutCopy = layout;
+  v8 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:path];
   if (v8)
   {
-    v9 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v10 = [v9 _delegateActual];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _delegateActual = [collectionView _delegateActual];
 
-    v11 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v12 = [v10 collectionView:v11 tableLayout:v7 leadingSwipeActionsConfigurationForRowAtIndexPath:v8];
+    collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    v12 = [_delegateActual collectionView:collectionView2 tableLayout:layoutCopy leadingSwipeActionsConfigurationForRowAtIndexPath:v8];
   }
 
   else
@@ -2274,17 +2274,17 @@ LABEL_3:
   return v12;
 }
 
-- (id)collectionView:(id)a3 tableLayout:(id)a4 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a5
+- (id)collectionView:(id)view tableLayout:(id)layout trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path
 {
-  v7 = a4;
-  v8 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:a5];
+  layoutCopy = layout;
+  v8 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:path];
   if (v8)
   {
-    v9 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v10 = [v9 _delegateActual];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _delegateActual = [collectionView _delegateActual];
 
-    v11 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v12 = [v10 collectionView:v11 tableLayout:v7 trailingSwipeActionsConfigurationForRowAtIndexPath:v8];
+    collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    v12 = [_delegateActual collectionView:collectionView2 tableLayout:layoutCopy trailingSwipeActionsConfigurationForRowAtIndexPath:v8];
   }
 
   else
@@ -2295,17 +2295,17 @@ LABEL_3:
   return v12;
 }
 
-- (BOOL)collectionView:(id)a3 tableLayout:(id)a4 shouldIndentWhileEditingRowAtIndexPath:(id)a5
+- (BOOL)collectionView:(id)view tableLayout:(id)layout shouldIndentWhileEditingRowAtIndexPath:(id)path
 {
-  v7 = a4;
-  v8 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:a5];
+  layoutCopy = layout;
+  v8 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:path];
   if (v8)
   {
-    v9 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v10 = [v9 _delegateActual];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _delegateActual = [collectionView _delegateActual];
 
-    v11 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v12 = [v10 collectionView:v11 tableLayout:v7 shouldIndentWhileEditingRowAtIndexPath:v8];
+    collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    v12 = [_delegateActual collectionView:collectionView2 tableLayout:layoutCopy shouldIndentWhileEditingRowAtIndexPath:v8];
   }
 
   else
@@ -2316,45 +2316,45 @@ LABEL_3:
   return v12;
 }
 
-- (void)collectionView:(id)a3 tableLayout:(id)a4 willBeginEditingRowAtIndexPath:(id)a5
+- (void)collectionView:(id)view tableLayout:(id)layout willBeginEditingRowAtIndexPath:(id)path
 {
-  v11 = a4;
-  v7 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:a5];
+  layoutCopy = layout;
+  v7 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:path];
   if (v7)
   {
-    v8 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v9 = [v8 _delegateActual];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _delegateActual = [collectionView _delegateActual];
 
-    v10 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    [v9 collectionView:v10 tableLayout:v11 willBeginEditingRowAtIndexPath:v7];
+    collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    [_delegateActual collectionView:collectionView2 tableLayout:layoutCopy willBeginEditingRowAtIndexPath:v7];
   }
 }
 
-- (void)collectionView:(id)a3 tableLayout:(id)a4 didEndEditingRowAtIndexPath:(id)a5
+- (void)collectionView:(id)view tableLayout:(id)layout didEndEditingRowAtIndexPath:(id)path
 {
-  v11 = a4;
-  v7 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:a5];
+  layoutCopy = layout;
+  v7 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:path];
   if (v7)
   {
-    v8 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v9 = [v8 _delegateActual];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _delegateActual = [collectionView _delegateActual];
 
-    v10 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    [v9 collectionView:v10 tableLayout:v11 didEndEditingRowAtIndexPath:v7];
+    collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    [_delegateActual collectionView:collectionView2 tableLayout:layoutCopy didEndEditingRowAtIndexPath:v7];
   }
 }
 
-- (int64_t)collectionView:(id)a3 tableLayout:(id)a4 indentationLevelForRowAtIndexPath:(id)a5
+- (int64_t)collectionView:(id)view tableLayout:(id)layout indentationLevelForRowAtIndexPath:(id)path
 {
-  v7 = a4;
-  v8 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:a5];
+  layoutCopy = layout;
+  v8 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:path];
   if (v8)
   {
-    v9 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v10 = [v9 _delegateActual];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _delegateActual = [collectionView _delegateActual];
 
-    v11 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v12 = [v10 collectionView:v11 tableLayout:v7 indentationLevelForRowAtIndexPath:v8];
+    collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    v12 = [_delegateActual collectionView:collectionView2 tableLayout:layoutCopy indentationLevelForRowAtIndexPath:v8];
   }
 
   else
@@ -2365,17 +2365,17 @@ LABEL_3:
   return v12;
 }
 
-- (id)collectionView:(id)a3 tableLayout:(id)a4 leadingSwipeActionsForRowAtIndexPath:(id)a5
+- (id)collectionView:(id)view tableLayout:(id)layout leadingSwipeActionsForRowAtIndexPath:(id)path
 {
-  v7 = a4;
-  v8 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:a5];
+  layoutCopy = layout;
+  v8 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:path];
   if (v8)
   {
-    v9 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v10 = [v9 _delegateActual];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _delegateActual = [collectionView _delegateActual];
 
-    v11 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v12 = [v10 collectionView:v11 tableLayout:v7 leadingSwipeActionsForRowAtIndexPath:v8];
+    collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    v12 = [_delegateActual collectionView:collectionView2 tableLayout:layoutCopy leadingSwipeActionsForRowAtIndexPath:v8];
   }
 
   else
@@ -2386,17 +2386,17 @@ LABEL_3:
   return v12;
 }
 
-- (id)collectionView:(id)a3 tableLayout:(id)a4 trailingSwipeActionsForRowAtIndexPath:(id)a5
+- (id)collectionView:(id)view tableLayout:(id)layout trailingSwipeActionsForRowAtIndexPath:(id)path
 {
-  v7 = a4;
-  v8 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:a5];
+  layoutCopy = layout;
+  v8 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:path];
   if (v8)
   {
-    v9 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v10 = [v9 _delegateActual];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _delegateActual = [collectionView _delegateActual];
 
-    v11 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v12 = [v10 collectionView:v11 tableLayout:v7 trailingSwipeActionsForRowAtIndexPath:v8];
+    collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    v12 = [_delegateActual collectionView:collectionView2 tableLayout:layoutCopy trailingSwipeActionsForRowAtIndexPath:v8];
   }
 
   else
@@ -2407,104 +2407,104 @@ LABEL_3:
   return v12;
 }
 
-- (id)collectionView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path
 {
-  v7 = a4;
-  v8 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:a5];
-  v9 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v10 = [v9 _dragDelegateActual];
-  v11 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v12 = [v10 collectionView:v11 itemsForBeginningDragSession:v7 atIndexPath:v8];
+  sessionCopy = session;
+  v8 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:path];
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  _dragDelegateActual = [collectionView _dragDelegateActual];
+  collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  v12 = [_dragDelegateActual collectionView:collectionView2 itemsForBeginningDragSession:sessionCopy atIndexPath:v8];
 
   return v12;
 }
 
-- (id)collectionView:(id)a3 itemsForAddingToDragSession:(id)a4 atIndexPath:(id)a5 point:(CGPoint)a6
+- (id)collectionView:(id)view itemsForAddingToDragSession:(id)session atIndexPath:(id)path point:(CGPoint)point
 {
-  y = a6.y;
-  x = a6.x;
-  v10 = a4;
-  v11 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:a5];
-  v12 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v13 = [v12 _dragDelegateActual];
-  v14 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v15 = [v13 collectionView:v14 itemsForAddingToDragSession:v10 atIndexPath:v11 point:{x, y}];
+  y = point.y;
+  x = point.x;
+  sessionCopy = session;
+  v11 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:path];
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  _dragDelegateActual = [collectionView _dragDelegateActual];
+  collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  v15 = [_dragDelegateActual collectionView:collectionView2 itemsForAddingToDragSession:sessionCopy atIndexPath:v11 point:{x, y}];
 
   return v15;
 }
 
-- (id)collectionView:(id)a3 dragPreviewParametersForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view dragPreviewParametersForItemAtIndexPath:(id)path
 {
-  v5 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:a4];
-  v6 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v7 = [v6 _dragDelegateActual];
-  v8 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v9 = [v7 collectionView:v8 dragPreviewParametersForItemAtIndexPath:v5];
+  v5 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:path];
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  _dragDelegateActual = [collectionView _dragDelegateActual];
+  collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  v9 = [_dragDelegateActual collectionView:collectionView2 dragPreviewParametersForItemAtIndexPath:v5];
 
   return v9;
 }
 
-- (void)collectionView:(id)a3 dragSessionWillBegin:(id)a4
+- (void)collectionView:(id)view dragSessionWillBegin:(id)begin
 {
-  v5 = a4;
-  v8 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v6 = [v8 _dragDelegateActual];
-  v7 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  [v6 collectionView:v7 dragSessionWillBegin:v5];
+  beginCopy = begin;
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  _dragDelegateActual = [collectionView _dragDelegateActual];
+  collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  [_dragDelegateActual collectionView:collectionView2 dragSessionWillBegin:beginCopy];
 }
 
-- (void)collectionView:(id)a3 dragSessionDidEnd:(id)a4
+- (void)collectionView:(id)view dragSessionDidEnd:(id)end
 {
-  v5 = a4;
-  v8 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v6 = [v8 _dragDelegateActual];
-  v7 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  [v6 collectionView:v7 dragSessionDidEnd:v5];
+  endCopy = end;
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  _dragDelegateActual = [collectionView _dragDelegateActual];
+  collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  [_dragDelegateActual collectionView:collectionView2 dragSessionDidEnd:endCopy];
 }
 
-- (BOOL)collectionView:(id)a3 dragSessionAllowsMoveOperation:(id)a4
+- (BOOL)collectionView:(id)view dragSessionAllowsMoveOperation:(id)operation
 {
-  v5 = a4;
-  v6 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v7 = [v6 _dragDelegateActual];
-  v8 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v9 = [v7 collectionView:v8 dragSessionAllowsMoveOperation:v5];
+  operationCopy = operation;
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  _dragDelegateActual = [collectionView _dragDelegateActual];
+  collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  v9 = [_dragDelegateActual collectionView:collectionView2 dragSessionAllowsMoveOperation:operationCopy];
 
   return v9;
 }
 
-- (BOOL)collectionView:(id)a3 dragSessionIsRestrictedToDraggingApplication:(id)a4
+- (BOOL)collectionView:(id)view dragSessionIsRestrictedToDraggingApplication:(id)application
 {
-  v5 = a4;
-  v6 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v7 = [v6 _dragDelegateActual];
-  v8 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v9 = [v7 collectionView:v8 dragSessionIsRestrictedToDraggingApplication:v5];
+  applicationCopy = application;
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  _dragDelegateActual = [collectionView _dragDelegateActual];
+  collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  v9 = [_dragDelegateActual collectionView:collectionView2 dragSessionIsRestrictedToDraggingApplication:applicationCopy];
 
   return v9;
 }
 
-- (BOOL)_collectionView:(id)a3 prefersFullSizePreviewsForDragSession:(id)a4
+- (BOOL)_collectionView:(id)view prefersFullSizePreviewsForDragSession:(id)session
 {
-  v5 = a4;
-  v6 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v7 = [v6 _dragDelegateActual];
-  v8 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v9 = [v7 _collectionView:v8 prefersFullSizePreviewsForDragSession:v5];
+  sessionCopy = session;
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  _dragDelegateActual = [collectionView _dragDelegateActual];
+  collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  v9 = [_dragDelegateActual _collectionView:collectionView2 prefersFullSizePreviewsForDragSession:sessionCopy];
 
   return v9;
 }
 
-- (int64_t)_collectionView:(id)a3 dataOwnerForDragSession:(id)a4 atIndexPath:(id)a5
+- (int64_t)_collectionView:(id)view dataOwnerForDragSession:(id)session atIndexPath:(id)path
 {
-  v7 = a4;
-  v8 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:a5];
+  sessionCopy = session;
+  v8 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:path];
   if (v8)
   {
-    v9 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v10 = [v9 _dragDelegateActual];
-    v11 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v12 = [v10 _collectionView:v11 dataOwnerForDragSession:v7 atIndexPath:v8];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _dragDelegateActual = [collectionView _dragDelegateActual];
+    collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    v12 = [_dragDelegateActual _collectionView:collectionView2 dataOwnerForDragSession:sessionCopy atIndexPath:v8];
   }
 
   else
@@ -2515,68 +2515,68 @@ LABEL_3:
   return v12;
 }
 
-- (BOOL)_collectionView:(id)a3 dragSessionSupportsSystemDrag:(id)a4
+- (BOOL)_collectionView:(id)view dragSessionSupportsSystemDrag:(id)drag
 {
-  v5 = a4;
-  v6 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v7 = [v6 _dragDelegateActual];
-  v8 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v9 = [v7 _collectionView:v8 dragSessionSupportsSystemDrag:v5];
+  dragCopy = drag;
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  _dragDelegateActual = [collectionView _dragDelegateActual];
+  collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  v9 = [_dragDelegateActual _collectionView:collectionView2 dragSessionSupportsSystemDrag:dragCopy];
 
   return v9;
 }
 
-- (id)_collectionView:(id)a3 dragSessionPropertiesForSession:(id)a4
+- (id)_collectionView:(id)view dragSessionPropertiesForSession:(id)session
 {
-  v5 = a4;
-  v6 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v7 = [v6 _dragDelegateActual];
-  v8 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v9 = [v7 _collectionView:v8 dragSessionPropertiesForSession:v5];
+  sessionCopy = session;
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  _dragDelegateActual = [collectionView _dragDelegateActual];
+  collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  v9 = [_dragDelegateActual _collectionView:collectionView2 dragSessionPropertiesForSession:sessionCopy];
 
   return v9;
 }
 
-- (void)collectionView:(id)a3 performDropWithCoordinator:(id)a4
+- (void)collectionView:(id)view performDropWithCoordinator:(id)coordinator
 {
-  v5 = a4;
-  v8 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v6 = [v8 _dropDelegateActual];
-  v7 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  [v6 collectionView:v7 performDropWithCoordinator:v5];
+  coordinatorCopy = coordinator;
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  _dropDelegateActual = [collectionView _dropDelegateActual];
+  collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  [_dropDelegateActual collectionView:collectionView2 performDropWithCoordinator:coordinatorCopy];
 }
 
-- (BOOL)collectionView:(id)a3 canHandleDropSession:(id)a4
+- (BOOL)collectionView:(id)view canHandleDropSession:(id)session
 {
-  v5 = a4;
-  v6 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v7 = [v6 _dropDelegateActual];
-  v8 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v9 = [v7 collectionView:v8 canHandleDropSession:v5];
+  sessionCopy = session;
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  _dropDelegateActual = [collectionView _dropDelegateActual];
+  collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  v9 = [_dropDelegateActual collectionView:collectionView2 canHandleDropSession:sessionCopy];
 
   return v9;
 }
 
-- (void)collectionView:(id)a3 dropSessionDidEnter:(id)a4
+- (void)collectionView:(id)view dropSessionDidEnter:(id)enter
 {
-  v5 = a4;
-  v8 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v6 = [v8 _dropDelegateActual];
-  v7 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  [v6 collectionView:v7 dropSessionDidEnter:v5];
+  enterCopy = enter;
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  _dropDelegateActual = [collectionView _dropDelegateActual];
+  collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  [_dropDelegateActual collectionView:collectionView2 dropSessionDidEnter:enterCopy];
 }
 
-- (id)collectionView:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationIndexPath:(id)a5
+- (id)collectionView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:v7];
+  pathCopy = path;
+  updateCopy = update;
+  v9 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:pathCopy];
   v10 = v9;
-  if (v7 && !v9)
+  if (pathCopy && !v9)
   {
-    if ([(_UICollectionViewShadowUpdatesController *)self _shadowUpdatesAreSimpleInsertWithOptionalMoveSequenceForIndexPath:v7])
+    if ([(_UICollectionViewShadowUpdatesController *)self _shadowUpdatesAreSimpleInsertWithOptionalMoveSequenceForIndexPath:pathCopy])
     {
-      v10 = v7;
+      v10 = pathCopy;
     }
 
     else
@@ -2585,41 +2585,41 @@ LABEL_3:
     }
   }
 
-  v11 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v12 = [v11 _dropDelegateActual];
-  v13 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v14 = [v12 collectionView:v13 dropSessionDidUpdate:v8 withDestinationIndexPath:v10];
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  _dropDelegateActual = [collectionView _dropDelegateActual];
+  collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  v14 = [_dropDelegateActual collectionView:collectionView2 dropSessionDidUpdate:updateCopy withDestinationIndexPath:v10];
 
   return v14;
 }
 
-- (void)collectionView:(id)a3 dropSessionDidExit:(id)a4
+- (void)collectionView:(id)view dropSessionDidExit:(id)exit
 {
-  v5 = a4;
-  v8 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v6 = [v8 _dropDelegateActual];
-  v7 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  [v6 collectionView:v7 dropSessionDidExit:v5];
+  exitCopy = exit;
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  _dropDelegateActual = [collectionView _dropDelegateActual];
+  collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  [_dropDelegateActual collectionView:collectionView2 dropSessionDidExit:exitCopy];
 }
 
-- (void)collectionView:(id)a3 dropSessionDidEnd:(id)a4
+- (void)collectionView:(id)view dropSessionDidEnd:(id)end
 {
-  v5 = a4;
-  v8 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v6 = [v8 _dropDelegateActual];
-  v7 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  [v6 collectionView:v7 dropSessionDidEnd:v5];
+  endCopy = end;
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  _dropDelegateActual = [collectionView _dropDelegateActual];
+  collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  [_dropDelegateActual collectionView:collectionView2 dropSessionDidEnd:endCopy];
 }
 
-- (id)collectionView:(id)a3 dropPreviewParametersForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view dropPreviewParametersForItemAtIndexPath:(id)path
 {
-  v5 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:a4];
+  v5 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:path];
   if (v5)
   {
-    v6 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v7 = [v6 _dropDelegateActual];
-    v8 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v9 = [v7 collectionView:v8 dropPreviewParametersForItemAtIndexPath:v5];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _dropDelegateActual = [collectionView _dropDelegateActual];
+    collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    v9 = [_dropDelegateActual collectionView:collectionView2 dropPreviewParametersForItemAtIndexPath:v5];
   }
 
   else
@@ -2630,16 +2630,16 @@ LABEL_3:
   return v9;
 }
 
-- (int64_t)_collectionView:(id)a3 dataOwnerForDropSession:(id)a4 withDestinationIndexPath:(id)a5
+- (int64_t)_collectionView:(id)view dataOwnerForDropSession:(id)session withDestinationIndexPath:(id)path
 {
-  v7 = a4;
-  v8 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:a5];
+  sessionCopy = session;
+  v8 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:path];
   if (v8)
   {
-    v9 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v10 = [v9 _dropDelegateActual];
-    v11 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v12 = [v10 _collectionView:v11 dataOwnerForDropSession:v7 withDestinationIndexPath:v8];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _dropDelegateActual = [collectionView _dropDelegateActual];
+    collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    v12 = [_dropDelegateActual _collectionView:collectionView2 dataOwnerForDropSession:sessionCopy withDestinationIndexPath:v8];
   }
 
   else
@@ -2650,53 +2650,53 @@ LABEL_3:
   return v12;
 }
 
-- (id)_collectionView:(id)a3 liftingPreviewParametersForItemAtIndexPath:(id)a4
+- (id)_collectionView:(id)view liftingPreviewParametersForItemAtIndexPath:(id)path
 {
-  v5 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:a4];
-  v6 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v7 = [v6 _dragSourceDelegateActual];
-  v8 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v9 = [v7 _collectionView:v8 liftingPreviewParametersForItemAtIndexPath:v5];
+  v5 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:path];
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  _dragSourceDelegateActual = [collectionView _dragSourceDelegateActual];
+  collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  v9 = [_dragSourceDelegateActual _collectionView:collectionView2 liftingPreviewParametersForItemAtIndexPath:v5];
 
   return v9;
 }
 
-- (id)_collectionView:(id)a3 dragDestinationTargetIndexPathForProposedIndexPath:(id)a4 currentIndexPath:(id)a5 dropSession:(id)a6
+- (id)_collectionView:(id)view dragDestinationTargetIndexPathForProposedIndexPath:(id)path currentIndexPath:(id)indexPath dropSession:(id)session
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:a4];
-  v12 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:v10];
+  sessionCopy = session;
+  indexPathCopy = indexPath;
+  v11 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:path];
+  v12 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:indexPathCopy];
 
-  v13 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v14 = [v13 _dragDestinationDelegateActual];
-  v15 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v16 = [v14 _collectionView:v15 dragDestinationTargetIndexPathForProposedIndexPath:v11 currentIndexPath:v12 dropSession:v9];
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  _dragDestinationDelegateActual = [collectionView _dragDestinationDelegateActual];
+  collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  v16 = [_dragDestinationDelegateActual _collectionView:collectionView2 dragDestinationTargetIndexPathForProposedIndexPath:v11 currentIndexPath:v12 dropSession:sessionCopy];
 
   return v16;
 }
 
-- (BOOL)_collectionView:(id)a3 canHandleDropSesson:(id)a4
+- (BOOL)_collectionView:(id)view canHandleDropSesson:(id)sesson
 {
-  v5 = a4;
-  v6 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v7 = [v6 _dragDestinationDelegateActual];
-  v8 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v9 = [v7 _collectionView:v8 canHandleDropSesson:v5];
+  sessonCopy = sesson;
+  collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  _dragDestinationDelegateActual = [collectionView _dragDestinationDelegateActual];
+  collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  v9 = [_dragDestinationDelegateActual _collectionView:collectionView2 canHandleDropSesson:sessonCopy];
 
   return v9;
 }
 
-- (BOOL)_collectionView:(id)a3 shouldSpringLoadItemAtIndexPath:(id)a4 withContext:(id)a5
+- (BOOL)_collectionView:(id)view shouldSpringLoadItemAtIndexPath:(id)path withContext:(id)context
 {
-  v7 = a5;
-  v8 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:a4];
+  contextCopy = context;
+  v8 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:path];
   if (v8)
   {
-    v9 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v10 = [v9 _delegateActual];
-    v11 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v12 = [v10 _collectionView:v11 shouldSpringLoadItemAtIndexPath:v8 withContext:v7];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _delegateActual = [collectionView _delegateActual];
+    collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    v12 = [_delegateActual _collectionView:collectionView2 shouldSpringLoadItemAtIndexPath:v8 withContext:contextCopy];
   }
 
   else
@@ -2707,16 +2707,16 @@ LABEL_3:
   return v12;
 }
 
-- (BOOL)collectionView:(id)a3 shouldSpringLoadItemAtIndexPath:(id)a4 withContext:(id)a5
+- (BOOL)collectionView:(id)view shouldSpringLoadItemAtIndexPath:(id)path withContext:(id)context
 {
-  v7 = a5;
-  v8 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:a4];
+  contextCopy = context;
+  v8 = [(_UICollectionViewShadowUpdatesController *)self indexPathBeforeShadowUpdates:path];
   if (v8)
   {
-    v9 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v10 = [v9 _delegateActual];
-    v11 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v12 = [v10 collectionView:v11 shouldSpringLoadItemAtIndexPath:v8 withContext:v7];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    _delegateActual = [collectionView _delegateActual];
+    collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    v12 = [_delegateActual collectionView:collectionView2 shouldSpringLoadItemAtIndexPath:v8 withContext:contextCopy];
   }
 
   else
@@ -2727,9 +2727,9 @@ LABEL_3:
   return v12;
 }
 
-- (BOOL)_shadowUpdatesAreSimpleInsertWithOptionalMoveSequenceForIndexPath:(id)a3
+- (BOOL)_shadowUpdatesAreSimpleInsertWithOptionalMoveSequenceForIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = [(NSMutableArray *)self->__shadowUpdates count];
   shadowUpdates = self->__shadowUpdates;
   if (v5 == 1)
@@ -2743,8 +2743,8 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    v9 = [(UICollectionViewUpdateItem *)v7 _indexPath];
-    v8 = [v9 isEqual:v4];
+    _indexPath = [(UICollectionViewUpdateItem *)v7 _indexPath];
+    v8 = [_indexPath isEqual:pathCopy];
 LABEL_12:
 
     goto LABEL_13;
@@ -2753,20 +2753,20 @@ LABEL_12:
   if ([(NSMutableArray *)shadowUpdates count]== 2)
   {
     v7 = [(NSMutableArray *)self->__shadowUpdates objectAtIndexedSubscript:0];
-    v9 = [(NSMutableArray *)self->__shadowUpdates objectAtIndexedSubscript:1];
-    if ([v7 updateAction] || objc_msgSend(v9, "updateAction") != 3)
+    _indexPath = [(NSMutableArray *)self->__shadowUpdates objectAtIndexedSubscript:1];
+    if ([v7 updateAction] || objc_msgSend(_indexPath, "updateAction") != 3)
     {
       v8 = 0;
     }
 
     else
     {
-      v10 = [(UICollectionViewUpdateItem *)v7 _indexPath];
-      v11 = [v9 indexPathBeforeUpdate];
-      if ([v10 isEqual:v11])
+      _indexPath2 = [(UICollectionViewUpdateItem *)v7 _indexPath];
+      indexPathBeforeUpdate = [_indexPath indexPathBeforeUpdate];
+      if ([_indexPath2 isEqual:indexPathBeforeUpdate])
       {
-        v12 = [v9 indexPathAfterUpdate];
-        v8 = [v4 isEqual:v12];
+        indexPathAfterUpdate = [_indexPath indexPathAfterUpdate];
+        v8 = [pathCopy isEqual:indexPathAfterUpdate];
       }
 
       else
@@ -2784,24 +2784,24 @@ LABEL_14:
   return v8;
 }
 
-- (id)_rebasedShadowUpdatesForUpdate:(id)a3 initialSnapshot:(id)a4 shadowUpdates:(id)a5
+- (id)_rebasedShadowUpdatesForUpdate:(id)update initialSnapshot:(id)snapshot shadowUpdates:(id)updates
 {
   v47[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  updateCopy = update;
+  snapshotCopy = snapshot;
+  updatesCopy = updates;
   v35 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v39 = v7;
-  v47[0] = v7;
+  v39 = updateCopy;
+  v47[0] = updateCopy;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v47 count:1];
-  v38 = v8;
-  v11 = [_UIDataSourceUpdateMap mapForInitialSnapshot:v8 orderedUpdateItems:v10];
+  v38 = snapshotCopy;
+  v11 = [_UIDataSourceUpdateMap mapForInitialSnapshot:snapshotCopy orderedUpdateItems:v10];
 
   v43 = 0u;
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  obj = v9;
+  obj = updatesCopy;
   v40 = [obj countByEnumeratingWithState:&v41 objects:v46 count:16];
   if (v40)
   {
@@ -2818,11 +2818,11 @@ LABEL_14:
         }
 
         v14 = *(*(&v41 + 1) + 8 * v12);
-        v15 = [v14 indexPathBeforeUpdate];
-        v16 = [v13 finalIndexPathForInitialIndexPath:v15];
+        indexPathBeforeUpdate = [v14 indexPathBeforeUpdate];
+        indexPathBeforeUpdate2 = [v13 finalIndexPathForInitialIndexPath:indexPathBeforeUpdate];
 
-        v17 = [v14 indexPathAfterUpdate];
-        v18 = [v13 finalIndexPathForInitialIndexPath:v17];
+        indexPathAfterUpdate = [v14 indexPathAfterUpdate];
+        indexPathAfterUpdate2 = [v13 finalIndexPathForInitialIndexPath:indexPathAfterUpdate];
 
         if ([v14 updateAction] != 3)
         {
@@ -2833,25 +2833,25 @@ LABEL_14:
 
           else
           {
-            v21 = v18 == 0;
+            v21 = indexPathAfterUpdate2 == 0;
           }
 
           if (v21)
           {
-            v18 = [v14 indexPathAfterUpdate];
+            indexPathAfterUpdate2 = [v14 indexPathAfterUpdate];
           }
 
           goto LABEL_21;
         }
 
-        if (!v16)
+        if (!indexPathBeforeUpdate2)
         {
-          v16 = [v14 indexPathBeforeUpdate];
+          indexPathBeforeUpdate2 = [v14 indexPathBeforeUpdate];
         }
 
-        if (v16)
+        if (indexPathBeforeUpdate2)
         {
-          v19 = v18 == 0;
+          v19 = indexPathAfterUpdate2 == 0;
         }
 
         else
@@ -2861,21 +2861,21 @@ LABEL_14:
 
         if (v19)
         {
-          v20 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v20 handleFailureInMethod:a2 object:self file:@"_UICollectionViewShadowUpdatesController.m" lineNumber:1326 description:{@"Rebased moves cannot have either initial or final indexPaths == nil. updateItem(%@)", v14}];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"_UICollectionViewShadowUpdatesController.m" lineNumber:1326 description:{@"Rebased moves cannot have either initial or final indexPaths == nil. updateItem(%@)", v14}];
 
 LABEL_21:
-          if (!(v16 | v18))
+          if (!(indexPathBeforeUpdate2 | indexPathAfterUpdate2))
           {
-            v30 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v30 handleFailureInMethod:a2 object:self file:@"_UICollectionViewShadowUpdatesController.m" lineNumber:1334 description:{@"Rebased updateItem cannot have both an initial+final indexPath == nil. Faulty updateItem is (%@)", v14}];
+            currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UICollectionViewShadowUpdatesController.m" lineNumber:1334 description:{@"Rebased updateItem cannot have both an initial+final indexPath == nil. Faulty updateItem is (%@)", v14}];
 
-            v16 = 0;
-            v18 = 0;
+            indexPathBeforeUpdate2 = 0;
+            indexPathAfterUpdate2 = 0;
           }
         }
 
-        v22 = -[UICollectionViewUpdateItem initWithInitialIndexPath:finalIndexPath:updateAction:]([UICollectionViewUpdateItem alloc], "initWithInitialIndexPath:finalIndexPath:updateAction:", v16, v18, [v14 updateAction]);
+        v22 = -[UICollectionViewUpdateItem initWithInitialIndexPath:finalIndexPath:updateAction:]([UICollectionViewUpdateItem alloc], "initWithInitialIndexPath:finalIndexPath:updateAction:", indexPathBeforeUpdate2, indexPathAfterUpdate2, [v14 updateAction]);
         if (v14)
         {
           v23 = v14[11];
@@ -2894,14 +2894,14 @@ LABEL_21:
           [v35 addObject:v22];
         }
 
-        v25 = [v13 updates];
-        v26 = [v25 arrayByAddingObject:v22];
+        updates = [v13 updates];
+        v26 = [updates arrayByAddingObject:v22];
 
         v27 = [_UIDataSourceUpdateMap mapForInitialSnapshot:v38 orderedUpdateItems:v26];
-        v28 = [v27 finalSnapshot];
+        finalSnapshot = [v27 finalSnapshot];
         v45 = v39;
         v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v45 count:1];
-        v11 = [_UIDataSourceUpdateMap mapForInitialSnapshot:v28 orderedUpdateItems:v29];
+        v11 = [_UIDataSourceUpdateMap mapForInitialSnapshot:finalSnapshot orderedUpdateItems:v29];
 
         ++v12;
         v13 = v11;
@@ -2923,9 +2923,9 @@ LABEL_21:
   updateMap = self->_updateMap;
   if (!updateMap)
   {
-    v4 = [(_UICollectionViewShadowUpdatesController *)self initialSnapshot];
-    v5 = [(_UICollectionViewShadowUpdatesController *)self _shadowUpdates];
-    v6 = [_UIDataSourceUpdateMap mapForInitialSnapshot:v4 orderedUpdateItems:v5];
+    initialSnapshot = [(_UICollectionViewShadowUpdatesController *)self initialSnapshot];
+    _shadowUpdates = [(_UICollectionViewShadowUpdatesController *)self _shadowUpdates];
+    v6 = [_UIDataSourceUpdateMap mapForInitialSnapshot:initialSnapshot orderedUpdateItems:_shadowUpdates];
     v7 = self->_updateMap;
     self->_updateMap = v6;
 
@@ -2938,8 +2938,8 @@ LABEL_21:
 - (void)_regenerateUpdateMap
 {
   [(_UICollectionViewShadowUpdatesController *)self setUpdateMap:0];
-  v3 = [(_UICollectionViewShadowUpdatesController *)self updateMap];
-  [v3 _performAppendingInsertsFixups];
+  updateMap = [(_UICollectionViewShadowUpdatesController *)self updateMap];
+  [updateMap _performAppendingInsertsFixups];
 }
 
 - (_UIDataSourceSnapshotter)initialSnapshot
@@ -2947,8 +2947,8 @@ LABEL_21:
   initialSnapshot = self->_initialSnapshot;
   if (!initialSnapshot)
   {
-    v4 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    v5 = [off_1E70ECC48 snapshotterForDataSourceBackedView:v4];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    v5 = [off_1E70ECC48 snapshotterForDataSourceBackedView:collectionView];
     v6 = self->_initialSnapshot;
     self->_initialSnapshot = v5;
 
@@ -2958,48 +2958,48 @@ LABEL_21:
   return initialSnapshot;
 }
 
-- (id)_rebasedUpdateMapForUpdates:(id)a3
+- (id)_rebasedUpdateMapForUpdates:(id)updates
 {
-  v5 = a3;
+  updatesCopy = updates;
   if (!self->_updateMap || !self->_initialSnapshot)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    v12 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-    [v11 handleFailureInMethod:a2 object:self file:@"_UICollectionViewShadowUpdatesController.m" lineNumber:1373 description:{@"UICollectionView internal inconsistency: attempted to rebase shadow updates with a nil update map and/or initial snapshot. Collection view: %@", v12}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    collectionView = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UICollectionViewShadowUpdatesController.m" lineNumber:1373 description:{@"UICollectionView internal inconsistency: attempted to rebase shadow updates with a nil update map and/or initial snapshot. Collection view: %@", collectionView}];
   }
 
-  v6 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
-  v7 = [off_1E70ECC48 snapshotterForDataSourceBackedView:v6];
+  collectionView2 = [(_UICollectionViewShadowUpdatesController *)self collectionView];
+  v7 = [off_1E70ECC48 snapshotterForDataSourceBackedView:collectionView2];
 
-  v8 = [(_UICollectionViewShadowUpdatesController *)self initialSnapshot];
-  v9 = [_UIDataSourceUpdateMap validatedMapForInitialSnapshot:v8 finalSnapshot:v7 batchUpdateItems:v5];
+  initialSnapshot = [(_UICollectionViewShadowUpdatesController *)self initialSnapshot];
+  v9 = [_UIDataSourceUpdateMap validatedMapForInitialSnapshot:initialSnapshot finalSnapshot:v7 batchUpdateItems:updatesCopy];
 
   return v9;
 }
 
-- (id)_coalesceUpdatesIfPossible:(id)a3
+- (id)_coalesceUpdatesIfPossible:(id)possible
 {
   v21 = *MEMORY[0x1E69E9840];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  possibleCopy = possible;
+  v4 = [possibleCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v4)
   {
     v5 = v4;
     v6 = 0;
-    v7 = 0;
+    indexPathAfterUpdate = 0;
     v8 = *v17;
 LABEL_3:
     v9 = 0;
-    v10 = v7;
+    v10 = indexPathAfterUpdate;
     while (1)
     {
       if (*v17 != v8)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(possibleCopy);
       }
 
       v11 = *(*(&v16 + 1) + 8 * v9);
@@ -3008,11 +3008,11 @@ LABEL_3:
         break;
       }
 
-      v12 = [*(*(&v16 + 1) + 8 * v9) indexPathBeforeUpdate];
-      v13 = v12;
+      indexPathBeforeUpdate = [*(*(&v16 + 1) + 8 * v9) indexPathBeforeUpdate];
+      v13 = indexPathBeforeUpdate;
       if (v6)
       {
-        v14 = [v12 isEqual:v10];
+        v14 = [indexPathBeforeUpdate isEqual:v10];
 
         if (!v14)
         {
@@ -3022,24 +3022,24 @@ LABEL_3:
 
       else
       {
-        v6 = v12;
+        v6 = indexPathBeforeUpdate;
       }
 
-      v7 = [v11 indexPathAfterUpdate];
+      indexPathAfterUpdate = [v11 indexPathAfterUpdate];
 
       v9 = (v9 + 1);
-      v10 = v7;
+      v10 = indexPathAfterUpdate;
       if (v5 == v9)
       {
-        v5 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v5 = [possibleCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v5)
         {
           goto LABEL_3;
         }
 
-        if (v6 && v7)
+        if (v6 && indexPathAfterUpdate)
         {
-          v5 = [[UICollectionViewUpdateItem alloc] initWithInitialIndexPath:v6 finalIndexPath:v7 updateAction:3];
+          v5 = [[UICollectionViewUpdateItem alloc] initWithInitialIndexPath:v6 finalIndexPath:indexPathAfterUpdate updateAction:3];
         }
 
         goto LABEL_19;
@@ -3054,41 +3054,41 @@ LABEL_3:
   }
 
   v5 = 0;
-  v7 = v10;
+  indexPathAfterUpdate = v10;
 LABEL_19:
 
   return v5;
 }
 
-- (id)indexPathBeforeShadowUpdates:(id)a3
+- (id)indexPathBeforeShadowUpdates:(id)updates
 {
-  v4 = a3;
+  updatesCopy = updates;
   if ([(NSMutableArray *)self->__shadowUpdates count])
   {
-    v5 = [(_UICollectionViewShadowUpdatesController *)self updateMap];
-    v6 = [v5 initialIndexPathForFinalIndexPath:v4];
+    updateMap = [(_UICollectionViewShadowUpdatesController *)self updateMap];
+    v6 = [updateMap initialIndexPathForFinalIndexPath:updatesCopy];
   }
 
   else
   {
-    v6 = v4;
+    v6 = updatesCopy;
   }
 
   return v6;
 }
 
-- (id)indexPathsBeforeShadowUpdates:(id)a3
+- (id)indexPathsBeforeShadowUpdates:(id)updates
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  updatesCopy = updates;
   if ([(NSMutableArray *)self->__shadowUpdates count])
   {
-    v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+    v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(updatesCopy, "count")}];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = v4;
+    v6 = updatesCopy;
     v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
@@ -3116,24 +3116,24 @@ LABEL_19:
 
   else
   {
-    v5 = v4;
+    v5 = updatesCopy;
   }
 
   return v5;
 }
 
-- (id)indexPathsAfterShadowUpdates:(id)a3
+- (id)indexPathsAfterShadowUpdates:(id)updates
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  updatesCopy = updates;
   if ([(NSMutableArray *)self->__shadowUpdates count])
   {
-    v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+    v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(updatesCopy, "count")}];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = v4;
+    v6 = updatesCopy;
     v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
@@ -3161,83 +3161,83 @@ LABEL_19:
 
   else
   {
-    v5 = v4;
+    v5 = updatesCopy;
   }
 
   return v5;
 }
 
-- (id)indexPathAfterShadowUpdates:(id)a3 allowingAppendingInserts:(BOOL)a4
+- (id)indexPathAfterShadowUpdates:(id)updates allowingAppendingInserts:(BOOL)inserts
 {
-  v4 = a4;
-  v6 = a3;
+  insertsCopy = inserts;
+  updatesCopy = updates;
   if ([(NSMutableArray *)self->__shadowUpdates count])
   {
-    if (v4 && (-[_UICollectionViewShadowUpdatesController updateMap](self, "updateMap"), v7 = objc_claimAutoreleasedReturnValue(), [v7 initialSnapshot], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "indexPathIsSectionAppendingInsert:", v6), v8, v7, v9))
+    if (insertsCopy && (-[_UICollectionViewShadowUpdatesController updateMap](self, "updateMap"), v7 = objc_claimAutoreleasedReturnValue(), [v7 initialSnapshot], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "indexPathIsSectionAppendingInsert:", updatesCopy), v8, v7, v9))
     {
-      v10 = [(_UICollectionViewShadowUpdatesController *)self updateMap];
-      v11 = [v10 finalSnapshot];
-      v12 = [v11 indexPathForAppendingInsertInSection:{objc_msgSend(v6, "section")}];
+      updateMap = [(_UICollectionViewShadowUpdatesController *)self updateMap];
+      finalSnapshot = [updateMap finalSnapshot];
+      v12 = [finalSnapshot indexPathForAppendingInsertInSection:{objc_msgSend(updatesCopy, "section")}];
     }
 
     else
     {
-      v10 = [(_UICollectionViewShadowUpdatesController *)self updateMap];
-      v12 = [v10 finalIndexPathForInitialIndexPath:v6];
+      updateMap = [(_UICollectionViewShadowUpdatesController *)self updateMap];
+      v12 = [updateMap finalIndexPathForInitialIndexPath:updatesCopy];
     }
   }
 
   else
   {
-    v12 = v6;
+    v12 = updatesCopy;
   }
 
   return v12;
 }
 
-- (int64_t)sectionIndexBeforeShadowUpdates:(int64_t)a3
+- (int64_t)sectionIndexBeforeShadowUpdates:(int64_t)updates
 {
   if ([(NSMutableArray *)self->__shadowUpdates count])
   {
-    v5 = [(_UICollectionViewShadowUpdatesController *)self updateMap];
-    a3 = [v5 initialSectionIndexForFinalSectionIndex:a3];
+    updateMap = [(_UICollectionViewShadowUpdatesController *)self updateMap];
+    updates = [updateMap initialSectionIndexForFinalSectionIndex:updates];
   }
 
-  return a3;
+  return updates;
 }
 
-- (int64_t)sectionIndexAfterShadowUpdates:(int64_t)a3 allowingAppendingInserts:(BOOL)a4
+- (int64_t)sectionIndexAfterShadowUpdates:(int64_t)updates allowingAppendingInserts:(BOOL)inserts
 {
-  v4 = a4;
+  insertsCopy = inserts;
   if ([(NSMutableArray *)self->__shadowUpdates count])
   {
-    if (v4 && (-[_UICollectionViewShadowUpdatesController updateMap](self, "updateMap"), v7 = objc_claimAutoreleasedReturnValue(), [v7 initialSnapshot], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "numberOfSections"), v8, v7, v9 == a3))
+    if (insertsCopy && (-[_UICollectionViewShadowUpdatesController updateMap](self, "updateMap"), v7 = objc_claimAutoreleasedReturnValue(), [v7 initialSnapshot], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "numberOfSections"), v8, v7, v9 == updates))
     {
-      v10 = [(_UICollectionViewShadowUpdatesController *)self updateMap];
-      v11 = [v10 finalSnapshot];
-      a3 = [v11 numberOfSections];
+      updateMap = [(_UICollectionViewShadowUpdatesController *)self updateMap];
+      finalSnapshot = [updateMap finalSnapshot];
+      updates = [finalSnapshot numberOfSections];
     }
 
     else
     {
-      v10 = [(_UICollectionViewShadowUpdatesController *)self updateMap];
-      a3 = [v10 finalSectionIndexForInitialSectionIndex:a3];
+      updateMap = [(_UICollectionViewShadowUpdatesController *)self updateMap];
+      updates = [updateMap finalSectionIndexForInitialSectionIndex:updates];
     }
   }
 
-  return a3;
+  return updates;
 }
 
-- (id)_indexPathsBeforeShadowUpdates:(id)a3
+- (id)_indexPathsBeforeShadowUpdates:(id)updates
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  updatesCopy = updates;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = updatesCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -3268,10 +3268,10 @@ LABEL_19:
   return v5;
 }
 
-- (id)_findShadowUpdateForIdentifier:(id)a3 inShadowUpdates:(id)a4
+- (id)_findShadowUpdateForIdentifier:(id)identifier inShadowUpdates:(id)updates
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  updatesCopy = updates;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -3282,10 +3282,10 @@ LABEL_19:
   v10[1] = 3221225472;
   v10[2] = __91___UICollectionViewShadowUpdatesController__findShadowUpdateForIdentifier_inShadowUpdates___block_invoke;
   v10[3] = &unk_1E70FD008;
-  v7 = v5;
+  v7 = identifierCopy;
   v11 = v7;
   v12 = &v13;
-  [v6 enumerateObjectsUsingBlock:v10];
+  [updatesCopy enumerateObjectsUsingBlock:v10];
   v8 = v14[5];
 
   _Block_object_dispose(&v13, 8);
@@ -3293,25 +3293,25 @@ LABEL_19:
   return v8;
 }
 
-- (id)_findInsertShadowUpdateForFinalIndexPath:(id)a3
+- (id)_findInsertShadowUpdateForFinalIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__45;
   v16 = __Block_byref_object_dispose__45;
   v17 = 0;
-  v5 = [(_UICollectionViewShadowUpdatesController *)self shadowUpdates];
+  shadowUpdates = [(_UICollectionViewShadowUpdatesController *)self shadowUpdates];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __85___UICollectionViewShadowUpdatesController__findInsertShadowUpdateForFinalIndexPath___block_invoke;
   v9[3] = &unk_1E7100568;
   v9[4] = self;
-  v6 = v4;
+  v6 = pathCopy;
   v10 = v6;
   v11 = &v12;
-  [v5 enumerateObjectsWithOptions:2 usingBlock:v9];
+  [shadowUpdates enumerateObjectsWithOptions:2 usingBlock:v9];
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -3319,18 +3319,18 @@ LABEL_19:
   return v7;
 }
 
-- (void)_pruneAndRebaseShadowUpdatesForShadowInsertWithIdentifier:(id)a3
+- (void)_pruneAndRebaseShadowUpdatesForShadowInsertWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(_UICollectionViewShadowUpdatesController *)self updateMap];
-  v9 = [v5 updateMapByRevertingUpdateWithIdentifier:v4];
+  identifierCopy = identifier;
+  updateMap = [(_UICollectionViewShadowUpdatesController *)self updateMap];
+  v9 = [updateMap updateMapByRevertingUpdateWithIdentifier:identifierCopy];
 
-  v6 = [(_UICollectionViewShadowUpdatesController *)self _shadowUpdates];
-  [v6 removeAllObjects];
+  _shadowUpdates = [(_UICollectionViewShadowUpdatesController *)self _shadowUpdates];
+  [_shadowUpdates removeAllObjects];
 
-  v7 = [(_UICollectionViewShadowUpdatesController *)self _shadowUpdates];
-  v8 = [v9 updates];
-  [v7 addObjectsFromArray:v8];
+  _shadowUpdates2 = [(_UICollectionViewShadowUpdatesController *)self _shadowUpdates];
+  updates = [v9 updates];
+  [_shadowUpdates2 addObjectsFromArray:updates];
 
   [(_UICollectionViewShadowUpdatesController *)self _regenerateUpdateMap];
 }

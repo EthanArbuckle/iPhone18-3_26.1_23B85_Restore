@@ -1,13 +1,13 @@
 @interface MTSeasonFeedResponse
-- (id)sectionAtIndex:(unint64_t)a3;
+- (id)sectionAtIndex:(unint64_t)index;
 @end
 
 @implementation MTSeasonFeedResponse
 
-- (id)sectionAtIndex:(unint64_t)a3
+- (id)sectionAtIndex:(unint64_t)index
 {
-  v4 = self;
-  v5 = sub_1D901A2D4(a3);
+  selfCopy = self;
+  v5 = sub_1D901A2D4(index);
   v7 = v6;
   v8 = type metadata accessor for GenericDataSourceSection();
   v9 = objc_allocWithZone(v8);
@@ -21,8 +21,8 @@
   v17.super_class = v8;
   v12 = [(BaseFeedResponse *)&v17 init];
   v13 = swift_allocObject();
-  *(v13 + 16) = v4;
-  *(v13 + 24) = a3;
+  *(v13 + 16) = selfCopy;
+  *(v13 + 24) = index;
   v14 = (v12 + OBJC_IVAR___MTGenericDataSourceSection_shouldIncludeSeeAllBlock);
   swift_beginAccess();
   v15 = v14[1];

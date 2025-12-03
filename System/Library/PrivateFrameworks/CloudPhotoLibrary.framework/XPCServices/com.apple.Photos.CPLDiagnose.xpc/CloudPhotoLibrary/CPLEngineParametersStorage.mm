@@ -1,15 +1,15 @@
 @interface CPLEngineParametersStorage
 + (NSSet)defaultSupportedLibraryIdentifiers;
-- (BOOL)removeParametersWithLibraryIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)saveParameters:(id)a3 error:(id *)a4;
-- (CPLEngineParametersStorage)initWithBundleIdentifier:(id)a3;
-- (CPLEngineParametersStorage)initWithUserDefaults:(id)a3 bundleIdentifier:(id)a4 supportedLibraryIdentifiers:(id)a5;
+- (BOOL)removeParametersWithLibraryIdentifier:(id)identifier error:(id *)error;
+- (BOOL)saveParameters:(id)parameters error:(id *)error;
+- (CPLEngineParametersStorage)initWithBundleIdentifier:(id)identifier;
+- (CPLEngineParametersStorage)initWithUserDefaults:(id)defaults bundleIdentifier:(id)identifier supportedLibraryIdentifiers:(id)identifiers;
 - (NSArray)allDefinedParameters;
-- (id)_savedParametersForKey:(id)a3;
-- (id)parametersForLibraryIdentifier:(id)a3;
-- (void)_removeKeyForInsanityForLibraryIdentifier:(id)a3;
-- (void)_saveParameters:(id)a3 withKey:(id)a4;
-- (void)_setKeyForInsanityIfNecessaryForParameters:(id)a3;
+- (id)_savedParametersForKey:(id)key;
+- (id)parametersForLibraryIdentifier:(id)identifier;
+- (void)_removeKeyForInsanityForLibraryIdentifier:(id)identifier;
+- (void)_saveParameters:(id)parameters withKey:(id)key;
+- (void)_setKeyForInsanityIfNecessaryForParameters:(id)parameters;
 @end
 
 @implementation CPLEngineParametersStorage
@@ -26,33 +26,33 @@
   return v3;
 }
 
-- (CPLEngineParametersStorage)initWithBundleIdentifier:(id)a3
+- (CPLEngineParametersStorage)initWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[NSUserDefaults standardUserDefaults];
-  v6 = [objc_opt_class() defaultSupportedLibraryIdentifiers];
-  v7 = [(CPLEngineParametersStorage *)self initWithUserDefaults:v5 bundleIdentifier:v4 supportedLibraryIdentifiers:v6];
+  defaultSupportedLibraryIdentifiers = [objc_opt_class() defaultSupportedLibraryIdentifiers];
+  v7 = [(CPLEngineParametersStorage *)self initWithUserDefaults:v5 bundleIdentifier:identifierCopy supportedLibraryIdentifiers:defaultSupportedLibraryIdentifiers];
 
   return v7;
 }
 
-- (CPLEngineParametersStorage)initWithUserDefaults:(id)a3 bundleIdentifier:(id)a4 supportedLibraryIdentifiers:(id)a5
+- (CPLEngineParametersStorage)initWithUserDefaults:(id)defaults bundleIdentifier:(id)identifier supportedLibraryIdentifiers:(id)identifiers
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  defaultsCopy = defaults;
+  identifierCopy = identifier;
+  identifiersCopy = identifiers;
   v36.receiver = self;
   v36.super_class = CPLEngineParametersStorage;
   v12 = [(CPLEngineParametersStorage *)&v36 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_userDefaults, a3);
-    v14 = [v10 copy];
+    objc_storeStrong(&v12->_userDefaults, defaults);
+    v14 = [identifierCopy copy];
     bundleIdentifier = v13->_bundleIdentifier;
     v13->_bundleIdentifier = v14;
 
-    v16 = [v11 copy];
+    v16 = [identifiersCopy copy];
     supportedLibraryIdentifiers = v13->_supportedLibraryIdentifiers;
     v13->_supportedLibraryIdentifiers = v16;
 
@@ -136,7 +136,7 @@ LABEL_35:
         }
 
         v26 = [v19 objectForKeyedSubscript:@"options"];
-        v31 = [v26 integerValue];
+        integerValue = [v26 integerValue];
 
         if (v25 && v24 && v35)
         {
@@ -152,7 +152,7 @@ LABEL_35:
           }
 
           v28 = [CPLEngineParameters alloc];
-          v29 = [(CPLEngineParameters *)v28 initWithClientLibraryBaseURL:v24 cloudLibraryStateStorageURL:v33 cloudLibraryResourceStorageURL:v35 libraryIdentifier:v20 mainScopeIdentifier:CPLPrimaryScopeIdentifier options:v31];
+          v29 = [(CPLEngineParameters *)v28 initWithClientLibraryBaseURL:v24 cloudLibraryStateStorageURL:v33 cloudLibraryResourceStorageURL:v35 libraryIdentifier:v20 mainScopeIdentifier:CPLPrimaryScopeIdentifier options:integerValue];
           [(CPLEngineParametersStorage *)v13 _saveParameters:v29 withKey:v21];
         }
 
@@ -196,15 +196,15 @@ LABEL_38:
   return v13;
 }
 
-- (id)_savedParametersForKey:(id)a3
+- (id)_savedParametersForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(NSUserDefaults *)self->_userDefaults dictionaryForKey:v4];
+  keyCopy = key;
+  v5 = [(NSUserDefaults *)self->_userDefaults dictionaryForKey:keyCopy];
   if (v5)
   {
     v6 = [[CPLEngineParameters alloc] initWithPlist:v5];
-    v7 = [(CPLEngineParameters *)v6 asPlist];
-    if (([v7 isEqual:v5] & 1) == 0)
+    asPlist = [(CPLEngineParameters *)v6 asPlist];
+    if (([asPlist isEqual:v5] & 1) == 0)
     {
       if ((_CPLSilentLogging & 1) == 0)
       {
@@ -212,16 +212,16 @@ LABEL_38:
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
         {
           v10 = 138543874;
-          v11 = v4;
+          v11 = keyCopy;
           v12 = 2112;
           v13 = v5;
           v14 = 2112;
-          v15 = v7;
+          v15 = asPlist;
           _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Updating plist for %{public}@ from %@ to %@", &v10, 0x20u);
         }
       }
 
-      [(CPLEngineParametersStorage *)self _saveParameters:v6 withKey:v4];
+      [(CPLEngineParametersStorage *)self _saveParameters:v6 withKey:keyCopy];
     }
   }
 
@@ -233,47 +233,47 @@ LABEL_38:
   return v6;
 }
 
-- (void)_saveParameters:(id)a3 withKey:(id)a4
+- (void)_saveParameters:(id)parameters withKey:(id)key
 {
-  v6 = a4;
-  v7 = [a3 asPlist];
-  [(NSUserDefaults *)self->_userDefaults setObject:v7 forKey:v6];
+  keyCopy = key;
+  asPlist = [parameters asPlist];
+  [(NSUserDefaults *)self->_userDefaults setObject:asPlist forKey:keyCopy];
 
   [(NSUserDefaults *)self->_userDefaults synchronize];
 }
 
-- (void)_setKeyForInsanityIfNecessaryForParameters:(id)a3
+- (void)_setKeyForInsanityIfNecessaryForParameters:(id)parameters
 {
-  v4 = a3;
-  v5 = [v4 cloudLibraryResourceStorageURL];
-  v6 = [v5 lastPathComponent];
+  parametersCopy = parameters;
+  cloudLibraryResourceStorageURL = [parametersCopy cloudLibraryResourceStorageURL];
+  lastPathComponent = [cloudLibraryResourceStorageURL lastPathComponent];
 
-  if (v6 && ([v6 isEqual:@"storage"] & 1) != 0)
+  if (lastPathComponent && ([lastPathComponent isEqual:@"storage"] & 1) != 0)
   {
   }
 
   else
   {
-    sub_10001D6D8(v6, v4, self);
+    sub_10001D6D8(lastPathComponent, parametersCopy, self);
   }
 }
 
-- (void)_removeKeyForInsanityForLibraryIdentifier:(id)a3
+- (void)_removeKeyForInsanityForLibraryIdentifier:(id)identifier
 {
   userDefaults = self->_userDefaults;
-  v4 = [(CPLEngineParametersStorage *)self _keyForInsanityForLibraryIdentifier:a3];
+  v4 = [(CPLEngineParametersStorage *)self _keyForInsanityForLibraryIdentifier:identifier];
   [(NSUserDefaults *)userDefaults removeObjectForKey:v4];
 }
 
-- (id)parametersForLibraryIdentifier:(id)a3
+- (id)parametersForLibraryIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CPLEngineParametersStorage *)self keyForLibraryIdentifier:v4 error:0];
+  identifierCopy = identifier;
+  v5 = [(CPLEngineParametersStorage *)self keyForLibraryIdentifier:identifierCopy error:0];
   if (v5)
   {
     v6 = [(CPLEngineParametersStorage *)self _savedParametersForKey:v5];
-    v7 = [v6 libraryIdentifier];
-    v8 = [v7 isEqualToString:v4];
+    libraryIdentifier = [v6 libraryIdentifier];
+    v8 = [libraryIdentifier isEqualToString:identifierCopy];
 
     if (v8)
     {
@@ -287,30 +287,30 @@ LABEL_5:
   return v6;
 }
 
-- (BOOL)removeParametersWithLibraryIdentifier:(id)a3 error:(id *)a4
+- (BOOL)removeParametersWithLibraryIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CPLEngineParametersStorage *)self keyForLibraryIdentifier:v6 error:a4];
+  identifierCopy = identifier;
+  v7 = [(CPLEngineParametersStorage *)self keyForLibraryIdentifier:identifierCopy error:error];
   if (v7)
   {
     [(NSUserDefaults *)self->_userDefaults removeObjectForKey:v7];
-    [(CPLEngineParametersStorage *)self _removeKeyForInsanityForLibraryIdentifier:v6];
+    [(CPLEngineParametersStorage *)self _removeKeyForInsanityForLibraryIdentifier:identifierCopy];
     [(NSUserDefaults *)self->_userDefaults synchronize];
   }
 
   return v7 != 0;
 }
 
-- (BOOL)saveParameters:(id)a3 error:(id *)a4
+- (BOOL)saveParameters:(id)parameters error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 libraryIdentifier];
-  v8 = [(CPLEngineParametersStorage *)self keyForLibraryIdentifier:v7 error:a4];
+  parametersCopy = parameters;
+  libraryIdentifier = [parametersCopy libraryIdentifier];
+  v8 = [(CPLEngineParametersStorage *)self keyForLibraryIdentifier:libraryIdentifier error:error];
 
   if (v8)
   {
-    [(CPLEngineParametersStorage *)self _saveParameters:v6 withKey:v8];
-    [(CPLEngineParametersStorage *)self _setKeyForInsanityIfNecessaryForParameters:v6];
+    [(CPLEngineParametersStorage *)self _saveParameters:parametersCopy withKey:v8];
+    [(CPLEngineParametersStorage *)self _setKeyForInsanityIfNecessaryForParameters:parametersCopy];
   }
 
   return v8 != 0;
@@ -324,12 +324,12 @@ LABEL_5:
   v10 = 3221225472;
   v11 = sub_100002870;
   v12 = &unk_100034AB0;
-  v13 = self;
+  selfCopy = self;
   v5 = v3;
   v14 = v5;
   [v4 enumerateKeysAndObjectsUsingBlock:&v9];
 
-  [(NSArray *)v5 sortUsingComparator:&stru_100034AF0, v9, v10, v11, v12, v13];
+  [(NSArray *)v5 sortUsingComparator:&stru_100034AF0, v9, v10, v11, v12, selfCopy];
   v6 = v14;
   v7 = v5;
 

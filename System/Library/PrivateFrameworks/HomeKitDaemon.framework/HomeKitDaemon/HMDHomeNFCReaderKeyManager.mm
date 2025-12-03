@@ -2,44 +2,44 @@
 + (id)logCategory;
 - (HMDDevice)primaryResidentDevice;
 - (HMDHome)home;
-- (HMDHomeNFCReaderKeyManager)initWithUUID:(id)a3 workQueue:(id)a4;
-- (HMDHomeNFCReaderKeyManager)initWithUUID:(id)a3 workQueue:(id)a4 keychainStore:(id)a5 dataSource:(id)a6;
-- (id)createNFCReaderKeyModelWithHome:(id)a3 nfcReaderKey:(id)a4;
-- (id)fetchOrCreateReaderKeyForPairingWithFlow:(id)a3;
+- (HMDHomeNFCReaderKeyManager)initWithUUID:(id)d workQueue:(id)queue;
+- (HMDHomeNFCReaderKeyManager)initWithUUID:(id)d workQueue:(id)queue keychainStore:(id)store dataSource:(id)source;
+- (id)createNFCReaderKeyModelWithHome:(id)home nfcReaderKey:(id)key;
+- (id)fetchOrCreateReaderKeyForPairingWithFlow:(id)flow;
 - (id)logIdentifier;
-- (id)readerKeyWithKeychainItemIdentifier:(id)a3 error:(id *)a4 flow:(id)a5;
-- (id)requestPrimaryResidentToFetchOrCreateReaderKeyWithFlow:(id)a3;
-- (void)configureWithHome:(id)a3;
-- (void)createReaderKeyInKeychainForHome:(id)a3 isForceUpdate:(BOOL)a4 flow:(id)a5;
-- (void)createReaderKeyInKeychainForHome:(id)a3 isForceUpdate:(BOOL)a4 flow:(id)a5 completion:(id)a6;
-- (void)deleteKeychainItemForNFCReaderKeyIsForceUpdate:(BOOL)a3 withFlow:(id)a4 completion:(id)a5;
-- (void)fetchOrCreateReaderKeyOnQueueWithRequiresPrivateKey:(BOOL)a3 flow:(id)a4 completion:(id)a5;
-- (void)fetchOrCreateReaderKeyWithRequiresPrivateKey:(BOOL)a3 flow:(id)a4 completion:(id)a5;
-- (void)handleCreateKeychainItemForReaderKeyMessage:(id)a3;
-- (void)handleDeleteKeychainItemForNFCReaderKey:(id)a3;
-- (void)handleFetchOrCreateReaderKeyMessage:(id)a3;
-- (void)handleHomeDidUpdateNFCReaderKeyNotification:(id)a3;
-- (void)handleHomeRemovedNotification:(id)a3;
-- (void)handleSystemKeychainStoreUpdatedNotification:(id)a3;
-- (void)pullFromKeychainWithFlow:(HMFFlow *)a3 completionHandler:(id)a4;
-- (void)removeKeychainItemForReaderKey:(id)a3 home:(id)a4 flow:(id)a5;
-- (void)requestDevice:(id)a3 toCreateKeychainItemForReaderKeyWithFlow:(id)a4 completion:(id)a5;
-- (void)requestPrimaryResidentToFetchOrCreateReaderKeyWithFlow:(id)a3 completion:(id)a4;
-- (void)rollReaderKeyWithFlow:(id)a3 withCompletion:(id)a4;
+- (id)readerKeyWithKeychainItemIdentifier:(id)identifier error:(id *)error flow:(id)flow;
+- (id)requestPrimaryResidentToFetchOrCreateReaderKeyWithFlow:(id)flow;
+- (void)configureWithHome:(id)home;
+- (void)createReaderKeyInKeychainForHome:(id)home isForceUpdate:(BOOL)update flow:(id)flow;
+- (void)createReaderKeyInKeychainForHome:(id)home isForceUpdate:(BOOL)update flow:(id)flow completion:(id)completion;
+- (void)deleteKeychainItemForNFCReaderKeyIsForceUpdate:(BOOL)update withFlow:(id)flow completion:(id)completion;
+- (void)fetchOrCreateReaderKeyOnQueueWithRequiresPrivateKey:(BOOL)key flow:(id)flow completion:(id)completion;
+- (void)fetchOrCreateReaderKeyWithRequiresPrivateKey:(BOOL)key flow:(id)flow completion:(id)completion;
+- (void)handleCreateKeychainItemForReaderKeyMessage:(id)message;
+- (void)handleDeleteKeychainItemForNFCReaderKey:(id)key;
+- (void)handleFetchOrCreateReaderKeyMessage:(id)message;
+- (void)handleHomeDidUpdateNFCReaderKeyNotification:(id)notification;
+- (void)handleHomeRemovedNotification:(id)notification;
+- (void)handleSystemKeychainStoreUpdatedNotification:(id)notification;
+- (void)pullFromKeychainWithFlow:(HMFFlow *)flow completionHandler:(id)handler;
+- (void)removeKeychainItemForReaderKey:(id)key home:(id)home flow:(id)flow;
+- (void)requestDevice:(id)device toCreateKeychainItemForReaderKeyWithFlow:(id)flow completion:(id)completion;
+- (void)requestPrimaryResidentToFetchOrCreateReaderKeyWithFlow:(id)flow completion:(id)completion;
+- (void)rollReaderKeyWithFlow:(id)flow withCompletion:(id)completion;
 - (void)unconfigure;
 @end
 
 @implementation HMDHomeNFCReaderKeyManager
 
-- (void)pullFromKeychainWithFlow:(HMFFlow *)a3 completionHandler:(id)a4
+- (void)pullFromKeychainWithFlow:(HMFFlow *)flow completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27D87D8F0, &qword_22A578D70);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = flow;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_22A4DD9DC();
@@ -54,8 +54,8 @@
   v15[3] = 0;
   v15[4] = &unk_22A57B590;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  flowCopy = flow;
+  selfCopy = self;
   sub_229859F70(0, 0, v10, &unk_22A581CC0, v15);
 }
 
@@ -68,26 +68,26 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDHomeNFCReaderKeyManager *)self uuid];
-  v3 = [v2 UUIDString];
+  uuid = [(HMDHomeNFCReaderKeyManager *)self uuid];
+  uUIDString = [uuid UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (void)requestPrimaryResidentToFetchOrCreateReaderKeyWithFlow:(id)a3 completion:(id)a4
+- (void)requestPrimaryResidentToFetchOrCreateReaderKeyWithFlow:(id)flow completion:(id)completion
 {
   v42[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDHomeNFCReaderKeyManager *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  flowCopy = flow;
+  completionCopy = completion;
+  workQueue = [(HMDHomeNFCReaderKeyManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v9 = [(HMDHomeNFCReaderKeyManager *)self primaryResidentDevice];
-  if (v9)
+  primaryResidentDevice = [(HMDHomeNFCReaderKeyManager *)self primaryResidentDevice];
+  if (primaryResidentDevice)
   {
     v10 = [HMDRemoteDeviceMessageDestination alloc];
-    v11 = [(HMDHomeNFCReaderKeyManager *)self messageTargetUUID];
-    v12 = [(HMDRemoteDeviceMessageDestination *)v10 initWithTarget:v11 device:v9];
+    messageTargetUUID = [(HMDHomeNFCReaderKeyManager *)self messageTargetUUID];
+    v12 = [(HMDRemoteDeviceMessageDestination *)v10 initWithTarget:messageTargetUUID device:primaryResidentDevice];
 
     v13 = [HMDRemoteMessage alloc];
     v41 = *MEMORY[0x277D0F1C8];
@@ -101,52 +101,52 @@
     v30[2] = __96__HMDHomeNFCReaderKeyManager_requestPrimaryResidentToFetchOrCreateReaderKeyWithFlow_completion___block_invoke;
     v30[3] = &unk_2786862C0;
     v30[4] = self;
-    v17 = v6;
+    v17 = flowCopy;
     v31 = v17;
-    v32 = v7;
+    v32 = completionCopy;
     [(HMDRemoteMessage *)v16 setResponseHandler:v30];
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
       v21 = HMFGetLogIdentifier();
-      v22 = [v17 UUID];
+      uUID = [v17 UUID];
       *buf = 138544130;
       v34 = v21;
       v35 = 2112;
-      v36 = v22;
+      v36 = uUID;
       v37 = 2112;
       v38 = v16;
       v39 = 2112;
-      v40 = v9;
+      v40 = primaryResidentDevice;
       _os_log_impl(&dword_229538000, v20, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Sending message to fetch or create reader key: %@ to primary resident: %@", buf, 0x2Au);
     }
 
     objc_autoreleasePoolPop(v18);
-    v23 = [(HMDHomeNFCReaderKeyManager *)v19 messageDispatcher];
-    [v23 sendMessage:v16];
+    messageDispatcher = [(HMDHomeNFCReaderKeyManager *)selfCopy messageDispatcher];
+    [messageDispatcher sendMessage:v16];
   }
 
   else
   {
     v24 = objc_autoreleasePoolPush();
-    v25 = self;
+    selfCopy2 = self;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
       v27 = HMFGetLogIdentifier();
-      v28 = [v6 UUID];
+      uUID2 = [flowCopy UUID];
       *buf = 138543618;
       v34 = v27;
       v35 = 2112;
-      v36 = v28;
+      v36 = uUID2;
       _os_log_impl(&dword_229538000, v26, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Did not send message to fetch or create reader key, there is no primary resident that support wallet key", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v24);
     v12 = [MEMORY[0x277CCA9B8] hmErrorWithCode:48];
-    (*(v7 + 2))(v7, 0, v12);
+    (*(completionCopy + 2))(completionCopy, 0, v12);
   }
 
   v29 = *MEMORY[0x277D85DE8];
@@ -300,35 +300,35 @@ uint64_t __96__HMDHomeNFCReaderKeyManager_requestPrimaryResidentToFetchOrCreateR
   return result;
 }
 
-- (void)requestDevice:(id)a3 toCreateKeychainItemForReaderKeyWithFlow:(id)a4 completion:(id)a5
+- (void)requestDevice:(id)device toCreateKeychainItemForReaderKeyWithFlow:(id)flow completion:(id)completion
 {
   v45[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HMDHomeNFCReaderKeyManager *)self workQueue];
-  dispatch_assert_queue_V2(v11);
+  deviceCopy = device;
+  flowCopy = flow;
+  completionCopy = completion;
+  workQueue = [(HMDHomeNFCReaderKeyManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v12 = objc_autoreleasePoolPush();
-  v13 = self;
+  selfCopy = self;
   v14 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     v15 = HMFGetLogIdentifier();
-    v16 = [v9 UUID];
+    uUID = [flowCopy UUID];
     *buf = 138543874;
     v37 = v15;
     v38 = 2112;
-    v39 = v16;
+    v39 = uUID;
     v40 = 2112;
-    v41 = v8;
+    v41 = deviceCopy;
     _os_log_impl(&dword_229538000, v14, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Requesting primary resident device to create keychain item for nfc reader key. residentDevice: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v12);
   v17 = [HMDRemoteDeviceMessageDestination alloc];
-  v18 = [(HMDHomeNFCReaderKeyManager *)v13 messageTargetUUID];
-  v19 = [(HMDRemoteDeviceMessageDestination *)v17 initWithTarget:v18 device:v8];
+  messageTargetUUID = [(HMDHomeNFCReaderKeyManager *)selfCopy messageTargetUUID];
+  v19 = [(HMDRemoteDeviceMessageDestination *)v17 initWithTarget:messageTargetUUID device:deviceCopy];
 
   v20 = [HMDRemoteMessage alloc];
   v44 = *MEMORY[0x277D0F1C8];
@@ -341,33 +341,33 @@ uint64_t __96__HMDHomeNFCReaderKeyManager_requestPrimaryResidentToFetchOrCreateR
   v33[1] = 3221225472;
   v33[2] = __96__HMDHomeNFCReaderKeyManager_requestDevice_toCreateKeychainItemForReaderKeyWithFlow_completion___block_invoke;
   v33[3] = &unk_2786862C0;
-  v33[4] = v13;
-  v24 = v9;
+  v33[4] = selfCopy;
+  v24 = flowCopy;
   v34 = v24;
-  v25 = v10;
+  v25 = completionCopy;
   v35 = v25;
   [(HMDRemoteMessage *)v23 setResponseHandler:v33];
   v26 = objc_autoreleasePoolPush();
-  v27 = v13;
+  v27 = selfCopy;
   v28 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
   {
     v29 = HMFGetLogIdentifier();
-    v30 = [v24 UUID];
+    uUID2 = [v24 UUID];
     *buf = 138544130;
     v37 = v29;
     v38 = 2112;
-    v39 = v30;
+    v39 = uUID2;
     v40 = 2112;
     v41 = v23;
     v42 = 2112;
-    v43 = v8;
+    v43 = deviceCopy;
     _os_log_impl(&dword_229538000, v28, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Sending message to create keychain item for reader key: %@ to primary resident: %@", buf, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v26);
-  v31 = [(HMDHomeNFCReaderKeyManager *)v27 messageDispatcher];
-  [v31 sendMessage:v23];
+  messageDispatcher = [(HMDHomeNFCReaderKeyManager *)v27 messageDispatcher];
+  [messageDispatcher sendMessage:v23];
 
   v32 = *MEMORY[0x277D85DE8];
 }
@@ -519,21 +519,21 @@ uint64_t __96__HMDHomeNFCReaderKeyManager_requestDevice_toCreateKeychainItemForR
 
 - (HMDDevice)primaryResidentDevice
 {
-  v2 = [(HMDHomeNFCReaderKeyManager *)self home];
-  v3 = [v2 residentDeviceManager];
-  v4 = [v3 primaryResidentDevice];
+  home = [(HMDHomeNFCReaderKeyManager *)self home];
+  residentDeviceManager = [home residentDeviceManager];
+  primaryResidentDevice = [residentDeviceManager primaryResidentDevice];
 
-  v5 = [v4 device];
-  if (v5)
+  device = [primaryResidentDevice device];
+  if (device)
   {
-    v6 = [v4 capabilities];
-    if ([v6 supportsWalletKey])
+    capabilities = [primaryResidentDevice capabilities];
+    if ([capabilities supportsWalletKey])
     {
-      v7 = [v4 isReachable];
+      isReachable = [primaryResidentDevice isReachable];
 
-      if (v7)
+      if (isReachable)
       {
-        v8 = v5;
+        v8 = device;
         goto LABEL_7;
       }
     }
@@ -549,44 +549,44 @@ LABEL_7:
   return v8;
 }
 
-- (void)removeKeychainItemForReaderKey:(id)a3 home:(id)a4 flow:(id)a5
+- (void)removeKeychainItemForReaderKey:(id)key home:(id)home flow:(id)flow
 {
   v58 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HMDHomeNFCReaderKeyManager *)self workQueue];
-  dispatch_assert_queue_V2(v11);
+  keyCopy = key;
+  homeCopy = home;
+  flowCopy = flow;
+  workQueue = [(HMDHomeNFCReaderKeyManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v46 = [v8 identifier];
-  v47 = v9;
-  v12 = [HMDHomeNFCReaderKey keychainItemAccountAttributeValueWithHome:v9 keyIdentifier:?];
-  v13 = [(HMDHomeNFCReaderKeyManager *)self keychainStore];
+  identifier = [keyCopy identifier];
+  v47 = homeCopy;
+  v12 = [HMDHomeNFCReaderKey keychainItemAccountAttributeValueWithHome:homeCopy keyIdentifier:?];
+  keychainStore = [(HMDHomeNFCReaderKeyManager *)self keychainStore];
   v49 = 0;
-  v14 = [v13 allKeychainItemsForType:&unk_283E73B20 identifier:v12 syncable:MEMORY[0x277CBEC38] error:&v49];
+  v14 = [keychainStore allKeychainItemsForType:&unk_283E73B20 identifier:v12 syncable:MEMORY[0x277CBEC38] error:&v49];
   v15 = v49;
-  v16 = [v14 firstObject];
+  firstObject = [v14 firstObject];
 
-  v17 = [v15 userInfo];
-  v18 = [v17 hmf_errorForKey:*MEMORY[0x277CCA7E8]];
+  userInfo = [v15 userInfo];
+  v18 = [userInfo hmf_errorForKey:*MEMORY[0x277CCA7E8]];
 
-  if (!v16)
+  if (!firstObject)
   {
-    v34 = [v18 code];
+    code = [v18 code];
     v45 = objc_autoreleasePoolPush();
-    v35 = self;
+    selfCopy = self;
     v36 = HMFGetOSLogHandle();
     v26 = v36;
-    if (v34 == -25300)
+    if (code == -25300)
     {
       if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
       {
         v37 = HMFGetLogIdentifier();
-        v38 = [v10 UUID];
+        uUID = [flowCopy UUID];
         *buf = 138543618;
         v51 = v37;
         v52 = 2112;
-        v53 = v38;
+        v53 = uUID;
         v39 = "%{public}@[Flow: %@] Not removing nfc reader key, keychain item does not exist";
         v40 = v26;
         v41 = OS_LOG_TYPE_INFO;
@@ -599,11 +599,11 @@ LABEL_14:
     else if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
     {
       v37 = HMFGetLogIdentifier();
-      v38 = [v10 UUID];
+      uUID = [flowCopy UUID];
       *buf = 138543874;
       v51 = v37;
       v52 = 2112;
-      v53 = v38;
+      v53 = uUID;
       v54 = 2112;
       v55 = v15;
       v39 = "%{public}@[Flow: %@] Failed to remove nfc reader key, keychain item fetch failed: %@";
@@ -618,14 +618,14 @@ LABEL_14:
   }
 
   v44 = v18;
-  v19 = v8;
-  v20 = [(HMDHomeNFCReaderKeyManager *)self keychainStore];
+  v19 = keyCopy;
+  keychainStore2 = [(HMDHomeNFCReaderKeyManager *)self keychainStore];
   v48 = v15;
-  v21 = [v20 deleteKeychainItem:v16 error:&v48];
+  v21 = [keychainStore2 deleteKeychainItem:firstObject error:&v48];
   v22 = v48;
 
   v23 = objc_autoreleasePoolPush();
-  v24 = self;
+  selfCopy2 = self;
   v25 = HMFGetOSLogHandle();
   v26 = v25;
   if (v21)
@@ -634,13 +634,13 @@ LABEL_14:
     {
       HMFGetLogIdentifier();
       v28 = v27 = v23;
-      v29 = [v10 UUID];
+      uUID2 = [flowCopy UUID];
       *buf = 138543874;
       v51 = v28;
       v52 = 2112;
-      v53 = v29;
+      v53 = uUID2;
       v54 = 2112;
-      v55 = v16;
+      v55 = firstObject;
       v30 = "%{public}@[Flow: %@] Successfully removed nfc reader key keychain item %@";
       v31 = v26;
       v32 = OS_LOG_TYPE_INFO;
@@ -656,13 +656,13 @@ LABEL_10:
   {
     HMFGetLogIdentifier();
     v28 = v27 = v23;
-    v29 = [v10 UUID];
+    uUID2 = [flowCopy UUID];
     *buf = 138544130;
     v51 = v28;
     v52 = 2112;
-    v53 = v29;
+    v53 = uUID2;
     v54 = 2112;
-    v55 = v16;
+    v55 = firstObject;
     v56 = 2112;
     v57 = v22;
     v30 = "%{public}@[Flow: %@] Failed to remove nfc reader key keychain item %@:%@";
@@ -673,7 +673,7 @@ LABEL_10:
   }
 
   v15 = v22;
-  v8 = v19;
+  keyCopy = v19;
   v18 = v44;
 LABEL_16:
 
@@ -681,42 +681,42 @@ LABEL_16:
   v43 = *MEMORY[0x277D85DE8];
 }
 
-- (id)createNFCReaderKeyModelWithHome:(id)a3 nfcReaderKey:(id)a4
+- (id)createNFCReaderKeyModelWithHome:(id)home nfcReaderKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HMDHomeNFCReaderKeyManager *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  keyCopy = key;
+  homeCopy = home;
+  workQueue = [(HMDHomeNFCReaderKeyManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v9 = [HMDHomeModel alloc];
-  v10 = [v7 uuid];
-  v11 = [v7 homeManager];
+  uuid = [homeCopy uuid];
+  homeManager = [homeCopy homeManager];
 
-  v12 = [v11 uuid];
-  v13 = [(HMDBackingStoreModelObject *)v9 initWithObjectChangeType:2 uuid:v10 parentUUID:v12];
+  uuid2 = [homeManager uuid];
+  v13 = [(HMDBackingStoreModelObject *)v9 initWithObjectChangeType:2 uuid:uuid parentUUID:uuid2];
 
-  [(HMDHomeModel *)v13 setNfcReaderKey:v6];
+  [(HMDHomeModel *)v13 setNfcReaderKey:keyCopy];
 
   return v13;
 }
 
-- (void)createReaderKeyInKeychainForHome:(id)a3 isForceUpdate:(BOOL)a4 flow:(id)a5
+- (void)createReaderKeyInKeychainForHome:(id)home isForceUpdate:(BOOL)update flow:(id)flow
 {
-  v6 = a4;
+  updateCopy = update;
   v73 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
+  homeCopy = home;
+  flowCopy = flow;
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     v14 = HMFGetLogIdentifier();
-    v15 = [v10 UUID];
+    uUID = [flowCopy UUID];
     *buf = 138543618;
     v66 = v14;
     v67 = 2112;
-    v68 = v15;
+    v68 = uUID;
     _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Creating reader key", buf, 0x16u);
   }
 
@@ -725,19 +725,19 @@ LABEL_16:
   v17 = v16;
   if (v16)
   {
-    v18 = [v16 createKeychainItemForHome:v9];
-    if (v18)
+    createKeychainItemFuture3 = [v16 createKeychainItemForHome:homeCopy];
+    if (createKeychainItemFuture3)
     {
-      v52 = v6;
-      v54 = v9;
-      v55 = v10;
-      v19 = [(HMDHomeNFCReaderKeyManager *)v12 keychainStore];
+      v52 = updateCopy;
+      v54 = homeCopy;
+      v55 = flowCopy;
+      keychainStore = [(HMDHomeNFCReaderKeyManager *)selfCopy keychainStore];
       v64 = 0;
-      v20 = [v19 updateKeychainItem:v18 createIfNeeded:1 error:&v64];
-      v21 = v64;
+      v20 = [keychainStore updateKeychainItem:createKeychainItemFuture3 createIfNeeded:1 error:&v64];
+      createKeychainItemFuture2 = v64;
 
       v22 = objc_autoreleasePoolPush();
-      v23 = v12;
+      v23 = selfCopy;
       v24 = HMFGetOSLogHandle();
       v25 = v24;
       if (v20)
@@ -745,13 +745,13 @@ LABEL_16:
         if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
         {
           v26 = HMFGetLogIdentifier();
-          v27 = [v55 UUID];
+          uUID2 = [v55 UUID];
           *buf = 138544130;
           v66 = v26;
           v67 = 2112;
-          v68 = v27;
+          v68 = uUID2;
           v69 = 2112;
-          v70 = v18;
+          v70 = createKeychainItemFuture3;
           v71 = 2112;
           v72 = v17;
           _os_log_impl(&dword_229538000, v25, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Successfully created keychain item: %@ for nfc reader key: %@", buf, 0x2Au);
@@ -760,8 +760,8 @@ LABEL_16:
         objc_autoreleasePoolPop(v22);
         v28 = objc_alloc(MEMORY[0x277D0F848]);
         v29 = NSStringFromSelector(a2);
-        v30 = [MEMORY[0x277D0F820] allMessageDestinations];
-        v31 = [v28 initWithName:v29 destination:v30 payload:0];
+        allMessageDestinations = [MEMORY[0x277D0F820] allMessageDestinations];
+        createKeychainItemFuture = [v28 initWithName:v29 destination:allMessageDestinations payload:0];
 
         v60[0] = MEMORY[0x277D85DD0];
         v60[1] = 3221225472;
@@ -774,7 +774,7 @@ LABEL_16:
         v62 = v32;
         v33 = v54;
         v63 = v33;
-        [v31 setResponseHandler:v60];
+        [createKeychainItemFuture setResponseHandler:v60];
         if (v52)
         {
           [HMDBackingStoreTransactionOptions defaultXPCOptionsWithCDTransactionAuthor:10 clientIdentifier:0];
@@ -786,10 +786,10 @@ LABEL_16:
         }
         v53 = ;
         v47 = [(HMDHomeNFCReaderKeyManager *)v23 createNFCReaderKeyModelWithHome:v33 nfcReaderKey:v32];
-        v48 = [v33 backingStore];
-        v49 = [v48 transaction:@"Creating NFC Reader Key" options:v53];
+        backingStore = [v33 backingStore];
+        v49 = [backingStore transaction:@"Creating NFC Reader Key" options:v53];
 
-        [v49 add:v47 withMessage:v31];
+        [v49 add:v47 withMessage:createKeychainItemFuture];
         v56[0] = MEMORY[0x277D85DD0];
         v56[1] = 3221225472;
         v56[2] = __82__HMDHomeNFCReaderKeyManager_createReaderKeyInKeychainForHome_isForceUpdate_flow___block_invoke_2;
@@ -806,73 +806,73 @@ LABEL_16:
         if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
         {
           v44 = HMFGetLogIdentifier();
-          v45 = [v55 UUID];
+          uUID3 = [v55 UUID];
           *buf = 138544130;
           v66 = v44;
           v67 = 2112;
-          v68 = v45;
+          v68 = uUID3;
           v69 = 2112;
-          v70 = v18;
+          v70 = createKeychainItemFuture3;
           v71 = 2112;
-          v72 = v21;
+          v72 = createKeychainItemFuture2;
           _os_log_impl(&dword_229538000, v25, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Failed to add nfc reader key item: %@ to key chain: %@", buf, 0x2Au);
         }
 
         objc_autoreleasePoolPop(v22);
-        v31 = [(HMDHomeNFCReaderKeyManager *)v23 createKeychainItemFuture];
+        createKeychainItemFuture = [(HMDHomeNFCReaderKeyManager *)v23 createKeychainItemFuture];
         v46 = [MEMORY[0x277CCA9B8] hmErrorWithCode:-1];
-        [v31 finishWithError:v46];
+        [createKeychainItemFuture finishWithError:v46];
       }
 
-      v9 = v54;
-      v10 = v55;
+      homeCopy = v54;
+      flowCopy = v55;
     }
 
     else
     {
       v39 = objc_autoreleasePoolPush();
-      v40 = v12;
+      v40 = selfCopy;
       v41 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
       {
         v42 = HMFGetLogIdentifier();
-        v43 = [v10 UUID];
+        uUID4 = [flowCopy UUID];
         *buf = 138543874;
         v66 = v42;
         v67 = 2112;
-        v68 = v43;
+        v68 = uUID4;
         v69 = 2112;
         v70 = v17;
         _os_log_impl(&dword_229538000, v41, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Failed to create keychain item  for reader key: %@", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v39);
-      v21 = [(HMDHomeNFCReaderKeyManager *)v40 createKeychainItemFuture];
-      v31 = [MEMORY[0x277CCA9B8] hmErrorWithCode:-1];
-      [v21 finishWithError:v31];
+      createKeychainItemFuture2 = [(HMDHomeNFCReaderKeyManager *)v40 createKeychainItemFuture];
+      createKeychainItemFuture = [MEMORY[0x277CCA9B8] hmErrorWithCode:-1];
+      [createKeychainItemFuture2 finishWithError:createKeychainItemFuture];
     }
   }
 
   else
   {
     v34 = objc_autoreleasePoolPush();
-    v35 = v12;
+    v35 = selfCopy;
     v36 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
     {
       v37 = HMFGetLogIdentifier();
-      v38 = [v10 UUID];
+      uUID5 = [flowCopy UUID];
       *buf = 138543618;
       v66 = v37;
       v67 = 2112;
-      v68 = v38;
+      v68 = uUID5;
       _os_log_impl(&dword_229538000, v36, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Failed to create the nfc reader key", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v34);
-    v18 = [(HMDHomeNFCReaderKeyManager *)v35 createKeychainItemFuture];
-    v21 = [MEMORY[0x277CCA9B8] hmErrorWithCode:-1];
-    [v18 finishWithError:v21];
+    createKeychainItemFuture3 = [(HMDHomeNFCReaderKeyManager *)v35 createKeychainItemFuture];
+    createKeychainItemFuture2 = [MEMORY[0x277CCA9B8] hmErrorWithCode:-1];
+    [createKeychainItemFuture3 finishWithError:createKeychainItemFuture2];
   }
 
   v50 = *MEMORY[0x277D85DE8];
@@ -979,32 +979,32 @@ void __82__HMDHomeNFCReaderKeyManager_createReaderKeyInKeychainForHome_isForceUp
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)createReaderKeyInKeychainForHome:(id)a3 isForceUpdate:(BOOL)a4 flow:(id)a5 completion:(id)a6
+- (void)createReaderKeyInKeychainForHome:(id)home isForceUpdate:(BOOL)update flow:(id)flow completion:(id)completion
 {
-  v8 = a4;
+  updateCopy = update;
   v76 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(HMDHomeNFCReaderKeyManager *)self workQueue];
-  dispatch_assert_queue_V2(v13);
+  homeCopy = home;
+  flowCopy = flow;
+  completionCopy = completion;
+  workQueue = [(HMDHomeNFCReaderKeyManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v14 = [v10 homeManager];
-  v15 = [v14 hasLoadedData];
+  homeManager = [homeCopy homeManager];
+  hasLoadedData = [homeManager hasLoadedData];
 
-  if ((v15 & 1) == 0)
+  if ((hasLoadedData & 1) == 0)
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy2 = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
       v21 = HMFGetLogIdentifier();
-      v22 = [v11 UUID];
+      uUID = [flowCopy UUID];
       *buf = 138543618;
       v69 = v21;
       v70 = 2112;
-      v71 = v22;
+      v71 = uUID;
       _os_log_impl(&dword_229538000, v20, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Not creating nfc reader key, home data load is in progress.", buf, 0x16u);
       goto LABEL_7;
     }
@@ -1013,29 +1013,29 @@ LABEL_8:
 
     objc_autoreleasePoolPop(v18);
     v24 = [MEMORY[0x277CCA9B8] hmErrorWithCode:48];
-    v12[2](v12, 0, v24);
+    completionCopy[2](completionCopy, 0, v24);
     goto LABEL_26;
   }
 
-  v16 = [v10 administratorHandler];
-  v17 = [v16 shouldRelayMessages];
+  administratorHandler = [homeCopy administratorHandler];
+  shouldRelayMessages = [administratorHandler shouldRelayMessages];
 
-  if (v17)
+  if (shouldRelayMessages)
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy2 = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
       v21 = HMFGetLogIdentifier();
-      v22 = [v11 UUID];
-      v23 = [v10 uuid];
+      uUID = [flowCopy UUID];
+      uuid = [homeCopy uuid];
       *buf = 138543874;
       v69 = v21;
       v70 = 2112;
-      v71 = v22;
+      v71 = uUID;
       v72 = 2112;
-      v73 = v23;
+      v73 = uuid;
       _os_log_impl(&dword_229538000, v20, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Call to create reader key, but we are not the designated writer for home: %@", buf, 0x20u);
 
 LABEL_7:
@@ -1045,53 +1045,53 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v58 = v8;
-  v25 = [(HMDHomeNFCReaderKeyManager *)self createKeychainItemFuture];
+  v58 = updateCopy;
+  createKeychainItemFuture = [(HMDHomeNFCReaderKeyManager *)self createKeychainItemFuture];
 
-  v26 = [(HMDHomeNFCReaderKeyManager *)self createKeychainItemFuture];
+  createKeychainItemFuture2 = [(HMDHomeNFCReaderKeyManager *)self createKeychainItemFuture];
 
-  if (!v26)
+  if (!createKeychainItemFuture2)
   {
     v27 = objc_alloc_init(MEMORY[0x277D2C900]);
     [(HMDHomeNFCReaderKeyManager *)self setCreateKeychainItemFuture:v27];
   }
 
-  v28 = [(HMDHomeNFCReaderKeyManager *)self createKeychainItemFuture];
-  v29 = [(HMDHomeNFCReaderKeyManager *)self createKeychainItemFuture];
+  createKeychainItemFuture3 = [(HMDHomeNFCReaderKeyManager *)self createKeychainItemFuture];
+  createKeychainItemFuture4 = [(HMDHomeNFCReaderKeyManager *)self createKeychainItemFuture];
   v30 = MEMORY[0x277D2C938];
-  v31 = [(HMDHomeNFCReaderKeyManager *)self workQueue];
-  v32 = [v30 schedulerWithDispatchQueue:v31];
-  v33 = [v29 reschedule:v32];
+  workQueue2 = [(HMDHomeNFCReaderKeyManager *)self workQueue];
+  v32 = [v30 schedulerWithDispatchQueue:workQueue2];
+  v33 = [createKeychainItemFuture4 reschedule:v32];
   v65[0] = MEMORY[0x277D85DD0];
   v65[1] = 3221225472;
   v65[2] = __93__HMDHomeNFCReaderKeyManager_createReaderKeyInKeychainForHome_isForceUpdate_flow_completion___block_invoke;
   v65[3] = &unk_27867E798;
   v65[4] = self;
-  v24 = v28;
+  v24 = createKeychainItemFuture3;
   v66 = v24;
-  v67 = v12;
+  v67 = completionCopy;
   v34 = [v33 addCompletionBlock:v65];
 
-  if (!v25)
+  if (!createKeychainItemFuture)
   {
-    v35 = [v10 nfcReaderKey];
-    v36 = [v35 identifier];
+    nfcReaderKey = [homeCopy nfcReaderKey];
+    identifier = [nfcReaderKey identifier];
 
-    if (v36)
+    if (identifier)
     {
-      v56 = v36;
-      v37 = [HMDHomeNFCReaderKey keychainItemAccountAttributeValueWithHome:v10 keyIdentifier:v36];
+      v56 = identifier;
+      v37 = [HMDHomeNFCReaderKey keychainItemAccountAttributeValueWithHome:homeCopy keyIdentifier:identifier];
       v38 = objc_autoreleasePoolPush();
-      v39 = self;
+      selfCopy3 = self;
       v40 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
       {
         v41 = HMFGetLogIdentifier();
-        v42 = [v11 UUID];
+        uUID2 = [flowCopy UUID];
         *buf = 138543874;
         v69 = v41;
         v70 = 2112;
-        v71 = v42;
+        v71 = uUID2;
         v72 = 2112;
         v73 = v37;
         _os_log_impl(&dword_229538000, v40, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Looking for key chain item with identifier: %@", buf, 0x20u);
@@ -1099,10 +1099,10 @@ LABEL_7:
 
       objc_autoreleasePoolPop(v38);
       v64 = 0;
-      v43 = [(HMDHomeNFCReaderKeyManager *)v39 readerKeyWithKeychainItemIdentifier:v37 error:&v64 flow:v11];
+      v43 = [(HMDHomeNFCReaderKeyManager *)selfCopy3 readerKeyWithKeychainItemIdentifier:v37 error:&v64 flow:flowCopy];
       v57 = v64;
       v44 = objc_autoreleasePoolPush();
-      v45 = v39;
+      v45 = selfCopy3;
       v46 = HMFGetOSLogHandle();
       v47 = v46;
       if (v43)
@@ -1111,11 +1111,11 @@ LABEL_7:
         {
           HMFGetLogIdentifier();
           v48 = v54 = v44;
-          v49 = [v11 UUID];
+          uUID3 = [flowCopy UUID];
           *buf = 138543874;
           v69 = v48;
           v70 = 2112;
-          v71 = v49;
+          v71 = uUID3;
           v72 = 2112;
           v73 = v43;
           _os_log_impl(&dword_229538000, v47, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Found existing reader key, returning that: %@", buf, 0x20u);
@@ -1124,8 +1124,8 @@ LABEL_7:
         }
 
         objc_autoreleasePoolPop(v44);
-        v50 = [(HMDHomeNFCReaderKeyManager *)v45 createKeychainItemFuture];
-        [v50 finishWithResult:v43];
+        createKeychainItemFuture5 = [(HMDHomeNFCReaderKeyManager *)v45 createKeychainItemFuture];
+        [createKeychainItemFuture5 finishWithResult:v43];
       }
 
       else
@@ -1133,7 +1133,7 @@ LABEL_7:
         if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
         {
           v51 = HMFGetLogIdentifier();
-          [v11 UUID];
+          [flowCopy UUID];
           v52 = v55 = v44;
           *buf = 138544130;
           v69 = v51;
@@ -1155,18 +1155,18 @@ LABEL_7:
         v59[3] = &unk_27867E7C0;
         v59[4] = v45;
         v60 = v37;
-        v61 = v11;
-        v62 = v10;
+        v61 = flowCopy;
+        v62 = homeCopy;
         v63 = v58;
         [(HMDHomeNFCReaderKeyManager *)v45 pullFromKeychainWithFlow:v61 completionHandler:v59];
       }
 
-      v36 = v56;
+      identifier = v56;
     }
 
     else
     {
-      [(HMDHomeNFCReaderKeyManager *)self createReaderKeyInKeychainForHome:v10 isForceUpdate:v58 flow:v11];
+      [(HMDHomeNFCReaderKeyManager *)self createReaderKeyInKeychainForHome:homeCopy isForceUpdate:v58 flow:flowCopy];
     }
   }
 
@@ -1260,40 +1260,40 @@ void __93__HMDHomeNFCReaderKeyManager_createReaderKeyInKeychainForHome_isForceUp
   }
 }
 
-- (id)readerKeyWithKeychainItemIdentifier:(id)a3 error:(id *)a4 flow:(id)a5
+- (id)readerKeyWithKeychainItemIdentifier:(id)identifier error:(id *)error flow:(id)flow
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(HMDHomeNFCReaderKeyManager *)self workQueue];
-  dispatch_assert_queue_V2(v10);
+  identifierCopy = identifier;
+  flowCopy = flow;
+  workQueue = [(HMDHomeNFCReaderKeyManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v11 = [(HMDHomeNFCReaderKeyManager *)self keychainStore];
-  v12 = [v11 allKeychainItemsForType:&unk_283E73B20 identifier:v8 syncable:MEMORY[0x277CBEC38] error:a4];
+  keychainStore = [(HMDHomeNFCReaderKeyManager *)self keychainStore];
+  v12 = [keychainStore allKeychainItemsForType:&unk_283E73B20 identifier:identifierCopy syncable:MEMORY[0x277CBEC38] error:error];
 
   if ([v12 count])
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       v16 = HMFGetLogIdentifier();
-      v17 = [v9 UUID];
+      uUID = [flowCopy UUID];
       v22 = 138544130;
       v23 = v16;
       v24 = 2112;
-      v25 = v17;
+      v25 = uUID;
       v26 = 2112;
       v27 = v12;
       v28 = 2112;
-      v29 = v8;
+      v29 = identifierCopy;
       _os_log_impl(&dword_229538000, v15, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Found keychain items: %@ for nfc reader key with keychain item identifier: %@", &v22, 0x2Au);
     }
 
     objc_autoreleasePoolPop(v13);
-    v18 = [v12 firstObject];
-    v19 = [HMDHomeNFCReaderKey createWithKeychainItem:v18];
+    firstObject = [v12 firstObject];
+    v19 = [HMDHomeNFCReaderKey createWithKeychainItem:firstObject];
   }
 
   else
@@ -1306,45 +1306,45 @@ void __93__HMDHomeNFCReaderKeyManager_createReaderKeyInKeychainForHome_isForceUp
   return v19;
 }
 
-- (void)deleteKeychainItemForNFCReaderKeyIsForceUpdate:(BOOL)a3 withFlow:(id)a4 completion:(id)a5
+- (void)deleteKeychainItemForNFCReaderKeyIsForceUpdate:(BOOL)update withFlow:(id)flow completion:(id)completion
 {
-  v6 = a3;
+  updateCopy = update;
   v42 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HMDHomeNFCReaderKeyManager *)self workQueue];
-  dispatch_assert_queue_V2(v11);
+  flowCopy = flow;
+  completionCopy = completion;
+  workQueue = [(HMDHomeNFCReaderKeyManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v12 = [(HMDHomeNFCReaderKeyManager *)self home];
-  v13 = v12;
-  if (v12)
+  home = [(HMDHomeNFCReaderKeyManager *)self home];
+  v13 = home;
+  if (home)
   {
-    v14 = [v12 homeManager];
-    if ([v14 hasLoadedData])
+    homeManager = [home homeManager];
+    if ([homeManager hasLoadedData])
     {
-      v15 = [v13 nfcReaderKey];
-      if (v15)
+      nfcReaderKey = [v13 nfcReaderKey];
+      if (nfcReaderKey)
       {
         v16 = objc_alloc(MEMORY[0x277D0F848]);
         v17 = NSStringFromSelector(a2);
-        v18 = [MEMORY[0x277D0F820] allMessageDestinations];
-        v19 = [v16 initWithName:v17 destination:v18 payload:0];
+        allMessageDestinations = [MEMORY[0x277D0F820] allMessageDestinations];
+        v19 = [v16 initWithName:v17 destination:allMessageDestinations payload:0];
 
         v20 = v19;
         v33[0] = MEMORY[0x277D85DD0];
         v33[1] = 3221225472;
         v33[2] = __97__HMDHomeNFCReaderKeyManager_deleteKeychainItemForNFCReaderKeyIsForceUpdate_withFlow_completion___block_invoke;
         v33[3] = &unk_278688A90;
-        v37 = v10;
+        v37 = completionCopy;
         v33[4] = self;
-        v15 = v15;
-        v34 = v15;
+        nfcReaderKey = nfcReaderKey;
+        v34 = nfcReaderKey;
         v21 = v13;
         v35 = v21;
-        v36 = v9;
+        v36 = flowCopy;
         [v20 setResponseHandler:v33];
         v22 = [(HMDHomeNFCReaderKeyManager *)self createNFCReaderKeyModelWithHome:v21 nfcReaderKey:0];
-        if (v6)
+        if (updateCopy)
         {
           [HMDBackingStoreTransactionOptions defaultXPCOptionsWithCDTransactionAuthor:10 clientIdentifier:0];
         }
@@ -1354,8 +1354,8 @@ void __93__HMDHomeNFCReaderKeyManager_createReaderKeyInKeychainForHome_isForceUp
           +[HMDBackingStoreTransactionOptions defaultXPCOptions];
         }
         v29 = ;
-        v30 = [v21 backingStore];
-        v31 = [v30 transaction:@"Deleting NFC Reader Key" options:v29];
+        backingStore = [v21 backingStore];
+        v31 = [backingStore transaction:@"Deleting NFC Reader Key" options:v29];
 
         [v31 add:v22 withMessage:v20];
         [v31 run];
@@ -1364,36 +1364,36 @@ void __93__HMDHomeNFCReaderKeyManager_createReaderKeyInKeychainForHome_isForceUp
       else
       {
         v28 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-        (*(v10 + 2))(v10, v28);
+        (*(completionCopy + 2))(completionCopy, v28);
       }
     }
 
     else
     {
       v23 = objc_autoreleasePoolPush();
-      v24 = self;
+      selfCopy = self;
       v25 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
       {
         v26 = HMFGetLogIdentifier();
-        v27 = [v9 UUID];
+        uUID = [flowCopy UUID];
         *buf = 138543618;
         v39 = v26;
         v40 = 2112;
-        v41 = v27;
+        v41 = uUID;
         _os_log_impl(&dword_229538000, v25, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Not deleting reader key, home data load is in progress.", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v23);
-      v15 = [MEMORY[0x277CCA9B8] hmErrorWithCode:48];
-      (*(v10 + 2))(v10, v15);
+      nfcReaderKey = [MEMORY[0x277CCA9B8] hmErrorWithCode:48];
+      (*(completionCopy + 2))(completionCopy, nfcReaderKey);
     }
   }
 
   else
   {
-    v14 = [MEMORY[0x277CCA9B8] hmErrorWithCode:-1];
-    (*(v10 + 2))(v10, v14);
+    homeManager = [MEMORY[0x277CCA9B8] hmErrorWithCode:-1];
+    (*(completionCopy + 2))(completionCopy, homeManager);
   }
 
   v32 = *MEMORY[0x277D85DE8];
@@ -1446,13 +1446,13 @@ uint64_t __97__HMDHomeNFCReaderKeyManager_deleteKeychainItemForNFCReaderKeyIsFor
   return v2();
 }
 
-- (id)requestPrimaryResidentToFetchOrCreateReaderKeyWithFlow:(id)a3
+- (id)requestPrimaryResidentToFetchOrCreateReaderKeyWithFlow:(id)flow
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDHomeNFCReaderKeyManager *)self home];
-  v6 = v5;
-  if (!v5)
+  flowCopy = flow;
+  home = [(HMDHomeNFCReaderKeyManager *)self home];
+  v6 = home;
+  if (!home)
   {
     v16 = MEMORY[0x277D2C900];
     v17 = MEMORY[0x277CCA9B8];
@@ -1464,19 +1464,19 @@ LABEL_11:
     goto LABEL_19;
   }
 
-  if (![v5 hasAnyResident])
+  if (![home hasAnyResident])
   {
     v19 = objc_autoreleasePoolPush();
-    v20 = self;
+    selfCopy = self;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
       v22 = HMFGetLogIdentifier();
-      v23 = [v4 UUID];
+      uUID = [flowCopy UUID];
       *buf = 138543618;
       v43 = v22;
       v44 = 2112;
-      v45 = v23;
+      v45 = uUID;
       _os_log_impl(&dword_229538000, v21, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Did not find any residents", buf, 0x16u);
     }
 
@@ -1491,16 +1491,16 @@ LABEL_11:
   if ([v6 isCurrentDeviceConfirmedPrimaryResident])
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy2 = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v11 = HMFGetLogIdentifier();
-      v12 = [v4 UUID];
+      uUID2 = [flowCopy UUID];
       *buf = 138543618;
       v43 = v11;
       v44 = 2112;
-      v45 = v12;
+      v45 = uUID2;
       _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Creating a reader key locally because we are primary", buf, 0x16u);
     }
 
@@ -1511,18 +1511,18 @@ LABEL_11:
     v40[3] = &unk_27867E748;
     v13 = v7;
     v41 = v13;
-    [(HMDHomeNFCReaderKeyManager *)v9 createReaderKeyInKeychainForHome:v6 isForceUpdate:0 flow:v4 completion:v40];
+    [(HMDHomeNFCReaderKeyManager *)selfCopy2 createReaderKeyInKeychainForHome:v6 isForceUpdate:0 flow:flowCopy completion:v40];
     v14 = v13;
-    v15 = v41;
+    primaryResidentDevice = v41;
   }
 
   else
   {
-    v25 = [v6 residentDeviceManager];
-    v15 = [v25 primaryResidentDevice];
+    residentDeviceManager = [v6 residentDeviceManager];
+    primaryResidentDevice = [residentDeviceManager primaryResidentDevice];
 
-    v26 = [v15 device];
-    if (v26)
+    device = [primaryResidentDevice device];
+    if (device)
     {
       v38[0] = MEMORY[0x277D85DD0];
       v38[1] = 3221225472;
@@ -1530,7 +1530,7 @@ LABEL_11:
       v38[3] = &unk_27867E748;
       v27 = v7;
       v39 = v27;
-      [(HMDHomeNFCReaderKeyManager *)self requestDevice:v26 toCreateKeychainItemForReaderKeyWithFlow:v4 completion:v38];
+      [(HMDHomeNFCReaderKeyManager *)self requestDevice:device toCreateKeychainItemForReaderKeyWithFlow:flowCopy completion:v38];
       v14 = v27;
       v28 = v39;
     }
@@ -1538,17 +1538,17 @@ LABEL_11:
     else
     {
       v29 = objc_autoreleasePoolPush();
-      v30 = self;
+      selfCopy3 = self;
       v31 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
       {
         HMFGetLogIdentifier();
         v32 = v37 = v29;
-        v33 = [v4 UUID];
+        uUID3 = [flowCopy UUID];
         *buf = 138543618;
         v43 = v32;
         v44 = 2112;
-        v45 = v33;
+        v45 = uUID3;
         _os_log_impl(&dword_229538000, v31, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Did not find a primary resident but there are residents in the home", buf, 0x16u);
 
         v29 = v37;
@@ -1567,53 +1567,53 @@ LABEL_19:
   return v14;
 }
 
-- (void)handleSystemKeychainStoreUpdatedNotification:(id)a3
+- (void)handleSystemKeychainStoreUpdatedNotification:(id)notification
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277D0F7B8] internalOnlyInitializer];
+  notificationCopy = notification;
+  internalOnlyInitializer = [MEMORY[0x277D0F7B8] internalOnlyInitializer];
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = HMFGetLogIdentifier();
-    v10 = [v5 UUID];
+    uUID = [internalOnlyInitializer UUID];
     *buf = 138543618;
     v23 = v9;
     v24 = 2112;
-    v25 = v10;
+    v25 = uUID;
     _os_log_impl(&dword_229538000, v8, OS_LOG_TYPE_INFO, "%{public}@[NewFlow: %@ {Feature:Home Key}] Handling system keychain store updated notification", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
-  v11 = [(HMDHomeNFCReaderKeyManager *)v7 home];
-  if (v11)
+  home = [(HMDHomeNFCReaderKeyManager *)selfCopy home];
+  if (home)
   {
-    v12 = [(HMDHomeNFCReaderKeyManager *)v7 workQueue];
+    workQueue = [(HMDHomeNFCReaderKeyManager *)selfCopy workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __75__HMDHomeNFCReaderKeyManager_handleSystemKeychainStoreUpdatedNotification___block_invoke;
     block[3] = &unk_27868A010;
-    block[4] = v7;
-    v20 = v11;
-    v21 = v5;
-    dispatch_async(v12, block);
+    block[4] = selfCopy;
+    v20 = home;
+    v21 = internalOnlyInitializer;
+    dispatch_async(workQueue, block);
   }
 
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = v7;
+    v14 = selfCopy;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       v16 = HMFGetLogIdentifier();
-      v17 = [v5 UUID];
+      uUID2 = [internalOnlyInitializer UUID];
       *buf = 138543618;
       v23 = v16;
       v24 = 2112;
-      v25 = v17;
+      v25 = uUID2;
       _os_log_impl(&dword_229538000, v15, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Not handling keychain update, home is nil", buf, 0x16u);
     }
 
@@ -1721,12 +1721,12 @@ void __75__HMDHomeNFCReaderKeyManager_handleSystemKeychainStoreUpdatedNotificati
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleHomeRemovedNotification:(id)a3
+- (void)handleHomeRemovedNotification:(id)notification
 {
   v50 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:@"HMDHomeNotificationKey"];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKey:@"HMDHomeNotificationKey"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1741,42 +1741,42 @@ void __75__HMDHomeNFCReaderKeyManager_handleSystemKeychainStoreUpdatedNotificati
 
   v8 = v7;
 
-  v9 = [MEMORY[0x277D0F7B8] internalOnlyInitializer];
+  internalOnlyInitializer = [MEMORY[0x277D0F7B8] internalOnlyInitializer];
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v13 = HMFGetLogIdentifier();
-    v14 = [v9 UUID];
+    uUID = [internalOnlyInitializer UUID];
     *buf = 138543874;
     v43 = v13;
     v44 = 2112;
-    v45 = v14;
+    v45 = uUID;
     v46 = 2112;
     v47 = v8;
     _os_log_impl(&dword_229538000, v12, OS_LOG_TYPE_INFO, "%{public}@[NewFlow: %@ {Feature:Home Key}] Handling home removed notification: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v10);
-  v15 = [(HMDHomeNFCReaderKeyManager *)v11 home];
-  if (v15 == v8)
+  home = [(HMDHomeNFCReaderKeyManager *)selfCopy home];
+  if (home == v8)
   {
-    v16 = [(HMDHomeNFCReaderKeyManager *)v11 dataSource];
-    v17 = [v16 isWatch];
+    dataSource = [(HMDHomeNFCReaderKeyManager *)selfCopy dataSource];
+    isWatch = [dataSource isWatch];
 
-    v18 = [v15 currentUser];
-    v19 = [v18 isOwner];
+    currentUser = [home currentUser];
+    isOwner = [currentUser isOwner];
 
-    if ((v17 & 1) != 0 || v19 != 1)
+    if ((isWatch & 1) != 0 || isOwner != 1)
     {
       v24 = objc_autoreleasePoolPush();
-      v25 = v11;
+      v25 = selfCopy;
       v26 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
       {
         v27 = HMFGetLogIdentifier();
-        [v9 UUID];
+        [internalOnlyInitializer UUID];
         v28 = v37 = v24;
         v29 = HMFBooleanToString();
         v30 = HMFBooleanToString();
@@ -1798,21 +1798,21 @@ void __75__HMDHomeNFCReaderKeyManager_handleSystemKeychainStoreUpdatedNotificati
 
     else
     {
-      v20 = [(HMDHomeNFCReaderKeyManager *)v11 primaryResidentDevice];
-      v21 = v20;
-      if (v20 && ([v20 isCurrentDevice] & 1) == 0)
+      primaryResidentDevice = [(HMDHomeNFCReaderKeyManager *)selfCopy primaryResidentDevice];
+      v21 = primaryResidentDevice;
+      if (primaryResidentDevice && ([primaryResidentDevice isCurrentDevice] & 1) == 0)
       {
         v31 = objc_autoreleasePoolPush();
-        v32 = v11;
+        v32 = selfCopy;
         v33 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
         {
           v34 = HMFGetLogIdentifier();
-          v35 = [v9 UUID];
+          uUID2 = [internalOnlyInitializer UUID];
           *buf = 138543618;
           v43 = v34;
           v44 = 2112;
-          v45 = v35;
+          v45 = uUID2;
           _os_log_impl(&dword_229538000, v33, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Skipping removal of nfc reader key on current device because home has a primary resident that supports wallet key", buf, 0x16u);
         }
 
@@ -1821,19 +1821,19 @@ void __75__HMDHomeNFCReaderKeyManager_handleSystemKeychainStoreUpdatedNotificati
 
       else
       {
-        v22 = [v15 nfcReaderKey];
-        if (v22)
+        nfcReaderKey = [home nfcReaderKey];
+        if (nfcReaderKey)
         {
-          v23 = [(HMDHomeNFCReaderKeyManager *)v11 workQueue];
+          workQueue = [(HMDHomeNFCReaderKeyManager *)selfCopy workQueue];
           block[0] = MEMORY[0x277D85DD0];
           block[1] = 3221225472;
           block[2] = __60__HMDHomeNFCReaderKeyManager_handleHomeRemovedNotification___block_invoke;
           block[3] = &unk_2786891E0;
-          block[4] = v11;
-          v39 = v22;
-          v40 = v15;
-          v41 = v9;
-          dispatch_async(v23, block);
+          block[4] = selfCopy;
+          v39 = nfcReaderKey;
+          v40 = home;
+          v41 = internalOnlyInitializer;
+          dispatch_async(workQueue, block);
         }
       }
     }
@@ -1842,15 +1842,15 @@ void __75__HMDHomeNFCReaderKeyManager_handleSystemKeychainStoreUpdatedNotificati
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleHomeDidUpdateNFCReaderKeyNotification:(id)a3
+- (void)handleHomeDidUpdateNFCReaderKeyNotification:(id)notification
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 object];
+  notificationCopy = notification;
+  object = [notificationCopy object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = object;
   }
 
   else
@@ -1860,18 +1860,18 @@ void __75__HMDHomeNFCReaderKeyManager_handleSystemKeychainStoreUpdatedNotificati
 
   v7 = v6;
 
-  v8 = [(HMDHomeNFCReaderKeyManager *)self dataSource];
-  v9 = [v8 isWatch];
+  dataSource = [(HMDHomeNFCReaderKeyManager *)self dataSource];
+  isWatch = [dataSource isWatch];
 
-  v10 = [(HMDHomeNFCReaderKeyManager *)self home];
-  v11 = [v10 currentUser];
-  v12 = [v11 isOwner];
+  home = [(HMDHomeNFCReaderKeyManager *)self home];
+  currentUser = [home currentUser];
+  isOwner = [currentUser isOwner];
 
-  v13 = v12 ^ 1;
-  if ((v9 & 1) != 0 || v13)
+  v13 = isOwner ^ 1;
+  if ((isWatch & 1) != 0 || v13)
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
@@ -1892,15 +1892,15 @@ void __75__HMDHomeNFCReaderKeyManager_handleSystemKeychainStoreUpdatedNotificati
 
   else
   {
-    v14 = [(HMDHomeNFCReaderKeyManager *)self workQueue];
+    workQueue = [(HMDHomeNFCReaderKeyManager *)self workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __74__HMDHomeNFCReaderKeyManager_handleHomeDidUpdateNFCReaderKeyNotification___block_invoke;
     block[3] = &unk_27868A010;
     block[4] = self;
-    v23 = v4;
+    v23 = notificationCopy;
     v24 = v7;
-    dispatch_async(v14, block);
+    dispatch_async(workQueue, block);
   }
 
   v21 = *MEMORY[0x277D85DE8];
@@ -2126,31 +2126,31 @@ void __74__HMDHomeNFCReaderKeyManager_handleHomeDidUpdateNFCReaderKeyNotificatio
 
 - (void)unconfigure
 {
-  v3 = [(HMDHomeNFCReaderKeyManager *)self messageDispatcher];
-  [v3 deregisterReceiver:self];
+  messageDispatcher = [(HMDHomeNFCReaderKeyManager *)self messageDispatcher];
+  [messageDispatcher deregisterReceiver:self];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v5 = [(HMDHomeNFCReaderKeyManager *)self accessoryManager];
-  [v5 unconfigure];
+  accessoryManager = [(HMDHomeNFCReaderKeyManager *)self accessoryManager];
+  [accessoryManager unconfigure];
 }
 
-- (void)rollReaderKeyWithFlow:(id)a3 withCompletion:(id)a4
+- (void)rollReaderKeyWithFlow:(id)flow withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDHomeNFCReaderKeyManager *)self workQueue];
+  flowCopy = flow;
+  completionCopy = completion;
+  workQueue = [(HMDHomeNFCReaderKeyManager *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __67__HMDHomeNFCReaderKeyManager_rollReaderKeyWithFlow_withCompletion___block_invoke;
   block[3] = &unk_278689F98;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = flowCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = flowCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __67__HMDHomeNFCReaderKeyManager_rollReaderKeyWithFlow_withCompletion___block_invoke(id *a1)
@@ -2306,46 +2306,46 @@ LABEL_6:
 LABEL_7:
 }
 
-- (id)fetchOrCreateReaderKeyForPairingWithFlow:(id)a3
+- (id)fetchOrCreateReaderKeyForPairingWithFlow:(id)flow
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDHomeNFCReaderKeyManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  flowCopy = flow;
+  workQueue = [(HMDHomeNFCReaderKeyManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = HMFGetLogIdentifier();
-    v10 = [v4 UUID];
+    uUID = [flowCopy UUID];
     *buf = 138543618;
     v37 = v9;
     v38 = 2112;
-    v39 = v10;
+    v39 = uUID;
     _os_log_impl(&dword_229538000, v8, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] fetchOrCreateReaderKeyForPairingWithFlow", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
-  v11 = [(HMDHomeNFCReaderKeyManager *)v7 home];
-  v12 = [v11 currentUser];
-  v13 = v12;
-  if (!v11 || !v12)
+  home = [(HMDHomeNFCReaderKeyManager *)selfCopy home];
+  currentUser = [home currentUser];
+  v13 = currentUser;
+  if (!home || !currentUser)
   {
     v23 = objc_autoreleasePoolPush();
-    v24 = v7;
+    v24 = selfCopy;
     v25 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
       v26 = HMFGetLogIdentifier();
-      v27 = [v4 UUID];
+      uUID2 = [flowCopy UUID];
       *buf = 138544130;
       v37 = v26;
       v38 = 2112;
-      v39 = v27;
+      v39 = uUID2;
       v40 = 2112;
-      v41 = v11;
+      v41 = home;
       v42 = 2112;
       v43 = v13;
       _os_log_impl(&dword_229538000, v25, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Failed to create reader key, home or currentUser is nil. home: %@, currentUser: %@", buf, 0x2Au);
@@ -2358,33 +2358,33 @@ LABEL_7:
     goto LABEL_12;
   }
 
-  v14 = [v12 isOwner];
+  isOwner = [currentUser isOwner];
   v15 = objc_autoreleasePoolPush();
-  v16 = v7;
+  v16 = selfCopy;
   v17 = HMFGetOSLogHandle();
   v18 = os_log_type_enabled(v17, OS_LOG_TYPE_INFO);
-  if (v14)
+  if (isOwner)
   {
     if (v18)
     {
       v19 = HMFGetLogIdentifier();
-      v20 = [v4 UUID];
+      uUID3 = [flowCopy UUID];
       *buf = 138543618;
       v37 = v19;
       v38 = 2112;
-      v39 = v20;
+      v39 = uUID3;
       _os_log_impl(&dword_229538000, v17, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Did not find an existing key in the home graph, so fetching the key from the resident", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v15);
-    v21 = [(HMDHomeNFCReaderKeyManager *)v16 requestPrimaryResidentToFetchOrCreateReaderKeyWithFlow:v4];
+    v21 = [(HMDHomeNFCReaderKeyManager *)v16 requestPrimaryResidentToFetchOrCreateReaderKeyWithFlow:flowCopy];
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
     v33[2] = __71__HMDHomeNFCReaderKeyManager_fetchOrCreateReaderKeyForPairingWithFlow___block_invoke;
     v33[3] = &unk_278683318;
     v33[4] = v16;
-    v34 = v4;
-    v35 = v11;
+    v34 = flowCopy;
+    v35 = home;
     v22 = [v21 recover:v33];
 
 LABEL_12:
@@ -2394,16 +2394,16 @@ LABEL_12:
   if (v18)
   {
     v29 = HMFGetLogIdentifier();
-    v30 = [v4 UUID];
+    uUID4 = [flowCopy UUID];
     *buf = 138543618;
     v37 = v29;
     v38 = 2112;
-    v39 = v30;
+    v39 = uUID4;
     _os_log_impl(&dword_229538000, v17, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] We are not the owner, so fetching the key from the resident", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v15);
-  v22 = [(HMDHomeNFCReaderKeyManager *)v16 requestPrimaryResidentToFetchOrCreateReaderKeyWithFlow:v4];
+  v22 = [(HMDHomeNFCReaderKeyManager *)v16 requestPrimaryResidentToFetchOrCreateReaderKeyWithFlow:flowCopy];
 LABEL_16:
 
   v31 = *MEMORY[0x277D85DE8];
@@ -2471,116 +2471,116 @@ LABEL_9:
   return v17;
 }
 
-- (void)fetchOrCreateReaderKeyWithRequiresPrivateKey:(BOOL)a3 flow:(id)a4 completion:(id)a5
+- (void)fetchOrCreateReaderKeyWithRequiresPrivateKey:(BOOL)key flow:(id)flow completion:(id)completion
 {
   v60 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = [(HMDHomeNFCReaderKeyManager *)self workQueue];
-  dispatch_assert_queue_V2(v10);
+  flowCopy = flow;
+  completionCopy = completion;
+  workQueue = [(HMDHomeNFCReaderKeyManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     v14 = HMFGetLogIdentifier();
-    v15 = [v8 UUID];
+    uUID = [flowCopy UUID];
     v16 = HMFBooleanToString();
     v54 = 138543874;
     v55 = v14;
     v56 = 2112;
-    v57 = v15;
+    v57 = uUID;
     v58 = 2112;
     v59 = v16;
     _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Fetch or create reader key with requiresPrivateKey: %@", &v54, 0x20u);
   }
 
   objc_autoreleasePoolPop(v11);
-  v17 = [(HMDHomeNFCReaderKeyManager *)v12 home];
-  if (v17)
+  home = [(HMDHomeNFCReaderKeyManager *)selfCopy home];
+  if (home)
   {
-    v18 = [(HMDHomeNFCReaderKeyManager *)v12 dataSource];
-    v19 = [v18 isWatch];
+    dataSource = [(HMDHomeNFCReaderKeyManager *)selfCopy dataSource];
+    isWatch = [dataSource isWatch];
 
-    v20 = [v17 currentUser];
-    v21 = [v17 nfcReaderKey];
-    v22 = v21;
-    if (((v19 & 1) != 0 || !a3) && v21)
+    currentUser = [home currentUser];
+    nfcReaderKey = [home nfcReaderKey];
+    v22 = nfcReaderKey;
+    if (((isWatch & 1) != 0 || !key) && nfcReaderKey)
     {
       v23 = objc_autoreleasePoolPush();
-      v24 = v12;
+      v24 = selfCopy;
       v25 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
       {
         v26 = HMFGetLogIdentifier();
-        v27 = [v8 UUID];
+        uUID2 = [flowCopy UUID];
         v54 = 138543874;
         v55 = v26;
         v56 = 2112;
-        v57 = v27;
+        v57 = uUID2;
         v58 = 2112;
         v59 = v22;
         _os_log_impl(&dword_229538000, v25, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Current device is watch or caller does not requires private key, fetched nfc reader key from home graph: %@", &v54, 0x20u);
       }
 
       objc_autoreleasePoolPop(v23);
-      v9[2](v9, v22, 0);
+      completionCopy[2](completionCopy, v22, 0);
     }
 
     else
     {
-      if ([v20 isAdministrator])
+      if ([currentUser isAdministrator])
       {
-        if ([v20 privilege] == 4)
+        if ([currentUser privilege] == 4)
         {
           v33 = objc_autoreleasePoolPush();
-          v34 = v12;
+          v34 = selfCopy;
           v35 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
           {
             v36 = HMFGetLogIdentifier();
-            v37 = [v8 UUID];
+            uUID3 = [flowCopy UUID];
             v54 = 138543618;
             v55 = v36;
             v56 = 2112;
-            v57 = v37;
+            v57 = uUID3;
             _os_log_impl(&dword_229538000, v35, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Current user is shared admin, sending request to resident to create nfc reader key", &v54, 0x16u);
           }
 
           objc_autoreleasePoolPop(v33);
-          [(HMDHomeNFCReaderKeyManager *)v34 requestPrimaryResidentToFetchOrCreateReaderKeyWithFlow:v8 completion:v9];
+          [(HMDHomeNFCReaderKeyManager *)v34 requestPrimaryResidentToFetchOrCreateReaderKeyWithFlow:flowCopy completion:completionCopy];
           goto LABEL_22;
         }
 
-        if (!v19)
+        if (!isWatch)
         {
-          v52 = [(HMDHomeNFCReaderKeyManager *)v12 primaryResidentDevice];
-          v53 = v52;
-          if (v52 && ([v52 isCurrentDevice] & 1) == 0)
+          primaryResidentDevice = [(HMDHomeNFCReaderKeyManager *)selfCopy primaryResidentDevice];
+          v53 = primaryResidentDevice;
+          if (primaryResidentDevice && ([primaryResidentDevice isCurrentDevice] & 1) == 0)
           {
-            [(HMDHomeNFCReaderKeyManager *)v12 requestDevice:v53 toCreateKeychainItemForReaderKeyWithFlow:v8 completion:v9];
+            [(HMDHomeNFCReaderKeyManager *)selfCopy requestDevice:v53 toCreateKeychainItemForReaderKeyWithFlow:flowCopy completion:completionCopy];
           }
 
           else
           {
-            [(HMDHomeNFCReaderKeyManager *)v12 createReaderKeyInKeychainForHome:v17 isForceUpdate:0 flow:v8 completion:v9];
+            [(HMDHomeNFCReaderKeyManager *)selfCopy createReaderKeyInKeychainForHome:home isForceUpdate:0 flow:flowCopy completion:completionCopy];
           }
 
           goto LABEL_22;
         }
 
         v47 = objc_autoreleasePoolPush();
-        v48 = v12;
+        v48 = selfCopy;
         v49 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v49, OS_LOG_TYPE_INFO))
         {
           v50 = HMFGetLogIdentifier();
-          v51 = [v8 UUID];
+          uUID4 = [flowCopy UUID];
           v54 = 138543618;
           v55 = v50;
           v56 = 2112;
-          v57 = v51;
+          v57 = uUID4;
           _os_log_impl(&dword_229538000, v49, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Current user is owner. Fetch or create reader key from keychain is not supported on watch", &v54, 0x16u);
         }
 
@@ -2592,16 +2592,16 @@ LABEL_9:
       else
       {
         v38 = objc_autoreleasePoolPush();
-        v39 = v12;
+        v39 = selfCopy;
         v40 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
         {
           v41 = HMFGetLogIdentifier();
-          v42 = [v8 UUID];
+          uUID5 = [flowCopy UUID];
           v54 = 138543618;
           v55 = v41;
           v56 = 2112;
-          v57 = v42;
+          v57 = uUID5;
           _os_log_impl(&dword_229538000, v40, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Current user is not admin and home key doesn't exist in home graph, returning nil", &v54, 0x16u);
         }
 
@@ -2611,7 +2611,7 @@ LABEL_9:
       }
 
       v45 = [v43 hmErrorWithCode:v44];
-      (v9)[2](v9, 0, v45);
+      (completionCopy)[2](completionCopy, 0, v45);
     }
 
 LABEL_22:
@@ -2620,101 +2620,101 @@ LABEL_22:
   }
 
   v28 = objc_autoreleasePoolPush();
-  v29 = v12;
+  v29 = selfCopy;
   v30 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
   {
     v31 = HMFGetLogIdentifier();
-    v32 = [v8 UUID];
+    uUID6 = [flowCopy UUID];
     v54 = 138543618;
     v55 = v31;
     v56 = 2112;
-    v57 = v32;
+    v57 = uUID6;
     _os_log_impl(&dword_229538000, v30, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] Failed to create reader key, home is nil", &v54, 0x16u);
   }
 
   objc_autoreleasePoolPop(v28);
-  v20 = [MEMORY[0x277CCA9B8] hmErrorWithCode:-1];
-  (v9)[2](v9, 0, v20);
+  currentUser = [MEMORY[0x277CCA9B8] hmErrorWithCode:-1];
+  (completionCopy)[2](completionCopy, 0, currentUser);
 LABEL_23:
 
   v46 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchOrCreateReaderKeyOnQueueWithRequiresPrivateKey:(BOOL)a3 flow:(id)a4 completion:(id)a5
+- (void)fetchOrCreateReaderKeyOnQueueWithRequiresPrivateKey:(BOOL)key flow:(id)flow completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(HMDHomeNFCReaderKeyManager *)self workQueue];
+  flowCopy = flow;
+  completionCopy = completion;
+  workQueue = [(HMDHomeNFCReaderKeyManager *)self workQueue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __98__HMDHomeNFCReaderKeyManager_fetchOrCreateReaderKeyOnQueueWithRequiresPrivateKey_flow_completion___block_invoke;
   v13[3] = &unk_278685C18;
-  v16 = a3;
+  keyCopy = key;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = flowCopy;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = flowCopy;
+  dispatch_async(workQueue, v13);
 }
 
-- (void)handleCreateKeychainItemForReaderKeyMessage:(id)a3
+- (void)handleCreateKeychainItemForReaderKeyMessage:(id)message
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDHomeNFCReaderKeyManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  messageCopy = message;
+  workQueue = [(HMDHomeNFCReaderKeyManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [v4 flow];
+  flow = [messageCopy flow];
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v10 = HMFGetLogIdentifier();
-    v11 = [v6 UUID];
+    uUID = [flow UUID];
     *buf = 138543874;
     v23 = v10;
     v24 = 2112;
-    v25 = v11;
+    v25 = uUID;
     v26 = 2112;
-    v27 = v4;
+    v27 = messageCopy;
     _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Handling message to create keychain item for reader key: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v7);
-  v12 = [(HMDHomeNFCReaderKeyManager *)v8 home];
-  if (v12)
+  home = [(HMDHomeNFCReaderKeyManager *)selfCopy home];
+  if (home)
   {
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __74__HMDHomeNFCReaderKeyManager_handleCreateKeychainItemForReaderKeyMessage___block_invoke;
     v20[3] = &unk_27867E748;
-    v21 = v4;
-    [(HMDHomeNFCReaderKeyManager *)v8 createReaderKeyInKeychainForHome:v12 isForceUpdate:0 flow:v6 completion:v20];
+    v21 = messageCopy;
+    [(HMDHomeNFCReaderKeyManager *)selfCopy createReaderKeyInKeychainForHome:home isForceUpdate:0 flow:flow completion:v20];
     v13 = v21;
   }
 
   else
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = v8;
+    v15 = selfCopy;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       v17 = HMFGetLogIdentifier();
-      v18 = [v6 UUID];
+      uUID2 = [flow UUID];
       *buf = 138543618;
       v23 = v17;
       v24 = 2112;
-      v25 = v18;
+      v25 = uUID2;
       _os_log_impl(&dword_229538000, v16, OS_LOG_TYPE_ERROR, "%{public}@[Flow: %@] I am not configured with a home", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v14);
     v13 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-    [v4 respondWithError:v13];
+    [messageCopy respondWithError:v13];
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -2743,27 +2743,27 @@ void __74__HMDHomeNFCReaderKeyManager_handleCreateKeychainItemForReaderKeyMessag
   }
 }
 
-- (void)handleFetchOrCreateReaderKeyMessage:(id)a3
+- (void)handleFetchOrCreateReaderKeyMessage:(id)message
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDHomeNFCReaderKeyManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  messageCopy = message;
+  workQueue = [(HMDHomeNFCReaderKeyManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [v4 flow];
+  flow = [messageCopy flow];
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v10 = HMFGetLogIdentifier();
-    v11 = [v6 UUID];
+    uUID = [flow UUID];
     *buf = 138543874;
     v19 = v10;
     v20 = 2112;
-    v21 = v11;
+    v21 = uUID;
     v22 = 2112;
-    v23 = v4;
+    v23 = messageCopy;
     _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Handling message to fetch or create reader key: %@", buf, 0x20u);
   }
 
@@ -2772,12 +2772,12 @@ void __74__HMDHomeNFCReaderKeyManager_handleCreateKeychainItemForReaderKeyMessag
   v15[1] = 3221225472;
   v15[2] = __66__HMDHomeNFCReaderKeyManager_handleFetchOrCreateReaderKeyMessage___block_invoke;
   v15[3] = &unk_27867E720;
-  v15[4] = v8;
-  v16 = v6;
-  v17 = v4;
-  v12 = v4;
-  v13 = v6;
-  [(HMDHomeNFCReaderKeyManager *)v8 fetchOrCreateReaderKeyWithRequiresPrivateKey:0 flow:v13 completion:v15];
+  v15[4] = selfCopy;
+  v16 = flow;
+  v17 = messageCopy;
+  v12 = messageCopy;
+  v13 = flow;
+  [(HMDHomeNFCReaderKeyManager *)selfCopy fetchOrCreateReaderKeyWithRequiresPrivateKey:0 flow:v13 completion:v15];
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -2885,16 +2885,16 @@ void __66__HMDHomeNFCReaderKeyManager_handleFetchOrCreateReaderKeyMessage___bloc
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleDeleteKeychainItemForNFCReaderKey:(id)a3
+- (void)handleDeleteKeychainItemForNFCReaderKey:(id)key
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDHomeNFCReaderKeyManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  keyCopy = key;
+  workQueue = [(HMDHomeNFCReaderKeyManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [v4 flow];
+  flow = [keyCopy flow];
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -2909,10 +2909,10 @@ void __66__HMDHomeNFCReaderKeyManager_handleFetchOrCreateReaderKeyMessage___bloc
   v13[1] = 3221225472;
   v13[2] = __70__HMDHomeNFCReaderKeyManager_handleDeleteKeychainItemForNFCReaderKey___block_invoke;
   v13[3] = &unk_27868A1D8;
-  v13[4] = v8;
-  v14 = v4;
-  v11 = v4;
-  [(HMDHomeNFCReaderKeyManager *)v8 deleteKeychainItemForNFCReaderKeyIsForceUpdate:0 withFlow:v6 completion:v13];
+  v13[4] = selfCopy;
+  v14 = keyCopy;
+  v11 = keyCopy;
+  [(HMDHomeNFCReaderKeyManager *)selfCopy deleteKeychainItemForNFCReaderKeyIsForceUpdate:0 withFlow:flow completion:v13];
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -2962,12 +2962,12 @@ void __70__HMDHomeNFCReaderKeyManager_handleDeleteKeychainItemForNFCReaderKey___
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)configureWithHome:(id)a3
+- (void)configureWithHome:(id)home
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  homeCopy = home;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -2975,22 +2975,22 @@ void __70__HMDHomeNFCReaderKeyManager_handleDeleteKeychainItemForNFCReaderKey___
     *buf = 138543618;
     v36 = v8;
     v37 = 2112;
-    v38 = v4;
+    v38 = homeCopy;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_INFO, "%{public}@Configuring with home: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  [(HMDHomeNFCReaderKeyManager *)v6 setHome:v4];
-  v9 = [v4 msgDispatcher];
-  [(HMDHomeNFCReaderKeyManager *)v6 setMessageDispatcher:v9];
+  [(HMDHomeNFCReaderKeyManager *)selfCopy setHome:homeCopy];
+  msgDispatcher = [homeCopy msgDispatcher];
+  [(HMDHomeNFCReaderKeyManager *)selfCopy setMessageDispatcher:msgDispatcher];
 
-  v10 = [(HMDHomeNFCReaderKeyManager *)v6 dataSource];
-  v11 = [v10 isResidentCapable];
+  dataSource = [(HMDHomeNFCReaderKeyManager *)selfCopy dataSource];
+  isResidentCapable = [dataSource isResidentCapable];
 
-  if (v11)
+  if (isResidentCapable)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = v6;
+    v13 = selfCopy;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
@@ -3001,65 +3001,65 @@ void __70__HMDHomeNFCReaderKeyManager_handleDeleteKeychainItemForNFCReaderKey___
     }
 
     objc_autoreleasePoolPop(v12);
-    v16 = [HMDUserMessagePolicy userMessagePolicyWithHome:v4 userPrivilege:4 remoteAccessRequired:0];
+    v16 = [HMDUserMessagePolicy userMessagePolicyWithHome:homeCopy userPrivilege:4 remoteAccessRequired:0];
     v17 = +[(HMDRemoteMessagePolicy *)HMDMutableRemoteMessagePolicy];
     [v17 setRoles:{objc_msgSend(v17, "roles") | 4}];
-    v18 = [(HMDHomeNFCReaderKeyManager *)v13 messageDispatcher];
+    messageDispatcher = [(HMDHomeNFCReaderKeyManager *)v13 messageDispatcher];
     v34[0] = v16;
     v34[1] = v17;
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:2];
-    [v18 registerForMessage:@"HMDHomeFetchOrCreateNFCReaderKeyMessage" receiver:v13 policies:v19 selector:sel_handleFetchOrCreateReaderKeyMessage_];
+    [messageDispatcher registerForMessage:@"HMDHomeFetchOrCreateNFCReaderKeyMessage" receiver:v13 policies:v19 selector:sel_handleFetchOrCreateReaderKeyMessage_];
 
-    v20 = [(HMDHomeNFCReaderKeyManager *)v13 messageDispatcher];
+    messageDispatcher2 = [(HMDHomeNFCReaderKeyManager *)v13 messageDispatcher];
     v33[0] = v16;
     v33[1] = v17;
     v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:2];
-    [v20 registerForMessage:@"HMDHomeCreateKeychainItemForNFCReaderKeyMessage" receiver:v13 policies:v21 selector:sel_handleCreateKeychainItemForReaderKeyMessage_];
+    [messageDispatcher2 registerForMessage:@"HMDHomeCreateKeychainItemForNFCReaderKeyMessage" receiver:v13 policies:v21 selector:sel_handleCreateKeychainItemForReaderKeyMessage_];
 
-    v22 = [(HMDHomeNFCReaderKeyManager *)v13 messageDispatcher];
+    messageDispatcher3 = [(HMDHomeNFCReaderKeyManager *)v13 messageDispatcher];
     v32[0] = v16;
     v32[1] = v17;
     v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:2];
-    [v22 registerForMessage:@"HMDHomeDeleteKeychainItemForNFCReaderKeyMessage" receiver:v13 policies:v23 selector:sel_handleDeleteKeychainItemForNFCReaderKey_];
+    [messageDispatcher3 registerForMessage:@"HMDHomeDeleteKeychainItemForNFCReaderKeyMessage" receiver:v13 policies:v23 selector:sel_handleDeleteKeychainItemForNFCReaderKey_];
   }
 
-  v24 = [MEMORY[0x277CCAB98] defaultCenter];
-  v25 = [v4 homeManager];
-  [v24 addObserver:v6 selector:sel_handleHomeRemovedNotification_ name:@"HMDHomeRemovedNotification" object:v25];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  homeManager = [homeCopy homeManager];
+  [defaultCenter addObserver:selfCopy selector:sel_handleHomeRemovedNotification_ name:@"HMDHomeRemovedNotification" object:homeManager];
 
-  v26 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
   v27 = *MEMORY[0x277CFE930];
-  v28 = [(HMDHomeNFCReaderKeyManager *)v6 keychainStore];
-  [v26 addObserver:v6 selector:sel_handleSystemKeychainStoreUpdatedNotification_ name:v27 object:v28];
+  keychainStore = [(HMDHomeNFCReaderKeyManager *)selfCopy keychainStore];
+  [defaultCenter2 addObserver:selfCopy selector:sel_handleSystemKeychainStoreUpdatedNotification_ name:v27 object:keychainStore];
 
-  v29 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v29 addObserver:v6 selector:sel_handleHomeDidUpdateNFCReaderKeyNotification_ name:@"HMDHomeDidUpdateNFCReaderKeyNotification" object:v4];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter3 addObserver:selfCopy selector:sel_handleHomeDidUpdateNFCReaderKeyNotification_ name:@"HMDHomeDidUpdateNFCReaderKeyNotification" object:homeCopy];
 
-  v30 = [(HMDHomeNFCReaderKeyManager *)v6 accessoryManager];
-  [v30 configureWithHome:v4];
+  accessoryManager = [(HMDHomeNFCReaderKeyManager *)selfCopy accessoryManager];
+  [accessoryManager configureWithHome:homeCopy];
 
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDHomeNFCReaderKeyManager)initWithUUID:(id)a3 workQueue:(id)a4 keychainStore:(id)a5 dataSource:(id)a6
+- (HMDHomeNFCReaderKeyManager)initWithUUID:(id)d workQueue:(id)queue keychainStore:(id)store dataSource:(id)source
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  queueCopy = queue;
+  storeCopy = store;
+  sourceCopy = source;
   v22.receiver = self;
   v22.super_class = HMDHomeNFCReaderKeyManager;
   v14 = [(HMDHomeNFCReaderKeyManager *)&v22 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [dCopy copy];
     uuid = v14->_uuid;
     v14->_uuid = v15;
 
-    objc_storeStrong(&v14->_workQueue, a4);
-    objc_storeStrong(&v14->_keychainStore, a5);
-    objc_storeStrong(&v14->_dataSource, a6);
-    v17 = [[HMDHomeWalletKeyAccessoryManager alloc] initWithUUID:v10 workQueue:v11];
+    objc_storeStrong(&v14->_workQueue, queue);
+    objc_storeStrong(&v14->_keychainStore, store);
+    objc_storeStrong(&v14->_dataSource, source);
+    v17 = [[HMDHomeWalletKeyAccessoryManager alloc] initWithUUID:dCopy workQueue:queueCopy];
     accessoryManager = v14->_accessoryManager;
     v14->_accessoryManager = v17;
 
@@ -3071,14 +3071,14 @@ void __70__HMDHomeNFCReaderKeyManager_handleDeleteKeychainItemForNFCReaderKey___
   return v14;
 }
 
-- (HMDHomeNFCReaderKeyManager)initWithUUID:(id)a3 workQueue:(id)a4
+- (HMDHomeNFCReaderKeyManager)initWithUUID:(id)d workQueue:(id)queue
 {
   v6 = MEMORY[0x277CFEC78];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 systemStore];
+  queueCopy = queue;
+  dCopy = d;
+  systemStore = [v6 systemStore];
   v10 = objc_alloc_init(HMDHomeWalletDataSource);
-  v11 = [(HMDHomeNFCReaderKeyManager *)self initWithUUID:v8 workQueue:v7 keychainStore:v9 dataSource:v10];
+  v11 = [(HMDHomeNFCReaderKeyManager *)self initWithUUID:dCopy workQueue:queueCopy keychainStore:systemStore dataSource:v10];
 
   return v11;
 }

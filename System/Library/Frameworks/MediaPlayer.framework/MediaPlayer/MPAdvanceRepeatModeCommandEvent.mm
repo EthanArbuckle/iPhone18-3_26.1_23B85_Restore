@@ -1,19 +1,19 @@
 @interface MPAdvanceRepeatModeCommandEvent
-- (MPAdvanceRepeatModeCommandEvent)initWithCommand:(id)a3 mediaRemoteType:(unsigned int)a4 options:(id)a5;
+- (MPAdvanceRepeatModeCommandEvent)initWithCommand:(id)command mediaRemoteType:(unsigned int)type options:(id)options;
 @end
 
 @implementation MPAdvanceRepeatModeCommandEvent
 
-- (MPAdvanceRepeatModeCommandEvent)initWithCommand:(id)a3 mediaRemoteType:(unsigned int)a4 options:(id)a5
+- (MPAdvanceRepeatModeCommandEvent)initWithCommand:(id)command mediaRemoteType:(unsigned int)type options:(id)options
 {
-  v5 = *&a4;
-  v8 = a5;
+  v5 = *&type;
+  optionsCopy = options;
   v12.receiver = self;
   v12.super_class = MPAdvanceRepeatModeCommandEvent;
-  v9 = [(MPRemoteCommandEvent *)&v12 initWithCommand:a3 mediaRemoteType:v5 options:v8];
+  v9 = [(MPRemoteCommandEvent *)&v12 initWithCommand:command mediaRemoteType:v5 options:optionsCopy];
   if (v9)
   {
-    v10 = [v8 objectForKey:*MEMORY[0x1E69B0CE0]];
+    v10 = [optionsCopy objectForKey:*MEMORY[0x1E69B0CE0]];
     v9->_preservesRepeatMode = [v10 BOOLValue];
   }
 

@@ -2,9 +2,9 @@
 + (void)initialize;
 - (AVOutputContextDestinationChange)result;
 - (void)_routeChangeComplete;
-- (void)_routeChangeStartedWithID:(__CFNumber *)a3;
-- (void)_routeChangeWithID:(__CFNumber *)a3 endedWithReason:(__CFString *)a4;
-- (void)_setResultIfNotAlreadySet:(id)a3;
+- (void)_routeChangeStartedWithID:(__CFNumber *)d;
+- (void)_routeChangeWithID:(__CFNumber *)d endedWithReason:(__CFString *)reason;
+- (void)_setResultIfNotAlreadySet:(id)set;
 - (void)dealloc;
 - (void)start;
 @end
@@ -13,7 +13,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work();
@@ -89,7 +89,7 @@ id __49__AVFigRoutingContextRouteChangeOperation_result__block_invoke(uint64_t a
   return result;
 }
 
-- (void)_setResultIfNotAlreadySet:(id)a3
+- (void)_setResultIfNotAlreadySet:(id)set
 {
   notificationManagementQueue = self->_notificationManagementQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -97,7 +97,7 @@ id __49__AVFigRoutingContextRouteChangeOperation_result__block_invoke(uint64_t a
   v4[2] = __69__AVFigRoutingContextRouteChangeOperation__setResultIfNotAlreadySet___block_invoke;
   v4[3] = &unk_1E7460DF0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = set;
   dispatch_sync(notificationManagementQueue, v4);
 }
 
@@ -136,7 +136,7 @@ id *__69__AVFigRoutingContextRouteChangeOperation__setResultIfNotAlreadySet___bl
   }
 }
 
-- (void)_routeChangeStartedWithID:(__CFNumber *)a3
+- (void)_routeChangeStartedWithID:(__CFNumber *)d
 {
   notificationManagementQueue = self->_notificationManagementQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -144,7 +144,7 @@ id *__69__AVFigRoutingContextRouteChangeOperation__setResultIfNotAlreadySet___bl
   v4[2] = __69__AVFigRoutingContextRouteChangeOperation__routeChangeStartedWithID___block_invoke;
   v4[3] = &unk_1E7460FA8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = d;
   dispatch_sync(notificationManagementQueue, v4);
 }
 
@@ -167,7 +167,7 @@ void *__69__AVFigRoutingContextRouteChangeOperation__routeChangeStartedWithID___
   return result;
 }
 
-- (void)_routeChangeWithID:(__CFNumber *)a3 endedWithReason:(__CFString *)a4
+- (void)_routeChangeWithID:(__CFNumber *)d endedWithReason:(__CFString *)reason
 {
   v11 = 0;
   v12 = &v11;
@@ -180,12 +180,12 @@ void *__69__AVFigRoutingContextRouteChangeOperation__routeChangeStartedWithID___
   block[2] = __78__AVFigRoutingContextRouteChangeOperation__routeChangeWithID_endedWithReason___block_invoke;
   block[3] = &unk_1E7462990;
   block[5] = &v11;
-  block[6] = a3;
+  block[6] = d;
   block[4] = self;
   dispatch_sync(notificationManagementQueue, block);
   if (v12[3])
   {
-    [v7 changeToTerminalStatusBasedOnRouteChangeEndedReason:a4];
+    [v7 changeToTerminalStatusBasedOnRouteChangeEndedReason:reason];
     [(AVFigRoutingContextRouteChangeOperation *)self _setResultIfNotAlreadySet:v7];
     if (!FigCFEqual())
     {

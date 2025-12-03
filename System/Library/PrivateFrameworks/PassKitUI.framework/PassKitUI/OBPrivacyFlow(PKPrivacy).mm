@@ -14,20 +14,20 @@
   }
 
   v6 = MEMORY[0x1E69B7D10];
-  v7 = [v5 firstObject];
-  v8 = [v6 bundleWithIdentifier:v7];
+  firstObject = [v5 firstObject];
+  v8 = [v6 bundleWithIdentifier:firstObject];
 
-  v9 = [a1 flowWithBundle:v8];
+  v9 = [self flowWithBundle:v8];
 
   return v9;
 }
 
 + (uint64_t)pk_privacyContentVersionForContext:()PKPrivacy
 {
-  v1 = [a1 pk_privacyFlowForContext:?];
-  v2 = [v1 contentVersion];
+  v1 = [self pk_privacyFlowForContext:?];
+  contentVersion = [v1 contentVersion];
 
-  return v2;
+  return contentVersion;
 }
 
 @end

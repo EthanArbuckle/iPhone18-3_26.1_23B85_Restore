@@ -1,62 +1,62 @@
 @interface IPAAutoRegistry
-+ (void)setSharedRegistry:(id)a3;
-- (BOOL)hasMappingForAutoIdentifier:(id)a3 operationIdentifier:(id)a4;
-- (BOOL)isPersistableAutoIdentifier:(id)a3 forOperationIdentifier:(id)a4;
-- (Class)settingsClassForAutoIdentifier:(id)a3 operationIdentifier:(id)a4;
++ (void)setSharedRegistry:(id)registry;
+- (BOOL)hasMappingForAutoIdentifier:(id)identifier operationIdentifier:(id)operationIdentifier;
+- (BOOL)isPersistableAutoIdentifier:(id)identifier forOperationIdentifier:(id)operationIdentifier;
+- (Class)settingsClassForAutoIdentifier:(id)identifier operationIdentifier:(id)operationIdentifier;
 - (IPAAutoRegistry)init;
-- (id)_entryForAutoIdentifier:(id)a3 operationIdentifier:(id)a4;
-- (void)registerAutoCalculatorSettingsClass:(Class)a3 toAutoIdentifier:(id)a4 operationIdentifier:(id)a5 persistable:(BOOL)a6;
+- (id)_entryForAutoIdentifier:(id)identifier operationIdentifier:(id)operationIdentifier;
+- (void)registerAutoCalculatorSettingsClass:(Class)class toAutoIdentifier:(id)identifier operationIdentifier:(id)operationIdentifier persistable:(BOOL)persistable;
 @end
 
 @implementation IPAAutoRegistry
 
-- (BOOL)isPersistableAutoIdentifier:(id)a3 forOperationIdentifier:(id)a4
+- (BOOL)isPersistableAutoIdentifier:(id)identifier forOperationIdentifier:(id)operationIdentifier
 {
-  v4 = [(IPAAutoRegistry *)self _entryForAutoIdentifier:a3 operationIdentifier:a4];
-  v5 = [v4 persistable];
+  v4 = [(IPAAutoRegistry *)self _entryForAutoIdentifier:identifier operationIdentifier:operationIdentifier];
+  persistable = [v4 persistable];
 
-  return v5;
+  return persistable;
 }
 
-- (Class)settingsClassForAutoIdentifier:(id)a3 operationIdentifier:(id)a4
+- (Class)settingsClassForAutoIdentifier:(id)identifier operationIdentifier:(id)operationIdentifier
 {
-  v4 = [(IPAAutoRegistry *)self _entryForAutoIdentifier:a3 operationIdentifier:a4];
-  v5 = [v4 autoSettingsClass];
+  v4 = [(IPAAutoRegistry *)self _entryForAutoIdentifier:identifier operationIdentifier:operationIdentifier];
+  autoSettingsClass = [v4 autoSettingsClass];
 
-  return v5;
+  return autoSettingsClass;
 }
 
-- (BOOL)hasMappingForAutoIdentifier:(id)a3 operationIdentifier:(id)a4
+- (BOOL)hasMappingForAutoIdentifier:(id)identifier operationIdentifier:(id)operationIdentifier
 {
-  v4 = [(IPAAutoRegistry *)self _entryForAutoIdentifier:a3 operationIdentifier:a4];
+  v4 = [(IPAAutoRegistry *)self _entryForAutoIdentifier:identifier operationIdentifier:operationIdentifier];
   v5 = v4 != 0;
 
   return v5;
 }
 
-- (id)_entryForAutoIdentifier:(id)a3 operationIdentifier:(id)a4
+- (id)_entryForAutoIdentifier:(id)identifier operationIdentifier:(id)operationIdentifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  identifierCopy = identifier;
+  operationIdentifierCopy = operationIdentifier;
+  v8 = operationIdentifierCopy;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__2205;
   v21 = __Block_byref_object_dispose__2206;
   v22 = 0;
-  if (v6 && v7)
+  if (identifierCopy && operationIdentifierCopy)
   {
-    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", v7, v6];
+    identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", operationIdentifierCopy, identifierCopy];
     serializer = self->_serializer;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __63__IPAAutoRegistry__entryForAutoIdentifier_operationIdentifier___block_invoke;
     block[3] = &unk_279A26640;
-    v15 = v9;
+    v15 = identifierCopy;
     v16 = &v17;
     block[4] = self;
-    v11 = v9;
+    v11 = identifierCopy;
     dispatch_sync(serializer, block);
   }
 
@@ -78,37 +78,37 @@ uint64_t __63__IPAAutoRegistry__entryForAutoIdentifier_operationIdentifier___blo
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)registerAutoCalculatorSettingsClass:(Class)a3 toAutoIdentifier:(id)a4 operationIdentifier:(id)a5 persistable:(BOOL)a6
+- (void)registerAutoCalculatorSettingsClass:(Class)class toAutoIdentifier:(id)identifier operationIdentifier:(id)operationIdentifier persistable:(BOOL)persistable
 {
-  v10 = a4;
-  v11 = a5;
-  if (!a3)
+  identifierCopy = identifier;
+  operationIdentifierCopy = operationIdentifier;
+  if (!class)
   {
     _PFAssertFailHandler();
     goto LABEL_6;
   }
 
-  if (!v10)
+  if (!identifierCopy)
   {
 LABEL_6:
     _PFAssertFailHandler();
     goto LABEL_7;
   }
 
-  v12 = v11;
-  if (v11)
+  v12 = operationIdentifierCopy;
+  if (operationIdentifierCopy)
   {
-    v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", v11, v10];
+    identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", operationIdentifierCopy, identifierCopy];
     serializer = self->_serializer;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __104__IPAAutoRegistry_registerAutoCalculatorSettingsClass_toAutoIdentifier_operationIdentifier_persistable___block_invoke;
     block[3] = &unk_279A26618;
-    v18 = v13;
-    v19 = a3;
-    v20 = a6;
+    v18 = identifierCopy;
+    classCopy = class;
+    persistableCopy = persistable;
     block[4] = self;
-    v15 = v13;
+    v15 = identifierCopy;
     dispatch_sync(serializer, block);
 
     return;
@@ -147,12 +147,12 @@ void __104__IPAAutoRegistry_registerAutoCalculatorSettingsClass_toAutoIdentifier
   return v2;
 }
 
-+ (void)setSharedRegistry:(id)a3
++ (void)setSharedRegistry:(id)registry
 {
-  v3 = a3;
-  if (v3)
+  registryCopy = registry;
+  if (registryCopy)
   {
-    s_instance = v3;
+    s_instance = registryCopy;
 
     MEMORY[0x2821F96F8]();
   }

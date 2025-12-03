@@ -1,7 +1,7 @@
 @interface BDSBookWidgetInfoSource
 + (id)sharedServiceProxy;
 - (BDSBookWidgetInfoSource)init;
-- (void)getBookWidgetInfoWithLimit:(unint64_t)a3 completionHandler:(id)a4;
+- (void)getBookWidgetInfoWithLimit:(unint64_t)limit completionHandler:(id)handler;
 @end
 
 @implementation BDSBookWidgetInfoSource
@@ -33,9 +33,9 @@
   return v2;
 }
 
-- (void)getBookWidgetInfoWithLimit:(unint64_t)a3 completionHandler:(id)a4
+- (void)getBookWidgetInfoWithLimit:(unint64_t)limit completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = BDSServiceLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -43,8 +43,8 @@
     _os_log_impl(&dword_1E45E0000, v7, OS_LOG_TYPE_DEFAULT, "BDSBookWidgetInfoSource getBookWidgetDataWithLimit calling remote.", v9, 2u);
   }
 
-  v8 = [(BDSBookWidgetInfoSource *)self serviceProxy];
-  [v8 getBookWidgetInfoWithLimit:a3 completion:v6];
+  serviceProxy = [(BDSBookWidgetInfoSource *)self serviceProxy];
+  [serviceProxy getBookWidgetInfoWithLimit:limit completion:handlerCopy];
 }
 
 @end

@@ -1,18 +1,18 @@
 @interface SBIconWidgetIntroductionView
-- (SBIconWidgetIntroductionView)initWithWidgetIcons:(id)a3;
+- (SBIconWidgetIntroductionView)initWithWidgetIcons:(id)icons;
 @end
 
 @implementation SBIconWidgetIntroductionView
 
-- (SBIconWidgetIntroductionView)initWithWidgetIcons:(id)a3
+- (SBIconWidgetIntroductionView)initWithWidgetIcons:(id)icons
 {
-  v4 = a3;
+  iconsCopy = icons;
   v9.receiver = self;
   v9.super_class = SBIconWidgetIntroductionView;
   v5 = [(SBIconWidgetIntroductionView *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [iconsCopy copy];
     widgetIcons = v5->_widgetIcons;
     v5->_widgetIcons = v6;
   }

@@ -1,16 +1,16 @@
 @interface LiveTranscriptionAppearanceController
-- (id)_colorFromData:(id)a3;
-- (id)backgroundColorForSpecifier:(id)a3;
-- (id)boldTextEnabled:(id)a3;
-- (id)largerTextEnabled:(id)a3;
+- (id)_colorFromData:(id)data;
+- (id)backgroundColorForSpecifier:(id)specifier;
+- (id)boldTextEnabled:(id)enabled;
+- (id)largerTextEnabled:(id)enabled;
 - (id)specifiers;
-- (id)textColorForSpecifier:(id)a3;
+- (id)textColorForSpecifier:(id)specifier;
 - (int)largerTextPerAppValue;
-- (void)_updateSpecifierState:(id)a3;
-- (void)colorPickerViewController:(id)a3 didSelectColor:(id)a4 continuously:(BOOL)a5;
-- (void)resetColors:(id)a3;
-- (void)setBoldTextEnabled:(id)a3 specifier:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)_updateSpecifierState:(id)state;
+- (void)colorPickerViewController:(id)controller didSelectColor:(id)color continuously:(BOOL)continuously;
+- (void)resetColors:(id)colors;
+- (void)setBoldTextEnabled:(id)enabled specifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -21,15 +21,15 @@
   v9.receiver = self;
   v9.super_class = LiveTranscriptionAppearanceController;
   [(LiveTranscriptionAppearanceController *)&v9 viewDidLoad];
-  v3 = [(LiveTranscriptionAppearanceController *)self table];
+  table = [(LiveTranscriptionAppearanceController *)self table];
   v4 = objc_opt_class();
   v5 = +[AXColorPickerCell cellReuseIdentifier];
-  [v3 registerClass:v4 forCellReuseIdentifier:v5];
+  [table registerClass:v4 forCellReuseIdentifier:v5];
 
-  v6 = [(LiveTranscriptionAppearanceController *)self table];
+  table2 = [(LiveTranscriptionAppearanceController *)self table];
   v7 = objc_opt_class();
   v8 = +[LiveCaptionsNubbitOpacitySliderCell cellReuseIdentifier];
-  [v6 registerClass:v7 forCellReuseIdentifier:v8];
+  [table2 registerClass:v7 forCellReuseIdentifier:v8];
 }
 
 - (id)specifiers
@@ -186,11 +186,11 @@ id __51__LiveTranscriptionAppearanceController_specifiers__block_invoke_4(uint64
   return v2;
 }
 
-- (id)boldTextEnabled:(id)a3
+- (id)boldTextEnabled:(id)enabled
 {
   v4 = [NSNumber numberWithInt:_AXSLiveCaptionsBoldTextEnabled()];
   v5 = v4;
-  if (a3)
+  if (enabled)
   {
     v6 = [AXDefaultOnOffViewController stringValueForNumber:v4];
   }
@@ -205,30 +205,30 @@ id __51__LiveTranscriptionAppearanceController_specifiers__block_invoke_4(uint64
   return v7;
 }
 
-- (void)setBoldTextEnabled:(id)a3 specifier:(id)a4
+- (void)setBoldTextEnabled:(id)enabled specifier:(id)specifier
 {
-  v6 = a4;
-  [a3 integerValue];
+  specifierCopy = specifier;
+  [enabled integerValue];
   _AXSLiveCaptionsSetBoldTextEnabled();
-  [(LiveTranscriptionAppearanceController *)self _updateSpecifierState:v6];
+  [(LiveTranscriptionAppearanceController *)self _updateSpecifierState:specifierCopy];
 
   v7 = +[AXSettings sharedInstance];
   [v7 aggregatePerAppSettingsStatistics];
 }
 
-- (id)largerTextEnabled:(id)a3
+- (id)largerTextEnabled:(id)enabled
 {
   if (self->_appID)
   {
-    v3 = [(LiveTranscriptionAppearanceController *)self largerTextPerAppValue];
+    largerTextPerAppValue = [(LiveTranscriptionAppearanceController *)self largerTextPerAppValue];
   }
 
   else
   {
-    v3 = _AXSLargeTextUsesExtendedRange() != 0;
+    largerTextPerAppValue = _AXSLargeTextUsesExtendedRange() != 0;
   }
 
-  v4 = [NSNumber numberWithInt:v3];
+  v4 = [NSNumber numberWithInt:largerTextPerAppValue];
   v5 = [AXDefaultOnOffViewController stringValueForNumber:v4];
 
   return v5;
@@ -250,7 +250,7 @@ id __51__LiveTranscriptionAppearanceController_specifiers__block_invoke_4(uint64
   return v3;
 }
 
-- (id)textColorForSpecifier:(id)a3
+- (id)textColorForSpecifier:(id)specifier
 {
   v4 = _AXSLiveTranscriptionCopyTextColorData();
   v5 = [(LiveTranscriptionAppearanceController *)self _colorFromData:v4];
@@ -258,7 +258,7 @@ id __51__LiveTranscriptionAppearanceController_specifiers__block_invoke_4(uint64
   return v5;
 }
 
-- (id)backgroundColorForSpecifier:(id)a3
+- (id)backgroundColorForSpecifier:(id)specifier
 {
   v4 = _AXSLiveTranscriptionCopyBackgroundColorData();
   v5 = [(LiveTranscriptionAppearanceController *)self _colorFromData:v4];
@@ -266,9 +266,9 @@ id __51__LiveTranscriptionAppearanceController_specifiers__block_invoke_4(uint64
   return v5;
 }
 
-- (void)resetColors:(id)a3
+- (void)resetColors:(id)colors
 {
-  v4 = a3;
+  colorsCopy = colors;
   _AXSLiveTranscriptionSetTextColorData();
   _AXSLiveTranscriptionSetBackgroundColorData();
   objc_opt_class();
@@ -283,9 +283,9 @@ id __51__LiveTranscriptionAppearanceController_specifiers__block_invoke_4(uint64
   [v8 setValue:0];
 }
 
-- (void)_updateSpecifierState:(id)a3
+- (void)_updateSpecifierState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v7 = _AXSLiveCaptionsCopyContentSizeCategoryName();
   v5 = +[AXSettings sharedInstance];
   appID = self->_appID;
@@ -299,16 +299,16 @@ id __51__LiveTranscriptionAppearanceController_specifiers__block_invoke_4(uint64
     [v5 removeCustomizedAppID:appID];
   }
 
-  [(LiveTranscriptionAppearanceController *)self reloadSpecifier:v4];
+  [(LiveTranscriptionAppearanceController *)self reloadSpecifier:stateCopy];
 }
 
-- (id)_colorFromData:(id)a3
+- (id)_colorFromData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v3 = a3;
+    dataCopy = data;
     v8 = 0;
-    v4 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v3 error:&v8];
+    v4 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:&v8];
 
     v5 = v8;
     if (v5)
@@ -329,20 +329,20 @@ id __51__LiveTranscriptionAppearanceController_specifiers__block_invoke_4(uint64
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v19.receiver = self;
   v19.super_class = LiveTranscriptionAppearanceController;
-  [(LiveTranscriptionAppearanceController *)&v19 tableView:v6 didSelectRowAtIndexPath:v7];
+  [(LiveTranscriptionAppearanceController *)&v19 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
   v18.receiver = self;
   v18.super_class = LiveTranscriptionAppearanceController;
-  v8 = [(LiveTranscriptionAppearanceController *)&v18 tableView:v6 cellForRowAtIndexPath:v7];
-  v9 = [v8 specifier];
-  v10 = [v9 identifier];
+  v8 = [(LiveTranscriptionAppearanceController *)&v18 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
+  specifier = [v8 specifier];
+  identifier = [specifier identifier];
   selectedIdentifier = self->_selectedIdentifier;
-  self->_selectedIdentifier = v10;
+  self->_selectedIdentifier = identifier;
 
   if ([(NSString *)self->_selectedIdentifier isEqualToString:@"LIVE_TRANSCRIPTION_TEXT_COLOR"]|| [(NSString *)self->_selectedIdentifier isEqualToString:@"LIVE_TRANSCRIPTION_BACKGROUND_COLOR"])
   {
@@ -364,12 +364,12 @@ id __51__LiveTranscriptionAppearanceController_specifiers__block_invoke_4(uint64
       if (![(NSString *)self->_selectedIdentifier isEqualToString:@"LIVE_TRANSCRIPTION_BACKGROUND_COLOR"])
       {
 LABEL_10:
-        v17 = [v12 popoverPresentationController];
-        [v17 setSourceView:v8];
+        popoverPresentationController = [v12 popoverPresentationController];
+        [popoverPresentationController setSourceView:v8];
 
         [(LiveTranscriptionAppearanceController *)self presentViewController:v12 animated:1 completion:0];
         [v12 setDelegate:self];
-        [v6 deselectRowAtIndexPath:v7 animated:1];
+        [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 
         goto LABEL_11;
       }
@@ -393,12 +393,12 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)colorPickerViewController:(id)a3 didSelectColor:(id)a4 continuously:(BOOL)a5
+- (void)colorPickerViewController:(id)controller didSelectColor:(id)color continuously:(BOOL)continuously
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  colorCopy = color;
   v14 = 0;
-  v9 = [NSKeyedArchiver archivedDataWithRootObject:v8 requiringSecureCoding:1 error:&v14];
+  v9 = [NSKeyedArchiver archivedDataWithRootObject:colorCopy requiringSecureCoding:1 error:&v14];
   v10 = v14;
   if (v10)
   {
@@ -423,7 +423,7 @@ LABEL_11:
   v12 = [(LiveTranscriptionAppearanceController *)self cellForSpecifierID:self->_selectedIdentifier];
   v13 = __UIAccessibilityCastAsClass();
 
-  [v13 setValue:v8];
+  [v13 setValue:colorCopy];
 }
 
 - (void)_colorFromData:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

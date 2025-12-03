@@ -1,24 +1,24 @@
 @interface MTL4MachineLearningPipelineReflection
-- (MTL4MachineLearningPipelineReflection)initWithExecutable:(id)a3 functionName:(id)a4 inputShapes:(id)a5 outputShapes:(id)a6;
+- (MTL4MachineLearningPipelineReflection)initWithExecutable:(id)executable functionName:(id)name inputShapes:(id)shapes outputShapes:(id)outputShapes;
 - (void)dealloc;
 @end
 
 @implementation MTL4MachineLearningPipelineReflection
 
-- (MTL4MachineLearningPipelineReflection)initWithExecutable:(id)a3 functionName:(id)a4 inputShapes:(id)a5 outputShapes:(id)a6
+- (MTL4MachineLearningPipelineReflection)initWithExecutable:(id)executable functionName:(id)name inputShapes:(id)shapes outputShapes:(id)outputShapes
 {
   v36.receiver = self;
   v36.super_class = MTL4MachineLearningPipelineReflection;
   v10 = [(MTL4MachineLearningPipelineReflection *)&v36 init];
   if (v10)
   {
-    v11 = [a5 count];
-    v12 = [a6 count] + v11;
-    v33 = a5;
-    if ((objc_opt_respondsToSelector() & 1) != 0 && [objc_msgSend(a3 "functionNames")])
+    v11 = [shapes count];
+    v12 = [outputShapes count] + v11;
+    shapesCopy = shapes;
+    if ((objc_opt_respondsToSelector() & 1) != 0 && [objc_msgSend(executable "functionNames")])
     {
-      v13 = [a3 inputNamesForFunction:a4];
-      v14 = [a3 outputNamesForFunction:a4];
+      v13 = [executable inputNamesForFunction:name];
+      v14 = [executable outputNamesForFunction:name];
     }
 
     else
@@ -42,7 +42,7 @@
             v17 = [v14 objectAtIndexedSubscript:v16 - v11];
           }
 
-          v18 = [a6 objectAtIndexedSubscript:v16 - v11];
+          v18 = [outputShapes objectAtIndexedSubscript:v16 - v11];
         }
 
         else
@@ -53,12 +53,12 @@
             v17 = [v13 objectAtIndexedSubscript:v16];
           }
 
-          v18 = [v33 objectAtIndexedSubscript:v16];
+          v18 = [shapesCopy objectAtIndexedSubscript:v16];
         }
 
         v19 = v18;
-        v20 = [v18 dataType];
-        v28 = MTLTensorDataTypeFromMPSDataType(v20, v21, v22, v23, v24, v25, v26, v27);
+        dataType = [v18 dataType];
+        v28 = MTLTensorDataTypeFromMPSDataType(dataType, v21, v22, v23, v24, v25, v26, v27);
         v29 = -[MTLTensorBindingInternal initWithName:access:isActive:locationIndex:arrayLength:dataType:indexType:dimensions:]([MTLTensorBindingInternal alloc], "initWithName:access:isActive:locationIndex:arrayLength:dataType:indexType:dimensions:", v17, 2 * (v11 <= v16), 1, v16, 1, v28, 33, TensorExtentsFromMPSShape([v19 shape]));
         v34[v16++] = v29;
       }

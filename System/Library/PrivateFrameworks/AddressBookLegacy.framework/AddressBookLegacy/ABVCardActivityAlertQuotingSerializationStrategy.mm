@@ -1,14 +1,14 @@
 @interface ABVCardActivityAlertQuotingSerializationStrategy
 + (id)regex;
-+ (id)serializeString:(id)a3;
++ (id)serializeString:(id)string;
 @end
 
 @implementation ABVCardActivityAlertQuotingSerializationStrategy
 
-+ (id)serializeString:(id)a3
++ (id)serializeString:(id)string
 {
-  v5 = [a3 mutableCopy];
-  [objc_msgSend(a1 "regex")];
+  v5 = [string mutableCopy];
+  [objc_msgSend(self "regex")];
   [v5 insertString:@"" atIndex:0];
   [v5 appendString:@""];
 

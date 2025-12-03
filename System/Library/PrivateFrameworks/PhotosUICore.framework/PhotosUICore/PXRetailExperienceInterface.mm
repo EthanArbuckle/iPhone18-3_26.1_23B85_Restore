@@ -1,13 +1,13 @@
 @interface PXRetailExperienceInterface
-+ (id)createRetailExperienceViewController:(id)a3;
++ (id)createRetailExperienceViewController:(id)controller;
 - (_TtC12PhotosUICore27PXRetailExperienceInterface)init;
 @end
 
 @implementation PXRetailExperienceInterface
 
-+ (id)createRetailExperienceViewController:(id)a3
++ (id)createRetailExperienceViewController:(id)controller
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(controller);
   *(swift_allocObject() + 16) = v3;
   v4 = sub_1A4774934();
 

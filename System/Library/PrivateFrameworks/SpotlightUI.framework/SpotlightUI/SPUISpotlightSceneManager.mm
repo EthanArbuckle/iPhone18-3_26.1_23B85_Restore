@@ -2,11 +2,11 @@
 + (id)sharedManager;
 - (SPUISpotlightSceneManager)init;
 - (SPUISpotlightSceneManagerDelegate)delegate;
-- (void)addScene:(id)a3;
-- (void)launchSpotlightIfNeededWithForegroundPriority:(BOOL)a3;
-- (void)removeScene:(id)a3;
-- (void)sceneWillBackground:(id)a3;
-- (void)sceneWillForeground:(id)a3;
+- (void)addScene:(id)scene;
+- (void)launchSpotlightIfNeededWithForegroundPriority:(BOOL)priority;
+- (void)removeScene:(id)scene;
+- (void)sceneWillBackground:(id)background;
+- (void)sceneWillForeground:(id)foreground;
 - (void)spendMoreTimeReleasingMemory;
 @end
 
@@ -144,42 +144,42 @@ uint64_t __42__SPUISpotlightSceneManager_sharedManager__block_invoke()
     appService = v2->_appService;
     v2->_appService = v7;
 
-    v9 = [MEMORY[0x277D0AD20] configurationForDefaultMainDisplayMonitor];
-    [v9 setNeedsUserInteractivePriority:1];
+    configurationForDefaultMainDisplayMonitor = [MEMORY[0x277D0AD20] configurationForDefaultMainDisplayMonitor];
+    [configurationForDefaultMainDisplayMonitor setNeedsUserInteractivePriority:1];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __33__SPUISpotlightSceneManager_init__block_invoke;
     v13[3] = &unk_279D056B0;
     v10 = v2;
     v14 = v10;
-    [v9 setTransitionHandler:v13];
-    v11 = [MEMORY[0x277D0AD08] monitorWithConfiguration:v9];
+    [configurationForDefaultMainDisplayMonitor setTransitionHandler:v13];
+    v11 = [MEMORY[0x277D0AD08] monitorWithConfiguration:configurationForDefaultMainDisplayMonitor];
     [(SPUISpotlightSceneManager *)v10 setLayoutMonitor:v11];
   }
 
   return v2;
 }
 
-- (void)launchSpotlightIfNeededWithForegroundPriority:(BOOL)a3
+- (void)launchSpotlightIfNeededWithForegroundPriority:(BOOL)priority
 {
-  v3 = a3;
+  priorityCopy = priority;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __75__SPUISpotlightSceneManager_launchSpotlightIfNeededWithForegroundPriority___block_invoke;
   v8[3] = &unk_279D056D8;
   v8[4] = self;
-  v9 = a3;
+  priorityCopy2 = priority;
   v5 = MEMORY[0x26D682990](v8, a2);
-  v6 = [(SPUISpotlightSceneManager *)self queue];
-  v7 = v6;
-  if (v3)
+  queue = [(SPUISpotlightSceneManager *)self queue];
+  v7 = queue;
+  if (priorityCopy)
   {
-    dispatch_sync(v6, v5);
+    dispatch_sync(queue, v5);
   }
 
   else
   {
-    dispatch_async(v6, v5);
+    dispatch_async(queue, v5);
   }
 }
 
@@ -290,28 +290,28 @@ LABEL_3:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addScene:(id)a3
+- (void)addScene:(id)scene
 {
-  v4 = a3;
-  v5 = [(SPUISpotlightSceneManager *)self managedScenes];
-  [v5 addObject:v4];
+  sceneCopy = scene;
+  managedScenes = [(SPUISpotlightSceneManager *)self managedScenes];
+  [managedScenes addObject:sceneCopy];
 }
 
-- (void)removeScene:(id)a3
+- (void)removeScene:(id)scene
 {
-  v4 = a3;
-  v5 = [(SPUISpotlightSceneManager *)self managedScenes];
-  [v5 removeObject:v4];
+  sceneCopy = scene;
+  managedScenes = [(SPUISpotlightSceneManager *)self managedScenes];
+  [managedScenes removeObject:sceneCopy];
 
-  v6 = [(SPUISpotlightSceneManager *)self foregroundScenes];
-  [v6 removeObject:v4];
+  foregroundScenes = [(SPUISpotlightSceneManager *)self foregroundScenes];
+  [foregroundScenes removeObject:sceneCopy];
 }
 
-- (void)sceneWillForeground:(id)a3
+- (void)sceneWillForeground:(id)foreground
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v5 isEqualToString:@"searchScreen"];
+  foregroundCopy = foreground;
+  identifier = [foregroundCopy identifier];
+  v6 = [identifier isEqualToString:@"searchScreen"];
 
   if (v6)
   {
@@ -324,23 +324,23 @@ LABEL_3:
 
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      [(SPUISpotlightSceneManager *)v7 sceneWillForeground:v4];
+      [(SPUISpotlightSceneManager *)v7 sceneWillForeground:foregroundCopy];
     }
 
     [(SPUIAppService *)self->_appService activate];
   }
 
-  v8 = [(SPUISpotlightSceneManager *)self foregroundScenes];
-  [v8 addObject:v4];
+  foregroundScenes = [(SPUISpotlightSceneManager *)self foregroundScenes];
+  [foregroundScenes addObject:foregroundCopy];
 
   [(SPUISpotlightSceneManager *)self applyAssertionAsNeeded];
 }
 
-- (void)sceneWillBackground:(id)a3
+- (void)sceneWillBackground:(id)background
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v5 isEqualToString:@"searchScreen"];
+  backgroundCopy = background;
+  identifier = [backgroundCopy identifier];
+  v6 = [identifier isEqualToString:@"searchScreen"];
 
   if (v6)
   {
@@ -353,14 +353,14 @@ LABEL_3:
 
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      [(SPUISpotlightSceneManager *)v7 sceneWillBackground:v4];
+      [(SPUISpotlightSceneManager *)v7 sceneWillBackground:backgroundCopy];
     }
 
     [(SPUIAppService *)self->_appService deactivate];
   }
 
-  v8 = [(SPUISpotlightSceneManager *)self foregroundScenes];
-  [v8 removeObject:v4];
+  foregroundScenes = [(SPUISpotlightSceneManager *)self foregroundScenes];
+  [foregroundScenes removeObject:backgroundCopy];
 
   [(SPUISpotlightSceneManager *)self applyAssertionAsNeeded];
 }
@@ -368,25 +368,25 @@ LABEL_3:
 - (void)spendMoreTimeReleasingMemory
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v3 = [(SPUISpotlightSceneManager *)self backgroundingAssertions];
-  [v3 invalidate];
+  backgroundingAssertions = [(SPUISpotlightSceneManager *)self backgroundingAssertions];
+  [backgroundingAssertions invalidate];
 
-  v4 = [(SPUISpotlightSceneManager *)self spotlightProcessHandle];
-  v5 = [v4 identity];
+  spotlightProcessHandle = [(SPUISpotlightSceneManager *)self spotlightProcessHandle];
+  identity = [spotlightProcessHandle identity];
 
-  if (v5)
+  if (identity)
   {
     v6 = objc_alloc(MEMORY[0x277D46DB8]);
-    v7 = [MEMORY[0x277D47008] targetWithProcessIdentity:v5];
+    v7 = [MEMORY[0x277D47008] targetWithProcessIdentity:identity];
     v8 = [MEMORY[0x277D46E38] attributeWithDomain:@"com.apple.spotlight" name:@"ReleaseMemory"];
     v18[0] = v8;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
     v10 = [v6 initWithExplanation:@"spotlightMemoryBG" target:v7 attributes:v9];
     [(SPUISpotlightSceneManager *)self setBackgroundingAssertions:v10];
 
-    v11 = [(SPUISpotlightSceneManager *)self backgroundingAssertions];
+    backgroundingAssertions2 = [(SPUISpotlightSceneManager *)self backgroundingAssertions];
     v15 = 0;
-    [v11 acquireWithError:&v15];
+    [backgroundingAssertions2 acquireWithError:&v15];
     v12 = v15;
 
     if (v12)

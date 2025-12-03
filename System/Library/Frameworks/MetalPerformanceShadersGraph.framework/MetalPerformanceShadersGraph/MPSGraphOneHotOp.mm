@@ -1,33 +1,33 @@
 @interface MPSGraphOneHotOp
-- (MPSGraphOneHotOp)initWithGraph:(id)a3 inputTensors:(id)a4 controlDependencies:(id)a5 depth:(unint64_t)a6 axis:(unint64_t)a7 dataType:(unsigned int)a8 name:(id)a9;
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7;
+- (MPSGraphOneHotOp)initWithGraph:(id)graph inputTensors:(id)tensors controlDependencies:(id)dependencies depth:(unint64_t)depth axis:(unint64_t)axis dataType:(unsigned int)type name:(id)name;
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name;
 @end
 
 @implementation MPSGraphOneHotOp
 
-- (MPSGraphOneHotOp)initWithGraph:(id)a3 inputTensors:(id)a4 controlDependencies:(id)a5 depth:(unint64_t)a6 axis:(unint64_t)a7 dataType:(unsigned int)a8 name:(id)a9
+- (MPSGraphOneHotOp)initWithGraph:(id)graph inputTensors:(id)tensors controlDependencies:(id)dependencies depth:(unint64_t)depth axis:(unint64_t)axis dataType:(unsigned int)type name:(id)name
 {
-  self->_depth = a6;
-  self->_axis = a7;
-  self->_dataType = a8;
-  return [(MPSGraphOperation *)self initWithGraph:a3 inputTensors:a4 controlDependencies:a5 name:a9];
+  self->_depth = depth;
+  self->_axis = axis;
+  self->_dataType = type;
+  return [(MPSGraphOperation *)self initWithGraph:graph inputTensors:tensors controlDependencies:dependencies name:name];
 }
 
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name
 {
   v60 = *MEMORY[0x1E69E9840];
-  v11 = a7;
+  nameCopy = name;
   mpsFileLoc("[MPSGraphOneHotOp makeMLIROpWithBuilder:symbolTable:inputValues:opInitialization:name:]", "/Library/Caches/com.apple.xbs/Sources/MetalPerformanceShadersGraph/mpsgraph/MetalPerformanceShadersGraph/Core/Files/Operations/MPSGraphOneHotOps.mm", __p);
-  v12 = v11;
+  v12 = nameCopy;
   v56 = 260;
   v55[0] = __p;
-  StringAttr = mlir::Builder::getStringAttr(a3, v55);
+  StringAttr = mlir::Builder::getStringAttr(builder, v55);
   v15 = mlir::FileLineColLoc::get(StringAttr, 0x34u, 0);
   if (v12)
   {
     v16 = v12;
-    v17 = [v12 UTF8String];
-    v18 = strlen(v17);
+    uTF8String = [v12 UTF8String];
+    v18 = strlen(uTF8String);
     if (v18 >= 0x7FFFFFFFFFFFFFF8)
     {
       std::string::__throw_length_error[abi:ne200100]();
@@ -42,7 +42,7 @@
     v59 = v18;
     if (v18)
     {
-      memmove(__dst, v17, v18);
+      memmove(__dst, uTF8String, v18);
     }
 
     v20 = &__dst[v19];
@@ -56,7 +56,7 @@
   }
 
   *v20 = 0;
-  MPSSymbolTable::insertOpInSymbolTable(a4, __dst, v14, &v52);
+  MPSSymbolTable::insertOpInSymbolTable(table, __dst, v14, &v52);
   v21 = v52.__r_.__value_.__r.__words[0];
   if ((v52.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
   {
@@ -72,7 +72,7 @@
   }
 
   LOBYTE(v56) = v22;
-  v23 = mlir::Builder::getStringAttr(a3, v55);
+  v23 = mlir::Builder::getStringAttr(builder, v55);
   v24 = mlir::NameLoc::get(v23, v15);
   if (SHIBYTE(v52.__r_.__value_.__r.__words[2]) < 0)
   {
@@ -96,9 +96,9 @@ LABEL_16:
     operator delete(__p[0]);
   }
 
-  MLIRElementType = getMLIRElementType(*a3, self->_dataType);
+  MLIRElementType = getMLIRElementType(*builder, self->_dataType);
   *__dst = 1;
-  IntegerType = mlir::Builder::getIntegerType(a3, 32, 0);
+  IntegerType = mlir::Builder::getIntegerType(builder, 32, 0);
   v27 = mlir::RankedTensorType::get(__dst, 1, IntegerType, 0);
   if (v27)
   {
@@ -114,9 +114,9 @@ LABEL_16:
 
   LODWORD(v52.__r_.__value_.__l.__data_) = self->_depth;
   v55[0] = mlir::DenseElementsAttr::getFromRawBuffer(v27, v29, &v52, 4, 4, 1, 0);
-  v30 = mlir::OpBuilder::create<mlir::mps::ConstantOp,mlir::DenseElementsAttr &>(a3, v24, v55);
+  v30 = mlir::OpBuilder::create<mlir::mps::ConstantOp,mlir::DenseElementsAttr &>(builder, v24, v55);
   *__dst = 1;
-  v31 = mlir::Builder::getIntegerType(a3, 32, 1);
+  v31 = mlir::Builder::getIntegerType(builder, 32, 1);
   v32 = mlir::RankedTensorType::get(__dst, 1, v31, 0);
   if (v32)
   {
@@ -132,9 +132,9 @@ LABEL_16:
 
   LODWORD(v52.__r_.__value_.__l.__data_) = self->_axis;
   v55[0] = mlir::DenseElementsAttr::getFromRawBuffer(v32, v34, &v52, 4, 4, 1, 1);
-  v35 = mlir::OpBuilder::create<mlir::mps::ConstantOp,mlir::DenseElementsAttr &>(a3, v24, v55);
-  v36 = *a5;
-  if (*(a5 + 1) == *a5)
+  v35 = mlir::OpBuilder::create<mlir::mps::ConstantOp,mlir::DenseElementsAttr &>(builder, v24, v55);
+  v36 = *values;
+  if (*(values + 1) == *values)
   {
     std::vector<mlir::Value>::__throw_out_of_range[abi:ne200100]();
   }
@@ -154,8 +154,8 @@ LABEL_16:
   }
 
   mlir::OperationState::OperationState(v55, v24, v39);
-  mlir::mps::OneHotOp::build(a3, v55, *v36, v30 - 16, v37 - 16, MLIRElementType);
-  v41 = mlir::OpBuilder::create(a3, v55);
+  mlir::mps::OneHotOp::build(builder, v55, *v36, v30 - 16, v37 - 16, MLIRElementType);
+  v41 = mlir::OpBuilder::create(builder, v55);
   v42 = *(*(v41 + 48) + 16);
   mlir::OperationState::~OperationState(v55);
   if (v42 == &mlir::detail::TypeIDResolver<mlir::mps::OneHotOp,void>::id)

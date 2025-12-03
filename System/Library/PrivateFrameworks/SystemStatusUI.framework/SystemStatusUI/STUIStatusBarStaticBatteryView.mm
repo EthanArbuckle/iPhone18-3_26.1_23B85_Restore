@@ -1,17 +1,17 @@
 @interface STUIStatusBarStaticBatteryView
-+ (CGSize)_batterySizeForIconSize:(int64_t)a3;
-+ (CGSize)_pinSizeForIconSize:(int64_t)a3;
-+ (double)_insideCornerRadiusForIconSize:(int64_t)a3;
-+ (double)_lineWidthAndInterspaceForIconSize:(int64_t)a3;
-+ (double)_outsideCornerRadiusForIconSize:(int64_t)a3;
-- (CGSize)_pinSizeForIconSize:(int64_t)a3;
++ (CGSize)_batterySizeForIconSize:(int64_t)size;
++ (CGSize)_pinSizeForIconSize:(int64_t)size;
++ (double)_insideCornerRadiusForIconSize:(int64_t)size;
++ (double)_lineWidthAndInterspaceForIconSize:(int64_t)size;
++ (double)_outsideCornerRadiusForIconSize:(int64_t)size;
+- (CGSize)_pinSizeForIconSize:(int64_t)size;
 - (double)_batteryBoltScaleFactorMultiplier;
-- (double)_percentTextVerticalAdjustmentForIconSize:(int64_t)a3;
-- (double)_percentTextXAdjustmentWhenFullForIconSize:(int64_t)a3;
+- (double)_percentTextVerticalAdjustmentForIconSize:(int64_t)size;
+- (double)_percentTextXAdjustmentWhenFullForIconSize:(int64_t)size;
 - (double)_percentageBatteryBoltScaleFactorMultiplier;
-- (double)_percentageFontCondensedWhenChargingForIconSize:(int64_t)a3;
-- (double)_percentageFontSizeForIconSize:(int64_t)a3;
-- (void)applyStyleAttributes:(id)a3;
+- (double)_percentageFontCondensedWhenChargingForIconSize:(int64_t)size;
+- (double)_percentageFontSizeForIconSize:(int64_t)size;
+- (void)applyStyleAttributes:(id)attributes;
 @end
 
 @implementation STUIStatusBarStaticBatteryView
@@ -27,9 +27,9 @@
 
   else
   {
-    v4 = [(_UIBatteryView *)self iconSize];
+    iconSize = [(_UIBatteryView *)self iconSize];
     v5 = 11.5;
-    switch(v4)
+    switch(iconSize)
     {
       case 1:
       case 16:
@@ -90,11 +90,11 @@
   return result;
 }
 
-+ (CGSize)_batterySizeForIconSize:(int64_t)a3
++ (CGSize)_batterySizeForIconSize:(int64_t)size
 {
   v3 = 11.5;
   v4 = 22.0;
-  switch(a3)
+  switch(size)
   {
     case 1:
     case 16:
@@ -174,11 +174,11 @@
   return result;
 }
 
-+ (CGSize)_pinSizeForIconSize:(int64_t)a3
++ (CGSize)_pinSizeForIconSize:(int64_t)size
 {
   v3 = 4.5;
   v4 = 1.25;
-  switch(a3)
+  switch(size)
   {
     case 1:
     case 16:
@@ -247,44 +247,44 @@ LABEL_13:
   return result;
 }
 
-+ (double)_lineWidthAndInterspaceForIconSize:(int64_t)a3
++ (double)_lineWidthAndInterspaceForIconSize:(int64_t)size
 {
   result = 0.0;
-  if ((a3 - 1) <= 0x10)
+  if ((size - 1) <= 0x10)
   {
-    return dbl_26C582420[a3 - 1];
+    return dbl_26C582420[size - 1];
   }
 
   return result;
 }
 
-+ (double)_outsideCornerRadiusForIconSize:(int64_t)a3
++ (double)_outsideCornerRadiusForIconSize:(int64_t)size
 {
   result = 0.0;
-  if ((a3 - 1) <= 0x10)
+  if ((size - 1) <= 0x10)
   {
-    return dbl_26C5824A8[a3 - 1];
+    return dbl_26C5824A8[size - 1];
   }
 
   return result;
 }
 
-+ (double)_insideCornerRadiusForIconSize:(int64_t)a3
++ (double)_insideCornerRadiusForIconSize:(int64_t)size
 {
   result = 0.0;
-  if ((a3 - 1) <= 0x10)
+  if ((size - 1) <= 0x10)
   {
-    return dbl_26C582530[a3 - 1];
+    return dbl_26C582530[size - 1];
   }
 
   return result;
 }
 
-- (double)_percentageFontSizeForIconSize:(int64_t)a3
+- (double)_percentageFontSizeForIconSize:(int64_t)size
 {
-  v4 = [(_UIBatteryView *)self rounded];
+  rounded = [(_UIBatteryView *)self rounded];
   result = 9.0;
-  switch(a3)
+  switch(size)
   {
     case 1:
     case 14:
@@ -305,7 +305,7 @@ LABEL_13:
       break;
     case 7:
       result = 12.6666667;
-      if (v4)
+      if (rounded)
       {
         result = 11.6666667;
       }
@@ -331,40 +331,40 @@ LABEL_13:
   return result;
 }
 
-- (double)_percentageFontCondensedWhenChargingForIconSize:(int64_t)a3
+- (double)_percentageFontCondensedWhenChargingForIconSize:(int64_t)size
 {
-  v4 = [(_UIBatteryView *)self rounded];
-  if (a3 == 8)
+  rounded = [(_UIBatteryView *)self rounded];
+  if (size == 8)
   {
     return 0.0;
   }
 
   result = 1.0;
-  if (a3 == 7)
+  if (size == 7)
   {
-    return !v4;
+    return !rounded;
   }
 
   return result;
 }
 
-- (double)_percentTextVerticalAdjustmentForIconSize:(int64_t)a3
+- (double)_percentTextVerticalAdjustmentForIconSize:(int64_t)size
 {
   result = 0.0;
-  if ((a3 - 1) <= 0x10)
+  if ((size - 1) <= 0x10)
   {
-    return dbl_26C5825B8[a3 - 1];
+    return dbl_26C5825B8[size - 1];
   }
 
   return result;
 }
 
-- (double)_percentTextXAdjustmentWhenFullForIconSize:(int64_t)a3
+- (double)_percentTextXAdjustmentWhenFullForIconSize:(int64_t)size
 {
   [(STUIStatusBarStaticBatteryView *)self _currentScreenScale];
   v5 = v4;
   result = 0.0;
-  if (a3 != 3)
+  if (size != 3)
   {
     return -1.0 / v5 + 0.0;
   }
@@ -372,12 +372,12 @@ LABEL_13:
   return result;
 }
 
-- (CGSize)_pinSizeForIconSize:(int64_t)a3
+- (CGSize)_pinSizeForIconSize:(int64_t)size
 {
-  v4 = [(_UIBatteryView *)self rounded];
+  rounded = [(_UIBatteryView *)self rounded];
   v5 = 4.5;
   v6 = 1.25;
-  switch(a3)
+  switch(size)
   {
     case 1:
     case 16:
@@ -426,7 +426,7 @@ LABEL_18:
       v6 = 1.83333333;
       break;
     case 14:
-      v7 = v4;
+      v7 = rounded;
       v8 = _UIEnhancedMainMenuEnabled();
       v5 = 4.5;
       if (v7)
@@ -462,11 +462,11 @@ LABEL_18:
   return result;
 }
 
-- (void)applyStyleAttributes:(id)a3
+- (void)applyStyleAttributes:(id)attributes
 {
-  v4 = [a3 iconSize];
+  iconSize = [attributes iconSize];
 
-  [(_UIBatteryView *)self setRounded:1 iconSize:v4];
+  [(_UIBatteryView *)self setRounded:1 iconSize:iconSize];
 }
 
 - (double)_percentageBatteryBoltScaleFactorMultiplier
@@ -480,10 +480,10 @@ LABEL_18:
 
   else
   {
-    v4 = [(_UIBatteryView *)self iconSize];
-    v5 = [(_UIBatteryView *)self rounded];
+    iconSize = [(_UIBatteryView *)self iconSize];
+    rounded = [(_UIBatteryView *)self rounded];
     v6 = 9.0;
-    switch(v4)
+    switch(iconSize)
     {
       case 1:
       case 14:
@@ -504,7 +504,7 @@ LABEL_18:
         break;
       case 7:
         v6 = 12.6666667;
-        if (v5)
+        if (rounded)
         {
           v6 = 11.6666667;
         }

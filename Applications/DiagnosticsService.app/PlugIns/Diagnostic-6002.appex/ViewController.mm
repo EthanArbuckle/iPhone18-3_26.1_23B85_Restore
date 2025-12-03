@@ -1,25 +1,25 @@
 @interface ViewController
 - (UIView)storyBoardView;
 - (ViewController)init;
-- (ViewController)initWithCoder:(id)a3;
+- (ViewController)initWithCoder:(id)coder;
 - (ViewControllerCallbacks)listener;
 - (id).cxx_construct;
-- (int)getCalibResults:(ViewController *)self focalPoint:(SEL)a2;
-- (int)getJasperSensorId:(void *)a3;
-- (int)getRotAnglesToPrcl:(ViewController *)self focalPoint:(SEL)a2 prcl:(Prcl *)a3;
+- (int)getCalibResults:(ViewController *)self focalPoint:(SEL)point;
+- (int)getJasperSensorId:(void *)id;
+- (int)getRotAnglesToPrcl:(ViewController *)self focalPoint:(SEL)point prcl:(Prcl *)prcl;
 - (int)initDiagnosticRgbjFlow;
 - (int)initStreaming;
 - (int)startStreaming;
-- (void)addToReducedLog:(const void *)a3;
-- (void)buttonClicked:(id)a3;
+- (void)addToReducedLog:(const void *)log;
+- (void)buttonClicked:(id)clicked;
 - (void)cancel;
-- (void)compareResults:(float *)a3;
-- (void)continueButtonPressed:(id)a3;
-- (void)dogWatch:(id)a3;
-- (void)duplicatPixelBuffer:(__CVBuffer *)a3 newBuffer:(__CVBuffer *)a4;
+- (void)compareResults:(float *)results;
+- (void)continueButtonPressed:(id)pressed;
+- (void)dogWatch:(id)watch;
+- (void)duplicatPixelBuffer:(__CVBuffer *)buffer newBuffer:(__CVBuffer *)newBuffer;
 - (void)endTest;
-- (void)error:(id)a3 details:(id)a4;
-- (void)finishRun:(id)a3 reducedLog:(id)a4 result:(int)a5 prcl:(const Prcl *)a6 angles:;
+- (void)error:(id)error details:(id)details;
+- (void)finishRun:(id)run reducedLog:(id)log result:(int)result prcl:(const Prcl *)prcl angles:;
 - (void)handleResume;
 - (void)handleSuspend;
 - (void)handleUserMovement;
@@ -28,32 +28,32 @@
 - (void)hideWarningWindow;
 - (void)initFlow;
 - (void)loadNormalAppWindow;
-- (void)log:(const void *)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)log:(const void *)log;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)prepareIterationToNewSession;
 - (void)prepareNewIteration;
-- (void)primaryScalerHxISPFrameAvailableCallback:(__CVBuffer *)a3 pts:(id *)a4 streamType:(int)a5;
+- (void)primaryScalerHxISPFrameAvailableCallback:(__CVBuffer *)callback pts:(id *)pts streamType:(int)type;
 - (void)quitButtonTapped;
-- (void)setFadedLabel:(id)a3;
-- (void)setHighlightedLabel:(id)a3;
-- (void)setUpperViewLabelText:(id)a3;
+- (void)setFadedLabel:(id)label;
+- (void)setHighlightedLabel:(id)label;
+- (void)setUpperViewLabelText:(id)text;
 - (void)showInProgressView;
 - (void)showPausedDialog;
-- (void)showSummaryScreen:(BOOL)a3;
-- (void)showWarningWindow:(id)a3 subMessage:(id)a4;
+- (void)showSummaryScreen:(BOOL)screen;
+- (void)showWarningWindow:(id)window subMessage:(id)message;
 - (void)startUI;
 - (void)updateProgress;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
 @implementation ViewController
 
-- (void)finishRun:(id)a3 reducedLog:(id)a4 result:(int)a5 prcl:(const Prcl *)a6 angles:
+- (void)finishRun:(id)run reducedLog:(id)log result:(int)result prcl:(const Prcl *)prcl angles:
 {
-  v10 = a3;
-  v24 = a4;
-  std::to_string(&v25, a5);
+  runCopy = run;
+  logCopy = log;
+  std::to_string(&v25, result);
   v11 = std::string::insert(&v25, 0, "finishRun, result = ");
   v12 = *&v11->__r_.__value_.__l.__data_;
   v29 = v11->__r_.__value_.__r.__words[2];
@@ -88,7 +88,7 @@
     std::ios_base::clear((__p + *(__p[0] - 3)), *&v30[*(__p[0] - 3)] | 4);
   }
 
-  v17 = [NSData dataWithBytes:a6 length:256];
+  v17 = [NSData dataWithBytes:prcl length:256];
   v18 = ConvertDataToHexString(v17);
   v27 = 0;
   v25.__r_.__value_.__r.__words[0] = v14;
@@ -109,10 +109,10 @@
   }
 
   v21 = [@"PrCL:" stringByAppendingString:v18];
-  [v10 addObject:v21];
+  [runCopy addObject:v21];
 
-  [v10 writeToFile:@"/tmp/diagnostic.log" atomically:0];
-  [v10 writeToFile:@"/tmp/reduced.log" atomically:0];
+  [runCopy writeToFile:@"/tmp/diagnostic.log" atomically:0];
+  [runCopy writeToFile:@"/tmp/reduced.log" atomically:0];
   std::filebuf::~filebuf();
   std::ostream::~ostream();
   std::ios::~ios();
@@ -124,84 +124,84 @@
   std::ios::~ios();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = ViewController;
-  [(ViewController *)&v3 viewDidAppear:a3];
+  [(ViewController *)&v3 viewDidAppear:appear];
 }
 
-- (void)log:(const void *)a3
+- (void)log:(const void *)log
 {
   v5 = self->_resultsDict;
   objc_sync_enter(v5);
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    if (*(a3 + 23) >= 0)
+    if (*(log + 23) >= 0)
     {
-      v6 = a3;
+      logCopy = log;
     }
 
     else
     {
-      v6 = *a3;
+      logCopy = *log;
     }
 
     v10 = 136315138;
-    v11 = v6;
+    v11 = logCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "JasperCalibDiag %s", &v10, 0xCu);
   }
 
   resultsDict = self->_resultsDict;
-  if (*(a3 + 23) >= 0)
+  if (*(log + 23) >= 0)
   {
-    v8 = a3;
+    logCopy2 = log;
   }
 
   else
   {
-    v8 = *a3;
+    logCopy2 = *log;
   }
 
-  v9 = [NSString stringWithUTF8String:v8];
+  v9 = [NSString stringWithUTF8String:logCopy2];
   [(NSMutableArray *)resultsDict addObject:v9];
 
   objc_sync_exit(v5);
 }
 
-- (void)addToReducedLog:(const void *)a3
+- (void)addToReducedLog:(const void *)log
 {
   v5 = self->_reducedLog;
   objc_sync_enter(v5);
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    if (*(a3 + 23) >= 0)
+    if (*(log + 23) >= 0)
     {
-      v6 = a3;
+      logCopy = log;
     }
 
     else
     {
-      v6 = *a3;
+      logCopy = *log;
     }
 
     v10 = 136315138;
-    v11 = v6;
+    v11 = logCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "addToReducedLog %s", &v10, 0xCu);
   }
 
   reducedLog = self->_reducedLog;
-  if (*(a3 + 23) >= 0)
+  if (*(log + 23) >= 0)
   {
-    v8 = a3;
+    logCopy2 = log;
   }
 
   else
   {
-    v8 = *a3;
+    logCopy2 = *log;
   }
 
-  v9 = [NSString stringWithUTF8String:v8];
+  v9 = [NSString stringWithUTF8String:logCopy2];
   [(NSMutableArray *)reducedLog addObject:v9];
 
   objc_sync_exit(v5);
@@ -228,12 +228,12 @@
   self->_consecutiveSceneError = 0;
 }
 
-- (ViewController)initWithCoder:(id)a3
+- (ViewController)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = ViewController;
-  v5 = [(ViewController *)&v8 initWithCoder:v4];
+  v5 = [(ViewController *)&v8 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
@@ -453,7 +453,7 @@
   [(ViewController *)self startUI];
 }
 
-- (int)getJasperSensorId:(void *)a3
+- (int)getJasperSensorId:(void *)id
 {
   theDict = 0;
   if (DeviceCMInterface::getJasperModuleInfo(self->_diagnosticCMInterface, &theDict))
@@ -466,7 +466,7 @@
   else
   {
     v6 = CFDictionaryGetValue(theDict, kFigCapturePropertyValue_ModuleSerialNumberString);
-    std::string::assign(a3, [v6 UTF8String]);
+    std::string::assign(id, [v6 UTF8String]);
     CFRelease(theDict);
 
     return 0;
@@ -475,25 +475,25 @@
   return v5;
 }
 
-- (void)setFadedLabel:(id)a3
+- (void)setFadedLabel:(id)label
 {
-  v5 = a3;
+  labelCopy = label;
   v3 = [UIColor colorWithDisplayP3Red:240.0 green:240.0 blue:240.0 alpha:0.5];
-  [v5 setTextColor:v3];
+  [labelCopy setTextColor:v3];
 
   v4 = [UIFont systemFontOfSize:14.0];
-  [v5 setFont:v4];
+  [labelCopy setFont:v4];
 }
 
-- (void)setHighlightedLabel:(id)a3
+- (void)setHighlightedLabel:(id)label
 {
-  v5 = a3;
-  [v5 setAlpha:1.0];
+  labelCopy = label;
+  [labelCopy setAlpha:1.0];
   v3 = [UIFont boldSystemFontOfSize:20.0];
-  [v5 setFont:v3];
+  [labelCopy setFont:v3];
 
   v4 = +[UIColor whiteColor];
-  [v5 setTextColor:v4];
+  [labelCopy setTextColor:v4];
 }
 
 - (void)updateProgress
@@ -614,9 +614,9 @@
   objc_autoreleasePoolPop(v3);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if ([a3 isEqualToString:{@"movementState", a4, a5, a6}])
+  if ([path isEqualToString:{@"movementState", object, change, context}])
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -711,7 +711,7 @@
   return v4;
 }
 
-- (int)getRotAnglesToPrcl:(ViewController *)self focalPoint:(SEL)a2 prcl:(Prcl *)a3
+- (int)getRotAnglesToPrcl:(ViewController *)self focalPoint:(SEL)point prcl:(Prcl *)prcl
 {
   v8 = v3;
   v9 = v4;
@@ -721,15 +721,15 @@
     p_sensorId = p_sensorId->__rep_.__l.__data_;
   }
 
-  strcpy(a3->jasperSN, p_sensorId->__rep_.__s.__data_);
+  strcpy(prcl->jasperSN, p_sensorId->__rep_.__s.__data_);
   CalcRotationMatrix(*&v8 / 1000.0, *(&v8 + 1) / 1000.0, *(&v8 + 2) / 1000.0, &v10);
   v10.columns[3].i32[2] = DWORD2(v9);
   v10.columns[3].i64[0] = v9;
-  Simd4x3ToMatrix(&v10, a3->wideRotMatrix, a3->wideFocalPoint);
+  Simd4x3ToMatrix(&v10, prcl->wideRotMatrix, prcl->wideFocalPoint);
   return 0;
 }
 
-- (int)getCalibResults:(ViewController *)self focalPoint:(SEL)a2
+- (int)getCalibResults:(ViewController *)self focalPoint:(SEL)point
 {
   v4 = v3;
   v5 = v2;
@@ -805,28 +805,28 @@
   [v7 addSubview:self->_mainView];
 
   [(UIView *)self->_mainView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v8 = [(UIView *)self->_mainView heightAnchor];
+  heightAnchor = [(UIView *)self->_mainView heightAnchor];
   v9 = objc_loadWeakRetained(&self->_storyBoardView);
-  v10 = [v9 heightAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10 multiplier:1.0];
+  heightAnchor2 = [v9 heightAnchor];
+  v11 = [heightAnchor constraintEqualToAnchor:heightAnchor2 multiplier:1.0];
   [v11 setActive:1];
 
-  v12 = [(UIView *)self->_mainView widthAnchor];
+  widthAnchor = [(UIView *)self->_mainView widthAnchor];
   v13 = objc_loadWeakRetained(&self->_storyBoardView);
-  v14 = [v13 widthAnchor];
-  v15 = [v12 constraintEqualToAnchor:v14 multiplier:1.0];
+  widthAnchor2 = [v13 widthAnchor];
+  v15 = [widthAnchor constraintEqualToAnchor:widthAnchor2 multiplier:1.0];
   [v15 setActive:1];
 
-  v16 = [(UIView *)self->_mainView centerXAnchor];
+  centerXAnchor = [(UIView *)self->_mainView centerXAnchor];
   v17 = objc_loadWeakRetained(&self->_storyBoardView);
-  v18 = [v17 centerXAnchor];
-  v19 = [v16 constraintEqualToAnchor:v18];
+  centerXAnchor2 = [v17 centerXAnchor];
+  v19 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v19 setActive:1];
 
-  v20 = [(UIView *)self->_mainView centerYAnchor];
+  centerYAnchor = [(UIView *)self->_mainView centerYAnchor];
   v21 = objc_loadWeakRetained(&self->_storyBoardView);
-  v22 = [v21 centerYAnchor];
-  v23 = [v20 constraintEqualToAnchor:v22];
+  centerYAnchor2 = [v21 centerYAnchor];
+  v23 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v23 setActive:1];
 
   v24 = objc_alloc_init(UIView);
@@ -844,22 +844,22 @@
   upperView = self->_upperView;
   self->_upperView = v28;
 
-  v30 = [(UIView *)self->_upperView layer];
-  [v30 setCornerRadius:10.0];
+  layer = [(UIView *)self->_upperView layer];
+  [layer setCornerRadius:10.0];
 
   [(UIView *)self->_upperView setAlpha:0.5];
   v31 = +[UIColor blackColor];
   [(UIView *)self->_upperView setBackgroundColor:v31];
 
   [(UIView *)self->_upperView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v32 = [(UIView *)self->_upperView widthAnchor];
+  widthAnchor3 = [(UIView *)self->_upperView widthAnchor];
   v33 = objc_loadWeakRetained(&self->_storyBoardView);
   [v33 frame];
-  v35 = [v32 constraintLessThanOrEqualToConstant:v34 - (2 * self->_textMargin)];
+  v35 = [widthAnchor3 constraintLessThanOrEqualToConstant:v34 - (2 * self->_textMargin)];
   [v35 setActive:1];
 
-  v36 = [(UIView *)self->_upperView widthAnchor];
-  v37 = [v36 constraintEqualToConstant:0.0];
+  widthAnchor4 = [(UIView *)self->_upperView widthAnchor];
+  v37 = [widthAnchor4 constraintEqualToConstant:0.0];
   upperTextWidthConstraint = self->_upperTextWidthConstraint;
   self->_upperTextWidthConstraint = v37;
 
@@ -868,19 +868,19 @@
   [(NSLayoutConstraint *)self->_upperTextWidthConstraint setPriority:v39];
   [(UIView *)self->_mainView addSubview:self->_upperView];
   [(UIView *)self->_upperView setHidden:1];
-  v40 = [(UIView *)self->_upperView topAnchor];
-  v41 = [(UIView *)self->_mainView safeAreaLayoutGuide];
-  v42 = [v41 topAnchor];
-  v43 = [v40 constraintEqualToAnchor:v42 constant:(self->_textMargin + 30.0)];
+  topAnchor = [(UIView *)self->_upperView topAnchor];
+  safeAreaLayoutGuide = [(UIView *)self->_mainView safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v43 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:(self->_textMargin + 30.0)];
   [v43 setActive:1];
 
-  v44 = [(UIView *)self->_upperView heightAnchor];
-  v45 = [v44 constraintEqualToConstant:(self->_topTextHeight + 2 * self->_textMargin)];
+  heightAnchor3 = [(UIView *)self->_upperView heightAnchor];
+  v45 = [heightAnchor3 constraintEqualToConstant:(self->_topTextHeight + 2 * self->_textMargin)];
   [v45 setActive:1];
 
-  v46 = [(UIView *)self->_upperView centerXAnchor];
-  v47 = [(UIView *)self->_mainView centerXAnchor];
-  v48 = [v46 constraintEqualToAnchor:v47];
+  centerXAnchor3 = [(UIView *)self->_upperView centerXAnchor];
+  centerXAnchor4 = [(UIView *)self->_mainView centerXAnchor];
+  v48 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   [v48 setActive:1];
 
   v49 = objc_alloc_init(UILabel);
@@ -893,16 +893,16 @@
   v51 = +[UIColor whiteColor];
   [(UILabel *)self->_upperViewLabel setTextColor:v51];
 
-  v52 = [(UILabel *)self->_upperViewLabel topAnchor];
-  v53 = [(UIView *)self->_upperView topAnchor];
+  topAnchor3 = [(UILabel *)self->_upperViewLabel topAnchor];
+  topAnchor4 = [(UIView *)self->_upperView topAnchor];
   LODWORD(v54) = self->_textMargin;
-  v55 = [v52 constraintEqualToAnchor:v53 constant:v54];
+  v55 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:v54];
   [v55 setActive:1];
 
-  v56 = [(UILabel *)self->_upperViewLabel leadingAnchor];
-  v57 = [(UIView *)self->_upperView leadingAnchor];
+  leadingAnchor = [(UILabel *)self->_upperViewLabel leadingAnchor];
+  leadingAnchor2 = [(UIView *)self->_upperView leadingAnchor];
   LODWORD(v58) = self->_textMargin;
-  v59 = [v56 constraintEqualToAnchor:v57 constant:v58];
+  v59 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v58];
   [v59 setActive:1];
 
   v60 = [UIButton buttonWithType:0];
@@ -913,8 +913,8 @@
   v62 = +[UIColor blackColor];
   [(UIButton *)self->_quitButton setBackgroundColor:v62];
 
-  v63 = [(UIButton *)self->_quitButton layer];
-  [v63 setCornerRadius:15.0];
+  layer2 = [(UIButton *)self->_quitButton layer];
+  [layer2 setCornerRadius:15.0];
 
   v64 = objc_loadWeakRetained(&self->_storyBoardView);
   [v64 addSubview:self->_quitButton];
@@ -931,21 +931,21 @@
   v69 = +[UIColor whiteColor];
   [(UIButton *)v68 setTintColor:v69];
 
-  v147 = [(UIButton *)self->_quitButton topAnchor];
+  topAnchor5 = [(UIButton *)self->_quitButton topAnchor];
   v148 = objc_loadWeakRetained(&self->_storyBoardView);
-  v144 = [v148 topAnchor];
-  v143 = [v147 constraintEqualToAnchor:30.0 constant:?];
+  topAnchor6 = [v148 topAnchor];
+  v143 = [topAnchor5 constraintEqualToAnchor:30.0 constant:?];
   v155[0] = v143;
-  v146 = [(UIButton *)self->_quitButton trailingAnchor];
+  trailingAnchor = [(UIButton *)self->_quitButton trailingAnchor];
   v70 = objc_loadWeakRetained(&self->_storyBoardView);
-  v71 = [v70 trailingAnchor];
-  v72 = [v146 constraintEqualToAnchor:v71 constant:-30.0];
+  trailingAnchor2 = [v70 trailingAnchor];
+  v72 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-30.0];
   v155[1] = v72;
-  v73 = [(UIButton *)self->_quitButton widthAnchor];
-  v74 = [v73 constraintEqualToConstant:30.0];
+  widthAnchor5 = [(UIButton *)self->_quitButton widthAnchor];
+  v74 = [widthAnchor5 constraintEqualToConstant:30.0];
   v155[2] = v74;
-  v75 = [(UIButton *)self->_quitButton heightAnchor];
-  v76 = [v75 constraintEqualToConstant:30.0];
+  heightAnchor4 = [(UIButton *)self->_quitButton heightAnchor];
+  v76 = [heightAnchor4 constraintEqualToConstant:30.0];
   v155[3] = v76;
   v77 = [NSArray arrayWithObjects:v155 count:4];
   [NSLayoutConstraint activateConstraints:v77];
@@ -971,8 +971,8 @@
   [v149 setColors:v87];
 
   [v149 setLocations:&off_1000306F0];
-  v88 = [(UIView *)self->_gradientView layer];
-  [v88 addSublayer:v149];
+  layer3 = [(UIView *)self->_gradientView layer];
+  [layer3 addSublayer:v149];
 
   [(UIView *)self->_mainView addSubview:self->_gradientView];
   v89 = objc_alloc_init(UIProgressView);
@@ -981,46 +981,46 @@
 
   [(UIProgressView *)self->_progressView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIView *)self->_mainView addSubview:self->_progressView];
-  v91 = [(UIProgressView *)self->_progressView leadingAnchor];
-  v92 = [(UIView *)self->_mainView leadingAnchor];
-  v93 = [v91 constraintGreaterThanOrEqualToAnchor:v92 constant:30.0];
+  leadingAnchor3 = [(UIProgressView *)self->_progressView leadingAnchor];
+  leadingAnchor4 = [(UIView *)self->_mainView leadingAnchor];
+  v93 = [leadingAnchor3 constraintGreaterThanOrEqualToAnchor:leadingAnchor4 constant:30.0];
   [v93 setActive:1];
 
-  v94 = [(UIProgressView *)self->_progressView trailingAnchor];
-  v95 = [(UIView *)self->_mainView trailingAnchor];
-  v96 = [v94 constraintLessThanOrEqualToAnchor:v95 constant:-30.0];
+  trailingAnchor3 = [(UIProgressView *)self->_progressView trailingAnchor];
+  trailingAnchor4 = [(UIView *)self->_mainView trailingAnchor];
+  v96 = [trailingAnchor3 constraintLessThanOrEqualToAnchor:trailingAnchor4 constant:-30.0];
   [v96 setActive:1];
 
-  v97 = [(UIProgressView *)self->_progressView leadingAnchor];
-  v98 = [(UIView *)self->_mainView safeAreaLayoutGuide];
-  v99 = [v98 leadingAnchor];
-  v100 = [v97 constraintGreaterThanOrEqualToAnchor:v99 constant:30.0];
+  leadingAnchor5 = [(UIProgressView *)self->_progressView leadingAnchor];
+  safeAreaLayoutGuide2 = [(UIView *)self->_mainView safeAreaLayoutGuide];
+  leadingAnchor6 = [safeAreaLayoutGuide2 leadingAnchor];
+  v100 = [leadingAnchor5 constraintGreaterThanOrEqualToAnchor:leadingAnchor6 constant:30.0];
   [v100 setActive:1];
 
-  v101 = [(UIProgressView *)self->_progressView trailingAnchor];
-  v102 = [(UIView *)self->_mainView safeAreaLayoutGuide];
-  v103 = [v102 trailingAnchor];
-  v104 = [v101 constraintLessThanOrEqualToAnchor:v103 constant:-30.0];
+  trailingAnchor5 = [(UIProgressView *)self->_progressView trailingAnchor];
+  safeAreaLayoutGuide3 = [(UIView *)self->_mainView safeAreaLayoutGuide];
+  trailingAnchor6 = [safeAreaLayoutGuide3 trailingAnchor];
+  v104 = [trailingAnchor5 constraintLessThanOrEqualToAnchor:trailingAnchor6 constant:-30.0];
   [v104 setActive:1];
 
-  v105 = [(UIProgressView *)self->_progressView widthAnchor];
-  v106 = [v105 constraintEqualToConstant:334.0];
+  widthAnchor6 = [(UIProgressView *)self->_progressView widthAnchor];
+  v106 = [widthAnchor6 constraintEqualToConstant:334.0];
   [v106 setActive:1];
 
-  v107 = [(UIProgressView *)self->_progressView heightAnchor];
-  v108 = [v107 constraintEqualToConstant:4.0];
+  heightAnchor5 = [(UIProgressView *)self->_progressView heightAnchor];
+  v108 = [heightAnchor5 constraintEqualToConstant:4.0];
   [v108 setActive:1];
 
-  v109 = [(UIProgressView *)self->_progressView centerXAnchor];
+  centerXAnchor5 = [(UIProgressView *)self->_progressView centerXAnchor];
   v110 = objc_loadWeakRetained(&self->_storyBoardView);
-  v111 = [v110 centerXAnchor];
-  v112 = [v109 constraintEqualToAnchor:v111];
+  centerXAnchor6 = [v110 centerXAnchor];
+  v112 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
   [v112 setActive:1];
 
-  v113 = [(UIProgressView *)self->_progressView bottomAnchor];
-  v114 = [(UIView *)self->_mainView safeAreaLayoutGuide];
-  v115 = [v114 bottomAnchor];
-  v116 = [v113 constraintEqualToAnchor:v115 constant:-46.0];
+  bottomAnchor = [(UIProgressView *)self->_progressView bottomAnchor];
+  safeAreaLayoutGuide4 = [(UIView *)self->_mainView safeAreaLayoutGuide];
+  bottomAnchor2 = [safeAreaLayoutGuide4 bottomAnchor];
+  v116 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-46.0];
   [v116 setActive:1];
 
   [(UIProgressView *)self->_progressView setClipsToBounds:1];
@@ -1031,8 +1031,8 @@
   v118 = +[UIColor blackColor];
   [(UIProgressView *)self->_progressView setTrackTintColor:v118];
 
-  v119 = [(UIProgressView *)self->_progressView layer];
-  [v119 setCornerRadius:2.0];
+  layer4 = [(UIProgressView *)self->_progressView layer];
+  [layer4 setCornerRadius:2.0];
 
   v120 = objc_alloc_init(UIView);
   middleView = self->_middleView;
@@ -1041,19 +1041,19 @@
   [(UIView *)self->_middleView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIView *)self->_middleView setAlpha:0.5];
   [(UIView *)self->_mainView addSubview:self->_middleView];
-  v122 = [(UIView *)self->_middleView widthAnchor];
-  v123 = [(UIView *)self->_mainView widthAnchor];
-  v124 = [v122 constraintEqualToAnchor:v123 multiplier:1.0];
+  widthAnchor7 = [(UIView *)self->_middleView widthAnchor];
+  widthAnchor8 = [(UIView *)self->_mainView widthAnchor];
+  v124 = [widthAnchor7 constraintEqualToAnchor:widthAnchor8 multiplier:1.0];
   [v124 setActive:1];
 
-  v125 = [(UIView *)self->_middleView centerXAnchor];
-  v126 = [(UIView *)self->_mainView centerXAnchor];
-  v127 = [v125 constraintEqualToAnchor:v126];
+  centerXAnchor7 = [(UIView *)self->_middleView centerXAnchor];
+  centerXAnchor8 = [(UIView *)self->_mainView centerXAnchor];
+  v127 = [centerXAnchor7 constraintEqualToAnchor:centerXAnchor8];
   [v127 setActive:1];
 
-  v128 = [(UIView *)self->_middleView heightAnchor];
-  v129 = [(UIView *)self->_mainView heightAnchor];
-  v130 = [v128 constraintEqualToAnchor:v129 multiplier:0.73];
+  heightAnchor6 = [(UIView *)self->_middleView heightAnchor];
+  heightAnchor7 = [(UIView *)self->_mainView heightAnchor];
+  v130 = [heightAnchor6 constraintEqualToAnchor:heightAnchor7 multiplier:0.73];
   [v130 setActive:1];
 
   [(UIView *)self->_mainView addSubview:self->_bottomView];
@@ -1064,15 +1064,15 @@
   [(UIView *)self->_cameraView addSubview:self->_imageView];
   [(UIImageView *)self->_imageView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIImageView *)self->_imageView setContentMode:2];
-  v150 = [(UIImageView *)self->_imageView heightAnchor];
+  heightAnchor8 = [(UIImageView *)self->_imageView heightAnchor];
   v133 = objc_loadWeakRetained(&self->_storyBoardView);
-  v134 = [v133 heightAnchor];
-  v135 = [v150 constraintEqualToAnchor:v134];
+  heightAnchor9 = [v133 heightAnchor];
+  v135 = [heightAnchor8 constraintEqualToAnchor:heightAnchor9];
   v153[0] = v135;
-  v136 = [(UIImageView *)self->_imageView widthAnchor];
+  widthAnchor9 = [(UIImageView *)self->_imageView widthAnchor];
   v137 = objc_loadWeakRetained(&self->_storyBoardView);
-  v138 = [v137 widthAnchor];
-  v139 = [v136 constraintEqualToAnchor:v138];
+  widthAnchor10 = [v137 widthAnchor];
+  v139 = [widthAnchor9 constraintEqualToAnchor:widthAnchor10];
   v153[1] = v139;
   v140 = [NSArray arrayWithObjects:v153 count:2];
   [NSLayoutConstraint activateConstraints:v140];
@@ -1085,7 +1085,7 @@
   objc_autoreleasePoolPop(context);
 }
 
-- (void)compareResults:(float *)a3
+- (void)compareResults:(float *)results
 {
   sub_100007090(&v46, "compareResults started");
   [(ViewController *)self log:&v46];
@@ -1299,7 +1299,7 @@
   }
 
   [(ViewController *)self log:&v46, __val];
-  if (__vala > *a3 || v24 > a3[1] || *(&__val + 2) > a3[2])
+  if (__vala > *results || v24 > results[1] || *(&__val + 2) > results[2])
   {
     self->_diagnosticFinalResult = -3;
   }
@@ -1315,16 +1315,16 @@
   }
 }
 
-- (void)dogWatch:(id)a3
+- (void)dogWatch:(id)watch
 {
-  v4 = a3;
+  watchCopy = watch;
   if (!self->_running)
   {
     goto LABEL_166;
   }
 
-  v5 = [(ViewController *)self imageView];
-  [v5 setAlpha:1.0];
+  imageView = [(ViewController *)self imageView];
+  [imageView setAlpha:1.0];
 
   if (DeviceCMInterface::getRgbjReport(self->_diagnosticCMInterface, &__val, &__val + 1, &__val + 3, v316, &v316[1]))
   {
@@ -2379,8 +2379,8 @@ LABEL_195:
       v153 = [v152 localizedStringForKey:@"Timed_Out" value:&stru_10002D398 table:0];
       [(ViewController *)self showWarningWindow:v153 subMessage:&stru_10002D398];
 
-      v154 = [(ViewController *)self upperView];
-      [v154 setHidden:1];
+      upperView = [(ViewController *)self upperView];
+      [upperView setHidden:1];
 
       v155 = self->_backgroundDispatchQueue;
       v280[0] = _NSConcreteStackBlock;
@@ -3376,14 +3376,14 @@ LABEL_164:
 LABEL_166:
 }
 
-- (void)primaryScalerHxISPFrameAvailableCallback:(__CVBuffer *)a3 pts:(id *)a4 streamType:(int)a5
+- (void)primaryScalerHxISPFrameAvailableCallback:(__CVBuffer *)callback pts:(id *)pts streamType:(int)type
 {
   if (self->_running)
   {
-    Width = CVPixelBufferGetWidth(a3);
-    Height = CVPixelBufferGetHeight(a3);
+    Width = CVPixelBufferGetWidth(callback);
+    Height = CVPixelBufferGetHeight(callback);
     imageOut = 0;
-    VTCreateCGImageFromCVPixelBuffer(a3, 0, &imageOut);
+    VTCreateCGImageFromCVPixelBuffer(callback, 0, &imageOut);
     v13.size.height = Height;
     v13.size.width = Width;
     v13.origin.x = 0.0;
@@ -3401,7 +3401,7 @@ LABEL_166:
 
     CGImageRelease(imageOut);
     CGImageRelease(v10);
-    if (a5 == 1)
+    if (type == 1)
     {
       if (self->_uiStreamType != 1)
       {
@@ -3411,7 +3411,7 @@ LABEL_11:
       }
     }
 
-    else if (a5 || self->_uiStreamType)
+    else if (type || self->_uiStreamType)
     {
       goto LABEL_11;
     }
@@ -3421,10 +3421,10 @@ LABEL_11:
   }
 }
 
-- (void)error:(id)a3 details:(id)a4
+- (void)error:(id)error details:(id)details
 {
-  v5 = a3;
-  sub_100007090(__p, [v5 UTF8String]);
+  errorCopy = error;
+  sub_100007090(__p, [errorCopy UTF8String]);
   [(ViewController *)self log:__p];
   if (v7 < 0)
   {
@@ -3462,35 +3462,35 @@ LABEL_11:
 - (void)handleSuspend
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   sub_100007090(__p, "handleSuspend");
-  [(ViewController *)v4 log:__p];
+  [(ViewController *)selfCopy log:__p];
   if (v9 < 0)
   {
     operator delete(__p[0]);
   }
 
-  v4->_running = 0;
-  m_userMovementTracker = v4->m_userMovementTracker;
+  selfCopy->_running = 0;
+  m_userMovementTracker = selfCopy->m_userMovementTracker;
   if (m_userMovementTracker)
   {
     [(UserMovementTracker *)m_userMovementTracker stopDeviceMotionTracking];
   }
 
-  if (v4->_diagnosticCMInterface)
+  if (selfCopy->_diagnosticCMInterface)
   {
-    [(NSTimer *)v4->_watchDogTimer invalidate];
-    backgroundDispatchQueue = v4->_backgroundDispatchQueue;
+    [(NSTimer *)selfCopy->_watchDogTimer invalidate];
+    backgroundDispatchQueue = selfCopy->_backgroundDispatchQueue;
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_10001A078;
     v7[3] = &unk_10002CEC0;
-    v7[4] = v4;
+    v7[4] = selfCopy;
     dispatch_async(backgroundDispatchQueue, v7);
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   objc_autoreleasePoolPop(v3);
 }
@@ -3539,8 +3539,8 @@ LABEL_11:
       operator delete(__p[0]);
     }
 
-    v6 = [(ViewController *)self listener];
-    [v6 finishRun:self->_resultsDict reducedLog:self->_reducedLog result:self->_diagnosticFinalResult prcl:&self->_prclResult angles:self->_avgRotAngles];
+    listener = [(ViewController *)self listener];
+    [listener finishRun:self->_resultsDict reducedLog:self->_reducedLog result:self->_diagnosticFinalResult prcl:&self->_prclResult angles:self->_avgRotAngles];
 
     exit(0);
   }
@@ -3555,18 +3555,18 @@ LABEL_11:
   [(ViewController *)self showSummaryScreen:self->_diagnosticFinalResult == 0];
 }
 
-- (void)showSummaryScreen:(BOOL)a3
+- (void)showSummaryScreen:(BOOL)screen
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_10001A478;
   v3[3] = &unk_10002CF10;
   v3[4] = self;
-  v4 = a3;
+  screenCopy = screen;
   dispatch_async(&_dispatch_main_q, v3);
 }
 
-- (void)buttonClicked:(id)a3
+- (void)buttonClicked:(id)clicked
 {
   sub_100007090(__p, "button clicked");
   [(ViewController *)self log:__p];
@@ -3576,10 +3576,10 @@ LABEL_11:
   }
 }
 
-- (void)setUpperViewLabelText:(id)a3
+- (void)setUpperViewLabelText:(id)text
 {
-  v4 = a3;
-  sub_100007090(&v10, [v4 UTF8String]);
+  textCopy = text;
+  sub_100007090(&v10, [textCopy UTF8String]);
   std::operator+<char>();
   [(ViewController *)self log:&__p];
   if (v9 < 0)
@@ -3592,7 +3592,7 @@ LABEL_11:
   v6[2] = sub_10001AE20;
   v6[3] = &unk_10002CF38;
   v6[4] = self;
-  v5 = v4;
+  v5 = textCopy;
   v7 = v5;
   dispatch_async(&_dispatch_main_q, v6);
 
@@ -3602,29 +3602,29 @@ LABEL_11:
   }
 }
 
-- (void)duplicatPixelBuffer:(__CVBuffer *)a3 newBuffer:(__CVBuffer *)a4
+- (void)duplicatPixelBuffer:(__CVBuffer *)buffer newBuffer:(__CVBuffer *)newBuffer
 {
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
-  if (!CVPixelBufferCreate(kCFAllocatorDefault, Width, Height, PixelFormatType, 0, a4))
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
+  if (!CVPixelBufferCreate(kCFAllocatorDefault, Width, Height, PixelFormatType, 0, newBuffer))
   {
-    v9 = *a4;
+    v9 = *newBuffer;
     CVPixelBufferLockBaseAddress(v9, 0);
-    CVPixelBufferLockBaseAddress(a3, 1uLL);
+    CVPixelBufferLockBaseAddress(buffer, 1uLL);
     BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(v9, 0);
-    v11 = CVPixelBufferGetBaseAddressOfPlane(a3, 0);
-    BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(a3, 0);
-    HeightOfPlane = CVPixelBufferGetHeightOfPlane(a3, 0);
+    v11 = CVPixelBufferGetBaseAddressOfPlane(buffer, 0);
+    BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(buffer, 0);
+    HeightOfPlane = CVPixelBufferGetHeightOfPlane(buffer, 0);
     memcpy(BaseAddressOfPlane, v11, HeightOfPlane * BytesPerRowOfPlane);
     v14 = CVPixelBufferGetBaseAddressOfPlane(v9, 1uLL);
-    v15 = CVPixelBufferGetBaseAddressOfPlane(a3, 1uLL);
-    v16 = CVPixelBufferGetBytesPerRowOfPlane(a3, 1uLL);
-    v17 = CVPixelBufferGetHeightOfPlane(a3, 1uLL);
+    v15 = CVPixelBufferGetBaseAddressOfPlane(buffer, 1uLL);
+    v16 = CVPixelBufferGetBytesPerRowOfPlane(buffer, 1uLL);
+    v17 = CVPixelBufferGetHeightOfPlane(buffer, 1uLL);
     memcpy(v14, v15, v17 * v16);
     CVPixelBufferUnlockBaseAddress(v9, 0);
 
-    CVPixelBufferUnlockBaseAddress(a3, 1uLL);
+    CVPixelBufferUnlockBaseAddress(buffer, 1uLL);
   }
 }
 
@@ -3671,18 +3671,18 @@ LABEL_11:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)showWarningWindow:(id)a3 subMessage:(id)a4
+- (void)showWarningWindow:(id)window subMessage:(id)message
 {
-  v6 = a3;
+  windowCopy = window;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001B898;
   block[3] = &unk_10002CF60;
   block[4] = self;
-  v10 = a4;
-  v11 = v6;
-  v7 = v6;
-  v8 = v10;
+  messageCopy = message;
+  v11 = windowCopy;
+  v7 = windowCopy;
+  v8 = messageCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
@@ -3698,12 +3698,12 @@ LABEL_11:
   [(ViewController *)self endTest];
 }
 
-- (void)continueButtonPressed:(id)a3
+- (void)continueButtonPressed:(id)pressed
 {
-  v4 = a3;
+  pressedCopy = pressed;
   NSLog(@"Continue button pressed");
-  v5 = [(ViewController *)self listener];
-  [v5 finishRun:self->_resultsDict reducedLog:self->_reducedLog result:self->_diagnosticFinalResult prcl:&self->_prclResult angles:self->_avgRotAngles];
+  listener = [(ViewController *)self listener];
+  [listener finishRun:self->_resultsDict reducedLog:self->_reducedLog result:self->_diagnosticFinalResult prcl:&self->_prclResult angles:self->_avgRotAngles];
 
   exit(0);
 }

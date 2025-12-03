@@ -2,29 +2,29 @@
 - (NSArray)items;
 - (_SFPopoverSourceInfo)safari_popoverSourceInfo;
 - (_SFSettingsAlertContentController)_rootContentController;
-- (_SFSettingsAlertController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_SFSettingsAlertController)initWithNibName:(id)name bundle:(id)bundle;
 - (_SFSettingsAlertControllerDelegate)delegate;
 - (_SFSettingsAlertItem)focusedItem;
 - (id)presentingViewController;
-- (void)_pushSubItemsForGroup:(id)a3;
+- (void)_pushSubItemsForGroup:(id)group;
 - (void)addDivider;
-- (void)addItem:(id)a3;
-- (void)pushViewController:(id)a3;
+- (void)addItem:(id)item;
+- (void)pushViewController:(id)controller;
 - (void)removeAllItems;
 - (void)resizeMenu;
-- (void)setFocusedItem:(id)a3;
-- (void)setPreferredContentSize:(CGSize)a3;
-- (void)setUsesReverseOrder:(BOOL)a3;
+- (void)setFocusedItem:(id)item;
+- (void)setPreferredContentSize:(CGSize)size;
+- (void)setUsesReverseOrder:(BOOL)order;
 - (void)viewDidLoad;
 @end
 
 @implementation _SFSettingsAlertController
 
-- (_SFSettingsAlertController)initWithNibName:(id)a3 bundle:(id)a4
+- (_SFSettingsAlertController)initWithNibName:(id)name bundle:(id)bundle
 {
   v10.receiver = self;
   v10.super_class = _SFSettingsAlertController;
-  v4 = [(_SFSettingsAlertController *)&v10 initWithNibName:a3 bundle:a4];
+  v4 = [(_SFSettingsAlertController *)&v10 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = objc_alloc_init(_SFSettingsAlertContentController);
@@ -45,142 +45,142 @@
   v18.super_class = _SFSettingsAlertController;
   [(_SFSettingsAlertController *)&v18 viewDidLoad];
   [(UINavigationController *)self->_navigationController _setClipUnderlapWhileTransitioning:1];
-  v3 = [MEMORY[0x1E69DC888] labelColor];
-  v4 = [(UINavigationController *)self->_navigationController navigationBar];
-  [v4 setTintColor:v3];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  navigationBar = [(UINavigationController *)self->_navigationController navigationBar];
+  [navigationBar setTintColor:labelColor];
 
   [(UINavigationController *)self->_navigationController willMoveToParentViewController:self];
   [(_SFSettingsAlertController *)self addChildViewController:self->_navigationController];
-  v5 = [(_SFSettingsAlertController *)self view];
-  [v5 bounds];
+  view = [(_SFSettingsAlertController *)self view];
+  [view bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(UINavigationController *)self->_navigationController view];
-  [v14 setFrame:{v7, v9, v11, v13}];
+  view2 = [(UINavigationController *)self->_navigationController view];
+  [view2 setFrame:{v7, v9, v11, v13}];
 
-  v15 = [(UINavigationController *)self->_navigationController view];
-  [v15 setAutoresizingMask:18];
+  view3 = [(UINavigationController *)self->_navigationController view];
+  [view3 setAutoresizingMask:18];
 
-  v16 = [(_SFSettingsAlertController *)self view];
-  v17 = [(UINavigationController *)self->_navigationController view];
-  [v16 addSubview:v17];
+  view4 = [(_SFSettingsAlertController *)self view];
+  view5 = [(UINavigationController *)self->_navigationController view];
+  [view4 addSubview:view5];
 }
 
 - (_SFSettingsAlertContentController)_rootContentController
 {
-  v2 = [(UINavigationController *)self->_navigationController viewControllers];
-  v3 = [v2 firstObject];
+  viewControllers = [(UINavigationController *)self->_navigationController viewControllers];
+  firstObject = [viewControllers firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (id)presentingViewController
 {
-  v3 = [(_SFSettingsAlertController *)self delegate];
-  v4 = [v3 presentingViewControllerForAlertController:self];
+  delegate = [(_SFSettingsAlertController *)self delegate];
+  v4 = [delegate presentingViewControllerForAlertController:self];
 
   if (v4)
   {
-    v5 = v4;
+    presentingViewController = v4;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = _SFSettingsAlertController;
-    v5 = [(_SFSettingsAlertController *)&v8 presentingViewController];
+    presentingViewController = [(_SFSettingsAlertController *)&v8 presentingViewController];
   }
 
-  v6 = v5;
+  v6 = presentingViewController;
 
   return v6;
 }
 
-- (void)setUsesReverseOrder:(BOOL)a3
+- (void)setUsesReverseOrder:(BOOL)order
 {
-  if (self->_usesReverseOrder != a3)
+  if (self->_usesReverseOrder != order)
   {
-    v4 = a3;
-    self->_usesReverseOrder = a3;
-    v5 = [(_SFSettingsAlertController *)self _rootContentController];
-    [v5 setUsesReverseOrder:v4];
+    orderCopy = order;
+    self->_usesReverseOrder = order;
+    _rootContentController = [(_SFSettingsAlertController *)self _rootContentController];
+    [_rootContentController setUsesReverseOrder:orderCopy];
   }
 }
 
-- (void)addItem:(id)a3
+- (void)addItem:(id)item
 {
-  v4 = a3;
-  v5 = [(_SFSettingsAlertController *)self _rootContentController];
-  [v5 addItem:v4];
+  itemCopy = item;
+  _rootContentController = [(_SFSettingsAlertController *)self _rootContentController];
+  [_rootContentController addItem:itemCopy];
 
-  v6 = [(_SFSettingsAlertController *)self delegate];
-  [v6 alertController:self didAddItem:v4];
+  delegate = [(_SFSettingsAlertController *)self delegate];
+  [delegate alertController:self didAddItem:itemCopy];
 }
 
 - (void)addDivider
 {
-  v3 = [(_SFSettingsAlertController *)self _rootContentController];
-  [v3 addDivider];
+  _rootContentController = [(_SFSettingsAlertController *)self _rootContentController];
+  [_rootContentController addDivider];
 
-  v4 = [(_SFSettingsAlertController *)self delegate];
-  [v4 alertControllerDidAddDivider:self];
+  delegate = [(_SFSettingsAlertController *)self delegate];
+  [delegate alertControllerDidAddDivider:self];
 }
 
 - (_SFSettingsAlertItem)focusedItem
 {
-  v2 = [(_SFSettingsAlertController *)self _rootContentController];
-  v3 = [v2 focusedItem];
+  _rootContentController = [(_SFSettingsAlertController *)self _rootContentController];
+  focusedItem = [_rootContentController focusedItem];
 
-  return v3;
+  return focusedItem;
 }
 
-- (void)setFocusedItem:(id)a3
+- (void)setFocusedItem:(id)item
 {
-  v4 = a3;
-  v5 = [(_SFSettingsAlertController *)self _rootContentController];
-  [v5 setFocusedItem:v4];
+  itemCopy = item;
+  _rootContentController = [(_SFSettingsAlertController *)self _rootContentController];
+  [_rootContentController setFocusedItem:itemCopy];
 }
 
 - (void)removeAllItems
 {
-  v3 = [(_SFSettingsAlertController *)self _rootContentController];
-  [v3 removeAllItems];
+  _rootContentController = [(_SFSettingsAlertController *)self _rootContentController];
+  [_rootContentController removeAllItems];
 
-  v4 = [(_SFSettingsAlertController *)self delegate];
-  [v4 alertControllerResetSections:self];
+  delegate = [(_SFSettingsAlertController *)self delegate];
+  [delegate alertControllerResetSections:self];
 }
 
 - (void)resizeMenu
 {
-  v2 = [(_SFSettingsAlertController *)self _rootContentController];
-  [v2 resizeMenu];
+  _rootContentController = [(_SFSettingsAlertController *)self _rootContentController];
+  [_rootContentController resizeMenu];
 }
 
 - (NSArray)items
 {
-  v2 = [(_SFSettingsAlertController *)self _rootContentController];
-  v3 = [v2 items];
+  _rootContentController = [(_SFSettingsAlertController *)self _rootContentController];
+  items = [_rootContentController items];
 
-  return v3;
+  return items;
 }
 
-- (void)_pushSubItemsForGroup:(id)a3
+- (void)_pushSubItemsForGroup:(id)group
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  groupCopy = group;
   v5 = objc_alloc_init(_SFSettingsAlertContentController);
-  v6 = [v4 title];
-  v7 = [(_SFSettingsAlertContentController *)v5 navigationItem];
-  [v7 setTitle:v6];
+  title = [groupCopy title];
+  navigationItem = [(_SFSettingsAlertContentController *)v5 navigationItem];
+  [navigationItem setTitle:title];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v8 = [v4 subItems];
-  v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  subItems = [groupCopy subItems];
+  v9 = [subItems countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
   {
     v10 = v9;
@@ -192,14 +192,14 @@
       {
         if (*v14 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(subItems);
         }
 
         [(_SFSettingsAlertContentController *)v5 addItem:*(*(&v13 + 1) + 8 * v12++)];
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v10 = [subItems countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v10);
@@ -208,22 +208,22 @@
   -[UINavigationController pushViewController:animated:](self->_navigationController, "pushViewController:animated:", v5, [MEMORY[0x1E69DD250] areAnimationsEnabled]);
 }
 
-- (void)pushViewController:(id)a3
+- (void)pushViewController:(id)controller
 {
   v4 = MEMORY[0x1E69DD250];
-  v5 = a3;
-  v6 = [v4 areAnimationsEnabled];
-  [(UINavigationController *)self->_navigationController pushViewController:v5 animated:v6];
+  controllerCopy = controller;
+  areAnimationsEnabled = [v4 areAnimationsEnabled];
+  [(UINavigationController *)self->_navigationController pushViewController:controllerCopy animated:areAnimationsEnabled];
   navigationController = self->_navigationController;
-  v9 = [(UINavigationController *)navigationController viewControllers];
-  v8 = [v9 firstObject];
+  viewControllers = [(UINavigationController *)navigationController viewControllers];
+  firstObject = [viewControllers firstObject];
 
-  [(UINavigationController *)navigationController setNavigationBarHidden:v8 == v5 animated:v6];
+  [(UINavigationController *)navigationController setNavigationBarHidden:firstObject == controllerCopy animated:areAnimationsEnabled];
 }
 
-- (void)setPreferredContentSize:(CGSize)a3
+- (void)setPreferredContentSize:(CGSize)size
 {
-  [(UINavigationController *)self->_navigationController _adjustedContentSizeForPopover:a3.width, a3.height];
+  [(UINavigationController *)self->_navigationController _adjustedContentSizeForPopover:size.width, size.height];
   v4.receiver = self;
   v4.super_class = _SFSettingsAlertController;
   [(_SFSettingsAlertController *)&v4 setPreferredContentSize:?];
@@ -231,8 +231,8 @@
 
 - (_SFPopoverSourceInfo)safari_popoverSourceInfo
 {
-  v3 = [(_SFSettingsAlertController *)self delegate];
-  v4 = [v3 popoverSourceInfoForAlertController:self];
+  delegate = [(_SFSettingsAlertController *)self delegate];
+  v4 = [delegate popoverSourceInfoForAlertController:self];
 
   return v4;
 }

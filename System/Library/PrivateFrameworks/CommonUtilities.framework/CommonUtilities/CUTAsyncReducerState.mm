@@ -1,51 +1,51 @@
 @interface CUTAsyncReducerState
-- (void)cancelWithError:(id)a3;
-- (void)continueWithResult:(id)a3;
-- (void)stopWithResult:(id)a3;
+- (void)cancelWithError:(id)error;
+- (void)continueWithResult:(id)result;
+- (void)stopWithResult:(id)result;
 @end
 
 @implementation CUTAsyncReducerState
 
-- (void)continueWithResult:(id)a3
+- (void)continueWithResult:(id)result
 {
-  v5 = a3;
-  v6 = [(CUTAsyncReducerState *)self continueBlock];
+  resultCopy = result;
+  continueBlock = [(CUTAsyncReducerState *)self continueBlock];
 
-  if (!v6)
+  if (!continueBlock)
   {
     sub_1B2330D48(a2, self);
   }
 
-  v7 = [(CUTAsyncReducerState *)self continueBlock];
-  v7[2](v7, v5);
+  continueBlock2 = [(CUTAsyncReducerState *)self continueBlock];
+  continueBlock2[2](continueBlock2, resultCopy);
 }
 
-- (void)cancelWithError:(id)a3
+- (void)cancelWithError:(id)error
 {
-  v5 = a3;
-  v6 = [(CUTAsyncReducerState *)self cancelBlock];
+  errorCopy = error;
+  cancelBlock = [(CUTAsyncReducerState *)self cancelBlock];
 
-  if (!v6)
+  if (!cancelBlock)
   {
     sub_1B2330DC4(a2, self);
   }
 
-  v7 = [(CUTAsyncReducerState *)self cancelBlock];
-  v7[2](v7, v5);
+  cancelBlock2 = [(CUTAsyncReducerState *)self cancelBlock];
+  cancelBlock2[2](cancelBlock2, errorCopy);
 }
 
-- (void)stopWithResult:(id)a3
+- (void)stopWithResult:(id)result
 {
-  v5 = a3;
-  v6 = [(CUTAsyncReducerState *)self stopBlock];
+  resultCopy = result;
+  stopBlock = [(CUTAsyncReducerState *)self stopBlock];
 
-  if (!v6)
+  if (!stopBlock)
   {
     sub_1B2330E40(a2, self);
   }
 
-  v7 = [(CUTAsyncReducerState *)self stopBlock];
-  v7[2](v7, v5);
+  stopBlock2 = [(CUTAsyncReducerState *)self stopBlock];
+  stopBlock2[2](stopBlock2, resultCopy);
 }
 
 @end

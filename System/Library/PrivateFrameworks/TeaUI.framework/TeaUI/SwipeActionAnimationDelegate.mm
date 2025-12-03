@@ -1,14 +1,14 @@
 @interface SwipeActionAnimationDelegate
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 @end
 
 @implementation SwipeActionAnimationDelegate
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v6 = a3;
-  v7 = self;
-  sub_1D7FAD460(v7, a4);
+  stopCopy = stop;
+  selfCopy = self;
+  sub_1D7FAD460(selfCopy, finished);
 }
 
 @end

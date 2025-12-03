@@ -1,13 +1,13 @@
 @interface ModifyContactAttributeIntent
-- (ModifyContactAttributeIntent)initWithDomain:(id)a3 verb:(id)a4 parametersByName:(id)a5;
-- (ModifyContactAttributeIntent)initWithIdentifier:(id)a3 backingStore:(id)a4;
+- (ModifyContactAttributeIntent)initWithDomain:(id)domain verb:(id)verb parametersByName:(id)name;
+- (ModifyContactAttributeIntent)initWithIdentifier:(id)identifier backingStore:(id)store;
 @end
 
 @implementation ModifyContactAttributeIntent
 
-- (ModifyContactAttributeIntent)initWithIdentifier:(id)a3 backingStore:(id)a4
+- (ModifyContactAttributeIntent)initWithIdentifier:(id)identifier backingStore:(id)store
 {
-  if (a3)
+  if (identifier)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -19,15 +19,15 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return ModifyContactAttributeIntent.init(identifier:backingStore:)(v5, v7, a4);
+  storeCopy = store;
+  return ModifyContactAttributeIntent.init(identifier:backingStore:)(v5, v7, store);
 }
 
-- (ModifyContactAttributeIntent)initWithDomain:(id)a3 verb:(id)a4 parametersByName:(id)a5
+- (ModifyContactAttributeIntent)initWithDomain:(id)domain verb:(id)verb parametersByName:(id)name
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   static String._unconditionallyBridgeFromObjectiveC(_:)();
-  if (a5)
+  if (name)
   {
     static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }

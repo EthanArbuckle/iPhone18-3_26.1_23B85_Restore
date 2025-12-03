@@ -1,11 +1,11 @@
 @interface PXGViewCoordinator
 - (PXGViewCoordinator)init;
-- (PXGViewCoordinator)initWithContentLayout:(id)a3 containerView:(id)a4 belowSubview:(id)a5 containerViewController:(id)a6 configuration:(id)a7;
+- (PXGViewCoordinator)initWithContentLayout:(id)layout containerView:(id)view belowSubview:(id)subview containerViewController:(id)controller configuration:(id)configuration;
 - (UIEdgeInsets)insets;
 - (UIView)belowSubview;
 - (UIView)containerView;
 - (void)_addTungstenViewToContainerView;
-- (void)prepareForTransitionInContainerView:(id)a3 withContentFrame:(CGRect)a4;
+- (void)prepareForTransitionInContainerView:(id)view withContentFrame:(CGRect)frame;
 - (void)restoreAfterTransition;
 @end
 
@@ -40,17 +40,17 @@
 
 - (void)_addTungstenViewToContainerView
 {
-  v5 = [(PXGViewCoordinator *)self containerView];
-  v3 = [(PXGViewCoordinator *)self tungstenView];
-  v4 = [(PXGViewCoordinator *)self belowSubview];
-  if (v4)
+  containerView = [(PXGViewCoordinator *)self containerView];
+  tungstenView = [(PXGViewCoordinator *)self tungstenView];
+  belowSubview = [(PXGViewCoordinator *)self belowSubview];
+  if (belowSubview)
   {
-    [v5 insertSubview:v3 belowSubview:v4];
+    [containerView insertSubview:tungstenView belowSubview:belowSubview];
   }
 
   else
   {
-    [v5 addSubview:v3];
+    [containerView addSubview:tungstenView];
   }
 }
 
@@ -63,22 +63,22 @@
     v4 = *(MEMORY[0x277CBF398] + 8);
     v5 = *(MEMORY[0x277CBF398] + 16);
     v6 = *(MEMORY[0x277CBF398] + 24);
-    v7 = [(PXGViewCoordinator *)self transitionLayout];
-    [v7 setContentFrameOverride:{v3, v4, v5, v6}];
+    transitionLayout = [(PXGViewCoordinator *)self transitionLayout];
+    [transitionLayout setContentFrameOverride:{v3, v4, v5, v6}];
 
-    v8 = [(PXGViewCoordinator *)self tungstenView];
-    v9 = [(PXGViewCoordinator *)self containerView];
-    [v9 bounds];
+    tungstenView = [(PXGViewCoordinator *)self tungstenView];
+    containerView = [(PXGViewCoordinator *)self containerView];
+    [containerView bounds];
     [(PXGViewCoordinator *)self insets];
     PXEdgeInsetsInsetRect();
-    [v8 setFrame:?];
+    [tungstenView setFrame:?];
     [(PXGViewCoordinator *)self _addTungstenViewToContainerView];
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v10 = [(NSMapTable *)self->_backgroundColorByViewBeforeTransition keyEnumerator];
-    v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    keyEnumerator = [(NSMapTable *)self->_backgroundColorByViewBeforeTransition keyEnumerator];
+    v11 = [keyEnumerator countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v11)
     {
       v12 = v11;
@@ -89,7 +89,7 @@
         {
           if (*v18 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(keyEnumerator);
           }
 
           v15 = *(*(&v17 + 1) + 8 * i);
@@ -97,96 +97,96 @@
           [v15 setBackgroundColor:v16];
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v12 = [keyEnumerator countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v12);
     }
 
     [(NSMapTable *)self->_backgroundColorByViewBeforeTransition removeAllObjects];
-    [v8 forceUpdate];
+    [tungstenView forceUpdate];
     [(PXGViewCoordinator *)self setIsPreparedForTransition:0];
   }
 }
 
-- (void)prepareForTransitionInContainerView:(id)a3 withContentFrame:(CGRect)a4
+- (void)prepareForTransitionInContainerView:(id)view withContentFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v15 = a3;
-  v9 = [(PXGViewCoordinator *)self tungstenView];
-  v10 = [(PXGViewCoordinator *)self transitionLayout];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
+  tungstenView = [(PXGViewCoordinator *)self tungstenView];
+  transitionLayout = [(PXGViewCoordinator *)self transitionLayout];
 
-  if (v10)
+  if (transitionLayout)
   {
-    [v15 bounds];
-    [v9 setFrame:?];
-    v11 = [(PXGViewCoordinator *)self transitionLayout];
-    [v11 setContentFrameOverride:{x, y, width, height}];
+    [viewCopy bounds];
+    [tungstenView setFrame:?];
+    transitionLayout2 = [(PXGViewCoordinator *)self transitionLayout];
+    [transitionLayout2 setContentFrameOverride:{x, y, width, height}];
   }
 
   [(NSMapTable *)self->_backgroundColorByViewBeforeTransition removeAllObjects];
   if ([(PXGViewCoordinator *)self shouldMoveTungstenViewDuringTransition])
   {
     backgroundColorByViewBeforeTransition = self->_backgroundColorByViewBeforeTransition;
-    v13 = [v9 backgroundColor];
-    [(NSMapTable *)backgroundColorByViewBeforeTransition setObject:v13 forKey:v9];
+    backgroundColor = [tungstenView backgroundColor];
+    [(NSMapTable *)backgroundColorByViewBeforeTransition setObject:backgroundColor forKey:tungstenView];
 
-    v14 = [MEMORY[0x277D75348] clearColor];
-    [v9 setBackgroundColor:v14];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [tungstenView setBackgroundColor:clearColor];
 
-    [v15 addSubview:v9];
+    [viewCopy addSubview:tungstenView];
   }
 
-  [v9 forceUpdate];
+  [tungstenView forceUpdate];
   [(PXGViewCoordinator *)self setIsPreparedForTransition:1];
 }
 
-- (PXGViewCoordinator)initWithContentLayout:(id)a3 containerView:(id)a4 belowSubview:(id)a5 containerViewController:(id)a6 configuration:(id)a7
+- (PXGViewCoordinator)initWithContentLayout:(id)layout containerView:(id)view belowSubview:(id)subview containerViewController:(id)controller configuration:(id)configuration
 {
   v42[2] = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  layoutCopy = layout;
+  viewCopy = view;
+  subviewCopy = subview;
+  controllerCopy = controller;
+  configurationCopy = configuration;
   v41.receiver = self;
   v41.super_class = PXGViewCoordinator;
   v18 = [(PXGViewCoordinator *)&v41 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_contentLayout, a3);
-    objc_storeWeak(&v19->_containerView, v14);
-    objc_storeWeak(&v19->_belowSubview, v15);
+    objc_storeStrong(&v18->_contentLayout, layout);
+    objc_storeWeak(&v19->_containerView, viewCopy);
+    objc_storeWeak(&v19->_belowSubview, subviewCopy);
     v19->_shouldMoveTungstenViewDuringTransition = 1;
-    v20 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     backgroundColorByViewBeforeTransition = v19->_backgroundColorByViewBeforeTransition;
-    v19->_backgroundColorByViewBeforeTransition = v20;
+    v19->_backgroundColorByViewBeforeTransition = weakToStrongObjectsMapTable;
 
-    if (v17)
+    if (configurationCopy)
     {
-      v17[2](v17, v19);
+      configurationCopy[2](configurationCopy, v19);
     }
 
-    if (v16)
+    if (controllerCopy)
     {
       v22 = _tungstenViewCoordinatorsByContainerViewController;
       if (!_tungstenViewCoordinatorsByContainerViewController)
       {
-        v23 = [MEMORY[0x277CCAB00] weakToWeakObjectsMapTable];
+        weakToWeakObjectsMapTable = [MEMORY[0x277CCAB00] weakToWeakObjectsMapTable];
         v24 = _tungstenViewCoordinatorsByContainerViewController;
-        _tungstenViewCoordinatorsByContainerViewController = v23;
+        _tungstenViewCoordinatorsByContainerViewController = weakToWeakObjectsMapTable;
 
         v22 = _tungstenViewCoordinatorsByContainerViewController;
       }
 
-      [v22 setObject:v19 forKey:v16];
+      [v22 setObject:v19 forKey:controllerCopy];
     }
 
-    v25 = v13;
+    v25 = layoutCopy;
     if ([(PXGViewCoordinator *)v19 shouldEmbedContentLayout])
     {
       v26 = [[PXGTransitioningLayout alloc] initWithContentLayout:v25];
@@ -203,9 +203,9 @@
     v30 = [MEMORY[0x277CBEA60] arrayWithObjects:v42 count:2];
 
     LOBYTE(v29) = [(PXGViewCoordinator *)v19 metalViewInScrollViewAllowed];
-    objc_storeWeak(&v19->_containerView, v14);
+    objc_storeWeak(&v19->_containerView, viewCopy);
     v31 = [PXGView alloc];
-    [v14 bounds];
+    [viewCopy bounds];
     [(PXGViewCoordinator *)v19 insets];
     PXEdgeInsetsInsetRect();
     v38[0] = 0;
@@ -219,14 +219,14 @@
     [(PXGView *)v19->_tungstenView setRootLayout:v25];
     [(PXGView *)v19->_tungstenView setAutoresizingMask:18];
     v34 = v19->_tungstenView;
-    v35 = [(PXGViewCoordinator *)v19 mediaProvider];
-    [(PXGView *)v34 registerAllTextureProvidersWithMediaProvider:v35];
+    mediaProvider = [(PXGViewCoordinator *)v19 mediaProvider];
+    [(PXGView *)v34 registerAllTextureProvidersWithMediaProvider:mediaProvider];
 
     [(PXGViewCoordinator *)v19 _addTungstenViewToContainerView];
-    v36 = [(PXGView *)v19->_tungstenView scrollViewController];
-    [v36 setShowsHorizontalScrollIndicator:{-[PXGViewCoordinator showsHorizontalScrollIndicator](v19, "showsHorizontalScrollIndicator")}];
-    [v36 setShowsVerticalScrollIndicator:{-[PXGViewCoordinator showsVerticalScrollIndicator](v19, "showsVerticalScrollIndicator")}];
-    [v36 setContentInsetAdjustmentBehavior:{-[PXGViewCoordinator contentInsetAdjustmentBehavior](v19, "contentInsetAdjustmentBehavior")}];
+    scrollViewController = [(PXGView *)v19->_tungstenView scrollViewController];
+    [scrollViewController setShowsHorizontalScrollIndicator:{-[PXGViewCoordinator showsHorizontalScrollIndicator](v19, "showsHorizontalScrollIndicator")}];
+    [scrollViewController setShowsVerticalScrollIndicator:{-[PXGViewCoordinator showsVerticalScrollIndicator](v19, "showsVerticalScrollIndicator")}];
+    [scrollViewController setContentInsetAdjustmentBehavior:{-[PXGViewCoordinator contentInsetAdjustmentBehavior](v19, "contentInsetAdjustmentBehavior")}];
   }
 
   return v19;
@@ -234,8 +234,8 @@
 
 - (PXGViewCoordinator)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXGViewCoordinator.m" lineNumber:40 description:{@"%s is not available as initializer", "-[PXGViewCoordinator init]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGViewCoordinator.m" lineNumber:40 description:{@"%s is not available as initializer", "-[PXGViewCoordinator init]"}];
 
   abort();
 }

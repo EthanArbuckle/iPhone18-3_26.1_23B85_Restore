@@ -8,10 +8,10 @@
 {
   v3 = +[NSMutableString string];
   v4 = [(NSData *)self length];
-  v5 = [(NSData *)self bytes];
+  bytes = [(NSData *)self bytes];
   if (v4 >= 1)
   {
-    v6 = v5;
+    v6 = bytes;
     do
     {
       v7 = *v6++;

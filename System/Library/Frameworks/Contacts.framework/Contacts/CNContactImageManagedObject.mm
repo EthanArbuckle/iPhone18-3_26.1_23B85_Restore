@@ -1,163 +1,163 @@
 @interface CNContactImageManagedObject
-- (void)setupWithContactImage:(id)a3 contactIdentifier:(id)a4;
-- (void)setupWithContactImage:(id)a3 contactIdentifier:(id)a4 externalDetails:(id)a5 isCurrent:(BOOL)a6;
-- (void)setupWithContactImage:(id)a3 pairedPoster:(id)a4 contactIdentifier:(id)a5;
-- (void)setupWithContactImage:(id)a3 pairedPoster:(id)a4 contactIdentifier:(id)a5 externalDetails:(id)a6 isCurrent:(BOOL)a7;
-- (void)updateWithContactImage:(id)a3;
-- (void)updateWithContactImage:(id)a3 pairedPoster:(id)a4;
+- (void)setupWithContactImage:(id)image contactIdentifier:(id)identifier;
+- (void)setupWithContactImage:(id)image contactIdentifier:(id)identifier externalDetails:(id)details isCurrent:(BOOL)current;
+- (void)setupWithContactImage:(id)image pairedPoster:(id)poster contactIdentifier:(id)identifier;
+- (void)setupWithContactImage:(id)image pairedPoster:(id)poster contactIdentifier:(id)identifier externalDetails:(id)details isCurrent:(BOOL)current;
+- (void)updateWithContactImage:(id)image;
+- (void)updateWithContactImage:(id)image pairedPoster:(id)poster;
 @end
 
 @implementation CNContactImageManagedObject
 
-- (void)updateWithContactImage:(id)a3
+- (void)updateWithContactImage:(id)image
 {
-  v4 = a3;
-  v5 = [v4 imageData];
-  [(CNContactImageManagedObject *)self setImageData:v5];
+  imageCopy = image;
+  imageData = [imageCopy imageData];
+  [(CNContactImageManagedObject *)self setImageData:imageData];
 
-  v6 = [v4 lastUsedDate];
-  [(CNContactImageManagedObject *)self setLastUsedDate:v6];
+  lastUsedDate = [imageCopy lastUsedDate];
+  [(CNContactImageManagedObject *)self setLastUsedDate:lastUsedDate];
 
-  [v4 cropRect];
+  [imageCopy cropRect];
   v7 = [(CNContactImageManagedObject *)self cropRectStringFromCGRect:?];
   [(CNContactImageManagedObject *)self setCropRectString:v7];
 
-  v8 = [v4 displayString];
-  [(CNContactImageManagedObject *)self setDisplayString:v8];
+  displayString = [imageCopy displayString];
+  [(CNContactImageManagedObject *)self setDisplayString:displayString];
 
-  v9 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v4, "source")}];
+  v9 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(imageCopy, "source")}];
   [(CNContactImageManagedObject *)self setSource:v9];
 
-  v10 = [v4 sourceIdentifier];
-  [(CNContactImageManagedObject *)self setSourceIdentifier:v10];
+  sourceIdentifier = [imageCopy sourceIdentifier];
+  [(CNContactImageManagedObject *)self setSourceIdentifier:sourceIdentifier];
 
-  v11 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v4, "encodingType")}];
+  v11 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(imageCopy, "encodingType")}];
   [(CNContactImageManagedObject *)self setImageDataEncodingType:v11];
 
-  v12 = [v4 variant];
-  [(CNContactImageManagedObject *)self setVariant:v12];
+  variant = [imageCopy variant];
+  [(CNContactImageManagedObject *)self setVariant:variant];
 
-  v13 = [v4 poseConfigurationData];
-  [(CNContactImageManagedObject *)self setPoseConfigurationData:v13];
+  poseConfigurationData = [imageCopy poseConfigurationData];
+  [(CNContactImageManagedObject *)self setPoseConfigurationData:poseConfigurationData];
 
-  -[CNContactImageManagedObject setIgnoredForRevert:](self, "setIgnoredForRevert:", [v4 ignoredForRevert]);
+  -[CNContactImageManagedObject setIgnoredForRevert:](self, "setIgnoredForRevert:", [imageCopy ignoredForRevert]);
   v14 = MEMORY[0x1E696AD98];
-  v15 = [v4 itemDetails];
+  itemDetails = [imageCopy itemDetails];
 
-  v16 = [v14 numberWithUnsignedInteger:v15];
+  v16 = [v14 numberWithUnsignedInteger:itemDetails];
   [(CNContactImageManagedObject *)self setItemDetailsNumber:v16];
 }
 
-- (void)updateWithContactImage:(id)a3 pairedPoster:(id)a4
+- (void)updateWithContactImage:(id)image pairedPoster:(id)poster
 {
-  v19 = a4;
-  v6 = a3;
-  v7 = [v6 imageData];
-  [(CNContactImageManagedObject *)self setImageData:v7];
+  posterCopy = poster;
+  imageCopy = image;
+  imageData = [imageCopy imageData];
+  [(CNContactImageManagedObject *)self setImageData:imageData];
 
-  v8 = [v6 lastUsedDate];
-  [(CNContactImageManagedObject *)self setLastUsedDate:v8];
+  lastUsedDate = [imageCopy lastUsedDate];
+  [(CNContactImageManagedObject *)self setLastUsedDate:lastUsedDate];
 
-  [v6 cropRect];
+  [imageCopy cropRect];
   v9 = [(CNContactImageManagedObject *)self cropRectStringFromCGRect:?];
   [(CNContactImageManagedObject *)self setCropRectString:v9];
 
-  v10 = [v6 displayString];
-  [(CNContactImageManagedObject *)self setDisplayString:v10];
+  displayString = [imageCopy displayString];
+  [(CNContactImageManagedObject *)self setDisplayString:displayString];
 
-  v11 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v6, "source")}];
+  v11 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(imageCopy, "source")}];
   [(CNContactImageManagedObject *)self setSource:v11];
 
-  v12 = [v6 sourceIdentifier];
-  [(CNContactImageManagedObject *)self setSourceIdentifier:v12];
+  sourceIdentifier = [imageCopy sourceIdentifier];
+  [(CNContactImageManagedObject *)self setSourceIdentifier:sourceIdentifier];
 
-  v13 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v6, "encodingType")}];
+  v13 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(imageCopy, "encodingType")}];
   [(CNContactImageManagedObject *)self setImageDataEncodingType:v13];
 
-  v14 = [v6 variant];
-  [(CNContactImageManagedObject *)self setVariant:v14];
+  variant = [imageCopy variant];
+  [(CNContactImageManagedObject *)self setVariant:variant];
 
-  v15 = [v6 poseConfigurationData];
-  [(CNContactImageManagedObject *)self setPoseConfigurationData:v15];
+  poseConfigurationData = [imageCopy poseConfigurationData];
+  [(CNContactImageManagedObject *)self setPoseConfigurationData:poseConfigurationData];
 
-  -[CNContactImageManagedObject setIgnoredForRevert:](self, "setIgnoredForRevert:", [v6 ignoredForRevert]);
+  -[CNContactImageManagedObject setIgnoredForRevert:](self, "setIgnoredForRevert:", [imageCopy ignoredForRevert]);
   v16 = MEMORY[0x1E696AD98];
-  v17 = [v6 itemDetails];
+  itemDetails = [imageCopy itemDetails];
 
-  v18 = [v16 numberWithUnsignedInteger:v17];
+  v18 = [v16 numberWithUnsignedInteger:itemDetails];
   [(CNContactImageManagedObject *)self setItemDetailsNumber:v18];
 
-  [(CNContactImageManagedObject *)self setPairedPoster:v19];
+  [(CNContactImageManagedObject *)self setPairedPoster:posterCopy];
 }
 
-- (void)setupWithContactImage:(id)a3 contactIdentifier:(id)a4
+- (void)setupWithContactImage:(id)image contactIdentifier:(id)identifier
 {
   v6 = MEMORY[0x1E696AFB0];
-  v7 = a4;
-  v8 = a3;
+  identifierCopy = identifier;
+  imageCopy = image;
   v9 = [v6 alloc];
-  v10 = [v8 identifier];
-  v11 = [v9 initWithUUIDString:v10];
+  identifier = [imageCopy identifier];
+  v11 = [v9 initWithUUIDString:identifier];
 
   [(CNContactImageManagedObject *)self setIdentifier:v11];
-  [(CNContactImageManagedObject *)self setContactIdentifier:v7];
+  [(CNContactImageManagedObject *)self setContactIdentifier:identifierCopy];
 
-  [(CNContactImageManagedObject *)self updateWithContactImage:v8];
+  [(CNContactImageManagedObject *)self updateWithContactImage:imageCopy];
 }
 
-- (void)setupWithContactImage:(id)a3 contactIdentifier:(id)a4 externalDetails:(id)a5 isCurrent:(BOOL)a6
+- (void)setupWithContactImage:(id)image contactIdentifier:(id)identifier externalDetails:(id)details isCurrent:(BOOL)current
 {
-  v6 = a6;
+  currentCopy = current;
   v10 = MEMORY[0x1E696AFB0];
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  detailsCopy = details;
+  identifierCopy = identifier;
+  imageCopy = image;
   v14 = [v10 alloc];
-  v15 = [v13 identifier];
-  v16 = [v14 initWithUUIDString:v15];
+  identifier = [imageCopy identifier];
+  v16 = [v14 initWithUUIDString:identifier];
 
   [(CNContactImageManagedObject *)self setIdentifier:v16];
-  [(CNContactImageManagedObject *)self setContactIdentifier:v12];
+  [(CNContactImageManagedObject *)self setContactIdentifier:identifierCopy];
 
-  [(CNContactImageManagedObject *)self setExternalDetails:v11];
-  [(CNContactImageManagedObject *)self setIsCurrent:v6];
-  [(CNContactImageManagedObject *)self updateWithContactImage:v13];
+  [(CNContactImageManagedObject *)self setExternalDetails:detailsCopy];
+  [(CNContactImageManagedObject *)self setIsCurrent:currentCopy];
+  [(CNContactImageManagedObject *)self updateWithContactImage:imageCopy];
 }
 
-- (void)setupWithContactImage:(id)a3 pairedPoster:(id)a4 contactIdentifier:(id)a5
+- (void)setupWithContactImage:(id)image pairedPoster:(id)poster contactIdentifier:(id)identifier
 {
   v8 = MEMORY[0x1E696AFB0];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  identifierCopy = identifier;
+  posterCopy = poster;
+  imageCopy = image;
   v12 = [v8 alloc];
-  v13 = [v11 identifier];
-  v14 = [v12 initWithUUIDString:v13];
+  identifier = [imageCopy identifier];
+  v14 = [v12 initWithUUIDString:identifier];
 
   [(CNContactImageManagedObject *)self setIdentifier:v14];
-  [(CNContactImageManagedObject *)self setContactIdentifier:v9];
+  [(CNContactImageManagedObject *)self setContactIdentifier:identifierCopy];
 
-  [(CNContactImageManagedObject *)self updateWithContactImage:v11 pairedPoster:v10];
+  [(CNContactImageManagedObject *)self updateWithContactImage:imageCopy pairedPoster:posterCopy];
 }
 
-- (void)setupWithContactImage:(id)a3 pairedPoster:(id)a4 contactIdentifier:(id)a5 externalDetails:(id)a6 isCurrent:(BOOL)a7
+- (void)setupWithContactImage:(id)image pairedPoster:(id)poster contactIdentifier:(id)identifier externalDetails:(id)details isCurrent:(BOOL)current
 {
-  v7 = a7;
+  currentCopy = current;
   v12 = MEMORY[0x1E696AFB0];
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
+  detailsCopy = details;
+  identifierCopy = identifier;
+  posterCopy = poster;
+  imageCopy = image;
   v17 = [v12 alloc];
-  v18 = [v16 identifier];
-  v19 = [v17 initWithUUIDString:v18];
+  identifier = [imageCopy identifier];
+  v19 = [v17 initWithUUIDString:identifier];
 
   [(CNContactImageManagedObject *)self setIdentifier:v19];
-  [(CNContactImageManagedObject *)self setContactIdentifier:v14];
+  [(CNContactImageManagedObject *)self setContactIdentifier:identifierCopy];
 
-  [(CNContactImageManagedObject *)self setExternalDetails:v13];
-  [(CNContactImageManagedObject *)self setIsCurrent:v7];
-  [(CNContactImageManagedObject *)self updateWithContactImage:v16 pairedPoster:v15];
+  [(CNContactImageManagedObject *)self setExternalDetails:detailsCopy];
+  [(CNContactImageManagedObject *)self setIsCurrent:currentCopy];
+  [(CNContactImageManagedObject *)self updateWithContactImage:imageCopy pairedPoster:posterCopy];
 }
 
 @end

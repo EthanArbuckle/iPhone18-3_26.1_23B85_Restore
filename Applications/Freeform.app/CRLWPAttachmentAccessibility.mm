@@ -1,18 +1,18 @@
 @interface CRLWPAttachmentAccessibility
-+ (id)crlaxAttachmentElementForAttachment:(id)a3 inTextRep:(id)a4;
-+ (id)crlaxCastFrom:(id)a3;
-- (void)crlaxSetParentInteractiveCanvasController:(id)a3;
++ (id)crlaxAttachmentElementForAttachment:(id)attachment inTextRep:(id)rep;
++ (id)crlaxCastFrom:(id)from;
+- (void)crlaxSetParentInteractiveCanvasController:(id)controller;
 - (void)dealloc;
-- (void)setParentStorage:(id)a3;
+- (void)setParentStorage:(id)storage;
 @end
 
 @implementation CRLWPAttachmentAccessibility
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
@@ -25,21 +25,21 @@
   [(CRLWPAttachmentAccessibility *)&v3 dealloc];
 }
 
-- (void)setParentStorage:(id)a3
+- (void)setParentStorage:(id)storage
 {
-  v4 = a3;
+  storageCopy = storage;
   [(CRLWPAttachmentAccessibility *)self crlaxParentStorageWasUpdated];
   v5.receiver = self;
   v5.super_class = CRLWPAttachmentAccessibility;
-  [(CRLWPAttachmentAccessibility *)&v5 setParentStorage:v4];
+  [(CRLWPAttachmentAccessibility *)&v5 setParentStorage:storageCopy];
 }
 
-- (void)crlaxSetParentInteractiveCanvasController:(id)a3
+- (void)crlaxSetParentInteractiveCanvasController:(id)controller
 {
-  v4 = a3;
-  v5 = [(CRLWPAttachmentAccessibility *)self _crlaxParentInteractiveCanvasController];
+  controllerCopy = controller;
+  _crlaxParentInteractiveCanvasController = [(CRLWPAttachmentAccessibility *)self _crlaxParentInteractiveCanvasController];
   v10 = 0;
-  v6 = v4;
+  v6 = controllerCopy;
   v7 = objc_opt_class();
   v8 = __CRLAccessibilityCastAsSafeCategory(v7, v6, 1, &v10);
   if (v10 == 1)
@@ -49,20 +49,20 @@
 
   v9 = v8;
 
-  if (v5 != v9)
+  if (_crlaxParentInteractiveCanvasController != v9)
   {
-    [v5 crlaxUnregisterLinkedTextElement:self];
+    [_crlaxParentInteractiveCanvasController crlaxUnregisterLinkedTextElement:self];
     [(CRLWPAttachmentAccessibility *)self _crlaxSetParentInteractiveCanvasController:v9];
     [v9 crlaxRegisterLinkedTextElement:self];
   }
 }
 
-+ (id)crlaxAttachmentElementForAttachment:(id)a3 inTextRep:(id)a4
++ (id)crlaxAttachmentElementForAttachment:(id)attachment inTextRep:(id)rep
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 crlaxAssociatedAXElement];
-  if (!v7)
+  attachmentCopy = attachment;
+  repCopy = rep;
+  crlaxAssociatedAXElement = [attachmentCopy crlaxAssociatedAXElement];
+  if (!crlaxAssociatedAXElement)
   {
     if (CRLAccessibilityShouldPerformValidationChecks())
     {
@@ -73,10 +73,10 @@
       }
     }
 
-    [v5 crlaxSetAssociatedAXElement:0];
+    [attachmentCopy crlaxSetAssociatedAXElement:0];
   }
 
-  return v7;
+  return crlaxAssociatedAXElement;
 }
 
 @end

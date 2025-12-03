@@ -1,6 +1,6 @@
 @interface StickerPickerInProcessViewController
-- (_TtC10StickerKit36StickerPickerInProcessViewController)initWithCoder:(id)a3;
-- (_TtC10StickerKit36StickerPickerInProcessViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC10StickerKit36StickerPickerInProcessViewController)initWithCoder:(id)coder;
+- (_TtC10StickerKit36StickerPickerInProcessViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)handleCloseButton;
 - (void)loadView;
 @end
@@ -9,25 +9,25 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_19A78BEEC();
 }
 
 - (void)handleCloseButton
 {
-  v5 = self;
-  v2 = [(StickerPickerInProcessViewController *)v5 _hostedWindowScene];
-  if (v2)
+  selfCopy = self;
+  _hostedWindowScene = [(StickerPickerInProcessViewController *)selfCopy _hostedWindowScene];
+  if (_hostedWindowScene)
   {
-    v3 = v2;
-    v4 = [objc_opt_self() actionForStickerPickerSceneDidRequestDismissal];
+    v3 = _hostedWindowScene;
+    actionForStickerPickerSceneDidRequestDismissal = [objc_opt_self() actionForStickerPickerSceneDidRequestDismissal];
     [v3 sendAction_];
   }
 }
 
-- (_TtC10StickerKit36StickerPickerInProcessViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC10StickerKit36StickerPickerInProcessViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_19A7AB014();
     v7 = v6;
@@ -40,7 +40,7 @@
 
   v8 = OBJC_IVAR____TtC10StickerKit36StickerPickerInProcessViewController_nav;
   v9 = objc_allocWithZone(MEMORY[0x1E69DCCD8]);
-  v10 = a4;
+  bundleCopy = bundle;
   *(&self->super.super.super.isa + v8) = [v9 init];
   if (v7)
   {
@@ -54,20 +54,20 @@
 
   v14.receiver = self;
   v14.super_class = type metadata accessor for StickerPickerInProcessViewController();
-  v12 = [(StickerPickerInProcessViewController *)&v14 initWithNibName:v11 bundle:v10];
+  v12 = [(StickerPickerInProcessViewController *)&v14 initWithNibName:v11 bundle:bundleCopy];
 
   return v12;
 }
 
-- (_TtC10StickerKit36StickerPickerInProcessViewController)initWithCoder:(id)a3
+- (_TtC10StickerKit36StickerPickerInProcessViewController)initWithCoder:(id)coder
 {
   v5 = OBJC_IVAR____TtC10StickerKit36StickerPickerInProcessViewController_nav;
   v6 = objc_allocWithZone(MEMORY[0x1E69DCCD8]);
-  v7 = a3;
+  coderCopy = coder;
   *(&self->super.super.super.isa + v5) = [v6 init];
   v10.receiver = self;
   v10.super_class = type metadata accessor for StickerPickerInProcessViewController();
-  v8 = [(StickerPickerInProcessViewController *)&v10 initWithCoder:v7];
+  v8 = [(StickerPickerInProcessViewController *)&v10 initWithCoder:coderCopy];
 
   if (v8)
   {

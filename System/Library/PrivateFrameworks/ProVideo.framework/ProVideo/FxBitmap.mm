@@ -1,15 +1,15 @@
 @interface FxBitmap
 - (BOOL)_verifyImage;
 - (FxBitmap)init;
-- (FxBitmap)initWithCopy:(id)a3;
-- (FxBitmap)initWithCopy:(id)a3 andInfo:(id *)a4;
-- (FxBitmap)initWithInfo:(id *)a3;
-- (FxBitmap)initWithInfo:(id *)a3 andData:(void *)a4;
-- (FxBitmap)initWithInfo:(id *)a3 rowBytes:(unint64_t)a4 andData:(void *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (FxBitmap)initWithCopy:(id)copy;
+- (FxBitmap)initWithCopy:(id)copy andInfo:(id *)info;
+- (FxBitmap)initWithInfo:(id *)info;
+- (FxBitmap)initWithInfo:(id *)info andData:(void *)data;
+- (FxBitmap)initWithInfo:(id *)info rowBytes:(unint64_t)bytes andData:(void *)data;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)_packedRowBytes;
-- (void)_setOwnedDataPtr:(void *)a3;
-- (void)dataPtrForPositionX:(unint64_t)a3 Y:(unint64_t)a4;
+- (void)_setOwnedDataPtr:(void *)ptr;
+- (void)dataPtrForPositionX:(unint64_t)x Y:(unint64_t)y;
 - (void)dealloc;
 @end
 
@@ -27,8 +27,8 @@
   [(FxImage *)&v6 imageInfo];
   v5.receiver = self;
   v5.super_class = FxBitmap;
-  v3 = [(FxImage *)&v5 depth];
-  return 4 * v7 * (v3 >> 3);
+  depth = [(FxImage *)&v5 depth];
+  return 4 * v7 * (depth >> 3);
 }
 
 - (FxBitmap)init
@@ -55,14 +55,14 @@
   return result;
 }
 
-- (FxBitmap)initWithInfo:(id *)a3
+- (FxBitmap)initWithInfo:(id *)info
 {
-  v4 = *&a3->var6;
-  v15[2] = *&a3->var4;
+  v4 = *&info->var6;
+  v15[2] = *&info->var4;
   v15[3] = v4;
-  var8 = a3->var8;
-  v5 = *&a3->var2;
-  v15[0] = *&a3->var0;
+  var8 = info->var8;
+  v5 = *&info->var2;
+  v15[0] = *&info->var0;
   v15[1] = v5;
   v14.receiver = self;
   v14.super_class = FxBitmap;
@@ -74,12 +74,12 @@
     if (bitmapPriv || (bitmapPriv = malloc_type_calloc(1uLL, 0x18uLL, 0x1080040BEB90DD3uLL), (v7->_bitmapPriv = bitmapPriv) != 0))
     {
       bitmapPriv->var2 = 1;
-      v9 = [(FxBitmap *)v7 _packedRowBytes];
-      v7->_bitmapPriv->var1 = v9;
-      v10 = a3->var1 * v9;
+      _packedRowBytes = [(FxBitmap *)v7 _packedRowBytes];
+      v7->_bitmapPriv->var1 = _packedRowBytes;
+      v10 = info->var1 * _packedRowBytes;
       if (v10 <= 0x32000)
       {
-        v11 = a3->var1 * v9;
+        v11 = info->var1 * _packedRowBytes;
       }
 
       else
@@ -109,14 +109,14 @@
   return v7;
 }
 
-- (FxBitmap)initWithInfo:(id *)a3 andData:(void *)a4
+- (FxBitmap)initWithInfo:(id *)info andData:(void *)data
 {
-  v5 = *&a3->var6;
-  v12[2] = *&a3->var4;
+  v5 = *&info->var6;
+  v12[2] = *&info->var4;
   v12[3] = v5;
-  var8 = a3->var8;
-  v6 = *&a3->var2;
-  v12[0] = *&a3->var0;
+  var8 = info->var8;
+  v6 = *&info->var2;
+  v12[0] = *&info->var0;
   v12[1] = v6;
   v11.receiver = self;
   v11.super_class = FxBitmap;
@@ -127,7 +127,7 @@
     bitmapPriv = v7->_bitmapPriv;
     if (bitmapPriv || (bitmapPriv = malloc_type_calloc(1uLL, 0x18uLL, 0x1080040BEB90DD3uLL), (v8->_bitmapPriv = bitmapPriv) != 0))
     {
-      bitmapPriv->var0 = a4;
+      bitmapPriv->var0 = data;
       v8->_bitmapPriv->var2 = 0;
       v8->_bitmapPriv->var1 = [(FxBitmap *)v8 _packedRowBytes];
     }
@@ -136,38 +136,38 @@
   return v8;
 }
 
-- (FxBitmap)initWithInfo:(id *)a3 rowBytes:(unint64_t)a4 andData:(void *)a5
+- (FxBitmap)initWithInfo:(id *)info rowBytes:(unint64_t)bytes andData:(void *)data
 {
-  v6 = *&a3->var6;
-  v10[2] = *&a3->var4;
+  v6 = *&info->var6;
+  v10[2] = *&info->var4;
   v10[3] = v6;
-  var8 = a3->var8;
-  v7 = *&a3->var2;
-  v10[0] = *&a3->var0;
+  var8 = info->var8;
+  v7 = *&info->var2;
+  v10[0] = *&info->var0;
   v10[1] = v7;
-  result = [(FxBitmap *)self initWithInfo:v10 andData:a5];
+  result = [(FxBitmap *)self initWithInfo:v10 andData:data];
   if (result)
   {
     bitmapPriv = result->_bitmapPriv;
     if (bitmapPriv)
     {
-      bitmapPriv->var1 = a4;
+      bitmapPriv->var1 = bytes;
     }
   }
 
   return result;
 }
 
-- (FxBitmap)initWithCopy:(id)a3
+- (FxBitmap)initWithCopy:(id)copy
 {
   v11 = 0;
   v9 = 0u;
   v10 = 0u;
   v7 = 0u;
   v8 = 0u;
-  if (a3)
+  if (copy)
   {
-    [a3 imageInfo];
+    [copy imageInfo];
   }
 
   v5[2] = v9;
@@ -178,20 +178,20 @@
   return [(FxBitmap *)self initWithInfo:v5];
 }
 
-- (FxBitmap)initWithCopy:(id)a3 andInfo:(id *)a4
+- (FxBitmap)initWithCopy:(id)copy andInfo:(id *)info
 {
-  v7 = [(FxBitmap *)self _packedRowBytes];
-  v8 = *&a4->var6;
-  v11[2] = *&a4->var4;
+  _packedRowBytes = [(FxBitmap *)self _packedRowBytes];
+  v8 = *&info->var6;
+  v11[2] = *&info->var4;
   v11[3] = v8;
-  var8 = a4->var8;
-  v9 = *&a4->var2;
-  v11[0] = *&a4->var0;
+  var8 = info->var8;
+  v9 = *&info->var2;
+  v11[0] = *&info->var0;
   v11[1] = v9;
-  return [(FxBitmap *)self initWithCopy:a3 andInfo:v11 andRowBytes:v7];
+  return [(FxBitmap *)self initWithCopy:copy andInfo:v11 andRowBytes:_packedRowBytes];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[FxBitmap allocWithZone:?], "initWithCopy:", self];
   v5 = v4;
@@ -202,12 +202,12 @@
       goto LABEL_10;
     }
 
-    v6 = [(FxBitmap *)self rowBytes];
+    rowBytes = [(FxBitmap *)self rowBytes];
     bitmapPriv = v5->_bitmapPriv;
-    bitmapPriv->var1 = v6;
+    bitmapPriv->var1 = rowBytes;
     bitmapPriv->var2 = 1;
-    v8 = [(FxImage *)self height];
-    v9 = [(FxBitmap *)self rowBytes]* v8;
+    height = [(FxImage *)self height];
+    v9 = [(FxBitmap *)self rowBytes]* height;
     v5->_bitmapPriv->var0 = malloc_type_malloc(v9, 0x5D2CCAF7uLL);
     var0 = v5->_bitmapPriv->var0;
     if (!var0 && guaranteeMemory != 0)
@@ -252,32 +252,32 @@ LABEL_10:
   [(FxImage *)&v4 dealloc];
 }
 
-- (void)dataPtrForPositionX:(unint64_t)a3 Y:(unint64_t)a4
+- (void)dataPtrForPositionX:(unint64_t)x Y:(unint64_t)y
 {
   if (!self->_bitmapPriv->var0)
   {
     return 0;
   }
 
-  v7 = [(FxImage *)self depth];
+  depth = [(FxImage *)self depth];
   var0 = self->_bitmapPriv->var0;
-  return &var0[[(FxBitmap *)self rowBytes]* a4 + ((v7 >> 1) & 0xFFFFFFFFFFFFFFFCLL) * a3];
+  return &var0[[(FxBitmap *)self rowBytes]* y + ((depth >> 1) & 0xFFFFFFFFFFFFFFFCLL) * x];
 }
 
 - (BOOL)_verifyImage
 {
   v6.receiver = self;
   v6.super_class = FxBitmap;
-  v3 = [(FxImage *)&v6 _verifyImage];
-  if (v3)
+  _verifyImage = [(FxImage *)&v6 _verifyImage];
+  if (_verifyImage)
   {
     bitmapPriv = self->_bitmapPriv;
     if (bitmapPriv)
     {
       if (bitmapPriv->var0 && bitmapPriv->var1)
       {
-        LOBYTE(v3) = 1;
-        return v3;
+        LOBYTE(_verifyImage) = 1;
+        return _verifyImage;
       }
 
       NSLog(&cfstr_FxbitmapVerify_0.isa);
@@ -288,13 +288,13 @@ LABEL_10:
       NSLog(&cfstr_FxbitmapVerify.isa);
     }
 
-    LOBYTE(v3) = 0;
+    LOBYTE(_verifyImage) = 0;
   }
 
-  return v3;
+  return _verifyImage;
 }
 
-- (void)_setOwnedDataPtr:(void *)a3
+- (void)_setOwnedDataPtr:(void *)ptr
 {
   bitmapPriv = self->_bitmapPriv;
   if (bitmapPriv->var2 && bitmapPriv->var0)
@@ -303,7 +303,7 @@ LABEL_10:
     bitmapPriv = self->_bitmapPriv;
   }
 
-  bitmapPriv->var0 = a3;
+  bitmapPriv->var0 = ptr;
   self->_bitmapPriv->var2 = 1;
 }
 

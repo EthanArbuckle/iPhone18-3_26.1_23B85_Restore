@@ -1,36 +1,36 @@
 @interface BCLayoutMetrics
-- (BCLayoutMetrics)initWithObserver:(id)a3 factory:(id)a4 manager:(id)a5 delegate:(id)a6;
+- (BCLayoutMetrics)initWithObserver:(id)observer factory:(id)factory manager:(id)manager delegate:(id)delegate;
 - (BCLayoutMetricsDelegate)delegate;
 - (BCMetricsEnvironmentObserver)observer;
-- (BOOL)_needsUpdatingWithEnvironment:(id)a3;
-- (BOOL)updateIfNeededWithEnvironment:(id)a3;
-- (id)_computeMetricsWithEnvironment:(id)a3;
+- (BOOL)_needsUpdatingWithEnvironment:(id)environment;
+- (BOOL)updateIfNeededWithEnvironment:(id)environment;
+- (id)_computeMetricsWithEnvironment:(id)environment;
 - (void)_fontNeedsUpdate;
 - (void)dealloc;
 - (void)invalidate;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation BCLayoutMetrics
 
-- (BCLayoutMetrics)initWithObserver:(id)a3 factory:(id)a4 manager:(id)a5 delegate:(id)a6
+- (BCLayoutMetrics)initWithObserver:(id)observer factory:(id)factory manager:(id)manager delegate:(id)delegate
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  observerCopy = observer;
+  factoryCopy = factory;
+  managerCopy = manager;
+  delegateCopy = delegate;
   v22.receiver = self;
   v22.super_class = BCLayoutMetrics;
   v14 = [(BCLayoutMetrics *)&v22 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak(&v14->_observer, v10);
-    objc_storeStrong(&v15->_metricsTemplateFactory, a4);
-    objc_storeStrong(&v15->_manager, a5);
-    objc_storeWeak(&v15->_delegate, v13);
-    v16 = [v13 metricsTemplateURL];
-    v17 = [(TUITemplateFactory *)v15->_metricsTemplateFactory templateFromURL:v16];
+    objc_storeWeak(&v14->_observer, observerCopy);
+    objc_storeStrong(&v15->_metricsTemplateFactory, factory);
+    objc_storeStrong(&v15->_manager, manager);
+    objc_storeWeak(&v15->_delegate, delegateCopy);
+    metricsTemplateURL = [delegateCopy metricsTemplateURL];
+    v17 = [(TUITemplateFactory *)v15->_metricsTemplateFactory templateFromURL:metricsTemplateURL];
     metricsTemplate = v15->_metricsTemplate;
     v15->_metricsTemplate = v17;
 
@@ -63,9 +63,9 @@
   [WeakRetained bc_environmentDidChangeFont];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (off_33C828 == a6)
+  if (off_33C828 == context)
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -79,19 +79,19 @@
   {
     v6.receiver = self;
     v6.super_class = BCLayoutMetrics;
-    [(BCLayoutMetrics *)&v6 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(BCLayoutMetrics *)&v6 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
-- (BOOL)updateIfNeededWithEnvironment:(id)a3
+- (BOOL)updateIfNeededWithEnvironment:(id)environment
 {
-  v4 = a3;
-  v5 = [(BCLayoutMetrics *)self _needsUpdatingWithEnvironment:v4];
+  environmentCopy = environment;
+  v5 = [(BCLayoutMetrics *)self _needsUpdatingWithEnvironment:environmentCopy];
   if (v5)
   {
-    if (v4)
+    if (environmentCopy)
     {
-      v6 = [(BCLayoutMetrics *)self _computeMetricsWithEnvironment:v4];
+      v6 = [(BCLayoutMetrics *)self _computeMetricsWithEnvironment:environmentCopy];
     }
 
     else
@@ -106,16 +106,16 @@
   return v5;
 }
 
-- (BOOL)_needsUpdatingWithEnvironment:(id)a3
+- (BOOL)_needsUpdatingWithEnvironment:(id)environment
 {
-  v4 = a3;
-  v5 = [(BCLayoutMetrics *)self environment];
+  environmentCopy = environment;
+  environment = [(BCLayoutMetrics *)self environment];
 
   LOBYTE(v6) = 1;
-  if (v4 && v5)
+  if (environmentCopy && environment)
   {
-    v7 = [(BCLayoutMetrics *)self environment];
-    v6 = [v4 isEqualToEnvironment:v7] ^ 1;
+    environment2 = [(BCLayoutMetrics *)self environment];
+    v6 = [environmentCopy isEqualToEnvironment:environment2] ^ 1;
   }
 
   return v6;
@@ -130,20 +130,20 @@
   self->_metrics = 0;
 }
 
-- (id)_computeMetricsWithEnvironment:(id)a3
+- (id)_computeMetricsWithEnvironment:(id)environment
 {
-  v5 = a3;
+  environmentCopy = environment;
   kdebug_trace();
-  objc_storeStrong(&self->_environment, a3);
+  objc_storeStrong(&self->_environment, environment);
   v6 = [TUIInstantiateContext alloc];
-  v7 = [(TUITemplate *)self->_metricsTemplate package];
+  package = [(TUITemplate *)self->_metricsTemplate package];
   manager = self->_manager;
   v9 = objc_opt_new();
-  v10 = [v6 initWithDelegate:0 package:v7 manager:manager identifierMap:v9 environment:v5 state:0 feedId:TUIFeedIdentifierNil];
+  v10 = [v6 initWithDelegate:0 package:package manager:manager identifierMap:v9 environment:environmentCopy state:0 feedId:TUIFeedIdentifierNil];
 
-  v11 = [(BCLayoutMetrics *)self delegate];
-  v12 = [(TUITemplate *)self->_metricsTemplate package];
-  [v11 addSymbolsToMetricsEnvironment:v5 package:v12];
+  delegate = [(BCLayoutMetrics *)self delegate];
+  package2 = [(TUITemplate *)self->_metricsTemplate package];
+  [delegate addSymbolsToMetricsEnvironment:environmentCopy package:package2];
 
   v13 = +[NSMutableDictionary dictionary];
   v25 = v10;
@@ -153,9 +153,9 @@
   v28 = 0u;
   v29 = 0u;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v16 = [objc_opt_class() supportedMetrics];
+  supportedMetrics = [objc_opt_class() supportedMetrics];
 
-  v17 = [v16 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  v17 = [supportedMetrics countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v17)
   {
     v18 = v17;
@@ -166,20 +166,20 @@
       {
         if (*v27 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(supportedMetrics);
         }
 
         v21 = *(*(&v26 + 1) + 8 * i);
-        v22 = [objc_opt_class() sectionName];
-        v23 = [v14 sectionForKey:v22];
+        sectionName = [objc_opt_class() sectionName];
+        v23 = [v14 sectionForKey:sectionName];
         if (v23)
         {
           [v21 configureWithSection:v23];
-          [v13 setObject:v21 forKey:v22];
+          [v13 setObject:v21 forKey:sectionName];
         }
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v18 = [supportedMetrics countByEnumeratingWithState:&v26 objects:v30 count:16];
     }
 
     while (v18);

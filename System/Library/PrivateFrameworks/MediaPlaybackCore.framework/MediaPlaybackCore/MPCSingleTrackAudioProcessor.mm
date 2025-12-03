@@ -1,7 +1,7 @@
 @interface MPCSingleTrackAudioProcessor
-- (BOOL)configureQueueItem:(id)a3;
+- (BOOL)configureQueueItem:(id)item;
 - (MPCPlaybackEngine)playbackEngine;
-- (MPCSingleTrackAudioProcessor)initWithPlaybackEngine:(id)a3;
+- (MPCSingleTrackAudioProcessor)initWithPlaybackEngine:(id)engine;
 - (opaqueMTAudioProcessingTap)audioProcessingTap;
 - (void)_createAudioTap;
 - (void)_destroyAudioTap;
@@ -38,9 +38,9 @@
   callbacks.prepare = _MPCAudioTapPrepareCallback_1814;
   callbacks.process = _MPCAudioTapProcess_1809;
   callbacks.unprepare = _MPCAudioTapUnprepareCallback_1808;
-  v3 = [(MPCSingleTrackAudioProcessor *)self creationFlags];
+  creationFlags = [(MPCSingleTrackAudioProcessor *)self creationFlags];
   tapOut = 0;
-  v4 = MTAudioProcessingTapCreate(*MEMORY[0x1E695E480], &callbacks, v3, &tapOut);
+  v4 = MTAudioProcessingTapCreate(*MEMORY[0x1E695E480], &callbacks, creationFlags, &tapOut);
   if (!v4)
   {
     goto LABEL_24;
@@ -151,15 +151,15 @@ LABEL_25:
   [(MPCSingleTrackAudioProcessor *)self _createAudioTap];
 }
 
-- (BOOL)configureQueueItem:(id)a3
+- (BOOL)configureQueueItem:(id)item
 {
   v64 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 isAssetLoaded] && -[MPCSingleTrackAudioProcessor shouldAttachAudioTapToItem:](self, "shouldAttachAudioTapToItem:", v4))
+  itemCopy = item;
+  if ([itemCopy isAssetLoaded] && -[MPCSingleTrackAudioProcessor shouldAttachAudioTapToItem:](self, "shouldAttachAudioTapToItem:", itemCopy))
   {
-    v5 = [(MPCSingleTrackAudioProcessor *)self audioProcessingTap];
-    v37 = [v4 playerItem];
-    v6 = [v37 asset];
+    audioProcessingTap = [(MPCSingleTrackAudioProcessor *)self audioProcessingTap];
+    playerItem = [itemCopy playerItem];
+    asset = [playerItem asset];
     v7 = dispatch_semaphore_create(0);
     v53 = 0;
     v54 = &v53;
@@ -176,7 +176,7 @@ LABEL_25:
     v42[2] = __51__MPCSingleTrackAudioProcessor_configureQueueItem___block_invoke;
     v42[3] = &unk_1E8239078;
     v45 = &v53;
-    v8 = v6;
+    v8 = asset;
     v43 = v8;
     v46 = &v47;
     v9 = v7;
@@ -202,33 +202,33 @@ LABEL_42:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v59 = self;
+        selfCopy6 = self;
         v60 = 2114;
-        v61 = v4;
+        v61 = itemCopy;
         _os_log_impl(&dword_1C5C61000, v20, OS_LOG_TYPE_DEFAULT, "[AP] - %{public}@ - Tracks loaded for %{public}@ - Setting up audio tap", buf, 0x16u);
       }
 
-      v35 = [MEMORY[0x1E6988040] audioMixInputParameters];
-      v21 = [v8 tracks];
-      v22 = [v21 firstObject];
-      -[NSObject setTrackID:](v35, "setTrackID:", [v22 trackID]);
+      audioMixInputParameters = [MEMORY[0x1E6988040] audioMixInputParameters];
+      tracks = [v8 tracks];
+      firstObject = [tracks firstObject];
+      -[NSObject setTrackID:](audioMixInputParameters, "setTrackID:", [firstObject trackID]);
 
-      [v35 setAudioTapProcessor:v5];
-      v34 = [v37 audioMix];
-      v33 = [MEMORY[0x1E6988038] audioMix];
+      [audioMixInputParameters setAudioTapProcessor:audioProcessingTap];
+      audioMix = [playerItem audioMix];
+      audioMix2 = [MEMORY[0x1E6988038] audioMix];
       v36 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      if (v34)
+      if (audioMix)
       {
         v23 = _MPCLogCategoryPlayback();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
         {
-          v24 = [v34 inputParameters];
+          inputParameters = [audioMix inputParameters];
           *buf = 138543874;
-          v59 = self;
+          selfCopy6 = self;
           v60 = 2114;
-          v61 = v4;
+          v61 = itemCopy;
           v62 = 2114;
-          v63 = v24;
+          v63 = inputParameters;
           _os_log_impl(&dword_1C5C61000, v23, OS_LOG_TYPE_DEFAULT, "[AP] - %{public}@ - Found existing audio mix on %{public}@ - Input parameters: %{public}@", buf, 0x20u);
         }
 
@@ -236,8 +236,8 @@ LABEL_42:
         v41 = 0u;
         v38 = 0u;
         v39 = 0u;
-        v25 = [v34 inputParameters];
-        v26 = [v25 countByEnumeratingWithState:&v38 objects:v57 count:16];
+        inputParameters2 = [audioMix inputParameters];
+        v26 = [inputParameters2 countByEnumeratingWithState:&v38 objects:v57 count:16];
         if (v26)
         {
           v27 = *v39;
@@ -247,19 +247,19 @@ LABEL_42:
             {
               if (*v39 != v27)
               {
-                objc_enumerationMutation(v25);
+                objc_enumerationMutation(inputParameters2);
               }
 
               v29 = *(*(&v38 + 1) + 8 * i);
-              if ([v29 audioTapProcessor] && objc_msgSend(v29, "audioTapProcessor") == v5)
+              if ([v29 audioTapProcessor] && objc_msgSend(v29, "audioTapProcessor") == audioProcessingTap)
               {
                 v31 = _MPCLogCategoryPlayback();
                 if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 138543618;
-                  v59 = self;
+                  selfCopy6 = self;
                   v60 = 2114;
-                  v61 = v4;
+                  v61 = itemCopy;
                   _os_log_impl(&dword_1C5C61000, v31, OS_LOG_TYPE_DEFAULT, "[AP] - %{public}@ - Audio tap already setup [Not changing existing audio mix] - item: %{public}@", buf, 0x16u);
                 }
 
@@ -272,7 +272,7 @@ LABEL_42:
               }
             }
 
-            v26 = [v25 countByEnumeratingWithState:&v38 objects:v57 count:16];
+            v26 = [inputParameters2 countByEnumeratingWithState:&v38 objects:v57 count:16];
             if (v26)
             {
               continue;
@@ -283,13 +283,13 @@ LABEL_42:
         }
       }
 
-      [v36 addObject:v35];
-      [v33 setInputParameters:v36];
-      [v37 setAudioMix:v33];
+      [v36 addObject:audioMixInputParameters];
+      [audioMix2 setInputParameters:v36];
+      [playerItem setAudioMix:audioMix2];
 
 LABEL_40:
       v11 = 1;
-      v15 = v35;
+      v15 = audioMixInputParameters;
       goto LABEL_41;
     }
 
@@ -300,9 +300,9 @@ LABEL_40:
       {
         v17 = v48[5];
         *buf = 138543874;
-        v59 = self;
+        selfCopy6 = self;
         v60 = 2114;
-        v61 = v4;
+        v61 = itemCopy;
         v62 = 2114;
         v63 = v17;
         v16 = "[AP] - %{public}@ - Error loading tracks [No audio tap setup possible] - item: %{public}@ - error: %{public}@";
@@ -325,9 +325,9 @@ LABEL_35:
         }
 
         *buf = 138543618;
-        v59 = self;
+        selfCopy6 = self;
         v60 = 2114;
-        v61 = v4;
+        v61 = itemCopy;
         v16 = "[AP] - %{public}@ - Tracks loading failed without reason [No audio tap setup possible] - item: %{public}@";
         goto LABEL_34;
       }
@@ -335,9 +335,9 @@ LABEL_35:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v59 = self;
+        selfCopy6 = self;
         v60 = 2114;
-        v61 = v4;
+        v61 = itemCopy;
         v16 = "[AP] - %{public}@ - Tracks loading cancelled [No audio tap setup possible] - item: %{public}@";
 LABEL_34:
         v18 = v15;
@@ -390,16 +390,16 @@ intptr_t __51__MPCSingleTrackAudioProcessor_configureQueueItem___block_invoke(ui
   [(MPCSingleTrackAudioProcessor *)&v3 dealloc];
 }
 
-- (MPCSingleTrackAudioProcessor)initWithPlaybackEngine:(id)a3
+- (MPCSingleTrackAudioProcessor)initWithPlaybackEngine:(id)engine
 {
-  v4 = a3;
+  engineCopy = engine;
   v8.receiver = self;
   v8.super_class = MPCSingleTrackAudioProcessor;
   v5 = [(MPCSingleTrackAudioProcessor *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_playbackEngine, v4);
+    objc_storeWeak(&v5->_playbackEngine, engineCopy);
   }
 
   return v6;

@@ -1,25 +1,25 @@
 @interface TUIHostingGeometry
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToGeometry:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToGeometry:(id)geometry;
 - (CGSize)layoutSize;
 - (CGSize)requestedSize;
-- (TUIHostingGeometry)initWithRequestedSize:(CGSize)a3 layoutSize:(CGSize)a4 erasableInsets:(UIEdgeInsets)a5;
+- (TUIHostingGeometry)initWithRequestedSize:(CGSize)size layoutSize:(CGSize)layoutSize erasableInsets:(UIEdgeInsets)insets;
 - (UIEdgeInsets)erasableInsets;
 - (id)description;
 @end
 
 @implementation TUIHostingGeometry
 
-- (TUIHostingGeometry)initWithRequestedSize:(CGSize)a3 layoutSize:(CGSize)a4 erasableInsets:(UIEdgeInsets)a5
+- (TUIHostingGeometry)initWithRequestedSize:(CGSize)size layoutSize:(CGSize)layoutSize erasableInsets:(UIEdgeInsets)insets
 {
-  right = a5.right;
-  bottom = a5.bottom;
-  left = a5.left;
-  top = a5.top;
-  height = a4.height;
-  width = a4.width;
-  v11 = a3.height;
-  v12 = a3.width;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  height = layoutSize.height;
+  width = layoutSize.width;
+  v11 = size.height;
+  v12 = size.width;
   v14.receiver = self;
   v14.super_class = TUIHostingGeometry;
   result = [(TUIHostingGeometry *)&v14 init];
@@ -38,31 +38,31 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (v5 != objc_opt_class() || v4 == 0)
+  if (v5 != objc_opt_class() || equalCopy == 0)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = [(TUIHostingGeometry *)self isEqualToGeometry:v4];
+    v7 = [(TUIHostingGeometry *)self isEqualToGeometry:equalCopy];
   }
 
   return v7;
 }
 
-- (BOOL)isEqualToGeometry:(id)a3
+- (BOOL)isEqualToGeometry:(id)geometry
 {
-  v4 = a3;
-  [v4 requestedSize];
+  geometryCopy = geometry;
+  [geometryCopy requestedSize];
   v7 = self->_requestedSize.width == v6 && self->_requestedSize.height == v5;
-  if (v7 && (([v4 layoutSize], self->_layoutSize.width == v9) ? (v10 = self->_layoutSize.height == v8) : (v10 = 0), v10))
+  if (v7 && (([geometryCopy layoutSize], self->_layoutSize.width == v9) ? (v10 = self->_layoutSize.height == v8) : (v10 = 0), v10))
   {
-    [v4 erasableInsets];
+    [geometryCopy erasableInsets];
     v13.f64[1] = v12;
     v15.f64[1] = v14;
     v11 = vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_erasableInsets.top, v13), vceqq_f64(*&self->_erasableInsets.bottom, v15))));

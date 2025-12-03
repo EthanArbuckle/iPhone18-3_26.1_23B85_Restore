@@ -1,26 +1,26 @@
 @interface VCPRequestPersonPromoterStatusTask
-+ (id)taskWithAdvancedFlag:(BOOL)a3 andPhotoLibraryURL:(id)a4 andProgressHandler:(id)a5 andReply:(id)a6;
++ (id)taskWithAdvancedFlag:(BOOL)flag andPhotoLibraryURL:(id)l andProgressHandler:(id)handler andReply:(id)reply;
 - (BOOL)isCanceled;
-- (VCPRequestPersonPromoterStatusTask)initWithAdvancedFlag:(BOOL)a3 andPhotoLibraryURL:(id)a4 andProgressHandler:(id)a5 andReply:(id)a6;
+- (VCPRequestPersonPromoterStatusTask)initWithAdvancedFlag:(BOOL)flag andPhotoLibraryURL:(id)l andProgressHandler:(id)handler andReply:(id)reply;
 - (int)run;
 - (void)dealloc;
 @end
 
 @implementation VCPRequestPersonPromoterStatusTask
 
-- (VCPRequestPersonPromoterStatusTask)initWithAdvancedFlag:(BOOL)a3 andPhotoLibraryURL:(id)a4 andProgressHandler:(id)a5 andReply:(id)a6
+- (VCPRequestPersonPromoterStatusTask)initWithAdvancedFlag:(BOOL)flag andPhotoLibraryURL:(id)l andProgressHandler:(id)handler andReply:(id)reply
 {
-  v10 = a4;
-  v11 = a6;
+  lCopy = l;
+  replyCopy = reply;
   v17.receiver = self;
   v17.super_class = VCPRequestPersonPromoterStatusTask;
   v12 = [(VCPRequestPersonPromoterStatusTask *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    v12->_advancedStatus = a3;
-    objc_storeStrong(&v12->_photoLibraryURL, a4);
-    v14 = objc_retainBlock(v11);
+    v12->_advancedStatus = flag;
+    objc_storeStrong(&v12->_photoLibraryURL, l);
+    v14 = objc_retainBlock(replyCopy);
     reply = v13->_reply;
     v13->_reply = v14;
   }
@@ -28,13 +28,13 @@
   return v13;
 }
 
-+ (id)taskWithAdvancedFlag:(BOOL)a3 andPhotoLibraryURL:(id)a4 andProgressHandler:(id)a5 andReply:(id)a6
++ (id)taskWithAdvancedFlag:(BOOL)flag andPhotoLibraryURL:(id)l andProgressHandler:(id)handler andReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [objc_alloc(objc_opt_class()) initWithAdvancedFlag:v8 andPhotoLibraryURL:v9 andProgressHandler:v10 andReply:v11];
+  flagCopy = flag;
+  lCopy = l;
+  handlerCopy = handler;
+  replyCopy = reply;
+  v12 = [objc_alloc(objc_opt_class()) initWithAdvancedFlag:flagCopy andPhotoLibraryURL:lCopy andProgressHandler:handlerCopy andReply:replyCopy];
 
   return v12;
 }

@@ -1,7 +1,7 @@
 @interface ATXInfoTimelineDonationClient
 + (id)sharedInstance;
 - (id)_init;
-- (void)timelineDidReloadForWidget:(id)a3 parentApp:(id)a4 withEntries:(id)a5 completion:(id)a6;
+- (void)timelineDidReloadForWidget:(id)widget parentApp:(id)app withEntries:(id)entries completion:(id)completion;
 @end
 
 @implementation ATXInfoTimelineDonationClient
@@ -66,12 +66,12 @@ void __38__ATXInfoTimelineDonationClient__init__block_invoke_14()
   }
 }
 
-- (void)timelineDidReloadForWidget:(id)a3 parentApp:(id)a4 withEntries:(id)a5 completion:(id)a6
+- (void)timelineDidReloadForWidget:(id)widget parentApp:(id)app withEntries:(id)entries completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  widgetCopy = widget;
+  appCopy = app;
+  entriesCopy = entries;
+  completionCopy = completion;
   if ([MEMORY[0x1E698AFE8] widgetSuggestionsEnabled])
   {
     xpcClientHelper = self->_xpcClientHelper;
@@ -79,21 +79,21 @@ void __38__ATXInfoTimelineDonationClient__init__block_invoke_14()
     v23 = 3221225472;
     v24 = __93__ATXInfoTimelineDonationClient_timelineDidReloadForWidget_parentApp_withEntries_completion___block_invoke;
     v25 = &unk_1E86A43B0;
-    v15 = v10;
+    v15 = widgetCopy;
     v26 = v15;
-    v16 = v13;
+    v16 = completionCopy;
     v27 = v16;
     v17 = [(_PASXPCClientHelper *)xpcClientHelper remoteObjectProxyWithErrorHandler:&v22];
-    [v17 timelineDidReloadForWidget:v15 parentApp:v11 withEntries:v12 completion:{v16, v22, v23, v24, v25}];
+    [v17 timelineDidReloadForWidget:v15 parentApp:appCopy withEntries:entriesCopy completion:{v16, v22, v23, v24, v25}];
   }
 
-  else if (v13)
+  else if (completionCopy)
   {
     v18 = MEMORY[0x1E696ABC0];
     v19 = objc_opt_class();
     v20 = NSStringFromClass(v19);
     v21 = [v18 errorWithDomain:v20 code:-1 userInfo:0];
-    (*(v13 + 2))(v13, v21);
+    (*(completionCopy + 2))(completionCopy, v21);
   }
 }
 

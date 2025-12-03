@@ -1,13 +1,13 @@
 @interface AddingPodcastStateDataSource
-- (void)updateAddingShowsWithStoreCollectionIds:(id)a3;
+- (void)updateAddingShowsWithStoreCollectionIds:(id)ids;
 @end
 
 @implementation AddingPodcastStateDataSource
 
-- (void)updateAddingShowsWithStoreCollectionIds:(id)a3
+- (void)updateAddingShowsWithStoreCollectionIds:(id)ids
 {
   v4 = sub_1D9178A9C();
-  v5 = self;
+  selfCopy = self;
   sub_1D910AA6C(v4);
 }
 

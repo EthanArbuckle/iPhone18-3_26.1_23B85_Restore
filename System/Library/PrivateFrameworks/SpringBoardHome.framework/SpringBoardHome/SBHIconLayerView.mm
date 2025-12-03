@@ -1,30 +1,30 @@
 @interface SBHIconLayerView
-- (BOOL)canAcceptIconContentInLayerView:(id)a3;
-- (BOOL)canUpdateIconTintColorFromImageAppearance:(id)a3;
-- (BOOL)canUpdateIconTintColorFromImageIdentity:(id)a3;
+- (BOOL)canAcceptIconContentInLayerView:(id)view;
+- (BOOL)canUpdateIconTintColorFromImageAppearance:(id)appearance;
+- (BOOL)canUpdateIconTintColorFromImageIdentity:(id)identity;
 - (BOOL)isDisplayingRealIconContent;
-- (BOOL)matchesIconContentInLayerView:(id)a3;
-- (BOOL)takeIconContentInLayerView:(id)a3 animated:(BOOL)a4;
+- (BOOL)matchesIconContentInLayerView:(id)view;
+- (BOOL)takeIconContentInLayerView:(id)view animated:(BOOL)animated;
 - (CALayer)iconContentLayer;
 - (CGSize)intrinsicContentSize;
 - (NSString)backdropGroupName;
 - (NSString)iconIdentifier;
 - (SBHIconImageIdentity)iconImageIdentity;
-- (SBHIconLayerView)initWithCoder:(id)a3;
-- (SBHIconLayerView)initWithFrame:(CGRect)a3;
-- (SBHIconLayerView)initWithIcon:(id)a3 iconImageInfo:(SBIconImageInfo *)a4 iconImageStyleConfiguration:(id)a5 iconImageAppearance:(id)a6 iconImageOptions:(unint64_t)a7;
+- (SBHIconLayerView)initWithCoder:(id)coder;
+- (SBHIconLayerView)initWithFrame:(CGRect)frame;
+- (SBHIconLayerView)initWithIcon:(id)icon iconImageInfo:(SBIconImageInfo *)info iconImageStyleConfiguration:(id)configuration iconImageAppearance:(id)appearance iconImageOptions:(unint64_t)options;
 - (SBIconImageInfo)iconImageInfo;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)layoutSubviews;
-- (void)removeObserver:(id)a3;
-- (void)setAllowsGlassGrouping:(BOOL)a3;
-- (void)setBackdropGroupName:(id)a3;
-- (void)setGlassIdentifier:(int64_t)a3;
-- (void)setIconContentLayer:(id)a3;
-- (void)setIconContentLayer:(id)a3 animated:(BOOL)a4;
-- (void)setIconContentLayer:(id)a3 generation:(int64_t)a4 type:(int64_t)a5 animated:(BOOL)a6;
-- (void)setIconContentType:(int64_t)a3;
-- (void)setIconTintColor:(id)a3;
+- (void)removeObserver:(id)observer;
+- (void)setAllowsGlassGrouping:(BOOL)grouping;
+- (void)setBackdropGroupName:(id)name;
+- (void)setGlassIdentifier:(int64_t)identifier;
+- (void)setIconContentLayer:(id)layer;
+- (void)setIconContentLayer:(id)layer animated:(BOOL)animated;
+- (void)setIconContentLayer:(id)layer generation:(int64_t)generation type:(int64_t)type animated:(BOOL)animated;
+- (void)setIconContentType:(int64_t)type;
+- (void)setIconTintColor:(id)color;
 @end
 
 @implementation SBHIconLayerView
@@ -40,7 +40,7 @@
   }
 }
 
-- (SBHIconLayerView)initWithIcon:(id)a3 iconImageInfo:(SBIconImageInfo *)a4 iconImageStyleConfiguration:(id)a5 iconImageAppearance:(id)a6 iconImageOptions:(unint64_t)a7
+- (SBHIconLayerView)initWithIcon:(id)icon iconImageInfo:(SBIconImageInfo *)info iconImageStyleConfiguration:(id)configuration iconImageAppearance:(id)appearance iconImageOptions:(unint64_t)options
 {
   v14 = v10;
   v15 = v9;
@@ -54,15 +54,15 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v19 = a3;
-  v20 = a4;
-  v21 = a5;
-  v22 = sub_1BEE04CD4(v19, v20, v21, a6, v17, v16, v15, v14);
+  iconCopy = icon;
+  infoCopy = info;
+  configurationCopy = configuration;
+  v22 = sub_1BEE04CD4(iconCopy, infoCopy, configurationCopy, appearance, v17, v16, v15, v14);
 
   return v22;
 }
 
-- (SBHIconLayerView)initWithFrame:(CGRect)a3
+- (SBHIconLayerView)initWithFrame:(CGRect)frame
 {
   sub_1BEE4720C();
   sub_1BEE471FC();
@@ -73,14 +73,14 @@
   }
 
   v4 = [objc_allocWithZone(SBIcon) init];
-  v5 = [objc_opt_self() defaultStyleConfiguration];
-  v6 = [objc_opt_self() defaultAppearance];
-  v7 = [(SBHIconLayerView *)self initWithIcon:v4 iconImageInfo:v5 iconImageStyleConfiguration:v6 iconImageAppearance:0 iconImageOptions:0.0, 0.0, 1.0, 0.0];
+  defaultStyleConfiguration = [objc_opt_self() defaultStyleConfiguration];
+  defaultAppearance = [objc_opt_self() defaultAppearance];
+  v7 = [(SBHIconLayerView *)self initWithIcon:v4 iconImageInfo:defaultStyleConfiguration iconImageStyleConfiguration:defaultAppearance iconImageAppearance:0 iconImageOptions:0.0, 0.0, 1.0, 0.0];
 
   return v7;
 }
 
-- (SBHIconLayerView)initWithCoder:(id)a3
+- (SBHIconLayerView)initWithCoder:(id)coder
 {
   sub_1BEE4720C();
   sub_1BEE471FC();
@@ -103,21 +103,21 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
-  v4 = [(SBHIconLayerView *)v3 icon];
-  v5 = [(SBIcon *)v4 uniqueIdentifier];
+  selfCopy = self;
+  icon = [(SBHIconLayerView *)selfCopy icon];
+  uniqueIdentifier = [(SBIcon *)icon uniqueIdentifier];
 
-  if (v5)
+  if (uniqueIdentifier)
   {
   }
 
   else
   {
     sub_1BEE4708C();
-    v5 = sub_1BEE4705C();
+    uniqueIdentifier = sub_1BEE4705C();
   }
 
-  return v5;
+  return uniqueIdentifier;
 }
 
 - (CALayer)iconContentLayer
@@ -135,7 +135,7 @@
   return v3;
 }
 
-- (void)setIconContentLayer:(id)a3
+- (void)setIconContentLayer:(id)layer
 {
   sub_1BEE4720C();
   sub_1BEE471FC();
@@ -145,14 +145,14 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
-  sub_1BEE021DC(a3);
+  layerCopy = layer;
+  selfCopy = self;
+  sub_1BEE021DC(layer);
 }
 
-- (void)setIconContentLayer:(id)a3 animated:(BOOL)a4
+- (void)setIconContentLayer:(id)layer animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   sub_1BEE4720C();
   sub_1BEE471FC();
   sub_1BEE471EC();
@@ -161,24 +161,24 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v7 = self;
-  v10 = v7;
-  if (a3)
+  selfCopy = self;
+  v10 = selfCopy;
+  if (layer)
   {
-    v8 = a3;
-    v9 = [(SBHIconLayerView *)v10 iconContentType];
-    v7 = v10;
+    layerCopy = layer;
+    iconContentType = [(SBHIconLayerView *)v10 iconContentType];
+    selfCopy = v10;
   }
 
   else
   {
-    v9 = 0;
+    iconContentType = 0;
   }
 
-  [(SBHIconLayerView *)v10 setIconContentLayer:a3 generation:[(SBHIconLayerView *)v7 iconContentGeneration] type:v9 animated:v4];
+  [(SBHIconLayerView *)v10 setIconContentLayer:layer generation:[(SBHIconLayerView *)selfCopy iconContentGeneration] type:iconContentType animated:animatedCopy];
 }
 
-- (void)setIconContentLayer:(id)a3 generation:(int64_t)a4 type:(int64_t)a5 animated:(BOOL)a6
+- (void)setIconContentLayer:(id)layer generation:(int64_t)generation type:(int64_t)type animated:(BOOL)animated
 {
   sub_1BEE4720C();
   sub_1BEE471FC();
@@ -188,12 +188,12 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v11 = a3;
-  v12 = self;
-  sub_1BEE02538(a3, a4, a5, a6);
+  layerCopy = layer;
+  selfCopy = self;
+  sub_1BEE02538(layer, generation, type, animated);
 }
 
-- (BOOL)matchesIconContentInLayerView:(id)a3
+- (BOOL)matchesIconContentInLayerView:(id)view
 {
   sub_1BEE4720C();
   sub_1BEE471FC();
@@ -203,12 +203,12 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
-  v7 = [(SBHIconLayerView *)v6 iconContentGeneration];
-  if (v7 == [v5 iconContentGeneration] && (v8 = -[SBHIconLayerView iconContentType](v6, sel_iconContentType), v8 == objc_msgSend(v5, sel_iconContentType)))
+  viewCopy = view;
+  selfCopy = self;
+  iconContentGeneration = [(SBHIconLayerView *)selfCopy iconContentGeneration];
+  if (iconContentGeneration == [viewCopy iconContentGeneration] && (v8 = -[SBHIconLayerView iconContentType](selfCopy, sel_iconContentType), v8 == objc_msgSend(viewCopy, sel_iconContentType)))
   {
-    v9 = sub_1BEE02E60(v5);
+    v9 = sub_1BEE02E60(viewCopy);
   }
 
   else
@@ -219,7 +219,7 @@
   return v9 & 1;
 }
 
-- (BOOL)canAcceptIconContentInLayerView:(id)a3
+- (BOOL)canAcceptIconContentInLayerView:(id)view
 {
   sub_1BEE4720C();
   sub_1BEE471FC();
@@ -229,12 +229,12 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
-  v7 = [(SBHIconLayerView *)v6 iconContentGeneration];
-  if ([v5 iconContentGeneration] >= v7 && objc_msgSend(v5, sel_iconContentType) == 2)
+  viewCopy = view;
+  selfCopy = self;
+  iconContentGeneration = [(SBHIconLayerView *)selfCopy iconContentGeneration];
+  if ([viewCopy iconContentGeneration] >= iconContentGeneration && objc_msgSend(viewCopy, sel_iconContentType) == 2)
   {
-    v8 = sub_1BEE02E60(v5);
+    v8 = sub_1BEE02E60(viewCopy);
   }
 
   else
@@ -245,7 +245,7 @@
   return v8 & 1;
 }
 
-- (BOOL)takeIconContentInLayerView:(id)a3 animated:(BOOL)a4
+- (BOOL)takeIconContentInLayerView:(id)view animated:(BOOL)animated
 {
   sub_1BEE4720C();
   sub_1BEE471FC();
@@ -255,9 +255,9 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v7 = a3;
-  v8 = self;
-  v9 = sub_1BEE03254(v7, a4);
+  viewCopy = view;
+  selfCopy = self;
+  v9 = sub_1BEE03254(viewCopy, animated);
 
   return v9 & 1;
 }
@@ -274,13 +274,13 @@
 
   v15.receiver = self;
   v15.super_class = SBHIconLayerView;
-  v3 = self;
+  selfCopy = self;
   [(SBHIconLayerView *)&v15 layoutSubviews];
-  v4 = [(SBHIconLayerView *)v3 iconContentLayer:v15.receiver];
+  v4 = [(SBHIconLayerView *)selfCopy iconContentLayer:v15.receiver];
   if (v4)
   {
     v5 = v4;
-    [(SBHIconLayerView *)v3 bounds];
+    [(SBHIconLayerView *)selfCopy bounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -303,7 +303,7 @@
   }
 }
 
-- (void)setIconContentType:(int64_t)a3
+- (void)setIconContentType:(int64_t)type
 {
   sub_1BEE4720C();
   sub_1BEE471FC();
@@ -314,14 +314,14 @@
   }
 
   v5 = *(self + OBJC_IVAR___SBHIconLayerView_iconContentType);
-  *(self + OBJC_IVAR___SBHIconLayerView_iconContentType) = a3;
-  if (v5 == a3)
+  *(self + OBJC_IVAR___SBHIconLayerView_iconContentType) = type;
+  if (v5 == type)
   {
   }
 
   else
   {
-    v6 = self;
+    selfCopy = self;
     sub_1BEE0378C(&selRef_iconLayerViewContentTypeDidChange_);
     sub_1BEE01464();
   }
@@ -337,8 +337,8 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = [(SBHIconLayerView *)self iconContentType];
-  if (v3 >= 3)
+  iconContentType = [(SBHIconLayerView *)self iconContentType];
+  if (iconContentType >= 3)
   {
     result = sub_1BEE4764C();
     __break(1u);
@@ -346,7 +346,7 @@
 
   else
   {
-    v4 = 4u >> (v3 & 7);
+    v4 = 4u >> (iconContentType & 7);
 
     return v4 & 1;
   }
@@ -364,27 +364,27 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
-  v4 = [(SBHIconLayerView *)v3 iconIdentifier];
-  if (!v4)
+  selfCopy = self;
+  iconIdentifier = [(SBHIconLayerView *)selfCopy iconIdentifier];
+  if (!iconIdentifier)
   {
     sub_1BEE4708C();
-    v4 = sub_1BEE4705C();
+    iconIdentifier = sub_1BEE4705C();
   }
 
-  [(SBHIconLayerView *)v3 iconImageInfo];
+  [(SBHIconLayerView *)selfCopy iconImageInfo];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(SBHIconLayerView *)v3 iconContentGeneration];
-  v14 = [(SBHIconLayerView *)v3 iconImageAppearance];
-  v15 = [objc_allocWithZone(SBHIconImageIdentity) initWithIconIdentifier:v4 iconImageInfo:v13 imageGeneration:v14 imageAppearance:{v6, v8, v10, v12}];
+  iconContentGeneration = [(SBHIconLayerView *)selfCopy iconContentGeneration];
+  iconImageAppearance = [(SBHIconLayerView *)selfCopy iconImageAppearance];
+  v15 = [objc_allocWithZone(SBHIconImageIdentity) initWithIconIdentifier:iconIdentifier iconImageInfo:iconContentGeneration imageGeneration:iconImageAppearance imageAppearance:{v6, v8, v10, v12}];
 
   return v15;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   sub_1BEE4720C();
   sub_1BEE471FC();
@@ -395,13 +395,13 @@
   }
 
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1BEE03C74(a3);
+  selfCopy = self;
+  sub_1BEE03C74(observer);
 
   swift_unknownObjectRelease();
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   sub_1BEE4720C();
   sub_1BEE471FC();
@@ -418,7 +418,7 @@
   }
 }
 
-- (void)setIconTintColor:(id)a3
+- (void)setIconTintColor:(id)color
 {
   sub_1BEE4720C();
   sub_1BEE471FC();
@@ -428,12 +428,12 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
-  sub_1BEE03EA8(v5);
+  colorCopy = color;
+  selfCopy = self;
+  sub_1BEE03EA8(colorCopy);
 }
 
-- (BOOL)canUpdateIconTintColorFromImageIdentity:(id)a3
+- (BOOL)canUpdateIconTintColorFromImageIdentity:(id)identity
 {
   sub_1BEE4720C();
   sub_1BEE471FC();
@@ -443,14 +443,14 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
-  v7 = sub_1BEE04120(v5);
+  identityCopy = identity;
+  selfCopy = self;
+  v7 = sub_1BEE04120(identityCopy);
 
   return v7;
 }
 
-- (BOOL)canUpdateIconTintColorFromImageAppearance:(id)a3
+- (BOOL)canUpdateIconTintColorFromImageAppearance:(id)appearance
 {
   sub_1BEE4720C();
   sub_1BEE471FC();
@@ -460,15 +460,15 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
-  v7 = [(SBHIconLayerView *)v6 iconImageAppearance];
-  if ([(SBHIconImageAppearance *)v7 hasTintColor])
+  appearanceCopy = appearance;
+  selfCopy = self;
+  iconImageAppearance = [(SBHIconLayerView *)selfCopy iconImageAppearance];
+  if ([(SBHIconImageAppearance *)iconImageAppearance hasTintColor])
   {
-    v8 = [(SBHIconImageAppearance *)v7 appearanceType];
-    v9 = [v5 appearanceType];
+    appearanceType = [(SBHIconImageAppearance *)iconImageAppearance appearanceType];
+    appearanceType2 = [appearanceCopy appearanceType];
 
-    return v8 == v9;
+    return appearanceType == appearanceType2;
   }
 
   else
@@ -478,7 +478,7 @@
   }
 }
 
-- (void)setAllowsGlassGrouping:(BOOL)a3
+- (void)setAllowsGlassGrouping:(BOOL)grouping
 {
   sub_1BEE4720C();
   sub_1BEE471FC();
@@ -488,12 +488,12 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  *(self + OBJC_IVAR___SBHIconLayerView_allowsGlassGrouping) = a3;
-  v5 = self;
+  *(self + OBJC_IVAR___SBHIconLayerView_allowsGlassGrouping) = grouping;
+  selfCopy = self;
   sub_1BEE01464();
 }
 
-- (void)setGlassIdentifier:(int64_t)a3
+- (void)setGlassIdentifier:(int64_t)identifier
 {
   sub_1BEE4720C();
   sub_1BEE471FC();
@@ -503,8 +503,8 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  *(self + OBJC_IVAR___SBHIconLayerView_glassIdentifier) = a3;
-  v5 = self;
+  *(self + OBJC_IVAR___SBHIconLayerView_glassIdentifier) = identifier;
+  selfCopy = self;
   sub_1BEE01464();
 }
 
@@ -533,7 +533,7 @@
   return v3;
 }
 
-- (void)setBackdropGroupName:(id)a3
+- (void)setBackdropGroupName:(id)name
 {
   sub_1BEE4720C();
   sub_1BEE471FC();
@@ -543,10 +543,10 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a3)
+  if (name)
   {
     v5 = sub_1BEE4708C();
-    a3 = v6;
+    name = v6;
   }
 
   else
@@ -554,8 +554,8 @@
     v5 = 0;
   }
 
-  v7 = self;
-  sub_1BEE04928(v5, a3);
+  selfCopy = self;
+  sub_1BEE04928(v5, name);
 }
 
 - (CGSize)intrinsicContentSize

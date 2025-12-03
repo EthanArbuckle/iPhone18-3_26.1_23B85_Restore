@@ -1,10 +1,10 @@
 @interface LNAutoShortcutLocalizedPhrase
-- (BOOL)isEqual:(id)a3;
-- (LNAutoShortcutLocalizedPhrase)initWithCoder:(id)a3;
-- (LNAutoShortcutLocalizedPhrase)initWithLocalizedPhrase:(id)a3 bundleIdentifier:(id)a4 basePhraseTemplate:(id)a5 parameterIdentifier:(id)a6 optionsCollectionTitle:(id)a7 optionsCollectionSystemImageName:(id)a8 primary:(BOOL)a9 signature:(id)a10;
+- (BOOL)isEqual:(id)equal;
+- (LNAutoShortcutLocalizedPhrase)initWithCoder:(id)coder;
+- (LNAutoShortcutLocalizedPhrase)initWithLocalizedPhrase:(id)phrase bundleIdentifier:(id)identifier basePhraseTemplate:(id)template parameterIdentifier:(id)parameterIdentifier optionsCollectionTitle:(id)title optionsCollectionSystemImageName:(id)name primary:(BOOL)primary signature:(id)self0;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNAutoShortcutLocalizedPhrase
@@ -14,54 +14,54 @@
   v15 = MEMORY[0x1E696AEC0];
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(LNAutoShortcutLocalizedPhrase *)self localizedPhrase];
-  v6 = [(LNAutoShortcutLocalizedPhrase *)self bundleIdentifier];
-  v7 = [(LNAutoShortcutLocalizedPhrase *)self basePhraseTemplate];
-  v8 = [(LNAutoShortcutLocalizedPhrase *)self parameterIdentifier];
-  v9 = [(LNAutoShortcutLocalizedPhrase *)self optionsCollectionTitle];
-  v10 = [(LNAutoShortcutLocalizedPhrase *)self optionsCollectionSystemImageName];
-  v11 = [(LNAutoShortcutLocalizedPhrase *)self isPrimary];
-  v12 = [(LNAutoShortcutLocalizedPhrase *)self signature];
-  v13 = [v15 stringWithFormat:@"<%@: %p, localizedPhrase: %@, bundleIdentifier: %@, basePhraseTemplate: %@, parameterIdentifier: %@ optionsCollectionTitle: %@, systemImageName: %@ isPrimary: %d, signature: %@>", v4, self, v5, v6, v7, v8, v9, v10, v11, v12];
+  localizedPhrase = [(LNAutoShortcutLocalizedPhrase *)self localizedPhrase];
+  bundleIdentifier = [(LNAutoShortcutLocalizedPhrase *)self bundleIdentifier];
+  basePhraseTemplate = [(LNAutoShortcutLocalizedPhrase *)self basePhraseTemplate];
+  parameterIdentifier = [(LNAutoShortcutLocalizedPhrase *)self parameterIdentifier];
+  optionsCollectionTitle = [(LNAutoShortcutLocalizedPhrase *)self optionsCollectionTitle];
+  optionsCollectionSystemImageName = [(LNAutoShortcutLocalizedPhrase *)self optionsCollectionSystemImageName];
+  isPrimary = [(LNAutoShortcutLocalizedPhrase *)self isPrimary];
+  signature = [(LNAutoShortcutLocalizedPhrase *)self signature];
+  v13 = [v15 stringWithFormat:@"<%@: %p, localizedPhrase: %@, bundleIdentifier: %@, basePhraseTemplate: %@, parameterIdentifier: %@ optionsCollectionTitle: %@, systemImageName: %@ isPrimary: %d, signature: %@>", v4, self, localizedPhrase, bundleIdentifier, basePhraseTemplate, parameterIdentifier, optionsCollectionTitle, optionsCollectionSystemImageName, isPrimary, signature];
 
   return v13;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(LNAutoShortcutLocalizedPhrase *)self isPrimary];
-  v4 = [(LNAutoShortcutLocalizedPhrase *)self localizedPhrase];
-  v5 = [v4 hash];
-  v6 = [(LNAutoShortcutLocalizedPhrase *)self bundleIdentifier];
-  v7 = v5 ^ [v6 hash] ^ v3;
-  v8 = [(LNAutoShortcutLocalizedPhrase *)self basePhraseTemplate];
-  v9 = [v8 hash];
-  v10 = [(LNAutoShortcutLocalizedPhrase *)self parameterIdentifier];
-  v11 = v9 ^ [v10 hash];
-  v12 = [(LNAutoShortcutLocalizedPhrase *)self optionsCollectionTitle];
-  v13 = v7 ^ v11 ^ [v12 hash];
-  v14 = [(LNAutoShortcutLocalizedPhrase *)self optionsCollectionSystemImageName];
-  v15 = [v14 hash];
-  v16 = [(LNAutoShortcutLocalizedPhrase *)self signature];
-  v17 = v15 ^ [v16 hash];
+  isPrimary = [(LNAutoShortcutLocalizedPhrase *)self isPrimary];
+  localizedPhrase = [(LNAutoShortcutLocalizedPhrase *)self localizedPhrase];
+  v5 = [localizedPhrase hash];
+  bundleIdentifier = [(LNAutoShortcutLocalizedPhrase *)self bundleIdentifier];
+  v7 = v5 ^ [bundleIdentifier hash] ^ isPrimary;
+  basePhraseTemplate = [(LNAutoShortcutLocalizedPhrase *)self basePhraseTemplate];
+  v9 = [basePhraseTemplate hash];
+  parameterIdentifier = [(LNAutoShortcutLocalizedPhrase *)self parameterIdentifier];
+  v11 = v9 ^ [parameterIdentifier hash];
+  optionsCollectionTitle = [(LNAutoShortcutLocalizedPhrase *)self optionsCollectionTitle];
+  v13 = v7 ^ v11 ^ [optionsCollectionTitle hash];
+  optionsCollectionSystemImageName = [(LNAutoShortcutLocalizedPhrase *)self optionsCollectionSystemImageName];
+  v15 = [optionsCollectionSystemImageName hash];
+  signature = [(LNAutoShortcutLocalizedPhrase *)self signature];
+  v17 = v15 ^ [signature hash];
 
   return v13 ^ v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (v6)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = [(LNAutoShortcutLocalizedPhrase *)self isPrimary];
-        if (v7 != [(LNAutoShortcutLocalizedPhrase *)v6 isPrimary])
+        isPrimary = [(LNAutoShortcutLocalizedPhrase *)self isPrimary];
+        if (isPrimary != [(LNAutoShortcutLocalizedPhrase *)v6 isPrimary])
         {
           LOBYTE(v8) = 0;
 LABEL_65:
@@ -69,10 +69,10 @@ LABEL_65:
           goto LABEL_66;
         }
 
-        v10 = [(LNAutoShortcutLocalizedPhrase *)self localizedPhrase];
-        v11 = [(LNAutoShortcutLocalizedPhrase *)v6 localizedPhrase];
-        v9 = v10;
-        v12 = v11;
+        localizedPhrase = [(LNAutoShortcutLocalizedPhrase *)self localizedPhrase];
+        localizedPhrase2 = [(LNAutoShortcutLocalizedPhrase *)v6 localizedPhrase];
+        v9 = localizedPhrase;
+        v12 = localizedPhrase2;
         v13 = v12;
         if (v9 == v12)
         {
@@ -99,10 +99,10 @@ LABEL_63:
           }
         }
 
-        v17 = [(LNAutoShortcutLocalizedPhrase *)self bundleIdentifier];
-        v18 = [(LNAutoShortcutLocalizedPhrase *)v6 bundleIdentifier];
-        v15 = v17;
-        v19 = v18;
+        bundleIdentifier = [(LNAutoShortcutLocalizedPhrase *)self bundleIdentifier];
+        bundleIdentifier2 = [(LNAutoShortcutLocalizedPhrase *)v6 bundleIdentifier];
+        v15 = bundleIdentifier;
+        v19 = bundleIdentifier2;
         v14 = v19;
         if (v15 == v19)
         {
@@ -129,10 +129,10 @@ LABEL_62:
           }
         }
 
-        v23 = [(LNAutoShortcutLocalizedPhrase *)self basePhraseTemplate];
-        v24 = [(LNAutoShortcutLocalizedPhrase *)v6 basePhraseTemplate];
-        v21 = v23;
-        v25 = v24;
+        basePhraseTemplate = [(LNAutoShortcutLocalizedPhrase *)self basePhraseTemplate];
+        basePhraseTemplate2 = [(LNAutoShortcutLocalizedPhrase *)v6 basePhraseTemplate];
+        v21 = basePhraseTemplate;
+        v25 = basePhraseTemplate2;
         v20 = v25;
         v56 = v21;
         if (v21 == v25)
@@ -157,10 +157,10 @@ LABEL_62:
         }
 
         v55 = v20;
-        v27 = [(LNAutoShortcutLocalizedPhrase *)self parameterIdentifier];
-        v28 = [(LNAutoShortcutLocalizedPhrase *)v6 parameterIdentifier];
-        v29 = v27;
-        v30 = v28;
+        parameterIdentifier = [(LNAutoShortcutLocalizedPhrase *)self parameterIdentifier];
+        parameterIdentifier2 = [(LNAutoShortcutLocalizedPhrase *)v6 parameterIdentifier];
+        v29 = parameterIdentifier;
+        v30 = parameterIdentifier2;
         v53 = v30;
         v54 = v29;
         if (v29 == v30)
@@ -204,10 +204,10 @@ LABEL_61:
           }
         }
 
-        v33 = [(LNAutoShortcutLocalizedPhrase *)self optionsCollectionTitle];
-        v34 = [(LNAutoShortcutLocalizedPhrase *)v6 optionsCollectionTitle];
-        v29 = v33;
-        v35 = v34;
+        optionsCollectionTitle = [(LNAutoShortcutLocalizedPhrase *)self optionsCollectionTitle];
+        optionsCollectionTitle2 = [(LNAutoShortcutLocalizedPhrase *)v6 optionsCollectionTitle];
+        v29 = optionsCollectionTitle;
+        v35 = optionsCollectionTitle2;
         v51 = v29;
         v52 = v35;
         if (v29 != v35)
@@ -230,10 +230,10 @@ LABEL_61:
               }
 
 LABEL_39:
-              v38 = [(LNAutoShortcutLocalizedPhrase *)self optionsCollectionSystemImageName];
-              v39 = [(LNAutoShortcutLocalizedPhrase *)v6 optionsCollectionSystemImageName];
-              v40 = v38;
-              v41 = v39;
+              optionsCollectionSystemImageName = [(LNAutoShortcutLocalizedPhrase *)self optionsCollectionSystemImageName];
+              optionsCollectionSystemImageName2 = [(LNAutoShortcutLocalizedPhrase *)v6 optionsCollectionSystemImageName];
+              v40 = optionsCollectionSystemImageName;
+              v41 = optionsCollectionSystemImageName2;
               v49 = v41;
               v50 = v40;
               if (v40 == v41)
@@ -273,9 +273,9 @@ LABEL_56:
               }
 
               v44 = [(LNAutoShortcutLocalizedPhrase *)self signature:v49];
-              v45 = [(LNAutoShortcutLocalizedPhrase *)v6 signature];
+              signature = [(LNAutoShortcutLocalizedPhrase *)v6 signature];
               v40 = v44;
-              v46 = v45;
+              v46 = signature;
               v47 = v46;
               if (v40 == v46)
               {
@@ -343,95 +343,95 @@ LABEL_66:
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNAutoShortcutLocalizedPhrase *)self localizedPhrase];
-  [v4 encodeObject:v5 forKey:@"localizedPhrase"];
+  coderCopy = coder;
+  localizedPhrase = [(LNAutoShortcutLocalizedPhrase *)self localizedPhrase];
+  [coderCopy encodeObject:localizedPhrase forKey:@"localizedPhrase"];
 
-  v6 = [(LNAutoShortcutLocalizedPhrase *)self bundleIdentifier];
-  [v4 encodeObject:v6 forKey:@"bundleIdentifier"];
+  bundleIdentifier = [(LNAutoShortcutLocalizedPhrase *)self bundleIdentifier];
+  [coderCopy encodeObject:bundleIdentifier forKey:@"bundleIdentifier"];
 
-  v7 = [(LNAutoShortcutLocalizedPhrase *)self basePhraseTemplate];
-  [v4 encodeObject:v7 forKey:@"basePhraseTemplate"];
+  basePhraseTemplate = [(LNAutoShortcutLocalizedPhrase *)self basePhraseTemplate];
+  [coderCopy encodeObject:basePhraseTemplate forKey:@"basePhraseTemplate"];
 
-  v8 = [(LNAutoShortcutLocalizedPhrase *)self parameterIdentifier];
-  [v4 encodeObject:v8 forKey:@"parameterIdentifier"];
+  parameterIdentifier = [(LNAutoShortcutLocalizedPhrase *)self parameterIdentifier];
+  [coderCopy encodeObject:parameterIdentifier forKey:@"parameterIdentifier"];
 
-  v9 = [(LNAutoShortcutLocalizedPhrase *)self optionsCollectionTitle];
-  [v4 encodeObject:v9 forKey:@"optionsCollectionTitle"];
+  optionsCollectionTitle = [(LNAutoShortcutLocalizedPhrase *)self optionsCollectionTitle];
+  [coderCopy encodeObject:optionsCollectionTitle forKey:@"optionsCollectionTitle"];
 
-  v10 = [(LNAutoShortcutLocalizedPhrase *)self optionsCollectionSystemImageName];
-  [v4 encodeObject:v10 forKey:@"optionsCollectionSystemImageName"];
+  optionsCollectionSystemImageName = [(LNAutoShortcutLocalizedPhrase *)self optionsCollectionSystemImageName];
+  [coderCopy encodeObject:optionsCollectionSystemImageName forKey:@"optionsCollectionSystemImageName"];
 
-  [v4 encodeBool:-[LNAutoShortcutLocalizedPhrase isPrimary](self forKey:{"isPrimary"), @"primary"}];
-  v11 = [(LNAutoShortcutLocalizedPhrase *)self signature];
-  [v4 encodeObject:v11 forKey:@"signature"];
+  [coderCopy encodeBool:-[LNAutoShortcutLocalizedPhrase isPrimary](self forKey:{"isPrimary"), @"primary"}];
+  signature = [(LNAutoShortcutLocalizedPhrase *)self signature];
+  [coderCopy encodeObject:signature forKey:@"signature"];
 }
 
-- (LNAutoShortcutLocalizedPhrase)initWithCoder:(id)a3
+- (LNAutoShortcutLocalizedPhrase)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedPhrase"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedPhrase"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
     if (v6)
     {
-      v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"basePhraseTemplate"];
+      v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"basePhraseTemplate"];
       if (v7)
       {
-        v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"parameterIdentifier"];
-        v9 = [v4 decodeBoolForKey:@"primary"];
-        v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"signature"];
+        v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"parameterIdentifier"];
+        v9 = [coderCopy decodeBoolForKey:@"primary"];
+        v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"signature"];
         if (v10)
         {
-          v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"optionsCollectionTitle"];
-          v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"optionsCollectionSystemImageName"];
+          v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"optionsCollectionTitle"];
+          v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"optionsCollectionSystemImageName"];
           LOBYTE(v15) = v9;
           self = [(LNAutoShortcutLocalizedPhrase *)self initWithLocalizedPhrase:v5 bundleIdentifier:v6 basePhraseTemplate:v7 parameterIdentifier:v8 optionsCollectionTitle:v11 optionsCollectionSystemImageName:v12 primary:v15 signature:v10];
 
-          v13 = self;
+          selfCopy = self;
         }
 
         else
         {
-          v13 = 0;
+          selfCopy = 0;
         }
       }
 
       else
       {
-        v13 = 0;
+        selfCopy = 0;
       }
     }
 
     else
     {
-      v13 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (LNAutoShortcutLocalizedPhrase)initWithLocalizedPhrase:(id)a3 bundleIdentifier:(id)a4 basePhraseTemplate:(id)a5 parameterIdentifier:(id)a6 optionsCollectionTitle:(id)a7 optionsCollectionSystemImageName:(id)a8 primary:(BOOL)a9 signature:(id)a10
+- (LNAutoShortcutLocalizedPhrase)initWithLocalizedPhrase:(id)phrase bundleIdentifier:(id)identifier basePhraseTemplate:(id)template parameterIdentifier:(id)parameterIdentifier optionsCollectionTitle:(id)title optionsCollectionSystemImageName:(id)name primary:(BOOL)primary signature:(id)self0
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
-  v23 = a10;
-  if (v17)
+  phraseCopy = phrase;
+  identifierCopy = identifier;
+  templateCopy = template;
+  parameterIdentifierCopy = parameterIdentifier;
+  titleCopy = title;
+  nameCopy = name;
+  signatureCopy = signature;
+  if (phraseCopy)
   {
-    if (v18)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
@@ -439,22 +439,22 @@ LABEL_66:
 
   else
   {
-    v39 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v39 handleFailureInMethod:a2 object:self file:@"LNAutoShortcutLocalizedPhrase.m" lineNumber:68 description:{@"Invalid parameter not satisfying: %@", @"localizedPhrase"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNAutoShortcutLocalizedPhrase.m" lineNumber:68 description:{@"Invalid parameter not satisfying: %@", @"localizedPhrase"}];
 
-    if (v18)
+    if (identifierCopy)
     {
 LABEL_3:
-      if (v19)
+      if (templateCopy)
       {
         goto LABEL_4;
       }
 
 LABEL_10:
-      v41 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v41 handleFailureInMethod:a2 object:self file:@"LNAutoShortcutLocalizedPhrase.m" lineNumber:70 description:{@"Invalid parameter not satisfying: %@", @"basePhraseTemplate"}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNAutoShortcutLocalizedPhrase.m" lineNumber:70 description:{@"Invalid parameter not satisfying: %@", @"basePhraseTemplate"}];
 
-      if (v23)
+      if (signatureCopy)
       {
         goto LABEL_5;
       }
@@ -463,23 +463,23 @@ LABEL_10:
     }
   }
 
-  v40 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v40 handleFailureInMethod:a2 object:self file:@"LNAutoShortcutLocalizedPhrase.m" lineNumber:69 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"LNAutoShortcutLocalizedPhrase.m" lineNumber:69 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
 
-  if (!v19)
+  if (!templateCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_4:
-  if (v23)
+  if (signatureCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_11:
-  v42 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v42 handleFailureInMethod:a2 object:self file:@"LNAutoShortcutLocalizedPhrase.m" lineNumber:71 description:{@"Invalid parameter not satisfying: %@", @"signature"}];
+  currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler4 handleFailureInMethod:a2 object:self file:@"LNAutoShortcutLocalizedPhrase.m" lineNumber:71 description:{@"Invalid parameter not satisfying: %@", @"signature"}];
 
 LABEL_5:
   v43.receiver = self;
@@ -487,32 +487,32 @@ LABEL_5:
   v24 = [(LNAutoShortcutLocalizedPhrase *)&v43 init];
   if (v24)
   {
-    v25 = [v17 copy];
+    v25 = [phraseCopy copy];
     localizedPhrase = v24->_localizedPhrase;
     v24->_localizedPhrase = v25;
 
-    v27 = [v18 copy];
+    v27 = [identifierCopy copy];
     bundleIdentifier = v24->_bundleIdentifier;
     v24->_bundleIdentifier = v27;
 
-    v29 = [v19 copy];
+    v29 = [templateCopy copy];
     basePhraseTemplate = v24->_basePhraseTemplate;
     v24->_basePhraseTemplate = v29;
 
-    v31 = [v20 copy];
+    v31 = [parameterIdentifierCopy copy];
     parameterIdentifier = v24->_parameterIdentifier;
     v24->_parameterIdentifier = v31;
 
-    v33 = [v21 copy];
+    v33 = [titleCopy copy];
     optionsCollectionTitle = v24->_optionsCollectionTitle;
     v24->_optionsCollectionTitle = v33;
 
-    v35 = [v22 copy];
+    v35 = [nameCopy copy];
     optionsCollectionSystemImageName = v24->_optionsCollectionSystemImageName;
     v24->_optionsCollectionSystemImageName = v35;
 
-    v24->_primary = a9;
-    objc_storeStrong(&v24->_signature, a10);
+    v24->_primary = primary;
+    objc_storeStrong(&v24->_signature, signature);
     v37 = v24;
   }
 

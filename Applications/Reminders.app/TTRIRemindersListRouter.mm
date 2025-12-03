@@ -11,11 +11,11 @@
   {
     v3 = Strong;
 
-    v4 = [v3 presentedViewController];
+    presentedViewController = [v3 presentedViewController];
 
-    if (v4)
+    if (presentedViewController)
     {
-      [v4 dismissViewControllerAnimated:1 completion:0];
+      [presentedViewController dismissViewControllerAnimated:1 completion:0];
     }
   }
 }

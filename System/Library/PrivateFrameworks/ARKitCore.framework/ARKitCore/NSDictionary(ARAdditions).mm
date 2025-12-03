@@ -9,39 +9,39 @@
   v52 = *MEMORY[0x1E69E9840];
   v5 = a3;
   v6 = a4;
-  v7 = [MEMORY[0x1E695DF90] dictionary];
-  v8 = [MEMORY[0x1E695DF90] dictionary];
-  [v7 setObject:v8 forKeyedSubscript:@"added"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:dictionary2 forKeyedSubscript:@"added"];
 
-  v9 = [MEMORY[0x1E695DF90] dictionary];
-  [v7 setObject:v9 forKeyedSubscript:@"removed"];
+  dictionary3 = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:dictionary3 forKeyedSubscript:@"removed"];
 
-  v10 = [MEMORY[0x1E695DF90] dictionary];
-  [v7 setObject:v10 forKeyedSubscript:@"modified"];
+  dictionary4 = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:dictionary4 forKeyedSubscript:@"modified"];
 
-  v11 = [MEMORY[0x1E695DF90] dictionary];
-  [v7 setObject:v11 forKeyedSubscript:@"same"];
+  dictionary5 = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:dictionary5 forKeyedSubscript:@"same"];
 
   if (v5 | v6)
   {
-    v42 = v7;
+    v42 = dictionary;
     v12 = objc_opt_new();
-    v13 = [v5 allKeys];
-    v14 = [v13 count];
+    allKeys = [v5 allKeys];
+    v14 = [allKeys count];
 
     if (v14)
     {
-      v15 = [v5 allKeys];
-      [v12 addObjectsFromArray:v15];
+      allKeys2 = [v5 allKeys];
+      [v12 addObjectsFromArray:allKeys2];
     }
 
-    v16 = [v6 allKeys];
-    v17 = [v16 count];
+    allKeys3 = [v6 allKeys];
+    v17 = [allKeys3 count];
 
     if (v17)
     {
-      v18 = [v6 allKeys];
-      [v12 addObjectsFromArray:v18];
+      allKeys4 = [v6 allKeys];
+      [v12 addObjectsFromArray:allKeys4];
     }
 
     v47 = 0u;
@@ -161,8 +161,8 @@ LABEL_31:
 
   else
   {
-    v38 = v7;
-    v39 = v7;
+    v38 = dictionary;
+    v39 = dictionary;
   }
 
   return v39;

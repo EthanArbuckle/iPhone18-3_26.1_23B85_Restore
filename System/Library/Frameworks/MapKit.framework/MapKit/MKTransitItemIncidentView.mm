@@ -1,21 +1,21 @@
 @interface MKTransitItemIncidentView
-- (MKTransitItemIncidentView)initWithFrame:(CGRect)a3;
+- (MKTransitItemIncidentView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)contentInsets;
 - (id)_nonBlockingImage;
-- (void)_configureWithMessage:(id)a3 referenceDate:(id)a4 lastUpdated:(id)a5 incidentIsBlocking:(BOOL)a6 shouldShowImage:(BOOL)a7 inSiri:(BOOL)a8;
+- (void)_configureWithMessage:(id)message referenceDate:(id)date lastUpdated:(id)updated incidentIsBlocking:(BOOL)blocking shouldShowImage:(BOOL)image inSiri:(BOOL)siri;
 - (void)_contentSizeCategoryDidChange;
-- (void)_updateBottomConstraintWithOffset:(double)a3;
+- (void)_updateBottomConstraintWithOffset:(double)offset;
 - (void)_updateConstraintValues;
 - (void)configureViews;
-- (void)configureWithIncident:(id)a3 referenceDate:(id)a4 shouldShowImage:(BOOL)a5 inSiri:(BOOL)a6;
-- (void)configureWithIncidentMessage:(id)a3 referenceDate:(id)a4 shouldShowImage:(BOOL)a5 inSiri:(BOOL)a6;
-- (void)configureWithMessage:(id)a3 incident:(id)a4 referenceDate:(id)a5 shouldShowImage:(BOOL)a6 inSiri:(BOOL)a7;
+- (void)configureWithIncident:(id)incident referenceDate:(id)date shouldShowImage:(BOOL)image inSiri:(BOOL)siri;
+- (void)configureWithIncidentMessage:(id)message referenceDate:(id)date shouldShowImage:(BOOL)image inSiri:(BOOL)siri;
+- (void)configureWithMessage:(id)message incident:(id)incident referenceDate:(id)date shouldShowImage:(BOOL)image inSiri:(BOOL)siri;
 - (void)dealloc;
 - (void)didMoveToWindow;
 - (void)infoCardThemeChanged;
 - (void)rebuildConstraints;
-- (void)setContentInsets:(UIEdgeInsets)a3;
-- (void)setPadBottom:(BOOL)a3;
+- (void)setContentInsets:(UIEdgeInsets)insets;
+- (void)setPadBottom:(BOOL)bottom;
 - (void)updateConstraints;
 @end
 
@@ -47,77 +47,77 @@
   v5 = v4;
   [(MKTransitItemIncidentView *)self contentInsets];
   v7 = v6;
-  v8 = [(MKTransitItemIncidentView *)self layoutMarginsGuide];
-  v63 = [v8 trailingAnchor];
+  layoutMarginsGuide = [(MKTransitItemIncidentView *)self layoutMarginsGuide];
+  trailingAnchor = [layoutMarginsGuide trailingAnchor];
 
-  v9 = [(UIImageView *)self->_incidentIconImageView leadingAnchor];
-  v10 = [(MKTransitIncidentItemCellBackgroundView *)self->_backgroundView leadingAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10 constant:v5];
+  leadingAnchor = [(UIImageView *)self->_incidentIconImageView leadingAnchor];
+  leadingAnchor2 = [(MKTransitIncidentItemCellBackgroundView *)self->_backgroundView leadingAnchor];
+  v11 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v5];
   [(NSArray *)v3 addObject:v11];
 
-  v12 = [(UIImageView *)self->_incidentIconImageView widthAnchor];
-  v13 = [v12 constraintEqualToConstant:32.0];
+  widthAnchor = [(UIImageView *)self->_incidentIconImageView widthAnchor];
+  v13 = [widthAnchor constraintEqualToConstant:32.0];
   [(NSArray *)v3 addObject:v13];
 
-  v14 = [(UIImageView *)self->_incidentIconImageView topAnchor];
-  v15 = [(MKTransitIncidentItemCellBackgroundView *)self->_backgroundView topAnchor];
-  v16 = [v14 constraintGreaterThanOrEqualToAnchor:v15];
+  topAnchor = [(UIImageView *)self->_incidentIconImageView topAnchor];
+  topAnchor2 = [(MKTransitIncidentItemCellBackgroundView *)self->_backgroundView topAnchor];
+  v16 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
   [(NSArray *)v3 addObject:v16];
 
-  v17 = [(MKTransitIncidentItemCellBackgroundView *)self->_backgroundView bottomAnchor];
-  v18 = [(UIImageView *)self->_incidentIconImageView bottomAnchor];
-  v19 = [v17 constraintGreaterThanOrEqualToAnchor:v18];
+  bottomAnchor = [(MKTransitIncidentItemCellBackgroundView *)self->_backgroundView bottomAnchor];
+  bottomAnchor2 = [(UIImageView *)self->_incidentIconImageView bottomAnchor];
+  v19 = [bottomAnchor constraintGreaterThanOrEqualToAnchor:bottomAnchor2];
   [(NSArray *)v3 addObject:v19];
 
-  v20 = [(UIImageView *)self->_incidentIconImageView centerYAnchor];
-  v21 = [(MKTransitIncidentItemCellBackgroundView *)self->_backgroundView centerYAnchor];
-  v22 = [v20 constraintEqualToAnchor:v21];
+  centerYAnchor = [(UIImageView *)self->_incidentIconImageView centerYAnchor];
+  centerYAnchor2 = [(MKTransitIncidentItemCellBackgroundView *)self->_backgroundView centerYAnchor];
+  v22 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [(NSArray *)v3 addObject:v22];
 
-  v23 = [(_MKUILabel *)self->_titleLabel firstBaselineAnchor];
-  v24 = [(MKTransitIncidentItemCellBackgroundView *)self->_backgroundView topAnchor];
-  v25 = [v23 constraintEqualToAnchor:v24];
+  firstBaselineAnchor = [(_MKUILabel *)self->_titleLabel firstBaselineAnchor];
+  topAnchor3 = [(MKTransitIncidentItemCellBackgroundView *)self->_backgroundView topAnchor];
+  v25 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor3];
   titleLabelToTopConstraint = self->_titleLabelToTopConstraint;
   self->_titleLabelToTopConstraint = v25;
 
   [(NSArray *)v3 addObject:self->_titleLabelToTopConstraint];
-  v27 = [(_MKUILabel *)self->_titleLabel leadingAnchor];
-  v28 = [(UIImageView *)self->_incidentIconImageView trailingAnchor];
-  v29 = [v27 constraintEqualToAnchor:v28 constant:10.0];
+  leadingAnchor3 = [(_MKUILabel *)self->_titleLabel leadingAnchor];
+  trailingAnchor2 = [(UIImageView *)self->_incidentIconImageView trailingAnchor];
+  v29 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor2 constant:10.0];
   [(NSArray *)v3 addObject:v29];
 
-  v30 = [MEMORY[0x1E69DC668] sharedApplication];
-  v31 = [v30 preferredContentSizeCategory];
-  self->_useCondensedWidthLayout = UIContentSizeCategoryIsAccessibilityCategory(v31);
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
+  self->_useCondensedWidthLayout = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
-  LODWORD(v31) = self->_useCondensedWidthLayout;
-  v32 = [(_MKUILabel *)self->_lastUpdatedLabel leadingAnchor];
+  LODWORD(preferredContentSizeCategory) = self->_useCondensedWidthLayout;
+  leadingAnchor4 = [(_MKUILabel *)self->_lastUpdatedLabel leadingAnchor];
   titleLabel = self->_titleLabel;
-  if (v31 == 1)
+  if (preferredContentSizeCategory == 1)
   {
-    v34 = [(_MKUILabel *)titleLabel leadingAnchor];
-    v35 = [v32 constraintEqualToAnchor:v34];
+    leadingAnchor5 = [(_MKUILabel *)titleLabel leadingAnchor];
+    v35 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
     [(NSArray *)v3 addObject:v35];
 
-    v36 = [(_MKUILabel *)self->_lastUpdatedLabel trailingAnchor];
-    v37 = [(_MKUILabel *)self->_titleLabel trailingAnchor];
-    v38 = [v36 constraintEqualToAnchor:v37];
+    trailingAnchor3 = [(_MKUILabel *)self->_lastUpdatedLabel trailingAnchor];
+    trailingAnchor4 = [(_MKUILabel *)self->_titleLabel trailingAnchor];
+    v38 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     [(NSArray *)v3 addObject:v38];
 
-    v39 = [(_MKUILabel *)self->_titleLabel trailingAnchor];
-    v40 = [v63 constraintEqualToAnchor:v39 constant:v7];
+    trailingAnchor5 = [(_MKUILabel *)self->_titleLabel trailingAnchor];
+    v40 = [trailingAnchor constraintEqualToAnchor:trailingAnchor5 constant:v7];
     [(NSArray *)v3 addObject:v40];
 
-    v41 = [(_MKUILabel *)self->_lastUpdatedLabel firstBaselineAnchor];
-    v42 = [(_MKUILabel *)self->_titleLabel lastBaselineAnchor];
-    v43 = [v41 constraintEqualToAnchor:v42];
+    firstBaselineAnchor2 = [(_MKUILabel *)self->_lastUpdatedLabel firstBaselineAnchor];
+    lastBaselineAnchor = [(_MKUILabel *)self->_titleLabel lastBaselineAnchor];
+    v43 = [firstBaselineAnchor2 constraintEqualToAnchor:lastBaselineAnchor];
     titleToLastUpdatedLabelConstraint = self->_titleToLastUpdatedLabelConstraint;
     self->_titleToLastUpdatedLabelConstraint = v43;
 
     [(NSArray *)v3 addObject:self->_titleToLastUpdatedLabelConstraint];
-    v45 = [(MKTransitIncidentItemCellBackgroundView *)self->_backgroundView bottomAnchor];
-    v46 = [(_MKUILabel *)self->_lastUpdatedLabel lastBaselineAnchor];
-    v47 = [v45 constraintGreaterThanOrEqualToAnchor:v46];
+    bottomAnchor3 = [(MKTransitIncidentItemCellBackgroundView *)self->_backgroundView bottomAnchor];
+    lastBaselineAnchor2 = [(_MKUILabel *)self->_lastUpdatedLabel lastBaselineAnchor];
+    v47 = [bottomAnchor3 constraintGreaterThanOrEqualToAnchor:lastBaselineAnchor2];
     bottomToLabelConstraint = self->_bottomToLabelConstraint;
     self->_bottomToLabelConstraint = v47;
 
@@ -126,22 +126,22 @@
 
   else
   {
-    v49 = [(_MKUILabel *)titleLabel trailingAnchor];
-    v50 = [v32 constraintGreaterThanOrEqualToAnchor:v49 constant:10.0];
+    trailingAnchor6 = [(_MKUILabel *)titleLabel trailingAnchor];
+    v50 = [leadingAnchor4 constraintGreaterThanOrEqualToAnchor:trailingAnchor6 constant:10.0];
     [(NSArray *)v3 addObject:v50];
 
-    v51 = [(_MKUILabel *)self->_lastUpdatedLabel firstBaselineAnchor];
-    v52 = [(_MKUILabel *)self->_titleLabel firstBaselineAnchor];
-    v53 = [v51 constraintEqualToAnchor:v52];
+    firstBaselineAnchor3 = [(_MKUILabel *)self->_lastUpdatedLabel firstBaselineAnchor];
+    firstBaselineAnchor4 = [(_MKUILabel *)self->_titleLabel firstBaselineAnchor];
+    v53 = [firstBaselineAnchor3 constraintEqualToAnchor:firstBaselineAnchor4];
     [(NSArray *)v3 addObject:v53];
 
-    v54 = [(_MKUILabel *)self->_lastUpdatedLabel trailingAnchor];
-    v55 = [v63 constraintEqualToAnchor:v54 constant:v7];
+    trailingAnchor7 = [(_MKUILabel *)self->_lastUpdatedLabel trailingAnchor];
+    v55 = [trailingAnchor constraintEqualToAnchor:trailingAnchor7 constant:v7];
     [(NSArray *)v3 addObject:v55];
 
-    v56 = [(MKTransitIncidentItemCellBackgroundView *)self->_backgroundView bottomAnchor];
-    v57 = [(_MKUILabel *)self->_titleLabel lastBaselineAnchor];
-    v58 = [v56 constraintGreaterThanOrEqualToAnchor:v57];
+    bottomAnchor4 = [(MKTransitIncidentItemCellBackgroundView *)self->_backgroundView bottomAnchor];
+    lastBaselineAnchor3 = [(_MKUILabel *)self->_titleLabel lastBaselineAnchor];
+    v58 = [bottomAnchor4 constraintGreaterThanOrEqualToAnchor:lastBaselineAnchor3];
     v59 = self->_bottomToLabelConstraint;
     self->_bottomToLabelConstraint = v58;
 
@@ -180,24 +180,24 @@
 
 - (void)_updateConstraintValues
 {
-  v3 = [(_MKUILabel *)self->_titleLabel font];
-  [v3 _mapkit_scaledValueForValue:30.0];
+  font = [(_MKUILabel *)self->_titleLabel font];
+  [font _mapkit_scaledValueForValue:30.0];
   UIRoundToViewScale();
   [(NSLayoutConstraint *)self->_titleLabelToTopConstraint setConstant:?];
 
-  v7 = [(NSLayoutConstraint *)self->_bottomToLabelConstraint secondItem];
-  v4 = [v7 font];
-  [v4 _mapkit_scaledValueForValue:20.0];
+  secondItem = [(NSLayoutConstraint *)self->_bottomToLabelConstraint secondItem];
+  font2 = [secondItem font];
+  [font2 _mapkit_scaledValueForValue:20.0];
   UIRoundToViewScale();
   [(NSLayoutConstraint *)self->_bottomToLabelConstraint setConstant:?];
 
   if (self->_titleToLastUpdatedLabelConstraint)
   {
-    v5 = [(_MKUILabel *)self->_lastUpdatedLabel attributedText];
-    if ([v5 length])
+    attributedText = [(_MKUILabel *)self->_lastUpdatedLabel attributedText];
+    if ([attributedText length])
     {
-      v6 = [(_MKUILabel *)self->_lastUpdatedLabel font];
-      [v6 _mapkit_lineHeight];
+      font3 = [(_MKUILabel *)self->_lastUpdatedLabel font];
+      [font3 _mapkit_lineHeight];
       UIRoundToViewScale();
       [(NSLayoutConstraint *)self->_titleToLastUpdatedLabelConstraint setConstant:?];
     }
@@ -214,9 +214,9 @@
 - (void)_contentSizeCategoryDidChange
 {
   useCondensedWidthLayout = self->_useCondensedWidthLayout;
-  v4 = [MEMORY[0x1E69DC668] sharedApplication];
-  v5 = [v4 preferredContentSizeCategory];
-  self->_needsConstraintsRebuild = useCondensedWidthLayout != UIContentSizeCategoryIsAccessibilityCategory(v5);
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
+  self->_needsConstraintsRebuild = useCondensedWidthLayout != UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   v6 = MEMORY[0x1E69DB878];
   v7 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD80]];
@@ -242,8 +242,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = MKTransitItemIncidentView;
@@ -252,16 +252,16 @@
 
 - (id)_nonBlockingImage
 {
-  v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v2 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v4 = v3;
 
-  v5 = [MEMORY[0x1E69DF430] sharedManager];
-  v6 = [v5 trafficIncidentTypeKey];
+  mEMORY[0x1E69DF430] = [MEMORY[0x1E69DF430] sharedManager];
+  trafficIncidentTypeKey = [mEMORY[0x1E69DF430] trafficIncidentTypeKey];
 
-  v7 = [MEMORY[0x1E69DF430] sharedManager];
+  mEMORY[0x1E69DF430]2 = [MEMORY[0x1E69DF430] sharedManager];
   *&v8 = v4;
-  v9 = [v7 imageForKey:v6 value:4 contentScale:7 sizeGroup:0 modifiers:v8];
+  v9 = [mEMORY[0x1E69DF430]2 imageForKey:trafficIncidentTypeKey value:4 contentScale:7 sizeGroup:0 modifiers:v8];
 
   if (v9 && (v10 = CGImageRetain([v9 image])) != 0)
   {
@@ -280,12 +280,12 @@
   return v14;
 }
 
-- (void)_updateBottomConstraintWithOffset:(double)a3
+- (void)_updateBottomConstraintWithOffset:(double)offset
 {
-  self->_bottomToBackgroundOffset = a3;
-  v4 = [(MKTransitItemIncidentView *)self padBottom];
+  self->_bottomToBackgroundOffset = offset;
+  padBottom = [(MKTransitItemIncidentView *)self padBottom];
   bottomToBackgroundOffset = 10.0;
-  if (!v4)
+  if (!padBottom)
   {
     bottomToBackgroundOffset = self->_bottomToBackgroundOffset;
   }
@@ -295,11 +295,11 @@
   [(NSLayoutConstraint *)bottomToBackgroundConstraint setConstant:bottomToBackgroundOffset];
 }
 
-- (void)setPadBottom:(BOOL)a3
+- (void)setPadBottom:(BOOL)bottom
 {
-  if (self->_padBottom != a3)
+  if (self->_padBottom != bottom)
   {
-    self->_padBottom = a3;
+    self->_padBottom = bottom;
     [(MKTransitItemIncidentView *)self _updateBottomConstraintWithOffset:self->_bottomToBackgroundOffset];
   }
 }
@@ -309,21 +309,21 @@
   v19.receiver = self;
   v19.super_class = MKTransitItemIncidentView;
   [(UIView *)&v19 infoCardThemeChanged];
-  v3 = [(MKTransitItemIncidentView *)self traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  traitCollection = [(MKTransitItemIncidentView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v4 == 5)
+  if (userInterfaceIdiom == 5)
   {
-    v5 = [(UIView *)self mk_theme];
-    v6 = [v5 transitIncidentBackgroundColor];
-    [(MKTransitIncidentItemCellBackgroundView *)self->_backgroundView setFillColor:v6];
+    mk_theme = [(UIView *)self mk_theme];
+    transitIncidentBackgroundColor = [mk_theme transitIncidentBackgroundColor];
+    [(MKTransitIncidentItemCellBackgroundView *)self->_backgroundView setFillColor:transitIncidentBackgroundColor];
 
     [(MKTransitIncidentItemCellBackgroundView *)self->_backgroundView setStrokeColor:0];
     v7 = [MEMORY[0x1E69DB878] _mapkit_preferredFontForTextStyleInTableViewCell:*MEMORY[0x1E69DDCF8]];
     [(_MKUILabel *)self->_titleLabel setFont:v7];
 
-    v8 = [MEMORY[0x1E69DB878] _mapkit_preferredFontForTextStyleInTableViewCell:*MEMORY[0x1E69DDD80] addingSymbolicTraits:0];
-    [(_MKUILabel *)self->_lastUpdatedLabel setFont:v8];
+    mk_theme3 = [MEMORY[0x1E69DB878] _mapkit_preferredFontForTextStyleInTableViewCell:*MEMORY[0x1E69DDD80] addingSymbolicTraits:0];
+    [(_MKUILabel *)self->_lastUpdatedLabel setFont:mk_theme3];
   }
 
   else
@@ -337,19 +337,19 @@
     v12 = [MEMORY[0x1E69DB878] _mapkit_preferredFontForTextStyleInTableViewCell:*MEMORY[0x1E69DDD28] addingSymbolicTraits:0];
     [(_MKUILabel *)self->_lastUpdatedLabel setFont:v12];
 
-    v13 = [(UIView *)self mk_theme];
-    v14 = [v13 themeType];
+    mk_theme2 = [(UIView *)self mk_theme];
+    themeType = [mk_theme2 themeType];
 
-    if (v14 >= 2)
+    if (themeType >= 2)
     {
-      if (v14 != 2)
+      if (themeType != 2)
       {
         return;
       }
 
-      v8 = [(UIView *)self mk_theme];
-      v18 = [v8 transitIncidentBackgroundColor];
-      [(MKTransitIncidentItemCellBackgroundView *)self->_backgroundView setFillColor:v18];
+      mk_theme3 = [(UIView *)self mk_theme];
+      transitIncidentBackgroundColor2 = [mk_theme3 transitIncidentBackgroundColor];
+      [(MKTransitIncidentItemCellBackgroundView *)self->_backgroundView setFillColor:transitIncidentBackgroundColor2];
     }
 
     else
@@ -368,33 +368,33 @@
         v17 = 0.0;
       }
 
-      v8 = [MEMORY[0x1E69DC888] colorWithRed:v15 green:v16 blue:v17 alpha:0.100000001];
-      [(MKTransitIncidentItemCellBackgroundView *)self->_backgroundView setFillColor:v8];
+      mk_theme3 = [MEMORY[0x1E69DC888] colorWithRed:v15 green:v16 blue:v17 alpha:0.100000001];
+      [(MKTransitIncidentItemCellBackgroundView *)self->_backgroundView setFillColor:mk_theme3];
     }
   }
 }
 
-- (void)setContentInsets:(UIEdgeInsets)a3
+- (void)setContentInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_contentInsets.top), vceqq_f64(v4, *&self->_contentInsets.bottom)))) & 1) == 0)
   {
-    self->_contentInsets = a3;
+    self->_contentInsets = insets;
     self->_needsConstraintsRebuild = 1;
     [(UIView *)self _mapkit_setNeedsUpdateConstraints];
   }
 }
 
-- (void)_configureWithMessage:(id)a3 referenceDate:(id)a4 lastUpdated:(id)a5 incidentIsBlocking:(BOOL)a6 shouldShowImage:(BOOL)a7 inSiri:(BOOL)a8
+- (void)_configureWithMessage:(id)message referenceDate:(id)date lastUpdated:(id)updated incidentIsBlocking:(BOOL)blocking shouldShowImage:(BOOL)image inSiri:(BOOL)siri
 {
-  v24 = a7;
+  imageCopy = image;
   v26[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  messageCopy = message;
+  dateCopy = date;
+  updatedCopy = updated;
   v15 = objc_alloc_init(MEMORY[0x1E69DB7C8]);
   LODWORD(v16) = 1058642330;
   [v15 setHyphenationFactor:v16];
@@ -402,18 +402,18 @@
   v26[0] = v15;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:&v25 count:1];
   v18 = &stru_1F15B23C0;
-  if (v12)
+  if (messageCopy)
   {
-    v18 = v12;
+    v18 = messageCopy;
   }
 
   v19 = v18;
   v20 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v19 attributes:v17];
   [(_MKUILabel *)self->_titleLabel setAttributedText:v20];
 
-  if (v13 && v14)
+  if (dateCopy && updatedCopy)
   {
-    v21 = [MEMORY[0x1E696AB70] _mapkit_descriptionForTimeSinceDate:v14 referenceDate:v13];
+    v21 = [MEMORY[0x1E696AB70] _mapkit_descriptionForTimeSinceDate:updatedCopy referenceDate:dateCopy];
 
     v22 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v21 attributes:v17];
     [(_MKUILabel *)self->_lastUpdatedLabel setAttributedText:v22];
@@ -426,9 +426,9 @@
     [(_MKUILabel *)self->_lastUpdatedLabel setAttributedText:0];
   }
 
-  self->_incidentIsBlocking = a6;
+  self->_incidentIsBlocking = blocking;
   [(MKTransitItemIncidentView *)self infoCardThemeChanged];
-  if (v24)
+  if (imageCopy)
   {
     if (self->_incidentIsBlocking)
     {
@@ -449,20 +449,20 @@
   }
 }
 
-- (void)configureWithIncidentMessage:(id)a3 referenceDate:(id)a4 shouldShowImage:(BOOL)a5 inSiri:(BOOL)a6
+- (void)configureWithIncidentMessage:(id)message referenceDate:(id)date shouldShowImage:(BOOL)image inSiri:(BOOL)siri
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = [v10 transitIncidents];
-  v13 = [v12 count];
+  siriCopy = siri;
+  imageCopy = image;
+  messageCopy = message;
+  dateCopy = date;
+  transitIncidents = [messageCopy transitIncidents];
+  v13 = [transitIncidents count];
 
   if (v13 == 1)
   {
-    v14 = [v10 transitIncidents];
-    v15 = [v14 firstObject];
-    [(MKTransitItemIncidentView *)self configureWithIncident:v15 referenceDate:v11 shouldShowImage:v7 inSiri:v6];
+    transitIncidents2 = [messageCopy transitIncidents];
+    firstObject = [transitIncidents2 firstObject];
+    [(MKTransitItemIncidentView *)self configureWithIncident:firstObject referenceDate:dateCopy shouldShowImage:imageCopy inSiri:siriCopy];
   }
 
   else
@@ -471,16 +471,16 @@
     v20 = &v19;
     v21 = 0x2020000000;
     v22 = 0;
-    v16 = [v10 transitIncidents];
+    transitIncidents3 = [messageCopy transitIncidents];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __95__MKTransitItemIncidentView_configureWithIncidentMessage_referenceDate_shouldShowImage_inSiri___block_invoke;
     v18[3] = &unk_1E76C93B8;
     v18[4] = &v19;
-    [v16 enumerateObjectsUsingBlock:v18];
+    [transitIncidents3 enumerateObjectsUsingBlock:v18];
 
-    v17 = [v10 routingMessage];
-    [(MKTransitItemIncidentView *)self _configureWithMessage:v17 referenceDate:0 lastUpdated:0 incidentIsBlocking:*(v20 + 24) shouldShowImage:v7 inSiri:v6];
+    routingMessage = [messageCopy routingMessage];
+    [(MKTransitItemIncidentView *)self _configureWithMessage:routingMessage referenceDate:0 lastUpdated:0 incidentIsBlocking:*(v20 + 24) shouldShowImage:imageCopy inSiri:siriCopy];
 
     _Block_object_dispose(&v19, 8);
   }
@@ -498,30 +498,30 @@ uint64_t __95__MKTransitItemIncidentView_configureWithIncidentMessage_referenceD
   return result;
 }
 
-- (void)configureWithMessage:(id)a3 incident:(id)a4 referenceDate:(id)a5 shouldShowImage:(BOOL)a6 inSiri:(BOOL)a7
+- (void)configureWithMessage:(id)message incident:(id)incident referenceDate:(id)date shouldShowImage:(BOOL)image inSiri:(BOOL)siri
 {
-  v7 = a7;
-  v8 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v16 = [v13 lastUpdated];
-  v15 = [v13 isBlockingIncident];
+  siriCopy = siri;
+  imageCopy = image;
+  dateCopy = date;
+  incidentCopy = incident;
+  messageCopy = message;
+  lastUpdated = [incidentCopy lastUpdated];
+  isBlockingIncident = [incidentCopy isBlockingIncident];
 
-  [(MKTransitItemIncidentView *)self _configureWithMessage:v14 referenceDate:v12 lastUpdated:v16 incidentIsBlocking:v15 shouldShowImage:v8 inSiri:v7];
+  [(MKTransitItemIncidentView *)self _configureWithMessage:messageCopy referenceDate:dateCopy lastUpdated:lastUpdated incidentIsBlocking:isBlockingIncident shouldShowImage:imageCopy inSiri:siriCopy];
 }
 
-- (void)configureWithIncident:(id)a3 referenceDate:(id)a4 shouldShowImage:(BOOL)a5 inSiri:(BOOL)a6
+- (void)configureWithIncident:(id)incident referenceDate:(id)date shouldShowImage:(BOOL)image inSiri:(BOOL)siri
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a4;
-  v11 = a3;
-  v14 = [MKTransitIncidentStringProvider cellTitleForIncident:v11];
-  v12 = [v11 lastUpdated];
-  v13 = [v11 isBlockingIncident];
+  siriCopy = siri;
+  imageCopy = image;
+  dateCopy = date;
+  incidentCopy = incident;
+  v14 = [MKTransitIncidentStringProvider cellTitleForIncident:incidentCopy];
+  lastUpdated = [incidentCopy lastUpdated];
+  isBlockingIncident = [incidentCopy isBlockingIncident];
 
-  [(MKTransitItemIncidentView *)self _configureWithMessage:v14 referenceDate:v10 lastUpdated:v12 incidentIsBlocking:v13 shouldShowImage:v7 inSiri:v6];
+  [(MKTransitItemIncidentView *)self _configureWithMessage:v14 referenceDate:dateCopy lastUpdated:lastUpdated incidentIsBlocking:isBlockingIncident shouldShowImage:imageCopy inSiri:siriCopy];
 }
 
 - (void)configureViews
@@ -544,26 +544,26 @@ uint64_t __95__MKTransitItemIncidentView_configureWithIncidentMessage_referenceD
   [(MKTransitIncidentItemCellBackgroundView *)self->_backgroundView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(MKTransitItemIncidentView *)self addSubview:self->_backgroundView];
   [(MKTransitItemIncidentView *)self sendSubviewToBack:self->_backgroundView];
-  v8 = [(MKTransitItemIncidentView *)self bottomAnchor];
-  v9 = [(MKTransitIncidentItemCellBackgroundView *)self->_backgroundView bottomAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  bottomAnchor = [(MKTransitItemIncidentView *)self bottomAnchor];
+  bottomAnchor2 = [(MKTransitIncidentItemCellBackgroundView *)self->_backgroundView bottomAnchor];
+  v10 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   bottomToBackgroundConstraint = self->_bottomToBackgroundConstraint;
   self->_bottomToBackgroundConstraint = v10;
 
   v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v32 = [(MKTransitIncidentItemCellBackgroundView *)self->_backgroundView leadingAnchor];
-  v33 = [(MKTransitItemIncidentView *)self layoutMarginsGuide];
-  v31 = [v33 leadingAnchor];
-  v30 = [v32 constraintEqualToAnchor:v31];
+  leadingAnchor = [(MKTransitIncidentItemCellBackgroundView *)self->_backgroundView leadingAnchor];
+  layoutMarginsGuide = [(MKTransitItemIncidentView *)self layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v30 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v34[0] = v30;
-  v29 = [(MKTransitIncidentItemCellBackgroundView *)self->_backgroundView trailingAnchor];
-  v13 = [(MKTransitItemIncidentView *)self layoutMarginsGuide];
-  v14 = [v13 trailingAnchor];
-  v15 = [v29 constraintEqualToAnchor:v14];
+  trailingAnchor = [(MKTransitIncidentItemCellBackgroundView *)self->_backgroundView trailingAnchor];
+  layoutMarginsGuide2 = [(MKTransitItemIncidentView *)self layoutMarginsGuide];
+  trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+  v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v34[1] = v15;
-  v16 = [(MKTransitIncidentItemCellBackgroundView *)self->_backgroundView topAnchor];
-  v17 = [(MKTransitItemIncidentView *)self topAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17];
+  topAnchor = [(MKTransitIncidentItemCellBackgroundView *)self->_backgroundView topAnchor];
+  topAnchor2 = [(MKTransitItemIncidentView *)self topAnchor];
+  v18 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v19 = self->_bottomToBackgroundConstraint;
   v34[2] = v18;
   v34[3] = v19;
@@ -601,18 +601,18 @@ uint64_t __95__MKTransitItemIncidentView_configureWithIncidentMessage_referenceD
 
   [(_MKUILabel *)self->_lastUpdatedLabel setTextAlignment:v27];
   [(MKTransitIncidentItemCellBackgroundView *)self->_backgroundView addSubview:self->_lastUpdatedLabel];
-  v28 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v28 addObserver:self selector:sel__contentSizeCategoryDidChange name:*MEMORY[0x1E69DDC48] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__contentSizeCategoryDidChange name:*MEMORY[0x1E69DDC48] object:0];
 
   [(MKTransitItemIncidentView *)self _updateConstraintValues];
   [MEMORY[0x1E696ACD8] activateConstraints:v12];
 }
 
-- (MKTransitItemIncidentView)initWithFrame:(CGRect)a3
+- (MKTransitItemIncidentView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MKTransitItemIncidentView;
-  v3 = [(MKTransitItemIncidentView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MKTransitItemIncidentView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

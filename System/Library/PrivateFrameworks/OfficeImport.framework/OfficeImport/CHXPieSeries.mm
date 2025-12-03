@@ -1,18 +1,18 @@
 @interface CHXPieSeries
-+ (id)chdSeriesFromXmlSeriesElement:(_xmlNode *)a3 state:(id)a4;
++ (id)chdSeriesFromXmlSeriesElement:(_xmlNode *)element state:(id)state;
 @end
 
 @implementation CHXPieSeries
 
-+ (id)chdSeriesFromXmlSeriesElement:(_xmlNode *)a3 state:(id)a4
++ (id)chdSeriesFromXmlSeriesElement:(_xmlNode *)element state:(id)state
 {
-  v5 = a4;
-  v6 = [v5 chart];
-  v7 = [(CHDSeries *)CHDPieSeries seriesWithChart:v6];
+  stateCopy = state;
+  chart = [stateCopy chart];
+  v7 = [(CHDSeries *)CHDPieSeries seriesWithChart:chart];
 
-  v8 = [v5 drawingState];
-  v9 = [v8 OAXChartNamespace];
-  v10 = OCXFindChild(a3, v9, "explosion");
+  drawingState = [stateCopy drawingState];
+  oAXChartNamespace = [drawingState OAXChartNamespace];
+  v10 = OCXFindChild(element, oAXChartNamespace, "explosion");
 
   if (v10)
   {

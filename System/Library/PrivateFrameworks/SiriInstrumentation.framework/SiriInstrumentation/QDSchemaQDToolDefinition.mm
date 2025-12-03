@@ -1,28 +1,28 @@
 @interface QDSchemaQDToolDefinition
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (QDSchemaQDToolDefinition)initWithDictionary:(id)a3;
-- (QDSchemaQDToolDefinition)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (QDSchemaQDToolDefinition)initWithDictionary:(id)dictionary;
+- (QDSchemaQDToolDefinition)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addParameters:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addParameters:(id)parameters;
+- (void)writeTo:(id)to;
 @end
 
 @implementation QDSchemaQDToolDefinition
 
-- (QDSchemaQDToolDefinition)initWithDictionary:(id)a3
+- (QDSchemaQDToolDefinition)initWithDictionary:(id)dictionary
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v25.receiver = self;
   v25.super_class = QDSchemaQDToolDefinition;
   v5 = [(QDSchemaQDToolDefinition *)&v25 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"parameters"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"parameters"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -66,7 +66,7 @@
       }
     }
 
-    v15 = [v4 objectForKeyedSubscript:{@"output", v21}];
+    v15 = [dictionaryCopy objectForKeyedSubscript:{@"output", v21}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -74,7 +74,7 @@
       [(QDSchemaQDToolDefinition *)v5 setOutput:v16];
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"description"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"description"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -88,30 +88,30 @@
   return v5;
 }
 
-- (QDSchemaQDToolDefinition)initWithJSON:(id)a3
+- (QDSchemaQDToolDefinition)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(QDSchemaQDToolDefinition *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(QDSchemaQDToolDefinition *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(QDSchemaQDToolDefinition *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -125,33 +125,33 @@
 - (id)dictionaryRepresentation
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_description)
   {
     v4 = [(QDSchemaQDToolDefinition *)self description];
     v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"description"];
+    [dictionary setObject:v5 forKeyedSubscript:@"description"];
   }
 
   if (self->_output)
   {
-    v6 = [(QDSchemaQDToolDefinition *)self output];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    output = [(QDSchemaQDToolDefinition *)self output];
+    dictionaryRepresentation = [output dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"output"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"output"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"output"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"output"];
     }
   }
 
   if ([(NSArray *)self->_parameters count])
   {
-    v9 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
@@ -171,16 +171,16 @@
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
-          if (v15)
+          dictionaryRepresentation2 = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v9 addObject:v15];
+            [array addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v16 = [MEMORY[0x1E695DFB0] null];
-            [v9 addObject:v16];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null2];
           }
         }
 
@@ -190,12 +190,12 @@
       while (v12);
     }
 
-    [v3 setObject:v9 forKeyedSubscript:@"parameters"];
+    [dictionary setObject:array forKeyedSubscript:@"parameters"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v18];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v18];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -205,28 +205,28 @@
   return v4 ^ [(NSString *)self->_description hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(QDSchemaQDToolDefinition *)self parameters];
-  v6 = [v4 parameters];
-  if ((v5 != 0) == (v6 == 0))
+  parameters = [(QDSchemaQDToolDefinition *)self parameters];
+  parameters2 = [equalCopy parameters];
+  if ((parameters != 0) == (parameters2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(QDSchemaQDToolDefinition *)self parameters];
-  if (v7)
+  parameters3 = [(QDSchemaQDToolDefinition *)self parameters];
+  if (parameters3)
   {
-    v8 = v7;
-    v9 = [(QDSchemaQDToolDefinition *)self parameters];
-    v10 = [v4 parameters];
-    v11 = [v9 isEqual:v10];
+    v8 = parameters3;
+    parameters4 = [(QDSchemaQDToolDefinition *)self parameters];
+    parameters5 = [equalCopy parameters];
+    v11 = [parameters4 isEqual:parameters5];
 
     if (!v11)
     {
@@ -238,20 +238,20 @@
   {
   }
 
-  v5 = [(QDSchemaQDToolDefinition *)self output];
-  v6 = [v4 output];
-  if ((v5 != 0) == (v6 == 0))
+  parameters = [(QDSchemaQDToolDefinition *)self output];
+  parameters2 = [equalCopy output];
+  if ((parameters != 0) == (parameters2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(QDSchemaQDToolDefinition *)self output];
-  if (v12)
+  output = [(QDSchemaQDToolDefinition *)self output];
+  if (output)
   {
-    v13 = v12;
-    v14 = [(QDSchemaQDToolDefinition *)self output];
-    v15 = [v4 output];
-    v16 = [v14 isEqual:v15];
+    v13 = output;
+    output2 = [(QDSchemaQDToolDefinition *)self output];
+    output3 = [equalCopy output];
+    v16 = [output2 isEqual:output3];
 
     if (!v16)
     {
@@ -263,9 +263,9 @@
   {
   }
 
-  v5 = [(QDSchemaQDToolDefinition *)self description];
-  v6 = [v4 description];
-  if ((v5 != 0) != (v6 == 0))
+  parameters = [(QDSchemaQDToolDefinition *)self description];
+  parameters2 = [equalCopy description];
+  if ((parameters != 0) != (parameters2 == 0))
   {
     v17 = [(QDSchemaQDToolDefinition *)self description];
     if (!v17)
@@ -278,7 +278,7 @@ LABEL_20:
 
     v18 = v17;
     v19 = [(QDSchemaQDToolDefinition *)self description];
-    v20 = [v4 description];
+    v20 = [equalCopy description];
     v21 = [v19 isEqual:v20];
 
     if (v21)
@@ -299,10 +299,10 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -334,11 +334,11 @@ LABEL_18:
     while (v7);
   }
 
-  v10 = [(QDSchemaQDToolDefinition *)self output];
+  output = [(QDSchemaQDToolDefinition *)self output];
 
-  if (v10)
+  if (output)
   {
-    v11 = [(QDSchemaQDToolDefinition *)self output];
+    output2 = [(QDSchemaQDToolDefinition *)self output];
     PBDataWriterWriteSubmessage();
   }
 
@@ -350,39 +350,39 @@ LABEL_18:
   }
 }
 
-- (void)addParameters:(id)a3
+- (void)addParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   parameters = self->_parameters;
-  v8 = v4;
+  v8 = parametersCopy;
   if (!parameters)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_parameters;
-    self->_parameters = v6;
+    self->_parameters = array;
 
-    v4 = v8;
+    parametersCopy = v8;
     parameters = self->_parameters;
   }
 
-  [(NSArray *)parameters addObject:v4];
+  [(NSArray *)parameters addObject:parametersCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v11.receiver = self;
   v11.super_class = QDSchemaQDToolDefinition;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(QDSchemaQDToolDefinition *)self parameters:v11.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
   [(QDSchemaQDToolDefinition *)self setParameters:v7];
 
-  v8 = [(QDSchemaQDToolDefinition *)self output];
-  v9 = [v8 applySensitiveConditionsPolicy:v4];
+  output = [(QDSchemaQDToolDefinition *)self output];
+  v9 = [output applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v9 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v9 suppressMessage];
+  if (policyCopy)
   {
     [(QDSchemaQDToolDefinition *)self deleteOutput];
   }

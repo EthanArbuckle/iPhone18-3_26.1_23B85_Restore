@@ -1,15 +1,15 @@
 @interface STUIStatusBarRoundedCornerView
-- (STUIStatusBarRoundedCornerView)initWithFrame:(CGRect)a3;
+- (STUIStatusBarRoundedCornerView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation STUIStatusBarRoundedCornerView
 
-- (STUIStatusBarRoundedCornerView)initWithFrame:(CGRect)a3
+- (STUIStatusBarRoundedCornerView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = STUIStatusBarRoundedCornerView;
-  result = [(STUIStatusBarRoundedCornerView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(STUIStatusBarRoundedCornerView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_cornerRadius = -1.0;
@@ -33,8 +33,8 @@
     cornerRadius = v8;
   }
 
-  v9 = [(STUIStatusBarRoundedCornerView *)self layer];
-  [v9 setCornerRadius:cornerRadius];
+  layer = [(STUIStatusBarRoundedCornerView *)self layer];
+  [layer setCornerRadius:cornerRadius];
 
   v10 = MEMORY[0x277CDA138];
   if (vabdd_f64(v5, v7) <= 1.0)
@@ -43,8 +43,8 @@
   }
 
   v11 = *v10;
-  v12 = [(STUIStatusBarRoundedCornerView *)self layer];
-  [v12 setCornerCurve:v11];
+  layer2 = [(STUIStatusBarRoundedCornerView *)self layer];
+  [layer2 setCornerCurve:v11];
 }
 
 @end

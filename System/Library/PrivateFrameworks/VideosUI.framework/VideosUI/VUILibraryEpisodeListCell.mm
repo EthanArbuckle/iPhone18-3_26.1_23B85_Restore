@@ -1,70 +1,70 @@
 @interface VUILibraryEpisodeListCell
-+ (id)_metadataLabelWithString:(id)a3 existingLabel:(id)a4;
-+ (void)configureVUILibraryEpisodeListCell:(id)a3 withMedia:(id)a4 andAssetController:(id)a5;
++ (id)_metadataLabelWithString:(id)string existingLabel:(id)label;
++ (void)configureVUILibraryEpisodeListCell:(id)cell withMedia:(id)media andAssetController:(id)controller;
 - (BOOL)_contentSizeCategoryIsAccessibility;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (VUILibraryEpisodeListCell)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (VUILibraryEpisodeListCell)initWithFrame:(CGRect)frame;
 - (double)_metadataHeightToBaselineNonAXContentSizeCategory;
 - (double)_metadataScaledTopMarginForNonAXContentSizeCategory;
-- (void)_addDownloadButtonIfRequired:(id)a3;
+- (void)_addDownloadButtonIfRequired:(id)required;
 - (void)_configureDotSeparator;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setDownloadButton:(id)a3;
-- (void)setDuration:(id)a3;
-- (void)setImageFrameView:(id)a3;
-- (void)setReleaseDate:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setDownloadButton:(id)button;
+- (void)setDuration:(id)duration;
+- (void)setImageFrameView:(id)view;
+- (void)setReleaseDate:(id)date;
+- (void)setTitle:(id)title;
 @end
 
 @implementation VUILibraryEpisodeListCell
 
-+ (void)configureVUILibraryEpisodeListCell:(id)a3 withMedia:(id)a4 andAssetController:(id)a5
++ (void)configureVUILibraryEpisodeListCell:(id)cell withMedia:(id)media andAssetController:(id)controller
 {
-  v26 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [v26 imageFrameView];
-  if (v9)
+  cellCopy = cell;
+  mediaCopy = media;
+  controllerCopy = controller;
+  imageFrameView = [cellCopy imageFrameView];
+  if (imageFrameView)
   {
-    v10 = [v26 imageFrameView];
+    imageFrameView2 = [cellCopy imageFrameView];
   }
 
   else
   {
     v11 = [VUILibraryEpisodeFrameView alloc];
-    v10 = [(VUILibraryEpisodeFrameView *)v11 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
+    imageFrameView2 = [(VUILibraryEpisodeFrameView *)v11 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   }
 
-  v12 = v10;
+  v12 = imageFrameView2;
 
   [VUIUtilities imageSizeWithAspectRatio:1.77777778 scaleToSize:0.0, 48.0];
-  [VUILibraryEpisodeFrameView configureEpisodeFrameView:v12 withMedia:v7 layout:0 imageSize:?];
-  [v26 setImageFrameView:v12];
-  objc_storeStrong(v26 + 96, a4);
-  objc_storeStrong(v26 + 95, a5);
-  [v26 _addDownloadButtonIfRequired:v7];
-  v13 = [v7 episodeNumber];
-  v14 = [v13 vui_languageAwareDescription];
+  [VUILibraryEpisodeFrameView configureEpisodeFrameView:v12 withMedia:mediaCopy layout:0 imageSize:?];
+  [cellCopy setImageFrameView:v12];
+  objc_storeStrong(cellCopy + 96, media);
+  objc_storeStrong(cellCopy + 95, controller);
+  [cellCopy _addDownloadButtonIfRequired:mediaCopy];
+  episodeNumber = [mediaCopy episodeNumber];
+  vui_languageAwareDescription = [episodeNumber vui_languageAwareDescription];
 
-  v15 = [v7 title];
-  v16 = [v15 vui_stringWithFirstStrongDirectionalIsolates];
+  title = [mediaCopy title];
+  vui_stringWithFirstStrongDirectionalIsolates = [title vui_stringWithFirstStrongDirectionalIsolates];
 
   v17 = MEMORY[0x1E696AEC0];
   v18 = +[VUILocalizationManager sharedInstance];
   v19 = [v18 localizedStringForKey:@"EPISODE_NUMBER_INDICATOR_FOLLOWED_BY_TITLE"];
-  v20 = [v17 stringWithValidatedFormat:v19 validFormatSpecifiers:@"%@ %@" error:0, v14, v16];
-  [v26 setTitle:v20];
+  v20 = [v17 stringWithValidatedFormat:v19 validFormatSpecifiers:@"%@ %@" error:0, vui_languageAwareDescription, vui_stringWithFirstStrongDirectionalIsolates];
+  [cellCopy setTitle:v20];
 
-  v21 = [v7 releaseDate];
-  v22 = [MEMORY[0x1E696AB78] localizedStringFromDate:v21 dateStyle:2 timeStyle:0];
-  [v26 setReleaseDate:v22];
+  releaseDate = [mediaCopy releaseDate];
+  v22 = [MEMORY[0x1E696AB78] localizedStringFromDate:releaseDate dateStyle:2 timeStyle:0];
+  [cellCopy setReleaseDate:v22];
 
-  v23 = [v7 duration];
-  if (v23)
+  duration = [mediaCopy duration];
+  if (duration)
   {
     v24 = [MEMORY[0x1E696B0A0] valueTransformerForName:*MEMORY[0x1E69DF858]];
-    v25 = [v24 transformedValue:v23];
+    v25 = [v24 transformedValue:duration];
   }
 
   else
@@ -72,16 +72,16 @@
     v25 = &stru_1F5DB25C0;
   }
 
-  [v26 setDuration:v25];
-  [v26 setNeedsLayout];
+  [cellCopy setDuration:v25];
+  [cellCopy setNeedsLayout];
 }
 
-- (VUILibraryEpisodeListCell)initWithFrame:(CGRect)a3
+- (VUILibraryEpisodeListCell)initWithFrame:(CGRect)frame
 {
   v15[1] = *MEMORY[0x1E69E9840];
   v14.receiver = self;
   v14.super_class = VUILibraryEpisodeListCell;
-  v3 = [(VUILibraryEpisodeListCell *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VUILibraryEpisodeListCell *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [VUISeparatorView alloc];
@@ -89,8 +89,8 @@
     separatorView = v3->_separatorView;
     v3->_separatorView = v5;
 
-    v7 = [(VUILibraryEpisodeListCell *)v3 contentView];
-    [v7 addSubview:v3->_separatorView];
+    contentView = [(VUILibraryEpisodeListCell *)v3 contentView];
+    [contentView addSubview:v3->_separatorView];
 
     objc_initWeak(&location, v3);
     v15[0] = objc_opt_class();
@@ -124,13 +124,13 @@ void __43__VUILibraryEpisodeListCell_initWithFrame___block_invoke(uint64_t a1)
   [(VUILibraryEpisodeListCell *)self setImageFrameView:0];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   v5 = MEMORY[0x1E69DF6D0];
-  v6 = [MEMORY[0x1E69DC668] sharedApplication];
-  v7 = [v6 preferredContentSizeCategory];
-  v8 = [v5 vuiContentSizeCategoryFor:v7];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
+  v8 = [v5 vuiContentSizeCategoryFor:preferredContentSizeCategory];
 
   if (![MEMORY[0x1E69DF678] contentSizeCategoryIsAccessibility:v8])
   {
@@ -175,10 +175,10 @@ void __43__VUILibraryEpisodeListCell_initWithFrame___block_invoke(uint64_t a1)
   [(VUILabel *)self->_releaseDateLabel sizeThatFits:width, 1.79769313e308];
   [(VUILabel *)self->_durationLabel sizeThatFits:width, 1.79769313e308];
   [VUIUtilities imageSizeWithAspectRatio:1.77777778 scaleToSize:0.0, 48.0];
-  v9 = [(VUILibraryEpisodeListCell *)self assetController];
-  if (v9)
+  assetController = [(VUILibraryEpisodeListCell *)self assetController];
+  if (assetController)
   {
-    v10 = [[VUIDownloadButton alloc] initWithAssetController:v9 type:9];
+    v10 = [[VUIDownloadButton alloc] initWithAssetController:assetController type:9];
   }
 
   else
@@ -201,54 +201,54 @@ LABEL_14:
   return result;
 }
 
-- (void)setImageFrameView:(id)a3
+- (void)setImageFrameView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   imageFrameView = self->_imageFrameView;
-  if (imageFrameView != v5)
+  if (imageFrameView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(VUILibraryEpisodeFrameView *)imageFrameView removeFromSuperview];
-    objc_storeStrong(&self->_imageFrameView, a3);
+    objc_storeStrong(&self->_imageFrameView, view);
     if (self->_imageFrameView)
     {
       [(VUILibraryEpisodeListCell *)self addSubview:?];
     }
 
     [(VUILibraryEpisodeListCell *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
-- (void)setDownloadButton:(id)a3
+- (void)setDownloadButton:(id)button
 {
-  v5 = a3;
+  buttonCopy = button;
   downloadButton = self->_downloadButton;
-  if (downloadButton != v5)
+  if (downloadButton != buttonCopy)
   {
-    v7 = v5;
+    v7 = buttonCopy;
     [(VUIDownloadButton *)downloadButton removeFromSuperview];
-    objc_storeStrong(&self->_downloadButton, a3);
+    objc_storeStrong(&self->_downloadButton, button);
     if (self->_downloadButton)
     {
       [(VUILibraryEpisodeListCell *)self addSubview:?];
     }
 
     [(VUILibraryEpisodeListCell *)self setNeedsLayout];
-    v5 = v7;
+    buttonCopy = v7;
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v10 = a3;
+  titleCopy = title;
   if (![(NSString *)self->_title isEqualToString:?])
   {
-    objc_storeStrong(&self->_title, a3);
+    objc_storeStrong(&self->_title, title);
     v5 = objc_alloc_init(VUITextLayout);
     [(VUITextLayout *)v5 setTextStyle:20];
-    v6 = [MEMORY[0x1E69DC888] vui_primaryTextColor];
-    [(VUITextLayout *)v5 setColor:v6];
+    vui_primaryTextColor = [MEMORY[0x1E69DC888] vui_primaryTextColor];
+    [(VUITextLayout *)v5 setColor:vui_primaryTextColor];
 
     [(VUITextLayout *)v5 setNumberOfLines:2];
     [(VUITextLayout *)v5 setAlignment:2 * ([(VUILibraryEpisodeListCell *)self effectiveUserInterfaceLayoutDirection]== 1)];
@@ -257,31 +257,31 @@ LABEL_14:
     titleLabel = self->_titleLabel;
     self->_titleLabel = v7;
 
-    v9 = [(VUILibraryEpisodeListCell *)self contentView];
-    [v9 addSubview:self->_titleLabel];
+    contentView = [(VUILibraryEpisodeListCell *)self contentView];
+    [contentView addSubview:self->_titleLabel];
   }
 }
 
-- (void)setReleaseDate:(id)a3
+- (void)setReleaseDate:(id)date
 {
-  v8 = a3;
+  dateCopy = date;
   if (![(NSString *)self->_releaseDate isEqualToString:?])
   {
-    objc_storeStrong(&self->_releaseDate, a3);
+    objc_storeStrong(&self->_releaseDate, date);
     if (self->_releaseDate)
     {
       v5 = [objc_opt_class() _metadataLabelWithString:self->_releaseDate existingLabel:self->_releaseDateLabel];
       releaseDateLabel = self->_releaseDateLabel;
       self->_releaseDateLabel = v5;
 
-      v7 = [(VUILibraryEpisodeListCell *)self contentView];
-      [v7 addSubview:self->_releaseDateLabel];
+      contentView = [(VUILibraryEpisodeListCell *)self contentView];
+      [contentView addSubview:self->_releaseDateLabel];
     }
 
     else
     {
       [(VUILabel *)self->_releaseDateLabel removeFromSuperview];
-      v7 = self->_releaseDateLabel;
+      contentView = self->_releaseDateLabel;
       self->_releaseDateLabel = 0;
     }
 
@@ -289,26 +289,26 @@ LABEL_14:
   }
 }
 
-- (void)setDuration:(id)a3
+- (void)setDuration:(id)duration
 {
-  v8 = a3;
+  durationCopy = duration;
   if (![(NSString *)self->_duration isEqualToString:?])
   {
-    objc_storeStrong(&self->_duration, a3);
+    objc_storeStrong(&self->_duration, duration);
     if (self->_duration)
     {
       v5 = [objc_opt_class() _metadataLabelWithString:self->_duration existingLabel:self->_durationLabel];
       durationLabel = self->_durationLabel;
       self->_durationLabel = v5;
 
-      v7 = [(VUILibraryEpisodeListCell *)self contentView];
-      [v7 addSubview:self->_durationLabel];
+      contentView = [(VUILibraryEpisodeListCell *)self contentView];
+      [contentView addSubview:self->_durationLabel];
     }
 
     else
     {
       [(VUILabel *)self->_durationLabel removeFromSuperview];
-      v7 = self->_durationLabel;
+      contentView = self->_durationLabel;
       self->_durationLabel = 0;
     }
 
@@ -328,8 +328,8 @@ LABEL_14:
   if ([(VUILibraryEpisodeListCell *)self _contentSizeCategoryIsAccessibility])
   {
     titleLabel = self->_titleLabel;
-    v7 = [(VUILibraryEpisodeListCell *)self contentView];
-    [v7 bounds];
+    contentView = [(VUILibraryEpisodeListCell *)self contentView];
+    [contentView bounds];
     [(VUILabel *)titleLabel sizeThatFits:CGRectGetWidth(v140), 1.79769313e308];
     v9 = v8;
     v11 = v10;
@@ -339,8 +339,8 @@ LABEL_14:
     v13 = v12;
     v15 = v14;
     separatorView = self->_separatorView;
-    v17 = [(VUILibraryEpisodeListCell *)self contentView];
-    [v17 bounds];
+    contentView2 = [(VUILibraryEpisodeListCell *)self contentView];
+    [contentView2 bounds];
     [(VUIBaseView *)separatorView sizeThatFits:CGRectGetWidth(v141), 1.79769313e308];
     v119 = v19;
     v120 = v18;
@@ -364,8 +364,8 @@ LABEL_14:
     v23 = v5;
     if (releaseDateLabel)
     {
-      v24 = [(VUILibraryEpisodeListCell *)self contentView];
-      [v24 bounds];
+      contentView3 = [(VUILibraryEpisodeListCell *)self contentView];
+      [contentView3 bounds];
       [(VUILabel *)releaseDateLabel sizeThatFits:CGRectGetWidth(v144), 1.79769313e308];
       v26 = v25;
       v28 = v27;
@@ -392,8 +392,8 @@ LABEL_14:
     durationLabel = self->_durationLabel;
     if (durationLabel)
     {
-      v86 = [(VUILibraryEpisodeListCell *)self contentView];
-      [v86 bounds];
+      contentView4 = [(VUILibraryEpisodeListCell *)self contentView];
+      [contentView4 bounds];
       [(VUILabel *)durationLabel sizeThatFits:CGRectGetWidth(v158), 1.79769313e308];
       v88 = v87;
       v90 = v89;
@@ -441,14 +441,14 @@ LABEL_14:
   [(VUIDownloadButton *)self->_downloadButton frame];
   v31 = v30;
   v33 = v32;
-  v34 = [(VUILibraryEpisodeListCell *)self contentView];
-  [v34 bounds];
+  contentView5 = [(VUILibraryEpisodeListCell *)self contentView];
+  [contentView5 bounds];
   MaxX = CGRectGetMaxX(v146);
   [(VUIDownloadButton *)self->_downloadButton frame];
   v136 = v5;
   v36 = MaxX - CGRectGetWidth(v147);
-  v37 = [(VUILibraryEpisodeListCell *)self contentView];
-  [v37 bounds];
+  contentView6 = [(VUILibraryEpisodeListCell *)self contentView];
+  [contentView6 bounds];
   MidY = CGRectGetMidY(v148);
   [(VUIDownloadButton *)self->_downloadButton frame];
   v39 = MidY - CGRectGetHeight(v149) * 0.5;
@@ -456,8 +456,8 @@ LABEL_14:
   [VUIUtilities imageSizeWithAspectRatio:1.77777778 scaleToSize:?];
   v41 = v40;
   v43 = v42;
-  v44 = [(VUILibraryEpisodeListCell *)self contentView];
-  [v44 bounds];
+  contentView7 = [(VUILibraryEpisodeListCell *)self contentView];
+  [contentView7 bounds];
   v45 = CGRectGetMidY(v150) - v43 * 0.5;
 
   v151.origin.x = 0.0;
@@ -467,8 +467,8 @@ LABEL_14:
   v127 = v43;
   v151.size.height = v43;
   v135 = CGRectGetMaxX(v151);
-  v46 = [(VUILibraryEpisodeListCell *)self contentView];
-  [v46 bounds];
+  contentView8 = [(VUILibraryEpisodeListCell *)self contentView];
+  [contentView8 bounds];
   Width = CGRectGetWidth(v152);
   v121 = v36;
   v122 = v39;
@@ -486,8 +486,8 @@ LABEL_14:
   }
 
   v49 = self->_separatorView;
-  v50 = [(VUILibraryEpisodeListCell *)self contentView];
-  [v50 bounds];
+  contentView9 = [(VUILibraryEpisodeListCell *)self contentView];
+  [contentView9 bounds];
   v126 = v41;
   [(VUIBaseView *)v49 sizeThatFits:CGRectGetWidth(v154) - (v41 + 16.0), 1.79769313e308];
   v119 = v52;
@@ -516,8 +516,8 @@ LABEL_14:
   }
 
   [(VUILabel *)self->_titleLabel baselineHeight];
-  v64 = [(VUILabel *)self->_titleLabel font];
-  [v64 capHeight];
+  font = [(VUILabel *)self->_titleLabel font];
+  [font capHeight];
 
   recta = v54;
   v65 = self->_releaseDateLabel;
@@ -537,8 +537,8 @@ LABEL_14:
     [(VUILabel *)self->_durationLabel _baselineOffsetFromBottom];
   }
 
-  v68 = [(VUILibraryEpisodeListCell *)self contentView];
-  [v68 bounds];
+  contentView10 = [(VUILibraryEpisodeListCell *)self contentView];
+  [contentView10 bounds];
   CGRectGetHeight(v155);
   VUIRoundValue();
   v70 = v69;
@@ -641,8 +641,8 @@ LABEL_28:
 LABEL_33:
   if ([(VUILibraryEpisodeListCell *)self effectiveUserInterfaceLayoutDirection]== 1)
   {
-    v103 = [(VUILibraryEpisodeListCell *)self contentView];
-    [v103 bounds];
+    contentView11 = [(VUILibraryEpisodeListCell *)self contentView];
+    [contentView11 bounds];
 
     v104 = self->_separatorView;
     VUIRectWithFlippedOriginRelativeToBoundingRect();
@@ -684,26 +684,26 @@ LABEL_33:
   [(VUIDownloadButton *)downloadButton setFrame:v111, v112, v113, v114];
 }
 
-- (void)_addDownloadButtonIfRequired:(id)a3
+- (void)_addDownloadButtonIfRequired:(id)required
 {
-  v8 = a3;
-  v4 = [v8 assetController];
+  requiredCopy = required;
+  assetController = [requiredCopy assetController];
 
-  if (v4)
+  if (assetController)
   {
-    v5 = [(VUILibraryEpisodeListCell *)self downloadButton];
-    if (v5)
+    downloadButton = [(VUILibraryEpisodeListCell *)self downloadButton];
+    if (downloadButton)
     {
-      v6 = v5;
-      [(VUIDownloadButton *)v5 updateWithAssetController:self->_assetController];
+      v6 = downloadButton;
+      [(VUIDownloadButton *)downloadButton updateWithAssetController:self->_assetController];
     }
 
     else
     {
-      v6 = [[VUIDownloadButton alloc] initWithMediaEntity:v8 type:9];
+      v6 = [[VUIDownloadButton alloc] initWithMediaEntity:requiredCopy type:9];
       [(VUIDownloadButton *)v6 setUsesDefaultConfiguration:1];
-      v7 = [(VUILibraryEpisodeListCell *)self contentView];
-      [v7 addSubview:v6];
+      contentView = [(VUILibraryEpisodeListCell *)self contentView];
+      [contentView addSubview:v6];
 
       [(VUILibraryEpisodeListCell *)self setDownloadButton:v6];
     }
@@ -721,16 +721,16 @@ LABEL_33:
   {
     v8 = objc_alloc_init(VUITextLayout);
     [(VUITextLayout *)v8 setTextStyle:22];
-    v4 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
-    [(VUITextLayout *)v8 setColor:v4];
+    vui_secondaryTextColor = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
+    [(VUITextLayout *)v8 setColor:vui_secondaryTextColor];
 
     [(VUITextLayout *)v8 setNumberOfLines:1];
     v5 = [VUILabel labelWithString:@"·" textLayout:v8 existingLabel:self->_dotSeparatorLabel];
     dotSeparatorLabel = self->_dotSeparatorLabel;
     self->_dotSeparatorLabel = v5;
 
-    v7 = [(VUILibraryEpisodeListCell *)self contentView];
-    [v7 addSubview:self->_dotSeparatorLabel];
+    contentView = [(VUILibraryEpisodeListCell *)self contentView];
+    [contentView addSubview:self->_dotSeparatorLabel];
 
     v3 = v8;
   }
@@ -745,8 +745,8 @@ LABEL_33:
 
 - (double)_metadataScaledTopMarginForNonAXContentSizeCategory
 {
-  v3 = [(VUILibraryEpisodeListCell *)self traitCollection];
-  [VUIUtilities scaleContentSizeValue:v3 forTraitCollection:20.0];
+  traitCollection = [(VUILibraryEpisodeListCell *)self traitCollection];
+  [VUIUtilities scaleContentSizeValue:traitCollection forTraitCollection:20.0];
   v5 = v4;
 
   [(VUILibraryEpisodeListCell *)self _metadataHeightToBaselineNonAXContentSizeCategory];
@@ -771,23 +771,23 @@ LABEL_33:
 
 - (BOOL)_contentSizeCategoryIsAccessibility
 {
-  v2 = [(VUILibraryEpisodeListCell *)self traitCollection];
-  v3 = [v2 isAXEnabled];
+  traitCollection = [(VUILibraryEpisodeListCell *)self traitCollection];
+  isAXEnabled = [traitCollection isAXEnabled];
 
-  return v3;
+  return isAXEnabled;
 }
 
-+ (id)_metadataLabelWithString:(id)a3 existingLabel:(id)a4
++ (id)_metadataLabelWithString:(id)string existingLabel:(id)label
 {
-  v5 = a4;
-  v6 = a3;
+  labelCopy = label;
+  stringCopy = string;
   v7 = objc_alloc_init(VUITextLayout);
   [(VUITextLayout *)v7 setTextStyle:22];
-  v8 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
-  [(VUITextLayout *)v7 setColor:v8];
+  vui_secondaryTextColor = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
+  [(VUITextLayout *)v7 setColor:vui_secondaryTextColor];
 
   [(VUITextLayout *)v7 setNumberOfLines:1];
-  v9 = [VUILabel labelWithString:v6 textLayout:v7 existingLabel:v5];
+  v9 = [VUILabel labelWithString:stringCopy textLayout:v7 existingLabel:labelCopy];
 
   return v9;
 }

@@ -4,8 +4,8 @@
 - (CGRect)acceptableCropRect;
 - (CGRect)preferredCropRect;
 - (CGSize)size;
-- (PXLayoutItem)initWithSize:(CGSize)a3 weight:(double)a4;
-- (void)setTransform:(CGAffineTransform *)a3;
+- (PXLayoutItem)initWithSize:(CGSize)size weight:(double)weight;
+- (void)setTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation PXLayoutItem
@@ -45,11 +45,11 @@
   return result;
 }
 
-- (void)setTransform:(CGAffineTransform *)a3
+- (void)setTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->tx;
-  *&self->_transform.c = *&a3->c;
+  v3 = *&transform->a;
+  v4 = *&transform->tx;
+  *&self->_transform.c = *&transform->c;
   *&self->_transform.tx = v4;
   *&self->_transform.a = v3;
 }
@@ -72,10 +72,10 @@
   return result;
 }
 
-- (PXLayoutItem)initWithSize:(CGSize)a3 weight:(double)a4
+- (PXLayoutItem)initWithSize:(CGSize)size weight:(double)weight
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v8.receiver = self;
   v8.super_class = PXLayoutItem;
   result = [(PXLayoutItem *)&v8 init];
@@ -83,7 +83,7 @@
   {
     result->_size.width = width;
     result->_size.height = height;
-    result->_weight = a4;
+    result->_weight = weight;
     result->_preferredCropRect.origin = *PXRectUnit;
     result->_preferredCropRect.size = *&PXRectUnit[16];
     result->_acceptableCropRect.origin = *PXRectUnit;

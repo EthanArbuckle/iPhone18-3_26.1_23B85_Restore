@@ -29,51 +29,51 @@
   v6 = MEMORY[0x277CBEBD0];
   v9 = a4;
   v7 = a3;
-  v8 = [v6 standardUserDefaults];
-  [v8 setObject:v7 forKey:v9];
+  standardUserDefaults = [v6 standardUserDefaults];
+  [standardUserDefaults setObject:v7 forKey:v9];
 
-  [a1 fi_backupStandardUserDefaultsKey:v9];
+  [self fi_backupStandardUserDefaultsKey:v9];
 }
 
 + (void)fi_backupAndSetInteger:()FIBackupSupport forKey:
 {
   v6 = MEMORY[0x277CBEBD0];
   v8 = a4;
-  v7 = [v6 standardUserDefaults];
-  [v7 setInteger:a3 forKey:v8];
+  standardUserDefaults = [v6 standardUserDefaults];
+  [standardUserDefaults setInteger:a3 forKey:v8];
 
-  [a1 fi_backupStandardUserDefaultsKey:v8];
+  [self fi_backupStandardUserDefaultsKey:v8];
 }
 
 + (void)fi_backupAndSetFloat:()FIBackupSupport forKey:
 {
   v6 = MEMORY[0x277CBEBD0];
   v9 = a4;
-  v7 = [v6 standardUserDefaults];
+  standardUserDefaults = [v6 standardUserDefaults];
   *&v8 = a2;
-  [v7 setFloat:v9 forKey:v8];
+  [standardUserDefaults setFloat:v9 forKey:v8];
 
-  [a1 fi_backupStandardUserDefaultsKey:v9];
+  [self fi_backupStandardUserDefaultsKey:v9];
 }
 
 + (void)fi_backupAndSetDouble:()FIBackupSupport forKey:
 {
   v6 = MEMORY[0x277CBEBD0];
   v8 = a4;
-  v7 = [v6 standardUserDefaults];
-  [v7 setDouble:v8 forKey:a2];
+  standardUserDefaults = [v6 standardUserDefaults];
+  [standardUserDefaults setDouble:v8 forKey:a2];
 
-  [a1 fi_backupStandardUserDefaultsKey:v8];
+  [self fi_backupStandardUserDefaultsKey:v8];
 }
 
 + (void)fi_backupAndSetBool:()FIBackupSupport forKey:
 {
   v6 = MEMORY[0x277CBEBD0];
   v8 = a4;
-  v7 = [v6 standardUserDefaults];
-  [v7 setBool:a3 forKey:v8];
+  standardUserDefaults = [v6 standardUserDefaults];
+  [standardUserDefaults setBool:a3 forKey:v8];
 
-  [a1 fi_backupStandardUserDefaultsKey:v8];
+  [self fi_backupStandardUserDefaultsKey:v8];
 }
 
 + (void)fi_backupAndSetURL:()FIBackupSupport forKey:
@@ -81,10 +81,10 @@
   v6 = MEMORY[0x277CBEBD0];
   v9 = a4;
   v7 = a3;
-  v8 = [v6 standardUserDefaults];
-  [v8 setURL:v7 forKey:v9];
+  standardUserDefaults = [v6 standardUserDefaults];
+  [standardUserDefaults setURL:v7 forKey:v9];
 
-  [a1 fi_backupStandardUserDefaultsKey:v9];
+  [self fi_backupStandardUserDefaultsKey:v9];
 }
 
 + (void)fi_backupStandardUserDefaultsKey:()FIBackupSupport useContainer:
@@ -110,14 +110,14 @@
     _os_log_impl(&dword_24B35E000, v7, OS_LOG_TYPE_DEFAULT, "Synchronizing default with key: %@", &v14, 0xCu);
   }
 
-  v8 = [MEMORY[0x277CCA8D8] mainBundle];
-  v9 = [v8 bundleIdentifier];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  v10 = [a1 fi_npsManager];
+  fi_npsManager = [self fi_npsManager];
   v11 = [MEMORY[0x277CBEB98] setWithObject:v6];
   if (a4)
   {
-    v12 = v9;
+    v12 = bundleIdentifier;
   }
 
   else
@@ -125,7 +125,7 @@
     v12 = 0;
   }
 
-  [v10 synchronizeUserDefaultsDomain:v9 keys:v11 container:v12];
+  [fi_npsManager synchronizeUserDefaultsDomain:bundleIdentifier keys:v11 container:v12];
 
   v13 = *MEMORY[0x277D85DE8];
 }

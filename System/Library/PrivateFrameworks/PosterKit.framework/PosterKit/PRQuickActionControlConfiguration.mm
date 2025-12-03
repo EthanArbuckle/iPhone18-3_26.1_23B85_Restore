@@ -1,13 +1,13 @@
 @interface PRQuickActionControlConfiguration
-- (PRQuickActionControlConfiguration)initWithCategory:(int64_t)a3;
-- (PRQuickActionControlConfiguration)initWithCoder:(id)a3;
-- (PRQuickActionControlConfiguration)initWithControlIdentity:(id)a3 type:(unint64_t)a4;
-- (void)encodeWithCoder:(id)a3;
+- (PRQuickActionControlConfiguration)initWithCategory:(int64_t)category;
+- (PRQuickActionControlConfiguration)initWithCoder:(id)coder;
+- (PRQuickActionControlConfiguration)initWithControlIdentity:(id)identity type:(unint64_t)type;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PRQuickActionControlConfiguration
 
-- (PRQuickActionControlConfiguration)initWithCategory:(int64_t)a3
+- (PRQuickActionControlConfiguration)initWithCategory:(int64_t)category
 {
   v8.receiver = self;
   v8.super_class = PRQuickActionControlConfiguration;
@@ -16,7 +16,7 @@
   if (v4)
   {
     identity = v4->_identity;
-    v4->_category = a3;
+    v4->_category = category;
     v4->_identity = 0;
 
     v5->_type = 0;
@@ -25,9 +25,9 @@
   return v5;
 }
 
-- (PRQuickActionControlConfiguration)initWithControlIdentity:(id)a3 type:(unint64_t)a4
+- (PRQuickActionControlConfiguration)initWithControlIdentity:(id)identity type:(unint64_t)type
 {
-  v7 = a3;
+  identityCopy = identity;
   v11.receiver = self;
   v11.super_class = PRQuickActionControlConfiguration;
   v8 = [(PRQuickActionControlConfiguration *)&v11 init];
@@ -35,21 +35,21 @@
   if (v8)
   {
     v8->_category = 3;
-    objc_storeStrong(&v8->_identity, a3);
-    v9->_type = a4;
+    objc_storeStrong(&v8->_identity, identity);
+    v9->_type = type;
   }
 
   return v9;
 }
 
-- (PRQuickActionControlConfiguration)initWithCoder:(id)a3
+- (PRQuickActionControlConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"category"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"category"];
   v6 = objc_opt_self();
-  v7 = [v4 decodeObjectOfClass:v6 forKey:@"identity"];
+  v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"identity"];
 
-  v8 = [v4 decodeIntegerForKey:@"type"];
+  v8 = [coderCopy decodeIntegerForKey:@"type"];
   if (v5 == 3)
   {
     v9 = [(PRQuickActionControlConfiguration *)self initWithControlIdentity:v7 type:v8];
@@ -65,14 +65,14 @@
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeInteger:-[PRQuickActionControlConfiguration category](self forKey:{"category"), @"category"}];
-  v4 = [(PRQuickActionControlConfiguration *)self identity];
-  [v5 encodeObject:v4 forKey:@"identity"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[PRQuickActionControlConfiguration category](self forKey:{"category"), @"category"}];
+  identity = [(PRQuickActionControlConfiguration *)self identity];
+  [coderCopy encodeObject:identity forKey:@"identity"];
 
-  [v5 encodeInteger:-[PRQuickActionControlConfiguration type](self forKey:{"type"), @"type"}];
+  [coderCopy encodeInteger:-[PRQuickActionControlConfiguration type](self forKey:{"type"), @"type"}];
 }
 
 @end

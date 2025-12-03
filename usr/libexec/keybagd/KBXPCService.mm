@@ -1,48 +1,48 @@
 @interface KBXPCService
 + (id)sharedService;
-- (BOOL)remoteProcessHasBooleanEntitlement:(id)a3;
-- (BOOL)retrievePasscodeFromFileHandle:(id)a3 ofLength:(unint64_t)a4 withbaseaddress:(char *)a5;
+- (BOOL)remoteProcessHasBooleanEntitlement:(id)entitlement;
+- (BOOL)retrievePasscodeFromFileHandle:(id)handle ofLength:(unint64_t)length withbaseaddress:(char *)withbaseaddress;
 - (id)remoteServiceName;
-- (void)SeshatDebugWithDebugMask:(int)a3 withReply:(id)a4;
-- (void)SeshatEnrollWithSecret:(id)a3 secretSize:(unint64_t)a4 secretIsACM:(BOOL)a5 withReply:(id)a6;
-- (void)SeshatRecoverWithSecret:(id)a3 secretSize:(unint64_t)a4 secretIsACM:(BOOL)a5 withReply:(id)a6;
-- (void)SeshatUnlockWithSecret:(id)a3 secretSize:(unint64_t)a4 secretIsACM:(BOOL)a5 withMemento:(BOOL)a6 verifyOnly:(BOOL)a7 withACMRef:(id)a8 forHandle:(int)a9 withReply:(id)a10;
-- (void)backupUUIDForVolume:(id)a3 reply:(id)a4;
-- (void)changeClassKeysGenerationWithSecret:(id)a3 secretSize:(unint64_t)a4 secretIsACM:(BOOL)a5 generationOption:(int)a6 reply:(id)a7;
-- (void)changeSystemSecretWithEscrow:(id)a3 fromOldSecret:(id)a4 oldSize:(unint64_t)a5 toNewSecret:(id)a6 newSize:(unint64_t)a7 opaqueData:(id)a8 keepstate:(BOOL)a9 withACM:(BOOL)a10 reply:(id)a11;
-- (void)changeSystemSecretfromOldSecret:(id)a3 oldSize:(unint64_t)a4 toNewSecret:(id)a5 newSize:(unint64_t)a6 opaqueData:(id)a7 withParams:(unsigned int)a8 reply:(id)a9;
-- (void)createKeybagForUserSession:(id)a3 withSessionUID:(int)a4 WithSecret:(id)a5 secretSize:(unint64_t)a6 withGracePeriod:(int)a7 withOpaqeStuff:(id)a8 withReply:(id)a9;
-- (void)createPersonaKeyForUserSession:(id)a3 forPath:(id)a4 withUID:(unsigned int)a5 WithSecret:(id)a6 secretSize:(unint64_t)a7 secretIsACM:(BOOL)a8 withReply:(id)a9;
-- (void)createSyncBagForUserSession:(id)a3 withSessionUID:(int)a4 withReply:(id)a5;
-- (void)disableBackupForVolume:(id)a3 reply:(id)a4;
-- (void)enableBackupForVolume:(id)a3 withSecret:(id)a4 secretSize:(unint64_t)a5 secretIsACM:(BOOL)a6 reply:(id)a7;
-- (void)forgottenPasscodeEventWithReply:(id)a3;
-- (void)getBackupBlobreply:(id)a3;
-- (void)getBackupkeyForVolume:(id)a3 andCryptoID:(unint64_t)a4 withReply:(id)a5;
-- (void)getLockSateInfoforUser:(int)a3 WithReply:(id)a4;
-- (void)getPasscodeBlobWithReply:(id)a3;
-- (void)isKeyRollingInProgresswithreply:(id)a3;
-- (void)loadKeybagForUserSession:(id)a3 withSessionID:(int)a4 withSecret:(id)a5 secretSize:(unint64_t)a6 shouldSetGracePeriod:(BOOL)a7 withGracePeriod:(int)a8 isInEarlyStar:(BOOL)a9 withReply:(id)a10;
-- (void)loadSyncBagForUserSession:(id)a3 withSessionUID:(int)a4 withReply:(id)a5;
-- (void)migrationWithReply:(id)a3;
-- (void)passcodeUnlockFailedWithReply:(id)a3;
-- (void)passcodeUnlockStartWithReply:(id)a3;
-- (void)passcodeUnlockSuccessWithReply:(id)a3;
-- (void)registerBackupBag:(id)a3 withSecret:(id)a4 secretSize:(unint64_t)a5 secretIsACM:(BOOL)a6 reply:(id)a7;
-- (void)removePersonaKeyForUserSession:(id)a3 withUID:(unsigned int)a4 withVolumeUUIDString:(id)a5 withReply:(id)a6;
-- (void)removeSyncBagForUserSession:(id)a3 withSessionUID:(int)a4 withReply:(id)a5;
-- (void)setSpacedRepetitionMode:(unsigned int)a3 reply:(id)a4;
-- (void)setSystemSecretBlob:(id)a3 reply:(id)a4;
-- (void)setVolumeToPersona:(id)a3 withPersonaString:(id)a4 withReply:(id)a5;
-- (void)startBackupSessionForVolume:(id)a3 withReply:(id)a4;
-- (void)stashCommitwithUID:(unsigned int)a3 WithFlags:(unsigned int)a4 WithReply:(id)a5;
-- (void)stashCreatewithSecret:(id)a3 secrestSize:(unint64_t)a4 withMode:(int)a5 withUID:(unsigned int)a6 WithFlags:(unsigned int)a7 reply:(id)a8;
-- (void)stashDestroywithReply:(id)a3;
-- (void)stashVerifywithUID:(unsigned int)a3 WithFlags:(unsigned int)a4 WithReply:(id)a5;
-- (void)stopBackupSessionForVolume:(id)a3 withReply:(id)a4;
-- (void)unloadKeybagForUserSession:(int)a3 withReply:(id)a4;
-- (void)unloadSyncBagForUserSession:(id)a3 withSessionUID:(int)a4 withReply:(id)a5;
-- (void)verifySyncBagForUserSession:(id)a3 withSessionUID:(int)a4 withReply:(id)a5;
+- (void)SeshatDebugWithDebugMask:(int)mask withReply:(id)reply;
+- (void)SeshatEnrollWithSecret:(id)secret secretSize:(unint64_t)size secretIsACM:(BOOL)m withReply:(id)reply;
+- (void)SeshatRecoverWithSecret:(id)secret secretSize:(unint64_t)size secretIsACM:(BOOL)m withReply:(id)reply;
+- (void)SeshatUnlockWithSecret:(id)secret secretSize:(unint64_t)size secretIsACM:(BOOL)m withMemento:(BOOL)memento verifyOnly:(BOOL)only withACMRef:(id)ref forHandle:(int)handle withReply:(id)self0;
+- (void)backupUUIDForVolume:(id)volume reply:(id)reply;
+- (void)changeClassKeysGenerationWithSecret:(id)secret secretSize:(unint64_t)size secretIsACM:(BOOL)m generationOption:(int)option reply:(id)reply;
+- (void)changeSystemSecretWithEscrow:(id)escrow fromOldSecret:(id)secret oldSize:(unint64_t)size toNewSecret:(id)newSecret newSize:(unint64_t)newSize opaqueData:(id)data keepstate:(BOOL)keepstate withACM:(BOOL)self0 reply:(id)self1;
+- (void)changeSystemSecretfromOldSecret:(id)secret oldSize:(unint64_t)size toNewSecret:(id)newSecret newSize:(unint64_t)newSize opaqueData:(id)data withParams:(unsigned int)params reply:(id)reply;
+- (void)createKeybagForUserSession:(id)session withSessionUID:(int)d WithSecret:(id)secret secretSize:(unint64_t)size withGracePeriod:(int)period withOpaqeStuff:(id)stuff withReply:(id)reply;
+- (void)createPersonaKeyForUserSession:(id)session forPath:(id)path withUID:(unsigned int)d WithSecret:(id)secret secretSize:(unint64_t)size secretIsACM:(BOOL)m withReply:(id)reply;
+- (void)createSyncBagForUserSession:(id)session withSessionUID:(int)d withReply:(id)reply;
+- (void)disableBackupForVolume:(id)volume reply:(id)reply;
+- (void)enableBackupForVolume:(id)volume withSecret:(id)secret secretSize:(unint64_t)size secretIsACM:(BOOL)m reply:(id)reply;
+- (void)forgottenPasscodeEventWithReply:(id)reply;
+- (void)getBackupBlobreply:(id)blobreply;
+- (void)getBackupkeyForVolume:(id)volume andCryptoID:(unint64_t)d withReply:(id)reply;
+- (void)getLockSateInfoforUser:(int)user WithReply:(id)reply;
+- (void)getPasscodeBlobWithReply:(id)reply;
+- (void)isKeyRollingInProgresswithreply:(id)progresswithreply;
+- (void)loadKeybagForUserSession:(id)session withSessionID:(int)d withSecret:(id)secret secretSize:(unint64_t)size shouldSetGracePeriod:(BOOL)period withGracePeriod:(int)gracePeriod isInEarlyStar:(BOOL)star withReply:(id)self0;
+- (void)loadSyncBagForUserSession:(id)session withSessionUID:(int)d withReply:(id)reply;
+- (void)migrationWithReply:(id)reply;
+- (void)passcodeUnlockFailedWithReply:(id)reply;
+- (void)passcodeUnlockStartWithReply:(id)reply;
+- (void)passcodeUnlockSuccessWithReply:(id)reply;
+- (void)registerBackupBag:(id)bag withSecret:(id)secret secretSize:(unint64_t)size secretIsACM:(BOOL)m reply:(id)reply;
+- (void)removePersonaKeyForUserSession:(id)session withUID:(unsigned int)d withVolumeUUIDString:(id)string withReply:(id)reply;
+- (void)removeSyncBagForUserSession:(id)session withSessionUID:(int)d withReply:(id)reply;
+- (void)setSpacedRepetitionMode:(unsigned int)mode reply:(id)reply;
+- (void)setSystemSecretBlob:(id)blob reply:(id)reply;
+- (void)setVolumeToPersona:(id)persona withPersonaString:(id)string withReply:(id)reply;
+- (void)startBackupSessionForVolume:(id)volume withReply:(id)reply;
+- (void)stashCommitwithUID:(unsigned int)d WithFlags:(unsigned int)flags WithReply:(id)reply;
+- (void)stashCreatewithSecret:(id)secret secrestSize:(unint64_t)size withMode:(int)mode withUID:(unsigned int)d WithFlags:(unsigned int)flags reply:(id)reply;
+- (void)stashDestroywithReply:(id)reply;
+- (void)stashVerifywithUID:(unsigned int)d WithFlags:(unsigned int)flags WithReply:(id)reply;
+- (void)stopBackupSessionForVolume:(id)volume withReply:(id)reply;
+- (void)unloadKeybagForUserSession:(int)session withReply:(id)reply;
+- (void)unloadSyncBagForUserSession:(id)session withSessionUID:(int)d withReply:(id)reply;
+- (void)verifySyncBagForUserSession:(id)session withSessionUID:(int)d withReply:(id)reply;
 @end
 
 @implementation KBXPCService
@@ -53,7 +53,7 @@
   block[1] = 3221225472;
   block[2] = sub_100005434;
   block[3] = &unk_100034D08;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10003D2F8 != -1)
   {
     dispatch_once(&qword_10003D2F8, block);
@@ -64,44 +64,44 @@
   return v2;
 }
 
-- (BOOL)remoteProcessHasBooleanEntitlement:(id)a3
+- (BOOL)remoteProcessHasBooleanEntitlement:(id)entitlement
 {
-  v3 = a3;
+  entitlementCopy = entitlement;
   v4 = +[NSXPCConnection currentConnection];
-  v5 = [v4 valueForEntitlement:v3];
+  v5 = [v4 valueForEntitlement:entitlementCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v6 = 0;
+    bOOLValue = 0;
   }
 
-  return v6;
+  return bOOLValue;
 }
 
 - (id)remoteServiceName
 {
   v2 = +[NSXPCConnection currentConnection];
-  v3 = [v2 serviceName];
+  serviceName = [v2 serviceName];
 
-  return v3;
+  return serviceName;
 }
 
-- (BOOL)retrievePasscodeFromFileHandle:(id)a3 ofLength:(unint64_t)a4 withbaseaddress:(char *)a5
+- (BOOL)retrievePasscodeFromFileHandle:(id)handle ofLength:(unint64_t)length withbaseaddress:(char *)withbaseaddress
 {
-  v7 = a3;
-  v8 = v7;
-  if (!a4)
+  handleCopy = handle;
+  v8 = handleCopy;
+  if (!length)
   {
     goto LABEL_5;
   }
 
-  if (read([v7 fileDescriptor], a5, a4) != a4)
+  if (read([handleCopy fileDescriptor], withbaseaddress, length) != length)
   {
     sub_100011BE0("[KBXPCService retrievePasscodeFromFileHandle:ofLength:withbaseaddress:]", @"Failed to read the retrievePasscodeFromFileHandle", v9, v10, v11, v12, v13, v14, v17);
 LABEL_5:
@@ -115,12 +115,12 @@ LABEL_6:
   return v15;
 }
 
-- (void)changeSystemSecretfromOldSecret:(id)a3 oldSize:(unint64_t)a4 toNewSecret:(id)a5 newSize:(unint64_t)a6 opaqueData:(id)a7 withParams:(unsigned int)a8 reply:(id)a9
+- (void)changeSystemSecretfromOldSecret:(id)secret oldSize:(unint64_t)size toNewSecret:(id)newSecret newSize:(unint64_t)newSize opaqueData:(id)data withParams:(unsigned int)params reply:(id)reply
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = a7;
-  v18 = a9;
+  secretCopy = secret;
+  newSecretCopy = newSecret;
+  dataCopy = data;
+  replyCopy = reply;
   v75 = 0;
   v76 = &v75;
   v77 = 0x3032000000;
@@ -134,7 +134,7 @@ LABEL_6:
   v73 = -1;
   if ([(KBXPCService *)self remoteProcessHasBooleanEntitlement:@"com.apple.keystore.device"])
   {
-    if (vm_page_size < a4 || vm_page_size < a6)
+    if (vm_page_size < size || vm_page_size < newSize)
     {
       sub_100011BE0("[KBXPCService changeSystemSecretfromOldSecret:oldSize:toNewSecret:newSize:opaqueData:withParams:reply:]", @"Long Secret, can't handle ...", vm_page_size, v19, v20, v21, v22, v23, v61);
       v25 = [NSError errorWithDomain:NSPOSIXErrorDomain code:7 userInfo:0];
@@ -150,14 +150,14 @@ LABEL_6:
 
       address = 0;
 LABEL_24:
-      v18[2](v18, v76[5]);
+      replyCopy[2](replyCopy, v76[5]);
       goto LABEL_25;
     }
 
-    if (a4)
+    if (size)
     {
       v62 = address;
-      if ([(KBXPCService *)self retrievePasscodeFromFileHandle:v15 ofLength:a4 withbaseaddress:?])
+      if ([(KBXPCService *)self retrievePasscodeFromFileHandle:secretCopy ofLength:size withbaseaddress:?])
       {
         sub_100011BE0("[KBXPCService changeSystemSecretfromOldSecret:oldSize:toNewSecret:newSize:opaqueData:withParams:reply:]", @"Failed to retrieve oldpasscode", v35, v36, v37, v38, v39, v40, v61);
         v41 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
@@ -167,18 +167,18 @@ LABEL_24:
         v43 = mach_task_self_;
         v44 = address;
         v45 = vm_page_size;
-        if (vm_page_size >= a4)
+        if (vm_page_size >= size)
         {
-          v46 = a4;
+          sizeCopy = size;
         }
 
         else
         {
-          v46 = vm_page_size;
+          sizeCopy = vm_page_size;
         }
 
 LABEL_23:
-        memset_s(address, v46, 0, v46);
+        memset_s(address, sizeCopy, 0, sizeCopy);
         vm_deallocate(v43, v44, v45);
         goto LABEL_24;
       }
@@ -189,10 +189,10 @@ LABEL_23:
       v62 = 0;
     }
 
-    if (a6)
+    if (newSize)
     {
       v47 = address + 1024;
-      if ([(KBXPCService *)self retrievePasscodeFromFileHandle:v16 ofLength:a6 withbaseaddress:address + 1024])
+      if ([(KBXPCService *)self retrievePasscodeFromFileHandle:newSecretCopy ofLength:newSize withbaseaddress:address + 1024])
       {
         sub_100011BE0("[KBXPCService changeSystemSecretfromOldSecret:oldSize:toNewSecret:newSize:opaqueData:withParams:reply:]", @"Failed to retrieve newpasscode", v48, v49, v50, v51, v52, v53, v61);
         v54 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
@@ -202,14 +202,14 @@ LABEL_23:
         v43 = mach_task_self_;
         v44 = address;
         v45 = vm_page_size;
-        if (vm_page_size >= a6 + 1024)
+        if (vm_page_size >= newSize + 1024)
         {
-          v46 = a6 + 1024;
+          sizeCopy = newSize + 1024;
         }
 
         else
         {
-          v46 = vm_page_size;
+          sizeCopy = vm_page_size;
         }
 
         goto LABEL_23;
@@ -227,20 +227,20 @@ LABEL_23:
     block[2] = sub_100005A90;
     block[3] = &unk_100034D30;
     v67 = v62;
-    v68 = a4;
+    sizeCopy2 = size;
     v69 = v47;
-    v70 = a6;
-    v71 = a8;
-    v64 = v17;
+    newSizeCopy = newSize;
+    paramsCopy = params;
+    v64 = dataCopy;
     v65 = &v75;
     v66 = v72;
     dispatch_sync(v56, block);
     v57 = mach_task_self_;
     v58 = address;
     v59 = vm_page_size;
-    if (vm_page_size >= a6 + 1024)
+    if (vm_page_size >= newSize + 1024)
     {
-      v60 = a6 + 1024;
+      v60 = newSize + 1024;
     }
 
     else
@@ -250,7 +250,7 @@ LABEL_23:
 
     memset_s(address, v60, 0, v60);
     vm_deallocate(v57, v58, v59);
-    v18[2](v18, v76[5]);
+    replyCopy[2](replyCopy, v76[5]);
 
     goto LABEL_25;
   }
@@ -260,7 +260,7 @@ LABEL_8:
   v26 = v76[5];
   v76[5] = v25;
 
-  if (v18)
+  if (replyCopy)
   {
     goto LABEL_24;
   }
@@ -270,13 +270,13 @@ LABEL_25:
   _Block_object_dispose(&v75, 8);
 }
 
-- (void)setSpacedRepetitionMode:(unsigned int)a3 reply:(id)a4
+- (void)setSpacedRepetitionMode:(unsigned int)mode reply:(id)reply
 {
-  v15 = a4;
+  replyCopy = reply;
   if ([(KBXPCService *)self remoteProcessHasBooleanEntitlement:@"com.apple.keystore.device"])
   {
-    sub_100011BE0("[KBXPCService setSpacedRepetitionMode:reply:]", @"setting spaced repetition verification mode to %d", v6, v7, v8, v9, v10, v11, a3);
-    dword_10003D280 = a3;
+    sub_100011BE0("[KBXPCService setSpacedRepetitionMode:reply:]", @"setting spaced repetition verification mode to %d", v6, v7, v8, v9, v10, v11, mode);
+    dword_10003D280 = mode;
     v12 = NSPOSIXErrorDomain;
     v13 = 0;
   }
@@ -288,15 +288,15 @@ LABEL_25:
   }
 
   v14 = [NSError errorWithDomain:v12 code:v13 userInfo:0];
-  if (v15)
+  if (replyCopy)
   {
-    v15[2](v15, v14);
+    replyCopy[2](replyCopy, v14);
   }
 }
 
-- (void)getPasscodeBlobWithReply:(id)a3
+- (void)getPasscodeBlobWithReply:(id)reply
 {
-  v6 = a3;
+  replyCopy = reply;
   if ([(KBXPCService *)self remoteProcessHasBooleanEntitlement:@"com.apple.keystore.device"])
   {
     if (sub_100004190())
@@ -309,7 +309,7 @@ LABEL_25:
       v4 = sub_1000130B4(0);
     }
 
-    v6[2](v6, v4, 0);
+    replyCopy[2](replyCopy, v4, 0);
 
     v5 = 0;
   }
@@ -317,20 +317,20 @@ LABEL_25:
   else
   {
     v5 = [NSError errorWithDomain:NSPOSIXErrorDomain code:1 userInfo:0];
-    if (v6)
+    if (replyCopy)
     {
-      (v6[2])();
+      (replyCopy[2])();
     }
   }
 }
 
-- (void)changeSystemSecretWithEscrow:(id)a3 fromOldSecret:(id)a4 oldSize:(unint64_t)a5 toNewSecret:(id)a6 newSize:(unint64_t)a7 opaqueData:(id)a8 keepstate:(BOOL)a9 withACM:(BOOL)a10 reply:(id)a11
+- (void)changeSystemSecretWithEscrow:(id)escrow fromOldSecret:(id)secret oldSize:(unint64_t)size toNewSecret:(id)newSecret newSize:(unint64_t)newSize opaqueData:(id)data keepstate:(BOOL)keepstate withACM:(BOOL)self0 reply:(id)self1
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a6;
-  v20 = a8;
-  v21 = a11;
+  escrowCopy = escrow;
+  secretCopy = secret;
+  newSecretCopy = newSecret;
+  dataCopy = data;
+  replyCopy = reply;
   v81 = 0;
   v82 = &v81;
   v83 = 0x3032000000;
@@ -344,7 +344,7 @@ LABEL_25:
   v79 = -1;
   if ([(KBXPCService *)self remoteProcessHasBooleanEntitlement:@"com.apple.keystore.device"])
   {
-    if (vm_page_size < a5 || vm_page_size < a7)
+    if (vm_page_size < size || vm_page_size < newSize)
     {
       sub_100011BE0("[KBXPCService changeSystemSecretWithEscrow:fromOldSecret:oldSize:toNewSecret:newSize:opaqueData:keepstate:withACM:reply:]", @"Long Secret, can't handle ...", vm_page_size, v22, v23, v24, v25, v26, v64);
       v28 = [NSError errorWithDomain:NSPOSIXErrorDomain code:7 userInfo:0];
@@ -360,14 +360,14 @@ LABEL_25:
 
       address = 0;
 LABEL_24:
-      v21[2](v21, v82[5]);
+      replyCopy[2](replyCopy, v82[5]);
       goto LABEL_25;
     }
 
-    if (a5)
+    if (size)
     {
       v66 = address;
-      if ([(KBXPCService *)self retrievePasscodeFromFileHandle:v18 ofLength:a5 withbaseaddress:?])
+      if ([(KBXPCService *)self retrievePasscodeFromFileHandle:secretCopy ofLength:size withbaseaddress:?])
       {
         sub_100011BE0("[KBXPCService changeSystemSecretWithEscrow:fromOldSecret:oldSize:toNewSecret:newSize:opaqueData:keepstate:withACM:reply:]", @"Failed to retrieve oldpasscode", v38, v39, v40, v41, v42, v43, v64);
         v44 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
@@ -377,18 +377,18 @@ LABEL_24:
         v46 = mach_task_self_;
         v47 = address;
         v48 = vm_page_size;
-        if (vm_page_size >= a5)
+        if (vm_page_size >= size)
         {
-          v49 = a5;
+          sizeCopy = size;
         }
 
         else
         {
-          v49 = vm_page_size;
+          sizeCopy = vm_page_size;
         }
 
 LABEL_23:
-        memset_s(address, v49, 0, v49);
+        memset_s(address, sizeCopy, 0, sizeCopy);
         vm_deallocate(v46, v47, v48);
         goto LABEL_24;
       }
@@ -399,10 +399,10 @@ LABEL_23:
       v66 = 0;
     }
 
-    if (a7)
+    if (newSize)
     {
       v50 = address + 1024;
-      if ([(KBXPCService *)self retrievePasscodeFromFileHandle:v19 ofLength:a7 withbaseaddress:address + 1024])
+      if ([(KBXPCService *)self retrievePasscodeFromFileHandle:newSecretCopy ofLength:newSize withbaseaddress:address + 1024])
       {
         sub_100011BE0("[KBXPCService changeSystemSecretWithEscrow:fromOldSecret:oldSize:toNewSecret:newSize:opaqueData:keepstate:withACM:reply:]", @"Failed to retrieve newpasscode", v51, v52, v53, v54, v55, v56, v64);
         v57 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
@@ -411,16 +411,16 @@ LABEL_23:
 
         v47 = address;
         v48 = vm_page_size;
-        v59 = a7 + 1024;
+        v59 = newSize + 1024;
         v46 = mach_task_self_;
         if (vm_page_size >= v59)
         {
-          v49 = v59;
+          sizeCopy = v59;
         }
 
         else
         {
-          v49 = vm_page_size;
+          sizeCopy = vm_page_size;
         }
 
         goto LABEL_23;
@@ -438,22 +438,22 @@ LABEL_23:
     block[2] = sub_100006378;
     block[3] = &unk_100034D58;
     v72 = v66;
-    v73 = a5;
+    sizeCopy2 = size;
     v74 = v50;
-    v75 = a7;
-    v68 = v20;
-    v76 = a10;
-    v77 = a9;
-    v69 = v17;
+    newSizeCopy = newSize;
+    v68 = dataCopy;
+    mCopy = m;
+    keepstateCopy = keepstate;
+    v69 = escrowCopy;
     v70 = &v81;
     v71 = v78;
     dispatch_sync(queue, block);
     v60 = mach_task_self_;
     v61 = address;
     v62 = vm_page_size;
-    if (vm_page_size >= a7 + 1024)
+    if (vm_page_size >= newSize + 1024)
     {
-      v63 = a7 + 1024;
+      v63 = newSize + 1024;
     }
 
     else
@@ -463,7 +463,7 @@ LABEL_23:
 
     memset_s(address, v63, 0, v63);
     vm_deallocate(v60, v61, v62);
-    v21[2](v21, v82[5]);
+    replyCopy[2](replyCopy, v82[5]);
 
     goto LABEL_25;
   }
@@ -473,7 +473,7 @@ LABEL_8:
   v29 = v82[5];
   v82[5] = v28;
 
-  if (v21)
+  if (replyCopy)
   {
     goto LABEL_24;
   }
@@ -483,10 +483,10 @@ LABEL_25:
   _Block_object_dispose(&v81, 8);
 }
 
-- (void)changeClassKeysGenerationWithSecret:(id)a3 secretSize:(unint64_t)a4 secretIsACM:(BOOL)a5 generationOption:(int)a6 reply:(id)a7
+- (void)changeClassKeysGenerationWithSecret:(id)secret secretSize:(unint64_t)size secretIsACM:(BOOL)m generationOption:(int)option reply:(id)reply
 {
-  v12 = a3;
-  v13 = a7;
+  secretCopy = secret;
+  replyCopy = reply;
   address = 0;
   if (![(KBXPCService *)self remoteProcessHasBooleanEntitlement:@"com.apple.keystore.device"])
   {
@@ -494,7 +494,7 @@ LABEL_25:
     v20 = 1;
 LABEL_5:
     v21 = [NSError errorWithDomain:v19 code:v20 userInfo:0];
-    if (!v13)
+    if (!replyCopy)
     {
       goto LABEL_22;
     }
@@ -502,7 +502,7 @@ LABEL_5:
     goto LABEL_21;
   }
 
-  if (vm_page_size < a4)
+  if (vm_page_size < size)
   {
     sub_100011BE0("[KBXPCService changeClassKeysGenerationWithSecret:secretSize:secretIsACM:generationOption:reply:]", @"Long Secret, can't handle ...", vm_page_size, v14, v15, v16, v17, v18, v42);
     v19 = NSPOSIXErrorDomain;
@@ -512,10 +512,10 @@ LABEL_5:
 
   if (!vm_allocate(mach_task_self_, &address, vm_page_size, -268435455))
   {
-    if (a4)
+    if (size)
     {
       v28 = address;
-      if ([(KBXPCService *)self retrievePasscodeFromFileHandle:v12 ofLength:a4 withbaseaddress:address])
+      if ([(KBXPCService *)self retrievePasscodeFromFileHandle:secretCopy ofLength:size withbaseaddress:address])
       {
         sub_100011BE0("[KBXPCService changeClassKeysGenerationWithSecret:secretSize:secretIsACM:generationOption:reply:]", @"Failed to retrieve oldpasscode", v29, v30, v31, v32, v33, v34, v42);
         v35 = NSPOSIXErrorDomain;
@@ -529,7 +529,7 @@ LABEL_5:
       v28 = 0;
     }
 
-    v37 = sub_100014A4C(v28, a4, a5, a6);
+    v37 = sub_100014A4C(v28, size, m, option);
     if (!v37)
     {
       v21 = 0;
@@ -544,17 +544,17 @@ LABEL_17:
     v38 = mach_task_self_;
     v39 = address;
     v40 = vm_page_size;
-    if (vm_page_size >= a4)
+    if (vm_page_size >= size)
     {
-      v41 = a4;
+      sizeCopy = size;
     }
 
     else
     {
-      v41 = vm_page_size;
+      sizeCopy = vm_page_size;
     }
 
-    memset_s(address, v41, 0, v41);
+    memset_s(address, sizeCopy, 0, sizeCopy);
     vm_deallocate(v38, v39, v40);
     goto LABEL_21;
   }
@@ -563,17 +563,17 @@ LABEL_17:
   v21 = [NSError errorWithDomain:NSPOSIXErrorDomain code:12 userInfo:0];
   address = 0;
 LABEL_21:
-  v13[2](v13, v21);
+  replyCopy[2](replyCopy, v21);
 LABEL_22:
 }
 
-- (void)setSystemSecretBlob:(id)a3 reply:(id)a4
+- (void)setSystemSecretBlob:(id)blob reply:(id)reply
 {
-  v9 = a3;
-  v6 = a4;
+  blobCopy = blob;
+  replyCopy = reply;
   if ([(KBXPCService *)self remoteProcessHasBooleanEntitlement:@"com.apple.keystore.device"])
   {
-    v7 = sub_10001322C(v9);
+    v7 = sub_10001322C(blobCopy);
     if (v7)
     {
       v8 = [NSError errorWithDomain:NSPOSIXErrorDomain code:v7 userInfo:0];
@@ -588,18 +588,18 @@ LABEL_22:
   }
 
   v8 = [NSError errorWithDomain:NSPOSIXErrorDomain code:1 userInfo:0];
-  if (v6)
+  if (replyCopy)
   {
 LABEL_7:
-    v6[2](v6, v8);
+    replyCopy[2](replyCopy, v8);
   }
 }
 
-- (void)registerBackupBag:(id)a3 withSecret:(id)a4 secretSize:(unint64_t)a5 secretIsACM:(BOOL)a6 reply:(id)a7
+- (void)registerBackupBag:(id)bag withSecret:(id)secret secretSize:(unint64_t)size secretIsACM:(BOOL)m reply:(id)reply
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  bagCopy = bag;
+  secretCopy = secret;
+  replyCopy = reply;
   address = 0;
   if (![(KBXPCService *)self remoteProcessHasBooleanEntitlement:@"com.apple.keystore.devicebackup"])
   {
@@ -607,7 +607,7 @@ LABEL_7:
     v21 = 1;
 LABEL_5:
     v22 = [NSError errorWithDomain:v20 code:v21 userInfo:0];
-    if (!v14)
+    if (!replyCopy)
     {
       goto LABEL_22;
     }
@@ -615,7 +615,7 @@ LABEL_5:
     goto LABEL_21;
   }
 
-  if (vm_page_size < a5)
+  if (vm_page_size < size)
   {
     sub_100011BE0("[KBXPCService registerBackupBag:withSecret:secretSize:secretIsACM:reply:]", @"Long Secret, can't handle ...", vm_page_size, v15, v16, v17, v18, v19, v43);
     v20 = NSPOSIXErrorDomain;
@@ -625,10 +625,10 @@ LABEL_5:
 
   if (!vm_allocate(mach_task_self_, &address, vm_page_size, -268435455))
   {
-    if (a5)
+    if (size)
     {
       v29 = address;
-      if ([(KBXPCService *)self retrievePasscodeFromFileHandle:v13 ofLength:a5 withbaseaddress:address])
+      if ([(KBXPCService *)self retrievePasscodeFromFileHandle:secretCopy ofLength:size withbaseaddress:address])
       {
         sub_100011BE0("[KBXPCService registerBackupBag:withSecret:secretSize:secretIsACM:reply:]", @"Failed to retrieve oldpasscode", v30, v31, v32, v33, v34, v35, v43);
         v36 = NSPOSIXErrorDomain;
@@ -642,7 +642,7 @@ LABEL_5:
       v29 = 0;
     }
 
-    v38 = sub_100013350(v12, v29, a5, a6);
+    v38 = sub_100013350(bagCopy, v29, size, m);
     if (!v38)
     {
       v22 = 0;
@@ -657,17 +657,17 @@ LABEL_17:
     v39 = mach_task_self_;
     v40 = address;
     v41 = vm_page_size;
-    if (vm_page_size >= a5)
+    if (vm_page_size >= size)
     {
-      v42 = a5;
+      sizeCopy = size;
     }
 
     else
     {
-      v42 = vm_page_size;
+      sizeCopy = vm_page_size;
     }
 
-    memset_s(address, v42, 0, v42);
+    memset_s(address, sizeCopy, 0, sizeCopy);
     vm_deallocate(v39, v40, v41);
     goto LABEL_21;
   }
@@ -676,17 +676,17 @@ LABEL_17:
   v22 = [NSError errorWithDomain:NSPOSIXErrorDomain code:12 userInfo:0];
   address = 0;
 LABEL_21:
-  v14[2](v14, v22);
+  replyCopy[2](replyCopy, v22);
 LABEL_22:
 }
 
-- (void)getBackupBlobreply:(id)a3
+- (void)getBackupBlobreply:(id)blobreply
 {
-  v6 = a3;
+  blobreplyCopy = blobreply;
   if ([(KBXPCService *)self remoteProcessHasBooleanEntitlement:@"com.apple.keystore.devicebackup"])
   {
     v4 = sub_1000130B4(1);
-    v6[2](v6, v4, 0);
+    blobreplyCopy[2](blobreplyCopy, v4, 0);
 
     v5 = 0;
   }
@@ -694,21 +694,21 @@ LABEL_22:
   else
   {
     v5 = [NSError errorWithDomain:NSPOSIXErrorDomain code:1 userInfo:0];
-    if (v6)
+    if (blobreplyCopy)
     {
-      (v6[2])();
+      (blobreplyCopy[2])();
     }
   }
 }
 
-- (void)getBackupkeyForVolume:(id)a3 andCryptoID:(unint64_t)a4 withReply:(id)a5
+- (void)getBackupkeyForVolume:(id)volume andCryptoID:(unint64_t)d withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a5;
+  volumeCopy = volume;
+  replyCopy = reply;
   if ([(KBXPCService *)self remoteProcessHasBooleanEntitlement:@"com.apple.keystore.devicebackup"])
   {
     v12 = 0;
-    v10 = sub_1000200EC(v8, a4, &v12);
+    v10 = sub_1000200EC(volumeCopy, d, &v12);
     if (v10)
     {
       v11 = 0;
@@ -719,26 +719,26 @@ LABEL_22:
       v11 = v12;
     }
 
-    v9[2](v9, v10, v11);
+    replyCopy[2](replyCopy, v10, v11);
   }
 
   else
   {
     v11 = [NSError errorWithDomain:NSPOSIXErrorDomain code:1 userInfo:0];
-    if (v9)
+    if (replyCopy)
     {
-      v9[2](v9, 0, v11);
+      replyCopy[2](replyCopy, 0, v11);
     }
   }
 }
 
-- (void)startBackupSessionForVolume:(id)a3 withReply:(id)a4
+- (void)startBackupSessionForVolume:(id)volume withReply:(id)reply
 {
-  v9 = a3;
-  v6 = a4;
+  volumeCopy = volume;
+  replyCopy = reply;
   if ([(KBXPCService *)self remoteProcessHasBooleanEntitlement:@"com.apple.keystore.devicebackup"])
   {
-    v7 = sub_100013634(v9, 1);
+    v7 = sub_100013634(volumeCopy, 1);
     if (v7)
     {
       v8 = [NSError errorWithDomain:NSPOSIXErrorDomain code:v7 userInfo:0];
@@ -753,20 +753,20 @@ LABEL_22:
   }
 
   v8 = [NSError errorWithDomain:NSPOSIXErrorDomain code:1 userInfo:0];
-  if (v6)
+  if (replyCopy)
   {
 LABEL_7:
-    v6[2](v6, v8);
+    replyCopy[2](replyCopy, v8);
   }
 }
 
-- (void)stopBackupSessionForVolume:(id)a3 withReply:(id)a4
+- (void)stopBackupSessionForVolume:(id)volume withReply:(id)reply
 {
-  v9 = a3;
-  v6 = a4;
+  volumeCopy = volume;
+  replyCopy = reply;
   if ([(KBXPCService *)self remoteProcessHasBooleanEntitlement:@"com.apple.keystore.devicebackup"])
   {
-    v7 = sub_100013634(v9, 0);
+    v7 = sub_100013634(volumeCopy, 0);
     if (v7)
     {
       v8 = [NSError errorWithDomain:NSPOSIXErrorDomain code:v7 userInfo:0];
@@ -781,18 +781,18 @@ LABEL_7:
   }
 
   v8 = [NSError errorWithDomain:NSPOSIXErrorDomain code:1 userInfo:0];
-  if (v6)
+  if (replyCopy)
   {
 LABEL_7:
-    v6[2](v6, v8);
+    replyCopy[2](replyCopy, v8);
   }
 }
 
-- (void)enableBackupForVolume:(id)a3 withSecret:(id)a4 secretSize:(unint64_t)a5 secretIsACM:(BOOL)a6 reply:(id)a7
+- (void)enableBackupForVolume:(id)volume withSecret:(id)secret secretSize:(unint64_t)size secretIsACM:(BOOL)m reply:(id)reply
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  volumeCopy = volume;
+  secretCopy = secret;
+  replyCopy = reply;
   v46 = 0;
   address = 0;
   if (![(KBXPCService *)self remoteProcessHasBooleanEntitlement:@"com.apple.keystore.devicebackup"])
@@ -801,7 +801,7 @@ LABEL_7:
     v21 = 1;
 LABEL_5:
     v22 = [NSError errorWithDomain:v20 code:v21 userInfo:0];
-    if (!v14)
+    if (!replyCopy)
     {
       goto LABEL_10;
     }
@@ -809,7 +809,7 @@ LABEL_5:
     goto LABEL_9;
   }
 
-  if (vm_page_size < a5)
+  if (vm_page_size < size)
   {
     sub_100011BE0("[KBXPCService enableBackupForVolume:withSecret:secretSize:secretIsACM:reply:]", @"Long Secret, can't handle ...", vm_page_size, v15, v16, v17, v18, v19, v46);
     v20 = NSPOSIXErrorDomain;
@@ -823,31 +823,31 @@ LABEL_5:
     v22 = [NSError errorWithDomain:NSPOSIXErrorDomain code:12 userInfo:0];
     address = 0;
 LABEL_9:
-    v14[2](v14, 0, v22);
+    replyCopy[2](replyCopy, 0, v22);
     goto LABEL_10;
   }
 
-  if (a5)
+  if (size)
   {
     v29 = address;
-    if ([(KBXPCService *)self retrievePasscodeFromFileHandle:v13 ofLength:a5 withbaseaddress:address])
+    if ([(KBXPCService *)self retrievePasscodeFromFileHandle:secretCopy ofLength:size withbaseaddress:address])
     {
       sub_100011BE0("[KBXPCService enableBackupForVolume:withSecret:secretSize:secretIsACM:reply:]", @"Failed to retrieve oldpasscode", v30, v31, v32, v33, v34, v35, v46);
       v22 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
       v36 = mach_task_self_;
       v37 = address;
       v38 = vm_page_size;
-      if (vm_page_size >= a5)
+      if (vm_page_size >= size)
       {
-        v39 = a5;
+        sizeCopy = size;
       }
 
       else
       {
-        v39 = vm_page_size;
+        sizeCopy = vm_page_size;
       }
 
-      memset_s(address, v39, 0, v39);
+      memset_s(address, sizeCopy, 0, sizeCopy);
       vm_deallocate(v36, v37, v38);
       goto LABEL_9;
     }
@@ -858,7 +858,7 @@ LABEL_9:
     v29 = 0;
   }
 
-  v40 = sub_1000138CC(v12, v29, a5, a6, &v46);
+  v40 = sub_1000138CC(volumeCopy, v29, size, m, &v46);
   if (v40)
   {
     v22 = [NSError errorWithDomain:NSPOSIXErrorDomain code:v40 userInfo:0];
@@ -872,31 +872,31 @@ LABEL_9:
   v41 = mach_task_self_;
   v42 = address;
   v43 = vm_page_size;
-  if (vm_page_size >= a5)
+  if (vm_page_size >= size)
   {
-    v44 = a5;
+    sizeCopy2 = size;
   }
 
   else
   {
-    v44 = vm_page_size;
+    sizeCopy2 = vm_page_size;
   }
 
-  memset_s(address, v44, 0, v44);
+  memset_s(address, sizeCopy2, 0, sizeCopy2);
   vm_deallocate(v41, v42, v43);
   v45 = v46;
-  (v14)[2](v14, v46, v22);
+  (replyCopy)[2](replyCopy, v46, v22);
 
 LABEL_10:
 }
 
-- (void)disableBackupForVolume:(id)a3 reply:(id)a4
+- (void)disableBackupForVolume:(id)volume reply:(id)reply
 {
-  v9 = a3;
-  v6 = a4;
+  volumeCopy = volume;
+  replyCopy = reply;
   if ([(KBXPCService *)self remoteProcessHasBooleanEntitlement:@"com.apple.keystore.devicebackup"])
   {
-    v7 = sub_10002022C(v9);
+    v7 = sub_10002022C(volumeCopy);
     if (v7)
     {
       v8 = [NSError errorWithDomain:NSPOSIXErrorDomain code:v7 userInfo:0];
@@ -911,25 +911,25 @@ LABEL_10:
   }
 
   v8 = [NSError errorWithDomain:NSPOSIXErrorDomain code:1 userInfo:0];
-  if (v6)
+  if (replyCopy)
   {
 LABEL_7:
-    v6[2](v6, v8);
+    replyCopy[2](replyCopy, v8);
   }
 }
 
-- (void)backupUUIDForVolume:(id)a3 reply:(id)a4
+- (void)backupUUIDForVolume:(id)volume reply:(id)reply
 {
-  v4 = a4;
+  replyCopy = reply;
   v5 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-  v4[2](v4, 0, v5);
+  replyCopy[2](replyCopy, 0, v5);
 }
 
-- (void)stashCreatewithSecret:(id)a3 secrestSize:(unint64_t)a4 withMode:(int)a5 withUID:(unsigned int)a6 WithFlags:(unsigned int)a7 reply:(id)a8
+- (void)stashCreatewithSecret:(id)secret secrestSize:(unint64_t)size withMode:(int)mode withUID:(unsigned int)d WithFlags:(unsigned int)flags reply:(id)reply
 {
-  v9 = a7;
-  v14 = a3;
-  v15 = a8;
+  flagsCopy = flags;
+  secretCopy = secret;
+  replyCopy = reply;
   address = 0;
   if (![(KBXPCService *)self remoteProcessHasBooleanEntitlement:@"com.apple.keystore.stash.access"])
   {
@@ -937,7 +937,7 @@ LABEL_7:
     v22 = 1;
 LABEL_5:
     v23 = [NSError errorWithDomain:v21 code:v22 userInfo:0];
-    if (!v15)
+    if (!replyCopy)
     {
       goto LABEL_22;
     }
@@ -945,7 +945,7 @@ LABEL_5:
     goto LABEL_21;
   }
 
-  if (vm_page_size < a4)
+  if (vm_page_size < size)
   {
     sub_100011BE0("[KBXPCService stashCreatewithSecret:secrestSize:withMode:withUID:WithFlags:reply:]", @"Long Secret, can't handle ...", vm_page_size, v16, v17, v18, v19, v20, v44);
     v21 = NSPOSIXErrorDomain;
@@ -955,10 +955,10 @@ LABEL_5:
 
   if (!vm_allocate(mach_task_self_, &address, vm_page_size, -268435455))
   {
-    if (a4)
+    if (size)
     {
       v30 = address;
-      if ([(KBXPCService *)self retrievePasscodeFromFileHandle:v14 ofLength:a4 withbaseaddress:address])
+      if ([(KBXPCService *)self retrievePasscodeFromFileHandle:secretCopy ofLength:size withbaseaddress:address])
       {
         sub_100011BE0("[KBXPCService stashCreatewithSecret:secrestSize:withMode:withUID:WithFlags:reply:]", @"Failed to retrieve Passcode", v31, v32, v33, v34, v35, v36, v44);
         v37 = NSPOSIXErrorDomain;
@@ -972,7 +972,7 @@ LABEL_5:
       v30 = 0;
     }
 
-    v39 = sub_100013C8C(v30, a4, a5, v9, a6);
+    v39 = sub_100013C8C(v30, size, mode, flagsCopy, d);
     if (!v39)
     {
       v23 = 0;
@@ -987,17 +987,17 @@ LABEL_17:
     v40 = mach_task_self_;
     v41 = address;
     v42 = vm_page_size;
-    if (vm_page_size >= a4)
+    if (vm_page_size >= size)
     {
-      v43 = a4;
+      sizeCopy = size;
     }
 
     else
     {
-      v43 = vm_page_size;
+      sizeCopy = vm_page_size;
     }
 
-    memset_s(address, v43, 0, v43);
+    memset_s(address, sizeCopy, 0, sizeCopy);
     vm_deallocate(v40, v41, v42);
     goto LABEL_21;
   }
@@ -1006,17 +1006,17 @@ LABEL_17:
   v23 = [NSError errorWithDomain:NSPOSIXErrorDomain code:12 userInfo:0];
   address = 0;
 LABEL_21:
-  v15[2](v15, v23);
+  replyCopy[2](replyCopy, v23);
 LABEL_22:
 }
 
-- (void)stashCommitwithUID:(unsigned int)a3 WithFlags:(unsigned int)a4 WithReply:(id)a5
+- (void)stashCommitwithUID:(unsigned int)d WithFlags:(unsigned int)flags WithReply:(id)reply
 {
-  v5 = a4;
-  v11 = a5;
+  flagsCopy = flags;
+  replyCopy = reply;
   if ([(KBXPCService *)self remoteProcessHasBooleanEntitlement:@"com.apple.keystore.stash.access"])
   {
-    v8 = sub_100014740(a3, v5);
+    v8 = sub_100014740(d, flagsCopy);
     if (v8)
     {
       v9 = [NSError errorWithDomain:NSPOSIXErrorDomain code:v8 userInfo:0];
@@ -1027,27 +1027,27 @@ LABEL_22:
       v9 = 0;
     }
 
-    v10 = v11;
+    v10 = replyCopy;
     goto LABEL_8;
   }
 
   v9 = [NSError errorWithDomain:NSPOSIXErrorDomain code:1 userInfo:0];
-  v10 = v11;
-  if (v11)
+  v10 = replyCopy;
+  if (replyCopy)
   {
 LABEL_8:
     v10[2](v10, v9);
   }
 }
 
-- (void)stashVerifywithUID:(unsigned int)a3 WithFlags:(unsigned int)a4 WithReply:(id)a5
+- (void)stashVerifywithUID:(unsigned int)d WithFlags:(unsigned int)flags WithReply:(id)reply
 {
-  v5 = a4;
-  v8 = a5;
+  flagsCopy = flags;
+  replyCopy = reply;
   v11 = 0;
   if ([(KBXPCService *)self remoteProcessHasBooleanEntitlement:@"com.apple.keystore.stash.access"])
   {
-    v9 = sub_100013F60(a3, v5, &v11);
+    v9 = sub_100013F60(d, flagsCopy, &v11);
     if (v9)
     {
       v10 = [NSError errorWithDomain:NSPOSIXErrorDomain code:v9 userInfo:0];
@@ -1058,22 +1058,22 @@ LABEL_8:
       v10 = 0;
     }
 
-    v8[2](v8, v11, v10);
+    replyCopy[2](replyCopy, v11, v10);
   }
 
   else
   {
     v10 = [NSError errorWithDomain:NSPOSIXErrorDomain code:1 userInfo:0];
-    if (v8)
+    if (replyCopy)
     {
-      v8[2](v8, 0, v10);
+      replyCopy[2](replyCopy, 0, v10);
     }
   }
 }
 
-- (void)stashDestroywithReply:(id)a3
+- (void)stashDestroywithReply:(id)reply
 {
-  v7 = a3;
+  replyCopy = reply;
   if ([(KBXPCService *)self remoteProcessHasBooleanEntitlement:@"com.apple.keystore.stash.access"])
   {
     v4 = sub_10001488C();
@@ -1087,22 +1087,22 @@ LABEL_8:
       v5 = 0;
     }
 
-    v6 = v7;
+    v6 = replyCopy;
     goto LABEL_8;
   }
 
   v5 = [NSError errorWithDomain:NSPOSIXErrorDomain code:1 userInfo:0];
-  v6 = v7;
-  if (v7)
+  v6 = replyCopy;
+  if (replyCopy)
   {
 LABEL_8:
     v6[2](v6, v5);
   }
 }
 
-- (void)isKeyRollingInProgresswithreply:(id)a3
+- (void)isKeyRollingInProgresswithreply:(id)progresswithreply
 {
-  v3 = a3;
+  progresswithreplyCopy = progresswithreply;
   v7 = 0;
   v4 = sub_100014D70(&v7);
   if (v4)
@@ -1118,12 +1118,12 @@ LABEL_8:
     v5 = v7;
   }
 
-  v3[2](v3, v5, v6);
+  progresswithreplyCopy[2](progresswithreplyCopy, v5, v6);
 }
 
-- (void)migrationWithReply:(id)a3
+- (void)migrationWithReply:(id)reply
 {
-  v5 = a3;
+  replyCopy = reply;
   v3 = aks_migrate_fs();
   if (v3)
   {
@@ -1135,20 +1135,20 @@ LABEL_8:
     v4 = 0;
   }
 
-  v5[2](v5, v4);
+  replyCopy[2](replyCopy, v4);
 }
 
-- (void)forgottenPasscodeEventWithReply:(id)a3
+- (void)forgottenPasscodeEventWithReply:(id)reply
 {
-  (*(a3 + 2))(a3, 0);
+  (*(reply + 2))(reply, 0);
 
   sub_100014FFC();
 }
 
-- (void)getLockSateInfoforUser:(int)a3 WithReply:(id)a4
+- (void)getLockSateInfoforUser:(int)user WithReply:(id)reply
 {
-  v7 = a4;
-  v5 = sub_100014F04(a3);
+  replyCopy = reply;
+  v5 = sub_100014F04(user);
   if (v5)
   {
     v6 = 0;
@@ -1159,40 +1159,40 @@ LABEL_8:
     v6 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
   }
 
-  v7[2](v7, v5, v6);
+  replyCopy[2](replyCopy, v5, v6);
 }
 
-- (void)passcodeUnlockStartWithReply:(id)a3
+- (void)passcodeUnlockStartWithReply:(id)reply
 {
-  v6 = a3;
-  v5 = sub_100011BDC(v6, v3, v4);
+  replyCopy = reply;
+  v5 = sub_100011BDC(replyCopy, v3, v4);
   sub_10000B8B8(v5);
-  v6[2](v6, 0);
+  replyCopy[2](replyCopy, 0);
 }
 
-- (void)passcodeUnlockSuccessWithReply:(id)a3
+- (void)passcodeUnlockSuccessWithReply:(id)reply
 {
-  v6 = a3;
-  v5 = sub_100011BDC(v6, v3, v4);
+  replyCopy = reply;
+  v5 = sub_100011BDC(replyCopy, v3, v4);
   sub_10000B8EC(v5);
-  v6[2](v6, 0);
+  replyCopy[2](replyCopy, 0);
 }
 
-- (void)passcodeUnlockFailedWithReply:(id)a3
+- (void)passcodeUnlockFailedWithReply:(id)reply
 {
-  v6 = a3;
-  v5 = sub_100011BDC(v6, v3, v4);
+  replyCopy = reply;
+  v5 = sub_100011BDC(replyCopy, v3, v4);
   sub_10000B920(v5);
-  v6[2](v6, 0);
+  replyCopy[2](replyCopy, 0);
 }
 
-- (void)SeshatEnrollWithSecret:(id)a3 secretSize:(unint64_t)a4 secretIsACM:(BOOL)a5 withReply:(id)a6
+- (void)SeshatEnrollWithSecret:(id)secret secretSize:(unint64_t)size secretIsACM:(BOOL)m withReply:(id)reply
 {
-  v7 = a5;
-  v10 = a3;
-  v16 = a6;
+  mCopy = m;
+  secretCopy = secret;
+  replyCopy = reply;
   address = 0;
-  if (vm_page_size < a4)
+  if (vm_page_size < size)
   {
     sub_100011BE0("[KBXPCService SeshatEnrollWithSecret:secretSize:secretIsACM:withReply:]", @"Long Secret, can't handle ...", vm_page_size, v11, v12, v13, v14, v15, v38);
     v17 = [NSError errorWithDomain:NSPOSIXErrorDomain code:7 userInfo:0];
@@ -1207,10 +1207,10 @@ LABEL_8:
     goto LABEL_17;
   }
 
-  if (a4)
+  if (size)
   {
     v24 = address;
-    if ([(KBXPCService *)self retrievePasscodeFromFileHandle:v10 ofLength:a4 withbaseaddress:address])
+    if ([(KBXPCService *)self retrievePasscodeFromFileHandle:secretCopy ofLength:size withbaseaddress:address])
     {
       sub_100011BE0("[KBXPCService SeshatEnrollWithSecret:secretSize:secretIsACM:withReply:]", @"Failed to retrieve oldpasscode", v25, v26, v27, v28, v29, v30, v38);
       v31 = NSPOSIXErrorDomain;
@@ -1224,7 +1224,7 @@ LABEL_8:
     v24 = 0;
   }
 
-  v33 = sub_1000204E8(v24, a4, v7);
+  v33 = sub_1000204E8(v24, size, mCopy);
   if (!v33)
   {
     v17 = 0;
@@ -1239,35 +1239,35 @@ LABEL_13:
   v34 = mach_task_self_;
   v35 = address;
   v36 = vm_page_size;
-  if (vm_page_size >= a4)
+  if (vm_page_size >= size)
   {
-    v37 = a4;
+    sizeCopy = size;
   }
 
   else
   {
-    v37 = vm_page_size;
+    sizeCopy = vm_page_size;
   }
 
-  memset_s(address, v37, 0, v37);
+  memset_s(address, sizeCopy, 0, sizeCopy);
   vm_deallocate(v34, v35, v36);
 LABEL_17:
-  v16[2](v16, v17);
+  replyCopy[2](replyCopy, v17);
 }
 
-- (void)SeshatUnlockWithSecret:(id)a3 secretSize:(unint64_t)a4 secretIsACM:(BOOL)a5 withMemento:(BOOL)a6 verifyOnly:(BOOL)a7 withACMRef:(id)a8 forHandle:(int)a9 withReply:(id)a10
+- (void)SeshatUnlockWithSecret:(id)secret secretSize:(unint64_t)size secretIsACM:(BOOL)m withMemento:(BOOL)memento verifyOnly:(BOOL)only withACMRef:(id)ref forHandle:(int)handle withReply:(id)self0
 {
-  v13 = a5;
-  v16 = a3;
-  v17 = a8;
-  v23 = a10;
+  mCopy = m;
+  secretCopy = secret;
+  refCopy = ref;
+  replyCopy = reply;
   address = 0;
-  if (vm_page_size < a4)
+  if (vm_page_size < size)
   {
     sub_100011BE0("[KBXPCService SeshatUnlockWithSecret:secretSize:secretIsACM:withMemento:verifyOnly:withACMRef:forHandle:withReply:]", @"Long Secret, can't handle ...", vm_page_size, v18, v19, v20, v21, v22, v46);
     v24 = [NSError errorWithDomain:NSPOSIXErrorDomain code:7 userInfo:0];
 LABEL_5:
-    v23[2](v23, 0, v24);
+    replyCopy[2](replyCopy, 0, v24);
     goto LABEL_6;
   }
 
@@ -1279,27 +1279,27 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  if (a4)
+  if (size)
   {
     v31 = address;
-    if ([(KBXPCService *)self retrievePasscodeFromFileHandle:v16 ofLength:a4 withbaseaddress:address])
+    if ([(KBXPCService *)self retrievePasscodeFromFileHandle:secretCopy ofLength:size withbaseaddress:address])
     {
       sub_100011BE0("[KBXPCService SeshatUnlockWithSecret:secretSize:secretIsACM:withMemento:verifyOnly:withACMRef:forHandle:withReply:]", @"Failed to retrieve oldpasscode", v32, v33, v34, v35, v36, v37, v46);
       v24 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
       v38 = mach_task_self_;
       v39 = address;
       v40 = vm_page_size;
-      if (vm_page_size >= a4)
+      if (vm_page_size >= size)
       {
-        v41 = a4;
+        sizeCopy = size;
       }
 
       else
       {
-        v41 = vm_page_size;
+        sizeCopy = vm_page_size;
       }
 
-      memset_s(address, v41, 0, v41);
+      memset_s(address, sizeCopy, 0, sizeCopy);
       vm_deallocate(v38, v39, v40);
       goto LABEL_5;
     }
@@ -1315,39 +1315,39 @@ LABEL_5:
   v47[2] = sub_100008038;
   v47[3] = &unk_100034D80;
   v48 = os_transaction_create();
-  v49 = v23;
+  v49 = replyCopy;
   v24 = v48;
-  sub_100015EE4(a9, v31, a4, v13, a6, a7, v17, v47);
+  sub_100015EE4(handle, v31, size, mCopy, memento, only, refCopy, v47);
   v42 = mach_task_self_;
   v43 = address;
   v44 = vm_page_size;
-  if (vm_page_size >= a4)
+  if (vm_page_size >= size)
   {
-    v45 = a4;
+    sizeCopy2 = size;
   }
 
   else
   {
-    v45 = vm_page_size;
+    sizeCopy2 = vm_page_size;
   }
 
-  memset_s(address, v45, 0, v45);
+  memset_s(address, sizeCopy2, 0, sizeCopy2);
   vm_deallocate(v42, v43, v44);
 
 LABEL_6:
 }
 
-- (void)SeshatRecoverWithSecret:(id)a3 secretSize:(unint64_t)a4 secretIsACM:(BOOL)a5 withReply:(id)a6
+- (void)SeshatRecoverWithSecret:(id)secret secretSize:(unint64_t)size secretIsACM:(BOOL)m withReply:(id)reply
 {
-  v10 = a3;
-  v16 = a6;
+  secretCopy = secret;
+  replyCopy = reply;
   address = 0;
-  if (vm_page_size < a4)
+  if (vm_page_size < size)
   {
     sub_100011BE0("[KBXPCService SeshatRecoverWithSecret:secretSize:secretIsACM:withReply:]", @"Long Secret, can't handle ...", vm_page_size, v11, v12, v13, v14, v15, v41);
     v17 = [NSError errorWithDomain:NSPOSIXErrorDomain code:7 userInfo:0];
 LABEL_5:
-    v16[2](v16, 0, v17);
+    replyCopy[2](replyCopy, 0, v17);
 
     goto LABEL_6;
   }
@@ -1360,29 +1360,29 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  if (a4)
+  if (size)
   {
     v24 = address;
-    if ([(KBXPCService *)self retrievePasscodeFromFileHandle:v10 ofLength:a4 withbaseaddress:address])
+    if ([(KBXPCService *)self retrievePasscodeFromFileHandle:secretCopy ofLength:size withbaseaddress:address])
     {
       sub_100011BE0("[KBXPCService SeshatRecoverWithSecret:secretSize:secretIsACM:withReply:]", @"Failed to retrieve oldpasscode", v25, v26, v27, v28, v29, v30, v41);
       v31 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
       v32 = mach_task_self_;
       v33 = address;
       v34 = vm_page_size;
-      if (vm_page_size >= a4)
+      if (vm_page_size >= size)
       {
-        v35 = a4;
+        sizeCopy = size;
       }
 
       else
       {
-        v35 = vm_page_size;
+        sizeCopy = vm_page_size;
       }
 
-      memset_s(address, v35, 0, v35);
+      memset_s(address, sizeCopy, 0, sizeCopy);
       vm_deallocate(v32, v33, v34);
-      v16[2](v16, 0, v31);
+      replyCopy[2](replyCopy, 0, v31);
 
       goto LABEL_6;
     }
@@ -1393,30 +1393,30 @@ LABEL_5:
     v24 = 0;
   }
 
-  v36 = sub_100017080(v24, a4, a5);
+  v36 = sub_100017080(v24, size, m);
   v37 = mach_task_self_;
   v38 = address;
   v39 = vm_page_size;
-  if (vm_page_size >= a4)
+  if (vm_page_size >= size)
   {
-    v40 = a4;
+    sizeCopy2 = size;
   }
 
   else
   {
-    v40 = vm_page_size;
+    sizeCopy2 = vm_page_size;
   }
 
-  memset_s(address, v40, 0, v40);
+  memset_s(address, sizeCopy2, 0, sizeCopy2);
   vm_deallocate(v37, v38, v39);
-  v16[2](v16, v36, 0);
+  replyCopy[2](replyCopy, v36, 0);
 LABEL_6:
 }
 
-- (void)SeshatDebugWithDebugMask:(int)a3 withReply:(id)a4
+- (void)SeshatDebugWithDebugMask:(int)mask withReply:(id)reply
 {
-  v6 = a4;
-  if (sub_100017718(a3))
+  replyCopy = reply;
+  if (sub_100017718(mask))
   {
     v5 = [NSError errorWithDomain:NSPOSIXErrorDomain code:12 userInfo:0];
   }
@@ -1426,15 +1426,15 @@ LABEL_6:
     v5 = 0;
   }
 
-  v6[2](v6, v5);
+  replyCopy[2](replyCopy, v5);
 }
 
-- (void)createKeybagForUserSession:(id)a3 withSessionUID:(int)a4 WithSecret:(id)a5 secretSize:(unint64_t)a6 withGracePeriod:(int)a7 withOpaqeStuff:(id)a8 withReply:(id)a9
+- (void)createKeybagForUserSession:(id)session withSessionUID:(int)d WithSecret:(id)secret secretSize:(unint64_t)size withGracePeriod:(int)period withOpaqeStuff:(id)stuff withReply:(id)reply
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = a8;
-  v18 = a9;
+  sessionCopy = session;
+  secretCopy = secret;
+  stuffCopy = stuff;
+  replyCopy = reply;
   v60 = 0;
   v61 = &v60;
   v62 = 0x3032000000;
@@ -1457,14 +1457,14 @@ LABEL_6:
 
       address = 0;
 LABEL_5:
-      v18[2](v18, v61[5]);
+      replyCopy[2](replyCopy, v61[5]);
       goto LABEL_17;
     }
 
-    if (a6)
+    if (size)
     {
       v29 = address;
-      if ([(KBXPCService *)self retrievePasscodeFromFileHandle:v16 ofLength:a6 withbaseaddress:address])
+      if ([(KBXPCService *)self retrievePasscodeFromFileHandle:secretCopy ofLength:size withbaseaddress:address])
       {
         sub_100011BE0("[KBXPCService createKeybagForUserSession:withSessionUID:WithSecret:secretSize:withGracePeriod:withOpaqeStuff:withReply:]", @"Failed to retrieve passcode info", v30, v31, v32, v33, v34, v35, v47);
         v36 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
@@ -1474,17 +1474,17 @@ LABEL_5:
         v38 = mach_task_self_;
         v39 = address;
         v40 = vm_page_size;
-        if (vm_page_size >= a6)
+        if (vm_page_size >= size)
         {
-          v41 = a6;
+          sizeCopy = size;
         }
 
         else
         {
-          v41 = vm_page_size;
+          sizeCopy = vm_page_size;
         }
 
-        memset_s(address, v41, 0, v41);
+        memset_s(address, sizeCopy, 0, sizeCopy);
         vm_deallocate(v38, v39, v40);
         goto LABEL_5;
       }
@@ -1500,31 +1500,31 @@ LABEL_5:
     block[1] = 3221225472;
     block[2] = sub_1000086EC;
     block[3] = &unk_100034DA8;
-    v49 = v15;
-    v53 = a6;
+    v49 = sessionCopy;
+    sizeCopy2 = size;
     v54 = v29;
-    v55 = a4;
-    v56 = a7;
-    v50 = v17;
+    dCopy = d;
+    periodCopy = period;
+    v50 = stuffCopy;
     v51 = &v60;
     v52 = v57;
     dispatch_sync(v42, block);
     v43 = mach_task_self_;
     v44 = address;
     v45 = vm_page_size;
-    if (vm_page_size >= a6)
+    if (vm_page_size >= size)
     {
-      v46 = a6;
+      sizeCopy3 = size;
     }
 
     else
     {
-      v46 = vm_page_size;
+      sizeCopy3 = vm_page_size;
     }
 
-    memset_s(address, v46, 0, v46);
+    memset_s(address, sizeCopy3, 0, sizeCopy3);
     vm_deallocate(v43, v44, v45);
-    v18[2](v18, v61[5]);
+    replyCopy[2](replyCopy, v61[5]);
   }
 
   else
@@ -1533,7 +1533,7 @@ LABEL_5:
     v28 = v61[5];
     v61[5] = v27;
 
-    if (v18)
+    if (replyCopy)
     {
       goto LABEL_5;
     }
@@ -1544,11 +1544,11 @@ LABEL_17:
   _Block_object_dispose(&v60, 8);
 }
 
-- (void)loadKeybagForUserSession:(id)a3 withSessionID:(int)a4 withSecret:(id)a5 secretSize:(unint64_t)a6 shouldSetGracePeriod:(BOOL)a7 withGracePeriod:(int)a8 isInEarlyStar:(BOOL)a9 withReply:(id)a10
+- (void)loadKeybagForUserSession:(id)session withSessionID:(int)d withSecret:(id)secret secretSize:(unint64_t)size shouldSetGracePeriod:(BOOL)period withGracePeriod:(int)gracePeriod isInEarlyStar:(BOOL)star withReply:(id)self0
 {
-  v16 = a3;
-  v17 = a5;
-  v18 = a10;
+  sessionCopy = session;
+  secretCopy = secret;
+  replyCopy = reply;
   v61 = 0;
   v62 = &v61;
   v63 = 0x3032000000;
@@ -1571,14 +1571,14 @@ LABEL_17:
 
       address = 0;
 LABEL_5:
-      v18[2](v18, v62[5]);
+      replyCopy[2](replyCopy, v62[5]);
       goto LABEL_17;
     }
 
-    if (a6)
+    if (size)
     {
       v29 = address;
-      if ([(KBXPCService *)self retrievePasscodeFromFileHandle:v17 ofLength:a6 withbaseaddress:address])
+      if ([(KBXPCService *)self retrievePasscodeFromFileHandle:secretCopy ofLength:size withbaseaddress:address])
       {
         sub_100011BE0("[KBXPCService loadKeybagForUserSession:withSessionID:withSecret:secretSize:shouldSetGracePeriod:withGracePeriod:isInEarlyStar:withReply:]", @"Failed to retrieve passcode info", v30, v31, v32, v33, v34, v35, v47);
         v36 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
@@ -1588,17 +1588,17 @@ LABEL_5:
         v38 = mach_task_self_;
         v39 = address;
         v40 = vm_page_size;
-        if (vm_page_size >= a6)
+        if (vm_page_size >= size)
         {
-          v41 = a6;
+          sizeCopy = size;
         }
 
         else
         {
-          v41 = vm_page_size;
+          sizeCopy = vm_page_size;
         }
 
-        memset_s(address, v41, 0, v41);
+        memset_s(address, sizeCopy, 0, sizeCopy);
         vm_deallocate(v38, v39, v40);
         goto LABEL_5;
       }
@@ -1614,32 +1614,32 @@ LABEL_5:
     block[1] = 3221225472;
     block[2] = sub_100008B90;
     block[3] = &unk_100034DD0;
-    v52 = a6;
+    sizeCopy2 = size;
     v53 = v29;
-    v56 = a7;
-    v54 = a4;
-    v55 = a8;
-    v57 = a9;
-    v49 = v16;
+    periodCopy = period;
+    dCopy = d;
+    gracePeriodCopy = gracePeriod;
+    starCopy = star;
+    v49 = sessionCopy;
     v50 = &v61;
     v51 = v58;
     dispatch_sync(v42, block);
     v43 = mach_task_self_;
     v44 = address;
     v45 = vm_page_size;
-    if (vm_page_size >= a6)
+    if (vm_page_size >= size)
     {
-      v46 = a6;
+      sizeCopy3 = size;
     }
 
     else
     {
-      v46 = vm_page_size;
+      sizeCopy3 = vm_page_size;
     }
 
-    memset_s(address, v46, 0, v46);
+    memset_s(address, sizeCopy3, 0, sizeCopy3);
     vm_deallocate(v43, v44, v45);
-    v18[2](v18, v62[5]);
+    replyCopy[2](replyCopy, v62[5]);
   }
 
   else
@@ -1648,7 +1648,7 @@ LABEL_5:
     v28 = v62[5];
     v62[5] = v27;
 
-    if (v18)
+    if (replyCopy)
     {
       goto LABEL_5;
     }
@@ -1659,9 +1659,9 @@ LABEL_17:
   _Block_object_dispose(&v61, 8);
 }
 
-- (void)unloadKeybagForUserSession:(int)a3 withReply:(id)a4
+- (void)unloadKeybagForUserSession:(int)session withReply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -1674,11 +1674,11 @@ LABEL_17:
     v9[1] = 3221225472;
     v9[2] = sub_100008DFC;
     v9[3] = &unk_100034DF8;
-    v10 = a3;
+    sessionCopy = session;
     v9[4] = &v11;
     dispatch_sync(qword_10003D2A0, v9);
 LABEL_4:
-    v6[2](v6, v12[5]);
+    replyCopy[2](replyCopy, v12[5]);
     goto LABEL_5;
   }
 
@@ -1686,7 +1686,7 @@ LABEL_4:
   v8 = v12[5];
   v12[5] = v7;
 
-  if (v6)
+  if (replyCopy)
   {
     goto LABEL_4;
   }
@@ -1695,11 +1695,11 @@ LABEL_5:
   _Block_object_dispose(&v11, 8);
 }
 
-- (void)setVolumeToPersona:(id)a3 withPersonaString:(id)a4 withReply:(id)a5
+- (void)setVolumeToPersona:(id)persona withPersonaString:(id)string withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  personaCopy = persona;
+  stringCopy = string;
+  replyCopy = reply;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -1713,10 +1713,10 @@ LABEL_5:
     v14[1] = 3221225472;
     v14[2] = sub_1000092EC;
     v14[3] = &unk_100034E20;
-    v15 = v8;
+    v15 = personaCopy;
     v18 = &v19;
-    v16 = v9;
-    v17 = v10;
+    v16 = stringCopy;
+    v17 = replyCopy;
     dispatch_sync(v11, v14);
   }
 
@@ -1726,19 +1726,19 @@ LABEL_5:
     v13 = v20[5];
     v20[5] = v12;
 
-    if (v10)
+    if (replyCopy)
     {
-      (*(v10 + 2))(v10, v20[5]);
+      (*(replyCopy + 2))(replyCopy, v20[5]);
     }
   }
 
   _Block_object_dispose(&v19, 8);
 }
 
-- (void)createSyncBagForUserSession:(id)a3 withSessionUID:(int)a4 withReply:(id)a5
+- (void)createSyncBagForUserSession:(id)session withSessionUID:(int)d withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a5;
+  sessionCopy = session;
+  replyCopy = reply;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -1752,11 +1752,11 @@ LABEL_5:
     block[1] = 3221225472;
     block[2] = sub_1000096F0;
     block[3] = &unk_100034E48;
-    v16 = a4;
-    v14 = v8;
+    dCopy = d;
+    v14 = sessionCopy;
     v15 = &v17;
     dispatch_sync(v10, block);
-    v9[2](v9, v18[5]);
+    replyCopy[2](replyCopy, v18[5]);
   }
 
   else
@@ -1765,19 +1765,19 @@ LABEL_5:
     v12 = v18[5];
     v18[5] = v11;
 
-    if (v9)
+    if (replyCopy)
     {
-      v9[2](v9, v18[5]);
+      replyCopy[2](replyCopy, v18[5]);
     }
   }
 
   _Block_object_dispose(&v17, 8);
 }
 
-- (void)loadSyncBagForUserSession:(id)a3 withSessionUID:(int)a4 withReply:(id)a5
+- (void)loadSyncBagForUserSession:(id)session withSessionUID:(int)d withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a5;
+  sessionCopy = session;
+  replyCopy = reply;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -1791,11 +1791,11 @@ LABEL_5:
     block[1] = 3221225472;
     block[2] = sub_100009968;
     block[3] = &unk_100034E48;
-    v16 = a4;
-    v14 = v8;
+    dCopy = d;
+    v14 = sessionCopy;
     v15 = &v17;
     dispatch_sync(v10, block);
-    v9[2](v9, v18[5]);
+    replyCopy[2](replyCopy, v18[5]);
   }
 
   else
@@ -1804,19 +1804,19 @@ LABEL_5:
     v12 = v18[5];
     v18[5] = v11;
 
-    if (v9)
+    if (replyCopy)
     {
-      v9[2](v9, v18[5]);
+      replyCopy[2](replyCopy, v18[5]);
     }
   }
 
   _Block_object_dispose(&v17, 8);
 }
 
-- (void)verifySyncBagForUserSession:(id)a3 withSessionUID:(int)a4 withReply:(id)a5
+- (void)verifySyncBagForUserSession:(id)session withSessionUID:(int)d withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a5;
+  sessionCopy = session;
+  replyCopy = reply;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -1830,11 +1830,11 @@ LABEL_5:
     block[1] = 3221225472;
     block[2] = sub_100009BE0;
     block[3] = &unk_100034E48;
-    v16 = a4;
-    v14 = v8;
+    dCopy = d;
+    v14 = sessionCopy;
     v15 = &v17;
     dispatch_sync(v10, block);
-    v9[2](v9, v18[5]);
+    replyCopy[2](replyCopy, v18[5]);
   }
 
   else
@@ -1843,19 +1843,19 @@ LABEL_5:
     v12 = v18[5];
     v18[5] = v11;
 
-    if (v9)
+    if (replyCopy)
     {
-      v9[2](v9, v18[5]);
+      replyCopy[2](replyCopy, v18[5]);
     }
   }
 
   _Block_object_dispose(&v17, 8);
 }
 
-- (void)unloadSyncBagForUserSession:(id)a3 withSessionUID:(int)a4 withReply:(id)a5
+- (void)unloadSyncBagForUserSession:(id)session withSessionUID:(int)d withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a5;
+  sessionCopy = session;
+  replyCopy = reply;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -1869,11 +1869,11 @@ LABEL_5:
     block[1] = 3221225472;
     block[2] = sub_100009E58;
     block[3] = &unk_100034E48;
-    v16 = a4;
-    v14 = v8;
+    dCopy = d;
+    v14 = sessionCopy;
     v15 = &v17;
     dispatch_sync(v10, block);
-    v9[2](v9, v18[5]);
+    replyCopy[2](replyCopy, v18[5]);
   }
 
   else
@@ -1882,19 +1882,19 @@ LABEL_5:
     v12 = v18[5];
     v18[5] = v11;
 
-    if (v9)
+    if (replyCopy)
     {
-      v9[2](v9, v18[5]);
+      replyCopy[2](replyCopy, v18[5]);
     }
   }
 
   _Block_object_dispose(&v17, 8);
 }
 
-- (void)removeSyncBagForUserSession:(id)a3 withSessionUID:(int)a4 withReply:(id)a5
+- (void)removeSyncBagForUserSession:(id)session withSessionUID:(int)d withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a5;
+  sessionCopy = session;
+  replyCopy = reply;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -1908,11 +1908,11 @@ LABEL_5:
     block[1] = 3221225472;
     block[2] = sub_10000A120;
     block[3] = &unk_100034E48;
-    v16 = a4;
-    v14 = v8;
+    dCopy = d;
+    v14 = sessionCopy;
     v15 = &v17;
     dispatch_sync(v10, block);
-    v9[2](v9, v18[5]);
+    replyCopy[2](replyCopy, v18[5]);
   }
 
   else
@@ -1921,21 +1921,21 @@ LABEL_5:
     v12 = v18[5];
     v18[5] = v11;
 
-    if (v9)
+    if (replyCopy)
     {
-      v9[2](v9, v18[5]);
+      replyCopy[2](replyCopy, v18[5]);
     }
   }
 
   _Block_object_dispose(&v17, 8);
 }
 
-- (void)createPersonaKeyForUserSession:(id)a3 forPath:(id)a4 withUID:(unsigned int)a5 WithSecret:(id)a6 secretSize:(unint64_t)a7 secretIsACM:(BOOL)a8 withReply:(id)a9
+- (void)createPersonaKeyForUserSession:(id)session forPath:(id)path withUID:(unsigned int)d WithSecret:(id)secret secretSize:(unint64_t)size secretIsACM:(BOOL)m withReply:(id)reply
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  v18 = a9;
+  sessionCopy = session;
+  pathCopy = path;
+  secretCopy = secret;
+  replyCopy = reply;
   v60 = 0;
   v61 = &v60;
   v62 = 0x3032000000;
@@ -1958,14 +1958,14 @@ LABEL_5:
 
       address = 0;
 LABEL_5:
-      v18[2](v18, v61[5]);
+      replyCopy[2](replyCopy, v61[5]);
       goto LABEL_17;
     }
 
-    if (a7)
+    if (size)
     {
       v29 = address;
-      if ([(KBXPCService *)self retrievePasscodeFromFileHandle:v17 ofLength:a7 withbaseaddress:address])
+      if ([(KBXPCService *)self retrievePasscodeFromFileHandle:secretCopy ofLength:size withbaseaddress:address])
       {
         sub_100011BE0("[KBXPCService createPersonaKeyForUserSession:forPath:withUID:WithSecret:secretSize:secretIsACM:withReply:]", @"Failed to passcode info", v30, v31, v32, v33, v34, v35, v47);
         v36 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
@@ -1975,17 +1975,17 @@ LABEL_5:
         v38 = mach_task_self_;
         v39 = address;
         v40 = vm_page_size;
-        if (vm_page_size >= a7)
+        if (vm_page_size >= size)
         {
-          v41 = a7;
+          sizeCopy = size;
         }
 
         else
         {
-          v41 = vm_page_size;
+          sizeCopy = vm_page_size;
         }
 
-        memset_s(address, v41, 0, v41);
+        memset_s(address, sizeCopy, 0, sizeCopy);
         vm_deallocate(v38, v39, v40);
         goto LABEL_5;
       }
@@ -2001,31 +2001,31 @@ LABEL_5:
     block[1] = 3221225472;
     block[2] = sub_10000A60C;
     block[3] = &unk_100034E70;
-    v55 = a5;
-    v49 = v16;
-    v53 = a7;
+    dCopy = d;
+    v49 = pathCopy;
+    sizeCopy2 = size;
     v54 = v29;
-    v56 = a8;
-    v50 = v15;
+    mCopy = m;
+    v50 = sessionCopy;
     v51 = &v60;
     v52 = v57;
     dispatch_sync(v42, block);
     v43 = mach_task_self_;
     v44 = address;
     v45 = vm_page_size;
-    if (vm_page_size >= a7)
+    if (vm_page_size >= size)
     {
-      v46 = a7;
+      sizeCopy3 = size;
     }
 
     else
     {
-      v46 = vm_page_size;
+      sizeCopy3 = vm_page_size;
     }
 
-    memset_s(address, v46, 0, v46);
+    memset_s(address, sizeCopy3, 0, sizeCopy3);
     vm_deallocate(v43, v44, v45);
-    v18[2](v18, v61[5]);
+    replyCopy[2](replyCopy, v61[5]);
   }
 
   else
@@ -2034,7 +2034,7 @@ LABEL_5:
     v28 = v61[5];
     v61[5] = v27;
 
-    if (v18)
+    if (replyCopy)
     {
       goto LABEL_5;
     }
@@ -2045,11 +2045,11 @@ LABEL_17:
   _Block_object_dispose(&v60, 8);
 }
 
-- (void)removePersonaKeyForUserSession:(id)a3 withUID:(unsigned int)a4 withVolumeUUIDString:(id)a5 withReply:(id)a6
+- (void)removePersonaKeyForUserSession:(id)session withUID:(unsigned int)d withVolumeUUIDString:(id)string withReply:(id)reply
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  sessionCopy = session;
+  stringCopy = string;
+  replyCopy = reply;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -2063,12 +2063,12 @@ LABEL_17:
     v16[1] = 3221225472;
     v16[2] = sub_10000A8CC;
     v16[3] = &unk_100034E98;
-    v20 = a4;
-    v17 = v10;
-    v18 = v11;
+    dCopy = d;
+    v17 = sessionCopy;
+    v18 = stringCopy;
     v19 = &v21;
     dispatch_sync(v13, v16);
-    v12[2](v12, v22[5]);
+    replyCopy[2](replyCopy, v22[5]);
   }
 
   else
@@ -2077,9 +2077,9 @@ LABEL_17:
     v15 = v22[5];
     v22[5] = v14;
 
-    if (v12)
+    if (replyCopy)
     {
-      v12[2](v12, v22[5]);
+      replyCopy[2](replyCopy, v22[5]);
     }
   }
 

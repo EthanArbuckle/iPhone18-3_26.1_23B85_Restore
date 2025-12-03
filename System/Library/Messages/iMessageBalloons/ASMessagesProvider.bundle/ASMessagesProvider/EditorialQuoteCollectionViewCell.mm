@@ -1,12 +1,12 @@
 @interface EditorialQuoteCollectionViewCell
-- (_TtC18ASMessagesProvider32EditorialQuoteCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC18ASMessagesProvider32EditorialQuoteCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation EditorialQuoteCollectionViewCell
 
-- (_TtC18ASMessagesProvider32EditorialQuoteCollectionViewCell)initWithCoder:(id)a3
+- (_TtC18ASMessagesProvider32EditorialQuoteCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC18ASMessagesProvider32EditorialQuoteCollectionViewCell_itemLayoutContext;
   v5 = sub_75C840();
@@ -18,15 +18,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_36E530();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_36E894(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_36E894(change);
 }
 
 @end

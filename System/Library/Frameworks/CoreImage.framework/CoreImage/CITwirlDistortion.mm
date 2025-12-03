@@ -118,7 +118,7 @@
       height = v55.size.height;
     }
 
-    v40 = [(CITwirlDistortion *)self _kernel];
+    _kernel = [(CITwirlDistortion *)self _kernel];
     v46[0] = MEMORY[0x1E69E9820];
     v46[1] = 3221225472;
     v46[2] = __32__CITwirlDistortion_outputImage__block_invoke;
@@ -130,7 +130,7 @@
     v51 = v26;
     inputImage = self->inputImage;
     v52[0] = v15;
-    return [v40 applyWithExtent:v46 roiCallback:inputImage inputImage:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v52, 1), x, y, width, height}];
+    return [_kernel applyWithExtent:v46 roiCallback:inputImage inputImage:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v52, 1), x, y, width, height}];
   }
 
   else

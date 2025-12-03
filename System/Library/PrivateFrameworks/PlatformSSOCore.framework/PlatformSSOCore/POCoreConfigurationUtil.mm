@@ -7,7 +7,7 @@
 + (void)platformSSODevModeEnabled;
 + (void)platformSSOEnabled;
 + (void)updateTriggerFile;
-+ (void)writeTriggerFileToPath:(id)a3;
++ (void)writeTriggerFileToPath:(id)path;
 @end
 
 @implementation POCoreConfigurationUtil
@@ -20,9 +20,9 @@
     +[POCoreConfigurationUtil platformSSOEnabled];
   }
 
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v4 = +[POCoreConfigurationUtil platformSSOTriggerFile];
-  v5 = [v3 fileExistsAtPath:v4];
+  v5 = [defaultManager fileExistsAtPath:v4];
 
   if (v5)
   {
@@ -44,8 +44,8 @@
     +[POCoreConfigurationUtil appSSOEnabled];
   }
 
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [v3 fileExistsAtPath:@"/var/mobile/Library/ExtensibleSSO/Configuration/com.apple.AppSSO.configuration.plist"];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v4 = [defaultManager fileExistsAtPath:@"/var/mobile/Library/ExtensibleSSO/Configuration/com.apple.AppSSO.configuration.plist"];
 
   return v4;
 }
@@ -58,8 +58,8 @@
     +[POCoreConfigurationUtil platformSSODevModeEnabled];
   }
 
-  v4 = [a1 isInternalBuild];
-  if (v4)
+  isInternalBuild = [self isInternalBuild];
+  if (isInternalBuild)
   {
     if ((_os_feature_enabled_impl() & 1) != 0 || ([MEMORY[0x277CCAA00] defaultManager], v5 = objc_claimAutoreleasedReturnValue(), +[POCoreConfigurationUtil platformSSODevModeTriggerFile](POCoreConfigurationUtil, "platformSSODevModeTriggerFile"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "fileExistsAtPath:", v6), v6, v5, v7))
     {
@@ -69,25 +69,25 @@
         +[POCoreConfigurationUtil platformSSODevModeEnabled];
       }
 
-      LOBYTE(v4) = 1;
+      LOBYTE(isInternalBuild) = 1;
     }
 
     else
     {
-      LOBYTE(v4) = 0;
+      LOBYTE(isInternalBuild) = 0;
     }
   }
 
-  return v4;
+  return isInternalBuild;
 }
 
-+ (void)writeTriggerFileToPath:(id)a3
++ (void)writeTriggerFileToPath:(id)path
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEA90] data];
+  pathCopy = path;
+  data = [MEMORY[0x277CBEA90] data];
   v23 = 0;
-  v5 = [v4 writeToFile:v3 options:268435457 error:&v23];
+  v5 = [data writeToFile:pathCopy options:268435457 error:&v23];
   v6 = v23;
   v7 = v6;
   if (v5)
@@ -95,9 +95,9 @@
     v24 = *MEMORY[0x277CCA180];
     v25[0] = &unk_2870A9270;
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:&v24 count:1];
-    v9 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v19 = v7;
-    v10 = [v9 setAttributes:v8 ofItemAtPath:v3 error:&v19];
+    v10 = [defaultManager setAttributes:v8 ofItemAtPath:pathCopy error:&v19];
     v11 = v19;
 
     if (v10)
@@ -116,7 +116,7 @@
       v16[2] = __50__POCoreConfigurationUtil_writeTriggerFileToPath___block_invoke_18;
       v16[3] = &unk_279A3DE00;
       v17 = v11;
-      v18 = v3;
+      v18 = pathCopy;
       v14 = __50__POCoreConfigurationUtil_writeTriggerFileToPath___block_invoke_18(v16);
 
       v12 = v17;
@@ -131,7 +131,7 @@
     v20[3] = &unk_279A3DE00;
     v11 = v6;
     v21 = v11;
-    v22 = v3;
+    v22 = pathCopy;
     v13 = __50__POCoreConfigurationUtil_writeTriggerFileToPath___block_invoke(v20);
 
     v8 = v21;

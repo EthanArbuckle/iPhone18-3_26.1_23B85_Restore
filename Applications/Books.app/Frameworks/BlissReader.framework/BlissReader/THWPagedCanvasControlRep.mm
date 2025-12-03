@@ -1,28 +1,28 @@
 @interface THWPagedCanvasControlRep
-- (THWPagedCanvasControlRep)initWithLayout:(id)a3 canvas:(id)a4;
-- (id)viewControllerForView:(id)a3;
-- (void)addAlternateLayersForChildViewsToArray:(id)a3;
-- (void)addChildViewsToArray:(id)a3;
+- (THWPagedCanvasControlRep)initWithLayout:(id)layout canvas:(id)canvas;
+- (id)viewControllerForView:(id)view;
+- (void)addAlternateLayersForChildViewsToArray:(id)array;
+- (void)addChildViewsToArray:(id)array;
 - (void)dealloc;
 - (void)updateFromLayout;
 - (void)viewScrollingEnded;
 - (void)willBeRemoved;
-- (void)willRemoveChildView:(id)a3;
+- (void)willRemoveChildView:(id)view;
 @end
 
 @implementation THWPagedCanvasControlRep
 
-- (THWPagedCanvasControlRep)initWithLayout:(id)a3 canvas:(id)a4
+- (THWPagedCanvasControlRep)initWithLayout:(id)layout canvas:(id)canvas
 {
   v23.receiver = self;
   v23.super_class = THWPagedCanvasControlRep;
   v6 = [THWPagedCanvasControlRep initWithLayout:"initWithLayout:canvas:" canvas:?];
   if (v6)
   {
-    v6->_pagedCanvasController = -[THWPagedCanvasController initWithDocumentRoot:]([THWPagedCanvasController alloc], "initWithDocumentRoot:", [a4 documentRoot]);
-    v7 = [(THWPagedCanvasControlRep *)v6 canvas];
-    [a3 frameInRoot];
-    [v7 convertUnscaledToBoundsRect:?];
+    v6->_pagedCanvasController = -[THWPagedCanvasController initWithDocumentRoot:]([THWPagedCanvasController alloc], "initWithDocumentRoot:", [canvas documentRoot]);
+    canvas = [(THWPagedCanvasControlRep *)v6 canvas];
+    [layout frameInRoot];
+    [canvas convertUnscaledToBoundsRect:?];
     pagedCanvasController = v6->_pagedCanvasController;
     [-[THWPagedCanvasControlRep canvas](v6 "canvas")];
     v14 = v13;
@@ -45,18 +45,18 @@
 
 - (void)viewScrollingEnded
 {
-  v2 = [(THWPagedCanvasControlRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(THWPagedCanvasControlRep *)self interactiveCanvasController];
 
-  [v2 invalidateReps];
+  [interactiveCanvasController invalidateReps];
 }
 
-- (void)addAlternateLayersForChildViewsToArray:(id)a3
+- (void)addAlternateLayersForChildViewsToArray:(id)array
 {
-  v4 = [(THWPagedCanvasController *)self->_pagedCanvasController alternateLayerForView];
-  if (v4)
+  alternateLayerForView = [(THWPagedCanvasController *)self->_pagedCanvasController alternateLayerForView];
+  if (alternateLayerForView)
   {
 
-    [a3 addObject:v4];
+    [array addObject:alternateLayerForView];
   }
 }
 
@@ -76,7 +76,7 @@
   [(THWPagedCanvasController *)pagedCanvasController setFrame:v8 scale:v10, v12, v14, v16];
 }
 
-- (void)addChildViewsToArray:(id)a3
+- (void)addChildViewsToArray:(id)array
 {
   if (!+[NSThread isMainThread])
   {
@@ -92,24 +92,24 @@
   pagedCanvasController = self->_pagedCanvasController;
   [-[THWPagedCanvasControlRep canvas](self "canvas")];
   [(THWPagedCanvasController *)pagedCanvasController createViewIfNeededWithFrame:v10 viewScale:v12, v14, v16, v18];
-  v19 = [(THWPagedCanvasController *)self->_pagedCanvasController view];
-  if (v19)
+  view = [(THWPagedCanvasController *)self->_pagedCanvasController view];
+  if (view)
   {
 
-    [a3 addObject:v19];
+    [array addObject:view];
   }
 }
 
-- (id)viewControllerForView:(id)a3
+- (id)viewControllerForView:(id)view
 {
-  if ([(THWPagedCanvasController *)self->_pagedCanvasController view]!= a3)
+  if ([(THWPagedCanvasController *)self->_pagedCanvasController view]!= view)
   {
     return 0;
   }
 
-  v5 = [(TSDInteractiveCanvasController *)[(THWPagedCanvasController *)self->_pagedCanvasController interactiveCanvasController] layerHost];
+  layerHost = [(TSDInteractiveCanvasController *)[(THWPagedCanvasController *)self->_pagedCanvasController interactiveCanvasController] layerHost];
 
-  return [v5 viewController];
+  return [layerHost viewController];
 }
 
 - (void)willBeRemoved
@@ -121,19 +121,19 @@
   [(THWPagedCanvasController *)self->_pagedCanvasController setDelegate:0];
 }
 
-- (void)willRemoveChildView:(id)a3
+- (void)willRemoveChildView:(id)view
 {
   if (!+[NSThread isMainThread])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  if (a3)
+  if (view)
   {
     pagedCanvasController = self->_pagedCanvasController;
     if (pagedCanvasController)
     {
-      if ([(THWPagedCanvasController *)pagedCanvasController view]== a3)
+      if ([(THWPagedCanvasController *)pagedCanvasController view]== view)
       {
         v6 = self->_pagedCanvasController;
 

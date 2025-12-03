@@ -1,44 +1,44 @@
 @interface EKEventAttachmentEditViewController
-- (EKEventAttachmentEditViewController)initWithFrame:(CGRect)a3 attachments:(id)a4 sourceIsManaged:(BOOL)a5;
+- (EKEventAttachmentEditViewController)initWithFrame:(CGRect)frame attachments:(id)attachments sourceIsManaged:(BOOL)managed;
 - (EKEventAttachmentEditViewControllerDelegate)delegate;
-- (id)owningEventForAttachmentCellController:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4;
+- (id)owningEventForAttachmentCellController:(id)controller;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path;
 - (void)loadView;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation EKEventAttachmentEditViewController
 
-- (EKEventAttachmentEditViewController)initWithFrame:(CGRect)a3 attachments:(id)a4 sourceIsManaged:(BOOL)a5
+- (EKEventAttachmentEditViewController)initWithFrame:(CGRect)frame attachments:(id)attachments sourceIsManaged:(BOOL)managed
 {
-  v5 = a5;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
+  managedCopy = managed;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  attachmentsCopy = attachments;
   v20.receiver = self;
   v20.super_class = EKEventAttachmentEditViewController;
-  v12 = [(EKEditItemViewController *)&v20 initWithFrame:x, y, width, height];
-  if (v12)
+  height = [(EKEditItemViewController *)&v20 initWithFrame:x, y, width, height];
+  if (height)
   {
     v13 = [objc_alloc(MEMORY[0x1E69DD020]) initWithFrame:2 style:{x, y, width, height}];
-    table = v12->_table;
-    v12->_table = v13;
+    table = height->_table;
+    height->_table = v13;
 
-    v15 = [EKEventAttachmentCellController cellControllersForAttachments:v11 givenExistingControllers:0 sourceIsManaged:v5];
-    cellControllers = v12->_cellControllers;
-    v12->_cellControllers = v15;
+    v15 = [EKEventAttachmentCellController cellControllersForAttachments:attachmentsCopy givenExistingControllers:0 sourceIsManaged:managedCopy];
+    cellControllers = height->_cellControllers;
+    height->_cellControllers = v15;
 
-    [(NSArray *)v12->_cellControllers makeObjectsPerformSelector:sel_setDelegate_ withObject:v12];
+    [(NSArray *)height->_cellControllers makeObjectsPerformSelector:sel_setDelegate_ withObject:height];
     v17 = EventKitUIBundle();
     v18 = [v17 localizedStringForKey:@"Attachments" value:&stru_1F4EF6790 table:0];
-    [(EKEventAttachmentEditViewController *)v12 setTitle:v18];
+    [(EKEventAttachmentEditViewController *)height setTitle:v18];
   }
 
-  return v12;
+  return height;
 }
 
 - (void)loadView
@@ -62,23 +62,23 @@
   [(EKEditItemViewController *)&v7 viewDidLoad];
   if (self->super._modal)
   {
-    v3 = [(EKEventAttachmentEditViewController *)self navigationItem];
-    [v3 setLeftBarButtonItem:0];
+    navigationItem = [(EKEventAttachmentEditViewController *)self navigationItem];
+    [navigationItem setLeftBarButtonItem:0];
 
-    v4 = [(EKEventAttachmentEditViewController *)self navigationItem];
-    [v4 setHidesBackButton:1];
+    navigationItem2 = [(EKEventAttachmentEditViewController *)self navigationItem];
+    [navigationItem2 setHidesBackButton:1];
 
     v5 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:self action:sel_saveAndDismiss];
-    v6 = [(EKEventAttachmentEditViewController *)self navigationItem];
-    [v6 setRightBarButtonItem:v5];
+    navigationItem3 = [(EKEventAttachmentEditViewController *)self navigationItem];
+    [navigationItem3 setRightBarButtonItem:v5];
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [v5 row];
-  if (v6 >= -[NSArray count](self->_cellControllers, "count") || (-[NSArray objectAtIndex:](self->_cellControllers, "objectAtIndex:", [v5 row]), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "cell"), v8 = objc_claimAutoreleasedReturnValue(), v7, !v8))
+  pathCopy = path;
+  v6 = [pathCopy row];
+  if (v6 >= -[NSArray count](self->_cellControllers, "count") || (-[NSArray objectAtIndex:](self->_cellControllers, "objectAtIndex:", [pathCopy row]), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "cell"), v8 = objc_claimAutoreleasedReturnValue(), v7, !v8))
   {
     v8 = objc_opt_new();
   }
@@ -86,14 +86,14 @@
   return v8;
 }
 
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v27 = 0;
   v28 = &v27;
   v29 = 0x2020000000;
-  v30 = [v7 row];
+  v30 = [pathCopy row];
   v8 = v28[3];
   if ((v8 & 0x8000000000000000) != 0 || v8 >= [(NSArray *)self->_cellControllers count])
   {
@@ -112,13 +112,13 @@
     v20 = &unk_1E8440990;
     objc_copyWeak(&v25, &location);
     v24 = &v27;
-    v21 = self;
-    v22 = v6;
-    v23 = v7;
+    selfCopy = self;
+    v22 = viewCopy;
+    v23 = pathCopy;
     v12 = [v9 contextualActionWithStyle:1 title:v11 handler:&v17];
 
     v13 = MEMORY[0x1E69DCFC0];
-    v14 = [MEMORY[0x1E695DEC8] arrayWithObject:{v12, v17, v18, v19, v20, v21}];
+    v14 = [MEMORY[0x1E695DEC8] arrayWithObject:{v12, v17, v18, v19, v20, selfCopy}];
     v15 = [v13 configurationWithActions:v14];
 
     [v15 setPerformsFirstActionWithFullSwipe:0];
@@ -173,20 +173,20 @@ void __100__EKEventAttachmentEditViewController_tableView_trailingSwipeActionsCo
   v5[2](v5, 1);
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v7 = a4;
-  v5 = [v7 row];
+  pathCopy = path;
+  v5 = [pathCopy row];
   if (v5 < [(NSArray *)self->_cellControllers count])
   {
-    v6 = -[NSArray objectAtIndex:](self->_cellControllers, "objectAtIndex:", [v7 row]);
+    v6 = -[NSArray objectAtIndex:](self->_cellControllers, "objectAtIndex:", [pathCopy row]);
     [v6 cellSelected];
   }
 
   [(UITableView *)self->_table selectRowAtIndexPath:0 animated:1 scrollPosition:0];
 }
 
-- (id)owningEventForAttachmentCellController:(id)a3
+- (id)owningEventForAttachmentCellController:(id)controller
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();

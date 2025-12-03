@@ -1,7 +1,7 @@
 @interface STTCoreAnalyticsService
 + (STTCoreAnalyticsService)sharedInstance;
-- (void)reportRequest:(id)a3;
-- (void)reportTask:(id)a3;
+- (void)reportRequest:(id)request;
+- (void)reportTask:(id)task;
 @end
 
 @implementation STTCoreAnalyticsService
@@ -18,16 +18,16 @@
   return v3;
 }
 
-- (void)reportRequest:(id)a3
+- (void)reportRequest:(id)request
 {
-  if (a3)
+  if (request)
   {
     v18[0] = @"app_id";
-    v5 = [a3 appId];
-    v6 = v5;
-    if (v5)
+    appId = [request appId];
+    v6 = appId;
+    if (appId)
     {
-      v7 = v5;
+      v7 = appId;
     }
 
     else
@@ -37,11 +37,11 @@
 
     v19[0] = v7;
     v18[1] = @"language";
-    v8 = [a3 assetLanguage];
-    v9 = v8;
-    if (v8)
+    assetLanguage = [request assetLanguage];
+    v9 = assetLanguage;
+    if (assetLanguage)
     {
-      v10 = v8;
+      v10 = assetLanguage;
     }
 
     else
@@ -51,11 +51,11 @@
 
     v19[1] = v10;
     v18[2] = @"name";
-    v11 = [a3 assetName];
-    v12 = v11;
-    if (v11)
+    assetName = [request assetName];
+    v12 = assetName;
+    if (assetName)
     {
-      v13 = v11;
+      v13 = assetName;
     }
 
     else
@@ -65,11 +65,11 @@
 
     v19[2] = v13;
     v18[3] = @"error_code";
-    v14 = [a3 error];
-    v15 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v14 code]);
+    error = [request error];
+    v15 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [error code]);
     v19[3] = v15;
     v18[4] = @"task_mode";
-    v16 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [a3 taskMode]);
+    v16 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [request taskMode]);
     v19[4] = v16;
     v17 = [NSDictionary dictionaryWithObjects:v19 forKeys:v18 count:5];
 
@@ -83,16 +83,16 @@
   }
 }
 
-- (void)reportTask:(id)a3
+- (void)reportTask:(id)task
 {
-  if (a3)
+  if (task)
   {
     v28[0] = @"app_id";
-    v4 = [a3 appId];
-    v25 = v4;
-    if (v4)
+    appId = [task appId];
+    v25 = appId;
+    if (appId)
     {
-      v5 = v4;
+      v5 = appId;
     }
 
     else
@@ -102,15 +102,15 @@
 
     v29[0] = v5;
     v28[1] = @"error_code";
-    v24 = [a3 error];
-    v23 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v24 code]);
+    error = [task error];
+    v23 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [error code]);
     v29[1] = v23;
     v28[2] = @"language";
-    v6 = [a3 assetLanguage];
-    v7 = v6;
-    if (v6)
+    assetLanguage = [task assetLanguage];
+    v7 = assetLanguage;
+    if (assetLanguage)
     {
-      v8 = v6;
+      v8 = assetLanguage;
     }
 
     else
@@ -120,11 +120,11 @@
 
     v29[2] = v8;
     v28[3] = @"name";
-    v9 = [a3 assetName];
-    v10 = v9;
-    if (v9)
+    assetName = [task assetName];
+    v10 = assetName;
+    if (assetName)
     {
-      v11 = v9;
+      v11 = assetName;
     }
 
     else
@@ -134,31 +134,31 @@
 
     v29[3] = v11;
     v28[4] = @"task_mode";
-    v22 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [a3 taskMode]);
+    v22 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [task taskMode]);
     v29[4] = v22;
     v28[5] = @"task_status";
-    v12 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [a3 taskStatus]);
+    v12 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [task taskStatus]);
     v29[5] = v12;
     v28[6] = @"training_status";
-    v13 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [a3 trainingStatus]);
+    v13 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [task trainingStatus]);
     v29[6] = v13;
     v28[7] = @"training_time";
-    [a3 timeIntervalSinceTrainingStart];
+    [task timeIntervalSinceTrainingStart];
     v15 = [NSNumber numberWithInteger:v14];
     v29[7] = v15;
     v28[8] = @"time_since_request";
-    [a3 timeIntervalSinceSubmission];
+    [task timeIntervalSinceSubmission];
     v17 = [NSNumber numberWithInteger:v16];
     v29[8] = v17;
     v28[9] = @"total_training_time";
-    [a3 totalTrainingTime];
+    [task totalTrainingTime];
     v19 = [NSNumber numberWithInteger:v18];
     v29[9] = v19;
     v28[10] = @"task_current_progress";
-    v20 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [a3 currentTaskStatusProgressValue]);
+    v20 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [task currentTaskStatusProgressValue]);
     v29[10] = v20;
     v28[11] = @"task_total_progress";
-    v21 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [a3 totalTaskStatusProgressValue]);
+    v21 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [task totalTaskStatusProgressValue]);
     v29[11] = v21;
     v27 = [NSDictionary dictionaryWithObjects:v29 forKeys:v28 count:12];
 

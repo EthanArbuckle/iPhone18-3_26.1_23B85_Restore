@@ -1,18 +1,18 @@
 @interface LAUIPearlGlyphViewStaticResources
 - (id).cxx_construct;
-- (id)initWithState:(void *)a1;
+- (id)initWithState:(void *)state;
 @end
 
 @implementation LAUIPearlGlyphViewStaticResources
 
-- (id)initWithState:(void *)a1
+- (id)initWithState:(void *)state
 {
-  if (!a1)
+  if (!state)
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = state;
   v6.super_class = LAUIPearlGlyphViewStaticResources;
   v3 = objc_msgSendSuper2(&v6, sel_init);
   v4 = v3;

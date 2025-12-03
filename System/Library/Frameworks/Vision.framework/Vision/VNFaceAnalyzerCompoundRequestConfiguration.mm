@@ -1,17 +1,17 @@
 @interface VNFaceAnalyzerCompoundRequestConfiguration
-- (VNFaceAnalyzerCompoundRequestConfiguration)initWithRequestClass:(Class)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setDetectorConfigurationOption:(id)a3 value:(id)a4;
-- (void)setDetectorConfigurationOptions:(id)a3;
-- (void)setResolvedRevision:(unint64_t)a3;
+- (VNFaceAnalyzerCompoundRequestConfiguration)initWithRequestClass:(Class)class;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setDetectorConfigurationOption:(id)option value:(id)value;
+- (void)setDetectorConfigurationOptions:(id)options;
+- (void)setResolvedRevision:(unint64_t)revision;
 @end
 
 @implementation VNFaceAnalyzerCompoundRequestConfiguration
 
-- (void)setDetectorConfigurationOptions:(id)a3
+- (void)setDetectorConfigurationOptions:(id)options
 {
-  v4 = a3;
-  v5 = [v4 mutableCopy];
+  optionsCopy = options;
+  v5 = [optionsCopy mutableCopy];
   detectorConfigurationOptions = self->_detectorConfigurationOptions;
   self->_detectorConfigurationOptions = v5;
 
@@ -25,32 +25,32 @@
   }
 }
 
-- (void)setResolvedRevision:(unint64_t)a3
+- (void)setResolvedRevision:(unint64_t)revision
 {
   v6.receiver = self;
   v6.super_class = VNFaceAnalyzerCompoundRequestConfiguration;
   [(VNRequestConfiguration *)&v6 setResolvedRevision:?];
-  v5 = [VNRequestSpecifier specifierForRequestClass:[(objc_class *)[(VNRequestConfiguration *)self requestClass] frameworkClass] revision:a3 error:0];
+  v5 = [VNRequestSpecifier specifierForRequestClass:[(objc_class *)[(VNRequestConfiguration *)self requestClass] frameworkClass] revision:revision error:0];
   [(NSMutableDictionary *)self->_detectorConfigurationOptions setObject:v5 forKeyedSubscript:@"VNDetectorOption_OriginatingRequestSpecifier"];
 }
 
-- (void)setDetectorConfigurationOption:(id)a3 value:(id)a4
+- (void)setDetectorConfigurationOption:(id)option value:(id)value
 {
-  v8 = a3;
-  v6 = a4;
-  [(NSMutableDictionary *)self->_detectorConfigurationOptions setValue:v6 forKey:v8];
-  if ([v8 isEqualToString:@"VNDetectorOption_OriginatingRequestSpecifier"])
+  optionCopy = option;
+  valueCopy = value;
+  [(NSMutableDictionary *)self->_detectorConfigurationOptions setValue:valueCopy forKey:optionCopy];
+  if ([optionCopy isEqualToString:@"VNDetectorOption_OriginatingRequestSpecifier"])
   {
-    v7 = v6;
+    v7 = valueCopy;
     -[VNFaceAnalyzerCompoundRequestConfiguration setResolvedRevision:](self, "setResolvedRevision:", [v7 requestRevision]);
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = VNFaceAnalyzerCompoundRequestConfiguration;
-  v4 = [(VNRequestConfiguration *)&v12 copyWithZone:a3];
+  v4 = [(VNRequestConfiguration *)&v12 copyWithZone:zone];
   if (v4)
   {
     v5 = [(NSMutableDictionary *)self->_detectorConfigurationOptions mutableCopy];
@@ -69,7 +69,7 @@
   return v4;
 }
 
-- (VNFaceAnalyzerCompoundRequestConfiguration)initWithRequestClass:(Class)a3
+- (VNFaceAnalyzerCompoundRequestConfiguration)initWithRequestClass:(Class)class
 {
   v11.receiver = self;
   v11.super_class = VNFaceAnalyzerCompoundRequestConfiguration;
@@ -80,7 +80,7 @@
     detectorConfigurationOptions = v4->_detectorConfigurationOptions;
     v4->_detectorConfigurationOptions = v5;
 
-    v7 = [VNRequestSpecifier specifierForRequestClass:[(objc_class *)a3 frameworkClass] revision:[(objc_class *)a3 defaultRevision] error:0];
+    v7 = [VNRequestSpecifier specifierForRequestClass:[(objc_class *)class frameworkClass] revision:[(objc_class *)class defaultRevision] error:0];
     [(NSMutableDictionary *)v4->_detectorConfigurationOptions setObject:v7 forKeyedSubscript:@"VNDetectorOption_OriginatingRequestSpecifier"];
 
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);

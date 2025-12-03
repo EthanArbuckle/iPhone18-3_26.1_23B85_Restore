@@ -1,14 +1,14 @@
 @interface MTPAFKit
-- (MTPAFKit)initWithTopic:(id)a3;
+- (MTPAFKit)initWithTopic:(id)topic;
 @end
 
 @implementation MTPAFKit
 
-- (MTPAFKit)initWithTopic:(id)a3
+- (MTPAFKit)initWithTopic:(id)topic
 {
   v6.receiver = self;
   v6.super_class = MTPAFKit;
-  v3 = [(MTMetricsKitTemplate *)&v6 initWithTopic:a3];
+  v3 = [(MTMetricsKitTemplate *)&v6 initWithTopic:topic];
   if (v3)
   {
     v4 = [(MTObject *)[MTPAFEventHandlers alloc] initWithMetricsKit:v3];

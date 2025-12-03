@@ -1,16 +1,16 @@
 @interface VCDataMLEnhance
 - (BOOL)isMLEnhanceActive;
 - (VCDataMLEnhance)init;
-- (id)resolutionDurationForIndex:(id)a3;
-- (void)accumulate:(id)a3;
-- (void)checkAndUpdateTimers:(double)a3;
+- (id)resolutionDurationForIndex:(id)index;
+- (void)accumulate:(id)accumulate;
+- (void)checkAndUpdateTimers:(double)timers;
 - (void)dealloc;
-- (void)finalize:(double)a3;
+- (void)finalize:(double)finalize;
 - (void)init;
-- (void)pauseAllTimers:(double)a3;
-- (void)updateMLEnhanceResolution:(id)a3 participantID:(id)a4 enabled:(BOOL)a5 currentTime:(double)a6;
-- (void)updateReport:(id)a3;
-- (void)updateStateWithPayload:(id)a3 withTime:(double)a4;
+- (void)pauseAllTimers:(double)timers;
+- (void)updateMLEnhanceResolution:(id)resolution participantID:(id)d enabled:(BOOL)enabled currentTime:(double)time;
+- (void)updateReport:(id)report;
+- (void)updateStateWithPayload:(id)payload withTime:(double)time;
 @end
 
 @implementation VCDataMLEnhance
@@ -54,15 +54,15 @@ LABEL_8:
   [(VCDataMLEnhance *)&v3 dealloc];
 }
 
-- (void)updateStateWithPayload:(id)a3 withTime:(double)a4
+- (void)updateStateWithPayload:(id)payload withTime:(double)time
 {
-  v7 = [a3 objectForKeyedSubscript:@"VCSPUUID"];
+  v7 = [payload objectForKeyedSubscript:@"VCSPUUID"];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v24 = __51__VCDataMLEnhance_updateStateWithPayload_withTime___block_invoke;
   v25 = &unk_278BD4E38;
-  v26 = self;
-  v8 = [a3 objectForKeyedSubscript:@"Thermal"];
+  selfCopy = self;
+  v8 = [payload objectForKeyedSubscript:@"Thermal"];
   if (v8)
   {
     v24(v23, v8);
@@ -72,10 +72,10 @@ LABEL_8:
   v17[1] = 3221225472;
   v18 = __51__VCDataMLEnhance_updateStateWithPayload_withTime___block_invoke_2;
   v19 = &unk_278BD4E60;
-  v20 = self;
-  v21 = a3;
-  v22 = a4;
-  v9 = [a3 objectForKeyedSubscript:@"MLSFENB"];
+  selfCopy2 = self;
+  payloadCopy = payload;
+  timeCopy = time;
+  v9 = [payload objectForKeyedSubscript:@"MLSFENB"];
   if (v9)
   {
     v18(v17, v9);
@@ -85,16 +85,16 @@ LABEL_8:
   v11[1] = 3221225472;
   v12 = __51__VCDataMLEnhance_updateStateWithPayload_withTime___block_invoke_3;
   v13 = &unk_278BD4E60;
-  v14 = self;
+  selfCopy3 = self;
   v15 = v7;
-  v16 = a4;
-  v10 = [a3 objectForKeyedSubscript:@"MLSW"];
+  timeCopy2 = time;
+  v10 = [payload objectForKeyedSubscript:@"MLSW"];
   if (v10)
   {
     v12(v11, v10);
   }
 
-  [(VCDataMLEnhance *)self checkAndUpdateTimers:a4];
+  [(VCDataMLEnhance *)self checkAndUpdateTimers:time];
 }
 
 uint64_t __51__VCDataMLEnhance_updateStateWithPayload_withTime___block_invoke(uint64_t a1, void *a2)
@@ -128,19 +128,19 @@ _BYTE *__51__VCDataMLEnhance_updateStateWithPayload_withTime___block_invoke_2(ui
   return result;
 }
 
-- (void)accumulate:(id)a3
+- (void)accumulate:(id)accumulate
 {
   v16 = *MEMORY[0x277D85DE8];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    self->_mlEnhanceStatus |= *(a3 + 12);
+    self->_mlEnhanceStatus |= *(accumulate + 12);
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [*(a3 + 2) allKeys];
-    v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    allKeys = [*(accumulate + 2) allKeys];
+    v6 = [allKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = v6;
@@ -152,21 +152,21 @@ _BYTE *__51__VCDataMLEnhance_updateStateWithPayload_withTime___block_invoke_2(ui
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allKeys);
           }
 
-          [-[VCDataMLEnhance resolutionDurationForIndex:](self resolutionDurationForIndex:{*(*(&v11 + 1) + 8 * v9)), "merge:", objc_msgSend(*(a3 + 2), "objectForKeyedSubscript:", *(*(&v11 + 1) + 8 * v9))}];
+          [-[VCDataMLEnhance resolutionDurationForIndex:](self resolutionDurationForIndex:{*(*(&v11 + 1) + 8 * v9)), "merge:", objc_msgSend(*(accumulate + 2), "objectForKeyedSubscript:", *(*(&v11 + 1) + 8 * v9))}];
           ++v9;
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v7 = [allKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v7);
     }
 
-    [(VCHistogram *)self->_totalActiveDuration merge:*(a3 + 3)];
+    [(VCHistogram *)self->_totalActiveDuration merge:*(accumulate + 3)];
   }
 
   else
@@ -177,10 +177,10 @@ _BYTE *__51__VCDataMLEnhance_updateStateWithPayload_withTime___block_invoke_2(ui
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateReport:(id)a3
+- (void)updateReport:(id)report
 {
   v20 = *MEMORY[0x277D85DE8];
-  [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithChar:", self->_mlEnhanceStatus), @"MLSFENB"}];
+  [report setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithChar:", self->_mlEnhanceStatus), @"MLSFENB"}];
   v5 = micro();
   v15 = 0u;
   v16 = 0u;
@@ -205,7 +205,7 @@ _BYTE *__51__VCDataMLEnhance_updateStateWithPayload_withTime___block_invoke_2(ui
         v11 = [MEMORY[0x277CCACA0] stringWithFormat:@"%@_%@", @"MLSW", v10];
         v12 = [(NSMutableDictionary *)self->_resolutionDurations objectForKeyedSubscript:v10];
         [v12 finalize:v5];
-        [a3 setObject:objc_msgSend(v12 forKeyedSubscript:{"description"), v11}];
+        [report setObject:objc_msgSend(v12 forKeyedSubscript:{"description"), v11}];
       }
 
       v7 = [obj countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -215,7 +215,7 @@ _BYTE *__51__VCDataMLEnhance_updateStateWithPayload_withTime___block_invoke_2(ui
   }
 
   [(VCDurationHistogram *)self->_totalActiveDuration finalize:v5];
-  [a3 setObject:-[VCHistogram description](self->_totalActiveDuration forKeyedSubscript:{"description"), @"MLSW"}];
+  [report setObject:-[VCHistogram description](self->_totalActiveDuration forKeyedSubscript:{"description"), @"MLSW"}];
   v13 = *MEMORY[0x277D85DE8];
 }
 
@@ -226,8 +226,8 @@ _BYTE *__51__VCDataMLEnhance_updateStateWithPayload_withTime___block_invoke_2(ui
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(NSMutableDictionary *)self->_resolutionDurations allValues];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allValues = [(NSMutableDictionary *)self->_resolutionDurations allValues];
+  v4 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -239,7 +239,7 @@ _BYTE *__51__VCDataMLEnhance_updateStateWithPayload_withTime___block_invoke_2(ui
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         if (![*(*(&v11 + 1) + 8 * v7) isPaused])
@@ -252,7 +252,7 @@ _BYTE *__51__VCDataMLEnhance_updateStateWithPayload_withTime___block_invoke_2(ui
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v5)
       {
         continue;
@@ -268,49 +268,49 @@ LABEL_11:
   return mlEnhanceLastEnabledReport;
 }
 
-- (id)resolutionDurationForIndex:(id)a3
+- (id)resolutionDurationForIndex:(id)index
 {
   v5 = [(NSMutableDictionary *)self->_resolutionDurations objectForKeyedSubscript:?];
   if (!v5)
   {
     v5 = [(VCReportingHistogram *)[VCDurationHistogram alloc] initWithType:88 bucketValues:0];
-    [(NSMutableDictionary *)self->_resolutionDurations setObject:v5 forKeyedSubscript:a3];
+    [(NSMutableDictionary *)self->_resolutionDurations setObject:v5 forKeyedSubscript:index];
     v6 = v5;
   }
 
   return v5;
 }
 
-- (void)updateMLEnhanceResolution:(id)a3 participantID:(id)a4 enabled:(BOOL)a5 currentTime:(double)a6
+- (void)updateMLEnhanceResolution:(id)resolution participantID:(id)d enabled:(BOOL)enabled currentTime:(double)time
 {
-  if (a3)
+  if (resolution)
   {
-    v7 = a5;
-    v9 = [(VCDataMLEnhance *)self resolutionDurationForIndex:a3, a4];
-    if (v7)
+    enabledCopy = enabled;
+    v9 = [(VCDataMLEnhance *)self resolutionDurationForIndex:resolution, d];
+    if (enabledCopy)
     {
       thermalLevel = self->_thermalLevel;
 
-      [v9 resumeAtBucket:thermalLevel currentTime:a6];
+      [v9 resumeAtBucket:thermalLevel currentTime:time];
     }
 
     else
     {
 
-      [v9 pause:a6];
+      [v9 pause:time];
     }
   }
 }
 
-- (void)pauseAllTimers:(double)a3
+- (void)pauseAllTimers:(double)timers
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(NSMutableDictionary *)self->_resolutionDurations allValues];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allValues = [(NSMutableDictionary *)self->_resolutionDurations allValues];
+  v6 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -322,24 +322,24 @@ LABEL_11:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) pause:a3];
+        [*(*(&v11 + 1) + 8 * v9++) pause:timers];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 
-  [(VCDurationHistogram *)self->_totalActiveDuration pause:a3];
+  [(VCDurationHistogram *)self->_totalActiveDuration pause:timers];
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)checkAndUpdateTimers:(double)a3
+- (void)checkAndUpdateTimers:(double)timers
 {
   v18 = *MEMORY[0x277D85DE8];
   if ([(VCDataMLEnhance *)self isMLEnhanceActive])
@@ -348,8 +348,8 @@ LABEL_11:
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [(NSMutableDictionary *)self->_resolutionDurations allValues];
-    v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    allValues = [(NSMutableDictionary *)self->_resolutionDurations allValues];
+    v6 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
       v7 = v6;
@@ -360,23 +360,23 @@ LABEL_11:
         {
           if (*v14 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allValues);
           }
 
           v10 = *(*(&v13 + 1) + 8 * i);
           if (([v10 isPaused] & 1) == 0)
           {
-            [v10 switchBucket:self->_thermalLevel currentTime:a3];
+            [v10 switchBucket:self->_thermalLevel currentTime:timers];
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v7 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v7);
     }
 
-    [(VCDurationHistogram *)self->_totalActiveDuration switchBucket:self->_thermalLevel currentTime:a3];
+    [(VCDurationHistogram *)self->_totalActiveDuration switchBucket:self->_thermalLevel currentTime:timers];
     v11 = *MEMORY[0x277D85DE8];
   }
 
@@ -384,19 +384,19 @@ LABEL_11:
   {
     v12 = *MEMORY[0x277D85DE8];
 
-    [(VCDataMLEnhance *)self pauseAllTimers:a3];
+    [(VCDataMLEnhance *)self pauseAllTimers:timers];
   }
 }
 
-- (void)finalize:(double)a3
+- (void)finalize:(double)finalize
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(NSMutableDictionary *)self->_resolutionDurations allValues];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allValues = [(NSMutableDictionary *)self->_resolutionDurations allValues];
+  v6 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -408,20 +408,20 @@ LABEL_11:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) finalize:a3];
+        [*(*(&v11 + 1) + 8 * v9++) finalize:finalize];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 
-  [(VCDurationHistogram *)self->_totalActiveDuration finalize:a3];
+  [(VCDurationHistogram *)self->_totalActiveDuration finalize:finalize];
   v10 = *MEMORY[0x277D85DE8];
 }
 

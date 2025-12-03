@@ -1,49 +1,49 @@
 @interface MTPlaybackIdentifierUtil
-+ (id)__queryStringToQueryDictionary:(id)a3;
-+ (id)__stringByRemovingPercentEscapes:(id)a3;
-+ (id)__stringWithPercentEscape:(id)a3;
-- (BOOL)isLocalSetPlaybackQueueURLString:(id)a3;
-- (BOOL)isSubscribeCommandURLString:(id)a3;
-- (BOOL)isUniversalPlaybackIdentifierURLString:(id)a3;
-- (_MRSystemAppPlaybackQueue)playbackQueueWithAccountInfoForIdentifiers:(id)a3;
-- (_MRSystemAppPlaybackQueue)playbackQueueWithDsid:(id)a3 forIdentifiers:(id)a4;
-- (id)_playbackRequestIdentifierWithHost:(id)a3 queryComponents:(id)a4;
-- (id)_playbackRequestIdentifierWithHost:(id)a3 queryKey:(id)a4 value:(id)a5;
-- (id)_universalPlaybackQueueIdentifierForPodcastUuid:(id)a3 podcastFeedUrl:(id)a4 podcastStoreId:(int64_t)a5 episodeUuid:(id)a6 episodeGuid:(id)a7 episodeStoreId:(int64_t)a8 context:(int64_t)a9 contextSortType:(int64_t)a10 sampPlaybackOrder:(id)a11;
-- (id)episodeUuidForSetPlaybackQueueRequestIdentifier:(id)a3;
-- (id)localPlaybackQueueIdentifierForPodcastUuid:(id)a3 episodeUuid:(id)a4 sampPlaybackOrder:(id)a5;
-- (id)playbackQueueIdentifierForPlayMyPodcastsWithPlaybackOrder:(id)a3;
-- (id)playbackQueueIdentifierForPodcastAdamId:(id)a3 sampPlaybackOrder:(id)a4;
-- (id)playbackQueueIdentifierForSubscribeToPodcastFeedUrl:(id)a3;
-- (id)playbackRequestURLWithDSID:(id)a3 baseRequestURLString:(id)a4;
-- (id)playbackRequestURLWithPlayReason:(unint64_t)a3 baseRequestURLString:(id)a4;
-- (id)podcastUuidForSetPlaybackQueueRequestIdentifier:(id)a3;
-- (id)universalPlaybackQueueIdentifierForStationUuid:(id)a3 episodeUuid:(id)a4 episodeGuid:(id)a5 episodeStoreId:(int64_t)a6 podcastFeedUrl:(id)a7;
-- (int64_t)_episodeContextFromString:(id)a3;
-- (int64_t)_episodeContextSortFromString:(id)a3;
-- (int64_t)_episodeOrderFromString:(id)a3;
-- (unint64_t)_playQueueTypeForRequestURL:(id)a3;
-- (unint64_t)_playReasonFromString:(id)a3;
++ (id)__queryStringToQueryDictionary:(id)dictionary;
++ (id)__stringByRemovingPercentEscapes:(id)escapes;
++ (id)__stringWithPercentEscape:(id)escape;
+- (BOOL)isLocalSetPlaybackQueueURLString:(id)string;
+- (BOOL)isSubscribeCommandURLString:(id)string;
+- (BOOL)isUniversalPlaybackIdentifierURLString:(id)string;
+- (_MRSystemAppPlaybackQueue)playbackQueueWithAccountInfoForIdentifiers:(id)identifiers;
+- (_MRSystemAppPlaybackQueue)playbackQueueWithDsid:(id)dsid forIdentifiers:(id)identifiers;
+- (id)_playbackRequestIdentifierWithHost:(id)host queryComponents:(id)components;
+- (id)_playbackRequestIdentifierWithHost:(id)host queryKey:(id)key value:(id)value;
+- (id)_universalPlaybackQueueIdentifierForPodcastUuid:(id)uuid podcastFeedUrl:(id)url podcastStoreId:(int64_t)id episodeUuid:(id)episodeUuid episodeGuid:(id)guid episodeStoreId:(int64_t)storeId context:(int64_t)context contextSortType:(int64_t)self0 sampPlaybackOrder:(id)self1;
+- (id)episodeUuidForSetPlaybackQueueRequestIdentifier:(id)identifier;
+- (id)localPlaybackQueueIdentifierForPodcastUuid:(id)uuid episodeUuid:(id)episodeUuid sampPlaybackOrder:(id)order;
+- (id)playbackQueueIdentifierForPlayMyPodcastsWithPlaybackOrder:(id)order;
+- (id)playbackQueueIdentifierForPodcastAdamId:(id)id sampPlaybackOrder:(id)order;
+- (id)playbackQueueIdentifierForSubscribeToPodcastFeedUrl:(id)url;
+- (id)playbackRequestURLWithDSID:(id)d baseRequestURLString:(id)string;
+- (id)playbackRequestURLWithPlayReason:(unint64_t)reason baseRequestURLString:(id)string;
+- (id)podcastUuidForSetPlaybackQueueRequestIdentifier:(id)identifier;
+- (id)universalPlaybackQueueIdentifierForStationUuid:(id)uuid episodeUuid:(id)episodeUuid episodeGuid:(id)guid episodeStoreId:(int64_t)id podcastFeedUrl:(id)url;
+- (int64_t)_episodeContextFromString:(id)string;
+- (int64_t)_episodeContextSortFromString:(id)string;
+- (int64_t)_episodeOrderFromString:(id)string;
+- (unint64_t)_playQueueTypeForRequestURL:(id)l;
+- (unint64_t)_playReasonFromString:(id)string;
 @end
 
 @implementation MTPlaybackIdentifierUtil
 
-- (id)playbackRequestURLWithPlayReason:(unint64_t)a3 baseRequestURLString:(id)a4
+- (id)playbackRequestURLWithPlayReason:(unint64_t)reason baseRequestURLString:(id)string
 {
-  v4 = [MEMORY[0x277CBEBC0] URLWithString:a4];
+  v4 = [MEMORY[0x277CBEBC0] URLWithString:string];
   v5 = objc_opt_class();
-  v6 = [v4 query];
-  v7 = [v5 __queryStringToQueryDictionary:v6];
+  query = [v4 query];
+  v7 = [v5 __queryStringToQueryDictionary:query];
 
   v8 = NSPersistentStringForMTPlayReason();
   [v7 setObject:v8 forKey:@"playReason"];
 
   v9 = objc_alloc_init(MEMORY[0x277CCACE0]);
-  v10 = [v4 scheme];
-  [v9 setScheme:v10];
+  scheme = [v4 scheme];
+  [v9 setScheme:scheme];
 
-  v11 = [v4 host];
-  [v9 setHost:v11];
+  host = [v4 host];
+  [v9 setHost:host];
 
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -54,9 +54,9 @@
   v13 = [v12 mt_compactMap:v16];
   [v9 setQueryItems:v13];
 
-  v14 = [v9 string];
+  string = [v9 string];
 
-  return v14;
+  return string;
 }
 
 id __82__MTPlaybackIdentifierUtil_playbackRequestURLWithPlayReason_baseRequestURLString___block_invoke(uint64_t a1, void *a2)
@@ -70,28 +70,28 @@ id __82__MTPlaybackIdentifierUtil_playbackRequestURLWithPlayReason_baseRequestUR
   return v7;
 }
 
-- (id)playbackRequestURLWithDSID:(id)a3 baseRequestURLString:(id)a4
+- (id)playbackRequestURLWithDSID:(id)d baseRequestURLString:(id)string
 {
-  v5 = a3;
-  v6 = [MEMORY[0x277CBEBC0] URLWithString:a4];
+  dCopy = d;
+  v6 = [MEMORY[0x277CBEBC0] URLWithString:string];
   v7 = objc_opt_class();
-  v8 = [v6 query];
-  v9 = [v7 __queryStringToQueryDictionary:v8];
+  query = [v6 query];
+  v9 = [v7 __queryStringToQueryDictionary:query];
 
-  v10 = [v5 stringValue];
+  stringValue = [dCopy stringValue];
 
-  if (v10)
+  if (stringValue)
   {
-    v11 = [v5 stringValue];
-    [v9 setObject:v11 forKey:@"enqueuerDSID"];
+    stringValue2 = [dCopy stringValue];
+    [v9 setObject:stringValue2 forKey:@"enqueuerDSID"];
   }
 
   v12 = objc_alloc_init(MEMORY[0x277CCACE0]);
-  v13 = [v6 scheme];
-  [v12 setScheme:v13];
+  scheme = [v6 scheme];
+  [v12 setScheme:scheme];
 
-  v14 = [v6 host];
-  [v12 setHost:v14];
+  host = [v6 host];
+  [v12 setHost:host];
 
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
@@ -102,9 +102,9 @@ id __82__MTPlaybackIdentifierUtil_playbackRequestURLWithPlayReason_baseRequestUR
   v16 = [v15 mt_compactMap:v19];
   [v12 setQueryItems:v16];
 
-  v17 = [v12 string];
+  string = [v12 string];
 
-  return v17;
+  return string;
 }
 
 id __76__MTPlaybackIdentifierUtil_playbackRequestURLWithDSID_baseRequestURLString___block_invoke(uint64_t a1, void *a2)
@@ -118,18 +118,18 @@ id __76__MTPlaybackIdentifierUtil_playbackRequestURLWithDSID_baseRequestURLStrin
   return v7;
 }
 
-- (BOOL)isLocalSetPlaybackQueueURLString:(id)a3
+- (BOOL)isLocalSetPlaybackQueueURLString:(id)string
 {
-  v3 = [MEMORY[0x277CBEBC0] URLWithString:a3];
-  v4 = [v3 host];
-  if ([v4 length])
+  v3 = [MEMORY[0x277CBEBC0] URLWithString:string];
+  host = [v3 host];
+  if ([host length])
   {
     if (isLocalSetPlaybackQueueURLString__onceToken != -1)
     {
       [MTPlaybackIdentifierUtil isLocalSetPlaybackQueueURLString:];
     }
 
-    v5 = [isLocalSetPlaybackQueueURLString__commandsSupported containsObject:v4];
+    v5 = [isLocalSetPlaybackQueueURLString__commandsSupported containsObject:host];
   }
 
   else
@@ -153,45 +153,45 @@ void __61__MTPlaybackIdentifierUtil_isLocalSetPlaybackQueueURLString___block_inv
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isSubscribeCommandURLString:(id)a3
+- (BOOL)isSubscribeCommandURLString:(id)string
 {
-  v3 = [MEMORY[0x277CBEBC0] URLWithString:a3];
-  v4 = [v3 host];
-  v5 = [v4 isEqualToString:@"subscribe"];
+  v3 = [MEMORY[0x277CBEBC0] URLWithString:string];
+  host = [v3 host];
+  v5 = [host isEqualToString:@"subscribe"];
 
   return v5;
 }
 
-- (BOOL)isUniversalPlaybackIdentifierURLString:(id)a3
+- (BOOL)isUniversalPlaybackIdentifierURLString:(id)string
 {
-  v3 = [MEMORY[0x277CBEBC0] URLWithString:a3];
-  v4 = [v3 host];
-  v5 = [v4 isEqualToString:@"playItem"];
+  v3 = [MEMORY[0x277CBEBC0] URLWithString:string];
+  host = [v3 host];
+  v5 = [host isEqualToString:@"playItem"];
 
   return v5;
 }
 
-- (id)playbackQueueIdentifierForPlayMyPodcastsWithPlaybackOrder:(id)a3
+- (id)playbackQueueIdentifierForPlayMyPodcastsWithPlaybackOrder:(id)order
 {
-  v4 = a3;
-  if (!v4)
+  orderCopy = order;
+  if (!orderCopy)
   {
-    v4 = *MEMORY[0x277D48610];
+    orderCopy = *MEMORY[0x277D48610];
   }
 
-  v5 = [(MTPlaybackIdentifierUtil *)self _playbackRequestIdentifierWithHost:@"playPodcasts" queryKey:@"playbackOrder" value:v4];
+  v5 = [(MTPlaybackIdentifierUtil *)self _playbackRequestIdentifierWithHost:@"playPodcasts" queryKey:@"playbackOrder" value:orderCopy];
 
   return v5;
 }
 
-- (id)localPlaybackQueueIdentifierForPodcastUuid:(id)a3 episodeUuid:(id)a4 sampPlaybackOrder:(id)a5
+- (id)localPlaybackQueueIdentifierForPodcastUuid:(id)uuid episodeUuid:(id)episodeUuid sampPlaybackOrder:(id)order
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 length] || objc_msgSend(v9, "length"))
+  uuidCopy = uuid;
+  episodeUuidCopy = episodeUuid;
+  orderCopy = order;
+  if ([uuidCopy length] || objc_msgSend(episodeUuidCopy, "length"))
   {
-    v11 = [(MTPlaybackIdentifierUtil *)self universalPlaybackQueueIdentifierForPodcastUuid:v8 podcastFeedUrl:0 podcastStoreId:0 episodeUuid:v9 episodeGuid:0 episodeStoreId:0 sampPlaybackOrder:v10];
+    v11 = [(MTPlaybackIdentifierUtil *)self universalPlaybackQueueIdentifierForPodcastUuid:uuidCopy podcastFeedUrl:0 podcastStoreId:0 episodeUuid:episodeUuidCopy episodeGuid:0 episodeStoreId:0 sampPlaybackOrder:orderCopy];
   }
 
   else
@@ -202,24 +202,24 @@ void __61__MTPlaybackIdentifierUtil_isLocalSetPlaybackQueueURLString___block_inv
   return v11;
 }
 
-- (id)_universalPlaybackQueueIdentifierForPodcastUuid:(id)a3 podcastFeedUrl:(id)a4 podcastStoreId:(int64_t)a5 episodeUuid:(id)a6 episodeGuid:(id)a7 episodeStoreId:(int64_t)a8 context:(int64_t)a9 contextSortType:(int64_t)a10 sampPlaybackOrder:(id)a11
+- (id)_universalPlaybackQueueIdentifierForPodcastUuid:(id)uuid podcastFeedUrl:(id)url podcastStoreId:(int64_t)id episodeUuid:(id)episodeUuid episodeGuid:(id)guid episodeStoreId:(int64_t)storeId context:(int64_t)context contextSortType:(int64_t)self0 sampPlaybackOrder:(id)self1
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a6;
-  v19 = a7;
-  v20 = a11;
-  if (![v20 length])
+  uuidCopy = uuid;
+  urlCopy = url;
+  episodeUuidCopy = episodeUuid;
+  guidCopy = guid;
+  orderCopy = order;
+  if (![orderCopy length])
   {
     v21 = *MEMORY[0x277D48610];
 
-    v20 = v21;
+    orderCopy = v21;
   }
 
-  v22 = [v18 length];
-  v23 = [v16 length];
-  v24 = [MEMORY[0x277CBEB38] dictionary];
-  [v24 setObject:v20 forKey:@"playbackOrder"];
+  v22 = [episodeUuidCopy length];
+  v23 = [uuidCopy length];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:orderCopy forKey:@"playbackOrder"];
   if (!v23)
   {
     if (!v22)
@@ -227,8 +227,8 @@ void __61__MTPlaybackIdentifierUtil_isLocalSetPlaybackQueueURLString___block_inv
       goto LABEL_11;
     }
 
-    v25 = [MEMORY[0x277D3DAE8] sharedInstance];
-    v26 = [v25 mainOrPrivateContext];
+    mEMORY[0x277D3DAE8] = [MEMORY[0x277D3DAE8] sharedInstance];
+    mainOrPrivateContext = [mEMORY[0x277D3DAE8] mainOrPrivateContext];
 
     v41 = 0;
     v42 = &v41;
@@ -240,59 +240,59 @@ void __61__MTPlaybackIdentifierUtil_isLocalSetPlaybackQueueURLString___block_inv
     v37[1] = 3221225472;
     v37[2] = __187__MTPlaybackIdentifierUtil__universalPlaybackQueueIdentifierForPodcastUuid_podcastFeedUrl_podcastStoreId_episodeUuid_episodeGuid_episodeStoreId_context_contextSortType_sampPlaybackOrder___block_invoke;
     v37[3] = &unk_279A44930;
-    v27 = v26;
+    v27 = mainOrPrivateContext;
     v38 = v27;
-    v39 = v18;
+    v39 = episodeUuidCopy;
     v40 = &v41;
     [v27 performBlockAndWait:v37];
     if ([v42[5] length])
     {
-      [v24 setObject:v42[5] forKey:@"uuid"];
+      [dictionary setObject:v42[5] forKey:@"uuid"];
     }
 
     _Block_object_dispose(&v41, 8);
     goto LABEL_10;
   }
 
-  [v24 setObject:v16 forKey:@"uuid"];
+  [dictionary setObject:uuidCopy forKey:@"uuid"];
   if (v22)
   {
 LABEL_10:
-    [v24 setObject:v18 forKey:@"episodeUuid"];
+    [dictionary setObject:episodeUuidCopy forKey:@"episodeUuid"];
   }
 
 LABEL_11:
-  if ([v17 length])
+  if ([urlCopy length])
   {
-    v28 = [objc_opt_class() __stringWithPercentEscape:v17];
-    [v24 setObject:v28 forKey:@"podcastFeedUrl"];
+    v28 = [objc_opt_class() __stringWithPercentEscape:urlCopy];
+    [dictionary setObject:v28 forKey:@"podcastFeedUrl"];
   }
 
-  if ([v19 length])
+  if ([guidCopy length])
   {
-    [v24 setObject:v19 forKey:@"episodeGuid"];
+    [dictionary setObject:guidCopy forKey:@"episodeGuid"];
   }
 
   v29 = *MEMORY[0x277D3DD88];
-  if (a5 && v29 != a5)
+  if (id && v29 != id)
   {
-    v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"%llu", a5];
-    [v24 setObject:v30 forKey:@"storeCollectionId"];
+    v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"%llu", id];
+    [dictionary setObject:v30 forKey:@"storeCollectionId"];
   }
 
-  if (a8 && v29 != a8)
+  if (storeId && v29 != storeId)
   {
-    v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"%llu", a8];
-    [v24 setObject:v31 forKey:@"storeTrackId"];
+    storeId = [MEMORY[0x277CCACA8] stringWithFormat:@"%llu", storeId];
+    [dictionary setObject:storeId forKey:@"storeTrackId"];
   }
 
   v32 = NSPersistentStringForMTEpisodeContext();
-  [v24 setObject:v32 forKey:@"context"];
+  [dictionary setObject:v32 forKey:@"context"];
 
   v33 = NSPersistentStringForMTEpisodeContextSortType();
-  [v24 setObject:v33 forKey:@"contextSortType"];
+  [dictionary setObject:v33 forKey:@"contextSortType"];
 
-  v34 = [(MTPlaybackIdentifierUtil *)self _playbackRequestIdentifierWithHost:@"playPodcast" queryComponents:v24];
+  v34 = [(MTPlaybackIdentifierUtil *)self _playbackRequestIdentifierWithHost:@"playPodcast" queryComponents:dictionary];
 
   return v34;
 }
@@ -307,21 +307,21 @@ void __187__MTPlaybackIdentifierUtil__universalPlaybackQueueIdentifierForPodcast
   *(v4 + 40) = v3;
 }
 
-- (id)playbackQueueIdentifierForPodcastAdamId:(id)a3 sampPlaybackOrder:(id)a4
+- (id)playbackQueueIdentifierForPodcastAdamId:(id)id sampPlaybackOrder:(id)order
 {
   v14[2] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (!v6)
+  orderCopy = order;
+  if (!orderCopy)
   {
-    v6 = *MEMORY[0x277D48610];
+    orderCopy = *MEMORY[0x277D48610];
   }
 
   v13[0] = @"storeCollectionId";
   v13[1] = @"playbackOrder";
-  v14[0] = a3;
-  v14[1] = v6;
+  v14[0] = id;
+  v14[1] = orderCopy;
   v7 = MEMORY[0x277CBEAC0];
-  v8 = a3;
+  idCopy = id;
   v9 = [v7 dictionaryWithObjects:v14 forKeys:v13 count:2];
   v10 = [(MTPlaybackIdentifierUtil *)self _playbackRequestIdentifierWithHost:@"playPodcast" queryComponents:v9];
 
@@ -330,39 +330,39 @@ void __187__MTPlaybackIdentifierUtil__universalPlaybackQueueIdentifierForPodcast
   return v10;
 }
 
-- (id)playbackQueueIdentifierForSubscribeToPodcastFeedUrl:(id)a3
+- (id)playbackQueueIdentifierForSubscribeToPodcastFeedUrl:(id)url
 {
-  v4 = a3;
-  v5 = [objc_opt_class() __stringWithPercentEscape:v4];
+  urlCopy = url;
+  v5 = [objc_opt_class() __stringWithPercentEscape:urlCopy];
 
   v6 = [(MTPlaybackIdentifierUtil *)self _playbackRequestIdentifierWithHost:@"subscribe" queryKey:@"podcastFeedUrl" value:v5];
 
   return v6;
 }
 
-- (id)universalPlaybackQueueIdentifierForStationUuid:(id)a3 episodeUuid:(id)a4 episodeGuid:(id)a5 episodeStoreId:(int64_t)a6 podcastFeedUrl:(id)a7
+- (id)universalPlaybackQueueIdentifierForStationUuid:(id)uuid episodeUuid:(id)episodeUuid episodeGuid:(id)guid episodeStoreId:(int64_t)id podcastFeedUrl:(id)url
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a7;
+  episodeUuidCopy = episodeUuid;
+  guidCopy = guid;
+  urlCopy = url;
   v14 = MEMORY[0x277CBEB38];
-  v15 = a3;
+  uuidCopy = uuid;
   v16 = [v14 dictionaryWithCapacity:5];
-  [v16 setObject:v15 forKey:@"uuid"];
+  [v16 setObject:uuidCopy forKey:@"uuid"];
 
-  if ([v11 length])
+  if ([episodeUuidCopy length])
   {
-    [v16 setObject:v11 forKey:@"episodeUuid"];
+    [v16 setObject:episodeUuidCopy forKey:@"episodeUuid"];
   }
 
-  if ([v12 length])
+  if ([guidCopy length])
   {
-    [v16 setObject:v12 forKey:@"episodeGuid"];
+    [v16 setObject:guidCopy forKey:@"episodeGuid"];
   }
 
-  if ([v13 length])
+  if ([urlCopy length])
   {
-    v17 = [objc_opt_class() __stringWithPercentEscape:v13];
+    v17 = [objc_opt_class() __stringWithPercentEscape:urlCopy];
     [v16 setObject:v17 forKey:@"podcastFeedUrl"];
   }
 
@@ -371,64 +371,64 @@ void __187__MTPlaybackIdentifierUtil__universalPlaybackQueueIdentifierForPodcast
   return v18;
 }
 
-- (id)episodeUuidForSetPlaybackQueueRequestIdentifier:(id)a3
+- (id)episodeUuidForSetPlaybackQueueRequestIdentifier:(id)identifier
 {
-  v3 = [MEMORY[0x277CBEBC0] URLWithString:a3];
-  v4 = [v3 pf_queryAsDictionary];
+  v3 = [MEMORY[0x277CBEBC0] URLWithString:identifier];
+  pf_queryAsDictionary = [v3 pf_queryAsDictionary];
   v5 = objc_alloc(MEMORY[0x277D3DB00]);
-  v6 = [v4 objectForKeyedSubscript:@"storeTrackId"];
+  v6 = [pf_queryAsDictionary objectForKeyedSubscript:@"storeTrackId"];
   [v5 setStoreTrackId:{objc_msgSend(v6, "longLongValue")}];
 
-  v7 = [v4 objectForKeyedSubscript:@"episodeUuid"];
+  v7 = [pf_queryAsDictionary objectForKeyedSubscript:@"episodeUuid"];
   [v5 setUuid:v7];
 
-  v8 = [v4 objectForKeyedSubscript:@"episodeGuid"];
+  v8 = [pf_queryAsDictionary objectForKeyedSubscript:@"episodeGuid"];
   [v5 setEpisodeGuid:v8];
 
-  v9 = [v4 objectForKeyedSubscript:@"episodeTitle"];
-  v10 = [v9 stringByRemovingPercentEscapes];
-  [v5 setEpisodeTitle:v10];
+  v9 = [pf_queryAsDictionary objectForKeyedSubscript:@"episodeTitle"];
+  stringByRemovingPercentEscapes = [v9 stringByRemovingPercentEscapes];
+  [v5 setEpisodeTitle:stringByRemovingPercentEscapes];
 
-  v11 = [v4 objectForKeyedSubscript:@"podcastTitle"];
-  v12 = [v11 stringByRemovingPercentEscapes];
-  [v5 setPodcastTitle:v12];
+  v11 = [pf_queryAsDictionary objectForKeyedSubscript:@"podcastTitle"];
+  stringByRemovingPercentEscapes2 = [v11 stringByRemovingPercentEscapes];
+  [v5 setPodcastTitle:stringByRemovingPercentEscapes2];
 
-  v13 = [v4 objectForKeyedSubscript:@"podcastFeedUrl"];
-  v14 = [v13 stringByRemovingPercentEscapes];
-  v15 = [v14 stringByRemovingPercentEscapes];
-  [v5 setPodcastFeedUrl:v15];
+  v13 = [pf_queryAsDictionary objectForKeyedSubscript:@"podcastFeedUrl"];
+  stringByRemovingPercentEscapes3 = [v13 stringByRemovingPercentEscapes];
+  v14StringByRemovingPercentEscapes = [stringByRemovingPercentEscapes3 stringByRemovingPercentEscapes];
+  [v5 setPodcastFeedUrl:v14StringByRemovingPercentEscapes];
 
-  v16 = [v4 objectForKeyedSubscript:@"streamUrl"];
-  v17 = [v16 stringByRemovingPercentEscapes];
-  v18 = [v17 stringByRemovingPercentEscapes];
-  [v5 setStreamUrl:v18];
+  v16 = [pf_queryAsDictionary objectForKeyedSubscript:@"streamUrl"];
+  stringByRemovingPercentEscapes4 = [v16 stringByRemovingPercentEscapes];
+  v17StringByRemovingPercentEscapes = [stringByRemovingPercentEscapes4 stringByRemovingPercentEscapes];
+  [v5 setStreamUrl:v17StringByRemovingPercentEscapes];
 
-  v19 = [MEMORY[0x277D3DB08] sharedInstance];
-  v20 = [v19 findEpisodeWithRequest:v5];
+  mEMORY[0x277D3DB08] = [MEMORY[0x277D3DB08] sharedInstance];
+  v20 = [mEMORY[0x277D3DB08] findEpisodeWithRequest:v5];
 
-  v21 = [v20 uuid];
+  uuid = [v20 uuid];
 
-  return v21;
+  return uuid;
 }
 
-- (id)podcastUuidForSetPlaybackQueueRequestIdentifier:(id)a3
+- (id)podcastUuidForSetPlaybackQueueRequestIdentifier:(id)identifier
 {
   v44 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEBC0] URLWithString:v3];
-  v5 = [v4 pf_queryAsDictionary];
-  v6 = [v5 objectForKeyedSubscript:@"podcastFeedUrl"];
-  v7 = [v6 stringByRemovingPercentEscapes];
-  v8 = [v7 stringByRemovingPercentEscapes];
+  identifierCopy = identifier;
+  v4 = [MEMORY[0x277CBEBC0] URLWithString:identifierCopy];
+  pf_queryAsDictionary = [v4 pf_queryAsDictionary];
+  v6 = [pf_queryAsDictionary objectForKeyedSubscript:@"podcastFeedUrl"];
+  stringByRemovingPercentEscapes = [v6 stringByRemovingPercentEscapes];
+  v7StringByRemovingPercentEscapes = [stringByRemovingPercentEscapes stringByRemovingPercentEscapes];
 
-  v9 = [v5 objectForKeyedSubscript:@"storeCollectionId"];
-  v10 = [v9 longLongValue];
+  v9 = [pf_queryAsDictionary objectForKeyedSubscript:@"storeCollectionId"];
+  longLongValue = [v9 longLongValue];
 
-  v11 = [MEMORY[0x277CCABB0] numberWithLongLong:v10];
-  v12 = [MEMORY[0x277D3DAE8] sharedInstance];
-  v13 = [v12 mainOrPrivateContext];
+  v11 = [MEMORY[0x277CCABB0] numberWithLongLong:longLongValue];
+  mEMORY[0x277D3DAE8] = [MEMORY[0x277D3DAE8] sharedInstance];
+  mainOrPrivateContext = [mEMORY[0x277D3DAE8] mainOrPrivateContext];
 
-  v14 = [objc_alloc(MEMORY[0x277D3DB48]) initWithFeedUrl:v8 storeIdentifier:v11];
+  v14 = [objc_alloc(MEMORY[0x277D3DB48]) initWithFeedUrl:v7StringByRemovingPercentEscapes storeIdentifier:v11];
   v15 = objc_alloc(MEMORY[0x277CBE428]);
   v16 = [v15 initWithEntityName:*MEMORY[0x277D3DD50]];
   v17 = [MEMORY[0x277D3DB38] predicateForIdentifer:v14];
@@ -451,7 +451,7 @@ void __187__MTPlaybackIdentifierUtil__universalPlaybackQueueIdentifierForPodcast
   v25[1] = 3221225472;
   v25[2] = __76__MTPlaybackIdentifierUtil_podcastUuidForSetPlaybackQueueRequestIdentifier___block_invoke;
   v25[3] = &unk_279A44BC8;
-  v18 = v13;
+  v18 = mainOrPrivateContext;
   v26 = v18;
   v19 = v16;
   v27 = v19;
@@ -500,28 +500,28 @@ void __76__MTPlaybackIdentifierUtil_podcastUuidForSetPlaybackQueueRequestIdentif
   *(v8 + 40) = v7;
 }
 
-- (_MRSystemAppPlaybackQueue)playbackQueueWithAccountInfoForIdentifiers:(id)a3
+- (_MRSystemAppPlaybackQueue)playbackQueueWithAccountInfoForIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = +[(MTSingleton *)MTAccountController];
-  v6 = [v5 activeDsid];
-  v7 = [(MTPlaybackIdentifierUtil *)self playbackQueueWithDsid:v6 forIdentifiers:v4];
+  activeDsid = [v5 activeDsid];
+  v7 = [(MTPlaybackIdentifierUtil *)self playbackQueueWithDsid:activeDsid forIdentifiers:identifiersCopy];
 
   return v7;
 }
 
-- (_MRSystemAppPlaybackQueue)playbackQueueWithDsid:(id)a3 forIdentifiers:(id)a4
+- (_MRSystemAppPlaybackQueue)playbackQueueWithDsid:(id)dsid forIdentifiers:(id)identifiers
 {
   v5 = *MEMORY[0x277CBECE8];
-  v6 = a4;
+  identifiersCopy = identifiers;
   v7 = MRSystemAppPlaybackQueueCreate();
   MRSystemAppPlaybackQueueSetGenericTrackIdentifiers();
 
-  if (a3)
+  if (dsid)
   {
-    v10 = a3;
+    dsidCopy = dsid;
     keys = @"enqueuerDSID";
-    v8 = CFDictionaryCreate(0, &keys, &v10, 1, 0, MEMORY[0x277CBF150]);
+    v8 = CFDictionaryCreate(0, &keys, &dsidCopy, 1, 0, MEMORY[0x277CBF150]);
     MRSystemAppPlaybackQueueSetUserInfo();
     CFRelease(v8);
   }
@@ -529,19 +529,19 @@ void __76__MTPlaybackIdentifierUtil_podcastUuidForSetPlaybackQueueRequestIdentif
   return v7;
 }
 
-- (unint64_t)_playQueueTypeForRequestURL:(id)a3
+- (unint64_t)_playQueueTypeForRequestURL:(id)l
 {
   v3 = _playQueueTypeForRequestURL__onceToken;
-  v4 = a3;
+  lCopy = l;
   if (v3 != -1)
   {
     [MTPlaybackIdentifierUtil _playQueueTypeForRequestURL:];
   }
 
   v5 = _playQueueTypeForRequestURL__map;
-  v6 = [v4 host];
+  host = [lCopy host];
 
-  v7 = [v5 objectForKeyedSubscript:v6];
+  v7 = [v5 objectForKeyedSubscript:host];
   v8 = v7;
   v9 = &unk_2870B6BF0;
   if (v7)
@@ -551,8 +551,8 @@ void __76__MTPlaybackIdentifierUtil_podcastUuidForSetPlaybackQueueRequestIdentif
 
   v10 = v9;
 
-  v11 = [v10 unsignedIntegerValue];
-  return v11;
+  unsignedIntegerValue = [v10 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
 void __56__MTPlaybackIdentifierUtil__playQueueTypeForRequestURL___block_invoke()
@@ -571,39 +571,39 @@ void __56__MTPlaybackIdentifierUtil__playQueueTypeForRequestURL___block_invoke()
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_playbackRequestIdentifierWithHost:(id)a3 queryKey:(id)a4 value:(id)a5
+- (id)_playbackRequestIdentifierWithHost:(id)host queryKey:(id)key value:(id)value
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v16 = a4;
-  v17[0] = a5;
+  keyCopy = key;
+  v17[0] = value;
   v8 = MEMORY[0x277CBEAC0];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 dictionaryWithObjects:v17 forKeys:&v16 count:1];
+  valueCopy = value;
+  keyCopy2 = key;
+  hostCopy = host;
+  v12 = [v8 dictionaryWithObjects:v17 forKeys:&keyCopy count:1];
 
-  v13 = [(MTPlaybackIdentifierUtil *)self _playbackRequestIdentifierWithHost:v11 queryComponents:v12];
+  v13 = [(MTPlaybackIdentifierUtil *)self _playbackRequestIdentifierWithHost:hostCopy queryComponents:v12];
 
   v14 = *MEMORY[0x277D85DE8];
 
   return v13;
 }
 
-- (id)_playbackRequestIdentifierWithHost:(id)a3 queryComponents:(id)a4
+- (id)_playbackRequestIdentifierWithHost:(id)host queryComponents:(id)components
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  hostCopy = host;
+  componentsCopy = components;
   v7 = objc_alloc_init(MEMORY[0x277CCACE0]);
   [v7 setScheme:@"podcasts"];
-  v21 = v5;
-  [v7 setHost:v5];
-  v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  v21 = hostCopy;
+  [v7 setHost:hostCopy];
+  v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(componentsCopy, "count")}];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v9 = v6;
+  v9 = componentsCopy;
   v10 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v10)
   {
@@ -633,22 +633,22 @@ void __56__MTPlaybackIdentifierUtil__playQueueTypeForRequestURL___block_invoke()
   }
 
   [v7 setQueryItems:v8];
-  v18 = [v7 string];
+  string = [v7 string];
 
   v19 = *MEMORY[0x277D85DE8];
 
-  return v18;
+  return string;
 }
 
-- (int64_t)_episodeOrderFromString:(id)a3
+- (int64_t)_episodeOrderFromString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x277D48618]])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:*MEMORY[0x277D48618]])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277D48620]])
+  else if ([stringCopy isEqualToString:*MEMORY[0x277D48620]])
   {
     v4 = 2;
   }
@@ -661,10 +661,10 @@ void __56__MTPlaybackIdentifierUtil__playQueueTypeForRequestURL___block_invoke()
   return v4;
 }
 
-- (unint64_t)_playReasonFromString:(id)a3
+- (unint64_t)_playReasonFromString:(id)string
 {
-  v3 = a3;
-  if ([v3 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
     v4 = MTPlayReasonFromPersistentString();
   }
@@ -677,10 +677,10 @@ void __56__MTPlaybackIdentifierUtil__playQueueTypeForRequestURL___block_invoke()
   return v4;
 }
 
-- (int64_t)_episodeContextFromString:(id)a3
+- (int64_t)_episodeContextFromString:(id)string
 {
-  v3 = a3;
-  if ([v3 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
     v4 = MTEpisodeContextFromPersistentString();
   }
@@ -693,10 +693,10 @@ void __56__MTPlaybackIdentifierUtil__playQueueTypeForRequestURL___block_invoke()
   return v4;
 }
 
-- (int64_t)_episodeContextSortFromString:(id)a3
+- (int64_t)_episodeContextSortFromString:(id)string
 {
-  v3 = a3;
-  if ([v3 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
     v4 = MTEpisodeContextSortTypeFromPersistentString();
   }
@@ -709,24 +709,24 @@ void __56__MTPlaybackIdentifierUtil__playQueueTypeForRequestURL___block_invoke()
   return v4;
 }
 
-+ (id)__stringWithPercentEscape:(id)a3
++ (id)__stringWithPercentEscape:(id)escape
 {
-  v3 = CFURLCreateStringByAddingPercentEscapes(0, a3, 0, @"\uFFFC!$&'()+,/:;=?@", 0x8000100u);
+  v3 = CFURLCreateStringByAddingPercentEscapes(0, escape, 0, @"\uFFFC!$&'()+,/:;=?@", 0x8000100u);
 
   return v3;
 }
 
-+ (id)__stringByRemovingPercentEscapes:(id)a3
++ (id)__stringByRemovingPercentEscapes:(id)escapes
 {
-  v3 = CFURLCreateStringByReplacingPercentEscapes(*MEMORY[0x277CBECE8], a3, &stru_2870B1390);
+  v3 = CFURLCreateStringByReplacingPercentEscapes(*MEMORY[0x277CBECE8], escapes, &stru_2870B1390);
 
   return v3;
 }
 
-+ (id)__queryStringToQueryDictionary:(id)a3
++ (id)__queryStringToQueryDictionary:(id)dictionary
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [a3 componentsSeparatedByString:@"&"];
+  v3 = [dictionary componentsSeparatedByString:@"&"];
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v16 = 0u;
   v17 = 0u;
@@ -749,15 +749,15 @@ void __56__MTPlaybackIdentifierUtil__playQueueTypeForRequestURL___block_invoke()
 
         v9 = [*(*(&v16 + 1) + 8 * i) componentsSeparatedByString:@"="];
         v10 = [v9 objectAtIndex:0];
-        v11 = [MEMORY[0x277CBEB68] null];
+        null = [MEMORY[0x277CBEB68] null];
         if ([v9 count] >= 2)
         {
           v12 = [v9 objectAtIndex:1];
 
-          v11 = v12;
+          null = v12;
         }
 
-        [v4 setObject:v11 forKey:v10];
+        [v4 setObject:null forKey:v10];
       }
 
       v6 = [obj countByEnumeratingWithState:&v16 objects:v20 count:16];

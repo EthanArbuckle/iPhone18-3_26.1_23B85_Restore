@@ -1,18 +1,18 @@
 @interface VisionCoreValidationUtilities
-+ (BOOL)validateObject:(id)a3 isKindOfClass:(Class)a4 basedOnClass:(Class)a5 error:(id *)a6;
++ (BOOL)validateObject:(id)object isKindOfClass:(Class)class basedOnClass:(Class)onClass error:(id *)error;
 @end
 
 @implementation VisionCoreValidationUtilities
 
-+ (BOOL)validateObject:(id)a3 isKindOfClass:(Class)a4 basedOnClass:(Class)a5 error:(id *)a6
++ (BOOL)validateObject:(id)object isKindOfClass:(Class)class basedOnClass:(Class)onClass error:(id *)error
 {
-  v9 = a3;
-  if (!v9)
+  objectCopy = object;
+  if (!objectCopy)
   {
-    if (a6)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] VisionCoreErrorForInvalidArgumentWithLocalizedDescription:@"object is nil"];
-      *a6 = v10 = 0;
+      *error = v10 = 0;
       goto LABEL_13;
     }
 
@@ -21,16 +21,16 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (a5 && ([(objc_class *)a4 isSubclassOfClass:a5]& 1) == 0)
+  if (onClass && ([(objc_class *)class isSubclassOfClass:onClass]& 1) == 0)
   {
-    if (a6)
+    if (error)
     {
       v16 = objc_alloc(MEMORY[0x1E696AEC0]);
-      v17 = NSStringFromClass(a4);
-      v18 = NSStringFromClass(a5);
+      v17 = NSStringFromClass(class);
+      v18 = NSStringFromClass(onClass);
       v19 = [v16 initWithFormat:@"%@ is not a %@", v17, v18];
 
-      *a6 = [MEMORY[0x1E696ABC0] VisionCoreErrorForInvalidArgumentWithLocalizedDescription:v19];
+      *error = [MEMORY[0x1E696ABC0] VisionCoreErrorForInvalidArgumentWithLocalizedDescription:v19];
     }
 
     goto LABEL_12;
@@ -38,15 +38,15 @@ LABEL_12:
 
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (a6)
+    if (error)
     {
       v11 = objc_alloc(MEMORY[0x1E696AEC0]);
       v12 = objc_opt_class();
       v13 = NSStringFromClass(v12);
-      v14 = NSStringFromClass(a4);
+      v14 = NSStringFromClass(class);
       v15 = [v11 initWithFormat:@"%@ is not a %@", v13, v14];
 
-      *a6 = [MEMORY[0x1E696ABC0] VisionCoreErrorForUnavailableResourceWithLocalizedDescription:v15];
+      *error = [MEMORY[0x1E696ABC0] VisionCoreErrorForUnavailableResourceWithLocalizedDescription:v15];
     }
 
     goto LABEL_12;

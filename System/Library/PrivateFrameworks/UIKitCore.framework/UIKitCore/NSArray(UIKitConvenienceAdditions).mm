@@ -7,10 +7,10 @@
 
 - (id)_ui_firstObject
 {
-  v2 = [a1 count];
+  v2 = [self count];
   if (v2)
   {
-    v2 = [a1 objectAtIndex:0];
+    v2 = [self objectAtIndex:0];
   }
 
   return v2;
@@ -18,17 +18,17 @@
 
 - (id)_ui_onlyObject
 {
-  if ([a1 count] == 1)
+  if ([self count] == 1)
   {
-    v2 = [a1 lastObject];
+    lastObject = [self lastObject];
   }
 
   else
   {
-    v2 = 0;
+    lastObject = 0;
   }
 
-  return v2;
+  return lastObject;
 }
 
 @end

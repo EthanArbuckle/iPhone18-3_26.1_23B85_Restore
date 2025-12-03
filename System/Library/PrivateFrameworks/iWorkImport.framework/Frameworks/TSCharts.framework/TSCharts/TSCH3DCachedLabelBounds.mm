@@ -1,21 +1,21 @@
 @interface TSCH3DCachedLabelBounds
-+ (id)boundsWithPosition:(tvec3<float>)a3 labelBox:(box<glm:(tvec2<float>)a5 :(id)a6 detail::tvec2<float>>)a4 offset2D:string:;
-- (TSCH3DCachedLabelBounds)initWithPosition:(tvec3<float>)a3 labelBox:(box<glm:(tvec2<float>)a5 :(id)a6 detail::tvec2<float>>)a4 offset2D:string:;
++ (id)boundsWithPosition:(tvec3<float>)position labelBox:(box<glm:(tvec2<float>)box :(id)a6 detail::tvec2<float>>)a4 offset2D:string:;
+- (TSCH3DCachedLabelBounds)initWithPosition:(tvec3<float>)position labelBox:(box<glm:(tvec2<float>)box :(id)a6 detail::tvec2<float>>)a4 offset2D:string:;
 - (box<glm::detail::tvec2<float>>)labelBox;
-- (box<glm::detail::tvec3<float>>)normalizedBoundsWithOffset:(SEL)a3 transforms:(tvec3<float>)a4 viewport:(id)a5;
+- (box<glm::detail::tvec3<float>>)normalizedBoundsWithOffset:(SEL)offset transforms:(tvec3<float>)transforms viewport:(id)viewport;
 - (id).cxx_construct;
 - (tvec3<float>)position;
 @end
 
 @implementation TSCH3DCachedLabelBounds
 
-+ (id)boundsWithPosition:(tvec3<float>)a3 labelBox:(box<glm:(tvec2<float>)a5 :(id)a6 detail::tvec2<float>>)a4 offset2D:string:
++ (id)boundsWithPosition:(tvec3<float>)position labelBox:(box<glm:(tvec2<float>)box :(id)a6 detail::tvec2<float>>)a4 offset2D:string:
 {
   min = a4._min;
-  v7 = *&a3.var2.var0;
-  v8 = *&a3.var0.var0;
+  v7 = *&position.var2.var0;
+  v8 = *&position.var0.var0;
   v10 = *&a4._max;
-  v11 = [a1 alloc];
+  v11 = [self alloc];
   v19 = *v8;
   v20 = *(v8 + 2);
   v18 = *v7;
@@ -25,11 +25,11 @@
   return v15;
 }
 
-- (TSCH3DCachedLabelBounds)initWithPosition:(tvec3<float>)a3 labelBox:(box<glm:(tvec2<float>)a5 :(id)a6 detail::tvec2<float>>)a4 offset2D:string:
+- (TSCH3DCachedLabelBounds)initWithPosition:(tvec3<float>)position labelBox:(box<glm:(tvec2<float>)box :(id)a6 detail::tvec2<float>>)a4 offset2D:string:
 {
   min = a4._min;
-  v7 = *&a3.var2.var0;
-  v8 = *&a3.var0.var0;
+  v7 = *&position.var2.var0;
+  v8 = *&position.var0.var0;
   v10 = *&a4._max;
   v20.receiver = self;
   v20.super_class = TSCH3DCachedLabelBounds;
@@ -55,10 +55,10 @@
   return v16;
 }
 
-- (box<glm::detail::tvec3<float>>)normalizedBoundsWithOffset:(SEL)a3 transforms:(tvec3<float>)a4 viewport:(id)a5
+- (box<glm::detail::tvec3<float>>)normalizedBoundsWithOffset:(SEL)offset transforms:(tvec3<float>)transforms viewport:(id)viewport
 {
-  v7 = *&a4.var0.var0;
-  v10 = *&a4.var2.var0;
+  v7 = *&transforms.var0.var0;
+  v10 = *&transforms.var2.var0;
   v12 = v10;
   *&v13 = self->_position.var2.var0 + v7[1].f32[0];
   v14 = *v7;
@@ -91,7 +91,7 @@
     v17 = vadd_f32(v17, min);
   }
 
-  v21 = vcvt_f32_s32(vsub_s32(*(a5 + 8), *a5));
+  v21 = vcvt_f32_s32(vsub_s32(*(viewport + 8), *viewport));
   *&retstr->_min.var0.var0 = vdiv_f32(v17, v21);
   retstr->_min.var2.var0 = 0.0;
   *&retstr->_max.var0.var0 = vdiv_f32(v20, v21);

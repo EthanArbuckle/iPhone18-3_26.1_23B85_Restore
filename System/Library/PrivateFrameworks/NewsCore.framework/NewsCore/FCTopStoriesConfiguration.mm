@@ -1,27 +1,27 @@
 @interface FCTopStoriesConfiguration
-- (BOOL)isEqual:(id)a3;
-- (FCTopStoriesConfiguration)initWithConfigDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FCTopStoriesConfiguration)initWithConfigDictionary:(id)dictionary;
 @end
 
 @implementation FCTopStoriesConfiguration
 
-- (FCTopStoriesConfiguration)initWithConfigDictionary:(id)a3
+- (FCTopStoriesConfiguration)initWithConfigDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = FCTopStoriesConfiguration;
   v6 = [(FCTopStoriesConfiguration *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configDict, a3);
-    v7->_promotingEnabled = FCAppConfigurationBoolValue(v5, @"promotingEnabled", 1);
-    v8 = FCAppConfigurationStringValue(v5, @"channelId", 0);
+    objc_storeStrong(&v6->_configDict, dictionary);
+    v7->_promotingEnabled = FCAppConfigurationBoolValue(dictionaryCopy, @"promotingEnabled", 1);
+    v8 = FCAppConfigurationStringValue(dictionaryCopy, @"channelId", 0);
     channelID = v7->_channelID;
     v7->_channelID = v8;
 
-    v7->_storyTypeTimeout = FCAppConfigurationIntegerValue(v5, @"badgesTimeout", 21600);
-    v10 = FCAppConfigurationArrayValueWithDefaultValue(v5, @"styleConfigs", 0);
+    v7->_storyTypeTimeout = FCAppConfigurationIntegerValue(dictionaryCopy, @"badgesTimeout", 21600);
+    v10 = FCAppConfigurationArrayValueWithDefaultValue(dictionaryCopy, @"styleConfigs", 0);
     v11 = [v10 fc_dictionaryWithKeyBlock:&__block_literal_global_282 valueBlock:&__block_literal_global_288_0];
     styleConfigurations = v7->_styleConfigurations;
     v7->_styleConfigurations = v11;
@@ -30,15 +30,15 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if (v4)
+  if (equalCopy)
   {
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else

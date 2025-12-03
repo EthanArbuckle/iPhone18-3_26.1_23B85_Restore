@@ -1,8 +1,8 @@
 @interface MTRZoneManagementClusterUpdateTwoDCartesianZoneParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRZoneManagementClusterUpdateTwoDCartesianZoneParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -33,20 +33,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRZoneManagementClusterUpdateTwoDCartesianZoneParams);
-  v5 = [(MTRZoneManagementClusterUpdateTwoDCartesianZoneParams *)self zoneID];
-  [(MTRZoneManagementClusterUpdateTwoDCartesianZoneParams *)v4 setZoneID:v5];
+  zoneID = [(MTRZoneManagementClusterUpdateTwoDCartesianZoneParams *)self zoneID];
+  [(MTRZoneManagementClusterUpdateTwoDCartesianZoneParams *)v4 setZoneID:zoneID];
 
   v6 = [(MTRZoneManagementClusterUpdateTwoDCartesianZoneParams *)self zone];
   [(MTRZoneManagementClusterUpdateTwoDCartesianZoneParams *)v4 setZone:v6];
 
-  v7 = [(MTRZoneManagementClusterUpdateTwoDCartesianZoneParams *)self timedInvokeTimeoutMs];
-  [(MTRZoneManagementClusterUpdateTwoDCartesianZoneParams *)v4 setTimedInvokeTimeoutMs:v7];
+  timedInvokeTimeoutMs = [(MTRZoneManagementClusterUpdateTwoDCartesianZoneParams *)self timedInvokeTimeoutMs];
+  [(MTRZoneManagementClusterUpdateTwoDCartesianZoneParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v8 = [(MTRZoneManagementClusterUpdateTwoDCartesianZoneParams *)self serverSideProcessingTimeout];
-  [(MTRZoneManagementClusterUpdateTwoDCartesianZoneParams *)v4 setServerSideProcessingTimeout:v8];
+  serverSideProcessingTimeout = [(MTRZoneManagementClusterUpdateTwoDCartesianZoneParams *)self serverSideProcessingTimeout];
+  [(MTRZoneManagementClusterUpdateTwoDCartesianZoneParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -61,34 +61,34 @@
   return v6;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   v44 = *MEMORY[0x277D85DE8];
-  v32 = 0;
+  unsignedShortValue = 0;
   v33 = 0uLL;
-  v34 = 0;
+  unsignedCharValue = 0;
   v35 = 0;
   v36 = 0;
   v37 = 0;
   v31[0] = 0;
   v31[1] = 0;
   v30 = v31;
-  v4 = [(MTRZoneManagementClusterUpdateTwoDCartesianZoneParams *)self zoneID];
-  v32 = [v4 unsignedShortValue];
+  zoneID = [(MTRZoneManagementClusterUpdateTwoDCartesianZoneParams *)self zoneID];
+  unsignedShortValue = [zoneID unsignedShortValue];
 
   v5 = [(MTRZoneManagementClusterUpdateTwoDCartesianZoneParams *)self zone];
-  v6 = [v5 name];
-  v7 = v6;
-  sub_238DB9BD8(buf, [v6 UTF8String], objc_msgSend(v6, "lengthOfBytesUsingEncoding:", 4));
+  name = [v5 name];
+  v7 = name;
+  sub_238DB9BD8(buf, [name UTF8String], objc_msgSend(name, "lengthOfBytesUsingEncoding:", 4));
 
   v33 = *buf;
   v8 = [(MTRZoneManagementClusterUpdateTwoDCartesianZoneParams *)self zone];
   v9 = [v8 use];
-  v34 = [v9 unsignedCharValue];
+  unsignedCharValue = [v9 unsignedCharValue];
 
   v10 = [(MTRZoneManagementClusterUpdateTwoDCartesianZoneParams *)self zone];
-  v11 = [v10 vertices];
-  v12 = [v11 count] == 0;
+  vertices = [v10 vertices];
+  v12 = [vertices count] == 0;
 
   if (!v12)
   {
@@ -98,17 +98,17 @@
   v35 = 0;
   v36 = 0;
   v13 = [(MTRZoneManagementClusterUpdateTwoDCartesianZoneParams *)self zone];
-  v14 = [v13 color];
-  v15 = v14 == 0;
+  color = [v13 color];
+  v15 = color == 0;
 
   if (!v15)
   {
     v37 = 1;
     v38 = 0uLL;
     v16 = [(MTRZoneManagementClusterUpdateTwoDCartesianZoneParams *)self zone];
-    v17 = [v16 color];
-    v18 = v17;
-    sub_238DB9BD8(buf, [v17 UTF8String], objc_msgSend(v17, "lengthOfBytesUsingEncoding:", 4));
+    color2 = [v16 color];
+    v18 = color2;
+    sub_238DB9BD8(buf, [color2 UTF8String], objc_msgSend(color2, "lengthOfBytesUsingEncoding:", 4));
 
     v38 = *buf;
   }
@@ -123,7 +123,7 @@
     v43 = 0;
     sub_238EA16C4(&v40, &v29, 0);
     sub_2393C7BF0(buf, &v40, 0xFFFFFFFF);
-    v19 = sub_238F34688(&v32, buf, 0x100uLL);
+    v19 = sub_238F34688(&unsignedShortValue, buf, 0x100uLL);
     v21 = v19;
     if (v19 || (v19 = sub_238DD2EFC(buf, &v29), v21 = v19, v19))
     {
@@ -132,8 +132,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v29);
-      v19 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v29);
+      v19 = sub_2393C7114(reader, 21, 256);
       v22 = v27;
       v21 = v19;
     }
@@ -162,19 +162,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRZoneManagementClusterUpdateTwoDCartesianZoneParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -185,7 +185,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x835800000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

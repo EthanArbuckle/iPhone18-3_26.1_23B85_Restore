@@ -1,28 +1,28 @@
 @interface SUUINavigationPaletteView
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5;
-+ (CGSize)_sizeForViewElement:(id)a3 width:(double)a4 context:(id)a5;
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-+ (id)_attributedStringForButton:(id)a3 context:(id)a4;
-+ (id)_attributedStringForLabel:(id)a3 context:(id)a4;
-+ (id)_attributedStringForText:(id)a3 style:(id)a4 context:(id)a5;
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5;
-- (SUUINavigationPaletteView)initWithFrame:(CGRect)a3;
-- (id)viewForElementIdentifier:(id)a3;
-- (void)_buttonAction:(id)a3;
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context;
++ (CGSize)_sizeForViewElement:(id)element width:(double)width context:(id)context;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
++ (id)_attributedStringForButton:(id)button context:(id)context;
++ (id)_attributedStringForLabel:(id)label context:(id)context;
++ (id)_attributedStringForText:(id)text style:(id)style context:(id)context;
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context;
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context;
+- (SUUINavigationPaletteView)initWithFrame:(CGRect)frame;
+- (id)viewForElementIdentifier:(id)identifier;
+- (void)_buttonAction:(id)action;
 - (void)layoutSubviews;
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (void)setVerticalAlignment:(int64_t)a3;
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context;
+- (void)setVerticalAlignment:(int64_t)alignment;
 @end
 
 @implementation SUUINavigationPaletteView
 
-- (SUUINavigationPaletteView)initWithFrame:(CGRect)a3
+- (SUUINavigationPaletteView)initWithFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = SUUINavigationPaletteView;
-  v3 = [(SUUIViewReuseView *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUIViewReuseView *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -45,19 +45,19 @@
   return v3;
 }
 
-- (void)setVerticalAlignment:(int64_t)a3
+- (void)setVerticalAlignment:(int64_t)alignment
 {
-  if (self->_verticalAlignment != a3)
+  if (self->_verticalAlignment != alignment)
   {
-    self->_verticalAlignment = a3;
+    self->_verticalAlignment = alignment;
     [(SUUINavigationPaletteView *)self setNeedsLayout];
   }
 }
 
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context
 {
-  v7 = a3;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -66,15 +66,15 @@
   v11[1] = 3221225472;
   v11[2] = __76__SUUINavigationPaletteView_prefetchResourcesForViewElement_reason_context___block_invoke;
   v11[3] = &unk_2798F5E50;
-  v14 = a4;
-  v9 = v8;
+  reasonCopy = reason;
+  v9 = contextCopy;
   v12 = v9;
   v13 = &v15;
-  [v7 enumerateChildrenUsingBlock:v11];
-  LOBYTE(a4) = *(v16 + 24);
+  [elementCopy enumerateChildrenUsingBlock:v11];
+  LOBYTE(reason) = *(v16 + 24);
 
   _Block_object_dispose(&v15, 8);
-  return a4;
+  return reason;
 }
 
 void __76__SUUINavigationPaletteView_prefetchResourcesForViewElement_reason_context___block_invoke(uint64_t a1, void *a2)
@@ -95,7 +95,7 @@ void __76__SUUINavigationPaletteView_prefetchResourcesForViewElement_reason_cont
   *(*(*(a1 + 40) + 8) + 24) = (*(*(*(a1 + 40) + 8) + 24) | v5) & 1;
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
   v4 = *MEMORY[0x277CBF3A8];
   v5 = *(MEMORY[0x277CBF3A8] + 8);
@@ -104,22 +104,22 @@ void __76__SUUINavigationPaletteView_prefetchResourcesForViewElement_reason_cont
   return result;
 }
 
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [v8 labelLayoutCache];
+  contextCopy = context;
+  elementCopy = element;
+  labelLayoutCache = [contextCopy labelLayoutCache];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __71__SUUINavigationPaletteView_requestLayoutForViewElement_width_context___block_invoke;
   v13[3] = &unk_2798F5E78;
-  v15 = v10;
-  v16 = a1;
-  v14 = v8;
-  v17 = a4;
-  v11 = v10;
-  v12 = v8;
-  [v9 enumerateChildrenUsingBlock:v13];
+  v15 = labelLayoutCache;
+  selfCopy = self;
+  v14 = contextCopy;
+  widthCopy = width;
+  v11 = labelLayoutCache;
+  v12 = contextCopy;
+  [elementCopy enumerateChildrenUsingBlock:v13];
 }
 
 void __71__SUUINavigationPaletteView_requestLayoutForViewElement_width_context___block_invoke(uint64_t a1, void *a2)
@@ -165,26 +165,26 @@ LABEL_13:
 LABEL_14:
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
-  v8 = a4;
-  v9 = a5;
+  elementCopy = element;
+  contextCopy = context;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3010000000;
   v23 = "";
-  v24 = a3;
+  widthCopy = width;
   v25 = 0;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __67__SUUINavigationPaletteView_sizeThatFitsWidth_viewElement_context___block_invoke;
   v15[3] = &unk_2798F5EA0;
-  v18 = a1;
-  v19 = a3;
-  v10 = v9;
+  selfCopy = self;
+  widthCopy2 = width;
+  v10 = contextCopy;
   v16 = v10;
   v17 = &v20;
-  [v8 enumerateChildrenUsingBlock:v15];
+  [elementCopy enumerateChildrenUsingBlock:v15];
   v11 = v21[4];
   v12 = v21[5];
 
@@ -210,10 +210,10 @@ uint64_t __67__SUUINavigationPaletteView_sizeThatFitsWidth_viewElement_context__
   return result;
 }
 
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  elementCopy = element;
+  contextCopy = context;
   [(NSHashTable *)self->_artworkRelatedChildViewElementViews removeAllObjects];
   [(NSMapTable *)self->_imageViewToImageResourceCacheKey removeAllObjects];
   [(NSMutableArray *)self->_segmentedControls removeAllObjects];
@@ -224,12 +224,12 @@ uint64_t __67__SUUINavigationPaletteView_sizeThatFitsWidth_viewElement_context__
   v12[1] = 3221225472;
   v12[2] = __65__SUUINavigationPaletteView_reloadWithViewElement_width_context___block_invoke;
   v12[3] = &unk_2798F5EF0;
-  v16 = a4;
-  v13 = v8;
-  v14 = v9;
-  v15 = self;
-  v10 = v9;
-  v11 = v8;
+  widthCopy = width;
+  v13 = elementCopy;
+  v14 = contextCopy;
+  selfCopy = self;
+  v10 = contextCopy;
+  v11 = elementCopy;
   [(SUUIViewReuseView *)self modifyUsingBlock:v12];
 }
 
@@ -444,14 +444,14 @@ LABEL_23:
 LABEL_37:
 }
 
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context
 {
   v39 = *MEMORY[0x277D85DE8];
-  v27 = a3;
-  v8 = a4;
-  v9 = a5;
-  v26 = v8;
-  v10 = [v8 requestIdentifier];
+  imageCopy = image;
+  requestCopy = request;
+  contextCopy = context;
+  v26 = requestCopy;
+  requestIdentifier = [requestCopy requestIdentifier];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
@@ -473,32 +473,32 @@ LABEL_37:
 
         v15 = *(*(&v33 + 1) + 8 * i);
         v16 = [(NSMapTable *)self->_imageViewToImageResourceCacheKey objectForKey:v15];
-        v17 = [v9 requestIdentifierForResourceCacheKey:v16];
+        v17 = [contextCopy requestIdentifierForResourceCacheKey:v16];
         v18 = v17;
-        if (v17 && [v17 unsignedIntegerValue] == v10)
+        if (v17 && [v17 unsignedIntegerValue] == requestIdentifier)
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
           {
-            v22 = v8;
-            v21 = v27;
-            [v15 setImage:v27 forArtworkRequest:v8 context:v9];
+            v22 = requestCopy;
+            v21 = imageCopy;
+            [v15 setImage:imageCopy forArtworkRequest:requestCopy context:contextCopy];
           }
 
           else
           {
             objc_opt_class();
-            v22 = v8;
-            v21 = v27;
+            v22 = requestCopy;
+            v21 = imageCopy;
             if (objc_opt_isKindOfClass())
             {
-              v25 = [v15 imageView];
-              [v25 setImage:v27];
+              imageView = [v15 imageView];
+              [imageView setImage:imageCopy];
             }
 
             else
             {
-              [v15 setImage:v27];
+              [v15 setImage:imageCopy];
             }
           }
 
@@ -526,7 +526,7 @@ LABEL_37:
   {
     v20 = *v30;
     v22 = v26;
-    v21 = v27;
+    v21 = imageCopy;
 LABEL_12:
     v23 = 0;
     while (1)
@@ -536,7 +536,7 @@ LABEL_12:
         objc_enumerationMutation(obj);
       }
 
-      if ([*(*(&v29 + 1) + 8 * v23) setImage:v27 forArtworkRequest:v26 context:v9])
+      if ([*(*(&v29 + 1) + 8 * v23) setImage:imageCopy forArtworkRequest:v26 context:contextCopy])
       {
         break;
       }
@@ -559,8 +559,8 @@ LABEL_23:
 
   else
   {
-    v22 = v8;
-    v21 = v27;
+    v22 = requestCopy;
+    v21 = imageCopy;
   }
 
 LABEL_24:
@@ -568,10 +568,10 @@ LABEL_24:
   return v19;
 }
 
-- (id)viewForElementIdentifier:(id)a3
+- (id)viewForElementIdentifier:(id)identifier
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -593,8 +593,8 @@ LABEL_24:
 
         v9 = *(*(&v17 + 1) + 8 * i);
         v10 = [(NSMapTable *)self->_viewElementViews objectForKey:v9];
-        v11 = [v10 itmlID];
-        v12 = [v11 isEqualToString:v4];
+        itmlID = [v10 itmlID];
+        v12 = [itmlID isEqualToString:identifierCopy];
 
         if (v12)
         {
@@ -607,7 +607,7 @@ LABEL_13:
 
         if ([v9 conformsToProtocol:&unk_286BDBC58])
         {
-          v13 = [v9 viewForElementIdentifier:v4];
+          v13 = [v9 viewForElementIdentifier:identifierCopy];
           if (v13)
           {
             goto LABEL_13;
@@ -647,7 +647,7 @@ LABEL_14:
   v47 = &v46;
   v48 = 0x2020000000;
   v49 = 0;
-  v11 = [(SUUIViewReuseView *)self allExistingViews];
+  allExistingViews = [(SUUIViewReuseView *)self allExistingViews];
   v45[0] = MEMORY[0x277D85DD0];
   v45[1] = 3221225472;
   v45[2] = __43__SUUINavigationPaletteView_layoutSubviews__block_invoke;
@@ -659,13 +659,13 @@ LABEL_14:
   v45[4] = self;
   v45[5] = &v50;
   v45[6] = &v46;
-  [v11 enumerateObjectsUsingBlock:v45];
+  [allExistingViews enumerateObjectsUsingBlock:v45];
   v35 = v6;
   v36 = v4;
   v12 = [(NSMutableArray *)self->_stretchViews count];
   left = self->_contentInset.left;
   v14 = v47[3];
-  v37 = [v11 count];
+  v37 = [allExistingViews count];
   v43 = 0u;
   v44 = 0u;
   v41 = 0u;
@@ -690,7 +690,7 @@ LABEL_14:
         [v21 frame];
         v23 = v22;
         v25 = v24;
-        if ([v11 indexOfObjectIdenticalTo:v21] == v37 - 1 && (segmentedControls = self->_segmentedControls, v40[0] = MEMORY[0x277D85DD0], v40[1] = 3221225472, v40[2] = __43__SUUINavigationPaletteView_layoutSubviews__block_invoke_2, v40[3] = &unk_2798F5F40, v40[4] = v21, -[NSMutableArray indexOfObjectPassingTest:](segmentedControls, "indexOfObjectPassingTest:", v40) == 0x7FFFFFFFFFFFFFFFLL))
+        if ([allExistingViews indexOfObjectIdenticalTo:v21] == v37 - 1 && (segmentedControls = self->_segmentedControls, v40[0] = MEMORY[0x277D85DD0], v40[1] = 3221225472, v40[2] = __43__SUUINavigationPaletteView_layoutSubviews__block_invoke_2, v40[3] = &unk_2798F5F40, v40[4] = v21, -[NSMutableArray indexOfObjectPassingTest:](segmentedControls, "indexOfObjectPassingTest:", v40) == 0x7FFFFFFFFFFFFFFFLL))
         {
           v27 = v8 - v17;
           [v21 sizeThatFits:{floorf(v27), v10}];
@@ -738,7 +738,7 @@ LABEL_14:
   *&v38[11] = v10;
   v38[6] = &v50;
   v38[7] = v37;
-  [v11 enumerateObjectsUsingBlock:v38];
+  [allExistingViews enumerateObjectsUsingBlock:v38];
   _Block_object_dispose(v39, 8);
 
   _Block_object_dispose(&v46, 8);
@@ -850,104 +850,104 @@ void __43__SUUINavigationPaletteView_layoutSubviews__block_invoke_3(uint64_t a1,
   *(*(*(a1 + 40) + 8) + 24) = CGRectGetMaxX(v30);
 }
 
-- (void)_buttonAction:(id)a3
+- (void)_buttonAction:(id)action
 {
   v4 = MEMORY[0x277CCAB98];
-  v5 = a3;
-  v7 = [v4 defaultCenter];
-  [v7 postNotificationName:0x286AF1D80 object:self];
-  v6 = [(NSMapTable *)self->_viewElementViews objectForKey:v5];
+  actionCopy = action;
+  defaultCenter = [v4 defaultCenter];
+  [defaultCenter postNotificationName:0x286AF1D80 object:self];
+  v6 = [(NSMapTable *)self->_viewElementViews objectForKey:actionCopy];
 
   [v6 dispatchEventOfType:2 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:0];
 }
 
-+ (id)_attributedStringForButton:(id)a3 context:(id)a4
++ (id)_attributedStringForButton:(id)button context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 buttonText];
-  v9 = [v6 buttonTitleStyle];
-  if (v9)
+  buttonCopy = button;
+  contextCopy = context;
+  buttonText = [buttonCopy buttonText];
+  buttonTitleStyle = [buttonCopy buttonTitleStyle];
+  if (buttonTitleStyle)
   {
-    v10 = [a1 _attributedStringForText:v8 style:v9 context:v7];
+    v10 = [self _attributedStringForText:buttonText style:buttonTitleStyle context:contextCopy];
   }
 
   else
   {
-    v11 = [v6 style];
-    v10 = [a1 _attributedStringForText:v8 style:v11 context:v7];
+    style = [buttonCopy style];
+    v10 = [self _attributedStringForText:buttonText style:style context:contextCopy];
   }
 
   return v10;
 }
 
-+ (id)_attributedStringForLabel:(id)a3 context:(id)a4
++ (id)_attributedStringForLabel:(id)label context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 text];
-  v9 = [v7 style];
+  contextCopy = context;
+  labelCopy = label;
+  text = [labelCopy text];
+  style = [labelCopy style];
 
-  v10 = [a1 _attributedStringForText:v8 style:v9 context:v6];
+  v10 = [self _attributedStringForText:text style:style context:contextCopy];
 
   return v10;
 }
 
-+ (id)_attributedStringForText:(id)a3 style:(id)a4 context:(id)a5
++ (id)_attributedStringForText:(id)text style:(id)style context:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = SUUIViewElementFontWithStyle(v8);
+  textCopy = text;
+  styleCopy = style;
+  contextCopy = context;
+  v10 = SUUIViewElementFontWithStyle(styleCopy);
   if (!v10)
   {
     v10 = SUUIFontPreferredFontForTextStyle(5);
   }
 
-  v11 = [v9 tintColor];
-  v12 = SUUIViewElementPlainColorWithStyle(v8, v11);
+  tintColor = [contextCopy tintColor];
+  v12 = SUUIViewElementPlainColorWithStyle(styleCopy, tintColor);
 
   if (!v12)
   {
     v12 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.8];
   }
 
-  v13 = [v7 attributedStringWithDefaultFont:v10 foregroundColor:v12 style:v8];
+  v13 = [textCopy attributedStringWithDefaultFont:v10 foregroundColor:v12 style:styleCopy];
 
   return v13;
 }
 
-+ (CGSize)_sizeForViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (CGSize)_sizeForViewElement:(id)element width:(double)width context:(id)context
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 elementType];
-  if (v9 == 109)
+  elementCopy = element;
+  contextCopy = context;
+  elementType = [elementCopy elementType];
+  if (elementType == 109)
   {
     v13 = *MEMORY[0x277CBF3A8];
-    v10 = objc_alloc_init(MEMORY[0x277D75A08]);
-    [v10 sizeThatFits:{*(MEMORY[0x277CBF390] + 16), *(MEMORY[0x277CBF390] + 24)}];
+    mainScreen = objc_alloc_init(MEMORY[0x277D75A08]);
+    [mainScreen sizeThatFits:{*(MEMORY[0x277CBF390] + 16), *(MEMORY[0x277CBF390] + 24)}];
     v11 = v16;
     goto LABEL_7;
   }
 
-  if (v9 == 62)
+  if (elementType == 62)
   {
-    [SUUIHorizontalListScrollView sizeThatFitsWidth:v7 viewElement:v8 context:a4];
+    [SUUIHorizontalListScrollView sizeThatFitsWidth:elementCopy viewElement:contextCopy context:width];
 LABEL_9:
     v13 = v14;
     v11 = v15;
     goto LABEL_10;
   }
 
-  if (v9 != 32)
+  if (elementType != 32)
   {
-    [v8 sizeForViewElement:v7 width:a4];
+    [contextCopy sizeForViewElement:elementCopy width:width];
     goto LABEL_9;
   }
 
-  v10 = [MEMORY[0x277D759A0] mainScreen];
-  [v10 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v11 = 16.0;
   v13 = 1.0 / v12;
 LABEL_7:

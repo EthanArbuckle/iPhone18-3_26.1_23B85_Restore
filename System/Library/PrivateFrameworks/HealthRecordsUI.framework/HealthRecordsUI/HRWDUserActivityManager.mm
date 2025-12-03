@@ -1,19 +1,19 @@
 @interface HRWDUserActivityManager
-- (BOOL)_restoreActivityFromPolicies:(id)a3;
+- (BOOL)_restoreActivityFromPolicies:(id)policies;
 - (HRWDUserActivityManager)init;
-- (id)_handoffActivityBreadcrumbsForOnboarding:(id)a3;
-- (id)_userActivityWithType:(id)a3;
+- (id)_handoffActivityBreadcrumbsForOnboarding:(id)onboarding;
+- (id)_userActivityWithType:(id)type;
 - (void)_resetActivities;
-- (void)_restoreFromActivityChain:(id)a3;
-- (void)_setCurrentNodeToResponder:(id)a3;
-- (void)_userActivityWithTitle:(id)a3 keywords:(id)a4 activityType:(id)a5;
-- (void)addPolicy:(id)a3;
-- (void)changeActivityForResponder:(id)a3 activityDictionary:(id)a4 title:(id)a5 keywords:(id)a6;
-- (void)decodeRestorableStateWithCoder:(id)a3;
-- (void)encodeRestorableStateWithCoder:(id)a3;
-- (void)restoreFromUserActivity:(id)a3;
-- (void)setRootViewController:(id)a3;
-- (void)transitionActivityForResponder:(id)a3 newResponder:(id)a4 transitionDictionary:(id)a5;
+- (void)_restoreFromActivityChain:(id)chain;
+- (void)_setCurrentNodeToResponder:(id)responder;
+- (void)_userActivityWithTitle:(id)title keywords:(id)keywords activityType:(id)type;
+- (void)addPolicy:(id)policy;
+- (void)changeActivityForResponder:(id)responder activityDictionary:(id)dictionary title:(id)title keywords:(id)keywords;
+- (void)decodeRestorableStateWithCoder:(id)coder;
+- (void)encodeRestorableStateWithCoder:(id)coder;
+- (void)restoreFromUserActivity:(id)activity;
+- (void)setRootViewController:(id)controller;
+- (void)transitionActivityForResponder:(id)responder newResponder:(id)newResponder transitionDictionary:(id)dictionary;
 @end
 
 @implementation HRWDUserActivityManager
@@ -48,10 +48,10 @@
   return v3;
 }
 
-- (void)setRootViewController:(id)a3
+- (void)setRootViewController:(id)controller
 {
-  v9 = a3;
-  objc_storeStrong(&self->_rootViewController, a3);
+  controllerCopy = controller;
+  objc_storeStrong(&self->_rootViewController, controller);
   if ([objc_opt_class() conformsToProtocol:&unk_1F4D41470])
   {
     v5 = [[_HRWDActivityNode alloc] initWithResponder:self->_rootViewController];
@@ -70,86 +70,86 @@
   }
 }
 
-- (void)changeActivityForResponder:(id)a3 activityDictionary:(id)a4 title:(id)a5 keywords:(id)a6
+- (void)changeActivityForResponder:(id)responder activityDictionary:(id)dictionary title:(id)title keywords:(id)keywords
 {
-  v15 = a3;
-  v10 = a5;
-  v11 = a6;
+  responderCopy = responder;
+  titleCopy = title;
+  keywordsCopy = keywords;
   if (self->_recordActivities)
   {
-    v12 = [(_HRWDActivityNode *)self->_topNode changeActivityForResponder:v15 activityDictionary:a4];
+    v12 = [(_HRWDActivityNode *)self->_topNode changeActivityForResponder:responderCopy activityDictionary:dictionary];
     currentNode = self->_currentNode;
     self->_currentNode = v12;
 
-    if (v10)
+    if (titleCopy)
     {
       if (objc_opt_respondsToSelector())
       {
-        v14 = [v15 uniqueUserActivityType];
-        [(HRWDUserActivityManager *)self _userActivityWithTitle:v10 keywords:v11 activityType:v14];
+        uniqueUserActivityType = [responderCopy uniqueUserActivityType];
+        [(HRWDUserActivityManager *)self _userActivityWithTitle:titleCopy keywords:keywordsCopy activityType:uniqueUserActivityType];
       }
 
       else
       {
-        [(HRWDUserActivityManager *)self _userActivityWithTitle:v10 keywords:v11 activityType:*MEMORY[0x1E696B8F8]];
+        [(HRWDUserActivityManager *)self _userActivityWithTitle:titleCopy keywords:keywordsCopy activityType:*MEMORY[0x1E696B8F8]];
       }
     }
   }
 }
 
-- (void)transitionActivityForResponder:(id)a3 newResponder:(id)a4 transitionDictionary:(id)a5
+- (void)transitionActivityForResponder:(id)responder newResponder:(id)newResponder transitionDictionary:(id)dictionary
 {
   if (self->_recordActivities)
   {
-    v7 = [(_HRWDActivityNode *)self->_topNode transitionActivityForResponder:a3 newResponder:a4 transitionDictionary:a5];
+    v7 = [(_HRWDActivityNode *)self->_topNode transitionActivityForResponder:responder newResponder:newResponder transitionDictionary:dictionary];
     currentNode = self->_currentNode;
     self->_currentNode = v7;
   }
 }
 
-- (id)_handoffActivityBreadcrumbsForOnboarding:(id)a3
+- (id)_handoffActivityBreadcrumbsForOnboarding:(id)onboarding
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v7[0] = a3;
+  v7[0] = onboarding;
   v3 = MEMORY[0x1E695DEC8];
-  v4 = a3;
+  onboardingCopy = onboarding;
   v5 = [v3 arrayWithObjects:v7 count:1];
 
   return v5;
 }
 
-- (void)restoreFromUserActivity:(id)a3
+- (void)restoreFromUserActivity:(id)activity
 {
-  v14 = a3;
-  v4 = [(HRWDUserActivityManager *)self _restoreActivityFromPolicies:v14];
-  v5 = v14;
+  activityCopy = activity;
+  v4 = [(HRWDUserActivityManager *)self _restoreActivityFromPolicies:activityCopy];
+  v5 = activityCopy;
   if (!v4)
   {
-    v6 = [v14 userInfo];
-    v7 = [v6 objectForKey:@"MainTab"];
+    userInfo = [activityCopy userInfo];
+    v7 = [userInfo objectForKey:@"MainTab"];
 
     if (v7)
     {
-      v8 = [(HRWDUserActivityManager *)self _castleRockSpotlightBreadcrumbs:v6];
+      v8 = [(HRWDUserActivityManager *)self _castleRockSpotlightBreadcrumbs:userInfo];
     }
 
     else
     {
-      v9 = [v6 objectForKey:*MEMORY[0x1E69A3EB8]];
+      v9 = [userInfo objectForKey:*MEMORY[0x1E69A3EB8]];
 
       if (v9)
       {
-        v8 = [(HRWDUserActivityManager *)self _handoffActivityBreadcrumbsForOnboarding:v6];
+        v8 = [(HRWDUserActivityManager *)self _handoffActivityBreadcrumbsForOnboarding:userInfo];
       }
 
       else
       {
         v11 = *MEMORY[0x1E696BE40];
-        v12 = [v6 objectForKey:*MEMORY[0x1E696BE40]];
+        v12 = [userInfo objectForKey:*MEMORY[0x1E696BE40]];
 
         if (v12)
         {
-          v13 = [v6 objectForKey:v11];
+          v13 = [userInfo objectForKey:v11];
           v10 = [(HRWDUserActivityManager *)self _handoffActivityBreadcrumbsForSampleType:v13];
 
           if (!v10)
@@ -160,7 +160,7 @@
           goto LABEL_7;
         }
 
-        v8 = [v6 objectForKey:@"_ActivityBreadcrumbKey"];
+        v8 = [userInfo objectForKey:@"_ActivityBreadcrumbKey"];
       }
     }
 
@@ -169,7 +169,7 @@
     {
 LABEL_8:
 
-      v5 = v14;
+      v5 = activityCopy;
       goto LABEL_9;
     }
 
@@ -193,12 +193,12 @@ LABEL_9:
   [(NSMutableDictionary *)indexedActivities removeAllObjects];
 }
 
-- (id)_userActivityWithType:(id)a3
+- (id)_userActivityWithType:(id)type
 {
   v15[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E69636A8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithActivityType:v5];
+  typeCopy = type;
+  v6 = [[v4 alloc] initWithActivityType:typeCopy];
 
   [v6 setEligibleForHandoff:0];
   [v6 setEligibleForSearch:0];
@@ -219,43 +219,43 @@ LABEL_9:
   return v6;
 }
 
-- (void)_userActivityWithTitle:(id)a3 keywords:(id)a4 activityType:(id)a5
+- (void)_userActivityWithTitle:(id)title keywords:(id)keywords activityType:(id)type
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(NSMutableDictionary *)self->_indexedActivities objectForKey:v13];
+  titleCopy = title;
+  keywordsCopy = keywords;
+  typeCopy = type;
+  v10 = [(NSMutableDictionary *)self->_indexedActivities objectForKey:titleCopy];
   if (!v10)
   {
-    v11 = [(HRWDUserActivityManager *)self _userActivityWithType:v9];
+    v11 = [(HRWDUserActivityManager *)self _userActivityWithType:typeCopy];
     if (v11)
     {
       v12 = v11;
       [v11 setEligibleForSearch:1];
-      [v12 setTitle:v13];
+      [v12 setTitle:titleCopy];
       [v12 setEligibleForPrediction:0];
-      if (v8)
+      if (keywordsCopy)
       {
-        [v12 setKeywords:v8];
+        [v12 setKeywords:keywordsCopy];
       }
 
       [v12 becomeCurrent];
-      [(NSMutableDictionary *)self->_indexedActivities setObject:v12 forKey:v13];
+      [(NSMutableDictionary *)self->_indexedActivities setObject:v12 forKey:titleCopy];
     }
   }
 }
 
-- (void)_restoreFromActivityChain:(id)a3
+- (void)_restoreFromActivityChain:(id)chain
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  chainCopy = chain;
   [(HRWDUserActivityManager *)self _resetActivities];
-  v5 = [(_HRWDActivityNode *)self->_topNode responder];
+  responder = [(_HRWDActivityNode *)self->_topNode responder];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v4;
+  v6 = chainCopy;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -277,15 +277,15 @@ LABEL_9:
         v13 = *(*(&v17 + 1) + 8 * v11);
         if (v12)
         {
-          [v5 applyChangeActivity:*(*(&v17 + 1) + 8 * v11)];
-          [(HRWDUserActivityManager *)self _setCurrentNodeToResponder:v5];
+          [responder applyChangeActivity:*(*(&v17 + 1) + 8 * v11)];
+          [(HRWDUserActivityManager *)self _setCurrentNodeToResponder:responder];
         }
 
         else
         {
-          v14 = [v5 applyTransitionActivity:*(*(&v17 + 1) + 8 * v11)];
+          v14 = [responder applyTransitionActivity:*(*(&v17 + 1) + 8 * v11)];
 
-          v5 = v14;
+          responder = v14;
           if (!v14)
           {
             v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Transition failed for breadcrumb: %@ in chain %@", v13, v6, v17];
@@ -296,7 +296,7 @@ LABEL_9:
               [(HRWDUserActivityManager *)v15 _restoreFromActivityChain:v16];
             }
 
-            v5 = 0;
+            responder = 0;
             goto LABEL_15;
           }
         }
@@ -319,11 +319,11 @@ LABEL_9:
 LABEL_15:
 }
 
-- (void)_setCurrentNodeToResponder:(id)a3
+- (void)_setCurrentNodeToResponder:(id)responder
 {
-  v4 = a3;
+  responderCopy = responder;
   currentNode = self->_currentNode;
-  v10 = v4;
+  v10 = responderCopy;
   if (!currentNode || ([(_HRWDActivityNode *)currentNode responder], v6 = objc_claimAutoreleasedReturnValue(), v6, v7 = v10, v6 != v10))
   {
     v8 = [(_HRWDActivityNode *)self->_topNode changeActivityForResponder:v10 activityDictionary:0];
@@ -334,23 +334,23 @@ LABEL_15:
   }
 }
 
-- (void)encodeRestorableStateWithCoder:(id)a3
+- (void)encodeRestorableStateWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:801 forKey:@"_UserActivityVersionKey"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:801 forKey:@"_UserActivityVersionKey"];
   v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:10];
   [(_HRWDActivityNode *)self->_topNode addActivitiesToArray:v5 currentNode:self->_currentNode];
-  [v4 encodeObject:v5 forKey:@"_UserActivityBreadcrumbArrayKey"];
+  [coderCopy encodeObject:v5 forKey:@"_UserActivityBreadcrumbArrayKey"];
 }
 
-- (void)decodeRestorableStateWithCoder:(id)a3
+- (void)decodeRestorableStateWithCoder:(id)coder
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"_UserActivityVersionKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"_UserActivityVersionKey"];
   if (v5 == 801)
   {
-    v6 = [v4 decodeObjectForKey:@"_UserActivityBreadcrumbArrayKey"];
+    v6 = [coderCopy decodeObjectForKey:@"_UserActivityBreadcrumbArrayKey"];
     [(HRWDUserActivityManager *)self _restoreFromActivityChain:v6];
     [(HRWDUserActivityManager *)self setRecordActivities:0];
   }
@@ -371,26 +371,26 @@ LABEL_15:
   }
 }
 
-- (void)addPolicy:(id)a3
+- (void)addPolicy:(id)policy
 {
-  v5 = a3;
-  v4 = [(HRWDUserActivityManager *)self policies];
-  if (([v4 containsObject:v5] & 1) == 0)
+  policyCopy = policy;
+  policies = [(HRWDUserActivityManager *)self policies];
+  if (([policies containsObject:policyCopy] & 1) == 0)
   {
-    [v4 addObject:v5];
+    [policies addObject:policyCopy];
   }
 }
 
-- (BOOL)_restoreActivityFromPolicies:(id)a3
+- (BOOL)_restoreActivityFromPolicies:(id)policies
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  policiesCopy = policies;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(HRWDUserActivityManager *)self policies];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  policies = [(HRWDUserActivityManager *)self policies];
+  v6 = [policies countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -401,13 +401,13 @@ LABEL_15:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(policies);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        if ([v10 decidesActivity:v4])
+        if ([v10 decidesActivity:policiesCopy])
         {
-          v11 = [v10 activityChainForActivity:v4];
+          v11 = [v10 activityChainForActivity:policiesCopy];
           if (v11)
           {
             v13 = v11;
@@ -419,7 +419,7 @@ LABEL_15:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [policies countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
         continue;

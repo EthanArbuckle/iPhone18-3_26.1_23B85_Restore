@@ -1,5 +1,5 @@
 @interface MosaicCollectionViewCell
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)handleTraitChange;
 @end
 
@@ -8,40 +8,40 @@
 - (void)handleTraitChange
 {
   v2 = *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC9MomentsUI24MosaicCollectionViewCell_containerView);
-  v6 = self;
+  selfCopy = self;
   v3 = v2;
-  v4 = [(MosaicCollectionViewCell *)v6 traitCollection];
-  v5 = [v4 userInterfaceStyle];
+  traitCollection = [(MosaicCollectionViewCell *)selfCopy traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  specialized static CommonTheme.Styles.styleViewAsPlatter(view:traitCollection:)(v3, v5);
+  specialized static CommonTheme.Styles.styleViewAsPlatter(view:traitCollection:)(v3, userInterfaceStyle);
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v13.receiver = self;
   v13.super_class = type metadata accessor for MosaicCollectionViewCell();
   v7 = v13.receiver;
-  v8 = a4;
-  v9 = [(MosaicCollectionViewCell *)&v13 hitTest:v8 withEvent:x, y];
+  eventCopy = event;
+  v9 = [(MosaicCollectionViewCell *)&v13 hitTest:eventCopy withEvent:x, y];
   if (v9)
   {
     v10 = v9;
     type metadata accessor for NSAttributedString(0, &lazy cache variable for type metadata for UIButton);
-    v11 = [v10 isKindOfClass_];
+    isKindOfClass_ = [v10 isKindOfClass_];
 
-    if (v11)
+    if (isKindOfClass_)
     {
-      v8 = v7;
+      eventCopy = v7;
     }
 
     else
     {
-      v8 = v10;
+      eventCopy = v10;
     }
 
-    if (v11)
+    if (isKindOfClass_)
     {
       v7 = v10;
     }

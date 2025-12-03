@@ -1,21 +1,21 @@
 @interface ICConvertToSmartFolderDecision
-+ (BOOL)canShowConvertToSmartFolder:(id)a3;
-- (ICConvertToSmartFolderDecision)initWithSourceFolder:(id)a3;
++ (BOOL)canShowConvertToSmartFolder:(id)folder;
+- (ICConvertToSmartFolderDecision)initWithSourceFolder:(id)folder;
 - (void)makeDecision;
 @end
 
 @implementation ICConvertToSmartFolderDecision
 
-- (ICConvertToSmartFolderDecision)initWithSourceFolder:(id)a3
+- (ICConvertToSmartFolderDecision)initWithSourceFolder:(id)folder
 {
-  v5 = a3;
+  folderCopy = folder;
   v9.receiver = self;
   v9.super_class = ICConvertToSmartFolderDecision;
   v6 = [(ICConvertToSmartFolderDecision *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sourceFolder, a3);
+    objc_storeStrong(&v6->_sourceFolder, folder);
     [(ICConvertToSmartFolderDecision *)v7 makeDecision];
   }
 
@@ -24,40 +24,40 @@
 
 - (void)makeDecision
 {
-  v3 = [(ICConvertToSmartFolderDecision *)self sourceFolder];
-  v4 = [v3 isSystemFolder];
+  sourceFolder = [(ICConvertToSmartFolderDecision *)self sourceFolder];
+  isSystemFolder = [sourceFolder isSystemFolder];
 
-  v5 = self;
-  if (v4 || (-[ICConvertToSmartFolderDecision sourceFolder](self, "sourceFolder"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isSmartFolder], v6, v5 = self, v7))
+  selfCopy = self;
+  if (isSystemFolder || (-[ICConvertToSmartFolderDecision sourceFolder](self, "sourceFolder"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isSmartFolder], v6, selfCopy = self, v7))
   {
-    [(ICConvertToSmartFolderDecision *)v5 setType:1];
-    v8 = self;
+    [(ICConvertToSmartFolderDecision *)selfCopy setType:1];
+    selfCopy4 = self;
     v9 = 0;
 LABEL_4:
 
-    [(ICConvertToSmartFolderDecision *)v8 setAdditionalStep:v9];
+    [(ICConvertToSmartFolderDecision *)selfCopy4 setAdditionalStep:v9];
     return;
   }
 
-  v10 = [(ICConvertToSmartFolderDecision *)self sourceFolder];
-  v11 = [v10 isSharedViaICloud];
+  sourceFolder2 = [(ICConvertToSmartFolderDecision *)self sourceFolder];
+  isSharedViaICloud = [sourceFolder2 isSharedViaICloud];
 
-  if (v11)
+  if (isSharedViaICloud)
   {
     [(ICConvertToSmartFolderDecision *)self setType:2];
-    v8 = self;
+    selfCopy4 = self;
     v9 = 3;
     goto LABEL_4;
   }
 
-  v12 = [(ICConvertToSmartFolderDecision *)self sourceFolder];
-  v13 = [v12 visibleSubFolders];
-  v14 = [v13 count];
+  sourceFolder3 = [(ICConvertToSmartFolderDecision *)self sourceFolder];
+  visibleSubFolders = [sourceFolder3 visibleSubFolders];
+  v14 = [visibleSubFolders count];
 
   if (v14)
   {
     [(ICConvertToSmartFolderDecision *)self setType:2];
-    v8 = self;
+    selfCopy4 = self;
     v9 = 4;
     goto LABEL_4;
   }
@@ -66,10 +66,10 @@ LABEL_4:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v15 = [(ICConvertToSmartFolderDecision *)self sourceFolder];
-  v16 = [v15 visibleNotesIncludingChildFolders];
+  sourceFolder4 = [(ICConvertToSmartFolderDecision *)self sourceFolder];
+  visibleNotesIncludingChildFolders = [sourceFolder4 visibleNotesIncludingChildFolders];
 
-  v17 = [v16 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  v17 = [visibleNotesIncludingChildFolders countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v17)
   {
     v18 = v17;
@@ -81,7 +81,7 @@ LABEL_4:
       {
         if (*v27 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(visibleNotesIncludingChildFolders);
         }
 
         v22 = *(*(&v26 + 1) + 8 * i);
@@ -101,7 +101,7 @@ LABEL_23:
         }
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v18 = [visibleNotesIncludingChildFolders countByEnumeratingWithState:&v26 objects:v30 count:16];
       if (v18)
       {
         continue;
@@ -111,11 +111,11 @@ LABEL_23:
     }
   }
 
-  v23 = [(ICConvertToSmartFolderDecision *)self sourceFolder];
-  v24 = [v23 parent];
+  sourceFolder5 = [(ICConvertToSmartFolderDecision *)self sourceFolder];
+  parent = [sourceFolder5 parent];
 
   [(ICConvertToSmartFolderDecision *)self setType:0];
-  if (v24)
+  if (parent)
   {
     v25 = 2;
   }
@@ -128,13 +128,13 @@ LABEL_23:
   [(ICConvertToSmartFolderDecision *)self setAdditionalStep:v25];
 }
 
-+ (BOOL)canShowConvertToSmartFolder:(id)a3
++ (BOOL)canShowConvertToSmartFolder:(id)folder
 {
-  v3 = a3;
-  v4 = [[ICConvertToSmartFolderDecision alloc] initWithSourceFolder:v3];
+  folderCopy = folder;
+  v4 = [[ICConvertToSmartFolderDecision alloc] initWithSourceFolder:folderCopy];
 
-  LOBYTE(v3) = [(ICConvertToSmartFolderDecision *)v4 type]!= 1;
-  return v3;
+  LOBYTE(folderCopy) = [(ICConvertToSmartFolderDecision *)v4 type]!= 1;
+  return folderCopy;
 }
 
 @end

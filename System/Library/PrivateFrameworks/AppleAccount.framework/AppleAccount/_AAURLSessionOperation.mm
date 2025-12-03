@@ -1,18 +1,18 @@
 @interface _AAURLSessionOperation
-+ (id)operationWithCompletion:(id)a3;
++ (id)operationWithCompletion:(id)completion;
 - (NSData)data;
 - (_AAURLSessionOperation)init;
-- (_AAURLSessionOperation)initWithCompletion:(id)a3;
-- (void)appendData:(id)a3;
-- (void)invokeCompletionWithResponse:(id)a3 error:(id)a4;
+- (_AAURLSessionOperation)initWithCompletion:(id)completion;
+- (void)appendData:(id)data;
+- (void)invokeCompletionWithResponse:(id)response error:(id)error;
 @end
 
 @implementation _AAURLSessionOperation
 
-+ (id)operationWithCompletion:(id)a3
++ (id)operationWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithCompletion:v4];
+  completionCopy = completion;
+  v5 = [[self alloc] initWithCompletion:completionCopy];
 
   return v5;
 }
@@ -24,15 +24,15 @@
   return 0;
 }
 
-- (_AAURLSessionOperation)initWithCompletion:(id)a3
+- (_AAURLSessionOperation)initWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v10.receiver = self;
   v10.super_class = _AAURLSessionOperation;
   v5 = [(_AAURLSessionOperation *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [completionCopy copy];
     completion = v5->_completion;
     v5->_completion = v6;
 
@@ -50,18 +50,18 @@
   return v2;
 }
 
-- (void)appendData:(id)a3
+- (void)appendData:(id)data
 {
   mutableData = self->_mutableData;
   if (mutableData)
   {
 
-    [(NSMutableData *)mutableData appendData:a3];
+    [(NSMutableData *)mutableData appendData:data];
   }
 
   else
   {
-    v5 = [a3 mutableCopy];
+    v5 = [data mutableCopy];
     v6 = self->_mutableData;
     self->_mutableData = v5;
 
@@ -69,12 +69,12 @@
   }
 }
 
-- (void)invokeCompletionWithResponse:(id)a3 error:(id)a4
+- (void)invokeCompletionWithResponse:(id)response error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v12 = v6;
-  v8 = v7;
+  responseCopy = response;
+  errorCopy = error;
+  v12 = responseCopy;
+  v8 = errorCopy;
   if ((v12 != 0) != (v8 == 0))
   {
     v11 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"Invalid exclusivity not satisfying: response ^ error" userInfo:0];
@@ -82,8 +82,8 @@
   }
 
   completion = self->_completion;
-  v10 = [(_AAURLSessionOperation *)self data];
-  completion[2](completion, v10, v12, v8);
+  data = [(_AAURLSessionOperation *)self data];
+  completion[2](completion, data, v12, v8);
 }
 
 @end

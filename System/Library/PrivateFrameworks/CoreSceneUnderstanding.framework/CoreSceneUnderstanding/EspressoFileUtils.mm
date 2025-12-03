@@ -1,18 +1,18 @@
 @interface EspressoFileUtils
-+ (EspressoTensor)createEspressoTensorFromTextFile:(SEL)a3 channels:(id)a4 height:(unint64_t)a5 width:(unint64_t)a6;
-+ (void)writeEspressoBufferToBinFile:(id)a3 FromBuffer:(id)a4;
-+ (void)writeEspressoBufferToTextFile:(id)a3 FromBuffer:(id)a4;
-+ (void)writeIKFloatTensorBuffer:(const void *)a3 ToBinFile:(id)a4;
++ (EspressoTensor)createEspressoTensorFromTextFile:(SEL)file channels:(id)channels height:(unint64_t)height width:(unint64_t)width;
++ (void)writeEspressoBufferToBinFile:(id)file FromBuffer:(id)buffer;
++ (void)writeEspressoBufferToTextFile:(id)file FromBuffer:(id)buffer;
++ (void)writeIKFloatTensorBuffer:(const void *)buffer ToBinFile:(id)file;
 @end
 
 @implementation EspressoFileUtils
 
-+ (void)writeEspressoBufferToTextFile:(id)a3 FromBuffer:(id)a4
++ (void)writeEspressoBufferToTextFile:(id)file FromBuffer:(id)buffer
 {
   v42[19] = *MEMORY[0x1E69E9840];
-  v37 = a3;
-  v5 = a4;
-  if (!v5)
+  fileCopy = file;
+  bufferCopy = buffer;
+  if (!bufferCopy)
   {
     exception = __cxa_allocate_exception(0x10uLL);
     std::runtime_error::runtime_error(exception, "The given CSUBuffer instance is nil.");
@@ -28,8 +28,8 @@ LABEL_37:
     __cxa_throw(exception, MEMORY[0x1E69E5408], MEMORY[0x1E69E5288]);
   }
 
-  v10 = objc_msgSend_espressoBuffer(v5, v6, v7, v8, v9);
-  v36 = v5;
+  v10 = objc_msgSend_espressoBuffer(bufferCopy, v6, v7, v8, v9);
+  v36 = bufferCopy;
 
   v11 = *v10;
   v42[6] = 0;
@@ -46,7 +46,7 @@ LABEL_37:
   v40 = v15;
   v42[0] = v12;
   MEMORY[0x1AC5AC0F0](v41);
-  v16 = v37;
+  v16 = fileCopy;
   v21 = objc_msgSend_UTF8String(v16, v17, v18, v19, v20);
   v22 = strlen(v21);
   if (v22 >= 0x7FFFFFFFFFFFFFF8)
@@ -172,29 +172,29 @@ LABEL_30:
   v34 = *MEMORY[0x1E69E9840];
 }
 
-+ (EspressoTensor)createEspressoTensorFromTextFile:(SEL)a3 channels:(id)a4 height:(unint64_t)a5 width:(unint64_t)a6
++ (EspressoTensor)createEspressoTensorFromTextFile:(SEL)file channels:(id)channels height:(unint64_t)height width:(unint64_t)width
 {
   v8 = *MEMORY[0x1E69E9840];
-  a4;
+  channels;
   operator new();
 }
 
-+ (void)writeEspressoBufferToBinFile:(id)a3 FromBuffer:(id)a4
++ (void)writeEspressoBufferToBinFile:(id)file FromBuffer:(id)buffer
 {
-  v5 = a3;
+  fileCopy = file;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_1AC083AAC;
   v10[3] = &unk_1E7967EC8;
-  v11 = v5;
-  v6 = v5;
-  objc_msgSend_accessDataUsingBlock_(a4, v7, v10, v8, v9);
+  v11 = fileCopy;
+  v6 = fileCopy;
+  objc_msgSend_accessDataUsingBlock_(buffer, v7, v10, v8, v9);
 }
 
-+ (void)writeIKFloatTensorBuffer:(const void *)a3 ToBinFile:(id)a4
++ (void)writeIKFloatTensorBuffer:(const void *)buffer ToBinFile:(id)file
 {
   v21[19] = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  fileCopy = file;
   v21[6] = 0;
   v6 = MEMORY[0x1E69E5530] + 64;
   v21[0] = MEMORY[0x1E69E5530] + 64;
@@ -210,11 +210,11 @@ LABEL_30:
   v19 = v10;
   v21[0] = v6;
   MEMORY[0x1AC5AC0F0](v20);
-  v11 = v5;
-  objc_msgSend_UTF8String(v5, v12, v13, v14, v15);
+  v11 = fileCopy;
+  objc_msgSend_UTF8String(fileCopy, v12, v13, v14, v15);
   std::ofstream::open();
-  v16 = *a3;
-  v17 = *(a3 + 1);
+  v16 = *buffer;
+  v17 = *(buffer + 1);
   std::ostream::write();
   if (!std::filebuf::close())
   {

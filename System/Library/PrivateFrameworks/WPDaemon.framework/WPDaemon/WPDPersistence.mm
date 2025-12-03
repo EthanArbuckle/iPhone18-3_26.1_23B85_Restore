@@ -1,14 +1,14 @@
 @interface WPDPersistence
-- (BOOL)readBoolPropertyValue:(id)a3;
+- (BOOL)readBoolPropertyValue:(id)value;
 - (WPDPersistence)init;
 - (id)currentBootSessionUUID;
-- (id)readStringPropertyValue:(id)a3;
+- (id)readStringPropertyValue:(id)value;
 - (void)dealloc;
-- (void)deletePropertyValue:(id)a3;
-- (void)firstUnlockedWithEvent:(BOOL)a3;
+- (void)deletePropertyValue:(id)value;
+- (void)firstUnlockedWithEvent:(BOOL)event;
 - (void)synchronisePrefs;
-- (void)writeBoolProperty:(id)a3 Value:(BOOL)a4;
-- (void)writeStringProperty:(id)a3 Value:(id)a4;
+- (void)writeBoolProperty:(id)property Value:(BOOL)value;
+- (void)writeStringProperty:(id)property Value:(id)value;
 @end
 
 @implementation WPDPersistence
@@ -24,9 +24,9 @@
   {
     *&v2->_isRangingEnabled = 256;
     v2->_systemFirstUnlocked = 0;
-    v4 = [(WPDPersistence *)v2 currentBootSessionUUID];
+    currentBootSessionUUID = [(WPDPersistence *)v2 currentBootSessionUUID];
     bootUUID = v3->_bootUUID;
-    v3->_bootUUID = v4;
+    v3->_bootUUID = currentBootSessionUUID;
 
     if (WPLogInitOnce != -1)
     {
@@ -92,9 +92,9 @@ LABEL_5:
   return v3;
 }
 
-- (void)firstUnlockedWithEvent:(BOOL)a3
+- (void)firstUnlockedWithEvent:(BOOL)event
 {
-  v3 = a3;
+  eventCopy = event;
   if (WPLogInitOnce != -1)
   {
     [WPDPersistence firstUnlockedWithEvent:];
@@ -103,11 +103,11 @@ LABEL_5:
   v5 = WiProxLog;
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEBUG))
   {
-    [(WPDPersistence *)v3 firstUnlockedWithEvent:v5];
+    [(WPDPersistence *)eventCopy firstUnlockedWithEvent:v5];
   }
 
   [(WPDPersistence *)self setSystemFirstUnlocked:1];
-  if (v3)
+  if (eventCopy)
   {
     [(WPDPersistence *)self setNeedsInit:0];
   }
@@ -117,8 +117,8 @@ LABEL_5:
     v6 = [(WPDPersistence *)self readStringPropertyValue:@"WPBootUUID"];
     if (v6)
     {
-      v7 = [(WPDPersistence *)self bootUUID];
-      v8 = [v7 isEqual:v6];
+      bootUUID = [(WPDPersistence *)self bootUUID];
+      v8 = [bootUUID isEqual:v6];
 
       if (v8)
       {
@@ -143,19 +143,19 @@ LABEL_5:
 - (void)synchronisePrefs
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = a1;
+  selfCopy = self;
   v7[0] = 67109376;
   v7[1] = a3;
   v8 = 1024;
-  v9 = [a2 systemFirstUnlocked];
-  _os_log_debug_impl(&dword_272965000, v5, OS_LOG_TYPE_DEBUG, "WPDPersistence synchronised: %d (firstUnlocked: %d)", v7, 0xEu);
+  systemFirstUnlocked = [a2 systemFirstUnlocked];
+  _os_log_debug_impl(&dword_272965000, selfCopy, OS_LOG_TYPE_DEBUG, "WPDPersistence synchronised: %d (firstUnlocked: %d)", v7, 0xEu);
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deletePropertyValue:(id)a3
+- (void)deletePropertyValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   v4 = objc_autoreleasePoolPush();
   if (WPLogInitOnce != -1)
   {
@@ -165,20 +165,20 @@ LABEL_5:
   v5 = WiProxLog;
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEBUG))
   {
-    [(WPDPersistence *)v3 deletePropertyValue:v5];
+    [(WPDPersistence *)valueCopy deletePropertyValue:v5];
   }
 
-  CFPreferencesSetAppValue(v3, 0, @"com.apple.BTServer");
+  CFPreferencesSetAppValue(valueCopy, 0, @"com.apple.BTServer");
   objc_autoreleasePoolPop(v4);
 }
 
-- (BOOL)readBoolPropertyValue:(id)a3
+- (BOOL)readBoolPropertyValue:(id)value
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  valueCopy = value;
   v4 = objc_autoreleasePoolPush();
   keyExistsAndHasValidFormat = 0;
-  AppBooleanValue = CFPreferencesGetAppBooleanValue(v3, @"com.apple.BTServer", &keyExistsAndHasValidFormat);
+  AppBooleanValue = CFPreferencesGetAppBooleanValue(valueCopy, @"com.apple.BTServer", &keyExistsAndHasValidFormat);
   if (AppBooleanValue)
   {
     v6 = keyExistsAndHasValidFormat == 0;
@@ -199,7 +199,7 @@ LABEL_5:
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138413058;
-    v13 = v3;
+    v13 = valueCopy;
     v14 = 1024;
     v15 = v7;
     v16 = 1024;
@@ -215,10 +215,10 @@ LABEL_5:
   return v7;
 }
 
-- (void)writeBoolProperty:(id)a3 Value:(BOOL)a4
+- (void)writeBoolProperty:(id)property Value:(BOOL)value
 {
-  v4 = a4;
-  v6 = a3;
+  valueCopy = value;
+  propertyCopy = property;
   if (WPLogInitOnce != -1)
   {
     [WPDPersistence writeBoolProperty:Value:];
@@ -231,21 +231,21 @@ LABEL_5:
 
   v7 = objc_autoreleasePoolPush();
   v8 = MEMORY[0x277CBED28];
-  if (!v4)
+  if (!valueCopy)
   {
     v8 = MEMORY[0x277CBED10];
   }
 
-  CFPreferencesSetAppValue(v6, *v8, @"com.apple.BTServer");
+  CFPreferencesSetAppValue(propertyCopy, *v8, @"com.apple.BTServer");
   objc_autoreleasePoolPop(v7);
   [(WPDPersistence *)self synchronisePrefs];
 }
 
-- (id)readStringPropertyValue:(id)a3
+- (id)readStringPropertyValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   v4 = objc_autoreleasePoolPush();
-  v5 = CFPreferencesCopyAppValue(v3, @"com.apple.BTServer");
+  v5 = CFPreferencesCopyAppValue(valueCopy, @"com.apple.BTServer");
   if (v5)
   {
     v6 = v5;
@@ -282,10 +282,10 @@ LABEL_5:
   return v8;
 }
 
-- (void)writeStringProperty:(id)a3 Value:(id)a4
+- (void)writeStringProperty:(id)property Value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  propertyCopy = property;
+  valueCopy = value;
   if (WPLogInitOnce != -1)
   {
     [WPDPersistence writeStringProperty:Value:];
@@ -297,7 +297,7 @@ LABEL_5:
   }
 
   v8 = objc_autoreleasePoolPush();
-  CFPreferencesSetAppValue(v6, v7, @"com.apple.BTServer");
+  CFPreferencesSetAppValue(propertyCopy, valueCopy, @"com.apple.BTServer");
   objc_autoreleasePoolPop(v8);
   [(WPDPersistence *)self synchronisePrefs];
 }

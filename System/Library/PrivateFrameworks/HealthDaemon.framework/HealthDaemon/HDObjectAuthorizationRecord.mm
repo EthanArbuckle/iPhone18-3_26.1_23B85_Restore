@@ -1,10 +1,10 @@
 @interface HDObjectAuthorizationRecord
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HDObjectAuthorizationRecord)init;
-- (HDObjectAuthorizationRecord)initWithCoder:(id)a3;
+- (HDObjectAuthorizationRecord)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HDObjectAuthorizationRecord
@@ -25,12 +25,12 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(NSUUID *)self->_objectUUID UUIDString];
-  v5 = [(NSUUID *)self->_sourceUUID UUIDString];
-  v6 = [(NSUUID *)self->_sessionUUID UUIDString];
+  uUIDString = [(NSUUID *)self->_objectUUID UUIDString];
+  uUIDString2 = [(NSUUID *)self->_sourceUUID UUIDString];
+  uUIDString3 = [(NSUUID *)self->_sessionUUID UUIDString];
   status = self->_status;
   v8 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:self->_modificationDate];
-  v9 = [v3 stringWithFormat:@"<Object: %@ Source: %@ Session: %@ Status: %ld Mod: %@>", v4, v5, v6, status, v8];
+  v9 = [v3 stringWithFormat:@"<Object: %@ Source: %@ Session: %@ Status: %ld Mod: %@>", uUIDString, uUIDString2, uUIDString3, status, v8];
 
   return v9;
 }
@@ -42,19 +42,19 @@
   return v4 ^ [(NSUUID *)self->_sessionUUID hash]^ self->_status ^ self->_modificationDate;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v11 = (objc_opt_isKindOfClass() & 1) != 0 && ((sourceUUID = self->_sourceUUID, v6 = *(v4 + 2), sourceUUID == v6) || v6 && [(NSUUID *)sourceUUID isEqual:?]) && ((objectUUID = self->_objectUUID, v8 = *(v4 + 1), objectUUID == v8) || v8 && [(NSUUID *)objectUUID isEqual:?]) && ((sessionUUID = self->_sessionUUID, v10 = *(v4 + 3), sessionUUID == v10) || v10 && [(NSUUID *)sessionUUID isEqual:?]) && self->_status == *(v4 + 4) && self->_modificationDate == v4[5];
+  v11 = (objc_opt_isKindOfClass() & 1) != 0 && ((sourceUUID = self->_sourceUUID, v6 = *(equalCopy + 2), sourceUUID == v6) || v6 && [(NSUUID *)sourceUUID isEqual:?]) && ((objectUUID = self->_objectUUID, v8 = *(equalCopy + 1), objectUUID == v8) || v8 && [(NSUUID *)objectUUID isEqual:?]) && ((sessionUUID = self->_sessionUUID, v10 = *(equalCopy + 3), sessionUUID == v10) || v10 && [(NSUUID *)sessionUUID isEqual:?]) && self->_status == *(equalCopy + 4) && self->_modificationDate == equalCopy[5];
 
   return v11;
 }
 
-- (HDObjectAuthorizationRecord)initWithCoder:(id)a3
+- (HDObjectAuthorizationRecord)initWithCoder:(id)coder
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v29.receiver = self;
   v29.super_class = HDObjectAuthorizationRecord;
   v5 = [(HDObjectAuthorizationRecord *)&v29 init];
@@ -63,17 +63,17 @@
     goto LABEL_5;
   }
 
-  [v4 decodeDoubleForKey:@"mod"];
+  [coderCopy decodeDoubleForKey:@"mod"];
   v5->_modificationDate = v6;
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sid"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sid"];
   sourceUUID = v5->_sourceUUID;
   v5->_sourceUUID = v7;
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"oid"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"oid"];
   objectUUID = v5->_objectUUID;
   v5->_objectUUID = v9;
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sessionid"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sessionid"];
   sessionUUID = v5->_sessionUUID;
   v5->_sessionUUID = v11;
 
@@ -106,7 +106,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v13 = [v4 decodeIntegerForKey:@"stat"];
+  v13 = [coderCopy decodeIntegerForKey:@"stat"];
   v5->_status = v13;
   if (v13 >= 3)
   {
@@ -139,15 +139,15 @@ LABEL_12:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sourceUUID = self->_sourceUUID;
-  v5 = a3;
-  [v5 encodeObject:sourceUUID forKey:@"sid"];
-  [v5 encodeObject:self->_objectUUID forKey:@"oid"];
-  [v5 encodeObject:self->_sessionUUID forKey:@"sessionid"];
-  [v5 encodeInteger:self->_status forKey:@"stat"];
-  [v5 encodeDouble:@"mod" forKey:self->_modificationDate];
+  coderCopy = coder;
+  [coderCopy encodeObject:sourceUUID forKey:@"sid"];
+  [coderCopy encodeObject:self->_objectUUID forKey:@"oid"];
+  [coderCopy encodeObject:self->_sessionUUID forKey:@"sessionid"];
+  [coderCopy encodeInteger:self->_status forKey:@"stat"];
+  [coderCopy encodeDouble:@"mod" forKey:self->_modificationDate];
 }
 
 @end

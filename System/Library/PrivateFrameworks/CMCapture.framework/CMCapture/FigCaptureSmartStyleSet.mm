@@ -1,34 +1,34 @@
 @interface FigCaptureSmartStyleSet
-+ (id)smartStyleSetWithSmartStyles:(id)a3 regions:(id)a4;
-- (CGRect)regionAtIndex:(unint64_t)a3;
-- (FigCaptureSmartStyleSet)initWithXPCEncoding:(id)a3;
++ (id)smartStyleSetWithSmartStyles:(id)styles regions:(id)regions;
+- (CGRect)regionAtIndex:(unint64_t)index;
+- (FigCaptureSmartStyleSet)initWithXPCEncoding:(id)encoding;
 - (NSString)description;
 - (float)largestEdgeOffset;
 - (float)leftmostRegionStartXOffset;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyXPCEncoding;
 - (id)largestRegionSmartStyle;
 - (void)dealloc;
-- (void)initWithSmartStyles:(void *)a3 regions:;
+- (void)initWithSmartStyles:(void *)styles regions:;
 @end
 
 @implementation FigCaptureSmartStyleSet
 
-+ (id)smartStyleSetWithSmartStyles:(id)a3 regions:(id)a4
++ (id)smartStyleSetWithSmartStyles:(id)styles regions:(id)regions
 {
-  v4 = [[FigCaptureSmartStyleSet alloc] initWithSmartStyles:a3 regions:a4];
+  v4 = [[FigCaptureSmartStyleSet alloc] initWithSmartStyles:styles regions:regions];
 
   return v4;
 }
 
-- (FigCaptureSmartStyleSet)initWithXPCEncoding:(id)a3
+- (FigCaptureSmartStyleSet)initWithXPCEncoding:(id)encoding
 {
   v19.receiver = self;
   v19.super_class = FigCaptureSmartStyleSet;
   v4 = [(FigCaptureSmartStyleSet *)&v19 init];
   if (v4)
   {
-    value = xpc_dictionary_get_value(a3, "smartStylesArray");
+    value = xpc_dictionary_get_value(encoding, "smartStylesArray");
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     if (xpc_array_get_count(value))
     {
@@ -42,7 +42,7 @@
     }
 
     v4->_smartStyles = v6;
-    v8 = xpc_dictionary_get_value(a3, "regionsArray");
+    v8 = xpc_dictionary_get_value(encoding, "regionsArray");
     v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
     if (xpc_array_get_count(v8))
     {
@@ -237,9 +237,9 @@
   return v9;
 }
 
-- (CGRect)regionAtIndex:(unint64_t)a3
+- (CGRect)regionAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_regions objectAtIndexedSubscript:a3];
+  v3 = [(NSArray *)self->_regions objectAtIndexedSubscript:index];
   v8 = 0u;
   v9 = 0u;
   [v3 getValue:&v8];
@@ -278,14 +278,14 @@
   return v4;
 }
 
-- (void)initWithSmartStyles:(void *)a3 regions:
+- (void)initWithSmartStyles:(void *)styles regions:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v13.receiver = a1;
+  v13.receiver = self;
   v13.super_class = FigCaptureSmartStyleSet;
   v5 = objc_msgSendSuper2(&v13, sel_init);
   if (v5)
@@ -297,9 +297,9 @@
       for (i = 0; [a2 count] > i; ++i)
       {
         [a2 objectAtIndexedSubscript:i];
-        if (a3)
+        if (styles)
         {
-          if ([a3 count] <= i)
+          if ([styles count] <= i)
           {
             continue;
           }
@@ -336,9 +336,9 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [FigCaptureSmartStyleSet allocWithZone:a3];
+  v4 = [FigCaptureSmartStyleSet allocWithZone:zone];
   smartStyles = self->_smartStyles;
   regions = self->_regions;
 

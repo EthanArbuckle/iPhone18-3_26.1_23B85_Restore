@@ -1,9 +1,9 @@
 @interface CSSIntegralSize
 + (CSSIntegralSize)zeroSize;
-- (BOOL)isEqual:(id)a3;
-- (CSSIntegralSize)initWithWidth:(unint64_t)a3 height:(unint64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (CSSIntegralSize)initWithWidth:(unint64_t)width height:(unint64_t)height;
 - (CSSIntegralSize)rotatedSize;
-- (id)sizeScaledByFactor:(unint64_t)a3;
+- (id)sizeScaledByFactor:(unint64_t)factor;
 @end
 
 @implementation CSSIntegralSize
@@ -15,23 +15,23 @@
   return v2;
 }
 
-- (CSSIntegralSize)initWithWidth:(unint64_t)a3 height:(unint64_t)a4
+- (CSSIntegralSize)initWithWidth:(unint64_t)width height:(unint64_t)height
 {
   v7.receiver = self;
   v7.super_class = CSSIntegralSize;
   result = [(CSSIntegralSize *)&v7 init];
   if (result)
   {
-    result->_width = a3;
-    result->_height = a4;
+    result->_width = width;
+    result->_height = height;
   }
 
   return result;
 }
 
-- (id)sizeScaledByFactor:(unint64_t)a3
+- (id)sizeScaledByFactor:(unint64_t)factor
 {
-  v3 = [objc_alloc(objc_opt_class()) initWithWidth:-[CSSIntegralSize width](self height:{"width") * a3, -[CSSIntegralSize height](self, "height") * a3}];
+  v3 = [objc_alloc(objc_opt_class()) initWithWidth:-[CSSIntegralSize width](self height:{"width") * factor, -[CSSIntegralSize height](self, "height") * factor}];
 
   return v3;
 }
@@ -43,17 +43,17 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(CSSIntegralSize *)self width];
-    if (v6 == [v5 width])
+    v5 = equalCopy;
+    width = [(CSSIntegralSize *)self width];
+    if (width == [v5 width])
     {
-      v7 = [(CSSIntegralSize *)self height];
-      v8 = v7 == [v5 height];
+      height = [(CSSIntegralSize *)self height];
+      v8 = height == [v5 height];
     }
 
     else

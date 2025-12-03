@@ -1,46 +1,46 @@
 @interface RELocationRelevanceProviderManager
 + (id)_dependencyClasses;
 + (id)_features;
-- (id)_locationOfProvider:(id)a3;
-- (id)_valueForProvider:(id)a3 context:(id)a4 feature:(id)a5;
-- (int)_queryRevokableStatusForProvider:(id)a3;
+- (id)_locationOfProvider:(id)provider;
+- (id)_valueForProvider:(id)provider context:(id)context feature:(id)feature;
+- (int)_queryRevokableStatusForProvider:(id)provider;
 - (void)pause;
-- (void)predictorDidUpdate:(id)a3;
+- (void)predictorDidUpdate:(id)update;
 - (void)resume;
 @end
 
 @implementation RELocationRelevanceProviderManager
 
-- (id)_locationOfProvider:(id)a3
+- (id)_locationOfProvider:(id)provider
 {
-  v4 = a3;
-  if ([v4 type])
+  providerCopy = provider;
+  if ([providerCopy type])
   {
-    v5 = [v4 type];
+    type = [providerCopy type];
 
-    if (v5 >= 5)
+    if (type >= 5)
     {
       v6 = 0;
     }
 
     else
     {
-      v6 = v5 - 1;
+      v6 = type - 1;
     }
 
-    v7 = [(RERelevanceProviderManager *)self environment];
-    v4 = [v7 relevanceEngine];
+    environment = [(RERelevanceProviderManager *)self environment];
+    providerCopy = [environment relevanceEngine];
 
     v8 = +[(RESingleton *)RELocationPredictor];
-    v9 = [v8 locationForEngine:v4 userLocation:v6];
+    location = [v8 locationForEngine:providerCopy userLocation:v6];
   }
 
   else
   {
-    v9 = [v4 location];
+    location = [providerCopy location];
   }
 
-  return v9;
+  return location;
 }
 
 + (id)_features
@@ -63,15 +63,15 @@
   return [v2 setWithObject:v3];
 }
 
-- (id)_valueForProvider:(id)a3 context:(id)a4 feature:(id)a5
+- (id)_valueForProvider:(id)provider context:(id)context feature:(id)feature
 {
   v41 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [a4 attributeForKey:@"RETrainingContextLocationKey"];
+  providerCopy = provider;
+  currentLocation = [context attributeForKey:@"RETrainingContextLocationKey"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (v8)
+    if (currentLocation)
     {
       goto LABEL_6;
     }
@@ -81,17 +81,17 @@
   {
   }
 
-  v8 = [(RESharedLocationRelevanceProviderManager *)self currentLocation];
+  currentLocation = [(RESharedLocationRelevanceProviderManager *)self currentLocation];
 LABEL_6:
   v9 = RELogForDomain(5);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v37 = 138412290;
-    v38 = *&v8;
+    v38 = *&currentLocation;
     _os_log_impl(&dword_22859F000, v9, OS_LOG_TYPE_DEFAULT, "in _valueForProvider, deviceLocation is %@", &v37, 0xCu);
   }
 
-  if (!v8)
+  if (!currentLocation)
   {
     v22 = RELogForDomain(5);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -103,14 +103,14 @@ LABEL_6:
     goto LABEL_29;
   }
 
-  v10 = [v7 bundleIdentifier];
+  bundleIdentifier = [providerCopy bundleIdentifier];
 
-  if (v10)
+  if (bundleIdentifier)
   {
-    v11 = [(RELocationRelevanceProviderManager *)self _queryRevokableStatusForProvider:v7];
-    v12 = [v7 type];
+    v11 = [(RELocationRelevanceProviderManager *)self _queryRevokableStatusForProvider:providerCopy];
+    type = [providerCopy type];
     v13 = (v11 - 3) < 2;
-    if (v12)
+    if (type)
     {
       v13 = v11 == 3;
     }
@@ -120,10 +120,10 @@ LABEL_6:
       v22 = RELogForDomain(5);
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
       {
-        v23 = [v7 bundleIdentifier];
-        v24 = [v23 UTF8String];
+        bundleIdentifier2 = [providerCopy bundleIdentifier];
+        uTF8String = [bundleIdentifier2 UTF8String];
         v37 = 136315138;
-        v38 = *&v24;
+        v38 = *&uTF8String;
         _os_log_impl(&dword_22859F000, v22, OS_LOG_TYPE_INFO, "Bundle identifier (%s) lacks location permission. Skipping relevance.", &v37, 0xCu);
       }
 
@@ -134,7 +134,7 @@ LABEL_29:
     }
   }
 
-  v14 = [(RELocationRelevanceProviderManager *)self _locationOfProvider:v7];
+  v14 = [(RELocationRelevanceProviderManager *)self _locationOfProvider:providerCopy];
   v15 = RELogForDomain(5);
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
@@ -145,7 +145,7 @@ LABEL_29:
 
   if (v14)
   {
-    [v14 distanceFromLocation:v8];
+    [v14 distanceFromLocation:currentLocation];
     v17 = v16;
     v18 = RELogForDomain(5);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -153,23 +153,23 @@ LABEL_29:
       v37 = 134218242;
       v38 = v17;
       v39 = 2112;
-      v40 = v7;
+      v40 = providerCopy;
       _os_log_impl(&dword_22859F000, v18, OS_LOG_TYPE_DEFAULT, "%f distance to %@", &v37, 0x16u);
     }
 
     [v14 coordinate];
-    if (CLLocationCoordinate2DIsValid(v43) && ([v8 coordinate], CLLocationCoordinate2DIsValid(v44)))
+    if (CLLocationCoordinate2DIsValid(v43) && ([currentLocation coordinate], CLLocationCoordinate2DIsValid(v44)))
     {
       if (v17 >= 0.0)
       {
-        [v7 accuracy];
+        [providerCopy accuracy];
         if (v17 >= v30)
         {
-          [v7 accuracy];
+          [providerCopy accuracy];
           v33 = v17 - v32;
-          [v7 radius];
+          [providerCopy radius];
           v35 = v34;
-          [v7 accuracy];
+          [providerCopy accuracy];
           v20 = 1.0 - REPercentThroughRange(v33, 0.0, v35 - v36);
           v19 = RELogForDomain(5);
           if (!os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -193,7 +193,7 @@ LABEL_29:
             goto LABEL_34;
           }
 
-          [v7 accuracy];
+          [providerCopy accuracy];
           v37 = 134218240;
           v38 = v17;
           v39 = 2048;
@@ -255,12 +255,12 @@ LABEL_35:
   return v25;
 }
 
-- (int)_queryRevokableStatusForProvider:(id)a3
+- (int)_queryRevokableStatusForProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   objc_initWeak(&location, self);
-  v5 = [v4 bundleIdentifier];
-  v6 = REWatchKitExtensionForApplicationIdentifier(v5);
+  bundleIdentifier = [providerCopy bundleIdentifier];
+  v6 = REWatchKitExtensionForApplicationIdentifier(bundleIdentifier);
   v7 = v6;
   if (v6)
   {
@@ -269,21 +269,21 @@ LABEL_35:
 
   else
   {
-    v8 = v5;
+    v8 = bundleIdentifier;
   }
 
   v9 = v8;
 
   v10 = +[(RESingleton *)RELocationAuthorizationStatusCache];
-  v11 = [(RERelevanceProviderManager *)self _manager_queue];
+  _manager_queue = [(RERelevanceProviderManager *)self _manager_queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __71__RELocationRelevanceProviderManager__queryRevokableStatusForProvider___block_invoke;
   v15[3] = &unk_2785FAEC0;
   objc_copyWeak(&v17, &location);
-  v12 = v4;
+  v12 = providerCopy;
   v16 = v12;
-  v13 = [v10 cachedAuthorizationStatusForBundleIdentifier:v9 invalidationUpdateQueue:v11 withCallback:v15];
+  v13 = [v10 cachedAuthorizationStatusForBundleIdentifier:v9 invalidationUpdateQueue:_manager_queue withCallback:v15];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
@@ -316,7 +316,7 @@ void __71__RELocationRelevanceProviderManager__queryRevokableStatusForProvider__
   [v3 removeObserver:self];
 }
 
-- (void)predictorDidUpdate:(id)a3
+- (void)predictorDidUpdate:(id)update
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;

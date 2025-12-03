@@ -1,58 +1,58 @@
 @interface TSTCellRegion
 + (id)invalidRegion;
-+ (id)region:(id)a3 addingRange:(id)a4;
-+ (id)region:(id)a3 addingRegion:(id)a4;
-+ (id)region:(id)a3 intersectingRange:(id)a4;
-+ (id)region:(id)a3 subtractingRange:(id)a4;
-+ (id)region:(id)a3 subtractingRegion:(id)a4;
-+ (id)regionFillingColumnsFromRegion:(id)a3;
-+ (id)regionFillingRowsFromRegion:(id)a3;
-+ (id)regionFromCellMap:(id)a3;
-+ (id)regionFromColumnIndices:(id)a3;
-+ (id)regionFromRange:(id)a3;
-+ (id)regionFromRowIndices:(id)a3;
-+ (id)unionEveryRangeInRegion:(id)a3 withRange:(id)a4;
++ (id)region:(id)region addingRange:(id)range;
++ (id)region:(id)region addingRegion:(id)addingRegion;
++ (id)region:(id)region intersectingRange:(id)range;
++ (id)region:(id)region subtractingRange:(id)range;
++ (id)region:(id)region subtractingRegion:(id)subtractingRegion;
++ (id)regionFillingColumnsFromRegion:(id)region;
++ (id)regionFillingRowsFromRegion:(id)region;
++ (id)regionFromCellMap:(id)map;
++ (id)regionFromColumnIndices:(id)indices;
++ (id)regionFromRange:(id)range;
++ (id)regionFromRowIndices:(id)indices;
++ (id)unionEveryRangeInRegion:(id)region withRange:(id)range;
 - ($2F2D2FE54C0B9D2AA4EBD8788136C7D0)suitableAnchor;
 - ($2F2D2FE54C0B9D2AA4EBD8788136C7D0)suitableCursor;
-- (BOOL)containsCellID:(id)a3;
-- (BOOL)containsCellRange:(id)a3;
-- (BOOL)containsCellRegion:(id)a3;
-- (BOOL)equalsCellRegion:(id)a3;
-- (BOOL)intersectsCellRange:(id)a3;
-- (BOOL)partiallyIntersectsCellRange:(id)a3;
+- (BOOL)containsCellID:(id)d;
+- (BOOL)containsCellRange:(id)range;
+- (BOOL)containsCellRegion:(id)region;
+- (BOOL)equalsCellRegion:(id)region;
+- (BOOL)intersectsCellRange:(id)range;
+- (BOOL)partiallyIntersectsCellRange:(id)range;
 - (TSTCellRegion)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)iterator;
-- (id)regionByAddingColumns:(id)a3;
-- (id)regionByAddingRange:(id)a3;
-- (id)regionByAddingRegion:(id)a3;
-- (id)regionByAddingRows:(id)a3;
-- (id)regionByApplyingRowMapping:(id)a3;
-- (id)regionByIntersectingColumnIndices:(id)a3;
-- (id)regionByIntersectingRange:(id)a3;
-- (id)regionByIntersectingRowIndices:(id)a3;
-- (id)regionByRemovingColumns:(id)a3;
-- (id)regionByRemovingRows:(id)a3;
-- (id)regionBySubtractingRange:(id)a3;
-- (id)regionBySubtractingRegion:(id)a3;
-- (id)regionByUnioningEveryRangeInRegionWithRange:(id)a3;
-- (id)regionOffsetBy:(id)a3;
+- (id)regionByAddingColumns:(id)columns;
+- (id)regionByAddingRange:(id)range;
+- (id)regionByAddingRegion:(id)region;
+- (id)regionByAddingRows:(id)rows;
+- (id)regionByApplyingRowMapping:(id)mapping;
+- (id)regionByIntersectingColumnIndices:(id)indices;
+- (id)regionByIntersectingRange:(id)range;
+- (id)regionByIntersectingRowIndices:(id)indices;
+- (id)regionByRemovingColumns:(id)columns;
+- (id)regionByRemovingRows:(id)rows;
+- (id)regionBySubtractingRange:(id)range;
+- (id)regionBySubtractingRegion:(id)region;
+- (id)regionByUnioningEveryRangeInRegionWithRange:(id)range;
+- (id)regionOffsetBy:(id)by;
 - (id)rightToLeftIterator;
 - (id)topToBottomIterator;
 - (void)dealloc;
-- (void)enumerateCellIDsUsingBlock:(id)a3;
-- (void)enumerateCellRangesUsingBlock:(id)a3;
-- (void)enumerateColumnsUsingBlock:(id)a3;
-- (void)enumerateInDirection:(int)a3 usingBlock:(id)a4;
-- (void)enumerateRowsUsingBlock:(id)a3;
-- (void)fillCellRangeColMajorSet:(void *)a3 leftToRight:(BOOL)a4;
-- (void)fillCellRangeRowMajorSet:(void *)a3 leftToRight:(BOOL)a4;
+- (void)enumerateCellIDsUsingBlock:(id)block;
+- (void)enumerateCellRangesUsingBlock:(id)block;
+- (void)enumerateColumnsUsingBlock:(id)block;
+- (void)enumerateInDirection:(int)direction usingBlock:(id)block;
+- (void)enumerateRowsUsingBlock:(id)block;
+- (void)fillCellRangeColMajorSet:(void *)set leftToRight:(BOOL)right;
+- (void)fillCellRangeRowMajorSet:(void *)set leftToRight:(BOOL)right;
 - (void)p_calculateAncillaryInformation;
 - (void)p_calculateIntersectingColumns;
 - (void)p_calculateIntersectingRows;
 - (void)p_calculateUpperLeftAndBottomRightCellID;
-- (void)p_insertRangeIntoRegion:(id)a3;
+- (void)p_insertRangeIntoRegion:(id)region;
 @end
 
 @implementation TSTCellRegion
@@ -91,21 +91,21 @@
   [(TSTCellRegion *)&v4 dealloc];
 }
 
-+ (id)regionFromRange:(id)a3
++ (id)regionFromRange:(id)range
 {
-  v4 = ~a3.var0.var0;
+  v4 = ~range.var0.var0;
   v5 = objc_alloc_init(TSTCellRegion);
   v6 = v5;
-  if (v4 && (*&a3 & 0xFF0000) != 0xFF0000 && HIWORD(*&a3) && (*&a3 & 0xFFFF00000000) != 0)
+  if (v4 && (*&range & 0xFF0000) != 0xFF0000 && HIWORD(*&range) && (*&range & 0xFFFF00000000) != 0)
   {
-    [(TSTCellRegion *)v5 p_insertRangeIntoRegion:a3];
+    [(TSTCellRegion *)v5 p_insertRangeIntoRegion:range];
   }
 
   [(TSTCellRegion *)v6 p_calculateAncillaryInformation];
   return v6;
 }
 
-+ (id)regionFromCellMap:(id)a3
++ (id)regionFromCellMap:(id)map
 {
   v38 = 0;
   v39 = &v38;
@@ -126,9 +126,9 @@
   v8 = 0xFFFF;
   v24 = 0xFFFF;
   v9 = 255;
-  while (v3 < [a3 count] + 1)
+  while (v3 < [map count] + 1)
   {
-    if (v3 >= [a3 count])
+    if (v3 >= [map count])
     {
       v11 = 0;
       v12 = 255;
@@ -137,7 +137,7 @@
 
     else
     {
-      v10 = [a3 cellIDAtIndex:v3];
+      v10 = [map cellIDAtIndex:v3];
       v11 = v10 & 0xFF000000;
       v12 = BYTE2(v10);
       v13 = v10;
@@ -335,13 +335,13 @@ id __35__TSTCellRegion_regionFromCellMap___block_invoke(uint64_t a1, uint64_t a2
   return result;
 }
 
-+ (id)region:(id)a3 addingRange:(id)a4
++ (id)region:(id)region addingRange:(id)range
 {
   v6 = objc_alloc_init(TSTCellRegion);
   v7 = v6;
-  if (!a3)
+  if (!region)
   {
-    [(TSTCellRegion *)v6 p_insertRangeIntoRegion:a4];
+    [(TSTCellRegion *)v6 p_insertRangeIntoRegion:range];
     goto LABEL_44;
   }
 
@@ -353,7 +353,7 @@ id __35__TSTCellRegion_regionFromCellMap___block_invoke(uint64_t a1, uint64_t a2
   v31 = &v30;
   v32 = 0x2020000000;
   v33 = 1;
-  *v35[3] = a4;
+  *v35[3] = range;
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __36__TSTCellRegion_region_addingRange___block_invoke;
@@ -361,7 +361,7 @@ id __35__TSTCellRegion_regionFromCellMap___block_invoke(uint64_t a1, uint64_t a2
   v29[5] = &v30;
   v29[6] = &v34;
   v29[4] = v7;
-  [a3 enumerateCellRangesUsingBlock:v29];
+  [region enumerateCellRangesUsingBlock:v29];
   LODWORD(v8) = *(v31 + 6);
   if (v8 <= 1)
   {
@@ -574,11 +574,11 @@ LABEL_33:
   return result;
 }
 
-+ (id)region:(id)a3 subtractingRange:(id)a4
++ (id)region:(id)region subtractingRange:(id)range
 {
   v6 = objc_alloc_init(TSTCellRegion);
   v7 = v6;
-  if (a3)
+  if (region)
   {
     v16 = 0;
     v17 = &v16;
@@ -593,10 +593,10 @@ LABEL_33:
     v11[2] = __41__TSTCellRegion_region_subtractingRange___block_invoke;
     v11[3] = &unk_279D4A420;
     v11[6] = &v16;
-    v11[7] = a4;
+    v11[7] = range;
     v11[4] = v6;
     v11[5] = &v12;
-    [a3 enumerateCellRangesUsingBlock:v11];
+    [region enumerateCellRangesUsingBlock:v11];
     if (v13[6] >= 1)
     {
       v8 = 0;
@@ -837,19 +837,19 @@ LABEL_45:
   return result;
 }
 
-+ (id)region:(id)a3 intersectingRange:(id)a4
++ (id)region:(id)region intersectingRange:(id)range
 {
   v6 = objc_alloc_init(TSTCellRegion);
   v7 = v6;
-  if (a3)
+  if (region)
   {
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __42__TSTCellRegion_region_intersectingRange___block_invoke;
     v9[3] = &unk_279D4A448;
     v9[4] = v6;
-    v9[5] = a4;
-    [a3 enumerateCellRangesUsingBlock:v9];
+    v9[5] = range;
+    [region enumerateCellRangesUsingBlock:v9];
   }
 
   [(TSTCellRegion *)v7 p_calculateAncillaryInformation];
@@ -975,24 +975,24 @@ LABEL_24:
   return result;
 }
 
-+ (id)unionEveryRangeInRegion:(id)a3 withRange:(id)a4
++ (id)unionEveryRangeInRegion:(id)region withRange:(id)range
 {
   v6 = objc_alloc_init(TSTCellRegion);
   v7 = v6;
-  if (a3)
+  if (region)
   {
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __51__TSTCellRegion_unionEveryRangeInRegion_withRange___block_invoke;
     v9[3] = &unk_279D4A448;
     v9[4] = v6;
-    v9[5] = a4;
-    [a3 enumerateCellRangesUsingBlock:v9];
+    v9[5] = range;
+    [region enumerateCellRangesUsingBlock:v9];
   }
 
   else
   {
-    [(TSTCellRegion *)v6 p_insertRangeIntoRegion:a4];
+    [(TSTCellRegion *)v6 p_insertRangeIntoRegion:range];
   }
 
   [(TSTCellRegion *)v7 p_calculateAncillaryInformation];
@@ -1016,21 +1016,21 @@ unint64_t __51__TSTCellRegion_unionEveryRangeInRegion_withRange___block_invoke(u
   return result;
 }
 
-+ (id)region:(id)a3 addingRegion:(id)a4
++ (id)region:(id)region addingRegion:(id)addingRegion
 {
   v9 = 0;
   v10 = &v9;
   v11 = 0x3052000000;
   v12 = __Block_byref_object_copy__27;
   v13 = __Block_byref_object_dispose__27;
-  v14 = [a3 copy];
+  v14 = [region copy];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __37__TSTCellRegion_region_addingRegion___block_invoke;
   v8[3] = &unk_279D4A470;
-  v8[4] = a1;
+  v8[4] = self;
   v8[5] = &v9;
-  [a4 enumerateCellRangesUsingBlock:v8];
+  [addingRegion enumerateCellRangesUsingBlock:v8];
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
   return v6;
@@ -1043,21 +1043,21 @@ uint64_t __37__TSTCellRegion_region_addingRegion___block_invoke(uint64_t a1, uin
   return result;
 }
 
-+ (id)region:(id)a3 subtractingRegion:(id)a4
++ (id)region:(id)region subtractingRegion:(id)subtractingRegion
 {
   v9 = 0;
   v10 = &v9;
   v11 = 0x3052000000;
   v12 = __Block_byref_object_copy__27;
   v13 = __Block_byref_object_dispose__27;
-  v14 = [a3 copy];
+  v14 = [region copy];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __42__TSTCellRegion_region_subtractingRegion___block_invoke;
   v8[3] = &unk_279D4A470;
-  v8[4] = a1;
+  v8[4] = self;
   v8[5] = &v9;
-  [a4 enumerateCellRangesUsingBlock:v8];
+  [subtractingRegion enumerateCellRangesUsingBlock:v8];
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
   return v6;
@@ -1077,16 +1077,16 @@ uint64_t __42__TSTCellRegion_region_subtractingRegion___block_invoke(uint64_t a1
   return v2;
 }
 
-+ (id)regionFillingColumnsFromRegion:(id)a3
++ (id)regionFillingColumnsFromRegion:(id)region
 {
-  if (!a3)
+  if (!region)
   {
     return 0;
   }
 
-  if ([a3 isEmpty])
+  if ([region isEmpty])
   {
-    return a3;
+    return region;
   }
 
   v4 = objc_alloc_init(TSTCellRegion);
@@ -1099,7 +1099,7 @@ uint64_t __42__TSTCellRegion_region_subtractingRegion___block_invoke(uint64_t a1
   v15 = 0;
   v5 = [+[TSTConfiguration sharedTableConfiguration](TSTConfiguration "sharedTableConfiguration")];
   *(v10 + 27) = v5;
-  v6 = *(a3 + 5);
+  v6 = *(region + 5);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __48__TSTCellRegion_regionFillingColumnsFromRegion___block_invoke;
@@ -1119,16 +1119,16 @@ uint64_t __48__TSTCellRegion_regionFillingColumnsFromRegion___block_invoke(uint6
   return [*(a1 + 32) p_insertRangeIntoRegion:*(*(*(a1 + 40) + 8) + 48)];
 }
 
-+ (id)regionFillingRowsFromRegion:(id)a3
++ (id)regionFillingRowsFromRegion:(id)region
 {
-  if (!a3)
+  if (!region)
   {
     return 0;
   }
 
-  if ([a3 isEmpty])
+  if ([region isEmpty])
   {
-    return a3;
+    return region;
   }
 
   v4 = objc_alloc_init(TSTCellRegion);
@@ -1141,7 +1141,7 @@ uint64_t __48__TSTCellRegion_regionFillingColumnsFromRegion___block_invoke(uint6
   v15 = 0;
   v5 = [+[TSTConfiguration sharedTableConfiguration](TSTConfiguration "sharedTableConfiguration")];
   *(v10 + 26) = v5;
-  v6 = *(a3 + 6);
+  v6 = *(region + 6);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __45__TSTCellRegion_regionFillingRowsFromRegion___block_invoke;
@@ -1161,7 +1161,7 @@ uint64_t __45__TSTCellRegion_regionFillingRowsFromRegion___block_invoke(uint64_t
   return [*(a1 + 32) p_insertRangeIntoRegion:*(*(*(a1 + 40) + 8) + 48)];
 }
 
-+ (id)regionFromRowIndices:(id)a3
++ (id)regionFromRowIndices:(id)indices
 {
   v4 = objc_alloc_init(TSTCellRegion);
   v6[0] = MEMORY[0x277D85DD0];
@@ -1169,12 +1169,12 @@ uint64_t __45__TSTCellRegion_regionFillingRowsFromRegion___block_invoke(uint64_t
   v6[2] = __38__TSTCellRegion_regionFromRowIndices___block_invoke;
   v6[3] = &unk_279D4A4C0;
   v6[4] = v4;
-  [a3 enumerateRangesUsingBlock:v6];
+  [indices enumerateRangesUsingBlock:v6];
   [(TSTCellRegion *)v4 p_calculateAncillaryInformation];
   return v4;
 }
 
-+ (id)regionFromColumnIndices:(id)a3
++ (id)regionFromColumnIndices:(id)indices
 {
   v4 = objc_alloc_init(TSTCellRegion);
   v6[0] = MEMORY[0x277D85DD0];
@@ -1182,7 +1182,7 @@ uint64_t __45__TSTCellRegion_regionFillingRowsFromRegion___block_invoke(uint64_t
   v6[2] = __41__TSTCellRegion_regionFromColumnIndices___block_invoke;
   v6[3] = &unk_279D4A4C0;
   v6[4] = v4;
-  [a3 enumerateRangesUsingBlock:v6];
+  [indices enumerateRangesUsingBlock:v6];
   [(TSTCellRegion *)v4 p_calculateAncillaryInformation];
   return v4;
 }
@@ -1202,33 +1202,33 @@ uint64_t __41__TSTCellRegion_regionFromColumnIndices___block_invoke(uint64_t a1,
   return [*(a1 + 32) p_insertRangeIntoRegion:(a2 << 16) | (v3 << 32) | 0xFFFF000000000000];
 }
 
-- (id)regionByAddingRange:(id)a3
+- (id)regionByAddingRange:(id)range
 {
   v5 = objc_opt_class();
 
-  return [v5 region:self addingRange:a3];
+  return [v5 region:self addingRange:range];
 }
 
-- (id)regionBySubtractingRange:(id)a3
+- (id)regionBySubtractingRange:(id)range
 {
   v5 = objc_opt_class();
 
-  return [v5 region:self subtractingRange:a3];
+  return [v5 region:self subtractingRange:range];
 }
 
-- (id)regionByIntersectingRange:(id)a3
+- (id)regionByIntersectingRange:(id)range
 {
-  v5 = [(TSTCellRegion *)self boundingCellRange];
-  if (HIWORD(*&a3))
+  boundingCellRange = [(TSTCellRegion *)self boundingCellRange];
+  if (HIWORD(*&range))
   {
-    if ((*&a3 & 0xFFFF00000000) != 0)
+    if ((*&range & 0xFFFF00000000) != 0)
     {
-      if (HIWORD(*&v5))
+      if (HIWORD(*&boundingCellRange))
       {
-        if ((*&v5 & 0xFFFF00000000) != 0 && a3.var0.var0 <= v5.var0.var0 && (a3.var0.var0 + a3.var1.var1 - 1) >= v5.var0.var0 && v5.var0.var1 >= a3.var0.var1)
+        if ((*&boundingCellRange & 0xFFFF00000000) != 0 && range.var0.var0 <= boundingCellRange.var0.var0 && (range.var0.var0 + range.var1.var1 - 1) >= boundingCellRange.var0.var0 && boundingCellRange.var0.var1 >= range.var0.var1)
         {
-          v6 = (LOBYTE(a3.var1.var0) + a3.var0.var1 - 1);
-          if (v6 >= v5.var0.var1 && v6 >= (LOBYTE(v5.var1.var0) + v5.var0.var1 - 1) && (a3.var0.var0 + a3.var1.var1 - 1) >= (v5.var0.var0 + v5.var1.var1 - 1))
+          v6 = (LOBYTE(range.var1.var0) + range.var0.var1 - 1);
+          if (v6 >= boundingCellRange.var0.var1 && v6 >= (LOBYTE(boundingCellRange.var1.var0) + boundingCellRange.var0.var1 - 1) && (range.var0.var0 + range.var1.var1 - 1) >= (boundingCellRange.var0.var0 + boundingCellRange.var1.var1 - 1))
           {
             return self;
           }
@@ -1239,31 +1239,31 @@ uint64_t __41__TSTCellRegion_regionFromColumnIndices___block_invoke(uint64_t a1,
 
   v7 = objc_opt_class();
 
-  return [v7 region:self intersectingRange:a3];
+  return [v7 region:self intersectingRange:range];
 }
 
-- (id)regionByUnioningEveryRangeInRegionWithRange:(id)a3
+- (id)regionByUnioningEveryRangeInRegionWithRange:(id)range
 {
   v5 = objc_opt_class();
 
-  return [v5 unionEveryRangeInRegion:self withRange:a3];
+  return [v5 unionEveryRangeInRegion:self withRange:range];
 }
 
-- (id)regionByAddingRegion:(id)a3
+- (id)regionByAddingRegion:(id)region
 {
   v5 = objc_opt_class();
 
-  return [v5 region:self addingRegion:a3];
+  return [v5 region:self addingRegion:region];
 }
 
-- (id)regionBySubtractingRegion:(id)a3
+- (id)regionBySubtractingRegion:(id)region
 {
   v5 = objc_opt_class();
 
-  return [v5 region:self subtractingRegion:a3];
+  return [v5 region:self subtractingRegion:region];
 }
 
-- (id)regionOffsetBy:(id)a3
+- (id)regionOffsetBy:(id)by
 {
   v5 = objc_alloc_init(objc_opt_class());
   if (v5)
@@ -1274,9 +1274,9 @@ uint64_t __41__TSTCellRegion_regionFromColumnIndices___block_invoke(uint64_t a1,
     v5[2] = v6;
     v5[4] = self->mCellCount;
     origin = self->mBoundingCellRange.origin;
-    v9 = a3.var1 + origin.row;
-    v10 = ((a3.var0 + origin.column) | v9) >> 16;
-    v11 = ((LOBYTE(a3.var0) + origin.column) << 16) | v9;
+    v9 = by.var1 + origin.row;
+    v10 = ((by.var0 + origin.column) | v9) >> 16;
+    v11 = ((LOBYTE(by.var0) + origin.column) << 16) | v9;
     v12 = v10 ? 0xFFFFFF : v11;
     *(v5 + 6) = v12;
     *(v5 + 7) = self->mBoundingCellRange.size;
@@ -1287,9 +1287,9 @@ uint64_t __41__TSTCellRegion_regionFromColumnIndices___block_invoke(uint64_t a1,
       do
       {
         var0 = self->mCellRanges[v13].var0;
-        v16 = a3.var1 + var0.var0;
-        v17 = ((a3.var0 + var0.var1) | v16) >> 16;
-        v18 = ((LOBYTE(a3.var0) + var0.var1) << 16) | v16;
+        v16 = by.var1 + var0.var0;
+        v17 = ((by.var0 + var0.var1) | v16) >> 16;
+        v18 = ((LOBYTE(by.var0) + var0.var1) << 16) | v16;
         if (v17)
         {
           v18 = 0xFFFFFF;
@@ -1309,14 +1309,14 @@ uint64_t __41__TSTCellRegion_regionFromColumnIndices___block_invoke(uint64_t a1,
   return v5;
 }
 
-- (id)regionByRemovingRows:(id)a3
+- (id)regionByRemovingRows:(id)rows
 {
-  if (a3)
+  if (rows)
   {
     v5 = objc_alloc_init(TSTCellRegion);
-    v6 = [(TSTCellRegion *)self boundingCellRange];
-    v7 = [MEMORY[0x277CCAB58] indexSetWithIndexesInRange:{0, (v6.var0.var0 + v6.var1.var1 - 1) + 1}];
-    [v7 removeIndexes:a3];
+    boundingCellRange = [(TSTCellRegion *)self boundingCellRange];
+    v7 = [MEMORY[0x277CCAB58] indexSetWithIndexesInRange:{0, (boundingCellRange.var0.var0 + boundingCellRange.var1.var1 - 1) + 1}];
+    [v7 removeIndexes:rows];
     v12[0] = 0;
     v12[1] = v12;
     v12[2] = 0x2020000000;
@@ -1356,14 +1356,14 @@ uint64_t __38__TSTCellRegion_regionByRemovingRows___block_invoke(uint64_t a1, ui
   return [v4 enumerateCellRangesUsingBlock:v6];
 }
 
-- (id)regionByRemovingColumns:(id)a3
+- (id)regionByRemovingColumns:(id)columns
 {
-  if (a3)
+  if (columns)
   {
     v5 = objc_alloc_init(TSTCellRegion);
-    v6 = [(TSTCellRegion *)self boundingCellRange];
-    v7 = [MEMORY[0x277CCAB58] indexSetWithIndexesInRange:{0, (LOBYTE(v6.var1.var0) + v6.var0.var1 - 1) + 1}];
-    [v7 removeIndexes:a3];
+    boundingCellRange = [(TSTCellRegion *)self boundingCellRange];
+    v7 = [MEMORY[0x277CCAB58] indexSetWithIndexesInRange:{0, (LOBYTE(boundingCellRange.var1.var0) + boundingCellRange.var0.var1 - 1) + 1}];
+    [v7 removeIndexes:columns];
     v12[0] = 0;
     v12[1] = v12;
     v12[2] = 0x2020000000;
@@ -1413,7 +1413,7 @@ uint64_t __41__TSTCellRegion_regionByRemovingColumns___block_invoke(uint64_t a1,
   return [v5 enumerateCellRangesUsingBlock:v7];
 }
 
-- (id)regionByIntersectingRowIndices:(id)a3
+- (id)regionByIntersectingRowIndices:(id)indices
 {
   v5 = objc_alloc_init(TSTCellRegion);
   v7[0] = MEMORY[0x277D85DD0];
@@ -1422,7 +1422,7 @@ uint64_t __41__TSTCellRegion_regionByRemovingColumns___block_invoke(uint64_t a1,
   v7[3] = &unk_279D4A538;
   v7[4] = self;
   v7[5] = v5;
-  [a3 enumerateRangesUsingBlock:v7];
+  [indices enumerateRangesUsingBlock:v7];
   [(TSTCellRegion *)v5 p_calculateAncillaryInformation];
   return v5;
 }
@@ -1558,7 +1558,7 @@ LABEL_24:
   return result;
 }
 
-- (id)regionByIntersectingColumnIndices:(id)a3
+- (id)regionByIntersectingColumnIndices:(id)indices
 {
   v5 = objc_alloc_init(TSTCellRegion);
   v7[0] = MEMORY[0x277D85DD0];
@@ -1567,7 +1567,7 @@ LABEL_24:
   v7[3] = &unk_279D4A538;
   v7[4] = self;
   v7[5] = v5;
-  [a3 enumerateRangesUsingBlock:v7];
+  [indices enumerateRangesUsingBlock:v7];
   [(TSTCellRegion *)v5 p_calculateAncillaryInformation];
   return v5;
 }
@@ -1713,10 +1713,10 @@ LABEL_24:
   return result;
 }
 
-- (id)regionByAddingRows:(id)a3
+- (id)regionByAddingRows:(id)rows
 {
-  v3 = self;
-  if (a3)
+  selfCopy = self;
+  if (rows)
   {
     v8 = 0;
     v9 = &v8;
@@ -1734,15 +1734,15 @@ LABEL_24:
     v6[3] = &unk_279D4A588;
     v6[5] = v7;
     v6[6] = &v8;
-    v6[4] = v3;
-    [a3 enumerateRangesUsingBlock:v6];
+    v6[4] = selfCopy;
+    [rows enumerateRangesUsingBlock:v6];
     [v9[5] p_calculateAncillaryInformation];
-    v3 = v9[5];
+    selfCopy = v9[5];
     _Block_object_dispose(v7, 8);
     _Block_object_dispose(&v8, 8);
   }
 
-  return v3;
+  return selfCopy;
 }
 
 void __36__TSTCellRegion_regionByAddingRows___block_invoke(void *a1, __int16 a2, uint64_t a3)
@@ -1832,10 +1832,10 @@ LABEL_16:
   return [*(a1 + 40) p_insertRangeIntoRegion:a2 & 0xFFFFFFFF0000 | (v4 << 48) | v7];
 }
 
-- (id)regionByAddingColumns:(id)a3
+- (id)regionByAddingColumns:(id)columns
 {
-  v3 = self;
-  if (a3)
+  selfCopy = self;
+  if (columns)
   {
     v8 = 0;
     v9 = &v8;
@@ -1853,15 +1853,15 @@ LABEL_16:
     v6[3] = &unk_279D4A588;
     v6[5] = v7;
     v6[6] = &v8;
-    v6[4] = v3;
-    [a3 enumerateRangesUsingBlock:v6];
+    v6[4] = selfCopy;
+    [columns enumerateRangesUsingBlock:v6];
     [v9[5] p_calculateAncillaryInformation];
-    v3 = v9[5];
+    selfCopy = v9[5];
     _Block_object_dispose(v7, 8);
     _Block_object_dispose(&v8, 8);
   }
 
-  return v3;
+  return selfCopy;
 }
 
 void __39__TSTCellRegion_regionByAddingColumns___block_invoke(void *a1, char a2, uint64_t a3)
@@ -1942,14 +1942,14 @@ uint64_t __39__TSTCellRegion_regionByAddingColumns___block_invoke_2(uint64_t a1,
   return [*(a1 + 40) p_insertRangeIntoRegion:a2 & 0xFFFF0000FF000000 | (v5 << 32) | (v4 << 16) | a2];
 }
 
-- (id)regionByApplyingRowMapping:(id)a3
+- (id)regionByApplyingRowMapping:(id)mapping
 {
   v5 = objc_alloc_init(TSTCellRegion);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__TSTCellRegion_regionByApplyingRowMapping___block_invoke;
   v7[3] = &unk_279D4A5D8;
-  v7[4] = a3;
+  v7[4] = mapping;
   v7[5] = v5;
   [(TSTCellRegion *)self enumerateCellRangesUsingBlock:v7];
   [(TSTCellRegion *)v5 p_calculateAncillaryInformation];
@@ -1985,10 +1985,10 @@ uint64_t __44__TSTCellRegion_regionByApplyingRowMapping___block_invoke(uint64_t 
   return result;
 }
 
-- (BOOL)containsCellID:(id)a3
+- (BOOL)containsCellID:(id)d
 {
   result = 0;
-  if (a3.var0 != 0xFFFF && (*&a3.var0 & 0xFF0000) != 0xFF0000)
+  if (d.var0 != 0xFFFF && (*&d.var0 & 0xFF0000) != 0xFF0000)
   {
     mCellRangesCount = self->mCellRangesCount;
     if (mCellRangesCount)
@@ -2001,10 +2001,10 @@ uint64_t __44__TSTCellRegion_regionByApplyingRowMapping___block_invoke(uint64_t 
         v9 = v8 & 0xFFFF00000000;
         v10 = HIWORD(v8);
         v11 = !HIWORD(v8) || v9 == 0;
-        if (!v11 && v7 <= a3.var0)
+        if (!v11 && v7 <= d.var0)
         {
-          v12 = (v7 + v10 - 1) < a3.var0 || BYTE2(v7) > a3.var1;
-          if (!v12 && a3.var1 <= (BYTE4(v7) + BYTE2(v7) - 1))
+          v12 = (v7 + v10 - 1) < d.var0 || BYTE2(v7) > d.var1;
+          if (!v12 && d.var1 <= (BYTE4(v7) + BYTE2(v7) - 1))
           {
             break;
           }
@@ -2028,30 +2028,30 @@ uint64_t __44__TSTCellRegion_regionByApplyingRowMapping___block_invoke(uint64_t 
   return result;
 }
 
-- (BOOL)containsCellRange:(id)a3
+- (BOOL)containsCellRange:(id)range
 {
-  var0 = a3.var0;
+  var0 = range.var0;
   result = 0;
-  if (a3.var0.var0 != 0xFFFF && (*&a3 & 0xFF0000) != 0xFF0000)
+  if (range.var0.var0 != 0xFFFF && (*&range & 0xFF0000) != 0xFF0000)
   {
     result = 0;
-    if (a3.var1.var1)
+    if (range.var1.var1)
     {
-      if ((*&a3 & 0xFFFF00000000) != 0)
+      if ((*&range & 0xFFFF00000000) != 0)
       {
-        v7 = a3.var1.var0;
-        if (self->mCellCount < a3.var1.var0 * a3.var1.var1)
+        v7 = range.var1.var0;
+        if (self->mCellCount < range.var1.var0 * range.var1.var1)
         {
           return 0;
         }
 
         if (self->mCellRangesCount != 1)
         {
-          v11 = *&a3 >> 16;
-          v12 = a3.var0.var0;
-          v13 = a3.var1.var1 + a3.var0.var0;
-          var1 = a3.var0.var1;
-          v15 = a3.var1.var0 + a3.var0.var1;
+          v11 = *&range >> 16;
+          v12 = range.var0.var0;
+          v13 = range.var1.var1 + range.var0.var0;
+          var1 = range.var0.var1;
+          v15 = range.var1.var0 + range.var0.var1;
           while (1)
           {
             v16 = var1;
@@ -2091,21 +2091,21 @@ LABEL_21:
         mBoundingCellRange = self->mBoundingCellRange;
         if (HIWORD(*&mBoundingCellRange) && (*&mBoundingCellRange & 0xFFFF00000000) != 0)
         {
-          if (*&self->mBoundingCellRange > a3.var0.var0)
+          if (*&self->mBoundingCellRange > range.var0.var0)
           {
             return 0;
           }
 
           result = 0;
-          if (mBoundingCellRange.origin.column <= a3.var0.var1)
+          if (mBoundingCellRange.origin.column <= range.var0.var1)
           {
             v9 = mBoundingCellRange.origin.row + mBoundingCellRange.size.numberOfRows - 1;
-            if (v9 >= a3.var0.var0)
+            if (v9 >= range.var0.var0)
             {
               v10 = (LOBYTE(mBoundingCellRange.size.numberOfColumns) + mBoundingCellRange.origin.column - 1);
-              if (v10 >= a3.var0.var1 && v10 >= (LOBYTE(a3.var1.var0) + a3.var0.var1 - 1))
+              if (v10 >= range.var0.var1 && v10 >= (LOBYTE(range.var1.var0) + range.var0.var1 - 1))
               {
-                return v9 >= (a3.var0.var0 + a3.var1.var1 - 1);
+                return v9 >= (range.var0.var0 + range.var1.var1 - 1);
               }
 
               return 0;
@@ -2119,14 +2119,14 @@ LABEL_21:
   return result;
 }
 
-- (BOOL)containsCellRegion:(id)a3
+- (BOOL)containsCellRegion:(id)region
 {
-  if (!a3)
+  if (!region)
   {
     return 0;
   }
 
-  if (self->mCellCount < *(a3 + 4))
+  if (self->mCellCount < *(region + 4))
   {
     return 0;
   }
@@ -2137,7 +2137,7 @@ LABEL_21:
     return 0;
   }
 
-  v7 = *(a3 + 3);
+  v7 = *(region + 3);
   if (!HIWORD(v7) || (v7 & 0xFFFF00000000) == 0)
   {
     return 0;
@@ -2165,7 +2165,7 @@ LABEL_21:
     return 0;
   }
 
-  if (!*(a3 + 1))
+  if (!*(region + 1))
   {
     return 1;
   }
@@ -2173,7 +2173,7 @@ LABEL_21:
   v12 = 0;
   do
   {
-    result = [(TSTCellRegion *)self containsCellRange:*(*(a3 + 2) + 8 * v12)];
+    result = [(TSTCellRegion *)self containsCellRange:*(*(region + 2) + 8 * v12)];
     if (!result)
     {
       break;
@@ -2182,23 +2182,23 @@ LABEL_21:
     ++v12;
   }
 
-  while (v12 < *(a3 + 1));
+  while (v12 < *(region + 1));
   return result;
 }
 
-- (BOOL)equalsCellRegion:(id)a3
+- (BOOL)equalsCellRegion:(id)region
 {
-  if (!a3)
+  if (!region)
   {
     return 0;
   }
 
-  if (self->mCellCount != *(a3 + 4) || ((*(a3 + 3) ^ *&self->mBoundingCellRange) & 0xFFFFFFFF00FFFFFFLL) != 0)
+  if (self->mCellCount != *(region + 4) || ((*(region + 3) ^ *&self->mBoundingCellRange) & 0xFFFFFFFF00FFFFFFLL) != 0)
   {
     return 0;
   }
 
-  if (!*(a3 + 1))
+  if (!*(region + 1))
   {
     return 1;
   }
@@ -2206,7 +2206,7 @@ LABEL_21:
   v6 = 0;
   do
   {
-    result = [(TSTCellRegion *)self containsCellRange:*(*(a3 + 2) + 8 * v6)];
+    result = [(TSTCellRegion *)self containsCellRange:*(*(region + 2) + 8 * v6)];
     if (!result)
     {
       break;
@@ -2215,18 +2215,18 @@ LABEL_21:
     ++v6;
   }
 
-  while (v6 < *(a3 + 1));
+  while (v6 < *(region + 1));
   return result;
 }
 
-- (BOOL)intersectsCellRange:(id)a3
+- (BOOL)intersectsCellRange:(id)range
 {
   mCellRangesCount = self->mCellRangesCount;
   if (mCellRangesCount)
   {
     mCellRanges = self->mCellRanges;
-    v5 = (~*&a3.var0 & 0xFF0000) != 0 && a3.var0.var0 != 0xFFFF;
-    v6 = (*&a3 & 0xFFFF00000000) == 0 || a3.var1.var1 == 0;
+    v5 = (~*&range.var0 & 0xFF0000) != 0 && range.var0.var0 != 0xFFFF;
+    v6 = (*&range & 0xFFFF00000000) == 0 || range.var1.var1 == 0;
     v7 = !v6;
     v8 = 1;
     v9 = self->mCellRangesCount;
@@ -2264,14 +2264,14 @@ LABEL_21:
           {
             v14 = 0;
             var1 = BYTE2(v12);
-            if (BYTE2(v12) <= a3.var0.var1)
+            if (BYTE2(v12) <= range.var0.var1)
             {
-              var1 = a3.var0.var1;
+              var1 = range.var0.var1;
             }
 
-            if (v12 <= a3.var0.var0)
+            if (v12 <= range.var0.var0)
             {
-              var0 = a3.var0.var0;
+              var0 = range.var0.var0;
             }
 
             else
@@ -2279,9 +2279,9 @@ LABEL_21:
               var0 = v12;
             }
 
-            if ((BYTE4(v12) + BYTE2(v12) - 1) >= (LOBYTE(a3.var1.var0) + a3.var0.var1 - 1))
+            if ((BYTE4(v12) + BYTE2(v12) - 1) >= (LOBYTE(range.var1.var0) + range.var0.var1 - 1))
             {
-              v20 = (LOBYTE(a3.var1.var0) + a3.var0.var1 - 1);
+              v20 = (LOBYTE(range.var1.var0) + range.var0.var1 - 1);
             }
 
             else
@@ -2289,9 +2289,9 @@ LABEL_21:
               v20 = (BYTE4(v12) + BYTE2(v12) - 1);
             }
 
-            if ((v12 + HIWORD(v12) - 1) >= (a3.var0.var0 + a3.var1.var1 - 1))
+            if ((v12 + HIWORD(v12) - 1) >= (range.var0.var0 + range.var1.var1 - 1))
             {
-              v21 = (a3.var0.var0 + a3.var1.var1 - 1);
+              v21 = (range.var0.var0 + range.var1.var1 - 1);
             }
 
             else
@@ -2349,19 +2349,19 @@ LABEL_21:
   return v10;
 }
 
-- (BOOL)partiallyIntersectsCellRange:(id)a3
+- (BOOL)partiallyIntersectsCellRange:(id)range
 {
-  v5 = [(TSTCellRegion *)self boundingCellRange];
+  boundingCellRange = [(TSTCellRegion *)self boundingCellRange];
   v6 = 0;
   v7 = 16711680;
   v8 = 0xFFFFLL;
-  if (v5.var0.var0 == 0xFFFF)
+  if (boundingCellRange.var0.var0 == 0xFFFF)
   {
     goto LABEL_23;
   }
 
   v9 = 0;
-  if ((*&v5 & 0xFF0000) == 0xFF0000)
+  if ((*&boundingCellRange & 0xFF0000) == 0xFF0000)
   {
     goto LABEL_24;
   }
@@ -2369,13 +2369,13 @@ LABEL_21:
   v6 = 0;
   v7 = 16711680;
   v8 = 0xFFFFLL;
-  if (!HIWORD(*&v5))
+  if (!HIWORD(*&boundingCellRange))
   {
     goto LABEL_23;
   }
 
   v9 = 0;
-  if ((*&v5 & 0xFFFF00000000) == 0)
+  if ((*&boundingCellRange & 0xFFFF00000000) == 0)
   {
     goto LABEL_24;
   }
@@ -2383,13 +2383,13 @@ LABEL_21:
   v6 = 0;
   v7 = 16711680;
   v8 = 0xFFFFLL;
-  if (a3.var0.var0 == 0xFFFF)
+  if (range.var0.var0 == 0xFFFF)
   {
     goto LABEL_23;
   }
 
   v9 = 0;
-  if ((*&a3 & 0xFF0000) == 0xFF0000)
+  if ((*&range & 0xFF0000) == 0xFF0000)
   {
     goto LABEL_24;
   }
@@ -2397,7 +2397,7 @@ LABEL_21:
   v6 = 0;
   v7 = 16711680;
   v8 = 0xFFFFLL;
-  if (!HIWORD(*&a3))
+  if (!HIWORD(*&range))
   {
 LABEL_23:
     v9 = 0;
@@ -2405,43 +2405,43 @@ LABEL_23:
   }
 
   v9 = 0;
-  if ((*&a3 & 0xFFFF00000000) != 0)
+  if ((*&range & 0xFFFF00000000) != 0)
   {
     v8 = 0;
-    if (v5.var0.var1 <= a3.var0.var1)
+    if (boundingCellRange.var0.var1 <= range.var0.var1)
     {
-      var1 = a3.var0.var1;
+      var1 = range.var0.var1;
     }
 
     else
     {
-      var1 = v5.var0.var1;
+      var1 = boundingCellRange.var0.var1;
     }
 
-    if (v5.var0.var0 <= a3.var0.var0)
+    if (boundingCellRange.var0.var0 <= range.var0.var0)
     {
-      var0 = a3.var0.var0;
-    }
-
-    else
-    {
-      var0 = v5.var0.var0;
-    }
-
-    if ((LOBYTE(v5.var1.var0) + v5.var0.var1 - 1) >= (LOBYTE(a3.var1.var0) + a3.var0.var1 - 1))
-    {
-      v12 = (LOBYTE(a3.var1.var0) + a3.var0.var1 - 1);
+      var0 = range.var0.var0;
     }
 
     else
     {
-      v12 = (LOBYTE(v5.var1.var0) + v5.var0.var1 - 1);
+      var0 = boundingCellRange.var0.var0;
     }
 
-    v13 = (a3.var0.var0 + a3.var1.var1 - 1);
-    if ((v5.var0.var0 + v5.var1.var1 - 1) < v13)
+    if ((LOBYTE(boundingCellRange.var1.var0) + boundingCellRange.var0.var1 - 1) >= (LOBYTE(range.var1.var0) + range.var0.var1 - 1))
     {
-      v13 = (v5.var0.var0 + v5.var1.var1 - 1);
+      v12 = (LOBYTE(range.var1.var0) + range.var0.var1 - 1);
+    }
+
+    else
+    {
+      v12 = (LOBYTE(boundingCellRange.var1.var0) + boundingCellRange.var0.var1 - 1);
+    }
+
+    v13 = (range.var0.var0 + range.var1.var1 - 1);
+    if ((boundingCellRange.var0.var0 + boundingCellRange.var1.var1 - 1) < v13)
+    {
+      v13 = (boundingCellRange.var0.var0 + boundingCellRange.var1.var1 - 1);
     }
 
     v7 = 0;
@@ -2470,27 +2470,27 @@ LABEL_24:
         if (mCellRangesCount)
         {
           v17 = 0;
-          v18 = (v15 ^ *&a3) & 0xFFFFFFFF00FFFFFFLL;
+          v18 = (v15 ^ *&range) & 0xFFFFFFFF00FFFFFFLL;
           mCellRanges = self->mCellRanges;
-          v20 = HIWORD(*&a3);
-          v21 = (~*&a3.var0 & 0xFF0000) != 0 && a3.var0.var0 != 0xFFFF;
+          v20 = HIWORD(*&range);
+          v21 = (~*&range.var0 & 0xFF0000) != 0 && range.var0.var0 != 0xFFFF;
           v22 = v20 == 0;
           v23 = v20 == 0;
           v24 = !v22;
-          if ((*&a3 & 0xFFFF00000000) == 0)
+          if ((*&range & 0xFFFF00000000) == 0)
           {
             v23 = 1;
           }
 
-          v25 = a3.var0.var1;
-          if ((*&a3 & 0xFFFF00000000) == 0)
+          v25 = range.var0.var1;
+          if ((*&range & 0xFFFF00000000) == 0)
           {
             v24 = 0;
           }
 
-          if (a3.var0.var1 <= (LOBYTE(a3.var1.var0) + a3.var0.var1 - 1))
+          if (range.var0.var1 <= (LOBYTE(range.var1.var0) + range.var0.var1 - 1))
           {
-            v25 = (LOBYTE(a3.var1.var0) + a3.var0.var1 - 1);
+            v25 = (LOBYTE(range.var1.var0) + range.var0.var1 - 1);
           }
 
           while (1)
@@ -2505,7 +2505,7 @@ LABEL_24:
               v29 = 1;
             }
 
-            if (!v29 && !v23 && v26 <= a3.var0.var0 && (v26 + v28 - 1) >= a3.var0.var0 && BYTE2(v26) <= a3.var0.var1 && v25 <= (BYTE4(v26) + BYTE2(v26) - 1) && (v26 + v28 - 1) >= (a3.var0.var0 + a3.var1.var1 - 1))
+            if (!v29 && !v23 && v26 <= range.var0.var0 && (v26 + v28 - 1) >= range.var0.var0 && BYTE2(v26) <= range.var0.var1 && v25 <= (BYTE4(v26) + BYTE2(v26) - 1) && (v26 + v28 - 1) >= (range.var0.var0 + range.var1.var1 - 1))
             {
               return 0;
             }
@@ -2532,9 +2532,9 @@ LABEL_24:
                   if (v21 && v24)
                   {
                     v32 = 0;
-                    if (BYTE2(v26) <= a3.var0.var1)
+                    if (BYTE2(v26) <= range.var0.var1)
                     {
-                      v35 = a3.var0.var1;
+                      v35 = range.var0.var1;
                     }
 
                     else
@@ -2542,9 +2542,9 @@ LABEL_24:
                       v35 = BYTE2(v26);
                     }
 
-                    if (v26 <= a3.var0.var0)
+                    if (v26 <= range.var0.var0)
                     {
-                      v36 = a3.var0.var0;
+                      v36 = range.var0.var0;
                     }
 
                     else
@@ -2552,9 +2552,9 @@ LABEL_24:
                       v36 = v26;
                     }
 
-                    if ((BYTE4(v26) + BYTE2(v26) - 1) >= (LOBYTE(a3.var1.var0) + a3.var0.var1 - 1))
+                    if ((BYTE4(v26) + BYTE2(v26) - 1) >= (LOBYTE(range.var1.var0) + range.var0.var1 - 1))
                     {
-                      v37 = (LOBYTE(a3.var1.var0) + a3.var0.var1 - 1);
+                      v37 = (LOBYTE(range.var1.var0) + range.var0.var1 - 1);
                     }
 
                     else
@@ -2563,9 +2563,9 @@ LABEL_24:
                     }
 
                     v38 = (v26 + v28 - 1);
-                    if (v38 >= (a3.var0.var0 + a3.var1.var1 - 1))
+                    if (v38 >= (range.var0.var0 + range.var1.var1 - 1))
                     {
-                      v38 = (a3.var0.var0 + a3.var1.var1 - 1);
+                      v38 = (range.var0.var0 + range.var1.var1 - 1);
                     }
 
                     v33 = 0;
@@ -2624,7 +2624,7 @@ LABEL_72:
                 return 0;
               }
 
-              return ![(TSTCellRegion *)self containsCellRange:a3];
+              return ![(TSTCellRegion *)self containsCellRange:range];
             }
           }
         }
@@ -2637,7 +2637,7 @@ LABEL_72:
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[TSTCellRegion allocWithZone:](TSTCellRegion init];
   v6 = v5;
@@ -2657,8 +2657,8 @@ LABEL_72:
 
   v6->mBoundingCellRange = self->mBoundingCellRange;
   v6->mCellCount = self->mCellCount;
-  v6->mIntersectingColumnsIndexSet = [(NSIndexSet *)self->mIntersectingColumnsIndexSet copyWithZone:a3];
-  v6->mIntersectingRowsIndexSet = [(NSIndexSet *)self->mIntersectingRowsIndexSet copyWithZone:a3];
+  v6->mIntersectingColumnsIndexSet = [(NSIndexSet *)self->mIntersectingColumnsIndexSet copyWithZone:zone];
+  v6->mIntersectingRowsIndexSet = [(NSIndexSet *)self->mIntersectingRowsIndexSet copyWithZone:zone];
   v6->mUpperLeftCellID = self->mUpperLeftCellID;
   v6->mBottomRightCellID = self->mBottomRightCellID;
   return v6;
@@ -2713,28 +2713,28 @@ LABEL_72:
   return v2;
 }
 
-- (void)enumerateCellIDsUsingBlock:(id)a3
+- (void)enumerateCellIDsUsingBlock:(id)block
 {
   v9 = 0;
-  v5 = [(TSTCellRegion *)self iterator];
-  v6 = [v5 getNext];
-  if (v6 != 0xFFFF)
+  iterator = [(TSTCellRegion *)self iterator];
+  getNext = [iterator getNext];
+  if (getNext != 0xFFFF)
   {
-    v7 = v6;
-    if ((v6 & 0xFF0000) != 0xFF0000)
+    v7 = getNext;
+    if ((getNext & 0xFF0000) != 0xFF0000)
     {
       do
       {
         v3 = v7 | v3 & 0xFFFFFFFF00000000;
-        (*(a3 + 2))(a3, v3, &v9);
-        v8 = [v5 getNext];
-        if (v8 == 0xFFFF)
+        (*(block + 2))(block, v3, &v9);
+        getNext2 = [iterator getNext];
+        if (getNext2 == 0xFFFF)
         {
           break;
         }
 
-        v7 = v8;
-        if ((v8 & 0xFF0000) == 0xFF0000)
+        v7 = getNext2;
+        if ((getNext2 & 0xFF0000) == 0xFF0000)
         {
           break;
         }
@@ -2745,7 +2745,7 @@ LABEL_72:
   }
 }
 
-- (void)enumerateCellRangesUsingBlock:(id)a3
+- (void)enumerateCellRangesUsingBlock:(id)block
 {
   v6 = 0;
   if (self->mCellRangesCount)
@@ -2753,39 +2753,39 @@ LABEL_72:
     v5 = 0;
     do
     {
-      (*(a3 + 2))(a3, *&self->mCellRanges[v5++], &v6);
+      (*(block + 2))(block, *&self->mCellRanges[v5++], &v6);
     }
 
     while (v5 < self->mCellRangesCount && (v6 & 1) == 0);
   }
 }
 
-- (void)enumerateColumnsUsingBlock:(id)a3
+- (void)enumerateColumnsUsingBlock:(id)block
 {
   mIntersectingColumnsIndexSet = self->mIntersectingColumnsIndexSet;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __44__TSTCellRegion_enumerateColumnsUsingBlock___block_invoke;
   v4[3] = &unk_279D481F8;
-  v4[4] = a3;
+  v4[4] = block;
   [(NSIndexSet *)mIntersectingColumnsIndexSet enumerateIndexesUsingBlock:v4];
 }
 
-- (void)enumerateRowsUsingBlock:(id)a3
+- (void)enumerateRowsUsingBlock:(id)block
 {
   mIntersectingRowsIndexSet = self->mIntersectingRowsIndexSet;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __41__TSTCellRegion_enumerateRowsUsingBlock___block_invoke;
   v4[3] = &unk_279D481F8;
-  v4[4] = a3;
+  v4[4] = block;
   [(NSIndexSet *)mIntersectingRowsIndexSet enumerateIndexesUsingBlock:v4];
 }
 
-- (void)enumerateInDirection:(int)a3 usingBlock:(id)a4
+- (void)enumerateInDirection:(int)direction usingBlock:(id)block
 {
   v4 = 48;
-  if (a3 == 1)
+  if (direction == 1)
   {
     v4 = 40;
   }
@@ -2795,24 +2795,24 @@ LABEL_72:
   v6[1] = 3221225472;
   v6[2] = __49__TSTCellRegion_enumerateInDirection_usingBlock___block_invoke;
   v6[3] = &unk_279D481F8;
-  v6[4] = a4;
+  v6[4] = block;
   [v5 enumerateIndexesUsingBlock:v6];
 }
 
-- (void)p_insertRangeIntoRegion:(id)a3
+- (void)p_insertRangeIntoRegion:(id)region
 {
-  if (a3.var0.var0 == 0xFFFF)
+  if (region.var0.var0 == 0xFFFF)
   {
     return;
   }
 
-  if ((*&a3 & 0xFF0000) == 0xFF0000)
+  if ((*&region & 0xFF0000) == 0xFF0000)
   {
     return;
   }
 
-  var1 = a3.var1.var1;
-  if (!a3.var1.var1 || (*&a3 & 0xFFFF00000000) == 0)
+  var1 = region.var1.var1;
+  if (!region.var1.var1 || (*&region & 0xFFFF00000000) == 0)
   {
     return;
   }
@@ -2825,7 +2825,7 @@ LABEL_72:
     v9 = mCellRanges[mCellRangesCount - 1];
     v10 = 16711680;
     v11 = 0xFFFFLL;
-    var0 = a3.var1.var0;
+    var0 = region.var1.var0;
     if (mCellRanges[mCellRangesCount - 1].var0.var0 == 0xFFFF)
     {
       v13 = 0;
@@ -2858,14 +2858,14 @@ LABEL_72:
         {
           v11 = 0;
           v15 = BYTE2(v9);
-          if (BYTE2(v9) <= a3.var0.var1)
+          if (BYTE2(v9) <= region.var0.var1)
           {
-            v15 = a3.var0.var1;
+            v15 = region.var0.var1;
           }
 
-          if (*&mCellRanges[mCellRangesCount - 1] <= a3.var0.var0)
+          if (*&mCellRanges[mCellRangesCount - 1] <= region.var0.var0)
           {
-            v16 = a3.var0.var0;
+            v16 = region.var0.var0;
           }
 
           else
@@ -2873,9 +2873,9 @@ LABEL_72:
             v16 = *&mCellRanges[mCellRangesCount - 1];
           }
 
-          if ((BYTE4(v9) + BYTE2(v9) - 1) >= (LOBYTE(a3.var1.var0) + a3.var0.var1 - 1))
+          if ((BYTE4(v9) + BYTE2(v9) - 1) >= (LOBYTE(region.var1.var0) + region.var0.var1 - 1))
           {
-            v17 = (LOBYTE(a3.var1.var0) + a3.var0.var1 - 1);
+            v17 = (LOBYTE(region.var1.var0) + region.var0.var1 - 1);
           }
 
           else
@@ -2883,9 +2883,9 @@ LABEL_72:
             v17 = (BYTE4(v9) + BYTE2(v9) - 1);
           }
 
-          if ((v9 + HIWORD(v9) - 1) >= (a3.var0.var0 + a3.var1.var1 - 1))
+          if ((v9 + HIWORD(v9) - 1) >= (region.var0.var0 + region.var1.var1 - 1))
           {
-            v18 = (a3.var0.var0 + a3.var1.var1 - 1);
+            v18 = (region.var0.var0 + region.var1.var1 - 1);
           }
 
           else
@@ -2910,16 +2910,16 @@ LABEL_72:
     v19 = v10 | v11 | v8 | v13;
     if (v19 != 0xFFFF && (v19 & 0xFF0000) != 0xFF0000 && HIWORD(v19) && (v19 & 0xFFFF00000000) != 0)
     {
-      v20 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSTCellRegion p_insertRangeIntoRegion:]"];
-      [v20 handleFailureInFunction:v21 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTCellRegion.mm"), 1254, @"should never overlap."}];
+      [currentHandler handleFailureInFunction:v21 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTCellRegion.mm"), 1254, @"should never overlap."}];
       mCellRangesCount = self->mCellRangesCount;
       mCellRanges = self->mCellRanges;
       v9 = mCellRanges[mCellRangesCount - 1];
     }
 
-    v22 = TSTCellRangeUnionCellRange(v9, *&a3);
-    if (WORD2(v22) * HIWORD(v22) == a3.var1.var0 * var1 + WORD2(v9) * HIWORD(v9))
+    v22 = TSTCellRangeUnionCellRange(v9, *&region);
+    if (WORD2(v22) * HIWORD(v22) == region.var1.var0 * var1 + WORD2(v9) * HIWORD(v9))
     {
       mCellRanges[mCellRangesCount - 1] = v22;
       v23 = self->mCellRangesCount;
@@ -2929,16 +2929,16 @@ LABEL_72:
 
   else
   {
-    var0 = a3.var1.var0;
+    var0 = region.var1.var0;
   }
 
   v24 = malloc_type_realloc(mCellRanges, 8 * mCellRangesCount + 8, 0x100004000313F17uLL);
   self->mCellRanges = v24;
-  v24[self->mCellRangesCount] = a3;
+  v24[self->mCellRangesCount] = region;
   v23 = self->mCellRangesCount + 1;
   self->mCellRangesCount = v23;
 LABEL_38:
-  v25 = TSTCellRangeUnionCellRange(*&self->mBoundingCellRange, *&a3);
+  v25 = TSTCellRangeUnionCellRange(*&self->mBoundingCellRange, *&region);
   v26 = self->mCellCount + var0 * var1;
   self->mBoundingCellRange = v25;
   self->mCellCount = v26;
@@ -3108,10 +3108,10 @@ uint64_t __57__TSTCellRegion_p_calculateUpperLeftAndBottomRightCellID__block_inv
   return v10;
 }
 
-- (void)fillCellRangeRowMajorSet:(void *)a3 leftToRight:(BOOL)a4
+- (void)fillCellRangeRowMajorSet:(void *)set leftToRight:(BOOL)right
 {
   mCellRangesCount = self->mCellRangesCount;
-  if (a4)
+  if (right)
   {
     if (mCellRangesCount)
     {
@@ -3119,7 +3119,7 @@ uint64_t __57__TSTCellRegion_p_calculateUpperLeftAndBottomRightCellID__block_inv
       v8 = 0;
       do
       {
-        std::__tree<TSUColumnRowRect,TSTCellRangeRowMajorLess,std::allocator<TSUColumnRowRect>>::__emplace_unique_key_args<TSUColumnRowRect,TSUColumnRowRect const&>(a3, &self->mCellRanges[v7]);
+        std::__tree<TSUColumnRowRect,TSTCellRangeRowMajorLess,std::allocator<TSUColumnRowRect>>::__emplace_unique_key_args<TSUColumnRowRect,TSUColumnRowRect const&>(set, &self->mCellRanges[v7]);
         ++v8;
         ++v7;
       }
@@ -3135,20 +3135,20 @@ uint64_t __57__TSTCellRegion_p_calculateUpperLeftAndBottomRightCellID__block_inv
     {
       v10 = self->mCellRanges[v9];
       v10.var0.var1 = ~(*&v10.var1 + HIWORD(*&v10.var0));
-      std::__tree<TSUColumnRowRect,TSTCellRangeRowMajorLess,std::allocator<TSUColumnRowRect>>::__emplace_unique_key_args<TSUColumnRowRect,TSUColumnRowRect const&>(a3, &v10);
+      std::__tree<TSUColumnRowRect,TSTCellRangeRowMajorLess,std::allocator<TSUColumnRowRect>>::__emplace_unique_key_args<TSUColumnRowRect,TSUColumnRowRect const&>(set, &v10);
       ++v9;
     }
 
     while (v9 < self->mCellRangesCount);
   }
 
-  std::__tree<TSUColumnRowRect,TSTCellRangeRowMajorLess,std::allocator<TSUColumnRowRect>>::__emplace_unique_key_args<TSUColumnRowRect,TSUColumnRowRect const&>(a3, TSTInvalidCellRange);
+  std::__tree<TSUColumnRowRect,TSTCellRangeRowMajorLess,std::allocator<TSUColumnRowRect>>::__emplace_unique_key_args<TSUColumnRowRect,TSUColumnRowRect const&>(set, TSTInvalidCellRange);
 }
 
-- (void)fillCellRangeColMajorSet:(void *)a3 leftToRight:(BOOL)a4
+- (void)fillCellRangeColMajorSet:(void *)set leftToRight:(BOOL)right
 {
   mCellRangesCount = self->mCellRangesCount;
-  if (a4)
+  if (right)
   {
     if (mCellRangesCount)
     {
@@ -3156,7 +3156,7 @@ uint64_t __57__TSTCellRegion_p_calculateUpperLeftAndBottomRightCellID__block_inv
       v8 = 0;
       do
       {
-        std::__tree<TSUColumnRowRect,TSTCellRangeColumnMajorLess,std::allocator<TSUColumnRowRect>>::__emplace_unique_key_args<TSUColumnRowRect,TSUColumnRowRect const&>(a3, &self->mCellRanges[v7]);
+        std::__tree<TSUColumnRowRect,TSTCellRangeColumnMajorLess,std::allocator<TSUColumnRowRect>>::__emplace_unique_key_args<TSUColumnRowRect,TSUColumnRowRect const&>(set, &self->mCellRanges[v7]);
         ++v8;
         ++v7;
       }
@@ -3172,14 +3172,14 @@ uint64_t __57__TSTCellRegion_p_calculateUpperLeftAndBottomRightCellID__block_inv
     {
       v10 = self->mCellRanges[v9];
       v10.var0.var1 = ~(*&v10.var1 + HIWORD(*&v10.var0));
-      std::__tree<TSUColumnRowRect,TSTCellRangeColumnMajorLess,std::allocator<TSUColumnRowRect>>::__emplace_unique_key_args<TSUColumnRowRect,TSUColumnRowRect const&>(a3, &v10);
+      std::__tree<TSUColumnRowRect,TSTCellRangeColumnMajorLess,std::allocator<TSUColumnRowRect>>::__emplace_unique_key_args<TSUColumnRowRect,TSUColumnRowRect const&>(set, &v10);
       ++v9;
     }
 
     while (v9 < self->mCellRangesCount);
   }
 
-  std::__tree<TSUColumnRowRect,TSTCellRangeColumnMajorLess,std::allocator<TSUColumnRowRect>>::__emplace_unique_key_args<TSUColumnRowRect,TSUColumnRowRect const&>(a3, TSTInvalidCellRange);
+  std::__tree<TSUColumnRowRect,TSTCellRangeColumnMajorLess,std::allocator<TSUColumnRowRect>>::__emplace_unique_key_args<TSUColumnRowRect,TSUColumnRowRect const&>(set, TSTInvalidCellRange);
 }
 
 @end

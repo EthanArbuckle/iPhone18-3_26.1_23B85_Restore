@@ -18,16 +18,16 @@
 
 - (uint64_t)pui_salientContentRectangleUpdatesRequested
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 BOOLForSetting:20518];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings BOOLForSetting:20518];
 
   return v2;
 }
 
 - (uint64_t)pui_significantEventOptions
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20516];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20516];
 
   v3 = objc_opt_class();
   v4 = v2;
@@ -51,14 +51,14 @@
 
   v6 = v5;
 
-  v7 = [v6 integerValue];
-  return v7;
+  integerValue = [v6 integerValue];
+  return integerValue;
 }
 
 - (uint64_t)pui_inExtendedRenderSession
 {
-  v1 = [a1 otherSettings];
-  [v1 flagForSetting:20514];
+  otherSettings = [self otherSettings];
+  [otherSettings flagForSetting:20514];
   IsYes = BSSettingFlagIsYes();
 
   return IsYes;
@@ -66,8 +66,8 @@
 
 - (double)pui_preferredSalientContentRectangle
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20517];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20517];
   v3 = objc_opt_class();
   v4 = v2;
   if (v3)
@@ -106,16 +106,16 @@
 
 - (uint64_t)pui_didFinishInitialization
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 BOOLForSetting:20512];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings BOOLForSetting:20512];
 
   return v2;
 }
 
 - (uint64_t)pui_significantEventTime
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20515];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20515];
 
   v3 = objc_opt_class();
   v4 = v2;
@@ -139,14 +139,14 @@
 
   v6 = v5;
 
-  v7 = [v6 unsignedLongLongValue];
-  return v7;
+  unsignedLongLongValue = [v6 unsignedLongLongValue];
+  return unsignedLongLongValue;
 }
 
 - (uint64_t)pui_userTapEventsRequested
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20513];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20513];
 
   v3 = objc_opt_class();
   v4 = v2;
@@ -170,14 +170,14 @@
 
   v6 = v5;
 
-  v7 = [v6 BOOLValue];
-  return v7;
+  bOOLValue = [v6 BOOLValue];
+  return bOOLValue;
 }
 
 - (double)pui_acceptableSalientContentRectangle
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20520];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20520];
   v3 = objc_opt_class();
   v4 = v2;
   if (v3)
@@ -216,16 +216,16 @@
 
 - (uint64_t)pui_contentOcclusionRectangleUpdatesRequested
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 BOOLForSetting:20519];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings BOOLForSetting:20519];
 
   return v2;
 }
 
 - (uint64_t)pui_powerlogIdentifier
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20521];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20521];
   v3 = objc_opt_class();
   v4 = v2;
   if (v3)
@@ -248,14 +248,14 @@
 
   v6 = v5;
 
-  v7 = [v6 unsignedIntegerValue];
-  return v7;
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
 - (uint64_t)pui_adaptiveTimeMode
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20522];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20522];
 
   v3 = objc_opt_class();
   v4 = v2;
@@ -303,29 +303,29 @@
 
     v11 = v9;
 
-    v10 = [v11 unsignedIntegerValue];
+    unsignedIntegerValue = [v11 unsignedIntegerValue];
   }
 
   else
   {
-    v10 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v10;
+  return unsignedIntegerValue;
 }
 
 - (uint64_t)pui_isAdaptiveTimeHeightUserConfigured
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 BOOLForSetting:20523];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings BOOLForSetting:20523];
 
   return v2;
 }
 
 - (uint64_t)pui_wantsSuitableSnapshotChecks
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 BOOLForSetting:20524];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings BOOLForSetting:20524];
 
   return v2;
 }

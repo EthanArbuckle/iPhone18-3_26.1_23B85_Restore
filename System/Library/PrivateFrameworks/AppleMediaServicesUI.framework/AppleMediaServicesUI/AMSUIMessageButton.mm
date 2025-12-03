@@ -1,29 +1,29 @@
 @interface AMSUIMessageButton
-+ (id)_platterBackgroundForBaseColor:(id)a3 style:(unint64_t)a4;
-- (AMSUIMessageButton)initWithDialogAction:(id)a3 messageStyle:(unint64_t)a4;
++ (id)_platterBackgroundForBaseColor:(id)color style:(unint64_t)style;
+- (AMSUIMessageButton)initWithDialogAction:(id)action messageStyle:(unint64_t)style;
 - (BOOL)isDefaultCloseButton;
 - (id)_chevronImage;
 - (id)_symbolConfiguration;
 - (void)_setAccessibilityIdentifier;
-- (void)_setupWithDialogAction:(id)a3;
-- (void)setPreferredBackgroundColor:(id)a3;
-- (void)setPreferredForegroundColor:(id)a3;
+- (void)_setupWithDialogAction:(id)action;
+- (void)setPreferredBackgroundColor:(id)color;
+- (void)setPreferredForegroundColor:(id)color;
 @end
 
 @implementation AMSUIMessageButton
 
-- (AMSUIMessageButton)initWithDialogAction:(id)a3 messageStyle:(unint64_t)a4
+- (AMSUIMessageButton)initWithDialogAction:(id)action messageStyle:(unint64_t)style
 {
-  v7 = a3;
+  actionCopy = action;
   v11.receiver = self;
   v11.super_class = AMSUIMessageButton;
   v8 = [(AMSUICommonButton *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_dialogAction, a3);
-    v9->_messageStyle = a4;
-    [(AMSUIMessageButton *)v9 _setupWithDialogAction:v7];
+    objc_storeStrong(&v8->_dialogAction, action);
+    v9->_messageStyle = style;
+    [(AMSUIMessageButton *)v9 _setupWithDialogAction:actionCopy];
     [(AMSUIMessageButton *)v9 _setAccessibilityIdentifier];
     if (![(AMSUIMessageButton *)v9 messageStyle]&& (!_os_feature_enabled_impl() || (_os_feature_enabled_impl() & 1) == 0))
     {
@@ -34,81 +34,81 @@
   return v9;
 }
 
-- (void)_setupWithDialogAction:(id)a3
+- (void)_setupWithDialogAction:(id)action
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E69DC740] filledButtonConfiguration];
-  v7 = [(AMSUIMessageButton *)self dialogAction];
-  v8 = [v7 style];
+  actionCopy = action;
+  filledButtonConfiguration = [MEMORY[0x1E69DC740] filledButtonConfiguration];
+  dialogAction = [(AMSUIMessageButton *)self dialogAction];
+  style = [dialogAction style];
 
-  if (v8 == 2)
+  if (style == 2)
   {
-    v9 = [(AMSUIMessageButton *)self _closeImage];
-    v10 = [MEMORY[0x1E69DC740] filledButtonConfiguration];
+    _closeImage = [(AMSUIMessageButton *)self _closeImage];
+    filledButtonConfiguration2 = [MEMORY[0x1E69DC740] filledButtonConfiguration];
 
-    [v10 setCornerStyle:4];
+    [filledButtonConfiguration2 setCornerStyle:4];
     if ([(AMSUIMessageButton *)self isBubbleTipStyle:[(AMSUIMessageButton *)self messageStyle]])
     {
-      v11 = [(AMSUIMessageButton *)self traitCollection];
-      v12 = [v11 userInterfaceIdiom];
+      traitCollection = [(AMSUIMessageButton *)self traitCollection];
+      userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-      if (v12 == 6)
+      if (userInterfaceIdiom == 6)
       {
-        [v10 setButtonSize:2];
+        [filledButtonConfiguration2 setButtonSize:2];
       }
     }
 
-    [v10 setContentInsets:{6.0, 6.0, 6.0, 6.0}];
-    v13 = 0;
+    [filledButtonConfiguration2 setContentInsets:{6.0, 6.0, 6.0, 6.0}];
+    title = 0;
     goto LABEL_25;
   }
 
-  v13 = [v5 title];
-  v14 = [v5 iconURL];
-  v15 = [v14 host];
+  title = [actionCopy title];
+  iconURL = [actionCopy iconURL];
+  host = [iconURL host];
 
-  if (v15)
+  if (host)
   {
-    v9 = [MEMORY[0x1E69DCAB8] ams_imageWithSystemSymbolName:v15];
+    _closeImage = [MEMORY[0x1E69DCAB8] ams_imageWithSystemSymbolName:host];
   }
 
   else
   {
-    v9 = 0;
+    _closeImage = 0;
   }
 
-  if (!(v9 | v13))
+  if (!(_closeImage | title))
   {
-    v9 = [(AMSUIMessageButton *)self _chevronImage];
+    _closeImage = [(AMSUIMessageButton *)self _chevronImage];
   }
 
   if ([(AMSUIMessageButton *)self messageStyle]== 5)
   {
-    v10 = [MEMORY[0x1E69DC740] grayButtonConfiguration];
+    filledButtonConfiguration2 = [MEMORY[0x1E69DC740] grayButtonConfiguration];
   }
 
   else
   {
     if ([(AMSUIMessageButton *)self isBannerStyle:[(AMSUIMessageButton *)self messageStyle]])
     {
-      [v6 setContentInsets:{6.0, 8.0, 6.0, 8.0}];
+      [filledButtonConfiguration setContentInsets:{6.0, 8.0, 6.0, 8.0}];
     }
 
     else if ([(AMSUIMessageButton *)self messageStyle]== 2 || [(AMSUIMessageButton *)self messageStyle]== 3)
     {
-      v16 = [(AMSUIMessageButton *)self traitCollection];
-      v17 = [v16 userInterfaceIdiom];
+      traitCollection2 = [(AMSUIMessageButton *)self traitCollection];
+      userInterfaceIdiom2 = [traitCollection2 userInterfaceIdiom];
 
-      if (v17 == 6)
+      if (userInterfaceIdiom2 == 6)
       {
         [(AMSUIMessageButton *)self setContentHorizontalAlignment:4];
-        v18 = v6;
+        v18 = filledButtonConfiguration;
         v19 = 1;
       }
 
       else
       {
-        v18 = v6;
+        v18 = filledButtonConfiguration;
         v19 = 3;
       }
 
@@ -117,44 +117,44 @@
 
     else if ([(AMSUIMessageButton *)self messageStyle]== 6)
     {
-      v10 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+      filledButtonConfiguration2 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
 
-      [v10 setContentInsets:{*MEMORY[0x1E69DC5C0], *(MEMORY[0x1E69DC5C0] + 8), *(MEMORY[0x1E69DC5C0] + 16), *(MEMORY[0x1E69DC5C0] + 24)}];
+      [filledButtonConfiguration2 setContentInsets:{*MEMORY[0x1E69DC5C0], *(MEMORY[0x1E69DC5C0] + 8), *(MEMORY[0x1E69DC5C0] + 16), *(MEMORY[0x1E69DC5C0] + 24)}];
       [(AMSUIMessageButton *)self setContentHorizontalAlignment:4];
       goto LABEL_22;
     }
 
-    v10 = v6;
+    filledButtonConfiguration2 = filledButtonConfiguration;
   }
 
 LABEL_22:
   if ([(AMSUIMessageButton *)self messageStyle]!= 6)
   {
-    [v10 setCornerStyle:4];
+    [filledButtonConfiguration2 setCornerStyle:4];
   }
 
-  [v10 setTitleLineBreakMode:4];
+  [filledButtonConfiguration2 setTitleLineBreakMode:4];
 
 LABEL_25:
-  v20 = [(AMSUIMessageButton *)self messageStyle];
-  v21 = [(AMSUIMessageButton *)self traitCollection];
-  v22 = [AMSUIAppearance _defaultButtonBackgroundColorForStyle:v20 withTraitCollection:v21];
+  messageStyle = [(AMSUIMessageButton *)self messageStyle];
+  traitCollection3 = [(AMSUIMessageButton *)self traitCollection];
+  v22 = [AMSUIAppearance _defaultButtonBackgroundColorForStyle:messageStyle withTraitCollection:traitCollection3];
 
   if (v22)
   {
-    [v10 setBaseBackgroundColor:v22];
+    [filledButtonConfiguration2 setBaseBackgroundColor:v22];
   }
 
-  v23 = [(AMSUIMessageButton *)self dialogAction];
-  v24 = [v23 style];
+  dialogAction2 = [(AMSUIMessageButton *)self dialogAction];
+  style2 = [dialogAction2 style];
 
-  if (v24 == 2)
+  if (style2 == 2)
   {
-    v25 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [v10 setBaseForegroundColor:v25];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [filledButtonConfiguration2 setBaseForegroundColor:secondaryLabelColor];
 
-    v26 = [MEMORY[0x1E69DC888] tertiarySystemFillColor];
-    [v10 setBaseBackgroundColor:v26];
+    tertiarySystemFillColor = [MEMORY[0x1E69DC888] tertiarySystemFillColor];
+    [filledButtonConfiguration2 setBaseBackgroundColor:tertiarySystemFillColor];
   }
 
   if ([(AMSUIMessageButton *)self isDefaultCloseButton]&& [(AMSUIMessageButton *)self isBubbleTipStyle:[(AMSUIMessageButton *)self messageStyle]])
@@ -166,13 +166,13 @@ LABEL_25:
 
   [(AMSUIMessageButton *)self setPreservesSuperviewLayoutMargins:0];
   objc_initWeak(&location, self);
-  if (v9)
+  if (_closeImage)
   {
-    [v10 setImage:v9];
+    [filledButtonConfiguration2 setImage:_closeImage];
     if (![(AMSUIMessageButton *)self isDefaultCloseButton])
     {
       v28 = [AMSUIAppearance _defaultButtonIconColorForStyle:[(AMSUIMessageButton *)self messageStyle]];
-      [v10 setBaseForegroundColor:v28];
+      [filledButtonConfiguration2 setBaseForegroundColor:v28];
     }
 
     v42[0] = MEMORY[0x1E69E9820];
@@ -180,50 +180,50 @@ LABEL_25:
     v42[2] = __45__AMSUIMessageButton__setupWithDialogAction___block_invoke;
     v42[3] = &unk_1E7F25000;
     objc_copyWeak(&v43, &location);
-    [v10 setImageColorTransformer:v42];
-    v29 = [(AMSUIMessageButton *)self _symbolConfiguration];
-    [v10 setPreferredSymbolConfigurationForImage:v29];
+    [filledButtonConfiguration2 setImageColorTransformer:v42];
+    _symbolConfiguration = [(AMSUIMessageButton *)self _symbolConfiguration];
+    [filledButtonConfiguration2 setPreferredSymbolConfigurationForImage:_symbolConfiguration];
 
-    v30 = [v10 background];
-    [v30 setBackgroundInsets:{*MEMORY[0x1E69DC5C0], *(MEMORY[0x1E69DC5C0] + 8), *(MEMORY[0x1E69DC5C0] + 16), *(MEMORY[0x1E69DC5C0] + 24)}];
+    background = [filledButtonConfiguration2 background];
+    [background setBackgroundInsets:{*MEMORY[0x1E69DC5C0], *(MEMORY[0x1E69DC5C0] + 8), *(MEMORY[0x1E69DC5C0] + 16), *(MEMORY[0x1E69DC5C0] + 24)}];
 
     objc_destroyWeak(&v43);
   }
 
-  if (v13)
+  if (title)
   {
-    v31 = [MEMORY[0x1E695DF90] dictionary];
-    v32 = [(AMSUIMessageButton *)self preferredFont];
-    v33 = v32;
-    if (!v32)
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    preferredFont = [(AMSUIMessageButton *)self preferredFont];
+    v33 = preferredFont;
+    if (!preferredFont)
     {
-      v34 = [(AMSUIMessageButton *)self messageStyle];
-      v3 = [(AMSUIMessageButton *)self traitCollection];
-      v33 = [AMSUIAppearance _defaultButtonTextFontForStyle:v34 withTraitCollection:v3];
+      messageStyle2 = [(AMSUIMessageButton *)self messageStyle];
+      traitCollection4 = [(AMSUIMessageButton *)self traitCollection];
+      v33 = [AMSUIAppearance _defaultButtonTextFontForStyle:messageStyle2 withTraitCollection:traitCollection4];
     }
 
-    [v31 setObject:v33 forKeyedSubscript:*MEMORY[0x1E69DB648]];
-    if (!v32)
+    [dictionary setObject:v33 forKeyedSubscript:*MEMORY[0x1E69DB648]];
+    if (!preferredFont)
     {
     }
 
-    v35 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v13 attributes:v31];
-    [v10 setAttributedTitle:v35];
-    v36 = [(AMSUIMessageButton *)self messageStyle];
-    v37 = [(AMSUIMessageButton *)self traitCollection];
-    v38 = [AMSUIAppearance _defaultButtonTextColorForStyle:v36 withTraitCollection:v37];
-    [v10 setBaseForegroundColor:v38];
+    v35 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:title attributes:dictionary];
+    [filledButtonConfiguration2 setAttributedTitle:v35];
+    messageStyle3 = [(AMSUIMessageButton *)self messageStyle];
+    traitCollection5 = [(AMSUIMessageButton *)self traitCollection];
+    v38 = [AMSUIAppearance _defaultButtonTextColorForStyle:messageStyle3 withTraitCollection:traitCollection5];
+    [filledButtonConfiguration2 setBaseForegroundColor:v38];
 
     v40[0] = MEMORY[0x1E69E9820];
     v40[1] = 3221225472;
     v40[2] = __45__AMSUIMessageButton__setupWithDialogAction___block_invoke_2;
     v40[3] = &unk_1E7F25028;
     objc_copyWeak(&v41, &location);
-    [v10 setTitleTextAttributesTransformer:v40];
+    [filledButtonConfiguration2 setTitleTextAttributesTransformer:v40];
     objc_destroyWeak(&v41);
   }
 
-  [(AMSUIMessageButton *)self setConfiguration:v10];
+  [(AMSUIMessageButton *)self setConfiguration:filledButtonConfiguration2];
   [(AMSUIMessageButton *)self setNeedsUpdateConfiguration];
   [(AMSUIMessageButton *)self _setAccessibilityIdentifier];
   objc_destroyWeak(&location);
@@ -290,21 +290,21 @@ id __45__AMSUIMessageButton__setupWithDialogAction___block_invoke_2(uint64_t a1,
 
 - (BOOL)isDefaultCloseButton
 {
-  v3 = [(AMSUIMessageButton *)self dialogAction];
-  if ([v3 style] == 2)
+  dialogAction = [(AMSUIMessageButton *)self dialogAction];
+  if ([dialogAction style] == 2)
   {
-    v4 = [(AMSUIMessageButton *)self dialogAction];
-    v5 = [v4 title];
-    if (v5)
+    dialogAction2 = [(AMSUIMessageButton *)self dialogAction];
+    title = [dialogAction2 title];
+    if (title)
     {
       v6 = 0;
     }
 
     else
     {
-      v7 = [(AMSUIMessageButton *)self dialogAction];
-      v8 = [v7 iconURL];
-      v6 = v8 == 0;
+      dialogAction3 = [(AMSUIMessageButton *)self dialogAction];
+      iconURL = [dialogAction3 iconURL];
+      v6 = iconURL == 0;
     }
   }
 
@@ -318,17 +318,17 @@ id __45__AMSUIMessageButton__setupWithDialogAction___block_invoke_2(uint64_t a1,
 
 - (id)_symbolConfiguration
 {
-  v3 = [(AMSUIMessageButton *)self preferredFont];
+  preferredFont = [(AMSUIMessageButton *)self preferredFont];
 
-  if (v3)
+  if (preferredFont)
   {
     v4 = MEMORY[0x1E69DCAD8];
-    v5 = [(AMSUIMessageButton *)self preferredFont];
-    v6 = [v4 configurationWithFont:v5 scale:2];
+    preferredFont2 = [(AMSUIMessageButton *)self preferredFont];
+    v6 = [v4 configurationWithFont:preferredFont2 scale:2];
     goto LABEL_15;
   }
 
-  v5 = *MEMORY[0x1E69DDCF8];
+  preferredFont2 = *MEMORY[0x1E69DDCF8];
   if ([(AMSUIMessageButton *)self isBannerStyle:[(AMSUIMessageButton *)self messageStyle]])
   {
     v7 = MEMORY[0x1E69DDD28];
@@ -353,19 +353,19 @@ id __45__AMSUIMessageButton__setupWithDialogAction___block_invoke_2(uint64_t a1,
   v10 = *v7;
 
   v11 = 0;
-  v5 = v10;
+  preferredFont2 = v10;
 LABEL_9:
-  v12 = [(AMSUIMessageButton *)self traitCollection];
-  v13 = [v12 userInterfaceIdiom];
+  traitCollection = [(AMSUIMessageButton *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v13 == 6 && [(AMSUIMessageButton *)self isBubbleTipStyle:[(AMSUIMessageButton *)self messageStyle]]&& [(AMSUIMessageButton *)self isDefaultCloseButton])
+  if (userInterfaceIdiom == 6 && [(AMSUIMessageButton *)self isBubbleTipStyle:[(AMSUIMessageButton *)self messageStyle]]&& [(AMSUIMessageButton *)self isDefaultCloseButton])
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [MEMORY[0x1E69DCAD8] configurationWithTextStyle:v5 scale:v9];
+    v6 = [MEMORY[0x1E69DCAD8] configurationWithTextStyle:preferredFont2 scale:v9];
     if ((v11 & 1) == 0)
     {
       v14 = [MEMORY[0x1E69DCAD8] configurationWithWeight:v8];
@@ -382,10 +382,10 @@ LABEL_15:
 
 - (id)_chevronImage
 {
-  v2 = [(AMSUIMessageButton *)self traitCollection];
-  v3 = [v2 layoutDirection];
+  traitCollection = [(AMSUIMessageButton *)self traitCollection];
+  layoutDirection = [traitCollection layoutDirection];
 
-  if (v3 == 1)
+  if (layoutDirection == 1)
   {
     [MEMORY[0x1E69DCAB8] ams_systemChevronLeft];
   }
@@ -399,73 +399,73 @@ LABEL_15:
   return v4;
 }
 
-+ (id)_platterBackgroundForBaseColor:(id)a3 style:(unint64_t)a4
++ (id)_platterBackgroundForBaseColor:(id)color style:(unint64_t)style
 {
   v4 = MEMORY[0x1E69DC888];
-  v5 = a3;
-  v6 = [v5 colorWithAlphaComponent:0.08];
-  v7 = [v5 colorWithAlphaComponent:0.18];
+  colorCopy = color;
+  v6 = [colorCopy colorWithAlphaComponent:0.08];
+  v7 = [colorCopy colorWithAlphaComponent:0.18];
 
   v8 = [v4 ams_dynamicColorWithLightColor:v6 darkColor:v7];
 
   return v8;
 }
 
-- (void)setPreferredForegroundColor:(id)a3
+- (void)setPreferredForegroundColor:(id)color
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_preferredForegroundColor, a3);
-  v6 = [MEMORY[0x1E698C968] sharedMessagingUIConfig];
-  if (!v6)
+  colorCopy = color;
+  objc_storeStrong(&self->_preferredForegroundColor, color);
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedMessagingUIConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v6 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138543618;
     v12 = objc_opt_class();
     v13 = 2112;
-    v14 = v5;
+    v14 = colorCopy;
     v8 = v12;
-    _os_log_impl(&dword_1BB036000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: (setPreferredForegroundColor: %@)", &v11, 0x16u);
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: (setPreferredForegroundColor: %@)", &v11, 0x16u);
   }
 
-  v9 = [(AMSUIMessageButton *)self configuration];
-  [v9 setBaseForegroundColor:v5];
-  [(AMSUIMessageButton *)self setConfiguration:v9];
+  configuration = [(AMSUIMessageButton *)self configuration];
+  [configuration setBaseForegroundColor:colorCopy];
+  [(AMSUIMessageButton *)self setConfiguration:configuration];
   [(AMSUIMessageButton *)self setNeedsUpdateConfiguration];
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setPreferredBackgroundColor:(id)a3
+- (void)setPreferredBackgroundColor:(id)color
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_preferredBackgroundColor, a3);
-  v6 = [MEMORY[0x1E698C968] sharedMessagingUIConfig];
-  if (!v6)
+  colorCopy = color;
+  objc_storeStrong(&self->_preferredBackgroundColor, color);
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedMessagingUIConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v6 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138543618;
     v12 = objc_opt_class();
     v13 = 2112;
-    v14 = v5;
+    v14 = colorCopy;
     v8 = v12;
-    _os_log_impl(&dword_1BB036000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: (setPreferredBackgroundColor: %@)", &v11, 0x16u);
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: (setPreferredBackgroundColor: %@)", &v11, 0x16u);
   }
 
-  v9 = [(AMSUIMessageButton *)self configuration];
-  [v9 setBaseBackgroundColor:v5];
-  [(AMSUIMessageButton *)self setConfiguration:v9];
+  configuration = [(AMSUIMessageButton *)self configuration];
+  [configuration setBaseBackgroundColor:colorCopy];
+  [(AMSUIMessageButton *)self setConfiguration:configuration];
   [(AMSUIMessageButton *)self setNeedsUpdateConfiguration];
 
   v10 = *MEMORY[0x1E69E9840];

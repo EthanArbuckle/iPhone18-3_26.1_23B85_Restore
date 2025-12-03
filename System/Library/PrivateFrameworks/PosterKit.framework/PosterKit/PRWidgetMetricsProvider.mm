@@ -1,6 +1,6 @@
 @interface PRWidgetMetricsProvider
 + (id)sharedInstance;
-- (CGSize)_sizeForItemWithGridWidth:(int64_t)a3 height:(int64_t)a4;
+- (CGSize)_sizeForItemWithGridWidth:(int64_t)width height:(int64_t)height;
 - (CHSEdgeInsets)_edgeInsets;
 - (double)_insetScreenWidth;
 - (double)_scaleFactor;
@@ -10,7 +10,7 @@
 - (id)_systemSmallMetrics;
 - (id)_transparentMediumMetrics;
 - (id)lockScreenWidgetMetricsSpecifications;
-- (id)systemMetricsForWidget:(id)a3;
+- (id)systemMetricsForWidget:(id)widget;
 - (int64_t)_complicationFontStyle;
 @end
 
@@ -40,77 +40,77 @@ uint64_t __41__PRWidgetMetricsProvider_sharedInstance__block_invoke()
 - (id)lockScreenWidgetMetricsSpecifications
 {
   v3 = objc_alloc_init(MEMORY[0x1E6994318]);
-  v4 = [(PRWidgetMetricsProvider *)self _complicationCircularMetrics];
-  [v3 setMetrics:v4 forFamily:10];
+  _complicationCircularMetrics = [(PRWidgetMetricsProvider *)self _complicationCircularMetrics];
+  [v3 setMetrics:_complicationCircularMetrics forFamily:10];
 
-  v5 = [(PRWidgetMetricsProvider *)self _complicationRectangularMetrics];
-  [v3 setMetrics:v5 forFamily:11];
+  _complicationRectangularMetrics = [(PRWidgetMetricsProvider *)self _complicationRectangularMetrics];
+  [v3 setMetrics:_complicationRectangularMetrics forFamily:11];
 
-  v6 = [(PRWidgetMetricsProvider *)self _complicationInlineMetrics];
-  [v3 setMetrics:v6 forFamily:12];
+  _complicationInlineMetrics = [(PRWidgetMetricsProvider *)self _complicationInlineMetrics];
+  [v3 setMetrics:_complicationInlineMetrics forFamily:12];
 
-  v7 = [MEMORY[0x1E698E730] sharedInstance];
-  v8 = [v7 deviceClass];
+  mEMORY[0x1E698E730] = [MEMORY[0x1E698E730] sharedInstance];
+  deviceClass = [mEMORY[0x1E698E730] deviceClass];
 
-  if (v8 == 2)
+  if (deviceClass == 2)
   {
-    v9 = [(PRWidgetMetricsProvider *)self _systemSmallMetrics];
-    [v3 setMetrics:v9 forFamily:1];
+    _systemSmallMetrics = [(PRWidgetMetricsProvider *)self _systemSmallMetrics];
+    [v3 setMetrics:_systemSmallMetrics forFamily:1];
   }
 
   return v3;
 }
 
-- (id)systemMetricsForWidget:(id)a3
+- (id)systemMetricsForWidget:(id)widget
 {
-  v4 = [a3 family];
-  if (v4 > 10)
+  family = [widget family];
+  if (family > 10)
   {
-    if (v4 != 11)
+    if (family != 11)
     {
-      if (v4 == 12)
+      if (family == 12)
       {
-        v5 = [(PRWidgetMetricsProvider *)self _complicationInlineMetrics];
+        _complicationInlineMetrics = [(PRWidgetMetricsProvider *)self _complicationInlineMetrics];
         goto LABEL_11;
       }
 
       goto LABEL_8;
     }
 
-    v5 = [(PRWidgetMetricsProvider *)self _complicationRectangularMetrics];
+    _complicationInlineMetrics = [(PRWidgetMetricsProvider *)self _complicationRectangularMetrics];
   }
 
   else
   {
-    if (v4 != 1)
+    if (family != 1)
     {
-      if (v4 == 10)
+      if (family == 10)
       {
-        v5 = [(PRWidgetMetricsProvider *)self _complicationCircularMetrics];
+        _complicationInlineMetrics = [(PRWidgetMetricsProvider *)self _complicationCircularMetrics];
         goto LABEL_11;
       }
 
 LABEL_8:
-      v5 = [(PRWidgetMetricsProvider *)self _transparentMediumMetrics];
+      _complicationInlineMetrics = [(PRWidgetMetricsProvider *)self _transparentMediumMetrics];
       goto LABEL_11;
     }
 
-    v5 = [(PRWidgetMetricsProvider *)self _systemSmallMetrics];
+    _complicationInlineMetrics = [(PRWidgetMetricsProvider *)self _systemSmallMetrics];
   }
 
 LABEL_11:
 
-  return v5;
+  return _complicationInlineMetrics;
 }
 
 - (CHSEdgeInsets)_edgeInsets
 {
-  v2 = [MEMORY[0x1E6999618] complicationEdgeInset];
+  complicationEdgeInset = [MEMORY[0x1E6999618] complicationEdgeInset];
   v4.n128_u64[0] = v3.n128_u64[0];
   v5.n128_u64[0] = v3.n128_u64[0];
   v6.n128_u64[0] = v3.n128_u64[0];
 
-  MEMORY[0x1EEDF3CB0](v2, v3, v4, v5, v6);
+  MEMORY[0x1EEDF3CB0](complicationEdgeInset, v3, v4, v5, v6);
   result.var3 = v10;
   result.var2 = v9;
   result.var1 = v8;
@@ -120,35 +120,35 @@ LABEL_11:
 
 - (double)_scaleFactor
 {
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v4 = 1.0;
-  if ((v3 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
-    v5 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v5 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v7 = v6;
-    v8 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v8 nativeScale];
+    mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen2 nativeScale];
     v4 = v7 / v9;
   }
 
   return v4;
 }
 
-- (CGSize)_sizeForItemWithGridWidth:(int64_t)a3 height:(int64_t)a4
+- (CGSize)_sizeForItemWithGridWidth:(int64_t)width height:(int64_t)height
 {
   [MEMORY[0x1E6999618] complicationEdgeInset];
   v8 = v7 + v7;
   [MEMORY[0x1E6999618] interComplicationSpacing];
-  v10 = v9 * (a3 - 1);
+  v10 = v9 * (width - 1);
   [MEMORY[0x1E6999618] gridUnitSize];
-  v12 = v8 + v10 + v11 * a3;
+  v12 = v8 + v10 + v11 * width;
   [MEMORY[0x1E6999618] interComplicationSpacing];
-  v14 = v13 * (a4 - 1);
+  v14 = v13 * (height - 1);
   [MEMORY[0x1E6999618] gridUnitSize];
-  v16 = v8 + v14 + v15 * a4;
+  v16 = v8 + v14 + v15 * height;
   [(PRWidgetMetricsProvider *)self _scaleFactor];
   v18 = 1.0 / v17;
   v19 = v12 * (1.0 / v17);
@@ -168,9 +168,9 @@ LABEL_11:
   v9 = objc_alloc(MEMORY[0x1E69943F0]);
   [(PRWidgetMetricsProvider *)self _scaleFactor];
   v11 = v10;
-  v12 = [(PRWidgetMetricsProvider *)self _complicationFontStyle];
+  _complicationFontStyle = [(PRWidgetMetricsProvider *)self _complicationFontStyle];
   [(PRWidgetMetricsProvider *)self _edgeInsets];
-  v17 = [v9 initWithSize:v12 cornerRadius:2 scaleFactor:v4 fontStyle:v6 safeAreaInsets:v8 layoutInsets:v11 contentMargins:v13 supportsDynamicText:{v14, v15, v16, *MEMORY[0x1E69941E0], *(MEMORY[0x1E69941E0] + 8), *(MEMORY[0x1E69941E0] + 16), *(MEMORY[0x1E69941E0] + 24)}];
+  v17 = [v9 initWithSize:_complicationFontStyle cornerRadius:2 scaleFactor:v4 fontStyle:v6 safeAreaInsets:v8 layoutInsets:v11 contentMargins:v13 supportsDynamicText:{v14, v15, v16, *MEMORY[0x1E69941E0], *(MEMORY[0x1E69941E0] + 8), *(MEMORY[0x1E69941E0] + 16), *(MEMORY[0x1E69941E0] + 24)}];
 
   return v17;
 }
@@ -183,9 +183,9 @@ LABEL_11:
   v7 = v6;
   [(PRWidgetMetricsProvider *)self _scaleFactor];
   v9 = v8;
-  v10 = [(PRWidgetMetricsProvider *)self _complicationFontStyle];
+  _complicationFontStyle = [(PRWidgetMetricsProvider *)self _complicationFontStyle];
   [(PRWidgetMetricsProvider *)self _edgeInsets];
-  v15 = [v3 initWithSize:v10 cornerRadius:2 scaleFactor:v5 fontStyle:v7 safeAreaInsets:0.0 layoutInsets:v9 contentMargins:v11 supportsDynamicText:{v12, v13, v14, *MEMORY[0x1E69941E0], *(MEMORY[0x1E69941E0] + 8), *(MEMORY[0x1E69941E0] + 16), *(MEMORY[0x1E69941E0] + 24)}];
+  v15 = [v3 initWithSize:_complicationFontStyle cornerRadius:2 scaleFactor:v5 fontStyle:v7 safeAreaInsets:0.0 layoutInsets:v9 contentMargins:v11 supportsDynamicText:{v12, v13, v14, *MEMORY[0x1E69941E0], *(MEMORY[0x1E69941E0] + 8), *(MEMORY[0x1E69941E0] + 16), *(MEMORY[0x1E69941E0] + 24)}];
 
   return v15;
 }
@@ -223,8 +223,8 @@ LABEL_11:
 
 - (double)_insetScreenWidth
 {
-  v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v2 _referenceBounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen _referenceBounds];
   v4 = v3 + -16.0;
 
   return v4;
@@ -232,22 +232,22 @@ LABEL_11:
 
 - (int64_t)_complicationFontStyle
 {
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v3 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     return 7;
   }
 
-  v5 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v5 _referenceBounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen _referenceBounds];
   v7 = v6;
 
   if (v7 == 375.0)
   {
-    v8 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v8 nativeScale];
+    mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen2 nativeScale];
     v10 = v9 == 2.0;
   }
 

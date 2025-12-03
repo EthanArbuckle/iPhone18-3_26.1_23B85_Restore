@@ -1,92 +1,92 @@
 @interface TSUImage
-+ (id)allocWithZone:(_NSZone *)a3;
-+ (id)imageNamed:(id)a3 inBundle:(id)a4 compatibleWithTraitCollection:(id)a5;
-+ (id)imageWithCGImage:(CGImage *)a3;
-+ (id)imageWithCGImage:(CGImage *)a3 scale:(double)a4 orientation:(int64_t)a5;
-+ (id)imageWithContentsOfFile:(id)a3;
-+ (id)imageWithData:(id)a3;
-+ (id)imageWithUIImage:(id)a3;
-+ (id)systemImageNamed:(id)a3 pointSize:(double)a4 weight:(int64_t)a5;
++ (id)allocWithZone:(_NSZone *)zone;
++ (id)imageNamed:(id)named inBundle:(id)bundle compatibleWithTraitCollection:(id)collection;
++ (id)imageWithCGImage:(CGImage *)image;
++ (id)imageWithCGImage:(CGImage *)image scale:(double)scale orientation:(int64_t)orientation;
++ (id)imageWithContentsOfFile:(id)file;
++ (id)imageWithData:(id)data;
++ (id)imageWithUIImage:(id)image;
++ (id)systemImageNamed:(id)named pointSize:(double)size weight:(int64_t)weight;
 - (BOOL)isEmpty;
 - (CGImage)CGImage;
-- (CGImage)CGImageForSize:(CGSize)a3;
+- (CGImage)CGImageForSize:(CGSize)size;
 - (CGSize)size;
 - (TSUImage)init;
-- (TSUImage)initWithCGImage:(CGImage *)a3;
-- (TSUImage)initWithCGImage:(CGImage *)a3 scale:(double)a4 orientation:(int64_t)a5;
-- (TSUImage)initWithContentsOfFile:(id)a3;
-- (TSUImage)initWithData:(id)a3;
-- (TSUImage)initWithImageSourceRef:(CGImageSource *)a3;
-- (TSUImage)initWithUIImage:(id)a3;
+- (TSUImage)initWithCGImage:(CGImage *)image;
+- (TSUImage)initWithCGImage:(CGImage *)image scale:(double)scale orientation:(int64_t)orientation;
+- (TSUImage)initWithContentsOfFile:(id)file;
+- (TSUImage)initWithData:(id)data;
+- (TSUImage)initWithImageSourceRef:(CGImageSource *)ref;
+- (TSUImage)initWithUIImage:(id)image;
 - (UIImage)UIImage;
 - (double)scale;
-- (id)JPEGRepresentationWithCompressionQuality:(double)a3;
+- (id)JPEGRepresentationWithCompressionQuality:(double)quality;
 - (id)PNGRepresentation;
 - (id)TIFFRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)stretchedImageOfSize:(CGSize)a3 leftCapWidth:(double)a4 rightCapWidth:(double)a5 topCapHeight:(double)a6 bottomCapHeight:(double)a7;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)stretchedImageOfSize:(CGSize)size leftCapWidth:(double)width rightCapWidth:(double)capWidth topCapHeight:(double)height bottomCapHeight:(double)capHeight;
 - (int64_t)imageOrientation;
 - (void)dealloc;
 @end
 
 @implementation TSUImage
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    return [_TSUImageM allocWithZone:a3];
+    return [_TSUImageM allocWithZone:zone];
   }
 
   else
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___TSUImage;
-    return objc_msgSendSuper2(&v6, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v6, sel_allocWithZone_, zone);
   }
 }
 
-+ (id)imageNamed:(id)a3 inBundle:(id)a4 compatibleWithTraitCollection:(id)a5
++ (id)imageNamed:(id)named inBundle:(id)bundle compatibleWithTraitCollection:(id)collection
 {
-  v6 = [MEMORY[0x277D755B8] imageNamed:a3 inBundle:a4 compatibleWithTraitCollection:a5];
-  v7 = [a1 alloc];
+  v6 = [MEMORY[0x277D755B8] imageNamed:named inBundle:bundle compatibleWithTraitCollection:collection];
+  v7 = [self alloc];
 
   return [v7 initWithUIImage:v6];
 }
 
-+ (id)systemImageNamed:(id)a3 pointSize:(double)a4 weight:(int64_t)a5
++ (id)systemImageNamed:(id)named pointSize:(double)size weight:(int64_t)weight
 {
-  v7 = [MEMORY[0x277D755D0] configurationWithPointSize:a5 weight:a4];
-  [MEMORY[0x277D755B8] systemImageNamed:a3 withConfiguration:v7];
+  v7 = [MEMORY[0x277D755D0] configurationWithPointSize:weight weight:size];
+  [MEMORY[0x277D755B8] systemImageNamed:named withConfiguration:v7];
 
-  return MEMORY[0x2821F9670](a1, sel_imageWithUIImage_);
+  return MEMORY[0x2821F9670](self, sel_imageWithUIImage_);
 }
 
-+ (id)imageWithContentsOfFile:(id)a3
++ (id)imageWithContentsOfFile:(id)file
 {
-  v3 = [[a1 alloc] initWithContentsOfFile:a3];
+  v3 = [[self alloc] initWithContentsOfFile:file];
 
   return v3;
 }
 
-+ (id)imageWithData:(id)a3
++ (id)imageWithData:(id)data
 {
-  v3 = [[a1 alloc] initWithData:a3];
+  v3 = [[self alloc] initWithData:data];
 
   return v3;
 }
 
-+ (id)imageWithCGImage:(CGImage *)a3
++ (id)imageWithCGImage:(CGImage *)image
 {
-  v3 = [[a1 alloc] initWithCGImage:a3];
+  v3 = [[self alloc] initWithCGImage:image];
 
   return v3;
 }
 
-+ (id)imageWithCGImage:(CGImage *)a3 scale:(double)a4 orientation:(int64_t)a5
++ (id)imageWithCGImage:(CGImage *)image scale:(double)scale orientation:(int64_t)orientation
 {
-  v5 = [[a1 alloc] initWithCGImage:a3 scale:a5 orientation:a4];
+  v5 = [[self alloc] initWithCGImage:image scale:orientation orientation:scale];
 
   return v5;
 }
@@ -105,7 +105,7 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUImage copyWithZone:]"];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSUImage.m"];
@@ -120,7 +120,7 @@
   objc_exception_throw(v10);
 }
 
-- (TSUImage)initWithContentsOfFile:(id)a3
+- (TSUImage)initWithContentsOfFile:(id)file
 {
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUImage initWithContentsOfFile:]"];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSUImage.m"];
@@ -135,7 +135,7 @@
   objc_exception_throw(v10);
 }
 
-- (TSUImage)initWithData:(id)a3
+- (TSUImage)initWithData:(id)data
 {
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUImage initWithData:]"];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSUImage.m"];
@@ -150,7 +150,7 @@
   objc_exception_throw(v10);
 }
 
-- (TSUImage)initWithCGImage:(CGImage *)a3
+- (TSUImage)initWithCGImage:(CGImage *)image
 {
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUImage initWithCGImage:]"];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSUImage.m"];
@@ -165,9 +165,9 @@
   objc_exception_throw(v10);
 }
 
-- (TSUImage)initWithCGImage:(CGImage *)a3 scale:(double)a4 orientation:(int64_t)a5
+- (TSUImage)initWithCGImage:(CGImage *)image scale:(double)scale orientation:(int64_t)orientation
 {
-  v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"-[TSUImage initWithCGImage:scale:orientation:]", a5, a4}];
+  v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"-[TSUImage initWithCGImage:scale:orientation:]", orientation, scale}];
   v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSUImage.m"];
   v7 = objc_opt_class();
   [TSUAssertionHandler handleFailureInFunction:v5 file:v6 lineNumber:845 isFatal:0 description:"Abstract method not overridden by %{public}@", NSStringFromClass(v7)];
@@ -180,7 +180,7 @@
   objc_exception_throw(v12);
 }
 
-- (TSUImage)initWithImageSourceRef:(CGImageSource *)a3
+- (TSUImage)initWithImageSourceRef:(CGImageSource *)ref
 {
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUImage initWithImageSourceRef:]"];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSUImage.m"];
@@ -239,9 +239,9 @@
   [(TSUImage *)&v4 dealloc];
 }
 
-- (CGImage)CGImageForSize:(CGSize)a3
+- (CGImage)CGImageForSize:(CGSize)size
 {
-  v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"-[TSUImage CGImageForSize:]", a3.width, a3.height}];
+  v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"-[TSUImage CGImageForSize:]", size.width, size.height}];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSUImage.m"];
   v5 = objc_opt_class();
   [TSUAssertionHandler handleFailureInFunction:v3 file:v4 lineNumber:876 isFatal:0 description:"Abstract method not overridden by %{public}@", NSStringFromClass(v5)];
@@ -286,44 +286,44 @@
 
 - (BOOL)isEmpty
 {
-  v2 = [(TSUImage *)self CGImage];
+  cGImage = [(TSUImage *)self CGImage];
 
-  return sub_277085754(v2);
+  return sub_277085754(cGImage);
 }
 
 - (id)TIFFRepresentation
 {
-  v2 = [(TSUImage *)self CGImage];
+  cGImage = [(TSUImage *)self CGImage];
 
-  return CGImageTIFFRepresentation(v2);
+  return CGImageTIFFRepresentation(cGImage);
 }
 
-- (id)JPEGRepresentationWithCompressionQuality:(double)a3
+- (id)JPEGRepresentationWithCompressionQuality:(double)quality
 {
-  v4 = [(TSUImage *)self CGImage];
+  cGImage = [(TSUImage *)self CGImage];
 
-  return CGImageJPEGRepresentation(v4, a3);
+  return CGImageJPEGRepresentation(cGImage, quality);
 }
 
 - (id)PNGRepresentation
 {
-  v2 = [(TSUImage *)self CGImage];
+  cGImage = [(TSUImage *)self CGImage];
 
-  return CGImagePNGRepresentation(v2);
+  return CGImagePNGRepresentation(cGImage);
 }
 
-- (id)stretchedImageOfSize:(CGSize)a3 leftCapWidth:(double)a4 rightCapWidth:(double)a5 topCapHeight:(double)a6 bottomCapHeight:(double)a7
+- (id)stretchedImageOfSize:(CGSize)size leftCapWidth:(double)width rightCapWidth:(double)capWidth topCapHeight:(double)height bottomCapHeight:(double)capHeight
 {
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = sub_277085994;
   v13[3] = &unk_27A7022D8;
-  v14 = a3;
+  sizeCopy = size;
   v13[4] = self;
-  v15 = a6;
-  v16 = a7;
-  v17 = a4;
-  v18 = a5;
+  heightCopy = height;
+  capHeightCopy = capHeight;
+  widthCopy = width;
+  capWidthCopy = capWidth;
   v8 = sub_277085994(v13, [(TSUImage *)self CGImageForSize:?], 1.0);
   if (!v8)
   {
@@ -337,14 +337,14 @@
   return v11;
 }
 
-+ (id)imageWithUIImage:(id)a3
++ (id)imageWithUIImage:(id)image
 {
-  v3 = [[TSUUIImage alloc] initWithUIImage:a3];
+  v3 = [[TSUUIImage alloc] initWithUIImage:image];
 
   return v3;
 }
 
-- (TSUImage)initWithUIImage:(id)a3
+- (TSUImage)initWithUIImage:(id)image
 {
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUImage(UIKitAdditions) initWithUIImage:]"];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSUImage.m"];

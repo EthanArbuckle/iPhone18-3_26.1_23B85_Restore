@@ -1,17 +1,17 @@
 @interface CSUAFAssetManagerBase
 - (CSUAFAssetManagerBase)init;
-- (CSUAFAssetManagerBase)initWithForceSetIsExclave:(BOOL)a3 exclaveManagerProxy:(id)a4;
+- (CSUAFAssetManagerBase)initWithForceSetIsExclave:(BOOL)exclave exclaveManagerProxy:(id)proxy;
 - (id)_getExclaveAssetManagerProxy;
-- (id)_timerForUUID:(id)a3 eventHandler:(id)a4;
-- (void)_cancelRetryTimerForAsset:(id)a3;
-- (void)_logMapFailTelemetryAndSubmitDiagnosticReportForError:(id)a3 assetSpecifier:(id)a4 assetConfigVersion:(id)a5;
-- (void)_logMapOperationLatencyTelemetry:(double)a3 assetSpecifier:(id)a4 assetConfigVersion:(id)a5;
-- (void)_mapAssetToExclaveKit:(id)a3 assetName:(id)a4 assetSet:(id)a5 completion:(id)a6;
-- (void)_mapVoiceTriggerAsset:(id)a3 asset:(id)a4 completion:(id)a5;
-- (void)_resetRetryTimerForAsset:(id)a3;
-- (void)_retryMappingAssetToExclaveKit:(id)a3 assetName:(id)a4 assetSet:(id)a5 completion:(id)a6;
-- (void)mapAssetToExclaveKit:(id)a3 assetName:(id)a4 assetSet:(id)a5 completion:(id)a6;
-- (void)retryMappingAssetToExclaveKit:(id)a3 assetName:(id)a4 assetSet:(id)a5 completion:(id)a6;
+- (id)_timerForUUID:(id)d eventHandler:(id)handler;
+- (void)_cancelRetryTimerForAsset:(id)asset;
+- (void)_logMapFailTelemetryAndSubmitDiagnosticReportForError:(id)error assetSpecifier:(id)specifier assetConfigVersion:(id)version;
+- (void)_logMapOperationLatencyTelemetry:(double)telemetry assetSpecifier:(id)specifier assetConfigVersion:(id)version;
+- (void)_mapAssetToExclaveKit:(id)kit assetName:(id)name assetSet:(id)set completion:(id)completion;
+- (void)_mapVoiceTriggerAsset:(id)asset asset:(id)a4 completion:(id)completion;
+- (void)_resetRetryTimerForAsset:(id)asset;
+- (void)_retryMappingAssetToExclaveKit:(id)kit assetName:(id)name assetSet:(id)set completion:(id)completion;
+- (void)mapAssetToExclaveKit:(id)kit assetName:(id)name assetSet:(id)set completion:(id)completion;
+- (void)retryMappingAssetToExclaveKit:(id)kit assetName:(id)name assetSet:(id)set completion:(id)completion;
 @end
 
 @implementation CSUAFAssetManagerBase
@@ -20,7 +20,7 @@
 {
   if (+[CSUtils isDarwinOS])
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -34,13 +34,13 @@
       queue = v4->_queue;
       v4->_queue = v5;
 
-      v7 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       retryTimers = v4->_retryTimers;
-      v4->_retryTimers = v7;
+      v4->_retryTimers = dictionary;
 
-      v9 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary2 = [MEMORY[0x1E695DF90] dictionary];
       retryAttemptCount = v4->_retryAttemptCount;
-      v4->_retryAttemptCount = v9;
+      v4->_retryAttemptCount = dictionary2;
 
       v4->_isExclaveHardware = +[CSUtils isExclaveHardware];
       exclaveManagerProxy = v4->_exclaveManagerProxy;
@@ -48,40 +48,40 @@
     }
 
     self = v4;
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)_mapVoiceTriggerAsset:(id)a3 asset:(id)a4 completion:(id)a5
+- (void)_mapVoiceTriggerAsset:(id)asset asset:(id)a4 completion:(id)completion
 {
-  v8 = a3;
+  assetCopy = asset;
   v9 = a4;
-  v10 = a5;
+  completionCopy = completion;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __64__CSUAFAssetManagerBase__mapVoiceTriggerAsset_asset_completion___block_invoke;
   v22[3] = &unk_1E865BF90;
-  v26 = v10;
-  v11 = v8;
+  v26 = completionCopy;
+  v11 = assetCopy;
   v23 = v11;
-  v24 = self;
+  selfCopy = self;
   v25 = v9;
   v12 = v9;
-  v13 = v10;
+  v13 = completionCopy;
   v14 = MEMORY[0x1E12BA300](v22);
-  v15 = [(CSUAFAssetManagerBase *)self _getExclaveAssetManagerProxy];
+  _getExclaveAssetManagerProxy = [(CSUAFAssetManagerBase *)self _getExclaveAssetManagerProxy];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __64__CSUAFAssetManagerBase__mapVoiceTriggerAsset_asset_completion___block_invoke_2;
   v18[3] = &unk_1E865C678;
   v19 = v11;
-  v20 = self;
+  selfCopy2 = self;
   v21 = v14;
   v16 = v14;
   v17 = v11;
-  [v15 stopSecureMobileAssetLoaderService:v18];
+  [_getExclaveAssetManagerProxy stopSecureMobileAssetLoaderService:v18];
 }
 
 void __64__CSUAFAssetManagerBase__mapVoiceTriggerAsset_asset_completion___block_invoke(uint64_t a1, void *a2, double a3)
@@ -190,63 +190,63 @@ void __64__CSUAFAssetManagerBase__mapVoiceTriggerAsset_asset_completion___block_
   }
 }
 
-- (void)_logMapOperationLatencyTelemetry:(double)a3 assetSpecifier:(id)a4 assetConfigVersion:(id)a5
+- (void)_logMapOperationLatencyTelemetry:(double)telemetry assetSpecifier:(id)specifier assetConfigVersion:(id)version
 {
-  v7 = a5;
-  v8 = a4;
+  versionCopy = version;
+  specifierCopy = specifier;
   v9 = +[CSAssetTelemetryReporter sharedReporter];
-  [v9 reportAssetMapLatencyTelemetry:v8 assetSpecifier:v7 assetConfigVersion:a3];
+  [v9 reportAssetMapLatencyTelemetry:specifierCopy assetSpecifier:versionCopy assetConfigVersion:telemetry];
 }
 
-- (void)_logMapFailTelemetryAndSubmitDiagnosticReportForError:(id)a3 assetSpecifier:(id)a4 assetConfigVersion:(id)a5
+- (void)_logMapFailTelemetryAndSubmitDiagnosticReportForError:(id)error assetSpecifier:(id)specifier assetConfigVersion:(id)version
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  versionCopy = version;
+  specifierCopy = specifier;
+  errorCopy = error;
   v10 = +[CSAssetTelemetryReporter sharedReporter];
-  [v10 reportAssetMapFailTelemetryForError:v9 assetSpecifier:v8 assetConfigVersion:v7];
+  [v10 reportAssetMapFailTelemetryForError:errorCopy assetSpecifier:specifierCopy assetConfigVersion:versionCopy];
 
   v11 = +[CSAssetTelemetryReporter sharedReporter];
-  [v11 submitSecureAssetMapFailDiagnosticReportForError:v9];
+  [v11 submitSecureAssetMapFailDiagnosticReportForError:errorCopy];
 }
 
-- (void)_retryMappingAssetToExclaveKit:(id)a3 assetName:(id)a4 assetSet:(id)a5 completion:(id)a6
+- (void)_retryMappingAssetToExclaveKit:(id)kit assetName:(id)name assetSet:(id)set completion:(id)completion
 {
   v44[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v30 = a4;
-  v31 = a5;
-  v32 = a6;
-  v11 = [v10 assetType];
-  [(CSUAFAssetManagerBase *)self _cancelRetryTimerForAsset:v10];
-  v12 = [(CSUAFAssetManagerBase *)self retryAttemptCount];
-  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v11];
-  v14 = [v12 objectForKey:v13];
+  kitCopy = kit;
+  nameCopy = name;
+  setCopy = set;
+  completionCopy = completion;
+  assetType = [kitCopy assetType];
+  [(CSUAFAssetManagerBase *)self _cancelRetryTimerForAsset:kitCopy];
+  retryAttemptCount = [(CSUAFAssetManagerBase *)self retryAttemptCount];
+  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:assetType];
+  v14 = [retryAttemptCount objectForKey:v13];
 
-  v15 = [v14 unsignedIntegerValue];
+  unsignedIntegerValue = [v14 unsignedIntegerValue];
   if (!v14 || [v14 unsignedIntegerValue] < self->_maxAssetMapRetryCount)
   {
-    v16 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     objc_initWeak(&location, self);
     v35[0] = MEMORY[0x1E69E9820];
     v35[1] = 3221225472;
     v35[2] = __86__CSUAFAssetManagerBase__retryMappingAssetToExclaveKit_assetName_assetSet_completion___block_invoke;
     v35[3] = &unk_1E865BF40;
     objc_copyWeak(&v41, &location);
-    v36 = v10;
-    v37 = v30;
-    v38 = v31;
-    v39 = self;
-    v40 = v32;
-    v17 = [(CSUAFAssetManagerBase *)self _timerForUUID:v16 eventHandler:v35];
-    v18 = [(CSUAFAssetManagerBase *)self retryTimers];
-    v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v11];
-    [v18 setObject:v17 forKey:v19];
+    v36 = kitCopy;
+    v37 = nameCopy;
+    v38 = setCopy;
+    selfCopy = self;
+    v40 = completionCopy;
+    v17 = [(CSUAFAssetManagerBase *)self _timerForUUID:uUID eventHandler:v35];
+    retryTimers = [(CSUAFAssetManagerBase *)self retryTimers];
+    v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:assetType];
+    [retryTimers setObject:v17 forKey:v19];
 
-    v20 = [(CSUAFAssetManagerBase *)self retryAttemptCount];
-    v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v15 + 1];
-    v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v11];
-    [v20 setObject:v21 forKey:v22];
+    retryAttemptCount2 = [(CSUAFAssetManagerBase *)self retryAttemptCount];
+    v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:unsignedIntegerValue + 1];
+    v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:assetType];
+    [retryAttemptCount2 setObject:v21 forKey:v22];
 
     v33[0] = MEMORY[0x1E69E9820];
     v33[1] = 3221225472;
@@ -263,18 +263,18 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  [(CSUAFAssetManagerBase *)self _resetRetryTimerForAsset:v10];
-  if (v32)
+  [(CSUAFAssetManagerBase *)self _resetRetryTimerForAsset:kitCopy];
+  if (completionCopy)
   {
     v24 = MEMORY[0x1E696ABC0];
     v43 = @"reason";
     v25 = MEMORY[0x1E696AEC0];
-    v16 = [(CSUAFAssetManagerBase *)self retryAttemptCount];
-    v26 = [v25 stringWithFormat:@"Failed to map asset of type %ld after %ld retries", v11, v16];
+    uUID = [(CSUAFAssetManagerBase *)self retryAttemptCount];
+    v26 = [v25 stringWithFormat:@"Failed to map asset of type %ld after %ld retries", assetType, uUID];
     v44[0] = v26;
     v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v44 forKeys:&v43 count:1];
     v28 = [v24 errorWithDomain:@"com.apple.corespeech" code:2162 userInfo:v27];
-    (*(v32 + 2))(v32, v28);
+    (*(completionCopy + 2))(completionCopy, v28);
 
     goto LABEL_6;
   }
@@ -390,67 +390,67 @@ uint64_t __86__CSUAFAssetManagerBase__retryMappingAssetToExclaveKit_assetName_as
   return result;
 }
 
-- (id)_timerForUUID:(id)a3 eventHandler:(id)a4
+- (id)_timerForUUID:(id)d eventHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[CSFTimerContext alloc] initTimerinterval:v7 identifier:self->_assetMapRetryTimeInterval];
+  handlerCopy = handler;
+  dCopy = d;
+  v8 = [[CSFTimerContext alloc] initTimerinterval:dCopy identifier:self->_assetMapRetryTimeInterval];
 
   v9 = [CSFTimer alloc];
-  v10 = [(CSUAFAssetManagerBase *)self queue];
-  v11 = [(CSFTimer *)v9 initWithContext:v8 queue:v10 eventHandler:v6];
+  queue = [(CSUAFAssetManagerBase *)self queue];
+  v11 = [(CSFTimer *)v9 initWithContext:v8 queue:queue eventHandler:handlerCopy];
 
   return v11;
 }
 
-- (void)_resetRetryTimerForAsset:(id)a3
+- (void)_resetRetryTimerForAsset:(id)asset
 {
-  v4 = a3;
-  [(CSUAFAssetManagerBase *)self _cancelRetryTimerForAsset:v4];
-  v8 = [(CSUAFAssetManagerBase *)self retryAttemptCount];
+  assetCopy = asset;
+  [(CSUAFAssetManagerBase *)self _cancelRetryTimerForAsset:assetCopy];
+  retryAttemptCount = [(CSUAFAssetManagerBase *)self retryAttemptCount];
   v5 = MEMORY[0x1E696AD98];
-  v6 = [v4 assetType];
+  assetType = [assetCopy assetType];
 
-  v7 = [v5 numberWithUnsignedInteger:v6];
-  [v8 removeObjectForKey:v7];
+  v7 = [v5 numberWithUnsignedInteger:assetType];
+  [retryAttemptCount removeObjectForKey:v7];
 }
 
-- (void)_cancelRetryTimerForAsset:(id)a3
+- (void)_cancelRetryTimerForAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [(CSUAFAssetManagerBase *)self retryTimers];
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v4, "assetType")}];
-  v7 = [v5 objectForKey:v6];
+  assetCopy = asset;
+  retryTimers = [(CSUAFAssetManagerBase *)self retryTimers];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(assetCopy, "assetType")}];
+  v7 = [retryTimers objectForKey:v6];
   [v7 cancel];
 
-  v11 = [(CSUAFAssetManagerBase *)self retryTimers];
+  retryTimers2 = [(CSUAFAssetManagerBase *)self retryTimers];
   v8 = MEMORY[0x1E696AD98];
-  v9 = [v4 assetType];
+  assetType = [assetCopy assetType];
 
-  v10 = [v8 numberWithUnsignedInteger:v9];
-  [v11 removeObjectForKey:v10];
+  v10 = [v8 numberWithUnsignedInteger:assetType];
+  [retryTimers2 removeObjectForKey:v10];
 }
 
-- (void)retryMappingAssetToExclaveKit:(id)a3 assetName:(id)a4 assetSet:(id)a5 completion:(id)a6
+- (void)retryMappingAssetToExclaveKit:(id)kit assetName:(id)name assetSet:(id)set completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  kitCopy = kit;
+  nameCopy = name;
+  setCopy = set;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __85__CSUAFAssetManagerBase_retryMappingAssetToExclaveKit_assetName_assetSet_completion___block_invoke;
   block[3] = &unk_1E865BEA0;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v20 = kitCopy;
+  v21 = nameCopy;
+  v22 = setCopy;
+  v23 = completionCopy;
+  v15 = completionCopy;
+  v16 = setCopy;
+  v17 = nameCopy;
+  v18 = kitCopy;
   dispatch_async(queue, block);
 }
 
@@ -466,14 +466,14 @@ uint64_t __85__CSUAFAssetManagerBase_retryMappingAssetToExclaveKit_assetName_ass
   return [v2 _retryMappingAssetToExclaveKit:v3 assetName:v4 assetSet:v5 completion:v6];
 }
 
-- (void)_mapAssetToExclaveKit:(id)a3 assetName:(id)a4 assetSet:(id)a5 completion:(id)a6
+- (void)_mapAssetToExclaveKit:(id)kit assetName:(id)name assetSet:(id)set completion:(id)completion
 {
   v45 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [MEMORY[0x1E696AFB0] UUID];
+  kitCopy = kit;
+  nameCopy = name;
+  setCopy = set;
+  completionCopy = completion;
+  uUID = [MEMORY[0x1E696AFB0] UUID];
   v15 = CSLogCategoryAsset;
   v16 = os_signpost_id_generate(CSLogCategoryAsset);
   if (v16 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
@@ -482,9 +482,9 @@ uint64_t __85__CSUAFAssetManagerBase_retryMappingAssetToExclaveKit_assetName_ass
     if (os_signpost_enabled(v15))
     {
       *buf = 138412546;
-      v40 = v14;
+      v40 = uUID;
       v41 = 2048;
-      v42 = [v10 assetType];
+      assetType = [kitCopy assetType];
       _os_signpost_emit_with_name_impl(&dword_1DDA4B000, v15, OS_SIGNPOST_EVENT, v17, "Mapping_Secure_Asset", "[%@] Mapping asset type: %ld into exclave", buf, 0x16u);
     }
   }
@@ -493,13 +493,13 @@ uint64_t __85__CSUAFAssetManagerBase_retryMappingAssetToExclaveKit_assetName_ass
   if (os_log_type_enabled(CSLogCategoryAsset, OS_LOG_TYPE_DEFAULT))
   {
     v19 = v18;
-    v20 = [v10 assetType];
+    assetType2 = [kitCopy assetType];
     *buf = 136315650;
     v40 = "[CSUAFAssetManagerBase _mapAssetToExclaveKit:assetName:assetSet:completion:]";
     v41 = 2112;
-    v42 = v14;
+    assetType = uUID;
     v43 = 2048;
-    v44 = v20;
+    v44 = assetType2;
     _os_log_impl(&dword_1DDA4B000, v19, OS_LOG_TYPE_DEFAULT, "%s [%@] Mapping asset type: %ld into exclave", buf, 0x20u);
   }
 
@@ -507,9 +507,9 @@ uint64_t __85__CSUAFAssetManagerBase_retryMappingAssetToExclaveKit_assetName_ass
   v34 = 3221225472;
   v35 = __77__CSUAFAssetManagerBase__mapAssetToExclaveKit_assetName_assetSet_completion___block_invoke;
   v36 = &unk_1E865BEC8;
-  v21 = v12;
+  v21 = setCopy;
   v37 = v21;
-  v22 = v13;
+  v22 = completionCopy;
   v38 = v22;
   v23 = MEMORY[0x1E12BA300](&v33);
   if (CSIsInternalBuild_onceToken != -1)
@@ -523,9 +523,9 @@ uint64_t __85__CSUAFAssetManagerBase_retryMappingAssetToExclaveKit_assetName_ass
   }
 
   v24 = [CSFPreferences sharedPreferences:v33];
-  v25 = [v24 forceFailExclaveAssetMapping];
+  forceFailExclaveAssetMapping = [v24 forceFailExclaveAssetMapping];
 
-  if (!v25)
+  if (!forceFailExclaveAssetMapping)
   {
     goto LABEL_14;
   }
@@ -554,13 +554,13 @@ LABEL_14:
       *buf = 136315394;
       v40 = "[CSUAFAssetManagerBase _mapAssetToExclaveKit:assetName:assetSet:completion:]";
       v41 = 2112;
-      v42 = v11;
+      assetType = nameCopy;
       _os_log_impl(&dword_1DDA4B000, v29, OS_LOG_TYPE_DEFAULT, "%s Mapping asset %@ to ExclaveKit", buf, 0x16u);
     }
 
-    if ([v11 isEqualToString:{@"com.apple.siri.sp.invocation", v33, v34, v35, v36}])
+    if ([nameCopy isEqualToString:{@"com.apple.siri.sp.invocation", v33, v34, v35, v36}])
     {
-      [(CSUAFAssetManagerBase *)self _mapVoiceTriggerAsset:v21 asset:v10 completion:v23];
+      [(CSUAFAssetManagerBase *)self _mapVoiceTriggerAsset:v21 asset:kitCopy completion:v23];
     }
 
     else
@@ -571,7 +571,7 @@ LABEL_14:
         *buf = 136315394;
         v40 = "[CSUAFAssetManagerBase _mapAssetToExclaveKit:assetName:assetSet:completion:]";
         v41 = 2112;
-        v42 = v11;
+        assetType = nameCopy;
         _os_log_error_impl(&dword_1DDA4B000, v30, OS_LOG_TYPE_ERROR, "%s Exclave Mapping Not supported assetName: %@", buf, 0x16u);
       }
 
@@ -609,26 +609,26 @@ uint64_t __77__CSUAFAssetManagerBase__mapAssetToExclaveKit_assetName_assetSet_co
   return v3;
 }
 
-- (void)mapAssetToExclaveKit:(id)a3 assetName:(id)a4 assetSet:(id)a5 completion:(id)a6
+- (void)mapAssetToExclaveKit:(id)kit assetName:(id)name assetSet:(id)set completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  kitCopy = kit;
+  nameCopy = name;
+  setCopy = set;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __76__CSUAFAssetManagerBase_mapAssetToExclaveKit_assetName_assetSet_completion___block_invoke;
   block[3] = &unk_1E865BEA0;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v20 = kitCopy;
+  v21 = nameCopy;
+  v22 = setCopy;
+  v23 = completionCopy;
+  v15 = completionCopy;
+  v16 = setCopy;
+  v17 = nameCopy;
+  v18 = kitCopy;
   dispatch_async(queue, block);
 }
 
@@ -697,15 +697,15 @@ LABEL_11:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (CSUAFAssetManagerBase)initWithForceSetIsExclave:(BOOL)a3 exclaveManagerProxy:(id)a4
+- (CSUAFAssetManagerBase)initWithForceSetIsExclave:(BOOL)exclave exclaveManagerProxy:(id)proxy
 {
-  v7 = a4;
+  proxyCopy = proxy;
   v8 = [(CSUAFAssetManagerBase *)self init];
   v9 = v8;
   if (v8)
   {
-    v8->_isExclaveHardware = a3;
-    objc_storeStrong(&v8->_exclaveManagerProxy, a4);
+    v8->_isExclaveHardware = exclave;
+    objc_storeStrong(&v8->_exclaveManagerProxy, proxy);
     v9->_assetMapRetryTimeInterval = 30.0;
     v9->_maxAssetMapRetryCount = 50;
   }

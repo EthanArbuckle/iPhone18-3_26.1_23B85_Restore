@@ -1,29 +1,29 @@
 @interface CoreTelephonyClientRemoteAsyncProxy
-- (CoreTelephonyClientRemoteAsyncProxy)initWithXPCObject:(id)a3 userQueue:(queue)a4 errorHandler:(id)a5;
-- (void)forwardInvocation:(id)a3;
+- (CoreTelephonyClientRemoteAsyncProxy)initWithXPCObject:(id)object userQueue:(queue)queue errorHandler:(id)handler;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation CoreTelephonyClientRemoteAsyncProxy
 
-- (CoreTelephonyClientRemoteAsyncProxy)initWithXPCObject:(id)a3 userQueue:(queue)a4 errorHandler:(id)a5
+- (CoreTelephonyClientRemoteAsyncProxy)initWithXPCObject:(id)object userQueue:(queue)queue errorHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  objectCopy = object;
+  handlerCopy = handler;
   v10 = objc_autoreleasePoolPush();
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3321888768;
   v18[2] = __80__CoreTelephonyClientRemoteAsyncProxy_initWithXPCObject_userQueue_errorHandler___block_invoke;
   v18[3] = &unk_1EF012F68;
-  v11 = *a4.fObj.fObj;
+  v11 = *queue.fObj.fObj;
   object = v11;
   if (v11)
   {
     dispatch_retain(v11);
   }
 
-  v12 = v9;
+  v12 = handlerCopy;
   v19 = v12;
-  v13 = [v8 remoteObjectProxyWithErrorHandler:v18];
+  v13 = [objectCopy remoteObjectProxyWithErrorHandler:v18];
   target = self->_target;
   self->_target = v13;
 
@@ -33,8 +33,8 @@
   }
 
   objc_autoreleasePoolPop(v10);
-  v15 = *a4.fObj.fObj;
-  *a4.fObj.fObj = 0;
+  v15 = *queue.fObj.fObj;
+  *queue.fObj.fObj = 0;
   fObj = self->_userQueue.fObj.fObj;
   self->_userQueue.fObj.fObj = v15;
   if (fObj)
@@ -66,13 +66,13 @@ void __80__CoreTelephonyClientRemoteAsyncProxy_initWithXPCObject_userQueue_error
   dispatch_async(v6, v8);
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 methodSignature];
-  v6 = [v5 numberOfArguments];
-  if (v6 < 3)
+  invocationCopy = invocation;
+  methodSignature = [invocationCopy methodSignature];
+  numberOfArguments = [methodSignature numberOfArguments];
+  if (numberOfArguments < 3)
   {
     goto LABEL_7;
   }
@@ -81,7 +81,7 @@ void __80__CoreTelephonyClientRemoteAsyncProxy_initWithXPCObject_userQueue_error
   v8 = 2;
   while (1)
   {
-    v9 = [v5 getArgumentTypeAtIndex:v8];
+    v9 = [methodSignature getArgumentTypeAtIndex:v8];
     if (*v9 == 64 && v9[1] == 63 && !v9[2])
     {
       break;
@@ -89,7 +89,7 @@ void __80__CoreTelephonyClientRemoteAsyncProxy_initWithXPCObject_userQueue_error
 
     ++v8;
     --v7;
-    if (v6 == v8)
+    if (numberOfArguments == v8)
     {
       goto LABEL_7;
     }
@@ -101,7 +101,7 @@ LABEL_7:
     v10 = CTLogClient();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
     {
-      v11 = NSStringFromSelector([v4 selector]);
+      v11 = NSStringFromSelector([invocationCopy selector]);
       [(CoreTelephonyClientRemoteAsyncProxy *)v11 forwardInvocation:buf, v10];
     }
 
@@ -109,7 +109,7 @@ LABEL_7:
   }
 
   aBlock = 0;
-  [v4 getArgument:&aBlock atIndex:v8];
+  [invocationCopy getArgument:&aBlock atIndex:v8];
   _Block_signature(aBlock);
   v12 = [aBlock copy];
   fObj = self->_userQueue.fObj.fObj;
@@ -126,8 +126,8 @@ LABEL_7:
 
   v14 = v12;
   v17 = __NSMakeSpecialForwardingCaptureBlock();
-  [v4 setArgument:&v17 atIndex:{v8, v16, 3321888768, __57__CoreTelephonyClientRemoteAsyncProxy_forwardInvocation___block_invoke, &unk_1EF012FA0}];
-  [v4 invokeWithTarget:self->_target];
+  [invocationCopy setArgument:&v17 atIndex:{v8, v16, 3321888768, __57__CoreTelephonyClientRemoteAsyncProxy_forwardInvocation___block_invoke, &unk_1EF012FA0}];
+  [invocationCopy invokeWithTarget:self->_target];
 
   if (fObj)
   {

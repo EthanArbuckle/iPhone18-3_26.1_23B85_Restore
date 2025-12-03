@@ -30,9 +30,9 @@
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134219264;
-    v37 = a1;
+    selfCopy = self;
     v38 = 2048;
-    v39 = [a1 count];
+    v39 = [self count];
     v40 = 2048;
     v41 = v34;
     v42 = 1024;
@@ -44,9 +44,9 @@
     _os_log_debug_impl(&dword_1C61EF000, v13, OS_LOG_TYPE_DEBUG, "%p: fetching %llu UIDs, limit %llu, reverse %{BOOL}d, range count limit %llu, batch limit %llu.", buf, 0x3Au);
   }
 
-  v32 = a1;
+  selfCopy2 = self;
 
-  v14 = [a1 mutableCopy];
+  v14 = [self mutableCopy];
   v15 = 0;
   *&v16 = 134218496;
   v31 = v16;
@@ -67,11 +67,11 @@
     v20 = +[EDServerMessagePersistence log];
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
     {
-      v27 = [v19 ed_logDescription];
+      ed_logDescription = [v19 ed_logDescription];
       *buf = 134218498;
-      v37 = v32;
+      selfCopy = selfCopy2;
       v38 = 2114;
-      v39 = v27;
+      v39 = ed_logDescription;
       v40 = 2048;
       v41 = v18;
       _os_log_debug_impl(&dword_1C61EF000, v20, OS_LOG_TYPE_DEBUG, "%p: fetching UIDs {%{public}@} with limit %llu", buf, 0x20u);
@@ -81,11 +81,11 @@
     v22 = +[EDServerMessagePersistence log];
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
     {
-      v28 = [v21 ed_logDescription];
+      ed_logDescription2 = [v21 ed_logDescription];
       *buf = 134218242;
-      v37 = v32;
+      selfCopy = selfCopy2;
       v38 = 2114;
-      v39 = v28;
+      v39 = ed_logDescription2;
       _os_log_debug_impl(&dword_1C61EF000, v22, OS_LOG_TYPE_DEBUG, "%p: got UIDs {%{public}@}", buf, 0x16u);
     }
 
@@ -99,7 +99,7 @@
         if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
         {
           *buf = v31;
-          v37 = v32;
+          selfCopy = selfCopy2;
           v38 = 2048;
           v39 = v24;
           v40 = 2048;
@@ -110,8 +110,8 @@
 
       if (a4)
       {
-        v26 = [v21 firstIndex];
-        [v14 removeIndexesInRange:{v26, objc_msgSend(v14, "lastIndex") - v26 + 1}];
+        firstIndex = [v21 firstIndex];
+        [v14 removeIndexesInRange:{firstIndex, objc_msgSend(v14, "lastIndex") - firstIndex + 1}];
       }
 
       else
@@ -137,7 +137,7 @@
   v29 = +[EDServerMessagePersistence log];
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
   {
-    [NSIndexSet(EDServerMessagePersistence) ed_enumerateUIDsWithLimit:v32 reverseEnumeration:v29 queryRangeCountLimit:? batchLimit:? usingBlock:?];
+    [NSIndexSet(EDServerMessagePersistence) ed_enumerateUIDsWithLimit:selfCopy2 reverseEnumeration:v29 queryRangeCountLimit:? batchLimit:? usingBlock:?];
   }
 
   v30 = *MEMORY[0x1E69E9840];
@@ -145,7 +145,7 @@
 
 - (id)ed_nextRangesWithRangeCountLimit:()EDServerMessagePersistence reverseEnumeration:
 {
-  if ([a1 count])
+  if ([self count])
   {
     v7 = objc_alloc_init(MEMORY[0x1E696AD50]);
     v15[0] = 0;
@@ -168,19 +168,19 @@
     v11[3] = &unk_1E8257BB8;
     v13 = v15;
     v14 = a3;
-    v9 = v7;
-    v12 = v9;
-    [a1 enumerateRangesWithOptions:v8 usingBlock:v11];
+    indexSet = v7;
+    v12 = indexSet;
+    [self enumerateRangesWithOptions:v8 usingBlock:v11];
 
     _Block_object_dispose(v15, 8);
   }
 
   else
   {
-    v9 = [MEMORY[0x1E696AC90] indexSet];
+    indexSet = [MEMORY[0x1E696AC90] indexSet];
   }
 
-  return v9;
+  return indexSet;
 }
 
 - (id)ed_uidQueryExpressionWithTableName:()EDServerMessagePersistence
@@ -188,7 +188,7 @@
   v22 = *MEMORY[0x1E69E9840];
   v4 = a3;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v6 = [a1 _uidRangesAndSingleUIDs:v5];
+  v6 = [self _uidRangesAndSingleUIDs:v5];
   if ([v6 count] >= 0x3DF)
   {
     v7 = [v6 sortedArrayUsingComparator:&__block_literal_global_596];
@@ -211,8 +211,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v12 = [*(*(&v17 + 1) + 8 * i) rangeValue];
-          [a1 _addUIDsFromRange:v12 toArray:{v13, v5}];
+          rangeValue = [*(*(&v17 + 1) + 8 * i) rangeValue];
+          [self _addUIDsFromRange:rangeValue toArray:{v13, v5}];
         }
 
         v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -224,7 +224,7 @@
     v6 = [v7 ef_prefix:990];
   }
 
-  v14 = [a1 _uidQueryExpressionForRanges:v6 andSingleUIDs:v5 withTableName:{v4, v17}];
+  v14 = [self _uidQueryExpressionForRanges:v6 andSingleUIDs:v5 withTableName:{v4, v17}];
 
   v15 = *MEMORY[0x1E69E9840];
 
@@ -234,27 +234,27 @@
 - (id)_uidRangesAndSingleUIDs:()EDServerMessagePersistence
 {
   v4 = a3;
-  if ([a1 count])
+  if ([self count])
   {
     v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:10];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __66__NSIndexSet_EDServerMessagePersistence___uidRangesAndSingleUIDs___block_invoke;
     v9[3] = &unk_1E8257C00;
-    v9[4] = a1;
+    v9[4] = self;
     v10 = v4;
     v6 = v5;
     v11 = v6;
-    [a1 enumerateRangesUsingBlock:v9];
-    v7 = [v6 ef_notEmpty];
+    [self enumerateRangesUsingBlock:v9];
+    ef_notEmpty = [v6 ef_notEmpty];
   }
 
   else
   {
-    v7 = 0;
+    ef_notEmpty = 0;
   }
 
-  return v7;
+  return ef_notEmpty;
 }
 
 - (void)_addUIDsFromRange:()EDServerMessagePersistence toArray:
@@ -346,14 +346,14 @@
 - (id)ed_logDescription
 {
   v2 = objc_autoreleasePoolPush();
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __59__NSIndexSet_EDServerMessagePersistence__ed_logDescription__block_invoke;
   v7[3] = &unk_1E8257C50;
-  v4 = v3;
+  v4 = array;
   v8 = v4;
-  [a1 enumerateRangesWithOptions:0 usingBlock:v7];
+  [self enumerateRangesWithOptions:0 usingBlock:v7];
   v5 = [v4 componentsJoinedByString:{@", "}];
 
   objc_autoreleasePoolPop(v2);

@@ -1,7 +1,7 @@
 @interface SUScriptSubscriptionStatusObserver
 + (id)sharedObserver;
 - (SUScriptSubscriptionStatusObserver)init;
-- (void)_updateWithSubscriptionStatus:(id)a3;
+- (void)_updateWithSubscriptionStatus:(id)status;
 - (void)dealloc;
 @end
 
@@ -37,12 +37,12 @@ uint64_t __52__SUScriptSubscriptionStatusObserver_sharedObserver__block_invoke()
     accessQueue = v2->_accessQueue;
     v2->_accessQueue = v3;
 
-    v5 = [(objc_class *)getICUserIdentityClass_1() autoupdatingActiveAccount];
-    v6 = [(objc_class *)getICMusicSubscriptionStatusMonitorClass_1() sharedMonitorForIdentity:v5];
+    autoupdatingActiveAccount = [(objc_class *)getICUserIdentityClass_1() autoupdatingActiveAccount];
+    v6 = [(objc_class *)getICMusicSubscriptionStatusMonitorClass_1() sharedMonitorForIdentity:autoupdatingActiveAccount];
     subscriptionStatusMonitor = v2->_subscriptionStatusMonitor;
     v2->_subscriptionStatusMonitor = v6;
 
-    v8 = [(ICMusicSubscriptionStatusMonitor *)v2->_subscriptionStatusMonitor subscriptionStatus];
+    subscriptionStatus = [(ICMusicSubscriptionStatusMonitor *)v2->_subscriptionStatusMonitor subscriptionStatus];
     v9 = v2->_accessQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -50,7 +50,7 @@ uint64_t __52__SUScriptSubscriptionStatusObserver_sharedObserver__block_invoke()
     block[3] = &unk_1E81644A8;
     v10 = v2;
     v20 = v10;
-    v11 = v8;
+    v11 = subscriptionStatus;
     v21 = v11;
     dispatch_sync(v9, block);
     objc_initWeak(&location, v10);
@@ -106,18 +106,18 @@ void __42__SUScriptSubscriptionStatusObserver_init__block_invoke_2(uint64_t a1, 
   [(SUScriptSubscriptionStatusObserver *)&v3 dealloc];
 }
 
-- (void)_updateWithSubscriptionStatus:(id)a3
+- (void)_updateWithSubscriptionStatus:(id)status
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  statusCopy = status;
+  v5 = statusCopy;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 0;
-  if (v4)
+  if (statusCopy)
   {
-    v4 = [[SUScriptSubscriptionStatusResponse alloc] initWithSubscriptionStatus:v4 isFinal:1];
+    statusCopy = [[SUScriptSubscriptionStatusResponse alloc] initWithSubscriptionStatus:statusCopy isFinal:1];
   }
 
   accessQueue = self->_accessQueue;
@@ -125,18 +125,18 @@ void __42__SUScriptSubscriptionStatusObserver_init__block_invoke_2(uint64_t a1, 
   v11 = 3221225472;
   v12 = __68__SUScriptSubscriptionStatusObserver__updateWithSubscriptionStatus___block_invoke;
   v13 = &unk_1E8167100;
-  v14 = self;
-  v7 = v4;
+  selfCopy = self;
+  v7 = statusCopy;
   v15 = v7;
   v16 = &v17;
   dispatch_sync(accessQueue, &v10);
   if (*(v18 + 24) == 1)
   {
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v21 = @"service";
     v22[0] = @"AppleMusic";
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:1];
-    [v8 postNotificationName:@"SUScriptSubscriptionStatusDidChangeNotification" object:self userInfo:v9];
+    [defaultCenter postNotificationName:@"SUScriptSubscriptionStatusDidChangeNotification" object:self userInfo:v9];
   }
 
   _Block_object_dispose(&v17, 8);

@@ -1,38 +1,38 @@
 @interface JFXCompositionExporter
-- (JFXCompositionExporter)initWithClipsDataSource:(id)a3;
+- (JFXCompositionExporter)initWithClipsDataSource:(id)source;
 - (double)timeElapsedDuringExport;
-- (unint64_t)estimatedFileSizeForDuration:(int)a3 frameRate:(double)a4 preset:(id)a5;
+- (unint64_t)estimatedFileSizeForDuration:(int)duration frameRate:(double)rate preset:(id)preset;
 - (unsigned)parentCode;
-- (void)cancelWithStatus:(int64_t)a3;
+- (void)cancelWithStatus:(int64_t)status;
 - (void)dealloc;
-- (void)didFinishExport:(int64_t)a3;
+- (void)didFinishExport:(int64_t)export;
 - (void)exportAnalyticsForSessionBegin;
-- (void)exportAnalyticsForSessionCompleteWithStatus:(int64_t)a3 exportMachDuration:(unint64_t)a4;
-- (void)exportProgressedTo:(float)a3;
-- (void)setParentCode:(unsigned int)a3;
-- (void)startWithPresets:(id)a3 toFilePath:(id)a4 poster:(id)a5;
+- (void)exportAnalyticsForSessionCompleteWithStatus:(int64_t)status exportMachDuration:(unint64_t)duration;
+- (void)exportProgressedTo:(float)to;
+- (void)setParentCode:(unsigned int)code;
+- (void)startWithPresets:(id)presets toFilePath:(id)path poster:(id)poster;
 - (void)tearDown;
 @end
 
 @implementation JFXCompositionExporter
 
-- (JFXCompositionExporter)initWithClipsDataSource:(id)a3
+- (JFXCompositionExporter)initWithClipsDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v13.receiver = self;
   v13.super_class = JFXCompositionExporter;
   v6 = [(JFXCompositionExporter *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_clipsDataSource, a3);
+    objc_storeStrong(&v6->_clipsDataSource, source);
     v8 = objc_alloc([objc_opt_class() compositionClass]);
-    v9 = [(JFXCompositionExporter *)v7 clipsDataSource];
-    v10 = [v8 initWithClipsDataSource:v9];
+    clipsDataSource = [(JFXCompositionExporter *)v7 clipsDataSource];
+    v10 = [v8 initWithClipsDataSource:clipsDataSource];
     composition = v7->_composition;
     v7->_composition = v10;
 
-    [v5 renderSize];
+    [sourceCopy renderSize];
     [(JFXComposition *)v7->_composition setViewSize:?];
     [(JFXComposition *)v7->_composition applyExportProperties];
   }
@@ -40,63 +40,63 @@
   return v7;
 }
 
-- (void)setParentCode:(unsigned int)a3
+- (void)setParentCode:(unsigned int)code
 {
-  v3 = *&a3;
-  v4 = [(JFXCompositionExporter *)self composition];
-  [v4 setParentCode:v3];
+  v3 = *&code;
+  composition = [(JFXCompositionExporter *)self composition];
+  [composition setParentCode:v3];
 }
 
 - (unsigned)parentCode
 {
-  v2 = [(JFXCompositionExporter *)self composition];
-  v3 = [v2 parentCode];
+  composition = [(JFXCompositionExporter *)self composition];
+  parentCode = [composition parentCode];
 
-  return v3;
+  return parentCode;
 }
 
-- (unint64_t)estimatedFileSizeForDuration:(int)a3 frameRate:(double)a4 preset:(id)a5
+- (unint64_t)estimatedFileSizeForDuration:(int)duration frameRate:(double)rate preset:(id)preset
 {
-  v6 = *&a3;
-  v8 = a5;
-  v9 = [(JFXCompositionExporter *)self composition];
-  [v9 viewSize];
-  v12 = [JFXExportController estimatedFileSizeForDuration:v6 frameRate:v8 preset:a4 size:v10, v11];
+  v6 = *&duration;
+  presetCopy = preset;
+  composition = [(JFXCompositionExporter *)self composition];
+  [composition viewSize];
+  v12 = [JFXExportController estimatedFileSizeForDuration:v6 frameRate:presetCopy preset:rate size:v10, v11];
 
   return v12;
 }
 
-- (void)startWithPresets:(id)a3 toFilePath:(id)a4 poster:(id)a5
+- (void)startWithPresets:(id)presets toFilePath:(id)path poster:(id)poster
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  pathCopy = path;
   v9 = MEMORY[0x277CBEAA8];
-  v10 = a5;
-  v11 = a3;
-  v12 = [v9 date];
-  [(JFXCompositionExporter *)self setExportStartTime:v12];
+  posterCopy = poster;
+  presetsCopy = presets;
+  date = [v9 date];
+  [(JFXCompositionExporter *)self setExportStartTime:date];
 
   v13 = JFXLog_export();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
-    v14 = [(JFXCompositionExporter *)self exportStartTime];
+    exportStartTime = [(JFXCompositionExporter *)self exportStartTime];
     v20 = 138412546;
-    v21 = v8;
+    v21 = pathCopy;
     v22 = 2112;
-    v23 = v14;
+    v23 = exportStartTime;
     _os_log_impl(&dword_242A3B000, v13, OS_LOG_TYPE_INFO, "Starting export to %@ at %@", &v20, 0x16u);
   }
 
   v15 = [JFXReaderWriterExportController alloc];
-  v16 = [(JFXCompositionExporter *)self composition];
-  v17 = [(JFXExportController *)v15 initWithWithComposition:v16 presets:v11 toFile:v8 poster:v10 delegate:self];
+  composition = [(JFXCompositionExporter *)self composition];
+  v17 = [(JFXExportController *)v15 initWithWithComposition:composition presets:presetsCopy toFile:pathCopy poster:posterCopy delegate:self];
 
   [(JFXCompositionExporter *)self setExportController:v17];
-  v18 = [(JFXCompositionExporter *)self exportController];
-  [v18 beginAsynchronousExport];
+  exportController = [(JFXCompositionExporter *)self exportController];
+  [exportController beginAsynchronousExport];
 
-  v19 = [(JFXCompositionExporter *)self exportController];
-  [v19 startProgressTimer];
+  exportController2 = [(JFXCompositionExporter *)self exportController];
+  [exportController2 startProgressTimer];
 }
 
 - (void)tearDown
@@ -106,10 +106,10 @@
   [(JFXCompositionExporter *)self setExportController:0];
 }
 
-- (void)cancelWithStatus:(int64_t)a3
+- (void)cancelWithStatus:(int64_t)status
 {
-  v5 = [(JFXCompositionExporter *)self exportController];
-  [v5 cancelExportWithStatus:a3];
+  exportController = [(JFXCompositionExporter *)self exportController];
+  [exportController cancelExportWithStatus:status];
 
   [(JFXCompositionExporter *)self tearDown];
 }
@@ -124,58 +124,58 @@
 
 - (double)timeElapsedDuringExport
 {
-  v3 = [(JFXCompositionExporter *)self exportEndTime];
-  v4 = [(JFXCompositionExporter *)self exportStartTime];
-  [v3 timeIntervalSinceDate:v4];
+  exportEndTime = [(JFXCompositionExporter *)self exportEndTime];
+  exportStartTime = [(JFXCompositionExporter *)self exportStartTime];
+  [exportEndTime timeIntervalSinceDate:exportStartTime];
   v6 = v5;
 
   return v6;
 }
 
-- (void)exportProgressedTo:(float)a3
+- (void)exportProgressedTo:(float)to
 {
-  v5 = [(JFXCompositionExporter *)self delegate];
-  if (v5)
+  delegate = [(JFXCompositionExporter *)self delegate];
+  if (delegate)
   {
-    v6 = v5;
-    v7 = [(JFXCompositionExporter *)self delegate];
+    v6 = delegate;
+    delegate2 = [(JFXCompositionExporter *)self delegate];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v10 = [(JFXCompositionExporter *)self delegate];
-      *&v9 = a3;
-      [v10 exportProgressedTo:v9];
+      delegate3 = [(JFXCompositionExporter *)self delegate];
+      *&v9 = to;
+      [delegate3 exportProgressedTo:v9];
     }
   }
 }
 
-- (void)didFinishExport:(int64_t)a3
+- (void)didFinishExport:(int64_t)export
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CBEAA8] date];
-  [(JFXCompositionExporter *)self setExportEndTime:v5];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(JFXCompositionExporter *)self setExportEndTime:date];
 
   v6 = JFXLog_export();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [(JFXCompositionExporter *)self exportEndTime];
+    exportEndTime = [(JFXCompositionExporter *)self exportEndTime];
     v13 = 138412290;
-    v14 = v7;
+    v14 = exportEndTime;
     _os_log_impl(&dword_242A3B000, v6, OS_LOG_TYPE_INFO, "Finished exporting at %@", &v13, 0xCu);
   }
 
-  v8 = [(JFXCompositionExporter *)self delegate];
-  if (v8)
+  delegate = [(JFXCompositionExporter *)self delegate];
+  if (delegate)
   {
-    v9 = v8;
-    v10 = [(JFXCompositionExporter *)self delegate];
+    v9 = delegate;
+    delegate2 = [(JFXCompositionExporter *)self delegate];
     v11 = objc_opt_respondsToSelector();
 
     if (v11)
     {
-      v12 = [(JFXCompositionExporter *)self delegate];
-      [v12 didFinishExport:a3];
+      delegate3 = [(JFXCompositionExporter *)self delegate];
+      [delegate3 didFinishExport:export];
     }
   }
 
@@ -184,34 +184,34 @@
 
 - (void)exportAnalyticsForSessionBegin
 {
-  v3 = [(JFXCompositionExporter *)self delegate];
-  if (v3)
+  delegate = [(JFXCompositionExporter *)self delegate];
+  if (delegate)
   {
-    v4 = v3;
-    v5 = [(JFXCompositionExporter *)self delegate];
+    v4 = delegate;
+    delegate2 = [(JFXCompositionExporter *)self delegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(JFXCompositionExporter *)self delegate];
-      [v7 exportAnalyticsForSessionBegin];
+      delegate3 = [(JFXCompositionExporter *)self delegate];
+      [delegate3 exportAnalyticsForSessionBegin];
     }
   }
 }
 
-- (void)exportAnalyticsForSessionCompleteWithStatus:(int64_t)a3 exportMachDuration:(unint64_t)a4
+- (void)exportAnalyticsForSessionCompleteWithStatus:(int64_t)status exportMachDuration:(unint64_t)duration
 {
-  v7 = [(JFXCompositionExporter *)self delegate];
-  if (v7)
+  delegate = [(JFXCompositionExporter *)self delegate];
+  if (delegate)
   {
-    v8 = v7;
-    v9 = [(JFXCompositionExporter *)self delegate];
+    v8 = delegate;
+    delegate2 = [(JFXCompositionExporter *)self delegate];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v11 = [(JFXCompositionExporter *)self delegate];
-      [v11 exportAnalyticsForSessionCompleteWithStatus:a3 exportMachDuration:a4];
+      delegate3 = [(JFXCompositionExporter *)self delegate];
+      [delegate3 exportAnalyticsForSessionCompleteWithStatus:status exportMachDuration:duration];
     }
   }
 }

@@ -1,40 +1,40 @@
 @interface NCNotificationViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityAppearanceAnnouncementHandledByEnclosingEntity;
 - (BOOL)_accessibilityShouldPostScreenChangedOnPresentation;
 - (id)_axLongLookView;
 - (void)_axAnnounceNotification;
 - (void)_axHandleAnnouncementFinished;
-- (void)_axNotifyWillBeginUserInteraction:(BOOL)a3;
-- (void)_logNotificationMessage:(id)a3;
+- (void)_axNotifyWillBeginUserInteraction:(BOOL)interaction;
+- (void)_logNotificationMessage:(id)message;
 @end
 
 @implementation NCNotificationViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PLPlatterView"];
-  [v3 validateClass:@"PLPlatterHeaderContentView"];
-  [v3 validateClass:@"NCNotificationShortLookView"];
-  [v3 validateClass:@"NCNotificationLongLookView"];
-  [v3 validateClass:@"NCNotificationLongLookViewController"];
-  [v3 validateClass:@"NCNotificationLongLookView" hasInstanceVariable:@"_headerContentView" withType:"PLPlatterHeaderContentView"];
-  [v3 validateClass:@"NCNotificationViewController" hasInstanceMethod:@"notificationRequest" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCNotificationViewController" hasInstanceMethod:@"viewDidAppear:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"NCDimmableView" hasInstanceMethod:@"contentView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCNotificationShortLookView" hasInstanceMethod:@"_notificationContentView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCNotificationViewController" hasInstanceMethod:@"_notifyObserversWithBlock:" withFullSignature:{"v", "@?", 0}];
-  [v3 validateClass:@"NCNotificationStructuredListViewController"];
-  [v3 validateClass:@"NCNotificationViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateProtocol:@"NCNotificationViewControllerObserving" hasOptionalInstanceMethod:@"notificationViewControllerWillBeginUserInteraction:"];
-  [v3 validateProtocol:@"NCNotificationViewControllerObserving" hasOptionalInstanceMethod:@"notificationViewControllerDidEndUserInteraction:"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PLPlatterView"];
+  [validationsCopy validateClass:@"PLPlatterHeaderContentView"];
+  [validationsCopy validateClass:@"NCNotificationShortLookView"];
+  [validationsCopy validateClass:@"NCNotificationLongLookView"];
+  [validationsCopy validateClass:@"NCNotificationLongLookViewController"];
+  [validationsCopy validateClass:@"NCNotificationLongLookView" hasInstanceVariable:@"_headerContentView" withType:"PLPlatterHeaderContentView"];
+  [validationsCopy validateClass:@"NCNotificationViewController" hasInstanceMethod:@"notificationRequest" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCNotificationViewController" hasInstanceMethod:@"viewDidAppear:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"NCDimmableView" hasInstanceMethod:@"contentView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCNotificationShortLookView" hasInstanceMethod:@"_notificationContentView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCNotificationViewController" hasInstanceMethod:@"_notifyObserversWithBlock:" withFullSignature:{"v", "@?", 0}];
+  [validationsCopy validateClass:@"NCNotificationStructuredListViewController"];
+  [validationsCopy validateClass:@"NCNotificationViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateProtocol:@"NCNotificationViewControllerObserving" hasOptionalInstanceMethod:@"notificationViewControllerWillBeginUserInteraction:"];
+  [validationsCopy validateProtocol:@"NCNotificationViewControllerObserving" hasOptionalInstanceMethod:@"notificationViewControllerDidEndUserInteraction:"];
   if (AXProcessIsSpringBoard())
   {
-    [v3 validateClass:@"SpringBoard" hasInstanceMethod:@"notificationDispatcher" withFullSignature:{"@", 0}];
-    [v3 validateClass:@"SBNCNotificationDispatcher" hasInstanceVariable:@"_dispatcher" withType:"NCNotificationDispatcher"];
-    [v3 validateClass:@"SBNCAlertingController" hasInstanceMethod:@"screenController" withFullSignature:{"@", 0}];
-    [v3 validateClass:@"SBNCScreenController" hasInstanceMethod:@"canTurnOnScreenForNotificationRequest:" withFullSignature:{"B", "@", 0}];
+    [validationsCopy validateClass:@"SpringBoard" hasInstanceMethod:@"notificationDispatcher" withFullSignature:{"@", 0}];
+    [validationsCopy validateClass:@"SBNCNotificationDispatcher" hasInstanceVariable:@"_dispatcher" withType:"NCNotificationDispatcher"];
+    [validationsCopy validateClass:@"SBNCAlertingController" hasInstanceMethod:@"screenController" withFullSignature:{"@", 0}];
+    [validationsCopy validateClass:@"SBNCScreenController" hasInstanceMethod:@"canTurnOnScreenForNotificationRequest:" withFullSignature:{"B", "@", 0}];
   }
 }
 
@@ -42,8 +42,8 @@
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 view];
-  v4 = [v3 _accessibilityFindAncestor:&__block_literal_global_10 startWithSelf:0];
+  view = [v2 view];
+  v4 = [view _accessibilityFindAncestor:&__block_literal_global_10 startWithSelf:0];
   v5 = v4 != 0;
 
   return v5;
@@ -70,8 +70,8 @@ uint64_t __105__NCNotificationViewControllerAccessibility__accessibilityAppearan
 
 - (BOOL)_accessibilityShouldPostScreenChangedOnPresentation
 {
-  v2 = [(NCNotificationViewControllerAccessibility *)self _axLongLookView];
-  v3 = v2 != 0;
+  _axLongLookView = [(NCNotificationViewControllerAccessibility *)self _axLongLookView];
+  v3 = _axLongLookView != 0;
 
   return v3;
 }
@@ -103,14 +103,14 @@ uint64_t __59__NCNotificationViewControllerAccessibility_viewDidAppear___block_i
     if (objc_opt_isKindOfClass())
     {
       v6 = MEMORY[0x29EDBD7E8];
-      v7 = [v5 accessibilityLabel];
-      v8 = [v6 axAttributedStringWithString:v7];
+      accessibilityLabel = [v5 accessibilityLabel];
+      v8 = [v6 axAttributedStringWithString:accessibilityLabel];
 
       v9 = MEMORY[0x29EDB8EB0];
       [v8 setAttribute:MEMORY[0x29EDB8EB0] forKey:*MEMORY[0x29EDBDA00]];
       [v8 setAttribute:v9 forKey:*MEMORY[0x29EDBD978]];
-      v10 = [MEMORY[0x29EDBA068] defaultCenter];
-      [v10 addObserver:self selector:sel__axHandleAnnouncementFinished name:*MEMORY[0x29EDC7E98] object:0];
+      defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+      [defaultCenter addObserver:self selector:sel__axHandleAnnouncementFinished name:*MEMORY[0x29EDC7E98] object:0];
 
       [(NCNotificationViewControllerAccessibility *)self _logNotificationMessage:@"Notification posting announcement to VO"];
       UIAccessibilityPostNotification(*MEMORY[0x29EDC7EA8], v8);
@@ -126,17 +126,17 @@ uint64_t __59__NCNotificationViewControllerAccessibility_viewDidAppear___block_i
 {
   [(NCNotificationViewControllerAccessibility *)self _logNotificationMessage:@"Notification announcement finished"];
   [(NCNotificationViewControllerAccessibility *)self _axSetHasFinishedAnnouncement:1];
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x29EDC7E98] object:0];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x29EDC7E98] object:0];
 
   [(NCNotificationViewControllerAccessibility *)self _axNotifyWillBeginUserInteraction:0];
 
   [(NCNotificationViewControllerAccessibility *)self _axNotifyDidEndUserInteraction];
 }
 
-- (void)_axNotifyWillBeginUserInteraction:(BOOL)a3
+- (void)_axNotifyWillBeginUserInteraction:(BOOL)interaction
 {
-  if (a3)
+  if (interaction)
   {
     [(NCNotificationViewControllerAccessibility *)self _logNotificationMessage:@"Notification notifying did begin interaction for focus"];
     [(NCNotificationViewControllerAccessibility *)self _axSetHasFinishedAnnouncement:1];
@@ -167,21 +167,21 @@ void __75__NCNotificationViewControllerAccessibility__axNotifyDidEndUserInteract
   }
 }
 
-- (void)_logNotificationMessage:(id)a3
+- (void)_logNotificationMessage:(id)message
 {
   v18 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  messageCopy = message;
   buf[0] = 0;
   v5 = [(NCNotificationViewControllerAccessibility *)self safeValueForKey:@"view"];
   v6 = __UIAccessibilitySafeClass();
 
   v7 = [v6 safeValueForKey:@"contentView"];
-  v8 = [MEMORY[0x29EDBD6D0] sharedInstance];
-  v9 = [v8 ignoreLogging];
+  mEMORY[0x29EDBD6D0] = [MEMORY[0x29EDBD6D0] sharedInstance];
+  ignoreLogging = [mEMORY[0x29EDBD6D0] ignoreLogging];
 
-  if ((v9 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
-    v10 = [MEMORY[0x29EDBD6D0] identifier];
+    identifier = [MEMORY[0x29EDBD6D0] identifier];
     v11 = AXLoggerForFacility();
 
     v12 = AXOSLogLevelFromAXLogLevel();
@@ -226,12 +226,12 @@ void __92__NCNotificationViewControllerAccessibility_dismissViewControllerWithTr
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 view];
+  view = [v2 view];
 
   NSClassFromString(&cfstr_Ncnotification_58.isa);
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = view;
   }
 
   else

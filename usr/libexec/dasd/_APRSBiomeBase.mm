@@ -1,12 +1,12 @@
 @interface _APRSBiomeBase
 + (id)config;
 + (id)eventStream;
-+ (id)publisherForEventsStartingFromDate:(id)a3;
++ (id)publisherForEventsStartingFromDate:(id)date;
 + (id)sharedEventQueue;
 + (id)sourceForStream;
-+ (void)postEvent:(id)a3;
-+ (void)postEvent:(id)a3 usingSource:(id)a4;
-+ (void)pruneEventsOlderThanDate:(id)a3;
++ (void)postEvent:(id)event;
++ (void)postEvent:(id)event usingSource:(id)source;
++ (void)pruneEventsOlderThanDate:(id)date;
 @end
 
 @implementation _APRSBiomeBase
@@ -32,10 +32,10 @@
 
 + (id)sourceForStream
 {
-  v2 = [objc_opt_class() eventStream];
-  v3 = [v2 source];
+  eventStream = [objc_opt_class() eventStream];
+  source = [eventStream source];
 
-  return v3;
+  return source;
 }
 
 + (id)sharedEventQueue
@@ -50,48 +50,48 @@
   return v3;
 }
 
-+ (void)postEvent:(id)a3
++ (void)postEvent:(id)event
 {
-  v3 = a3;
-  v4 = [objc_opt_class() eventStream];
-  v5 = [v4 source];
+  eventCopy = event;
+  eventStream = [objc_opt_class() eventStream];
+  source = [eventStream source];
 
-  [objc_opt_class() postEvent:v3 usingSource:v5];
+  [objc_opt_class() postEvent:eventCopy usingSource:source];
 }
 
-+ (void)postEvent:(id)a3 usingSource:(id)a4
++ (void)postEvent:(id)event usingSource:(id)source
 {
-  v5 = a3;
-  v6 = a4;
+  eventCopy = event;
+  sourceCopy = source;
   v7 = +[_APRSBiomeBase sharedEventQueue];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100062A0C;
   v10[3] = &unk_1001B56E0;
-  v11 = v6;
-  v12 = v5;
-  v8 = v5;
-  v9 = v6;
+  v11 = sourceCopy;
+  v12 = eventCopy;
+  v8 = eventCopy;
+  v9 = sourceCopy;
   dispatch_async(v7, v10);
 }
 
-+ (id)publisherForEventsStartingFromDate:(id)a3
++ (id)publisherForEventsStartingFromDate:(id)date
 {
-  v3 = a3;
-  v4 = [objc_opt_class() eventStream];
-  [v3 timeIntervalSinceReferenceDate];
+  dateCopy = date;
+  eventStream = [objc_opt_class() eventStream];
+  [dateCopy timeIntervalSinceReferenceDate];
   v6 = v5;
 
-  v7 = [v4 publisherFromStartTime:v6];
+  v7 = [eventStream publisherFromStartTime:v6];
 
   return v7;
 }
 
-+ (void)pruneEventsOlderThanDate:(id)a3
++ (void)pruneEventsOlderThanDate:(id)date
 {
-  v4 = a3;
-  v5 = [a1 eventStream];
-  [v4 timeIntervalSinceReferenceDate];
+  dateCopy = date;
+  eventStream = [self eventStream];
+  [dateCopy timeIntervalSinceReferenceDate];
   v7 = v6;
 
   v8 = +[_APRSBiomeBase sharedEventQueue];
@@ -99,9 +99,9 @@
   v10[1] = 3221225472;
   v10[2] = sub_100062B74;
   v10[3] = &unk_1001B6250;
-  v11 = v5;
+  v11 = eventStream;
   v12 = v7;
-  v9 = v5;
+  v9 = eventStream;
   dispatch_async(v8, v10);
 }
 

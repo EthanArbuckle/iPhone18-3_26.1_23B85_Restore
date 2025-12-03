@@ -1,10 +1,10 @@
 @interface CLGpsPosition
 - ($FE0CC061C8DCDB9119F02F95D6E19FCC)gpsLocation;
 - (CLGpsPosition)init;
-- (CLGpsPosition)initWithCoder:(id)a3;
-- (CLGpsPosition)initWithLocation:(id *)a3 andPrivateLocation:(id *)a4;
+- (CLGpsPosition)initWithCoder:(id)coder;
+- (CLGpsPosition)initWithLocation:(id *)location andPrivateLocation:(id *)privateLocation;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLGpsPosition
@@ -16,7 +16,7 @@
   return 0;
 }
 
-- (CLGpsPosition)initWithLocation:(id *)a3 andPrivateLocation:(id *)a4
+- (CLGpsPosition)initWithLocation:(id *)location andPrivateLocation:(id *)privateLocation
 {
   v18.receiver = self;
   v18.super_class = CLGpsPosition;
@@ -24,24 +24,24 @@
   if (v6)
   {
     v7.__d_.__rep_ = std::chrono::steady_clock::now().__d_.__rep_;
-    v8 = *&a3->var1.var1;
-    *(v6 + 1) = *&a3->var0;
+    v8 = *&location->var1.var1;
+    *(v6 + 1) = *&location->var0;
     *(v6 + 2) = v8;
-    v9 = *&a3->var3;
-    v10 = *&a3->var5;
-    v11 = *&a3->var9;
-    *(v6 + 5) = *&a3->var7;
+    v9 = *&location->var3;
+    v10 = *&location->var5;
+    v11 = *&location->var9;
+    *(v6 + 5) = *&location->var7;
     *(v6 + 6) = v11;
     *(v6 + 3) = v9;
     *(v6 + 4) = v10;
-    v12 = *&a3->var11;
-    var13 = a3->var13;
-    v14 = *&a3->var14;
-    *(v6 + 156) = *&a3->var16;
+    v12 = *&location->var11;
+    var13 = location->var13;
+    v14 = *&location->var14;
+    *(v6 + 156) = *&location->var16;
     *(v6 + 8) = var13;
     *(v6 + 9) = v14;
     *(v6 + 7) = v12;
-    *&v12 = *&a3->var10;
+    *&v12 = *&location->var10;
     v15 = v7.__d_.__rep_ + (*&v12 * 1000000000.0);
     if (*&v12 < 0.0)
     {
@@ -49,22 +49,22 @@
     }
 
     *(v6 + 1) = v15;
-    memcpy(v6 + 176, a4, 0x230uLL);
+    memcpy(v6 + 176, privateLocation, 0x230uLL);
     v16 = v6;
   }
 
   return v6;
 }
 
-- (CLGpsPosition)initWithCoder:(id)a3
+- (CLGpsPosition)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = CLGpsPosition;
   v5 = [(CLGpsPosition *)&v16 init];
   if (v5)
   {
-    sub_1001718AC(v4, v15);
+    sub_1001718AC(coderCopy, v15);
     v6 = *(&v15[8] + 12);
     v8 = v15[7];
     v7 = v15[8];
@@ -82,21 +82,21 @@
     v12 = v15[1];
     *(v5 + 1) = v15[0];
     *(v5 + 2) = v12;
-    sub_100171954(v4, v15);
+    sub_100171954(coderCopy, v15);
     memcpy(v5 + 176, v15, 0x230uLL);
-    *(v5 + 1) = sub_100171AA4(v4);
+    *(v5 + 1) = sub_100171AA4(coderCopy);
     v13 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  sub_100171940(v4, &self->_gpsLocation);
-  sub_1001719E8(v4, &self->_gpsLocation.ellipsoidalAltitude);
-  sub_100171AEC(v4, &self->_expiry);
+  coderCopy = coder;
+  sub_100171940(coderCopy, &self->_gpsLocation);
+  sub_1001719E8(coderCopy, &self->_gpsLocation.ellipsoidalAltitude);
+  sub_100171AEC(coderCopy, &self->_expiry);
 }
 
 - (id)description

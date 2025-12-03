@@ -1,5 +1,5 @@
 @interface CBOpeningViewController
-+ (id)_welcomeImageForSymbol:(id)a3;
++ (id)_welcomeImageForSymbol:(id)symbol;
 + (id)openingViewControllerForBootIntent;
 - (void)_setupLanguageButton;
 - (void)_setupOnboardingButtons;
@@ -25,13 +25,13 @@
   if ([v3 currentBootIntentReason] == 1)
   {
     v8 = +[UIDevice currentDevice];
-    v9 = [v8 userInterfaceIdiom];
+    userInterfaceIdiom = [v8 userInterfaceIdiom];
 
     v10 = +[NSBundle mainBundle];
     v11 = [v10 localizedStringForKey:@"SELF_SERVICE_REPAIR" value:&stru_10007EAB0 table:0];
 
     v12 = @"SELF_SERVICE_REPAIR_DESCRIPTION_IPHONE";
-    if (v9 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v12 = @"SELF_SERVICE_REPAIR_DESCRIPTION_IPAD";
     }
@@ -40,7 +40,7 @@
     v14 = +[NSBundle mainBundle];
     v15 = [v14 localizedStringForKey:v13 value:&stru_10007EAB0 table:0];
 
-    v16 = [a1 _welcomeImageForSymbol:@"screwdriver.fill"];
+    v16 = [self _welcomeImageForSymbol:@"screwdriver.fill"];
     if (v16)
     {
       v17 = v16;
@@ -65,13 +65,13 @@ LABEL_9:
   return v18;
 }
 
-+ (id)_welcomeImageForSymbol:(id)a3
++ (id)_welcomeImageForSymbol:(id)symbol
 {
-  v3 = a3;
+  symbolCopy = symbol;
   v4 = +[UIDevice currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  userInterfaceIdiom = [v4 userInterfaceIdiom];
 
-  v6 = [[IFSymbol alloc] initWithSymbolName:v3 bundleURL:0];
+  v6 = [[IFSymbol alloc] initWithSymbolName:symbolCopy bundleURL:0];
   v7 = objc_opt_new();
   v8 = [[IFColor alloc] initWithSystemColor:11];
   v17 = v8;
@@ -85,7 +85,7 @@ LABEL_9:
 
   [v7 setRenderingMode:3];
   v12 = 85.0;
-  if (v5 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v12 = 60.0;
   }
@@ -140,12 +140,12 @@ LABEL_9:
   v3 = MGCopyAnswer();
   v4 = +[NSBundle mainBundle];
   v5 = [v4 localizedStringForKey:@"OS_VERSION" value:&stru_10007EAB0 table:0];
-  v6 = [v10 systemName];
-  v7 = [v10 systemVersion];
-  v8 = [NSString stringWithFormat:v5, v6, v7, v3];
+  systemName = [v10 systemName];
+  systemVersion = [v10 systemVersion];
+  v8 = [NSString stringWithFormat:v5, systemName, systemVersion, v3];
 
-  v9 = [(CBOpeningViewController *)self buttonTray];
-  [v9 setCaptionText:v8 style:1];
+  buttonTray = [(CBOpeningViewController *)self buttonTray];
+  [buttonTray setCaptionText:v8 style:1];
 }
 
 - (void)_setupOnboardingButtons
@@ -157,9 +157,9 @@ LABEL_9:
   v5 = [v4 localizedStringForKey:@"EXIT_DIAGNOSTICS" value:&stru_10007EAB0 table:0];
 
   v6 = +[CBBootIntentManager sharedInstance];
-  v7 = [v6 currentBootIntentReason];
+  currentBootIntentReason = [v6 currentBootIntentReason];
 
-  if (v7 == 1)
+  if (currentBootIntentReason == 1)
   {
     v8 = +[NSBundle mainBundle];
     v9 = [v8 localizedStringForKey:@"EXIT_SELF_SERVICE_REPAIR" value:&stru_10007EAB0 table:0];
@@ -170,8 +170,8 @@ LABEL_9:
   v10 = +[OBBoldTrayButton boldButton];
   [v10 setTitle:v16 forState:0];
   [v10 addTarget:self action:"didTappedStartDiagnosticsButton" forControlEvents:64];
-  v11 = [(CBOpeningViewController *)self buttonTray];
-  [v11 addButton:v10];
+  buttonTray = [(CBOpeningViewController *)self buttonTray];
+  [buttonTray addButton:v10];
 
   v12 = +[OBLinkTrayButton linkButton];
   v13 = +[NSBundle mainBundle];
@@ -179,8 +179,8 @@ LABEL_9:
   [v12 setTitle:v14 forState:0];
 
   [v12 addTarget:self action:"didTappedExitButton" forControlEvents:64];
-  v15 = [(CBOpeningViewController *)self buttonTray];
-  [v15 addButton:v12];
+  buttonTray2 = [(CBOpeningViewController *)self buttonTray];
+  [buttonTray2 addButton:v12];
 }
 
 - (void)didTappedStartDiagnosticsButton
@@ -193,8 +193,8 @@ LABEL_9:
   }
 
   v4 = [[CBNetworkViewController alloc] initWithSetupPresentationTheme:1];
-  v5 = [(CBOpeningViewController *)self navigationController];
-  [v5 pushViewController:v4 animated:1];
+  navigationController = [(CBOpeningViewController *)self navigationController];
+  [navigationController pushViewController:v4 animated:1];
 }
 
 - (void)didTappedExitButton
@@ -210,8 +210,8 @@ LABEL_9:
   v4 = +[UIColor systemBlueColor];
   [v3 setTintColor:v4];
 
-  v5 = [(CBOpeningViewController *)self navigationItem];
-  [v5 setLeftBarButtonItem:v3];
+  navigationItem = [(CBOpeningViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v3];
 }
 
 - (void)didTappedLanguageSelectorButton
@@ -225,8 +225,8 @@ LABEL_9:
 
   v4 = objc_alloc_init(CBLanguageSelectorViewController);
   v5 = +[CBLocationController sharedLocationController];
-  v6 = [v5 languageComposite];
-  [(CBLanguageSelectorViewController *)v4 setLanguageComposite:v6];
+  languageComposite = [v5 languageComposite];
+  [(CBLanguageSelectorViewController *)v4 setLanguageComposite:languageComposite];
 
   [(CBOpeningViewController *)self presentViewController:v4 animated:1 completion:0];
 }

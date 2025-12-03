@@ -1,15 +1,15 @@
 @interface ADInstallAttributionData
-- (ADInstallAttributionData)initWithDict:(id)a3;
+- (ADInstallAttributionData)initWithDict:(id)dict;
 - (id)dictionaryRepresentation;
-- (void)recordStoreKitAdTap:(id)a3;
+- (void)recordStoreKitAdTap:(id)tap;
 @end
 
 @implementation ADInstallAttributionData
 
-- (ADInstallAttributionData)initWithDict:(id)a3
+- (ADInstallAttributionData)initWithDict:(id)dict
 {
   v91 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictCopy = dict;
   v86.receiver = self;
   v86.super_class = ADInstallAttributionData;
   v5 = [(ADInstallAttributionData *)&v86 init];
@@ -19,7 +19,7 @@
   }
 
   v6 = objc_opt_class();
-  v9 = objc_msgSend_AD_objectForKey_ofKindOfClass_(v4, v7, @"version", v6, v8);
+  v9 = objc_msgSend_AD_objectForKey_ofKindOfClass_(dictCopy, v7, @"version", v6, v8);
   version = v5->_version;
   v5->_version = v9;
 
@@ -36,7 +36,7 @@
   }
 
   v13 = objc_opt_class();
-  v16 = objc_msgSend_AD_objectForKey_ofKindOfClass_(v4, v14, @"sourceAppAdamID", v13, v15);
+  v16 = objc_msgSend_AD_objectForKey_ofKindOfClass_(dictCopy, v14, @"sourceAppAdamID", v13, v15);
   sourceAppAdamID = v5->_sourceAppAdamID;
   v5->_sourceAppAdamID = v16;
 
@@ -53,7 +53,7 @@
   }
 
   v20 = objc_opt_class();
-  v23 = objc_msgSend_AD_objectForKey_ofKindOfClass_(v4, v21, @"adNetworkId", v20, v22);
+  v23 = objc_msgSend_AD_objectForKey_ofKindOfClass_(dictCopy, v21, @"adNetworkId", v20, v22);
   adNetworkID = v5->_adNetworkID;
   v5->_adNetworkID = v23;
 
@@ -66,7 +66,7 @@
     }
 
     v52 = objc_opt_class();
-    v57 = objc_msgSend_AD_jsonString(v4, v53, v54, v55, v56);
+    v57 = objc_msgSend_AD_jsonString(dictCopy, v53, v54, v55, v56);
     *buf = 138412546;
     v88 = v52;
     v89 = 2112;
@@ -79,7 +79,7 @@ LABEL_29:
   }
 
   v25 = objc_opt_class();
-  v28 = objc_msgSend_AD_objectForKey_ofKindOfClass_(v4, v26, @"campaignId", v25, v27);
+  v28 = objc_msgSend_AD_objectForKey_ofKindOfClass_(dictCopy, v26, @"campaignId", v25, v27);
   campaignID = v5->_campaignID;
   v5->_campaignID = v28;
 
@@ -92,7 +92,7 @@ LABEL_29:
     }
 
     v59 = objc_opt_class();
-    v57 = objc_msgSend_AD_jsonString(v4, v60, v61, v62, v63);
+    v57 = objc_msgSend_AD_jsonString(dictCopy, v60, v61, v62, v63);
     *buf = 138412546;
     v88 = v59;
     v89 = 2112;
@@ -102,7 +102,7 @@ LABEL_29:
   }
 
   v30 = objc_opt_class();
-  v33 = objc_msgSend_AD_objectForKey_ofKindOfClass_(v4, v31, @"uuid", v30, v32);
+  v33 = objc_msgSend_AD_objectForKey_ofKindOfClass_(dictCopy, v31, @"uuid", v30, v32);
   uuid = v5->_uuid;
   v5->_uuid = v33;
 
@@ -115,7 +115,7 @@ LABEL_29:
     }
 
     v64 = objc_opt_class();
-    v57 = objc_msgSend_AD_jsonString(v4, v65, v66, v67, v68);
+    v57 = objc_msgSend_AD_jsonString(dictCopy, v65, v66, v67, v68);
     *buf = 138412546;
     v88 = v64;
     v89 = 2112;
@@ -125,7 +125,7 @@ LABEL_29:
   }
 
   v35 = objc_opt_class();
-  v38 = objc_msgSend_AD_objectForKey_ofKindOfClass_(v4, v36, @"adamId", v35, v37);
+  v38 = objc_msgSend_AD_objectForKey_ofKindOfClass_(dictCopy, v36, @"adamId", v35, v37);
   adamID = v5->_adamID;
   v5->_adamID = v38;
 
@@ -138,7 +138,7 @@ LABEL_29:
     }
 
     v69 = objc_opt_class();
-    v57 = objc_msgSend_AD_jsonString(v4, v70, v71, v72, v73);
+    v57 = objc_msgSend_AD_jsonString(dictCopy, v70, v71, v72, v73);
     *buf = 138412546;
     v88 = v69;
     v89 = 2112;
@@ -148,7 +148,7 @@ LABEL_29:
   }
 
   v40 = objc_opt_class();
-  v43 = objc_msgSend_AD_objectForKey_ofKindOfClass_(v4, v41, @"timestamp", v40, v42);
+  v43 = objc_msgSend_AD_objectForKey_ofKindOfClass_(dictCopy, v41, @"timestamp", v40, v42);
   timestamp = v5->_timestamp;
   v5->_timestamp = v43;
 
@@ -161,7 +161,7 @@ LABEL_29:
     }
 
     v74 = objc_opt_class();
-    v57 = objc_msgSend_AD_jsonString(v4, v75, v76, v77, v78);
+    v57 = objc_msgSend_AD_jsonString(dictCopy, v75, v76, v77, v78);
     *buf = 138412546;
     v88 = v74;
     v89 = 2112;
@@ -171,7 +171,7 @@ LABEL_29:
   }
 
   v45 = objc_opt_class();
-  v48 = objc_msgSend_AD_objectForKey_ofKindOfClass_(v4, v46, @"signature", v45, v47);
+  v48 = objc_msgSend_AD_objectForKey_ofKindOfClass_(dictCopy, v46, @"signature", v45, v47);
   signature = v5->_signature;
   v5->_signature = v48;
 
@@ -181,7 +181,7 @@ LABEL_29:
     if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
     {
       v79 = objc_opt_class();
-      v57 = objc_msgSend_AD_jsonString(v4, v80, v81, v82, v83);
+      v57 = objc_msgSend_AD_jsonString(dictCopy, v80, v81, v82, v83);
       *buf = 138412546;
       v88 = v79;
       v89 = 2112;
@@ -261,10 +261,10 @@ LABEL_31:
   return v19;
 }
 
-- (void)recordStoreKitAdTap:(id)a3
+- (void)recordStoreKitAdTap:(id)tap
 {
   v123 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  tapCopy = tap;
   v5 = APLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -335,8 +335,8 @@ LABEL_31:
   v117[2] = sub_264E50808;
   v117[3] = &unk_279B88AD0;
   v117[4] = self;
-  v118 = v4;
-  v113 = v4;
+  v118 = tapCopy;
+  v113 = tapCopy;
   objc_msgSend_addInstallAttributionParamsWithConfig_completionHandler_(v112, v114, v18, v117, v115);
 
   v116 = *MEMORY[0x277D85DE8];

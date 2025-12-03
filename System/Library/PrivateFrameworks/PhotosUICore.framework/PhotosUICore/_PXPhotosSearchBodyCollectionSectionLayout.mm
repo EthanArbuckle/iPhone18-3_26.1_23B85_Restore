@@ -1,13 +1,13 @@
 @interface _PXPhotosSearchBodyCollectionSectionLayout
 - (_PXPhotosSearchBodyCollectionSectionLayout)init;
 - (id)axSpriteIndexes;
-- (id)axSpriteIndexesInRect:(CGRect)a3;
+- (id)axSpriteIndexesInRect:(CGRect)rect;
 - (void)referenceSizeDidChange;
 @end
 
 @implementation _PXPhotosSearchBodyCollectionSectionLayout
 
-- (id)axSpriteIndexesInRect:(CGRect)a3
+- (id)axSpriteIndexesInRect:(CGRect)rect
 {
   v3 = objc_alloc_init(MEMORY[0x1E696AC90]);
 

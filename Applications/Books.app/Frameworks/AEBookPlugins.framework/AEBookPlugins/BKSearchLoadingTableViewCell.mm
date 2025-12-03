@@ -15,8 +15,8 @@
     v5 = self->_activityIndicator;
     self->_activityIndicator = v4;
 
-    v6 = [(BKSearchLoadingTableViewCell *)self contentView];
-    [v6 addSubview:self->_activityIndicator];
+    contentView = [(BKSearchLoadingTableViewCell *)self contentView];
+    [contentView addSubview:self->_activityIndicator];
 
     activityIndicator = self->_activityIndicator;
   }
@@ -31,42 +31,42 @@
   v47.receiver = self;
   v47.super_class = BKSearchLoadingTableViewCell;
   [(BKSearchLoadingTableViewCell *)&v47 layoutSubviews];
-  v3 = [(BKSearchLoadingTableViewCell *)self textLabel];
-  [v3 frame];
+  textLabel = [(BKSearchLoadingTableViewCell *)self textLabel];
+  [textLabel frame];
   v5 = v4;
   v7 = v6;
 
-  v8 = [(BKSearchLoadingTableViewCell *)self contentView];
-  [v8 bounds];
+  contentView = [(BKSearchLoadingTableViewCell *)self contentView];
+  [contentView bounds];
   Width = CGRectGetWidth(v48);
 
-  v10 = [(BKSearchLoadingTableViewCell *)self textLabel];
-  [v10 setFrame:{0.0, v5, Width, v7}];
+  textLabel2 = [(BKSearchLoadingTableViewCell *)self textLabel];
+  [textLabel2 setFrame:{0.0, v5, Width, v7}];
 
-  v11 = [(BKSearchLoadingTableViewCell *)self detailTextLabel];
-  [v11 frame];
+  detailTextLabel = [(BKSearchLoadingTableViewCell *)self detailTextLabel];
+  [detailTextLabel frame];
   v13 = v12;
   v15 = v14;
 
-  v16 = [(BKSearchLoadingTableViewCell *)self contentView];
-  [v16 bounds];
+  contentView2 = [(BKSearchLoadingTableViewCell *)self contentView];
+  [contentView2 bounds];
   v17 = CGRectGetWidth(v49);
 
-  v18 = [(BKSearchLoadingTableViewCell *)self detailTextLabel];
-  [v18 setFrame:{0.0, v13, v17, v15}];
+  detailTextLabel2 = [(BKSearchLoadingTableViewCell *)self detailTextLabel];
+  [detailTextLabel2 setFrame:{0.0, v13, v17, v15}];
 
-  v19 = [(BKSearchLoadingTableViewCell *)self activityIndicator];
-  if ([v19 isAnimating])
+  activityIndicator = [(BKSearchLoadingTableViewCell *)self activityIndicator];
+  if ([activityIndicator isAnimating])
   {
-    [v19 frame];
+    [activityIndicator frame];
     v21 = v20;
     v23 = v22;
     v25 = v24;
     v27 = v26;
-    v28 = [(BKSearchLoadingTableViewCell *)self textLabel];
-    v29 = [(BKSearchLoadingTableViewCell *)self contentView];
-    [v29 bounds];
-    [v28 sizeThatFits:{v30, v31}];
+    textLabel3 = [(BKSearchLoadingTableViewCell *)self textLabel];
+    contentView3 = [(BKSearchLoadingTableViewCell *)self contentView];
+    [contentView3 bounds];
+    [textLabel3 sizeThatFits:{v30, v31}];
     v45 = v32;
 
     v50.origin.x = 0.0;
@@ -104,19 +104,19 @@
     v55.size.height = v27;
     v41 = (CGRectGetWidth(v55) + 5.0) * 0.5;
     v42 = floorf(v41) + 0.0;
-    v43 = [(BKSearchLoadingTableViewCell *)self textLabel];
-    [v43 setFrame:{v42, v5, Width, v46}];
+    textLabel4 = [(BKSearchLoadingTableViewCell *)self textLabel];
+    [textLabel4 setFrame:{v42, v5, Width, v46}];
 
-    [v19 setFrame:{v40, v35, v25, v27}];
-    v44 = [(BKSearchLoadingTableViewCell *)self contentView];
-    [v44 bringSubviewToFront:v19];
+    [activityIndicator setFrame:{v40, v35, v25, v27}];
+    contentView4 = [(BKSearchLoadingTableViewCell *)self contentView];
+    [contentView4 bringSubviewToFront:activityIndicator];
   }
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(BKSearchLoadingTableViewCell *)self contentView];
-  [v2 systemLayoutSizeFittingSize:{UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height}];
+  contentView = [(BKSearchLoadingTableViewCell *)self contentView];
+  [contentView systemLayoutSizeFittingSize:{UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height}];
   v4 = v3;
   v6 = v5;
 

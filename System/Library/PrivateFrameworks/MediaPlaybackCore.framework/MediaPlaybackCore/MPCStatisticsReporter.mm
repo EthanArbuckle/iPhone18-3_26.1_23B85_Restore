@@ -3,15 +3,15 @@
 - (MPCStatisticsReporter)init;
 - (NSString)recordScenarioName;
 - (id)_reportDirectoryURL;
-- (id)_reportingFileForRecorder:(id)a3 extension:(id)a4;
+- (id)_reportingFileForRecorder:(id)recorder extension:(id)extension;
 - (id)description;
 - (void)_clearLocalReports;
 - (void)_sendAnalyticsData;
-- (void)_writeAnalyticsDataFromRecorder:(id)a3;
-- (void)_writeData:(id)a3 toFileAtPath:(id)a4;
-- (void)_writeSamplesFromRecorder:(id)a3;
+- (void)_writeAnalyticsDataFromRecorder:(id)recorder;
+- (void)_writeData:(id)data toFileAtPath:(id)path;
+- (void)_writeSamplesFromRecorder:(id)recorder;
 - (void)flush;
-- (void)reportRecordedResults:(id)a3;
+- (void)reportRecordedResults:(id)results;
 @end
 
 @implementation MPCStatisticsReporter
@@ -27,24 +27,24 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(MPCStatisticsReporter *)self recordScenarioName];
-  v6 = [v3 stringWithFormat:@"<%@: %p - recordScenarioName:%@>", v4, self, v5];
+  recordScenarioName = [(MPCStatisticsReporter *)self recordScenarioName];
+  v6 = [v3 stringWithFormat:@"<%@: %p - recordScenarioName:%@>", v4, self, recordScenarioName];
 
   return v6;
 }
 
-- (void)_writeData:(id)a3 toFileAtPath:(id)a4
+- (void)_writeData:(id)data toFileAtPath:(id)path
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  pathCopy = path;
   dispatch_assert_queue_V2(self->_writerQueue);
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
-  v9 = [v8 fileExistsAtPath:v7];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v9 = [defaultManager fileExistsAtPath:pathCopy];
 
   if (v9)
   {
-    v10 = [MEMORY[0x1E696AC00] fileHandleForWritingAtPath:v7];
+    v10 = [MEMORY[0x1E696AC00] fileHandleForWritingAtPath:pathCopy];
     v11 = v10;
     if (v10)
     {
@@ -58,7 +58,7 @@
         if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543618;
-          v31 = self;
+          selfCopy6 = self;
           v32 = 2114;
           v33 = v14;
           _os_log_impl(&dword_1C5C61000, v26, OS_LOG_TYPE_ERROR, "[AP] - %{public}@ - Unable to seek to file for records update - error: %{public}@", buf, 0x16u);
@@ -68,7 +68,7 @@
       }
 
       v27 = 0;
-      [v11 writeData:v6 error:&v27];
+      [v11 writeData:dataCopy error:&v27];
       v15 = v27;
       v14 = v27;
       v16 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
@@ -78,7 +78,7 @@
         if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543618;
-          v31 = self;
+          selfCopy6 = self;
           v32 = 2114;
           v33 = v14;
           v18 = "[AP] - %{public}@ - Unable to write data for records update - error: %{public}@";
@@ -92,9 +92,9 @@ LABEL_23:
       else if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v31 = self;
+        selfCopy6 = self;
         v32 = 2114;
-        v33 = v7;
+        v33 = pathCopy;
         v18 = "[AP] - %{public}@ - Records update successful at %{public}@";
         v19 = v17;
         v20 = OS_LOG_TYPE_DEFAULT;
@@ -109,7 +109,7 @@ LABEL_23:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v31 = self;
+      selfCopy6 = self;
       v23 = "[AP] - %{public}@ - Unable to open file for records update";
       v24 = v14;
       v25 = 12;
@@ -120,7 +120,7 @@ LABEL_23:
   }
 
   v29 = 0;
-  v21 = [v6 writeToFile:v7 options:0 error:&v29];
+  v21 = [dataCopy writeToFile:pathCopy options:0 error:&v29];
   v11 = v29;
   v22 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
   v14 = v22;
@@ -129,7 +129,7 @@ LABEL_23:
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v31 = self;
+      selfCopy6 = self;
       v32 = 2114;
       v33 = v11;
       v23 = "[AP] - %{public}@ - Unable to create file for records - error: %{public}@";
@@ -147,9 +147,9 @@ LABEL_25:
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v31 = self;
+    selfCopy6 = self;
     v32 = 2114;
-    v33 = v7;
+    v33 = pathCopy;
     _os_log_impl(&dword_1C5C61000, v14, OS_LOG_TYPE_DEFAULT, "[AP] - %{public}@ - Records creation successful at %{public}@", buf, 0x16u);
   }
 
@@ -157,16 +157,16 @@ LABEL_25:
 LABEL_26:
 }
 
-- (void)_writeSamplesFromRecorder:(id)a3
+- (void)_writeSamplesFromRecorder:(id)recorder
 {
   writerQueue = self->_writerQueue;
-  v5 = a3;
+  recorderCopy = recorder;
   dispatch_assert_queue_V2(writerQueue);
-  v9 = [(MPCStatisticsReporter *)self _reportingFileForRecorder:v5 extension:@".csv"];
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
-  v7 = [v6 fileExistsAtPath:v9];
+  v9 = [(MPCStatisticsReporter *)self _reportingFileForRecorder:recorderCopy extension:@".csv"];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v7 = [defaultManager fileExistsAtPath:v9];
 
-  v8 = [v5 flushSamplesToCSVDataWithHeader:v7 ^ 1u];
+  v8 = [recorderCopy flushSamplesToCSVDataWithHeader:v7 ^ 1u];
 
   if (v8)
   {
@@ -174,11 +174,11 @@ LABEL_26:
   }
 }
 
-- (id)_reportingFileForRecorder:(id)a3 extension:(id)a4
+- (id)_reportingFileForRecorder:(id)recorder extension:(id)extension
 {
-  v6 = a4;
+  extensionCopy = extension;
   writerQueue = self->_writerQueue;
-  v8 = a3;
+  recorderCopy = recorder;
   dispatch_assert_queue_V2(writerQueue);
   v9 = MSVGetDeviceProductType();
   v10 = v9;
@@ -190,24 +190,24 @@ LABEL_26:
 
   v12 = v11;
 
-  v13 = [(MPCStatisticsReporter *)self recordScenarioName];
+  recordScenarioName = [(MPCStatisticsReporter *)self recordScenarioName];
   v14 = MEMORY[0x1E696AEC0];
-  v15 = [v8 modelID];
+  modelID = [recorderCopy modelID];
 
-  v16 = [v14 stringWithFormat:@"%@__%@", v15, v12];
+  v16 = [v14 stringWithFormat:@"%@__%@", modelID, v12];
 
-  if (v13)
+  if (recordScenarioName)
   {
-    v17 = [v16 stringByAppendingFormat:@"__%@", v13];
+    v17 = [v16 stringByAppendingFormat:@"__%@", recordScenarioName];
 
     v16 = v17;
   }
 
-  v18 = [v16 stringByAppendingString:v6];
+  v18 = [v16 stringByAppendingString:extensionCopy];
 
-  v19 = [(MPCStatisticsReporter *)self _reportDirectoryURL];
-  v20 = [v19 path];
-  v21 = [v20 stringByAppendingPathComponent:v18];
+  _reportDirectoryURL = [(MPCStatisticsReporter *)self _reportDirectoryURL];
+  path = [_reportDirectoryURL path];
+  v21 = [path stringByAppendingPathComponent:v18];
 
   return v21;
 }
@@ -223,16 +223,16 @@ LABEL_26:
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:2];
   v6 = [v3 fileURLWithPathComponents:v5];
 
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  v8 = [v6 path];
-  v9 = [v7 fileExistsAtPath:v8 isDirectory:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [v6 path];
+  v9 = [defaultManager fileExistsAtPath:path isDirectory:0];
 
   if ((v9 & 1) == 0)
   {
-    v10 = [MEMORY[0x1E696AC08] defaultManager];
-    v11 = [v6 path];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+    path2 = [v6 path];
     v16 = 0;
-    v12 = [v10 createDirectoryAtPath:v11 withIntermediateDirectories:1 attributes:0 error:&v16];
+    v12 = [defaultManager2 createDirectoryAtPath:path2 withIntermediateDirectories:1 attributes:0 error:&v16];
     v13 = v16;
 
     if ((v12 & 1) == 0)
@@ -241,7 +241,7 @@ LABEL_26:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
       {
         *buf = 138543874;
-        v18 = self;
+        selfCopy = self;
         v19 = 2114;
         v20 = v6;
         v21 = 2114;
@@ -258,21 +258,21 @@ LABEL_26:
 {
   v41 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_writerQueue);
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v26 = self;
-  v28 = [(MPCStatisticsReporter *)self _reportDirectoryURL];
-  v4 = [v28 path];
-  v27 = v3;
-  v5 = [v3 enumeratorAtPath:v4];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  selfCopy = self;
+  _reportDirectoryURL = [(MPCStatisticsReporter *)self _reportDirectoryURL];
+  path = [_reportDirectoryURL path];
+  v27 = defaultManager;
+  v5 = [defaultManager enumeratorAtPath:path];
 
   v6 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v28 path];
+    path2 = [_reportDirectoryURL path];
     *buf = 138543618;
-    v35 = v26;
+    v35 = selfCopy;
     v36 = 2114;
-    v37 = v7;
+    v37 = path2;
     _os_log_impl(&dword_1C5C61000, v6, OS_LOG_TYPE_DEFAULT, "[AP] - %{public}@ - Removing local report files in %{public}@", buf, 0x16u);
   }
 
@@ -298,15 +298,15 @@ LABEL_26:
         }
 
         v13 = *(*(&v30 + 1) + 8 * i);
-        v14 = [v13 pathExtension];
-        if ([v14 isEqualToString:@"json"])
+        pathExtension = [v13 pathExtension];
+        if ([pathExtension isEqualToString:@"json"])
         {
         }
 
         else
         {
-          v15 = [v13 pathExtension];
-          v16 = [v15 isEqualToString:@"csv"];
+          pathExtension2 = [v13 pathExtension];
+          v16 = [pathExtension2 isEqualToString:@"csv"];
 
           if (!v16)
           {
@@ -314,14 +314,14 @@ LABEL_26:
           }
         }
 
-        v17 = [v28 path];
-        v18 = [v17 stringByAppendingPathComponent:v13];
+        path3 = [_reportDirectoryURL path];
+        v18 = [path3 stringByAppendingPathComponent:v13];
 
         v19 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543618;
-          v35 = v26;
+          v35 = selfCopy;
           v36 = 2114;
           v37 = v18;
           _os_log_impl(&dword_1C5C61000, v19, OS_LOG_TYPE_DEFAULT, "[AP] - %{public}@ - Removing %{public}@", buf, 0x16u);
@@ -337,7 +337,7 @@ LABEL_26:
           if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
           {
             *buf = v24;
-            v35 = v26;
+            v35 = selfCopy;
             v36 = 2114;
             v37 = v18;
             v38 = 2114;
@@ -356,23 +356,23 @@ LABEL_26:
 
 - (void)_sendAnalyticsData
 {
-  v2 = self;
+  selfCopy = self;
   v52 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_writerQueue);
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v36 = [(MPCStatisticsReporter *)v2 _reportDirectoryURL];
-  v4 = [v36 path];
-  v35 = v3;
-  v5 = [v3 enumeratorAtPath:v4];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  _reportDirectoryURL = [(MPCStatisticsReporter *)selfCopy _reportDirectoryURL];
+  path = [_reportDirectoryURL path];
+  v35 = defaultManager;
+  v5 = [defaultManager enumeratorAtPath:path];
 
   v6 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v36 path];
+    path2 = [_reportDirectoryURL path];
     *buf = 138543618;
-    v46 = v2;
+    v46 = selfCopy;
     v47 = 2114;
-    v48 = v7;
+    v48 = path2;
     _os_log_impl(&dword_1C5C61000, v6, OS_LOG_TYPE_DEFAULT, "[AP] - %{public}@ - Flushing local analytics files in %{public}@", buf, 0x16u);
   }
 
@@ -387,7 +387,7 @@ LABEL_26:
     v10 = v9;
     v11 = @"analytics";
     v12 = *v42;
-    v33 = v2;
+    v33 = selfCopy;
     v34 = v8;
     do
     {
@@ -401,14 +401,14 @@ LABEL_26:
         v14 = *(*(&v41 + 1) + 8 * i);
         if ([v14 containsString:v11])
         {
-          v15 = [v14 pathExtension];
-          v16 = [v15 isEqualToString:@"plist"];
+          pathExtension = [v14 pathExtension];
+          v16 = [pathExtension isEqualToString:@"plist"];
 
           if (v16)
           {
             v17 = v11;
-            v18 = [v36 path];
-            v19 = [v18 stringByAppendingPathComponent:v14];
+            path3 = [_reportDirectoryURL path];
+            v19 = [path3 stringByAppendingPathComponent:v14];
 
             v20 = [MEMORY[0x1E695DFF8] fileURLWithPath:v19];
             v40 = 0;
@@ -421,7 +421,7 @@ LABEL_26:
               if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
               {
                 *buf = 138543874;
-                v46 = v2;
+                v46 = selfCopy;
                 v47 = 2114;
                 v48 = v19;
                 v49 = 2114;
@@ -434,16 +434,16 @@ LABEL_26:
             {
               if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
               {
-                v25 = [v21 msv_compactDescription];
+                msv_compactDescription = [v21 msv_compactDescription];
                 *buf = 138543874;
                 v46 = v33;
                 v47 = 2114;
                 v48 = v19;
                 v49 = 2114;
-                v50 = v25;
+                v50 = msv_compactDescription;
                 _os_log_impl(&dword_1C5C61000, v24, OS_LOG_TYPE_DEFAULT, "[AP] - %{public}@ - Sending data in %{public}@: %{public}@", buf, 0x20u);
 
-                v2 = v33;
+                selfCopy = v33;
               }
 
               aBlock[0] = MEMORY[0x1E69E9820];
@@ -452,10 +452,10 @@ LABEL_26:
               aBlock[3] = &unk_1E82382A8;
               v39 = v21;
               v26 = _Block_copy(aBlock);
-              v27 = [(MPCStatisticsReporter *)v2 coreAnalyticsEventName];
+              coreAnalyticsEventName = [(MPCStatisticsReporter *)selfCopy coreAnalyticsEventName];
               AnalyticsSendEventLazy();
 
-              v2 = v33;
+              selfCopy = v33;
               v24 = v39;
             }
 
@@ -463,7 +463,7 @@ LABEL_26:
             if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543618;
-              v46 = v2;
+              v46 = selfCopy;
               v47 = 2114;
               v48 = v19;
               _os_log_impl(&dword_1C5C61000, v28, OS_LOG_TYPE_DEFAULT, "[AP] - %{public}@ - Removing %{public}@", buf, 0x16u);
@@ -479,7 +479,7 @@ LABEL_26:
               if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
               {
                 *buf = 138543874;
-                v46 = v2;
+                v46 = selfCopy;
                 v47 = 2114;
                 v48 = v19;
                 v49 = 2114;
@@ -501,48 +501,48 @@ LABEL_26:
   }
 }
 
-- (void)_writeAnalyticsDataFromRecorder:(id)a3
+- (void)_writeAnalyticsDataFromRecorder:(id)recorder
 {
   v25 = *MEMORY[0x1E69E9840];
   writerQueue = self->_writerQueue;
-  v5 = a3;
+  recorderCopy = recorder;
   dispatch_assert_queue_V2(writerQueue);
   v6 = MEMORY[0x1E696AEC0];
-  v7 = [v5 recordID];
-  v8 = [v6 stringWithFormat:@"analytics_%@.plist", v7];
+  recordID = [recorderCopy recordID];
+  v8 = [v6 stringWithFormat:@"analytics_%@.plist", recordID];
 
-  v9 = [(MPCStatisticsReporter *)self _reportDirectoryURL];
-  v10 = [v9 URLByAppendingPathComponent:v8];
+  _reportDirectoryURL = [(MPCStatisticsReporter *)self _reportDirectoryURL];
+  v10 = [_reportDirectoryURL URLByAppendingPathComponent:v8];
 
-  v11 = [v5 dictionaryRepresentation];
+  dictionaryRepresentation = [recorderCopy dictionaryRepresentation];
 
   v12 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v10 path];
-    v14 = [v11 msv_compactDescription];
+    path = [v10 path];
+    msv_compactDescription = [dictionaryRepresentation msv_compactDescription];
     *buf = 138543874;
-    v20 = self;
+    selfCopy2 = self;
     v21 = 2114;
-    v22 = v13;
+    v22 = path;
     v23 = 2114;
-    v24 = v14;
+    v24 = msv_compactDescription;
     _os_log_impl(&dword_1C5C61000, v12, OS_LOG_TYPE_DEFAULT, "[AP] - %{public}@ - Writing data to %{public}@ %{public}@", buf, 0x20u);
   }
 
   v18 = 0;
-  [v11 writeToURL:v10 error:&v18];
+  [dictionaryRepresentation writeToURL:v10 error:&v18];
   v15 = v18;
   if (v15)
   {
     v16 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      v17 = [v10 path];
+      path2 = [v10 path];
       *buf = 138543874;
-      v20 = self;
+      selfCopy2 = self;
       v21 = 2114;
-      v22 = v17;
+      v22 = path2;
       v23 = 2114;
       v24 = v15;
       _os_log_impl(&dword_1C5C61000, v16, OS_LOG_TYPE_ERROR, "[AP] - %{public}@ - Failed to write: %{public}@ - error:%{public}@", buf, 0x20u);
@@ -552,12 +552,12 @@ LABEL_26:
 
 - (NSString)recordScenarioName
 {
-  v2 = [MEMORY[0x1E69708A8] standardUserDefaults];
-  v3 = [v2 vocalAttenuationStatisticsName];
+  standardUserDefaults = [MEMORY[0x1E69708A8] standardUserDefaults];
+  vocalAttenuationStatisticsName = [standardUserDefaults vocalAttenuationStatisticsName];
 
-  if (v3)
+  if (vocalAttenuationStatisticsName)
   {
-    v4 = [v3 stringByReplacingOccurrencesOfString:@" " withString:@"_"];
+    v4 = [vocalAttenuationStatisticsName stringByReplacingOccurrencesOfString:@" " withString:@"_"];
   }
 
   else
@@ -579,17 +579,17 @@ LABEL_26:
   dispatch_async(writerQueue, block);
 }
 
-- (void)reportRecordedResults:(id)a3
+- (void)reportRecordedResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   writerQueue = self->_writerQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47__MPCStatisticsReporter_reportRecordedResults___block_invoke;
   v7[3] = &unk_1E82392C0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = resultsCopy;
+  selfCopy = self;
+  v6 = resultsCopy;
   dispatch_async(writerQueue, v7);
 }
 

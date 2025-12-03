@@ -1,20 +1,20 @@
 @interface ConversationSearchOverlayView
-- (ConversationSearchOverlayView)initWithFrame:(CGRect)a3;
+- (ConversationSearchOverlayView)initWithFrame:(CGRect)frame;
 - (void)hide;
 - (void)show;
 @end
 
 @implementation ConversationSearchOverlayView
 
-- (ConversationSearchOverlayView)initWithFrame:(CGRect)a3
+- (ConversationSearchOverlayView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = ConversationSearchOverlayView;
-  v3 = [(ConversationSearchOverlayView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ConversationSearchOverlayView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75348] clearColor];
-    [(ConversationSearchOverlayView *)v3 setBackgroundColor:v4];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(ConversationSearchOverlayView *)v3 setBackgroundColor:clearColor];
   }
 
   return v3;

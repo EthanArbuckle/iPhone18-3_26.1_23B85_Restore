@@ -1,25 +1,25 @@
 @interface PIGainMap
-+ (BOOL)shouldUseGainMapExposureCompensationForRawProperties:(id)a3;
-+ (id)gainMapParametersFromRawProperties:(id)a3;
++ (BOOL)shouldUseGainMapExposureCompensationForRawProperties:(id)properties;
++ (id)gainMapParametersFromRawProperties:(id)properties;
 @end
 
 @implementation PIGainMap
 
-+ (BOOL)shouldUseGainMapExposureCompensationForRawProperties:(id)a3
++ (BOOL)shouldUseGainMapExposureCompensationForRawProperties:(id)properties
 {
-  v3 = a3;
-  if (![v3 isAppleProRaw])
+  propertiesCopy = properties;
+  if (![propertiesCopy isAppleProRaw])
   {
     goto LABEL_7;
   }
 
-  v4 = [MEMORY[0x1E69B3AB0] meteorGainMapExposureCompensationMode];
+  meteorGainMapExposureCompensationMode = [MEMORY[0x1E69B3AB0] meteorGainMapExposureCompensationMode];
 
-  if (!v4)
+  if (!meteorGainMapExposureCompensationMode)
   {
-    if ([v3 hasLensCorrection] && objc_msgSend(v3, "isSensorRawCapture"))
+    if ([propertiesCopy hasLensCorrection] && objc_msgSend(propertiesCopy, "isSensorRawCapture"))
     {
-      v5 = [v3 isUnifiedBracketingHDRCapture] ^ 1;
+      v5 = [propertiesCopy isUnifiedBracketingHDRCapture] ^ 1;
       goto LABEL_8;
     }
 
@@ -34,18 +34,18 @@ LABEL_8:
   return v5;
 }
 
-+ (id)gainMapParametersFromRawProperties:(id)a3
++ (id)gainMapParametersFromRawProperties:(id)properties
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 isAppleProRaw] && objc_msgSend(a1, "shouldUseGainMapExposureCompensationForRawProperties:", v4))
+  propertiesCopy = properties;
+  if ([propertiesCopy isAppleProRaw] && objc_msgSend(self, "shouldUseGainMapExposureCompensationForRawProperties:", propertiesCopy))
   {
-    v5 = [v4 rawToneCurveProperties];
-    v7 = v5;
-    if (v5)
+    rawToneCurveProperties = [propertiesCopy rawToneCurveProperties];
+    v7 = rawToneCurveProperties;
+    if (rawToneCurveProperties)
     {
       LODWORD(v6) = 1043878380;
-      [v5 inverseAggregatedCurveValueAt:v6];
+      [rawToneCurveProperties inverseAggregatedCurveValueAt:v6];
       *&v9 = (0.18 / v8) * 0.5;
       v10 = [MEMORY[0x1E696AD98] numberWithFloat:v9];
       v13[0] = v10;

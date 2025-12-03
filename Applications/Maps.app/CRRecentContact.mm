@@ -1,16 +1,16 @@
 @interface CRRecentContact
 - (double)timestamp;
-- (id)entryWithTicket:(id)a3;
-- (void)updateModel:(id)a3;
+- (id)entryWithTicket:(id)ticket;
+- (void)updateModel:(id)model;
 @end
 
 @implementation CRRecentContact
 
-- (void)updateModel:(id)a3
+- (void)updateModel:(id)model
 {
-  v18 = a3;
-  v4 = [(CRRecentContact *)self metadata];
-  v5 = [v4 objectForKeyedSubscript:CRRecentContactMetadataFrom];
+  modelCopy = model;
+  metadata = [(CRRecentContact *)self metadata];
+  v5 = [metadata objectForKeyedSubscript:CRRecentContactMetadataFrom];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -87,36 +87,36 @@ LABEL_17:
 LABEL_20:
 
 LABEL_21:
-  v16 = [(CRRecentContact *)self address];
-  [v18 setFirstLine:v16];
+  address = [(CRRecentContact *)self address];
+  [modelCopy setFirstLine:address];
 
   if (v8)
   {
-    [v18 setSecondLine:v8];
+    [modelCopy setSecondLine:v8];
   }
 
   else
   {
-    v17 = [(CRRecentContact *)self address];
-    [v18 setSecondLine:v17];
+    address2 = [(CRRecentContact *)self address];
+    [modelCopy setSecondLine:address2];
   }
 
-  [v18 setDebugSubtitle:@"[Recent Contact]"];
+  [modelCopy setDebugSubtitle:@"[Recent Contact]"];
 }
 
-- (id)entryWithTicket:(id)a3
+- (id)entryWithTicket:(id)ticket
 {
   v4 = [[GEORPSuggestionEntry alloc] initWithType:7];
-  v5 = [(CRRecentContact *)self address];
-  [v4 safeAddDisplayLine:v5];
+  address = [(CRRecentContact *)self address];
+  [v4 safeAddDisplayLine:address];
 
   return v4;
 }
 
 - (double)timestamp
 {
-  v2 = [(CRRecentContact *)self mostRecentDate];
-  [v2 timeIntervalSinceReferenceDate];
+  mostRecentDate = [(CRRecentContact *)self mostRecentDate];
+  [mostRecentDate timeIntervalSinceReferenceDate];
   v4 = v3;
 
   return v4;

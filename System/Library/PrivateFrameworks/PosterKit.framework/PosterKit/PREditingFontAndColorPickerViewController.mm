@@ -1,47 +1,47 @@
 @interface PREditingFontAndColorPickerViewController
 - (BOOL)_shouldShowWeightSliderForSelectedFont;
-- (PREditingFontAndColorPickerViewController)initWithComponents:(unint64_t)a3 role:(id)a4 titleString:(id)a5;
+- (PREditingFontAndColorPickerViewController)initWithComponents:(unint64_t)components role:(id)role titleString:(id)string;
 - (PREditingFontAndColorPickerViewControllerDelegate)delegate;
 - (double)desiredDetent;
-- (id)localeWithNumberingSystem:(id)a3;
-- (int64_t)adaptivePresentationStyleForPresentationController:(id)a3;
-- (void)_closeButtonTapped:(id)a3;
+- (id)localeWithNumberingSystem:(id)system;
+- (int64_t)adaptivePresentationStyleForPresentationController:(id)controller;
+- (void)_closeButtonTapped:(id)tapped;
 - (void)_signalDelegateDidFinish;
-- (void)colorPickerComponentViewController:(id)a3 didSelectColorItem:(id)a4 userSelected:(BOOL)a5;
-- (void)colorPickerComponentViewControllerDidChangeHeight:(id)a3;
-- (void)colorWellDidUpdateColor:(id)a3;
-- (void)didPressTitleAlignmentBarButtonItem:(id)a3;
-- (void)fontPickerComponentViewController:(id)a3 didChangeFontWeight:(double)a4;
-- (void)fontPickerComponentViewController:(id)a3 didSelectItem:(id)a4;
-- (void)fontPickerComponentViewControllerDidChangeHeight:(id)a3;
+- (void)colorPickerComponentViewController:(id)controller didSelectColorItem:(id)item userSelected:(BOOL)selected;
+- (void)colorPickerComponentViewControllerDidChangeHeight:(id)height;
+- (void)colorWellDidUpdateColor:(id)color;
+- (void)didPressTitleAlignmentBarButtonItem:(id)item;
+- (void)fontPickerComponentViewController:(id)controller didChangeFontWeight:(double)weight;
+- (void)fontPickerComponentViewController:(id)controller didSelectItem:(id)item;
+- (void)fontPickerComponentViewControllerDidChangeHeight:(id)height;
 - (void)loadComponentViewControllersIfNeeded;
 - (void)loadView;
-- (void)numberingSystemPickerController:(id)a3 didSelectNumberingSystem:(id)a4;
-- (void)numberingSystemViewController:(id)a3 didSelectNumberingSystem:(id)a4;
-- (void)numberingSystemWasChanged:(id)a3 locale:(id)a4;
-- (void)setContentsLuminance:(double)a3;
-- (void)titleLayoutPickerComponentViewController:(id)a3 didSelectTitleLayout:(unint64_t)a4 userSelected:(BOOL)a5;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)numberingSystemPickerController:(id)controller didSelectNumberingSystem:(id)system;
+- (void)numberingSystemViewController:(id)controller didSelectNumberingSystem:(id)system;
+- (void)numberingSystemWasChanged:(id)changed locale:(id)locale;
+- (void)setContentsLuminance:(double)luminance;
+- (void)titleLayoutPickerComponentViewController:(id)controller didSelectTitleLayout:(unint64_t)layout userSelected:(BOOL)selected;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updatePopoverContentSize;
 - (void)viewDidLayoutSubviews;
 @end
 
 @implementation PREditingFontAndColorPickerViewController
 
-- (PREditingFontAndColorPickerViewController)initWithComponents:(unint64_t)a3 role:(id)a4 titleString:(id)a5
+- (PREditingFontAndColorPickerViewController)initWithComponents:(unint64_t)components role:(id)role titleString:(id)string
 {
-  v9 = a4;
-  v10 = a5;
+  roleCopy = role;
+  stringCopy = string;
   v16.receiver = self;
   v16.super_class = PREditingFontAndColorPickerViewController;
   v11 = [(PREditingFontAndColorPickerViewController *)&v16 initWithNibName:0 bundle:0];
   v12 = v11;
   if (v11)
   {
-    v11->_components = a3;
+    v11->_components = components;
     v11->_contentsLuminance = 0.5;
-    objc_storeStrong(&v11->_role, a4);
-    v13 = [v10 copy];
+    objc_storeStrong(&v11->_role, role);
+    v13 = [stringCopy copy];
     titleString = v12->_titleString;
     v12->_titleString = v13;
   }
@@ -53,11 +53,11 @@
 {
   if (!self->_hasLoadedComponentViewControllers)
   {
-    v3 = [(PREditingFontAndColorPickerViewController *)self components];
-    v4 = [(PREditingFontAndColorPickerViewController *)self extensionBundleURL];
-    if (v4)
+    components = [(PREditingFontAndColorPickerViewController *)self components];
+    extensionBundleURL = [(PREditingFontAndColorPickerViewController *)self extensionBundleURL];
+    if (extensionBundleURL)
     {
-      v5 = [(PRPosterTitleStyleConfiguration *)self->_titleStyleConfiguration effectiveTimeFontWithExtensionBundleURL:v4 forRole:self->_role];
+      v5 = [(PRPosterTitleStyleConfiguration *)self->_titleStyleConfiguration effectiveTimeFontWithExtensionBundleURL:extensionBundleURL forRole:self->_role];
     }
 
     else
@@ -65,16 +65,16 @@
       v5 = 0;
     }
 
-    v6 = [(PREditingFontAndColorPickerViewController *)self delegate];
-    v74 = v3;
+    delegate = [(PREditingFontAndColorPickerViewController *)self delegate];
+    v74 = components;
     v75 = v5;
-    v76 = v6;
-    if (v3)
+    v76 = delegate;
+    if (components)
     {
       v7 = [PREditingFontPickerComponentViewController defaultItemsForRole:self->_role titleString:self->_titleString];
       if (![(NSString *)self->_role isEqualToString:@"PRPosterRoleIncomingCall"]&& (objc_opt_respondsToSelector() & 1) != 0)
       {
-        v8 = [v6 additionalFontConfigurationsForFontAndColorPickerViewController:self];
+        v8 = [delegate additionalFontConfigurationsForFontAndColorPickerViewController:self];
         if (v8)
         {
           [(PREditingFontAndColorPickerViewController *)self setAdditionalFontConfigurations:v8];
@@ -82,7 +82,7 @@
           v10 = [v7 arrayByAddingObjectsFromArray:v9];
 
           v7 = v10;
-          v6 = v76;
+          delegate = v76;
         }
       }
 
@@ -92,28 +92,28 @@
         v85[1] = 3221225472;
         v85[2] = __81__PREditingFontAndColorPickerViewController_loadComponentViewControllersIfNeeded__block_invoke_2;
         v85[3] = &unk_1E78439B8;
-        v86 = v6;
-        v87 = self;
+        v86 = delegate;
+        selfCopy = self;
         v11 = [v7 bs_filter:v85];
 
         v7 = v11;
       }
 
-      v12 = [(PRPosterTitleStyleConfiguration *)self->_titleStyleConfiguration timeFontConfiguration];
-      v73 = v4;
-      v13 = [v12 timeFontConfigurationWithExtensionBundleURL:v4];
-      v14 = [v13 customFont];
+      timeFontConfiguration = [(PRPosterTitleStyleConfiguration *)self->_titleStyleConfiguration timeFontConfiguration];
+      v73 = extensionBundleURL;
+      v13 = [timeFontConfiguration timeFontConfigurationWithExtensionBundleURL:extensionBundleURL];
+      customFont = [v13 customFont];
 
-      v72 = v12;
-      if (v14)
+      v72 = timeFontConfiguration;
+      if (customFont)
       {
-        v15 = [v13 customFont];
+        customFont2 = [v13 customFont];
         v83[0] = MEMORY[0x1E69E9820];
         v83[1] = 3221225472;
         v83[2] = __81__PREditingFontAndColorPickerViewController_loadComponentViewControllersIfNeeded__block_invoke_3;
         v83[3] = &unk_1E78439E0;
-        v84 = v15;
-        v16 = v15;
+        v84 = customFont2;
+        v16 = customFont2;
         v17 = [v7 bs_firstObjectPassingTest:v83];
       }
 
@@ -125,7 +125,7 @@
         v80[3] = &unk_1E78439B8;
         v18 = v13;
         v81 = v18;
-        v19 = v12;
+        v19 = timeFontConfiguration;
         v82 = v19;
         v17 = [v7 bs_firstObjectPassingTest:v80];
         if (!v17)
@@ -140,7 +140,7 @@
         }
 
         v16 = v81;
-        v6 = v76;
+        delegate = v76;
       }
 
       v20 = [v7 count];
@@ -148,35 +148,35 @@
       if (v20)
       {
         v21 = [[PREditingFontPickerComponentViewController alloc] initWithItems:v7 selectedItem:v17 role:self->_role titleString:self->_titleString];
-        v22 = [(PRPosterTitleStyleConfiguration *)self->_titleStyleConfiguration timeFontConfiguration];
-        v23 = [(PREditingFontAndColorPickerViewController *)self extensionBundleURL];
-        v24 = [v22 timeFontConfigurationWithExtensionBundleURL:v23];
+        timeFontConfiguration2 = [(PRPosterTitleStyleConfiguration *)self->_titleStyleConfiguration timeFontConfiguration];
+        extensionBundleURL2 = [(PREditingFontAndColorPickerViewController *)self extensionBundleURL];
+        v24 = [timeFontConfiguration2 timeFontConfigurationWithExtensionBundleURL:extensionBundleURL2];
 
         v25 = [v24 effectiveFontForRole:self->_role ignoringWeight:1];
-        v26 = [v25 pr_variantWeightRange];
+        pr_variantWeightRange = [v25 pr_variantWeightRange];
         v28 = v27;
         [v24 weight];
-        [(PREditingFontPickerComponentViewController *)v21 setFontWeight:(v29 - v26) / (v28 - v26)];
-        v30 = [(PRPosterTitleStyleConfiguration *)self->_titleStyleConfiguration timeNumberingSystem];
-        if (v30)
+        [(PREditingFontPickerComponentViewController *)v21 setFontWeight:(v29 - pr_variantWeightRange) / (v28 - pr_variantWeightRange)];
+        timeNumberingSystem = [(PRPosterTitleStyleConfiguration *)self->_titleStyleConfiguration timeNumberingSystem];
+        if (timeNumberingSystem)
         {
-          v31 = [(PREditingFontAndColorPickerViewController *)self localeWithNumberingSystem:v30];
+          v31 = [(PREditingFontAndColorPickerViewController *)self localeWithNumberingSystem:timeNumberingSystem];
           [(PREditingFontPickerComponentViewController *)v21 setLocale:v31];
         }
 
         [(PREditingFontPickerComponentViewController *)v21 setDelegate:self, v13];
         [(PREditingFontAndColorPickerViewController *)self setFontPickerController:v21];
 
-        v6 = v76;
+        delegate = v76;
         v13 = v71;
       }
 
-      v4 = v73;
+      extensionBundleURL = v73;
       v5 = v75;
-      if ((v3 & 0x10) == 0)
+      if ((components & 0x10) == 0)
       {
 LABEL_7:
-        if ((v3 & 8) == 0)
+        if ((components & 8) == 0)
         {
           goto LABEL_8;
         }
@@ -185,42 +185,42 @@ LABEL_7:
       }
     }
 
-    else if ((v3 & 0x10) == 0)
+    else if ((components & 0x10) == 0)
     {
       goto LABEL_7;
     }
 
     titleStyleConfiguration = self->_titleStyleConfiguration;
-    v33 = [(PREditingFontAndColorPickerViewController *)self titleString];
-    v34 = [(PRPosterTitleStyleConfiguration *)titleStyleConfiguration effectiveTitleLayoutForText:v33];
+    titleString = [(PREditingFontAndColorPickerViewController *)self titleString];
+    v34 = [(PRPosterTitleStyleConfiguration *)titleStyleConfiguration effectiveTitleLayoutForText:titleString];
 
-    v35 = [(PREditingFontAndColorPickerViewController *)self fontPickerController];
-    v36 = [v35 selectedItem];
-    v37 = [v36 fontConfiguration];
-    v38 = [v37 effectiveFontForRole:self->_role];
+    fontPickerController = [(PREditingFontAndColorPickerViewController *)self fontPickerController];
+    selectedItem = [fontPickerController selectedItem];
+    fontConfiguration = [selectedItem fontConfiguration];
+    v38 = [fontConfiguration effectiveFontForRole:self->_role];
 
-    v39 = [(PREditingFontAndColorPickerViewController *)self titleString];
-    [PRIncomingCallFontsProvider idealEmphasizedFontSizeForName:v39 usingLayout:v34];
+    titleString2 = [(PREditingFontAndColorPickerViewController *)self titleString];
+    [PRIncomingCallFontsProvider idealEmphasizedFontSizeForName:titleString2 usingLayout:v34];
     v41 = v40;
 
     v42 = [v38 fontWithSize:v41];
     v43 = [PRTitleAlignmentBarButtonItem alloc];
     v44 = self->_titleStyleConfiguration;
-    v45 = [(PREditingFontAndColorPickerViewController *)self titleString];
-    v46 = [(PRTitleAlignmentBarButtonItem *)v43 initWithTitleAlignment:[(PRPosterTitleStyleConfiguration *)v44 effectiveTitleAlignmentForText:v45 withFont:v42] target:self action:sel_didPressTitleAlignmentBarButtonItem_];
+    titleString3 = [(PREditingFontAndColorPickerViewController *)self titleString];
+    v46 = [(PRTitleAlignmentBarButtonItem *)v43 initWithTitleAlignment:[(PRPosterTitleStyleConfiguration *)v44 effectiveTitleAlignmentForText:titleString3 withFont:v42] target:self action:sel_didPressTitleAlignmentBarButtonItem_];
     titleAlignmentBarItem = self->_titleAlignmentBarItem;
     self->_titleAlignmentBarItem = v46;
 
     v48 = self->_titleAlignmentBarItem;
-    v49 = [(PREditingFontAndColorPickerViewController *)self titleString];
-    v6 = v76;
-    [(PRTitleAlignmentBarButtonItem *)v48 setEnabled:[PRIncomingCallMetricsProvider canApplyKashidaToText:v49 withFont:v42]];
+    titleString4 = [(PREditingFontAndColorPickerViewController *)self titleString];
+    delegate = v76;
+    [(PRTitleAlignmentBarButtonItem *)v48 setEnabled:[PRIncomingCallMetricsProvider canApplyKashidaToText:titleString4 withFont:v42]];
 
     v5 = v75;
-    if ((v3 & 8) == 0)
+    if ((components & 8) == 0)
     {
 LABEL_8:
-      if ((v3 & 4) == 0)
+      if ((components & 4) == 0)
       {
         goto LABEL_9;
       }
@@ -232,18 +232,18 @@ LABEL_29:
     v50 = [PREditingTitleLayoutPickerComponentViewController defaultTitleLayoutsForRole:self->_role];
     v51 = [PREditingTitleLayoutPickerComponentViewController alloc];
     v52 = self->_titleStyleConfiguration;
-    v53 = [(PREditingFontAndColorPickerViewController *)self titleString];
+    titleString5 = [(PREditingFontAndColorPickerViewController *)self titleString];
     v54 = v52;
-    v6 = v76;
-    v55 = [(PREditingTitleLayoutPickerComponentViewController *)v51 initWithTitleLayouts:v50 selectedLayout:[(PRPosterTitleStyleConfiguration *)v54 effectiveTitleLayoutForText:v53]];
+    delegate = v76;
+    v55 = [(PREditingTitleLayoutPickerComponentViewController *)v51 initWithTitleLayouts:v50 selectedLayout:[(PRPosterTitleStyleConfiguration *)v54 effectiveTitleLayoutForText:titleString5]];
 
     [(PREditingTitleLayoutPickerComponentViewController *)v55 setDelegate:self];
     [(PREditingFontAndColorPickerViewController *)self setTitleLayoutPickerController:v55];
 
-    if ((v3 & 4) == 0)
+    if ((components & 4) == 0)
     {
 LABEL_9:
-      if ((v3 & 2) == 0)
+      if ((components & 2) == 0)
       {
         goto LABEL_35;
       }
@@ -257,7 +257,7 @@ LABEL_30:
     [(PREditingColorPickerComponentViewController *)v56 setContentsLuminance:self->_contentsLuminance];
     [(PREditingFontAndColorPickerViewController *)self setColorPickerController:v56];
 
-    if ((v3 & 2) == 0)
+    if ((components & 2) == 0)
     {
 LABEL_35:
       self->_hasLoadedComponentViewControllers = 1;
@@ -266,11 +266,11 @@ LABEL_35:
     }
 
 LABEL_31:
-    if ((v3 >> 2) & 1 | v74)
+    if ((components >> 2) & 1 | v74)
     {
       v57 = [PREditorNumberingSystemPickerController alloc];
-      v58 = [(PRPosterTitleStyleConfiguration *)self->_titleStyleConfiguration effectiveTimeNumberingSystem];
-      v59 = [(PREditorNumberingSystemPickerController *)v57 initWithSelectedNumberingSystem:v58 selectedFont:v5];
+      effectiveTimeNumberingSystem = [(PRPosterTitleStyleConfiguration *)self->_titleStyleConfiguration effectiveTimeNumberingSystem];
+      v59 = [(PREditorNumberingSystemPickerController *)v57 initWithSelectedNumberingSystem:effectiveTimeNumberingSystem selectedFont:v5];
 
       [(PREditorNumberingSystemPickerController *)v59 setDelegate:self];
       numberingSystemController = self->_numberingSystemController;
@@ -282,8 +282,8 @@ LABEL_31:
       v64 = [v62 systemImageNamed:@"globe" withConfiguration:v63];
 
       v65 = objc_alloc(MEMORY[0x1E69DC708]);
-      v66 = [(PREditorNumberingSystemPickerController *)v61 menu];
-      v67 = [v65 initWithImage:v64 menu:v66];
+      menu = [(PREditorNumberingSystemPickerController *)v61 menu];
+      v67 = [v65 initWithImage:v64 menu:menu];
 
       numberSystemBarItem = self->_numberSystemBarItem;
       self->_numberSystemBarItem = v67;
@@ -292,14 +292,14 @@ LABEL_31:
     else
     {
       v69 = [PREditorNumberingSystemViewController alloc];
-      v70 = [(PRPosterTitleStyleConfiguration *)self->_titleStyleConfiguration effectiveTimeNumberingSystem];
-      v64 = [(PREditorNumberingSystemViewController *)v69 initWithSelectedNumberingSystem:v70 selectedFont:v5];
+      effectiveTimeNumberingSystem2 = [(PRPosterTitleStyleConfiguration *)self->_titleStyleConfiguration effectiveTimeNumberingSystem];
+      v64 = [(PREditorNumberingSystemViewController *)v69 initWithSelectedNumberingSystem:effectiveTimeNumberingSystem2 selectedFont:v5];
 
       [(PREditorNumberingSystemViewController *)v64 setDelegate:self];
       [(PREditingFontAndColorPickerViewController *)self setNumberingSystemViewController:v64];
     }
 
-    v6 = v76;
+    delegate = v76;
     goto LABEL_35;
   }
 }
@@ -379,26 +379,26 @@ uint64_t __81__PREditingFontAndColorPickerViewController_loadComponentViewContro
 {
   v87 = *MEMORY[0x1E69E9840];
   [(PREditingFontAndColorPickerViewController *)self loadComponentViewControllersIfNeeded];
-  v3 = [(PREditingFontAndColorPickerViewController *)self navigationController];
-  v4 = [v3 navigationBar];
-  v5 = [v4 topItem];
+  navigationController = [(PREditingFontAndColorPickerViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  topItem = [navigationBar topItem];
 
-  [v5 _setManualScrollEdgeAppearanceProgress:0.0];
+  [topItem _setManualScrollEdgeAppearanceProgress:0.0];
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v7 = [(PREditingFontAndColorPickerViewController *)self components];
+  components = [(PREditingFontAndColorPickerViewController *)self components];
   if ((self->_components & 8) != 0 && self->_titleLayoutPickerController)
   {
     [v6 addObject:?];
   }
 
-  if ((v7 & 1) != 0 && self->_fontPickerController)
+  if ((components & 1) != 0 && self->_fontPickerController)
   {
     [v6 addObject:?];
   }
 
   if ((self->_components & 0x10) == 0)
   {
-    if ((v7 & 2) == 0)
+    if ((components & 2) == 0)
     {
       goto LABEL_9;
     }
@@ -407,7 +407,7 @@ LABEL_31:
     if (self->_numberingSystemViewController)
     {
       [v6 addObject:?];
-      if ((v7 & 4) == 0)
+      if ((components & 4) == 0)
       {
         goto LABEL_11;
       }
@@ -415,8 +415,8 @@ LABEL_31:
 
     else
     {
-      [v5 setLeftBarButtonItem:self->_numberSystemBarItem];
-      if ((v7 & 4) == 0)
+      [topItem setLeftBarButtonItem:self->_numberSystemBarItem];
+      if ((components & 4) == 0)
       {
         goto LABEL_11;
       }
@@ -425,14 +425,14 @@ LABEL_31:
     goto LABEL_10;
   }
 
-  [v5 setLeftBarButtonItem:self->_titleAlignmentBarItem];
-  if ((v7 & 2) != 0)
+  [topItem setLeftBarButtonItem:self->_titleAlignmentBarItem];
+  if ((components & 2) != 0)
   {
     goto LABEL_31;
   }
 
 LABEL_9:
-  if ((v7 & 4) != 0)
+  if ((components & 4) != 0)
   {
 LABEL_10:
     [v6 addObject:self->_colorPickerController];
@@ -443,15 +443,15 @@ LABEL_11:
   {
     v8 = objc_alloc(MEMORY[0x1E69C5548]);
     v9 = [v8 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
-    v10 = [v9 colorWell];
-    [v10 addTarget:self action:sel_colorWellDidUpdateColor_ forControlEvents:4096];
-    [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+    colorWell = [v9 colorWell];
+    [colorWell addTarget:self action:sel_colorWellDidUpdateColor_ forControlEvents:4096];
+    [colorWell setTranslatesAutoresizingMaskIntoConstraints:0];
     v11 = [objc_alloc(MEMORY[0x1E69DC708]) initWithCustomView:v9];
     [v11 setHidesSharedBackground:1];
-    [v5 setLeftBarButtonItem:v11];
+    [topItem setLeftBarButtonItem:v11];
     colorWell = self->_colorWell;
-    self->_colorWell = v10;
-    v13 = v10;
+    self->_colorWell = colorWell;
+    v13 = colorWell;
 
     colorWellView = self->_colorWellView;
     self->_colorWellView = v9;
@@ -477,9 +477,9 @@ LABEL_11:
           objc_enumerationMutation(v16);
         }
 
-        v21 = [*(*(&v78 + 1) + 8 * i) view];
-        [v21 setTranslatesAutoresizingMaskIntoConstraints:0];
-        [v15 addObject:v21];
+        view = [*(*(&v78 + 1) + 8 * i) view];
+        [view setTranslatesAutoresizingMaskIntoConstraints:0];
+        [v15 addObject:view];
       }
 
       v18 = [v16 countByEnumeratingWithState:&v78 objects:v86 count:16];
@@ -520,7 +520,7 @@ LABEL_11:
     while (v25);
   }
 
-  v56 = v5;
+  v56 = topItem;
   v54 = v23;
 
   [v22 setAxis:1];
@@ -531,22 +531,22 @@ LABEL_11:
   [v29 addSubview:v22];
   [(PREditingFontAndColorPickerViewController *)self setView:v29];
   v62 = MEMORY[0x1E696ACD8];
-  v66 = [v22 leadingAnchor];
-  v68 = [v29 safeAreaLayoutGuide];
-  v64 = [v68 leadingAnchor];
-  v30 = [v66 constraintEqualToAnchor:v64];
+  leadingAnchor = [v22 leadingAnchor];
+  safeAreaLayoutGuide = [v29 safeAreaLayoutGuide];
+  leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+  v30 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v84[0] = v30;
-  v31 = [v22 trailingAnchor];
-  v32 = [v29 safeAreaLayoutGuide];
-  v33 = [v32 trailingAnchor];
-  v34 = [v31 constraintEqualToAnchor:v33];
+  trailingAnchor = [v22 trailingAnchor];
+  safeAreaLayoutGuide2 = [v29 safeAreaLayoutGuide];
+  trailingAnchor2 = [safeAreaLayoutGuide2 trailingAnchor];
+  v34 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v84[1] = v34;
   v55 = v22;
-  v35 = [v22 topAnchor];
+  topAnchor = [v22 topAnchor];
   v53 = v29;
-  v36 = [v29 safeAreaLayoutGuide];
-  v37 = [v36 topAnchor];
-  v38 = [v35 constraintEqualToAnchor:v37 constant:7.0];
+  safeAreaLayoutGuide3 = [v29 safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide3 topAnchor];
+  v38 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:7.0];
   v84[2] = v38;
   v39 = [MEMORY[0x1E695DEC8] arrayWithObjects:v84 count:3];
   [v62 activateConstraints:v39];
@@ -581,26 +581,26 @@ LABEL_11:
 
         v42 = *(*(&v70 + 1) + 8 * k);
         v43 = objc_alloc_init(MEMORY[0x1E69DD250]);
-        v44 = [MEMORY[0x1E69DC888] separatorColor];
-        [v43 setBackgroundColor:v44];
+        separatorColor = [MEMORY[0x1E69DC888] separatorColor];
+        [v43 setBackgroundColor:separatorColor];
 
         [v43 setTranslatesAutoresizingMaskIntoConstraints:0];
         [v42 addSubview:v43];
         v61 = MEMORY[0x1E696ACD8];
-        v69 = [v43 heightAnchor];
-        v67 = [v69 constraintEqualToConstant:1.0];
+        heightAnchor = [v43 heightAnchor];
+        v67 = [heightAnchor constraintEqualToConstant:1.0];
         v82[0] = v67;
-        v65 = [v43 leadingAnchor];
-        v63 = [v42 leadingAnchor];
-        v45 = [v65 constraintEqualToAnchor:v63];
+        leadingAnchor3 = [v43 leadingAnchor];
+        leadingAnchor4 = [v42 leadingAnchor];
+        v45 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
         v82[1] = v45;
-        v46 = [v43 trailingAnchor];
-        v47 = [v42 trailingAnchor];
-        v48 = [v46 constraintEqualToAnchor:v47];
+        trailingAnchor3 = [v43 trailingAnchor];
+        trailingAnchor4 = [v42 trailingAnchor];
+        v48 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
         v82[2] = v48;
-        v49 = [v43 bottomAnchor];
-        v50 = [v42 topAnchor];
-        v51 = [v49 constraintEqualToAnchor:v50 constant:-24.0];
+        bottomAnchor = [v43 bottomAnchor];
+        topAnchor3 = [v42 topAnchor];
+        v51 = [bottomAnchor constraintEqualToAnchor:topAnchor3 constant:-24.0];
         v82[3] = v51;
         v52 = [MEMORY[0x1E695DEC8] arrayWithObjects:v82 count:4];
         [v61 activateConstraints:v52];
@@ -613,22 +613,22 @@ LABEL_11:
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v10.receiver = self;
   v10.super_class = PREditingFontAndColorPickerViewController;
-  v4 = a3;
-  [(PREditingFontAndColorPickerViewController *)&v10 traitCollectionDidChange:v4];
-  v5 = [v4 userInterfaceStyle];
+  changeCopy = change;
+  [(PREditingFontAndColorPickerViewController *)&v10 traitCollectionDidChange:changeCopy];
+  userInterfaceStyle = [changeCopy userInterfaceStyle];
 
-  v6 = [(PREditingFontAndColorPickerViewController *)self traitCollection];
-  v7 = [v6 userInterfaceStyle];
+  traitCollection = [(PREditingFontAndColorPickerViewController *)self traitCollection];
+  userInterfaceStyle2 = [traitCollection userInterfaceStyle];
 
-  if (v5 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
     numberSystemBarItem = self->_numberSystemBarItem;
-    v9 = [(PREditorNumberingSystemPickerController *)self->_numberingSystemController menu];
-    [(UIBarButtonItem *)numberSystemBarItem setMenu:v9];
+    menu = [(PREditorNumberingSystemPickerController *)self->_numberingSystemController menu];
+    [(UIBarButtonItem *)numberSystemBarItem setMenu:menu];
   }
 }
 
@@ -705,14 +705,14 @@ LABEL_20:
 {
   if (_os_feature_enabled_impl())
   {
-    v3 = [(PRPosterTitleStyleConfiguration *)self->_titleStyleConfiguration timeFontConfiguration];
-    v4 = [(PREditingFontAndColorPickerViewController *)self extensionBundleURL];
-    v5 = [v3 timeFontConfigurationWithExtensionBundleURL:v4];
+    timeFontConfiguration = [(PRPosterTitleStyleConfiguration *)self->_titleStyleConfiguration timeFontConfiguration];
+    extensionBundleURL = [(PREditingFontAndColorPickerViewController *)self extensionBundleURL];
+    v5 = [timeFontConfiguration timeFontConfigurationWithExtensionBundleURL:extensionBundleURL];
 
-    if ([v3 isSystemItem])
+    if ([timeFontConfiguration isSystemItem])
     {
-      v6 = [v5 timeFontIdentifier];
-      v7 = [v6 isEqual:@"PRTimeFontIdentifierRail"] ^ 1;
+      timeFontIdentifier = [v5 timeFontIdentifier];
+      v7 = [timeFontIdentifier isEqual:@"PRTimeFontIdentifierRail"] ^ 1;
     }
 
     else
@@ -729,18 +729,18 @@ LABEL_20:
   return v7;
 }
 
-- (void)setContentsLuminance:(double)a3
+- (void)setContentsLuminance:(double)luminance
 {
-  self->_contentsLuminance = a3;
+  self->_contentsLuminance = luminance;
   if ([(PREditingFontAndColorPickerViewController *)self isViewLoaded])
   {
     colorPickerController = self->_colorPickerController;
 
-    [(PREditingColorPickerComponentViewController *)colorPickerController setContentsLuminance:a3];
+    [(PREditingColorPickerComponentViewController *)colorPickerController setContentsLuminance:luminance];
   }
 }
 
-- (void)_closeButtonTapped:(id)a3
+- (void)_closeButtonTapped:(id)tapped
 {
   [(PREditingFontAndColorPickerViewController *)self _signalDelegateDidFinish];
 
@@ -749,93 +749,93 @@ LABEL_20:
 
 - (void)_signalDelegateDidFinish
 {
-  v3 = [(PREditingFontAndColorPickerViewController *)self delegate];
+  delegate = [(PREditingFontAndColorPickerViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 fontAndColorPickerViewControllerDidFinish:self];
+    [delegate fontAndColorPickerViewControllerDidFinish:self];
   }
 }
 
-- (id)localeWithNumberingSystem:(id)a3
+- (id)localeWithNumberingSystem:(id)system
 {
   v3 = MEMORY[0x1E695DF58];
-  v4 = a3;
-  v5 = [v3 currentLocale];
-  v6 = [v5 localeIdentifier];
+  systemCopy = system;
+  currentLocale = [v3 currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
 
-  v7 = [MEMORY[0x1E695DF58] componentsFromLocaleIdentifier:v6];
+  v7 = [MEMORY[0x1E695DF58] componentsFromLocaleIdentifier:localeIdentifier];
   v8 = [v7 mutableCopy];
 
-  [v8 setObject:v4 forKey:@"numbers"];
+  [v8 setObject:systemCopy forKey:@"numbers"];
   v9 = [MEMORY[0x1E695DF58] localeIdentifierFromComponents:v8];
   v10 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v9];
 
   return v10;
 }
 
-- (void)fontPickerComponentViewControllerDidChangeHeight:(id)a3
+- (void)fontPickerComponentViewControllerDidChangeHeight:(id)height
 {
-  v4 = [(PREditingFontAndColorPickerViewController *)self delegate];
+  delegate = [(PREditingFontAndColorPickerViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     [(PREditingFontAndColorPickerViewController *)self desiredDetent];
-    [v4 fontAndColorPickerViewController:self didUpdateDesiredDetent:?];
+    [delegate fontAndColorPickerViewController:self didUpdateDesiredDetent:?];
   }
 }
 
-- (void)fontPickerComponentViewController:(id)a3 didChangeFontWeight:(double)a4
+- (void)fontPickerComponentViewController:(id)controller didChangeFontWeight:(double)weight
 {
-  v6 = [(PRPosterTitleStyleConfiguration *)self->_titleStyleConfiguration timeFontConfiguration];
-  v7 = [(PREditingFontAndColorPickerViewController *)self extensionBundleURL];
-  v14 = [v6 timeFontConfigurationWithExtensionBundleURL:v7];
+  timeFontConfiguration = [(PRPosterTitleStyleConfiguration *)self->_titleStyleConfiguration timeFontConfiguration];
+  extensionBundleURL = [(PREditingFontAndColorPickerViewController *)self extensionBundleURL];
+  v14 = [timeFontConfiguration timeFontConfigurationWithExtensionBundleURL:extensionBundleURL];
 
   v8 = [v14 effectiveFontForRole:self->_role ignoringWeight:1];
-  v9 = [v8 pr_variantWeightRange];
+  pr_variantWeightRange = [v8 pr_variantWeightRange];
   v11 = v10;
-  v12 = [(PREditingFontAndColorPickerViewController *)self changeHandler];
-  if (v12)
+  changeHandler = [(PREditingFontAndColorPickerViewController *)self changeHandler];
+  if (changeHandler)
   {
-    v13 = [MEMORY[0x1E696AD98] numberWithDouble:v11 * a4 + (1.0 - a4) * v9];
-    (v12)[2](v12, 0, 0, 0, v13, 0, 0, 0, 0);
+    v13 = [MEMORY[0x1E696AD98] numberWithDouble:v11 * weight + (1.0 - weight) * pr_variantWeightRange];
+    (changeHandler)[2](changeHandler, 0, 0, 0, v13, 0, 0, 0, 0);
   }
 }
 
-- (void)fontPickerComponentViewController:(id)a3 didSelectItem:(id)a4
+- (void)fontPickerComponentViewController:(id)controller didSelectItem:(id)item
 {
-  v30 = a3;
-  v6 = a4;
-  v7 = [v6 fontConfiguration];
-  v8 = [v7 effectiveFontForRole:self->_role];
+  controllerCopy = controller;
+  itemCopy = item;
+  fontConfiguration = [itemCopy fontConfiguration];
+  v8 = [fontConfiguration effectiveFontForRole:self->_role];
 
   [(PREditorNumberingSystemPickerController *)self->_numberingSystemController setFont:v8];
-  v9 = [(PREditorNumberingSystemPickerController *)self->_numberingSystemController menu];
-  [(UIBarButtonItem *)self->_numberSystemBarItem setMenu:v9];
-  v10 = [v6 fontConfiguration];
-  v11 = [v10 effectiveFontForRole:self->_role ignoringWeight:1];
+  menu = [(PREditorNumberingSystemPickerController *)self->_numberingSystemController menu];
+  [(UIBarButtonItem *)self->_numberSystemBarItem setMenu:menu];
+  fontConfiguration2 = [itemCopy fontConfiguration];
+  v11 = [fontConfiguration2 effectiveFontForRole:self->_role ignoringWeight:1];
 
-  v12 = [(PREditingFontAndColorPickerViewController *)self changeHandler];
-  if (v12)
+  changeHandler = [(PREditingFontAndColorPickerViewController *)self changeHandler];
+  if (changeHandler)
   {
-    v13 = [(PREditingFontAndColorPickerViewController *)self additionalFontConfigurations];
-    v14 = [v6 fontConfiguration];
-    v15 = [v13 containsObject:v14];
+    additionalFontConfigurations = [(PREditingFontAndColorPickerViewController *)self additionalFontConfigurations];
+    fontConfiguration3 = [itemCopy fontConfiguration];
+    v15 = [additionalFontConfigurations containsObject:fontConfiguration3];
 
-    v16 = [v6 fontConfiguration];
-    v17 = [v16 timeFontIdentifier];
+    fontConfiguration4 = [itemCopy fontConfiguration];
+    timeFontIdentifier = [fontConfiguration4 timeFontIdentifier];
 
-    if ((v15 & 1) != 0 || v17 == @"PRTimeFontIdentifierRail")
+    if ((v15 & 1) != 0 || timeFontIdentifier == @"PRTimeFontIdentifierRail")
     {
-      v23 = [v6 fontConfiguration];
-      [v23 weight];
+      fontConfiguration5 = [itemCopy fontConfiguration];
+      [fontConfiguration5 weight];
       v22 = v24;
     }
 
     else
     {
-      v18 = [v11 pr_variantWeightRange];
+      pr_variantWeightRange = [v11 pr_variantWeightRange];
       v20 = v19;
-      [v30 fontWeight];
-      v22 = v21 * v20 + (1.0 - v21) * v18;
+      [controllerCopy fontWeight];
+      v22 = v21 * v20 + (1.0 - v21) * pr_variantWeightRange;
     }
 
     if (v15)
@@ -851,19 +851,19 @@ LABEL_20:
     v26 = MEMORY[0x1E696AD98];
     v27 = v25;
     v28 = [v26 numberWithDouble:v22];
-    v29 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v6, "isSystemItem")}];
-    (v12)[2](v12, v17, 0, 0, v28, v29, v27, 0, 0);
+    v29 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(itemCopy, "isSystemItem")}];
+    (changeHandler)[2](changeHandler, timeFontIdentifier, 0, 0, v28, v29, v27, 0, 0);
   }
 }
 
-- (void)titleLayoutPickerComponentViewController:(id)a3 didSelectTitleLayout:(unint64_t)a4 userSelected:(BOOL)a5
+- (void)titleLayoutPickerComponentViewController:(id)controller didSelectTitleLayout:(unint64_t)layout userSelected:(BOOL)selected
 {
-  v5 = a4;
-  v7 = [PRIncomingCallMetricsProvider maxVerticalTextLength:a3];
-  if (PRPosterTitleLayoutIsVertical(v5))
+  layoutCopy = layout;
+  v7 = [PRIncomingCallMetricsProvider maxVerticalTextLength:controller];
+  if (PRPosterTitleLayoutIsVertical(layoutCopy))
   {
-    v8 = [(PREditingFontAndColorPickerViewController *)self titleString];
-    v9 = [v8 length];
+    titleString = [(PREditingFontAndColorPickerViewController *)self titleString];
+    v9 = [titleString length];
 
     if (v9 > v7)
     {
@@ -885,158 +885,158 @@ LABEL_20:
       [v17 addAction:v21];
       [(PREditingFontAndColorPickerViewController *)self presentViewController:v17 animated:1 completion:0];
 
-      v5 = 0;
+      layoutCopy = 0;
     }
   }
 
-  v22 = [(PREditingFontAndColorPickerViewController *)self titleLayoutPickerController];
+  titleLayoutPickerController = [(PREditingFontAndColorPickerViewController *)self titleLayoutPickerController];
 
-  if (v22)
+  if (titleLayoutPickerController)
   {
-    v23 = [(PREditingFontAndColorPickerViewController *)self titleLayoutPickerController];
-    [v23 setSelectedTitleLayout:v5];
+    titleLayoutPickerController2 = [(PREditingFontAndColorPickerViewController *)self titleLayoutPickerController];
+    [titleLayoutPickerController2 setSelectedTitleLayout:layoutCopy];
   }
 
-  v24 = [(PREditingFontAndColorPickerViewController *)self changeHandler];
-  if (v24)
+  changeHandler = [(PREditingFontAndColorPickerViewController *)self changeHandler];
+  if (changeHandler)
   {
-    v26 = v24;
-    v25 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v5];
+    v26 = changeHandler;
+    v25 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:layoutCopy];
     (*(v26 + 2))(v26, 0, 0, v25, 0, 0, 0, 0, 0);
 
-    v24 = v26;
+    changeHandler = v26;
   }
 }
 
-- (void)numberingSystemPickerController:(id)a3 didSelectNumberingSystem:(id)a4
+- (void)numberingSystemPickerController:(id)controller didSelectNumberingSystem:(id)system
 {
-  v6 = a4;
-  v7 = [a3 displayLocale];
-  [(PREditingFontAndColorPickerViewController *)self numberingSystemWasChanged:v6 locale:v7];
+  systemCopy = system;
+  displayLocale = [controller displayLocale];
+  [(PREditingFontAndColorPickerViewController *)self numberingSystemWasChanged:systemCopy locale:displayLocale];
 }
 
-- (void)numberingSystemViewController:(id)a3 didSelectNumberingSystem:(id)a4
+- (void)numberingSystemViewController:(id)controller didSelectNumberingSystem:(id)system
 {
-  v6 = a4;
-  v7 = [a3 displayLocale];
-  [(PREditingFontAndColorPickerViewController *)self numberingSystemWasChanged:v6 locale:v7];
+  systemCopy = system;
+  displayLocale = [controller displayLocale];
+  [(PREditingFontAndColorPickerViewController *)self numberingSystemWasChanged:systemCopy locale:displayLocale];
 }
 
-- (void)numberingSystemWasChanged:(id)a3 locale:(id)a4
+- (void)numberingSystemWasChanged:(id)changed locale:(id)locale
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [(PREditingFontAndColorPickerViewController *)self fontPickerController];
-  v8 = v7;
-  if (v7)
+  changedCopy = changed;
+  localeCopy = locale;
+  fontPickerController = [(PREditingFontAndColorPickerViewController *)self fontPickerController];
+  v8 = fontPickerController;
+  if (fontPickerController)
   {
-    [v7 setLocale:v6];
+    [fontPickerController setLocale:localeCopy];
   }
 
   numberingSystemController = self->_numberingSystemController;
   if (numberingSystemController)
   {
-    v10 = [(PREditorNumberingSystemPickerController *)numberingSystemController menu];
-    [(UIBarButtonItem *)self->_numberSystemBarItem setMenu:v10];
+    menu = [(PREditorNumberingSystemPickerController *)numberingSystemController menu];
+    [(UIBarButtonItem *)self->_numberSystemBarItem setMenu:menu];
   }
 
-  v11 = [(PREditingFontAndColorPickerViewController *)self changeHandler];
-  v12 = v11;
-  if (v11)
+  changeHandler = [(PREditingFontAndColorPickerViewController *)self changeHandler];
+  v12 = changeHandler;
+  if (changeHandler)
   {
-    (*(v11 + 16))(v11, 0, 0, 0, 0, 0, 0, v13, 0);
+    (*(changeHandler + 16))(changeHandler, 0, 0, 0, 0, 0, 0, changedCopy, 0);
   }
 }
 
-- (void)didPressTitleAlignmentBarButtonItem:(id)a3
+- (void)didPressTitleAlignmentBarButtonItem:(id)item
 {
-  v4 = [(PRTitleAlignmentBarButtonItem *)self->_titleAlignmentBarItem toggle];
-  v5 = [(PREditingFontAndColorPickerViewController *)self changeHandler];
-  if (v5)
+  toggle = [(PRTitleAlignmentBarButtonItem *)self->_titleAlignmentBarItem toggle];
+  changeHandler = [(PREditingFontAndColorPickerViewController *)self changeHandler];
+  if (changeHandler)
   {
-    v7 = v5;
-    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v4];
+    v7 = changeHandler;
+    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:toggle];
     (*(v7 + 2))(v7, 0, v6, 0, 0, 0, 0, 0, 0);
 
-    v5 = v7;
+    changeHandler = v7;
   }
 }
 
 - (void)updatePopoverContentSize
 {
-  v8 = [(PREditingFontAndColorPickerViewController *)self navigationController];
-  v3 = [v8 navigationBar];
-  [v3 frame];
+  navigationController = [(PREditingFontAndColorPickerViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar frame];
   v5 = v4;
 
-  v6 = [(PREditingFontAndColorPickerViewController *)self rootStackView];
-  [v6 bounds];
-  [v8 setPreferredContentSize:{370.0, v5 + v7 + -15.0}];
+  rootStackView = [(PREditingFontAndColorPickerViewController *)self rootStackView];
+  [rootStackView bounds];
+  [navigationController setPreferredContentSize:{370.0, v5 + v7 + -15.0}];
 }
 
-- (void)colorPickerComponentViewController:(id)a3 didSelectColorItem:(id)a4 userSelected:(BOOL)a5
+- (void)colorPickerComponentViewController:(id)controller didSelectColorItem:(id)item userSelected:(BOOL)selected
 {
-  v5 = a5;
-  v12 = a4;
-  if ([v12 isFromUIKitColorPicker])
+  selectedCopy = selected;
+  itemCopy = item;
+  if ([itemCopy isFromUIKitColorPicker])
   {
     colorWell = self->_colorWell;
     if (colorWell)
     {
-      v8 = [v12 color];
-      v9 = [v8 color];
-      [(PUIColorWell *)colorWell setSelectedColor:v9];
+      color = [itemCopy color];
+      v8Color = [color color];
+      [(PUIColorWell *)colorWell setSelectedColor:v8Color];
     }
   }
 
-  if (v5)
+  if (selectedCopy)
   {
-    v10 = [(PREditingFontAndColorPickerViewController *)self changeHandler];
-    v11 = v10;
-    if (v10)
+    changeHandler = [(PREditingFontAndColorPickerViewController *)self changeHandler];
+    v11 = changeHandler;
+    if (changeHandler)
     {
-      (*(v10 + 16))(v10, 0, 0, 0, 0, 0, 0, 0, v12);
+      (*(changeHandler + 16))(changeHandler, 0, 0, 0, 0, 0, 0, 0, itemCopy);
     }
   }
 }
 
-- (void)colorPickerComponentViewControllerDidChangeHeight:(id)a3
+- (void)colorPickerComponentViewControllerDidChangeHeight:(id)height
 {
-  v4 = [(PREditingFontAndColorPickerViewController *)self delegate];
+  delegate = [(PREditingFontAndColorPickerViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     [(PREditingFontAndColorPickerViewController *)self desiredDetent];
-    [v4 fontAndColorPickerViewController:self didUpdateDesiredDetent:?];
+    [delegate fontAndColorPickerViewController:self didUpdateDesiredDetent:?];
   }
 }
 
-- (void)colorWellDidUpdateColor:(id)a3
+- (void)colorWellDidUpdateColor:(id)color
 {
-  v4 = a3;
-  v5 = [(PREditingFontAndColorPickerViewController *)self colorWell];
-  [v5 invalidateIntrinsicContentSize];
+  colorCopy = color;
+  colorWell = [(PREditingFontAndColorPickerViewController *)self colorWell];
+  [colorWell invalidateIntrinsicContentSize];
 
-  v6 = [(PREditingFontAndColorPickerViewController *)self colorWellView];
-  [v6 setNeedsLayout];
+  colorWellView = [(PREditingFontAndColorPickerViewController *)self colorWellView];
+  [colorWellView setNeedsLayout];
 
-  v12 = [v4 selectedColor];
+  selectedColor = [colorCopy selectedColor];
 
-  v7 = [[PRPosterColor alloc] initWithColor:v12];
+  v7 = [[PRPosterColor alloc] initWithColor:selectedColor];
   v8 = [[PREditorColorPickerConstantColor alloc] initWithColor:v7 initialVariation:0.0];
   v9 = [[PREditingColorItem alloc] initWithPickerColor:v8 variation:[(PREditorColorPickerConfiguration *)self->_colorPickerConfiguration context] context:0.0];
   [(PREditingColorItem *)v9 setFromUIKitColorPicker:1];
   [(PREditingColorPickerComponentViewController *)self->_colorPickerController updateForColorWellSelectedItem:v9];
-  v10 = [(PREditingFontAndColorPickerViewController *)self changeHandler];
-  v11 = v10;
-  if (v10)
+  changeHandler = [(PREditingFontAndColorPickerViewController *)self changeHandler];
+  v11 = changeHandler;
+  if (changeHandler)
   {
-    (*(v10 + 16))(v10, 0, 0, 0, 0, 0, 0, 0, v9);
+    (*(changeHandler + 16))(changeHandler, 0, 0, 0, 0, 0, 0, 0, v9);
   }
 }
 
-- (int64_t)adaptivePresentationStyleForPresentationController:(id)a3
+- (int64_t)adaptivePresentationStyleForPresentationController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 

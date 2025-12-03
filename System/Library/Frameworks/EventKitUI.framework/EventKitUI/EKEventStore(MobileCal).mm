@@ -46,7 +46,7 @@
   block[1] = 3221225472;
   block[2] = __49__EKEventStore_MobileCal__symbolicNameToUIColors__block_invoke;
   block[3] = &unk_1E843EC60;
-  block[4] = a1;
+  block[4] = self;
   if (symbolicNameToUIColors_onceToken != -1)
   {
     dispatch_once(&symbolicNameToUIColors_onceToken, block);
@@ -61,7 +61,7 @@
   block[1] = 3221225472;
   block[2] = __62__EKEventStore_MobileCal__defaultCalendarColorsInRainbowOrder__block_invoke;
   block[3] = &unk_1E843EC60;
-  block[4] = a1;
+  block[4] = self;
   if (defaultCalendarColorsInRainbowOrder_onceToken != -1)
   {
     dispatch_once(&defaultCalendarColorsInRainbowOrder_onceToken, block);
@@ -95,8 +95,8 @@
 
 - (id)stringForColor:()MobileCal
 {
-  v2 = [a1 symbolicNameForColor:?];
-  v3 = [a1 localizedStringForSymbolicColorName:v2];
+  v2 = [self symbolicNameForColor:?];
+  v3 = [self localizedStringForSymbolicColorName:v2];
 
   return v3;
 }
@@ -110,7 +110,7 @@
   v15 = __Block_byref_object_copy_;
   v16 = __Block_byref_object_dispose_;
   v17 = 0;
-  v5 = [a1 symbolicNameToUIColors];
+  symbolicNameToUIColors = [self symbolicNameToUIColors];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __48__EKEventStore_MobileCal__symbolicNameForColor___block_invoke;
@@ -118,7 +118,7 @@
   v6 = v4;
   v10 = v6;
   v11 = &v12;
-  [v5 enumerateKeysAndObjectsUsingBlock:v9];
+  [symbolicNameToUIColors enumerateKeysAndObjectsUsingBlock:v9];
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);

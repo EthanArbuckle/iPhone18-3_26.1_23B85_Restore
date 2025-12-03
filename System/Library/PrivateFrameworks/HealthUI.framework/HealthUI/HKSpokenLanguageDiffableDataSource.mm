@@ -1,24 +1,24 @@
 @interface HKSpokenLanguageDiffableDataSource
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
 @end
 
 @implementation HKSpokenLanguageDiffableDataSource
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v5 = [(UITableViewDiffableDataSource *)self snapshot];
-  v6 = [v5 sectionIdentifiers];
-  v7 = [v6 objectAtIndexedSubscript:a4];
-  v8 = [v7 unsignedIntegerValue];
+  snapshot = [(UITableViewDiffableDataSource *)self snapshot];
+  sectionIdentifiers = [snapshot sectionIdentifiers];
+  v7 = [sectionIdentifiers objectAtIndexedSubscript:section];
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-  if (v8 > 2)
+  if (unsignedIntegerValue > 2)
   {
     v11 = 0;
   }
 
   else
   {
-    v9 = off_1E81B9240[v8];
+    v9 = off_1E81B9240[unsignedIntegerValue];
     v10 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     v11 = [v10 localizedStringForKey:v9 value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
   }

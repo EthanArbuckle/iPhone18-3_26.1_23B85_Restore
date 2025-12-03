@@ -1,23 +1,23 @@
 @interface TSTConvertFormulasForCategoriesByRewritingWrapper
-- (TSTConvertFormulasForCategoriesByRewritingWrapper)initWithCalcEngine:(id)a3 rewriteSpec:(id)a4;
-- (id)convertFromBaseToChromeForCategorizedTableMove:(id)a3 containingCell:(const TSCEFormulaContainingCell *)a4;
-- (id)convertFromChromeToBaseForCategorizedTableMove:(id)a3 containingCell:(const TSCEFormulaContainingCell *)a4;
+- (TSTConvertFormulasForCategoriesByRewritingWrapper)initWithCalcEngine:(id)engine rewriteSpec:(id)spec;
+- (id)convertFromBaseToChromeForCategorizedTableMove:(id)move containingCell:(const TSCEFormulaContainingCell *)cell;
+- (id)convertFromChromeToBaseForCategorizedTableMove:(id)move containingCell:(const TSCEFormulaContainingCell *)cell;
 @end
 
 @implementation TSTConvertFormulasForCategoriesByRewritingWrapper
 
-- (TSTConvertFormulasForCategoriesByRewritingWrapper)initWithCalcEngine:(id)a3 rewriteSpec:(id)a4
+- (TSTConvertFormulasForCategoriesByRewritingWrapper)initWithCalcEngine:(id)engine rewriteSpec:(id)spec
 {
-  v7 = a3;
-  v8 = a4;
+  engineCopy = engine;
+  specCopy = spec;
   v39.receiver = self;
   v39.super_class = TSTConvertFormulasForCategoriesByRewritingWrapper;
   v9 = [(TSTConvertFormulasForCategoriesByRewritingWrapper *)&v39 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_calcEngine, a3);
-    objc_storeStrong(&v10->_rewriteSpec, a4);
+    objc_storeStrong(&v9->_calcEngine, engine);
+    objc_storeStrong(&v10->_rewriteSpec, spec);
     v15 = objc_msgSend_rewriteType(v10->_rewriteSpec, v11, v12, v13, v14);
     if ((objc_msgSend_isMoveRewriteType_(TSTConvertFormulasForCategoriesByRewritingWrapper, v16, v15, v17, v18) & 1) == 0)
     {
@@ -34,17 +34,17 @@
   return v10;
 }
 
-- (id)convertFromBaseToChromeForCategorizedTableMove:(id)a3 containingCell:(const TSCEFormulaContainingCell *)a4
+- (id)convertFromBaseToChromeForCategorizedTableMove:(id)move containingCell:(const TSCEFormulaContainingCell *)cell
 {
-  v6 = a3;
-  v7 = v6;
-  if (!v6)
+  moveCopy = move;
+  v7 = moveCopy;
+  if (!moveCopy)
   {
     v8 = 0;
     goto LABEL_38;
   }
 
-  v8 = v6;
+  v8 = moveCopy;
   v13 = objc_msgSend_rewriteType(self->_rewriteSpec, v9, v10, v11, v12);
   if (!objc_msgSend_isMoveRewriteType_(TSTConvertFormulasForCategoriesByRewritingWrapper, v14, v13, v15, v16))
   {
@@ -64,7 +64,7 @@
     v20 = TSUDynamicCast();
   }
 
-  *&v170.var0 = a4->var0._tableUID;
+  *&v170.var0 = cell->var0._tableUID;
   v26 = objc_msgSend_tableModelForTableUID_withCalcEngine_(TSTTableModel, v18, &v170, self->_calcEngine, v19);
   v31 = objc_msgSend_tableInfo(v26, v27, v28, v29, v30);
   v36 = objc_msgSend_translator(v31, v32, v33, v34, v35);
@@ -199,7 +199,7 @@
     }
   }
 
-  TSCEFormulaRewriteContext::TSCEFormulaRewriteContext(&v170, self->_calcEngine, a4);
+  TSCEFormulaRewriteContext::TSCEFormulaRewriteContext(&v170, self->_calcEngine, cell);
   v162 = sub_221491A58(v8, &v170, v20, 2);
 
   v8 = v162;
@@ -210,17 +210,17 @@ LABEL_38:
   return v8;
 }
 
-- (id)convertFromChromeToBaseForCategorizedTableMove:(id)a3 containingCell:(const TSCEFormulaContainingCell *)a4
+- (id)convertFromChromeToBaseForCategorizedTableMove:(id)move containingCell:(const TSCEFormulaContainingCell *)cell
 {
-  v6 = a3;
-  v7 = v6;
-  if (!v6)
+  moveCopy = move;
+  v7 = moveCopy;
+  if (!moveCopy)
   {
     v8 = 0;
     goto LABEL_51;
   }
 
-  v8 = v6;
+  v8 = moveCopy;
   v13 = objc_msgSend_rewriteType(self->_rewriteSpec, v9, v10, v11, v12);
   v18 = objc_msgSend_rewriteType(self->_rewriteSpec, v14, v15, v16, v17);
   if (v13 != 6 && v18 != 4)
@@ -243,7 +243,7 @@ LABEL_38:
     v24 = TSUDynamicCast();
   }
 
-  *&v216.var0 = a4->var1._tableUID;
+  *&v216.var0 = cell->var1._tableUID;
   v215 = objc_msgSend_tableModelForTableUID_withCalcEngine_(TSTTableModel, v22, &v216, self->_calcEngine, v23);
   v34 = objc_msgSend_tableInfo(v215, v30, v31, v32, v33);
   v39 = objc_msgSend_translator(v34, v35, v36, v37, v38);
@@ -417,15 +417,15 @@ LABEL_39:
     v191 = v190;
   }
 
-  coordinate = a4->var1.coordinate;
+  coordinate = cell->var1.coordinate;
   v193 = objc_msgSend_tableInfo(v215, v49, v52, v50, v51);
   v198 = objc_msgSend_translator(v193, v194, v195, v196, v197);
   v202 = objc_msgSend_chromeCellCoordForBaseCellCoord_(v198, v199, coordinate, v200, v201);
 
   v216.var0 = v202;
-  *&v216.var1 = a4->var1._tableUID;
-  v217 = *&a4->var1.coordinate.row;
-  upper = a4->var1._tableUID._upper;
+  *&v216.var1 = cell->var1._tableUID;
+  v217 = *&cell->var1.coordinate.row;
+  upper = cell->var1._tableUID._upper;
   sub_2212C726C(&v219, &v216, &v217);
   TSCEFormulaRewriteContext::TSCEFormulaRewriteContext(&v216, self->_calcEngine, &v219);
   v203 = sub_22149252C(v8, &v216, v24, 2, v191);

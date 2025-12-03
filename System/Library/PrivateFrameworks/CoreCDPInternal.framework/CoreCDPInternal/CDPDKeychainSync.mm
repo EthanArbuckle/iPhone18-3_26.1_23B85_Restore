@@ -1,77 +1,77 @@
 @interface CDPDKeychainSync
 + (id)_defaultUserVisibleViewSet;
 + (id)keyChainSync;
-+ (id)keyChainSyncWithProxy:(id)a3 sosCircleProxy:(id)a4 context:(id)a5;
++ (id)keyChainSyncWithProxy:(id)proxy sosCircleProxy:(id)circleProxy context:(id)context;
 - (BOOL)isUserVisibleKeychainSyncAvailable;
 - (BOOL)isUserVisibleKeychainSyncEnabled;
-- (CDPDKeychainSync)initWithCircleProxy:(id)a3 sosCircleProxy:(id)a4 context:(id)a5;
-- (CDPDKeychainSync)initWithCircleProxy:(id)a3 sosCircleProxy:(id)a4 policyProvider:(id)a5;
-- (CDPDKeychainSync)initWithContext:(id)a3;
-- (void)_preflightCircleStatusWithCompletion:(id)a3;
-- (void)_processAuthFailure:(id)a3 completion:(id)a4;
-- (void)_setUserVisibleKeychainSyncEnabled:(BOOL)a3 withCompletion:(id)a4;
+- (CDPDKeychainSync)initWithCircleProxy:(id)proxy sosCircleProxy:(id)circleProxy context:(id)context;
+- (CDPDKeychainSync)initWithCircleProxy:(id)proxy sosCircleProxy:(id)circleProxy policyProvider:(id)provider;
+- (CDPDKeychainSync)initWithContext:(id)context;
+- (void)_preflightCircleStatusWithCompletion:(id)completion;
+- (void)_processAuthFailure:(id)failure completion:(id)completion;
+- (void)_setUserVisibleKeychainSyncEnabled:(BOOL)enabled withCompletion:(id)completion;
 - (void)isUserVisibleKeychainSyncEnabled;
-- (void)removeNonViewAwarePeersFromCircleWithCompletion:(id)a3;
-- (void)updateKeychainSyncStateIfNeededWithCompletion:(id)a3;
+- (void)removeNonViewAwarePeersFromCircleWithCompletion:(id)completion;
+- (void)updateKeychainSyncStateIfNeededWithCompletion:(id)completion;
 @end
 
 @implementation CDPDKeychainSync
 
 + (id)keyChainSync
 {
-  v2 = [MEMORY[0x277CFD4A8] contextForPrimaryAccount];
-  v3 = [[CDPDKeychainSync alloc] initWithContext:v2];
+  contextForPrimaryAccount = [MEMORY[0x277CFD4A8] contextForPrimaryAccount];
+  v3 = [[CDPDKeychainSync alloc] initWithContext:contextForPrimaryAccount];
 
   return v3;
 }
 
-+ (id)keyChainSyncWithProxy:(id)a3 sosCircleProxy:(id)a4 context:(id)a5
++ (id)keyChainSyncWithProxy:(id)proxy sosCircleProxy:(id)circleProxy context:(id)context
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[CDPDKeychainSync alloc] initWithCircleProxy:v9 sosCircleProxy:v8 context:v7];
+  contextCopy = context;
+  circleProxyCopy = circleProxy;
+  proxyCopy = proxy;
+  v10 = [[CDPDKeychainSync alloc] initWithCircleProxy:proxyCopy sosCircleProxy:circleProxyCopy context:contextCopy];
 
   return v10;
 }
 
-- (CDPDKeychainSync)initWithContext:(id)a3
+- (CDPDKeychainSync)initWithContext:(id)context
 {
   v4 = MEMORY[0x277CFD498];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithContext:v5];
-  v7 = [objc_alloc(MEMORY[0x277CFD540]) initWithContext:v5];
-  v8 = [[CDPDDefaultKeychainSyncPolicyProvider alloc] initWithContext:v5];
+  contextCopy = context;
+  v6 = [[v4 alloc] initWithContext:contextCopy];
+  v7 = [objc_alloc(MEMORY[0x277CFD540]) initWithContext:contextCopy];
+  v8 = [[CDPDDefaultKeychainSyncPolicyProvider alloc] initWithContext:contextCopy];
 
   v9 = [(CDPDKeychainSync *)self initWithCircleProxy:v6 sosCircleProxy:v7 policyProvider:v8];
   return v9;
 }
 
-- (CDPDKeychainSync)initWithCircleProxy:(id)a3 sosCircleProxy:(id)a4 context:(id)a5
+- (CDPDKeychainSync)initWithCircleProxy:(id)proxy sosCircleProxy:(id)circleProxy context:(id)context
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[CDPDDefaultKeychainSyncPolicyProvider alloc] initWithContext:v8];
+  contextCopy = context;
+  circleProxyCopy = circleProxy;
+  proxyCopy = proxy;
+  v11 = [[CDPDDefaultKeychainSyncPolicyProvider alloc] initWithContext:contextCopy];
 
-  v12 = [(CDPDKeychainSync *)self initWithCircleProxy:v10 sosCircleProxy:v9 policyProvider:v11];
+  v12 = [(CDPDKeychainSync *)self initWithCircleProxy:proxyCopy sosCircleProxy:circleProxyCopy policyProvider:v11];
   return v12;
 }
 
-- (CDPDKeychainSync)initWithCircleProxy:(id)a3 sosCircleProxy:(id)a4 policyProvider:(id)a5
+- (CDPDKeychainSync)initWithCircleProxy:(id)proxy sosCircleProxy:(id)circleProxy policyProvider:(id)provider
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  proxyCopy = proxy;
+  circleProxyCopy = circleProxy;
+  providerCopy = provider;
   v16.receiver = self;
   v16.super_class = CDPDKeychainSync;
   v12 = [(CDPDKeychainSync *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_circleProxy, a3);
-    objc_storeStrong(&v13->_sosCircleProxy, a4);
-    objc_storeStrong(&v13->_syncPolicy, a5);
+    objc_storeStrong(&v12->_circleProxy, proxy);
+    objc_storeStrong(&v13->_sosCircleProxy, circleProxy);
+    objc_storeStrong(&v13->_syncPolicy, provider);
     v14 = v13;
   }
 
@@ -81,10 +81,10 @@
 - (BOOL)isUserVisibleKeychainSyncAvailable
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(CDPDKeychainSync *)self syncPolicy];
-  v4 = [v3 keychainSyncAllowedByMDM];
+  syncPolicy = [(CDPDKeychainSync *)self syncPolicy];
+  keychainSyncAllowedByMDM = [syncPolicy keychainSyncAllowedByMDM];
 
-  if ((v4 & 1) == 0)
+  if ((keychainSyncAllowedByMDM & 1) == 0)
   {
     v5 = _CDPLogSystem();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -93,10 +93,10 @@
     }
   }
 
-  v6 = [(CDPDKeychainSync *)self syncPolicy];
-  v7 = [v6 keychainSyncAllowedByServer];
+  syncPolicy2 = [(CDPDKeychainSync *)self syncPolicy];
+  keychainSyncAllowedByServer = [syncPolicy2 keychainSyncAllowedByServer];
 
-  if ((v7 & 1) == 0)
+  if ((keychainSyncAllowedByServer & 1) == 0)
   {
     v8 = _CDPLogSystem();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -104,14 +104,14 @@
       [CDPDKeychainSync isUserVisibleKeychainSyncAvailable];
     }
 
-    v4 = 0;
+    keychainSyncAllowedByMDM = 0;
   }
 
   v9 = _CDPLogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = @"DISALLOWED";
-    if (v4)
+    if (keychainSyncAllowedByMDM)
     {
       v10 = @"ALLOWED";
     }
@@ -122,7 +122,7 @@
   }
 
   v11 = *MEMORY[0x277D85DE8];
-  return v4;
+  return keychainSyncAllowedByMDM;
 }
 
 - (BOOL)isUserVisibleKeychainSyncEnabled
@@ -168,7 +168,7 @@
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412802;
-        v26 = self;
+        selfCopy = self;
         v27 = 1024;
         v28 = v8;
         v29 = 1024;
@@ -217,19 +217,19 @@
   return v16;
 }
 
-- (void)updateKeychainSyncStateIfNeededWithCompletion:(id)a3
+- (void)updateKeychainSyncStateIfNeededWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = _CDPLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [CDPDKeychainSync updateKeychainSyncStateIfNeededWithCompletion:];
   }
 
-  v6 = [(CDPDKeychainSync *)self syncPolicy];
-  v7 = [v6 userHasExplicitlyDisabledSync];
+  syncPolicy = [(CDPDKeychainSync *)self syncPolicy];
+  userHasExplicitlyDisabledSync = [syncPolicy userHasExplicitlyDisabledSync];
 
-  if (v7)
+  if (userHasExplicitlyDisabledSync)
   {
     v8 = _CDPLogSystem();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -258,17 +258,17 @@ LABEL_12:
 
 LABEL_13:
 
-    v16 = self;
+    selfCopy2 = self;
     v17 = 0;
 LABEL_14:
-    [(CDPDKeychainSync *)v16 _setUserVisibleKeychainSyncEnabled:v17 withCompletion:v4, v26];
+    [(CDPDKeychainSync *)selfCopy2 _setUserVisibleKeychainSyncEnabled:v17 withCompletion:completionCopy, v26];
     goto LABEL_15;
   }
 
-  v11 = [(CDPDKeychainSync *)self _keychainSyncAvailableViaSOS];
+  _keychainSyncAvailableViaSOS = [(CDPDKeychainSync *)self _keychainSyncAvailableViaSOS];
   v12 = _CDPLogSystem();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
-  if (v11)
+  if (_keychainSyncAvailableViaSOS)
   {
     if (!v13)
     {
@@ -295,31 +295,31 @@ LABEL_14:
   _os_log_impl(&dword_24510B000, v12, OS_LOG_TYPE_DEFAULT, v14, v15, 2u);
 LABEL_19:
 
-  v18 = [(CDPDKeychainSync *)self syncPolicy];
-  v19 = [v18 isBuddyFinished];
+  syncPolicy2 = [(CDPDKeychainSync *)self syncPolicy];
+  isBuddyFinished = [syncPolicy2 isBuddyFinished];
 
   v20 = _CDPLogSystem();
   v21 = os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG);
-  if (v19)
+  if (isBuddyFinished)
   {
     if (v21)
     {
       [CDPDKeychainSync updateKeychainSyncStateIfNeededWithCompletion:];
     }
 
-    v22 = [(CDPDKeychainSync *)self syncPolicy];
-    v23 = [v22 userHasExplicitlyDisabledSync];
+    syncPolicy3 = [(CDPDKeychainSync *)self syncPolicy];
+    userHasExplicitlyDisabledSync2 = [syncPolicy3 userHasExplicitlyDisabledSync];
 
     v8 = _CDPLogSystem();
     v24 = os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG);
-    if (!v23)
+    if (!userHasExplicitlyDisabledSync2)
     {
       if (v24)
       {
         [CDPDKeychainSync updateKeychainSyncStateIfNeededWithCompletion:];
       }
 
-      v16 = self;
+      selfCopy2 = self;
       v17 = 1;
       goto LABEL_14;
     }
@@ -337,10 +337,10 @@ LABEL_19:
     [CDPDKeychainSync updateKeychainSyncStateIfNeededWithCompletion:];
   }
 
-  if (v4)
+  if (completionCopy)
   {
     v25 = _CDPStateError();
-    v4[2](v4, 0, v25);
+    completionCopy[2](completionCopy, 0, v25);
   }
 
 LABEL_15:
@@ -366,13 +366,13 @@ uint64_t __69__CDPDKeychainSync_setUserVisibleKeychainSyncEnabled_withCompletion
   return MEMORY[0x2821F9730]();
 }
 
-- (void)_setUserVisibleKeychainSyncEnabled:(BOOL)a3 withCompletion:(id)a4
+- (void)_setUserVisibleKeychainSyncEnabled:(BOOL)enabled withCompletion:(id)completion
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   v7 = @"disable";
-  if (v4)
+  if (enabledCopy)
   {
     v7 = @"enable";
   }
@@ -395,10 +395,10 @@ uint64_t __69__CDPDKeychainSync_setUserVisibleKeychainSyncEnabled_withCompletion
   v23 = v11;
   v12 = v10;
   v24 = v12;
-  v13 = v6;
+  v13 = completionCopy;
   v25 = v13;
   v14 = _Block_copy(aBlock);
-  if (v4 && ![(CDPDKeychainSync *)self isUserVisibleKeychainSyncAvailable])
+  if (enabledCopy && ![(CDPDKeychainSync *)self isUserVisibleKeychainSyncAvailable])
   {
     v16 = _CDPLogSystem();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -414,7 +414,7 @@ uint64_t __69__CDPDKeychainSync_setUserVisibleKeychainSyncEnabled_withCompletion
     }
   }
 
-  else if ([(CDPDKeychainSync *)self isUserVisibleKeychainSyncEnabled]== v4)
+  else if ([(CDPDKeychainSync *)self isUserVisibleKeychainSyncEnabled]== enabledCopy)
   {
     v15 = _CDPLogSystem();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -438,7 +438,7 @@ uint64_t __69__CDPDKeychainSync_setUserVisibleKeychainSyncEnabled_withCompletion
     v19[3] = &unk_278E260D0;
     v19[4] = self;
     v20 = v14;
-    v21 = v4;
+    v21 = enabledCopy;
     [CDPAuthenticationHelper silentAuthenticationForPrimaryAccountWithCompletion:v19];
   }
 
@@ -568,27 +568,27 @@ LABEL_16:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_processAuthFailure:(id)a3 completion:(id)a4
+- (void)_processAuthFailure:(id)failure completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 domain];
-  if ([v7 isEqualToString:*MEMORY[0x277CEFF48]])
+  failureCopy = failure;
+  completionCopy = completion;
+  domain = [failureCopy domain];
+  if ([domain isEqualToString:*MEMORY[0x277CEFF48]])
   {
-    v8 = [v5 code];
+    code = [failureCopy code];
 
-    if (v8 == -7013)
+    if (code == -7013)
     {
       v9 = _CDPLogSystem();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
-        [CDPDKeychainSync _processAuthFailure:v5 completion:v9];
+        [CDPDKeychainSync _processAuthFailure:failureCopy completion:v9];
       }
 
-      if (v6)
+      if (completionCopy)
       {
         v10 = _CDPStateError();
-        v6[2](v6, 0, v10);
+        completionCopy[2](completionCopy, 0, v10);
       }
 
       goto LABEL_10;
@@ -599,20 +599,20 @@ LABEL_16:
   {
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6, 0, v5);
+    completionCopy[2](completionCopy, 0, failureCopy);
   }
 
 LABEL_10:
 }
 
-- (void)_preflightCircleStatusWithCompletion:(id)a3
+- (void)_preflightCircleStatusWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(CDPDKeychainSync *)self _isThisDeviceInCircle])
   {
-    v4[2](v4, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 
   else
@@ -623,24 +623,24 @@ LABEL_10:
       [CDPDKeychainSync _preflightCircleStatusWithCompletion:];
     }
 
-    if (v4)
+    if (completionCopy)
     {
       v6 = _CDPStateError();
-      (v4)[2](v4, 0, v6);
+      (completionCopy)[2](completionCopy, 0, v6);
     }
   }
 }
 
-- (void)removeNonViewAwarePeersFromCircleWithCompletion:(id)a3
+- (void)removeNonViewAwarePeersFromCircleWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   circleProxy = self->_circleProxy;
   v8 = 0;
   v6 = [(CDPDCircleProxy *)circleProxy removeNonViewAwarePeers:&v8];
   v7 = v8;
-  if (v4)
+  if (completionCopy)
   {
-    v4[2](v4, v6, v7);
+    completionCopy[2](completionCopy, v6, v7);
   }
 }
 

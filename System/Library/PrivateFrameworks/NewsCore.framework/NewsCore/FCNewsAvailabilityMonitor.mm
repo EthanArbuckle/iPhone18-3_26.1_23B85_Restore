@@ -1,10 +1,10 @@
 @interface FCNewsAvailabilityMonitor
 - (BOOL)_isNewsAvailable;
 - (FCNewsAvailabilityMonitor)init;
-- (FCNewsAvailabilityMonitor)initWithApplicationProxy:(id)a3 queue:(id)a4;
-- (FCNewsAvailabilityMonitor)initWithProcessVariant:(unint64_t)a3 queue:(id)a4;
+- (FCNewsAvailabilityMonitor)initWithApplicationProxy:(id)proxy queue:(id)queue;
+- (FCNewsAvailabilityMonitor)initWithProcessVariant:(unint64_t)variant queue:(id)queue;
 - (void)_updateAvailability;
-- (void)addNotificationBlock:(id)a3;
+- (void)addNotificationBlock:(id)block;
 - (void)dealloc;
 @end
 
@@ -36,12 +36,12 @@
   objc_exception_throw(v6);
 }
 
-- (FCNewsAvailabilityMonitor)initWithApplicationProxy:(id)a3 queue:(id)a4
+- (FCNewsAvailabilityMonitor)initWithApplicationProxy:(id)proxy queue:(id)queue
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  proxyCopy = proxy;
+  queueCopy = queue;
+  if (!proxyCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v18 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "applicationProxy"];
     *buf = 136315906;
@@ -54,13 +54,13 @@
     v28 = v18;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v7)
+    if (queueCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v7)
+  else if (queueCopy)
   {
     goto LABEL_6;
   }
@@ -89,11 +89,11 @@ LABEL_6:
     blocks = v8->_blocks;
     v8->_blocks = v9;
 
-    v11 = [v6 copy];
+    v11 = [proxyCopy copy];
     applicationProxy = v8->_applicationProxy;
     v8->_applicationProxy = v11;
 
-    objc_storeStrong(&v8->_queue, a4);
+    objc_storeStrong(&v8->_queue, queue);
     DistributedCenter = CFNotificationCenterGetDistributedCenter();
     CFNotificationCenterAddObserver(DistributedCenter, v8, applicationStateNotificationCallback, @"com.apple.LaunchServices.applicationStateChanged", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
     v14 = CFNotificationCenterGetDistributedCenter();
@@ -107,11 +107,11 @@ LABEL_6:
   return v8;
 }
 
-- (FCNewsAvailabilityMonitor)initWithProcessVariant:(unint64_t)a3 queue:(id)a4
+- (FCNewsAvailabilityMonitor)initWithProcessVariant:(unint64_t)variant queue:(id)queue
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (!v6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  queueCopy = queue;
+  if (!queueCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v16 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "queue"];
     *buf = 136315906;
@@ -125,9 +125,9 @@ LABEL_6:
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  if (a3 - 1 >= 2)
+  if (variant - 1 >= 2)
   {
-    if (a3)
+    if (variant)
     {
       v7 = 0;
     }
@@ -135,12 +135,12 @@ LABEL_6:
     else
     {
       v8 = objc_opt_class();
-      v9 = [MEMORY[0x1E6963618] bundleProxyForCurrentProcess];
-      v10 = FCCheckedDynamicCast(v8, v9);
+      bundleProxyForCurrentProcess = [MEMORY[0x1E6963618] bundleProxyForCurrentProcess];
+      v10 = FCCheckedDynamicCast(v8, bundleProxyForCurrentProcess);
 
       v11 = objc_opt_class();
-      v12 = [v10 containingBundle];
-      v7 = FCCheckedDynamicCast(v11, v12);
+      containingBundle = [v10 containingBundle];
+      v7 = FCCheckedDynamicCast(v11, containingBundle);
     }
   }
 
@@ -149,7 +149,7 @@ LABEL_6:
     v7 = [MEMORY[0x1E69635E0] applicationProxyForIdentifier:@"com.apple.news"];
   }
 
-  v13 = [(FCNewsAvailabilityMonitor *)self initWithApplicationProxy:v7 queue:v6];
+  v13 = [(FCNewsAvailabilityMonitor *)self initWithApplicationProxy:v7 queue:queueCopy];
 
   v14 = *MEMORY[0x1E69E9840];
   return v13;
@@ -164,11 +164,11 @@ LABEL_6:
   [(FCNewsAvailabilityMonitor *)&v4 dealloc];
 }
 
-- (void)addNotificationBlock:(id)a3
+- (void)addNotificationBlock:(id)block
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  blockCopy = block;
+  if (!blockCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "notificationBlock"];
     *buf = 136315906;
@@ -182,9 +182,9 @@ LABEL_6:
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v5 = [(FCNewsAvailabilityMonitor *)self blocks];
-  v6 = _Block_copy(v4);
-  [v5 addObject:v6];
+  blocks = [(FCNewsAvailabilityMonitor *)self blocks];
+  v6 = _Block_copy(blockCopy);
+  [blocks addObject:v6];
 
   v7 = *MEMORY[0x1E69E9840];
 }
@@ -193,12 +193,12 @@ LABEL_6:
 {
   v18 = *MEMORY[0x1E69E9840];
   NewsIsAvailable = self->_NewsIsAvailable;
-  v4 = [(FCNewsAvailabilityMonitor *)self _isNewsAvailable];
-  if (NewsIsAvailable != v4)
+  _isNewsAvailable = [(FCNewsAvailabilityMonitor *)self _isNewsAvailable];
+  if (NewsIsAvailable != _isNewsAvailable)
   {
-    self->_NewsIsAvailable = v4;
-    v5 = [(FCNewsAvailabilityMonitor *)self blocks];
-    v6 = [v5 copy];
+    self->_NewsIsAvailable = _isNewsAvailable;
+    blocks = [(FCNewsAvailabilityMonitor *)self blocks];
+    v6 = [blocks copy];
 
     v15 = 0u;
     v16 = 0u;
@@ -237,20 +237,20 @@ LABEL_6:
 
 - (BOOL)_isNewsAvailable
 {
-  v2 = [(FCNewsAvailabilityMonitor *)self applicationProxy];
-  v3 = [v2 appState];
+  applicationProxy = [(FCNewsAvailabilityMonitor *)self applicationProxy];
+  appState = [applicationProxy appState];
 
-  if ([v3 isRestricted])
+  if ([appState isRestricted])
   {
-    v4 = 0;
+    isInstalled = 0;
   }
 
   else
   {
-    v4 = [v3 isInstalled];
+    isInstalled = [appState isInstalled];
   }
 
-  return v4;
+  return isInstalled;
 }
 
 @end

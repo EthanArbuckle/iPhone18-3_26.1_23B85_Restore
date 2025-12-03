@@ -14,8 +14,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v1 = [a1 connectedScenes];
-  v2 = [v1 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  connectedScenes = [self connectedScenes];
+  v2 = [connectedScenes countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v2)
   {
     v3 = v2;
@@ -27,13 +27,13 @@
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v1);
+          objc_enumerationMutation(connectedScenes);
         }
 
         v4 |= [*(*(&v8 + 1) + 8 * i) vui_isNonLightningSecondScreenScene];
       }
 
-      v3 = [v1 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [connectedScenes countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v3);
@@ -49,12 +49,12 @@
 
 - (id)vuiDelegate
 {
-  v0 = [MEMORY[0x1E69DC668] sharedApplication];
-  v1 = [v0 delegate];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  delegate = [mEMORY[0x1E69DC668] delegate];
 
-  if ([v1 conformsToProtocol:&unk_1F5F78BA8])
+  if ([delegate conformsToProtocol:&unk_1F5F78BA8])
   {
-    v2 = v1;
+    v2 = delegate;
   }
 
   else
@@ -67,16 +67,16 @@
 
 + (BOOL)vuiIsRTL
 {
-  v0 = [MEMORY[0x1E69DC668] sharedApplication];
-  v1 = [v0 userInterfaceLayoutDirection];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-  return v1 == 1;
+  return userInterfaceLayoutDirection == 1;
 }
 
 + (BOOL)vuiIsActive
 {
-  v0 = [MEMORY[0x1E69DC668] sharedApplication];
-  v1 = [v0 applicationState] == 0;
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  v1 = [mEMORY[0x1E69DC668] applicationState] == 0;
 
   return v1;
 }

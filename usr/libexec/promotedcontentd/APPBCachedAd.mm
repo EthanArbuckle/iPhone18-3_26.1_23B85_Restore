@@ -1,15 +1,15 @@
 @interface APPBCachedAd
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasPriority:(BOOL)a3;
-- (void)setHasRemainingImpressionCount:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasPriority:(BOOL)priority;
+- (void)setHasRemainingImpressionCount:(BOOL)count;
+- (void)writeTo:(id)to;
 @end
 
 @implementation APPBCachedAd
@@ -26,9 +26,9 @@
   return v3;
 }
 
-- (void)setHasPriority:(BOOL)a3
+- (void)setHasPriority:(BOOL)priority
 {
-  if (a3)
+  if (priority)
   {
     v3 = 2;
   }
@@ -41,9 +41,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasRemainingImpressionCount:(BOOL)a3
+- (void)setHasRemainingImpressionCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 4;
   }
@@ -61,8 +61,8 @@
   v7.receiver = self;
   v7.super_class = APPBCachedAd;
   v3 = [(APPBCachedAd *)&v7 description];
-  v4 = [(APPBCachedAd *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(APPBCachedAd *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -116,21 +116,21 @@ LABEL_7:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_uniqueIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
     PBDataWriterWriteDoubleField();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -150,32 +150,32 @@ LABEL_5:
   }
 
   PBDataWriterWriteFixed32Field();
-  v4 = v6;
+  toCopy = v6;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_6:
     PBDataWriterWriteFixed64Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
 LABEL_7:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_uniqueIdentifier)
   {
-    v6 = v4;
-    [v4 setUniqueIdentifier:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setUniqueIdentifier:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 1) = *&self->_expirationDate;
-    *(v4 + 40) |= 1u;
+    *(toCopy + 1) = *&self->_expirationDate;
+    *(toCopy + 40) |= 1u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -194,22 +194,22 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 6) = self->_remainingImpressionCount;
-  *(v4 + 40) |= 4u;
+  *(toCopy + 6) = self->_remainingImpressionCount;
+  *(toCopy + 40) |= 4u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_6:
-    *(v4 + 2) = self->_priority;
-    *(v4 + 40) |= 2u;
+    *(toCopy + 2) = self->_priority;
+    *(toCopy + 40) |= 2u;
   }
 
 LABEL_7:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_uniqueIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_uniqueIdentifier copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
@@ -251,16 +251,16 @@ LABEL_4:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   uniqueIdentifier = self->_uniqueIdentifier;
-  if (uniqueIdentifier | *(v4 + 4))
+  if (uniqueIdentifier | *(equalCopy + 4))
   {
     if (![(NSString *)uniqueIdentifier isEqual:?])
     {
@@ -270,13 +270,13 @@ LABEL_4:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_expirationDate != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_expirationDate != *(equalCopy + 1))
     {
       goto LABEL_18;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
 LABEL_18:
     v6 = 0;
@@ -285,21 +285,21 @@ LABEL_18:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 40) & 4) == 0 || self->_remainingImpressionCount != *(v4 + 6))
+    if ((*(equalCopy + 40) & 4) == 0 || self->_remainingImpressionCount != *(equalCopy + 6))
     {
       goto LABEL_18;
     }
   }
 
-  else if ((*(v4 + 40) & 4) != 0)
+  else if ((*(equalCopy + 40) & 4) != 0)
   {
     goto LABEL_18;
   }
 
-  v6 = (*(v4 + 40) & 2) == 0;
+  v6 = (*(equalCopy + 40) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_priority != *(v4 + 2))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_priority != *(equalCopy + 2))
     {
       goto LABEL_18;
     }
@@ -372,22 +372,22 @@ LABEL_11:
   return v6 ^ v3 ^ v10 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 4))
+  fromCopy = from;
+  if (*(fromCopy + 4))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(APPBCachedAd *)self setUniqueIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if (v5)
   {
-    self->_expirationDate = *(v4 + 1);
+    self->_expirationDate = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 40);
+    v5 = *(fromCopy + 40);
     if ((v5 & 4) == 0)
     {
 LABEL_5:
@@ -400,17 +400,17 @@ LABEL_5:
     }
   }
 
-  else if ((*(v4 + 40) & 4) == 0)
+  else if ((*(fromCopy + 40) & 4) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_remainingImpressionCount = *(v4 + 6);
+  self->_remainingImpressionCount = *(fromCopy + 6);
   *&self->_has |= 4u;
-  if ((*(v4 + 40) & 2) != 0)
+  if ((*(fromCopy + 40) & 2) != 0)
   {
 LABEL_6:
-    self->_priority = *(v4 + 2);
+    self->_priority = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 

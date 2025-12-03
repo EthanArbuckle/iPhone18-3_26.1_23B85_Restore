@@ -1,16 +1,16 @@
 @interface HDCloudSyncPullChangeRecordOperation
-- (HDCloudSyncPullChangeRecordOperation)initWithConfiguration:(id)a3 cloudState:(id)a4;
-- (HDCloudSyncPullChangeRecordOperation)initWithConfiguration:(id)a3 cloudState:(id)a4 target:(id)a5 sequenceRecord:(id)a6 changeRecord:(id)a7;
+- (HDCloudSyncPullChangeRecordOperation)initWithConfiguration:(id)configuration cloudState:(id)state;
+- (HDCloudSyncPullChangeRecordOperation)initWithConfiguration:(id)configuration cloudState:(id)state target:(id)target sequenceRecord:(id)record changeRecord:(id)changeRecord;
 - (id)_assetExtractionFailureCountKey;
-- (uint64_t)_shouldSucceedWithAssetExtractionError:(uint64_t)a1;
-- (void)_handlePossibleCacheDiscrepancyWithRecordID:(void *)a3 fetchError:(void *)a4 errorOut:;
-- (void)_setAssetExtractionFailureCount:(void *)a1;
+- (uint64_t)_shouldSucceedWithAssetExtractionError:(uint64_t)error;
+- (void)_handlePossibleCacheDiscrepancyWithRecordID:(void *)d fetchError:(void *)error errorOut:;
+- (void)_setAssetExtractionFailureCount:(void *)count;
 - (void)main;
 @end
 
 @implementation HDCloudSyncPullChangeRecordOperation
 
-- (HDCloudSyncPullChangeRecordOperation)initWithConfiguration:(id)a3 cloudState:(id)a4
+- (HDCloudSyncPullChangeRecordOperation)initWithConfiguration:(id)configuration cloudState:(id)state
 {
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE660];
@@ -20,20 +20,20 @@
   return 0;
 }
 
-- (HDCloudSyncPullChangeRecordOperation)initWithConfiguration:(id)a3 cloudState:(id)a4 target:(id)a5 sequenceRecord:(id)a6 changeRecord:(id)a7
+- (HDCloudSyncPullChangeRecordOperation)initWithConfiguration:(id)configuration cloudState:(id)state target:(id)target sequenceRecord:(id)record changeRecord:(id)changeRecord
 {
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  targetCopy = target;
+  recordCopy = record;
+  changeRecordCopy = changeRecord;
   v19.receiver = self;
   v19.super_class = HDCloudSyncPullChangeRecordOperation;
-  v16 = [(HDCloudSyncOperation *)&v19 initWithConfiguration:a3 cloudState:a4];
+  v16 = [(HDCloudSyncOperation *)&v19 initWithConfiguration:configuration cloudState:state];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_target, a5);
-    objc_storeStrong(&v17->_sequenceRecord, a6);
-    objc_storeStrong(&v17->_changeRecord, a7);
+    objc_storeStrong(&v16->_target, target);
+    objc_storeStrong(&v17->_sequenceRecord, record);
+    objc_storeStrong(&v17->_changeRecord, changeRecord);
   }
 
   return v17;
@@ -42,15 +42,15 @@
 - (void)main
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v3 = [(HDCloudSyncChangeRecord *)self->_changeRecord sequenceRecordID];
-  v4 = [(HDCloudSyncRecord *)self->_sequenceRecord recordID];
-  v5 = [v3 isEqual:v4];
+  sequenceRecordID = [(HDCloudSyncChangeRecord *)self->_changeRecord sequenceRecordID];
+  recordID = [(HDCloudSyncRecord *)self->_sequenceRecord recordID];
+  v5 = [sequenceRecordID isEqual:recordID];
 
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x277CBC3E0]);
-    v7 = [(HDCloudSyncRecord *)self->_changeRecord recordID];
-    v33[0] = v7;
+    recordID2 = [(HDCloudSyncRecord *)self->_changeRecord recordID];
+    v33[0] = recordID2;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:1];
     v9 = [v6 initWithRecordIDs:v8];
 
@@ -59,9 +59,9 @@
     v12 = [v10 arrayByAddingObjectsFromArray:v11];
     [v9 setDesiredKeys:v12];
 
-    v13 = [(HDCloudSyncChangeRecord *)self->_changeRecord shouldFetchAssetContentInMemory];
-    v14 = v13;
-    if (v13)
+    shouldFetchAssetContentInMemory = [(HDCloudSyncChangeRecord *)self->_changeRecord shouldFetchAssetContentInMemory];
+    v14 = shouldFetchAssetContentInMemory;
+    if (shouldFetchAssetContentInMemory)
     {
       [v9 setShouldFetchAssetContentInMemory:1];
       [v9 setDropInMemoryAssetContentASAP:1];
@@ -88,19 +88,19 @@
     v28[4] = self;
     v28[5] = v31;
     [v9 setFetchRecordsCompletionBlock:v28];
-    v15 = [(HDCloudSyncOperation *)self configuration];
-    v16 = [v15 cachedCloudState];
-    [v16 setOperationCountForAnalytics:{objc_msgSend(v16, "operationCountForAnalytics") + 1}];
+    configuration = [(HDCloudSyncOperation *)self configuration];
+    cachedCloudState = [configuration cachedCloudState];
+    [cachedCloudState setOperationCountForAnalytics:{objc_msgSend(cachedCloudState, "operationCountForAnalytics") + 1}];
 
-    v17 = [(HDCloudSyncOperation *)self configuration];
-    v18 = [v17 operationGroup];
-    [v9 setGroup:v18];
+    configuration2 = [(HDCloudSyncOperation *)self configuration];
+    operationGroup = [configuration2 operationGroup];
+    [v9 setGroup:operationGroup];
 
-    v19 = [(HDCloudSyncTarget *)self->_target container];
-    v20 = [(HDCloudSyncOperation *)self configuration];
-    v21 = [v20 repository];
-    v22 = [v21 profileIdentifier];
-    v23 = HDDatabaseForContainer(v19, v22);
+    container = [(HDCloudSyncTarget *)self->_target container];
+    configuration3 = [(HDCloudSyncOperation *)self configuration];
+    repository = [configuration3 repository];
+    profileIdentifier = [repository profileIdentifier];
+    v23 = HDDatabaseForContainer(container, profileIdentifier);
 
     [v23 addOperation:v9];
     _Block_object_dispose(v31, 8);
@@ -352,35 +352,35 @@ LABEL_7:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handlePossibleCacheDiscrepancyWithRecordID:(void *)a3 fetchError:(void *)a4 errorOut:
+- (void)_handlePossibleCacheDiscrepancyWithRecordID:(void *)d fetchError:(void *)error errorOut:
 {
   v32 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (a1)
+  dCopy = d;
+  if (self)
   {
     v8 = a2;
-    v9 = [a1 configuration];
-    v10 = [v9 cachedCloudState];
-    v11 = [a1[14] container];
-    v12 = [v11 containerIdentifier];
+    configuration = [self configuration];
+    cachedCloudState = [configuration cachedCloudState];
+    container = [self[14] container];
+    containerIdentifier = [container containerIdentifier];
     v27 = 0;
-    v13 = [v10 zoneForRecordID:v8 containerIdentifier:v12 error:&v27];
+    v13 = [cachedCloudState zoneForRecordID:v8 containerIdentifier:containerIdentifier error:&v27];
 
     v14 = v27;
     if (v13)
     {
-      v15 = [a1[14] container];
-      v16 = [a1 configuration];
-      v17 = [v16 repository];
-      v18 = [v17 profileIdentifier];
-      HDDatabaseForContainer(v15, v18);
+      container2 = [self[14] container];
+      configuration2 = [self configuration];
+      repository = [configuration2 repository];
+      profileIdentifier = [repository profileIdentifier];
+      HDDatabaseForContainer(container2, profileIdentifier);
       v19 = v14;
-      v21 = v20 = a4;
+      v21 = v20 = error;
 
-      v22 = [a1[14] container];
-      [v13 handleCloudError:v7 operation:a1 container:v22 database:v21];
+      container3 = [self[14] container];
+      [v13 handleCloudError:dCopy operation:self container:container3 database:v21];
 
-      a4 = v20;
+      error = v20;
       v14 = v19;
     }
 
@@ -391,20 +391,20 @@ LABEL_7:
       if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v29 = a1;
+        selfCopy = self;
         v30 = 2114;
         v31 = v14;
         _os_log_error_impl(&dword_228986000, v23, OS_LOG_TYPE_ERROR, "%{public}@: Failed to lookup zone during cache discrepancy reporting %{public}@", buf, 0x16u);
       }
     }
 
-    v24 = v7;
+    v24 = dCopy;
     if (v24)
     {
-      if (a4)
+      if (error)
       {
         v25 = v24;
-        *a4 = v24;
+        *error = v24;
       }
 
       else
@@ -471,21 +471,21 @@ uint64_t __104__HDCloudSyncPullChangeRecordOperation__continuationForFetchedReco
   return [(HDCloudSyncPullChangeRecordOperation *)v6 _shouldSucceedWithAssetExtractionError:v7];
 }
 
-- (uint64_t)_shouldSucceedWithAssetExtractionError:(uint64_t)a1
+- (uint64_t)_shouldSucceedWithAssetExtractionError:(uint64_t)error
 {
   v37 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (error)
   {
-    v4 = [a1 configuration];
-    v5 = [v4 repository];
-    v6 = [v5 profile];
-    v7 = [v6 legacyRepositoryProfile];
-    v8 = HDCloudSyncKeyValueDomainWithProfile(v7);
+    configuration = [error configuration];
+    repository = [configuration repository];
+    profile = [repository profile];
+    legacyRepositoryProfile = [profile legacyRepositoryProfile];
+    v8 = HDCloudSyncKeyValueDomainWithProfile(legacyRepositoryProfile);
 
-    v9 = [(HDCloudSyncPullChangeRecordOperation *)a1 _assetExtractionFailureCountKey];
+    _assetExtractionFailureCountKey = [(HDCloudSyncPullChangeRecordOperation *)error _assetExtractionFailureCountKey];
     v32 = 0;
-    v10 = [v8 numberForKey:v9 error:&v32];
+    v10 = [v8 numberForKey:_assetExtractionFailureCountKey error:&v32];
     v11 = v32;
     v12 = v11;
     v13 = MEMORY[0x277CCC328];
@@ -498,7 +498,7 @@ uint64_t __104__HDCloudSyncPullChangeRecordOperation__continuationForFetchedReco
         if (os_log_type_enabled(*v13, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543618;
-          v34 = v9;
+          errorCopy3 = _assetExtractionFailureCountKey;
           v35 = 2114;
           v36 = v12;
           _os_log_error_impl(&dword_228986000, v14, OS_LOG_TYPE_ERROR, "Failed to get value for %{public}@: %{public}@.", buf, 0x16u);
@@ -506,33 +506,33 @@ uint64_t __104__HDCloudSyncPullChangeRecordOperation__continuationForFetchedReco
       }
     }
 
-    v15 = [v10 integerValue];
+    integerValue = [v10 integerValue];
 
     _HKInitializeLogging();
     v16 = *v13;
     v17 = os_log_type_enabled(*v13, OS_LOG_TYPE_ERROR);
-    if (v15 > 1)
+    if (integerValue > 1)
     {
       if (v17)
       {
         *buf = 138543618;
-        v34 = a1;
+        errorCopy3 = error;
         v35 = 2114;
         v36 = v3;
         _os_log_error_impl(&dword_228986000, v16, OS_LOG_TYPE_ERROR, "%{public}@: skip record due to multiple failures to extract archive: %{public}@", buf, 0x16u);
       }
 
       v30 = v3;
-      [(HDCloudSyncPullChangeRecordOperation *)a1 _setAssetExtractionFailureCount:?];
-      v18 = [*(a1 + 128) decodedSyncAnchorRangeMap];
-      v19 = [HDSyncAnchorMap syncAnchorMapWithSyncAnchorRangeMap:v18];
-      v20 = [*(a1 + 112) store];
-      v21 = [a1 configuration];
-      v22 = [v21 repository];
-      v23 = [v22 profile];
-      v24 = [v23 legacyRepositoryProfile];
+      [(HDCloudSyncPullChangeRecordOperation *)error _setAssetExtractionFailureCount:?];
+      decodedSyncAnchorRangeMap = [*(error + 128) decodedSyncAnchorRangeMap];
+      v19 = [HDSyncAnchorMap syncAnchorMapWithSyncAnchorRangeMap:decodedSyncAnchorRangeMap];
+      store = [*(error + 112) store];
+      configuration2 = [error configuration];
+      repository2 = [configuration2 repository];
+      profile2 = [repository2 profile];
+      legacyRepositoryProfile2 = [profile2 legacyRepositoryProfile];
       v31 = 0;
-      v25 = [HDSyncAnchorEntity updateSyncAnchorsWithMap:v19 type:3 store:v20 updatePolicy:1 resetInvalid:0 profile:v24 error:&v31];
+      v25 = [HDSyncAnchorEntity updateSyncAnchorsWithMap:v19 type:3 store:store updatePolicy:1 resetInvalid:0 profile:legacyRepositoryProfile2 error:&v31];
       v26 = v31;
 
       if (!v25)
@@ -542,14 +542,14 @@ uint64_t __104__HDCloudSyncPullChangeRecordOperation__continuationForFetchedReco
         if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
         {
           *buf = 138543618;
-          v34 = a1;
+          errorCopy3 = error;
           v35 = 2114;
           v36 = v26;
           _os_log_error_impl(&dword_228986000, v27, OS_LOG_TYPE_ERROR, "%{public}@: Failed to update anchors when skipping record due to extraction failures: %{public}@", buf, 0x16u);
         }
       }
 
-      a1 = 1;
+      error = 1;
       v3 = v30;
     }
 
@@ -558,19 +558,19 @@ uint64_t __104__HDCloudSyncPullChangeRecordOperation__continuationForFetchedReco
       if (v17)
       {
         *buf = 138543618;
-        v34 = a1;
+        errorCopy3 = error;
         v35 = 2114;
         v36 = v3;
         _os_log_error_impl(&dword_228986000, v16, OS_LOG_TYPE_ERROR, "%{public}@: zip extraction failed: %{public}@", buf, 0x16u);
       }
 
-      [(HDCloudSyncPullChangeRecordOperation *)a1 _setAssetExtractionFailureCount:?];
-      a1 = 0;
+      [(HDCloudSyncPullChangeRecordOperation *)error _setAssetExtractionFailureCount:?];
+      error = 0;
     }
   }
 
   v28 = *MEMORY[0x277D85DE8];
-  return a1;
+  return error;
 }
 
 uint64_t __104__HDCloudSyncPullChangeRecordOperation__continuationForFetchedRecord_recordID_inMemoryAsset_fetchError___block_invoke_313(uint64_t a1, void *a2)
@@ -850,31 +850,31 @@ LABEL_47:
   return v55;
 }
 
-- (void)_setAssetExtractionFailureCount:(void *)a1
+- (void)_setAssetExtractionFailureCount:(void *)count
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (count)
   {
-    v4 = [a1 configuration];
-    v5 = [v4 repository];
-    v6 = [v5 profile];
-    v7 = [v6 legacyRepositoryProfile];
-    v8 = HDCloudSyncKeyValueDomainWithProfile(v7);
+    configuration = [count configuration];
+    repository = [configuration repository];
+    profile = [repository profile];
+    legacyRepositoryProfile = [profile legacyRepositoryProfile];
+    v8 = HDCloudSyncKeyValueDomainWithProfile(legacyRepositoryProfile);
 
-    v9 = [(HDCloudSyncPullChangeRecordOperation *)a1 _assetExtractionFailureCountKey];
+    _assetExtractionFailureCountKey = [(HDCloudSyncPullChangeRecordOperation *)count _assetExtractionFailureCountKey];
     v10 = [MEMORY[0x277CCABB0] numberWithInteger:a2];
     v14 = 0;
-    LOBYTE(v5) = [v8 setNumber:v10 forKey:v9 error:&v14];
+    LOBYTE(repository) = [v8 setNumber:v10 forKey:_assetExtractionFailureCountKey error:&v14];
     v11 = v14;
 
-    if ((v5 & 1) == 0)
+    if ((repository & 1) == 0)
     {
       _HKInitializeLogging();
       v12 = *MEMORY[0x277CCC328];
       if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v16 = v9;
+        v16 = _assetExtractionFailureCountKey;
         v17 = 2114;
         v18 = v11;
         _os_log_error_impl(&dword_228986000, v12, OS_LOG_TYPE_ERROR, "Failed to set value for %{public}@: %{public}@.", buf, 0x16u);
@@ -1505,10 +1505,10 @@ uint64_t __70__HDCloudSyncPullChangeRecordOperation__applySyncChanges_store_erro
 - (id)_assetExtractionFailureCountKey
 {
   v1 = MEMORY[0x277CCACA8];
-  v2 = [*(a1 + 112) storeRecord];
-  v3 = [v2 storeIdentifier];
-  v4 = [v3 UUIDString];
-  v5 = [v1 stringWithFormat:@"%@%@", @"FailedAssetExtractionCount-", v4];
+  storeRecord = [*(self + 112) storeRecord];
+  storeIdentifier = [storeRecord storeIdentifier];
+  uUIDString = [storeIdentifier UUIDString];
+  v5 = [v1 stringWithFormat:@"%@%@", @"FailedAssetExtractionCount-", uUIDString];
 
   return v5;
 }

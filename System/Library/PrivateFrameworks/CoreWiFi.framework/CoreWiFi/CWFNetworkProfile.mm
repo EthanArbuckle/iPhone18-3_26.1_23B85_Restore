@@ -17,8 +17,8 @@
 - (BOOL)isCloudSyncable;
 - (BOOL)isDNSHeuristicsFilteredNetwork;
 - (BOOL)isEAP;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToNetworkProfile:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToNetworkProfile:(id)profile;
 - (BOOL)isHighPopularity;
 - (BOOL)isHighQuality;
 - (BOOL)isHotspot;
@@ -47,15 +47,15 @@
 - (BOOL)isTLSCertificateRequired;
 - (BOOL)supportsPersonalHotspotFallbackUponBrokenBackhaul;
 - (BOOL)wasCaptive;
-- (BOOL)wasManuallyJoinedRecentlyInProximityOf:(id)a3;
+- (BOOL)wasManuallyJoinedRecentlyInProximityOf:(id)of;
 - (BOOL)wasMoreRecentlyAdded;
 - (BOOL)wasMoreRecentlyJoinedByUser;
 - (BOOL)wasRecently6GHzOnlyOnAnyDevice;
 - (CWFNetworkProfile)init;
-- (CWFNetworkProfile)initWithCloudSyncExternalForm:(id)a3;
-- (CWFNetworkProfile)initWithCoder:(id)a3;
-- (CWFNetworkProfile)initWithExternalForm:(id)a3;
-- (CWFNetworkProfile)initWithMigrationData:(id)a3;
+- (CWFNetworkProfile)initWithCloudSyncExternalForm:(id)form;
+- (CWFNetworkProfile)initWithCoder:(id)coder;
+- (CWFNetworkProfile)initWithExternalForm:(id)form;
+- (CWFNetworkProfile)initWithMigrationData:(id)data;
 - (CWFWiFiNetworkSharingNetworkID)wifiNetworkSharingNetworkID;
 - (NSArray)TLSTrustedServerNames;
 - (NSArray)acceptedEAPTypes;
@@ -72,11 +72,11 @@
 - (NSString)networkName;
 - (double)networkQualityResponsiveness;
 - (id)JSONCompatibleKeyValueMap;
-- (id)OSSpecificValueForKey:(id)a3;
+- (id)OSSpecificValueForKey:(id)key;
 - (id)__basicDescription;
 - (id)__classDStorageSpecificPropertiesSet;
 - (id)__descriptionFor6EMode;
-- (id)__descriptionForBSSListWithLimit:(unint64_t)a3;
+- (id)__descriptionForBSSListWithLimit:(unint64_t)limit;
 - (id)__descriptionForCaptiveFlags;
 - (id)__descriptionForHiddenState;
 - (id)__descriptionForLowDataMode;
@@ -86,13 +86,13 @@
 - (id)__descriptionForNearbyShareableStatus;
 - (id)__descriptionForPrivateMAC;
 - (id)__descriptionForPublicAttribute;
-- (id)__filteredNetworkProfileWithProperties:(id)a3 OSSpecificKeys:(id)a4;
-- (id)__keyForProperty:(int64_t)a3;
+- (id)__filteredNetworkProfileWithProperties:(id)properties OSSpecificKeys:(id)keys;
+- (id)__keyForProperty:(int64_t)property;
 - (id)_location;
-- (id)changedOSSpecificKeysFromNetworkProfile:(id)a3;
-- (id)changedPropertiesFromNetworkProfile:(id)a3;
+- (id)changedOSSpecificKeysFromNetworkProfile:(id)profile;
+- (id)changedPropertiesFromNetworkProfile:(id)profile;
 - (id)cloudSyncExternalForm;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)coreWiFiSpecificAttributes;
 - (id)deepCopy;
 - (id)externalForm;
@@ -102,27 +102,27 @@
 - (id)filteredTombstoneNetworkProfile;
 - (id)filteredWiFiNetworkSharingNetworkProfile;
 - (id)identifier;
-- (id)matchingKnownBSS:(id)a3;
+- (id)matchingKnownBSS:(id)s;
 - (id)migrationData;
 - (int)lastDisconnectReason;
 - (int)transitionDisabledFlags;
 - (int64_t)WAPISubtype;
 - (int64_t)WEPSubtype;
-- (int64_t)__propertyForKey:(id)a3;
+- (int64_t)__propertyForKey:(id)key;
 - (int64_t)addReason;
 - (int64_t)brokenBackhaulState;
-- (int64_t)compareReceivedFromDeviceFlags:(id)a3;
-- (int64_t)compareSupportedSecurityTypes:(id)a3;
-- (int64_t)compareUserPriority:(id)a3;
+- (int64_t)compareReceivedFromDeviceFlags:(id)flags;
+- (int64_t)compareSupportedSecurityTypes:(id)types;
+- (int64_t)compareUserPriority:(id)priority;
 - (int64_t)defaultPrivateMACMode;
 - (int64_t)disable6EMode;
-- (int64_t)effectivePrivateMACModeWithSystemSetting:(int64_t)a3;
+- (int64_t)effectivePrivateMACModeWithSystemSetting:(int64_t)setting;
 - (int64_t)hiddenState;
 - (int64_t)locationOfInterest;
 - (int64_t)lowDataMode;
-- (int64_t)mapCWFSecurityTypeToCWFMigrationSecurityType:(unint64_t)a3;
-- (int64_t)mapPrivateMACAddress:(id)a3;
-- (int64_t)mapPrivateMacToCWFPrivateMACMode:(int64_t)a3 setByUser:(BOOL *)a4;
+- (int64_t)mapCWFSecurityTypeToCWFMigrationSecurityType:(unint64_t)type;
+- (int64_t)mapPrivateMACAddress:(id)address;
+- (int64_t)mapPrivateMacToCWFPrivateMACMode:(int64_t)mode setByUser:(BOOL *)user;
 - (int64_t)movingAttribute;
 - (int64_t)nearbyShareableStatus;
 - (int64_t)networkOfInterestHomeState;
@@ -137,7 +137,7 @@
 - (unint64_t)effectiveSupportedSecurityTypes;
 - (unint64_t)hash;
 - (unint64_t)lastJoinedBySystemAtWeek;
-- (unint64_t)mapCWFMigrationSecurityTypeToCWFSecurityType:(int64_t)a3;
+- (unint64_t)mapCWFMigrationSecurityTypeToCWFSecurityType:(int64_t)type;
 - (unint64_t)networkGroupPriority;
 - (unint64_t)popularityScore;
 - (unint64_t)qualityScore;
@@ -148,41 +148,41 @@
 - (unint64_t)totalNetworkUsage;
 - (unint64_t)was6GHzOnlyAtWeek;
 - (unint64_t)weakestSupportedSecurityType;
-- (void)mergeWithCloudNetworkProfile:(id)a3;
-- (void)mergeWithNetworkProfile:(id)a3;
-- (void)setAddReason:(int64_t)a3;
-- (void)setBSSList:(id)a3;
-- (void)setBrokenBackhaulState:(int64_t)a3;
-- (void)setCoreWiFiSpecificAttributes:(id)a3;
-- (void)setDeploymentIssues:(unint64_t)a3;
-- (void)setDisable6EMode:(int64_t)a3;
-- (void)setHiddenState:(int64_t)a3;
-- (void)setLastJoinedBySystemAtWeek:(unint64_t)a3;
-- (void)setLocationOfInterest:(int64_t)a3;
-- (void)setLowDataMode:(int64_t)a3;
-- (void)setMovingAttribute:(int64_t)a3;
-- (void)setNearbyShareableStatus:(int64_t)a3;
-- (void)setNetworkGroupPriority:(unint64_t)a3;
-- (void)setNetworkOfInterestHomeState:(int64_t)a3;
-- (void)setNetworkOfInterestWorkState:(int64_t)a3;
-- (void)setNetworkQualityResponsiveness:(double)a3;
-- (void)setOSSpecificAttributes:(id)a3;
-- (void)setOSSpecificValue:(id)a3 forKey:(id)a4;
-- (void)setPayloadIdentifier:(id)a3;
-- (void)setPopularityScore:(unint64_t)a3;
-- (void)setPrivateMACAddressEvaluationState:(int64_t)a3;
-- (void)setPrivateMACAddressModeConfigurationProfileSetting:(int64_t)a3;
-- (void)setPrivateMACAddressModeUserSetting:(int64_t)a3;
-- (void)setPublicAttribute:(int64_t)a3;
-- (void)setQualityScore:(unint64_t)a3;
-- (void)setReceivedFromDeviceFlags:(unint64_t)a3;
-- (void)setSSID:(id)a3;
-- (void)setSSIDHarvestStatus:(int64_t)a3;
-- (void)setSupportedSecurityTypes:(unint64_t)a3;
-- (void)setTotalNetworkUsage:(unint64_t)a3;
-- (void)setWAPISubtype:(int64_t)a3;
-- (void)setWEPSubtype:(int64_t)a3;
-- (void)setWas6GHzOnlyAtWeek:(unint64_t)a3;
+- (void)mergeWithCloudNetworkProfile:(id)profile;
+- (void)mergeWithNetworkProfile:(id)profile;
+- (void)setAddReason:(int64_t)reason;
+- (void)setBSSList:(id)list;
+- (void)setBrokenBackhaulState:(int64_t)state;
+- (void)setCoreWiFiSpecificAttributes:(id)attributes;
+- (void)setDeploymentIssues:(unint64_t)issues;
+- (void)setDisable6EMode:(int64_t)mode;
+- (void)setHiddenState:(int64_t)state;
+- (void)setLastJoinedBySystemAtWeek:(unint64_t)week;
+- (void)setLocationOfInterest:(int64_t)interest;
+- (void)setLowDataMode:(int64_t)mode;
+- (void)setMovingAttribute:(int64_t)attribute;
+- (void)setNearbyShareableStatus:(int64_t)status;
+- (void)setNetworkGroupPriority:(unint64_t)priority;
+- (void)setNetworkOfInterestHomeState:(int64_t)state;
+- (void)setNetworkOfInterestWorkState:(int64_t)state;
+- (void)setNetworkQualityResponsiveness:(double)responsiveness;
+- (void)setOSSpecificAttributes:(id)attributes;
+- (void)setOSSpecificValue:(id)value forKey:(id)key;
+- (void)setPayloadIdentifier:(id)identifier;
+- (void)setPopularityScore:(unint64_t)score;
+- (void)setPrivateMACAddressEvaluationState:(int64_t)state;
+- (void)setPrivateMACAddressModeConfigurationProfileSetting:(int64_t)setting;
+- (void)setPrivateMACAddressModeUserSetting:(int64_t)setting;
+- (void)setPublicAttribute:(int64_t)attribute;
+- (void)setQualityScore:(unint64_t)score;
+- (void)setReceivedFromDeviceFlags:(unint64_t)flags;
+- (void)setSSID:(id)d;
+- (void)setSSIDHarvestStatus:(int64_t)status;
+- (void)setSupportedSecurityTypes:(unint64_t)types;
+- (void)setTotalNetworkUsage:(unint64_t)usage;
+- (void)setWAPISubtype:(int64_t)subtype;
+- (void)setWEPSubtype:(int64_t)subtype;
+- (void)setWas6GHzOnlyAtWeek:(unint64_t)week;
 @end
 
 @implementation CWFNetworkProfile
@@ -190,17 +190,17 @@
 - (unint64_t)supportedSecurityTypes
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBB8F0];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (int64_t)addReason
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBBC38];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (CWFNetworkProfile)init
@@ -220,8 +220,8 @@
 - (NSSet)properties
 {
   v2 = MEMORY[0x1E695DFD8];
-  v3 = [(NSMutableDictionary *)self->_internal allKeys];
-  v4 = [v2 setWithArray:v3];
+  allKeys = [(NSMutableDictionary *)self->_internal allKeys];
+  v4 = [v2 setWithArray:allKeys];
 
   return v4;
 }
@@ -240,29 +240,29 @@
 
 - (BOOL)isPasspoint
 {
-  v2 = [(CWFNetworkProfile *)self domainName];
-  v3 = v2 != 0;
+  domainName = [(CWFNetworkProfile *)self domainName];
+  v3 = domainName != 0;
 
   return v3;
 }
 
 - (NSString)networkName
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (![(CWFNetworkProfile *)v2 useCachedNetworkName])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (![(CWFNetworkProfile *)selfCopy useCachedNetworkName])
   {
-    v3 = [(CWFNetworkProfile *)v2 SSID];
-    v4 = CWFHumanReadableStringFromData(v3);
-    [(CWFNetworkProfile *)v2 setCachedNetworkName:v4];
+    sSID = [(CWFNetworkProfile *)selfCopy SSID];
+    v4 = CWFHumanReadableStringFromData(sSID);
+    [(CWFNetworkProfile *)selfCopy setCachedNetworkName:v4];
 
-    [(CWFNetworkProfile *)v2 setUseCachedNetworkName:1];
+    [(CWFNetworkProfile *)selfCopy setUseCachedNetworkName:1];
   }
 
-  v5 = [(CWFNetworkProfile *)v2 cachedNetworkName];
-  objc_sync_exit(v2);
+  cachedNetworkName = [(CWFNetworkProfile *)selfCopy cachedNetworkName];
+  objc_sync_exit(selfCopy);
 
-  return v5;
+  return cachedNetworkName;
 }
 
 - (id)deepCopy
@@ -341,47 +341,47 @@
 
 - (id)identifier
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (![(CWFNetworkProfile *)v2 useCachedIdentifier])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (![(CWFNetworkProfile *)selfCopy useCachedIdentifier])
   {
-    if ([(CWFNetworkProfile *)v2 isPasspoint])
+    if ([(CWFNetworkProfile *)selfCopy isPasspoint])
     {
-      v3 = [(CWFNetworkProfile *)v2 domainName];
-      if (!v3)
+      domainName = [(CWFNetworkProfile *)selfCopy domainName];
+      if (!domainName)
       {
 LABEL_11:
 
-        [(CWFNetworkProfile *)v2 setUseCachedIdentifier:1];
+        [(CWFNetworkProfile *)selfCopy setUseCachedIdentifier:1];
         goto LABEL_12;
       }
 
-      v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"wifi.network.passpoint.%@", v3];
-      [(CWFNetworkProfile *)v2 setCachedIdentifier:v4];
+      v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"wifi.network.passpoint.%@", domainName];
+      [(CWFNetworkProfile *)selfCopy setCachedIdentifier:v4];
     }
 
     else
     {
-      v3 = [(CWFNetworkProfile *)v2 networkName];
-      if (v3)
+      domainName = [(CWFNetworkProfile *)selfCopy networkName];
+      if (domainName)
       {
-        v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"wifi.network.ssid.%@", v3];
-        [(CWFNetworkProfile *)v2 setCachedIdentifier:v4];
+        v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"wifi.network.ssid.%@", domainName];
+        [(CWFNetworkProfile *)selfCopy setCachedIdentifier:v4];
       }
 
       else
       {
-        v5 = [(CWFNetworkProfile *)v2 SSID];
-        v4 = v5;
-        if (v5)
+        sSID = [(CWFNetworkProfile *)selfCopy SSID];
+        v4 = sSID;
+        if (sSID)
         {
           v6 = MEMORY[0x1E696AEC0];
-          v7 = CWFHexadecimalStringFromData(v5);
+          v7 = CWFHexadecimalStringFromData(sSID);
           v8 = [v6 stringWithFormat:@"wifi.network.ssid.%@", v7];
-          [(CWFNetworkProfile *)v2 setCachedIdentifier:v8];
+          [(CWFNetworkProfile *)selfCopy setCachedIdentifier:v8];
         }
 
-        v3 = 0;
+        domainName = 0;
       }
     }
 
@@ -389,26 +389,26 @@ LABEL_11:
   }
 
 LABEL_12:
-  v9 = [(CWFNetworkProfile *)v2 cachedIdentifier];
-  objc_sync_exit(v2);
+  cachedIdentifier = [(CWFNetworkProfile *)selfCopy cachedIdentifier];
+  objc_sync_exit(selfCopy);
 
-  return v9;
+  return cachedIdentifier;
 }
 
 - (BOOL)isAutoJoinDisabled
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBBB78];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isPersonalHotspot
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBBCB0];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isCaptiveStateDetermined
@@ -418,9 +418,9 @@ LABEL_12:
     return 0;
   }
 
-  v3 = [(CWFNetworkProfile *)self captiveProfile];
+  captiveProfile = [(CWFNetworkProfile *)self captiveProfile];
   sub_1E0BCE288();
-  v5 = [v3 objectForKeyedSubscript:v4];
+  v5 = [captiveProfile objectForKeyedSubscript:v4];
   v6 = v5 != 0;
 
   return v6;
@@ -433,8 +433,8 @@ LABEL_12:
     return 1;
   }
 
-  v4 = [(CWFNetworkProfile *)self carplayUUID];
-  v3 = v4 != 0;
+  carplayUUID = [(CWFNetworkProfile *)self carplayUUID];
+  v3 = carplayUUID != 0;
 
   return v3;
 }
@@ -442,41 +442,41 @@ LABEL_12:
 - (BOOL)isCarPlayNetwork
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBBE48];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (int64_t)hiddenState
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBBB90];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (BOOL)isPublicAirPlayNetwork
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBBF38];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (int64_t)publicAttribute
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBBF80];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (int64_t)movingAttribute
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBBF68];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (BOOL)isPrivacyProxyEnabled
@@ -485,50 +485,50 @@ LABEL_12:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (int64_t)disable6EMode
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBB908];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (BOOL)isStandalone6G
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBBD10];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)wasRecently6GHzOnlyOnAnyDevice
 {
-  v3 = [(CWFNetworkProfile *)self was6GHzOnlyOnAnyDeviceAt];
-  if (v3)
+  was6GHzOnlyOnAnyDeviceAt = [(CWFNetworkProfile *)self was6GHzOnlyOnAnyDeviceAt];
+  if (was6GHzOnlyOnAnyDeviceAt)
   {
-    v4 = [(CWFNetworkProfile *)self lastJoinedByUserAt];
-    [v4 timeIntervalSinceReferenceDate];
+    lastJoinedByUserAt = [(CWFNetworkProfile *)self lastJoinedByUserAt];
+    [lastJoinedByUserAt timeIntervalSinceReferenceDate];
     v6 = v5;
-    v7 = [(CWFNetworkProfile *)self was6GHzOnlyOnAnyDeviceAt];
-    [v7 timeIntervalSinceReferenceDate];
+    was6GHzOnlyOnAnyDeviceAt2 = [(CWFNetworkProfile *)self was6GHzOnlyOnAnyDeviceAt];
+    [was6GHzOnlyOnAnyDeviceAt2 timeIntervalSinceReferenceDate];
     if (v6 >= v8)
     {
-      v10 = [(CWFNetworkProfile *)self lastJoinedByUserAt];
-      [v10 timeIntervalSinceReferenceDate];
+      lastJoinedByUserAt2 = [(CWFNetworkProfile *)self lastJoinedByUserAt];
+      [lastJoinedByUserAt2 timeIntervalSinceReferenceDate];
       v12 = v11;
-      v13 = [(CWFNetworkProfile *)self was6GHzOnlyOnAnyDeviceAt];
-      [v13 timeIntervalSinceReferenceDate];
+      was6GHzOnlyOnAnyDeviceAt3 = [(CWFNetworkProfile *)self was6GHzOnlyOnAnyDeviceAt];
+      [was6GHzOnlyOnAnyDeviceAt3 timeIntervalSinceReferenceDate];
       v9 = v12 - v14 <= 1209600.0;
     }
 
@@ -550,8 +550,8 @@ LABEL_12:
 {
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   v4 = v3;
-  v5 = [(CWFNetworkProfile *)self was6GHzOnlyAt];
-  [v5 timeIntervalSinceReferenceDate];
+  was6GHzOnlyAt = [(CWFNetworkProfile *)self was6GHzOnlyAt];
+  [was6GHzOnlyAt timeIntervalSinceReferenceDate];
   if (v6 <= v4)
   {
     v7 = v6;
@@ -562,10 +562,10 @@ LABEL_12:
     v7 = 0.0;
   }
 
-  v8 = [(CWFNetworkProfile *)self was6GHzOnlyAtWeek];
-  if (v4 >= (604800 * v8))
+  was6GHzOnlyAtWeek = [(CWFNetworkProfile *)self was6GHzOnlyAtWeek];
+  if (v4 >= (604800 * was6GHzOnlyAtWeek))
   {
-    v9 = (604800 * v8);
+    v9 = (604800 * was6GHzOnlyAtWeek);
   }
 
   else
@@ -584,7 +584,7 @@ LABEL_12:
 
     else
     {
-      v13 = v5;
+      v13 = was6GHzOnlyAt;
     }
 
     v12 = v13;
@@ -603,20 +603,20 @@ LABEL_12:
 - (unint64_t)was6GHzOnlyAtWeek
 {
   v3 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBB950];
-  v4 = [v3 unsignedIntegerValue];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  v5 = [(CWFNetworkProfile *)self was6GHzOnlyAt];
-  [v5 timeIntervalSinceReferenceDate];
+  was6GHzOnlyAt = [(CWFNetworkProfile *)self was6GHzOnlyAt];
+  [was6GHzOnlyAt timeIntervalSinceReferenceDate];
   v7 = vcvtmd_u64_f64(v6 / 86400.0 / 7.0);
 
-  if (v4 <= v7)
+  if (unsignedIntegerValue <= v7)
   {
     return v7;
   }
 
   else
   {
-    return v4;
+    return unsignedIntegerValue;
   }
 }
 
@@ -624,8 +624,8 @@ LABEL_12:
 {
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   v4 = v3;
-  v5 = [(CWFNetworkProfile *)self lastJoinedBySystemAt];
-  [(NSDate *)v5 timeIntervalSinceReferenceDate];
+  lastJoinedBySystemAt = [(CWFNetworkProfile *)self lastJoinedBySystemAt];
+  [(NSDate *)lastJoinedBySystemAt timeIntervalSinceReferenceDate];
   if (v6 <= v4)
   {
     v7 = v6;
@@ -636,8 +636,8 @@ LABEL_12:
     v7 = 0.0;
   }
 
-  v8 = [(CWFNetworkProfile *)self lastJoinedByUserAt];
-  [(NSDate *)v8 timeIntervalSinceReferenceDate];
+  lastJoinedByUserAt = [(CWFNetworkProfile *)self lastJoinedByUserAt];
+  [(NSDate *)lastJoinedByUserAt timeIntervalSinceReferenceDate];
   if (v9 > v4)
   {
     v9 = 0.0;
@@ -645,12 +645,12 @@ LABEL_12:
 
   if (v7 <= v9)
   {
-    v10 = v8;
+    v10 = lastJoinedByUserAt;
   }
 
   else
   {
-    v10 = v5;
+    v10 = lastJoinedBySystemAt;
   }
 
   v11 = v10;
@@ -678,16 +678,16 @@ LABEL_12:
     return 1;
   }
 
-  v4 = [(CWFNetworkProfile *)self acceptedEAPTypes];
-  if ([v4 containsObject:&unk_1F5BBBCC8])
+  acceptedEAPTypes = [(CWFNetworkProfile *)self acceptedEAPTypes];
+  if ([acceptedEAPTypes containsObject:&unk_1F5BBBCC8])
   {
     v3 = 1;
   }
 
   else
   {
-    v5 = [(CWFNetworkProfile *)self acceptedEAPTypes];
-    v3 = [v5 containsObject:&unk_1F5BBBCE0];
+    acceptedEAPTypes2 = [(CWFNetworkProfile *)self acceptedEAPTypes];
+    v3 = [acceptedEAPTypes2 containsObject:&unk_1F5BBBCE0];
   }
 
   return v3;
@@ -698,12 +698,12 @@ LABEL_12:
   v3 = sub_1E0BCE0D8();
   if (v3)
   {
-    v4 = [(CWFNetworkProfile *)self captiveProfile];
+    captiveProfile = [(CWFNetworkProfile *)self captiveProfile];
     sub_1E0BCE288();
-    v6 = [v4 objectForKeyedSubscript:v5];
-    v7 = [v6 BOOLValue];
+    v6 = [captiveProfile objectForKeyedSubscript:v5];
+    bOOLValue = [v6 BOOLValue];
 
-    LOBYTE(v3) = v7;
+    LOBYTE(v3) = bOOLValue;
   }
 
   return v3;
@@ -711,223 +711,223 @@ LABEL_12:
 
 - (NSArray)acceptedEAPTypes
 {
-  v2 = [(CWFNetworkProfile *)self EAPProfile];
-  v3 = [v2 objectForKeyedSubscript:@"AcceptEAPTypes"];
+  eAPProfile = [(CWFNetworkProfile *)self EAPProfile];
+  v3 = [eAPProfile objectForKeyedSubscript:@"AcceptEAPTypes"];
 
   return v3;
 }
 
 - (id)__basicDescription
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  v4 = [(CWFNetworkProfile *)self networkName];
-  v5 = [v4 redactedForWiFi];
+  string = [MEMORY[0x1E696AD60] string];
+  networkName = [(CWFNetworkProfile *)self networkName];
+  redactedForWiFi = [networkName redactedForWiFi];
 
-  if (([v5 hasPrefix:@" "] & 1) != 0 || objc_msgSend(v5, "hasSuffix:", @" "))
+  if (([redactedForWiFi hasPrefix:@" "] & 1) != 0 || objc_msgSend(redactedForWiFi, "hasSuffix:", @" "))
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"'%@'", v5];
+    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"'%@'", redactedForWiFi];
 
-    v5 = v6;
+    redactedForWiFi = v6;
   }
 
-  [v3 appendFormat:@"%@ - ", v5];
-  v7 = [(CWFNetworkProfile *)self SSID];
-  v8 = CWFHexadecimalStringFromData(v7);
-  v9 = [v8 redactedForWiFi];
-  [v3 appendFormat:@"ssid=%@ (%lu), ", v9, -[CWFNetworkProfile shortSSID](self, "shortSSID")];
+  [string appendFormat:@"%@ - ", redactedForWiFi];
+  sSID = [(CWFNetworkProfile *)self SSID];
+  v8 = CWFHexadecimalStringFromData(sSID);
+  redactedForWiFi2 = [v8 redactedForWiFi];
+  [string appendFormat:@"ssid=%@ (%lu), ", redactedForWiFi2, -[CWFNetworkProfile shortSSID](self, "shortSSID")];
 
   v10 = sub_1E0BD331C([(CWFNetworkProfile *)self effectiveSupportedSecurityTypes], [(CWFNetworkProfile *)self WEPSubtype], [(CWFNetworkProfile *)self WAPISubtype]);
-  [v3 appendFormat:@"security=%@, ", v10];
+  [string appendFormat:@"security=%@, ", v10];
 
-  v11 = [(CWFNetworkProfile *)self __descriptionForPrivateMAC];
-  [v3 appendFormat:@"privateMAC=[%@], ", v11];
+  __descriptionForPrivateMAC = [(CWFNetworkProfile *)self __descriptionForPrivateMAC];
+  [string appendFormat:@"privateMAC=[%@], ", __descriptionForPrivateMAC];
 
   if ([(CWFNetworkProfile *)self isPasspoint])
   {
-    v12 = [(CWFNetworkProfile *)self domainName];
-    v13 = [(CWFNetworkProfile *)self displayedOperatorName];
-    v14 = [(CWFNetworkProfile *)self isServiceProviderRoamingEnabled];
+    domainName = [(CWFNetworkProfile *)self domainName];
+    displayedOperatorName = [(CWFNetworkProfile *)self displayedOperatorName];
+    isServiceProviderRoamingEnabled = [(CWFNetworkProfile *)self isServiceProviderRoamingEnabled];
     v15 = "no";
-    if (v14)
+    if (isServiceProviderRoamingEnabled)
     {
       v15 = "yes";
     }
 
-    [v3 appendFormat:@"hs20=[domain=%@, display=%@, sproam=%s], ", v12, v13, v15];
+    [string appendFormat:@"hs20=[domain=%@, display=%@, sproam=%s], ", domainName, displayedOperatorName, v15];
   }
 
   if ([(CWFNetworkProfile *)self isAddReasonCarrierBundle])
   {
-    v16 = [(CWFNetworkProfile *)self payloadIdentifier];
-    v17 = [v16 redactedForWiFi];
-    [v3 appendFormat:@"carrierPayloadIdentifier=%@, ", v17];
+    payloadIdentifier = [(CWFNetworkProfile *)self payloadIdentifier];
+    redactedForWiFi3 = [payloadIdentifier redactedForWiFi];
+    [string appendFormat:@"carrierPayloadIdentifier=%@, ", redactedForWiFi3];
   }
 
   if ([(CWFNetworkProfile *)self isAutoJoinDisabled])
   {
-    [v3 appendString:{@"disabled=yes, "}];
+    [string appendString:{@"disabled=yes, "}];
   }
 
   if ([(CWFNetworkProfile *)self hiddenState]== 1)
   {
-    [v3 appendString:{@"hidden=yes, "}];
+    [string appendString:{@"hidden=yes, "}];
   }
 
-  v18 = [(CWFNetworkProfile *)self __descriptionForCaptiveFlags];
-  v19 = [(CWFNetworkProfile *)self captiveWebsheetLoginDate];
-  v20 = sub_1E0BCC248(v19);
-  [v3 appendFormat:@"captive=[state=%@, login=%@], ", v18, v20];
+  __descriptionForCaptiveFlags = [(CWFNetworkProfile *)self __descriptionForCaptiveFlags];
+  captiveWebsheetLoginDate = [(CWFNetworkProfile *)self captiveWebsheetLoginDate];
+  v20 = sub_1E0BCC248(captiveWebsheetLoginDate);
+  [string appendFormat:@"captive=[state=%@, login=%@], ", __descriptionForCaptiveFlags, v20];
 
   v21 = sub_1E0BD3BE8([(CWFNetworkProfile *)self brokenBackhaulState]);
-  v22 = [(CWFNetworkProfile *)self brokenBackhaulStateUpdatedAt];
-  v23 = sub_1E0BCC248(v22);
-  [v3 appendFormat:@"bbh=[%@ (%@)], ", v21, v23];
+  brokenBackhaulStateUpdatedAt = [(CWFNetworkProfile *)self brokenBackhaulStateUpdatedAt];
+  v23 = sub_1E0BCC248(brokenBackhaulStateUpdatedAt);
+  [string appendFormat:@"bbh=[%@ (%@)], ", v21, v23];
 
   if ([(CWFNetworkProfile *)self isPersonalHotspot])
   {
-    [v3 appendString:{@"ph=yes, "}];
+    [string appendString:{@"ph=yes, "}];
   }
 
   if ([(CWFNetworkProfile *)self isCarPlay])
   {
-    [v3 appendString:{@"carplay=yes, "}];
+    [string appendString:{@"carplay=yes, "}];
   }
 
   if ([(CWFNetworkProfile *)self lowDataMode]== 1)
   {
-    [v3 appendString:{@"lowDataMode=on, "}];
+    [string appendString:{@"lowDataMode=on, "}];
   }
 
   if ([(CWFNetworkProfile *)self isStandalone6G])
   {
-    [v3 appendString:{@"6g-split=yes, "}];
+    [string appendString:{@"6g-split=yes, "}];
   }
 
   if ([(CWFNetworkProfile *)self disable6EMode]== 2)
   {
-    v24 = [(CWFNetworkProfile *)self disable6EModeTimestamp];
-    v25 = sub_1E0BCC248(v24);
-    [v3 appendFormat:@"6e-mode=[off (%@)], ", v25];
+    disable6EModeTimestamp = [(CWFNetworkProfile *)self disable6EModeTimestamp];
+    v25 = sub_1E0BCC248(disable6EModeTimestamp);
+    [string appendFormat:@"6e-mode=[off (%@)], ", v25];
   }
 
   if ([(CWFNetworkProfile *)self wasRecently6GHzOnlyOnAnyDevice])
   {
-    v26 = [(CWFNetworkProfile *)self was6GHzOnlyAt];
-    [v3 appendFormat:@"6g-only=[yes, (%@)], ", v26];
+    was6GHzOnlyAt = [(CWFNetworkProfile *)self was6GHzOnlyAt];
+    [string appendFormat:@"6g-only=[yes, (%@)], ", was6GHzOnlyAt];
   }
 
-  v27 = [(CWFNetworkProfile *)self lastJoinedAt];
+  lastJoinedAt = [(CWFNetworkProfile *)self lastJoinedAt];
 
-  if (v27)
+  if (lastJoinedAt)
   {
-    v28 = [(CWFNetworkProfile *)self lastJoinedAt];
-    v29 = sub_1E0BCC248(v28);
-    v30 = [(CWFNetworkProfile *)self wasMoreRecentlyJoinedByUser];
+    lastJoinedAt2 = [(CWFNetworkProfile *)self lastJoinedAt];
+    v29 = sub_1E0BCC248(lastJoinedAt2);
+    wasMoreRecentlyJoinedByUser = [(CWFNetworkProfile *)self wasMoreRecentlyJoinedByUser];
     v31 = "auto";
-    if (v30)
+    if (wasMoreRecentlyJoinedByUser)
     {
       v31 = "user";
     }
 
-    [v3 appendFormat:@"assoc=%@ (%s), ", v29, v31];
+    [string appendFormat:@"assoc=%@ (%s), ", v29, v31];
   }
 
-  v32 = [(CWFNetworkProfile *)self lastDisconnectTimestamp];
+  lastDisconnectTimestamp = [(CWFNetworkProfile *)self lastDisconnectTimestamp];
 
-  if (v32)
+  if (lastDisconnectTimestamp)
   {
-    v33 = [(CWFNetworkProfile *)self lastDisconnectTimestamp];
-    v34 = sub_1E0BCC248(v33);
-    [v3 appendFormat:@"disassoc=[%@ (%d)], ", v34, -[CWFNetworkProfile lastDisconnectReason](self, "lastDisconnectReason")];
+    lastDisconnectTimestamp2 = [(CWFNetworkProfile *)self lastDisconnectTimestamp];
+    v34 = sub_1E0BCC248(lastDisconnectTimestamp2);
+    [string appendFormat:@"disassoc=[%@ (%d)], ", v34, -[CWFNetworkProfile lastDisconnectReason](self, "lastDisconnectReason")];
   }
 
   if ([(CWFNetworkProfile *)self isPublicAirPlayNetwork])
   {
-    [v3 appendString:{@"publicAirPlayNetwork=yes, "}];
+    [string appendString:{@"publicAirPlayNetwork=yes, "}];
   }
 
-  v35 = [(CWFNetworkProfile *)self wasHiddenBefore];
+  wasHiddenBefore = [(CWFNetworkProfile *)self wasHiddenBefore];
 
-  if (v35)
+  if (wasHiddenBefore)
   {
-    v36 = [(CWFNetworkProfile *)self wasHiddenBefore];
-    v37 = sub_1E0BCC248(v36);
-    [v3 appendFormat:@"wasHiddenBefore=%@, ", v37];
+    wasHiddenBefore2 = [(CWFNetworkProfile *)self wasHiddenBefore];
+    v37 = sub_1E0BCC248(wasHiddenBefore2);
+    [string appendFormat:@"wasHiddenBefore=%@, ", v37];
   }
 
-  v38 = [(CWFNetworkProfile *)self addedAt];
+  addedAt = [(CWFNetworkProfile *)self addedAt];
 
-  if (v38)
+  if (addedAt)
   {
-    v39 = [(CWFNetworkProfile *)self addedAt];
-    v40 = sub_1E0BCC248(v39);
+    addedAt2 = [(CWFNetworkProfile *)self addedAt];
+    v40 = sub_1E0BCC248(addedAt2);
     v41 = sub_1E0BD3F78([(CWFNetworkProfile *)self addReason]);
-    v42 = [(CWFNetworkProfile *)self addedByVersion];
-    [v3 appendFormat:@"addedAt=[%@ (reason=%@, vers=%@)], ", v40, v41, v42];
+    addedByVersion = [(CWFNetworkProfile *)self addedByVersion];
+    [string appendFormat:@"addedAt=[%@ (reason=%@, vers=%@)], ", v40, v41, addedByVersion];
   }
 
-  v43 = [(CWFNetworkProfile *)self removedAt];
+  removedAt = [(CWFNetworkProfile *)self removedAt];
 
-  if (v43)
+  if (removedAt)
   {
-    v44 = [(CWFNetworkProfile *)self removedAt];
-    v45 = sub_1E0BCC248(v44);
-    v46 = [(CWFNetworkProfile *)self removedByVersion];
-    [v3 appendFormat:@"removedAt=[%@ (vers=%@)], ", v45, v46];
+    removedAt2 = [(CWFNetworkProfile *)self removedAt];
+    v45 = sub_1E0BCC248(removedAt2);
+    removedByVersion = [(CWFNetworkProfile *)self removedByVersion];
+    [string appendFormat:@"removedAt=[%@ (vers=%@)], ", v45, removedByVersion];
   }
 
-  v47 = [(CWFNetworkProfile *)self receivedFromDeviceAt];
+  receivedFromDeviceAt = [(CWFNetworkProfile *)self receivedFromDeviceAt];
 
-  if (v47)
+  if (receivedFromDeviceAt)
   {
-    v48 = [(CWFNetworkProfile *)self receivedFromDeviceAt];
-    v49 = sub_1E0BCC248(v48);
-    v50 = [(CWFNetworkProfile *)self receivedFromDeviceID];
-    v51 = [v50 redactedForWiFi];
-    v52 = [(CWFNetworkProfile *)self receivedFromDeviceName];
-    v53 = [v52 redactedForWiFi];
-    [v3 appendFormat:@"receivedFromDeviceAt=[%@ (id=%@, name=%@, flags=0x%llx)], ", v49, v51, v53, -[CWFNetworkProfile receivedFromDeviceFlags](self, "receivedFromDeviceFlags")];
+    receivedFromDeviceAt2 = [(CWFNetworkProfile *)self receivedFromDeviceAt];
+    v49 = sub_1E0BCC248(receivedFromDeviceAt2);
+    receivedFromDeviceID = [(CWFNetworkProfile *)self receivedFromDeviceID];
+    redactedForWiFi4 = [receivedFromDeviceID redactedForWiFi];
+    receivedFromDeviceName = [(CWFNetworkProfile *)self receivedFromDeviceName];
+    redactedForWiFi5 = [receivedFromDeviceName redactedForWiFi];
+    [string appendFormat:@"receivedFromDeviceAt=[%@ (id=%@, name=%@, flags=0x%llx)], ", v49, redactedForWiFi4, redactedForWiFi5, -[CWFNetworkProfile receivedFromDeviceFlags](self, "receivedFromDeviceFlags")];
   }
 
   if ([(CWFNetworkProfile *)self allowedBeforeFirstUnlock])
   {
-    [v3 appendString:{@"allowedBeforeFirstUnlock=yes, "}];
+    [string appendString:{@"allowedBeforeFirstUnlock=yes, "}];
   }
 
-  v54 = [(CWFNetworkProfile *)self networkOfInterestHomeStateUpdatedAt];
-  if (v54)
+  networkOfInterestHomeStateUpdatedAt = [(CWFNetworkProfile *)self networkOfInterestHomeStateUpdatedAt];
+  if (networkOfInterestHomeStateUpdatedAt)
   {
   }
 
   else
   {
-    v55 = [(CWFNetworkProfile *)self networkOfInterestWorkStateUpdatedAt];
+    networkOfInterestWorkStateUpdatedAt = [(CWFNetworkProfile *)self networkOfInterestWorkStateUpdatedAt];
 
-    if (!v55)
+    if (!networkOfInterestWorkStateUpdatedAt)
     {
       goto LABEL_48;
     }
   }
 
-  v56 = [(CWFNetworkProfile *)self __descriptionForNOIHomeState];
-  v57 = [(CWFNetworkProfile *)self __descriptionForNOIWorkState];
-  [v3 appendFormat:@"NOI=[%@ %@], ", v56, v57];
+  __descriptionForNOIHomeState = [(CWFNetworkProfile *)self __descriptionForNOIHomeState];
+  __descriptionForNOIWorkState = [(CWFNetworkProfile *)self __descriptionForNOIWorkState];
+  [string appendFormat:@"NOI=[%@ %@], ", __descriptionForNOIHomeState, __descriptionForNOIWorkState];
 
 LABEL_48:
-  if ([v3 hasSuffix:{@", "}])
+  if ([string hasSuffix:{@", "}])
   {
-    [v3 deleteCharactersInRange:{objc_msgSend(v3, "length") - 2, 2}];
+    [string deleteCharactersInRange:{objc_msgSend(string, "length") - 2, 2}];
   }
 
-  return v3;
+  return string;
 }
 
 - (unint64_t)shortSSID
 {
   if (![(CWFNetworkProfile *)self useCachedShortSSID])
   {
-    v3 = [(CWFNetworkProfile *)self SSID];
-    if (v3)
+    sSID = [(CWFNetworkProfile *)self SSID];
+    if (sSID)
     {
       Apple80211CalculateShortSSIDCopy();
     }
@@ -941,20 +941,20 @@ LABEL_48:
 
 - (NSString)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  v4 = [(CWFNetworkProfile *)self __basicDescription];
-  [v3 appendString:v4];
+  string = [MEMORY[0x1E696AD60] string];
+  __basicDescription = [(CWFNetworkProfile *)self __basicDescription];
+  [string appendString:__basicDescription];
 
-  [v3 appendString:{@", "}];
+  [string appendString:{@", "}];
   v5 = [(CWFNetworkProfile *)self __descriptionForBSSListWithLimit:3];
-  [v3 appendString:v5];
+  [string appendString:v5];
 
-  if ([v3 hasSuffix:{@", "}])
+  if ([string hasSuffix:{@", "}])
   {
-    [v3 deleteCharactersInRange:{objc_msgSend(v3, "length") - 2, 2}];
+    [string deleteCharactersInRange:{objc_msgSend(string, "length") - 2, 2}];
   }
 
-  return v3;
+  return string;
 }
 
 - (NSDictionary)OSSpecificAttributes
@@ -967,34 +967,34 @@ LABEL_48:
 
 - (id)coreWiFiSpecificAttributes
 {
-  v3 = [(CWFNetworkProfile *)self __coreWiFiSpecificProperties];
-  v4 = [MEMORY[0x1E695DFD8] setWithArray:v3];
+  __coreWiFiSpecificProperties = [(CWFNetworkProfile *)self __coreWiFiSpecificProperties];
+  v4 = [MEMORY[0x1E695DFD8] setWithArray:__coreWiFiSpecificProperties];
   v5 = [MEMORY[0x1E695DFD8] set];
   v6 = [(CWFNetworkProfile *)self __filteredNetworkProfileWithProperties:v4 OSSpecificKeys:v5];
 
-  v7 = [v6 externalForm];
+  externalForm = [v6 externalForm];
 
-  return v7;
+  return externalForm;
 }
 
 - (id)externalForm
 {
   v50 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v4 = [(NSMutableDictionary *)self->_internal allKeys];
-  v5 = [v4 countByEnumeratingWithState:&v43 objects:v49 count:16];
+  allKeys = [(NSMutableDictionary *)self->_internal allKeys];
+  v5 = [allKeys countByEnumeratingWithState:&v43 objects:v49 count:16];
   if (v5)
   {
     v6 = v5;
     v7 = MEMORY[0x1E695E110];
     v8 = MEMORY[0x1E695E118];
     v38 = *v44;
-    v34 = v4;
-    v35 = v3;
+    v34 = allKeys;
+    v35 = dictionary;
     do
     {
       v9 = 0;
@@ -1002,15 +1002,15 @@ LABEL_48:
       {
         if (*v44 != v38)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v43 + 1) + 8 * v9);
         v11 = -[CWFNetworkProfile __keyForProperty:](self, "__keyForProperty:", [v10 integerValue]);
-        v12 = [v10 integerValue];
+        integerValue = [v10 integerValue];
         if (v11)
         {
-          switch(v12)
+          switch(integerValue)
           {
             case 2:
               v13 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:v10];
@@ -1029,11 +1029,11 @@ LABEL_48:
             case 40:
             case 41:
               v14 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:v10];
-              v15 = [v14 integerValue];
+              integerValue2 = [v14 integerValue];
 
-              if (v15)
+              if (integerValue2)
               {
-                if (v15 == 1)
+                if (integerValue2 == 1)
                 {
                   v16 = v8;
                 }
@@ -1043,7 +1043,7 @@ LABEL_48:
                   v16 = v7;
                 }
 
-                [v3 setObject:v16 forKeyedSubscript:v11];
+                [dictionary setObject:v16 forKeyedSubscript:v11];
               }
 
               goto LABEL_15;
@@ -1147,7 +1147,7 @@ LABEL_48:
               if (v23)
               {
                 v24 = v23;
-                v25 = 0;
+                array = 0;
                 v26 = *v40;
                 do
                 {
@@ -1158,15 +1158,15 @@ LABEL_48:
                       objc_enumerationMutation(v22);
                     }
 
-                    v28 = [*(*(&v39 + 1) + 8 * i) externalForm];
-                    if (v28)
+                    externalForm = [*(*(&v39 + 1) + 8 * i) externalForm];
+                    if (externalForm)
                     {
-                      if (!v25)
+                      if (!array)
                       {
-                        v25 = [MEMORY[0x1E695DF70] array];
+                        array = [MEMORY[0x1E695DF70] array];
                       }
 
-                      [v25 addObject:v28];
+                      [array addObject:externalForm];
                     }
                   }
 
@@ -1178,14 +1178,14 @@ LABEL_48:
 
               else
               {
-                v25 = 0;
+                array = 0;
               }
 
-              v29 = [v25 copy];
-              v3 = v35;
+              v29 = [array copy];
+              dictionary = v35;
               [v35 setObject:v29 forKeyedSubscript:v11];
 
-              v4 = v34;
+              allKeys = v34;
               v7 = MEMORY[0x1E695E110];
               v8 = MEMORY[0x1E695E118];
               goto LABEL_15;
@@ -1199,13 +1199,13 @@ LABEL_48:
               v17 = sub_1E0BD3BE8([v13 integerValue]);
 LABEL_31:
               v18 = v17;
-              [v3 setObject:v17 forKeyedSubscript:v11];
+              [dictionary setObject:v17 forKeyedSubscript:v11];
 
               break;
             default:
               v13 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:v10];
 LABEL_13:
-              [v3 setObject:v13 forKeyedSubscript:v11];
+              [dictionary setObject:v13 forKeyedSubscript:v11];
               break;
           }
         }
@@ -1216,14 +1216,14 @@ LABEL_15:
       }
 
       while (v9 != v6);
-      v30 = [v4 countByEnumeratingWithState:&v43 objects:v49 count:16];
+      v30 = [allKeys countByEnumeratingWithState:&v43 objects:v49 count:16];
       v6 = v30;
     }
 
     while (v30);
   }
 
-  v31 = [v3 copy];
+  v31 = [dictionary copy];
   v32 = *MEMORY[0x1E69E9840];
 
   return v31;
@@ -1231,13 +1231,13 @@ LABEL_15:
 
 - (id)__descriptionForCaptiveFlags
 {
-  v3 = [(CWFNetworkProfile *)self bypassCaptive];
+  bypassCaptive = [(CWFNetworkProfile *)self bypassCaptive];
   if (![(CWFNetworkProfile *)self isCaptiveStateDetermined])
   {
     v4 = @"?";
     v5 = @"? (bypass)";
 LABEL_5:
-    if (v3)
+    if (bypassCaptive)
     {
       v6 = v5;
     }
@@ -1257,20 +1257,20 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v7 = [(CWFNetworkProfile *)self wasCaptive];
+  wasCaptive = [(CWFNetworkProfile *)self wasCaptive];
   v8 = @"no";
-  if (v3)
+  if (bypassCaptive)
   {
     v8 = @"no (bypass)";
   }
 
   v9 = @"was (bypass)";
-  if (!v3)
+  if (!bypassCaptive)
   {
     v9 = @"was";
   }
 
-  if (v7)
+  if (wasCaptive)
   {
     v6 = v9;
   }
@@ -1292,7 +1292,7 @@ LABEL_15:
     return 0;
   }
 
-  v3 = [(CWFNetworkProfile *)self captiveProfile];
+  captiveProfile = [(CWFNetworkProfile *)self captiveProfile];
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -1309,15 +1309,15 @@ LABEL_15:
   _Block_object_dispose(&v11, 8);
   if (v4)
   {
-    v6 = [v3 objectForKeyedSubscript:*v4];
-    v7 = [v6 BOOLValue];
+    v6 = [captiveProfile objectForKeyedSubscript:*v4];
+    bOOLValue = [v6 BOOLValue];
 
-    return v7;
+    return bOOLValue;
   }
 
-  v9 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"CFStringRef getkCNSCaptiveBypassProperty(void)"];
-  [v9 handleFailureInFunction:v10 file:@"CWFNetworkProfile.m" lineNumber:40 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v10 file:@"CWFNetworkProfile.m" lineNumber:40 description:{@"%s", dlerror()}];
 
   __break(1u);
   return result;
@@ -1326,39 +1326,39 @@ LABEL_15:
 - (int64_t)privateMACAddressModeUserSetting
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBB9F8];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (int64_t)privateMACAddressModeConfigurationProfileSetting
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBBA28];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (int64_t)privateMACAddressEvaluationState
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBBA40];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (unint64_t)effectiveSupportedSecurityTypes
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = [(CWFNetworkProfile *)self supportedSecurityTypes];
-  if (v3 == 16)
+  supportedSecurityTypes = [(CWFNetworkProfile *)self supportedSecurityTypes];
+  if (supportedSecurityTypes == 16)
   {
     v4 = 80;
   }
 
   else
   {
-    v4 = v3;
+    v4 = supportedSecurityTypes;
   }
 
   if (v4 == 512)
@@ -1371,8 +1371,8 @@ LABEL_15:
     v5 = v4;
   }
 
-  v6 = [(CWFNetworkProfile *)self transitionDisabledFlags];
-  if (v5 & 0x50) != 0 && (v6)
+  transitionDisabledFlags = [(CWFNetworkProfile *)self transitionDisabledFlags];
+  if (v5 & 0x50) != 0 && (transitionDisabledFlags)
   {
     v8 = CWFGetOSLog();
     if (v8)
@@ -1401,72 +1401,72 @@ LABEL_15:
 - (int)transitionDisabledFlags
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBBCF8];
-  v3 = [v2 unsignedIntValue];
+  unsignedIntValue = [v2 unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
 - (int64_t)WEPSubtype
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBBB48];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (int64_t)WAPISubtype
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBBB60];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (id)__descriptionForPrivateMAC
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  v4 = [(CWFNetworkProfile *)self cachedPrivateMACAddress];
-  v5 = [v4 redactedForWiFi];
-  v6 = [(CWFNetworkProfile *)self cachedPrivateMACAddressUpdatedAt];
-  v7 = sub_1E0BCC248(v6);
-  [v3 appendFormat:@"%@ (%@), ", v5, v7];
+  string = [MEMORY[0x1E696AD60] string];
+  cachedPrivateMACAddress = [(CWFNetworkProfile *)self cachedPrivateMACAddress];
+  redactedForWiFi = [cachedPrivateMACAddress redactedForWiFi];
+  cachedPrivateMACAddressUpdatedAt = [(CWFNetworkProfile *)self cachedPrivateMACAddressUpdatedAt];
+  v7 = sub_1E0BCC248(cachedPrivateMACAddressUpdatedAt);
+  [string appendFormat:@"%@ (%@), ", redactedForWiFi, v7];
 
   if ([(CWFNetworkProfile *)self privateMACAddressModeUserSetting])
   {
     v8 = sub_1E0BEF2F4([(CWFNetworkProfile *)self privateMACAddressModeUserSetting]);
-    v9 = [(CWFNetworkProfile *)self privateMACAddressModeUserSettingUpdatedAt];
-    v10 = sub_1E0BCC248(v9);
-    [v3 appendFormat:@"user=%@ (%@), ", v8, v10];
+    privateMACAddressModeUserSettingUpdatedAt = [(CWFNetworkProfile *)self privateMACAddressModeUserSettingUpdatedAt];
+    v10 = sub_1E0BCC248(privateMACAddressModeUserSettingUpdatedAt);
+    [string appendFormat:@"user=%@ (%@), ", v8, v10];
   }
 
   if ([(CWFNetworkProfile *)self privateMACAddressEvaluationState])
   {
     v11 = sub_1E0BEF284([(CWFNetworkProfile *)self privateMACAddressEvaluationState]);
-    v12 = [(CWFNetworkProfile *)self privateMACAddressEvaluatedAt];
-    v13 = sub_1E0BCC248(v12);
-    [v3 appendFormat:@"eval=%@ (%@), ", v11, v13];
+    privateMACAddressEvaluatedAt = [(CWFNetworkProfile *)self privateMACAddressEvaluatedAt];
+    v13 = sub_1E0BCC248(privateMACAddressEvaluatedAt);
+    [string appendFormat:@"eval=%@ (%@), ", v11, v13];
   }
 
   if ([(CWFNetworkProfile *)self privateMACAddressModeConfigurationProfileSetting])
   {
     v14 = sub_1E0BEF2F4([(CWFNetworkProfile *)self privateMACAddressModeConfigurationProfileSetting]);
-    [v3 appendFormat:@"prof=%@, ", v14];
+    [string appendFormat:@"prof=%@, ", v14];
   }
 
-  v15 = [(CWFNetworkProfile *)self cachedNetworkID];
+  cachedNetworkID = [(CWFNetworkProfile *)self cachedNetworkID];
 
-  if (v15)
+  if (cachedNetworkID)
   {
-    v16 = [(CWFNetworkProfile *)self cachedNetworkID];
-    [v3 appendFormat:@"netID=%@, ", v16];
+    cachedNetworkID2 = [(CWFNetworkProfile *)self cachedNetworkID];
+    [string appendFormat:@"netID=%@, ", cachedNetworkID2];
   }
 
-  if ([v3 hasSuffix:{@", "}])
+  if ([string hasSuffix:{@", "}])
   {
-    [v3 deleteCharactersInRange:{objc_msgSend(v3, "length") - 2, 2}];
+    [string deleteCharactersInRange:{objc_msgSend(string, "length") - 2, 2}];
   }
 
-  return v3;
+  return string;
 }
 
 - (BOOL)wasCaptive
@@ -1476,7 +1476,7 @@ LABEL_15:
     return 0;
   }
 
-  v3 = [(CWFNetworkProfile *)self captiveProfile];
+  captiveProfile = [(CWFNetworkProfile *)self captiveProfile];
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -1493,15 +1493,15 @@ LABEL_15:
   _Block_object_dispose(&v11, 8);
   if (v4)
   {
-    v6 = [v3 objectForKeyedSubscript:*v4];
-    v7 = [v6 BOOLValue];
+    v6 = [captiveProfile objectForKeyedSubscript:*v4];
+    bOOLValue = [v6 BOOLValue];
 
-    return v7;
+    return bOOLValue;
   }
 
-  v9 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"CFStringRef getkCNSNetworkWasCaptiveProperty(void)"];
-  [v9 handleFailureInFunction:v10 file:@"CWFNetworkProfile.m" lineNumber:39 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v10 file:@"CWFNetworkProfile.m" lineNumber:39 description:{@"%s", dlerror()}];
 
   __break(1u);
   return result;
@@ -1510,16 +1510,16 @@ LABEL_15:
 - (BOOL)isPasswordSharingDisabled
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBBBD8];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSDate)captiveWebsheetLoginDate
 {
   if (sub_1E0BCE0D8())
   {
-    v3 = [(CWFNetworkProfile *)self captiveProfile];
+    captiveProfile = [(CWFNetworkProfile *)self captiveProfile];
     v10 = 0;
     v11 = &v10;
     v12 = 0x2020000000;
@@ -1536,15 +1536,15 @@ LABEL_15:
     _Block_object_dispose(&v10, 8);
     if (!v4)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"CFStringRef getkCNSCaptiveNetworkWebSheetLoginDateProperty(void)"];
-      [v8 handleFailureInFunction:v9 file:@"CWFNetworkProfile.m" lineNumber:41 description:{@"%s", dlerror()}];
+      [currentHandler handleFailureInFunction:v9 file:@"CWFNetworkProfile.m" lineNumber:41 description:{@"%s", dlerror()}];
 
       __break(1u);
       return result;
     }
 
-    v6 = [v3 objectForKeyedSubscript:*v4];
+    v6 = [captiveProfile objectForKeyedSubscript:*v4];
   }
 
   else
@@ -1558,17 +1558,17 @@ LABEL_15:
 - (int64_t)brokenBackhaulState
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBBB18];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (int64_t)lowDataMode
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBBD58];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (BOOL)isServiceProviderRoamingEnabled
@@ -1577,72 +1577,72 @@ LABEL_15:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (unint64_t)networkGroupPriority
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBBEC0];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (BOOL)isDNSHeuristicsFilteredNetwork
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBC058];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)allowedBeforeFirstUnlock
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBBE60];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isPayloadIdentifierTelemetryApproved
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBBC08];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (int64_t)networkOfInterestWorkState
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBBAD0];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (int64_t)networkOfInterestHomeState
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBBAA0];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (BOOL)wasMoreRecentlyJoinedByUser
 {
-  v3 = [(CWFNetworkProfile *)self lastJoinedByUserAt];
-  [v3 timeIntervalSinceReferenceDate];
+  lastJoinedByUserAt = [(CWFNetworkProfile *)self lastJoinedByUserAt];
+  [lastJoinedByUserAt timeIntervalSinceReferenceDate];
   v5 = v4;
-  v6 = [(CWFNetworkProfile *)self lastJoinedBySystemAt];
-  [v6 timeIntervalSinceReferenceDate];
+  lastJoinedBySystemAt = [(CWFNetworkProfile *)self lastJoinedBySystemAt];
+  [lastJoinedBySystemAt timeIntervalSinceReferenceDate];
   v8 = v5 > v7;
 
   return v8;
@@ -1650,8 +1650,8 @@ LABEL_15:
 
 - (BOOL)isProfileBased
 {
-  v2 = [(CWFNetworkProfile *)self payloadUUID];
-  v3 = v2 != 0;
+  payloadUUID = [(CWFNetworkProfile *)self payloadUUID];
+  v3 = payloadUUID != 0;
 
   return v3;
 }
@@ -1660,11 +1660,11 @@ LABEL_15:
 {
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   v4 = v3;
-  v5 = [(CWFNetworkProfile *)self lastJoinedAt];
-  [v5 timeIntervalSinceReferenceDate];
+  lastJoinedAt = [(CWFNetworkProfile *)self lastJoinedAt];
+  [lastJoinedAt timeIntervalSinceReferenceDate];
   v7 = v6;
-  v8 = [(CWFNetworkProfile *)self lastDisconnectTimestamp];
-  [v8 timeIntervalSinceReferenceDate];
+  lastDisconnectTimestamp = [(CWFNetworkProfile *)self lastDisconnectTimestamp];
+  [lastDisconnectTimestamp timeIntervalSinceReferenceDate];
   if (v7 <= v4 && v9 <= v4)
   {
     v11 = v9;
@@ -1675,9 +1675,9 @@ LABEL_15:
 
     else
     {
-      v12 = v8;
+      v12 = lastDisconnectTimestamp;
 
-      v5 = v12;
+      lastJoinedAt = v12;
     }
   }
 
@@ -1686,10 +1686,10 @@ LABEL_15:
     v11 = 0.0;
   }
 
-  v13 = [(CWFNetworkProfile *)self lastJoinedBySystemAtWeek];
-  if (v4 >= (604800 * v13))
+  lastJoinedBySystemAtWeek = [(CWFNetworkProfile *)self lastJoinedBySystemAtWeek];
+  if (v4 >= (604800 * lastJoinedBySystemAtWeek))
   {
-    v14 = (604800 * v13);
+    v14 = (604800 * lastJoinedBySystemAtWeek);
   }
 
   else
@@ -1708,7 +1708,7 @@ LABEL_15:
 
     else
     {
-      v18 = v5;
+      v18 = lastJoinedAt;
     }
 
     v17 = v18;
@@ -1727,37 +1727,37 @@ LABEL_15:
 - (unint64_t)lastJoinedBySystemAtWeek
 {
   v3 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBB968];
-  v4 = [v3 unsignedIntegerValue];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  v5 = [(CWFNetworkProfile *)self lastJoinedBySystemAt];
-  [v5 timeIntervalSinceReferenceDate];
+  lastJoinedBySystemAt = [(CWFNetworkProfile *)self lastJoinedBySystemAt];
+  [lastJoinedBySystemAt timeIntervalSinceReferenceDate];
   v7 = vcvtmd_u64_f64(v6 / 86400.0 / 7.0);
 
-  if (v4 <= v7)
+  if (unsignedIntegerValue <= v7)
   {
     return v7;
   }
 
   else
   {
-    return v4;
+    return unsignedIntegerValue;
   }
 }
 
 - (unint64_t)strongestSupportedSecurityType
 {
-  v3 = [(CWFNetworkProfile *)self supportedSecurityTypes];
-  v4 = [(CWFNetworkProfile *)self WAPISubtype];
-  v5 = [(CWFNetworkProfile *)self WEPSubtype];
+  supportedSecurityTypes = [(CWFNetworkProfile *)self supportedSecurityTypes];
+  wAPISubtype = [(CWFNetworkProfile *)self WAPISubtype];
+  wEPSubtype = [(CWFNetworkProfile *)self WEPSubtype];
 
-  return CWFStrongestSecurityType(v3, v4, v5);
+  return CWFStrongestSecurityType(supportedSecurityTypes, wAPISubtype, wEPSubtype);
 }
 
 - (id)filteredNearbySyncableNetworkProfile
 {
   v3 = MEMORY[0x1E695DFD8];
-  v4 = [(CWFNetworkProfile *)self __nearbySyncSpecificProperties];
-  v5 = [v3 setWithArray:v4];
+  __nearbySyncSpecificProperties = [(CWFNetworkProfile *)self __nearbySyncSpecificProperties];
+  v5 = [v3 setWithArray:__nearbySyncSpecificProperties];
   v6 = [(CWFNetworkProfile *)self filteredNetworkProfileWithProperties:v5];
 
   return v6;
@@ -1772,9 +1772,9 @@ LABEL_15:
     {
       if (![(CWFNetworkProfile *)self wasCaptive]&& ![(CWFNetworkProfile *)self isCaptive]&& ![(CWFNetworkProfile *)self bypassCaptive])
       {
-        v3 = [(CWFNetworkProfile *)self captiveWebsheetLoginDate];
+        captiveWebsheetLoginDate = [(CWFNetworkProfile *)self captiveWebsheetLoginDate];
 
-        if (!v3)
+        if (!captiveWebsheetLoginDate)
         {
           return 1;
         }
@@ -1787,11 +1787,11 @@ LABEL_15:
 
 - (BOOL)isEAP
 {
-  v3 = [(CWFNetworkProfile *)self supportedSecurityTypes];
-  v4 = v3;
-  if ((v3 & 1) == 0)
+  supportedSecurityTypes = [(CWFNetworkProfile *)self supportedSecurityTypes];
+  v4 = supportedSecurityTypes;
+  if ((supportedSecurityTypes & 1) == 0)
   {
-    if ((v3 & 8) != 0)
+    if ((supportedSecurityTypes & 8) != 0)
     {
       return 1;
     }
@@ -1799,9 +1799,9 @@ LABEL_15:
     return (v4 & 0x20) != 0 || v4 < 0;
   }
 
-  v6 = [(CWFNetworkProfile *)self WEPSubtype];
+  wEPSubtype = [(CWFNetworkProfile *)self WEPSubtype];
   result = 1;
-  if ((v4 & 8) == 0 && v6 != 5)
+  if ((v4 & 8) == 0 && wEPSubtype != 5)
   {
     return (v4 & 0x20) != 0 || v4 < 0;
   }
@@ -1811,8 +1811,8 @@ LABEL_15:
 
 - (BOOL)isAppBased
 {
-  v2 = [(CWFNetworkProfile *)self bundleID];
-  v3 = v2 != 0;
+  bundleID = [(CWFNetworkProfile *)self bundleID];
+  v3 = bundleID != 0;
 
   return v3;
 }
@@ -1824,19 +1824,19 @@ LABEL_15:
     return 0;
   }
 
-  v5 = [(CWFNetworkProfile *)self lastJoinedByUserAt];
-  v3 = v5 == 0;
+  lastJoinedByUserAt = [(CWFNetworkProfile *)self lastJoinedByUserAt];
+  v3 = lastJoinedByUserAt == 0;
 
   return v3;
 }
 
 - (BOOL)isPSK
 {
-  v3 = [(CWFNetworkProfile *)self supportedSecurityTypes];
-  v4 = v3;
-  if ((v3 & 1) == 0)
+  supportedSecurityTypes = [(CWFNetworkProfile *)self supportedSecurityTypes];
+  v4 = supportedSecurityTypes;
+  if ((supportedSecurityTypes & 1) == 0)
   {
-    if ((v3 & 2) != 0)
+    if ((supportedSecurityTypes & 2) != 0)
     {
       return 1;
     }
@@ -1844,9 +1844,9 @@ LABEL_15:
     return (v4 & 0x14) != 0 || (v4 & 0x40) != 0;
   }
 
-  v6 = [(CWFNetworkProfile *)self WEPSubtype];
+  wEPSubtype = [(CWFNetworkProfile *)self WEPSubtype];
   result = 1;
-  if ((v4 & 2) == 0 && v6 == 5)
+  if ((v4 & 2) == 0 && wEPSubtype == 5)
   {
     return (v4 & 0x14) != 0 || (v4 & 0x40) != 0;
   }
@@ -1856,20 +1856,20 @@ LABEL_15:
 
 - (id)JSONCompatibleKeyValueMap
 {
-  v3 = [(CWFNetworkProfile *)self externalForm];
-  v4 = [v3 mutableCopy];
+  externalForm = [(CWFNetworkProfile *)self externalForm];
+  v4 = [externalForm mutableCopy];
 
-  v5 = [(CWFNetworkProfile *)self networkName];
-  [v4 setObject:v5 forKeyedSubscript:@"NetworkName"];
+  networkName = [(CWFNetworkProfile *)self networkName];
+  [v4 setObject:networkName forKeyedSubscript:@"NetworkName"];
 
-  v6 = [(CWFNetworkProfile *)self removedAt];
-  [v4 setObject:v6 forKeyedSubscript:@"RemovedAt"];
+  removedAt = [(CWFNetworkProfile *)self removedAt];
+  [v4 setObject:removedAt forKeyedSubscript:@"RemovedAt"];
 
-  v7 = [(CWFNetworkProfile *)self removedByVersion];
-  [v4 setObject:v7 forKeyedSubscript:@"RemovedByVersion"];
+  removedByVersion = [(CWFNetworkProfile *)self removedByVersion];
+  [v4 setObject:removedByVersion forKeyedSubscript:@"RemovedByVersion"];
 
-  v8 = [(CWFNetworkProfile *)self addedByVersion];
-  [v4 setObject:v8 forKeyedSubscript:@"AddedByVersion"];
+  addedByVersion = [(CWFNetworkProfile *)self addedByVersion];
+  [v4 setObject:addedByVersion forKeyedSubscript:@"AddedByVersion"];
 
   if ([(CWFNetworkProfile *)self isSessionBased])
   {
@@ -1882,11 +1882,11 @@ LABEL_15:
   }
 
   [v4 setObject:v9 forKeyedSubscript:@"isSessionBased"];
-  v10 = [(CWFNetworkProfile *)self receivedFromDeviceAt];
-  [v4 setObject:v10 forKeyedSubscript:@"ReceivedFromDeviceAt"];
+  receivedFromDeviceAt = [(CWFNetworkProfile *)self receivedFromDeviceAt];
+  [v4 setObject:receivedFromDeviceAt forKeyedSubscript:@"ReceivedFromDeviceAt"];
 
-  v11 = [(CWFNetworkProfile *)self receivedFromDeviceID];
-  [v4 setObject:v11 forKeyedSubscript:@"ReceivedFromDeviceID"];
+  receivedFromDeviceID = [(CWFNetworkProfile *)self receivedFromDeviceID];
+  [v4 setObject:receivedFromDeviceID forKeyedSubscript:@"ReceivedFromDeviceID"];
 
   v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[CWFNetworkProfile receivedFromDeviceFlags](self, "receivedFromDeviceFlags")}];
   [v4 setObject:v12 forKeyedSubscript:@"ReceivedFromDeviceFlags"];
@@ -1905,39 +1905,39 @@ LABEL_15:
   return v14;
 }
 
-- (id)__filteredNetworkProfileWithProperties:(id)a3 OSSpecificKeys:(id)a4
+- (id)__filteredNetworkProfileWithProperties:(id)properties OSSpecificKeys:(id)keys
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  propertiesCopy = properties;
+  keysCopy = keys;
   v8 = objc_alloc_init(CWFNetworkProfile);
   v9 = [(NSMutableDictionary *)self->_internal mutableCopy];
-  if (v6)
+  if (propertiesCopy)
   {
-    v10 = [(CWFNetworkProfile *)self properties];
-    v11 = [v10 mutableCopy];
+    properties = [(CWFNetworkProfile *)self properties];
+    v11 = [properties mutableCopy];
 
-    [v11 minusSet:v6];
-    v12 = [v11 allObjects];
-    [v9 removeObjectsForKeys:v12];
+    [v11 minusSet:propertiesCopy];
+    allObjects = [v11 allObjects];
+    [v9 removeObjectsForKeys:allObjects];
   }
 
   [(CWFNetworkProfile *)v8 setInternal:v9];
-  v13 = [v6 containsObject:&unk_1F5BBB8C0];
-  if (v7 && v13)
+  v13 = [propertiesCopy containsObject:&unk_1F5BBB8C0];
+  if (keysCopy && v13)
   {
     v27 = v9;
     v28 = v8;
-    v29 = v6;
-    v14 = [MEMORY[0x1E695DF90] dictionary];
+    v29 = propertiesCopy;
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v15 = [(CWFNetworkProfile *)self OSSpecificAttributes];
-    v16 = [v15 allKeys];
+    oSSpecificAttributes = [(CWFNetworkProfile *)self OSSpecificAttributes];
+    allKeys = [oSSpecificAttributes allKeys];
 
-    v17 = [v16 countByEnumeratingWithState:&v30 objects:v34 count:16];
+    v17 = [allKeys countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (v17)
     {
       v18 = v17;
@@ -1948,29 +1948,29 @@ LABEL_15:
         {
           if (*v31 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(allKeys);
           }
 
           v21 = *(*(&v30 + 1) + 8 * i);
-          if ([v7 containsObject:v21])
+          if ([keysCopy containsObject:v21])
           {
-            v22 = [(CWFNetworkProfile *)self OSSpecificAttributes];
-            v23 = [v22 objectForKeyedSubscript:v21];
-            [v14 setObject:v23 forKeyedSubscript:v21];
+            oSSpecificAttributes2 = [(CWFNetworkProfile *)self OSSpecificAttributes];
+            v23 = [oSSpecificAttributes2 objectForKeyedSubscript:v21];
+            [dictionary setObject:v23 forKeyedSubscript:v21];
           }
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v30 objects:v34 count:16];
+        v18 = [allKeys countByEnumeratingWithState:&v30 objects:v34 count:16];
       }
 
       while (v18);
     }
 
-    v24 = [v14 copy];
+    v24 = [dictionary copy];
     v8 = v28;
     [(CWFNetworkProfile *)v28 setOSSpecificAttributes:v24];
 
-    v6 = v29;
+    propertiesCopy = v29;
     v9 = v27;
   }
 
@@ -1979,63 +1979,63 @@ LABEL_15:
   return v8;
 }
 
-- (int64_t)compareSupportedSecurityTypes:(id)a3
+- (int64_t)compareSupportedSecurityTypes:(id)types
 {
-  v4 = a3;
-  v5 = [(CWFNetworkProfile *)self weakestSupportedSecurityType];
-  v6 = [v4 weakestSupportedSecurityType];
-  v7 = [(CWFNetworkProfile *)self strongestSupportedSecurityType];
-  v8 = [v4 strongestSupportedSecurityType];
-  v9 = [(CWFNetworkProfile *)self WAPISubtype];
-  v10 = [v4 WAPISubtype];
-  v11 = [(CWFNetworkProfile *)self WEPSubtype];
-  v12 = [v4 WEPSubtype];
+  typesCopy = types;
+  weakestSupportedSecurityType = [(CWFNetworkProfile *)self weakestSupportedSecurityType];
+  weakestSupportedSecurityType2 = [typesCopy weakestSupportedSecurityType];
+  strongestSupportedSecurityType = [(CWFNetworkProfile *)self strongestSupportedSecurityType];
+  strongestSupportedSecurityType2 = [typesCopy strongestSupportedSecurityType];
+  wAPISubtype = [(CWFNetworkProfile *)self WAPISubtype];
+  wAPISubtype2 = [typesCopy WAPISubtype];
+  wEPSubtype = [(CWFNetworkProfile *)self WEPSubtype];
+  wEPSubtype2 = [typesCopy WEPSubtype];
 
-  if (v5 == v6)
+  if (weakestSupportedSecurityType == weakestSupportedSecurityType2)
   {
-    if (v7 == v8)
+    if (strongestSupportedSecurityType == strongestSupportedSecurityType2)
     {
       return 0;
     }
 
-    v14 = v7;
-    v15 = v11;
-    v16 = v9;
-    v17 = v8;
+    v14 = strongestSupportedSecurityType;
+    v15 = wEPSubtype;
+    v16 = wAPISubtype;
+    v17 = strongestSupportedSecurityType2;
   }
 
   else
   {
-    v14 = v5;
-    v15 = v11;
-    v16 = v9;
-    v17 = v6;
+    v14 = weakestSupportedSecurityType;
+    v15 = wEPSubtype;
+    v16 = wAPISubtype;
+    v17 = weakestSupportedSecurityType2;
   }
 
-  return CWFCompareSecurityType(v14, v15, v16, v17, v12, v10);
+  return CWFCompareSecurityType(v14, v15, v16, v17, wEPSubtype2, wAPISubtype2);
 }
 
-- (int64_t)compareUserPriority:(id)a3
+- (int64_t)compareUserPriority:(id)priority
 {
-  v4 = a3;
-  v5 = [(CWFNetworkProfile *)self userPreferredNetworkNames];
-  v6 = [v4 userPreferredNetworkNames];
-  v7 = [(CWFNetworkProfile *)self userPreferredPasspointDomains];
-  v8 = [v4 userPreferredPasspointDomains];
-  v9 = [(CWFNetworkProfile *)self domainName];
-  v10 = [v4 domainName];
-  v11 = [(CWFNetworkProfile *)self networkName];
-  v12 = [v4 networkName];
+  priorityCopy = priority;
+  userPreferredNetworkNames = [(CWFNetworkProfile *)self userPreferredNetworkNames];
+  userPreferredNetworkNames2 = [priorityCopy userPreferredNetworkNames];
+  userPreferredPasspointDomains = [(CWFNetworkProfile *)self userPreferredPasspointDomains];
+  userPreferredPasspointDomains2 = [priorityCopy userPreferredPasspointDomains];
+  domainName = [(CWFNetworkProfile *)self domainName];
+  domainName2 = [priorityCopy domainName];
+  networkName = [(CWFNetworkProfile *)self networkName];
+  networkName2 = [priorityCopy networkName];
 
-  v26 = v9;
-  v27 = v8;
-  v13 = [v8 objectForKeyedSubscript:v9];
-  v28 = v7;
-  v14 = [v7 objectForKeyedSubscript:v10];
-  v29 = v6;
-  v15 = [v6 objectForKeyedSubscript:v11];
-  v30 = v5;
-  v16 = [v5 objectForKeyedSubscript:v12];
+  v26 = domainName;
+  v27 = userPreferredPasspointDomains2;
+  v13 = [userPreferredPasspointDomains2 objectForKeyedSubscript:domainName];
+  v28 = userPreferredPasspointDomains;
+  v14 = [userPreferredPasspointDomains objectForKeyedSubscript:domainName2];
+  v29 = userPreferredNetworkNames2;
+  v15 = [userPreferredNetworkNames2 objectForKeyedSubscript:networkName];
+  v30 = userPreferredNetworkNames;
+  v16 = [userPreferredNetworkNames objectForKeyedSubscript:networkName2];
   if (v15 && v13)
   {
     v17 = [v15 laterDate:v13];
@@ -2109,10 +2109,10 @@ LABEL_15:
   return v23;
 }
 
-- (id)matchingKnownBSS:(id)a3
+- (id)matchingKnownBSS:(id)s
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sCopy = s;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -2132,17 +2132,17 @@ LABEL_15:
         }
 
         v8 = *(*(&v19 + 1) + 8 * i);
-        v9 = [v8 BSSID];
-        if (v9)
+        bSSID = [v8 BSSID];
+        if (bSSID)
         {
-          v10 = v9;
-          v11 = [v4 BSSID];
-          if (v11)
+          v10 = bSSID;
+          bSSID2 = [sCopy BSSID];
+          if (bSSID2)
           {
-            v12 = v11;
-            v13 = [v8 BSSID];
-            v14 = [v4 BSSID];
-            v15 = [v13 isEqual:v14];
+            v12 = bSSID2;
+            bSSID3 = [v8 BSSID];
+            bSSID4 = [sCopy BSSID];
+            v15 = [bSSID3 isEqual:bSSID4];
 
             if (v15)
             {
@@ -2170,11 +2170,11 @@ LABEL_13:
   return v5;
 }
 
-- (id)__keyForProperty:(int64_t)a3
+- (id)__keyForProperty:(int64_t)property
 {
   v4 = 0;
   v5 = CWFNetworkProfilePropertySSIDKey;
-  switch(a3)
+  switch(property)
   {
     case 1:
       goto LABEL_104;
@@ -2493,539 +2493,539 @@ LABEL_104:
   return v4;
 }
 
-- (int64_t)__propertyForKey:(id)a3
+- (int64_t)__propertyForKey:(id)key
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SSID"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"SSID"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SupportedSecurityTypes"])
+  else if ([keyCopy isEqualToString:@"SupportedSecurityTypes"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"WEPSubtype"])
+  else if ([keyCopy isEqualToString:@"WEPSubtype"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"WAPISubtype"])
+  else if ([keyCopy isEqualToString:@"WAPISubtype"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"CaptiveProfile"])
+  else if ([keyCopy isEqualToString:@"CaptiveProfile"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"Hidden"])
+  else if ([keyCopy isEqualToString:@"Hidden"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"AutoJoinDisabled"])
+  else if ([keyCopy isEqualToString:@"AutoJoinDisabled"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"PasswordSharingDisabled"])
+  else if ([keyCopy isEqualToString:@"PasswordSharingDisabled"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"PayloadIdentifierTelemetryApproved"])
+  else if ([keyCopy isEqualToString:@"PayloadIdentifierTelemetryApproved"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"PayloadIdentifier"])
+  else if ([keyCopy isEqualToString:@"PayloadIdentifier"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"PayloadUUID"])
+  else if ([keyCopy isEqualToString:@"PayloadUUID"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"BundleID"])
+  else if ([keyCopy isEqualToString:@"BundleID"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"AddReason"])
+  else if ([keyCopy isEqualToString:@"AddReason"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"AddedAt"])
+  else if ([keyCopy isEqualToString:@"AddedAt"])
   {
     v4 = 14;
   }
 
   else
   {
-    if ([v3 isEqualToString:@"JoinedByUserAt"])
+    if ([keyCopy isEqualToString:@"JoinedByUserAt"])
     {
       goto LABEL_30;
     }
 
-    if ([v3 isEqualToString:@"JoinedBySystemAt"])
+    if ([keyCopy isEqualToString:@"JoinedBySystemAt"])
     {
       v4 = 16;
       goto LABEL_33;
     }
 
-    if ([v3 isEqualToString:@"JoinedByUserAt"])
+    if ([keyCopy isEqualToString:@"JoinedByUserAt"])
     {
 LABEL_30:
       v4 = 15;
     }
 
-    else if ([v3 isEqualToString:@"PersonalHotspot"])
+    else if ([keyCopy isEqualToString:@"PersonalHotspot"])
     {
       v4 = 17;
     }
 
-    else if ([v3 isEqualToString:@"SystemMode"])
+    else if ([keyCopy isEqualToString:@"SystemMode"])
     {
       v4 = 18;
     }
 
-    else if ([v3 isEqualToString:@"EAPProfile"])
+    else if ([keyCopy isEqualToString:@"EAPProfile"])
     {
       v4 = 20;
     }
 
-    else if ([v3 isEqualToString:@"PasspointDomain"])
+    else if ([keyCopy isEqualToString:@"PasspointDomain"])
     {
       v4 = 21;
     }
 
-    else if ([v3 isEqualToString:@"PasspointNAIRealmList"])
+    else if ([keyCopy isEqualToString:@"PasspointNAIRealmList"])
     {
       v4 = 22;
     }
 
-    else if ([v3 isEqualToString:@"PasspointRCList"])
+    else if ([keyCopy isEqualToString:@"PasspointRCList"])
     {
       v4 = 23;
     }
 
-    else if ([v3 isEqualToString:@"PasspointCellularNetworkInfo"])
+    else if ([keyCopy isEqualToString:@"PasspointCellularNetworkInfo"])
     {
       v4 = 24;
     }
 
-    else if ([v3 isEqualToString:@"PasspointSPRoamingEnabled"])
+    else if ([keyCopy isEqualToString:@"PasspointSPRoamingEnabled"])
     {
       v4 = 25;
     }
 
-    else if ([v3 isEqualToString:@"PasspointDisplayName"])
+    else if ([keyCopy isEqualToString:@"PasspointDisplayName"])
     {
       v4 = 26;
     }
 
-    else if ([v3 isEqualToString:@"LowDataMode"])
+    else if ([keyCopy isEqualToString:@"LowDataMode"])
     {
       v4 = 27;
     }
 
-    else if ([v3 isEqualToString:@"__OSSpecific__"])
+    else if ([keyCopy isEqualToString:@"__OSSpecific__"])
     {
       v4 = 28;
     }
 
-    else if ([v3 isEqualToString:@"allowedBeforeFirstUnlock"])
+    else if ([keyCopy isEqualToString:@"allowedBeforeFirstUnlock"])
     {
       v4 = 105;
     }
 
-    else if ([v3 isEqualToString:@"UpdatedAt"])
+    else if ([keyCopy isEqualToString:@"UpdatedAt"])
     {
       v4 = 29;
     }
 
-    else if ([v3 isEqualToString:@"CarPlayUUID"])
+    else if ([keyCopy isEqualToString:@"CarPlayUUID"])
     {
       v4 = 30;
     }
 
-    else if ([v3 isEqualToString:@"CarPlayNetwork"])
+    else if ([keyCopy isEqualToString:@"CarPlayNetwork"])
     {
       v4 = 31;
     }
 
-    else if ([v3 isEqualToString:@"UserPreferredNetworkNames"])
+    else if ([keyCopy isEqualToString:@"UserPreferredNetworkNames"])
     {
       v4 = 32;
     }
 
-    else if ([v3 isEqualToString:@"UserPreferredPasspointDomains"])
+    else if ([keyCopy isEqualToString:@"UserPreferredPasspointDomains"])
     {
       v4 = 33;
     }
 
-    else if ([v3 isEqualToString:@"NetworkGroupID"])
+    else if ([keyCopy isEqualToString:@"NetworkGroupID"])
     {
       v4 = 34;
     }
 
-    else if ([v3 isEqualToString:@"NetworkGroupPriority"])
+    else if ([keyCopy isEqualToString:@"NetworkGroupPriority"])
     {
       v4 = 35;
     }
 
-    else if ([v3 isEqualToString:@"LastDiscoveredAt"])
+    else if ([keyCopy isEqualToString:@"LastDiscoveredAt"])
     {
       v4 = 36;
     }
 
-    else if ([v3 isEqualToString:@"BSSList"])
+    else if ([keyCopy isEqualToString:@"BSSList"])
     {
       v4 = 37;
     }
 
-    else if ([v3 isEqualToString:@"PrivacyProxyEnabled"])
+    else if ([keyCopy isEqualToString:@"PrivacyProxyEnabled"])
     {
       v4 = 38;
     }
 
-    else if ([v3 isEqualToString:@"PrivacyProxyBlockedReason"])
+    else if ([keyCopy isEqualToString:@"PrivacyProxyBlockedReason"])
     {
       v4 = 39;
     }
 
-    else if ([v3 isEqualToString:@"Moving"])
+    else if ([keyCopy isEqualToString:@"Moving"])
     {
       v4 = 40;
     }
 
-    else if ([v3 isEqualToString:@"Public"])
+    else if ([keyCopy isEqualToString:@"Public"])
     {
       v4 = 41;
     }
 
-    else if ([v3 isEqualToString:@"BlueAtlasNetwork"])
+    else if ([keyCopy isEqualToString:@"BlueAtlasNetwork"])
     {
       v4 = 80;
     }
 
-    else if ([v3 isEqualToString:@"PublicAirPlayNetwork"])
+    else if ([keyCopy isEqualToString:@"PublicAirPlayNetwork"])
     {
       v4 = 81;
     }
 
-    else if ([v3 isEqualToString:@"TransitionDisabledFlags"])
+    else if ([keyCopy isEqualToString:@"TransitionDisabledFlags"])
     {
       v4 = 42;
     }
 
-    else if ([v3 isEqualToString:@"NearbyShareableStatus"])
+    else if ([keyCopy isEqualToString:@"NearbyShareableStatus"])
     {
       v4 = 43;
     }
 
-    else if ([v3 isEqualToString:@"Standalone6G"])
+    else if ([keyCopy isEqualToString:@"Standalone6G"])
     {
       v4 = 44;
     }
 
-    else if ([v3 isEqualToString:@"Disable6EMode"])
+    else if ([keyCopy isEqualToString:@"Disable6EMode"])
     {
       v4 = 45;
     }
 
-    else if ([v3 isEqualToString:@"Disable6EModeTimestamp"])
+    else if ([keyCopy isEqualToString:@"Disable6EModeTimestamp"])
     {
       v4 = 46;
     }
 
-    else if ([v3 isEqualToString:@"DisableAutojoinUntilFirstUserJoin"])
+    else if ([keyCopy isEqualToString:@"DisableAutojoinUntilFirstUserJoin"])
     {
       v4 = 47;
     }
 
-    else if ([v3 isEqualToString:@"NetworkDisabledUntilDate"])
+    else if ([keyCopy isEqualToString:@"NetworkDisabledUntilDate"])
     {
       v4 = 48;
     }
 
-    else if ([v3 isEqualToString:@"PasspointHomeOperatorNetwork"])
+    else if ([keyCopy isEqualToString:@"PasspointHomeOperatorNetwork"])
     {
       v4 = 49;
     }
 
-    else if ([v3 isEqualToString:@"PasspointProvisionedNetwork"])
+    else if ([keyCopy isEqualToString:@"PasspointProvisionedNetwork"])
     {
       v4 = 50;
     }
 
-    else if ([v3 isEqualToString:@"PasspointAccountName"])
+    else if ([keyCopy isEqualToString:@"PasspointAccountName"])
     {
       v4 = 51;
     }
 
-    else if ([v3 isEqualToString:@"HighPopularity"])
+    else if ([keyCopy isEqualToString:@"HighPopularity"])
     {
       v4 = 52;
     }
 
-    else if ([v3 isEqualToString:@"HighQuality"])
+    else if ([keyCopy isEqualToString:@"HighQuality"])
     {
       v4 = 53;
     }
 
-    else if ([v3 isEqualToString:@"PotentiallyCaptive"])
+    else if ([keyCopy isEqualToString:@"PotentiallyCaptive"])
     {
       v4 = 54;
     }
 
-    else if ([v3 isEqualToString:@"PotentiallyMoving"])
+    else if ([keyCopy isEqualToString:@"PotentiallyMoving"])
     {
       v4 = 55;
     }
 
-    else if ([v3 isEqualToString:@"TCPGood"])
+    else if ([keyCopy isEqualToString:@"TCPGood"])
     {
       v4 = 57;
     }
 
-    else if ([v3 isEqualToString:@"LowPopularity"])
+    else if ([keyCopy isEqualToString:@"LowPopularity"])
     {
       v4 = 58;
     }
 
-    else if ([v3 isEqualToString:@"LowQuality"])
+    else if ([keyCopy isEqualToString:@"LowQuality"])
     {
       v4 = 59;
     }
 
-    else if ([v3 isEqualToString:@"ProminentDisplay"])
+    else if ([keyCopy isEqualToString:@"ProminentDisplay"])
     {
       v4 = 60;
     }
 
-    else if ([v3 isEqualToString:@"PopularityScore"])
+    else if ([keyCopy isEqualToString:@"PopularityScore"])
     {
       v4 = 61;
     }
 
-    else if ([v3 isEqualToString:@"QualityScore"])
+    else if ([keyCopy isEqualToString:@"QualityScore"])
     {
       v4 = 62;
     }
 
-    else if ([v3 isEqualToString:@"TotalNetworkUsage"])
+    else if ([keyCopy isEqualToString:@"TotalNetworkUsage"])
     {
       v4 = 63;
     }
 
-    else if ([v3 isEqualToString:@"ExpirationDate"])
+    else if ([keyCopy isEqualToString:@"ExpirationDate"])
     {
       v4 = 64;
     }
 
-    else if ([v3 isEqualToString:@"HomeForceFixDate"])
+    else if ([keyCopy isEqualToString:@"HomeForceFixDate"])
     {
       v4 = 65;
     }
 
-    else if ([v3 isEqualToString:@"LocationOfInterestType"])
+    else if ([keyCopy isEqualToString:@"LocationOfInterestType"])
     {
       v4 = 66;
     }
 
-    else if ([v3 isEqualToString:@"NetworkOfInterestHomeState"])
+    else if ([keyCopy isEqualToString:@"NetworkOfInterestHomeState"])
     {
       v4 = 67;
     }
 
-    else if ([v3 isEqualToString:@"NetworkOfInterestHomeStateUpdatedAt"])
+    else if ([keyCopy isEqualToString:@"NetworkOfInterestHomeStateUpdatedAt"])
     {
       v4 = 68;
     }
 
-    else if ([v3 isEqualToString:@"NetworkOfInterestWorkState"])
+    else if ([keyCopy isEqualToString:@"NetworkOfInterestWorkState"])
     {
       v4 = 69;
     }
 
-    else if ([v3 isEqualToString:@"NetworkOfInterestWorkStateUpdatedAt"])
+    else if ([keyCopy isEqualToString:@"NetworkOfInterestWorkStateUpdatedAt"])
     {
       v4 = 70;
     }
 
-    else if ([v3 isEqualToString:@"SSIDHarvestStatus"])
+    else if ([keyCopy isEqualToString:@"SSIDHarvestStatus"])
     {
       v4 = 71;
     }
 
-    else if ([v3 isEqualToString:@"WalletIdentifier"])
+    else if ([keyCopy isEqualToString:@"WalletIdentifier"])
     {
       v4 = 72;
     }
 
-    else if ([v3 isEqualToString:@"OTASystemInfoBeaconProbeList"])
+    else if ([keyCopy isEqualToString:@"OTASystemInfoBeaconProbeList"])
     {
       v4 = 73;
     }
 
-    else if ([v3 isEqualToString:@"SIMIdentifiers"])
+    else if ([keyCopy isEqualToString:@"SIMIdentifiers"])
     {
       v4 = 74;
     }
 
-    else if ([v3 isEqualToString:@"NetworkQualityResponsiveness"])
+    else if ([keyCopy isEqualToString:@"NetworkQualityResponsiveness"])
     {
       v4 = 75;
     }
 
-    else if ([v3 isEqualToString:@"NetworkQualityDate"])
+    else if ([keyCopy isEqualToString:@"NetworkQualityDate"])
     {
       v4 = 76;
     }
 
-    else if ([v3 isEqualToString:@"LastDisconnectReason"])
+    else if ([keyCopy isEqualToString:@"LastDisconnectReason"])
     {
       v4 = 77;
     }
 
-    else if ([v3 isEqualToString:@"LastDisconnectTimestamp"])
+    else if ([keyCopy isEqualToString:@"LastDisconnectTimestamp"])
     {
       v4 = 78;
     }
 
-    else if ([v3 isEqualToString:@"NANServiceID"])
+    else if ([keyCopy isEqualToString:@"NANServiceID"])
     {
       v4 = 79;
     }
 
-    else if ([v3 isEqualToString:@"JoinedBySystemAtWeek"])
+    else if ([keyCopy isEqualToString:@"JoinedBySystemAtWeek"])
     {
       v4 = 82;
     }
 
-    else if ([v3 isEqualToString:@"Was6GHzOnlyAt"])
+    else if ([keyCopy isEqualToString:@"Was6GHzOnlyAt"])
     {
       v4 = 83;
     }
 
-    else if ([v3 isEqualToString:@"Was6GHzOnlyAtWeek"])
+    else if ([keyCopy isEqualToString:@"Was6GHzOnlyAtWeek"])
     {
       v4 = 84;
     }
 
-    else if ([v3 isEqualToString:@"SeamlessSSIDList"])
+    else if ([keyCopy isEqualToString:@"SeamlessSSIDList"])
     {
       v4 = 85;
     }
 
-    else if ([v3 isEqualToString:@"DNSHeuristicsFilteredNetwork"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"FilteredNetwork"))
+    else if ([keyCopy isEqualToString:@"DNSHeuristicsFilteredNetwork"] & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"FilteredNetwork"))
     {
       v4 = 86;
     }
 
-    else if ([v3 isEqualToString:@"DNSHeuristicsFailureStateInfo"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"DNSFailures"))
+    else if ([keyCopy isEqualToString:@"DNSHeuristicsFailureStateInfo"] & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"DNSFailures"))
     {
       v4 = 87;
     }
 
-    else if ([v3 isEqualToString:@"CachedPrivateMACAddress"])
+    else if ([keyCopy isEqualToString:@"CachedPrivateMACAddress"])
     {
       v4 = 88;
     }
 
-    else if ([v3 isEqualToString:@"CachedPrivateMACAddressUpdatedAt"])
+    else if ([keyCopy isEqualToString:@"CachedPrivateMACAddressUpdatedAt"])
     {
       v4 = 89;
     }
 
-    else if ([v3 isEqualToString:@"PrivateMACAddressModeUserSetting"])
+    else if ([keyCopy isEqualToString:@"PrivateMACAddressModeUserSetting"])
     {
       v4 = 90;
     }
 
-    else if ([v3 isEqualToString:@"PrivateMACAddressModeUserSettingUpdatedAt"])
+    else if ([keyCopy isEqualToString:@"PrivateMACAddressModeUserSettingUpdatedAt"])
     {
       v4 = 91;
     }
 
-    else if ([v3 isEqualToString:@"PrivateMACAddressEvaluationState"])
+    else if ([keyCopy isEqualToString:@"PrivateMACAddressEvaluationState"])
     {
       v4 = 93;
     }
 
-    else if ([v3 isEqualToString:@"PrivateMACAddressModeConfigurationProfileSetting"])
+    else if ([keyCopy isEqualToString:@"PrivateMACAddressModeConfigurationProfileSetting"])
     {
       v4 = 92;
     }
 
-    else if ([v3 isEqualToString:@"PrivateMACAddressEvaluatedAt"])
+    else if ([keyCopy isEqualToString:@"PrivateMACAddressEvaluatedAt"])
     {
       v4 = 94;
     }
 
-    else if ([v3 isEqualToString:@"WasHiddenBefore"])
+    else if ([keyCopy isEqualToString:@"WasHiddenBefore"])
     {
       v4 = 95;
     }
 
-    else if ([v3 isEqualToString:@"DiscoveredDevices"])
+    else if ([keyCopy isEqualToString:@"DiscoveredDevices"])
     {
       v4 = 96;
     }
 
-    else if ([v3 isEqualToString:@"CachedNetworkID"])
+    else if ([keyCopy isEqualToString:@"CachedNetworkID"])
     {
       v4 = 97;
     }
 
-    else if ([v3 isEqualToString:@"RemovedAt"])
+    else if ([keyCopy isEqualToString:@"RemovedAt"])
     {
       v4 = 98;
     }
 
-    else if ([v3 isEqualToString:@"ReceivedFromDeviceAt"])
+    else if ([keyCopy isEqualToString:@"ReceivedFromDeviceAt"])
     {
       v4 = 102;
     }
 
-    else if ([v3 isEqualToString:@"ReceivedFromDeviceFlags"])
+    else if ([keyCopy isEqualToString:@"ReceivedFromDeviceFlags"])
     {
       v4 = 101;
     }
 
-    else if ([v3 isEqualToString:@"ReceivedFromDeviceID"])
+    else if ([keyCopy isEqualToString:@"ReceivedFromDeviceID"])
     {
       v4 = 103;
     }
 
-    else if ([v3 isEqualToString:@"ReceivedFromDeviceName"])
+    else if ([keyCopy isEqualToString:@"ReceivedFromDeviceName"])
     {
       v4 = 106;
     }
 
-    else if ([v3 isEqualToString:@"DeploymentIssues"])
+    else if ([keyCopy isEqualToString:@"DeploymentIssues"])
     {
       v4 = 107;
     }
 
-    else if ([v3 isEqualToString:@"is2GHzBssPresent"])
+    else if ([keyCopy isEqualToString:@"is2GHzBssPresent"])
     {
       v4 = 108;
     }
 
-    else if ([v3 isEqualToString:@"BrokenBackhaulState"])
+    else if ([keyCopy isEqualToString:@"BrokenBackhaulState"])
     {
       v4 = 109;
     }
 
-    else if ([v3 isEqualToString:@"BrokenBackhaulStateUdatedAt"])
+    else if ([keyCopy isEqualToString:@"BrokenBackhaulStateUdatedAt"])
     {
       v4 = 110;
     }
@@ -3041,19 +3041,19 @@ LABEL_33:
   return v4;
 }
 
-- (CWFNetworkProfile)initWithExternalForm:(id)a3
+- (CWFNetworkProfile)initWithExternalForm:(id)form
 {
   v54 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  formCopy = form;
   v5 = [(CWFNetworkProfile *)self init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v48 = 0u;
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
-    obj = [v4 allKeys];
+    obj = [formCopy allKeys];
     v43 = [obj countByEnumeratingWithState:&v48 objects:v53 count:16];
     if (!v43)
     {
@@ -3061,7 +3061,7 @@ LABEL_33:
     }
 
     v42 = *v49;
-    v39 = v4;
+    v39 = formCopy;
     v40 = v5;
     while (1)
     {
@@ -3079,7 +3079,7 @@ LABEL_33:
         {
           v10 = v9;
           v11 = [MEMORY[0x1E696AD98] numberWithInteger:v9];
-          v12 = [v6 objectForKeyedSubscript:v11];
+          v12 = [dictionary objectForKeyedSubscript:v11];
 
           if (!v12)
           {
@@ -3090,7 +3090,7 @@ LABEL_33:
                 if (v10 == 90 || v10 == 92)
                 {
                   v22 = MEMORY[0x1E696AD98];
-                  v14 = [v4 objectForKeyedSubscript:v8];
+                  v14 = [formCopy objectForKeyedSubscript:v8];
                   v15 = [v22 numberWithInteger:sub_1E0BEF318(v14)];
                   v16 = MEMORY[0x1E696AD98];
                   v17 = v10;
@@ -3104,7 +3104,7 @@ LABEL_33:
                   }
 
                   v21 = MEMORY[0x1E696AD98];
-                  v14 = [v4 objectForKeyedSubscript:v8];
+                  v14 = [formCopy objectForKeyedSubscript:v8];
                   v15 = [v21 numberWithInteger:sub_1E0BD6118(v14)];
                   v16 = MEMORY[0x1E696AD98];
                   v17 = 109;
@@ -3116,7 +3116,7 @@ LABEL_33:
               switch(v10)
               {
                 case '%':
-                  v15 = [v4 objectForKeyedSubscript:v8];
+                  v15 = [formCopy objectForKeyedSubscript:v8];
                   v44 = 0u;
                   v45 = 0u;
                   v46 = 0u;
@@ -3161,13 +3161,13 @@ LABEL_33:
 
                   v34 = [v14 copy];
                   v35 = [MEMORY[0x1E696AD98] numberWithInteger:37];
-                  [v6 setObject:v34 forKeyedSubscript:v35];
+                  [dictionary setObject:v34 forKeyedSubscript:v35];
 
-                  v4 = v39;
+                  formCopy = v39;
                   v5 = v40;
                   goto LABEL_61;
                 case '(':
-                  v14 = [v4 objectForKeyedSubscript:v8];
+                  v14 = [formCopy objectForKeyedSubscript:v8];
                   if ([v14 BOOLValue])
                   {
                     v18 = &unk_1F5BBB8D8;
@@ -3182,7 +3182,7 @@ LABEL_33:
                   v20 = 40;
                   break;
                 case ')':
-                  v14 = [v4 objectForKeyedSubscript:v8];
+                  v14 = [formCopy objectForKeyedSubscript:v8];
                   if ([v14 BOOLValue])
                   {
                     v18 = &unk_1F5BBB8D8;
@@ -3209,30 +3209,30 @@ LABEL_33:
                 {
                   case 2:
                     v23 = MEMORY[0x1E696AD98];
-                    v14 = [v4 objectForKeyedSubscript:v8];
+                    v14 = [formCopy objectForKeyedSubscript:v8];
                     v15 = [v23 numberWithUnsignedInteger:sub_1E0BED0BC(v14)];
                     v16 = MEMORY[0x1E696AD98];
                     v17 = 2;
                     break;
                   case 3:
                     v29 = MEMORY[0x1E696AD98];
-                    v14 = [v4 objectForKeyedSubscript:v8];
+                    v14 = [formCopy objectForKeyedSubscript:v8];
                     v15 = [v29 numberWithInteger:sub_1E0BED36C(v14)];
                     v16 = MEMORY[0x1E696AD98];
                     v17 = 3;
                     break;
                   case 4:
                     v13 = MEMORY[0x1E696AD98];
-                    v14 = [v4 objectForKeyedSubscript:v8];
+                    v14 = [formCopy objectForKeyedSubscript:v8];
                     v15 = [v13 numberWithInteger:sub_1E0BED4E8(v14)];
                     v16 = MEMORY[0x1E696AD98];
                     v17 = 4;
                     break;
                   default:
 LABEL_64:
-                    v14 = [v4 objectForKeyedSubscript:v8];
+                    v14 = [formCopy objectForKeyedSubscript:v8];
                     v15 = [MEMORY[0x1E696AD98] numberWithInteger:v10];
-                    v30 = v6;
+                    v30 = dictionary;
                     v31 = v14;
 LABEL_58:
                     [v30 setObject:v31 forKeyedSubscript:v15];
@@ -3243,7 +3243,7 @@ LABEL_61:
 
 LABEL_60:
                 v33 = [v16 numberWithInteger:v17];
-                [v6 setObject:v15 forKeyedSubscript:v33];
+                [dictionary setObject:v15 forKeyedSubscript:v33];
 
                 goto LABEL_61;
               }
@@ -3251,7 +3251,7 @@ LABEL_60:
               switch(v10)
               {
                 case 6:
-                  v14 = [v4 objectForKeyedSubscript:v8];
+                  v14 = [formCopy objectForKeyedSubscript:v8];
                   if ([v14 BOOLValue])
                   {
                     v18 = &unk_1F5BBB8D8;
@@ -3267,13 +3267,13 @@ LABEL_60:
                   break;
                 case 13:
                   v32 = MEMORY[0x1E696AD98];
-                  v14 = [v4 objectForKeyedSubscript:v8];
+                  v14 = [formCopy objectForKeyedSubscript:v8];
                   v15 = [v32 numberWithInteger:sub_1E0BED598(v14)];
                   v16 = MEMORY[0x1E696AD98];
                   v17 = 13;
                   goto LABEL_60;
                 case 27:
-                  v14 = [v4 objectForKeyedSubscript:v8];
+                  v14 = [formCopy objectForKeyedSubscript:v8];
                   if ([v14 BOOLValue])
                   {
                     v18 = &unk_1F5BBB8D8;
@@ -3293,7 +3293,7 @@ LABEL_60:
             }
 
             v15 = [v19 numberWithInteger:v20];
-            v30 = v6;
+            v30 = dictionary;
             v31 = v18;
             goto LABEL_58;
           }
@@ -3310,7 +3310,7 @@ LABEL_62:
       {
 LABEL_68:
 
-        [(CWFNetworkProfile *)v5 setInternal:v6];
+        [(CWFNetworkProfile *)v5 setInternal:dictionary];
         break;
       }
     }
@@ -3320,58 +3320,58 @@ LABEL_68:
   return v5;
 }
 
-- (void)mergeWithNetworkProfile:(id)a3
+- (void)mergeWithNetworkProfile:(id)profile
 {
-  v4 = a3;
-  v9 = [v4 OSSpecificAttributes];
-  v5 = [(CWFNetworkProfile *)self OSSpecificAttributes];
-  v6 = [v5 mutableCopy];
+  profileCopy = profile;
+  oSSpecificAttributes = [profileCopy OSSpecificAttributes];
+  oSSpecificAttributes2 = [(CWFNetworkProfile *)self OSSpecificAttributes];
+  v6 = [oSSpecificAttributes2 mutableCopy];
 
   internal = self->_internal;
-  v8 = [v4 internal];
+  internal = [profileCopy internal];
 
-  [(NSMutableDictionary *)internal addEntriesFromDictionary:v8];
-  if (v9 && v6)
+  [(NSMutableDictionary *)internal addEntriesFromDictionary:internal];
+  if (oSSpecificAttributes && v6)
   {
-    [v6 addEntriesFromDictionary:v9];
+    [v6 addEntriesFromDictionary:oSSpecificAttributes];
     [(CWFNetworkProfile *)self setOSSpecificAttributes:v6];
   }
 }
 
-- (void)setCoreWiFiSpecificAttributes:(id)a3
+- (void)setCoreWiFiSpecificAttributes:(id)attributes
 {
-  v4 = a3;
-  v11 = [(CWFNetworkProfile *)self __coreWiFiSpecificProperties];
-  v5 = [[CWFNetworkProfile alloc] initWithExternalForm:v4];
+  attributesCopy = attributes;
+  __coreWiFiSpecificProperties = [(CWFNetworkProfile *)self __coreWiFiSpecificProperties];
+  v5 = [[CWFNetworkProfile alloc] initWithExternalForm:attributesCopy];
 
-  v6 = [MEMORY[0x1E695DFD8] setWithArray:v11];
+  v6 = [MEMORY[0x1E695DFD8] setWithArray:__coreWiFiSpecificProperties];
   v7 = [MEMORY[0x1E695DFD8] set];
   v8 = [(CWFNetworkProfile *)v5 __filteredNetworkProfileWithProperties:v6 OSSpecificKeys:v7];
 
   internal = self->_internal;
-  v10 = [v8 internal];
-  [(NSMutableDictionary *)internal addEntriesFromDictionary:v10];
+  internal = [v8 internal];
+  [(NSMutableDictionary *)internal addEntriesFromDictionary:internal];
 }
 
-- (id)changedPropertiesFromNetworkProfile:(id)a3
+- (id)changedPropertiesFromNetworkProfile:(id)profile
 {
   v52 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v34 = [(CWFNetworkProfile *)self externalForm];
-  v5 = [[CWFNetworkProfile alloc] initWithExternalForm:v34];
-  v35 = v4;
-  v33 = [v4 externalForm];
-  v6 = [[CWFNetworkProfile alloc] initWithExternalForm:v33];
+  profileCopy = profile;
+  externalForm = [(CWFNetworkProfile *)self externalForm];
+  v5 = [[CWFNetworkProfile alloc] initWithExternalForm:externalForm];
+  v35 = profileCopy;
+  externalForm2 = [profileCopy externalForm];
+  v6 = [[CWFNetworkProfile alloc] initWithExternalForm:externalForm2];
   v41 = [MEMORY[0x1E695DFA8] set];
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v7 = [(CWFNetworkProfile *)v5 internal];
-  v8 = [v7 allKeys];
+  internal = [(CWFNetworkProfile *)v5 internal];
+  allKeys = [internal allKeys];
 
-  obj = v8;
-  v45 = [v8 countByEnumeratingWithState:&v47 objects:v51 count:16];
+  obj = allKeys;
+  v45 = [allKeys countByEnumeratingWithState:&v47 objects:v51 count:16];
   if (v45)
   {
     v44 = *v48;
@@ -3387,10 +3387,10 @@ LABEL_68:
         }
 
         v10 = *(*(&v47 + 1) + 8 * i);
-        v11 = [(CWFNetworkProfile *)v5 internal];
-        v12 = [v11 objectForKeyedSubscript:v10];
-        v13 = [(CWFNetworkProfile *)v6 internal];
-        v14 = [v13 objectForKeyedSubscript:v10];
+        internal2 = [(CWFNetworkProfile *)v5 internal];
+        v12 = [internal2 objectForKeyedSubscript:v10];
+        internal3 = [(CWFNetworkProfile *)v6 internal];
+        v14 = [internal3 objectForKeyedSubscript:v10];
         v15 = v14;
         if (v12 == v14)
         {
@@ -3398,17 +3398,17 @@ LABEL_68:
           continue;
         }
 
-        v46 = v11;
-        v16 = [(CWFNetworkProfile *)v5 internal];
-        v17 = [v16 objectForKeyedSubscript:v10];
+        v46 = internal2;
+        internal4 = [(CWFNetworkProfile *)v5 internal];
+        v17 = [internal4 objectForKeyedSubscript:v10];
         if (!v17)
         {
           goto LABEL_13;
         }
 
         v18 = v6;
-        v43 = [(CWFNetworkProfile *)v6 internal];
-        v19 = [v43 objectForKeyedSubscript:v10];
+        internal5 = [(CWFNetworkProfile *)v6 internal];
+        v19 = [internal5 objectForKeyedSubscript:v10];
         if (!v19)
         {
 
@@ -3419,10 +3419,10 @@ LABEL_14:
         }
 
         v39 = v19;
-        v38 = [(CWFNetworkProfile *)v5 internal];
-        v20 = [v38 objectForKeyedSubscript:v10];
-        v21 = [(CWFNetworkProfile *)v18 internal];
-        v22 = [v21 objectForKeyedSubscript:v10];
+        internal6 = [(CWFNetworkProfile *)v5 internal];
+        v20 = [internal6 objectForKeyedSubscript:v10];
+        internal7 = [(CWFNetworkProfile *)v18 internal];
+        v22 = [internal7 objectForKeyedSubscript:v10];
         v40 = [v20 isEqual:v22];
 
         v5 = v37;
@@ -3440,14 +3440,14 @@ LABEL_14:
   }
 
   v23 = MEMORY[0x1E695DFA8];
-  v24 = [(CWFNetworkProfile *)v6 internal];
-  v25 = [v24 allKeys];
-  v26 = [v23 setWithArray:v25];
+  internal8 = [(CWFNetworkProfile *)v6 internal];
+  allKeys2 = [internal8 allKeys];
+  v26 = [v23 setWithArray:allKeys2];
 
   v27 = MEMORY[0x1E695DFA8];
-  v28 = [(CWFNetworkProfile *)v5 internal];
-  v29 = [v28 allKeys];
-  v30 = [v27 setWithArray:v29];
+  internal9 = [(CWFNetworkProfile *)v5 internal];
+  allKeys3 = [internal9 allKeys];
+  v30 = [v27 setWithArray:allKeys3];
   [v26 minusSet:v30];
 
   [v41 unionSet:v26];
@@ -3456,29 +3456,29 @@ LABEL_14:
   return v41;
 }
 
-- (id)changedOSSpecificKeysFromNetworkProfile:(id)a3
+- (id)changedOSSpecificKeysFromNetworkProfile:(id)profile
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  profileCopy = profile;
   v5 = [MEMORY[0x1E695DFA8] set];
-  v34 = [(CWFNetworkProfile *)self externalForm];
-  v33 = [[CWFNetworkProfile alloc] initWithExternalForm:v34];
-  v6 = [(CWFNetworkProfile *)v33 OSSpecificAttributes];
-  v35 = v4;
-  v32 = [v4 externalForm];
-  v31 = [[CWFNetworkProfile alloc] initWithExternalForm:v32];
-  v7 = [(CWFNetworkProfile *)v31 OSSpecificAttributes];
+  externalForm = [(CWFNetworkProfile *)self externalForm];
+  v33 = [[CWFNetworkProfile alloc] initWithExternalForm:externalForm];
+  oSSpecificAttributes = [(CWFNetworkProfile *)v33 OSSpecificAttributes];
+  v35 = profileCopy;
+  externalForm2 = [profileCopy externalForm];
+  v31 = [[CWFNetworkProfile alloc] initWithExternalForm:externalForm2];
+  oSSpecificAttributes2 = [(CWFNetworkProfile *)v31 OSSpecificAttributes];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v8 = [v6 allKeys];
-  v40 = [v8 countByEnumeratingWithState:&v41 objects:v45 count:16];
+  allKeys = [oSSpecificAttributes allKeys];
+  v40 = [allKeys countByEnumeratingWithState:&v41 objects:v45 count:16];
   if (v40)
   {
     v9 = *v42;
-    v36 = v8;
-    v37 = v7;
+    v36 = allKeys;
+    v37 = oSSpecificAttributes2;
     v38 = *v42;
     do
     {
@@ -3486,12 +3486,12 @@ LABEL_14:
       {
         if (*v42 != v9)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v41 + 1) + 8 * i);
-        v12 = [v6 objectForKeyedSubscript:v11];
-        v13 = [v7 objectForKeyedSubscript:v11];
+        v12 = [oSSpecificAttributes objectForKeyedSubscript:v11];
+        v13 = [oSSpecificAttributes2 objectForKeyedSubscript:v11];
         v14 = v13;
         if (v12 == v13)
         {
@@ -3499,14 +3499,14 @@ LABEL_14:
           continue;
         }
 
-        v15 = [v6 objectForKeyedSubscript:v11];
+        v15 = [oSSpecificAttributes objectForKeyedSubscript:v11];
         if (!v15)
         {
           goto LABEL_13;
         }
 
         v16 = v15;
-        v17 = [v7 objectForKeyedSubscript:v11];
+        v17 = [oSSpecificAttributes2 objectForKeyedSubscript:v11];
         if (!v17)
         {
 
@@ -3519,17 +3519,17 @@ LABEL_14:
         }
 
         v18 = v17;
-        v19 = [v6 objectForKeyedSubscript:v11];
-        [v7 objectForKeyedSubscript:v11];
-        v20 = v6;
+        v19 = [oSSpecificAttributes objectForKeyedSubscript:v11];
+        [oSSpecificAttributes2 objectForKeyedSubscript:v11];
+        v20 = oSSpecificAttributes;
         v22 = v21 = v5;
         v39 = [v19 isEqual:v22];
 
         v5 = v21;
-        v6 = v20;
-        v7 = v37;
+        oSSpecificAttributes = v20;
+        oSSpecificAttributes2 = v37;
 
-        v8 = v36;
+        allKeys = v36;
         v9 = v38;
         if ((v39 & 1) == 0)
         {
@@ -3537,19 +3537,19 @@ LABEL_14:
         }
       }
 
-      v40 = [v8 countByEnumeratingWithState:&v41 objects:v45 count:16];
+      v40 = [allKeys countByEnumeratingWithState:&v41 objects:v45 count:16];
     }
 
     while (v40);
   }
 
   v23 = MEMORY[0x1E695DFA8];
-  v24 = [v7 allKeys];
-  v25 = [v23 setWithArray:v24];
+  allKeys2 = [oSSpecificAttributes2 allKeys];
+  v25 = [v23 setWithArray:allKeys2];
 
   v26 = MEMORY[0x1E695DFA8];
-  v27 = [v6 allKeys];
-  v28 = [v26 setWithArray:v27];
+  allKeys3 = [oSSpecificAttributes allKeys];
+  v28 = [v26 setWithArray:allKeys3];
   [v25 minusSet:v28];
 
   [v5 unionSet:v25];
@@ -3558,140 +3558,140 @@ LABEL_14:
   return v5;
 }
 
-- (void)setSSID:(id)a3
+- (void)setSSID:(id)d
 {
-  [(NSMutableDictionary *)self->_internal setObject:a3 forKeyedSubscript:&unk_1F5BBB8D8];
+  [(NSMutableDictionary *)self->_internal setObject:d forKeyedSubscript:&unk_1F5BBB8D8];
   *&self->_useCachedIdentifier = 0;
   self->_useCachedShortSSID = 0;
 }
 
-- (void)setDisable6EMode:(int64_t)a3
+- (void)setDisable6EMode:(int64_t)mode
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:mode];
   [(NSMutableDictionary *)self->_internal setObject:v4 forKeyedSubscript:&unk_1F5BBB908];
 }
 
 - (BOOL)isAmbiguousNetworkName
 {
-  v2 = [(CWFNetworkProfile *)self networkName];
-  v3 = sub_1E0BEE360(v2);
+  networkName = [(CWFNetworkProfile *)self networkName];
+  v3 = sub_1E0BEE360(networkName);
 
   return v3;
 }
 
-- (void)setSupportedSecurityTypes:(unint64_t)a3
+- (void)setSupportedSecurityTypes:(unint64_t)types
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:types];
   [(NSMutableDictionary *)self->_internal setObject:v4 forKeyedSubscript:&unk_1F5BBB8F0];
 }
 
-- (void)setWEPSubtype:(int64_t)a3
+- (void)setWEPSubtype:(int64_t)subtype
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:subtype];
   [(NSMutableDictionary *)self->_internal setObject:v4 forKeyedSubscript:&unk_1F5BBBB48];
 }
 
-- (void)setWAPISubtype:(int64_t)a3
+- (void)setWAPISubtype:(int64_t)subtype
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:subtype];
   [(NSMutableDictionary *)self->_internal setObject:v4 forKeyedSubscript:&unk_1F5BBBB60];
 }
 
 - (unint64_t)weakestSupportedSecurityType
 {
-  v3 = [(CWFNetworkProfile *)self supportedSecurityTypes];
-  v4 = [(CWFNetworkProfile *)self WAPISubtype];
-  v5 = [(CWFNetworkProfile *)self WEPSubtype];
+  supportedSecurityTypes = [(CWFNetworkProfile *)self supportedSecurityTypes];
+  wAPISubtype = [(CWFNetworkProfile *)self WAPISubtype];
+  wEPSubtype = [(CWFNetworkProfile *)self WEPSubtype];
 
-  return CWFWeakestSecurityType(v3, v4, v5);
+  return CWFWeakestSecurityType(supportedSecurityTypes, wAPISubtype, wEPSubtype);
 }
 
-- (void)setHiddenState:(int64_t)a3
+- (void)setHiddenState:(int64_t)state
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:state];
   [(NSMutableDictionary *)self->_internal setObject:v4 forKeyedSubscript:&unk_1F5BBBB90];
 }
 
-- (void)setPayloadIdentifier:(id)a3
+- (void)setPayloadIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
-  if ([(CWFNetworkProfile *)self isAddReasonCarrierBundle]&& CWFIsPayloadIdentifierTelemetryApproved(v4))
+  if ([(CWFNetworkProfile *)self isAddReasonCarrierBundle]&& CWFIsPayloadIdentifierTelemetryApproved(identifierCopy))
   {
     [(CWFNetworkProfile *)self setPayloadIdentifierTelemetryApproved:1];
   }
 }
 
-- (void)setAddReason:(int64_t)a3
+- (void)setAddReason:(int64_t)reason
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:reason];
   [(NSMutableDictionary *)self->_internal setObject:v4 forKeyedSubscript:&unk_1F5BBBC38];
 }
 
 - (BOOL)isSystemMode
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBBD28];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isSessionBased
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBBD40];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setLowDataMode:(int64_t)a3
+- (void)setLowDataMode:(int64_t)mode
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:mode];
   [(NSMutableDictionary *)self->_internal setObject:v4 forKeyedSubscript:&unk_1F5BBBD58];
 }
 
 - (NSArray)innerAcceptedEAPTypes
 {
-  v2 = [(CWFNetworkProfile *)self EAPProfile];
-  v3 = [v2 objectForKeyedSubscript:@"InnerAcceptEAPTypes"];
+  eAPProfile = [(CWFNetworkProfile *)self EAPProfile];
+  v3 = [eAPProfile objectForKeyedSubscript:@"InnerAcceptEAPTypes"];
 
   return v3;
 }
 
 - (BOOL)isTLSCertificateRequired
 {
-  v2 = [(CWFNetworkProfile *)self EAPProfile];
-  v3 = [v2 objectForKeyedSubscript:@"TLSCertificateIsRequired"];
-  v4 = [v3 BOOLValue];
+  eAPProfile = [(CWFNetworkProfile *)self EAPProfile];
+  v3 = [eAPProfile objectForKeyedSubscript:@"TLSCertificateIsRequired"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (NSArray)TLSTrustedServerNames
 {
-  v2 = [(CWFNetworkProfile *)self EAPProfile];
-  v3 = [v2 objectForKeyedSubscript:@"TLSTrustedServerNames"];
+  eAPProfile = [(CWFNetworkProfile *)self EAPProfile];
+  v3 = [eAPProfile objectForKeyedSubscript:@"TLSTrustedServerNames"];
 
   return v3;
 }
 
-- (void)setOSSpecificValue:(id)a3 forKey:(id)a4
+- (void)setOSSpecificValue:(id)value forKey:(id)key
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7 && (+[CWFNetworkProfile supportedOSSpecificKeys](CWFNetworkProfile, "supportedOSSpecificKeys"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 containsObject:v7], v8, v9))
+  valueCopy = value;
+  keyCopy = key;
+  if (keyCopy && (+[CWFNetworkProfile supportedOSSpecificKeys](CWFNetworkProfile, "supportedOSSpecificKeys"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 containsObject:keyCopy], v8, v9))
   {
     v10 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBB8C0];
 
-    if (v6 && !v10)
+    if (valueCopy && !v10)
     {
-      v11 = [MEMORY[0x1E695DF90] dictionary];
-      [(NSMutableDictionary *)self->_internal setObject:v11 forKeyedSubscript:&unk_1F5BBB8C0];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      [(NSMutableDictionary *)self->_internal setObject:dictionary forKeyedSubscript:&unk_1F5BBB8C0];
     }
 
     v12 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBB8C0];
-    [v12 setObject:v6 forKeyedSubscript:v7];
+    [v12 setObject:valueCopy forKeyedSubscript:keyCopy];
   }
 
   else
@@ -3717,14 +3717,14 @@ LABEL_14:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (id)OSSpecificValueForKey:(id)a3
+- (id)OSSpecificValueForKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     internal = self->_internal;
-    v4 = a3;
+    keyCopy = key;
     v5 = [(NSMutableDictionary *)internal objectForKeyedSubscript:&unk_1F5BBB8C0];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    v6 = [v5 objectForKeyedSubscript:keyCopy];
   }
 
   else
@@ -3735,25 +3735,25 @@ LABEL_14:
   return v6;
 }
 
-- (void)setOSSpecificAttributes:(id)a3
+- (void)setOSSpecificAttributes:(id)attributes
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  attributesCopy = attributes;
+  v5 = attributesCopy;
+  if (attributesCopy)
   {
-    v24 = self;
-    v25 = v4;
+    selfCopy = self;
+    v25 = attributesCopy;
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v6 = [v4 allKeys];
-    v7 = [v6 countByEnumeratingWithState:&v26 objects:v38 count:16];
+    allKeys = [attributesCopy allKeys];
+    v7 = [allKeys countByEnumeratingWithState:&v26 objects:v38 count:16];
     if (v7)
     {
       v8 = v7;
-      v9 = 0;
+      array = 0;
       v10 = *v27;
       v11 = MEMORY[0x1E69E9C10];
       do
@@ -3762,7 +3762,7 @@ LABEL_14:
         {
           if (*v27 != v10)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allKeys);
           }
 
           v13 = *(*(&v26 + 1) + 8 * i);
@@ -3771,12 +3771,12 @@ LABEL_14:
 
           if ((v15 & 1) == 0)
           {
-            if (!v9)
+            if (!array)
             {
-              v9 = [MEMORY[0x1E695DF70] array];
+              array = [MEMORY[0x1E695DF70] array];
             }
 
-            [v9 addObject:v13];
+            [array addObject:v13];
             v16 = CWFGetOSLog();
             if (v16)
             {
@@ -3806,7 +3806,7 @@ LABEL_14:
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v26 objects:v38 count:16];
+        v8 = [allKeys countByEnumeratingWithState:&v26 objects:v38 count:16];
       }
 
       while (v8);
@@ -3814,14 +3814,14 @@ LABEL_14:
 
     else
     {
-      v9 = 0;
+      array = 0;
     }
 
-    if ([v9 count])
+    if ([array count])
     {
       v5 = v25;
       v19 = [v25 mutableCopy];
-      [v19 removeObjectsForKeys:v9];
+      [v19 removeObjectsForKeys:array];
     }
 
     else
@@ -3830,7 +3830,7 @@ LABEL_14:
       v5 = v25;
     }
 
-    self = v24;
+    self = selfCopy;
   }
 
   else
@@ -3853,19 +3853,19 @@ LABEL_14:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setNetworkGroupPriority:(unint64_t)a3
+- (void)setNetworkGroupPriority:(unint64_t)priority
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:priority];
   [(NSMutableDictionary *)self->_internal setObject:v4 forKeyedSubscript:&unk_1F5BBBEC0];
 }
 
-- (void)setBSSList:(id)a3
+- (void)setBSSList:(id)list
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count] < 0xB)
+  listCopy = list;
+  if ([listCopy count] < 0xB)
   {
-    [(NSMutableDictionary *)self->_internal setObject:v4 forKeyedSubscript:&unk_1F5BBBEF0];
+    [(NSMutableDictionary *)self->_internal setObject:listCopy forKeyedSubscript:&unk_1F5BBBEF0];
   }
 
   else
@@ -3873,7 +3873,7 @@ LABEL_14:
     v5 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"lastAssociatedAt" ascending:0];
     v11[0] = v5;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
-    v7 = [v4 sortedArrayUsingDescriptors:v6];
+    v7 = [listCopy sortedArrayUsingDescriptors:v6];
     v8 = [v7 subarrayWithRange:{0, 10}];
 
     v9 = [MEMORY[0x1E695DFD8] setWithArray:v8];
@@ -3886,70 +3886,70 @@ LABEL_14:
 - (BOOL)isBlueAtlasNetwork
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBBF20];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setMovingAttribute:(int64_t)a3
+- (void)setMovingAttribute:(int64_t)attribute
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:attribute];
   [(NSMutableDictionary *)self->_internal setObject:v4 forKeyedSubscript:&unk_1F5BBBF68];
 }
 
-- (void)setPublicAttribute:(int64_t)a3
+- (void)setPublicAttribute:(int64_t)attribute
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:attribute];
   [(NSMutableDictionary *)self->_internal setObject:v4 forKeyedSubscript:&unk_1F5BBBF80];
 }
 
 - (int64_t)nearbyShareableStatus
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBBF98];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (void)setNearbyShareableStatus:(int64_t)a3
+- (void)setNearbyShareableStatus:(int64_t)status
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:status];
   [(NSMutableDictionary *)self->_internal setObject:v4 forKeyedSubscript:&unk_1F5BBBF98];
 }
 
 - (BOOL)isAutojoinDisabledUntilFirstUserJoin
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBBFC8];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isPasspointHomeOperatorNetwork
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBBFF8];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isPasspointProvisionedNetwork
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBC010];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setLastJoinedBySystemAtWeek:(unint64_t)a3
+- (void)setLastJoinedBySystemAtWeek:(unint64_t)week
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:week];
   [(NSMutableDictionary *)self->_internal setObject:v4 forKeyedSubscript:&unk_1F5BBB968];
 }
 
-- (void)setWas6GHzOnlyAtWeek:(unint64_t)a3
+- (void)setWas6GHzOnlyAtWeek:(unint64_t)week
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:week];
   [(NSMutableDictionary *)self->_internal setObject:v4 forKeyedSubscript:&unk_1F5BBB950];
 }
 
@@ -3974,8 +3974,8 @@ LABEL_14:
 - (id)filteredClassDStorageNetworkProfile
 {
   v38 = *MEMORY[0x1E69E9840];
-  v3 = [(CWFNetworkProfile *)self __classDStorageSpecificPropertiesSet];
-  if (!v3)
+  __classDStorageSpecificPropertiesSet = [(CWFNetworkProfile *)self __classDStorageSpecificPropertiesSet];
+  if (!__classDStorageSpecificPropertiesSet)
   {
     v19 = CWFGetOSLog();
     if (v19)
@@ -4003,7 +4003,7 @@ LABEL_14:
     goto LABEL_34;
   }
 
-  v4 = [(CWFNetworkProfile *)self filteredNetworkProfileWithProperties:v3];
+  v4 = [(CWFNetworkProfile *)self filteredNetworkProfileWithProperties:__classDStorageSpecificPropertiesSet];
   if (!v4)
   {
     v20 = CWFGetOSLog();
@@ -4039,8 +4039,8 @@ LABEL_35:
   }
 
   v5 = v4;
-  v6 = [v4 BSSList];
-  if (!v6)
+  bSSList = [v4 BSSList];
+  if (!bSSList)
   {
     v21 = CWFGetOSLog();
     if (v21)
@@ -4076,7 +4076,7 @@ LABEL_35:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v7 = v6;
+  v7 = bSSList;
   v8 = [v7 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (!v8)
   {
@@ -4100,15 +4100,15 @@ LABEL_35:
       v13 = *(*(&v25 + 1) + 8 * i);
       if (v13)
       {
-        v14 = [v13 filteredBSSForClassDStorage];
-        if (v14)
+        filteredBSSForClassDStorage = [v13 filteredBSSForClassDStorage];
+        if (filteredBSSForClassDStorage)
         {
           if (!v10)
           {
             v10 = [MEMORY[0x1E695DFA8] set];
           }
 
-          [v10 addObject:v14];
+          [v10 addObject:filteredBSSForClassDStorage];
         }
       }
     }
@@ -4134,154 +4134,154 @@ LABEL_20:
 - (BOOL)isHighPopularity
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBC088];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isPotentiallyCaptive
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBC0A0];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isPotentiallyMoving
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBC0B8];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isHighQuality
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBC0D0];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isSuspicious
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBC0E8];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isTCPGood
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBC100];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isLowPopularity
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBC118];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isLowQuality
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBC130];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isProminentDisplay
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBC148];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (unint64_t)popularityScore
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBC160];
-  v3 = [v2 unsignedIntValue];
+  unsignedIntValue = [v2 unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
-- (void)setPopularityScore:(unint64_t)a3
+- (void)setPopularityScore:(unint64_t)score
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:score];
   [(NSMutableDictionary *)self->_internal setObject:v4 forKeyedSubscript:&unk_1F5BBC160];
 }
 
 - (unint64_t)qualityScore
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBC178];
-  v3 = [v2 unsignedIntValue];
+  unsignedIntValue = [v2 unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
-- (void)setQualityScore:(unint64_t)a3
+- (void)setQualityScore:(unint64_t)score
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:score];
   [(NSMutableDictionary *)self->_internal setObject:v4 forKeyedSubscript:&unk_1F5BBC178];
 }
 
 - (unint64_t)totalNetworkUsage
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBC190];
-  v3 = [v2 unsignedLongLongValue];
+  unsignedLongLongValue = [v2 unsignedLongLongValue];
 
-  return v3;
+  return unsignedLongLongValue;
 }
 
-- (void)setTotalNetworkUsage:(unint64_t)a3
+- (void)setTotalNetworkUsage:(unint64_t)usage
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:usage];
   [(NSMutableDictionary *)self->_internal setObject:v4 forKeyedSubscript:&unk_1F5BBC190];
 }
 
 - (int64_t)locationOfInterest
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBC1D8];
-  v3 = [v2 unsignedIntValue];
+  unsignedIntValue = [v2 unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
-- (void)setLocationOfInterest:(int64_t)a3
+- (void)setLocationOfInterest:(int64_t)interest
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:interest];
   [(NSMutableDictionary *)self->_internal setObject:v4 forKeyedSubscript:&unk_1F5BBC1D8];
 }
 
-- (void)setNetworkOfInterestHomeState:(int64_t)a3
+- (void)setNetworkOfInterestHomeState:(int64_t)state
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:state];
   [(NSMutableDictionary *)self->_internal setObject:v4 forKeyedSubscript:&unk_1F5BBBAA0];
 }
 
-- (void)setNetworkOfInterestWorkState:(int64_t)a3
+- (void)setNetworkOfInterestWorkState:(int64_t)state
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:state];
   [(NSMutableDictionary *)self->_internal setObject:v4 forKeyedSubscript:&unk_1F5BBBAD0];
 }
 
 - (int64_t)ssidHarvestStatus
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBC1F0];
-  v3 = [v2 unsignedIntValue];
+  unsignedIntValue = [v2 unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
-- (void)setSSIDHarvestStatus:(int64_t)a3
+- (void)setSSIDHarvestStatus:(int64_t)status
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:status];
   [(NSMutableDictionary *)self->_internal setObject:v4 forKeyedSubscript:&unk_1F5BBC1F0];
 }
 
@@ -4294,63 +4294,63 @@ LABEL_20:
   return v4;
 }
 
-- (void)setNetworkQualityResponsiveness:(double)a3
+- (void)setNetworkQualityResponsiveness:(double)responsiveness
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:responsiveness];
   [(NSMutableDictionary *)self->_internal setObject:v4 forKeyedSubscript:&unk_1F5BBC250];
 }
 
 - (int)lastDisconnectReason
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBB9B0];
-  v3 = [v2 unsignedIntValue];
+  unsignedIntValue = [v2 unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
 - (BOOL)is2GHzBssPresent
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBBB00];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setPrivateMACAddressModeUserSetting:(int64_t)a3
+- (void)setPrivateMACAddressModeUserSetting:(int64_t)setting
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:setting];
   [(NSMutableDictionary *)self->_internal setObject:v4 forKeyedSubscript:&unk_1F5BBB9F8];
 }
 
-- (void)setPrivateMACAddressModeConfigurationProfileSetting:(int64_t)a3
+- (void)setPrivateMACAddressModeConfigurationProfileSetting:(int64_t)setting
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:setting];
   [(NSMutableDictionary *)self->_internal setObject:v4 forKeyedSubscript:&unk_1F5BBBA28];
 }
 
-- (void)setPrivateMACAddressEvaluationState:(int64_t)a3
+- (void)setPrivateMACAddressEvaluationState:(int64_t)state
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:state];
   [(NSMutableDictionary *)self->_internal setObject:v4 forKeyedSubscript:&unk_1F5BBBA40];
 }
 
-- (int64_t)effectivePrivateMACModeWithSystemSetting:(int64_t)a3
+- (int64_t)effectivePrivateMACModeWithSystemSetting:(int64_t)setting
 {
-  v5 = [(CWFNetworkProfile *)self privateMACAddressModeUserSetting];
-  if (v5)
+  privateMACAddressModeUserSetting = [(CWFNetworkProfile *)self privateMACAddressModeUserSetting];
+  if (privateMACAddressModeUserSetting)
   {
-    return v5;
+    return privateMACAddressModeUserSetting;
   }
 
-  v5 = [(CWFNetworkProfile *)self privateMACAddressModeConfigurationProfileSetting];
-  if (v5)
+  privateMACAddressModeUserSetting = [(CWFNetworkProfile *)self privateMACAddressModeConfigurationProfileSetting];
+  if (privateMACAddressModeUserSetting)
   {
-    return v5;
+    return privateMACAddressModeUserSetting;
   }
 
-  if (a3)
+  if (setting)
   {
-    return a3;
+    return setting;
   }
 
   if ([(CWFNetworkProfile *)self privateMACAddressDisabledByEvaluation])
@@ -4364,47 +4364,47 @@ LABEL_20:
 - (unint64_t)deploymentIssues
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBC280];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
-- (void)setDeploymentIssues:(unint64_t)a3
+- (void)setDeploymentIssues:(unint64_t)issues
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:issues];
   [(NSMutableDictionary *)self->_internal setObject:v4 forKeyedSubscript:&unk_1F5BBC280];
 }
 
-- (void)setBrokenBackhaulState:(int64_t)a3
+- (void)setBrokenBackhaulState:(int64_t)state
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:state];
   [(NSMutableDictionary *)self->_internal setObject:v4 forKeyedSubscript:&unk_1F5BBBB18];
 }
 
 - (id)__descriptionForLowDataMode
 {
-  v2 = [(CWFNetworkProfile *)self lowDataMode];
-  if (v2 > 2)
+  lowDataMode = [(CWFNetworkProfile *)self lowDataMode];
+  if (lowDataMode > 2)
   {
     return @"?";
   }
 
   else
   {
-    return off_1E86E68C8[v2];
+    return off_1E86E68C8[lowDataMode];
   }
 }
 
 - (id)__descriptionForHiddenState
 {
-  v2 = [(CWFNetworkProfile *)self hiddenState];
+  hiddenState = [(CWFNetworkProfile *)self hiddenState];
   v3 = @"?";
-  if (v2 == 2)
+  if (hiddenState == 2)
   {
     v3 = @"no";
   }
 
-  if (v2 == 1)
+  if (hiddenState == 1)
   {
     return @"yes";
   }
@@ -4417,14 +4417,14 @@ LABEL_20:
 
 - (id)__descriptionForMovingAttribute
 {
-  v2 = [(CWFNetworkProfile *)self movingAttribute];
+  movingAttribute = [(CWFNetworkProfile *)self movingAttribute];
   v3 = @"?";
-  if (v2 == 1)
+  if (movingAttribute == 1)
   {
     v3 = @"moving";
   }
 
-  if (v2 == 2)
+  if (movingAttribute == 2)
   {
     return @"stationary";
   }
@@ -4437,14 +4437,14 @@ LABEL_20:
 
 - (id)__descriptionForPublicAttribute
 {
-  v2 = [(CWFNetworkProfile *)self publicAttribute];
+  publicAttribute = [(CWFNetworkProfile *)self publicAttribute];
   v3 = @"?";
-  if (v2 == 2)
+  if (publicAttribute == 2)
   {
     v3 = @"private";
   }
 
-  if (v2 == 1)
+  if (publicAttribute == 1)
   {
     return @"public";
   }
@@ -4457,59 +4457,59 @@ LABEL_20:
 
 - (id)__descriptionForNearbyShareableStatus
 {
-  v2 = [(CWFNetworkProfile *)self nearbyShareableStatus];
-  if ((v2 - 1) > 8)
+  nearbyShareableStatus = [(CWFNetworkProfile *)self nearbyShareableStatus];
+  if ((nearbyShareableStatus - 1) > 8)
   {
     return @"?";
   }
 
   else
   {
-    return off_1E86E68E0[v2 - 1];
+    return off_1E86E68E0[nearbyShareableStatus - 1];
   }
 }
 
 - (id)__descriptionFor6EMode
 {
-  v2 = [(CWFNetworkProfile *)self disable6EMode];
-  if (v2 >= 3)
+  disable6EMode = [(CWFNetworkProfile *)self disable6EMode];
+  if (disable6EMode >= 3)
   {
-    v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"? (%ld)", v2];
+    v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"? (%ld)", disable6EMode];
   }
 
   else
   {
-    v3 = off_1E86E6928[v2];
+    v3 = off_1E86E6928[disable6EMode];
   }
 
   return v3;
 }
 
-- (id)__descriptionForBSSListWithLimit:(unint64_t)a3
+- (id)__descriptionForBSSListWithLimit:(unint64_t)limit
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v6 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"lastAssociatedAt" ascending:0];
-  v7 = [(CWFNetworkProfile *)self BSSList];
+  bSSList = [(CWFNetworkProfile *)self BSSList];
   v24[0] = v6;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
-  v9 = [v7 sortedArrayUsingDescriptors:v8];
+  v9 = [bSSList sortedArrayUsingDescriptors:v8];
 
   if ([v9 count])
   {
-    [v5 appendString:@"bssList=["];
+    [string appendString:@"bssList=["];
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
     v10 = [v9 count];
-    v11 = a3;
-    if (v10 <= a3)
+    limitCopy = limit;
+    if (v10 <= limit)
     {
-      v11 = [v9 count];
+      limitCopy = [v9 count];
     }
 
-    v12 = [v9 subarrayWithRange:{0, v11}];
+    v12 = [v9 subarrayWithRange:{0, limitCopy}];
     v13 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v13)
     {
@@ -4524,7 +4524,7 @@ LABEL_20:
             objc_enumerationMutation(v12);
           }
 
-          [v5 appendFormat:@"(%@), ", *(*(&v19 + 1) + 8 * i)];
+          [string appendFormat:@"(%@), ", *(*(&v19 + 1) + 8 * i)];
         }
 
         v14 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -4533,65 +4533,65 @@ LABEL_20:
       while (v14);
     }
 
-    if ([v9 count] > a3)
+    if ([v9 count] > limit)
     {
-      [v5 appendString:{@"..., "}];
+      [string appendString:{@"..., "}];
     }
 
-    [v5 deleteCharactersInRange:{objc_msgSend(v5, "length") - 2, 2}];
-    [v5 appendString:{@"], "}];
+    [string deleteCharactersInRange:{objc_msgSend(string, "length") - 2, 2}];
+    [string appendString:{@"], "}];
   }
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return string;
 }
 
 - (id)__descriptionForNOIHomeState
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  v4 = [(CWFNetworkProfile *)self networkOfInterestHomeStateUpdatedAt];
+  string = [MEMORY[0x1E696AD60] string];
+  networkOfInterestHomeStateUpdatedAt = [(CWFNetworkProfile *)self networkOfInterestHomeStateUpdatedAt];
 
-  if (v4)
+  if (networkOfInterestHomeStateUpdatedAt)
   {
-    v5 = [(CWFNetworkProfile *)self networkOfInterestHomeState];
-    v6 = [(CWFNetworkProfile *)self networkOfInterestHomeStateUpdatedAt];
-    v7 = sub_1E0BCC248(v6);
+    networkOfInterestHomeState = [(CWFNetworkProfile *)self networkOfInterestHomeState];
+    networkOfInterestHomeStateUpdatedAt2 = [(CWFNetworkProfile *)self networkOfInterestHomeStateUpdatedAt];
+    v7 = sub_1E0BCC248(networkOfInterestHomeStateUpdatedAt2);
     v8 = v7;
-    if ((v5 - 1) > 2)
+    if ((networkOfInterestHomeState - 1) > 2)
     {
       v9 = @"HOME-UNKNOWN(%@)";
     }
 
     else
     {
-      v9 = off_1E86E6940[v5 - 1];
+      v9 = off_1E86E6940[networkOfInterestHomeState - 1];
     }
 
-    [v3 appendFormat:v9, v7];
+    [string appendFormat:v9, v7];
   }
 
-  return v3;
+  return string;
 }
 
 - (id)__descriptionForNOIWorkState
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  v4 = [(CWFNetworkProfile *)self networkOfInterestWorkStateUpdatedAt];
+  string = [MEMORY[0x1E696AD60] string];
+  networkOfInterestWorkStateUpdatedAt = [(CWFNetworkProfile *)self networkOfInterestWorkStateUpdatedAt];
 
-  if (v4)
+  if (networkOfInterestWorkStateUpdatedAt)
   {
-    v5 = [(CWFNetworkProfile *)self networkOfInterestWorkState];
-    v6 = [(CWFNetworkProfile *)self networkOfInterestWorkStateUpdatedAt];
-    v7 = sub_1E0BCC248(v6);
+    networkOfInterestWorkState = [(CWFNetworkProfile *)self networkOfInterestWorkState];
+    networkOfInterestWorkStateUpdatedAt2 = [(CWFNetworkProfile *)self networkOfInterestWorkStateUpdatedAt];
+    v7 = sub_1E0BCC248(networkOfInterestWorkStateUpdatedAt2);
     v8 = v7;
     v9 = @"WORK-UNKNOWN(%@)";
-    if (v5 == 2)
+    if (networkOfInterestWorkState == 2)
     {
       v9 = @"NOT-WORK(%@)";
     }
 
-    if (v5 == 1)
+    if (networkOfInterestWorkState == 1)
     {
       v10 = @"WORK(%@)";
     }
@@ -4601,270 +4601,270 @@ LABEL_20:
       v10 = v9;
     }
 
-    [v3 appendFormat:v10, v7];
+    [string appendFormat:v10, v7];
   }
 
-  return v3;
+  return string;
 }
 
 - (NSString)debugDescription
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  v4 = [(CWFNetworkProfile *)self __basicDescription];
-  [v3 appendString:v4];
+  string = [MEMORY[0x1E696AD60] string];
+  __basicDescription = [(CWFNetworkProfile *)self __basicDescription];
+  [string appendString:__basicDescription];
 
-  [v3 appendString:{@", "}];
+  [string appendString:{@", "}];
   if ([(CWFNetworkProfile *)self isEAP]&& [(CWFNetworkProfile *)self isSystemMode])
   {
-    [v3 appendString:{@"systemMode=yes, "}];
+    [string appendString:{@"systemMode=yes, "}];
   }
 
   if ([(CWFNetworkProfile *)self transitionDisabledFlags])
   {
     v5 = sub_1E0BEE49C([(CWFNetworkProfile *)self transitionDisabledFlags]);
-    [v3 appendFormat:@"transitionDisabledFlags=%@, ", v5];
+    [string appendFormat:@"transitionDisabledFlags=%@, ", v5];
   }
 
   if ([(CWFNetworkProfile *)self movingAttribute])
   {
-    v6 = [(CWFNetworkProfile *)self __descriptionForMovingAttribute];
-    [v3 appendFormat:@"moving=%@, ", v6];
+    __descriptionForMovingAttribute = [(CWFNetworkProfile *)self __descriptionForMovingAttribute];
+    [string appendFormat:@"moving=%@, ", __descriptionForMovingAttribute];
   }
 
   if ([(CWFNetworkProfile *)self publicAttribute])
   {
-    v7 = [(CWFNetworkProfile *)self __descriptionForPublicAttribute];
-    [v3 appendFormat:@"public=%@, ", v7];
+    __descriptionForPublicAttribute = [(CWFNetworkProfile *)self __descriptionForPublicAttribute];
+    [string appendFormat:@"public=%@, ", __descriptionForPublicAttribute];
   }
 
   if ([(CWFNetworkProfile *)self nearbyShareableStatus])
   {
-    v8 = [(CWFNetworkProfile *)self __descriptionForNearbyShareableStatus];
-    [v3 appendFormat:@"nearbyShareStatus=%@, ", v8];
+    __descriptionForNearbyShareableStatus = [(CWFNetworkProfile *)self __descriptionForNearbyShareableStatus];
+    [string appendFormat:@"nearbyShareStatus=%@, ", __descriptionForNearbyShareableStatus];
   }
 
   if (![(CWFNetworkProfile *)self isPrivacyProxyEnabled])
   {
-    [v3 appendString:{@"privacyProxy=no, "}];
+    [string appendString:{@"privacyProxy=no, "}];
   }
 
   if ([(CWFNetworkProfile *)self isAutojoinDisabledUntilFirstUserJoin])
   {
-    [v3 appendString:{@"disableAutojoinUntilFirstUserJoin=yes, "}];
+    [string appendString:{@"disableAutojoinUntilFirstUserJoin=yes, "}];
   }
 
-  v9 = [(CWFNetworkProfile *)self networkDisabledUntilDate];
+  networkDisabledUntilDate = [(CWFNetworkProfile *)self networkDisabledUntilDate];
 
-  if (v9)
+  if (networkDisabledUntilDate)
   {
-    v10 = [(CWFNetworkProfile *)self networkDisabledUntilDate];
-    v11 = sub_1E0BCC248(v10);
-    [v3 appendFormat:@"networkDisabledUntilDate=%@, ", v11];
+    networkDisabledUntilDate2 = [(CWFNetworkProfile *)self networkDisabledUntilDate];
+    v11 = sub_1E0BCC248(networkDisabledUntilDate2);
+    [string appendFormat:@"networkDisabledUntilDate=%@, ", v11];
   }
 
   if ([(CWFNetworkProfile *)self isPasspointHomeOperatorNetwork])
   {
-    [v3 appendString:{@"passpointHomeOperatorNetwork=yes, "}];
+    [string appendString:{@"passpointHomeOperatorNetwork=yes, "}];
   }
 
   if ([(CWFNetworkProfile *)self isPasspointProvisionedNetwork])
   {
-    [v3 appendString:{@"passpointProvisionedNetwork=yes, "}];
+    [string appendString:{@"passpointProvisionedNetwork=yes, "}];
   }
 
-  v12 = [(CWFNetworkProfile *)self passpointAccountName];
+  passpointAccountName = [(CWFNetworkProfile *)self passpointAccountName];
 
-  if (v12)
+  if (passpointAccountName)
   {
-    v13 = [(CWFNetworkProfile *)self passpointAccountName];
-    [v3 appendFormat:@"passpointAccountName=%@, ", v13];
+    passpointAccountName2 = [(CWFNetworkProfile *)self passpointAccountName];
+    [string appendFormat:@"passpointAccountName=%@, ", passpointAccountName2];
   }
 
-  v14 = [(CWFNetworkProfile *)self payloadIdentifier];
+  payloadIdentifier = [(CWFNetworkProfile *)self payloadIdentifier];
 
-  if (v14)
+  if (payloadIdentifier)
   {
-    v15 = [(CWFNetworkProfile *)self payloadIdentifier];
-    [v3 appendFormat:@"payloadIdentifier=%@, ", v15];
+    payloadIdentifier2 = [(CWFNetworkProfile *)self payloadIdentifier];
+    [string appendFormat:@"payloadIdentifier=%@, ", payloadIdentifier2];
   }
 
   if ([(CWFNetworkProfile *)self isHighPopularity])
   {
-    [v3 appendString:{@"highPopularity=yes, "}];
+    [string appendString:{@"highPopularity=yes, "}];
   }
 
   if ([(CWFNetworkProfile *)self isHighQuality])
   {
-    [v3 appendString:{@"highQuality=yes, "}];
+    [string appendString:{@"highQuality=yes, "}];
   }
 
   if ([(CWFNetworkProfile *)self isPotentiallyCaptive])
   {
-    [v3 appendString:{@"potentiallyCaptive=yes, "}];
+    [string appendString:{@"potentiallyCaptive=yes, "}];
   }
 
   if ([(CWFNetworkProfile *)self isPotentiallyMoving])
   {
-    [v3 appendString:{@"potentiallyMoving=yes, "}];
+    [string appendString:{@"potentiallyMoving=yes, "}];
   }
 
   if ([(CWFNetworkProfile *)self isSuspicious])
   {
-    [v3 appendString:{@"suspicious=yes, "}];
+    [string appendString:{@"suspicious=yes, "}];
   }
 
   if ([(CWFNetworkProfile *)self isTCPGood])
   {
-    [v3 appendString:{@"tcpGood=yes, "}];
+    [string appendString:{@"tcpGood=yes, "}];
   }
 
   if ([(CWFNetworkProfile *)self isLowPopularity])
   {
-    [v3 appendString:{@"lowPopularity=yes, "}];
+    [string appendString:{@"lowPopularity=yes, "}];
   }
 
   if ([(CWFNetworkProfile *)self isLowQuality])
   {
-    [v3 appendString:{@"lowQuality=yes, "}];
+    [string appendString:{@"lowQuality=yes, "}];
   }
 
   if ([(CWFNetworkProfile *)self isProminentDisplay])
   {
-    [v3 appendString:{@"prominentDisplay=yes, "}];
+    [string appendString:{@"prominentDisplay=yes, "}];
   }
 
   if ([(CWFNetworkProfile *)self popularityScore])
   {
-    [v3 appendFormat:@"popularityScore=%lu, ", -[CWFNetworkProfile popularityScore](self, "popularityScore")];
+    [string appendFormat:@"popularityScore=%lu, ", -[CWFNetworkProfile popularityScore](self, "popularityScore")];
   }
 
   if ([(CWFNetworkProfile *)self qualityScore])
   {
-    [v3 appendFormat:@"qualityScore=%lu, ", -[CWFNetworkProfile qualityScore](self, "qualityScore")];
+    [string appendFormat:@"qualityScore=%lu, ", -[CWFNetworkProfile qualityScore](self, "qualityScore")];
   }
 
   if ([(CWFNetworkProfile *)self totalNetworkUsage])
   {
-    [v3 appendFormat:@"totalNetworkUsage=%lu, ", -[CWFNetworkProfile totalNetworkUsage](self, "totalNetworkUsage")];
+    [string appendFormat:@"totalNetworkUsage=%lu, ", -[CWFNetworkProfile totalNetworkUsage](self, "totalNetworkUsage")];
   }
 
-  v16 = [(CWFNetworkProfile *)self expirationDate];
+  expirationDate = [(CWFNetworkProfile *)self expirationDate];
 
-  if (v16)
+  if (expirationDate)
   {
-    v17 = [(CWFNetworkProfile *)self expirationDate];
-    v18 = sub_1E0BCC248(v17);
-    [v3 appendFormat:@"expirationDate=%@, ", v18];
+    expirationDate2 = [(CWFNetworkProfile *)self expirationDate];
+    v18 = sub_1E0BCC248(expirationDate2);
+    [string appendFormat:@"expirationDate=%@, ", v18];
   }
 
-  v19 = [(CWFNetworkProfile *)self lastHomeForceFixDate];
+  lastHomeForceFixDate = [(CWFNetworkProfile *)self lastHomeForceFixDate];
 
-  if (v19)
+  if (lastHomeForceFixDate)
   {
-    v20 = [(CWFNetworkProfile *)self lastHomeForceFixDate];
-    v21 = sub_1E0BCC248(v20);
-    [v3 appendFormat:@"lastHomeForceFixDate=%@, ", v21];
+    lastHomeForceFixDate2 = [(CWFNetworkProfile *)self lastHomeForceFixDate];
+    v21 = sub_1E0BCC248(lastHomeForceFixDate2);
+    [string appendFormat:@"lastHomeForceFixDate=%@, ", v21];
   }
 
   if ([(CWFNetworkProfile *)self locationOfInterest])
   {
-    [v3 appendFormat:@"locationOfInterest=%lu, ", -[CWFNetworkProfile locationOfInterest](self, "locationOfInterest")];
+    [string appendFormat:@"locationOfInterest=%lu, ", -[CWFNetworkProfile locationOfInterest](self, "locationOfInterest")];
   }
 
   if ([(CWFNetworkProfile *)self networkOfInterestHomeState])
   {
-    [v3 appendString:{@"networkOfInterestHomeState=yes, "}];
+    [string appendString:{@"networkOfInterestHomeState=yes, "}];
   }
 
   if ([(CWFNetworkProfile *)self networkOfInterestWorkState])
   {
-    [v3 appendString:{@"networkOfInterestWorkState=yes, "}];
+    [string appendString:{@"networkOfInterestWorkState=yes, "}];
   }
 
   if ([(CWFNetworkProfile *)self ssidHarvestStatus])
   {
-    [v3 appendFormat:@"ssidHarvestStatus=%lu, ", -[CWFNetworkProfile ssidHarvestStatus](self, "ssidHarvestStatus")];
+    [string appendFormat:@"ssidHarvestStatus=%lu, ", -[CWFNetworkProfile ssidHarvestStatus](self, "ssidHarvestStatus")];
   }
 
-  v22 = [(CWFNetworkProfile *)self walletIdentifier];
+  walletIdentifier = [(CWFNetworkProfile *)self walletIdentifier];
 
-  if (v22)
+  if (walletIdentifier)
   {
-    v23 = [(CWFNetworkProfile *)self walletIdentifier];
-    [v3 appendFormat:@"walletIdentifier=%@, ", v23];
+    walletIdentifier2 = [(CWFNetworkProfile *)self walletIdentifier];
+    [string appendFormat:@"walletIdentifier=%@, ", walletIdentifier2];
   }
 
-  v24 = [(CWFNetworkProfile *)self OTASystemInfoBeaconProbeList];
+  oTASystemInfoBeaconProbeList = [(CWFNetworkProfile *)self OTASystemInfoBeaconProbeList];
 
-  if (v24)
+  if (oTASystemInfoBeaconProbeList)
   {
-    v25 = [(CWFNetworkProfile *)self OTASystemInfoBeaconProbeList];
-    [v3 appendFormat:@"OTASystemInfoBeaconProbeList=%@, ", v25];
+    oTASystemInfoBeaconProbeList2 = [(CWFNetworkProfile *)self OTASystemInfoBeaconProbeList];
+    [string appendFormat:@"OTASystemInfoBeaconProbeList=%@, ", oTASystemInfoBeaconProbeList2];
   }
 
-  v26 = [(CWFNetworkProfile *)self SIMIdentifiers];
+  sIMIdentifiers = [(CWFNetworkProfile *)self SIMIdentifiers];
 
-  if (v26)
+  if (sIMIdentifiers)
   {
-    v27 = [(CWFNetworkProfile *)self SIMIdentifiers];
-    [v3 appendFormat:@"SIMIdentifiers=%@, ", v27];
+    sIMIdentifiers2 = [(CWFNetworkProfile *)self SIMIdentifiers];
+    [string appendFormat:@"SIMIdentifiers=%@, ", sIMIdentifiers2];
   }
 
   [(CWFNetworkProfile *)self networkQualityResponsiveness];
   if (v28 > 0.0)
   {
     [(CWFNetworkProfile *)self networkQualityResponsiveness];
-    [v3 appendFormat:@"networkQualityResponsiveness=%f, ", v29];
+    [string appendFormat:@"networkQualityResponsiveness=%f, ", v29];
   }
 
-  v30 = [(CWFNetworkProfile *)self networkQualityDate];
+  networkQualityDate = [(CWFNetworkProfile *)self networkQualityDate];
 
-  if (v30)
+  if (networkQualityDate)
   {
-    v31 = [(CWFNetworkProfile *)self networkQualityDate];
-    v32 = sub_1E0BCC248(v31);
-    [v3 appendFormat:@"networkQualityDate=%@, ", v32];
+    networkQualityDate2 = [(CWFNetworkProfile *)self networkQualityDate];
+    v32 = sub_1E0BCC248(networkQualityDate2);
+    [string appendFormat:@"networkQualityDate=%@, ", v32];
   }
 
   if ([(CWFNetworkProfile *)self isPublicAirPlayNetwork])
   {
-    [v3 appendString:{@"publicAirPlayNetwork=yes, "}];
+    [string appendString:{@"publicAirPlayNetwork=yes, "}];
   }
 
   if ([(CWFNetworkProfile *)self is2GHzBssPresent])
   {
-    [v3 appendString:{@"2GHBssPresent=yes, "}];
+    [string appendString:{@"2GHBssPresent=yes, "}];
   }
 
   v33 = [(CWFNetworkProfile *)self __descriptionForBSSListWithLimit:-1];
-  [v3 appendString:v33];
+  [string appendString:v33];
 
-  if ([v3 hasSuffix:{@", "}])
+  if ([string hasSuffix:{@", "}])
   {
-    [v3 deleteCharactersInRange:{objc_msgSend(v3, "length") - 2, 2}];
+    [string deleteCharactersInRange:{objc_msgSend(string, "length") - 2, 2}];
   }
 
-  v34 = v3;
+  v34 = string;
 
-  return v3;
+  return string;
 }
 
-- (BOOL)isEqualToNetworkProfile:(id)a3
+- (BOOL)isEqualToNetworkProfile:(id)profile
 {
-  v5 = a3;
-  v6 = [(CWFNetworkProfile *)self SSID];
-  v7 = [v5 SSID];
-  if (v6 != v7)
+  profileCopy = profile;
+  sSID = [(CWFNetworkProfile *)self SSID];
+  sSID2 = [profileCopy SSID];
+  if (sSID != sSID2)
   {
-    v35 = [(CWFNetworkProfile *)self SSID];
-    if (!v35)
+    sSID3 = [(CWFNetworkProfile *)self SSID];
+    if (!sSID3)
     {
       v17 = 0;
       goto LABEL_32;
     }
 
-    v8 = [v5 SSID];
-    if (!v8)
+    sSID4 = [profileCopy SSID];
+    if (!sSID4)
     {
       v17 = 0;
 LABEL_31:
@@ -4872,9 +4872,9 @@ LABEL_31:
       goto LABEL_32;
     }
 
-    v9 = [(CWFNetworkProfile *)self SSID];
-    v10 = [v5 SSID];
-    if (![v9 isEqual:v10])
+    sSID5 = [(CWFNetworkProfile *)self SSID];
+    sSID6 = [profileCopy SSID];
+    if (![sSID5 isEqual:sSID6])
     {
       v17 = 0;
 LABEL_30:
@@ -4882,28 +4882,28 @@ LABEL_30:
       goto LABEL_31;
     }
 
-    v32 = v10;
-    v33 = v9;
-    v34 = v8;
+    v32 = sSID6;
+    v33 = sSID5;
+    v34 = sSID4;
   }
 
-  v11 = [(CWFNetworkProfile *)self domainName];
-  v12 = [v5 domainName];
-  if (v11 != v12)
+  domainName = [(CWFNetworkProfile *)self domainName];
+  domainName2 = [profileCopy domainName];
+  if (domainName != domainName2)
   {
-    v13 = [(CWFNetworkProfile *)self domainName];
-    if (v13)
+    domainName3 = [(CWFNetworkProfile *)self domainName];
+    if (domainName3)
     {
-      v14 = v13;
-      v15 = [v5 domainName];
-      if (v15)
+      v14 = domainName3;
+      domainName4 = [profileCopy domainName];
+      if (domainName4)
       {
-        v3 = [(CWFNetworkProfile *)self domainName];
-        v16 = [v5 domainName];
-        if ([v3 isEqual:v16])
+        domainName5 = [(CWFNetworkProfile *)self domainName];
+        domainName6 = [profileCopy domainName];
+        if ([domainName5 isEqual:domainName6])
         {
-          v28 = v16;
-          v29 = v15;
+          v28 = domainName6;
+          v29 = domainName4;
           v30 = v14;
           goto LABEL_12;
         }
@@ -4915,14 +4915,14 @@ LABEL_30:
   }
 
 LABEL_12:
-  v18 = [(CWFNetworkProfile *)self internal];
-  v19 = [v5 internal];
-  v20 = v19;
-  if (v18 == v19)
+  internal = [(CWFNetworkProfile *)self internal];
+  internal2 = [profileCopy internal];
+  v20 = internal2;
+  if (internal == internal2)
   {
 
     v17 = 1;
-    if (v11 == v12)
+    if (domainName == domainName2)
     {
       goto LABEL_28;
     }
@@ -4930,20 +4930,20 @@ LABEL_12:
 
   else
   {
-    v31 = v3;
-    v21 = [(CWFNetworkProfile *)self internal];
-    if (v21)
+    v31 = domainName5;
+    internal3 = [(CWFNetworkProfile *)self internal];
+    if (internal3)
     {
-      v22 = v21;
-      v23 = [v5 internal];
-      if (v23)
+      v22 = internal3;
+      internal4 = [profileCopy internal];
+      if (internal4)
       {
-        v27 = v23;
-        v26 = [(CWFNetworkProfile *)self internal];
-        v24 = [v5 internal];
-        v17 = [v26 isEqual:v24];
+        v27 = internal4;
+        internal5 = [(CWFNetworkProfile *)self internal];
+        internal6 = [profileCopy internal];
+        v17 = [internal5 isEqual:internal6];
 
-        v23 = v27;
+        internal4 = v27;
       }
 
       else
@@ -4958,8 +4958,8 @@ LABEL_12:
       v17 = 0;
     }
 
-    v3 = v31;
-    if (v11 == v12)
+    domainName5 = v31;
+    if (domainName == domainName2)
     {
       goto LABEL_28;
     }
@@ -4967,10 +4967,10 @@ LABEL_12:
 
 LABEL_28:
 LABEL_29:
-  v9 = v33;
-  v8 = v34;
-  v10 = v32;
-  if (v6 != v7)
+  sSID5 = v33;
+  sSID4 = v34;
+  sSID6 = v32;
+  if (sSID != sSID2)
   {
     goto LABEL_30;
   }
@@ -4980,18 +4980,18 @@ LABEL_32:
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CWFNetworkProfile *)self isEqualToNetworkProfile:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CWFNetworkProfile *)self isEqualToNetworkProfile:v5];
   }
 
   return v6;
@@ -4999,17 +4999,17 @@ LABEL_32:
 
 - (unint64_t)hash
 {
-  v3 = [(CWFNetworkProfile *)self SSID];
-  v4 = [v3 hash];
-  v5 = [(CWFNetworkProfile *)self domainName];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(CWFNetworkProfile *)self internal];
-  v8 = [v7 hash];
+  sSID = [(CWFNetworkProfile *)self SSID];
+  v4 = [sSID hash];
+  domainName = [(CWFNetworkProfile *)self domainName];
+  v6 = [domainName hash] ^ v4;
+  internal = [(CWFNetworkProfile *)self internal];
+  v8 = [internal hash];
 
   return v6 ^ v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[CWFNetworkProfile allocWithZone:?]];
   v5 = v4;
@@ -5027,9 +5027,9 @@ LABEL_32:
   return v5;
 }
 
-- (CWFNetworkProfile)initWithCoder:(id)a3
+- (CWFNetworkProfile)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = CWFNetworkProfile;
   v5 = [(CWFNetworkProfile *)&v19 init];
@@ -5044,7 +5044,7 @@ LABEL_32:
     v12 = objc_opt_class();
     v13 = objc_opt_class();
     v14 = [v6 setWithObjects:{v7, v8, v9, v10, v11, v12, v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"_internal"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"_internal"];
     v16 = [v15 mutableCopy];
     internal = v5->_internal;
     v5->_internal = v16;
@@ -5053,41 +5053,41 @@ LABEL_32:
   return v5;
 }
 
-- (BOOL)wasManuallyJoinedRecentlyInProximityOf:(id)a3
+- (BOOL)wasManuallyJoinedRecentlyInProximityOf:(id)of
 {
-  v4 = a3;
+  ofCopy = of;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  v5 = [(CWFNetworkProfile *)self BSSList];
-  if (![v5 count])
+  bSSList = [(CWFNetworkProfile *)self BSSList];
+  if (![bSSList count])
   {
     goto LABEL_5;
   }
 
-  v6 = [(CWFNetworkProfile *)self lastJoinedByUserAt];
-  if (!v6)
+  lastJoinedByUserAt = [(CWFNetworkProfile *)self lastJoinedByUserAt];
+  if (!lastJoinedByUserAt)
   {
     goto LABEL_5;
   }
 
-  v7 = [(CWFNetworkProfile *)self lastJoinedByUserAt];
-  v8 = [MEMORY[0x1E695DF00] date];
-  v9 = sub_1E0BF1C80(v7, 5, v8);
+  lastJoinedByUserAt2 = [(CWFNetworkProfile *)self lastJoinedByUserAt];
+  date = [MEMORY[0x1E695DF00] date];
+  v9 = sub_1E0BF1C80(lastJoinedByUserAt2, 5, date);
 
   if (!v9)
   {
-    v10 = [(CWFNetworkProfile *)self BSSList];
+    bSSList2 = [(CWFNetworkProfile *)self BSSList];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = sub_1E0C2EBE4;
     v13[3] = &unk_1E86E6890;
-    v14 = v4;
+    v14 = ofCopy;
     v15 = &v16;
-    [v10 enumerateObjectsUsingBlock:v13];
+    [bSSList2 enumerateObjectsUsingBlock:v13];
 
-    v5 = v14;
+    bSSList = v14;
 LABEL_5:
   }
 
@@ -5106,9 +5106,9 @@ LABEL_5:
     {
       if (![(CWFNetworkProfile *)self wasCaptive]&& ![(CWFNetworkProfile *)self isCaptive]&& ![(CWFNetworkProfile *)self bypassCaptive])
       {
-        v3 = [(CWFNetworkProfile *)self captiveWebsheetLoginDate];
+        captiveWebsheetLoginDate = [(CWFNetworkProfile *)self captiveWebsheetLoginDate];
 
-        if (!v3)
+        if (!captiveWebsheetLoginDate)
         {
           return 1;
         }
@@ -5122,27 +5122,27 @@ LABEL_5:
 - (id)filteredTombstoneNetworkProfile
 {
   v3 = MEMORY[0x1E695DFD8];
-  v4 = [(CWFNetworkProfile *)self __tombstoneSpecificProperties];
-  v5 = [v3 setWithArray:v4];
+  __tombstoneSpecificProperties = [(CWFNetworkProfile *)self __tombstoneSpecificProperties];
+  v5 = [v3 setWithArray:__tombstoneSpecificProperties];
   v6 = [(CWFNetworkProfile *)self filteredNetworkProfileWithProperties:v5];
 
   return v6;
 }
 
-- (int64_t)compareReceivedFromDeviceFlags:(id)a3
+- (int64_t)compareReceivedFromDeviceFlags:(id)flags
 {
-  v4 = a3;
-  v5 = [(CWFNetworkProfile *)self receivedFromDeviceFlags];
-  v6 = [v4 receivedFromDeviceFlags];
+  flagsCopy = flags;
+  receivedFromDeviceFlags = [(CWFNetworkProfile *)self receivedFromDeviceFlags];
+  receivedFromDeviceFlags2 = [flagsCopy receivedFromDeviceFlags];
 
-  v7 = *&v6 & 0x80000;
+  v7 = *&receivedFromDeviceFlags2 & 0x80000;
   v8 = 1;
-  if ((*&v6 & 0x20000) != 0)
+  if ((*&receivedFromDeviceFlags2 & 0x20000) != 0)
   {
     v8 = -1;
   }
 
-  if ((*&v6 & 0x20000) == (*&v5 & 0x20000))
+  if ((*&receivedFromDeviceFlags2 & 0x20000) == (*&receivedFromDeviceFlags & 0x20000))
   {
     v9 = 0;
   }
@@ -5153,12 +5153,12 @@ LABEL_5:
   }
 
   v10 = 1;
-  if ((v6 & 0x4000) != 0)
+  if ((receivedFromDeviceFlags2 & 0x4000) != 0)
   {
     v10 = -1;
   }
 
-  if ((v6 & 0x4000) == (v5 & 0x4000))
+  if ((receivedFromDeviceFlags2 & 0x4000) == (receivedFromDeviceFlags & 0x4000))
   {
     v11 = v9;
   }
@@ -5174,7 +5174,7 @@ LABEL_5:
     v12 = -1;
   }
 
-  if (v7 == (*&v5 & 0x80000))
+  if (v7 == (*&receivedFromDeviceFlags & 0x80000))
   {
     return v11;
   }
@@ -5188,14 +5188,14 @@ LABEL_5:
 - (unint64_t)receivedFromDeviceFlags
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBC2C8];
-  v3 = [v2 unsignedLongLongValue];
+  unsignedLongLongValue = [v2 unsignedLongLongValue];
 
-  return v3;
+  return unsignedLongLongValue;
 }
 
-- (void)setReceivedFromDeviceFlags:(unint64_t)a3
+- (void)setReceivedFromDeviceFlags:(unint64_t)flags
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:flags];
   [(NSMutableDictionary *)self->_internal setObject:v4 forKeyedSubscript:&unk_1F5BBC2C8];
 }
 
@@ -5203,8 +5203,8 @@ LABEL_5:
 {
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   v4 = v3;
-  v5 = [(CWFNetworkProfile *)self addedAt];
-  [(NSDate *)v5 timeIntervalSinceReferenceDate];
+  addedAt = [(CWFNetworkProfile *)self addedAt];
+  [(NSDate *)addedAt timeIntervalSinceReferenceDate];
   if (v6 <= v4)
   {
     v7 = v6;
@@ -5215,8 +5215,8 @@ LABEL_5:
     v7 = 0.0;
   }
 
-  v8 = [(CWFNetworkProfile *)self lastJoinedByUserAt];
-  [(NSDate *)v8 timeIntervalSinceReferenceDate];
+  lastJoinedByUserAt = [(CWFNetworkProfile *)self lastJoinedByUserAt];
+  [(NSDate *)lastJoinedByUserAt timeIntervalSinceReferenceDate];
   if (v9 > v4)
   {
     v9 = 0.0;
@@ -5224,12 +5224,12 @@ LABEL_5:
 
   if (v7 <= v9)
   {
-    v10 = v8;
+    v10 = lastJoinedByUserAt;
   }
 
   else
   {
-    v10 = v5;
+    v10 = addedAt;
   }
 
   v11 = v10;
@@ -5237,49 +5237,49 @@ LABEL_5:
   return v10;
 }
 
-- (CWFNetworkProfile)initWithCloudSyncExternalForm:(id)a3
+- (CWFNetworkProfile)initWithCloudSyncExternalForm:(id)form
 {
   v42[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  formCopy = form;
   v5 = [(CWFNetworkProfile *)self init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"SSID"];
+    v6 = [formCopy objectForKeyedSubscript:@"SSID"];
     v7 = [v6 dataUsingEncoding:4];
     [(CWFNetworkProfile *)v5 setSSID:v7];
 
-    v8 = [v4 objectForKeyedSubscript:@"isWEP"];
-    v9 = [v8 BOOLValue];
+    v8 = [formCopy objectForKeyedSubscript:@"isWEP"];
+    bOOLValue = [v8 BOOLValue];
 
-    v10 = [v4 objectForKeyedSubscript:@"isWPA"];
-    v11 = [v10 BOOLValue];
+    v10 = [formCopy objectForKeyedSubscript:@"isWPA"];
+    bOOLValue2 = [v10 BOOLValue];
 
-    v12 = [v4 objectForKeyedSubscript:@"isWPA2"];
-    v13 = [v12 BOOLValue];
+    v12 = [formCopy objectForKeyedSubscript:@"isWPA2"];
+    bOOLValue3 = [v12 BOOLValue];
 
-    v14 = [v4 objectForKeyedSubscript:@"isWPA3"];
-    v15 = [v14 BOOLValue];
+    v14 = [formCopy objectForKeyedSubscript:@"isWPA3"];
+    bOOLValue4 = [v14 BOOLValue];
 
-    v16 = [v4 objectForKeyedSubscript:@"isWAPI"];
-    v17 = [v16 BOOLValue];
+    v16 = [formCopy objectForKeyedSubscript:@"isWAPI"];
+    bOOLValue5 = [v16 BOOLValue];
 
-    v18 = v9;
-    if (v17)
+    v18 = bOOLValue;
+    if (bOOLValue5)
     {
-      v18 = v9 | 2;
+      v18 = bOOLValue | 2;
     }
 
-    if (v11)
+    if (bOOLValue2)
     {
       v18 |= 4uLL;
     }
 
-    if (v13)
+    if (bOOLValue3)
     {
       v18 |= 0x10uLL;
     }
 
-    if (v15)
+    if (bOOLValue4)
     {
       v19 = v18 | 0x40;
     }
@@ -5290,21 +5290,21 @@ LABEL_5:
     }
 
     [(CWFNetworkProfile *)v5 setSupportedSecurityTypes:v19];
-    [(CWFNetworkProfile *)v5 setWAPISubtype:v17];
+    [(CWFNetworkProfile *)v5 setWAPISubtype:bOOLValue5];
     [(CWFNetworkProfile *)v5 setWEPSubtype:0];
-    v20 = [v4 objectForKeyedSubscript:@"addedAt"];
+    v20 = [formCopy objectForKeyedSubscript:@"addedAt"];
     [(CWFNetworkProfile *)v5 setAddedAt:v20];
 
-    v21 = [v4 objectForKeyedSubscript:@"addedByVersion"];
+    v21 = [formCopy objectForKeyedSubscript:@"addedByVersion"];
     [(CWFNetworkProfile *)v5 setAddedByVersion:v21];
 
-    v22 = [v4 objectForKeyedSubscript:@"removedAt"];
+    v22 = [formCopy objectForKeyedSubscript:@"removedAt"];
     [(CWFNetworkProfile *)v5 setRemovedAt:v22];
 
-    v23 = [v4 objectForKeyedSubscript:@"removedByVersion"];
+    v23 = [formCopy objectForKeyedSubscript:@"removedByVersion"];
     [(CWFNetworkProfile *)v5 setRemovedByVersion:v23];
 
-    v24 = [v4 objectForKeyedSubscript:@"lowDataMode"];
+    v24 = [formCopy objectForKeyedSubscript:@"lowDataMode"];
     v25 = v24;
     if (v24)
     {
@@ -5321,24 +5321,24 @@ LABEL_5:
       [(CWFNetworkProfile *)v5 setLowDataMode:v26];
     }
 
-    v27 = [v4 objectForKeyedSubscript:@"lastJoinedByUserAt"];
+    v27 = [formCopy objectForKeyedSubscript:@"lastJoinedByUserAt"];
     [(CWFNetworkProfile *)v5 setLastJoinedByUserAt:v27];
 
-    v28 = [v4 objectForKeyedSubscript:@"lastJoinedBySystemAtWeek"];
+    v28 = [formCopy objectForKeyedSubscript:@"lastJoinedBySystemAtWeek"];
 
     if (v28)
     {
       -[CWFNetworkProfile setLastJoinedBySystemAtWeek:](v5, "setLastJoinedBySystemAtWeek:", [v28 unsignedIntegerValue]);
     }
 
-    v29 = [v4 objectForKeyedSubscript:@"isPrivacyProxyEnabled"];
+    v29 = [formCopy objectForKeyedSubscript:@"isPrivacyProxyEnabled"];
 
     if (v29)
     {
       -[CWFNetworkProfile setPrivacyProxyEnabled:](v5, "setPrivacyProxyEnabled:", [v29 BOOLValue]);
     }
 
-    v30 = [v4 objectForKeyedSubscript:@"isMoving"];
+    v30 = [formCopy objectForKeyedSubscript:@"isMoving"];
 
     if (v30)
     {
@@ -5355,7 +5355,7 @@ LABEL_5:
       [(CWFNetworkProfile *)v5 setMovingAttribute:v31];
     }
 
-    v32 = [v4 objectForKeyedSubscript:@"isPublic"];
+    v32 = [formCopy objectForKeyedSubscript:@"isPublic"];
 
     if (v32)
     {
@@ -5372,17 +5372,17 @@ LABEL_5:
       [(CWFNetworkProfile *)v5 setMovingAttribute:v33];
     }
 
-    v34 = [v4 objectForKeyedSubscript:@"was6GHzOnlyAtWeek"];
+    v34 = [formCopy objectForKeyedSubscript:@"was6GHzOnlyAtWeek"];
 
     if (v34)
     {
       -[CWFNetworkProfile setWas6GHzOnlyAtWeek:](v5, "setWas6GHzOnlyAtWeek:", [v34 unsignedIntegerValue]);
     }
 
-    v35 = [v4 objectForKeyedSubscript:@"seamlessSSIDList"];
+    v35 = [formCopy objectForKeyedSubscript:@"seamlessSSIDList"];
     [(CWFNetworkProfile *)v5 setSeamlessSSIDList:v35];
 
-    v36 = [v4 objectForKeyedSubscript:@"isCaptive"];
+    v36 = [formCopy objectForKeyedSubscript:@"isCaptive"];
 
     if (v36 && sub_1E0BCE0D8())
     {
@@ -5405,55 +5405,55 @@ LABEL_5:
 
 - (id)cloudSyncExternalForm
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(CWFNetworkProfile *)self networkName];
-  [v3 setObject:v4 forKeyedSubscript:@"SSID"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  networkName = [(CWFNetworkProfile *)self networkName];
+  [dictionary setObject:networkName forKeyedSubscript:@"SSID"];
 
   v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[CWFNetworkProfile isWEP](self, "isWEP")}];
-  [v3 setObject:v5 forKeyedSubscript:@"isWEP"];
+  [dictionary setObject:v5 forKeyedSubscript:@"isWEP"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[CWFNetworkProfile isWAPI](self, "isWAPI")}];
-  [v3 setObject:v6 forKeyedSubscript:@"isWAPI"];
+  [dictionary setObject:v6 forKeyedSubscript:@"isWAPI"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[CWFNetworkProfile isWPA](self, "isWPA")}];
-  [v3 setObject:v7 forKeyedSubscript:@"isWPA"];
+  [dictionary setObject:v7 forKeyedSubscript:@"isWPA"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[CWFNetworkProfile isWPA2](self, "isWPA2")}];
-  [v3 setObject:v8 forKeyedSubscript:@"isWPA2"];
+  [dictionary setObject:v8 forKeyedSubscript:@"isWPA2"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[CWFNetworkProfile isWPA3](self, "isWPA3")}];
-  [v3 setObject:v9 forKeyedSubscript:@"isWPA3"];
+  [dictionary setObject:v9 forKeyedSubscript:@"isWPA3"];
 
-  v10 = [(CWFNetworkProfile *)self addedAt];
-  [v3 setObject:v10 forKeyedSubscript:@"addedAt"];
+  addedAt = [(CWFNetworkProfile *)self addedAt];
+  [dictionary setObject:addedAt forKeyedSubscript:@"addedAt"];
 
-  v11 = [(CWFNetworkProfile *)self addedByVersion];
-  [v3 setObject:v11 forKeyedSubscript:@"addedByVersion"];
+  addedByVersion = [(CWFNetworkProfile *)self addedByVersion];
+  [dictionary setObject:addedByVersion forKeyedSubscript:@"addedByVersion"];
 
-  v12 = [(CWFNetworkProfile *)self removedAt];
-  [v3 setObject:v12 forKeyedSubscript:@"removedAt"];
+  removedAt = [(CWFNetworkProfile *)self removedAt];
+  [dictionary setObject:removedAt forKeyedSubscript:@"removedAt"];
 
-  v13 = [(CWFNetworkProfile *)self removedByVersion];
-  [v3 setObject:v13 forKeyedSubscript:@"removedByVersion"];
+  removedByVersion = [(CWFNetworkProfile *)self removedByVersion];
+  [dictionary setObject:removedByVersion forKeyedSubscript:@"removedByVersion"];
 
-  v14 = [(CWFNetworkProfile *)self lastJoinedByUserAt];
-  [v3 setObject:v14 forKeyedSubscript:@"lastJoinedByUserAt"];
+  lastJoinedByUserAt = [(CWFNetworkProfile *)self lastJoinedByUserAt];
+  [dictionary setObject:lastJoinedByUserAt forKeyedSubscript:@"lastJoinedByUserAt"];
 
   if ([(CWFNetworkProfile *)self lastJoinedBySystemAtWeek])
   {
     v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[CWFNetworkProfile lastJoinedBySystemAtWeek](self, "lastJoinedBySystemAtWeek")}];
-    [v3 setObject:v15 forKeyedSubscript:@"lastJoinedBySystemAtWeek"];
+    [dictionary setObject:v15 forKeyedSubscript:@"lastJoinedBySystemAtWeek"];
   }
 
   else
   {
-    [v3 setObject:0 forKeyedSubscript:@"lastJoinedBySystemAtWeek"];
+    [dictionary setObject:0 forKeyedSubscript:@"lastJoinedBySystemAtWeek"];
   }
 
-  v16 = [(CWFNetworkProfile *)self lowDataMode];
+  lowDataMode = [(CWFNetworkProfile *)self lowDataMode];
   v17 = MEMORY[0x1E695E110];
   v18 = MEMORY[0x1E695E118];
-  if (v16)
+  if (lowDataMode)
   {
     if ([(CWFNetworkProfile *)self lowDataMode]== 1)
     {
@@ -5471,9 +5471,9 @@ LABEL_5:
     v19 = 0;
   }
 
-  [v3 setObject:v19 forKeyedSubscript:@"lowDataMode"];
-  v20 = [(CWFNetworkProfile *)self properties];
-  if ([v20 containsObject:&unk_1F5BBBF08])
+  [dictionary setObject:v19 forKeyedSubscript:@"lowDataMode"];
+  properties = [(CWFNetworkProfile *)self properties];
+  if ([properties containsObject:&unk_1F5BBBF08])
   {
     if ([(CWFNetworkProfile *)self isPrivacyProxyEnabled])
     {
@@ -5491,7 +5491,7 @@ LABEL_5:
     v21 = 0;
   }
 
-  [v3 setObject:v21 forKeyedSubscript:@"isPrivacyProxyEnabled"];
+  [dictionary setObject:v21 forKeyedSubscript:@"isPrivacyProxyEnabled"];
 
   if ([(CWFNetworkProfile *)self movingAttribute])
   {
@@ -5511,7 +5511,7 @@ LABEL_5:
     v22 = 0;
   }
 
-  [v3 setObject:v22 forKeyedSubscript:@"isMoving"];
+  [dictionary setObject:v22 forKeyedSubscript:@"isMoving"];
   if ([(CWFNetworkProfile *)self publicAttribute])
   {
     if ([(CWFNetworkProfile *)self publicAttribute]== 1)
@@ -5530,20 +5530,20 @@ LABEL_5:
     v23 = 0;
   }
 
-  [v3 setObject:v23 forKeyedSubscript:@"isPublic"];
+  [dictionary setObject:v23 forKeyedSubscript:@"isPublic"];
   if ([(CWFNetworkProfile *)self was6GHzOnlyAtWeek])
   {
     v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[CWFNetworkProfile was6GHzOnlyAtWeek](self, "was6GHzOnlyAtWeek")}];
-    [v3 setObject:v24 forKeyedSubscript:@"was6GHzOnlyAtWeek"];
+    [dictionary setObject:v24 forKeyedSubscript:@"was6GHzOnlyAtWeek"];
   }
 
   else
   {
-    [v3 setObject:0 forKeyedSubscript:@"was6GHzOnlyAtWeek"];
+    [dictionary setObject:0 forKeyedSubscript:@"was6GHzOnlyAtWeek"];
   }
 
-  v25 = [(CWFNetworkProfile *)self seamlessSSIDList];
-  [v3 setObject:v25 forKeyedSubscript:@"seamlessSSIDList"];
+  seamlessSSIDList = [(CWFNetworkProfile *)self seamlessSSIDList];
+  [dictionary setObject:seamlessSSIDList forKeyedSubscript:@"seamlessSSIDList"];
 
   if ([(CWFNetworkProfile *)self isCaptiveStateDetermined])
   {
@@ -5557,10 +5557,10 @@ LABEL_5:
       v26 = v17;
     }
 
-    [v3 setObject:v26 forKeyedSubscript:@"isCaptive"];
+    [dictionary setObject:v26 forKeyedSubscript:@"isCaptive"];
   }
 
-  v27 = [v3 copy];
+  v27 = [dictionary copy];
 
   return v27;
 }
@@ -5572,8 +5572,8 @@ LABEL_5:
     return 0;
   }
 
-  v3 = [(CWFNetworkProfile *)self expirationDate];
-  if (v3 || ![(CWFNetworkProfile *)self isCaptiveStateDetermined]|| [(CWFNetworkProfile *)self isCaptive])
+  expirationDate = [(CWFNetworkProfile *)self expirationDate];
+  if (expirationDate || ![(CWFNetworkProfile *)self isCaptiveStateDetermined]|| [(CWFNetworkProfile *)self isCaptive])
   {
 
     return 0;
@@ -5584,122 +5584,122 @@ LABEL_5:
 
 - (BOOL)wasMoreRecentlyAdded
 {
-  v3 = [(CWFNetworkProfile *)self addedAt];
-  [v3 timeIntervalSinceReferenceDate];
+  addedAt = [(CWFNetworkProfile *)self addedAt];
+  [addedAt timeIntervalSinceReferenceDate];
   v5 = v4;
-  v6 = [(CWFNetworkProfile *)self removedAt];
-  [v6 timeIntervalSinceReferenceDate];
+  removedAt = [(CWFNetworkProfile *)self removedAt];
+  [removedAt timeIntervalSinceReferenceDate];
   v8 = v5 > v7;
 
   return v8;
 }
 
-- (void)mergeWithCloudNetworkProfile:(id)a3
+- (void)mergeWithCloudNetworkProfile:(id)profile
 {
-  v73 = a3;
-  v4 = [(CWFNetworkProfile *)self addedAt];
-  v5 = [(CWFNetworkProfile *)v73 addedAt];
-  v6 = [(CWFNetworkProfile *)self removedAt];
-  v7 = [(CWFNetworkProfile *)v73 removedAt];
-  v8 = [(CWFNetworkProfile *)self addedAt];
-  v9 = [(CWFNetworkProfile *)v73 addedAt];
-  v10 = [v8 laterDate:v9];
+  profileCopy = profile;
+  addedAt = [(CWFNetworkProfile *)self addedAt];
+  addedAt2 = [(CWFNetworkProfile *)profileCopy addedAt];
+  removedAt = [(CWFNetworkProfile *)self removedAt];
+  removedAt2 = [(CWFNetworkProfile *)profileCopy removedAt];
+  addedAt3 = [(CWFNetworkProfile *)self addedAt];
+  addedAt4 = [(CWFNetworkProfile *)profileCopy addedAt];
+  v10 = [addedAt3 laterDate:addedAt4];
   [(CWFNetworkProfile *)self setAddedAt:v10];
 
-  [v4 timeIntervalSinceReferenceDate];
+  [addedAt timeIntervalSinceReferenceDate];
   v12 = v11;
-  [v5 timeIntervalSinceReferenceDate];
-  v13 = v73;
+  [addedAt2 timeIntervalSinceReferenceDate];
+  selfCopy = profileCopy;
   if (v12 > v14)
   {
-    v13 = self;
+    selfCopy = self;
   }
 
-  v15 = [(CWFNetworkProfile *)v13 addedByVersion];
-  [(CWFNetworkProfile *)self setAddedByVersion:v15];
+  addedByVersion = [(CWFNetworkProfile *)selfCopy addedByVersion];
+  [(CWFNetworkProfile *)self setAddedByVersion:addedByVersion];
 
-  v16 = [(CWFNetworkProfile *)self removedAt];
-  v17 = [(CWFNetworkProfile *)v73 removedAt];
-  v18 = [v16 laterDate:v17];
+  removedAt3 = [(CWFNetworkProfile *)self removedAt];
+  removedAt4 = [(CWFNetworkProfile *)profileCopy removedAt];
+  v18 = [removedAt3 laterDate:removedAt4];
   [(CWFNetworkProfile *)self setRemovedAt:v18];
 
-  [v6 timeIntervalSinceReferenceDate];
+  [removedAt timeIntervalSinceReferenceDate];
   v20 = v19;
-  [v7 timeIntervalSinceReferenceDate];
-  v21 = v73;
+  [removedAt2 timeIntervalSinceReferenceDate];
+  selfCopy2 = profileCopy;
   if (v20 > v22)
   {
-    v21 = self;
+    selfCopy2 = self;
   }
 
-  v23 = [(CWFNetworkProfile *)v21 removedByVersion];
-  [(CWFNetworkProfile *)self setRemovedByVersion:v23];
+  removedByVersion = [(CWFNetworkProfile *)selfCopy2 removedByVersion];
+  [(CWFNetworkProfile *)self setRemovedByVersion:removedByVersion];
 
-  v24 = [(CWFNetworkProfile *)self lastJoinedByUserAt];
-  v25 = [(CWFNetworkProfile *)v73 lastJoinedByUserAt];
-  v26 = [v24 laterDate:v25];
+  lastJoinedByUserAt = [(CWFNetworkProfile *)self lastJoinedByUserAt];
+  lastJoinedByUserAt2 = [(CWFNetworkProfile *)profileCopy lastJoinedByUserAt];
+  v26 = [lastJoinedByUserAt laterDate:lastJoinedByUserAt2];
   [(CWFNetworkProfile *)self setLastJoinedByUserAt:v26];
 
-  v27 = [(CWFNetworkProfile *)self lastJoinedBySystemAtWeek];
-  v28 = v27 > [(CWFNetworkProfile *)v73 lastJoinedBySystemAtWeek];
-  v29 = v73;
+  lastJoinedBySystemAtWeek = [(CWFNetworkProfile *)self lastJoinedBySystemAtWeek];
+  v28 = lastJoinedBySystemAtWeek > [(CWFNetworkProfile *)profileCopy lastJoinedBySystemAtWeek];
+  selfCopy3 = profileCopy;
   if (v28)
   {
-    v29 = self;
+    selfCopy3 = self;
   }
 
-  [(CWFNetworkProfile *)self setLastJoinedBySystemAtWeek:[(CWFNetworkProfile *)v29 lastJoinedBySystemAtWeek]];
-  [v4 timeIntervalSinceReferenceDate];
+  [(CWFNetworkProfile *)self setLastJoinedBySystemAtWeek:[(CWFNetworkProfile *)selfCopy3 lastJoinedBySystemAtWeek]];
+  [addedAt timeIntervalSinceReferenceDate];
   v31 = v30;
-  [v5 timeIntervalSinceReferenceDate];
-  v32 = v73;
+  [addedAt2 timeIntervalSinceReferenceDate];
+  selfCopy4 = profileCopy;
   if (v31 > v33)
   {
-    v32 = self;
+    selfCopy4 = self;
   }
 
-  [(CWFNetworkProfile *)self setSupportedSecurityTypes:[(CWFNetworkProfile *)v32 supportedSecurityTypes]];
-  if ([(CWFNetworkProfile *)self lowDataMode]&& [(CWFNetworkProfile *)v73 lowDataMode])
+  [(CWFNetworkProfile *)self setSupportedSecurityTypes:[(CWFNetworkProfile *)selfCopy4 supportedSecurityTypes]];
+  if ([(CWFNetworkProfile *)self lowDataMode]&& [(CWFNetworkProfile *)profileCopy lowDataMode])
   {
-    [v4 timeIntervalSinceReferenceDate];
+    [addedAt timeIntervalSinceReferenceDate];
     v35 = v34;
-    [v5 timeIntervalSinceReferenceDate];
-    v36 = v73;
+    [addedAt2 timeIntervalSinceReferenceDate];
+    selfCopy6 = profileCopy;
     if (v35 > v37)
     {
-      v36 = self;
+      selfCopy6 = self;
     }
   }
 
   else
   {
     v38 = [(CWFNetworkProfile *)self lowDataMode]== 0;
-    v36 = v73;
+    selfCopy6 = profileCopy;
     if (!v38)
     {
-      v36 = self;
+      selfCopy6 = self;
     }
   }
 
-  [(CWFNetworkProfile *)self setLowDataMode:[(CWFNetworkProfile *)v36 lowDataMode]];
-  v39 = [(CWFNetworkProfile *)self properties];
-  if ([v39 containsObject:&unk_1F5BBBF08])
+  [(CWFNetworkProfile *)self setLowDataMode:[(CWFNetworkProfile *)selfCopy6 lowDataMode]];
+  properties = [(CWFNetworkProfile *)self properties];
+  if ([properties containsObject:&unk_1F5BBBF08])
   {
-    v40 = [(CWFNetworkProfile *)v73 properties];
-    v41 = [v40 containsObject:&unk_1F5BBBF08];
+    properties2 = [(CWFNetworkProfile *)profileCopy properties];
+    v41 = [properties2 containsObject:&unk_1F5BBBF08];
 
     if (v41)
     {
-      [v4 timeIntervalSinceReferenceDate];
+      [addedAt timeIntervalSinceReferenceDate];
       v43 = v42;
-      [v5 timeIntervalSinceReferenceDate];
-      v44 = v73;
+      [addedAt2 timeIntervalSinceReferenceDate];
+      selfCopy7 = profileCopy;
       if (v43 > v45)
       {
-        v44 = self;
+        selfCopy7 = self;
       }
 
-      [(CWFNetworkProfile *)self setPrivacyProxyEnabled:[(CWFNetworkProfile *)v44 isPrivacyProxyEnabled]];
+      [(CWFNetworkProfile *)self setPrivacyProxyEnabled:[(CWFNetworkProfile *)selfCopy7 isPrivacyProxyEnabled]];
       goto LABEL_25;
     }
   }
@@ -5708,127 +5708,127 @@ LABEL_5:
   {
   }
 
-  v46 = [(CWFNetworkProfile *)self properties];
-  v38 = [v46 containsObject:&unk_1F5BBBF08] == 0;
-  v47 = v73;
+  properties3 = [(CWFNetworkProfile *)self properties];
+  v38 = [properties3 containsObject:&unk_1F5BBBF08] == 0;
+  selfCopy8 = profileCopy;
   if (!v38)
   {
-    v47 = self;
+    selfCopy8 = self;
   }
 
-  [(CWFNetworkProfile *)self setPrivacyProxyEnabled:[(CWFNetworkProfile *)v47 isPrivacyProxyEnabled]];
+  [(CWFNetworkProfile *)self setPrivacyProxyEnabled:[(CWFNetworkProfile *)selfCopy8 isPrivacyProxyEnabled]];
 
 LABEL_25:
-  if ([(CWFNetworkProfile *)self publicAttribute]&& [(CWFNetworkProfile *)v73 publicAttribute])
+  if ([(CWFNetworkProfile *)self publicAttribute]&& [(CWFNetworkProfile *)profileCopy publicAttribute])
   {
-    [v4 timeIntervalSinceReferenceDate];
+    [addedAt timeIntervalSinceReferenceDate];
     v49 = v48;
-    [v5 timeIntervalSinceReferenceDate];
-    v50 = v73;
+    [addedAt2 timeIntervalSinceReferenceDate];
+    selfCopy10 = profileCopy;
     if (v49 > v51)
     {
-      v50 = self;
+      selfCopy10 = self;
     }
   }
 
   else
   {
     v38 = [(CWFNetworkProfile *)self publicAttribute]== 0;
-    v50 = v73;
+    selfCopy10 = profileCopy;
     if (!v38)
     {
-      v50 = self;
+      selfCopy10 = self;
     }
   }
 
-  [(CWFNetworkProfile *)self setPublicAttribute:[(CWFNetworkProfile *)v50 publicAttribute]];
-  if ([(CWFNetworkProfile *)self movingAttribute]&& [(CWFNetworkProfile *)v73 movingAttribute])
+  [(CWFNetworkProfile *)self setPublicAttribute:[(CWFNetworkProfile *)selfCopy10 publicAttribute]];
+  if ([(CWFNetworkProfile *)self movingAttribute]&& [(CWFNetworkProfile *)profileCopy movingAttribute])
   {
-    [v4 timeIntervalSinceReferenceDate];
+    [addedAt timeIntervalSinceReferenceDate];
     v53 = v52;
-    [v5 timeIntervalSinceReferenceDate];
-    v54 = v73;
+    [addedAt2 timeIntervalSinceReferenceDate];
+    selfCopy12 = profileCopy;
     if (v53 > v55)
     {
-      v54 = self;
+      selfCopy12 = self;
     }
   }
 
   else
   {
     v38 = [(CWFNetworkProfile *)self movingAttribute]== 0;
-    v54 = v73;
+    selfCopy12 = profileCopy;
     if (!v38)
     {
-      v54 = self;
+      selfCopy12 = self;
     }
   }
 
-  [(CWFNetworkProfile *)self setMovingAttribute:[(CWFNetworkProfile *)v54 movingAttribute]];
-  v56 = [(CWFNetworkProfile *)self was6GHzOnlyAtWeek];
-  v28 = v56 > [(CWFNetworkProfile *)v73 was6GHzOnlyAtWeek];
-  v57 = v73;
+  [(CWFNetworkProfile *)self setMovingAttribute:[(CWFNetworkProfile *)selfCopy12 movingAttribute]];
+  was6GHzOnlyAtWeek = [(CWFNetworkProfile *)self was6GHzOnlyAtWeek];
+  v28 = was6GHzOnlyAtWeek > [(CWFNetworkProfile *)profileCopy was6GHzOnlyAtWeek];
+  selfCopy13 = profileCopy;
   if (v28)
   {
-    v57 = self;
+    selfCopy13 = self;
   }
 
-  [(CWFNetworkProfile *)self setWas6GHzOnlyAtWeek:[(CWFNetworkProfile *)v57 was6GHzOnlyAtWeek]];
-  v58 = [(CWFNetworkProfile *)self seamlessSSIDList];
-  if (v58 && (v59 = v58, [(CWFNetworkProfile *)v73 seamlessSSIDList], v60 = objc_claimAutoreleasedReturnValue(), v60, v59, v60))
+  [(CWFNetworkProfile *)self setWas6GHzOnlyAtWeek:[(CWFNetworkProfile *)selfCopy13 was6GHzOnlyAtWeek]];
+  seamlessSSIDList = [(CWFNetworkProfile *)self seamlessSSIDList];
+  if (seamlessSSIDList && (v59 = seamlessSSIDList, [(CWFNetworkProfile *)profileCopy seamlessSSIDList], v60 = objc_claimAutoreleasedReturnValue(), v60, v59, v60))
   {
     v61 = MEMORY[0x1E695DFA0];
-    [v4 timeIntervalSinceReferenceDate];
+    [addedAt timeIntervalSinceReferenceDate];
     v63 = v62;
-    [v5 timeIntervalSinceReferenceDate];
-    v64 = v73;
+    [addedAt2 timeIntervalSinceReferenceDate];
+    selfCopy14 = profileCopy;
     if (v63 > v65)
     {
-      v64 = self;
+      selfCopy14 = self;
     }
 
-    v66 = [(CWFNetworkProfile *)v64 seamlessSSIDList];
-    v67 = [v61 orderedSetWithArray:v66];
+    seamlessSSIDList2 = [(CWFNetworkProfile *)selfCopy14 seamlessSSIDList];
+    seamlessSSIDList5 = [v61 orderedSetWithArray:seamlessSSIDList2];
 
-    v68 = [(CWFNetworkProfile *)self seamlessSSIDList];
-    [v67 addObjectsFromArray:v68];
+    seamlessSSIDList3 = [(CWFNetworkProfile *)self seamlessSSIDList];
+    [seamlessSSIDList5 addObjectsFromArray:seamlessSSIDList3];
 
-    v69 = [(CWFNetworkProfile *)v73 seamlessSSIDList];
-    [v67 addObjectsFromArray:v69];
+    seamlessSSIDList4 = [(CWFNetworkProfile *)profileCopy seamlessSSIDList];
+    [seamlessSSIDList5 addObjectsFromArray:seamlessSSIDList4];
 
-    v70 = [v67 array];
+    array = [seamlessSSIDList5 array];
   }
 
   else
   {
-    v67 = [(CWFNetworkProfile *)self seamlessSSIDList];
-    v71 = v73;
-    if (v67)
+    seamlessSSIDList5 = [(CWFNetworkProfile *)self seamlessSSIDList];
+    selfCopy15 = profileCopy;
+    if (seamlessSSIDList5)
     {
-      v71 = self;
+      selfCopy15 = self;
     }
 
-    v70 = [(CWFNetworkProfile *)v71 seamlessSSIDList];
+    array = [(CWFNetworkProfile *)selfCopy15 seamlessSSIDList];
   }
 
-  v72 = v70;
-  [(CWFNetworkProfile *)self setSeamlessSSIDList:v70];
+  v72 = array;
+  [(CWFNetworkProfile *)self setSeamlessSSIDList:array];
 }
 
 - (id)filteredCloudNetworkProfile
 {
   v3 = MEMORY[0x1E695DFD8];
-  v4 = [(CWFNetworkProfile *)self __cloudNetworkSpecificProperties];
-  v5 = [v3 setWithArray:v4];
+  __cloudNetworkSpecificProperties = [(CWFNetworkProfile *)self __cloudNetworkSpecificProperties];
+  v5 = [v3 setWithArray:__cloudNetworkSpecificProperties];
   v6 = [(CWFNetworkProfile *)self filteredNetworkProfileWithProperties:v5];
 
   return v6;
 }
 
-- (CWFNetworkProfile)initWithMigrationData:(id)a3
+- (CWFNetworkProfile)initWithMigrationData:(id)data
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
@@ -5840,9 +5840,9 @@ LABEL_25:
     goto LABEL_22;
   }
 
-  if ([v4 length] == 400)
+  if ([dataCopy length] == 400)
   {
-    [v4 getBytes:__s length:400];
+    [dataCopy getBytes:__s length:400];
     if (!memchr(__s, 0, 0x21uLL) || ([MEMORY[0x1E696AEC0] stringWithUTF8String:__s], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
     {
       NSLog(&cfstr_SsidIsEitherNo.isa);
@@ -5869,8 +5869,8 @@ LABEL_25:
       v9 = 0;
     }
 
-    v10 = [(CWFNetworkProfile *)v5 SSID];
-    sub_1E0BEE9FC(v10, 0, v9);
+    sSID = [(CWFNetworkProfile *)v5 SSID];
+    sub_1E0BEE9FC(sSID, 0, v9);
 
     if ((*(&v32 + 1) - 1) > 0xFF)
     {
@@ -5899,20 +5899,20 @@ LABEL_25:
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:v27 count:2];
     v18 = [v14 dictionaryWithDictionary:v17];
 
-    v19 = [(CWFNetworkProfile *)v5 OSSpecificAttributes];
-    if (v19 && ([(CWFNetworkProfile *)v5 OSSpecificAttributes], v16 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    oSSpecificAttributes = [(CWFNetworkProfile *)v5 OSSpecificAttributes];
+    if (oSSpecificAttributes && ([(CWFNetworkProfile *)v5 OSSpecificAttributes], v16 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v20 = [(CWFNetworkProfile *)v5 OSSpecificAttributes];
-      v21 = [v20 mutableCopy];
+      oSSpecificAttributes2 = [(CWFNetworkProfile *)v5 OSSpecificAttributes];
+      v21 = [oSSpecificAttributes2 mutableCopy];
       [(CWFNetworkProfile *)v5 setOSSpecificAttributes:v21];
     }
 
     else
     {
-      v22 = [MEMORY[0x1E695DF90] dictionary];
-      [(CWFNetworkProfile *)v5 setOSSpecificAttributes:v22];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      [(CWFNetworkProfile *)v5 setOSSpecificAttributes:dictionary];
 
-      if (!v19)
+      if (!oSSpecificAttributes)
       {
 LABEL_21:
 
@@ -5946,8 +5946,8 @@ LABEL_23:
   *__dst = 0u;
   v18 = 0u;
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(CWFNetworkProfile *)self SSID];
-  v5 = [v3 initWithData:v4 encoding:4];
+  sSID = [(CWFNetworkProfile *)self SSID];
+  v5 = [v3 initWithData:sSID encoding:4];
 
   if (v5)
   {
@@ -5957,9 +5957,9 @@ LABEL_23:
 
   BYTE1(v19) = [(CWFNetworkProfile *)self hiddenState]== 1;
   *(&v19 + 1) = [(CWFNetworkProfile *)self mapCWFSecurityTypeToCWFMigrationSecurityType:[(CWFNetworkProfile *)self supportedSecurityTypes]];
-  v6 = [(CWFNetworkProfile *)self SSID];
+  sSID2 = [(CWFNetworkProfile *)self SSID];
   v16 = 0;
-  CWFSecItemQueryPassword_0(v6, &v16);
+  CWFSecItemQueryPassword_0(sSID2, &v16);
   v7 = v16;
 
   if (v7)
@@ -5969,23 +5969,23 @@ LABEL_23:
   }
 
   [(CWFNetworkProfile *)self setPublicKey:0];
-  v8 = [(CWFNetworkProfile *)self publicKey];
-  if ([v8 length] >= 0x100)
+  publicKey = [(CWFNetworkProfile *)self publicKey];
+  if ([publicKey length] >= 0x100)
   {
     *(&v21 + 1) = 256;
   }
 
   else
   {
-    v9 = [(CWFNetworkProfile *)self publicKey];
-    *(&v21 + 1) = [v9 length];
+    publicKey2 = [(CWFNetworkProfile *)self publicKey];
+    *(&v21 + 1) = [publicKey2 length];
   }
 
-  v10 = [(CWFNetworkProfile *)self publicKey];
-  [v10 getBytes:&v20[4] + 1 length:*(&v21 + 1)];
+  publicKey3 = [(CWFNetworkProfile *)self publicKey];
+  [publicKey3 getBytes:&v20[4] + 1 length:*(&v21 + 1)];
 
-  v11 = [(CWFNetworkProfile *)self OSSpecificAttributes];
-  v12 = [v11 objectForKeyedSubscript:@"PRIVATE_MAC_ADDRESS"];
+  oSSpecificAttributes = [(CWFNetworkProfile *)self OSSpecificAttributes];
+  v12 = [oSSpecificAttributes objectForKeyedSubscript:@"PRIVATE_MAC_ADDRESS"];
 
   if (v12)
   {
@@ -6000,20 +6000,20 @@ LABEL_23:
   return v13;
 }
 
-- (unint64_t)mapCWFMigrationSecurityTypeToCWFSecurityType:(int64_t)a3
+- (unint64_t)mapCWFMigrationSecurityTypeToCWFSecurityType:(int64_t)type
 {
-  if ((a3 - 1) > 5)
+  if ((type - 1) > 5)
   {
     return 0;
   }
 
   else
   {
-    return qword_1E0D81980[a3 - 1];
+    return qword_1E0D81980[type - 1];
   }
 }
 
-- (int64_t)mapCWFSecurityTypeToCWFMigrationSecurityType:(unint64_t)a3
+- (int64_t)mapCWFSecurityTypeToCWFMigrationSecurityType:(unint64_t)type
 {
   if ([(CWFNetworkProfile *)self isOpen]&& [(CWFNetworkProfile *)self isOWE])
   {
@@ -6025,16 +6025,16 @@ LABEL_23:
     return 3;
   }
 
-  if (a3 > 15)
+  if (type > 15)
   {
-    if (a3 > 255)
+    if (type > 255)
     {
-      if (a3 == 512)
+      if (type == 512)
       {
         return 1;
       }
 
-      if (a3 == 256)
+      if (type == 256)
       {
         return 5;
       }
@@ -6042,9 +6042,9 @@ LABEL_23:
       return 0;
     }
 
-    if (a3 != 16)
+    if (type != 16)
     {
-      if (a3 == 64)
+      if (type == 64)
       {
         return 4;
       }
@@ -6055,14 +6055,14 @@ LABEL_23:
     return 3;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     return 2;
   }
 
-  if (a3 != 2)
+  if (type != 2)
   {
-    if (a3 != 4)
+    if (type != 4)
     {
       return 0;
     }
@@ -6073,34 +6073,34 @@ LABEL_23:
   return 6;
 }
 
-- (int64_t)mapPrivateMACAddress:(id)a3
+- (int64_t)mapPrivateMACAddress:(id)address
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"PRIVATE_MAC_ADDRESS_TYPE"];
-  v5 = [v4 integerValue];
+  addressCopy = address;
+  v4 = [addressCopy objectForKeyedSubscript:@"PRIVATE_MAC_ADDRESS_TYPE"];
+  integerValue = [v4 integerValue];
 
-  v6 = [v3 objectForKeyedSubscript:@"PRIVATE_MAC_SET_BY_USER"];
+  v6 = [addressCopy objectForKeyedSubscript:@"PRIVATE_MAC_SET_BY_USER"];
 
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
   v8 = 4;
-  if (v5 == 3)
+  if (integerValue == 3)
   {
     v8 = 5;
   }
 
   v9 = 1;
-  if (v5 == 3)
+  if (integerValue == 3)
   {
     v9 = 2;
   }
 
-  if (v5 == 2)
+  if (integerValue == 2)
   {
     v8 = 6;
     v9 = 3;
   }
 
-  if (v7)
+  if (bOOLValue)
   {
     return v8;
   }
@@ -6111,36 +6111,36 @@ LABEL_23:
   }
 }
 
-- (int64_t)mapPrivateMacToCWFPrivateMACMode:(int64_t)a3 setByUser:(BOOL *)a4
+- (int64_t)mapPrivateMacToCWFPrivateMACMode:(int64_t)mode setByUser:(BOOL *)user
 {
-  if (a3 <= 6)
+  if (mode <= 6)
   {
-    if (((1 << a3) & 0x12) != 0)
+    if (((1 << mode) & 0x12) != 0)
     {
-      *a4 = a3 == 4;
+      *user = mode == 4;
       return 1;
     }
 
-    if (((1 << a3) & 0x24) != 0)
+    if (((1 << mode) & 0x24) != 0)
     {
-      *a4 = a3 == 5;
+      *user = mode == 5;
       return 3;
     }
 
-    if (((1 << a3) & 0x48) != 0)
+    if (((1 << mode) & 0x48) != 0)
     {
-      *a4 = a3 == 6;
+      *user = mode == 6;
       return 2;
     }
   }
 
-  if (a3)
+  if (mode)
   {
-    *a4 = 0;
+    *user = 0;
     return 1;
   }
 
-  *a4 = 1;
+  *user = 1;
   if ([(CWFNetworkProfile *)self isOpen:v4])
   {
     return 2;
@@ -6154,10 +6154,10 @@ LABEL_23:
 
 - (CWFWiFiNetworkSharingNetworkID)wifiNetworkSharingNetworkID
 {
-  v2 = [(CWFNetworkProfile *)self SSID];
-  if (v2)
+  sSID = [(CWFNetworkProfile *)self SSID];
+  if (sSID)
   {
-    v3 = [[CWFWiFiNetworkSharingNetworkID alloc] initWithSSID:v2];
+    v3 = [[CWFWiFiNetworkSharingNetworkID alloc] initWithSSID:sSID];
   }
 
   else
@@ -6171,8 +6171,8 @@ LABEL_23:
 - (id)filteredWiFiNetworkSharingNetworkProfile
 {
   v3 = MEMORY[0x1E695DFD8];
-  v4 = [(CWFNetworkProfile *)self __wifiNetworkSharingSpecificProperties];
-  v5 = [v3 setWithArray:v4];
+  __wifiNetworkSharingSpecificProperties = [(CWFNetworkProfile *)self __wifiNetworkSharingSpecificProperties];
+  v5 = [v3 setWithArray:__wifiNetworkSharingSpecificProperties];
   v6 = [(CWFNetworkProfile *)self filteredNetworkProfileWithProperties:v5];
 
   return v6;
@@ -6185,32 +6185,32 @@ LABEL_23:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(CWFNetworkProfile *)self BSSList];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
-  if (v3)
+  bSSList = [(CWFNetworkProfile *)self BSSList];
+  location2 = [bSSList countByEnumeratingWithState:&v10 objects:v14 count:16];
+  if (location2)
   {
     v4 = *v11;
     while (2)
     {
-      for (i = 0; i != v3; i = i + 1)
+      for (i = 0; i != location2; i = i + 1)
       {
         if (*v11 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(bSSList);
         }
 
         v6 = *(*(&v10 + 1) + 8 * i);
-        v7 = [v6 location];
+        location = [v6 location];
 
-        if (v7)
+        if (location)
         {
-          v3 = [v6 location];
+          location2 = [v6 location];
           goto LABEL_11;
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
-      if (v3)
+      location2 = [bSSList countByEnumeratingWithState:&v10 objects:v14 count:16];
+      if (location2)
       {
         continue;
       }
@@ -6223,7 +6223,7 @@ LABEL_11:
 
   v8 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return location2;
 }
 
 - (BOOL)_isHomeNetwork
@@ -6233,8 +6233,8 @@ LABEL_11:
     return 1;
   }
 
-  v4 = [(CWFNetworkProfile *)self OSSpecificAttributes];
-  v5 = [v4 objectForKeyedSubscript:@"NetworkOfInterestHomeState"];
+  oSSpecificAttributes = [(CWFNetworkProfile *)self OSSpecificAttributes];
+  v5 = [oSSpecificAttributes objectForKeyedSubscript:@"NetworkOfInterestHomeState"];
   if ([v5 integerValue] == 1)
   {
     v3 = 1;
@@ -6242,8 +6242,8 @@ LABEL_11:
 
   else
   {
-    v6 = [(CWFNetworkProfile *)self OSSpecificAttributes];
-    v7 = [v6 objectForKeyedSubscript:@"NetworkAtLocationOfInterestType"];
+    oSSpecificAttributes2 = [(CWFNetworkProfile *)self OSSpecificAttributes];
+    v7 = [oSSpecificAttributes2 objectForKeyedSubscript:@"NetworkAtLocationOfInterestType"];
     if ([v7 integerValue] == 2)
     {
       v3 = 1;
@@ -6251,8 +6251,8 @@ LABEL_11:
 
     else
     {
-      v8 = [(CWFNetworkProfile *)self OSSpecificAttributes];
-      v9 = [v8 objectForKeyedSubscript:@"NetworkAtLocationOfInterestType"];
+      oSSpecificAttributes3 = [(CWFNetworkProfile *)self OSSpecificAttributes];
+      v9 = [oSSpecificAttributes3 objectForKeyedSubscript:@"NetworkAtLocationOfInterestType"];
       v3 = [v9 integerValue] == 4;
     }
   }
@@ -6262,11 +6262,11 @@ LABEL_11:
 
 - (unint64_t)CWFNetworkWarningFlagsFromNetworkProfile
 {
-  v3 = [(CWFNetworkProfile *)self acceptedEAPTypes];
-  if ([v3 count] == 1)
+  acceptedEAPTypes = [(CWFNetworkProfile *)self acceptedEAPTypes];
+  if ([acceptedEAPTypes count] == 1)
   {
-    v4 = [(CWFNetworkProfile *)self acceptedEAPTypes];
-    v5 = [v4 containsObject:&unk_1F5BBD4C8];
+    acceptedEAPTypes2 = [(CWFNetworkProfile *)self acceptedEAPTypes];
+    v5 = [acceptedEAPTypes2 containsObject:&unk_1F5BBD4C8];
 
     v6 = v5 ^ 1;
   }
@@ -6278,8 +6278,8 @@ LABEL_11:
 
   if ([(CWFNetworkProfile *)self isEAP]&& !(([(CWFNetworkProfile *)self addReason]!= 10) | v6 & 1))
   {
-    v8 = [(CWFNetworkProfile *)self TLSTrustedServerNames];
-    v9 = v8 == 0;
+    tLSTrustedServerNames = [(CWFNetworkProfile *)self TLSTrustedServerNames];
+    v9 = tLSTrustedServerNames == 0;
 
     v7 = v9 << 20;
   }
@@ -6299,22 +6299,22 @@ LABEL_11:
     v7 |= 0x400uLL;
   }
 
-  v10 = [(CWFNetworkProfile *)self acceptedEAPTypes];
-  if ([v10 containsObject:&unk_1F5BBD4E0])
+  acceptedEAPTypes3 = [(CWFNetworkProfile *)self acceptedEAPTypes];
+  if ([acceptedEAPTypes3 containsObject:&unk_1F5BBD4E0])
   {
     goto LABEL_15;
   }
 
-  v11 = [(CWFNetworkProfile *)self acceptedEAPTypes];
-  if ([v11 containsObject:&unk_1F5BBD4F8])
+  acceptedEAPTypes4 = [(CWFNetworkProfile *)self acceptedEAPTypes];
+  if ([acceptedEAPTypes4 containsObject:&unk_1F5BBD4F8])
   {
 
 LABEL_15:
     goto LABEL_16;
   }
 
-  v18 = [(CWFNetworkProfile *)self acceptedEAPTypes];
-  v19 = [v18 containsObject:&unk_1F5BBD510];
+  acceptedEAPTypes5 = [(CWFNetworkProfile *)self acceptedEAPTypes];
+  v19 = [acceptedEAPTypes5 containsObject:&unk_1F5BBD510];
 
   if ((v19 & 1) == 0)
   {
@@ -6323,16 +6323,16 @@ LABEL_15:
   }
 
 LABEL_16:
-  v12 = [(CWFNetworkProfile *)self EAPProfile];
-  v13 = v12;
-  if (!v12)
+  eAPProfile = [(CWFNetworkProfile *)self EAPProfile];
+  v13 = eAPProfile;
+  if (!eAPProfile)
   {
 LABEL_25:
     v14 = 0;
     goto LABEL_22;
   }
 
-  v14 = [v12 objectForKey:@"EAPClientConfiguration"];
+  v14 = [eAPProfile objectForKey:@"EAPClientConfiguration"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

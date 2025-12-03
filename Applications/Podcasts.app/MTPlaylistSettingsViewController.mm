@@ -1,40 +1,40 @@
 @interface MTPlaylistSettingsViewController
 + (CGSize)podcastImageSize;
-+ (id)cellClassForSettingType:(int64_t)a3 inGroupWithIdentifier:(id)a4;
++ (id)cellClassForSettingType:(int64_t)type inGroupWithIdentifier:(id)identifier;
 - (BOOL)isPresentedModally;
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
-- (MTPlaylistSettingsViewController)initWithPlaylistUuid:(id)a3 library:(id)a4;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
+- (MTPlaylistSettingsViewController)initWithPlaylistUuid:(id)uuid library:(id)library;
 - (MTPlaylistSettingsViewControllerDelegate)delegate;
-- (double)heightForRowWithDescription:(id)a3 inGroupWithIdentifier:(id)a4;
+- (double)heightForRowWithDescription:(id)description inGroupWithIdentifier:(id)identifier;
 - (id)metricDataSource;
 - (id)newSettingsController;
 - (id)titleForCurrentPodcasts;
-- (void)_updateUngroupedListSetting:(BOOL)a3;
-- (void)configureCell:(id)a3 atIndexPath:(id)a4 withDescription:(id)a5 inGroupWithIdentifier:(id)a6;
-- (void)deletePlaylist:(id)a3;
-- (void)removePodcastAtIndex:(unint64_t)a3;
+- (void)_updateUngroupedListSetting:(BOOL)setting;
+- (void)configureCell:(id)cell atIndexPath:(id)path withDescription:(id)description inGroupWithIdentifier:(id)identifier;
+- (void)deletePlaylist:(id)playlist;
+- (void)removePodcastAtIndex:(unint64_t)index;
 - (void)saveNewPlaylists;
 - (void)selectAppearancePathIfNecessary;
 - (void)showAddPodcastsSheet;
-- (void)syncControllerOperationCompleted:(id)a3;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)updateContainerOrder:(int)a3;
+- (void)syncControllerOperationCompleted:(id)completed;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)updateContainerOrder:(int)order;
 - (void)updatePodcastCount;
-- (void)updateSetting:(id)a3 value:(id)a4;
-- (void)updateShowSetting:(int64_t)a3 forSettings:(id)a4;
-- (void)updateTitle:(id)a3;
+- (void)updateSetting:(id)setting value:(id)value;
+- (void)updateShowSetting:(int64_t)setting forSettings:(id)settings;
+- (void)updateTitle:(id)title;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation MTPlaylistSettingsViewController
 
-- (double)heightForRowWithDescription:(id)a3 inGroupWithIdentifier:(id)a4
+- (double)heightForRowWithDescription:(id)description inGroupWithIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isEqualToString:@"podcasts"] && (isTV() & 1) == 0 || (objc_msgSend(v6, "identifier"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isEqualToString:", @"played"), v8, v9))
+  descriptionCopy = description;
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:@"podcasts"] && (isTV() & 1) == 0 || (objc_msgSend(descriptionCopy, "identifier"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isEqualToString:", @"played"), v8, v9))
   {
     v10 = UITableViewAutomaticDimension;
   }
@@ -43,17 +43,17 @@
   {
     v13.receiver = self;
     v13.super_class = MTPlaylistSettingsViewController;
-    [(MTGenericSettingsViewController *)&v13 heightForRowWithDescription:v6 inGroupWithIdentifier:v7];
+    [(MTGenericSettingsViewController *)&v13 heightForRowWithDescription:descriptionCopy inGroupWithIdentifier:identifierCopy];
     v10 = v11;
   }
 
   return v10;
 }
 
-- (MTPlaylistSettingsViewController)initWithPlaylistUuid:(id)a3 library:(id)a4
+- (MTPlaylistSettingsViewController)initWithPlaylistUuid:(id)uuid library:(id)library
 {
-  v7 = a3;
-  v8 = a4;
+  uuidCopy = uuid;
+  libraryCopy = library;
   v12.receiver = self;
   v12.super_class = MTPlaylistSettingsViewController;
   v9 = [(MTGenericSettingsViewController *)&v12 init];
@@ -61,8 +61,8 @@
   if (v9)
   {
     v9->_userDriven = 1;
-    objc_storeStrong(&v9->_playlistUuid, a3);
-    objc_storeStrong(&v10->_library, a4);
+    objc_storeStrong(&v9->_playlistUuid, uuid);
+    objc_storeStrong(&v10->_library, library);
   }
 
   return v10;
@@ -73,37 +73,37 @@
   v4.receiver = self;
   v4.super_class = MTPlaylistSettingsViewController;
   [(MTGenericSettingsViewController *)&v4 viewDidLoad];
-  v3 = [(MTPlaylistSettingsViewController *)self newSettingsController];
-  [(MTGenericSettingsViewController *)self setSettingsController:v3];
+  newSettingsController = [(MTPlaylistSettingsViewController *)self newSettingsController];
+  [(MTGenericSettingsViewController *)self setSettingsController:newSettingsController];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = MTPlaylistSettingsViewController;
-  [(MTGenericSettingsViewController *)&v4 viewWillAppear:a3];
+  [(MTGenericSettingsViewController *)&v4 viewWillAppear:appear];
   [(MTPlaylistSettingsViewController *)self selectAppearancePathIfNecessary];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v6.receiver = self;
   v6.super_class = MTPlaylistSettingsViewController;
-  [(MTPlaylistSettingsViewController *)&v6 viewWillTransitionToSize:a4 withTransitionCoordinator:a3.width, a3.height];
-  v5 = [(MTPlaylistSettingsViewController *)self deleteStationAlertController];
-  [v5 dismissViewControllerAnimated:1 completion:0];
+  [(MTPlaylistSettingsViewController *)&v6 viewWillTransitionToSize:coordinator withTransitionCoordinator:size.width, size.height];
+  deleteStationAlertController = [(MTPlaylistSettingsViewController *)self deleteStationAlertController];
+  [deleteStationAlertController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (void)selectAppearancePathIfNecessary
 {
-  v3 = [(MTPlaylistSettingsViewController *)self appearanceSelectedPath];
+  appearanceSelectedPath = [(MTPlaylistSettingsViewController *)self appearanceSelectedPath];
 
-  if (v3)
+  if (appearanceSelectedPath)
   {
     [(MTPlaylistSettingsViewController *)self setUserDriven:0];
-    v4 = [(MTPlaylistSettingsViewController *)self tableView];
-    v5 = [(MTPlaylistSettingsViewController *)self appearanceSelectedPath];
-    [(MTGenericSettingsViewController *)self tableView:v4 didSelectRowAtIndexPath:v5];
+    tableView = [(MTPlaylistSettingsViewController *)self tableView];
+    appearanceSelectedPath2 = [(MTPlaylistSettingsViewController *)self appearanceSelectedPath];
+    [(MTGenericSettingsViewController *)self tableView:tableView didSelectRowAtIndexPath:appearanceSelectedPath2];
 
     [(MTPlaylistSettingsViewController *)self setUserDriven:1];
 
@@ -113,29 +113,29 @@
 
 - (BOOL)isPresentedModally
 {
-  v3 = [(MTPlaylistSettingsViewController *)self presentingViewController];
-  if (v3)
+  presentingViewController = [(MTPlaylistSettingsViewController *)self presentingViewController];
+  if (presentingViewController)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(MTPlaylistSettingsViewController *)self navigationController];
-    v6 = [v5 presentingViewController];
-    v7 = [v6 presentedViewController];
-    v8 = [(MTPlaylistSettingsViewController *)self navigationController];
-    v4 = v7 == v8;
+    navigationController = [(MTPlaylistSettingsViewController *)self navigationController];
+    presentingViewController2 = [navigationController presentingViewController];
+    presentedViewController = [presentingViewController2 presentedViewController];
+    navigationController2 = [(MTPlaylistSettingsViewController *)self navigationController];
+    v4 = presentedViewController == navigationController2;
   }
 
   return v4;
 }
 
-- (void)deletePlaylist:(id)a3
+- (void)deletePlaylist:(id)playlist
 {
-  v4 = a3;
+  playlistCopy = playlist;
   v5 = +[MTDB sharedInstance];
-  v6 = [v5 mainQueueContext];
+  mainQueueContext = [v5 mainQueueContext];
 
   v24 = 0;
   v25 = &v24;
@@ -148,25 +148,25 @@
   v20[2] = sub_10011C7E4;
   v20[3] = &unk_1004D9040;
   v23 = &v24;
-  v7 = v6;
+  v7 = mainQueueContext;
   v21 = v7;
-  v22 = self;
+  selfCopy = self;
   [v7 performBlockAndWait:v20];
-  v8 = [(MTPlaylistSettingsViewController *)self isPresentedModally];
+  isPresentedModally = [(MTPlaylistSettingsViewController *)self isPresentedModally];
   objc_initWeak(&location, self);
   v9 = v25[5];
-  v10 = [(MTPlaylistSettingsViewController *)self library];
+  library = [(MTPlaylistSettingsViewController *)self library];
   v13 = _NSConcreteStackBlock;
   v14 = 3221225472;
   v15 = sub_10011C854;
   v16 = &unk_1004DCF68;
-  v18 = v8;
+  v18 = isPresentedModally;
   objc_copyWeak(&v17, &location);
-  v11 = [UIAlertController controllerForDeletingStation:v9 fromLibrary:v10 deletionCompletion:&v13];
+  v11 = [UIAlertController controllerForDeletingStation:v9 fromLibrary:library deletionCompletion:&v13];
   [(MTPlaylistSettingsViewController *)self setDeleteStationAlertController:v11, v13, v14, v15, v16];
 
-  v12 = [(MTPlaylistSettingsViewController *)self deleteStationAlertController];
-  [(MTPlaylistSettingsViewController *)self presentViewController:v12 animated:1 completion:0];
+  deleteStationAlertController = [(MTPlaylistSettingsViewController *)self deleteStationAlertController];
+  [(MTPlaylistSettingsViewController *)self presentViewController:deleteStationAlertController animated:1 completion:0];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
@@ -174,11 +174,11 @@
   _Block_object_dispose(&v24, 8);
 }
 
-+ (id)cellClassForSettingType:(int64_t)a3 inGroupWithIdentifier:(id)a4
++ (id)cellClassForSettingType:(int64_t)type inGroupWithIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3 == 5 && [v6 isEqualToString:@"podcasts"])
+  identifierCopy = identifier;
+  v7 = identifierCopy;
+  if (type == 5 && [identifierCopy isEqualToString:@"podcasts"])
   {
     isTV();
     v8 = objc_opt_class();
@@ -187,9 +187,9 @@
 
   else
   {
-    v12.receiver = a1;
+    v12.receiver = self;
     v12.super_class = &OBJC_METACLASS___MTPlaylistSettingsViewController;
-    v9 = objc_msgSendSuper2(&v12, "cellClassForSettingType:inGroupWithIdentifier:", a3, v7);
+    v9 = objc_msgSendSuper2(&v12, "cellClassForSettingType:inGroupWithIdentifier:", type, v7);
   }
 
   v10 = v9;
@@ -197,24 +197,24 @@
   return v10;
 }
 
-- (void)configureCell:(id)a3 atIndexPath:(id)a4 withDescription:(id)a5 inGroupWithIdentifier:(id)a6
+- (void)configureCell:(id)cell atIndexPath:(id)path withDescription:(id)description inGroupWithIdentifier:(id)identifier
 {
-  v10 = a3;
-  v11 = a5;
+  cellCopy = cell;
+  descriptionCopy = description;
   v26.receiver = self;
   v26.super_class = MTPlaylistSettingsViewController;
-  v12 = a6;
-  [(MTiOSGenericSettingsViewController *)&v26 configureCell:v10 atIndexPath:a4 withDescription:v11 inGroupWithIdentifier:v12];
-  LODWORD(a4) = [v12 isEqualToString:{@"podcasts", v26.receiver, v26.super_class}];
+  identifierCopy = identifier;
+  [(MTiOSGenericSettingsViewController *)&v26 configureCell:cellCopy atIndexPath:path withDescription:descriptionCopy inGroupWithIdentifier:identifierCopy];
+  LODWORD(path) = [identifierCopy isEqualToString:{@"podcasts", v26.receiver, v26.super_class}];
 
-  if (a4 && [v11 type] == 5)
+  if (path && [descriptionCopy type] == 5)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = [v11 identifier];
-      v14 = [v10 artworkView];
-      [v14 setArtworkKey:v13];
+      identifier = [descriptionCopy identifier];
+      artworkView = [cellCopy artworkView];
+      [artworkView setArtworkKey:identifier];
     }
 
     else
@@ -222,38 +222,38 @@
       [objc_opt_class() podcastImageSize];
       v16 = v15;
       v18 = v17;
-      v13 = [v11 identifier];
+      identifier = [descriptionCopy identifier];
       v19 = +[MTImageStore defaultStore];
-      v14 = [v19 imageForKey:v13 size:{v16, v18}];
+      artworkView = [v19 imageForKey:identifier size:{v16, v18}];
 
-      if (!v14)
+      if (!artworkView)
       {
         v20 = +[MTImageStore defaultStore];
-        v14 = [v20 imageForKey:kMTLibraryDefaultImageKey size:{v16, v18}];
+        artworkView = [v20 imageForKey:kMTLibraryDefaultImageKey size:{v16, v18}];
       }
 
-      v21 = [v10 imageView];
-      [v21 setImage:v14];
+      imageView = [cellCopy imageView];
+      [imageView setImage:artworkView];
     }
   }
 
-  v22 = [v11 identifier];
-  v23 = [v22 isEqualToString:@"add"];
+  identifier2 = [descriptionCopy identifier];
+  v23 = [identifier2 isEqualToString:@"add"];
 
   if (v23)
   {
-    [v10 setAccessoryType:1];
+    [cellCopy setAccessoryType:1];
   }
 
-  v24 = [v11 identifier];
-  if ([v24 isEqualToString:@"played"])
+  identifier3 = [descriptionCopy identifier];
+  if ([identifier3 isEqualToString:@"played"])
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      [v10 setMaximumNumberOfTextLines:3];
+      [cellCopy setMaximumNumberOfTextLines:3];
     }
   }
 
@@ -265,7 +265,7 @@
 - (id)newSettingsController
 {
   v3 = +[MTDB sharedInstance];
-  v4 = [v3 mainQueueContext];
+  mainQueueContext = [v3 mainQueueContext];
 
   v5 = objc_alloc_init(MTSettingsController);
   objc_initWeak(&location, self);
@@ -274,9 +274,9 @@
   v11[1] = 3221225472;
   v11[2] = sub_10011CDAC;
   v11[3] = &unk_1004DD0C0;
-  v7 = v4;
+  v7 = mainQueueContext;
   v12 = v7;
-  v13 = self;
+  selfCopy = self;
   objc_copyWeak(&v15, &location);
   v8 = v6;
   v14 = v8;
@@ -297,7 +297,7 @@
 - (id)titleForCurrentPodcasts
 {
   v3 = +[MTDB sharedInstance];
-  v4 = [v3 mainOrPrivateContext];
+  mainOrPrivateContext = [v3 mainOrPrivateContext];
 
   v28 = 0;
   v29 = &v28;
@@ -315,9 +315,9 @@
   v14[1] = 3221225472;
   v14[2] = sub_10011E46C;
   v14[3] = &unk_1004D91D0;
-  v5 = v4;
+  v5 = mainOrPrivateContext;
   v15 = v5;
-  v16 = self;
+  selfCopy = self;
   v17 = &v28;
   v18 = &v24;
   v19 = &v20;
@@ -349,29 +349,29 @@
 
 - (void)updatePodcastCount
 {
-  v4 = [(MTGenericSettingsViewController *)self settingsController];
-  v3 = [(MTPlaylistSettingsViewController *)self titleForCurrentPodcasts];
-  [v4 setValue:v3 forSettingWithIdentifier:@"add" inGroup:@"podcasts"];
+  settingsController = [(MTGenericSettingsViewController *)self settingsController];
+  titleForCurrentPodcasts = [(MTPlaylistSettingsViewController *)self titleForCurrentPodcasts];
+  [settingsController setValue:titleForCurrentPodcasts forSettingWithIdentifier:@"add" inGroup:@"podcasts"];
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(MTGenericSettingsViewController *)self settingsController];
-  v7 = [v6 order];
-  v8 = [v7 objectAtIndexedSubscript:{objc_msgSend(v5, "section")}];
+  pathCopy = path;
+  settingsController = [(MTGenericSettingsViewController *)self settingsController];
+  order = [settingsController order];
+  v8 = [order objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-  v9 = [(MTGenericSettingsViewController *)self settingsController];
-  v10 = [v9 groups];
-  v11 = [v10 objectForKeyedSubscript:v8];
+  settingsController2 = [(MTGenericSettingsViewController *)self settingsController];
+  groups = [settingsController2 groups];
+  v11 = [groups objectForKeyedSubscript:v8];
 
   if ([v8 isEqualToString:@"podcasts"])
   {
-    v12 = [v11 groupSettings];
-    v13 = [v12 objectAtIndexedSubscript:{objc_msgSend(v5, "row")}];
+    groupSettings = [v11 groupSettings];
+    v13 = [groupSettings objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
-    v14 = [v13 identifier];
-    v15 = [v14 isEqualToString:@"add"];
+    identifier = [v13 identifier];
+    v15 = [identifier isEqualToString:@"add"];
 
     v16 = v15 ^ 1;
   }
@@ -384,56 +384,56 @@
   return v16;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  if (a4 == 1)
+  if (style == 1)
   {
-    v7 = [a5 row] - 1;
+    v7 = [path row] - 1;
 
     [(MTPlaylistSettingsViewController *)self removePodcastAtIndex:v7];
   }
 }
 
-- (void)removePodcastAtIndex:(unint64_t)a3
+- (void)removePodcastAtIndex:(unint64_t)index
 {
   v5 = +[MTDB sharedInstance];
-  v6 = [v5 mainOrPrivateContext];
+  mainOrPrivateContext = [v5 mainOrPrivateContext];
 
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10011E858;
   v11[3] = &unk_1004D86D8;
-  v12 = v6;
-  v13 = self;
-  v14 = a3;
-  v7 = v6;
+  v12 = mainOrPrivateContext;
+  selfCopy = self;
+  indexCopy = index;
+  v7 = mainOrPrivateContext;
   [v7 performBlockAndWaitWithSave:v11];
   v8 = +[_TtC18PodcastsFoundation18SyncKeysRepository shared];
   [v8 setIsPlaylistSyncDirty:1];
 
-  v9 = [(MTGenericSettingsViewController *)self settingsController];
-  [v9 removeSettingAtIndex:a3 + 1 fromGroupWithIdentifier:@"podcasts"];
+  settingsController = [(MTGenericSettingsViewController *)self settingsController];
+  [settingsController removeSettingAtIndex:index + 1 fromGroupWithIdentifier:@"podcasts"];
 
   [(MTPlaylistSettingsViewController *)self updatePodcastCount];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained playlistSettingsDidChangeSetting:self];
 }
 
-- (void)updateShowSetting:(int64_t)a3 forSettings:(id)a4
+- (void)updateShowSetting:(int64_t)setting forSettings:(id)settings
 {
-  v6 = a4;
+  settingsCopy = settings;
   v7 = +[MTDB sharedInstance];
-  v8 = [v7 mainOrPrivateContext];
+  mainOrPrivateContext = [v7 mainOrPrivateContext];
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10011EA28;
   v13[3] = &unk_1004D86D8;
-  v14 = v8;
-  v15 = v6;
-  v16 = a3;
-  v9 = v6;
-  v10 = v8;
+  v14 = mainOrPrivateContext;
+  v15 = settingsCopy;
+  settingCopy = setting;
+  v9 = settingsCopy;
+  v10 = mainOrPrivateContext;
   [v10 performBlockAndWaitWithSave:v13];
   v11 = +[_TtC18PodcastsFoundation18SyncKeysRepository shared];
   [v11 setIsPlaylistSyncDirty:1];
@@ -442,24 +442,24 @@
   [WeakRetained playlistSettingsDidChangeSetting:self];
 }
 
-- (void)updateSetting:(id)a3 value:(id)a4
+- (void)updateSetting:(id)setting value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  settingCopy = setting;
+  valueCopy = value;
   v8 = +[MTDB sharedInstance];
-  v9 = [v8 mainOrPrivateContext];
+  mainOrPrivateContext = [v8 mainOrPrivateContext];
 
   v15 = _NSConcreteStackBlock;
   v16 = 3221225472;
   v17 = sub_10011EC28;
   v18 = &unk_1004D8DA8;
-  v19 = v9;
-  v20 = self;
-  v21 = v7;
-  v22 = v6;
-  v10 = v6;
-  v11 = v7;
-  v12 = v9;
+  v19 = mainOrPrivateContext;
+  selfCopy = self;
+  v21 = valueCopy;
+  v22 = settingCopy;
+  v10 = settingCopy;
+  v11 = valueCopy;
+  v12 = mainOrPrivateContext;
   [v12 performBlockAndWaitWithSave:&v15];
   v13 = [_TtC18PodcastsFoundation18SyncKeysRepository shared:v15];
   [v13 setIsPlaylistSyncDirty:1];
@@ -468,19 +468,19 @@
   [WeakRetained playlistSettingsDidChangeSetting:self];
 }
 
-- (void)updateContainerOrder:(int)a3
+- (void)updateContainerOrder:(int)order
 {
   v5 = +[MTDB sharedInstance];
-  v6 = [v5 mainOrPrivateContext];
+  mainOrPrivateContext = [v5 mainOrPrivateContext];
 
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10011EE30;
   v10[3] = &unk_1004DD110;
-  v11 = v6;
-  v12 = self;
-  v13 = a3;
-  v7 = v6;
+  v11 = mainOrPrivateContext;
+  selfCopy = self;
+  orderCopy = order;
+  v7 = mainOrPrivateContext;
   [v7 performBlockAndWaitWithSave:v10];
   v8 = +[_TtC18PodcastsFoundation18SyncKeysRepository shared];
   [v8 setIsPlaylistSyncDirty:1];
@@ -503,15 +503,15 @@
   v24 = 0x2020000000;
   v25 = 0;
   v4 = +[MTDB sharedInstance];
-  v5 = [v4 mainOrPrivateContext];
+  mainOrPrivateContext = [v4 mainOrPrivateContext];
 
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_10011F198;
   v16[3] = &unk_1004DC410;
-  v6 = v5;
+  v6 = mainOrPrivateContext;
   v17 = v6;
-  v18 = self;
+  selfCopy = self;
   v20 = &v26;
   v21 = &v22;
   v7 = v3;
@@ -527,15 +527,15 @@
   [(MTBasePodcastListViewController *)v11 setDelegate:self];
   [(MTPlaylistSelectPodcastListViewController *)v11 setPodcastUuids:v7];
   [(MTPlaylistSelectPodcastListViewController *)v11 setAllPodcastsSelected:*(v23 + 24)];
-  v12 = [(MTPlaylistSettingsViewController *)self playlistUuid];
-  [(MTPlaylistSelectPodcastListViewController *)v11 setPlaylistUuid:v12];
+  playlistUuid = [(MTPlaylistSettingsViewController *)self playlistUuid];
+  [(MTPlaylistSelectPodcastListViewController *)v11 setPlaylistUuid:playlistUuid];
 
   v13 = +[NSBundle mainBundle];
   v14 = [v13 localizedStringForKey:@"Podcasts Header" value:&stru_1004F3018 table:0];
   [(MTPlaylistSelectPodcastListViewController *)v11 setTitle:v14];
 
-  v15 = [(MTPlaylistSettingsViewController *)self navigationController];
-  [v15 pushViewController:v11 animated:{-[MTPlaylistSettingsViewController userDriven](self, "userDriven")}];
+  navigationController = [(MTPlaylistSettingsViewController *)self navigationController];
+  [navigationController pushViewController:v11 animated:{-[MTPlaylistSettingsViewController userDriven](self, "userDriven")}];
 
   [(MTPlaylistSettingsViewController *)self setAddPodcastsViewController:v11];
   _Block_object_dispose(&v22, 8);
@@ -545,16 +545,16 @@
 - (void)saveNewPlaylists
 {
   v3 = +[MTDB sharedInstance];
-  v4 = [v3 mainOrPrivateContext];
+  mainOrPrivateContext = [v3 mainOrPrivateContext];
 
   objc_initWeak(&location, self);
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10011F418;
   v6[3] = &unk_1004DA270;
-  v5 = v4;
+  v5 = mainOrPrivateContext;
   v7 = v5;
-  v8 = self;
+  selfCopy = self;
   objc_copyWeak(&v9, &location);
   [v5 performBlock:v6];
   objc_destroyWeak(&v9);
@@ -562,60 +562,60 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_updateUngroupedListSetting:(BOOL)a3
+- (void)_updateUngroupedListSetting:(BOOL)setting
 {
-  v3 = a3;
+  settingCopy = setting;
   v5 = +[MTDB sharedInstance];
-  v6 = [v5 mainOrPrivateContext];
+  mainOrPrivateContext = [v5 mainOrPrivateContext];
 
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10011F884;
   v10[3] = &unk_1004DA0E0;
-  v11 = v6;
-  v12 = self;
-  v13 = v3;
-  v7 = v6;
+  v11 = mainOrPrivateContext;
+  selfCopy = self;
+  v13 = settingCopy;
+  v7 = mainOrPrivateContext;
   [v7 performBlockAndWaitWithSave:v10];
   v8 = +[_TtC18PodcastsFoundation18SyncKeysRepository shared];
   [v8 setIsPlaylistSyncDirty:1];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained playlistSettings:self didChangeLayout:!v3];
+  [WeakRetained playlistSettings:self didChangeLayout:!settingCopy];
 }
 
 - (id)metricDataSource
 {
   v3 = +[MTDB sharedInstance];
-  v4 = [v3 mainOrPrivateContext];
+  mainOrPrivateContext = [v3 mainOrPrivateContext];
 
-  v5 = [(MTPlaylistSettingsViewController *)self playlistUuid];
-  v6 = [v4 playlistForUuid:v5];
+  playlistUuid = [(MTPlaylistSettingsViewController *)self playlistUuid];
+  v6 = [mainOrPrivateContext playlistForUuid:playlistUuid];
 
   return v6;
 }
 
-- (void)syncControllerOperationCompleted:(id)a3
+- (void)syncControllerOperationCompleted:(id)completed
 {
-  v4 = [(MTPlaylistSettingsViewController *)self newSettingsController];
-  [(MTGenericSettingsViewController *)self setSettingsController:v4];
+  newSettingsController = [(MTPlaylistSettingsViewController *)self newSettingsController];
+  [(MTGenericSettingsViewController *)self setSettingsController:newSettingsController];
 }
 
-- (void)updateTitle:(id)a3
+- (void)updateTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v5 = +[MTDB sharedInstance];
-  v6 = [v5 mainOrPrivateContext];
+  mainOrPrivateContext = [v5 mainOrPrivateContext];
 
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10011FB38;
   v11[3] = &unk_1004D94C8;
-  v12 = v6;
-  v13 = self;
-  v14 = v4;
-  v7 = v4;
-  v8 = v6;
+  v12 = mainOrPrivateContext;
+  selfCopy = self;
+  v14 = titleCopy;
+  v7 = titleCopy;
+  v8 = mainOrPrivateContext;
   [v8 performBlockAndWaitWithSave:v11];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained playlistSettingsDidChangeSetting:self];

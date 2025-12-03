@@ -1,21 +1,21 @@
 @interface BMPBParsecSearchEntity
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addTopics:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasProbabilityScore:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addTopics:(id)topics;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasProbabilityScore:(BOOL)score;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPBParsecSearchEntity
 
-- (void)setHasProbabilityScore:(BOOL)a3
+- (void)setHasProbabilityScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 2;
   }
@@ -28,22 +28,22 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addTopics:(id)a3
+- (void)addTopics:(id)topics
 {
-  v4 = a3;
+  topicsCopy = topics;
   topics = self->_topics;
-  v8 = v4;
+  v8 = topicsCopy;
   if (!topics)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_topics;
     self->_topics = v6;
 
-    v4 = v8;
+    topicsCopy = v8;
     topics = self->_topics;
   }
 
-  [(NSMutableArray *)topics addObject:v4];
+  [(NSMutableArray *)topics addObject:topicsCopy];
 }
 
 - (id)description
@@ -52,8 +52,8 @@
   v8.receiver = self;
   v8.super_class = BMPBParsecSearchEntity;
   v4 = [(BMPBParsecSearchEntity *)&v8 description];
-  v5 = [(BMPBParsecSearchEntity *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BMPBParsecSearchEntity *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -61,12 +61,12 @@
 - (id)dictionaryRepresentation
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v5 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v5 = dictionary;
   name = self->_name;
   if (name)
   {
-    [v3 setObject:name forKey:@"name"];
+    [dictionary setObject:name forKey:@"name"];
   }
 
   has = self->_has;
@@ -107,8 +107,8 @@
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
-          [v10 addObject:v16];
+          dictionaryRepresentation = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
+          [v10 addObject:dictionaryRepresentation];
         }
 
         v13 = [(NSMutableArray *)v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -125,10 +125,10 @@
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_name)
   {
     PBDataWriterWriteStringField();
@@ -180,37 +180,37 @@
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_name)
   {
-    [v4 setName:?];
-    v4 = v10;
+    [toCopy setName:?];
+    toCopy = v10;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 2) = self->_category;
-    *(v4 + 40) |= 1u;
+    *(toCopy + 2) = self->_category;
+    *(toCopy + 40) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 6) = LODWORD(self->_probabilityScore);
-    *(v4 + 40) |= 2u;
+    *(toCopy + 6) = LODWORD(self->_probabilityScore);
+    *(toCopy + 40) |= 2u;
   }
 
   if ([(BMPBParsecSearchEntity *)self topicsCount])
   {
     [v10 clearTopics];
-    v6 = [(BMPBParsecSearchEntity *)self topicsCount];
-    if (v6)
+    topicsCount = [(BMPBParsecSearchEntity *)self topicsCount];
+    if (topicsCount)
     {
-      v7 = v6;
+      v7 = topicsCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(BMPBParsecSearchEntity *)self topicsAtIndex:i];
@@ -220,11 +220,11 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_name copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_name copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -261,7 +261,7 @@
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v17 + 1) + 8 * i) copyWithZone:{a3, v17}];
+        v14 = [*(*(&v17 + 1) + 8 * i) copyWithZone:{zone, v17}];
         [v5 addTopics:v14];
       }
 
@@ -275,16 +275,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
   name = self->_name;
-  if (name | *(v4 + 2))
+  if (name | *(equalCopy + 2))
   {
     if (![(NSString *)name isEqual:?])
     {
@@ -292,16 +292,16 @@
     }
   }
 
-  v6 = *(v4 + 40);
+  v6 = *(equalCopy + 40);
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_category != *(v4 + 2))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_category != *(equalCopy + 2))
     {
       goto LABEL_16;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
 LABEL_16:
     v8 = 0;
@@ -310,19 +310,19 @@ LABEL_16:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_probabilityScore != *(v4 + 6))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_probabilityScore != *(equalCopy + 6))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 40) & 2) != 0)
+  else if ((*(equalCopy + 40) & 2) != 0)
   {
     goto LABEL_16;
   }
 
   topics = self->_topics;
-  if (topics | *(v4 + 4))
+  if (topics | *(equalCopy + 4))
   {
     v8 = [(NSMutableArray *)topics isEqual:?];
   }
@@ -388,26 +388,26 @@ LABEL_3:
   return v6 ^ v3 ^ v10 ^ [(NSMutableArray *)self->_topics hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 2))
+  fromCopy = from;
+  if (*(fromCopy + 2))
   {
     [(BMPBParsecSearchEntity *)self setName:?];
   }
 
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if (v5)
   {
-    self->_category = *(v4 + 2);
+    self->_category = *(fromCopy + 2);
     *&self->_has |= 1u;
-    v5 = *(v4 + 40);
+    v5 = *(fromCopy + 40);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_probabilityScore = *(v4 + 6);
+    self->_probabilityScore = *(fromCopy + 6);
     *&self->_has |= 2u;
   }
 
@@ -415,7 +415,7 @@ LABEL_3:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = *(v4 + 4);
+  v6 = *(fromCopy + 4);
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {

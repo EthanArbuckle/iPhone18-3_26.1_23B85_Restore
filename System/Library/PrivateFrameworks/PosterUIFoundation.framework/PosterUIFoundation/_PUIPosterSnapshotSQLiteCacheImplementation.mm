@@ -1,11 +1,11 @@
 @interface _PUIPosterSnapshotSQLiteCacheImplementation
-- (BOOL)checkCacheIsReachableWithError:(id *)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)prepareCacheWithError:(id *)a3;
-- (_PUIPosterSnapshotSQLiteCacheImplementation)initWithURL:(id)a3 fileManager:(id)a4 options:(int64_t)a5 cacheQueue:(id)a6 scheduler:(id)a7 error:(id *)a8;
-- (id)cacheSnapshotBundle:(id)a3 options:(id)a4;
-- (id)discardSnapshotBundlesMatchingSQLPredicate:(id)a3;
-- (id)snapshotBundlesMatchingSQLPredicate:(id)a3 orderedBy:(id)a4 limit:(id)a5;
+- (BOOL)checkCacheIsReachableWithError:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)prepareCacheWithError:(id *)error;
+- (_PUIPosterSnapshotSQLiteCacheImplementation)initWithURL:(id)l fileManager:(id)manager options:(int64_t)options cacheQueue:(id)queue scheduler:(id)scheduler error:(id *)error;
+- (id)cacheSnapshotBundle:(id)bundle options:(id)options;
+- (id)discardSnapshotBundlesMatchingSQLPredicate:(id)predicate;
+- (id)snapshotBundlesMatchingSQLPredicate:(id)predicate orderedBy:(id)by limit:(id)limit;
 - (unint64_t)hash;
 - (void)dealloc;
 - (void)invalidate;
@@ -13,13 +13,13 @@
 
 @implementation _PUIPosterSnapshotSQLiteCacheImplementation
 
-- (_PUIPosterSnapshotSQLiteCacheImplementation)initWithURL:(id)a3 fileManager:(id)a4 options:(int64_t)a5 cacheQueue:(id)a6 scheduler:(id)a7 error:(id *)a8
+- (_PUIPosterSnapshotSQLiteCacheImplementation)initWithURL:(id)l fileManager:(id)manager options:(int64_t)options cacheQueue:(id)queue scheduler:(id)scheduler error:(id *)error
 {
   v70[3] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
+  lCopy = l;
+  managerCopy = manager;
+  queueCopy = queue;
+  schedulerCopy = scheduler;
   v64.receiver = self;
   v64.super_class = _PUIPosterSnapshotSQLiteCacheImplementation;
   v18 = [(_PUIPosterSnapshotSQLiteCacheImplementation *)&v64 init];
@@ -34,16 +34,16 @@ LABEL_25:
   invalidationFlag = v18->_invalidationFlag;
   v18->_invalidationFlag = v19;
 
-  v18->_options = a5;
-  v21 = [v14 URLByStandardizingPath];
+  v18->_options = options;
+  uRLByStandardizingPath = [lCopy URLByStandardizingPath];
   cacheURL = v18->_cacheURL;
-  v18->_cacheURL = v21;
+  v18->_cacheURL = uRLByStandardizingPath;
 
-  if ([(NSURL *)v18->_cacheURL checkResourceIsReachableAndReturnError:a8])
+  if ([(NSURL *)v18->_cacheURL checkResourceIsReachableAndReturnError:error])
   {
-    if (v15)
+    if (managerCopy)
     {
-      v23 = v15;
+      v23 = managerCopy;
     }
 
     else
@@ -68,18 +68,18 @@ LABEL_25:
 
     if ((v18->_options & 4) == 0)
     {
-      v55 = a6;
-      v56 = a7;
-      v57 = v17;
-      v58 = v16;
+      queueCopy2 = queue;
+      schedulerCopy2 = scheduler;
+      v57 = schedulerCopy;
+      v58 = queueCopy;
       v32 = MEMORY[0x1E695DFF8];
-      v33 = [(NSURL *)v18->_databaseURL path];
-      v34 = [v33 stringByAppendingString:@"-shm"];
+      path = [(NSURL *)v18->_databaseURL path];
+      v34 = [path stringByAppendingString:@"-shm"];
       v35 = [v32 fileURLWithPath:v34];
 
       v36 = MEMORY[0x1E695DFF8];
-      v37 = [(NSURL *)v18->_databaseURL path];
-      v38 = [v37 stringByAppendingString:@"-wal"];
+      path2 = [(NSURL *)v18->_databaseURL path];
+      v38 = [path2 stringByAppendingString:@"-wal"];
       v39 = [v36 fileURLWithPath:v38];
 
       v70[0] = v18->_databaseURL;
@@ -124,9 +124,9 @@ LABEL_25:
                   v48 = PUILogSnapshotCache();
                   if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
                   {
-                    v49 = [v45 lastPathComponent];
+                    lastPathComponent = [v45 lastPathComponent];
                     *buf = 138543618;
-                    v66 = v49;
+                    v66 = lastPathComponent;
                     v67 = 2114;
                     v68 = v46;
                     _os_log_error_impl(&dword_1A8C85000, v48, OS_LOG_TYPE_ERROR, "<_PUIPosterSnapshotSQLiteCacheImplementation init> Unable to change allow-suspend-with-open-file-handle for sqlite database url %{public}@: %{public}@", buf, 0x16u);
@@ -142,17 +142,17 @@ LABEL_25:
         while (v42);
       }
 
-      v17 = v57;
-      v16 = v58;
-      a6 = v55;
-      a7 = v56;
+      schedulerCopy = v57;
+      queueCopy = v58;
+      queue = queueCopy2;
+      scheduler = schedulerCopy2;
     }
 
-    objc_storeStrong(&v18->_cacheQueue, a6);
-    objc_storeStrong(&v18->_cacheQueueScheduler, a7);
-    v50 = [MEMORY[0x1E696AFB0] UUID];
+    objc_storeStrong(&v18->_cacheQueue, queue);
+    objc_storeStrong(&v18->_cacheQueueScheduler, scheduler);
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     identifier = v18->_identifier;
-    v18->_identifier = v50;
+    v18->_identifier = uUID;
 
     goto LABEL_25;
   }
@@ -169,7 +169,7 @@ LABEL_26:
   v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    NSStringFromSelector(a1);
+    NSStringFromSelector(self);
     objc_claimAutoreleasedReturnValue();
     v3 = OUTLINED_FUNCTION_2();
     v4 = NSStringFromClass(v3);
@@ -182,11 +182,11 @@ LABEL_26:
   __break(0);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = equalCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -236,26 +236,26 @@ LABEL_26:
   OUTLINED_FUNCTION_9(&dword_1A8C85000, v3, v4, "<%p> invalidating the database connection from: %@", v5, v6, v7, v8, 2u);
 }
 
-- (BOOL)prepareCacheWithError:(id *)a3
+- (BOOL)prepareCacheWithError:(id *)error
 {
-  v4 = self;
+  selfCopy = self;
   v174 = *MEMORY[0x1E69E9840];
   if ([(BSAtomicSignal *)self->_invalidationFlag hasBeenSignalled])
   {
-    if (a3)
+    if (error)
     {
       v5 = PFFunctionNameForAddress();
-      *a3 = PFGeneralErrorFromObjectWithLocalizedFailureReason();
+      *error = PFGeneralErrorFromObjectWithLocalizedFailureReason();
     }
 
     return 0;
   }
 
-  v6 = [(_PUIPosterSnapshotSQLiteCacheImplementation *)v4 databaseConnectionAcquisitionError];
+  databaseConnectionAcquisitionError = [(_PUIPosterSnapshotSQLiteCacheImplementation *)selfCopy databaseConnectionAcquisitionError];
 
-  if (!v6)
+  if (!databaseConnectionAcquisitionError)
   {
-    if (v4->_databaseConnection)
+    if (selfCopy->_databaseConnection)
     {
       return 1;
     }
@@ -271,16 +271,16 @@ LABEL_26:
       _os_signpost_emit_with_name_impl(&dword_1A8C85000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v10, "SnapshotCachePrepare", &unk_1A8D256D3, buf, 2u);
     }
 
-    v146 = v4->_fileManager;
-    v13 = v4->_databaseURL;
-    v145 = v4->_cacheLogIdentifier;
-    options = v4->_options;
-    v15 = [(NSURL *)v4->_cacheURL URLByAppendingPathComponent:@"PosterSnapshots" isDirectory:1];
+    v146 = selfCopy->_fileManager;
+    v13 = selfCopy->_databaseURL;
+    v145 = selfCopy->_cacheLogIdentifier;
+    options = selfCopy->_options;
+    v15 = [(NSURL *)selfCopy->_cacheURL URLByAppendingPathComponent:@"PosterSnapshots" isDirectory:1];
     v164[0] = MEMORY[0x1E69E9820];
     v164[1] = 3221225472;
     v164[2] = __69___PUIPosterSnapshotSQLiteCacheImplementation_prepareCacheWithError___block_invoke;
     v164[3] = &unk_1E78554F8;
-    v164[4] = v4;
+    v164[4] = selfCopy;
     v164[5] = v10;
     v16 = MEMORY[0x1AC5769F0](v164);
     if ((options & 6) != 0)
@@ -289,13 +289,13 @@ LABEL_26:
       {
         v17 = PFFunctionNameForAddress();
         PFGeneralErrorFromObjectWithLocalizedFailureReason();
-        *a3 = v7 = 0;
+        *error = v7 = 0;
 LABEL_131:
 
         goto LABEL_132;
       }
 
-      if (![(NSURL *)v4->_databaseURL checkResourceIsReachableAndReturnError:a3]|| ![(NSURL *)v4->_snapshotBundleContainerURL checkResourceIsReachableAndReturnError:a3])
+      if (![(NSURL *)selfCopy->_databaseURL checkResourceIsReachableAndReturnError:error]|| ![(NSURL *)selfCopy->_snapshotBundleContainerURL checkResourceIsReachableAndReturnError:error])
       {
         v7 = 0;
 LABEL_132:
@@ -313,7 +313,7 @@ LABEL_132:
       if (!v18)
       {
         v56 = v19;
-        *a3 = v17;
+        *error = v17;
         (v16)[2](v16, v17);
         v57 = PUILogSnapshotCache();
         if (os_log_type_enabled(v57, OS_LOG_TYPE_ERROR))
@@ -340,14 +340,14 @@ LABEL_132:
       }
     }
 
-    if ([(NSURL *)v4->_rootCacheURL checkResourceIsReachableAndReturnError:0])
+    if ([(NSURL *)selfCopy->_rootCacheURL checkResourceIsReachableAndReturnError:0])
     {
-      v21 = [(NSURL *)v4->_databaseURL checkResourceIsReachableAndReturnError:0];
-      [(NSURL *)v4->_snapshotBundleContainerURL checkResourceIsReachableAndReturnError:0];
+      v21 = [(NSURL *)selfCopy->_databaseURL checkResourceIsReachableAndReturnError:0];
+      [(NSURL *)selfCopy->_snapshotBundleContainerURL checkResourceIsReachableAndReturnError:0];
       goto LABEL_31;
     }
 
-    rootCacheURL = v4->_rootCacheURL;
+    rootCacheURL = selfCopy->_rootCacheURL;
     v23 = PFPosterPathFileAttributes();
     v162 = 0;
     LOBYTE(rootCacheURL) = [(NSFileManager *)v146 createDirectoryAtURL:rootCacheURL withIntermediateDirectories:0 attributes:v23 error:&v162];
@@ -367,20 +367,20 @@ LABEL_31:
       v131 = v21;
       if (!(v21 | (options >> 2) & 1))
       {
-        v133 = a3;
+        errorCopy = error;
         v135 = v16;
         v138 = v15;
         v140 = v13;
-        v130 = v4;
-        v25 = v4->_databaseURL;
+        v130 = selfCopy;
+        v25 = selfCopy->_databaseURL;
         v26 = MEMORY[0x1E695DFF8];
-        v27 = [(NSURL *)v25 path];
-        v28 = [v27 stringByAppendingString:@"-shm"];
+        path = [(NSURL *)v25 path];
+        v28 = [path stringByAppendingString:@"-shm"];
         v29 = [v26 fileURLWithPath:v28];
 
         v30 = MEMORY[0x1E695DFF8];
-        v31 = [(NSURL *)v25 path];
-        v32 = [v31 stringByAppendingString:@"-wal"];
+        path2 = [(NSURL *)v25 path];
+        v32 = [path2 stringByAppendingString:@"-wal"];
         v33 = [v30 fileURLWithPath:v32];
 
         v160 = 0u;
@@ -412,10 +412,10 @@ LABEL_31:
             }
 
             v39 = *(*(&v158 + 1) + 8 * v38);
-            v40 = [v39 path];
-            v41 = [MEMORY[0x1E695DEF0] data];
+            path3 = [v39 path];
+            data = [MEMORY[0x1E695DEF0] data];
             v42 = PFPosterPathFileAttributes();
-            [(NSFileManager *)v146 createFileAtPath:v40 contents:v41 attributes:v42];
+            [(NSFileManager *)v146 createFileAtPath:path3 contents:data attributes:v42];
 
             v157 = 0;
             LOBYTE(v42) = [v39 pf_setAllowSuspendWithOpenFileHandle:1 error:&v157];
@@ -429,11 +429,11 @@ LABEL_31:
                 goto LABEL_44;
               }
 
-              v46 = [v39 lastPathComponent];
+              lastPathComponent = [v39 lastPathComponent];
               *buf = 138543874;
               v167 = v145;
               v168 = 2114;
-              v169 = v46;
+              v169 = lastPathComponent;
               v170 = 2114;
               v171 = v43;
               _os_log_impl(&dword_1A8C85000, v45, OS_LOG_TYPE_DEFAULT, "<%{public}@> Changed allow-suspend-with-open-file-handle for sqlite database url %{public}@: %{public}@", buf, 0x20u);
@@ -442,11 +442,11 @@ LABEL_31:
 
             if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
             {
-              v46 = [v39 lastPathComponent];
+              lastPathComponent = [v39 lastPathComponent];
               *buf = 138543874;
               v167 = v145;
               v168 = 2114;
-              v169 = v46;
+              v169 = lastPathComponent;
               v170 = 2114;
               v171 = v43;
               _os_log_error_impl(&dword_1A8C85000, v45, OS_LOG_TYPE_ERROR, "<%{public}@> Unable to change allow-suspend-with-open-file-handle for sqlite database url %{public}@: %{public}@", buf, 0x20u);
@@ -467,9 +467,9 @@ LABEL_48:
 
             v15 = v138;
             v13 = v140;
-            a3 = v133;
+            error = errorCopy;
             v16 = v135;
-            v4 = v130;
+            selfCopy = v130;
             break;
           }
         }
@@ -496,17 +496,17 @@ LABEL_48:
       }
 
       v50 = objc_alloc(MEMORY[0x1E69C51A0]);
-      databaseURL = v4->_databaseURL;
+      databaseURL = selfCopy->_databaseURL;
       v156 = 0;
       v52 = [v50 initWithFileURL:databaseURL options:v49 dataProtectionClass:1 error:&v156];
       v17 = v156;
-      databaseConnection = v4->_databaseConnection;
-      v4->_databaseConnection = v52;
+      databaseConnection = selfCopy->_databaseConnection;
+      selfCopy->_databaseConnection = v52;
 
       if (v17)
       {
         v54 = v17;
-        *a3 = v17;
+        *error = v17;
         (v16)[2](v16, v17);
         v55 = PUILogSnapshotCache();
         if (os_log_type_enabled(v55, OS_LOG_TYPE_ERROR))
@@ -524,7 +524,7 @@ LABEL_48:
         [_PUIPosterSnapshotSQLiteCacheImplementation prepareCacheWithError:];
       }
 
-      v59 = v4->_databaseConnection;
+      v59 = selfCopy->_databaseConnection;
       v155 = 0;
       [(PFSQLiteDatabaseConnection *)v59 executeQuery:@"PRAGMA journal_mode=WAL;" error:&v155];
       v60 = v155;
@@ -532,7 +532,7 @@ LABEL_48:
       if (v60)
       {
         v61 = v60;
-        *a3 = v55;
+        *error = v55;
         (v16)[2](v16, v55);
         v62 = PUILogSnapshotCache();
         if (os_log_type_enabled(v62, OS_LOG_TYPE_ERROR))
@@ -545,17 +545,17 @@ LABEL_48:
       }
 
       v64 = objc_alloc(MEMORY[0x1E69C5188]);
-      v65 = v4->_databaseConnection;
+      v65 = selfCopy->_databaseConnection;
       v154 = 0;
       v66 = [v64 initWithDatabaseConnection:v65 error:&v154];
       v62 = v154;
-      archiver = v4->_archiver;
-      v4->_archiver = v66;
+      archiver = selfCopy->_archiver;
+      selfCopy->_archiver = v66;
 
       if (v62)
       {
         v68 = v62;
-        *a3 = v62;
+        *error = v62;
         (v16)[2](v16, v62);
         v69 = PUILogSnapshotCache();
         if (os_log_type_enabled(v69, OS_LOG_TYPE_ERROR))
@@ -574,17 +574,17 @@ LABEL_48:
       }
 
       v71 = objc_alloc(MEMORY[0x1E69C51B0]);
-      v72 = v4->_databaseConnection;
+      v72 = selfCopy->_databaseConnection;
       v153 = 0;
       v142 = [v71 initWithDatabaseConnection:v72 error:&v153];
       v73 = v153;
-      keyedArchiver = v4->_keyedArchiver;
-      v4->_keyedArchiver = v142;
+      keyedArchiver = selfCopy->_keyedArchiver;
+      selfCopy->_keyedArchiver = v142;
 
       if (v73)
       {
         v75 = v73;
-        *a3 = v73;
+        *error = v73;
         (v16)[2](v16, v73);
         v76 = PUILogSnapshotCache();
         v69 = v73;
@@ -603,7 +603,7 @@ LABEL_48:
         [_PUIPosterSnapshotSQLiteCacheImplementation prepareCacheWithError:];
       }
 
-      v129 = [(PFSQLiteKeyedArchiver *)v4->_keyedArchiver objectForKey:@"schema_version" ofClass:objc_opt_class()];
+      v129 = [(PFSQLiteKeyedArchiver *)selfCopy->_keyedArchiver objectForKey:@"schema_version" ofClass:objc_opt_class()];
       v78 = [v129 unsignedIntegerValue]| options & 4;
       v126 = v78 != 0;
       v139 = v15;
@@ -611,7 +611,7 @@ LABEL_48:
       if (!v78)
       {
         v132 = options;
-        v134 = a3;
+        errorCopy2 = error;
         v136 = v16;
         v79 = PUILogSnapshotCache();
         if (os_log_type_enabled(v79, OS_LOG_TYPE_DEBUG))
@@ -623,9 +623,9 @@ LABEL_48:
         v152 = 0u;
         v149 = 0u;
         v150 = 0u;
-        v80 = v4;
-        v81 = [(PFSQLiteDatabaseConnection *)v4->_databaseConnection tableNames];
-        v82 = [v81 countByEnumeratingWithState:&v149 objects:v165 count:16];
+        v80 = selfCopy;
+        tableNames = [(PFSQLiteDatabaseConnection *)selfCopy->_databaseConnection tableNames];
+        v82 = [tableNames countByEnumeratingWithState:&v149 objects:v165 count:16];
         if (v82)
         {
           v83 = v82;
@@ -636,7 +636,7 @@ LABEL_48:
             {
               if (*v150 != v84)
               {
-                objc_enumerationMutation(v81);
+                objc_enumerationMutation(tableNames);
               }
 
               v86 = *(*(&v149 + 1) + 8 * i);
@@ -648,13 +648,13 @@ LABEL_48:
               }
             }
 
-            v83 = [v81 countByEnumeratingWithState:&v149 objects:v165 count:16];
+            v83 = [tableNames countByEnumeratingWithState:&v149 objects:v165 count:16];
           }
 
           while (v83);
         }
 
-        v4 = v80;
+        selfCopy = v80;
         [(NSFileManager *)v146 removeItemAtURL:v80->_snapshotBundleContainerURL error:0];
         [(PFSQLiteKeyedArchiver *)v80->_keyedArchiver setInteger:1 forKey:@"schema_version"];
         v89 = PUILogSnapshotCache();
@@ -665,12 +665,12 @@ LABEL_48:
         }
 
         LOBYTE(options) = v132;
-        a3 = v134;
+        error = errorCopy2;
         v17 = 0;
       }
 
       v90 = +[_PUIPosterSnapshotCacheRecord pf_sqliteCodingDescriptor];
-      v143 = v4->_archiver;
+      v143 = selfCopy->_archiver;
       v91 = objc_opt_class();
       v148 = 0;
       v92 = v143;
@@ -681,7 +681,7 @@ LABEL_48:
       if ((v90 & 1) == 0)
       {
         v105 = v93;
-        *a3 = v94;
+        *error = v94;
         (v16)[2](v16, v94);
         v106 = PUILogSnapshotCache();
         v62 = 0;
@@ -704,7 +704,7 @@ LABEL_48:
         [_PUIPosterSnapshotSQLiteCacheImplementation prepareCacheWithError:];
       }
 
-      if (![(NSURL *)v4->_snapshotBundleContainerURL checkResourceIsReachableAndReturnError:0])
+      if (![(NSURL *)selfCopy->_snapshotBundleContainerURL checkResourceIsReachableAndReturnError:0])
       {
         v96 = v16;
         if ((options & 4) != 0)
@@ -718,8 +718,8 @@ LABEL_48:
           goto LABEL_123;
         }
 
-        fileManager = v4->_fileManager;
-        snapshotBundleContainerURL = v4->_snapshotBundleContainerURL;
+        fileManager = selfCopy->_fileManager;
+        snapshotBundleContainerURL = selfCopy->_snapshotBundleContainerURL;
         v110 = PFPosterPathFileAttributes();
         v147 = 0;
         LOBYTE(snapshotBundleContainerURL) = [(NSFileManager *)fileManager createDirectoryAtURL:snapshotBundleContainerURL withIntermediateDirectories:1 attributes:v110 error:&v147];
@@ -728,7 +728,7 @@ LABEL_48:
         if ((snapshotBundleContainerURL & 1) == 0)
         {
           v113 = v111;
-          *a3 = v111;
+          *error = v111;
           (v96)[2](v96, v111);
           v114 = PUILogSnapshotCache();
           if (os_log_type_enabled(v114, OS_LOG_TYPE_ERROR))
@@ -761,8 +761,8 @@ LABEL_48:
 
       v96 = v16;
       v97 = [v144 columnForName:@"_snapshotBundleUUID"];
-      v98 = v4;
-      v99 = v4->_archiver;
+      v98 = selfCopy;
+      v99 = selfCopy->_archiver;
       v100 = objc_opt_self();
       v101 = [(PFSQLiteArchiver *)v99 objectsOfClass:v100 column:v97 predicate:0 limitOffset:0 orderedBy:0 error:0];
       v102 = [v101 set];
@@ -789,8 +789,8 @@ LABEL_48:
         v120 = [v115 mutableCopy];
         [v120 minusSet:v119];
         v121 = MEMORY[0x1E69C51C8];
-        v122 = [v120 allObjects];
-        v123 = [v121 predicateWithColumn:v97 operatorType:6 value:v122];
+        allObjects = [v120 allObjects];
+        v123 = [v121 predicateWithColumn:v97 operatorType:6 value:allObjects];
 
         v124 = v98->_archiver;
         v125 = objc_opt_self();
@@ -823,7 +823,7 @@ LABEL_130:
     }
 
     v63 = v17;
-    *a3 = v17;
+    *error = v17;
     (v16)[2](v16, v17);
     v57 = PUILogSnapshotCache();
     if (os_log_type_enabled(v57, OS_LOG_TYPE_ERROR))
@@ -837,32 +837,32 @@ LABEL_69:
     goto LABEL_131;
   }
 
-  if (!a3)
+  if (!error)
   {
     return 0;
   }
 
-  [(_PUIPosterSnapshotSQLiteCacheImplementation *)v4 databaseConnectionAcquisitionError];
-  *a3 = v7 = 0;
+  [(_PUIPosterSnapshotSQLiteCacheImplementation *)selfCopy databaseConnectionAcquisitionError];
+  *error = v7 = 0;
   return v7;
 }
 
-- (BOOL)checkCacheIsReachableWithError:(id *)a3
+- (BOOL)checkCacheIsReachableWithError:(id *)error
 {
-  if (![(NSURL *)self->_cacheURL checkResourceIsReachableAndReturnError:?]|| ![(NSURL *)self->_rootCacheURL checkResourceIsReachableAndReturnError:a3]|| ![(NSURL *)self->_databaseURL checkResourceIsReachableAndReturnError:a3])
+  if (![(NSURL *)self->_cacheURL checkResourceIsReachableAndReturnError:?]|| ![(NSURL *)self->_rootCacheURL checkResourceIsReachableAndReturnError:error]|| ![(NSURL *)self->_databaseURL checkResourceIsReachableAndReturnError:error])
   {
     return 0;
   }
 
   snapshotBundleContainerURL = self->_snapshotBundleContainerURL;
 
-  return [(NSURL *)snapshotBundleContainerURL checkResourceIsReachableAndReturnError:a3];
+  return [(NSURL *)snapshotBundleContainerURL checkResourceIsReachableAndReturnError:error];
 }
 
-- (id)discardSnapshotBundlesMatchingSQLPredicate:(id)a3
+- (id)discardSnapshotBundlesMatchingSQLPredicate:(id)predicate
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  predicateCopy = predicate;
   if ([(BSAtomicSignal *)self->_invalidationFlag hasBeenSignalled])
   {
     v5 = MEMORY[0x1E69C5258];
@@ -895,7 +895,7 @@ LABEL_69:
       if (v14 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v15))
       {
         *buf = 138543362;
-        v38 = v4;
+        v38 = predicateCopy;
         _os_signpost_emit_with_name_impl(&dword_1A8C85000, v16, OS_SIGNPOST_INTERVAL_BEGIN, v14, "discardSnapshotBundlesMatchingSQLPredicate:", "predicate %{public}@", buf, 0xCu);
       }
 
@@ -906,7 +906,7 @@ LABEL_69:
       v31[2] = __90___PUIPosterSnapshotSQLiteCacheImplementation_discardSnapshotBundlesMatchingSQLPredicate___block_invoke;
       v31[3] = &unk_1E7855568;
       v32 = v17;
-      v33 = v4;
+      v33 = predicateCopy;
       v19 = v12;
       v34 = v19;
       v35 = v10;
@@ -932,12 +932,12 @@ LABEL_69:
   return v8;
 }
 
-- (id)snapshotBundlesMatchingSQLPredicate:(id)a3 orderedBy:(id)a4 limit:(id)a5
+- (id)snapshotBundlesMatchingSQLPredicate:(id)predicate orderedBy:(id)by limit:(id)limit
 {
   v49 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  predicateCopy = predicate;
+  byCopy = by;
+  limitCopy = limit;
   if ([(BSAtomicSignal *)self->_invalidationFlag hasBeenSignalled])
   {
     v11 = MEMORY[0x1E69C5258];
@@ -960,11 +960,11 @@ LABEL_69:
     if (v20 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v21))
     {
       *buf = 138543874;
-      v44 = v8;
+      v44 = predicateCopy;
       v45 = 2114;
-      v46 = v9;
+      v46 = byCopy;
       v47 = 2114;
-      v48 = v10;
+      v48 = limitCopy;
       _os_signpost_emit_with_name_impl(&dword_1A8C85000, v22, OS_SIGNPOST_INTERVAL_BEGIN, v20, "snapshotBundlesMatchingSQLPredicate:orderedBy:limit:", "predicate %{public}@ orderedBy %{public}@ limit %{public}@", buf, 0x20u);
     }
 
@@ -974,10 +974,10 @@ LABEL_69:
     v35[2] = __99___PUIPosterSnapshotSQLiteCacheImplementation_snapshotBundlesMatchingSQLPredicate_orderedBy_limit___block_invoke;
     v35[3] = &unk_1E78555E0;
     v36 = v18;
-    v37 = v8;
-    v38 = v10;
-    v39 = v9;
-    v40 = self;
+    v37 = predicateCopy;
+    v38 = limitCopy;
+    v39 = byCopy;
+    selfCopy = self;
     v24 = v17;
     v41 = v24;
     v42 = v15;
@@ -1003,11 +1003,11 @@ LABEL_69:
   return v14;
 }
 
-- (id)cacheSnapshotBundle:(id)a3 options:(id)a4
+- (id)cacheSnapshotBundle:(id)bundle options:(id)options
 {
   v57[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  bundleCopy = bundle;
+  optionsCopy = options;
   if ([(BSAtomicSignal *)self->_invalidationFlag hasBeenSignalled])
   {
     v9 = MEMORY[0x1E69C5258];
@@ -1018,13 +1018,13 @@ LABEL_69:
 
   else
   {
-    if (!v7)
+    if (!bundleCopy)
     {
       [_PUIPosterSnapshotSQLiteCacheImplementation cacheSnapshotBundle:a2 options:?];
     }
 
-    v13 = [v7 bundleURL];
-    v14 = [v13 checkResourceIsReachableAndReturnError:0];
+    bundleURL = [bundleCopy bundleURL];
+    v14 = [bundleURL checkResourceIsReachableAndReturnError:0];
 
     if (v14)
     {
@@ -1050,11 +1050,11 @@ LABEL_69:
         v22 = v21;
         if (v20 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v21))
         {
-          v23 = [v7 bundleURL];
+          bundleURL2 = [bundleCopy bundleURL];
           *buf = 138543618;
           v53 = v15;
           v54 = 2114;
-          v55 = v23;
+          v55 = bundleURL2;
           _os_signpost_emit_with_name_impl(&dword_1A8C85000, v22, OS_SIGNPOST_INTERVAL_BEGIN, v20, "cacheSnapshotBundle", "<%{public}@> snapshotBundle URL %{public}@", buf, 0x16u);
         }
 
@@ -1063,13 +1063,13 @@ LABEL_69:
         v44[1] = 3221225472;
         v44[2] = __75___PUIPosterSnapshotSQLiteCacheImplementation_cacheSnapshotBundle_options___block_invoke;
         v44[3] = &unk_1E7855658;
-        v45 = v7;
+        v45 = bundleCopy;
         v46 = v17;
-        v47 = self;
+        selfCopy = self;
         v25 = v15;
         v48 = v25;
         v49 = v18;
-        v50 = v8;
+        v50 = optionsCopy;
         v51 = v16;
         v26 = v16;
         v27 = v18;

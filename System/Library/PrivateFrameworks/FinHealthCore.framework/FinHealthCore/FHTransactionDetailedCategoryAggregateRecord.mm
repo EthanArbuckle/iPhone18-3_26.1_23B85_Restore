@@ -1,89 +1,89 @@
 @interface FHTransactionDetailedCategoryAggregateRecord
-- (BOOL)isEqual:(id)a3;
-- (FHTransactionDetailedCategoryAggregateRecord)initWithCoder:(id)a3;
-- (FHTransactionDetailedCategoryAggregateRecord)initWithMapsCategory:(id)a3 amountSpent:(id)a4 countryCode:(id)a5 transactionCount:(unint64_t)a6 regularTransactionRatio:(double)a7;
+- (BOOL)isEqual:(id)equal;
+- (FHTransactionDetailedCategoryAggregateRecord)initWithCoder:(id)coder;
+- (FHTransactionDetailedCategoryAggregateRecord)initWithMapsCategory:(id)category amountSpent:(id)spent countryCode:(id)code transactionCount:(unint64_t)count regularTransactionRatio:(double)ratio;
 - (id)description;
 - (unint64_t)hash;
-- (void)addRecord:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)addRecord:(id)record;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FHTransactionDetailedCategoryAggregateRecord
 
-- (FHTransactionDetailedCategoryAggregateRecord)initWithMapsCategory:(id)a3 amountSpent:(id)a4 countryCode:(id)a5 transactionCount:(unint64_t)a6 regularTransactionRatio:(double)a7
+- (FHTransactionDetailedCategoryAggregateRecord)initWithMapsCategory:(id)category amountSpent:(id)spent countryCode:(id)code transactionCount:(unint64_t)count regularTransactionRatio:(double)ratio
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  categoryCopy = category;
+  spentCopy = spent;
+  codeCopy = code;
   v19.receiver = self;
   v19.super_class = FHTransactionDetailedCategoryAggregateRecord;
   v16 = [(FHTransactionDetailedCategoryAggregateRecord *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_mapsCategory, a3);
-    objc_storeStrong(&v17->_amountSpent, a4);
-    objc_storeStrong(&v17->_countryCode, a5);
-    v17->_transactionCount = a6;
-    v17->_regularTransactionRatio = a7;
+    objc_storeStrong(&v16->_mapsCategory, category);
+    objc_storeStrong(&v17->_amountSpent, spent);
+    objc_storeStrong(&v17->_countryCode, code);
+    v17->_transactionCount = count;
+    v17->_regularTransactionRatio = ratio;
   }
 
   return v17;
 }
 
-- (void)addRecord:(id)a3
+- (void)addRecord:(id)record
 {
-  v13 = a3;
-  if (v13)
+  recordCopy = record;
+  if (recordCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       mapsCategory = self->_mapsCategory;
-      v5 = [v13 mapsCategory];
-      LODWORD(mapsCategory) = [(NSString *)mapsCategory isEqualToString:v5];
+      mapsCategory = [recordCopy mapsCategory];
+      LODWORD(mapsCategory) = [(NSString *)mapsCategory isEqualToString:mapsCategory];
 
       if (mapsCategory)
       {
         amountSpent = self->_amountSpent;
-        v7 = [v13 amountSpent];
-        v8 = [(NSDecimalNumber *)amountSpent decimalNumberByAdding:v7];
+        amountSpent = [recordCopy amountSpent];
+        v8 = [(NSDecimalNumber *)amountSpent decimalNumberByAdding:amountSpent];
         [(FHTransactionDetailedCategoryAggregateRecord *)self setAmountSpent:v8];
 
         regularTransactionRatio = self->_regularTransactionRatio;
         transactionCount = self->_transactionCount;
-        v11 = [v13 transactionCount];
-        [v13 regularTransactionRatio];
-        -[FHTransactionDetailedCategoryAggregateRecord setRegularTransactionRatio:](self, "setRegularTransactionRatio:", (v12 * v11 + transactionCount * regularTransactionRatio) / ([v13 transactionCount] + self->_transactionCount));
-        -[FHTransactionDetailedCategoryAggregateRecord setTransactionCount:](self, "setTransactionCount:", [v13 transactionCount] + self->_transactionCount);
+        transactionCount = [recordCopy transactionCount];
+        [recordCopy regularTransactionRatio];
+        -[FHTransactionDetailedCategoryAggregateRecord setRegularTransactionRatio:](self, "setRegularTransactionRatio:", (v12 * transactionCount + transactionCount * regularTransactionRatio) / ([recordCopy transactionCount] + self->_transactionCount));
+        -[FHTransactionDetailedCategoryAggregateRecord setTransactionCount:](self, "setTransactionCount:", [recordCopy transactionCount] + self->_transactionCount);
         [(FHTransactionDetailedCategoryAggregateRecord *)self setCountryCode:0];
       }
     }
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v15 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     mapsCategory = self->_mapsCategory;
-    v7 = [(FHTransactionDetailedCategoryAggregateRecord *)v5 mapsCategory];
-    if ([(NSString *)mapsCategory isEqualToString:v7])
+    mapsCategory = [(FHTransactionDetailedCategoryAggregateRecord *)v5 mapsCategory];
+    if ([(NSString *)mapsCategory isEqualToString:mapsCategory])
     {
       amountSpent = self->_amountSpent;
-      v9 = [(FHTransactionDetailedCategoryAggregateRecord *)v5 amountSpent];
-      if ([(NSDecimalNumber *)amountSpent isEqualToNumber:v9])
+      amountSpent = [(FHTransactionDetailedCategoryAggregateRecord *)v5 amountSpent];
+      if ([(NSDecimalNumber *)amountSpent isEqualToNumber:amountSpent])
       {
         countryCode = self->_countryCode;
-        v11 = [(FHTransactionDetailedCategoryAggregateRecord *)v5 countryCode];
-        if ([(NSString *)countryCode isEqualToString:v11]&& (transactionCount = self->_transactionCount, transactionCount == [(FHTransactionDetailedCategoryAggregateRecord *)v5 transactionCount]))
+        countryCode = [(FHTransactionDetailedCategoryAggregateRecord *)v5 countryCode];
+        if ([(NSString *)countryCode isEqualToString:countryCode]&& (transactionCount = self->_transactionCount, transactionCount == [(FHTransactionDetailedCategoryAggregateRecord *)v5 transactionCount]))
         {
           regularTransactionRatio = self->_regularTransactionRatio;
           [(FHTransactionDetailedCategoryAggregateRecord *)v5 regularTransactionRatio];
@@ -138,39 +138,39 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   mapsCategory = self->_mapsCategory;
-  v5 = a3;
-  [v5 encodeObject:mapsCategory forKey:@"mapsCategory"];
-  [v5 encodeObject:self->_amountSpent forKey:@"amountSpent"];
-  [v5 encodeObject:self->_countryCode forKey:@"countryCode"];
-  [v5 encodeInteger:self->_transactionCount forKey:@"transactionCount"];
-  [v5 encodeDouble:@"regularTransactionRatio" forKey:self->_regularTransactionRatio];
+  coderCopy = coder;
+  [coderCopy encodeObject:mapsCategory forKey:@"mapsCategory"];
+  [coderCopy encodeObject:self->_amountSpent forKey:@"amountSpent"];
+  [coderCopy encodeObject:self->_countryCode forKey:@"countryCode"];
+  [coderCopy encodeInteger:self->_transactionCount forKey:@"transactionCount"];
+  [coderCopy encodeDouble:@"regularTransactionRatio" forKey:self->_regularTransactionRatio];
 }
 
-- (FHTransactionDetailedCategoryAggregateRecord)initWithCoder:(id)a3
+- (FHTransactionDetailedCategoryAggregateRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = FHTransactionDetailedCategoryAggregateRecord;
   v5 = [(FHTransactionDetailedCategoryAggregateRecord *)&v14 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mapsCategory"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mapsCategory"];
     mapsCategory = v5->_mapsCategory;
     v5->_mapsCategory = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"amountSpent"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"amountSpent"];
     amountSpent = v5->_amountSpent;
     v5->_amountSpent = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"countryCode"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"countryCode"];
     countryCode = v5->_countryCode;
     v5->_countryCode = v10;
 
-    v5->_transactionCount = [v4 decodeIntegerForKey:@"transactionCount"];
-    [v4 decodeDoubleForKey:@"regularTransactionRatio"];
+    v5->_transactionCount = [coderCopy decodeIntegerForKey:@"transactionCount"];
+    [coderCopy decodeDoubleForKey:@"regularTransactionRatio"];
     v5->_regularTransactionRatio = v12;
   }
 

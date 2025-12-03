@@ -1,26 +1,26 @@
 @interface TRIXPCActivitySupport
-+ (BOOL)unsafe_immediatelyScheduleActivityWithLaunchDaemonDescriptor:(id)a3;
++ (BOOL)unsafe_immediatelyScheduleActivityWithLaunchDaemonDescriptor:(id)descriptor;
 + (id)_registeredActivities;
-+ (id)nameForActivityState:(int64_t)a3;
-+ (void)assertRegistrationOfLaunchdPlistActivities:(id)a3;
-+ (void)registerActivityWithLaunchDaemonDescriptor:(id)a3 checkInBlock:(id)a4 asyncHandler:(id)a5;
++ (id)nameForActivityState:(int64_t)state;
++ (void)assertRegistrationOfLaunchdPlistActivities:(id)activities;
++ (void)registerActivityWithLaunchDaemonDescriptor:(id)descriptor checkInBlock:(id)block asyncHandler:(id)handler;
 @end
 
 @implementation TRIXPCActivitySupport
 
-+ (id)nameForActivityState:(int64_t)a3
++ (id)nameForActivityState:(int64_t)state
 {
-  if (a3 >= 6)
+  if (state >= 6)
   {
-    v3 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"XPC_ACTIVITY_STATE_%ld", a3];
+    state = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"XPC_ACTIVITY_STATE_%ld", state];
   }
 
   else
   {
-    v3 = off_279DE0330[a3];
+    state = off_279DE0330[state];
   }
 
-  return v3;
+  return state;
 }
 
 + (id)_registeredActivities
@@ -47,21 +47,21 @@ void __46__TRIXPCActivitySupport__registeredActivities__block_invoke()
   objc_autoreleasePoolPop(v0);
 }
 
-+ (void)registerActivityWithLaunchDaemonDescriptor:(id)a3 checkInBlock:(id)a4 asyncHandler:(id)a5
++ (void)registerActivityWithLaunchDaemonDescriptor:(id)descriptor checkInBlock:(id)block asyncHandler:(id)handler
 {
   v36 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v9 name];
+  descriptorCopy = descriptor;
+  blockCopy = block;
+  handlerCopy = handler;
+  name = [descriptorCopy name];
   v13 = +[TRIXPCActivitySupport _registeredActivities];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __94__TRIXPCActivitySupport_registerActivityWithLaunchDaemonDescriptor_checkInBlock_asyncHandler___block_invoke;
   v31[3] = &unk_279DE0270;
-  v14 = v12;
+  v14 = name;
   v32 = v14;
-  v15 = v11;
+  v15 = handlerCopy;
   v33 = v15;
   [v13 runWithLockAcquired:v31];
   v16 = TRILogCategory_Server();
@@ -72,11 +72,11 @@ void __46__TRIXPCActivitySupport__registeredActivities__block_invoke()
     _os_log_impl(&dword_26F567000, v16, OS_LOG_TYPE_DEFAULT, "register xpc activity handler for %{public}@", buf, 0xCu);
   }
 
-  v17 = [v14 UTF8String];
-  if (!v17)
+  uTF8String = [v14 UTF8String];
+  if (!uTF8String)
   {
-    v24 = [MEMORY[0x277CCA890] currentHandler];
-    [v24 handleFailureInMethod:a2 object:a1 file:@"TRIXPCActivitySupport.m" lineNumber:159 description:{@"Invalid parameter not satisfying: %@", @"utf8Name"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIXPCActivitySupport.m" lineNumber:159 description:{@"Invalid parameter not satisfying: %@", @"utf8Name"}];
   }
 
   v18 = *MEMORY[0x277D86238];
@@ -85,15 +85,15 @@ void __46__TRIXPCActivitySupport__registeredActivities__block_invoke()
   handler[2] = __94__TRIXPCActivitySupport_registerActivityWithLaunchDaemonDescriptor_checkInBlock_asyncHandler___block_invoke_117;
   handler[3] = &unk_279DE0298;
   v26 = v14;
-  v27 = v9;
+  v27 = descriptorCopy;
   v29 = v15;
-  v30 = a1;
-  v28 = v10;
+  selfCopy = self;
+  v28 = blockCopy;
   v19 = v15;
-  v20 = v9;
-  v21 = v10;
+  v20 = descriptorCopy;
+  v21 = blockCopy;
   v22 = v14;
-  xpc_activity_register(v17, v18, handler);
+  xpc_activity_register(uTF8String, v18, handler);
 
   v23 = *MEMORY[0x277D85DE8];
 }
@@ -207,18 +207,18 @@ LABEL_21:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)assertRegistrationOfLaunchdPlistActivities:(id)a3
++ (void)assertRegistrationOfLaunchdPlistActivities:(id)activities
 {
-  v5 = a3;
+  activitiesCopy = activities;
   v6 = +[TRIXPCActivitySupport _registeredActivities];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __68__TRIXPCActivitySupport_assertRegistrationOfLaunchdPlistActivities___block_invoke;
   v8[3] = &unk_279DE02C0;
-  v9 = v5;
+  v9 = activitiesCopy;
   v10 = a2;
-  v11 = a1;
-  v7 = v5;
+  selfCopy = self;
+  v7 = activitiesCopy;
   [v6 runWithLockAcquired:v8];
 }
 
@@ -280,10 +280,10 @@ void __68__TRIXPCActivitySupport_assertRegistrationOfLaunchdPlistActivities___bl
   v15 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)unsafe_immediatelyScheduleActivityWithLaunchDaemonDescriptor:(id)a3
++ (BOOL)unsafe_immediatelyScheduleActivityWithLaunchDaemonDescriptor:(id)descriptor
 {
   v33 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  descriptorCopy = descriptor;
   v6 = +[TRIXPCActivitySupport _registeredActivities];
   v25 = 0;
   v26 = &v25;
@@ -296,7 +296,7 @@ void __68__TRIXPCActivitySupport_assertRegistrationOfLaunchdPlistActivities___bl
   v22[2] = __86__TRIXPCActivitySupport_unsafe_immediatelyScheduleActivityWithLaunchDaemonDescriptor___block_invoke;
   v22[3] = &unk_279DE02E8;
   v24 = &v25;
-  v7 = v5;
+  v7 = descriptorCopy;
   v23 = v7;
   [v6 runWithLockAcquired:v22];
   v8 = v26[5];
@@ -309,20 +309,20 @@ void __68__TRIXPCActivitySupport_assertRegistrationOfLaunchdPlistActivities___bl
     v10 = TRILogCategory_Server();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v7 name];
+      name = [v7 name];
       *buf = 138543362;
-      v32 = v11;
+      v32 = name;
       _os_log_impl(&dword_26F567000, v10, OS_LOG_TYPE_DEFAULT, "Registering TOTALLY SKETCHY IMMEDIATE ACTIVITY FOR TESTING: %{public}@", buf, 0xCu);
     }
 
-    v12 = [v7 name];
-    v13 = v12;
-    v14 = [v12 UTF8String];
+    name2 = [v7 name];
+    v13 = name2;
+    uTF8String = [name2 UTF8String];
 
-    if (!v14)
+    if (!uTF8String)
     {
-      v18 = [MEMORY[0x277CCA890] currentHandler];
-      [v18 handleFailureInMethod:a2 object:a1 file:@"TRIXPCActivitySupport.m" lineNumber:240 description:{@"Expression was unexpectedly nil/false: %@", @"descriptor.name.UTF8String"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"TRIXPCActivitySupport.m" lineNumber:240 description:{@"Expression was unexpectedly nil/false: %@", @"descriptor.name.UTF8String"}];
     }
 
     handler[0] = MEMORY[0x277D85DD0];
@@ -331,7 +331,7 @@ void __68__TRIXPCActivitySupport_assertRegistrationOfLaunchdPlistActivities___bl
     handler[3] = &unk_279DE0310;
     v20 = v7;
     v21 = &v25;
-    xpc_activity_register(v14, v9, handler);
+    xpc_activity_register(uTF8String, v9, handler);
   }
 
   else
@@ -339,9 +339,9 @@ void __68__TRIXPCActivitySupport_assertRegistrationOfLaunchdPlistActivities___bl
     v9 = TRILogCategory_Server();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v17 = [v7 name];
+      name3 = [v7 name];
       *buf = 138543362;
-      v32 = v17;
+      v32 = name3;
       _os_log_error_impl(&dword_26F567000, v9, OS_LOG_TYPE_ERROR, "Unable to immediately schedule %{public}@: activity not yet registered", buf, 0xCu);
     }
   }

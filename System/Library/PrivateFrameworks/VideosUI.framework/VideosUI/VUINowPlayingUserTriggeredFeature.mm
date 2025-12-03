@@ -1,21 +1,21 @@
 @interface VUINowPlayingUserTriggeredFeature
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (VUINowPlayingUserTriggeredFeature)initWithType:(unint64_t)a3;
+- (VUINowPlayingUserTriggeredFeature)initWithType:(unint64_t)type;
 - (unint64_t)hash;
 @end
 
 @implementation VUINowPlayingUserTriggeredFeature
 
-- (VUINowPlayingUserTriggeredFeature)initWithType:(unint64_t)a3
+- (VUINowPlayingUserTriggeredFeature)initWithType:(unint64_t)type
 {
   v5.receiver = self;
   v5.super_class = VUINowPlayingUserTriggeredFeature;
   result = [(VUINowPlayingUserTriggeredFeature *)&v5 init];
-  if (a3 && result)
+  if (type && result)
   {
     *&result->_active = 0;
-    result->_type = a3;
+    result->_type = type;
   }
 
   else
@@ -46,19 +46,19 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [(VUINowPlayingUserTriggeredFeature *)self type];
-    v7 = v6 == [(VUINowPlayingUserTriggeredFeature *)v5 type];
+    type = [(VUINowPlayingUserTriggeredFeature *)self type];
+    v7 = type == [(VUINowPlayingUserTriggeredFeature *)v5 type];
   }
 
   else

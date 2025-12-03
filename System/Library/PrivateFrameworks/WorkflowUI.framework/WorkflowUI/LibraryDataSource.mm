@@ -1,12 +1,12 @@
 @interface LibraryDataSource
-- (void)databaseResultDidChange:(id)a3;
+- (void)databaseResultDidChange:(id)change;
 @end
 
 @implementation LibraryDataSource
 
-- (void)databaseResultDidChange:(id)a3
+- (void)databaseResultDidChange:(id)change
 {
-  v3 = a3;
+  changeCopy = change;
 
   sub_2747AD05C();
 }

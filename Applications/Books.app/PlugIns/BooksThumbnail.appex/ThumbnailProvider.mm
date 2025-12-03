@@ -1,16 +1,16 @@
 @interface ThumbnailProvider
-- (void)provideThumbnailForFileRequest:(id)a3 completionHandler:(id)a4;
+- (void)provideThumbnailForFileRequest:(id)request completionHandler:(id)handler;
 @end
 
 @implementation ThumbnailProvider
 
-- (void)provideThumbnailForFileRequest:(id)a3 completionHandler:(id)a4
+- (void)provideThumbnailForFileRequest:(id)request completionHandler:(id)handler
 {
-  v5 = a3;
-  v40 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v6 = BooksThumbsLog();
-  v7 = [v5 fileURL];
-  [v5 maximumSize];
+  fileURL = [requestCopy fileURL];
+  [requestCopy maximumSize];
   if (v8 < 8.0)
   {
     v8 = 8.0;
@@ -31,7 +31,7 @@
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    *&buf[4] = v7;
+    *&buf[4] = fileURL;
     v47 = 2048;
     v48 = v10;
     v49 = 2048;
@@ -39,7 +39,7 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "provideThumbnailForFileRequest for URL: %{public}@ size: %f,%f", buf, 0x20u);
   }
 
-  if ([BUZipFileArchive isZipArchiveAtURL:v7 error:0])
+  if ([BUZipFileArchive isZipArchiveAtURL:fileURL error:0])
   {
     v13 = +[IMLibraryPlist purchasesRepositoryPath];
     v14 = v6;
@@ -55,14 +55,14 @@
     }
 
     v19 = +[NSFileManager defaultManager];
-    v20 = [v7 lastPathComponent];
-    v21 = [v19 bu_nonCollidingNameForFileName:v20 inDestPath:v15];
+    lastPathComponent = [fileURL lastPathComponent];
+    v21 = [v19 bu_nonCollidingNameForFileName:lastPathComponent inDestPath:v15];
 
     v22 = [v15 stringByAppendingPathComponent:v21];
     v23 = [NSURL fileURLWithPath:v22];
 
     v45 = 0;
-    v24 = [BUZipFileArchive extractArchiveFromURL:v7 toURL:v23 options:0 error:&v45];
+    v24 = [BUZipFileArchive extractArchiveFromURL:fileURL toURL:v23 options:0 error:&v45];
     v25 = v45;
     if (v24)
     {
@@ -79,7 +79,7 @@
 
   else
   {
-    v26 = sub_10000141C(v6, v7);
+    v26 = sub_10000141C(v6, fileURL);
     v25 = 0;
   }
 
@@ -148,7 +148,7 @@ LABEL_36:
   v35 = 0;
   v36 = 0;
 LABEL_38:
-  v38 = objc_retainBlock(v40);
+  v38 = objc_retainBlock(handlerCopy);
   v39 = v38;
   if (v38)
   {

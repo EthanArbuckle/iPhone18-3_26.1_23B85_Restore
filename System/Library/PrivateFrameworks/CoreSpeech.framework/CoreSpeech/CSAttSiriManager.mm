@@ -1,6 +1,6 @@
 @interface CSAttSiriManager
-- (CSAttSiriManager)initWithAudioProviderSelector:(id)a3;
-- (CSAttSiriManager)initWithAudioProviderSelector:(id)a3 attSiriController:(id)a4 icRequestHandler:(id)a5 attendingUsecaseManager:(id)a6 attendingServiceListener:(id)a7 attendingStatesServiceListener:(id)a8 attendingConnectionManager:(id)a9 attendingStatesProvidingProxy:(id)a10;
+- (CSAttSiriManager)initWithAudioProviderSelector:(id)selector;
+- (CSAttSiriManager)initWithAudioProviderSelector:(id)selector attSiriController:(id)controller icRequestHandler:(id)handler attendingUsecaseManager:(id)manager attendingServiceListener:(id)listener attendingStatesServiceListener:(id)serviceListener attendingConnectionManager:(id)connectionManager attendingStatesProvidingProxy:(id)self0;
 - (void)_setupAttendingServiceListener;
 - (void)_setupAttendingStatesServiceListener;
 - (void)setupListeners;
@@ -57,25 +57,25 @@
     v5 = [(CSAttSiriController *)self->_attSiriController getNodeOfType:2];
     v6 = [(CSAttSiriController *)self->_attSiriController getNodeOfType:10];
     connectionManager = self->_connectionManager;
-    v8 = [(CSAttSiriController *)self->_attSiriController rcHandler];
-    [(CSAttSiriConnectionManager *)connectionManager setupListenersForEndpointerNode:v4 asrNode:v5 ssrNode:v6 rcHandler:v8];
+    rcHandler = [(CSAttSiriController *)self->_attSiriController rcHandler];
+    [(CSAttSiriConnectionManager *)connectionManager setupListenersForEndpointerNode:v4 asrNode:v5 ssrNode:v6 rcHandler:rcHandler];
   }
 
   icRequestHandler = self->_icRequestHandler;
   if (icRequestHandler)
   {
     v10 = self->_connectionManager;
-    v11 = [(CSIntuitiveConvRequestHandler *)icRequestHandler getEndpointerProxyObj];
-    v12 = [(CSIntuitiveConvRequestHandler *)self->_icRequestHandler getAsrProxyObj];
-    v13 = [(CSIntuitiveConvRequestHandler *)self->_icRequestHandler getSsrProxyObj];
-    v14 = [(CSIntuitiveConvRequestHandler *)self->_icRequestHandler getRcHandlerProxyObj];
-    [(CSAttSiriConnectionManager *)v10 setupListenersForEndpointerNode:v11 asrNode:v12 ssrNode:v13 rcHandler:v14];
+    getEndpointerProxyObj = [(CSIntuitiveConvRequestHandler *)icRequestHandler getEndpointerProxyObj];
+    getAsrProxyObj = [(CSIntuitiveConvRequestHandler *)self->_icRequestHandler getAsrProxyObj];
+    getSsrProxyObj = [(CSIntuitiveConvRequestHandler *)self->_icRequestHandler getSsrProxyObj];
+    getRcHandlerProxyObj = [(CSIntuitiveConvRequestHandler *)self->_icRequestHandler getRcHandlerProxyObj];
+    [(CSAttSiriConnectionManager *)v10 setupListenersForEndpointerNode:getEndpointerProxyObj asrNode:getAsrProxyObj ssrNode:getSsrProxyObj rcHandler:getRcHandlerProxyObj];
 
     if (+[CSUtils supportsAudioMessage])
     {
       v15 = self->_connectionManager;
-      v16 = [(CSIntuitiveConvRequestHandler *)self->_icRequestHandler getAudioMessageServiceProxyObj];
-      [(CSAttSiriConnectionManager *)v15 setupAudioMessageServiceListnerWithProxy:v16];
+      getAudioMessageServiceProxyObj = [(CSIntuitiveConvRequestHandler *)self->_icRequestHandler getAudioMessageServiceProxyObj];
+      [(CSAttSiriConnectionManager *)v15 setupAudioMessageServiceListnerWithProxy:getAudioMessageServiceProxyObj];
     }
   }
 
@@ -95,13 +95,13 @@
   }
 }
 
-- (CSAttSiriManager)initWithAudioProviderSelector:(id)a3
+- (CSAttSiriManager)initWithAudioProviderSelector:(id)selector
 {
-  v4 = a3;
+  selectorCopy = selector;
   if ((+[CSUtils isAttentiveSiriEnabled]& 1) != 0)
   {
-    self = [(CSAttSiriManager *)self initWithAudioProviderSelector:v4 attSiriController:0 icRequestHandler:0 attendingUsecaseManager:0 attendingServiceListener:0 attendingStatesServiceListener:0 attendingConnectionManager:0 attendingStatesProvidingProxy:0];
-    v5 = self;
+    self = [(CSAttSiriManager *)self initWithAudioProviderSelector:selectorCopy attSiriController:0 icRequestHandler:0 attendingUsecaseManager:0 attendingServiceListener:0 attendingStatesServiceListener:0 attendingConnectionManager:0 attendingStatesProvidingProxy:0];
+    selfCopy = self;
   }
 
   else
@@ -114,22 +114,22 @@
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s Attentive Siri not supported on device", buf, 0xCu);
     }
 
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (CSAttSiriManager)initWithAudioProviderSelector:(id)a3 attSiriController:(id)a4 icRequestHandler:(id)a5 attendingUsecaseManager:(id)a6 attendingServiceListener:(id)a7 attendingStatesServiceListener:(id)a8 attendingConnectionManager:(id)a9 attendingStatesProvidingProxy:(id)a10
+- (CSAttSiriManager)initWithAudioProviderSelector:(id)selector attSiriController:(id)controller icRequestHandler:(id)handler attendingUsecaseManager:(id)manager attendingServiceListener:(id)listener attendingStatesServiceListener:(id)serviceListener attendingConnectionManager:(id)connectionManager attendingStatesProvidingProxy:(id)self0
 {
-  v16 = a3;
-  v51 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
+  selectorCopy = selector;
+  controllerCopy = controller;
+  handlerCopy = handler;
+  managerCopy = manager;
+  listenerCopy = listener;
+  serviceListenerCopy = serviceListener;
+  connectionManagerCopy = connectionManager;
+  proxyCopy = proxy;
   v52.receiver = self;
   v52.super_class = CSAttSiriManager;
   v23 = [(CSAttSiriManager *)&v52 init];
@@ -146,9 +146,9 @@
         _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "%s Medoc feature flag is Enabled, swtich to new request handler", buf, 0xCu);
       }
 
-      if (v18)
+      if (managerCopy)
       {
-        v25 = v18;
+        v25 = managerCopy;
       }
 
       else
@@ -160,7 +160,7 @@
       v23->_attendingUsecaseManager = v25;
 
       v27 = [CSLocalAttendingInitiator alloc];
-      v28 = [(CSAttendingUsecaseManager *)v23->_attendingUsecaseManager usecaseForType:0 audioProviderSelector:v16];
+      v28 = [(CSAttendingUsecaseManager *)v23->_attendingUsecaseManager usecaseForType:0 audioProviderSelector:selectorCopy];
       v29 = [(CSLocalAttendingInitiator *)v27 initWithAttendingUsecase:v28];
       localAttendingInitiator = v23->_localAttendingInitiator;
       v23->_localAttendingInitiator = v29;
@@ -170,9 +170,9 @@
       attendingStatesMessageHandler = v23->_attendingStatesMessageHandler;
       v23->_attendingStatesMessageHandler = v32;
 
-      if (v22)
+      if (proxyCopy)
       {
-        v34 = v22;
+        v34 = proxyCopy;
       }
 
       else
@@ -192,9 +192,9 @@
       v40 = +[CSIntuitiveConvAudioCaptureMonitor sharedInstance];
       [v40 registerObserver:v23->_localAttendingInitiator];
 
-      if (v17)
+      if (handlerCopy)
       {
-        v41 = v17;
+        v41 = handlerCopy;
       }
 
       else
@@ -210,22 +210,22 @@
       [(CSAttendingStatesProvidingProxy *)v23->_localAttendingStatesProvidingProxy addDismissUpdateReceiver:v23->_icRequestHandler];
       [(CSAttendingStatesProvidingProxy *)v23->_localAttendingStatesProvidingProxy addSiriPromptUpdateReceiver:v23->_icRequestHandler];
       [(CSAttendingStatesProvidingProxy *)v23->_localAttendingStatesProvidingProxy addDismissUpdateReceiver:v23->_attendingStatesMessageHandler];
-      if (v19)
+      if (listenerCopy)
       {
-        v43 = v19;
+        v43 = listenerCopy;
       }
 
       else
       {
-        v43 = [[CSAttendingServiceListener alloc] initWithAudioProviderSelector:v16];
+        v43 = [[CSAttendingServiceListener alloc] initWithAudioProviderSelector:selectorCopy];
       }
 
       attendingServiceListener = v23->_attendingServiceListener;
       v23->_attendingServiceListener = v43;
 
-      if (v20)
+      if (serviceListenerCopy)
       {
-        v45 = v20;
+        v45 = serviceListenerCopy;
       }
 
       else
@@ -237,14 +237,14 @@
       v23->_attendingStatesServiceListener = v45;
     }
 
-    else if (v51)
+    else if (controllerCopy)
     {
-      objc_storeStrong(&v23->_attSiriController, a4);
+      objc_storeStrong(&v23->_attSiriController, controller);
     }
 
     else
     {
-      v35 = [[CSAttSiriController alloc] initWithAudioProviderSelector:v16];
+      v35 = [[CSAttSiriController alloc] initWithAudioProviderSelector:selectorCopy];
       attSiriController = v23->_attSiriController;
       v23->_attSiriController = v35;
 
@@ -257,9 +257,9 @@
       }
     }
 
-    if (v21)
+    if (connectionManagerCopy)
     {
-      v47 = v21;
+      v47 = connectionManagerCopy;
     }
 
     else

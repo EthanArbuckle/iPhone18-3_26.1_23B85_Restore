@@ -1,26 +1,26 @@
 @interface NPKPaymentProvisioningFlowPickerItem
-+ (id)itemWithIdentifier:(id)a3 products:(id)a4;
-+ (id)itemWithIdentifier:(id)a3 title:(id)a4 products:(id)a5;
++ (id)itemWithIdentifier:(id)identifier products:(id)products;
++ (id)itemWithIdentifier:(id)identifier title:(id)title products:(id)products;
 - (id)description;
 @end
 
 @implementation NPKPaymentProvisioningFlowPickerItem
 
-+ (id)itemWithIdentifier:(id)a3 title:(id)a4 products:(id)a5
++ (id)itemWithIdentifier:(id)identifier title:(id)title products:(id)products
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = objc_alloc_init(a1);
+  identifierCopy = identifier;
+  titleCopy = title;
+  productsCopy = products;
+  v12 = objc_alloc_init(self);
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(v12 + 3, a3);
-    v14 = [v10 copy];
+    objc_storeStrong(v12 + 3, identifier);
+    v14 = [titleCopy copy];
     v15 = v13[1];
     v13[1] = v14;
 
-    v16 = [v11 copy];
+    v16 = [productsCopy copy];
     v17 = v13[2];
     v13[2] = v16;
   }
@@ -28,16 +28,16 @@
   return v13;
 }
 
-+ (id)itemWithIdentifier:(id)a3 products:(id)a4
++ (id)itemWithIdentifier:(id)identifier products:(id)products
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = objc_alloc_init(a1);
+  identifierCopy = identifier;
+  productsCopy = products;
+  v9 = objc_alloc_init(self);
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(v9 + 3, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(v9 + 3, identifier);
+    v11 = [productsCopy copy];
     v12 = v10[2];
     v10[2] = v11;
   }
@@ -49,9 +49,9 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(NPKPaymentProvisioningFlowPickerItem *)self title];
-  v6 = [(NPKPaymentProvisioningFlowPickerItem *)self products];
-  v7 = [v3 stringWithFormat:@"<%@: %p title %@ products %@>", v4, self, v5, v6];
+  title = [(NPKPaymentProvisioningFlowPickerItem *)self title];
+  products = [(NPKPaymentProvisioningFlowPickerItem *)self products];
+  v7 = [v3 stringWithFormat:@"<%@: %p title %@ products %@>", v4, self, title, products];
 
   return v7;
 }

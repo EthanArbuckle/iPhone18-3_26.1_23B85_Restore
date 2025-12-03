@@ -1,54 +1,54 @@
 @interface UARPUploaderEndpoint
-- (BOOL)handlePersonalizationResponse:(id)a3;
-- (BOOL)hasFullPersonality:(id)a3;
-- (BOOL)im4mAssetReceived:(id)a3;
+- (BOOL)handlePersonalizationResponse:(id)response;
+- (BOOL)hasFullPersonality:(id)personality;
+- (BOOL)im4mAssetReceived:(id)received;
 - (NSArray)rxDynamicAssets;
 - (NSArray)txDynamicAssets;
 - (NSArray)txFirmwareAssets;
-- (UARPUploaderEndpoint)initWithUARPAccessory:(id)a3 endpointID:(unsigned __int16)a4 uploader:(id)a5;
-- (UARPUploaderEndpoint)initWithUARPAccessory:(id)a3 uploader:(id)a4;
+- (UARPUploaderEndpoint)initWithUARPAccessory:(id)accessory endpointID:(unsigned __int16)d uploader:(id)uploader;
+- (UARPUploaderEndpoint)initWithUARPAccessory:(id)accessory uploader:(id)uploader;
 - (UARPUploaderUARP)uploader;
-- (id)downstreamEndpoint:(unsigned __int16)a3;
-- (id)findMatch:(id)a3;
+- (id)downstreamEndpoint:(unsigned __int16)endpoint;
+- (id)findMatch:(id)match;
 - (id)idealTxFirmwareAsset;
 - (id)pendingTssRequests;
-- (void)abandonRxDynamicAsset:(id)a3;
-- (void)abandonTxDynamicAsset:(id)a3;
-- (void)addRxDynamicAsset:(id)a3;
-- (void)addTxDynamicAsset:(id)a3;
-- (void)addTxFirmwareAsset:(id)a3;
+- (void)abandonRxDynamicAsset:(id)asset;
+- (void)abandonTxDynamicAsset:(id)asset;
+- (void)addRxDynamicAsset:(id)asset;
+- (void)addTxDynamicAsset:(id)asset;
+- (void)addTxFirmwareAsset:(id)asset;
 - (void)cancelLayer2WatchdogTimer;
 - (void)dealloc;
-- (void)dumpRxUARPMsg:(id)a3;
-- (void)dumpTxUARPMsg:(id)a3;
-- (void)handleLayer2WatchdogTimer:(id)a3;
+- (void)dumpRxUARPMsg:(id)msg;
+- (void)dumpTxUARPMsg:(id)msg;
+- (void)handleLayer2WatchdogTimer:(id)timer;
 - (void)handlePersonalizationRequest;
-- (void)handlePersonalizationRequest:(id)a3 tatsuSigningServer:(id)a4;
+- (void)handlePersonalizationRequest:(id)request tatsuSigningServer:(id)server;
 - (void)qcancelLayer2WatchdogTimer;
-- (void)queueAppleProperty:(unsigned int)a3;
-- (void)queueInfoProperty:(unsigned int)a3;
-- (void)removeAsset:(id)a3;
-- (void)respondIM4M:(id)a3;
-- (void)setLayer2WatchdogTimer:(id)a3 timeoutMS:(unint64_t)a4;
-- (void)solicitLogsDynamicAssetForEndpoint:(id)a3;
+- (void)queueAppleProperty:(unsigned int)property;
+- (void)queueInfoProperty:(unsigned int)property;
+- (void)removeAsset:(id)asset;
+- (void)respondIM4M:(id)m;
+- (void)setLayer2WatchdogTimer:(id)timer timeoutMS:(unint64_t)s;
+- (void)solicitLogsDynamicAssetForEndpoint:(id)endpoint;
 - (void)solicitLogsDynamicAssetForTTR;
 @end
 
 @implementation UARPUploaderEndpoint
 
-- (UARPUploaderEndpoint)initWithUARPAccessory:(id)a3 endpointID:(unsigned __int16)a4 uploader:(id)a5
+- (UARPUploaderEndpoint)initWithUARPAccessory:(id)accessory endpointID:(unsigned __int16)d uploader:(id)uploader
 {
   v62 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
+  accessoryCopy = accessory;
+  uploaderCopy = uploader;
   v59.receiver = self;
   v59.super_class = UARPUploaderEndpoint;
   v11 = [(UARPUploaderEndpoint *)&v59 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_accessory, a3);
-    objc_storeWeak(&v12->_uploader, v10);
+    objc_storeStrong(&v11->_accessory, accessory);
+    objc_storeWeak(&v12->_uploader, uploaderCopy);
     v13 = os_log_create("com.apple.accessoryupdater.uarp", "uploader");
     log = v12->_log;
     v12->_log = v13;
@@ -72,9 +72,9 @@
     *&v12->_uarpEndpoint._options.upgradeOnly = 0u;
     *&v12->_uarpEndpoint._options.responseTimeout = 0u;
     *&v12->_uarpEndpoint._options.maxTxPayloadLength = 0u;
-    v12->_downstreamID = a4;
-    v19 = [v9 modelNumber];
-    v20 = [UARPSupportedAccessory findByAppleModelNumber:v19];
+    v12->_downstreamID = d;
+    modelNumber = [accessoryCopy modelNumber];
+    v20 = [UARPSupportedAccessory findByAppleModelNumber:modelNumber];
 
     *&v12->_uarpOptions.maxTxPayloadLength = 0u;
     *&v12->_uarpOptions.responseTimeout = 0u;
@@ -90,14 +90,14 @@
       v12->_uarpOptions.retryLimit = [v20 uploaderRetryLimit];
     }
 
-    v21 = [v9 productGroup];
+    productGroup = [accessoryCopy productGroup];
     v24 = 0;
-    if (v21)
+    if (productGroup)
     {
-      v22 = v21;
-      v23 = [v9 productNumber];
+      v22 = productGroup;
+      productNumber = [accessoryCopy productNumber];
 
-      if (v23)
+      if (productNumber)
       {
         v24 = 1;
       }
@@ -135,26 +135,26 @@
     applePropertiesToQuery = v12->_applePropertiesToQuery;
     v12->_applePropertiesToQuery = v35;
 
-    v37 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     uuid = v12->_uuid;
-    v12->_uuid = v37;
+    v12->_uuid = uUID;
 
     v39 = v12->_log;
     if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
     {
       v40 = v12->_uuid;
       v41 = v39;
-      v42 = [(NSUUID *)v40 UUIDString];
+      uUIDString = [(NSUUID *)v40 UUIDString];
       *buf = 138412290;
-      v61 = v42;
+      v61 = uUIDString;
       _os_log_impl(&dword_247AA7000, v41, OS_LOG_TYPE_INFO, "New Remote Endpoint: UUID <%@>", buf, 0xCu);
     }
 
-    v43 = [(UARPAccessory *)v12->_accessory getID];
-    v44 = [v43 modelIdentifier];
-    v45 = [(NSUUID *)v12->_uuid UUIDString];
+    getID = [(UARPAccessory *)v12->_accessory getID];
+    modelIdentifier = [getID modelIdentifier];
+    uUIDString2 = [(NSUUID *)v12->_uuid UUIDString];
     v46 = UARPStringPcapFilesFilepath();
-    v47 = UARPUniqueFilename(v44, v45, v46, 0, @".pcap");
+    v47 = UARPUniqueFilename(modelIdentifier, uUIDString2, v46, 0, @".pcap");
 
     v48 = v12->_log;
     if (os_log_type_enabled(v48, OS_LOG_TYPE_DEBUG))
@@ -171,11 +171,11 @@
   return v12;
 }
 
-- (UARPUploaderEndpoint)initWithUARPAccessory:(id)a3 uploader:(id)a4
+- (UARPUploaderEndpoint)initWithUARPAccessory:(id)accessory uploader:(id)uploader
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UARPUploaderEndpoint *)self initWithUARPAccessory:v6 endpointID:0 uploader:v7];
+  accessoryCopy = accessory;
+  uploaderCopy = uploader;
+  v8 = [(UARPUploaderEndpoint *)self initWithUARPAccessory:accessoryCopy endpointID:0 uploader:uploaderCopy];
   if (v8)
   {
     v9 = objc_autoreleasePoolPush();
@@ -188,7 +188,7 @@
     v12 = UARPStringCrashAnalyticsDirectoryFilePath();
     UARPCleanupAgedFiles(v12, 604800.0);
 
-    [v7 ageOutUnprocessedDynamicAssets];
+    [uploaderCopy ageOutUnprocessedDynamicAssets];
     v13 = UARPStringSysdiagnoseDirectoryFilePath();
     UARPCleanupAgedFiles(v13, 604800.0);
 
@@ -218,46 +218,46 @@
 
 - (NSArray)txFirmwareAssets
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [MEMORY[0x277CBEA60] arrayWithArray:v2->_txFirmwareAssets];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [MEMORY[0x277CBEA60] arrayWithArray:selfCopy->_txFirmwareAssets];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (NSArray)txDynamicAssets
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [MEMORY[0x277CBEA60] arrayWithArray:v2->_txDynamicAssets];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [MEMORY[0x277CBEA60] arrayWithArray:selfCopy->_txDynamicAssets];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (NSArray)rxDynamicAssets
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [MEMORY[0x277CBEA60] arrayWithArray:v2->_rxDynamicAssets];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [MEMORY[0x277CBEA60] arrayWithArray:selfCopy->_rxDynamicAssets];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)addTxFirmwareAsset:(id)a3
+- (void)addTxFirmwareAsset:(id)asset
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assetCopy = asset;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v21 = v4;
+    v21 = assetCopy;
     _os_log_impl(&dword_247AA7000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Add Tx Firmware Asset %@", buf, 0xCu);
   }
 
-  if (v4)
+  if (assetCopy)
   {
     if ([(NSMutableArray *)self->_txFirmwareAssets count])
     {
@@ -313,7 +313,7 @@
       }
     }
 
-    [(NSMutableArray *)self->_txFirmwareAssets addObject:v4, v14, v15];
+    [(NSMutableArray *)self->_txFirmwareAssets addObject:assetCopy, v14, v15];
   }
 
   else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -325,18 +325,18 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addTxDynamicAsset:(id)a3
+- (void)addTxDynamicAsset:(id)asset
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assetCopy = asset;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = assetCopy;
     _os_log_impl(&dword_247AA7000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Add Tx Dynamic Asset %@", &v6, 0xCu);
   }
 
-  [(NSMutableArray *)self->_txDynamicAssets addObject:v4];
+  [(NSMutableArray *)self->_txDynamicAssets addObject:assetCopy];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [UARPUploaderEndpoint addTxDynamicAsset:?];
@@ -345,18 +345,18 @@
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addRxDynamicAsset:(id)a3
+- (void)addRxDynamicAsset:(id)asset
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assetCopy = asset;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = assetCopy;
     _os_log_impl(&dword_247AA7000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Add Rx Dynamic Asset %@", &v6, 0xCu);
   }
 
-  [(NSMutableArray *)self->_rxDynamicAssets addObject:v4];
+  [(NSMutableArray *)self->_rxDynamicAssets addObject:assetCopy];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [UARPUploaderEndpoint addRxDynamicAsset:?];
@@ -365,18 +365,18 @@
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeAsset:(id)a3
+- (void)removeAsset:(id)asset
 {
   txFirmwareAssets = self->_txFirmwareAssets;
-  v5 = a3;
-  [(NSMutableArray *)txFirmwareAssets removeObject:v5];
-  [(NSMutableArray *)self->_txDynamicAssets removeObject:v5];
+  assetCopy = asset;
+  [(NSMutableArray *)txFirmwareAssets removeObject:assetCopy];
+  [(NSMutableArray *)self->_txDynamicAssets removeObject:assetCopy];
 }
 
-- (id)findMatch:(id)a3
+- (id)findMatch:(id)match
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  matchCopy = match;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
@@ -397,8 +397,8 @@ LABEL_3:
       }
 
       v10 = *(*(&v34 + 1) + 8 * v9);
-      v11 = [v10 asset];
-      v12 = [v4 isEqual:v11];
+      asset = [v10 asset];
+      v12 = [matchCopy isEqual:asset];
 
       if (v12)
       {
@@ -442,8 +442,8 @@ LABEL_11:
         }
 
         v10 = *(*(&v30 + 1) + 8 * v16);
-        v17 = [v10 asset];
-        v18 = [v4 isEqual:v17];
+        asset2 = [v10 asset];
+        v18 = [matchCopy isEqual:asset2];
 
         if (v18)
         {
@@ -489,8 +489,8 @@ LABEL_19:
         }
 
         v10 = *(*(&v26 + 1) + 8 * v21);
-        v22 = [v10 asset];
-        v23 = [v4 isEqual:v22];
+        asset3 = [v10 asset];
+        v23 = [matchCopy isEqual:asset3];
 
         if (v23)
         {
@@ -519,13 +519,13 @@ LABEL_27:
   return v19;
 }
 
-- (void)handleLayer2WatchdogTimer:(id)a3
+- (void)handleLayer2WatchdogTimer:(id)timer
 {
   layer2WatchdogTimer = self->_layer2WatchdogTimer;
   self->_layer2WatchdogTimer = 0;
-  v5 = a3;
+  timerCopy = timer;
 
-  [v5 watchdogExpireLayer2:self];
+  [timerCopy watchdogExpireLayer2:self];
 }
 
 - (void)cancelLayer2WatchdogTimer
@@ -550,18 +550,18 @@ LABEL_27:
   }
 }
 
-- (void)setLayer2WatchdogTimer:(id)a3 timeoutMS:(unint64_t)a4
+- (void)setLayer2WatchdogTimer:(id)timer timeoutMS:(unint64_t)s
 {
-  v6 = a3;
+  timerCopy = timer;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__UARPUploaderEndpoint_setLayer2WatchdogTimer_timeoutMS___block_invoke;
   block[3] = &unk_278EC2530;
-  v10 = v6;
-  v11 = a4;
+  v10 = timerCopy;
+  sCopy = s;
   block[4] = self;
-  v8 = v6;
+  v8 = timerCopy;
   dispatch_async(queue, block);
 }
 
@@ -606,17 +606,17 @@ void __57__UARPUploaderEndpoint_setLayer2WatchdogTimer_timeoutMS___block_invoke_
   [WeakRetained handleLayer2WatchdogTimer:*(a1 + 32)];
 }
 
-- (void)solicitLogsDynamicAssetForEndpoint:(id)a3
+- (void)solicitLogsDynamicAssetForEndpoint:(id)endpoint
 {
-  v8 = a3;
-  v4 = [v8 appleModelNumber];
-  v5 = [UARPSupportedAccessory findByAppleModelNumber:v4];
+  endpointCopy = endpoint;
+  appleModelNumber = [endpointCopy appleModelNumber];
+  v5 = [UARPSupportedAccessory findByAppleModelNumber:appleModelNumber];
 
   v6 = [[UARPAssetTag alloc] initWithString:@"LOGS"];
   if ([v5 ttrSolicitLogs])
   {
     WeakRetained = objc_loadWeakRetained(&self->_uploader);
-    [WeakRetained solicitDynamicAssetForRemoteEndpoint:v8 assetTag:v6 internalSolicit:1 error:0];
+    [WeakRetained solicitDynamicAssetForRemoteEndpoint:endpointCopy assetTag:v6 internalSolicit:1 error:0];
   }
 }
 
@@ -657,9 +657,9 @@ void __57__UARPUploaderEndpoint_setLayer2WatchdogTimer_timeoutMS___block_invoke_
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)downstreamEndpoint:(unsigned __int16)a3
+- (id)downstreamEndpoint:(unsigned __int16)endpoint
 {
-  v3 = a3;
+  endpointCopy = endpoint;
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
@@ -681,7 +681,7 @@ void __57__UARPUploaderEndpoint_setLayer2WatchdogTimer_timeoutMS___block_invoke_
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        if ([v9 downstreamID] == v3)
+        if ([v9 downstreamID] == endpointCopy)
         {
           v10 = v9;
           goto LABEL_11;
@@ -706,35 +706,35 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)hasFullPersonality:(id)a3
+- (BOOL)hasFullPersonality:(id)personality
 {
-  v4 = a3;
-  v5 = [(UARPUploaderEndpoint *)self serialNumber];
+  personalityCopy = personality;
+  serialNumber = [(UARPUploaderEndpoint *)self serialNumber];
 
-  if (!v5)
+  if (!serialNumber)
   {
     goto LABEL_10;
   }
 
-  v6 = [(UARPUploaderEndpoint *)self appleModelNumber];
+  appleModelNumber = [(UARPUploaderEndpoint *)self appleModelNumber];
 
-  if (!v6)
+  if (!appleModelNumber)
   {
     goto LABEL_10;
   }
 
-  v7 = [(UARPUploaderEndpoint *)self hwFusingType];
+  hwFusingType = [(UARPUploaderEndpoint *)self hwFusingType];
 
-  if (v7 && ([(UARPUploaderEndpoint *)self firmwareVersion], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
+  if (hwFusingType && ([(UARPUploaderEndpoint *)self firmwareVersion], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
   {
-    if ([v4 isTapToRadarMode])
+    if ([personalityCopy isTapToRadarMode])
     {
-      [v4 solicitDynamicAssetsForTapToRadar:self];
+      [personalityCopy solicitDynamicAssetsForTapToRadar:self];
     }
 
     if ([(UARPUploaderEndpoint *)self isDownstreamEndpoint])
     {
-      [v4 offerFirmwareAssetToDownstreamEndpoint:self error:0];
+      [personalityCopy offerFirmwareAssetToDownstreamEndpoint:self error:0];
     }
 
     v9 = 1;
@@ -749,44 +749,44 @@ LABEL_10:
   return v9;
 }
 
-- (void)dumpTxUARPMsg:(id)a3
+- (void)dumpTxUARPMsg:(id)msg
 {
   packetDumper = self->_packetDumper;
   if (packetDumper)
   {
     accessory = self->_accessory;
-    v5 = a3;
-    v6 = [(UARPAccessory *)accessory getID];
-    [(UARPPacketDumper *)packetDumper dump:v5 accessoryID:v6 uarpStatus:0 direction:0];
+    msgCopy = msg;
+    getID = [(UARPAccessory *)accessory getID];
+    [(UARPPacketDumper *)packetDumper dump:msgCopy accessoryID:getID uarpStatus:0 direction:0];
   }
 }
 
-- (void)dumpRxUARPMsg:(id)a3
+- (void)dumpRxUARPMsg:(id)msg
 {
   packetDumper = self->_packetDumper;
   if (packetDumper)
   {
     accessory = self->_accessory;
-    v5 = a3;
-    v6 = [(UARPAccessory *)accessory getID];
-    [(UARPPacketDumper *)packetDumper dump:v5 accessoryID:v6 uarpStatus:0 direction:1];
+    msgCopy = msg;
+    getID = [(UARPAccessory *)accessory getID];
+    [(UARPPacketDumper *)packetDumper dump:msgCopy accessoryID:getID uarpStatus:0 direction:1];
   }
 }
 
-- (void)abandonRxDynamicAsset:(id)a3
+- (void)abandonRxDynamicAsset:(id)asset
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assetCopy = asset;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = assetCopy;
     _os_log_impl(&dword_247AA7000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Remove Rx Dynamic Asset %@", &v6, 0xCu);
   }
 
-  if ([v4 internalSolicit])
+  if ([assetCopy internalSolicit])
   {
-    [(NSMutableArray *)self->_rxDynamicAssets removeObject:v4];
+    [(NSMutableArray *)self->_rxDynamicAssets removeObject:assetCopy];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
       [UARPUploaderEndpoint addRxDynamicAsset:?];
@@ -798,29 +798,29 @@ LABEL_10:
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v6 = 138412290;
-      v7 = v4;
+      v7 = assetCopy;
       _os_log_impl(&dword_247AA7000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Do not abandon internally solicited Rx Dynamic Asset %@", &v6, 0xCu);
     }
 
-    [v4 setUarpSuperBinary:0];
-    [v4 setUarpPlatformAsset:0];
+    [assetCopy setUarpSuperBinary:0];
+    [assetCopy setUarpPlatformAsset:0];
   }
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)abandonTxDynamicAsset:(id)a3
+- (void)abandonTxDynamicAsset:(id)asset
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assetCopy = asset;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = assetCopy;
     _os_log_impl(&dword_247AA7000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Remove Tx Dynamic Asset %@", &v6, 0xCu);
   }
 
-  [(NSMutableArray *)self->_txDynamicAssets removeObject:v4];
+  [(NSMutableArray *)self->_txDynamicAssets removeObject:assetCopy];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [UARPUploaderEndpoint addTxDynamicAsset:?];
@@ -829,21 +829,21 @@ LABEL_10:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)queueInfoProperty:(unsigned int)a3
+- (void)queueInfoProperty:(unsigned int)property
 {
   obj = self;
   objc_sync_enter(obj);
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:property];
   [(NSMutableSet *)obj->_infoPropertiesToQuery addObject:v4];
 
   objc_sync_exit(obj);
 }
 
-- (void)queueAppleProperty:(unsigned int)a3
+- (void)queueAppleProperty:(unsigned int)property
 {
   obj = self;
   objc_sync_enter(obj);
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:property];
   [(NSMutableSet *)obj->_applePropertiesToQuery addObject:v4];
 
   objc_sync_exit(obj);
@@ -877,29 +877,29 @@ LABEL_10:
         {
           v21 = 0;
           v22 = 0;
-          v9 = [v8 assetVersion];
-          LODWORD(v21) = [v9 majorVersion];
+          assetVersion = [v8 assetVersion];
+          LODWORD(v21) = [assetVersion majorVersion];
 
-          v10 = [v8 assetVersion];
-          HIDWORD(v21) = [v10 minorVersion];
+          assetVersion2 = [v8 assetVersion];
+          HIDWORD(v21) = [assetVersion2 minorVersion];
 
-          v11 = [v8 assetVersion];
-          HIDWORD(v22) = [v11 buildVersion];
+          assetVersion3 = [v8 assetVersion];
+          HIDWORD(v22) = [assetVersion3 buildVersion];
 
-          v12 = [v8 assetVersion];
-          LODWORD(v22) = [v12 releaseVersion];
+          assetVersion4 = [v8 assetVersion];
+          LODWORD(v22) = [assetVersion4 releaseVersion];
 
-          v13 = [v5 assetVersion];
-          v20[0] = [v13 majorVersion];
+          assetVersion5 = [v5 assetVersion];
+          v20[0] = [assetVersion5 majorVersion];
 
-          v14 = [v5 assetVersion];
-          v20[1] = [v14 minorVersion];
+          assetVersion6 = [v5 assetVersion];
+          v20[1] = [assetVersion6 minorVersion];
 
-          v15 = [v5 assetVersion];
-          v20[3] = [v15 buildVersion];
+          assetVersion7 = [v5 assetVersion];
+          v20[3] = [assetVersion7 buildVersion];
 
-          v16 = [v5 assetVersion];
-          v20[2] = [v16 releaseVersion];
+          assetVersion8 = [v5 assetVersion];
+          v20[2] = [assetVersion8 releaseVersion];
 
           if (uarpVersionCompare(v20, &v21) == 1)
           {
@@ -931,18 +931,18 @@ LABEL_10:
   return v5;
 }
 
-- (BOOL)im4mAssetReceived:(id)a3
+- (BOOL)im4mAssetReceived:(id)received
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  receivedCopy = received;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
   {
     [(UARPUploaderEndpoint *)log im4mAssetReceived:v6, v7, v8, v9, v10, v11, v12];
   }
 
-  v13 = [v4 asset];
-  v14 = [v13 id];
+  asset = [receivedCopy asset];
+  v14 = [asset id];
   v15 = [v14 tag];
 
   v16 = uarpAssetTagStructPersonalization();
@@ -950,25 +950,25 @@ LABEL_10:
   v18 = [v15 isEqual:v17];
   if (v18)
   {
-    v19 = [v4 asset];
-    v20 = [v19 id];
-    v21 = [v20 localURL];
-    v22 = [v21 copy];
+    asset2 = [receivedCopy asset];
+    v20 = [asset2 id];
+    localURL = [v20 localURL];
+    v22 = [localURL copy];
 
     v23 = [MEMORY[0x277CBEBC0] URLWithString:@"https://gs.apple.com:443"];
     v24 = [[UARPDynamicAssetPersonalization alloc] initWithEndpoint:self url:v22 tatsuServerURL:v23];
     v39 = 0;
-    LOBYTE(v21) = [(UARPDynamicAssetPersonalization *)v24 processDynamicAsset:&v39];
+    LOBYTE(localURL) = [(UARPDynamicAssetPersonalization *)v24 processDynamicAsset:&v39];
     v25 = v39;
     v26 = v25;
-    if (v21)
+    if (localURL)
     {
       v36 = v25;
       v37 = v22;
-      [v4 setPendingTssRequest:v24];
+      [receivedCopy setPendingTssRequest:v24];
       name = [@"com.apple.uarp.internal.personalization" UTF8String];
-      v27 = [(UARPUploaderEndpoint *)self appleModelNumber];
-      v28 = [UARPSupportedAccessory findByAppleModelNumber:v27];
+      appleModelNumber = [(UARPUploaderEndpoint *)self appleModelNumber];
+      v28 = [UARPSupportedAccessory findByAppleModelNumber:appleModelNumber];
 
       if ([v28 supportsAuthListingInternally])
       {
@@ -977,23 +977,23 @@ LABEL_10:
 
       else
       {
-        v29 = [v28 personalizationNotification];
+        personalizationNotification = [v28 personalizationNotification];
 
-        if (v29)
+        if (personalizationNotification)
         {
-          v30 = [v28 personalizationNotification];
-          name = [v30 UTF8String];
+          personalizationNotification2 = [v28 personalizationNotification];
+          name = [personalizationNotification2 UTF8String];
         }
 
         v31 = self->_log;
         if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
         {
           v32 = v31;
-          v33 = [(UARPUploaderEndpoint *)self appleModelNumber];
+          appleModelNumber2 = [(UARPUploaderEndpoint *)self appleModelNumber];
           *buf = 136315394;
           v41 = name;
           v42 = 2112;
-          v43 = v33;
+          v43 = appleModelNumber2;
           _os_log_impl(&dword_247AA7000, v32, OS_LOG_TYPE_INFO, "posting bsd notification to personalization helper; %s for %@", buf, 0x16u);
         }
 
@@ -1022,7 +1022,7 @@ LABEL_10:
 - (void)handlePersonalizationRequest
 {
   v9 = *MEMORY[0x277D85DE8];
-  OUTLINED_FUNCTION_1_5(&dword_247AA7000, a1, a3, "%s", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_1_5(&dword_247AA7000, self, a3, "%s", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }
 
@@ -1095,38 +1095,38 @@ void __52__UARPUploaderEndpoint_handlePersonalizationRequest__block_invoke(uint6
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handlePersonalizationRequest:(id)a3 tatsuSigningServer:(id)a4
+- (void)handlePersonalizationRequest:(id)request tatsuSigningServer:(id)server
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  serverCopy = server;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v23 = "[UARPUploaderEndpoint handlePersonalizationRequest:tatsuSigningServer:]";
     v24 = 2112;
-    v25 = self;
+    selfCopy3 = self;
     _os_log_impl(&dword_247AA7000, log, OS_LOG_TYPE_INFO, "%s: Handling TSS request for %@", buf, 0x16u);
   }
 
-  v9 = [(UARPAccessory *)self->_accessory modelNumber];
-  v10 = [UARPSupportedAccessory findByAppleModelNumber:v9];
+  modelNumber = [(UARPAccessory *)self->_accessory modelNumber];
+  v10 = [UARPSupportedAccessory findByAppleModelNumber:modelNumber];
 
-  LODWORD(v9) = [v10 supportsAuthListingInternally];
-  v11 = [v6 pendingTssRequest];
-  v12 = v11;
-  if (v9)
+  LODWORD(modelNumber) = [v10 supportsAuthListingInternally];
+  pendingTssRequest = [requestCopy pendingTssRequest];
+  v12 = pendingTssRequest;
+  if (modelNumber)
   {
     v21 = 0;
-    v13 = [v11 tssRequest:v7 error:&v21 authListed:1];
+    v13 = [pendingTssRequest tssRequest:serverCopy error:&v21 authListed:1];
     v14 = v21;
   }
 
   else
   {
     v20 = 0;
-    v13 = [v11 tssRequest:v7 error:&v20 authListed:0];
+    v13 = [pendingTssRequest tssRequest:serverCopy error:&v20 authListed:0];
     v14 = v20;
   }
 
@@ -1149,30 +1149,30 @@ void __52__UARPUploaderEndpoint_handlePersonalizationRequest__block_invoke(uint6
     *buf = 136315394;
     v23 = "[UARPUploaderEndpoint handlePersonalizationRequest:tatsuSigningServer:]";
     v24 = 2112;
-    v25 = self;
+    selfCopy3 = self;
     _os_log_impl(&dword_247AA7000, v17, OS_LOG_TYPE_INFO, "%s: Respond with IM4M %@", buf, 0x16u);
   }
 
-  [(UARPUploaderEndpoint *)self respondIM4M:v6];
+  [(UARPUploaderEndpoint *)self respondIM4M:requestCopy];
   v18 = self->_log;
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v23 = "[UARPUploaderEndpoint handlePersonalizationRequest:tatsuSigningServer:]";
     v24 = 2112;
-    v25 = self;
+    selfCopy3 = self;
     _os_log_impl(&dword_247AA7000, v18, OS_LOG_TYPE_INFO, "%s: Remove received IM4M asset from Rx list %@", buf, 0x16u);
   }
 
-  [(NSMutableArray *)self->_rxDynamicAssets removeObject:v6];
+  [(NSMutableArray *)self->_rxDynamicAssets removeObject:requestCopy];
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)handlePersonalizationResponse:(id)a3
+- (BOOL)handlePersonalizationResponse:(id)response
 {
   v59 = *MEMORY[0x277D85DE8];
-  v44 = a3;
+  responseCopy = response;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
@@ -1186,7 +1186,7 @@ void __52__UARPUploaderEndpoint_handlePersonalizationRequest__block_invoke(uint6
     _os_log_impl(&dword_247AA7000, log, OS_LOG_TYPE_INFO, "%s: Checking pending TSS requests for (ds id is %u) %@", buf, 0x1Cu);
   }
 
-  if (v44)
+  if (responseCopy)
   {
     v51 = 0u;
     v52 = 0u;
@@ -1210,11 +1210,11 @@ void __52__UARPUploaderEndpoint_handlePersonalizationRequest__block_invoke(uint6
           }
 
           v12 = *(*(&v49 + 1) + 8 * i);
-          v13 = [v12 pendingTssRequest];
+          pendingTssRequest = [v12 pendingTssRequest];
 
           v14 = self->_log;
           v15 = os_log_type_enabled(v14, OS_LOG_TYPE_INFO);
-          if (v13)
+          if (pendingTssRequest)
           {
             if (v15)
             {
@@ -1231,7 +1231,7 @@ void __52__UARPUploaderEndpoint_handlePersonalizationRequest__block_invoke(uint6
               *buf = v42;
               v56 = "[UARPUploaderEndpoint handlePersonalizationResponse:]";
               v57 = 2112;
-              *v58 = v44;
+              *v58 = responseCopy;
               _os_log_impl(&dword_247AA7000, v16, OS_LOG_TYPE_INFO, "%s: Pending TSS requests for %@", buf, 0x16u);
             }
 
@@ -1239,16 +1239,16 @@ void __52__UARPUploaderEndpoint_handlePersonalizationRequest__block_invoke(uint6
             if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
             {
               v18 = v17;
-              v19 = [v12 pendingTssRequest];
+              pendingTssRequest2 = [v12 pendingTssRequest];
               *buf = v42;
               v56 = "[UARPUploaderEndpoint handlePersonalizationResponse:]";
               v57 = 2112;
-              *v58 = v19;
+              *v58 = pendingTssRequest2;
               _os_log_impl(&dword_247AA7000, v18, OS_LOG_TYPE_INFO, "%s: Pending TSS requests for %@", buf, 0x16u);
             }
 
-            v20 = [v12 pendingTssRequest];
-            v21 = [v20 compareTssResponse:v44];
+            pendingTssRequest3 = [v12 pendingTssRequest];
+            v21 = [pendingTssRequest3 compareTssResponse:responseCopy];
 
             if (v21)
             {
@@ -1262,8 +1262,8 @@ void __52__UARPUploaderEndpoint_handlePersonalizationRequest__block_invoke(uint6
                 _os_log_impl(&dword_247AA7000, v34, OS_LOG_TYPE_INFO, "%s: Matched TSS response for %@", buf, 0x16u);
               }
 
-              v36 = [v12 pendingTssRequest];
-              v37 = [v36 processTssResponse:v44];
+              pendingTssRequest4 = [v12 pendingTssRequest];
+              v37 = [pendingTssRequest4 processTssResponse:responseCopy];
 
               if ((v37 & 1) == 0)
               {
@@ -1349,17 +1349,17 @@ void __52__UARPUploaderEndpoint_handlePersonalizationRequest__block_invoke(uint6
           if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
           {
             v31 = v30;
-            v32 = [v29 downstreamID];
+            downstreamID = [v29 downstreamID];
             *buf = v43;
             v56 = "[UARPUploaderEndpoint handlePersonalizationResponse:]";
             v57 = 1024;
-            *v58 = v32;
+            *v58 = downstreamID;
             *&v58[4] = 2112;
             *&v58[6] = self;
             _os_log_impl(&dword_247AA7000, v31, OS_LOG_TYPE_INFO, "%s: Checking downstream endpoint (%u) for TSS requests for %@", buf, 0x1Cu);
           }
 
-          [v29 handlePersonalizationResponse:{v44, v43}];
+          [v29 handlePersonalizationResponse:{responseCopy, v43}];
         }
 
         v6 = v27;
@@ -1388,30 +1388,30 @@ LABEL_47:
   return v33;
 }
 
-- (void)respondIM4M:(id)a3
+- (void)respondIM4M:(id)m
 {
-  v4 = a3;
-  v5 = [v4 pendingTssRequest];
-  v6 = [v5 tagIM4M];
-  v7 = uarpDynamicAssetURL(v6);
+  mCopy = m;
+  pendingTssRequest = [mCopy pendingTssRequest];
+  tagIM4M = [pendingTssRequest tagIM4M];
+  v7 = uarpDynamicAssetURL(tagIM4M);
 
-  v8 = [v4 pendingTssRequest];
+  pendingTssRequest2 = [mCopy pendingTssRequest];
   v19 = 0;
-  v9 = [v8 prepareDynamicAsset:v7 error:&v19];
+  v9 = [pendingTssRequest2 prepareDynamicAsset:v7 error:&v19];
   v10 = v19;
 
   if (v9)
   {
     v11 = [UARPAssetID alloc];
-    v12 = [v4 pendingTssRequest];
-    v13 = [v12 tagIM4M];
-    v14 = [(UARPAssetID *)v11 initWithLocationType:0 assetTag:v13 url:v7];
+    pendingTssRequest3 = [mCopy pendingTssRequest];
+    tagIM4M2 = [pendingTssRequest3 tagIM4M];
+    v14 = [(UARPAssetID *)v11 initWithLocationType:0 assetTag:tagIM4M2 url:v7];
 
     v15 = [[UARPAsset alloc] initWithID:v14];
     WeakRetained = objc_loadWeakRetained(&self->_uploader);
-    v17 = [v4 pendingTssRequest];
-    v18 = [v17 tagIM4M];
-    [WeakRetained offerDynamicAssetToAccessory:self asset:v15 internalOffer:1 tag:v18];
+    pendingTssRequest4 = [mCopy pendingTssRequest];
+    tagIM4M3 = [pendingTssRequest4 tagIM4M];
+    [WeakRetained offerDynamicAssetToAccessory:self asset:v15 internalOffer:1 tag:tagIM4M3];
   }
 
   else
@@ -1464,36 +1464,36 @@ LABEL_47:
         }
 
         v11 = *(*(&v50 + 1) + 8 * i);
-        v12 = [v11 pendingTssRequest];
+        pendingTssRequest = [v11 pendingTssRequest];
 
         v13 = self->_log;
-        if (v12)
+        if (pendingTssRequest)
         {
           if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
           {
             v14 = v13;
-            v15 = [v11 pendingTssRequest];
-            v16 = [v15 tatsuServerURL];
-            v17 = [v11 pendingTssRequest];
-            v18 = [v17 options];
+            pendingTssRequest2 = [v11 pendingTssRequest];
+            tatsuServerURL = [pendingTssRequest2 tatsuServerURL];
+            pendingTssRequest3 = [v11 pendingTssRequest];
+            options = [pendingTssRequest3 options];
             *buf = 136315650;
             v56 = "[UARPUploaderEndpoint pendingTssRequests]";
             v57 = 2112;
-            v58 = v16;
+            v58 = tatsuServerURL;
             v59 = 2112;
-            v60 = v18;
+            v60 = options;
             _os_log_impl(&dword_247AA7000, v14, OS_LOG_TYPE_INFO, "%s: Pending TSS request for Signing Server %@ is %@", buf, 0x20u);
           }
 
           v19 = MEMORY[0x277CBEB38];
-          v20 = [v11 pendingTssRequest];
-          v21 = [v20 options];
-          v22 = [v19 dictionaryWithDictionary:v21];
+          pendingTssRequest4 = [v11 pendingTssRequest];
+          options2 = [pendingTssRequest4 options];
+          v22 = [v19 dictionaryWithDictionary:options2];
 
-          v23 = [v11 pendingTssRequest];
-          v24 = [v23 tatsuServerURL];
-          v25 = [v24 absoluteString];
-          [v22 setObject:v25 forKeyedSubscript:@"tatsuSigningServer"];
+          pendingTssRequest5 = [v11 pendingTssRequest];
+          tatsuServerURL2 = [pendingTssRequest5 tatsuServerURL];
+          absoluteString = [tatsuServerURL2 absoluteString];
+          [v22 setObject:absoluteString forKeyedSubscript:@"tatsuSigningServer"];
 
           v26 = self->_log;
           if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -1555,15 +1555,15 @@ LABEL_47:
           _os_log_impl(&dword_247AA7000, v34, OS_LOG_TYPE_INFO, "%s: Checking for pending TSS requests on %@", buf, 0x16u);
         }
 
-        v35 = [v33 pendingTssRequests];
+        pendingTssRequests = [v33 pendingTssRequests];
         v36 = self->_log;
         v37 = os_log_type_enabled(v36, OS_LOG_TYPE_INFO);
-        if (v35)
+        if (pendingTssRequests)
         {
           if (v37)
           {
             v38 = v36;
-            v39 = [v35 count];
+            v39 = [pendingTssRequests count];
             *buf = 136315650;
             v56 = "[UARPUploaderEndpoint pendingTssRequests]";
             v57 = 2048;
@@ -1573,7 +1573,7 @@ LABEL_47:
             _os_log_impl(&dword_247AA7000, v38, OS_LOG_TYPE_INFO, "%s: Found %lu for pending TSS requests on %@", buf, 0x20u);
           }
 
-          [v45 addObjectsFromArray:v35];
+          [v45 addObjectsFromArray:pendingTssRequests];
         }
 
         else if (v37)

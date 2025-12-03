@@ -1,16 +1,16 @@
 @interface _GCGamepadEventImpl
-- (BOOL)hasValidValueForElement:(int64_t)a3;
+- (BOOL)hasValidValueForElement:(int64_t)element;
 - (NSString)debugDescription;
-- (_GCGamepadEventImpl)initWithGamepadEvent:(id)a3;
-- (_GCGamepadEventImpl)initWithTimeStamp:(unint64_t)a3 inputs:(float)a4[47] validMask:(unint64_t)a5;
-- (float)floatValueForElement:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setFloatValue:(float)a3 forElement:(int64_t)a4;
+- (_GCGamepadEventImpl)initWithGamepadEvent:(id)event;
+- (_GCGamepadEventImpl)initWithTimeStamp:(unint64_t)stamp inputs:(float)inputs[47] validMask:(unint64_t)mask;
+- (float)floatValueForElement:(int64_t)element;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setFloatValue:(float)value forElement:(int64_t)element;
 @end
 
 @implementation _GCGamepadEventImpl
 
-- (_GCGamepadEventImpl)initWithTimeStamp:(unint64_t)a3 inputs:(float)a4[47] validMask:(unint64_t)a5
+- (_GCGamepadEventImpl)initWithTimeStamp:(unint64_t)stamp inputs:(float)inputs[47] validMask:(unint64_t)mask
 {
   v10.receiver = self;
   v10.super_class = _GCGamepadEventImpl;
@@ -18,11 +18,11 @@
   if (result)
   {
     v9 = 0;
-    result->_timestamp = a3;
-    result->_data.mask = a5;
+    result->_timestamp = stamp;
+    result->_data.mask = mask;
     do
     {
-      result->_data.buttons[v9] = a4[v9];
+      result->_data.buttons[v9] = inputs[v9];
       ++v9;
     }
 
@@ -32,20 +32,20 @@
   return result;
 }
 
-- (_GCGamepadEventImpl)initWithGamepadEvent:(id)a3
+- (_GCGamepadEventImpl)initWithGamepadEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v9.receiver = self;
   v9.super_class = _GCGamepadEventImpl;
   v5 = [(_GCGamepadEventImpl *)&v9 init];
   if (v5)
   {
     v6 = 0;
-    v5->_timestamp = [v4 timestamp];
+    v5->_timestamp = [eventCopy timestamp];
     do
     {
-      v5->_data.mask |= [v4 hasValidValueForElement:v6] << v6;
-      [v4 floatValueForElement:v6];
+      v5->_data.mask |= [eventCopy hasValidValueForElement:v6] << v6;
+      [eventCopy floatValueForElement:v6];
       v5->_data.buttons[v6++] = v7;
     }
 
@@ -55,7 +55,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   result = objc_opt_new();
@@ -173,49 +173,49 @@
   return [v3 stringWithFormat:@"<%@ %p> {\n\t.DpadUp: %f\n\t.DpadDown: %f\n\t.DpadLeft: %f\n\t.DpadRight: %f\n\t.ButtonA: %f\n\t.ButtonB: %f\n\t.ButtonX: %f\n\t.ButtonY: %f\n\t.LeftShoulder: %f\n\t.RightShoulder: %f\n\t.LeftThumbstickUp: %f\n\t.LeftThumbstickDown: %f\n\t.LeftThumbstickLeft: %f\n\t.LeftThumbstickRight: %f\n\t.RightThumbstickUp: %f\n\t.RightThumbstickDown: %f\n\t.RightThumbstickLeft: %f\n\t.RightThumbstickRight: %f\n\t.LeftTrigger: %f\n\t.RightTrigger: %f\n\t.LeftThumbstickButton: %f\n\t.RightThumbstickButton: %f\n\t.ButtonHome: %f\n\t.ButtonMenu: %f\n\t.ButtonOptions: %f\n\t.ButtonSpecial0: %f\n\t.ButtonSpecial1: %f\n\t.ButtonSpecial2: %f\n\t.ButtonSpecial3: %f\n\t.ButtonSpecial4: %f\n\t.ButtonSpecial5: %f\n\t.ButtonSpecial6: %f\n\t.ButtonSpecial7: %f\n\t.ButtonSpecial8: %f\n\t.ButtonSpecial9: %f\n\t.ButtonSpecial10: %f\n\t.ButtonSpecial11: %f\n\t.ButtonSpecial12: %f\n\t.ButtonSpecial13: %f\n\t.ButtonSearch: %f\n\t.ButtonShare: %f\n}", v4, self, *&v86, *&v85, *&v84, *&v83, *&v82, *&v81, *&v80, *&v79, *&v78, *&v77, *&v76, *&v75, *&v74, *&v73, *&v72, *&v71, *&v70, *&v69, *&v68, *&v67, *&v66, *&v65, *&v64, *&v63, *&v62, *&v61, *&v60, *&v59, *&v58, *&v57, *&v56, *&v55, *&v38, *&v40, *&v42, *&v44, *&v46, *&v48, *&v50, *&v52, v53];
 }
 
-- (BOOL)hasValidValueForElement:(int64_t)a3
+- (BOOL)hasValidValueForElement:(int64_t)element
 {
-  if (a3 > 46)
+  if (element > 46)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"_GCGamepadEventImpl.m" lineNumber:214 description:@"Unknown element"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_GCGamepadEventImpl.m" lineNumber:214 description:@"Unknown element"];
 
     LOBYTE(v4) = 0;
   }
 
   else
   {
-    return (self->_data.mask >> a3) & 1;
+    return (self->_data.mask >> element) & 1;
   }
 
   return v4;
 }
 
-- (float)floatValueForElement:(int64_t)a3
+- (float)floatValueForElement:(int64_t)element
 {
-  if (a3 <= 46)
+  if (element <= 46)
   {
-    return self->_data.buttons[a3];
+    return self->_data.buttons[element];
   }
 
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"_GCGamepadEventImpl.m" lineNumber:223 description:@"Unknown element"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_GCGamepadEventImpl.m" lineNumber:223 description:@"Unknown element"];
 
   return 0.0;
 }
 
-- (void)setFloatValue:(float)a3 forElement:(int64_t)a4
+- (void)setFloatValue:(float)value forElement:(int64_t)element
 {
-  if (a4 > 46)
+  if (element > 46)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"_GCGamepadEventImpl.m" lineNumber:233 description:@"Unknown element"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_GCGamepadEventImpl.m" lineNumber:233 description:@"Unknown element"];
   }
 
   else
   {
-    self->_data.mask |= 1 << a4;
-    self->_data.buttons[a4] = a3;
+    self->_data.mask |= 1 << element;
+    self->_data.buttons[element] = value;
   }
 }
 

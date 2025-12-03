@@ -1,12 +1,12 @@
 @interface ASDStreamFormat
-- (ASDStreamFormat)initWithAudioStreamBasicDescription:(AudioStreamBasicDescription *)a3;
-- (ASDStreamFormat)initWithAudioStreamRangedDescription:(AudioStreamRangedDescription *)a3;
-- (ASDStreamFormat)initWithSampleRate:(double)a3 numChannels:(unsigned int)a4 commonPCMFormat:(unsigned int)a5 isInterleaved:(BOOL)a6;
+- (ASDStreamFormat)initWithAudioStreamBasicDescription:(AudioStreamBasicDescription *)description;
+- (ASDStreamFormat)initWithAudioStreamRangedDescription:(AudioStreamRangedDescription *)description;
+- (ASDStreamFormat)initWithSampleRate:(double)rate numChannels:(unsigned int)channels commonPCMFormat:(unsigned int)format isInterleaved:(BOOL)interleaved;
 - (AudioStreamBasicDescription)audioStreamBasicDescription;
 - (AudioStreamRangedDescription)audioStreamRangedDescription;
-- (BOOL)isCompatible:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isCompatible:(id)compatible;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -41,22 +41,22 @@
   return result;
 }
 
-- (ASDStreamFormat)initWithSampleRate:(double)a3 numChannels:(unsigned int)a4 commonPCMFormat:(unsigned int)a5 isInterleaved:(BOOL)a6
+- (ASDStreamFormat)initWithSampleRate:(double)rate numChannels:(unsigned int)channels commonPCMFormat:(unsigned int)format isInterleaved:(BOOL)interleaved
 {
-  v6 = a6;
+  interleavedCopy = interleaved;
   v15.receiver = self;
   v15.super_class = ASDStreamFormat;
   result = [(ASDStreamFormat *)&v15 init];
   if (result)
   {
-    result->_sampleRate = a3;
-    result->_minimumSampleRate = a3;
-    result->_maximumSampleRate = a3;
+    result->_sampleRate = rate;
+    result->_minimumSampleRate = rate;
+    result->_maximumSampleRate = rate;
     *&result->_formatID = 0x86C70636DLL;
     result->_framesPerPacket = 1;
-    result->_channelsPerFrame = a4;
-    v11 = a5 - 1;
-    if (a5 - 1 > 4)
+    result->_channelsPerFrame = channels;
+    v11 = format - 1;
+    if (format - 1 > 4)
     {
       v14 = 0;
       v13 = 40;
@@ -71,9 +71,9 @@
     }
 
     result->_bitsPerChannel = 8 * v14;
-    if (v6)
+    if (interleavedCopy)
     {
-      v14 *= a4;
+      v14 *= channels;
     }
 
     else
@@ -88,27 +88,27 @@
   return result;
 }
 
-- (ASDStreamFormat)initWithAudioStreamBasicDescription:(AudioStreamBasicDescription *)a3
+- (ASDStreamFormat)initWithAudioStreamBasicDescription:(AudioStreamBasicDescription *)description
 {
   v8.receiver = self;
   v8.super_class = ASDStreamFormat;
   result = [(ASDStreamFormat *)&v8 init];
   if (result)
   {
-    mSampleRate = a3->mSampleRate;
-    result->_formatID = a3->mFormatID;
-    result->_formatFlags = a3->mFormatFlags;
-    result->_bytesPerPacket = a3->mBytesPerPacket;
-    mFramesPerPacket = a3->mFramesPerPacket;
+    mSampleRate = description->mSampleRate;
+    result->_formatID = description->mFormatID;
+    result->_formatFlags = description->mFormatFlags;
+    result->_bytesPerPacket = description->mBytesPerPacket;
+    mFramesPerPacket = description->mFramesPerPacket;
     result->_framesPerPacket = mFramesPerPacket;
-    result->_channelsPerFrame = a3->mChannelsPerFrame;
-    mBytesPerFrame = a3->mBytesPerFrame;
+    result->_channelsPerFrame = description->mChannelsPerFrame;
+    mBytesPerFrame = description->mBytesPerFrame;
     result->_bytesPerFrame = mBytesPerFrame;
-    result->_bitsPerChannel = a3->mBitsPerChannel;
+    result->_bitsPerChannel = description->mBitsPerChannel;
     result->_sampleRate = mSampleRate;
     result->_minimumSampleRate = mSampleRate;
     result->_maximumSampleRate = mSampleRate;
-    if (a3->mFormatID == 1819304813)
+    if (description->mFormatID == 1819304813)
     {
       result->_bytesPerPacket = mBytesPerFrame * mFramesPerPacket;
     }
@@ -117,26 +117,26 @@
   return result;
 }
 
-- (ASDStreamFormat)initWithAudioStreamRangedDescription:(AudioStreamRangedDescription *)a3
+- (ASDStreamFormat)initWithAudioStreamRangedDescription:(AudioStreamRangedDescription *)description
 {
   v7.receiver = self;
   v7.super_class = ASDStreamFormat;
   result = [(ASDStreamFormat *)&v7 init];
   if (result)
   {
-    result->_sampleRate = a3->mFormat.mSampleRate;
-    result->_formatID = a3->mFormat.mFormatID;
-    result->_formatFlags = a3->mFormat.mFormatFlags;
-    result->_bytesPerPacket = a3->mFormat.mBytesPerPacket;
-    mFramesPerPacket = a3->mFormat.mFramesPerPacket;
+    result->_sampleRate = description->mFormat.mSampleRate;
+    result->_formatID = description->mFormat.mFormatID;
+    result->_formatFlags = description->mFormat.mFormatFlags;
+    result->_bytesPerPacket = description->mFormat.mBytesPerPacket;
+    mFramesPerPacket = description->mFormat.mFramesPerPacket;
     result->_framesPerPacket = mFramesPerPacket;
-    result->_channelsPerFrame = a3->mFormat.mChannelsPerFrame;
-    mBytesPerFrame = a3->mFormat.mBytesPerFrame;
+    result->_channelsPerFrame = description->mFormat.mChannelsPerFrame;
+    mBytesPerFrame = description->mFormat.mBytesPerFrame;
     result->_bytesPerFrame = mBytesPerFrame;
-    result->_bitsPerChannel = a3->mFormat.mBitsPerChannel;
-    result->_minimumSampleRate = a3->mSampleRateRange.mMinimum;
-    result->_maximumSampleRate = a3->mSampleRateRange.mMaximum;
-    if (a3->mFormat.mFormatID == 1819304813)
+    result->_bitsPerChannel = description->mFormat.mBitsPerChannel;
+    result->_minimumSampleRate = description->mSampleRateRange.mMinimum;
+    result->_maximumSampleRate = description->mSampleRateRange.mMaximum;
+    if (description->mFormat.mFormatID == 1819304813)
     {
       result->_bytesPerPacket = mBytesPerFrame * mFramesPerPacket;
     }
@@ -145,7 +145,7 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [(ASDStreamFormat *)self sampleRate];
@@ -166,19 +166,19 @@
 
 - (unint64_t)hash
 {
-  v3 = [(ASDStreamFormat *)self formatID];
-  v4 = [(ASDStreamFormat *)self formatFlags]| v3;
-  v5 = [(ASDStreamFormat *)self bytesPerPacket];
-  v6 = v4 | v5 | [(ASDStreamFormat *)self framesPerPacket];
-  v7 = [(ASDStreamFormat *)self bytesPerFrame];
-  v8 = v7 | [(ASDStreamFormat *)self channelsPerFrame];
+  formatID = [(ASDStreamFormat *)self formatID];
+  v4 = [(ASDStreamFormat *)self formatFlags]| formatID;
+  bytesPerPacket = [(ASDStreamFormat *)self bytesPerPacket];
+  v6 = v4 | bytesPerPacket | [(ASDStreamFormat *)self framesPerPacket];
+  bytesPerFrame = [(ASDStreamFormat *)self bytesPerFrame];
+  v8 = bytesPerFrame | [(ASDStreamFormat *)self channelsPerFrame];
   return *&self->_sampleRate | v6 | v8 | [(ASDStreamFormat *)self bitsPerChannel];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v16 = 1;
   }
@@ -188,9 +188,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(ASDStreamFormat *)v5 formatID];
-      if (v6 == [(ASDStreamFormat *)self formatID]&& (v7 = [(ASDStreamFormat *)v5 formatFlags], v7 == [(ASDStreamFormat *)self formatFlags]) && (v8 = [(ASDStreamFormat *)v5 bytesPerPacket], v8 == [(ASDStreamFormat *)self bytesPerPacket]) && (v9 = [(ASDStreamFormat *)v5 framesPerPacket], v9 == [(ASDStreamFormat *)self framesPerPacket]) && (v10 = [(ASDStreamFormat *)v5 bytesPerFrame], v10 == [(ASDStreamFormat *)self bytesPerFrame]) && (v11 = [(ASDStreamFormat *)v5 channelsPerFrame], v11 == [(ASDStreamFormat *)self channelsPerFrame]) && (v12 = [(ASDStreamFormat *)v5 bitsPerChannel], v12 == [(ASDStreamFormat *)self bitsPerChannel]))
+      v5 = equalCopy;
+      formatID = [(ASDStreamFormat *)v5 formatID];
+      if (formatID == [(ASDStreamFormat *)self formatID]&& (v7 = [(ASDStreamFormat *)v5 formatFlags], v7 == [(ASDStreamFormat *)self formatFlags]) && (v8 = [(ASDStreamFormat *)v5 bytesPerPacket], v8 == [(ASDStreamFormat *)self bytesPerPacket]) && (v9 = [(ASDStreamFormat *)v5 framesPerPacket], v9 == [(ASDStreamFormat *)self framesPerPacket]) && (v10 = [(ASDStreamFormat *)v5 bytesPerFrame], v10 == [(ASDStreamFormat *)self bytesPerFrame]) && (v11 = [(ASDStreamFormat *)v5 channelsPerFrame], v11 == [(ASDStreamFormat *)self channelsPerFrame]) && (v12 = [(ASDStreamFormat *)v5 bitsPerChannel], v12 == [(ASDStreamFormat *)self bitsPerChannel]))
       {
         [(ASDStreamFormat *)v5 sampleRate];
         v14 = v13;
@@ -213,52 +213,52 @@
   return v16;
 }
 
-- (BOOL)isCompatible:(id)a3
+- (BOOL)isCompatible:(id)compatible
 {
-  v4 = a3;
-  v5 = [v4 formatID];
-  if (v5 != [(ASDStreamFormat *)self formatID])
+  compatibleCopy = compatible;
+  formatID = [compatibleCopy formatID];
+  if (formatID != [(ASDStreamFormat *)self formatID])
   {
     goto LABEL_13;
   }
 
-  v6 = [v4 formatFlags];
-  if (v6 != [(ASDStreamFormat *)self formatFlags])
+  formatFlags = [compatibleCopy formatFlags];
+  if (formatFlags != [(ASDStreamFormat *)self formatFlags])
   {
     goto LABEL_13;
   }
 
-  v7 = [v4 bytesPerPacket];
-  if (v7 != [(ASDStreamFormat *)self bytesPerPacket])
+  bytesPerPacket = [compatibleCopy bytesPerPacket];
+  if (bytesPerPacket != [(ASDStreamFormat *)self bytesPerPacket])
   {
     goto LABEL_13;
   }
 
-  v8 = [v4 framesPerPacket];
-  if (v8 != [(ASDStreamFormat *)self framesPerPacket])
+  framesPerPacket = [compatibleCopy framesPerPacket];
+  if (framesPerPacket != [(ASDStreamFormat *)self framesPerPacket])
   {
     goto LABEL_13;
   }
 
-  v9 = [v4 bytesPerFrame];
-  if (v9 != [(ASDStreamFormat *)self bytesPerFrame])
+  bytesPerFrame = [compatibleCopy bytesPerFrame];
+  if (bytesPerFrame != [(ASDStreamFormat *)self bytesPerFrame])
   {
     goto LABEL_13;
   }
 
-  v10 = [v4 channelsPerFrame];
-  if (v10 != [(ASDStreamFormat *)self channelsPerFrame])
+  channelsPerFrame = [compatibleCopy channelsPerFrame];
+  if (channelsPerFrame != [(ASDStreamFormat *)self channelsPerFrame])
   {
     goto LABEL_13;
   }
 
-  v11 = [v4 bitsPerChannel];
-  if (v11 != [(ASDStreamFormat *)self bitsPerChannel])
+  bitsPerChannel = [compatibleCopy bitsPerChannel];
+  if (bitsPerChannel != [(ASDStreamFormat *)self bitsPerChannel])
   {
     goto LABEL_13;
   }
 
-  [v4 minimumSampleRate];
+  [compatibleCopy minimumSampleRate];
   v13 = v12;
   [(ASDStreamFormat *)self sampleRate];
   if (vabdd_f64(v13, v14) < 0.001)
@@ -266,10 +266,10 @@
     goto LABEL_10;
   }
 
-  [v4 maximumSampleRate];
+  [compatibleCopy maximumSampleRate];
   v16 = v15;
   [(ASDStreamFormat *)self sampleRate];
-  if (vabdd_f64(v16, v17) < 0.001 || ([v4 minimumSampleRate], v20 = v19, -[ASDStreamFormat sampleRate](self, "sampleRate"), v20 <= v21) && (objc_msgSend(v4, "maximumSampleRate"), v23 = v22, -[ASDStreamFormat sampleRate](self, "sampleRate"), v23 >= v24))
+  if (vabdd_f64(v16, v17) < 0.001 || ([compatibleCopy minimumSampleRate], v20 = v19, -[ASDStreamFormat sampleRate](self, "sampleRate"), v20 <= v21) && (objc_msgSend(compatibleCopy, "maximumSampleRate"), v23 = v22, -[ASDStreamFormat sampleRate](self, "sampleRate"), v23 >= v24))
   {
 LABEL_10:
     v18 = 1;
@@ -325,24 +325,24 @@ LABEL_13:
 
   if ([(ASDStreamFormat *)self formatID]< 32 || [(ASDStreamFormat *)self formatID]== 127)
   {
-    v10 = 32;
+    formatID = 32;
   }
 
   else
   {
-    v10 = [(ASDStreamFormat *)self formatID];
+    formatID = [(ASDStreamFormat *)self formatID];
   }
 
-  v11 = [(ASDStreamFormat *)self formatFlags];
-  v12 = [(ASDStreamFormat *)self bytesPerPacket];
-  v13 = [(ASDStreamFormat *)self framesPerPacket];
-  v14 = [(ASDStreamFormat *)self bytesPerFrame];
-  v15 = [(ASDStreamFormat *)self channelsPerFrame];
-  v16 = [(ASDStreamFormat *)self bitsPerChannel];
+  formatFlags = [(ASDStreamFormat *)self formatFlags];
+  bytesPerPacket = [(ASDStreamFormat *)self bytesPerPacket];
+  framesPerPacket = [(ASDStreamFormat *)self framesPerPacket];
+  bytesPerFrame = [(ASDStreamFormat *)self bytesPerFrame];
+  channelsPerFrame = [(ASDStreamFormat *)self channelsPerFrame];
+  bitsPerChannel = [(ASDStreamFormat *)self bitsPerChannel];
   [(ASDStreamFormat *)self minimumSampleRate];
   v18 = v17;
   [(ASDStreamFormat *)self maximumSampleRate];
-  v20 = [v24 stringWithFormat:@"<%@ sampleRate:%f formatID:%c%c%c%c formatFlags:0x%08x bytesPerPacket:%u framesPerPacket:%u bytesPerFrame:%u channelsPerFrame:%u bitsPerChannel:%u minimumSampleRate:%f maximumSampleRate:%f>", v4, v6, v23, v22, v9, v10, v11, v12, v13, v14, v15, v16, v18, v19];
+  v20 = [v24 stringWithFormat:@"<%@ sampleRate:%f formatID:%c%c%c%c formatFlags:0x%08x bytesPerPacket:%u framesPerPacket:%u bytesPerFrame:%u channelsPerFrame:%u bitsPerChannel:%u minimumSampleRate:%f maximumSampleRate:%f>", v4, v6, v23, v22, v9, formatID, formatFlags, bytesPerPacket, framesPerPacket, bytesPerFrame, channelsPerFrame, bitsPerChannel, v18, v19];
 
   return v20;
 }

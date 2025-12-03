@@ -1,80 +1,80 @@
 @interface WMTableRowMapper
-+ (BOOL)isTableRowDeleted:(id)a3;
-- (WMTableRowMapper)initWithWDTableRow:(id)a3 parent:(id)a4;
-- (void)mapAt:(id)a3 withState:(id)a4;
-- (void)setRowProperties:(id)a3;
++ (BOOL)isTableRowDeleted:(id)deleted;
+- (WMTableRowMapper)initWithWDTableRow:(id)row parent:(id)parent;
+- (void)mapAt:(id)at withState:(id)state;
+- (void)setRowProperties:(id)properties;
 @end
 
 @implementation WMTableRowMapper
 
-- (WMTableRowMapper)initWithWDTableRow:(id)a3 parent:(id)a4
+- (WMTableRowMapper)initWithWDTableRow:(id)row parent:(id)parent
 {
-  v7 = a3;
-  v8 = a4;
+  rowCopy = row;
+  parentCopy = parent;
   v13.receiver = self;
   v13.super_class = WMTableRowMapper;
-  v9 = [(CMMapper *)&v13 initWithParent:v8];
+  v9 = [(CMMapper *)&v13 initWithParent:parentCopy];
   v10 = v9;
   if (v9)
   {
     v9->mHeight = 0.0;
-    objc_storeStrong(&v9->mWdTableRow, a3);
-    v11 = [v7 properties];
-    [(WMTableRowMapper *)v10 setRowProperties:v11];
+    objc_storeStrong(&v9->mWdTableRow, row);
+    properties = [rowCopy properties];
+    [(WMTableRowMapper *)v10 setRowProperties:properties];
   }
 
   return v10;
 }
 
-+ (BOOL)isTableRowDeleted:(id)a3
++ (BOOL)isTableRowDeleted:(id)deleted
 {
-  v3 = [a3 properties];
-  v4 = [v3 characterProperties];
-  v5 = [v4 isDeletedOverridden] && (objc_msgSend(v4, "deleted") & 0xFFFFFF7F) == 1;
+  properties = [deleted properties];
+  characterProperties = [properties characterProperties];
+  v5 = [characterProperties isDeletedOverridden] && (objc_msgSend(characterProperties, "deleted") & 0xFFFFFF7F) == 1;
 
   return v5;
 }
 
-- (void)mapAt:(id)a3 withState:(id)a4
+- (void)mapAt:(id)at withState:(id)state
 {
-  v17 = a3;
-  v6 = a4;
+  atCopy = at;
+  stateCopy = state;
   if (![WMTableRowMapper isTableRowDeleted:self->mWdTableRow])
   {
     v7 = [OIXMLElement elementWithType:21];
-    [v17 addChild:v7];
+    [atCopy addChild:v7];
     v8 = objc_alloc_init(WMStyle);
     [(CMStyle *)v8 appendPropertyForName:0x286F077D0 stringValue:@"top"];
-    v9 = [(WMStyle *)v8 cssStyleString];
-    [(CMMapper *)self addAttribute:0x286EEA590 toNode:v7 value:v9];
-    v10 = [(WDTableRow *)self->mWdTableRow cellCount];
-    if (v10)
+    cssStyleString = [(WMStyle *)v8 cssStyleString];
+    [(CMMapper *)self addAttribute:0x286EEA590 toNode:v7 value:cssStyleString];
+    cellCount = [(WDTableRow *)self->mWdTableRow cellCount];
+    if (cellCount)
     {
-      v16 = v9;
+      v16 = cssStyleString;
       v11 = 0;
       v12 = 0;
-      for (i = 0; i != v10; ++i)
+      for (i = 0; i != cellCount; ++i)
       {
         v14 = [(WDTableRow *)self->mWdTableRow cellAt:i];
 
         v15 = [[WMTableCellMapper alloc] initWithWDTableCell:v14 atIndex:v12 parent:self];
-        [(WMTableCellMapper *)v15 mapAt:v7 withState:v6];
+        [(WMTableCellMapper *)v15 mapAt:v7 withState:stateCopy];
         v12 = [(WMTableCellMapper *)v15 colSpan]+ v12;
 
         v11 = v14;
       }
 
-      v9 = v16;
+      cssStyleString = v16;
     }
   }
 }
 
-- (void)setRowProperties:(id)a3
+- (void)setRowProperties:(id)properties
 {
-  v4 = a3;
-  if ([v4 isHeightOverridden])
+  propertiesCopy = properties;
+  if ([propertiesCopy isHeightOverridden])
   {
-    self->mHeight = [v4 height];
+    self->mHeight = [propertiesCopy height];
   }
 }
 

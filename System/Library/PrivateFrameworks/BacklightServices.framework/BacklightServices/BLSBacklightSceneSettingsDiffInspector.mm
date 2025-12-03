@@ -1,5 +1,5 @@
 @interface BLSBacklightSceneSettingsDiffInspector
-- ($CC87CEEC7FB96912C0F1D2377F1A8E9C)inspectDiff:(id)a3;
+- ($CC87CEEC7FB96912C0F1D2377F1A8E9C)inspectDiff:(id)diff;
 - (BLSBacklightSceneSettingsDiffInspector)init;
 @end
 
@@ -22,10 +22,10 @@
   return v3;
 }
 
-- ($CC87CEEC7FB96912C0F1D2377F1A8E9C)inspectDiff:(id)a3
+- ($CC87CEEC7FB96912C0F1D2377F1A8E9C)inspectDiff:(id)diff
 {
   v4 = 0;
-  [(FBSSettingsDiffInspector *)self inspectDiff:a3 withContext:&v4];
+  [(FBSSettingsDiffInspector *)self inspectDiff:diff withContext:&v4];
   return v4;
 }
 

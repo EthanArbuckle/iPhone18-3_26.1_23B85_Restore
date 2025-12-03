@@ -1,16 +1,16 @@
 @interface MBCacheDelete
-- (id)periodic:(id)a3 urgency:(int)a4;
-- (id)purge:(id)a3 urgency:(int)a4;
+- (id)periodic:(id)periodic urgency:(int)urgency;
+- (id)purge:(id)purge urgency:(int)urgency;
 - (void)cancelPurge;
 @end
 
 @implementation MBCacheDelete
 
-- (id)purge:(id)a3 urgency:(int)a4
+- (id)purge:(id)purge urgency:(int)urgency
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"CACHE_DELETE_VOLUME"];
-  v33 = [v4 objectForKeyedSubscript:@"CACHE_DELETE_AMOUNT"];
+  purgeCopy = purge;
+  v5 = [purgeCopy objectForKeyedSubscript:@"CACHE_DELETE_VOLUME"];
+  v33 = [purgeCopy objectForKeyedSubscript:@"CACHE_DELETE_AMOUNT"];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
@@ -30,8 +30,8 @@
         }
 
         v10 = *(*(&v36 + 1) + 8 * i);
-        v11 = [v10 volumeMountPoint];
-        v12 = [v11 isEqualToString:v5];
+        volumeMountPoint = [v10 volumeMountPoint];
+        v12 = [volumeMountPoint isEqualToString:v5];
 
         if (v12)
         {
@@ -58,7 +58,7 @@ LABEL_11:
     *buf = 138413058;
     v47 = v33;
     v48 = 2048;
-    v49 = a4;
+    urgencyCopy = urgency;
     v50 = 2112;
     v51 = v5;
     v52 = 2112;
@@ -67,7 +67,7 @@ LABEL_11:
     v30 = v5;
     v31 = v7;
     v27 = v33;
-    v29 = a4;
+    urgencyCopy2 = urgency;
     _MBLog();
   }
 
@@ -89,7 +89,7 @@ LABEL_11:
   }
 
   v34 = v16;
-  v18 = [MBFileSystemManager deleteAllSnapshotsForVolume:v5 withPrefix:@"com.appleinternal.mobilebackup" error:&v34, v27, v29, v30, v31];
+  v18 = [MBFileSystemManager deleteAllSnapshotsForVolume:v5 withPrefix:@"com.appleinternal.mobilebackup" error:&v34, v27, urgencyCopy2, v30, v31];
   v19 = v34;
 
   if ((v18 & 1) == 0)
@@ -119,7 +119,7 @@ LABEL_11:
   {
     v21 = [NSDate dateWithTimeIntervalSinceNow:-604800.0];
     [MBFileSystemManager removeAbandonedDriveBackupDirectoriesWithLatestCreationDate:v21 persona:v7];
-    if (a4 < 2)
+    if (urgency < 2)
     {
       v42[0] = @"CACHE_DELETE_VOLUME";
       v42[1] = @"CACHE_DELETE_AMOUNT";
@@ -148,11 +148,11 @@ LABEL_29:
   return v25;
 }
 
-- (id)periodic:(id)a3 urgency:(int)a4
+- (id)periodic:(id)periodic urgency:(int)urgency
 {
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"CACHE_DELETE_VOLUME"];
-  v7 = [v5 objectForKeyedSubscript:@"CACHE_DELETE_AMOUNT"];
+  periodicCopy = periodic;
+  v6 = [periodicCopy objectForKeyedSubscript:@"CACHE_DELETE_VOLUME"];
+  v7 = [periodicCopy objectForKeyedSubscript:@"CACHE_DELETE_AMOUNT"];
 
   v8 = MBGetDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -160,7 +160,7 @@ LABEL_29:
     *buf = 138412802;
     v14 = v7;
     v15 = 2048;
-    v16 = a4;
+    urgencyCopy = urgency;
     v17 = 2112;
     v18 = v6;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Requested to periodic purge %@ with urgency %ld for volume %@. Unsupported", buf, 0x20u);

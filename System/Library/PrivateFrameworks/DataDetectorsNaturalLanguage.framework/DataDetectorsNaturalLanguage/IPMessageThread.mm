@@ -1,19 +1,19 @@
 @interface IPMessageThread
 - (id)orderedMessageUnits;
-- (void)appendUnit:(id)a3 inResponseToUnit:(id)a4;
+- (void)appendUnit:(id)unit inResponseToUnit:(id)toUnit;
 @end
 
 @implementation IPMessageThread
 
-- (void)appendUnit:(id)a3 inResponseToUnit:(id)a4
+- (void)appendUnit:(id)unit inResponseToUnit:(id)toUnit
 {
-  v14 = a3;
-  v6 = a4;
-  if (v14)
+  unitCopy = unit;
+  toUnitCopy = toUnit;
+  if (unitCopy)
   {
-    if (v6)
+    if (toUnitCopy)
     {
-      [v6 addFollowup:v14];
+      [toUnitCopy addFollowup:unitCopy];
     }
 
     else
@@ -21,12 +21,12 @@
       threadRoots = self->_threadRoots;
       if (threadRoots)
       {
-        [(NSMutableArray *)threadRoots addObject:v14];
+        [(NSMutableArray *)threadRoots addObject:unitCopy];
       }
 
       else
       {
-        v8 = [MEMORY[0x277CBEB18] arrayWithObject:v14];
+        v8 = [MEMORY[0x277CBEB18] arrayWithObject:unitCopy];
         v9 = self->_threadRoots;
         self->_threadRoots = v8;
       }
@@ -42,7 +42,7 @@
       allUnits = self->_allUnits;
     }
 
-    [(NSMutableArray *)allUnits addObject:v14];
+    [(NSMutableArray *)allUnits addObject:unitCopy];
     allUnitsSorted = self->_allUnitsSorted;
     self->_allUnitsSorted = 0;
   }

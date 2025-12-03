@@ -1,16 +1,16 @@
 @interface AXMathExpressionRow
-- (AXMathExpressionRow)initWithExpressions:(id)a3;
+- (AXMathExpressionRow)initWithExpressions:(id)expressions;
 @end
 
 @implementation AXMathExpressionRow
 
-- (AXMathExpressionRow)initWithExpressions:(id)a3
+- (AXMathExpressionRow)initWithExpressions:(id)expressions
 {
   v6.receiver = self;
   v6.super_class = AXMathExpressionRow;
-  v3 = a3;
+  expressionsCopy = expressions;
   v4 = [(AXMathExpressionRow *)&v6 init];
-  [(AXMathExpressionRow *)v4 setExpressions:v3, v6.receiver, v6.super_class];
+  [(AXMathExpressionRow *)v4 setExpressions:expressionsCopy, v6.receiver, v6.super_class];
 
   return v4;
 }

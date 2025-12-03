@@ -1,14 +1,14 @@
 @interface TextSettingsMiniFlowController
 + (BOOL)controllerNeedsToRun;
-+ (BOOL)skipControllerForExpressMode:(id)a3;
++ (BOOL)skipControllerForExpressMode:(id)mode;
 - (BOOL)holdBeforeDisplaying;
 - (TextSettingsMiniFlowController)init;
 - (id)viewController;
 - (void)dealloc;
-- (void)didReceiveIncomingData:(id)a3;
-- (void)didSelectContentSizeCategory:(id)a3 boldTextEnabled:(BOOL)a4;
-- (void)miniFlowStepComplete:(id)a3;
-- (void)miniFlowStepComplete:(id)a3 nextControllerClass:(Class)a4;
+- (void)didReceiveIncomingData:(id)data;
+- (void)didSelectContentSizeCategory:(id)category boldTextEnabled:(BOOL)enabled;
+- (void)miniFlowStepComplete:(id)complete;
+- (void)miniFlowStepComplete:(id)complete nextControllerClass:(Class)class;
 @end
 
 @implementation TextSettingsMiniFlowController
@@ -53,11 +53,11 @@
   return v4;
 }
 
-+ (BOOL)skipControllerForExpressMode:(id)a3
++ (BOOL)skipControllerForExpressMode:(id)mode
 {
-  v3 = a3;
-  v4 = getWatchContentSize(v3);
-  v5 = boldTextKeyExistsOnDevice(v3);
+  modeCopy = mode;
+  v4 = getWatchContentSize(modeCopy);
+  v5 = boldTextKeyExistsOnDevice(modeCopy);
 
   if (v4)
   {
@@ -96,8 +96,8 @@ LABEL_9:
 
 - (BOOL)holdBeforeDisplaying
 {
-  v3 = [(TextSettingsMiniFlowController *)self receivedCachedScreenshots];
-  if (v3)
+  receivedCachedScreenshots = [(TextSettingsMiniFlowController *)self receivedCachedScreenshots];
+  if (receivedCachedScreenshots)
   {
     v4 = AXLogCommon();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -115,16 +115,16 @@ LABEL_8:
     {
       [(TextSettingsMiniFlowController *)self setControllerIsOnHold:1];
       objc_initWeak(location, self);
-      v6 = [(TextSettingsMiniFlowController *)self controllerHoldTimeoutTimer];
+      controllerHoldTimeoutTimer = [(TextSettingsMiniFlowController *)self controllerHoldTimeoutTimer];
       v9[0] = _NSConcreteStackBlock;
       v9[1] = 3221225472;
       v9[2] = __54__TextSettingsMiniFlowController_holdBeforeDisplaying__block_invoke;
       v9[3] = &unk_C470;
       objc_copyWeak(&v10, location);
-      [v6 afterDelay:v9 processBlock:30.0];
+      [controllerHoldTimeoutTimer afterDelay:v9 processBlock:30.0];
 
-      v7 = [(TextSettingsMiniFlowController *)self idsServicesQueue];
-      dispatch_async(v7, &__block_literal_global);
+      idsServicesQueue = [(TextSettingsMiniFlowController *)self idsServicesQueue];
+      dispatch_async(idsServicesQueue, &__block_literal_global);
 
       objc_destroyWeak(&v10);
       objc_destroyWeak(location);
@@ -139,7 +139,7 @@ LABEL_8:
     }
   }
 
-  return v3 ^ 1;
+  return receivedCachedScreenshots ^ 1;
 }
 
 void __54__TextSettingsMiniFlowController_holdBeforeDisplaying__block_invoke(uint64_t a1)
@@ -171,39 +171,39 @@ void __54__TextSettingsMiniFlowController_holdBeforeDisplaying__block_invoke_2(i
 
 - (id)viewController
 {
-  v3 = [(TextSettingsMiniFlowController *)self textSettingsViewController];
+  textSettingsViewController = [(TextSettingsMiniFlowController *)self textSettingsViewController];
 
-  if (!v3)
+  if (!textSettingsViewController)
   {
-    v4 = [(TextSettingsMiniFlowController *)self delegate];
-    v5 = [v4 activePairingDevice];
+    delegate = [(TextSettingsMiniFlowController *)self delegate];
+    activePairingDevice = [delegate activePairingDevice];
 
-    v6 = [[TextSettingsViewController alloc] initWithDevice:v5 observer:self];
+    v6 = [[TextSettingsViewController alloc] initWithDevice:activePairingDevice observer:self];
     [(TextSettingsMiniFlowController *)self setTextSettingsViewController:v6];
 
-    v7 = [(TextSettingsMiniFlowController *)self textSettingsViewController];
-    [v7 setMiniFlowDelegate:self];
+    textSettingsViewController2 = [(TextSettingsMiniFlowController *)self textSettingsViewController];
+    [textSettingsViewController2 setMiniFlowDelegate:self];
   }
 
   return [(TextSettingsMiniFlowController *)self textSettingsViewController];
 }
 
-- (void)miniFlowStepComplete:(id)a3
+- (void)miniFlowStepComplete:(id)complete
 {
-  v4 = [(TextSettingsMiniFlowController *)self delegate];
-  [v4 buddyControllerDone:self];
+  delegate = [(TextSettingsMiniFlowController *)self delegate];
+  [delegate buddyControllerDone:self];
 }
 
-- (void)miniFlowStepComplete:(id)a3 nextControllerClass:(Class)a4
+- (void)miniFlowStepComplete:(id)complete nextControllerClass:(Class)class
 {
-  v5 = objc_alloc_init(a4);
+  v5 = objc_alloc_init(class);
   [v5 setMiniFlowDelegate:self];
   [(TextSettingsMiniFlowController *)self pushController:v5 animated:1];
 }
 
-- (void)didReceiveIncomingData:(id)a3
+- (void)didReceiveIncomingData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = AXLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -211,18 +211,18 @@ void __54__TextSettingsMiniFlowController_holdBeforeDisplaying__block_invoke_2(i
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "[TextSettingsMiniFlowController] did receive incoming data", buf, 2u);
   }
 
-  v6 = [(TextSettingsMiniFlowController *)self controllerHoldTimeoutTimer];
-  [v6 cancel];
+  controllerHoldTimeoutTimer = [(TextSettingsMiniFlowController *)self controllerHoldTimeoutTimer];
+  [controllerHoldTimeoutTimer cancel];
 
-  v7 = [(TextSettingsMiniFlowController *)self idsServicesQueue];
+  idsServicesQueue = [(TextSettingsMiniFlowController *)self idsServicesQueue];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = __57__TextSettingsMiniFlowController_didReceiveIncomingData___block_invoke;
   v9[3] = &unk_C448;
-  v10 = v4;
-  v11 = self;
-  v8 = v4;
-  dispatch_async(v7, v9);
+  v10 = dataCopy;
+  selfCopy = self;
+  v8 = dataCopy;
+  dispatch_async(idsServicesQueue, v9);
 }
 
 void __57__TextSettingsMiniFlowController_didReceiveIncomingData___block_invoke(uint64_t a1)
@@ -318,18 +318,18 @@ void __57__TextSettingsMiniFlowController_didReceiveIncomingData___block_invoke_
   }
 }
 
-- (void)didSelectContentSizeCategory:(id)a3 boldTextEnabled:(BOOL)a4
+- (void)didSelectContentSizeCategory:(id)category boldTextEnabled:(BOOL)enabled
 {
-  v6 = a3;
-  v7 = [(TextSettingsMiniFlowController *)self idsServicesQueue];
+  categoryCopy = category;
+  idsServicesQueue = [(TextSettingsMiniFlowController *)self idsServicesQueue];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = __79__TextSettingsMiniFlowController_didSelectContentSizeCategory_boldTextEnabled___block_invoke;
   v9[3] = &unk_C500;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
-  dispatch_async(v7, v9);
+  v10 = categoryCopy;
+  enabledCopy = enabled;
+  v8 = categoryCopy;
+  dispatch_async(idsServicesQueue, v9);
 }
 
 void __79__TextSettingsMiniFlowController_didSelectContentSizeCategory_boldTextEnabled___block_invoke(uint64_t a1)

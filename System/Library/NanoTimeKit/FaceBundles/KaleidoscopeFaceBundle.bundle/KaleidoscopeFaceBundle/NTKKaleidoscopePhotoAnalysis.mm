@@ -1,17 +1,17 @@
 @interface NTKKaleidoscopePhotoAnalysis
-+ (BOOL)_dictionaryHasValidValues:(id)a3;
-+ (BOOL)_dictionaryPassesBasicCheck:(id)a3;
-+ (BOOL)isValidDictionary:(id)a3;
-+ (id)analysisWithImage:(id)a3 alignment:(unint64_t)a4 deviceSizeClass:(unint64_t)a5;
++ (BOOL)_dictionaryHasValidValues:(id)values;
++ (BOOL)_dictionaryPassesBasicCheck:(id)check;
++ (BOOL)isValidDictionary:(id)dictionary;
++ (id)analysisWithImage:(id)image alignment:(unint64_t)alignment deviceSizeClass:(unint64_t)class;
 + (id)defaultAnalysis;
 + (id)invalidAnalysis;
 - ($BBBA91DF173D22D92F8479248DC92AE7)structure;
-- (NTKKaleidoscopePhotoAnalysis)initWithCoder:(id)a3;
-- (NTKKaleidoscopePhotoAnalysis)initWithStructure:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NTKKaleidoscopePhotoAnalysis)initWithCoder:(id)coder;
+- (NTKKaleidoscopePhotoAnalysis)initWithStructure:(id *)structure;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)encodeAsDictionary;
-- (id)initFromDictionary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)initFromDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NTKKaleidoscopePhotoAnalysis
@@ -25,12 +25,12 @@
   return self;
 }
 
-+ (BOOL)isValidDictionary:(id)a3
++ (BOOL)isValidDictionary:(id)dictionary
 {
-  v4 = a3;
-  if ([a1 _dictionaryPassesBasicCheck:v4])
+  dictionaryCopy = dictionary;
+  if ([self _dictionaryPassesBasicCheck:dictionaryCopy])
   {
-    v5 = [a1 _dictionaryHasValidValues:v4];
+    v5 = [self _dictionaryHasValidValues:dictionaryCopy];
   }
 
   else
@@ -41,15 +41,15 @@
   return v5;
 }
 
-+ (BOOL)_dictionaryPassesBasicCheck:(id)a3
++ (BOOL)_dictionaryPassesBasicCheck:(id)check
 {
-  v3 = a3;
-  if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  checkCopy = check;
+  if (checkCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 objectForKey:@"version"];
-    v5 = [v4 integerValue];
+    v4 = [checkCopy objectForKey:@"version"];
+    integerValue = [v4 integerValue];
 
-    v6 = (v5 & 0xFFFFFFFE) == 0;
+    v6 = (integerValue & 0xFFFFFFFE) == 0;
   }
 
   else
@@ -60,9 +60,9 @@
   return v6;
 }
 
-+ (BOOL)_dictionaryHasValidValues:(id)a3
++ (BOOL)_dictionaryHasValidValues:(id)values
 {
-  v3 = a3;
+  valuesCopy = values;
   v22[0] = @"complexBackground";
   v22[1] = @"coloredText";
   v22[2] = @"textHue";
@@ -97,7 +97,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [v3 objectForKeyedSubscript:{*(*(&v17 + 1) + 8 * i), v17}];
+        v13 = [valuesCopy objectForKeyedSubscript:{*(*(&v17 + 1) + 8 * i), v17}];
         if (!v13 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || [v13 compare:v5] == -1)
         {
 
@@ -135,34 +135,34 @@ LABEL_16:
   return v15;
 }
 
-- (NTKKaleidoscopePhotoAnalysis)initWithCoder:(id)a3
+- (NTKKaleidoscopePhotoAnalysis)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = NTKKaleidoscopePhotoAnalysis;
   v5 = [(NTKKaleidoscopePhotoAnalysis *)&v17 init];
-  if (v5 && [v4 decodeInt32ForKey:@"version"] == 1)
+  if (v5 && [coderCopy decodeInt32ForKey:@"version"] == 1)
   {
     v5->_version = 1;
-    v5->_data.isComplexBackground = [v4 decodeBoolForKey:@"complexBackground"];
-    v5->_data.isColoredText = [v4 decodeBoolForKey:@"coloredText"];
-    [v4 decodeFloatForKey:@"textHue"];
+    v5->_data.isComplexBackground = [coderCopy decodeBoolForKey:@"complexBackground"];
+    v5->_data.isColoredText = [coderCopy decodeBoolForKey:@"coloredText"];
+    [coderCopy decodeFloatForKey:@"textHue"];
     v5->_data.textHue = v6;
-    [v4 decodeFloatForKey:@"textSaturation"];
+    [coderCopy decodeFloatForKey:@"textSaturation"];
     v5->_data.textSaturation = v7;
-    [v4 decodeFloatForKey:@"textBrightness"];
+    [coderCopy decodeFloatForKey:@"textBrightness"];
     v5->_data.textBrightness = v8;
-    [v4 decodeFloatForKey:@"bgHue"];
+    [coderCopy decodeFloatForKey:@"bgHue"];
     v5->_data.bgHue = v9;
-    [v4 decodeFloatForKey:@"bgSaturation"];
+    [coderCopy decodeFloatForKey:@"bgSaturation"];
     v5->_data.bgSaturation = v10;
-    [v4 decodeFloatForKey:@"bgBrightness"];
+    [coderCopy decodeFloatForKey:@"bgBrightness"];
     v5->_data.bgBrightness = v11;
-    [v4 decodeFloatForKey:@"shadowHue"];
+    [coderCopy decodeFloatForKey:@"shadowHue"];
     v5->_data.shadowHue = v12;
-    [v4 decodeFloatForKey:@"shadowSaturation"];
+    [coderCopy decodeFloatForKey:@"shadowSaturation"];
     v5->_data.shadowSaturation = v13;
-    [v4 decodeFloatForKey:@"shadowBrightness"];
+    [coderCopy decodeFloatForKey:@"shadowBrightness"];
     v5->_data.shadowBrightness = v14;
     v15 = v5;
   }
@@ -175,54 +175,54 @@ LABEL_16:
   return v15;
 }
 
-- (id)initFromDictionary:(id)a3
+- (id)initFromDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v28.receiver = self;
   v28.super_class = NTKKaleidoscopePhotoAnalysis;
   v5 = [(NTKKaleidoscopePhotoAnalysis *)&v28 init];
-  if (v5 && [objc_opt_class() _dictionaryPassesBasicCheck:v4])
+  if (v5 && [objc_opt_class() _dictionaryPassesBasicCheck:dictionaryCopy])
   {
     v5->_version = 1;
-    v6 = [v4 objectForKey:@"complexBackground"];
+    v6 = [dictionaryCopy objectForKey:@"complexBackground"];
     v5->_data.isComplexBackground = [v6 BOOLValue];
 
-    v7 = [v4 objectForKey:@"coloredText"];
+    v7 = [dictionaryCopy objectForKey:@"coloredText"];
     v5->_data.isColoredText = [v7 BOOLValue];
 
-    v8 = [v4 objectForKey:@"textHue"];
+    v8 = [dictionaryCopy objectForKey:@"textHue"];
     [v8 floatValue];
     v5->_data.textHue = v9;
 
-    v10 = [v4 objectForKey:@"textSaturation"];
+    v10 = [dictionaryCopy objectForKey:@"textSaturation"];
     [v10 floatValue];
     v5->_data.textSaturation = v11;
 
-    v12 = [v4 objectForKey:@"textBrightness"];
+    v12 = [dictionaryCopy objectForKey:@"textBrightness"];
     [v12 floatValue];
     v5->_data.textBrightness = v13;
 
-    v14 = [v4 objectForKey:@"bgHue"];
+    v14 = [dictionaryCopy objectForKey:@"bgHue"];
     [v14 floatValue];
     v5->_data.bgHue = v15;
 
-    v16 = [v4 objectForKey:@"bgSaturation"];
+    v16 = [dictionaryCopy objectForKey:@"bgSaturation"];
     [v16 floatValue];
     v5->_data.bgSaturation = v17;
 
-    v18 = [v4 objectForKey:@"bgBrightness"];
+    v18 = [dictionaryCopy objectForKey:@"bgBrightness"];
     [v18 floatValue];
     v5->_data.bgBrightness = v19;
 
-    v20 = [v4 objectForKey:@"shadowHue"];
+    v20 = [dictionaryCopy objectForKey:@"shadowHue"];
     [v20 floatValue];
     v5->_data.shadowHue = v21;
 
-    v22 = [v4 objectForKey:@"shadowSaturation"];
+    v22 = [dictionaryCopy objectForKey:@"shadowSaturation"];
     [v22 floatValue];
     v5->_data.shadowSaturation = v23;
 
-    v24 = [v4 objectForKey:@"shadowBrightness"];
+    v24 = [dictionaryCopy objectForKey:@"shadowBrightness"];
     [v24 floatValue];
     v5->_data.shadowBrightness = v25;
 
@@ -237,7 +237,7 @@ LABEL_16:
   return v26;
 }
 
-- (NTKKaleidoscopePhotoAnalysis)initWithStructure:(id *)a3
+- (NTKKaleidoscopePhotoAnalysis)initWithStructure:(id *)structure
 {
   v10.receiver = self;
   v10.super_class = NTKKaleidoscopePhotoAnalysis;
@@ -245,9 +245,9 @@ LABEL_16:
   v5 = v4;
   if (v4)
   {
-    v6 = *&a3->var0;
-    v7 = *&a3->var5;
-    *(v4 + 5) = *&a3->var9;
+    v6 = *&structure->var0;
+    v7 = *&structure->var5;
+    *(v4 + 5) = *&structure->var9;
     *(v4 + 24) = v7;
     *(v4 + 8) = v6;
     *(v4 + 12) = 1;
@@ -261,7 +261,7 @@ LABEL_16:
 {
   v5 = 0;
   memset(v4, 0, sizeof(v4));
-  v2 = [[a1 alloc] initWithStructure:v4];
+  v2 = [[self alloc] initWithStructure:v4];
 
   return v2;
 }
@@ -271,21 +271,21 @@ LABEL_16:
   v4[0] = xmmword_1B5EC;
   v4[1] = *algn_1B5FC;
   v5 = 0;
-  v2 = [[a1 alloc] initWithStructure:v4];
+  v2 = [[self alloc] initWithStructure:v4];
 
   return v2;
 }
 
-+ (id)analysisWithImage:(id)a3 alignment:(unint64_t)a4 deviceSizeClass:(unint64_t)a5
++ (id)analysisWithImage:(id)image alignment:(unint64_t)alignment deviceSizeClass:(unint64_t)class
 {
-  v7 = a3;
-  v8 = [v7 CGImage];
-  Width = CGImageGetWidth(v8);
-  Height = CGImageGetHeight(v8);
+  imageCopy = image;
+  cGImage = [imageCopy CGImage];
+  Width = CGImageGetWidth(cGImage);
+  Height = CGImageGetHeight(cGImage);
   v11 = CLKDeviceCategoryForSizeClass() - 1;
   if (v11 >= 5)
   {
-    v25 = [a1 invalidAnalysis];
+    invalidAnalysis = [self invalidAnalysis];
   }
 
   else
@@ -336,7 +336,7 @@ LABEL_16:
     v35 = CGRectInset(v34, dbl_1B618[v11], dbl_1B618[v11]);
     x = v35.origin.x;
     v22 = v35.size.width;
-    if (a4 == 1)
+    if (alignment == 1)
     {
       v15 = CGRectGetMaxY(v35) - v14;
     }
@@ -348,10 +348,10 @@ LABEL_16:
     v23 = [NSValue valueWithBytes:v31 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}", *&v27, *&v29];
     v32 = v23;
     v24 = [NSArray arrayWithObjects:&v32 count:1];
-    v25 = NTKKaleidoscopeAnalyzePhoto(v7, v24, 0, v20, v19, v28, v30, v17, v16);
+    invalidAnalysis = NTKKaleidoscopeAnalyzePhoto(imageCopy, v24, 0, v20, v19, v28, v30, v17, v16);
   }
 
-  return v25;
+  return invalidAnalysis;
 }
 
 - (id)encodeAsDictionary
@@ -403,33 +403,33 @@ LABEL_16:
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v13 = a3;
-  [v13 encodeInt32:1 forKey:@"version"];
-  [v13 encodeBool:self->_data.isComplexBackground forKey:@"complexBackground"];
-  [v13 encodeBool:self->_data.isColoredText forKey:@"coloredText"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:1 forKey:@"version"];
+  [coderCopy encodeBool:self->_data.isComplexBackground forKey:@"complexBackground"];
+  [coderCopy encodeBool:self->_data.isColoredText forKey:@"coloredText"];
   *&v4 = self->_data.textHue;
-  [v13 encodeFloat:@"textHue" forKey:v4];
+  [coderCopy encodeFloat:@"textHue" forKey:v4];
   *&v5 = self->_data.textSaturation;
-  [v13 encodeFloat:@"textSaturation" forKey:v5];
+  [coderCopy encodeFloat:@"textSaturation" forKey:v5];
   *&v6 = self->_data.textBrightness;
-  [v13 encodeFloat:@"textBrightness" forKey:v6];
+  [coderCopy encodeFloat:@"textBrightness" forKey:v6];
   *&v7 = self->_data.bgHue;
-  [v13 encodeFloat:@"bgHue" forKey:v7];
+  [coderCopy encodeFloat:@"bgHue" forKey:v7];
   *&v8 = self->_data.bgSaturation;
-  [v13 encodeFloat:@"bgSaturation" forKey:v8];
+  [coderCopy encodeFloat:@"bgSaturation" forKey:v8];
   *&v9 = self->_data.bgBrightness;
-  [v13 encodeFloat:@"bgBrightness" forKey:v9];
+  [coderCopy encodeFloat:@"bgBrightness" forKey:v9];
   *&v10 = self->_data.shadowHue;
-  [v13 encodeFloat:@"shadowHue" forKey:v10];
+  [coderCopy encodeFloat:@"shadowHue" forKey:v10];
   *&v11 = self->_data.shadowSaturation;
-  [v13 encodeFloat:@"shadowSaturation" forKey:v11];
+  [coderCopy encodeFloat:@"shadowSaturation" forKey:v11];
   *&v12 = self->_data.shadowBrightness;
-  [v13 encodeFloat:@"shadowBrightness" forKey:v12];
+  [coderCopy encodeFloat:@"shadowBrightness" forKey:v12];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   v5 = *&self->_data.bgHue;

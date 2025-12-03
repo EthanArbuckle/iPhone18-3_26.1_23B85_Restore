@@ -1,8 +1,8 @@
 @interface WRM_CellStationManagerIOS
 - (WRM_CellStationManagerIOS)init;
 - (id)storeURL;
-- (void)checkUsingCoreData:(id)a3 :(id)a4;
-- (void)isFR2:(id)a3 completionHandler:(id)a4;
+- (void)checkUsingCoreData:(id)data :(id)a4;
+- (void)isFR2:(id)r2 completionHandler:(id)handler;
 @end
 
 @implementation WRM_CellStationManagerIOS
@@ -14,52 +14,52 @@
   return [(WRM_CellStationManagerIOS *)&v3 init];
 }
 
-- (void)checkUsingCoreData:(id)a3 :(id)a4
+- (void)checkUsingCoreData:(id)data :(id)a4
 {
-  v6 = a3;
+  dataCopy = data;
   v7 = a4;
-  if (v6)
+  if (dataCopy)
   {
-    v8 = [(WRM_CellStationManagerIOS *)self modelURL];
-    v9 = [v8 absoluteString];
-    [WCM_Logging logLevel:22 message:@"CellStationManager: The given model URL is %@", v9];
+    modelURL = [(WRM_CellStationManagerIOS *)self modelURL];
+    absoluteString = [modelURL absoluteString];
+    [WCM_Logging logLevel:22 message:@"CellStationManager: The given model URL is %@", absoluteString];
 
-    v10 = [(WRM_CellStationManagerIOS *)self modelURL];
+    modelURL2 = [(WRM_CellStationManagerIOS *)self modelURL];
     v29 = 0;
-    v11 = [v10 checkResourceIsReachableAndReturnError:&v29];
+    v11 = [modelURL2 checkResourceIsReachableAndReturnError:&v29];
     v12 = v29;
 
     if (v11)
     {
       [WCM_Logging logLevel:22 message:@"CellStationManager: model file exists at the given URL"];
-      v13 = [(WRM_CellStationManagerIOS *)self storeURL];
-      v14 = [v13 absoluteString];
-      [WCM_Logging logLevel:22 message:@"CellStationManager: The given store URL is %@", v14];
+      storeURL = [(WRM_CellStationManagerIOS *)self storeURL];
+      absoluteString2 = [storeURL absoluteString];
+      [WCM_Logging logLevel:22 message:@"CellStationManager: The given store URL is %@", absoluteString2];
 
-      v15 = [(WRM_CellStationManagerIOS *)self storeURL];
+      storeURL2 = [(WRM_CellStationManagerIOS *)self storeURL];
       v28 = v12;
-      LOBYTE(v14) = [v15 checkResourceIsReachableAndReturnError:&v28];
+      LOBYTE(absoluteString2) = [storeURL2 checkResourceIsReachableAndReturnError:&v28];
       v16 = v28;
 
-      if (v14)
+      if (absoluteString2)
       {
         [WCM_Logging logLevel:22 message:@"CellStationManager: store file exists at the given URL"];
         v17 = [CellPropertiesCoreDataStack alloc];
-        v18 = [(WRM_CellStationManagerIOS *)self storeURL];
-        v19 = [(WRM_CellStationManagerIOS *)self modelURL];
-        v20 = [(CellPropertiesCoreDataStack *)v17 initWithStoreURL:v18 modelURL:v19];
+        storeURL3 = [(WRM_CellStationManagerIOS *)self storeURL];
+        modelURL3 = [(WRM_CellStationManagerIOS *)self modelURL];
+        v20 = [(CellPropertiesCoreDataStack *)v17 initWithStoreURL:storeURL3 modelURL:modelURL3];
 
         if (v20)
         {
-          v21 = [(CellPropertiesCoreDataStack *)v20 private_queue_context];
+          private_queue_context = [(CellPropertiesCoreDataStack *)v20 private_queue_context];
           v24[0] = _NSConcreteStackBlock;
           v24[1] = 3221225472;
           v24[2] = sub_10008796C;
           v24[3] = &unk_10023F980;
           v27 = v7;
-          v25 = v6;
+          v25 = dataCopy;
           v26 = v20;
-          [v21 performBlockAndWait:v24];
+          [private_queue_context performBlockAndWait:v24];
         }
 
         else
@@ -118,13 +118,13 @@
     v5 = v4;
     if (v4)
     {
-      v6 = [v4 fileValue];
-      v7 = [v6 path];
-      [WCM_Logging logLevel:22 message:@"CellStationManager: trialClient sqlite file found at %@", v7];
+      fileValue = [v4 fileValue];
+      path = [fileValue path];
+      [WCM_Logging logLevel:22 message:@"CellStationManager: trialClient sqlite file found at %@", path];
 
-      v8 = [v5 fileValue];
-      v9 = [v8 path];
-      v10 = [NSURL fileURLWithPath:v9];
+      fileValue2 = [v5 fileValue];
+      path2 = [fileValue2 path];
+      v10 = [NSURL fileURLWithPath:path2];
     }
 
     else
@@ -143,20 +143,20 @@
   return v10;
 }
 
-- (void)isFR2:(id)a3 completionHandler:(id)a4
+- (void)isFR2:(id)r2 completionHandler:(id)handler
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v8)
+  r2Copy = r2;
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  if (r2Copy)
   {
-    [WCM_Logging logLevel:22 message:@"CellStationManager: The cellID to query is %@", v8];
-    [(WRM_CellStationManagerIOS *)self checkUsingCoreData:v8];
+    [WCM_Logging logLevel:22 message:@"CellStationManager: The cellID to query is %@", r2Copy];
+    [(WRM_CellStationManagerIOS *)self checkUsingCoreData:r2Copy];
   }
 
-  else if (v6)
+  else if (handlerCopy)
   {
-    (*(v6 + 2))(v6, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 

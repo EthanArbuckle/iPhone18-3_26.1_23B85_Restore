@@ -1,24 +1,24 @@
 @interface IDSSystemAccount
-- (IDSSystemAccount)initWithUsername:(id)a3 DSID:(id)a4;
+- (IDSSystemAccount)initWithUsername:(id)username DSID:(id)d;
 - (id)description;
 @end
 
 @implementation IDSSystemAccount
 
-- (IDSSystemAccount)initWithUsername:(id)a3 DSID:(id)a4
+- (IDSSystemAccount)initWithUsername:(id)username DSID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  usernameCopy = username;
+  dCopy = d;
   v14.receiver = self;
   v14.super_class = IDSSystemAccount;
   v8 = [(IDSSystemAccount *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [usernameCopy copy];
     username = v8->_username;
     v8->_username = v9;
 
-    v11 = [v7 copy];
+    v11 = [dCopy copy];
     DSID = v8->_DSID;
     v8->_DSID = v11;
   }

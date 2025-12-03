@@ -1,10 +1,10 @@
 @interface _LTTextStreamingConfiguration
 - (_LTTextStreamingConfiguration)init;
-- (_LTTextStreamingConfiguration)initWithCoder:(id)a3;
-- (_LTTextStreamingConfiguration)initWithMinTimeBetweenTranslations:(double)a3 maxTimeBetweenTranslations:(double)a4 userIdleTime:(double)a5 maxPartialTranslationAttempts:(int64_t)a6 minNumberOfCharactersForTranslation:(int64_t)a7;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateMinTimeBetweenTranslations:(double)a3 maxTimeBetweenTranslations:(double)a4 userIdleTime:(double)a5;
+- (_LTTextStreamingConfiguration)initWithCoder:(id)coder;
+- (_LTTextStreamingConfiguration)initWithMinTimeBetweenTranslations:(double)translations maxTimeBetweenTranslations:(double)betweenTranslations userIdleTime:(double)time maxPartialTranslationAttempts:(int64_t)attempts minNumberOfCharactersForTranslation:(int64_t)translation;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateMinTimeBetweenTranslations:(double)translations maxTimeBetweenTranslations:(double)betweenTranslations userIdleTime:(double)time;
 @end
 
 @implementation _LTTextStreamingConfiguration
@@ -26,7 +26,7 @@
   return v3;
 }
 
-- (_LTTextStreamingConfiguration)initWithMinTimeBetweenTranslations:(double)a3 maxTimeBetweenTranslations:(double)a4 userIdleTime:(double)a5 maxPartialTranslationAttempts:(int64_t)a6 minNumberOfCharactersForTranslation:(int64_t)a7
+- (_LTTextStreamingConfiguration)initWithMinTimeBetweenTranslations:(double)translations maxTimeBetweenTranslations:(double)betweenTranslations userIdleTime:(double)time maxPartialTranslationAttempts:(int64_t)attempts minNumberOfCharactersForTranslation:(int64_t)translation
 {
   v16.receiver = self;
   v16.super_class = _LTTextStreamingConfiguration;
@@ -34,58 +34,58 @@
   v13 = v12;
   if (v12)
   {
-    v12->_minTimeBetweenTranslations = a3;
-    v12->_maxTimeBetweenTranslations = a4;
-    v12->_userIdleTime = a5;
-    v12->_maxPartialTranslationAttempts = a6;
-    v12->_minNumberOfCharactersForTranslation = a7;
+    v12->_minTimeBetweenTranslations = translations;
+    v12->_maxTimeBetweenTranslations = betweenTranslations;
+    v12->_userIdleTime = time;
+    v12->_maxPartialTranslationAttempts = attempts;
+    v12->_minNumberOfCharactersForTranslation = translation;
     v14 = v12;
   }
 
   return v13;
 }
 
-- (void)updateMinTimeBetweenTranslations:(double)a3 maxTimeBetweenTranslations:(double)a4 userIdleTime:(double)a5
+- (void)updateMinTimeBetweenTranslations:(double)translations maxTimeBetweenTranslations:(double)betweenTranslations userIdleTime:(double)time
 {
-  self->_minTimeBetweenTranslations = a3;
-  self->_maxTimeBetweenTranslations = a4;
-  self->_userIdleTime = a5;
+  self->_minTimeBetweenTranslations = translations;
+  self->_maxTimeBetweenTranslations = betweenTranslations;
+  self->_userIdleTime = time;
 }
 
-- (_LTTextStreamingConfiguration)initWithCoder:(id)a3
+- (_LTTextStreamingConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = _LTTextStreamingConfiguration;
   v5 = [(_LTTextStreamingConfiguration *)&v11 init];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"minTimeBetweenTranslations"];
+    [coderCopy decodeDoubleForKey:@"minTimeBetweenTranslations"];
     v5->_minTimeBetweenTranslations = v6;
-    [v4 decodeDoubleForKey:@"maxTimeBetweenTranslations"];
+    [coderCopy decodeDoubleForKey:@"maxTimeBetweenTranslations"];
     v5->_maxTimeBetweenTranslations = v7;
-    [v4 decodeDoubleForKey:@"userIdleTime"];
+    [coderCopy decodeDoubleForKey:@"userIdleTime"];
     v5->_userIdleTime = v8;
-    v5->_maxPartialTranslationAttempts = [v4 decodeIntegerForKey:@"maxPartialTranslationAttempts"];
-    v5->_minNumberOfCharactersForTranslation = [v4 decodeIntegerForKey:@"minNumberOfCharactersForTranslation"];
+    v5->_maxPartialTranslationAttempts = [coderCopy decodeIntegerForKey:@"maxPartialTranslationAttempts"];
+    v5->_minNumberOfCharactersForTranslation = [coderCopy decodeIntegerForKey:@"minNumberOfCharactersForTranslation"];
     v9 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   minTimeBetweenTranslations = self->_minTimeBetweenTranslations;
-  v5 = a3;
-  [v5 encodeDouble:@"minTimeBetweenTranslations" forKey:minTimeBetweenTranslations];
-  [v5 encodeDouble:@"maxTimeBetweenTranslations" forKey:self->_maxTimeBetweenTranslations];
-  [v5 encodeDouble:@"userIdleTime" forKey:self->_userIdleTime];
-  [v5 encodeInteger:self->_maxPartialTranslationAttempts forKey:@"maxPartialTranslationAttempts"];
-  [v5 encodeInteger:self->_minNumberOfCharactersForTranslation forKey:@"minNumberOfCharactersForTranslation"];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"minTimeBetweenTranslations" forKey:minTimeBetweenTranslations];
+  [coderCopy encodeDouble:@"maxTimeBetweenTranslations" forKey:self->_maxTimeBetweenTranslations];
+  [coderCopy encodeDouble:@"userIdleTime" forKey:self->_userIdleTime];
+  [coderCopy encodeInteger:self->_maxPartialTranslationAttempts forKey:@"maxPartialTranslationAttempts"];
+  [coderCopy encodeInteger:self->_minNumberOfCharactersForTranslation forKey:@"minNumberOfCharactersForTranslation"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [_LTTextStreamingConfiguration alloc];
   minTimeBetweenTranslations = self->_minTimeBetweenTranslations;

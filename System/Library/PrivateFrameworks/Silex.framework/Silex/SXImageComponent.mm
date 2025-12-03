@@ -7,55 +7,55 @@
 
 - (BOOL)shouldBeExposedToAssistiveTechnology
 {
-  v2 = [(SXImageComponent *)self captionWithLocalizedRoleForSpeaking];
-  v3 = [v2 length] != 0;
+  captionWithLocalizedRoleForSpeaking = [(SXImageComponent *)self captionWithLocalizedRoleForSpeaking];
+  v3 = [captionWithLocalizedRoleForSpeaking length] != 0;
 
   return v3;
 }
 
 - (NSAttributedString)captionWithLocalizedRoleForSpeaking
 {
-  v3 = [(SXComponent *)self classification];
-  v4 = [v3 accessibilityContextualLabel];
+  classification = [(SXComponent *)self classification];
+  accessibilityContextualLabel = [classification accessibilityContextualLabel];
 
-  if ([v4 length])
+  if ([accessibilityContextualLabel length])
   {
-    v5 = [(SXImageComponent *)self caption];
-    if ([v5 length])
+    caption = [(SXImageComponent *)self caption];
+    if ([caption length])
     {
-      v6 = [(SXImageComponent *)self caption];
-      v7 = [v6 sxaxAttributedStringWithLowPitchPrefix:v4];
+      caption2 = [(SXImageComponent *)self caption];
+      v7 = [caption2 sxaxAttributedStringWithLowPitchPrefix:accessibilityContextualLabel];
 
 LABEL_11:
       goto LABEL_12;
     }
 
-    v12 = [v4 sxaxLowPitchAttributedString];
+    sxaxLowPitchAttributedString = [accessibilityContextualLabel sxaxLowPitchAttributedString];
 LABEL_10:
-    v7 = v12;
+    v7 = sxaxLowPitchAttributedString;
     goto LABEL_11;
   }
 
-  v8 = [(SXImageComponent *)self accessibilityCaption];
-  v9 = [v8 length];
+  accessibilityCaption = [(SXImageComponent *)self accessibilityCaption];
+  v9 = [accessibilityCaption length];
 
   if (v9)
   {
     v10 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v11 = [(SXImageComponent *)self accessibilityCaption];
+    accessibilityCaption2 = [(SXImageComponent *)self accessibilityCaption];
 LABEL_9:
-    v5 = v11;
-    v12 = [v10 initWithString:v11];
+    caption = accessibilityCaption2;
+    sxaxLowPitchAttributedString = [v10 initWithString:accessibilityCaption2];
     goto LABEL_10;
   }
 
-  v13 = [(SXImageComponent *)self caption];
-  v14 = [v13 length];
+  caption3 = [(SXImageComponent *)self caption];
+  v14 = [caption3 length];
 
   if (v14)
   {
     v10 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v11 = [(SXImageComponent *)self caption];
+    accessibilityCaption2 = [(SXImageComponent *)self caption];
     goto LABEL_9;
   }
 

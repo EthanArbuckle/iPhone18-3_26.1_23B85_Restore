@@ -2,33 +2,33 @@
 - (BOOL)forceSynchronizedControllersToRunDetectionImmediately;
 - (BOOL)isSmartCameraSceneConfident;
 - (BOOL)shouldEmitBuffer;
-- (BWMetadataDetectorGatingOutputController)initWithOutput:(id)a3 name:(id)a4 sceneStabilityMonitor:(id)a5 detectorAvailableGroup:(id)a6;
+- (BWMetadataDetectorGatingOutputController)initWithOutput:(id)output name:(id)name sceneStabilityMonitor:(id)monitor detectorAvailableGroup:(id)group;
 - (int64_t)lastDetectedCodesCount;
-- (unsigned)_newOutputSampleBufferWithPixelBuffer:(opaqueCMSampleBuffer *)a3 inputSampleBuffer:(int)a4 appliedPrimaryCaptureRect:;
+- (unsigned)_newOutputSampleBufferWithPixelBuffer:(opaqueCMSampleBuffer *)buffer inputSampleBuffer:(int)sampleBuffer appliedPrimaryCaptureRect:;
 - (void)_updateSceneLikelyToHaveCodes;
 - (void)dealloc;
-- (void)emitPixelBuffer:(__CVBuffer *)a3 inputSampleBuffer:(opaqueCMSampleBuffer *)a4 appliedPrimaryCaptureRect:(BOOL)a5;
-- (void)enableDetectionFrameRateControllingWithRamp:(id)a3 startIndex:(char)a4;
-- (void)node:(id)a3 didEmitCodesCount:(int64_t)a4 emittedIdentifiers:(id)a5 originalPTS:(id *)a6;
-- (void)prepareToEmitBuffer:(opaqueCMSampleBuffer *)a3;
-- (void)setForceSynchronizedControllersToRunDetectionImmediately:(BOOL)a3;
-- (void)setLastDetectedCodesCount:(int64_t)a3 originalPTS:(id *)a4;
-- (void)setLastDetectionPTS:(id *)a3;
-- (void)setSmartCameraSceneConfident:(BOOL)a3;
+- (void)emitPixelBuffer:(__CVBuffer *)buffer inputSampleBuffer:(opaqueCMSampleBuffer *)sampleBuffer appliedPrimaryCaptureRect:(BOOL)rect;
+- (void)enableDetectionFrameRateControllingWithRamp:(id)ramp startIndex:(char)index;
+- (void)node:(id)node didEmitCodesCount:(int64_t)count emittedIdentifiers:(id)identifiers originalPTS:(id *)s;
+- (void)prepareToEmitBuffer:(opaqueCMSampleBuffer *)buffer;
+- (void)setForceSynchronizedControllersToRunDetectionImmediately:(BOOL)immediately;
+- (void)setLastDetectedCodesCount:(int64_t)count originalPTS:(id *)s;
+- (void)setLastDetectionPTS:(id *)s;
+- (void)setSmartCameraSceneConfident:(BOOL)confident;
 @end
 
 @implementation BWMetadataDetectorGatingOutputController
 
-- (BWMetadataDetectorGatingOutputController)initWithOutput:(id)a3 name:(id)a4 sceneStabilityMonitor:(id)a5 detectorAvailableGroup:(id)a6
+- (BWMetadataDetectorGatingOutputController)initWithOutput:(id)output name:(id)name sceneStabilityMonitor:(id)monitor detectorAvailableGroup:(id)group
 {
   v16.receiver = self;
   v16.super_class = BWMetadataDetectorGatingOutputController;
   v10 = [(BWMetadataDetectorGatingOutputController *)&v16 init];
   if (v10)
   {
-    *(v10 + 2) = a3;
-    *(v10 + 1) = [a4 copy];
-    *(v10 + 12) = a5;
+    *(v10 + 2) = output;
+    *(v10 + 1) = [name copy];
+    *(v10 + 12) = monitor;
     *(v10 + 43) = 0;
     v11 = MEMORY[0x1E6960C70];
     v12 = *MEMORY[0x1E6960C70];
@@ -41,7 +41,7 @@
     *(v10 + 9) = *MEMORY[0x1E6960CC0];
     *(v10 + 20) = *(v14 + 16);
     v10[129] = 1;
-    *(v10 + 15) = a6;
+    *(v10 + 15) = group;
   }
 
   return v10;
@@ -54,11 +54,11 @@
   [(BWMetadataDetectorGatingOutputController *)&v3 dealloc];
 }
 
-- (void)enableDetectionFrameRateControllingWithRamp:(id)a3 startIndex:(char)a4
+- (void)enableDetectionFrameRateControllingWithRamp:(id)ramp startIndex:(char)index
 {
-  self->_detectionFrameRateRamp = a3;
-  self->_detectionFrameRateRampStartIndex = a4;
-  self->_detectionFrameRateRampIndex = a4;
+  self->_detectionFrameRateRamp = ramp;
+  self->_detectionFrameRateRampStartIndex = index;
+  self->_detectionFrameRateRampIndex = index;
 }
 
 - (BOOL)shouldEmitBuffer
@@ -72,13 +72,13 @@
   return v3;
 }
 
-- (void)setSmartCameraSceneConfident:(BOOL)a3
+- (void)setSmartCameraSceneConfident:(BOOL)confident
 {
-  v3 = a3;
+  confidentCopy = confident;
   os_unfair_lock_lock(&self->_lock);
-  if (self->_isSmartCameraSceneConfident != v3)
+  if (self->_isSmartCameraSceneConfident != confidentCopy)
   {
-    self->_isSmartCameraSceneConfident = v3;
+    self->_isSmartCameraSceneConfident = confidentCopy;
     [(BWMetadataDetectorGatingOutputController *)self _updateSceneLikelyToHaveCodes];
   }
 
@@ -93,27 +93,27 @@
   return isSmartCameraSceneConfident;
 }
 
-- (void)setLastDetectedCodesCount:(int64_t)a3 originalPTS:(id *)a4
+- (void)setLastDetectedCodesCount:(int64_t)count originalPTS:(id *)s
 {
   os_unfair_lock_lock(&self->_lock);
   lastDetectedCodesCount = self->_lastDetectedCodesCount;
-  if (lastDetectedCodesCount != a3)
+  if (lastDetectedCodesCount != count)
   {
-    if (lastDetectedCodesCount < a3 && self->_synchronizeWithOtherControllers)
+    if (lastDetectedCodesCount < count && self->_synchronizeWithOtherControllers)
     {
       self->_forceSynchronizedControllersToRunDetectionImmediately = 1;
     }
 
-    self->_lastDetectedCodesCount = a3;
+    self->_lastDetectedCodesCount = count;
     [(BWMetadataDetectorGatingOutputController *)self _updateSceneLikelyToHaveCodes];
-    a3 = self->_lastDetectedCodesCount;
+    count = self->_lastDetectedCodesCount;
   }
 
-  if (a3 >= 1)
+  if (count >= 1)
   {
     self->_detectionFrameRateRampIndex = 0;
-    v8 = *&a4->var0;
-    self->_detectedCodesLastSeenPTS.epoch = a4->var3;
+    v8 = *&s->var0;
+    self->_detectedCodesLastSeenPTS.epoch = s->var3;
     *&self->_detectedCodesLastSeenPTS.value = v8;
   }
 
@@ -128,10 +128,10 @@
   return lastDetectedCodesCount;
 }
 
-- (void)setForceSynchronizedControllersToRunDetectionImmediately:(BOOL)a3
+- (void)setForceSynchronizedControllersToRunDetectionImmediately:(BOOL)immediately
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_forceSynchronizedControllersToRunDetectionImmediately = a3;
+  self->_forceSynchronizedControllersToRunDetectionImmediately = immediately;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -144,9 +144,9 @@
   return forceSynchronizedControllersToRunDetectionImmediately;
 }
 
-- (void)prepareToEmitBuffer:(opaqueCMSampleBuffer *)a3
+- (void)prepareToEmitBuffer:(opaqueCMSampleBuffer *)buffer
 {
-  BWGetOriginalPresentationTimeStampFromBuffer(a3, &time1);
+  BWGetOriginalPresentationTimeStampFromBuffer(buffer, &time1);
   self->_currentPTS = time1;
   self->_isHandlingFirstBufferAfterSceneChange = 0;
   os_unfair_lock_lock(&self->_lock);
@@ -246,72 +246,72 @@ LABEL_19:
   self->_shouldApplySceneMotion = v12;
 }
 
-- (void)node:(id)a3 didEmitCodesCount:(int64_t)a4 emittedIdentifiers:(id)a5 originalPTS:(id *)a6
+- (void)node:(id)node didEmitCodesCount:(int64_t)count emittedIdentifiers:(id)identifiers originalPTS:(id *)s
 {
-  v10 = *a6;
-  [(BWMetadataDetectorGatingOutputController *)self setLastDetectedCodesCount:a4 originalPTS:&v10];
+  v10 = *s;
+  [(BWMetadataDetectorGatingOutputController *)self setLastDetectedCodesCount:count originalPTS:&v10];
   os_unfair_lock_lock(&self->_lock);
   isSmartCameraSceneConfident = self->_isSmartCameraSceneConfident;
   os_unfair_lock_unlock(&self->_lock);
-  [(FigCaptureLogSmartCameraGating *)self->_logger logSmartCamIsConfident:isSmartCameraSceneConfident presentedIdentifiers:a5 presentedCount:a4];
+  [(FigCaptureLogSmartCameraGating *)self->_logger logSmartCamIsConfident:isSmartCameraSceneConfident presentedIdentifiers:identifiers presentedCount:count];
 }
 
-- (void)setLastDetectionPTS:(id *)a3
+- (void)setLastDetectionPTS:(id *)s
 {
-  v3 = *&a3->var0;
-  self->_lastDetectionPTS.epoch = a3->var3;
+  v3 = *&s->var0;
+  self->_lastDetectionPTS.epoch = s->var3;
   *&self->_lastDetectionPTS.value = v3;
 }
 
 - (void)_updateSceneLikelyToHaveCodes
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  os_unfair_lock_assert_owner((a1 + 172));
-  if (*(a1 + 24) != 1)
+  os_unfair_lock_assert_owner((self + 172));
+  if (*(self + 24) != 1)
   {
     return;
   }
 
-  if (*(a1 + 130))
+  if (*(self + 130))
   {
-    if (*(a1 + 128))
+    if (*(self + 128))
     {
       return;
     }
 
-    *(a1 + 128) = 1;
+    *(self + 128) = 1;
 LABEL_9:
-    v4 = *(a1 + 112);
+    v4 = *(self + 112);
 
     [v4 logGateOpened];
     return;
   }
 
-  v2 = *(a1 + 136);
+  v2 = *(self + 136);
   v3 = v2 > 0;
-  if (*(a1 + 128) == v3)
+  if (*(self + 128) == v3)
   {
     return;
   }
 
-  *(a1 + 128) = v3;
+  *(self + 128) = v3;
   if (v2 >= 1)
   {
     goto LABEL_9;
   }
 
-  v5 = *(a1 + 112);
+  v5 = *(self + 112);
 
   [v5 logGateClosed];
 }
 
-- (void)emitPixelBuffer:(__CVBuffer *)a3 inputSampleBuffer:(opaqueCMSampleBuffer *)a4 appliedPrimaryCaptureRect:(BOOL)a5
+- (void)emitPixelBuffer:(__CVBuffer *)buffer inputSampleBuffer:(opaqueCMSampleBuffer *)sampleBuffer appliedPrimaryCaptureRect:(BOOL)rect
 {
-  v6 = [(BWMetadataDetectorGatingOutputController *)self _newOutputSampleBufferWithPixelBuffer:a3 inputSampleBuffer:a4 appliedPrimaryCaptureRect:a5];
+  v6 = [(BWMetadataDetectorGatingOutputController *)self _newOutputSampleBufferWithPixelBuffer:buffer inputSampleBuffer:sampleBuffer appliedPrimaryCaptureRect:rect];
   if (v6)
   {
     v7 = v6;
@@ -371,14 +371,14 @@ LABEL_16:
   }
 }
 
-- (unsigned)_newOutputSampleBufferWithPixelBuffer:(opaqueCMSampleBuffer *)a3 inputSampleBuffer:(int)a4 appliedPrimaryCaptureRect:
+- (unsigned)_newOutputSampleBufferWithPixelBuffer:(opaqueCMSampleBuffer *)buffer inputSampleBuffer:(int)sampleBuffer appliedPrimaryCaptureRect:
 {
   if (result)
   {
     v5 = result;
     cf = 0;
     target = 0;
-    if (BWCMSampleBufferCreateCopyWithNewPixelBuffer(a3, a2, &cf, &target))
+    if (BWCMSampleBufferCreateCopyWithNewPixelBuffer(buffer, a2, &cf, &target))
     {
       fig_log_get_emitter();
       OUTLINED_FUNCTION_2_33();
@@ -387,7 +387,7 @@ LABEL_16:
 
     else
     {
-      if (a4)
+      if (sampleBuffer)
       {
         CMSetAttachment(target, *off_1E798A430, 0, 1u);
       }

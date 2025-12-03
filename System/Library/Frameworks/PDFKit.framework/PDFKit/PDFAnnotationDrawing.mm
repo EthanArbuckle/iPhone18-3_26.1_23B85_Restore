@@ -1,205 +1,205 @@
 @interface PDFAnnotationDrawing
-+ (BOOL)renderString:(id)a3 forRect:(CGRect)a4 font:(id)a5 color:(id)a6 alignment:(int64_t)a7 rotation:(int)a8 breaks:(BOOL)a9 context:(CGContext *)c withAnnotation:(id)a11;
-+ (CGPath)createCGPathArrayWithBezierPaths:(id)a3;
-+ (CGRect)adjustedRectForBox:(int64_t)a3 withAnnotation:(id)a4;
-+ (id)createLigtherColor:(CGColor *)a3 withIntensity:(double)a4;
-+ (id)stringByTrimmingTrailingCharactersInSet:(id)a3 forString:(id)a4;
-+ (void)createPillBezier:(CGRect)a3 inContext:(CGContext *)a4;
-+ (void)drawAppearance:(int)a3 ofAnnotation:(id)a4 withBox:(int64_t)a5 inContext:(CGContext *)a6 scaleProportional:(BOOL)a7 suppressTextRendering:(BOOL)a8;
-+ (void)drawArrowFrom:(CGPoint)a3 to:(CGPoint)a4 open:(BOOL)a5 inContext:(CGContext *)a6 withBorder:(id)a7;
-+ (void)drawBulletAtPoint:(CGPoint)a3 shape:(int)a4 inContext:(CGContext *)a5 withBorder:(id)a6;
-+ (void)drawCheckBox:(id)a3 inContext:(CGContext *)a4 withState:(int64_t)a5 withBackgroundColor:(id)a6 withBorderColor:(id)a7 withFontColor:(id)a8 isHighlighted:(BOOL)a9;
-+ (void)drawComboBox:(CGRect)a3 inContext:(CGContext *)a4 withAnnotation:(id)a5 withStringValue:(id)a6 withFont:(id)a7 withFontColor:(id)a8;
-+ (void)drawCommentIconInRect:(CGRect)a3 withColor:(id)a4 inContext:(CGContext *)a5;
-+ (void)drawCommonCommentNoteIconToContext:(CGContext *)a3 color:(id)a4 rect:(CGRect)a5;
-+ (void)drawDisclosureBox:(CGRect)a3 inContext:(CGContext *)a4;
-+ (void)drawHelpIconInRect:(CGRect)a3 withColor:(id)a4 inContext:(CGContext *)a5;
-+ (void)drawInsertIconInRect:(CGRect)a3 withColor:(id)a4 inContext:(CGContext *)a5;
-+ (void)drawKeyIconInRect:(CGRect)a3 withColor:(id)a4 inContext:(CGContext *)a5;
-+ (void)drawListBox:(CGRect)a3 inContext:(CGContext *)a4 withAnnotation:(id)a5 withOptions:(id)a6 withStringValue:(id)a7 withFont:(id)a8 withFontColor:(id)a9;
-+ (void)drawNewParagraphIconInRect:(CGRect)a3 withColor:(id)a4 inContext:(CGContext *)a5;
-+ (void)drawNoteAsSelected:(CGContext *)a3 rect:(CGRect)a4;
-+ (void)drawNoteIconInRect:(CGRect)a3 withColor:(id)a4 inContext:(CGContext *)a5;
-+ (void)drawNoteInContext:(CGContext *)a3 withParentAnnotation:(id)a4;
-+ (void)drawParagraphIconInRect:(CGRect)a3 withColor:(id)a4 inContext:(CGContext *)a5;
-+ (void)drawPushButton:(id)a3 inContext:(CGContext *)a4 withBackgroundColor:(id)a5 withCaption:(id)a6 withFont:(id)a7 withFontColor:(id)a8 isHighlighted:(BOOL)a9;
-+ (void)drawRadioButton:(id)a3 inContext:(CGContext *)a4 withState:(int64_t)a5 withBackgroundColor:(id)a6 withBorderColor:(id)a7 withFontColor:(id)a8 isHighlighted:(BOOL)a9;
-+ (void)drawWithBox:(int64_t)a3 inContext:(CGContext *)CurrentContext withButtonWidgetAnnotation:(id)a5;
-+ (void)drawWithBox:(int64_t)a3 inContext:(CGContext *)CurrentContext withChoiceWidgetAnnotation:(id)a5;
-+ (void)drawWithBox:(int64_t)a3 inContext:(CGContext *)CurrentContext withCircleAnnotation:(id)a5;
-+ (void)drawWithBox:(int64_t)a3 inContext:(CGContext *)CurrentContext withFreeTextAnnotation:(id)a5;
-+ (void)drawWithBox:(int64_t)a3 inContext:(CGContext *)CurrentContext withInkAnnotation:(id)a5;
-+ (void)drawWithBox:(int64_t)a3 inContext:(CGContext *)CurrentContext withLineAnnotation:(id)a5;
-+ (void)drawWithBox:(int64_t)a3 inContext:(CGContext *)CurrentContext withLinkAnnotation:(id)a5;
-+ (void)drawWithBox:(int64_t)a3 inContext:(CGContext *)CurrentContext withMarkupAnnotation:(id)a5;
-+ (void)drawWithBox:(int64_t)a3 inContext:(CGContext *)CurrentContext withRedactAnnotation:(id)a5;
-+ (void)drawWithBox:(int64_t)a3 inContext:(CGContext *)CurrentContext withSignatureWidgetAnnotation:(id)a5;
-+ (void)drawWithBox:(int64_t)a3 inContext:(CGContext *)CurrentContext withSquareAnnotation:(id)a5;
-+ (void)drawWithBox:(int64_t)a3 inContext:(CGContext *)CurrentContext withStampAnnotation:(id)a5;
-+ (void)drawWithBox:(int64_t)a3 inContext:(CGContext *)CurrentContext withTextAnnotation:(id)a5;
-+ (void)drawWithBox:(int64_t)a3 inContext:(CGContext *)CurrentContext withTextWidgetAnnotation:(id)a5;
-+ (void)drawWithBox:(int64_t)a3 inContext:(CGContext *)a4 withAKAnnotation:(id)a5 forAnnotation:(id)a6;
-+ (void)drawWithBox:(int64_t)a3 inContext:(CGContext *)a4 withAnnotation:(id)a5;
-+ (void)drawWithBox:(int64_t)a3 inContext:(CGContext *)a4 withPopupAnnotation:(id)a5;
-+ (void)drawWithBox:(int64_t)a3 inContext:(CGContext *)a4 withUnknownAnnotation:(id)a5;
-+ (void)fillOval:(CGRect)a3 color:(id)a4 context:(CGContext *)a5;
-+ (void)fillRect:(CGRect)a3 color:(id)a4 context:(CGContext *)a5;
-+ (void)setupDrawColor:(id)a3 forContext:(CGContext *)a4;
-+ (void)strokeOval:(CGRect)a3 color:(id)a4 context:(CGContext *)a5;
-+ (void)strokeRect:(CGRect)a3 color:(id)a4 context:(CGContext *)a5;
++ (BOOL)renderString:(id)string forRect:(CGRect)rect font:(id)font color:(id)color alignment:(int64_t)alignment rotation:(int)rotation breaks:(BOOL)breaks context:(CGContext *)c withAnnotation:(id)self1;
++ (CGPath)createCGPathArrayWithBezierPaths:(id)paths;
++ (CGRect)adjustedRectForBox:(int64_t)box withAnnotation:(id)annotation;
++ (id)createLigtherColor:(CGColor *)color withIntensity:(double)intensity;
++ (id)stringByTrimmingTrailingCharactersInSet:(id)set forString:(id)string;
++ (void)createPillBezier:(CGRect)bezier inContext:(CGContext *)context;
++ (void)drawAppearance:(int)appearance ofAnnotation:(id)annotation withBox:(int64_t)box inContext:(CGContext *)context scaleProportional:(BOOL)proportional suppressTextRendering:(BOOL)rendering;
++ (void)drawArrowFrom:(CGPoint)from to:(CGPoint)to open:(BOOL)open inContext:(CGContext *)context withBorder:(id)border;
++ (void)drawBulletAtPoint:(CGPoint)point shape:(int)shape inContext:(CGContext *)context withBorder:(id)border;
++ (void)drawCheckBox:(id)box inContext:(CGContext *)context withState:(int64_t)state withBackgroundColor:(id)color withBorderColor:(id)borderColor withFontColor:(id)fontColor isHighlighted:(BOOL)highlighted;
++ (void)drawComboBox:(CGRect)box inContext:(CGContext *)context withAnnotation:(id)annotation withStringValue:(id)value withFont:(id)font withFontColor:(id)color;
++ (void)drawCommentIconInRect:(CGRect)rect withColor:(id)color inContext:(CGContext *)context;
++ (void)drawCommonCommentNoteIconToContext:(CGContext *)context color:(id)color rect:(CGRect)rect;
++ (void)drawDisclosureBox:(CGRect)box inContext:(CGContext *)context;
++ (void)drawHelpIconInRect:(CGRect)rect withColor:(id)color inContext:(CGContext *)context;
++ (void)drawInsertIconInRect:(CGRect)rect withColor:(id)color inContext:(CGContext *)context;
++ (void)drawKeyIconInRect:(CGRect)rect withColor:(id)color inContext:(CGContext *)context;
++ (void)drawListBox:(CGRect)box inContext:(CGContext *)context withAnnotation:(id)annotation withOptions:(id)options withStringValue:(id)value withFont:(id)font withFontColor:(id)color;
++ (void)drawNewParagraphIconInRect:(CGRect)rect withColor:(id)color inContext:(CGContext *)context;
++ (void)drawNoteAsSelected:(CGContext *)selected rect:(CGRect)rect;
++ (void)drawNoteIconInRect:(CGRect)rect withColor:(id)color inContext:(CGContext *)context;
++ (void)drawNoteInContext:(CGContext *)context withParentAnnotation:(id)annotation;
++ (void)drawParagraphIconInRect:(CGRect)rect withColor:(id)color inContext:(CGContext *)context;
++ (void)drawPushButton:(id)button inContext:(CGContext *)context withBackgroundColor:(id)color withCaption:(id)caption withFont:(id)font withFontColor:(id)fontColor isHighlighted:(BOOL)highlighted;
++ (void)drawRadioButton:(id)button inContext:(CGContext *)context withState:(int64_t)state withBackgroundColor:(id)color withBorderColor:(id)borderColor withFontColor:(id)fontColor isHighlighted:(BOOL)highlighted;
++ (void)drawWithBox:(int64_t)box inContext:(CGContext *)CurrentContext withButtonWidgetAnnotation:(id)annotation;
++ (void)drawWithBox:(int64_t)box inContext:(CGContext *)CurrentContext withChoiceWidgetAnnotation:(id)annotation;
++ (void)drawWithBox:(int64_t)box inContext:(CGContext *)CurrentContext withCircleAnnotation:(id)annotation;
++ (void)drawWithBox:(int64_t)box inContext:(CGContext *)CurrentContext withFreeTextAnnotation:(id)annotation;
++ (void)drawWithBox:(int64_t)box inContext:(CGContext *)CurrentContext withInkAnnotation:(id)annotation;
++ (void)drawWithBox:(int64_t)box inContext:(CGContext *)CurrentContext withLineAnnotation:(id)annotation;
++ (void)drawWithBox:(int64_t)box inContext:(CGContext *)CurrentContext withLinkAnnotation:(id)annotation;
++ (void)drawWithBox:(int64_t)box inContext:(CGContext *)CurrentContext withMarkupAnnotation:(id)annotation;
++ (void)drawWithBox:(int64_t)box inContext:(CGContext *)CurrentContext withRedactAnnotation:(id)annotation;
++ (void)drawWithBox:(int64_t)box inContext:(CGContext *)CurrentContext withSignatureWidgetAnnotation:(id)annotation;
++ (void)drawWithBox:(int64_t)box inContext:(CGContext *)CurrentContext withSquareAnnotation:(id)annotation;
++ (void)drawWithBox:(int64_t)box inContext:(CGContext *)CurrentContext withStampAnnotation:(id)annotation;
++ (void)drawWithBox:(int64_t)box inContext:(CGContext *)CurrentContext withTextAnnotation:(id)annotation;
++ (void)drawWithBox:(int64_t)box inContext:(CGContext *)CurrentContext withTextWidgetAnnotation:(id)annotation;
++ (void)drawWithBox:(int64_t)box inContext:(CGContext *)context withAKAnnotation:(id)annotation forAnnotation:(id)forAnnotation;
++ (void)drawWithBox:(int64_t)box inContext:(CGContext *)context withAnnotation:(id)annotation;
++ (void)drawWithBox:(int64_t)box inContext:(CGContext *)context withPopupAnnotation:(id)annotation;
++ (void)drawWithBox:(int64_t)box inContext:(CGContext *)context withUnknownAnnotation:(id)annotation;
++ (void)fillOval:(CGRect)oval color:(id)color context:(CGContext *)context;
++ (void)fillRect:(CGRect)rect color:(id)color context:(CGContext *)context;
++ (void)setupDrawColor:(id)color forContext:(CGContext *)context;
++ (void)strokeOval:(CGRect)oval color:(id)color context:(CGContext *)context;
++ (void)strokeRect:(CGRect)rect color:(id)color context:(CGContext *)context;
 @end
 
 @implementation PDFAnnotationDrawing
 
-+ (void)drawWithBox:(int64_t)a3 inContext:(CGContext *)a4 withAnnotation:(id)a5
++ (void)drawWithBox:(int64_t)box inContext:(CGContext *)context withAnnotation:(id)annotation
 {
-  v8 = a5;
-  v9 = [v8 valueForAnnotationKey:@"/Subtype"];
-  v10 = [v8 akAnnotationAdaptor];
-  v11 = [v10 akAnnotation];
+  annotationCopy = annotation;
+  v9 = [annotationCopy valueForAnnotationKey:@"/Subtype"];
+  akAnnotationAdaptor = [annotationCopy akAnnotationAdaptor];
+  akAnnotation = [akAnnotationAdaptor akAnnotation];
 
-  if (v11)
+  if (akAnnotation)
   {
-    [a1 drawWithBox:a3 inContext:a4 withAKAnnotation:v11 forAnnotation:v8];
+    [self drawWithBox:box inContext:context withAKAnnotation:akAnnotation forAnnotation:annotationCopy];
   }
 
   else if ([v9 isEqualToString:@"/Circle"])
   {
-    [a1 drawWithBox:a3 inContext:a4 withCircleAnnotation:v8];
+    [self drawWithBox:box inContext:context withCircleAnnotation:annotationCopy];
   }
 
   else if ([v9 isEqualToString:@"/FreeText"])
   {
-    [a1 drawWithBox:a3 inContext:a4 withFreeTextAnnotation:v8];
+    [self drawWithBox:box inContext:context withFreeTextAnnotation:annotationCopy];
   }
 
   else if ([v9 isEqualToString:@"/Ink"])
   {
-    [a1 drawWithBox:a3 inContext:a4 withInkAnnotation:v8];
+    [self drawWithBox:box inContext:context withInkAnnotation:annotationCopy];
   }
 
   else if ([v9 isEqualToString:@"/Line"])
   {
-    [a1 drawWithBox:a3 inContext:a4 withLineAnnotation:v8];
+    [self drawWithBox:box inContext:context withLineAnnotation:annotationCopy];
   }
 
   else if ([v9 isEqualToString:@"/Link"])
   {
-    [a1 drawWithBox:a3 inContext:a4 withLinkAnnotation:v8];
+    [self drawWithBox:box inContext:context withLinkAnnotation:annotationCopy];
   }
 
   else if (([v9 isEqualToString:@"/Highlight"] & 1) != 0 || (objc_msgSend(v9, "isEqualToString:", @"/StrikeOut") & 1) != 0 || objc_msgSend(v9, "isEqualToString:", @"/Underline"))
   {
-    [a1 drawWithBox:a3 inContext:a4 withMarkupAnnotation:v8];
+    [self drawWithBox:box inContext:context withMarkupAnnotation:annotationCopy];
   }
 
   else if ([v9 isEqualToString:@"/Popup"])
   {
-    [a1 drawWithBox:a3 inContext:a4 withPopupAnnotation:v8];
+    [self drawWithBox:box inContext:context withPopupAnnotation:annotationCopy];
   }
 
   else if ([v9 isEqualToString:@"/Square"])
   {
-    [a1 drawWithBox:a3 inContext:a4 withSquareAnnotation:v8];
+    [self drawWithBox:box inContext:context withSquareAnnotation:annotationCopy];
   }
 
   else if ([v9 isEqualToString:@"/Stamp"])
   {
-    [a1 drawWithBox:a3 inContext:a4 withStampAnnotation:v8];
+    [self drawWithBox:box inContext:context withStampAnnotation:annotationCopy];
   }
 
   else if ([v9 isEqualToString:@"/Text"])
   {
-    [a1 drawWithBox:a3 inContext:a4 withTextAnnotation:v8];
+    [self drawWithBox:box inContext:context withTextAnnotation:annotationCopy];
   }
 
   else if ([v9 isEqualToString:@"/Redact"])
   {
-    [a1 drawWithBox:a3 inContext:a4 withRedactAnnotation:v8];
+    [self drawWithBox:box inContext:context withRedactAnnotation:annotationCopy];
   }
 
   else if ([v9 isEqualToString:@"/Widget"])
   {
-    v15 = [v8 valueForAnnotationKey:@"/FT"];
+    v15 = [annotationCopy valueForAnnotationKey:@"/FT"];
     if ([v15 isEqualToString:@"/Btn"])
     {
-      [a1 drawWithBox:a3 inContext:a4 withButtonWidgetAnnotation:v8];
+      [self drawWithBox:box inContext:context withButtonWidgetAnnotation:annotationCopy];
     }
 
     else if ([v15 isEqualToString:@"/Tx"])
     {
-      [a1 drawWithBox:a3 inContext:a4 withTextWidgetAnnotation:v8];
+      [self drawWithBox:box inContext:context withTextWidgetAnnotation:annotationCopy];
     }
 
     else if ([v15 isEqualToString:@"/Ch"])
     {
-      [a1 drawWithBox:a3 inContext:a4 withChoiceWidgetAnnotation:v8];
+      [self drawWithBox:box inContext:context withChoiceWidgetAnnotation:annotationCopy];
     }
 
     else if ([v15 isEqualToString:@"/Sig"])
     {
-      [a1 drawWithBox:a3 inContext:a4 withSignatureWidgetAnnotation:v8];
+      [self drawWithBox:box inContext:context withSignatureWidgetAnnotation:annotationCopy];
     }
   }
 
   else
   {
-    [a1 drawWithBox:a3 inContext:a4 withUnknownAnnotation:v8];
+    [self drawWithBox:box inContext:context withUnknownAnnotation:annotationCopy];
   }
 
   if (GetDefaultsWriteHighlightAnnotations())
   {
-    CGContextSaveGState(a4);
-    [v8 bounds];
-    v12 = [v8 page];
-    v13 = v12;
+    CGContextSaveGState(context);
+    [annotationCopy bounds];
+    page = [annotationCopy page];
+    v13 = page;
     memset(&v16[1], 0, sizeof(CGAffineTransform));
-    if (v12)
+    if (page)
     {
-      [v12 getDrawingTransformForBox:a3];
+      [page getDrawingTransformForBox:box];
     }
 
     v16[0] = v16[1];
-    CGContextConcatCTM(a4, v16);
-    CGContextSetRGBStrokeColor(a4, 0.5, 0.0, 0.5, 1.0);
-    CGContextSetLineWidth(a4, 1.0);
+    CGContextConcatCTM(context, v16);
+    CGContextSetRGBStrokeColor(context, 0.5, 0.0, 0.5, 1.0);
+    CGContextSetLineWidth(context, 1.0);
     v17.origin.x = PDFRectToCGRect(v14);
-    CGContextStrokeRect(a4, v17);
-    CGContextRestoreGState(a4);
+    CGContextStrokeRect(context, v17);
+    CGContextRestoreGState(context);
   }
 }
 
-+ (void)drawAppearance:(int)a3 ofAnnotation:(id)a4 withBox:(int64_t)a5 inContext:(CGContext *)a6 scaleProportional:(BOOL)a7 suppressTextRendering:(BOOL)a8
++ (void)drawAppearance:(int)appearance ofAnnotation:(id)annotation withBox:(int64_t)box inContext:(CGContext *)context scaleProportional:(BOOL)proportional suppressTextRendering:(BOOL)rendering
 {
-  v8 = a8;
-  v11 = *&a3;
-  v15 = a4;
-  v12 = [v15 cachedAppearance:v11];
+  renderingCopy = rendering;
+  v11 = *&appearance;
+  annotationCopy = annotation;
+  v12 = [annotationCopy cachedAppearance:v11];
   if (v12)
   {
     v13 = v12;
-    [v15 bounds];
-    [v15 drawCachedAppearance:v13 withBox:a5 inContext:a6 inRect:1 scaleProportional:?];
+    [annotationCopy bounds];
+    [annotationCopy drawCachedAppearance:v13 withBox:box inContext:context inRect:1 scaleProportional:?];
   }
 
   else
   {
-    v14 = [v15 appearance:v11];
-    [v15 bounds];
-    [v15 drawAppearance:v14 withBox:a5 inContext:a6 inRect:1 scaleProportional:v8 suppressTextRendering:?];
+    v14 = [annotationCopy appearance:v11];
+    [annotationCopy bounds];
+    [annotationCopy drawAppearance:v14 withBox:box inContext:context inRect:1 scaleProportional:renderingCopy suppressTextRendering:?];
   }
 }
 
-+ (void)drawWithBox:(int64_t)a3 inContext:(CGContext *)a4 withAKAnnotation:(id)a5 forAnnotation:(id)a6
++ (void)drawWithBox:(int64_t)box inContext:(CGContext *)context withAKAnnotation:(id)annotation forAnnotation:(id)forAnnotation
 {
-  v9 = a5;
-  v10 = a6;
-  CGContextSaveGState(a4);
-  v11 = [v10 page];
+  annotationCopy = annotation;
+  forAnnotationCopy = forAnnotation;
+  CGContextSaveGState(context);
+  page = [forAnnotationCopy page];
 
-  if (v11)
+  if (page)
   {
-    [v11 getDrawingTransformForBox:a3];
+    [page getDrawingTransformForBox:box];
   }
 
   else
@@ -207,9 +207,9 @@
     memset(&transform, 0, sizeof(transform));
   }
 
-  CGContextConcatCTM(a4, &transform);
+  CGContextConcatCTM(context, &transform);
 
-  [v9 integralDrawingBounds];
+  [annotationCopy integralDrawingBounds];
   x = v20.origin.x;
   y = v20.origin.y;
   width = v20.size.width;
@@ -229,34 +229,34 @@
     MinY = CGRectGetMinY(v22);
     CGAffineTransformMakeTranslation(&transform, MinX, MinY);
     v18 = transform;
-    CGContextConcatCTM(a4, &v18);
+    CGContextConcatCTM(context, &v18);
   }
 
-  [AKControllerClass() renderAnnotation:v9 inContext:a4];
-  CGContextRestoreGState(a4);
+  [AKControllerClass() renderAnnotation:annotationCopy inContext:context];
+  CGContextRestoreGState(context);
 }
 
-+ (void)drawWithBox:(int64_t)a3 inContext:(CGContext *)CurrentContext withCircleAnnotation:(id)a5
++ (void)drawWithBox:(int64_t)box inContext:(CGContext *)CurrentContext withCircleAnnotation:(id)annotation
 {
-  v29 = a5;
-  v8 = [v29 page];
-  [v29 bounds];
-  v9 = [v29 valueForAnnotationKey:@"/Border"];
-  v10 = [v29 valueForAnnotationKey:@"/C"];
-  v11 = [v29 valueForAnnotationKey:@"/IC"];
+  annotationCopy = annotation;
+  page = [annotationCopy page];
+  [annotationCopy bounds];
+  v9 = [annotationCopy valueForAnnotationKey:@"/Border"];
+  v10 = [annotationCopy valueForAnnotationKey:@"/C"];
+  v11 = [annotationCopy valueForAnnotationKey:@"/IC"];
   v12 = PDFRectToCGRect(v11);
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  if ([v29 appearance:0])
+  if ([annotationCopy appearance:0])
   {
-    [a1 drawAppearance:0 ofAnnotation:v29 withBox:a3 inContext:CurrentContext];
+    [self drawAppearance:0 ofAnnotation:annotationCopy withBox:box inContext:CurrentContext];
   }
 
-  else if (a3 <= 4 && (CurrentContext || (CurrentContext = PDFGraphicsGetCurrentContext()) != 0))
+  else if (box <= 4 && (CurrentContext || (CurrentContext = PDFGraphicsGetCurrentContext()) != 0))
   {
     CGContextSaveGState(CurrentContext);
-    [v8 transformContext:CurrentContext forBox:a3];
+    [page transformContext:CurrentContext forBox:box];
     v19 = 1.0;
     if (v9)
     {
@@ -284,10 +284,10 @@
     height = v32.size.height;
     if (v11)
     {
-      v25 = [v11 CGColor];
-      ColorSpace = CGColorGetColorSpace(v25);
+      cGColor = [v11 CGColor];
+      ColorSpace = CGColorGetColorSpace(cGColor);
       CGContextSetFillColorSpace(CurrentContext, ColorSpace);
-      CGContextSetFillColorWithColor(CurrentContext, v25);
+      CGContextSetFillColorWithColor(CurrentContext, cGColor);
       v33.origin.x = x;
       v33.origin.y = y;
       v33.size.width = width;
@@ -295,10 +295,10 @@
       CGContextFillEllipseInRect(CurrentContext, v33);
     }
 
-    v27 = [v10 CGColor];
-    v28 = CGColorGetColorSpace(v27);
+    cGColor2 = [v10 CGColor];
+    v28 = CGColorGetColorSpace(cGColor2);
     CGContextSetStrokeColorSpace(CurrentContext, v28);
-    CGContextSetStrokeColorWithColor(CurrentContext, v27);
+    CGContextSetStrokeColorWithColor(CurrentContext, cGColor2);
     v34.origin.x = x;
     v34.origin.y = y;
     v34.size.width = width;
@@ -308,42 +308,42 @@
   }
 }
 
-+ (void)drawWithBox:(int64_t)a3 inContext:(CGContext *)CurrentContext withFreeTextAnnotation:(id)a5
++ (void)drawWithBox:(int64_t)box inContext:(CGContext *)CurrentContext withFreeTextAnnotation:(id)annotation
 {
-  v25 = a5;
-  v8 = [v25 page];
-  [v25 bounds];
+  annotationCopy = annotation;
+  page = [annotationCopy page];
+  [annotationCopy bounds];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v24 = [v25 valueForAnnotationKey:@"/C"];
-  v17 = [v25 valueForAnnotationKey:@"/Contents"];
-  v18 = [v25 valueForAnnotationKey:@"/Border"];
-  v19 = [v25 font];
-  v20 = [v25 fontColor];
-  v21 = [v25 alignment];
-  v22 = [v8 rotation];
-  if ([v25 appearance:0])
+  v24 = [annotationCopy valueForAnnotationKey:@"/C"];
+  v17 = [annotationCopy valueForAnnotationKey:@"/Contents"];
+  v18 = [annotationCopy valueForAnnotationKey:@"/Border"];
+  font = [annotationCopy font];
+  fontColor = [annotationCopy fontColor];
+  alignment = [annotationCopy alignment];
+  rotation = [page rotation];
+  if ([annotationCopy appearance:0])
   {
-    [a1 drawAppearance:0 ofAnnotation:v25 withBox:a3 inContext:CurrentContext];
+    [self drawAppearance:0 ofAnnotation:annotationCopy withBox:box inContext:CurrentContext];
   }
 
-  else if (a3 <= 4 && (CurrentContext || (CurrentContext = PDFGraphicsGetCurrentContext()) != 0))
+  else if (box <= 4 && (CurrentContext || (CurrentContext = PDFGraphicsGetCurrentContext()) != 0))
   {
     CGContextSaveGState(CurrentContext);
-    [v8 transformContext:CurrentContext forBox:a3];
+    [page transformContext:CurrentContext forBox:box];
     [PDFAnnotationDrawing fillRect:v24 color:CurrentContext context:v10, v12, v14, v16];
     v27.origin.x = v10;
     v27.origin.y = v12;
     v27.size.width = v14;
     v27.size.height = v16;
     v28 = PDFRectInset(v27, 2.0, 2.0);
-    [PDFAnnotationDrawing renderString:v17 forRect:v19 font:v20 color:v21 alignment:v22 rotation:1 breaks:v28.origin.x context:v28.origin.y withAnnotation:v28.size.width, v28.size.height, CurrentContext, v25];
+    [PDFAnnotationDrawing renderString:v17 forRect:font font:fontColor color:alignment alignment:rotation rotation:1 breaks:v28.origin.x context:v28.origin.y withAnnotation:v28.size.width, v28.size.height, CurrentContext, annotationCopy];
     if (v18)
     {
-      v23 = [MEMORY[0x1E69DC888] blackColor];
-      CGContextSetStrokeColorWithColor(CurrentContext, [v23 CGColor]);
+      blackColor = [MEMORY[0x1E69DC888] blackColor];
+      CGContextSetStrokeColorWithColor(CurrentContext, [blackColor CGColor]);
 
       [v18 drawInRect:CurrentContext inContext:{v10, v12, v14, v16}];
     }
@@ -352,39 +352,39 @@
   }
 }
 
-+ (void)drawWithBox:(int64_t)a3 inContext:(CGContext *)CurrentContext withInkAnnotation:(id)a5
++ (void)drawWithBox:(int64_t)box inContext:(CGContext *)CurrentContext withInkAnnotation:(id)annotation
 {
-  v8 = a5;
-  v9 = [v8 page];
-  v10 = [v8 valueForAnnotationKey:@"/C"];
-  v11 = [v8 valueForAnnotationKey:@"/Border"];
-  if (![v8 appearance:0])
+  annotationCopy = annotation;
+  page = [annotationCopy page];
+  v10 = [annotationCopy valueForAnnotationKey:@"/C"];
+  v11 = [annotationCopy valueForAnnotationKey:@"/Border"];
+  if (![annotationCopy appearance:0])
   {
-    v12 = [v8 valueForAnnotationKey:@"/InkList"];
+    v12 = [annotationCopy valueForAnnotationKey:@"/InkList"];
     if (v12)
     {
-      v13 = [v8 cgPathArray];
-      if (v13)
+      cgPathArray = [annotationCopy cgPathArray];
+      if (cgPathArray)
       {
-        v14 = v13;
+        v14 = cgPathArray;
 LABEL_7:
         v15 = [v12 count];
-        if (a3 <= 4)
+        if (box <= 4)
         {
           LODWORD(v16) = v15;
           if (CurrentContext || (CurrentContext = PDFGraphicsGetCurrentContext()) != 0)
           {
             CGContextSaveGState(CurrentContext);
-            [v9 transformContext:CurrentContext forBox:a3];
-            [v8 bounds];
+            [page transformContext:CurrentContext forBox:box];
+            [annotationCopy bounds];
             CGAffineTransformMakeTranslation(&v24, v17, v18);
             CGContextConcatCTM(CurrentContext, &v24);
             if (v10)
             {
-              v19 = [v10 CGColor];
-              ColorSpace = CGColorGetColorSpace(v19);
+              cGColor = [v10 CGColor];
+              ColorSpace = CGColorGetColorSpace(cGColor);
               CGContextSetStrokeColorSpace(CurrentContext, ColorSpace);
-              CGContextSetStrokeColorWithColor(CurrentContext, v19);
+              CGContextSetStrokeColorWithColor(CurrentContext, cGColor);
             }
 
             if (v11)
@@ -441,8 +441,8 @@ LABEL_7:
         goto LABEL_23;
       }
 
-      v14 = [a1 createCGPathArrayWithBezierPaths:v12];
-      [v8 setCGPathArray:v14];
+      v14 = [self createCGPathArrayWithBezierPaths:v12];
+      [annotationCopy setCGPathArray:v14];
       if (v14)
       {
         goto LABEL_7;
@@ -454,14 +454,14 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  [a1 drawAppearance:0 ofAnnotation:v8 withBox:a3 inContext:CurrentContext];
+  [self drawAppearance:0 ofAnnotation:annotationCopy withBox:box inContext:CurrentContext];
 LABEL_24:
 }
 
-+ (CGPath)createCGPathArrayWithBezierPaths:(id)a3
++ (CGPath)createCGPathArrayWithBezierPaths:(id)paths
 {
-  v3 = a3;
-  v4 = [v3 count];
+  pathsCopy = paths;
+  v4 = [pathsCopy count];
   if (v4 < 1)
   {
     v6 = 0;
@@ -475,7 +475,7 @@ LABEL_24:
     {
       for (i = 0; i != v5; ++i)
       {
-        v8 = [v3 objectAtIndex:i];
+        v8 = [pathsCopy objectAtIndex:i];
         v6[i] = CGPathCreateMutableCopy([v8 CGPath]);
       }
     }
@@ -484,37 +484,37 @@ LABEL_24:
   return v6;
 }
 
-+ (void)drawWithBox:(int64_t)a3 inContext:(CGContext *)CurrentContext withLineAnnotation:(id)a5
++ (void)drawWithBox:(int64_t)box inContext:(CGContext *)CurrentContext withLineAnnotation:(id)annotation
 {
-  v8 = a5;
-  v43 = [v8 page];
-  [v8 bounds];
+  annotationCopy = annotation;
+  page = [annotationCopy page];
+  [annotationCopy bounds];
   v10 = v9;
   v12 = v11;
-  v13 = [v8 valueForAnnotationKey:@"/C"];
-  v14 = [v8 valueForAnnotationKey:@"/IC"];
-  v15 = [v8 valueForAnnotationKey:@"/Border"];
-  v16 = [v8 valueForAnnotationKey:@"/L"];
+  v13 = [annotationCopy valueForAnnotationKey:@"/C"];
+  v14 = [annotationCopy valueForAnnotationKey:@"/IC"];
+  v15 = [annotationCopy valueForAnnotationKey:@"/Border"];
+  v16 = [annotationCopy valueForAnnotationKey:@"/L"];
   if (v16)
   {
-    [v8 startPoint];
+    [annotationCopy startPoint];
     v18 = v17;
     v20 = v19;
-    [v8 endPoint];
+    [annotationCopy endPoint];
     v22 = v21;
     v24 = v23;
-    v25 = [v8 startLineStyle];
-    v26 = [v8 endLineStyle];
-    if ([v8 appearance:0])
+    startLineStyle = [annotationCopy startLineStyle];
+    endLineStyle = [annotationCopy endLineStyle];
+    if ([annotationCopy appearance:0])
     {
-      [a1 drawAppearance:0 ofAnnotation:v8 withBox:a3 inContext:CurrentContext];
+      [self drawAppearance:0 ofAnnotation:annotationCopy withBox:box inContext:CurrentContext];
       goto LABEL_45;
     }
 
-    if (a3 <= 4 && (CurrentContext || (CurrentContext = PDFGraphicsGetCurrentContext()) != 0))
+    if (box <= 4 && (CurrentContext || (CurrentContext = PDFGraphicsGetCurrentContext()) != 0))
     {
       CGContextSaveGState(CurrentContext);
-      [v43 transformContext:CurrentContext forBox:a3];
+      [page transformContext:CurrentContext forBox:box];
       CGAffineTransformMakeTranslation(&transform, v10, v12);
       CGContextConcatCTM(CurrentContext, &transform);
       v27 = 1.0;
@@ -535,57 +535,57 @@ LABEL_24:
 
       CGContextMoveToPoint(CurrentContext, v18, v20);
       CGContextAddLineToPoint(CurrentContext, v22, v24);
-      v29 = [v13 CGColor];
-      ColorSpace = CGColorGetColorSpace(v29);
+      cGColor = [v13 CGColor];
+      ColorSpace = CGColorGetColorSpace(cGColor);
       CGContextSetStrokeColorSpace(CurrentContext, ColorSpace);
-      CGContextSetStrokeColorWithColor(CurrentContext, v29);
-      if (v25 == 4)
+      CGContextSetStrokeColorWithColor(CurrentContext, cGColor);
+      if (startLineStyle == 4)
       {
-        [a1 drawArrowFrom:1 to:CurrentContext open:v15 inContext:v22 withBorder:{v24, v18, v20}];
+        [self drawArrowFrom:1 to:CurrentContext open:v15 inContext:v22 withBorder:{v24, v18, v20}];
       }
 
-      if (v26 == 4)
+      if (endLineStyle == 4)
       {
-        [a1 drawArrowFrom:1 to:CurrentContext open:v15 inContext:v18 withBorder:{v20, v22, v24}];
+        [self drawArrowFrom:1 to:CurrentContext open:v15 inContext:v18 withBorder:{v20, v22, v24}];
       }
 
       CGContextDrawPath(CurrentContext, kCGPathStroke);
-      if (((v25 | v26) & 0xFFFFFFFFFFFFFFFBLL) == 0)
+      if (((startLineStyle | endLineStyle) & 0xFFFFFFFFFFFFFFFBLL) == 0)
       {
         goto LABEL_44;
       }
 
-      if (v25 > 2)
+      if (startLineStyle > 2)
       {
-        if (v25 != 3)
+        if (startLineStyle != 3)
         {
-          if (v25 == 5)
+          if (startLineStyle == 5)
           {
-            [a1 drawArrowFrom:0 to:CurrentContext open:v15 inContext:v22 withBorder:{v24, v18, v20}];
+            [self drawArrowFrom:0 to:CurrentContext open:v15 inContext:v22 withBorder:{v24, v18, v20}];
           }
 
 LABEL_27:
-          if (v26 > 2)
+          if (endLineStyle > 2)
           {
-            if (v26 != 3)
+            if (endLineStyle != 3)
             {
-              if (v26 == 5)
+              if (endLineStyle == 5)
               {
-                [a1 drawArrowFrom:0 to:CurrentContext open:v15 inContext:v18 withBorder:{v20, v22, v24}];
+                [self drawArrowFrom:0 to:CurrentContext open:v15 inContext:v18 withBorder:{v20, v22, v24}];
               }
 
               goto LABEL_37;
             }
 
-            v35 = a1;
+            selfCopy3 = self;
             v36 = v22;
             v37 = v24;
             v38 = 2;
           }
 
-          else if (v26 == 1)
+          else if (endLineStyle == 1)
           {
-            v35 = a1;
+            selfCopy3 = self;
             v36 = v22;
             v37 = v24;
             v38 = 0;
@@ -593,17 +593,17 @@ LABEL_27:
 
           else
           {
-            if (v26 != 2)
+            if (endLineStyle != 2)
             {
 LABEL_37:
-              v39 = v26 <= 0 && v25 <= 0;
+              v39 = endLineStyle <= 0 && startLineStyle <= 0;
               v40 = kCGPathStroke;
               if (!v39 && v14)
               {
-                v41 = [v14 CGColor];
-                v42 = CGColorGetColorSpace(v41);
+                cGColor2 = [v14 CGColor];
+                v42 = CGColorGetColorSpace(cGColor2);
                 CGContextSetFillColorSpace(CurrentContext, v42);
-                CGContextSetFillColorWithColor(CurrentContext, v41);
+                CGContextSetFillColorWithColor(CurrentContext, cGColor2);
                 v40 = kCGPathFillStroke;
               }
 
@@ -613,25 +613,25 @@ LABEL_44:
               goto LABEL_45;
             }
 
-            v35 = a1;
+            selfCopy3 = self;
             v36 = v22;
             v37 = v24;
             v38 = 1;
           }
 
-          [v35 drawBulletAtPoint:v38 shape:CurrentContext inContext:v15 withBorder:{v36, v37}];
+          [selfCopy3 drawBulletAtPoint:v38 shape:CurrentContext inContext:v15 withBorder:{v36, v37}];
           goto LABEL_37;
         }
 
-        v31 = a1;
+        selfCopy6 = self;
         v32 = v18;
         v33 = v20;
         v34 = 2;
       }
 
-      else if (v25 == 1)
+      else if (startLineStyle == 1)
       {
-        v31 = a1;
+        selfCopy6 = self;
         v32 = v18;
         v33 = v20;
         v34 = 0;
@@ -639,18 +639,18 @@ LABEL_44:
 
       else
       {
-        if (v25 != 2)
+        if (startLineStyle != 2)
         {
           goto LABEL_27;
         }
 
-        v31 = a1;
+        selfCopy6 = self;
         v32 = v18;
         v33 = v20;
         v34 = 1;
       }
 
-      [v31 drawBulletAtPoint:v34 shape:CurrentContext inContext:v15 withBorder:{v32, v33}];
+      [selfCopy6 drawBulletAtPoint:v34 shape:CurrentContext inContext:v15 withBorder:{v32, v33}];
       goto LABEL_27;
     }
   }
@@ -658,15 +658,15 @@ LABEL_44:
 LABEL_45:
 }
 
-+ (void)drawBulletAtPoint:(CGPoint)a3 shape:(int)a4 inContext:(CGContext *)a5 withBorder:(id)a6
++ (void)drawBulletAtPoint:(CGPoint)point shape:(int)shape inContext:(CGContext *)context withBorder:(id)border
 {
-  y = a3.y;
-  x = a3.x;
-  v10 = a6;
-  v15 = v10;
-  if (v10)
+  y = point.y;
+  x = point.x;
+  borderCopy = border;
+  v15 = borderCopy;
+  if (borderCopy)
   {
-    [v10 lineWidth];
+    [borderCopy lineWidth];
     v12 = v11;
     if (v12 == 0.0)
     {
@@ -686,46 +686,46 @@ LABEL_45:
     v14 = 1.0;
   }
 
-  switch(a4)
+  switch(shape)
   {
     case 2:
-      CGContextMoveToPoint(a5, x - v14 * 0.25, y + v14 + v14 * 0.25);
-      CGContextAddLineToPoint(a5, x + v14, y);
-      CGContextAddLineToPoint(a5, x, y - v14);
-      CGContextAddLineToPoint(a5, x - v14, y);
-      CGContextAddLineToPoint(a5, x, y + v14);
+      CGContextMoveToPoint(context, x - v14 * 0.25, y + v14 + v14 * 0.25);
+      CGContextAddLineToPoint(context, x + v14, y);
+      CGContextAddLineToPoint(context, x, y - v14);
+      CGContextAddLineToPoint(context, x - v14, y);
+      CGContextAddLineToPoint(context, x, y + v14);
       break;
     case 1:
       v18.origin.x = x - v14;
       v18.origin.y = y - v14;
       v18.size.width = v14 + v14;
       v18.size.height = v14 + v14;
-      CGContextAddEllipseInRect(a5, v18);
+      CGContextAddEllipseInRect(context, v18);
       break;
     case 0:
       v17.origin.x = x - v14;
       v17.origin.y = y - v14;
       v17.size.width = v14 + v14;
       v17.size.height = v14 + v14;
-      CGContextAddRect(a5, v17);
+      CGContextAddRect(context, v17);
       break;
   }
 }
 
-+ (void)drawArrowFrom:(CGPoint)a3 to:(CGPoint)a4 open:(BOOL)a5 inContext:(CGContext *)a6 withBorder:(id)a7
++ (void)drawArrowFrom:(CGPoint)from to:(CGPoint)to open:(BOOL)open inContext:(CGContext *)context withBorder:(id)border
 {
-  y = a4.y;
-  x = a4.x;
-  v11 = a3.y;
-  v12 = a3.x;
-  v13 = a7;
+  y = to.y;
+  x = to.x;
+  v11 = from.y;
+  v12 = from.x;
+  borderCopy = border;
   v14 = x - v12;
   v15 = y - v11;
   v16 = sqrtf((v15 * v15) + (v14 * v14));
-  v26 = v13;
-  if (v13)
+  v26 = borderCopy;
+  if (borderCopy)
   {
-    [v13 lineWidth];
+    [borderCopy lineWidth];
     v18 = v17;
     if (v18 == 0.0)
     {
@@ -745,44 +745,44 @@ LABEL_45:
   v23 = y - v22 * 3.0 / v20;
   v24 = v22 * 1.5 / v20;
   v25 = v19 * 1.5 / v20;
-  CGContextMoveToPoint(a6, v21 - v24, v25 + v23);
-  CGContextAddLineToPoint(a6, x, y);
-  CGContextAddLineToPoint(a6, v24 + v21, v23 - v25);
-  if (!a5)
+  CGContextMoveToPoint(context, v21 - v24, v25 + v23);
+  CGContextAddLineToPoint(context, x, y);
+  CGContextAddLineToPoint(context, v24 + v21, v23 - v25);
+  if (!open)
   {
-    CGContextAddLineToPoint(a6, v21 - v24, v25 + v23);
-    CGContextAddLineToPoint(a6, x, y);
+    CGContextAddLineToPoint(context, v21 - v24, v25 + v23);
+    CGContextAddLineToPoint(context, x, y);
   }
 }
 
-+ (void)drawWithBox:(int64_t)a3 inContext:(CGContext *)CurrentContext withLinkAnnotation:(id)a5
++ (void)drawWithBox:(int64_t)box inContext:(CGContext *)CurrentContext withLinkAnnotation:(id)annotation
 {
-  v30 = a5;
-  v8 = [v30 page];
-  [v30 bounds];
+  annotationCopy = annotation;
+  page = [annotationCopy page];
+  [annotationCopy bounds];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [v30 valueForAnnotationKey:@"/Border"];
-  v18 = [v30 valueForAnnotationKey:@"/C"];
-  v19 = [v30 isHighlighted];
-  v20 = [v30 valueForAnnotationKey:@"/H"];
-  if (v19)
+  v17 = [annotationCopy valueForAnnotationKey:@"/Border"];
+  blackColor = [annotationCopy valueForAnnotationKey:@"/C"];
+  isHighlighted = [annotationCopy isHighlighted];
+  v20 = [annotationCopy valueForAnnotationKey:@"/H"];
+  if (isHighlighted)
   {
-    if ([v30 appearance:2])
+    if ([annotationCopy appearance:2])
     {
-      v21 = a1;
+      selfCopy2 = self;
       v22 = 2;
 LABEL_6:
-      [v21 drawAppearance:v22 ofAnnotation:v30 withBox:a3 inContext:CurrentContext];
+      [selfCopy2 drawAppearance:v22 ofAnnotation:annotationCopy withBox:box inContext:CurrentContext];
       goto LABEL_26;
     }
   }
 
-  else if ([v30 appearance:0])
+  else if ([annotationCopy appearance:0])
   {
-    v21 = a1;
+    selfCopy2 = self;
     v22 = 0;
     goto LABEL_6;
   }
@@ -794,10 +794,10 @@ LABEL_6:
 
   else
   {
-    v23 = v19;
+    v23 = isHighlighted;
   }
 
-  if (a3 > 4)
+  if (box > 4)
   {
     goto LABEL_26;
   }
@@ -817,8 +817,8 @@ LABEL_6:
   }
 
   CGContextSaveGState(CurrentContext);
-  [v8 transformContext:CurrentContext forBox:a3];
-  if (!v19)
+  [page transformContext:CurrentContext forBox:box];
+  if (!isHighlighted)
   {
     goto LABEL_20;
   }
@@ -827,24 +827,24 @@ LABEL_6:
   {
     if ([v20 isEqualToString:@"/O"])
     {
-      v24 = [MEMORY[0x1E69DC888] whiteColor];
-      v28 = [v24 CGColor];
-      ColorSpace = CGColorGetColorSpace(v28);
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      cGColor = [whiteColor CGColor];
+      ColorSpace = CGColorGetColorSpace(cGColor);
       CGContextSetStrokeColorSpace(CurrentContext, ColorSpace);
-      CGContextSetStrokeColorWithColor(CurrentContext, v28);
+      CGContextSetStrokeColorWithColor(CurrentContext, cGColor);
       CGContextSetCompositeOperation();
       v33.origin.x = v10;
       v33.origin.y = v12;
       v33.size.width = v14;
       v33.size.height = v16;
       v34 = PDFRectInset(v33, 0.5, 0.5);
-      [a1 createPillBezier:CurrentContext inContext:{v34.origin.x, v34.origin.y, v34.size.width, v34.size.height}];
+      [self createPillBezier:CurrentContext inContext:{v34.origin.x, v34.origin.y, v34.size.width, v34.size.height}];
       CGContextStrokePath(CurrentContext);
       goto LABEL_21;
     }
 
 LABEL_20:
-    v24 = 0;
+    whiteColor = 0;
 LABEL_21:
     if (v17)
     {
@@ -854,28 +854,28 @@ LABEL_21:
     goto LABEL_25;
   }
 
-  v24 = +[PDFSelection defaultActiveColor];
-  v25 = [v24 CGColor];
-  v26 = CGColorGetColorSpace(v25);
+  whiteColor = +[PDFSelection defaultActiveColor];
+  cGColor2 = [whiteColor CGColor];
+  v26 = CGColorGetColorSpace(cGColor2);
   CGContextSetFillColorSpace(CurrentContext, v26);
-  CGContextSetFillColorWithColor(CurrentContext, v25);
+  CGContextSetFillColorWithColor(CurrentContext, cGColor2);
   v27 = CGContextSetCompositeOperation();
   if (v17)
   {
     v32.origin.x = PDFRectToCGRect(v27);
     CGContextFillRect(CurrentContext, v32);
 LABEL_22:
-    if (!v18)
+    if (!blackColor)
     {
-      v18 = [MEMORY[0x1E69DC888] blackColor];
+      blackColor = [MEMORY[0x1E69DC888] blackColor];
     }
 
-    CGContextSetStrokeColorWithColor(CurrentContext, [v18 CGColor]);
+    CGContextSetStrokeColorWithColor(CurrentContext, [blackColor CGColor]);
     [v17 drawInRect:CurrentContext inContext:{v10, v12, v14, v16}];
     goto LABEL_25;
   }
 
-  [a1 createPillBezier:CurrentContext inContext:{v10, v12, v14, v16}];
+  [self createPillBezier:CurrentContext inContext:{v10, v12, v14, v16}];
   CGContextFillPath(CurrentContext);
 LABEL_25:
   CGContextRestoreGState(CurrentContext);
@@ -883,13 +883,13 @@ LABEL_25:
 LABEL_26:
 }
 
-+ (void)createPillBezier:(CGRect)a3 inContext:(CGContext *)a4
++ (void)createPillBezier:(CGRect)bezier inContext:(CGContext *)context
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  v8 = a3.origin.x;
-  CGContextSetLineJoin(a4, kCGLineJoinRound);
+  height = bezier.size.height;
+  width = bezier.size.width;
+  y = bezier.origin.y;
+  v8 = bezier.origin.x;
+  CGContextSetLineJoin(context, kCGLineJoinRound);
   v19 = width;
   if (height >= width)
   {
@@ -905,65 +905,65 @@ LABEL_26:
   v11 = v10;
   v12 = 0.55228 * v10;
   x = v8 + v10;
-  CGContextMoveToPoint(a4, x, y);
+  CGContextMoveToPoint(context, x, y);
   v13 = v12;
   v14 = v8 + v12;
-  CGContextAddCurveToPoint(a4, v14, y, v8, y + v13, v8, y + v11);
+  CGContextAddCurveToPoint(context, v14, y, v8, y + v13, v8, y + v11);
   v15 = y + height;
-  CGContextAddLineToPoint(a4, v8, v15 - v11);
-  CGContextAddCurveToPoint(a4, v8, v15 - v13, v14, v15, x, v15);
+  CGContextAddLineToPoint(context, v8, v15 - v11);
+  CGContextAddCurveToPoint(context, v8, v15 - v13, v14, v15, x, v15);
   v16 = v8 + v19;
   v17 = v8 + v19 - v11;
-  CGContextAddLineToPoint(a4, v17, v15);
-  CGContextAddCurveToPoint(a4, v16 - v13, v15, v16, v15 - v13, v16, v15 - v11);
-  CGContextAddLineToPoint(a4, v16, y + v11);
-  CGContextAddCurveToPoint(a4, v16, y + v13, v16 - v13, y, v17, y);
+  CGContextAddLineToPoint(context, v17, v15);
+  CGContextAddCurveToPoint(context, v16 - v13, v15, v16, v15 - v13, v16, v15 - v11);
+  CGContextAddLineToPoint(context, v16, y + v11);
+  CGContextAddCurveToPoint(context, v16, y + v13, v16 - v13, y, v17, y);
 
-  CGContextAddLineToPoint(a4, x, y);
+  CGContextAddLineToPoint(context, x, y);
 }
 
-+ (void)drawWithBox:(int64_t)a3 inContext:(CGContext *)CurrentContext withMarkupAnnotation:(id)a5
++ (void)drawWithBox:(int64_t)box inContext:(CGContext *)CurrentContext withMarkupAnnotation:(id)annotation
 {
-  v39 = a5;
-  v8 = [v39 page];
-  v9 = [v39 valueForAnnotationKey:@"/C"];
-  v10 = [v39 markupType];
-  v11 = [v39 valueForAnnotationKey:@"/QuadPoints"];
+  annotationCopy = annotation;
+  page = [annotationCopy page];
+  v9 = [annotationCopy valueForAnnotationKey:@"/C"];
+  markupType = [annotationCopy markupType];
+  v11 = [annotationCopy valueForAnnotationKey:@"/QuadPoints"];
   v12 = [v11 count];
-  if ([v39 appearance:0])
+  if ([annotationCopy appearance:0])
   {
-    [a1 drawAppearance:0 ofAnnotation:v39 withBox:a3 inContext:CurrentContext];
+    [self drawAppearance:0 ofAnnotation:annotationCopy withBox:box inContext:CurrentContext];
     goto LABEL_13;
   }
 
-  if (a3 <= 4 && (CurrentContext || (CurrentContext = PDFGraphicsGetCurrentContext()) != 0))
+  if (box <= 4 && (CurrentContext || (CurrentContext = PDFGraphicsGetCurrentContext()) != 0))
   {
     CGContextSaveGState(CurrentContext);
-    [v8 transformContext:CurrentContext forBox:a3];
-    v13 = [v9 CGColor];
-    ColorSpace = CGColorGetColorSpace(v13);
-    if (v10)
+    [page transformContext:CurrentContext forBox:box];
+    cGColor = [v9 CGColor];
+    ColorSpace = CGColorGetColorSpace(cGColor);
+    if (markupType)
     {
       CGContextSetStrokeColorSpace(CurrentContext, ColorSpace);
-      CGContextSetStrokeColorWithColor(CurrentContext, v13);
+      CGContextSetStrokeColorWithColor(CurrentContext, cGColor);
     }
 
     else
     {
       CGContextSetCompositeOperation();
       CGContextSetFillColorSpace(CurrentContext, ColorSpace);
-      CGContextSetFillColorWithColor(CurrentContext, v13);
+      CGContextSetFillColorWithColor(CurrentContext, cGColor);
     }
 
-    v15 = v39;
+    v15 = annotationCopy;
     if (v12 < 4)
     {
 LABEL_10:
-      v16 = [v15 popup];
+      popup = [v15 popup];
 
-      if (v16)
+      if (popup)
       {
-        [PDFAnnotationDrawing drawNoteInContext:CurrentContext withParentAnnotation:v39];
+        [PDFAnnotationDrawing drawNoteInContext:CurrentContext withParentAnnotation:annotationCopy];
       }
 
       CGContextRestoreGState(CurrentContext);
@@ -1011,20 +1011,20 @@ LABEL_10:
       v36 = v35;
       v38 = v37;
 
-      v15 = v39;
+      v15 = annotationCopy;
       v40.f64[0] = v36;
       v40.f64[1] = v38;
       v17 += 4;
-      if (v10)
+      if (markupType)
       {
-        if (v10 == 2)
+        if (markupType == 2)
         {
           underlinePath(CurrentContext, v43.f64, v41.f64, v40.f64);
         }
 
         else
         {
-          if (v10 != 1)
+          if (markupType != 1)
           {
             goto LABEL_21;
           }
@@ -1041,7 +1041,7 @@ LABEL_10:
         CGContextFillPath(CurrentContext);
       }
 
-      v15 = v39;
+      v15 = annotationCopy;
 LABEL_21:
       if (!--v18)
       {
@@ -1053,55 +1053,55 @@ LABEL_21:
 LABEL_13:
 }
 
-+ (void)drawNoteInContext:(CGContext *)a3 withParentAnnotation:(id)a4
++ (void)drawNoteInContext:(CGContext *)context withParentAnnotation:(id)annotation
 {
-  v5 = a4;
-  v6 = [v5 markupStyle];
-  v7 = [PDFAnnotation PDFTextColorForMarkupStyle:v6];
-  v8 = [v7 CGColor];
+  annotationCopy = annotation;
+  markupStyle = [annotationCopy markupStyle];
+  v7 = [PDFAnnotation PDFTextColorForMarkupStyle:markupStyle];
+  cGColor = [v7 CGColor];
 
-  v9 = [PDFAnnotation PDFTextBorderColorForMarkupStyle:v6];
-  v10 = [v9 CGColor];
+  v9 = [PDFAnnotation PDFTextBorderColorForMarkupStyle:markupStyle];
+  cGColor2 = [v9 CGColor];
 
-  [v5 noteBounds];
+  [annotationCopy noteBounds];
   v13 = PDFKitBezierPathWithRoundedRect();
-  ColorSpace = CGColorGetColorSpace(v8);
-  CGContextSetFillColorSpace(a3, ColorSpace);
-  CGContextSetFillColorWithColor(a3, v8);
+  ColorSpace = CGColorGetColorSpace(cGColor);
+  CGContextSetFillColorSpace(context, ColorSpace);
+  CGContextSetFillColorWithColor(context, cGColor);
   [v13 fill];
-  v12 = CGColorGetColorSpace(v10);
-  CGContextSetStrokeColorSpace(a3, v12);
-  CGContextSetStrokeColorWithColor(a3, v10);
+  v12 = CGColorGetColorSpace(cGColor2);
+  CGContextSetStrokeColorSpace(context, v12);
+  CGContextSetStrokeColorWithColor(context, cGColor2);
   [v13 stroke];
 }
 
-+ (void)drawWithBox:(int64_t)a3 inContext:(CGContext *)a4 withPopupAnnotation:(id)a5
++ (void)drawWithBox:(int64_t)box inContext:(CGContext *)context withPopupAnnotation:(id)annotation
 {
-  v9 = a5;
-  v8 = [v9 page];
-  if (a3 <= 4)
+  annotationCopy = annotation;
+  page = [annotationCopy page];
+  if (box <= 4)
   {
-    CGContextSaveGState(a4);
-    [v8 transformContext:a4 forBox:a3];
-    [a1 adjustedRectForBox:a3 withAnnotation:v9];
-    [a1 drawInContext:a4 withBounds:v9 withPopupAnnotation:?];
-    CGContextRestoreGState(a4);
+    CGContextSaveGState(context);
+    [page transformContext:context forBox:box];
+    [self adjustedRectForBox:box withAnnotation:annotationCopy];
+    [self drawInContext:context withBounds:annotationCopy withPopupAnnotation:?];
+    CGContextRestoreGState(context);
   }
 }
 
-+ (CGRect)adjustedRectForBox:(int64_t)a3 withAnnotation:(id)a4
++ (CGRect)adjustedRectForBox:(int64_t)box withAnnotation:(id)annotation
 {
-  v5 = a4;
-  [v5 bounds];
+  annotationCopy = annotation;
+  [annotationCopy bounds];
   x = v6;
   y = v8;
   width = v10;
   height = v12;
-  v14 = [v5 page];
+  page = [annotationCopy page];
 
-  if (v14)
+  if (page)
   {
-    [v14 boundsForBox:a3];
+    [page boundsForBox:box];
     v16 = v15;
     v17 = x;
     v19 = v18;
@@ -1191,27 +1191,27 @@ LABEL_13:
   return result;
 }
 
-+ (void)drawWithBox:(int64_t)a3 inContext:(CGContext *)CurrentContext withSquareAnnotation:(id)a5
++ (void)drawWithBox:(int64_t)box inContext:(CGContext *)CurrentContext withSquareAnnotation:(id)annotation
 {
-  v30 = a5;
-  v8 = [v30 page];
-  [v30 bounds];
+  annotationCopy = annotation;
+  page = [annotationCopy page];
+  [annotationCopy bounds];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [v30 valueForAnnotationKey:@"/C"];
-  v18 = [v30 valueForAnnotationKey:@"/IC"];
-  v19 = [v30 valueForAnnotationKey:@"/Border"];
-  if ([v30 appearance:0])
+  v17 = [annotationCopy valueForAnnotationKey:@"/C"];
+  v18 = [annotationCopy valueForAnnotationKey:@"/IC"];
+  v19 = [annotationCopy valueForAnnotationKey:@"/Border"];
+  if ([annotationCopy appearance:0])
   {
-    [a1 drawAppearance:0 ofAnnotation:v30 withBox:a3 inContext:CurrentContext];
+    [self drawAppearance:0 ofAnnotation:annotationCopy withBox:box inContext:CurrentContext];
   }
 
-  else if (a3 <= 4 && (CurrentContext || (CurrentContext = PDFGraphicsGetCurrentContext()) != 0))
+  else if (box <= 4 && (CurrentContext || (CurrentContext = PDFGraphicsGetCurrentContext()) != 0))
   {
     CGContextSaveGState(CurrentContext);
-    [v8 transformContext:CurrentContext forBox:a3];
+    [page transformContext:CurrentContext forBox:box];
     v20 = 1.0;
     if (v19)
     {
@@ -1239,10 +1239,10 @@ LABEL_13:
     height = v33.size.height;
     if (v18)
     {
-      v26 = [v18 CGColor];
-      ColorSpace = CGColorGetColorSpace(v26);
+      cGColor = [v18 CGColor];
+      ColorSpace = CGColorGetColorSpace(cGColor);
       CGContextSetFillColorSpace(CurrentContext, ColorSpace);
-      CGContextSetFillColorWithColor(CurrentContext, v26);
+      CGContextSetFillColorWithColor(CurrentContext, cGColor);
       v34.origin.x = x;
       v34.origin.y = y;
       v34.size.width = width;
@@ -1250,10 +1250,10 @@ LABEL_13:
       CGContextFillRect(CurrentContext, v34);
     }
 
-    v28 = [v17 CGColor];
-    v29 = CGColorGetColorSpace(v28);
+    cGColor2 = [v17 CGColor];
+    v29 = CGColorGetColorSpace(cGColor2);
     CGContextSetStrokeColorSpace(CurrentContext, v29);
-    CGContextSetStrokeColorWithColor(CurrentContext, v28);
+    CGContextSetStrokeColorWithColor(CurrentContext, cGColor2);
     v35.origin.x = x;
     v35.origin.y = y;
     v35.size.width = width;
@@ -1263,35 +1263,35 @@ LABEL_13:
   }
 }
 
-+ (void)drawWithBox:(int64_t)a3 inContext:(CGContext *)CurrentContext withStampAnnotation:(id)a5
++ (void)drawWithBox:(int64_t)box inContext:(CGContext *)CurrentContext withStampAnnotation:(id)annotation
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = [v8 page];
-  [v8 bounds];
-  if (a3 <= 4)
+  annotationCopy = annotation;
+  page = [annotationCopy page];
+  [annotationCopy bounds];
+  if (box <= 4)
   {
     v14 = v10;
     v15 = v11;
     v16 = v12;
     v17 = v13;
-    if ([v8 appearance:0])
+    if ([annotationCopy appearance:0])
     {
-      [a1 drawAppearance:0 ofAnnotation:v8 withBox:a3 inContext:CurrentContext];
+      [self drawAppearance:0 ofAnnotation:annotationCopy withBox:box inContext:CurrentContext];
     }
 
     else if (CurrentContext || (CurrentContext = PDFGraphicsGetCurrentContext()) != 0)
     {
       CGContextSaveGState(CurrentContext);
-      [v9 transformContext:CurrentContext forBox:a3];
-      v18 = [MEMORY[0x1E69DC888] blackColor];
-      v19 = [v18 CGColor];
+      [page transformContext:CurrentContext forBox:box];
+      blackColor = [MEMORY[0x1E69DC888] blackColor];
+      cGColor = [blackColor CGColor];
 
-      ColorSpace = CGColorGetColorSpace(v19);
+      ColorSpace = CGColorGetColorSpace(cGColor);
       if (ColorSpace)
       {
         CGContextSetStrokeColorSpace(CurrentContext, ColorSpace);
-        CGContextSetStrokeColorWithColor(CurrentContext, v19);
+        CGContextSetStrokeColorWithColor(CurrentContext, cGColor);
         points.x = PDFRectGetMinX(v14, v15, v16);
         points.y = PDFRectGetMinY(v14, v15, v16, v17);
         MaxX = PDFRectGetMaxX(v14, v15, v16);
@@ -1310,50 +1310,50 @@ LABEL_13:
   }
 }
 
-+ (void)drawWithBox:(int64_t)a3 inContext:(CGContext *)CurrentContext withTextAnnotation:(id)a5
++ (void)drawWithBox:(int64_t)box inContext:(CGContext *)CurrentContext withTextAnnotation:(id)annotation
 {
-  v32 = a5;
-  v8 = [v32 page];
-  [v32 bounds];
+  annotationCopy = annotation;
+  page = [annotationCopy page];
+  [annotationCopy bounds];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [v32 color];
-  v18 = [v32 popup];
-  v19 = [v32 iconType];
-  if ([v32 appearance:0])
+  color = [annotationCopy color];
+  popup = [annotationCopy popup];
+  iconType = [annotationCopy iconType];
+  if ([annotationCopy appearance:0])
   {
-    [a1 drawAppearance:0 ofAnnotation:v32 withBox:a3 inContext:CurrentContext];
-    if ([v32 isSelected])
+    [self drawAppearance:0 ofAnnotation:annotationCopy withBox:box inContext:CurrentContext];
+    if ([annotationCopy isSelected])
     {
-      [a1 drawNoteAsSelected:CurrentContext rect:{v10, v12, v14, v16}];
+      [self drawNoteAsSelected:CurrentContext rect:{v10, v12, v14, v16}];
     }
   }
 
-  else if (a3 <= 4 && (CurrentContext || (CurrentContext = PDFGraphicsGetCurrentContext()) != 0))
+  else if (box <= 4 && (CurrentContext || (CurrentContext = PDFGraphicsGetCurrentContext()) != 0))
   {
     CGContextSaveGState(CurrentContext);
-    [v8 transformContext:CurrentContext forBox:a3];
-    if (!v17)
+    [page transformContext:CurrentContext forBox:box];
+    if (!color)
     {
-      v20 = [v18 color];
+      color2 = [popup color];
 
-      if (v20)
+      if (color2)
       {
-        v17 = [v18 color];
+        color = [popup color];
       }
 
       else
       {
         v21 = +[PDFAnnotation PDFTextColors];
-        v17 = [v21 objectAtIndex:0];
+        color = [v21 objectAtIndex:0];
       }
     }
 
     if (GetDefaultsWriteAKEnabled())
     {
-      v22 = v17;
+      v22 = color;
       v23 = +[PDFAnnotation PDFTextColors];
       v24 = [v23 indexOfObject:v22];
 
@@ -1382,130 +1382,130 @@ LABEL_13:
       v31 = [MEMORY[0x1E69DC728] bezierPathWithRoundedRect:x cornerRadius:{y, width, height, 1.0}];
       CGContextSetStrokeColorWithColor(CurrentContext, [v25 CGColor]);
       [v31 stroke];
-      if ([v32 isSelected])
+      if ([annotationCopy isSelected])
       {
-        [a1 drawNoteAsSelected:CurrentContext rect:{v10, v12, v14, v16}];
+        [self drawNoteAsSelected:CurrentContext rect:{v10, v12, v14, v16}];
       }
     }
 
-    else if (v19 <= 2)
+    else if (iconType <= 2)
     {
-      if (v19)
+      if (iconType)
       {
-        if (v19 == 1)
+        if (iconType == 1)
         {
-          [a1 drawKeyIconInRect:v17 withColor:CurrentContext inContext:{v10, v12, v14, v16}];
+          [self drawKeyIconInRect:color withColor:CurrentContext inContext:{v10, v12, v14, v16}];
         }
 
-        else if (v19 == 2)
+        else if (iconType == 2)
         {
-          [a1 drawNoteIconInRect:v17 withColor:CurrentContext inContext:{v10, v12, v14, v16}];
+          [self drawNoteIconInRect:color withColor:CurrentContext inContext:{v10, v12, v14, v16}];
         }
       }
 
       else
       {
-        [a1 drawCommentIconInRect:v17 withColor:CurrentContext inContext:{v10, v12, v14, v16}];
+        [self drawCommentIconInRect:color withColor:CurrentContext inContext:{v10, v12, v14, v16}];
       }
     }
 
-    else if (v19 > 4)
+    else if (iconType > 4)
     {
-      if (v19 == 5)
+      if (iconType == 5)
       {
-        [a1 drawParagraphIconInRect:v17 withColor:CurrentContext inContext:{v10, v12, v14, v16}];
+        [self drawParagraphIconInRect:color withColor:CurrentContext inContext:{v10, v12, v14, v16}];
       }
 
-      else if (v19 == 6)
+      else if (iconType == 6)
       {
-        [a1 drawInsertIconInRect:v17 withColor:CurrentContext inContext:{v10, v12, v14, v16}];
+        [self drawInsertIconInRect:color withColor:CurrentContext inContext:{v10, v12, v14, v16}];
       }
     }
 
-    else if (v19 == 3)
+    else if (iconType == 3)
     {
-      [a1 drawHelpIconInRect:v17 withColor:CurrentContext inContext:{v10, v12, v14, v16}];
+      [self drawHelpIconInRect:color withColor:CurrentContext inContext:{v10, v12, v14, v16}];
     }
 
     else
     {
-      [a1 drawNewParagraphIconInRect:v17 withColor:CurrentContext inContext:{v10, v12, v14, v16}];
+      [self drawNewParagraphIconInRect:color withColor:CurrentContext inContext:{v10, v12, v14, v16}];
     }
 
     CGContextRestoreGState(CurrentContext);
   }
 }
 
-+ (void)drawNoteAsSelected:(CGContext *)a3 rect:(CGRect)a4
++ (void)drawNoteAsSelected:(CGContext *)selected rect:(CGRect)rect
 {
-  v10 = PDFRectInset(a4, 1.0, 1.0);
+  v10 = PDFRectInset(rect, 1.0, 1.0);
   v8 = [MEMORY[0x1E69DC728] bezierPathWithRoundedRect:v10.origin.x cornerRadius:{v10.origin.y, v10.size.width, v10.size.height, 1.0}];
-  v5 = [MEMORY[0x1E69DC888] lightGrayColor];
-  v6 = [v5 CGColor];
-  ColorSpace = CGColorGetColorSpace(v6);
-  CGContextSetStrokeColorSpace(a3, ColorSpace);
-  CGContextSetStrokeColorWithColor(a3, v6);
+  lightGrayColor = [MEMORY[0x1E69DC888] lightGrayColor];
+  cGColor = [lightGrayColor CGColor];
+  ColorSpace = CGColorGetColorSpace(cGColor);
+  CGContextSetStrokeColorSpace(selected, ColorSpace);
+  CGContextSetStrokeColorWithColor(selected, cGColor);
   [v8 stroke];
 }
 
-+ (void)drawCommonCommentNoteIconToContext:(CGContext *)a3 color:(id)a4 rect:(CGRect)a5
++ (void)drawCommonCommentNoteIconToContext:(CGContext *)context color:(id)color rect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  CGContextSetFillColorWithColor(a3, [a4 CGColor]);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  CGContextSetFillColorWithColor(context, [color CGColor]);
   v10 = x + width * 0.1;
   v16.origin.y = y + height * 0.78;
   v16.origin.x = v10;
   v16.size.width = width * 0.8;
   v16.size.height = height * 0.11;
-  CGContextFillRect(a3, v16);
+  CGContextFillRect(context, v16);
   v17.origin.y = y + height * 0.57;
   v17.origin.x = v10;
   v17.size.width = width * 0.8;
   v17.size.height = height * 0.11;
-  CGContextFillRect(a3, v17);
+  CGContextFillRect(context, v17);
   v13 = v10;
 
   v11 = y + height * 0.36;
   v12 = width * 0.6;
   v14 = height * 0.11;
-  CGContextFillRect(a3, *&v13);
+  CGContextFillRect(context, *&v13);
 }
 
-+ (void)setupDrawColor:(id)a3 forContext:(CGContext *)a4
++ (void)setupDrawColor:(id)color forContext:(CGContext *)context
 {
-  v5 = a3;
-  if (v5)
+  colorCopy = color;
+  if (colorCopy)
   {
-    v12 = v5;
-    v6 = v5;
-    v7 = [v12 CGColor];
-    v5 = v12;
-    if (v7)
+    v12 = colorCopy;
+    v6 = colorCopy;
+    cGColor = [v12 CGColor];
+    colorCopy = v12;
+    if (cGColor)
     {
-      ColorSpace = CGColorGetColorSpace(v7);
-      CGContextSetFillColorSpace(a4, ColorSpace);
-      CGContextSetFillColorWithColor(a4, v7);
-      v9 = [MEMORY[0x1E69DC888] blackColor];
-      v10 = [v9 CGColor];
+      ColorSpace = CGColorGetColorSpace(cGColor);
+      CGContextSetFillColorSpace(context, ColorSpace);
+      CGContextSetFillColorWithColor(context, cGColor);
+      blackColor = [MEMORY[0x1E69DC888] blackColor];
+      cGColor2 = [blackColor CGColor];
 
-      v11 = CGColorGetColorSpace(v10);
-      CGContextSetStrokeColorSpace(a4, v11);
-      CGContextSetStrokeColorWithColor(a4, v10);
-      v5 = v12;
+      v11 = CGColorGetColorSpace(cGColor2);
+      CGContextSetStrokeColorSpace(context, v11);
+      CGContextSetStrokeColorWithColor(context, cGColor2);
+      colorCopy = v12;
     }
   }
 }
 
-+ (void)drawCommentIconInRect:(CGRect)a3 withColor:(id)a4 inContext:(CGContext *)a5
++ (void)drawCommentIconInRect:(CGRect)rect withColor:(id)color inContext:(CGContext *)context
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  v8 = a3.origin.y;
-  x = a3.origin.x;
-  v25 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  v8 = rect.origin.y;
+  x = rect.origin.x;
+  colorCopy = color;
   v27.origin.x = x;
   v27.origin.y = v8;
   v27.size.width = width;
@@ -1515,43 +1515,43 @@ LABEL_13:
   v12 = v28.origin.y;
   v13 = v28.size.width;
   v14 = v28.size.height;
-  CGContextSetLineWidth(a5, 1.0);
-  CGContextSetLineCap(a5, kCGLineCapRound);
-  CGContextSetLineJoin(a5, kCGLineJoinRound);
+  CGContextSetLineWidth(context, 1.0);
+  CGContextSetLineCap(context, kCGLineCapRound);
+  CGContextSetLineJoin(context, kCGLineJoinRound);
   v24 = v12 + v14 * 0.0;
-  CGContextMoveToPoint(a5, v11 + v13 * 0.25, v24);
+  CGContextMoveToPoint(context, v11 + v13 * 0.25, v24);
   v15 = v12 + v14 * 0.25;
-  CGContextAddLineToPoint(a5, v11 + v13 * 0.33, v15);
-  CGContextAddLineToPoint(a5, v11 + v13 * 0.1, v15);
+  CGContextAddLineToPoint(context, v11 + v13 * 0.33, v15);
+  CGContextAddLineToPoint(context, v11 + v13 * 0.1, v15);
   cp1y = v12 + v14 * 0.28;
   v20 = v12 + v14 * 0.35;
-  CGContextAddCurveToPoint(a5, v11 + v13 * 0.03, v15, v11 + v13 * 0.0, cp1y, v11 + v13 * 0.0, v20);
+  CGContextAddCurveToPoint(context, v11 + v13 * 0.03, v15, v11 + v13 * 0.0, cp1y, v11 + v13 * 0.0, v20);
   y = v12 + v14 * 0.9;
-  CGContextAddLineToPoint(a5, v11 + v13 * 0.0, y);
+  CGContextAddLineToPoint(context, v11 + v13 * 0.0, y);
   v16 = v12;
   v22 = v12;
   v23 = v14;
   v17 = v12 + v14 * 0.97;
   v18 = v14 + v16;
-  CGContextAddCurveToPoint(a5, v11 + v13 * 0.0, v17, v11 + v13 * 0.03, v18, v11 + v13 * 0.1, v18);
-  CGContextAddLineToPoint(a5, v11 + v13 * 0.9, v18);
-  CGContextAddCurveToPoint(a5, v11 + v13 * 0.97, v18, v13 + v11, v17, v13 + v11, y);
-  CGContextAddLineToPoint(a5, v13 + v11, v20);
-  CGContextAddCurveToPoint(a5, v13 + v11, cp1y, v11 + v13 * 0.97, v15, v11 + v13 * 0.9, v15);
-  CGContextAddLineToPoint(a5, v11 + v13 * 0.5, v15);
-  CGContextAddLineToPoint(a5, v11 + v13 * 0.25, v24);
-  [a1 setupDrawColor:v25 forContext:a5];
-  CGContextDrawPath(a5, kCGPathFillStroke);
-  [a1 drawCommonCommentNoteIconToContext:a5 color:v25 rect:{v11, v22, v13, v23}];
+  CGContextAddCurveToPoint(context, v11 + v13 * 0.0, v17, v11 + v13 * 0.03, v18, v11 + v13 * 0.1, v18);
+  CGContextAddLineToPoint(context, v11 + v13 * 0.9, v18);
+  CGContextAddCurveToPoint(context, v11 + v13 * 0.97, v18, v13 + v11, v17, v13 + v11, y);
+  CGContextAddLineToPoint(context, v13 + v11, v20);
+  CGContextAddCurveToPoint(context, v13 + v11, cp1y, v11 + v13 * 0.97, v15, v11 + v13 * 0.9, v15);
+  CGContextAddLineToPoint(context, v11 + v13 * 0.5, v15);
+  CGContextAddLineToPoint(context, v11 + v13 * 0.25, v24);
+  [self setupDrawColor:colorCopy forContext:context];
+  CGContextDrawPath(context, kCGPathFillStroke);
+  [self drawCommonCommentNoteIconToContext:context color:colorCopy rect:{v11, v22, v13, v23}];
 }
 
-+ (void)drawKeyIconInRect:(CGRect)a3 withColor:(id)a4 inContext:(CGContext *)a5
++ (void)drawKeyIconInRect:(CGRect)rect withColor:(id)color inContext:(CGContext *)context
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  colorCopy = color;
   v17.origin.x = x;
   v17.origin.y = y;
   v17.size.width = width;
@@ -1561,42 +1561,42 @@ LABEL_13:
   v13 = v18.origin.y;
   v14 = v18.size.width;
   v15 = v18.size.height;
-  CGContextSetLineWidth(a5, 1.0);
-  CGContextSetLineCap(a5, kCGLineCapRound);
-  CGContextSetLineJoin(a5, kCGLineJoinRound);
-  CGContextMoveToPoint(a5, v12 + v14 * 0.0, v13 + v15 * 0.61);
-  CGContextAddLineToPoint(a5, v12 + v14 * 0.0, v13 + v15 * 0.75);
-  CGContextAddCurveToPoint(a5, v12 + v14 * 0.0, v13 + v15 * 0.9, v12 + v14 * 0.1, v15 + v13, v12 + v14 * 0.25, v15 + v13);
-  CGContextAddLineToPoint(a5, v12 + v14 * 0.38, v15 + v13);
-  CGContextAddCurveToPoint(a5, v12 + v14 * 0.48, v15 + v13, v12 + v14 * 0.55, v13 + v15 * 0.95, v12 + v14 * 0.55, v13 + v15 * 0.85);
-  CGContextAddLineToPoint(a5, v12 + v14 * 0.55, v13 + v15 * 0.61);
-  CGContextAddLineToPoint(a5, v14 + v12, v13 + v15 * 0.15);
-  CGContextAddLineToPoint(a5, v14 + v12, v13 + v15 * 0.0);
-  CGContextAddLineToPoint(a5, v12 + v14 * 0.7, v13 + v15 * 0.0);
-  CGContextAddLineToPoint(a5, v12 + v14 * 0.7, v13 + v15 * 0.15);
-  CGContextAddLineToPoint(a5, v12 + v14 * 0.55, v13 + v15 * 0.15);
-  CGContextAddLineToPoint(a5, v12 + v14 * 0.55, v13 + v15 * 0.3);
-  CGContextAddLineToPoint(a5, v12 + v14 * 0.4, v13 + v15 * 0.3);
-  CGContextAddLineToPoint(a5, v12 + v14 * 0.4, v13 + v15 * 0.45);
-  CGContextAddLineToPoint(a5, v12 + v14 * 0.15, v13 + v15 * 0.45);
-  CGContextAddCurveToPoint(a5, v12 + v14 * 0.05, v13 + v15 * 0.45, v12 + v14 * 0.0, v13 + v15 * 0.51, v12 + v14 * 0.0, v13 + v15 * 0.61);
+  CGContextSetLineWidth(context, 1.0);
+  CGContextSetLineCap(context, kCGLineCapRound);
+  CGContextSetLineJoin(context, kCGLineJoinRound);
+  CGContextMoveToPoint(context, v12 + v14 * 0.0, v13 + v15 * 0.61);
+  CGContextAddLineToPoint(context, v12 + v14 * 0.0, v13 + v15 * 0.75);
+  CGContextAddCurveToPoint(context, v12 + v14 * 0.0, v13 + v15 * 0.9, v12 + v14 * 0.1, v15 + v13, v12 + v14 * 0.25, v15 + v13);
+  CGContextAddLineToPoint(context, v12 + v14 * 0.38, v15 + v13);
+  CGContextAddCurveToPoint(context, v12 + v14 * 0.48, v15 + v13, v12 + v14 * 0.55, v13 + v15 * 0.95, v12 + v14 * 0.55, v13 + v15 * 0.85);
+  CGContextAddLineToPoint(context, v12 + v14 * 0.55, v13 + v15 * 0.61);
+  CGContextAddLineToPoint(context, v14 + v12, v13 + v15 * 0.15);
+  CGContextAddLineToPoint(context, v14 + v12, v13 + v15 * 0.0);
+  CGContextAddLineToPoint(context, v12 + v14 * 0.7, v13 + v15 * 0.0);
+  CGContextAddLineToPoint(context, v12 + v14 * 0.7, v13 + v15 * 0.15);
+  CGContextAddLineToPoint(context, v12 + v14 * 0.55, v13 + v15 * 0.15);
+  CGContextAddLineToPoint(context, v12 + v14 * 0.55, v13 + v15 * 0.3);
+  CGContextAddLineToPoint(context, v12 + v14 * 0.4, v13 + v15 * 0.3);
+  CGContextAddLineToPoint(context, v12 + v14 * 0.4, v13 + v15 * 0.45);
+  CGContextAddLineToPoint(context, v12 + v14 * 0.15, v13 + v15 * 0.45);
+  CGContextAddCurveToPoint(context, v12 + v14 * 0.05, v13 + v15 * 0.45, v12 + v14 * 0.0, v13 + v15 * 0.51, v12 + v14 * 0.0, v13 + v15 * 0.61);
   v19.origin.x = v12 + v14 * 0.12;
   v19.origin.y = v13 + v15 * 0.72;
   v19.size.width = v14 * 0.16;
   v19.size.height = v15 * 0.16;
-  CGContextAddEllipseInRect(a5, v19);
-  [a1 setupDrawColor:v11 forContext:a5];
+  CGContextAddEllipseInRect(context, v19);
+  [self setupDrawColor:colorCopy forContext:context];
 
-  CGContextDrawPath(a5, kCGPathEOFillStroke);
+  CGContextDrawPath(context, kCGPathEOFillStroke);
 }
 
-+ (void)drawNoteIconInRect:(CGRect)a3 withColor:(id)a4 inContext:(CGContext *)a5
++ (void)drawNoteIconInRect:(CGRect)rect withColor:(id)color inContext:(CGContext *)context
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v18 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  colorCopy = color;
   v20.origin.x = x;
   v20.origin.y = y;
   v20.size.width = width;
@@ -1607,34 +1607,34 @@ LABEL_13:
   v12 = v22.origin.y;
   v13 = v22.size.width;
   v14 = v22.size.height;
-  CGContextSetLineWidth(a5, 1.0);
-  CGContextSetLineCap(a5, kCGLineCapRound);
-  CGContextSetLineJoin(a5, kCGLineJoinRound);
+  CGContextSetLineWidth(context, 1.0);
+  CGContextSetLineCap(context, kCGLineCapRound);
+  CGContextSetLineJoin(context, kCGLineJoinRound);
   v15 = v11 + v13 * 0.0;
   v16 = v12 + v14 * 0.0;
-  CGContextMoveToPoint(a5, v15, v16);
-  CGContextAddLineToPoint(a5, v15, v14 + v12);
-  CGContextAddLineToPoint(a5, v13 + v11, v14 + v12);
+  CGContextMoveToPoint(context, v15, v16);
+  CGContextAddLineToPoint(context, v15, v14 + v12);
+  CGContextAddLineToPoint(context, v13 + v11, v14 + v12);
   v17 = v12 + v14 * 0.25;
-  CGContextAddLineToPoint(a5, v13 + v11, v17);
-  CGContextAddLineToPoint(a5, v11 + v13 * 0.75, v16);
-  CGContextAddLineToPoint(a5, v15, v16);
-  [a1 setupDrawColor:v18 forContext:a5];
-  CGContextDrawPath(a5, kCGPathFillStroke);
-  CGContextMoveToPoint(a5, v13 + v11, v17);
-  CGContextAddLineToPoint(a5, v11 + v13 * 0.75, v17);
-  CGContextAddLineToPoint(a5, v11 + v13 * 0.75, v16);
-  CGContextStrokePath(a5);
-  [a1 drawCommonCommentNoteIconToContext:a5 color:v18 rect:{v11, v12, v13, v14}];
+  CGContextAddLineToPoint(context, v13 + v11, v17);
+  CGContextAddLineToPoint(context, v11 + v13 * 0.75, v16);
+  CGContextAddLineToPoint(context, v15, v16);
+  [self setupDrawColor:colorCopy forContext:context];
+  CGContextDrawPath(context, kCGPathFillStroke);
+  CGContextMoveToPoint(context, v13 + v11, v17);
+  CGContextAddLineToPoint(context, v11 + v13 * 0.75, v17);
+  CGContextAddLineToPoint(context, v11 + v13 * 0.75, v16);
+  CGContextStrokePath(context);
+  [self drawCommonCommentNoteIconToContext:context color:colorCopy rect:{v11, v12, v13, v14}];
 }
 
-+ (void)drawHelpIconInRect:(CGRect)a3 withColor:(id)a4 inContext:(CGContext *)a5
++ (void)drawHelpIconInRect:(CGRect)rect withColor:(id)color inContext:(CGContext *)context
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  colorCopy = color;
   v18.origin.x = x;
   v18.origin.y = y;
   v18.size.width = width;
@@ -1644,41 +1644,41 @@ LABEL_13:
   v13 = v19.origin.y;
   v14 = v19.size.width;
   v15 = v19.size.height;
-  CGContextSetLineWidth(a5, 1.0);
-  CGContextSetLineCap(a5, kCGLineCapRound);
-  CGContextSetLineJoin(a5, kCGLineJoinRound);
-  CGContextMoveToPoint(a5, v12 + v14 * 0.3, v13 + v15 * 0.65);
-  CGContextAddCurveToPoint(a5, v12 + v14 * 0.3, v13 + v15 * 0.78, v12 + v14 * 0.37, v13 + v15 * 0.85, v12 + v14 * 0.5, v13 + v15 * 0.85);
-  CGContextAddCurveToPoint(a5, v12 + v14 * 0.63, v13 + v15 * 0.85, v12 + v14 * 0.7, v13 + v15 * 0.78, v12 + v14 * 0.7, v13 + v15 * 0.65);
-  CGContextAddCurveToPoint(a5, v12 + v14 * 0.68, v13 + v15 * 0.45, v12 + v14 * 0.55, v13 + v15 * 0.5, v12 + v14 * 0.55, v13 + v15 * 0.35);
-  CGContextAddLineToPoint(a5, v12 + v14 * 0.45, v13 + v15 * 0.35);
-  CGContextAddCurveToPoint(a5, v12 + v14 * 0.44, v13 + v15 * 0.55, v12 + v14 * 0.6, v13 + v15 * 0.52, v12 + v14 * 0.6, v13 + v15 * 0.65);
-  CGContextAddCurveToPoint(a5, v12 + v14 * 0.6, v13 + v15 * 0.71, v12 + v14 * 0.56, v13 + v15 * 0.75, v12 + v14 * 0.5, v13 + v15 * 0.75);
+  CGContextSetLineWidth(context, 1.0);
+  CGContextSetLineCap(context, kCGLineCapRound);
+  CGContextSetLineJoin(context, kCGLineJoinRound);
+  CGContextMoveToPoint(context, v12 + v14 * 0.3, v13 + v15 * 0.65);
+  CGContextAddCurveToPoint(context, v12 + v14 * 0.3, v13 + v15 * 0.78, v12 + v14 * 0.37, v13 + v15 * 0.85, v12 + v14 * 0.5, v13 + v15 * 0.85);
+  CGContextAddCurveToPoint(context, v12 + v14 * 0.63, v13 + v15 * 0.85, v12 + v14 * 0.7, v13 + v15 * 0.78, v12 + v14 * 0.7, v13 + v15 * 0.65);
+  CGContextAddCurveToPoint(context, v12 + v14 * 0.68, v13 + v15 * 0.45, v12 + v14 * 0.55, v13 + v15 * 0.5, v12 + v14 * 0.55, v13 + v15 * 0.35);
+  CGContextAddLineToPoint(context, v12 + v14 * 0.45, v13 + v15 * 0.35);
+  CGContextAddCurveToPoint(context, v12 + v14 * 0.44, v13 + v15 * 0.55, v12 + v14 * 0.6, v13 + v15 * 0.52, v12 + v14 * 0.6, v13 + v15 * 0.65);
+  CGContextAddCurveToPoint(context, v12 + v14 * 0.6, v13 + v15 * 0.71, v12 + v14 * 0.56, v13 + v15 * 0.75, v12 + v14 * 0.5, v13 + v15 * 0.75);
   v16 = v13 + v15 * 0.65;
-  CGContextAddCurveToPoint(a5, v12 + v14 * 0.44, v13 + v15 * 0.75, v12 + v14 * 0.4, v13 + v15 * 0.71, v12 + v14 * 0.4, v16);
-  CGContextAddLineToPoint(a5, v12 + v14 * 0.3, v16);
+  CGContextAddCurveToPoint(context, v12 + v14 * 0.44, v13 + v15 * 0.75, v12 + v14 * 0.4, v13 + v15 * 0.71, v12 + v14 * 0.4, v16);
+  CGContextAddLineToPoint(context, v12 + v14 * 0.3, v16);
   v20.origin.x = v12 + v14 * 0.42;
   v20.origin.y = v13 + v15 * 0.11;
   v20.size.width = v14 * 0.16;
   v20.size.height = v15 * 0.16;
-  CGContextAddEllipseInRect(a5, v20);
+  CGContextAddEllipseInRect(context, v20);
   v21.origin.x = v12 + v14 * 0.0;
   v21.origin.y = v13 + v15 * 0.0;
   v21.size.width = v14;
   v21.size.height = v15;
-  CGContextAddEllipseInRect(a5, v21);
-  [a1 setupDrawColor:v11 forContext:a5];
+  CGContextAddEllipseInRect(context, v21);
+  [self setupDrawColor:colorCopy forContext:context];
 
-  CGContextDrawPath(a5, kCGPathEOFillStroke);
+  CGContextDrawPath(context, kCGPathEOFillStroke);
 }
 
-+ (void)drawNewParagraphIconInRect:(CGRect)a3 withColor:(id)a4 inContext:(CGContext *)a5
++ (void)drawNewParagraphIconInRect:(CGRect)rect withColor:(id)color inContext:(CGContext *)context
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  colorCopy = color;
   v20.origin.x = x;
   v20.origin.y = y;
   v20.size.width = width;
@@ -1689,39 +1689,39 @@ LABEL_13:
   v13 = v22.origin.y;
   v14 = v22.size.width;
   v15 = v22.size.height;
-  CGContextSetLineWidth(a5, 1.0);
-  CGContextSetLineCap(a5, kCGLineCapRound);
-  CGContextSetLineJoin(a5, kCGLineJoinRound);
-  CGContextMoveToPoint(a5, v12 + v14 * 0.0, v13 + v15 * 0.5);
-  CGContextAddLineToPoint(a5, v12 + v14 * 0.5, v15 + v13);
-  CGContextAddLineToPoint(a5, v14 + v12, v13 + v15 * 0.5);
-  CGContextAddLineToPoint(a5, v12 + v14 * 0.0, v13 + v15 * 0.5);
-  [a1 setupDrawColor:v11 forContext:a5];
+  CGContextSetLineWidth(context, 1.0);
+  CGContextSetLineCap(context, kCGLineCapRound);
+  CGContextSetLineJoin(context, kCGLineJoinRound);
+  CGContextMoveToPoint(context, v12 + v14 * 0.0, v13 + v15 * 0.5);
+  CGContextAddLineToPoint(context, v12 + v14 * 0.5, v15 + v13);
+  CGContextAddLineToPoint(context, v14 + v12, v13 + v15 * 0.5);
+  CGContextAddLineToPoint(context, v12 + v14 * 0.0, v13 + v15 * 0.5);
+  [self setupDrawColor:colorCopy forContext:context];
 
-  CGContextDrawPath(a5, kCGPathFillStroke);
+  CGContextDrawPath(context, kCGPathFillStroke);
   v16 = v13 + v15 * 0.0;
-  CGContextMoveToPoint(a5, v12 + v14 * 0.0, v16);
+  CGContextMoveToPoint(context, v12 + v14 * 0.0, v16);
   v17 = v13 + v15 * 0.4;
-  CGContextAddLineToPoint(a5, v12 + v14 * 0.0, v17);
-  CGContextAddLineToPoint(a5, v12 + v14 * 0.4, v16);
-  CGContextAddLineToPoint(a5, v12 + v14 * 0.4, v17);
-  CGContextMoveToPoint(a5, v12 + v14 * 0.6, v16);
-  CGContextAddLineToPoint(a5, v12 + v14 * 0.6, v17);
-  CGContextAddLineToPoint(a5, v12 + v14 * 0.9, v17);
+  CGContextAddLineToPoint(context, v12 + v14 * 0.0, v17);
+  CGContextAddLineToPoint(context, v12 + v14 * 0.4, v16);
+  CGContextAddLineToPoint(context, v12 + v14 * 0.4, v17);
+  CGContextMoveToPoint(context, v12 + v14 * 0.6, v16);
+  CGContextAddLineToPoint(context, v12 + v14 * 0.6, v17);
+  CGContextAddLineToPoint(context, v12 + v14 * 0.9, v17);
   v18 = v13 + v15 * 0.2;
-  CGContextAddCurveToPoint(a5, v12 + v14 * 1.1, v17, v12 + v14 * 1.1, v18, v12 + v14 * 0.9, v18);
-  CGContextAddLineToPoint(a5, v12 + v14 * 0.6, v18);
+  CGContextAddCurveToPoint(context, v12 + v14 * 1.1, v17, v12 + v14 * 1.1, v18, v12 + v14 * 0.9, v18);
+  CGContextAddLineToPoint(context, v12 + v14 * 0.6, v18);
 
-  CGContextStrokePath(a5);
+  CGContextStrokePath(context);
 }
 
-+ (void)drawParagraphIconInRect:(CGRect)a3 withColor:(id)a4 inContext:(CGContext *)a5
++ (void)drawParagraphIconInRect:(CGRect)rect withColor:(id)color inContext:(CGContext *)context
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  colorCopy = color;
   v22.origin.x = x;
   v22.origin.y = y;
   v22.size.width = width;
@@ -1732,37 +1732,37 @@ LABEL_13:
   v13 = v24.origin.y;
   v14 = v24.size.width;
   v15 = v24.size.height;
-  CGContextSetLineWidth(a5, 1.0);
-  CGContextSetLineCap(a5, kCGLineCapRound);
-  CGContextSetLineJoin(a5, kCGLineJoinRound);
+  CGContextSetLineWidth(context, 1.0);
+  CGContextSetLineCap(context, kCGLineCapRound);
+  CGContextSetLineJoin(context, kCGLineJoinRound);
   v16 = v13 + v15 * 0.0;
-  CGContextMoveToPoint(a5, v12 + v14 * 0.5, v16);
-  CGContextAddLineToPoint(a5, v12 + v14 * 0.5, v13 + v15 * 0.5);
+  CGContextMoveToPoint(context, v12 + v14 * 0.5, v16);
+  CGContextAddLineToPoint(context, v12 + v14 * 0.5, v13 + v15 * 0.5);
   v17 = v12 + v14 * 0.0;
-  CGContextAddCurveToPoint(a5, v12 + v14 * 0.15, v13 + v15 * 0.5, v17, v13 + v15 * 0.55, v17, v13 + v15 * 0.7);
+  CGContextAddCurveToPoint(context, v12 + v14 * 0.15, v13 + v15 * 0.5, v17, v13 + v15 * 0.55, v17, v13 + v15 * 0.7);
   v18 = v12 + v14 * 0.5;
-  CGContextAddCurveToPoint(a5, v17, v13 + v15 * 0.95, v12 + v14 * 0.15, v15 + v13, v18, v15 + v13);
-  CGContextAddLineToPoint(a5, v14 + v12, v15 + v13);
-  CGContextAddLineToPoint(a5, v14 + v12, v16);
-  CGContextAddLineToPoint(a5, v12 + v14 * 0.8, v16);
+  CGContextAddCurveToPoint(context, v17, v13 + v15 * 0.95, v12 + v14 * 0.15, v15 + v13, v18, v15 + v13);
+  CGContextAddLineToPoint(context, v14 + v12, v15 + v13);
+  CGContextAddLineToPoint(context, v14 + v12, v16);
+  CGContextAddLineToPoint(context, v12 + v14 * 0.8, v16);
   v19 = v13 + v15 * 0.8;
-  CGContextAddLineToPoint(a5, v12 + v14 * 0.8, v19);
+  CGContextAddLineToPoint(context, v12 + v14 * 0.8, v19);
   v20 = v12 + v14 * 0.65;
-  CGContextAddLineToPoint(a5, v20, v19);
-  CGContextAddLineToPoint(a5, v20, v16);
-  CGContextAddLineToPoint(a5, v18, v16);
-  [a1 setupDrawColor:v11 forContext:a5];
+  CGContextAddLineToPoint(context, v20, v19);
+  CGContextAddLineToPoint(context, v20, v16);
+  CGContextAddLineToPoint(context, v18, v16);
+  [self setupDrawColor:colorCopy forContext:context];
 
-  CGContextDrawPath(a5, kCGPathFillStroke);
+  CGContextDrawPath(context, kCGPathFillStroke);
 }
 
-+ (void)drawInsertIconInRect:(CGRect)a3 withColor:(id)a4 inContext:(CGContext *)a5
++ (void)drawInsertIconInRect:(CGRect)rect withColor:(id)color inContext:(CGContext *)context
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  colorCopy = color;
   v17.origin.x = x;
   v17.origin.y = y;
   v17.size.width = width;
@@ -1772,28 +1772,28 @@ LABEL_13:
   v13 = v18.origin.y;
   v14 = v18.size.width;
   v15 = v18.size.height;
-  CGContextSetLineWidth(a5, 1.0);
-  CGContextSetLineCap(a5, kCGLineCapRound);
-  CGContextSetLineJoin(a5, kCGLineJoinRound);
-  CGContextMoveToPoint(a5, v12 + v14 * 0.0, v13 + v15 * 0.0);
-  CGContextAddLineToPoint(a5, v12 + v14 * 0.5, v15 + v13);
-  CGContextAddLineToPoint(a5, v14 + v12, v13 + v15 * 0.0);
-  CGContextAddLineToPoint(a5, v12 + v14 * 0.0, v13 + v15 * 0.0);
-  [a1 setupDrawColor:v11 forContext:a5];
+  CGContextSetLineWidth(context, 1.0);
+  CGContextSetLineCap(context, kCGLineCapRound);
+  CGContextSetLineJoin(context, kCGLineJoinRound);
+  CGContextMoveToPoint(context, v12 + v14 * 0.0, v13 + v15 * 0.0);
+  CGContextAddLineToPoint(context, v12 + v14 * 0.5, v15 + v13);
+  CGContextAddLineToPoint(context, v14 + v12, v13 + v15 * 0.0);
+  CGContextAddLineToPoint(context, v12 + v14 * 0.0, v13 + v15 * 0.0);
+  [self setupDrawColor:colorCopy forContext:context];
 
-  CGContextDrawPath(a5, kCGPathFillStroke);
+  CGContextDrawPath(context, kCGPathFillStroke);
 }
 
-+ (void)drawWithBox:(int64_t)a3 inContext:(CGContext *)CurrentContext withRedactAnnotation:(id)a5
++ (void)drawWithBox:(int64_t)box inContext:(CGContext *)CurrentContext withRedactAnnotation:(id)annotation
 {
   v52 = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  if (a3 <= 4 && (CurrentContext || (CurrentContext = PDFGraphicsGetCurrentContext()) != 0))
+  annotationCopy = annotation;
+  if (box <= 4 && (CurrentContext || (CurrentContext = PDFGraphicsGetCurrentContext()) != 0))
   {
     CGContextSaveGState(CurrentContext);
-    v8 = [v7 page];
-    [v8 transformContext:CurrentContext forBox:a3];
-    if ([v7 isTransparent])
+    page = [annotationCopy page];
+    [page transformContext:CurrentContext forBox:box];
+    if ([annotationCopy isTransparent])
     {
       v9 = 0.65;
     }
@@ -1803,7 +1803,7 @@ LABEL_13:
       v9 = 1.0;
     }
 
-    v10 = [v7 valueForAnnotationKey:@"/QuadPoints"];
+    v10 = [annotationCopy valueForAnnotationKey:@"/QuadPoints"];
     v11 = v10;
     if (v10)
     {
@@ -1840,7 +1840,7 @@ LABEL_13:
 
     else
     {
-      [v7 bounds];
+      [annotationCopy bounds];
       v28 = v27;
       v30 = v29;
       v32 = v31;
@@ -1848,8 +1848,8 @@ LABEL_13:
       if (GetDefaultsWriteHighlightRedactions())
       {
         CGContextSetLineWidth(CurrentContext, 1.0);
-        v35 = [MEMORY[0x1E69DC888] blackColor];
-        [PDFAnnotationDrawing strokeRect:v35 color:CurrentContext context:v28, v30, v32, v34];
+        blackColor = [MEMORY[0x1E69DC888] blackColor];
+        [PDFAnnotationDrawing strokeRect:blackColor color:CurrentContext context:v28, v30, v32, v34];
       }
 
       else
@@ -1859,8 +1859,8 @@ LABEL_13:
         v53.size.width = v32;
         v53.size.height = v34;
         CGContextClipToRect(CurrentContext, v53);
-        v36 = [MEMORY[0x1E69DC888] blackColor];
-        v37 = [v36 colorWithAlphaComponent:0.5];
+        blackColor2 = [MEMORY[0x1E69DC888] blackColor];
+        v37 = [blackColor2 colorWithAlphaComponent:0.5];
         [PDFAnnotationDrawing fillRect:v37 color:CurrentContext context:v28, v30, v32, v34];
 
         CGContextSetRGBStrokeColor(CurrentContext, 0.333333, 0.333333, 0.333333, 1.0);
@@ -1918,26 +1918,26 @@ LABEL_13:
   }
 }
 
-+ (void)drawWithBox:(int64_t)a3 inContext:(CGContext *)CurrentContext withButtonWidgetAnnotation:(id)a5
++ (void)drawWithBox:(int64_t)box inContext:(CGContext *)CurrentContext withButtonWidgetAnnotation:(id)annotation
 {
-  v43 = a5;
-  v7 = [v43 page];
-  [v43 bounds];
+  annotationCopy = annotation;
+  page = [annotationCopy page];
+  [annotationCopy bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [v43 interactiveBackgroundColor];
-  v17 = [v43 valueForAnnotationKey:@"/MK"];
-  v18 = [v43 buttonWidgetState];
-  v19 = [v43 widgetControlType];
-  v20 = [v43 isHighlighted];
-  if (a3 > 4)
+  interactiveBackgroundColor = [annotationCopy interactiveBackgroundColor];
+  v17 = [annotationCopy valueForAnnotationKey:@"/MK"];
+  buttonWidgetState = [annotationCopy buttonWidgetState];
+  widgetControlType = [annotationCopy widgetControlType];
+  isHighlighted = [annotationCopy isHighlighted];
+  if (box > 4)
   {
     goto LABEL_35;
   }
 
-  v21 = v20;
+  v21 = isHighlighted;
   if (!CurrentContext)
   {
     CurrentContext = PDFGraphicsGetCurrentContext();
@@ -1947,26 +1947,26 @@ LABEL_13:
     }
   }
 
-  if (v16)
+  if (interactiveBackgroundColor)
   {
-    CGContextSetFillColorWithColor(CurrentContext, [v16 CGColor]);
+    CGContextSetFillColorWithColor(CurrentContext, [interactiveBackgroundColor CGColor]);
     v45.origin.x = PDFRectToCGRect(v22);
     CGContextFillRect(CurrentContext, v45);
   }
 
   if ((v21 & 1) == 0)
   {
-    if (![v43 appearance:0])
+    if (![annotationCopy appearance:0])
     {
       goto LABEL_24;
     }
 
-    v30 = [v43 appearance:0];
-    v31 = [v43 appearance:3];
+    v30 = [annotationCopy appearance:0];
+    v31 = [annotationCopy appearance:3];
     v26 = 0;
-    if (v19)
+    if (widgetControlType)
     {
-      if (!v18)
+      if (!buttonWidgetState)
       {
         v26 = 3;
         if (v30)
@@ -1979,18 +1979,18 @@ LABEL_13:
       }
     }
 
-    if (![v43 appearance:v26])
+    if (![annotationCopy appearance:v26])
     {
       goto LABEL_24;
     }
 
 LABEL_23:
-    [a1 drawAppearance:v26 ofAnnotation:v43 withBox:a3 inContext:CurrentContext scaleProportional:{objc_msgSend(v17, "scaleProportional")}];
+    [self drawAppearance:v26 ofAnnotation:annotationCopy withBox:box inContext:CurrentContext scaleProportional:{objc_msgSend(v17, "scaleProportional")}];
     goto LABEL_35;
   }
 
-  v23 = v19 != 0;
-  v24 = v18 == 0;
+  v23 = widgetControlType != 0;
+  v24 = buttonWidgetState == 0;
   v25 = v23 && v24;
   if (v23 && v24)
   {
@@ -2002,13 +2002,13 @@ LABEL_23:
     v26 = 2;
   }
 
-  if ([v43 appearance:v26])
+  if ([annotationCopy appearance:v26])
   {
     goto LABEL_23;
   }
 
-  v40 = [v43 appearance:0];
-  v27 = [v43 appearance:3];
+  v40 = [annotationCopy appearance:0];
+  v27 = [annotationCopy appearance:3];
   v28 = 0;
   if (v25)
   {
@@ -2022,19 +2022,19 @@ LABEL_23:
     }
   }
 
-  if ([v43 appearance:v28])
+  if ([annotationCopy appearance:v28])
   {
-    [a1 drawAppearance:v28 ofAnnotation:v43 withBox:a3 inContext:CurrentContext scaleProportional:{objc_msgSend(v17, "scaleProportional")}];
+    [self drawAppearance:v28 ofAnnotation:annotationCopy withBox:box inContext:CurrentContext scaleProportional:{objc_msgSend(v17, "scaleProportional")}];
     CGContextSaveGState(CurrentContext);
-    v29 = PDFColorCreateFromWhiteAlpha([v7 transformContext:CurrentContext forBox:a3], 0.0, 0.25);
-    if (v19 == 1)
+    v29 = PDFColorCreateFromWhiteAlpha([page transformContext:CurrentContext forBox:box], 0.0, 0.25);
+    if (widgetControlType == 1)
     {
-      [a1 fillOval:v29 color:CurrentContext context:{v9, v11, v13, v15}];
+      [self fillOval:v29 color:CurrentContext context:{v9, v11, v13, v15}];
     }
 
     else
     {
-      [a1 fillRect:v29 color:CurrentContext context:{v9, v11, v13, v15}];
+      [self fillRect:v29 color:CurrentContext context:{v9, v11, v13, v15}];
     }
 
     CGContextRestoreGState(CurrentContext);
@@ -2043,40 +2043,40 @@ LABEL_23:
 
 LABEL_24:
   CGContextSaveGState(CurrentContext);
-  [v7 transformContext:CurrentContext forBox:a3];
-  v39 = [v17 backgroundColor];
-  v32 = [v17 borderColor];
-  v33 = [v17 caption];
-  v41 = [v43 font];
-  v34 = [v43 fontColor];
-  if (!v33)
+  [page transformContext:CurrentContext forBox:box];
+  backgroundColor = [v17 backgroundColor];
+  borderColor = [v17 borderColor];
+  caption = [v17 caption];
+  font = [annotationCopy font];
+  fontColor = [annotationCopy fontColor];
+  if (!caption)
   {
-    v33 = [v43 valueForAnnotationKey:@"/Contents"];
+    caption = [annotationCopy valueForAnnotationKey:@"/Contents"];
   }
 
-  if (v19 == 2)
+  if (widgetControlType == 2)
   {
     LOBYTE(v38) = v21;
-    v37 = v18;
-    v35 = v39;
-    [a1 drawCheckBox:v43 inContext:CurrentContext withState:v37 withBackgroundColor:v39 withBorderColor:v32 withFontColor:v34 isHighlighted:v38];
+    v37 = buttonWidgetState;
+    v35 = backgroundColor;
+    [self drawCheckBox:annotationCopy inContext:CurrentContext withState:v37 withBackgroundColor:backgroundColor withBorderColor:borderColor withFontColor:fontColor isHighlighted:v38];
   }
 
-  else if (v19 == 1)
+  else if (widgetControlType == 1)
   {
     LOBYTE(v38) = v21;
-    v36 = v18;
-    v35 = v39;
-    [a1 drawRadioButton:v43 inContext:CurrentContext withState:v36 withBackgroundColor:v39 withBorderColor:v32 withFontColor:v34 isHighlighted:v38];
+    v36 = buttonWidgetState;
+    v35 = backgroundColor;
+    [self drawRadioButton:annotationCopy inContext:CurrentContext withState:v36 withBackgroundColor:backgroundColor withBorderColor:borderColor withFontColor:fontColor isHighlighted:v38];
   }
 
   else
   {
-    v35 = v39;
-    if (!v19)
+    v35 = backgroundColor;
+    if (!widgetControlType)
     {
       LOBYTE(v38) = v21;
-      [a1 drawPushButton:v43 inContext:CurrentContext withBackgroundColor:v39 withCaption:v33 withFont:v41 withFontColor:v34 isHighlighted:v38];
+      [self drawPushButton:annotationCopy inContext:CurrentContext withBackgroundColor:backgroundColor withCaption:caption withFont:font withFontColor:fontColor isHighlighted:v38];
     }
   }
 
@@ -2085,74 +2085,74 @@ LABEL_24:
 LABEL_35:
 }
 
-+ (void)drawPushButton:(id)a3 inContext:(CGContext *)a4 withBackgroundColor:(id)a5 withCaption:(id)a6 withFont:(id)a7 withFontColor:(id)a8 isHighlighted:(BOOL)a9
++ (void)drawPushButton:(id)button inContext:(CGContext *)context withBackgroundColor:(id)color withCaption:(id)caption withFont:(id)font withFontColor:(id)fontColor isHighlighted:(BOOL)highlighted
 {
-  v35 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
-  [v35 bounds];
+  buttonCopy = button;
+  colorCopy = color;
+  captionCopy = caption;
+  fontCopy = font;
+  fontColorCopy = fontColor;
+  [buttonCopy bounds];
   v19 = v18;
   v21 = v20;
   v23 = v22;
   v25 = v24;
-  v26 = [v35 page];
-  v27 = [v26 rotation];
+  page = [buttonCopy page];
+  rotation = [page rotation];
 
-  if (v14)
+  if (colorCopy)
   {
-    [PDFAnnotationDrawing fillRect:v14 color:a4 context:v19, v21, v23, v25];
+    [PDFAnnotationDrawing fillRect:colorCopy color:context context:v19, v21, v23, v25];
   }
 
-  if (v15)
+  if (captionCopy)
   {
-    [v16 pointSize];
+    [fontCopy pointSize];
     v29 = (v25 - v28) * -0.5;
-    if (!v16)
+    if (!fontCopy)
     {
       v30 = MEMORY[0x1E69DB878];
       [MEMORY[0x1E69DB878] systemFontSize];
-      v16 = [v30 systemFontOfSize:?];
+      fontCopy = [v30 systemFontOfSize:?];
     }
 
     v31 = v25 + v29;
-    if (!v17)
+    if (!fontColorCopy)
     {
-      v17 = [MEMORY[0x1E69DC888] blackColor];
+      fontColorCopy = [MEMORY[0x1E69DC888] blackColor];
     }
 
-    [PDFAnnotationDrawing renderString:v15 forRect:v16 font:v17 color:1 alignment:v27 rotation:0 breaks:v19 context:v21 withAnnotation:v23, v31, a4, v35];
+    [PDFAnnotationDrawing renderString:captionCopy forRect:fontCopy font:fontColorCopy color:1 alignment:rotation rotation:0 breaks:v19 context:v21 withAnnotation:v23, v31, context, buttonCopy];
   }
 
-  v32 = [v35 valueForAnnotationKey:@"/C"];
+  v32 = [buttonCopy valueForAnnotationKey:@"/C"];
   v33 = v32;
   if (v32)
   {
-    v32 = [PDFAnnotationDrawing strokeRect:v32 color:a4 context:v19, v21, v23, v25];
+    v32 = [PDFAnnotationDrawing strokeRect:v32 color:context context:v19, v21, v23, v25];
   }
 
-  if (a9)
+  if (highlighted)
   {
     v34 = PDFColorCreateFromWhiteAlpha(v32, 0.0, 0.25);
-    [PDFAnnotationDrawing fillRect:v34 color:a4 context:v19, v21, v23, v25];
+    [PDFAnnotationDrawing fillRect:v34 color:context context:v19, v21, v23, v25];
   }
 }
 
-+ (void)drawRadioButton:(id)a3 inContext:(CGContext *)a4 withState:(int64_t)a5 withBackgroundColor:(id)a6 withBorderColor:(id)a7 withFontColor:(id)a8 isHighlighted:(BOOL)a9
++ (void)drawRadioButton:(id)button inContext:(CGContext *)context withState:(int64_t)state withBackgroundColor:(id)color withBorderColor:(id)borderColor withFontColor:(id)fontColor isHighlighted:(BOOL)highlighted
 {
-  v34 = a6;
-  v14 = a7;
-  v15 = a8;
-  v16 = a3;
-  [v16 bounds];
+  colorCopy = color;
+  borderColorCopy = borderColor;
+  fontColorCopy = fontColor;
+  buttonCopy = button;
+  [buttonCopy bounds];
   x = v17;
   y = v19;
   width = v21;
   v24 = v23;
-  v25 = [v16 valueForAnnotationKey:@"/Border"];
+  v25 = [buttonCopy valueForAnnotationKey:@"/Border"];
 
-  CGContextSaveGState(a4);
+  CGContextSaveGState(context);
   LODWORD(v26) = 1.0;
   if (v25)
   {
@@ -2165,7 +2165,7 @@ LABEL_35:
   }
 
   v27 = *&v26;
-  CGContextSetLineWidth(a4, *&v26);
+  CGContextSetLineWidth(context, *&v26);
   v28 = width < v24;
   v29 = x + (width - v24) * 0.5;
   if (width < v24)
@@ -2183,14 +2183,14 @@ LABEL_35:
     x = v29;
   }
 
-  if (v34)
+  if (colorCopy)
   {
-    [PDFAnnotationDrawing fillOval:v34 color:a4 context:x, y, width, width];
+    [PDFAnnotationDrawing fillOval:colorCopy color:context context:x, y, width, width];
   }
 
-  if (!v14)
+  if (!borderColorCopy)
   {
-    v14 = [MEMORY[0x1E69DC888] blackColor];
+    borderColorCopy = [MEMORY[0x1E69DC888] blackColor];
   }
 
   v36.origin.x = x;
@@ -2198,11 +2198,11 @@ LABEL_35:
   v36.size.width = width;
   v36.size.height = width;
   v37 = PDFRectInset(v36, v27 * 0.5, v27 * 0.5);
-  v30 = [PDFAnnotationDrawing strokeOval:v14 color:a4 context:v37.origin.x, v37.origin.y, v37.size.width, v37.size.height];
-  if (a5 != 1)
+  v30 = [PDFAnnotationDrawing strokeOval:borderColorCopy color:context context:v37.origin.x, v37.origin.y, v37.size.width, v37.size.height];
+  if (state != 1)
   {
     height = width;
-    if (!a9)
+    if (!highlighted)
     {
       goto LABEL_20;
     }
@@ -2219,52 +2219,52 @@ LABEL_35:
   y = v39.origin.y;
   width = v39.size.width;
   height = v39.size.height;
-  v32 = v15;
-  if (!v32)
+  blackColor = fontColorCopy;
+  if (!blackColor)
   {
-    v32 = [MEMORY[0x1E69DC888] blackColor];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
   }
 
-  [PDFAnnotationDrawing fillOval:v32 color:a4 context:x, y, width, height];
+  [PDFAnnotationDrawing fillOval:blackColor color:context context:x, y, width, height];
 
-  if (a9)
+  if (highlighted)
   {
 LABEL_19:
     v33 = PDFColorCreateFromWhiteAlpha(v30, 0.0, 0.25);
-    [PDFAnnotationDrawing fillOval:v33 color:a4 context:x, y, width, height];
+    [PDFAnnotationDrawing fillOval:v33 color:context context:x, y, width, height];
   }
 
 LABEL_20:
-  CGContextRestoreGState(a4);
+  CGContextRestoreGState(context);
 }
 
-+ (void)drawCheckBox:(id)a3 inContext:(CGContext *)a4 withState:(int64_t)a5 withBackgroundColor:(id)a6 withBorderColor:(id)a7 withFontColor:(id)a8 isHighlighted:(BOOL)a9
++ (void)drawCheckBox:(id)box inContext:(CGContext *)context withState:(int64_t)state withBackgroundColor:(id)color withBorderColor:(id)borderColor withFontColor:(id)fontColor isHighlighted:(BOOL)highlighted
 {
-  v40 = a6;
-  v14 = a7;
-  v15 = a8;
-  [a3 bounds];
+  colorCopy = color;
+  borderColorCopy = borderColor;
+  fontColorCopy = fontColor;
+  [box bounds];
   v17 = v16;
   v19 = v18;
   v21 = v20;
   v23 = v22;
-  CGContextSaveGState(a4);
-  v24 = v40;
-  if (v40)
+  CGContextSaveGState(context);
+  v24 = colorCopy;
+  if (colorCopy)
   {
-    v24 = [PDFAnnotationDrawing fillRect:v40 color:a4 context:v17, v19, v21, v23];
+    v24 = [PDFAnnotationDrawing fillRect:colorCopy color:context context:v17, v19, v21, v23];
   }
 
-  if (!v15)
+  if (!fontColorCopy)
   {
-    v15 = PDFColorCreateFromWhiteAlpha(v24, 0.0, 1.0);
+    fontColorCopy = PDFColorCreateFromWhiteAlpha(v24, 0.0, 1.0);
   }
 
-  v25 = [v15 CGColor];
-  ColorSpace = CGColorGetColorSpace(v25);
-  CGContextSetStrokeColorSpace(a4, ColorSpace);
-  CGContextSetStrokeColorWithColor(a4, v25);
-  if (a5 == 1)
+  cGColor = [fontColorCopy CGColor];
+  ColorSpace = CGColorGetColorSpace(cGColor);
+  CGContextSetStrokeColorSpace(context, ColorSpace);
+  CGContextSetStrokeColorWithColor(context, cGColor);
+  if (state == 1)
   {
     v27 = (v21 - v23) * 0.5;
     v28 = v27;
@@ -2301,73 +2301,73 @@ LABEL_20:
     }
 
     v34 = v31;
-    CGContextBeginPath(a4);
+    CGContextBeginPath(context);
     v35 = v17 + v32;
     v36 = v34;
     v37 = v19 + v33;
-    CGContextMoveToPoint(a4, v35 + v36 * 0.15, v37 + v36 * 0.45);
-    CGContextAddLineToPoint(a4, v35 + v36 * 0.35, v37 + v36 * 0.25);
-    CGContextAddLineToPoint(a4, v35 + v36 * 0.85, v37 + v36 * 0.75);
-    CGContextSetLineWidth(a4, 1.5);
-    CGContextStrokePath(a4);
+    CGContextMoveToPoint(context, v35 + v36 * 0.15, v37 + v36 * 0.45);
+    CGContextAddLineToPoint(context, v35 + v36 * 0.35, v37 + v36 * 0.25);
+    CGContextAddLineToPoint(context, v35 + v36 * 0.85, v37 + v36 * 0.75);
+    CGContextSetLineWidth(context, 1.5);
+    CGContextStrokePath(context);
   }
 
-  CGContextRestoreGState(a4);
-  if (!v14)
+  CGContextRestoreGState(context);
+  if (!borderColorCopy)
   {
-    v14 = [MEMORY[0x1E69DC888] blackColor];
+    borderColorCopy = [MEMORY[0x1E69DC888] blackColor];
   }
 
-  v38 = [PDFAnnotationDrawing strokeRect:v14 color:a4 context:v17, v19, v21, v23];
-  if (a9)
+  v38 = [PDFAnnotationDrawing strokeRect:borderColorCopy color:context context:v17, v19, v21, v23];
+  if (highlighted)
   {
     v39 = PDFColorCreateFromWhiteAlpha(v38, 0.0, 0.25);
-    [PDFAnnotationDrawing fillRect:v39 color:a4 context:v17, v19, v21, v23];
+    [PDFAnnotationDrawing fillRect:v39 color:context context:v17, v19, v21, v23];
   }
 }
 
-+ (void)drawWithBox:(int64_t)a3 inContext:(CGContext *)CurrentContext withChoiceWidgetAnnotation:(id)a5
++ (void)drawWithBox:(int64_t)box inContext:(CGContext *)CurrentContext withChoiceWidgetAnnotation:(id)annotation
 {
-  v29 = a5;
-  v8 = [v29 page];
-  [v29 bounds];
+  annotationCopy = annotation;
+  page = [annotationCopy page];
+  [annotationCopy bounds];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [v29 interactiveBackgroundColor];
-  v18 = [v29 widgetStringValue];
-  v19 = [v29 widgetDefaultStringValue];
-  if (v17)
+  interactiveBackgroundColor = [annotationCopy interactiveBackgroundColor];
+  widgetStringValue = [annotationCopy widgetStringValue];
+  widgetDefaultStringValue = [annotationCopy widgetDefaultStringValue];
+  if (interactiveBackgroundColor)
   {
-    [PDFAnnotationDrawing fillRect:v17 color:CurrentContext context:v10, v12, v14, v16];
+    [PDFAnnotationDrawing fillRect:interactiveBackgroundColor color:CurrentContext context:v10, v12, v14, v16];
   }
 
-  if ([v29 appearance:0] && v19 && objc_msgSend(v19, "isEqualToString:", v18))
+  if ([annotationCopy appearance:0] && widgetDefaultStringValue && objc_msgSend(widgetDefaultStringValue, "isEqualToString:", widgetStringValue))
   {
-    [a1 drawAppearance:0 ofAnnotation:v29 withBox:a3 inContext:CurrentContext];
+    [self drawAppearance:0 ofAnnotation:annotationCopy withBox:box inContext:CurrentContext];
     goto LABEL_22;
   }
 
-  if (a3 <= 4 && (CurrentContext || (CurrentContext = PDFGraphicsGetCurrentContext()) != 0))
+  if (box <= 4 && (CurrentContext || (CurrentContext = PDFGraphicsGetCurrentContext()) != 0))
   {
     CGContextSaveGState(CurrentContext);
-    [v8 transformContext:CurrentContext forBox:a3];
-    v20 = [v29 valueForAnnotationKey:@"/MK"];
-    v21 = [v20 backgroundColor];
-    v22 = [v29 isListChoice];
-    v26 = [v29 choices];
-    v28 = [v29 font];
-    v27 = [v29 fontColor];
-    v23 = [v29 valueForAnnotationKey:@"/Border"];
-    if (v21)
+    [page transformContext:CurrentContext forBox:box];
+    v20 = [annotationCopy valueForAnnotationKey:@"/MK"];
+    backgroundColor = [v20 backgroundColor];
+    isListChoice = [annotationCopy isListChoice];
+    choices = [annotationCopy choices];
+    font = [annotationCopy font];
+    fontColor = [annotationCopy fontColor];
+    v23 = [annotationCopy valueForAnnotationKey:@"/Border"];
+    if (backgroundColor)
     {
-      [PDFAnnotationDrawing fillRect:v21 color:CurrentContext context:v10, v12, v14, v16];
+      [PDFAnnotationDrawing fillRect:backgroundColor color:CurrentContext context:v10, v12, v14, v16];
     }
 
-    if (v22)
+    if (isListChoice)
     {
-      [a1 drawListBox:CurrentContext inContext:v29 withAnnotation:v26 withOptions:v18 withStringValue:v28 withFont:v27 withFontColor:{v10, v12, v14, v16}];
+      [self drawListBox:CurrentContext inContext:annotationCopy withAnnotation:choices withOptions:widgetStringValue withStringValue:font withFont:fontColor withFontColor:{v10, v12, v14, v16}];
       if (!v23)
       {
         goto LABEL_19;
@@ -2376,13 +2376,13 @@ LABEL_20:
 
     else
     {
-      [a1 drawComboBox:CurrentContext inContext:v29 withAnnotation:v18 withStringValue:v28 withFont:v27 withFontColor:{v10, v12, v14, v16}];
+      [self drawComboBox:CurrentContext inContext:annotationCopy withAnnotation:widgetStringValue withStringValue:font withFont:fontColor withFontColor:{v10, v12, v14, v16}];
       if (!v23)
       {
 LABEL_19:
-        if ((v22 & 1) == 0)
+        if ((isListChoice & 1) == 0)
         {
-          [a1 drawDisclosureBox:CurrentContext inContext:{v10, v12, v14, v16}];
+          [self drawDisclosureBox:CurrentContext inContext:{v10, v12, v14, v16}];
         }
 
         CGContextRestoreGState(CurrentContext);
@@ -2392,13 +2392,13 @@ LABEL_19:
     }
 
     v25 = v20;
-    v24 = [v20 borderColor];
-    if (!v24)
+    borderColor = [v20 borderColor];
+    if (!borderColor)
     {
-      v24 = [MEMORY[0x1E69DC888] blackColor];
+      borderColor = [MEMORY[0x1E69DC888] blackColor];
     }
 
-    CGContextSetStrokeColorWithColor(CurrentContext, [v24 CGColor]);
+    CGContextSetStrokeColorWithColor(CurrentContext, [borderColor CGColor]);
     [v23 drawInRect:CurrentContext inContext:{v10, v12, v14, v16}];
 
     v20 = v25;
@@ -2408,36 +2408,36 @@ LABEL_19:
 LABEL_22:
 }
 
-+ (void)drawListBox:(CGRect)a3 inContext:(CGContext *)a4 withAnnotation:(id)a5 withOptions:(id)a6 withStringValue:(id)a7 withFont:(id)a8 withFontColor:(id)a9
++ (void)drawListBox:(CGRect)box inContext:(CGContext *)context withAnnotation:(id)annotation withOptions:(id)options withStringValue:(id)value withFont:(id)font withFontColor:(id)color
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v38 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  if (v18)
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  annotationCopy = annotation;
+  optionsCopy = options;
+  valueCopy = value;
+  fontCopy = font;
+  colorCopy = color;
+  if (optionsCopy)
   {
-    v22 = [v18 count];
+    v22 = [optionsCopy count];
     if (v22 >= 1)
     {
       v23 = v22;
       v24 = x + 1.0;
       v25 = width + -1.0;
-      [v20 pointSize];
+      [fontCopy pointSize];
       v26 = 0;
       v28 = v27 + 2.0;
       v29 = y + height - (v27 + 2.0);
       do
       {
-        v30 = [v18 objectAtIndex:v26];
-        if ([v19 isEqualToString:v30])
+        v30 = [optionsCopy objectAtIndex:v26];
+        if ([valueCopy isEqualToString:v30])
         {
-          v31 = [MEMORY[0x1E69DC888] groupTableViewBackgroundColor];
-          [PDFAnnotationDrawing fillRect:v31 color:a4 context:v24, v29, v25, v28 + -0.1];
+          groupTableViewBackgroundColor = [MEMORY[0x1E69DC888] groupTableViewBackgroundColor];
+          [PDFAnnotationDrawing fillRect:groupTableViewBackgroundColor color:context context:v24, v29, v25, v28 + -0.1];
 
           v32 = 0x1E69DC000;
           p_vtable = (&OBJC_METACLASS___PDFAKPageOverlayViewProvider + 24);
@@ -2449,19 +2449,19 @@ LABEL_22:
           v32 = 0x1E69DC000uLL;
         }
 
-        [p_vtable + 332 renderString:v30 forRect:v20 font:v21 color:0 alignment:0 rotation:0 breaks:v24 context:v29 withAnnotation:{v25, v28, a4, v38}];
-        CGContextSaveGState(a4);
-        v34 = [*(v32 + 2184) grayColor];
-        v35 = [v34 CGColor];
+        [p_vtable + 332 renderString:v30 forRect:fontCopy font:colorCopy color:0 alignment:0 rotation:0 breaks:v24 context:v29 withAnnotation:{v25, v28, context, annotationCopy}];
+        CGContextSaveGState(context);
+        grayColor = [*(v32 + 2184) grayColor];
+        cGColor = [grayColor CGColor];
 
-        ColorSpace = CGColorGetColorSpace(v35);
-        CGContextSetStrokeColorSpace(a4, ColorSpace);
-        CGContextSetStrokeColorWithColor(a4, v35);
-        CGContextSetLineWidth(a4, 0.2);
-        CGContextMoveToPoint(a4, v24, v29);
-        CGContextAddLineToPoint(a4, v25 + v24, v29);
-        CGContextStrokePath(a4);
-        CGContextRestoreGState(a4);
+        ColorSpace = CGColorGetColorSpace(cGColor);
+        CGContextSetStrokeColorSpace(context, ColorSpace);
+        CGContextSetStrokeColorWithColor(context, cGColor);
+        CGContextSetLineWidth(context, 0.2);
+        CGContextMoveToPoint(context, v24, v29);
+        CGContextAddLineToPoint(context, v25 + v24, v29);
+        CGContextStrokePath(context);
+        CGContextRestoreGState(context);
         v40.origin.x = v24;
         v40.origin.y = v29;
         v40.size.width = v25;
@@ -2486,59 +2486,59 @@ LABEL_22:
   }
 }
 
-+ (void)drawComboBox:(CGRect)a3 inContext:(CGContext *)a4 withAnnotation:(id)a5 withStringValue:(id)a6 withFont:(id)a7 withFontColor:(id)a8
++ (void)drawComboBox:(CGRect)box inContext:(CGContext *)context withAnnotation:(id)annotation withStringValue:(id)value withFont:(id)font withFontColor:(id)color
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v16 = a8;
-  v17 = a7;
-  v18 = a6;
-  v21 = a5;
-  [v17 pointSize];
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  colorCopy = color;
+  fontCopy = font;
+  valueCopy = value;
+  annotationCopy = annotation;
+  [fontCopy pointSize];
   v20 = ceil((height - v19) * 0.5);
   v23.origin.x = x;
   v23.origin.y = y;
   v23.size.width = width;
   v23.size.height = height;
   v24 = PDFRectInset(v23, 2.0, v20);
-  [PDFAnnotationDrawing renderString:v18 forRect:v17 font:v16 color:0 alignment:0 rotation:0 breaks:v24.origin.x context:v24.origin.y - (height - v24.size.height) withAnnotation:v24.size.width, v24.size.height + height - v24.size.height, a4, v21];
+  [PDFAnnotationDrawing renderString:valueCopy forRect:fontCopy font:colorCopy color:0 alignment:0 rotation:0 breaks:v24.origin.x context:v24.origin.y - (height - v24.size.height) withAnnotation:v24.size.width, v24.size.height + height - v24.size.height, context, annotationCopy];
 }
 
-+ (void)drawDisclosureBox:(CGRect)a3 inContext:(CGContext *)a4
++ (void)drawDisclosureBox:(CGRect)box inContext:(CGContext *)context
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  CGContextSaveGState(a4);
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  CGContextSaveGState(context);
   DeviceRGB = CGColorSpaceCreateDeviceRGB();
   if (DeviceRGB)
   {
     v10 = DeviceRGB;
-    CGContextSetFillColorSpace(a4, DeviceRGB);
+    CGContextSetFillColorSpace(context, DeviceRGB);
     v11 = PDFRectGetMaxX(x, y, width) + -8.0;
     v12 = PDFRectGetMidY(x, y, width, height) + -2.5;
-    v13 = [MEMORY[0x1E69DC888] grayColor];
-    CGContextSetFillColorWithColor(a4, [v13 CGColor]);
+    grayColor = [MEMORY[0x1E69DC888] grayColor];
+    CGContextSetFillColorWithColor(context, [grayColor CGColor]);
 
     v17.origin.x = v11 + -4.5;
     v17.origin.y = v12 + -2.0;
     v17.size.width = 9.0;
     v17.size.height = 9.0;
-    CGContextFillEllipseInRect(a4, v17);
-    v14 = [MEMORY[0x1E69DC888] whiteColor];
-    CGContextSetFillColorWithColor(a4, [v14 CGColor]);
+    CGContextFillEllipseInRect(context, v17);
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    CGContextSetFillColorWithColor(context, [whiteColor CGColor]);
 
-    CGContextBeginPath(a4);
-    CGContextMoveToPoint(a4, v11, v12);
+    CGContextBeginPath(context);
+    CGContextMoveToPoint(context, v11, v12);
     v15 = v12 + 4.0;
-    CGContextAddLineToPoint(a4, v11 + -3.0, v15);
-    CGContextAddLineToPoint(a4, v11 + 3.0, v15);
-    CGContextClosePath(a4);
-    CGContextFillPath(a4);
-    CGContextRestoreGState(a4);
+    CGContextAddLineToPoint(context, v11 + -3.0, v15);
+    CGContextAddLineToPoint(context, v11 + 3.0, v15);
+    CGContextClosePath(context);
+    CGContextFillPath(context);
+    CGContextRestoreGState(context);
 
     CGColorSpaceRelease(v10);
   }
@@ -2546,16 +2546,16 @@ LABEL_22:
   else
   {
 
-    CGContextRestoreGState(a4);
+    CGContextRestoreGState(context);
   }
 }
 
-+ (void)drawWithBox:(int64_t)a3 inContext:(CGContext *)CurrentContext withTextWidgetAnnotation:(id)a5
++ (void)drawWithBox:(int64_t)box inContext:(CGContext *)CurrentContext withTextWidgetAnnotation:(id)annotation
 {
-  v44 = a5;
-  v8 = [v44 page];
-  [v44 bounds];
-  if (a3 <= 4)
+  annotationCopy = annotation;
+  page = [annotationCopy page];
+  [annotationCopy bounds];
+  if (box <= 4)
   {
     v13 = v9;
     v14 = v10;
@@ -2565,26 +2565,26 @@ LABEL_22:
     {
       Property = CGContextGetProperty();
       v18 = *MEMORY[0x1E695E4D0];
-      v19 = [v44 appearance:0];
+      v19 = [annotationCopy appearance:0];
       if (v19)
       {
-        [a1 drawAppearance:0 ofAnnotation:v44 withBox:a3 inContext:CurrentContext scaleProportional:1 suppressTextRendering:1];
+        [self drawAppearance:0 ofAnnotation:annotationCopy withBox:box inContext:CurrentContext scaleProportional:1 suppressTextRendering:1];
       }
 
       CGContextSaveGState(CurrentContext);
-      [v8 transformContext:CurrentContext forBox:a3];
+      [page transformContext:CurrentContext forBox:box];
       UIGraphicsPushContext(CurrentContext);
-      [v8 boundsForBox:a3];
+      [page boundsForBox:box];
       CGContextTranslateCTM(CurrentContext, 0.0, v20 + v14 - (v20 - v14 - v16));
       CGContextScaleCTM(CurrentContext, 1.0, -1.0);
       if (Property == v18)
       {
-        v21 = [v44 interactiveBackgroundColor];
+        interactiveBackgroundColor = [annotationCopy interactiveBackgroundColor];
       }
 
       else
       {
-        v21 = 0;
+        interactiveBackgroundColor = 0;
       }
 
       v46.origin.x = v13;
@@ -2598,47 +2598,47 @@ LABEL_22:
       height = v47.size.height;
       if (v19)
       {
-        if (v21)
+        if (interactiveBackgroundColor)
         {
-          [PDFAnnotationDrawing fillRect:v21 color:CurrentContext context:v47.origin.x, v47.origin.y, v47.size.width, v47.size.height];
+          [PDFAnnotationDrawing fillRect:interactiveBackgroundColor color:CurrentContext context:v47.origin.x, v47.origin.y, v47.size.width, v47.size.height];
         }
       }
 
       else
       {
-        v26 = [v44 backgroundColor];
-        v27 = v26;
-        v28 = v21;
-        if (v21 || (v28 = v26) != 0)
+        backgroundColor = [annotationCopy backgroundColor];
+        v27 = backgroundColor;
+        v28 = interactiveBackgroundColor;
+        if (interactiveBackgroundColor || (v28 = backgroundColor) != 0)
         {
           [PDFAnnotationDrawing fillRect:v28 color:CurrentContext context:x, y, width, height];
         }
 
-        v29 = [v44 valueForAnnotationKey:@"/MK"];
-        v30 = [v29 borderColor];
+        v29 = [annotationCopy valueForAnnotationKey:@"/MK"];
+        borderColor = [v29 borderColor];
 
-        if (v30)
+        if (borderColor)
         {
-          CGContextSetStrokeColorWithColor(CurrentContext, [v30 CGColor]);
+          CGContextSetStrokeColorWithColor(CurrentContext, [borderColor CGColor]);
           v31 = objc_alloc_init(PDFBorder);
           [(PDFBorder *)v31 drawInRect:CurrentContext inContext:v13, v14, v15, v16];
         }
       }
 
-      v32 = [v44 control];
+      control = [annotationCopy control];
 
-      if (!v32)
+      if (!control)
       {
-        v33 = [v44 createAttributedStringForTextWidget];
-        if ([v33 length])
+        createAttributedStringForTextWidget = [annotationCopy createAttributedStringForTextWidget];
+        if ([createAttributedStringForTextWidget length])
         {
           +[PDFAnnotationDrawing textInset];
           v35 = v34;
           +[PDFAnnotationDrawing textInset];
           v37 = v36;
-          if (([v44 isMultiline] & 1) == 0)
+          if (([annotationCopy isMultiline] & 1) == 0)
           {
-            [v33 boundingRectWithSize:1 options:0 context:{v15, v16}];
+            [createAttributedStringForTextWidget boundingRectWithSize:1 options:0 context:{v15, v16}];
             v37 = fmax((v16 - v38) * 0.5, 0.0);
           }
 
@@ -2656,7 +2656,7 @@ LABEL_22:
           v50.origin.y = v40;
           v50.size.width = v41;
           v50.size.height = v42;
-          [v33 drawWithRect:1 options:0 context:{v39, v43 - CGRectGetHeight(v50), v41, v42}];
+          [createAttributedStringForTextWidget drawWithRect:1 options:0 context:{v39, v43 - CGRectGetHeight(v50), v41, v42}];
         }
       }
 
@@ -2666,12 +2666,12 @@ LABEL_22:
   }
 }
 
-+ (void)drawWithBox:(int64_t)a3 inContext:(CGContext *)CurrentContext withSignatureWidgetAnnotation:(id)a5
++ (void)drawWithBox:(int64_t)box inContext:(CGContext *)CurrentContext withSignatureWidgetAnnotation:(id)annotation
 {
-  v21 = a5;
-  v8 = [v21 page];
-  [v21 bounds];
-  if (a3 <= 4)
+  annotationCopy = annotation;
+  page = [annotationCopy page];
+  [annotationCopy bounds];
+  if (box <= 4)
   {
     v13 = v9;
     v14 = v10;
@@ -2681,23 +2681,23 @@ LABEL_22:
     {
       Property = CGContextGetProperty();
       v18 = *MEMORY[0x1E695E4D0];
-      v19 = [v21 isAppearanceStreamEmpty];
-      if ((v19 & 1) == 0)
+      isAppearanceStreamEmpty = [annotationCopy isAppearanceStreamEmpty];
+      if ((isAppearanceStreamEmpty & 1) == 0)
       {
-        [a1 drawAppearance:0 ofAnnotation:v21 withBox:a3 inContext:CurrentContext scaleProportional:1 suppressTextRendering:1];
+        [self drawAppearance:0 ofAnnotation:annotationCopy withBox:box inContext:CurrentContext scaleProportional:1 suppressTextRendering:1];
       }
 
       CGContextSaveGState(CurrentContext);
-      [v8 transformContext:CurrentContext forBox:a3];
+      [page transformContext:CurrentContext forBox:box];
       UIGraphicsPushContext(CurrentContext);
       if (Property == v18)
       {
-        v20 = [v21 interactiveBackgroundColor];
+        interactiveBackgroundColor = [annotationCopy interactiveBackgroundColor];
       }
 
       else
       {
-        v20 = 0;
+        interactiveBackgroundColor = 0;
       }
 
       v23.origin.x = v13;
@@ -2705,9 +2705,9 @@ LABEL_22:
       v23.size.width = v15;
       v23.size.height = v16;
       v24 = PDFRectInset(v23, 1.0, 1.0);
-      if (v19)
+      if (isAppearanceStreamEmpty)
       {
-        [PDFAnnotationDrawing fillRect:v20 color:CurrentContext context:v24.origin.x, v24.origin.y, v24.size.width, v24.size.height];
+        [PDFAnnotationDrawing fillRect:interactiveBackgroundColor color:CurrentContext context:v24.origin.x, v24.origin.y, v24.size.width, v24.size.height];
       }
 
       UIGraphicsPopContext();
@@ -2716,14 +2716,14 @@ LABEL_22:
   }
 }
 
-+ (id)createLigtherColor:(CGColor *)a3 withIntensity:(double)a4
++ (id)createLigtherColor:(CGColor *)color withIntensity:(double)intensity
 {
-  if (a3 && CGColorGetNumberOfComponents(a3) == 4 && (ColorSpace = CGColorGetColorSpace(a3), CGColorSpaceGetModel(ColorSpace) == kCGColorSpaceModelRGB))
+  if (color && CGColorGetNumberOfComponents(color) == 4 && (ColorSpace = CGColorGetColorSpace(color), CGColorSpaceGetModel(ColorSpace) == kCGColorSpaceModelRGB))
   {
-    Components = CGColorGetComponents(a3);
-    v8 = fmax(*Components - a4, 0.0);
-    v9 = fmax(Components[1] - a4, 0.0);
-    v10 = fmax(Components[2] - a4, 0.0);
+    Components = CGColorGetComponents(color);
+    v8 = fmax(*Components - intensity, 0.0);
+    v9 = fmax(Components[1] - intensity, 0.0);
+    v10 = fmax(Components[2] - intensity, 0.0);
   }
 
   else
@@ -2738,11 +2738,11 @@ LABEL_22:
   return v11;
 }
 
-+ (id)stringByTrimmingTrailingCharactersInSet:(id)a3 forString:(id)a4
++ (id)stringByTrimmingTrailingCharactersInSet:(id)set forString:(id)string
 {
-  v5 = a4;
-  v6 = [a3 invertedSet];
-  v7 = [v5 rangeOfCharacterFromSet:v6 options:4];
+  stringCopy = string;
+  invertedSet = [set invertedSet];
+  v7 = [stringCopy rangeOfCharacterFromSet:invertedSet options:4];
   v9 = v8;
 
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
@@ -2752,25 +2752,25 @@ LABEL_22:
 
   else
   {
-    v10 = [v5 substringToIndex:v7 + v9];
+    v10 = [stringCopy substringToIndex:v7 + v9];
   }
 
   return v10;
 }
 
-+ (BOOL)renderString:(id)a3 forRect:(CGRect)a4 font:(id)a5 color:(id)a6 alignment:(int64_t)a7 rotation:(int)a8 breaks:(BOOL)a9 context:(CGContext *)c withAnnotation:(id)a11
++ (BOOL)renderString:(id)string forRect:(CGRect)rect font:(id)font color:(id)color alignment:(int64_t)alignment rotation:(int)rotation breaks:(BOOL)breaks context:(CGContext *)c withAnnotation:(id)self1
 {
-  v11 = a9;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  breaksCopy = breaks;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v70[1] = *MEMORY[0x1E69E9840];
-  v20 = a3;
-  v21 = a5;
-  v22 = a6;
-  v23 = a11;
-  if (!v20)
+  stringCopy = string;
+  fontCopy = font;
+  colorCopy = color;
+  annotationCopy = annotation;
+  if (!stringCopy)
   {
     v39 = 1;
     goto LABEL_45;
@@ -2784,7 +2784,7 @@ LABEL_22:
   PDFRectIntegral(v72);
   v73.origin.x = PDFRectToCGRect(v24);
   CGContextClipToRect(c, v73);
-  v25 = [v23 gcCreateAttributesForFont:v21 color:v22];
+  v25 = [annotationCopy gcCreateAttributesForFont:fontCopy color:colorCopy];
   if (!v25)
   {
     v39 = height >= 0.0;
@@ -2793,34 +2793,34 @@ LABEL_22:
   }
 
   v26 = v25;
-  if (a7 == 2)
+  if (alignment == 2)
   {
-    v27 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-    v28 = [a1 stringByTrimmingTrailingCharactersInSet:v27 forString:v20];
+    whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+    v28 = [self stringByTrimmingTrailingCharactersInSet:whitespaceCharacterSet forString:stringCopy];
 
-    v20 = v28;
+    stringCopy = v28;
   }
 
-  v64 = v23;
-  if ([v23 shouldComb])
+  v64 = annotationCopy;
+  if ([annotationCopy shouldComb])
   {
-    v29 = [v23 valueForAnnotationKey:@"/MaxLen"];
-    v30 = [v29 integerValue];
+    v29 = [annotationCopy valueForAnnotationKey:@"/MaxLen"];
+    integerValue = [v29 integerValue];
 
-    if (!v21)
+    if (!fontCopy)
     {
       v31 = MEMORY[0x1E69DB878];
       [MEMORY[0x1E69DB878] systemFontSize];
-      v21 = [v31 systemFontOfSize:?];
+      fontCopy = [v31 systemFontOfSize:?];
     }
 
     v69 = *MEMORY[0x1E69DB648];
-    v70[0] = v21;
+    v70[0] = fontCopy;
     v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v70 forKeys:&v69 count:1];
-    [(__CFString *)v20 sizeWithAttributes:v32];
+    [(__CFString *)stringCopy sizeWithAttributes:v32];
     v34 = v33;
 
-    valuePtr.a = (width + -v34 / [(__CFString *)v20 length]* v30) / v30;
+    valuePtr.a = (width + -v34 / [(__CFString *)stringCopy length]* integerValue) / integerValue;
     v35 = *MEMORY[0x1E695E480];
     v36 = CFNumberCreate(*MEMORY[0x1E695E480], kCFNumberCGFloatType, &valuePtr);
     CFDictionarySetValue(v26, *MEMORY[0x1E6965A18], v36);
@@ -2839,7 +2839,7 @@ LABEL_22:
   }
 
   cf = v26;
-  v40 = CFAttributedStringCreate(v35, v20, v26);
+  v40 = CFAttributedStringCreate(v35, stringCopy, v26);
   v41 = v40;
   if (v40)
   {
@@ -2849,13 +2849,13 @@ LABEL_22:
       v43 = v42;
       Length = CFAttributedStringGetLength(v41);
       v45 = 0.0;
-      v61 = v21;
-      v62 = v22;
-      if (a8 > 179)
+      v61 = fontCopy;
+      v62 = colorCopy;
+      if (rotation > 179)
       {
-        if (a8 != 180)
+        if (rotation != 180)
         {
-          if (a8 != 270)
+          if (rotation != 270)
           {
             goto LABEL_26;
           }
@@ -2872,9 +2872,9 @@ LABEL_22:
 
       else
       {
-        if (a8)
+        if (rotation)
         {
-          if (a8 != 90)
+          if (rotation != 90)
           {
             goto LABEL_26;
           }
@@ -2903,7 +2903,7 @@ LABEL_26:
       do
       {
         v52 = Length;
-        if (v11)
+        if (breaksCopy)
         {
           v52 = CTTypesetterSuggestLineBreak(v43, v50, v45);
         }
@@ -2932,12 +2932,12 @@ LABEL_26:
           v57 = v45 - TypographicBounds;
           v58 = v57 * 0.5;
           v59 = v38 + v57;
-          if (a7 != 2)
+          if (alignment != 2)
           {
             v59 = v58;
           }
 
-          if (!a7)
+          if (!alignment)
           {
             v59 = v38;
           }
@@ -2952,8 +2952,8 @@ LABEL_26:
 
       while (v50 < Length);
       v39 = v51 <= height;
-      v21 = v61;
-      v22 = v62;
+      fontCopy = v61;
+      colorCopy = v62;
       goto LABEL_40;
     }
   }
@@ -2973,101 +2973,101 @@ LABEL_40:
     CFRelease(v43);
   }
 
-  v23 = v64;
+  annotationCopy = v64;
 LABEL_45:
 
   return v39;
 }
 
-+ (void)fillRect:(CGRect)a3 color:(id)a4 context:(CGContext *)a5
++ (void)fillRect:(CGRect)rect color:(id)color context:(CGContext *)context
 {
-  if (a4)
+  if (color)
   {
-    v6 = a4;
-    CGContextSaveGState(a5);
-    v7 = [v6 CGColor];
+    colorCopy = color;
+    CGContextSaveGState(context);
+    cGColor = [colorCopy CGColor];
 
-    ColorSpace = CGColorGetColorSpace(v7);
-    CGContextSetFillColorSpace(a5, ColorSpace);
-    CGContextSetFillColorWithColor(a5, v7);
+    ColorSpace = CGColorGetColorSpace(cGColor);
+    CGContextSetFillColorSpace(context, ColorSpace);
+    CGContextSetFillColorWithColor(context, cGColor);
     v11.origin.x = PDFRectToCGRect(v9);
-    CGContextFillRect(a5, v11);
+    CGContextFillRect(context, v11);
 
-    CGContextRestoreGState(a5);
+    CGContextRestoreGState(context);
   }
 }
 
-+ (void)strokeRect:(CGRect)a3 color:(id)a4 context:(CGContext *)a5
++ (void)strokeRect:(CGRect)rect color:(id)color context:(CGContext *)context
 {
-  if (a4)
+  if (color)
   {
-    v6 = a4;
-    CGContextSaveGState(a5);
-    v7 = [v6 CGColor];
+    colorCopy = color;
+    CGContextSaveGState(context);
+    cGColor = [colorCopy CGColor];
 
-    ColorSpace = CGColorGetColorSpace(v7);
-    CGContextSetStrokeColorSpace(a5, ColorSpace);
-    CGContextSetStrokeColorWithColor(a5, v7);
+    ColorSpace = CGColorGetColorSpace(cGColor);
+    CGContextSetStrokeColorSpace(context, ColorSpace);
+    CGContextSetStrokeColorWithColor(context, cGColor);
     v11.origin.x = PDFRectToCGRect(v9);
-    CGContextStrokeRect(a5, v11);
+    CGContextStrokeRect(context, v11);
 
-    CGContextRestoreGState(a5);
+    CGContextRestoreGState(context);
   }
 }
 
-+ (void)fillOval:(CGRect)a3 color:(id)a4 context:(CGContext *)a5
++ (void)fillOval:(CGRect)oval color:(id)color context:(CGContext *)context
 {
-  if (a4)
+  if (color)
   {
-    v6 = a4;
-    CGContextSaveGState(a5);
-    v7 = [v6 CGColor];
+    colorCopy = color;
+    CGContextSaveGState(context);
+    cGColor = [colorCopy CGColor];
 
-    ColorSpace = CGColorGetColorSpace(v7);
-    CGContextSetFillColorSpace(a5, ColorSpace);
-    CGContextSetFillColorWithColor(a5, v7);
+    ColorSpace = CGColorGetColorSpace(cGColor);
+    CGContextSetFillColorSpace(context, ColorSpace);
+    CGContextSetFillColorWithColor(context, cGColor);
     v11.origin.x = PDFRectToCGRect(v9);
-    CGContextFillEllipseInRect(a5, v11);
+    CGContextFillEllipseInRect(context, v11);
 
-    CGContextRestoreGState(a5);
+    CGContextRestoreGState(context);
   }
 }
 
-+ (void)strokeOval:(CGRect)a3 color:(id)a4 context:(CGContext *)a5
++ (void)strokeOval:(CGRect)oval color:(id)color context:(CGContext *)context
 {
-  if (a4)
+  if (color)
   {
-    v6 = a4;
-    CGContextSaveGState(a5);
-    v7 = [v6 CGColor];
+    colorCopy = color;
+    CGContextSaveGState(context);
+    cGColor = [colorCopy CGColor];
 
-    ColorSpace = CGColorGetColorSpace(v7);
-    CGContextSetStrokeColorSpace(a5, ColorSpace);
-    CGContextSetStrokeColorWithColor(a5, v7);
+    ColorSpace = CGColorGetColorSpace(cGColor);
+    CGContextSetStrokeColorSpace(context, ColorSpace);
+    CGContextSetStrokeColorWithColor(context, cGColor);
     v11.origin.x = PDFRectToCGRect(v9);
-    CGContextStrokeEllipseInRect(a5, v11);
+    CGContextStrokeEllipseInRect(context, v11);
 
-    CGContextRestoreGState(a5);
+    CGContextRestoreGState(context);
   }
 }
 
-+ (void)drawWithBox:(int64_t)a3 inContext:(CGContext *)a4 withUnknownAnnotation:(id)a5
++ (void)drawWithBox:(int64_t)box inContext:(CGContext *)context withUnknownAnnotation:(id)annotation
 {
-  v8 = a5;
-  v9 = v8;
-  if (a3 <= 4)
+  annotationCopy = annotation;
+  v9 = annotationCopy;
+  if (box <= 4)
   {
-    v10 = v8;
-    v8 = [v8 appearance:0];
+    v10 = annotationCopy;
+    annotationCopy = [annotationCopy appearance:0];
     v9 = v10;
-    if (v8)
+    if (annotationCopy)
     {
-      v8 = [a1 drawAppearance:0 ofAnnotation:v10 withBox:a3 inContext:a4];
+      annotationCopy = [self drawAppearance:0 ofAnnotation:v10 withBox:box inContext:context];
       v9 = v10;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v8, v9);
+  MEMORY[0x1EEE66BB8](annotationCopy, v9);
 }
 
 @end

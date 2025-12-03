@@ -1,12 +1,12 @@
 @interface ViewfinderReliability
 + (id)sharedInstance;
 - (ViewfinderReliability)init;
-- (void)_checkForRepeatedEvent:(int64_t)a3;
-- (void)_checkForUnexpectedEvent:(int64_t)a3;
+- (void)_checkForRepeatedEvent:(int64_t)event;
+- (void)_checkForUnexpectedEvent:(int64_t)event;
 - (void)_print;
 - (void)_registerSources;
 - (void)_reset;
-- (void)logEvent:(int64_t)a3;
+- (void)logEvent:(int64_t)event;
 @end
 
 @implementation ViewfinderReliability
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = sub_100018408;
   block[3] = &unk_100034A20;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10003F330 != -1)
   {
     dispatch_once(&qword_10003F330, block);
@@ -49,24 +49,24 @@
     }
 
     self = v3;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)logEvent:(int64_t)a3
+- (void)logEvent:(int64_t)event
 {
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v6 = log;
-    v7 = sub_100018644(a3);
+    v7 = sub_100018644(event);
     v11 = 138412290;
     v12 = v7;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%@", &v11, 0xCu);
@@ -75,11 +75,11 @@
   v8 = self->_events;
   objc_sync_enter(v8);
   events = self->_events;
-  v10 = [NSNumber numberWithInteger:a3];
+  v10 = [NSNumber numberWithInteger:event];
   [(NSCountedSet *)events addObject:v10];
 
-  [(ViewfinderReliability *)self _checkForUnexpectedEvent:a3];
-  [(ViewfinderReliability *)self _checkForRepeatedEvent:a3];
+  [(ViewfinderReliability *)self _checkForUnexpectedEvent:event];
+  [(ViewfinderReliability *)self _checkForRepeatedEvent:event];
   objc_sync_exit(v8);
 }
 
@@ -178,12 +178,12 @@
   objc_sync_exit(v11);
 }
 
-- (void)_checkForUnexpectedEvent:(int64_t)a3
+- (void)_checkForUnexpectedEvent:(int64_t)event
 {
   if (CFPreferencesGetAppBooleanValue(@"ViewfinderReliability_CheckUnexpectedEvents", @"com.apple.NanoCamera", 0))
   {
     v5 = [NSSet setWithObjects:&off_100036730, &off_100036748, &off_100036760, &off_100036778, &off_100036790, &off_1000367A8, &off_1000367C0, 0];
-    v6 = [NSNumber numberWithInteger:a3];
+    v6 = [NSNumber numberWithInteger:event];
     v7 = [v5 containsObject:v6];
 
     if (v7)
@@ -191,18 +191,18 @@
       log = self->_log;
       if (os_log_type_enabled(log, OS_LOG_TYPE_FAULT))
       {
-        sub_10002513C(log, a3);
+        sub_10002513C(log, event);
       }
     }
   }
 }
 
-- (void)_checkForRepeatedEvent:(int64_t)a3
+- (void)_checkForRepeatedEvent:(int64_t)event
 {
   if (CFPreferencesGetAppBooleanValue(@"ViewfinderReliability_CheckRepeatedEvents", @"com.apple.NanoCamera", 0))
   {
     events = self->_events;
-    v6 = [NSNumber numberWithInteger:a3];
+    v6 = [NSNumber numberWithInteger:event];
     v7 = [(NSCountedSet *)events countForObject:v6];
 
     if (v7 >= 2)
@@ -210,7 +210,7 @@
       log = self->_log;
       if (os_log_type_enabled(log, OS_LOG_TYPE_FAULT))
       {
-        sub_1000251D4(log, a3);
+        sub_1000251D4(log, event);
       }
     }
   }

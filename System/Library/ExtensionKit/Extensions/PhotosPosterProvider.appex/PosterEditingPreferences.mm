@@ -10,7 +10,7 @@
 
 - (UIFont)timeFont
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100009370();
 
   return v3;
@@ -18,7 +18,7 @@
 
 - (UIColor)timeColor
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1000093F4();
 
   return v3;
@@ -26,7 +26,7 @@
 
 - (UIColor)statusBarTintColor
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100009478();
 
   return v3;
@@ -44,7 +44,7 @@
 
 - (BOOL)isDepthEffectEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100009524();
 
   return v3 & 1;

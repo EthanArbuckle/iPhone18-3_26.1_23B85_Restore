@@ -8,15 +8,15 @@
 - (UILabel)subLabel;
 - (double)spaceFromSuperViewToLabel;
 - (void)awakeFromNib;
-- (void)updateWithDevice:(id)a3 showsDetail:(BOOL)a4 showsTransport:(BOOL)a5 isSelected:(BOOL)a6;
+- (void)updateWithDevice:(id)device showsDetail:(BOOL)detail showsTransport:(BOOL)transport isSelected:(BOOL)selected;
 @end
 
 @implementation FBADevicePairingCell
 
 - (double)spaceFromSuperViewToLabel
 {
-  v2 = [(FBADevicePairingCell *)self mainLabel];
-  [v2 frame];
+  mainLabel = [(FBADevicePairingCell *)self mainLabel];
+  [mainLabel frame];
   v4 = v3;
 
   return v4;
@@ -27,49 +27,49 @@
   v12.receiver = self;
   v12.super_class = FBADevicePairingCell;
   [(FBADevicePairingCell *)&v12 awakeFromNib];
-  v3 = [(FBADevicePairingCell *)self mainLabel];
-  [v3 setText:&stru_1000E2210];
+  mainLabel = [(FBADevicePairingCell *)self mainLabel];
+  [mainLabel setText:&stru_1000E2210];
 
   v4 = +[UIColor labelColor];
-  v5 = [(FBADevicePairingCell *)self mainLabel];
-  [v5 setTextColor:v4];
+  mainLabel2 = [(FBADevicePairingCell *)self mainLabel];
+  [mainLabel2 setTextColor:v4];
 
-  v6 = [(FBADevicePairingCell *)self subLabel];
-  [v6 setText:&stru_1000E2210];
+  subLabel = [(FBADevicePairingCell *)self subLabel];
+  [subLabel setText:&stru_1000E2210];
 
   v7 = +[UIColor secondaryLabelColor];
-  v8 = [(FBADevicePairingCell *)self subLabel];
-  [v8 setTextColor:v7];
+  subLabel2 = [(FBADevicePairingCell *)self subLabel];
+  [subLabel2 setTextColor:v7];
 
-  v9 = [(FBADevicePairingCell *)self deviceImage];
-  [v9 setImage:0];
+  deviceImage = [(FBADevicePairingCell *)self deviceImage];
+  [deviceImage setImage:0];
 
-  v10 = [(FBADevicePairingCell *)self activityIndicator];
-  [v10 stopAnimating];
+  activityIndicator = [(FBADevicePairingCell *)self activityIndicator];
+  [activityIndicator stopAnimating];
 
-  v11 = [(FBADevicePairingCell *)self detailLabelTrailingConstraint];
-  [v11 constant];
+  detailLabelTrailingConstraint = [(FBADevicePairingCell *)self detailLabelTrailingConstraint];
+  [detailLabelTrailingConstraint constant];
   [(FBADevicePairingCell *)self setDetailLabelTrailingConstraintInitial:?];
 }
 
-- (void)updateWithDevice:(id)a3 showsDetail:(BOOL)a4 showsTransport:(BOOL)a5 isSelected:(BOOL)a6
+- (void)updateWithDevice:(id)device showsDetail:(BOOL)detail showsTransport:(BOOL)transport isSelected:(BOOL)selected
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
-  v10 = a3;
-  v11 = [v10 displayType];
-  v12 = [(FBADevicePairingCell *)self detailLabel];
-  [v12 setText:&stru_1000E2210];
+  selectedCopy = selected;
+  transportCopy = transport;
+  detailCopy = detail;
+  deviceCopy = device;
+  displayType = [deviceCopy displayType];
+  detailLabel = [(FBADevicePairingCell *)self detailLabel];
+  [detailLabel setText:&stru_1000E2210];
 
-  v13 = [(FBADevicePairingCell *)self statusIndicatorImageView];
-  [v13 setHidden:0];
+  statusIndicatorImageView = [(FBADevicePairingCell *)self statusIndicatorImageView];
+  [statusIndicatorImageView setHidden:0];
 
-  if ([v10 isCurrentDevice])
+  if ([deviceCopy isCurrentDevice])
   {
-    v14 = [v10 deviceClass];
-    v15 = [v14 lowercaseString];
-    v16 = [v15 containsString:@"iphone"];
+    deviceClass = [deviceCopy deviceClass];
+    lowercaseString = [deviceClass lowercaseString];
+    v16 = [lowercaseString containsString:@"iphone"];
 
     if (v16)
     {
@@ -80,8 +80,8 @@
 
     else
     {
-      v20 = [v14 lowercaseString];
-      v21 = [v20 containsString:@"ipad"];
+      lowercaseString2 = [deviceClass lowercaseString];
+      v21 = [lowercaseString2 containsString:@"ipad"];
 
       if (v21)
       {
@@ -92,8 +92,8 @@
 
       else
       {
-        v23 = [v14 lowercaseString];
-        v24 = [v23 containsString:@"ipod"];
+        lowercaseString3 = [deviceClass lowercaseString];
+        v24 = [lowercaseString3 containsString:@"ipod"];
 
         if (v24)
         {
@@ -104,8 +104,8 @@
 
         else
         {
-          v25 = [v14 lowercaseString];
-          v26 = [v25 containsString:@"mac"];
+          lowercaseString4 = [deviceClass lowercaseString];
+          v26 = [lowercaseString4 containsString:@"mac"];
 
           v17 = +[NSBundle mainBundle];
           v18 = v17;
@@ -113,11 +113,11 @@
           {
             v50 = [v17 localizedStringForKey:@"THIS_DEVICE_FORMAT" value:@"This %@" table:0];
 
-            v51 = [v10 deviceClass];
+            deviceClass2 = [deviceCopy deviceClass];
             v18 = v50;
-            v27 = [NSString stringWithFormat:v50, v51];
+            v27 = [NSString stringWithFormat:v50, deviceClass2];
 
-            v11 = v51;
+            displayType = deviceClass2;
             goto LABEL_15;
           }
 
@@ -129,15 +129,15 @@
     v27 = [v17 localizedStringForKey:v19 value:v19 table:0];
 LABEL_15:
 
-    v22 = +[UIColor systemGreenColor];
-    v28 = [(FBADevicePairingCell *)self statusIndicatorImageView];
-    [v28 setTintColor:v22];
+    statusIndicatorImageView3 = +[UIColor systemGreenColor];
+    statusIndicatorImageView2 = [(FBADevicePairingCell *)self statusIndicatorImageView];
+    [statusIndicatorImageView2 setTintColor:statusIndicatorImageView3];
 
-    v11 = v27;
+    displayType = v27;
     goto LABEL_16;
   }
 
-  if ([v10 isVisibleToDED])
+  if ([deviceCopy isVisibleToDED])
   {
     +[UIColor systemGreenColor];
   }
@@ -146,22 +146,22 @@ LABEL_15:
   {
     +[UIColor systemGrayColor];
   }
-  v14 = ;
-  v22 = [(FBADevicePairingCell *)self statusIndicatorImageView];
-  [v22 setHidden:v14 != 0];
+  deviceClass = ;
+  statusIndicatorImageView3 = [(FBADevicePairingCell *)self statusIndicatorImageView];
+  [statusIndicatorImageView3 setHidden:deviceClass != 0];
 LABEL_16:
 
-  v29 = [v10 displayName];
-  v30 = [(FBADevicePairingCell *)self mainLabel];
-  [v30 setText:v29];
+  displayName = [deviceCopy displayName];
+  mainLabel = [(FBADevicePairingCell *)self mainLabel];
+  [mainLabel setText:displayName];
 
-  v31 = [(FBADevicePairingCell *)self subLabel];
-  [v31 setText:v11];
+  subLabel = [(FBADevicePairingCell *)self subLabel];
+  [subLabel setText:displayType];
 
-  if (v6)
+  if (selectedCopy)
   {
     [(FBADevicePairingCell *)self setAccessoryType:3];
-    if (!v7)
+    if (!transportCopy)
     {
       goto LABEL_27;
     }
@@ -169,42 +169,42 @@ LABEL_16:
     goto LABEL_26;
   }
 
-  if (v8)
+  if (detailCopy)
   {
-    if ([v10 isCurrentDevice] && !v7)
+    if ([deviceCopy isCurrentDevice] && !transportCopy)
     {
       goto LABEL_22;
     }
   }
 
-  else if (!v7)
+  else if (!transportCopy)
   {
 LABEL_22:
     [(FBADevicePairingCell *)self setAccessoryType:0];
     [(FBADevicePairingCell *)self detailLabelTrailingConstraintInitial];
     v33 = v32;
-    v34 = [(FBADevicePairingCell *)self detailLabelTrailingConstraint];
-    v35 = v34;
+    detailLabelTrailingConstraint = [(FBADevicePairingCell *)self detailLabelTrailingConstraint];
+    v35 = detailLabelTrailingConstraint;
     v36 = v33;
     goto LABEL_25;
   }
 
   [(FBADevicePairingCell *)self setAccessoryType:4];
-  v34 = [(FBADevicePairingCell *)self detailLabelTrailingConstraint];
-  v35 = v34;
+  detailLabelTrailingConstraint = [(FBADevicePairingCell *)self detailLabelTrailingConstraint];
+  v35 = detailLabelTrailingConstraint;
   v36 = 0.0;
 LABEL_25:
-  [v34 setConstant:v36];
+  [detailLabelTrailingConstraint setConstant:v36];
 
-  if (v7)
+  if (transportCopy)
   {
 LABEL_26:
-    v37 = [(FBADevicePairingCell *)self mainLabel];
-    v38 = [v37 text];
-    v39 = [v10 transportsForDisplay];
-    v40 = [NSString stringWithFormat:@"%@ (%@)", v38, v39];
-    v41 = [(FBADevicePairingCell *)self subLabel];
-    [v41 setText:v40];
+    mainLabel2 = [(FBADevicePairingCell *)self mainLabel];
+    text = [mainLabel2 text];
+    transportsForDisplay = [deviceCopy transportsForDisplay];
+    v40 = [NSString stringWithFormat:@"%@ (%@)", text, transportsForDisplay];
+    subLabel2 = [(FBADevicePairingCell *)self subLabel];
+    [subLabel2 setText:v40];
   }
 
 LABEL_27:
@@ -216,20 +216,20 @@ LABEL_27:
   v52[2] = sub_100026EC8;
   v52[3] = &unk_1000DEFF0;
   v52[4] = self;
-  [v10 fetchIconImageDataForScale:v52 completionCompletion:v43];
+  [deviceCopy fetchIconImageDataForScale:v52 completionCompletion:v43];
 
-  v44 = [(FBADevicePairingCell *)self traitCollection];
-  v45 = [v44 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v45);
+  traitCollection = [(FBADevicePairingCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
-  v47 = [(FBADevicePairingCell *)self subLabel];
-  [v47 setNumberOfLines:!IsAccessibilityCategory];
+  subLabel3 = [(FBADevicePairingCell *)self subLabel];
+  [subLabel3 setNumberOfLines:!IsAccessibilityCategory];
 
-  v48 = [(FBADevicePairingCell *)self mainLabel];
-  [v48 setNumberOfLines:!IsAccessibilityCategory];
+  mainLabel3 = [(FBADevicePairingCell *)self mainLabel];
+  [mainLabel3 setNumberOfLines:!IsAccessibilityCategory];
 
-  v49 = [(FBADevicePairingCell *)self contentView];
-  [v49 setNeedsDisplay];
+  contentView = [(FBADevicePairingCell *)self contentView];
+  [contentView setNeedsDisplay];
 }
 
 - (UIImageView)deviceImage

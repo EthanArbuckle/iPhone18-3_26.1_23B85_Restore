@@ -1,17 +1,17 @@
 @interface SKTileGroupRule
 + (SKTileGroupRule)tileGroupRuleWithAdjacency:(SKTileAdjacencyMask)adjacency tileDefinitions:(NSArray *)tileDefinitions;
-- (BOOL)isEqualToNode:(id)a3;
+- (BOOL)isEqualToNode:(id)node;
 - (SKTileGroup)parentGroup;
 - (SKTileGroupRule)initWithAdjacency:(SKTileAdjacencyMask)adjacency tileDefinitions:(NSArray *)tileDefinitions;
-- (SKTileGroupRule)initWithCoder:(id)a3;
+- (SKTileGroupRule)initWithCoder:(id)coder;
 - (id)copy;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)calcTileDefinitionIDsWithTileSet:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setTileDefinitionIDs:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)calcTileDefinitionIDsWithTileSet:(id)set;
+- (void)encodeWithCoder:(id)coder;
+- (void)setTileDefinitionIDs:(id)ds;
 - (void)setTileDefinitionParentPointers;
 - (void)setTileDefinitions:(NSArray *)tileDefinitions;
-- (void)setTileDefinitionsFromIDsWithTileSet:(id)a3;
+- (void)setTileDefinitionsFromIDsWithTileSet:(id)set;
 @end
 
 @implementation SKTileGroupRule
@@ -25,9 +25,9 @@
   [(SKTileGroupRule *)self setTileDefinitionParentPointers];
 }
 
-- (void)setTileDefinitionIDs:(id)a3
+- (void)setTileDefinitionIDs:(id)ds
 {
-  v4 = [MEMORY[0x277CBEB18] arrayWithArray:a3];
+  v4 = [MEMORY[0x277CBEB18] arrayWithArray:ds];
   tileDefinitionIDs = self->_tileDefinitionIDs;
   self->_tileDefinitionIDs = v4;
 }
@@ -72,10 +72,10 @@
   }
 }
 
-- (SKTileGroupRule)initWithCoder:(id)a3
+- (SKTileGroupRule)initWithCoder:(id)coder
 {
   v14[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = SKTileGroupRule;
   v5 = [(SKTileGroupRule *)&v13 init];
@@ -88,15 +88,15 @@
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:3];
     [v6 addObjectsFromArray:v7];
 
-    v8 = [v4 allowedClasses];
-    [v6 unionSet:v8];
+    allowedClasses = [coderCopy allowedClasses];
+    [v6 unionSet:allowedClasses];
 
-    v9 = [v4 decodeObjectOfClasses:v6 forKey:@"_tileDefinitions"];
+    v9 = [coderCopy decodeObjectOfClasses:v6 forKey:@"_tileDefinitions"];
     tileDefinitions = v5->_tileDefinitions;
     v5->_tileDefinitions = v9;
 
-    v5->_adjacency = [v4 decodeInt32ForKey:@"_adjacency"];
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_name"];
+    v5->_adjacency = [coderCopy decodeInt32ForKey:@"_adjacency"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_name"];
     [(SKTileGroupRule *)v5 setName:v11];
 
     [(SKTileGroupRule *)v5 setTileDefinitionParentPointers];
@@ -105,23 +105,23 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   tileDefinitions = self->_tileDefinitions;
-  v5 = a3;
-  [v5 encodeObject:tileDefinitions forKey:@"_tileDefinitions"];
-  [v5 encodeInt32:self->_adjacency forKey:@"_adjacency"];
-  v6 = [(SKTileGroupRule *)self name];
-  [v5 encodeObject:v6 forKey:@"_name"];
+  coderCopy = coder;
+  [coderCopy encodeObject:tileDefinitions forKey:@"_tileDefinitions"];
+  [coderCopy encodeInt32:self->_adjacency forKey:@"_adjacency"];
+  name = [(SKTileGroupRule *)self name];
+  [coderCopy encodeObject:name forKey:@"_name"];
 }
 
-- (BOOL)isEqualToNode:(id)a3
+- (BOOL)isEqualToNode:(id)node
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  nodeCopy = node;
+  v5 = nodeCopy;
+  if (self != nodeCopy)
   {
-    v6 = v4;
+    v6 = nodeCopy;
     if ([(NSMutableArray *)self->_tileDefinitions count])
     {
       v7 = 0;
@@ -146,24 +146,24 @@
     }
 
 LABEL_7:
-    v11 = [(SKTileGroupRule *)self name];
-    if (v11)
+    name = [(SKTileGroupRule *)self name];
+    if (name)
     {
     }
 
     else
     {
-      v13 = [(SKTileGroupRule *)v6 name];
+      name2 = [(SKTileGroupRule *)v6 name];
 
-      if (!v13)
+      if (!name2)
       {
         goto LABEL_12;
       }
     }
 
-    v14 = [(SKTileGroupRule *)self name];
-    v15 = [(SKTileGroupRule *)v6 name];
-    v16 = [v14 isEqualToString:v15];
+    name3 = [(SKTileGroupRule *)self name];
+    name4 = [(SKTileGroupRule *)v6 name];
+    v16 = [name3 isEqualToString:name4];
 
     if (!v16)
     {
@@ -192,17 +192,17 @@ LABEL_15:
   return [(SKTileGroupRule *)self copyWithZone:v3];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v4)
   {
     [v4 setAdjacency:{-[SKTileGroupRule adjacency](self, "adjacency")}];
-    v5 = [(SKTileGroupRule *)self tileDefinitions];
-    [v4 setTileDefinitions:v5];
+    tileDefinitions = [(SKTileGroupRule *)self tileDefinitions];
+    [v4 setTileDefinitions:tileDefinitions];
 
-    v6 = [(SKTileGroupRule *)self tileDefinitionIDs];
-    [v4 setTileDefinitionIDs:v6];
+    tileDefinitionIDs = [(SKTileGroupRule *)self tileDefinitionIDs];
+    [v4 setTileDefinitionIDs:tileDefinitionIDs];
   }
 
   return v4;
@@ -235,15 +235,15 @@ LABEL_15:
   return v6;
 }
 
-- (void)calcTileDefinitionIDsWithTileSet:(id)a3
+- (void)calcTileDefinitionIDsWithTileSet:(id)set
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  setCopy = set;
+  if (setCopy)
   {
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     tileDefinitionIDs = self->_tileDefinitionIDs;
-    self->_tileDefinitionIDs = v5;
+    self->_tileDefinitionIDs = array;
 
     v19 = 0u;
     v20 = 0u;
@@ -270,8 +270,8 @@ LABEL_15:
           {
             v13 = self->_tileDefinitionIDs;
             v14 = MEMORY[0x277CCABB0];
-            v15 = [v4 tileDefinitions];
-            v16 = [v14 numberWithUnsignedInteger:{objc_msgSend(v15, "indexOfObject:", v12)}];
+            tileDefinitions = [setCopy tileDefinitions];
+            v16 = [v14 numberWithUnsignedInteger:{objc_msgSend(tileDefinitions, "indexOfObject:", v12)}];
             [(NSMutableArray *)v13 addObject:v16];
           }
 
@@ -287,15 +287,15 @@ LABEL_15:
   }
 }
 
-- (void)setTileDefinitionsFromIDsWithTileSet:(id)a3
+- (void)setTileDefinitionsFromIDsWithTileSet:(id)set
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  setCopy = set;
+  if (setCopy)
   {
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     tileDefinitions = self->_tileDefinitions;
-    self->_tileDefinitions = v5;
+    self->_tileDefinitions = array;
 
     v21 = 0u;
     v22 = 0u;
@@ -320,15 +320,15 @@ LABEL_15:
           v12 = *(*(&v19 + 1) + 8 * v11);
           if (v12)
           {
-            v13 = [v12 unsignedIntegerValue];
-            v14 = [v4 tileDefinitions];
-            v15 = [v14 count];
+            unsignedIntegerValue = [v12 unsignedIntegerValue];
+            tileDefinitions = [setCopy tileDefinitions];
+            v15 = [tileDefinitions count];
 
-            if (v15 > v13)
+            if (v15 > unsignedIntegerValue)
             {
               v16 = self->_tileDefinitions;
-              v17 = [v4 tileDefinitions];
-              v18 = [v17 objectAtIndexedSubscript:v13];
+              tileDefinitions2 = [setCopy tileDefinitions];
+              v18 = [tileDefinitions2 objectAtIndexedSubscript:unsignedIntegerValue];
               [(NSMutableArray *)v16 addObject:v18];
             }
           }

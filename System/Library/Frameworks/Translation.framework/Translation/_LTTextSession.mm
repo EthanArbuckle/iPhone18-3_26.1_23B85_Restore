@@ -2,25 +2,25 @@
 + (OS_dispatch_queue)synchronizationQueue;
 - (BOOL)_isCancelled;
 - (_LTPreflightLocaleResolving)localeResolver;
-- (_LTTextSession)initWithSourceLocale:(id)a3 targetLocale:(id)a4 isHeadless:(BOOL)a5;
+- (_LTTextSession)initWithSourceLocale:(id)locale targetLocale:(id)targetLocale isHeadless:(BOOL)headless;
 - (_LTTextSessionDelegate)delegate;
 - (_LTTextSessionTranslating)textTranslator;
-- (void)_beginBatchRequest:(id)a3;
-- (void)_callDelegateOrGiveError:(id)a3 forConfiguration:(id)a4 completion:(id)a5;
-- (void)_checkDownloadStatusForConfiguration:(id)a3 completion:(id)a4;
-- (void)_didFinishMultiParagraphRequestWithUUID:(id)a3;
+- (void)_beginBatchRequest:(id)request;
+- (void)_callDelegateOrGiveError:(id)error forConfiguration:(id)configuration completion:(id)completion;
+- (void)_checkDownloadStatusForConfiguration:(id)configuration completion:(id)completion;
+- (void)_didFinishMultiParagraphRequestWithUUID:(id)d;
 - (void)_invocationCancelledSELFLogging;
-- (void)_invocationStartedSELFLogging:(id)a3;
-- (void)_prepareRequest:(id)a3;
-- (void)_supportedLocalePairsWithCompletionHandler:(id)a3;
-- (void)_translateRequest:(id)a3 perItemHandler:(id)a4;
-- (void)cancel:(BOOL)a3;
-- (void)preflightChecker:(id)a3 continueCheckingFromStep:(int64_t)a4 forConfiguration:(id)a5 completion:(id)a6;
-- (void)prepareDownloadsWithCompletion:(id)a3;
-- (void)setLocaleResolver:(id)a3;
-- (void)translateBatch:(id)a3 itemHandler:(id)a4 completionHandler:(id)a5;
-- (void)translateRequest:(id)a3 forSession:(id)a4 perItemHandler:(id)a5;
-- (void)translateString:(id)a3 completionHandler:(id)a4;
+- (void)_invocationStartedSELFLogging:(id)logging;
+- (void)_prepareRequest:(id)request;
+- (void)_supportedLocalePairsWithCompletionHandler:(id)handler;
+- (void)_translateRequest:(id)request perItemHandler:(id)handler;
+- (void)cancel:(BOOL)cancel;
+- (void)preflightChecker:(id)checker continueCheckingFromStep:(int64_t)step forConfiguration:(id)configuration completion:(id)completion;
+- (void)prepareDownloadsWithCompletion:(id)completion;
+- (void)setLocaleResolver:(id)resolver;
+- (void)translateBatch:(id)batch itemHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)translateRequest:(id)request forSession:(id)session perItemHandler:(id)handler;
+- (void)translateString:(id)string completionHandler:(id)handler;
 @end
 
 @implementation _LTTextSession
@@ -37,30 +37,30 @@
   return v3;
 }
 
-- (_LTTextSession)initWithSourceLocale:(id)a3 targetLocale:(id)a4 isHeadless:(BOOL)a5
+- (_LTTextSession)initWithSourceLocale:(id)locale targetLocale:(id)targetLocale isHeadless:(BOOL)headless
 {
-  v9 = a3;
-  v10 = a4;
+  localeCopy = locale;
+  targetLocaleCopy = targetLocale;
   v27.receiver = self;
   v27.super_class = _LTTextSession;
   v11 = [(_LTTextSession *)&v27 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_sourceLocale, a3);
-    objc_storeStrong(&v12->_targetLocale, a4);
-    v12->_isHeadless = a5;
-    v13 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeStrong(&v11->_sourceLocale, locale);
+    objc_storeStrong(&v12->_targetLocale, targetLocale);
+    v12->_isHeadless = headless;
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     inProgressMultiParagraphRequestByUUID = v12->_inProgressMultiParagraphRequestByUUID;
-    v12->_inProgressMultiParagraphRequestByUUID = v13;
+    v12->_inProgressMultiParagraphRequestByUUID = dictionary;
 
     v15 = objc_alloc_init(_LTTranslator);
     translator = v12->_translator;
     v12->_translator = v15;
 
-    v17 = [(_LTTranslator *)v12->_translator startTranslationSession];
+    startTranslationSession = [(_LTTranslator *)v12->_translator startTranslationSession];
     translationSession = v12->_translationSession;
-    v12->_translationSession = v17;
+    v12->_translationSession = startTranslationSession;
 
     v19 = objc_alloc_init(_LTPreflightChecker);
     preflightChecker = v12->_preflightChecker;
@@ -82,65 +82,65 @@
   return v12;
 }
 
-- (void)translateString:(id)a3 completionHandler:(id)a4
+- (void)translateString:(id)string completionHandler:(id)handler
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  handlerCopy = handler;
   v8 = _LTOSLogTextAPI();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
     *buf = 134217984;
-    v18 = [v6 length];
+    v18 = [stringCopy length];
     _os_log_impl(&dword_23AAF5000, v9, OS_LOG_TYPE_DEFAULT, "Client asked to translate single string: of length %zu", buf, 0xCu);
   }
 
-  v10 = [[_LTTextInput alloc] initWithSourceText:v6 clientIdentifier:0];
+  v10 = [[_LTTextInput alloc] initWithSourceText:stringCopy clientIdentifier:0];
   v16 = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:&v16 count:1];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __52___LTTextSession_translateString_completionHandler___block_invoke;
   v14[3] = &unk_278B6D6E0;
-  v15 = v7;
-  v12 = v7;
+  v15 = handlerCopy;
+  v12 = handlerCopy;
   [(_LTTextSession *)self translateBatch:v11 itemHandler:0 completionHandler:v14];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)translateBatch:(id)a3 itemHandler:(id)a4 completionHandler:(id)a5
+- (void)translateBatch:(id)batch itemHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[_LTTextSessionRequest alloc] initWithBatch:v10 sourceLocale:self->_sourceLocale targetLocale:self->_targetLocale itemHandler:v9 completionHandler:v8];
+  completionHandlerCopy = completionHandler;
+  handlerCopy = handler;
+  batchCopy = batch;
+  v11 = [[_LTTextSessionRequest alloc] initWithBatch:batchCopy sourceLocale:self->_sourceLocale targetLocale:self->_targetLocale itemHandler:handlerCopy completionHandler:completionHandlerCopy];
 
   [(_LTTextSessionRequest *)v11 setIsHeadless:[(_LTTextSession *)self isHeadless]];
   [(_LTTextSession *)self _prepareRequest:v11];
 }
 
-- (void)prepareDownloadsWithCompletion:(id)a3
+- (void)prepareDownloadsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [[_LTTextSessionRequest alloc] initForDownloadRequestWithSourceLocale:self->_sourceLocale targetLocale:self->_targetLocale completionHandler:v4];
+  completionCopy = completion;
+  v5 = [[_LTTextSessionRequest alloc] initForDownloadRequestWithSourceLocale:self->_sourceLocale targetLocale:self->_targetLocale completionHandler:completionCopy];
 
   [v5 setIsHeadless:{-[_LTTextSession isHeadless](self, "isHeadless")}];
   [(_LTTextSession *)self _prepareRequest:v5];
 }
 
-- (void)cancel:(BOOL)a3
+- (void)cancel:(BOOL)cancel
 {
   objc_initWeak(&location, self);
-  v4 = [objc_opt_class() synchronizationQueue];
+  synchronizationQueue = [objc_opt_class() synchronizationQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __25___LTTextSession_cancel___block_invoke;
   block[3] = &unk_278B6D708;
   objc_copyWeak(&v6, &location);
-  v7 = a3;
-  dispatch_async(v4, block);
+  cancelCopy = cancel;
+  dispatch_async(synchronizationQueue, block);
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -148,38 +148,38 @@
 
 - (BOOL)_isCancelled
 {
-  v3 = [objc_opt_class() synchronizationQueue];
-  dispatch_assert_queue_V2(v3);
+  synchronizationQueue = [objc_opt_class() synchronizationQueue];
+  dispatch_assert_queue_V2(synchronizationQueue);
 
   return self->_cancellationStatus - 1 < 2;
 }
 
-- (void)_prepareRequest:(id)a3
+- (void)_prepareRequest:(id)request
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 batch];
+  requestCopy = request;
+  batch = [requestCopy batch];
   v6 = _LTOSLogTextAPI();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
     *buf = 134217984;
-    v18 = [v5 count];
+    v18 = [batch count];
     _os_log_impl(&dword_23AAF5000, v7, OS_LOG_TYPE_DEFAULT, "Client asked to translate batch of %zu inputs", buf, 0xCu);
   }
 
-  v8 = [objc_opt_class() synchronizationQueue];
+  synchronizationQueue = [objc_opt_class() synchronizationQueue];
   objc_initWeak(buf, self);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __34___LTTextSession__prepareRequest___block_invoke;
   v12[3] = &unk_278B6D750;
   objc_copyWeak(&v16, buf);
-  v13 = v4;
-  v14 = v8;
-  v15 = self;
-  v9 = v8;
-  v10 = v4;
+  v13 = requestCopy;
+  v14 = synchronizationQueue;
+  selfCopy = self;
+  v9 = synchronizationQueue;
+  v10 = requestCopy;
   dispatch_async(v9, v12);
 
   objc_destroyWeak(&v16);
@@ -188,14 +188,14 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_beginBatchRequest:(id)a3
+- (void)_beginBatchRequest:(id)request
 {
-  v4 = a3;
-  [v4 didStartTranslating];
-  v5 = [objc_opt_class() synchronizationQueue];
+  requestCopy = request;
+  [requestCopy didStartTranslating];
+  synchronizationQueue = [objc_opt_class() synchronizationQueue];
   v6 = dispatch_group_create();
-  v7 = [v4 batch];
-  v8 = [v7 count];
+  batch = [requestCopy batch];
+  v8 = [batch count];
 
   if (v8)
   {
@@ -215,9 +215,9 @@
   v17[2] = __37___LTTextSession__beginBatchRequest___block_invoke;
   v17[3] = &unk_278B6D7C8;
   objc_copyWeak(&v21, &location);
-  v10 = v5;
+  v10 = synchronizationQueue;
   v18 = v10;
-  v11 = v4;
+  v11 = requestCopy;
   v19 = v11;
   v12 = v6;
   v20 = v12;
@@ -237,20 +237,20 @@
   objc_destroyWeak(&location);
 }
 
-- (void)translateRequest:(id)a3 forSession:(id)a4 perItemHandler:(id)a5
+- (void)translateRequest:(id)request forSession:(id)session perItemHandler:(id)handler
 {
   v46 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v32 = a4;
-  v9 = a5;
+  requestCopy = request;
+  sessionCopy = session;
+  handlerCopy = handler;
   v10 = [_LTLocalePair alloc];
-  v11 = [v8 resolvedSourceLocale];
-  v12 = [v8 resolvedTargetLocale];
-  v13 = [(_LTLocalePair *)v10 initWithSourceLocale:v11 targetLocale:v12];
+  resolvedSourceLocale = [requestCopy resolvedSourceLocale];
+  resolvedTargetLocale = [requestCopy resolvedTargetLocale];
+  v13 = [(_LTLocalePair *)v10 initWithSourceLocale:resolvedSourceLocale targetLocale:resolvedTargetLocale];
 
-  v14 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   objc_initWeak(&location, self);
-  v15 = [v8 batch];
+  batch = [requestCopy batch];
   v37[0] = MEMORY[0x277D85DD0];
   v37[1] = 3221225472;
   v37[2] = __61___LTTextSession_translateRequest_forSession_perItemHandler___block_invoke;
@@ -258,11 +258,11 @@
   objc_copyWeak(&v41, &location);
   v16 = v13;
   v38 = v16;
-  v17 = v9;
+  v17 = handlerCopy;
   v40 = v17;
-  v18 = v14;
+  v18 = array;
   v39 = v18;
-  [v15 enumerateObjectsUsingBlock:v37];
+  [batch enumerateObjectsUsingBlock:v37];
 
   v35 = 0u;
   v36 = 0u;
@@ -284,8 +284,8 @@
 
         v23 = *(*(&v33 + 1) + 8 * i);
         [v23 setSourceOrigin:3];
-        v24 = [v8 logIdentifier];
-        [v23 setLogIdentifier:v24];
+        logIdentifier = [requestCopy logIdentifier];
+        [v23 setLogIdentifier:logIdentifier];
 
         [v23 setForcedOfflineTranslation:{-[_LTTextSession allowOnlineTranslation](self, "allowOnlineTranslation") ^ 1}];
       }
@@ -296,13 +296,13 @@
     while (v20);
   }
 
-  v25 = [v8 batch];
-  v26 = [v25 count];
+  batch2 = [requestCopy batch];
+  v26 = [batch2 count];
 
   if ([v19 count])
   {
     v27 = +[_LTTranslator interruptionController];
-    [v27 addObserver:v8];
+    [v27 addObserver:requestCopy];
 
     v28 = _LTOSLogTextAPI();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
@@ -310,8 +310,8 @@
       -[_LTTextSession translateRequest:forSession:perItemHandler:].cold.1(buf, [v19 count], v26, v28);
     }
 
-    v29 = [v8 logIdentifier];
-    [(_LTTranslationSession *)self->_translationSession setLogIdentifier:v29];
+    logIdentifier2 = [requestCopy logIdentifier];
+    [(_LTTranslationSession *)self->_translationSession setLogIdentifier:logIdentifier2];
 
     [(_LTTranslationSession *)self->_translationSession translate:v19 useDedicatedTextMachPort:1];
   }
@@ -333,26 +333,26 @@
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)preflightChecker:(id)a3 continueCheckingFromStep:(int64_t)a4 forConfiguration:(id)a5 completion:(id)a6
+- (void)preflightChecker:(id)checker continueCheckingFromStep:(int64_t)step forConfiguration:(id)configuration completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [objc_opt_class() synchronizationQueue];
+  checkerCopy = checker;
+  configurationCopy = configuration;
+  completionCopy = completion;
+  synchronizationQueue = [objc_opt_class() synchronizationQueue];
   objc_initWeak(&location, self);
-  v14 = [v11 copy];
+  v14 = [configurationCopy copy];
   v15 = v14;
-  if (a4)
+  if (step)
   {
-    if (a4 != 2)
+    if (step != 2)
     {
       goto LABEL_4;
     }
 
     v16 = MEMORY[0x277CCA9B8];
-    v17 = [v14 effectiveSourceLocale];
-    v18 = [v15 effectiveTargetLocale];
-    v19 = [v16 lt_unsupportedPairingErrorWithSource:v17 target:v18];
+    effectiveSourceLocale = [v14 effectiveSourceLocale];
+    effectiveTargetLocale = [v15 effectiveTargetLocale];
+    v19 = [v16 lt_unsupportedPairingErrorWithSource:effectiveSourceLocale target:effectiveTargetLocale];
 
     if (!v19)
     {
@@ -367,9 +367,9 @@ LABEL_6:
     objc_copyWeak(&v30, &location);
     v27 = v19;
     v28 = v15;
-    v29 = v12;
+    v29 = completionCopy;
     v20 = v19;
-    dispatch_async(v13, block);
+    dispatch_async(synchronizationQueue, block);
 
     objc_destroyWeak(&v30);
     goto LABEL_7;
@@ -387,8 +387,8 @@ LABEL_4:
   v21[2] = __88___LTTextSession_preflightChecker_continueCheckingFromStep_forConfiguration_completion___block_invoke_29;
   v21[3] = &unk_278B6D868;
   objc_copyWeak(&v25, &location);
-  v22 = v13;
-  v24 = v12;
+  v22 = synchronizationQueue;
+  v24 = completionCopy;
   v23 = v15;
   [(_LTTextSession *)self _checkDownloadStatusForConfiguration:v23 completion:v21];
 
@@ -398,31 +398,31 @@ LABEL_7:
   objc_destroyWeak(&location);
 }
 
-- (void)_callDelegateOrGiveError:(id)a3 forConfiguration:(id)a4 completion:(id)a5
+- (void)_callDelegateOrGiveError:(id)error forConfiguration:(id)configuration completion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [objc_opt_class() synchronizationQueue];
-  dispatch_assert_queue_V2(v11);
+  errorCopy = error;
+  configurationCopy = configuration;
+  completionCopy = completion;
+  synchronizationQueue = [objc_opt_class() synchronizationQueue];
+  dispatch_assert_queue_V2(synchronizationQueue);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained needsUserInterventionForTextSession:self configuration:v9 completion:v10];
+    [WeakRetained needsUserInterventionForTextSession:self configuration:configurationCopy completion:completionCopy];
   }
 
   else
   {
-    v13 = [(_LTTextSession *)self isHeadless];
+    isHeadless = [(_LTTextSession *)self isHeadless];
     v14 = _LTOSLogTextAPI();
     v15 = v14;
-    if (v13)
+    if (isHeadless)
     {
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
         v17 = 138412290;
-        v18 = v8;
+        v18 = errorCopy;
         _os_log_impl(&dword_23AAF5000, v15, OS_LOG_TYPE_INFO, "_LTTextSession is running headless, so can't ask a delegate to complete validation, returning error: %@", &v17, 0xCu);
       }
     }
@@ -432,57 +432,57 @@ LABEL_7:
       [_LTTextSession _callDelegateOrGiveError:forConfiguration:completion:];
     }
 
-    v10[2](v10, 0, v8);
+    completionCopy[2](completionCopy, 0, errorCopy);
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_checkDownloadStatusForConfiguration:(id)a3 completion:(id)a4
+- (void)_checkDownloadStatusForConfiguration:(id)configuration completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [objc_opt_class() synchronizationQueue];
+  synchronizationQueue = [objc_opt_class() synchronizationQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66___LTTextSession__checkDownloadStatusForConfiguration_completion___block_invoke;
   block[3] = &unk_278B6D4B0;
   objc_copyWeak(&v16, &location);
-  v13 = v6;
-  v14 = v8;
-  v15 = v7;
-  v9 = v7;
-  v10 = v8;
-  v11 = v6;
+  v13 = configurationCopy;
+  v14 = synchronizationQueue;
+  v15 = completionCopy;
+  v9 = completionCopy;
+  v10 = synchronizationQueue;
+  v11 = configurationCopy;
   dispatch_async(v10, block);
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
 }
 
-- (void)_supportedLocalePairsWithCompletionHandler:(id)a3
+- (void)_supportedLocalePairsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [objc_opt_class() synchronizationQueue];
+  handlerCopy = handler;
+  synchronizationQueue = [objc_opt_class() synchronizationQueue];
   languageAvailability = self->_languageAvailability;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __61___LTTextSession__supportedLocalePairsWithCompletionHandler___block_invoke;
   v9[3] = &unk_278B6D8E0;
-  v10 = v5;
-  v11 = v4;
-  v7 = v4;
-  v8 = v5;
+  v10 = synchronizationQueue;
+  v11 = handlerCopy;
+  v7 = handlerCopy;
+  v8 = synchronizationQueue;
   [(_LTLanguageAvailability *)languageAvailability supportedLocalePairsWithCompletion:v9];
 }
 
-- (void)_translateRequest:(id)a3 perItemHandler:(id)a4
+- (void)_translateRequest:(id)request perItemHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_opt_class() synchronizationQueue];
-  if ([v6 isForDownloadRequest])
+  requestCopy = request;
+  handlerCopy = handler;
+  synchronizationQueue = [objc_opt_class() synchronizationQueue];
+  if ([requestCopy isForDownloadRequest])
   {
     v9 = _LTOSLogTextAPI();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -494,64 +494,64 @@ LABEL_7:
 
   else
   {
-    v10 = [(_LTTextSession *)self textTranslator];
+    textTranslator = [(_LTTextSession *)self textTranslator];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __51___LTTextSession__translateRequest_perItemHandler___block_invoke;
     v11[3] = &unk_278B6D930;
-    v12 = v8;
-    v13 = v7;
-    [v10 translateRequest:v6 forSession:self perItemHandler:v11];
+    v12 = synchronizationQueue;
+    v13 = handlerCopy;
+    [textTranslator translateRequest:requestCopy forSession:self perItemHandler:v11];
   }
 }
 
-- (void)_didFinishMultiParagraphRequestWithUUID:(id)a3
+- (void)_didFinishMultiParagraphRequestWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   objc_initWeak(&location, self);
-  v5 = [objc_opt_class() synchronizationQueue];
+  synchronizationQueue = [objc_opt_class() synchronizationQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58___LTTextSession__didFinishMultiParagraphRequestWithUUID___block_invoke;
   block[3] = &unk_278B6CD08;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = dCopy;
+  v6 = dCopy;
+  dispatch_async(synchronizationQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)setLocaleResolver:(id)a3
+- (void)setLocaleResolver:(id)resolver
 {
-  v4 = a3;
-  v5 = [(_LTTextSession *)self preflightChecker];
-  [v5 setLocaleResolver:v4];
+  resolverCopy = resolver;
+  preflightChecker = [(_LTTextSession *)self preflightChecker];
+  [preflightChecker setLocaleResolver:resolverCopy];
 }
 
 - (_LTPreflightLocaleResolving)localeResolver
 {
-  v2 = [(_LTTextSession *)self preflightChecker];
-  v3 = [v2 localeResolver];
+  preflightChecker = [(_LTTextSession *)self preflightChecker];
+  localeResolver = [preflightChecker localeResolver];
 
-  return v3;
+  return localeResolver;
 }
 
-- (void)_invocationStartedSELFLogging:(id)a3
+- (void)_invocationStartedSELFLogging:(id)logging
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [objc_opt_class() synchronizationQueue];
-  dispatch_assert_queue_V2(v4);
+  loggingCopy = logging;
+  synchronizationQueue = [objc_opt_class() synchronizationQueue];
+  dispatch_assert_queue_V2(synchronizationQueue);
 
-  if (([v3 isForDownloadRequest] & 1) == 0)
+  if (([loggingCopy isForDownloadRequest] & 1) == 0)
   {
-    v5 = [v3 resolvedSourceLocale];
-    v6 = v5;
-    if (v5)
+    resolvedSourceLocale = [loggingCopy resolvedSourceLocale];
+    v6 = resolvedSourceLocale;
+    if (resolvedSourceLocale)
     {
-      v7 = v5;
+      v7 = resolvedSourceLocale;
     }
 
     else
@@ -561,11 +561,11 @@ LABEL_7:
 
     v8 = v7;
 
-    v9 = [v3 resolvedTargetLocale];
-    v10 = v9;
-    if (v9)
+    resolvedTargetLocale = [loggingCopy resolvedTargetLocale];
+    v10 = resolvedTargetLocale;
+    if (resolvedTargetLocale)
     {
-      v11 = v9;
+      v11 = resolvedTargetLocale;
     }
 
     else
@@ -578,41 +578,41 @@ LABEL_7:
     v34 = v8;
     v13 = [[_LTLocalePair alloc] initWithSourceLocale:v8 targetLocale:v12];
     v14 = [_LTSELFLoggingEventData alloc];
-    v15 = [v3 logIdentifier];
-    v16 = [(_LTSELFLoggingEventData *)v14 initWithType:1 invocationId:v15];
+    logIdentifier = [loggingCopy logIdentifier];
+    v16 = [(_LTSELFLoggingEventData *)v14 initWithType:1 invocationId:logIdentifier];
 
     v17 = [_LTSELFLoggingTranslateAppContext alloc];
-    v18 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     LOBYTE(v33) = 0;
     LOBYTE(v32) = 0;
-    v19 = [(_LTSELFLoggingTranslateAppContext *)v17 initWithDisplayMode:0 localePair:v13 isGenderAlternativeEnabled:0 tabName:0 tabSessionId:v18 conversationTabView:0 isPlayTranslationsEnabled:v32 autoTranslateSessionId:0 audioChannel:0 languageIdentificationEnabled:v33];
+    v19 = [(_LTSELFLoggingTranslateAppContext *)v17 initWithDisplayMode:0 localePair:v13 isGenderAlternativeEnabled:0 tabName:0 tabSessionId:uUID conversationTabView:0 isPlayTranslationsEnabled:v32 autoTranslateSessionId:0 audioChannel:0 languageIdentificationEnabled:v33];
 
     v20 = [[_LTSELFLoggingInvocationOptions alloc] initWithTask:0 inputMode:1 invocationType:10 translateAppContext:v19];
     [(_LTSELFLoggingEventData *)v16 setStartInvocationOptions:v20];
     v21 = [_LTSELFLoggingEventData alloc];
-    v22 = [v3 logIdentifier];
-    v23 = [(_LTSELFLoggingEventData *)v21 initWithType:10 invocationId:v22];
+    logIdentifier2 = [loggingCopy logIdentifier];
+    v23 = [(_LTSELFLoggingEventData *)v21 initWithType:10 invocationId:logIdentifier2];
 
     v24 = [[_LTSELFLoggingInvocationOptions alloc] initWithTask:0 inputMode:1 invocationType:10 translateAppContext:0];
     [(_LTSELFLoggingEventData *)v23 setStartInvocationOptions:v24];
-    v25 = [MEMORY[0x277CCA8D8] mainBundle];
-    v26 = [v25 objectForInfoDictionaryKey:@"CFBundleIdentifier"];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    processName = [mainBundle objectForInfoDictionaryKey:@"CFBundleIdentifier"];
 
-    if (v26)
+    if (processName)
     {
       v27 = _LTOSLogXPC();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
       {
         *buf = 138543362;
-        v36 = v26;
+        v36 = processName;
         _os_log_impl(&dword_23AAF5000, v27, OS_LOG_TYPE_INFO, "Got untrusted client identifier from Info.plist: %{public}@", buf, 0xCu);
       }
     }
 
     else
     {
-      v28 = [MEMORY[0x277CCAC38] processInfo];
-      v26 = [v28 processName];
+      processInfo = [MEMORY[0x277CCAC38] processInfo];
+      processName = [processInfo processName];
 
       v29 = _LTOSLogXPC();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -621,7 +621,7 @@ LABEL_7:
       }
     }
 
-    v30 = v26;
+    v30 = processName;
 
     [(_LTSELFLoggingEventData *)v23 setUntrustedClientIdentifier:v30];
     [_LTTranslator selfLoggingInvocationStartedWithData:v16 invocationStartedTier1Data:v23];
@@ -632,8 +632,8 @@ LABEL_7:
 
 - (void)_invocationCancelledSELFLogging
 {
-  v3 = [objc_opt_class() synchronizationQueue];
-  dispatch_assert_queue_V2(v3);
+  synchronizationQueue = [objc_opt_class() synchronizationQueue];
+  dispatch_assert_queue_V2(synchronizationQueue);
 
   v4 = [(NSMutableSet *)self->_ongoingRequestInvocationIDs copy];
   [_LTTranslator selfLoggingInvocationCancelledForIDs:v4];

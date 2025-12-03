@@ -1,27 +1,27 @@
 @interface AVTimeRangeMarkUIProxy
-+ (id)maskedTimeRangeMarkUIProxyWithCornerRadius:(float)a3;
-+ (id)timeRangeMarkUIProxyWithBackgroundColor:(id)a3 cornerRadius:(float)a4;
++ (id)maskedTimeRangeMarkUIProxyWithCornerRadius:(float)radius;
++ (id)timeRangeMarkUIProxyWithBackgroundColor:(id)color cornerRadius:(float)radius;
 @end
 
 @implementation AVTimeRangeMarkUIProxy
 
-+ (id)timeRangeMarkUIProxyWithBackgroundColor:(id)a3 cornerRadius:(float)a4
++ (id)timeRangeMarkUIProxyWithBackgroundColor:(id)color cornerRadius:(float)radius
 {
-  v5 = a3;
+  colorCopy = color;
   v6 = objc_alloc_init(AVTimeRangeMarkUIProxy);
   backgroundColor = v6->_backgroundColor;
-  v6->_backgroundColor = v5;
+  v6->_backgroundColor = colorCopy;
 
-  v6->_cornerRadius = a4;
+  v6->_cornerRadius = radius;
 
   return v6;
 }
 
-+ (id)maskedTimeRangeMarkUIProxyWithCornerRadius:(float)a3
++ (id)maskedTimeRangeMarkUIProxyWithCornerRadius:(float)radius
 {
   v4 = objc_alloc_init(AVTimeRangeMarkUIProxy);
   v4->_isMasked = 1;
-  v4->_cornerRadius = a3;
+  v4->_cornerRadius = radius;
 
   return v4;
 }

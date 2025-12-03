@@ -1,10 +1,10 @@
 @interface TicketStatus
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (NSString)rawValue;
 - (_TtC25CloudSubscriptionFeatures12TicketStatus)init;
-- (void)encodeWithCoder:(id)a3;
-- (void)setRawValue:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setRawValue:(id)value;
 @end
 
 @implementation TicketStatus
@@ -21,7 +21,7 @@
   return v5;
 }
 
-- (void)setRawValue:(id)a3
+- (void)setRawValue:(id)value
 {
   v4 = sub_1DF564944();
   v6 = v5;
@@ -38,7 +38,7 @@
   swift_beginAccess();
   v4 = *v3;
   v5 = v3[1];
-  v6 = self;
+  selfCopy = self;
 
   MEMORY[0x1E12D62C0](v4, v5);
 
@@ -47,26 +47,26 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5 = (self + OBJC_IVAR____TtC25CloudSubscriptionFeatures12TicketStatus_rawValue);
   swift_beginAccess();
   v7 = *v5;
   v6 = v5[1];
-  v8 = a3;
-  v9 = self;
+  coderCopy = coder;
+  selfCopy = self;
 
   v10 = sub_1DF564914();
 
   v11 = sub_1DF564914();
-  [v8 encodeObject:v10 forKey:v11];
+  [coderCopy encodeObject:v10 forKey:v11];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1DF564D24();
     swift_unknownObjectRelease();
@@ -75,7 +75,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_1DF5525C0(v8);

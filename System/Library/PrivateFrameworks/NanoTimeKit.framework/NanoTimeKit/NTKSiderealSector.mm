@@ -1,67 +1,67 @@
 @interface NTKSiderealSector
-- (NTKSiderealSector)initWithCoder:(id)a3;
-- (NTKSiderealSector)initWithStartingEvent:(id)a3 endingEvent:(id)a4;
+- (NTKSiderealSector)initWithCoder:(id)coder;
+- (NTKSiderealSector)initWithStartingEvent:(id)event endingEvent:(id)endingEvent;
 - (id)description;
 - (id)localizedName;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NTKSiderealSector
 
-- (NTKSiderealSector)initWithStartingEvent:(id)a3 endingEvent:(id)a4
+- (NTKSiderealSector)initWithStartingEvent:(id)event endingEvent:(id)endingEvent
 {
-  v7 = a3;
-  v8 = a4;
+  eventCopy = event;
+  endingEventCopy = endingEvent;
   v13.receiver = self;
   v13.super_class = NTKSiderealSector;
   v9 = [(NTKSiderealSector *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_startingEvent, a3);
-    objc_storeStrong(&v10->_endingEvent, a4);
-    v11 = [v7 type];
-    if (v11 <= 9)
+    objc_storeStrong(&v9->_startingEvent, event);
+    objc_storeStrong(&v10->_endingEvent, endingEvent);
+    type = [eventCopy type];
+    if (type <= 9)
     {
-      v10->_type = qword_22DCE99B8[v11];
+      v10->_type = qword_22DCE99B8[type];
     }
   }
 
   return v10;
 }
 
-- (NTKSiderealSector)initWithCoder:(id)a3
+- (NTKSiderealSector)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = NTKSiderealSector;
   v5 = [(NTKSiderealSector *)&v24 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
     v5->_type = [v6 unsignedIntegerValue];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startingEvent"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startingEvent"];
     startingEvent = v5->_startingEvent;
     v5->_startingEvent = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endingEvent"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endingEvent"];
     endingEvent = v5->_endingEvent;
     v5->_endingEvent = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"gradientStartPoint.x"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"gradientStartPoint.x"];
     [v11 floatValue];
     v23 = v12;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"gradientStartPoint.y"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"gradientStartPoint.y"];
     [v13 floatValue];
     v22 = v14;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"gradientEndPoint.x"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"gradientEndPoint.x"];
     [v15 floatValue];
     v21 = v16;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"gradientEndPoint.y"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"gradientEndPoint.y"];
     [v17 floatValue];
     v20 = v18;
 
@@ -72,39 +72,39 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCABB0];
   type = self->_type;
-  v6 = a3;
+  coderCopy = coder;
   v7 = [v4 numberWithUnsignedInteger:type];
-  [v6 encodeObject:v7 forKey:@"type"];
+  [coderCopy encodeObject:v7 forKey:@"type"];
 
-  [v6 encodeObject:self->_startingEvent forKey:@"startingEvent"];
-  [v6 encodeObject:self->_endingEvent forKey:@"endingEvent"];
+  [coderCopy encodeObject:self->_startingEvent forKey:@"startingEvent"];
+  [coderCopy encodeObject:self->_endingEvent forKey:@"endingEvent"];
   v8 = [MEMORY[0x277CCABB0] numberWithFloat:*self->_gradientStartPoint];
-  [v6 encodeObject:v8 forKey:@"gradientStartPoint.x"];
+  [coderCopy encodeObject:v8 forKey:@"gradientStartPoint.x"];
 
   LODWORD(v9) = *&self->_gradientStartPoint[4];
   v10 = [MEMORY[0x277CCABB0] numberWithFloat:v9];
-  [v6 encodeObject:v10 forKey:@"gradientStartPoint.y"];
+  [coderCopy encodeObject:v10 forKey:@"gradientStartPoint.y"];
 
   v11 = [MEMORY[0x277CCABB0] numberWithFloat:*self->_gradientEndPoint];
-  [v6 encodeObject:v11 forKey:@"gradientEndPoint.x"];
+  [coderCopy encodeObject:v11 forKey:@"gradientEndPoint.x"];
 
   LODWORD(v12) = *&self->_gradientEndPoint[4];
   v13 = [MEMORY[0x277CCABB0] numberWithFloat:v12];
-  [v6 encodeObject:v13 forKey:@"gradientEndPoint.y"];
+  [coderCopy encodeObject:v13 forKey:@"gradientEndPoint.y"];
 }
 
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(NTKSiderealSector *)self localizedName];
+  localizedName = [(NTKSiderealSector *)self localizedName];
   [(NTKSiderealSolarEvent *)self->_startingEvent angle];
   v6 = v5;
   [(NTKSiderealSolarEvent *)self->_endingEvent angle];
-  v8 = [v3 stringWithFormat:@"SiderealSector: %@ %f %f", v4, v6, v7];
+  v8 = [v3 stringWithFormat:@"SiderealSector: %@ %f %f", localizedName, v6, v7];
 
   return v8;
 }

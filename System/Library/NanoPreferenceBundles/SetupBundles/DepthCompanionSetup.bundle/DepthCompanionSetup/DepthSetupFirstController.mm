@@ -10,8 +10,8 @@
 - (id)imageResourceBundleIdentifier;
 - (id)suggestedButtonTitle;
 - (id)titleString;
-- (void)alternateButtonPressed:(id)a3;
-- (void)suggestedButtonPressed:(id)a3;
+- (void)alternateButtonPressed:(id)pressed;
+- (void)suggestedButtonPressed:(id)pressed;
 @end
 
 @implementation DepthSetupFirstController
@@ -43,10 +43,10 @@
   v2 = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierUnderwaterDepth];
   v3 = _HKGenerateDefaultUnitForQuantityType();
 
-  v4 = [v3 unitString];
+  unitString = [v3 unitString];
   v5 = +[HKUnit meterUnit];
-  v6 = [v5 unitString];
-  if ([v4 isEqualToString:v6])
+  unitString2 = [v5 unitString];
+  if ([unitString isEqualToString:unitString2])
   {
     v7 = @"M";
   }
@@ -66,11 +66,11 @@
   v2 = +[NRPairedDeviceRegistry sharedInstance];
   v3 = +[NRPairedDeviceRegistry activeDeviceSelectorBlock];
   v4 = [v2 getAllDevicesWithArchivedAltAccountDevicesMatching:v3];
-  v5 = [v4 firstObject];
+  firstObject = [v4 firstObject];
 
-  if (v5)
+  if (firstObject)
   {
-    v6 = [v5 valueForProperty:NRDevicePropertyAbsoluteDepthLimit];
+    v6 = [firstObject valueForProperty:NRDevicePropertyAbsoluteDepthLimit];
     v7 = sub_1478();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -99,16 +99,16 @@
   v3 = [NSBundle bundleForClass:objc_opt_class()];
   v4 = [v3 localizedStringForKey:@"CHARON_SETUP_DETAIL" value:&stru_8308 table:@"Localizable"];
 
-  v5 = [(DepthSetupFirstController *)self _unitString];
-  v6 = [(DepthSetupFirstController *)self deviceDepthLimit];
-  v7 = [v6 intValue];
+  _unitString = [(DepthSetupFirstController *)self _unitString];
+  deviceDepthLimit = [(DepthSetupFirstController *)self deviceDepthLimit];
+  intValue = [deviceDepthLimit intValue];
   v8 = @"SERIES_";
-  if (v7 != 6)
+  if (intValue != 6)
   {
     v8 = &stru_8308;
   }
 
-  v9 = [NSString stringWithFormat:@"CHARON_MAX_DEPTH_%@%@", v8, v5];
+  v9 = [NSString stringWithFormat:@"CHARON_MAX_DEPTH_%@%@", v8, _unitString];
   v10 = [NSBundle bundleForClass:objc_opt_class()];
   v11 = [v10 localizedStringForKey:v9 value:&stru_8308 table:@"Localizable"];
 
@@ -136,9 +136,9 @@
 - (id)imageResourceBundleIdentifier
 {
   v2 = [NSBundle bundleForClass:objc_opt_class()];
-  v3 = [v2 bundleIdentifier];
+  bundleIdentifier = [v2 bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 - (id)autoLaunchSetting
@@ -156,16 +156,16 @@
   return autoLaunchSetting;
 }
 
-- (void)suggestedButtonPressed:(id)a3
+- (void)suggestedButtonPressed:(id)pressed
 {
-  v4 = [(DepthSetupFirstController *)self autoLaunchSetting];
-  [v4 updateSettingsWithBlock:&stru_81E8];
+  autoLaunchSetting = [(DepthSetupFirstController *)self autoLaunchSetting];
+  [autoLaunchSetting updateSettingsWithBlock:&stru_81E8];
 
-  v5 = [(DepthSetupFirstController *)self deviceDepthLimit];
-  v6 = [v5 intValue];
+  deviceDepthLimit = [(DepthSetupFirstController *)self deviceDepthLimit];
+  intValue = [deviceDepthLimit intValue];
   v7 = sub_1478();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v6 == 6)
+  if (intValue == 6)
   {
     if (v8)
     {
@@ -173,8 +173,8 @@
       _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "DepthFirstSetupController: Hiding scuba safety screen for shallow use device", buf, 2u);
     }
 
-    v9 = [(DepthSetupFirstController *)self miniFlowDelegate];
-    [v9 miniFlowStepComplete:self];
+    miniFlowDelegate = [(DepthSetupFirstController *)self miniFlowDelegate];
+    [miniFlowDelegate miniFlowStepComplete:self];
   }
 
   else
@@ -185,27 +185,27 @@
       _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "DepthFirstSetupController: Scuba device, presenting safety setup controller", v10, 2u);
     }
 
-    v9 = [(DepthSetupFirstController *)self miniFlowDelegate];
-    [v9 miniFlowStepComplete:self nextControllerClass:objc_opt_class()];
+    miniFlowDelegate = [(DepthSetupFirstController *)self miniFlowDelegate];
+    [miniFlowDelegate miniFlowStepComplete:self nextControllerClass:objc_opt_class()];
   }
 }
 
-- (void)alternateButtonPressed:(id)a3
+- (void)alternateButtonPressed:(id)pressed
 {
-  v4 = [(DepthSetupFirstController *)self autoLaunchSetting];
-  [v4 updateSettingsWithBlock:&stru_8208];
+  autoLaunchSetting = [(DepthSetupFirstController *)self autoLaunchSetting];
+  [autoLaunchSetting updateSettingsWithBlock:&stru_8208];
 
-  v5 = [(DepthSetupFirstController *)self miniFlowDelegate];
-  [v5 miniFlowStepComplete:self nextControllerClass:objc_opt_class()];
+  miniFlowDelegate = [(DepthSetupFirstController *)self miniFlowDelegate];
+  [miniFlowDelegate miniFlowStepComplete:self nextControllerClass:objc_opt_class()];
 }
 
 - (id)animationController
 {
-  v2 = [(DepthSetupFirstController *)self deviceDepthLimit];
-  v3 = [v2 intValue];
+  deviceDepthLimit = [(DepthSetupFirstController *)self deviceDepthLimit];
+  intValue = [deviceDepthLimit intValue];
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = @"Ultra";
-  if (v3 == 6)
+  if (intValue == 6)
   {
     v5 = @"Series";
   }

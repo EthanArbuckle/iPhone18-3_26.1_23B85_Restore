@@ -1,41 +1,41 @@
 @interface AVTAvatarAttributeEditorModelBuilder
-+ (id)buildDataSourceCategoriesFromCoreModel:(id)a3 selectingFromAvatarConfiguration:(id)a4 imageProvider:(id)a5 colorLayerProvider:(id)a6 stickerRenderer:(id)a7 modelManager:(id)a8 withSelectedCategory:(id)a9 atIndex:(unint64_t)a10;
-+ (id)filterPresets:(id)a3 forRowRepresentingTags:(id)a4 currentTagSelection:(id)a5 fixedTags:(id)a6 availableTags:(id)a7 sortingOption:(unint64_t)a8;
-+ (id)filterPresets:(id)a3 matchingTagValues:(id)a4 sortedUsing:(unint64_t)a5;
-+ (id)firstColorSectionInSections:(id)a3;
-+ (id)framingModeForRow:(id)a3 selectedPreset:(id)a4;
-+ (id)multicolorSectionProviderForCoreMulticolorPicker:(id)a3 platform:(unint64_t)a4 configuration:(id)a5 imageProvider:(id)a6 colorLayerProvider:(id)a7 editingColors:(id)a8 colorDefaultsProvider:(id)a9 modelManager:(id)a10 previousSectionMap:(id)a11 pairingPickers:(id)a12;
-+ (id)previewModeForCoreModelGroup:(id)a3;
-+ (id)sectionColorItemsForColors:(id)a3 selectedPreset:(id)a4 configuration:(id)a5 modelManager:(id)a6 additionalUpdateKind:(id)a7 imageProvider:(id)a8 colorLayerProvider:(id)a9 pairedCategory:(int64_t)a10 editingColors:(id)a11;
-+ (id)sectionForModelColorsRow:(id)a3 configuration:(id)a4 modelManager:(id)a5 imageProvider:(id)a6 colorLayerProvider:(id)a7 pairedCategory:(int64_t)a8 destination:(int64_t)a9 editingColors:(id)a10 displaysTitle:(BOOL)a11;
-+ (id)sectionForModelColorsRow:(id)a3 selectedColorPreset:(id)a4 configuration:(id)a5 modelManager:(id)a6 additionalAvatarUpdateKind:(id)a7 imageProvider:(id)a8 colorLayerProvider:(id)a9 pairedCategory:(int64_t)a10 destination:(int64_t)a11 editingColors:(id)a12 displaysTitle:(BOOL)a13;
-+ (id)sectionForModelRow:(id)a3 fromModelPresets:(id)a4 selectedModelPreset:(id)a5 tagSelection:(id)a6 fixedTags:(id)a7 availableTags:(id)a8 category:(int64_t)a9 imageProvider:(id)a10 stickerRenderer:(id)a11 configuration:(id)a12 previousSection:(id)a13 pairedCategory:(int64_t)a14;
-+ (id)sectionOptionFromModelOptions:(id)a3;
-+ (id)sectionProvidersForCoreModelCategory:(id)a3 platform:(unint64_t)a4 modelManager:(id)a5 pairingPickers:(id)a6 editingColors:(id)a7 colorDefaultsProvider:(id)a8 previousSectionMap:(id)a9 imageProvider:(id)a10 colorLayerProvider:(id)a11 stickerRenderer:(id)a12 configuration:(id)a13 displayConditionEvaluator:(id)a14;
-+ (id)selectedModelPresetForSelectedPreset:(id)a3 inPresetsList:(id)a4;
-+ (id)selectedPresetForCoreModelColorsPicker:(id)a3 isEnabled:(BOOL)a4 fallbackToColorsPicker:(id)a5 colorDefaultsProvider:(id)a6 modelManager:(id)a7;
-+ (id)subtitleFromSubtitles:(id)a3 forIndex:(int64_t)a4 enabledIndex:(int64_t)a5;
-+ (id)tagCombinationsForTagNames:(id)a3 availableTags:(id)a4;
-+ (id)tagSetByRemovingTagNames:(id)a3 fromTagSet:(id)a4;
-+ (id)tagSetForTagNames:(id)a3 inTagSet:(id)a4;
-+ (int)scoreForTags:(id)a3 forCombination:(id)a4 currentSelection:(id)a5;
-+ (unint64_t)destinationForPresetCategory:(int64_t)a3 isPaired:(BOOL)a4;
-+ (void)addTags:(id)a3 toMutableTagSet:(id)a4;
-+ (void)insertPreset:(id)a3 intoList:(id)a4 forSortingOption:(unint64_t)a5;
-+ (void)setTags:(id)a3 onMutableTagSet:(id)a4;
++ (id)buildDataSourceCategoriesFromCoreModel:(id)model selectingFromAvatarConfiguration:(id)configuration imageProvider:(id)provider colorLayerProvider:(id)layerProvider stickerRenderer:(id)renderer modelManager:(id)manager withSelectedCategory:(id)category atIndex:(unint64_t)self0;
++ (id)filterPresets:(id)presets forRowRepresentingTags:(id)tags currentTagSelection:(id)selection fixedTags:(id)fixedTags availableTags:(id)availableTags sortingOption:(unint64_t)option;
++ (id)filterPresets:(id)presets matchingTagValues:(id)values sortedUsing:(unint64_t)using;
++ (id)firstColorSectionInSections:(id)sections;
++ (id)framingModeForRow:(id)row selectedPreset:(id)preset;
++ (id)multicolorSectionProviderForCoreMulticolorPicker:(id)picker platform:(unint64_t)platform configuration:(id)configuration imageProvider:(id)provider colorLayerProvider:(id)layerProvider editingColors:(id)colors colorDefaultsProvider:(id)defaultsProvider modelManager:(id)self0 previousSectionMap:(id)self1 pairingPickers:(id)self2;
++ (id)previewModeForCoreModelGroup:(id)group;
++ (id)sectionColorItemsForColors:(id)colors selectedPreset:(id)preset configuration:(id)configuration modelManager:(id)manager additionalUpdateKind:(id)kind imageProvider:(id)provider colorLayerProvider:(id)layerProvider pairedCategory:(int64_t)self0 editingColors:(id)self1;
++ (id)sectionForModelColorsRow:(id)row configuration:(id)configuration modelManager:(id)manager imageProvider:(id)provider colorLayerProvider:(id)layerProvider pairedCategory:(int64_t)category destination:(int64_t)destination editingColors:(id)self0 displaysTitle:(BOOL)self1;
++ (id)sectionForModelColorsRow:(id)row selectedColorPreset:(id)preset configuration:(id)configuration modelManager:(id)manager additionalAvatarUpdateKind:(id)kind imageProvider:(id)provider colorLayerProvider:(id)layerProvider pairedCategory:(int64_t)self0 destination:(int64_t)self1 editingColors:(id)self2 displaysTitle:(BOOL)self3;
++ (id)sectionForModelRow:(id)row fromModelPresets:(id)presets selectedModelPreset:(id)preset tagSelection:(id)selection fixedTags:(id)tags availableTags:(id)availableTags category:(int64_t)category imageProvider:(id)self0 stickerRenderer:(id)self1 configuration:(id)self2 previousSection:(id)self3 pairedCategory:(int64_t)self4;
++ (id)sectionOptionFromModelOptions:(id)options;
++ (id)sectionProvidersForCoreModelCategory:(id)category platform:(unint64_t)platform modelManager:(id)manager pairingPickers:(id)pickers editingColors:(id)colors colorDefaultsProvider:(id)provider previousSectionMap:(id)map imageProvider:(id)self0 colorLayerProvider:(id)self1 stickerRenderer:(id)self2 configuration:(id)self3 displayConditionEvaluator:(id)self4;
++ (id)selectedModelPresetForSelectedPreset:(id)preset inPresetsList:(id)list;
++ (id)selectedPresetForCoreModelColorsPicker:(id)picker isEnabled:(BOOL)enabled fallbackToColorsPicker:(id)colorsPicker colorDefaultsProvider:(id)provider modelManager:(id)manager;
++ (id)subtitleFromSubtitles:(id)subtitles forIndex:(int64_t)index enabledIndex:(int64_t)enabledIndex;
++ (id)tagCombinationsForTagNames:(id)names availableTags:(id)tags;
++ (id)tagSetByRemovingTagNames:(id)names fromTagSet:(id)set;
++ (id)tagSetForTagNames:(id)names inTagSet:(id)set;
++ (int)scoreForTags:(id)tags forCombination:(id)combination currentSelection:(id)selection;
++ (unint64_t)destinationForPresetCategory:(int64_t)category isPaired:(BOOL)paired;
++ (void)addTags:(id)tags toMutableTagSet:(id)set;
++ (void)insertPreset:(id)preset intoList:(id)list forSortingOption:(unint64_t)option;
++ (void)setTags:(id)tags onMutableTagSet:(id)set;
 @end
 
 @implementation AVTAvatarAttributeEditorModelBuilder
 
-+ (unint64_t)destinationForPresetCategory:(int64_t)a3 isPaired:(BOOL)a4
++ (unint64_t)destinationForPresetCategory:(int64_t)category isPaired:(BOOL)paired
 {
   result = 0;
-  if (a3 > 29)
+  if (category > 29)
   {
-    if (a3 == 31)
+    if (category == 31)
     {
 LABEL_10:
-      if (a4)
+      if (paired)
       {
         return 3;
       }
@@ -46,15 +46,15 @@ LABEL_10:
       }
     }
 
-    if (a3 != 30)
+    if (category != 30)
     {
       return result;
     }
   }
 
-  else if (a3 != 25)
+  else if (category != 25)
   {
-    if (a3 != 26)
+    if (category != 26)
     {
       return result;
     }
@@ -62,7 +62,7 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  if (a4)
+  if (paired)
   {
     return 3;
   }
@@ -73,28 +73,28 @@ LABEL_10:
   }
 }
 
-+ (id)buildDataSourceCategoriesFromCoreModel:(id)a3 selectingFromAvatarConfiguration:(id)a4 imageProvider:(id)a5 colorLayerProvider:(id)a6 stickerRenderer:(id)a7 modelManager:(id)a8 withSelectedCategory:(id)a9 atIndex:(unint64_t)a10
++ (id)buildDataSourceCategoriesFromCoreModel:(id)model selectingFromAvatarConfiguration:(id)configuration imageProvider:(id)provider colorLayerProvider:(id)layerProvider stickerRenderer:(id)renderer modelManager:(id)manager withSelectedCategory:(id)category atIndex:(unint64_t)self0
 {
   v79 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v58 = a4;
-  v57 = a5;
-  v56 = a6;
-  v55 = a7;
-  v16 = a8;
-  v17 = a9;
-  v48 = [MEMORY[0x1E695DF70] array];
-  v52 = [v15 platform];
-  v59 = [MEMORY[0x1E695DF90] dictionary];
-  v45 = v17;
-  if (v17)
+  modelCopy = model;
+  configurationCopy = configuration;
+  providerCopy = provider;
+  layerProviderCopy = layerProvider;
+  rendererCopy = renderer;
+  managerCopy = manager;
+  categoryCopy = category;
+  array = [MEMORY[0x1E695DF70] array];
+  platform = [modelCopy platform];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v45 = categoryCopy;
+  if (categoryCopy)
   {
     v74 = 0u;
     v75 = 0u;
     v72 = 0u;
     v73 = 0u;
-    v18 = [v17 sections];
-    v19 = [v18 countByEnumeratingWithState:&v72 objects:v78 count:16];
+    sections = [categoryCopy sections];
+    v19 = [sections countByEnumeratingWithState:&v72 objects:v78 count:16];
     if (v19)
     {
       v20 = v19;
@@ -105,15 +105,15 @@ LABEL_10:
         {
           if (*v73 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(sections);
           }
 
           v23 = *(*(&v72 + 1) + 8 * i);
-          v24 = [v23 identifier];
-          [v59 setObject:v23 forKeyedSubscript:v24];
+          identifier = [v23 identifier];
+          [dictionary setObject:v23 forKeyedSubscript:identifier];
         }
 
-        v20 = [v18 countByEnumeratingWithState:&v72 objects:v78 count:16];
+        v20 = [sections countByEnumeratingWithState:&v72 objects:v78 count:16];
       }
 
       while (v20);
@@ -124,15 +124,15 @@ LABEL_10:
   v69[1] = 3221225472;
   v69[2] = __203__AVTAvatarAttributeEditorModelBuilder_buildDataSourceCategoriesFromCoreModel_selectingFromAvatarConfiguration_imageProvider_colorLayerProvider_stickerRenderer_modelManager_withSelectedCategory_atIndex___block_invoke;
   v69[3] = &unk_1E7F3CF80;
-  v54 = v16;
+  v54 = managerCopy;
   v70 = v54;
-  v71 = a10;
+  indexCopy = index;
   v53 = MEMORY[0x1BFB0DE80](v69);
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
-  obj = [v15 groups];
+  obj = [modelCopy groups];
   v49 = [obj countByEnumeratingWithState:&v65 objects:v77 count:16];
   if (v49)
   {
@@ -149,15 +149,15 @@ LABEL_10:
 
         v51 = v25;
         v26 = *(*(&v65 + 1) + 8 * v25);
-        v27 = [MEMORY[0x1E695DF70] array];
-        v28 = [MEMORY[0x1E695DF90] dictionary];
+        array2 = [MEMORY[0x1E695DF70] array];
+        dictionary2 = [MEMORY[0x1E695DF90] dictionary];
         v61 = 0u;
         v62 = 0u;
         v63 = 0u;
         v64 = 0u;
         v50 = v26;
-        v29 = [v26 categories];
-        v30 = [v29 countByEnumeratingWithState:&v61 objects:v76 count:16];
+        categories = [v26 categories];
+        v30 = [categories countByEnumeratingWithState:&v61 objects:v76 count:16];
         if (v30)
         {
           v31 = v30;
@@ -168,33 +168,33 @@ LABEL_10:
             {
               if (*v62 != v32)
               {
-                objc_enumerationMutation(v29);
+                objc_enumerationMutation(categories);
               }
 
               v34 = *(*(&v61 + 1) + 8 * j);
-              v35 = [v15 colors];
-              v36 = [v15 colorDefaultsProvider];
-              v37 = [a1 sectionProvidersForCoreModelCategory:v34 platform:v52 modelManager:v54 pairingPickers:v28 editingColors:v35 colorDefaultsProvider:v36 previousSectionMap:v59 imageProvider:v57 colorLayerProvider:v56 stickerRenderer:v55 configuration:v58 displayConditionEvaluator:v53];
+              colors = [modelCopy colors];
+              colorDefaultsProvider = [modelCopy colorDefaultsProvider];
+              v37 = [self sectionProvidersForCoreModelCategory:v34 platform:platform modelManager:v54 pairingPickers:dictionary2 editingColors:colors colorDefaultsProvider:colorDefaultsProvider previousSectionMap:dictionary imageProvider:providerCopy colorLayerProvider:layerProviderCopy stickerRenderer:rendererCopy configuration:configurationCopy displayConditionEvaluator:v53];
 
               if (v37)
               {
-                [v27 addObjectsFromArray:v37];
+                [array2 addObjectsFromArray:v37];
               }
             }
 
-            v31 = [v29 countByEnumeratingWithState:&v61 objects:v76 count:16];
+            v31 = [categories countByEnumeratingWithState:&v61 objects:v76 count:16];
           }
 
           while (v31);
         }
 
-        v38 = [a1 previewModeForCoreModelGroup:v50];
+        v38 = [self previewModeForCoreModelGroup:v50];
         v39 = [AVTAvatarAttributeEditorCategory alloc];
-        v40 = [v50 name];
-        v41 = [v50 symbolNames];
-        v42 = [(AVTAvatarAttributeEditorCategory *)v39 initWithSectionProviders:v27 localizedName:v40 previewMode:v38 modelGroup:v50 symbolNames:v41];
+        name = [v50 name];
+        symbolNames = [v50 symbolNames];
+        v42 = [(AVTAvatarAttributeEditorCategory *)v39 initWithSectionProviders:array2 localizedName:name previewMode:v38 modelGroup:v50 symbolNames:symbolNames];
 
-        [v48 addObject:v42];
+        [array addObject:v42];
         v25 = v51 + 1;
       }
 
@@ -205,7 +205,7 @@ LABEL_10:
     while (v49);
   }
 
-  v43 = [v48 copy];
+  v43 = [array copy];
 
   return v43;
 }
@@ -223,41 +223,41 @@ uint64_t __203__AVTAvatarAttributeEditorModelBuilder_buildDataSourceCategoriesFr
   }
 }
 
-+ (id)sectionProvidersForCoreModelCategory:(id)a3 platform:(unint64_t)a4 modelManager:(id)a5 pairingPickers:(id)a6 editingColors:(id)a7 colorDefaultsProvider:(id)a8 previousSectionMap:(id)a9 imageProvider:(id)a10 colorLayerProvider:(id)a11 stickerRenderer:(id)a12 configuration:(id)a13 displayConditionEvaluator:(id)a14
++ (id)sectionProvidersForCoreModelCategory:(id)category platform:(unint64_t)platform modelManager:(id)manager pairingPickers:(id)pickers editingColors:(id)colors colorDefaultsProvider:(id)provider previousSectionMap:(id)map imageProvider:(id)self0 colorLayerProvider:(id)self1 stickerRenderer:(id)self2 configuration:(id)self3 displayConditionEvaluator:(id)self4
 {
   v109 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  v19 = a5;
-  v89 = a6;
-  v99 = a7;
-  v88 = a8;
-  v20 = v19;
-  v94 = a9;
-  v101 = a10;
-  v98 = a11;
-  v80 = a12;
-  v21 = a13;
-  v22 = a14;
-  v81 = v18;
-  if (!v19)
+  categoryCopy = category;
+  managerCopy = manager;
+  pickersCopy = pickers;
+  colorsCopy = colors;
+  providerCopy = provider;
+  v20 = managerCopy;
+  mapCopy = map;
+  imageProviderCopy = imageProvider;
+  layerProviderCopy = layerProvider;
+  rendererCopy = renderer;
+  configurationCopy = configuration;
+  evaluatorCopy = evaluator;
+  v81 = categoryCopy;
+  if (!managerCopy)
   {
     goto LABEL_5;
   }
 
-  if (![v19 shouldDisplaySectionForCategory:{objc_msgSend(v18, "presetCategory")}])
+  if (![managerCopy shouldDisplaySectionForCategory:{objc_msgSend(categoryCopy, "presetCategory")}])
   {
     v35 = 0;
     goto LABEL_60;
   }
 
-  v23 = [v19 editorState];
-  v24 = [v18 pairing];
-  v25 = [v23 isCategoryPaired:{objc_msgSend(v24, "pairedCategory")}];
+  editorState = [managerCopy editorState];
+  pairing = [categoryCopy pairing];
+  v25 = [editorState isCategoryPaired:{objc_msgSend(pairing, "pairedCategory")}];
 
   if (v25)
   {
-    v26 = [v18 pairing];
-    v93 = [v26 pairedCategory];
+    pairing2 = [categoryCopy pairing];
+    pairedCategory = [pairing2 pairedCategory];
 
     v90 = 1;
   }
@@ -266,25 +266,25 @@ uint64_t __203__AVTAvatarAttributeEditorModelBuilder_buildDataSourceCategoriesFr
   {
 LABEL_5:
     v90 = 0;
-    v93 = 40;
+    pairedCategory = 40;
   }
 
-  v27 = a1;
-  v28 = [v18 pairing];
+  selfCopy4 = self;
+  pairing3 = [categoryCopy pairing];
 
-  if (v28)
+  if (pairing3)
   {
-    v29 = [v20 colorsState];
-    v30 = [AVTAvatarUpdaterFactory updaterForPairingCategory:v18 colorsState:v29];
+    colorsState = [v20 colorsState];
+    v30 = [AVTAvatarUpdaterFactory updaterForPairingCategory:categoryCopy colorsState:colorsState];
 
-    v31 = [AVTAvatarAttributeEditorSectionSupplementalPicker pickerForPairableModelCategory:v18 isPaired:v90 avatarUpdaterOnPair:v30];
+    v31 = [AVTAvatarAttributeEditorSectionSupplementalPicker pickerForPairableModelCategory:categoryCopy isPaired:v90 avatarUpdaterOnPair:v30];
     v32 = MEMORY[0x1E696AD98];
-    v33 = [v81 pairing];
-    v34 = [v32 numberWithInteger:{objc_msgSend(v33, "pairedCategory")}];
+    pairing4 = [v81 pairing];
+    v34 = [v32 numberWithInteger:{objc_msgSend(pairing4, "pairedCategory")}];
     v97 = v31;
-    [v89 setObject:v31 forKeyedSubscript:v34];
+    [pickersCopy setObject:v31 forKeyedSubscript:v34];
 
-    v18 = v81;
+    categoryCopy = v81;
   }
 
   else
@@ -292,22 +292,22 @@ LABEL_5:
     v97 = 0;
   }
 
-  v92 = [MEMORY[0x1E695DF70] array];
-  v76 = [MEMORY[0x1E695DF70] array];
-  v36 = [v21 presetForCategory:{objc_msgSend(v18, "presetCategory")}];
-  v37 = [v36 preset];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  v36 = [configurationCopy presetForCategory:{objc_msgSend(categoryCopy, "presetCategory")}];
+  preset = [v36 preset];
 
-  v38 = [v18 presets];
-  v75 = v37;
-  v39 = [a1 selectedModelPresetForSelectedPreset:v37 inPresetsList:v38];
+  presets = [categoryCopy presets];
+  v75 = preset;
+  v39 = [self selectedModelPresetForSelectedPreset:preset inPresetsList:presets];
 
   v79 = v39;
-  v40 = [v39 tags];
-  v83 = [v40 copy];
+  tags = [v39 tags];
+  v83 = [tags copy];
 
-  v78 = [v18 tags];
-  v82 = [MEMORY[0x1E695DF90] dictionary];
-  [v18 pickers];
+  tags2 = [categoryCopy tags];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [categoryCopy pickers];
   v104 = 0u;
   v105 = 0u;
   v106 = 0u;
@@ -318,8 +318,8 @@ LABEL_5:
     v103 = 0;
     v100 = *v105;
     v84 = v20;
-    v77 = v21;
-    v96 = v22;
+    v77 = configurationCopy;
+    v96 = evaluatorCopy;
     do
     {
       for (i = 0; i != v102; ++i)
@@ -330,11 +330,11 @@ LABEL_5:
         }
 
         v42 = *(*(&v104 + 1) + 8 * i);
-        if (v22)
+        if (evaluatorCopy)
         {
-          v43 = [*(*(&v104 + 1) + 8 * i) options];
-          v44 = [v43 displayCondition];
-          v45 = v22[2](v22, v44);
+          options = [*(*(&v104 + 1) + 8 * i) options];
+          displayCondition = [options displayCondition];
+          v45 = evaluatorCopy[2](evaluatorCopy, displayCondition);
 
           if (!v45)
           {
@@ -356,10 +356,10 @@ LABEL_5:
         v47 = v46;
         if (v47)
         {
-          v48 = [v27 multicolorSectionProviderForCoreMulticolorPicker:v47 platform:a4 configuration:v21 imageProvider:v101 colorLayerProvider:v98 editingColors:v99 colorDefaultsProvider:v88 modelManager:v20 previousSectionMap:v94 pairingPickers:v89];
+          v48 = [selfCopy4 multicolorSectionProviderForCoreMulticolorPicker:v47 platform:platform configuration:configurationCopy imageProvider:imageProviderCopy colorLayerProvider:layerProviderCopy editingColors:colorsCopy colorDefaultsProvider:providerCopy modelManager:v20 previousSectionMap:mapCopy pairingPickers:pickersCopy];
           if (v48)
           {
-            [v92 addObject:v48];
+            [array addObject:v48];
           }
         }
 
@@ -378,26 +378,26 @@ LABEL_5:
         if (v50)
         {
           LOBYTE(v74) = 1;
-          v51 = [v27 sectionForModelColorsRow:v50 configuration:v21 modelManager:v20 imageProvider:v101 colorLayerProvider:v98 pairedCategory:v93 destination:AVTAvatarSettingDestinationForColorPickerIndex(v103) editingColors:v99 displaysTitle:v74];
+          v51 = [selfCopy4 sectionForModelColorsRow:v50 configuration:configurationCopy modelManager:v20 imageProvider:imageProviderCopy colorLayerProvider:layerProviderCopy pairedCategory:pairedCategory destination:AVTAvatarSettingDestinationForColorPickerIndex(v103) editingColors:colorsCopy displaysTitle:v74];
           if (v97)
           {
-            v52 = [v42 pairing];
-            if (!v52)
+            pairing5 = [v42 pairing];
+            if (!pairing5)
             {
               goto LABEL_44;
             }
 
-            v53 = v52;
-            v54 = [v42 pairing];
-            v55 = v54;
+            v53 = pairing5;
+            pairing6 = [v42 pairing];
+            v55 = pairing6;
             if (v90)
             {
-              [v54 localizedUnpairTitle];
+              [pairing6 localizedUnpairTitle];
             }
 
             else
             {
-              [v54 localizedPairTitle];
+              [pairing6 localizedPairTitle];
             }
             v67 = ;
 
@@ -414,32 +414,32 @@ LABEL_44:
               [v51 setSupplementalPicker:v97];
             }
 
-            v27 = a1;
+            selfCopy4 = self;
             if (v90)
             {
-              v69 = [v42 pairing];
-              v70 = [v69 localizedPairedTitle];
-              if (v70)
+              pairing7 = [v42 pairing];
+              localizedPairedTitle = [pairing7 localizedPairedTitle];
+              if (localizedPairedTitle)
               {
-                [v51 setLocalizedName:v70];
+                [v51 setLocalizedName:localizedPairedTitle];
               }
 
               else
               {
-                v71 = [v81 pairing];
-                v72 = [v71 localizedPairedTitle];
-                [v51 setLocalizedName:v72];
+                pairing8 = [v81 pairing];
+                localizedPairedTitle2 = [pairing8 localizedPairedTitle];
+                [v51 setLocalizedName:localizedPairedTitle2];
 
                 v20 = v84;
               }
 
-              v27 = a1;
+              selfCopy4 = self;
             }
           }
 
           if (v51)
           {
-            [v92 addObject:v51];
+            [array addObject:v51];
           }
 
           ++v103;
@@ -462,25 +462,25 @@ LABEL_44:
           if (v51)
           {
             v85 = v47;
-            v57 = [v42 identifier];
-            v58 = [v94 objectForKeyedSubscript:v57];
+            identifier = [v42 identifier];
+            v58 = [mapCopy objectForKeyedSubscript:identifier];
 
-            v59 = [v81 presets];
+            presets2 = [v81 presets];
             v86 = v58;
-            v60 = [v27 sectionForModelRow:v42 fromModelPresets:v59 selectedModelPreset:v79 tagSelection:v83 fixedTags:v82 availableTags:v78 category:objc_msgSend(v81 imageProvider:"presetCategory") stickerRenderer:v101 configuration:v80 previousSection:v21 pairedCategory:{v58, v93}];
+            v60 = [selfCopy4 sectionForModelRow:v42 fromModelPresets:presets2 selectedModelPreset:v79 tagSelection:v83 fixedTags:dictionary availableTags:tags2 category:objc_msgSend(v81 imageProvider:"presetCategory") stickerRenderer:imageProviderCopy configuration:rendererCopy previousSection:configurationCopy pairedCategory:{v58, pairedCategory}];
 
             if (v60)
             {
-              v61 = [v51 representedTags];
-              v62 = [a1 tagSetForTagNames:v61 inTagSet:v83];
+              representedTags = [v51 representedTags];
+              v62 = [self tagSetForTagNames:representedTags inTagSet:v83];
 
-              [a1 setTags:v62 onMutableTagSet:v82];
-              v63 = [v60 options];
-              v64 = [v63 displayMode];
+              [self setTags:v62 onMutableTagSet:dictionary];
+              options2 = [v60 options];
+              displayMode = [options2 displayMode];
 
-              if (v64 == 1)
+              if (displayMode == 1)
               {
-                v65 = [a1 firstColorSectionInSections:v76];
+                v65 = [self firstColorSectionInSections:array2];
                 if (v65)
                 {
                   v66 = [AVTAvatarAttributeEditorSectionSupplementalPicker pickerFromEditorSection:v60];
@@ -490,19 +490,19 @@ LABEL_44:
 
               else
               {
-                [v92 addObject:v60];
+                [array addObject:v60];
               }
 
               v20 = v84;
             }
 
-            v27 = a1;
-            v21 = v77;
+            selfCopy4 = self;
+            configurationCopy = v77;
             v47 = v85;
           }
         }
 
-        v22 = v96;
+        evaluatorCopy = v96;
       }
 
       v102 = [obj countByEnumeratingWithState:&v104 objects:v108 count:16];
@@ -511,43 +511,43 @@ LABEL_44:
     while (v102);
   }
 
-  v35 = [v92 copy];
+  v35 = [array copy];
 
 LABEL_60:
 
   return v35;
 }
 
-+ (id)previewModeForCoreModelGroup:(id)a3
++ (id)previewModeForCoreModelGroup:(id)group
 {
-  v3 = a3;
+  groupCopy = group;
   v4 = [AVTAvatarAttributeEditorPreviewModeOptions alloc];
-  v5 = [v3 previewMode];
-  v6 = [v5 options];
-  v7 = [v6 framingMode];
-  v8 = [v3 previewMode];
-  v9 = [v8 options];
-  v10 = [v9 bodyPosePack];
-  v11 = [(AVTAvatarAttributeEditorPreviewModeOptions *)v4 initWithFramingMode:v7 bodyPosePack:v10];
+  previewMode = [groupCopy previewMode];
+  options = [previewMode options];
+  framingMode = [options framingMode];
+  previewMode2 = [groupCopy previewMode];
+  options2 = [previewMode2 options];
+  bodyPosePack = [options2 bodyPosePack];
+  v11 = [(AVTAvatarAttributeEditorPreviewModeOptions *)v4 initWithFramingMode:framingMode bodyPosePack:bodyPosePack];
 
-  v12 = [v3 previewMode];
+  previewMode3 = [groupCopy previewMode];
 
-  v13 = +[AVTAvatarAttributeEditorPreviewMode attributeEditorPreviewModeTypeForEditingPreviewModeType:](AVTAvatarAttributeEditorPreviewMode, "attributeEditorPreviewModeTypeForEditingPreviewModeType:", [v12 type]);
+  v13 = +[AVTAvatarAttributeEditorPreviewMode attributeEditorPreviewModeTypeForEditingPreviewModeType:](AVTAvatarAttributeEditorPreviewMode, "attributeEditorPreviewModeTypeForEditingPreviewModeType:", [previewMode3 type]);
   v14 = [[AVTAvatarAttributeEditorPreviewMode alloc] initWithType:v13 options:v11];
 
   return v14;
 }
 
-+ (id)selectedModelPresetForSelectedPreset:(id)a3 inPresetsList:(id)a4
++ (id)selectedModelPresetForSelectedPreset:(id)preset inPresetsList:(id)list
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  presetCopy = preset;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  listCopy = list;
+  v7 = [listCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = *v16;
@@ -557,13 +557,13 @@ LABEL_60:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(listCopy);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 identifier];
-        v12 = [v5 identifier];
-        v13 = [v11 isEqualToString:v12];
+        identifier = [v10 identifier];
+        identifier2 = [presetCopy identifier];
+        v13 = [identifier isEqualToString:identifier2];
 
         if (v13)
         {
@@ -572,7 +572,7 @@ LABEL_60:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [listCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
         continue;
@@ -587,23 +587,23 @@ LABEL_11:
   return v7;
 }
 
-+ (id)sectionForModelColorsRow:(id)a3 configuration:(id)a4 modelManager:(id)a5 imageProvider:(id)a6 colorLayerProvider:(id)a7 pairedCategory:(int64_t)a8 destination:(int64_t)a9 editingColors:(id)a10 displaysTitle:(BOOL)a11
++ (id)sectionForModelColorsRow:(id)row configuration:(id)configuration modelManager:(id)manager imageProvider:(id)provider colorLayerProvider:(id)layerProvider pairedCategory:(int64_t)category destination:(int64_t)destination editingColors:(id)self0 displaysTitle:(BOOL)self1
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a10;
-  if (v16 && ([v16 isEmpty] & 1) == 0)
+  rowCopy = row;
+  configurationCopy = configuration;
+  managerCopy = manager;
+  providerCopy = provider;
+  layerProviderCopy = layerProvider;
+  colorsCopy = colors;
+  if (rowCopy && ([rowCopy isEmpty] & 1) == 0)
   {
-    [v18 colorsState];
-    v23 = v29 = a8;
-    v24 = [v23 selectedColorPresetForCategory:objc_msgSend(v16 destinationIndex:{"colorCategory"), a9}];
+    [managerCopy colorsState];
+    v23 = v29 = category;
+    v24 = [v23 selectedColorPresetForCategory:objc_msgSend(rowCopy destinationIndex:{"colorCategory"), destination}];
 
     v25 = AVTColorSettingKind(40, 0);
-    LOBYTE(v28) = a11;
-    v22 = [a1 sectionForModelColorsRow:v16 selectedColorPreset:v24 configuration:v17 modelManager:v18 additionalAvatarUpdateKind:v25 imageProvider:v26 colorLayerProvider:v19 pairedCategory:v20 destination:v29 editingColors:a9 displaysTitle:{v21, v28}];
+    LOBYTE(v28) = title;
+    v22 = [self sectionForModelColorsRow:rowCopy selectedColorPreset:v24 configuration:configurationCopy modelManager:managerCopy additionalAvatarUpdateKind:v25 imageProvider:v26 colorLayerProvider:providerCopy pairedCategory:layerProviderCopy destination:v29 editingColors:destination displaysTitle:{colorsCopy, v28}];
   }
 
   else
@@ -614,34 +614,34 @@ LABEL_11:
   return v22;
 }
 
-+ (id)sectionForModelColorsRow:(id)a3 selectedColorPreset:(id)a4 configuration:(id)a5 modelManager:(id)a6 additionalAvatarUpdateKind:(id)a7 imageProvider:(id)a8 colorLayerProvider:(id)a9 pairedCategory:(int64_t)a10 destination:(int64_t)a11 editingColors:(id)a12 displaysTitle:(BOOL)a13
++ (id)sectionForModelColorsRow:(id)row selectedColorPreset:(id)preset configuration:(id)configuration modelManager:(id)manager additionalAvatarUpdateKind:(id)kind imageProvider:(id)provider colorLayerProvider:(id)layerProvider pairedCategory:(int64_t)self0 destination:(int64_t)self1 editingColors:(id)self2 displaysTitle:(BOOL)self3
 {
-  var1 = a7.var1;
-  var0 = a7.var0;
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a8;
-  v23 = a9;
-  v24 = a12;
-  v53 = v24;
-  v54 = v21;
-  v52 = v23;
-  if (!v18 || (v25 = v24, ([v18 isEmpty] & 1) != 0))
+  var1 = kind.var1;
+  var0 = kind.var0;
+  rowCopy = row;
+  presetCopy = preset;
+  configurationCopy = configuration;
+  managerCopy = manager;
+  providerCopy = provider;
+  layerProviderCopy = layerProvider;
+  colorsCopy = colors;
+  v53 = colorsCopy;
+  v54 = managerCopy;
+  v52 = layerProviderCopy;
+  if (!rowCopy || (v25 = colorsCopy, ([rowCopy isEmpty] & 1) != 0))
   {
-    v26 = v22;
+    v26 = providerCopy;
     v27 = 0;
     goto LABEL_19;
   }
 
-  v48 = v19;
-  v28 = [v18 primaryColors];
+  v48 = presetCopy;
+  primaryColors = [rowCopy primaryColors];
 
-  if (v28)
+  if (primaryColors)
   {
-    v29 = [v18 primaryColors];
-    v46 = [a1 sectionColorItemsForColors:v29 selectedPreset:v48 configuration:v20 modelManager:v21 additionalUpdateKind:var0 imageProvider:var1 colorLayerProvider:v22 pairedCategory:v23 editingColors:{a10, v25}];
+    primaryColors2 = [rowCopy primaryColors];
+    v46 = [self sectionColorItemsForColors:primaryColors2 selectedPreset:v48 configuration:configurationCopy modelManager:managerCopy additionalUpdateKind:var0 imageProvider:var1 colorLayerProvider:providerCopy pairedCategory:layerProviderCopy editingColors:{category, v25}];
   }
 
   else
@@ -649,12 +649,12 @@ LABEL_11:
     v46 = 0;
   }
 
-  v30 = [v18 extendedColors];
+  extendedColors = [rowCopy extendedColors];
 
-  if (v30)
+  if (extendedColors)
   {
-    v31 = [v18 extendedColors];
-    v45 = [a1 sectionColorItemsForColors:v31 selectedPreset:v48 configuration:v20 modelManager:v21 additionalUpdateKind:var0 imageProvider:var1 colorLayerProvider:v22 pairedCategory:v23 editingColors:{a10, v25}];
+    extendedColors2 = [rowCopy extendedColors];
+    v45 = [self sectionColorItemsForColors:extendedColors2 selectedPreset:v48 configuration:configurationCopy modelManager:managerCopy additionalUpdateKind:var0 imageProvider:var1 colorLayerProvider:providerCopy pairedCategory:layerProviderCopy editingColors:{category, v25}];
   }
 
   else
@@ -662,11 +662,11 @@ LABEL_11:
     v45 = 0;
   }
 
-  v47 = v20;
-  if (a10 == 40)
+  v47 = configurationCopy;
+  if (category == 40)
   {
     v32 = 0;
-    if (a13)
+    if (title)
     {
       goto LABEL_17;
     }
@@ -674,84 +674,84 @@ LABEL_11:
     goto LABEL_16;
   }
 
-  v33 = [v18 pairing];
-  v32 = v33 != 0;
+  pairing = [rowCopy pairing];
+  v32 = pairing != 0;
 
-  if (!a13)
+  if (!title)
   {
 LABEL_16:
-    v26 = v22;
-    v49 = 0;
+    v26 = providerCopy;
+    title = 0;
     goto LABEL_18;
   }
 
-  v34 = [v18 pairing];
-  if (!v34)
+  pairing2 = [rowCopy pairing];
+  if (!pairing2)
   {
 LABEL_17:
-    v26 = v22;
-    v49 = [v18 title];
+    v26 = providerCopy;
+    title = [rowCopy title];
     goto LABEL_18;
   }
 
-  v35 = v34;
-  v26 = v22;
-  v36 = [v18 pairing];
-  v49 = [v36 localizedPairedTitle];
+  v35 = pairing2;
+  v26 = providerCopy;
+  pairing3 = [rowCopy pairing];
+  title = [pairing3 localizedPairedTitle];
 
 LABEL_18:
-  v37 = [v18 options];
-  v38 = [a1 sectionOptionFromModelOptions:v37];
+  options = [rowCopy options];
+  v38 = [self sectionOptionFromModelOptions:options];
 
-  v51 = [objc_opt_class() destinationForPresetCategory:objc_msgSend(v18 isPaired:{"colorCategory"), v32}];
+  v51 = [objc_opt_class() destinationForPresetCategory:objc_msgSend(rowCopy isPaired:{"colorCategory"), v32}];
   v39 = [AVTAvatarAttributeEditorColorSection alloc];
-  v40 = [v54 colorsState];
-  v41 = [v40 variationStore];
-  v42 = [v18 identifier];
-  LOBYTE(v44) = [v18 alwaysShowExtended];
-  v27 = [(AVTAvatarAttributeEditorColorSection *)v39 initWithPrimaryItems:v46 extendedItems:v45 colorVariationStore:v41 localizedName:v49 identifier:v42 intendedDestination:v51 alwaysShowExtended:v44 options:v38];
+  colorsState = [v54 colorsState];
+  variationStore = [colorsState variationStore];
+  identifier = [rowCopy identifier];
+  LOBYTE(v44) = [rowCopy alwaysShowExtended];
+  v27 = [(AVTAvatarAttributeEditorColorSection *)v39 initWithPrimaryItems:v46 extendedItems:v45 colorVariationStore:variationStore localizedName:title identifier:identifier intendedDestination:v51 alwaysShowExtended:v44 options:v38];
 
-  v20 = v47;
-  v19 = v48;
+  configurationCopy = v47;
+  presetCopy = v48;
 LABEL_19:
 
   return v27;
 }
 
-+ (id)multicolorSectionProviderForCoreMulticolorPicker:(id)a3 platform:(unint64_t)a4 configuration:(id)a5 imageProvider:(id)a6 colorLayerProvider:(id)a7 editingColors:(id)a8 colorDefaultsProvider:(id)a9 modelManager:(id)a10 previousSectionMap:(id)a11 pairingPickers:(id)a12
++ (id)multicolorSectionProviderForCoreMulticolorPicker:(id)picker platform:(unint64_t)platform configuration:(id)configuration imageProvider:(id)provider colorLayerProvider:(id)layerProvider editingColors:(id)colors colorDefaultsProvider:(id)defaultsProvider modelManager:(id)self0 previousSectionMap:(id)self1 pairingPickers:(id)self2
 {
   v193 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v162 = a5;
-  v160 = a6;
-  v159 = a7;
-  v158 = a8;
-  v17 = v16;
-  v167 = a9;
-  v18 = a10;
-  v147 = a11;
-  v146 = a12;
+  pickerCopy = picker;
+  configurationCopy = configuration;
+  providerCopy = provider;
+  layerProviderCopy = layerProvider;
+  colorsCopy = colors;
+  v17 = pickerCopy;
+  defaultsProviderCopy = defaultsProvider;
+  managerCopy = manager;
+  mapCopy = map;
+  pickersCopy = pickers;
   v19 = MEMORY[0x1E695DF70];
-  v20 = [v17 subpickers];
-  v140 = [v19 arrayWithCapacity:{objc_msgSend(v20, "count")}];
+  subpickers = [v17 subpickers];
+  v140 = [v19 arrayWithCapacity:{objc_msgSend(subpickers, "count")}];
 
   v21 = MEMORY[0x1E695DF70];
-  v22 = [v17 subpickers];
-  v136 = [v21 arrayWithCapacity:{objc_msgSend(v22, "count")}];
+  subpickers2 = [v17 subpickers];
+  v136 = [v21 arrayWithCapacity:{objc_msgSend(subpickers2, "count")}];
 
   v23 = MEMORY[0x1E695DF70];
-  v24 = [v17 subpickers];
-  v25 = [v23 arrayWithCapacity:{objc_msgSend(v24, "count")}];
+  subpickers3 = [v17 subpickers];
+  v25 = [v23 arrayWithCapacity:{objc_msgSend(subpickers3, "count")}];
 
   v148 = v25;
   v139 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v25, "count")}];
-  v26 = [v18 editorState];
-  v27 = [v17 identifier];
-  v137 = [v26 selectedMulticolorSubpickersIndexForMulticolorPickerIdentifier:v27];
+  editorState = [managerCopy editorState];
+  identifier = [v17 identifier];
+  v137 = [editorState selectedMulticolorSubpickersIndexForMulticolorPickerIdentifier:identifier];
 
-  v28 = [v18 editorState];
-  v29 = [v17 identifier];
-  v30 = [v28 enabledMulticolorSubpickersIndexForMulticolorPickerIdentifier:v29];
+  editorState2 = [managerCopy editorState];
+  identifier2 = [v17 identifier];
+  v30 = [editorState2 enabledMulticolorSubpickersIndexForMulticolorPickerIdentifier:identifier2];
 
   v188 = 0u;
   v189 = 0u;
@@ -759,12 +759,12 @@ LABEL_19:
   v187 = 0u;
   obj = [v17 subpickers];
   v141 = v17;
-  v161 = v18;
+  v161 = managerCopy;
   v154 = [obj countByEnumeratingWithState:&v186 objects:v192 count:16];
   if (!v154)
   {
     v138 = 0;
-    v32 = a1;
+    selfCopy5 = self;
     goto LABEL_77;
   }
 
@@ -772,7 +772,7 @@ LABEL_19:
   v31 = 0;
   v152 = *v187;
   v153 = v30 + 1;
-  v32 = a1;
+  selfCopy5 = self;
   v163 = v30;
   do
   {
@@ -791,25 +791,25 @@ LABEL_19:
 
       else
       {
-        v35 = [v17 subpickers];
-        v36 = [v35 objectAtIndexedSubscript:v31 - 1];
+        subpickers4 = [v17 subpickers];
+        v36 = [subpickers4 objectAtIndexedSubscript:v31 - 1];
       }
 
       v164 = v36;
-      v171 = [v32 selectedPresetForCoreModelColorsPicker:v34 isEnabled:v31 <= v30 fallbackToColorsPicker:v36 colorDefaultsProvider:v167 modelManager:v18];
-      v37 = AVTColorSettingKind(40, 0);
-      v39 = v38;
+      v171 = [selfCopy5 selectedPresetForCoreModelColorsPicker:v34 isEnabled:v31 <= v30 fallbackToColorsPicker:v36 colorDefaultsProvider:defaultsProviderCopy modelManager:managerCopy];
+      destination = AVTColorSettingKind(40, 0);
+      colorCategory = v38;
       v41 = [v34 colorCategory] == 1 && objc_msgSend(v34, "destination") == 1 && v30 == 0;
       v43 = [v34 colorCategory] == 2 && objc_msgSend(v34, "destination") == 1 && v30 == 0;
       v168 = v31;
       if (v41 || v43)
       {
         v44 = v31 + 1;
-        v45 = [v17 subpickers];
-        if (v44 < [v45 count])
+        subpickers5 = [v17 subpickers];
+        if (v44 < [subpickers5 count])
         {
-          v46 = [v17 subpickers];
-          v47 = [v46 objectAtIndexedSubscript:v44];
+          subpickers6 = [v17 subpickers];
+          v47 = [subpickers6 objectAtIndexedSubscript:v44];
 
           v30 = v163;
           if (!v47)
@@ -817,15 +817,15 @@ LABEL_19:
             goto LABEL_30;
           }
 
-          v37 = [v47 destination];
-          v39 = [v47 colorCategory];
-          v45 = v47;
+          destination = [v47 destination];
+          colorCategory = [v47 colorCategory];
+          subpickers5 = v47;
         }
       }
 
 LABEL_30:
       LOBYTE(v135) = 0;
-      v48 = [v32 sectionForModelColorsRow:v34 selectedColorPreset:v171 configuration:v162 modelManager:v18 additionalAvatarUpdateKind:v37 imageProvider:v39 colorLayerProvider:v160 pairedCategory:v159 destination:40 editingColors:objc_msgSend(v34 displaysTitle:{"destination"), v158, v135}];
+      v48 = [selfCopy5 sectionForModelColorsRow:v34 selectedColorPreset:v171 configuration:configurationCopy modelManager:managerCopy additionalAvatarUpdateKind:destination imageProvider:colorCategory colorLayerProvider:providerCopy pairedCategory:layerProviderCopy destination:40 editingColors:objc_msgSend(v34 displaysTitle:{"destination"), colorsCopy, v135}];
       if (!v48)
       {
         v31 = v168;
@@ -836,8 +836,8 @@ LABEL_30:
       [v148 addObject:v48];
       v31 = v168;
       v150 = v168 > v30;
-      v49 = [v48 sectionItems];
-      v50 = [v49 indexOfObjectPassingTest:&__block_literal_global_29];
+      sectionItems = [v48 sectionItems];
+      v50 = [sectionItems indexOfObjectPassingTest:&__block_literal_global_29];
 
       if (v50 == 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -849,27 +849,27 @@ LABEL_30:
         v51 = v50;
       }
 
-      v52 = [v48 sectionItems];
-      v155 = [v52 objectAtIndexedSubscript:v51];
+      sectionItems2 = [v48 sectionItems];
+      v155 = [sectionItems2 objectAtIndexedSubscript:v51];
 
       if (v168 >= 1)
       {
         if ([v34 destination] == 1)
         {
-          v53 = [v18 colorsState];
-          v54 = [v53 variationStore];
-          v55 = [v138 color];
-          v56 = [v54 colorPresetFromColor:v55];
+          colorsState = [managerCopy colorsState];
+          variationStore = [colorsState variationStore];
+          color = [v138 color];
+          v56 = [variationStore colorPresetFromColor:color];
 
-          v57 = [v138 color];
-          v58 = [v57 copyForPairedCategory:{objc_msgSend(v34, "colorCategory")}];
+          color2 = [v138 color];
+          v58 = [color2 copyForPairedCategory:{objc_msgSend(v34, "colorCategory")}];
           v59 = MEMORY[0x1E696AD98];
           [v56 variation];
           v60 = [v59 numberWithFloat:?];
-          v61 = [v18 colorsState];
-          v62 = [AVTAvatarUpdaterFactory updaterForColor:v58 variationOverride:v60 colorsState:v61 pairedColors:0 additionalColor:0 saveToColorsState:0];
+          colorsState2 = [managerCopy colorsState];
+          v62 = [AVTAvatarUpdaterFactory updaterForColor:v58 variationOverride:v60 colorsState:colorsState2 pairedColors:0 additionalColor:0 saveToColorsState:0];
 
-          v18 = v161;
+          managerCopy = v161;
         }
 
         else
@@ -881,12 +881,12 @@ LABEL_30:
         v66 = MEMORY[0x1BFB0DE80]();
         [v140 addObject:v66];
 
-        v67 = [v18 colorsState];
-        v68 = [v67 selectedColorForCategory:objc_msgSend(v34 destinationIndex:{"colorCategory"), objc_msgSend(v34, "destination")}];
+        colorsState3 = [managerCopy colorsState];
+        v68 = [colorsState3 selectedColorForCategory:objc_msgSend(v34 destinationIndex:{"colorCategory"), objc_msgSend(v34, "destination")}];
 
-        if (v167 && !v68)
+        if (defaultsProviderCopy && !v68)
         {
-          v69 = [v167 defaultColorForCategory:objc_msgSend(v34 destination:"colorCategory") withConfiguration:{AVTAvatarSettingColorIndexForColorDestination(objc_msgSend(v34, "destination")), v162}];
+          v69 = [defaultsProviderCopy defaultColorForCategory:objc_msgSend(v34 destination:"colorCategory") withConfiguration:{AVTAvatarSettingColorIndexForColorDestination(objc_msgSend(v34, "destination")), configurationCopy}];
           v68 = v69;
           if (v69)
           {
@@ -896,17 +896,17 @@ LABEL_30:
 
         if (!v68)
         {
-          v71 = [v17 subpickers];
-          v72 = [v71 objectAtIndexedSubscript:v168 - 1];
+          subpickers7 = [v17 subpickers];
+          v72 = [subpickers7 objectAtIndexedSubscript:v168 - 1];
 
-          v73 = [v18 colorsState];
-          v74 = [v73 selectedColorForCategory:objc_msgSend(v72 destinationIndex:{"colorCategory"), objc_msgSend(v72, "destination")}];
+          colorsState4 = [managerCopy colorsState];
+          v74 = [colorsState4 selectedColorForCategory:objc_msgSend(v72 destinationIndex:{"colorCategory"), objc_msgSend(v72, "destination")}];
 
           v68 = [v74 copyForCategory:objc_msgSend(v34 destination:{"colorCategory"), objc_msgSend(v34, "destination")}];
         }
 
-        v75 = [v18 colorsState];
-        v76 = [AVTAvatarUpdaterFactory updaterForColor:v68 colorsState:v75 pairedColors:0 additionalColor:0 saveToColorsState:0];
+        colorsState5 = [managerCopy colorsState];
+        v76 = [AVTAvatarUpdaterFactory updaterForColor:v68 colorsState:colorsState5 pairedColors:0 additionalColor:0 saveToColorsState:0];
 
         v64 = 0;
         if (v168 > v153)
@@ -937,7 +937,7 @@ LABEL_51:
           }
         }
 
-        v32 = a1;
+        selfCopy5 = self;
         v31 = v168;
         goto LABEL_53;
       }
@@ -956,10 +956,10 @@ LABEL_53:
       {
         v151 = v48;
         v149 = v64;
-        v79 = [v17 allowsRemoval];
+        allowsRemoval = [v17 allowsRemoval];
         if (v31 > 0)
         {
-          v80 = v79;
+          v80 = allowsRemoval;
         }
 
         else
@@ -967,20 +967,20 @@ LABEL_53:
           v80 = 0;
         }
 
-        v81 = [v17 subtitles];
-        [v32 subtitleFromSubtitles:v81 forIndex:v31 enabledIndex:v163];
+        subtitles = [v17 subtitles];
+        [selfCopy5 subtitleFromSubtitles:subtitles forIndex:v31 enabledIndex:v163];
         v82 = v17;
         v84 = v83 = v31;
 
         v85 = v163;
-        v86 = v84;
+        title = v84;
         v87 = v82;
-        v144 = v86;
-        if (!v86)
+        v144 = title;
+        if (!title)
         {
           if (v83 <= v163)
           {
-            v86 = [v34 title];
+            title = [v34 title];
           }
 
           else
@@ -988,8 +988,8 @@ LABEL_53:
             v88 = MEMORY[0x1E696AEC0];
             v89 = AVTAvatarUIBundle();
             v90 = [v89 localizedStringForKey:@"ADD_MULTICOLOR_FORMAT" value:&stru_1F39618F0 table:@"Localized"];
-            v91 = [v34 title];
-            v86 = [v88 stringWithFormat:v90, v91];
+            title2 = [v34 title];
+            title = [v88 stringWithFormat:v90, title2];
 
             v85 = v163;
           }
@@ -1012,8 +1012,8 @@ LABEL_53:
         v94 = v80;
         v95 = MEMORY[0x1BFB0DE80](v93);
         v96 = [AVTAvatarAttributeEditorMulticolorPickerSectionItem alloc];
-        v97 = [v151 identifier];
-        v98 = [v151 colorVariationStore];
+        identifier3 = [v151 identifier];
+        colorVariationStore = [v151 colorVariationStore];
         v181[0] = MEMORY[0x1E69E9820];
         v181[1] = 3221225472;
         v181[2] = __228__AVTAvatarAttributeEditorModelBuilder_multicolorSectionProviderForCoreMulticolorPicker_platform_configuration_imageProvider_colorLayerProvider_editingColors_colorDefaultsProvider_modelManager_previousSectionMap_pairingPickers___block_invoke_2;
@@ -1024,7 +1024,7 @@ LABEL_53:
         v183 = v87;
         v169 = v95;
         v92 = v155;
-        v99 = [(AVTAvatarAttributeEditorMulticolorPickerSectionItem *)v96 initWithIdentifier:v97 localizedName:v86 isPlaceholder:v143 isRemovable:v94 colorItem:v155 variationStore:v98 avatarUpdater:v149 editorStateUpdater:v181 removalUpdater:v95];
+        v99 = [(AVTAvatarAttributeEditorMulticolorPickerSectionItem *)v96 initWithIdentifier:identifier3 localizedName:title isPlaceholder:v143 isRemovable:v94 colorItem:v155 variationStore:colorVariationStore avatarUpdater:v149 editorStateUpdater:v181 removalUpdater:v95];
 
         [(AVTAvatarAttributeEditorMulticolorPickerSectionItem *)v99 setSelected:v83 == v137];
         [v139 addObject:v99];
@@ -1032,20 +1032,20 @@ LABEL_53:
         if (!v83)
         {
           v101 = [v148 objectAtIndexedSubscript:0];
-          v102 = [v101 sectionItems];
-          v103 = [v102 indexOfObjectPassingTest:&__block_literal_global_24];
+          sectionItems3 = [v101 sectionItems];
+          v103 = [sectionItems3 indexOfObjectPassingTest:&__block_literal_global_24];
 
           if (v103 != 0x7FFFFFFFFFFFFFFFLL)
           {
-            v104 = [v151 sectionItems];
-            v105 = [v104 objectAtIndexedSubscript:v103];
+            sectionItems4 = [v151 sectionItems];
+            v105 = [sectionItems4 objectAtIndexedSubscript:v103];
 
             v138 = v105;
           }
         }
 
         v17 = v141;
-        v32 = a1;
+        selfCopy5 = self;
         v30 = v163;
         v64 = v149;
         v31 = v100 + 1;
@@ -1054,7 +1054,7 @@ LABEL_53:
         v48 = v151;
       }
 
-      v18 = v161;
+      managerCopy = v161;
 LABEL_73:
     }
 
@@ -1068,8 +1068,8 @@ LABEL_77:
   if ([v148 count])
   {
     v107 = MEMORY[0x1E695DF90];
-    v108 = [v17 nestedPresetPickers];
-    v170 = [v107 dictionaryWithCapacity:{objc_msgSend(v108, "count")}];
+    nestedPresetPickers = [v17 nestedPresetPickers];
+    v170 = [v107 dictionaryWithCapacity:{objc_msgSend(nestedPresetPickers, "count")}];
 
     [v17 nestedPresetPickers];
     v177 = 0u;
@@ -1092,8 +1092,8 @@ LABEL_77:
 
           v112 = *(*(&v177 + 1) + 8 * j);
           v113 = [v172 objectForKeyedSubscript:v112];
-          v114 = [v32 sectionProvidersForCoreModelCategory:v113 platform:a4 modelManager:v18 pairingPickers:v146 editingColors:v158 colorDefaultsProvider:v167 previousSectionMap:v147 imageProvider:v160 colorLayerProvider:v159 stickerRenderer:0 configuration:v162 displayConditionEvaluator:0];
-          v115 = [MEMORY[0x1E695DF70] array];
+          v114 = [selfCopy5 sectionProvidersForCoreModelCategory:v113 platform:platform modelManager:managerCopy pairingPickers:pickersCopy editingColors:colorsCopy colorDefaultsProvider:defaultsProviderCopy previousSectionMap:mapCopy imageProvider:providerCopy colorLayerProvider:layerProviderCopy stickerRenderer:0 configuration:configurationCopy displayConditionEvaluator:0];
+          array = [MEMORY[0x1E695DF70] array];
           v173 = 0u;
           v174 = 0u;
           v175 = 0u;
@@ -1113,8 +1113,8 @@ LABEL_77:
                   objc_enumerationMutation(v116);
                 }
 
-                v121 = [*(*(&v173 + 1) + 8 * k) sections];
-                [v115 addObjectsFromArray:v121];
+                sections = [*(*(&v173 + 1) + 8 * k) sections];
+                [array addObjectsFromArray:sections];
               }
 
               v118 = [v116 countByEnumeratingWithState:&v173 objects:v190 count:16];
@@ -1123,9 +1123,9 @@ LABEL_77:
             while (v118);
           }
 
-          [v170 setObject:v115 forKeyedSubscript:v112];
-          v18 = v161;
-          v32 = a1;
+          [v170 setObject:array forKeyedSubscript:v112];
+          managerCopy = v161;
+          selfCopy5 = self;
         }
 
         v110 = [v172 countByEnumeratingWithState:&v177 objects:v191 count:16];
@@ -1134,10 +1134,10 @@ LABEL_77:
       while (v110);
     }
 
-    v122 = [v18 editorState];
+    editorState3 = [managerCopy editorState];
     v17 = v141;
-    v123 = [v141 identifier];
-    v124 = [v122 enabledMulticolorSubpickersIndexForMulticolorPickerIdentifier:v123] > 0;
+    identifier4 = [v141 identifier];
+    v124 = [editorState3 enabledMulticolorSubpickersIndexForMulticolorPickerIdentifier:identifier4] > 0;
 
     v125 = v140;
     v126 = [AVTAvatarUpdaterFactory updaterForAggregatingUpdaters:v140];
@@ -1151,10 +1151,10 @@ LABEL_77:
     }
 
     v130 = [AVTAvatarAttributeEditorMulticolorSectionProvider alloc];
-    v131 = [v141 identifier];
-    v132 = [v141 title];
+    identifier5 = [v141 identifier];
+    title3 = [v141 title];
     v133 = v139;
-    v166 = [(AVTAvatarAttributeEditorMulticolorSectionProvider *)v130 initWithIdentifier:v131 localizedName:v132 subpickers:v148 subpickerRemovalUpdaters:v140 nestedPresetPickers:v170 supplementalPicker:v128 pickerItems:v139 editorState:v122];
+    v166 = [(AVTAvatarAttributeEditorMulticolorSectionProvider *)v130 initWithIdentifier:identifier5 localizedName:title3 subpickers:v148 subpickerRemovalUpdaters:v140 nestedPresetPickers:v170 supplementalPicker:v128 pickerItems:v139 editorState:editorState3];
   }
 
   else
@@ -1183,14 +1183,14 @@ void __228__AVTAvatarAttributeEditorModelBuilder_multicolorSectionProviderForCor
   [v7 setSelectedMulticolorSubpickersIndex:v5 forMulticolorPickerIdentifier:v6];
 }
 
-+ (id)subtitleFromSubtitles:(id)a3 forIndex:(int64_t)a4 enabledIndex:(int64_t)a5
++ (id)subtitleFromSubtitles:(id)subtitles forIndex:(int64_t)index enabledIndex:(int64_t)enabledIndex
 {
-  v7 = a3;
-  v8 = v7;
-  if (v7 && [v7 count])
+  subtitlesCopy = subtitles;
+  v8 = subtitlesCopy;
+  if (subtitlesCopy && [subtitlesCopy count])
   {
-    v9 = [v8 objectAtIndexedSubscript:a5];
-    v10 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v9 = [v8 objectAtIndexedSubscript:enabledIndex];
+    v10 = [MEMORY[0x1E696AD98] numberWithInteger:index];
     v11 = [v9 objectForKeyedSubscript:v10];
 
     v12 = v11;
@@ -1204,43 +1204,43 @@ void __228__AVTAvatarAttributeEditorModelBuilder_multicolorSectionProviderForCor
   return v12;
 }
 
-+ (id)selectedPresetForCoreModelColorsPicker:(id)a3 isEnabled:(BOOL)a4 fallbackToColorsPicker:(id)a5 colorDefaultsProvider:(id)a6 modelManager:(id)a7
++ (id)selectedPresetForCoreModelColorsPicker:(id)picker isEnabled:(BOOL)enabled fallbackToColorsPicker:(id)colorsPicker colorDefaultsProvider:(id)provider modelManager:(id)manager
 {
-  v10 = a4;
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = [v14 colorsState];
-  v16 = [v15 selectedColorPresetForCategory:objc_msgSend(v11 destinationIndex:{"colorCategory"), objc_msgSend(v11, "destination")}];
+  enabledCopy = enabled;
+  pickerCopy = picker;
+  colorsPickerCopy = colorsPicker;
+  providerCopy = provider;
+  managerCopy = manager;
+  colorsState = [managerCopy colorsState];
+  colorPreset3 = [colorsState selectedColorPresetForCategory:objc_msgSend(pickerCopy destinationIndex:{"colorCategory"), objc_msgSend(pickerCopy, "destination")}];
 
-  v17 = [v14 colorsState];
-  v18 = [v17 selectedColorPresetForCategory:objc_msgSend(v12 destinationIndex:{"colorCategory"), objc_msgSend(v12, "destination")}];
+  colorsState2 = [managerCopy colorsState];
+  v18 = [colorsState2 selectedColorPresetForCategory:objc_msgSend(colorsPickerCopy destinationIndex:{"colorCategory"), objc_msgSend(colorsPickerCopy, "destination")}];
 
-  if (!v16 && v10)
+  if (!colorPreset3 && enabledCopy)
   {
-    v40 = v13;
-    v19 = [v11 destination];
-    v20 = [v11 colorCategory];
-    v21 = [v14 avatarConfiguration];
-    v22 = [v21 colorPresetForSettingKind:{v19, v20}];
+    v40 = providerCopy;
+    destination = [pickerCopy destination];
+    colorCategory = [pickerCopy colorCategory];
+    avatarConfiguration = [managerCopy avatarConfiguration];
+    v22 = [avatarConfiguration colorPresetForSettingKind:{destination, colorCategory}];
 
-    v23 = [v18 name];
-    v24 = [v22 colorPreset];
-    v25 = [v24 name];
-    if ([v23 isEqual:v25])
+    name = [v18 name];
+    colorPreset = [v22 colorPreset];
+    name2 = [colorPreset name];
+    if ([name isEqual:name2])
     {
       [v18 variation];
       v27 = v26;
-      v28 = [v22 colorPreset];
-      [v28 variation];
+      colorPreset2 = [v22 colorPreset];
+      [colorPreset2 variation];
       v30 = v29;
 
       if (v27 == v30)
       {
-        v16 = 0;
+        colorPreset3 = 0;
 LABEL_8:
-        v13 = v40;
+        providerCopy = v40;
 
         goto LABEL_9;
       }
@@ -1250,52 +1250,52 @@ LABEL_8:
     {
     }
 
-    v16 = [v22 colorPreset];
+    colorPreset3 = [v22 colorPreset];
     goto LABEL_8;
   }
 
 LABEL_9:
-  if (!v16 && v10)
+  if (!colorPreset3 && enabledCopy)
   {
-    v31 = [v11 colorCategory];
-    v32 = AVTAvatarSettingColorIndexForColorDestination([v11 destination]);
-    v33 = [v14 avatarConfiguration];
-    v16 = [v13 defaultColorPresetForCategory:v31 destination:v32 withConfiguration:v33];
+    colorCategory2 = [pickerCopy colorCategory];
+    v32 = AVTAvatarSettingColorIndexForColorDestination([pickerCopy destination]);
+    avatarConfiguration2 = [managerCopy avatarConfiguration];
+    colorPreset3 = [providerCopy defaultColorPresetForCategory:colorCategory2 destination:v32 withConfiguration:avatarConfiguration2];
   }
 
-  if (v12 && !v16)
+  if (colorsPickerCopy && !colorPreset3)
   {
-    v34 = [v14 colorsState];
-    v35 = [v34 selectedColorPresetForCategory:objc_msgSend(v12 destinationIndex:{"colorCategory"), objc_msgSend(v12, "destination")}];
+    colorsState3 = [managerCopy colorsState];
+    v35 = [colorsState3 selectedColorPresetForCategory:objc_msgSend(colorsPickerCopy destinationIndex:{"colorCategory"), objc_msgSend(colorsPickerCopy, "destination")}];
 
     v36 = MEMORY[0x1E698E290];
-    v37 = [v35 name];
-    v38 = [v11 colorCategory];
+    name3 = [v35 name];
+    colorCategory3 = [pickerCopy colorCategory];
     [v35 variation];
-    v16 = [v36 colorPresetWithName:v37 category:v38 variation:?];
+    colorPreset3 = [v36 colorPresetWithName:name3 category:colorCategory3 variation:?];
   }
 
-  return v16;
+  return colorPreset3;
 }
 
-+ (id)sectionColorItemsForColors:(id)a3 selectedPreset:(id)a4 configuration:(id)a5 modelManager:(id)a6 additionalUpdateKind:(id)a7 imageProvider:(id)a8 colorLayerProvider:(id)a9 pairedCategory:(int64_t)a10 editingColors:(id)a11
++ (id)sectionColorItemsForColors:(id)colors selectedPreset:(id)preset configuration:(id)configuration modelManager:(id)manager additionalUpdateKind:(id)kind imageProvider:(id)provider colorLayerProvider:(id)layerProvider pairedCategory:(int64_t)self0 editingColors:(id)self1
 {
-  var1 = a7.var1;
-  var0 = a7.var0;
+  var1 = kind.var1;
+  var0 = kind.var0;
   v53 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v43 = a4;
-  v42 = a5;
-  v46 = a6;
-  v40 = a8;
-  v39 = a9;
-  v38 = a11;
-  v41 = [MEMORY[0x1E695DF70] array];
+  colorsCopy = colors;
+  presetCopy = preset;
+  configurationCopy = configuration;
+  managerCopy = manager;
+  providerCopy = provider;
+  layerProviderCopy = layerProvider;
+  editingColorsCopy = editingColors;
+  array = [MEMORY[0x1E695DF70] array];
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  obj = v14;
+  obj = colorsCopy;
   v44 = [obj countByEnumeratingWithState:&v47 objects:v52 count:16];
   if (v44)
   {
@@ -1310,18 +1310,18 @@ LABEL_9:
         }
 
         v16 = *(*(&v47 + 1) + 8 * i);
-        v17 = [v46 colorsState];
-        v18 = [v17 variationStore];
-        v19 = [v18 colorPresetFromColor:v16];
+        colorsState = [managerCopy colorsState];
+        variationStore = [colorsState variationStore];
+        v19 = [variationStore colorPresetFromColor:v16];
 
         v20 = AVTColorSettingKind(0, 0);
-        v22 = [v42 colorPresetForSettingKind:{v20, v21}];
-        v23 = [v22 colorPreset];
-        v45 = [v19 isEqual:v43];
+        v22 = [configurationCopy colorPresetForSettingKind:{v20, v21}];
+        colorPreset = [v22 colorPreset];
+        v45 = [v19 isEqual:presetCopy];
         v24 = 0;
-        if (a10 != 40)
+        if (category != 40)
         {
-          v25 = [v16 copyForPairedCategory:a10];
+          v25 = [v16 copyForPairedCategory:category];
           v51 = v25;
           v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v51 count:1];
         }
@@ -1329,22 +1329,22 @@ LABEL_9:
         if (var1 == 40)
         {
           v26 = 0;
-          v27 = v38;
+          v27 = editingColorsCopy;
         }
 
         else
         {
-          v28 = [v19 name];
-          v27 = v38;
-          v26 = [v38 colorForSettingKind:var0 identifier:{var1, v28}];
+          name = [v19 name];
+          v27 = editingColorsCopy;
+          v26 = [editingColorsCopy colorForSettingKind:var0 identifier:{var1, name}];
         }
 
-        v29 = [v46 colorsState];
-        v30 = [AVTAvatarUpdaterFactory updaterForColor:v16 colorsState:v29 pairedColors:v24 additionalColor:v26];
+        colorsState2 = [managerCopy colorsState];
+        v30 = [AVTAvatarUpdaterFactory updaterForColor:v16 colorsState:colorsState2 pairedColors:v24 additionalColor:v26];
 
         LOBYTE(v33) = v45;
-        v31 = -[AVTAvatarAttributeEditorSectionColorItem initWithColor:skinColor:imageProvider:colorLayerProvider:avatarUpdater:derivedColorDependent:selected:]([AVTAvatarAttributeEditorSectionColorItem alloc], "initWithColor:skinColor:imageProvider:colorLayerProvider:avatarUpdater:derivedColorDependent:selected:", v16, v23, v40, v39, v30, [v27 colorHasDerivedColorDependency:v16], v33);
-        [v41 addObject:v31];
+        v31 = -[AVTAvatarAttributeEditorSectionColorItem initWithColor:skinColor:imageProvider:colorLayerProvider:avatarUpdater:derivedColorDependent:selected:]([AVTAvatarAttributeEditorSectionColorItem alloc], "initWithColor:skinColor:imageProvider:colorLayerProvider:avatarUpdater:derivedColorDependent:selected:", v16, colorPreset, providerCopy, layerProviderCopy, v30, [v27 colorHasDerivedColorDependency:v16], v33);
+        [array addObject:v31];
       }
 
       v44 = [obj countByEnumeratingWithState:&v47 objects:v52 count:16];
@@ -1353,41 +1353,41 @@ LABEL_9:
     while (v44);
   }
 
-  return v41;
+  return array;
 }
 
-+ (id)sectionForModelRow:(id)a3 fromModelPresets:(id)a4 selectedModelPreset:(id)a5 tagSelection:(id)a6 fixedTags:(id)a7 availableTags:(id)a8 category:(int64_t)a9 imageProvider:(id)a10 stickerRenderer:(id)a11 configuration:(id)a12 previousSection:(id)a13 pairedCategory:(int64_t)a14
++ (id)sectionForModelRow:(id)row fromModelPresets:(id)presets selectedModelPreset:(id)preset tagSelection:(id)selection fixedTags:(id)tags availableTags:(id)availableTags category:(int64_t)category imageProvider:(id)self0 stickerRenderer:(id)self1 configuration:(id)self2 previousSection:(id)self3 pairedCategory:(int64_t)self4
 {
   v108 = *MEMORY[0x1E69E9840];
-  v19 = a3;
-  v20 = a4;
-  v92 = a5;
-  v21 = a6;
-  v22 = a7;
-  v23 = a8;
-  v85 = a10;
-  v87 = a11;
-  v91 = a12;
-  v24 = a13;
-  v90 = [MEMORY[0x1E695DF70] array];
-  v25 = [v19 representedTags];
-  v26 = [v19 options];
-  v81 = v21;
-  v82 = v20;
-  v79 = v23;
-  v80 = v22;
-  v27 = [a1 filterPresets:v20 forRowRepresentingTags:v25 currentTagSelection:v21 fixedTags:v22 availableTags:v23 sortingOption:{objc_msgSend(v26, "sortingOption")}];
+  rowCopy = row;
+  presetsCopy = presets;
+  presetCopy = preset;
+  selectionCopy = selection;
+  tagsCopy = tags;
+  availableTagsCopy = availableTags;
+  providerCopy = provider;
+  rendererCopy = renderer;
+  configurationCopy = configuration;
+  sectionCopy = section;
+  array = [MEMORY[0x1E695DF70] array];
+  representedTags = [rowCopy representedTags];
+  options = [rowCopy options];
+  v81 = selectionCopy;
+  v82 = presetsCopy;
+  v79 = availableTagsCopy;
+  v80 = tagsCopy;
+  v27 = [self filterPresets:presetsCopy forRowRepresentingTags:representedTags currentTagSelection:selectionCopy fixedTags:tagsCopy availableTags:availableTagsCopy sortingOption:{objc_msgSend(options, "sortingOption")}];
 
   v28 = MEMORY[0x1E695DF90];
-  v29 = [v24 sectionItems];
-  v95 = [v28 dictionaryWithCapacity:{objc_msgSend(v29, "count")}];
+  sectionItems = [sectionCopy sectionItems];
+  v95 = [v28 dictionaryWithCapacity:{objc_msgSend(sectionItems, "count")}];
 
   v104 = 0u;
   v105 = 0u;
   v102 = 0u;
   v103 = 0u;
-  v30 = [v24 sectionItems];
-  v31 = [v30 countByEnumeratingWithState:&v102 objects:v107 count:16];
+  sectionItems2 = [sectionCopy sectionItems];
+  v31 = [sectionItems2 countByEnumeratingWithState:&v102 objects:v107 count:16];
   if (v31)
   {
     v32 = v31;
@@ -1398,32 +1398,32 @@ LABEL_9:
       {
         if (*v103 != v33)
         {
-          objc_enumerationMutation(v30);
+          objc_enumerationMutation(sectionItems2);
         }
 
         v35 = *(*(&v102 + 1) + 8 * i);
-        v36 = [v35 identifier];
-        [v95 setObject:v35 forKeyedSubscript:v36];
+        identifier = [v35 identifier];
+        [v95 setObject:v35 forKeyedSubscript:identifier];
       }
 
-      v32 = [v30 countByEnumeratingWithState:&v102 objects:v107 count:16];
+      v32 = [sectionItems2 countByEnumeratingWithState:&v102 objects:v107 count:16];
     }
 
     while (v32);
   }
 
-  v84 = [objc_opt_class() framingModeForRow:v19 selectedPreset:v92];
-  v37 = a14;
-  v78 = v24;
-  if (a14 == 40)
+  v84 = [objc_opt_class() framingModeForRow:rowCopy selectedPreset:presetCopy];
+  pairedCategoryCopy2 = pairedCategory;
+  v78 = sectionCopy;
+  if (pairedCategory == 40)
   {
     v77 = 0;
   }
 
   else
   {
-    v38 = [v19 pairing];
-    v77 = v38 != 0;
+    pairing = [rowCopy pairing];
+    v77 = pairing != 0;
   }
 
   v100 = 0u;
@@ -1435,7 +1435,7 @@ LABEL_9:
   if (v93)
   {
     v88 = *v99;
-    v89 = v19;
+    v89 = rowCopy;
     do
     {
       for (j = 0; j != v93; ++j)
@@ -1446,47 +1446,47 @@ LABEL_9:
         }
 
         v40 = *(*(&v98 + 1) + 8 * j);
-        v41 = [v40 identifier];
-        v94 = [v95 objectForKeyedSubscript:v41];
+        identifier2 = [v40 identifier];
+        v94 = [v95 objectForKeyedSubscript:identifier2];
 
-        v42 = [v19 options];
-        v43 = [v42 stickerConfiguration];
+        options2 = [rowCopy options];
+        stickerConfiguration = [options2 stickerConfiguration];
 
-        v44 = [v19 options];
-        v45 = [v44 presetOverrides];
-        v46 = [v19 options];
-        v47 = v46;
-        if (v43)
+        options3 = [rowCopy options];
+        presetOverrides = [options3 presetOverrides];
+        options4 = [rowCopy options];
+        v47 = options4;
+        if (stickerConfiguration)
         {
-          v48 = [v46 stickerConfiguration];
-          v96 = [v87 scheduledStickerResourceProviderForThumbnailForModelPreset:v40 presetOverrides:v45 avatarConfiguration:v91 stickerConfiguration:v48 correctClipping:0];
+          stickerConfiguration2 = [options4 stickerConfiguration];
+          v96 = [rendererCopy scheduledStickerResourceProviderForThumbnailForModelPreset:v40 presetOverrides:presetOverrides avatarConfiguration:configurationCopy stickerConfiguration:stickerConfiguration2 correctClipping:0];
           v49 = 0;
         }
 
         else
         {
-          v48 = [v46 poseOverride];
-          v49 = [v85 providerForThumbnailForModelPreset:v40 presetOverrides:v45 poseOverride:v48 avatarConfiguration:v91 framingMode:v84];
+          stickerConfiguration2 = [options4 poseOverride];
+          v49 = [providerCopy providerForThumbnailForModelPreset:v40 presetOverrides:presetOverrides poseOverride:stickerConfiguration2 avatarConfiguration:configurationCopy framingMode:v84];
           v96 = 0;
         }
 
-        v50 = [v40 identifier];
-        v51 = [v92 identifier];
-        v52 = [v50 isEqual:v51];
+        identifier3 = [v40 identifier];
+        identifier4 = [presetCopy identifier];
+        v52 = [identifier3 isEqual:identifier4];
 
-        v53 = [v19 options];
-        v54 = [v53 framingMode];
-        [AVTRenderingScope thumbnailHeightRatioForFramingMode:v54];
+        options5 = [rowCopy options];
+        framingMode = [options5 framingMode];
+        [AVTRenderingScope thumbnailHeightRatioForFramingMode:framingMode];
         v56 = v55;
 
-        if (v37 == 40)
+        if (pairedCategoryCopy2 == 40)
         {
           v57 = 0;
         }
 
         else
         {
-          v57 = [v40 copyForPairedCategory:v37];
+          v57 = [v40 copyForPairedCategory:pairedCategoryCopy2];
         }
 
         v58 = [AVTAvatarUpdaterFactory updaterForPreset:v40 pairedPreset:v57];
@@ -1496,7 +1496,7 @@ LABEL_9:
         v97[3] = &unk_1E7F3CFD0;
         v97[4] = v40;
         v59 = MEMORY[0x1BFB0DE80](v97);
-        if (v37 == 40)
+        if (pairedCategoryCopy2 == 40)
         {
           [v40 localizedName];
         }
@@ -1507,23 +1507,23 @@ LABEL_9:
         }
         v60 = ;
         v61 = [AVTAvatarAttributeEditorSectionItem alloc];
-        v62 = [v40 identifier];
+        identifier5 = [v40 identifier];
         v63 = [v59 copy];
         LOBYTE(v76) = v52;
-        v64 = [(AVTAvatarAttributeEditorSectionItem *)v61 initWithIdentifier:v62 localizedName:v60 thumbnailProvider:v49 stickerResourceProvider:v96 presetResourcesProvider:v63 avatarUpdater:v58 heightRatio:v56 selected:v76];
+        v64 = [(AVTAvatarAttributeEditorSectionItem *)v61 initWithIdentifier:identifier5 localizedName:v60 thumbnailProvider:v49 stickerResourceProvider:v96 presetResourcesProvider:v63 avatarUpdater:v58 heightRatio:v56 selected:v76];
 
-        v65 = [v94 cachedThumbnail];
+        cachedThumbnail = [v94 cachedThumbnail];
 
-        if (v65)
+        if (cachedThumbnail)
         {
-          v66 = [v94 cachedThumbnail];
-          [(AVTAvatarAttributeEditorSectionItem *)v64 setCachedThumbnail:v66];
+          cachedThumbnail2 = [v94 cachedThumbnail];
+          [(AVTAvatarAttributeEditorSectionItem *)v64 setCachedThumbnail:cachedThumbnail2];
         }
 
-        [v90 addObject:v64];
+        [array addObject:v64];
 
-        v19 = v89;
-        v37 = a14;
+        rowCopy = v89;
+        pairedCategoryCopy2 = pairedCategory;
       }
 
       v93 = [obj countByEnumeratingWithState:&v98 objects:v106 count:16];
@@ -1534,29 +1534,29 @@ LABEL_9:
 
   if (v77)
   {
-    v67 = [v19 pairing];
-    v68 = [v67 localizedPairedTitle];
+    pairing2 = [rowCopy pairing];
+    localizedPairedTitle = [pairing2 localizedPairedTitle];
   }
 
   else
   {
-    v68 = [v19 title];
+    localizedPairedTitle = [rowCopy title];
   }
 
-  v69 = [v19 options];
-  v70 = [a1 sectionOptionFromModelOptions:v69];
+  options6 = [rowCopy options];
+  v70 = [self sectionOptionFromModelOptions:options6];
 
-  if ([v90 count] < 2)
+  if ([array count] < 2)
   {
     v74 = 0;
   }
 
   else
   {
-    v71 = [objc_opt_class() destinationForPresetCategory:a9 isPaired:v77];
+    v71 = [objc_opt_class() destinationForPresetCategory:category isPaired:v77];
     v72 = [AVTAvatarAttributeEditorSection alloc];
-    v73 = [v19 identifier];
-    v74 = [(AVTAvatarAttributeEditorSection *)v72 initWithSectionItems:v90 localizedName:v68 identifier:v73 intendedDestination:v71 options:v70];
+    identifier6 = [rowCopy identifier];
+    v74 = [(AVTAvatarAttributeEditorSection *)v72 initWithSectionItems:array localizedName:localizedPairedTitle identifier:identifier6 intendedDestination:v71 options:v70];
   }
 
   return v74;
@@ -1571,25 +1571,25 @@ AVTPresetResources *__217__AVTAvatarAttributeEditorModelBuilder_sectionForModelR
   return v4;
 }
 
-+ (id)framingModeForRow:(id)a3 selectedPreset:(id)a4
++ (id)framingModeForRow:(id)row selectedPreset:(id)preset
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v28 = a4;
-  v7 = [v6 options];
-  v8 = [v7 framingMode];
+  rowCopy = row;
+  presetCopy = preset;
+  options = [rowCopy options];
+  framingMode = [options framingMode];
 
-  v9 = [v6 options];
-  v10 = [v9 framingModeOverrides];
+  options2 = [rowCopy options];
+  framingModeOverrides = [options2 framingModeOverrides];
 
-  if (v10)
+  if (framingModeOverrides)
   {
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v11 = [v10 orderedTags];
-    v12 = [v11 countByEnumeratingWithState:&v29 objects:v33 count:16];
+    orderedTags = [framingModeOverrides orderedTags];
+    v12 = [orderedTags countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (!v12)
     {
 LABEL_13:
@@ -1598,9 +1598,9 @@ LABEL_13:
     }
 
     v13 = v12;
-    v24 = v10;
-    v25 = v8;
-    v26 = v6;
+    v24 = framingModeOverrides;
+    v25 = framingMode;
+    v26 = rowCopy;
     v14 = 0;
     v15 = *v30;
     v16 = 1;
@@ -1614,12 +1614,12 @@ LABEL_13:
       {
         if (*v30 != v15)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(orderedTags);
         }
 
         v20 = *(*(&v29 + 1) + 8 * v18);
-        v21 = [v28 tags];
-        v22 = [a1 scoreForTags:v20 forCombination:v20 currentSelection:v21];
+        tags = [presetCopy tags];
+        v22 = [self scoreForTags:v20 forCombination:v20 currentSelection:tags];
 
         if (v22 > v16)
         {
@@ -1633,48 +1633,48 @@ LABEL_13:
 
       while (v13 != v18);
       v14 = v27 + v13;
-      v13 = [v11 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      v13 = [orderedTags countByEnumeratingWithState:&v29 objects:v33 count:16];
     }
 
     while (v13);
 
-    v6 = v26;
+    rowCopy = v26;
     if ((v17 & 0x8000000000000000) == 0)
     {
-      v10 = v24;
-      v11 = [v24 orderedFramingModeOverrides];
-      v8 = [v11 objectAtIndexedSubscript:v17];
+      framingModeOverrides = v24;
+      orderedTags = [v24 orderedFramingModeOverrides];
+      framingMode = [orderedTags objectAtIndexedSubscript:v17];
 
       goto LABEL_13;
     }
 
-    v10 = v24;
-    v8 = v25;
+    framingModeOverrides = v24;
+    framingMode = v25;
   }
 
 LABEL_15:
 
-  return v8;
+  return framingMode;
 }
 
-+ (id)filterPresets:(id)a3 forRowRepresentingTags:(id)a4 currentTagSelection:(id)a5 fixedTags:(id)a6 availableTags:(id)a7 sortingOption:(unint64_t)a8
++ (id)filterPresets:(id)presets forRowRepresentingTags:(id)tags currentTagSelection:(id)selection fixedTags:(id)fixedTags availableTags:(id)availableTags sortingOption:(unint64_t)option
 {
   v63 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  if (v15)
+  presetsCopy = presets;
+  tagsCopy = tags;
+  selectionCopy = selection;
+  fixedTagsCopy = fixedTags;
+  availableTagsCopy = availableTags;
+  if (tagsCopy)
   {
-    v43 = [MEMORY[0x1E695DF70] array];
-    v41 = v15;
-    v39 = v18;
-    v19 = [a1 tagCombinationsForTagNames:v15 availableTags:v18];
-    v40 = v16;
-    if (v16)
+    array = [MEMORY[0x1E695DF70] array];
+    v41 = tagsCopy;
+    v39 = availableTagsCopy;
+    v19 = [self tagCombinationsForTagNames:tagsCopy availableTags:availableTagsCopy];
+    v40 = selectionCopy;
+    if (selectionCopy)
     {
-      v20 = v16;
+      v20 = selectionCopy;
     }
 
     else
@@ -1692,9 +1692,9 @@ LABEL_15:
     if (v48)
     {
       v44 = *v58;
-      v45 = a8;
-      v46 = v17;
-      v47 = v14;
+      optionCopy = option;
+      v46 = fixedTagsCopy;
+      v47 = presetsCopy;
       do
       {
         v21 = 0;
@@ -1708,10 +1708,10 @@ LABEL_15:
           v50 = v21;
           v22 = *(*(&v57 + 1) + 8 * v21);
           v23 = [v22 mutableCopy];
-          [a1 setTags:v17 onMutableTagSet:v23];
+          [self setTags:fixedTagsCopy onMutableTagSet:v23];
           v49 = v23;
-          v24 = [a1 filterPresets:v14 matchingTagValues:v23 sortedUsing:a8];
-          v25 = [v24 firstObject];
+          v24 = [self filterPresets:presetsCopy matchingTagValues:v23 sortedUsing:option];
+          firstObject = [v24 firstObject];
           v53 = 0u;
           v54 = 0u;
           v55 = 0u;
@@ -1733,19 +1733,19 @@ LABEL_15:
                 }
 
                 v31 = *(*(&v53 + 1) + 8 * i);
-                v32 = [v31 tags];
-                v33 = a1;
-                v34 = [a1 scoreForTags:v32 forCombination:v22 currentSelection:v52];
+                tags = [v31 tags];
+                selfCopy = self;
+                v34 = [self scoreForTags:tags forCombination:v22 currentSelection:v52];
 
                 if (v34 > v28)
                 {
                   v35 = v31;
 
                   v28 = v34;
-                  v25 = v35;
+                  firstObject = v35;
                 }
 
-                a1 = v33;
+                self = selfCopy;
               }
 
               v27 = [v51 countByEnumeratingWithState:&v53 objects:v61 count:16];
@@ -1754,17 +1754,17 @@ LABEL_15:
             while (v27);
           }
 
-          if (v25 && ([v43 containsObject:v25] & 1) == 0)
+          if (firstObject && ([array containsObject:firstObject] & 1) == 0)
           {
-            [v43 addObject:v25];
-            v36 = [v25 tags];
-            [a1 addTags:v36 toMutableTagSet:v52];
+            [array addObject:firstObject];
+            tags2 = [firstObject tags];
+            [self addTags:tags2 toMutableTagSet:v52];
           }
 
           v21 = v50 + 1;
-          v14 = v47;
-          a8 = v45;
-          v17 = v46;
+          presetsCopy = v47;
+          option = optionCopy;
+          fixedTagsCopy = v46;
         }
 
         while (v50 + 1 != v48);
@@ -1774,37 +1774,37 @@ LABEL_15:
       while (v48);
     }
 
-    v37 = [v43 copy];
-    v16 = v40;
-    v15 = v41;
-    v18 = v39;
+    v37 = [array copy];
+    selectionCopy = v40;
+    tagsCopy = v41;
+    availableTagsCopy = v39;
   }
 
   else
   {
-    v37 = [a1 filterPresets:v14 matchingTagValues:v17 sortedUsing:a8];
+    v37 = [self filterPresets:presetsCopy matchingTagValues:fixedTagsCopy sortedUsing:option];
   }
 
   return v37;
 }
 
-+ (id)tagCombinationsForTagNames:(id)a3 availableTags:(id)a4
++ (id)tagCombinationsForTagNames:(id)names availableTags:(id)tags
 {
   v46 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  namesCopy = names;
+  tagsCopy = tags;
+  if ([namesCopy count])
   {
-    v8 = [v6 firstObject];
-    v33 = [v7 objectForKeyedSubscript:v8];
-    v9 = [MEMORY[0x1E695DF70] array];
-    v30 = v6;
-    v10 = [v6 mutableCopy];
+    firstObject = [namesCopy firstObject];
+    v33 = [tagsCopy objectForKeyedSubscript:firstObject];
+    array = [MEMORY[0x1E695DF70] array];
+    v30 = namesCopy;
+    v10 = [namesCopy mutableCopy];
     [v10 removeObjectsInRange:{0, 1}];
     v28 = v10;
     v11 = [v10 copy];
-    v29 = v7;
-    v12 = [a1 tagCombinationsForTagNames:v11 availableTags:v7];
+    v29 = tagsCopy;
+    v12 = [self tagCombinationsForTagNames:v11 availableTags:tagsCopy];
 
     v42 = 0u;
     v43 = 0u;
@@ -1849,16 +1849,16 @@ LABEL_15:
                 v20 = *(*(&v36 + 1) + 8 * i);
                 v21 = [v14 mutableCopy];
                 v22 = [MEMORY[0x1E695DFA0] orderedSetWithObject:v20];
-                [v21 setObject:v22 forKeyedSubscript:v8];
+                [v21 setObject:v22 forKeyedSubscript:firstObject];
 
-                [v9 addObject:v21];
+                [array addObject:v21];
                 if ([v14 count])
                 {
                   v23 = MEMORY[0x1E695DF20];
                   v24 = [MEMORY[0x1E695DFB8] orderedSetWithObject:v20];
-                  v25 = [v23 dictionaryWithObject:v24 forKey:v8];
+                  v25 = [v23 dictionaryWithObject:v24 forKey:firstObject];
 
-                  [v9 addObject:v25];
+                  [array addObject:v25];
                 }
               }
 
@@ -1870,7 +1870,7 @@ LABEL_15:
 
           if ([v14 count])
           {
-            [v9 addObject:v14];
+            [array addObject:v14];
           }
 
           v13 = v35 + 1;
@@ -1883,9 +1883,9 @@ LABEL_15:
       while (v34);
     }
 
-    v26 = [v9 copy];
-    v7 = v29;
-    v6 = v30;
+    v26 = [array copy];
+    tagsCopy = v29;
+    namesCopy = v30;
   }
 
   else
@@ -1896,16 +1896,16 @@ LABEL_15:
   return v26;
 }
 
-+ (id)tagSetByRemovingTagNames:(id)a3 fromTagSet:(id)a4
++ (id)tagSetByRemovingTagNames:(id)names fromTagSet:(id)set
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [a4 mutableCopy];
+  namesCopy = names;
+  v6 = [set mutableCopy];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = v5;
+  v7 = namesCopy;
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
@@ -1934,17 +1934,17 @@ LABEL_15:
   return v12;
 }
 
-+ (id)filterPresets:(id)a3 matchingTagValues:(id)a4 sortedUsing:(unint64_t)a5
++ (id)filterPresets:(id)presets matchingTagValues:(id)values sortedUsing:(unint64_t)using
 {
   v42 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v31 = a4;
-  v25 = [MEMORY[0x1E695DF70] array];
+  presetsCopy = presets;
+  valuesCopy = values;
+  array = [MEMORY[0x1E695DF70] array];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = v6;
+  obj = presetsCopy;
   v28 = [obj countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (v28)
   {
@@ -1965,8 +1965,8 @@ LABEL_15:
         v33 = 0u;
         v34 = 0u;
         v35 = 0u;
-        v30 = [v31 allKeys];
-        v9 = [v30 countByEnumeratingWithState:&v32 objects:v40 count:16];
+        allKeys = [valuesCopy allKeys];
+        v9 = [allKeys countByEnumeratingWithState:&v32 objects:v40 count:16];
         if (v9)
         {
           v10 = v9;
@@ -1977,18 +1977,18 @@ LABEL_15:
             {
               if (*v33 != v11)
               {
-                objc_enumerationMutation(v30);
+                objc_enumerationMutation(allKeys);
               }
 
               v13 = *(*(&v32 + 1) + 8 * i);
-              v14 = [v8 tags];
-              v15 = [v14 objectForKeyedSubscript:v13];
+              tags = [v8 tags];
+              v15 = [tags objectForKeyedSubscript:v13];
               if (v15)
               {
                 v16 = v15;
-                v17 = [v8 tags];
-                v18 = [v17 objectForKeyedSubscript:v13];
-                v19 = [v31 objectForKeyedSubscript:v13];
+                tags2 = [v8 tags];
+                v18 = [tags2 objectForKeyedSubscript:v13];
+                v19 = [valuesCopy objectForKeyedSubscript:v13];
                 v20 = [v18 intersectsOrderedSet:v19];
 
                 if (!v20)
@@ -2003,13 +2003,13 @@ LABEL_15:
               }
             }
 
-            v10 = [v30 countByEnumeratingWithState:&v32 objects:v40 count:16];
+            v10 = [allKeys countByEnumeratingWithState:&v32 objects:v40 count:16];
           }
 
           while (v10);
         }
 
-        [a1 insertPreset:v8 intoList:v25 forSortingOption:a5];
+        [self insertPreset:v8 intoList:array forSortingOption:using];
 LABEL_18:
         v7 = v29 + 1;
       }
@@ -2021,37 +2021,37 @@ LABEL_18:
     while (v28);
   }
 
-  v21 = [v25 copy];
+  v21 = [array copy];
 
   return v21;
 }
 
-+ (void)insertPreset:(id)a3 intoList:(id)a4 forSortingOption:(unint64_t)a5
++ (void)insertPreset:(id)preset intoList:(id)list forSortingOption:(unint64_t)option
 {
-  v8 = a3;
-  v7 = a4;
-  if (a5 == 1 || a5 == 2 && [v8 isDefaultPreset])
+  presetCopy = preset;
+  listCopy = list;
+  if (option == 1 || option == 2 && [presetCopy isDefaultPreset])
   {
-    [v7 insertObject:v8 atIndex:0];
+    [listCopy insertObject:presetCopy atIndex:0];
   }
 
   else
   {
-    [v7 addObject:v8];
+    [listCopy addObject:presetCopy];
   }
 }
 
-+ (int)scoreForTags:(id)a3 forCombination:(id)a4 currentSelection:(id)a5
++ (int)scoreForTags:(id)tags forCombination:(id)combination currentSelection:(id)selection
 {
   v35 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
+  tagsCopy = tags;
+  selectionCopy = selection;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v9 = [a4 allKeys];
-  v10 = [v9 countByEnumeratingWithState:&v29 objects:v34 count:16];
+  allKeys = [combination allKeys];
+  v10 = [allKeys countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (!v10)
   {
 LABEL_19:
@@ -2067,16 +2067,16 @@ LABEL_19:
     {
       if (*v30 != v12)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(allKeys);
       }
 
-      v14 = [v7 objectForKeyedSubscript:*(*(&v29 + 1) + 8 * i)];
+      v14 = [tagsCopy objectForKeyedSubscript:*(*(&v29 + 1) + 8 * i)];
       v15 = v14 != 0;
 
       v11 |= v15;
     }
 
-    v10 = [v9 countByEnumeratingWithState:&v29 objects:v34 count:16];
+    v10 = [allKeys countByEnumeratingWithState:&v29 objects:v34 count:16];
   }
 
   while (v10);
@@ -2087,8 +2087,8 @@ LABEL_19:
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v9 = [v7 allKeys];
-    v16 = [v9 countByEnumeratingWithState:&v25 objects:v33 count:16];
+    allKeys = [tagsCopy allKeys];
+    v16 = [allKeys countByEnumeratingWithState:&v25 objects:v33 count:16];
     if (v16)
     {
       v17 = v16;
@@ -2100,20 +2100,20 @@ LABEL_19:
         {
           if (*v26 != v18)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(allKeys);
           }
 
           v20 = *(*(&v25 + 1) + 8 * j);
-          v21 = [v7 objectForKeyedSubscript:v20];
+          v21 = [tagsCopy objectForKeyedSubscript:v20];
           v22 = [v21 mutableCopy];
 
-          v23 = [v8 objectForKeyedSubscript:v20];
+          v23 = [selectionCopy objectForKeyedSubscript:v20];
           [v22 intersectOrderedSet:v23];
 
           v10 = [v22 count] + v10;
         }
 
-        v17 = [v9 countByEnumeratingWithState:&v25 objects:v33 count:16];
+        v17 = [allKeys countByEnumeratingWithState:&v25 objects:v33 count:16];
       }
 
       while (v17);
@@ -2133,16 +2133,16 @@ LABEL_20:
   return v10;
 }
 
-+ (void)addTags:(id)a3 toMutableTagSet:(id)a4
++ (void)addTags:(id)tags toMutableTagSet:(id)set
 {
-  v5 = a4;
+  setCopy = set;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __64__AVTAvatarAttributeEditorModelBuilder_addTags_toMutableTagSet___block_invoke;
   v7[3] = &unk_1E7F3BC58;
-  v8 = v5;
-  v6 = v5;
-  [a3 enumerateKeysAndObjectsUsingBlock:v7];
+  v8 = setCopy;
+  v6 = setCopy;
+  [tags enumerateKeysAndObjectsUsingBlock:v7];
 }
 
 void __64__AVTAvatarAttributeEditorModelBuilder_addTags_toMutableTagSet___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -2158,16 +2158,16 @@ void __64__AVTAvatarAttributeEditorModelBuilder_addTags_toMutableTagSet___block_
   }
 }
 
-+ (void)setTags:(id)a3 onMutableTagSet:(id)a4
++ (void)setTags:(id)tags onMutableTagSet:(id)set
 {
-  v5 = a4;
+  setCopy = set;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __64__AVTAvatarAttributeEditorModelBuilder_setTags_onMutableTagSet___block_invoke;
   v7[3] = &unk_1E7F3BC58;
-  v8 = v5;
-  v6 = v5;
-  [a3 enumerateKeysAndObjectsUsingBlock:v7];
+  v8 = setCopy;
+  v6 = setCopy;
+  [tags enumerateKeysAndObjectsUsingBlock:v7];
 }
 
 void __64__AVTAvatarAttributeEditorModelBuilder_setTags_onMutableTagSet___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -2177,17 +2177,17 @@ void __64__AVTAvatarAttributeEditorModelBuilder_setTags_onMutableTagSet___block_
   [*(a1 + 32) setObject:v6 forKeyedSubscript:v5];
 }
 
-+ (id)tagSetForTagNames:(id)a3 inTagSet:(id)a4
++ (id)tagSetForTagNames:(id)names inTagSet:(id)set
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF90] dictionary];
+  namesCopy = names;
+  setCopy = set;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = v5;
+  v8 = namesCopy;
   v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
@@ -2203,9 +2203,9 @@ void __64__AVTAvatarAttributeEditorModelBuilder_setTags_onMutableTagSet___block_
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
-        v14 = [v6 objectForKeyedSubscript:{v13, v18}];
+        v14 = [setCopy objectForKeyedSubscript:{v13, v18}];
         v15 = [v14 mutableCopy];
-        [v7 setObject:v15 forKeyedSubscript:v13];
+        [dictionary setObject:v15 forKeyedSubscript:v13];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -2214,15 +2214,15 @@ void __64__AVTAvatarAttributeEditorModelBuilder_setTags_onMutableTagSet___block_
     while (v10);
   }
 
-  v16 = [v7 copy];
+  v16 = [dictionary copy];
 
   return v16;
 }
 
-+ (id)firstColorSectionInSections:(id)a3
++ (id)firstColorSectionInSections:(id)sections
 {
-  v3 = a3;
-  v4 = [v3 indexOfObjectPassingTest:&__block_literal_global_40];
+  sectionsCopy = sections;
+  v4 = [sectionsCopy indexOfObjectPassingTest:&__block_literal_global_40];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0;
@@ -2230,7 +2230,7 @@ void __64__AVTAvatarAttributeEditorModelBuilder_setTags_onMutableTagSet___block_
 
   else
   {
-    v5 = [v3 objectAtIndex:v4];
+    v5 = [sectionsCopy objectAtIndex:v4];
   }
 
   return v5;
@@ -2245,18 +2245,18 @@ uint64_t __68__AVTAvatarAttributeEditorModelBuilder_firstColorSectionInSections_
   return isKindOfClass & 1;
 }
 
-+ (id)sectionOptionFromModelOptions:(id)a3
++ (id)sectionOptionFromModelOptions:(id)options
 {
-  v4 = a3;
-  v5 = [a1 sectionDisplayModeForCoreModelDisplayMode:{objc_msgSend(v4, "displayMode")}];
+  optionsCopy = options;
+  v5 = [self sectionDisplayModeForCoreModelDisplayMode:{objc_msgSend(optionsCopy, "displayMode")}];
   v6 = [AVTAvatarAttributeEditorSectionOptions alloc];
-  v7 = [v4 framingMode];
-  v8 = [v4 poseOverride];
-  v9 = [v4 presetOverrides];
-  v10 = [v4 stickerConfiguration];
-  v11 = [v4 showsLabel];
+  framingMode = [optionsCopy framingMode];
+  poseOverride = [optionsCopy poseOverride];
+  presetOverrides = [optionsCopy presetOverrides];
+  stickerConfiguration = [optionsCopy stickerConfiguration];
+  showsLabel = [optionsCopy showsLabel];
 
-  v12 = [(AVTAvatarAttributeEditorSectionOptions *)v6 initWithFramingMode:v7 poseOverride:v8 presetOverrides:v9 displayMode:v5 stickerConfiguration:v10 showsLabel:v11];
+  v12 = [(AVTAvatarAttributeEditorSectionOptions *)v6 initWithFramingMode:framingMode poseOverride:poseOverride presetOverrides:presetOverrides displayMode:v5 stickerConfiguration:stickerConfiguration showsLabel:showsLabel];
 
   return v12;
 }

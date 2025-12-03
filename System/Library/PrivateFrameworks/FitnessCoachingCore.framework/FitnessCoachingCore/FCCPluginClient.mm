@@ -1,16 +1,16 @@
 @interface FCCPluginClient
-- (FCCPluginClient)initWithHealthStore:(id)a3;
-- (void)_pluginMessage:(unint64_t)a3 data:(id)a4 completionHandler:(id)a5;
+- (FCCPluginClient)initWithHealthStore:(id)store;
+- (void)_pluginMessage:(unint64_t)message data:(id)data completionHandler:(id)handler;
 - (void)connectionInterrupted;
 - (void)connectionInvalidated;
-- (void)pluginMessage:(unint64_t)a3 data:(id)a4 completionHandler:(id)a5;
+- (void)pluginMessage:(unint64_t)message data:(id)data completionHandler:(id)handler;
 @end
 
 @implementation FCCPluginClient
 
-- (FCCPluginClient)initWithHealthStore:(id)a3
+- (FCCPluginClient)initWithHealthStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v14.receiver = self;
   v14.super_class = FCCPluginClient;
   v5 = [(FCCPluginClient *)&v14 init];
@@ -21,9 +21,9 @@
     v5->_dispatchQueue = v6;
 
     v8 = objc_alloc(MEMORY[0x277CCDAA0]);
-    v9 = [objc_opt_class() taskIdentifier];
-    v10 = [MEMORY[0x277CCAD78] UUID];
-    v11 = [v8 initWithHealthStore:v4 taskIdentifier:v9 exportedObject:v5 taskUUID:v10];
+    taskIdentifier = [objc_opt_class() taskIdentifier];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    v11 = [v8 initWithHealthStore:storeCopy taskIdentifier:taskIdentifier exportedObject:v5 taskUUID:uUID];
     proxyProvider = v5->_proxyProvider;
     v5->_proxyProvider = v11;
   }
@@ -31,42 +31,42 @@
   return v5;
 }
 
-- (void)pluginMessage:(unint64_t)a3 data:(id)a4 completionHandler:(id)a5
+- (void)pluginMessage:(unint64_t)message data:(id)data completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  dataCopy = data;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __56__FCCPluginClient_pluginMessage_data_completionHandler___block_invoke;
   v13[3] = &unk_27900A188;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a3;
-  v11 = v9;
-  v12 = v8;
+  v14 = dataCopy;
+  v15 = handlerCopy;
+  messageCopy = message;
+  v11 = handlerCopy;
+  v12 = dataCopy;
   dispatch_async(dispatchQueue, v13);
 }
 
-- (void)_pluginMessage:(unint64_t)a3 data:(id)a4 completionHandler:(id)a5
+- (void)_pluginMessage:(unint64_t)message data:(id)data completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  dataCopy = data;
+  handlerCopy = handler;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __57__FCCPluginClient__pluginMessage_data_completionHandler___block_invoke;
   v14[3] = &unk_27900A1B0;
-  v17 = a3;
-  v15 = v8;
-  v16 = v9;
+  messageCopy = message;
+  v15 = dataCopy;
+  v16 = handlerCopy;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __57__FCCPluginClient__pluginMessage_data_completionHandler___block_invoke_2;
   v12[3] = &unk_27900A1D8;
   v13 = v16;
   v10 = v16;
-  v11 = v8;
+  v11 = dataCopy;
   [(FCCPluginClient *)self _remoteProxy:v14 errorHandler:v12];
 }
 

@@ -1,37 +1,37 @@
 @interface ADCoreBluetoothV2DeviceSource
 - (ADCoreBluetoothV2DeviceSource)init;
-- (id)_createDeviceWithAddress:(id)a3;
-- (id)_createDeviceWithUID:(id)a3;
-- (id)_deviceWithAddress:(id)a3 createsIfAbsent:(BOOL)a4;
-- (id)_deviceWithUID:(id)a3 createsIfAbsent:(BOOL)a4;
-- (id)deviceWithAddress:(id)a3;
-- (id)deviceWithUID:(id)a3;
-- (id)headGestureConfigurationForBTAddress:(id)a3;
-- (void)_aadActivatingWithRetry:(BOOL)a3 andError:(id)a4;
+- (id)_createDeviceWithAddress:(id)address;
+- (id)_createDeviceWithUID:(id)d;
+- (id)_deviceWithAddress:(id)address createsIfAbsent:(BOOL)absent;
+- (id)_deviceWithUID:(id)d createsIfAbsent:(BOOL)absent;
+- (id)deviceWithAddress:(id)address;
+- (id)deviceWithUID:(id)d;
+- (id)headGestureConfigurationForBTAddress:(id)address;
+- (void)_aadActivatingWithRetry:(BOOL)retry andError:(id)error;
 - (void)_aadConnectionInterrupted;
-- (void)_handleDeviceFound:(id)a3;
-- (void)_handleDeviceLost:(id)a3;
+- (void)_handleDeviceFound:(id)found;
+- (void)_handleDeviceLost:(id)lost;
 - (void)_invalidate;
-- (void)_setupDiscoveryWithRetry:(BOOL)a3;
-- (void)aadActivatingWithRetry:(BOOL)a3 andError:(id)a4;
-- (void)fetchAddressForDeviceWithCBUUID:(id)a3 completion:(id)a4;
-- (void)fetchAudioAccessoryDeviceForBTAddress:(id)a3 completion:(id)a4;
-- (void)fetchAudioAccessoryDeviceForCBUUID:(id)a3 completion:(id)a4;
-- (void)fetchCBUUIDForDeviceWithAddress:(id)a3 completion:(id)a4;
-- (void)handleDeviceFound:(id)a3;
-- (void)handleDeviceLost:(id)a3;
+- (void)_setupDiscoveryWithRetry:(BOOL)retry;
+- (void)aadActivatingWithRetry:(BOOL)retry andError:(id)error;
+- (void)fetchAddressForDeviceWithCBUUID:(id)d completion:(id)completion;
+- (void)fetchAudioAccessoryDeviceForBTAddress:(id)address completion:(id)completion;
+- (void)fetchAudioAccessoryDeviceForCBUUID:(id)d completion:(id)completion;
+- (void)fetchCBUUIDForDeviceWithAddress:(id)address completion:(id)completion;
+- (void)handleDeviceFound:(id)found;
+- (void)handleDeviceLost:(id)lost;
 - (void)invalidate;
-- (void)invalidateDeviceWithAddress:(id)a3 cbuuid:(id)a4;
-- (void)sendDeviceConfig:(id)a3 device:(id)a4 completion:(id)a5;
+- (void)invalidateDeviceWithAddress:(id)address cbuuid:(id)cbuuid;
+- (void)sendDeviceConfig:(id)config device:(id)device completion:(id)completion;
 @end
 
 @implementation ADCoreBluetoothV2DeviceSource
 
-- (void)sendDeviceConfig:(id)a3 device:(id)a4 completion:(id)a5
+- (void)sendDeviceConfig:(id)config device:(id)device completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  configCopy = config;
+  deviceCopy = device;
+  completionCopy = completion;
   group = self->_group;
   queue = self->_queue;
   v16[0] = _NSConcreteStackBlock;
@@ -39,19 +39,19 @@
   v16[2] = sub_1000DA0AC;
   v16[3] = &unk_10051E0D8;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
+  v17 = configCopy;
+  v18 = deviceCopy;
+  v19 = completionCopy;
+  v13 = completionCopy;
+  v14 = deviceCopy;
+  v15 = configCopy;
   dispatch_group_notify(group, queue, v16);
 }
 
-- (void)fetchAudioAccessoryDeviceForBTAddress:(id)a3 completion:(id)a4
+- (void)fetchAudioAccessoryDeviceForBTAddress:(id)address completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  addressCopy = address;
+  completionCopy = completion;
   v8 = AFNormalizeMacAddress();
   group = self->_group;
   queue = self->_queue;
@@ -61,18 +61,18 @@
   v14[3] = &unk_10051E0D8;
   v14[4] = self;
   v15 = v8;
-  v16 = v6;
-  v17 = v7;
-  v11 = v7;
-  v12 = v6;
+  v16 = addressCopy;
+  v17 = completionCopy;
+  v11 = completionCopy;
+  v12 = addressCopy;
   v13 = v8;
   dispatch_group_notify(group, queue, v14);
 }
 
-- (void)fetchAudioAccessoryDeviceForCBUUID:(id)a3 completion:(id)a4
+- (void)fetchAudioAccessoryDeviceForCBUUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   group = self->_group;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -80,17 +80,17 @@
   block[2] = sub_1000DA578;
   block[3] = &unk_10051E088;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = dCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = dCopy;
   dispatch_group_notify(group, queue, block);
 }
 
-- (void)fetchAddressForDeviceWithCBUUID:(id)a3 completion:(id)a4
+- (void)fetchAddressForDeviceWithCBUUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   group = self->_group;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -98,17 +98,17 @@
   block[2] = sub_1000DA884;
   block[3] = &unk_10051E088;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = dCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = dCopy;
   dispatch_group_notify(group, queue, block);
 }
 
-- (void)fetchCBUUIDForDeviceWithAddress:(id)a3 completion:(id)a4
+- (void)fetchCBUUIDForDeviceWithAddress:(id)address completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  addressCopy = address;
+  completionCopy = completion;
   group = self->_group;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -116,10 +116,10 @@
   block[2] = sub_1000DAA54;
   block[3] = &unk_10051E088;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = addressCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = addressCopy;
   dispatch_group_notify(group, queue, block);
 }
 
@@ -134,29 +134,29 @@
   dispatch_async(queue, block);
 }
 
-- (void)_aadActivatingWithRetry:(BOOL)a3 andError:(id)a4
+- (void)_aadActivatingWithRetry:(BOOL)retry andError:(id)error
 {
-  v4 = a3;
-  v6 = a4;
+  retryCopy = retry;
+  errorCopy = error;
   v7 = AFSiriLogContextDaemon;
-  if (v6)
+  if (errorCopy)
   {
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
     {
       *location = 136315650;
       *&location[4] = "[ADCoreBluetoothV2DeviceSource _aadActivatingWithRetry:andError:]";
       v13 = 2112;
-      v14 = v6;
+      v14 = errorCopy;
       v15 = 1024;
-      v16 = v4;
+      v16 = retryCopy;
       _os_log_error_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "%s Failed to activate discovery, error: %@, will retry: %d", location, 0x1Cu);
-      if (v4)
+      if (retryCopy)
       {
         goto LABEL_4;
       }
     }
 
-    else if (v4)
+    else if (retryCopy)
     {
 LABEL_4:
       objc_initWeak(location, self);
@@ -192,28 +192,28 @@ LABEL_10:
   dispatch_group_leave(self->_group);
 }
 
-- (void)aadActivatingWithRetry:(BOOL)a3 andError:(id)a4
+- (void)aadActivatingWithRetry:(BOOL)retry andError:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   setupQueue = self->_setupQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000DB204;
   block[3] = &unk_10051C890;
-  v11 = a3;
+  retryCopy = retry;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = errorCopy;
+  v8 = errorCopy;
   dispatch_async(setupQueue, block);
 }
 
-- (void)_handleDeviceLost:(id)a3
+- (void)_handleDeviceLost:(id)lost
 {
-  v4 = a3;
-  v5 = [v4 bluetoothAddress];
+  lostCopy = lost;
+  bluetoothAddress = [lostCopy bluetoothAddress];
   v6 = AFNormalizeMacAddress();
 
-  v7 = [v4 identifier];
+  identifier = [lostCopy identifier];
 
   v8 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
@@ -223,14 +223,14 @@ LABEL_10:
     v15 = 2112;
     v16 = v6;
     v17 = 2112;
-    v18 = v7;
+    v18 = identifier;
     _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%s Device lost: %@ (%@)", &v13, 0x20u);
   }
 
   [(NSMapTable *)self->_cbuuidByAddress removeObjectForKey:v6];
-  [(NSMapTable *)self->_addressByCBUUID removeObjectForKey:v7];
-  v9 = [(NSMapTable *)self->_devicesByDeviceUID objectForKey:v7];
-  v10 = [(NSMapTable *)self->_devicesByAddress objectForKey:v7];
+  [(NSMapTable *)self->_addressByCBUUID removeObjectForKey:identifier];
+  v9 = [(NSMapTable *)self->_devicesByDeviceUID objectForKey:identifier];
+  v10 = [(NSMapTable *)self->_devicesByAddress objectForKey:identifier];
   if (v9)
   {
     v11 = v9;
@@ -248,37 +248,37 @@ LABEL_7:
   }
 
 LABEL_8:
-  [(NSMapTable *)self->_devicesByDeviceUID removeObjectForKey:v7];
+  [(NSMapTable *)self->_devicesByDeviceUID removeObjectForKey:identifier];
   [(NSMapTable *)self->_devicesByAddress removeObjectForKey:v6];
 }
 
-- (void)handleDeviceLost:(id)a3
+- (void)handleDeviceLost:(id)lost
 {
-  v4 = a3;
+  lostCopy = lost;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000DB450;
   v7[3] = &unk_10051E010;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = lostCopy;
+  v6 = lostCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_handleDeviceFound:(id)a3
+- (void)_handleDeviceFound:(id)found
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  foundCopy = found;
+  v5 = foundCopy;
+  if (foundCopy)
   {
-    v6 = [v4 bluetoothAddress];
+    bluetoothAddress = [foundCopy bluetoothAddress];
     v7 = AFNormalizeMacAddress();
 
-    v8 = [v5 identifier];
-    [(NSMapTable *)self->_addressByCBUUID setObject:v7 forKey:v8];
-    [(NSMapTable *)self->_cbuuidByAddress setObject:v8 forKey:v7];
-    v9 = [(NSMapTable *)self->_devicesByDeviceUID objectForKey:v8];
+    identifier = [v5 identifier];
+    [(NSMapTable *)self->_addressByCBUUID setObject:v7 forKey:identifier];
+    [(NSMapTable *)self->_cbuuidByAddress setObject:identifier forKey:v7];
+    v9 = [(NSMapTable *)self->_devicesByDeviceUID objectForKey:identifier];
     v10 = [(NSMapTable *)self->_devicesByAddress objectForKey:v7];
     if (v9)
     {
@@ -316,7 +316,7 @@ LABEL_8:
           v22 = 2112;
           v23 = v7;
           v24 = 2112;
-          v25 = v8;
+          v25 = identifier;
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "%s Device not found, no need to update device: %@ (%@)", &v20, 0x20u);
         }
 
@@ -328,15 +328,15 @@ LABEL_8:
         v20 = 136315394;
         v21 = "[ADCoreBluetoothV2DeviceSource _handleDeviceFound:]";
         v22 = 2112;
-        v23 = v8;
+        v23 = identifier;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "%s Device found with address: %@", &v20, 0x16u);
       }
 
-      [(NSMapTable *)self->_devicesByDeviceUID setObject:v10 forKey:v8];
+      [(NSMapTable *)self->_devicesByDeviceUID setObject:v10 forKey:identifier];
       [v10 updateDevice:v5];
       devicesByAddress = self->_devicesByDeviceUID;
       v13 = v10;
-      v14 = v8;
+      v14 = identifier;
     }
 
     [(NSMapTable *)devicesByAddress setObject:v13 forKey:v14];
@@ -373,23 +373,23 @@ LABEL_14:
 LABEL_20:
 }
 
-- (void)handleDeviceFound:(id)a3
+- (void)handleDeviceFound:(id)found
 {
-  v4 = a3;
+  foundCopy = found;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000DB864;
   v7[3] = &unk_10051E010;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = foundCopy;
+  v6 = foundCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_setupDiscoveryWithRetry:(BOOL)a3
+- (void)_setupDiscoveryWithRetry:(BOOL)retry
 {
-  v3 = a3;
+  retryCopy = retry;
   dispatch_group_enter(self->_group);
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
@@ -397,7 +397,7 @@ LABEL_20:
     *location = 136315394;
     *&location[4] = "[ADCoreBluetoothV2DeviceSource _setupDiscoveryWithRetry:]";
     v22 = 1024;
-    v23 = v3;
+    v23 = retryCopy;
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%s  %d:", location, 0x12u);
   }
 
@@ -427,7 +427,7 @@ LABEL_20:
   v14[2] = sub_1000DBC3C;
   v14[3] = &unk_100510F60;
   objc_copyWeak(&v15, location);
-  v16 = v3;
+  v16 = retryCopy;
   [(AADeviceManager *)v10 activateWithCompletion:v14];
   v11 = self->_aaDeviceManager;
   v12[0] = _NSConcreteStackBlock;
@@ -443,18 +443,18 @@ LABEL_20:
   objc_destroyWeak(location);
 }
 
-- (id)_createDeviceWithUID:(id)a3
+- (id)_createDeviceWithUID:(id)d
 {
-  v4 = a3;
-  v5 = [[ADCoreBluetoothV2Device alloc] initWithDeviceUID:v4 dataSource:self];
+  dCopy = d;
+  v5 = [[ADCoreBluetoothV2Device alloc] initWithDeviceUID:dCopy dataSource:self];
 
   return v5;
 }
 
-- (id)_createDeviceWithAddress:(id)a3
+- (id)_createDeviceWithAddress:(id)address
 {
-  v4 = a3;
-  v5 = [[ADCoreBluetoothV2Device alloc] initWithAddress:v4 dataSource:self];
+  addressCopy = address;
+  v5 = [[ADCoreBluetoothV2Device alloc] initWithAddress:addressCopy dataSource:self];
 
   return v5;
 }
@@ -553,30 +553,30 @@ LABEL_20:
   dispatch_async(queue, block);
 }
 
-- (void)invalidateDeviceWithAddress:(id)a3 cbuuid:(id)a4
+- (void)invalidateDeviceWithAddress:(id)address cbuuid:(id)cbuuid
 {
-  v6 = a3;
-  v7 = a4;
+  addressCopy = address;
+  cbuuidCopy = cbuuid;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000DC338;
   block[3] = &unk_10051DB68;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
+  v12 = addressCopy;
+  v13 = cbuuidCopy;
+  selfCopy = self;
+  v9 = cbuuidCopy;
+  v10 = addressCopy;
   dispatch_async(queue, block);
 }
 
-- (id)_deviceWithUID:(id)a3 createsIfAbsent:(BOOL)a4
+- (id)_deviceWithUID:(id)d createsIfAbsent:(BOOL)absent
 {
-  v4 = a4;
-  v6 = a3;
+  absentCopy = absent;
+  dCopy = d;
   devicesByDeviceUID = self->_devicesByDeviceUID;
-  v8 = [v6 UUIDString];
-  v9 = [(NSMapTable *)devicesByDeviceUID objectForKey:v8];
+  uUIDString = [dCopy UUIDString];
+  v9 = [(NSMapTable *)devicesByDeviceUID objectForKey:uUIDString];
 
   if (v9)
   {
@@ -586,50 +586,50 @@ LABEL_20:
       *buf = 136315650;
       v21 = "[ADCoreBluetoothV2DeviceSource _deviceWithUID:createsIfAbsent:]";
       v22 = 2112;
-      v23 = v6;
+      v23 = dCopy;
       v24 = 2112;
       v25 = v9;
       _os_log_debug_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "%s  %@: %@", buf, 0x20u);
     }
   }
 
-  else if (v6 && v4)
+  else if (dCopy && absentCopy)
   {
-    v11 = [(ADCoreBluetoothV2DeviceSource *)self _createDeviceWithUID:v6];
+    v11 = [(ADCoreBluetoothV2DeviceSource *)self _createDeviceWithUID:dCopy];
     v12 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
     {
       *buf = 136315650;
       v21 = "[ADCoreBluetoothV2DeviceSource _deviceWithUID:createsIfAbsent:]";
       v22 = 2112;
-      v23 = v6;
+      v23 = dCopy;
       v24 = 2112;
       v25 = v11;
       _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "%s  %@ not found, created %@", buf, 0x20u);
     }
 
     v13 = self->_devicesByDeviceUID;
-    v14 = [v6 UUIDString];
-    [(NSMapTable *)v13 setObject:v11 forKey:v14];
+    uUIDString2 = [dCopy UUIDString];
+    [(NSMapTable *)v13 setObject:v11 forKey:uUIDString2];
 
-    v15 = [v6 UUIDString];
+    uUIDString3 = [dCopy UUIDString];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_1000DC6D0;
     v17[3] = &unk_100510F10;
     v9 = v11;
     v18 = v9;
-    v19 = self;
-    [(ADCoreBluetoothV2DeviceSource *)self fetchAddressForDeviceWithCBUUID:v15 completion:v17];
+    selfCopy = self;
+    [(ADCoreBluetoothV2DeviceSource *)self fetchAddressForDeviceWithCBUUID:uUIDString3 completion:v17];
   }
 
   return v9;
 }
 
-- (id)_deviceWithAddress:(id)a3 createsIfAbsent:(BOOL)a4
+- (id)_deviceWithAddress:(id)address createsIfAbsent:(BOOL)absent
 {
-  v4 = a4;
-  v6 = a3;
+  absentCopy = absent;
+  addressCopy = address;
   v7 = AFNormalizeMacAddress();
   v8 = [(NSMapTable *)self->_devicesByAddress objectForKey:v7];
   if (v8)
@@ -641,23 +641,23 @@ LABEL_20:
       *buf = 136315650;
       v18 = "[ADCoreBluetoothV2DeviceSource _deviceWithAddress:createsIfAbsent:]";
       v19 = 2112;
-      v20 = v6;
+      v20 = addressCopy;
       v21 = 2112;
       v22 = v9;
       _os_log_debug_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "%s  %@: %@", buf, 0x20u);
     }
   }
 
-  else if (v4 && [v7 length])
+  else if (absentCopy && [v7 length])
   {
-    v11 = [(ADCoreBluetoothV2DeviceSource *)self _createDeviceWithAddress:v6];
+    v11 = [(ADCoreBluetoothV2DeviceSource *)self _createDeviceWithAddress:addressCopy];
     v12 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
     {
       *buf = 136315650;
       v18 = "[ADCoreBluetoothV2DeviceSource _deviceWithAddress:createsIfAbsent:]";
       v19 = 2112;
-      v20 = v6;
+      v20 = addressCopy;
       v21 = 2112;
       v22 = v11;
       _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "%s  %@ not found, created %@", buf, 0x20u);
@@ -670,7 +670,7 @@ LABEL_20:
     v14[3] = &unk_100510F10;
     v9 = v11;
     v15 = v9;
-    v16 = self;
+    selfCopy = self;
     [(ADCoreBluetoothV2DeviceSource *)self fetchCBUUIDForDeviceWithAddress:v7 completion:v14];
   }
 
@@ -682,9 +682,9 @@ LABEL_20:
   return v9;
 }
 
-- (id)headGestureConfigurationForBTAddress:(id)a3
+- (id)headGestureConfigurationForBTAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -696,10 +696,10 @@ LABEL_20:
   block[1] = 3221225472;
   block[2] = sub_1000DCC0C;
   block[3] = &unk_10051C588;
-  v11 = self;
+  selfCopy = self;
   v12 = &v13;
-  v10 = v4;
-  v6 = v4;
+  v10 = addressCopy;
+  v6 = addressCopy;
   dispatch_sync(queue, block);
   v7 = v14[5];
 
@@ -708,9 +708,9 @@ LABEL_20:
   return v7;
 }
 
-- (id)deviceWithUID:(id)a3
+- (id)deviceWithUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -722,10 +722,10 @@ LABEL_20:
   block[1] = 3221225472;
   block[2] = sub_1000DCE34;
   block[3] = &unk_10051C588;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -734,9 +734,9 @@ LABEL_20:
   return v7;
 }
 
-- (id)deviceWithAddress:(id)a3
+- (id)deviceWithAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -748,10 +748,10 @@ LABEL_20:
   block[1] = 3221225472;
   block[2] = sub_1000DD15C;
   block[3] = &unk_10051C588;
-  v10 = v4;
+  v10 = addressCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = addressCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 

@@ -1,19 +1,19 @@
 @interface ICNSBlockOperation
-- (BOOL)canCoalesceWithOperation:(id)a3;
+- (BOOL)canCoalesceWithOperation:(id)operation;
 - (BOOL)isProcessObjectsForContextDidSaveOperation;
 @end
 
 @implementation ICNSBlockOperation
 
-- (BOOL)canCoalesceWithOperation:(id)a3
+- (BOOL)canCoalesceWithOperation:(id)operation
 {
-  v4 = [a3 name];
-  v5 = [(ICNSBlockOperation *)self name];
+  name = [operation name];
+  name2 = [(ICNSBlockOperation *)self name];
   v6 = 0;
-  if (v5 && v4)
+  if (name2 && name)
   {
-    v7 = [(ICNSBlockOperation *)self name];
-    v6 = [v7 isEqualToString:v4];
+    name3 = [(ICNSBlockOperation *)self name];
+    v6 = [name3 isEqualToString:name];
   }
 
   if (([(ICNSBlockOperation *)self isFinished]& 1) != 0 || ([(ICNSBlockOperation *)self isExecuting]& 1) != 0)
@@ -31,11 +31,11 @@
 
 - (BOOL)isProcessObjectsForContextDidSaveOperation
 {
-  v3 = [(ICNSBlockOperation *)self name];
-  if (v3)
+  name = [(ICNSBlockOperation *)self name];
+  if (name)
   {
-    v4 = [(ICNSBlockOperation *)self name];
-    v5 = [v4 isEqualToString:ICNSBlockOperationNameProcessObjectsForContextDidSave];
+    name2 = [(ICNSBlockOperation *)self name];
+    v5 = [name2 isEqualToString:ICNSBlockOperationNameProcessObjectsForContextDidSave];
   }
 
   else

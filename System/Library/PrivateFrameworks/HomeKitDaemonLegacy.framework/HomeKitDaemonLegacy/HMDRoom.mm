@@ -1,30 +1,30 @@
 @interface HMDRoom
 + (id)logCategory;
-+ (id)messageBindingForDispatcher:(id)a3 message:(id)a4 receiver:(id)a5;
++ (id)messageBindingForDispatcher:(id)dispatcher message:(id)message receiver:(id)receiver;
 - (HMDHome)home;
-- (HMDRoom)initWithCoder:(id)a3;
-- (HMDRoom)initWithName:(id)a3 uuid:(id)a4 home:(id)a5;
+- (HMDRoom)initWithCoder:(id)coder;
+- (HMDRoom)initWithName:(id)name uuid:(id)uuid home:(id)home;
 - (NSDictionary)assistantObject;
 - (NSString)name;
 - (NSString)serializedIdentifier;
 - (NSString)urlString;
 - (id)attributeDescriptions;
-- (id)backingStoreObjects:(int64_t)a3;
-- (id)dumpStateWithPrivacyLevel:(unint64_t)a3;
+- (id)backingStoreObjects:(int64_t)objects;
+- (id)dumpStateWithPrivacyLevel:(unint64_t)level;
 - (id)logIdentifier;
 - (id)messageDestination;
 - (id)zones;
-- (void)_handleRemoveAppDataModel:(id)a3 message:(id)a4;
-- (void)_handleRenameRequest:(id)a3;
-- (void)_handleUpdateAppDataModel:(id)a3 message:(id)a4;
-- (void)_handleUpdateRoomModel:(id)a3 message:(id)a4;
+- (void)_handleRemoveAppDataModel:(id)model message:(id)message;
+- (void)_handleRenameRequest:(id)request;
+- (void)_handleUpdateAppDataModel:(id)model message:(id)message;
+- (void)_handleUpdateRoomModel:(id)model message:(id)message;
 - (void)_registerForMessages;
-- (void)configure:(id)a3 queue:(id)a4;
+- (void)configure:(id)configure queue:(id)queue;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setName:(id)a3;
-- (void)transactionObjectRemoved:(id)a3 message:(id)a4;
-- (void)transactionObjectUpdated:(id)a3 newValues:(id)a4 message:(id)a5;
+- (void)encodeWithCoder:(id)coder;
+- (void)setName:(id)name;
+- (void)transactionObjectRemoved:(id)removed message:(id)message;
+- (void)transactionObjectUpdated:(id)updated newValues:(id)values message:(id)message;
 @end
 
 @implementation HMDRoom
@@ -40,12 +40,12 @@
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMDRoom *)self uuid];
-  v5 = [v3 initWithName:@"uuid" value:v4];
+  uuid = [(HMDRoom *)self uuid];
+  v5 = [v3 initWithName:@"uuid" value:uuid];
   v12[0] = v5;
   v6 = objc_alloc(MEMORY[0x277D0F778]);
-  v7 = [(HMDRoom *)self name];
-  v8 = [v6 initWithName:@"name" value:v7];
+  name = [(HMDRoom *)self name];
+  v8 = [v6 initWithName:@"name" value:name];
   v12[1] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:2];
 
@@ -56,22 +56,22 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDRoom *)self uuid];
-  v3 = [v2 UUIDString];
+  uuid = [(HMDRoom *)self uuid];
+  uUIDString = [uuid UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 - (id)zones
 {
-  v3 = [(HMDRoom *)self home];
-  v4 = [v3 zones];
+  home = [(HMDRoom *)self home];
+  zones = [home zones];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __16__HMDRoom_zones__block_invoke;
   v7[3] = &unk_27972E2D8;
   v7[4] = self;
-  v5 = [v4 na_filter:v7];
+  v5 = [zones na_filter:v7];
 
   return v5;
 }
@@ -100,37 +100,37 @@ uint64_t __16__HMDRoom_zones__block_invoke_2(uint64_t a1, void *a2)
   return v6;
 }
 
-- (id)backingStoreObjects:(int64_t)a3
+- (id)backingStoreObjects:(int64_t)objects
 {
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v6 = [HMDRoomModel alloc];
-  v7 = [(HMDRoom *)self uuid];
-  v8 = [(HMDRoom *)self home];
-  v9 = [v8 uuid];
-  v10 = [(HMDBackingStoreModelObject *)v6 initWithObjectChangeType:1 uuid:v7 parentUUID:v9];
+  uuid = [(HMDRoom *)self uuid];
+  home = [(HMDRoom *)self home];
+  uuid2 = [home uuid];
+  v10 = [(HMDBackingStoreModelObject *)v6 initWithObjectChangeType:1 uuid:uuid parentUUID:uuid2];
 
-  v11 = [(HMDRoom *)self name];
-  [(HMDRoomModel *)v10 setName:v11];
+  name = [(HMDRoom *)self name];
+  [(HMDRoomModel *)v10 setName:name];
 
-  [v5 addObject:v10];
-  v12 = [(HMDRoom *)self appData];
+  [array addObject:v10];
+  appData = [(HMDRoom *)self appData];
 
-  if (a3 >= 3 && v12)
+  if (objects >= 3 && appData)
   {
-    v13 = [(HMDRoom *)self appData];
-    v14 = [v13 modelObjectWithChangeType:1];
-    [v5 addObject:v14];
+    appData2 = [(HMDRoom *)self appData];
+    v14 = [appData2 modelObjectWithChangeType:1];
+    [array addObject:v14];
   }
 
-  return v5;
+  return array;
 }
 
-- (void)transactionObjectRemoved:(id)a3 message:(id)a4
+- (void)transactionObjectRemoved:(id)removed message:(id)message
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  removedCopy = removed;
+  messageCopy = message;
+  v8 = removedCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -146,13 +146,13 @@ uint64_t __16__HMDRoom_zones__block_invoke_2(uint64_t a1, void *a2)
 
   if (v10)
   {
-    [(HMDRoom *)self _handleRemoveAppDataModel:v10 message:v7];
+    [(HMDRoom *)self _handleRemoveAppDataModel:v10 message:messageCopy];
   }
 
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -168,29 +168,29 @@ uint64_t __16__HMDRoom_zones__block_invoke_2(uint64_t a1, void *a2)
     }
 
     objc_autoreleasePoolPop(v11);
-    v16 = [v7 responseHandler];
+    responseHandler = [messageCopy responseHandler];
 
-    if (v16)
+    if (responseHandler)
     {
-      v17 = [v7 responseHandler];
+      responseHandler2 = [messageCopy responseHandler];
       v18 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-      (v17)[2](v17, v18, 0);
+      (responseHandler2)[2](responseHandler2, v18, 0);
     }
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)transactionObjectUpdated:(id)a3 newValues:(id)a4 message:(id)a5
+- (void)transactionObjectUpdated:(id)updated newValues:(id)values message:(id)message
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  updatedCopy = updated;
+  valuesCopy = values;
+  messageCopy = message;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = v9;
+    v11 = valuesCopy;
   }
 
   else
@@ -201,18 +201,18 @@ uint64_t __16__HMDRoom_zones__block_invoke_2(uint64_t a1, void *a2)
   v12 = v11;
   if (v12)
   {
-    [(HMDRoom *)self _handleUpdateRoomModel:v12 message:v10];
-    v13 = v9;
+    [(HMDRoom *)self _handleUpdateRoomModel:v12 message:messageCopy];
+    responseHandler2 = valuesCopy;
 LABEL_15:
 
     goto LABEL_16;
   }
 
-  v13 = v9;
+  responseHandler2 = valuesCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = v13;
+    v14 = responseHandler2;
   }
 
   else
@@ -224,12 +224,12 @@ LABEL_15:
 
   if (v15)
   {
-    [(HMDRoom *)self _handleUpdateAppDataModel:v15 message:v10];
+    [(HMDRoom *)self _handleUpdateAppDataModel:v15 message:messageCopy];
     goto LABEL_15;
   }
 
   v16 = objc_autoreleasePoolPush();
-  v17 = self;
+  selfCopy = self;
   v18 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
   {
@@ -237,7 +237,7 @@ LABEL_15:
     v24 = 138543874;
     v25 = v19;
     v26 = 2112;
-    v27 = v13;
+    v27 = responseHandler2;
     v28 = 2112;
     v29 = objc_opt_class();
     v20 = v29;
@@ -245,13 +245,13 @@ LABEL_15:
   }
 
   objc_autoreleasePoolPop(v16);
-  v21 = [v10 responseHandler];
+  responseHandler = [messageCopy responseHandler];
 
-  if (v21)
+  if (responseHandler)
   {
-    v13 = [v10 responseHandler];
+    responseHandler2 = [messageCopy responseHandler];
     v22 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-    (*(v13 + 2))(v13, v22, 0);
+    (*(responseHandler2 + 2))(responseHandler2, v22, 0);
 
     goto LABEL_15;
   }
@@ -264,49 +264,49 @@ LABEL_16:
 - (id)messageDestination
 {
   v3 = objc_alloc(MEMORY[0x277D0F820]);
-  v4 = [(HMDRoom *)self messageTargetUUID];
-  v5 = [v3 initWithTarget:v4];
+  messageTargetUUID = [(HMDRoom *)self messageTargetUUID];
+  v5 = [v3 initWithTarget:messageTargetUUID];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v10 = a3;
-  v4 = [(HMDRoom *)self home];
-  [v10 encodeConditionalObject:v4 forKey:@"home"];
-  v5 = [(HMDRoom *)self name];
-  [v10 encodeObject:v5 forKey:@"roomName"];
+  coderCopy = coder;
+  home = [(HMDRoom *)self home];
+  [coderCopy encodeConditionalObject:home forKey:@"home"];
+  name = [(HMDRoom *)self name];
+  [coderCopy encodeObject:name forKey:@"roomName"];
 
-  v6 = [(HMDRoom *)self uuid];
-  v7 = [v6 UUIDString];
-  [v10 encodeObject:v7 forKey:@"roomUUID"];
+  uuid = [(HMDRoom *)self uuid];
+  uUIDString = [uuid UUIDString];
+  [coderCopy encodeObject:uUIDString forKey:@"roomUUID"];
 
-  LODWORD(v6) = [v10 hmd_isForXPCTransport];
-  v8 = [(HMDRoom *)self appData];
-  v9 = v8;
-  if (v6)
+  LODWORD(uuid) = [coderCopy hmd_isForXPCTransport];
+  appData = [(HMDRoom *)self appData];
+  v9 = appData;
+  if (uuid)
   {
-    [v8 encodeForXPCTransportWithCoder:v10 key:@"HM.appData"];
+    [appData encodeForXPCTransportWithCoder:coderCopy key:@"HM.appData"];
   }
 
   else
   {
-    [v10 encodeObject:v8 forKey:@"HM.appDataRepository"];
+    [coderCopy encodeObject:appData forKey:@"HM.appDataRepository"];
   }
 }
 
-- (HMDRoom)initWithCoder:(id)a3
+- (HMDRoom)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"roomName"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"roomUUID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"roomName"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"roomUUID"];
   v7 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v6];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"home"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"home"];
   v9 = [(HMDRoom *)self initWithName:v5 uuid:v7 home:v8];
   if (v9)
   {
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.appDataRepository"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.appDataRepository"];
     appData = v9->_appData;
     v9->_appData = v10;
 
@@ -316,86 +316,86 @@ LABEL_16:
   return v9;
 }
 
-- (void)_handleRemoveAppDataModel:(id)a3 message:(id)a4
+- (void)_handleRemoveAppDataModel:(id)model message:(id)message
 {
-  v5 = a4;
+  messageCopy = message;
   [(HMDRoom *)self setAppData:0];
-  v6 = [v5 transactionResult];
-  [v6 markChanged];
-  [v5 respondWithPayload:0];
+  transactionResult = [messageCopy transactionResult];
+  [transactionResult markChanged];
+  [messageCopy respondWithPayload:0];
 }
 
-- (void)_handleUpdateAppDataModel:(id)a3 message:(id)a4
+- (void)_handleUpdateAppDataModel:(id)model message:(id)message
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDRoom *)self appData];
+  modelCopy = model;
+  messageCopy = message;
+  appData = [(HMDRoom *)self appData];
 
-  if (v8)
+  if (appData)
   {
-    v9 = [(HMDRoom *)self appData];
-    [v9 updateWithModel:v6];
+    appData2 = [(HMDRoom *)self appData];
+    [appData2 updateWithModel:modelCopy];
   }
 
   else
   {
     v10 = [HMDApplicationData alloc];
-    v11 = [v6 appDataDictionary];
-    v12 = [(HMDRoom *)self uuid];
-    v13 = [(HMDApplicationData *)v10 initWithDictionary:v11 parentUUID:v12];
+    appDataDictionary = [modelCopy appDataDictionary];
+    uuid = [(HMDRoom *)self uuid];
+    v13 = [(HMDApplicationData *)v10 initWithDictionary:appDataDictionary parentUUID:uuid];
     [(HMDRoom *)self setAppData:v13];
 
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
       v17 = HMFGetLogIdentifier();
-      v18 = [v6 appDataDictionary];
+      appDataDictionary2 = [modelCopy appDataDictionary];
       v21 = 138543618;
       v22 = v17;
       v23 = 2112;
-      v24 = v18;
+      v24 = appDataDictionary2;
       _os_log_impl(&dword_2531F8000, v16, OS_LOG_TYPE_DEBUG, "%{public}@Updating the application data : %@", &v21, 0x16u);
     }
 
     objc_autoreleasePoolPop(v14);
   }
 
-  v19 = [v7 transactionResult];
-  [v19 markChanged];
-  [v7 respondWithPayload:0];
+  transactionResult = [messageCopy transactionResult];
+  [transactionResult markChanged];
+  [messageCopy respondWithPayload:0];
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleUpdateRoomModel:(id)a3 message:(id)a4
+- (void)_handleUpdateRoomModel:(id)model message:(id)message
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDRoom *)self uuid];
-  v9 = [(HMDRoom *)self home];
-  v10 = [v9 roomForEntireHome];
-  v11 = [v10 uuid];
-  v12 = [v8 isEqual:v11];
+  modelCopy = model;
+  messageCopy = message;
+  uuid = [(HMDRoom *)self uuid];
+  home = [(HMDRoom *)self home];
+  roomForEntireHome = [home roomForEntireHome];
+  uuid2 = [roomForEntireHome uuid];
+  v12 = [uuid isEqual:uuid2];
 
   if (!v12)
   {
-    v20 = [v6 name];
-    v21 = [v20 hm_truncatedNameString];
+    name = [modelCopy name];
+    hm_truncatedNameString = [name hm_truncatedNameString];
 
-    if (v21 && [v21 length])
+    if (hm_truncatedNameString && [hm_truncatedNameString length])
     {
-      v22 = [(HMDRoom *)self home];
-      if (v22)
+      home2 = [(HMDRoom *)self home];
+      if (home2)
       {
-        v23 = [(HMDRoom *)self name];
-        [(HMDRoom *)self setName:v21];
-        v24 = [v7 transactionResult];
-        [v24 markChanged];
-        [v24 markSaveToAssistant];
+        name2 = [(HMDRoom *)self name];
+        [(HMDRoom *)self setName:hm_truncatedNameString];
+        transactionResult = [messageCopy transactionResult];
+        [transactionResult markChanged];
+        [transactionResult markSaveToAssistant];
         if ((HMFEqualObjects() & 1) == 0)
         {
           v25 = [(HMDRoom *)self uuid:@"kRoomOldNameKey"];
@@ -405,32 +405,32 @@ LABEL_16:
           logAndPostNotification(@"HMDRoomNameUpdatedNotification", self, v26);
         }
 
-        [v7 respondWithPayload:0];
+        [messageCopy respondWithPayload:0];
       }
 
       else
       {
-        v30 = [v7 responseHandler];
+        responseHandler = [messageCopy responseHandler];
         v31 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-        (v30)[2](v30, v31, 0);
+        (responseHandler)[2](responseHandler, v31, 0);
       }
     }
 
     else
     {
       v27 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCFD28] code:20 userInfo:0];
-      v28 = [v7 responseHandler];
-      (v28)[2](v28, v27, 0);
+      responseHandler2 = [messageCopy responseHandler];
+      (responseHandler2)[2](responseHandler2, v27, 0);
     }
 
     goto LABEL_18;
   }
 
-  v13 = [v7 name];
+  name3 = [messageCopy name];
   v14 = HMFEqualObjects();
 
   v15 = objc_autoreleasePoolPush();
-  v16 = self;
+  selfCopy = self;
   v17 = HMFGetOSLogHandle();
   v18 = v17;
   if (!v14)
@@ -441,17 +441,17 @@ LABEL_16:
       *buf = 138544130;
       v36 = v29;
       v37 = 2112;
-      v38 = v7;
+      v38 = messageCopy;
       v39 = 2112;
-      v40 = v6;
+      v40 = modelCopy;
       v41 = 2112;
       v42 = &unk_286628B58;
       _os_log_impl(&dword_2531F8000, v18, OS_LOG_TYPE_ERROR, "%{public}@Cannot update name for the default room %@, %@, errorCode: %@", buf, 0x2Au);
     }
 
     objc_autoreleasePoolPop(v15);
-    v21 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCFD28] code:29 userInfo:0];
-    [v7 respondWithError:v21];
+    hm_truncatedNameString = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCFD28] code:29 userInfo:0];
+    [messageCopy respondWithError:hm_truncatedNameString];
 LABEL_18:
 
     goto LABEL_19;
@@ -466,39 +466,39 @@ LABEL_18:
   }
 
   objc_autoreleasePoolPop(v15);
-  [v7 respondWithSuccess];
+  [messageCopy respondWithSuccess];
 LABEL_19:
 
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleRenameRequest:(id)a3
+- (void)_handleRenameRequest:(id)request
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 stringForKey:*MEMORY[0x277CD0D30]];
+  requestCopy = request;
+  v5 = [requestCopy stringForKey:*MEMORY[0x277CD0D30]];
   v6 = HMMaxLengthForNaming();
   if ([v5 length] <= v6)
   {
-    v12 = [(HMDRoom *)self home];
-    v13 = [(HMDRoom *)self name];
-    v11 = [v12 replaceName:v13 withNewName:v5];
+    home = [(HMDRoom *)self home];
+    name = [(HMDRoom *)self name];
+    v11 = [home replaceName:name withNewName:v5];
 
     if (!v11)
     {
-      v19 = [(HMDRoom *)self home];
+      home2 = [(HMDRoom *)self home];
       v20 = [HMDRoomModel alloc];
-      v21 = [(HMDRoom *)self uuid];
-      v22 = [v19 uuid];
-      v23 = [(HMDBackingStoreModelObject *)v20 initWithObjectChangeType:2 uuid:v21 parentUUID:v22];
+      uuid = [(HMDRoom *)self uuid];
+      uuid2 = [home2 uuid];
+      v23 = [(HMDBackingStoreModelObject *)v20 initWithObjectChangeType:2 uuid:uuid parentUUID:uuid2];
 
       [(HMDRoomModel *)v23 setName:v5];
-      v24 = [v19 backingStore];
-      v25 = [v4 name];
+      backingStore = [home2 backingStore];
+      name2 = [requestCopy name];
       v26 = +[HMDBackingStoreTransactionOptions defaultXPCOptions];
-      v27 = [v24 transaction:v25 options:v26];
+      v27 = [backingStore transaction:name2 options:v26];
 
-      [v27 add:v23 withMessage:v4];
+      [v27 add:v23 withMessage:requestCopy];
       [v27 run];
 
       v11 = 0;
@@ -506,7 +506,7 @@ LABEL_19:
     }
 
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
@@ -524,7 +524,7 @@ LABEL_19:
   else
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy2 = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -538,7 +538,7 @@ LABEL_19:
     v11 = [MEMORY[0x277CCA9B8] hmErrorWithCode:46];
   }
 
-  [v4 respondWithError:v11];
+  [requestCopy respondWithError:v11];
 LABEL_10:
 
   v18 = *MEMORY[0x277D85DE8];
@@ -547,26 +547,26 @@ LABEL_10:
 - (void)_registerForMessages
 {
   v10[2] = *MEMORY[0x277D85DE8];
-  v3 = [(HMDRoom *)self home];
-  v4 = [v3 administratorHandler];
+  home = [(HMDRoom *)self home];
+  administratorHandler = [home administratorHandler];
   v5 = *MEMORY[0x277CD0CB0];
   v6 = [HMDConfigurationMessagePolicy policyWithOperationTypes:2];
   v10[0] = v6;
   v7 = [HMDXPCMessagePolicy policyWithEntitlements:1];
   v10[1] = v7;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:2];
-  [v4 registerForMessage:v5 receiver:self policies:v8 selector:sel__handleRenameRequest_];
+  [administratorHandler registerForMessage:v5 receiver:self policies:v8 selector:sel__handleRenameRequest_];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v6 = a3;
+  nameCopy = name;
   os_unfair_lock_lock_with_options();
-  v4 = [v6 hm_truncatedNameString];
+  hm_truncatedNameString = [nameCopy hm_truncatedNameString];
   name = self->_name;
-  self->_name = v4;
+  self->_name = hm_truncatedNameString;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -580,19 +580,19 @@ LABEL_10:
   return v3;
 }
 
-- (id)dumpStateWithPrivacyLevel:(unint64_t)a3
+- (id)dumpStateWithPrivacyLevel:(unint64_t)level
 {
   v5 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:2];
   v6 = MEMORY[0x277CCACA8];
-  v7 = [(HMDRoom *)self name];
-  v8 = [(HMDRoom *)self uuid];
-  v9 = [v8 UUIDString];
-  v10 = [(HMDRoom *)self urlString];
-  v11 = [v6 stringWithFormat:@"name: %@  uuid: %@, assistantIdentifier: %@", v7, v9, v10];
+  name = [(HMDRoom *)self name];
+  uuid = [(HMDRoom *)self uuid];
+  uUIDString = [uuid UUIDString];
+  urlString = [(HMDRoom *)self urlString];
+  v11 = [v6 stringWithFormat:@"name: %@  uuid: %@, assistantIdentifier: %@", name, uUIDString, urlString];
 
   [v5 setObject:v11 forKeyedSubscript:*MEMORY[0x277D0F170]];
-  v12 = [(HMDRoom *)self appData];
-  v13 = [v12 dumpStateWithPrivacyLevel:a3];
+  appData = [(HMDRoom *)self appData];
+  v13 = [appData dumpStateWithPrivacyLevel:level];
   [v5 setObject:v13 forKeyedSubscript:*MEMORY[0x277D0F050]];
 
   return v5;
@@ -601,66 +601,66 @@ LABEL_10:
 - (NSString)serializedIdentifier
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDRoom *)self home];
-  v5 = [v4 uuid];
-  v6 = [v5 UUIDString];
-  v7 = [(HMDRoom *)self uuid];
-  v8 = [v7 UUIDString];
-  v9 = [v3 stringWithFormat:@"%@/%@", v6, v8];
+  home = [(HMDRoom *)self home];
+  uuid = [home uuid];
+  uUIDString = [uuid UUIDString];
+  uuid2 = [(HMDRoom *)self uuid];
+  uUIDString2 = [uuid2 UUIDString];
+  v9 = [v3 stringWithFormat:@"%@/%@", uUIDString, uUIDString2];
 
   return v9;
 }
 
-- (void)configure:(id)a3 queue:(id)a4
+- (void)configure:(id)configure queue:(id)queue
 {
-  v6 = a4;
-  [(HMDRoom *)self setMsgDispatcher:a3];
-  [(HMDRoom *)self setWorkQueue:v6];
+  queueCopy = queue;
+  [(HMDRoom *)self setMsgDispatcher:configure];
+  [(HMDRoom *)self setWorkQueue:queueCopy];
 
   [(HMDRoom *)self _registerForMessages];
 }
 
 - (void)dealloc
 {
-  v3 = [(HMDRoom *)self msgDispatcher];
-  [v3 deregisterReceiver:self];
+  msgDispatcher = [(HMDRoom *)self msgDispatcher];
+  [msgDispatcher deregisterReceiver:self];
 
-  v4 = [(HMDRoom *)self home];
-  v5 = [v4 administratorHandler];
-  [v5 deregisterReceiver:self];
+  home = [(HMDRoom *)self home];
+  administratorHandler = [home administratorHandler];
+  [administratorHandler deregisterReceiver:self];
 
   v6.receiver = self;
   v6.super_class = HMDRoom;
   [(HMDRoom *)&v6 dealloc];
 }
 
-- (HMDRoom)initWithName:(id)a3 uuid:(id)a4 home:(id)a5
+- (HMDRoom)initWithName:(id)name uuid:(id)uuid home:(id)home
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  uuidCopy = uuid;
+  homeCopy = home;
   v23.receiver = self;
   v23.super_class = HMDRoom;
   v11 = [(HMDRoom *)&v23 init];
   if (v11)
   {
-    v12 = [v8 hm_truncatedNameString];
-    v13 = [v12 copy];
+    hm_truncatedNameString = [nameCopy hm_truncatedNameString];
+    v13 = [hm_truncatedNameString copy];
     name = v11->_name;
     v11->_name = v13;
 
-    if (v9)
+    if (uuidCopy)
     {
-      v15 = [v9 copy];
+      uUID = [uuidCopy copy];
     }
 
     else
     {
-      v15 = [MEMORY[0x277CCAD78] UUID];
+      uUID = [MEMORY[0x277CCAD78] UUID];
     }
 
-    v16 = v15;
-    v17 = [MEMORY[0x277D0F890] hmf_cachedInstanceForNSUUID:v15];
+    v16 = uUID;
+    v17 = [MEMORY[0x277D0F890] hmf_cachedInstanceForNSUUID:uUID];
     uuid = v11->_uuid;
     v11->_uuid = v17;
 
@@ -670,7 +670,7 @@ LABEL_10:
     v11->_spiClientIdentifier = v20;
 
     v11->_lock._os_unfair_lock_opaque = 0;
-    objc_storeWeak(&v11->_home, v10);
+    objc_storeWeak(&v11->_home, homeCopy);
   }
 
   return v11;
@@ -698,11 +698,11 @@ uint64_t __22__HMDRoom_logCategory__block_invoke()
   return MEMORY[0x2821F96F8](v1, v2);
 }
 
-+ (id)messageBindingForDispatcher:(id)a3 message:(id)a4 receiver:(id)a5
++ (id)messageBindingForDispatcher:(id)dispatcher message:(id)message receiver:(id)receiver
 {
   v17[3] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [v5 name];
+  messageCopy = message;
+  name = [messageCopy name];
   v7 = *MEMORY[0x277CD0CB0];
   v8 = HMFEqualObjects();
 
@@ -715,7 +715,7 @@ uint64_t __22__HMDRoom_logCategory__block_invoke()
     v17[2] = v11;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:3];
 
-    v13 = [v5 name];
+    name2 = [messageCopy name];
     v14 = HMFCreateMessageBinding();
   }
 
@@ -732,45 +732,45 @@ uint64_t __22__HMDRoom_logCategory__block_invoke()
 - (NSDictionary)assistantObject
 {
   v58 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDRoom *)self home];
+  home = [(HMDRoom *)self home];
   if (self)
   {
-    v4 = [(HMDRoom *)self name];
-    v5 = v4;
-    if (v4 && v3)
+    name = [(HMDRoom *)self name];
+    v5 = name;
+    if (name && home)
     {
-      v6 = [v3 name];
+      name2 = [home name];
 
-      if (v6)
+      if (name2)
       {
         v7 = objc_alloc(MEMORY[0x277CBEB38]);
         v51[0] = *MEMORY[0x277D48160];
         v50[0] = @"objectType";
         v50[1] = @"objectName";
-        v8 = [(HMDRoom *)self name];
-        v51[1] = v8;
+        name3 = [(HMDRoom *)self name];
+        v51[1] = name3;
         v50[2] = @"objectIdentifier";
-        v9 = [(HMDRoom *)self urlString];
-        v51[2] = v9;
+        urlString = [(HMDRoom *)self urlString];
+        v51[2] = urlString;
         v50[3] = @"objectHome";
-        v10 = [v3 name];
-        v51[3] = v10;
+        name4 = [home name];
+        v51[3] = name4;
         v50[4] = @"objectHomeIdentifier";
-        v11 = [v3 urlString];
+        urlString2 = [home urlString];
         v50[5] = @"objectReference";
-        v51[4] = v11;
+        v51[4] = urlString2;
         v51[5] = self;
         v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v51 forKeys:v50 count:6];
         v34 = [v7 initWithDictionary:v12];
 
-        v13 = [MEMORY[0x277CBEB18] array];
-        v14 = [MEMORY[0x277CBEB18] array];
+        array = [MEMORY[0x277CBEB18] array];
+        array2 = [MEMORY[0x277CBEB18] array];
         v44 = 0u;
         v45 = 0u;
         v46 = 0u;
         v47 = 0u;
-        v35 = v3;
-        obj = [v3 zones];
+        v35 = home;
+        obj = [home zones];
         v38 = [obj countByEnumeratingWithState:&v44 objects:v49 count:16];
         if (v38)
         {
@@ -791,8 +791,8 @@ uint64_t __22__HMDRoom_logCategory__block_invoke()
               v41 = 0u;
               v42 = 0u;
               v43 = 0u;
-              v17 = [v16 roomUUIDs];
-              v18 = [v17 countByEnumeratingWithState:&v40 objects:v48 count:16];
+              roomUUIDs = [v16 roomUUIDs];
+              v18 = [roomUUIDs countByEnumeratingWithState:&v40 objects:v48 count:16];
               if (v18)
               {
                 v19 = v18;
@@ -803,24 +803,24 @@ uint64_t __22__HMDRoom_logCategory__block_invoke()
                   {
                     if (*v41 != v20)
                     {
-                      objc_enumerationMutation(v17);
+                      objc_enumerationMutation(roomUUIDs);
                     }
 
                     v22 = *(*(&v40 + 1) + 8 * i);
-                    v23 = [(HMDRoom *)self uuid];
-                    LODWORD(v22) = [v23 hmf_isEqualToUUIDString:v22];
+                    uuid = [(HMDRoom *)self uuid];
+                    LODWORD(v22) = [uuid hmf_isEqualToUUIDString:v22];
 
                     if (v22)
                     {
-                      v24 = [v16 name];
-                      [v13 addObject:v24];
+                      name5 = [v16 name];
+                      [array addObject:name5];
 
-                      v25 = [v16 urlString];
-                      [v14 addObject:v25];
+                      urlString3 = [v16 urlString];
+                      [array2 addObject:urlString3];
                     }
                   }
 
-                  v19 = [v17 countByEnumeratingWithState:&v40 objects:v48 count:16];
+                  v19 = [roomUUIDs countByEnumeratingWithState:&v40 objects:v48 count:16];
                 }
 
                 while (v19);
@@ -837,15 +837,15 @@ uint64_t __22__HMDRoom_logCategory__block_invoke()
         }
 
         v26 = v34;
-        if ([v13 count])
+        if ([array count])
         {
-          [v34 setObject:v13 forKey:@"objectZones"];
-          [v34 setObject:v14 forKey:@"objectZoneIdentifiers"];
+          [v34 setObject:array forKey:@"objectZones"];
+          [v34 setObject:array2 forKey:@"objectZoneIdentifiers"];
         }
 
         v27 = [v34 copy];
 
-        v3 = v35;
+        home = v35;
         goto LABEL_28;
       }
     }
@@ -860,13 +860,13 @@ uint64_t __22__HMDRoom_logCategory__block_invoke()
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
   {
     v30 = HMFGetLogIdentifier();
-    v31 = [(HMDRoom *)self name];
+    name6 = [(HMDRoom *)self name];
     *buf = 138543874;
     v53 = v30;
     v54 = 2112;
-    v55 = v31;
+    v55 = name6;
     v56 = 2112;
-    v57 = v3;
+    v57 = home;
     _os_log_impl(&dword_2531F8000, v29, OS_LOG_TYPE_DEFAULT, "%{public}@Skipping because one of the properties of room is nil: name %@  home %@", buf, 0x20u);
   }
 
@@ -882,7 +882,7 @@ LABEL_28:
 - (NSString)urlString
 {
   v2 = *MEMORY[0x277CCF2A0];
-  v3 = [(HMDRoom *)self uuid];
+  uuid = [(HMDRoom *)self uuid];
   v4 = hm_assistantIdentifier();
 
   return v4;

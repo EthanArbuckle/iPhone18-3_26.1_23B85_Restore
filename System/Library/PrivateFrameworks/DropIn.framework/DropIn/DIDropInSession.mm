@@ -1,35 +1,35 @@
 @interface DIDropInSession
-+ (id)stringForDropInSessionState:(unint64_t)a3;
-+ (id)stringForDropInSessionStateReason:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)stringForDropInSessionState:(unint64_t)state;
++ (id)stringForDropInSessionStateReason:(unint64_t)reason;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isUplinkMuted;
-- (DIDropInSession)initWithCoder:(id)a3;
-- (DIDropInSession)initWithNullableRequest:(id)a3;
+- (DIDropInSession)initWithCoder:(id)coder;
+- (DIDropInSession)initWithNullableRequest:(id)request;
 - (DIDropInSessionDelegate)delegate;
 - (DIXPCConnectionManager)connectionManager;
 - (NSArray)participants;
 - (NSDate)sessionEndDate;
 - (NSDate)sessionStartTimeoutDate;
 - (id)description;
-- (void)cancelWithError:(id)a3 completionHandler:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)endWithCompletionHandler:(id)a3;
-- (void)failWithError:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setParticipants:(id)a3;
-- (void)setSessionEndDate:(id)a3;
-- (void)setSessionStartTimeoutDate:(id)a3;
-- (void)setState:(unint64_t)a3;
-- (void)startWithCompletionHandler:(id)a3;
-- (void)updateUplinkMuteStatus:(BOOL)a3;
-- (void)updateWithSession:(id)a3;
+- (void)cancelWithError:(id)error completionHandler:(id)handler;
+- (void)encodeWithCoder:(id)coder;
+- (void)endWithCompletionHandler:(id)handler;
+- (void)failWithError:(id)error;
+- (void)setDelegate:(id)delegate;
+- (void)setParticipants:(id)participants;
+- (void)setSessionEndDate:(id)date;
+- (void)setSessionStartTimeoutDate:(id)date;
+- (void)setState:(unint64_t)state;
+- (void)startWithCompletionHandler:(id)handler;
+- (void)updateUplinkMuteStatus:(BOOL)status;
+- (void)updateWithSession:(id)session;
 @end
 
 @implementation DIDropInSession
 
-- (DIDropInSession)initWithNullableRequest:(id)a3
+- (DIDropInSession)initWithNullableRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v15.receiver = self;
   v15.super_class = DIDropInSession;
   v6 = [(DIDropInSession *)&v15 init];
@@ -50,36 +50,36 @@
     identifier = v6->_identifier;
     v6->_identifier = v11;
 
-    objc_storeStrong(&v6->_request, a3);
-    v13 = [v5 connectionManager];
-    objc_storeWeak(&v6->_connectionManager, v13);
+    objc_storeStrong(&v6->_request, request);
+    connectionManager = [requestCopy connectionManager];
+    objc_storeWeak(&v6->_connectionManager, connectionManager);
   }
 
   return v6;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  objc_storeWeak(&self->_delegate, v4);
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_delegate, delegateCopy);
   v5 = DILogHandleDropInSession();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412546;
     v8 = &stru_285D02BA8;
     v9 = 2112;
-    v10 = v4;
+    v10 = delegateCopy;
     _os_log_impl(&dword_249DA7000, v5, OS_LOG_TYPE_DEFAULT, "%@Delegate set to %@", &v7, 0x16u);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -89,11 +89,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(DIDropInSession *)self identifier];
-      v7 = [(DIDropInSession *)v5 identifier];
+      v5 = equalCopy;
+      identifier = [(DIDropInSession *)self identifier];
+      identifier2 = [(DIDropInSession *)v5 identifier];
 
-      v8 = [v6 isEqual:v7];
+      v8 = [identifier isEqual:identifier2];
     }
 
     else
@@ -109,77 +109,77 @@
 {
   v15 = MEMORY[0x277CCACA8];
   v14 = objc_opt_class();
-  v3 = [(DIDropInSession *)self identifier];
+  identifier = [(DIDropInSession *)self identifier];
   v4 = [DIDropInSession stringForDropInSessionState:[(DIDropInSession *)self state]];
   v5 = [DIDropInSession stringForDropInSessionStateReason:[(DIDropInSession *)self stateReason]];
-  v6 = [(DIDropInSession *)self sessionStartTimeoutDate];
-  v7 = [(DIDropInSession *)self sessionEndDate];
-  v8 = [(DIDropInSession *)self request];
-  v9 = [(DIDropInSession *)self participants];
-  v10 = [(DIDropInSession *)self connectionManager];
-  v11 = [(DIDropInSession *)self delegate];
-  v12 = [v15 stringWithFormat:@"<%@: %p> Identifier = %@, State = %@, State Reason = %@, StartTimeout = %@, EndDate = %@, Request = %@, Participants = %@, Connection Manager = %p, Delegate = %@", v14, self, v3, v4, v5, v6, v7, v8, v9, v10, v11];
+  sessionStartTimeoutDate = [(DIDropInSession *)self sessionStartTimeoutDate];
+  sessionEndDate = [(DIDropInSession *)self sessionEndDate];
+  request = [(DIDropInSession *)self request];
+  participants = [(DIDropInSession *)self participants];
+  connectionManager = [(DIDropInSession *)self connectionManager];
+  delegate = [(DIDropInSession *)self delegate];
+  v12 = [v15 stringWithFormat:@"<%@: %p> Identifier = %@, State = %@, State Reason = %@, StartTimeout = %@, EndDate = %@, Request = %@, Participants = %@, Connection Manager = %p, Delegate = %@", v14, self, identifier, v4, v5, sessionStartTimeoutDate, sessionEndDate, request, participants, connectionManager, delegate];
 
   return v12;
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
   v28 = *MEMORY[0x277D85DE8];
   v5 = DILogHandleDropInSession();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [DIDropInSession stringForDropInSessionState:a3];
+    v6 = [DIDropInSession stringForDropInSessionState:state];
     *buf = 138412802;
     v23 = &stru_285D02BA8;
     v24 = 2112;
     v25 = v6;
     v26 = 2112;
-    v27 = self;
+    selfCopy = self;
     _os_log_impl(&dword_249DA7000, v5, OS_LOG_TYPE_DEFAULT, "%@Updating state to %@ for session %@", buf, 0x20u);
   }
 
-  v7 = [(DIDropInSession *)self lock];
+  lock = [(DIDropInSession *)self lock];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __28__DIDropInSession_setState___block_invoke;
   v21[3] = &unk_278FB8CC8;
   v21[4] = self;
-  v21[5] = a3;
-  [v7 di_synchronize:v21];
+  v21[5] = state;
+  [lock di_synchronize:v21];
 
-  v8 = [(DIDropInSession *)self delegate];
+  delegate = [(DIDropInSession *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(DIDropInSession *)self connectionManager];
-    v11 = [v10 manager];
-    v12 = [v11 clientQueue];
+    connectionManager = [(DIDropInSession *)self connectionManager];
+    manager = [connectionManager manager];
+    clientQueue = [manager clientQueue];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __28__DIDropInSession_setState___block_invoke_2;
     v20[3] = &unk_278FB8CC8;
     v20[4] = self;
-    v20[5] = a3;
-    [DIUtilities onQueue:v12 block:v20];
+    v20[5] = state;
+    [DIUtilities onQueue:clientQueue block:v20];
   }
 
-  v13 = [(DIDropInSession *)self delegate];
+  delegate2 = [(DIDropInSession *)self delegate];
   v14 = objc_opt_respondsToSelector();
 
   if (v14)
   {
-    v15 = [(DIDropInSession *)self connectionManager];
-    v16 = [v15 manager];
-    v17 = [v16 clientQueue];
+    connectionManager2 = [(DIDropInSession *)self connectionManager];
+    manager2 = [connectionManager2 manager];
+    clientQueue2 = [manager2 clientQueue];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __28__DIDropInSession_setState___block_invoke_32;
     v19[3] = &unk_278FB8CC8;
     v19[4] = self;
-    v19[5] = a3;
-    [DIUtilities onQueue:v17 block:v19];
+    v19[5] = state;
+    [DIUtilities onQueue:clientQueue2 block:v19];
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -233,25 +233,25 @@ void __28__DIDropInSession_setState___block_invoke_32(uint64_t a1)
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startWithCompletionHandler:(id)a3
+- (void)startWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(DIDropInSession *)self connectionManager];
-  v6 = [v5 manager];
-  v7 = [v6 clientContext];
+  handlerCopy = handler;
+  connectionManager = [(DIDropInSession *)self connectionManager];
+  manager = [connectionManager manager];
+  clientContext = [manager clientContext];
 
-  v8 = [(DIDropInSession *)self connectionManager];
-  v9 = [v8 manager];
-  v10 = [v9 connection];
+  connectionManager2 = [(DIDropInSession *)self connectionManager];
+  manager2 = [connectionManager2 manager];
+  connection = [manager2 connection];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __46__DIDropInSession_startWithCompletionHandler___block_invoke;
   v17[3] = &unk_278FB8D18;
   v17[4] = self;
-  v11 = v4;
+  v11 = handlerCopy;
   v18 = v11;
-  v12 = [v10 remoteObjectProxyWithErrorHandler:v17];
-  v13 = [(DIDropInSession *)self request];
+  v12 = [connection remoteObjectProxyWithErrorHandler:v17];
+  request = [(DIDropInSession *)self request];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __46__DIDropInSession_startWithCompletionHandler___block_invoke_2;
@@ -259,7 +259,7 @@ void __28__DIDropInSession_setState___block_invoke_32(uint64_t a1)
   v15[4] = self;
   v16 = v11;
   v14 = v11;
-  [v12 startSessionWithContext:v7 request:v13 completionHandler:v15];
+  [v12 startSessionWithContext:clientContext request:request completionHandler:v15];
 }
 
 void __46__DIDropInSession_startWithCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -356,24 +356,24 @@ LABEL_6:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)endWithCompletionHandler:(id)a3
+- (void)endWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(DIDropInSession *)self connectionManager];
-  v6 = [v5 manager];
-  v7 = [v6 clientContext];
+  handlerCopy = handler;
+  connectionManager = [(DIDropInSession *)self connectionManager];
+  manager = [connectionManager manager];
+  clientContext = [manager clientContext];
 
-  v8 = [(DIDropInSession *)self connectionManager];
-  v9 = [v8 manager];
-  v10 = [v9 connection];
+  connectionManager2 = [(DIDropInSession *)self connectionManager];
+  manager2 = [connectionManager2 manager];
+  connection = [manager2 connection];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __44__DIDropInSession_endWithCompletionHandler___block_invoke;
   v16[3] = &unk_278FB8D18;
   v16[4] = self;
-  v11 = v4;
+  v11 = handlerCopy;
   v17 = v11;
-  v12 = [v10 remoteObjectProxyWithErrorHandler:v16];
+  v12 = [connection remoteObjectProxyWithErrorHandler:v16];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __44__DIDropInSession_endWithCompletionHandler___block_invoke_2;
@@ -381,7 +381,7 @@ LABEL_6:
   v14[4] = self;
   v15 = v11;
   v13 = v11;
-  [v12 endSessionWithContext:v7 session:self completionHandler:v14];
+  [v12 endSessionWithContext:clientContext session:self completionHandler:v14];
 }
 
 void __44__DIDropInSession_endWithCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -431,25 +431,25 @@ void __44__DIDropInSession_endWithCompletionHandler___block_invoke_2(uint64_t a1
   [DIUtilities onQueue:v6 block:v9];
 }
 
-- (void)cancelWithError:(id)a3 completionHandler:(id)a4
+- (void)cancelWithError:(id)error completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(DIDropInSession *)self connectionManager];
-  v9 = [v8 manager];
-  v10 = [v9 clientContext];
+  handlerCopy = handler;
+  errorCopy = error;
+  connectionManager = [(DIDropInSession *)self connectionManager];
+  manager = [connectionManager manager];
+  clientContext = [manager clientContext];
 
-  v11 = [(DIDropInSession *)self connectionManager];
-  v12 = [v11 manager];
-  v13 = [v12 connection];
+  connectionManager2 = [(DIDropInSession *)self connectionManager];
+  manager2 = [connectionManager2 manager];
+  connection = [manager2 connection];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __53__DIDropInSession_cancelWithError_completionHandler___block_invoke;
   v19[3] = &unk_278FB8D18;
   v19[4] = self;
-  v14 = v6;
+  v14 = handlerCopy;
   v20 = v14;
-  v15 = [v13 remoteObjectProxyWithErrorHandler:v19];
+  v15 = [connection remoteObjectProxyWithErrorHandler:v19];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __53__DIDropInSession_cancelWithError_completionHandler___block_invoke_2;
@@ -457,7 +457,7 @@ void __44__DIDropInSession_endWithCompletionHandler___block_invoke_2(uint64_t a1
   v17[4] = self;
   v18 = v14;
   v16 = v14;
-  [v15 cancelSessionWithContext:v10 session:self error:v7 completionHandler:v17];
+  [v15 cancelSessionWithContext:clientContext session:self error:errorCopy completionHandler:v17];
 }
 
 void __53__DIDropInSession_cancelWithError_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -522,14 +522,14 @@ void __53__DIDropInSession_cancelWithError_completionHandler___block_invoke_2(ui
   *(&buf + 1) = &buf;
   v10 = 0x2020000000;
   v11 = 0;
-  v4 = [(DIDropInSession *)self lock];
+  lock = [(DIDropInSession *)self lock];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __32__DIDropInSession_isUplinkMuted__block_invoke;
   v8[3] = &unk_278FB8DB8;
   v8[4] = self;
   v8[5] = &buf;
-  [v4 di_synchronize:v8];
+  [lock di_synchronize:v8];
 
   v5 = *(*(&buf + 1) + 24);
   _Block_object_dispose(&buf, 8);
@@ -683,14 +683,14 @@ LABEL_6:
   v10 = __Block_byref_object_copy_;
   v11 = __Block_byref_object_dispose_;
   v12 = 0;
-  v3 = [(DIDropInSession *)self lock];
+  lock = [(DIDropInSession *)self lock];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __31__DIDropInSession_participants__block_invoke;
   v6[3] = &unk_278FB8E20;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 di_synchronize:v6];
+  [lock di_synchronize:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -708,26 +708,26 @@ uint64_t __31__DIDropInSession_participants__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setParticipants:(id)a3
+- (void)setParticipants:(id)participants
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  participantsCopy = participants;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
   v25 = __Block_byref_object_copy_;
   v26 = __Block_byref_object_dispose_;
   v27 = 0;
-  v5 = [(DIDropInSession *)self lock];
+  lock = [(DIDropInSession *)self lock];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __35__DIDropInSession_setParticipants___block_invoke;
   v21[3] = &unk_278FB8E20;
   v21[4] = self;
   v21[5] = &v22;
-  [v5 di_synchronize:v21];
+  [lock di_synchronize:v21];
 
-  v6 = [MEMORY[0x277CBEB98] setWithArray:v4];
+  v6 = [MEMORY[0x277CBEB98] setWithArray:participantsCopy];
   if ([v23[5] isEqualToSet:v6])
   {
     v7 = DILogHandleDropInSession();
@@ -741,31 +741,31 @@ uint64_t __31__DIDropInSession_participants__block_invoke(uint64_t a1)
 
   else
   {
-    v8 = [(DIDropInSession *)self lock];
+    lock2 = [(DIDropInSession *)self lock];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __35__DIDropInSession_setParticipants___block_invoke_43;
     v19[3] = &unk_278FB8E48;
     v19[4] = self;
-    v9 = v4;
+    v9 = participantsCopy;
     v20 = v9;
-    [v8 di_synchronize:v19];
+    [lock2 di_synchronize:v19];
 
-    v10 = [(DIDropInSession *)self delegate];
+    delegate = [(DIDropInSession *)self delegate];
     v11 = objc_opt_respondsToSelector();
 
     if (v11)
     {
-      v12 = [(DIDropInSession *)self connectionManager];
-      v13 = [v12 manager];
-      v14 = [v13 clientQueue];
+      connectionManager = [(DIDropInSession *)self connectionManager];
+      manager = [connectionManager manager];
+      clientQueue = [manager clientQueue];
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __35__DIDropInSession_setParticipants___block_invoke_2;
       v16[3] = &unk_278FB8E48;
       v17 = v9;
-      v18 = self;
-      [DIUtilities onQueue:v14 block:v16];
+      selfCopy = self;
+      [DIUtilities onQueue:clientQueue block:v16];
     }
   }
 
@@ -824,14 +824,14 @@ void __35__DIDropInSession_setParticipants___block_invoke_2(uint64_t a1)
   v10 = __Block_byref_object_copy_;
   v11 = __Block_byref_object_dispose_;
   v12 = 0;
-  v3 = [(DIDropInSession *)self lock];
+  lock = [(DIDropInSession *)self lock];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __42__DIDropInSession_sessionStartTimeoutDate__block_invoke;
   v6[3] = &unk_278FB8E20;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 di_synchronize:v6];
+  [lock di_synchronize:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -839,10 +839,10 @@ void __35__DIDropInSession_setParticipants___block_invoke_2(uint64_t a1)
   return v4;
 }
 
-- (void)setSessionStartTimeoutDate:(id)a3
+- (void)setSessionStartTimeoutDate:(id)date
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -855,20 +855,20 @@ void __35__DIDropInSession_setParticipants___block_invoke_2(uint64_t a1)
     *buf = 138412546;
     v29 = &stru_285D02BA8;
     v30 = 2112;
-    v31 = v4;
+    v31 = dateCopy;
     _os_log_impl(&dword_249DA7000, v5, OS_LOG_TYPE_INFO, "%@Update session start timeout date: %@", buf, 0x16u);
   }
 
-  v6 = [(DIDropInSession *)self lock];
+  lock = [(DIDropInSession *)self lock];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __46__DIDropInSession_setSessionStartTimeoutDate___block_invoke;
   v21[3] = &unk_278FB8E20;
   v21[4] = self;
   v21[5] = &v22;
-  [v6 di_synchronize:v21];
+  [lock di_synchronize:v21];
 
-  if ([v23[5] isEqualToDate:v4])
+  if ([v23[5] isEqualToDate:dateCopy])
   {
     v7 = DILogHandleDropInSession();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -881,31 +881,31 @@ void __35__DIDropInSession_setParticipants___block_invoke_2(uint64_t a1)
 
   else
   {
-    v8 = [(DIDropInSession *)self lock];
+    lock2 = [(DIDropInSession *)self lock];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __46__DIDropInSession_setSessionStartTimeoutDate___block_invoke_46;
     v19[3] = &unk_278FB8E48;
     v19[4] = self;
-    v9 = v4;
+    v9 = dateCopy;
     v20 = v9;
-    [v8 di_synchronize:v19];
+    [lock2 di_synchronize:v19];
 
-    v10 = [(DIDropInSession *)self delegate];
+    delegate = [(DIDropInSession *)self delegate];
     v11 = objc_opt_respondsToSelector();
 
     if (v11)
     {
-      v12 = [(DIDropInSession *)self connectionManager];
-      v13 = [v12 manager];
-      v14 = [v13 clientQueue];
+      connectionManager = [(DIDropInSession *)self connectionManager];
+      manager = [connectionManager manager];
+      clientQueue = [manager clientQueue];
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __46__DIDropInSession_setSessionStartTimeoutDate___block_invoke_2;
       v16[3] = &unk_278FB8E48;
       v17 = v9;
-      v18 = self;
-      [DIUtilities onQueue:v14 block:v16];
+      selfCopy = self;
+      [DIUtilities onQueue:clientQueue block:v16];
     }
   }
 
@@ -955,14 +955,14 @@ void __46__DIDropInSession_setSessionStartTimeoutDate___block_invoke_2(uint64_t 
   v10 = __Block_byref_object_copy_;
   v11 = __Block_byref_object_dispose_;
   v12 = 0;
-  v3 = [(DIDropInSession *)self lock];
+  lock = [(DIDropInSession *)self lock];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __33__DIDropInSession_sessionEndDate__block_invoke;
   v6[3] = &unk_278FB8E20;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 di_synchronize:v6];
+  [lock di_synchronize:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -970,10 +970,10 @@ void __46__DIDropInSession_setSessionStartTimeoutDate___block_invoke_2(uint64_t 
   return v4;
 }
 
-- (void)setSessionEndDate:(id)a3
+- (void)setSessionEndDate:(id)date
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -986,20 +986,20 @@ void __46__DIDropInSession_setSessionStartTimeoutDate___block_invoke_2(uint64_t 
     *buf = 138412546;
     v29 = &stru_285D02BA8;
     v30 = 2112;
-    v31 = v4;
+    v31 = dateCopy;
     _os_log_impl(&dword_249DA7000, v5, OS_LOG_TYPE_INFO, "%@Update session end date: %@", buf, 0x16u);
   }
 
-  v6 = [(DIDropInSession *)self lock];
+  lock = [(DIDropInSession *)self lock];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __37__DIDropInSession_setSessionEndDate___block_invoke;
   v21[3] = &unk_278FB8E20;
   v21[4] = self;
   v21[5] = &v22;
-  [v6 di_synchronize:v21];
+  [lock di_synchronize:v21];
 
-  if ([v23[5] isEqualToDate:v4])
+  if ([v23[5] isEqualToDate:dateCopy])
   {
     v7 = DILogHandleDropInSession();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -1012,31 +1012,31 @@ void __46__DIDropInSession_setSessionStartTimeoutDate___block_invoke_2(uint64_t 
 
   else
   {
-    v8 = [(DIDropInSession *)self lock];
+    lock2 = [(DIDropInSession *)self lock];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __37__DIDropInSession_setSessionEndDate___block_invoke_49;
     v19[3] = &unk_278FB8E48;
     v19[4] = self;
-    v9 = v4;
+    v9 = dateCopy;
     v20 = v9;
-    [v8 di_synchronize:v19];
+    [lock2 di_synchronize:v19];
 
-    v10 = [(DIDropInSession *)self delegate];
+    delegate = [(DIDropInSession *)self delegate];
     v11 = objc_opt_respondsToSelector();
 
     if (v11)
     {
-      v12 = [(DIDropInSession *)self connectionManager];
-      v13 = [v12 manager];
-      v14 = [v13 clientQueue];
+      connectionManager = [(DIDropInSession *)self connectionManager];
+      manager = [connectionManager manager];
+      clientQueue = [manager clientQueue];
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __37__DIDropInSession_setSessionEndDate___block_invoke_2;
       v16[3] = &unk_278FB8E48;
       v17 = v9;
-      v18 = self;
-      [DIUtilities onQueue:v14 block:v16];
+      selfCopy = self;
+      [DIUtilities onQueue:clientQueue block:v16];
     }
   }
 
@@ -1078,48 +1078,48 @@ void __37__DIDropInSession_setSessionEndDate___block_invoke_2(uint64_t a1)
   v6 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)stringForDropInSessionState:(unint64_t)a3
++ (id)stringForDropInSessionState:(unint64_t)state
 {
-  if (a3 - 1 > 6)
+  if (state - 1 > 6)
   {
     v5 = @"Unknown";
   }
 
   else
   {
-    v5 = off_278FB8EB0[a3 - 1];
+    v5 = off_278FB8EB0[state - 1];
   }
 
-  return [MEMORY[0x277CCACA8] stringWithFormat:@"(%lu) %@", a3, v5, v3, v4];
+  return [MEMORY[0x277CCACA8] stringWithFormat:@"(%lu) %@", state, v5, v3, v4];
 }
 
-+ (id)stringForDropInSessionStateReason:(unint64_t)a3
++ (id)stringForDropInSessionStateReason:(unint64_t)reason
 {
-  if (a3 > 6)
+  if (reason > 6)
   {
     v5 = @"Unknown";
   }
 
   else
   {
-    v5 = off_278FB8EE8[a3];
+    v5 = off_278FB8EE8[reason];
   }
 
-  return [MEMORY[0x277CCACA8] stringWithFormat:@"(%lu) %@", a3, v5, v3, v4];
+  return [MEMORY[0x277CCACA8] stringWithFormat:@"(%lu) %@", reason, v5, v3, v4];
 }
 
-- (void)updateWithSession:(id)a3
+- (void)updateWithSession:(id)session
 {
-  v4 = a3;
-  v5 = [(DIDropInSession *)self lock];
+  sessionCopy = session;
+  lock = [(DIDropInSession *)self lock];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __37__DIDropInSession_updateWithSession___block_invoke;
   v7[3] = &unk_278FB8E48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 di_synchronize:v7];
+  v8 = sessionCopy;
+  v6 = sessionCopy;
+  [lock di_synchronize:v7];
 }
 
 void __37__DIDropInSession_updateWithSession___block_invoke(uint64_t a1)
@@ -1136,37 +1136,37 @@ void __37__DIDropInSession_updateWithSession___block_invoke(uint64_t a1)
   [*(a1 + 32) setSessionEndDate:v4];
 }
 
-- (void)failWithError:(id)a3
+- (void)failWithError:(id)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = DILogHandleDropInSession();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412802;
     v16 = &stru_285D02BA8;
     v17 = 2112;
-    v18 = v4;
+    v18 = errorCopy;
     v19 = 2112;
-    v20 = self;
+    selfCopy = self;
     _os_log_impl(&dword_249DA7000, v5, OS_LOG_TYPE_ERROR, "%@Session failed with error %@. Session = %@", buf, 0x20u);
   }
 
-  v6 = [(DIDropInSession *)self delegate];
+  delegate = [(DIDropInSession *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(DIDropInSession *)self connectionManager];
-    v9 = [v8 manager];
-    v10 = [v9 clientQueue];
+    connectionManager = [(DIDropInSession *)self connectionManager];
+    manager = [connectionManager manager];
+    clientQueue = [manager clientQueue];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __33__DIDropInSession_failWithError___block_invoke;
     v12[3] = &unk_278FB8E48;
-    v13 = v4;
-    v14 = self;
-    [DIUtilities onQueue:v10 block:v12];
+    v13 = errorCopy;
+    selfCopy2 = self;
+    [DIUtilities onQueue:clientQueue block:v12];
   }
 
   v11 = *MEMORY[0x277D85DE8];
@@ -1195,9 +1195,9 @@ void __33__DIDropInSession_failWithError___block_invoke(uint64_t a1)
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateUplinkMuteStatus:(BOOL)a3
+- (void)updateUplinkMuteStatus:(BOOL)status
 {
-  v3 = a3;
+  statusCopy = status;
   v23 = *MEMORY[0x277D85DE8];
   v5 = DILogHandleDropInSession();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1205,36 +1205,36 @@ void __33__DIDropInSession_failWithError___block_invoke(uint64_t a1)
     *buf = 138412802;
     v18 = &stru_285D02BA8;
     v19 = 1024;
-    v20 = v3;
+    v20 = statusCopy;
     v21 = 2112;
-    v22 = self;
+    selfCopy = self;
     _os_log_impl(&dword_249DA7000, v5, OS_LOG_TYPE_DEFAULT, "%@Update uplink mute status %d. Session = %@", buf, 0x1Cu);
   }
 
-  v6 = [(DIDropInSession *)self lock];
+  lock = [(DIDropInSession *)self lock];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __42__DIDropInSession_updateUplinkMuteStatus___block_invoke;
   v15[3] = &unk_278FB8E70;
   v15[4] = self;
-  v16 = v3;
-  [v6 di_synchronize:v15];
+  v16 = statusCopy;
+  [lock di_synchronize:v15];
 
-  v7 = [(DIDropInSession *)self delegate];
+  delegate = [(DIDropInSession *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(DIDropInSession *)self connectionManager];
-    v10 = [v9 manager];
-    v11 = [v10 clientQueue];
+    connectionManager = [(DIDropInSession *)self connectionManager];
+    manager = [connectionManager manager];
+    clientQueue = [manager clientQueue];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __42__DIDropInSession_updateUplinkMuteStatus___block_invoke_2;
     v13[3] = &unk_278FB8E70;
-    v14 = v3;
+    v14 = statusCopy;
     v13[4] = self;
-    [DIUtilities onQueue:v11 block:v13];
+    [DIUtilities onQueue:clientQueue block:v13];
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -1263,27 +1263,27 @@ void __42__DIDropInSession_updateUplinkMuteStatus___block_invoke_2(uint64_t a1)
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(DIDropInSession *)self identifier];
-  [v4 encodeObject:v5 forKey:@"Identifier"];
+  coderCopy = coder;
+  identifier = [(DIDropInSession *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"Identifier"];
 
-  [v4 encodeInteger:-[DIDropInSession state](self forKey:{"state"), @"State"}];
-  [v4 encodeInteger:-[DIDropInSession stateReason](self forKey:{"stateReason"), @"StateReason"}];
-  v6 = [(DIDropInSession *)self participants];
-  [v4 encodeObject:v6 forKey:@"Participants"];
+  [coderCopy encodeInteger:-[DIDropInSession state](self forKey:{"state"), @"State"}];
+  [coderCopy encodeInteger:-[DIDropInSession stateReason](self forKey:{"stateReason"), @"StateReason"}];
+  participants = [(DIDropInSession *)self participants];
+  [coderCopy encodeObject:participants forKey:@"Participants"];
 
-  v7 = [(DIDropInSession *)self sessionStartTimeoutDate];
-  [v4 encodeObject:v7 forKey:@"StartTimeoutDate"];
+  sessionStartTimeoutDate = [(DIDropInSession *)self sessionStartTimeoutDate];
+  [coderCopy encodeObject:sessionStartTimeoutDate forKey:@"StartTimeoutDate"];
 
-  v8 = [(DIDropInSession *)self sessionEndDate];
-  [v4 encodeObject:v8 forKey:@"EndDate"];
+  sessionEndDate = [(DIDropInSession *)self sessionEndDate];
+  [coderCopy encodeObject:sessionEndDate forKey:@"EndDate"];
 }
 
-- (DIDropInSession)initWithCoder:(id)a3
+- (DIDropInSession)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(DIDropInSession *)self init];
   if (!v5)
   {
@@ -1293,17 +1293,17 @@ LABEL_11:
   }
 
   v6 = objc_opt_self();
-  v7 = [v4 decodeObjectOfClass:v6 forKey:@"Identifier"];
+  v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"Identifier"];
 
   if (v7)
   {
     objc_storeStrong(&v5->_identifier, v7);
-    v5->_state = [v4 decodeIntegerForKey:@"State"];
-    v5->_stateReason = [v4 decodeIntegerForKey:@"StateReason"];
+    v5->_state = [coderCopy decodeIntegerForKey:@"State"];
+    v5->_stateReason = [coderCopy decodeIntegerForKey:@"StateReason"];
     v8 = MEMORY[0x277CBEB98];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"Participants"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"Participants"];
     v12 = v11;
     if (v11)
     {
@@ -1317,13 +1317,13 @@ LABEL_11:
 
     objc_storeStrong(&v5->_participants, v13);
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"StartTimeoutDate"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"StartTimeoutDate"];
     if (v14)
     {
       objc_storeStrong(&v5->_sessionStartTimeoutDate, v14);
     }
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EndDate"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EndDate"];
     if (v15)
     {
       objc_storeStrong(&v5->_sessionEndDate, v15);

@@ -1,132 +1,132 @@
 @interface REMCDReminder
-+ (id)existingCloudObjectForRecordID:(id)a3 accountID:(id)a4 context:(id)a5;
-+ (id)newCloudObjectForRecord:(id)a3 account:(id)a4 context:(id)a5;
++ (id)existingCloudObjectForRecordID:(id)d accountID:(id)iD context:(id)context;
++ (id)newCloudObjectForRecord:(id)record account:(id)account context:(id)context;
 + (id)recordTypes;
-+ (id)timeZoneFromName:(id)a3;
-- (BOOL)_validateAssignmentsForInvalidSharees:(id *)a3;
-- (BOOL)_validateForReminderTreeConsistency:(id *)a3;
-- (BOOL)_validateMoveAcrossLists:(id *)a3;
-- (BOOL)_validateMoveAcrossSharedLists:(id *)a3;
-- (BOOL)isConnectedToAccountObject:(id)a3;
++ (id)timeZoneFromName:(id)name;
+- (BOOL)_validateAssignmentsForInvalidSharees:(id *)sharees;
+- (BOOL)_validateForReminderTreeConsistency:(id *)consistency;
+- (BOOL)_validateMoveAcrossLists:(id *)lists;
+- (BOOL)_validateMoveAcrossSharedLists:(id *)lists;
+- (BOOL)isConnectedToAccountObject:(id)object;
 - (BOOL)markExtraneousAlarmsForDeletion;
-- (BOOL)mergeWithLocalObject:(id)a3;
-- (BOOL)validateForInsert:(id *)a3;
-- (BOOL)validateForUpdate:(id *)a3;
+- (BOOL)mergeWithLocalObject:(id)object;
+- (BOOL)validateForInsert:(id *)insert;
+- (BOOL)validateForUpdate:(id *)update;
 - (CKRecord)ckServerRecord;
 - (NSArray)alarms;
 - (NSDateComponents)dueDateComponents;
 - (NSDateComponents)startDateComponents;
 - (REMDisplayDate)displayDate;
 - (REMDisplayDateUtils)displayDateUtils;
-- (id)existingLocalObjectToMergeWithPredicate:(id)a3;
+- (id)existingLocalObjectToMergeWithPredicate:(id)predicate;
 - (id)newlyCreatedRecord;
 - (id)objectsToBeDeletedBeforeThisObject;
 - (id)parentCloudObject;
 - (id)recordType;
 - (int64_t)parentEffectiveMinimumSupportedVersion;
-- (uint64_t)validateForUpdate_Swift:(void *)a1;
+- (uint64_t)validateForUpdate_Swift:(void *)swift;
 - (unint64_t)displayOrder;
 - (void)debug_lowLevelRemoveFromParent;
 - (void)didSave;
 - (void)fixBrokenReferences;
 - (void)incrementSpotlightIndexCount;
-- (void)mergeDataFromRecord:(id)a3 accountID:(id)a4;
+- (void)mergeDataFromRecord:(id)record accountID:(id)d;
 - (void)prepareForDeletion_Swift;
 - (void)processDueDateDeltaAlertsDataChanges;
-- (void)setCkServerRecord:(id)a3;
-- (void)setDisplayDate:(id)a3;
-- (void)setDisplayOrder:(unint64_t)a3;
-- (void)setDueDateComponents:(id)a3;
-- (void)setList:(id)a3;
-- (void)setStartDateComponents:(id)a3;
+- (void)setCkServerRecord:(id)record;
+- (void)setDisplayDate:(id)date;
+- (void)setDisplayOrder:(unint64_t)order;
+- (void)setDueDateComponents:(id)components;
+- (void)setList:(id)list;
+- (void)setStartDateComponents:(id)components;
 - (void)updateDisplayDate;
-- (void)updateDisplayDateWithAlarm:(id)a3;
-- (void)willChangeList:(id)a3 toList:(id)a4;
+- (void)updateDisplayDateWithAlarm:(id)alarm;
+- (void)willChangeList:(id)list toList:(id)toList;
 - (void)willSave;
 - (void)willSave_Swift;
 @end
 
 @implementation REMCDReminder
 
-- (uint64_t)validateForUpdate_Swift:(void *)a1
+- (uint64_t)validateForUpdate_Swift:(void *)swift
 {
-  v1 = a1;
+  swiftCopy = swift;
   sub_100342E04();
 
   return 1;
 }
 
-- (void)setList:(id)a3
+- (void)setList:(id)list
 {
-  v5 = a3;
+  listCopy = list;
   v4 = [(REMCDReminder *)self primitiveValueForKey:@"list"];
   [(REMCDReminder *)self setPreviousList:v4];
 
   if (objc_opt_respondsToSelector())
   {
-    [(REMCDReminder *)self willChangeList:self->previousList toList:v5];
+    [(REMCDReminder *)self willChangeList:self->previousList toList:listCopy];
   }
 
   [(REMCDObject *)self willChangeValueForKey:@"list"];
-  [(REMCDReminder *)self setPrimitiveValue:v5 forKey:@"list"];
+  [(REMCDReminder *)self setPrimitiveValue:listCopy forKey:@"list"];
   [(REMCDObject *)self didChangeValueForKey:@"list"];
 }
 
-- (BOOL)validateForInsert:(id *)a3
+- (BOOL)validateForInsert:(id *)insert
 {
   v12.receiver = self;
   v12.super_class = REMCDReminder;
   v5 = [(REMCDObject *)&v12 validateForInsert:?];
-  if (!v5 || [(REMCDReminder *)self _validateForReminderTreeConsistency:a3])
+  if (!v5 || [(REMCDReminder *)self _validateForReminderTreeConsistency:insert])
   {
     v6 = 1;
     return v5 & v6;
   }
 
-  v7 = [(REMCDObject *)self storeControllerManagedObjectContext];
+  storeControllerManagedObjectContext = [(REMCDObject *)self storeControllerManagedObjectContext];
 
-  if (!v7)
+  if (!storeControllerManagedObjectContext)
   {
-    v9 = 0;
+    validationPolicy = 0;
 LABEL_9:
 
     v6 = 0;
     return v5 & v6;
   }
 
-  v8 = [(REMCDObject *)self storeControllerManagedObjectContext];
-  v9 = [v8 validationPolicy];
+  storeControllerManagedObjectContext2 = [(REMCDObject *)self storeControllerManagedObjectContext];
+  validationPolicy = [storeControllerManagedObjectContext2 validationPolicy];
 
-  if (!v9 || ![v9 saveShouldContinueIfCustomValidationFailed])
+  if (!validationPolicy || ![validationPolicy saveShouldContinueIfCustomValidationFailed])
   {
     goto LABEL_9;
   }
 
   v10 = 1;
-  [v9 setCustomValidationFailed:1];
+  [validationPolicy setCustomValidationFailed:1];
 
   return v10;
 }
 
-- (BOOL)validateForUpdate:(id *)a3
+- (BOOL)validateForUpdate:(id *)update
 {
   v12.receiver = self;
   v12.super_class = REMCDReminder;
   v5 = [(REMCDObject *)&v12 validateForUpdate:?];
-  v6 = [(REMCDReminder *)self _validateMoveAcrossLists:a3];
-  v7 = [(REMCDObject *)self storeControllerManagedObjectContext];
+  v6 = [(REMCDReminder *)self _validateMoveAcrossLists:update];
+  storeControllerManagedObjectContext = [(REMCDObject *)self storeControllerManagedObjectContext];
 
-  if (!v7 || (-[REMCDObject storeControllerManagedObjectContext](self, "storeControllerManagedObjectContext"), v8 = objc_claimAutoreleasedReturnValue(), [v8 validationPolicy], v7 = objc_claimAutoreleasedReturnValue(), v8, !v7))
+  if (!storeControllerManagedObjectContext || (-[REMCDObject storeControllerManagedObjectContext](self, "storeControllerManagedObjectContext"), v8 = objc_claimAutoreleasedReturnValue(), [v8 validationPolicy], storeControllerManagedObjectContext = objc_claimAutoreleasedReturnValue(), v8, !storeControllerManagedObjectContext))
   {
     v9 = 1;
     goto LABEL_7;
   }
 
   v9 = 0;
-  if ([v7 shouldValidateMoveAcrossSharedList])
+  if ([storeControllerManagedObjectContext shouldValidateMoveAcrossSharedList])
   {
 LABEL_7:
-    if (!v6 || ![(REMCDReminder *)self _validateMoveAcrossSharedLists:a3])
+    if (!v6 || ![(REMCDReminder *)self _validateMoveAcrossSharedLists:update])
     {
       goto LABEL_13;
     }
@@ -147,9 +147,9 @@ LABEL_11:
   }
 
 LABEL_9:
-  if ([(REMCDReminder *)self _validateForReminderTreeConsistency:a3])
+  if ([(REMCDReminder *)self _validateForReminderTreeConsistency:update])
   {
-    v10 = [(REMCDReminder *)self _validateAssignmentsForInvalidSharees:a3];
+    v10 = [(REMCDReminder *)self _validateAssignmentsForInvalidSharees:update];
     goto LABEL_11;
   }
 
@@ -163,53 +163,53 @@ LABEL_17:
   }
 
 LABEL_14:
-  if ((v10 & 1) != 0 || ![v7 saveShouldContinueIfCustomValidationFailed])
+  if ((v10 & 1) != 0 || ![storeControllerManagedObjectContext saveShouldContinueIfCustomValidationFailed])
   {
     goto LABEL_17;
   }
 
-  [v7 setCustomValidationFailed:1];
+  [storeControllerManagedObjectContext setCustomValidationFailed:1];
 LABEL_18:
 
   return v5;
 }
 
-- (BOOL)_validateMoveAcrossLists:(id *)a3
+- (BOOL)_validateMoveAcrossLists:(id *)lists
 {
   v5 = [REMAccountCapabilities alloc];
-  v6 = [(REMCDReminder *)self account];
-  v7 = [v5 initWithAccountType:{objc_msgSend(v6, "type")}];
+  account = [(REMCDReminder *)self account];
+  v7 = [v5 initWithAccountType:{objc_msgSend(account, "type")}];
 
   if ([v7 supportsMoveAcrossLists])
   {
     goto LABEL_10;
   }
 
-  v8 = [(REMCDReminder *)self previousList];
-  if (!v8)
+  previousList = [(REMCDReminder *)self previousList];
+  if (!previousList)
   {
     goto LABEL_10;
   }
 
-  v9 = v8;
-  v10 = [(REMCDReminder *)self list];
-  if (!v10)
+  v9 = previousList;
+  list = [(REMCDReminder *)self list];
+  if (!list)
   {
 
     goto LABEL_10;
   }
 
-  v11 = v10;
-  v12 = [(REMCDReminder *)self previousList];
-  v13 = [v12 identifier];
-  v14 = [(REMCDReminder *)self list];
-  v15 = [v14 identifier];
-  v16 = [v13 isEqual:v15];
+  v11 = list;
+  previousList2 = [(REMCDReminder *)self previousList];
+  identifier = [previousList2 identifier];
+  list2 = [(REMCDReminder *)self list];
+  identifier2 = [list2 identifier];
+  v16 = [identifier isEqual:identifier2];
 
   if (v16)
   {
 LABEL_10:
-    LOBYTE(a3) = 1;
+    LOBYTE(lists) = 1;
     goto LABEL_11;
   }
 
@@ -219,54 +219,54 @@ LABEL_10:
     sub_100765A5C(self);
   }
 
-  if (a3)
+  if (lists)
   {
-    v18 = [(REMCDReminder *)self previousList];
-    v19 = [v18 remObjectID];
-    v20 = [(REMCDReminder *)self list];
-    v21 = [v20 remObjectID];
-    v22 = [(REMCDReminder *)self account];
-    v23 = [v22 remObjectID];
-    *a3 = [REMError validationErrorMoveReminderFromList:v19 toList:v21 inAccount:v23];
+    previousList3 = [(REMCDReminder *)self previousList];
+    remObjectID = [previousList3 remObjectID];
+    list3 = [(REMCDReminder *)self list];
+    remObjectID2 = [list3 remObjectID];
+    account2 = [(REMCDReminder *)self account];
+    remObjectID3 = [account2 remObjectID];
+    *lists = [REMError validationErrorMoveReminderFromList:remObjectID toList:remObjectID2 inAccount:remObjectID3];
 
-    LOBYTE(a3) = 0;
+    LOBYTE(lists) = 0;
   }
 
 LABEL_11:
 
-  return a3;
+  return lists;
 }
 
-- (BOOL)_validateMoveAcrossSharedLists:(id *)a3
+- (BOOL)_validateMoveAcrossSharedLists:(id *)lists
 {
   v5 = [REMAccountCapabilities alloc];
-  v6 = [(REMCDReminder *)self account];
-  v7 = [v5 initWithAccountType:{objc_msgSend(v6, "type")}];
+  account = [(REMCDReminder *)self account];
+  v7 = [v5 initWithAccountType:{objc_msgSend(account, "type")}];
 
   if ([v7 supportsMoveAcrossSharedLists])
   {
     goto LABEL_7;
   }
 
-  v8 = [(REMCDReminder *)self previousList];
-  if (!v8)
+  previousList = [(REMCDReminder *)self previousList];
+  if (!previousList)
   {
     goto LABEL_7;
   }
 
-  v9 = v8;
-  v10 = [(REMCDReminder *)self list];
-  if (!v10)
+  v9 = previousList;
+  list = [(REMCDReminder *)self list];
+  if (!list)
   {
     goto LABEL_6;
   }
 
-  v11 = v10;
-  v12 = [(REMCDReminder *)self previousList];
-  v13 = [v12 identifier];
-  v14 = [(REMCDReminder *)self list];
-  v15 = [v14 identifier];
-  if ([v13 isEqual:v15])
+  v11 = list;
+  previousList2 = [(REMCDReminder *)self previousList];
+  identifier = [previousList2 identifier];
+  list2 = [(REMCDReminder *)self list];
+  identifier2 = [list2 identifier];
+  if ([identifier isEqual:identifier2])
   {
 
 LABEL_6:
@@ -275,18 +275,18 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v28 = a3;
-  v18 = [(REMCDReminder *)self previousList];
-  if ([v18 isShared])
+  listsCopy = lists;
+  previousList3 = [(REMCDReminder *)self previousList];
+  if ([previousList3 isShared])
   {
   }
 
   else
   {
-    v19 = [(REMCDReminder *)self list];
-    v27 = [v19 isShared];
+    list3 = [(REMCDReminder *)self list];
+    isShared = [list3 isShared];
 
-    if ((v27 & 1) == 0)
+    if ((isShared & 1) == 0)
     {
       goto LABEL_7;
     }
@@ -298,15 +298,15 @@ LABEL_7:
     sub_100765B5C(self);
   }
 
-  if (v28)
+  if (listsCopy)
   {
-    v21 = [(REMCDReminder *)self previousList];
-    v22 = [v21 remObjectID];
-    v23 = [(REMCDReminder *)self list];
-    v24 = [v23 remObjectID];
-    v25 = [(REMCDReminder *)self account];
-    v26 = [v25 remObjectID];
-    *v28 = [REMError validationErrorMoveReminderFromList:v22 toList:v24 inAccount:v26];
+    previousList4 = [(REMCDReminder *)self previousList];
+    remObjectID = [previousList4 remObjectID];
+    list4 = [(REMCDReminder *)self list];
+    remObjectID2 = [list4 remObjectID];
+    account2 = [(REMCDReminder *)self account];
+    remObjectID3 = [account2 remObjectID];
+    *listsCopy = [REMError validationErrorMoveReminderFromList:remObjectID toList:remObjectID2 inAccount:remObjectID3];
   }
 
   v16 = 0;
@@ -315,25 +315,25 @@ LABEL_8:
   return v16;
 }
 
-- (BOOL)_validateForReminderTreeConsistency:(id *)a3
+- (BOOL)_validateForReminderTreeConsistency:(id *)consistency
 {
-  v5 = [(REMCDReminder *)self parentReminder];
-  if (!v5)
+  parentReminder = [(REMCDReminder *)self parentReminder];
+  if (!parentReminder)
   {
     goto LABEL_10;
   }
 
-  v6 = v5;
-  v7 = [(REMCDReminder *)self children];
-  if (!v7)
+  v6 = parentReminder;
+  children = [(REMCDReminder *)self children];
+  if (!children)
   {
 
     goto LABEL_10;
   }
 
-  v8 = v7;
-  v9 = [(REMCDReminder *)self children];
-  v10 = [v9 count];
+  v8 = children;
+  children2 = [(REMCDReminder *)self children];
+  v10 = [children2 count];
 
   if (!v10)
   {
@@ -348,30 +348,30 @@ LABEL_10:
     sub_100765C5C(self, v11);
   }
 
-  if (a3)
+  if (consistency)
   {
-    v12 = [(REMCDObject *)self remObjectID];
-    v13 = [(REMCDReminder *)self parentReminder];
-    v14 = [v13 remObjectID];
-    *a3 = [REMError validationErrorNestedSubtask:v12 parentReminderID:v14];
+    remObjectID = [(REMCDObject *)self remObjectID];
+    parentReminder2 = [(REMCDReminder *)self parentReminder];
+    remObjectID2 = [parentReminder2 remObjectID];
+    *consistency = [REMError validationErrorNestedSubtask:remObjectID parentReminderID:remObjectID2];
   }
 
   v15 = 0;
 LABEL_11:
-  v16 = [(REMCDReminder *)self parentReminder];
-  if (v16)
+  parentReminder3 = [(REMCDReminder *)self parentReminder];
+  if (parentReminder3)
   {
-    v17 = v16;
-    v18 = [(REMCDReminder *)self parentReminder];
-    if ([v18 markedForDeletion])
+    remObjectID3 = parentReminder3;
+    parentReminder4 = [(REMCDReminder *)self parentReminder];
+    if ([parentReminder4 markedForDeletion])
     {
 LABEL_20:
 
       goto LABEL_21;
     }
 
-    v19 = [(REMCDReminder *)self parentReminder];
-    if ([v19 ckNeedsInitialFetchFromCloud])
+    parentReminder5 = [(REMCDReminder *)self parentReminder];
+    if ([parentReminder5 ckNeedsInitialFetchFromCloud])
     {
 LABEL_19:
 
@@ -380,16 +380,16 @@ LABEL_19:
 
     [(REMCDReminder *)self parentReminder];
     v43 = v15;
-    v21 = v20 = a3;
-    v22 = [v21 list];
-    v23 = [v22 identifier];
-    v24 = [(REMCDReminder *)self list];
-    v25 = [v24 identifier];
+    v21 = v20 = consistency;
+    list = [v21 list];
+    identifier = [list identifier];
+    list2 = [(REMCDReminder *)self list];
+    identifier2 = [list2 identifier];
 
-    a3 = v20;
+    consistency = v20;
     v15 = v43;
 
-    if (v23 != v25)
+    if (identifier != identifier2)
     {
       v26 = +[REMLogStore write];
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -397,17 +397,17 @@ LABEL_19:
         sub_100765D4C(self, v26);
       }
 
-      if (!a3)
+      if (!consistency)
       {
         v15 = 0;
         goto LABEL_21;
       }
 
-      v17 = [(REMCDObject *)self remObjectID];
-      v18 = [(REMCDReminder *)self parentReminder];
-      v19 = [v18 remObjectID];
-      [REMError validationErrorSubtaskAndParentNotOnSameList:v17 parentReminderID:v19];
-      *a3 = v15 = 0;
+      remObjectID3 = [(REMCDObject *)self remObjectID];
+      parentReminder4 = [(REMCDReminder *)self parentReminder];
+      parentReminder5 = [parentReminder4 remObjectID];
+      [REMError validationErrorSubtaskAndParentNotOnSameList:remObjectID3 parentReminderID:parentReminder5];
+      *consistency = v15 = 0;
       goto LABEL_19;
     }
   }
@@ -415,21 +415,21 @@ LABEL_19:
 LABEL_21:
   if (([(REMCDReminder *)self ckNeedsInitialFetchFromCloud]& 1) == 0 && ([(REMCDReminder *)self markedForDeletion]& 1) == 0)
   {
-    v27 = [(REMCDReminder *)self children];
+    children3 = [(REMCDReminder *)self children];
 
-    if (v27)
+    if (children3)
     {
       v47 = 0u;
       v48 = 0u;
       v45 = 0u;
       v46 = 0u;
-      v28 = [(REMCDReminder *)self children];
-      v29 = [v28 countByEnumeratingWithState:&v45 objects:v49 count:16];
+      children4 = [(REMCDReminder *)self children];
+      v29 = [children4 countByEnumeratingWithState:&v45 objects:v49 count:16];
       if (v29)
       {
         v30 = v29;
         v44 = v15;
-        v42 = a3;
+        consistencyCopy = consistency;
         v31 = *v46;
         while (2)
         {
@@ -437,16 +437,16 @@ LABEL_21:
           {
             if (*v46 != v31)
             {
-              objc_enumerationMutation(v28);
+              objc_enumerationMutation(children4);
             }
 
             v33 = *(*(&v45 + 1) + 8 * i);
-            v34 = [v33 list];
-            v35 = [v34 identifier];
-            v36 = [(REMCDReminder *)self list];
-            v37 = [v36 identifier];
+            list3 = [v33 list];
+            identifier3 = [list3 identifier];
+            list4 = [(REMCDReminder *)self list];
+            identifier4 = [list4 identifier];
 
-            if (v35 != v37)
+            if (identifier3 != identifier4)
             {
               v38 = +[REMLogStore write];
               if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
@@ -454,11 +454,11 @@ LABEL_21:
                 sub_100765EA0(v33, self);
               }
 
-              if (v42)
+              if (consistencyCopy)
               {
-                v39 = [v33 remObjectID];
-                v40 = [(REMCDObject *)self remObjectID];
-                *v42 = [REMError validationErrorSubtaskAndParentNotOnSameList:v39 parentReminderID:v40];
+                remObjectID4 = [v33 remObjectID];
+                remObjectID5 = [(REMCDObject *)self remObjectID];
+                *consistencyCopy = [REMError validationErrorSubtaskAndParentNotOnSameList:remObjectID4 parentReminderID:remObjectID5];
               }
 
               v15 = 0;
@@ -466,7 +466,7 @@ LABEL_21:
             }
           }
 
-          v30 = [v28 countByEnumeratingWithState:&v45 objects:v49 count:16];
+          v30 = [children4 countByEnumeratingWithState:&v45 objects:v49 count:16];
           if (v30)
           {
             continue;
@@ -485,32 +485,32 @@ LABEL_38:
   return v15;
 }
 
-- (BOOL)_validateAssignmentsForInvalidSharees:(id *)a3
+- (BOOL)_validateAssignmentsForInvalidSharees:(id *)sharees
 {
   v4 = [REMAccountCapabilities alloc];
-  v5 = [(REMCDReminder *)self account];
-  v6 = [v4 initWithAccountType:{objc_msgSend(v5, "type")}];
+  account = [(REMCDReminder *)self account];
+  v6 = [v4 initWithAccountType:{objc_msgSend(account, "type")}];
 
   LODWORD(v4) = [v6 supportsAssignments];
   v75 = v6;
-  v7 = [v6 supportsMoveAcrossSharedLists];
+  supportsMoveAcrossSharedLists = [v6 supportsMoveAcrossSharedLists];
   if (!v4)
   {
     goto LABEL_51;
   }
 
-  v74 = v7;
-  v8 = [(REMCDReminder *)self previousList];
-  if (v8)
+  v74 = supportsMoveAcrossSharedLists;
+  previousList = [(REMCDReminder *)self previousList];
+  if (previousList)
   {
-    v9 = [(REMCDReminder *)self list];
-    if (v9)
+    list = [(REMCDReminder *)self list];
+    if (list)
     {
-      v10 = [(REMCDReminder *)self previousList];
-      v11 = [v10 identifier];
-      v12 = [(REMCDReminder *)self list];
-      v13 = [v12 identifier];
-      v14 = [v11 isEqual:v13] ^ 1;
+      previousList2 = [(REMCDReminder *)self previousList];
+      identifier = [previousList2 identifier];
+      list2 = [(REMCDReminder *)self list];
+      identifier2 = [list2 identifier];
+      v14 = [identifier isEqual:identifier2] ^ 1;
     }
 
     else
@@ -528,11 +528,11 @@ LABEL_38:
   v89 = 0u;
   v86 = 0u;
   v87 = 0u;
-  v15 = [(REMCDReminder *)self assignments];
-  v16 = [v15 objectEnumerator];
+  assignments = [(REMCDReminder *)self assignments];
+  objectEnumerator = [assignments objectEnumerator];
 
-  obj = v16;
-  v85 = [v16 countByEnumeratingWithState:&v86 objects:v100 count:16];
+  obj = objectEnumerator;
+  v85 = [objectEnumerator countByEnumeratingWithState:&v86 objects:v100 count:16];
   if (!v85)
   {
 LABEL_50:
@@ -542,7 +542,7 @@ LABEL_50:
 
   v77 = 0;
   v84 = *v87;
-  v81 = self;
+  selfCopy = self;
   v79 = v14;
   do
   {
@@ -562,17 +562,17 @@ LABEL_28:
         goto LABEL_31;
       }
 
-      v19 = [*(*(&v86 + 1) + 8 * i) assignee];
-      if (v19)
+      assignee = [*(*(&v86 + 1) + 8 * i) assignee];
+      if (assignee)
       {
-        v20 = v19;
-        v21 = [v18 assignee];
-        v22 = [v21 list];
-        v23 = [v22 identifier];
-        v24 = [(REMCDReminder *)self list];
-        v25 = [v24 identifier];
+        v20 = assignee;
+        assignee2 = [v18 assignee];
+        list3 = [assignee2 list];
+        identifier3 = [list3 identifier];
+        list4 = [(REMCDReminder *)self list];
+        identifier4 = [list4 identifier];
 
-        if (v23 == v25)
+        if (identifier3 == identifier4)
         {
           v35 = 0;
         }
@@ -582,25 +582,25 @@ LABEL_28:
           v26 = +[REMLogStore write];
           if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
           {
-            v27 = [v18 identifier];
-            v28 = [(REMCDReminder *)v81 identifier];
-            v82 = [(REMCDReminder *)v81 previousList];
-            v29 = [v82 identifier];
-            v30 = [(REMCDReminder *)v81 list];
-            v31 = [v30 identifier];
-            [(REMCDReminder *)v81 account];
+            identifier5 = [v18 identifier];
+            identifier6 = [(REMCDReminder *)selfCopy identifier];
+            previousList3 = [(REMCDReminder *)selfCopy previousList];
+            identifier7 = [previousList3 identifier];
+            list5 = [(REMCDReminder *)selfCopy list];
+            identifier8 = [list5 identifier];
+            [(REMCDReminder *)selfCopy account];
             v33 = v32 = v18;
-            v34 = [v33 identifier];
+            identifier9 = [v33 identifier];
             *buf = 138544386;
-            v91 = v27;
+            v91 = identifier5;
             v92 = 2114;
-            v93 = v28;
+            v93 = identifier6;
             v94 = 2114;
-            v95 = v29;
+            v95 = identifier7;
             v96 = 2114;
-            v97 = v31;
+            v97 = identifier8;
             v98 = 2114;
-            v99 = v34;
+            v99 = identifier9;
             _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Validation Update: Moving reminder to another list nullifies assignee in its assignments {assignment.identifier: %{public}@, reminder.identifier: %{public}@, fromList.identifier: %{public}@, toList.identifier: %{public}@, account.identifier: %{public}@}", buf, 0x34u);
 
             v18 = v32;
@@ -610,7 +610,7 @@ LABEL_28:
           v35 = 1;
         }
 
-        self = v81;
+        self = selfCopy;
         v14 = v79;
       }
 
@@ -619,21 +619,21 @@ LABEL_28:
         v35 = 0;
       }
 
-      v36 = [v18 originator];
-      if (!v36)
+      originator = [v18 originator];
+      if (!originator)
       {
         goto LABEL_28;
       }
 
-      v37 = v36;
+      v37 = originator;
       v83 = v18;
-      v38 = [v18 originator];
-      v39 = [v38 list];
-      v40 = [v39 identifier];
-      v41 = [(REMCDReminder *)self list];
-      v42 = [v41 identifier];
+      originator2 = [v18 originator];
+      list6 = [originator2 list];
+      identifier10 = [list6 identifier];
+      list7 = [(REMCDReminder *)self list];
+      identifier11 = [list7 identifier];
 
-      if (v40 == v42)
+      if (identifier10 == identifier11)
       {
         v52 = 0;
       }
@@ -643,30 +643,30 @@ LABEL_28:
         v43 = +[REMLogStore write];
         if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
         {
-          v76 = [v83 identifier];
-          v44 = self;
-          v45 = [(REMCDReminder *)self identifier];
-          v78 = [(REMCDReminder *)v44 previousList];
-          v46 = [v78 identifier];
-          v47 = [(REMCDReminder *)v81 list];
-          v48 = [v47 identifier];
-          v49 = [(REMCDReminder *)v81 account];
-          v50 = [v49 identifier];
+          identifier12 = [v83 identifier];
+          selfCopy2 = self;
+          identifier13 = [(REMCDReminder *)self identifier];
+          previousList4 = [(REMCDReminder *)selfCopy2 previousList];
+          identifier14 = [previousList4 identifier];
+          list8 = [(REMCDReminder *)selfCopy list];
+          identifier15 = [list8 identifier];
+          account2 = [(REMCDReminder *)selfCopy account];
+          identifier16 = [account2 identifier];
           *buf = 138544386;
-          v91 = v76;
+          v91 = identifier12;
           v92 = 2114;
-          v93 = v45;
-          v51 = v45;
+          v93 = identifier13;
+          v51 = identifier13;
           v94 = 2114;
-          v95 = v46;
+          v95 = identifier14;
           v96 = 2114;
-          v97 = v48;
+          v97 = identifier15;
           v98 = 2114;
-          v99 = v50;
+          v99 = identifier16;
           _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_DEFAULT, "Validation Update: Moving reminder to another list nullifies origiantor in its assignments {assignment.identifier: %{public}@, reminder.identifier: %{public}@, fromList.identifier: %{public}@, toList.identifier: %{public}@, account.identifier: %{public}@}", buf, 0x34u);
 
           v14 = v79;
-          self = v81;
+          self = selfCopy;
         }
 
         v77 = 1;
@@ -675,29 +675,29 @@ LABEL_28:
 
       v18 = v83;
 LABEL_31:
-      v53 = [v18 assignee];
-      if (v53)
+      assignee3 = [v18 assignee];
+      if (assignee3)
       {
-        v54 = v53;
-        v55 = [v18 assignee];
-        v56 = [REMCDAssignment isShareeActivelyParticipatingWithSharee:v55];
+        v54 = assignee3;
+        assignee4 = [v18 assignee];
+        v56 = [REMCDAssignment isShareeActivelyParticipatingWithSharee:assignee4];
 
         if ((v56 & 1) == 0)
         {
           v57 = +[REMLogStore write];
           if (os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT))
           {
-            v58 = [v18 identifier];
-            v59 = [(REMCDReminder *)self identifier];
+            identifier17 = [v18 identifier];
+            identifier18 = [(REMCDReminder *)self identifier];
             [(REMCDReminder *)self account];
             v61 = v60 = v18;
-            v62 = [v61 identifier];
+            identifier19 = [v61 identifier];
             *buf = 138543874;
-            v91 = v58;
+            v91 = identifier17;
             v92 = 2114;
-            v93 = v59;
+            v93 = identifier18;
             v94 = 2114;
-            v95 = v62;
+            v95 = identifier19;
             _os_log_impl(&_mh_execute_header, v57, OS_LOG_TYPE_DEFAULT, "Validation Update: Assignee in disallowed status and hence will be nullified {assignment.identifier: %{public}@, reminder.identifier: %{public}@, account.identifier: %{public}@}", buf, 0x20u);
 
             v18 = v60;
@@ -707,29 +707,29 @@ LABEL_31:
         }
       }
 
-      v63 = [v18 originator];
-      if (v63)
+      originator3 = [v18 originator];
+      if (originator3)
       {
-        v64 = v63;
-        v65 = [v18 originator];
-        v66 = [REMCDAssignment isShareeActivelyParticipatingWithSharee:v65];
+        v64 = originator3;
+        originator4 = [v18 originator];
+        v66 = [REMCDAssignment isShareeActivelyParticipatingWithSharee:originator4];
 
         if ((v66 & 1) == 0)
         {
           v67 = +[REMLogStore write];
           if (os_log_type_enabled(v67, OS_LOG_TYPE_DEFAULT))
           {
-            v68 = [v18 identifier];
-            v69 = [(REMCDReminder *)self identifier];
+            identifier20 = [v18 identifier];
+            identifier21 = [(REMCDReminder *)self identifier];
             [(REMCDReminder *)self account];
             v71 = v70 = v18;
-            v72 = [v71 identifier];
+            identifier22 = [v71 identifier];
             *buf = 138543874;
-            v91 = v68;
+            v91 = identifier20;
             v92 = 2114;
-            v93 = v69;
+            v93 = identifier21;
             v94 = 2114;
-            v95 = v72;
+            v95 = identifier22;
             _os_log_impl(&_mh_execute_header, v67, OS_LOG_TYPE_DEFAULT, "Validation Update: Originator in disallowed status and hence will be nullified {assignment.identifier: %{public}@, reminder.identifier: %{public}@, account.identifier: %{public}@}", buf, 0x20u);
 
             v18 = v70;
@@ -773,13 +773,13 @@ LABEL_51:
 
 - (REMDisplayDate)displayDate
 {
-  v3 = [(REMCDReminder *)self displayDateDate];
-  if (v3)
+  displayDateDate = [(REMCDReminder *)self displayDateDate];
+  if (displayDateDate)
   {
-    v4 = [(REMCDReminder *)self displayDateTimeZone];
-    if (v4)
+    displayDateTimeZone = [(REMCDReminder *)self displayDateTimeZone];
+    if (displayDateTimeZone)
     {
-      v5 = [NSTimeZone timeZoneWithName:v4];
+      v5 = [NSTimeZone timeZoneWithName:displayDateTimeZone];
     }
 
     else
@@ -787,7 +787,7 @@ LABEL_51:
       v5 = 0;
     }
 
-    v6 = [[REMDisplayDate alloc] initWithDate:v3 allDay:-[REMCDReminder displayDateIsAllDay](self timeZone:"displayDateIsAllDay") floatingDateSecondsFromGMT:{v5, -[REMCDReminder displayDateUpdatedForSecondsFromGMT](self, "displayDateUpdatedForSecondsFromGMT")}];
+    v6 = [[REMDisplayDate alloc] initWithDate:displayDateDate allDay:-[REMCDReminder displayDateIsAllDay](self timeZone:"displayDateIsAllDay") floatingDateSecondsFromGMT:{v5, -[REMCDReminder displayDateUpdatedForSecondsFromGMT](self, "displayDateUpdatedForSecondsFromGMT")}];
   }
 
   else
@@ -798,21 +798,21 @@ LABEL_51:
   return v6;
 }
 
-- (void)setDisplayDate:(id)a3
+- (void)setDisplayDate:(id)date
 {
-  v10 = a3;
-  v4 = [(REMCDReminder *)self displayDate];
-  v5 = [v4 isEqual:v10];
+  dateCopy = date;
+  displayDate = [(REMCDReminder *)self displayDate];
+  v5 = [displayDate isEqual:dateCopy];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [v10 date];
-    [(REMCDReminder *)self setDisplayDateDate:v6];
+    date = [dateCopy date];
+    [(REMCDReminder *)self setDisplayDateDate:date];
 
-    -[REMCDReminder setDisplayDateIsAllDay:](self, "setDisplayDateIsAllDay:", [v10 isAllDay]);
-    v7 = [v10 timeZone];
-    v8 = [v7 name];
-    [(REMCDReminder *)self setDisplayDateTimeZone:v8];
+    -[REMCDReminder setDisplayDateIsAllDay:](self, "setDisplayDateIsAllDay:", [dateCopy isAllDay]);
+    timeZone = [dateCopy timeZone];
+    name = [timeZone name];
+    [(REMCDReminder *)self setDisplayDateTimeZone:name];
 
     v9 = +[NSTimeZone defaultTimeZone];
     -[REMCDReminder setDisplayDateUpdatedForSecondsFromGMT:](self, "setDisplayDateUpdatedForSecondsFromGMT:", [v9 secondsFromGMT]);
@@ -847,10 +847,10 @@ LABEL_51:
   else
   {
     [(REMCDReminder *)self setWillSave_handledExtraneousAlarmsMarking:1];
-    v4 = [(REMCDReminder *)self changedValues];
-    v5 = [v4 allKeys];
+    changedValues = [(REMCDReminder *)self changedValues];
+    allKeys = [changedValues allKeys];
 
-    if ([v5 containsObject:@"alarmStorage"] && (objc_opt_respondsToSelector() & 1) != 0 && -[REMCDReminder markExtraneousAlarmsForDeletion](self, "markExtraneousAlarmsForDeletion"))
+    if ([allKeys containsObject:@"alarmStorage"] && (objc_opt_respondsToSelector() & 1) != 0 && -[REMCDReminder markExtraneousAlarmsForDeletion](self, "markExtraneousAlarmsForDeletion"))
     {
       if ([(REMCDReminder *)self willSave_handledUpdateDisplayDate])
       {
@@ -869,10 +869,10 @@ LABEL_51:
   if (![(REMCDReminder *)self willSave_handledUpdateDisplayDate])
   {
     [(REMCDReminder *)self setWillSave_handledUpdateDisplayDate:1];
-    v6 = [(REMCDReminder *)self changedValues];
-    v7 = [v6 allKeys];
+    changedValues2 = [(REMCDReminder *)self changedValues];
+    allKeys2 = [changedValues2 allKeys];
 
-    if ((v3 & 1) != 0 || ([v7 containsObject:@"alarmStorage"] & 1) != 0 || objc_msgSend(v7, "containsObject:", @"dueDate"))
+    if ((v3 & 1) != 0 || ([allKeys2 containsObject:@"alarmStorage"] & 1) != 0 || objc_msgSend(allKeys2, "containsObject:", @"dueDate"))
     {
       [(REMCDReminder *)self updateDisplayDate];
     }
@@ -890,21 +890,21 @@ LABEL_51:
 
 - (void)updateDisplayDate
 {
-  v6 = [(REMCDReminder *)self displayDateUtils];
-  v3 = [(REMCDReminder *)self dueDateComponents];
-  v4 = [(REMCDReminder *)self alarms];
-  v5 = [v6 displayDateWithDueDateComponents:v3 alarms:v4];
+  displayDateUtils = [(REMCDReminder *)self displayDateUtils];
+  dueDateComponents = [(REMCDReminder *)self dueDateComponents];
+  alarms = [(REMCDReminder *)self alarms];
+  v5 = [displayDateUtils displayDateWithDueDateComponents:dueDateComponents alarms:alarms];
   [(REMCDReminder *)self setDisplayDate:v5];
 }
 
-- (void)updateDisplayDateWithAlarm:(id)a3
+- (void)updateDisplayDateWithAlarm:(id)alarm
 {
-  v4 = a3;
-  v8 = [(REMCDReminder *)self displayDateUtils];
-  v5 = [(REMCDReminder *)self dueDateComponents];
-  v6 = [v4 modelObject];
+  alarmCopy = alarm;
+  displayDateUtils = [(REMCDReminder *)self displayDateUtils];
+  dueDateComponents = [(REMCDReminder *)self dueDateComponents];
+  modelObject = [alarmCopy modelObject];
 
-  v7 = [v8 updateDisplayDateWithDueDateComponents:v5 alarm:v6 alarmsProviding:self];
+  v7 = [displayDateUtils updateDisplayDateWithDueDateComponents:dueDateComponents alarm:modelObject alarmsProviding:self];
   [(REMCDReminder *)self setDisplayDate:v7];
 }
 
@@ -923,13 +923,13 @@ LABEL_51:
   [(REMCDReminder *)self setSpotlightIndexCount:v3];
 }
 
-- (BOOL)isConnectedToAccountObject:(id)a3
+- (BOOL)isConnectedToAccountObject:(id)object
 {
-  v4 = a3;
-  v5 = [(REMCDObject *)self remObjectID];
-  if (v5)
+  objectCopy = object;
+  remObjectID = [(REMCDObject *)self remObjectID];
+  if (remObjectID)
   {
-    v6 = [v4 objectForKeyedSubscript:v5];
+    v6 = [objectCopy objectForKeyedSubscript:remObjectID];
     v7 = v6;
     if (v6)
     {
@@ -938,10 +938,10 @@ LABEL_51:
 
     else
     {
-      [v4 setObject:&off_100904F50 forKeyedSubscript:v5];
-      v9 = [(REMCDReminder *)self parentReminder];
+      [objectCopy setObject:&off_100904F50 forKeyedSubscript:remObjectID];
+      parentReminder = [(REMCDReminder *)self parentReminder];
 
-      if (v9)
+      if (parentReminder)
       {
         [(REMCDReminder *)self parentReminder];
       }
@@ -951,7 +951,7 @@ LABEL_51:
         [(REMCDReminder *)self list];
       }
       v10 = ;
-      v8 = [v10 isConnectedToAccountObject:v4];
+      v8 = [v10 isConnectedToAccountObject:objectCopy];
 
       if (v8)
       {
@@ -963,7 +963,7 @@ LABEL_51:
         v11 = &off_100904F80;
       }
 
-      [v4 setObject:v11 forKeyedSubscript:v5];
+      [objectCopy setObject:v11 forKeyedSubscript:remObjectID];
     }
   }
 
@@ -977,35 +977,35 @@ LABEL_51:
 
 - (int64_t)parentEffectiveMinimumSupportedVersion
 {
-  v3 = [(REMCDReminder *)self parentReminder];
+  parentReminder = [(REMCDReminder *)self parentReminder];
 
-  if (v3)
+  if (parentReminder)
   {
-    v4 = [(REMCDReminder *)self parentReminder];
-    v5 = [v4 effectiveMinimumSupportedVersion];
+    parentReminder2 = [(REMCDReminder *)self parentReminder];
+    effectiveMinimumSupportedVersion = [parentReminder2 effectiveMinimumSupportedVersion];
   }
 
   else
   {
-    v4 = [(REMCDReminder *)self list];
-    if (v4)
+    parentReminder2 = [(REMCDReminder *)self list];
+    if (parentReminder2)
     {
-      v6 = [(REMCDReminder *)self list];
-      v5 = [v6 effectiveMinimumSupportedVersion];
+      list = [(REMCDReminder *)self list];
+      effectiveMinimumSupportedVersion = [list effectiveMinimumSupportedVersion];
     }
 
     else
     {
-      v5 = kREMSupportedVersionUnset;
+      effectiveMinimumSupportedVersion = kREMSupportedVersionUnset;
     }
   }
 
-  return v5;
+  return effectiveMinimumSupportedVersion;
 }
 
-+ (id)timeZoneFromName:(id)a3
++ (id)timeZoneFromName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v4 = [NSTimeZone timeZoneWithName:?];
   }
@@ -1021,34 +1021,34 @@ LABEL_51:
 - (NSDateComponents)dueDateComponents
 {
   v3 = objc_opt_class();
-  v4 = [(REMCDReminder *)self dueDate];
-  v5 = [(REMCDReminder *)self allDay];
-  v6 = [(REMCDReminder *)self timeZone];
-  v7 = [v3 dueDateComponentsWithDueDate:v4 isAllDay:v5 timeZoneName:v6];
+  dueDate = [(REMCDReminder *)self dueDate];
+  allDay = [(REMCDReminder *)self allDay];
+  timeZone = [(REMCDReminder *)self timeZone];
+  v7 = [v3 dueDateComponentsWithDueDate:dueDate isAllDay:allDay timeZoneName:timeZone];
 
   return v7;
 }
 
-- (void)setDueDateComponents:(id)a3
+- (void)setDueDateComponents:(id)components
 {
-  v4 = a3;
-  v8 = v4;
-  if (v4)
+  componentsCopy = components;
+  v8 = componentsCopy;
+  if (componentsCopy)
   {
-    -[REMCDReminder setAllDay:](self, "setAllDay:", [v4 rem_isAllDayDateComponents]);
-    v5 = [v8 timeZone];
+    -[REMCDReminder setAllDay:](self, "setAllDay:", [componentsCopy rem_isAllDayDateComponents]);
+    timeZone = [v8 timeZone];
     if ([(REMCDReminder *)self allDay])
     {
 
-      v5 = 0;
+      timeZone = 0;
     }
 
-    v6 = [v5 name];
-    [(REMCDReminder *)self setTimeZone:v6];
+    name = [timeZone name];
+    [(REMCDReminder *)self setTimeZone:name];
 
-    if (v5)
+    if (timeZone)
     {
-      [NSDateComponents rem_dateWithDateComponents:v8 timeZone:v5];
+      [NSDateComponents rem_dateWithDateComponents:v8 timeZone:timeZone];
     }
 
     else
@@ -1067,12 +1067,12 @@ LABEL_51:
 
 - (NSDateComponents)startDateComponents
 {
-  v3 = [(REMCDReminder *)self startDate];
+  startDate = [(REMCDReminder *)self startDate];
 
-  if (v3)
+  if (startDate)
   {
-    v4 = [(REMCDReminder *)self startDate];
-    v5 = [NSDateComponents rem_dateComponentsWithDateUsingArchivingTimeZone:v4 isAllDay:0];
+    startDate2 = [(REMCDReminder *)self startDate];
+    v5 = [NSDateComponents rem_dateComponentsWithDateUsingArchivingTimeZone:startDate2 isAllDay:0];
   }
 
   else
@@ -1083,16 +1083,16 @@ LABEL_51:
   return v5;
 }
 
-- (void)setStartDateComponents:(id)a3
+- (void)setStartDateComponents:(id)components
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4)
+  componentsCopy = components;
+  v7 = componentsCopy;
+  if (componentsCopy)
   {
-    v5 = [v4 timeZone];
-    if (v5)
+    timeZone = [componentsCopy timeZone];
+    if (timeZone)
     {
-      [NSDateComponents rem_dateWithDateComponents:v7 timeZone:v5];
+      [NSDateComponents rem_dateWithDateComponents:v7 timeZone:timeZone];
     }
 
     else
@@ -1111,20 +1111,20 @@ LABEL_51:
 
 - (NSArray)alarms
 {
-  v3 = [(REMCDReminder *)self alarmStorage];
-  v4 = [v3 count];
+  alarmStorage = [(REMCDReminder *)self alarmStorage];
+  v4 = [alarmStorage count];
 
   if (v4)
   {
-    v5 = [(REMCDReminder *)self alarmStorage];
-    v6 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v5 count]);
+    alarmStorage2 = [(REMCDReminder *)self alarmStorage];
+    v6 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [alarmStorage2 count]);
 
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v7 = [(REMCDReminder *)self alarmStorage];
-    v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    alarmStorage3 = [(REMCDReminder *)self alarmStorage];
+    v8 = [alarmStorage3 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {
       v9 = v8;
@@ -1135,18 +1135,18 @@ LABEL_51:
         {
           if (*v16 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(alarmStorage3);
           }
 
           v12 = *(*(&v15 + 1) + 8 * i);
           if (([v12 isDeleted] & 1) == 0)
           {
-            v13 = [v12 modelObject];
-            [v6 addObject:v13];
+            modelObject = [v12 modelObject];
+            [v6 addObject:modelObject];
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v9 = [alarmStorage3 countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v9);
@@ -1163,23 +1163,23 @@ LABEL_51:
 
 - (unint64_t)displayOrder
 {
-  v3 = [(REMCDReminder *)self icsDisplayOrder];
-  if (!v3)
+  icsDisplayOrder = [(REMCDReminder *)self icsDisplayOrder];
+  if (!icsDisplayOrder)
   {
-    v4 = [(REMCDReminder *)self creationDate];
-    [v4 timeIntervalSinceReferenceDate];
-    v3 = v5;
+    creationDate = [(REMCDReminder *)self creationDate];
+    [creationDate timeIntervalSinceReferenceDate];
+    icsDisplayOrder = v5;
   }
 
-  return v3;
+  return icsDisplayOrder;
 }
 
-- (void)setDisplayOrder:(unint64_t)a3
+- (void)setDisplayOrder:(unint64_t)order
 {
-  if (a3 || ([(REMCDReminder *)self creationDate], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  if (order || ([(REMCDReminder *)self creationDate], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
 
-    [(REMCDReminder *)self setIcsDisplayOrder:a3];
+    [(REMCDReminder *)self setIcsDisplayOrder:order];
   }
 }
 
@@ -1192,29 +1192,29 @@ LABEL_51:
 
 - (BOOL)markExtraneousAlarmsForDeletion
 {
-  v2 = self;
+  selfCopy = self;
   v3 = REMCDReminder.markExtraneousAlarmsForDeletion()();
 
   return v3;
 }
 
-- (void)willChangeList:(id)a3 toList:(id)a4
+- (void)willChangeList:(id)list toList:(id)toList
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  REMCDReminder.willChange(_:to:)(a3, a4);
+  listCopy = list;
+  toListCopy = toList;
+  selfCopy = self;
+  REMCDReminder.willChange(_:to:)(list, toList);
 }
 
 - (void)willSave_Swift
 {
-  v2 = self;
+  selfCopy = self;
   REMCDReminder.willSave_Swift()();
 }
 
 - (void)prepareForDeletion_Swift
 {
-  v2 = self;
+  selfCopy = self;
   _sSo13REMCDReminderC7reminddE24prepareForDeletion_SwiftyyF_0();
 }
 
@@ -1225,25 +1225,25 @@ LABEL_51:
   return v2.super.isa;
 }
 
-+ (id)existingCloudObjectForRecordID:(id)a3 accountID:(id)a4 context:(id)a5
++ (id)existingCloudObjectForRecordID:(id)d accountID:(id)iD context:(id)context
 {
   v7 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = v8;
   swift_getObjCClassMetadata();
-  v10 = a3;
-  v11 = a5;
-  v12 = static REMCDReminder.existingCloudObject(for:accountID:managedObjectContext:)(v10, v7, v9, v11);
+  dCopy = d;
+  contextCopy = context;
+  v12 = static REMCDReminder.existingCloudObject(for:accountID:managedObjectContext:)(dCopy, v7, v9, contextCopy);
 
   return v12;
 }
 
-+ (id)newCloudObjectForRecord:(id)a3 account:(id)a4 context:(id)a5
++ (id)newCloudObjectForRecord:(id)record account:(id)account context:(id)context
 {
   swift_getObjCClassMetadata();
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = static REMCDReminder.newCloudObject(for:account:managedObjectContext:)(v8, v9, v10);
+  recordCopy = record;
+  accountCopy = account;
+  contextCopy = context;
+  v11 = static REMCDReminder.newCloudObject(for:account:managedObjectContext:)(recordCopy, accountCopy, contextCopy);
 
   return v11;
 }
@@ -1255,39 +1255,39 @@ LABEL_51:
   return v2;
 }
 
-- (void)mergeDataFromRecord:(id)a3 accountID:(id)a4
+- (void)mergeDataFromRecord:(id)record accountID:(id)d
 {
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
-  v9 = a3;
-  v10 = self;
+  recordCopy = record;
+  selfCopy = self;
   v11._countAndFlagsBits = v6;
   v11._object = v8;
-  REMCDReminder.mergeData(from:accountID:)(v9, v11);
+  REMCDReminder.mergeData(from:accountID:)(recordCopy, v11);
 }
 
 - (CKRecord)ckServerRecord
 {
   v4.receiver = self;
   v4.super_class = REMCDReminder;
-  v2 = [(REMCDObject *)&v4 ckServerRecord];
+  ckServerRecord = [(REMCDObject *)&v4 ckServerRecord];
 
-  return v2;
+  return ckServerRecord;
 }
 
-- (void)setCkServerRecord:(id)a3
+- (void)setCkServerRecord:(id)record
 {
   v6.receiver = self;
   v6.super_class = REMCDReminder;
-  v4 = a3;
-  v5 = self;
-  [(REMCDObject *)&v6 setCkServerRecord:v4];
+  recordCopy = record;
+  selfCopy = self;
+  [(REMCDObject *)&v6 setCkServerRecord:recordCopy];
   sub_10039DAE4();
 }
 
 - (id)newlyCreatedRecord
 {
-  v2 = self;
+  selfCopy = self;
   v3 = REMCDReminder.newlyCreatedRecord()();
 
   return v3;
@@ -1295,33 +1295,33 @@ LABEL_51:
 
 - (id)parentCloudObject
 {
-  v2 = [(REMCDReminder *)self list];
+  list = [(REMCDReminder *)self list];
 
-  return v2;
+  return list;
 }
 
-- (id)existingLocalObjectToMergeWithPredicate:(id)a3
+- (id)existingLocalObjectToMergeWithPredicate:(id)predicate
 {
-  v5 = a3;
-  v6 = self;
-  REMCDReminder.existingLocalObjectToMerge(with:)(v7, a3);
+  predicateCopy = predicate;
+  selfCopy = self;
+  REMCDReminder.existingLocalObjectToMerge(with:)(v7, predicate);
   v9 = v8;
 
   return v9;
 }
 
-- (BOOL)mergeWithLocalObject:(id)a3
+- (BOOL)mergeWithLocalObject:(id)object
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = REMCDReminder.merge(withLocalObject:)(v4);
+  objectCopy = object;
+  selfCopy = self;
+  LOBYTE(self) = REMCDReminder.merge(withLocalObject:)(objectCopy);
 
   return self & 1;
 }
 
 - (id)objectsToBeDeletedBeforeThisObject
 {
-  v2 = self;
+  selfCopy = self;
   REMCDReminder.objectsToBeDeletedBeforeThisObject()();
 
   v3.super.isa = Array._bridgeToObjectiveC()().super.isa;
@@ -1331,13 +1331,13 @@ LABEL_51:
 
 - (void)fixBrokenReferences
 {
-  v2 = self;
+  selfCopy = self;
   REMCDReminder.fixBrokenReferences()();
 }
 
 - (void)processDueDateDeltaAlertsDataChanges
 {
-  v2 = self;
+  selfCopy = self;
   REMCDReminder.processDueDateDeltaAlertsDataChanges()();
 }
 

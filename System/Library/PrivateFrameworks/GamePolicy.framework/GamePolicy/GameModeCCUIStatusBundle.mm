@@ -1,15 +1,15 @@
 @interface GameModeCCUIStatusBundle
 - (_TtC10GamePolicy24GameModeCCUIStatusBundle)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GameModeCCUIStatusBundle
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_24E5C2974(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_24E5C2974(coderCopy);
 }
 
 - (_TtC10GamePolicy24GameModeCCUIStatusBundle)init

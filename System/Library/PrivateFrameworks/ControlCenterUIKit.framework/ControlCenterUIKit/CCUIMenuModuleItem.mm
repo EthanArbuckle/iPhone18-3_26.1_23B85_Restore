@@ -1,32 +1,32 @@
 @interface CCUIMenuModuleItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)performAction;
-- (CCUIMenuModuleItem)initWithTitle:(id)a3 identifier:(id)a4 image:(id)a5 handler:(id)a6;
+- (CCUIMenuModuleItem)initWithTitle:(id)title identifier:(id)identifier image:(id)image handler:(id)handler;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation CCUIMenuModuleItem
 
-- (CCUIMenuModuleItem)initWithTitle:(id)a3 identifier:(id)a4 image:(id)a5 handler:(id)a6
+- (CCUIMenuModuleItem)initWithTitle:(id)title identifier:(id)identifier image:(id)image handler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  titleCopy = title;
+  identifierCopy = identifier;
+  imageCopy = image;
+  handlerCopy = handler;
   v22.receiver = self;
   v22.super_class = CCUIMenuModuleItem;
   v15 = [(CCUIMenuModuleItem *)&v22 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_title, a3);
-    objc_storeStrong(&v16->_identifier, a4);
-    v17 = [v14 copy];
+    objc_storeStrong(&v15->_title, title);
+    objc_storeStrong(&v16->_identifier, identifier);
+    v17 = [handlerCopy copy];
     handler = v16->_handler;
     v16->_handler = v17;
 
-    v19 = [v13 copy];
+    v19 = [imageCopy copy];
     image = v16->_image;
     v16->_image = v19;
   }
@@ -34,10 +34,10 @@
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -47,21 +47,21 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(CCUIMenuModuleItem *)self identifier];
-      v7 = [(CCUIMenuModuleItem *)v5 identifier];
+      v5 = equalCopy;
+      identifier = [(CCUIMenuModuleItem *)self identifier];
+      identifier2 = [(CCUIMenuModuleItem *)v5 identifier];
       if (BSEqualObjects())
       {
-        v8 = [(CCUIMenuModuleItem *)self title];
-        v9 = [(CCUIMenuModuleItem *)v5 title];
+        title = [(CCUIMenuModuleItem *)self title];
+        title2 = [(CCUIMenuModuleItem *)v5 title];
         if (BSEqualObjects())
         {
-          v10 = [(CCUIMenuModuleItem *)self image];
-          v11 = [(CCUIMenuModuleItem *)v5 image];
+          image = [(CCUIMenuModuleItem *)self image];
+          image2 = [(CCUIMenuModuleItem *)v5 image];
           if (BSEqualObjects())
           {
-            v12 = [(CCUIMenuModuleItem *)self subtitle];
-            v15 = [(CCUIMenuModuleItem *)v5 subtitle];
+            subtitle = [(CCUIMenuModuleItem *)self subtitle];
+            subtitle2 = [(CCUIMenuModuleItem *)v5 subtitle];
             if (BSEqualObjects())
             {
               [(CCUIMenuModuleItem *)self isBusy];
@@ -114,28 +114,28 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [(CCUIMenuModuleItem *)self identifier];
-  v5 = [v3 appendObject:v4];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  identifier = [(CCUIMenuModuleItem *)self identifier];
+  v5 = [builder appendObject:identifier];
 
-  v6 = [(CCUIMenuModuleItem *)self title];
-  v7 = [v3 appendObject:v6];
+  title = [(CCUIMenuModuleItem *)self title];
+  v7 = [builder appendObject:title];
 
-  v8 = [(CCUIMenuModuleItem *)self image];
+  image = [(CCUIMenuModuleItem *)self image];
 
-  if (v8)
+  if (image)
   {
-    v9 = [(CCUIMenuModuleItem *)self image];
-    v10 = [v3 appendObject:v9];
+    image2 = [(CCUIMenuModuleItem *)self image];
+    v10 = [builder appendObject:image2];
   }
 
-  v11 = [(CCUIMenuModuleItem *)self subtitle];
-  v12 = [v3 appendObject:v11];
+  subtitle = [(CCUIMenuModuleItem *)self subtitle];
+  v12 = [builder appendObject:subtitle];
 
-  v13 = [v3 appendBool:{-[CCUIMenuModuleItem isBusy](self, "isBusy")}];
-  v14 = [v3 appendBool:{-[CCUIMenuModuleItem isPlaceholder](self, "isPlaceholder")}];
-  v15 = [v3 appendBool:{-[CCUIMenuModuleItem isSelected](self, "isSelected")}];
-  v16 = [v3 hash];
+  v13 = [builder appendBool:{-[CCUIMenuModuleItem isBusy](self, "isBusy")}];
+  v14 = [builder appendBool:{-[CCUIMenuModuleItem isPlaceholder](self, "isPlaceholder")}];
+  v15 = [builder appendBool:{-[CCUIMenuModuleItem isSelected](self, "isSelected")}];
+  v16 = [builder hash];
 
   return v16;
 }
@@ -143,24 +143,24 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
-  v4 = [(CCUIMenuModuleItem *)self identifier];
-  [v3 appendString:v4 withName:@"identifier"];
+  identifier = [(CCUIMenuModuleItem *)self identifier];
+  [v3 appendString:identifier withName:@"identifier"];
 
-  v5 = [(CCUIMenuModuleItem *)self title];
-  [v3 appendString:v5 withName:@"title"];
+  title = [(CCUIMenuModuleItem *)self title];
+  [v3 appendString:title withName:@"title"];
 
-  v6 = [(CCUIMenuModuleItem *)self image];
-  v7 = [v3 appendObject:v6 withName:@"image" skipIfNil:1];
+  image = [(CCUIMenuModuleItem *)self image];
+  v7 = [v3 appendObject:image withName:@"image" skipIfNil:1];
 
-  v8 = [(CCUIMenuModuleItem *)self subtitle];
-  [v3 appendString:v8 withName:@"subtitle" skipIfEmpty:1];
+  subtitle = [(CCUIMenuModuleItem *)self subtitle];
+  [v3 appendString:subtitle withName:@"subtitle" skipIfEmpty:1];
 
   v9 = [v3 appendBool:-[CCUIMenuModuleItem isPlaceholder](self withName:"isPlaceholder") ifEqualTo:{@"placeholder", 1}];
   v10 = [v3 appendBool:-[CCUIMenuModuleItem isSelected](self withName:"isSelected") ifEqualTo:{@"selected", 1}];
   v11 = [v3 appendBool:-[CCUIMenuModuleItem isBusy](self withName:"isBusy") ifEqualTo:{@"busy", 1}];
-  v12 = [v3 build];
+  build = [v3 build];
 
-  return v12;
+  return build;
 }
 
 - (BOOL)performAction

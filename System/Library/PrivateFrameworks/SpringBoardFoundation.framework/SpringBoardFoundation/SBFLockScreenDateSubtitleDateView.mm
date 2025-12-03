@@ -1,25 +1,25 @@
 @interface SBFLockScreenDateSubtitleDateView
 + ($01BB1521EC52D44A8E7628F5261DCEC8)dateTimeLunarDateFontMetrics;
-+ (double)scaledFontSize:(double)a3 withMaximumFontSizeCategory:(id)a4;
++ (double)scaledFontSize:(double)size withMaximumFontSizeCategory:(id)category;
 + (double)subtitleLabelToLunarDateLabelBaselineDifferenceY;
 + (id)dateTimeLunarDateFont;
 - (CGRect)alternateDateLabelFrame;
 - (CGRect)subtitleLabelFrame;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SBFLockScreenDateSubtitleDateView)initWithDate:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SBFLockScreenDateSubtitleDateView)initWithDate:(id)date;
 - (double)_lunarDateLabelYOffsetFromDateLabel;
 - (void)_overlayCalendarDidChange;
-- (void)_setDate:(id)a3 inTimeZone:(id)a4;
+- (void)_setDate:(id)date inTimeZone:(id)zone;
 - (void)_setupAlternateDateLabel;
 - (void)_updateDateLabelForCompact;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setAlignmentPercent:(double)a3;
-- (void)setDate:(id)a3;
-- (void)setLegibilitySettings:(id)a3;
-- (void)setStrength:(double)a3;
-- (void)setUseCompactDateFormat:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setAlignmentPercent:(double)percent;
+- (void)setDate:(id)date;
+- (void)setLegibilitySettings:(id)settings;
+- (void)setStrength:(double)strength;
+- (void)setUseCompactDateFormat:(BOOL)format;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation SBFLockScreenDateSubtitleDateView
@@ -33,19 +33,19 @@
     goto LABEL_38;
   }
 
-  v3 = 0x1E69DC000;
-  v4 = [MEMORY[0x1E69DC938] currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  currentDevice2 = 0x1E69DC000;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  v6 = v5 & 0xFFFFFFFFFFFFFFFBLL;
-  v7 = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
+  v6 = userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL;
+  preferredContentSizeCategory = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
   v8 = __sb__runningInSpringBoard();
   v9 = v8;
   if (v8)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
-      v10 = UIContentSizeCategoryCompareToCategory(v7, *MEMORY[0x1E69DDC50]);
+      v10 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, *MEMORY[0x1E69DDC50]);
 
       if (v10 == NSOrderedAscending)
       {
@@ -64,7 +64,7 @@ LABEL_11:
     {
       if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
       {
-        v15 = UIContentSizeCategoryCompareToCategory(v7, *MEMORY[0x1E69DDC58]) == NSOrderedAscending;
+        v15 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, *MEMORY[0x1E69DDC58]) == NSOrderedAscending;
         if ((v9 & 1) == 0)
         {
 LABEL_31:
@@ -90,10 +90,10 @@ LABEL_27:
 
     else
     {
-      v3 = [MEMORY[0x1E69DC938] currentDevice];
-      if ([v3 userInterfaceIdiom])
+      currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+      if ([currentDevice2 userInterfaceIdiom])
       {
-        v15 = UIContentSizeCategoryCompareToCategory(v7, *MEMORY[0x1E69DDC58]) == NSOrderedAscending;
+        v15 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, *MEMORY[0x1E69DDC58]) == NSOrderedAscending;
         goto LABEL_30;
       }
     }
@@ -107,8 +107,8 @@ LABEL_27:
 
     else
     {
-      v25 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v25 _referenceBounds];
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen _referenceBounds];
     }
 
     BSSizeRoundForScale();
@@ -122,7 +122,7 @@ LABEL_27:
       v19 = MEMORY[0x1E69DDC58];
     }
 
-    v15 = UIContentSizeCategoryCompareToCategory(v7, *v19) == NSOrderedAscending;
+    v15 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, *v19) == NSOrderedAscending;
     if (v17)
     {
       if (v14)
@@ -156,13 +156,13 @@ LABEL_30:
     goto LABEL_27;
   }
 
-  v5 = [MEMORY[0x1E69DC938] currentDevice];
-  if (![v5 userInterfaceIdiom])
+  userInterfaceIdiom = [MEMORY[0x1E69DC938] currentDevice];
+  if (![userInterfaceIdiom userInterfaceIdiom])
   {
     goto LABEL_11;
   }
 
-  v11 = UIContentSizeCategoryCompareToCategory(v7, *MEMORY[0x1E69DDC50]);
+  v11 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, *MEMORY[0x1E69DDC50]);
 
   if (v11 != NSOrderedAscending)
   {
@@ -186,8 +186,8 @@ LABEL_33:
   }
 
   v22 = MEMORY[0x1E696AB78];
-  v23 = [MEMORY[0x1E695DF58] currentLocale];
-  v24 = [v22 dateFormatFromTemplate:v21 options:0 locale:v23];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v24 = [v22 dateFormatFromTemplate:v21 options:0 locale:currentLocale];
   [v20 setDateFormat:v24];
 
   v26 = [v20 stringFromDate:self->_date];
@@ -197,25 +197,25 @@ LABEL_38:
   [(SBFLockScreenAlternateDateLabel *)self->_alternateDateLabel setDate:self->_date];
 }
 
-- (SBFLockScreenDateSubtitleDateView)initWithDate:(id)a3
+- (SBFLockScreenDateSubtitleDateView)initWithDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   v12.receiver = self;
   v12.super_class = SBFLockScreenDateSubtitleDateView;
   v6 = [(SBFLockScreenDateSubtitleView *)&v12 initWithString:0 accessoryView:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_date, a3);
+    objc_storeStrong(&v6->_date, date);
     timeZone = v7->_timeZone;
     v7->_timeZone = 0;
 
     [(SBFLockScreenDateSubtitleDateView *)v7 _setupAlternateDateLabel];
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 addObserver:v7 selector:sel__overlayCalendarDidChange name:*MEMORY[0x1E6966B78] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__overlayCalendarDidChange name:*MEMORY[0x1E6966B78] object:0];
 
-    v10 = [MEMORY[0x1E698E670] sharedInstance];
-    [v10 resetFormattersIfNecessary];
+    mEMORY[0x1E698E670] = [MEMORY[0x1E698E670] sharedInstance];
+    [mEMORY[0x1E698E670] resetFormattersIfNecessary];
   }
 
   return v7;
@@ -244,17 +244,17 @@ LABEL_38:
   if (+[SBFLockScreenAlternateDateLabel showAlternateDate])
   {
     v5 = [SBFLockScreenAlternateDateLabel alloc];
-    v6 = [(SBFLockScreenDateSubtitleView *)self legibilitySettings];
+    legibilitySettings = [(SBFLockScreenDateSubtitleView *)self legibilitySettings];
     v7 = *MEMORY[0x1E69DE9E8];
     v8 = +[SBFLockScreenDateSubtitleDateView dateTimeLunarDateFont];
-    v9 = [(SBFLockScreenAlternateDateLabel *)v5 initWithSettings:v6 strength:v8 font:v7];
+    v9 = [(SBFLockScreenAlternateDateLabel *)v5 initWithSettings:legibilitySettings strength:v8 font:v7];
     v10 = self->_alternateDateLabel;
     self->_alternateDateLabel = v9;
 
     [(SBFLockScreenAlternateDateLabel *)self->_alternateDateLabel setDate:self->_date];
     v11 = self->_alternateDateLabel;
-    v12 = [MEMORY[0x1E69DC888] clearColor];
-    [(SBFLockScreenAlternateDateLabel *)v11 setBackgroundColor:v12];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(SBFLockScreenAlternateDateLabel *)v11 setBackgroundColor:clearColor];
 
     v13 = self->_alternateDateLabel;
 
@@ -264,72 +264,72 @@ LABEL_38:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SBFLockScreenDateSubtitleDateView;
   [(SBFLockScreenDateSubtitleView *)&v4 dealloc];
 }
 
-- (void)setDate:(id)a3
+- (void)setDate:(id)date
 {
   v4 = MEMORY[0x1E695DFE8];
-  v5 = a3;
-  v6 = [v4 systemTimeZone];
-  [(SBFLockScreenDateSubtitleDateView *)self _setDate:v5 inTimeZone:v6];
+  dateCopy = date;
+  systemTimeZone = [v4 systemTimeZone];
+  [(SBFLockScreenDateSubtitleDateView *)self _setDate:dateCopy inTimeZone:systemTimeZone];
 }
 
-- (void)_setDate:(id)a3 inTimeZone:(id)a4
+- (void)_setDate:(id)date inTimeZone:(id)zone
 {
-  v6 = a3;
-  objc_storeStrong(&self->_timeZone, a4);
-  v7 = a4;
+  dateCopy = date;
+  objc_storeStrong(&self->_timeZone, zone);
+  zoneCopy = zone;
   date = self->_date;
-  self->_date = v6;
+  self->_date = dateCopy;
 
   [(SBFLockScreenDateSubtitleDateView *)self _updateDateLabelForCompact];
 }
 
-- (void)setAlignmentPercent:(double)a3
+- (void)setAlignmentPercent:(double)percent
 {
-  if (self->_alignmentPercent != a3)
+  if (self->_alignmentPercent != percent)
   {
-    self->_alignmentPercent = a3;
+    self->_alignmentPercent = percent;
     [(SBFLockScreenDateSubtitleDateView *)self setNeedsLayout];
   }
 }
 
-- (void)setUseCompactDateFormat:(BOOL)a3
+- (void)setUseCompactDateFormat:(BOOL)format
 {
-  if (self->_useCompactDateFormat != a3)
+  if (self->_useCompactDateFormat != format)
   {
-    self->_useCompactDateFormat = a3;
+    self->_useCompactDateFormat = format;
     [(SBFLockScreenDateSubtitleDateView *)self _updateDateLabelForCompact];
   }
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
-  v4 = a3;
-  v5 = [(SBFLockScreenDateSubtitleView *)self legibilitySettings];
-  v6 = [v5 sb_isEqualToLegibilitySettings:v4];
+  settingsCopy = settings;
+  legibilitySettings = [(SBFLockScreenDateSubtitleView *)self legibilitySettings];
+  v6 = [legibilitySettings sb_isEqualToLegibilitySettings:settingsCopy];
 
   if ((v6 & 1) == 0)
   {
-    [(SBFLockScreenAlternateDateLabel *)self->_alternateDateLabel setLegibilitySettings:v4];
+    [(SBFLockScreenAlternateDateLabel *)self->_alternateDateLabel setLegibilitySettings:settingsCopy];
     v7.receiver = self;
     v7.super_class = SBFLockScreenDateSubtitleDateView;
-    [(SBFLockScreenDateSubtitleView *)&v7 setLegibilitySettings:v4];
+    [(SBFLockScreenDateSubtitleView *)&v7 setLegibilitySettings:settingsCopy];
   }
 }
 
-- (void)setStrength:(double)a3
+- (void)setStrength:(double)strength
 {
   [(SBFLockScreenAlternateDateLabel *)self->_alternateDateLabel setStrength:?];
   v5.receiver = self;
   v5.super_class = SBFLockScreenDateSubtitleDateView;
-  [(SBFLockScreenDateSubtitleView *)&v5 setStrength:a3];
+  [(SBFLockScreenDateSubtitleView *)&v5 setStrength:strength];
 }
 
 + (id)dateTimeLunarDateFont
@@ -345,10 +345,10 @@ LABEL_38:
   }
 
   v4 = MEMORY[0x1E69DB878];
-  v5 = [MEMORY[0x1E69DC938] currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v6 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v7 = 16.0;
   }
@@ -358,8 +358,8 @@ LABEL_38:
     v7 = 15.0;
   }
 
-  v8 = __sb__runningInSpringBoard();
-  if (v8)
+  currentDevice2 = __sb__runningInSpringBoard();
+  if (currentDevice2)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -374,8 +374,8 @@ LABEL_24:
 
   else
   {
-    v5 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v5 userInterfaceIdiom])
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice userInterfaceIdiom])
     {
       v9 = 0;
       v10 = 0;
@@ -384,9 +384,9 @@ LABEL_24:
     }
   }
 
-  v11 = v8 ^ 1;
-  v2 = __sb__runningInSpringBoard();
-  if (v2)
+  v11 = currentDevice2 ^ 1;
+  mainScreen = __sb__runningInSpringBoard();
+  if (mainScreen)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -399,8 +399,8 @@ LABEL_24:
 
   else
   {
-    v8 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v8 userInterfaceIdiom])
+    currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice2 userInterfaceIdiom])
     {
       v10 = 0;
       v12 = MEMORY[0x1E69DDC40];
@@ -409,7 +409,7 @@ LABEL_24:
     }
   }
 
-  v9 = v2 ^ 1;
+  v9 = mainScreen ^ 1;
   v13 = __sb__runningInSpringBoard();
   if (v13)
   {
@@ -418,8 +418,8 @@ LABEL_24:
 
   else
   {
-    v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v2 _referenceBounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen _referenceBounds];
   }
 
   v10 = v13 ^ 1;
@@ -431,7 +431,7 @@ LABEL_24:
 
   v12 = MEMORY[0x1E69DDC40];
 LABEL_25:
-  [a1 scaledFontSize:*v12 withMaximumFontSizeCategory:v7];
+  [self scaledFontSize:*v12 withMaximumFontSizeCategory:v7];
   v15 = [v4 systemFontOfSize:?];
   v16 = dateTimeLunarDateFont_dateTimeLunarDateFont;
   dateTimeLunarDateFont_dateTimeLunarDateFont = v15;
@@ -491,14 +491,14 @@ void __58__SBFLockScreenDateSubtitleDateView_dateTimeLunarDateFont__block_invoke
   v3 = *&dateTimeLunarDateFontMetrics_dateTimeLunarDateFontMetrics;
   if (*&dateTimeLunarDateFontMetrics_dateTimeLunarDateFontMetrics == 0.0)
   {
-    v4 = [a1 dateTimeLunarDateFont];
-    [v4 ascender];
+    dateTimeLunarDateFont = [self dateTimeLunarDateFont];
+    [dateTimeLunarDateFont ascender];
     v6 = v5;
-    [v4 descender];
+    [dateTimeLunarDateFont descender];
     v8 = v7;
-    [v4 _bodyLeading];
+    [dateTimeLunarDateFont _bodyLeading];
     v10 = v9;
-    [v4 capHeight];
+    [dateTimeLunarDateFont capHeight];
     *&dateTimeLunarDateFontMetrics_dateTimeLunarDateFontMetrics = v6;
     *(&dateTimeLunarDateFontMetrics_dateTimeLunarDateFontMetrics + 1) = v8;
     qword_1EBDBC090 = v10;
@@ -545,11 +545,11 @@ double __65__SBFLockScreenDateSubtitleDateView_dateTimeLunarDateFontMetrics__blo
   result = *&subtitleLabelToLunarDateLabelBaselineDifferenceY_subtitleLabelToLunarDateLabelBaselineDifferenceY;
   if (*&subtitleLabelToLunarDateLabelBaselineDifferenceY_subtitleLabelToLunarDateLabelBaselineDifferenceY == 0.0)
   {
-    v4 = [MEMORY[0x1E69DC938] currentDevice];
-    v5 = [v4 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
     v6 = 6.0;
-    if ((v5 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
     {
 LABEL_19:
       +[SBFLockScreenDateSubtitleDateView dateTimeLunarDateFontMetrics];
@@ -571,9 +571,9 @@ LABEL_19:
 
     else
     {
-      v5 = [MEMORY[0x1E69DC938] currentDevice];
+      userInterfaceIdiom = [MEMORY[0x1E69DC938] currentDevice];
       v6 = 7.0;
-      if ([v5 userInterfaceIdiom] != 1)
+      if ([userInterfaceIdiom userInterfaceIdiom] != 1)
       {
 LABEL_18:
 
@@ -590,8 +590,8 @@ LABEL_18:
 
     else
     {
-      v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v2 _referenceBounds];
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen _referenceBounds];
     }
 
     BSSizeRoundForScale();
@@ -628,11 +628,11 @@ void __85__SBFLockScreenDateSubtitleDateView_subtitleLabelToLunarDateLabelBaseli
   v2 = [v3 addObserverForName:v0 object:0 queue:v1 usingBlock:&__block_literal_global_28];
 }
 
-+ (double)scaledFontSize:(double)a3 withMaximumFontSizeCategory:(id)a4
++ (double)scaledFontSize:(double)size withMaximumFontSizeCategory:(id)category
 {
-  v5 = a4;
-  v6 = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
-  v7 = UIContentSizeCategoryCompareToCategory(v6, v5);
+  categoryCopy = category;
+  preferredContentSizeCategory = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
+  v7 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, categoryCopy);
 
   v8 = MEMORY[0x1E69DB878];
   v9 = *MEMORY[0x1E69DDCF8];
@@ -643,12 +643,12 @@ void __85__SBFLockScreenDateSubtitleDateView_subtitleLabelToLunarDateLabelBaseli
 
   else
   {
-    v10 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:v5];
+    v10 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:categoryCopy];
     v11 = [v8 preferredFontForTextStyle:v9 compatibleWithTraitCollection:v10];
   }
 
-  [v11 _scaledValueForValue:a3];
-  v12 = [MEMORY[0x1E69DCEB0] mainScreen];
+  [v11 _scaledValueForValue:size];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
   UIRoundToScreenScale();
   v14 = v13;
 
@@ -668,10 +668,10 @@ void __85__SBFLockScreenDateSubtitleDateView_subtitleLabelToLunarDateLabelBaseli
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v17.receiver = self;
   v17.super_class = SBFLockScreenDateSubtitleDateView;
   [(SBFLockScreenDateSubtitleView *)&v17 sizeThatFits:?];
@@ -780,18 +780,18 @@ void __85__SBFLockScreenDateSubtitleDateView_subtitleLabelToLunarDateLabelBaseli
   return v10 - v11;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v10.receiver = self;
   v10.super_class = SBFLockScreenDateSubtitleDateView;
-  [(SBFLockScreenDateSubtitleDateView *)&v10 traitCollectionDidChange:v4];
-  if (v4)
+  [(SBFLockScreenDateSubtitleDateView *)&v10 traitCollectionDidChange:changeCopy];
+  if (changeCopy)
   {
-    v5 = [(SBFLockScreenDateSubtitleDateView *)self traitCollection];
-    v6 = [v5 preferredContentSizeCategory];
-    v7 = [v4 preferredContentSizeCategory];
-    v8 = [v6 isEqualToString:v7];
+    traitCollection = [(SBFLockScreenDateSubtitleDateView *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
+    v8 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
     if ((v8 & 1) == 0)
     {

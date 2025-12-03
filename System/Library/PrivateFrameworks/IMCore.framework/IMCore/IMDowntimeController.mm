@@ -1,24 +1,24 @@
 @interface IMDowntimeController
-+ (id)fetchEmergencyNumbersSetWithProviderManager:(id)a3;
++ (id)fetchEmergencyNumbersSetWithProviderManager:(id)manager;
 + (id)sharedInstance;
-- (BOOL)_allowedToShowConversationWithHandleIDs:(id)a3 sync:(BOOL)a4 context:(id *)a5 participantIDsHash:(id)a6 trackingChat:(id)a7;
-- (BOOL)allowedToShowAppExtensionWithBundleIdentifier:(id)a3;
+- (BOOL)_allowedToShowConversationWithHandleIDs:(id)ds sync:(BOOL)sync context:(id *)context participantIDsHash:(id)hash trackingChat:(id)chat;
+- (BOOL)allowedToShowAppExtensionWithBundleIdentifier:(id)identifier;
 - (BOOL)isDowntimeLimited;
-- (BOOL)isEmergencyHandle:(id)a3;
+- (BOOL)isEmergencyHandle:(id)handle;
 - (IMDowntimeController)init;
 - (id)STConversation;
-- (id)conversationContextForChat:(id)a3;
+- (id)conversationContextForChat:(id)chat;
 - (id)emergencyNumbers;
-- (void)_addObserversToChat:(id)a3;
+- (void)_addObserversToChat:(id)chat;
 - (void)_doRegisterForScreenTimeNotifications;
-- (void)_participantsForChatDidChange:(id)a3;
+- (void)_participantsForChatDidChange:(id)change;
 - (void)fetchScreenTimeAppPolicy;
-- (void)getSTConversation:(id)a3;
-- (void)initializeContext:(id)a3 participantIDsHash:(id)a4 trackingChat:(id)a5;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)providersChangedForProviderManager:(id)a3;
+- (void)getSTConversation:(id)conversation;
+- (void)initializeContext:(id)context participantIDsHash:(id)hash trackingChat:(id)chat;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)providersChangedForProviderManager:(id)manager;
 - (void)registerForScreenTimeNotifications;
-- (void)setEmergencyNumbers:(id)a3;
+- (void)setEmergencyNumbers:(id)numbers;
 @end
 
 @implementation IMDowntimeController
@@ -268,21 +268,21 @@
   v21[2] = sub_1A834D640;
   v21[3] = &unk_1E7813200;
   v22 = v9;
-  v23 = self;
+  selfCopy = self;
   v18 = v9;
   objc_msgSend_requestPoliciesForBundleIdentifiers_completionHandler_(v14, v19, v17, v21);
 
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v12 = a4;
-  if (qword_1EB2E54E8 == a6)
+  objectCopy = object;
+  if (qword_1EB2E54E8 == context)
   {
     if (objc_msgSend_isContactLimitsFeatureEnabled(IMDowntimeController, v10, v11))
     {
-      v13 = v12;
+      v13 = objectCopy;
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = sub_1A834C094;
@@ -297,13 +297,13 @@
   {
     v16.receiver = self;
     v16.super_class = IMDowntimeController;
-    [(IMDowntimeController *)&v16 observeValueForKeyPath:a3 ofObject:v12 change:a5 context:a6];
+    [(IMDowntimeController *)&v16 observeValueForKeyPath:path ofObject:objectCopy change:change context:context];
   }
 }
 
-+ (id)fetchEmergencyNumbersSetWithProviderManager:(id)a3
++ (id)fetchEmergencyNumbersSetWithProviderManager:(id)manager
 {
-  v3 = objc_msgSend_emergencyProvider(a3, a2, a3);
+  v3 = objc_msgSend_emergencyProvider(manager, a2, manager);
   v6 = objc_msgSend_emergencyHandles(v3, v4, v5);
   v8 = objc_msgSend___imArrayByApplyingBlock_(v6, v7, &unk_1F1B6EE40);
 
@@ -312,58 +312,58 @@
   return v10;
 }
 
-- (void)initializeContext:(id)a3 participantIDsHash:(id)a4 trackingChat:(id)a5
+- (void)initializeContext:(id)context participantIDsHash:(id)hash trackingChat:(id)chat
 {
-  v19 = a3;
-  v8 = a5;
-  v9 = a4;
+  contextCopy = context;
+  chatCopy = chat;
+  hashCopy = hash;
   v12 = objc_msgSend_policyCache(self, v10, v11);
-  objc_msgSend_addTrackingForConversationContext_forParticipantIDsHash_(v12, v13, v19, v9);
+  objc_msgSend_addTrackingForConversationContext_forParticipantIDsHash_(v12, v13, contextCopy, hashCopy);
 
-  objc_msgSend_addObserver_forKeyPath_options_context_(v19, v14, self, @"allowedByScreenTime", 5, qword_1EB2E54E8);
-  if (v8)
+  objc_msgSend_addObserver_forKeyPath_options_context_(contextCopy, v14, self, @"allowedByScreenTime", 5, qword_1EB2E54E8);
+  if (chatCopy)
   {
-    v17 = objc_msgSend_allowedByScreenTime(v19, v15, v16);
-    objc_msgSend_downtimeControllerInitializedContextWithAllowedByScreenTime_(v8, v18, v17);
+    v17 = objc_msgSend_allowedByScreenTime(contextCopy, v15, v16);
+    objc_msgSend_downtimeControllerInitializedContextWithAllowedByScreenTime_(chatCopy, v18, v17);
   }
 }
 
-- (void)setEmergencyNumbers:(id)a3
+- (void)setEmergencyNumbers:(id)numbers
 {
-  v4 = a3;
+  numbersCopy = numbers;
   os_unfair_lock_lock(&self->_stateLock);
   stateLock_emergencyNumbersSet = self->_stateLock_emergencyNumbersSet;
-  self->_stateLock_emergencyNumbersSet = v4;
+  self->_stateLock_emergencyNumbersSet = numbersCopy;
 
   os_unfair_lock_unlock(&self->_stateLock);
 }
 
-- (void)getSTConversation:(id)a3
+- (void)getSTConversation:(id)conversation
 {
-  v4 = a3;
+  conversationCopy = conversation;
   os_unfair_lock_lock(&self->_stateLock);
-  v4[2](v4, self->_stateLock_STConversation);
+  conversationCopy[2](conversationCopy, self->_stateLock_STConversation);
 
   os_unfair_lock_unlock(&self->_stateLock);
 }
 
-- (BOOL)_allowedToShowConversationWithHandleIDs:(id)a3 sync:(BOOL)a4 context:(id *)a5 participantIDsHash:(id)a6 trackingChat:(id)a7
+- (BOOL)_allowedToShowConversationWithHandleIDs:(id)ds sync:(BOOL)sync context:(id *)context participantIDsHash:(id)hash trackingChat:(id)chat
 {
-  v10 = a4;
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  syncCopy = sync;
+  dsCopy = ds;
+  hashCopy = hash;
+  chatCopy = chat;
   if (objc_msgSend_isContactLimitsFeatureEnabled(IMDowntimeController, v15, v16))
   {
-    v47 = a5;
-    if (v13)
+    contextCopy = context;
+    if (hashCopy)
     {
-      v18 = v13;
+      v18 = hashCopy;
     }
 
     else
     {
-      v18 = IMHashOfHashesForStringArray(v12, v17);
+      v18 = IMHashOfHashesForStringArray(dsCopy, v17);
     }
 
     v20 = v18;
@@ -381,14 +381,14 @@
     aBlock[1] = 3221225472;
     aBlock[2] = sub_1A834C7D4;
     aBlock[3] = &unk_1E7813140;
-    v52 = v12;
+    v52 = dsCopy;
     v48 = v20;
     v53 = v48;
-    v54 = self;
+    selfCopy = self;
     v56 = &v59;
     v57 = &v63;
-    v58 = v10;
-    v21 = v14;
+    v58 = syncCopy;
+    v21 = chatCopy;
     v55 = v21;
     v22 = _Block_copy(aBlock);
     v25 = objc_msgSend_emergencyNumbers(self, v23, v24);
@@ -401,7 +401,7 @@
 
     else
     {
-      if (v10)
+      if (syncCopy)
       {
         dispatch_sync(self->_setupDispatchQueue, &unk_1F1B6EE60);
         v36 = objc_msgSend_emergencyNumbers(self, v34, v35);
@@ -427,9 +427,9 @@
       }
     }
 
-    if (v47)
+    if (contextCopy)
     {
-      *v47 = v64[5];
+      *contextCopy = v64[5];
     }
 
     if (v21)
@@ -480,12 +480,12 @@
   return v14;
 }
 
-- (BOOL)isEmergencyHandle:(id)a3
+- (BOOL)isEmergencyHandle:(id)handle
 {
   v4 = MEMORY[0x1E696AB08];
-  v5 = a3;
+  handleCopy = handle;
   v8 = objc_msgSend_whitespaceAndNewlineCharacterSet(v4, v6, v7);
-  v10 = objc_msgSend_stringByTrimmingCharactersInSet_(v5, v9, v8);
+  v10 = objc_msgSend_stringByTrimmingCharactersInSet_(handleCopy, v9, v8);
 
   v13 = objc_msgSend_controlCharacterSet(MEMORY[0x1E696AB08], v11, v12);
   v15 = objc_msgSend_stringByTrimmingCharactersInSet_(v10, v14, v13);
@@ -496,24 +496,24 @@
   return v13;
 }
 
-- (void)_addObserversToChat:(id)a3
+- (void)_addObserversToChat:(id)chat
 {
-  if (a3)
+  if (chat)
   {
     v4 = MEMORY[0x1E696AD88];
-    v5 = a3;
+    chatCopy = chat;
     v10 = objc_msgSend_defaultCenter(v4, v6, v7);
-    objc_msgSend_removeObserver_name_object_(v10, v8, self, @"__kIMChatParticipantsDidChangeNotification", v5);
-    objc_msgSend_addObserver_selector_name_object_(v10, v9, self, sel__participantsForChatDidChange_, @"__kIMChatParticipantsDidChangeNotification", v5);
+    objc_msgSend_removeObserver_name_object_(v10, v8, self, @"__kIMChatParticipantsDidChangeNotification", chatCopy);
+    objc_msgSend_addObserver_selector_name_object_(v10, v9, self, sel__participantsForChatDidChange_, @"__kIMChatParticipantsDidChangeNotification", chatCopy);
   }
 }
 
-- (void)_participantsForChatDidChange:(id)a3
+- (void)_participantsForChatDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   if (objc_msgSend_isContactLimitsFeatureEnabled(IMDowntimeController, v5, v6))
   {
-    v10 = objc_msgSend_object(v4, v7, v8);
+    v10 = objc_msgSend_object(changeCopy, v7, v8);
     if (v10)
     {
       v11 = objc_msgSend_conversationContextForChat_(self, v9, v10);
@@ -535,13 +535,13 @@
   }
 }
 
-- (id)conversationContextForChat:(id)a3
+- (id)conversationContextForChat:(id)chat
 {
-  v4 = a3;
+  chatCopy = chat;
   if (objc_msgSend_isContactLimitsFeatureEnabled(IMDowntimeController, v5, v6))
   {
     v9 = objc_msgSend_policyCache(self, v7, v8);
-    v11 = objc_msgSend_conversationContextForChat_(v9, v10, v4);
+    v11 = objc_msgSend_conversationContextForChat_(v9, v10, chatCopy);
   }
 
   else
@@ -552,9 +552,9 @@
   return v11;
 }
 
-- (void)providersChangedForProviderManager:(id)a3
+- (void)providersChangedForProviderManager:(id)manager
 {
-  if (objc_msgSend_isContactLimitsFeatureEnabled(IMDowntimeController, a2, a3))
+  if (objc_msgSend_isContactLimitsFeatureEnabled(IMDowntimeController, a2, manager))
   {
     v4 = objc_opt_class();
     v7 = objc_msgSend_callProviderManager(self, v5, v6);
@@ -564,16 +564,16 @@
   }
 }
 
-- (BOOL)allowedToShowAppExtensionWithBundleIdentifier:(id)a3
+- (BOOL)allowedToShowAppExtensionWithBundleIdentifier:(id)identifier
 {
-  if (!a3)
+  if (!identifier)
   {
     return 1;
   }
 
-  v4 = a3;
+  identifierCopy = identifier;
   v7 = objc_msgSend_bundleIDPolicyMap(self, v5, v6);
-  v9 = objc_msgSend_objectForKeyedSubscript_(v7, v8, v4);
+  v9 = objc_msgSend_objectForKeyedSubscript_(v7, v8, identifierCopy);
 
   if (v9)
   {

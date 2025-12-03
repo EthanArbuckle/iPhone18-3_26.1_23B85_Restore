@@ -1,20 +1,20 @@
 @interface _GCUserIntentInputEvent
-- (_GCUserIntentInputEvent)initWithXValue:(float)a3 yValue:(float)a4 timestamp:(unint64_t)a5 deadzoneSquared:(double)a6;
+- (_GCUserIntentInputEvent)initWithXValue:(float)value yValue:(float)yValue timestamp:(unint64_t)timestamp deadzoneSquared:(double)squared;
 @end
 
 @implementation _GCUserIntentInputEvent
 
-- (_GCUserIntentInputEvent)initWithXValue:(float)a3 yValue:(float)a4 timestamp:(unint64_t)a5 deadzoneSquared:(double)a6
+- (_GCUserIntentInputEvent)initWithXValue:(float)value yValue:(float)yValue timestamp:(unint64_t)timestamp deadzoneSquared:(double)squared
 {
   v17.receiver = self;
   v17.super_class = _GCUserIntentInputEvent;
   v10 = [(_GCUserIntentInputEvent *)&v17 init];
   if (v10)
   {
-    if (((a4 * a4) + (a3 * a3)) >= a6)
+    if (((yValue * yValue) + (value * value)) >= squared)
     {
-      v12 = a4 * 0.0 + a3;
-      v13 = a4 - a3 * 0.0;
+      v12 = yValue * 0.0 + value;
+      v13 = yValue - value * 0.0;
       v14 = atan2f(v13, v12);
       v15 = v14;
       if (v14 >= -2.35619449)
@@ -79,7 +79,7 @@
       [_GCUserIntentInputEvent initWithXValue:yValue:timestamp:deadzoneSquared:];
     }
 
-    v10->_timestampInSeconds = *&timestampToSecondsMultiplier_multiplier * a5;
+    v10->_timestampInSeconds = *&timestampToSecondsMultiplier_multiplier * timestamp;
   }
 
   return v10;

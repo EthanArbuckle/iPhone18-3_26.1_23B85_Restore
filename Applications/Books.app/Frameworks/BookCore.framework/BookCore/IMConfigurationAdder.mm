@@ -1,134 +1,134 @@
 @interface IMConfigurationAdder
 - (IMConfiguration)configuration;
-- (IMConfigurationAdder)initWithConfiguration:(id)a3 predicate:(id)a4;
-- (void)addBool:(BOOL)a3 forKey:(id)a4;
-- (void)addEdgeInsets:(UIEdgeInsets)a3 forKey:(id)a4;
-- (void)addFloat:(double)a3 forKey:(id)a4;
-- (void)addInteger:(int64_t)a3 forKey:(id)a4;
-- (void)addObject:(id)a3 forKey:(id)a4;
-- (void)addPoint:(CGPoint)a3 forKey:(id)a4;
-- (void)addRect:(CGRect)a3 forKey:(id)a4;
-- (void)addSize:(CGSize)a3 forKey:(id)a4;
-- (void)addWithPredicate:(id)a3 adder:(id)a4;
+- (IMConfigurationAdder)initWithConfiguration:(id)configuration predicate:(id)predicate;
+- (void)addBool:(BOOL)bool forKey:(id)key;
+- (void)addEdgeInsets:(UIEdgeInsets)insets forKey:(id)key;
+- (void)addFloat:(double)float forKey:(id)key;
+- (void)addInteger:(int64_t)integer forKey:(id)key;
+- (void)addObject:(id)object forKey:(id)key;
+- (void)addPoint:(CGPoint)point forKey:(id)key;
+- (void)addRect:(CGRect)rect forKey:(id)key;
+- (void)addSize:(CGSize)size forKey:(id)key;
+- (void)addWithPredicate:(id)predicate adder:(id)adder;
 @end
 
 @implementation IMConfigurationAdder
 
-- (IMConfigurationAdder)initWithConfiguration:(id)a3 predicate:(id)a4
+- (IMConfigurationAdder)initWithConfiguration:(id)configuration predicate:(id)predicate
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  predicateCopy = predicate;
   v11.receiver = self;
   v11.super_class = IMConfigurationAdder;
   v8 = [(IMConfigurationAdder *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_configuration, v6);
-    objc_storeStrong(&v9->_predicate, a4);
+    objc_storeWeak(&v8->_configuration, configurationCopy);
+    objc_storeStrong(&v9->_predicate, predicate);
   }
 
   return v9;
 }
 
-- (void)addObject:(id)a3 forKey:(id)a4
+- (void)addObject:(id)object forKey:(id)key
 {
-  v9 = a3;
-  v6 = a4;
+  objectCopy = object;
+  keyCopy = key;
   if (self->_addProhibited)
   {
     [NSException raise:@"IMConfigurationWrongAdderCalledError" format:@"For a given adder block, only the adder passed into that block can be used"];
   }
 
-  v7 = [(IMConfigurationAdder *)self configuration];
-  v8 = [(IMConfigurationAdder *)self predicate];
-  [v7 addValue:v9 predicate:v8 forKey:v6];
+  configuration = [(IMConfigurationAdder *)self configuration];
+  predicate = [(IMConfigurationAdder *)self predicate];
+  [configuration addValue:objectCopy predicate:predicate forKey:keyCopy];
 }
 
-- (void)addFloat:(double)a3 forKey:(id)a4
+- (void)addFloat:(double)float forKey:(id)key
 {
-  v6 = a4;
-  v7 = [NSNumber numberWithDouble:a3];
-  [(IMConfigurationAdder *)self addObject:v7 forKey:v6];
+  keyCopy = key;
+  v7 = [NSNumber numberWithDouble:float];
+  [(IMConfigurationAdder *)self addObject:v7 forKey:keyCopy];
 }
 
-- (void)addBool:(BOOL)a3 forKey:(id)a4
+- (void)addBool:(BOOL)bool forKey:(id)key
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [NSNumber numberWithBool:v4];
-  [(IMConfigurationAdder *)self addObject:v7 forKey:v6];
+  boolCopy = bool;
+  keyCopy = key;
+  v7 = [NSNumber numberWithBool:boolCopy];
+  [(IMConfigurationAdder *)self addObject:v7 forKey:keyCopy];
 }
 
-- (void)addInteger:(int64_t)a3 forKey:(id)a4
+- (void)addInteger:(int64_t)integer forKey:(id)key
 {
-  v6 = a4;
-  v7 = [NSNumber numberWithInteger:a3];
-  [(IMConfigurationAdder *)self addObject:v7 forKey:v6];
+  keyCopy = key;
+  v7 = [NSNumber numberWithInteger:integer];
+  [(IMConfigurationAdder *)self addObject:v7 forKey:keyCopy];
 }
 
-- (void)addPoint:(CGPoint)a3 forKey:(id)a4
+- (void)addPoint:(CGPoint)point forKey:(id)key
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = point.y;
+  x = point.x;
+  keyCopy = key;
   v8 = [NSValue valueWithCGPoint:x, y];
-  [(IMConfigurationAdder *)self addObject:v8 forKey:v7];
+  [(IMConfigurationAdder *)self addObject:v8 forKey:keyCopy];
 }
 
-- (void)addSize:(CGSize)a3 forKey:(id)a4
+- (void)addSize:(CGSize)size forKey:(id)key
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = [NSValue valueWithCGSize:width, height];
-  [(IMConfigurationAdder *)self addObject:v8 forKey:v7];
+  height = size.height;
+  width = size.width;
+  keyCopy = key;
+  height = [NSValue valueWithCGSize:width, height];
+  [(IMConfigurationAdder *)self addObject:height forKey:keyCopy];
 }
 
-- (void)addRect:(CGRect)a3 forKey:(id)a4
+- (void)addRect:(CGRect)rect forKey:(id)key
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v10 = [NSValue valueWithCGRect:x, y, width, height];
-  [(IMConfigurationAdder *)self addObject:v10 forKey:v9];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  keyCopy = key;
+  height = [NSValue valueWithCGRect:x, y, width, height];
+  [(IMConfigurationAdder *)self addObject:height forKey:keyCopy];
 }
 
-- (void)addEdgeInsets:(UIEdgeInsets)a3 forKey:(id)a4
+- (void)addEdgeInsets:(UIEdgeInsets)insets forKey:(id)key
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v9 = a4;
-  v10 = [NSValue valueWithUIEdgeInsets:top, left, bottom, right];
-  [(IMConfigurationAdder *)self addObject:v10 forKey:v9];
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  keyCopy = key;
+  right = [NSValue valueWithUIEdgeInsets:top, left, bottom, right];
+  [(IMConfigurationAdder *)self addObject:right forKey:keyCopy];
 }
 
-- (void)addWithPredicate:(id)a3 adder:(id)a4
+- (void)addWithPredicate:(id)predicate adder:(id)adder
 {
-  v6 = a3;
-  v7 = a4;
+  predicateCopy = predicate;
+  adderCopy = adder;
   if (self->_addProhibited)
   {
     [NSException raise:@"IMConfigurationWrongAdderCalledError" format:@"For a given adder block, only the adder passed into that block can be used"];
   }
 
-  v8 = [(IMConfigurationAdder *)self predicate];
-  v14[0] = v8;
-  v14[1] = v6;
+  predicate = [(IMConfigurationAdder *)self predicate];
+  v14[0] = predicate;
+  v14[1] = predicateCopy;
   v9 = [NSArray arrayWithObjects:v14 count:2];
   v10 = [IMCompoundConfigurationPredicate andPredicateWithSubpredicates:v9];
 
   v11 = objc_alloc(objc_opt_class());
-  v12 = [(IMConfigurationAdder *)self configuration];
-  v13 = [v11 initWithConfiguration:v12 predicate:v10];
+  configuration = [(IMConfigurationAdder *)self configuration];
+  v13 = [v11 initWithConfiguration:configuration predicate:v10];
 
   [(IMConfigurationAdder *)self setAddProhibited:1];
   [v13 setAddProhibited:0];
-  v7[2](v7, v13);
+  adderCopy[2](adderCopy, v13);
   [v13 setAddProhibited:1];
   [(IMConfigurationAdder *)self setAddProhibited:0];
 }

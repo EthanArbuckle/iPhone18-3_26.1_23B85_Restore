@@ -1,20 +1,20 @@
 @interface AMSEngagementResult
-+ (id)_updatedBodyFromValue:(id)a3 request:(id)a4;
-- (AMSEngagementResult)initWithCoder:(id)a3;
-- (AMSEngagementResult)initWithModel:(id)a3;
++ (id)_updatedBodyFromValue:(id)value request:(id)request;
+- (AMSEngagementResult)initWithCoder:(id)coder;
+- (AMSEngagementResult)initWithModel:(id)model;
 - (NSString)ams_buyParams;
-- (id)ams_requestActionFromRequest:(id)a3;
+- (id)ams_requestActionFromRequest:(id)request;
 - (id)expressCheckoutCardSelection;
-- (id)modelForClass:(Class)a3 error:(id *)a4;
+- (id)modelForClass:(Class)class error:(id *)error;
 - (int64_t)expressCheckoutPath;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AMSEngagementResult
 
 - (int64_t)expressCheckoutPath
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AMSEngagementResult.expressCheckoutPath()();
 
   return v3;
@@ -22,7 +22,7 @@
 
 - (id)expressCheckoutCardSelection
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AMSEngagementResult.expressCheckoutCardSelection()();
 
   return v3;
@@ -30,8 +30,8 @@
 
 - (NSString)ams_buyParams
 {
-  v2 = [(AMSEngagementResult *)self userInfo];
-  v3 = [v2 objectForKeyedSubscript:@"buyParams"];
+  userInfo = [(AMSEngagementResult *)self userInfo];
+  v3 = [userInfo objectForKeyedSubscript:@"buyParams"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -47,12 +47,12 @@
   return v4;
 }
 
-- (id)ams_requestActionFromRequest:(id)a3
+- (id)ams_requestActionFromRequest:(id)request
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(AMSEngagementResult *)self userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"requestAction"];
+  requestCopy = request;
+  userInfo = [(AMSEngagementResult *)self userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"requestAction"];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -123,9 +123,9 @@ LABEL_10:
   }
 
   v11 = v14;
-  v15 = [(AMSEngagementResult *)self ams_buyParams];
+  ams_buyParams = [(AMSEngagementResult *)self ams_buyParams];
 
-  if (v15)
+  if (ams_buyParams)
   {
     v16 = +[AMSLogConfig sharedConfig];
     if (!v16)
@@ -133,8 +133,8 @@ LABEL_10:
       v16 = +[AMSLogConfig sharedConfig];
     }
 
-    v17 = [v16 OSLogObject];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v16 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v18 = objc_opt_class();
       AMSLogKey();
@@ -144,7 +144,7 @@ LABEL_10:
       v28 = v18;
       v29 = 2114;
       v30 = v21;
-      _os_log_impl(&dword_192869000, v17, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Dropping updated body because buy params exist", &v27, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Dropping updated body because buy params exist", &v27, 0x16u);
 
       v10 = v20;
       v9 = v19;
@@ -155,7 +155,7 @@ LABEL_10:
   {
     v22 = objc_opt_class();
     v16 = [v7 objectForKeyedSubscript:@"body"];
-    v23 = [v22 _updatedBodyFromValue:v16 request:v4];
+    v23 = [v22 _updatedBodyFromValue:v16 request:requestCopy];
     [v11 setUpdatedBody:v23];
   }
 
@@ -177,29 +177,29 @@ LABEL_30:
   return v11;
 }
 
-+ (id)_updatedBodyFromValue:(id)a3 request:(id)a4
++ (id)_updatedBodyFromValue:(id)value request:(id)request
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  valueCopy = value;
+  requestCopy = request;
+  if (valueCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v5 dataUsingEncoding:4];
+      v7 = [valueCopy dataUsingEncoding:4];
     }
 
     else
     {
-      v8 = [v6 allHTTPHeaderFields];
-      v9 = [v8 objectForKeyedSubscript:@"Content-Type"];
+      allHTTPHeaderFields = [requestCopy allHTTPHeaderFields];
+      v9 = [allHTTPHeaderFields objectForKeyedSubscript:@"Content-Type"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v16 = 0;
-        v7 = [AMSData dataWithObject:v5 encoding:[AMSData dataEncodingFromContentType:v9] error:&v16];
+        v7 = [AMSData dataWithObject:valueCopy encoding:[AMSData dataEncodingFromContentType:v9] error:&v16];
         v10 = v16;
         if (v10)
         {
@@ -209,8 +209,8 @@ LABEL_30:
             v11 = +[AMSLogConfig sharedConfig];
           }
 
-          v12 = [v11 OSLogObject];
-          if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+          oSLogObject = [v11 OSLogObject];
+          if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
           {
             v13 = objc_opt_class();
             v14 = AMSLogKey();
@@ -220,7 +220,7 @@ LABEL_30:
             v20 = v14;
             v21 = 2114;
             v22 = v10;
-            _os_log_impl(&dword_192869000, v12, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to encode data from engagement request. %{public}@", buf, 0x20u);
+            _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to encode data from engagement request. %{public}@", buf, 0x20u);
           }
         }
       }
@@ -240,13 +240,13 @@ LABEL_30:
   return v7;
 }
 
-- (AMSEngagementResult)initWithModel:(id)a3
+- (AMSEngagementResult)initWithModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v5 = [(AMSEngagementResult *)self init];
   if (v5)
   {
-    v6 = [AMSEngagementUtils encodeModel:v4];
+    v6 = [AMSEngagementUtils encodeModel:modelCopy];
     modelData = v5->_modelData;
     v5->_modelData = v6;
   }
@@ -254,36 +254,36 @@ LABEL_30:
   return v5;
 }
 
-- (id)modelForClass:(Class)a3 error:(id *)a4
+- (id)modelForClass:(Class)class error:(id *)error
 {
-  v6 = [(AMSEngagementResult *)self modelData];
-  v7 = [AMSEngagementUtils modelFromData:v6 class:a3 error:a4];
+  modelData = [(AMSEngagementResult *)self modelData];
+  v7 = [AMSEngagementUtils modelFromData:modelData class:class error:error];
 
   return v7;
 }
 
-- (AMSEngagementResult)initWithCoder:(id)a3
+- (AMSEngagementResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = AMSEngagementResult;
   v5 = [(AMSEngagementResult *)&v16 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyCarrierLinkResult"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyCarrierLinkResult"];
     carrierLinkResult = v5->_carrierLinkResult;
     v5->_carrierLinkResult = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyModelData"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyModelData"];
     modelData = v5->_modelData;
     v5->_modelData = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyPurchaseResult"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyPurchaseResult"];
     purchaseResult = v5->_purchaseResult;
     v5->_purchaseResult = v10;
 
-    v12 = [MEMORY[0x1E695DFD8] ams_PLISTClasses];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"kCodingKeyUserInfo"];
+    ams_PLISTClasses = [MEMORY[0x1E695DFD8] ams_PLISTClasses];
+    v13 = [coderCopy decodeObjectOfClasses:ams_PLISTClasses forKey:@"kCodingKeyUserInfo"];
     userInfo = v5->_userInfo;
     v5->_userInfo = v13;
   }
@@ -291,20 +291,20 @@ LABEL_30:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(AMSEngagementResult *)self carrierLinkResult];
-  [v4 encodeObject:v5 forKey:@"kCodingKeyCarrierLinkResult"];
+  coderCopy = coder;
+  carrierLinkResult = [(AMSEngagementResult *)self carrierLinkResult];
+  [coderCopy encodeObject:carrierLinkResult forKey:@"kCodingKeyCarrierLinkResult"];
 
-  v6 = [(AMSEngagementResult *)self purchaseResult];
-  [v4 encodeObject:v6 forKey:@"kCodingKeyPurchaseResult"];
+  purchaseResult = [(AMSEngagementResult *)self purchaseResult];
+  [coderCopy encodeObject:purchaseResult forKey:@"kCodingKeyPurchaseResult"];
 
-  v7 = [(AMSEngagementResult *)self modelData];
-  [v4 encodeObject:v7 forKey:@"kCodingKeyModelData"];
+  modelData = [(AMSEngagementResult *)self modelData];
+  [coderCopy encodeObject:modelData forKey:@"kCodingKeyModelData"];
 
-  v8 = [(AMSEngagementResult *)self userInfo];
-  [v4 encodeObject:v8 forKey:@"kCodingKeyUserInfo"];
+  userInfo = [(AMSEngagementResult *)self userInfo];
+  [coderCopy encodeObject:userInfo forKey:@"kCodingKeyUserInfo"];
 }
 
 @end

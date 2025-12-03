@@ -140,12 +140,12 @@ LABEL_45:
   v9 = 0;
 LABEL_46:
   objc_autoreleasePoolPop(v3);
-  v19 = [(IMBatteryStatus *)self testDelegate];
+  testDelegate = [(IMBatteryStatus *)self testDelegate];
 
-  if (v19)
+  if (testDelegate)
   {
-    v20 = [(IMBatteryStatus *)self testDelegate];
-    [v20 chargingCalledWithResult:v15 isCharging:v9 frameworksLoadedOk:v17];
+    testDelegate2 = [(IMBatteryStatus *)self testDelegate];
+    [testDelegate2 chargingCalledWithResult:v15 isCharging:v9 frameworksLoadedOk:v17];
   }
 
   return v9;

@@ -1,12 +1,12 @@
 @interface UIStatusBarNewUIDoubleHeightStyleAttributes
-- (double)heightForMetrics:(int64_t)a3;
+- (double)heightForMetrics:(int64_t)metrics;
 @end
 
 @implementation UIStatusBarNewUIDoubleHeightStyleAttributes
 
-- (double)heightForMetrics:(int64_t)a3
+- (double)heightForMetrics:(int64_t)metrics
 {
-  if (a3 == 1)
+  if (metrics == 1)
   {
     return 40.0;
   }

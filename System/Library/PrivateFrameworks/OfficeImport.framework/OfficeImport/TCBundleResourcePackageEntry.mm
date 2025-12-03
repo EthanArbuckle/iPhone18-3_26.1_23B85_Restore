@@ -1,5 +1,5 @@
 @interface TCBundleResourcePackageEntry
-- (TCBundleResourcePackageEntry)initWithZipEntry:(id)a3;
+- (TCBundleResourcePackageEntry)initWithZipEntry:(id)entry;
 - (_xmlDoc)xmlDocument;
 - (id)data;
 - (void)dealloc;
@@ -7,16 +7,16 @@
 
 @implementation TCBundleResourcePackageEntry
 
-- (TCBundleResourcePackageEntry)initWithZipEntry:(id)a3
+- (TCBundleResourcePackageEntry)initWithZipEntry:(id)entry
 {
-  v5 = a3;
+  entryCopy = entry;
   v9.receiver = self;
   v9.super_class = TCBundleResourcePackageEntry;
   v6 = [(TCBundleResourcePackageEntry *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->mZipEntry, a3);
+    objc_storeStrong(&v6->mZipEntry, entry);
   }
 
   return v7;
@@ -37,9 +37,9 @@
 
 - (id)data
 {
-  v2 = [(OISFUZipEntry *)self->mZipEntry data];
+  data = [(OISFUZipEntry *)self->mZipEntry data];
 
-  return v2;
+  return data;
 }
 
 - (_xmlDoc)xmlDocument

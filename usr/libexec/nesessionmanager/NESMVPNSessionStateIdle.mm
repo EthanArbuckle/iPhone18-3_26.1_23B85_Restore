@@ -2,18 +2,18 @@
 - (BOOL)handleClearConfiguration;
 - (BOOL)handleSetConfiguration;
 - (NESMVPNSessionStateIdle)init;
-- (void)enterWithSession:(id)a3;
-- (void)handleClearConfigurationResult:(BOOL)a3;
+- (void)enterWithSession:(id)session;
+- (void)handleClearConfigurationResult:(BOOL)result;
 - (void)handleEstablishIPC;
-- (void)handleSetConfigurationResult:(BOOL)a3;
-- (void)handleStartMessage:(id)a3;
+- (void)handleSetConfigurationResult:(BOOL)result;
+- (void)handleStartMessage:(id)message;
 - (void)handleUpdateConfiguration;
 - (void)leave;
 @end
 
 @implementation NESMVPNSessionStateIdle
 
-- (void)handleClearConfigurationResult:(BOOL)a3
+- (void)handleClearConfigurationResult:(BOOL)result
 {
   v4 = ne_log_obj();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -65,7 +65,7 @@
   return 0;
 }
 
-- (void)handleSetConfigurationResult:(BOOL)a3
+- (void)handleSetConfigurationResult:(BOOL)result
 {
   v4 = ne_log_obj();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -132,8 +132,8 @@
     Property = 0;
   }
 
-  v5 = [Property configuration];
-  v6 = [v5 VPN];
+  configuration = [Property configuration];
+  v6 = [configuration VPN];
   if ([v6 isEnabled])
   {
 
@@ -155,11 +155,11 @@
       v8 = 0;
     }
 
-    v9 = [v8 configuration];
-    v10 = [v9 appVPN];
-    v11 = [v10 isEnabled];
+    configuration2 = [v8 configuration];
+    appVPN = [configuration2 appVPN];
+    isEnabled = [appVPN isEnabled];
 
-    if (!self || !v11)
+    if (!self || !isEnabled)
     {
       return;
     }
@@ -219,8 +219,8 @@
     v9 = 0;
   }
 
-  v10 = [v9 configuration];
-  v11 = [v10 VPN];
+  configuration = [v9 configuration];
+  v11 = [configuration VPN];
   if ([v11 isEnabled])
   {
 
@@ -249,11 +249,11 @@ LABEL_12:
     v14 = 0;
   }
 
-  v15 = [v14 configuration];
-  v16 = [v15 appVPN];
-  v17 = [v16 isEnabled];
+  configuration2 = [v14 configuration];
+  appVPN = [configuration2 appVPN];
+  isEnabled = [appVPN isEnabled];
 
-  if (v17)
+  if (isEnabled)
   {
     goto LABEL_12;
   }
@@ -286,12 +286,12 @@ LABEL_12:
   }
 }
 
-- (void)handleStartMessage:(id)a3
+- (void)handleStartMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v8.receiver = self;
   v8.super_class = NESMVPNSessionStateIdle;
-  [(NESMVPNSessionState *)&v8 handleStartMessage:v4];
+  [(NESMVPNSessionState *)&v8 handleStartMessage:messageCopy];
   if (self)
   {
     [objc_getProperty(self v5];
@@ -300,7 +300,7 @@ LABEL_12:
 
   else
   {
-    [0 createConnectParametersWithStartMessage:v4];
+    [0 createConnectParametersWithStartMessage:messageCopy];
     Property = 0;
   }
 
@@ -309,25 +309,25 @@ LABEL_12:
 
 - (void)leave
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = objc_getProperty(self, a2, 16, 1);
   }
 
   sub_10002DF74(self);
-  v3.receiver = v2;
+  v3.receiver = selfCopy;
   v3.super_class = NESMVPNSessionStateIdle;
   [(NESMVPNSessionState *)&v3 leave];
 }
 
-- (void)enterWithSession:(id)a3
+- (void)enterWithSession:(id)session
 {
   v18.receiver = self;
   v18.super_class = NESMVPNSessionStateIdle;
-  v4 = a3;
-  [(NESMVPNSessionState *)&v18 enterWithSession:v4];
-  sub_10002DF74(v4);
+  sessionCopy = session;
+  [(NESMVPNSessionState *)&v18 enterWithSession:sessionCopy];
+  sub_10002DF74(sessionCopy);
 
   if (self)
   {
@@ -342,10 +342,10 @@ LABEL_12:
 
   else
   {
-    v17 = [0 sleepOnDisconnect];
+    sleepOnDisconnect = [0 sleepOnDisconnect];
     v8 = 0;
     v16 = 0;
-    if ((v17 & 1) == 0)
+    if ((sleepOnDisconnect & 1) == 0)
     {
       goto LABEL_16;
     }
@@ -363,13 +363,13 @@ LABEL_12:
       v10 = 0;
     }
 
-    v12 = [v10 parent];
+    parent = [v10 parent];
     if (self)
     {
       objc_getProperty(self, v11, 16, 1);
     }
 
-    sub_10009A9A8(v12);
+    sub_10009A9A8(parent);
   }
 
   else
@@ -384,8 +384,8 @@ LABEL_12:
       v13 = 0;
     }
 
-    v12 = [v13 server];
-    sub_100059ED4(v12, v14);
+    parent = [v13 server];
+    sub_100059ED4(parent, v14);
   }
 
   if (!self)

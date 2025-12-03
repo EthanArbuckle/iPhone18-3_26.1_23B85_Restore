@@ -1,15 +1,15 @@
 @interface RTTripClusterRoadTransitionsData2MO
-+ (id)managedObjectWithTripClusterRoadTransitions:(id)a3 inManagedObjectContext:(id)a4;
++ (id)managedObjectWithTripClusterRoadTransitions:(id)transitions inManagedObjectContext:(id)context;
 @end
 
 @implementation RTTripClusterRoadTransitionsData2MO
 
-+ (id)managedObjectWithTripClusterRoadTransitions:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedObjectWithTripClusterRoadTransitions:(id)transitions inManagedObjectContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  transitionsCopy = transitions;
+  contextCopy = context;
+  v7 = contextCopy;
+  if (!transitionsCopy)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -25,14 +25,14 @@ LABEL_12:
     goto LABEL_7;
   }
 
-  if (v6)
+  if (contextCopy)
   {
-    v8 = [[RTTripClusterRoadTransitionsData2MO alloc] initWithContext:v6];
-    v9 = [v5 clusterID];
-    [(RTTripClusterRoadTransitionsData2MO *)v8 setClusterID:v9];
+    v8 = [[RTTripClusterRoadTransitionsData2MO alloc] initWithContext:contextCopy];
+    clusterID = [transitionsCopy clusterID];
+    [(RTTripClusterRoadTransitionsData2MO *)v8 setClusterID:clusterID];
 
-    v10 = [v5 roadTransitions];
-    [(RTTripClusterRoadTransitionsData2MO *)v8 setRoadTransitions:v10];
+    roadTransitions = [transitionsCopy roadTransitions];
+    [(RTTripClusterRoadTransitionsData2MO *)v8 setRoadTransitions:roadTransitions];
 
     goto LABEL_8;
   }

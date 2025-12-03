@@ -1,115 +1,115 @@
 @interface _SFPBQueryUnderstandingParse
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBQueryUnderstandingParse)initWithDictionary:(id)a3;
-- (_SFPBQueryUnderstandingParse)initWithFacade:(id)a3;
-- (_SFPBQueryUnderstandingParse)initWithJSON:(id)a3;
+- (_SFPBQueryUnderstandingParse)initWithDictionary:(id)dictionary;
+- (_SFPBQueryUnderstandingParse)initWithFacade:(id)facade;
+- (_SFPBQueryUnderstandingParse)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBQueryUnderstandingParse
 
-- (_SFPBQueryUnderstandingParse)initWithFacade:(id)a3
+- (_SFPBQueryUnderstandingParse)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBQueryUnderstandingParse *)self init];
   if (v5)
   {
-    if ([v4 hasQueryIntentType])
+    if ([facadeCopy hasQueryIntentType])
     {
-      -[_SFPBQueryUnderstandingParse setQueryIntentType:](v5, "setQueryIntentType:", [v4 queryIntentType]);
+      -[_SFPBQueryUnderstandingParse setQueryIntentType:](v5, "setQueryIntentType:", [facadeCopy queryIntentType]);
     }
 
-    if ([v4 hasHasUnspecifiedTokens])
+    if ([facadeCopy hasHasUnspecifiedTokens])
     {
-      -[_SFPBQueryUnderstandingParse setHasUnspecifiedTokens:](v5, "setHasUnspecifiedTokens:", [v4 hasUnspecifiedTokens]);
+      -[_SFPBQueryUnderstandingParse setHasUnspecifiedTokens:](v5, "setHasUnspecifiedTokens:", [facadeCopy hasUnspecifiedTokens]);
     }
 
-    if ([v4 hasHasSortCriteriaTokens])
+    if ([facadeCopy hasHasSortCriteriaTokens])
     {
-      -[_SFPBQueryUnderstandingParse setHasSortCriteriaTokens:](v5, "setHasSortCriteriaTokens:", [v4 hasSortCriteriaTokens]);
+      -[_SFPBQueryUnderstandingParse setHasSortCriteriaTokens:](v5, "setHasSortCriteriaTokens:", [facadeCopy hasSortCriteriaTokens]);
     }
 
-    if ([v4 hasHasLocationTokens])
+    if ([facadeCopy hasHasLocationTokens])
     {
-      -[_SFPBQueryUnderstandingParse setHasLocationTokens:](v5, "setHasLocationTokens:", [v4 hasLocationTokens]);
+      -[_SFPBQueryUnderstandingParse setHasLocationTokens:](v5, "setHasLocationTokens:", [facadeCopy hasLocationTokens]);
     }
 
-    if ([v4 hasHasActionTokens])
+    if ([facadeCopy hasHasActionTokens])
     {
-      -[_SFPBQueryUnderstandingParse setHasActionTokens:](v5, "setHasActionTokens:", [v4 hasActionTokens]);
+      -[_SFPBQueryUnderstandingParse setHasActionTokens:](v5, "setHasActionTokens:", [facadeCopy hasActionTokens]);
     }
 
-    if ([v4 hasHasMediaTypeTokens])
+    if ([facadeCopy hasHasMediaTypeTokens])
     {
-      -[_SFPBQueryUnderstandingParse setHasMediaTypeTokens:](v5, "setHasMediaTypeTokens:", [v4 hasMediaTypeTokens]);
+      -[_SFPBQueryUnderstandingParse setHasMediaTypeTokens:](v5, "setHasMediaTypeTokens:", [facadeCopy hasMediaTypeTokens]);
     }
 
-    if ([v4 hasHasVisualQualityTokens])
+    if ([facadeCopy hasHasVisualQualityTokens])
     {
-      -[_SFPBQueryUnderstandingParse setHasVisualQualityTokens:](v5, "setHasVisualQualityTokens:", [v4 hasVisualQualityTokens]);
+      -[_SFPBQueryUnderstandingParse setHasVisualQualityTokens:](v5, "setHasVisualQualityTokens:", [facadeCopy hasVisualQualityTokens]);
     }
 
-    if ([v4 hasHasNounTokens])
+    if ([facadeCopy hasHasNounTokens])
     {
-      -[_SFPBQueryUnderstandingParse setHasNounTokens:](v5, "setHasNounTokens:", [v4 hasNounTokens]);
+      -[_SFPBQueryUnderstandingParse setHasNounTokens:](v5, "setHasNounTokens:", [facadeCopy hasNounTokens]);
     }
 
-    if ([v4 hasHasTimeTokens])
+    if ([facadeCopy hasHasTimeTokens])
     {
-      -[_SFPBQueryUnderstandingParse setHasTimeTokens:](v5, "setHasTimeTokens:", [v4 hasTimeTokens]);
+      -[_SFPBQueryUnderstandingParse setHasTimeTokens:](v5, "setHasTimeTokens:", [facadeCopy hasTimeTokens]);
     }
 
-    if ([v4 hasHasEventTokens])
+    if ([facadeCopy hasHasEventTokens])
     {
-      -[_SFPBQueryUnderstandingParse setHasEventTokens:](v5, "setHasEventTokens:", [v4 hasEventTokens]);
+      -[_SFPBQueryUnderstandingParse setHasEventTokens:](v5, "setHasEventTokens:", [facadeCopy hasEventTokens]);
     }
 
-    if ([v4 hasHasGenericLocationTokens])
+    if ([facadeCopy hasHasGenericLocationTokens])
     {
-      -[_SFPBQueryUnderstandingParse setHasGenericLocationTokens:](v5, "setHasGenericLocationTokens:", [v4 hasGenericLocationTokens]);
+      -[_SFPBQueryUnderstandingParse setHasGenericLocationTokens:](v5, "setHasGenericLocationTokens:", [facadeCopy hasGenericLocationTokens]);
     }
 
-    if ([v4 hasHasCaptureDeviceTokens])
+    if ([facadeCopy hasHasCaptureDeviceTokens])
     {
-      -[_SFPBQueryUnderstandingParse setHasCaptureDeviceTokens:](v5, "setHasCaptureDeviceTokens:", [v4 hasCaptureDeviceTokens]);
+      -[_SFPBQueryUnderstandingParse setHasCaptureDeviceTokens:](v5, "setHasCaptureDeviceTokens:", [facadeCopy hasCaptureDeviceTokens]);
     }
 
-    if ([v4 hasHasFavoritedTokens])
+    if ([facadeCopy hasHasFavoritedTokens])
     {
-      -[_SFPBQueryUnderstandingParse setHasFavoritedTokens:](v5, "setHasFavoritedTokens:", [v4 hasFavoritedTokens]);
+      -[_SFPBQueryUnderstandingParse setHasFavoritedTokens:](v5, "setHasFavoritedTokens:", [facadeCopy hasFavoritedTokens]);
     }
 
-    if ([v4 hasHasSourceAppTokens])
+    if ([facadeCopy hasHasSourceAppTokens])
     {
-      -[_SFPBQueryUnderstandingParse setHasSourceAppTokens:](v5, "setHasSourceAppTokens:", [v4 hasSourceAppTokens]);
+      -[_SFPBQueryUnderstandingParse setHasSourceAppTokens:](v5, "setHasSourceAppTokens:", [facadeCopy hasSourceAppTokens]);
     }
 
-    if ([v4 hasHasPersonTokens])
+    if ([facadeCopy hasHasPersonTokens])
     {
-      -[_SFPBQueryUnderstandingParse setHasPersonTokens:](v5, "setHasPersonTokens:", [v4 hasPersonTokens]);
+      -[_SFPBQueryUnderstandingParse setHasPersonTokens:](v5, "setHasPersonTokens:", [facadeCopy hasPersonTokens]);
     }
 
-    if ([v4 hasHasPersonSenderTokens])
+    if ([facadeCopy hasHasPersonSenderTokens])
     {
-      -[_SFPBQueryUnderstandingParse setHasPersonSenderTokens:](v5, "setHasPersonSenderTokens:", [v4 hasPersonSenderTokens]);
+      -[_SFPBQueryUnderstandingParse setHasPersonSenderTokens:](v5, "setHasPersonSenderTokens:", [facadeCopy hasPersonSenderTokens]);
     }
 
-    if ([v4 hasSpotlightQueryIntent])
+    if ([facadeCopy hasSpotlightQueryIntent])
     {
-      -[_SFPBQueryUnderstandingParse setSpotlightQueryIntent:](v5, "setSpotlightQueryIntent:", [v4 spotlightQueryIntent]);
+      -[_SFPBQueryUnderstandingParse setSpotlightQueryIntent:](v5, "setSpotlightQueryIntent:", [facadeCopy spotlightQueryIntent]);
     }
 
-    if ([v4 hasIsUnsafeQuery])
+    if ([facadeCopy hasIsUnsafeQuery])
     {
-      -[_SFPBQueryUnderstandingParse setIsUnsafeQuery:](v5, "setIsUnsafeQuery:", [v4 isUnsafeQuery]);
+      -[_SFPBQueryUnderstandingParse setIsUnsafeQuery:](v5, "setIsUnsafeQuery:", [facadeCopy isUnsafeQuery]);
     }
 
-    if ([v4 hasIsBlocklistedQuery])
+    if ([facadeCopy hasIsBlocklistedQuery])
     {
-      -[_SFPBQueryUnderstandingParse setIsBlocklistedQuery:](v5, "setIsBlocklistedQuery:", [v4 isBlocklistedQuery]);
+      -[_SFPBQueryUnderstandingParse setIsBlocklistedQuery:](v5, "setIsBlocklistedQuery:", [facadeCopy isBlocklistedQuery]);
     }
 
     v6 = v5;
@@ -118,29 +118,29 @@
   return v5;
 }
 
-- (_SFPBQueryUnderstandingParse)initWithDictionary:(id)a3
+- (_SFPBQueryUnderstandingParse)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v44.receiver = self;
   v44.super_class = _SFPBQueryUnderstandingParse;
   v5 = [(_SFPBQueryUnderstandingParse *)&v44 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"queryIntentType"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"queryIntentType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBQueryUnderstandingParse setQueryIntentType:](v5, "setQueryIntentType:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"hasUnspecifiedTokens"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"hasUnspecifiedTokens"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBQueryUnderstandingParse setHasUnspecifiedTokens:](v5, "setHasUnspecifiedTokens:", [v7 BOOLValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"hasSortCriteriaTokens"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"hasSortCriteriaTokens"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -148,7 +148,7 @@
     }
 
     v33 = v8;
-    v9 = [v4 objectForKeyedSubscript:@"hasLocationTokens"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"hasLocationTokens"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -156,7 +156,7 @@
     }
 
     v37 = v9;
-    v10 = [v4 objectForKeyedSubscript:@"hasActionTokens"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"hasActionTokens"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -164,7 +164,7 @@
     }
 
     v11 = v7;
-    v12 = [v4 objectForKeyedSubscript:@"hasMediaTypeTokens"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"hasMediaTypeTokens"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -172,14 +172,14 @@
     }
 
     v13 = v6;
-    v14 = [v4 objectForKeyedSubscript:@"hasVisualQualityTokens"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"hasVisualQualityTokens"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBQueryUnderstandingParse setHasVisualQualityTokens:](v5, "setHasVisualQualityTokens:", [v14 BOOLValue]);
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"hasNounTokens"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"hasNounTokens"];
     objc_opt_class();
     v43 = v15;
     if (objc_opt_isKindOfClass())
@@ -187,7 +187,7 @@
       -[_SFPBQueryUnderstandingParse setHasNounTokens:](v5, "setHasNounTokens:", [v15 BOOLValue]);
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"hasTimeTokens"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"hasTimeTokens"];
     objc_opt_class();
     v42 = v16;
     v17 = v13;
@@ -196,7 +196,7 @@
       -[_SFPBQueryUnderstandingParse setHasTimeTokens:](v5, "setHasTimeTokens:", [v42 BOOLValue]);
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"hasEventTokens"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"hasEventTokens"];
     objc_opt_class();
     v41 = v18;
     v19 = v11;
@@ -205,14 +205,14 @@
       -[_SFPBQueryUnderstandingParse setHasEventTokens:](v5, "setHasEventTokens:", [v41 BOOLValue]);
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"hasGenericLocationTokens"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"hasGenericLocationTokens"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBQueryUnderstandingParse setHasGenericLocationTokens:](v5, "setHasGenericLocationTokens:", [v20 BOOLValue]);
     }
 
-    v21 = [v4 objectForKeyedSubscript:@"hasCaptureDeviceTokens"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"hasCaptureDeviceTokens"];
     objc_opt_class();
     v40 = v21;
     if (objc_opt_isKindOfClass())
@@ -221,7 +221,7 @@
     }
 
     v36 = v10;
-    v22 = [v4 objectForKeyedSubscript:@"hasFavoritedTokens"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"hasFavoritedTokens"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -229,7 +229,7 @@
     }
 
     v35 = v12;
-    v23 = [v4 objectForKeyedSubscript:@"hasSourceAppTokens"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"hasSourceAppTokens"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -237,7 +237,7 @@
     }
 
     v34 = v14;
-    v24 = [v4 objectForKeyedSubscript:@"hasPersonTokens"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"hasPersonTokens"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -245,7 +245,7 @@
     }
 
     v39 = v17;
-    v25 = [v4 objectForKeyedSubscript:@"hasPersonSenderTokens"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"hasPersonSenderTokens"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -253,7 +253,7 @@
     }
 
     v38 = v19;
-    v26 = [v4 objectForKeyedSubscript:{@"spotlightQueryIntent", v22}];
+    v26 = [dictionaryCopy objectForKeyedSubscript:{@"spotlightQueryIntent", v22}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -261,14 +261,14 @@
     }
 
     v27 = v20;
-    v28 = [v4 objectForKeyedSubscript:@"isUnsafeQuery"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"isUnsafeQuery"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBQueryUnderstandingParse setIsUnsafeQuery:](v5, "setIsUnsafeQuery:", [v28 BOOLValue]);
     }
 
-    v29 = [v4 objectForKeyedSubscript:@"isBlocklistedQuery"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"isBlocklistedQuery"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -281,30 +281,30 @@
   return v5;
 }
 
-- (_SFPBQueryUnderstandingParse)initWithJSON:(id)a3
+- (_SFPBQueryUnderstandingParse)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBQueryUnderstandingParse *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBQueryUnderstandingParse *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBQueryUnderstandingParse *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -317,142 +317,142 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_hasActionTokens)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBQueryUnderstandingParse hasActionTokens](self, "hasActionTokens")}];
-    [v3 setObject:v4 forKeyedSubscript:@"hasActionTokens"];
+    [dictionary setObject:v4 forKeyedSubscript:@"hasActionTokens"];
   }
 
   if (self->_hasCaptureDeviceTokens)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBQueryUnderstandingParse hasCaptureDeviceTokens](self, "hasCaptureDeviceTokens")}];
-    [v3 setObject:v5 forKeyedSubscript:@"hasCaptureDeviceTokens"];
+    [dictionary setObject:v5 forKeyedSubscript:@"hasCaptureDeviceTokens"];
   }
 
   if (self->_hasEventTokens)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBQueryUnderstandingParse hasEventTokens](self, "hasEventTokens")}];
-    [v3 setObject:v6 forKeyedSubscript:@"hasEventTokens"];
+    [dictionary setObject:v6 forKeyedSubscript:@"hasEventTokens"];
   }
 
   if (self->_hasFavoritedTokens)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBQueryUnderstandingParse hasFavoritedTokens](self, "hasFavoritedTokens")}];
-    [v3 setObject:v7 forKeyedSubscript:@"hasFavoritedTokens"];
+    [dictionary setObject:v7 forKeyedSubscript:@"hasFavoritedTokens"];
   }
 
   if (self->_hasGenericLocationTokens)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBQueryUnderstandingParse hasGenericLocationTokens](self, "hasGenericLocationTokens")}];
-    [v3 setObject:v8 forKeyedSubscript:@"hasGenericLocationTokens"];
+    [dictionary setObject:v8 forKeyedSubscript:@"hasGenericLocationTokens"];
   }
 
   if (self->_hasLocationTokens)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBQueryUnderstandingParse hasLocationTokens](self, "hasLocationTokens")}];
-    [v3 setObject:v9 forKeyedSubscript:@"hasLocationTokens"];
+    [dictionary setObject:v9 forKeyedSubscript:@"hasLocationTokens"];
   }
 
   if (self->_hasMediaTypeTokens)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBQueryUnderstandingParse hasMediaTypeTokens](self, "hasMediaTypeTokens")}];
-    [v3 setObject:v10 forKeyedSubscript:@"hasMediaTypeTokens"];
+    [dictionary setObject:v10 forKeyedSubscript:@"hasMediaTypeTokens"];
   }
 
   if (self->_hasNounTokens)
   {
     v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBQueryUnderstandingParse hasNounTokens](self, "hasNounTokens")}];
-    [v3 setObject:v11 forKeyedSubscript:@"hasNounTokens"];
+    [dictionary setObject:v11 forKeyedSubscript:@"hasNounTokens"];
   }
 
   if (self->_hasPersonSenderTokens)
   {
     v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBQueryUnderstandingParse hasPersonSenderTokens](self, "hasPersonSenderTokens")}];
-    [v3 setObject:v12 forKeyedSubscript:@"hasPersonSenderTokens"];
+    [dictionary setObject:v12 forKeyedSubscript:@"hasPersonSenderTokens"];
   }
 
   if (self->_hasPersonTokens)
   {
     v13 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBQueryUnderstandingParse hasPersonTokens](self, "hasPersonTokens")}];
-    [v3 setObject:v13 forKeyedSubscript:@"hasPersonTokens"];
+    [dictionary setObject:v13 forKeyedSubscript:@"hasPersonTokens"];
   }
 
   if (self->_hasSortCriteriaTokens)
   {
     v14 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBQueryUnderstandingParse hasSortCriteriaTokens](self, "hasSortCriteriaTokens")}];
-    [v3 setObject:v14 forKeyedSubscript:@"hasSortCriteriaTokens"];
+    [dictionary setObject:v14 forKeyedSubscript:@"hasSortCriteriaTokens"];
   }
 
   if (self->_hasSourceAppTokens)
   {
     v15 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBQueryUnderstandingParse hasSourceAppTokens](self, "hasSourceAppTokens")}];
-    [v3 setObject:v15 forKeyedSubscript:@"hasSourceAppTokens"];
+    [dictionary setObject:v15 forKeyedSubscript:@"hasSourceAppTokens"];
   }
 
   if (self->_hasTimeTokens)
   {
     v16 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBQueryUnderstandingParse hasTimeTokens](self, "hasTimeTokens")}];
-    [v3 setObject:v16 forKeyedSubscript:@"hasTimeTokens"];
+    [dictionary setObject:v16 forKeyedSubscript:@"hasTimeTokens"];
   }
 
   if (self->_hasUnspecifiedTokens)
   {
     v17 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBQueryUnderstandingParse hasUnspecifiedTokens](self, "hasUnspecifiedTokens")}];
-    [v3 setObject:v17 forKeyedSubscript:@"hasUnspecifiedTokens"];
+    [dictionary setObject:v17 forKeyedSubscript:@"hasUnspecifiedTokens"];
   }
 
   if (self->_hasVisualQualityTokens)
   {
     v18 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBQueryUnderstandingParse hasVisualQualityTokens](self, "hasVisualQualityTokens")}];
-    [v3 setObject:v18 forKeyedSubscript:@"hasVisualQualityTokens"];
+    [dictionary setObject:v18 forKeyedSubscript:@"hasVisualQualityTokens"];
   }
 
   if (self->_isBlocklistedQuery)
   {
     v19 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBQueryUnderstandingParse isBlocklistedQuery](self, "isBlocklistedQuery")}];
-    [v3 setObject:v19 forKeyedSubscript:@"isBlocklistedQuery"];
+    [dictionary setObject:v19 forKeyedSubscript:@"isBlocklistedQuery"];
   }
 
   if (self->_isUnsafeQuery)
   {
     v20 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBQueryUnderstandingParse isUnsafeQuery](self, "isUnsafeQuery")}];
-    [v3 setObject:v20 forKeyedSubscript:@"isUnsafeQuery"];
+    [dictionary setObject:v20 forKeyedSubscript:@"isUnsafeQuery"];
   }
 
   if (self->_queryIntentType)
   {
-    v21 = [(_SFPBQueryUnderstandingParse *)self queryIntentType];
-    if (v21 >= 4)
+    queryIntentType = [(_SFPBQueryUnderstandingParse *)self queryIntentType];
+    if (queryIntentType >= 4)
     {
-      v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v21];
+      v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", queryIntentType];
     }
 
     else
     {
-      v22 = off_1E7ACE560[v21];
+      v22 = off_1E7ACE560[queryIntentType];
     }
 
-    [v3 setObject:v22 forKeyedSubscript:@"queryIntentType"];
+    [dictionary setObject:v22 forKeyedSubscript:@"queryIntentType"];
   }
 
   if (self->_spotlightQueryIntent)
   {
-    v23 = [(_SFPBQueryUnderstandingParse *)self spotlightQueryIntent];
-    if (v23 >= 5)
+    spotlightQueryIntent = [(_SFPBQueryUnderstandingParse *)self spotlightQueryIntent];
+    if (spotlightQueryIntent >= 5)
     {
-      v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v23];
+      v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", spotlightQueryIntent];
     }
 
     else
     {
-      v24 = off_1E7ACE448[v23];
+      v24 = off_1E7ACE448[spotlightQueryIntent];
     }
 
-    [v3 setObject:v24 forKeyedSubscript:@"spotlightQueryIntent"];
+    [dictionary setObject:v24 forKeyedSubscript:@"spotlightQueryIntent"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -626,85 +626,85 @@
   return v3 ^ v4 ^ v5 ^ v6 ^ (2654435761 * self->_queryIntentType) ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ (2654435761 * self->_spotlightQueryIntent) ^ v18 ^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
   queryIntentType = self->_queryIntentType;
-  if (queryIntentType != [v4 queryIntentType])
+  if (queryIntentType != [equalCopy queryIntentType])
   {
     goto LABEL_21;
   }
 
   hasUnspecifiedTokens = self->_hasUnspecifiedTokens;
-  if (hasUnspecifiedTokens != [v4 hasUnspecifiedTokens])
+  if (hasUnspecifiedTokens != [equalCopy hasUnspecifiedTokens])
   {
     goto LABEL_21;
   }
 
   hasSortCriteriaTokens = self->_hasSortCriteriaTokens;
-  if (hasSortCriteriaTokens != [v4 hasSortCriteriaTokens])
+  if (hasSortCriteriaTokens != [equalCopy hasSortCriteriaTokens])
   {
     goto LABEL_21;
   }
 
   hasLocationTokens = self->_hasLocationTokens;
-  if (hasLocationTokens != [v4 hasLocationTokens])
+  if (hasLocationTokens != [equalCopy hasLocationTokens])
   {
     goto LABEL_21;
   }
 
   hasActionTokens = self->_hasActionTokens;
-  if (hasActionTokens != [v4 hasActionTokens])
+  if (hasActionTokens != [equalCopy hasActionTokens])
   {
     goto LABEL_21;
   }
 
   hasMediaTypeTokens = self->_hasMediaTypeTokens;
-  if (hasMediaTypeTokens != [v4 hasMediaTypeTokens])
+  if (hasMediaTypeTokens != [equalCopy hasMediaTypeTokens])
   {
     goto LABEL_21;
   }
 
   hasVisualQualityTokens = self->_hasVisualQualityTokens;
-  if (hasVisualQualityTokens != [v4 hasVisualQualityTokens])
+  if (hasVisualQualityTokens != [equalCopy hasVisualQualityTokens])
   {
     goto LABEL_21;
   }
 
   hasNounTokens = self->_hasNounTokens;
-  if (hasNounTokens != [v4 hasNounTokens])
+  if (hasNounTokens != [equalCopy hasNounTokens])
   {
     goto LABEL_21;
   }
 
   hasTimeTokens = self->_hasTimeTokens;
-  if (hasTimeTokens != [v4 hasTimeTokens])
+  if (hasTimeTokens != [equalCopy hasTimeTokens])
   {
     goto LABEL_21;
   }
 
   hasEventTokens = self->_hasEventTokens;
-  if (hasEventTokens != [v4 hasEventTokens])
+  if (hasEventTokens != [equalCopy hasEventTokens])
   {
     goto LABEL_21;
   }
 
   hasGenericLocationTokens = self->_hasGenericLocationTokens;
-  if (hasGenericLocationTokens != [v4 hasGenericLocationTokens])
+  if (hasGenericLocationTokens != [equalCopy hasGenericLocationTokens])
   {
     goto LABEL_21;
   }
 
   hasCaptureDeviceTokens = self->_hasCaptureDeviceTokens;
-  if (hasCaptureDeviceTokens == [v4 hasCaptureDeviceTokens] && (hasFavoritedTokens = self->_hasFavoritedTokens, hasFavoritedTokens == objc_msgSend(v4, "hasFavoritedTokens")) && (hasSourceAppTokens = self->_hasSourceAppTokens, hasSourceAppTokens == objc_msgSend(v4, "hasSourceAppTokens")) && (hasPersonTokens = self->_hasPersonTokens, hasPersonTokens == objc_msgSend(v4, "hasPersonTokens")) && (hasPersonSenderTokens = self->_hasPersonSenderTokens, hasPersonSenderTokens == objc_msgSend(v4, "hasPersonSenderTokens")) && (spotlightQueryIntent = self->_spotlightQueryIntent, spotlightQueryIntent == objc_msgSend(v4, "spotlightQueryIntent")) && (isUnsafeQuery = self->_isUnsafeQuery, isUnsafeQuery == objc_msgSend(v4, "isUnsafeQuery")))
+  if (hasCaptureDeviceTokens == [equalCopy hasCaptureDeviceTokens] && (hasFavoritedTokens = self->_hasFavoritedTokens, hasFavoritedTokens == objc_msgSend(equalCopy, "hasFavoritedTokens")) && (hasSourceAppTokens = self->_hasSourceAppTokens, hasSourceAppTokens == objc_msgSend(equalCopy, "hasSourceAppTokens")) && (hasPersonTokens = self->_hasPersonTokens, hasPersonTokens == objc_msgSend(equalCopy, "hasPersonTokens")) && (hasPersonSenderTokens = self->_hasPersonSenderTokens, hasPersonSenderTokens == objc_msgSend(equalCopy, "hasPersonSenderTokens")) && (spotlightQueryIntent = self->_spotlightQueryIntent, spotlightQueryIntent == objc_msgSend(equalCopy, "spotlightQueryIntent")) && (isUnsafeQuery = self->_isUnsafeQuery, isUnsafeQuery == objc_msgSend(equalCopy, "isUnsafeQuery")))
   {
     isBlocklistedQuery = self->_isBlocklistedQuery;
-    v24 = isBlocklistedQuery == [v4 isBlocklistedQuery];
+    v24 = isBlocklistedQuery == [equalCopy isBlocklistedQuery];
   }
 
   else
@@ -716,9 +716,9 @@ LABEL_21:
   return v24;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ([(_SFPBQueryUnderstandingParse *)self queryIntentType])
   {
     PBDataWriterWriteInt32Field();

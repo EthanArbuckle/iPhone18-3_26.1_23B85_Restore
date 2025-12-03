@@ -1,11 +1,11 @@
 @interface CardDAVAgent
 + (OS_os_log)os_log_summary;
-- (BOOL)APSTopicHasValidPrefix:(id)a3;
-- (BOOL)_syncResultForFolderWithURL:(id)a3 newTag:(id)a4 newSyncToken:(id)a5 actions:(id)a6 changeIdContext:(id)a7 isInitialSync:(BOOL)a8 arePartialResults:(BOOL)a9 externalURLForNewLocation:(id)a10;
+- (BOOL)APSTopicHasValidPrefix:(id)prefix;
+- (BOOL)_syncResultForFolderWithURL:(id)l newTag:(id)tag newSyncToken:(id)token actions:(id)actions changeIdContext:(id)context isInitialSync:(BOOL)sync arePartialResults:(BOOL)results externalURLForNewLocation:(id)self0;
 - (BOOL)_updateMeCard;
 - (BOOL)isAccountOwnerChildInFamilyCircle;
 - (BOOL)isPrimaryICloudAccount;
-- (CardDAVAgent)initWithAccount:(id)a3;
+- (CardDAVAgent)initWithAccount:(id)account;
 - (NSString)onBehalfOfBundleIdentifier;
 - (NSString)scheduleIdentifier;
 - (NSString)waiterID;
@@ -19,38 +19,38 @@
 - (id)initialActionsDataSource;
 - (id)password;
 - (id)publicContainerProviderSummaryInfo;
-- (id)setupCardDAVDelegateManager:(id)a3;
+- (id)setupCardDAVDelegateManager:(id)manager;
 - (id)username;
-- (void)_addressBookSyncTask:(id)a3 failedWithErrorCode:(int64_t)a4;
-- (void)_appendSyncRequest:(id)a3;
+- (void)_addressBookSyncTask:(id)task failedWithErrorCode:(int64_t)code;
+- (void)_appendSyncRequest:(id)request;
 - (void)_contactsDidChange;
-- (void)_finishInitialSyncForFolderWithURL:(id)a3 context:(id)a4;
+- (void)_finishInitialSyncForFolderWithURL:(id)l context:(id)context;
 - (void)_fireWaitingFolderItemSyncRequests;
-- (void)_handlePotential503Error:(id)a3;
-- (void)_holdingDataClassLock_refreshPropertiesOfAllContactFoldersWithCompletion:(id)a3;
-- (void)_pushInitialSyncActionsForFolderWithURL:(id)a3 context:(id)a4;
-- (void)_reallySyncRequest:(id)a3;
+- (void)_handlePotential503Error:(id)error;
+- (void)_holdingDataClassLock_refreshPropertiesOfAllContactFoldersWithCompletion:(id)completion;
+- (void)_pushInitialSyncActionsForFolderWithURL:(id)l context:(id)context;
+- (void)_reallySyncRequest:(id)request;
 - (void)_setUpABNotifications;
-- (void)_successfullyFinishedInitialSyncForFolderWithID:(id)a3 context:(id)a4;
-- (void)_syncRequest:(id)a3;
+- (void)_successfullyFinishedInitialSyncForFolderWithID:(id)d context:(id)context;
+- (void)_syncRequest:(id)request;
 - (void)_tearDownABNotifications;
-- (void)_validateAndSync:(BOOL)a3;
-- (void)account:(id)a3 isValid:(BOOL)a4 validationError:(id)a5;
-- (void)actionFailed:(int64_t)a3 forTask:(id)a4 error:(id)a5;
-- (void)contactsFolderWithId:(id)a3 successfullyPushedActions:(id)a4;
-- (void)failedToFinishInitialSync:(id)a3 error:(id)a4;
-- (void)failedToRetrieveAddressBookURLsWithError:(id)a3;
-- (void)failedToUpdateServerMeCardWithError:(id)a3;
-- (void)refreshCollections:(id)a3 withReason:(int)a4;
-- (void)refreshPropertiesOfAllContactFoldersWithCompletion:(id)a3;
-- (void)requestAgentStopMonitoringWithCompletionBlock:(id)a3;
+- (void)_validateAndSync:(BOOL)sync;
+- (void)account:(id)account isValid:(BOOL)valid validationError:(id)error;
+- (void)actionFailed:(int64_t)failed forTask:(id)task error:(id)error;
+- (void)contactsFolderWithId:(id)id successfullyPushedActions:(id)actions;
+- (void)failedToFinishInitialSync:(id)sync error:(id)error;
+- (void)failedToRetrieveAddressBookURLsWithError:(id)error;
+- (void)failedToUpdateServerMeCardWithError:(id)error;
+- (void)refreshCollections:(id)collections withReason:(int)reason;
+- (void)refreshPropertiesOfAllContactFoldersWithCompletion:(id)completion;
+- (void)requestAgentStopMonitoringWithCompletionBlock:(id)block;
 - (void)startMonitoring;
-- (void)successfullyFinishedInitalUploadForFolderWithID:(id)a3 container:(id)a4 guardianRestrictedUUIDs:(id)a5 guardianRestrictedHREFs:(id)a6 blacklistedUUIDs:(id)a7 blacklistedHREFs:(id)a8 context:(id)a9;
+- (void)successfullyFinishedInitalUploadForFolderWithID:(id)d container:(id)container guardianRestrictedUUIDs:(id)ds guardianRestrictedHREFs:(id)fs blacklistedUUIDs:(id)iDs blacklistedHREFs:(id)eFs context:(id)context;
 - (void)successfullyRetrievedAddressBookURLs;
-- (void)successfullyUpdatedServerMeCardWithURL:(id)a3;
-- (void)syncFolderIDs:(id)a3 forDataclasses:(int64_t)a4 isUserRequested:(BOOL)a5;
-- (void)syncResultForContactsFolder:(id)a3 newTag:(id)a4 previousTag:(id)a5 newSyncToken:(id)a6 actions:(id)a7 results:(id)a8 changeIdContext:(id)a9 isInitialSync:(BOOL)a10 moreAvailable:(BOOL)a11 moreLocalChangesAvailable:(BOOL)a12 pushedActions:(id)a13;
-- (void)syncResultForContactsFolder:(id)a3 newTag:(id)a4 previousTag:(id)a5 newSyncToken:(id)a6 actions:(id)a7 results:(id)a8 changeIdContext:(id)a9 isInitialSync:(BOOL)a10 moreAvailable:(BOOL)a11 moreLocalChangesAvailable:(BOOL)a12 pushedActions:(id)a13 externalURLForNewLocation:(id)a14;
+- (void)successfullyUpdatedServerMeCardWithURL:(id)l;
+- (void)syncFolderIDs:(id)ds forDataclasses:(int64_t)dataclasses isUserRequested:(BOOL)requested;
+- (void)syncResultForContactsFolder:(id)folder newTag:(id)tag previousTag:(id)previousTag newSyncToken:(id)token actions:(id)actions results:(id)results changeIdContext:(id)context isInitialSync:(BOOL)self0 moreAvailable:(BOOL)self1 moreLocalChangesAvailable:(BOOL)self2 pushedActions:(id)self3;
+- (void)syncResultForContactsFolder:(id)folder newTag:(id)tag previousTag:(id)previousTag newSyncToken:(id)token actions:(id)actions results:(id)results changeIdContext:(id)context isInitialSync:(BOOL)self0 moreAvailable:(BOOL)self1 moreLocalChangesAvailable:(BOOL)self2 pushedActions:(id)self3 externalURLForNewLocation:(id)self4;
 @end
 
 @implementation CardDAVAgent
@@ -67,12 +67,12 @@
   return v3;
 }
 
-- (CardDAVAgent)initWithAccount:(id)a3
+- (CardDAVAgent)initWithAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v16.receiver = self;
   v16.super_class = CardDAVAgent;
-  v5 = [(CardDAVAgent *)&v16 initWithAccount:v4];
+  v5 = [(CardDAVAgent *)&v16 initWithAccount:accountCopy];
   if (v5)
   {
     v6 = objc_alloc_init(NSLock);
@@ -87,8 +87,8 @@
     folderURLToSyncInfo = v5->_folderURLToSyncInfo;
     v5->_folderURLToSyncInfo = v10;
 
-    v12 = [v4 backingAccountInfo];
-    v13 = [(CardDAVAgent *)v5 setupCardDAVDelegateManager:v12];
+    backingAccountInfo = [accountCopy backingAccountInfo];
+    v13 = [(CardDAVAgent *)v5 setupCardDAVDelegateManager:backingAccountInfo];
     delegateManager = v5->_delegateManager;
     v5->_delegateManager = v13;
   }
@@ -98,25 +98,25 @@
 
 - (id)databaseHelper
 {
-  v2 = [(CardDAVAgent *)self account];
-  v3 = [v2 databaseHelper];
+  account = [(CardDAVAgent *)self account];
+  databaseHelper = [account databaseHelper];
 
-  return v3;
+  return databaseHelper;
 }
 
-- (id)setupCardDAVDelegateManager:(id)a3
+- (id)setupCardDAVDelegateManager:(id)manager
 {
-  v4 = a3;
-  v5 = [v4 parentAccount];
-  v6 = [v5 aa_isAccountClass:AAAccountClassPrimary];
+  managerCopy = manager;
+  parentAccount = [managerCopy parentAccount];
+  v6 = [parentAccount aa_isAccountClass:AAAccountClassPrimary];
 
   if (v6)
   {
     v7 = objc_alloc_init(CardDAViCloudDelegateInfoProvider);
     v8 = [CardDAVDelegateManager alloc];
-    v9 = [v4 identifier];
-    v10 = [(CardDAVAgent *)self databaseHelper];
-    v11 = [(CardDAVDelegateManager *)v8 initWithDelegateInfoProvider:v7 accountID:v9 databaseHelper:v10];
+    identifier = [managerCopy identifier];
+    databaseHelper = [(CardDAVAgent *)self databaseHelper];
+    v11 = [(CardDAVDelegateManager *)v8 initWithDelegateInfoProvider:v7 accountID:identifier databaseHelper:databaseHelper];
   }
 
   else
@@ -130,17 +130,17 @@
 - (id)contactsProvider
 {
   v3 = +[DABehaviorOptions useContactsFramework];
-  v4 = [(CardDAVAgent *)self databaseHelper];
-  v5 = v4;
+  databaseHelper = [(CardDAVAgent *)self databaseHelper];
+  v5 = databaseHelper;
   if (v3)
   {
-    v6 = [v4 contactStore];
-    v7 = [DAContactsProvider providerWithContactStore:v6];
+    contactStore = [databaseHelper contactStore];
+    v7 = [DAContactsProvider providerWithContactStore:contactStore];
   }
 
   else
   {
-    v7 = +[DAContactsProvider providerWithAddressBook:](DAContactsProvider, "providerWithAddressBook:", [v4 abDB]);
+    v7 = +[DAContactsProvider providerWithAddressBook:](DAContactsProvider, "providerWithAddressBook:", [databaseHelper abDB]);
   }
 
   return v7;
@@ -149,17 +149,17 @@
 - (id)containerProvider
 {
   v3 = +[DABehaviorOptions useContactsFramework];
-  v4 = [(CardDAVAgent *)self databaseHelper];
-  v5 = v4;
+  databaseHelper = [(CardDAVAgent *)self databaseHelper];
+  v5 = databaseHelper;
   if (v3)
   {
-    v6 = [v4 contactStore];
-    v7 = [DAContainerProvider providerWithContactStore:v6];
+    contactStore = [databaseHelper contactStore];
+    v7 = [DAContainerProvider providerWithContactStore:contactStore];
   }
 
   else
   {
-    v7 = +[DAContainerProvider providerWithAddressBook:](DAContainerProvider, "providerWithAddressBook:", [v4 abDB]);
+    v7 = +[DAContainerProvider providerWithAddressBook:](DAContainerProvider, "providerWithAddressBook:", [databaseHelper abDB]);
   }
 
   return v7;
@@ -168,17 +168,17 @@
 - (id)groupsProvider
 {
   v3 = +[DABehaviorOptions useContactsFramework];
-  v4 = [(CardDAVAgent *)self databaseHelper];
-  v5 = v4;
+  databaseHelper = [(CardDAVAgent *)self databaseHelper];
+  v5 = databaseHelper;
   if (v3)
   {
-    v6 = [v4 contactStore];
-    v7 = [DAGroupsProvider providerWithContactStore:v6];
+    contactStore = [databaseHelper contactStore];
+    v7 = [DAGroupsProvider providerWithContactStore:contactStore];
   }
 
   else
   {
-    v7 = +[DAGroupsProvider providerWithAddressBook:](DAGroupsProvider, "providerWithAddressBook:", [v4 abDB]);
+    v7 = +[DAGroupsProvider providerWithAddressBook:](DAGroupsProvider, "providerWithAddressBook:", [databaseHelper abDB]);
   }
 
   return v7;
@@ -187,17 +187,17 @@
 - (id)initialActionsDataSource
 {
   v3 = +[DABehaviorOptions useContactsFramework];
-  v4 = [(CardDAVAgent *)self databaseHelper];
-  v5 = v4;
+  databaseHelper = [(CardDAVAgent *)self databaseHelper];
+  v5 = databaseHelper;
   if (v3)
   {
-    v6 = [v4 contactStore];
-    v7 = [CardDAVInitialActionsDataSource dataSourceWithContactStore:v6];
+    contactStore = [databaseHelper contactStore];
+    v7 = [CardDAVInitialActionsDataSource dataSourceWithContactStore:contactStore];
   }
 
   else
   {
-    v7 = +[CardDAVInitialActionsDataSource dataSourceWithAddressBook:](CardDAVInitialActionsDataSource, "dataSourceWithAddressBook:", [v4 abDB]);
+    v7 = +[CardDAVInitialActionsDataSource dataSourceWithAddressBook:](CardDAVInitialActionsDataSource, "dataSourceWithAddressBook:", [databaseHelper abDB]);
   }
 
   return v7;
@@ -206,17 +206,17 @@
 - (id)actionsDataSource
 {
   v3 = +[DABehaviorOptions useContactsFramework];
-  v4 = [(CardDAVAgent *)self databaseHelper];
-  v5 = v4;
+  databaseHelper = [(CardDAVAgent *)self databaseHelper];
+  v5 = databaseHelper;
   if (v3)
   {
-    v6 = [v4 contactStore];
-    v7 = [CardDAVActionsDataSource dataSourceWithContactStore:v6];
+    contactStore = [databaseHelper contactStore];
+    v7 = [CardDAVActionsDataSource dataSourceWithContactStore:contactStore];
   }
 
   else
   {
-    v7 = +[CardDAVActionsDataSource dataSourceWithAddressBook:](CardDAVActionsDataSource, "dataSourceWithAddressBook:", [v4 abDB]);
+    v7 = +[CardDAVActionsDataSource dataSourceWithAddressBook:](CardDAVActionsDataSource, "dataSourceWithAddressBook:", [databaseHelper abDB]);
   }
 
   return v7;
@@ -225,17 +225,17 @@
 - (id)actionsHandler
 {
   v3 = +[DABehaviorOptions useContactsFramework];
-  v4 = [(CardDAVAgent *)self databaseHelper];
-  v5 = v4;
+  databaseHelper = [(CardDAVAgent *)self databaseHelper];
+  v5 = databaseHelper;
   if (v3)
   {
-    v6 = [v4 contactStore];
-    v7 = [CardDAVActionsHandler handlerWithContactStore:v6];
+    contactStore = [databaseHelper contactStore];
+    v7 = [CardDAVActionsHandler handlerWithContactStore:contactStore];
   }
 
   else
   {
-    v7 = +[CardDAVActionsHandler handlerWithAddressBook:](CardDAVActionsHandler, "handlerWithAddressBook:", [v4 abDB]);
+    v7 = +[CardDAVActionsHandler handlerWithAddressBook:](CardDAVActionsHandler, "handlerWithAddressBook:", [databaseHelper abDB]);
   }
 
   return v7;
@@ -244,67 +244,67 @@
 - (id)actionsFinalizer
 {
   v3 = +[DABehaviorOptions useContactsFramework];
-  v4 = [(CardDAVAgent *)self databaseHelper];
-  v5 = v4;
+  databaseHelper = [(CardDAVAgent *)self databaseHelper];
+  v5 = databaseHelper;
   if (v3)
   {
-    v6 = [v4 contactStore];
-    v7 = [CardDAVActionsFinalizer finalizerWithContactStore:v6];
+    contactStore = [databaseHelper contactStore];
+    v7 = [CardDAVActionsFinalizer finalizerWithContactStore:contactStore];
   }
 
   else
   {
-    v7 = +[CardDAVActionsFinalizer finalizerWithAddressBook:](CardDAVActionsFinalizer, "finalizerWithAddressBook:", [v4 abDB]);
+    v7 = +[CardDAVActionsFinalizer finalizerWithAddressBook:](CardDAVActionsFinalizer, "finalizerWithAddressBook:", [databaseHelper abDB]);
   }
 
   return v7;
 }
 
-- (void)_validateAndSync:(BOOL)a3
+- (void)_validateAndSync:(BOOL)sync
 {
-  if (a3)
+  if (sync)
   {
-    v5 = [(CardDAVAgent *)self account];
-    [v5 setWasUserInitiated:1];
+    account = [(CardDAVAgent *)self account];
+    [account setWasUserInitiated:1];
   }
 
   if ([(CardDAVAgent *)self isWaitingForPassword])
   {
-    v6 = [objc_opt_class() os_log_summary];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    os_log_summary = [objc_opt_class() os_log_summary];
+    if (os_log_type_enabled(os_log_summary, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(CardDAVAgent *)self account];
-      v8 = [v7 accountDescription];
-      v9 = [(CardDAVAgent *)self account];
-      v10 = [v9 publicDescription];
+      account2 = [(CardDAVAgent *)self account];
+      accountDescription = [account2 accountDescription];
+      account3 = [(CardDAVAgent *)self account];
+      publicDescription = [account3 publicDescription];
       *buf = 138412546;
-      v24 = v8;
+      v24 = accountDescription;
       v25 = 2114;
-      v26 = v10;
+      v26 = publicDescription;
       v11 = "Account %@ (%{public}@) is waiting for a password, so we're going to ignore this refresh request";
 LABEL_9:
-      _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, v11, buf, 0x16u);
+      _os_log_impl(&dword_0, os_log_summary, OS_LOG_TYPE_DEFAULT, v11, buf, 0x16u);
     }
   }
 
   else
   {
-    v12 = [(CardDAVAgent *)self account];
-    v13 = [v12 shouldFailAllTasks];
+    account4 = [(CardDAVAgent *)self account];
+    shouldFailAllTasks = [account4 shouldFailAllTasks];
 
-    if (v13)
+    if (shouldFailAllTasks)
     {
-      v6 = [objc_opt_class() os_log_summary];
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+      os_log_summary = [objc_opt_class() os_log_summary];
+      if (os_log_type_enabled(os_log_summary, OS_LOG_TYPE_DEFAULT))
       {
-        v7 = [(CardDAVAgent *)self account];
-        v8 = [v7 accountDescription];
-        v9 = [(CardDAVAgent *)self account];
-        v10 = [v9 publicDescription];
+        account2 = [(CardDAVAgent *)self account];
+        accountDescription = [account2 accountDescription];
+        account3 = [(CardDAVAgent *)self account];
+        publicDescription = [account3 publicDescription];
         *buf = 138412546;
-        v24 = v8;
+        v24 = accountDescription;
         v25 = 2114;
-        v26 = v10;
+        v26 = publicDescription;
         v11 = "Account %@ (%{public}@) thinks it should fail all tasks.  Doing so";
         goto LABEL_9;
       }
@@ -312,37 +312,37 @@ LABEL_9:
 
     else
     {
-      v14 = [(CardDAVAgent *)self account];
-      v15 = [v14 shouldAutodiscoverAccountProperties];
+      account5 = [(CardDAVAgent *)self account];
+      shouldAutodiscoverAccountProperties = [account5 shouldAutodiscoverAccountProperties];
 
-      if (!v15)
+      if (!shouldAutodiscoverAccountProperties)
       {
         v21[0] = _NSConcreteStackBlock;
         v21[1] = 3221225472;
         v21[2] = sub_3E90;
         v21[3] = &unk_3C8D0;
         v21[4] = self;
-        v22 = a3;
+        syncCopy = sync;
         [(CardDAVAgent *)self _probeAndSyncWithBlock:v21];
         return;
       }
 
-      v16 = [objc_opt_class() os_log_summary];
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+      os_log_summary2 = [objc_opt_class() os_log_summary];
+      if (os_log_type_enabled(os_log_summary2, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [(CardDAVAgent *)self account];
-        v18 = [v17 accountDescription];
-        v19 = [(CardDAVAgent *)self account];
-        v20 = [v19 publicDescription];
+        account6 = [(CardDAVAgent *)self account];
+        accountDescription2 = [account6 accountDescription];
+        account7 = [(CardDAVAgent *)self account];
+        publicDescription2 = [account7 publicDescription];
         *buf = 138412546;
-        v24 = v18;
+        v24 = accountDescription2;
         v25 = 2114;
-        v26 = v20;
-        _os_log_impl(&dword_0, v16, OS_LOG_TYPE_DEFAULT, "Account %@ (%{public}@) doesn't have a principal URL. Running autodiscovery.", buf, 0x16u);
+        v26 = publicDescription2;
+        _os_log_impl(&dword_0, os_log_summary2, OS_LOG_TYPE_DEFAULT, "Account %@ (%{public}@) doesn't have a principal URL. Running autodiscovery.", buf, 0x16u);
       }
 
-      v6 = [(CardDAVAgent *)self account];
-      [v6 discoverInitialPropertiesWithConsumer:self];
+      os_log_summary = [(CardDAVAgent *)self account];
+      [os_log_summary discoverInitialPropertiesWithConsumer:self];
     }
   }
 }
@@ -357,18 +357,18 @@ LABEL_9:
 {
   if ([(CardDAVAgent *)self isMonitoring])
   {
-    v3 = [objc_opt_class() os_log_summary];
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+    os_log_summary = [objc_opt_class() os_log_summary];
+    if (os_log_type_enabled(os_log_summary, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(CardDAVAgent *)self account];
-      v5 = [v4 accountDescription];
-      v6 = [(CardDAVAgent *)self account];
-      v7 = [v6 publicDescription];
+      account = [(CardDAVAgent *)self account];
+      accountDescription = [account accountDescription];
+      account2 = [(CardDAVAgent *)self account];
+      publicDescription = [account2 publicDescription];
       v8 = 138412546;
-      v9 = v5;
+      v9 = accountDescription;
       v10 = 2114;
-      v11 = v7;
-      _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "Handling CNContactStoreDidChangeNotification for account %@ (%{public}@); sync will occur", &v8, 0x16u);
+      v11 = publicDescription;
+      _os_log_impl(&dword_0, os_log_summary, OS_LOG_TYPE_DEFAULT, "Handling CNContactStoreDidChangeNotification for account %@ (%{public}@); sync will occur", &v8, 0x16u);
     }
 
     [(CardDAVAgent *)self _validateAndSync:1];
@@ -381,54 +381,54 @@ LABEL_9:
   [v3 removeObserver:self name:CNContactStoreDidChangeNotification object:0];
 }
 
-- (void)account:(id)a3 isValid:(BOOL)a4 validationError:(id)a5
+- (void)account:(id)account isValid:(BOOL)valid validationError:(id)error
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  if (v6 && (-[CardDAVAgent account](self, "account"), v10 = objc_claimAutoreleasedReturnValue(), [v10 principalPath], v11 = objc_claimAutoreleasedReturnValue(), v11, v10, v11))
+  validCopy = valid;
+  accountCopy = account;
+  errorCopy = error;
+  if (validCopy && (-[CardDAVAgent account](self, "account"), v10 = objc_claimAutoreleasedReturnValue(), [v10 principalPath], v11 = objc_claimAutoreleasedReturnValue(), v11, v10, v11))
   {
     v12 = DALoggingwithCategory();
     v13 = _CPLog_to_os_log_type[6];
     if (os_log_type_enabled(v12, v13))
     {
-      v14 = [(CardDAVAgent *)self account];
-      v15 = [v14 accountDescription];
-      v16 = [v8 publicDescription];
+      account = [(CardDAVAgent *)self account];
+      accountDescription = [account accountDescription];
+      publicDescription = [accountCopy publicDescription];
       *buf = 138412546;
-      v27 = v15;
+      v27 = accountDescription;
       v28 = 2114;
-      v29 = v16;
+      v29 = publicDescription;
       _os_log_impl(&dword_0, v12, v13, "Account %@ (%{public}@) was successfully autodiscovered, saving account settings", buf, 0x16u);
     }
 
-    v17 = [(CardDAVAgent *)self account];
-    [v17 setShouldDoInitialAutodiscovery:0];
+    account2 = [(CardDAVAgent *)self account];
+    [account2 setShouldDoInitialAutodiscovery:0];
 
-    v18 = [(CardDAVAgent *)self account];
-    [v18 saveAccountProperties];
+    account3 = [(CardDAVAgent *)self account];
+    [account3 saveAccountProperties];
 
     [(CardDAVAgent *)self refreshFolderListRequireChangedFolders:0 isUserRequested:1];
   }
 
   else
   {
-    v19 = [v9 domain];
-    if ([v19 isEqualToString:DAAccountValidationDomain])
+    domain = [errorCopy domain];
+    if ([domain isEqualToString:DAAccountValidationDomain])
     {
-      v20 = [v9 code];
+      code = [errorCopy code];
 
-      if (v20 == &stru_20.flags + 2)
+      if (code == &stru_20.flags + 2)
       {
         [(CardDAVAgent *)self setIsWaitingForPassword:1];
-        v21 = [(CardDAVAgent *)self account];
+        account4 = [(CardDAVAgent *)self account];
         v24[0] = _NSConcreteStackBlock;
         v24[1] = 3221225472;
         v24[2] = sub_44D4;
         v24[3] = &unk_3C8F8;
         v24[4] = self;
-        v25 = v8;
-        [v21 handleValidationError:v9 completion:v24];
+        v25 = accountCopy;
+        [account4 handleValidationError:errorCopy completion:v24];
 
         goto LABEL_14;
       }
@@ -457,8 +457,8 @@ LABEL_14:
 
 - (void)startMonitoring
 {
-  v3 = [(CardDAVAgent *)self account];
-  v4 = [v3 enabledForDADataclass:2];
+  account = [(CardDAVAgent *)self account];
+  v4 = [account enabledForDADataclass:2];
 
   if (v4)
   {
@@ -472,13 +472,13 @@ LABEL_14:
     objc_copyWeak(&v9, &location);
     [(CardDAVAgent *)self observeReachabilityWithBlock:v8];
     [(CardDAVAgent *)self _setUpABNotifications];
-    v5 = [objc_opt_class() os_log_summary];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    os_log_summary = [objc_opt_class() os_log_summary];
+    if (os_log_type_enabled(os_log_summary, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(CardDAVAgent *)self publicDescription];
+      publicDescription = [(CardDAVAgent *)self publicDescription];
       *buf = 138543362;
-      v12 = v6;
-      _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "DA just woke up; sync will occur with %{public}@.", buf, 0xCu);
+      v12 = publicDescription;
+      _os_log_impl(&dword_0, os_log_summary, OS_LOG_TYPE_DEFAULT, "DA just woke up; sync will occur with %{public}@.", buf, 0xCu);
     }
 
     [(CardDAVAgent *)self _validateAndSync:0];
@@ -490,29 +490,29 @@ LABEL_14:
   }
 }
 
-- (void)requestAgentStopMonitoringWithCompletionBlock:(id)a3
+- (void)requestAgentStopMonitoringWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(CardDAVAgent *)self setIsMonitoring:0];
   v5 = DALoggingwithCategory();
   v6 = _CPLog_to_os_log_type[6];
   if (os_log_type_enabled(v5, v6))
   {
-    v7 = [(CardDAVAgent *)self publicDescription];
+    publicDescription = [(CardDAVAgent *)self publicDescription];
     v14 = 138543362;
-    v15 = v7;
+    v15 = publicDescription;
     _os_log_impl(&dword_0, v5, v6, "The CardDAV agent was told to stop monitoring with %{public}@.", &v14, 0xCu);
   }
 
   [(CardDAVAgent *)self stopObservingReachability];
   [(CardDAVAgent *)self _tearDownABNotifications];
-  v8 = [(CardDAVAgent *)self account];
-  v9 = [v8 taskManager];
-  [v9 shutdown];
+  account = [(CardDAVAgent *)self account];
+  taskManager = [account taskManager];
+  [taskManager shutdown];
 
   v10 = +[DALocalDBGateKeeper sharedGateKeeper];
-  v11 = [(CardDAVAgent *)self account];
-  [v10 unregisterWaiterForDataclassLocks:v11];
+  account2 = [(CardDAVAgent *)self account];
+  [v10 unregisterWaiterForDataclassLocks:account2];
 
   v12 = +[DALocalDBGateKeeper sharedGateKeeper];
   [v12 unregisterWaiterForDataclassLocks:self];
@@ -520,29 +520,29 @@ LABEL_14:
   v13 = +[DARefreshManager sharedManager];
   [v13 unregisterDelegate:self];
 
-  v4[2](v4, self);
+  blockCopy[2](blockCopy, self);
 }
 
-- (void)syncFolderIDs:(id)a3 forDataclasses:(int64_t)a4 isUserRequested:(BOOL)a5
+- (void)syncFolderIDs:(id)ds forDataclasses:(int64_t)dataclasses isUserRequested:(BOOL)requested
 {
-  v5 = a5;
-  v7 = a3;
-  if (v5)
+  requestedCopy = requested;
+  dsCopy = ds;
+  if (requestedCopy)
   {
-    v8 = [(CardDAVAgent *)self account];
-    [v8 setShouldUseOpportunisticSockets:0];
+    account = [(CardDAVAgent *)self account];
+    [account setShouldUseOpportunisticSockets:0];
 
-    v9 = [(CardDAVAgent *)self account];
-    [v9 setWasUserInitiated:1];
+    account2 = [(CardDAVAgent *)self account];
+    [account2 setWasUserInitiated:1];
   }
 
-  if (v7)
+  if (dsCopy)
   {
-    v27 = v7;
+    v27 = dsCopy;
     v10 = objc_opt_new();
-    v26 = self;
-    v11 = [(CardDAVAgent *)self account];
-    v12 = [v11 addressBooksByFolderURL];
+    selfCopy = self;
+    account3 = [(CardDAVAgent *)self account];
+    addressBooksByFolderURL = [account3 addressBooksByFolderURL];
 
     v30 = 0u;
     v31 = 0u;
@@ -565,7 +565,7 @@ LABEL_14:
           }
 
           v19 = [NSURL URLWithString:*(*(&v28 + 1) + 8 * i)];
-          v20 = [v12 objectForKeyedSubscript:v19];
+          v20 = [addressBooksByFolderURL objectForKeyedSubscript:v19];
           if (v20)
           {
             [v13 addObject:v20];
@@ -579,7 +579,7 @@ LABEL_14:
               *buf = 138412546;
               v33 = v19;
               v34 = 2112;
-              v35 = v12;
+              v35 = addressBooksByFolderURL;
               _os_log_impl(&dword_0, v21, v17, "Asked to sync folder with id %@, but I only know of these folders %@", buf, 0x16u);
             }
           }
@@ -591,15 +591,15 @@ LABEL_14:
       while (v15);
     }
 
-    [(CardDAVAgent *)v26 _appendSyncRequestsForFolders:v13 remoteChanges:1];
-    v7 = v27;
+    [(CardDAVAgent *)selfCopy _appendSyncRequestsForFolders:v13 remoteChanges:1];
+    dsCopy = v27;
   }
 
   else
   {
-    v22 = [(CardDAVAgent *)self account];
-    v23 = [v22 addressBooks];
-    v24 = [v23 count];
+    account4 = [(CardDAVAgent *)self account];
+    addressBooks = [account4 addressBooks];
+    v24 = [addressBooks count];
 
     if (v24)
     {
@@ -608,11 +608,11 @@ LABEL_14:
 
     else
     {
-      v25 = [objc_opt_class() os_log_summary];
-      if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
+      os_log_summary = [objc_opt_class() os_log_summary];
+      if (os_log_type_enabled(os_log_summary, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&dword_0, v25, OS_LOG_TYPE_DEFAULT, "DA retry machinations; sync will occur", buf, 2u);
+        _os_log_impl(&dword_0, os_log_summary, OS_LOG_TYPE_DEFAULT, "DA retry machinations; sync will occur", buf, 2u);
       }
 
       [(CardDAVAgent *)self _validateAndSync:0];
@@ -620,16 +620,16 @@ LABEL_14:
   }
 }
 
-- (void)failedToFinishInitialSync:(id)a3 error:(id)a4
+- (void)failedToFinishInitialSync:(id)sync error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 domain];
-  if ([v9 isEqualToString:DAErrorDomain])
+  syncCopy = sync;
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:DAErrorDomain])
   {
-    v10 = [v8 code];
+    code = [errorCopy code];
 
-    if (v10 == &dword_4 + 2)
+    if (code == &dword_4 + 2)
     {
       goto LABEL_8;
     }
@@ -644,48 +644,48 @@ LABEL_14:
   if (os_log_type_enabled(v11, v12))
   {
     Name = sel_getName(a2);
-    v14 = [v8 code];
-    v15 = [v8 domain];
+    code2 = [errorCopy code];
+    domain2 = [errorCopy domain];
     *buf = 136316162;
     v39 = Name;
     v40 = 2112;
-    v41 = v7;
+    v41 = syncCopy;
     v42 = 2048;
-    v43 = v14;
+    v43 = code2;
     v44 = 2114;
-    v45 = v15;
+    v45 = domain2;
     v46 = 2112;
-    v47 = v8;
+    v47 = errorCopy;
     _os_log_impl(&dword_0, v11, v12, "Yikes: %s %@ error code:%ld error domain:%{public}@ error:%@", buf, 0x34u);
   }
 
 LABEL_8:
-  v16 = [NSURL URLWithString:v7];
+  v16 = [NSURL URLWithString:syncCopy];
   [(NSMutableDictionary *)self->_folderURLToSyncInfo removeObjectForKey:v16];
-  [(CardDAVAgent *)self _handlePotential503Error:v8];
-  if ([v8 DA_isFailedDependencyError])
+  [(CardDAVAgent *)self _handlePotential503Error:errorCopy];
+  if ([errorCopy DA_isFailedDependencyError])
   {
-    v17 = [(CardDAVAgent *)self account];
-    v18 = [v17 homeURL];
-    v19 = [v16 da_leastInfoStringRepresentationRelativeToParentURL:v18];
+    account = [(CardDAVAgent *)self account];
+    homeURL = [account homeURL];
+    v19 = [v16 da_leastInfoStringRepresentationRelativeToParentURL:homeURL];
 
     if ((+[DABehaviorOptions useContactsFramework]& 1) == 0)
     {
-      v20 = [(CardDAVAgent *)self databaseHelper];
-      v21 = [(CardDAVAgent *)self account];
-      v22 = [v21 changeTrackingID];
-      [v20 abOpenDBWithClientIdentifier:v22];
+      databaseHelper = [(CardDAVAgent *)self databaseHelper];
+      account2 = [(CardDAVAgent *)self account];
+      changeTrackingID = [account2 changeTrackingID];
+      [databaseHelper abOpenDBWithClientIdentifier:changeTrackingID];
     }
 
-    v23 = [(CardDAVAgent *)self containerProvider];
-    v24 = [(CardDAVAgent *)self account];
-    v25 = [v24 syncStoreIdentifier];
-    v26 = [v23 containerWithExternalIdentifier:v19 forAccountWithExternalIdentifier:v25];
+    containerProvider = [(CardDAVAgent *)self containerProvider];
+    account3 = [(CardDAVAgent *)self account];
+    syncStoreIdentifier = [account3 syncStoreIdentifier];
+    v26 = [containerProvider containerWithExternalIdentifier:v19 forAccountWithExternalIdentifier:syncStoreIdentifier];
 
     if (v26)
     {
-      v27 = [v26 syncData];
-      if (!v27 || ([NSPropertyListSerialization propertyListFromData:v27 mutabilityOption:1 format:0 errorDescription:0], (v28 = objc_claimAutoreleasedReturnValue()) == 0))
+      syncData = [v26 syncData];
+      if (!syncData || ([NSPropertyListSerialization propertyListFromData:syncData mutabilityOption:1 format:0 errorDescription:0], (v28 = objc_claimAutoreleasedReturnValue()) == 0))
       {
         v28 = [NSMutableDictionary dictionaryWithCapacity:1];
       }
@@ -698,11 +698,11 @@ LABEL_8:
         v37 = v19;
         v30 = objc_alloc_init(CNSaveRequest);
         [v26 updateSaveRequest:v30];
-        v31 = [(CardDAVAgent *)self databaseHelper];
-        [v31 addSaveRequest:v30];
+        databaseHelper2 = [(CardDAVAgent *)self databaseHelper];
+        [databaseHelper2 addSaveRequest:v30];
 
-        v32 = [(CardDAVAgent *)self databaseHelper];
-        [v32 executeAllSaveRequests];
+        databaseHelper3 = [(CardDAVAgent *)self databaseHelper];
+        [databaseHelper3 executeAllSaveRequests];
 
         v19 = v37;
       }
@@ -710,15 +710,15 @@ LABEL_8:
 
     if ((+[DABehaviorOptions useContactsFramework]& 1) == 0)
     {
-      v33 = [(CardDAVAgent *)self databaseHelper];
-      [v33 abCloseDBAndSave:v26 != 0];
+      databaseHelper4 = [(CardDAVAgent *)self databaseHelper];
+      [databaseHelper4 abCloseDBAndSave:v26 != 0];
     }
 
-    v34 = [objc_opt_class() os_log_summary];
-    if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
+    os_log_summary = [objc_opt_class() os_log_summary];
+    if (os_log_type_enabled(os_log_summary, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_0, v34, OS_LOG_TYPE_DEFAULT, "Initial sync failed, queue retry", buf, 2u);
+      _os_log_impl(&dword_0, os_log_summary, OS_LOG_TYPE_DEFAULT, "Initial sync failed, queue retry", buf, 2u);
     }
 
     [(CardDAVAgent *)self _syncAllContactFoldersWithRemoteChanges:1];
@@ -734,7 +734,7 @@ LABEL_8:
   [(CardDAVAgent *)self _fireWaitingFolderItemSyncRequests];
 }
 
-- (void)successfullyUpdatedServerMeCardWithURL:(id)a3
+- (void)successfullyUpdatedServerMeCardWithURL:(id)l
 {
   v4 = +[DALocalDBGateKeeper sharedGateKeeper];
   [v4 relinquishLocksForWaiter:self dataclasses:2 moreComing:0];
@@ -747,7 +747,7 @@ LABEL_8:
   [(CardDAVAgent *)self _fireWaitingFolderItemSyncRequests];
 }
 
-- (void)failedToUpdateServerMeCardWithError:(id)a3
+- (void)failedToUpdateServerMeCardWithError:(id)error
 {
   v4 = +[DALocalDBGateKeeper sharedGateKeeper];
   [v4 relinquishLocksForWaiter:self dataclasses:2 moreComing:0];
@@ -756,11 +756,11 @@ LABEL_8:
   [v5 delegateDidCompleteRefresh:self];
 
   [(CardDAVAgent *)self setLastRetryTimeout:0.0];
-  v6 = [objc_opt_class() os_log_summary];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  os_log_summary = [objc_opt_class() os_log_summary];
+  if (os_log_type_enabled(os_log_summary, OS_LOG_TYPE_DEFAULT))
   {
     *v7 = 0;
-    _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Me-card sync failed, queue retry", v7, 2u);
+    _os_log_impl(&dword_0, os_log_summary, OS_LOG_TYPE_DEFAULT, "Me-card sync failed, queue retry", v7, 2u);
   }
 
   [(CardDAVAgent *)self _fireWaitingFolderItemSyncRequests];
@@ -768,17 +768,17 @@ LABEL_8:
 
 - (BOOL)_updateMeCard
 {
-  v2 = self;
-  v3 = [(CardDAVAgent *)self account];
-  LOBYTE(v2) = [v3 updateMeCardWithWithConsumer:v2];
+  selfCopy = self;
+  account = [(CardDAVAgent *)self account];
+  LOBYTE(selfCopy) = [account updateMeCardWithWithConsumer:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)_successfullyFinishedInitialSyncForFolderWithID:(id)a3 context:(id)a4
+- (void)_successfullyFinishedInitialSyncForFolderWithID:(id)d context:(id)context
 {
-  v34 = a4;
-  v6 = [NSURL URLWithString:a3];
+  contextCopy = context;
+  v6 = [NSURL URLWithString:d];
   [(NSMutableDictionary *)self->_folderURLToSyncInfo removeObjectForKey:v6];
   bulkUploadUUIDBlacklist = self->_bulkUploadUUIDBlacklist;
   self->_bulkUploadUUIDBlacklist = 0;
@@ -788,27 +788,27 @@ LABEL_8:
 
   if ((+[DABehaviorOptions useContactsFramework]& 1) == 0)
   {
-    v9 = [(CardDAVAgent *)self databaseHelper];
-    v10 = [(CardDAVAgent *)self account];
-    v11 = [v10 changeTrackingID];
-    [v9 abOpenDBWithClientIdentifier:v11];
+    databaseHelper = [(CardDAVAgent *)self databaseHelper];
+    account = [(CardDAVAgent *)self account];
+    changeTrackingID = [account changeTrackingID];
+    [databaseHelper abOpenDBWithClientIdentifier:changeTrackingID];
   }
 
-  v12 = [(CardDAVAgent *)self account];
-  v13 = [v12 homeURL];
-  v14 = [v6 da_leastInfoStringRepresentationRelativeToParentURL:v13];
+  account2 = [(CardDAVAgent *)self account];
+  homeURL = [account2 homeURL];
+  v14 = [v6 da_leastInfoStringRepresentationRelativeToParentURL:homeURL];
 
-  v15 = [(CardDAVAgent *)self containerProvider];
-  v16 = [(CardDAVAgent *)self account];
-  v17 = [v16 syncStoreIdentifier];
-  v18 = [v15 containerWithExternalIdentifier:v14 forAccountWithExternalIdentifier:v17];
+  containerProvider = [(CardDAVAgent *)self containerProvider];
+  account3 = [(CardDAVAgent *)self account];
+  syncStoreIdentifier = [account3 syncStoreIdentifier];
+  v18 = [containerProvider containerWithExternalIdentifier:v14 forAccountWithExternalIdentifier:syncStoreIdentifier];
 
   if (v18)
   {
-    v19 = [v18 syncData];
-    if (v19)
+    syncData = [v18 syncData];
+    if (syncData)
     {
-      v20 = [NSPropertyListSerialization propertyListFromData:v19 mutabilityOption:1 format:0 errorDescription:0];
+      v20 = [NSPropertyListSerialization propertyListFromData:syncData mutabilityOption:1 format:0 errorDescription:0];
       [v20 setObject:&__kCFBooleanFalse forKeyedSubscript:@"NeedInitialSync"];
       [v20 removeObjectForKey:@"CTagIsSuspect"];
       v21 = [NSPropertyListSerialization dataFromPropertyList:v20 format:200 errorDescription:0];
@@ -817,19 +817,19 @@ LABEL_8:
       {
         v22 = objc_alloc_init(CNSaveRequest);
         [v18 updateSaveRequest:v22];
-        v23 = [(CardDAVAgent *)self databaseHelper];
-        [v23 addSaveRequest:v22];
+        databaseHelper2 = [(CardDAVAgent *)self databaseHelper];
+        [databaseHelper2 addSaveRequest:v22];
       }
     }
 
-    v24 = [(CardDAVAgent *)self actionsFinalizer];
-    v25 = [(CardDAVAgent *)self account];
-    v26 = [v25 changeTrackingID];
-    v27 = [v24 clearChangeHistoriesWithChangeIdContext:v34 pushedActions:0 inContainer:v18 changeTrackingID:v26];
+    actionsFinalizer = [(CardDAVAgent *)self actionsFinalizer];
+    account4 = [(CardDAVAgent *)self account];
+    changeTrackingID2 = [account4 changeTrackingID];
+    v27 = [actionsFinalizer clearChangeHistoriesWithChangeIdContext:contextCopy pushedActions:0 inContainer:v18 changeTrackingID:changeTrackingID2];
 
-    v28 = [(CardDAVAgent *)self account];
-    v29 = v27 | [v28 setBestMeCard];
-    if (v19)
+    account5 = [(CardDAVAgent *)self account];
+    v29 = v27 | [account5 setBestMeCard];
+    if (syncData)
     {
       v30 = 1;
     }
@@ -846,8 +846,8 @@ LABEL_8:
         goto LABEL_18;
       }
 
-      v31 = [(CardDAVAgent *)self databaseHelper];
-      [v31 executeAllSaveRequests];
+      databaseHelper3 = [(CardDAVAgent *)self databaseHelper];
+      [databaseHelper3 executeAllSaveRequests];
       goto LABEL_17;
     }
   }
@@ -862,8 +862,8 @@ LABEL_8:
     v30 = 0;
   }
 
-  v31 = [(CardDAVAgent *)self databaseHelper];
-  [v31 abCloseDBAndSave:v30];
+  databaseHelper3 = [(CardDAVAgent *)self databaseHelper];
+  [databaseHelper3 abCloseDBAndSave:v30];
 LABEL_17:
 
 LABEL_18:
@@ -880,34 +880,34 @@ LABEL_18:
   }
 }
 
-- (void)_pushInitialSyncActionsForFolderWithURL:(id)a3 context:(id)a4
+- (void)_pushInitialSyncActionsForFolderWithURL:(id)l context:(id)context
 {
-  v75 = a3;
-  v72 = a4;
+  lCopy = l;
+  contextCopy = context;
   v98 = 0;
   if ((+[DABehaviorOptions useContactsFramework]& 1) == 0)
   {
-    v7 = [(CardDAVAgent *)self databaseHelper];
-    v8 = [(CardDAVAgent *)self account];
-    v9 = [v8 changeTrackingID];
-    [v7 abOpenDBWithClientIdentifier:v9];
+    databaseHelper = [(CardDAVAgent *)self databaseHelper];
+    account = [(CardDAVAgent *)self account];
+    changeTrackingID = [account changeTrackingID];
+    [databaseHelper abOpenDBWithClientIdentifier:changeTrackingID];
   }
 
-  v10 = [(CardDAVAgent *)self account];
-  v11 = [v10 homeURL];
-  v74 = [v75 da_leastInfoStringRepresentationRelativeToParentURL:v11];
+  account2 = [(CardDAVAgent *)self account];
+  homeURL = [account2 homeURL];
+  v74 = [lCopy da_leastInfoStringRepresentationRelativeToParentURL:homeURL];
 
-  v12 = [(CardDAVAgent *)self containerProvider];
-  v13 = [(CardDAVAgent *)self account];
-  v14 = [v13 syncStoreIdentifier];
-  v76 = [v12 containerWithExternalIdentifier:v74 forAccountWithExternalIdentifier:v14];
+  containerProvider = [(CardDAVAgent *)self containerProvider];
+  account3 = [(CardDAVAgent *)self account];
+  syncStoreIdentifier = [account3 syncStoreIdentifier];
+  v76 = [containerProvider containerWithExternalIdentifier:v74 forAccountWithExternalIdentifier:syncStoreIdentifier];
 
   if (v76)
   {
-    v71 = [v76 syncData];
-    if (v71)
+    syncData = [v76 syncData];
+    if (syncData)
     {
-      v15 = [NSPropertyListSerialization propertyListFromData:v71 mutabilityOption:0 format:0 errorDescription:0];
+      v15 = [NSPropertyListSerialization propertyListFromData:syncData mutabilityOption:0 format:0 errorDescription:0];
     }
 
     else
@@ -918,11 +918,11 @@ LABEL_18:
     v16 = [CardDAVPropertiesHelper maxImageSizeFromSyncDict:v15];
     v70 = v15;
     v17 = [CardDAVPropertiesHelper maxResourceSizeFromSyncDict:v15];
-    v69 = [v76 cTag];
+    cTag = [v76 cTag];
     v18 = objc_opt_new();
     v19 = objc_opt_new();
-    v20 = [(CardDAVAgent *)self contactsProvider];
-    v73 = [v20 contactsInContainer:v76];
+    contactsProvider = [(CardDAVAgent *)self contactsProvider];
+    v73 = [contactsProvider contactsInContainer:v76];
 
     v94 = 0;
     v95 = &v94;
@@ -934,15 +934,15 @@ LABEL_18:
     v93 = 0;
     if ([v76 isGuardianRestricted])
     {
-      v21 = [(CardDAVAgent *)self isPrimaryICloudAccount];
+      isPrimaryICloudAccount = [(CardDAVAgent *)self isPrimaryICloudAccount];
     }
 
     else
     {
-      v21 = 0;
+      isPrimaryICloudAccount = 0;
     }
 
-    if (!(([v73 count] == 0) | v21 & 1))
+    if (!(([v73 count] == 0) | isPrimaryICloudAccount & 1))
     {
       memset(&stats, 0, sizeof(stats));
       malloc_zone_statistics(0, &stats);
@@ -967,9 +967,9 @@ LABEL_18:
       v89 = size_in_use;
       v24 = objc_retainBlock(v81);
       v25 = objc_autoreleasePoolPush();
-      v26 = [(CardDAVAgent *)self initialActionsDataSource];
-      v27 = [(CardDAVAgent *)self databaseHelper];
-      [v26 generateActionsForContacts:v73 databaseHelper:v27 inFolderWithURL:v75 blacklistedUUIDs:self->_bulkUploadUUIDBlacklist blacklistedURLs:self->_bulkUploadHREFBlacklist maxImageSize:v16 maxResourceSize:v17 outTouchedDB:&v98 reportingBlock:v24];
+      initialActionsDataSource = [(CardDAVAgent *)self initialActionsDataSource];
+      databaseHelper2 = [(CardDAVAgent *)self databaseHelper];
+      [initialActionsDataSource generateActionsForContacts:v73 databaseHelper:databaseHelper2 inFolderWithURL:lCopy blacklistedUUIDs:self->_bulkUploadUUIDBlacklist blacklistedURLs:self->_bulkUploadHREFBlacklist maxImageSize:v16 maxResourceSize:v17 outTouchedDB:&v98 reportingBlock:v24];
 
       objc_autoreleasePoolPop(v25);
       _Block_object_dispose(&stats, 8);
@@ -997,19 +997,19 @@ LABEL_18:
 
     if (v28 == v29 && !v95[3])
     {
-      v34 = [(CardDAVAgent *)self groupsProvider];
-      v68 = [v34 groupsInContainer:v76];
+      groupsProvider = [(CardDAVAgent *)self groupsProvider];
+      v68 = [groupsProvider groupsInContainer:v76];
 
       v67 = v16;
       v35 = v17;
-      v36 = [(CardDAVAgent *)self initialActionsDataSource];
-      v37 = [(CardDAVAgent *)self isPrimaryICloudAccount];
-      v38 = [(CardDAVAgent *)self isAccountOwnerChildInFamilyCircle];
-      v39 = [(CardDAVAgent *)self databaseHelper];
+      initialActionsDataSource2 = [(CardDAVAgent *)self initialActionsDataSource];
+      isPrimaryICloudAccount2 = [(CardDAVAgent *)self isPrimaryICloudAccount];
+      isAccountOwnerChildInFamilyCircle = [(CardDAVAgent *)self isAccountOwnerChildInFamilyCircle];
+      databaseHelper3 = [(CardDAVAgent *)self databaseHelper];
       bulkUploadUUIDBlacklist = self->_bulkUploadUUIDBlacklist;
       bulkUploadHREFBlacklist = self->_bulkUploadHREFBlacklist;
       LOBYTE(v66) = [v76 isGuardianRestricted];
-      v42 = [v36 actionsForGroups:v68 isPrimaryAppleAccount:v37 isU18Account:v38 databaseHelper:v39 inFolderWithURL:v75 blacklistedUUIDs:bulkUploadUUIDBlacklist blacklistedURLs:bulkUploadHREFBlacklist maxImageSize:v67 maxResourceSize:v35 containerIsRestricted:v66 outTouchedDB:&v98];
+      v42 = [initialActionsDataSource2 actionsForGroups:v68 isPrimaryAppleAccount:isPrimaryICloudAccount2 isU18Account:isAccountOwnerChildInFamilyCircle databaseHelper:databaseHelper3 inFolderWithURL:lCopy blacklistedUUIDs:bulkUploadUUIDBlacklist blacklistedURLs:bulkUploadHREFBlacklist maxImageSize:v67 maxResourceSize:v35 containerIsRestricted:v66 outTouchedDB:&v98];
 
       v79 = 0u;
       v80 = 0u;
@@ -1033,29 +1033,29 @@ LABEL_18:
           }
 
           v47 = *(*(&v77 + 1) + 8 * i);
-          v48 = [v47 action];
-          v49 = [v48 itemChangeType] == &dword_0 + 1;
+          action = [v47 action];
+          v49 = [action itemChangeType] == &dword_0 + 1;
 
           if (v49)
           {
-            v50 = [v47 action];
-            v51 = [v47 externalURL];
-            [v19 setObject:v50 forKeyedSubscript:v51];
+            action2 = [v47 action];
+            externalURL = [v47 externalURL];
+            [v19 setObject:action2 forKeyedSubscript:externalURL];
           }
 
           else
           {
-            v52 = [v47 action];
-            v53 = [v52 itemChangeType] == 0;
+            action3 = [v47 action];
+            v53 = [action3 itemChangeType] == 0;
 
             if (!v53)
             {
               continue;
             }
 
-            v50 = [v47 action];
-            v51 = [v47 externalUUID];
-            [v18 setObject:v50 forKeyedSubscript:v51];
+            action2 = [v47 action];
+            externalURL = [v47 externalUUID];
+            [v18 setObject:action2 forKeyedSubscript:externalURL];
           }
         }
 
@@ -1078,38 +1078,38 @@ LABEL_30:
       if (v55)
       {
         v58 = [v55 objectForKeyedSubscript:cdXMLMMeBulkMaxResources];
-        v59 = [v58 integerValue];
+        integerValue = [v58 integerValue];
 
         v60 = [v56 objectForKeyedSubscript:cdXMLMMeBulkMaxSize];
-        v61 = [v60 integerValue];
+        integerValue2 = [v60 integerValue];
       }
 
       else
       {
-        v59 = 0;
-        v61 = 0;
+        integerValue = 0;
+        integerValue2 = 0;
       }
     }
 
     else
     {
       v57 = 0;
-      v59 = 0;
-      v61 = 0;
+      integerValue = 0;
+      integerValue2 = 0;
     }
 
     if ((v98 & 1) != 0 || [v18 count] || objc_msgSend(v19, "count"))
     {
-      v62 = [(CardDAVAgent *)self account];
-      v63 = [v75 absoluteString];
-      v64 = [v62 finishInitialSyncOfContactsFolder:v63 previousTag:v69 uuidsToAddActions:v18 hrefsToModDeleteActions:v19 useCRUD:v57 maxResources:v59 maxSize:v61 consumer:self context:v72];
+      account4 = [(CardDAVAgent *)self account];
+      absoluteString = [lCopy absoluteString];
+      v64 = [account4 finishInitialSyncOfContactsFolder:absoluteString previousTag:cTag uuidsToAddActions:v18 hrefsToModDeleteActions:v19 useCRUD:v57 maxResources:integerValue maxSize:integerValue2 consumer:self context:contextCopy];
       v98 |= v64;
     }
 
     else
     {
-      v62 = [v75 absoluteString];
-      [(CardDAVAgent *)self _successfullyFinishedInitialSyncForFolderWithID:v62 context:v72];
+      account4 = [lCopy absoluteString];
+      [(CardDAVAgent *)self _successfullyFinishedInitialSyncForFolderWithID:account4 context:contextCopy];
     }
 
     _Block_object_dispose(&v90, 8);
@@ -1118,42 +1118,42 @@ LABEL_30:
 
   if (!+[DABehaviorOptions useContactsFramework])
   {
-    v65 = [(CardDAVAgent *)self databaseHelper];
-    [v65 abCloseDBAndSave:v98];
+    databaseHelper4 = [(CardDAVAgent *)self databaseHelper];
+    [databaseHelper4 abCloseDBAndSave:v98];
     goto LABEL_46;
   }
 
   if (v98 == 1)
   {
-    v65 = [(CardDAVAgent *)self databaseHelper];
-    [v65 executeAllSaveRequests];
+    databaseHelper4 = [(CardDAVAgent *)self databaseHelper];
+    [databaseHelper4 executeAllSaveRequests];
 LABEL_46:
   }
 }
 
-- (void)_finishInitialSyncForFolderWithURL:(id)a3 context:(id)a4
+- (void)_finishInitialSyncForFolderWithURL:(id)l context:(id)context
 {
   bulkUploadUUIDBlacklist = self->_bulkUploadUUIDBlacklist;
-  v7 = a4;
-  v9 = a3;
+  contextCopy = context;
+  lCopy = l;
   [(NSMutableSet *)bulkUploadUUIDBlacklist removeAllObjects];
   [(NSMutableSet *)self->_bulkUploadHREFBlacklist removeAllObjects];
-  v8 = [(CardDAVAgent *)self initialActionsDataSource];
-  [v8 prepareToGenerateInitialActionsWithContext:v7];
+  initialActionsDataSource = [(CardDAVAgent *)self initialActionsDataSource];
+  [initialActionsDataSource prepareToGenerateInitialActionsWithContext:contextCopy];
 
-  [(CardDAVAgent *)self _pushInitialSyncActionsForFolderWithURL:v9 context:v7];
+  [(CardDAVAgent *)self _pushInitialSyncActionsForFolderWithURL:lCopy context:contextCopy];
 }
 
-- (void)successfullyFinishedInitalUploadForFolderWithID:(id)a3 container:(id)a4 guardianRestrictedUUIDs:(id)a5 guardianRestrictedHREFs:(id)a6 blacklistedUUIDs:(id)a7 blacklistedHREFs:(id)a8 context:(id)a9
+- (void)successfullyFinishedInitalUploadForFolderWithID:(id)d container:(id)container guardianRestrictedUUIDs:(id)ds guardianRestrictedHREFs:(id)fs blacklistedUUIDs:(id)iDs blacklistedHREFs:(id)eFs context:(id)context
 {
-  v57 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
-  v20 = [NSURL URLWithString:a3];
-  if ([v17 count])
+  containerCopy = container;
+  dsCopy = ds;
+  fsCopy = fs;
+  iDsCopy = iDs;
+  eFsCopy = eFs;
+  contextCopy = context;
+  v20 = [NSURL URLWithString:d];
+  if ([iDsCopy count])
   {
     bulkUploadUUIDBlacklist = self->_bulkUploadUUIDBlacklist;
     if (!bulkUploadUUIDBlacklist)
@@ -1165,11 +1165,11 @@ LABEL_46:
       bulkUploadUUIDBlacklist = self->_bulkUploadUUIDBlacklist;
     }
 
-    v24 = [v17 allObjects];
-    [(NSMutableSet *)bulkUploadUUIDBlacklist addObjectsFromArray:v24];
+    allObjects = [iDsCopy allObjects];
+    [(NSMutableSet *)bulkUploadUUIDBlacklist addObjectsFromArray:allObjects];
   }
 
-  if ([v18 count])
+  if ([eFsCopy count])
   {
     bulkUploadHREFBlacklist = self->_bulkUploadHREFBlacklist;
     if (!bulkUploadHREFBlacklist)
@@ -1181,44 +1181,44 @@ LABEL_46:
       bulkUploadHREFBlacklist = self->_bulkUploadHREFBlacklist;
     }
 
-    v28 = [v18 allObjects];
-    [(NSMutableSet *)bulkUploadHREFBlacklist addObjectsFromArray:v28];
+    allObjects2 = [eFsCopy allObjects];
+    [(NSMutableSet *)bulkUploadHREFBlacklist addObjectsFromArray:allObjects2];
   }
 
-  v29 = [v16 count];
-  if ([v15 count] + v29)
+  v29 = [fsCopy count];
+  if ([dsCopy count] + v29)
   {
     v56 = v20;
-    v52 = v18;
-    v53 = v17;
+    v52 = eFsCopy;
+    v53 = iDsCopy;
     if ((+[DABehaviorOptions useContactsFramework]& 1) == 0)
     {
-      v30 = [(CardDAVAgent *)self databaseHelper];
-      v31 = [(CardDAVAgent *)self account];
-      v32 = [v31 changeTrackingID];
-      [v30 abOpenDBWithClientIdentifier:v32];
+      databaseHelper = [(CardDAVAgent *)self databaseHelper];
+      account = [(CardDAVAgent *)self account];
+      changeTrackingID = [account changeTrackingID];
+      [databaseHelper abOpenDBWithClientIdentifier:changeTrackingID];
     }
 
-    v55 = v15;
-    v33 = [v15 allObjects];
-    v54 = v16;
-    v34 = [v16 allObjects];
+    v55 = dsCopy;
+    allObjects3 = [dsCopy allObjects];
+    v54 = fsCopy;
+    allObjects4 = [fsCopy allObjects];
     v35 = +[NSMutableArray array];
     v36 = +[NSMutableArray array];
-    v37 = [(CardDAVAgent *)self contactsProvider];
-    v38 = [v37 contactsWithExternalUUIDs:v33 container:v57];
+    contactsProvider = [(CardDAVAgent *)self contactsProvider];
+    v38 = [contactsProvider contactsWithExternalUUIDs:allObjects3 container:containerCopy];
 
-    v39 = [(CardDAVAgent *)self contactsProvider];
-    v40 = [v39 contactsWithExternalHREFs:v34 container:v57];
+    contactsProvider2 = [(CardDAVAgent *)self contactsProvider];
+    v40 = [contactsProvider2 contactsWithExternalHREFs:allObjects4 container:containerCopy];
 
-    v41 = [(CardDAVAgent *)self groupsProvider];
-    v50 = v33;
-    v42 = v33;
-    v43 = v34;
-    v44 = [v41 groupsWithExternalUUIDs:v42 container:v57];
+    groupsProvider = [(CardDAVAgent *)self groupsProvider];
+    v50 = allObjects3;
+    v42 = allObjects3;
+    v43 = allObjects4;
+    v44 = [groupsProvider groupsWithExternalUUIDs:v42 container:containerCopy];
 
-    v45 = [(CardDAVAgent *)self groupsProvider];
-    v46 = [v45 groupsWithExternalHREFs:v34 container:v57];
+    groupsProvider2 = [(CardDAVAgent *)self groupsProvider];
+    v46 = [groupsProvider2 groupsWithExternalHREFs:allObjects4 container:containerCopy];
 
     if (v38)
     {
@@ -1235,91 +1235,91 @@ LABEL_46:
       [v36 addObjectsFromArray:v44];
     }
 
-    v51 = v19;
+    v51 = contextCopy;
     if (v46)
     {
       [v36 addObjectsFromArray:v46];
     }
 
     v47 = [[ABMoveLocalAction alloc] initWithContacts:v35 groups:v36];
-    v48 = [(CardDAVAgent *)self actionsHandler];
-    [v48 handleAction:v47 forContainer:v57 inAccount:0 withFolderURL:v56 isInitialSync:1 arePartialResults:0 syncInfo:0 heldAsideGroups:0 internalReference:0];
+    actionsHandler = [(CardDAVAgent *)self actionsHandler];
+    [actionsHandler handleAction:v47 forContainer:containerCopy inAccount:0 withFolderURL:v56 isInitialSync:1 arePartialResults:0 syncInfo:0 heldAsideGroups:0 internalReference:0];
 
     if ((+[DABehaviorOptions useContactsFramework]& 1) == 0)
     {
-      v49 = [(CardDAVAgent *)self databaseHelper];
-      [v49 abCloseDBAndSave:1];
+      databaseHelper2 = [(CardDAVAgent *)self databaseHelper];
+      [databaseHelper2 abCloseDBAndSave:1];
     }
 
-    v16 = v54;
-    v15 = v55;
-    v18 = v52;
-    v17 = v53;
-    v19 = v51;
+    fsCopy = v54;
+    dsCopy = v55;
+    eFsCopy = v52;
+    iDsCopy = v53;
+    contextCopy = v51;
     v20 = v56;
   }
 
-  [(CardDAVAgent *)self _pushInitialSyncActionsForFolderWithURL:v20 context:v19];
+  [(CardDAVAgent *)self _pushInitialSyncActionsForFolderWithURL:v20 context:contextCopy];
 }
 
-- (void)contactsFolderWithId:(id)a3 successfullyPushedActions:(id)a4
+- (void)contactsFolderWithId:(id)id successfullyPushedActions:(id)actions
 {
-  v19 = a4;
-  v6 = [NSURL URLWithString:a3];
-  v7 = [(CardDAVAgent *)self account];
-  v8 = [v7 homeURL];
-  v9 = [v6 da_leastInfoStringRepresentationRelativeToParentURL:v8];
+  actionsCopy = actions;
+  v6 = [NSURL URLWithString:id];
+  account = [(CardDAVAgent *)self account];
+  homeURL = [account homeURL];
+  v9 = [v6 da_leastInfoStringRepresentationRelativeToParentURL:homeURL];
 
-  v10 = [(CardDAVAgent *)self containerProvider];
-  v11 = [(CardDAVAgent *)self account];
-  v12 = [v11 syncStoreIdentifier];
-  v13 = [v10 containerWithExternalIdentifier:v9 forAccountWithExternalIdentifier:v12];
+  containerProvider = [(CardDAVAgent *)self containerProvider];
+  account2 = [(CardDAVAgent *)self account];
+  syncStoreIdentifier = [account2 syncStoreIdentifier];
+  v13 = [containerProvider containerWithExternalIdentifier:v9 forAccountWithExternalIdentifier:syncStoreIdentifier];
 
   if (v13)
   {
-    v14 = [(CardDAVAgent *)self actionsFinalizer];
-    v15 = [(CardDAVAgent *)self account];
-    v16 = [v15 changeTrackingID];
-    v17 = [v14 clearChangeHistoriesWithChangeIdContext:0 pushedActions:v19 inContainer:v13 changeTrackingID:v16];
+    actionsFinalizer = [(CardDAVAgent *)self actionsFinalizer];
+    account3 = [(CardDAVAgent *)self account];
+    changeTrackingID = [account3 changeTrackingID];
+    v17 = [actionsFinalizer clearChangeHistoriesWithChangeIdContext:0 pushedActions:actionsCopy inContainer:v13 changeTrackingID:changeTrackingID];
 
     if (v17)
     {
       if ((+[DABehaviorOptions useContactsFramework]& 1) == 0)
       {
-        v18 = [(CardDAVAgent *)self databaseHelper];
-        [v18 abSaveDB];
+        databaseHelper = [(CardDAVAgent *)self databaseHelper];
+        [databaseHelper abSaveDB];
       }
     }
   }
 }
 
-- (BOOL)_syncResultForFolderWithURL:(id)a3 newTag:(id)a4 newSyncToken:(id)a5 actions:(id)a6 changeIdContext:(id)a7 isInitialSync:(BOOL)a8 arePartialResults:(BOOL)a9 externalURLForNewLocation:(id)a10
+- (BOOL)_syncResultForFolderWithURL:(id)l newTag:(id)tag newSyncToken:(id)token actions:(id)actions changeIdContext:(id)context isInitialSync:(BOOL)sync arePartialResults:(BOOL)results externalURLForNewLocation:(id)self0
 {
-  v104 = a8;
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v96 = a7;
-  v103 = a10;
+  syncCopy = sync;
+  lCopy = l;
+  tagCopy = tag;
+  tokenCopy = token;
+  actionsCopy = actions;
+  contextCopy = context;
+  locationCopy = location;
   if ((+[DABehaviorOptions useContactsFramework]& 1) == 0)
   {
-    v19 = [(CardDAVAgent *)self databaseHelper];
-    v20 = [(CardDAVAgent *)self account];
-    v21 = [v20 changeTrackingID];
-    [v19 abOpenDBWithClientIdentifier:v21];
+    databaseHelper = [(CardDAVAgent *)self databaseHelper];
+    account = [(CardDAVAgent *)self account];
+    changeTrackingID = [account changeTrackingID];
+    [databaseHelper abOpenDBWithClientIdentifier:changeTrackingID];
   }
 
-  v22 = [(CardDAVAgent *)self account];
-  [CardDAVActionsLogger logSummaryForCardDAVActions:v18 partialResults:a9 initialSync:v104 syncPhase:@"in server results phase" syncAccount:v22];
+  account2 = [(CardDAVAgent *)self account];
+  [CardDAVActionsLogger logSummaryForCardDAVActions:actionsCopy partialResults:results initialSync:syncCopy syncPhase:@"in server results phase" syncAccount:account2];
 
-  v23 = [(NSMutableDictionary *)self->_folderURLToSyncInfo objectForKeyedSubscript:v15];
-  v106 = self;
+  v23 = [(NSMutableDictionary *)self->_folderURLToSyncInfo objectForKeyedSubscript:lCopy];
+  selfCopy = self;
   if (!v23)
   {
     v23 = objc_alloc_init(CardDAVSyncInfo);
-    v24 = [(CardDAVAgent *)self contactsProvider];
-    -[CardDAVSyncInfo setStartedWithNoContacts:](v23, "setStartedWithNoContacts:", [v24 countOfContacts] == 0);
+    contactsProvider = [(CardDAVAgent *)self contactsProvider];
+    -[CardDAVSyncInfo setStartedWithNoContacts:](v23, "setStartedWithNoContacts:", [contactsProvider countOfContacts] == 0);
 
     if ([(CardDAVSyncInfo *)v23 startedWithNoContacts])
     {
@@ -1328,30 +1328,30 @@ LABEL_46:
       if (os_log_type_enabled(v25, v26))
       {
         *buf = 138412290;
-        v123 = v15;
+        v123 = lCopy;
         _os_log_impl(&dword_0, v25, v26, "started initial sync for %@ with no contacts - won't try to match people", buf, 0xCu);
       }
     }
 
     v27 = objc_opt_new();
     [(CardDAVSyncInfo *)v23 setUuidToPersonCache:v27];
-    [(NSMutableDictionary *)self->_folderURLToSyncInfo setObject:v23 forKeyedSubscript:v15];
+    [(NSMutableDictionary *)self->_folderURLToSyncInfo setObject:v23 forKeyedSubscript:lCopy];
   }
 
-  v28 = [(CardDAVAgent *)self account];
-  v29 = [v28 homeURL];
-  v30 = [v15 da_leastInfoStringRepresentationRelativeToParentURL:v29];
+  account3 = [(CardDAVAgent *)self account];
+  homeURL = [account3 homeURL];
+  v30 = [lCopy da_leastInfoStringRepresentationRelativeToParentURL:homeURL];
 
-  v31 = [(CardDAVAgent *)self containerProvider];
-  v32 = [(CardDAVAgent *)self account];
-  v33 = [v32 syncStoreIdentifier];
+  containerProvider = [(CardDAVAgent *)self containerProvider];
+  account4 = [(CardDAVAgent *)self account];
+  syncStoreIdentifier = [account4 syncStoreIdentifier];
   v95 = v30;
-  v34 = [v31 containerWithExternalIdentifier:v30 forAccountWithExternalIdentifier:v33];
+  v34 = [containerProvider containerWithExternalIdentifier:v30 forAccountWithExternalIdentifier:syncStoreIdentifier];
 
   v105 = v34;
   if (!v34)
   {
-    v48 = v96;
+    v48 = contextCopy;
     if ((+[DABehaviorOptions useContactsFramework]& 1) != 0)
     {
       v49 = 0;
@@ -1359,8 +1359,8 @@ LABEL_46:
 
     else
     {
-      v101 = [(CardDAVAgent *)self databaseHelper];
-      [v101 abCloseDBAndSave:0];
+      databaseHelper2 = [(CardDAVAgent *)self databaseHelper];
+      [databaseHelper2 abCloseDBAndSave:0];
       v49 = 0;
     }
 
@@ -1368,8 +1368,8 @@ LABEL_46:
   }
 
   v94 = v23;
-  v92 = v16;
-  v100 = [(NSMutableDictionary *)self->_folderURLToHeldAsideGroups objectForKeyedSubscript:v15];
+  v92 = tagCopy;
+  v100 = [(NSMutableDictionary *)self->_folderURLToHeldAsideGroups objectForKeyedSubscript:lCopy];
   if (!v100)
   {
     v100 = +[NSMutableSet set];
@@ -1380,13 +1380,13 @@ LABEL_46:
   v118 = 0u;
   v115 = 0u;
   v116 = 0u;
-  v35 = v18;
-  v36 = [v35 countByEnumeratingWithState:&v115 objects:v121 count:16];
+  databaseHelper3 = actionsCopy;
+  v36 = [databaseHelper3 countByEnumeratingWithState:&v115 objects:v121 count:16];
   v98 = v36 != 0;
-  obj = v35;
-  v102 = v15;
-  v93 = v17;
-  v91 = v18;
+  obj = databaseHelper3;
+  v102 = lCopy;
+  v93 = tokenCopy;
+  v91 = actionsCopy;
   if (v36)
   {
     v37 = v36;
@@ -1402,15 +1402,15 @@ LABEL_46:
         }
 
         v40 = *(*(&v115 + 1) + 8 * i);
-        v41 = [v40 serverId];
-        v42 = [v41 da_leastInfoStringRepresentationRelativeToParentURL:v102];
-        v43 = [v42 da_stringByRemovingPercentEscapesForUsername];
+        serverId = [v40 serverId];
+        v42 = [serverId da_leastInfoStringRepresentationRelativeToParentURL:v102];
+        da_stringByRemovingPercentEscapesForUsername = [v42 da_stringByRemovingPercentEscapesForUsername];
 
-        v44 = [v103 objectForKey:v43];
-        v45 = [(CardDAVAgent *)v106 actionsHandler];
-        v46 = [(CardDAVAgent *)v106 account];
-        v47 = [(NSMutableDictionary *)v106->_folderURLToSyncInfo objectForKeyedSubscript:v102];
-        LOBYTE(v40) = [v45 handleAction:v40 forContainer:v34 inAccount:v46 withFolderURL:v102 isInitialSync:v104 arePartialResults:a9 syncInfo:v47 heldAsideGroups:v100 internalReference:v44];
+        v44 = [locationCopy objectForKey:da_stringByRemovingPercentEscapesForUsername];
+        actionsHandler = [(CardDAVAgent *)selfCopy actionsHandler];
+        account5 = [(CardDAVAgent *)selfCopy account];
+        v47 = [(NSMutableDictionary *)selfCopy->_folderURLToSyncInfo objectForKeyedSubscript:v102];
+        LOBYTE(v40) = [actionsHandler handleAction:v40 forContainer:v34 inAccount:account5 withFolderURL:v102 isInitialSync:syncCopy arePartialResults:results syncInfo:v47 heldAsideGroups:v100 internalReference:v44];
 
         v38 |= v40;
       }
@@ -1423,24 +1423,24 @@ LABEL_46:
     if ((v38 & 1) == 0)
     {
       v98 = 0;
-      v17 = v93;
+      tokenCopy = v93;
       goto LABEL_28;
     }
 
-    v17 = v93;
+    tokenCopy = v93;
     if ((+[DABehaviorOptions useContactsFramework]& 1) != 0)
     {
       v98 = 1;
       goto LABEL_28;
     }
 
-    v35 = [(CardDAVAgent *)v106 databaseHelper];
-    [v35 abProcessAddedRecords];
+    databaseHelper3 = [(CardDAVAgent *)selfCopy databaseHelper];
+    [databaseHelper3 abProcessAddedRecords];
   }
 
 LABEL_28:
-  v50 = [(CardDAVSyncInfo *)v94 uuidToPersonCache];
-  if (v50)
+  uuidToPersonCache = [(CardDAVSyncInfo *)v94 uuidToPersonCache];
+  if (uuidToPersonCache)
   {
     v113 = 0u;
     v114 = 0u;
@@ -1448,7 +1448,7 @@ LABEL_28:
     v112 = 0u;
     v51 = obj;
     v52 = [v51 countByEnumeratingWithState:&v111 objects:v120 count:16];
-    v53 = v106;
+    v53 = selfCopy;
     if (v52)
     {
       v54 = v52;
@@ -1462,26 +1462,26 @@ LABEL_28:
             objc_enumerationMutation(v51);
           }
 
-          v57 = [*(*(&v111 + 1) + 8 * j) changedItem];
-          v58 = [(CardDAVAgent *)v53 contactsProvider];
-          v59 = [v58 contactFromItem:v57];
+          changedItem = [*(*(&v111 + 1) + 8 * j) changedItem];
+          contactsProvider2 = [(CardDAVAgent *)v53 contactsProvider];
+          v59 = [contactsProvider2 contactFromItem:changedItem];
 
           if (v59 && [v59 legacyIdentifier] != -1)
           {
-            v60 = [v59 externalUUID];
-            if (v60)
+            externalUUID = [v59 externalUUID];
+            if (externalUUID)
             {
-              v61 = [v50 objectForKeyedSubscript:v60];
+              v61 = [uuidToPersonCache objectForKeyedSubscript:externalUUID];
               if (!v61)
               {
                 v61 = objc_opt_new();
-                [v50 setObject:v61 forKeyedSubscript:v60];
+                [uuidToPersonCache setObject:v61 forKeyedSubscript:externalUUID];
               }
 
               v62 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v59 legacyIdentifier]);
               [v61 addObject:v62];
 
-              v53 = v106;
+              v53 = selfCopy;
             }
           }
         }
@@ -1492,10 +1492,10 @@ LABEL_28:
       while (v54);
     }
 
-    v17 = v93;
+    tokenCopy = v93;
   }
 
-  v63 = v17;
+  v63 = tokenCopy;
   v64 = objc_alloc_init(CNSaveRequest);
   v107 = 0u;
   v108 = 0u;
@@ -1517,14 +1517,14 @@ LABEL_28:
         }
 
         v70 = *(*(&v107 + 1) + 8 * k);
-        v71 = [v70 changedItem];
-        if (!a9 || [v70 itemChangeType] == &dword_0 + 2 || (objc_msgSend(v71, "cardDAVRecordItem"), v72 = objc_claimAutoreleasedReturnValue(), v73 = objc_msgSend(v72, "isGroup"), v72, (v73 & 1) == 0))
+        changedItem2 = [v70 changedItem];
+        if (!results || [v70 itemChangeType] == &dword_0 + 2 || (objc_msgSend(changedItem2, "cardDAVRecordItem"), v72 = objc_claimAutoreleasedReturnValue(), v73 = objc_msgSend(v72, "isGroup"), v72, (v73 & 1) == 0))
         {
-          [v71 setUUIDToPersonCache:v50];
-          v74 = [(CardDAVAgent *)v106 account];
-          [v71 saveIfGroupWithLocalObject:0 toContainer:v105 shouldMergeProperties:v104 outMergeDidChooseLocalProperties:0 account:v74];
+          [changedItem2 setUUIDToPersonCache:uuidToPersonCache];
+          account6 = [(CardDAVAgent *)selfCopy account];
+          [changedItem2 saveIfGroupWithLocalObject:0 toContainer:v105 shouldMergeProperties:syncCopy outMergeDidChooseLocalProperties:0 account:account6];
 
-          [v71 setUUIDToPersonCache:0];
+          [changedItem2 setUUIDToPersonCache:0];
           v98 = 1;
         }
       }
@@ -1535,13 +1535,13 @@ LABEL_28:
     while (v67);
   }
 
-  if (a9)
+  if (results)
   {
-    v48 = v96;
+    v48 = contextCopy;
     v75 = v64;
-    v17 = v63;
-    v18 = v91;
-    v16 = v92;
+    tokenCopy = v63;
+    actionsCopy = v91;
+    tagCopy = v92;
     if (!v98)
     {
       goto LABEL_74;
@@ -1550,32 +1550,32 @@ LABEL_28:
 
   else
   {
-    v76 = [v105 cTag];
-    v77 = v76;
-    v16 = v92;
-    v48 = v96;
+    cTag = [v105 cTag];
+    v77 = cTag;
+    tagCopy = v92;
+    v48 = contextCopy;
     v75 = v64;
-    if (v76 == v92)
+    if (cTag == v92)
     {
-      v17 = v63;
+      tokenCopy = v63;
     }
 
     else
     {
-      v17 = v63;
-      if (([v76 isEqualToString:v92] & 1) == 0)
+      tokenCopy = v63;
+      if (([cTag isEqualToString:v92] & 1) == 0)
       {
         [v105 setCTag:v92];
         v98 = 1;
       }
     }
 
-    v78 = [v105 syncTag];
-    v79 = v78;
-    v18 = v91;
-    if (v78 != v17 && ([v78 isEqualToString:v17] & 1) == 0)
+    syncTag = [v105 syncTag];
+    v79 = syncTag;
+    actionsCopy = v91;
+    if (syncTag != tokenCopy && ([syncTag isEqualToString:tokenCopy] & 1) == 0)
     {
-      [v105 setSyncTag:v17];
+      [v105 setSyncTag:tokenCopy];
       v98 = 1;
     }
 
@@ -1584,7 +1584,7 @@ LABEL_28:
       [v105 updateSaveRequest:v75];
     }
 
-    [(NSMutableSet *)v106->_currentlySyncingFolderURLs removeObject:v102];
+    [(NSMutableSet *)selfCopy->_currentlySyncingFolderURLs removeObject:v102];
 
     if (!v98)
     {
@@ -1593,22 +1593,22 @@ LABEL_28:
   }
 
   v80 = +[DABehaviorOptions useContactsFramework];
-  v81 = [(CardDAVAgent *)v106 databaseHelper];
-  v82 = v81;
+  databaseHelper4 = [(CardDAVAgent *)selfCopy databaseHelper];
+  v82 = databaseHelper4;
   if (v80)
   {
-    [v81 addSaveRequest:v75];
+    [databaseHelper4 addSaveRequest:v75];
 LABEL_70:
 
     goto LABEL_72;
   }
 
-  [v81 abProcessAddedImages];
+  [databaseHelper4 abProcessAddedImages];
 
-  v83 = [(CardDAVAgent *)v106 databaseHelper];
-  v84 = [v83 abSaveDB];
+  databaseHelper5 = [(CardDAVAgent *)selfCopy databaseHelper];
+  abSaveDB = [databaseHelper5 abSaveDB];
 
-  if ((v84 & 1) == 0)
+  if ((abSaveDB & 1) == 0)
   {
     v82 = DALoggingwithCategory();
     v90 = _CPLog_to_os_log_type[3];
@@ -1622,48 +1622,48 @@ LABEL_70:
   }
 
 LABEL_72:
-  if (!a9)
+  if (!results)
   {
 LABEL_73:
-    v85 = [(CardDAVAgent *)v106 actionsFinalizer];
-    v86 = [(CardDAVAgent *)v106 account];
-    v87 = [v86 changeTrackingID];
-    [v85 clearChangeHistoriesWithChangeIdContext:v48 pushedActions:0 inContainer:v105 changeTrackingID:v87];
+    actionsFinalizer = [(CardDAVAgent *)selfCopy actionsFinalizer];
+    account7 = [(CardDAVAgent *)selfCopy account];
+    changeTrackingID2 = [account7 changeTrackingID];
+    [actionsFinalizer clearChangeHistoriesWithChangeIdContext:v48 pushedActions:0 inContainer:v105 changeTrackingID:changeTrackingID2];
   }
 
 LABEL_74:
   if ((+[DABehaviorOptions useContactsFramework]& 1) == 0)
   {
-    v88 = [(CardDAVAgent *)v106 databaseHelper];
-    [v88 abCloseDBAndSave:0];
+    databaseHelper6 = [(CardDAVAgent *)selfCopy databaseHelper];
+    [databaseHelper6 abCloseDBAndSave:0];
   }
 
-  if (v104 && !a9)
+  if (syncCopy && !results)
   {
-    [(CardDAVAgent *)v106 _finishInitialSyncForFolderWithURL:v102 context:v48];
+    [(CardDAVAgent *)selfCopy _finishInitialSyncForFolderWithURL:v102 context:v48];
   }
 
-  v49 = v104 && !a9;
+  v49 = syncCopy && !results;
 
   v23 = v94;
-  v15 = v102;
+  lCopy = v102;
 
 LABEL_80:
   return v49;
 }
 
-- (void)syncResultForContactsFolder:(id)a3 newTag:(id)a4 previousTag:(id)a5 newSyncToken:(id)a6 actions:(id)a7 results:(id)a8 changeIdContext:(id)a9 isInitialSync:(BOOL)a10 moreAvailable:(BOOL)a11 moreLocalChangesAvailable:(BOOL)a12 pushedActions:(id)a13 externalURLForNewLocation:(id)a14
+- (void)syncResultForContactsFolder:(id)folder newTag:(id)tag previousTag:(id)previousTag newSyncToken:(id)token actions:(id)actions results:(id)results changeIdContext:(id)context isInitialSync:(BOOL)self0 moreAvailable:(BOOL)self1 moreLocalChangesAvailable:(BOOL)self2 pushedActions:(id)self3 externalURLForNewLocation:(id)self4
 {
-  v29 = a4;
-  v18 = a6;
-  v19 = a7;
-  v20 = a9;
-  v21 = a14;
-  v22 = [NSURL URLWithString:a3];
-  if (a11)
+  tagCopy = tag;
+  tokenCopy = token;
+  actionsCopy = actions;
+  contextCopy = context;
+  locationCopy = location;
+  v22 = [NSURL URLWithString:folder];
+  if (available)
   {
     LOBYTE(v28) = 1;
-    [(CardDAVAgent *)self _syncResultForFolderWithURL:v22 newTag:v29 newSyncToken:v18 actions:v19 changeIdContext:v20 isInitialSync:a10 arePartialResults:v28 externalURLForNewLocation:v21];
+    [(CardDAVAgent *)self _syncResultForFolderWithURL:v22 newTag:tagCopy newSyncToken:tokenCopy actions:actionsCopy changeIdContext:contextCopy isInitialSync:sync arePartialResults:v28 externalURLForNewLocation:locationCopy];
   }
 
   else
@@ -1671,17 +1671,17 @@ LABEL_80:
     v23 = [(NSMutableDictionary *)self->_folderURLToHeldAsideGroups objectForKeyedSubscript:v22];
     if ([v23 count])
     {
-      v24 = [v19 mutableCopy];
+      v24 = [actionsCopy mutableCopy];
 
-      v25 = [v23 allObjects];
-      [v24 addObjectsFromArray:v25];
+      allObjects = [v23 allObjects];
+      [v24 addObjectsFromArray:allObjects];
 
-      v19 = v24;
+      actionsCopy = v24;
     }
 
     [(NSMutableDictionary *)self->_folderURLToHeldAsideGroups removeObjectForKey:v22];
     LOBYTE(v28) = 0;
-    if (![(CardDAVAgent *)self _syncResultForFolderWithURL:v22 newTag:v29 newSyncToken:v18 actions:v19 changeIdContext:v20 isInitialSync:a10 arePartialResults:v28 externalURLForNewLocation:v21]&& ![(CardDAVAgent *)self _updateMeCard])
+    if (![(CardDAVAgent *)self _syncResultForFolderWithURL:v22 newTag:tagCopy newSyncToken:tokenCopy actions:actionsCopy changeIdContext:contextCopy isInitialSync:sync arePartialResults:v28 externalURLForNewLocation:locationCopy]&& ![(CardDAVAgent *)self _updateMeCard])
     {
       v26 = +[DALocalDBGateKeeper sharedGateKeeper];
       [v26 relinquishLocksForWaiter:self dataclasses:2 moreComing:0];
@@ -1695,33 +1695,33 @@ LABEL_80:
   }
 }
 
-- (void)syncResultForContactsFolder:(id)a3 newTag:(id)a4 previousTag:(id)a5 newSyncToken:(id)a6 actions:(id)a7 results:(id)a8 changeIdContext:(id)a9 isInitialSync:(BOOL)a10 moreAvailable:(BOOL)a11 moreLocalChangesAvailable:(BOOL)a12 pushedActions:(id)a13
+- (void)syncResultForContactsFolder:(id)folder newTag:(id)tag previousTag:(id)previousTag newSyncToken:(id)token actions:(id)actions results:(id)results changeIdContext:(id)context isInitialSync:(BOOL)self0 moreAvailable:(BOOL)self1 moreLocalChangesAvailable:(BOOL)self2 pushedActions:(id)self3
 {
-  *(&v13 + 1) = __PAIR16__(a12, a11);
-  LOBYTE(v13) = a10;
-  [CardDAVAgent syncResultForContactsFolder:"syncResultForContactsFolder:newTag:previousTag:newSyncToken:actions:results:changeIdContext:isInitialSync:moreAvailable:moreLocalChangesAvailable:pushedActions:externalURLForNewLocation:" newTag:a3 previousTag:a4 newSyncToken:a5 actions:a6 results:a7 changeIdContext:a8 isInitialSync:a9 moreAvailable:v13 moreLocalChangesAvailable:a13 pushedActions:0 externalURLForNewLocation:?];
+  *(&v13 + 1) = __PAIR16__(changesAvailable, available);
+  LOBYTE(v13) = sync;
+  [CardDAVAgent syncResultForContactsFolder:"syncResultForContactsFolder:newTag:previousTag:newSyncToken:actions:results:changeIdContext:isInitialSync:moreAvailable:moreLocalChangesAvailable:pushedActions:externalURLForNewLocation:" newTag:folder previousTag:tag newSyncToken:previousTag actions:token results:actions changeIdContext:results isInitialSync:context moreAvailable:v13 moreLocalChangesAvailable:pushedActions pushedActions:0 externalURLForNewLocation:?];
 }
 
-- (void)_handlePotential503Error:(id)a3
+- (void)_handlePotential503Error:(id)error
 {
-  v4 = a3;
-  v5 = [v4 domain];
-  if (![v5 isEqualToString:CoreDAVHTTPStatusErrorDomain])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if (![domain isEqualToString:CoreDAVHTTPStatusErrorDomain])
   {
     goto LABEL_16;
   }
 
-  v6 = [v4 code];
+  code = [errorCopy code];
 
-  if (v6 == &stru_1A8.reserved3 + 3)
+  if (code == &stru_1A8.reserved3 + 3)
   {
-    v7 = [v4 userInfo];
-    v8 = [v7 objectForKeyedSubscript:CoreDAVHTTPHeaders];
-    v5 = [v8 DAObjectForKeyCaseInsensitive:@"retry-after"];
+    userInfo = [errorCopy userInfo];
+    v8 = [userInfo objectForKeyedSubscript:CoreDAVHTTPHeaders];
+    domain = [v8 DAObjectForKeyCaseInsensitive:@"retry-after"];
 
-    if (v5)
+    if (domain)
     {
-      [v5 doubleValue];
+      [domain doubleValue];
       v10 = v9;
       v11 = DALoggingwithCategory();
       v12 = _CPLog_to_os_log_type[5];
@@ -1733,10 +1733,10 @@ LABEL_80:
       }
 
       v13 = +[DARefreshManager sharedManager];
-      v14 = [(CardDAVAgent *)self watchedCollections];
+      watchedCollections = [(CardDAVAgent *)self watchedCollections];
       v15 = v13;
-      v16 = self;
-      v17 = v14;
+      selfCopy2 = self;
+      v17 = watchedCollections;
       v18 = v10;
     }
 
@@ -1780,29 +1780,29 @@ LABEL_80:
       }
 
       v13 = +[DARefreshManager sharedManager];
-      v14 = [(CardDAVAgent *)self watchedCollections];
+      watchedCollections = [(CardDAVAgent *)self watchedCollections];
       [(CardDAVAgent *)self lastRetryTimeout];
       v15 = v13;
-      v16 = self;
-      v17 = v14;
+      selfCopy2 = self;
+      v17 = watchedCollections;
     }
 
-    [v15 retryRefreshForDelegate:v16 withCollections:v17 after:1 originalRefreshReason:v18];
+    [v15 retryRefreshForDelegate:selfCopy2 withCollections:v17 after:1 originalRefreshReason:v18];
 
 LABEL_15:
 LABEL_16:
   }
 }
 
-- (void)actionFailed:(int64_t)a3 forTask:(id)a4 error:(id)a5
+- (void)actionFailed:(int64_t)failed forTask:(id)task error:(id)error
 {
-  v8 = a4;
-  v9 = a5;
+  taskCopy = task;
+  errorCopy = error;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(CardDAVAgent *)self _addressBookSyncTask:v8 failedWithErrorCode:a3];
-    [(CardDAVAgent *)self _handlePotential503Error:v9];
+    [(CardDAVAgent *)self _addressBookSyncTask:taskCopy failedWithErrorCode:failed];
+    [(CardDAVAgent *)self _handlePotential503Error:errorCopy];
   }
 
   else
@@ -1812,21 +1812,21 @@ LABEL_16:
     if (os_log_type_enabled(v10, v11))
     {
       v12 = 138412802;
-      v13 = v8;
+      v13 = taskCopy;
       v14 = 2048;
-      v15 = a3;
+      failedCopy = failed;
       v16 = 2112;
-      v17 = v9;
+      v17 = errorCopy;
       _os_log_impl(&dword_0, v10, v11, "Daemon is ignoring task %@ which failed with status %ld and error %@", &v12, 0x20u);
     }
   }
 }
 
-- (void)_addressBookSyncTask:(id)a3 failedWithErrorCode:(int64_t)a4
+- (void)_addressBookSyncTask:(id)task failedWithErrorCode:(int64_t)code
 {
   currentlySyncingFolderURLs = self->_currentlySyncingFolderURLs;
-  v6 = [a3 folderURL];
-  [(NSMutableSet *)currentlySyncingFolderURLs removeObject:v6];
+  folderURL = [task folderURL];
+  [(NSMutableSet *)currentlySyncingFolderURLs removeObject:folderURL];
 
   v7 = +[DALocalDBGateKeeper sharedGateKeeper];
   [v7 relinquishLocksForWaiter:self dataclasses:2 moreComing:0];
@@ -1837,84 +1837,84 @@ LABEL_16:
   [(CardDAVAgent *)self _fireWaitingFolderItemSyncRequests];
 }
 
-- (void)_reallySyncRequest:(id)a3
+- (void)_reallySyncRequest:(id)request
 {
-  v103 = a3;
-  [v103 folder];
+  requestCopy = request;
+  [requestCopy folder];
   v102 = v104 = 0;
-  v101 = [(CardDAVAgent *)v102 folderID];
+  folderID = [(CardDAVAgent *)v102 folderID];
   v4 = [NSURL URLWithString:?];
-  v5 = [(CardDAVAgent *)self account];
-  v6 = [v5 homeURL];
-  v7 = [v4 da_leastInfoStringRepresentationRelativeToParentURL:v6];
+  account = [(CardDAVAgent *)self account];
+  homeURL = [account homeURL];
+  v7 = [v4 da_leastInfoStringRepresentationRelativeToParentURL:homeURL];
 
   v8 = +[DABabysitter sharedBabysitter];
-  LOBYTE(v6) = [v8 registerAccount:self forOperationWithName:@"CardDAVSyncRequest"];
+  LOBYTE(homeURL) = [v8 registerAccount:self forOperationWithName:@"CardDAVSyncRequest"];
 
-  if (v6)
+  if (homeURL)
   {
-    v9 = [objc_opt_class() os_log_summary];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    os_log_summary = [objc_opt_class() os_log_summary];
+    if (os_log_type_enabled(os_log_summary, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(CardDAVAgent *)self account];
-      v11 = [v10 accountDescription];
-      v12 = [(CardDAVAgent *)self publicDescription];
+      account2 = [(CardDAVAgent *)self account];
+      accountDescription = [account2 accountDescription];
+      publicDescription = [(CardDAVAgent *)self publicDescription];
       *buf = 138412546;
-      v106 = v11;
+      selfCopy = accountDescription;
       v107 = 2114;
-      v108 = v12;
-      _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "Syncing account %@ (%{public}@) -- started", buf, 0x16u);
+      v108 = publicDescription;
+      _os_log_impl(&dword_0, os_log_summary, OS_LOG_TYPE_DEFAULT, "Syncing account %@ (%{public}@) -- started", buf, 0x16u);
     }
 
-    v13 = [(CardDAVAgent *)self delegateManager];
-    [v13 updateDelegates];
+    delegateManager = [(CardDAVAgent *)self delegateManager];
+    [delegateManager updateDelegates];
 
     if ((+[DABehaviorOptions useContactsFramework]& 1) == 0)
     {
-      v14 = [(CardDAVAgent *)self databaseHelper];
-      v15 = [(CardDAVAgent *)self account];
-      v16 = [v15 changeTrackingID];
-      [v14 abOpenDBWithClientIdentifier:v16];
+      databaseHelper = [(CardDAVAgent *)self databaseHelper];
+      account3 = [(CardDAVAgent *)self account];
+      changeTrackingID = [account3 changeTrackingID];
+      [databaseHelper abOpenDBWithClientIdentifier:changeTrackingID];
     }
 
-    v17 = [objc_opt_class() os_log_summary];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+    os_log_summary2 = [objc_opt_class() os_log_summary];
+    if (os_log_type_enabled(os_log_summary2, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [(CardDAVAgent *)self account];
-      v19 = [v18 accountDescription];
-      v20 = [(CardDAVAgent *)self publicDescription];
+      account4 = [(CardDAVAgent *)self account];
+      accountDescription2 = [account4 accountDescription];
+      publicDescription2 = [(CardDAVAgent *)self publicDescription];
       [(CardDAVAgent *)self publicContainerProviderSummaryInfo];
       v21 = v7;
       v23 = v22 = v4;
       *buf = 138412802;
-      v106 = v19;
+      selfCopy = accountDescription2;
       v107 = 2114;
-      v108 = v20;
+      v108 = publicDescription2;
       v109 = 2114;
       v110 = v23;
-      _os_log_impl(&dword_0, v17, OS_LOG_TYPE_DEFAULT, "Syncing account %@ (%{public}@) -- %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_0, os_log_summary2, OS_LOG_TYPE_DEFAULT, "Syncing account %@ (%{public}@) -- %{public}@", buf, 0x20u);
 
       v4 = v22;
       v7 = v21;
     }
 
-    v24 = [(CardDAVAgent *)self containerProvider];
-    v25 = [(CardDAVAgent *)self account];
-    v26 = [v25 syncStoreIdentifier];
-    v27 = [v24 containerWithExternalIdentifier:v7 forAccountWithExternalIdentifier:v26];
+    containerProvider = [(CardDAVAgent *)self containerProvider];
+    account5 = [(CardDAVAgent *)self account];
+    syncStoreIdentifier = [account5 syncStoreIdentifier];
+    v27 = [containerProvider containerWithExternalIdentifier:v7 forAccountWithExternalIdentifier:syncStoreIdentifier];
 
     if (!v27)
     {
-      v28 = DALoggingwithCategory();
+      cTag = DALoggingwithCategory();
       v41 = _CPLog_to_os_log_type[3];
-      if (os_log_type_enabled(v28, v41))
+      if (os_log_type_enabled(cTag, v41))
       {
-        v42 = [(CardDAVAgent *)self publicDescription];
+        publicDescription3 = [(CardDAVAgent *)self publicDescription];
         *buf = 138543618;
-        v106 = v42;
+        selfCopy = publicDescription3;
         v107 = 2112;
-        v108 = v101;
-        _os_log_impl(&dword_0, v28, v41, "Agent %{public}@ asked to sync folder with id %@, but I have no matching container", buf, 0x16u);
+        v108 = folderID;
+        _os_log_impl(&dword_0, cTag, v41, "Agent %{public}@ asked to sync folder with id %@, but I have no matching container", buf, 0x16u);
       }
 
       v43 = 0;
@@ -1940,41 +1940,41 @@ LABEL_70:
           goto LABEL_73;
         }
 
-        v83 = [(CardDAVAgent *)self databaseHelper];
-        [v83 executeAllSaveRequests];
+        databaseHelper2 = [(CardDAVAgent *)self databaseHelper];
+        [databaseHelper2 executeAllSaveRequests];
       }
 
       else
       {
-        v83 = [(CardDAVAgent *)self databaseHelper];
-        [v83 abCloseDBAndSave:v104];
+        databaseHelper2 = [(CardDAVAgent *)self databaseHelper];
+        [databaseHelper2 abCloseDBAndSave:v104];
       }
 
       goto LABEL_70;
     }
 
     v88 = v7;
-    v28 = [v27 cTag];
-    v29 = [v27 syncTag];
-    v30 = [v27 syncData];
-    v89 = v30;
-    if (v30)
+    cTag = [v27 cTag];
+    syncTag = [v27 syncTag];
+    syncData = [v27 syncData];
+    v89 = syncData;
+    if (syncData)
     {
-      v31 = [NSPropertyListSerialization propertyListFromData:v30 mutabilityOption:0 format:0 errorDescription:0];
+      v31 = [NSPropertyListSerialization propertyListFromData:syncData mutabilityOption:0 format:0 errorDescription:0];
       v32 = [v31 objectForKeyedSubscript:@"NeedInitialSync"];
-      [v103 setIsInitialUberSync:{objc_msgSend(v32, "BOOLValue")}];
+      [requestCopy setIsInitialUberSync:{objc_msgSend(v32, "BOOLValue")}];
 
       v33 = [v31 objectForKeyedSubscript:@"CTagIsSuspect"];
-      v34 = [v33 BOOLValue];
+      bOOLValue = [v33 BOOLValue];
 
-      if (v34)
+      if (bOOLValue)
       {
         v35 = DALoggingwithCategory();
         v36 = _CPLog_to_os_log_type[6];
         if (os_log_type_enabled(v35, v36))
         {
           *buf = 138412290;
-          v106 = v28;
+          selfCopy = cTag;
           _os_log_impl(&dword_0, v35, v36, "My ctag of %@ is suspect, I'll get a new one", buf, 0xCu);
         }
 
@@ -1982,7 +1982,7 @@ LABEL_70:
 
         v87 = 1;
 LABEL_23:
-        v44 = v29;
+        v44 = syncTag;
         v99 = [CardDAVPropertiesHelper maxImageSizeFromSyncDict:v31];
         v91 = [CardDAVPropertiesHelper maxResourceSizeFromSyncDict:v31];
         v45 = DALoggingwithCategory();
@@ -1990,26 +1990,26 @@ LABEL_23:
         if (os_log_type_enabled(v45, v46))
         {
           *buf = 138412290;
-          v106 = v102;
+          selfCopy = v102;
           _os_log_impl(&dword_0, v45, v46, "external change, folder %@", buf, 0xCu);
         }
 
         type = v46;
         v47 = objc_alloc_init(ContactFolderItemsSyncContext);
-        v48 = [(CardDAVAgent *)self actionsDataSource];
-        v49 = [(CardDAVAgent *)self account];
-        v50 = [v49 changeTrackingID];
+        actionsDataSource = [(CardDAVAgent *)self actionsDataSource];
+        account6 = [(CardDAVAgent *)self account];
+        changeTrackingID2 = [account6 changeTrackingID];
 
-        v93 = v50;
-        [v48 prepareChangeHistoryForClientWithIdentifier:v50 forContainer:v27 withChangeContext:v47];
-        v94 = v48;
-        v51 = v48;
+        v93 = changeTrackingID2;
+        [actionsDataSource prepareChangeHistoryForClientWithIdentifier:changeTrackingID2 forContainer:v27 withChangeContext:v47];
+        v94 = actionsDataSource;
+        v51 = actionsDataSource;
         v52 = type;
         v53 = v44;
         v4 = v37;
         if (([v51 changeHistoryIsValid] & 1) == 0)
         {
-          [v103 setIsInitialUberSync:1];
+          [requestCopy setIsInitialUberSync:1];
           v54 = DALoggingwithCategory();
           if (os_log_type_enabled(v54, type))
           {
@@ -2018,29 +2018,29 @@ LABEL_23:
           }
         }
 
-        v97 = v28;
+        v97 = cTag;
         v98 = v27;
         v96 = v31;
         v90 = v53;
-        if ([v103 isInitialUberSync])
+        if ([requestCopy isInitialUberSync])
         {
           v100 = 0;
         }
 
         else
         {
-          v55 = [(CardDAVAgent *)self account];
-          v56 = [(CardDAVAgent *)self isPrimaryICloudAccount];
-          v57 = [(CardDAVAgent *)self isAccountOwnerChildInFamilyCircle];
-          v58 = [v55 isImageUploadRestricted];
-          v59 = [v55 databaseHelper];
-          v60 = [v55 homeURL];
-          v61 = [v103 actions];
+          account7 = [(CardDAVAgent *)self account];
+          isPrimaryICloudAccount = [(CardDAVAgent *)self isPrimaryICloudAccount];
+          isAccountOwnerChildInFamilyCircle = [(CardDAVAgent *)self isAccountOwnerChildInFamilyCircle];
+          isImageUploadRestricted = [account7 isImageUploadRestricted];
+          databaseHelper3 = [account7 databaseHelper];
+          homeURL2 = [account7 homeURL];
+          actions = [requestCopy actions];
           v62 = v27;
-          v63 = v61;
-          v100 = [v94 _copyCoalescedChangesInContainer:v62 isPrimaryAppleAccount:v56 isU18Account:v57 isImageUploadRestricted:v58 databaseHelper:v59 accountHomeURL:v60 changeTrackingID:v93 existingActions:v61 maxImageSize:v99 maxResourceSize:v91 changeContext:v47 outTouchedDB:&v104];
+          v63 = actions;
+          v100 = [v94 _copyCoalescedChangesInContainer:v62 isPrimaryAppleAccount:isPrimaryICloudAccount isU18Account:isAccountOwnerChildInFamilyCircle isImageUploadRestricted:isImageUploadRestricted databaseHelper:databaseHelper3 accountHomeURL:homeURL2 changeTrackingID:v93 existingActions:actions maxImageSize:v99 maxResourceSize:v91 changeContext:v47 outTouchedDB:&v104];
 
-          if ([v47 isChangeHistoryTruncated] && (objc_msgSend(v103, "isInitialUberSync") & 1) == 0)
+          if ([v47 isChangeHistoryTruncated] && (objc_msgSend(requestCopy, "isInitialUberSync") & 1) == 0)
           {
             v64 = DALoggingwithCategory();
             v65 = _CPLog_to_os_log_type[1];
@@ -2052,14 +2052,14 @@ LABEL_23:
           }
 
           v4 = v37;
-          v28 = v97;
+          cTag = v97;
           v27 = v98;
           v53 = v90;
           v31 = v96;
           v52 = type;
         }
 
-        if ([v103 isInitialUberSync])
+        if ([requestCopy isInitialUberSync])
         {
           v66 = DALoggingwithCategory();
           if (os_log_type_enabled(v66, v52))
@@ -2081,18 +2081,18 @@ LABEL_23:
           }
         }
 
-        v68 = [(CardDAVAgent *)self databaseHelper];
+        databaseHelper4 = [(CardDAVAgent *)self databaseHelper];
         v69 = DALoggingwithCategory();
         v70 = _CPLog_to_os_log_type[5];
         v71 = os_log_type_enabled(v69, v70);
-        v92 = v68;
-        if (v68)
+        v92 = databaseHelper4;
+        if (databaseHelper4)
         {
           if (v71)
           {
-            v72 = [v68 abDefaultAccountInfoSuitableForLogging];
+            abDefaultAccountInfoSuitableForLogging = [databaseHelper4 abDefaultAccountInfoSuitableForLogging];
             *buf = 138543362;
-            v106 = v72;
+            selfCopy = abDefaultAccountInfoSuitableForLogging;
             _os_log_impl(&dword_0, v69, v70, "Default source %{public}@", buf, 0xCu);
 
             v27 = v98;
@@ -2111,34 +2111,34 @@ LABEL_23:
           v74 = [v100 count];
           [(CardDAVAgent *)self account];
           v76 = v75 = v4;
-          v77 = [v76 accountDescription];
-          v78 = [(CardDAVAgent *)self account];
-          v79 = [v78 publicDescription];
+          accountDescription3 = [v76 accountDescription];
+          account8 = [(CardDAVAgent *)self account];
+          publicDescription4 = [account8 publicDescription];
           *buf = 134218498;
-          v106 = v74;
+          selfCopy = v74;
           v27 = v98;
           v107 = 2112;
-          v108 = v77;
+          v108 = accountDescription3;
           v109 = 2114;
-          v110 = v79;
+          v110 = publicDescription4;
           _os_log_impl(&dword_0, v73, v70, "%lu changes for account %@ (%{public}@)", buf, 0x20u);
 
-          v28 = v97;
+          cTag = v97;
           v4 = v75;
           v53 = v90;
 
           v31 = v96;
         }
 
-        if (v28)
+        if (cTag)
         {
-          if ((-[NSObject isEqualToString:](v28, "isEqualToString:", @"0") & 1) == 0 && ![v100 count] && (objc_msgSend(v103, "hasRemoteChanges") & 1) == 0 && (objc_msgSend(v103, "isInitialUberSync") & 1) == 0)
+          if ((-[NSObject isEqualToString:](cTag, "isEqualToString:", @"0") & 1) == 0 && ![v100 count] && (objc_msgSend(requestCopy, "hasRemoteChanges") & 1) == 0 && (objc_msgSend(requestCopy, "isInitialUberSync") & 1) == 0)
           {
-            v81 = DALoggingwithCategory();
-            if (os_log_type_enabled(v81, type))
+            account9 = DALoggingwithCategory();
+            if (os_log_type_enabled(account9, type))
             {
               *buf = 0;
-              _os_log_impl(&dword_0, v81, type, "returning early, as we have a folder change with no remote changes, and no local changes", buf, 2u);
+              _os_log_impl(&dword_0, account9, type, "returning early, as we have a folder change with no remote changes, and no local changes", buf, 2u);
             }
 
             v43 = 0;
@@ -2147,15 +2147,15 @@ LABEL_23:
 
           [(CardDAVAgent *)v102 setHasRemoteChanges:0];
           v80 = v100;
-          if (([v28 isEqualToString:@"0"]& 1) == 0)
+          if (([cTag isEqualToString:@"0"]& 1) == 0)
           {
 LABEL_63:
-            v81 = [(CardDAVAgent *)self account];
-            v82 = [v103 isInitialUberSync];
+            account9 = [(CardDAVAgent *)self account];
+            isInitialUberSync = [requestCopy isInitialUberSync];
             *(&v86 + 1) = v87;
-            LOBYTE(v86) = [v103 isResyncAfterConnectionFailed];
-            v28 = v97;
-            [NSObject synchronizeContactsFolder:v81 previousTag:"synchronizeContactsFolder:previousTag:previousSyncToken:actions:highestIdContext:isInitialUberSync:isResyncAfterConnectionFailed:previousTagIsSuspect:moreLocalChangesAvailable:consumer:" previousSyncToken:v101 actions:v97 highestIdContext:v53 isInitialUberSync:v80 isResyncAfterConnectionFailed:v47 previousTagIsSuspect:v82 moreLocalChangesAvailable:v86 consumer:self];
+            LOBYTE(v86) = [requestCopy isResyncAfterConnectionFailed];
+            cTag = v97;
+            [NSObject synchronizeContactsFolder:account9 previousTag:"synchronizeContactsFolder:previousTag:previousSyncToken:actions:highestIdContext:isInitialUberSync:isResyncAfterConnectionFailed:previousTagIsSuspect:moreLocalChangesAvailable:consumer:" previousSyncToken:folderID actions:v97 highestIdContext:v53 isInitialUberSync:v80 isResyncAfterConnectionFailed:v47 previousTagIsSuspect:isInitialUberSync moreLocalChangesAvailable:v86 consumer:self];
             v43 = 1;
             v27 = v98;
             v31 = v96;
@@ -2202,7 +2202,7 @@ LABEL_64:
   if (os_log_type_enabled(v38, v39))
   {
     *buf = 138412290;
-    v106 = self;
+    selfCopy = self;
     _os_log_impl(&dword_0, v38, v39, "The babysitter put us in timeout, so we're going to fail this sync. %@", buf, 0xCu);
   }
 
@@ -2216,11 +2216,11 @@ LABEL_73:
 
 - (id)publicContainerProviderSummaryInfo
 {
-  v2 = [(CardDAVAgent *)self contactsProvider];
-  v3 = v2;
-  if (v2)
+  contactsProvider = [(CardDAVAgent *)self contactsProvider];
+  v3 = contactsProvider;
+  if (contactsProvider)
   {
-    v4 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"contacts: %lu, groups: %lu", [v2 countOfContacts], objc_msgSend(v2, "countOfGroups"));
+    v4 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"contacts: %lu, groups: %lu", [contactsProvider countOfContacts], objc_msgSend(contactsProvider, "countOfGroups"));
   }
 
   else
@@ -2231,23 +2231,23 @@ LABEL_73:
   return v4;
 }
 
-- (void)_syncRequest:(id)a3
+- (void)_syncRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_opt_new();
   v6 = DALoggingwithCategory();
   v7 = _CPLog_to_os_log_type[6];
   if (os_log_type_enabled(v6, v7))
   {
-    v8 = [v5 transactionId];
+    transactionId = [v5 transactionId];
     *buf = 138543362;
-    v21 = v8;
+    v21 = transactionId;
     _os_log_impl(&dword_0, v6, v7, "DATransaction starting, ID: %{public}@", buf, 0xCu);
   }
 
   v9 = [DAActivity alloc];
-  v10 = [(CardDAVAgent *)self account];
-  v11 = [v9 initWithAccount:v10];
+  account = [(CardDAVAgent *)self account];
+  v11 = [v9 initWithAccount:account];
 
   v12 = +[DALocalDBGateKeeper sharedGateKeeper];
   v16[0] = _NSConcreteStackBlock;
@@ -2255,12 +2255,12 @@ LABEL_73:
   v16[2] = sub_8D90;
   v16[3] = &unk_3C990;
   v16[4] = self;
-  v17 = v4;
+  v17 = requestCopy;
   v18 = v5;
   v19 = v11;
   v13 = v11;
   v14 = v5;
-  v15 = v4;
+  v15 = requestCopy;
   [v12 registerWaiter:self forDataclassLocks:2 completionHandler:v16];
 }
 
@@ -2301,12 +2301,12 @@ LABEL_73:
 
         v8 = *(*(&v30 + 1) + 8 * v11);
 
-        v13 = [v8 folder];
-        v14 = [v13 folderID];
+        folder = [v8 folder];
+        folderID = [folder folderID];
 
-        if (v14)
+        if (folderID)
         {
-          v15 = [NSURL URLWithString:v14];
+          v15 = [NSURL URLWithString:folderID];
           if (([(NSMutableSet *)self->_currentlySyncingFolderURLs containsObject:v15]& 1) == 0)
           {
             [(NSMutableSet *)self->_currentlySyncingFolderURLs addObject:v15];
@@ -2379,9 +2379,9 @@ LABEL_73:
   }
 }
 
-- (void)_appendSyncRequest:(id)a3
+- (void)_appendSyncRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   [(NSLock *)self->_folderItemSyncRequestLock lock];
   outstandingFolderRequests = self->_outstandingFolderRequests;
   if (!outstandingFolderRequests)
@@ -2418,23 +2418,23 @@ LABEL_73:
 
         v11 = *(*(&v22 + 1) + 8 * v13);
 
-        v15 = [v11 folder];
-        v16 = [v4 folder];
-        v17 = [v15 isEqual:v16];
+        folder = [v11 folder];
+        folder2 = [requestCopy folder];
+        v17 = [folder isEqual:folder2];
 
         if (v17)
         {
-          if ([v4 hasRemoteChanges])
+          if ([requestCopy hasRemoteChanges])
           {
             [v11 setHasRemoteChanges:1];
           }
 
           v18 = objc_opt_new();
-          v19 = [v11 actions];
-          [v18 addObjectsFromArray:v19];
+          actions = [v11 actions];
+          [v18 addObjectsFromArray:actions];
 
-          v20 = [v4 actions];
-          [v18 addObjectsFromArray:v20];
+          actions2 = [requestCopy actions];
+          [v18 addObjectsFromArray:actions2];
 
           [v11 setActions:v18];
           goto LABEL_16;
@@ -2455,24 +2455,24 @@ LABEL_73:
     }
   }
 
-  [(NSMutableArray *)self->_outstandingFolderRequests addObject:v4];
+  [(NSMutableArray *)self->_outstandingFolderRequests addObject:requestCopy];
   v11 = 0;
 LABEL_16:
   [(NSLock *)self->_folderItemSyncRequestLock unlock];
   [(CardDAVAgent *)self _fireWaitingFolderItemSyncRequests];
 }
 
-- (BOOL)APSTopicHasValidPrefix:(id)a3
+- (BOOL)APSTopicHasValidPrefix:(id)prefix
 {
-  v3 = a3;
-  if ([v3 hasPrefix:@"com.me."] & 1) != 0 || (objc_msgSend(v3, "hasPrefix:", @"com.apple.contact."))
+  prefixCopy = prefix;
+  if ([prefixCopy hasPrefix:@"com.me."] & 1) != 0 || (objc_msgSend(prefixCopy, "hasPrefix:", @"com.apple.contact."))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 hasPrefix:@"com.icloud."];
+    v4 = [prefixCopy hasPrefix:@"com.icloud."];
   }
 
   return v4;
@@ -2493,25 +2493,25 @@ LABEL_16:
   serverTokenRegistrationURL = self->_serverTokenRegistrationURL;
   self->_serverTokenRegistrationURL = 0;
 
-  v6 = [(CardDAVAgent *)self account];
-  v7 = [v6 pushTransport];
-  v8 = [v7 objectForKeyedSubscript:@"APSD"];
+  account = [(CardDAVAgent *)self account];
+  pushTransport = [account pushTransport];
+  v8 = [pushTransport objectForKeyedSubscript:@"APSD"];
 
   v9 = [v8 objectForKeyedSubscript:cdXMLCalendarServerAPSBundleID];
   v10 = [v8 objectForKeyedSubscript:cdXMLMMAPSEnv];
-  v11 = [v10 uppercaseString];
+  uppercaseString = [v10 uppercaseString];
 
-  if ([v11 isEqualToString:@"PRODUCTION"])
+  if ([uppercaseString isEqualToString:@"PRODUCTION"])
   {
     v12 = @"production";
   }
 
-  else if ([v11 isEqualToString:@"SANDBOX"] & 1) != 0 || (objc_msgSend(v11, "isEqualToString:", @"DEVELOPMENT"))
+  else if ([uppercaseString isEqualToString:@"SANDBOX"] & 1) != 0 || (objc_msgSend(uppercaseString, "isEqualToString:", @"DEVELOPMENT"))
   {
     v12 = @"development";
   }
 
-  else if ([v11 isEqualToString:@"DEV"])
+  else if ([uppercaseString isEqualToString:@"DEV"])
   {
     v12 = @"demo";
   }
@@ -2538,15 +2538,15 @@ LABEL_16:
   self->_containerPushKeys = v19;
 
   v21 = self->_containerPushKeys;
-  v22 = [(CardDAVAgent *)self account];
-  v23 = [v22 pushKeysToFolderURLs];
-  v24 = [v23 allKeys];
-  [(NSMutableSet *)v21 addObjectsFromArray:v24];
+  account2 = [(CardDAVAgent *)self account];
+  pushKeysToFolderURLs = [account2 pushKeysToFolderURLs];
+  allKeys = [pushKeysToFolderURLs allKeys];
+  [(NSMutableSet *)v21 addObjectsFromArray:allKeys];
 
-  LODWORD(v22) = [(CardDAVAgent *)self APSTopicHasValidPrefix:v9];
+  LODWORD(account2) = [(CardDAVAgent *)self APSTopicHasValidPrefix:v9];
   v25 = +[DARefreshManager sharedManager];
   v26 = v25;
-  if (v22)
+  if (account2)
   {
     [v25 registerTopic:v9 forDelegate:self inEnvironment:v12];
   }
@@ -2559,15 +2559,15 @@ LABEL_16:
   [(CardDAVAgent *)self _syncAllContactFoldersWithRemoteChanges:1];
 }
 
-- (void)failedToRetrieveAddressBookURLsWithError:(id)a3
+- (void)failedToRetrieveAddressBookURLsWithError:(id)error
 {
-  v5 = a3;
-  v6 = [v5 domain];
-  if ([v6 isEqualToString:DAErrorDomain])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:DAErrorDomain])
   {
-    v7 = [v5 code];
+    code = [errorCopy code];
 
-    if (v7 == &dword_4 + 2)
+    if (code == &dword_4 + 2)
     {
       goto LABEL_8;
     }
@@ -2582,22 +2582,22 @@ LABEL_16:
   if (os_log_type_enabled(v8, v9))
   {
     Name = sel_getName(a2);
-    v11 = [v5 code];
-    v12 = [v5 domain];
+    code2 = [errorCopy code];
+    domain2 = [errorCopy domain];
     v15 = 136315906;
     v16 = Name;
     v17 = 2048;
-    v18 = v11;
+    v18 = code2;
     v19 = 2114;
-    v20 = v12;
+    v20 = domain2;
     v21 = 2112;
-    v22 = v5;
+    v22 = errorCopy;
     _os_log_impl(&dword_0, v8, v9, "Yikes: %s error code:%ld error domain:%{public}@ error:%@", &v15, 0x2Au);
   }
 
 LABEL_8:
   self->_isSyncingHierarchy = 0;
-  [(CardDAVAgent *)self _handlePotential503Error:v5];
+  [(CardDAVAgent *)self _handlePotential503Error:errorCopy];
   if (statusAndErrorIndicateWeShouldTurnOnReachability())
   {
     v13 = DALoggingwithCategory();
@@ -2614,61 +2614,61 @@ LABEL_8:
 
 - (NSString)waiterID
 {
-  v2 = [(CardDAVAgent *)self account];
-  v3 = [v2 accountID];
+  account = [(CardDAVAgent *)self account];
+  accountID = [account accountID];
 
-  return v3;
+  return accountID;
 }
 
 - (NSString)scheduleIdentifier
 {
-  v2 = [(CardDAVAgent *)self account];
-  v3 = [v2 scheduleIdentifier];
+  account = [(CardDAVAgent *)self account];
+  scheduleIdentifier = [account scheduleIdentifier];
 
-  return v3;
+  return scheduleIdentifier;
 }
 
 - (NSString)onBehalfOfBundleIdentifier
 {
-  v2 = [(CardDAVAgent *)self account];
-  v3 = [v2 onBehalfOfBundleIdentifier];
+  account = [(CardDAVAgent *)self account];
+  onBehalfOfBundleIdentifier = [account onBehalfOfBundleIdentifier];
 
-  return v3;
+  return onBehalfOfBundleIdentifier;
 }
 
 - (id)username
 {
-  v2 = [(CardDAVAgent *)self account];
-  v3 = [v2 username];
+  account = [(CardDAVAgent *)self account];
+  username = [account username];
 
-  return v3;
+  return username;
 }
 
 - (id)password
 {
-  v2 = [(CardDAVAgent *)self account];
-  v3 = [v2 password];
+  account = [(CardDAVAgent *)self account];
+  password = [account password];
 
-  return v3;
+  return password;
 }
 
-- (void)refreshPropertiesOfAllContactFoldersWithCompletion:(id)a3
+- (void)refreshPropertiesOfAllContactFoldersWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[DALocalDBGateKeeper sharedGateKeeper];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_9E58;
   v7[3] = &unk_3C9B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [v5 registerWaiter:self forDataclassLocks:2 completionHandler:v7];
 }
 
-- (void)_holdingDataClassLock_refreshPropertiesOfAllContactFoldersWithCompletion:(id)a3
+- (void)_holdingDataClassLock_refreshPropertiesOfAllContactFoldersWithCompletion:(id)completion
 {
-  v29 = a3;
+  completionCopy = completion;
   v60[0] = 0;
   v60[1] = v60;
   v60[2] = 0x2020000000;
@@ -2677,21 +2677,21 @@ LABEL_8:
   v58[1] = v58;
   v58[2] = 0x2020000000;
   v59 = 0;
-  v4 = [(CardDAVAgent *)self account];
-  v5 = [v4 addressBooks];
-  v30 = [v5 copy];
+  account = [(CardDAVAgent *)self account];
+  addressBooks = [account addressBooks];
+  v30 = [addressBooks copy];
 
-  v6 = [(CardDAVAgent *)self account];
-  v34 = [v6 containerPropertiesToFetchDuringRefresh];
+  account2 = [(CardDAVAgent *)self account];
+  containerPropertiesToFetchDuringRefresh = [account2 containerPropertiesToFetchDuringRefresh];
 
-  if ([v30 count] && objc_msgSend(v34, "count"))
+  if ([v30 count] && objc_msgSend(containerPropertiesToFetchDuringRefresh, "count"))
   {
     if ((+[DABehaviorOptions useContactsFramework]& 1) == 0)
     {
-      v7 = [(CardDAVAgent *)self databaseHelper];
-      v8 = [(CardDAVAgent *)self account];
-      v9 = [v8 changeTrackingID];
-      [v7 abOpenDBWithClientIdentifier:v9];
+      databaseHelper = [(CardDAVAgent *)self databaseHelper];
+      account3 = [(CardDAVAgent *)self account];
+      changeTrackingID = [account3 changeTrackingID];
+      [databaseHelper abOpenDBWithClientIdentifier:changeTrackingID];
     }
 
     v56[0] = 0;
@@ -2712,10 +2712,10 @@ LABEL_8:
     v51 = v54;
     v52 = v60;
     v53 = [v30 count];
-    v48 = v29;
+    v48 = completionCopy;
     v36 = objc_retainBlock(v47);
     v32 = +[NSMutableArray array];
-    v33 = [(CardDAVAgent *)self containerProvider];
+    containerProvider = [(CardDAVAgent *)self containerProvider];
     v45 = 0u;
     v46 = 0u;
     v43 = 0u;
@@ -2737,21 +2737,21 @@ LABEL_8:
           }
 
           v13 = *(*(&v43 + 1) + 8 * i);
-          v14 = [v13 folderID];
-          if (v14)
+          folderID = [v13 folderID];
+          if (folderID)
           {
-            v15 = [v13 folderID];
-            v16 = [NSURL URLWithString:v15];
+            folderID2 = [v13 folderID];
+            v16 = [NSURL URLWithString:folderID2];
 
-            v17 = [(CardDAVAgent *)self account];
-            v18 = [v17 homeURL];
-            v19 = [v16 da_leastInfoStringRepresentationRelativeToParentURL:v18];
+            account4 = [(CardDAVAgent *)self account];
+            homeURL = [account4 homeURL];
+            v19 = [v16 da_leastInfoStringRepresentationRelativeToParentURL:homeURL];
 
-            v20 = [(CardDAVAgent *)self account];
-            v21 = [v20 syncStoreIdentifier];
-            v22 = [v33 containerWithExternalIdentifier:v19 forAccountWithExternalIdentifier:v21];
+            account5 = [(CardDAVAgent *)self account];
+            syncStoreIdentifier = [account5 syncStoreIdentifier];
+            v22 = [containerProvider containerWithExternalIdentifier:v19 forAccountWithExternalIdentifier:syncStoreIdentifier];
 
-            v23 = [[CoreDAVPropFindTask alloc] initWithPropertiesToFind:v34 atURL:v16 withDepth:2];
+            v23 = [[CoreDAVPropFindTask alloc] initWithPropertiesToFind:containerPropertiesToFetchDuringRefresh atURL:v16 withDepth:2];
             objc_initWeak(&location, v23);
             v38[0] = _NSConcreteStackBlock;
             v38[1] = 3221225472;
@@ -2763,8 +2763,8 @@ LABEL_8:
             v24 = v22;
             v39 = v24;
             [v23 setCompletionBlock:v38];
-            v25 = [(CardDAVAgent *)self account];
-            [v23 setAccountInfoProvider:v25];
+            account6 = [(CardDAVAgent *)self account];
+            [v23 setAccountInfoProvider:account6];
 
             objc_destroyWeak(&v41);
             objc_destroyWeak(&location);
@@ -2775,9 +2775,9 @@ LABEL_8:
           if (v11)
           {
             [v32 addObject:v11];
-            v26 = [(CardDAVAgent *)self account];
-            v27 = [v26 taskManager];
-            [v27 submitIndependentCoreDAVTask:v11];
+            account7 = [(CardDAVAgent *)self account];
+            taskManager = [account7 taskManager];
+            [taskManager submitIndependentCoreDAVTask:v11];
           }
 
           else
@@ -2801,7 +2801,7 @@ LABEL_8:
     v28 = +[DALocalDBGateKeeper sharedGateKeeper];
     [v28 relinquishLocksForWaiter:self dataclasses:2 moreComing:0];
 
-    (*(v29 + 2))(v29, 1, 1);
+    (*(completionCopy + 2))(completionCopy, 1, 1);
     v11 = 0;
   }
 
@@ -2809,15 +2809,15 @@ LABEL_8:
   _Block_object_dispose(v60, 8);
 }
 
-- (void)refreshCollections:(id)a3 withReason:(int)a4
+- (void)refreshCollections:(id)collections withReason:(int)reason
 {
-  v6 = [(CardDAVAgent *)self account];
-  v7 = [v6 addressBooks];
-  v8 = [v7 count];
+  account = [(CardDAVAgent *)self account];
+  addressBooks = [account addressBooks];
+  v8 = [addressBooks count];
 
   if (v8)
   {
-    if (a4 == 1)
+    if (reason == 1)
     {
       v11[0] = _NSConcreteStackBlock;
       v11[1] = 3221225472;
@@ -2840,11 +2840,11 @@ LABEL_8:
 
   else
   {
-    v9 = [objc_opt_class() os_log_summary];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    os_log_summary = [objc_opt_class() os_log_summary];
+    if (os_log_type_enabled(os_log_summary, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "DA refresh machinations; sync will occur", buf, 2u);
+      _os_log_impl(&dword_0, os_log_summary, OS_LOG_TYPE_DEFAULT, "DA refresh machinations; sync will occur", buf, 2u);
     }
 
     [(CardDAVAgent *)self _validateAndSync:0];
@@ -2854,17 +2854,17 @@ LABEL_8:
 - (BOOL)isPrimaryICloudAccount
 {
   v2 = cn_objectResultWithObjectLock();
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isAccountOwnerChildInFamilyCircle
 {
   v2 = cn_objectResultWithObjectLock();
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 @end

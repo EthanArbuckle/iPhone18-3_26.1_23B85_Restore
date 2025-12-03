@@ -1,17 +1,17 @@
 @interface TDElementProduction
-- (id)associatedFileModificationDateWithDocument:(id)a3;
+- (id)associatedFileModificationDateWithDocument:(id)document;
 @end
 
 @implementation TDElementProduction
 
-- (id)associatedFileModificationDateWithDocument:(id)a3
+- (id)associatedFileModificationDateWithDocument:(id)document
 {
-  v3 = [-[TDElementProduction associatedFileURLWithDocument:](self associatedFileURLWithDocument:{a3), "path"}];
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v4 fileExistsAtPath:v3];
+  v3 = [-[TDElementProduction associatedFileURLWithDocument:](self associatedFileURLWithDocument:{document), "path"}];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v5 = [defaultManager fileExistsAtPath:v3];
   if (v5)
   {
-    v6 = [v4 attributesOfItemAtPath:v3 error:0];
+    v6 = [defaultManager attributesOfItemAtPath:v3 error:0];
   }
 
   else

@@ -1,20 +1,20 @@
 @interface GameControllerDaemon
 + (id)sharedInstance;
 + (void)run;
-- (BOOL)acceptNewConnection:(id)a3 fromGCEnabledApp:(id)a4;
-- (BOOL)acceptNewConnection:(id)a3 fromHIDServer:(id)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)acceptNewConnection:(id)connection fromGCEnabledApp:(id)app;
+- (BOOL)acceptNewConnection:(id)connection fromHIDServer:(id)server;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (GameControllerDaemon)init;
 - (id)_init;
-- (id)clientForConnection:(id)a3;
-- (id)serviceFor:(id)a3 client:(id)a4;
+- (id)clientForConnection:(id)connection;
+- (id)serviceFor:(id)for client:(id)client;
 - (void)_start;
-- (void)client:(id)a3 connectionsDidChange:(id)a4;
+- (void)client:(id)client connectionsDidChange:(id)change;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)refreshClientTransaction;
-- (void)registerAgentConnection:(id)a3;
-- (void)unregisterAgentConnection:(id)a3;
+- (void)registerAgentConnection:(id)connection;
+- (void)unregisterAgentConnection:(id)connection;
 @end
 
 @implementation GameControllerDaemon
@@ -148,37 +148,37 @@
   [(GameControllerDaemon *)&v4 dealloc];
 }
 
-- (id)serviceFor:(id)a3 client:(id)a4
+- (id)serviceFor:(id)for client:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  if (&OBJC_PROTOCOL___GCAnalytics == v6)
+  forCopy = for;
+  clientCopy = client;
+  if (&OBJC_PROTOCOL___GCAnalytics == forCopy)
   {
     v9 = 72;
   }
 
-  else if (&OBJC_PROTOCOL___GCUserDefaults == v6)
+  else if (&OBJC_PROTOCOL___GCUserDefaults == forCopy)
   {
     v9 = 80;
   }
 
-  else if (&OBJC_PROTOCOL___GCSSettingsStoreService == v6)
+  else if (&OBJC_PROTOCOL___GCSSettingsStoreService == forCopy)
   {
     v9 = 96;
   }
 
-  else if (&OBJC_PROTOCOL___GCGameIntentLauncherService == v6)
+  else if (&OBJC_PROTOCOL___GCGameIntentLauncherService == forCopy)
   {
     v9 = 88;
   }
 
   else
   {
-    if (objc_opt_class() != v6)
+    if (objc_opt_class() != forCopy)
     {
       v12.receiver = self;
       v12.super_class = GameControllerDaemon;
-      v8 = [(GameControllerDaemon *)&v12 serviceFor:v6 client:v7];
+      v8 = [(GameControllerDaemon *)&v12 serviceFor:forCopy client:clientCopy];
       goto LABEL_13;
     }
 
@@ -192,17 +192,17 @@ LABEL_13:
   return v10;
 }
 
-- (id)clientForConnection:(id)a3
+- (id)clientForConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = self->_clients;
   objc_sync_enter(v5);
-  v6 = [[_GCIPCRemoteProcess alloc] initWithConnection:v4];
+  v6 = [[_GCIPCRemoteProcess alloc] initWithConnection:connectionCopy];
   v7 = [(NSMutableSet *)self->_clients member:v6];
 
   if (!v7)
   {
-    v7 = [[_GCIPCRemoteProcess alloc] initWithConnection:v4];
+    v7 = [[_GCIPCRemoteProcess alloc] initWithConnection:connectionCopy];
     [(NSMutableSet *)self->_clients addObject:v7];
     [v7 addObserver:self forKeyPath:@"connections" options:1 context:0];
     [(GameControllerDaemon *)self refreshClientTransaction];
@@ -265,16 +265,16 @@ LABEL_8:
   objc_sync_exit(v3);
 }
 
-- (void)client:(id)a3 connectionsDidChange:(id)a4
+- (void)client:(id)client connectionsDidChange:(id)change
 {
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  changeCopy = change;
   v8 = self->_clients;
   objc_sync_enter(v8);
-  if (![v7 count])
+  if (![changeCopy count])
   {
-    [v6 removeObserver:self forKeyPath:@"connections" context:0];
-    [(NSMutableSet *)self->_clients removeObject:v6];
+    [clientCopy removeObserver:self forKeyPath:@"connections" context:0];
+    [(NSMutableSet *)self->_clients removeObject:clientCopy];
     if (sub_1000013D8())
     {
       v9 = sub_1000015D0();
@@ -286,57 +286,57 @@ LABEL_8:
   objc_sync_exit(v8);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v20.opaque[0] = 0;
   v20.opaque[1] = 0;
   v6 = _os_activity_create(&_mh_execute_header, "Incoming Connection", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v6, &v20);
-  v7 = [(GameControllerDaemon *)self clientForConnection:v5, v20.opaque[0], v20.opaque[1]];
-  v8 = [v5 serviceName];
-  v9 = [v8 isEqualToString:@"com.apple.GameController.gamecontrollerd.app"];
+  v7 = [(GameControllerDaemon *)self clientForConnection:connectionCopy, v20.opaque[0], v20.opaque[1]];
+  serviceName = [connectionCopy serviceName];
+  v9 = [serviceName isEqualToString:@"com.apple.GameController.gamecontrollerd.app"];
 
   if (v9)
   {
-    v10 = [(GameControllerDaemon *)self acceptNewConnection:v5 fromGCEnabledApp:v7];
+    v10 = [(GameControllerDaemon *)self acceptNewConnection:connectionCopy fromGCEnabledApp:v7];
 LABEL_5:
     v13 = v10;
     goto LABEL_6;
   }
 
-  v11 = [v5 serviceName];
-  v12 = [v11 isEqualToString:@"com.apple.GameController.gamecontrollerd.driver"];
+  serviceName2 = [connectionCopy serviceName];
+  v12 = [serviceName2 isEqualToString:@"com.apple.GameController.gamecontrollerd.driver"];
 
   if (v12)
   {
-    v10 = [(GameControllerDaemon *)self acceptNewConnection:v5 fromHIDServer:v7];
+    v10 = [(GameControllerDaemon *)self acceptNewConnection:connectionCopy fromHIDServer:v7];
     goto LABEL_5;
   }
 
-  v15 = [v5 serviceName];
-  v16 = [v15 isEqualToString:@"com.apple.GameController.gamecontrollerd.haptics"];
+  serviceName3 = [connectionCopy serviceName];
+  v16 = [serviceName3 isEqualToString:@"com.apple.GameController.gamecontrollerd.haptics"];
 
   if (v16)
   {
     v17 = +[_GCHapticServerManager sharedInstance];
-    v13 = [v17 acceptNewConnection:v5 fromHapticsEnabledApp:v7];
+    v13 = [v17 acceptNewConnection:connectionCopy fromHapticsEnabledApp:v7];
 
     goto LABEL_6;
   }
 
-  v18 = [v5 serviceName];
-  v19 = [v18 isEqualToString:@"com.apple.GameController.system-button-service"];
+  serviceName4 = [connectionCopy serviceName];
+  v19 = [serviceName4 isEqualToString:@"com.apple.GameController.system-button-service"];
 
   if (v19)
   {
-    v10 = [(GCSystemButtonServer *)self->_systemButtonServer acceptConnection:v5 fromProcess:v7];
+    v10 = [(GCSystemButtonServer *)self->_systemButtonServer acceptConnection:connectionCopy fromProcess:v7];
     goto LABEL_5;
   }
 
   if (sub_1000013D8())
   {
-    sub_100002E4C(v5);
+    sub_100002E4C(connectionCopy);
   }
 
   v13 = 0;
@@ -346,16 +346,16 @@ LABEL_6:
   return v13;
 }
 
-- (BOOL)acceptNewConnection:(id)a3 fromHIDServer:(id)a4
+- (BOOL)acceptNewConnection:(id)connection fromHIDServer:(id)server
 {
-  v5 = a3;
-  v6 = a4;
+  connectionCopy = connection;
+  serverCopy = server;
   if (sub_1000013D8())
   {
-    sub_100002F00(v5);
+    sub_100002F00(connectionCopy);
   }
 
-  v7 = [[_GCDriverClientConnection alloc] initWithConnection:v5 fromProcess:v6];
+  v7 = [[_GCDriverClientConnection alloc] initWithConnection:connectionCopy fromProcess:serverCopy];
 
   v8 = +[_GCControllerManagerServer sharedInstance];
   v9 = [v8 acceptIncomingDriverConnection:v7];
@@ -363,17 +363,17 @@ LABEL_6:
   return v9;
 }
 
-- (BOOL)acceptNewConnection:(id)a3 fromGCEnabledApp:(id)a4
+- (BOOL)acceptNewConnection:(id)connection fromGCEnabledApp:(id)app
 {
-  v5 = a3;
-  v6 = a4;
+  connectionCopy = connection;
+  appCopy = app;
   if (sub_1000013D8())
   {
-    sub_100002FB4(v5);
+    sub_100002FB4(connectionCopy);
   }
 
-  v7 = [[_GCAppClientConnection alloc] initWithConnection:v5 fromProcess:v6];
-  [v6 addConnection:v7];
+  v7 = [[_GCAppClientConnection alloc] initWithConnection:connectionCopy fromProcess:appCopy];
+  [appCopy addConnection:v7];
 
   v8 = +[_GCControllerManagerServer sharedInstance];
   v9 = [_GCAppClientProxy clientProxyWithConnection:v7 server:v8];
@@ -384,16 +384,16 @@ LABEL_6:
   return 1;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (off_10000D0F8 == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (off_10000D0F8 == context)
   {
-    if ([v10 isEqualToString:@"activeControllerDevices"])
+    if ([pathCopy isEqualToString:@"activeControllerDevices"])
     {
-      v13 = [v12 objectForKeyedSubscript:NSKeyValueChangeNewKey];
+      v13 = [changeCopy objectForKeyedSubscript:NSKeyValueChangeNewKey];
       self->_activeDevicesCount = [v13 count];
       [(GameControllerDaemon *)self refreshClientTransaction];
       goto LABEL_7;
@@ -402,45 +402,45 @@ LABEL_6:
 LABEL_8:
     v14.receiver = self;
     v14.super_class = GameControllerDaemon;
-    [(GameControllerDaemon *)&v14 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(GameControllerDaemon *)&v14 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
     goto LABEL_9;
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || ![v10 isEqualToString:@"connections"])
+  if ((objc_opt_isKindOfClass() & 1) == 0 || ![pathCopy isEqualToString:@"connections"])
   {
     goto LABEL_8;
   }
 
-  v13 = [v12 objectForKeyedSubscript:NSKeyValueChangeNewKey];
-  [(GameControllerDaemon *)self client:v11 connectionsDidChange:v13];
+  v13 = [changeCopy objectForKeyedSubscript:NSKeyValueChangeNewKey];
+  [(GameControllerDaemon *)self client:objectCopy connectionsDidChange:v13];
 LABEL_7:
 
 LABEL_9:
 }
 
-- (void)registerAgentConnection:(id)a3
+- (void)registerAgentConnection:(id)connection
 {
-  v7 = a3;
+  connectionCopy = connection;
   v4 = self->_agentRegistrations;
   objc_sync_enter(v4);
   agentRegistrations = self->_agentRegistrations;
-  v6 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v7 userIdentifier]);
-  [(NSMutableDictionary *)agentRegistrations setObject:v7 forKey:v6];
+  v6 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [connectionCopy userIdentifier]);
+  [(NSMutableDictionary *)agentRegistrations setObject:connectionCopy forKey:v6];
 
   objc_sync_exit(v4);
 }
 
-- (void)unregisterAgentConnection:(id)a3
+- (void)unregisterAgentConnection:(id)connection
 {
-  v7 = a3;
+  connectionCopy = connection;
   v4 = self->_agentRegistrations;
   objc_sync_enter(v4);
   agentRegistrations = self->_agentRegistrations;
-  v6 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v7 userIdentifier]);
+  v6 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [connectionCopy userIdentifier]);
   [(NSMutableDictionary *)agentRegistrations removeObjectForKey:v6];
 
-  [v7 invalidate];
+  [connectionCopy invalidate];
   objc_sync_exit(v4);
 }
 

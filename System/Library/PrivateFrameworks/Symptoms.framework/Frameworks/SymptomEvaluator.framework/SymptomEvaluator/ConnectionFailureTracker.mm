@@ -1,8 +1,8 @@
 @interface ConnectionFailureTracker
-- (BOOL)noteInitialSnapshot:(id)a3;
+- (BOOL)noteInitialSnapshot:(id)snapshot;
 - (id)description;
 - (void)_logFailure;
-- (void)_reportFailure:(unint64_t)a3 owner:(id)a4;
+- (void)_reportFailure:(unint64_t)failure owner:(id)owner;
 @end
 
 @implementation ConnectionFailureTracker
@@ -10,13 +10,13 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(ConnectionFailureTracker *)self processName];
-  v5 = [(ConnectionFailureTracker *)self ifIndex];
+  processName = [(ConnectionFailureTracker *)self processName];
+  ifIndex = [(ConnectionFailureTracker *)self ifIndex];
   [(ConnectionFailureTracker *)self lastConnectionFailTime];
   v7 = timeStringMillisecondsFromReferenceInterval(v6);
-  v8 = [(ConnectionFailureTracker *)self numConsecutiveFailures];
-  v9 = [(ConnectionFailureTracker *)self failedFlows];
-  v10 = [v3 stringWithFormat:@"ConnectionFailureTracker for %@ on ifIndex %d last fail at %@, cumulative %d  failures %@", v4, v5, v7, v8, v9];
+  numConsecutiveFailures = [(ConnectionFailureTracker *)self numConsecutiveFailures];
+  failedFlows = [(ConnectionFailureTracker *)self failedFlows];
+  v10 = [v3 stringWithFormat:@"ConnectionFailureTracker for %@ on ifIndex %d last fail at %@, cumulative %d  failures %@", processName, ifIndex, v7, numConsecutiveFailures, failedFlows];
 
   return v10;
 }
@@ -38,24 +38,24 @@
       v5 = "4";
     }
 
-    v6 = [(ConnectionFailureTracker *)self processName];
-    v7 = [(ConnectionFailureTracker *)self ifIndex];
-    v8 = [(ConnectionFailureTracker *)self numConsecutiveFailures];
+    processName = [(ConnectionFailureTracker *)self processName];
+    ifIndex = [(ConnectionFailureTracker *)self ifIndex];
+    numConsecutiveFailures = [(ConnectionFailureTracker *)self numConsecutiveFailures];
     [(ConnectionFailureTracker *)self firstConnectionFailTime];
     v10 = timeStringMillisecondsFromReferenceInterval(v9);
-    v11 = [(ConnectionFailureTracker *)self failedFlows];
+    failedFlows = [(ConnectionFailureTracker *)self failedFlows];
     *buf = 136316418;
     v35 = v5;
     v36 = 2112;
-    v37 = v6;
+    v37 = processName;
     v38 = 1024;
-    *v39 = v7;
+    *v39 = ifIndex;
     *&v39[4] = 1024;
-    *&v39[6] = v8;
+    *&v39[6] = numConsecutiveFailures;
     v40 = 2112;
     v41 = v10;
     v42 = 1024;
-    v43 = [v11 count];
+    v43 = [failedFlows count];
     _os_log_impl(&dword_23255B000, v4, OS_LOG_TYPE_ERROR, "RCF: Repeated TCPv%s connection failures seen from %@ on interface index %d, total %d starting at %@, last %d are:", buf, 0x32u);
   }
 
@@ -63,8 +63,8 @@
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v12 = [(ConnectionFailureTracker *)self failedFlows];
-  v13 = [v12 countByEnumeratingWithState:&v29 objects:v33 count:16];
+  failedFlows2 = [(ConnectionFailureTracker *)self failedFlows];
+  v13 = [failedFlows2 countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v13)
   {
     v14 = v13;
@@ -75,7 +75,7 @@
       {
         if (*v30 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(failedFlows2);
         }
 
         v17 = flowLogHandle;
@@ -101,7 +101,7 @@
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      v14 = [failedFlows2 countByEnumeratingWithState:&v29 objects:v33 count:16];
     }
 
     while (v14);
@@ -110,10 +110,10 @@
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_reportFailure:(unint64_t)a3 owner:(id)a4
+- (void)_reportFailure:(unint64_t)failure owner:(id)owner
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  ownerCopy = owner;
   v7 = flowLogHandle;
   if (os_log_type_enabled(flowLogHandle, OS_LOG_TYPE_ERROR))
   {
@@ -128,34 +128,34 @@
       v9 = "4";
     }
 
-    v10 = [(ConnectionFailureTracker *)self processName];
+    processName = [(ConnectionFailureTracker *)self processName];
     v16 = 136315906;
     v17 = v9;
     v18 = 2112;
-    v19 = v10;
+    v19 = processName;
     v20 = 1024;
-    v21 = [(ConnectionFailureTracker *)self ifIndex];
+    ifIndex = [(ConnectionFailureTracker *)self ifIndex];
     v22 = 2048;
-    v23 = a3;
+    failureCopy = failure;
     _os_log_impl(&dword_23255B000, v8, OS_LOG_TYPE_ERROR, "RCF: Report repeated TCPv%s connection failures from %@ on interface index %d, suppressed reports %lld", &v16, 0x26u);
   }
 
   [(ConnectionFailureTracker *)self lastConnectionFailTime];
   [(ConnectionFailureTracker *)self firstConnectionFailTime];
   internal_symptom_new(405520);
-  v11 = [(ConnectionFailureTracker *)self processName];
-  v12 = [v11 UTF8String];
+  processName2 = [(ConnectionFailureTracker *)self processName];
+  uTF8String = [processName2 UTF8String];
 
-  strlen(v12);
+  strlen(uTF8String);
   internal_symptom_set_additional_qualifier();
-  if (v6)
+  if (ownerCopy)
   {
-    v13 = [(ConnectionFailureTracker *)self processName];
-    v14 = [v6 isEqualToString:v13];
+    processName3 = [(ConnectionFailureTracker *)self processName];
+    v14 = [ownerCopy isEqualToString:processName3];
 
     if ((v14 & 1) == 0)
     {
-      strlen([v6 UTF8String]);
+      strlen([ownerCopy UTF8String]);
       internal_symptom_set_additional_qualifier();
     }
   }
@@ -174,56 +174,56 @@
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)noteInitialSnapshot:(id)a3
+- (BOOL)noteInitialSnapshot:(id)snapshot
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  snapshotCopy = snapshot;
   v5 = objc_alloc_init(ConnectionFailureInstance);
-  [v4 flowStartTimeIntervalSinceReferenceDate];
+  [snapshotCopy flowStartTimeIntervalSinceReferenceDate];
   [(ConnectionFailureInstance *)v5 setFlowStart:?];
-  [v4 flowDuration];
+  [snapshotCopy flowDuration];
   [(ConnectionFailureInstance *)v5 setFlowDuration:?];
-  v6 = [(ConnectionFailureTracker *)self failedFlows];
+  failedFlows = [(ConnectionFailureTracker *)self failedFlows];
 
-  if (!v6)
+  if (!failedFlows)
   {
-    v13 = [MEMORY[0x277CBEB18] array];
-    [(ConnectionFailureTracker *)self setFailedFlows:v13];
+    array = [MEMORY[0x277CBEB18] array];
+    [(ConnectionFailureTracker *)self setFailedFlows:array];
 
-    v14 = [v4 processName];
-    [(ConnectionFailureTracker *)self setProcessName:v14];
+    processName = [snapshotCopy processName];
+    [(ConnectionFailureTracker *)self setProcessName:processName];
 
-    -[ConnectionFailureTracker setIfIndex:](self, "setIfIndex:", [v4 interfaceIndex]);
-    v15 = [v4 remoteAddress];
-    v16 = [v15 bytes];
+    -[ConnectionFailureTracker setIfIndex:](self, "setIfIndex:", [snapshotCopy interfaceIndex]);
+    remoteAddress = [snapshotCopy remoteAddress];
+    bytes = [remoteAddress bytes];
 
-    if (v16)
+    if (bytes)
     {
-      v17 = *(v16 + 1);
+      v17 = *(bytes + 1);
       if (v17 == 2)
       {
         v18 = 0;
 LABEL_14:
         [(ConnectionFailureTracker *)self setIsIPv6:v18];
-        if ([v4 interfaceCellular])
+        if ([snapshotCopy interfaceCellular])
         {
-          v23 = self;
+          selfCopy3 = self;
           v24 = 2;
 LABEL_20:
-          [(ConnectionFailureTracker *)v23 setIfType:v24];
+          [(ConnectionFailureTracker *)selfCopy3 setIfType:v24];
           goto LABEL_3;
         }
 
-        if ([v4 interfaceWiFi])
+        if ([snapshotCopy interfaceWiFi])
         {
-          v23 = self;
+          selfCopy3 = self;
           v24 = 1;
           goto LABEL_20;
         }
 
-        if ([v4 interfaceWired])
+        if ([snapshotCopy interfaceWired])
         {
-          v23 = self;
+          selfCopy3 = self;
           v24 = 3;
           goto LABEL_20;
         }
@@ -232,7 +232,7 @@ LABEL_20:
         if (os_log_type_enabled(flowLogHandle, OS_LOG_TYPE_ERROR))
         {
           v25 = 138477827;
-          v26 = v4;
+          v26 = snapshotCopy;
           v20 = "RCF: Can't derive interface type  from %{private}@";
           goto LABEL_10;
         }
@@ -251,7 +251,7 @@ LABEL_20:
     if (os_log_type_enabled(flowLogHandle, OS_LOG_TYPE_ERROR))
     {
       v25 = 138477827;
-      v26 = v4;
+      v26 = snapshotCopy;
       v20 = "RCF: Unknown address family in %{private}@";
 LABEL_10:
       _os_log_impl(&dword_23255B000, v19, OS_LOG_TYPE_ERROR, v20, &v25, 0xCu);
@@ -262,12 +262,12 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v7 = [(ConnectionFailureTracker *)self failedFlows];
-  [v7 removeAllObjects];
+  failedFlows2 = [(ConnectionFailureTracker *)self failedFlows];
+  [failedFlows2 removeAllObjects];
 
 LABEL_3:
-  v8 = [(ConnectionFailureTracker *)self failedFlows];
-  [v8 addObject:v5];
+  failedFlows3 = [(ConnectionFailureTracker *)self failedFlows];
+  [failedFlows3 addObject:v5];
 
   v9 = 1;
   [(ConnectionFailureTracker *)self setNumConsecutiveFailures:1];

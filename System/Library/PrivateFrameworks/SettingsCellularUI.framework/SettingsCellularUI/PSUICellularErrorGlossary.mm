@@ -2,7 +2,7 @@
 + (id)sharedInstance;
 - (PSUICellularErrorGlossary)init;
 - (id)initPrivate;
-- (id)messageForError:(id)a3;
+- (id)messageForError:(id)error;
 @end
 
 @implementation PSUICellularErrorGlossary
@@ -36,20 +36,20 @@ uint64_t __43__PSUICellularErrorGlossary_sharedInstance__block_invoke()
 - (PSUICellularErrorGlossary)init
 {
   v5 = *MEMORY[0x277D85DE8];
-  v2 = [(PSUICellularErrorGlossary *)self getLogger];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_ERROR))
+  getLogger = [(PSUICellularErrorGlossary *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_ERROR))
   {
     v3 = 136315138;
     v4 = "[PSUICellularErrorGlossary init]";
-    _os_log_error_impl(&dword_2658DE000, v2, OS_LOG_TYPE_ERROR, "Error: unsupported initializer called: %s", &v3, 0xCu);
+    _os_log_error_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_ERROR, "Error: unsupported initializer called: %s", &v3, 0xCu);
   }
 
   objc_exception_throw([objc_alloc(MEMORY[0x277CBEAD8]) initWithName:@"Unsupported initializer" reason:@"Unsupported initializer called" userInfo:0]);
 }
 
-- (id)messageForError:(id)a3
+- (id)messageForError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v4 = objc_opt_new();
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"GENERIC_CELLULAR_PLAN_ERROR_TITLE" value:&stru_287733598 table:@"Cellular"];
@@ -59,13 +59,13 @@ uint64_t __43__PSUICellularErrorGlossary_sharedInstance__block_invoke()
   v8 = [v7 localizedStringForKey:@"GENERIC_CELLULAR_PLAN_ERROR_MESSAGE" value:&stru_287733598 table:@"Cellular"];
   [v4 setMessage:v8];
 
-  v9 = [v3 domain];
-  LODWORD(v8) = [v9 isEqualToString:*MEMORY[0x277CF9680]];
+  domain = [errorCopy domain];
+  LODWORD(v8) = [domain isEqualToString:*MEMORY[0x277CF9680]];
 
   if (v8)
   {
-    v10 = [v3 code];
-    if (v10 == 2)
+    code = [errorCopy code];
+    if (code == 2)
     {
       v11 = @"INVALID_ACTIVATION_CODE_MESSAGE";
       v12 = @"INVALID_ACTIVATION_CODE_TITLE";
@@ -73,7 +73,7 @@ uint64_t __43__PSUICellularErrorGlossary_sharedInstance__block_invoke()
 
     else
     {
-      if (v10 != 13)
+      if (code != 13)
       {
         goto LABEL_7;
       }

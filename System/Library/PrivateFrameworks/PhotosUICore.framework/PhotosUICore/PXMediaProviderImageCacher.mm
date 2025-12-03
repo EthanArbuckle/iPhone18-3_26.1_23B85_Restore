@@ -1,9 +1,9 @@
 @interface PXMediaProviderImageCacher
 - (PXMediaProvider)mediaProvider;
-- (PXMediaProviderImageCacher)initWithMediaProvider:(id)a3;
-- (void)startCachingImagesForAssets:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6;
+- (PXMediaProviderImageCacher)initWithMediaProvider:(id)provider;
+- (void)startCachingImagesForAssets:(id)assets targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options;
 - (void)stopCachingImagesForAllAssets;
-- (void)stopCachingImagesForAssets:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6;
+- (void)stopCachingImagesForAssets:(id)assets targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options;
 @end
 
 @implementation PXMediaProviderImageCacher
@@ -17,19 +17,19 @@
 
 - (void)stopCachingImagesForAllAssets
 {
-  v3 = [(PXMediaProviderImageCacher *)self requestCountByCacheSpec];
-  [v3 removeAllObjects];
+  requestCountByCacheSpec = [(PXMediaProviderImageCacher *)self requestCountByCacheSpec];
+  [requestCountByCacheSpec removeAllObjects];
 
-  v4 = [(PXMediaProviderImageCacher *)self requestIDByCacheSpec];
+  requestIDByCacheSpec = [(PXMediaProviderImageCacher *)self requestIDByCacheSpec];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __59__PXMediaProviderImageCacher_stopCachingImagesForAllAssets__block_invoke;
   v6[3] = &unk_1E7748368;
   v6[4] = self;
-  [v4 enumerateKeysAndObjectsUsingBlock:v6];
+  [requestIDByCacheSpec enumerateKeysAndObjectsUsingBlock:v6];
 
-  v5 = [(PXMediaProviderImageCacher *)self requestIDByCacheSpec];
-  [v5 removeAllObjects];
+  requestIDByCacheSpec2 = [(PXMediaProviderImageCacher *)self requestIDByCacheSpec];
+  [requestIDByCacheSpec2 removeAllObjects];
 }
 
 void __59__PXMediaProviderImageCacher_stopCachingImagesForAllAssets__block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -42,22 +42,22 @@ void __59__PXMediaProviderImageCacher_stopCachingImagesForAllAssets__block_invok
   [v6 cancelImageRequest:v5];
 }
 
-- (void)stopCachingImagesForAssets:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6
+- (void)stopCachingImagesForAssets:(id)assets targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options
 {
-  height = a4.height;
-  width = a4.width;
-  v11 = a6;
+  height = size.height;
+  width = size.width;
+  optionsCopy = options;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __88__PXMediaProviderImageCacher_stopCachingImagesForAssets_targetSize_contentMode_options___block_invoke;
   v13[3] = &unk_1E7748340;
   v16 = width;
   v17 = height;
-  v18 = a5;
-  v14 = v11;
-  v15 = self;
-  v12 = v11;
-  [a3 enumerateObjectsUsingBlock:v13];
+  modeCopy = mode;
+  v14 = optionsCopy;
+  selfCopy = self;
+  v12 = optionsCopy;
+  [assets enumerateObjectsUsingBlock:v13];
 }
 
 void __88__PXMediaProviderImageCacher_stopCachingImagesForAssets_targetSize_contentMode_options___block_invoke(uint64_t a1, void *a2)
@@ -88,22 +88,22 @@ void __88__PXMediaProviderImageCacher_stopCachingImagesForAssets_targetSize_cont
   }
 }
 
-- (void)startCachingImagesForAssets:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6
+- (void)startCachingImagesForAssets:(id)assets targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options
 {
-  height = a4.height;
-  width = a4.width;
-  v11 = a6;
+  height = size.height;
+  width = size.width;
+  optionsCopy = options;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __89__PXMediaProviderImageCacher_startCachingImagesForAssets_targetSize_contentMode_options___block_invoke;
   v13[3] = &unk_1E7748340;
   v16 = width;
   v17 = height;
-  v18 = a5;
-  v14 = v11;
-  v15 = self;
-  v12 = v11;
-  [a3 enumerateObjectsUsingBlock:v13];
+  modeCopy = mode;
+  v14 = optionsCopy;
+  selfCopy = self;
+  v12 = optionsCopy;
+  [assets enumerateObjectsUsingBlock:v13];
 }
 
 void __89__PXMediaProviderImageCacher_startCachingImagesForAssets_targetSize_contentMode_options___block_invoke(uint64_t a1, void *a2)
@@ -150,16 +150,16 @@ void __89__PXMediaProviderImageCacher_startCachingImagesForAssets_targetSize_con
   }
 }
 
-- (PXMediaProviderImageCacher)initWithMediaProvider:(id)a3
+- (PXMediaProviderImageCacher)initWithMediaProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v12.receiver = self;
   v12.super_class = PXMediaProviderImageCacher;
   v5 = [(PXMediaProviderImageCacher *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_mediaProvider, v4);
+    objc_storeWeak(&v5->_mediaProvider, providerCopy);
     v7 = objc_alloc_init(MEMORY[0x1E696AB50]);
     requestCountByCacheSpec = v6->_requestCountByCacheSpec;
     v6->_requestCountByCacheSpec = v7;

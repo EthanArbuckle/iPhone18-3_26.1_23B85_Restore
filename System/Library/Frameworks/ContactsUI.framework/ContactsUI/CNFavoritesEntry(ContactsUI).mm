@@ -11,7 +11,7 @@
   v6 = MEMORY[0x1E6996BD0];
   v7 = a4;
   v8 = [v6 contextWithExtensionContext:a3];
-  [a1 performActionWithContext:v8 completion:v7];
+  [self performActionWithContext:v8 completion:v7];
 }
 
 - (void)performActionWithCompletion:()ContactsUI
@@ -19,7 +19,7 @@
   v4 = MEMORY[0x1E6996BD0];
   v5 = a3;
   v6 = objc_alloc_init(v4);
-  [a1 performActionWithContext:v6 completion:v5];
+  [self performActionWithContext:v6 completion:v5];
 }
 
 - (void)performActionWithContext:()ContactsUI completion:
@@ -27,18 +27,18 @@
   v6 = a3;
   v7 = a4;
   v8 = MEMORY[0x1E6996BE0];
-  v9 = [a1 contactProperty];
-  v10 = [a1 actionType];
-  v11 = [a1 bundleIdentifier];
-  v12 = [v8 actionItemForContactProperty:v9 actionType:v10 bundleIdentifier:v11];
+  contactProperty = [self contactProperty];
+  actionType = [self actionType];
+  bundleIdentifier = [self bundleIdentifier];
+  v12 = [v8 actionItemForContactProperty:contactProperty actionType:actionType bundleIdentifier:bundleIdentifier];
 
   if (v12)
   {
     v13 = objc_alloc_init(MEMORY[0x1E695CEB0]);
-    v14 = [v13 channelForFavoritesEntry:a1 error:0];
+    v14 = [v13 channelForFavoritesEntry:self error:0];
 
-    v15 = [v14 channelIdentifier];
-    [v6 setChannelIdentifier:v15];
+    channelIdentifier = [v14 channelIdentifier];
+    [v6 setChannelIdentifier:channelIdentifier];
 
     [v6 setIsOriginatingFromFavorites:1];
     v16 = [v12 performActionWithContext:v6];

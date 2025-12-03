@@ -1,23 +1,23 @@
 @interface _SFOpenInOtherAppActivityViewController
-+ (BOOL)canOpenWithFilePath:(id)a3 UTI:(id)a4 sourceURL:(id)a5;
-+ (id)_activityItemsForFilePath:(id)a3 UTI:(id)a4 sourceURL:(id)a5;
-+ (id)_applicationsForDocumentProxy:(id)a3;
-- (_SFOpenInOtherAppActivityViewController)initWithFilePath:(id)a3 UTI:(id)a4 sourceURL:(id)a5;
-- (void)_prepareActivity:(id)a3;
++ (BOOL)canOpenWithFilePath:(id)path UTI:(id)i sourceURL:(id)l;
++ (id)_activityItemsForFilePath:(id)path UTI:(id)i sourceURL:(id)l;
++ (id)_applicationsForDocumentProxy:(id)proxy;
+- (_SFOpenInOtherAppActivityViewController)initWithFilePath:(id)path UTI:(id)i sourceURL:(id)l;
+- (void)_prepareActivity:(id)activity;
 @end
 
 @implementation _SFOpenInOtherAppActivityViewController
 
-+ (id)_applicationsForDocumentProxy:(id)a3
++ (id)_applicationsForDocumentProxy:(id)proxy
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E6963608] defaultWorkspace];
-  v5 = [v4 applicationsAvailableForOpeningDocument:v3];
+  proxyCopy = proxy;
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+  v5 = [defaultWorkspace applicationsAvailableForOpeningDocument:proxyCopy];
   v6 = [v5 mutableCopy];
 
-  v7 = [MEMORY[0x1E696AAE8] mainBundle];
-  v8 = [v7 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
   v20 = 0u;
   v21 = 0u;
@@ -39,8 +39,8 @@
         }
 
         v14 = *(*(&v18 + 1) + 8 * i);
-        v15 = [v14 bundleIdentifier];
-        v16 = [v15 isEqualToString:v8];
+        bundleIdentifier2 = [v14 bundleIdentifier];
+        v16 = [bundleIdentifier2 isEqualToString:bundleIdentifier];
 
         if (v16)
         {
@@ -64,25 +64,25 @@ LABEL_11:
   return v9;
 }
 
-+ (id)_activityItemsForFilePath:(id)a3 UTI:(id)a4 sourceURL:(id)a5
++ (id)_activityItemsForFilePath:(id)path UTI:(id)i sourceURL:(id)l
 {
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x1E695DF70] array];
-  if (v11)
+  pathCopy = path;
+  iCopy = i;
+  lCopy = l;
+  array = [MEMORY[0x1E695DF70] array];
+  if (array)
   {
     v12 = MEMORY[0x1E6963658];
-    v13 = [v8 lastPathComponent];
-    v14 = [v12 sf_documentProxyForName:v13 type:v9 MIMEType:0 sourceURL:v10];
+    lastPathComponent = [pathCopy lastPathComponent];
+    v14 = [v12 sf_documentProxyForName:lastPathComponent type:iCopy MIMEType:0 sourceURL:lCopy];
 
     if (v14)
     {
-      v15 = [a1 _applicationsForDocumentProxy:v14];
+      v15 = [self _applicationsForDocumentProxy:v14];
       if ([v15 count])
       {
-        v28 = v10;
+        v28 = lCopy;
         v31 = 0u;
         v32 = 0u;
         v29 = 0u;
@@ -105,9 +105,9 @@ LABEL_11:
 
               v21 = *(*(&v29 + 1) + 8 * i);
               v22 = [_SFOpenWithAppUIActivity alloc];
-              v23 = [v21 bundleIdentifier];
-              v24 = [(_SFOpenWithAppUIActivity *)v22 initWithApplicationIdentifier:v23 andFilePath:v8];
-              [v11 addObject:v24];
+              bundleIdentifier = [v21 bundleIdentifier];
+              v24 = [(_SFOpenWithAppUIActivity *)v22 initWithApplicationIdentifier:bundleIdentifier andFilePath:pathCopy];
+              [array addObject:v24];
             }
 
             v18 = [v16 countByEnumeratingWithState:&v29 objects:v33 count:16];
@@ -116,8 +116,8 @@ LABEL_11:
           while (v18);
         }
 
-        v25 = v11;
-        v10 = v28;
+        v25 = array;
+        lCopy = v28;
         v15 = v27;
       }
 
@@ -141,22 +141,22 @@ LABEL_11:
   return v25;
 }
 
-+ (BOOL)canOpenWithFilePath:(id)a3 UTI:(id)a4 sourceURL:(id)a5
++ (BOOL)canOpenWithFilePath:(id)path UTI:(id)i sourceURL:(id)l
 {
-  v5 = [a1 _activityItemsForFilePath:a3 UTI:a4 sourceURL:a5];
+  v5 = [self _activityItemsForFilePath:path UTI:i sourceURL:l];
   v6 = v5 != 0;
 
   return v6;
 }
 
-- (_SFOpenInOtherAppActivityViewController)initWithFilePath:(id)a3 UTI:(id)a4 sourceURL:(id)a5
+- (_SFOpenInOtherAppActivityViewController)initWithFilePath:(id)path UTI:(id)i sourceURL:(id)l
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [[_SFOpenInOtherAppActivityItemsSource alloc] initWithFilePath:v8];
-  v12 = [objc_opt_class() _activityItemsForFilePath:v8 UTI:v10 sourceURL:v9];
+  pathCopy = path;
+  lCopy = l;
+  iCopy = i;
+  v11 = [[_SFOpenInOtherAppActivityItemsSource alloc] initWithFilePath:pathCopy];
+  v12 = [objc_opt_class() _activityItemsForFilePath:pathCopy UTI:iCopy sourceURL:lCopy];
 
   if (v12)
   {
@@ -164,35 +164,35 @@ LABEL_11:
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
     v17.receiver = self;
     v17.super_class = _SFOpenInOtherAppActivityViewController;
-    v14 = [(_SFActivityViewController *)&v17 initWithActivityItems:v13 applicationActivities:v12 sharingURL:v9 sourceURL:v9];
+    v14 = [(_SFActivityViewController *)&v17 initWithActivityItems:v13 applicationActivities:v12 sharingURL:lCopy sourceURL:lCopy];
 
     if (v14)
     {
-      [(_SFOpenInOtherAppActivityViewController *)v14 setFilePath:v8];
+      [(_SFOpenInOtherAppActivityViewController *)v14 setFilePath:pathCopy];
     }
 
     self = v14;
-    v15 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
-- (void)_prepareActivity:(id)a3
+- (void)_prepareActivity:(id)activity
 {
-  v7 = a3;
-  v4 = [v7 activityType];
-  v5 = [v4 isEqualToString:*MEMORY[0x1E69CDAA0]];
+  activityCopy = activity;
+  activityType = [activityCopy activityType];
+  v5 = [activityType isEqualToString:*MEMORY[0x1E69CDAA0]];
 
   if (v5)
   {
-    v6 = [(NSString *)self->_filePath lastPathComponent];
-    [v7 setSubject:v6];
+    lastPathComponent = [(NSString *)self->_filePath lastPathComponent];
+    [activityCopy setSubject:lastPathComponent];
   }
 }
 

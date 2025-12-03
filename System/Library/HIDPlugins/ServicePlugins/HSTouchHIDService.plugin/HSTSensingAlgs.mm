@@ -1,25 +1,25 @@
 @interface HSTSensingAlgs
-- (BOOL)handleHSDecode:(void *)a3;
-- (BOOL)handleHSEncode:(void *)a3;
-- (HSTSensingAlgs)initWithConfig:(const HSTSensingAlgsConfig *)a3;
+- (BOOL)handleHSDecode:(void *)decode;
+- (BOOL)handleHSEncode:(void *)encode;
+- (HSTSensingAlgs)initWithConfig:(const HSTSensingAlgsConfig *)config;
 - (HSTSensingAlgsConfig)config;
-- (id)_handleSAFrame:(id)a3;
-- (void)_handleCoreAnalytics:(id)a3 payload:(id)a4;
-- (void)_handleDriverEvent:(id)a3;
-- (void)_handleEvents:(id)a3;
-- (void)_handleGetPropertyEvent:(id)a3;
-- (void)_handlePencilEvents:(id)a3;
-- (void)_handleResetRequest:(unsigned __int8)a3;
-- (void)_handleSetPropertyEvent:(id)a3;
-- (void)_handleStream:(id)a3;
-- (void)_handleTimestampSyncEvent:(id)a3;
-- (void)handleConsume:(id)a3;
-- (void)setConfig:(HSTSensingAlgsConfig *)a3;
+- (id)_handleSAFrame:(id)frame;
+- (void)_handleCoreAnalytics:(id)analytics payload:(id)payload;
+- (void)_handleDriverEvent:(id)event;
+- (void)_handleEvents:(id)events;
+- (void)_handleGetPropertyEvent:(id)event;
+- (void)_handlePencilEvents:(id)events;
+- (void)_handleResetRequest:(unsigned __int8)request;
+- (void)_handleSetPropertyEvent:(id)event;
+- (void)_handleStream:(id)stream;
+- (void)_handleTimestampSyncEvent:(id)event;
+- (void)handleConsume:(id)consume;
+- (void)setConfig:(HSTSensingAlgsConfig *)config;
 @end
 
 @implementation HSTSensingAlgs
 
-- (HSTSensingAlgs)initWithConfig:(const HSTSensingAlgsConfig *)a3
+- (HSTSensingAlgs)initWithConfig:(const HSTSensingAlgsConfig *)config
 {
   v39.receiver = self;
   v39.super_class = HSTSensingAlgs;
@@ -28,9 +28,9 @@
   if (v4)
   {
     p_config = &v4->_config;
-    *&v4->_config.maxPacketSize = *&a3->maxPacketSize;
-    objc_storeStrong(&v4->_config.frameworkString, a3->frameworkString);
-    v5->_config.device = a3->device;
+    *&v4->_config.maxPacketSize = *&config->maxPacketSize;
+    objc_storeStrong(&v4->_config.frameworkString, config->frameworkString);
+    v5->_config.device = config->device;
     frameworkString = v5->_config.frameworkString;
     if (frameworkString)
     {
@@ -46,8 +46,8 @@
     v11 = [[NSBundle alloc] initWithPath:v10];
     if ([v11 load])
     {
-      v12 = [v11 principalClass];
-      if (([(objc_class *)v12 conformsToProtocol:&OBJC_PROTOCOL___SASInterfaceProtocol]& 1) != 0)
+      principalClass = [v11 principalClass];
+      if (([(objc_class *)principalClass conformsToProtocol:&OBJC_PROTOCOL___SASInterfaceProtocol]& 1) != 0)
       {
         v13 = MTLoggingPlugin();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -58,7 +58,7 @@
         }
 
         objc_initWeak(buf, v5);
-        v14 = [v12 alloc];
+        v14 = [principalClass alloc];
         maxPacketSize = p_config->maxPacketSize;
         familyID = v5->_config.familyID;
         v37[0] = _NSConcreteStackBlock;
@@ -221,17 +221,17 @@ void __33__HSTSensingAlgs_initWithConfig___block_invoke_5(uint64_t a1, void *a2)
   [WeakRetained _handlePencilEvents:v3];
 }
 
-- (void)_handleEvents:(id)a3
+- (void)_handleEvents:(id)events
 {
-  v4 = a3;
-  if ([v4 count])
+  eventsCopy = events;
+  if ([eventsCopy count])
   {
     v5 = objc_opt_new();
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = v4;
+    v6 = eventsCopy;
     v7 = [v6 countByEnumeratingWithState:&v11 objects:v16 count:16];
     if (v7)
     {
@@ -266,17 +266,17 @@ void __33__HSTSensingAlgs_initWithConfig___block_invoke_5(uint64_t a1, void *a2)
   }
 }
 
-- (void)_handlePencilEvents:(id)a3
+- (void)_handlePencilEvents:(id)events
 {
-  v4 = a3;
-  if ([v4 count])
+  eventsCopy = events;
+  if ([eventsCopy count])
   {
     v5 = objc_opt_new();
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = v4;
+    v6 = eventsCopy;
     v7 = [v6 countByEnumeratingWithState:&v12 objects:v17 count:16];
     if (v7)
     {
@@ -313,33 +313,33 @@ void __33__HSTSensingAlgs_initWithConfig___block_invoke_5(uint64_t a1, void *a2)
   }
 }
 
-- (void)_handleStream:(id)a3
+- (void)_handleStream:(id)stream
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_filteredClients && [v5 length])
+  streamCopy = stream;
+  v6 = streamCopy;
+  if (self->_filteredClients && [streamCopy length])
   {
     v7 = objc_opt_new();
-    objc_storeStrong(v7 + 1, a3);
+    objc_storeStrong(v7 + 1, stream);
     v8.receiver = self;
     v8.super_class = HSTSensingAlgs;
     [(HSStage *)&v8 handleConsume:v7];
   }
 }
 
-- (void)_handleCoreAnalytics:(id)a3 payload:(id)a4
+- (void)_handleCoreAnalytics:(id)analytics payload:(id)payload
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[HSTAnalyticsEvent alloc] initWithName:v6 payload:v7];
+  analyticsCopy = analytics;
+  payloadCopy = payload;
+  v8 = [[HSTAnalyticsEvent alloc] initWithName:analyticsCopy payload:payloadCopy];
   v9.receiver = self;
   v9.super_class = HSTSensingAlgs;
   [(HSStage *)&v9 handleConsume:v8];
 }
 
-- (void)_handleResetRequest:(unsigned __int8)a3
+- (void)_handleResetRequest:(unsigned __int8)request
 {
-  __src = a3;
+  __src = request;
   memset(v16, 170, sizeof(v16));
   v15 = 90;
   v10 = v16;
@@ -370,16 +370,16 @@ void __33__HSTSensingAlgs_initWithConfig___block_invoke_5(uint64_t a1, void *a2)
   }
 }
 
-- (id)_handleSAFrame:(id)a3
+- (id)_handleSAFrame:(id)frame
 {
-  v5 = a3;
-  if (!v5)
+  frameCopy = frame;
+  if (!frameCopy)
   {
     v10 = +[NSAssertionHandler currentHandler];
     [v10 handleFailureInMethod:a2 object:self file:@"HSTSensingAlgs.mm" lineNumber:198 description:{@"Invalid parameter not satisfying: %@", @"frame"}];
   }
 
-  if (HSTFrameParserTypes::ReportCast<HSTPipeline::FirmwareInterface::InputReport::SABinaryFrame>(v5[1]))
+  if (HSTFrameParserTypes::ReportCast<HSTPipeline::FirmwareInterface::InputReport::SABinaryFrame>(frameCopy[1]))
   {
     v6 = MTLoggingPlugin();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -387,7 +387,7 @@ void __33__HSTSensingAlgs_initWithConfig___block_invoke_5(uint64_t a1, void *a2)
       [HSTSensingAlgs _handleSAFrame:];
     }
 
-    if (([(SASInterfaceProtocol *)self->_planInterface handleInputStream:v5[1]]& 1) == 0)
+    if (([(SASInterfaceProtocol *)self->_planInterface handleInputStream:frameCopy[1]]& 1) == 0)
     {
       v7 = MTLoggingPlugin();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -399,26 +399,26 @@ void __33__HSTSensingAlgs_initWithConfig___block_invoke_5(uint64_t a1, void *a2)
     if (self->_filteredClients)
     {
 
-      v5 = 0;
+      frameCopy = 0;
     }
   }
 
-  v8 = v5;
+  v8 = frameCopy;
 
   return v8;
 }
 
-- (void)_handleDriverEvent:(id)a3
+- (void)_handleDriverEvent:(id)event
 {
-  v5 = a3;
-  if ([v5 notification] == 5)
+  eventCopy = event;
+  if ([eventCopy notification] == 5)
   {
     v4 = 1;
   }
 
   else
   {
-    if ([v5 notification] != 6)
+    if ([eventCopy notification] != 6)
     {
       goto LABEL_6;
     }
@@ -430,22 +430,22 @@ void __33__HSTSensingAlgs_initWithConfig___block_invoke_5(uint64_t a1, void *a2)
 LABEL_6:
 }
 
-- (void)_handleSetPropertyEvent:(id)a3
+- (void)_handleSetPropertyEvent:(id)event
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = v4 + 16;
-  v7 = v4[39];
+  eventCopy = event;
+  v5 = eventCopy;
+  v6 = eventCopy + 16;
+  v7 = eventCopy[39];
   if ((v7 & 0x80000000) == 0)
   {
-    if (v4[39] != 13)
+    if (eventCopy[39] != 13)
     {
-      if (v4[39] != 15)
+      if (eventCopy[39] != 15)
       {
         goto LABEL_34;
       }
 
-      if (*v6 != 0x617A69746E617551 || *(v4 + 23) != 0x4950446E6F697461)
+      if (*v6 != 0x617A69746E617551 || *(eventCopy + 23) != 0x4950446E6F697461)
       {
         goto LABEL_34;
       }
@@ -464,9 +464,9 @@ LABEL_17:
     goto LABEL_27;
   }
 
-  if (*(v4 + 3) != 15 || (**v6 == 0x617A69746E617551 ? (v9 = *(*v6 + 7) == 0x4950446E6F697461) : (v9 = 0), !v9))
+  if (*(eventCopy + 3) != 15 || (**v6 == 0x617A69746E617551 ? (v9 = *(*v6 + 7) == 0x4950446E6F697461) : (v9 = 0), !v9))
   {
-    if (*(v4 + 3) != 13)
+    if (*(eventCopy + 3) != 13)
     {
       goto LABEL_34;
     }
@@ -476,7 +476,7 @@ LABEL_17:
   }
 
 LABEL_23:
-  v13 = *(v4 + 5);
+  v13 = *(eventCopy + 5);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -512,14 +512,14 @@ LABEL_27:
 LABEL_34:
 }
 
-- (void)_handleGetPropertyEvent:(id)a3
+- (void)_handleGetPropertyEvent:(id)event
 {
-  v4 = a3;
-  v5 = v4 + 16;
-  v6 = v4[39];
+  eventCopy = event;
+  v5 = eventCopy + 16;
+  v6 = eventCopy[39];
   if (v6 < 0)
   {
-    if (*(v4 + 3) != 15)
+    if (*(eventCopy + 3) != 15)
     {
       goto LABEL_13;
     }
@@ -539,21 +539,21 @@ LABEL_34:
     quantizationDPI = self->_quantizationDPI;
     if (quantizationDPI)
     {
-      v11 = v4;
-      objc_storeStrong(v4 + 5, quantizationDPI);
-      v4 = v11;
+      v11 = eventCopy;
+      objc_storeStrong(eventCopy + 5, quantizationDPI);
+      eventCopy = v11;
     }
   }
 
 LABEL_13:
 }
 
-- (void)_handleTimestampSyncEvent:(id)a3
+- (void)_handleTimestampSyncEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 deviceTimestampOffsetMs];
+  eventCopy = event;
+  deviceTimestampOffsetMs = [eventCopy deviceTimestampOffsetMs];
   planInterface = self->_planInterface;
-  v7 = [NSNumber numberWithLongLong:v5];
+  v7 = [NSNumber numberWithLongLong:deviceTimestampOffsetMs];
   LODWORD(planInterface) = [(SASInterfaceProtocol *)planInterface injectProperty:@"TimestampSync" value:v7];
 
   if (planInterface)
@@ -575,13 +575,13 @@ LABEL_13:
   }
 }
 
-- (void)handleConsume:(id)a3
+- (void)handleConsume:(id)consume
 {
-  v4 = a3;
+  consumeCopy = consume;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = consumeCopy;
   }
 
   else
@@ -591,14 +591,14 @@ LABEL_13:
 
   if (v5)
   {
-    v6 = [(HSTSensingAlgs *)self _handleSAFrame:v4];
+    v6 = [(HSTSensingAlgs *)self _handleSAFrame:consumeCopy];
 
     v7 = v6;
   }
 
   else
   {
-    v7 = v4;
+    v7 = consumeCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -684,30 +684,30 @@ LABEL_13:
   }
 }
 
-- (BOOL)handleHSEncode:(void *)a3
+- (BOOL)handleHSEncode:(void *)encode
 {
-  if (!*a3)
+  if (!*encode)
   {
-    *&v6 = *(a3 + 17);
+    *&v6 = *(encode + 17);
     DWORD2(v6) = 4;
-    std::vector<HSUtil::Encoder::ContainerRecord>::push_back[abi:ne200100](a3 + 56, &v6);
-    HSUtil::Encoder::_writeTokenValue32(a3, 0xEBu, 0);
+    std::vector<HSUtil::Encoder::ContainerRecord>::push_back[abi:ne200100](encode + 56, &v6);
+    HSUtil::Encoder::_writeTokenValue32(encode, 0xEBu, 0);
   }
 
-  HSUtil::Encoder::encodeUInt(a3, HSUtil::CoderKey::Literal<(char)109,(char)97,(char)120,(char)80,(char)97,(char)99,(char)107,(char)101,(char)116,(char)83,(char)105,(char)122,(char)101>::Key, self->_config.maxPacketSize);
-  if (!*a3)
+  HSUtil::Encoder::encodeUInt(encode, HSUtil::CoderKey::Literal<(char)109,(char)97,(char)120,(char)80,(char)97,(char)99,(char)107,(char)101,(char)116,(char)83,(char)105,(char)122,(char)101>::Key, self->_config.maxPacketSize);
+  if (!*encode)
   {
-    HSUtil::Encoder::_encodeContainerStop(a3);
+    HSUtil::Encoder::_encodeContainerStop(encode);
   }
 
   return 1;
 }
 
-- (BOOL)handleHSDecode:(void *)a3
+- (BOOL)handleHSDecode:(void *)decode
 {
-  self->_config.maxPacketSize = HSUtil::Decoder::decodeUInt(a3, HSUtil::CoderKey::Literal<(char)109,(char)97,(char)120,(char)80,(char)97,(char)99,(char)107,(char)101,(char)116,(char)83,(char)105,(char)122,(char)101>::Key);
-  v4 = *a3;
-  if (*a3)
+  self->_config.maxPacketSize = HSUtil::Decoder::decodeUInt(decode, HSUtil::CoderKey::Literal<(char)109,(char)97,(char)120,(char)80,(char)97,(char)99,(char)107,(char)101,(char)116,(char)83,(char)105,(char)122,(char)101>::Key);
+  v4 = *decode;
+  if (*decode)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/HIDSensingTouch/HSTPipeline/HSTSensingAlgs.mm", __b);
@@ -731,13 +731,13 @@ LABEL_13:
   return result;
 }
 
-- (void)setConfig:(HSTSensingAlgsConfig *)a3
+- (void)setConfig:(HSTSensingAlgsConfig *)config
 {
   p_config = &self->_config;
-  *&self->_config.maxPacketSize = *&a3->maxPacketSize;
-  objc_storeStrong(&self->_config.frameworkString, a3->frameworkString);
-  p_config->device = a3->device;
-  frameworkString = a3->frameworkString;
+  *&self->_config.maxPacketSize = *&config->maxPacketSize;
+  objc_storeStrong(&self->_config.frameworkString, config->frameworkString);
+  p_config->device = config->device;
+  frameworkString = config->frameworkString;
 }
 
 - (void)initWithConfig:.cold.1()

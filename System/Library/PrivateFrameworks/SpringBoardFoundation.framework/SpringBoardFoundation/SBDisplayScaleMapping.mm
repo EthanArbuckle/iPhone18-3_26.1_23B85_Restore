@@ -1,9 +1,9 @@
 @interface SBDisplayScaleMapping
-+ (id)withDisplay:(id)a3;
++ (id)withDisplay:(id)display;
 - (CGSize)referenceSize;
-- (SBDisplayScaleMapping)initWithDisplayHardwareIdentifier:(id)a3 nativePPI:(double)a4 referenceSize:(CGSize)a5 scaleMethod:(unint64_t)a6 supportedScales:(unint64_t)a7 displayScaleToLogicalScale:(id)a8;
-- (double)logicalScaleForDisplayScale:(unint64_t)a3;
-- (double)ppiForDisplayScale:(unint64_t)a3;
+- (SBDisplayScaleMapping)initWithDisplayHardwareIdentifier:(id)identifier nativePPI:(double)i referenceSize:(CGSize)size scaleMethod:(unint64_t)method supportedScales:(unint64_t)scales displayScaleToLogicalScale:(id)scale;
+- (double)logicalScaleForDisplayScale:(unint64_t)scale;
+- (double)ppiForDisplayScale:(unint64_t)scale;
 - (id)createDefaultSettings;
 - (id)description;
 - (unint64_t)_defaultScale;
@@ -12,44 +12,44 @@
 
 @implementation SBDisplayScaleMapping
 
-- (SBDisplayScaleMapping)initWithDisplayHardwareIdentifier:(id)a3 nativePPI:(double)a4 referenceSize:(CGSize)a5 scaleMethod:(unint64_t)a6 supportedScales:(unint64_t)a7 displayScaleToLogicalScale:(id)a8
+- (SBDisplayScaleMapping)initWithDisplayHardwareIdentifier:(id)identifier nativePPI:(double)i referenceSize:(CGSize)size scaleMethod:(unint64_t)method supportedScales:(unint64_t)scales displayScaleToLogicalScale:(id)scale
 {
-  height = a5.height;
-  width = a5.width;
-  v15 = a3;
-  v16 = a8;
+  height = size.height;
+  width = size.width;
+  identifierCopy = identifier;
+  scaleCopy = scale;
   v21.receiver = self;
   v21.super_class = SBDisplayScaleMapping;
   v17 = [(SBDisplayScaleMapping *)&v21 init];
   if (v17)
   {
-    v18 = [v15 copy];
+    v18 = [identifierCopy copy];
     displayHardwareIdentifier = v17->_displayHardwareIdentifier;
     v17->_displayHardwareIdentifier = v18;
 
-    v17->_nativePPI = a4;
+    v17->_nativePPI = i;
     v17->_referenceSize.width = width;
     v17->_referenceSize.height = height;
-    v17->_scaleMethod = a6;
-    v17->_supportedScales = a7;
-    objc_storeStrong(&v17->_displayScaleToLogicalScale, a8);
+    v17->_scaleMethod = method;
+    v17->_supportedScales = scales;
+    objc_storeStrong(&v17->_displayScaleToLogicalScale, scale);
   }
 
   return v17;
 }
 
-+ (id)withDisplay:(id)a3
++ (id)withDisplay:(id)display
 {
   v130[1] = *MEMORY[0x1E69E9840];
-  v101 = a3;
-  v3 = [v101 CADisplay];
-  v102 = [v3 immutableCopy];
+  displayCopy = display;
+  cADisplay = [displayCopy CADisplay];
+  immutableCopy = [cADisplay immutableCopy];
 
-  v103 = [v101 hardwareIdentifier];
+  hardwareIdentifier = [displayCopy hardwareIdentifier];
   v4 = [SBDisplayScaleMapping alloc];
-  v99 = [(SBDisplayScaleMapping *)v4 initWithDisplayHardwareIdentifier:v103 nativePPI:0 referenceSize:0 scaleMethod:0 supportedScales:0.0 displayScaleToLogicalScale:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
+  v99 = [(SBDisplayScaleMapping *)v4 initWithDisplayHardwareIdentifier:hardwareIdentifier nativePPI:0 referenceSize:0 scaleMethod:0 supportedScales:0.0 displayScaleToLogicalScale:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
   v5 = +[_SBDisplayScaleMappingCache sharedInstance];
-  v100 = [v5 mappingForDisplayIdentifier:v103];
+  v100 = [v5 mappingForDisplayIdentifier:hardwareIdentifier];
 
   if (v100)
   {
@@ -58,15 +58,15 @@
 
   else
   {
-    if (v103)
+    if (hardwareIdentifier)
     {
-      if ([v102 displayType] == 2)
+      if ([immutableCopy displayType] == 2)
       {
         v7 = SBLogDisplayScaleMapping();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          *&buf[4] = v102;
+          *&buf[4] = immutableCopy;
           _os_log_impl(&dword_1BEA11000, v7, OS_LOG_TYPE_DEFAULT, "YOU CAN'T JUST ENABLE AIRPLAY DISPLAYS. YOU WILL REGRET THIS! %{public}@", buf, 0xCu);
         }
 
@@ -74,39 +74,39 @@
         v130[0] = &unk_1F3D3F3B8;
         v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v130 forKeys:&v129 count:1];
         v9 = objc_alloc_init(MEMORY[0x1E6979340]);
-        v10 = [v102 preferredModeWithCriteria:v9];
+        v10 = [immutableCopy preferredModeWithCriteria:v9];
 
-        v6 = -[SBDisplayScaleMapping initWithDisplayHardwareIdentifier:nativePPI:referenceSize:scaleMethod:supportedScales:displayScaleToLogicalScale:]([SBDisplayScaleMapping alloc], "initWithDisplayHardwareIdentifier:nativePPI:referenceSize:scaleMethod:supportedScales:displayScaleToLogicalScale:", v103, 0, 2, v8, 0.0, [v10 width], objc_msgSend(v10, "height"));
+        v6 = -[SBDisplayScaleMapping initWithDisplayHardwareIdentifier:nativePPI:referenceSize:scaleMethod:supportedScales:displayScaleToLogicalScale:]([SBDisplayScaleMapping alloc], "initWithDisplayHardwareIdentifier:nativePPI:referenceSize:scaleMethod:supportedScales:displayScaleToLogicalScale:", hardwareIdentifier, 0, 2, v8, 0.0, [v10 width], objc_msgSend(v10, "height"));
       }
 
       else
       {
-        [v102 nativeSize];
+        [immutableCopy nativeSize];
         v12 = v11;
         v14 = v13;
         v15 = objc_alloc_init(MEMORY[0x1E6979340]);
         [v15 setResolution:{v12, v14}];
         v93 = v15;
-        v96 = [v102 preferredModeWithCriteria:v15];
-        v95 = [v102 currentMode];
-        [v102 physicalSize];
+        v96 = [immutableCopy preferredModeWithCriteria:v15];
+        currentMode = [immutableCopy currentMode];
+        [immutableCopy physicalSize];
         v17 = v16;
         size = v18;
-        v19 = [v96 width];
-        v20 = [v96 height];
-        if (v12 != v19 || v14 != v20)
+        width = [v96 width];
+        height = [v96 height];
+        if (v12 != width || v14 != height)
         {
           v22 = SBLogDisplayScaleMapping();
           if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
           {
-            v131.width = v19;
-            v131.height = v20;
+            v131.width = width;
+            v131.height = height;
             v23 = NSStringFromCGSize(v131);
             v132.width = v12;
             v132.height = v14;
             v24 = NSStringFromCGSize(v132);
             *buf = 138543874;
-            *&buf[4] = v103;
+            *&buf[4] = hardwareIdentifier;
             *&buf[12] = 2114;
             *&buf[14] = v23;
             *&buf[22] = 2114;
@@ -115,26 +115,26 @@
           }
         }
 
-        if (v20 <= v19)
+        if (height <= width)
         {
-          v25 = v20;
+          v25 = height;
         }
 
         else
         {
-          v25 = v19;
+          v25 = width;
         }
 
-        if (v20 > v19)
+        if (height > width)
         {
-          v19 = v20;
+          width = height;
         }
 
         v26 = SBLogDisplayScaleMapping();
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          *&buf[4] = v103;
+          *&buf[4] = hardwareIdentifier;
           _os_log_impl(&dword_1BEA11000, v26, OS_LOG_TYPE_DEFAULT, "%{public}@ about to calculate available logicalScales. dumping display mode info:", buf, 0xCu);
         }
 
@@ -142,8 +142,8 @@
         v113 = 0u;
         v110 = 0u;
         v111 = 0u;
-        v27 = [v102 availableModes];
-        v28 = [v27 countByEnumeratingWithState:&v110 objects:v128 count:16];
+        availableModes = [immutableCopy availableModes];
+        v28 = [availableModes countByEnumeratingWithState:&v110 objects:v128 count:16];
         if (v28)
         {
           v29 = *v111;
@@ -153,32 +153,32 @@
             {
               if (*v111 != v29)
               {
-                objc_enumerationMutation(v27);
+                objc_enumerationMutation(availableModes);
               }
 
               v31 = *(*(&v110 + 1) + 8 * i);
               v32 = SBLogDisplayScaleMapping();
               if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
               {
-                v33 = [v31 isHighBandwidth];
+                isHighBandwidth = [v31 isHighBandwidth];
                 [v31 refreshRate];
                 v35 = v34;
-                v36 = [v31 isVirtual];
+                isVirtual = [v31 isVirtual];
                 *buf = 138544386;
-                *&buf[4] = v103;
+                *&buf[4] = hardwareIdentifier;
                 *&buf[12] = 2114;
                 *&buf[14] = v31;
                 *&buf[22] = 1024;
-                *v125 = v33;
+                *v125 = isHighBandwidth;
                 *&v125[4] = 2048;
                 *&v125[6] = v35;
                 v126 = 1024;
-                v127 = v36;
+                v127 = isVirtual;
                 _os_log_impl(&dword_1BEA11000, v32, OS_LOG_TYPE_INFO, "%{public}@ %{public}@ highBandwidth: %{BOOL}u refreshRate: %.2g virtual: %{BOOL}u", buf, 0x2Cu);
               }
             }
 
-            v28 = [v27 countByEnumeratingWithState:&v110 objects:v128 count:16];
+            v28 = [availableModes countByEnumeratingWithState:&v110 objects:v128 count:16];
           }
 
           while (v28);
@@ -187,40 +187,40 @@
         v37 = SBLogDisplayScaleMapping();
         if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
         {
-          v38 = [v96 isHighBandwidth];
+          isHighBandwidth2 = [v96 isHighBandwidth];
           [v96 refreshRate];
           v40 = v39;
-          v41 = [v96 isVirtual];
+          isVirtual2 = [v96 isVirtual];
           *buf = 138544386;
-          *&buf[4] = v103;
+          *&buf[4] = hardwareIdentifier;
           *&buf[12] = 2114;
           *&buf[14] = v96;
           *&buf[22] = 1024;
-          *v125 = v38;
+          *v125 = isHighBandwidth2;
           *&v125[4] = 2048;
           *&v125[6] = v40;
           v126 = 1024;
-          v127 = v41;
+          v127 = isVirtual2;
           _os_log_impl(&dword_1BEA11000, v37, OS_LOG_TYPE_DEFAULT, "%{public}@ preferredMode: %{public}@ highBandwidth: %{BOOL}u refreshRate: %.2g virtual: %{BOOL}u", buf, 0x2Cu);
         }
 
         v42 = SBLogDisplayScaleMapping();
         if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
         {
-          v43 = [v95 isHighBandwidth];
-          [v95 refreshRate];
+          isHighBandwidth3 = [currentMode isHighBandwidth];
+          [currentMode refreshRate];
           v45 = v44;
-          v46 = [v95 isVirtual];
+          isVirtual3 = [currentMode isVirtual];
           *buf = 138544386;
-          *&buf[4] = v103;
+          *&buf[4] = hardwareIdentifier;
           *&buf[12] = 2114;
-          *&buf[14] = v95;
+          *&buf[14] = currentMode;
           *&buf[22] = 1024;
-          *v125 = v43;
+          *v125 = isHighBandwidth3;
           *&v125[4] = 2048;
           *&v125[6] = v45;
           v126 = 1024;
-          v127 = v46;
+          v127 = isVirtual3;
           _os_log_impl(&dword_1BEA11000, v42, OS_LOG_TYPE_DEFAULT, "%{public}@ currentMode: %{public}@ highBandwidth: %{BOOL}u refreshRate: %.2g virtual: %{BOOL}u", buf, 0x2Cu);
         }
 
@@ -231,7 +231,7 @@
           v133.height = v14;
           v48 = NSStringFromCGSize(v133);
           *buf = 138543618;
-          *&buf[4] = v103;
+          *&buf[4] = hardwareIdentifier;
           *&buf[12] = 2114;
           *&buf[14] = v48;
           _os_log_impl(&dword_1BEA11000, v47, OS_LOG_TYPE_DEFAULT, "%{public}@ nativeSize: %{public}@", buf, 0x16u);
@@ -240,11 +240,11 @@
         v49 = SBLogDisplayScaleMapping();
         if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
         {
-          v134.width = v19;
+          v134.width = width;
           v134.height = v25;
           v50 = NSStringFromCGSize(v134);
           *buf = 138543618;
-          *&buf[4] = v103;
+          *&buf[4] = hardwareIdentifier;
           *&buf[12] = 2114;
           *&buf[14] = v50;
           _os_log_impl(&dword_1BEA11000, v49, OS_LOG_TYPE_DEFAULT, "%{public}@ referenceSize (from preferred): %{public}@", buf, 0x16u);
@@ -257,7 +257,7 @@
           v135.height = size;
           v52 = NSStringFromCGSize(v135);
           *buf = 138543618;
-          *&buf[4] = v103;
+          *&buf[4] = hardwareIdentifier;
           *&buf[12] = 2114;
           *&buf[14] = v52;
           _os_log_impl(&dword_1BEA11000, v51, OS_LOG_TYPE_DEFAULT, "%{public}@ physicalSize: %{public}@", buf, 0x16u);
@@ -266,11 +266,11 @@
         v53 = SBLogDisplayScaleMapping();
         if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
         {
-          [v102 minimumLogicalScale];
+          [immutableCopy minimumLogicalScale];
           v55 = v54;
-          [v102 maximumLogicalScale];
+          [immutableCopy maximumLogicalScale];
           *buf = 138543874;
-          *&buf[4] = v103;
+          *&buf[4] = hardwareIdentifier;
           *&buf[12] = 2048;
           *&buf[14] = v55;
           *&buf[22] = 2048;
@@ -280,9 +280,9 @@
 
         v57 = [MEMORY[0x1E695DFA0] orderedSetWithCapacity:3];
         v58 = 0;
-        if (3840.0 / v19 >= 2160.0 / v25)
+        if (3840.0 / width >= 2160.0 / v25)
         {
-          v59 = 3840.0 / v19;
+          v59 = 3840.0 / width;
         }
 
         else
@@ -310,7 +310,7 @@
 
           else
           {
-            if (SBValidateLogicalScale(v102, v59, v19, v25))
+            if (SBValidateLogicalScale(immutableCopy, v59, width, v25))
             {
               v60 = 2;
             }
@@ -324,7 +324,7 @@
             v62 = 2160.0;
           }
 
-          v63 = v61 / v19;
+          v63 = v61 / width;
           v64 = v62 / v25;
           v65 = v63 < v64;
           if (v60 == 1)
@@ -342,7 +342,7 @@
             v66 = v63;
           }
 
-          if (!SBValidateLogicalScale(v102, v66, v19, v25))
+          if (!SBValidateLogicalScale(immutableCopy, v66, width, v25))
           {
             break;
           }
@@ -370,7 +370,7 @@
 
           v70 = v69;
           *buf = 138543874;
-          *&buf[4] = v103;
+          *&buf[4] = hardwareIdentifier;
           *&buf[12] = 2114;
           *&buf[14] = v70;
           *&buf[22] = 2114;
@@ -392,7 +392,7 @@
           v106[2] = __37__SBDisplayScaleMapping_withDisplay___block_invoke;
           v106[3] = &unk_1E8080718;
           v109 = v71;
-          v73 = v103;
+          v73 = hardwareIdentifier;
           v107 = v73;
           v74 = v57;
           v108 = v74;
@@ -443,7 +443,7 @@
           v81 = [v57 count];
           if ((v81 - 4) <= 0xFFFFFFFFFFFFFFFCLL)
           {
-            [(SBDisplayScaleMapping *)a2 withDisplay:a1, v81];
+            [(SBDisplayScaleMapping *)a2 withDisplay:self, v81];
           }
 
           if (v81 == 2)
@@ -484,7 +484,7 @@
             v84 = 7;
           }
 
-          v6 = [[SBDisplayScaleMapping alloc] initWithDisplayHardwareIdentifier:v103 nativePPI:v60 referenceSize:v84 scaleMethod:v83 supportedScales:v71 displayScaleToLogicalScale:v19, v25];
+          v6 = [[SBDisplayScaleMapping alloc] initWithDisplayHardwareIdentifier:hardwareIdentifier nativePPI:v60 referenceSize:v84 scaleMethod:v83 supportedScales:v71 displayScaleToLogicalScale:width, v25];
           v89 = +[_SBDisplayScaleMappingCache sharedInstance];
           [v89 cacheMapping:v6];
         }
@@ -495,7 +495,7 @@
           if (os_log_type_enabled(v85, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543362;
-            *&buf[4] = v103;
+            *&buf[4] = hardwareIdentifier;
             _os_log_impl(&dword_1BEA11000, v85, OS_LOG_TYPE_DEFAULT, "%{public}@ not supported because we couldn't derive any usable resolutions", buf, 0xCu);
           }
 
@@ -511,7 +511,7 @@
 
     if (!v6)
     {
-      [(SBDisplayScaleMapping *)a2 withDisplay:a1];
+      [(SBDisplayScaleMapping *)a2 withDisplay:self];
       v6 = 0;
     }
   }
@@ -570,10 +570,10 @@ uint64_t __37__SBDisplayScaleMapping_withDisplay___block_invoke_84(uint64_t a1, 
   return result;
 }
 
-- (double)logicalScaleForDisplayScale:(unint64_t)a3
+- (double)logicalScaleForDisplayScale:(unint64_t)scale
 {
   displayScaleToLogicalScale = self->_displayScaleToLogicalScale;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:scale];
   v5 = [(NSDictionary *)displayScaleToLogicalScale objectForKey:v4];
 
   if (v5)
@@ -590,11 +590,11 @@ uint64_t __37__SBDisplayScaleMapping_withDisplay___block_invoke_84(uint64_t a1, 
   return v7;
 }
 
-- (double)ppiForDisplayScale:(unint64_t)a3
+- (double)ppiForDisplayScale:(unint64_t)scale
 {
   nativePPI = self->_nativePPI;
   displayScaleToLogicalScale = self->_displayScaleToLogicalScale;
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:scale];
   v6 = [(NSDictionary *)displayScaleToLogicalScale objectForKey:v5];
 
   if (v6)
@@ -622,19 +622,19 @@ uint64_t __37__SBDisplayScaleMapping_withDisplay___block_invoke_84(uint64_t a1, 
 {
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
   displayHardwareIdentifier = self->_displayHardwareIdentifier;
-  v5 = [v3 activeMultilinePrefix];
+  activeMultilinePrefix = [v3 activeMultilinePrefix];
   v9 = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __36__SBDisplayScaleMapping_description__block_invoke;
   v12 = &unk_1E807F290;
   v13 = v3;
-  v14 = self;
+  selfCopy = self;
   v6 = v3;
-  [v6 appendBodySectionWithName:displayHardwareIdentifier multilinePrefix:v5 block:&v9];
+  [v6 appendBodySectionWithName:displayHardwareIdentifier multilinePrefix:activeMultilinePrefix block:&v9];
 
-  v7 = [v6 build];
+  build = [v6 build];
 
-  return v7;
+  return build;
 }
 
 void __36__SBDisplayScaleMapping_description__block_invoke(int8x16_t *a1)
@@ -808,8 +808,8 @@ void __36__SBDisplayScaleMapping_description__block_invoke_4(uint64_t a1, void *
 
 - (void)_defaultScale
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SBDisplayScaleMapping.m" lineNumber:403 description:{@"Invalid parameter not satisfying: %@", @"_supportedScales != SBSDisplayScaleMaskNone"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBDisplayScaleMapping.m" lineNumber:403 description:{@"Invalid parameter not satisfying: %@", @"_supportedScales != SBSDisplayScaleMaskNone"}];
 }
 
 @end

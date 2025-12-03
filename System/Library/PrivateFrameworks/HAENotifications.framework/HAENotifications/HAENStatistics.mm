@@ -1,10 +1,10 @@
 @interface HAENStatistics
 + (id)sharedInstance;
 - (HAENStatistics)init;
-- (id)volumeActionString:(unsigned int)a3;
-- (void)processMessage:(id)a3;
-- (void)processStatsForEvent:(id)a3;
-- (void)processStatsForLocationGating:(id *)a3;
+- (id)volumeActionString:(unsigned int)string;
+- (void)processMessage:(id)message;
+- (void)processStatsForEvent:(id)event;
+- (void)processStatsForLocationGating:(id *)gating;
 @end
 
 @implementation HAENStatistics
@@ -43,11 +43,11 @@ uint64_t __32__HAENStatistics_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)processStatsForEvent:(id)a3
+- (void)processStatsForEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = +[HAENVolumeControl sharedInstance];
-  v6 = [v5 getStats];
+  getStats = [v5 getStats];
   v8 = v7;
 
   eventQueue = self->_eventQueue;
@@ -55,11 +55,11 @@ uint64_t __32__HAENStatistics_sharedInstance__block_invoke()
   v11[1] = 3221225472;
   v11[2] = __39__HAENStatistics_processStatsForEvent___block_invoke;
   v11[3] = &unk_27969F268;
-  v13 = self;
-  v14 = v6;
+  selfCopy = self;
+  v14 = getStats;
   v15 = v8;
-  v12 = v4;
-  v10 = v4;
+  v12 = eventCopy;
+  v10 = eventCopy;
   dispatch_async(eventQueue, v11);
 }
 
@@ -130,21 +130,21 @@ void __39__HAENStatistics_processStatsForEvent___block_invoke(uint64_t a1)
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (id)volumeActionString:(unsigned int)a3
+- (id)volumeActionString:(unsigned int)string
 {
   v3 = @"lowered";
   v4 = @"unknown";
-  if (a3 == 1986814576)
+  if (string == 1986814576)
   {
     v4 = @"bypassed";
   }
 
-  if (a3 != 1986817143)
+  if (string != 1986817143)
   {
     v3 = v4;
   }
 
-  if (a3 == 561409132)
+  if (string == 561409132)
   {
     return @"failed";
   }
@@ -155,18 +155,18 @@ void __39__HAENStatistics_processStatsForEvent___block_invoke(uint64_t a1)
   }
 }
 
-- (void)processStatsForLocationGating:(id *)a3
+- (void)processStatsForLocationGating:(id *)gating
 {
   eventQueue = self->_eventQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3254779904;
   block[2] = __48__HAENStatistics_processStatsForLocationGating___block_invoke;
   block[3] = &unk_2862C6808;
-  __copy_constructor_8_8_s0_s8_s16_t24w2(v7, a3);
+  __copy_constructor_8_8_s0_s8_s16_t24w2(v7, gating);
   block[4] = self;
   dispatch_async(eventQueue, block);
 
-  __destructor_8_s0_s8_s16(a3);
+  __destructor_8_s0_s8_s16(gating);
 }
 
 void __48__HAENStatistics_processStatsForLocationGating___block_invoke(uint64_t a1)
@@ -210,17 +210,17 @@ void __48__HAENStatistics_processStatsForLocationGating___block_invoke(uint64_t 
   }
 }
 
-- (void)processMessage:(id)a3
+- (void)processMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   eventQueue = self->_eventQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __33__HAENStatistics_processMessage___block_invoke;
   v7[3] = &unk_27969F240;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = messageCopy;
+  v6 = messageCopy;
   dispatch_async(eventQueue, v7);
 }
 

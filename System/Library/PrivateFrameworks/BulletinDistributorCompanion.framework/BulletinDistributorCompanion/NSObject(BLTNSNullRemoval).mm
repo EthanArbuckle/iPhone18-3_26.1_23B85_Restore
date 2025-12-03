@@ -6,19 +6,19 @@
 
 - (id)objectWithNoNSNulls:()BLTNSNullRemoval
 {
-  v2 = [MEMORY[0x277CBEB68] null];
+  null = [MEMORY[0x277CBEB68] null];
 
-  if (v2 == a1)
+  if (null == self)
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v3 = a1;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 @end

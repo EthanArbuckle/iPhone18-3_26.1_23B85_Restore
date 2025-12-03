@@ -1,8 +1,8 @@
 @interface CNContactSuggestionMatch
 + (id)os_log;
-+ (id)suggestionFromContactMatch:(id)a3;
-+ (void)fetchLinkedIdentifiersForContactSuggestionMatches:(id)a3 fromSuggestionService:(id)a4;
-- (void)setContactMatch:(id)a3;
++ (id)suggestionFromContactMatch:(id)match;
++ (void)fetchLinkedIdentifiersForContactSuggestionMatches:(id)matches fromSuggestionService:(id)service;
+- (void)setContactMatch:(id)match;
 @end
 
 @implementation CNContactSuggestionMatch
@@ -28,41 +28,41 @@ uint64_t __34__CNContactSuggestionMatch_os_log__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (id)suggestionFromContactMatch:(id)a3
++ (id)suggestionFromContactMatch:(id)match
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  [v5 setContactMatch:v4];
+  matchCopy = match;
+  v5 = objc_alloc_init(self);
+  [v5 setContactMatch:matchCopy];
 
   return v5;
 }
 
-- (void)setContactMatch:(id)a3
+- (void)setContactMatch:(id)match
 {
-  v5 = a3;
+  matchCopy = match;
   p_contactMatch = &self->_contactMatch;
-  if (self->_contactMatch != v5)
+  if (self->_contactMatch != matchCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_contactMatch, a3);
-    v7 = [(SGContactMatch *)v8 contact];
-    [(CNContactSuggestionMatch *)self setContact:v7];
+    v8 = matchCopy;
+    objc_storeStrong(p_contactMatch, match);
+    contact = [(SGContactMatch *)v8 contact];
+    [(CNContactSuggestionMatch *)self setContact:contact];
 
-    v5 = v8;
+    matchCopy = v8;
   }
 
-  MEMORY[0x1EEE66BB8](p_contactMatch, v5);
+  MEMORY[0x1EEE66BB8](p_contactMatch, matchCopy);
 }
 
-+ (void)fetchLinkedIdentifiersForContactSuggestionMatches:(id)a3 fromSuggestionService:(id)a4
++ (void)fetchLinkedIdentifiersForContactSuggestionMatches:(id)matches fromSuggestionService:(id)service
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  matchesCopy = matches;
+  serviceCopy = service;
+  if ([matchesCopy count])
   {
-    v7 = [v5 _cn_map:&__block_literal_global_5];
+    v7 = [matchesCopy _cn_map:&__block_literal_global_5];
     v15 = 0;
-    v8 = [v6 cnContactMatchesForRecordIds:v7 error:&v15];
+    v8 = [serviceCopy cnContactMatchesForRecordIds:v7 error:&v15];
     v9 = v15;
     if (v8)
     {
@@ -74,7 +74,7 @@ uint64_t __34__CNContactSuggestionMatch_os_log__block_invoke()
           v11 = [v8 objectAtIndexedSubscript:v10];
           if ([v11 count] == 1)
           {
-            v12 = [v5 objectAtIndexedSubscript:v10];
+            v12 = [matchesCopy objectAtIndexedSubscript:v10];
             v13 = [v11 objectAtIndexedSubscript:0];
             [v12 setMainStoreLinkedIdentifier:v13];
           }
@@ -88,10 +88,10 @@ uint64_t __34__CNContactSuggestionMatch_os_log__block_invoke()
 
     else
     {
-      v14 = [objc_opt_class() os_log];
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+      os_log = [objc_opt_class() os_log];
+      if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
       {
-        [(CNContactSuggestionMatch *)v7 fetchLinkedIdentifiersForContactSuggestionMatches:v9 fromSuggestionService:v14];
+        [(CNContactSuggestionMatch *)v7 fetchLinkedIdentifiersForContactSuggestionMatches:v9 fromSuggestionService:os_log];
       }
     }
   }

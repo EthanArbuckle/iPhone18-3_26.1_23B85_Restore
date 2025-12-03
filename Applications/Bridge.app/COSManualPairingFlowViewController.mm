@@ -2,7 +2,7 @@
 - (COSManualPairingDelegate)pairingDelegate;
 - (COSManualPairingFlowViewController)init;
 - (Class)pairingControllerClass;
-- (void)controllerCancelled:(id)a3;
+- (void)controllerCancelled:(id)cancelled;
 @end
 
 @implementation COSManualPairingFlowViewController
@@ -17,18 +17,18 @@
   if (v4)
   {
     objc_storeStrong(&v4->_securePairingController, v3);
-    v6 = [(COSManualPairingFlowViewController *)v5 navigationBar];
-    sub_10002C794(v6);
+    navigationBar = [(COSManualPairingFlowViewController *)v5 navigationBar];
+    sub_10002C794(navigationBar);
 
-    v7 = [(COSManualPairingFlowViewController *)v5 view];
+    view = [(COSManualPairingFlowViewController *)v5 view];
     v8 = BPSBackgroundColor();
-    [v7 setBackgroundColor:v8];
+    [view setBackgroundColor:v8];
   }
 
   return v5;
 }
 
-- (void)controllerCancelled:(id)a3
+- (void)controllerCancelled:(id)cancelled
 {
   WeakRetained = objc_loadWeakRetained(&self->_pairingDelegate);
   [WeakRetained didCancelManualPairing];

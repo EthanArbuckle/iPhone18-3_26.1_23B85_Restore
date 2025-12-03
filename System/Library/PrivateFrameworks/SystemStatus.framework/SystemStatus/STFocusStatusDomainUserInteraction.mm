@@ -1,18 +1,18 @@
 @interface STFocusStatusDomainUserInteraction
-- (BOOL)isEqual:(id)a3;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (unint64_t)hash;
 @end
 
 @implementation STFocusStatusDomainUserInteraction
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v3 = MEMORY[0x1E698E6A0];
-  v4 = a3;
-  v5 = [v3 builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [v3 builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
 
   v6 = [v5 isEqual];
   return v6;
@@ -20,34 +20,34 @@
 
 - (unint64_t)hash
 {
-  v2 = [MEMORY[0x1E698E6B8] builder];
-  v3 = [v2 hash];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v3 = [builder hash];
 
   return v3;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(STFocusStatusDomainUserInteraction *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STFocusStatusDomainUserInteraction *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STFocusStatusDomainUserInteraction *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STFocusStatusDomainUserInteraction *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STAirPlayStatusDomainUserInteraction *)self _descriptionBuilderWithMultilinePrefix:a3 forDebug:1];
-  v4 = [v3 build];
+  v3 = [(STAirPlayStatusDomainUserInteraction *)self _descriptionBuilderWithMultilinePrefix:prefix forDebug:1];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 @end

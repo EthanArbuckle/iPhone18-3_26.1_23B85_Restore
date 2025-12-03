@@ -1,10 +1,10 @@
 @interface PUPhotoEditButtonCenteredToolbar
 - (double)interItemSpacing;
-- (void)_addCenterConstraintsWithMetrics:(id)a3 verticalLayout:(BOOL)a4;
-- (void)_addLeadingConstraintsWithMetrics:(id)a3 verticalLayout:(BOOL)a4;
-- (void)_addTrailingConstraintsWithMetrics:(id)a3 verticalLayout:(BOOL)a4;
+- (void)_addCenterConstraintsWithMetrics:(id)metrics verticalLayout:(BOOL)layout;
+- (void)_addLeadingConstraintsWithMetrics:(id)metrics verticalLayout:(BOOL)layout;
+- (void)_addTrailingConstraintsWithMetrics:(id)metrics verticalLayout:(BOOL)layout;
 - (void)_invalidateAllConstraints;
-- (void)setCenterView:(id)a3 leadingViews:(id)a4 trailingViews:(id)a5;
+- (void)setCenterView:(id)view leadingViews:(id)views trailingViews:(id)trailingViews;
 @end
 
 @implementation PUPhotoEditButtonCenteredToolbar
@@ -28,71 +28,71 @@
   [(PUPhotoEditToolbar *)&v6 _invalidateAllConstraints];
 }
 
-- (void)_addCenterConstraintsWithMetrics:(id)a3 verticalLayout:(BOOL)a4
+- (void)_addCenterConstraintsWithMetrics:(id)metrics verticalLayout:(BOOL)layout
 {
-  v4 = a4;
-  v6 = a3;
+  layoutCopy = layout;
+  metricsCopy = metrics;
   if (self->_centerView && !self->_centerLayoutConstraints)
   {
-    v42 = v6;
-    v7 = [MEMORY[0x1E695DF70] array];
+    v42 = metricsCopy;
+    array = [MEMORY[0x1E695DF70] array];
     [(UIView *)self->_centerView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v8 = [(PUPhotoEditButtonCenteredToolbar *)self buttonAreaLayoutGuide];
+    buttonAreaLayoutGuide = [(PUPhotoEditButtonCenteredToolbar *)self buttonAreaLayoutGuide];
     centerView = self->_centerView;
-    if (v4)
+    if (layoutCopy)
     {
-      v10 = [(UIView *)centerView centerYAnchor];
-      v11 = [v8 centerYAnchor];
-      v12 = [v10 constraintEqualToAnchor:v11];
-      [v7 addObject:v12];
+      centerYAnchor = [(UIView *)centerView centerYAnchor];
+      centerYAnchor2 = [buttonAreaLayoutGuide centerYAnchor];
+      v12 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+      [array addObject:v12];
 
-      v13 = [(UIView *)self->_centerView leadingAnchor];
-      v14 = [v8 leadingAnchor];
-      v15 = [v13 constraintGreaterThanOrEqualToAnchor:v14];
-      [v7 addObject:v15];
+      leadingAnchor = [(UIView *)self->_centerView leadingAnchor];
+      leadingAnchor2 = [buttonAreaLayoutGuide leadingAnchor];
+      v15 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
+      [array addObject:v15];
 
-      v16 = [(UIView *)self->_centerView trailingAnchor];
-      v17 = [v8 trailingAnchor];
-      v18 = [v16 constraintLessThanOrEqualToAnchor:v17];
-      [v7 addObject:v18];
+      trailingAnchor = [(UIView *)self->_centerView trailingAnchor];
+      trailingAnchor2 = [buttonAreaLayoutGuide trailingAnchor];
+      v18 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
+      [array addObject:v18];
 
-      v19 = [(UIView *)self->_centerView centerXAnchor];
-      v20 = [v8 centerXAnchor];
-      v21 = [v19 constraintEqualToAnchor:v20];
-      [v7 addObject:v21];
+      centerXAnchor = [(UIView *)self->_centerView centerXAnchor];
+      centerXAnchor2 = [buttonAreaLayoutGuide centerXAnchor];
+      leadingAnchor4 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
+      [array addObject:leadingAnchor4];
     }
 
     else
     {
-      v22 = [(UIView *)centerView centerXAnchor];
-      v23 = [v8 centerXAnchor];
-      v19 = [v22 constraintEqualToAnchor:v23];
+      centerXAnchor3 = [(UIView *)centerView centerXAnchor];
+      centerXAnchor4 = [buttonAreaLayoutGuide centerXAnchor];
+      centerXAnchor = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
 
       LODWORD(v24) = 1132068864;
-      [v19 setPriority:v24];
-      [v7 addObject:v19];
-      v25 = [(UIView *)self->_centerView topAnchor];
-      v26 = [v8 topAnchor];
-      v27 = [v25 constraintGreaterThanOrEqualToAnchor:v26];
-      [v7 addObject:v27];
+      [centerXAnchor setPriority:v24];
+      [array addObject:centerXAnchor];
+      topAnchor = [(UIView *)self->_centerView topAnchor];
+      topAnchor2 = [buttonAreaLayoutGuide topAnchor];
+      v27 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
+      [array addObject:v27];
 
-      v28 = [(UIView *)self->_centerView bottomAnchor];
-      v29 = [v8 bottomAnchor];
-      v30 = [v28 constraintLessThanOrEqualToAnchor:v29];
-      [v7 addObject:v30];
+      bottomAnchor = [(UIView *)self->_centerView bottomAnchor];
+      bottomAnchor2 = [buttonAreaLayoutGuide bottomAnchor];
+      v30 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
+      [array addObject:v30];
 
-      v31 = [(UIView *)self->_centerView centerYAnchor];
-      v32 = [v8 centerYAnchor];
-      v33 = [v31 constraintEqualToAnchor:v32];
-      [v7 addObject:v33];
+      centerYAnchor3 = [(UIView *)self->_centerView centerYAnchor];
+      centerYAnchor4 = [buttonAreaLayoutGuide centerYAnchor];
+      v33 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
+      [array addObject:v33];
 
       if ([(NSArray *)self->_leadingViews count])
       {
-        v34 = [(NSArray *)self->_leadingViews lastObject];
-        v35 = [v34 trailingAnchor];
-        v36 = [(UIView *)self->_centerView leadingAnchor];
-        v37 = [v35 constraintLessThanOrEqualToAnchor:v36 constant:-5.0];
-        [v7 addObject:v37];
+        lastObject = [(NSArray *)self->_leadingViews lastObject];
+        trailingAnchor3 = [lastObject trailingAnchor];
+        leadingAnchor3 = [(UIView *)self->_centerView leadingAnchor];
+        v37 = [trailingAnchor3 constraintLessThanOrEqualToAnchor:leadingAnchor3 constant:-5.0];
+        [array addObject:v37];
       }
 
       if (![(NSArray *)self->_trailingViews count])
@@ -100,36 +100,36 @@
         goto LABEL_10;
       }
 
-      v20 = [(NSArray *)self->_trailingViews firstObject];
-      v21 = [v20 leadingAnchor];
-      v38 = [(UIView *)self->_centerView trailingAnchor];
-      v39 = [v21 constraintGreaterThanOrEqualToAnchor:v38 constant:5.0];
-      [v7 addObject:v39];
+      centerXAnchor2 = [(NSArray *)self->_trailingViews firstObject];
+      leadingAnchor4 = [centerXAnchor2 leadingAnchor];
+      trailingAnchor4 = [(UIView *)self->_centerView trailingAnchor];
+      v39 = [leadingAnchor4 constraintGreaterThanOrEqualToAnchor:trailingAnchor4 constant:5.0];
+      [array addObject:v39];
     }
 
 LABEL_10:
-    [MEMORY[0x1E696ACD8] activateConstraints:v7];
-    v40 = [v7 copy];
+    [MEMORY[0x1E696ACD8] activateConstraints:array];
+    v40 = [array copy];
     centerLayoutConstraints = self->_centerLayoutConstraints;
     self->_centerLayoutConstraints = v40;
 
-    v6 = v42;
+    metricsCopy = v42;
   }
 }
 
-- (void)_addTrailingConstraintsWithMetrics:(id)a3 verticalLayout:(BOOL)a4
+- (void)_addTrailingConstraintsWithMetrics:(id)metrics verticalLayout:(BOOL)layout
 {
-  v4 = a4;
+  layoutCopy = layout;
   v89 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  metricsCopy = metrics;
   if (self->_trailingViews && !self->_trailingLayoutConstraints)
   {
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v8 = [(PUPhotoEditToolbar *)self layoutOrientation]== 3 || [(PUPhotoEditToolbar *)self layoutOrientation]== 2;
     v73 = v8;
     [(PUPhotoEditButtonCenteredToolbar *)self buttonAreaLayoutGuide];
     v78 = v77 = self;
-    if (v4)
+    if (layoutCopy)
     {
       v85 = 0u;
       v86 = 0u;
@@ -140,7 +140,7 @@ LABEL_10:
       if (v9)
       {
         v10 = v9;
-        v70 = v6;
+        v70 = metricsCopy;
         v11 = 0;
         v12 = *v84;
         do
@@ -155,39 +155,39 @@ LABEL_10:
             }
 
             v15 = *(*(&v83 + 1) + 8 * v13);
-            v16 = [(NSArray *)v77->_trailingViews lastObject];
+            lastObject = [(NSArray *)v77->_trailingViews lastObject];
 
             [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
             if (v14)
             {
-              v17 = [v15 topAnchor];
-              v18 = [(NSArray *)v14 bottomAnchor];
-              v19 = [v17 constraintEqualToAnchor:v18 constant:-15.0];
-              [v7 addObject:v19];
+              topAnchor = [v15 topAnchor];
+              bottomAnchor = [(NSArray *)v14 bottomAnchor];
+              v19 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:-15.0];
+              [array addObject:v19];
             }
 
-            if (v15 == v16)
+            if (v15 == lastObject)
             {
-              v20 = [v15 bottomAnchor];
-              v21 = [v78 bottomAnchor];
-              v22 = [v20 constraintEqualToAnchor:v21 constant:-15.0];
-              [v7 addObject:v22];
+              bottomAnchor2 = [v15 bottomAnchor];
+              bottomAnchor3 = [v78 bottomAnchor];
+              v22 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:-15.0];
+              [array addObject:v22];
             }
 
-            v23 = [v15 leadingAnchor];
-            v24 = [v78 leadingAnchor];
-            v25 = [v23 constraintGreaterThanOrEqualToAnchor:v24];
-            [v7 addObject:v25];
+            leadingAnchor = [v15 leadingAnchor];
+            leadingAnchor2 = [v78 leadingAnchor];
+            v25 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
+            [array addObject:v25];
 
-            v26 = [v15 trailingAnchor];
-            v27 = [v78 trailingAnchor];
-            v28 = [v26 constraintLessThanOrEqualToAnchor:v27];
-            [v7 addObject:v28];
+            trailingAnchor = [v15 trailingAnchor];
+            trailingAnchor2 = [v78 trailingAnchor];
+            v28 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
+            [array addObject:v28];
 
-            v29 = [v15 centerXAnchor];
-            v30 = [v78 centerXAnchor];
-            v31 = [v29 constraintEqualToAnchor:v30];
-            [v7 addObject:v31];
+            centerXAnchor = [v15 centerXAnchor];
+            centerXAnchor2 = [v78 centerXAnchor];
+            v31 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
+            [array addObject:v31];
 
             v11 = v15;
             ++v13;
@@ -199,7 +199,7 @@ LABEL_10:
         }
 
         while (v10);
-        v6 = v70;
+        metricsCopy = v70;
       }
 
       else
@@ -212,21 +212,21 @@ LABEL_10:
 
     else
     {
-      v32 = [(NSArray *)self->_trailingViews reverseObjectEnumerator];
-      v33 = [v32 allObjects];
+      reverseObjectEnumerator = [(NSArray *)self->_trailingViews reverseObjectEnumerator];
+      allObjects = [reverseObjectEnumerator allObjects];
 
       v81 = 0u;
       v82 = 0u;
       v79 = 0u;
       v80 = 0u;
-      v34 = v33;
+      v34 = allObjects;
       v74 = [(NSArray *)v34 countByEnumeratingWithState:&v79 objects:v87 count:16];
       if (v74)
       {
-        v71 = v6;
+        v71 = metricsCopy;
         v35 = 0;
         v72 = *v80;
-        v36 = self;
+        selfCopy = self;
         obja = v34;
         do
         {
@@ -241,7 +241,7 @@ LABEL_10:
 
             v39 = *(*(&v79 + 1) + 8 * v37);
             [v39 setTranslatesAutoresizingMaskIntoConstraints:0];
-            [(PUPhotoEditButtonCenteredToolbar *)v36 interItemSpacing];
+            [(PUPhotoEditButtonCenteredToolbar *)selfCopy interItemSpacing];
             v41 = v40;
             objc_opt_class();
             if (objc_opt_isKindOfClass())
@@ -254,11 +254,11 @@ LABEL_10:
               v42 = 0;
             }
 
-            v43 = [v42 configuration];
-            v44 = v43;
-            if (v43)
+            configuration = [v42 configuration];
+            v44 = configuration;
+            if (configuration)
             {
-              [v43 contentInsets];
+              [configuration contentInsets];
             }
 
             else
@@ -282,24 +282,24 @@ LABEL_10:
                 v53 = 0.0;
               }
 
-              v54 = [v39 trailingAnchor];
-              v55 = [v38 leadingAnchor];
-              v56 = [v54 constraintEqualToAnchor:v55 constant:v53];
+              trailingAnchor3 = [v39 trailingAnchor];
+              leadingAnchor3 = [v38 leadingAnchor];
+              centerYAnchor3 = [trailingAnchor3 constraintEqualToAnchor:leadingAnchor3 constant:v53];
 
               LODWORD(v57) = 1143930880;
-              [v56 setPriority:v57];
-              [v7 addObject:v56];
-              v58 = [v39 trailingAnchor];
-              v59 = [v38 leadingAnchor];
-              v60 = [v58 constraintLessThanOrEqualToAnchor:v59];
-              [v7 addObject:v60];
+              [centerYAnchor3 setPriority:v57];
+              [array addObject:centerYAnchor3];
+              trailingAnchor4 = [v39 trailingAnchor];
+              leadingAnchor4 = [v38 leadingAnchor];
+              v60 = [trailingAnchor4 constraintLessThanOrEqualToAnchor:leadingAnchor4];
+              [array addObject:v60];
 
-              v61 = [v39 centerYAnchor];
-              v62 = [v78 centerYAnchor];
-              v63 = [v61 constraintEqualToAnchor:v62];
-              [v7 addObject:v63];
+              centerYAnchor = [v39 centerYAnchor];
+              centerYAnchor2 = [v78 centerYAnchor];
+              v63 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+              [array addObject:v63];
 
-              v36 = v77;
+              selfCopy = v77;
             }
 
             else
@@ -310,16 +310,16 @@ LABEL_10:
                 [v39 setContentCompressionResistancePriority:0 forAxis:v45];
               }
 
-              v64 = [v39 trailingAnchor];
-              v65 = [v78 trailingAnchor];
-              [(PUPhotoEditToolbar *)v36 longSideMargin];
-              v67 = [v64 constraintEqualToAnchor:v65 constant:-v66];
-              [v7 addObject:v67];
+              trailingAnchor5 = [v39 trailingAnchor];
+              trailingAnchor6 = [v78 trailingAnchor];
+              [(PUPhotoEditToolbar *)selfCopy longSideMargin];
+              v67 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-v66];
+              [array addObject:v67];
 
-              v56 = [v39 centerYAnchor];
-              v61 = [v78 centerYAnchor];
-              v62 = [v56 constraintEqualToAnchor:v61];
-              [v7 addObject:v62];
+              centerYAnchor3 = [v39 centerYAnchor];
+              centerYAnchor = [v78 centerYAnchor];
+              centerYAnchor2 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor];
+              [array addObject:centerYAnchor2];
             }
 
             v35 = v39;
@@ -347,7 +347,7 @@ LABEL_10:
         while (v74);
 
         v11 = obja;
-        v6 = v71;
+        metricsCopy = v71;
       }
 
       else
@@ -356,29 +356,29 @@ LABEL_10:
       }
     }
 
-    [MEMORY[0x1E696ACD8] activateConstraints:v7];
-    v68 = [v7 copy];
+    [MEMORY[0x1E696ACD8] activateConstraints:array];
+    v68 = [array copy];
     trailingLayoutConstraints = v77->_trailingLayoutConstraints;
     v77->_trailingLayoutConstraints = v68;
   }
 }
 
-- (void)_addLeadingConstraintsWithMetrics:(id)a3 verticalLayout:(BOOL)a4
+- (void)_addLeadingConstraintsWithMetrics:(id)metrics verticalLayout:(BOOL)layout
 {
-  v4 = a4;
+  layoutCopy = layout;
   v84 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  metricsCopy = metrics;
   if (self->_leadingViews)
   {
     v7 = 608;
     if (!self->_leadingLayoutConstraints)
     {
-      v8 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v9 = [(PUPhotoEditToolbar *)self layoutOrientation]== 3 || [(PUPhotoEditToolbar *)self layoutOrientation]== 2;
       v72 = v9;
-      v10 = [(PUPhotoEditButtonCenteredToolbar *)self buttonAreaLayoutGuide];
-      v70 = self;
-      if (v4)
+      buttonAreaLayoutGuide = [(PUPhotoEditButtonCenteredToolbar *)self buttonAreaLayoutGuide];
+      selfCopy = self;
+      if (layoutCopy)
       {
         v80 = 0u;
         v81 = 0u;
@@ -388,21 +388,21 @@ LABEL_10:
         v11 = [(NSArray *)obj countByEnumeratingWithState:&v78 objects:v83 count:16];
         if (!v11)
         {
-          v30 = self;
+          selfCopy3 = self;
           v13 = 0;
 LABEL_47:
 
-          [MEMORY[0x1E696ACD8] activateConstraints:v8];
-          v64 = [v8 copy];
-          v65 = *(&v30->super.super.super.super.isa + v7);
-          *(&v30->super.super.super.super.isa + v7) = v64;
+          [MEMORY[0x1E696ACD8] activateConstraints:array];
+          v64 = [array copy];
+          v65 = *(&selfCopy3->super.super.super.super.isa + v7);
+          *(&selfCopy3->super.super.super.super.isa + v7) = v64;
 
           goto LABEL_48;
         }
 
         v12 = v11;
         v66 = 608;
-        v67 = v6;
+        v67 = metricsCopy;
         v13 = 0;
         v14 = *v79;
         do
@@ -418,7 +418,7 @@ LABEL_47:
 
             v17 = *(*(&v78 + 1) + 8 * v15);
             [v17 setTranslatesAutoresizingMaskIntoConstraints:{0, v66}];
-            v18 = [v17 topAnchor];
+            topAnchor = [v17 topAnchor];
             if (v16)
             {
               [v16 bottomAnchor];
@@ -426,26 +426,26 @@ LABEL_47:
 
             else
             {
-              [v10 topAnchor];
+              [buttonAreaLayoutGuide topAnchor];
             }
             v19 = ;
-            v20 = [v18 constraintEqualToAnchor:v19 constant:15.0];
-            [v8 addObject:v20];
+            v20 = [topAnchor constraintEqualToAnchor:v19 constant:15.0];
+            [array addObject:v20];
 
-            v21 = [v17 leadingAnchor];
-            v22 = [v10 leadingAnchor];
-            v23 = [v21 constraintGreaterThanOrEqualToAnchor:v22];
-            [v8 addObject:v23];
+            leadingAnchor = [v17 leadingAnchor];
+            leadingAnchor2 = [buttonAreaLayoutGuide leadingAnchor];
+            v23 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
+            [array addObject:v23];
 
-            v24 = [v17 trailingAnchor];
-            v25 = [v10 trailingAnchor];
-            v26 = [v24 constraintLessThanOrEqualToAnchor:v25];
-            [v8 addObject:v26];
+            trailingAnchor = [v17 trailingAnchor];
+            trailingAnchor2 = [buttonAreaLayoutGuide trailingAnchor];
+            v26 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
+            [array addObject:v26];
 
-            v27 = [v17 centerXAnchor];
-            v28 = [v10 centerXAnchor];
-            v29 = [v27 constraintEqualToAnchor:v28];
-            [v8 addObject:v29];
+            centerXAnchor = [v17 centerXAnchor];
+            centerXAnchor2 = [buttonAreaLayoutGuide centerXAnchor];
+            v29 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
+            [array addObject:v29];
 
             v13 = v17;
             ++v15;
@@ -457,21 +457,21 @@ LABEL_47:
         }
 
         while (v12);
-        v6 = v67;
-        v30 = v70;
+        metricsCopy = v67;
+        selfCopy3 = selfCopy;
       }
 
       else
       {
         v66 = 608;
-        v68 = v6;
+        v68 = metricsCopy;
         v76 = 0u;
         v77 = 0u;
         v74 = 0u;
         v75 = 0u;
         v69 = self->_leadingViews;
         v31 = [(NSArray *)v69 countByEnumeratingWithState:&v74 objects:v82 count:16];
-        v30 = self;
+        selfCopy3 = self;
         if (v31)
         {
           v32 = v31;
@@ -491,7 +491,7 @@ LABEL_47:
 
               v35 = *(*(&v74 + 1) + 8 * v33);
               [v35 setTranslatesAutoresizingMaskIntoConstraints:{0, v66}];
-              [(PUPhotoEditButtonCenteredToolbar *)v30 interItemSpacing];
+              [(PUPhotoEditButtonCenteredToolbar *)selfCopy3 interItemSpacing];
               v37 = v36;
               objc_opt_class();
               LOBYTE(v39) = 0;
@@ -504,7 +504,7 @@ LABEL_47:
               if (v34)
               {
                 v40 = v37 * 0.5;
-                v42 = [(NSArray *)v30->_leadingViews indexOfObject:v34]== 0 && v72;
+                v42 = [(NSArray *)selfCopy3->_leadingViews indexOfObject:v34]== 0 && v72;
                 v41 = v42 == 0;
                 v43 = v42 | v39;
                 if (v41)
@@ -516,18 +516,18 @@ LABEL_47:
                 {
                   if (obj)
                   {
-                    v44 = [v35 firstBaselineAnchor];
-                    v45 = [(NSArray *)obj firstBaselineAnchor];
-                    v46 = [v44 constraintEqualToAnchor:v45];
-                    [v8 addObject:v46];
+                    firstBaselineAnchor = [v35 firstBaselineAnchor];
+                    firstBaselineAnchor2 = [(NSArray *)obj firstBaselineAnchor];
+                    v46 = [firstBaselineAnchor constraintEqualToAnchor:firstBaselineAnchor2];
+                    [array addObject:v46];
                   }
 
                   else
                   {
-                    v57 = [v35 centerYAnchor];
-                    v58 = [v10 centerYAnchor];
-                    v59 = [v57 constraintEqualToAnchor:v58];
-                    [v8 addObject:v59];
+                    centerYAnchor = [v35 centerYAnchor];
+                    centerYAnchor2 = [buttonAreaLayoutGuide centerYAnchor];
+                    v59 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+                    [array addObject:v59];
 
                     obj = v35;
                   }
@@ -535,27 +535,27 @@ LABEL_47:
 
                 else
                 {
-                  v48 = [v35 centerYAnchor];
-                  v49 = [v10 centerYAnchor];
-                  v50 = [v48 constraintEqualToAnchor:v49];
-                  [v8 addObject:v50];
+                  centerYAnchor3 = [v35 centerYAnchor];
+                  centerYAnchor4 = [buttonAreaLayoutGuide centerYAnchor];
+                  v50 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
+                  [array addObject:v50];
 
                   v40 = 10.0;
                 }
 
-                v60 = [v35 leadingAnchor];
-                v61 = [v34 trailingAnchor];
-                v54 = [v60 constraintEqualToAnchor:v61 constant:v40];
+                leadingAnchor3 = [v35 leadingAnchor];
+                trailingAnchor3 = [v34 trailingAnchor];
+                centerYAnchor5 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor3 constant:v40];
 
                 LODWORD(v62) = 1143930880;
-                [v54 setPriority:v62];
-                [v8 addObject:v54];
-                v55 = [v35 leadingAnchor];
-                v56 = [v34 trailingAnchor];
-                v63 = [v55 constraintGreaterThanOrEqualToAnchor:v56];
-                [v8 addObject:v63];
+                [centerYAnchor5 setPriority:v62];
+                [array addObject:centerYAnchor5];
+                leadingAnchor4 = [v35 leadingAnchor];
+                trailingAnchor4 = [v34 trailingAnchor];
+                v63 = [leadingAnchor4 constraintGreaterThanOrEqualToAnchor:trailingAnchor4];
+                [array addObject:v63];
 
-                v30 = v70;
+                selfCopy3 = selfCopy;
               }
 
               else
@@ -573,16 +573,16 @@ LABEL_47:
                   obj = v47;
                 }
 
-                v51 = [v35 leadingAnchor];
-                v52 = [v10 leadingAnchor];
-                [(PUPhotoEditToolbar *)v30 longSideMargin];
-                v53 = [v51 constraintEqualToAnchor:v52 constant:?];
-                [v8 addObject:v53];
+                leadingAnchor5 = [v35 leadingAnchor];
+                leadingAnchor6 = [buttonAreaLayoutGuide leadingAnchor];
+                [(PUPhotoEditToolbar *)selfCopy3 longSideMargin];
+                v53 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:?];
+                [array addObject:v53];
 
-                v54 = [v35 centerYAnchor];
-                v55 = [v10 centerYAnchor];
-                v56 = [v54 constraintEqualToAnchor:v55];
-                [v8 addObject:v56];
+                centerYAnchor5 = [v35 centerYAnchor];
+                leadingAnchor4 = [buttonAreaLayoutGuide centerYAnchor];
+                trailingAnchor4 = [centerYAnchor5 constraintEqualToAnchor:leadingAnchor4];
+                [array addObject:trailingAnchor4];
               }
 
               v13 = v35;
@@ -603,7 +603,7 @@ LABEL_47:
           v13 = 0;
         }
 
-        v6 = v68;
+        metricsCopy = v68;
       }
 
       v7 = v66;
@@ -614,17 +614,17 @@ LABEL_47:
 LABEL_48:
 }
 
-- (void)setCenterView:(id)a3 leadingViews:(id)a4 trailingViews:(id)a5
+- (void)setCenterView:(id)view leadingViews:(id)views trailingViews:(id)trailingViews
 {
   v81 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v59 = v10;
-  if (([v10 isEqualToArray:self->_leadingViews] & 1) == 0 || !objc_msgSend(v11, "isEqualToArray:", self->_trailingViews) || self->_centerView != v9)
+  viewCopy = view;
+  viewsCopy = views;
+  trailingViewsCopy = trailingViews;
+  v59 = viewsCopy;
+  if (([viewsCopy isEqualToArray:self->_leadingViews] & 1) == 0 || !objc_msgSend(trailingViewsCopy, "isEqualToArray:", self->_trailingViews) || self->_centerView != viewCopy)
   {
-    v57 = v9;
-    v58 = v11;
+    v57 = viewCopy;
+    v58 = trailingViewsCopy;
     p_centerView = &self->_centerView;
     if ([(UIView *)self->_centerView isDescendantOfView:self])
     {
@@ -695,9 +695,9 @@ LABEL_48:
       while (v21);
     }
 
-    v25 = [(PUPhotoEditToolbar *)self mainToolbarContainer];
-    objc_storeStrong(p_centerView, a3);
-    [v25 addSubview:*p_centerView];
+    mainToolbarContainer = [(PUPhotoEditToolbar *)self mainToolbarContainer];
+    objc_storeStrong(p_centerView, view);
+    [mainToolbarContainer addSubview:*p_centerView];
     v26 = [v59 copy];
     leadingViews = self->_leadingViews;
     self->_leadingViews = v26;
@@ -725,7 +725,7 @@ LABEL_48:
             objc_enumerationMutation(v30);
           }
 
-          [v25 addSubview:*(*(&v64 + 1) + 8 * k)];
+          [mainToolbarContainer addSubview:*(*(&v64 + 1) + 8 * k)];
         }
 
         v32 = [(NSArray *)v30 countByEnumeratingWithState:&v64 objects:v78 count:16];
@@ -753,7 +753,7 @@ LABEL_48:
             objc_enumerationMutation(v35);
           }
 
-          [v25 addSubview:*(*(&v60 + 1) + 8 * m)];
+          [mainToolbarContainer addSubview:*(*(&v60 + 1) + 8 * m)];
         }
 
         v37 = [(NSArray *)v35 countByEnumeratingWithState:&v60 objects:v77 count:16];
@@ -762,40 +762,40 @@ LABEL_48:
       while (v37);
     }
 
-    v40 = [(PUPhotoEditButtonCenteredToolbar *)self buttonAreaLayoutGuide];
+    buttonAreaLayoutGuide = [(PUPhotoEditButtonCenteredToolbar *)self buttonAreaLayoutGuide];
 
-    if (!v40)
+    if (!buttonAreaLayoutGuide)
     {
       v41 = objc_alloc_init(MEMORY[0x1E69DCC20]);
       [(PUPhotoEditButtonCenteredToolbar *)self setButtonAreaLayoutGuide:v41];
 
-      v42 = [(PUPhotoEditButtonCenteredToolbar *)self buttonAreaLayoutGuide];
-      [v25 addLayoutGuide:v42];
+      buttonAreaLayoutGuide2 = [(PUPhotoEditButtonCenteredToolbar *)self buttonAreaLayoutGuide];
+      [mainToolbarContainer addLayoutGuide:buttonAreaLayoutGuide2];
     }
 
-    v43 = [(PUPhotoEditButtonCenteredToolbar *)self buttonAreaLayoutGuide];
-    v56 = [v25 leftAnchor];
-    v55 = [v43 leftAnchor];
-    v54 = [v56 constraintEqualToAnchor:v55];
+    buttonAreaLayoutGuide3 = [(PUPhotoEditButtonCenteredToolbar *)self buttonAreaLayoutGuide];
+    leftAnchor = [mainToolbarContainer leftAnchor];
+    leftAnchor2 = [buttonAreaLayoutGuide3 leftAnchor];
+    v54 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     v76[0] = v54;
-    v53 = [v25 rightAnchor];
-    v52 = [v43 rightAnchor];
-    v51 = [v53 constraintEqualToAnchor:v52];
+    rightAnchor = [mainToolbarContainer rightAnchor];
+    rightAnchor2 = [buttonAreaLayoutGuide3 rightAnchor];
+    v51 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     v76[1] = v51;
-    v44 = [v25 topAnchor];
-    v45 = [v43 topAnchor];
-    v46 = [v44 constraintEqualToAnchor:v45];
+    topAnchor = [mainToolbarContainer topAnchor];
+    topAnchor2 = [buttonAreaLayoutGuide3 topAnchor];
+    v46 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v76[2] = v46;
-    v47 = [v25 bottomAnchor];
-    v48 = [v43 bottomAnchor];
-    v49 = [v47 constraintEqualToAnchor:v48];
+    bottomAnchor = [mainToolbarContainer bottomAnchor];
+    bottomAnchor2 = [buttonAreaLayoutGuide3 bottomAnchor];
+    v49 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v76[3] = v49;
     v50 = [MEMORY[0x1E695DEC8] arrayWithObjects:v76 count:4];
-    [v25 addConstraints:v50];
+    [mainToolbarContainer addConstraints:v50];
 
     [(PUPhotoEditButtonCenteredToolbar *)self _invalidateAllConstraints];
-    v9 = v57;
-    v11 = v58;
+    viewCopy = v57;
+    trailingViewsCopy = v58;
   }
 }
 
@@ -813,10 +813,10 @@ LABEL_48:
     v4 = 18.0;
   }
 
-  v5 = [(PUPhotoEditToolbar *)self photoEditSpec];
-  v6 = [v5 shouldUseCompactToolbarSpacing];
+  photoEditSpec = [(PUPhotoEditToolbar *)self photoEditSpec];
+  shouldUseCompactToolbarSpacing = [photoEditSpec shouldUseCompactToolbarSpacing];
 
-  if (v6)
+  if (shouldUseCompactToolbarSpacing)
   {
     return v3;
   }

@@ -1,15 +1,15 @@
 @interface LNConnectionProxy
-+ (id)proxyWithConnection:(id)a3;
-- (BOOL)conformsToProtocol:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isKindOfClass:(Class)a3;
-- (BOOL)respondsToSelector:(SEL)a3;
-- (LNConnectionProxy)initWithConnection:(id)a3;
++ (id)proxyWithConnection:(id)connection;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isKindOfClass:(Class)class;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (LNConnectionProxy)initWithConnection:(id)connection;
 - (id)description;
 - (id)logPrefix;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (unint64_t)hash;
-- (void)forwardInvocation:(id)a3;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation LNConnectionProxy
@@ -17,9 +17,9 @@
 - (id)logPrefix
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(LNConnectionProxy *)self connection];
-  v4 = [v3 bundleIdentifier];
-  v5 = [v2 stringWithFormat:@"[%@]", v4];
+  connection = [(LNConnectionProxy *)self connection];
+  bundleIdentifier = [connection bundleIdentifier];
+  v5 = [v2 stringWithFormat:@"[%@]", bundleIdentifier];
 
   return v5;
 }
@@ -27,28 +27,28 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(LNConnectionProxy *)self connection];
-  v5 = [v3 stringWithFormat:@"<LNConnectionProxy: %p, wrapping: %@>", self, v4];
+  connection = [(LNConnectionProxy *)self connection];
+  v5 = [v3 stringWithFormat:@"<LNConnectionProxy: %p, wrapping: %@>", self, connection];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v6 = [(LNConnectionProxy *)self connection];
-  v7 = v6;
+  connection = [(LNConnectionProxy *)self connection];
+  v7 = connection;
   if (isKindOfClass)
   {
-    v8 = [v4 connection];
-    v9 = [v7 isEqual:v8];
+    connection2 = [equalCopy connection];
+    v9 = [v7 isEqual:connection2];
   }
 
   else
   {
-    v9 = [v6 isEqual:v4];
+    v9 = [connection isEqual:equalCopy];
   }
 
   return v9;
@@ -56,61 +56,61 @@
 
 - (unint64_t)hash
 {
-  v2 = [(LNConnectionProxy *)self connection];
-  v3 = [v2 hash];
+  connection = [(LNConnectionProxy *)self connection];
+  v3 = [connection hash];
 
   return v3;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
-  v4 = a3;
-  v5 = [(LNConnectionProxy *)self connection];
-  v6 = [v5 conformsToProtocol:v4];
+  protocolCopy = protocol;
+  connection = [(LNConnectionProxy *)self connection];
+  v6 = [connection conformsToProtocol:protocolCopy];
 
   return v6;
 }
 
-- (BOOL)isKindOfClass:(Class)a3
+- (BOOL)isKindOfClass:(Class)class
 {
-  v3 = [(LNConnectionProxy *)self connection];
+  connection = [(LNConnectionProxy *)self connection];
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
-  v3 = [(LNConnectionProxy *)self connection];
+  connection = [(LNConnectionProxy *)self connection];
   v4 = objc_opt_respondsToSelector();
 
   return v4 & 1;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
   v38 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = NSStringFromSelector([v3 selector]);
+  invocationCopy = invocation;
+  v4 = NSStringFromSelector([invocationCopy selector]);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __39__LNConnectionProxy_forwardInvocation___block_invoke;
   aBlock[3] = &unk_1E74B27A0;
-  v5 = v3;
+  v5 = invocationCopy;
   v31 = v5;
-  v32 = self;
+  selfCopy = self;
   v6 = _Block_copy(aBlock);
   if (([v4 hasSuffix:@"completionHandler:"] & 1) == 0)
   {
     goto LABEL_38;
   }
 
-  v7 = [MEMORY[0x1E695DF70] array];
-  v8 = [v5 methodSignature];
-  for (i = 2; i < [v8 numberOfArguments]; ++i)
+  array = [MEMORY[0x1E695DF70] array];
+  methodSignature = [v5 methodSignature];
+  for (i = 2; i < [methodSignature numberOfArguments]; ++i)
   {
-    v10 = v8;
-    v11 = [v8 getArgumentTypeAtIndex:i];
+    v10 = methodSignature;
+    v11 = [methodSignature getArgumentTypeAtIndex:i];
     v12 = *v11;
     if (v12 > 0x65)
     {
@@ -122,7 +122,7 @@
           [v5 getArgument:buf atIndex:i];
           LODWORD(v16) = *buf;
           v17 = [MEMORY[0x1E696AD98] numberWithFloat:v16];
-          [v7 addObject:v17];
+          [array addObject:v17];
 
           continue;
         }
@@ -135,7 +135,7 @@
           *buf = 0;
           [v5 getArgument:buf atIndex:i];
           v19 = [MEMORY[0x1E696AD98] numberWithInt:*buf];
-          [v7 addObject:v19];
+          [array addObject:v19];
 
           continue;
         }
@@ -146,7 +146,7 @@
         *buf = 0;
         [v5 getArgument:buf atIndex:i];
         v14 = [MEMORY[0x1E696AD98] numberWithLongLong:*buf];
-        [v7 addObject:v14];
+        [array addObject:v14];
 
         continue;
       }
@@ -163,7 +163,7 @@
           buf[0] = 0;
           [v5 getArgument:buf atIndex:i];
           v18 = [MEMORY[0x1E696AD98] numberWithBool:buf[0]];
-          [v7 addObject:v18];
+          [array addObject:v18];
 
           continue;
         }
@@ -174,14 +174,14 @@
         *buf = 0;
         [v5 getArgument:buf atIndex:i];
         v13 = [MEMORY[0x1E696AD98] numberWithDouble:*buf];
-        [v7 addObject:v13];
+        [array addObject:v13];
 
         continue;
       }
 
 LABEL_28:
       v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<arg of type %s>", v11];
-      [v7 addObject:v20];
+      [array addObject:v20];
 
       continue;
     }
@@ -193,7 +193,7 @@ LABEL_28:
         goto LABEL_28;
       }
 
-      [v7 addObject:@"<block>"];
+      [array addObject:@"<block>"];
     }
 
     else
@@ -215,18 +215,18 @@ LABEL_28:
         v15 = @"<nil>";
       }
 
-      [v7 addObject:v15];
+      [array addObject:v15];
     }
   }
 
   v21 = getLNLogCategoryGeneral();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
   {
-    v22 = [(LNConnectionProxy *)self logPrefix];
-    v23 = [(LNConnectionProxy *)self connection];
+    logPrefix = [(LNConnectionProxy *)self logPrefix];
+    connection = [(LNConnectionProxy *)self connection];
     v24 = objc_opt_class();
     *buf = 138543874;
-    *&buf[4] = v22;
+    *&buf[4] = logPrefix;
     v34 = 2114;
     v35 = v24;
     v36 = 2114;
@@ -235,16 +235,16 @@ LABEL_28:
     _os_log_impl(&dword_19763D000, v21, OS_LOG_TYPE_INFO, "%{public}@ Invoked [%{public}@ %{public}@]", buf, 0x20u);
   }
 
-  if ([v7 count])
+  if ([array count])
   {
     v26 = getLNLogCategoryGeneral();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
     {
-      v27 = [(LNConnectionProxy *)self logPrefix];
+      logPrefix2 = [(LNConnectionProxy *)self logPrefix];
       *buf = 138543618;
-      *&buf[4] = v27;
+      *&buf[4] = logPrefix2;
       v34 = 2112;
-      v35 = v7;
+      v35 = array;
       _os_log_impl(&dword_19763D000, v26, OS_LOG_TYPE_DEBUG, "%{public}@ Arguments: %@", buf, 0x16u);
     }
   }
@@ -266,35 +266,35 @@ uint64_t __39__LNConnectionProxy_forwardInvocation___block_invoke(uint64_t a1)
   return [v4 invoke];
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
-  v4 = [(LNConnectionProxy *)self connection];
-  v5 = [v4 methodSignatureForSelector:a3];
+  connection = [(LNConnectionProxy *)self connection];
+  v5 = [connection methodSignatureForSelector:selector];
 
   return v5;
 }
 
-- (LNConnectionProxy)initWithConnection:(id)a3
+- (LNConnectionProxy)initWithConnection:(id)connection
 {
-  v5 = a3;
-  if (v5)
+  connectionCopy = connection;
+  if (connectionCopy)
   {
-    objc_storeStrong(&self->_connection, a3);
-    v6 = self;
+    objc_storeStrong(&self->_connection, connection);
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-+ (id)proxyWithConnection:(id)a3
++ (id)proxyWithConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithConnection:v4];
+  connectionCopy = connection;
+  v5 = [[self alloc] initWithConnection:connectionCopy];
 
   return v5;
 }

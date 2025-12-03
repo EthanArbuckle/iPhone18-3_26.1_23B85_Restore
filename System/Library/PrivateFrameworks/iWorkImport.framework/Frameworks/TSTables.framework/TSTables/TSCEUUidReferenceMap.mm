@@ -1,23 +1,23 @@
 @interface TSCEUUidReferenceMap
-+ (id)_stringForInternalCellRef:(const TSCEInternalCellReference *)a3;
++ (id)_stringForInternalCellRef:(const TSCEInternalCellReference *)ref;
 - (id).cxx_construct;
 - (id)description;
-- (id)initFromArchive:(const void *)a3 dependencyTracker:(id)a4;
-- (void)addCellRef:(const TSCEInternalCellReference *)a3 forUuid:(const TSKUIDStruct *)a4;
-- (void)encodeToArchive:(void *)a3 alsoSave31Format:(BOOL)a4 archiver:(id)a5;
-- (void)getCellRefs:(void *)a3 referringToUuids:(const void *)a4;
-- (void)removeAllCellRefsInOwner:(unsigned __int16)a3;
-- (void)removeCellRef:(const TSCEInternalCellReference *)a3;
-- (void)removeCellRef:(const TSCEInternalCellReference *)a3 forUuid:(const TSKUIDStruct *)a4;
-- (void)upgradeForOwners:(id)a3;
+- (id)initFromArchive:(const void *)archive dependencyTracker:(id)tracker;
+- (void)addCellRef:(const TSCEInternalCellReference *)ref forUuid:(const TSKUIDStruct *)uuid;
+- (void)encodeToArchive:(void *)archive alsoSave31Format:(BOOL)format archiver:(id)archiver;
+- (void)getCellRefs:(void *)refs referringToUuids:(const void *)uuids;
+- (void)removeAllCellRefsInOwner:(unsigned __int16)owner;
+- (void)removeCellRef:(const TSCEInternalCellReference *)ref;
+- (void)removeCellRef:(const TSCEInternalCellReference *)ref forUuid:(const TSKUIDStruct *)uuid;
+- (void)upgradeForOwners:(id)owners;
 @end
 
 @implementation TSCEUUidReferenceMap
 
-+ (id)_stringForInternalCellRef:(const TSCEInternalCellReference *)a3
++ (id)_stringForInternalCellRef:(const TSCEInternalCellReference *)ref
 {
   v3 = MEMORY[0x277CCACA8];
-  tableID = a3->tableID;
+  tableID = ref->tableID;
   v5 = NSStringFromTSUCellCoord();
   v9 = objc_msgSend_stringWithFormat_(v3, v6, @"#%lu[%@]", v7, v8, tableID, v5);
 
@@ -58,73 +58,73 @@
   return v8;
 }
 
-- (void)addCellRef:(const TSCEInternalCellReference *)a3 forUuid:(const TSKUIDStruct *)a4
+- (void)addCellRef:(const TSCEInternalCellReference *)ref forUuid:(const TSKUIDStruct *)uuid
 {
-  v7 = sub_2210875C4(&self->_cellRefsByUuid.__table_.__bucket_list_.__ptr_, a4);
+  v7 = sub_2210875C4(&self->_cellRefsByUuid.__table_.__bucket_list_.__ptr_, uuid);
   if (v7)
   {
-    sub_2212DFCE8(v7 + 4, a3);
+    sub_2212DFCE8(v7 + 4, ref);
   }
 
   else
   {
     memset(v10, 0, sizeof(v10));
     v11 = 1065353216;
-    sub_2212DFCE8(v10, a3);
-    v12 = a4;
-    v8 = sub_22141DC04(&self->_cellRefsByUuid.__table_.__bucket_list_.__ptr_, a4);
+    sub_2212DFCE8(v10, ref);
+    uuidCopy = uuid;
+    v8 = sub_22141DC04(&self->_cellRefsByUuid.__table_.__bucket_list_.__ptr_, uuid);
     sub_2212DFCA0((v8 + 4), v10);
     sub_221122744(v10);
   }
 
-  *&v10[0] = a3;
-  v9 = sub_22141DEC4(&self->_uuidsByCellRef.__table_.__bucket_list_.__ptr_, a3);
-  sub_2210C2B00(v9 + 4, a4);
+  *&v10[0] = ref;
+  v9 = sub_22141DEC4(&self->_uuidsByCellRef.__table_.__bucket_list_.__ptr_, ref);
+  sub_2210C2B00(v9 + 4, uuid);
 }
 
-- (void)removeCellRef:(const TSCEInternalCellReference *)a3 forUuid:(const TSKUIDStruct *)a4
+- (void)removeCellRef:(const TSCEInternalCellReference *)ref forUuid:(const TSKUIDStruct *)uuid
 {
-  v7 = sub_2210875C4(&self->_cellRefsByUuid.__table_.__bucket_list_.__ptr_, a4);
+  v7 = sub_2210875C4(&self->_cellRefsByUuid.__table_.__bucket_list_.__ptr_, uuid);
   if (v7)
   {
-    sub_2212DFDD0(v7 + 4, a3);
-    v8 = sub_22141DEC4(&self->_uuidsByCellRef.__table_.__bucket_list_.__ptr_, a3);
-    sub_2211F2EF4(v8 + 4, a4);
+    sub_2212DFDD0(v7 + 4, ref);
+    v8 = sub_22141DEC4(&self->_uuidsByCellRef.__table_.__bucket_list_.__ptr_, ref);
+    sub_2211F2EF4(v8 + 4, uuid);
   }
 }
 
-- (void)removeCellRef:(const TSCEInternalCellReference *)a3
+- (void)removeCellRef:(const TSCEInternalCellReference *)ref
 {
-  if (sub_221123474(&self->_uuidsByCellRef.__table_.__bucket_list_.__ptr_, a3))
+  if (sub_221123474(&self->_uuidsByCellRef.__table_.__bucket_list_.__ptr_, ref))
   {
-    v12 = a3;
-    v5 = sub_22141DEC4(&self->_uuidsByCellRef.__table_.__bucket_list_.__ptr_, a3);
+    refCopy2 = ref;
+    v5 = sub_22141DEC4(&self->_uuidsByCellRef.__table_.__bucket_list_.__ptr_, ref);
     sub_2213FB8DC(v10, (v5 + 4));
     for (i = v11; i; i = *i)
     {
-      objc_msgSend_removeCellRef_forUuid_(self, v6, a3, (i + 2), v7);
+      objc_msgSend_removeCellRef_forUuid_(self, v6, ref, (i + 2), v7);
     }
 
-    v12 = a3;
-    v9 = sub_22141DEC4(&self->_uuidsByCellRef.__table_.__bucket_list_.__ptr_, a3);
+    refCopy2 = ref;
+    v9 = sub_22141DEC4(&self->_uuidsByCellRef.__table_.__bucket_list_.__ptr_, ref);
     sub_2210BE918(v9 + 4);
     sub_2210BDEC0(v10);
   }
 }
 
-- (void)removeAllCellRefsInOwner:(unsigned __int16)a3
+- (void)removeAllCellRefsInOwner:(unsigned __int16)owner
 {
   memset(v9, 0, sizeof(v9));
   v10 = 1065353216;
   next = self->_uuidsByCellRef.__table_.__first_node_.__next_;
   if (next)
   {
-    v5 = a3;
+    ownerCopy = owner;
     do
     {
       v7 = next[2];
       v8 = *(next + 6);
-      if (v5 == v8)
+      if (ownerCopy == v8)
       {
         sub_2212DFCE8(v9, &v7);
       }
@@ -144,11 +144,11 @@
   sub_221122744(v9);
 }
 
-- (void)getCellRefs:(void *)a3 referringToUuids:(const void *)a4
+- (void)getCellRefs:(void *)refs referringToUuids:(const void *)uuids
 {
-  v4 = *a4;
-  v5 = *(a4 + 1);
-  if (*a4 != v5)
+  v4 = *uuids;
+  v5 = *(uuids + 1);
+  if (*uuids != v5)
   {
     do
     {
@@ -159,7 +159,7 @@
         v9[1] = 3221225472;
         v9[2] = sub_22141D338;
         v9[3] = &unk_27845F588;
-        v9[4] = a3;
+        v9[4] = refs;
         sub_2212DFEC0((v8 + 4), v9);
       }
 
@@ -170,20 +170,20 @@
   }
 }
 
-- (id)initFromArchive:(const void *)a3 dependencyTracker:(id)a4
+- (id)initFromArchive:(const void *)archive dependencyTracker:(id)tracker
 {
-  v31 = a4;
+  trackerCopy = tracker;
   v13 = objc_msgSend_init(self, v5, v6, v7, v8);
   if (v13)
   {
-    v14 = objc_msgSend_idMap(v31, v9, v10, v11, v12);
-    v16 = *(a3 + 6);
+    v14 = objc_msgSend_idMap(trackerCopy, v9, v10, v11, v12);
+    v16 = *(archive + 6);
     if (v16 >= 1)
     {
       v17 = v14;
       for (i = 0; i != v16; ++i)
       {
-        v19 = *(*(a3 + 4) + 8 * i + 8);
+        v19 = *(*(archive + 4) + 8 * i + 8);
         v48 = 0uLL;
         if (*(v19 + 48))
         {
@@ -268,10 +268,10 @@
   return v13;
 }
 
-- (void)upgradeForOwners:(id)a3
+- (void)upgradeForOwners:(id)owners
 {
-  v4 = a3;
-  v9 = objc_msgSend_ownerUIDMap(v4, v5, v6, v7, v8);
+  ownersCopy = owners;
+  v9 = objc_msgSend_ownerUIDMap(ownersCopy, v5, v6, v7, v8);
   sub_22141E1BC(v21, &self->_cellRefsByUuid);
   for (i = v22; i; i = *i)
   {
@@ -309,10 +309,10 @@
   sub_22141E4F8(v21);
 }
 
-- (void)encodeToArchive:(void *)a3 alsoSave31Format:(BOOL)a4 archiver:(id)a5
+- (void)encodeToArchive:(void *)archive alsoSave31Format:(BOOL)format archiver:(id)archiver
 {
-  v5 = a4;
-  v8 = a5;
+  formatCopy = format;
+  archiverCopy = archiver;
   next = self->_cellRefsByUuid.__table_.__first_node_.__next_;
   if (next)
   {
@@ -332,17 +332,17 @@ LABEL_20:
       }
     }
 
-    v10 = *(a3 + 4);
+    v10 = *(archive + 4);
     if (!v10)
     {
       goto LABEL_8;
     }
 
-    v11 = *(a3 + 6);
+    v11 = *(archive + 6);
     v12 = *v10;
     if (v11 < *v10)
     {
-      *(a3 + 6) = v11 + 1;
+      *(archive + 6) = v11 + 1;
       v13 = *&v10[2 * v11 + 2];
 LABEL_10:
       *(v13 + 16) |= 1u;
@@ -375,7 +375,7 @@ LABEL_10:
       }
 
       sub_2212E0690(&next[2], v18);
-      if (v5)
+      if (formatCopy)
       {
         v20[0] = MEMORY[0x277D85DD0];
         v20[1] = 3221225472;
@@ -388,19 +388,19 @@ LABEL_10:
       goto LABEL_20;
     }
 
-    if (v12 == *(a3 + 7))
+    if (v12 == *(archive + 7))
     {
 LABEL_8:
-      google::protobuf::internal::RepeatedPtrFieldBase::Reserve((a3 + 16));
-      v10 = *(a3 + 4);
+      google::protobuf::internal::RepeatedPtrFieldBase::Reserve((archive + 16));
+      v10 = *(archive + 4);
       v12 = *v10;
     }
 
     *v10 = v12 + 1;
-    v13 = google::protobuf::Arena::CreateMaybeMessage<TSCE::UuidReferenceMapArchive_CellRefsForUuid>(*(a3 + 2));
-    v14 = *(a3 + 6);
-    v15 = *(a3 + 4) + 8 * v14;
-    *(a3 + 6) = v14 + 1;
+    v13 = google::protobuf::Arena::CreateMaybeMessage<TSCE::UuidReferenceMapArchive_CellRefsForUuid>(*(archive + 2));
+    v14 = *(archive + 6);
+    v15 = *(archive + 4) + 8 * v14;
+    *(archive + 6) = v14 + 1;
     *(v15 + 8) = v13;
     goto LABEL_10;
   }

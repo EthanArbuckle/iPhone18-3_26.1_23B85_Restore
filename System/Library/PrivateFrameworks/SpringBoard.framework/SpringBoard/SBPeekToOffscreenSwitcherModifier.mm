@@ -1,52 +1,52 @@
 @interface SBPeekToOffscreenSwitcherModifier
-- (CGRect)frameForIndex:(unint64_t)a3;
-- (SBPeekToOffscreenSwitcherModifier)initWithTransitionID:(id)a3 peekingAppLayout:(id)a4 peekConfiguration:(int64_t)a5 spaceConfiguration:(int64_t)a6;
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5;
-- (void)setState:(int64_t)a3;
+- (CGRect)frameForIndex:(unint64_t)index;
+- (SBPeekToOffscreenSwitcherModifier)initWithTransitionID:(id)d peekingAppLayout:(id)layout peekConfiguration:(int64_t)configuration spaceConfiguration:(int64_t)spaceConfiguration;
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index;
+- (void)setState:(int64_t)state;
 @end
 
 @implementation SBPeekToOffscreenSwitcherModifier
 
-- (SBPeekToOffscreenSwitcherModifier)initWithTransitionID:(id)a3 peekingAppLayout:(id)a4 peekConfiguration:(int64_t)a5 spaceConfiguration:(int64_t)a6
+- (SBPeekToOffscreenSwitcherModifier)initWithTransitionID:(id)d peekingAppLayout:(id)layout peekConfiguration:(int64_t)configuration spaceConfiguration:(int64_t)spaceConfiguration
 {
-  v11 = a3;
-  v12 = a4;
-  if (!v12)
+  dCopy = d;
+  layoutCopy = layout;
+  if (!layoutCopy)
   {
     [SBPeekToOffscreenSwitcherModifier initWithTransitionID:a2 peekingAppLayout:self peekConfiguration:? spaceConfiguration:?];
   }
 
-  if (!SBPeekConfigurationIsValid(a5))
+  if (!SBPeekConfigurationIsValid(configuration))
   {
     [SBPeekToOffscreenSwitcherModifier initWithTransitionID:a2 peekingAppLayout:self peekConfiguration:? spaceConfiguration:?];
   }
 
   v16.receiver = self;
   v16.super_class = SBPeekToOffscreenSwitcherModifier;
-  v13 = [(SBTransitionSwitcherModifier *)&v16 initWithTransitionID:v11];
+  v13 = [(SBTransitionSwitcherModifier *)&v16 initWithTransitionID:dCopy];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_peekingAppLayout, a4);
-    v14->_peekConfiguration = a5;
-    v14->_spaceConfiguration = a6;
+    objc_storeStrong(&v13->_peekingAppLayout, layout);
+    v14->_peekConfiguration = configuration;
+    v14->_spaceConfiguration = spaceConfiguration;
   }
 
   return v14;
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
   v3.receiver = self;
   v3.super_class = SBPeekToOffscreenSwitcherModifier;
-  [(SBChainableModifier *)&v3 setState:a3];
+  [(SBChainableModifier *)&v3 setState:state];
 }
 
-- (CGRect)frameForIndex:(unint64_t)a3
+- (CGRect)frameForIndex:(unint64_t)index
 {
   v46[1] = *MEMORY[0x277D85DE8];
-  v5 = [(SBPeekToOffscreenSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBPeekToOffscreenSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if (v6 == self->_peekingAppLayout && [(SBTransitionSwitcherModifier *)self isUpdatingLayout])
   {
@@ -96,7 +96,7 @@
 
     v42.receiver = self;
     v42.super_class = SBPeekToOffscreenSwitcherModifier;
-    [(SBPeekToOffscreenSwitcherModifier *)&v42 frameForIndex:a3];
+    [(SBPeekToOffscreenSwitcherModifier *)&v42 frameForIndex:index];
     SBRectWithSize();
     v41.receiver = self;
     v41.super_class = SBPeekToOffscreenSwitcherModifier;
@@ -104,9 +104,9 @@
     SBRectWithSize();
     v16 = v28;
     v18 = v29;
-    v30 = [(SBPeekToOffscreenSwitcherModifier *)self isRTLEnabled];
+    isRTLEnabled = [(SBPeekToOffscreenSwitcherModifier *)self isRTLEnabled];
     v31 = self->_peekConfiguration;
-    if (v30)
+    if (isRTLEnabled)
     {
       if (v31 != 3)
       {
@@ -133,7 +133,7 @@ LABEL_18:
 
   v40.receiver = self;
   v40.super_class = SBPeekToOffscreenSwitcherModifier;
-  [(SBPeekToOffscreenSwitcherModifier *)&v40 frameForIndex:a3];
+  [(SBPeekToOffscreenSwitcherModifier *)&v40 frameForIndex:index];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -151,9 +151,9 @@ LABEL_6:
   return result;
 }
 
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index
 {
-  if (self->_peekingAppLayout == a4)
+  if (self->_peekingAppLayout == layout)
   {
     return 1.0;
   }
@@ -162,7 +162,7 @@ LABEL_6:
   v10 = v6;
   v8.receiver = self;
   v8.super_class = SBPeekToOffscreenSwitcherModifier;
-  [SBPeekToOffscreenSwitcherModifier opacityForLayoutRole:sel_opacityForLayoutRole_inAppLayout_atIndex_ inAppLayout:a3 atIndex:?];
+  [SBPeekToOffscreenSwitcherModifier opacityForLayoutRole:sel_opacityForLayoutRole_inAppLayout_atIndex_ inAppLayout:role atIndex:?];
   return result;
 }
 

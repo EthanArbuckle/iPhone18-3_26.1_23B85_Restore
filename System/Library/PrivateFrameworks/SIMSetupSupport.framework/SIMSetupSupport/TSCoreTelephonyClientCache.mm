@@ -1,22 +1,22 @@
 @interface TSCoreTelephonyClientCache
 + (id)sharedInstance;
 - (BOOL)deviceSupportsHydra;
-- (BOOL)getTransferCapability:(unint64_t)a3;
+- (BOOL)getTransferCapability:(unint64_t)capability;
 - (BOOL)isEmbeddedSIMOnlyConfig;
 - (BOOL)usingBootstrapDataService;
 - (TSCoreTelephonyClientCache)init;
-- (id)getStoreVisitStatusForCarrier:(id)a3;
-- (id)loadSimSetupInfo:(id)a3;
-- (void)cancelTransferPlan:(id)a3 fromDevice:(id)a4 completionHandler:(id)a5;
-- (void)convertPhysicalSIMToeSIMWithCompletion:(id)a3;
+- (id)getStoreVisitStatusForCarrier:(id)carrier;
+- (id)loadSimSetupInfo:(id)info;
+- (void)cancelTransferPlan:(id)plan fromDevice:(id)device completionHandler:(id)handler;
+- (void)convertPhysicalSIMToeSIMWithCompletion:(id)completion;
 - (void)deviceSupportsHydra;
-- (void)getCarrierSetupWithCompletion:(id)a3;
-- (void)getPlanTransferCredentials:(id)a3 completion:(id)a4;
-- (void)pendingInstallItemsWithCompletion:(id)a3;
-- (void)saveSimSetupInfo:(id)a3 info:(id)a4;
-- (void)transferPlanListWithCompletion:(id)a3;
-- (void)transferPlanWithIdentifier:(id)a3 fromDevice:(id)a4 completionHandler:(id)a5;
-- (void)transferPlansWithIdentifier:(id)a3 fromDevice:(id)a4 completionHandler:(id)a5;
+- (void)getCarrierSetupWithCompletion:(id)completion;
+- (void)getPlanTransferCredentials:(id)credentials completion:(id)completion;
+- (void)pendingInstallItemsWithCompletion:(id)completion;
+- (void)saveSimSetupInfo:(id)info info:(id)a4;
+- (void)transferPlanListWithCompletion:(id)completion;
+- (void)transferPlanWithIdentifier:(id)identifier fromDevice:(id)device completionHandler:(id)handler;
+- (void)transferPlansWithIdentifier:(id)identifier fromDevice:(id)device completionHandler:(id)handler;
 @end
 
 @implementation TSCoreTelephonyClientCache
@@ -56,16 +56,16 @@ uint64_t __44__TSCoreTelephonyClientCache_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)transferPlanListWithCompletion:(id)a3
+- (void)transferPlanListWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   client = self->_client;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __61__TSCoreTelephonyClientCache_transferPlanListWithCompletion___block_invoke;
   v7[3] = &unk_279B458F8;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(CoreTelephonyClient *)client getTransferPlansWithCompletion:v7];
 }
 
@@ -219,17 +219,17 @@ LABEL_26:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)transferPlanWithIdentifier:(id)a3 fromDevice:(id)a4 completionHandler:(id)a5
+- (void)transferPlanWithIdentifier:(id)identifier fromDevice:(id)device completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   client = self->_client;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __86__TSCoreTelephonyClientCache_transferPlanWithIdentifier_fromDevice_completionHandler___block_invoke;
   v11[3] = &unk_279B45920;
-  v12 = v8;
-  v10 = v8;
-  [(CoreTelephonyClient *)client transferPlan:a3 fromDevice:a4 completionHandler:v11];
+  v12 = handlerCopy;
+  v10 = handlerCopy;
+  [(CoreTelephonyClient *)client transferPlan:identifier fromDevice:device completionHandler:v11];
 }
 
 void __86__TSCoreTelephonyClientCache_transferPlanWithIdentifier_fromDevice_completionHandler___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4, void *a5)
@@ -247,17 +247,17 @@ void __86__TSCoreTelephonyClientCache_transferPlanWithIdentifier_fromDevice_comp
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)transferPlansWithIdentifier:(id)a3 fromDevice:(id)a4 completionHandler:(id)a5
+- (void)transferPlansWithIdentifier:(id)identifier fromDevice:(id)device completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   client = self->_client;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __87__TSCoreTelephonyClientCache_transferPlansWithIdentifier_fromDevice_completionHandler___block_invoke;
   v11[3] = &unk_279B45920;
-  v12 = v8;
-  v10 = v8;
-  [(CoreTelephonyClient *)client transferPlans:a3 fromDevice:a4 completionHandler:v11];
+  v12 = handlerCopy;
+  v10 = handlerCopy;
+  [(CoreTelephonyClient *)client transferPlans:identifier fromDevice:device completionHandler:v11];
 }
 
 void __87__TSCoreTelephonyClientCache_transferPlansWithIdentifier_fromDevice_completionHandler___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4, void *a5)
@@ -275,17 +275,17 @@ void __87__TSCoreTelephonyClientCache_transferPlansWithIdentifier_fromDevice_com
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)cancelTransferPlan:(id)a3 fromDevice:(id)a4 completionHandler:(id)a5
+- (void)cancelTransferPlan:(id)plan fromDevice:(id)device completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   client = self->_client;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __78__TSCoreTelephonyClientCache_cancelTransferPlan_fromDevice_completionHandler___block_invoke;
   v11[3] = &unk_279B44DB8;
-  v12 = v8;
-  v10 = v8;
-  [(CoreTelephonyClient *)client cancelCellularPlanTransfer:a3 fromDevice:a4 completionHandler:v11];
+  v12 = handlerCopy;
+  v10 = handlerCopy;
+  [(CoreTelephonyClient *)client cancelCellularPlanTransfer:plan fromDevice:device completionHandler:v11];
 }
 
 void __78__TSCoreTelephonyClientCache_cancelTransferPlan_fromDevice_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -303,17 +303,17 @@ void __78__TSCoreTelephonyClientCache_cancelTransferPlan_fromDevice_completionHa
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)getPlanTransferCredentials:(id)a3 completion:(id)a4
+- (void)getPlanTransferCredentials:(id)credentials completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   client = self->_client;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __68__TSCoreTelephonyClientCache_getPlanTransferCredentials_completion___block_invoke;
   v9[3] = &unk_279B45948;
-  v10 = v6;
-  v8 = v6;
-  [(CoreTelephonyClient *)client getPlanTransferCredentials:a3 completion:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [(CoreTelephonyClient *)client getPlanTransferCredentials:credentials completion:v9];
 }
 
 void __68__TSCoreTelephonyClientCache_getPlanTransferCredentials_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -332,7 +332,7 @@ void __68__TSCoreTelephonyClientCache_getPlanTransferCredentials_completion___bl
   (*(*(a1 + 32) + 16))();
 }
 
-- (BOOL)getTransferCapability:(unint64_t)a3
+- (BOOL)getTransferCapability:(unint64_t)capability
 {
   v5 = dispatch_semaphore_create(0);
   v6 = dispatch_time(0, 20000000000);
@@ -348,7 +348,7 @@ void __68__TSCoreTelephonyClientCache_getPlanTransferCredentials_completion___bl
   v12 = &v13;
   v8 = v5;
   v11 = v8;
-  [(CoreTelephonyClient *)client isAnyPlanOfTransferCapability:a3 availableForThisDeviceWithCompletion:v10];
+  [(CoreTelephonyClient *)client isAnyPlanOfTransferCapability:capability availableForThisDeviceWithCompletion:v10];
   dispatch_semaphore_wait(v8, v6);
   LOBYTE(v6) = *(v14 + 24);
 
@@ -385,16 +385,16 @@ void __62__TSCoreTelephonyClientCache_setDataFallbackEnabled_forIccid___block_in
   }
 }
 
-- (void)pendingInstallItemsWithCompletion:(id)a3
+- (void)pendingInstallItemsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   client = self->_client;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__TSCoreTelephonyClientCache_pendingInstallItemsWithCompletion___block_invoke;
   v7[3] = &unk_279B459C0;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(CoreTelephonyClient *)client plansPendingInstallWithCompletion:v7];
 }
 
@@ -426,16 +426,16 @@ void __64__TSCoreTelephonyClientCache_pendingInstallItemsWithCompletion___block_
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)convertPhysicalSIMToeSIMWithCompletion:(id)a3
+- (void)convertPhysicalSIMToeSIMWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   client = self->_client;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __69__TSCoreTelephonyClientCache_convertPhysicalSIMToeSIMWithCompletion___block_invoke;
   v7[3] = &unk_279B44DB8;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(CoreTelephonyClient *)client convertPhysicalToeSIMWithCompletionHandler:v7];
 }
 
@@ -475,9 +475,9 @@ void __69__TSCoreTelephonyClientCache_convertPhysicalSIMToeSIMWithCompletion___b
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v3 BOOLValue];
+      bOOLValue = [v3 BOOLValue];
       v8 = @"Not Supported";
-      if (v7)
+      if (bOOLValue)
       {
         v8 = @"Supported";
       }
@@ -489,7 +489,7 @@ void __69__TSCoreTelephonyClientCache_convertPhysicalSIMToeSIMWithCompletion___b
       _os_log_impl(&dword_262AA8000, v6, OS_LOG_TYPE_DEFAULT, "Checking hydra result: %@ @%s", buf, 0x16u);
     }
 
-    v9 = [v3 BOOLValue];
+    bOOLValue2 = [v3 BOOLValue];
   }
 
   else
@@ -499,11 +499,11 @@ void __69__TSCoreTelephonyClientCache_convertPhysicalSIMToeSIMWithCompletion___b
       [TSCoreTelephonyClientCache deviceSupportsHydra];
     }
 
-    v9 = 0;
+    bOOLValue2 = 0;
   }
 
   v10 = *MEMORY[0x277D85DE8];
-  return v9;
+  return bOOLValue2;
 }
 
 - (BOOL)isEmbeddedSIMOnlyConfig
@@ -554,15 +554,15 @@ void __53__TSCoreTelephonyClientCache_isEmbeddedSIMOnlyConfig__block_invoke(uint
   }
 }
 
-- (id)getStoreVisitStatusForCarrier:(id)a3
+- (id)getStoreVisitStatusForCarrier:(id)carrier
 {
-  v4 = a3;
+  carrierCopy = carrier;
   client = self->_client;
   if (objc_opt_respondsToSelector())
   {
     v6 = self->_client;
     v19 = 0;
-    v7 = [(CoreTelephonyClient *)v6 loadCarrierStoreVisitStatusForCarrier:v4 error:&v19];
+    v7 = [(CoreTelephonyClient *)v6 loadCarrierStoreVisitStatusForCarrier:carrierCopy error:&v19];
     v8 = v19;
     if (v8)
     {
@@ -608,16 +608,16 @@ void __69__TSCoreTelephonyClientCache_saveStoreVisitStatusForCarrier_visited___b
   }
 }
 
-- (id)loadSimSetupInfo:(id)a3
+- (id)loadSimSetupInfo:(id)info
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   client = self->_client;
   if (objc_opt_respondsToSelector())
   {
     v6 = self->_client;
     v21 = 0;
-    v7 = [(CoreTelephonyClient *)v6 loadSimSetupInfo:v4 error:&v21];
+    v7 = [(CoreTelephonyClient *)v6 loadSimSetupInfo:infoCopy error:&v21];
     v8 = v21;
     v9 = _TSLogDomain();
     v10 = v9;
@@ -636,7 +636,7 @@ void __69__TSCoreTelephonyClientCache_saveStoreVisitStatusForCarrier_visited___b
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412802;
-        v23 = v4;
+        v23 = infoCopy;
         v24 = 2112;
         v25 = v7;
         v26 = 2080;
@@ -664,10 +664,10 @@ void __69__TSCoreTelephonyClientCache_saveStoreVisitStatusForCarrier_visited___b
   return v11;
 }
 
-- (void)saveSimSetupInfo:(id)a3 info:(id)a4
+- (void)saveSimSetupInfo:(id)info info:(id)a4
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  infoCopy = info;
   v7 = a4;
   client = self->_client;
   v9 = objc_opt_respondsToSelector();
@@ -678,7 +678,7 @@ void __69__TSCoreTelephonyClientCache_saveStoreVisitStatusForCarrier_visited___b
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v24 = v6;
+      v24 = infoCopy;
       v25 = 2112;
       v26 = v7;
       v27 = 2080;
@@ -691,7 +691,7 @@ void __69__TSCoreTelephonyClientCache_saveStoreVisitStatusForCarrier_visited___b
     v21[1] = 3221225472;
     v21[2] = __52__TSCoreTelephonyClientCache_saveSimSetupInfo_info___block_invoke;
     v21[3] = &unk_279B44638;
-    v22 = v6;
+    v22 = infoCopy;
     [(CoreTelephonyClient *)v12 saveSimSetupInfo:v22 info:v7 completion:v21];
     v11 = v22;
   }
@@ -743,16 +743,16 @@ void __60__TSCoreTelephonyClientCache_submitAutoReconnectionDetails___block_invo
   }
 }
 
-- (void)getCarrierSetupWithCompletion:(id)a3
+- (void)getCarrierSetupWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   client = self->_client;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60__TSCoreTelephonyClientCache_getCarrierSetupWithCompletion___block_invoke;
   v7[3] = &unk_279B459C0;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(CoreTelephonyClient *)client getCarrierSetupWithCompletion:v7];
 }
 
@@ -835,10 +835,10 @@ void __72__TSCoreTelephonyClientCache_getWebsheetInfoForPlan_inBuddy_completion_
     }
   }
 
-  v6 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
   v7 = *MEMORY[0x277D85DE8];
-  return v6;
+  return bOOLValue;
 }
 
 void __53__TSCoreTelephonyClientCache_submitPlanSetupDetails___block_invoke(uint64_t a1, void *a2)

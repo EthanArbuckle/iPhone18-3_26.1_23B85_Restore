@@ -1,15 +1,15 @@
 @interface NUImagePropertiesClient
-- (void)submitPropertiesRequestForComposition:(id)a3 completion:(id)a4;
+- (void)submitPropertiesRequestForComposition:(id)composition completion:(id)completion;
 @end
 
 @implementation NUImagePropertiesClient
 
-- (void)submitPropertiesRequestForComposition:(id)a3 completion:(id)a4
+- (void)submitPropertiesRequestForComposition:(id)composition completion:(id)completion
 {
   v45 = *MEMORY[0x1E69E9840];
-  v40 = a3;
-  v6 = a4;
-  if (!v40)
+  compositionCopy = composition;
+  completionCopy = completion;
+  if (!compositionCopy)
   {
     v8 = NUAssertLogger_23901();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -30,8 +30,8 @@
         v22 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v23 = MEMORY[0x1E696AF00];
         v24 = v22;
-        v25 = [v23 callStackSymbols];
-        v26 = [v25 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v23 callStackSymbols];
+        v26 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v42 = v22;
         v43 = 2114;
@@ -42,8 +42,8 @@
 
     else if (v12)
     {
-      v13 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v14 = [v13 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v14 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v42 = v14;
       _os_log_error_impl(&dword_1C0184000, v11, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -52,7 +52,7 @@
     _NUAssertFailHandler("[NUImagePropertiesClient submitPropertiesRequestForComposition:completion:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NUImagePropertiesRequest.m", 29, @"Invalid parameter not satisfying: %s", v27, v28, v29, v30, "composition != nil");
   }
 
-  if (!v6)
+  if (!completionCopy)
   {
     v15 = NUAssertLogger_23901();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -73,8 +73,8 @@
         v31 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v32 = MEMORY[0x1E696AF00];
         v33 = v31;
-        v34 = [v32 callStackSymbols];
-        v35 = [v34 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v32 callStackSymbols];
+        v35 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v42 = v31;
         v43 = 2114;
@@ -85,8 +85,8 @@
 
     else if (v19)
     {
-      v20 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v21 = [v20 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v21 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v42 = v21;
       _os_log_error_impl(&dword_1C0184000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -95,9 +95,9 @@
     _NUAssertFailHandler("[NUImagePropertiesClient submitPropertiesRequestForComposition:completion:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NUImagePropertiesRequest.m", 30, @"Invalid parameter not satisfying: %s", v36, v37, v38, v39, "completionBlock != nil");
   }
 
-  v7 = [(NURenderRequest *)[NUImagePropertiesRequest alloc] initWithComposition:v40];
+  v7 = [(NURenderRequest *)[NUImagePropertiesRequest alloc] initWithComposition:compositionCopy];
   [(NURenderRequest *)v7 setName:@"NUImagePropertiesRequest-generic"];
-  [(NURenderClient *)self submitGenericRequest:v7 completion:v6];
+  [(NURenderClient *)self submitGenericRequest:v7 completion:completionCopy];
 }
 
 @end

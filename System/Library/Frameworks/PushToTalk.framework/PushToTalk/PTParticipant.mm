@@ -1,5 +1,5 @@
 @interface PTParticipant
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)name;
 - (PTParticipant)initWithName:(NSString *)name image:(UIImage *)image;
 - (id)imageFileURL;
@@ -61,37 +61,37 @@
 
 - (id)imageFileURL
 {
-  v2 = [(PTParticipant *)self underlyingParticipant];
-  v3 = [v2 imageURL];
+  underlyingParticipant = [(PTParticipant *)self underlyingParticipant];
+  imageURL = [underlyingParticipant imageURL];
 
-  return v3;
+  return imageURL;
 }
 
 - (NSString)name
 {
-  v2 = [(PTParticipant *)self underlyingParticipant];
-  v3 = [v2 name];
+  underlyingParticipant = [(PTParticipant *)self underlyingParticipant];
+  name = [underlyingParticipant name];
 
-  return v3;
+  return name;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(PTParticipant *)self underlyingParticipant];
-  v3 = [v2 hash];
+  underlyingParticipant = [(PTParticipant *)self underlyingParticipant];
+  v3 = [underlyingParticipant hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 underlyingParticipant];
-    v6 = [(PTParticipant *)self underlyingParticipant];
-    v7 = [v6 isEqual:v5];
+    underlyingParticipant = [equalCopy underlyingParticipant];
+    underlyingParticipant2 = [(PTParticipant *)self underlyingParticipant];
+    v7 = [underlyingParticipant2 isEqual:underlyingParticipant];
   }
 
   else

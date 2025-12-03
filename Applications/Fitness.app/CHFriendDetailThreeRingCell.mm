@@ -1,12 +1,12 @@
 @interface CHFriendDetailThreeRingCell
-- (CHFriendDetailThreeRingCell)initWithFrame:(CGRect)a3;
+- (CHFriendDetailThreeRingCell)initWithFrame:(CGRect)frame;
 - (double)preferredHeight;
 - (double)preferredWidth;
 - (void)_setupCell;
 - (void)layoutSubviews;
-- (void)setActivitySummary:(id)a3 animated:(BOOL)a4;
-- (void)setHidden:(BOOL)a3;
-- (void)setIsStandalonePhoneFitnessMode:(BOOL)a3;
+- (void)setActivitySummary:(id)summary animated:(BOOL)animated;
+- (void)setHidden:(BOOL)hidden;
+- (void)setIsStandalonePhoneFitnessMode:(BOOL)mode;
 @end
 
 @implementation CHFriendDetailThreeRingCell
@@ -15,21 +15,21 @@
 {
   v3 = [ARUIRingsView alloc];
   v4 = [ARUIRingGroup activityRingGroupForRingType:3];
-  v5 = [v4 forCompanion];
-  v6 = [v3 initWithRingGroup:v5];
+  forCompanion = [v4 forCompanion];
+  v6 = [v3 initWithRingGroup:forCompanion];
   ringsView = self->_ringsView;
   self->_ringsView = v6;
 
-  v8 = [(ARUIRingsView *)self->_ringsView ringGroup];
-  [v8 setGroupDiameter:5.62950094e14];
+  ringGroup = [(ARUIRingsView *)self->_ringsView ringGroup];
+  [ringGroup setGroupDiameter:5.62950094e14];
 
-  v9 = [(ARUIRingsView *)self->_ringsView ringGroup];
+  ringGroup2 = [(ARUIRingsView *)self->_ringsView ringGroup];
   LODWORD(v10) = 13.0;
-  [v9 setThickness:v10];
+  [ringGroup2 setThickness:v10];
 
-  v11 = [(ARUIRingsView *)self->_ringsView ringGroup];
+  ringGroup3 = [(ARUIRingsView *)self->_ringsView ringGroup];
   LODWORD(v12) = 1071225242;
-  [v11 setInterspacing:v12];
+  [ringGroup3 setInterspacing:v12];
 
   v13 = +[UIColor clearColor];
   [(ARUIRingsView *)self->_ringsView setBackgroundColor:v13];
@@ -39,11 +39,11 @@
   [(CHFriendDetailThreeRingCell *)self addSubview:v14];
 }
 
-- (CHFriendDetailThreeRingCell)initWithFrame:(CGRect)a3
+- (CHFriendDetailThreeRingCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CHFriendDetailThreeRingCell;
-  v3 = [(CHFriendDetailThreeRingCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CHFriendDetailThreeRingCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -99,19 +99,19 @@
   return result;
 }
 
-- (void)setActivitySummary:(id)a3 animated:(BOOL)a4
+- (void)setActivitySummary:(id)summary animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   self->_isFriendHidingDataFromMe = 0;
-  objc_storeStrong(&self->_activitySummary, a3);
-  v7 = a3;
-  [(ARUIRingsView *)self->_ringsView hk_configureWithActivitySummary:v7 animated:v4];
+  objc_storeStrong(&self->_activitySummary, summary);
+  summaryCopy = summary;
+  [(ARUIRingsView *)self->_ringsView hk_configureWithActivitySummary:summaryCopy animated:animatedCopy];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  self->_isFriendHidingDataFromMe = a3;
-  if (a3)
+  self->_isFriendHidingDataFromMe = hidden;
+  if (hidden)
   {
     activitySummary = self->_activitySummary;
     self->_activitySummary = 0;
@@ -122,11 +122,11 @@
   }
 }
 
-- (void)setIsStandalonePhoneFitnessMode:(BOOL)a3
+- (void)setIsStandalonePhoneFitnessMode:(BOOL)mode
 {
-  v3 = a3;
-  v4 = [(ARUIRingsView *)self->_ringsView ringGroup];
-  [v4 setIsStandalonePhoneFitnessMode:v3];
+  modeCopy = mode;
+  ringGroup = [(ARUIRingsView *)self->_ringsView ringGroup];
+  [ringGroup setIsStandalonePhoneFitnessMode:modeCopy];
 }
 
 @end

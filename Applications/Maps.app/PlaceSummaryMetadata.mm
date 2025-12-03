@@ -16,8 +16,8 @@
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC4Maps20PlaceSummaryMetadata_templatePairs);
   v3 = *(v2 + 16);
-  v4 = self;
-  v5 = v4;
+  selfCopy = self;
+  v5 = selfCopy;
   v6 = v2 + 48;
   v7 = -v3;
   v8 = -1;
@@ -28,8 +28,8 @@
     {
 LABEL_5:
 
-      LOBYTE(v4) = v9 != -1;
-      return v4;
+      LOBYTE(selfCopy) = v9 != -1;
+      return selfCopy;
     }
 
     if (++v8 >= *(v2 + 16))
@@ -51,7 +51,7 @@ LABEL_5:
   }
 
   __break(1u);
-  return v4;
+  return selfCopy;
 }
 
 @end

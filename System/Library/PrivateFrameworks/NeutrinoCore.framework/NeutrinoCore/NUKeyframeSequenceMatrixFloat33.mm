@@ -1,27 +1,27 @@
 @interface NUKeyframeSequenceMatrixFloat33
-- (NUKeyframeSequenceMatrixFloat33)initWithCount:(unint64_t)a3 times:(id *)a4 values:(id *)a5;
-- (__n128)valueOfKeyframeAtIndex:(uint64_t)a3;
-- (uint64_t)sampleAtTime:(__int128 *)a3;
+- (NUKeyframeSequenceMatrixFloat33)initWithCount:(unint64_t)count times:(id *)times values:(id *)values;
+- (__n128)valueOfKeyframeAtIndex:(uint64_t)index;
+- (uint64_t)sampleAtTime:(__int128 *)time;
 - (void)dealloc;
 @end
 
 @implementation NUKeyframeSequenceMatrixFloat33
 
-- (uint64_t)sampleAtTime:(__int128 *)a3
+- (uint64_t)sampleAtTime:(__int128 *)time
 {
-  v3 = a1;
-  if (*(a3 + 12))
+  selfCopy = self;
+  if (*(time + 12))
   {
-    v9 = *a3;
-    v10 = *(a3 + 2);
-    v6 = [a1 indexOfKeyframeAtOrBeforeTime:&v9];
-    if ([v3 interpolation])
+    v9 = *time;
+    v10 = *(time + 2);
+    v6 = [self indexOfKeyframeAtOrBeforeTime:&v9];
+    if ([selfCopy interpolation])
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:a2 object:v3 file:@"NUKeyframeSequence.m" lineNumber:799 description:@"Don't know how to interpolate transforms"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"NUKeyframeSequence.m" lineNumber:799 description:@"Don't know how to interpolate transforms"];
     }
 
-    a1 = v3;
+    self = selfCopy;
     v4 = v6;
   }
 
@@ -30,20 +30,20 @@
     v4 = 0;
   }
 
-  return [a1 valueOfKeyframeAtIndex:v4];
+  return [self valueOfKeyframeAtIndex:v4];
 }
 
-- (__n128)valueOfKeyframeAtIndex:(uint64_t)a3
+- (__n128)valueOfKeyframeAtIndex:(uint64_t)index
 {
-  if (a1[5])
+  if (self[5])
   {
-    v5 = [a1 count] - 1;
-    if (v5 >= a3)
+    indexCopy = [self count] - 1;
+    if (indexCopy >= index)
     {
-      v5 = a3;
+      indexCopy = index;
     }
 
-    v6 = a1[5] + 48 * (v5 & ~(v5 >> 63));
+    v6 = self[5] + 48 * (indexCopy & ~(indexCopy >> 63));
   }
 
   else
@@ -67,14 +67,14 @@
   [(NUKeyframeSequence *)&v4 dealloc];
 }
 
-- (NUKeyframeSequenceMatrixFloat33)initWithCount:(unint64_t)a3 times:(id *)a4 values:(id *)a5
+- (NUKeyframeSequenceMatrixFloat33)initWithCount:(unint64_t)count times:(id *)times values:(id *)values
 {
   v17.receiver = self;
   v17.super_class = NUKeyframeSequenceMatrixFloat33;
-  v7 = [(NUKeyframeSequence *)&v17 initWithInterpolation:0 count:a3 times:a4];
-  if (a3)
+  v7 = [(NUKeyframeSequence *)&v17 initWithInterpolation:0 count:count times:times];
+  if (count)
   {
-    v8 = malloc_type_calloc(a3, 0x30uLL, 0x1000040EED21634uLL);
+    v8 = malloc_type_calloc(count, 0x30uLL, 0x1000040EED21634uLL);
     v9 = 0;
     v7->_values = v8;
     v10 = 1;
@@ -82,7 +82,7 @@
     {
       v11 = 3 * v9;
       v12 = (v7->_values + 16 * v11);
-      v13 = (a5 + 16 * v11);
+      v13 = (values + 16 * v11);
       v14 = *v13;
       v15 = v13[2];
       v12[1] = v13[1];
@@ -91,7 +91,7 @@
       v9 = v10++;
     }
 
-    while (v9 < a3);
+    while (v9 < count);
   }
 
   return v7;

@@ -1,25 +1,25 @@
 @interface DNDSEventBehaviorResolver
-- (BOOL)_isDisconnectedWatch:(unint64_t)a3 inReduceInterruptions:(int64_t)a4;
-- (BOOL)_queue_eventSourceIsContact:(id)a3;
-- (BOOL)_queue_eventSourceIsContact:(id)a3 inGroupWithIdentifier:(id)a4;
-- (BOOL)_queue_eventSourceIsEmergencyContact:(id)a3;
-- (BOOL)_queue_eventSourceIsFavorite:(id)a3;
-- (BOOL)_queue_eventSourceIsRepeat:(id)a3 clientDetails:(id)a4 date:(id)a5;
-- (BOOL)_queue_isBreakthroughAllowedForModeIdentifier:(id)a3 withConfiguration:(id)a4 application:(id)a5 sender:(id)a6 urgency:(unint64_t)a7 eventType:(unint64_t)a8 threadIdentifier:(id)a9 filterCriteria:(id)a10 notifyAnyway:(BOOL)a11 intelligentBehavior:(int64_t)a12 reason:(unint64_t *)a13;
-- (BOOL)_queue_isBreakthroughAllowedForSender:(id)a3 eventType:(unint64_t)a4 clientDetails:(id)a5 date:(id)a6 reason:(unint64_t *)a7;
+- (BOOL)_isDisconnectedWatch:(unint64_t)watch inReduceInterruptions:(int64_t)interruptions;
+- (BOOL)_queue_eventSourceIsContact:(id)contact;
+- (BOOL)_queue_eventSourceIsContact:(id)contact inGroupWithIdentifier:(id)identifier;
+- (BOOL)_queue_eventSourceIsEmergencyContact:(id)contact;
+- (BOOL)_queue_eventSourceIsFavorite:(id)favorite;
+- (BOOL)_queue_eventSourceIsRepeat:(id)repeat clientDetails:(id)details date:(id)date;
+- (BOOL)_queue_isBreakthroughAllowedForModeIdentifier:(id)identifier withConfiguration:(id)configuration application:(id)application sender:(id)sender urgency:(unint64_t)urgency eventType:(unint64_t)type threadIdentifier:(id)threadIdentifier filterCriteria:(id)self0 notifyAnyway:(BOOL)self1 intelligentBehavior:(int64_t)self2 reason:(unint64_t *)self3;
+- (BOOL)_queue_isBreakthroughAllowedForSender:(id)sender eventType:(unint64_t)type clientDetails:(id)details date:(id)date reason:(unint64_t *)reason;
 - (BOOL)_queue_shouldAdjustEventBehaviorForMirroring;
-- (DNDSEventBehaviorResolver)initWithModeRepository:(id)a3 contactStore:(id)a4 auxiliaryStateMonitor:(id)a5 intelligentBehaviorResolver:(id)a6 IDSLocalService:(id)a7;
+- (DNDSEventBehaviorResolver)initWithModeRepository:(id)repository contactStore:(id)store auxiliaryStateMonitor:(id)monitor intelligentBehaviorResolver:(id)resolver IDSLocalService:(id)service;
 - (DNDSEventBehaviorResolverDataSource)dataSource;
-- (id)_activeModeConfigurationForBehavior:(unint64_t)a3;
-- (id)_legacyModeConfigurationForModeConfiguration:(id)a3;
-- (id)_queue_adjustEventBehaviorResolutionForAuxiliaryState:(id)a3;
-- (id)_queue_firstContactForPredicate:(id)a3;
-- (id)_queue_resolutionForModeSemanticType:(int64_t)a3 withConfiguration:(id)a4 eventDetails:(id)a5 clientDetails:(id)a6 state:(id)a7 date:(id)a8 error:(id *)a9;
-- (id)_queue_resolveBehaviorForEventDetails:(id)a3 clientDetails:(id)a4 date:(id)a5 error:(id *)a6;
-- (id)resolutionForConfiguration:(id)a3 eventDetails:(id)a4 clientDetails:(id)a5 date:(id)a6 error:(id *)a7;
-- (id)resolveBehaviorForEventDetails:(id)a3 clientDetails:(id)a4 date:(id)a5 error:(id *)a6;
-- (id)sysdiagnoseDataForDate:(id)a3 redacted:(BOOL)a4;
-- (unint64_t)_queue_resolveOutcomeForEventSender:(id)a3 clientDetails:(id)a4 date:(id)a5 reason:(unint64_t *)a6;
+- (id)_activeModeConfigurationForBehavior:(unint64_t)behavior;
+- (id)_legacyModeConfigurationForModeConfiguration:(id)configuration;
+- (id)_queue_adjustEventBehaviorResolutionForAuxiliaryState:(id)state;
+- (id)_queue_firstContactForPredicate:(id)predicate;
+- (id)_queue_resolutionForModeSemanticType:(int64_t)type withConfiguration:(id)configuration eventDetails:(id)details clientDetails:(id)clientDetails state:(id)state date:(id)date error:(id *)error;
+- (id)_queue_resolveBehaviorForEventDetails:(id)details clientDetails:(id)clientDetails date:(id)date error:(id *)error;
+- (id)resolutionForConfiguration:(id)configuration eventDetails:(id)details clientDetails:(id)clientDetails date:(id)date error:(id *)error;
+- (id)resolveBehaviorForEventDetails:(id)details clientDetails:(id)clientDetails date:(id)date error:(id *)error;
+- (id)sysdiagnoseDataForDate:(id)date redacted:(BOOL)redacted;
+- (unint64_t)_queue_resolveOutcomeForEventSender:(id)sender clientDetails:(id)details date:(id)date reason:(unint64_t *)reason;
 - (void)dealloc;
 @end
 
@@ -32,13 +32,13 @@
   return WeakRetained;
 }
 
-- (DNDSEventBehaviorResolver)initWithModeRepository:(id)a3 contactStore:(id)a4 auxiliaryStateMonitor:(id)a5 intelligentBehaviorResolver:(id)a6 IDSLocalService:(id)a7
+- (DNDSEventBehaviorResolver)initWithModeRepository:(id)repository contactStore:(id)store auxiliaryStateMonitor:(id)monitor intelligentBehaviorResolver:(id)resolver IDSLocalService:(id)service
 {
-  v25 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  repositoryCopy = repository;
+  storeCopy = store;
+  monitorCopy = monitor;
+  resolverCopy = resolver;
+  serviceCopy = service;
   v26.receiver = self;
   v26.super_class = DNDSEventBehaviorResolver;
   v17 = [(DNDSEventBehaviorResolver *)&v26 init];
@@ -48,11 +48,11 @@
     queue = v17->_queue;
     v17->_queue = v18;
 
-    objc_storeStrong(&v17->_modeRepository, a3);
-    objc_storeStrong(&v17->_contactStore, a4);
-    objc_storeStrong(&v17->_auxiliaryStateMonitor, a5);
-    objc_storeStrong(&v17->_intelligentBehaviorResolver, a6);
-    objc_storeStrong(&v17->_localService, a7);
+    objc_storeStrong(&v17->_modeRepository, repository);
+    objc_storeStrong(&v17->_contactStore, store);
+    objc_storeStrong(&v17->_auxiliaryStateMonitor, monitor);
+    objc_storeStrong(&v17->_intelligentBehaviorResolver, resolver);
+    objc_storeStrong(&v17->_localService, service);
     v20 = [objc_alloc(MEMORY[0x277CBDAF8]) initWithContactStore:v17->_contactStore];
     favorites = v17->_favorites;
     v17->_favorites = v20;
@@ -75,11 +75,11 @@
   [(DNDSEventBehaviorResolver *)&v3 dealloc];
 }
 
-- (id)resolveBehaviorForEventDetails:(id)a3 clientDetails:(id)a4 date:(id)a5 error:(id *)a6
+- (id)resolveBehaviorForEventDetails:(id)details clientDetails:(id)clientDetails date:(id)date error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  detailsCopy = details;
+  clientDetailsCopy = clientDetails;
+  dateCopy = date;
   dispatch_assert_queue_not_V2(self->_queue);
   v32 = 0;
   v33 = &v32;
@@ -100,20 +100,20 @@
   v20[3] = &unk_278F8A178;
   v24 = &v32;
   v20[4] = self;
-  v14 = v10;
+  v14 = detailsCopy;
   v21 = v14;
-  v15 = v11;
+  v15 = clientDetailsCopy;
   v22 = v15;
-  v16 = v12;
+  v16 = dateCopy;
   v23 = v16;
   v25 = &v26;
   dispatch_sync(queue, v20);
-  if (a6)
+  if (error)
   {
     v17 = v27[5];
     if (v17)
     {
-      *a6 = v17;
+      *error = v17;
     }
   }
 
@@ -140,17 +140,17 @@ void __85__DNDSEventBehaviorResolver_resolveBehaviorForEventDetails_clientDetail
   *(v8 + 40) = v7;
 }
 
-- (id)sysdiagnoseDataForDate:(id)a3 redacted:(BOOL)a4
+- (id)sysdiagnoseDataForDate:(id)date redacted:(BOOL)redacted
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dateCopy = date;
   v6 = [(NSMutableArray *)self->_resolutionRecord copy];
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __61__DNDSEventBehaviorResolver_sysdiagnoseDataForDate_redacted___block_invoke;
   v15 = &unk_278F8A1A0;
-  v16 = v5;
-  v7 = v5;
+  v16 = dateCopy;
+  v7 = dateCopy;
   v8 = [v6 bs_mapNoNulls:&v12];
   v17 = @"resolution-record";
   v18[0] = v8;
@@ -197,38 +197,38 @@ id __61__DNDSEventBehaviorResolver_sysdiagnoseDataForDate_redacted___block_invok
   return v14;
 }
 
-- (id)_queue_resolveBehaviorForEventDetails:(id)a3 clientDetails:(id)a4 date:(id)a5 error:(id *)a6
+- (id)_queue_resolveBehaviorForEventDetails:(id)details clientDetails:(id)clientDetails date:(id)date error:(id *)error
 {
   v43 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  detailsCopy = details;
+  clientDetailsCopy = clientDetails;
+  dateCopy = date;
   dispatch_assert_queue_V2(self->_queue);
-  v13 = [(DNDSEventBehaviorResolver *)self dataSource];
-  v14 = [v13 currentStateForEventBehaviorResolver:self];
+  dataSource = [(DNDSEventBehaviorResolver *)self dataSource];
+  v14 = [dataSource currentStateForEventBehaviorResolver:self];
   if ([v14 isActive])
   {
-    v15 = -[DNDSEventBehaviorResolver _activeModeConfigurationForBehavior:](self, "_activeModeConfigurationForBehavior:", [v10 behavior]);
+    v15 = -[DNDSEventBehaviorResolver _activeModeConfigurationForBehavior:](self, "_activeModeConfigurationForBehavior:", [detailsCopy behavior]);
     v16 = DNDSLogResolver;
     if (v15)
     {
-      v38 = v11;
+      v38 = clientDetailsCopy;
       if (os_log_type_enabled(DNDSLogResolver, OS_LOG_TYPE_DEFAULT))
       {
         v17 = v16;
-        v18 = [v15 mode];
-        v19 = [v18 identifier];
+        mode = [v15 mode];
+        identifier = [mode identifier];
         *buf = 138543362;
-        v42 = v19;
+        v42 = identifier;
         _os_log_impl(&dword_24912E000, v17, OS_LOG_TYPE_DEFAULT, "Resolving breakthrough for active mode: %{public}@.", buf, 0xCu);
       }
 
-      v20 = [v15 mode];
-      v21 = [v20 semanticType];
-      v22 = [v15 configuration];
-      v23 = [(DNDSEventBehaviorResolver *)self _queue_resolutionForModeSemanticType:v21 withConfiguration:v22 eventDetails:v10 clientDetails:v38 state:v14 date:v12 error:a6];
+      mode2 = [v15 mode];
+      semanticType = [mode2 semanticType];
+      configuration = [v15 configuration];
+      v23 = [(DNDSEventBehaviorResolver *)self _queue_resolutionForModeSemanticType:semanticType withConfiguration:configuration eventDetails:detailsCopy clientDetails:v38 state:v14 date:dateCopy error:error];
 
-      v11 = v38;
+      clientDetailsCopy = v38;
     }
 
     else
@@ -244,9 +244,9 @@ id __61__DNDSEventBehaviorResolver_sysdiagnoseDataForDate_redacted___block_invok
 
   else
   {
-    v24 = [objc_alloc(MEMORY[0x277D058E0]) initWithEventDetails:v10 interruptionSuppression:0 intelligentBehavior:0 resolutionReason:2 activeModeUUID:0];
-    v25 = [v11 clientIdentifier];
-    v23 = [DNDSEventBehaviorResolution resolutionForDate:v12 eventBehavior:v24 clientIdentifier:v25 outcome:1 reason:2];
+    v24 = [objc_alloc(MEMORY[0x277D058E0]) initWithEventDetails:detailsCopy interruptionSuppression:0 intelligentBehavior:0 resolutionReason:2 activeModeUUID:0];
+    clientIdentifier = [clientDetailsCopy clientIdentifier];
+    v23 = [DNDSEventBehaviorResolution resolutionForDate:dateCopy eventBehavior:v24 clientIdentifier:clientIdentifier outcome:1 reason:2];
   }
 
   v26 = [(DNDSEventBehaviorResolver *)self _queue_adjustEventBehaviorResolutionForAuxiliaryState:v23];
@@ -265,7 +265,7 @@ id __61__DNDSEventBehaviorResolver_sysdiagnoseDataForDate_redacted___block_invok
     if ([(NSMutableArray *)self->_resolutionRecord count]>= 0x15)
     {
       v28 = [(NSMutableArray *)self->_resolutionRecord count];
-      v29 = [v12 dateByAddingTimeInterval:-180.0];
+      v29 = [dateCopy dateByAddingTimeInterval:-180.0];
       v30 = MEMORY[0x277CCAC30];
       v39[0] = MEMORY[0x277D85DD0];
       v39[1] = 3221225472;
@@ -289,11 +289,11 @@ id __61__DNDSEventBehaviorResolver_sysdiagnoseDataForDate_redacted___block_invok
     }
   }
 
-  v35 = [v26 eventBehavior];
+  eventBehavior = [v26 eventBehavior];
 
   v36 = *MEMORY[0x277D85DE8];
 
-  return v35;
+  return eventBehavior;
 }
 
 BOOL __92__DNDSEventBehaviorResolver__queue_resolveBehaviorForEventDetails_clientDetails_date_error___block_invoke(uint64_t a1, void *a2)
@@ -305,42 +305,42 @@ BOOL __92__DNDSEventBehaviorResolver__queue_resolveBehaviorForEventDetails_clien
   return v4;
 }
 
-- (id)_queue_adjustEventBehaviorResolutionForAuxiliaryState:(id)a3
+- (id)_queue_adjustEventBehaviorResolutionForAuxiliaryState:(id)state
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  stateCopy = state;
+  v5 = stateCopy;
+  if (stateCopy)
   {
-    v6 = [v4 eventBehavior];
-    if ([v6 interruptionSuppression])
+    eventBehavior = [stateCopy eventBehavior];
+    if ([eventBehavior interruptionSuppression])
     {
     }
 
     else
     {
-      v7 = [(DNDSEventBehaviorResolver *)self _queue_shouldAdjustEventBehaviorForMirroring];
+      _queue_shouldAdjustEventBehaviorForMirroring = [(DNDSEventBehaviorResolver *)self _queue_shouldAdjustEventBehaviorForMirroring];
 
-      if (v7)
+      if (_queue_shouldAdjustEventBehaviorForMirroring)
       {
-        v8 = [(DNDSAuxiliaryStateMonitor *)self->_auxiliaryStateMonitor isScreenShared];
-        v9 = [(DNDSAuxiliaryStateMonitor *)self->_auxiliaryStateMonitor isScreenMirrored];
-        v10 = [(DNDSAuxiliaryStateMonitor *)self->_auxiliaryStateMonitor isPresentationModeEnabled];
-        v11 = v10;
-        if (v9 || v8 || v10)
+        isScreenShared = [(DNDSAuxiliaryStateMonitor *)self->_auxiliaryStateMonitor isScreenShared];
+        isScreenMirrored = [(DNDSAuxiliaryStateMonitor *)self->_auxiliaryStateMonitor isScreenMirrored];
+        isPresentationModeEnabled = [(DNDSAuxiliaryStateMonitor *)self->_auxiliaryStateMonitor isPresentationModeEnabled];
+        v11 = isPresentationModeEnabled;
+        if (isScreenMirrored || isScreenShared || isPresentationModeEnabled)
         {
           v12 = 23;
-          if (!v10)
+          if (!isPresentationModeEnabled)
           {
             v12 = 0;
           }
 
-          if (v8)
+          if (isScreenShared)
           {
             v12 = 22;
           }
 
-          if (v9)
+          if (isScreenMirrored)
           {
             v13 = 21;
           }
@@ -350,23 +350,23 @@ BOOL __92__DNDSEventBehaviorResolver__queue_resolveBehaviorForEventDetails_clien
             v13 = v12;
           }
 
-          v14 = [v5 eventBehavior];
+          eventBehavior2 = [v5 eventBehavior];
           v15 = objc_alloc(MEMORY[0x277D058E0]);
-          v16 = [v14 eventDetails];
-          v17 = [v14 activeModeUUID];
-          v18 = [v15 initWithEventDetails:v16 interruptionSuppression:1 intelligentBehavior:3 resolutionReason:v13 activeModeUUID:v17];
+          eventDetails = [eventBehavior2 eventDetails];
+          activeModeUUID = [eventBehavior2 activeModeUUID];
+          v18 = [v15 initWithEventDetails:eventDetails interruptionSuppression:1 intelligentBehavior:3 resolutionReason:v13 activeModeUUID:activeModeUUID];
 
-          v19 = [v5 date];
-          v20 = [v5 clientIdentifier];
-          v21 = [DNDSEventBehaviorResolution resolutionForDate:v19 eventBehavior:v18 clientIdentifier:v20 outcome:2 reason:v13];
+          date = [v5 date];
+          clientIdentifier = [v5 clientIdentifier];
+          v21 = [DNDSEventBehaviorResolution resolutionForDate:date eventBehavior:v18 clientIdentifier:clientIdentifier outcome:2 reason:v13];
 
           v22 = DNDSLogResolver;
           if (os_log_type_enabled(DNDSLogResolver, OS_LOG_TYPE_DEFAULT))
           {
             v25[0] = 67109632;
-            v25[1] = v9;
+            v25[1] = isScreenMirrored;
             v26 = 1024;
-            v27 = v8;
+            v27 = isScreenShared;
             v28 = 1024;
             v29 = v11;
             _os_log_impl(&dword_24912E000, v22, OS_LOG_TYPE_DEFAULT, "Resolution modified to accomodate auxiliary state; isScreenMirrored=%d isScreenShared=%d isPresentationModeEnabled=%d", v25, 0x14u);
@@ -398,90 +398,90 @@ BOOL __92__DNDSEventBehaviorResolver__queue_resolveBehaviorForEventDetails_clien
   return 0;
 }
 
-- (id)_activeModeConfigurationForBehavior:(unint64_t)a3
+- (id)_activeModeConfigurationForBehavior:(unint64_t)behavior
 {
-  v5 = [(DNDSEventBehaviorResolver *)self dataSource];
-  v6 = [v5 currentStateForEventBehaviorResolver:self];
+  dataSource = [(DNDSEventBehaviorResolver *)self dataSource];
+  v6 = [dataSource currentStateForEventBehaviorResolver:self];
 
-  v7 = [v6 activeModeConfiguration];
-  if (a3 == 1)
+  activeModeConfiguration = [v6 activeModeConfiguration];
+  if (behavior == 1)
   {
-    v8 = [(DNDSEventBehaviorResolver *)self _legacyModeConfigurationForModeConfiguration:v7];
+    v8 = [(DNDSEventBehaviorResolver *)self _legacyModeConfigurationForModeConfiguration:activeModeConfiguration];
 
-    v7 = v8;
+    activeModeConfiguration = v8;
   }
 
-  return v7;
+  return activeModeConfiguration;
 }
 
-- (id)_legacyModeConfigurationForModeConfiguration:(id)a3
+- (id)_legacyModeConfigurationForModeConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = [v3 mutableCopy];
-  v5 = [MEMORY[0x277D05A20] defaultConfiguration];
+  configurationCopy = configuration;
+  v4 = [configurationCopy mutableCopy];
+  defaultConfiguration = [MEMORY[0x277D05A20] defaultConfiguration];
   v6 = objc_opt_new();
   v7 = [v6 mutableCopy];
 
-  v8 = [v3 configuration];
+  configuration = [configurationCopy configuration];
 
-  v9 = [v8 senderConfiguration];
-  v10 = [v9 phoneCallBypassSettings];
-  [v7 setPhoneCallBypassSettings:v10];
+  senderConfiguration = [configuration senderConfiguration];
+  phoneCallBypassSettings = [senderConfiguration phoneCallBypassSettings];
+  [v7 setPhoneCallBypassSettings:phoneCallBypassSettings];
 
-  [v5 setSenderConfiguration:v7];
-  [v5 setMinimumBreakthroughUrgency:0];
-  [v4 setConfiguration:v5];
+  [defaultConfiguration setSenderConfiguration:v7];
+  [defaultConfiguration setMinimumBreakthroughUrgency:0];
+  [v4 setConfiguration:defaultConfiguration];
 
   return v4;
 }
 
-- (id)_queue_resolutionForModeSemanticType:(int64_t)a3 withConfiguration:(id)a4 eventDetails:(id)a5 clientDetails:(id)a6 state:(id)a7 date:(id)a8 error:(id *)a9
+- (id)_queue_resolutionForModeSemanticType:(int64_t)type withConfiguration:(id)configuration eventDetails:(id)details clientDetails:(id)clientDetails state:(id)state date:(id)date error:(id *)error
 {
   v76 = *MEMORY[0x277D85DE8];
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  configurationCopy = configuration;
+  detailsCopy = details;
+  clientDetailsCopy = clientDetails;
+  stateCopy = state;
+  dateCopy = date;
   dispatch_assert_queue_V2(self->_queue);
-  v64 = [v16 bundleIdentifier];
-  v65 = [v16 sender];
-  v20 = [v16 urgency];
-  v61 = [v16 type];
-  v63 = [v16 threadIdentifier];
-  v62 = [v16 filterCriteria];
-  if ([v16 behavior] == 1)
+  bundleIdentifier = [detailsCopy bundleIdentifier];
+  sender = [detailsCopy sender];
+  urgency = [detailsCopy urgency];
+  type = [detailsCopy type];
+  threadIdentifier = [detailsCopy threadIdentifier];
+  filterCriteria = [detailsCopy filterCriteria];
+  if ([detailsCopy behavior] == 1)
   {
-    v21 = 0;
+    notifyAnyway = 0;
   }
 
   else
   {
-    v21 = [v16 notifyAnyway];
+    notifyAnyway = [detailsCopy notifyAnyway];
   }
 
-  v22 = [v16 platform];
-  if (!v22)
+  platform = [detailsCopy platform];
+  if (!platform)
   {
-    v22 = DNDPlatformForCurrentDevice();
+    platform = DNDPlatformForCurrentDevice();
   }
 
-  if ([(DNDSEventBehaviorResolver *)self _isDisconnectedWatch:v22 inReduceInterruptions:a3])
+  if ([(DNDSEventBehaviorResolver *)self _isDisconnectedWatch:platform inReduceInterruptions:type])
   {
-    v23 = [objc_alloc(MEMORY[0x277D058E0]) initWithEventDetails:v16 interruptionSuppression:0 intelligentBehavior:0 resolutionReason:2 activeModeUUID:0];
-    v24 = [v17 clientIdentifier];
-    v25 = [DNDSEventBehaviorResolution resolutionForDate:v19 eventBehavior:v23 clientIdentifier:v24 outcome:1 reason:2];
+    v23 = [objc_alloc(MEMORY[0x277D058E0]) initWithEventDetails:detailsCopy interruptionSuppression:0 intelligentBehavior:0 resolutionReason:2 activeModeUUID:0];
+    clientIdentifier = [clientDetailsCopy clientIdentifier];
+    v25 = [DNDSEventBehaviorResolution resolutionForDate:dateCopy eventBehavior:v23 clientIdentifier:clientIdentifier outcome:1 reason:2];
   }
 
   else
   {
-    v60 = [objc_alloc(MEMORY[0x277D058C8]) initWithBundleID:v64 platform:v22];
+    v60 = [objc_alloc(MEMORY[0x277D058C8]) initWithBundleID:bundleIdentifier platform:platform];
     v26 = +[DNDSServerDomain rootSettings];
-    v27 = [v26 forcedIntelligentBreakthrough];
+    forcedIntelligentBreakthrough = [v26 forcedIntelligentBreakthrough];
 
-    if (v27)
+    if (forcedIntelligentBreakthrough)
     {
-      if (v27 == 1)
+      if (forcedIntelligentBreakthrough == 1)
       {
         v28 = 2;
       }
@@ -492,9 +492,9 @@ BOOL __92__DNDSEventBehaviorResolver__queue_resolveBehaviorForEventDetails_clien
       }
     }
 
-    else if (_os_feature_enabled_impl() && [v15 allowIntelligentManagement] == 2 && (intelligentBehaviorResolver = self->_intelligentBehaviorResolver) != 0)
+    else if (_os_feature_enabled_impl() && [configurationCopy allowIntelligentManagement] == 2 && (intelligentBehaviorResolver = self->_intelligentBehaviorResolver) != 0)
     {
-      v28 = [(DNDSIntelligentBehaviorResolver *)intelligentBehaviorResolver intelligentInterruptionBehaviorForClientEventDetails:v16];
+      v28 = [(DNDSIntelligentBehaviorResolver *)intelligentBehaviorResolver intelligentInterruptionBehaviorForClientEventDetails:detailsCopy];
     }
 
     else
@@ -503,9 +503,9 @@ BOOL __92__DNDSEventBehaviorResolver__queue_resolveBehaviorForEventDetails_clien
     }
 
     v67 = 0;
-    v30 = [v18 activeModeIdentifier];
-    LOBYTE(v57) = v21;
-    v31 = [(DNDSEventBehaviorResolver *)self _queue_isBreakthroughAllowedForModeIdentifier:v30 withConfiguration:v15 application:v60 sender:v65 urgency:v20 eventType:v61 threadIdentifier:v63 filterCriteria:v62 notifyAnyway:v57 intelligentBehavior:v28 reason:&v67];
+    activeModeIdentifier = [stateCopy activeModeIdentifier];
+    LOBYTE(v57) = notifyAnyway;
+    v31 = [(DNDSEventBehaviorResolver *)self _queue_isBreakthroughAllowedForModeIdentifier:activeModeIdentifier withConfiguration:configurationCopy application:v60 sender:sender urgency:urgency eventType:type threadIdentifier:threadIdentifier filterCriteria:filterCriteria notifyAnyway:v57 intelligentBehavior:v28 reason:&v67];
 
     if (v67 != 26 && (v28 & 0xFFFFFFFFFFFFFFFELL) == 2)
     {
@@ -526,15 +526,15 @@ BOOL __92__DNDSEventBehaviorResolver__queue_resolveBehaviorForEventDetails_clien
       *buf = 138412546;
       v69 = v36;
       v70 = 2112;
-      v71 = v16;
+      v71 = detailsCopy;
       _os_log_impl(&dword_24912E000, v35, OS_LOG_TYPE_DEFAULT, "Intelligent Resolver behavior: %@ for clientEventDetails: %@", buf, 0x16u);
     }
 
     v37 = DNDSLogResolver;
-    v58 = v18;
+    v58 = stateCopy;
     if (os_log_type_enabled(DNDSLogResolver, OS_LOG_TYPE_DEFAULT))
     {
-      v38 = v15;
+      v38 = configurationCopy;
       if (v31)
       {
         v39 = @"is";
@@ -549,18 +549,18 @@ BOOL __92__DNDSEventBehaviorResolver__queue_resolveBehaviorForEventDetails_clien
       v41 = DNDResolutionReasonToString();
       *buf = 138544130;
       v69 = v39;
-      v15 = v38;
+      configurationCopy = v38;
       v70 = 2112;
       v71 = v41;
       v72 = 2112;
       v73 = v38;
       v74 = 2112;
-      v75 = v16;
+      v75 = detailsCopy;
       _os_log_impl(&dword_24912E000, v40, OS_LOG_TYPE_DEFAULT, "Breakthrough %{public}@ allowed with reason: %@ for configuration %@ with event details: %@.", buf, 0x2Au);
     }
 
     v66 = 0;
-    v42 = [(DNDSEventBehaviorResolver *)self _queue_isBreakthroughAllowedForSender:v65 eventType:v61 clientDetails:v17 date:v19 reason:&v66];
+    v42 = [(DNDSEventBehaviorResolver *)self _queue_isBreakthroughAllowedForSender:sender eventType:type clientDetails:clientDetailsCopy date:dateCopy reason:&v66];
     v43 = DNDSLogResolver;
     if (os_log_type_enabled(DNDSLogResolver, OS_LOG_TYPE_DEFAULT))
     {
@@ -573,7 +573,7 @@ BOOL __92__DNDSEventBehaviorResolver__queue_resolveBehaviorForEventDetails_clien
       *buf = 138543618;
       v69 = v44;
       v70 = 2112;
-      v71 = v16;
+      v71 = detailsCopy;
       _os_log_impl(&dword_24912E000, v43, OS_LOG_TYPE_DEFAULT, "Breakthrough %{public}@ allowed for global settings with event details: %@.", buf, 0x16u);
     }
 
@@ -607,26 +607,26 @@ BOOL __92__DNDSEventBehaviorResolver__queue_resolveBehaviorForEventDetails_clien
 
     if (v48)
     {
-      v50 = 0;
+      suppressionType = 0;
     }
 
-    else if ([v64 isEqualToString:@"com.apple.cmas"])
+    else if ([bundleIdentifier isEqualToString:@"com.apple.cmas"])
     {
-      v50 = 1;
+      suppressionType = 1;
     }
 
     else
     {
-      v50 = [v15 suppressionType];
+      suppressionType = [configurationCopy suppressionType];
     }
 
     v51 = objc_alloc(MEMORY[0x277D058E0]);
-    v52 = [v58 activeModeUUID];
-    v53 = [v51 initWithEventDetails:v16 interruptionSuppression:v50 intelligentBehavior:v59 resolutionReason:v47 activeModeUUID:v52];
+    activeModeUUID = [v58 activeModeUUID];
+    v53 = [v51 initWithEventDetails:detailsCopy interruptionSuppression:suppressionType intelligentBehavior:v59 resolutionReason:v47 activeModeUUID:activeModeUUID];
 
-    v54 = [v17 clientIdentifier];
-    v18 = v58;
-    v25 = [DNDSEventBehaviorResolution resolutionForDate:v19 eventBehavior:v53 clientIdentifier:v54 outcome:v49 reason:v47];
+    clientIdentifier2 = [clientDetailsCopy clientIdentifier];
+    stateCopy = v58;
+    v25 = [DNDSEventBehaviorResolution resolutionForDate:dateCopy eventBehavior:v53 clientIdentifier:clientIdentifier2 outcome:v49 reason:v47];
   }
 
   v55 = *MEMORY[0x277D85DE8];
@@ -634,18 +634,18 @@ BOOL __92__DNDSEventBehaviorResolver__queue_resolveBehaviorForEventDetails_clien
   return v25;
 }
 
-- (BOOL)_isDisconnectedWatch:(unint64_t)a3 inReduceInterruptions:(int64_t)a4
+- (BOOL)_isDisconnectedWatch:(unint64_t)watch inReduceInterruptions:(int64_t)interruptions
 {
   LOBYTE(v4) = 0;
   v18 = *MEMORY[0x277D85DE8];
-  if (a3 == 3 && a4 == 9)
+  if (watch == 3 && interruptions == 9)
   {
-    v5 = [(IDSService *)self->_localService devices];
+    devices = [(IDSService *)self->_localService devices];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    v6 = [devices countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
       v7 = v6;
@@ -657,7 +657,7 @@ BOOL __92__DNDSEventBehaviorResolver__queue_resolveBehaviorForEventDetails_clien
         {
           if (*v14 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(devices);
           }
 
           v10 = *(*(&v13 + 1) + 8 * i);
@@ -667,7 +667,7 @@ BOOL __92__DNDSEventBehaviorResolver__queue_resolveBehaviorForEventDetails_clien
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v7 = [devices countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v7);
@@ -683,15 +683,15 @@ BOOL __92__DNDSEventBehaviorResolver__queue_resolveBehaviorForEventDetails_clien
   return v4 & 1;
 }
 
-- (unint64_t)_queue_resolveOutcomeForEventSender:(id)a3 clientDetails:(id)a4 date:(id)a5 reason:(unint64_t *)a6
+- (unint64_t)_queue_resolveOutcomeForEventSender:(id)sender clientDetails:(id)details date:(id)date reason:(unint64_t *)reason
 {
   v31 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(DNDSEventBehaviorResolver *)self dataSource];
-  v14 = [v11 clientIdentifier];
-  v15 = [v13 eventBehaviorResolver:self bypassSettingsForClientIdentifier:v14];
+  senderCopy = sender;
+  detailsCopy = details;
+  dateCopy = date;
+  dataSource = [(DNDSEventBehaviorResolver *)self dataSource];
+  clientIdentifier = [detailsCopy clientIdentifier];
+  v15 = [dataSource eventBehaviorResolver:self bypassSettingsForClientIdentifier:clientIdentifier];
 
   v16 = DNDSLogResolver;
   if (os_log_type_enabled(DNDSLogResolver, OS_LOG_TYPE_DEFAULT))
@@ -701,19 +701,19 @@ BOOL __92__DNDSEventBehaviorResolver__queue_resolveBehaviorForEventDetails_clien
     _os_log_impl(&dword_24912E000, v16, OS_LOG_TYPE_DEFAULT, "Got bypass settings: settings=%{public}@", buf, 0xCu);
   }
 
-  v17 = [v10 isPopulated];
+  isPopulated = [senderCopy isPopulated];
   if (!v15)
   {
     v22 = 0;
     goto LABEL_35;
   }
 
-  v18 = v17;
+  v18 = isPopulated;
   [v15 immediateBypassEventSourceType];
   v19 = DNDResolvedImmediateBypassEventSourceType();
   v20 = 0;
   v21 = 1;
-  v28 = a6;
+  reasonCopy = reason;
   if (v19 <= 2)
   {
     if (v19 == 1)
@@ -739,7 +739,7 @@ BOOL __92__DNDSEventBehaviorResolver__queue_resolveBehaviorForEventDetails_clien
 
   if (v19 == 3)
   {
-    if (v18 && [(DNDSEventBehaviorResolver *)self _queue_eventSourceIsFavorite:v10])
+    if (v18 && [(DNDSEventBehaviorResolver *)self _queue_eventSourceIsFavorite:senderCopy])
     {
       v21 = 0;
       v22 = 1;
@@ -752,7 +752,7 @@ BOOL __92__DNDSEventBehaviorResolver__queue_resolveBehaviorForEventDetails_clien
 
   if (v19 == 4)
   {
-    if (v18 && [(DNDSEventBehaviorResolver *)self _queue_eventSourceIsContact:v10])
+    if (v18 && [(DNDSEventBehaviorResolver *)self _queue_eventSourceIsContact:senderCopy])
     {
       v21 = 0;
       v22 = 1;
@@ -768,8 +768,8 @@ BOOL __92__DNDSEventBehaviorResolver__queue_resolveBehaviorForEventDetails_clien
   {
     if (v18)
     {
-      v23 = [v15 immediateBypassCNGroupIdentifier];
-      v24 = [(DNDSEventBehaviorResolver *)self _queue_eventSourceIsContact:v10 inGroupWithIdentifier:v23];
+      immediateBypassCNGroupIdentifier = [v15 immediateBypassCNGroupIdentifier];
+      v24 = [(DNDSEventBehaviorResolver *)self _queue_eventSourceIsContact:senderCopy inGroupWithIdentifier:immediateBypassCNGroupIdentifier];
 
       if (v24)
       {
@@ -797,18 +797,18 @@ LABEL_24:
     v25 = 0;
   }
 
-  if ((v25 & v18) == 1 && [(DNDSEventBehaviorResolver *)self _queue_eventSourceIsRepeat:v10 clientDetails:v11 date:v12])
+  if ((v25 & v18) == 1 && [(DNDSEventBehaviorResolver *)self _queue_eventSourceIsRepeat:senderCopy clientDetails:detailsCopy date:dateCopy])
   {
     v20 = 10;
     v22 = 1;
   }
 
-  if (((v22 != 1) & v18) == 1 && [(DNDSEventBehaviorResolver *)self _queue_eventSourceIsEmergencyContact:v10])
+  if (((v22 != 1) & v18) == 1 && [(DNDSEventBehaviorResolver *)self _queue_eventSourceIsEmergencyContact:senderCopy])
   {
     v20 = 11;
     v22 = 1;
 LABEL_34:
-    *v28 = v20;
+    *reasonCopy = v20;
     goto LABEL_35;
   }
 
@@ -823,10 +823,10 @@ LABEL_35:
   return v22;
 }
 
-- (BOOL)_queue_eventSourceIsFavorite:(id)a3
+- (BOOL)_queue_eventSourceIsFavorite:(id)favorite
 {
   v28[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  favoriteCopy = favorite;
   dispatch_assert_queue_V2(self->_queue);
   v20 = 0;
   v21 = &v20;
@@ -840,7 +840,7 @@ LABEL_35:
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:3];
   v8 = [v5 initWithKeysToFetch:v7];
 
-  v9 = [MEMORY[0x277CBDA58] dnds_predicateForContactsMatchingEventSender:v4];
+  v9 = [MEMORY[0x277CBDA58] dnds_predicateForContactsMatchingEventSender:favoriteCopy];
   [v8 setPredicate:v9];
 
   [v8 setUnifyResults:1];
@@ -861,7 +861,7 @@ LABEL_35:
     {
       v14 = *(v21 + 24);
       *buf = 138478083;
-      v25 = v4;
+      v25 = favoriteCopy;
       v26 = 1024;
       v27 = v14;
       _os_log_impl(&dword_24912E000, v13, OS_LOG_TYPE_DEFAULT, "Checked if event source is a favorite: source=%{private}@, favorite=%{BOOL}d", buf, 0x12u);
@@ -915,17 +915,17 @@ BOOL __58__DNDSEventBehaviorResolver__queue_eventSourceIsFavorite___block_invoke
   return v3;
 }
 
-- (BOOL)_queue_eventSourceIsContact:(id)a3
+- (BOOL)_queue_eventSourceIsContact:(id)contact
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contactCopy = contact;
   dispatch_assert_queue_V2(self->_queue);
   v5 = objc_alloc(MEMORY[0x277CBDA70]);
   v27[0] = *MEMORY[0x277CBD098];
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:1];
   v7 = [v5 initWithKeysToFetch:v6];
 
-  v8 = [MEMORY[0x277CBDA58] dnds_predicateForContactsMatchingEventSender:v4];
+  v8 = [MEMORY[0x277CBDA58] dnds_predicateForContactsMatchingEventSender:contactCopy];
   [v7 setPredicate:v8];
 
   [v7 setUnifyResults:0];
@@ -949,7 +949,7 @@ BOOL __58__DNDSEventBehaviorResolver__queue_eventSourceIsFavorite___block_invoke
     {
       v13 = *(v20 + 24);
       *buf = 138478083;
-      v24 = v4;
+      v24 = contactCopy;
       v25 = 1024;
       v26 = v13;
       _os_log_impl(&dword_24912E000, v12, OS_LOG_TYPE_DEFAULT, "Checked if event source is a contact: source=%{private}@, contact=%{BOOL}d", buf, 0x12u);
@@ -975,16 +975,16 @@ uint64_t __57__DNDSEventBehaviorResolver__queue_eventSourceIsContact___block_inv
   return result;
 }
 
-- (BOOL)_queue_eventSourceIsContact:(id)a3 inGroupWithIdentifier:(id)a4
+- (BOOL)_queue_eventSourceIsContact:(id)contact inGroupWithIdentifier:(id)identifier
 {
   v45 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  contactCopy = contact;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_queue);
-  if ([v6 isPopulated])
+  if ([contactCopy isPopulated])
   {
     contactStore = self->_contactStore;
-    v9 = [MEMORY[0x277CBDA58] predicateForContactsInGroupWithIdentifier:v7];
+    v9 = [MEMORY[0x277CBDA58] predicateForContactsInGroupWithIdentifier:identifierCopy];
     v11 = *MEMORY[0x277CBD048];
     v43[0] = *MEMORY[0x277CBD018];
     v10 = v43[0];
@@ -995,7 +995,7 @@ uint64_t __57__DNDSEventBehaviorResolver__queue_eventSourceIsContact___block_inv
     v14 = [(CNContactStore *)contactStore unifiedContactsMatchingPredicate:v9 keysToFetch:v13 error:0];
 
     v15 = [v14 bs_mapNoNulls:&__block_literal_global_2];
-    v16 = [v15 bs_flatten];
+    bs_flatten = [v15 bs_flatten];
 
     v17 = objc_alloc(MEMORY[0x277CBDA70]);
     v42[0] = v10;
@@ -1003,7 +1003,7 @@ uint64_t __57__DNDSEventBehaviorResolver__queue_eventSourceIsContact___block_inv
     v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v42 count:2];
     v19 = [v17 initWithKeysToFetch:v18];
 
-    v20 = [MEMORY[0x277CBDA58] dnds_predicateForContactsMatchingEventSender:v6];
+    v20 = [MEMORY[0x277CBDA58] dnds_predicateForContactsMatchingEventSender:contactCopy];
     [v19 setPredicate:v20];
 
     [v19 setUnifyResults:0];
@@ -1018,7 +1018,7 @@ uint64_t __57__DNDSEventBehaviorResolver__queue_eventSourceIsContact___block_inv
     v30[1] = 3221225472;
     v30[2] = __79__DNDSEventBehaviorResolver__queue_eventSourceIsContact_inGroupWithIdentifier___block_invoke_2;
     v30[3] = &unk_278F8A218;
-    v22 = v16;
+    v22 = bs_flatten;
     v31 = v22;
     v23 = [(CNContactStore *)v21 enumerateContactsWithFetchRequest:v19 error:&v33 usingBlock:v30];
     v24 = v33;
@@ -1029,7 +1029,7 @@ uint64_t __57__DNDSEventBehaviorResolver__queue_eventSourceIsContact___block_inv
       {
         v26 = *(v35 + 24);
         *buf = 138478083;
-        v39 = v6;
+        v39 = contactCopy;
         v40 = 1024;
         v41 = v26;
         _os_log_impl(&dword_24912E000, v25, OS_LOG_TYPE_DEFAULT, "Checked if event source is a group contact: source=%{private}@, contact=%{BOOL}d", buf, 0x12u);
@@ -1100,16 +1100,16 @@ uint64_t __79__DNDSEventBehaviorResolver__queue_eventSourceIsContact_inGroupWith
   return v5;
 }
 
-- (BOOL)_queue_eventSourceIsRepeat:(id)a3 clientDetails:(id)a4 date:(id)a5
+- (BOOL)_queue_eventSourceIsRepeat:(id)repeat clientDetails:(id)details date:(id)date
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  repeatCopy = repeat;
+  detailsCopy = details;
+  dateCopy = date;
   dispatch_assert_queue_V2(self->_queue);
-  if ([v8 isPopulated])
+  if ([repeatCopy isPopulated])
   {
-    v11 = [v10 dateByAddingTimeInterval:-180.0];
+    v11 = [dateCopy dateByAddingTimeInterval:-180.0];
     resolutionRecord = self->_resolutionRecord;
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
@@ -1117,8 +1117,8 @@ uint64_t __79__DNDSEventBehaviorResolver__queue_eventSourceIsContact_inGroupWith
     v19[3] = &unk_278F8A288;
     v13 = v11;
     v20 = v13;
-    v21 = v9;
-    v14 = v8;
+    v21 = detailsCopy;
+    v14 = repeatCopy;
     v22 = v14;
     v15 = [(NSMutableArray *)resolutionRecord bs_containsObjectPassingTest:v19];
     v16 = DNDSLogResolver;
@@ -1162,12 +1162,12 @@ uint64_t __75__DNDSEventBehaviorResolver__queue_eventSourceIsRepeat_clientDetail
   return v6 & v9 & v2;
 }
 
-- (BOOL)_queue_eventSourceIsEmergencyContact:(id)a3
+- (BOOL)_queue_eventSourceIsEmergencyContact:(id)contact
 {
   v29[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contactCopy = contact;
   dispatch_assert_queue_V2(self->_queue);
-  if ([v4 isPopulated])
+  if ([contactCopy isPopulated])
   {
     v5 = objc_alloc(MEMORY[0x277CBDA70]);
     v6 = *MEMORY[0x277CBD048];
@@ -1179,7 +1179,7 @@ uint64_t __75__DNDSEventBehaviorResolver__queue_eventSourceIsRepeat_clientDetail
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:4];
     v9 = [v5 initWithKeysToFetch:v8];
 
-    v10 = [MEMORY[0x277CBDA58] dnds_predicateForContactsMatchingEventSender:v4];
+    v10 = [MEMORY[0x277CBDA58] dnds_predicateForContactsMatchingEventSender:contactCopy];
     [v9 setPredicate:v10];
 
     [v9 setUnifyResults:1];
@@ -1203,7 +1203,7 @@ uint64_t __75__DNDSEventBehaviorResolver__queue_eventSourceIsRepeat_clientDetail
       {
         v15 = *(v22 + 24);
         *buf = 138478083;
-        v26 = v4;
+        v26 = contactCopy;
         v27 = 1024;
         v28 = v15;
         _os_log_impl(&dword_24912E000, v14, OS_LOG_TYPE_DEFAULT, "Checked if event source is an emergency contact: source=%{private}@, emergencyContact=%{BOOL}d", buf, 0x12u);
@@ -1259,44 +1259,44 @@ uint64_t __66__DNDSEventBehaviorResolver__queue_eventSourceIsEmergencyContact___
   return v3;
 }
 
-- (BOOL)_queue_isBreakthroughAllowedForModeIdentifier:(id)a3 withConfiguration:(id)a4 application:(id)a5 sender:(id)a6 urgency:(unint64_t)a7 eventType:(unint64_t)a8 threadIdentifier:(id)a9 filterCriteria:(id)a10 notifyAnyway:(BOOL)a11 intelligentBehavior:(int64_t)a12 reason:(unint64_t *)a13
+- (BOOL)_queue_isBreakthroughAllowedForModeIdentifier:(id)identifier withConfiguration:(id)configuration application:(id)application sender:(id)sender urgency:(unint64_t)urgency eventType:(unint64_t)type threadIdentifier:(id)threadIdentifier filterCriteria:(id)self0 notifyAnyway:(BOOL)self1 intelligentBehavior:(int64_t)self2 reason:(unint64_t *)self3
 {
   v140 = *MEMORY[0x277D85DE8];
-  v108 = a3;
-  v114 = a4;
-  v18 = a5;
-  v19 = a6;
-  v110 = a9;
-  v109 = a10;
+  identifierCopy = identifier;
+  configurationCopy = configuration;
+  applicationCopy = application;
+  senderCopy = sender;
+  threadIdentifierCopy = threadIdentifier;
+  criteriaCopy = criteria;
   dispatch_assert_queue_V2(self->_queue);
-  v20 = [v18 platform];
-  if (v20 != DNDPlatformForCurrentDevice())
+  platform = [applicationCopy platform];
+  if (platform != DNDPlatformForCurrentDevice())
   {
     v21 = objc_autoreleasePoolPush();
     v22 = objc_alloc_init(DNDSApplicationIdentifierMapper);
-    v23 = [(DNDSApplicationIdentifierMapper *)v22 applicationIdentifierForTargetPlatform:DNDPlatformForCurrentDevice() withSourceApplicationIdentifier:v18];
+    v23 = [(DNDSApplicationIdentifierMapper *)v22 applicationIdentifierForTargetPlatform:DNDPlatformForCurrentDevice() withSourceApplicationIdentifier:applicationCopy];
 
     objc_autoreleasePoolPop(v21);
-    v18 = v23;
+    applicationCopy = v23;
   }
 
-  v113 = [v18 bundleID];
-  v112 = [(DNDSEventBehaviorResolver *)self dataSource];
-  v105 = [v112 eventBehaviorResolver:self isAvailabilityActiveForBundleIdentifier:v113];
-  if (!v19)
+  bundleID = [applicationCopy bundleID];
+  dataSource = [(DNDSEventBehaviorResolver *)self dataSource];
+  v105 = [dataSource eventBehaviorResolver:self isAvailabilityActiveForBundleIdentifier:bundleID];
+  if (!senderCopy)
   {
     v24 = 0;
     goto LABEL_16;
   }
 
-  v24 = [v19 mutableCopy];
-  v25 = [MEMORY[0x277CBDA58] dnds_predicateForContactsMatchingEventSender:v19];
+  v24 = [senderCopy mutableCopy];
+  v25 = [MEMORY[0x277CBDA58] dnds_predicateForContactsMatchingEventSender:senderCopy];
   v26 = [(DNDSEventBehaviorResolver *)self _queue_firstContactForPredicate:v25];
-  v27 = [v26 identifier];
+  identifier = [v26 identifier];
 
-  v28 = [v19 contactIdentifier];
+  contactIdentifier = [senderCopy contactIdentifier];
 
-  if (!v28)
+  if (!contactIdentifier)
   {
     v31 = DNDSLogResolver;
     if (!os_log_type_enabled(DNDSLogResolver, OS_LOG_TYPE_DEFAULT))
@@ -1305,9 +1305,9 @@ uint64_t __66__DNDSEventBehaviorResolver__queue_eventSourceIsEmergencyContact___
     }
 
     *buf = 138543618;
-    v129 = v27;
+    v129 = identifier;
     v130 = 2112;
-    v131 = v19;
+    v131 = senderCopy;
     v33 = "Filled out missing contact identifier: %{public}@ from sender: %@ to determine breakthrough.";
 LABEL_13:
     v34 = v31;
@@ -1315,8 +1315,8 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v29 = [v19 contactIdentifier];
-  v30 = [v29 isEqualToString:v27];
+  contactIdentifier2 = [senderCopy contactIdentifier];
+  v30 = [contactIdentifier2 isEqualToString:identifier];
 
   v31 = DNDSLogResolver;
   v32 = os_log_type_enabled(DNDSLogResolver, OS_LOG_TYPE_DEFAULT);
@@ -1328,9 +1328,9 @@ LABEL_13:
     }
 
     *buf = 138543618;
-    v129 = v27;
+    v129 = identifier;
     v130 = 2112;
-    v131 = v19;
+    v131 = senderCopy;
     v33 = "Updated contact identifier to %{public}@ from sender: %@ to determine breakthrough.";
     goto LABEL_13;
   }
@@ -1338,7 +1338,7 @@ LABEL_13:
   if (v32)
   {
     *buf = 138412290;
-    v129 = v19;
+    v129 = senderCopy;
     v33 = "No change to contact identifier from sender: %@ to determine breakthrough.";
     v34 = v31;
     v35 = 12;
@@ -1347,7 +1347,7 @@ LABEL_14:
   }
 
 LABEL_15:
-  [v24 setContactIdentifier:v27];
+  [v24 setContactIdentifier:identifier];
 
 LABEL_16:
   v36 = DNDSLogResolver;
@@ -1357,9 +1357,9 @@ LABEL_16:
     v38 = DNDStringFromClientEventUrgency();
     v39 = DNDStringFromClientEventType();
     *buf = 138413570;
-    v129 = v114;
+    v129 = configurationCopy;
     v130 = 2114;
-    v131 = v113;
+    v131 = bundleID;
     v132 = 2112;
     v133 = v24;
     v134 = 2114;
@@ -1367,27 +1367,27 @@ LABEL_16:
     v136 = 2114;
     v137 = v39;
     v138 = 2114;
-    v139 = v110;
+    v139 = threadIdentifierCopy;
     _os_log_impl(&dword_24912E000, v37, OS_LOG_TYPE_DEFAULT, "Resolving breakthrough through for configuration: %@ with event details application: %{public}@, sender: %@, urgency: %{public}@, eventType: %{public}@, threadIdentifier: %{public}@", buf, 0x3Eu);
   }
 
-  v40 = a8 - 1;
-  v41 = a8 - 1 < 4;
-  v42 = [v24 isPopulated];
-  if (a8 - 1 < 4)
+  v40 = type - 1;
+  v41 = type - 1 < 4;
+  isPopulated = [v24 isPopulated];
+  if (type - 1 < 4)
   {
-    if (v110)
+    if (threadIdentifierCopy)
     {
       v41 = 1;
     }
 
     else
     {
-      v41 = v42;
+      v41 = isPopulated;
     }
   }
 
-  if ([v114 suppressionMode] == 2 && objc_msgSend(v112, "currentUILockStateForEventBehaviorResolver:", self) == 1)
+  if ([configurationCopy suppressionMode] == 2 && objc_msgSend(dataSource, "currentUILockStateForEventBehaviorResolver:", self) == 1)
   {
     v43 = DNDSLogResolver;
     if (os_log_type_enabled(DNDSLogResolver, OS_LOG_TYPE_INFO))
@@ -1396,25 +1396,25 @@ LABEL_16:
       _os_log_impl(&dword_24912E000, v43, OS_LOG_TYPE_INFO, "Allowing breakthrough because the device is unlocked", buf, 2u);
     }
 
-    *a13 = 3;
+    *reason = 3;
     v44 = 1;
     goto LABEL_157;
   }
 
-  v45 = [v18 bundleID];
+  bundleID2 = [applicationCopy bundleID];
 
-  if (!v45)
+  if (!bundleID2)
   {
     goto LABEL_31;
   }
 
-  v111 = [v112 eventBehaviorResolver:self appPredicateForApplicationIdentifier:v18 modeIdentifier:v108];
+  v111 = [dataSource eventBehaviorResolver:self appPredicateForApplicationIdentifier:applicationCopy modeIdentifier:identifierCopy];
   if (!v111)
   {
-    if ([v18 platform] == 3)
+    if ([applicationCopy platform] == 3)
     {
-      v46 = [objc_alloc(MEMORY[0x277D058C8]) initWithBundleID:v113 platform:1];
-      v111 = [v112 eventBehaviorResolver:self appPredicateForApplicationIdentifier:v46 modeIdentifier:v108];
+      v46 = [objc_alloc(MEMORY[0x277D058C8]) initWithBundleID:bundleID platform:1];
+      v111 = [dataSource eventBehaviorResolver:self appPredicateForApplicationIdentifier:v46 modeIdentifier:identifierCopy];
 
       goto LABEL_32;
     }
@@ -1426,29 +1426,29 @@ LABEL_31:
 LABEL_32:
   v47 = objc_autoreleasePoolPush();
   v125 = 0;
-  v48 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v113 allowPlaceholder:1 error:&v125];
+  v48 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:bundleID allowPlaceholder:1 error:&v125];
   v49 = v125;
   if (v49)
   {
     v50 = DNDSLogResolver;
     if (os_log_type_enabled(DNDSLogResolver, OS_LOG_TYPE_ERROR))
     {
-      [DNDSEventBehaviorResolver _queue_isBreakthroughAllowedForModeIdentifier:v113 withConfiguration:v50 application:v49 sender:? urgency:? eventType:? threadIdentifier:? filterCriteria:? notifyAnyway:? intelligentBehavior:? reason:?];
+      [DNDSEventBehaviorResolver _queue_isBreakthroughAllowedForModeIdentifier:bundleID withConfiguration:v50 application:v49 sender:? urgency:? eventType:? threadIdentifier:? filterCriteria:? notifyAnyway:? intelligentBehavior:? reason:?];
     }
   }
 
   if (v48 && [v48 isWebApp])
   {
-    v51 = [v48 localizedName];
-    v52 = [v48 infoDictionary];
-    v53 = [v52 objectForKey:@"WKPushBundleMetadata" ofClass:objc_opt_class()];
+    localizedName = [v48 localizedName];
+    infoDictionary = [v48 infoDictionary];
+    v53 = [infoDictionary objectForKey:@"WKPushBundleMetadata" ofClass:objc_opt_class()];
 
     v54 = [v53 objectForKey:@"manifestId"];
     v55 = v54;
     v106 = 0;
-    if (v51 && v54)
+    if (localizedName && v54)
     {
-      v106 = [objc_alloc(MEMORY[0x277D05AC8]) initWithWebIdentifier:v54 givenName:v51];
+      v106 = [objc_alloc(MEMORY[0x277D05AC8]) initWithWebIdentifier:v54 givenName:localizedName];
     }
   }
 
@@ -1463,21 +1463,21 @@ LABEL_32:
     v104 = [MEMORY[0x277CBEB98] setWithArray:MEMORY[0x277CBEBF8]];
     if (v40 >= 4)
     {
-      v103 = v104;
+      contactsWithExceptions = v104;
     }
 
     else
     {
-      v103 = [v114 contactsWithExceptions];
+      contactsWithExceptions = [configurationCopy contactsWithExceptions];
     }
 
-    v62 = [v114 applicationConfigurationType];
-    v63 = [v114 senderConfigurationType];
-    if (v62)
+    applicationConfigurationType = [configurationCopy applicationConfigurationType];
+    senderConfigurationType = [configurationCopy senderConfigurationType];
+    if (applicationConfigurationType)
     {
-      if (v62 != 2)
+      if (applicationConfigurationType != 2)
       {
-        if (v62 != 1)
+        if (applicationConfigurationType != 1)
         {
           v99 = 0;
           v102 = 0;
@@ -1486,17 +1486,17 @@ LABEL_32:
           goto LABEL_75;
         }
 
-        if ([v114 exceptionForApplicationIdentifier:v18] == 1)
+        if ([configurationCopy exceptionForApplicationIdentifier:applicationCopy] == 1)
         {
           v102 = 0;
           v99 = 1;
           v100 = 0x100000000;
           v101 = 13;
 LABEL_75:
-          v65 = [v114 senderConfigurationType];
-          if (v65)
+          senderConfigurationType2 = [configurationCopy senderConfigurationType];
+          if (senderConfigurationType2)
           {
-            if (v65 == 2)
+            if (senderConfigurationType2 == 2)
             {
               LOBYTE(v71) = 0;
               LODWORD(v73) = 0;
@@ -1505,13 +1505,13 @@ LABEL_75:
               v69 = 12;
             }
 
-            else if (v65 == 1)
+            else if (senderConfigurationType2 == 1)
             {
               v123 = 0u;
               v124 = 0u;
               v121 = 0u;
               v122 = 0u;
-              v66 = v103;
+              v66 = contactsWithExceptions;
               v67 = [v66 countByEnumeratingWithState:&v121 objects:v127 count:16];
               if (v67)
               {
@@ -1569,7 +1569,7 @@ LABEL_101:
             v120 = 0u;
             v117 = 0u;
             v118 = 0u;
-            v75 = v103;
+            v75 = contactsWithExceptions;
             v73 = [v75 countByEnumeratingWithState:&v117 objects:v126 count:16];
             if (v73)
             {
@@ -1609,7 +1609,7 @@ LABEL_99:
             v74 = v73;
           }
 
-          if (v62 == 2)
+          if (applicationConfigurationType == 2)
           {
             v78 = 1;
           }
@@ -1620,13 +1620,13 @@ LABEL_99:
           }
 
           v79 = 12;
-          if (v63 != 2 || v62 != 2)
+          if (senderConfigurationType != 2 || applicationConfigurationType != 2)
           {
             v79 = v101;
           }
 
-          v80 = v63 == 2;
-          if (v63 == 2)
+          v80 = senderConfigurationType == 2;
+          if (senderConfigurationType == 2)
           {
             v60 = v79;
           }
@@ -1636,7 +1636,7 @@ LABEL_99:
             v60 = v69;
           }
 
-          if (v63 == 2)
+          if (senderConfigurationType == 2)
           {
             v59 = v78;
           }
@@ -1656,7 +1656,7 @@ LABEL_99:
             v86 = v81 == 1;
             v87 = v81 == 1 ? v84 : v69;
             v88 = v86 ? v85 : v72;
-            if (v62 != 2)
+            if (applicationConfigurationType != 2)
             {
               v60 = v87;
               v59 = v88;
@@ -1676,7 +1676,7 @@ LABEL_99:
 
     else
     {
-      if (![v114 exceptionForApplicationIdentifier:v18])
+      if (![configurationCopy exceptionForApplicationIdentifier:applicationCopy])
       {
         v99 = 1;
         v101 = 13;
@@ -1694,10 +1694,10 @@ LABEL_99:
     goto LABEL_75;
   }
 
-  v56 = [v114 applicationConfigurationType];
-  if (v56)
+  applicationConfigurationType2 = [configurationCopy applicationConfigurationType];
+  if (applicationConfigurationType2)
   {
-    if (v56 == 2)
+    if (applicationConfigurationType2 == 2)
     {
       v58 = 0;
       LOBYTE(v61) = 0;
@@ -1705,9 +1705,9 @@ LABEL_99:
       v60 = 12;
     }
 
-    else if (v56 == 1)
+    else if (applicationConfigurationType2 == 1)
     {
-      v57 = [v114 exceptionForApplicationIdentifier:v18];
+      v57 = [configurationCopy exceptionForApplicationIdentifier:applicationCopy];
       v58 = v57 == 1;
       v59 = v57 != 1;
       if (v57 == 1)
@@ -1720,7 +1720,7 @@ LABEL_99:
         v60 = 12;
       }
 
-      if (v106 && [v114 exceptionForWebApplicationIdentifier:?] == 1)
+      if (v106 && [configurationCopy exceptionForWebApplicationIdentifier:?] == 1)
       {
         LOBYTE(v61) = 0;
         v59 = 0;
@@ -1745,7 +1745,7 @@ LABEL_99:
 
   else
   {
-    v64 = [v114 exceptionForApplicationIdentifier:v18];
+    v64 = [configurationCopy exceptionForApplicationIdentifier:applicationCopy];
     v61 = v64 == 0;
     if (v64)
     {
@@ -1757,7 +1757,7 @@ LABEL_99:
       v60 = 13;
     }
 
-    if (v106 && ![v114 exceptionForWebApplicationIdentifier:?])
+    if (v106 && ![configurationCopy exceptionForWebApplicationIdentifier:?])
     {
       v58 = 0;
       LOBYTE(v61) = 1;
@@ -1773,17 +1773,17 @@ LABEL_99:
   }
 
 LABEL_129:
-  if (a12 >= 2)
+  if (behavior >= 2)
   {
-    v89 = a12 == 2 ? v58 : 0;
-    if ((v89 & 1) == 0 && ((a12 == 3) & v61) == 0)
+    v89 = behavior == 2 ? v58 : 0;
+    if ((v89 & 1) == 0 && ((behavior == 3) & v61) == 0)
     {
       v60 = 26;
-      v59 = a12 == 2;
+      v59 = behavior == 2;
     }
   }
 
-  if (v109 && v59 && v111)
+  if (criteriaCopy && v59 && v111)
   {
     v90 = objc_alloc_init(MEMORY[0x277D05A78]);
     v115 = 0;
@@ -1793,7 +1793,7 @@ LABEL_129:
     v93 = v115;
     if (v91)
     {
-      v59 = [v111 evaluateWithObject:v109];
+      v59 = [v111 evaluateWithObject:criteriaCopy];
       if (!v59)
       {
         v60 = 25;
@@ -1818,9 +1818,9 @@ LABEL_129:
         *buf = 138543874;
         v129 = v98;
         v130 = 2112;
-        v131 = v113;
+        v131 = bundleID;
         v132 = 2112;
-        v133 = v108;
+        v133 = identifierCopy;
         _os_log_error_impl(&dword_24912E000, v94, OS_LOG_TYPE_ERROR, "Notification filter predicate from App Context did not validate, issues=%{public}@ bundleIdentifier=%@ modeIdentifier=%@", buf, 0x20u);
       }
 
@@ -1828,33 +1828,33 @@ LABEL_129:
     }
   }
 
-  if ((a11 & v105) != 0)
+  if ((anyway & v105) != 0)
   {
     v60 = 20;
   }
 
-  v44 = a11 & v105 | v59;
-  if (a7 == 1)
+  v44 = anyway & v105 | v59;
+  if (urgency == 1)
   {
-    v95 = [v114 minimumBreakthroughUrgency];
-    if (v95)
+    minimumBreakthroughUrgency = [configurationCopy minimumBreakthroughUrgency];
+    if (minimumBreakthroughUrgency)
     {
       v60 = 19;
     }
 
-    v44 |= v95 != 0;
+    v44 |= minimumBreakthroughUrgency != 0;
   }
 
-  else if (a7 == 2)
+  else if (urgency == 2)
   {
-    [v114 minimumBreakthroughUrgency];
+    [configurationCopy minimumBreakthroughUrgency];
     v44 = 1;
     v60 = 19;
   }
 
-  if (a13)
+  if (reason)
   {
-    *a13 = v60;
+    *reason = v60;
   }
 
 LABEL_157:
@@ -1862,30 +1862,30 @@ LABEL_157:
   return v44 & 1;
 }
 
-- (BOOL)_queue_isBreakthroughAllowedForSender:(id)a3 eventType:(unint64_t)a4 clientDetails:(id)a5 date:(id)a6 reason:(unint64_t *)a7
+- (BOOL)_queue_isBreakthroughAllowedForSender:(id)sender eventType:(unint64_t)type clientDetails:(id)details date:(id)date reason:(unint64_t *)reason
 {
   v20 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
+  senderCopy = sender;
+  detailsCopy = details;
+  dateCopy = date;
   v15 = DNDSLogResolver;
   if (os_log_type_enabled(DNDSLogResolver, OS_LOG_TYPE_DEFAULT))
   {
     *v19 = 138412290;
-    *&v19[4] = v12;
+    *&v19[4] = senderCopy;
     _os_log_impl(&dword_24912E000, v15, OS_LOG_TYPE_DEFAULT, "Resolving global breakthrough for sender: %@", v19, 0xCu);
   }
 
   v16 = 0;
-  if (v12)
+  if (senderCopy)
   {
-    if (a4 == 1)
+    if (type == 1)
     {
       *v19 = 0;
-      v16 = [(DNDSEventBehaviorResolver *)self _queue_resolveOutcomeForEventSender:v12 clientDetails:v13 date:v14 reason:v19]== 1;
-      if (a7)
+      v16 = [(DNDSEventBehaviorResolver *)self _queue_resolveOutcomeForEventSender:senderCopy clientDetails:detailsCopy date:dateCopy reason:v19]== 1;
+      if (reason)
       {
-        *a7 = *v19;
+        *reason = *v19;
       }
     }
   }
@@ -1894,14 +1894,14 @@ LABEL_157:
   return v16;
 }
 
-- (id)_queue_firstContactForPredicate:(id)a3
+- (id)_queue_firstContactForPredicate:(id)predicate
 {
   v14[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  predicateCopy = predicate;
   dispatch_assert_queue_V2(self->_queue);
-  if (!v4)
+  if (!predicateCopy)
   {
-    v10 = 0;
+    firstObject = 0;
     goto LABEL_10;
   }
 
@@ -1911,7 +1911,7 @@ LABEL_157:
   v14[1] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:2];
   v13 = 0;
-  v8 = [(CNContactStore *)contactStore unifiedContactsMatchingPredicate:v4 keysToFetch:v7 error:&v13];
+  v8 = [(CNContactStore *)contactStore unifiedContactsMatchingPredicate:predicateCopy keysToFetch:v7 error:&v13];
   v9 = v13;
 
   if (v9)
@@ -1924,25 +1924,25 @@ LABEL_157:
 
   else if ([v8 count])
   {
-    v10 = [v8 firstObject];
+    firstObject = [v8 firstObject];
     goto LABEL_9;
   }
 
-  v10 = 0;
+  firstObject = 0;
 LABEL_9:
 
 LABEL_10:
   v11 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return firstObject;
 }
 
-- (id)resolutionForConfiguration:(id)a3 eventDetails:(id)a4 clientDetails:(id)a5 date:(id)a6 error:(id *)a7
+- (id)resolutionForConfiguration:(id)configuration eventDetails:(id)details clientDetails:(id)clientDetails date:(id)date error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  configurationCopy = configuration;
+  detailsCopy = details;
+  clientDetailsCopy = clientDetails;
+  dateCopy = date;
   dispatch_assert_queue_not_V2(self->_queue);
   v37 = 0;
   v38 = &v37;
@@ -1963,22 +1963,22 @@ LABEL_10:
   block[3] = &unk_278F8A2D0;
   v29 = &v37;
   block[4] = self;
-  v17 = v12;
+  v17 = configurationCopy;
   v25 = v17;
-  v18 = v13;
+  v18 = detailsCopy;
   v26 = v18;
-  v19 = v14;
+  v19 = clientDetailsCopy;
   v27 = v19;
-  v20 = v15;
+  v20 = dateCopy;
   v28 = v20;
   v30 = &v31;
   dispatch_sync(queue, block);
-  if (a7)
+  if (error)
   {
     v21 = v32[5];
     if (v21)
     {
-      *a7 = v21;
+      *error = v21;
     }
   }
 

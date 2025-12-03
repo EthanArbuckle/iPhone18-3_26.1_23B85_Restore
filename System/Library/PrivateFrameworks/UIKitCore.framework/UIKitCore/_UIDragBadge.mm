@@ -1,23 +1,23 @@
 @interface _UIDragBadge
 - (CGPoint)anchorPointForAlignment;
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3;
-- (_UIDragBadge)initWithCoder:(id)a3;
-- (_UIDragBadge)initWithFrame:(CGRect)a3;
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size;
+- (_UIDragBadge)initWithCoder:(id)coder;
+- (_UIDragBadge)initWithFrame:(CGRect)frame;
 - (void)_updateForStyle;
 - (void)_updateLabelTextFromItemCount;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)layoutSubviews;
-- (void)setItemCount:(int64_t)a3;
-- (void)setStyle:(int64_t)a3;
+- (void)setItemCount:(int64_t)count;
+- (void)setStyle:(int64_t)style;
 @end
 
 @implementation _UIDragBadge
 
-- (_UIDragBadge)initWithFrame:(CGRect)a3
+- (_UIDragBadge)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _UIDragBadge;
-  v3 = [(UIView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -27,46 +27,46 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = _UIDragBadge;
-  v4 = a3;
-  [(UIView *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_itemCount forKey:{@"UIDragBadgeItemCount", v5.receiver, v5.super_class}];
-  [v4 encodeInteger:self->_style forKey:@"UIDragBadgeStyle"];
+  coderCopy = coder;
+  [(UIView *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_itemCount forKey:{@"UIDragBadgeItemCount", v5.receiver, v5.super_class}];
+  [coderCopy encodeInteger:self->_style forKey:@"UIDragBadgeStyle"];
 }
 
-- (_UIDragBadge)initWithCoder:(id)a3
+- (_UIDragBadge)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = _UIDragBadge;
-  v5 = [(UIView *)&v7 initWithCoder:v4];
+  v5 = [(UIView *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_itemCount = [v4 decodeIntegerForKey:@"UIDragBadgeItemCount"];
-    v5->_style = [v4 decodeIntegerForKey:@"UIDragBadgeStyle"];
+    v5->_itemCount = [coderCopy decodeIntegerForKey:@"UIDragBadgeItemCount"];
+    v5->_style = [coderCopy decodeIntegerForKey:@"UIDragBadgeStyle"];
     CommonInit_0(v5);
   }
 
   return v5;
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
+    self->_style = style;
     [(UIView *)self setNeedsLayout];
   }
 }
 
-- (void)setItemCount:(int64_t)a3
+- (void)setItemCount:(int64_t)count
 {
-  if (self->_itemCount != a3)
+  if (self->_itemCount != count)
   {
-    self->_itemCount = a3;
+    self->_itemCount = count;
     [(UIView *)self setNeedsLayout];
   }
 }
@@ -173,16 +173,16 @@ LABEL_10:
 LABEL_13:
   [(UIView *)self setBackgroundColor:v2];
 
-  v8 = [(UIView *)self layer];
-  [v8 setBorderWidth:1.0];
+  layer = [(UIView *)self layer];
+  [layer setBorderWidth:1.0];
 
   v9 = +[UIColor whiteColor];
-  v10 = [v9 CGColor];
-  v11 = [(UIView *)self layer];
-  [v11 setBorderColor:v10];
+  cGColor = [v9 CGColor];
+  layer2 = [(UIView *)self layer];
+  [layer2 setBorderColor:cGColor];
 
   v12 = self->_style;
-  v13 = [(UIView *)self traitCollection];
+  traitCollection = [(UIView *)self traitCollection];
   if (v12 == 1)
   {
     v14 = @"plus";
@@ -193,7 +193,7 @@ LABEL_13:
   {
     v14 = @"nosign";
 LABEL_17:
-    v15 = [UIImage systemImageNamed:v14 compatibleWithTraitCollection:v13];
+    v15 = [UIImage systemImageNamed:v14 compatibleWithTraitCollection:traitCollection];
     goto LABEL_19;
   }
 
@@ -235,10 +235,10 @@ LABEL_19:
     [(UIView *)self setAlpha:1.0];
     if (self->_style)
     {
-      v3 = [(UIView *)self effectiveUserInterfaceLayoutDirection];
+      effectiveUserInterfaceLayoutDirection = [(UIView *)self effectiveUserInterfaceLayoutDirection];
       memset(&slice, 0, sizeof(slice));
-      v4 = v3 != UIUserInterfaceLayoutDirectionLeftToRight;
-      v5 = v3 == UIUserInterfaceLayoutDirectionLeftToRight;
+      v4 = effectiveUserInterfaceLayoutDirection != UIUserInterfaceLayoutDirectionLeftToRight;
+      v5 = effectiveUserInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionLeftToRight;
       memset(&remainder, 0, sizeof(remainder));
       memset(&v18, 0, sizeof(v18));
       [(UIView *)self bounds];
@@ -278,12 +278,12 @@ LABEL_19:
   return result;
 }
 
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size
 {
   v3 = 25.0;
   if (self->_itemCount >= 2)
   {
-    [(UIView *)self->_label systemLayoutSizeFittingSize:a3.width, a3.height, 25.0];
+    [(UIView *)self->_label systemLayoutSizeFittingSize:size.width, size.height, 25.0];
     v6 = 31.0;
     if (!self->_style)
     {

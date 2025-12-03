@@ -1,58 +1,58 @@
 @interface PCObjectZipper
-- (BOOL)nextObjectPairWithHandler:(id)a3;
-- (PCObjectZipper)initWithObjects:(id)a3 others:(id)a4 comparator:(id)a5;
+- (BOOL)nextObjectPairWithHandler:(id)handler;
+- (PCObjectZipper)initWithObjects:(id)objects others:(id)others comparator:(id)comparator;
 @end
 
 @implementation PCObjectZipper
 
-- (PCObjectZipper)initWithObjects:(id)a3 others:(id)a4 comparator:(id)a5
+- (PCObjectZipper)initWithObjects:(id)objects others:(id)others comparator:(id)comparator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  objectsCopy = objects;
+  othersCopy = others;
+  comparatorCopy = comparator;
   v25.receiver = self;
   v25.super_class = PCObjectZipper;
   v11 = [(PCObjectZipper *)&v25 init];
   if (v11)
   {
-    v12 = [v8 sortedArrayUsingComparator:v10];
+    v12 = [objectsCopy sortedArrayUsingComparator:comparatorCopy];
 
-    v13 = [v9 sortedArrayUsingComparator:v10];
+    v13 = [othersCopy sortedArrayUsingComparator:comparatorCopy];
 
-    v14 = [v12 objectEnumerator];
+    objectEnumerator = [v12 objectEnumerator];
     objectEnumerator = v11->objectEnumerator;
-    v11->objectEnumerator = v14;
+    v11->objectEnumerator = objectEnumerator;
 
-    v16 = [v13 objectEnumerator];
+    objectEnumerator2 = [v13 objectEnumerator];
     otherEnumerator = v11->otherEnumerator;
-    v11->otherEnumerator = v16;
+    v11->otherEnumerator = objectEnumerator2;
 
-    v18 = [(NSEnumerator *)v11->objectEnumerator nextObject];
+    nextObject = [(NSEnumerator *)v11->objectEnumerator nextObject];
     object = v11->object;
-    v11->object = v18;
+    v11->object = nextObject;
 
-    v20 = [(NSEnumerator *)v11->otherEnumerator nextObject];
+    nextObject2 = [(NSEnumerator *)v11->otherEnumerator nextObject];
     other = v11->other;
-    v11->other = v20;
+    v11->other = nextObject2;
 
-    v22 = _Block_copy(v10);
+    v22 = _Block_copy(comparatorCopy);
     objectComparator = v11->objectComparator;
     v11->objectComparator = v22;
 
-    v8 = v12;
-    v9 = v13;
+    objectsCopy = v12;
+    othersCopy = v13;
   }
 
   return v11;
 }
 
-- (BOOL)nextObjectPairWithHandler:(id)a3
+- (BOOL)nextObjectPairWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
+  handlerCopy = handler;
+  v5 = handlerCopy;
   if (self->object && self->other)
   {
-    (*(v4 + 2))(v4);
+    (*(handlerCopy + 2))(handlerCopy);
     other = self->other;
     object = self->object;
     v8 = (*(self->objectComparator + 2))();
@@ -68,19 +68,19 @@
       v10 = 32;
     }
 
-    v11 = [*(&self->super.isa + v9) nextObject];
+    nextObject = [*(&self->super.isa + v9) nextObject];
     v12 = *(&self->super.isa + v10);
-    *(&self->super.isa + v10) = v11;
+    *(&self->super.isa + v10) = nextObject;
 
-    v13 = [(PCObjectZipper *)self hasNextObjectPair];
+    hasNextObjectPair = [(PCObjectZipper *)self hasNextObjectPair];
   }
 
   else
   {
-    v13 = 0;
+    hasNextObjectPair = 0;
   }
 
-  return v13;
+  return hasNextObjectPair;
 }
 
 @end

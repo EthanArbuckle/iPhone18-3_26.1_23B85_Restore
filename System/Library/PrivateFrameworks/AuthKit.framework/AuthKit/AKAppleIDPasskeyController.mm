@@ -1,55 +1,55 @@
 @interface AKAppleIDPasskeyController
 - (AKAppleIDPasskeyController)init;
-- (AKAppleIDPasskeyController)initWithXPCSession:(id)a3;
-- (void)appleIDPasskeyStatusWithContext:(id)a3 completion:(id)a4;
+- (AKAppleIDPasskeyController)initWithXPCSession:(id)session;
+- (void)appleIDPasskeyStatusWithContext:(id)context completion:(id)completion;
 - (void)remoteServiceDidInterrupt;
 - (void)remoteServiceDidInvalidate;
-- (void)setupAppleIDPasskeyWithContext:(id)a3 completion:(id)a4;
-- (void)unenrollAppleIDPasskeyWithContext:(id)a3 completion:(id)a4;
-- (void)verifyAppleIDPasskeyWithContext:(id)a3 completion:(id)a4;
+- (void)setupAppleIDPasskeyWithContext:(id)context completion:(id)completion;
+- (void)unenrollAppleIDPasskeyWithContext:(id)context completion:(id)completion;
+- (void)verifyAppleIDPasskeyWithContext:(id)context completion:(id)completion;
 @end
 
 @implementation AKAppleIDPasskeyController
 
 - (AKAppleIDPasskeyController)init
 {
-  v8 = self;
+  selfCopy = self;
   v7[1] = a2;
   v7[0] = [objc_alloc(MEMORY[0x1E6985E18]) initWithServiceName:@"com.apple.ak.appleidpasskey.xpc" remoteProtocol:&unk_1F07DCE68 options:0];
   v2 = objc_alloc(MEMORY[0x1E6985E10]);
-  v6 = [v2 initWithRemoteServiceConfig:v7[0] delegate:v8];
-  v3 = v8;
-  v8 = 0;
-  v8 = [(AKAppleIDPasskeyController *)v3 initWithXPCSession:v6];
-  objc_storeStrong(&v8, v8);
-  v5 = MEMORY[0x1E69E5928](v8);
+  v6 = [v2 initWithRemoteServiceConfig:v7[0] delegate:selfCopy];
+  v3 = selfCopy;
+  selfCopy = 0;
+  selfCopy = [(AKAppleIDPasskeyController *)v3 initWithXPCSession:v6];
+  objc_storeStrong(&selfCopy, selfCopy);
+  v5 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(&v6, 0);
   objc_storeStrong(v7, 0);
-  objc_storeStrong(&v8, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
-- (AKAppleIDPasskeyController)initWithXPCSession:(id)a3
+- (AKAppleIDPasskeyController)initWithXPCSession:(id)session
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v8;
-  v8 = 0;
+  objc_storeStrong(location, session);
+  v3 = selfCopy;
+  selfCopy = 0;
   v6.receiver = v3;
   v6.super_class = AKAppleIDPasskeyController;
-  v8 = [(AKAppleIDPasskeyController *)&v6 init];
-  objc_storeStrong(&v8, v8);
-  if (v8)
+  selfCopy = [(AKAppleIDPasskeyController *)&v6 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(&v8->_remoteService, location[0]);
-    [(AAFXPCSession *)v8->_remoteService resume];
+    objc_storeStrong(&selfCopy->_remoteService, location[0]);
+    [(AAFXPCSession *)selfCopy->_remoteService resume];
   }
 
-  v5 = MEMORY[0x1E69E5928](v8);
+  v5 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v8, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
@@ -87,15 +87,15 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)setupAppleIDPasskeyWithContext:(id)a3 completion:(id)a4
+- (void)setupAppleIDPasskeyWithContext:(id)context completion:(id)completion
 {
   v42 = *MEMORY[0x1E69E9840];
-  v40 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v38 = 0;
-  objc_storeStrong(&v38, a4);
+  objc_storeStrong(&v38, completion);
   v36 = _os_activity_create(&dword_193225000, "AppleIDPasskey/setupAppleIDPasskey", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v37 = v36;
   state.opaque[0] = 0;
@@ -134,11 +134,11 @@
   v20 = 0;
   v21 = __72__AKAppleIDPasskeyController_setupAppleIDPasskeyWithContext_completion___block_invoke;
   v22 = &unk_1E73D71D0;
-  v23 = MEMORY[0x1E69E5928](v40);
+  v23 = MEMORY[0x1E69E5928](selfCopy);
   v25 = v34;
   v24 = MEMORY[0x1E69E5928](v38);
   v26 = MEMORY[0x193B165F0](&v18);
-  remoteService = v40->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v11 = MEMORY[0x1E69E9820];
   v12 = -1073741824;
   v13 = 0;
@@ -232,15 +232,15 @@ void __72__AKAppleIDPasskeyController_setupAppleIDPasskeyWithContext_completion_
   objc_storeStrong(location, 0);
 }
 
-- (void)verifyAppleIDPasskeyWithContext:(id)a3 completion:(id)a4
+- (void)verifyAppleIDPasskeyWithContext:(id)context completion:(id)completion
 {
   v42 = *MEMORY[0x1E69E9840];
-  v40 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v38 = 0;
-  objc_storeStrong(&v38, a4);
+  objc_storeStrong(&v38, completion);
   v36 = _os_activity_create(&dword_193225000, "AppleIDPasskey/verifyAppleIDPasskey", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v37 = v36;
   state.opaque[0] = 0;
@@ -279,11 +279,11 @@ void __72__AKAppleIDPasskeyController_setupAppleIDPasskeyWithContext_completion_
   v20 = 0;
   v21 = __73__AKAppleIDPasskeyController_verifyAppleIDPasskeyWithContext_completion___block_invoke;
   v22 = &unk_1E73D71F8;
-  v23 = MEMORY[0x1E69E5928](v40);
+  v23 = MEMORY[0x1E69E5928](selfCopy);
   v25 = v34;
   v24 = MEMORY[0x1E69E5928](v38);
   v26 = MEMORY[0x193B165F0](&v18);
-  remoteService = v40->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v11 = MEMORY[0x1E69E9820];
   v12 = -1073741824;
   v13 = 0;
@@ -379,15 +379,15 @@ void __73__AKAppleIDPasskeyController_verifyAppleIDPasskeyWithContext_completion
   objc_storeStrong(location, 0);
 }
 
-- (void)unenrollAppleIDPasskeyWithContext:(id)a3 completion:(id)a4
+- (void)unenrollAppleIDPasskeyWithContext:(id)context completion:(id)completion
 {
   v42 = *MEMORY[0x1E69E9840];
-  v40 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v38 = 0;
-  objc_storeStrong(&v38, a4);
+  objc_storeStrong(&v38, completion);
   v36 = _os_activity_create(&dword_193225000, "AppleIDPasskey/unenrollAppleIDPasskey", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v37 = v36;
   state.opaque[0] = 0;
@@ -426,11 +426,11 @@ void __73__AKAppleIDPasskeyController_verifyAppleIDPasskeyWithContext_completion
   v20 = 0;
   v21 = __75__AKAppleIDPasskeyController_unenrollAppleIDPasskeyWithContext_completion___block_invoke;
   v22 = &unk_1E73D71D0;
-  v23 = MEMORY[0x1E69E5928](v40);
+  v23 = MEMORY[0x1E69E5928](selfCopy);
   v25 = v34;
   v24 = MEMORY[0x1E69E5928](v38);
   v26 = MEMORY[0x193B165F0](&v18);
-  remoteService = v40->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v11 = MEMORY[0x1E69E9820];
   v12 = -1073741824;
   v13 = 0;
@@ -524,15 +524,15 @@ void __75__AKAppleIDPasskeyController_unenrollAppleIDPasskeyWithContext_completi
   objc_storeStrong(location, 0);
 }
 
-- (void)appleIDPasskeyStatusWithContext:(id)a3 completion:(id)a4
+- (void)appleIDPasskeyStatusWithContext:(id)context completion:(id)completion
 {
   v42 = *MEMORY[0x1E69E9840];
-  v40 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v38 = 0;
-  objc_storeStrong(&v38, a4);
+  objc_storeStrong(&v38, completion);
   v36 = _os_activity_create(&dword_193225000, "AppleIDPasskey/appleIDPasskeyStatus", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v37 = v36;
   state.opaque[0] = 0;
@@ -571,11 +571,11 @@ void __75__AKAppleIDPasskeyController_unenrollAppleIDPasskeyWithContext_completi
   v20 = 0;
   v21 = __73__AKAppleIDPasskeyController_appleIDPasskeyStatusWithContext_completion___block_invoke;
   v22 = &unk_1E73D71F8;
-  v23 = MEMORY[0x1E69E5928](v40);
+  v23 = MEMORY[0x1E69E5928](selfCopy);
   v25 = v34;
   v24 = MEMORY[0x1E69E5928](v38);
   v26 = MEMORY[0x193B165F0](&v18);
-  remoteService = v40->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v11 = MEMORY[0x1E69E9820];
   v12 = -1073741824;
   v13 = 0;

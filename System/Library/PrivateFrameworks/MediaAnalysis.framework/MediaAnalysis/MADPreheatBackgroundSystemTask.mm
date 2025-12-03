@@ -1,7 +1,7 @@
 @interface MADPreheatBackgroundSystemTask
 + (id)sharedTask;
-+ (void)updateTaskSpecificBGSystemTaskRequest:(id)a3;
-- (void)executeWith:(id)a3 completionHandler:(id)a4;
++ (void)updateTaskSpecificBGSystemTaskRequest:(id)request;
+- (void)executeWith:(id)with completionHandler:(id)handler;
 @end
 
 @implementation MADPreheatBackgroundSystemTask
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = sub_100057400;
   block[3] = &unk_100282998;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1002B81E8 != -1)
   {
     dispatch_once(&qword_1002B81E8, block);
@@ -23,19 +23,19 @@
   return v2;
 }
 
-+ (void)updateTaskSpecificBGSystemTaskRequest:(id)a3
++ (void)updateTaskSpecificBGSystemTaskRequest:(id)request
 {
-  v4 = a3;
-  v5.receiver = a1;
+  requestCopy = request;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___MADPreheatBackgroundSystemTask;
-  objc_msgSendSuper2(&v5, "updateTaskSpecificBGSystemTaskRequest:", v4);
-  [v4 setPreventsDeviceSleep:1];
+  objc_msgSendSuper2(&v5, "updateTaskSpecificBGSystemTaskRequest:", requestCopy);
+  [requestCopy setPreventsDeviceSleep:1];
 }
 
-- (void)executeWith:(id)a3 completionHandler:(id)a4
+- (void)executeWith:(id)with completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  withCopy = with;
+  handlerCopy = handler;
   if ((DeviceHasANE() & 1) == 0)
   {
     if (MediaAnalysisLogLevel() < 5)
@@ -94,10 +94,10 @@ LABEL_18:
         v19 = v18;
         if (v18)
         {
-          v20 = [v18 unsignedIntValue];
+          unsignedIntValue = [v18 unsignedIntValue];
 
-          v21 = v20 + 1;
-          if (v20 >= 2)
+          v21 = unsignedIntValue + 1;
+          if (unsignedIntValue >= 2)
           {
             if (MediaAnalysisLogLevel() >= 4)
             {
@@ -105,12 +105,12 @@ LABEL_18:
               if (os_log_type_enabled(&_os_log_default, v22))
               {
                 *buf = 134217984;
-                *v34 = v20 + 1;
+                *v34 = unsignedIntValue + 1;
                 _os_log_impl(&_mh_execute_header, &_os_log_default, v22, "Preheat attempted for %lu times, not allowed to retry", buf, 0xCu);
               }
             }
 
-            v6[2](v6, 4294967278);
+            handlerCopy[2](handlerCopy, 4294967278);
 LABEL_37:
 
             goto LABEL_38;
@@ -146,15 +146,15 @@ LABEL_30:
 
         if (VCPIsRemoteIOSTask())
         {
-          v27 = [objc_opt_class() taskID];
+          taskID = [objc_opt_class() taskID];
           v28 = v32;
           v32[0] = _NSConcreteStackBlock;
           v32[1] = 3221225472;
           v32[2] = sub_100057B4C;
           v32[3] = &unk_100284038;
-          v32[4] = v6;
-          v29 = [VCPMADRemoteActivityTask taskWithActivityType:v27 andCompletionHandler:v32];
-          [v29 setCancelBlock:v5];
+          v32[4] = handlerCopy;
+          v29 = [VCPMADRemoteActivityTask taskWithActivityType:taskID andCompletionHandler:v32];
+          [v29 setCancelBlock:withCopy];
         }
 
         else
@@ -164,8 +164,8 @@ LABEL_30:
           v31[1] = 3221225472;
           v31[2] = sub_100057B60;
           v31[3] = &unk_100284038;
-          v31[4] = v6;
-          v29 = [MADPreheatingTask taskWithCancelBlock:v5 progressHandler:0 completionHandler:v31];
+          v31[4] = handlerCopy;
+          v29 = [MADPreheatingTask taskWithCancelBlock:withCopy progressHandler:0 completionHandler:v31];
         }
 
         v30 = objc_alloc_init(MADScopedWatchdog);
@@ -202,7 +202,7 @@ LABEL_12:
   }
 
 LABEL_13:
-  v6[2](v6, 4294967278);
+  handlerCopy[2](handlerCopy, 4294967278);
 LABEL_38:
 }
 

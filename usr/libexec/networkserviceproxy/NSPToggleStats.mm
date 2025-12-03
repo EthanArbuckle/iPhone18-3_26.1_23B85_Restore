@@ -1,7 +1,7 @@
 @interface NSPToggleStats
 - (NSPToggleStats)init;
 - (id)analyticsDict;
-- (void)addNetworkStatsToToggleStatsDict:(id)a3 networkStats:(id)a4;
+- (void)addNetworkStatsToToggleStatsDict:(id)dict networkStats:(id)stats;
 - (void)resetStats;
 - (void)sendToggleOffStats;
 - (void)sendToggleOnStats;
@@ -20,28 +20,28 @@
   [(NSPToggleStats *)self setFraudAlertCount:0];
   [(NSPToggleStats *)self setOdohAuthFailureCount:0];
   [(NSPToggleStats *)self setOdohBadMessageCount:0];
-  v3 = [(NSPToggleStats *)self primaryPathStatistics];
-  if (v3)
+  primaryPathStatistics = [(NSPToggleStats *)self primaryPathStatistics];
+  if (primaryPathStatistics)
   {
-    v3[6] = 0u;
-    v3[7] = 0u;
-    v3[4] = 0u;
-    v3[5] = 0u;
-    v3[2] = 0u;
-    v3[3] = 0u;
-    v3[1] = 0u;
+    primaryPathStatistics[6] = 0u;
+    primaryPathStatistics[7] = 0u;
+    primaryPathStatistics[4] = 0u;
+    primaryPathStatistics[5] = 0u;
+    primaryPathStatistics[2] = 0u;
+    primaryPathStatistics[3] = 0u;
+    primaryPathStatistics[1] = 0u;
   }
 
-  v4 = [(NSPToggleStats *)self fallbackPathStatistics];
-  if (v4)
+  fallbackPathStatistics = [(NSPToggleStats *)self fallbackPathStatistics];
+  if (fallbackPathStatistics)
   {
-    v4[6] = 0u;
-    v4[7] = 0u;
-    v4[4] = 0u;
-    v4[5] = 0u;
-    v4[2] = 0u;
-    v4[3] = 0u;
-    v4[1] = 0u;
+    fallbackPathStatistics[6] = 0u;
+    fallbackPathStatistics[7] = 0u;
+    fallbackPathStatistics[4] = 0u;
+    fallbackPathStatistics[5] = 0u;
+    fallbackPathStatistics[2] = 0u;
+    fallbackPathStatistics[3] = 0u;
+    fallbackPathStatistics[1] = 0u;
   }
 }
 
@@ -64,12 +64,12 @@
   return v2;
 }
 
-- (void)addNetworkStatsToToggleStatsDict:(id)a3 networkStats:(id)a4
+- (void)addNetworkStatsToToggleStatsDict:(id)dict networkStats:(id)stats
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  dictCopy = dict;
+  statsCopy = stats;
+  v8 = statsCopy;
+  if (!dictCopy)
   {
     v38 = nplog_obj();
     if (!os_log_type_enabled(v38, OS_LOG_TYPE_FAULT))
@@ -85,7 +85,7 @@ LABEL_14:
     goto LABEL_9;
   }
 
-  if (!v7)
+  if (!statsCopy)
   {
     v38 = nplog_obj();
     if (!os_log_type_enabled(v38, OS_LOG_TYPE_FAULT))
@@ -99,18 +99,18 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v9 = [(NSPToggleStats *)self primaryPathStatistics];
+  primaryPathStatistics = [(NSPToggleStats *)self primaryPathStatistics];
 
-  if (v9 == v8)
+  if (primaryPathStatistics == v8)
   {
     v11 = @"PrimaryPath";
   }
 
   else
   {
-    v10 = [(NSPToggleStats *)self fallbackPathStatistics];
+    fallbackPathStatistics = [(NSPToggleStats *)self fallbackPathStatistics];
 
-    if (v10 == v8)
+    if (fallbackPathStatistics == v8)
     {
       v11 = @"FallbackPath";
     }
@@ -123,72 +123,72 @@ LABEL_14:
 
   v12 = [NSString stringWithFormat:@"%@%@", v11, @"ProxyConnectionSuccessCount"];
   v13 = [NSNumber numberWithUnsignedInteger:v8[2]];
-  [v6 setObject:v13 forKeyedSubscript:v12];
+  [dictCopy setObject:v13 forKeyedSubscript:v12];
 
   v14 = [NSString stringWithFormat:@"%@%@", v11, @"IngressProxyConnectionTimeoutCount"];
 
   v15 = [NSNumber numberWithUnsignedInteger:v8[3]];
-  [v6 setObject:v15 forKeyedSubscript:v14];
+  [dictCopy setObject:v15 forKeyedSubscript:v14];
 
   v16 = [NSString stringWithFormat:@"%@%@", v11, @"IngressProxyConnectionRefusedCount"];
 
   v17 = [NSNumber numberWithUnsignedInteger:v8[4]];
-  [v6 setObject:v17 forKeyedSubscript:v16];
+  [dictCopy setObject:v17 forKeyedSubscript:v16];
 
   v18 = [NSString stringWithFormat:@"%@%@", v11, @"IngressProxyConnectionHostDownCount"];
 
   v19 = [NSNumber numberWithUnsignedInteger:v8[5]];
-  [v6 setObject:v19 forKeyedSubscript:v18];
+  [dictCopy setObject:v19 forKeyedSubscript:v18];
 
   v20 = [NSString stringWithFormat:@"%@%@", v11, @"IngressProxyConnectionHostUnreachableCount"];
 
   v21 = [NSNumber numberWithUnsignedInteger:v8[6]];
-  [v6 setObject:v21 forKeyedSubscript:v20];
+  [dictCopy setObject:v21 forKeyedSubscript:v20];
 
   v22 = [NSString stringWithFormat:@"%@%@", v11, @"IngressProxyConnectionErrorCount"];
 
   v23 = [NSNumber numberWithUnsignedInteger:v8[7]];
-  [v6 setObject:v23 forKeyedSubscript:v22];
+  [dictCopy setObject:v23 forKeyedSubscript:v22];
 
   v24 = [NSString stringWithFormat:@"%@%@", v11, @"IngressProxyConnectionDNSTimeoutCount"];
 
   v25 = [NSNumber numberWithUnsignedInteger:v8[8]];
-  [v6 setObject:v25 forKeyedSubscript:v24];
+  [dictCopy setObject:v25 forKeyedSubscript:v24];
 
   v26 = [NSString stringWithFormat:@"%@%@", v11, @"IngressProxyConnectionDNSBlockedCount"];
 
   v27 = [NSNumber numberWithUnsignedInteger:v8[9]];
-  [v6 setObject:v27 forKeyedSubscript:v26];
+  [dictCopy setObject:v27 forKeyedSubscript:v26];
 
   v28 = [NSString stringWithFormat:@"%@%@", v11, @"IngressProxyConnectionCertErrorCount"];
 
   v29 = [NSNumber numberWithUnsignedInteger:v8[10]];
-  [v6 setObject:v29 forKeyedSubscript:v28];
+  [dictCopy setObject:v29 forKeyedSubscript:v28];
 
   v30 = [NSString stringWithFormat:@"%@%@", v11, @"EgressProxyConnectionErrorCount"];
 
   v31 = [NSNumber numberWithUnsignedInteger:v8[11]];
-  [v6 setObject:v31 forKeyedSubscript:v30];
+  [dictCopy setObject:v31 forKeyedSubscript:v30];
 
   v32 = [NSString stringWithFormat:@"%@%@", v11, @"OriginProxyConnectionErrorCount"];
 
   v33 = [NSNumber numberWithUnsignedInteger:v8[12]];
-  [v6 setObject:v33 forKeyedSubscript:v32];
+  [dictCopy setObject:v33 forKeyedSubscript:v32];
 
   v34 = [NSString stringWithFormat:@"%@%@", v11, @"EgressProxyUnavailableErrorCount"];
 
   v35 = [NSNumber numberWithUnsignedInteger:v8[13]];
-  [v6 setObject:v35 forKeyedSubscript:v34];
+  [dictCopy setObject:v35 forKeyedSubscript:v34];
 
   v36 = [NSString stringWithFormat:@"%@%@", v11, @"IncompleteHandshakeStallCount"];
 
   v37 = [NSNumber numberWithUnsignedInteger:v8[14]];
-  [v6 setObject:v37 forKeyedSubscript:v36];
+  [dictCopy setObject:v37 forKeyedSubscript:v36];
 
   v38 = [NSString stringWithFormat:@"%@%@", v11, @"PostHandShakeStallCount"];
 
   v39 = [NSNumber numberWithUnsignedInteger:v8[15]];
-  [v6 setObject:v39 forKeyedSubscript:v38];
+  [dictCopy setObject:v39 forKeyedSubscript:v38];
 
 LABEL_9:
 }
@@ -226,11 +226,11 @@ LABEL_9:
   v13 = [NSNumber numberWithUnsignedInteger:[(NSPToggleStats *)self odohBadMessageCount]];
   [v3 setObject:v13 forKeyedSubscript:@"ODoHBadMessageCount"];
 
-  v14 = [(NSPToggleStats *)self primaryPathStatistics];
-  [(NSPToggleStats *)self addNetworkStatsToToggleStatsDict:v3 networkStats:v14];
+  primaryPathStatistics = [(NSPToggleStats *)self primaryPathStatistics];
+  [(NSPToggleStats *)self addNetworkStatsToToggleStatsDict:v3 networkStats:primaryPathStatistics];
 
-  v15 = [(NSPToggleStats *)self fallbackPathStatistics];
-  [(NSPToggleStats *)self addNetworkStatsToToggleStatsDict:v3 networkStats:v15];
+  fallbackPathStatistics = [(NSPToggleStats *)self fallbackPathStatistics];
+  [(NSPToggleStats *)self addNetworkStatsToToggleStatsDict:v3 networkStats:fallbackPathStatistics];
 
   return v3;
 }

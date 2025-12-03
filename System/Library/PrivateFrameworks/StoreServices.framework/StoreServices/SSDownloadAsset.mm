@@ -1,11 +1,11 @@
 @interface SSDownloadAsset
-+ (id)assetWithURL:(id)a3 type:(int64_t)a4;
++ (id)assetWithURL:(id)l type:(int64_t)type;
 - (BOOL)isExternal;
 - (NSString)downloadFileName;
 - (NSURLRequest)URLRequest;
-- (SSDownloadAsset)initWithURLRequest:(id)a3;
-- (SSDownloadAsset)initWithURLRequest:(id)a3 type:(int64_t)a4;
-- (SSDownloadAsset)initWithURLRequestProperties:(id)a3;
+- (SSDownloadAsset)initWithURLRequest:(id)request;
+- (SSDownloadAsset)initWithURLRequest:(id)request type:(int64_t)type;
+- (SSDownloadAsset)initWithURLRequestProperties:(id)properties;
 - (SSURLRequestProperties)URLRequestProperties;
 - (SSURLRequestProperties)_localProperties;
 - (id)_copyURLRequestProperties;
@@ -20,16 +20,16 @@
 
 @implementation SSDownloadAsset
 
-- (SSDownloadAsset)initWithURLRequest:(id)a3
+- (SSDownloadAsset)initWithURLRequest:(id)request
 {
   v7.receiver = self;
   v7.super_class = SSDownloadAsset;
   v4 = [(SSEntity *)&v7 init];
   if (v4)
   {
-    if (a3)
+    if (request)
     {
-      v5 = [[SSURLRequestProperties alloc] initWithURLRequest:a3];
+      v5 = [[SSURLRequestProperties alloc] initWithURLRequest:request];
     }
 
     else
@@ -43,14 +43,14 @@
   return v4;
 }
 
-- (SSDownloadAsset)initWithURLRequestProperties:(id)a3
+- (SSDownloadAsset)initWithURLRequestProperties:(id)properties
 {
   v6.receiver = self;
   v6.super_class = SSDownloadAsset;
   v4 = [(SSEntity *)&v6 init];
   if (v4)
   {
-    v4->_localProperties = [a3 copy];
+    v4->_localProperties = [properties copy];
   }
 
   return v4;
@@ -101,10 +101,10 @@
 
 - (NSURLRequest)URLRequest
 {
-  v2 = [(SSDownloadAsset *)self _copyURLRequestProperties];
-  v3 = [v2 copyURLRequest];
+  _copyURLRequestProperties = [(SSDownloadAsset *)self _copyURLRequestProperties];
+  copyURLRequest = [_copyURLRequestProperties copyURLRequest];
 
-  return v3;
+  return copyURLRequest;
 }
 
 - (void)_resetLocalIVars
@@ -117,9 +117,9 @@
 
 - (SSURLRequestProperties)URLRequestProperties
 {
-  v2 = [(SSDownloadAsset *)self _copyURLRequestProperties];
+  _copyURLRequestProperties = [(SSDownloadAsset *)self _copyURLRequestProperties];
 
-  return v2;
+  return _copyURLRequestProperties;
 }
 
 - (SSURLRequestProperties)_localProperties
@@ -368,20 +368,20 @@ LABEL_18:
   }
 }
 
-+ (id)assetWithURL:(id)a3 type:(int64_t)a4
++ (id)assetWithURL:(id)l type:(int64_t)type
 {
-  v5 = [objc_alloc(objc_opt_class()) initWithURLRequest:{objc_msgSend(MEMORY[0x1E696AF68], "requestWithURL:", a3)}];
-  v5[8] = a4;
+  v5 = [objc_alloc(objc_opt_class()) initWithURLRequest:{objc_msgSend(MEMORY[0x1E696AF68], "requestWithURL:", l)}];
+  v5[8] = type;
 
   return v5;
 }
 
-- (SSDownloadAsset)initWithURLRequest:(id)a3 type:(int64_t)a4
+- (SSDownloadAsset)initWithURLRequest:(id)request type:(int64_t)type
 {
-  result = [(SSDownloadAsset *)self initWithURLRequest:a3];
+  result = [(SSDownloadAsset *)self initWithURLRequest:request];
   if (result)
   {
-    result->_assetType = a4;
+    result->_assetType = type;
   }
 
   return result;

@@ -1,21 +1,21 @@
 @interface BWHistogramStats
-- (BOOL)addDataPointP:(double)a3;
-- (BWHistogramStats)initWithBins:(id)a3;
+- (BOOL)addDataPointP:(double)p;
+- (BWHistogramStats)initWithBins:(id)bins;
 - (NSDictionary)histogramAsDictionary;
 - (void)dealloc;
-- (void)getEstimatedQuantiles:(double *)a3 n:(int)a4;
+- (void)getEstimatedQuantiles:(double *)quantiles n:(int)n;
 @end
 
 @implementation BWHistogramStats
 
-- (BWHistogramStats)initWithBins:(id)a3
+- (BWHistogramStats)initWithBins:(id)bins
 {
   v14.receiver = self;
   v14.super_class = BWHistogramStats;
   v4 = [(BWStats *)&v14 init];
   if (v4)
   {
-    v5 = [a3 count];
+    v5 = [bins count];
     if (!v5)
     {
 LABEL_10:
@@ -28,7 +28,7 @@ LABEL_10:
     do
     {
       v9 = v8;
-      [objc_msgSend(a3 objectAtIndexedSubscript:{v7), "doubleValue"}];
+      [objc_msgSend(bins objectAtIndexedSubscript:{v7), "doubleValue"}];
       if (v8 <= v9)
       {
         goto LABEL_10;
@@ -42,7 +42,7 @@ LABEL_10:
     v4->_bins = malloc_type_calloc(v6 + 1, 8uLL, 0x100004000313F17uLL);
     do
     {
-      [objc_msgSend(a3 objectAtIndexedSubscript:{v10), "doubleValue"}];
+      [objc_msgSend(bins objectAtIndexedSubscript:{v10), "doubleValue"}];
       bins = v4->_bins;
       bins[v10++] = v12;
     }
@@ -67,9 +67,9 @@ LABEL_10:
   [(BWStats *)&v3 dealloc];
 }
 
-- (BOOL)addDataPointP:(double)a3
+- (BOOL)addDataPointP:(double)p
 {
-  __key = a3;
+  __key = p;
   v8.receiver = self;
   v8.super_class = BWHistogramStats;
   v4 = [(BWStats *)&v8 addDataPointP:?];
@@ -93,7 +93,7 @@ LABEL_10:
 
 - (NSDictionary)histogramAsDictionary
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   binsCount = self->_binsCount;
   if (binsCount)
   {
@@ -105,18 +105,18 @@ LABEL_10:
         v7 = MEMORY[0x1E696AD98];
         v8 = self->_bins[i];
         [(BWStats *)self multiplier];
-        -[NSDictionary setObject:forKey:](v3, "setObject:forKey:", v6, [v7 numberWithDouble:v8 * v9]);
+        -[NSDictionary setObject:forKey:](dictionary, "setObject:forKey:", v6, [v7 numberWithDouble:v8 * v9]);
         binsCount = self->_binsCount;
       }
     }
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)getEstimatedQuantiles:(double *)a3 n:(int)a4
+- (void)getEstimatedQuantiles:(double *)quantiles n:(int)n
 {
-  if ((a4 - 101) <= 0xFFFFFF9C)
+  if ((n - 101) <= 0xFFFFFF9C)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Invalid quantile count" userInfo:0]);
   }
@@ -150,16 +150,16 @@ LABEL_10:
   areas[v8] = 0.0;
   v16 = fabs(*bins);
   v17 = v16 == INFINITY;
-  v18 = a4 - 1;
+  v18 = n - 1;
   v19 = 0;
-  if (v8 > v17 && a4 >= 2)
+  if (v8 > v17 && n >= 2)
   {
     v21 = v16 == INFINITY;
     v22 = 0.0;
     do
     {
       v23 = areas[v17];
-      v24 = v9 * (v19 + 1) / a4;
+      v24 = v9 * (v19 + 1) / n;
       if (v24 >= v22 + v23)
       {
         ++v21;
@@ -174,7 +174,7 @@ LABEL_10:
           v25 = bins[v17] + (v24 - v22) / v23 * (bins[v17 + 1] - bins[v17]);
         }
 
-        a3[v19++] = v25;
+        quantiles[v19++] = v25;
       }
 
       if (v8 <= v21)
@@ -191,7 +191,7 @@ LABEL_10:
   if (v19 < v18)
   {
 
-    bzero(&a3[v19], 8 * (a4 - v19 - 2) + 8);
+    bzero(&quantiles[v19], 8 * (n - v19 - 2) + 8);
   }
 }
 

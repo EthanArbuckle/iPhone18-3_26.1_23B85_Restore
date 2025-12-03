@@ -1,6 +1,6 @@
 @interface HFMediaCategoryStatusItem
 + (id)statusItemClasses;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HFMediaCategoryStatusItem
@@ -29,19 +29,19 @@ void __46__HFMediaCategoryStatusItem_statusItemClasses__block_invoke_2()
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v12.receiver = self;
   v12.super_class = HFMediaCategoryStatusItem;
-  v5 = [(HFAccessoryCategoryStatusItem *)&v12 _subclass_updateWithOptions:v4];
+  v5 = [(HFAccessoryCategoryStatusItem *)&v12 _subclass_updateWithOptions:optionsCopy];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __57__HFMediaCategoryStatusItem__subclass_updateWithOptions___block_invoke;
   v9[3] = &unk_277DF3068;
-  v10 = v4;
-  v11 = self;
-  v6 = v4;
+  v10 = optionsCopy;
+  selfCopy = self;
+  v6 = optionsCopy;
   v7 = [v5 flatMap:v9];
 
   return v7;

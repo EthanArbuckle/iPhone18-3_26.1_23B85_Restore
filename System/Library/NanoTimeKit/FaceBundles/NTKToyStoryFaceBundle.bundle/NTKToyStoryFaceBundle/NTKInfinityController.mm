@@ -1,31 +1,31 @@
 @interface NTKInfinityController
-- (id)_listingsOfTypes:(id)a3;
+- (id)_listingsOfTypes:(id)types;
 - (id)_nextToyboxListing;
 - (id)_recentlyPlayedListings;
-- (id)complicationColorForStyle:(unint64_t)a3;
+- (id)complicationColorForStyle:(unint64_t)style;
 - (id)currentComplicationColor;
-- (id)initForDevice:(id)a3;
+- (id)initForDevice:(id)device;
 - (id)nextListing;
-- (id)posterImageForStyle:(unint64_t)a3;
-- (unint64_t)characterFromStyle:(unint64_t)a3;
+- (id)posterImageForStyle:(unint64_t)style;
+- (unint64_t)characterFromStyle:(unint64_t)style;
 - (void)invalidateCurrentListing;
 - (void)invalidatePreparedListing;
 - (void)prepareListing;
-- (void)setStyle:(unint64_t)a3;
-- (void)startedPlayingListing:(id)a3;
+- (void)setStyle:(unint64_t)style;
+- (void)startedPlayingListing:(id)listing;
 @end
 
 @implementation NTKInfinityController
 
-- (id)initForDevice:(id)a3
+- (id)initForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v13.receiver = self;
   v13.super_class = NTKInfinityController;
   v5 = [(NTKInfinityController *)&v13 init];
   if (v5)
   {
-    v6 = [[NTKInfinityDataSource alloc] initForDevice:v4];
+    v6 = [[NTKInfinityDataSource alloc] initForDevice:deviceCopy];
     dataSource = v5->_dataSource;
     v5->_dataSource = v6;
 
@@ -49,9 +49,9 @@
 {
   if (self->_controllerMode <= 1)
   {
-    v4 = [(NTKInfinityController *)self _nextToyboxListing];
+    _nextToyboxListing = [(NTKInfinityController *)self _nextToyboxListing];
     preparedListing = self->_preparedListing;
-    self->_preparedListing = v4;
+    self->_preparedListing = _nextToyboxListing;
 
     _objc_release_x1();
   }
@@ -62,15 +62,15 @@
   preparedListing = self->_preparedListing;
   if (preparedListing)
   {
-    v4 = preparedListing;
+    _nextToyboxListing = preparedListing;
   }
 
   else
   {
-    v4 = [(NTKInfinityController *)self _nextToyboxListing];
+    _nextToyboxListing = [(NTKInfinityController *)self _nextToyboxListing];
   }
 
-  v5 = v4;
+  v5 = _nextToyboxListing;
   v6 = self->_preparedListing;
   self->_preparedListing = 0;
 
@@ -122,8 +122,8 @@
     sub_5724();
   }
 
-  v6 = [(NTKInfinityListing *)self->_currentListing type];
-  if (v6 - 2 < 3)
+  type = [(NTKInfinityListing *)self->_currentListing type];
+  if (type - 2 < 3)
   {
     v7 = _NTKLoggingObjectForDomain();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -137,7 +137,7 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if (v6 <= 1)
+  if (type <= 1)
   {
     v7 = _NTKLoggingObjectForDomain();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -176,25 +176,25 @@ LABEL_23:
   return v11;
 }
 
-- (id)_listingsOfTypes:(id)a3
+- (id)_listingsOfTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   controllerMode = self->_controllerMode;
   if (controllerMode == 1)
   {
     dataSource = self->_dataSource;
     currentCharacter = self->_currentCharacter;
-    v7 = [(NTKInfinityListing *)self->_currentListing attributes];
-    v9 = [(NTKInfinityDataSource *)dataSource listingsForCharacter:currentCharacter ofTypes:v4 withAttributes:v7 recentlyUsed:&__NSArray0__struct];
+    attributes = [(NTKInfinityListing *)self->_currentListing attributes];
+    v9 = [(NTKInfinityDataSource *)dataSource listingsForCharacter:currentCharacter ofTypes:typesCopy withAttributes:attributes recentlyUsed:&__NSArray0__struct];
     goto LABEL_5;
   }
 
   if (!controllerMode)
   {
     v6 = self->_dataSource;
-    v7 = [(NTKInfinityListing *)self->_currentListing attributes];
-    v8 = [(NTKInfinityController *)self _recentlyPlayedListings];
-    v9 = [(NTKInfinityDataSource *)v6 listingsOfTypes:v4 withAttributes:v7 recentlyUsed:v8];
+    attributes = [(NTKInfinityListing *)self->_currentListing attributes];
+    _recentlyPlayedListings = [(NTKInfinityController *)self _recentlyPlayedListings];
+    v9 = [(NTKInfinityDataSource *)v6 listingsOfTypes:typesCopy withAttributes:attributes recentlyUsed:_recentlyPlayedListings];
 
 LABEL_5:
     goto LABEL_7;
@@ -209,11 +209,11 @@ LABEL_7:
 - (id)_recentlyPlayedListings
 {
   v3 = +[NSMutableArray array];
-  v4 = [(NSMutableOrderedSet *)self->_recentlyPlayedMagicMoments array];
-  [v3 addObjectsFromArray:v4];
+  array = [(NSMutableOrderedSet *)self->_recentlyPlayedMagicMoments array];
+  [v3 addObjectsFromArray:array];
 
-  v5 = [(NSMutableOrderedSet *)self->_recentlyPlayedActions array];
-  [v3 addObjectsFromArray:v5];
+  array2 = [(NSMutableOrderedSet *)self->_recentlyPlayedActions array];
+  [v3 addObjectsFromArray:array2];
 
   return v3;
 }
@@ -232,18 +232,18 @@ LABEL_7:
   _objc_release_x1();
 }
 
-- (void)startedPlayingListing:(id)a3
+- (void)startedPlayingListing:(id)listing
 {
-  v4 = a3;
-  v5 = v4;
+  listingCopy = listing;
+  v5 = listingCopy;
   if (!self->_controllerMode)
   {
-    v9 = v4;
-    v4 = [v4 type];
-    if (v4 - 1 >= 3)
+    v9 = listingCopy;
+    listingCopy = [listingCopy type];
+    if (listingCopy - 1 >= 3)
     {
       v5 = v9;
-      if (v4 != &dword_4)
+      if (listingCopy != &dword_4)
       {
         goto LABEL_2;
       }
@@ -251,9 +251,9 @@ LABEL_7:
       p_recentlyPlayedMagicMoments = &self->_recentlyPlayedMagicMoments;
       [(NSMutableOrderedSet *)self->_recentlyPlayedMagicMoments addObject:v9];
       v8 = [(NSMutableOrderedSet *)self->_recentlyPlayedMagicMoments count];
-      v4 = [(NTKInfinityController *)self _maxRecentlyPlayedMagicMoments];
+      listingCopy = [(NTKInfinityController *)self _maxRecentlyPlayedMagicMoments];
       v5 = v9;
-      if (v8 < v4)
+      if (v8 < listingCopy)
       {
         goto LABEL_2;
       }
@@ -264,33 +264,33 @@ LABEL_7:
       p_recentlyPlayedMagicMoments = &self->_recentlyPlayedActions;
       [(NSMutableOrderedSet *)self->_recentlyPlayedActions addObject:v9];
       v7 = [(NSMutableOrderedSet *)self->_recentlyPlayedActions count];
-      v4 = [(NTKInfinityController *)self _maxRecentlyPlayedActions];
+      listingCopy = [(NTKInfinityController *)self _maxRecentlyPlayedActions];
       v5 = v9;
-      if (v7 < v4)
+      if (v7 < listingCopy)
       {
         goto LABEL_2;
       }
     }
 
-    v4 = [(NSMutableOrderedSet *)*p_recentlyPlayedMagicMoments removeObjectAtIndex:0];
+    listingCopy = [(NSMutableOrderedSet *)*p_recentlyPlayedMagicMoments removeObjectAtIndex:0];
     v5 = v9;
   }
 
 LABEL_2:
 
-  _objc_release_x1(v4, v5);
+  _objc_release_x1(listingCopy, v5);
 }
 
-- (void)setStyle:(unint64_t)a3
+- (void)setStyle:(unint64_t)style
 {
   self->_currentCharacter = [(NTKInfinityController *)self characterFromStyle:?];
-  v5 = [(NTKInfinityController *)self _modeFromStyle:a3];
+  v5 = [(NTKInfinityController *)self _modeFromStyle:style];
   if (self->_controllerMode != v5)
   {
     currentStyle = self->_currentStyle;
     self->_controllerMode = v5;
-    self->_currentStyle = a3;
-    if (currentStyle == a3 || v5 == 0)
+    self->_currentStyle = style;
+    if (currentStyle == style || v5 == 0)
     {
       goto LABEL_9;
     }
@@ -299,8 +299,8 @@ LABEL_2:
   }
 
   v6 = self->_currentStyle;
-  self->_currentStyle = a3;
-  if (v6 == a3)
+  self->_currentStyle = style;
+  if (v6 == style)
   {
     return;
   }
@@ -317,16 +317,16 @@ LABEL_9:
   [(NTKInfinityController *)self invalidateCurrentListing];
 }
 
-- (id)posterImageForStyle:(unint64_t)a3
+- (id)posterImageForStyle:(unint64_t)style
 {
-  if (a3 > 3)
+  if (style > 3)
   {
     v5 = 0;
   }
 
   else
   {
-    v4 = *(&off_C588 + a3);
+    v4 = *(&off_C588 + style);
     v5 = NTKImageNamedFromAssetsBundle();
   }
 
@@ -335,42 +335,42 @@ LABEL_9:
 
 - (id)currentComplicationColor
 {
-  v3 = [(NTKInfinityListing *)self->_currentListing attributes];
-  v4 = [v3 colorForKey:@"color"];
+  attributes = [(NTKInfinityListing *)self->_currentListing attributes];
+  v4 = [attributes colorForKey:@"color"];
   v5 = v4;
   if (v4)
   {
-    v6 = v4;
+    currentStyleComplicationColor = v4;
   }
 
   else
   {
-    v6 = [(NTKInfinityController *)self currentStyleComplicationColor];
+    currentStyleComplicationColor = [(NTKInfinityController *)self currentStyleComplicationColor];
   }
 
-  v7 = v6;
+  v7 = currentStyleComplicationColor;
 
   return v7;
 }
 
-- (id)complicationColorForStyle:(unint64_t)a3
+- (id)complicationColorForStyle:(unint64_t)style
 {
-  if (a3 > 1)
+  if (style > 1)
   {
-    if (a3 == 2)
+    if (style == 2)
     {
       self = +[NTKInfinityDataSource woodyColor];
     }
 
-    else if (a3 == 3)
+    else if (style == 3)
     {
       self = +[NTKInfinityDataSource jessieColor];
     }
   }
 
-  else if (a3)
+  else if (style)
   {
-    if (a3 == 1)
+    if (style == 1)
     {
       self = +[NTKInfinityDataSource buzzColor];
     }
@@ -384,16 +384,16 @@ LABEL_9:
   return self;
 }
 
-- (unint64_t)characterFromStyle:(unint64_t)a3
+- (unint64_t)characterFromStyle:(unint64_t)style
 {
-  if (a3 == 3)
+  if (style == 3)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 2;
+    return style == 2;
   }
 }
 

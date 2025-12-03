@@ -1,17 +1,17 @@
 @interface NUChannelMinMaxExpression
 + (int64_t)minMaxOrder;
-- (NUChannelMinMaxExpression)initWithExpressionType:(int64_t)a3 arguments:(id)a4;
-- (NUChannelMinMaxExpression)initWithExpressions:(id)a3;
-- (id)evaluateWithArgumentData:(id)a3 error:(id *)a4;
+- (NUChannelMinMaxExpression)initWithExpressionType:(int64_t)type arguments:(id)arguments;
+- (NUChannelMinMaxExpression)initWithExpressions:(id)expressions;
+- (id)evaluateWithArgumentData:(id)data error:(id *)error;
 @end
 
 @implementation NUChannelMinMaxExpression
 
-- (id)evaluateWithArgumentData:(id)a3 error:(id *)a4
+- (id)evaluateWithArgumentData:(id)data error:(id *)error
 {
   v43 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if ([v5 count] <= 1)
+  dataCopy = data;
+  if ([dataCopy count] <= 1)
   {
     v18 = NUAssertLogger_4187();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -32,8 +32,8 @@
         v25 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v26 = MEMORY[0x1E696AF00];
         v27 = v25;
-        v28 = [v26 callStackSymbols];
-        v29 = [v28 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v26 callStackSymbols];
+        v29 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v40 = v25;
         v41 = 2114;
@@ -44,8 +44,8 @@
 
     else if (v22)
     {
-      v23 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v24 = [v23 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v40 = v24;
       _os_log_error_impl(&dword_1C0184000, v21, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -54,12 +54,12 @@
     _NUAssertFailHandler("[NUChannelMinMaxExpression evaluateWithArgumentData:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUChannel.m", 3755, @"Invalid parameter not satisfying: %s", v30, v31, v32, v33, "args.count >= 2");
   }
 
-  v6 = [objc_opt_class() minMaxOrder];
+  minMaxOrder = [objc_opt_class() minMaxOrder];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v7 = v5;
+  v7 = dataCopy;
   v8 = [v7 countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v8)
   {
@@ -84,13 +84,13 @@
         v14 = [v13 compare:v10];
         if (v14 < 2)
         {
-          *a4 = [NUError invalidError:@"Values are not comparable" object:v13];
+          *error = [NUError invalidError:@"Values are not comparable" object:v13];
 
           v16 = 0;
           goto LABEL_18;
         }
 
-        if (v14 == v6)
+        if (v14 == minMaxOrder)
         {
           v15 = v13;
 
@@ -120,11 +120,11 @@ LABEL_18:
   return v16;
 }
 
-- (NUChannelMinMaxExpression)initWithExpressions:(id)a3
+- (NUChannelMinMaxExpression)initWithExpressions:(id)expressions
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  expressionsCopy = expressions;
+  if (!expressionsCopy)
   {
     v8 = NUAssertLogger_4187();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -145,8 +145,8 @@ LABEL_18:
         v22 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v23 = MEMORY[0x1E696AF00];
         v24 = v22;
-        v25 = [v23 callStackSymbols];
-        v26 = [v25 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v23 callStackSymbols];
+        v26 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v42 = v22;
         v43 = 2114;
@@ -157,8 +157,8 @@ LABEL_18:
 
     else if (v12)
     {
-      v13 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v14 = [v13 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v14 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v42 = v14;
       _os_log_error_impl(&dword_1C0184000, v11, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -167,8 +167,8 @@ LABEL_18:
     _NUAssertFailHandler("[NUChannelMinMaxExpression initWithExpressions:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUChannel.m", 3747, @"Invalid parameter not satisfying: %s", v27, v28, v29, v30, "expressions != nil");
   }
 
-  v5 = v4;
-  if ([v4 count] <= 1)
+  v5 = expressionsCopy;
+  if ([expressionsCopy count] <= 1)
   {
     v15 = NUAssertLogger_4187();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -189,8 +189,8 @@ LABEL_18:
         v31 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v32 = MEMORY[0x1E696AF00];
         v33 = v31;
-        v34 = [v32 callStackSymbols];
-        v35 = [v34 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v32 callStackSymbols];
+        v35 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v42 = v31;
         v43 = 2114;
@@ -201,8 +201,8 @@ LABEL_18:
 
     else if (v19)
     {
-      v20 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v21 = [v20 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v21 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v42 = v21;
       _os_log_error_impl(&dword_1C0184000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -218,10 +218,10 @@ LABEL_18:
   return v6;
 }
 
-- (NUChannelMinMaxExpression)initWithExpressionType:(int64_t)a3 arguments:(id)a4
+- (NUChannelMinMaxExpression)initWithExpressionType:(int64_t)type arguments:(id)arguments
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  argumentsCopy = arguments;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_1367);
@@ -265,8 +265,8 @@ LABEL_8:
     {
       v15 = MEMORY[0x1E696AF00];
       v16 = v14;
-      v17 = [v15 callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v15 callStackSymbols];
+      v18 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v33 = v18;
       _os_log_error_impl(&dword_1C0184000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -282,8 +282,8 @@ LABEL_8:
     v21 = MEMORY[0x1E696AF00];
     v22 = specific;
     v23 = v19;
-    v24 = [v21 callStackSymbols];
-    v25 = [v24 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v21 callStackSymbols];
+    v25 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v33 = specific;
     v34 = 2114;
@@ -344,8 +344,8 @@ LABEL_8:
     {
       v10 = MEMORY[0x1E696AF00];
       v11 = v9;
-      v12 = [v10 callStackSymbols];
-      v13 = [v12 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v10 callStackSymbols];
+      v13 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v28 = v13;
       _os_log_error_impl(&dword_1C0184000, v11, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -361,8 +361,8 @@ LABEL_8:
     v16 = MEMORY[0x1E696AF00];
     v17 = specific;
     v18 = v14;
-    v19 = [v16 callStackSymbols];
-    v20 = [v19 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v16 callStackSymbols];
+    v20 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v28 = specific;
     v29 = 2114;

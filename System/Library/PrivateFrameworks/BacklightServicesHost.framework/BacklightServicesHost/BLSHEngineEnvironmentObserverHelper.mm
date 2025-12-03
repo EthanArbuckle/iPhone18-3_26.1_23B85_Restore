@@ -1,20 +1,20 @@
 @interface BLSHEngineEnvironmentObserverHelper
 - (BLSHBacklightInactiveEnvironmentSession)inactiveSession;
 - (BLSHDateSpecifierModel)presentationDatesModel;
-- (BLSHEngineEnvironmentObserverHelper)initWithEngine:(id)a3;
-- (void)dateSpecifierModel:(id)a3 didAddEnvironment:(id)a4;
-- (void)dateSpecifierModel:(id)a3 didRemoveEnvironment:(id)a4;
-- (void)didEndInactiveEnvironmentSession:(id)a3;
-- (void)didUpdateToPresentation:(id)a3;
-- (void)setInactiveSession:(id)a3;
-- (void)setPresentationDatesModel:(id)a3;
+- (BLSHEngineEnvironmentObserverHelper)initWithEngine:(id)engine;
+- (void)dateSpecifierModel:(id)model didAddEnvironment:(id)environment;
+- (void)dateSpecifierModel:(id)model didRemoveEnvironment:(id)environment;
+- (void)didEndInactiveEnvironmentSession:(id)session;
+- (void)didUpdateToPresentation:(id)presentation;
+- (void)setInactiveSession:(id)session;
+- (void)setPresentationDatesModel:(id)model;
 @end
 
 @implementation BLSHEngineEnvironmentObserverHelper
 
-- (BLSHEngineEnvironmentObserverHelper)initWithEngine:(id)a3
+- (BLSHEngineEnvironmentObserverHelper)initWithEngine:(id)engine
 {
-  v5 = a3;
+  engineCopy = engine;
   v9.receiver = self;
   v9.super_class = BLSHEngineEnvironmentObserverHelper;
   v6 = [(BLSHEngineEnvironmentObserverHelper *)&v9 init];
@@ -22,7 +22,7 @@
   if (v6)
   {
     v6->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v6->_engine, a3);
+    objc_storeStrong(&v6->_engine, engine);
   }
 
   return v7;
@@ -37,19 +37,19 @@
   return v3;
 }
 
-- (void)setInactiveSession:(id)a3
+- (void)setInactiveSession:(id)session
 {
-  v7 = a3;
+  sessionCopy = session;
   os_unfair_lock_lock(&self->_lock);
   v5 = self->_lock_inactiveSession;
-  objc_storeStrong(&self->_lock_inactiveSession, a3);
+  objc_storeStrong(&self->_lock_inactiveSession, session);
   os_unfair_lock_unlock(&self->_lock);
-  if (v5 != v7)
+  if (v5 != sessionCopy)
   {
     [(BLSHBacklightInactiveEnvironmentSession *)v5 removeObserver:self];
-    [(BLSHBacklightInactiveEnvironmentSession *)v7 addObserver:self];
-    v6 = [(BLSHBacklightInactiveEnvironmentSession *)v7 presentation];
-    [(BLSHEngineEnvironmentObserverHelper *)self didUpdateToPresentation:v6];
+    [(BLSHBacklightInactiveEnvironmentSession *)sessionCopy addObserver:self];
+    presentation = [(BLSHBacklightInactiveEnvironmentSession *)sessionCopy presentation];
+    [(BLSHEngineEnvironmentObserverHelper *)self didUpdateToPresentation:presentation];
   }
 }
 
@@ -62,28 +62,28 @@
   return v3;
 }
 
-- (void)setPresentationDatesModel:(id)a3
+- (void)setPresentationDatesModel:(id)model
 {
-  v10 = a3;
+  modelCopy = model;
   os_unfair_lock_lock(&self->_lock);
   v6 = self->_lock_presentationDatesModel;
-  objc_storeStrong(&self->_lock_presentationDatesModel, a3);
+  objc_storeStrong(&self->_lock_presentationDatesModel, model);
   os_unfair_lock_unlock(&self->_lock);
-  if (v6 != v10)
+  if (v6 != modelCopy)
   {
     [(BLSHDateSpecifierModel *)v6 removeObserver:self];
-    if (v10)
+    if (modelCopy)
     {
-      if (![(BLSHDateSpecifierModel *)v10 isEmpty])
+      if (![(BLSHDateSpecifierModel *)modelCopy isEmpty])
       {
-        [(BLSHEngineEnvironmentObserverHelper *)v10 setPresentationDatesModel:a2, self];
+        [(BLSHEngineEnvironmentObserverHelper *)modelCopy setPresentationDatesModel:a2, self];
       }
 
       v7 = [MEMORY[0x277CBEB58] set];
       lock_modelEnvironments = self->_lock_modelEnvironments;
       self->_lock_modelEnvironments = v7;
 
-      [(BLSHDateSpecifierModel *)v10 addObserver:self];
+      [(BLSHDateSpecifierModel *)modelCopy addObserver:self];
     }
 
     else
@@ -94,30 +94,30 @@
   }
 }
 
-- (void)didUpdateToPresentation:(id)a3
+- (void)didUpdateToPresentation:(id)presentation
 {
   v36 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  presentationCopy = presentation;
   os_unfair_lock_lock(&self->_lock);
   v6 = self->_lock_presentation;
-  objc_storeStrong(&self->_lock_presentation, a3);
-  v7 = [MEMORY[0x277CBEB18] array];
-  v8 = [MEMORY[0x277CBEB18] array];
+  objc_storeStrong(&self->_lock_presentation, presentation);
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __63__BLSHEngineEnvironmentObserverHelper_didUpdateToPresentation___block_invoke;
   v32[3] = &unk_27841F090;
   v32[4] = self;
-  v9 = v8;
+  v9 = array2;
   v33 = v9;
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __63__BLSHEngineEnvironmentObserverHelper_didUpdateToPresentation___block_invoke_2;
   v30[3] = &unk_27841F090;
   v30[4] = self;
-  v10 = v7;
+  v10 = array;
   v31 = v10;
-  [v5 differenceFromPresentation:v6 forEachRemoval:v32 forEachAddition:v30];
+  [presentationCopy differenceFromPresentation:v6 forEachRemoval:v32 forEachAddition:v30];
   os_unfair_lock_unlock(&self->_lock);
   v28 = 0u;
   v29 = 0u;
@@ -200,43 +200,43 @@ void __63__BLSHEngineEnvironmentObserverHelper_didUpdateToPresentation___block_i
   }
 }
 
-- (void)didEndInactiveEnvironmentSession:(id)a3
+- (void)didEndInactiveEnvironmentSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   os_unfair_lock_lock(&self->_lock);
   lock_inactiveSession = self->_lock_inactiveSession;
-  if (lock_inactiveSession == v5)
+  if (lock_inactiveSession == sessionCopy)
   {
     self->_lock_inactiveSession = 0;
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  [(BLSHBacklightInactiveEnvironmentSession *)v5 removeObserver:self];
+  [(BLSHBacklightInactiveEnvironmentSession *)sessionCopy removeObserver:self];
 }
 
-- (void)dateSpecifierModel:(id)a3 didAddEnvironment:(id)a4
+- (void)dateSpecifierModel:(id)model didAddEnvironment:(id)environment
 {
-  v6 = a4;
+  environmentCopy = environment;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableSet *)self->_lock_modelEnvironments addObject:v6];
-  v5 = [(BLSHBacklightEnvironmentPresentation *)self->_lock_presentation containsEnvironment:v6];
+  [(NSMutableSet *)self->_lock_modelEnvironments addObject:environmentCopy];
+  v5 = [(BLSHBacklightEnvironmentPresentation *)self->_lock_presentation containsEnvironment:environmentCopy];
   os_unfair_lock_unlock(&self->_lock);
   if (!v5)
   {
-    [v6 addObserver:self->_engine];
+    [environmentCopy addObserver:self->_engine];
   }
 }
 
-- (void)dateSpecifierModel:(id)a3 didRemoveEnvironment:(id)a4
+- (void)dateSpecifierModel:(id)model didRemoveEnvironment:(id)environment
 {
-  v6 = a4;
+  environmentCopy = environment;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableSet *)self->_lock_modelEnvironments removeObject:v6];
-  v5 = [(BLSHBacklightEnvironmentPresentation *)self->_lock_presentation containsEnvironment:v6];
+  [(NSMutableSet *)self->_lock_modelEnvironments removeObject:environmentCopy];
+  v5 = [(BLSHBacklightEnvironmentPresentation *)self->_lock_presentation containsEnvironment:environmentCopy];
   os_unfair_lock_unlock(&self->_lock);
   if (!v5)
   {
-    [v6 removeObserver:self->_engine];
+    [environmentCopy removeObserver:self->_engine];
   }
 }
 

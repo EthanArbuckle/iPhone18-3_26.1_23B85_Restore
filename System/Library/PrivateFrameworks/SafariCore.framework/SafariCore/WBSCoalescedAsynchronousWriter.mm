@@ -1,23 +1,23 @@
 @interface WBSCoalescedAsynchronousWriter
 - (WBSCoalescedAsynchronousWriterDelegate)delegate;
-- (id)_dataForPlistDictionary:(id)a3;
+- (id)_dataForPlistDictionary:(id)dictionary;
 - (id)_dataFromDataSourceOnDataSourceQueue;
-- (id)_initWithName:(id)a3 fileURL:(id)a4 writerBlock:(id)a5 dataSourceQueue:(id)a6 dataSourceBlock:(id)a7 plistDictionarySourceBlock:(id)a8 plistFormat:(unint64_t)a9 writeDelayInterval:(double)a10 fileResourceValues:(id)a11;
+- (id)_initWithName:(id)name fileURL:(id)l writerBlock:(id)block dataSourceQueue:(id)queue dataSourceBlock:(id)sourceBlock plistDictionarySourceBlock:(id)dictionarySourceBlock plistFormat:(unint64_t)format writeDelayInterval:(double)self0 fileResourceValues:(id)self1;
 - (id)_plistDictionaryFromDataSourceOnDataSourceQueue;
 - (id)_synchronousDataOnDataSourceQueue;
-- (void)_asynchronouslyWriteData:(id)a3 orPlistDictionary:(id)a4 completionHandler:(id)a5;
+- (void)_asynchronouslyWriteData:(id)data orPlistDictionary:(id)dictionary completionHandler:(id)handler;
 - (void)_cancelPendingWriteSynchronouslyLeavingSuddenTerminationIntact;
 - (void)_invalidateTimer;
 - (void)_scheduleTimer;
 - (void)_timerFired;
 - (void)_waitForWriteCompletion;
-- (void)_writeData:(id)a3;
+- (void)_writeData:(id)data;
 - (void)cancelPendingWriteSynchronously;
 - (void)completePendingWriteSynchronously;
 - (void)dealloc;
 - (void)performScheduledWriteSynchronously;
 - (void)scheduleWrite;
-- (void)startScheduledWriteNowWithCompletionHandler:(id)a3;
+- (void)startScheduledWriteNowWithCompletionHandler:(id)handler;
 @end
 
 @implementation WBSCoalescedAsynchronousWriter
@@ -78,56 +78,56 @@ _BYTE *__47__WBSCoalescedAsynchronousWriter_scheduleWrite__block_invoke(uint64_t
   objc_destroyWeak(&location);
 }
 
-- (id)_initWithName:(id)a3 fileURL:(id)a4 writerBlock:(id)a5 dataSourceQueue:(id)a6 dataSourceBlock:(id)a7 plistDictionarySourceBlock:(id)a8 plistFormat:(unint64_t)a9 writeDelayInterval:(double)a10 fileResourceValues:(id)a11
+- (id)_initWithName:(id)name fileURL:(id)l writerBlock:(id)block dataSourceQueue:(id)queue dataSourceBlock:(id)sourceBlock plistDictionarySourceBlock:(id)dictionarySourceBlock plistFormat:(unint64_t)format writeDelayInterval:(double)self0 fileResourceValues:(id)self1
 {
-  v18 = a3;
-  v43 = a4;
-  v19 = a5;
-  v42 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a11;
+  nameCopy = name;
+  lCopy = l;
+  blockCopy = block;
+  queueCopy = queue;
+  sourceBlockCopy = sourceBlock;
+  dictionarySourceBlockCopy = dictionarySourceBlock;
+  valuesCopy = values;
   v44.receiver = self;
   v44.super_class = WBSCoalescedAsynchronousWriter;
   v23 = [(WBSCoalescedAsynchronousWriter *)&v44 init];
   if (v23)
   {
-    v24 = [v18 copy];
+    v24 = [nameCopy copy];
     name = v23->_name;
     v23->_name = v24;
 
-    v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.Safari.CoalescedAsynchronousWriter.%p.%@.DiskAccessQueue", v23, v18, v42, v43];
-    v27 = dispatch_queue_create([v26 UTF8String], 0);
+    lCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.Safari.CoalescedAsynchronousWriter.%p.%@.DiskAccessQueue", v23, nameCopy, queueCopy, lCopy];
+    v27 = dispatch_queue_create([lCopy UTF8String], 0);
     diskAccessQueue = v23->_diskAccessQueue;
     v23->_diskAccessQueue = v27;
 
-    objc_storeStrong(&v23->_fileURL, a4);
-    v29 = [v20 copy];
+    objc_storeStrong(&v23->_fileURL, l);
+    v29 = [sourceBlockCopy copy];
     dataSourceBlock = v23->_dataSourceBlock;
     v23->_dataSourceBlock = v29;
 
-    v31 = [v21 copy];
+    v31 = [dictionarySourceBlockCopy copy];
     plistDictionarySourceBlock = v23->_plistDictionarySourceBlock;
     v23->_plistDictionarySourceBlock = v31;
 
-    v23->_plistFormat = a9;
-    objc_storeStrong(&v23->_dataSourceQueue, a6);
+    v23->_plistFormat = format;
+    objc_storeStrong(&v23->_dataSourceQueue, queue);
     if (!v23->_dataSourceQueue)
     {
       objc_storeStrong(&v23->_dataSourceQueue, MEMORY[0x1E69E96A0]);
     }
 
-    v33 = [v19 copy];
+    v33 = [blockCopy copy];
     writerBlock = v23->_writerBlock;
     v23->_writerBlock = v33;
 
-    v35 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.Safari.CoalescedAsynchronousWriter.%p.%@.InternalQueue", v23, v18];
-    v36 = dispatch_queue_create([v35 UTF8String], 0);
+    nameCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.Safari.CoalescedAsynchronousWriter.%p.%@.InternalQueue", v23, nameCopy];
+    v36 = dispatch_queue_create([nameCopy UTF8String], 0);
     internalQueue = v23->_internalQueue;
     v23->_internalQueue = v36;
 
-    v23->_writeDelayInterval = a10;
-    v38 = [v22 copy];
+    v23->_writeDelayInterval = interval;
+    v38 = [valuesCopy copy];
     fileResourceValues = v23->_fileResourceValues;
     v23->_fileResourceValues = v38;
 
@@ -140,7 +140,7 @@ _BYTE *__47__WBSCoalescedAsynchronousWriter_scheduleWrite__block_invoke(uint64_t
 - (void)dealloc
 {
   v5 = *MEMORY[0x1E69E9840];
-  v1 = *(a1 + 120);
+  v1 = *(self + 120);
   OUTLINED_FUNCTION_0_1();
   _os_log_error_impl(&dword_1B8447000, v2, OS_LOG_TYPE_ERROR, "WBSCoalescedAsynchronousWriter <%{public}@, %p>: Timer is still valid in dealloc", v4, 0x16u);
   v3 = *MEMORY[0x1E69E9840];
@@ -215,15 +215,15 @@ void __48__WBSCoalescedAsynchronousWriter__scheduleTimer__block_invoke(uint64_t 
   return plistDictionarySourceBlock;
 }
 
-- (id)_dataForPlistDictionary:(id)a3
+- (id)_dataForPlistDictionary:(id)dictionary
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     plistFormat = self->_plistFormat;
     v13 = 0;
-    v6 = [MEMORY[0x1E696AE40] dataWithPropertyList:v4 format:plistFormat options:0 error:&v13];
+    v6 = [MEMORY[0x1E696AE40] dataWithPropertyList:dictionaryCopy format:plistFormat options:0 error:&v13];
     v7 = v13;
     if (!v6)
     {
@@ -231,13 +231,13 @@ void __48__WBSCoalescedAsynchronousWriter__scheduleTimer__block_invoke(uint64_t 
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
         name = self->_name;
-        v12 = [v7 safari_privacyPreservingDescription];
+        safari_privacyPreservingDescription = [v7 safari_privacyPreservingDescription];
         *buf = 138543874;
         v15 = name;
         v16 = 2048;
-        v17 = self;
+        selfCopy = self;
         v18 = 2114;
-        v19 = v12;
+        v19 = safari_privacyPreservingDescription;
         _os_log_error_impl(&dword_1B8447000, v8, OS_LOG_TYPE_ERROR, "WBSCoalescedAsynchronousWriter <%{public}@, %p>: Unable to serialize dictionary to data with error: %{public}@", buf, 0x20u);
       }
     }
@@ -257,16 +257,16 @@ void __48__WBSCoalescedAsynchronousWriter__scheduleTimer__block_invoke(uint64_t 
 {
   if (self->_dataSourceBlock)
   {
-    v3 = [(WBSCoalescedAsynchronousWriter *)self _dataFromDataSourceOnDataSourceQueue];
+    _dataFromDataSourceOnDataSourceQueue = [(WBSCoalescedAsynchronousWriter *)self _dataFromDataSourceOnDataSourceQueue];
   }
 
   else
   {
-    v4 = [(WBSCoalescedAsynchronousWriter *)self _plistDictionaryFromDataSourceOnDataSourceQueue];
-    v3 = [(WBSCoalescedAsynchronousWriter *)self _dataForPlistDictionary:v4];
+    _plistDictionaryFromDataSourceOnDataSourceQueue = [(WBSCoalescedAsynchronousWriter *)self _plistDictionaryFromDataSourceOnDataSourceQueue];
+    _dataFromDataSourceOnDataSourceQueue = [(WBSCoalescedAsynchronousWriter *)self _dataForPlistDictionary:_plistDictionaryFromDataSourceOnDataSourceQueue];
   }
 
-  return v3;
+  return _dataFromDataSourceOnDataSourceQueue;
 }
 
 - (void)_waitForWriteCompletion
@@ -280,31 +280,31 @@ void __48__WBSCoalescedAsynchronousWriter__scheduleTimer__block_invoke(uint64_t 
   }
 }
 
-- (void)_writeData:(id)a3
+- (void)_writeData:(id)data
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  dataCopy = data;
+  if (dataCopy)
   {
     writerBlock = self->_writerBlock;
     if (writerBlock)
     {
-      writerBlock[2](writerBlock, v4);
+      writerBlock[2](writerBlock, dataCopy);
     }
 
     else
     {
-      v6 = [MEMORY[0x1E696AC08] defaultManager];
-      v7 = [(NSURL *)self->_fileURL URLByDeletingLastPathComponent];
-      v8 = [v6 safari_ensureDirectoryExists:v7];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      uRLByDeletingLastPathComponent = [(NSURL *)self->_fileURL URLByDeletingLastPathComponent];
+      v8 = [defaultManager safari_ensureDirectoryExists:uRLByDeletingLastPathComponent];
 
-      if (([v4 writeToURL:self->_fileURL atomically:1] & 1) == 0)
+      if (([dataCopy writeToURL:self->_fileURL atomically:1] & 1) == 0)
       {
         v9 = WBS_LOG_CHANNEL_PREFIXCoalescedAsynchronousWriter();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
         {
-          v10 = [(NSURL *)self->_fileURL lastPathComponent];
-          [(WBSCoalescedAsynchronousWriter *)v10 _writeData:v23, v9];
+          lastPathComponent = [(NSURL *)self->_fileURL lastPathComponent];
+          [(WBSCoalescedAsynchronousWriter *)lastPathComponent _writeData:v23, v9];
         }
       }
 
@@ -331,8 +331,8 @@ void __48__WBSCoalescedAsynchronousWriter__scheduleTimer__block_invoke(uint64_t 
           if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
           {
             name = self->_name;
-            v18 = [v15 safari_privacyPreservingDescription];
-            [(WBSCoalescedAsynchronousWriter *)name _writeData:v18, buf, v16];
+            safari_privacyPreservingDescription = [v15 safari_privacyPreservingDescription];
+            [(WBSCoalescedAsynchronousWriter *)name _writeData:safari_privacyPreservingDescription, buf, v16];
           }
         }
       }
@@ -341,20 +341,20 @@ void __48__WBSCoalescedAsynchronousWriter__scheduleTimer__block_invoke(uint64_t 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
     {
-      [WeakRetained coalescedAsynchronousWriter:self didFinishWritingData:v4];
+      [WeakRetained coalescedAsynchronousWriter:self didFinishWritingData:dataCopy];
     }
   }
 
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_asynchronouslyWriteData:(id)a3 orPlistDictionary:(id)a4 completionHandler:(id)a5
+- (void)_asynchronouslyWriteData:(id)data orPlistDictionary:(id)dictionary completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8 | v9)
+  dataCopy = data;
+  dictionaryCopy = dictionary;
+  handlerCopy = handler;
+  v11 = handlerCopy;
+  if (dataCopy | dictionaryCopy)
   {
     v12 = dispatch_group_create();
     writeGroup = self->_writeGroup;
@@ -366,16 +366,16 @@ void __48__WBSCoalescedAsynchronousWriter__scheduleTimer__block_invoke(uint64_t 
     v16[1] = 3221225472;
     v16[2] = __95__WBSCoalescedAsynchronousWriter__asynchronouslyWriteData_orPlistDictionary_completionHandler___block_invoke;
     v16[3] = &unk_1E7CF1AC8;
-    v17 = v8;
-    v18 = self;
-    v19 = v9;
+    v17 = dataCopy;
+    selfCopy = self;
+    v19 = dictionaryCopy;
     v20 = v11;
     dispatch_group_async(v14, diskAccessQueue, v16);
   }
 
-  else if (v10)
+  else if (handlerCopy)
   {
-    (*(v10 + 2))(v10);
+    (*(handlerCopy + 2))(handlerCopy);
   }
 }
 
@@ -459,7 +459,7 @@ uint64_t __95__WBSCoalescedAsynchronousWriter__asynchronouslyWriteData_orPlistDi
       v6 = 138543618;
       v7 = name;
       v8 = 2048;
-      v9 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B8447000, v3, OS_LOG_TYPE_INFO, "WBSCoalescedAsynchronousWriter <%{public}@, %p>: Done with writer", &v6, 0x16u);
     }
   }
@@ -467,17 +467,17 @@ uint64_t __95__WBSCoalescedAsynchronousWriter__asynchronouslyWriteData_orPlistDi
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startScheduledWriteNowWithCompletionHandler:(id)a3
+- (void)startScheduledWriteNowWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __78__WBSCoalescedAsynchronousWriter_startScheduledWriteNowWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7CF09E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_sync(internalQueue, v7);
 }
 

@@ -1,11 +1,11 @@
 @interface RMDMersenneTwisterRandomSource
 - (RMDMersenneTwisterRandomSource)init;
-- (RMDMersenneTwisterRandomSource)initWithSeed:(unint64_t)a3;
+- (RMDMersenneTwisterRandomSource)initWithSeed:(unint64_t)seed;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
-- (unint64_t)nextIntWithUpperBound:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setSeed:(unint64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (unint64_t)nextIntWithUpperBound:(unint64_t)bound;
+- (void)encodeWithCoder:(id)coder;
+- (void)setSeed:(unint64_t)seed;
 @end
 
 @implementation RMDMersenneTwisterRandomSource
@@ -22,7 +22,7 @@
   return [(RMDMersenneTwisterRandomSource *)self initWithSeed:bytes];
 }
 
-- (RMDMersenneTwisterRandomSource)initWithSeed:(unint64_t)a3
+- (RMDMersenneTwisterRandomSource)initWithSeed:(unint64_t)seed
 {
   v9.receiver = self;
   v9.super_class = RMDMersenneTwisterRandomSource;
@@ -30,12 +30,12 @@
   v5 = v4;
   if (v4)
   {
-    v4->_seed = a3;
-    __src[0] = a3;
+    v4->_seed = seed;
+    __src[0] = seed;
     for (i = 1; i != 312; ++i)
     {
-      a3 = i + 0x5851F42D4C957F2DLL * (a3 ^ (a3 >> 62));
-      __src[i] = a3;
+      seed = i + 0x5851F42D4C957F2DLL * (seed ^ (seed >> 62));
+      __src[i] = seed;
     }
 
     __src[312] = 0;
@@ -45,48 +45,48 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [objc_alloc(objc_opt_class()) initWithSeed:self->_seed];
   memcpy((v4 + 16), &self->_engine, 0x9C8uLL);
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = RMDMersenneTwisterRandomSource;
-  [(RMDRandomSource *)&v3 encodeWithCoder:a3];
+  [(RMDRandomSource *)&v3 encodeWithCoder:coder];
 }
 
-- (void)setSeed:(unint64_t)a3
+- (void)setSeed:(unint64_t)seed
 {
-  self->_seed = a3;
-  self->_engine.__x_[0] = a3;
+  self->_seed = seed;
+  self->_engine.__x_[0] = seed;
   for (i = 1; i != 312; ++i)
   {
-    a3 = i + 0x5851F42D4C957F2DLL * (a3 ^ (a3 >> 62));
-    self->_engine.__x_[i] = a3;
+    seed = i + 0x5851F42D4C957F2DLL * (seed ^ (seed >> 62));
+    self->_engine.__x_[i] = seed;
   }
 
   self->_engine.__i_ = 0;
 }
 
-- (unint64_t)nextIntWithUpperBound:(unint64_t)a3
+- (unint64_t)nextIntWithUpperBound:(unint64_t)bound
 {
-  v5 = a3 - 1;
-  if ((a3 & (a3 - 1)) == 0)
+  v5 = bound - 1;
+  if ((bound & (bound - 1)) == 0)
   {
-    return ([(RMDMersenneTwisterRandomSource *)self nextBits:32]* a3) >> 32;
+    return ([(RMDMersenneTwisterRandomSource *)self nextBits:32]* bound) >> 32;
   }
 
   do
   {
     v7 = [(RMDMersenneTwisterRandomSource *)self nextBits:32];
-    result = v7 % a3;
+    result = v7 % bound;
   }
 
-  while (v5 + v7 < v7 % a3);
+  while (v5 + v7 < v7 % bound);
   return result;
 }
 

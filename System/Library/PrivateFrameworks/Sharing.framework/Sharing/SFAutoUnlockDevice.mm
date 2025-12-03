@@ -1,10 +1,10 @@
 @interface SFAutoUnlockDevice
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SFAutoUnlockDevice)init;
-- (SFAutoUnlockDevice)initWithCoder:(id)a3;
+- (SFAutoUnlockDevice)initWithCoder:(id)coder;
 - (id)description;
 - (int64_t)type;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFAutoUnlockDevice
@@ -26,45 +26,45 @@
 
 - (int64_t)type
 {
-  v3 = [(SFPeerDevice *)self modelIdentifier];
-  v4 = [v3 lowercaseString];
-  v5 = [v4 containsString:@"watch"];
+  modelIdentifier = [(SFPeerDevice *)self modelIdentifier];
+  lowercaseString = [modelIdentifier lowercaseString];
+  v5 = [lowercaseString containsString:@"watch"];
 
   if (v5)
   {
     return 1;
   }
 
-  v7 = [(SFPeerDevice *)self modelIdentifier];
-  v8 = [v7 lowercaseString];
-  v9 = [v8 containsString:@"iphone"];
+  modelIdentifier2 = [(SFPeerDevice *)self modelIdentifier];
+  lowercaseString2 = [modelIdentifier2 lowercaseString];
+  v9 = [lowercaseString2 containsString:@"iphone"];
 
   if (v9)
   {
     return 2;
   }
 
-  v10 = [(SFPeerDevice *)self modelIdentifier];
-  v11 = [v10 lowercaseString];
-  v12 = [v11 containsString:@"ipad"];
+  modelIdentifier3 = [(SFPeerDevice *)self modelIdentifier];
+  lowercaseString3 = [modelIdentifier3 lowercaseString];
+  v12 = [lowercaseString3 containsString:@"ipad"];
 
   if (v12)
   {
     return 3;
   }
 
-  v13 = [(SFPeerDevice *)self modelIdentifier];
-  v14 = [v13 lowercaseString];
-  v15 = [v14 containsString:@"reality"];
+  modelIdentifier4 = [(SFPeerDevice *)self modelIdentifier];
+  lowercaseString4 = [modelIdentifier4 lowercaseString];
+  v15 = [lowercaseString4 containsString:@"reality"];
 
   if (v15)
   {
     return 5;
   }
 
-  v16 = [(SFPeerDevice *)self modelIdentifier];
-  v17 = [v16 lowercaseString];
-  v18 = [v17 containsString:@"mac"];
+  modelIdentifier5 = [(SFPeerDevice *)self modelIdentifier];
+  lowercaseString5 = [modelIdentifier5 lowercaseString];
+  v18 = [lowercaseString5 containsString:@"mac"];
 
   if (v18)
   {
@@ -77,10 +77,10 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -90,16 +90,16 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(SFPeerDevice *)self uniqueID];
-      v7 = [(SFPeerDevice *)v5 uniqueID];
-      v8 = [v6 isEqual:v7];
+      v5 = equalCopy;
+      uniqueID = [(SFPeerDevice *)self uniqueID];
+      uniqueID2 = [(SFPeerDevice *)v5 uniqueID];
+      v8 = [uniqueID isEqual:uniqueID2];
 
       if (v8 && (v9 = [(SFAutoUnlockDevice *)self bluetoothCloudPaired], v9 == [(SFAutoUnlockDevice *)v5 bluetoothCloudPaired]))
       {
-        v11 = [(SFPeerDevice *)self name];
-        v12 = [(SFPeerDevice *)v5 name];
-        v10 = [v11 isEqualToString:v12];
+        name = [(SFPeerDevice *)self name];
+        name2 = [(SFPeerDevice *)v5 name];
+        v10 = [name isEqualToString:name2];
       }
 
       else
@@ -120,9 +120,9 @@
 - (id)description
 {
   v18 = MEMORY[0x1E696AEC0];
-  v3 = [(SFAutoUnlockDevice *)self placeholder];
+  placeholder = [(SFAutoUnlockDevice *)self placeholder];
   v4 = &stru_1F1D30528;
-  if (v3)
+  if (placeholder)
   {
     v4 = @"[PLACEHOLDER] ";
   }
@@ -130,8 +130,8 @@
   v17 = v4;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  v7 = [(SFPeerDevice *)self uniqueID];
-  v8 = [(SFAutoUnlockDevice *)self bluetoothID];
+  uniqueID = [(SFPeerDevice *)self uniqueID];
+  bluetoothID = [(SFAutoUnlockDevice *)self bluetoothID];
   v9 = @"YES";
   if ([(SFAutoUnlockDevice *)self bluetoothCloudPaired])
   {
@@ -143,8 +143,8 @@
     v10 = @"NO";
   }
 
-  v11 = [(SFPeerDevice *)self modelIdentifier];
-  v12 = [(SFPeerDevice *)self name];
+  modelIdentifier = [(SFPeerDevice *)self modelIdentifier];
+  name = [(SFPeerDevice *)self name];
   if ([(SFAutoUnlockDevice *)self unlockEnabled])
   {
     v13 = @"YES";
@@ -160,32 +160,32 @@
     v9 = @"NO";
   }
 
-  v14 = [(SFAutoUnlockDevice *)self modelDescription];
-  v15 = [v18 stringWithFormat:@"<%@%@: %p, uniqueID:%@, bluetooth ID:%@, cloud paired:%@, modelIdentifier:%@, name:%@, unlockEnabled:%@ canUnlockDevice:%@ modelDescription:%@>", v17, v6, self, v7, v8, v10, v11, v12, v13, v9, v14];
+  modelDescription = [(SFAutoUnlockDevice *)self modelDescription];
+  v15 = [v18 stringWithFormat:@"<%@%@: %p, uniqueID:%@, bluetooth ID:%@, cloud paired:%@, modelIdentifier:%@, name:%@, unlockEnabled:%@ canUnlockDevice:%@ modelDescription:%@>", v17, v6, self, uniqueID, bluetoothID, v10, modelIdentifier, name, v13, v9, modelDescription];
 
   return v15;
 }
 
-- (SFAutoUnlockDevice)initWithCoder:(id)a3
+- (SFAutoUnlockDevice)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = SFAutoUnlockDevice;
-  v5 = [(SFPeerDevice *)&v13 initWithCoder:v4];
+  v5 = [(SFPeerDevice *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_bluetoothCloudPaired = [v4 decodeBoolForKey:@"cloudPaired"];
-    v5->_unlockEnabled = [v4 decodeBoolForKey:@"unlockEnabled"];
-    v5->_canUnlockDevice = [v4 decodeBoolForKey:@"canUnlockDevice"];
-    v5->_keyExists = [v4 decodeBoolForKey:@"keyExists"];
-    v5->_placeholder = [v4 decodeBoolForKey:@"placeholder"];
-    v5->_supportsApproveWithWatch = [v4 decodeBoolForKey:@"supportsApproveWithWatch"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"modelDescription"];
+    v5->_bluetoothCloudPaired = [coderCopy decodeBoolForKey:@"cloudPaired"];
+    v5->_unlockEnabled = [coderCopy decodeBoolForKey:@"unlockEnabled"];
+    v5->_canUnlockDevice = [coderCopy decodeBoolForKey:@"canUnlockDevice"];
+    v5->_keyExists = [coderCopy decodeBoolForKey:@"keyExists"];
+    v5->_placeholder = [coderCopy decodeBoolForKey:@"placeholder"];
+    v5->_supportsApproveWithWatch = [coderCopy decodeBoolForKey:@"supportsApproveWithWatch"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"modelDescription"];
     v7 = [v6 copy];
     modelDescription = v5->_modelDescription;
     v5->_modelDescription = v7;
 
-    v9 = [v4 decodeObjectForKey:@"metrics"];
+    v9 = [coderCopy decodeObjectForKey:@"metrics"];
     v10 = [v9 copy];
     results = v5->_results;
     v5->_results = v10;
@@ -194,21 +194,21 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = SFAutoUnlockDevice;
-  v4 = a3;
-  [(SFPeerDevice *)&v6 encodeWithCoder:v4];
-  [v4 encodeBool:self->_bluetoothCloudPaired forKey:{@"cloudPaired", v6.receiver, v6.super_class}];
-  [v4 encodeBool:self->_unlockEnabled forKey:@"unlockEnabled"];
-  [v4 encodeBool:self->_canUnlockDevice forKey:@"canUnlockDevice"];
-  [v4 encodeBool:self->_keyExists forKey:@"keyExists"];
-  [v4 encodeBool:self->_placeholder forKey:@"placeholder"];
-  [v4 encodeBool:self->_supportsApproveWithWatch forKey:@"supportsApproveWithWatch"];
-  [v4 encodeObject:self->_modelDescription forKey:@"modelDescription"];
+  coderCopy = coder;
+  [(SFPeerDevice *)&v6 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:self->_bluetoothCloudPaired forKey:{@"cloudPaired", v6.receiver, v6.super_class}];
+  [coderCopy encodeBool:self->_unlockEnabled forKey:@"unlockEnabled"];
+  [coderCopy encodeBool:self->_canUnlockDevice forKey:@"canUnlockDevice"];
+  [coderCopy encodeBool:self->_keyExists forKey:@"keyExists"];
+  [coderCopy encodeBool:self->_placeholder forKey:@"placeholder"];
+  [coderCopy encodeBool:self->_supportsApproveWithWatch forKey:@"supportsApproveWithWatch"];
+  [coderCopy encodeObject:self->_modelDescription forKey:@"modelDescription"];
   v5 = [(NSDictionary *)self->_results copy];
-  [v4 encodeObject:v5 forKey:@"metrics"];
+  [coderCopy encodeObject:v5 forKey:@"metrics"];
 }
 
 @end

@@ -7,10 +7,10 @@
 - (void)performTask
 {
   [(RichMapsActivityCreatingTaskImpl *)self taskStarted];
-  v3 = [(UserActivityHandlingTask *)self userActivity];
-  v4 = [v3 userInfo];
+  userActivity = [(UserActivityHandlingTask *)self userActivity];
+  userInfo = [userActivity userInfo];
 
-  v5 = [v4 objectForKeyedSubscript:@"bs"];
+  v5 = [userInfo objectForKeyedSubscript:@"bs"];
   if (v5)
   {
     v6 = [[MapsActivity alloc] initWithBzip2CompressedData:v5];
@@ -30,16 +30,16 @@
 
     if ([(MapsActivity *)v6 hasDisplayOptions])
     {
-      v8 = [(MapsActivity *)v7 displayOptions];
-      if ([v8 hasCamera])
+      displayOptions = [(MapsActivity *)v7 displayOptions];
+      if ([displayOptions hasCamera])
       {
         v9 = 0;
       }
 
       else
       {
-        v13 = [(MapsActivity *)v7 displayOptions];
-        v9 = [v13 hasCenterSpan] ^ 1;
+        displayOptions2 = [(MapsActivity *)v7 displayOptions];
+        v9 = [displayOptions2 hasCenterSpan] ^ 1;
       }
 
       v12 = objc_alloc_init(NewWindowAction);

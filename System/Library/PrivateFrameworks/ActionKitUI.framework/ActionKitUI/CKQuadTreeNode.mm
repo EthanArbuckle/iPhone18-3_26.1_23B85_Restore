@@ -1,12 +1,12 @@
 @interface CKQuadTreeNode
 - (CGRect)bounds;
-- (CKQuadTreeNode)initWithBounds:(CGRect)a3;
+- (CKQuadTreeNode)initWithBounds:(CGRect)bounds;
 - (NSArray)nodes;
-- (id)debugDescriptionWithLevel:(int64_t)a3;
+- (id)debugDescriptionWithLevel:(int64_t)level;
 - (id)description;
-- (id)nodeForPoint:(CGPoint)a3;
-- (void)insertPoint:(CGPoint)a3;
-- (void)visit:(id)a3;
+- (id)nodeForPoint:(CGPoint)point;
+- (void)insertPoint:(CGPoint)point;
+- (void)visit:(id)visit;
 @end
 
 @implementation CKQuadTreeNode
@@ -24,19 +24,19 @@
   return result;
 }
 
-- (void)visit:(id)a3
+- (void)visit:(id)visit
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ((*(v4 + 2))(v4, self) & 1) == 0)
+  visitCopy = visit;
+  v5 = visitCopy;
+  if (visitCopy && ((*(visitCopy + 2))(visitCopy, self) & 1) == 0)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = [(CKQuadTreeNode *)self nodes];
-    v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    nodes = [(CKQuadTreeNode *)self nodes];
+    v7 = [nodes countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v7)
     {
       v8 = v7;
@@ -48,14 +48,14 @@
         {
           if (*v13 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(nodes);
           }
 
           [*(*(&v12 + 1) + 8 * v10++) visit:v5];
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v8 = [nodes countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v8);
@@ -65,14 +65,14 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)insertPoint:(CGPoint)a3
+- (void)insertPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  if (!CGRectContainsPoint(self->_bounds, a3))
+  y = point.y;
+  x = point.x;
+  if (!CGRectContainsPoint(self->_bounds, point))
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"CKQuadTree.m" lineNumber:99 description:@"You can only insert points within the calculated bounds"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CKQuadTree.m" lineNumber:99 description:@"You can only insert points within the calculated bounds"];
   }
 
   point = self->_point;
@@ -108,10 +108,10 @@ LABEL_11:
   MEMORY[0x2821F96F8]();
 }
 
-- (id)nodeForPoint:(CGPoint)a3
+- (id)nodeForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   memset(&remainder, 0, sizeof(remainder));
   memset(&slice, 0, sizeof(slice));
   memset(&v24, 0, sizeof(v24));
@@ -244,43 +244,43 @@ LABEL_16:
   return v5;
 }
 
-- (id)debugDescriptionWithLevel:(int64_t)a3
+- (id)debugDescriptionWithLevel:(int64_t)level
 {
   v35[4] = *MEMORY[0x277D85DE8];
-  v5 = [(CKQuadTreeNode *)self->_topRight debugDescriptionWithLevel:a3 + 1];
-  v6 = v5;
-  if (!v5)
+  null = [(CKQuadTreeNode *)self->_topRight debugDescriptionWithLevel:level + 1];
+  v6 = null;
+  if (!null)
   {
-    v5 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v28 = v5;
-  v35[0] = v5;
-  v7 = [(CKQuadTreeNode *)self->_topLeft debugDescriptionWithLevel:a3 + 1];
-  v8 = v7;
+  v28 = null;
+  v35[0] = null;
+  v7 = [(CKQuadTreeNode *)self->_topLeft debugDescriptionWithLevel:level + 1];
+  null2 = v7;
   if (!v7)
   {
-    v8 = [MEMORY[0x277CBEB68] null];
+    null2 = [MEMORY[0x277CBEB68] null];
   }
 
-  v35[1] = v8;
-  v9 = [(CKQuadTreeNode *)self->_bottomLeft debugDescriptionWithLevel:a3 + 1];
-  v10 = v9;
+  v35[1] = null2;
+  v9 = [(CKQuadTreeNode *)self->_bottomLeft debugDescriptionWithLevel:level + 1];
+  null3 = v9;
   if (!v9)
   {
-    v10 = [MEMORY[0x277CBEB68] null];
+    null3 = [MEMORY[0x277CBEB68] null];
   }
 
-  v35[2] = v10;
-  v29 = self;
-  v11 = [(CKQuadTreeNode *)self->_bottomRight debugDescriptionWithLevel:a3 + 1];
-  v12 = v11;
+  v35[2] = null3;
+  selfCopy = self;
+  v11 = [(CKQuadTreeNode *)self->_bottomRight debugDescriptionWithLevel:level + 1];
+  null4 = v11;
   if (!v11)
   {
-    v12 = [MEMORY[0x277CBEB68] null];
+    null4 = [MEMORY[0x277CBEB68] null];
   }
 
-  v35[3] = v12;
+  v35[3] = null4;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v35 count:4];
   v14 = [v13 mutableCopy];
 
@@ -300,14 +300,14 @@ LABEL_16:
   {
   }
 
-  v15 = [MEMORY[0x277CBEB68] null];
-  [v14 removeObject:v15];
+  null5 = [MEMORY[0x277CBEB68] null];
+  [v14 removeObject:null5];
 
-  v16 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v17 = [MEMORY[0x277CCAB68] stringWithString:@"\n"];
-  if ((a3 & 0x8000000000000000) == 0)
+  if ((level & 0x8000000000000000) == 0)
   {
-    v18 = a3 + 1;
+    v18 = level + 1;
     do
     {
       [v17 appendString:@"  | "];
@@ -336,7 +336,7 @@ LABEL_16:
           objc_enumerationMutation(v19);
         }
 
-        [v16 appendFormat:@"%@%@", v17, *(*(&v30 + 1) + 8 * i)];
+        [string appendFormat:@"%@%@", v17, *(*(&v30 + 1) + 8 * i)];
       }
 
       v21 = [v19 countByEnumeratingWithState:&v30 objects:v34 count:16];
@@ -345,8 +345,8 @@ LABEL_16:
     while (v21);
   }
 
-  v24 = [(CKQuadTreeNode *)v29 description];
-  v25 = [v24 stringByAppendingString:v16];
+  v24 = [(CKQuadTreeNode *)selfCopy description];
+  v25 = [v24 stringByAppendingString:string];
 
   v26 = *MEMORY[0x277D85DE8];
 
@@ -378,16 +378,16 @@ LABEL_16:
   return v11;
 }
 
-- (CKQuadTreeNode)initWithBounds:(CGRect)a3
+- (CKQuadTreeNode)initWithBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (CGRectIsNull(a3))
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  if (CGRectIsNull(bounds))
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"CKQuadTree.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"!CGRectIsNull(bounds)"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CKQuadTree.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"!CGRectIsNull(bounds)"}];
   }
 
   v18.origin.x = x;
@@ -401,8 +401,8 @@ LABEL_16:
   v19.size.height = height;
   if (v9 != CGRectGetWidth(v19))
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"CKQuadTree.m" lineNumber:29 description:@"The bounds must be square"];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"CKQuadTree.m" lineNumber:29 description:@"The bounds must be square"];
   }
 
   v17.receiver = self;
@@ -415,9 +415,9 @@ LABEL_16:
     v10->_bounds.origin.y = y;
     v10->_bounds.size.width = width;
     v10->_bounds.size.height = height;
-    v12 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     userInfo = v11->_userInfo;
-    v11->_userInfo = v12;
+    v11->_userInfo = dictionary;
   }
 
   return v11;

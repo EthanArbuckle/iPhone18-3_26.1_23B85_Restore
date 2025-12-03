@@ -1,12 +1,12 @@
 @interface YearInReviewEligibilityServiceFactory
-- (void)deleteCloudDataWithCompletion:(id)a3;
+- (void)deleteCloudDataWithCompletion:(id)completion;
 @end
 
 @implementation YearInReviewEligibilityServiceFactory
 
-- (void)deleteCloudDataWithCompletion:(id)a3
+- (void)deleteCloudDataWithCompletion:(id)completion
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(completion);
   if (v3)
   {
     v4 = v3;

@@ -1,8 +1,8 @@
 @interface SCLUnlockHistoryPersistentStore
-- (BOOL)deleteHistory:(id *)a3;
-- (BOOL)insertItem:(id)a3;
+- (BOOL)deleteHistory:(id *)history;
+- (BOOL)insertItem:(id)item;
 - (BOOL)purgeOldItems;
-- (SCLUnlockHistoryPersistentStore)initWithURL:(id)a3;
+- (SCLUnlockHistoryPersistentStore)initWithURL:(id)l;
 - (id)recentHistoryItems;
 - (id)recentItemsThresholdDate;
 - (void)dealloc;
@@ -11,17 +11,17 @@
 
 @implementation SCLUnlockHistoryPersistentStore
 
-- (SCLUnlockHistoryPersistentStore)initWithURL:(id)a3
+- (SCLUnlockHistoryPersistentStore)initWithURL:(id)l
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  lCopy = l;
   v18.receiver = self;
   v18.super_class = SCLUnlockHistoryPersistentStore;
   v6 = [(SCLUnlockHistoryPersistentStore *)&v18 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_URL, a3);
+    objc_storeStrong(&v6->_URL, l);
     v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v9 = [v8 URLForResource:@"SchoolTime" withExtension:@"momd"];
 
@@ -30,7 +30,7 @@
     persistentContainer = v7->_persistentContainer;
     v7->_persistentContainer = v11;
 
-    v13 = [objc_alloc(MEMORY[0x277CBE4E0]) initWithURL:v5];
+    v13 = [objc_alloc(MEMORY[0x277CBE4E0]) initWithURL:lCopy];
     [v13 setType:*MEMORY[0x277CBE2E8]];
     v14 = v7->_persistentContainer;
     v19[0] = v13;
@@ -95,21 +95,21 @@ void __44__SCLUnlockHistoryPersistentStore_loadStore__block_invoke(uint64_t a1, 
   [(SCLUnlockHistoryPersistentStore *)&v3 dealloc];
 }
 
-- (BOOL)insertItem:(id)a3
+- (BOOL)insertItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  v5 = [(SCLUnlockHistoryPersistentStore *)self storeContext];
+  storeContext = [(SCLUnlockHistoryPersistentStore *)self storeContext];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __46__SCLUnlockHistoryPersistentStore_insertItem___block_invoke;
   v10[3] = &unk_279B6CA00;
-  v6 = v5;
+  v6 = storeContext;
   v11 = v6;
-  v7 = v4;
+  v7 = itemCopy;
   v12 = v7;
   v13 = &v14;
   [v6 performBlockAndWait:v10];
@@ -169,26 +169,26 @@ void __46__SCLUnlockHistoryPersistentStore_insertItem___block_invoke(uint64_t a1
   }
 }
 
-- (BOOL)deleteHistory:(id *)a3
+- (BOOL)deleteHistory:(id *)history
 {
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v4 = [(SCLUnlockHistoryPersistentStore *)self storeContext];
+  storeContext = [(SCLUnlockHistoryPersistentStore *)self storeContext];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __49__SCLUnlockHistoryPersistentStore_deleteHistory___block_invoke;
   v7[3] = &unk_279B6CA28;
-  v5 = v4;
+  v5 = storeContext;
   v9 = &v11;
-  v10 = a3;
+  historyCopy = history;
   v8 = v5;
   [v5 performBlockAndWait:v7];
-  LOBYTE(a3) = *(v12 + 24);
+  LOBYTE(history) = *(v12 + 24);
 
   _Block_object_dispose(&v11, 8);
-  return a3;
+  return history;
 }
 
 void __49__SCLUnlockHistoryPersistentStore_deleteHistory___block_invoke(uint64_t a1)
@@ -209,31 +209,31 @@ void __49__SCLUnlockHistoryPersistentStore_deleteHistory___block_invoke(uint64_t
 {
   v24[1] = *MEMORY[0x277D85DE8];
   v3 = +[SCLUnlockEvent fetchRequest];
-  v4 = [(SCLUnlockHistoryPersistentStore *)self persistentContainer];
-  v5 = [v4 persistentStoreCoordinator];
-  v6 = [v5 persistentStores];
-  [v3 setAffectedStores:v6];
+  persistentContainer = [(SCLUnlockHistoryPersistentStore *)self persistentContainer];
+  persistentStoreCoordinator = [persistentContainer persistentStoreCoordinator];
+  persistentStores = [persistentStoreCoordinator persistentStores];
+  [v3 setAffectedStores:persistentStores];
 
-  v7 = [(SCLUnlockHistoryPersistentStore *)self recentItemsThresholdDate];
-  v8 = [MEMORY[0x277CCAC30] predicateWithFormat:@"startDate >= %@", v7];
+  recentItemsThresholdDate = [(SCLUnlockHistoryPersistentStore *)self recentItemsThresholdDate];
+  v8 = [MEMORY[0x277CCAC30] predicateWithFormat:@"startDate >= %@", recentItemsThresholdDate];
   [v3 setPredicate:v8];
   v9 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"startDate" ascending:1];
   v24[0] = v9;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:1];
   [v3 setSortDescriptors:v10];
 
-  v11 = [(SCLUnlockHistoryPersistentStore *)self storeContext];
-  v12 = [MEMORY[0x277CBEB18] array];
+  storeContext = [(SCLUnlockHistoryPersistentStore *)self storeContext];
+  array = [MEMORY[0x277CBEB18] array];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __53__SCLUnlockHistoryPersistentStore_recentHistoryItems__block_invoke;
   v20[3] = &unk_279B6CA50;
-  v21 = v11;
+  v21 = storeContext;
   v22 = v3;
-  v13 = v12;
+  v13 = array;
   v23 = v13;
   v14 = v3;
-  v15 = v11;
+  v15 = storeContext;
   [v15 performBlockAndWait:v20];
   v16 = v23;
   v17 = v13;
@@ -316,17 +316,17 @@ void __53__SCLUnlockHistoryPersistentStore_recentHistoryItems__block_invoke(uint
 - (BOOL)purgeOldItems
 {
   v3 = +[SCLUnlockEvent fetchRequest];
-  v4 = [(SCLUnlockHistoryPersistentStore *)self persistentContainer];
-  v5 = [v4 persistentStoreCoordinator];
-  v6 = [v5 persistentStores];
-  [v3 setAffectedStores:v6];
+  persistentContainer = [(SCLUnlockHistoryPersistentStore *)self persistentContainer];
+  persistentStoreCoordinator = [persistentContainer persistentStoreCoordinator];
+  persistentStores = [persistentStoreCoordinator persistentStores];
+  [v3 setAffectedStores:persistentStores];
 
-  v7 = [(SCLUnlockHistoryPersistentStore *)self recentItemsThresholdDate];
-  v8 = [MEMORY[0x277CCAC30] predicateWithFormat:@"startDate < %@", v7];
+  recentItemsThresholdDate = [(SCLUnlockHistoryPersistentStore *)self recentItemsThresholdDate];
+  v8 = [MEMORY[0x277CCAC30] predicateWithFormat:@"startDate < %@", recentItemsThresholdDate];
   [v3 setPredicate:v8];
   v9 = [objc_alloc(MEMORY[0x277CBE360]) initWithFetchRequest:v3];
   [v9 setResultType:2];
-  v10 = [(SCLUnlockHistoryPersistentStore *)self storeContext];
+  storeContext = [(SCLUnlockHistoryPersistentStore *)self storeContext];
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -335,7 +335,7 @@ void __53__SCLUnlockHistoryPersistentStore_recentHistoryItems__block_invoke(uint
   v15[1] = 3221225472;
   v15[2] = __48__SCLUnlockHistoryPersistentStore_purgeOldItems__block_invoke;
   v15[3] = &unk_279B6CA00;
-  v11 = v10;
+  v11 = storeContext;
   v16 = v11;
   v12 = v9;
   v17 = v12;
@@ -378,10 +378,10 @@ void __48__SCLUnlockHistoryPersistentStore_purgeOldItems__block_invoke(void *a1)
 
 - (id)recentItemsThresholdDate
 {
-  v2 = [MEMORY[0x277CBEA80] currentCalendar];
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [v2 dateByAddingUnit:16 value:-7 toDate:v3 options:0];
-  v5 = [v2 startOfDayForDate:v4];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  date = [MEMORY[0x277CBEAA8] date];
+  v4 = [currentCalendar dateByAddingUnit:16 value:-7 toDate:date options:0];
+  v5 = [currentCalendar startOfDayForDate:v4];
 
   return v5;
 }

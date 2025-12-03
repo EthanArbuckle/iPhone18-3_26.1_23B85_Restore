@@ -1,9 +1,9 @@
 @interface ACCTransportIOAccessoryConfigStream
 - (ACCTransportIOAccessoryConfigStreamProtocol)delegate;
-- (BOOL)IOAccessoryConfigStreamRequestGetPropertyForCategoryID:(unsigned __int16)a3 propertyID:(unsigned __int8)a4;
-- (BOOL)IOAccessoryConfigStreamSetPropertyData:(id)a3 categoryID:(unsigned __int16)a4 propertyID:(unsigned __int8)a5;
+- (BOOL)IOAccessoryConfigStreamRequestGetPropertyForCategoryID:(unsigned __int16)d propertyID:(unsigned __int8)iD;
+- (BOOL)IOAccessoryConfigStreamSetPropertyData:(id)data categoryID:(unsigned __int16)d propertyID:(unsigned __int8)iD;
 - (BOOL)openServiceSession;
-- (BOOL)transmitData:(id)a3;
+- (BOOL)transmitData:(id)data;
 - (NSString)deviceFirmwareVersion;
 - (NSString)deviceHardwareVersion;
 - (NSString)deviceIdentifier;
@@ -14,8 +14,8 @@
 - (NSString)deviceSerialNumber;
 - (NSString)parentConnectionUUID;
 - (id)_getCategories;
-- (id)_getPropertyData:(unsigned __int8)a3 forCategory:(unsigned __int16)a4;
-- (id)_getStringProperty:(unsigned __int8)a3 forCategory:(unsigned __int16)a4;
+- (id)_getPropertyData:(unsigned __int8)data forCategory:(unsigned __int16)category;
+- (id)_getStringProperty:(unsigned __int8)property forCategory:(unsigned __int16)category;
 - (id)description;
 - (void)_checkAccInfo;
 - (void)_getCategories;
@@ -118,7 +118,7 @@ void __69__ACCTransportIOAccessoryConfigStream_initWithDelegate_andIOService___b
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v17 = [(ACCTransportIOAccessoryBase *)self ioService];
+    ioService = [(ACCTransportIOAccessoryBase *)self ioService];
     _os_log_impl(&dword_233656000, v5, OS_LOG_TYPE_DEFAULT, "deallocing ConfigStream %d", buf, 8u);
   }
 
@@ -186,12 +186,12 @@ void __69__ACCTransportIOAccessoryConfigStream_initWithDelegate_andIOService___b
 
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(ACCTransportIOAccessoryBase *)self ioService];
-    v7 = [(ACCTransportIOAccessoryConfigStream *)self endpointUUID];
+    ioService = [(ACCTransportIOAccessoryBase *)self ioService];
+    endpointUUID = [(ACCTransportIOAccessoryConfigStream *)self endpointUUID];
     v26 = 67109378;
-    *v27 = v6;
+    *v27 = ioService;
     *&v27[4] = 2112;
-    *&v27[6] = v7;
+    *&v27[6] = endpointUUID;
     _os_log_impl(&dword_233656000, v5, OS_LOG_TYPE_DEFAULT, "ConfigStream openServiceSession, ioService = %d, endpointUUID %@", &v26, 0x12u);
   }
 
@@ -218,9 +218,9 @@ void __69__ACCTransportIOAccessoryConfigStream_initWithDelegate_andIOService___b
       goto LABEL_30;
     }
 
-    v15 = [(ACCTransportIOAccessoryConfigStream *)self endpointUUID];
+    endpointUUID2 = [(ACCTransportIOAccessoryConfigStream *)self endpointUUID];
     v26 = 138412290;
-    *v27 = v15;
+    *v27 = endpointUUID2;
     v16 = "ConfigStream is already open (endpointUUID %@)";
     v17 = v8;
     v18 = 12;
@@ -232,8 +232,8 @@ LABEL_30:
     goto LABEL_39;
   }
 
-  v9 = [(ACCTransportIOAccessoryBase *)self ioService];
-  v10 = IOServiceOpen(v9, *MEMORY[0x277D85F48], 0, &self->super._ioConnect);
+  ioService2 = [(ACCTransportIOAccessoryBase *)self ioService];
+  v10 = IOServiceOpen(ioService2, *MEMORY[0x277D85F48], 0, &self->super._ioConnect);
   if (gLogObjects)
   {
     v11 = gNumLogObjects <= 9;
@@ -268,14 +268,14 @@ LABEL_30:
       goto LABEL_30;
     }
 
-    v25 = [(ACCTransportIOAccessoryBase *)self ioService];
-    v15 = [(ACCTransportIOAccessoryConfigStream *)self endpointUUID];
+    ioService3 = [(ACCTransportIOAccessoryBase *)self ioService];
+    endpointUUID2 = [(ACCTransportIOAccessoryConfigStream *)self endpointUUID];
     v26 = 67109634;
-    *v27 = v25;
+    *v27 = ioService3;
     *&v27[4] = 1024;
     *&v27[6] = 0;
     *&v27[10] = 2112;
-    *&v27[12] = v15;
+    *&v27[12] = endpointUUID2;
     v16 = "ConfigStream for self.ioService %d is open, result = 0x%X (endpointUUID %@)";
     v17 = v8;
     v18 = 24;
@@ -301,11 +301,11 @@ LABEL_30:
 
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v21 = [(ACCTransportIOAccessoryConfigStream *)self endpointUUID];
+    endpointUUID3 = [(ACCTransportIOAccessoryConfigStream *)self endpointUUID];
     v26 = 67109378;
     *v27 = v13;
     *&v27[4] = 2112;
-    *&v27[6] = v21;
+    *&v27[6] = endpointUUID3;
     _os_log_impl(&dword_233656000, v8, OS_LOG_TYPE_DEFAULT, "ERROR: ConfigStream open failed! result %xh (endpointUUID %@)", &v26, 0x12u);
   }
 
@@ -352,9 +352,9 @@ LABEL_39:
 
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(ACCTransportIOAccessoryConfigStream *)self endpointUUID];
+      endpointUUID = [(ACCTransportIOAccessoryConfigStream *)self endpointUUID];
       v12 = 138412290;
-      v13 = v9;
+      v13 = endpointUUID;
       v10 = "ConfigStream is closed (endpointUUID %@)";
 LABEL_22:
       _os_log_impl(&dword_233656000, v8, OS_LOG_TYPE_DEFAULT, v10, &v12, 0xCu);
@@ -391,9 +391,9 @@ LABEL_22:
 
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(ACCTransportIOAccessoryConfigStream *)self endpointUUID];
+      endpointUUID = [(ACCTransportIOAccessoryConfigStream *)self endpointUUID];
       v12 = 138412290;
-      v13 = v9;
+      v13 = endpointUUID;
       v10 = "ConfigStream is already closed (endpointUUID %@)";
       goto LABEL_22;
     }
@@ -593,13 +593,13 @@ LABEL_67:
           if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
           {
             v30 = self->_deviceIdentifier;
-            v31 = [v17 unsignedIntValue];
+            unsignedIntValue = [v17 unsignedIntValue];
             *buf = 136320258;
             v54 = "[ACCTransportIOAccessoryConfigStream _getCategories]";
             v55 = 2112;
             *v56 = v30;
             *&v56[8] = 1024;
-            *&v56[10] = v31;
+            *&v56[10] = unsignedIntValue;
             v57 = 1024;
             *v58 = 16;
             *&v58[4] = 2048;
@@ -661,11 +661,11 @@ LABEL_67:
             if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
             {
               v37 = self->_deviceIdentifier;
-              v38 = [v17 unsignedIntValue];
+              unsignedIntValue2 = [v17 unsignedIntValue];
               *buf = 138412802;
               v54 = v37;
               v55 = 1024;
-              *v56 = v38;
+              *v56 = unsignedIntValue2;
               *&v56[4] = 1024;
               *&v56[6] = v19;
               _os_log_impl(&dword_233656000, v35, OS_LOG_TYPE_DEFAULT, "Error retrieving properties for deviceIdentifier %@, categoryID %04x, ret %x \n", buf, 0x18u);
@@ -744,10 +744,10 @@ LABEL_67:
   return v32;
 }
 
-- (id)_getPropertyData:(unsigned __int8)a3 forCategory:(unsigned __int16)a4
+- (id)_getPropertyData:(unsigned __int8)data forCategory:(unsigned __int16)category
 {
-  v4 = a4;
-  v5 = a3;
+  categoryCopy = category;
+  dataCopy = data;
   v31 = *MEMORY[0x277D85DE8];
   memset(__b, 170, sizeof(__b));
   [(ACCTransportIOAccessoryBase *)self ioService];
@@ -789,9 +789,9 @@ LABEL_67:
       v21 = 2112;
       v22 = deviceIdentifier;
       v23 = 1024;
-      v24 = v4;
+      v24 = categoryCopy;
       v25 = 1024;
-      v26 = v5;
+      v26 = dataCopy;
       v27 = 1024;
       LODWORD(v28) = v8;
       _os_log_debug_impl(&dword_233656000, v12, OS_LOG_TYPE_DEBUG, "%s: Failed to got property data: device %@, categoryID 0x%04x, propertyID 0x%02x, ret %x \n", buf, 0x28u);
@@ -827,9 +827,9 @@ LABEL_67:
       v21 = 2112;
       v22 = v17;
       v23 = 1024;
-      v24 = v4;
+      v24 = categoryCopy;
       v25 = 1024;
-      v26 = v5;
+      v26 = dataCopy;
       v27 = 2048;
       v28 = 1024;
       v29 = 2112;
@@ -843,10 +843,10 @@ LABEL_67:
   return v11;
 }
 
-- (id)_getStringProperty:(unsigned __int8)a3 forCategory:(unsigned __int16)a4
+- (id)_getStringProperty:(unsigned __int8)property forCategory:(unsigned __int16)category
 {
-  v4 = a4;
-  v5 = a3;
+  categoryCopy = category;
+  propertyCopy = property;
   v33 = *MEMORY[0x277D85DE8];
   memset(__b, 170, sizeof(__b));
   [(ACCTransportIOAccessoryBase *)self ioService];
@@ -886,9 +886,9 @@ LABEL_67:
     v25 = 2112;
     v26 = deviceIdentifier;
     v27 = 1024;
-    v28 = v4;
+    v28 = categoryCopy;
     v29 = 1024;
-    v30 = v5;
+    v30 = propertyCopy;
     v31 = 1024;
     *v32 = Property;
     *&v32[4] = 2048;
@@ -925,9 +925,9 @@ LABEL_67:
       v25 = 2112;
       v26 = v19;
       v27 = 1024;
-      v28 = v4;
+      v28 = categoryCopy;
       v29 = 1024;
-      v30 = v5;
+      v30 = propertyCopy;
       v31 = 1024;
       *v32 = Property;
       _os_log_debug_impl(&dword_233656000, v11, OS_LOG_TYPE_DEBUG, "%s: Failed to get string property: device %@, categoryID 0x%04x, propertyID 0x%02x, ret %x \n", buf, 0x28u);
@@ -964,9 +964,9 @@ LABEL_67:
       v25 = 2112;
       v26 = v20;
       v27 = 1024;
-      v28 = v4;
+      v28 = categoryCopy;
       v29 = 1024;
-      v30 = v5;
+      v30 = propertyCopy;
       v31 = 2048;
       *v32 = 1024;
       *&v32[8] = 2112;
@@ -983,7 +983,7 @@ LABEL_67:
 - (void)_checkAccInfo
 {
   v5 = *MEMORY[0x277D85DE8];
-  v1 = *a1;
+  v1 = *self;
   v4[0] = 136315394;
   OUTLINED_FUNCTION_2_0();
   _os_log_debug_impl(&dword_233656000, v2, OS_LOG_TYPE_DEBUG, "%s: _deviceIdentifier %@ \n", v4, 0x16u);
@@ -994,66 +994,66 @@ LABEL_67:
 {
   v4 = *MEMORY[0x277D85DE8];
   v3[0] = 67109120;
-  v3[1] = a1;
+  v3[1] = self;
   _os_log_error_impl(&dword_233656000, a2, OS_LOG_TYPE_ERROR, "error 0X%X  IOServiceAddInterestNotification", v3, 8u);
   v2 = *MEMORY[0x277D85DE8];
 }
 
 - (id)description
 {
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(ACCTransportIOAccessoryConfigStream *)self endpointUUID];
-  v6 = [v4 stringWithFormat:@"ConfigStream %@\n", v5];
-  [v3 appendFormat:@"%@", v6];
+  endpointUUID = [(ACCTransportIOAccessoryConfigStream *)self endpointUUID];
+  v6 = [v4 stringWithFormat:@"ConfigStream %@\n", endpointUUID];
+  [string appendFormat:@"%@", v6];
 
   v7 = MEMORY[0x277CCACA8];
-  v8 = [(ACCTransportIOAccessoryConfigStream *)self deviceIdentifier];
-  v9 = [v7 stringWithFormat:@"    deviceIdentifier %@\n", v8];
-  [v3 appendFormat:@"%@", v9];
+  deviceIdentifier = [(ACCTransportIOAccessoryConfigStream *)self deviceIdentifier];
+  v9 = [v7 stringWithFormat:@"    deviceIdentifier %@\n", deviceIdentifier];
+  [string appendFormat:@"%@", v9];
 
   v10 = MEMORY[0x277CCACA8];
-  v11 = [(ACCTransportIOAccessoryConfigStream *)self deviceName];
-  v12 = [v10 stringWithFormat:@"    deviceName %@\n", v11];
-  [v3 appendFormat:@"%@", v12];
+  deviceName = [(ACCTransportIOAccessoryConfigStream *)self deviceName];
+  v12 = [v10 stringWithFormat:@"    deviceName %@\n", deviceName];
+  [string appendFormat:@"%@", v12];
 
   v13 = MEMORY[0x277CCACA8];
-  v14 = [(ACCTransportIOAccessoryConfigStream *)self deviceManufacturer];
-  v15 = [v13 stringWithFormat:@"    deviceManufacturer %@\n", v14];
-  [v3 appendFormat:@"%@", v15];
+  deviceManufacturer = [(ACCTransportIOAccessoryConfigStream *)self deviceManufacturer];
+  v15 = [v13 stringWithFormat:@"    deviceManufacturer %@\n", deviceManufacturer];
+  [string appendFormat:@"%@", v15];
 
   v16 = MEMORY[0x277CCACA8];
-  v17 = [(ACCTransportIOAccessoryConfigStream *)self deviceModel];
-  v18 = [v16 stringWithFormat:@"    deviceModel %@\n", v17];
-  [v3 appendFormat:@"%@", v18];
+  deviceModel = [(ACCTransportIOAccessoryConfigStream *)self deviceModel];
+  v18 = [v16 stringWithFormat:@"    deviceModel %@\n", deviceModel];
+  [string appendFormat:@"%@", v18];
 
   v19 = MEMORY[0x277CCACA8];
-  v20 = [(ACCTransportIOAccessoryConfigStream *)self deviceHardwareVersion];
-  v21 = [v19 stringWithFormat:@"    deviceHardwareVersion %@\n", v20];
-  [v3 appendFormat:@"%@", v21];
+  deviceHardwareVersion = [(ACCTransportIOAccessoryConfigStream *)self deviceHardwareVersion];
+  v21 = [v19 stringWithFormat:@"    deviceHardwareVersion %@\n", deviceHardwareVersion];
+  [string appendFormat:@"%@", v21];
 
   v22 = MEMORY[0x277CCACA8];
-  v23 = [(ACCTransportIOAccessoryConfigStream *)self deviceFirmwareVersion];
-  v24 = [v22 stringWithFormat:@"    deviceFirmwareVersion %@\n", v23];
-  [v3 appendFormat:@"%@", v24];
+  deviceFirmwareVersion = [(ACCTransportIOAccessoryConfigStream *)self deviceFirmwareVersion];
+  v24 = [v22 stringWithFormat:@"    deviceFirmwareVersion %@\n", deviceFirmwareVersion];
+  [string appendFormat:@"%@", v24];
 
   v25 = MEMORY[0x277CCACA8];
-  v26 = [(ACCTransportIOAccessoryConfigStream *)self deviceSerialNumber];
-  v27 = [v25 stringWithFormat:@"    deviceSerialNumber %@\n", v26];
-  [v3 appendFormat:@"%@", v27];
+  deviceSerialNumber = [(ACCTransportIOAccessoryConfigStream *)self deviceSerialNumber];
+  v27 = [v25 stringWithFormat:@"    deviceSerialNumber %@\n", deviceSerialNumber];
+  [string appendFormat:@"%@", v27];
 
   v28 = MEMORY[0x277CCACA8];
-  v29 = [(ACCTransportIOAccessoryConfigStream *)self devicePPID];
-  v30 = [v28 stringWithFormat:@"    devicePPID %@\n", v29];
-  [v3 appendFormat:@"%@", v30];
+  devicePPID = [(ACCTransportIOAccessoryConfigStream *)self devicePPID];
+  v30 = [v28 stringWithFormat:@"    devicePPID %@\n", devicePPID];
+  [string appendFormat:@"%@", v30];
 
   v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"    IOService %d\n", -[ACCTransportIOAccessoryBase ioService](self, "ioService")];
-  [v3 appendFormat:@"%@", v31];
+  [string appendFormat:@"%@", v31];
 
-  return v3;
+  return string;
 }
 
-- (BOOL)IOAccessoryConfigStreamRequestGetPropertyForCategoryID:(unsigned __int16)a3 propertyID:(unsigned __int8)a4
+- (BOOL)IOAccessoryConfigStreamRequestGetPropertyForCategoryID:(unsigned __int16)d propertyID:(unsigned __int8)iD
 {
   v23 = *MEMORY[0x277D85DE8];
   if (self->_requestPending)
@@ -1063,11 +1063,11 @@ LABEL_67:
 
   else
   {
-    v5 = a4;
-    v6 = a3;
+    iDCopy = iD;
+    dCopy = d;
     self->_requestPending = 1;
-    self->_requestedCategoryID = a3;
-    self->_requestedPropertyID = a4;
+    self->_requestedCategoryID = d;
+    self->_requestedPropertyID = iD;
     [(ACCTransportIOAccessoryBase *)self ioService];
     Property = IOAccessoryConfigStreamInterfaceRequestGetProperty();
     if (gLogObjects)
@@ -1099,9 +1099,9 @@ LABEL_67:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       v18[0] = 67109632;
-      v18[1] = v6;
+      v18[1] = dCopy;
       v19 = 1024;
-      v20 = v5;
+      v20 = iDCopy;
       v21 = 1024;
       v22 = Property;
       _os_log_debug_impl(&dword_233656000, v10, OS_LOG_TYPE_DEBUG, "IOAccessoryConfigStreamRequestGetPropertyForCategoryID: called IOAccessoryConfigStreamInterfaceRequestGetProperty, categoryID 0x%x, propertyID %u, ret 0X%X", v18, 0x14u);
@@ -1154,14 +1154,14 @@ LABEL_25:
   return result;
 }
 
-- (BOOL)IOAccessoryConfigStreamSetPropertyData:(id)a3 categoryID:(unsigned __int16)a4 propertyID:(unsigned __int8)a5
+- (BOOL)IOAccessoryConfigStreamSetPropertyData:(id)data categoryID:(unsigned __int16)d propertyID:(unsigned __int8)iD
 {
-  v5 = a5;
-  v6 = a4;
+  iDCopy = iD;
+  dCopy = d;
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  dataCopy = data;
   memset(v21, 170, sizeof(v21));
-  if ([v8 length] > 0x400)
+  if ([dataCopy length] > 0x400)
   {
     if (gLogObjects)
     {
@@ -1191,23 +1191,23 @@ LABEL_25:
 
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [v8 length];
+      v16 = [dataCopy length];
       *buf = 134218752;
       *v23 = v16;
       *&v23[8] = 2048;
       *v24 = 1024;
       *&v24[8] = 1024;
-      *v25 = v6;
+      *v25 = dCopy;
       *&v25[4] = 1024;
-      v26 = v5;
+      v26 = iDCopy;
       _os_log_impl(&dword_233656000, v15, OS_LOG_TYPE_DEFAULT, "IOAccessoryConfigStreamSetPropertyData: dataLen too large! (%lu > %lu) categoryID 0x%x, propertyID %u", buf, 0x22u);
     }
 
     goto LABEL_30;
   }
 
-  [v8 getBytes:v21 length:1024];
-  v9 = [v8 length];
+  [dataCopy getBytes:v21 length:1024];
+  v9 = [dataCopy length];
   [(ACCTransportIOAccessoryBase *)self ioService];
   v10 = IOAccessoryConfigStreamInterfaceSetProperty();
   if (gLogObjects && gNumLogObjects >= 4)
@@ -1229,9 +1229,9 @@ LABEL_25:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     *buf = 67109888;
-    *v23 = v6;
+    *v23 = dCopy;
     *&v23[4] = 1024;
-    *&v23[6] = v5;
+    *&v23[6] = iDCopy;
     *v24 = 2048;
     *&v24[2] = v9;
     *v25 = 1024;
@@ -1260,9 +1260,9 @@ LABEL_25:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       *buf = 67109888;
-      *v23 = v6;
+      *v23 = dCopy;
       *&v23[4] = 1024;
-      *&v23[6] = v5;
+      *&v23[6] = iDCopy;
       *v24 = 2048;
       *&v24[2] = v9;
       *v25 = 1024;
@@ -1283,10 +1283,10 @@ LABEL_31:
   return v17;
 }
 
-- (BOOL)transmitData:(id)a3
+- (BOOL)transmitData:(id)data
 {
   v133 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 10;
@@ -1318,7 +1318,7 @@ LABEL_31:
     [ACCTransportIOAccessoryConfigStream transmitData:?];
   }
 
-  if (!v4 || !self->_categoriesAvailable)
+  if (!dataCopy || !self->_categoriesAvailable)
   {
     if (gLogObjects && gNumLogObjects >= 10)
     {
@@ -1346,7 +1346,7 @@ LABEL_31:
     *buf = 67109634;
     *&buf[4] = categoriesAvailable;
     *&buf[8] = 1024;
-    *&buf[10] = v4 != 0;
+    *&buf[10] = dataCopy != 0;
     *&buf[14] = 2112;
     *&buf[16] = endpointUUID;
     v17 = "ERROR: Not ready(%d) or no message data(%d) to handle ConfigStream transmit, endpointUUID %@";
@@ -1360,10 +1360,10 @@ LABEL_152:
     goto LABEL_153;
   }
 
-  v8 = [v4 bytes];
-  v9 = [v4 length];
+  bytes = [dataCopy bytes];
+  v9 = [dataCopy length];
   v10 = v9;
-  if (!v8 || (v11 = v9 - 12, v9 < 0xC))
+  if (!bytes || (v11 = v9 - 12, v9 < 0xC))
   {
     if (gLogObjects && gNumLogObjects >= 10)
     {
@@ -1417,7 +1417,7 @@ LABEL_152:
   {
     v76 = self->_endpointUUID;
     ioConnect = self->super._ioConnect;
-    v78 = *v8;
+    v78 = *bytes;
     *buf = 138413058;
     *&buf[4] = v76;
     *&buf[12] = 1024;
@@ -1429,14 +1429,14 @@ LABEL_152:
     _os_log_debug_impl(&dword_233656000, v12, OS_LOG_TYPE_DEBUG, "ConfigStream: endpointUUID %@, ioConnect %d, transmitData: messageID %d, payloadLen %lu", buf, 0x22u);
   }
 
-  v23 = *v8;
+  v23 = *bytes;
   if (v23 <= 2)
   {
     if (v23 == 1)
     {
-      v34 = [(ACCTransportIOAccessoryConfigStream *)self IOAccessoryConfigStreamCopyCategories];
-      v25 = v34;
-      if (v34)
+      iOAccessoryConfigStreamCopyCategories = [(ACCTransportIOAccessoryConfigStream *)self IOAccessoryConfigStreamCopyCategories];
+      v25 = iOAccessoryConfigStreamCopyCategories;
+      if (iOAccessoryConfigStreamCopyCategories)
       {
         v26 = 0;
       }
@@ -1446,9 +1446,9 @@ LABEL_152:
         v26 = -536870212;
       }
 
-      if (v34)
+      if (iOAccessoryConfigStreamCopyCategories)
       {
-        v35 = v34;
+        v35 = iOAccessoryConfigStreamCopyCategories;
         v36 = 64;
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
@@ -1483,18 +1483,18 @@ LABEL_152:
         {
           v91 = 64;
           v92 = v26;
-          v93 = v8;
-          v94 = self;
-          v95 = v4;
-          LODWORD(v4) = 0;
+          v93 = bytes;
+          selfCopy = self;
+          v95 = dataCopy;
+          LODWORD(dataCopy) = 0;
           v40 = *v111;
           v41 = MEMORY[0x277D86220];
           v96 = *v111;
           while (2)
           {
             v42 = 0;
-            v4 = v4;
-            v43 = &buf[20 * v4 + 6];
+            dataCopy = dataCopy;
+            v43 = &buf[20 * dataCopy + 6];
             do
             {
               if (*v111 != v40)
@@ -1543,32 +1543,32 @@ LABEL_152:
                 v45 = v102;
                 if (os_log_type_enabled(v41, OS_LOG_TYPE_DEBUG))
                 {
-                  v68 = [v104 unsignedIntValue];
+                  unsignedIntValue = [v104 unsignedIntValue];
                   *v123 = 67109376;
-                  *v124 = v4;
+                  *v124 = dataCopy;
                   *&v124[4] = 1024;
-                  *&v124[6] = v68;
+                  *&v124[6] = unsignedIntValue;
                   _os_log_debug_impl(&dword_233656000, v41, OS_LOG_TYPE_DEBUG, "ConfigStream _fillCategoryList [%d] categoryID 0x%x", v123, 0xEu);
                 }
 
-                if (v4 > 7)
+                if (dataCopy > 7)
                 {
-                  v70 = v4;
+                  v70 = dataCopy;
                   if (gLogObjects && gNumLogObjects >= 10)
                   {
                     v79 = *(gLogObjects + 72);
-                    self = v94;
-                    v4 = v95;
-                    v8 = v93;
+                    self = selfCopy;
+                    dataCopy = v95;
+                    bytes = v93;
                     v26 = v92;
                     v36 = v91;
                   }
 
                   else
                   {
-                    self = v94;
-                    v4 = v95;
-                    v8 = v93;
+                    self = selfCopy;
+                    dataCopy = v95;
+                    bytes = v93;
                     v26 = v92;
                     v36 = v91;
                     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -1588,7 +1588,7 @@ LABEL_152:
                   goto LABEL_132;
                 }
 
-                v100 = &buf[20 * v4 + 2];
+                v100 = &buf[20 * dataCopy + 2];
                 *v100 = [v104 unsignedIntValue];
                 v106 = 0u;
                 v107 = 0u;
@@ -1599,7 +1599,7 @@ LABEL_152:
                 if (v50)
                 {
                   v51 = v50;
-                  v101 = v4;
+                  v101 = dataCopy;
                   LODWORD(v52) = 0;
                   v53 = *v107;
                   while (2)
@@ -1658,16 +1658,16 @@ LABEL_152:
 
                       if (os_log_type_enabled(v61, OS_LOG_TYPE_DEBUG))
                       {
-                        v62 = [v104 unsignedIntValue];
-                        v63 = [v56 unsignedIntValue];
+                        unsignedIntValue2 = [v104 unsignedIntValue];
+                        unsignedIntValue3 = [v56 unsignedIntValue];
                         *v123 = 67109888;
                         *v124 = v101;
                         *&v124[4] = 1024;
                         *&v124[6] = v52;
                         *v125 = 1024;
-                        *&v125[2] = v62;
+                        *&v125[2] = unsignedIntValue2;
                         v126 = 1024;
-                        v127 = v63;
+                        v127 = unsignedIntValue3;
                         _os_log_debug_impl(&dword_233656000, v61, OS_LOG_TYPE_DEBUG, "ConfigStream _fillCategoryList [%d, %d] categoryID 0x%x, propertyID %d", v123, 0x1Au);
                       }
 
@@ -1680,7 +1680,7 @@ LABEL_152:
                           v66 = *(gLogObjects + 72);
                           v40 = v96;
                           v39 = v97;
-                          v4 = v101;
+                          dataCopy = v101;
                         }
 
                         else
@@ -1688,7 +1688,7 @@ LABEL_152:
                           v66 = MEMORY[0x277D86220];
                           v40 = v96;
                           v39 = v97;
-                          v4 = v101;
+                          dataCopy = v101;
                           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
                           {
                             *v123 = 134218240;
@@ -1704,11 +1704,11 @@ LABEL_152:
                         v45 = v102;
                         if (os_log_type_enabled(v66, OS_LOG_TYPE_ERROR))
                         {
-                          v69 = [v104 unsignedIntValue];
+                          unsignedIntValue4 = [v104 unsignedIntValue];
                           *v123 = 67109888;
-                          *v124 = v4;
+                          *v124 = dataCopy;
                           *&v124[4] = 1024;
-                          *&v124[6] = v69;
+                          *&v124[6] = unsignedIntValue4;
                           *v125 = 1024;
                           *&v125[2] = v52;
                           v126 = 1024;
@@ -1736,7 +1736,7 @@ LABEL_152:
 
                   v40 = v96;
                   v39 = v97;
-                  v4 = v101;
+                  dataCopy = v101;
                   v45 = v102;
                 }
 
@@ -1751,7 +1751,7 @@ LABEL_109:
                 v41 = MEMORY[0x277D86220];
               }
 
-              ++v4;
+              ++dataCopy;
 
               v42 = v103 + 1;
               v43 += 20;
@@ -1767,10 +1767,10 @@ LABEL_109:
             break;
           }
 
-          LOWORD(v70) = v4;
-          self = v94;
-          v4 = v95;
-          v8 = v93;
+          LOWORD(v70) = dataCopy;
+          self = selfCopy;
+          dataCopy = v95;
+          bytes = v93;
           v26 = v92;
           v36 = v91;
         }
@@ -1806,7 +1806,7 @@ LABEL_132:
 
         v30 = v97;
         v129 = 5;
-        v130 = *(v8 + 1);
+        v130 = *(bytes + 1);
         v131 = 162;
         v132 = v26;
         v28 = objc_alloc_init(MEMORY[0x277CBEB28]);
@@ -1841,7 +1841,7 @@ LABEL_143:
 
         if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
         {
-          v89 = *v8;
+          v89 = *bytes;
           v90 = self->_endpointUUID;
           *buf = 67109634;
           *&buf[4] = v89;
@@ -1860,7 +1860,7 @@ LABEL_143:
 
     if (v23 == 2)
     {
-      v24 = [(ACCTransportIOAccessoryConfigStream *)self IOAccessoryConfigStreamCopyDataForCategoryID:v8[1] propertyID:*(v8 + 4)];
+      v24 = [(ACCTransportIOAccessoryConfigStream *)self IOAccessoryConfigStreamCopyDataForCategoryID:bytes[1] propertyID:*(bytes + 4)];
       v25 = v24;
       if (v24)
       {
@@ -1879,7 +1879,7 @@ LABEL_143:
         if (v27)
         {
           *buf = 6;
-          *&buf[2] = *(v8 + 1);
+          *&buf[2] = *(bytes + 1);
           *&buf[6] = [v25 length];
           *&buf[8] = 0;
           v28 = objc_alloc_init(MEMORY[0x277CBEB28]);
@@ -1918,7 +1918,7 @@ LABEL_53:
 
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
-      v74 = *v8;
+      v74 = *bytes;
       v75 = self->_endpointUUID;
       *buf = 67109378;
       *&buf[4] = v74;
@@ -1935,8 +1935,8 @@ LABEL_53:
   {
     if (v23 == 4)
     {
-      v31 = [MEMORY[0x277CBEA90] dataWithBytes:v8 + 6 length:v11];
-      v32 = [(ACCTransportIOAccessoryConfigStream *)self IOAccessoryConfigStreamSetPropertyData:v31 categoryID:v8[1] propertyID:*(v8 + 4)];
+      v31 = [MEMORY[0x277CBEA90] dataWithBytes:bytes + 6 length:v11];
+      v32 = [(ACCTransportIOAccessoryConfigStream *)self IOAccessoryConfigStreamSetPropertyData:v31 categoryID:bytes[1] propertyID:*(bytes + 4)];
 
       if (!v32)
       {
@@ -1950,11 +1950,11 @@ LABEL_53:
     goto LABEL_53;
   }
 
-  if (![(ACCTransportIOAccessoryConfigStream *)self IOAccessoryConfigStreamRequestGetPropertyForCategoryID:v8[1] propertyID:*(v8 + 4)])
+  if (![(ACCTransportIOAccessoryConfigStream *)self IOAccessoryConfigStreamRequestGetPropertyForCategoryID:bytes[1] propertyID:*(bytes + 4)])
   {
     v26 = -536870212;
     *buf = 6;
-    *&buf[2] = *(v8 + 1);
+    *&buf[2] = *(bytes + 1);
     *&buf[6] = 0;
     *&buf[8] = -536870212;
     v71 = objc_alloc_init(MEMORY[0x277CBEB28]);
@@ -2088,8 +2088,8 @@ LABEL_153:
   deviceIdentifier = self->_deviceIdentifier;
   if (!deviceIdentifier || [(NSString *)deviceIdentifier isEqualToString:@"Unknown"])
   {
-    v4 = [(ACCTransportIOAccessoryBase *)self ioService];
-    CFProperty = IORegistryEntryCreateCFProperty(v4, @"IOAccessoryConfigStreamIdentifier", *MEMORY[0x277CBECE8], 0);
+    ioService = [(ACCTransportIOAccessoryBase *)self ioService];
+    CFProperty = IORegistryEntryCreateCFProperty(ioService, @"IOAccessoryConfigStreamIdentifier", *MEMORY[0x277CBECE8], 0);
     if (CFProperty)
     {
       v6 = self->_deviceIdentifier;
@@ -2299,7 +2299,7 @@ LABEL_153:
 - (void)_getCategories
 {
   v8 = *MEMORY[0x277D85DE8];
-  v1 = *(a1 + 72);
+  v1 = *(self + 72);
   OUTLINED_FUNCTION_2_0();
   OUTLINED_FUNCTION_3_0();
   _os_log_debug_impl(v2, v3, v4, v5, v6, 0x20u);

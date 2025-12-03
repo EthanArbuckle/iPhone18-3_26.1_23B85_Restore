@@ -1,6 +1,6 @@
 @interface MKTransitInactiveLinesSectionController
 - (MKTransitInactiveLinesSectionController)init;
-- (MKTransitInactiveLinesSectionController)initWithMapItem:(id)a3 system:(id)a4 line:(id)a5;
+- (MKTransitInactiveLinesSectionController)initWithMapItem:(id)item system:(id)system line:(id)line;
 - (NSArray)inactiveLines;
 - (id)_pagingFilter;
 - (void)_buildRows;
@@ -11,23 +11,23 @@
 
 - (void)_buildRows
 {
-  v2 = self;
+  selfCopy = self;
   v46[1] = *MEMORY[0x1E69E9840];
   if ([(MKTransitSectionController *)self _needsBuildRows])
   {
-    v44.receiver = v2;
+    v44.receiver = selfCopy;
     v44.super_class = MKTransitInactiveLinesSectionController;
     [(MKTransitSectionController *)&v44 _buildRows];
-    v3 = [(MKTransitInactiveLinesSectionController *)v2 _pagingFilter];
+    _pagingFilter = [(MKTransitInactiveLinesSectionController *)selfCopy _pagingFilter];
     v43[0] = MEMORY[0x1E69E9820];
     v43[1] = 3221225472;
     v43[2] = __53__MKTransitInactiveLinesSectionController__buildRows__block_invoke;
     v43[3] = &unk_1E76C7AC8;
-    v43[4] = v2;
+    v43[4] = selfCopy;
     v4 = MEMORY[0x1A58E9F30](v43);
-    if (v2->_line)
+    if (selfCopy->_line)
     {
-      v46[0] = v2->_line;
+      v46[0] = selfCopy->_line;
       v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v46 count:1];
     }
 
@@ -37,10 +37,10 @@
     }
 
     v36 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
-    if ([v3 limitNumLines])
+    if ([_pagingFilter limitNumLines])
     {
       v6 = [v5 count];
-      v34 = v6 >= [v3 numLinesFallbackThreshold];
+      v34 = v6 >= [_pagingFilter numLinesFallbackThreshold];
     }
 
     else
@@ -48,20 +48,20 @@
       v34 = 0;
     }
 
-    v30 = [v3 numLinesFallbackValue];
+    numLinesFallbackValue = [_pagingFilter numLinesFallbackValue];
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
     obj = v5;
     v38 = [obj countByEnumeratingWithState:&v39 objects:v45 count:16];
-    v29 = v3;
+    v29 = _pagingFilter;
     v7 = 0;
     if (v38)
     {
       v8 = *v40;
       v32 = v4;
-      v33 = v2;
+      v33 = selfCopy;
       v31 = *v40;
       do
       {
@@ -74,20 +74,20 @@
 
           v10 = *(*(&v39 + 1) + 8 * i);
           v11 = v4[2](v4, v10);
-          v12 = [(MKMapItem *)v2->super._mapItem _transitInfo];
-          v13 = [(MKTransitSectionController *)v2 incidentEntitiesToExclude];
-          v14 = [v12 serviceResumesResultForLine:v10 excludingIncidentEntities:v13 afterDate:v11 usingContainers:1];
+          _transitInfo = [(MKMapItem *)selfCopy->super._mapItem _transitInfo];
+          incidentEntitiesToExclude = [(MKTransitSectionController *)selfCopy incidentEntitiesToExclude];
+          v14 = [_transitInfo serviceResumesResultForLine:v10 excludingIncidentEntities:incidentEntitiesToExclude afterDate:v11 usingContainers:1];
 
-          v15 = [v14 blocked];
-          v16 = [v14 earliestNextDepartureDate];
-          v17 = v16;
-          if ((v15 & 1) != 0 || v16)
+          blocked = [v14 blocked];
+          earliestNextDepartureDate = [v14 earliestNextDepartureDate];
+          v17 = earliestNextDepartureDate;
+          if ((blocked & 1) != 0 || earliestNextDepartureDate)
           {
-            if (!v34 || [v36 count] != v30)
+            if (!v34 || [v36 count] != numLinesFallbackValue)
             {
               v18 = [_MKTransitInactiveLine alloc];
               v37 = v7;
-              if (v15)
+              if (blocked)
               {
                 v19 = 0;
               }
@@ -97,17 +97,17 @@
                 v19 = v17;
               }
 
-              v20 = [(MKMapItem *)v2->super._mapItem timeZone];
-              v21 = [v14 departureSequence];
+              timeZone = [(MKMapItem *)selfCopy->super._mapItem timeZone];
+              departureSequence = [v14 departureSequence];
               v22 = v18;
               v8 = v31;
-              v23 = [(_MKTransitInactiveLine *)v22 initWithTransitLine:v10 blocked:v15 serviceResumesDate:v19 timeZone:v20 referenceDate:v11 departuresSequence:v21];
+              v23 = [(_MKTransitInactiveLine *)v22 initWithTransitLine:v10 blocked:blocked serviceResumesDate:v19 timeZone:timeZone referenceDate:v11 departuresSequence:departureSequence];
               [v36 addObject:v23];
 
               v7 = v37;
               v4 = v32;
 
-              v2 = v33;
+              selfCopy = v33;
             }
           }
 
@@ -124,15 +124,15 @@
     }
 
     v24 = [obj count];
-    v2->super._numberOfFilteredLines = v24 - v7 - [v36 count];
+    selfCopy->super._numberOfFilteredLines = v24 - v7 - [v36 count];
     v25 = [MEMORY[0x1E695DEC8] arrayWithArray:v36];
-    inactiveLines = v2->_inactiveLines;
-    v2->_inactiveLines = v25;
+    inactiveLines = selfCopy->_inactiveLines;
+    selfCopy->_inactiveLines = v25;
 
-    v2->super._numberOfRows = [(NSArray *)v2->_inactiveLines count];
+    selfCopy->super._numberOfRows = [(NSArray *)selfCopy->_inactiveLines count];
     v27 = [MEMORY[0x1E695DFD8] setWithArray:obj];
-    linesToShow = v2->super._linesToShow;
-    v2->super._linesToShow = v27;
+    linesToShow = selfCopy->super._linesToShow;
+    selfCopy->super._linesToShow = v27;
   }
 }
 
@@ -191,16 +191,16 @@ id __53__MKTransitInactiveLinesSectionController__buildRows__block_invoke(uint64
   return inactiveLines;
 }
 
-- (MKTransitInactiveLinesSectionController)initWithMapItem:(id)a3 system:(id)a4 line:(id)a5
+- (MKTransitInactiveLinesSectionController)initWithMapItem:(id)item system:(id)system line:(id)line
 {
-  v9 = a5;
+  lineCopy = line;
   v13.receiver = self;
   v13.super_class = MKTransitInactiveLinesSectionController;
-  v10 = [(MKTransitSectionController *)&v13 initWithMapItem:a3 system:a4];
+  v10 = [(MKTransitSectionController *)&v13 initWithMapItem:item system:system];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_line, a5);
+    objc_storeStrong(&v10->_line, line);
   }
 
   return v11;

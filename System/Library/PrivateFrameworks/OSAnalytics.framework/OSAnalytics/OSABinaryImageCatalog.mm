@@ -1,13 +1,13 @@
 @interface OSABinaryImageCatalog
-+ (BOOL)isApplePath:(id)a3 orBundle:(id)a4;
-- (BOOL)isAddressInTargetedCache:(unint64_t)a3;
++ (BOOL)isApplePath:(id)path orBundle:(id)bundle;
+- (BOOL)isAddressInTargetedCache:(unint64_t)cache;
 - (OSABinaryImageCatalog)init;
 - (id)reportUsedImages;
-- (id)reportUsedImagesFullInfoUsingBlock:(id)a3;
-- (id)searchFrame:(unint64_t)a3 in:(id)a4 regions:(id)a5 result:(id *)a6;
-- (void)setKernelCache:(unsigned __int8)a3[16] address:(unint64_t)a4 size:(unint64_t)a5;
-- (void)setRootedCacheLibs:(dyld_uuid_info_64 *)a3 count:(unsigned int)a4;
-- (void)targetSharedCache:(unsigned __int8)a3[16] withSlide:(unint64_t)a4 atBaseAddress:(unint64_t)a5;
+- (id)reportUsedImagesFullInfoUsingBlock:(id)block;
+- (id)searchFrame:(unint64_t)frame in:(id)in regions:(id)regions result:(id *)result;
+- (void)setKernelCache:(unsigned __int8)cache[16] address:(unint64_t)address size:(unint64_t)size;
+- (void)setRootedCacheLibs:(dyld_uuid_info_64 *)libs count:(unsigned int)count;
+- (void)targetSharedCache:(unsigned __int8)cache[16] withSlide:(unint64_t)slide atBaseAddress:(unint64_t)address;
 @end
 
 @implementation OSABinaryImageCatalog
@@ -36,13 +36,13 @@
     shared_segments = v2->_shared_segments;
     v2->_shared_segments = v9;
 
-    v11 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     notes = v2->_notes;
-    v2->_notes = v11;
+    v2->_notes = array;
 
-    v13 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     exclave_shared_caches = v2->_exclave_shared_caches;
-    v2->_exclave_shared_caches = v13;
+    v2->_exclave_shared_caches = array2;
 
     memset(uu, 0, sizeof(uu));
     uuid_clear(uu);
@@ -71,26 +71,26 @@ uint64_t __29__OSABinaryImageCatalog_init__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setKernelCache:(unsigned __int8)a3[16] address:(unint64_t)a4 size:(unint64_t)a5
+- (void)setKernelCache:(unsigned __int8)cache[16] address:(unint64_t)address size:(unint64_t)size
 {
-  v6 = [[OSABinaryImageSegment alloc] initWithAddress:a4 size:0x40000000 for:a3];
+  v6 = [[OSABinaryImageSegment alloc] initWithAddress:address size:0x40000000 for:cache];
   kernel_cache_segment = self->_kernel_cache_segment;
   self->_kernel_cache_segment = v6;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setRootedCacheLibs:(dyld_uuid_info_64 *)a3 count:(unsigned int)a4
+- (void)setRootedCacheLibs:(dyld_uuid_info_64 *)libs count:(unsigned int)count
 {
-  LODWORD(v4) = a4;
-  v7 = [MEMORY[0x1E695DF70] array];
+  LODWORD(v4) = count;
+  array = [MEMORY[0x1E695DF70] array];
   rootedCacheLibs = self->_rootedCacheLibs;
-  self->_rootedCacheLibs = v7;
+  self->_rootedCacheLibs = array;
 
   if (v4)
   {
     v4 = v4;
-    imageUUID = a3->imageUUID;
+    imageUUID = libs->imageUUID;
     do
     {
       if (!uuid_is_null(imageUUID))
@@ -110,14 +110,14 @@ uint64_t __29__OSABinaryImageCatalog_init__block_invoke()
   [(NSMutableArray *)v10 sortByAddressAndSetInferredSizes];
 }
 
-- (void)targetSharedCache:(unsigned __int8)a3[16] withSlide:(unint64_t)a4 atBaseAddress:(unint64_t)a5
+- (void)targetSharedCache:(unsigned __int8)cache[16] withSlide:(unint64_t)slide atBaseAddress:(unint64_t)address
 {
-  v9 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:a3];
+  v9 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:cache];
   v10 = [(NSMutableDictionary *)self->_shared_segments objectForKeyedSubscript:v9];
   targeted_cache = self->_targeted_cache;
   self->_targeted_cache = v10;
 
-  self->_targeted_slide = a4;
+  self->_targeted_slide = slide;
   if (!self->_targeted_cache)
   {
     v12 = _sharedCacheLoaderQueue;
@@ -125,11 +125,11 @@ uint64_t __29__OSABinaryImageCatalog_init__block_invoke()
     block[1] = 3221225472;
     block[2] = __67__OSABinaryImageCatalog_targetSharedCache_withSlide_atBaseAddress___block_invoke;
     block[3] = &unk_1E7A27C20;
-    v16 = a3;
-    v17 = a5;
-    v18 = a4;
+    cacheCopy = cache;
+    addressCopy = address;
+    slideCopy = slide;
     v14 = v9;
-    v15 = self;
+    selfCopy = self;
     dispatch_sync(v12, block);
   }
 }
@@ -184,7 +184,7 @@ LABEL_6:
 LABEL_7:
 }
 
-- (BOOL)isAddressInTargetedCache:(unint64_t)a3
+- (BOOL)isAddressInTargetedCache:(unint64_t)cache
 {
   targeted_cache = self->_targeted_cache;
   targeted_slide = self->_targeted_slide;
@@ -194,14 +194,14 @@ LABEL_7:
     return 0;
   }
 
-  v7 = a3 - targeted_slide;
-  v8 = [(OSABinaryImageSegment *)self->_targeted_cache symbolInfo];
-  if (v7 >= [v8 start])
+  v7 = cache - targeted_slide;
+  symbolInfo = [(OSABinaryImageSegment *)self->_targeted_cache symbolInfo];
+  if (v7 >= [symbolInfo start])
   {
-    v10 = [(OSABinaryImageSegment *)self->_targeted_cache symbolInfo];
-    v11 = [v10 start];
-    v12 = [(OSABinaryImageSegment *)self->_targeted_cache symbolInfo];
-    v9 = v7 < [v12 size] + v11;
+    symbolInfo2 = [(OSABinaryImageSegment *)self->_targeted_cache symbolInfo];
+    start = [symbolInfo2 start];
+    symbolInfo3 = [(OSABinaryImageSegment *)self->_targeted_cache symbolInfo];
+    v9 = v7 < [symbolInfo3 size] + start;
   }
 
   else
@@ -212,11 +212,11 @@ LABEL_7:
   return v9;
 }
 
-- (id)searchFrame:(unint64_t)a3 in:(id)a4 regions:(id)a5 result:(id *)a6
+- (id)searchFrame:(unint64_t)frame in:(id)in regions:(id)regions result:(id *)result
 {
   v72[2] = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
+  inCopy = in;
+  regionsCopy = regions;
   v64 = 0;
   v65 = &v64;
   v66 = 0x3032000000;
@@ -232,16 +232,16 @@ LABEL_7:
   kernel_cache_segment = self->_kernel_cache_segment;
   if (kernel_cache_segment)
   {
-    v13 = [(OSABinaryImageSegment *)kernel_cache_segment symbolInfo];
-    v14 = [v13 start] > a3;
+    symbolInfo = [(OSABinaryImageSegment *)kernel_cache_segment symbolInfo];
+    v14 = [symbolInfo start] > frame;
 
     if (!v14)
     {
       v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[OSABinaryImageCatalog markImageAsUsed:from:](self, "markImageAsUsed:from:", self->_kernel_cache_segment, 85)}];
       v72[0] = v15;
       v16 = MEMORY[0x1E696AD98];
-      v17 = [(OSABinaryImageSegment *)self->_kernel_cache_segment symbolInfo];
-      v18 = [v16 numberWithUnsignedLongLong:{a3 - objc_msgSend(v17, "start")}];
+      symbolInfo2 = [(OSABinaryImageSegment *)self->_kernel_cache_segment symbolInfo];
+      v18 = [v16 numberWithUnsignedLongLong:{frame - objc_msgSend(symbolInfo2, "start")}];
       v72[1] = v18;
       v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v72 count:2];
       v20 = [v19 copy];
@@ -278,14 +278,14 @@ LABEL_7:
     v56[5] = &v64;
     v57 = v25;
     v56[6] = &v58;
-    v56[7] = a3;
+    v56[7] = frame;
     [(NSMutableArray *)v23 indexOfObject:&unk_1F241EB00 inSortedRange:0 options:v26 usingComparator:256, v56];
     if (v65[5])
     {
       goto LABEL_23;
     }
 
-    v27 = a3 - self->_targeted_slide;
+    v27 = frame - self->_targeted_slide;
     if ([(NSMutableArray *)self->_rootedCacheLibs count])
     {
       rootedCacheLibs = self->_rootedCacheLibs;
@@ -310,15 +310,15 @@ LABEL_7:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v31 = [(OSABinaryImageSegment *)self->_targeted_cache symbolInfo];
-      if (v27 >= [v31 start])
+      symbolInfo3 = [(OSABinaryImageSegment *)self->_targeted_cache symbolInfo];
+      if (v27 >= [symbolInfo3 start])
       {
-        v32 = [(OSABinaryImageSegment *)self->_targeted_cache symbolInfo];
-        v51 = [v32 start];
-        v33 = [(OSABinaryImageSegment *)self->_targeted_cache symbolInfo];
-        LODWORD(v51) = v27 < [v33 size] + v51;
+        symbolInfo4 = [(OSABinaryImageSegment *)self->_targeted_cache symbolInfo];
+        start = [symbolInfo4 start];
+        symbolInfo5 = [(OSABinaryImageSegment *)self->_targeted_cache symbolInfo];
+        LODWORD(start) = v27 < [symbolInfo5 size] + start;
 
-        if (!v51)
+        if (!start)
         {
           goto LABEL_17;
         }
@@ -326,8 +326,8 @@ LABEL_7:
         v34 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[OSABinaryImageCatalog markImageAsUsed:from:](self, "markImageAsUsed:from:", self->_targeted_cache, 83)}];
         v71[0] = v34;
         v35 = MEMORY[0x1E696AD98];
-        v36 = [(OSABinaryImageSegment *)self->_targeted_cache symbolInfo];
-        v37 = [v35 numberWithUnsignedLongLong:{v27 - objc_msgSend(v36, "start")}];
+        symbolInfo6 = [(OSABinaryImageSegment *)self->_targeted_cache symbolInfo];
+        v37 = [v35 numberWithUnsignedLongLong:{v27 - objc_msgSend(symbolInfo6, "start")}];
         v71[1] = v37;
         v38 = [MEMORY[0x1E695DEC8] arrayWithObjects:v71 count:2];
         v39 = [v38 copy];
@@ -336,7 +336,7 @@ LABEL_7:
 
         v41 = v59;
         v42 = self->_targeted_cache;
-        v31 = v41[5];
+        symbolInfo3 = v41[5];
         v41[5] = v42;
       }
     }
@@ -352,7 +352,7 @@ LABEL_17:
       v54[4] = self;
       v54[5] = &v64;
       v54[6] = &v58;
-      v54[7] = a3;
+      v54[7] = frame;
       [(NSMutableArray *)exclave_shared_caches enumerateObjectsUsingBlock:v54];
       if (!v65[5])
       {
@@ -363,37 +363,37 @@ LABEL_17:
         v53[4] = self;
         v53[5] = &v64;
         v53[6] = &v58;
-        v53[7] = a3;
-        [v10 indexOfObjectPassingTest:v53];
+        v53[7] = frame;
+        [inCopy indexOfObjectPassingTest:v53];
       }
 
       if (!v65[5])
       {
         v44 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[OSABinaryImageCatalog markImageAsUsed:from:](self, "markImageAsUsed:from:", self->_absolute_segment, 65)}];
         v70[0] = v44;
-        v45 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
+        v45 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:frame];
         v70[1] = v45;
         v46 = [MEMORY[0x1E695DEC8] arrayWithObjects:v70 count:2];
         v47 = v65[5];
         v65[5] = v46;
 
-        if (v11)
+        if (regionsCopy)
         {
           v52[0] = MEMORY[0x1E69E9820];
           v52[1] = 3221225472;
           v52[2] = __55__OSABinaryImageCatalog_searchFrame_in_regions_result___block_invoke_5;
           v52[3] = &unk_1E7A27CE8;
           v52[4] = &v58;
-          v52[5] = a3;
-          [v11 indexOfObjectPassingTest:v52];
+          v52[5] = frame;
+          [regionsCopy indexOfObjectPassingTest:v52];
         }
       }
     }
 
 LABEL_23:
-    if (a6)
+    if (result)
     {
-      *a6 = v59[5];
+      *result = v59[5];
     }
 
     v22 = v65[5];
@@ -707,8 +707,8 @@ BOOL __55__OSABinaryImageCatalog_searchFrame_in_regions_result___block_invoke_5(
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) details];
-        [v3 addObject:v9];
+        details = [*(*(&v12 + 1) + 8 * i) details];
+        [v3 addObject:details];
       }
 
       v6 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -722,10 +722,10 @@ BOOL __55__OSABinaryImageCatalog_searchFrame_in_regions_result___block_invoke_5(
   return v3;
 }
 
-- (id)reportUsedImagesFullInfoUsingBlock:(id)a3
+- (id)reportUsedImagesFullInfoUsingBlock:(id)block
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[NSMutableArray count](self->_used_segments, "count")}];
   v14 = 0u;
   v15 = 0u;
@@ -746,13 +746,13 @@ BOOL __55__OSABinaryImageCatalog_searchFrame_in_regions_result___block_invoke_5(
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * i) full_details];
-        if (v4)
+        full_details = [*(*(&v14 + 1) + 8 * i) full_details];
+        if (blockCopy)
         {
-          v4[2](v4, v11);
+          blockCopy[2](blockCopy, full_details);
         }
 
-        [v5 addObject:v11];
+        [v5 addObject:full_details];
       }
 
       v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -766,18 +766,18 @@ BOOL __55__OSABinaryImageCatalog_searchFrame_in_regions_result___block_invoke_5(
   return v5;
 }
 
-+ (BOOL)isApplePath:(id)a3 orBundle:(id)a4
++ (BOOL)isApplePath:(id)path orBundle:(id)bundle
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 hasPrefix:@"/System"] & 1) != 0 || (objc_msgSend(v5, "hasPrefix:", @"/usr/lib") & 1) != 0 || (objc_msgSend(v5, "hasPrefix:", @"/usr/bin") & 1) != 0 || (objc_msgSend(v5, "hasPrefix:", @"/usr/sbin") & 1) != 0 || (objc_msgSend(v5, "hasPrefix:", @"/bin") & 1) != 0 || (objc_msgSend(v5, "hasPrefix:", @"/sbin") & 1) != 0 || (objc_msgSend(v6, "hasPrefix:", @"com.apple.") & 1) != 0 || (objc_msgSend(v6, "hasPrefix:", @"commpage") & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"Ozone"))
+  pathCopy = path;
+  bundleCopy = bundle;
+  if ([pathCopy hasPrefix:@"/System"] & 1) != 0 || (objc_msgSend(pathCopy, "hasPrefix:", @"/usr/lib") & 1) != 0 || (objc_msgSend(pathCopy, "hasPrefix:", @"/usr/bin") & 1) != 0 || (objc_msgSend(pathCopy, "hasPrefix:", @"/usr/sbin") & 1) != 0 || (objc_msgSend(pathCopy, "hasPrefix:", @"/bin") & 1) != 0 || (objc_msgSend(pathCopy, "hasPrefix:", @"/sbin") & 1) != 0 || (objc_msgSend(bundleCopy, "hasPrefix:", @"com.apple.") & 1) != 0 || (objc_msgSend(bundleCopy, "hasPrefix:", @"commpage") & 1) != 0 || (objc_msgSend(bundleCopy, "isEqualToString:", @"Ozone"))
   {
     v7 = 1;
   }
 
   else
   {
-    v7 = [v6 isEqualToString:@"Motion"];
+    v7 = [bundleCopy isEqualToString:@"Motion"];
   }
 
   return v7;

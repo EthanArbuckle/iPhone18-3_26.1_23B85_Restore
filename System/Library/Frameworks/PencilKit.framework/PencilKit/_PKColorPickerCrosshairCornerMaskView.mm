@@ -1,18 +1,18 @@
 @interface _PKColorPickerCrosshairCornerMaskView
-- (_PKColorPickerCrosshairCornerMaskView)initWithFrame:(CGRect)a3;
+- (_PKColorPickerCrosshairCornerMaskView)initWithFrame:(CGRect)frame;
 - (id)maskPath;
-- (void)_setFillColor:(id)a3;
-- (void)_setPath:(id)a3;
+- (void)_setFillColor:(id)color;
+- (void)_setPath:(id)path;
 - (void)layoutSubviews;
 @end
 
 @implementation _PKColorPickerCrosshairCornerMaskView
 
-- (_PKColorPickerCrosshairCornerMaskView)initWithFrame:(CGRect)a3
+- (_PKColorPickerCrosshairCornerMaskView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = _PKColorPickerCrosshairCornerMaskView;
-  result = [(_PKColorPickerCrosshairCornerMaskView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(_PKColorPickerCrosshairCornerMaskView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   result->_cornerPosition = 0;
   result->_excludeCorner = 0;
   return result;
@@ -23,29 +23,29 @@
   v5.receiver = self;
   v5.super_class = _PKColorPickerCrosshairCornerMaskView;
   [(_PKColorPickerCrosshairCornerMaskView *)&v5 layoutSubviews];
-  v3 = [MEMORY[0x1E69DC888] blackColor];
-  [(_PKColorPickerCrosshairCornerMaskView *)self _setFillColor:v3];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  [(_PKColorPickerCrosshairCornerMaskView *)self _setFillColor:blackColor];
 
-  v4 = [(_PKColorPickerCrosshairCornerMaskView *)self maskPath];
-  [(_PKColorPickerCrosshairCornerMaskView *)self _setPath:v4];
+  maskPath = [(_PKColorPickerCrosshairCornerMaskView *)self maskPath];
+  [(_PKColorPickerCrosshairCornerMaskView *)self _setPath:maskPath];
 }
 
-- (void)_setPath:(id)a3
+- (void)_setPath:(id)path
 {
-  v4 = a3;
-  v6 = [(_PKColorPickerCrosshairCornerMaskView *)self _shapeLayer];
-  v5 = [v4 CGPath];
+  pathCopy = path;
+  _shapeLayer = [(_PKColorPickerCrosshairCornerMaskView *)self _shapeLayer];
+  cGPath = [pathCopy CGPath];
 
-  [v6 setPath:v5];
+  [_shapeLayer setPath:cGPath];
 }
 
-- (void)_setFillColor:(id)a3
+- (void)_setFillColor:(id)color
 {
-  v4 = a3;
-  v6 = [(_PKColorPickerCrosshairCornerMaskView *)self _shapeLayer];
-  v5 = [v4 CGColor];
+  colorCopy = color;
+  _shapeLayer = [(_PKColorPickerCrosshairCornerMaskView *)self _shapeLayer];
+  cGColor = [colorCopy CGColor];
 
-  [v6 setFillColor:v5];
+  [_shapeLayer setFillColor:cGColor];
 }
 
 - (id)maskPath
@@ -116,8 +116,8 @@
     v20 = MEMORY[0x1E69DC728];
     [(_PKColorPickerCrosshairCornerMaskView *)self bounds];
     v21 = [v20 bezierPathWithRect:?];
-    v22 = [v19 bezierPathByReversingPath];
-    [v21 appendPath:v22];
+    bezierPathByReversingPath = [v19 bezierPathByReversingPath];
+    [v21 appendPath:bezierPathByReversingPath];
   }
 
   else

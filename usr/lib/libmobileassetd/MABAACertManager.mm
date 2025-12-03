@@ -5,41 +5,41 @@
 + (id)certificateSubject;
 + (id)keyParameters;
 - (BOOL)shouldInvalidateExistingCertificateIfAny;
-- (MABAACertManager)initWithCertType:(int)a3;
-- (id)_copyCachedCerts:(__SecKey *)a3;
-- (id)copyBase64EncodedCertificateChain:(BOOL)a3 referenceKey:(__SecKey *)a4;
+- (MABAACertManager)initWithCertType:(int)type;
+- (id)_copyCachedCerts:(__SecKey *)certs;
+- (id)copyBase64EncodedCertificateChain:(BOOL)chain referenceKey:(__SecKey *)key;
 - (id)copyCurrentBootManifestHash;
-- (id)copyDeviceIdentityOptionsForCertAndRequestType:(int)a3 skipNetworkRequest:(BOOL)a4 invalidateExistingCert:(BOOL)a5;
-- (id)issueAndCopyCerts:(__SecKey *)a3;
-- (id)issueAndCopySelfSignedCert:(__SecKey *)a3;
-- (id)issueSelfSignedCertInternal:(__SecKey *)a3;
+- (id)copyDeviceIdentityOptionsForCertAndRequestType:(int)type skipNetworkRequest:(BOOL)request invalidateExistingCert:(BOOL)cert;
+- (id)issueAndCopyCerts:(__SecKey *)certs;
+- (id)issueAndCopySelfSignedCert:(__SecKey *)cert;
+- (id)issueSelfSignedCertInternal:(__SecKey *)internal;
 - (void)dealloc;
 - (void)invalidateExistingCertsAndWait;
-- (void)issueAndWaitForCerts:(unint64_t)a3;
+- (void)issueAndWaitForCerts:(unint64_t)certs;
 @end
 
 @implementation MABAACertManager
 
-- (MABAACertManager)initWithCertType:(int)a3
+- (MABAACertManager)initWithCertType:(int)type
 {
   v14.receiver = self;
   v14.super_class = MABAACertManager;
   v4 = [(MABAACertManager *)&v14 init];
   if (v4)
   {
-    v5 = [@"com.apple.MobileAsset.daemon.baacertmanagerQueue" UTF8String];
+    uTF8String = [@"com.apple.MobileAsset.daemon.baacertmanagerQueue" UTF8String];
     v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v7 = dispatch_queue_create(v5, v6);
+    v7 = dispatch_queue_create(uTF8String, v6);
     certManagerQueue = v4->_certManagerQueue;
     v4->_certManagerQueue = v7;
 
-    v9 = [@"com.apple.MobileAsset.daemon.deviceIdentityQueue" UTF8String];
+    uTF8String2 = [@"com.apple.MobileAsset.daemon.deviceIdentityQueue" UTF8String];
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v11 = dispatch_queue_create(v9, v10);
+    v11 = dispatch_queue_create(uTF8String2, v10);
     deviceIdentityQueue = v4->_deviceIdentityQueue;
     v4->_deviceIdentityQueue = v11;
 
-    v4->_certType = a3;
+    v4->_certType = type;
   }
 
   return v4;
@@ -65,7 +65,7 @@
   block[1] = 3221225472;
   block[2] = __31__MABAACertManager_isSupported__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (isSupported_once != -1)
   {
     dispatch_once(&isSupported_once, block);
@@ -158,29 +158,29 @@ LABEL_9:
   return IsSupported;
 }
 
-- (id)issueAndCopyCerts:(__SecKey *)a3
+- (id)issueAndCopyCerts:(__SecKey *)certs
 {
   v5 = clock_gettime_nsec_np(_CLOCK_MONOTONIC);
   v6 = v5;
   v7 = atomic_load(&self->_cachedTime);
   if (!v7 || (v8 = v5 >= v7, v9 = v5 - v7, v8) && v9 >= 0x34630B8A001)
   {
-    v10 = [(MABAACertManager *)self certManagerQueue];
+    certManagerQueue = [(MABAACertManager *)self certManagerQueue];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = __38__MABAACertManager_issueAndCopyCerts___block_invoke;
     v13[3] = &unk_4B36C0;
     v13[4] = self;
     v13[5] = v6;
-    dispatch_sync(v10, v13);
+    dispatch_sync(certManagerQueue, v13);
   }
 
-  v11 = [(MABAACertManager *)self _copyCachedCerts:a3];
+  v11 = [(MABAACertManager *)self _copyCachedCerts:certs];
 
   return v11;
 }
 
-- (id)_copyCachedCerts:(__SecKey *)a3
+- (id)_copyCachedCerts:(__SecKey *)certs
 {
   v14 = 0;
   v15 = &v14;
@@ -188,15 +188,15 @@ LABEL_9:
   v17 = __Block_byref_object_copy__18;
   v18 = __Block_byref_object_dispose__18;
   v19 = 0;
-  v5 = [(MABAACertManager *)self deviceIdentityQueue];
+  deviceIdentityQueue = [(MABAACertManager *)self deviceIdentityQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __37__MABAACertManager__copyCachedCerts___block_invoke;
   block[3] = &unk_4B6468;
   block[4] = self;
   block[5] = &v14;
-  block[6] = a3;
-  dispatch_sync(v5, block);
+  block[6] = certs;
+  dispatch_sync(deviceIdentityQueue, block);
 
   if (v15[5])
   {
@@ -241,7 +241,7 @@ void __37__MABAACertManager__copyCachedCerts___block_invoke(void *a1)
   }
 }
 
-- (id)issueAndCopySelfSignedCert:(__SecKey *)a3
+- (id)issueAndCopySelfSignedCert:(__SecKey *)cert
 {
   v5 = _MAClientLog(@"KeyManager");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -250,7 +250,7 @@ void __37__MABAACertManager__copyCachedCerts___block_invoke(void *a1)
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Attempting to generate self signed cert", buf, 2u);
   }
 
-  v6 = [(MABAACertManager *)self issueSelfSignedCertInternal:a3];
+  v6 = [(MABAACertManager *)self issueSelfSignedCertInternal:cert];
   if (!v6)
   {
     v7 = _MAClientLog(@"KeyManager");
@@ -264,10 +264,10 @@ void __37__MABAACertManager__copyCachedCerts___block_invoke(void *a1)
   return v6;
 }
 
-- (id)copyBase64EncodedCertificateChain:(BOOL)a3 referenceKey:(__SecKey *)a4
+- (id)copyBase64EncodedCertificateChain:(BOOL)chain referenceKey:(__SecKey *)key
 {
-  v4 = a3;
-  v5 = [(MABAACertManager *)self issueAndCopyCerts:a4];
+  chainCopy = chain;
+  v5 = [(MABAACertManager *)self issueAndCopyCerts:key];
   v6 = v5;
   if (v5)
   {
@@ -294,11 +294,11 @@ void __37__MABAACertManager__copyCachedCerts___block_invoke(void *a1)
           }
 
           v13 = SecCertificateCopyData(*(*(&v22 + 1) + 8 * i));
-          v14 = [(__CFData *)v13 base64EncodedStringWithOptions:0, context];
-          v15 = v14;
-          if (v4)
+          context = [(__CFData *)v13 base64EncodedStringWithOptions:0, context];
+          v15 = context;
+          if (chainCopy)
           {
-            v16 = [v14 stringByReplacingOccurrencesOfString:@"/" withString:@"_"];
+            v16 = [context stringByReplacingOccurrencesOfString:@"/" withString:@"_"];
             v17 = [v16 stringByReplacingOccurrencesOfString:@"+" withString:@"-"];
 
             v18 = [NSCharacterSet characterSetWithCharactersInString:@"="];
@@ -415,10 +415,10 @@ LABEL_16:
 
 - (BOOL)shouldInvalidateExistingCertificateIfAny
 {
-  v2 = [(MABAACertManager *)self copyCurrentBootManifestHash];
+  copyCurrentBootManifestHash = [(MABAACertManager *)self copyCurrentBootManifestHash];
   v3 = _MAPreferencesCopyNSDataValue(@"BootManifestHashForLastCert");
   v4 = v3;
-  v5 = v2 && ![v3 isEqual:v2];
+  v5 = copyCurrentBootManifestHash && ![v3 isEqual:copyCurrentBootManifestHash];
   v6 = _MAClientLog(@"KeyManager");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -429,7 +429,7 @@ LABEL_16:
     }
 
     v8 = @"Exists";
-    if (v2)
+    if (copyCurrentBootManifestHash)
     {
       v9 = @"Exists";
     }
@@ -456,10 +456,10 @@ LABEL_16:
   return v5;
 }
 
-- (id)copyDeviceIdentityOptionsForCertAndRequestType:(int)a3 skipNetworkRequest:(BOOL)a4 invalidateExistingCert:(BOOL)a5
+- (id)copyDeviceIdentityOptionsForCertAndRequestType:(int)type skipNetworkRequest:(BOOL)request invalidateExistingCert:(BOOL)cert
 {
-  v5 = a5;
-  v6 = a4;
+  certCopy = cert;
+  requestCopy = request;
   v8 = objc_alloc_init(NSMutableDictionary);
   v9 = kMAOptionsBAAOIDHardwareProperties;
   v10 = kMAOptionsBAAOIDDeviceOSInformation;
@@ -511,7 +511,7 @@ LABEL_15:
       goto LABEL_16;
     }
 
-    if (a3 >= 2)
+    if (type >= 2)
     {
       v16 = _MAClientLog(@"KeyManager");
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -527,7 +527,7 @@ LABEL_13:
     }
 
     [v8 setObject:@"com.apple.mobileassetd" forKeyedSubscript:kMAOptionsBAAKeychainAccessGroup];
-    if (a3)
+    if (type)
     {
       v20 = @"com.apple.mobileassetd.downloadcert";
     }
@@ -537,7 +537,7 @@ LABEL_13:
       v20 = @"com.apple.mobileassetd.scancert";
     }
 
-    if (a3)
+    if (type)
     {
       v21 = v13;
     }
@@ -552,10 +552,10 @@ LABEL_13:
     [v8 setObject:&off_4F82B8 forKeyedSubscript:kMAOptionsBAAValidity];
     [v8 setObject:&__kCFBooleanTrue forKeyedSubscript:kMAOptionsBAASCRTAttestation];
     [v8 setObject:&off_4F82D0 forKeyedSubscript:kMAOptionsBAANetworkTimeoutInterval];
-    v22 = [NSNumber numberWithBool:v6];
+    v22 = [NSNumber numberWithBool:requestCopy];
     [v8 setObject:v22 forKeyedSubscript:kMAOptionsBAASkipNetworkRequest];
 
-    v23 = [NSNumber numberWithBool:v5];
+    v23 = [NSNumber numberWithBool:certCopy];
     [v8 setObject:v23 forKeyedSubscript:kMAOptionsBAADeleteExistingKeysAndCerts];
 
     [v8 setObject:v15 forKeyedSubscript:kMAOptionsBAAAccessControls];
@@ -578,8 +578,8 @@ LABEL_16:
 
 - (void)invalidateExistingCertsAndWait
 {
-  v3 = [(MABAACertManager *)self certManagerQueue];
-  dispatch_assert_queue_V2(v3);
+  certManagerQueue = [(MABAACertManager *)self certManagerQueue];
+  dispatch_assert_queue_V2(certManagerQueue);
 
   v4 = +[MABAACertManager isSupported];
   v5 = _MAClientLog(@"KeyManager");
@@ -594,7 +594,7 @@ LABEL_16:
 
     v7 = dispatch_semaphore_create(0);
     v8 = [(MABAACertManager *)self copyDeviceIdentityOptionsForCertAndRequestType:self->_certType skipNetworkRequest:1 invalidateExistingCert:1];
-    v9 = [(MABAACertManager *)self deviceIdentityQueue];
+    deviceIdentityQueue = [(MABAACertManager *)self deviceIdentityQueue];
     v6 = v7;
     DeviceIdentityIssueClientCertificateWithCompletion();
 
@@ -626,10 +626,10 @@ intptr_t __50__MABAACertManager_invalidateExistingCertsAndWait__block_invoke(uin
   return dispatch_semaphore_signal(v3);
 }
 
-- (void)issueAndWaitForCerts:(unint64_t)a3
+- (void)issueAndWaitForCerts:(unint64_t)certs
 {
-  v5 = [(MABAACertManager *)self certManagerQueue];
-  dispatch_assert_queue_V2(v5);
+  certManagerQueue = [(MABAACertManager *)self certManagerQueue];
+  dispatch_assert_queue_V2(certManagerQueue);
 
   if (!+[MABAACertManager isSupported])
   {
@@ -645,7 +645,7 @@ intptr_t __50__MABAACertManager_invalidateExistingCertsAndWait__block_invoke(uin
 
   requestTime = self->_requestTime;
   atomic_load(&self->_cachedTime);
-  if (requestTime <= a3 && requestTime <= self->_responseTime)
+  if (requestTime <= certs && requestTime <= self->_responseTime)
   {
     if (!requestTime && [(MABAACertManager *)self shouldInvalidateExistingCertificateIfAny])
     {
@@ -662,7 +662,7 @@ intptr_t __50__MABAACertManager_invalidateExistingCertsAndWait__block_invoke(uin
     v9 = dispatch_semaphore_create(0);
     self->_requestTime = clock_gettime_nsec_np(_CLOCK_MONOTONIC);
     v10 = [(MABAACertManager *)self copyDeviceIdentityOptionsForCertAndRequestType:self->_certType skipNetworkRequest:0 invalidateExistingCert:0];
-    v11 = [(MABAACertManager *)self deviceIdentityQueue];
+    deviceIdentityQueue = [(MABAACertManager *)self deviceIdentityQueue];
     v12 = v9;
     DeviceIdentityIssueClientCertificateWithCompletion();
 
@@ -800,26 +800,26 @@ LABEL_15:
   return v2;
 }
 
-- (id)issueSelfSignedCertInternal:(__SecKey *)a3
+- (id)issueSelfSignedCertInternal:(__SecKey *)internal
 {
   v14 = 0;
-  v4 = [objc_opt_class() keyParameters];
-  v5 = SecKeyCreateRandomKey(v4, &v14);
+  keyParameters = [objc_opt_class() keyParameters];
+  v5 = SecKeyCreateRandomKey(keyParameters, &v14);
 
   if (v5)
   {
     v6 = SecKeyCopyPublicKey(v5);
-    v7 = [objc_opt_class() certificateSubject];
-    v8 = [objc_opt_class() certificateParameters];
+    certificateSubject = [objc_opt_class() certificateSubject];
+    certificateParameters = [objc_opt_class() certificateParameters];
     SelfSignedCertificate = SecGenerateSelfSignedCertificate();
 
     if (SelfSignedCertificate)
     {
       v15 = SelfSignedCertificate;
       v10 = [NSArray arrayWithObjects:&v15 count:1];
-      if (a3)
+      if (internal)
       {
-        *a3 = CFRetain(v5);
+        *internal = CFRetain(v5);
       }
 
       CFRelease(SelfSignedCertificate);

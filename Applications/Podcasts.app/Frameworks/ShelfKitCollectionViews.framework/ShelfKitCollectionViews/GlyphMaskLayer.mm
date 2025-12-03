@@ -1,13 +1,13 @@
 @interface GlyphMaskLayer
 - (_TtC23ShelfKitCollectionViews14GlyphMaskLayer)init;
-- (_TtC23ShelfKitCollectionViews14GlyphMaskLayer)initWithCoder:(id)a3;
-- (_TtC23ShelfKitCollectionViews14GlyphMaskLayer)initWithLayer:(id)a3;
-- (void)drawInContext:(CGContext *)a3;
+- (_TtC23ShelfKitCollectionViews14GlyphMaskLayer)initWithCoder:(id)coder;
+- (_TtC23ShelfKitCollectionViews14GlyphMaskLayer)initWithLayer:(id)layer;
+- (void)drawInContext:(CGContext *)context;
 @end
 
 @implementation GlyphMaskLayer
 
-- (_TtC23ShelfKitCollectionViews14GlyphMaskLayer)initWithLayer:(id)a3
+- (_TtC23ShelfKitCollectionViews14GlyphMaskLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_30D448();
@@ -23,7 +23,7 @@
   return v5;
 }
 
-- (_TtC23ShelfKitCollectionViews14GlyphMaskLayer)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViews14GlyphMaskLayer)initWithCoder:(id)coder
 {
   *(&self->super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews14GlyphMaskLayer_symbolImage) = 0;
   result = sub_30D648();
@@ -31,11 +31,11 @@
   return result;
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
-  v4 = a3;
-  v5 = self;
-  sub_2525C0(v4);
+  contextCopy = context;
+  selfCopy = self;
+  sub_2525C0(contextCopy);
 }
 
 - (_TtC23ShelfKitCollectionViews14GlyphMaskLayer)init

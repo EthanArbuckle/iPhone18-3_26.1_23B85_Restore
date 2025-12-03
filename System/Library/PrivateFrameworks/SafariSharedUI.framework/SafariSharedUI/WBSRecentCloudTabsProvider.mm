@@ -1,11 +1,11 @@
 @interface WBSRecentCloudTabsProvider
-+ (id)deviceIconForIdentifier:(id)a3;
++ (id)deviceIconForIdentifier:(id)identifier;
 - (NSSet)recentItems;
-- (WBSRecentCloudTabsProvider)initWithCloudTabDeviceProvider:(id)a3;
+- (WBSRecentCloudTabsProvider)initWithCloudTabDeviceProvider:(id)provider;
 - (WBSRecentsStore)recentsStore;
-- (void)cloudTabDeviceProvider:(id)a3 didUpdateCloudTabsInProfileWithIdentifier:(id)a4;
-- (void)setActiveProfileIdentifier:(id)a3;
-- (void)setCloudTabDeviceProvider:(id)a3;
+- (void)cloudTabDeviceProvider:(id)provider didUpdateCloudTabsInProfileWithIdentifier:(id)identifier;
+- (void)setActiveProfileIdentifier:(id)identifier;
+- (void)setCloudTabDeviceProvider:(id)provider;
 @end
 
 @implementation WBSRecentCloudTabsProvider
@@ -39,17 +39,17 @@
           v27 = v4;
           v5 = *(*(&v35 + 1) + 8 * v4);
           v6 = objc_opt_class();
-          v7 = [v5 deviceTypeIdentifier];
-          v30 = [v6 deviceIconForIdentifier:v7];
+          deviceTypeIdentifier = [v5 deviceTypeIdentifier];
+          v30 = [v6 deviceIconForIdentifier:deviceTypeIdentifier];
 
           v8 = v5;
-          v9 = [v5 tabs];
+          tabs = [v5 tabs];
           v31 = 0u;
           v32 = 0u;
           v33 = 0u;
           v34 = 0u;
-          v28 = v9;
-          v10 = [v9 countByEnumeratingWithState:&v31 objects:v39 count:16];
+          v28 = tabs;
+          v10 = [tabs countByEnumeratingWithState:&v31 objects:v39 count:16];
           if (v10)
           {
             v11 = v10;
@@ -65,15 +65,15 @@
 
                 v14 = *(*(&v31 + 1) + 8 * i);
                 v15 = [WBSRecentItem alloc];
-                v16 = [v14 uuidString];
+                uuidString = [v14 uuidString];
                 v17 = [v14 url];
-                v18 = [MEMORY[0x1E695DF00] date];
-                v19 = [(WBSRecentItem *)v15 initWithIdentifier:v16 url:v17 date:v18];
+                date = [MEMORY[0x1E695DF00] date];
+                v19 = [(WBSRecentItem *)v15 initWithIdentifier:uuidString url:v17 date:date];
 
                 [(WBSRecentItem *)v19 setDevice:v8];
                 [(WBSRecentItem *)v19 setCloudTab:v14];
-                v20 = [v14 title];
-                [(WBSRecentItem *)v19 setTitle:v20];
+                title = [v14 title];
+                [(WBSRecentItem *)v19 setTitle:title];
 
                 [(WBSRecentItem *)v19 setIcon:v30];
                 v21 = MEMORY[0x1E695DF00];
@@ -109,16 +109,16 @@
   return v29;
 }
 
-- (WBSRecentCloudTabsProvider)initWithCloudTabDeviceProvider:(id)a3
+- (WBSRecentCloudTabsProvider)initWithCloudTabDeviceProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v10.receiver = self;
   v10.super_class = WBSRecentCloudTabsProvider;
   v6 = [(WBSRecentCloudTabsProvider *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_cloudTabDeviceProvider, a3);
+    objc_storeStrong(&v6->_cloudTabDeviceProvider, provider);
     [(WBSCloudTabDeviceProvider *)v7->_cloudTabDeviceProvider addCloudTabsObserver:v7];
     v8 = v7;
   }
@@ -126,18 +126,18 @@
   return v7;
 }
 
-+ (id)deviceIconForIdentifier:(id)a3
++ (id)deviceIconForIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
-    v4 = [MEMORY[0x1E69A8A40] symbolForTypeIdentifier:v3 error:0];
+    v4 = [MEMORY[0x1E69A8A40] symbolForTypeIdentifier:identifierCopy error:0];
     v5 = v4;
     if (v4)
     {
       v6 = MEMORY[0x1E69DCAB8];
-      v7 = [v4 name];
-      v8 = [v6 _systemImageNamed:v7];
+      name = [v4 name];
+      v8 = [v6 _systemImageNamed:name];
     }
 
     else
@@ -154,23 +154,23 @@
   return v8;
 }
 
-- (void)setCloudTabDeviceProvider:(id)a3
+- (void)setCloudTabDeviceProvider:(id)provider
 {
-  v6 = a3;
+  providerCopy = provider;
   if ((WBSIsEqual() & 1) == 0)
   {
-    objc_storeStrong(&self->_cloudTabDeviceProvider, a3);
+    objc_storeStrong(&self->_cloudTabDeviceProvider, provider);
     WeakRetained = objc_loadWeakRetained(&self->_recentsStore);
     [WeakRetained ingestRecentItemsFromProvider:self];
   }
 }
 
-- (void)setActiveProfileIdentifier:(id)a3
+- (void)setActiveProfileIdentifier:(id)identifier
 {
-  v7 = a3;
+  identifierCopy = identifier;
   if ((WBSIsEqual() & 1) == 0)
   {
-    v4 = [v7 copy];
+    v4 = [identifierCopy copy];
     activeProfileIdentifier = self->_activeProfileIdentifier;
     self->_activeProfileIdentifier = v4;
 
@@ -179,7 +179,7 @@
   }
 }
 
-- (void)cloudTabDeviceProvider:(id)a3 didUpdateCloudTabsInProfileWithIdentifier:(id)a4
+- (void)cloudTabDeviceProvider:(id)provider didUpdateCloudTabsInProfileWithIdentifier:(id)identifier
 {
   if (WBSIsEqual())
   {

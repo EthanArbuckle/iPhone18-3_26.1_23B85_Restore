@@ -15,7 +15,7 @@
 
 - (id)hk_valueFormatterClass
 {
-  [a1 code];
+  [self code];
   v1 = objc_opt_class();
 
   return v1;
@@ -25,22 +25,22 @@
 {
   v8 = a3;
   v9 = a4;
-  v10 = [a1 code];
-  if (v10 > 137)
+  code = [self code];
+  if (code > 137)
   {
-    if (v10 <= 293)
+    if (code <= 293)
     {
-      if (v10 != 138)
+      if (code != 138)
       {
-        if (v10 != 189)
+        if (code != 189)
         {
-          if (v10 != 256)
+          if (code != 256)
           {
             goto LABEL_26;
           }
 
-          v13 = [MEMORY[0x1E696C510] _changeInDegreeCelsiusUnit];
-          v14 = [v8 _isCompatibleWithUnit:v13];
+          _changeInDegreeCelsiusUnit = [MEMORY[0x1E696C510] _changeInDegreeCelsiusUnit];
+          v14 = [v8 _isCompatibleWithUnit:_changeInDegreeCelsiusUnit];
 
           if (!v14)
           {
@@ -55,7 +55,7 @@
       }
     }
 
-    else if ((v10 - 294) >= 4)
+    else if ((code - 294) >= 4)
     {
       goto LABEL_26;
     }
@@ -63,9 +63,9 @@
     goto LABEL_21;
   }
 
-  if (v10 <= 69)
+  if (code <= 69)
   {
-    if (v10 == 2)
+    if (code == 2)
     {
       if (_HeightFormatter_oncetoken != -1)
       {
@@ -74,7 +74,7 @@
 
       v16 = _HeightFormatter__heightFormatter;
 LABEL_25:
-      v12 = v16;
+      numberFormatter = v16;
       if (v16)
       {
         goto LABEL_27;
@@ -83,15 +83,15 @@ LABEL_25:
       goto LABEL_26;
     }
 
-    if (v10 != 8)
+    if (code != 8)
     {
-      if (v10 == 63)
+      if (code == 63)
       {
         goto LABEL_23;
       }
 
 LABEL_26:
-      v12 = [v9 numberFormatter];
+      numberFormatter = [v9 numberFormatter];
       goto LABEL_27;
     }
 
@@ -107,8 +107,8 @@ LABEL_24:
     goto LABEL_26;
   }
 
-  v11 = v10 - 70;
-  if ((v10 - 70) > 0x2B)
+  v11 = code - 70;
+  if ((code - 70) > 0x2B)
   {
     goto LABEL_26;
   }
@@ -125,31 +125,31 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if (v10 != 70)
+  if (code != 70)
   {
     goto LABEL_26;
   }
 
-  v12 = objc_alloc_init(HKTimePeriodNumberFormatter);
-  [(HKTimePeriodNumberFormatter *)v12 setShouldRoundToHours:1];
-  [(HKTimePeriodNumberFormatter *)v12 setShouldShowDays:0];
-  if (!v12)
+  numberFormatter = objc_alloc_init(HKTimePeriodNumberFormatter);
+  [(HKTimePeriodNumberFormatter *)numberFormatter setShouldRoundToHours:1];
+  [(HKTimePeriodNumberFormatter *)numberFormatter setShouldShowDays:0];
+  if (!numberFormatter)
   {
     goto LABEL_26;
   }
 
 LABEL_27:
 
-  return v12;
+  return numberFormatter;
 }
 
 - (id)hk_valueFormatterClassForUnit:()HKAdditions
 {
   v4 = a3;
-  if ([a1 code] == 256)
+  if ([self code] == 256)
   {
-    v5 = [MEMORY[0x1E696C510] _changeInDegreeCelsiusUnit];
-    v6 = [v4 _isCompatibleWithUnit:v5];
+    _changeInDegreeCelsiusUnit = [MEMORY[0x1E696C510] _changeInDegreeCelsiusUnit];
+    v6 = [v4 _isCompatibleWithUnit:_changeInDegreeCelsiusUnit];
 
     if (v6)
     {
@@ -160,12 +160,12 @@ LABEL_27:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = a1;
-    v8 = [MEMORY[0x1E696C510] countUnit];
-    if ([v4 isEqual:v8])
+    selfCopy = self;
+    countUnit = [MEMORY[0x1E696C510] countUnit];
+    if ([v4 isEqual:countUnit])
     {
-      v9 = [v7 canonicalUnit];
-      v10 = [v9 _isCompatibleWithUnit:v4];
+      canonicalUnit = [selfCopy canonicalUnit];
+      v10 = [canonicalUnit _isCompatibleWithUnit:v4];
 
       v11 = v10 ^ 1;
     }
@@ -181,38 +181,38 @@ LABEL_27:
     v11 = 1;
   }
 
-  v12 = [MEMORY[0x1E696C510] countUnit];
-  v13 = [v4 isEqual:v12];
+  countUnit2 = [MEMORY[0x1E696C510] countUnit];
+  v13 = [v4 isEqual:countUnit2];
 
   if (v13 && v11)
   {
 LABEL_11:
-    v14 = objc_opt_class();
+    hk_valueFormatterClass = objc_opt_class();
   }
 
   else
   {
-    v14 = [a1 hk_valueFormatterClass];
+    hk_valueFormatterClass = [self hk_valueFormatterClass];
   }
 
-  v15 = v14;
+  v15 = hk_valueFormatterClass;
 
   return v15;
 }
 
 - (id)hk_primaryMetadataKey
 {
-  v1 = [a1 code];
+  code = [self code];
   v2 = 0;
-  if (v1 > 146)
+  if (code > 146)
   {
     v3 = MEMORY[0x1E696BA40];
-    if (v1 == 199 || v1 == 178)
+    if (code == 199 || code == 178)
     {
       goto LABEL_12;
     }
 
-    if (v1 != 147)
+    if (code != 147)
     {
       goto LABEL_13;
     }
@@ -220,7 +220,7 @@ LABEL_11:
     goto LABEL_9;
   }
 
-  switch(v1)
+  switch(code)
   {
     case 14:
       v3 = MEMORY[0x1E696BA50];
@@ -243,14 +243,14 @@ LABEL_13:
 
 - (id)hk_secondaryMetadataKey
 {
-  v1 = [a1 code];
+  code = [self code];
   v2 = MEMORY[0x1E696C6D8];
-  if (v1 == 178 || v1 == 199)
+  if (code == 178 || code == 199)
   {
     goto LABEL_5;
   }
 
-  if (v1 == 236)
+  if (code == 236)
   {
     v2 = MEMORY[0x1E696BB18];
 LABEL_5:
@@ -267,17 +267,17 @@ LABEL_7:
 - (id)hk_metadataValueDisplayTypeInStore:()HKAdditions
 {
   v4 = a3;
-  v5 = [a1 code];
-  if (v5 <= 198)
+  code = [self code];
+  if (code <= 198)
   {
-    if (v5 == 140 || v5 == 147)
+    if (code == 140 || code == 147)
     {
       v6 = MEMORY[0x1E696C370];
       v7 = MEMORY[0x1E696BD30];
       goto LABEL_17;
     }
 
-    if (v5 == 178)
+    if (code == 178)
     {
       v6 = MEMORY[0x1E696C370];
       v7 = MEMORY[0x1E696BD08];
@@ -285,20 +285,20 @@ LABEL_7:
     }
 
 LABEL_14:
-    v8 = a1;
+    selfCopy = self;
     goto LABEL_18;
   }
 
-  if (v5 > 249)
+  if (code > 249)
   {
-    if (v5 == 250)
+    if (code == 250)
     {
       v6 = MEMORY[0x1E696C370];
       v7 = MEMORY[0x1E696BC68];
       goto LABEL_17;
     }
 
-    if (v5 == 276)
+    if (code == 276)
     {
       v6 = MEMORY[0x1E696C370];
       v7 = MEMORY[0x1E696BC50];
@@ -308,14 +308,14 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if (v5 == 199)
+  if (code == 199)
   {
     v6 = MEMORY[0x1E696C370];
     v7 = MEMORY[0x1E696BD28];
     goto LABEL_17;
   }
 
-  if (v5 != 236)
+  if (code != 236)
   {
     goto LABEL_14;
   }
@@ -323,9 +323,9 @@ LABEL_14:
   v6 = MEMORY[0x1E696C370];
   v7 = MEMORY[0x1E696BDF0];
 LABEL_17:
-  v8 = [v6 quantityTypeForIdentifier:*v7];
+  selfCopy = [v6 quantityTypeForIdentifier:*v7];
 LABEL_18:
-  v9 = v8;
+  v9 = selfCopy;
   v10 = [HKDisplayTypeController sharedInstanceForHealthStore:v4];
   v11 = [v10 displayTypeForObjectType:v9];
 
@@ -336,8 +336,8 @@ LABEL_18:
 {
   v6 = a4;
   v7 = a3;
-  v8 = [a1 hk_primaryMetadataKey];
-  v9 = [a1 _hk_formatMetadataValueForMetadataKey:v8 object:v7 unitPreferenceController:v6];
+  hk_primaryMetadataKey = [self hk_primaryMetadataKey];
+  v9 = [self _hk_formatMetadataValueForMetadataKey:hk_primaryMetadataKey object:v7 unitPreferenceController:v6];
 
   return v9;
 }
@@ -346,8 +346,8 @@ LABEL_18:
 {
   v6 = a4;
   v7 = a3;
-  v8 = [a1 hk_secondaryMetadataKey];
-  v9 = [a1 _hk_formatMetadataValueForMetadataKey:v8 object:v7 unitPreferenceController:v6];
+  hk_secondaryMetadataKey = [self hk_secondaryMetadataKey];
+  v9 = [self _hk_formatMetadataValueForMetadataKey:hk_secondaryMetadataKey object:v7 unitPreferenceController:v6];
 
   return v9;
 }
@@ -357,16 +357,16 @@ LABEL_18:
   v8 = a3;
   v9 = a4;
   v10 = a5;
-  v11 = [v10 healthStore];
-  v12 = [a1 hk_metadataValueDisplayTypeInStore:v11];
+  healthStore = [v10 healthStore];
+  v12 = [self hk_metadataValueDisplayTypeInStore:healthStore];
 
   v13 = 0;
   if (v8 && v12)
   {
-    v14 = [v9 metadata];
-    v15 = [v14 objectForKey:v8];
+    metadata = [v9 metadata];
+    v15 = [metadata objectForKey:v8];
 
-    v13 = [a1 hk_formatMetadataValue:v15 displayType:v12 unitPreferencesController:v10];
+    v13 = [self hk_formatMetadataValue:v15 displayType:v12 unitPreferencesController:v10];
   }
 
   return v13;
@@ -387,11 +387,11 @@ LABEL_18:
     v14 = v13;
 
     v15 = [v12 numberWithDouble:v14];
-    v16 = [v8 presentation];
-    v17 = [v16 adjustedValueForDaemonValue:v15];
+    presentation = [v8 presentation];
+    v17 = [presentation adjustedValueForDaemonValue:v15];
 
     v18 = [v8 hk_valueFormatterForUnit:v11];
-    v19 = [v18 stringFromValue:v17 displayType:v8 unitController:v9];
+    stringValue = [v18 stringFromValue:v17 displayType:v8 unitController:v9];
   }
 
   else
@@ -400,10 +400,10 @@ LABEL_18:
     if (objc_opt_isKindOfClass())
     {
       v20 = v7;
-      v21 = [v8 presentation];
-      v22 = [v21 adjustedValueForDaemonValue:v20];
+      presentation2 = [v8 presentation];
+      v22 = [presentation2 adjustedValueForDaemonValue:v20];
 
-      v19 = [v22 stringValue];
+      stringValue = [v22 stringValue];
     }
 
     else
@@ -411,17 +411,17 @@ LABEL_18:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v19 = v7;
+        stringValue = v7;
       }
 
       else
       {
-        v19 = 0;
+        stringValue = 0;
       }
     }
   }
 
-  return v19;
+  return stringValue;
 }
 
 @end

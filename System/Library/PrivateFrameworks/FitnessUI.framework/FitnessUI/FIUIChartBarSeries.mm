@@ -1,12 +1,12 @@
 @interface FIUIChartBarSeries
 - (FIUIChartBarSeries)init;
-- (id)_chartColorForChartYValue:(double)a3;
-- (void)_strokeRect:(CGRect)a3 context:(CGContext *)a4 color:(CGColor *)a5 width:(double)a6;
+- (id)_chartColorForChartYValue:(double)value;
+- (void)_strokeRect:(CGRect)rect context:(CGContext *)context color:(CGColor *)color width:(double)width;
 - (void)_translateColorThresholds;
 - (void)dealloc;
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4;
+- (void)drawLayer:(id)layer inContext:(CGContext *)context;
 - (void)layoutSubviews;
-- (void)setBarGradient:(CGGradient *)a3;
+- (void)setBarGradient:(CGGradient *)gradient;
 @end
 
 @implementation FIUIChartBarSeries
@@ -26,17 +26,17 @@
     v3->_barLabels = 0;
 
     v3->_barWidth = 2.0;
-    v6 = [MEMORY[0x1E69DC888] whiteColor];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
     barColor = v3->_barColor;
-    v3->_barColor = v6;
+    v3->_barColor = whiteColor;
 
     v3->_barGradient = 0;
     v3->_barSpacing = 1.0;
     v3->_roundedCornerRadius = 0.0;
     v3->_fadeZeroBars = 0;
-    v8 = [MEMORY[0x1E69DC888] whiteColor];
+    whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
     fadedBarColor = v3->_fadedBarColor;
-    v3->_fadedBarColor = v8;
+    v3->_fadedBarColor = whiteColor2;
   }
 
   return v3;
@@ -55,23 +55,23 @@
   v8.receiver = self;
   v8.super_class = FIUIChartBarSeries;
   [(FIUIChartSeries *)&v8 layoutSubviews];
-  v3 = [(FIUIChartNumericSeries *)self CGPointsFromDataSet];
+  cGPointsFromDataSet = [(FIUIChartNumericSeries *)self CGPointsFromDataSet];
   plotPoints = self->_plotPoints;
-  self->_plotPoints = v3;
+  self->_plotPoints = cGPointsFromDataSet;
 
-  v5 = [(FIUIChartSeries *)self labelsFromDataSet];
+  labelsFromDataSet = [(FIUIChartSeries *)self labelsFromDataSet];
   barLabels = self->_barLabels;
-  self->_barLabels = v5;
+  self->_barLabels = labelsFromDataSet;
 
   [(FIUIChartBarSeries *)self _translateColorThresholds];
-  v7 = [(FIUIChartBarSeries *)self layer];
-  [v7 setNeedsDisplay];
+  layer = [(FIUIChartBarSeries *)self layer];
+  [layer setNeedsDisplay];
 }
 
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4
+- (void)drawLayer:(id)layer inContext:(CGContext *)context
 {
   v94 = *MEMORY[0x1E69E9840];
-  UIGraphicsPushContext(a4);
+  UIGraphicsPushContext(context);
   [(FIUIChartBarSeries *)self bounds];
   CGRectGetHeight(v97);
   UIRoundToViewScale();
@@ -100,7 +100,7 @@
     v69 = 0;
   }
 
-  c = a4;
+  c = context;
   Mutable = CGPathCreateMutable();
   v63 = v10;
   if (self->_fadeZeroBars)
@@ -113,7 +113,7 @@
     path = 0;
   }
 
-  v71 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v86 = 0u;
   v87 = 0u;
   v88 = 0u;
@@ -171,7 +171,7 @@
         }
 
         v22 = [MEMORY[0x1E696B098] valueWithCGRect:{v9, v17, barWidth, v20}];
-        [v71 addObject:v22];
+        [array addObject:v22];
 
         v9 = v9 + self->_barWidth + self->_barSpacing;
       }
@@ -184,48 +184,48 @@
 
   if (self->_barGradient)
   {
-    v23 = a4;
+    contextCopy2 = context;
     v24 = v63;
     v25 = v69;
     if (!CGPathIsEmpty(path))
     {
-      CGContextSaveGState(a4);
-      CGContextAddPath(a4, path);
-      CGContextSetFillColorWithColor(a4, [(UIColor *)self->_fadedBarColor CGColor]);
-      CGContextFillPath(a4);
-      CGContextRestoreGState(a4);
+      CGContextSaveGState(context);
+      CGContextAddPath(context, path);
+      CGContextSetFillColorWithColor(context, [(UIColor *)self->_fadedBarColor CGColor]);
+      CGContextFillPath(context);
+      CGContextRestoreGState(context);
     }
 
     if (!CGPathIsEmpty(Mutable))
     {
-      CGContextSaveGState(a4);
-      CGContextAddPath(a4, Mutable);
-      CGContextClip(a4);
+      CGContextSaveGState(context);
+      CGContextAddPath(context, Mutable);
+      CGContextClip(context);
       v95.x = 1.0;
       v95.y = 0.0;
       v96.x = 1.0;
       v96.y = v7;
-      CGContextDrawLinearGradient(a4, self->_barGradient, v95, v96, 0);
-      CGContextRestoreGState(a4);
+      CGContextDrawLinearGradient(context, self->_barGradient, v95, v96, 0);
+      CGContextRestoreGState(context);
     }
   }
 
   else
   {
-    v23 = a4;
-    CGContextSetFillColorWithColor(a4, [(UIColor *)self->_barColor CGColor]);
+    contextCopy2 = context;
+    CGContextSetFillColorWithColor(context, [(UIColor *)self->_barColor CGColor]);
     v24 = v63;
     v25 = v69;
   }
 
-  CGContextSaveGState(v23);
+  CGContextSaveGState(contextCopy2);
   if (v25)
   {
     v84 = 0u;
     v85 = 0u;
     v82 = 0u;
     v83 = 0u;
-    v26 = v71;
+    v26 = array;
     v27 = [v26 countByEnumeratingWithState:&v82 objects:v92 count:16];
     if (v27)
     {
@@ -244,7 +244,7 @@
           v32 = v31;
           v34 = v33;
           [(FIUIChartSeries *)self insetBounds];
-          [(FIUIChartBarSeries *)self _strokeRect:v23 context:[(UIColor *)self->_backgroundStrokeColor CGColor] color:v32 width:v35, v34 + 1.0, v36, self->_backgroundStrokeWidth];
+          [(FIUIChartBarSeries *)self _strokeRect:contextCopy2 context:[(UIColor *)self->_backgroundStrokeColor CGColor] color:v32 width:v35, v34 + 1.0, v36, self->_backgroundStrokeWidth];
         }
 
         v28 = [v26 countByEnumeratingWithState:&v82 objects:v92 count:16];
@@ -262,7 +262,7 @@
     v81 = 0u;
     v78 = 0u;
     v79 = 0u;
-    v37 = v71;
+    v37 = array;
     v38 = [v37 countByEnumeratingWithState:&v78 objects:v91 count:16];
     if (v38)
     {
@@ -299,13 +299,13 @@
             v49 = v48;
             if (v48)
             {
-              [v48 drawInRect:v23 inContext:{x, y, width, height}];
+              [v48 drawInRect:contextCopy2 inContext:{x, y, width, height}];
             }
 
             v70 = v40;
             if (v24)
             {
-              [(FIUIChartBarSeries *)self _strokeRect:v23 context:[(UIColor *)self->_strokeColor CGColor] color:x + v42 width:y, width + 1.0, height, self->_strokeWidth];
+              [(FIUIChartBarSeries *)self _strokeRect:contextCopy2 context:[(UIColor *)self->_strokeColor CGColor] color:x + v42 width:y, width + 1.0, height, self->_strokeWidth];
             }
 
             if (self->_barLabels && [(NSArray *)self->_labelAttributes count])
@@ -362,7 +362,7 @@
                 while (v52);
               }
 
-              v23 = c;
+              contextCopy2 = c;
               v24 = v63;
               v37 = v62;
               v42 = -1.0;
@@ -386,21 +386,21 @@
     }
   }
 
-  CGContextRestoreGState(v23);
+  CGContextRestoreGState(contextCopy2);
   CGPathRelease(Mutable);
   CGPathRelease(path);
   UIGraphicsPopContext();
 }
 
-- (id)_chartColorForChartYValue:(double)a3
+- (id)_chartColorForChartYValue:(double)value
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(NSArray *)self->_barColors reverseObjectEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  reverseObjectEnumerator = [(NSArray *)self->_barColors reverseObjectEnumerator];
+  v5 = [reverseObjectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = *v12;
@@ -410,19 +410,19 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
         [v8 chartYValue];
-        if (v9 >= a3)
+        if (v9 >= value)
         {
           v5 = v8;
           goto LABEL_11;
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [reverseObjectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v5)
       {
         continue;
@@ -437,15 +437,15 @@ LABEL_11:
   return v5;
 }
 
-- (void)_strokeRect:(CGRect)a3 context:(CGContext *)a4 color:(CGColor *)a5 width:(double)a6
+- (void)_strokeRect:(CGRect)rect context:(CGContext *)context color:(CGColor *)color width:(double)width
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  CGContextSetStrokeColorWithColor(a4, a5);
-  CGContextSetLineWidth(a4, a6);
-  CGContextBeginPath(a4);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  CGContextSetStrokeColorWithColor(context, color);
+  CGContextSetLineWidth(context, width);
+  CGContextBeginPath(context);
   v21.origin.x = x;
   v21.origin.y = y;
   v21.size.width = width;
@@ -456,7 +456,7 @@ LABEL_11:
   v22.size.width = width;
   v22.size.height = height;
   MaxY = CGRectGetMaxY(v22);
-  CGContextMoveToPoint(a4, MinX, MaxY);
+  CGContextMoveToPoint(context, MinX, MaxY);
   v23.origin.x = x;
   v23.origin.y = y;
   v23.size.width = width;
@@ -467,7 +467,7 @@ LABEL_11:
   v24.size.width = width;
   v24.size.height = height;
   MinY = CGRectGetMinY(v24);
-  CGContextAddLineToPoint(a4, v14, MinY);
+  CGContextAddLineToPoint(context, v14, MinY);
   v25.origin.x = x;
   v25.origin.y = y;
   v25.size.width = width;
@@ -478,7 +478,7 @@ LABEL_11:
   v26.size.width = width;
   v26.size.height = height;
   v17 = CGRectGetMinY(v26);
-  CGContextAddLineToPoint(a4, MaxX, v17);
+  CGContextAddLineToPoint(context, MaxX, v17);
   v27.origin.x = x;
   v27.origin.y = y;
   v27.size.width = width;
@@ -489,10 +489,10 @@ LABEL_11:
   v28.size.width = width;
   v28.size.height = height;
   v19 = CGRectGetMaxY(v28);
-  CGContextAddLineToPoint(a4, v18, v19);
-  CGContextClosePath(a4);
+  CGContextAddLineToPoint(context, v18, v19);
+  CGContextClosePath(context);
 
-  CGContextStrokePath(a4);
+  CGContextStrokePath(context);
 }
 
 - (void)_translateColorThresholds
@@ -532,10 +532,10 @@ LABEL_11:
   }
 }
 
-- (void)setBarGradient:(CGGradient *)a3
+- (void)setBarGradient:(CGGradient *)gradient
 {
   CGGradientRelease(self->_barGradient);
-  self->_barGradient = CGGradientRetain(a3);
+  self->_barGradient = CGGradientRetain(gradient);
 
   [(FIUIChartBarSeries *)self setNeedsDisplay];
 }

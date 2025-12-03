@@ -1,10 +1,10 @@
 @interface _LTAlignment
-- (BOOL)isEqual:(id)a3;
-- (_LTAlignment)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_LTAlignment)initWithCoder:(id)coder;
 - (_NSRange)sourceRange;
 - (_NSRange)targetRange;
 - (id)jsonRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _LTAlignment
@@ -13,22 +13,22 @@
 {
   v20[3] = *MEMORY[0x277D85DE8];
   v19[0] = @"identifier";
-  v3 = [(_LTAlignment *)self identifier];
-  v4 = v3;
+  identifier = [(_LTAlignment *)self identifier];
+  v4 = identifier;
   v5 = @"<no value>";
-  if (v3)
+  if (identifier)
   {
-    v5 = v3;
+    v5 = identifier;
   }
 
   v20[0] = v5;
   v19[1] = @"text";
-  v6 = [(_LTAlignment *)self text];
-  v7 = v6;
+  text = [(_LTAlignment *)self text];
+  v7 = text;
   v8 = &stru_284DBB9B8;
-  if (v6)
+  if (text)
   {
-    v8 = v6;
+    v8 = text;
   }
 
   v20[1] = v8;
@@ -50,52 +50,52 @@
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
   v7 = [MEMORY[0x277CCAE60] valueWithRange:{self->_sourceRange.location, self->_sourceRange.length}];
-  [v5 encodeObject:v7 forKey:@"sourceRange"];
+  [coderCopy encodeObject:v7 forKey:@"sourceRange"];
   v6 = [MEMORY[0x277CCAE60] valueWithRange:{self->_targetRange.location, self->_targetRange.length}];
-  [v5 encodeObject:v6 forKey:@"targetRange"];
-  [v5 encodeObject:self->_text forKey:@"text"];
-  [v5 encodeBool:self->_shouldTranslate forKey:@"shouldTranslate"];
+  [coderCopy encodeObject:v6 forKey:@"targetRange"];
+  [coderCopy encodeObject:self->_text forKey:@"text"];
+  [coderCopy encodeBool:self->_shouldTranslate forKey:@"shouldTranslate"];
 }
 
-- (_LTAlignment)initWithCoder:(id)a3
+- (_LTAlignment)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = _LTAlignment;
   v5 = [(_LTAlignment *)&v16 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sourceRange"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sourceRange"];
     v5->_sourceRange.location = [v8 rangeValue];
     v5->_sourceRange.length = v9;
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"targetRange"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"targetRange"];
     v5->_targetRange.location = [v10 rangeValue];
     v5->_targetRange.length = v11;
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"text"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"text"];
     text = v5->_text;
     v5->_text = v12;
 
-    v5->_shouldTranslate = [v4 decodeBoolForKey:@"shouldTranslate"];
+    v5->_shouldTranslate = [coderCopy decodeBoolForKey:@"shouldTranslate"];
     v14 = v5;
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -105,14 +105,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       identifier = self->_identifier;
-      v7 = [(_LTAlignment *)v5 identifier];
-      if ([(NSString *)identifier isEqualToString:v7])
+      identifier = [(_LTAlignment *)v5 identifier];
+      if ([(NSString *)identifier isEqualToString:identifier])
       {
         text = self->_text;
-        v9 = [(_LTAlignment *)v5 text];
-        if ([(NSString *)text isEqualToString:v9])
+        text = [(_LTAlignment *)v5 text];
+        if ([(NSString *)text isEqualToString:text])
         {
           v11 = 0;
           if (self->_sourceRange.location == [(_LTAlignment *)v5 sourceRange]&& self->_sourceRange.length == v10)

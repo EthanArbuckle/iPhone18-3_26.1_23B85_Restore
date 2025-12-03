@@ -1,59 +1,59 @@
 @interface CPError
-+ (id)errorWithCode:(int64_t)a3;
-+ (id)errorWithCode:(int64_t)a3 description:(id)a4 underlyingError:(id)a5;
++ (id)errorWithCode:(int64_t)code;
++ (id)errorWithCode:(int64_t)code description:(id)description underlyingError:(id)error;
 @end
 
 @implementation CPError
 
-+ (id)errorWithCode:(int64_t)a3
++ (id)errorWithCode:(int64_t)code
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  if ((a3 + 1) > 0x19)
+  if ((code + 1) > 0x19)
   {
     v4 = @"Unknown error";
   }
 
   else
   {
-    v4 = off_1E7A45CF0[a3 + 1];
+    v4 = off_1E7A45CF0[code + 1];
   }
 
   v5 = MEMORY[0x1E696ABC0];
   v10 = *MEMORY[0x1E696A578];
   v11[0] = v4;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-  v7 = [v5 errorWithDomain:@"com.apple.copresence.CPServiceErrorDomain" code:a3 userInfo:v6];
+  v7 = [v5 errorWithDomain:@"com.apple.copresence.CPServiceErrorDomain" code:code userInfo:v6];
 
   v8 = *MEMORY[0x1E69E9840];
 
   return v7;
 }
 
-+ (id)errorWithCode:(int64_t)a3 description:(id)a4 underlyingError:(id)a5
++ (id)errorWithCode:(int64_t)code description:(id)description underlyingError:(id)error
 {
-  v7 = a4;
-  v8 = a5;
-  if (v7 | v8)
+  descriptionCopy = description;
+  errorCopy = error;
+  if (descriptionCopy | errorCopy)
   {
-    v9 = [MEMORY[0x1E695DF90] dictionary];
-    if (v7)
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    if (descriptionCopy)
     {
-      v10 = [v7 copy];
-      [v9 setObject:v10 forKeyedSubscript:*MEMORY[0x1E696A278]];
+      v10 = [descriptionCopy copy];
+      [dictionary setObject:v10 forKeyedSubscript:*MEMORY[0x1E696A278]];
     }
 
-    if (v8)
+    if (errorCopy)
     {
-      [v9 setObject:v8 forKeyedSubscript:*MEMORY[0x1E696AA08]];
+      [dictionary setObject:errorCopy forKeyedSubscript:*MEMORY[0x1E696AA08]];
     }
   }
 
   else
   {
-    v9 = 0;
+    dictionary = 0;
   }
 
-  v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.copresence.CPServiceErrorDomain" code:a3 userInfo:v9];
+  v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.copresence.CPServiceErrorDomain" code:code userInfo:dictionary];
 
   return v11;
 }

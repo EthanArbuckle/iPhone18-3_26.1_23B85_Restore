@@ -3,23 +3,23 @@
 + (id)easeInPath;
 + (id)easeOutPath;
 + (id)linearPath;
-+ (id)mediaTimingFunctionForPath:(id)a3 reversed:(BOOL)a4;
-+ (id)parameterGroupForName:(id)a3;
++ (id)mediaTimingFunctionForPath:(id)path reversed:(BOOL)reversed;
++ (id)parameterGroupForName:(id)name;
 + (void)p_loadAllParametersIfNecessary;
-- (BOOL)BOOLForKey:(id)a3;
-- (KNAnimParameterGroup)initWithFileName:(id)a3;
-- (double)doubleForAnimationCurve:(id)a3 atPercent:(double)a4;
-- (double)doubleForKey:(id)a3;
-- (id)mediaTimingFunctionForAnimationCurve:(id)a3 reversed:(BOOL)a4;
-- (id)pathForAnimationCurve:(id)a3;
+- (BOOL)BOOLForKey:(id)key;
+- (KNAnimParameterGroup)initWithFileName:(id)name;
+- (double)doubleForAnimationCurve:(id)curve atPercent:(double)percent;
+- (double)doubleForKey:(id)key;
+- (id)mediaTimingFunctionForAnimationCurve:(id)curve reversed:(BOOL)reversed;
+- (id)pathForAnimationCurve:(id)curve;
 - (void)p_loadParameters;
 @end
 
 @implementation KNAnimParameterGroup
 
-+ (id)parameterGroupForName:(id)a3
++ (id)parameterGroupForName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   if (qword_280A3C090 != -1)
   {
     sub_275E5B55C();
@@ -31,7 +31,7 @@
   v31 = sub_275DC2384;
   v32 = sub_275DC2394;
   v33 = 0;
-  if (!v4)
+  if (!nameCopy)
   {
     v5 = MEMORY[0x277D81150];
     v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v3, "+[KNAnimParameterGroup parameterGroupForName:]");
@@ -47,7 +47,7 @@
   block[2] = sub_275DC239C;
   block[3] = &unk_27A698618;
   v27 = &v28;
-  v13 = v4;
+  v13 = nameCopy;
   v26 = v13;
   dispatch_sync(v12, block);
   v15 = v29[5];
@@ -79,18 +79,18 @@
   }
 }
 
-- (double)doubleForKey:(id)a3
+- (double)doubleForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v7 = objc_msgSend_savedGroup(self, v5, v6);
-  v9 = objc_msgSend_parameterForName_(v7, v8, v4);
+  v9 = objc_msgSend_parameterForName_(v7, v8, keyCopy);
 
   if (!v9)
   {
     v12 = MEMORY[0x277D81150];
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "[KNAnimParameterGroup doubleForKey:]");
     v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/keynote/Classes/KNAnimParameterGroup.m");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v12, v16, v13, v15, 134, 0, "Name does not exist for parameter '%@'", v4);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v12, v16, v13, v15, 134, 0, "Name does not exist for parameter '%@'", keyCopy);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v17, v18);
   }
@@ -100,7 +100,7 @@
     v21 = MEMORY[0x277D81150];
     v22 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v19, "[KNAnimParameterGroup doubleForKey:]");
     v24 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v23, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/keynote/Classes/KNAnimParameterGroup.m");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v21, v25, v22, v24, 135, 0, "Trying to access the constant from the wrong type of parameter '%@'", v4);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v21, v25, v22, v24, 135, 0, "Trying to access the constant from the wrong type of parameter '%@'", keyCopy);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v26, v27);
   }
@@ -111,18 +111,18 @@
   return v29;
 }
 
-- (BOOL)BOOLForKey:(id)a3
+- (BOOL)BOOLForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v7 = objc_msgSend_savedGroup(self, v5, v6);
-  v9 = objc_msgSend_parameterForName_(v7, v8, v4);
+  v9 = objc_msgSend_parameterForName_(v7, v8, keyCopy);
 
   if (!v9)
   {
     v12 = MEMORY[0x277D81150];
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "[KNAnimParameterGroup BOOLForKey:]");
     v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/keynote/Classes/KNAnimParameterGroup.m");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v12, v16, v13, v15, 144, 0, "Name does not exist for parameter '%@'", v4);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v12, v16, v13, v15, 144, 0, "Name does not exist for parameter '%@'", keyCopy);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v17, v18);
   }
@@ -132,7 +132,7 @@
     v21 = MEMORY[0x277D81150];
     v22 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v19, "[KNAnimParameterGroup BOOLForKey:]");
     v24 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v23, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/keynote/Classes/KNAnimParameterGroup.m");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v21, v25, v22, v24, 145, 0, "Trying to access the BOOL from the wrong type of parameter '%@'", v4);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v21, v25, v22, v24, 145, 0, "Trying to access the BOOL from the wrong type of parameter '%@'", keyCopy);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v26, v27);
   }
@@ -143,10 +143,10 @@
   return v29;
 }
 
-- (double)doubleForAnimationCurve:(id)a3 atPercent:(double)a4
+- (double)doubleForAnimationCurve:(id)curve atPercent:(double)percent
 {
-  v7 = objc_msgSend_pathForAnimationCurve_(self, a2, a3);
-  if (a4 < 0.0)
+  v7 = objc_msgSend_pathForAnimationCurve_(self, a2, curve);
+  if (percent < 0.0)
   {
     v8 = MEMORY[0x277D81150];
     v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[KNAnimParameterGroup doubleForAnimationCurve:atPercent:]");
@@ -156,7 +156,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v13, v14);
   }
 
-  if (a4 > 1.0)
+  if (percent > 1.0)
   {
     v15 = MEMORY[0x277D81150];
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[KNAnimParameterGroup doubleForAnimationCurve:atPercent:]");
@@ -166,18 +166,18 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v20, v21);
   }
 
-  objc_msgSend_yValueFromXValue_(v7, v5, v6, a4);
+  objc_msgSend_yValueFromXValue_(v7, v5, v6, percent);
   TSUClamp();
   v23 = v22;
 
   return v23;
 }
 
-- (id)pathForAnimationCurve:(id)a3
+- (id)pathForAnimationCurve:(id)curve
 {
-  v4 = a3;
+  curveCopy = curve;
   v7 = objc_msgSend_savedGroup(self, v5, v6);
-  v9 = objc_msgSend_parameterForName_(v7, v8, v4);
+  v9 = objc_msgSend_parameterForName_(v7, v8, curveCopy);
 
   v14 = objc_msgSend_pathValue(v9, v10, v11);
   if (!v9)
@@ -186,7 +186,7 @@
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, "[KNAnimParameterGroup pathForAnimationCurve:]");
     v18 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v17, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/keynote/Classes/KNAnimParameterGroup.m");
     v21 = objc_msgSend_name(self, v19, v20);
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v15, v22, v16, v18, 164, 0, "Name does not exist for parameter: %@(%@)", v21, v4);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v15, v22, v16, v18, 164, 0, "Name does not exist for parameter: %@(%@)", v21, curveCopy);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v23, v24);
   }
@@ -197,7 +197,7 @@
     v28 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v25, "[KNAnimParameterGroup pathForAnimationCurve:]");
     v30 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v29, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/keynote/Classes/KNAnimParameterGroup.m");
     v33 = objc_msgSend_name(self, v31, v32);
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v27, v34, v28, v30, 165, 0, "Trying to access a bezier path from the wrong type of parameter: %@(%@)", v33, v4);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v27, v34, v28, v30, 165, 0, "Trying to access a bezier path from the wrong type of parameter: %@(%@)", v33, curveCopy);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v35, v36);
   }
@@ -208,7 +208,7 @@
     v38 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v25, "[KNAnimParameterGroup pathForAnimationCurve:]");
     v40 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v39, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/keynote/Classes/KNAnimParameterGroup.m");
     v43 = objc_msgSend_name(self, v41, v42);
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v37, v44, v38, v40, 166, 0, "Bezier path is nil for parameter: %@(%@)", v43, v4);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v37, v44, v38, v40, 166, 0, "Bezier path is nil for parameter: %@(%@)", v43, curveCopy);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v45, v46);
   }
@@ -216,12 +216,12 @@
   return v14;
 }
 
-- (id)mediaTimingFunctionForAnimationCurve:(id)a3 reversed:(BOOL)a4
+- (id)mediaTimingFunctionForAnimationCurve:(id)curve reversed:(BOOL)reversed
 {
-  v4 = a4;
-  v6 = a3;
+  reversedCopy = reversed;
+  curveCopy = curve;
   v9 = objc_msgSend_savedGroup(self, v7, v8);
-  v11 = objc_msgSend_parameterForName_(v9, v10, v6);
+  v11 = objc_msgSend_parameterForName_(v9, v10, curveCopy);
 
   if (!v11 || objc_msgSend_type(v11, v12, v13) != 10)
   {
@@ -229,24 +229,24 @@
     v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, "[KNAnimParameterGroup mediaTimingFunctionForAnimationCurve:reversed:]");
     v17 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v16, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/keynote/Classes/KNAnimParameterGroup.m");
     v20 = objc_msgSend_name(self, v18, v19);
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v14, v21, v15, v17, 180, 0, "Trying to access media timing function from a parameter that is not a simple path for parameter: %@(%@)", v20, v6);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v14, v21, v15, v17, 180, 0, "Trying to access media timing function from a parameter that is not a simple path for parameter: %@(%@)", v20, curveCopy);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v22, v23);
   }
 
-  v24 = objc_msgSend_pathForAnimationCurve_(self, v12, v6);
-  v26 = objc_msgSend_mediaTimingFunctionForPath_reversed_(KNAnimParameterGroup, v25, v24, v4);
+  v24 = objc_msgSend_pathForAnimationCurve_(self, v12, curveCopy);
+  v26 = objc_msgSend_mediaTimingFunctionForPath_reversed_(KNAnimParameterGroup, v25, v24, reversedCopy);
 
   return v26;
 }
 
-+ (id)mediaTimingFunctionForPath:(id)a3 reversed:(BOOL)a4
++ (id)mediaTimingFunctionForPath:(id)path reversed:(BOOL)reversed
 {
-  v4 = a4;
+  reversedCopy = reversed;
   v33 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  pathCopy = path;
   v31 = *MEMORY[0x277CBF348];
-  if (objc_msgSend_elementCount(v5, v6, v7) < 2)
+  if (objc_msgSend_elementCount(pathCopy, v6, v7) < 2)
   {
     v30 = v31;
   }
@@ -259,21 +259,21 @@
     v30 = v31;
     do
     {
-      v12.i64[0] = objc_msgSend_elementAtIndex_associatedPoints_(v5, v8, v11, v32, *&v29);
+      v12.i64[0] = objc_msgSend_elementAtIndex_associatedPoints_(pathCopy, v8, v11, v32, *&v29);
       v13 = vdupq_lane_s64(vceqq_s64(v12, v29).i64[0], 0);
       v30 = vbslq_s8(v13, v32[1], v30);
       v31 = vbslq_s8(v13, v32[0], v31);
       ++v11;
     }
 
-    while (v11 < objc_msgSend_elementCount(v5, v14, v15));
+    while (v11 < objc_msgSend_elementCount(pathCopy, v14, v15));
   }
 
   __asm { FMOV            V0.2D, #1.0 }
 
   v21 = vsubq_f64(_Q0, v30);
   v22 = vsubq_f64(_Q0, v31);
-  if (v4)
+  if (reversedCopy)
   {
     v23 = -1;
   }
@@ -333,15 +333,15 @@
   return v3;
 }
 
-- (KNAnimParameterGroup)initWithFileName:(id)a3
+- (KNAnimParameterGroup)initWithFileName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v30.receiver = self;
   v30.super_class = KNAnimParameterGroup;
   v7 = [(KNAnimParameterGroup *)&v30 init];
   if (v7)
   {
-    if (!v4)
+    if (!nameCopy)
     {
       v8 = MEMORY[0x277D81150];
       v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[KNAnimParameterGroup initWithFileName:]");
@@ -351,11 +351,11 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v13, v14);
     }
 
-    v15 = objc_msgSend_copy(v4, v5, v6);
+    v15 = objc_msgSend_copy(nameCopy, v5, v6);
     fileName = v7->_fileName;
     v7->_fileName = v15;
 
-    v19 = objc_msgSend_lastPathComponent(v4, v17, v18);
+    v19 = objc_msgSend_lastPathComponent(nameCopy, v17, v18);
     v22 = objc_msgSend_stringByDeletingPathExtension(v19, v20, v21);
     v25 = objc_msgSend_copy(v22, v23, v24);
     name = v7->_name;

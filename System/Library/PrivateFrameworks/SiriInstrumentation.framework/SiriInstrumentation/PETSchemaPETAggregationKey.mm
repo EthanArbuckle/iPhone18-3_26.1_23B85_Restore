@@ -1,42 +1,42 @@
 @interface PETSchemaPETAggregationKey
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PETSchemaPETAggregationKey)initWithDictionary:(id)a3;
-- (PETSchemaPETAggregationKey)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PETSchemaPETAggregationKey)initWithDictionary:(id)dictionary;
+- (PETSchemaPETAggregationKey)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasBucket:(BOOL)a3;
-- (void)setHasDatestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasBucket:(BOOL)bucket;
+- (void)setHasDatestamp:(BOOL)datestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PETSchemaPETAggregationKey
 
-- (PETSchemaPETAggregationKey)initWithDictionary:(id)a3
+- (PETSchemaPETAggregationKey)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = PETSchemaPETAggregationKey;
   v5 = [(PETSchemaPETAggregationKey *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"type"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"type"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PETSchemaPETAggregationKey setType:](v5, "setType:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"datestamp"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"datestamp"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PETSchemaPETAggregationKey setDatestamp:](v5, "setDatestamp:", [v7 unsignedIntValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"bucket"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"bucket"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -44,7 +44,7 @@
       [(PETSchemaPETAggregationKey *)v5 setBucket:?];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"rawMessage"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"rawMessage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -58,30 +58,30 @@
   return v5;
 }
 
-- (PETSchemaPETAggregationKey)initWithJSON:(id)a3
+- (PETSchemaPETAggregationKey)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PETSchemaPETAggregationKey *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PETSchemaPETAggregationKey *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PETSchemaPETAggregationKey *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -94,14 +94,14 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
     v5 = MEMORY[0x1E696AD98];
     [(PETSchemaPETAggregationKey *)self bucket];
     v6 = [v5 numberWithDouble:?];
-    [v3 setObject:v6 forKeyedSubscript:@"bucket"];
+    [dictionary setObject:v6 forKeyedSubscript:@"bucket"];
 
     has = self->_has;
   }
@@ -109,22 +109,22 @@
   if ((has & 2) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PETSchemaPETAggregationKey datestamp](self, "datestamp")}];
-    [v3 setObject:v7 forKeyedSubscript:@"datestamp"];
+    [dictionary setObject:v7 forKeyedSubscript:@"datestamp"];
   }
 
   if (self->_raw_message)
   {
-    v8 = [(PETSchemaPETAggregationKey *)self raw_message];
-    v9 = [v8 dictionaryRepresentation];
-    if (v9)
+    raw_message = [(PETSchemaPETAggregationKey *)self raw_message];
+    dictionaryRepresentation = [raw_message dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v9 forKeyedSubscript:@"rawMessage"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"rawMessage"];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v10 forKeyedSubscript:@"rawMessage"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"rawMessage"];
     }
   }
 
@@ -141,12 +141,12 @@
       v12 = off_1E78DFE50[v11];
     }
 
-    [v3 setObject:v12 forKeyedSubscript:@"type"];
+    [dictionary setObject:v12 forKeyedSubscript:@"type"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -213,16 +213,16 @@ LABEL_4:
   return v9 ^ v8 ^ v13 ^ [(PETSchemaPETRawMessage *)self->_raw_message hash:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   has = self->_has;
-  v6 = v4[32];
+  v6 = equalCopy[32];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_18;
@@ -231,13 +231,13 @@ LABEL_4:
   if (*&has)
   {
     type = self->_type;
-    if (type != [v4 type])
+    if (type != [equalCopy type])
     {
       goto LABEL_18;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -246,27 +246,27 @@ LABEL_4:
     if (v8)
     {
       datestamp = self->_datestamp;
-      if (datestamp != [v4 datestamp])
+      if (datestamp != [equalCopy datestamp])
       {
         goto LABEL_18;
       }
 
       has = self->_has;
-      v6 = v4[32];
+      v6 = equalCopy[32];
     }
 
     v10 = (*&has >> 2) & 1;
     if (v10 == ((v6 >> 2) & 1))
     {
-      if (!v10 || (bucket = self->_bucket, [v4 bucket], bucket == v12))
+      if (!v10 || (bucket = self->_bucket, [equalCopy bucket], bucket == v12))
       {
-        v13 = [(PETSchemaPETAggregationKey *)self raw_message];
-        v14 = [v4 raw_message];
-        v15 = v14;
-        if ((v13 != 0) != (v14 == 0))
+        raw_message = [(PETSchemaPETAggregationKey *)self raw_message];
+        raw_message2 = [equalCopy raw_message];
+        v15 = raw_message2;
+        if ((raw_message != 0) != (raw_message2 == 0))
         {
-          v16 = [(PETSchemaPETAggregationKey *)self raw_message];
-          if (!v16)
+          raw_message3 = [(PETSchemaPETAggregationKey *)self raw_message];
+          if (!raw_message3)
           {
 
 LABEL_21:
@@ -274,10 +274,10 @@ LABEL_21:
             goto LABEL_19;
           }
 
-          v17 = v16;
-          v18 = [(PETSchemaPETAggregationKey *)self raw_message];
-          v19 = [v4 raw_message];
-          v20 = [v18 isEqual:v19];
+          v17 = raw_message3;
+          raw_message4 = [(PETSchemaPETAggregationKey *)self raw_message];
+          raw_message5 = [equalCopy raw_message];
+          v20 = [raw_message4 isEqual:raw_message5];
 
           if (v20)
           {
@@ -299,9 +299,9 @@ LABEL_19:
   return v21;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -332,21 +332,21 @@ LABEL_4:
   }
 
 LABEL_5:
-  v5 = [(PETSchemaPETAggregationKey *)self raw_message];
+  raw_message = [(PETSchemaPETAggregationKey *)self raw_message];
 
-  v6 = v8;
-  if (v5)
+  v6 = toCopy;
+  if (raw_message)
   {
-    v7 = [(PETSchemaPETAggregationKey *)self raw_message];
+    raw_message2 = [(PETSchemaPETAggregationKey *)self raw_message];
     PBDataWriterWriteSubmessage();
 
-    v6 = v8;
+    v6 = toCopy;
   }
 }
 
-- (void)setHasBucket:(BOOL)a3
+- (void)setHasBucket:(BOOL)bucket
 {
-  if (a3)
+  if (bucket)
   {
     v3 = 4;
   }
@@ -359,9 +359,9 @@ LABEL_5:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasDatestamp:(BOOL)a3
+- (void)setHasDatestamp:(BOOL)datestamp
 {
-  if (a3)
+  if (datestamp)
   {
     v3 = 2;
   }
@@ -374,17 +374,17 @@ LABEL_5:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = PETSchemaPETAggregationKey;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(PETSchemaPETAggregationKey *)self raw_message:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(PETSchemaPETAggregationKey *)self deleteRaw_message];
   }

@@ -1,20 +1,20 @@
 @interface ICASTagDeleteData
-- (ICASTagDeleteData)initWithTagDeleteApproach:(id)a3;
+- (ICASTagDeleteData)initWithTagDeleteApproach:(id)approach;
 - (id)toDict;
 @end
 
 @implementation ICASTagDeleteData
 
-- (ICASTagDeleteData)initWithTagDeleteApproach:(id)a3
+- (ICASTagDeleteData)initWithTagDeleteApproach:(id)approach
 {
-  v5 = a3;
+  approachCopy = approach;
   v9.receiver = self;
   v9.super_class = ICASTagDeleteData;
   v6 = [(ICASTagDeleteData *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_tagDeleteApproach, a3);
+    objc_storeStrong(&v6->_tagDeleteApproach, approach);
   }
 
   return v7;
@@ -24,19 +24,19 @@
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v9 = @"tagDeleteApproach";
-  v3 = [(ICASTagDeleteData *)self tagDeleteApproach];
-  if (v3)
+  tagDeleteApproach = [(ICASTagDeleteData *)self tagDeleteApproach];
+  if (tagDeleteApproach)
   {
-    v4 = [(ICASTagDeleteData *)self tagDeleteApproach];
+    tagDeleteApproach2 = [(ICASTagDeleteData *)self tagDeleteApproach];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    tagDeleteApproach2 = objc_opt_new();
   }
 
-  v5 = v4;
-  v10[0] = v4;
+  v5 = tagDeleteApproach2;
+  v10[0] = tagDeleteApproach2;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
 
   v7 = *MEMORY[0x277D85DE8];

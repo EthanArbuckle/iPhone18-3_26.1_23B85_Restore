@@ -1,14 +1,14 @@
 @interface IMSpotlightEventNotifier
 + (id)sharedNotifier;
-- (id)_displayStringForReason:(int64_t)a3;
-- (id)_formatDate:(id)a3;
-- (void)_presentNotificationWithMessage:(id)a3 newState:(id)a4 verbose:(BOOL)a5;
+- (id)_displayStringForReason:(int64_t)reason;
+- (id)_formatDate:(id)date;
+- (void)_presentNotificationWithMessage:(id)message newState:(id)state verbose:(BOOL)verbose;
 - (void)deferredReindexScheduled;
-- (void)reindexCompletedWithState:(id)a3 reason:(int64_t)a4;
-- (void)reindexInitiatedWithTotalMessages:(int64_t)a3 reason:(int64_t)a4;
-- (void)reindexPausedWithState:(id)a3 reason:(int64_t)a4;
-- (void)reindexResumedWithState:(id)a3 reason:(int64_t)a4;
-- (void)reindexSuspendedUntilDate:(id)a3 withError:(id)a4;
+- (void)reindexCompletedWithState:(id)state reason:(int64_t)reason;
+- (void)reindexInitiatedWithTotalMessages:(int64_t)messages reason:(int64_t)reason;
+- (void)reindexPausedWithState:(id)state reason:(int64_t)reason;
+- (void)reindexResumedWithState:(id)state reason:(int64_t)reason;
+- (void)reindexSuspendedUntilDate:(id)date withError:(id)error;
 @end
 
 @implementation IMSpotlightEventNotifier
@@ -33,7 +33,7 @@
   return v3;
 }
 
-- (id)_displayStringForReason:(int64_t)a3
+- (id)_displayStringForReason:(int64_t)reason
 {
   v3 = NSStringFromIMCoreSpotlightIndexReason();
   if (objc_msgSend_hasPrefix_(v3, v4, @"IMCoreSpotlightIndexReason"))
@@ -47,16 +47,16 @@
   return v3;
 }
 
-- (void)_presentNotificationWithMessage:(id)a3 newState:(id)a4 verbose:(BOOL)a5
+- (void)_presentNotificationWithMessage:(id)message newState:(id)state verbose:(BOOL)verbose
 {
-  v5 = a5;
-  v21 = a3;
-  v9 = a4;
-  if (!v5 || objc_msgSend_notifyForVerboseSpotlightEvents(MEMORY[0x1E69A7FF8], v7, v8))
+  verboseCopy = verbose;
+  messageCopy = message;
+  stateCopy = state;
+  if (!verboseCopy || objc_msgSend_notifyForVerboseSpotlightEvents(MEMORY[0x1E69A7FF8], v7, v8))
   {
     v10 = objc_alloc(MEMORY[0x1E69A8028]);
-    v12 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v11, @"Messages Indexing %@", v9);
-    v14 = objc_msgSend_initWithTitle_body_(v10, v13, v12, v21);
+    v12 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v11, @"Messages Indexing %@", stateCopy);
+    v14 = objc_msgSend_initWithTitle_body_(v10, v13, v12, messageCopy);
 
     v17 = objc_msgSend_spotlightEventsAreTimeSensitive(MEMORY[0x1E69A7FF8], v15, v16);
     objc_msgSend_setTimeSensitive_(v14, v18, v17);
@@ -73,16 +73,16 @@
   objc_msgSend__presentNotificationWithMessage_newState_verbose_(self, v7, v6, @"Scheduled", 0);
 }
 
-- (id)_formatDate:(id)a3
+- (id)_formatDate:(id)date
 {
-  if (a3)
+  if (date)
   {
     v3 = MEMORY[0x1E696AB78];
-    v4 = a3;
+    dateCopy = date;
     v5 = objc_alloc_init(v3);
     objc_msgSend_setDateStyle_(v5, v6, 1);
     objc_msgSend_setTimeStyle_(v5, v7, 2);
-    v9 = objc_msgSend_stringFromDate_(v5, v8, v4);
+    v9 = objc_msgSend_stringFromDate_(v5, v8, dateCopy);
   }
 
   else
@@ -93,59 +93,59 @@
   return v9;
 }
 
-- (void)reindexCompletedWithState:(id)a3 reason:(int64_t)a4
+- (void)reindexCompletedWithState:(id)state reason:(int64_t)reason
 {
   v6 = MEMORY[0x1E696AEC0];
-  v7 = a3;
-  v23 = objc_msgSend_indexBeginDate(v7, v8, v9);
+  stateCopy = state;
+  v23 = objc_msgSend_indexBeginDate(stateCopy, v8, v9);
   v11 = objc_msgSend__formatDate_(self, v10, v23);
-  v13 = objc_msgSend__displayStringForReason_(self, v12, a4);
-  v16 = objc_msgSend_initialIndexedMessages(v7, v14, v15);
-  v19 = objc_msgSend_initialTotalMessages(v7, v17, v18);
+  v13 = objc_msgSend__displayStringForReason_(self, v12, reason);
+  v16 = objc_msgSend_initialIndexedMessages(stateCopy, v14, v15);
+  v19 = objc_msgSend_initialTotalMessages(stateCopy, v17, v18);
 
   v21 = objc_msgSend_stringWithFormat_(v6, v20, @"Indexing initially began %@ due to %@. Indexed %lld/%lld messages.", v11, v13, v16, v19);
   objc_msgSend__presentNotificationWithMessage_newState_verbose_(self, v22, v21, @"Finished", 0);
 }
 
-- (void)reindexInitiatedWithTotalMessages:(int64_t)a3 reason:(int64_t)a4
+- (void)reindexInitiatedWithTotalMessages:(int64_t)messages reason:(int64_t)reason
 {
   v6 = MEMORY[0x1E696AEC0];
-  v10 = objc_msgSend__displayStringForReason_(self, a2, a4);
-  v8 = objc_msgSend_stringWithFormat_(v6, v7, @"Initiating reindex of %lld messages due to %@.", a3, v10);
+  v10 = objc_msgSend__displayStringForReason_(self, a2, reason);
+  v8 = objc_msgSend_stringWithFormat_(v6, v7, @"Initiating reindex of %lld messages due to %@.", messages, v10);
   objc_msgSend__presentNotificationWithMessage_newState_verbose_(self, v9, v8, @"Initiated", 0);
 }
 
-- (void)reindexResumedWithState:(id)a3 reason:(int64_t)a4
+- (void)reindexResumedWithState:(id)state reason:(int64_t)reason
 {
   v6 = MEMORY[0x1E696AEC0];
-  v7 = a3;
-  v23 = objc_msgSend_indexBeginDate(v7, v8, v9);
+  stateCopy = state;
+  v23 = objc_msgSend_indexBeginDate(stateCopy, v8, v9);
   v11 = objc_msgSend__formatDate_(self, v10, v23);
-  v13 = objc_msgSend__displayStringForReason_(self, v12, a4);
-  v16 = objc_msgSend_initialIndexedMessages(v7, v14, v15);
-  v19 = objc_msgSend_initialTotalMessages(v7, v17, v18);
+  v13 = objc_msgSend__displayStringForReason_(self, v12, reason);
+  v16 = objc_msgSend_initialIndexedMessages(stateCopy, v14, v15);
+  v19 = objc_msgSend_initialTotalMessages(stateCopy, v17, v18);
 
   v21 = objc_msgSend_stringWithFormat_(v6, v20, @"Resuming indexing, which initially began %@ due to %@. Indexed %lld/%lld messages.", v11, v13, v16, v19);
   objc_msgSend__presentNotificationWithMessage_newState_verbose_(self, v22, v21, @"Resumed", 1);
 }
 
-- (void)reindexPausedWithState:(id)a3 reason:(int64_t)a4
+- (void)reindexPausedWithState:(id)state reason:(int64_t)reason
 {
   v6 = MEMORY[0x1E696AEC0];
-  v7 = a3;
-  v23 = objc_msgSend_indexBeginDate(v7, v8, v9);
+  stateCopy = state;
+  v23 = objc_msgSend_indexBeginDate(stateCopy, v8, v9);
   v11 = objc_msgSend__formatDate_(self, v10, v23);
-  v13 = objc_msgSend__displayStringForReason_(self, v12, a4);
-  v16 = objc_msgSend_initialIndexedMessages(v7, v14, v15);
-  v19 = objc_msgSend_initialTotalMessages(v7, v17, v18);
+  v13 = objc_msgSend__displayStringForReason_(self, v12, reason);
+  v16 = objc_msgSend_initialIndexedMessages(stateCopy, v14, v15);
+  v19 = objc_msgSend_initialTotalMessages(stateCopy, v17, v18);
 
   v21 = objc_msgSend_stringWithFormat_(v6, v20, @"Reindexing paused, which initially began %@ due to %@. Indexed %lld/%lld messages.", v11, v13, v16, v19);
   objc_msgSend__presentNotificationWithMessage_newState_verbose_(self, v22, v21, @"Paused", 1);
 }
 
-- (void)reindexSuspendedUntilDate:(id)a3 withError:(id)a4
+- (void)reindexSuspendedUntilDate:(id)date withError:(id)error
 {
-  v6 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], a2, @"Reindexing suspended until %@ due to an error.\n\n%@", a3, a4);
+  v6 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], a2, @"Reindexing suspended until %@ due to an error.\n\n%@", date, error);
   objc_msgSend__presentNotificationWithMessage_newState_verbose_(self, v5, v6, @"Suspended", 1);
 }
 

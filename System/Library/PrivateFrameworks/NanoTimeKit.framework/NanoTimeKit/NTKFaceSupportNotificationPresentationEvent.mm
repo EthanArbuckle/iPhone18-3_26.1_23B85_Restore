@@ -1,59 +1,59 @@
 @interface NTKFaceSupportNotificationPresentationEvent
 - (NSDictionary)ntkfs_analyticsJSONRepresentation;
-- (NTKFaceSupportNotificationPresentationEvent)initWithBundleIdentifier:(id)a3 status:(int64_t)a4 artworkUsed:(int64_t)a5 delayFromServerPush:(double)a6 delayFromBundleUnlock:(double)a7 schedulingErrorCode:(int64_t)a8 optOutSources:(int64_t)a9;
+- (NTKFaceSupportNotificationPresentationEvent)initWithBundleIdentifier:(id)identifier status:(int64_t)status artworkUsed:(int64_t)used delayFromServerPush:(double)push delayFromBundleUnlock:(double)unlock schedulingErrorCode:(int64_t)code optOutSources:(int64_t)sources;
 @end
 
 @implementation NTKFaceSupportNotificationPresentationEvent
 
-- (NTKFaceSupportNotificationPresentationEvent)initWithBundleIdentifier:(id)a3 status:(int64_t)a4 artworkUsed:(int64_t)a5 delayFromServerPush:(double)a6 delayFromBundleUnlock:(double)a7 schedulingErrorCode:(int64_t)a8 optOutSources:(int64_t)a9
+- (NTKFaceSupportNotificationPresentationEvent)initWithBundleIdentifier:(id)identifier status:(int64_t)status artworkUsed:(int64_t)used delayFromServerPush:(double)push delayFromBundleUnlock:(double)unlock schedulingErrorCode:(int64_t)code optOutSources:(int64_t)sources
 {
-  v16 = a3;
-  v17 = 0;
-  if ([v16 length] && (a4 - 5) >= 0xFFFFFFFFFFFFFFFCLL && a6 > 0.0 && a7 > 0.0 && a9 <= 3)
+  identifierCopy = identifier;
+  selfCopy = 0;
+  if ([identifierCopy length] && (status - 5) >= 0xFFFFFFFFFFFFFFFCLL && push > 0.0 && unlock > 0.0 && sources <= 3)
   {
     v22.receiver = self;
     v22.super_class = NTKFaceSupportNotificationPresentationEvent;
     v18 = [(NTKFaceSupportNotificationPresentationEvent *)&v22 init];
     if (v18)
     {
-      v19 = [v16 copy];
+      v19 = [identifierCopy copy];
       bundleIdentifier = v18->_bundleIdentifier;
       v18->_bundleIdentifier = v19;
 
-      v18->_status = a4;
-      v18->_artworkUsed = a5;
-      v18->_delayFromServerPush = a6;
-      v18->_delayFromBundleUnlock = a7;
-      v18->_schedulingErrorCode = a8;
-      v18->_optOutSources = a9;
+      v18->_status = status;
+      v18->_artworkUsed = used;
+      v18->_delayFromServerPush = push;
+      v18->_delayFromBundleUnlock = unlock;
+      v18->_schedulingErrorCode = code;
+      v18->_optOutSources = sources;
     }
 
     self = v18;
-    v17 = self;
+    selfCopy = self;
   }
 
-  return v17;
+  return selfCopy;
 }
 
 - (NSDictionary)ntkfs_analyticsJSONRepresentation
 {
   v21[7] = *MEMORY[0x277D85DE8];
-  v3 = [(NTKFaceSupportNotificationPresentationEvent *)self bundleIdentifier];
-  v4 = [(NTKFaceSupportNotificationPresentationEvent *)self status];
-  v5 = [(NTKFaceSupportNotificationPresentationEvent *)self artworkUsed];
+  bundleIdentifier = [(NTKFaceSupportNotificationPresentationEvent *)self bundleIdentifier];
+  status = [(NTKFaceSupportNotificationPresentationEvent *)self status];
+  artworkUsed = [(NTKFaceSupportNotificationPresentationEvent *)self artworkUsed];
   [(NTKFaceSupportNotificationPresentationEvent *)self delayFromServerPush];
   v7 = v6;
   [(NTKFaceSupportNotificationPresentationEvent *)self delayFromBundleUnlock];
   v9 = v8;
-  v10 = [(NTKFaceSupportNotificationPresentationEvent *)self schedulingErrorCode];
-  v11 = [(NTKFaceSupportNotificationPresentationEvent *)self optOutSources];
-  v21[0] = v3;
+  schedulingErrorCode = [(NTKFaceSupportNotificationPresentationEvent *)self schedulingErrorCode];
+  optOutSources = [(NTKFaceSupportNotificationPresentationEvent *)self optOutSources];
+  v21[0] = bundleIdentifier;
   v20[0] = @"bundle_identifier";
   v20[1] = @"status";
-  v12 = [MEMORY[0x277CCABB0] numberWithInteger:v4];
+  v12 = [MEMORY[0x277CCABB0] numberWithInteger:status];
   v21[1] = v12;
   v20[2] = @"artwork_used";
-  v13 = [MEMORY[0x277CCABB0] numberWithInteger:v5];
+  v13 = [MEMORY[0x277CCABB0] numberWithInteger:artworkUsed];
   v21[2] = v13;
   v20[3] = @"delay_from_server_push";
   v14 = [MEMORY[0x277CCABB0] numberWithDouble:v7];
@@ -62,10 +62,10 @@
   v15 = [MEMORY[0x277CCABB0] numberWithDouble:v9];
   v21[4] = v15;
   v20[5] = @"scheduling_error_code";
-  v16 = [MEMORY[0x277CCABB0] numberWithInteger:v10];
+  v16 = [MEMORY[0x277CCABB0] numberWithInteger:schedulingErrorCode];
   v21[5] = v16;
   v20[6] = @"opt_out_sources";
-  v17 = [MEMORY[0x277CCABB0] numberWithInteger:v11];
+  v17 = [MEMORY[0x277CCABB0] numberWithInteger:optOutSources];
   v21[6] = v17;
   v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:7];
 

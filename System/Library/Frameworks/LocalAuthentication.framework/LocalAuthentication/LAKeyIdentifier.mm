@@ -1,26 +1,26 @@
 @interface LAKeyIdentifier
-+ (id)_identifierWithSuffix:(uint64_t)a1;
-+ (id)defaultAccessKeyIdentifierForRightWithIdentifier:(id)a3;
-+ (id)defaultSecretIdentifierForRightWithIdentifier:(id)a3;
-+ (uint64_t)_identifierHasCorrectFormat:(uint64_t)a1;
++ (id)_identifierWithSuffix:(uint64_t)suffix;
++ (id)defaultAccessKeyIdentifierForRightWithIdentifier:(id)identifier;
++ (id)defaultSecretIdentifierForRightWithIdentifier:(id)identifier;
++ (uint64_t)_identifierHasCorrectFormat:(uint64_t)format;
 @end
 
 @implementation LAKeyIdentifier
 
-+ (id)defaultAccessKeyIdentifierForRightWithIdentifier:(id)a3
++ (id)defaultAccessKeyIdentifierForRightWithIdentifier:(id)identifier
 {
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:akey", a3];
-  v5 = [(LAKeyIdentifier *)a1 _identifierWithSuffix:v4];
+  identifier = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:akey", identifier];
+  v5 = [(LAKeyIdentifier *)self _identifierWithSuffix:identifier];
 
   return v5;
 }
 
-+ (id)_identifierWithSuffix:(uint64_t)a1
++ (id)_identifierWithSuffix:(uint64_t)suffix
 {
   v2 = a2;
   objc_opt_self();
-  v3 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  v4 = [v2 stringByTrimmingCharactersInSet:v3];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  v4 = [v2 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
   v5 = [v4 length];
 
   if (!v5)
@@ -33,20 +33,20 @@
   return v6;
 }
 
-+ (id)defaultSecretIdentifierForRightWithIdentifier:(id)a3
++ (id)defaultSecretIdentifierForRightWithIdentifier:(id)identifier
 {
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:genp", a3];
-  v5 = [(LAKeyIdentifier *)a1 _identifierWithSuffix:v4];
+  identifier = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:genp", identifier];
+  v5 = [(LAKeyIdentifier *)self _identifierWithSuffix:identifier];
 
   return v5;
 }
 
-+ (uint64_t)_identifierHasCorrectFormat:(uint64_t)a1
++ (uint64_t)_identifierHasCorrectFormat:(uint64_t)format
 {
   v2 = a2;
   objc_opt_self();
-  v3 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  v4 = [v2 stringByTrimmingCharactersInSet:v3];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  v4 = [v2 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
   v5 = [v4 length];
 
   if (v5)

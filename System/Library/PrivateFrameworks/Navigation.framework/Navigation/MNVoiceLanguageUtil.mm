@@ -8,42 +8,42 @@
 + (id)systemDefaultVoiceLanguage
 {
   v24 = *MEMORY[0x1E69E9840];
-  v2 = [a1 _uiVoiceLanguage];
-  v3 = [MEMORY[0x1E698D1C0] sharedPreferences];
-  v4 = [v3 assistantIsEnabled];
+  _uiVoiceLanguage = [self _uiVoiceLanguage];
+  mEMORY[0x1E698D1C0] = [MEMORY[0x1E698D1C0] sharedPreferences];
+  assistantIsEnabled = [mEMORY[0x1E698D1C0] assistantIsEnabled];
 
-  if (!v4)
+  if (!assistantIsEnabled)
   {
-    v6 = GetAudioLogForMNVoiceLanguageUtilCategory();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+    languageCode = GetAudioLogForMNVoiceLanguageUtilCategory();
+    if (os_log_type_enabled(languageCode, OS_LOG_TYPE_INFO))
     {
       v20 = 138543362;
-      v21 = v2;
-      _os_log_impl(&dword_1D311E000, v6, OS_LOG_TYPE_INFO, "ⓥ Using UI language %{public}@ (Siri disabled)", &v20, 0xCu);
+      v21 = _uiVoiceLanguage;
+      _os_log_impl(&dword_1D311E000, languageCode, OS_LOG_TYPE_INFO, "ⓥ Using UI language %{public}@ (Siri disabled)", &v20, 0xCu);
     }
 
     goto LABEL_15;
   }
 
-  v5 = [MEMORY[0x1E698D0F8] outputVoice];
-  v6 = [v5 languageCode];
+  outputVoice = [MEMORY[0x1E698D0F8] outputVoice];
+  languageCode = [outputVoice languageCode];
 
   v7 = GetAudioLogForMNVoiceLanguageUtilCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     v20 = 138543362;
-    v21 = v6;
+    v21 = languageCode;
     _os_log_impl(&dword_1D311E000, v7, OS_LOG_TYPE_DEBUG, "ⓥ siriVoiceLanguage = %{public}@", &v20, 0xCu);
   }
 
-  if (!v6)
+  if (!languageCode)
   {
 LABEL_15:
-    v13 = v2;
+    v13 = _uiVoiceLanguage;
     goto LABEL_20;
   }
 
-  v8 = [MEMORY[0x1E698D0F8] assistantIsSupportedForLanguageCode:v2 error:0];
+  v8 = [MEMORY[0x1E698D0F8] assistantIsSupportedForLanguageCode:_uiVoiceLanguage error:0];
   v9 = GetAudioLogForMNVoiceLanguageUtilCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -65,14 +65,14 @@ LABEL_15:
     if (v12)
     {
       v20 = 138543618;
-      v21 = v6;
+      v21 = languageCode;
       v22 = 2114;
-      v23 = v2;
+      v23 = _uiVoiceLanguage;
       _os_log_impl(&dword_1D311E000, v11, OS_LOG_TYPE_INFO, "ⓥ Using Siri language %{public}@ (UI-based language is %{public}@)", &v20, 0x16u);
     }
 
-    v13 = v6;
-    v11 = v2;
+    v13 = languageCode;
+    v11 = _uiVoiceLanguage;
   }
 
   else
@@ -80,13 +80,13 @@ LABEL_15:
     if (v12)
     {
       v20 = 138543618;
-      v21 = v2;
+      v21 = _uiVoiceLanguage;
       v22 = 2114;
-      v23 = v6;
+      v23 = languageCode;
       _os_log_impl(&dword_1D311E000, v11, OS_LOG_TYPE_INFO, "ⓥ Using UI language %{public}@ (Siri language is %{public}@)", &v20, 0x16u);
     }
 
-    v13 = v2;
+    v13 = _uiVoiceLanguage;
   }
 
 LABEL_20:
@@ -103,14 +103,14 @@ LABEL_20:
 + (id)_uiVoiceLanguage
 {
   v37 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 preferredLocalizations];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  preferredLocalizations = [mainBundle preferredLocalizations];
 
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v4 = v3;
+  v4 = preferredLocalizations;
   v25 = [v4 countByEnumeratingWithState:&v26 objects:v36 count:16];
   if (!v25)
   {

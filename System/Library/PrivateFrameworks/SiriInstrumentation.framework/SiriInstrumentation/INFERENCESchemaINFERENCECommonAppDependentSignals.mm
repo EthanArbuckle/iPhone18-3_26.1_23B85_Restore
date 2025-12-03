@@ -1,33 +1,33 @@
 @interface INFERENCESchemaINFERENCECommonAppDependentSignals
-- (BOOL)isEqual:(id)a3;
-- (INFERENCESchemaINFERENCECommonAppDependentSignals)initWithDictionary:(id)a3;
-- (INFERENCESchemaINFERENCECommonAppDependentSignals)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INFERENCESchemaINFERENCECommonAppDependentSignals)initWithDictionary:(id)dictionary;
+- (INFERENCESchemaINFERENCECommonAppDependentSignals)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasAppScoreFromModel:(BOOL)a3;
-- (void)setHasCompoundActiveBundleScore:(BOOL)a3;
-- (void)setHasIsForegroundApp:(BOOL)a3;
-- (void)setHasIsResolvedApp:(BOOL)a3;
-- (void)setHasTimeSinceAppLastLaunchedInSec:(BOOL)a3;
-- (void)setHasTimeSpentByUserInAppToday:(BOOL)a3;
-- (void)setHasTotalTimeSpentByUserInAppPerDay:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasAppScoreFromModel:(BOOL)model;
+- (void)setHasCompoundActiveBundleScore:(BOOL)score;
+- (void)setHasIsForegroundApp:(BOOL)app;
+- (void)setHasIsResolvedApp:(BOOL)app;
+- (void)setHasTimeSinceAppLastLaunchedInSec:(BOOL)sec;
+- (void)setHasTimeSpentByUserInAppToday:(BOOL)today;
+- (void)setHasTotalTimeSpentByUserInAppPerDay:(BOOL)day;
+- (void)writeTo:(id)to;
 @end
 
 @implementation INFERENCESchemaINFERENCECommonAppDependentSignals
 
-- (INFERENCESchemaINFERENCECommonAppDependentSignals)initWithDictionary:(id)a3
+- (INFERENCESchemaINFERENCECommonAppDependentSignals)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v26.receiver = self;
   v26.super_class = INFERENCESchemaINFERENCECommonAppDependentSignals;
   v5 = [(INFERENCESchemaINFERENCECommonAppDependentSignals *)&v26 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"appBundleId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"appBundleId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,28 +36,28 @@
     }
 
     v25 = v6;
-    v8 = [v4 objectForKeyedSubscript:@"isFirstPartyBundle"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"isFirstPartyBundle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCECommonAppDependentSignals setIsFirstPartyBundle:](v5, "setIsFirstPartyBundle:", [v8 BOOLValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"isForegroundApp"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"isForegroundApp"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCECommonAppDependentSignals setIsForegroundApp:](v5, "setIsForegroundApp:", [v9 BOOLValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"isResolvedApp"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"isResolvedApp"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCECommonAppDependentSignals setIsResolvedApp:](v5, "setIsResolvedApp:", [v10 BOOLValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"appScoreFromModel"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"appScoreFromModel"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -65,7 +65,7 @@
       [(INFERENCESchemaINFERENCECommonAppDependentSignals *)v5 setAppScoreFromModel:?];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"compoundActiveBundleScore"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"compoundActiveBundleScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -73,7 +73,7 @@
       [(INFERENCESchemaINFERENCECommonAppDependentSignals *)v5 setCompoundActiveBundleScore:?];
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"totalTimeSpentByUserInAppPerDay"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"totalTimeSpentByUserInAppPerDay"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -81,7 +81,7 @@
     }
 
     v24 = v8;
-    v14 = [v4 objectForKeyedSubscript:@"timeSpentByUserInAppToday"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"timeSpentByUserInAppToday"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -89,14 +89,14 @@
     }
 
     v23 = v9;
-    v15 = [v4 objectForKeyedSubscript:{@"timeSinceAppLastLaunchedInSec", v10}];
+    v15 = [dictionaryCopy objectForKeyedSubscript:{@"timeSinceAppLastLaunchedInSec", v10}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCECommonAppDependentSignals setTimeSinceAppLastLaunchedInSec:](v5, "setTimeSinceAppLastLaunchedInSec:", [v15 intValue]);
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"appDependentFrequencyAndRecencySignals"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"appDependentFrequencyAndRecencySignals"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -104,7 +104,7 @@
       [(INFERENCESchemaINFERENCECommonAppDependentSignals *)v5 setAppDependentFrequencyAndRecencySignals:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"appDependentEntityFrequencyAndRecencySignals"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"appDependentEntityFrequencyAndRecencySignals"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -118,30 +118,30 @@
   return v5;
 }
 
-- (INFERENCESchemaINFERENCECommonAppDependentSignals)initWithJSON:(id)a3
+- (INFERENCESchemaINFERENCECommonAppDependentSignals)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(INFERENCESchemaINFERENCECommonAppDependentSignals *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(INFERENCESchemaINFERENCECommonAppDependentSignals *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(INFERENCESchemaINFERENCECommonAppDependentSignals *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -154,43 +154,43 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_appBundleId)
   {
-    v4 = [(INFERENCESchemaINFERENCECommonAppDependentSignals *)self appBundleId];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"appBundleId"];
+    appBundleId = [(INFERENCESchemaINFERENCECommonAppDependentSignals *)self appBundleId];
+    v5 = [appBundleId copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"appBundleId"];
   }
 
   if (self->_appDependentEntityFrequencyAndRecencySignals)
   {
-    v6 = [(INFERENCESchemaINFERENCECommonAppDependentSignals *)self appDependentEntityFrequencyAndRecencySignals];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    appDependentEntityFrequencyAndRecencySignals = [(INFERENCESchemaINFERENCECommonAppDependentSignals *)self appDependentEntityFrequencyAndRecencySignals];
+    dictionaryRepresentation = [appDependentEntityFrequencyAndRecencySignals dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"appDependentEntityFrequencyAndRecencySignals"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"appDependentEntityFrequencyAndRecencySignals"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"appDependentEntityFrequencyAndRecencySignals"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"appDependentEntityFrequencyAndRecencySignals"];
     }
   }
 
   if (self->_appDependentFrequencyAndRecencySignals)
   {
-    v9 = [(INFERENCESchemaINFERENCECommonAppDependentSignals *)self appDependentFrequencyAndRecencySignals];
-    v10 = [v9 dictionaryRepresentation];
-    if (v10)
+    appDependentFrequencyAndRecencySignals = [(INFERENCESchemaINFERENCECommonAppDependentSignals *)self appDependentFrequencyAndRecencySignals];
+    dictionaryRepresentation2 = [appDependentFrequencyAndRecencySignals dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v10 forKeyedSubscript:@"appDependentFrequencyAndRecencySignals"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"appDependentFrequencyAndRecencySignals"];
     }
 
     else
     {
-      v11 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v11 forKeyedSubscript:@"appDependentFrequencyAndRecencySignals"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"appDependentFrequencyAndRecencySignals"];
     }
   }
 
@@ -200,7 +200,7 @@
     v15 = MEMORY[0x1E696AD98];
     [(INFERENCESchemaINFERENCECommonAppDependentSignals *)self appScoreFromModel];
     v16 = [v15 numberWithFloat:?];
-    [v3 setObject:v16 forKeyedSubscript:@"appScoreFromModel"];
+    [dictionary setObject:v16 forKeyedSubscript:@"appScoreFromModel"];
 
     has = self->_has;
     if ((has & 0x10) == 0)
@@ -223,7 +223,7 @@ LABEL_15:
   v17 = MEMORY[0x1E696AD98];
   [(INFERENCESchemaINFERENCECommonAppDependentSignals *)self compoundActiveBundleScore];
   v18 = [v17 numberWithDouble:?];
-  [v3 setObject:v18 forKeyedSubscript:@"compoundActiveBundleScore"];
+  [dictionary setObject:v18 forKeyedSubscript:@"compoundActiveBundleScore"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -239,7 +239,7 @@ LABEL_16:
 
 LABEL_27:
   v19 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCECommonAppDependentSignals isFirstPartyBundle](self, "isFirstPartyBundle")}];
-  [v3 setObject:v19 forKeyedSubscript:@"isFirstPartyBundle"];
+  [dictionary setObject:v19 forKeyedSubscript:@"isFirstPartyBundle"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -255,7 +255,7 @@ LABEL_17:
 
 LABEL_28:
   v20 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCECommonAppDependentSignals isForegroundApp](self, "isForegroundApp")}];
-  [v3 setObject:v20 forKeyedSubscript:@"isForegroundApp"];
+  [dictionary setObject:v20 forKeyedSubscript:@"isForegroundApp"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -271,7 +271,7 @@ LABEL_18:
 
 LABEL_29:
   v21 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCECommonAppDependentSignals isResolvedApp](self, "isResolvedApp")}];
-  [v3 setObject:v21 forKeyedSubscript:@"isResolvedApp"];
+  [dictionary setObject:v21 forKeyedSubscript:@"isResolvedApp"];
 
   has = self->_has;
   if ((has & 0x80) == 0)
@@ -287,7 +287,7 @@ LABEL_19:
 
 LABEL_30:
   v22 = [MEMORY[0x1E696AD98] numberWithInt:{-[INFERENCESchemaINFERENCECommonAppDependentSignals timeSinceAppLastLaunchedInSec](self, "timeSinceAppLastLaunchedInSec")}];
-  [v3 setObject:v22 forKeyedSubscript:@"timeSinceAppLastLaunchedInSec"];
+  [dictionary setObject:v22 forKeyedSubscript:@"timeSinceAppLastLaunchedInSec"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -303,19 +303,19 @@ LABEL_20:
 
 LABEL_31:
   v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[INFERENCESchemaINFERENCECommonAppDependentSignals timeSpentByUserInAppToday](self, "timeSpentByUserInAppToday")}];
-  [v3 setObject:v23 forKeyedSubscript:@"timeSpentByUserInAppToday"];
+  [dictionary setObject:v23 forKeyedSubscript:@"timeSpentByUserInAppToday"];
 
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_21:
     v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[INFERENCESchemaINFERENCECommonAppDependentSignals totalTimeSpentByUserInAppPerDay](self, "totalTimeSpentByUserInAppPerDay")}];
-    [v3 setObject:v13 forKeyedSubscript:@"totalTimeSpentByUserInAppPerDay"];
+    [dictionary setObject:v13 forKeyedSubscript:@"totalTimeSpentByUserInAppPerDay"];
   }
 
 LABEL_22:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -474,28 +474,28 @@ LABEL_31:
   return v21 ^ [(INFERENCESchemaINFERENCECommonAppDependentEntityFrequencyAndRecencySignals *)self->_appDependentEntityFrequencyAndRecencySignals hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_48;
   }
 
-  v5 = [(INFERENCESchemaINFERENCECommonAppDependentSignals *)self appBundleId];
-  v6 = [v4 appBundleId];
-  if ((v5 != 0) == (v6 == 0))
+  appBundleId = [(INFERENCESchemaINFERENCECommonAppDependentSignals *)self appBundleId];
+  appBundleId2 = [equalCopy appBundleId];
+  if ((appBundleId != 0) == (appBundleId2 == 0))
   {
     goto LABEL_47;
   }
 
-  v7 = [(INFERENCESchemaINFERENCECommonAppDependentSignals *)self appBundleId];
-  if (v7)
+  appBundleId3 = [(INFERENCESchemaINFERENCECommonAppDependentSignals *)self appBundleId];
+  if (appBundleId3)
   {
-    v8 = v7;
-    v9 = [(INFERENCESchemaINFERENCECommonAppDependentSignals *)self appBundleId];
-    v10 = [v4 appBundleId];
-    v11 = [v9 isEqual:v10];
+    v8 = appBundleId3;
+    appBundleId4 = [(INFERENCESchemaINFERENCECommonAppDependentSignals *)self appBundleId];
+    appBundleId5 = [equalCopy appBundleId];
+    v11 = [appBundleId4 isEqual:appBundleId5];
 
     if (!v11)
     {
@@ -508,7 +508,7 @@ LABEL_31:
   }
 
   has = self->_has;
-  v13 = v4[64];
+  v13 = equalCopy[64];
   if ((*&has & 1) != (v13 & 1))
   {
     goto LABEL_48;
@@ -517,13 +517,13 @@ LABEL_31:
   if (*&has)
   {
     isFirstPartyBundle = self->_isFirstPartyBundle;
-    if (isFirstPartyBundle != [v4 isFirstPartyBundle])
+    if (isFirstPartyBundle != [equalCopy isFirstPartyBundle])
     {
       goto LABEL_48;
     }
 
     has = self->_has;
-    v13 = v4[64];
+    v13 = equalCopy[64];
   }
 
   v15 = (*&has >> 1) & 1;
@@ -535,13 +535,13 @@ LABEL_31:
   if (v15)
   {
     isForegroundApp = self->_isForegroundApp;
-    if (isForegroundApp != [v4 isForegroundApp])
+    if (isForegroundApp != [equalCopy isForegroundApp])
     {
       goto LABEL_48;
     }
 
     has = self->_has;
-    v13 = v4[64];
+    v13 = equalCopy[64];
   }
 
   v17 = (*&has >> 2) & 1;
@@ -553,13 +553,13 @@ LABEL_31:
   if (v17)
   {
     isResolvedApp = self->_isResolvedApp;
-    if (isResolvedApp != [v4 isResolvedApp])
+    if (isResolvedApp != [equalCopy isResolvedApp])
     {
       goto LABEL_48;
     }
 
     has = self->_has;
-    v13 = v4[64];
+    v13 = equalCopy[64];
   }
 
   v19 = (*&has >> 3) & 1;
@@ -571,14 +571,14 @@ LABEL_31:
   if (v19)
   {
     appScoreFromModel = self->_appScoreFromModel;
-    [v4 appScoreFromModel];
+    [equalCopy appScoreFromModel];
     if (appScoreFromModel != v21)
     {
       goto LABEL_48;
     }
 
     has = self->_has;
-    v13 = v4[64];
+    v13 = equalCopy[64];
   }
 
   v22 = (*&has >> 4) & 1;
@@ -590,14 +590,14 @@ LABEL_31:
   if (v22)
   {
     compoundActiveBundleScore = self->_compoundActiveBundleScore;
-    [v4 compoundActiveBundleScore];
+    [equalCopy compoundActiveBundleScore];
     if (compoundActiveBundleScore != v24)
     {
       goto LABEL_48;
     }
 
     has = self->_has;
-    v13 = v4[64];
+    v13 = equalCopy[64];
   }
 
   v25 = (*&has >> 5) & 1;
@@ -609,13 +609,13 @@ LABEL_31:
   if (v25)
   {
     totalTimeSpentByUserInAppPerDay = self->_totalTimeSpentByUserInAppPerDay;
-    if (totalTimeSpentByUserInAppPerDay != [v4 totalTimeSpentByUserInAppPerDay])
+    if (totalTimeSpentByUserInAppPerDay != [equalCopy totalTimeSpentByUserInAppPerDay])
     {
       goto LABEL_48;
     }
 
     has = self->_has;
-    v13 = v4[64];
+    v13 = equalCopy[64];
   }
 
   v27 = (*&has >> 6) & 1;
@@ -627,13 +627,13 @@ LABEL_31:
   if (v27)
   {
     timeSpentByUserInAppToday = self->_timeSpentByUserInAppToday;
-    if (timeSpentByUserInAppToday != [v4 timeSpentByUserInAppToday])
+    if (timeSpentByUserInAppToday != [equalCopy timeSpentByUserInAppToday])
     {
       goto LABEL_48;
     }
 
     has = self->_has;
-    v13 = v4[64];
+    v13 = equalCopy[64];
   }
 
   if (((v13 ^ *&has) & 0x80) != 0)
@@ -644,26 +644,26 @@ LABEL_31:
   if ((*&has & 0x80) != 0)
   {
     timeSinceAppLastLaunchedInSec = self->_timeSinceAppLastLaunchedInSec;
-    if (timeSinceAppLastLaunchedInSec != [v4 timeSinceAppLastLaunchedInSec])
+    if (timeSinceAppLastLaunchedInSec != [equalCopy timeSinceAppLastLaunchedInSec])
     {
       goto LABEL_48;
     }
   }
 
-  v5 = [(INFERENCESchemaINFERENCECommonAppDependentSignals *)self appDependentFrequencyAndRecencySignals];
-  v6 = [v4 appDependentFrequencyAndRecencySignals];
-  if ((v5 != 0) == (v6 == 0))
+  appBundleId = [(INFERENCESchemaINFERENCECommonAppDependentSignals *)self appDependentFrequencyAndRecencySignals];
+  appBundleId2 = [equalCopy appDependentFrequencyAndRecencySignals];
+  if ((appBundleId != 0) == (appBundleId2 == 0))
   {
     goto LABEL_47;
   }
 
-  v30 = [(INFERENCESchemaINFERENCECommonAppDependentSignals *)self appDependentFrequencyAndRecencySignals];
-  if (v30)
+  appDependentFrequencyAndRecencySignals = [(INFERENCESchemaINFERENCECommonAppDependentSignals *)self appDependentFrequencyAndRecencySignals];
+  if (appDependentFrequencyAndRecencySignals)
   {
-    v31 = v30;
-    v32 = [(INFERENCESchemaINFERENCECommonAppDependentSignals *)self appDependentFrequencyAndRecencySignals];
-    v33 = [v4 appDependentFrequencyAndRecencySignals];
-    v34 = [v32 isEqual:v33];
+    v31 = appDependentFrequencyAndRecencySignals;
+    appDependentFrequencyAndRecencySignals2 = [(INFERENCESchemaINFERENCECommonAppDependentSignals *)self appDependentFrequencyAndRecencySignals];
+    appDependentFrequencyAndRecencySignals3 = [equalCopy appDependentFrequencyAndRecencySignals];
+    v34 = [appDependentFrequencyAndRecencySignals2 isEqual:appDependentFrequencyAndRecencySignals3];
 
     if (!v34)
     {
@@ -675,17 +675,17 @@ LABEL_31:
   {
   }
 
-  v5 = [(INFERENCESchemaINFERENCECommonAppDependentSignals *)self appDependentEntityFrequencyAndRecencySignals];
-  v6 = [v4 appDependentEntityFrequencyAndRecencySignals];
-  if ((v5 != 0) == (v6 == 0))
+  appBundleId = [(INFERENCESchemaINFERENCECommonAppDependentSignals *)self appDependentEntityFrequencyAndRecencySignals];
+  appBundleId2 = [equalCopy appDependentEntityFrequencyAndRecencySignals];
+  if ((appBundleId != 0) == (appBundleId2 == 0))
   {
 LABEL_47:
 
     goto LABEL_48;
   }
 
-  v35 = [(INFERENCESchemaINFERENCECommonAppDependentSignals *)self appDependentEntityFrequencyAndRecencySignals];
-  if (!v35)
+  appDependentEntityFrequencyAndRecencySignals = [(INFERENCESchemaINFERENCECommonAppDependentSignals *)self appDependentEntityFrequencyAndRecencySignals];
+  if (!appDependentEntityFrequencyAndRecencySignals)
   {
 
 LABEL_51:
@@ -693,10 +693,10 @@ LABEL_51:
     goto LABEL_49;
   }
 
-  v36 = v35;
-  v37 = [(INFERENCESchemaINFERENCECommonAppDependentSignals *)self appDependentEntityFrequencyAndRecencySignals];
-  v38 = [v4 appDependentEntityFrequencyAndRecencySignals];
-  v39 = [v37 isEqual:v38];
+  v36 = appDependentEntityFrequencyAndRecencySignals;
+  appDependentEntityFrequencyAndRecencySignals2 = [(INFERENCESchemaINFERENCECommonAppDependentSignals *)self appDependentEntityFrequencyAndRecencySignals];
+  appDependentEntityFrequencyAndRecencySignals3 = [equalCopy appDependentEntityFrequencyAndRecencySignals];
+  v39 = [appDependentEntityFrequencyAndRecencySignals2 isEqual:appDependentEntityFrequencyAndRecencySignals3];
 
   if (v39)
   {
@@ -710,12 +710,12 @@ LABEL_49:
   return v40;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
-  v4 = [(INFERENCESchemaINFERENCECommonAppDependentSignals *)self appBundleId];
+  toCopy = to;
+  appBundleId = [(INFERENCESchemaINFERENCECommonAppDependentSignals *)self appBundleId];
 
-  if (v4)
+  if (appBundleId)
   {
     PBDataWriterWriteStringField();
   }
@@ -821,29 +821,29 @@ LABEL_10:
 LABEL_25:
   PBDataWriterWriteInt32Field();
 LABEL_11:
-  v6 = [(INFERENCESchemaINFERENCECommonAppDependentSignals *)self appDependentFrequencyAndRecencySignals];
+  appDependentFrequencyAndRecencySignals = [(INFERENCESchemaINFERENCECommonAppDependentSignals *)self appDependentFrequencyAndRecencySignals];
 
-  if (v6)
+  if (appDependentFrequencyAndRecencySignals)
   {
-    v7 = [(INFERENCESchemaINFERENCECommonAppDependentSignals *)self appDependentFrequencyAndRecencySignals];
+    appDependentFrequencyAndRecencySignals2 = [(INFERENCESchemaINFERENCECommonAppDependentSignals *)self appDependentFrequencyAndRecencySignals];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(INFERENCESchemaINFERENCECommonAppDependentSignals *)self appDependentEntityFrequencyAndRecencySignals];
+  appDependentEntityFrequencyAndRecencySignals = [(INFERENCESchemaINFERENCECommonAppDependentSignals *)self appDependentEntityFrequencyAndRecencySignals];
 
-  v9 = v11;
-  if (v8)
+  v9 = toCopy;
+  if (appDependentEntityFrequencyAndRecencySignals)
   {
-    v10 = [(INFERENCESchemaINFERENCECommonAppDependentSignals *)self appDependentEntityFrequencyAndRecencySignals];
+    appDependentEntityFrequencyAndRecencySignals2 = [(INFERENCESchemaINFERENCECommonAppDependentSignals *)self appDependentEntityFrequencyAndRecencySignals];
     PBDataWriterWriteSubmessage();
 
-    v9 = v11;
+    v9 = toCopy;
   }
 }
 
-- (void)setHasTimeSinceAppLastLaunchedInSec:(BOOL)a3
+- (void)setHasTimeSinceAppLastLaunchedInSec:(BOOL)sec
 {
-  if (a3)
+  if (sec)
   {
     v3 = 0x80;
   }
@@ -856,9 +856,9 @@ LABEL_11:
   *&self->_has = v3 & 0x80 | *&self->_has & 0x7F;
 }
 
-- (void)setHasTimeSpentByUserInAppToday:(BOOL)a3
+- (void)setHasTimeSpentByUserInAppToday:(BOOL)today
 {
-  if (a3)
+  if (today)
   {
     v3 = 64;
   }
@@ -871,9 +871,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasTotalTimeSpentByUserInAppPerDay:(BOOL)a3
+- (void)setHasTotalTimeSpentByUserInAppPerDay:(BOOL)day
 {
-  if (a3)
+  if (day)
   {
     v3 = 32;
   }
@@ -886,9 +886,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasCompoundActiveBundleScore:(BOOL)a3
+- (void)setHasCompoundActiveBundleScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 16;
   }
@@ -901,9 +901,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasAppScoreFromModel:(BOOL)a3
+- (void)setHasAppScoreFromModel:(BOOL)model
 {
-  if (a3)
+  if (model)
   {
     v3 = 8;
   }
@@ -916,9 +916,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasIsResolvedApp:(BOOL)a3
+- (void)setHasIsResolvedApp:(BOOL)app
 {
-  if (a3)
+  if (app)
   {
     v3 = 4;
   }
@@ -931,9 +931,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasIsForegroundApp:(BOOL)a3
+- (void)setHasIsForegroundApp:(BOOL)app
 {
-  if (a3)
+  if (app)
   {
     v3 = 2;
   }
@@ -946,26 +946,26 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = INFERENCESchemaINFERENCECommonAppDependentSignals;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(INFERENCESchemaINFERENCECommonAppDependentSignals *)self appDependentFrequencyAndRecencySignals];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  appDependentFrequencyAndRecencySignals = [(INFERENCESchemaINFERENCECommonAppDependentSignals *)self appDependentFrequencyAndRecencySignals];
+  v7 = [appDependentFrequencyAndRecencySignals applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(INFERENCESchemaINFERENCECommonAppDependentSignals *)self deleteAppDependentFrequencyAndRecencySignals];
   }
 
-  v9 = [(INFERENCESchemaINFERENCECommonAppDependentSignals *)self appDependentEntityFrequencyAndRecencySignals];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  appDependentEntityFrequencyAndRecencySignals = [(INFERENCESchemaINFERENCECommonAppDependentSignals *)self appDependentEntityFrequencyAndRecencySignals];
+  v10 = [appDependentEntityFrequencyAndRecencySignals applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(INFERENCESchemaINFERENCECommonAppDependentSignals *)self deleteAppDependentEntityFrequencyAndRecencySignals];
   }

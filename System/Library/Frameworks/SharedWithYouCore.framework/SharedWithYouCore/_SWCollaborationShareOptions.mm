@@ -1,25 +1,25 @@
 @interface _SWCollaborationShareOptions
-+ (_SWCollaborationShareOptions)shareOptionsWithOptionsGroups:(id)a3;
-+ (_SWCollaborationShareOptions)shareOptionsWithOptionsGroups:(id)a3 summary:(id)a4;
++ (_SWCollaborationShareOptions)shareOptionsWithOptionsGroups:(id)groups;
++ (_SWCollaborationShareOptions)shareOptionsWithOptionsGroups:(id)groups summary:(id)summary;
 - (NSArray)optionsGroups;
-- (void)setOptionsGroups:(id)a3;
+- (void)setOptionsGroups:(id)groups;
 @end
 
 @implementation _SWCollaborationShareOptions
 
-+ (_SWCollaborationShareOptions)shareOptionsWithOptionsGroups:(id)a3 summary:(id)a4
++ (_SWCollaborationShareOptions)shareOptionsWithOptionsGroups:(id)groups summary:(id)summary
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[_SWCollaborationShareOptions alloc] initWithOptionsGroups:v6 summary:v5];
+  summaryCopy = summary;
+  groupsCopy = groups;
+  v7 = [[_SWCollaborationShareOptions alloc] initWithOptionsGroups:groupsCopy summary:summaryCopy];
 
   return v7;
 }
 
-+ (_SWCollaborationShareOptions)shareOptionsWithOptionsGroups:(id)a3
++ (_SWCollaborationShareOptions)shareOptionsWithOptionsGroups:(id)groups
 {
-  v3 = a3;
-  v4 = [[_SWCollaborationShareOptions alloc] initWithOptionsGroups:v3];
+  groupsCopy = groups;
+  v4 = [[_SWCollaborationShareOptions alloc] initWithOptionsGroups:groupsCopy];
 
   return v4;
 }
@@ -28,16 +28,16 @@
 {
   v4.receiver = self;
   v4.super_class = _SWCollaborationShareOptions;
-  v2 = [(SWCollaborationShareOptions *)&v4 optionsGroups];
+  optionsGroups = [(SWCollaborationShareOptions *)&v4 optionsGroups];
 
-  return v2;
+  return optionsGroups;
 }
 
-- (void)setOptionsGroups:(id)a3
+- (void)setOptionsGroups:(id)groups
 {
   v3.receiver = self;
   v3.super_class = _SWCollaborationShareOptions;
-  [(SWCollaborationShareOptions *)&v3 setOptionsGroups:a3];
+  [(SWCollaborationShareOptions *)&v3 setOptionsGroups:groups];
 }
 
 @end

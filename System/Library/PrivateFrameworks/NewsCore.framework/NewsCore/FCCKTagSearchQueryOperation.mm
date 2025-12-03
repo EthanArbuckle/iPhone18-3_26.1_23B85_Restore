@@ -1,22 +1,22 @@
 @interface FCCKTagSearchQueryOperation
 - (BOOL)validateOperation;
 - (id)_constructTagSearchQuery;
-- (void)operationWillFinishWithError:(id)a3;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 - (void)prepareOperation;
 - (void)resetForRetry;
-- (void)setCursor:(uint64_t)a1;
-- (void)setDatabase:(uint64_t)a1;
-- (void)setResultCursor:(uint64_t)a1;
-- (void)setResultError:(uint64_t)a1;
-- (void)setResultRecords:(uint64_t)a1;
+- (void)setCursor:(uint64_t)cursor;
+- (void)setDatabase:(uint64_t)database;
+- (void)setResultCursor:(uint64_t)cursor;
+- (void)setResultError:(uint64_t)error;
+- (void)setResultRecords:(uint64_t)records;
 @end
 
 @implementation FCCKTagSearchQueryOperation
 
 - (BOOL)validateOperation
 {
-  v2 = self;
+  selfCopy = self;
   v18 = *MEMORY[0x1E69E9840];
   if (!self || !self->_database)
   {
@@ -33,19 +33,19 @@
       v17 = v6;
       _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v10, 0x26u);
 
-      if (!v2)
+      if (!selfCopy)
       {
         goto LABEL_6;
       }
     }
 
-    else if (!v2)
+    else if (!selfCopy)
     {
       goto LABEL_6;
     }
   }
 
-  if (v2->_searchString)
+  if (selfCopy->_searchString)
   {
     goto LABEL_8;
   }
@@ -64,17 +64,17 @@ LABEL_6:
     v17 = v7;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v10, 0x26u);
 
-    if (v2)
+    if (selfCopy)
     {
 LABEL_8:
-      if (v2->_tagType)
+      if (selfCopy->_tagType)
       {
         goto LABEL_11;
       }
     }
   }
 
-  else if (v2)
+  else if (selfCopy)
   {
     goto LABEL_8;
   }
@@ -92,7 +92,7 @@ LABEL_8:
     v17 = v8;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v10, 0x26u);
 
-    if (!v2)
+    if (!selfCopy)
     {
 LABEL_12:
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -108,13 +108,13 @@ LABEL_12:
         v17 = v9;
         _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v10, 0x26u);
 
-        if (v2)
+        if (selfCopy)
         {
           goto LABEL_14;
         }
       }
 
-      else if (v2)
+      else if (selfCopy)
       {
         goto LABEL_14;
       }
@@ -124,24 +124,24 @@ LABEL_12:
     }
   }
 
-  else if (!v2)
+  else if (!selfCopy)
   {
     goto LABEL_12;
   }
 
 LABEL_11:
-  if (!v2->_resultsLimit)
+  if (!selfCopy->_resultsLimit)
   {
     goto LABEL_12;
   }
 
 LABEL_14:
-  v3 = v2->_database;
-  LOBYTE(v2) = v3 && v2->_tagType && v2->_resultsLimit != 0;
+  v3 = selfCopy->_database;
+  LOBYTE(selfCopy) = v3 && selfCopy->_tagType && selfCopy->_resultsLimit != 0;
 LABEL_18:
 
   v4 = *MEMORY[0x1E69E9840];
-  return v2;
+  return selfCopy;
 }
 
 - (void)prepareOperation
@@ -170,8 +170,8 @@ LABEL_7:
   v3 = FCOperationLog;
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v24 = [(FCOperation *)self shortOperationDescription];
-    v25 = v24;
+    shortOperationDescription = [(FCOperation *)self shortOperationDescription];
+    v25 = shortOperationDescription;
     if (self)
     {
       searchString = self->_searchString;
@@ -183,7 +183,7 @@ LABEL_7:
     }
 
     *buf = 138543618;
-    *&buf[4] = v24;
+    *&buf[4] = shortOperationDescription;
     *&buf[12] = 2112;
     *&buf[14] = searchString;
     _os_log_debug_impl(&dword_1B63EF000, v3, OS_LOG_TYPE_DEBUG, "%{public}@ started with search string: %@", buf, 0x16u);
@@ -211,8 +211,8 @@ LABEL_30:
   }
 
   [(FCCKContentQueryOperation *)v4 setDatabase:?];
-  v6 = [(FCCKTagSearchQueryOperation *)&self->super.super.super.isa _constructTagSearchQuery];
-  [(FCCKContentQueryOperation *)v5 setQuery:v6];
+  _constructTagSearchQuery = [(FCCKTagSearchQueryOperation *)&self->super.super.super.isa _constructTagSearchQuery];
+  [(FCCKContentQueryOperation *)v5 setQuery:_constructTagSearchQuery];
 
   [(FCCKContentQueryOperation *)v5 setCursor:?];
   if (!v5)
@@ -225,15 +225,15 @@ LABEL_30:
 LABEL_5:
   objc_setProperty_nonatomic_copy(v5, v7, desiredKeys, 408);
   *(v5 + 372) = 13;
-  v9 = [(FCOperation *)self relativePriority];
+  relativePriority = [(FCOperation *)self relativePriority];
   v10 = 0;
   v11 = 300;
-  if (!v9)
+  if (!relativePriority)
   {
     v11 = 200;
   }
 
-  if (v9 == -1)
+  if (relativePriority == -1)
   {
     v11 = 100;
   }
@@ -253,7 +253,7 @@ LABEL_10:
       goto LABEL_17;
     }
 
-    v17 = [(FCOperation *)self shortOperationDescription];
+    shortOperationDescription2 = [(FCOperation *)self shortOperationDescription];
     if (self)
     {
       resultsLimit = self->_resultsLimit;
@@ -264,7 +264,7 @@ LABEL_14:
 LABEL_15:
         v20 = v19;
         *buf = 138543874;
-        *&buf[4] = v17;
+        *&buf[4] = shortOperationDescription2;
         *&buf[12] = 2048;
         *&buf[14] = resultsLimit;
         *&buf[22] = 2112;
@@ -290,8 +290,8 @@ LABEL_15:
 
   if (v16)
   {
-    v27 = [(FCOperation *)self shortOperationDescription];
-    v28 = v27;
+    shortOperationDescription3 = [(FCOperation *)self shortOperationDescription];
+    v28 = shortOperationDescription3;
     if (self)
     {
       v29 = self->_resultsLimit;
@@ -303,7 +303,7 @@ LABEL_15:
     }
 
     *buf = 138543618;
-    *&buf[4] = v27;
+    *&buf[4] = shortOperationDescription3;
     *&buf[12] = 2048;
     *&buf[14] = v29;
     _os_log_debug_impl(&dword_1B63EF000, v15, OS_LOG_TYPE_DEBUG, "%{public}@ issuing query from cursor with results limit %lu", buf, 0x16u);
@@ -316,7 +316,7 @@ LABEL_17:
   *&buf[16] = 0x3032000000;
   v35 = __Block_byref_object_copy__51;
   v36 = __Block_byref_object_dispose__51;
-  v37 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   newValue[0] = MEMORY[0x1E69E9820];
   newValue[1] = 3221225472;
   newValue[2] = __47__FCCKTagSearchQueryOperation_performOperation__block_invoke;
@@ -351,30 +351,30 @@ LABEL_17:
 
 - (id)_constructTagSearchQuery
 {
-  v1 = a1;
+  selfCopy = self;
   v24[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v3 = MEMORY[0x1E696AE18];
-    v24[0] = v1[48];
+    v24[0] = selfCopy[48];
     v4 = MEMORY[0x1E695DEC8];
     v5 = v24[0];
     v6 = [v4 arrayWithObjects:v24 count:1];
 
     v7 = [v3 predicateWithFormat:@"%@ CONTAINS %K", v6, @"query"];
 
-    [v2 addObject:v7];
+    [array addObject:v7];
     v8 = MEMORY[0x1E696AE18];
-    v23 = v1[54];
+    v23 = selfCopy[54];
     v9 = MEMORY[0x1E695DEC8];
     v10 = v23;
     v11 = [v9 arrayWithObjects:&v23 count:1];
 
     v12 = [v8 predicateWithFormat:@"%@ CONTAINS %K", v11, @"queryNames"];
 
-    [v2 addObject:v12];
-    v13 = v1[52];
+    [array addObject:v12];
+    v13 = selfCopy[52];
     if (v13)
     {
       v14 = MEMORY[0x1E696AE18];
@@ -385,16 +385,16 @@ LABEL_17:
 
       v18 = [v14 predicateWithFormat:@"%@ CONTAINS %K", v17, @"locale", v22];
 
-      [v2 addObject:v18];
+      [array addObject:v18];
     }
 
-    v19 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:v2];
-    v1 = [objc_alloc(MEMORY[0x1E695BA30]) initWithRecordType:@"TagSearch" predicate:v19];
+    v19 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:array];
+    selfCopy = [objc_alloc(MEMORY[0x1E695BA30]) initWithRecordType:@"TagSearch" predicate:v19];
   }
 
   v20 = *MEMORY[0x1E69E9840];
 
-  return v1;
+  return selfCopy;
 }
 
 void __47__FCCKTagSearchQueryOperation_performOperation__block_invoke_2(uint64_t a1, void *a2, void *a3)
@@ -512,27 +512,27 @@ LABEL_15:
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setResultError:(uint64_t)a1
+- (void)setResultError:(uint64_t)error
 {
-  if (a1)
+  if (error)
   {
-    objc_storeStrong((a1 + 456), a2);
+    objc_storeStrong((error + 456), a2);
   }
 }
 
-- (void)setResultRecords:(uint64_t)a1
+- (void)setResultRecords:(uint64_t)records
 {
-  if (a1)
+  if (records)
   {
-    objc_storeStrong((a1 + 440), a2);
+    objc_storeStrong((records + 440), a2);
   }
 }
 
-- (void)setResultCursor:(uint64_t)a1
+- (void)setResultCursor:(uint64_t)cursor
 {
-  if (a1)
+  if (cursor)
   {
-    objc_storeStrong((a1 + 448), a2);
+    objc_storeStrong((cursor + 448), a2);
   }
 }
 
@@ -544,15 +544,15 @@ LABEL_15:
   [(FCCKTagSearchQueryOperation *)self setResultError:?];
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     queryCompletionHandler = self->_queryCompletionHandler;
     if (queryCompletionHandler)
     {
-      v10 = v4;
+      v10 = errorCopy;
       v6 = queryCompletionHandler;
       v7 = self->_resultRecords;
       v8 = self->_resultCursor;
@@ -568,24 +568,24 @@ LABEL_15:
 
       v6[2](v6, v7, v8, resultError);
 
-      v4 = v10;
+      errorCopy = v10;
     }
   }
 }
 
-- (void)setDatabase:(uint64_t)a1
+- (void)setDatabase:(uint64_t)database
 {
-  if (a1)
+  if (database)
   {
-    objc_storeStrong((a1 + 368), a2);
+    objc_storeStrong((database + 368), a2);
   }
 }
 
-- (void)setCursor:(uint64_t)a1
+- (void)setCursor:(uint64_t)cursor
 {
-  if (a1)
+  if (cursor)
   {
-    objc_storeStrong((a1 + 400), a2);
+    objc_storeStrong((cursor + 400), a2);
   }
 }
 

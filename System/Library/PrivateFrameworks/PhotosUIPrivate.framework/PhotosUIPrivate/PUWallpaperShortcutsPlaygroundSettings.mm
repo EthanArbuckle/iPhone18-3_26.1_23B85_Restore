@@ -1,9 +1,9 @@
 @interface PUWallpaperShortcutsPlaygroundSettings
 + (id)settingsControllerModule;
 + (id)sharedInstance;
-+ (void)_runActionWithModuleController:(id)a3 photoLibrary:(id)a4;
-- (void)_handleLoadFileURL:(id)a3;
-- (void)picker:(id)a3 didFinishPicking:(id)a4;
++ (void)_runActionWithModuleController:(id)controller photoLibrary:(id)library;
+- (void)_handleLoadFileURL:(id)l;
+- (void)picker:(id)picker didFinishPicking:(id)picking;
 - (void)setDefaultValues;
 @end
 
@@ -21,51 +21,51 @@
   [(PUWallpaperShortcutsPlaygroundSettings *)self setPreviewEnabled:0];
 }
 
-- (void)_handleLoadFileURL:(id)a3
+- (void)_handleLoadFileURL:(id)l
 {
   v3 = MEMORY[0x1E695DFF8];
-  v4 = a3;
+  lCopy = l;
   v5 = NSTemporaryDirectory();
-  v6 = [MEMORY[0x1E696AFB0] UUID];
-  v7 = [v6 UUIDString];
-  v8 = [v5 stringByAppendingPathComponent:v7 conformingToType:*MEMORY[0x1E6982E58]];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v8 = [v5 stringByAppendingPathComponent:uUIDString conformingToType:*MEMORY[0x1E6982E58]];
   v9 = [v3 fileURLWithPath:v8];
 
-  v10 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v12 = 0;
-  LODWORD(v6) = [v10 copyItemAtURL:v4 toURL:v9 error:&v12];
+  LODWORD(uUID) = [defaultManager copyItemAtURL:lCopy toURL:v9 error:&v12];
 
   v11 = v12;
-  if (v6)
+  if (uUID)
   {
     objc_storeStrong(&sAssetURL, v9);
   }
 }
 
-- (void)picker:(id)a3 didFinishPicking:(id)a4
+- (void)picker:(id)picker didFinishPicking:(id)picking
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 firstObject];
-  v9 = v8;
-  if (v8)
+  pickerCopy = picker;
+  pickingCopy = picking;
+  firstObject = [pickingCopy firstObject];
+  v9 = firstObject;
+  if (firstObject)
   {
-    v10 = [v8 assetIdentifier];
-    objc_storeStrong(&sAssetIdentifier, v10);
+    assetIdentifier = [firstObject assetIdentifier];
+    objc_storeStrong(&sAssetIdentifier, assetIdentifier);
     v11 = +[PUWallpaperShortcutsPlaygroundSettings sharedInstance];
-    [v11 setSelectedAssetIdentifier:v10];
+    [v11 setSelectedAssetIdentifier:assetIdentifier];
 
     objc_initWeak(&location, self);
-    v12 = [v9 itemProvider];
-    v13 = [*MEMORY[0x1E6982E30] identifier];
+    itemProvider = [v9 itemProvider];
+    identifier = [*MEMORY[0x1E6982E30] identifier];
     v15 = MEMORY[0x1E69E9820];
     v16 = 3221225472;
     v17 = __70__PUWallpaperShortcutsPlaygroundSettings_UI__picker_didFinishPicking___block_invoke;
     v18 = &unk_1E7B7F7F8;
     objc_copyWeak(&v19, &location);
-    v14 = [v12 loadFileRepresentationForTypeIdentifier:v13 completionHandler:&v15];
+    v14 = [itemProvider loadFileRepresentationForTypeIdentifier:identifier completionHandler:&v15];
 
-    [v6 dismissViewControllerAnimated:1 completion:{0, v15, v16, v17, v18}];
+    [pickerCopy dismissViewControllerAnimated:1 completion:{0, v15, v16, v17, v18}];
     objc_destroyWeak(&v19);
     objc_destroyWeak(&location);
   }
@@ -78,22 +78,22 @@ void __70__PUWallpaperShortcutsPlaygroundSettings_UI__picker_didFinishPicking___
   [WeakRetained _handleLoadFileURL:v3];
 }
 
-+ (void)_runActionWithModuleController:(id)a3 photoLibrary:(id)a4
++ (void)_runActionWithModuleController:(id)controller photoLibrary:(id)library
 {
-  v5 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  libraryCopy = library;
   v7 = +[PUWallpaperShortcutsPlaygroundSettings sharedInstance];
-  v8 = [v7 selectedConfigurationUUID];
+  selectedConfigurationUUID = [v7 selectedConfigurationUUID];
   v30 = MEMORY[0x1E69E9820];
   v31 = 3221225472;
   v32 = __90__PUWallpaperShortcutsPlaygroundSettings_UI___runActionWithModuleController_photoLibrary___block_invoke;
   v33 = &unk_1E7B74030;
-  v9 = v8;
+  v9 = selectedConfigurationUUID;
   v34 = v9;
   v10 = PXFind();
   v11 = MEMORY[0x1E69C07E8];
-  v12 = [v10 assetDirectory];
-  v13 = [v11 loadFromURL:v12 error:0];
+  assetDirectory = [v10 assetDirectory];
+  v13 = [v11 loadFromURL:assetDirectory error:0];
 
   if (v13)
   {
@@ -103,11 +103,11 @@ void __70__PUWallpaperShortcutsPlaygroundSettings_UI__picker_didFinishPicking___
     if ([v7 previewEnabled])
     {
       v16 = [PUWallpaperPosterEditDebugViewController alloc];
-      v17 = [v10 assetDirectory];
-      v18 = [(PUWallpaperPosterEditDebugViewController *)v16 initWithExistingConfiguration:v13 assetDirectory:v17 overrideConfiguration:v15 photoLibrary:v6];
+      assetDirectory2 = [v10 assetDirectory];
+      v18 = [(PUWallpaperPosterEditDebugViewController *)v16 initWithExistingConfiguration:v13 assetDirectory:assetDirectory2 overrideConfiguration:v15 photoLibrary:libraryCopy];
 
       [(PUWallpaperPosterEditDebugViewController *)v18 setModalPresentationStyle:5];
-      [v5 presentViewController:v18 animated:1 completion:0];
+      [controllerCopy presentViewController:v18 animated:1 completion:0];
     }
 
     else
@@ -117,7 +117,7 @@ void __70__PUWallpaperShortcutsPlaygroundSettings_UI__picker_didFinishPicking___
       v21 = [v20 stringByAppendingPathComponent:@"PhotosShortcutsUpdateRendering"];
       v22 = [v19 fileURLWithPath:v21];
 
-      v23 = [[PUWallpaperConfigurationUpdater alloc] initWithPhotoLibrary:v6 sourceConfiguration:v13 targetAssetDirectory:v22 overrideConfiguration:v15];
+      v23 = [[PUWallpaperConfigurationUpdater alloc] initWithPhotoLibrary:libraryCopy sourceConfiguration:v13 targetAssetDirectory:v22 overrideConfiguration:v15];
       v24 = sConfigurationUpdater;
       sConfigurationUpdater = v23;
 
@@ -128,7 +128,7 @@ void __70__PUWallpaperShortcutsPlaygroundSettings_UI__picker_didFinishPicking___
       v26[3] = &unk_1E7B74058;
       v27 = v22;
       v28 = v13;
-      v29 = v5;
+      v29 = controllerCopy;
       v18 = v22;
       [v25 attemptUpdateWithCompletionBlock:v26];
     }
@@ -203,8 +203,8 @@ void __90__PUWallpaperShortcutsPlaygroundSettings_UI___runActionWithModuleContro
   [v3 fetchPosterConfigurationsForExtension:v4 completion:v46];
   dispatch_group_wait(v40, 0xFFFFFFFFFFFFFFFFLL);
   v5 = objc_alloc(MEMORY[0x1E69789A8]);
-  v6 = [MEMORY[0x1E69789A8] systemPhotoLibraryURL];
-  v7 = [v5 initWithPhotoLibraryURL:v6];
+  systemPhotoLibraryURL = [MEMORY[0x1E69789A8] systemPhotoLibraryURL];
+  v7 = [v5 initWithPhotoLibraryURL:systemPhotoLibraryURL];
 
   v8 = MEMORY[0x1E696AE18];
   v9 = NSStringFromSelector(sel_selectedAssetIdentifier);
@@ -248,7 +248,7 @@ void __90__PUWallpaperShortcutsPlaygroundSettings_UI___runActionWithModuleContro
   v41[2] = __70__PUWallpaperShortcutsPlaygroundSettings_UI__settingsControllerModule__block_invoke_6;
   v41[3] = &unk_1E7B7E3C8;
   v42 = v13;
-  v43 = a1;
+  selfCopy = self;
   v39 = v13;
   v22 = [v21 pu_rowWithTitle:@"Run Action" action:v41];
   v48 = v22;

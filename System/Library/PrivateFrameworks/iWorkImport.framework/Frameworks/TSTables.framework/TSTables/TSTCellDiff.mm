@@ -1,24 +1,24 @@
 @interface TSTCellDiff
 + (id)cellDiff;
 + (void)initialize;
-- (BOOL)containsAnyPropertiesInSet:(id)a3;
+- (BOOL)containsAnyPropertiesInSet:(id)set;
 - (BOOL)containsCellStyleOrCellDiffCellStyleProperties;
 - (BOOL)containsCellStyleProperties;
 - (BOOL)containsFormatAndValueProperties;
 - (BOOL)containsParagraphStyleProperties;
-- (BOOL)containsProperty:(int)a3;
+- (BOOL)containsProperty:(int)property;
 - (BOOL)containsTextStyleProperties;
 - (TSTCellDiff)init;
-- (TSTCellDiff)initWithArchive:(const void *)a3 unarchiver:(id)a4;
+- (TSTCellDiff)initWithArchive:(const void *)archive unarchiver:(id)unarchiver;
 - (id)allProperties;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)objectApplyingDiffToObject:(id)a3 andUpdateInverse:(id)a4;
-- (id)objectApplyingDiffToObject:(id)a3 andUpdateInverse:(id)a4 optionalConcurrentStylesheet:(id)a5;
-- (id)propertyMapToSetWithProperties:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)objectApplyingDiffToObject:(id)object andUpdateInverse:(id)inverse;
+- (id)objectApplyingDiffToObject:(id)object andUpdateInverse:(id)inverse optionalConcurrentStylesheet:(id)stylesheet;
+- (id)propertyMapToSetWithProperties:(id)properties;
 - (unint64_t)estimatedByteSize;
 - (void)clear;
-- (void)collectPropertyKeysIntoIndexSet:(id)a3;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
+- (void)collectPropertyKeysIntoIndexSet:(id)set;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
 @end
 
 @implementation TSTCellDiff
@@ -56,24 +56,24 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(objc_opt_class());
-  v9 = objc_msgSend_copyWithZone_(self->_propertyMapToSet, v6, a3, v7, v8);
+  v9 = objc_msgSend_copyWithZone_(self->_propertyMapToSet, v6, zone, v7, v8);
   v10 = v5[1];
   v5[1] = v9;
 
-  v14 = objc_msgSend_copyWithZone_(self->_propertyMapToReset, v11, a3, v12, v13);
+  v14 = objc_msgSend_copyWithZone_(self->_propertyMapToReset, v11, zone, v12, v13);
   v15 = v5[2];
   v5[2] = v14;
 
   return v5;
 }
 
-- (BOOL)containsProperty:(int)a3
+- (BOOL)containsProperty:(int)property
 {
-  v5 = *&a3;
-  if (objc_msgSend_containsProperty_(self->_propertyMapToSet, a2, *&a3, v3, v4))
+  v5 = *&property;
+  if (objc_msgSend_containsProperty_(self->_propertyMapToSet, a2, *&property, v3, v4))
   {
     return 1;
   }
@@ -83,10 +83,10 @@
   return objc_msgSend_containsProperty_(propertyMapToReset, v7, v5, v8, v9);
 }
 
-- (void)collectPropertyKeysIntoIndexSet:(id)a3
+- (void)collectPropertyKeysIntoIndexSet:(id)set
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  setCopy = set;
   objc_msgSend_allKeys(self->_propertyMapToSet, v5, v6, v7, v8);
   v45 = 0u;
   v46 = 0u;
@@ -107,7 +107,7 @@
         }
 
         v18 = objc_msgSend_unsignedIntegerValue(*(*(&v43 + 1) + 8 * v17), v11, v12, v13, v14);
-        objc_msgSend_addIndex_(v4, v19, v18, v20, v21);
+        objc_msgSend_addIndex_(setCopy, v19, v18, v20, v21);
         ++v17;
       }
 
@@ -138,7 +138,7 @@
         }
 
         v35 = objc_msgSend_unsignedIntegerValue(*(*(&v39 + 1) + 8 * v34), v28, v29, v30, v31, v39);
-        objc_msgSend_addIndex_(v4, v36, v35, v37, v38);
+        objc_msgSend_addIndex_(setCopy, v36, v35, v37, v38);
         ++v34;
       }
 
@@ -184,17 +184,17 @@ LABEL_7:
   return v28;
 }
 
-- (BOOL)containsAnyPropertiesInSet:(id)a3
+- (BOOL)containsAnyPropertiesInSet:(id)set
 {
-  v4 = a3;
-  if (objc_msgSend_containsAnyPropertyInProperties_(self->_propertyMapToSet, v5, v4, v6, v7))
+  setCopy = set;
+  if (objc_msgSend_containsAnyPropertyInProperties_(self->_propertyMapToSet, v5, setCopy, v6, v7))
   {
     v11 = 1;
   }
 
   else
   {
-    v11 = objc_msgSend_containsAnyPropertyInProperties_(self->_propertyMapToReset, v8, v4, v9, v10);
+    v11 = objc_msgSend_containsAnyPropertyInProperties_(self->_propertyMapToReset, v8, setCopy, v9, v10);
   }
 
   return v11;
@@ -296,11 +296,11 @@ LABEL_7:
   return objc_msgSend_containsAnyPropertyInProperties_(propertyMapToReset, v5, v10, v6, v7);
 }
 
-- (id)propertyMapToSetWithProperties:(id)a3
+- (id)propertyMapToSetWithProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v9 = objc_msgSend_copy(self->_propertyMapToSet, v5, v6, v7, v8);
-  objc_msgSend_filterWithProperties_(v9, v10, v4, v11, v12);
+  objc_msgSend_filterWithProperties_(v9, v10, propertiesCopy, v11, v12);
 
   return v9;
 }
@@ -313,34 +313,34 @@ LABEL_7:
   objc_msgSend_removeAllPropertyValues(propertyMapToReset, v6, v7, v8, v9);
 }
 
-- (id)objectApplyingDiffToObject:(id)a3 andUpdateInverse:(id)a4
+- (id)objectApplyingDiffToObject:(id)object andUpdateInverse:(id)inverse
 {
-  v4 = objc_msgSend_objectApplyingDiffToObject_andUpdateInverse_optionalConcurrentStylesheet_(self, a2, a3, a4, 0);
+  v4 = objc_msgSend_objectApplyingDiffToObject_andUpdateInverse_optionalConcurrentStylesheet_(self, a2, object, inverse, 0);
 
   return v4;
 }
 
-- (id)objectApplyingDiffToObject:(id)a3 andUpdateInverse:(id)a4 optionalConcurrentStylesheet:(id)a5
+- (id)objectApplyingDiffToObject:(id)object andUpdateInverse:(id)inverse optionalConcurrentStylesheet:(id)stylesheet
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  objectCopy = object;
+  inverseCopy = inverse;
+  stylesheetCopy = stylesheet;
   v11 = objc_opt_class();
   v16 = objc_msgSend_cellDiffProperties(v11, v12, v13, v14, v15);
   if ((objc_msgSend_containsAnyPropertyInProperties_(self->_propertyMapToSet, v17, v16, v18, v19) & 1) != 0 || objc_msgSend_containsAnyPropertyInProperties_(self->_propertyMapToReset, v20, v16, v22, v23))
   {
-    v24 = objc_msgSend_propertyMapToReset(v9, v20, v21, v22, v23);
-    v30 = objc_msgSend_propertyMapToSet(v9, v25, v26, v27, v28);
+    v24 = objc_msgSend_propertyMapToReset(inverseCopy, v20, v21, v22, v23);
+    v30 = objc_msgSend_propertyMapToSet(inverseCopy, v25, v26, v27, v28);
     propertyMapToSet = self->_propertyMapToSet;
     propertyMapToReset = self->_propertyMapToReset;
-    if (v10)
+    if (stylesheetCopy)
     {
-      objc_msgSend_objectByRemovingPropertiesInMap_addingPropertiesInMap_updateInverseResetPropertyMap_updateInverseSetPropertyMap_optionalConcurrentStylesheet_(v8, v29, propertyMapToReset, propertyMapToSet, v24, v30, v10);
+      objc_msgSend_objectByRemovingPropertiesInMap_addingPropertiesInMap_updateInverseResetPropertyMap_updateInverseSetPropertyMap_optionalConcurrentStylesheet_(objectCopy, v29, propertyMapToReset, propertyMapToSet, v24, v30, stylesheetCopy);
     }
 
     else
     {
-      objc_msgSend_objectByRemovingPropertiesInMap_addingPropertiesInMap_updateInverseResetPropertyMap_updateInverseSetPropertyMap_(v8, v29, propertyMapToReset, propertyMapToSet, v24, v30);
+      objc_msgSend_objectByRemovingPropertiesInMap_addingPropertiesInMap_updateInverseResetPropertyMap_updateInverseSetPropertyMap_(objectCopy, v29, propertyMapToReset, propertyMapToSet, v24, v30);
     }
     v33 = ;
   }
@@ -353,9 +353,9 @@ LABEL_7:
   return v33;
 }
 
-- (TSTCellDiff)initWithArchive:(const void *)a3 unarchiver:(id)a4
+- (TSTCellDiff)initWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
+  unarchiverCopy = unarchiver;
   v20.receiver = self;
   v20.super_class = TSTCellDiff;
   v7 = [(TSTCellDiff *)&v20 init];
@@ -363,28 +363,28 @@ LABEL_7:
   {
     v8 = objc_alloc(MEMORY[0x277D80AB8]);
     v11 = MEMORY[0x277D80BE0];
-    if (*(a3 + 3))
+    if (*(archive + 3))
     {
-      v12 = objc_msgSend_initFromCommandPropertyMapMessage_unarchiver_(v8, v9, *(a3 + 3), v6, v10);
+      v12 = objc_msgSend_initFromCommandPropertyMapMessage_unarchiver_(v8, v9, *(archive + 3), unarchiverCopy, v10);
     }
 
     else
     {
-      v12 = objc_msgSend_initFromCommandPropertyMapMessage_unarchiver_(v8, v9, MEMORY[0x277D80BE0], v6, v10);
+      v12 = objc_msgSend_initFromCommandPropertyMapMessage_unarchiver_(v8, v9, MEMORY[0x277D80BE0], unarchiverCopy, v10);
     }
 
     propertyMapToSet = v7->_propertyMapToSet;
     v7->_propertyMapToSet = v12;
 
     v14 = objc_alloc(MEMORY[0x277D80AB8]);
-    if (*(a3 + 4))
+    if (*(archive + 4))
     {
-      v17 = objc_msgSend_initFromCommandPropertyMapMessage_unarchiver_(v14, v15, *(a3 + 4), v6, v16);
+      v17 = objc_msgSend_initFromCommandPropertyMapMessage_unarchiver_(v14, v15, *(archive + 4), unarchiverCopy, v16);
     }
 
     else
     {
-      v17 = objc_msgSend_initFromCommandPropertyMapMessage_unarchiver_(v14, v15, v11, v6, v16);
+      v17 = objc_msgSend_initFromCommandPropertyMapMessage_unarchiver_(v14, v15, v11, unarchiverCopy, v16);
     }
 
     propertyMapToReset = v7->_propertyMapToReset;
@@ -394,40 +394,40 @@ LABEL_7:
   return v7;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v7 = a4;
+  archiverCopy = archiver;
   propertyMapToSet = self->_propertyMapToSet;
-  *(a3 + 4) |= 1u;
-  v10 = *(a3 + 3);
-  v17 = v7;
+  *(archive + 4) |= 1u;
+  v10 = *(archive + 3);
+  v17 = archiverCopy;
   if (!v10)
   {
-    v11 = *(a3 + 1);
+    v11 = *(archive + 1);
     if (v11)
     {
       v11 = *(v11 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v10 = MEMORY[0x223DA03B0](v11);
-    *(a3 + 3) = v10;
-    v7 = v17;
+    *(archive + 3) = v10;
+    archiverCopy = v17;
   }
 
-  objc_msgSend_saveToCommandPropertyMapMessage_archiver_(propertyMapToSet, v6, v10, v7, v8);
+  objc_msgSend_saveToCommandPropertyMapMessage_archiver_(propertyMapToSet, v6, v10, archiverCopy, v8);
   propertyMapToReset = self->_propertyMapToReset;
-  *(a3 + 4) |= 2u;
-  v15 = *(a3 + 4);
+  *(archive + 4) |= 2u;
+  v15 = *(archive + 4);
   if (!v15)
   {
-    v16 = *(a3 + 1);
+    v16 = *(archive + 1);
     if (v16)
     {
       v16 = *(v16 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v15 = MEMORY[0x223DA03B0](v16);
-    *(a3 + 4) = v15;
+    *(archive + 4) = v15;
   }
 
   objc_msgSend_saveToCommandPropertyMapMessage_archiver_(propertyMapToReset, v12, v15, v17, v13);

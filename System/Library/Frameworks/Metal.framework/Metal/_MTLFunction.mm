@@ -1,15 +1,15 @@
 @interface _MTLFunction
-- (_MTLFunction)initWithName:(id)a3 type:(unint64_t)a4 libraryData:(void *)a5 device:(id)a6;
+- (_MTLFunction)initWithName:(id)name type:(unint64_t)type libraryData:(void *)data device:(id)device;
 - (id)bitcodeData;
-- (id)formattedDescription:(unint64_t)a3;
-- (id)newArgumentEncoderWithBufferIndex:(unint64_t)a3 reflection:(id *)a4 binaryArchives:(id)a5;
-- (id)newArgumentEncoderWithBufferIndex:(unint64_t)a3 reflection:(id *)a4 functionReflection:(id)a5;
-- (id)newArgumentEncoderWithBufferIndex:(unint64_t)a3 reflection:(id *)a4 pipelineLibrary:(id)a5;
-- (id)reflectionWithOptions:(unint64_t)a3 binaryArchives:(id)a4;
-- (id)reflectionWithOptions:(unint64_t)a3 pipelineLibrary:(id)a4;
+- (id)formattedDescription:(unint64_t)description;
+- (id)newArgumentEncoderWithBufferIndex:(unint64_t)index reflection:(id *)reflection binaryArchives:(id)archives;
+- (id)newArgumentEncoderWithBufferIndex:(unint64_t)index reflection:(id *)reflection functionReflection:(id)functionReflection;
+- (id)newArgumentEncoderWithBufferIndex:(unint64_t)index reflection:(id *)reflection pipelineLibrary:(id)library;
+- (id)reflectionWithOptions:(unint64_t)options binaryArchives:(id)archives;
+- (id)reflectionWithOptions:(unint64_t)options pipelineLibrary:(id)library;
 - (void)dealloc;
-- (void)reflectionWithOptions:(unint64_t)a3 completionHandler:(id)a4;
-- (void)setVendorPrivate:(id)a3;
+- (void)reflectionWithOptions:(unint64_t)options completionHandler:(id)handler;
+- (void)setVendorPrivate:(id)private;
 @end
 
 @implementation _MTLFunction
@@ -45,14 +45,14 @@
 
 - (id)bitcodeData
 {
-  v2 = [(_MTLFunction *)self bitcodeDataInternal];
+  bitcodeDataInternal = [(_MTLFunction *)self bitcodeDataInternal];
 
-  return v2;
+  return bitcodeDataInternal;
 }
 
-- (_MTLFunction)initWithName:(id)a3 type:(unint64_t)a4 libraryData:(void *)a5 device:(id)a6
+- (_MTLFunction)initWithName:(id)name type:(unint64_t)type libraryData:(void *)data device:(id)device
 {
-  if (a3)
+  if (name)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -64,10 +64,10 @@
 
   else
   {
-    [(_MTLFunction *)self initWithName:a2 type:0 libraryData:a4 device:a5, a6, v6, v7, v33.receiver];
+    [(_MTLFunction *)self initWithName:a2 type:0 libraryData:type device:data, device, v6, v7, v33.receiver];
   }
 
-  if (a6)
+  if (device)
   {
     objc_opt_class();
     v21 = objc_opt_isKindOfClass();
@@ -82,7 +82,7 @@
     [(_MTLFunction *)isKindOfClass initWithName:v14 type:v15 libraryData:v16 device:v17, v18, v19, v20, v33.receiver];
   }
 
-  if (a4 - 1 >= 8)
+  if (type - 1 >= 8)
   {
     MTLReportFailure(0, "validateMTLFunctionType", 11075, @"type is not a valid MTLFunctionType.", v25, v26, v27, v28, v33.receiver);
   }
@@ -90,36 +90,36 @@
   v33.receiver = self;
   v33.super_class = _MTLFunction;
   v29 = [(_MTLObjectWithLabel *)&v33 init];
-  v29->_device = a6;
-  v30 = a6;
-  v29->_libraryData = a5;
-  (*(*a5 + 16))(a5);
+  v29->_device = device;
+  deviceCopy = device;
+  v29->_libraryData = data;
+  (*(*data + 16))(data);
   v29->_vendorPrivate = 0;
-  v29->_functionType = a4;
+  v29->_functionType = type;
   v29->_vertexAttributes = 0;
   v29->_returnType = 0;
   v29->_arguments = 0;
-  v29->_name = a3;
-  v31 = a3;
+  v29->_name = name;
+  nameCopy = name;
   return v29;
 }
 
-- (void)setVendorPrivate:(id)a3
+- (void)setVendorPrivate:(id)private
 {
-  v5 = a3;
+  privateCopy = private;
 
-  self->_vendorPrivate = a3;
+  self->_vendorPrivate = private;
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v20[12] = *MEMORY[0x1E69E9840];
-  v5 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
-  v6 = [@"\n" stringByPaddingToLength:a3 + 5 withString:@" " startingAtIndex:0];
-  v7 = [(_MTLFunction *)self stageInputAttributes];
-  if (v7)
+  v5 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
+  v6 = [@"\n" stringByPaddingToLength:description + 5 withString:@" " startingAtIndex:0];
+  stageInputAttributes = [(_MTLFunction *)self stageInputAttributes];
+  if (stageInputAttributes)
   {
-    v8 = [v7 componentsJoinedByString:@" "];
+    v8 = [stageInputAttributes componentsJoinedByString:@" "];
     v9 = [objc_msgSend(v8 componentsSeparatedByCharactersInSet:{objc_msgSend(MEMORY[0x1E696AB08], "newlineCharacterSet")), "componentsJoinedByString:", v6}];
   }
 
@@ -151,7 +151,7 @@
   device = self->_device;
   if (device)
   {
-    v15 = [(MTLDevice *)device formattedDescription:a3 + 4];
+    v15 = [(MTLDevice *)device formattedDescription:description + 4];
   }
 
   else
@@ -181,7 +181,7 @@
   return result;
 }
 
-- (id)reflectionWithOptions:(unint64_t)a3 binaryArchives:(id)a4
+- (id)reflectionWithOptions:(unint64_t)options binaryArchives:(id)archives
 {
   v11 = 0;
   v12 = &v11;
@@ -189,21 +189,21 @@
   v14 = __Block_byref_object_copy__10;
   v15 = __Block_byref_object_dispose__10;
   v16 = 0;
-  v7 = [(MTLDevice *)self->_device compiler];
+  compiler = [(MTLDevice *)self->_device compiler];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __53___MTLFunction_reflectionWithOptions_binaryArchives___block_invoke;
   v10[3] = &unk_1E6EEC0A0;
   v10[4] = self;
   v10[5] = &v11;
-  v10[6] = a3;
-  [v7 reflectionWithFunction:self options:a3 sync:1 binaryArchives:a4 completionHandler:v10];
+  v10[6] = options;
+  [compiler reflectionWithFunction:self options:options sync:1 binaryArchives:archives completionHandler:v10];
   v8 = v12[5];
   _Block_object_dispose(&v11, 8);
   return v8;
 }
 
-- (id)reflectionWithOptions:(unint64_t)a3 pipelineLibrary:(id)a4
+- (id)reflectionWithOptions:(unint64_t)options pipelineLibrary:(id)library
 {
   v11 = 0;
   v12 = &v11;
@@ -211,50 +211,50 @@
   v14 = __Block_byref_object_copy__10;
   v15 = __Block_byref_object_dispose__10;
   v16 = 0;
-  v7 = [(MTLDevice *)self->_device compiler];
+  compiler = [(MTLDevice *)self->_device compiler];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __54___MTLFunction_reflectionWithOptions_pipelineLibrary___block_invoke;
   v10[3] = &unk_1E6EEC0A0;
   v10[4] = self;
   v10[5] = &v11;
-  v10[6] = a3;
-  [v7 reflectionWithFunction:self options:a3 sync:1 pipelineLibrary:a4 completionHandler:v10];
+  v10[6] = options;
+  [compiler reflectionWithFunction:self options:options sync:1 pipelineLibrary:library completionHandler:v10];
   v8 = v12[5];
   _Block_object_dispose(&v11, 8);
   return v8;
 }
 
-- (void)reflectionWithOptions:(unint64_t)a3 completionHandler:(id)a4
+- (void)reflectionWithOptions:(unint64_t)options completionHandler:(id)handler
 {
-  v7 = [(MTLDevice *)self->_device compiler];
+  compiler = [(MTLDevice *)self->_device compiler];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __56___MTLFunction_reflectionWithOptions_completionHandler___block_invoke;
   v8[3] = &unk_1E6EEC0C8;
-  v8[5] = a4;
-  v8[6] = a3;
+  v8[5] = handler;
+  v8[6] = options;
   v8[4] = self;
-  [v7 reflectionWithFunction:self options:a3 sync:0 completionHandler:v8];
+  [compiler reflectionWithFunction:self options:options sync:0 completionHandler:v8];
 }
 
-- (id)newArgumentEncoderWithBufferIndex:(unint64_t)a3 reflection:(id *)a4 pipelineLibrary:(id)a5
+- (id)newArgumentEncoderWithBufferIndex:(unint64_t)index reflection:(id *)reflection pipelineLibrary:(id)library
 {
-  v8 = [(_MTLFunction *)self reflectionWithOptions:3 pipelineLibrary:a5];
+  v8 = [(_MTLFunction *)self reflectionWithOptions:3 pipelineLibrary:library];
 
-  return [(_MTLFunction *)self newArgumentEncoderWithBufferIndex:a3 reflection:a4 functionReflection:v8];
+  return [(_MTLFunction *)self newArgumentEncoderWithBufferIndex:index reflection:reflection functionReflection:v8];
 }
 
-- (id)newArgumentEncoderWithBufferIndex:(unint64_t)a3 reflection:(id *)a4 binaryArchives:(id)a5
+- (id)newArgumentEncoderWithBufferIndex:(unint64_t)index reflection:(id *)reflection binaryArchives:(id)archives
 {
-  v8 = [(_MTLFunction *)self reflectionWithOptions:3 binaryArchives:a5];
+  v8 = [(_MTLFunction *)self reflectionWithOptions:3 binaryArchives:archives];
 
-  return [(_MTLFunction *)self newArgumentEncoderWithBufferIndex:a3 reflection:a4 functionReflection:v8];
+  return [(_MTLFunction *)self newArgumentEncoderWithBufferIndex:index reflection:reflection functionReflection:v8];
 }
 
-- (id)newArgumentEncoderWithBufferIndex:(unint64_t)a3 reflection:(id *)a4 functionReflection:(id)a5
+- (id)newArgumentEncoderWithBufferIndex:(unint64_t)index reflection:(id *)reflection functionReflection:(id)functionReflection
 {
-  if (![objc_msgSend(a5 "arguments")])
+  if (![objc_msgSend(functionReflection "arguments")])
   {
     goto LABEL_6;
   }
@@ -262,13 +262,13 @@
   v13 = 0;
   while (1)
   {
-    v14 = [objc_msgSend(a5 "arguments")];
-    if (![v14 type] && objc_msgSend(v14, "index") == a3)
+    v14 = [objc_msgSend(functionReflection "arguments")];
+    if (![v14 type] && objc_msgSend(v14, "index") == index)
     {
       break;
     }
 
-    if (++v13 >= [objc_msgSend(a5 "arguments")])
+    if (++v13 >= [objc_msgSend(functionReflection "arguments")])
     {
       goto LABEL_6;
     }
@@ -281,9 +281,9 @@
     v19 = -[MTLDevice newIndirectArgumentBufferLayoutWithStructType:](self->_device, "newIndirectArgumentBufferLayoutWithStructType:", [v17 bufferStructType]);
     [v19 setStructType:objc_msgSend(v18 withDevice:{"bufferStructType"), self->_device}];
     v15 = [(MTLDevice *)self->_device newArgumentEncoderWithLayout:v19];
-    if (a4)
+    if (reflection)
     {
-      *a4 = v18;
+      *reflection = v18;
       _MTLFixIABReflectionOffsetsWithLayout(v18, v19, self->_device);
     }
 
@@ -293,7 +293,7 @@
   else
   {
 LABEL_6:
-    MTLReportFailure(0, "[_MTLFunction newArgumentEncoderWithBufferIndex:reflection:functionReflection:]", 11454, @"bufferIndex %lu does not identify an argument buffer", v9, v10, v11, v12, a3);
+    MTLReportFailure(0, "[_MTLFunction newArgumentEncoderWithBufferIndex:reflection:functionReflection:]", 11454, @"bufferIndex %lu does not identify an argument buffer", v9, v10, v11, v12, index);
     return 0;
   }
 

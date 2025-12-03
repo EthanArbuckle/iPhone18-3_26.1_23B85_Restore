@@ -1,18 +1,18 @@
 @interface EKInviteReplyNotification
 + (id)knownRelationshipSingleValueKeys;
-+ (id)sourceForInviteReplyNotification:(id)a3;
++ (id)sourceForInviteReplyNotification:(id)notification;
 - (BOOL)alerted;
-- (BOOL)validate:(id *)a3;
-- (EKInviteReplyNotification)initWithInviteReplyCalendar:(id)a3;
+- (BOOL)validate:(id *)validate;
+- (EKInviteReplyNotification)initWithInviteReplyCalendar:(id)calendar;
 - (NSString)shareeDisplayName;
 - (NSString)shareeEmailAddress;
 - (NSString)shareePhoneNumber;
 - (NSURL)shareeURL;
 - (unint64_t)shareeStatus;
-- (void)_setInviteReplyCalendar:(id)a3;
+- (void)_setInviteReplyCalendar:(id)calendar;
 - (void)clearAlertedStatus;
-- (void)setShareeStatus:(unint64_t)a3;
-- (void)setShareeURL:(id)a3;
+- (void)setShareeStatus:(unint64_t)status;
+- (void)setShareeURL:(id)l;
 @end
 
 @implementation EKInviteReplyNotification
@@ -23,7 +23,7 @@
   block[1] = 3221225472;
   block[2] = __61__EKInviteReplyNotification_knownRelationshipSingleValueKeys__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (knownRelationshipSingleValueKeys_onceToken_0 != -1)
   {
     dispatch_once(&knownRelationshipSingleValueKeys_onceToken_0, block);
@@ -53,34 +53,34 @@ void __61__EKInviteReplyNotification_knownRelationshipSingleValueKeys__block_inv
   v8 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)sourceForInviteReplyNotification:(id)a3
++ (id)sourceForInviteReplyNotification:(id)notification
 {
-  v3 = [a3 calendar];
-  v4 = [v3 source];
+  calendar = [notification calendar];
+  source = [calendar source];
 
-  return v4;
+  return source;
 }
 
-- (EKInviteReplyNotification)initWithInviteReplyCalendar:(id)a3
+- (EKInviteReplyNotification)initWithInviteReplyCalendar:(id)calendar
 {
-  v4 = a3;
+  calendarCopy = calendar;
   v8.receiver = self;
   v8.super_class = EKInviteReplyNotification;
   v5 = [(EKObject *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(EKInviteReplyNotification *)v5 _setInviteReplyCalendar:v4];
+    [(EKInviteReplyNotification *)v5 _setInviteReplyCalendar:calendarCopy];
   }
 
   return v6;
 }
 
-- (void)_setInviteReplyCalendar:(id)a3
+- (void)_setInviteReplyCalendar:(id)calendar
 {
   v4 = *MEMORY[0x1E6992AC0];
-  v5 = a3;
-  [(EKObject *)self updateMeltedAndCachedSingleRelationObject:v5 forKey:v4 frozenClass:+[EKCalendar frozenClass]];
+  calendarCopy = calendar;
+  [(EKObject *)self updateMeltedAndCachedSingleRelationObject:calendarCopy forKey:v4 frozenClass:+[EKCalendar frozenClass]];
 }
 
 - (NSString)shareeDisplayName
@@ -88,8 +88,8 @@ void __61__EKInviteReplyNotification_knownRelationshipSingleValueKeys__block_inv
   v3 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E6992AD8]];
   if (!v3)
   {
-    v4 = [(EKInviteReplyNotification *)self shareeFirstName];
-    v5 = [(EKInviteReplyNotification *)self shareeLastName];
+    shareeFirstName = [(EKInviteReplyNotification *)self shareeFirstName];
+    shareeLastName = [(EKInviteReplyNotification *)self shareeLastName];
     v3 = DisplayNameStringForIdentityWithProperties();
   }
 
@@ -98,10 +98,10 @@ void __61__EKInviteReplyNotification_knownRelationshipSingleValueKeys__block_inv
 
 - (NSURL)shareeURL
 {
-  v2 = [(EKInviteReplyNotification *)self shareeURLString];
-  if (v2)
+  shareeURLString = [(EKInviteReplyNotification *)self shareeURLString];
+  if (shareeURLString)
   {
-    v3 = [MEMORY[0x1E695DFF8] URLWithString:v2];
+    v3 = [MEMORY[0x1E695DFF8] URLWithString:shareeURLString];
   }
 
   else
@@ -112,76 +112,76 @@ void __61__EKInviteReplyNotification_knownRelationshipSingleValueKeys__block_inv
   return v3;
 }
 
-- (void)setShareeURL:(id)a3
+- (void)setShareeURL:(id)l
 {
-  v4 = [a3 absoluteString];
-  [(EKInviteReplyNotification *)self setShareeURLString:v4];
+  absoluteString = [l absoluteString];
+  [(EKInviteReplyNotification *)self setShareeURLString:absoluteString];
 }
 
 - (unint64_t)shareeStatus
 {
   v2 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E6992AF0]];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
-- (void)setShareeStatus:(unint64_t)a3
+- (void)setShareeStatus:(unint64_t)status
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:status];
   [(EKObject *)self setSingleChangedValue:v4 forKey:*MEMORY[0x1E6992AF0]];
 }
 
 - (NSString)shareeEmailAddress
 {
-  v2 = [(EKInviteReplyNotification *)self shareeURL];
-  v3 = [v2 cal_emailAddressString];
+  shareeURL = [(EKInviteReplyNotification *)self shareeURL];
+  cal_emailAddressString = [shareeURL cal_emailAddressString];
 
-  return v3;
+  return cal_emailAddressString;
 }
 
 - (NSString)shareePhoneNumber
 {
-  v2 = [(EKInviteReplyNotification *)self shareeURL];
-  v3 = [v2 cal_phoneNumberString];
+  shareeURL = [(EKInviteReplyNotification *)self shareeURL];
+  cal_phoneNumberString = [shareeURL cal_phoneNumberString];
 
-  return v3;
+  return cal_phoneNumberString;
 }
 
 - (BOOL)alerted
 {
   v2 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E6992A90]];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (void)clearAlertedStatus
 {
-  v2 = [(EKObject *)self persistentObject];
-  [v2 unloadPropertyForKey:*MEMORY[0x1E6992A90]];
+  persistentObject = [(EKObject *)self persistentObject];
+  [persistentObject unloadPropertyForKey:*MEMORY[0x1E6992A90]];
 }
 
-- (BOOL)validate:(id *)a3
+- (BOOL)validate:(id *)validate
 {
   v9.receiver = self;
   v9.super_class = EKInviteReplyNotification;
   LODWORD(v5) = [(EKObject *)&v9 validate:?];
   if (v5)
   {
-    v6 = [(EKInviteReplyNotification *)self inviteReplyCalendar];
+    inviteReplyCalendar = [(EKInviteReplyNotification *)self inviteReplyCalendar];
 
-    if (v6)
+    if (inviteReplyCalendar)
     {
       LOBYTE(v5) = 1;
     }
 
-    else if (a3)
+    else if (validate)
     {
       v7 = [MEMORY[0x1E696ABC0] errorWithEKErrorCode:31];
       v5 = v7;
       LOBYTE(v5) = 0;
-      *a3 = v7;
+      *validate = v7;
     }
 
     else

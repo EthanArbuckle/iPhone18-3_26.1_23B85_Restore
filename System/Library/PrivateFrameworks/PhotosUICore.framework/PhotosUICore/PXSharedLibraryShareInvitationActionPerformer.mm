@@ -1,6 +1,6 @@
 @interface PXSharedLibraryShareInvitationActionPerformer
-- (PXSharedLibraryShareInvitationActionPerformer)initWithPresentationEnvironment:(id)a3;
-- (void)performActionWithInvitationURL:(id)a3 completionHandler:(id)a4;
+- (PXSharedLibraryShareInvitationActionPerformer)initWithPresentationEnvironment:(id)environment;
+- (void)performActionWithInvitationURL:(id)l completionHandler:(id)handler;
 - (void)performUserInteractionTask;
 @end
 
@@ -10,9 +10,9 @@
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v4 = +[PXSharedLibrarySettings sharedInstance];
-  v5 = [v4 simulateErrorType];
+  simulateErrorType = [v4 simulateErrorType];
 
-  if (v5 == 7)
+  if (simulateErrorType == 7)
   {
     v6 = PLSharedLibraryGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -38,14 +38,14 @@
     v12[3] = &unk_1E773EBF0;
     v12[4] = self;
     [v7 setCompletionWithItemsHandler:v12];
-    v10 = [(PXActionPerformer *)self presentationEnvironment];
-    if (!v10)
+    presentationEnvironment = [(PXActionPerformer *)self presentationEnvironment];
+    if (!presentationEnvironment)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v11 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryShareInvitationActionPerformer.m" lineNumber:71 description:{@"Invalid parameter not satisfying: %@", @"presentationEnvironment"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryShareInvitationActionPerformer.m" lineNumber:71 description:{@"Invalid parameter not satisfying: %@", @"presentationEnvironment"}];
     }
 
-    [v10 presentViewController:v7 animated:1 completionHandler:0];
+    [presentationEnvironment presentViewController:v7 animated:1 completionHandler:0];
   }
 }
 
@@ -65,29 +65,29 @@ void __75__PXSharedLibraryShareInvitationActionPerformer_performUserInteractionT
   }
 }
 
-- (void)performActionWithInvitationURL:(id)a3 completionHandler:(id)a4
+- (void)performActionWithInvitationURL:(id)l completionHandler:(id)handler
 {
-  v7 = a3;
-  v10 = a4;
-  if (!v7)
+  lCopy = l;
+  handlerCopy = handler;
+  if (!lCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryShareInvitationActionPerformer.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"invitationURL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryShareInvitationActionPerformer.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"invitationURL"}];
   }
 
   invitationURL = self->_invitationURL;
-  self->_invitationURL = v7;
+  self->_invitationURL = lCopy;
 
-  [(PXActionPerformer *)self performActionWithCompletionHandler:v10];
+  [(PXActionPerformer *)self performActionWithCompletionHandler:handlerCopy];
 }
 
-- (PXSharedLibraryShareInvitationActionPerformer)initWithPresentationEnvironment:(id)a3
+- (PXSharedLibraryShareInvitationActionPerformer)initWithPresentationEnvironment:(id)environment
 {
-  v5 = a3;
-  if (!v5)
+  environmentCopy = environment;
+  if (!environmentCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryShareInvitationActionPerformer.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"presentationEnvironment"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryShareInvitationActionPerformer.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"presentationEnvironment"}];
   }
 
   v10.receiver = self;
@@ -96,7 +96,7 @@ void __75__PXSharedLibraryShareInvitationActionPerformer_performUserInteractionT
   v7 = v6;
   if (v6)
   {
-    [(PXActionPerformer *)v6 setPresentationEnvironment:v5];
+    [(PXActionPerformer *)v6 setPresentationEnvironment:environmentCopy];
   }
 
   return v7;

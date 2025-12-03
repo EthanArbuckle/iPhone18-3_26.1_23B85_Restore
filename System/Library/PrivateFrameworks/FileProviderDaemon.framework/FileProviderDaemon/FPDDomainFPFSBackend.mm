@@ -1,115 +1,115 @@
 @interface FPDDomainFPFSBackend
 - (BOOL)backgroundActivityIsPaused;
-- (BOOL)isItemDataless:(id)a3;
-- (BOOL)isProviderForRealPathURL:(id)a3;
+- (BOOL)isItemDataless:(id)dataless;
+- (BOOL)isProviderForRealPathURL:(id)l;
 - (BOOL)needsRootsCreation;
-- (BOOL)startWithReason:(id)a3 userAllowedDBDrop:(BOOL)a4 error:(id *)a5;
-- (BOOL)updateRootAfterDomainChangeWithError:(id *)a3;
+- (BOOL)startWithReason:(id)reason userAllowedDBDrop:(BOOL)drop error:(id *)error;
+- (BOOL)updateRootAfterDomainChangeWithError:(id *)error;
 - (NSArray)coordinationRootURLs;
 - (NSData)backingStoreIdentity;
 - (NSFileProviderDomainVersion)domainVersion;
 - (_TtC18FileProviderDaemon20FPDDomainFPFSBackend)init;
 - (id)accumulatedSizeOfItems;
-- (id)createIndexerWithExtension:(id)a3 enabled:(BOOL)a4 error:(id *)a5;
-- (id)createRootByImportingURL:(id)a3 knownFolders:(id)a4 error:(id *)a5;
-- (id)evictItemAtURL:(id)a3 evictionReason:(unsigned int)a4 request:(id)a5 completionHandler:(id)a6;
-- (id)materializedURLForItemID:(id)a3;
+- (id)createIndexerWithExtension:(id)extension enabled:(BOOL)enabled error:(id *)error;
+- (id)createRootByImportingURL:(id)l knownFolders:(id)folders error:(id *)error;
+- (id)evictItemAtURL:(id)l evictionReason:(unsigned int)reason request:(id)request completionHandler:(id)handler;
+- (id)materializedURLForItemID:(id)d;
 - (id)providerVersion;
-- (id)rootURLsWithTransientState:(BOOL *)a3;
-- (id)startProvidingItemAtURL:(id)a3 readerID:(id)a4 readingOptions:(unint64_t)a5 request:(id)a6 completionHandler:(id)a7;
+- (id)rootURLsWithTransientState:(BOOL *)state;
+- (id)startProvidingItemAtURL:(id)l readerID:(id)d readingOptions:(unint64_t)options request:(id)request completionHandler:(id)handler;
 - (int64_t)accumulatedSizeOfPinnedItems;
 - (int64_t)errorGenerationCount;
 - (int64_t)nonEvictableSpace;
-- (void)URLForItemID:(id)a3 creatingPlaceholderIfMissing:(BOOL)a4 ignoreAlternateContentsURL:(BOOL)a5 forBookmarkResolution:(BOOL)a6 request:(id)a7 completionHandler:(id)a8;
-- (void)attachKnownFolders:(id)a3 options:(unint64_t)a4 request:(id)a5 completionHandler:(id)a6;
-- (void)bulkItemChanges:(id)a3 changedFields:(unint64_t)a4 request:(id)a5 completionHandler:(id)a6;
-- (void)clearDiagnosticState:(id)a3;
-- (void)copyDatabaseToURL:(id)a3 completionHandler:(id)a4;
-- (void)createItemBasedOnTemplate:(id)a3 fields:(unint64_t)a4 urlWrapper:(id)a5 options:(unint64_t)a6 bounceOnCollision:(BOOL)a7 request:(id)a8 completionHandler:(id)aBlock;
-- (void)currentMaterializedSetSyncAnchorWithCompletionHandler:(id)a3;
-- (void)currentPendingSetSyncAnchorWithCompletionHandler:(id)a3;
-- (void)decorateItems:(id)a3 completionHandler:(id)a4;
-- (void)detachKnownFolders:(id)a3 request:(id)a4 completionHandler:(id)a5;
-- (void)didChangeDomainConfiguration:(id)a3;
-- (void)didChangeItemID:(id)a3 completionHandler:(id)a4;
-- (void)didChangeNeedsAuthentification:(BOOL)a3;
-- (void)didUpdateAlternateContentsDocumentForDocumentWithURL:(id)a3 request:(id)a4 completionHandler:(id)a5;
-- (void)disableDBQueryStatisticsWithCompletionHandler:(id)a3;
-- (void)downloadItemWithItemID:(id)a3 request:(id)a4 progress:(id)a5 completionHandler:(id)a6;
-- (void)downloadVersionWithItemID:(id)a3 version:(id)a4 originalURL:(id)a5 completionHandler:(id)a6;
-- (void)dumpStateTo:(id)a3 options:(unint64_t)a4 request:(id)a5 completionHandler:(id)a6;
-- (void)enumerateMaterializedSetFromSyncAnchor:(id)a3 suggestedBatchSize:(int64_t)a4 completionHandler:(id)a5;
-- (void)enumeratePendingSetFromSyncAnchor:(id)a3 suggestedBatchSize:(int64_t)a4 completionHandler:(id)a5;
-- (void)enumerateSearchResultForRequest:(id)a3 lifetimeExtender:(id)a4 completionHandler:(id)a5;
-- (void)enumerateWithSettings:(id)a3 lifetimeExtender:(id)a4 observer:(id)a5 completionHandler:(id)a6;
-- (void)evictItemWithID:(id)a3 evictionReason:(unsigned int)a4 request:(id)a5 completionHandler:(id)a6;
-- (void)fetchAlternateContentsURLWrapperForDocumentWithURL:(id)a3 request:(id)a4 completionHandler:(id)a5;
-- (void)fetchFSItemsForItemIdentifiers:(id)a3 materializingIfNeeded:(BOOL)a4 request:(id)a5 completionHandler:(id)a6;
-- (void)fetchLatestVersionForURL:(id)a3 request:(id)a4 completionHandler:(id)a5;
-- (void)fetchOperationServiceOrEndpointWithRequest:(id)a3 completionHandler:(id)a4;
-- (void)fetchServicesForItemID:(id)a3 allowRestrictedSources:(BOOL)a4 request:(id)a5 completionHandler:(id)a6;
-- (void)fetchTelemetryReportWithAlwaysFetchExpandedUsageStats:(BOOL)a3 completionHandler:(id)a4;
-- (void)fetchThumbnailsAtURL:(id)a3 versions:(id)a4 size:(CGSize)a5 perThumbnailCompletionHandler:(id)a6 completionHandler:(id)a7;
-- (void)fetchVendorEndpointWithRequest:(id)a3 completionHandler:(id)a4;
-- (void)forceFSIngestionForItemID:(id)a3 request:(id)a4 completionHandler:(id)a5;
-- (void)forceIngestionAtURL:(id)a3;
-- (void)forceIngestionForItemID:(id)a3 request:(id)a4 openFD:(BOOL)a5 completionHandler:(id)a6;
-- (void)forceUpdateBlockedProcessNamesFromDomain:(NSString *)a3 completionHandler:(id)a4;
-- (void)getCountersArrayWithCompletionHandler:(id)a3;
-- (void)getDBOptionsWithCompletionHandler:(id)a3;
-- (void)getDBQueryStatisticsWithQueryPlan:(BOOL)a3 completionHandler:(id)a4;
-- (void)getDiagnosticAttributesForItems:(id)a3 completionHandler:(id)a4;
-- (void)getKnownFolderLocations:(unint64_t)a3 request:(id)a4 completionHandler:(id)a5;
-- (void)getNumberOfNonMaterializedFilesWithCompletionHandler:(id)a3;
-- (void)getSavedDiagnostics:(id)a3;
-- (void)hasNonUploadedFilesWithCompletionHandler:(id)a3;
-- (void)hierarchyForURL:(id)a3 request:(id)a4 completionHandler:(id)a5;
-- (void)ingestFromCacheItemWithID:(id)a3 requestedFields:(unint64_t)a4 request:(id)a5 completionHandler:(id)a6;
+- (void)URLForItemID:(id)d creatingPlaceholderIfMissing:(BOOL)missing ignoreAlternateContentsURL:(BOOL)l forBookmarkResolution:(BOOL)resolution request:(id)request completionHandler:(id)handler;
+- (void)attachKnownFolders:(id)folders options:(unint64_t)options request:(id)request completionHandler:(id)handler;
+- (void)bulkItemChanges:(id)changes changedFields:(unint64_t)fields request:(id)request completionHandler:(id)handler;
+- (void)clearDiagnosticState:(id)state;
+- (void)copyDatabaseToURL:(id)l completionHandler:(id)handler;
+- (void)createItemBasedOnTemplate:(id)template fields:(unint64_t)fields urlWrapper:(id)wrapper options:(unint64_t)options bounceOnCollision:(BOOL)collision request:(id)request completionHandler:(id)aBlock;
+- (void)currentMaterializedSetSyncAnchorWithCompletionHandler:(id)handler;
+- (void)currentPendingSetSyncAnchorWithCompletionHandler:(id)handler;
+- (void)decorateItems:(id)items completionHandler:(id)handler;
+- (void)detachKnownFolders:(id)folders request:(id)request completionHandler:(id)handler;
+- (void)didChangeDomainConfiguration:(id)configuration;
+- (void)didChangeItemID:(id)d completionHandler:(id)handler;
+- (void)didChangeNeedsAuthentification:(BOOL)authentification;
+- (void)didUpdateAlternateContentsDocumentForDocumentWithURL:(id)l request:(id)request completionHandler:(id)handler;
+- (void)disableDBQueryStatisticsWithCompletionHandler:(id)handler;
+- (void)downloadItemWithItemID:(id)d request:(id)request progress:(id)progress completionHandler:(id)handler;
+- (void)downloadVersionWithItemID:(id)d version:(id)version originalURL:(id)l completionHandler:(id)handler;
+- (void)dumpStateTo:(id)to options:(unint64_t)options request:(id)request completionHandler:(id)handler;
+- (void)enumerateMaterializedSetFromSyncAnchor:(id)anchor suggestedBatchSize:(int64_t)size completionHandler:(id)handler;
+- (void)enumeratePendingSetFromSyncAnchor:(id)anchor suggestedBatchSize:(int64_t)size completionHandler:(id)handler;
+- (void)enumerateSearchResultForRequest:(id)request lifetimeExtender:(id)extender completionHandler:(id)handler;
+- (void)enumerateWithSettings:(id)settings lifetimeExtender:(id)extender observer:(id)observer completionHandler:(id)handler;
+- (void)evictItemWithID:(id)d evictionReason:(unsigned int)reason request:(id)request completionHandler:(id)handler;
+- (void)fetchAlternateContentsURLWrapperForDocumentWithURL:(id)l request:(id)request completionHandler:(id)handler;
+- (void)fetchFSItemsForItemIdentifiers:(id)identifiers materializingIfNeeded:(BOOL)needed request:(id)request completionHandler:(id)handler;
+- (void)fetchLatestVersionForURL:(id)l request:(id)request completionHandler:(id)handler;
+- (void)fetchOperationServiceOrEndpointWithRequest:(id)request completionHandler:(id)handler;
+- (void)fetchServicesForItemID:(id)d allowRestrictedSources:(BOOL)sources request:(id)request completionHandler:(id)handler;
+- (void)fetchTelemetryReportWithAlwaysFetchExpandedUsageStats:(BOOL)stats completionHandler:(id)handler;
+- (void)fetchThumbnailsAtURL:(id)l versions:(id)versions size:(CGSize)size perThumbnailCompletionHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)fetchVendorEndpointWithRequest:(id)request completionHandler:(id)handler;
+- (void)forceFSIngestionForItemID:(id)d request:(id)request completionHandler:(id)handler;
+- (void)forceIngestionAtURL:(id)l;
+- (void)forceIngestionForItemID:(id)d request:(id)request openFD:(BOOL)fD completionHandler:(id)handler;
+- (void)forceUpdateBlockedProcessNamesFromDomain:(NSString *)domain completionHandler:(id)handler;
+- (void)getCountersArrayWithCompletionHandler:(id)handler;
+- (void)getDBOptionsWithCompletionHandler:(id)handler;
+- (void)getDBQueryStatisticsWithQueryPlan:(BOOL)plan completionHandler:(id)handler;
+- (void)getDiagnosticAttributesForItems:(id)items completionHandler:(id)handler;
+- (void)getKnownFolderLocations:(unint64_t)locations request:(id)request completionHandler:(id)handler;
+- (void)getNumberOfNonMaterializedFilesWithCompletionHandler:(id)handler;
+- (void)getSavedDiagnostics:(id)diagnostics;
+- (void)hasNonUploadedFilesWithCompletionHandler:(id)handler;
+- (void)hierarchyForURL:(id)l request:(id)request completionHandler:(id)handler;
+- (void)ingestFromCacheItemWithID:(id)d requestedFields:(unint64_t)fields request:(id)request completionHandler:(id)handler;
 - (void)invalidate;
-- (void)itemChangedAtURL:(id)a3 request:(id)a4;
-- (void)itemForItemID:(id)a3 creatingPlaceholderIfMissing:(BOOL)a4 ignoreAlternateContentsURL:(BOOL)a5 request:(id)a6 completionHandler:(id)a7;
-- (void)itemForURL:(id)a3 options:(unint64_t)a4 request:(id)a5 completionHandler:(id)a6;
-- (void)itemIDForURL:(id)a3 requireProviderItemID:(BOOL)a4 request:(id)a5 completionHandler:(id)a6;
-- (void)launchFeedbackForDomain:(FPDDomain *)a3 itemIdentifier:(NSString *)a4 triggeringError:(NSError *)a5 when:(NSDate *)a6 useDiagnostic:(BOOL)a7 completionHandler:(id)a8;
-- (void)listAvailableTestingOperationsWithRequest:(id)a3 completionHandler:(id)a4;
-- (void)listRemoteVersionsOfItemAtURL:(id)a3 includeCachedVersions:(BOOL)a4 request:(id)a5 completionHandler:(id)a6;
-- (void)materializeItemWithID:(id)a3 requestedRange:(_NSRange)a4 request:(id)a5 completionHandler:(id)a6;
-- (void)movingItemAtURL:(id)a3 withInfo:(id)a4 completionHandler:(id)a5;
-- (void)pauseSyncForItemAtURL:(id)a3 bundleID:(id)a4 behavior:(unint64_t)a5 request:(id)a6 completionHandler:(id)a7;
-- (void)pinItemWithID:(id)a3 request:(id)a4 completionHandler:(id)a5;
-- (void)putBackURLForTrashedItemAtURL:(id)a3 request:(id)a4 completionHandler:(id)a5;
-- (void)queryDiskImportSchedulerLabelWithCompletionHandler:(id)a3;
-- (void)registerFPCKProgress:(id)a3;
-- (void)reimportItemsBelowItemWithID:(id)a3 markItemDataless:(BOOL)a4 completionHandler:(id)a5;
-- (void)reindexAllItemsWithDropReason:(unint64_t)a3 completionHandler:(id)a4;
-- (void)reindexItemsWithIndexReason:(int64_t)a3 identifiers:(id)a4 completionHandler:(id)a5;
+- (void)itemChangedAtURL:(id)l request:(id)request;
+- (void)itemForItemID:(id)d creatingPlaceholderIfMissing:(BOOL)missing ignoreAlternateContentsURL:(BOOL)l request:(id)request completionHandler:(id)handler;
+- (void)itemForURL:(id)l options:(unint64_t)options request:(id)request completionHandler:(id)handler;
+- (void)itemIDForURL:(id)l requireProviderItemID:(BOOL)d request:(id)request completionHandler:(id)handler;
+- (void)launchFeedbackForDomain:(FPDDomain *)domain itemIdentifier:(NSString *)identifier triggeringError:(NSError *)error when:(NSDate *)when useDiagnostic:(BOOL)diagnostic completionHandler:(id)handler;
+- (void)listAvailableTestingOperationsWithRequest:(id)request completionHandler:(id)handler;
+- (void)listRemoteVersionsOfItemAtURL:(id)l includeCachedVersions:(BOOL)versions request:(id)request completionHandler:(id)handler;
+- (void)materializeItemWithID:(id)d requestedRange:(_NSRange)range request:(id)request completionHandler:(id)handler;
+- (void)movingItemAtURL:(id)l withInfo:(id)info completionHandler:(id)handler;
+- (void)pauseSyncForItemAtURL:(id)l bundleID:(id)d behavior:(unint64_t)behavior request:(id)request completionHandler:(id)handler;
+- (void)pinItemWithID:(id)d request:(id)request completionHandler:(id)handler;
+- (void)putBackURLForTrashedItemAtURL:(id)l request:(id)request completionHandler:(id)handler;
+- (void)queryDiskImportSchedulerLabelWithCompletionHandler:(id)handler;
+- (void)registerFPCKProgress:(id)progress;
+- (void)reimportItemsBelowItemWithID:(id)d markItemDataless:(BOOL)dataless completionHandler:(id)handler;
+- (void)reindexAllItemsWithDropReason:(unint64_t)reason completionHandler:(id)handler;
+- (void)reindexItemsWithIndexReason:(int64_t)reason identifiers:(id)identifiers completionHandler:(id)handler;
 - (void)removeEbihilSymlink;
-- (void)requestDiagnosticCollectionForItemWithID:(id)a3 errorReason:(id)a4 completionHandler:(id)a5;
-- (void)resetCountersWithCompletionHandler:(id)a3;
-- (void)resetDBQueryStatisticsWithCompletionHandler:(id)a3;
-- (void)resolveConflictAtURL:(id)a3 request:(id)a4 completionHandler:(id)a5;
-- (void)resumeSyncForItemAtURL:(id)a3 bundleID:(id)a4 behavior:(unint64_t)a5 request:(id)a6 completionHandler:(id)a7;
-- (void)runTestingOperations:(id)a3 request:(id)a4 completionHandler:(id)a5;
-- (void)sendDiagnosticsFromFPCKForItemIDs:(id)a3;
-- (void)setAlternateContentsURLWrapper:(id)a3 forDocumentWithURL:(id)a4 request:(id)a5 completionHandler:(id)a6;
-- (void)setBackingStoreIdentity:(id)a3;
-- (void)setPutBackInfoOnItemAtURL:(id)a3 completionHandler:(id)a4;
-- (void)sharedSchedulerCanRun:(id)a3;
-- (void)signalErrorResolved:(id)a3 completionHandler:(id)a4;
-- (void)stateWithCompletionHandler:(id)a3;
-- (void)subscribeToDownloadProgressUpdates:(id)a3 completionHandler:(id)a4;
-- (void)subscribeToUploadProgressUpdates:(id)a3 completionHandler:(id)a4;
-- (void)trashItemAtURL:(id)a3 request:(id)a4 completionHandler:(id)a5;
-- (void)triggerDatabaseError:(id)a3 request:(id)a4 completionHandler:(id)a5;
-- (void)triggerFeedbackApprovalRequestForItemURL:(id)a3 domain:(id)a4 uiOnly:(BOOL)a5 completionHandler:(id)a6;
-- (void)unpinItemWithID:(id)a3 request:(id)a4 completionHandler:(id)a5;
-- (void)updateShouldRetryThrottledOperations:(BOOL)a3 completionHandler:(id)a4;
-- (void)uploadLocalVersionOfItemAtURL:(id)a3 conflictResolutionPolicy:(int64_t)a4 request:(id)a5 completionHandler:(id)a6;
-- (void)valuesForAttributes:(id)a3 forURL:(id)a4 request:(id)a5 completionHandler:(id)a6;
-- (void)waitForChangesOnItemsBelowItemWithIdentifier:(id)a3 request:(id)a4 completionHandler:(id)a5;
-- (void)waitForStabilizationForRequest:(id)a3 mode:(unint64_t)a4 completionHandler:(id)a5;
-- (void)wakeForPushWithCompletionHandler:(id)a3;
-- (void)workingSetDidChangeWithCompletionHandler:(id)a3;
+- (void)requestDiagnosticCollectionForItemWithID:(id)d errorReason:(id)reason completionHandler:(id)handler;
+- (void)resetCountersWithCompletionHandler:(id)handler;
+- (void)resetDBQueryStatisticsWithCompletionHandler:(id)handler;
+- (void)resolveConflictAtURL:(id)l request:(id)request completionHandler:(id)handler;
+- (void)resumeSyncForItemAtURL:(id)l bundleID:(id)d behavior:(unint64_t)behavior request:(id)request completionHandler:(id)handler;
+- (void)runTestingOperations:(id)operations request:(id)request completionHandler:(id)handler;
+- (void)sendDiagnosticsFromFPCKForItemIDs:(id)ds;
+- (void)setAlternateContentsURLWrapper:(id)wrapper forDocumentWithURL:(id)l request:(id)request completionHandler:(id)handler;
+- (void)setBackingStoreIdentity:(id)identity;
+- (void)setPutBackInfoOnItemAtURL:(id)l completionHandler:(id)handler;
+- (void)sharedSchedulerCanRun:(id)run;
+- (void)signalErrorResolved:(id)resolved completionHandler:(id)handler;
+- (void)stateWithCompletionHandler:(id)handler;
+- (void)subscribeToDownloadProgressUpdates:(id)updates completionHandler:(id)handler;
+- (void)subscribeToUploadProgressUpdates:(id)updates completionHandler:(id)handler;
+- (void)trashItemAtURL:(id)l request:(id)request completionHandler:(id)handler;
+- (void)triggerDatabaseError:(id)error request:(id)request completionHandler:(id)handler;
+- (void)triggerFeedbackApprovalRequestForItemURL:(id)l domain:(id)domain uiOnly:(BOOL)only completionHandler:(id)handler;
+- (void)unpinItemWithID:(id)d request:(id)request completionHandler:(id)handler;
+- (void)updateShouldRetryThrottledOperations:(BOOL)operations completionHandler:(id)handler;
+- (void)uploadLocalVersionOfItemAtURL:(id)l conflictResolutionPolicy:(int64_t)policy request:(id)request completionHandler:(id)handler;
+- (void)valuesForAttributes:(id)attributes forURL:(id)l request:(id)request completionHandler:(id)handler;
+- (void)waitForChangesOnItemsBelowItemWithIdentifier:(id)identifier request:(id)request completionHandler:(id)handler;
+- (void)waitForStabilizationForRequest:(id)request mode:(unint64_t)mode completionHandler:(id)handler;
+- (void)wakeForPushWithCompletionHandler:(id)handler;
+- (void)workingSetDidChangeWithCompletionHandler:(id)handler;
 @end
 
 @implementation FPDDomainFPFSBackend
@@ -117,17 +117,17 @@
 - (int64_t)errorGenerationCount
 {
   v2 = *(self + OBJC_IVAR____TtC18FileProviderDaemon20FPDDomainFPFSBackend_errorGenerationRecord + 16);
-  v3 = self;
+  selfCopy = self;
   v4 = v2;
   sub_1CF9E7398();
 
   return v6;
 }
 
-- (id)rootURLsWithTransientState:(BOOL *)a3
+- (id)rootURLsWithTransientState:(BOOL *)state
 {
-  v4 = self;
-  sub_1CEFCE524(a3);
+  selfCopy = self;
+  sub_1CEFCE524(state);
 
   sub_1CF9E5A58();
   v5 = sub_1CF9E6D28();
@@ -149,9 +149,9 @@
   }
 }
 
-- (void)fetchOperationServiceOrEndpointWithRequest:(id)a3 completionHandler:(id)a4
+- (void)fetchOperationServiceOrEndpointWithRequest:(id)request completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   v8 = swift_allocObject();
@@ -159,60 +159,60 @@
   *(v8 + 24) = v7;
   v9 = swift_allocObject();
   v9[2] = self;
-  v9[3] = a3;
+  v9[3] = request;
   v9[4] = sub_1CEFCFE98;
   v9[5] = v7;
   v10 = swift_allocObject();
   *(v10 + 16) = sub_1CF902EC8;
   *(v10 + 24) = v8;
-  v11 = a3;
-  v12 = self;
+  requestCopy = request;
+  selfCopy = self;
   swift_retain_n();
-  v14 = v12;
-  v13 = v11;
+  v14 = selfCopy;
+  v13 = requestCopy;
 
   sub_1CEFD4024("fetchOperationServiceOrEndpoint(with:completionHandler:)", 56, 2, sub_1CF903284, v10, sub_1CF902C54, v9);
 }
 
-- (void)itemForItemID:(id)a3 creatingPlaceholderIfMissing:(BOOL)a4 ignoreAlternateContentsURL:(BOOL)a5 request:(id)a6 completionHandler:(id)a7
+- (void)itemForItemID:(id)d creatingPlaceholderIfMissing:(BOOL)missing ignoreAlternateContentsURL:(BOOL)l request:(id)request completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v12 = _Block_copy(a7);
+  lCopy = l;
+  missingCopy = missing;
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
   *(v13 + 16) = v12;
-  v14 = a3;
-  v15 = a6;
-  v20 = self;
-  v16 = sub_1CEFD4E9C([v14 identifier]);
+  dCopy = d;
+  requestCopy = request;
+  selfCopy = self;
+  v16 = sub_1CEFD4E9C([dCopy identifier]);
   v17 = swift_allocObject();
-  *(v17 + 16) = [v14 identifier];
-  *(v17 + 24) = v15;
+  *(v17 + 16) = [dCopy identifier];
+  *(v17 + 24) = requestCopy;
   v18 = swift_allocObject();
   *(v18 + 16) = sub_1CF024BB0;
   *(v18 + 24) = v13;
-  v19 = v15;
+  v19 = requestCopy;
 
-  sub_1CEFD0300(v16, v9, v8, v17 | 0x9000000000000000, sub_1CF903268, v18);
+  sub_1CEFD0300(v16, missingCopy, lCopy, v17 | 0x9000000000000000, sub_1CF903268, v18);
 }
 
-- (void)URLForItemID:(id)a3 creatingPlaceholderIfMissing:(BOOL)a4 ignoreAlternateContentsURL:(BOOL)a5 forBookmarkResolution:(BOOL)a6 request:(id)a7 completionHandler:(id)a8
+- (void)URLForItemID:(id)d creatingPlaceholderIfMissing:(BOOL)missing ignoreAlternateContentsURL:(BOOL)l forBookmarkResolution:(BOOL)resolution request:(id)request completionHandler:(id)handler
 {
-  v9 = a6;
-  v10 = a5;
-  v14 = _Block_copy(a8);
+  resolutionCopy = resolution;
+  lCopy = l;
+  v14 = _Block_copy(handler);
   _Block_copy(v14);
-  v15 = a3;
-  v16 = a7;
-  v17 = self;
-  sub_1CF02BA84(v15, a4, v10, v9, v16, v17, v14);
+  dCopy = d;
+  requestCopy = request;
+  selfCopy = self;
+  sub_1CF02BA84(dCopy, missing, lCopy, resolutionCopy, requestCopy, selfCopy, v14);
   _Block_release(v14);
   _Block_release(v14);
 }
 
-- (void)workingSetDidChangeWithCompletionHandler:(id)a3
+- (void)workingSetDidChangeWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = swift_allocObject();
@@ -222,7 +222,7 @@
   *(v7 + 16) = sub_1CF067718;
   *(v7 + 24) = v5;
   swift_retain_n();
-  v8 = self;
+  selfCopy = self;
   sub_1CEFD4024("workingSetDidChange(completionHandler:)", 39, 2, sub_1CF90324C, v6, sub_1CF90349C, v7);
 }
 
@@ -244,20 +244,20 @@
   return v3;
 }
 
-- (void)setBackingStoreIdentity:(id)a3
+- (void)setBackingStoreIdentity:(id)identity
 {
-  v3 = a3;
-  if (a3)
+  identityCopy = identity;
+  if (identity)
   {
-    v5 = self;
-    v6 = v3;
-    v3 = sub_1CF9E5B88();
+    selfCopy = self;
+    v6 = identityCopy;
+    identityCopy = sub_1CF9E5B88();
     v8 = v7;
   }
 
   else
   {
-    v9 = self;
+    selfCopy2 = self;
     v8 = 0xF000000000000000;
   }
 
@@ -265,17 +265,17 @@
   swift_beginAccess();
   v11 = *v10;
   v12 = v10[1];
-  *v10 = v3;
+  *v10 = identityCopy;
   v10[1] = v8;
   sub_1CEFE48D8(v11, v12);
 }
 
 - (NSArray)coordinationRootURLs
 {
-  v2 = self;
+  selfCopy = self;
   v7 = sub_1CEFCE64C();
-  v3 = *(v2 + OBJC_IVAR____TtC18FileProviderDaemon20FPDDomainFPFSBackend_pathsManager);
-  v4 = v2;
+  v3 = *(selfCopy + OBJC_IVAR____TtC18FileProviderDaemon20FPDDomainFPFSBackend_pathsManager);
+  v4 = selfCopy;
   sub_1CF5170A8(v3, v4, &v7);
 
   sub_1CF9E5A58();
@@ -290,7 +290,7 @@
   if (v2)
   {
     v3 = *(v2 + 16);
-    v4 = self;
+    selfCopy = self;
 
     v5 = sub_1CF807310();
   }
@@ -305,19 +305,19 @@
 
 - (void)removeEbihilSymlink
 {
-  v2 = self;
+  selfCopy = self;
   sub_1CF8312C4();
 }
 
-- (BOOL)updateRootAfterDomainChangeWithError:(id *)a3
+- (BOOL)updateRootAfterDomainChangeWithError:(id *)error
 {
-  v3 = self;
+  selfCopy = self;
   sub_1CF8319C0();
 
   return 1;
 }
 
-- (void)copyDatabaseToURL:(id)a3 completionHandler:(id)a4
+- (void)copyDatabaseToURL:(id)l completionHandler:(id)handler
 {
   v6 = sub_1CF9E5A58();
   v7 = *(v6 - 8);
@@ -326,7 +326,7 @@
   v9 = &v19 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x1EEE9AC00](v10);
   v12 = &v19 - v11;
-  v13 = _Block_copy(a4);
+  v13 = _Block_copy(handler);
   sub_1CF9E59D8();
   v14 = swift_allocObject();
   *(v14 + 16) = v13;
@@ -338,22 +338,22 @@
   *v17 = sub_1CF067718;
   v17[1] = v14;
 
-  v18 = self;
-  sub_1CF8EB0F8("copyDatabase(to:completionHandler:)", 35, 2, sub_1CF903304, v16, v18, sub_1CF067718, v14);
+  selfCopy = self;
+  sub_1CF8EB0F8("copyDatabase(to:completionHandler:)", 35, 2, sub_1CF903304, v16, selfCopy, sub_1CF067718, v14);
 
   (*(v7 + 8))(v12, v6);
 }
 
-- (void)didChangeDomainConfiguration:(id)a3
+- (void)didChangeDomainConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = self;
-  sub_1CF842DFC(v4);
+  configurationCopy = configuration;
+  selfCopy = self;
+  sub_1CF842DFC(configurationCopy);
 }
 
-- (void)queryDiskImportSchedulerLabelWithCompletionHandler:(id)a3
+- (void)queryDiskImportSchedulerLabelWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = swift_allocObject();
@@ -366,7 +366,7 @@
   *(v8 + 16) = sub_1CF902EC4;
   *(v8 + 24) = v6;
   swift_retain_n();
-  v9 = self;
+  selfCopy = self;
 
   sub_1CEFD4024("queryDiskImportSchedulerLabel(completionHandler:)", 49, 2, sub_1CF903300, v8, sub_1CF9034C0, v7);
 }
@@ -378,16 +378,16 @@
   return result;
 }
 
-- (void)sharedSchedulerCanRun:(id)a3
+- (void)sharedSchedulerCanRun:(id)run
 {
-  v4 = a3;
-  v5 = self;
-  FPDDomainFPFSBackend.sharedSchedulerCanRun(_:)(v4);
+  runCopy = run;
+  selfCopy = self;
+  FPDDomainFPFSBackend.sharedSchedulerCanRun(_:)(runCopy);
 }
 
-- (void)reindexAllItemsWithDropReason:(unint64_t)a3 completionHandler:(id)a4
+- (void)reindexAllItemsWithDropReason:(unint64_t)reason completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   v8 = swift_allocObject();
@@ -397,16 +397,16 @@
   v9[2] = self;
   v9[3] = sub_1CF067718;
   v9[4] = v7;
-  v9[5] = a3;
-  v10 = self;
+  v9[5] = reason;
+  selfCopy = self;
   swift_retain_n();
-  v11 = v10;
+  v11 = selfCopy;
   sub_1CEFD4024("reindexAllItems(with:completionHandler:)", 40, 2, sub_1CF90324C, v8, sub_1CF902C6C, v9);
 }
 
-- (void)reindexItemsWithIndexReason:(int64_t)a3 identifiers:(id)a4 completionHandler:(id)a5
+- (void)reindexItemsWithIndexReason:(int64_t)reason identifiers:(id)identifiers completionHandler:(id)handler
 {
-  v6 = _Block_copy(a5);
+  v6 = _Block_copy(handler);
   v7 = sub_1CF9E6D48();
   v8 = swift_allocObject();
   *(v8 + 16) = v6;
@@ -418,17 +418,17 @@
   v10[3] = sub_1CF067718;
   v10[4] = v8;
   v10[5] = v7;
-  v11 = self;
+  selfCopy = self;
   swift_retain_n();
-  v12 = v11;
+  v12 = selfCopy;
   sub_1CEFD4024("reindexItems(with:identifiers:completionHandler:)", 49, 2, sub_1CF90324C, v9, sub_1CF902C68, v10);
 }
 
-- (BOOL)startWithReason:(id)a3 userAllowedDBDrop:(BOOL)a4 error:(id *)a5
+- (BOOL)startWithReason:(id)reason userAllowedDBDrop:(BOOL)drop error:(id *)error
 {
   _sSo28NSFileProviderItemIdentifiera04FileB6DaemonE15parseableStringSSvg_0();
   v6 = *(self + OBJC_IVAR____TtC18FileProviderDaemon20FPDDomainFPFSBackend_startupQueue);
-  v7 = self;
+  selfCopy = self;
   sub_1CF9E7398();
 
   return 1;
@@ -436,7 +436,7 @@
 
 - (BOOL)needsRootsCreation
 {
-  v2 = self;
+  selfCopy = self;
   if (sub_1CF849530())
   {
     v3 = 1;
@@ -450,7 +450,7 @@
   return v3 & 1;
 }
 
-- (id)createRootByImportingURL:(id)a3 knownFolders:(id)a4 error:(id *)a5
+- (id)createRootByImportingURL:(id)l knownFolders:(id)folders error:(id *)error
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EC4BE310, qword_1CF9FCBE0);
   v8 = *(*(v7 - 8) + 64);
@@ -463,7 +463,7 @@
   v15 = &v23[-((v14 + 15) & 0xFFFFFFFFFFFFFFF0)];
   MEMORY[0x1EEE9AC00](v16);
   v18 = &v23[-v17];
-  if (a3)
+  if (l)
   {
     sub_1CF9E59D8();
     (*(v12 + 32))(v10, v15, v11);
@@ -477,7 +477,7 @@
 
   sub_1CEFD57E0(0, &qword_1EDEA3480, 0x1E69674F8);
   v19 = sub_1CF9E6D48();
-  v20 = self;
+  selfCopy = self;
   FPDDomainFPFSBackend.createRoot(byImporting:knownFolders:)(v10, v19, v18);
   sub_1CEFCCC44(v10, &unk_1EC4BE310, qword_1CF9FCBE0);
 
@@ -489,11 +489,11 @@
 
 - (void)invalidate
 {
-  v2 = self;
+  selfCopy = self;
   FPDDomainFPFSBackend.invalidate()();
 }
 
-- (BOOL)isProviderForRealPathURL:(id)a3
+- (BOOL)isProviderForRealPathURL:(id)l
 {
   v4 = sub_1CF9E5A58();
   v5 = *(v4 - 8);
@@ -501,7 +501,7 @@
   MEMORY[0x1EEE9AC00](v4);
   v8 = &v13 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1CF9E59D8();
-  v9 = self;
+  selfCopy = self;
   FPDDomainFPFSBackend.isProvider(forRealPathURL:)(v8);
   v11 = v10;
 
@@ -509,18 +509,18 @@
   return v11 & 1;
 }
 
-- (void)registerFPCKProgress:(id)a3
+- (void)registerFPCKProgress:(id)progress
 {
   v5 = swift_allocObject();
-  *(v5 + 16) = a3;
-  v6 = a3;
-  v7 = self;
+  *(v5 + 16) = progress;
+  progressCopy = progress;
+  selfCopy = self;
   sub_1CEFD4024("registerFPCKProgress(_:)", 24, 2, nullsub_1, 0, sub_1CF9034D0, v5);
 }
 
-- (void)dumpStateTo:(id)a3 options:(unint64_t)a4 request:(id)a5 completionHandler:(id)a6
+- (void)dumpStateTo:(id)to options:(unint64_t)options request:(id)request completionHandler:(id)handler
 {
-  v9 = _Block_copy(a6);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   v11 = swift_allocObject();
@@ -528,109 +528,109 @@
   *(v11 + 24) = v10;
   v12 = swift_allocObject();
   v12[2] = self;
-  v12[3] = a3;
-  v12[4] = a4;
+  v12[3] = to;
+  v12[4] = options;
   v12[5] = sub_1CF067718;
   v12[6] = v10;
-  v13 = a3;
-  v14 = self;
+  toCopy = to;
+  selfCopy = self;
   swift_retain_n();
-  v16 = v14;
-  v15 = v13;
+  v16 = selfCopy;
+  v15 = toCopy;
   sub_1CEFD4024("dumpState(to:options:request:completionHandler:)", 48, 2, sub_1CF90324C, v11, sub_1CF9032EC, v12);
 }
 
-- (void)waitForChangesOnItemsBelowItemWithIdentifier:(id)a3 request:(id)a4 completionHandler:(id)a5
+- (void)waitForChangesOnItemsBelowItemWithIdentifier:(id)identifier request:(id)request completionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   v10 = swift_allocObject();
   *(v10 + 16) = sub_1CF067718;
   *(v10 + 24) = v9;
   v11 = swift_allocObject();
-  v11[2] = a3;
-  v11[3] = a4;
+  v11[2] = identifier;
+  v11[3] = request;
   v11[4] = sub_1CF067718;
   v11[5] = v9;
-  v12 = a3;
-  v13 = a4;
+  identifierCopy = identifier;
+  requestCopy = request;
   swift_retain_n();
-  v14 = v12;
-  v15 = v13;
-  v16 = self;
+  v14 = identifierCopy;
+  v15 = requestCopy;
+  selfCopy = self;
   sub_1CEFD4024("waitForChanges(below:request:completionHandler:)", 48, 2, sub_1CF90324C, v10, sub_1CF902C64, v11);
 }
 
-- (void)waitForStabilizationForRequest:(id)a3 mode:(unint64_t)a4 completionHandler:(id)a5
+- (void)waitForStabilizationForRequest:(id)request mode:(unint64_t)mode completionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   v10 = swift_allocObject();
   *(v10 + 16) = sub_1CF067718;
   *(v10 + 24) = v9;
   v11 = swift_allocObject();
-  v11[2] = a3;
-  v11[3] = a4;
+  v11[2] = request;
+  v11[3] = mode;
   v11[4] = sub_1CF067718;
   v11[5] = v9;
-  v12 = a3;
+  requestCopy = request;
   swift_retain_n();
-  v13 = v12;
-  v14 = self;
+  v13 = requestCopy;
+  selfCopy = self;
   sub_1CEFD4024("waitForStabilization(for:mode:completionHandler:)", 49, 2, sub_1CF90324C, v10, sub_1CF902C60, v11);
 }
 
-- (void)itemIDForURL:(id)a3 requireProviderItemID:(BOOL)a4 request:(id)a5 completionHandler:(id)a6
+- (void)itemIDForURL:(id)l requireProviderItemID:(BOOL)d request:(id)request completionHandler:(id)handler
 {
-  v8 = a4;
+  dCopy = d;
   v10 = sub_1CF9E5A58();
   v11 = *(v10 - 8);
   v12 = *(v11 + 64);
   MEMORY[0x1EEE9AC00](v10);
   v14 = &v19 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v15 = _Block_copy(a6);
+  v15 = _Block_copy(handler);
   sub_1CF9E59D8();
   v16 = swift_allocObject();
   *(v16 + 16) = v15;
-  v17 = a5;
-  v18 = self;
-  FPDDomainFPFSBackend.itemID(for:requireProviderItemID:request:completionHandler:)(v14, v8, v17, sub_1CF902DDC, v16);
+  requestCopy = request;
+  selfCopy = self;
+  FPDDomainFPFSBackend.itemID(for:requireProviderItemID:request:completionHandler:)(v14, dCopy, requestCopy, sub_1CF902DDC, v16);
 
   (*(v11 + 8))(v14, v10);
 }
 
-- (void)itemForURL:(id)a3 options:(unint64_t)a4 request:(id)a5 completionHandler:(id)a6
+- (void)itemForURL:(id)l options:(unint64_t)options request:(id)request completionHandler:(id)handler
 {
   v10 = sub_1CF9E5A58();
   v11 = *(v10 - 8);
   v12 = *(v11 + 64);
   MEMORY[0x1EEE9AC00](v10);
   v14 = &v19 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v15 = _Block_copy(a6);
+  v15 = _Block_copy(handler);
   sub_1CF9E59D8();
   v16 = swift_allocObject();
   v16[2] = v15;
-  v17 = a5;
-  v18 = self;
-  FPDDomainFPFSBackend.item(for:options:request:completionHandler:)(v14, a4, v17, sub_1CF024BB0, v16);
+  requestCopy = request;
+  selfCopy = self;
+  FPDDomainFPFSBackend.item(for:options:request:completionHandler:)(v14, options, requestCopy, sub_1CF024BB0, v16);
 
   (*(v11 + 8))(v14, v10);
 }
 
-- (void)putBackURLForTrashedItemAtURL:(id)a3 request:(id)a4 completionHandler:(id)a5
+- (void)putBackURLForTrashedItemAtURL:(id)l request:(id)request completionHandler:(id)handler
 {
-  v26 = self;
-  v27 = a4;
+  selfCopy = self;
+  requestCopy = request;
   v6 = sub_1CF9E5A58();
   v7 = *(v6 - 8);
   v8 = *(v7 + 64);
   MEMORY[0x1EEE9AC00](v6);
-  v9 = &v26 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
+  v9 = &selfCopy - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x1EEE9AC00](v10);
-  v12 = &v26 - v11;
-  v13 = _Block_copy(a5);
+  v12 = &selfCopy - v11;
+  v13 = _Block_copy(handler);
   sub_1CF9E59D8();
   v14 = swift_allocObject();
   *(v14 + 16) = v13;
@@ -638,16 +638,16 @@
   v15 = (*(v7 + 80) + 24) & ~*(v7 + 80);
   v16 = (v8 + v15 + 7) & 0xFFFFFFFFFFFFFFF8;
   v17 = swift_allocObject();
-  v18 = v26;
-  v17[2] = v26;
+  v18 = selfCopy;
+  v17[2] = selfCopy;
   v19 = v17 + v15;
   v20 = v6;
   (*(v7 + 32))(v19, v9, v6);
   v21 = (v17 + v16);
   *v21 = sub_1CF902DE0;
   v21[1] = v14;
-  v22 = v27;
-  *(v17 + ((v16 + 23) & 0xFFFFFFFFFFFFFFF8)) = v27;
+  v22 = requestCopy;
+  *(v17 + ((v16 + 23) & 0xFFFFFFFFFFFFFFF8)) = requestCopy;
   v23 = v22;
   v24 = v18;
   v25 = v23;
@@ -657,7 +657,7 @@
   (*(v7 + 8))(v12, v20);
 }
 
-- (void)setPutBackInfoOnItemAtURL:(id)a3 completionHandler:(id)a4
+- (void)setPutBackInfoOnItemAtURL:(id)l completionHandler:(id)handler
 {
   v6 = sub_1CF9E5A58();
   v7 = *(v6 - 8);
@@ -666,7 +666,7 @@
   v9 = &v19 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x1EEE9AC00](v10);
   v12 = &v19 - v11;
-  v13 = _Block_copy(a4);
+  v13 = _Block_copy(handler);
   sub_1CF9E59D8();
   v14 = swift_allocObject();
   *(v14 + 16) = v13;
@@ -678,29 +678,29 @@
   *v17 = sub_1CF067718;
   v17[1] = v14;
 
-  v18 = self;
-  sub_1CF8EB0F8("setPutBackInfoOnItemAt(_:completionHandler:)", 44, 2, sub_1CF9032E4, v16, v18, sub_1CF067718, v14);
+  selfCopy = self;
+  sub_1CF8EB0F8("setPutBackInfoOnItemAt(_:completionHandler:)", 44, 2, sub_1CF9032E4, v16, selfCopy, sub_1CF067718, v14);
 
   (*(v7 + 8))(v12, v6);
 }
 
-- (id)startProvidingItemAtURL:(id)a3 readerID:(id)a4 readingOptions:(unint64_t)a5 request:(id)a6 completionHandler:(id)a7
+- (id)startProvidingItemAtURL:(id)l readerID:(id)d readingOptions:(unint64_t)options request:(id)request completionHandler:(id)handler
 {
   v11 = sub_1CF9E5A58();
   v12 = *(v11 - 8);
   v13 = *(v12 + 64);
   MEMORY[0x1EEE9AC00](v11);
   v15 = v22 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v16 = _Block_copy(a7);
+  v16 = _Block_copy(handler);
   sub_1CF9E59D8();
   swift_unknownObjectRetain();
-  v17 = a6;
-  v18 = self;
+  requestCopy = request;
+  selfCopy = self;
   sub_1CF9E7728();
   swift_unknownObjectRelease();
   v19 = swift_allocObject();
   *(v19 + 16) = v16;
-  v20 = FPDDomainFPFSBackend.startProvidingItem(at:readerID:readingOptions:request:completionHandler:)(v15, v22, a5, v17, sub_1CF067718, v19);
+  v20 = FPDDomainFPFSBackend.startProvidingItem(at:readerID:readingOptions:request:completionHandler:)(v15, v22, options, requestCopy, sub_1CF067718, v19);
 
   __swift_destroy_boxed_opaque_existential_1(v22);
   (*(v12 + 8))(v15, v11);
@@ -708,46 +708,46 @@
   return v20;
 }
 
-- (void)downloadItemWithItemID:(id)a3 request:(id)a4 progress:(id)a5 completionHandler:(id)a6
+- (void)downloadItemWithItemID:(id)d request:(id)request progress:(id)progress completionHandler:(id)handler
 {
-  v10 = _Block_copy(a6);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
   *(v11 + 16) = v10;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = self;
-  FPDDomainFPFSBackend.downloadItem(with:request:progress:completionHandler:)(v12, v13, v14, sub_1CF902DE0, v11);
+  dCopy = d;
+  requestCopy = request;
+  progressCopy = progress;
+  selfCopy = self;
+  FPDDomainFPFSBackend.downloadItem(with:request:progress:completionHandler:)(dCopy, requestCopy, progressCopy, sub_1CF902DE0, v11);
 }
 
-- (void)downloadVersionWithItemID:(id)a3 version:(id)a4 originalURL:(id)a5 completionHandler:(id)a6
+- (void)downloadVersionWithItemID:(id)d version:(id)version originalURL:(id)l completionHandler:(id)handler
 {
   v10 = sub_1CF9E5A58();
   v11 = *(v10 - 8);
   v12 = *(v11 + 64);
   MEMORY[0x1EEE9AC00](v10);
   v14 = &v20 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v15 = _Block_copy(a6);
+  v15 = _Block_copy(handler);
   sub_1CF9E59D8();
   v16 = swift_allocObject();
   *(v16 + 16) = v15;
-  v17 = a3;
-  v18 = a4;
-  v19 = self;
-  FPDDomainFPFSBackend.downloadVersion(with:version:originalURL:completionHandler:)(v17, v18, v14, sub_1CF8F8750, v16);
+  dCopy = d;
+  versionCopy = version;
+  selfCopy = self;
+  FPDDomainFPFSBackend.downloadVersion(with:version:originalURL:completionHandler:)(dCopy, versionCopy, v14, sub_1CF8F8750, v16);
 
   (*(v11 + 8))(v14, v10);
 }
 
-- (void)forceUpdateBlockedProcessNamesFromDomain:(NSString *)a3 completionHandler:(id)a4
+- (void)forceUpdateBlockedProcessNamesFromDomain:(NSString *)domain completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC4BFBA8, &qword_1CFA12B20);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = domain;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_1CF9E6F08();
@@ -762,23 +762,23 @@
   v15[3] = 0;
   v15[4] = &unk_1CFA17E78;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  domainCopy = domain;
+  selfCopy = self;
   sub_1CF8DC7A4(0, 0, v10, &unk_1CFA17E80, v15);
 }
 
-- (void)movingItemAtURL:(id)a3 withInfo:(id)a4 completionHandler:(id)a5
+- (void)movingItemAtURL:(id)l withInfo:(id)info completionHandler:(id)handler
 {
-  v26 = self;
-  v27 = a4;
+  selfCopy = self;
+  infoCopy = info;
   v6 = sub_1CF9E5A58();
   v7 = *(v6 - 8);
   v8 = *(v7 + 64);
   MEMORY[0x1EEE9AC00](v6);
-  v9 = &v26 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
+  v9 = &selfCopy - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x1EEE9AC00](v10);
-  v12 = &v26 - v11;
-  v13 = _Block_copy(a5);
+  v12 = &selfCopy - v11;
+  v13 = _Block_copy(handler);
   sub_1CF9E59D8();
   v14 = swift_allocObject();
   *(v14 + 16) = v13;
@@ -786,13 +786,13 @@
   v15 = (*(v7 + 80) + 24) & ~*(v7 + 80);
   v16 = (v8 + v15 + 7) & 0xFFFFFFFFFFFFFFF8;
   v17 = swift_allocObject();
-  v18 = v26;
-  *(v17 + 16) = v26;
+  v18 = selfCopy;
+  *(v17 + 16) = selfCopy;
   v19 = v17 + v15;
   v20 = v6;
   (*(v7 + 32))(v19, v9, v6);
-  v21 = v27;
-  *(v17 + v16) = v27;
+  v21 = infoCopy;
+  *(v17 + v16) = infoCopy;
   v22 = (v17 + ((v16 + 15) & 0xFFFFFFFFFFFFFFF8));
   *v22 = sub_1CF6FC8B0;
   v22[1] = v14;
@@ -805,54 +805,54 @@
   (*(v7 + 8))(v12, v20);
 }
 
-- (id)evictItemAtURL:(id)a3 evictionReason:(unsigned int)a4 request:(id)a5 completionHandler:(id)a6
+- (id)evictItemAtURL:(id)l evictionReason:(unsigned int)reason request:(id)request completionHandler:(id)handler
 {
   v10 = sub_1CF9E5A58();
   v11 = *(v10 - 8);
   v12 = *(v11 + 64);
   MEMORY[0x1EEE9AC00](v10);
   v14 = &v21 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v15 = _Block_copy(a6);
+  v15 = _Block_copy(handler);
   sub_1CF9E59D8();
   v16 = swift_allocObject();
   *(v16 + 16) = v15;
-  v17 = a5;
-  v18 = self;
-  v19 = FPDDomainFPFSBackend.evictItem(at:evictionReason:request:completionHandler:)(v14, a4, v17, sub_1CF902DDC, v16);
+  requestCopy = request;
+  selfCopy = self;
+  v19 = FPDDomainFPFSBackend.evictItem(at:evictionReason:request:completionHandler:)(v14, reason, requestCopy, sub_1CF902DDC, v16);
 
   (*(v11 + 8))(v14, v10);
 
   return v19;
 }
 
-- (void)evictItemWithID:(id)a3 evictionReason:(unsigned int)a4 request:(id)a5 completionHandler:(id)a6
+- (void)evictItemWithID:(id)d evictionReason:(unsigned int)reason request:(id)request completionHandler:(id)handler
 {
-  v10 = _Block_copy(a6);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
   *(v11 + 16) = v10;
   v12 = swift_allocObject();
   *(v12 + 16) = sub_1CF067718;
   *(v12 + 24) = v11;
   v13 = swift_allocObject();
-  *(v13 + 16) = a4;
-  *(v13 + 24) = a3;
-  *(v13 + 32) = a5;
+  *(v13 + 16) = reason;
+  *(v13 + 24) = d;
+  *(v13 + 32) = request;
   *(v13 + 40) = sub_1CF067718;
   *(v13 + 48) = v11;
-  v14 = a3;
-  v15 = a5;
+  dCopy = d;
+  requestCopy = request;
   swift_retain_n();
-  v16 = v14;
-  v17 = v15;
-  v18 = self;
+  v16 = dCopy;
+  v17 = requestCopy;
+  selfCopy = self;
   sub_1CEFD4024("evictItem(with:evictionReason:request:completionHandler:)", 57, 2, sub_1CF90324C, v12, sub_1CF9032DC, v13);
 }
 
-- (void)materializeItemWithID:(id)a3 requestedRange:(_NSRange)a4 request:(id)a5 completionHandler:(id)a6
+- (void)materializeItemWithID:(id)d requestedRange:(_NSRange)range request:(id)request completionHandler:(id)handler
 {
-  length = a4.length;
-  location = a4.location;
-  v11 = _Block_copy(a6);
+  length = range.length;
+  location = range.location;
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
   *(v12 + 16) = v11;
   v13 = swift_allocObject();
@@ -863,18 +863,18 @@
   v14[3] = v12;
   v14[4] = location;
   v14[5] = length;
-  v14[6] = a5;
-  v14[7] = a3;
-  v15 = a3;
-  v16 = a5;
+  v14[6] = request;
+  v14[7] = d;
+  dCopy = d;
+  requestCopy = request;
   swift_retain_n();
-  v17 = v16;
-  v18 = v15;
-  v19 = self;
+  v17 = requestCopy;
+  v18 = dCopy;
+  selfCopy = self;
   sub_1CEFD4024("materializeItem(with:requestedRange:request:completionHandler:)", 63, 2, sub_1CF90324C, v13, sub_1CF9032D8, v14);
 }
 
-- (void)itemChangedAtURL:(id)a3 request:(id)a4
+- (void)itemChangedAtURL:(id)l request:(id)request
 {
   v4 = sub_1CF9E5A58();
   v5 = *(v4 - 8);
@@ -885,9 +885,9 @@
   (*(v5 + 8))(v8, v4);
 }
 
-- (void)enumerateMaterializedSetFromSyncAnchor:(id)a3 suggestedBatchSize:(int64_t)a4 completionHandler:(id)a5
+- (void)enumerateMaterializedSetFromSyncAnchor:(id)anchor suggestedBatchSize:(int64_t)size completionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   v10 = swift_allocObject();
@@ -897,19 +897,19 @@
   v11[2] = sub_1CF7BA270;
   v11[3] = v9;
   v11[4] = self;
-  v11[5] = a3;
-  v11[6] = a4;
-  v12 = a3;
-  v13 = self;
+  v11[5] = anchor;
+  v11[6] = size;
+  anchorCopy = anchor;
+  selfCopy = self;
   swift_retain_n();
-  v15 = v13;
-  v14 = v12;
+  v15 = selfCopy;
+  v14 = anchorCopy;
   sub_1CEFD4024("enumerateMaterializedSet(fromSyncAnchor:suggestedBatchSize:completionHandler:)", 78, 2, sub_1CF903250, v10, sub_1CF9032CC, v11);
 }
 
-- (void)currentMaterializedSetSyncAnchorWithCompletionHandler:(id)a3
+- (void)currentMaterializedSetSyncAnchorWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = swift_allocObject();
@@ -919,23 +919,23 @@
   *(v7 + 16) = sub_1CF6FC8B0;
   *(v7 + 24) = v5;
   swift_retain_n();
-  v8 = self;
+  selfCopy = self;
   sub_1CEFD4024("currentMaterializedSetSyncAnchor(completionHandler:)", 52, 2, sub_1CF9034AC, v6, sub_1CF9034B0, v7);
 }
 
-- (void)enumeratePendingSetFromSyncAnchor:(id)a3 suggestedBatchSize:(int64_t)a4 completionHandler:(id)a5
+- (void)enumeratePendingSetFromSyncAnchor:(id)anchor suggestedBatchSize:(int64_t)size completionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
-  v10 = a3;
-  v11 = self;
-  FPDDomainFPFSBackend.enumeratePendingSet(fromSyncAnchor:suggestedBatchSize:completionHandler:)(v10, a4, sub_1CF8F83F8, v9);
+  anchorCopy = anchor;
+  selfCopy = self;
+  FPDDomainFPFSBackend.enumeratePendingSet(fromSyncAnchor:suggestedBatchSize:completionHandler:)(anchorCopy, size, sub_1CF8F83F8, v9);
 }
 
-- (void)currentPendingSetSyncAnchorWithCompletionHandler:(id)a3
+- (void)currentPendingSetSyncAnchorWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = swift_allocObject();
@@ -945,15 +945,15 @@
   v7[2] = sub_1CF8F83DC;
   v7[3] = v5;
   v7[4] = self;
-  v8 = self;
+  selfCopy = self;
   swift_retain_n();
-  v9 = v8;
+  v9 = selfCopy;
   sub_1CEFD4024("currentPendingSetSyncAnchor(completionHandler:)", 47, 2, sub_1CF9034A8, v6, sub_1CF902EB8, v7);
 }
 
-- (void)stateWithCompletionHandler:(id)a3
+- (void)stateWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = swift_allocObject();
@@ -963,13 +963,13 @@
   *(v7 + 16) = sub_1CF902DDC;
   *(v7 + 24) = v5;
   swift_retain_n();
-  v8 = self;
+  selfCopy = self;
   sub_1CEFD4024("state(completionHandler:)", 25, 2, sub_1CF9034A0, v6, sub_1CF9034A4, v7);
 }
 
-- (void)wakeForPushWithCompletionHandler:(id)a3
+- (void)wakeForPushWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = swift_allocObject();
@@ -979,41 +979,41 @@
   v7[2] = self;
   v7[3] = sub_1CF067718;
   v7[4] = v5;
-  v8 = self;
+  selfCopy = self;
   swift_retain_n();
-  v9 = v8;
+  v9 = selfCopy;
   sub_1CEFD4024("wakeForPush(completionHandler:)", 31, 2, sub_1CF90324C, v6, sub_1CF902EB4, v7);
 }
 
-- (void)didChangeItemID:(id)a3 completionHandler:(id)a4
+- (void)didChangeItemID:(id)d completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   v8 = *(self + OBJC_IVAR____TtC18FileProviderDaemon20FPDDomainFPFSBackend_queue);
   v9 = *(self + OBJC_IVAR____TtC18FileProviderDaemon20FPDDomainFPFSBackend_log);
   v10 = swift_allocObject();
-  v10[2] = a3;
+  v10[2] = d;
   v10[3] = self;
   v10[4] = sub_1CF744650;
   v10[5] = v7;
-  v11 = a3;
-  v12 = self;
-  v13 = v11;
-  v14 = v12;
+  dCopy = d;
+  selfCopy = self;
+  v13 = dCopy;
+  v14 = selfCopy;
 
   sub_1CF01001C(v9, "didChange(_:completionHandler:)", 31, 2, sub_1CF90347C, v10);
 }
 
-- (void)enumerateWithSettings:(id)a3 lifetimeExtender:(id)a4 observer:(id)a5 completionHandler:(id)a6
+- (void)enumerateWithSettings:(id)settings lifetimeExtender:(id)extender observer:(id)observer completionHandler:(id)handler
 {
-  v10 = _Block_copy(a6);
+  v10 = _Block_copy(handler);
   _Block_copy(v10);
-  v11 = a3;
+  settingsCopy = settings;
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v12 = self;
-  sub_1CF8F1EA0(v11, a4, a5, v12, v10);
+  selfCopy = self;
+  sub_1CF8F1EA0(settingsCopy, extender, observer, selfCopy, v10);
   _Block_release(v10);
   _Block_release(v10);
 
@@ -1021,9 +1021,9 @@
   swift_unknownObjectRelease();
 }
 
-- (void)fetchFSItemsForItemIdentifiers:(id)a3 materializingIfNeeded:(BOOL)a4 request:(id)a5 completionHandler:(id)a6
+- (void)fetchFSItemsForItemIdentifiers:(id)identifiers materializingIfNeeded:(BOOL)needed request:(id)request completionHandler:(id)handler
 {
-  v9 = _Block_copy(a6);
+  v9 = _Block_copy(handler);
   type metadata accessor for NSFileProviderItemIdentifier(0);
   v10 = sub_1CF9E6D48();
   v11 = swift_allocObject();
@@ -1036,19 +1036,19 @@
   *(v13 + 24) = v11;
   *(v13 + 32) = v10;
   *(v13 + 40) = self;
-  *(v13 + 48) = a4;
-  *(v13 + 56) = a5;
-  v14 = a5;
-  v15 = self;
+  *(v13 + 48) = needed;
+  *(v13 + 56) = request;
+  requestCopy = request;
+  selfCopy = self;
   swift_retain_n();
-  v17 = v15;
-  v16 = v14;
+  v17 = selfCopy;
+  v16 = requestCopy;
   sub_1CEFD4024("fetchFSItems(forItemIdentifiers:materializingIfNeeded:request:completionHandler:)", 81, 2, sub_1CF9032C0, v12, sub_1CF9032C4, v13);
 }
 
-- (void)decorateItems:(id)a3 completionHandler:(id)a4
+- (void)decorateItems:(id)items completionHandler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   sub_1CEFD57E0(0, &qword_1EDEAB520, 0x1E6967388);
   v6 = sub_1CF9E6D48();
   v7 = swift_allocObject();
@@ -1062,14 +1062,14 @@
   v9[3] = sub_1CF8F827C;
   v9[4] = v7;
   swift_retain_n();
-  v10 = self;
+  selfCopy = self;
 
   sub_1CEFD4024("decorate(_:completionHandler:)", 30, 2, sub_1CF902EAC, v8, sub_1CF902EB0, v9);
 }
 
 - (int64_t)nonEvictableSpace
 {
-  v2 = self;
+  selfCopy = self;
   v3 = FPDDomainFPFSBackend.nonEvictableSpace()();
 
   return v3;
@@ -1077,7 +1077,7 @@
 
 - (int64_t)accumulatedSizeOfPinnedItems
 {
-  v2 = self;
+  selfCopy = self;
   v3 = FPDDomainFPFSBackend.accumulatedSizeOfPinnedItems()();
 
   return v3;
@@ -1085,7 +1085,7 @@
 
 - (id)accumulatedSizeOfItems
 {
-  v2 = self;
+  selfCopy = self;
   v3 = FPDDomainFPFSBackend.accumulatedSizeOfItems()();
 
   if (v3)
@@ -1102,9 +1102,9 @@
   return v4;
 }
 
-- (void)fetchTelemetryReportWithAlwaysFetchExpandedUsageStats:(BOOL)a3 completionHandler:(id)a4
+- (void)fetchTelemetryReportWithAlwaysFetchExpandedUsageStats:(BOOL)stats completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   v8 = swift_allocObject();
@@ -1114,20 +1114,20 @@
   *(v9 + 16) = sub_1CF8F8274;
   *(v9 + 24) = v7;
   *(v9 + 32) = self;
-  *(v9 + 40) = a3;
+  *(v9 + 40) = stats;
   v10 = swift_allocObject();
   *(v10 + 16) = sub_1CF903260;
   *(v10 + 24) = v8;
-  v11 = self;
+  selfCopy = self;
   swift_retain_n();
-  v12 = v11;
+  v12 = selfCopy;
 
   sub_1CEFD4024("fetchTelemetryReport(withAlwaysFetchExpandedUsageStats:completionHandler:)", 74, 2, sub_1CF903280, v10, sub_1CF902C5C, v9);
 }
 
 - (id)providerVersion
 {
-  v2 = self;
+  selfCopy = self;
   object = FPDDomainFPFSBackend.providerVersion()().value._object;
 
   if (object)
@@ -1143,25 +1143,25 @@
   return v4;
 }
 
-- (void)hierarchyForURL:(id)a3 request:(id)a4 completionHandler:(id)a5
+- (void)hierarchyForURL:(id)l request:(id)request completionHandler:(id)handler
 {
   v8 = sub_1CF9E5A58();
   v9 = *(v8 - 8);
   v10 = *(v9 + 64);
   MEMORY[0x1EEE9AC00](v8);
   v12 = aBlock - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   sub_1CF9E59D8();
   v14 = swift_allocObject();
   *(v14 + 16) = v13;
-  v15 = a4;
-  v16 = self;
+  requestCopy = request;
+  selfCopy = self;
   v17 = sub_1CF9E5928();
   v18 = swift_allocObject();
   v18[2] = sub_1CF8F826C;
   v18[3] = v14;
-  v18[4] = v16;
-  v18[5] = v15;
+  v18[4] = selfCopy;
+  v18[5] = requestCopy;
   aBlock[4] = sub_1CF902C90;
   aBlock[5] = v18;
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -1169,8 +1169,8 @@
   aBlock[2] = sub_1CEFF9A6C;
   aBlock[3] = &block_descriptor_1464;
   v19 = _Block_copy(aBlock);
-  v20 = v15;
-  v21 = v16;
+  v20 = requestCopy;
+  v21 = selfCopy;
 
   [(FPDDomainFPFSBackend *)v21 itemForURL:v17 options:0 request:v20 completionHandler:v19];
 
@@ -1179,9 +1179,9 @@
   (*(v9 + 8))(v12, v8);
 }
 
-- (void)reimportItemsBelowItemWithID:(id)a3 markItemDataless:(BOOL)a4 completionHandler:(id)a5
+- (void)reimportItemsBelowItemWithID:(id)d markItemDataless:(BOOL)dataless completionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   v10 = swift_allocObject();
@@ -1190,27 +1190,27 @@
   v11 = swift_allocObject();
   *(v11 + 16) = sub_1CF067718;
   *(v11 + 24) = v9;
-  *(v11 + 32) = a3;
+  *(v11 + 32) = d;
   *(v11 + 40) = self;
-  *(v11 + 48) = a4;
-  v12 = a3;
-  v13 = self;
+  *(v11 + 48) = dataless;
+  dCopy = d;
+  selfCopy = self;
   swift_retain_n();
-  v14 = v12;
-  v15 = v13;
+  v14 = dCopy;
+  v15 = selfCopy;
   sub_1CEFD4024("reimportItems(below:markItemDataless:completionHandler:)", 56, 2, sub_1CF90324C, v10, sub_1CF9032BC, v11);
 }
 
-- (id)createIndexerWithExtension:(id)a3 enabled:(BOOL)a4 error:(id *)a5
+- (id)createIndexerWithExtension:(id)extension enabled:(BOOL)enabled error:(id *)error
 {
-  v6 = self;
+  selfCopy = self;
   v7 = fpfs_supports_indexAllRemoteItems();
   result = swift_unknownObjectWeakLoadStrong();
   if (result)
   {
     v9 = result;
     v10 = objc_allocWithZone(type metadata accessor for FPFSIndexer());
-    v11 = sub_1CF746E80(v9, a4, v7);
+    v11 = sub_1CF746E80(v9, enabled, v7);
 
     return v11;
   }
@@ -1223,35 +1223,35 @@
   return result;
 }
 
-- (void)valuesForAttributes:(id)a3 forURL:(id)a4 request:(id)a5 completionHandler:(id)a6
+- (void)valuesForAttributes:(id)attributes forURL:(id)l request:(id)request completionHandler:(id)handler
 {
   v9 = sub_1CF9E5A58();
   v10 = *(v9 - 8);
   v11 = *(v10 + 64);
   MEMORY[0x1EEE9AC00](v9);
   v13 = &v19 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v14 = _Block_copy(a6);
+  v14 = _Block_copy(handler);
   type metadata accessor for URLResourceKey(0);
   v15 = sub_1CF9E6D48();
   sub_1CF9E59D8();
   v16 = swift_allocObject();
   v16[2] = v14;
-  v17 = a5;
-  v18 = self;
-  FPDDomainFPFSBackend.values(forAttributes:for:request:completionHandler:)(v15, v13, v17, sub_1CF8F8254, v16);
+  requestCopy = request;
+  selfCopy = self;
+  FPDDomainFPFSBackend.values(forAttributes:for:request:completionHandler:)(v15, v13, requestCopy, sub_1CF8F8254, v16);
 
   (*(v10 + 8))(v13, v9);
 }
 
-- (id)materializedURLForItemID:(id)a3
+- (id)materializedURLForItemID:(id)d
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EC4BE310, qword_1CF9FCBE0);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v17 - v7;
-  v9 = a3;
-  v10 = self;
-  FPDDomainFPFSBackend.materializedURL(for:)(v9, v8);
+  dCopy = d;
+  selfCopy = self;
+  FPDDomainFPFSBackend.materializedURL(for:)(dCopy, v8);
 
   v11 = sub_1CF9E5A58();
   v12 = *(v11 - 8);
@@ -1267,16 +1267,16 @@
   return v14;
 }
 
-- (BOOL)isItemDataless:(id)a3
+- (BOOL)isItemDataless:(id)dataless
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = FPDDomainFPFSBackend.isItemDataless(_:)(v4);
+  datalessCopy = dataless;
+  selfCopy = self;
+  LOBYTE(self) = FPDDomainFPFSBackend.isItemDataless(_:)(datalessCopy);
 
   return self & 1;
 }
 
-- (void)createItemBasedOnTemplate:(id)a3 fields:(unint64_t)a4 urlWrapper:(id)a5 options:(unint64_t)a6 bounceOnCollision:(BOOL)a7 request:(id)a8 completionHandler:(id)aBlock
+- (void)createItemBasedOnTemplate:(id)template fields:(unint64_t)fields urlWrapper:(id)wrapper options:(unint64_t)options bounceOnCollision:(BOOL)collision request:(id)request completionHandler:(id)aBlock
 {
   v15 = _Block_copy(aBlock);
   v16 = swift_allocObject();
@@ -1287,31 +1287,31 @@
   v18 = swift_allocObject();
   *(v18 + 16) = sub_1CF024BB0;
   *(v18 + 24) = v16;
-  *(v18 + 32) = a3;
-  *(v18 + 40) = a7;
-  *(v18 + 48) = a8;
+  *(v18 + 32) = template;
+  *(v18 + 40) = collision;
+  *(v18 + 48) = request;
   *(v18 + 56) = self;
-  *(v18 + 64) = a4;
-  *(v18 + 72) = a5;
+  *(v18 + 64) = fields;
+  *(v18 + 72) = wrapper;
   v19 = swift_allocObject();
   *(v19 + 16) = sub_1CF90325C;
   *(v19 + 24) = v17;
-  v20 = a3;
-  v21 = a5;
-  v22 = a8;
-  v23 = self;
+  templateCopy = template;
+  wrapperCopy = wrapper;
+  requestCopy = request;
+  selfCopy = self;
   swift_retain_n();
-  v24 = v20;
-  v25 = v22;
-  v27 = v23;
-  v26 = v21;
+  v24 = templateCopy;
+  v25 = requestCopy;
+  v27 = selfCopy;
+  v26 = wrapperCopy;
 
   sub_1CEFD4024("createItemBased(onTemplate:fields:urlWrapper:options:bounceOnCollision:request:completionHandler:)", 98, 2, sub_1CF903280, v19, sub_1CF9032B8, v18);
 }
 
-- (void)forceIngestionForItemID:(id)a3 request:(id)a4 openFD:(BOOL)a5 completionHandler:(id)a6
+- (void)forceIngestionForItemID:(id)d request:(id)request openFD:(BOOL)fD completionHandler:(id)handler
 {
-  v10 = _Block_copy(a6);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
   *(v11 + 16) = v10;
   v12 = swift_allocObject();
@@ -1320,27 +1320,27 @@
   v13 = swift_allocObject();
   *(v13 + 16) = sub_1CF024BB0;
   *(v13 + 24) = v11;
-  *(v13 + 32) = a3;
-  *(v13 + 40) = a4;
-  *(v13 + 48) = a5;
+  *(v13 + 32) = d;
+  *(v13 + 40) = request;
+  *(v13 + 48) = fD;
   *(v13 + 56) = self;
   v14 = swift_allocObject();
   *(v14 + 16) = sub_1CF90325C;
   *(v14 + 24) = v12;
-  v15 = a3;
-  v16 = a4;
-  v17 = self;
+  dCopy = d;
+  requestCopy = request;
+  selfCopy = self;
   swift_retain_n();
-  v18 = v15;
-  v19 = v16;
-  v20 = v17;
+  v18 = dCopy;
+  v19 = requestCopy;
+  v20 = selfCopy;
 
   sub_1CEFD4024("forceIngestion(for:request:openFD:completionHandler:)", 53, 2, sub_1CF903280, v14, sub_1CF9032B4, v13);
 }
 
-- (void)forceFSIngestionForItemID:(id)a3 request:(id)a4 completionHandler:(id)a5
+- (void)forceFSIngestionForItemID:(id)d request:(id)request completionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   v10 = swift_allocObject();
@@ -1349,24 +1349,24 @@
   v11 = swift_allocObject();
   v11[2] = sub_1CF024BB0;
   v11[3] = v9;
-  v11[4] = a3;
-  v11[5] = a4;
+  v11[4] = d;
+  v11[5] = request;
   v11[6] = self;
   v12 = swift_allocObject();
   *(v12 + 16) = sub_1CF90325C;
   *(v12 + 24) = v10;
-  v13 = a3;
-  v14 = a4;
-  v15 = self;
+  dCopy = d;
+  requestCopy = request;
+  selfCopy = self;
   swift_retain_n();
-  v16 = v13;
-  v17 = v14;
-  v18 = v15;
+  v16 = dCopy;
+  v17 = requestCopy;
+  v18 = selfCopy;
 
   sub_1CEFD4024("forceFSIngestion(for:request:completionHandler:)", 48, 2, sub_1CF903280, v12, sub_1CF9032B0, v11);
 }
 
-- (void)forceIngestionAtURL:(id)a3
+- (void)forceIngestionAtURL:(id)l
 {
   v3 = sub_1CF9E5A58();
   v4 = *(v3 - 8);
@@ -1378,89 +1378,89 @@
   (*(v4 + 8))(v7, v3);
 }
 
-- (void)pinItemWithID:(id)a3 request:(id)a4 completionHandler:(id)a5
+- (void)pinItemWithID:(id)d request:(id)request completionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   v10 = swift_allocObject();
   *(v10 + 16) = sub_1CF024BB0;
   *(v10 + 24) = v9;
   v11 = swift_allocObject();
-  v11[2] = a3;
-  v11[3] = a4;
+  v11[2] = d;
+  v11[3] = request;
   v11[4] = self;
   v11[5] = sub_1CF024BB0;
   v11[6] = v9;
   v12 = swift_allocObject();
   *(v12 + 16) = sub_1CF90325C;
   *(v12 + 24) = v10;
-  v13 = a3;
-  v14 = a4;
-  v15 = self;
+  dCopy = d;
+  requestCopy = request;
+  selfCopy = self;
   swift_retain_n();
-  v16 = v13;
-  v17 = v14;
-  v18 = v15;
+  v16 = dCopy;
+  v17 = requestCopy;
+  v18 = selfCopy;
 
   sub_1CEFD4024("pinItem(with:request:completionHandler:)", 40, 2, sub_1CF903280, v12, sub_1CF9032AC, v11);
 }
 
-- (void)unpinItemWithID:(id)a3 request:(id)a4 completionHandler:(id)a5
+- (void)unpinItemWithID:(id)d request:(id)request completionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   v10 = swift_allocObject();
   *(v10 + 16) = sub_1CEFFA830;
   *(v10 + 24) = v9;
   v11 = swift_allocObject();
-  v11[2] = a3;
-  v11[3] = a4;
+  v11[2] = d;
+  v11[3] = request;
   v11[4] = self;
   v11[5] = sub_1CEFFA830;
   v11[6] = v9;
   v12 = swift_allocObject();
   *(v12 + 16) = sub_1CF90325C;
   *(v12 + 24) = v10;
-  v13 = a3;
-  v14 = a4;
-  v15 = self;
+  dCopy = d;
+  requestCopy = request;
+  selfCopy = self;
   swift_retain_n();
-  v16 = v13;
-  v17 = v14;
-  v18 = v15;
+  v16 = dCopy;
+  v17 = requestCopy;
+  v18 = selfCopy;
 
   sub_1CEFD4024("unpinItem(with:request:completionHandler:)", 42, 2, sub_1CF903280, v12, sub_1CF9032A8, v11);
 }
 
-- (void)detachKnownFolders:(id)a3 request:(id)a4 completionHandler:(id)a5
+- (void)detachKnownFolders:(id)folders request:(id)request completionHandler:(id)handler
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(handler);
   sub_1CEFD57E0(0, &qword_1EDEA3480, 0x1E69674F8);
   v8 = sub_1CF9E6D48();
   v9 = swift_allocObject();
   *(v9 + 16) = v7;
-  v10 = a4;
-  v11 = self;
-  FPDDomainFPFSBackend.detachKnownFolders(_:request:completionHandler:)(v8, v10, sub_1CF067718, v9);
+  requestCopy = request;
+  selfCopy = self;
+  FPDDomainFPFSBackend.detachKnownFolders(_:request:completionHandler:)(v8, requestCopy, sub_1CF067718, v9);
 }
 
-- (void)attachKnownFolders:(id)a3 options:(unint64_t)a4 request:(id)a5 completionHandler:(id)a6
+- (void)attachKnownFolders:(id)folders options:(unint64_t)options request:(id)request completionHandler:(id)handler
 {
-  v9 = _Block_copy(a6);
+  v9 = _Block_copy(handler);
   sub_1CF9E5A58();
   v10 = sub_1CF9E6D48();
   v11 = swift_allocObject();
   *(v11 + 16) = v9;
-  v12 = a5;
-  v13 = self;
-  FPDDomainFPFSBackend.attachKnownFolders(_:options:request:completionHandler:)(v10, a4, v12, sub_1CF067718, v11);
+  requestCopy = request;
+  selfCopy = self;
+  FPDDomainFPFSBackend.attachKnownFolders(_:options:request:completionHandler:)(v10, options, requestCopy, sub_1CF067718, v11);
 }
 
-- (void)getKnownFolderLocations:(unint64_t)a3 request:(id)a4 completionHandler:(id)a5
+- (void)getKnownFolderLocations:(unint64_t)locations request:(id)request completionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   v10 = swift_allocObject();
@@ -1470,23 +1470,23 @@
   v11[2] = self;
   v11[3] = sub_1CF902DDC;
   v11[4] = v9;
-  v11[5] = a3;
-  v11[6] = a4;
+  v11[5] = locations;
+  v11[6] = request;
   v12 = swift_allocObject();
   *(v12 + 16) = sub_1CF90325C;
   *(v12 + 24) = v10;
-  v13 = a4;
-  v14 = self;
+  requestCopy = request;
+  selfCopy = self;
   swift_retain_n();
-  v16 = v14;
-  v15 = v13;
+  v16 = selfCopy;
+  v15 = requestCopy;
 
   sub_1CEFD4024("getKnownFolderLocations(_:request:completionHandler:)", 53, 2, sub_1CF903280, v12, sub_1CF9032A4, v11);
 }
 
-- (void)ingestFromCacheItemWithID:(id)a3 requestedFields:(unint64_t)a4 request:(id)a5 completionHandler:(id)a6
+- (void)ingestFromCacheItemWithID:(id)d requestedFields:(unint64_t)fields request:(id)request completionHandler:(id)handler
 {
-  v9 = _Block_copy(a6);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   v11 = swift_allocObject();
@@ -1495,49 +1495,49 @@
   v12 = swift_allocObject();
   v12[2] = sub_1CF067718;
   v12[3] = v10;
-  v12[4] = a3;
-  v12[5] = a4;
-  v13 = a3;
+  v12[4] = d;
+  v12[5] = fields;
+  dCopy = d;
   swift_retain_n();
-  v14 = v13;
-  v15 = self;
+  v14 = dCopy;
+  selfCopy = self;
   sub_1CEFD4024("ingestFromCacheItem(with:requestedFields:request:completionHandler:)", 68, 2, sub_1CF90324C, v11, sub_1CF902C58, v12);
 }
 
-- (void)bulkItemChanges:(id)a3 changedFields:(unint64_t)a4 request:(id)a5 completionHandler:(id)a6
+- (void)bulkItemChanges:(id)changes changedFields:(unint64_t)fields request:(id)request completionHandler:(id)handler
 {
-  v9 = _Block_copy(a6);
+  v9 = _Block_copy(handler);
   sub_1CEFD57E0(0, &qword_1EDEAB520, 0x1E6967388);
   v10 = sub_1CF9E6D48();
   v11 = swift_allocObject();
   *(v11 + 16) = v9;
-  v12 = a5;
-  v13 = self;
-  FPDDomainFPFSBackend.bulkItemChanges(_:changedFields:request:completionHandler:)(v10, a4, v12, sub_1CF8F8084, v11);
+  requestCopy = request;
+  selfCopy = self;
+  FPDDomainFPFSBackend.bulkItemChanges(_:changedFields:request:completionHandler:)(v10, fields, requestCopy, sub_1CF8F8084, v11);
 }
 
-- (void)trashItemAtURL:(id)a3 request:(id)a4 completionHandler:(id)a5
+- (void)trashItemAtURL:(id)l request:(id)request completionHandler:(id)handler
 {
   v8 = sub_1CF9E5A58();
   v9 = *(v8 - 8);
   v10 = *(v9 + 64);
   MEMORY[0x1EEE9AC00](v8);
   v12 = &v16 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   sub_1CF9E59D8();
   _Block_copy(v13);
-  v14 = a4;
-  v15 = self;
-  sub_1CF8F4EC0(v12, v14, v15, v13);
+  requestCopy = request;
+  selfCopy = self;
+  sub_1CF8F4EC0(v12, requestCopy, selfCopy, v13);
   _Block_release(v13);
   _Block_release(v13);
 
   (*(v9 + 8))(v12, v8);
 }
 
-- (void)resolveConflictAtURL:(id)a3 request:(id)a4 completionHandler:(id)a5
+- (void)resolveConflictAtURL:(id)l request:(id)request completionHandler:(id)handler
 {
-  v23 = self;
+  selfCopy = self;
   v7 = sub_1CF9E5A58();
   v8 = *(v7 - 8);
   v9 = *(v8 + 64);
@@ -1545,7 +1545,7 @@
   v10 = &v22 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x1EEE9AC00](v11);
   v13 = &v22 - v12;
-  v14 = _Block_copy(a5);
+  v14 = _Block_copy(handler);
   sub_1CF9E59D8();
   v15 = swift_allocObject();
   *(v15 + 16) = v14;
@@ -1557,20 +1557,20 @@
   v19 = (v18 + v17);
   *v19 = sub_1CF067718;
   v19[1] = v15;
-  *(v18 + ((v17 + 23) & 0xFFFFFFFFFFFFFFF8)) = a4;
-  v20 = a4;
+  *(v18 + ((v17 + 23) & 0xFFFFFFFFFFFFFFF8)) = request;
+  requestCopy = request;
 
-  v21 = v23;
+  v21 = selfCopy;
   sub_1CF8EB0F8("resolveConflict(at:request:completionHandler:)", 46, 2, sub_1CF90329C, v18, v21, sub_1CF067718, v15);
 
   (*(v8 + 8))(v13, v7);
 }
 
-- (void)listRemoteVersionsOfItemAtURL:(id)a3 includeCachedVersions:(BOOL)a4 request:(id)a5 completionHandler:(id)a6
+- (void)listRemoteVersionsOfItemAtURL:(id)l includeCachedVersions:(BOOL)versions request:(id)request completionHandler:(id)handler
 {
-  v30 = self;
-  v31 = a5;
-  v32 = a4;
+  selfCopy = self;
+  requestCopy = request;
+  versionsCopy = versions;
   v7 = sub_1CF9E5A58();
   v8 = *(v7 - 8);
   v9 = *(v8 + 64);
@@ -1578,7 +1578,7 @@
   v10 = &v29 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x1EEE9AC00](v11);
   v13 = &v29 - v12;
-  v14 = _Block_copy(a6);
+  v14 = _Block_copy(handler);
   v29 = v13;
   sub_1CF9E59D8();
   v15 = swift_allocObject();
@@ -1595,12 +1595,12 @@
   v20 = v10;
   v21 = v7;
   (*(v8 + 32))(v19 + v17, v20, v7);
-  v23 = v30;
-  v22 = v31;
-  *(v19 + v18) = v30;
+  v23 = selfCopy;
+  v22 = requestCopy;
+  *(v19 + v18) = selfCopy;
   v24 = v19 + ((v18 + 15) & 0xFFFFFFFFFFFFFFF8);
   *v24 = v22;
-  *(v24 + 8) = v32;
+  *(v24 + 8) = versionsCopy;
   v25 = v22;
   v26 = v23;
   swift_retain_n();
@@ -1611,11 +1611,11 @@
   (*(v8 + 8))(v29, v21);
 }
 
-- (void)fetchThumbnailsAtURL:(id)a3 versions:(id)a4 size:(CGSize)a5 perThumbnailCompletionHandler:(id)a6 completionHandler:(id)a7
+- (void)fetchThumbnailsAtURL:(id)l versions:(id)versions size:(CGSize)size perThumbnailCompletionHandler:(id)handler completionHandler:(id)completionHandler
 {
-  height = a5.height;
-  width = a5.width;
-  v40 = self;
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
   v38 = sub_1CF9E5A58();
   v11 = *(v38 - 8);
   v12 = *(v11 + 64);
@@ -1623,8 +1623,8 @@
   v34 = &v33 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x1EEE9AC00](v13);
   v15 = &v33 - v14;
-  v16 = _Block_copy(a6);
-  v17 = _Block_copy(a7);
+  v16 = _Block_copy(handler);
+  v17 = _Block_copy(completionHandler);
   v39 = v15;
   sub_1CF9E59D8();
   sub_1CEFD57E0(0, &unk_1EDEAB5A0, 0x1E69674E8);
@@ -1647,8 +1647,8 @@
   v27 = (v26 + v22);
   *v27 = sub_1CF067718;
   v27[1] = v18;
-  v28 = v40;
-  *(v26 + v23) = v40;
+  v28 = selfCopy;
+  *(v26 + v23) = selfCopy;
   v29 = v35;
   *(v26 + v24) = v36;
   v30 = (v26 + v25);
@@ -1664,42 +1664,42 @@
   (*(v37 + 8))(v39, v19);
 }
 
-- (void)fetchServicesForItemID:(id)a3 allowRestrictedSources:(BOOL)a4 request:(id)a5 completionHandler:(id)a6
+- (void)fetchServicesForItemID:(id)d allowRestrictedSources:(BOOL)sources request:(id)request completionHandler:(id)handler
 {
-  v10 = _Block_copy(a6);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
   *(v11 + 16) = v10;
   v12 = swift_allocObject();
   *(v12 + 16) = self;
   *(v12 + 24) = sub_1CF8F79D4;
   *(v12 + 32) = v11;
-  *(v12 + 40) = a4;
-  *(v12 + 48) = a5;
+  *(v12 + 40) = sources;
+  *(v12 + 48) = request;
   v13 = swift_allocObject();
   *(v13 + 16) = sub_1CF903368;
   *(v13 + 24) = v12;
   v14 = swift_allocObject();
-  v14[2] = a3;
+  v14[2] = d;
   v14[3] = sub_1CF903368;
   v14[4] = v12;
   v14[5] = self;
   v15 = swift_allocObject();
   *(v15 + 16) = sub_1CEFF9D98;
   *(v15 + 24) = v13;
-  v16 = self;
-  v17 = a3;
-  v18 = a5;
+  selfCopy = self;
+  dCopy = d;
+  requestCopy = request;
   swift_retain_n();
-  v21 = v16;
-  v19 = v18;
-  v20 = v17;
+  v21 = selfCopy;
+  v19 = requestCopy;
+  v20 = dCopy;
 
   sub_1CEFD4024("resolveProviderItemID(_:completionHandler:)", 43, 2, sub_1CF796A8C, v15, sub_1CF902C50, v14);
 }
 
-- (void)fetchVendorEndpointWithRequest:(id)a3 completionHandler:(id)a4
+- (void)fetchVendorEndpointWithRequest:(id)request completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   v8 = swift_allocObject();
@@ -1709,39 +1709,39 @@
   v9[2] = self;
   v9[3] = sub_1CF902DDC;
   v9[4] = v7;
-  v9[5] = a3;
+  v9[5] = request;
   v10 = swift_allocObject();
   *(v10 + 16) = sub_1CF90325C;
   *(v10 + 24) = v8;
-  v11 = a3;
-  v12 = self;
+  requestCopy = request;
+  selfCopy = self;
   swift_retain_n();
-  v14 = v12;
-  v13 = v11;
+  v14 = selfCopy;
+  v13 = requestCopy;
 
   sub_1CEFD4024("fetchVendorEndpoint(with:completionHandler:)", 44, 2, sub_1CF903280, v10, sub_1CF902C4C, v9);
 }
 
-- (void)didChangeNeedsAuthentification:(BOOL)a3
+- (void)didChangeNeedsAuthentification:(BOOL)authentification
 {
-  v4 = self;
-  FPDDomainFPFSBackend.didChangeNeedsAuthentification(_:)(a3);
+  selfCopy = self;
+  FPDDomainFPFSBackend.didChangeNeedsAuthentification(_:)(authentification);
 }
 
-- (void)signalErrorResolved:(id)a3 completionHandler:(id)a4
+- (void)signalErrorResolved:(id)resolved completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   _Block_copy(v6);
-  v8 = a3;
-  v7 = self;
-  sub_1CF8F5530(v8, v7, v6);
+  resolvedCopy = resolved;
+  selfCopy = self;
+  sub_1CF8F5530(resolvedCopy, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }
 
-- (void)updateShouldRetryThrottledOperations:(BOOL)a3 completionHandler:(id)a4
+- (void)updateShouldRetryThrottledOperations:(BOOL)operations completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   v8 = swift_allocObject();
@@ -1750,40 +1750,40 @@
   v9 = swift_allocObject();
   *(v9 + 16) = sub_1CF067718;
   *(v9 + 24) = v7;
-  *(v9 + 32) = a3;
+  *(v9 + 32) = operations;
   swift_retain_n();
-  v10 = self;
+  selfCopy = self;
   sub_1CEFD4024("updateShouldRetryThrottledOperations(_:completionHandler:)", 58, 2, sub_1CF90324C, v8, sub_1CF902EA8, v9);
 }
 
-- (void)listAvailableTestingOperationsWithRequest:(id)a3 completionHandler:(id)a4
+- (void)listAvailableTestingOperationsWithRequest:(id)request completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   v8 = swift_allocObject();
   *(v8 + 16) = sub_1CF8F7918;
   *(v8 + 24) = v7;
   v9 = swift_allocObject();
-  v9[2] = a3;
+  v9[2] = request;
   v9[3] = sub_1CF8F7918;
   v9[4] = v7;
   v9[5] = self;
   v10 = swift_allocObject();
   *(v10 + 16) = sub_1CF903264;
   *(v10 + 24) = v8;
-  v11 = a3;
-  v12 = self;
+  requestCopy = request;
+  selfCopy = self;
   swift_retain_n();
-  v13 = v11;
-  v14 = v12;
+  v13 = requestCopy;
+  v14 = selfCopy;
 
   sub_1CEFD4024("listAvailableTestingOperations(with:completionHandler:)", 55, 2, sub_1CF903280, v10, sub_1CF902C48, v9);
 }
 
-- (void)runTestingOperations:(id)a3 request:(id)a4 completionHandler:(id)a5
+- (void)runTestingOperations:(id)operations request:(id)request completionHandler:(id)handler
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(handler);
   sub_1CEFD57E0(0, &qword_1EC4C49B0, 0x1E6967478);
   v8 = sub_1CF9E6D48();
   v9 = swift_allocObject();
@@ -1793,63 +1793,63 @@
   *(v10 + 24) = v9;
   v11 = swift_allocObject();
   v11[2] = v8;
-  v11[3] = a4;
+  v11[3] = request;
   v11[4] = sub_1CF8F7910;
   v11[5] = v9;
   v12 = swift_allocObject();
   *(v12 + 16) = sub_1CF903260;
   *(v12 + 24) = v10;
-  v13 = a4;
+  requestCopy = request;
   swift_retain_n();
-  v14 = v13;
-  v15 = self;
+  v14 = requestCopy;
+  selfCopy = self;
 
   sub_1CEFD4024("run(_:request:completionHandler:)", 33, 2, sub_1CF903280, v12, sub_1CF902C44, v11);
 }
 
-- (void)subscribeToUploadProgressUpdates:(id)a3 completionHandler:(id)a4
+- (void)subscribeToUploadProgressUpdates:(id)updates completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   v8 = swift_allocObject();
   *(v8 + 16) = sub_1CF067718;
   *(v8 + 24) = v7;
   v9 = swift_allocObject();
-  v9[2] = a3;
+  v9[2] = updates;
   v9[3] = sub_1CF067718;
   v9[4] = v7;
   swift_unknownObjectRetain_n();
   swift_retain_n();
-  v10 = self;
+  selfCopy = self;
   sub_1CEFD4024("subscribe(toUploadProgressUpdates:completionHandler:)", 53, 2, sub_1CF90324C, v8, sub_1CF902EA4, v9);
 
   swift_unknownObjectRelease();
 }
 
-- (void)subscribeToDownloadProgressUpdates:(id)a3 completionHandler:(id)a4
+- (void)subscribeToDownloadProgressUpdates:(id)updates completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   v8 = swift_allocObject();
   *(v8 + 16) = sub_1CF067718;
   *(v8 + 24) = v7;
   v9 = swift_allocObject();
-  v9[2] = a3;
+  v9[2] = updates;
   v9[3] = sub_1CF067718;
   v9[4] = v7;
   swift_unknownObjectRetain_n();
   swift_retain_n();
-  v10 = self;
+  selfCopy = self;
   sub_1CEFD4024("subscribe(toDownloadProgressUpdates:completionHandler:)", 55, 2, sub_1CF90324C, v8, sub_1CF902EA0, v9);
 
   swift_unknownObjectRelease();
 }
 
-- (void)getCountersArrayWithCompletionHandler:(id)a3
+- (void)getCountersArrayWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = swift_allocObject();
@@ -1862,14 +1862,14 @@
   *(v8 + 16) = sub_1CF903264;
   *(v8 + 24) = v6;
   swift_retain_n();
-  v9 = self;
+  selfCopy = self;
 
   sub_1CEFD4024("getCountersArray(completionHandler:)", 36, 2, sub_1CF903280, v8, sub_1CF903498, v7);
 }
 
-- (void)resetCountersWithCompletionHandler:(id)a3
+- (void)resetCountersWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = swift_allocObject();
@@ -1879,13 +1879,13 @@
   *(v7 + 16) = sub_1CF067718;
   *(v7 + 24) = v5;
   swift_retain_n();
-  v8 = self;
+  selfCopy = self;
   sub_1CEFD4024("resetCounters(completionHandler:)", 33, 2, sub_1CF90324C, v6, sub_1CF903494, v7);
 }
 
-- (void)hasNonUploadedFilesWithCompletionHandler:(id)a3
+- (void)hasNonUploadedFilesWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = swift_allocObject();
@@ -1901,13 +1901,13 @@
   v8[5] = v5;
   swift_retain_n();
   swift_retain_n();
-  v9 = self;
+  selfCopy = self;
   sub_1CEFD4024("hasNonUploadedFiles(completionHandler:)", 39, 2, sub_1CF90324C, v7, sub_1CF902C40, v8);
 }
 
-- (void)getDBOptionsWithCompletionHandler:(id)a3
+- (void)getDBOptionsWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = swift_allocObject();
@@ -1920,31 +1920,31 @@
   *(v8 + 16) = sub_1CF902DDC;
   *(v8 + 24) = v5;
   swift_retain_n();
-  v9 = self;
+  selfCopy = self;
 
   sub_1CEFD4024("getDBOptions(completionHandler:)", 32, 2, sub_1CF90324C, v7, sub_1CF902C3C, v8);
 }
 
-- (void)setAlternateContentsURLWrapper:(id)a3 forDocumentWithURL:(id)a4 request:(id)a5 completionHandler:(id)a6
+- (void)setAlternateContentsURLWrapper:(id)wrapper forDocumentWithURL:(id)l request:(id)request completionHandler:(id)handler
 {
   v10 = sub_1CF9E5A58();
   v11 = *(v10 - 8);
   v12 = *(v11 + 64);
   MEMORY[0x1EEE9AC00](v10);
   v14 = aBlock - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v15 = _Block_copy(a6);
+  v15 = _Block_copy(handler);
   sub_1CF9E59D8();
   v16 = swift_allocObject();
   *(v16 + 16) = v15;
-  v17 = a3;
-  v18 = a5;
-  v19 = self;
+  wrapperCopy = wrapper;
+  requestCopy = request;
+  selfCopy = self;
   v20 = sub_1CF9E5928();
   v21 = swift_allocObject();
   v21[2] = sub_1CF902DDC;
   v21[3] = v16;
-  v21[4] = v19;
-  v21[5] = v17;
+  v21[4] = selfCopy;
+  v21[5] = wrapperCopy;
   aBlock[4] = sub_1CF902C8C;
   aBlock[5] = v21;
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -1952,33 +1952,33 @@
   aBlock[2] = sub_1CEFF9A6C;
   aBlock[3] = &block_descriptor_1065;
   v22 = _Block_copy(aBlock);
-  v23 = v17;
-  v24 = v19;
+  v23 = wrapperCopy;
+  v24 = selfCopy;
 
-  [(FPDDomainFPFSBackend *)v24 itemIDForURL:v20 requireProviderItemID:0 request:v18 completionHandler:v22];
+  [(FPDDomainFPFSBackend *)v24 itemIDForURL:v20 requireProviderItemID:0 request:requestCopy completionHandler:v22];
   _Block_release(v22);
 
   (*(v11 + 8))(v14, v10);
 }
 
-- (void)fetchAlternateContentsURLWrapperForDocumentWithURL:(id)a3 request:(id)a4 completionHandler:(id)a5
+- (void)fetchAlternateContentsURLWrapperForDocumentWithURL:(id)l request:(id)request completionHandler:(id)handler
 {
   v8 = sub_1CF9E5A58();
   v9 = *(v8 - 8);
   v10 = *(v9 + 64);
   MEMORY[0x1EEE9AC00](v8);
   v12 = aBlock - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   sub_1CF9E59D8();
   v14 = swift_allocObject();
   *(v14 + 16) = v13;
-  v15 = a4;
-  v16 = self;
+  requestCopy = request;
+  selfCopy = self;
   v17 = sub_1CF9E5928();
   v18 = swift_allocObject();
   v18[2] = sub_1CF902DDC;
   v18[3] = v14;
-  v18[4] = v16;
+  v18[4] = selfCopy;
   aBlock[4] = sub_1CF902E48;
   aBlock[5] = v18;
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -1986,32 +1986,32 @@
   aBlock[2] = sub_1CEFF9A6C;
   aBlock[3] = &block_descriptor_1054;
   v19 = _Block_copy(aBlock);
-  v20 = v16;
+  v20 = selfCopy;
 
-  [(FPDDomainFPFSBackend *)v20 itemIDForURL:v17 requireProviderItemID:0 request:v15 completionHandler:v19];
+  [(FPDDomainFPFSBackend *)v20 itemIDForURL:v17 requireProviderItemID:0 request:requestCopy completionHandler:v19];
   _Block_release(v19);
 
   (*(v9 + 8))(v12, v8);
 }
 
-- (void)didUpdateAlternateContentsDocumentForDocumentWithURL:(id)a3 request:(id)a4 completionHandler:(id)a5
+- (void)didUpdateAlternateContentsDocumentForDocumentWithURL:(id)l request:(id)request completionHandler:(id)handler
 {
   v8 = sub_1CF9E5A58();
   v9 = *(v8 - 8);
   v10 = *(v9 + 64);
   MEMORY[0x1EEE9AC00](v8);
   v12 = aBlock - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   sub_1CF9E59D8();
   v14 = swift_allocObject();
   *(v14 + 16) = v13;
-  v15 = a4;
-  v16 = self;
+  requestCopy = request;
+  selfCopy = self;
   v17 = sub_1CF9E5928();
   v18 = swift_allocObject();
   v18[2] = sub_1CF067718;
   v18[3] = v14;
-  v18[4] = v16;
+  v18[4] = selfCopy;
   aBlock[4] = sub_1CF902E44;
   aBlock[5] = v18;
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -2019,17 +2019,17 @@
   aBlock[2] = sub_1CEFF9A6C;
   aBlock[3] = &block_descriptor_1044_0;
   v19 = _Block_copy(aBlock);
-  v20 = v16;
+  v20 = selfCopy;
 
-  [(FPDDomainFPFSBackend *)v20 itemIDForURL:v17 requireProviderItemID:0 request:v15 completionHandler:v19];
+  [(FPDDomainFPFSBackend *)v20 itemIDForURL:v17 requireProviderItemID:0 request:requestCopy completionHandler:v19];
   _Block_release(v19);
 
   (*(v9 + 8))(v12, v8);
 }
 
-- (void)getDiagnosticAttributesForItems:(id)a3 completionHandler:(id)a4
+- (void)getDiagnosticAttributesForItems:(id)items completionHandler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   sub_1CEFD57E0(0, &qword_1EC4C4C10, 0x1E69674D0);
   v6 = sub_1CF9E6D48();
   v7 = swift_allocObject();
@@ -2045,18 +2045,18 @@
   v10 = swift_allocObject();
   *(v10 + 16) = sub_1CF903264;
   *(v10 + 24) = v8;
-  v11 = self;
+  selfCopy = self;
   swift_retain_n();
-  v12 = v11;
+  v12 = selfCopy;
 
   sub_1CEFD4024("getDiagnosticAttributes(forItems:completionHandler:)", 52, 2, sub_1CF903280, v10, sub_1CF902C38, v9);
 }
 
-- (void)pauseSyncForItemAtURL:(id)a3 bundleID:(id)a4 behavior:(unint64_t)a5 request:(id)a6 completionHandler:(id)a7
+- (void)pauseSyncForItemAtURL:(id)l bundleID:(id)d behavior:(unint64_t)behavior request:(id)request completionHandler:(id)handler
 {
-  v51 = a5;
-  v52 = a6;
-  v50 = self;
+  behaviorCopy = behavior;
+  requestCopy = request;
+  selfCopy = self;
   v53 = sub_1CF9E5A58();
   v8 = *(v53 - 8);
   v9 = *(v8 + 64);
@@ -2064,7 +2064,7 @@
   v45 = &v42 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x1EEE9AC00](v10);
   v12 = &v42 - v11;
-  v13 = _Block_copy(a7);
+  v13 = _Block_copy(handler);
   sub_1CF9E59D8();
   v14 = _sSo28NSFileProviderItemIdentifiera04FileB6DaemonE15parseableStringSSvg_0();
   v48 = v15;
@@ -2081,8 +2081,8 @@
   v23 = *(v8 + 16);
   v24 = v53;
   v23(v18, v12, v53);
-  v25 = v52;
-  *(v19 + v20) = v51;
+  v25 = requestCopy;
+  *(v19 + v20) = behaviorCopy;
   *(v19 + v21) = v25;
   v43 = v17 | 0x9000000000000004;
   v26 = v45;
@@ -2097,17 +2097,17 @@
   v33 = v44;
   *(v32 + 2) = sub_1CF902DDC;
   *(v32 + 3) = v33;
-  v34 = v50;
-  *(v32 + 4) = v50;
+  v34 = selfCopy;
+  *(v32 + 4) = selfCopy;
   (*(v22 + 32))(&v32[v29], v26, v53);
-  *&v32[v30] = v51;
+  *&v32[v30] = behaviorCopy;
   v35 = &v32[v31];
   v36 = v48;
   *v35 = v49;
   v35[1] = v36;
   v37 = v43;
   *&v32[(v31 + 23) & 0xFFFFFFFFFFFFFFF8] = v43;
-  v38 = v52;
+  v38 = requestCopy;
   v39 = v34;
   v40 = v38;
   v41 = v39;
@@ -2117,11 +2117,11 @@
   (*(v47 + 8))(v27, v53);
 }
 
-- (void)resumeSyncForItemAtURL:(id)a3 bundleID:(id)a4 behavior:(unint64_t)a5 request:(id)a6 completionHandler:(id)a7
+- (void)resumeSyncForItemAtURL:(id)l bundleID:(id)d behavior:(unint64_t)behavior request:(id)request completionHandler:(id)handler
 {
-  v46 = a5;
-  v47 = a6;
-  v45 = self;
+  behaviorCopy = behavior;
+  requestCopy = request;
+  selfCopy = self;
   v44 = sub_1CF9E5A58();
   v8 = *(v44 - 8);
   v9 = *(v8 + 64);
@@ -2129,7 +2129,7 @@
   v41 = &v38 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x1EEE9AC00](v10);
   v12 = &v38 - v11;
-  v13 = _Block_copy(a7);
+  v13 = _Block_copy(handler);
   sub_1CF9E59D8();
   v40 = swift_allocObject();
   *(v40 + 16) = v13;
@@ -2143,8 +2143,8 @@
   v20 = *(v8 + 16);
   v21 = v44;
   v20(v16, v12, v44);
-  v22 = v47;
-  *(v17 + v18) = v46;
+  v22 = requestCopy;
+  *(v17 + v18) = behaviorCopy;
   *(v17 + v19) = v22;
   v39 = v15 | 0x9000000000000006;
   v23 = v41;
@@ -2156,15 +2156,15 @@
   v28 = v40;
   *(v27 + 2) = sub_1CF902DDC;
   *(v27 + 3) = v28;
-  v30 = v45;
-  v29 = v46;
-  *(v27 + 4) = v45;
+  v30 = selfCopy;
+  v29 = behaviorCopy;
+  *(v27 + 4) = selfCopy;
   *(v27 + 5) = v29;
   v31 = v8;
   (*(v8 + 32))(&v27[v25], v23, v24);
   v32 = v39;
   *&v27[v26] = v39;
-  v33 = v47;
+  v33 = requestCopy;
   v34 = v30;
   v35 = v33;
   v36 = v34;
@@ -2175,9 +2175,9 @@
   (*(v31 + 8))(v37, v24);
 }
 
-- (void)fetchLatestVersionForURL:(id)a3 request:(id)a4 completionHandler:(id)a5
+- (void)fetchLatestVersionForURL:(id)l request:(id)request completionHandler:(id)handler
 {
-  v32 = self;
+  selfCopy = self;
   v7 = sub_1CF9E5A58();
   v8 = *(v7 - 8);
   v9 = *(v8 + 64);
@@ -2185,7 +2185,7 @@
   v30 = &v29 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x1EEE9AC00](v10);
   v12 = &v29 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   sub_1CF9E59D8();
   v14 = swift_allocObject();
   *(v14 + 16) = v13;
@@ -2195,7 +2195,7 @@
   v18 = *(v15 + 48);
   v19 = *(v8 + 16);
   v19(v16, v12, v7);
-  *(v17 + v18) = a4;
+  *(v17 + v18) = request;
   v20 = v30;
   v21 = v7;
   v19(v30, v12, v7);
@@ -2203,12 +2203,12 @@
   v23 = swift_allocObject();
   *(v23 + 2) = sub_1CF8F75FC;
   *(v23 + 3) = v14;
-  v24 = v32;
-  *(v23 + 4) = v32;
+  v24 = selfCopy;
+  *(v23 + 4) = selfCopy;
   (*(v8 + 32))(&v23[v22], v20, v7);
-  v25 = a4;
+  requestCopy = request;
   v26 = v24;
-  v27 = v25;
+  v27 = requestCopy;
   v28 = v26;
 
   sub_1CF84D640(v12, 0, v31 | 0xA000000000000000, sub_1CF90335C, v23);
@@ -2216,15 +2216,15 @@
   (*(v8 + 8))(v12, v21);
 }
 
-- (void)uploadLocalVersionOfItemAtURL:(id)a3 conflictResolutionPolicy:(int64_t)a4 request:(id)a5 completionHandler:(id)a6
+- (void)uploadLocalVersionOfItemAtURL:(id)l conflictResolutionPolicy:(int64_t)policy request:(id)request completionHandler:(id)handler
 {
-  v25 = self;
+  selfCopy = self;
   v9 = sub_1CF9E5A58();
   v10 = *(v9 - 8);
   v11 = *(v10 + 64);
   MEMORY[0x1EEE9AC00](v9);
   v13 = &v24 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v14 = _Block_copy(a6);
+  v14 = _Block_copy(handler);
   sub_1CF9E59D8();
   v15 = swift_allocObject();
   *(v15 + 16) = v14;
@@ -2234,18 +2234,18 @@
   v20 = *(v16 + 48);
   v21 = *(v16 + 64);
   (*(v10 + 16))(v18, v13, v9);
-  *(v19 + v20) = a4;
-  *(v19 + v21) = a5;
-  v22 = a5;
-  v23 = v25;
-  sub_1CF8F10A4(v13, 1, v17 | 0xA000000000000004, v23, sub_1CF067718, v15, v23, a4, v17 | 0xA000000000000004);
+  *(v19 + v20) = policy;
+  *(v19 + v21) = request;
+  requestCopy = request;
+  v23 = selfCopy;
+  sub_1CF8F10A4(v13, 1, v17 | 0xA000000000000004, v23, sub_1CF067718, v15, v23, policy, v17 | 0xA000000000000004);
 
   (*(v10 + 8))(v13, v9);
 }
 
-- (void)getNumberOfNonMaterializedFilesWithCompletionHandler:(id)a3
+- (void)getNumberOfNonMaterializedFilesWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = swift_allocObject();
@@ -2261,13 +2261,13 @@
   v8[5] = v5;
   swift_retain_n();
   swift_retain_n();
-  v9 = self;
+  selfCopy = self;
   sub_1CEFD4024("getNumberOfNonMaterializedFiles(withCompletionHandler:)", 55, 2, sub_1CF90324C, v7, sub_1CF902C34, v8);
 }
 
-- (void)disableDBQueryStatisticsWithCompletionHandler:(id)a3
+- (void)disableDBQueryStatisticsWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = swift_allocObject();
@@ -2277,13 +2277,13 @@
   *(v7 + 16) = sub_1CF067718;
   *(v7 + 24) = v5;
   swift_retain_n();
-  v8 = self;
+  selfCopy = self;
   sub_1CEFD4024("disableDBQueryStatistics(completionHandler:)", 44, 2, sub_1CF90324C, v6, sub_1CF90348C, v7);
 }
 
-- (void)resetDBQueryStatisticsWithCompletionHandler:(id)a3
+- (void)resetDBQueryStatisticsWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = swift_allocObject();
@@ -2293,13 +2293,13 @@
   *(v7 + 16) = sub_1CF067718;
   *(v7 + 24) = v5;
   swift_retain_n();
-  v8 = self;
+  selfCopy = self;
   sub_1CEFD4024("resetDBQueryStatistics(completionHandler:)", 42, 2, sub_1CF90324C, v6, sub_1CF903488, v7);
 }
 
-- (void)getDBQueryStatisticsWithQueryPlan:(BOOL)a3 completionHandler:(id)a4
+- (void)getDBQueryStatisticsWithQueryPlan:(BOOL)plan completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   v8 = swift_allocObject();
@@ -2308,40 +2308,40 @@
   v9 = swift_allocObject();
   *(v9 + 16) = sub_1CF8F75D8;
   *(v9 + 24) = v7;
-  *(v9 + 32) = a3;
+  *(v9 + 32) = plan;
   v10 = swift_allocObject();
   *(v10 + 16) = sub_1CF903260;
   *(v10 + 24) = v8;
   swift_retain_n();
-  v11 = self;
+  selfCopy = self;
 
   sub_1CEFD4024("getDBQueryStatistics(withQueryPlan:completionHandler:)", 54, 2, sub_1CF903280, v10, sub_1CF902E9C, v9);
 }
 
-- (void)enumerateSearchResultForRequest:(id)a3 lifetimeExtender:(id)a4 completionHandler:(id)a5
+- (void)enumerateSearchResultForRequest:(id)request lifetimeExtender:(id)extender completionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   v10 = swift_allocObject();
   v10[2] = self;
   v10[3] = sub_1CF902DDC;
   v10[4] = v9;
-  v10[5] = a3;
-  v10[6] = a4;
-  v11 = a3;
+  v10[5] = request;
+  v10[6] = extender;
+  requestCopy = request;
   swift_unknownObjectRetain_n();
-  v13 = self;
-  v12 = v11;
+  selfCopy = self;
+  v12 = requestCopy;
 
   sub_1CEFD4024("enumerateSearchResult(forRequest:lifetimeExtender:completionHandler:)", 69, 2, nullsub_1, 0, sub_1CF90328C, v10);
 
   swift_unknownObjectRelease();
 }
 
-- (void)triggerDatabaseError:(id)a3 request:(id)a4 completionHandler:(id)a5
+- (void)triggerDatabaseError:(id)error request:(id)request completionHandler:(id)handler
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(handler);
   v8 = swift_allocObject();
   *(v8 + 16) = v7;
   v9 = swift_allocObject();
@@ -2351,23 +2351,23 @@
   v10[2] = self;
   v10[3] = sub_1CF067718;
   v10[4] = v8;
-  v10[5] = a3;
-  v11 = a3;
-  v12 = self;
+  v10[5] = error;
+  errorCopy = error;
+  selfCopy = self;
   swift_retain_n();
-  v14 = v12;
-  v13 = v11;
+  v14 = selfCopy;
+  v13 = errorCopy;
   sub_1CEFD4024("triggerDatabaseError(_:request:completionHandler:)", 50, 2, sub_1CF90324C, v9, sub_1CF902C30, v10);
 }
 
-- (void)sendDiagnosticsFromFPCKForItemIDs:(id)a3
+- (void)sendDiagnosticsFromFPCKForItemIDs:(id)ds
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC4BFBA8, &qword_1CFA12B20);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v16 - v7;
-  v9 = a3;
-  v10 = self;
+  dsCopy = ds;
+  selfCopy = self;
   v11 = sub_1CF9E5B88();
   v13 = v12;
 
@@ -2376,15 +2376,15 @@
   v15 = swift_allocObject();
   v15[2] = 0;
   v15[3] = 0;
-  v15[4] = v10;
+  v15[4] = selfCopy;
   v15[5] = v11;
   v15[6] = v13;
   sub_1CF6FCFEC(0, 0, v8, &unk_1CFA17E50, v15);
 }
 
-- (void)requestDiagnosticCollectionForItemWithID:(id)a3 errorReason:(id)a4 completionHandler:(id)a5
+- (void)requestDiagnosticCollectionForItemWithID:(id)d errorReason:(id)reason completionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   v10 = swift_allocObject();
@@ -2394,23 +2394,23 @@
   v11[2] = self;
   v11[3] = sub_1CF067718;
   v11[4] = v9;
-  v11[5] = a3;
-  v11[6] = a4;
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
+  v11[5] = d;
+  v11[6] = reason;
+  dCopy = d;
+  reasonCopy = reason;
+  selfCopy = self;
   swift_retain_n();
-  v17 = v14;
-  v15 = v12;
-  v16 = v13;
+  v17 = selfCopy;
+  v15 = dCopy;
+  v16 = reasonCopy;
   sub_1CEFD4024("requestDiagnosticCollectionForItem(with:errorReason:completionHandler:)", 71, 2, sub_1CF90324C, v10, sub_1CF903288, v11);
 }
 
-- (void)triggerFeedbackApprovalRequestForItemURL:(id)a3 domain:(id)a4 uiOnly:(BOOL)a5 completionHandler:(id)a6
+- (void)triggerFeedbackApprovalRequestForItemURL:(id)l domain:(id)domain uiOnly:(BOOL)only completionHandler:(id)handler
 {
-  v32 = a5;
-  v33 = a4;
-  v31 = self;
+  onlyCopy = only;
+  domainCopy = domain;
+  selfCopy = self;
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC4BFBA8, &qword_1CFA12B20);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x1EEE9AC00](v7 - 8);
@@ -2423,7 +2423,7 @@
   v14 = &v30 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x1EEE9AC00](v15);
   v17 = &v30 - v16;
-  v18 = _Block_copy(a6);
+  v18 = _Block_copy(handler);
   sub_1CF9E59D8();
   v19 = swift_allocObject();
   *(v19 + 16) = v18;
@@ -2435,15 +2435,15 @@
   v23 = swift_allocObject();
   *(v23 + 16) = 0;
   *(v23 + 24) = 0;
-  *(v23 + 32) = v32;
-  v24 = v31;
-  *(v23 + 40) = v31;
+  *(v23 + 32) = onlyCopy;
+  v24 = selfCopy;
+  *(v23 + 40) = selfCopy;
   (*(v12 + 32))(v23 + v21, v14, v11);
   v25 = (v23 + v22);
   *v25 = sub_1CF8F741C;
   v25[1] = v19;
-  v26 = v33;
-  *(v23 + ((v22 + 23) & 0xFFFFFFFFFFFFFFF8)) = v33;
+  v26 = domainCopy;
+  *(v23 + ((v22 + 23) & 0xFFFFFFFFFFFFFFF8)) = domainCopy;
   v27 = v26;
   v28 = v24;
   v29 = v27;
@@ -2453,19 +2453,19 @@
   (*(v12 + 8))(v17, v11);
 }
 
-- (void)launchFeedbackForDomain:(FPDDomain *)a3 itemIdentifier:(NSString *)a4 triggeringError:(NSError *)a5 when:(NSDate *)a6 useDiagnostic:(BOOL)a7 completionHandler:(id)a8
+- (void)launchFeedbackForDomain:(FPDDomain *)domain itemIdentifier:(NSString *)identifier triggeringError:(NSError *)error when:(NSDate *)when useDiagnostic:(BOOL)diagnostic completionHandler:(id)handler
 {
   v15 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC4BFBA8, &qword_1CFA12B20);
   v16 = *(*(v15 - 8) + 64);
   MEMORY[0x1EEE9AC00](v15 - 8);
   v18 = &v29 - v17;
-  v19 = _Block_copy(a8);
+  v19 = _Block_copy(handler);
   v20 = swift_allocObject();
-  *(v20 + 16) = a3;
-  *(v20 + 24) = a4;
-  *(v20 + 32) = a5;
-  *(v20 + 40) = a6;
-  *(v20 + 48) = a7;
+  *(v20 + 16) = domain;
+  *(v20 + 24) = identifier;
+  *(v20 + 32) = error;
+  *(v20 + 40) = when;
+  *(v20 + 48) = diagnostic;
   *(v20 + 56) = v19;
   *(v20 + 64) = self;
   v21 = sub_1CF9E6F08();
@@ -2480,27 +2480,27 @@
   v23[3] = 0;
   v23[4] = &unk_1CFA17E18;
   v23[5] = v22;
-  v24 = a3;
-  v25 = a4;
-  v26 = a5;
-  v27 = a6;
-  v28 = self;
+  domainCopy = domain;
+  identifierCopy = identifier;
+  errorCopy = error;
+  whenCopy = when;
+  selfCopy = self;
   sub_1CF8DC7A4(0, 0, v18, &unk_1CFA17E28, v23);
 }
 
-- (void)getSavedDiagnostics:(id)a3
+- (void)getSavedDiagnostics:(id)diagnostics
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(diagnostics);
   _Block_copy(v4);
-  v5 = self;
-  sub_1CF8F6DF8(v5, v4);
+  selfCopy = self;
+  sub_1CF8F6DF8(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }
 
-- (void)clearDiagnosticState:(id)a3
+- (void)clearDiagnosticState:(id)state
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(state);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = swift_allocObject();
@@ -2510,9 +2510,9 @@
   v7[2] = self;
   v7[3] = sub_1CF067710;
   v7[4] = v5;
-  v8 = self;
+  selfCopy = self;
   swift_retain_n();
-  v9 = v8;
+  v9 = selfCopy;
   sub_1CEFD4024("clearDiagnosticState(_:)", 24, 2, sub_1CF90324C, v6, sub_1CF902E98, v7);
 }
 

@@ -10,38 +10,38 @@
 - (id)_widgetsForReadingMode;
 - (id)_widgetsForSleepMode;
 - (id)_widgetsForWorkMode;
-- (id)provideWidgetsForPageType:(int64_t)a3 environment:(id)a4;
+- (id)provideWidgetsForPageType:(int64_t)type environment:(id)environment;
 @end
 
 @implementation ATXSuggestedPagesStackHeuristicsDataSource
 
-- (id)provideWidgetsForPageType:(int64_t)a3 environment:(id)a4
+- (id)provideWidgetsForPageType:(int64_t)type environment:(id)environment
 {
-  v6 = a4;
+  environmentCopy = environment;
   v7 = 0;
-  if (a3 <= 7)
+  if (type <= 7)
   {
-    if (a3 <= 5)
+    if (type <= 5)
     {
-      if (a3 == 4)
+      if (type == 4)
       {
-        v8 = [(ATXSuggestedPagesStackHeuristicsDataSource *)self _widgetsForSleepMode];
+        _widgetsForSleepMode = [(ATXSuggestedPagesStackHeuristicsDataSource *)self _widgetsForSleepMode];
       }
 
       else
       {
-        if (a3 != 5)
+        if (type != 5)
         {
           goto LABEL_20;
         }
 
-        v8 = [(ATXSuggestedPagesStackHeuristicsDataSource *)self _widgetsForDrivingMode];
+        _widgetsForSleepMode = [(ATXSuggestedPagesStackHeuristicsDataSource *)self _widgetsForDrivingMode];
       }
 
       goto LABEL_19;
     }
 
-    if (a3 == 6)
+    if (type == 6)
     {
       [(ATXSuggestedPagesStackHeuristicsDataSource *)self _widgetsForExerciseMode];
     }
@@ -54,9 +54,9 @@
     goto LABEL_9;
   }
 
-  if (a3 <= 9)
+  if (type <= 9)
   {
-    if (a3 == 8)
+    if (type == 8)
     {
       [(ATXSuggestedPagesStackHeuristicsDataSource *)self _widgetsForPersonalMode];
     }
@@ -66,27 +66,27 @@
       [(ATXSuggestedPagesStackHeuristicsDataSource *)self _widgetsForReadingMode];
     }
 
-    v8 = LABEL_9:;
+    _widgetsForSleepMode = LABEL_9:;
     goto LABEL_19;
   }
 
-  if (a3 == 10)
+  if (type == 10)
   {
-    v8 = [(ATXSuggestedPagesStackHeuristicsDataSource *)self _widgetsForGamingMode];
+    _widgetsForSleepMode = [(ATXSuggestedPagesStackHeuristicsDataSource *)self _widgetsForGamingMode];
   }
 
   else
   {
-    if (a3 != 11)
+    if (type != 11)
     {
       goto LABEL_20;
     }
 
-    v8 = [(ATXSuggestedPagesStackHeuristicsDataSource *)self _widgetsForMindfulnessMode];
+    _widgetsForSleepMode = [(ATXSuggestedPagesStackHeuristicsDataSource *)self _widgetsForMindfulnessMode];
   }
 
 LABEL_19:
-  v7 = v8;
+  v7 = _widgetsForSleepMode;
 LABEL_20:
 
   return v7;
@@ -246,9 +246,9 @@ LABEL_20:
   [v3 addObject:v18];
 
   v19 = objc_opt_new();
-  v20 = [v19 hasiCloudFamily];
+  hasiCloudFamily = [v19 hasiCloudFamily];
 
-  if (v20)
+  if (hasiCloudFamily)
   {
     v21 = __atxlog_handle_modes();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -364,8 +364,8 @@ LABEL_20:
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v2 = [MEMORY[0x277CEB8F0] getUpcomingMediaForBundle:@"com.apple.tv" isInternalApplication:1];
-  v3 = [v2 sortedUpcomingMedia];
-  v4 = [v3 count];
+  sortedUpcomingMedia = [v2 sortedUpcomingMedia];
+  v4 = [sortedUpcomingMedia count];
 
   v5 = [MEMORY[0x277CEB2C8] getActionKeyForBundleId:@"com.apple.tv" actionType:@"INPlayMediaIntent"];
   v6 = +[_ATXAppLaunchHistogramManager sharedInstance];
@@ -387,12 +387,12 @@ LABEL_20:
   v14 = 0x2020000000;
   v15 = 0;
   v2 = BiomeLibrary();
-  v3 = [v2 HomeKit];
-  v4 = [v3 Client];
-  v5 = [v4 AccessoryControl];
+  homeKit = [v2 HomeKit];
+  client = [homeKit Client];
+  accessoryControl = [client AccessoryControl];
 
   v6 = objc_opt_new();
-  v7 = [v5 atx_publisherFromStartDate:0];
+  v7 = [accessoryControl atx_publisherFromStartDate:0];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __80__ATXSuggestedPagesStackHeuristicsDataSource__hasSignificantHomeAccessoryEvents__block_invoke_156;
@@ -440,9 +440,9 @@ void __80__ATXSuggestedPagesStackHeuristicsDataSource__hasSignificantHomeAccesso
   v13 = 0;
   v2 = BiomeLibrary();
   v3 = [v2 App];
-  v4 = [v3 Intent];
+  intent = [v3 Intent];
 
-  v5 = [v4 atx_publisherFromStartDate:0];
+  v5 = [intent atx_publisherFromStartDate:0];
   v6 = [v5 filterWithIsIncluded:&__block_literal_global_160];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;

@@ -1,17 +1,17 @@
 @interface PKPaymentSetupAssistantRegistrationViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLoad;
 @end
 
 @implementation PKPaymentSetupAssistantRegistrationViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKPaymentSetupAssistantRegistrationViewController" isKindOfClass:@"PKExplanationViewController"];
-  [v3 validateClass:@"PKExplanationViewController" hasInstanceMethod:@"explanationView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PKExplanationView" hasInstanceVariable:@"_logoImageView" withType:"UIImageView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKPaymentSetupAssistantRegistrationViewController" isKindOfClass:@"PKExplanationViewController"];
+  [validationsCopy validateClass:@"PKExplanationViewController" hasInstanceMethod:@"explanationView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PKExplanationView" hasInstanceVariable:@"_logoImageView" withType:"UIImageView"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

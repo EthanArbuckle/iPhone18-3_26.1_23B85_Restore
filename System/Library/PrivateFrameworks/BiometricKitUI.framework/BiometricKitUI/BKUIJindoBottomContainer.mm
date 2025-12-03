@@ -1,7 +1,7 @@
 @interface BKUIJindoBottomContainer
-- (BOOL)showStartOverForState:(int)a3;
-- (id)escapeHatchButtonForState:(int)a3;
-- (void)buttonSelectedWithButtonTrayPosition:(int64_t)a3;
+- (BOOL)showStartOverForState:(int)state;
+- (id)escapeHatchButtonForState:(int)state;
+- (void)buttonSelectedWithButtonTrayPosition:(int64_t)position;
 - (void)setupInitialUI;
 @end
 
@@ -12,110 +12,110 @@
   v7.receiver = self;
   v7.super_class = BKUIJindoBottomContainer;
   [(BKUIPearlEnrollViewBottomContainer *)&v7 setupInitialUI];
-  v3 = [(BKUIPearlEnrollViewBottomContainer *)self onScreenScrollview];
-  v4 = [v3 buttonTray];
-  [v4 setActionDelegate:self];
+  onScreenScrollview = [(BKUIPearlEnrollViewBottomContainer *)self onScreenScrollview];
+  buttonTray = [onScreenScrollview buttonTray];
+  [buttonTray setActionDelegate:self];
 
-  v5 = [(BKUIPearlEnrollViewBottomContainer *)self offScreenScrollview];
-  v6 = [v5 buttonTray];
-  [v6 setActionDelegate:self];
+  offScreenScrollview = [(BKUIPearlEnrollViewBottomContainer *)self offScreenScrollview];
+  buttonTray2 = [offScreenScrollview buttonTray];
+  [buttonTray2 setActionDelegate:self];
 }
 
-- (void)buttonSelectedWithButtonTrayPosition:(int64_t)a3
+- (void)buttonSelectedWithButtonTrayPosition:(int64_t)position
 {
-  if (a3 == 3)
+  if (position == 3)
   {
-    v9 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
-    v10 = -[BKUIJindoBottomContainer escapeHatchButtonForState:](self, "escapeHatchButtonForState:", [v9 state]);
-    v11 = [(BKUIPearlEnrollViewBottomContainer *)self buttonTray];
-    v12 = [v11 bottomLinkButton];
+    delegate = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
+    v10 = -[BKUIJindoBottomContainer escapeHatchButtonForState:](self, "escapeHatchButtonForState:", [delegate state]);
+    buttonTray = [(BKUIPearlEnrollViewBottomContainer *)self buttonTray];
+    bottomLinkButton = [buttonTray bottomLinkButton];
 
-    v8 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
-    v13 = v8;
-    if (v10 != v12)
+    delegate2 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
+    delegate3 = delegate2;
+    if (v10 != bottomLinkButton)
     {
-      [v8 cancelEnroll];
+      [delegate2 cancelEnroll];
       goto LABEL_11;
     }
 
     goto LABEL_10;
   }
 
-  if (a3 == 2)
+  if (position == 2)
   {
-    v13 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
-    [v13 nextStateButtonPressed:self];
+    delegate3 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
+    [delegate3 nextStateButtonPressed:self];
     goto LABEL_11;
   }
 
-  if (a3 != 1)
+  if (position != 1)
   {
     return;
   }
 
-  v4 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
-  v5 = -[BKUIJindoBottomContainer escapeHatchButtonForState:](self, "escapeHatchButtonForState:", [v4 state]);
-  v6 = [(BKUIPearlEnrollViewBottomContainer *)self buttonTray];
-  v7 = [v6 topLinkButton];
+  delegate4 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
+  v5 = -[BKUIJindoBottomContainer escapeHatchButtonForState:](self, "escapeHatchButtonForState:", [delegate4 state]);
+  buttonTray2 = [(BKUIPearlEnrollViewBottomContainer *)self buttonTray];
+  topLinkButton = [buttonTray2 topLinkButton];
 
-  v8 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
-  v13 = v8;
-  if (v5 == v7)
+  delegate2 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
+  delegate3 = delegate2;
+  if (v5 == topLinkButton)
   {
 LABEL_10:
-    [v8 escapeHatchButtonPressed];
+    [delegate2 escapeHatchButtonPressed];
     goto LABEL_11;
   }
 
-  [v8 retryPressed];
+  [delegate2 retryPressed];
 LABEL_11:
 }
 
-- (id)escapeHatchButtonForState:(int)a3
+- (id)escapeHatchButtonForState:(int)state
 {
-  if (a3 > 0xA)
+  if (state > 0xA)
   {
-    v5 = 0;
+    bottomLinkButton = 0;
   }
 
   else
   {
-    if (((1 << a3) & 0x747) != 0)
+    if (((1 << state) & 0x747) != 0)
     {
-      v4 = [(BKUIPearlEnrollViewBottomContainer *)self buttonTray];
-      v5 = [v4 bottomLinkButton];
+      buttonTray = [(BKUIPearlEnrollViewBottomContainer *)self buttonTray];
+      bottomLinkButton = [buttonTray bottomLinkButton];
     }
 
     else
     {
-      v4 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
-      v6 = [v4 currentOperationHandler];
-      if ([v6 shouldShowRetryUI])
+      buttonTray = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
+      currentOperationHandler = [buttonTray currentOperationHandler];
+      if ([currentOperationHandler shouldShowRetryUI])
       {
-        v5 = [(BKUIPearlEnrollViewBottomContainer *)self bottomLinkButton];
+        bottomLinkButton = [(BKUIPearlEnrollViewBottomContainer *)self bottomLinkButton];
       }
 
       else
       {
-        v7 = [(BKUIPearlEnrollViewBottomContainer *)self buttonTray];
-        v5 = [v7 topLinkButton];
+        buttonTray2 = [(BKUIPearlEnrollViewBottomContainer *)self buttonTray];
+        bottomLinkButton = [buttonTray2 topLinkButton];
       }
     }
   }
 
-  return v5;
+  return bottomLinkButton;
 }
 
-- (BOOL)showStartOverForState:(int)a3
+- (BOOL)showStartOverForState:(int)state
 {
-  v5 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
-  if ([v5 state] == 3)
+  delegate = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
+  if ([delegate state] == 3)
   {
-    v6 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
-    v7 = [v6 currentOperationHandler];
-    v8 = [v7 shouldShowRetryUI];
+    delegate2 = [(BKUIPearlEnrollViewBottomContainer *)self delegate];
+    currentOperationHandler = [delegate2 currentOperationHandler];
+    shouldShowRetryUI = [currentOperationHandler shouldShowRetryUI];
 
-    if (v8)
+    if (shouldShowRetryUI)
     {
       v9 = 0;
       return v9 & 1;
@@ -126,9 +126,9 @@ LABEL_11:
   {
   }
 
-  if (a3 <= 0xA)
+  if (state <= 0xA)
   {
-    v9 = 0x1F8u >> a3;
+    v9 = 0x1F8u >> state;
   }
 
   else

@@ -1,18 +1,18 @@
 @interface _REFeatureRuleCondition
-- (BOOL)_acceptsFeatureMap:(id)a3 predictionSet:(id)a4 explanation:(id *)a5;
-- (BOOL)isEqual:(id)a3;
-- (_REFeatureRuleCondition)initWithFeature:(id)a3 relation:(int64_t)a4 feature:(id)a5;
+- (BOOL)_acceptsFeatureMap:(id)map predictionSet:(id)set explanation:(id *)explanation;
+- (BOOL)isEqual:(id)equal;
+- (_REFeatureRuleCondition)initWithFeature:(id)feature relation:(int64_t)relation feature:(id)a5;
 - (id)_dependentFeatures;
 - (id)_inflectionFeatureValuePairs;
 - (id)_notCondition;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation _REFeatureRuleCondition
 
-- (_REFeatureRuleCondition)initWithFeature:(id)a3 relation:(int64_t)a4 feature:(id)a5
+- (_REFeatureRuleCondition)initWithFeature:(id)feature relation:(int64_t)relation feature:(id)a5
 {
-  v9 = a3;
+  featureCopy = feature;
   v10 = a5;
   v14.receiver = self;
   v14.super_class = _REFeatureRuleCondition;
@@ -20,8 +20,8 @@
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_firstFeature, a3);
-    v12->_relation = a4;
+    objc_storeStrong(&v11->_firstFeature, feature);
+    v12->_relation = relation;
     objc_storeStrong(&v12->_secondFeature, a5);
   }
 
@@ -49,17 +49,17 @@
   return v2;
 }
 
-- (BOOL)_acceptsFeatureMap:(id)a3 predictionSet:(id)a4 explanation:(id *)a5
+- (BOOL)_acceptsFeatureMap:(id)map predictionSet:(id)set explanation:(id *)explanation
 {
-  v7 = a3;
-  if (![v7 hasValueForFeature:self->_firstFeature] || !objc_msgSend(v7, "hasValueForFeature:", self->_secondFeature))
+  mapCopy = map;
+  if (![mapCopy hasValueForFeature:self->_firstFeature] || !objc_msgSend(mapCopy, "hasValueForFeature:", self->_secondFeature))
   {
     LOBYTE(v8) = 0;
     goto LABEL_9;
   }
 
-  v8 = [v7 valueForFeature:self->_firstFeature];
-  v9 = [v7 valueForFeature:self->_secondFeature];
+  v8 = [mapCopy valueForFeature:self->_firstFeature];
+  v9 = [mapCopy valueForFeature:self->_secondFeature];
   relation = self->_relation;
   v11 = RECompareFeatureValues(v8, v9);
   if (relation > 0)
@@ -81,7 +81,7 @@
 
 LABEL_17:
     LODWORD(v8) = !v14;
-    if (a5)
+    if (explanation)
     {
       goto LABEL_27;
     }
@@ -109,12 +109,12 @@ LABEL_17:
   v12 = v11 == 0;
 LABEL_23:
   LODWORD(v8) = v12;
-  if (a5)
+  if (explanation)
   {
 LABEL_27:
     if (v8)
     {
-      *a5 = [REMLExplanation explanationForCondition:self];
+      *explanation = [REMLExplanation explanationForCondition:self];
       LOBYTE(v8) = 1;
     }
   }
@@ -140,10 +140,10 @@ LABEL_9:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -153,7 +153,7 @@ LABEL_9:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       firstFeature = v5->_firstFeature;
       v7 = self->_firstFeature;
       v8 = v7;
@@ -204,9 +204,9 @@ LABEL_15:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   firstFeature = self->_firstFeature;
   relation = self->_relation;
   secondFeature = self->_secondFeature;

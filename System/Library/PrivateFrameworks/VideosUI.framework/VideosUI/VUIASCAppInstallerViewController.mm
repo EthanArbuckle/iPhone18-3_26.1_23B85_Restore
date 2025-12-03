@@ -1,17 +1,17 @@
 @interface VUIASCAppInstallerViewController
-- (BOOL)lockupViewShouldSupportDSIDLessInstalls:(id)a3;
-- (VUIASCAppInstallerViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (VUIASCAppInstallerViewController)initWithTitle:(id)a3 subtitle:(id)a4 request:(id)a5 forceDSIDless:(BOOL)a6 onFlowComplete:(id)a7;
+- (BOOL)lockupViewShouldSupportDSIDLessInstalls:(id)installs;
+- (VUIASCAppInstallerViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (VUIASCAppInstallerViewController)initWithTitle:(id)title subtitle:(id)subtitle request:(id)request forceDSIDless:(BOOL)dless onFlowComplete:(id)complete;
 - (void)handleCancel;
-- (void)lockupView:(id)a3 appStateDidChange:(id)a4;
+- (void)lockupView:(id)view appStateDidChange:(id)change;
 - (void)viewDidLoad;
 @end
 
 @implementation VUIASCAppInstallerViewController
 
-- (VUIASCAppInstallerViewController)initWithTitle:(id)a3 subtitle:(id)a4 request:(id)a5 forceDSIDless:(BOOL)a6 onFlowComplete:(id)a7
+- (VUIASCAppInstallerViewController)initWithTitle:(id)title subtitle:(id)subtitle request:(id)request forceDSIDless:(BOOL)dless onFlowComplete:(id)complete
 {
-  v8 = _Block_copy(a7);
+  v8 = _Block_copy(complete);
   sub_1E4205F14();
   sub_1E4205F14();
   if (v8)
@@ -20,13 +20,13 @@
     *(swift_allocObject() + 16) = v8;
   }
 
-  v9 = a5;
+  requestCopy = request;
   return AppInstallerViewController.init(title:subtitle:request:forceDSIDless:onFlowComplete:)();
 }
 
-- (VUIASCAppInstallerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (VUIASCAppInstallerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_1E4205F14();
     v7 = v6;
@@ -38,34 +38,34 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return AppInstallerViewController.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  return AppInstallerViewController.init(nibName:bundle:)(v5, v7, bundle);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   AppInstallerViewController.viewDidLoad()();
 }
 
 - (void)handleCancel
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3835034();
 }
 
-- (void)lockupView:(id)a3 appStateDidChange:(id)a4
+- (void)lockupView:(id)view appStateDidChange:(id)change
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  AppInstallerViewController.lockupView(_:appStateDidChange:)(v8, v7);
+  viewCopy = view;
+  changeCopy = change;
+  selfCopy = self;
+  AppInstallerViewController.lockupView(_:appStateDidChange:)(selfCopy, changeCopy);
 }
 
-- (BOOL)lockupViewShouldSupportDSIDLessInstalls:(id)a3
+- (BOOL)lockupViewShouldSupportDSIDLessInstalls:(id)installs
 {
-  v4 = a3;
-  v5 = self;
+  installsCopy = installs;
+  selfCopy = self;
   LOBYTE(self) = AppInstallerViewController.lockupViewShouldSupportDSIDLessInstalls(_:)();
 
   return self & 1;

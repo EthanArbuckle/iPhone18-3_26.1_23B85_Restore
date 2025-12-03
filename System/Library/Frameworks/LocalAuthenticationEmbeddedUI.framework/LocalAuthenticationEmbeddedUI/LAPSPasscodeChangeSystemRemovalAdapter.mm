@@ -1,18 +1,18 @@
 @interface LAPSPasscodeChangeSystemRemovalAdapter
-- (LAPSPasscodeChangeSystemRemovalAdapter)initWithPersistence:(id)a3;
+- (LAPSPasscodeChangeSystemRemovalAdapter)initWithPersistence:(id)persistence;
 @end
 
 @implementation LAPSPasscodeChangeSystemRemovalAdapter
 
-- (LAPSPasscodeChangeSystemRemovalAdapter)initWithPersistence:(id)a3
+- (LAPSPasscodeChangeSystemRemovalAdapter)initWithPersistence:(id)persistence
 {
-  v4 = a3;
+  persistenceCopy = persistence;
   v11.receiver = self;
   v11.super_class = LAPSPasscodeChangeSystemRemovalAdapter;
   v5 = [(LAPSPasscodeChangeSystemRemovalAdapter *)&v11 init];
   if (v5)
   {
-    v6 = [[LAPSCurrentPasscodeService alloc] initWithPersistence:v4];
+    v6 = [[LAPSCurrentPasscodeService alloc] initWithPersistence:persistenceCopy];
     currentPasscodeService = v5->_currentPasscodeService;
     v5->_currentPasscodeService = v6;
 

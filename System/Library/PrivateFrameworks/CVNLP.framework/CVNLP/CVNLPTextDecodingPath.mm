@@ -1,10 +1,10 @@
 @interface CVNLPTextDecodingPath
 + (id)defaultPathScoringFunction;
-+ (id)defaultPathScoringFunctionForLanguageResourceBundle:(id)a3;
-+ (id)defaultPathScoringFunctionForLanguageResourceBundle:(id)a3 pruneProblematicMixedScriptWordPaths:(BOOL)a4;
-+ (id)defaultPathScoringFunctionPruneProblematicMixedScriptWordPaths:(BOOL)a3;
++ (id)defaultPathScoringFunctionForLanguageResourceBundle:(id)bundle;
++ (id)defaultPathScoringFunctionForLanguageResourceBundle:(id)bundle pruneProblematicMixedScriptWordPaths:(BOOL)paths;
++ (id)defaultPathScoringFunctionPruneProblematicMixedScriptWordPaths:(BOOL)paths;
 - (CVNLPTextDecodingPath)init;
-- (CVNLPTextDecodingPath)initWithCharacterLanguageModelLogProbability:(double)a3 wordLanguageModelLogProbability:(double)a4 lexiconScore:(double)a5 hasProblematicMixedScriptWords:(BOOL)a6 string:(id)a7;
+- (CVNLPTextDecodingPath)initWithCharacterLanguageModelLogProbability:(double)probability wordLanguageModelLogProbability:(double)logProbability lexiconScore:(double)score hasProblematicMixedScriptWords:(BOOL)words string:(id)string;
 @end
 
 @implementation CVNLPTextDecodingPath
@@ -31,44 +31,44 @@
   return result;
 }
 
-- (CVNLPTextDecodingPath)initWithCharacterLanguageModelLogProbability:(double)a3 wordLanguageModelLogProbability:(double)a4 lexiconScore:(double)a5 hasProblematicMixedScriptWords:(BOOL)a6 string:(id)a7
+- (CVNLPTextDecodingPath)initWithCharacterLanguageModelLogProbability:(double)probability wordLanguageModelLogProbability:(double)logProbability lexiconScore:(double)score hasProblematicMixedScriptWords:(BOOL)words string:(id)string
 {
-  v13 = a7;
+  stringCopy = string;
   v17.receiver = self;
   v17.super_class = CVNLPTextDecodingPath;
   v14 = [(CVNLPTextDecodingPath *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    v14->_characterLanguageModelLogProbability = a3;
-    v14->_wordLanguageModelLogProbability = a4;
-    v14->_lexiconScore = a5;
-    v14->_hasProblematicMixedScriptWords = a6;
-    objc_storeStrong(&v14->_string, a7);
+    v14->_characterLanguageModelLogProbability = probability;
+    v14->_wordLanguageModelLogProbability = logProbability;
+    v14->_lexiconScore = score;
+    v14->_hasProblematicMixedScriptWords = words;
+    objc_storeStrong(&v14->_string, string);
   }
 
   return v15;
 }
 
-+ (id)defaultPathScoringFunctionForLanguageResourceBundle:(id)a3
++ (id)defaultPathScoringFunctionForLanguageResourceBundle:(id)bundle
 {
-  v3 = a3;
+  bundleCopy = bundle;
   v4 = objc_opt_class();
-  v6 = objc_msgSend_defaultPathScoringFunctionForLanguageResourceBundle_pruneProblematicMixedScriptWordPaths_(v4, v5, v3, 0);
+  v6 = objc_msgSend_defaultPathScoringFunctionForLanguageResourceBundle_pruneProblematicMixedScriptWordPaths_(v4, v5, bundleCopy, 0);
 
   return v6;
 }
 
-+ (id)defaultPathScoringFunctionForLanguageResourceBundle:(id)a3 pruneProblematicMixedScriptWordPaths:(BOOL)a4
++ (id)defaultPathScoringFunctionForLanguageResourceBundle:(id)bundle pruneProblematicMixedScriptWordPaths:(BOOL)paths
 {
-  v5 = a3;
+  bundleCopy = bundle;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = sub_1D9DB0448;
   v13[3] = &unk_1E858E210;
-  v15 = a4;
-  v14 = v5;
-  v6 = v5;
+  pathsCopy = paths;
+  v14 = bundleCopy;
+  v6 = bundleCopy;
   v7 = MEMORY[0x1DA741A60](v13);
   v11 = MEMORY[0x1DA741A60](v7, v8, v9, v10);
 
@@ -82,13 +82,13 @@
   return MEMORY[0x1EEE66B58](v2, sel_defaultPathScoringFunctionPruneProblematicMixedScriptWordPaths_, 0, v3);
 }
 
-+ (id)defaultPathScoringFunctionPruneProblematicMixedScriptWordPaths:(BOOL)a3
++ (id)defaultPathScoringFunctionPruneProblematicMixedScriptWordPaths:(BOOL)paths
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = sub_1D9DB0668;
   v6[3] = &unk_1E858E230;
-  v7 = a3;
+  pathsCopy = paths;
   v3 = MEMORY[0x1DA741A60](v6, a2);
   v4 = MEMORY[0x1DA741A60]();
 

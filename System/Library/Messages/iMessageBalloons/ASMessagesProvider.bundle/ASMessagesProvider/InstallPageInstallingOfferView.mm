@@ -1,12 +1,12 @@
 @interface InstallPageInstallingOfferView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC18ASMessagesProvider30InstallPageInstallingOfferView)initWithCoder:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC18ASMessagesProvider30InstallPageInstallingOfferView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation InstallPageInstallingOfferView
 
-- (_TtC18ASMessagesProvider30InstallPageInstallingOfferView)initWithCoder:(id)a3
+- (_TtC18ASMessagesProvider30InstallPageInstallingOfferView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider30InstallPageInstallingOfferView_progressView) = 0;
   v3 = (&self->super.super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider30InstallPageInstallingOfferView_animationCompletionHandler);
@@ -17,9 +17,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_531ADC();
   v6 = v5;
 
@@ -32,7 +32,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_531DE4();
 }
 

@@ -34,9 +34,9 @@
   v10 = [v8 na_map:v16];
 
   v11 = [HUQuickControlContext alloc];
-  v12 = [v9 home];
-  v13 = [v9 itemUpdater];
-  v14 = [(HUQuickControlContext *)v11 initWithQuickControlClass:a3 controlItems:v10 home:v12 itemUpdater:v13];
+  home = [v9 home];
+  itemUpdater = [v9 itemUpdater];
+  v14 = [(HUQuickControlContext *)v11 initWithQuickControlClass:a3 controlItems:v10 home:home itemUpdater:itemUpdater];
 
   return v14;
 }
@@ -62,8 +62,8 @@
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v10 = [a1 _hu_prioritizedViewControllerClasses];
-    v11 = [v10 countByEnumeratingWithState:&v20 objects:v25 count:16];
+    _hu_prioritizedViewControllerClasses = [self _hu_prioritizedViewControllerClasses];
+    v11 = [_hu_prioritizedViewControllerClasses countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v11)
     {
       v12 = v11;
@@ -74,22 +74,22 @@
         {
           if (*v21 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(_hu_prioritizedViewControllerClasses);
           }
 
           v15 = *(*(&v20 + 1) + 8 * i);
-          v16 = [v15 controlItemPredicate];
-          v17 = [v16 matchingControlItemsForControlItems:v9];
+          controlItemPredicate = [v15 controlItemPredicate];
+          v17 = [controlItemPredicate matchingControlItemsForControlItems:v9];
 
           if ([v17 count])
           {
-            v18 = [a1 _hu_quickControlContextOfClass:v15 controlItems:v17 configuration:v8];
+            v18 = [self _hu_quickControlContextOfClass:v15 controlItems:v17 configuration:v8];
 
             goto LABEL_14;
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v20 objects:v25 count:16];
+        v12 = [_hu_prioritizedViewControllerClasses countByEnumeratingWithState:&v20 objects:v25 count:16];
         if (v12)
         {
           continue;
@@ -117,9 +117,9 @@ LABEL_14:
   v8 = a3;
   v9 = a4;
   v10 = [v8 na_filter:&__block_literal_global_64_2];
-  v11 = [v10 allObjects];
-  v12 = [a1 hf_controlItemComparator];
-  v13 = [v11 sortedArrayUsingComparator:v12];
+  allObjects = [v10 allObjects];
+  hf_controlItemComparator = [self hf_controlItemComparator];
+  v13 = [allObjects sortedArrayUsingComparator:hf_controlItemComparator];
 
   v38 = v13;
   v14 = [v13 mutableCopy];
@@ -137,7 +137,7 @@ LABEL_14:
   v47[3] = &unk_277DC48F8;
   v18 = v15;
   v48 = v18;
-  v52 = a1;
+  selfCopy = self;
   v19 = v9;
   v49 = v19;
   v20 = v16;
@@ -158,8 +158,8 @@ LABEL_14:
     v46 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v24 = [objc_opt_class() _hu_prioritizedViewControllerClasses];
-    v25 = [v24 countByEnumeratingWithState:&v43 objects:v55 count:16];
+    _hu_prioritizedViewControllerClasses = [objc_opt_class() _hu_prioritizedViewControllerClasses];
+    v25 = [_hu_prioritizedViewControllerClasses countByEnumeratingWithState:&v43 objects:v55 count:16];
     v39 = v22;
     if (v25)
     {
@@ -171,14 +171,14 @@ LABEL_14:
         {
           if (*v44 != v27)
           {
-            objc_enumerationMutation(v24);
+            objc_enumerationMutation(_hu_prioritizedViewControllerClasses);
           }
 
           v29 = *(*(&v43 + 1) + 8 * i);
           if (!a5 || ([v29 isEqual:objc_opt_class()] & 1) == 0)
           {
-            v30 = [v29 controlItemPredicate];
-            v31 = [v30 matchingControlItemsForControlItems:v42];
+            controlItemPredicate = [v29 controlItemPredicate];
+            v31 = [controlItemPredicate matchingControlItemsForControlItems:v42];
 
             if ([v31 count])
             {
@@ -214,7 +214,7 @@ LABEL_14:
           }
         }
 
-        v26 = [v24 countByEnumeratingWithState:&v43 objects:v55 count:16];
+        v26 = [_hu_prioritizedViewControllerClasses countByEnumeratingWithState:&v43 objects:v55 count:16];
         if (v26)
         {
           continue;

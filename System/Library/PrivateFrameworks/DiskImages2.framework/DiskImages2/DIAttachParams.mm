@@ -1,76 +1,76 @@
 @interface DIAttachParams
-+ (BOOL)copyWithURL:(id)a3 outURLStr:(char *)a4 maxLen:(unint64_t)a5 error:(id *)a6;
-- (BOOL)isDeviceHighThroughputWithRegistryEntryID:(unint64_t)a3;
++ (BOOL)copyWithURL:(id)l outURLStr:(char *)str maxLen:(unint64_t)len error:(id *)error;
+- (BOOL)isDeviceHighThroughputWithRegistryEntryID:(unint64_t)d;
 - (BOOL)isDeviceSolidStateWithRegistryEntryID:;
-- (BOOL)isDeviceSolidStateWithRegistryEntryID:(unint64_t)a3;
-- (BOOL)isDeviceWithProperty:(const char *)a3 registryEntryID:(unint64_t)a4 predicate:(function<BOOL)(iokit_utils::di_io_obj_t;
-- (BOOL)reOpenIfWritableWithError:(id *)a3;
+- (BOOL)isDeviceSolidStateWithRegistryEntryID:(unint64_t)d;
+- (BOOL)isDeviceWithProperty:(const char *)property registryEntryID:(unint64_t)d predicate:(function<BOOL)(iokit_utils::di_io_obj_t;
+- (BOOL)reOpenIfWritableWithError:(id *)error;
 - (BOOL)shouldValidateShadows;
-- (BOOL)updateStatFSWithError:(id *)a3;
-- (DIAttachParams)initWithCoder:(id)a3;
-- (DIAttachParams)initWithExistingParams:(id)a3 error:(id *)a4;
-- (DIAttachParams)initWithURL:(id)a3 error:(id *)a4;
-- (DIAttachParams)initWithURL:(id)a3 shadowURLs:(id)a4 error:(id *)a5;
-- (id)newAttachWithError:(id *)a3;
+- (BOOL)updateStatFSWithError:(id *)error;
+- (DIAttachParams)initWithCoder:(id)coder;
+- (DIAttachParams)initWithExistingParams:(id)params error:(id *)error;
+- (DIAttachParams)initWithURL:(id)l error:(id *)error;
+- (DIAttachParams)initWithURL:(id)l shadowURLs:(id)ls error:(id *)error;
+- (id)newAttachWithError:(id *)error;
 - (uint64_t)isDeviceHighThroughputWithRegistryEntryID:;
 - (uint64_t)isDeviceSolidStateWithRegistryEntryID:;
-- (void)encodeWithCoder:(id)a3;
-- (void)setOnDiskCache:(BOOL)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setOnDiskCache:(BOOL)cache;
 - (void)setupDefaults;
 @end
 
 @implementation DIAttachParams
 
-- (DIAttachParams)initWithCoder:(id)a3
+- (DIAttachParams)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = DIAttachParams;
-  v5 = [(DIBaseParams *)&v11 initWithCoder:v4];
+  v5 = [(DIBaseParams *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_autoMount = [v4 decodeBoolForKey:@"autoMount"];
-    v5->_commandSize = [v4 decodeIntegerForKey:@"commandSize"];
-    v5->_regEntryID = [v4 decodeInt64ForKey:@"regEntryID"];
-    v5->_handleRefCount = [v4 decodeBoolForKey:@"handleRefCount"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"inputStatFS"];
+    v5->_autoMount = [coderCopy decodeBoolForKey:@"autoMount"];
+    v5->_commandSize = [coderCopy decodeIntegerForKey:@"commandSize"];
+    v5->_regEntryID = [coderCopy decodeInt64ForKey:@"regEntryID"];
+    v5->_handleRefCount = [coderCopy decodeBoolForKey:@"handleRefCount"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"inputStatFS"];
     inputStatFS = v5->_inputStatFS;
     v5->_inputStatFS = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"inputMountedFrom"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"inputMountedFrom"];
     inputMountedFrom = v5->_inputMountedFrom;
     v5->_inputMountedFrom = v8;
 
-    v5->_fileMode = [v4 decodeIntegerForKey:@"fileMode"];
-    v5->_onDiskCache = [v4 decodeBoolForKey:@"onDiskCache"];
-    v5->_uniqueDevice = [v4 decodeBoolForKey:@"uniqueDevice"];
-    v5->_emulateExternalDisk = [v4 decodeBoolForKey:@"emulateExternalDisk"];
-    v5->_suppressSsdFlags = [v4 decodeBoolForKey:@"suppressSsdFlags"];
-    v5->_singleInstanceDaemon = [v4 decodeBoolForKey:@"singleInstanceDaemon"];
+    v5->_fileMode = [coderCopy decodeIntegerForKey:@"fileMode"];
+    v5->_onDiskCache = [coderCopy decodeBoolForKey:@"onDiskCache"];
+    v5->_uniqueDevice = [coderCopy decodeBoolForKey:@"uniqueDevice"];
+    v5->_emulateExternalDisk = [coderCopy decodeBoolForKey:@"emulateExternalDisk"];
+    v5->_suppressSsdFlags = [coderCopy decodeBoolForKey:@"suppressSsdFlags"];
+    v5->_singleInstanceDaemon = [coderCopy decodeBoolForKey:@"singleInstanceDaemon"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = DIAttachParams;
-  [(DIBaseParams *)&v6 encodeWithCoder:v4];
-  [v4 encodeBool:-[DIAttachParams autoMount](self forKey:{"autoMount"), @"autoMount"}];
-  [v4 encodeInteger:-[DIAttachParams commandSize](self forKey:{"commandSize"), @"commandSize"}];
-  [v4 encodeInt64:-[DIAttachParams regEntryID](self forKey:{"regEntryID"), @"regEntryID"}];
-  [v4 encodeBool:-[DIAttachParams handleRefCount](self forKey:{"handleRefCount"), @"handleRefCount"}];
-  v5 = [(DIAttachParams *)self inputStatFS];
-  [v4 encodeObject:v5 forKey:@"inputStatFS"];
+  [(DIBaseParams *)&v6 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:-[DIAttachParams autoMount](self forKey:{"autoMount"), @"autoMount"}];
+  [coderCopy encodeInteger:-[DIAttachParams commandSize](self forKey:{"commandSize"), @"commandSize"}];
+  [coderCopy encodeInt64:-[DIAttachParams regEntryID](self forKey:{"regEntryID"), @"regEntryID"}];
+  [coderCopy encodeBool:-[DIAttachParams handleRefCount](self forKey:{"handleRefCount"), @"handleRefCount"}];
+  inputStatFS = [(DIAttachParams *)self inputStatFS];
+  [coderCopy encodeObject:inputStatFS forKey:@"inputStatFS"];
 
-  [v4 encodeInteger:-[DIAttachParams fileMode](self forKey:{"fileMode"), @"fileMode"}];
-  [v4 encodeBool:-[DIAttachParams onDiskCache](self forKey:{"onDiskCache"), @"onDiskCache"}];
-  [v4 encodeBool:-[DIAttachParams uniqueDevice](self forKey:{"uniqueDevice"), @"uniqueDevice"}];
-  [v4 encodeBool:-[DIAttachParams emulateExternalDisk](self forKey:{"emulateExternalDisk"), @"emulateExternalDisk"}];
-  [v4 encodeBool:-[DIAttachParams suppressSsdFlags](self forKey:{"suppressSsdFlags"), @"suppressSsdFlags"}];
-  [v4 encodeBool:-[DIAttachParams singleInstanceDaemon](self forKey:{"singleInstanceDaemon"), @"singleInstanceDaemon"}];
+  [coderCopy encodeInteger:-[DIAttachParams fileMode](self forKey:{"fileMode"), @"fileMode"}];
+  [coderCopy encodeBool:-[DIAttachParams onDiskCache](self forKey:{"onDiskCache"), @"onDiskCache"}];
+  [coderCopy encodeBool:-[DIAttachParams uniqueDevice](self forKey:{"uniqueDevice"), @"uniqueDevice"}];
+  [coderCopy encodeBool:-[DIAttachParams emulateExternalDisk](self forKey:{"emulateExternalDisk"), @"emulateExternalDisk"}];
+  [coderCopy encodeBool:-[DIAttachParams suppressSsdFlags](self forKey:{"suppressSsdFlags"), @"suppressSsdFlags"}];
+  [coderCopy encodeBool:-[DIAttachParams singleInstanceDaemon](self forKey:{"singleInstanceDaemon"), @"singleInstanceDaemon"}];
 }
 
 - (void)setupDefaults
@@ -82,10 +82,10 @@
   self->_customCacheURL = 0;
 }
 
-- (void)setOnDiskCache:(BOOL)a3
+- (void)setOnDiskCache:(BOOL)cache
 {
-  self->_onDiskCache = a3;
-  if (!a3)
+  self->_onDiskCache = cache;
+  if (!cache)
   {
     customCacheURL = self->_customCacheURL;
     self->_customCacheURL = 0;
@@ -93,35 +93,35 @@
   }
 }
 
-- (DIAttachParams)initWithURL:(id)a3 error:(id *)a4
+- (DIAttachParams)initWithURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  v7 = [MEMORY[0x277CBEA60] array];
-  v8 = [(DIAttachParams *)self initWithURL:v6 shadowURLs:v7 error:a4];
+  lCopy = l;
+  array = [MEMORY[0x277CBEA60] array];
+  v8 = [(DIAttachParams *)self initWithURL:lCopy shadowURLs:array error:error];
 
   return v8;
 }
 
-- (DIAttachParams)initWithURL:(id)a3 shadowURLs:(id)a4 error:(id *)a5
+- (DIAttachParams)initWithURL:(id)l shadowURLs:(id)ls error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  lCopy = l;
+  lsCopy = ls;
   v17.receiver = self;
   v17.super_class = DIAttachParams;
-  v10 = [(DIBaseParams *)&v17 initWithURL:v8 error:a5];
+  v10 = [(DIBaseParams *)&v17 initWithURL:lCopy error:error];
   v11 = v10;
   if (!v10)
   {
     goto LABEL_7;
   }
 
-  if (![(DIBaseParams *)v10 openExistingImageWithFlags:0 error:a5])
+  if (![(DIBaseParams *)v10 openExistingImageWithFlags:0 error:error])
   {
     goto LABEL_9;
   }
 
   [(DIAttachParams *)v11 setupDefaults];
-  if (![v9 count])
+  if (![lsCopy count])
   {
 LABEL_7:
     v12 = v11;
@@ -130,8 +130,8 @@ LABEL_7:
 
   if (![(DIBaseParams *)v11 isPstack])
   {
-    v13 = [(DIBaseParams *)v11 shadowChain];
-    v14 = [v13 addShadowURLs:v9 error:a5];
+    shadowChain = [(DIBaseParams *)v11 shadowChain];
+    v14 = [shadowChain addShadowURLs:lsCopy error:error];
 
     if (v14)
     {
@@ -143,7 +143,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v12 = [DIError nilWithPOSIXCode:22 verboseInfo:@"Custom cache or shadow is not supported for pstack based images." error:a5];
+  v12 = [DIError nilWithPOSIXCode:22 verboseInfo:@"Custom cache or shadow is not supported for pstack based images." error:error];
 LABEL_8:
   v15 = v12;
 LABEL_10:
@@ -151,23 +151,23 @@ LABEL_10:
   return v15;
 }
 
-- (DIAttachParams)initWithExistingParams:(id)a3 error:(id *)a4
+- (DIAttachParams)initWithExistingParams:(id)params error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 inputURL];
+  paramsCopy = params;
+  inputURL = [paramsCopy inputURL];
   v19.receiver = self;
   v19.super_class = DIAttachParams;
-  v8 = [(DIBaseParams *)&v19 initWithURL:v7 error:a4];
+  v8 = [(DIBaseParams *)&v19 initWithURL:inputURL error:error];
 
   if (!v8)
   {
     goto LABEL_5;
   }
 
-  v9 = [v6 diskImageParamsXPC];
-  [(DIBaseParams *)v8 setDiskImageParamsXPC:v9];
+  diskImageParamsXPC = [paramsCopy diskImageParamsXPC];
+  [(DIBaseParams *)v8 setDiskImageParamsXPC:diskImageParamsXPC];
 
-  v10 = [(DIBaseParams *)v8 diskImageParamsXPC];
+  diskImageParamsXPC2 = [(DIBaseParams *)v8 diskImageParamsXPC];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -178,13 +178,13 @@ LABEL_10:
   }
 
   [(DIAttachParams *)v8 setupDefaults];
-  v12 = [(DIBaseParams *)v8 diskImageParamsXPC];
-  -[DIBaseParams setBlockSize:](v8, "setBlockSize:", [v12 blockSize]);
+  diskImageParamsXPC3 = [(DIBaseParams *)v8 diskImageParamsXPC];
+  -[DIBaseParams setBlockSize:](v8, "setBlockSize:", [diskImageParamsXPC3 blockSize]);
 
-  v13 = [(DIBaseParams *)v8 shadowChain];
-  v14 = [v6 shadowChain];
-  v15 = [v14 nodes];
-  v16 = [v13 addShadowNodes:v15 error:a4];
+  shadowChain = [(DIBaseParams *)v8 shadowChain];
+  shadowChain2 = [paramsCopy shadowChain];
+  nodes = [shadowChain2 nodes];
+  v16 = [shadowChain addShadowNodes:nodes error:error];
 
   if ((v16 & 1) == 0)
   {
@@ -202,23 +202,23 @@ LABEL_5:
 
 - (BOOL)shouldValidateShadows
 {
-  v2 = [(DIBaseParams *)self shadowChain];
-  v3 = [v2 shouldValidate];
+  shadowChain = [(DIBaseParams *)self shadowChain];
+  shouldValidate = [shadowChain shouldValidate];
 
-  return v3;
+  return shouldValidate;
 }
 
-- (BOOL)reOpenIfWritableWithError:(id *)a3
+- (BOOL)reOpenIfWritableWithError:(id *)error
 {
   v47 = *MEMORY[0x277D85DE8];
-  v5 = [(DIBaseParams *)self inputURL];
-  if ([v5 isFileURL])
+  inputURL = [(DIBaseParams *)self inputURL];
+  if ([inputURL isFileURL])
   {
   }
 
   else
   {
-    v6 = [(DIBaseParams *)self diskImageParamsXPC];
+    diskImageParamsXPC = [(DIBaseParams *)self diskImageParamsXPC];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -228,10 +228,10 @@ LABEL_5:
     }
   }
 
-  v8 = [(DIBaseParams *)self shadowChain];
-  v9 = [v8 activeShadowURL];
+  shadowChain = [(DIBaseParams *)self shadowChain];
+  activeShadowURL = [shadowChain activeShadowURL];
 
-  if (!v9)
+  if (!activeShadowURL)
   {
     [(DIBaseParams *)self backend];
     v10 = (*(**buf + 48))(*buf);
@@ -242,8 +242,8 @@ LABEL_5:
 
     if ((v10 & 1) == 0)
     {
-      v14 = [(DIBaseParams *)self diskImageParamsXPC];
-      v15 = [v14 isWritableFormat];
+      diskImageParamsXPC2 = [(DIBaseParams *)self diskImageParamsXPC];
+      isWritableFormat = [diskImageParamsXPC2 isWritableFormat];
 
       v16 = *__error();
       if (DIForwardLogs())
@@ -255,7 +255,7 @@ LABEL_5:
         *&buf[4] = 44;
         *&v44[2] = "[DIAttachParams reOpenIfWritableWithError:]";
         *v44 = 2080;
-        if (v15)
+        if (isWritableFormat)
         {
           v18 = "YES";
         }
@@ -283,7 +283,7 @@ LABEL_5:
           *&buf[4] = 44;
           *&v44[2] = "[DIAttachParams reOpenIfWritableWithError:]";
           *v44 = 2080;
-          if (v15)
+          if (isWritableFormat)
           {
             v21 = "YES";
           }
@@ -295,33 +295,33 @@ LABEL_5:
       }
 
       *__error() = v16;
-      v22 = [(DIAttachParams *)self fileMode];
-      if (v15)
+      fileMode = [(DIAttachParams *)self fileMode];
+      if (isWritableFormat)
       {
-        if (v22 != 2)
+        if (fileMode != 2)
         {
-          v23 = [(DIBaseParams *)self diskImageParamsXPC];
+          diskImageParamsXPC3 = [(DIBaseParams *)self diskImageParamsXPC];
           objc_opt_class();
           v24 = objc_opt_isKindOfClass();
 
           if (v24)
           {
             v25 = [PluginBackendXPC alloc];
-            v26 = [(DIBaseParams *)self inputURL];
-            v27 = [(PluginBackendXPC *)v25 initWithURL:v26 openMode:2];
+            inputURL2 = [(DIBaseParams *)self inputURL];
+            v27 = [(PluginBackendXPC *)v25 initWithURL:inputURL2 openMode:2];
 
             v28 = v27;
           }
 
           else
           {
-            v29 = [(DIBaseParams *)self inputURL];
-            v30 = [BackendXPC newFileBackendWithURL:v29 fileOpenFlags:2 error:a3];
+            inputURL3 = [(DIBaseParams *)self inputURL];
+            v30 = [BackendXPC newFileBackendWithURL:inputURL3 fileOpenFlags:2 error:error];
 
             v28 = v30;
             if (!v30)
             {
-              v11 = 0;
+              error = 0;
               goto LABEL_9;
             }
           }
@@ -332,13 +332,13 @@ LABEL_5:
             v32 = getDIOSLog();
             os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT);
             v33 = [(DIBaseParams *)self inputURL:v41];
-            v34 = [v33 path];
+            path = [v33 path];
             *buf = 68158211;
             *&buf[4] = 44;
             *v44 = 2080;
             *&v44[2] = "[DIAttachParams reOpenIfWritableWithError:]";
             v45 = 2113;
-            v46 = v34;
+            v46 = path;
             v35 = _os_log_send_and_compose_impl();
 
             if (v35)
@@ -353,46 +353,46 @@ LABEL_5:
             v36 = getDIOSLog();
             if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
             {
-              v37 = [(DIBaseParams *)self inputURL];
-              v38 = [v37 path];
+              inputURL4 = [(DIBaseParams *)self inputURL];
+              path2 = [inputURL4 path];
               *buf = 68158211;
               *&buf[4] = 44;
               *v44 = 2080;
               *&v44[2] = "[DIAttachParams reOpenIfWritableWithError:]";
               v45 = 2113;
-              v46 = v38;
+              v46 = path2;
               _os_log_impl(&dword_248DE0000, v36, OS_LOG_TYPE_DEFAULT, "%.*s: Image %{private}@ re-opened with RW permissions", buf, 0x1Cu);
             }
           }
 
           *__error() = v31;
-          v39 = [(DIBaseParams *)self diskImageParamsXPC];
-          v40 = [v39 backendXPC];
-          [v40 replaceWithBackendXPC:v28];
+          diskImageParamsXPC4 = [(DIBaseParams *)self diskImageParamsXPC];
+          backendXPC = [diskImageParamsXPC4 backendXPC];
+          [backendXPC replaceWithBackendXPC:v28];
         }
       }
 
-      else if (v22 == 4)
+      else if (fileMode == 4)
       {
-        v11 = [DIError failWithPOSIXCode:22 verboseInfo:@"Image has a read-only format error:attach failed due to force RW flag", a3];
+        error = [DIError failWithPOSIXCode:22 verboseInfo:@"Image has a read-only format error:attach failed due to force RW flag", error];
         goto LABEL_9;
       }
     }
   }
 
 LABEL_8:
-  v11 = 1;
+  error = 1;
 LABEL_9:
   v12 = *MEMORY[0x277D85DE8];
-  return v11;
+  return error;
 }
 
-- (BOOL)updateStatFSWithError:(id *)a3
+- (BOOL)updateStatFSWithError:(id *)error
 {
-  v5 = [(DIBaseParams *)self inputURL];
-  v6 = [v5 isFileURL];
+  inputURL = [(DIBaseParams *)self inputURL];
+  isFileURL = [inputURL isFileURL];
 
-  if (v6)
+  if (isFileURL)
   {
     [(DIBaseParams *)self backend];
     get_sink_backend(&v17, &v19);
@@ -409,68 +409,68 @@ LABEL_9:
 
     if ((fd_from_backend & 0x80000000) != 0)
     {
-      return [DIError failWithEnumValue:150 verboseInfo:@"Unexpected backend type for file" error:a3];
+      return [DIError failWithEnumValue:150 verboseInfo:@"Unexpected backend type for file" error:error];
     }
 
-    v8 = [[DIStatFS alloc] initWithFileDescriptor:fd_from_backend error:a3];
+    v8 = [[DIStatFS alloc] initWithFileDescriptor:fd_from_backend error:error];
     [(DIAttachParams *)self setInputStatFS:v8];
 
-    v9 = [(DIAttachParams *)self inputStatFS];
+    inputStatFS = [(DIAttachParams *)self inputStatFS];
 
-    if (!v9)
+    if (!inputStatFS)
     {
       return 0;
     }
 
-    v10 = [(DIAttachParams *)self inputStatFS];
-    [v10 logWithHeader:@"Input underlying FS"];
+    inputStatFS2 = [(DIAttachParams *)self inputStatFS];
+    [inputStatFS2 logWithHeader:@"Input underlying FS"];
   }
 
-  v11 = [(DIBaseParams *)self shadowChain];
-  v12 = [v11 isEmpty];
+  shadowChain = [(DIBaseParams *)self shadowChain];
+  isEmpty = [shadowChain isEmpty];
 
-  if (v12)
+  if (isEmpty)
   {
     return 1;
   }
 
-  v14 = [(DIBaseParams *)self shadowChain];
-  v15 = [v14 statWithError:a3];
+  shadowChain2 = [(DIBaseParams *)self shadowChain];
+  v15 = [shadowChain2 statWithError:error];
   v13 = v15 != 0;
 
   return v13;
 }
 
-- (id)newAttachWithError:(id *)a3
+- (id)newAttachWithError:(id *)error
 {
   v48[1] = *MEMORY[0x277D85DE8];
   if (![(DIBaseParams *)self isPstack])
   {
-    v5 = [(DIBaseParams *)self shadowChain];
-    v6 = [v5 hasBaseImageCache];
+    shadowChain = [(DIBaseParams *)self shadowChain];
+    hasBaseImageCache = [shadowChain hasBaseImageCache];
 
-    if (v6)
+    if (hasBaseImageCache)
     {
-      v7 = [(DIBaseParams *)self shadowChain];
-      v8 = [v7 nodes];
-      [v8 removeObjectAtIndex:0];
+      shadowChain2 = [(DIBaseParams *)self shadowChain];
+      nodes = [shadowChain2 nodes];
+      [nodes removeObjectAtIndex:0];
     }
   }
 
   if (![(DIBaseParams *)self isPstack]|| ![(DIAttachParams *)self onDiskCache])
   {
-    v10 = [(DIAttachParams *)self customCacheURL];
+    customCacheURL = [(DIAttachParams *)self customCacheURL];
 
-    if (v10)
+    if (customCacheURL)
     {
       v11 = [DIShadowNode alloc];
-      v12 = [(DIAttachParams *)self customCacheURL];
-      v13 = [(DIShadowNode *)v11 initWithURL:v12 isCache:1];
+      customCacheURL2 = [(DIAttachParams *)self customCacheURL];
+      v13 = [(DIShadowNode *)v11 initWithURL:customCacheURL2 isCache:1];
 
-      v14 = [(DIBaseParams *)self shadowChain];
+      shadowChain3 = [(DIBaseParams *)self shadowChain];
       v48[0] = v13;
       v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v48 count:1];
-      v16 = [v14 verifyNodes:v15 error:a3];
+      v16 = [shadowChain3 verifyNodes:v15 error:error];
 
       if ((v16 & 1) == 0)
       {
@@ -478,13 +478,13 @@ LABEL_9:
         goto LABEL_15;
       }
 
-      v17 = [(DIBaseParams *)self shadowChain];
-      v18 = [v17 nodes];
-      [v18 insertObject:v13 atIndex:0];
+      shadowChain4 = [(DIBaseParams *)self shadowChain];
+      nodes2 = [shadowChain4 nodes];
+      [nodes2 insertObject:v13 atIndex:0];
     }
 
-    v19 = [(DIBaseParams *)self diskImageParamsXPC];
-    v20 = [v19 setBlockSize:-[DIBaseParams blockSize](self error:{"blockSize"), a3}];
+    diskImageParamsXPC = [(DIBaseParams *)self diskImageParamsXPC];
+    v20 = [diskImageParamsXPC setBlockSize:-[DIBaseParams blockSize](self error:{"blockSize"), error}];
 
     if (v20)
     {
@@ -500,7 +500,7 @@ LABEL_9:
         v44 = 2080;
         v45 = "[DIAttachParams newAttachWithError:]";
         v46 = 2114;
-        v47 = self;
+        selfCopy2 = self;
         LODWORD(v38) = 28;
         v37 = buf;
         v24 = _os_log_send_and_compose_impl();
@@ -522,7 +522,7 @@ LABEL_9:
           v44 = 2080;
           v45 = "[DIAttachParams newAttachWithError:]";
           v46 = 2114;
-          v47 = self;
+          selfCopy2 = self;
           _os_log_impl(&dword_248DE0000, v25, OS_LOG_TYPE_DEFAULT, "%.*s: entry: %{public}@", buf, 0x1Cu);
         }
       }
@@ -539,11 +539,11 @@ LABEL_9:
         {
           if (![(DIBaseParams *)self requiresRootDaemon])
           {
-            if ([(DIClient2Controller_XPCHandler *)v21 connectWithError:a3]&& [(DIBaseParams *)self prepareImageWithXpcHandler:v21 fileMode:[(DIAttachParams *)self fileMode] error:a3]&& [(DIAttachParams *)self reOpenIfWritableWithError:a3]&& [(DIAttachParams *)self updateStatFSWithError:a3])
+            if ([(DIClient2Controller_XPCHandler *)v21 connectWithError:error]&& [(DIBaseParams *)self prepareImageWithXpcHandler:v21 fileMode:[(DIAttachParams *)self fileMode] error:error]&& [(DIAttachParams *)self reOpenIfWritableWithError:error]&& [(DIAttachParams *)self updateStatFSWithError:error])
             {
               v30 = [QuarantineFileHandler alloc];
               [(DIBaseParams *)self backend];
-              v31 = [(QuarantineFileHandler *)v30 initWithBackend:v39 error:a3];
+              v31 = [(QuarantineFileHandler *)v30 initWithBackend:v39 error:error];
               if (v40)
               {
                 std::__shared_weak_count::__release_shared[abi:ne200100](v40);
@@ -553,16 +553,16 @@ LABEL_9:
               {
                 if ([(DIAttachParams *)self handleRefCount]&& [(DIAttachParams *)self uniqueDevice])
                 {
-                  v32 = [MEMORY[0x277CCAD78] UUID];
-                  v33 = [(DIBaseParams *)self diskImageParamsXPC];
-                  [v33 setInstanceID:v32];
+                  uUID = [MEMORY[0x277CCAD78] UUID];
+                  diskImageParamsXPC2 = [(DIBaseParams *)self diskImageParamsXPC];
+                  [diskImageParamsXPC2 setInstanceID:uUID];
                 }
 
-                v9 = [(DIClient2Controller_XPCHandler *)v21 newAttachWithParams:self error:a3];
+                v9 = [(DIClient2Controller_XPCHandler *)v21 newAttachWithParams:self error:error];
                 if (v9 && [(QuarantineFileHandler *)v31 isQuarantined])
                 {
-                  v34 = [v9 BSDName];
-                  [(QuarantineFileHandler *)v31 applyMountPointsWithBSDName:v34 error:0];
+                  bSDName = [v9 BSDName];
+                  [(QuarantineFileHandler *)v31 applyMountPointsWithBSDName:bSDName error:0];
                 }
               }
 
@@ -580,7 +580,7 @@ LABEL_9:
             goto LABEL_43;
           }
 
-          v29 = [DIError nilWithPOSIXCode:45 verboseInfo:@"Sparsebundles on SMB mounts are not supported on this system" error:a3];
+          v29 = [DIError nilWithPOSIXCode:45 verboseInfo:@"Sparsebundles on SMB mounts are not supported on this system" error:error];
 LABEL_42:
           v9 = v29;
 LABEL_43:
@@ -591,7 +591,7 @@ LABEL_43:
         v26 = @"Cannot attach RAM disk with a shadow or a cache file";
       }
 
-      v29 = [DIError nilWithPOSIXCode:22 description:v26 error:a3, v37];
+      v29 = [DIError nilWithPOSIXCode:22 description:v26 error:error, v37];
       goto LABEL_42;
     }
 
@@ -600,29 +600,29 @@ LABEL_15:
     goto LABEL_44;
   }
 
-  v9 = [DIError nilWithPOSIXCode:22 description:@"Cache is not supported when using pstack." error:a3];
+  v9 = [DIError nilWithPOSIXCode:22 description:@"Cache is not supported when using pstack." error:error];
 LABEL_44:
   v35 = *MEMORY[0x277D85DE8];
   return v9;
 }
 
-+ (BOOL)copyWithURL:(id)a3 outURLStr:(char *)a4 maxLen:(unint64_t)a5 error:(id *)a6
++ (BOOL)copyWithURL:(id)l outURLStr:(char *)str maxLen:(unint64_t)len error:(id *)error
 {
-  v9 = a3;
-  v10 = [v9 description];
-  v11 = [v10 UTF8String];
+  lCopy = l;
+  v10 = [lCopy description];
+  uTF8String = [v10 UTF8String];
 
-  if (!v11 || !*v11)
+  if (!uTF8String || !*uTF8String)
   {
-    v13 = [DIError failWithPOSIXCode:22 verboseInfo:@"Failed converting URL to UTF8" error:a6];
+    v13 = [DIError failWithPOSIXCode:22 verboseInfo:@"Failed converting URL to UTF8" error:error];
 LABEL_7:
     v12 = v13;
     goto LABEL_8;
   }
 
-  if (strlcpy(a4, v11, a5) >= a5)
+  if (strlcpy(str, uTF8String, len) >= len)
   {
-    v13 = [DIError failWithPOSIXCode:22 description:@"Disk image URL is too long" error:a6];
+    v13 = [DIError failWithPOSIXCode:22 description:@"Disk image URL is too long" error:error];
     goto LABEL_7;
   }
 
@@ -632,18 +632,18 @@ LABEL_8:
   return v12;
 }
 
-- (BOOL)isDeviceWithProperty:(const char *)a3 registryEntryID:(unint64_t)a4 predicate:(function<BOOL)(iokit_utils::di_io_obj_t
+- (BOOL)isDeviceWithProperty:(const char *)property registryEntryID:(unint64_t)d predicate:(function<BOOL)(iokit_utils::di_io_obj_t
 {
   v28 = *MEMORY[0x277D85DE8];
-  v21 = a4;
+  dCopy = d;
   if ([(DIBaseParams *)self RAMdisk])
   {
     v8 = 1;
   }
 
-  else if (a4)
+  else if (d)
   {
-    add_create_expected<iokit_utils::di_io_obj_t>::create<unsigned long long &>(&v21, v22);
+    add_create_expected<iokit_utils::di_io_obj_t>::create<unsigned long long &>(&dCopy, v22);
     unwrap_expected<iokit_utils::di_io_obj_t,std::error_code>(v22, "device not found in registry", &v20);
     iokit_utils::di_io_obj_view::di_io_obj_view(v19, 3, &v20);
     iokit_utils::di_io_obj_view::begin(v19, &v17);
@@ -681,7 +681,7 @@ LABEL_8:
       v23 = 2080;
       v24 = "[DIAttachParams isDeviceWithProperty:registryEntryID:predicate:]";
       v25 = 2080;
-      v26 = a3;
+      propertyCopy2 = property;
       v11 = _os_log_send_and_compose_impl();
 
       if (v11)
@@ -700,7 +700,7 @@ LABEL_8:
         v23 = 2080;
         v24 = "[DIAttachParams isDeviceWithProperty:registryEntryID:predicate:]";
         v25 = 2080;
-        v26 = a3;
+        propertyCopy2 = property;
         _os_log_impl(&dword_248DE0000, v12, OS_LOG_TYPE_DEFAULT, "%.*s: Registry entry ID is 0, can't check %s property", v22, 0x1Cu);
       }
     }
@@ -713,23 +713,23 @@ LABEL_8:
   return v8;
 }
 
-- (BOOL)isDeviceSolidStateWithRegistryEntryID:(unint64_t)a3
+- (BOOL)isDeviceSolidStateWithRegistryEntryID:(unint64_t)d
 {
   v6[4] = *MEMORY[0x277D85DE8];
   v6[0] = &unk_285BD7120;
   v6[3] = v6;
-  v3 = [(DIAttachParams *)self isDeviceWithProperty:"solid state" registryEntryID:a3 predicate:v6];
+  v3 = [(DIAttachParams *)self isDeviceWithProperty:"solid state" registryEntryID:d predicate:v6];
   std::__function::__value_func<BOOL ()(iokit_utils::di_io_obj_t)>::~__value_func[abi:ne200100](v6);
   v4 = *MEMORY[0x277D85DE8];
   return v3;
 }
 
-- (BOOL)isDeviceHighThroughputWithRegistryEntryID:(unint64_t)a3
+- (BOOL)isDeviceHighThroughputWithRegistryEntryID:(unint64_t)d
 {
   v6[4] = *MEMORY[0x277D85DE8];
   v6[0] = &unk_285BD71F0;
   v6[3] = v6;
-  v3 = [(DIAttachParams *)self isDeviceWithProperty:"high throughput" registryEntryID:a3 predicate:v6];
+  v3 = [(DIAttachParams *)self isDeviceWithProperty:"high throughput" registryEntryID:d predicate:v6];
   std::__function::__value_func<BOOL ()(iokit_utils::di_io_obj_t)>::~__value_func[abi:ne200100](v6);
   v4 = *MEMORY[0x277D85DE8];
   return v3;
@@ -756,7 +756,7 @@ LABEL_8:
 - (uint64_t)isDeviceSolidStateWithRegistryEntryID:
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else
@@ -768,7 +768,7 @@ LABEL_8:
 - (uint64_t)isDeviceHighThroughputWithRegistryEntryID:
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else

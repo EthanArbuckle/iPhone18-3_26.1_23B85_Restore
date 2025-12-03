@@ -1,54 +1,54 @@
 @interface EPSagaTransactionActivateDevice
 - (EPTransactionDelegate)delegate;
-- (id)_makeActiveDeviceCollection:(id)a3 diffWithPairingID:(id)a4 activate:(BOOL)a5;
-- (void)beginRollbackWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4;
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4;
+- (id)_makeActiveDeviceCollection:(id)collection diffWithPairingID:(id)d activate:(BOOL)activate;
+- (void)beginRollbackWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry;
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry;
 @end
 
 @implementation EPSagaTransactionActivateDevice
 
-- (id)_makeActiveDeviceCollection:(id)a3 diffWithPairingID:(id)a4 activate:(BOOL)a5
+- (id)_makeActiveDeviceCollection:(id)collection diffWithPairingID:(id)d activate:(BOOL)activate
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
+  activateCopy = activate;
+  collectionCopy = collection;
+  dCopy = d;
   v9 = +[NSDate date];
   v10 = +[NSMutableDictionary dictionary];
-  v11 = [v7 activeDeviceID];
-  v12 = v11;
-  if (v5)
+  activeDeviceID = [collectionCopy activeDeviceID];
+  v12 = activeDeviceID;
+  if (activateCopy)
   {
-    v13 = [v8 isEqual:v11];
+    v13 = [dCopy isEqual:activeDeviceID];
 
     if (v13)
     {
       goto LABEL_9;
     }
 
-    v14 = [v7 activeDeviceID];
+    activeDeviceID2 = [collectionCopy activeDeviceID];
 
-    if (v14)
+    if (activeDeviceID2)
     {
       v15 = [NRMutableDevice diffsToActivate:0 withDate:v9];
       v16 = [[NRDeviceDiff alloc] initWithDiffPropertyDiffs:v15];
       v17 = [[NRDeviceDiffType alloc] initWithDiff:v16 andChangeType:1];
-      v18 = [v7 activeDeviceID];
-      [v10 setObject:v17 forKeyedSubscript:v18];
+      activeDeviceID3 = [collectionCopy activeDeviceID];
+      [v10 setObject:v17 forKeyedSubscript:activeDeviceID3];
     }
 
     v19 = [NRMutableDevice diffsToActivate:1 withDate:v9];
     v20 = [v19 mutableCopy];
 
     v21 = [NRDevicePropertyDiffType alloc];
-    v22 = [[NRDevicePropertyDiff alloc] initWithValue:v8];
+    v22 = [[NRDevicePropertyDiff alloc] initWithValue:dCopy];
     v23 = [v21 initWithDiff:v22 andChangeType:1];
 
     [v20 setObject:v23 forKeyedSubscript:NRDevicePropertyPairingID];
     v24 = [[NRDeviceDiff alloc] initWithDiffPropertyDiffs:v20];
-    v25 = [[NRDeviceDiffType alloc] initWithDiff:v24 andChangeType:1];
+    activeDeviceID4 = [[NRDeviceDiffType alloc] initWithDiff:v24 andChangeType:1];
     v26 = v10;
-    v27 = v25;
-    v28 = v8;
+    v27 = activeDeviceID4;
+    v28 = dCopy;
   }
 
   else
@@ -62,10 +62,10 @@
     v20 = [NRMutableDevice diffsToActivate:0 withDate:v9];
     v23 = [[NRDeviceDiff alloc] initWithDiffPropertyDiffs:v20];
     v24 = [[NRDeviceDiffType alloc] initWithDiff:v23 andChangeType:1];
-    v25 = [v7 activeDeviceID];
+    activeDeviceID4 = [collectionCopy activeDeviceID];
     v26 = v10;
     v27 = v24;
-    v28 = v25;
+    v28 = activeDeviceID4;
   }
 
   [v26 setObject:v27 forKeyedSubscript:v28];
@@ -84,12 +84,12 @@ LABEL_9:
   return v29;
 }
 
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:@"nrDeviceIdentifier"];
-  v9 = [v7 serviceFromClass:objc_opt_class()];
+  entryCopy = entry;
+  registryCopy = registry;
+  v8 = [entryCopy objectForKeyedSubscript:@"nrDeviceIdentifier"];
+  v9 = [registryCopy serviceFromClass:objc_opt_class()];
 
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
@@ -97,26 +97,26 @@ LABEL_9:
   v12[3] = &unk_100176328;
   v12[4] = self;
   v13 = v8;
-  v14 = v6;
-  v10 = v6;
+  v14 = entryCopy;
+  v10 = entryCopy;
   v11 = v8;
   [v9 grabRegistryWithWriteBlockAsync:v12];
 }
 
-- (void)beginRollbackWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4
+- (void)beginRollbackWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [v9 objectForKeyedSubscript:@"shouldRollBack"];
+  entryCopy = entry;
+  registryCopy = registry;
+  v7 = [entryCopy objectForKeyedSubscript:@"shouldRollBack"];
   if ([v7 BOOLValue])
   {
-    [(EPSagaTransactionActivateDevice *)self beginTransactionWithRoutingSlipEntry:v9 serviceRegistry:v6];
+    [(EPSagaTransactionActivateDevice *)self beginTransactionWithRoutingSlipEntry:entryCopy serviceRegistry:registryCopy];
   }
 
   else
   {
-    v8 = [(EPSagaTransactionActivateDevice *)self delegate];
-    [v8 transactionDidComplete:self];
+    delegate = [(EPSagaTransactionActivateDevice *)self delegate];
+    [delegate transactionDidComplete:self];
   }
 }
 

@@ -13,11 +13,11 @@
     return 0;
   }
 
-  v3 = [(UITableViewCell *)self specifier];
-  v4 = [v3 propertyForKey:@"IsCaptionProfile"];
-  v5 = [v4 BOOLValue];
+  specifier = [(UITableViewCell *)self specifier];
+  v4 = [specifier propertyForKey:@"IsCaptionProfile"];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (BOOL)isEditableCaptionProfile
@@ -28,10 +28,10 @@
     return 0;
   }
 
-  v3 = [(UITableViewCell *)self specifier];
-  v4 = [v3 isEditableCaptionProfile];
+  specifier = [(UITableViewCell *)self specifier];
+  isEditableCaptionProfile = [specifier isEditableCaptionProfile];
 
-  return v4;
+  return isEditableCaptionProfile;
 }
 
 @end

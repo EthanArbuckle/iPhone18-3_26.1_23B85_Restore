@@ -1,23 +1,23 @@
 @interface CHUISMutableControlInstanceConfiguration
 - (CHUISMutableControlInstanceConfiguration)init;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 - (uint64_t)preferredColorScheme;
-- (void)setLaunchOrigin:(id)a3;
-- (void)setPreferredColorScheme:(unint64_t)a3;
+- (void)setLaunchOrigin:(id)origin;
+- (void)setPreferredColorScheme:(unint64_t)scheme;
 @end
 
 @implementation CHUISMutableControlInstanceConfiguration
 
 - (uint64_t)preferredColorScheme
 {
-  if (*(a1 + OBJC_IVAR___CHUISControlInstanceConfiguration__configuration + 16))
+  if (*(self + OBJC_IVAR___CHUISControlInstanceConfiguration__configuration + 16))
   {
     return 0;
   }
 
   else
   {
-    return *(a1 + OBJC_IVAR___CHUISControlInstanceConfiguration__configuration + 8);
+    return *(self + OBJC_IVAR___CHUISControlInstanceConfiguration__configuration + 8);
   }
 }
 
@@ -28,7 +28,7 @@
   return [(CHUISControlInstanceConfiguration *)&v3 init];
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
   v3 = *(&self->super.super.isa + OBJC_IVAR___CHUISControlInstanceConfiguration__configuration);
   v4 = *(&self->super.super.isa + OBJC_IVAR___CHUISControlInstanceConfiguration__configuration + 1);
@@ -51,16 +51,16 @@
   return v10;
 }
 
-- (void)setPreferredColorScheme:(unint64_t)a3
+- (void)setPreferredColorScheme:(unint64_t)scheme
 {
   v3 = self + OBJC_IVAR___CHUISControlInstanceConfiguration__configuration;
-  *(v3 + 1) = a3;
-  v3[16] = a3 == 0;
+  *(v3 + 1) = scheme;
+  v3[16] = scheme == 0;
 }
 
-- (void)setLaunchOrigin:(id)a3
+- (void)setLaunchOrigin:(id)origin
 {
-  if (a3)
+  if (origin)
   {
     v4 = sub_1D9327F84();
   }

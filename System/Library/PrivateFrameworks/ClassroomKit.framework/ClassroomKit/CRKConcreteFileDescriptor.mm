@@ -1,7 +1,7 @@
 @interface CRKConcreteFileDescriptor
-- (BOOL)changeFlags:(unsigned int)a3 error:(id *)a4;
-- (BOOL)fetchFlags:(unsigned int *)a3 error:(id *)a4;
-- (CRKConcreteFileDescriptor)initWithRawValue:(int)a3;
+- (BOOL)changeFlags:(unsigned int)flags error:(id *)error;
+- (BOOL)fetchFlags:(unsigned int *)flags error:(id *)error;
+- (CRKConcreteFileDescriptor)initWithRawValue:(int)value;
 - (int)rawValue;
 - (void)close;
 - (void)dealloc;
@@ -18,9 +18,9 @@
   [(CRKConcreteFileDescriptor *)&v3 dealloc];
 }
 
-- (CRKConcreteFileDescriptor)initWithRawValue:(int)a3
+- (CRKConcreteFileDescriptor)initWithRawValue:(int)value
 {
-  v3 = *&a3;
+  v3 = *&value;
   v8.receiver = self;
   v8.super_class = CRKConcreteFileDescriptor;
   v4 = [(CRKConcreteFileDescriptor *)&v8 init];
@@ -36,55 +36,55 @@
 
 - (int)rawValue
 {
-  v4 = [(CRKConcreteFileDescriptor *)self backingValue];
+  backingValue = [(CRKConcreteFileDescriptor *)self backingValue];
 
-  if (!v4)
+  if (!backingValue)
   {
     [(CRKConcreteFileDescriptor *)a2 rawValue];
   }
 
-  v5 = [(CRKConcreteFileDescriptor *)self backingValue];
-  v6 = [v5 intValue];
+  backingValue2 = [(CRKConcreteFileDescriptor *)self backingValue];
+  intValue = [backingValue2 intValue];
 
-  return v6;
+  return intValue;
 }
 
 - (void)close
 {
   v7 = *MEMORY[0x277D85DE8];
-  v3 = a1;
-  v4 = [a2 verboseDescription];
+  selfCopy = self;
+  verboseDescription = [a2 verboseDescription];
   v5 = 138543362;
-  v6 = v4;
-  _os_log_error_impl(&dword_243550000, v3, OS_LOG_TYPE_ERROR, "Failed to close file descriptor. Error: %{public}@", &v5, 0xCu);
+  v6 = verboseDescription;
+  _os_log_error_impl(&dword_243550000, selfCopy, OS_LOG_TYPE_ERROR, "Failed to close file descriptor. Error: %{public}@", &v5, 0xCu);
 }
 
-- (BOOL)fetchFlags:(unsigned int *)a3 error:(id *)a4
+- (BOOL)fetchFlags:(unsigned int *)flags error:(id *)error
 {
   v6 = fstat([(CRKConcreteFileDescriptor *)self rawValue:0], &v8);
   if (v6)
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [MEMORY[0x277CCA9B8] crk_errorWithPOSIXCode:*__error()];
+      *error = [MEMORY[0x277CCA9B8] crk_errorWithPOSIXCode:*__error()];
     }
   }
 
-  else if (a3)
+  else if (flags)
   {
-    *a3 = v8.st_flags;
+    *flags = v8.st_flags;
   }
 
   return v6 == 0;
 }
 
-- (BOOL)changeFlags:(unsigned int)a3 error:(id *)a4
+- (BOOL)changeFlags:(unsigned int)flags error:(id *)error
 {
-  v5 = fchflags([(CRKConcreteFileDescriptor *)self rawValue], a3);
+  v5 = fchflags([(CRKConcreteFileDescriptor *)self rawValue], flags);
   v6 = v5;
-  if (a4 && v5)
+  if (error && v5)
   {
-    *a4 = [MEMORY[0x277CCA9B8] crk_errorWithPOSIXCode:*__error()];
+    *error = [MEMORY[0x277CCA9B8] crk_errorWithPOSIXCode:*__error()];
   }
 
   return v6 == 0;
@@ -92,8 +92,8 @@
 
 - (void)rawValue
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"CRKConcreteFileDescriptor.m" lineNumber:45 description:@"Attempted to access raw value after closing file descriptor"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"CRKConcreteFileDescriptor.m" lineNumber:45 description:@"Attempted to access raw value after closing file descriptor"];
 }
 
 @end

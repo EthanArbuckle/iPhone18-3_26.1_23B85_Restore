@@ -1,18 +1,18 @@
 @interface COSManualFlowView
-- (COSManualFlowView)initWithFrame:(CGRect)a3;
+- (COSManualFlowView)initWithFrame:(CGRect)frame;
 - (COSManualFlowViewDelegate)delegate;
 - (void)layoutSubviews;
-- (void)pressedCancel:(id)a3;
-- (void)pressedDone:(id)a3;
+- (void)pressedCancel:(id)cancel;
+- (void)pressedDone:(id)done;
 @end
 
 @implementation COSManualFlowView
 
-- (COSManualFlowView)initWithFrame:(CGRect)a3
+- (COSManualFlowView)initWithFrame:(CGRect)frame
 {
   v62.receiver = self;
   v62.super_class = COSManualFlowView;
-  v3 = [(COSManualFlowView *)&v62 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(COSManualFlowView *)&v62 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [[_UIBackdropView alloc] initWithStyle:2030];
@@ -21,14 +21,14 @@
 
     [(COSManualFlowView *)v3 bounds];
     [(_UIBackdropView *)v3->_backdropView setFrame:?];
-    v6 = [(_UIBackdropView *)v3->_backdropView inputSettings];
-    [v6 setBlurRadius:3.0];
+    inputSettings = [(_UIBackdropView *)v3->_backdropView inputSettings];
+    [inputSettings setBlurRadius:3.0];
 
-    v7 = [(_UIBackdropView *)v3->_backdropView inputSettings];
-    [v7 setGrayscaleTintLevel:0.0];
+    inputSettings2 = [(_UIBackdropView *)v3->_backdropView inputSettings];
+    [inputSettings2 setGrayscaleTintLevel:0.0];
 
-    v8 = [(_UIBackdropView *)v3->_backdropView inputSettings];
-    [v8 setGrayscaleTintAlpha:0.8];
+    inputSettings3 = [(_UIBackdropView *)v3->_backdropView inputSettings];
+    [inputSettings3 setGrayscaleTintAlpha:0.8];
 
     [(COSManualFlowView *)v3 addSubview:v3->_backdropView];
     v9 = [UILabel alloc];
@@ -125,12 +125,12 @@
     v49 = [v48 localizedStringForKey:@"DONE" value:&stru_10026E598 table:@"Localizable"];
     [(UIButton *)v47 setTitle:v49 forState:0];
 
-    v50 = [(UIButton *)v3->_doneButton titleLabel];
-    [v50 setTextAlignment:1];
+    titleLabel = [(UIButton *)v3->_doneButton titleLabel];
+    [titleLabel setTextAlignment:1];
 
-    v51 = [(UIButton *)v3->_doneButton titleLabel];
+    titleLabel2 = [(UIButton *)v3->_doneButton titleLabel];
     v52 = [UIFont systemFontOfSize:18.0];
-    [v51 setFont:v52];
+    [titleLabel2 setFont:v52];
 
     [(COSManualFlowView *)v3 addSubview:v3->_doneButton];
     v53 = [UIButton buttonWithType:1];
@@ -143,12 +143,12 @@
     v57 = [v56 localizedStringForKey:@"CANCEL" value:&stru_10026E598 table:@"Localizable"];
     [(UIButton *)v55 setTitle:v57 forState:0];
 
-    v58 = [(UIButton *)v3->_cancelButton titleLabel];
-    [v58 setTextAlignment:1];
+    titleLabel3 = [(UIButton *)v3->_cancelButton titleLabel];
+    [titleLabel3 setTextAlignment:1];
 
-    v59 = [(UIButton *)v3->_cancelButton titleLabel];
+    titleLabel4 = [(UIButton *)v3->_cancelButton titleLabel];
     v60 = [UIFont systemFontOfSize:18.0];
-    [v59 setFont:v60];
+    [titleLabel4 setFont:v60];
 
     [(COSManualFlowView *)v3 addSubview:v3->_cancelButton];
   }
@@ -156,7 +156,7 @@
   return v3;
 }
 
-- (void)pressedCancel:(id)a3
+- (void)pressedCancel:(id)cancel
 {
   v4 = pbb_bridge_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -169,7 +169,7 @@
   [WeakRetained pressedCancel:self];
 }
 
-- (void)pressedDone:(id)a3
+- (void)pressedDone:(id)done
 {
   v4 = pbb_bridge_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))

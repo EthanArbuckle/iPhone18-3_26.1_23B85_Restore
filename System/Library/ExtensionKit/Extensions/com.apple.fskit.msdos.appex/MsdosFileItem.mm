@@ -6,11 +6,11 @@
 
 - (void)waitForWrites
 {
-  v2 = self;
+  selfCopy = self;
   while ([(FileItem *)self writeCounter])
   {
     usleep(0x64u);
-    self = v2;
+    self = selfCopy;
   }
 }
 

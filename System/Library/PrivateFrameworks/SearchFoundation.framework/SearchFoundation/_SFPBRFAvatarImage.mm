@@ -1,26 +1,26 @@
 @interface _SFPBRFAvatarImage
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBRFAvatarImage)initWithDictionary:(id)a3;
-- (_SFPBRFAvatarImage)initWithFacade:(id)a3;
-- (_SFPBRFAvatarImage)initWithJSON:(id)a3;
+- (_SFPBRFAvatarImage)initWithDictionary:(id)dictionary;
+- (_SFPBRFAvatarImage)initWithFacade:(id)facade;
+- (_SFPBRFAvatarImage)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)addContact_ids:(id)a3;
-- (void)setContact_ids:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addContact_ids:(id)contact_ids;
+- (void)setContact_ids:(id)contact_ids;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBRFAvatarImage
 
-- (_SFPBRFAvatarImage)initWithFacade:(id)a3
+- (_SFPBRFAvatarImage)initWithFacade:(id)facade
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBRFAvatarImage *)self init];
   if (v5)
   {
-    v6 = [v4 contact_ids];
-    if (v6)
+    contact_ids = [facadeCopy contact_ids];
+    if (contact_ids)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -34,8 +34,8 @@
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v8 = [v4 contact_ids];
-    v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    contact_ids2 = [facadeCopy contact_ids];
+    v9 = [contact_ids2 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v9)
     {
       v10 = v9;
@@ -46,7 +46,7 @@
         {
           if (*v17 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(contact_ids2);
           }
 
           if (*(*(&v16 + 1) + 8 * i))
@@ -55,16 +55,16 @@
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v10 = [contact_ids2 countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v10);
     }
 
     [(_SFPBRFAvatarImage *)v5 setContact_ids:v7];
-    if ([v4 hasImage_style])
+    if ([facadeCopy hasImage_style])
     {
-      -[_SFPBRFAvatarImage setImage_style:](v5, "setImage_style:", [v4 image_style]);
+      -[_SFPBRFAvatarImage setImage_style:](v5, "setImage_style:", [facadeCopy image_style]);
     }
 
     v13 = v5;
@@ -74,16 +74,16 @@
   return v5;
 }
 
-- (_SFPBRFAvatarImage)initWithDictionary:(id)a3
+- (_SFPBRFAvatarImage)initWithDictionary:(id)dictionary
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v22.receiver = self;
   v22.super_class = _SFPBRFAvatarImage;
   v5 = [(_SFPBRFAvatarImage *)&v22 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"contactIds"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"contactIds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -126,7 +126,7 @@
       }
     }
 
-    v14 = [v4 objectForKeyedSubscript:{@"imageStyle", v18}];
+    v14 = [dictionaryCopy objectForKeyedSubscript:{@"imageStyle", v18}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -140,30 +140,30 @@
   return v5;
 }
 
-- (_SFPBRFAvatarImage)initWithJSON:(id)a3
+- (_SFPBRFAvatarImage)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBRFAvatarImage *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBRFAvatarImage *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBRFAvatarImage *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -176,57 +176,57 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_contact_ids)
   {
-    v4 = [(_SFPBRFAvatarImage *)self contact_ids];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"contactIds"];
+    contact_ids = [(_SFPBRFAvatarImage *)self contact_ids];
+    v5 = [contact_ids copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"contactIds"];
   }
 
   if (self->_image_style)
   {
-    v6 = [(_SFPBRFAvatarImage *)self image_style];
-    if (v6 < 0x2A && ((0x3FFDFFFFFFFuLL >> v6) & 1) != 0)
+    image_style = [(_SFPBRFAvatarImage *)self image_style];
+    if (image_style < 0x2A && ((0x3FFDFFFFFFFuLL >> image_style) & 1) != 0)
     {
-      v7 = off_1E7ACE270[v6];
+      v7 = off_1E7ACE270[image_style];
     }
 
     else
     {
-      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v6];
+      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", image_style];
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"imageStyle"];
+    [dictionary setObject:v7 forKeyedSubscript:@"imageStyle"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_SFPBRFAvatarImage *)self contact_ids];
-    v6 = [v4 contact_ids];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    contact_ids = [(_SFPBRFAvatarImage *)self contact_ids];
+    contact_ids2 = [equalCopy contact_ids];
+    v7 = contact_ids2;
+    if ((contact_ids != 0) != (contact_ids2 == 0))
     {
-      v8 = [(_SFPBRFAvatarImage *)self contact_ids];
-      if (!v8)
+      contact_ids3 = [(_SFPBRFAvatarImage *)self contact_ids];
+      if (!contact_ids3)
       {
 
 LABEL_10:
         image_style = self->_image_style;
-        v13 = image_style == [v4 image_style];
+        v13 = image_style == [equalCopy image_style];
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(_SFPBRFAvatarImage *)self contact_ids];
-      v11 = [v4 contact_ids];
-      v12 = [v10 isEqual:v11];
+      v9 = contact_ids3;
+      contact_ids4 = [(_SFPBRFAvatarImage *)self contact_ids];
+      contact_ids5 = [equalCopy contact_ids];
+      v12 = [contact_ids4 isEqual:contact_ids5];
 
       if (v12)
       {
@@ -245,16 +245,16 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_SFPBRFAvatarImage *)self contact_ids];
+  toCopy = to;
+  contact_ids = [(_SFPBRFAvatarImage *)self contact_ids];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [contact_ids countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -266,7 +266,7 @@ LABEL_8:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(contact_ids);
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
@@ -275,7 +275,7 @@ LABEL_8:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [contact_ids countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -289,27 +289,27 @@ LABEL_8:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addContact_ids:(id)a3
+- (void)addContact_ids:(id)contact_ids
 {
-  v4 = a3;
+  contact_idsCopy = contact_ids;
   contact_ids = self->_contact_ids;
-  v8 = v4;
+  v8 = contact_idsCopy;
   if (!contact_ids)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_contact_ids;
-    self->_contact_ids = v6;
+    self->_contact_ids = array;
 
-    v4 = v8;
+    contact_idsCopy = v8;
     contact_ids = self->_contact_ids;
   }
 
-  [(NSArray *)contact_ids addObject:v4];
+  [(NSArray *)contact_ids addObject:contact_idsCopy];
 }
 
-- (void)setContact_ids:(id)a3
+- (void)setContact_ids:(id)contact_ids
 {
-  v4 = [a3 copy];
+  v4 = [contact_ids copy];
   contact_ids = self->_contact_ids;
   self->_contact_ids = v4;
 

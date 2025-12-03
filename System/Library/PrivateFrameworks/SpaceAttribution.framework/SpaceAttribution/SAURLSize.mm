@@ -1,51 +1,51 @@
 @interface SAURLSize
-+ (id)newWithSize:(unint64_t)a3;
-- (SAURLSize)initWithCoder:(id)a3;
-- (SAURLSize)initWithSize:(unint64_t)a3 mayBePartOfCloneChain:(BOOL)a4;
-- (void)encodeWithCoder:(id)a3;
++ (id)newWithSize:(unint64_t)size;
+- (SAURLSize)initWithCoder:(id)coder;
+- (SAURLSize)initWithSize:(unint64_t)size mayBePartOfCloneChain:(BOOL)chain;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SAURLSize
 
-- (SAURLSize)initWithSize:(unint64_t)a3 mayBePartOfCloneChain:(BOOL)a4
+- (SAURLSize)initWithSize:(unint64_t)size mayBePartOfCloneChain:(BOOL)chain
 {
   v7.receiver = self;
   v7.super_class = SAURLSize;
   result = [(SAURLSize *)&v7 init];
   if (result)
   {
-    result->_size = a3;
-    result->_mayBePartOfCloneChain = a4;
+    result->_size = size;
+    result->_mayBePartOfCloneChain = chain;
   }
 
   return result;
 }
 
-+ (id)newWithSize:(unint64_t)a3
++ (id)newWithSize:(unint64_t)size
 {
-  v4 = [a1 alloc];
+  v4 = [self alloc];
 
-  return [v4 initWithSize:a3 mayBePartOfCloneChain:0];
+  return [v4 initWithSize:size mayBePartOfCloneChain:0];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   size = self->_size;
-  v5 = a3;
-  [v5 encodeInt64:size forKey:@"urlSize"];
-  [v5 encodeBool:self->_mayBePartOfCloneChain forKey:@"cloneChain"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:size forKey:@"urlSize"];
+  [coderCopy encodeBool:self->_mayBePartOfCloneChain forKey:@"cloneChain"];
 }
 
-- (SAURLSize)initWithCoder:(id)a3
+- (SAURLSize)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = SAURLSize;
   v5 = [(SAURLSize *)&v7 init];
   if (v5)
   {
-    v5->_size = [v4 decodeInt64ForKey:@"urlSize"];
-    v5->_mayBePartOfCloneChain = [v4 decodeBoolForKey:@"cloneChain"];
+    v5->_size = [coderCopy decodeInt64ForKey:@"urlSize"];
+    v5->_mayBePartOfCloneChain = [coderCopy decodeBoolForKey:@"cloneChain"];
   }
 
   return v5;

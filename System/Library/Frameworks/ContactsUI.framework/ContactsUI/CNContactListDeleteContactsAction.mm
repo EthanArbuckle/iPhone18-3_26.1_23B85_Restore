@@ -1,10 +1,10 @@
 @interface CNContactListDeleteContactsAction
-+ (id)actionForContact:(id)a3 configuration:(id)a4;
++ (id)actionForContact:(id)contact configuration:(id)configuration;
 + (id)descriptorForRequiredKeys;
 + (id)log;
 - (BOOL)editRequiresAuthorization;
-- (BOOL)editRequiresAuthorizationCheckForActions:(id)a3;
-- (CNContactListDeleteContactsAction)initWithContacts:(id)a3 configuration:(id)a4;
+- (BOOL)editRequiresAuthorizationCheckForActions:(id)actions;
+- (CNContactListDeleteContactsAction)initWithContacts:(id)contacts configuration:(id)configuration;
 - (id)alertTitle;
 - (void)performAction;
 - (void)performUndoAction;
@@ -15,21 +15,21 @@
 
 - (void)performUndoAction
 {
-  v3 = [(CNContactListDeleteContactsAction *)self actions];
-  [v3 _cn_each:&__block_literal_global_91];
+  actions = [(CNContactListDeleteContactsAction *)self actions];
+  [actions _cn_each:&__block_literal_global_91];
 
-  v4 = [(CNContactListAction *)self delegate];
-  [v4 actionDidFinish:self];
+  delegate = [(CNContactListAction *)self delegate];
+  [delegate actionDidFinish:self];
 }
 
-- (BOOL)editRequiresAuthorizationCheckForActions:(id)a3
+- (BOOL)editRequiresAuthorizationCheckForActions:(id)actions
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __78__CNContactListDeleteContactsAction_editRequiresAuthorizationCheckForActions___block_invoke;
   v4[3] = &unk_1E74E3370;
   v4[4] = self;
-  return [a3 _cn_any:v4];
+  return [actions _cn_any:v4];
 }
 
 uint64_t __78__CNContactListDeleteContactsAction_editRequiresAuthorizationCheckForActions___block_invoke(uint64_t a1, void *a2)
@@ -45,11 +45,11 @@ uint64_t __78__CNContactListDeleteContactsAction_editRequiresAuthorizationCheckF
 
 - (BOOL)editRequiresAuthorization
 {
-  v2 = self;
-  v3 = [(CNContactListDeleteContactsAction *)self actions];
-  LOBYTE(v2) = [(CNContactListDeleteContactsAction *)v2 editRequiresAuthorizationCheckForActions:v3];
+  selfCopy = self;
+  actions = [(CNContactListDeleteContactsAction *)self actions];
+  LOBYTE(selfCopy) = [(CNContactListDeleteContactsAction *)selfCopy editRequiresAuthorizationCheckForActions:actions];
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)showDeleteFailureAlert
@@ -61,26 +61,26 @@ uint64_t __78__CNContactListDeleteContactsAction_editRequiresAuthorizationCheckF
   v7 = [v6 localizedStringForKey:@"DELETE_CARD_SHEET_FAILURE_ALERT_EXPLANATION" value:&stru_1F0CE7398 table:@"Localized"];
   v13 = [v3 alertControllerWithTitle:v5 message:v7 preferredStyle:1];
 
-  v8 = [(CNContactListDeleteContactsAction *)self componentsFactory];
+  componentsFactory = [(CNContactListDeleteContactsAction *)self componentsFactory];
   v9 = CNContactsUIBundle();
   v10 = [v9 localizedStringForKey:@"OK" value:&stru_1F0CE7398 table:@"Localized"];
-  v11 = [v8 alertActionWithTitle:v10 style:0 handler:0];
+  v11 = [componentsFactory alertActionWithTitle:v10 style:0 handler:0];
   [v13 addAction:v11];
 
-  v12 = [(CNContactListAction *)self delegate];
-  [v12 action:self presentViewController:v13];
+  delegate = [(CNContactListAction *)self delegate];
+  [delegate action:self presentViewController:v13];
 }
 
 - (id)alertTitle
 {
   if ([(CNContactListDeleteContactsAction *)self originalContactCount]== 1)
   {
-    v3 = [(CNContactListDeleteContactsAction *)self actions];
-    v4 = [v3 firstObject];
-    v5 = [v4 contact];
+    actions = [(CNContactListDeleteContactsAction *)self actions];
+    firstObject = [actions firstObject];
+    contact = [firstObject contact];
 
-    v6 = [(CNContactListDeleteContactsAction *)self actions];
-    v7 = [v6 count];
+    actions2 = [(CNContactListDeleteContactsAction *)self actions];
+    v7 = [actions2 count];
 
     v8 = MEMORY[0x1E696AEC0];
     v9 = CNContactsUIBundle();
@@ -88,24 +88,24 @@ uint64_t __78__CNContactListDeleteContactsAction_editRequiresAuthorizationCheckF
     if (v7 < 2)
     {
       v11 = [v9 localizedStringForKey:@"LIST_ACTION_DELETE_CARD" value:&stru_1F0CE7398 table:@"Localized"];
-      v12 = [(CNContactListDeleteContactsAction *)self contactFormatter];
-      v15 = [v12 stringFromContact:v5];
+      contactFormatter = [(CNContactListDeleteContactsAction *)self contactFormatter];
+      v15 = [contactFormatter stringFromContact:contact];
       v13 = [v8 localizedStringWithFormat:v11, v15];
     }
 
     else
     {
       v11 = [v9 localizedStringForKey:@"LIST_ACTION_DELETE_CARD_SINGLE_CONTACT" value:&stru_1F0CE7398 table:@"Localized"];
-      v12 = [(CNContactListDeleteContactsAction *)self actions];
-      v13 = [v8 localizedStringWithFormat:v11, objc_msgSend(v12, "count") - 1];
+      contactFormatter = [(CNContactListDeleteContactsAction *)self actions];
+      v13 = [v8 localizedStringWithFormat:v11, objc_msgSend(contactFormatter, "count") - 1];
     }
   }
 
   else
   {
     v14 = MEMORY[0x1E696AEC0];
-    v5 = CNContactsUIBundle();
-    v10 = [v5 localizedStringForKey:@"LIST_ACTION_DELETE_CARD_MULTIPLE" value:&stru_1F0CE7398 table:@"Localized"];
+    contact = CNContactsUIBundle();
+    v10 = [contact localizedStringForKey:@"LIST_ACTION_DELETE_CARD_MULTIPLE" value:&stru_1F0CE7398 table:@"Localized"];
     v13 = [v14 localizedStringWithFormat:v10, -[CNContactListDeleteContactsAction originalContactCount](self, "originalContactCount")];
   }
 
@@ -115,8 +115,8 @@ uint64_t __78__CNContactListDeleteContactsAction_editRequiresAuthorizationCheckF
 - (void)performAction
 {
   v3 = MEMORY[0x1E69DC650];
-  v4 = [(CNContactListDeleteContactsAction *)self alertTitle];
-  v5 = [v3 alertControllerWithTitle:v4 message:0 preferredStyle:1];
+  alertTitle = [(CNContactListDeleteContactsAction *)self alertTitle];
+  v5 = [v3 alertControllerWithTitle:alertTitle message:0 preferredStyle:1];
 
   if (-[CNContactListDeleteContactsAction originalContactCount](self, "originalContactCount") == 1 && (-[CNContactListDeleteContactsAction actions](self, "actions"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 count], v6, v7 == 1))
   {
@@ -131,23 +131,23 @@ uint64_t __78__CNContactListDeleteContactsAction_editRequiresAuthorizationCheckF
   v9 = CNContactsUIBundle();
   v10 = [v9 localizedStringForKey:v8 value:&stru_1F0CE7398 table:@"Localized"];
 
-  v11 = [(CNContactListDeleteContactsAction *)self componentsFactory];
+  componentsFactory = [(CNContactListDeleteContactsAction *)self componentsFactory];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __50__CNContactListDeleteContactsAction_performAction__block_invoke;
   v18[3] = &unk_1E74E6C28;
   v18[4] = self;
-  v12 = [v11 alertActionWithTitle:v10 style:2 handler:v18];
+  v12 = [componentsFactory alertActionWithTitle:v10 style:2 handler:v18];
   [v5 addAction:v12];
 
-  v13 = [(CNContactListDeleteContactsAction *)self componentsFactory];
+  componentsFactory2 = [(CNContactListDeleteContactsAction *)self componentsFactory];
   v14 = CNContactsUIBundle();
   v15 = [v14 localizedStringForKey:@"CANCEL" value:&stru_1F0CE7398 table:@"Localized"];
-  v16 = [v13 alertActionWithTitle:v15 style:1 handler:&__block_literal_global_70];
+  v16 = [componentsFactory2 alertActionWithTitle:v15 style:1 handler:&__block_literal_global_70];
   [v5 addAction:v16];
 
-  v17 = [(CNContactListAction *)self delegate];
-  [v17 action:self presentViewController:v5];
+  delegate = [(CNContactListAction *)self delegate];
+  [delegate action:self presentViewController:v5];
 }
 
 void __50__CNContactListDeleteContactsAction_performAction__block_invoke(uint64_t a1, void *a2)
@@ -190,44 +190,44 @@ void __50__CNContactListDeleteContactsAction_performAction__block_invoke_63(uint
   }
 }
 
-- (CNContactListDeleteContactsAction)initWithContacts:(id)a3 configuration:(id)a4
+- (CNContactListDeleteContactsAction)initWithContacts:(id)contacts configuration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  contactsCopy = contacts;
+  configurationCopy = configuration;
   v29.receiver = self;
   v29.super_class = CNContactListDeleteContactsAction;
   v8 = [(CNContactListDeleteContactsAction *)&v29 init];
   v9 = v8;
   if (v8)
   {
-    [(CNContactListAction *)v8 setConfiguration:v7];
-    v10 = [v7 environment];
-    v11 = [v10 componentsFactory];
+    [(CNContactListAction *)v8 setConfiguration:configurationCopy];
+    environment = [configurationCopy environment];
+    componentsFactory = [environment componentsFactory];
     componentsFactory = v9->_componentsFactory;
-    v9->_componentsFactory = v11;
+    v9->_componentsFactory = componentsFactory;
 
-    v13 = [v7 environment];
-    v14 = [v13 recentsManager];
+    environment2 = [configurationCopy environment];
+    recentsManager = [environment2 recentsManager];
     recentsManager = v9->_recentsManager;
-    v9->_recentsManager = v14;
+    v9->_recentsManager = recentsManager;
 
-    v16 = [v7 contactFormatter];
+    contactFormatter = [configurationCopy contactFormatter];
     contactFormatter = v9->_contactFormatter;
-    v9->_contactFormatter = v16;
+    v9->_contactFormatter = contactFormatter;
 
-    v18 = [v7 contactStore];
+    contactStore = [configurationCopy contactStore];
     contactStore = v9->_contactStore;
-    v9->_contactStore = v18;
+    v9->_contactStore = contactStore;
 
-    v9->_originalContactCount = [v6 count];
+    v9->_originalContactCount = [contactsCopy count];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __68__CNContactListDeleteContactsAction_initWithContacts_configuration___block_invoke;
     v25[3] = &unk_1E74E3320;
     v20 = v9;
     v26 = v20;
-    v27 = v6;
-    v28 = v7;
+    v27 = contactsCopy;
+    v28 = configurationCopy;
     v21 = [v27 _cn_flatMap:v25];
     actions = v20->_actions;
     v20->_actions = v21;
@@ -292,20 +292,20 @@ id __68__CNContactListDeleteContactsAction_initWithContacts_configuration___bloc
   return v4;
 }
 
-+ (id)actionForContact:(id)a3 configuration:(id)a4
++ (id)actionForContact:(id)contact configuration:(id)configuration
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 contactViewCache];
-  v8 = [v7 containerForContact:v6];
-  v9 = [v8 identifier];
+  configurationCopy = configuration;
+  contactCopy = contact;
+  contactViewCache = [configurationCopy contactViewCache];
+  v8 = [contactViewCache containerForContact:contactCopy];
+  identifier = [v8 identifier];
 
   v10 = [CNContactListDeleteContactAction alloc];
-  v11 = [v5 contactStore];
-  v12 = [v5 environment];
+  contactStore = [configurationCopy contactStore];
+  environment = [configurationCopy environment];
 
-  v13 = [v12 recentsManager];
-  v14 = [(CNContactListDeleteContactAction *)v10 initWithContact:v6 contactStore:v11 containerIdentifier:v9 recentsManager:v13];
+  recentsManager = [environment recentsManager];
+  v14 = [(CNContactListDeleteContactAction *)v10 initWithContact:contactCopy contactStore:contactStore containerIdentifier:identifier recentsManager:recentsManager];
 
   return v14;
 }
@@ -314,8 +314,8 @@ id __68__CNContactListDeleteContactsAction_initWithContacts_configuration___bloc
 {
   v10[3] = *MEMORY[0x1E69E9840];
   v2 = MEMORY[0x1E695CD58];
-  v3 = [MEMORY[0x1E6996B38] descriptorForRequiredKeys];
-  v4 = [MEMORY[0x1E695CD80] descriptorForRequiredKeysForStyle:{0, v3}];
+  descriptorForRequiredKeys = [MEMORY[0x1E6996B38] descriptorForRequiredKeys];
+  v4 = [MEMORY[0x1E695CD80] descriptorForRequiredKeysForStyle:{0, descriptorForRequiredKeys}];
   v5 = *MEMORY[0x1E695C200];
   v10[1] = v4;
   v10[2] = v5;

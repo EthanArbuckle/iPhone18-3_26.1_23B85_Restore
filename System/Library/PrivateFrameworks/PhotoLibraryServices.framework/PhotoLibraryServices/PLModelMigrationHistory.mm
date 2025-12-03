@@ -1,13 +1,13 @@
 @interface PLModelMigrationHistory
-- (BOOL)isLibraryOlderThanVersion:(unsigned __int16)a3;
+- (BOOL)isLibraryOlderThanVersion:(unsigned __int16)version;
 - (BOOL)libraryWasEverRebuilt;
-- (PLModelMigrationHistory)initWithManagedObjectContext:(id)a3;
-- (id)libraryVersionHistorySinceLastRebuildOnly:(BOOL)a3;
+- (PLModelMigrationHistory)initWithManagedObjectContext:(id)context;
+- (id)libraryVersionHistorySinceLastRebuildOnly:(BOOL)only;
 @end
 
 @implementation PLModelMigrationHistory
 
-- (id)libraryVersionHistorySinceLastRebuildOnly:(BOOL)a3
+- (id)libraryVersionHistorySinceLastRebuildOnly:(BOOL)only
 {
   v10 = 0;
   v11 = &v10;
@@ -22,7 +22,7 @@
   v8[3] = &unk_1E7573CD8;
   v8[4] = self;
   v8[5] = &v10;
-  v9 = a3;
+  onlyCopy = only;
   [(NSManagedObjectContext *)managedObjectContext performBlockAndWait:v8];
   v6 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -138,7 +138,7 @@ uint64_t __48__PLModelMigrationHistory_libraryWasEverRebuilt__block_invoke_2(uin
   return result;
 }
 
-- (BOOL)isLibraryOlderThanVersion:(unsigned __int16)a3
+- (BOOL)isLibraryOlderThanVersion:(unsigned __int16)version
 {
   v8 = 0;
   v9 = &v8;
@@ -149,7 +149,7 @@ uint64_t __48__PLModelMigrationHistory_libraryWasEverRebuilt__block_invoke_2(uin
   v6[1] = 3221225472;
   v6[2] = __53__PLModelMigrationHistory_isLibraryOlderThanVersion___block_invoke;
   v6[3] = &unk_1E75726C0;
-  v7 = a3;
+  versionCopy = version;
   v6[4] = self;
   v6[5] = &v8;
   [(NSManagedObjectContext *)managedObjectContext performBlockAndWait:v6];
@@ -194,13 +194,13 @@ void __53__PLModelMigrationHistory_isLibraryOlderThanVersion___block_invoke_2(ui
   }
 }
 
-- (PLModelMigrationHistory)initWithManagedObjectContext:(id)a3
+- (PLModelMigrationHistory)initWithManagedObjectContext:(id)context
 {
-  v6 = a3;
-  if (!v6)
+  contextCopy = context;
+  if (!contextCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PLModelMigrationHistory.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"ctx"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLModelMigrationHistory.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"ctx"}];
   }
 
   v18.receiver = self;
@@ -209,7 +209,7 @@ void __53__PLModelMigrationHistory_isLibraryOlderThanVersion___block_invoke_2(ui
   if (v7)
   {
     v8 = v7;
-    objc_storeStrong(&v7->_managedObjectContext, a3);
+    objc_storeStrong(&v7->_managedObjectContext, context);
     managedObjectContext = v8->_managedObjectContext;
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
@@ -217,7 +217,7 @@ void __53__PLModelMigrationHistory_isLibraryOlderThanVersion___block_invoke_2(ui
     v15[3] = &unk_1E7578848;
     v10 = v8;
     v16 = v10;
-    v17 = v6;
+    v17 = contextCopy;
     [(NSManagedObjectContext *)managedObjectContext performBlockAndWait:v15];
     if (!v10->_migrationHistory)
     {

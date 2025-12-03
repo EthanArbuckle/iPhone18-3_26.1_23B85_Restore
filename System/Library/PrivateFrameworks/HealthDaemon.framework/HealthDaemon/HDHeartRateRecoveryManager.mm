@@ -1,8 +1,8 @@
 @interface HDHeartRateRecoveryManager
 - (HDHeartRateRecoveryManager)init;
-- (id)createAndTakeAssertionForOwnerIdentifier:(id)a3 sessionStateController:(id)a4;
-- (void)assertionManager:(id)a3 assertionInvalidated:(id)a4;
-- (void)assertionManager:(id)a3 assertionTaken:(id)a4;
+- (id)createAndTakeAssertionForOwnerIdentifier:(id)identifier sessionStateController:(id)controller;
+- (void)assertionManager:(id)manager assertionInvalidated:(id)invalidated;
+- (void)assertionManager:(id)manager assertionTaken:(id)taken;
 - (void)dealloc;
 @end
 
@@ -38,17 +38,17 @@
   [(HDHeartRateRecoveryManager *)&v3 dealloc];
 }
 
-- (id)createAndTakeAssertionForOwnerIdentifier:(id)a3 sessionStateController:(id)a4
+- (id)createAndTakeAssertionForOwnerIdentifier:(id)identifier sessionStateController:(id)controller
 {
-  v6 = a4;
-  v7 = a3;
+  controllerCopy = controller;
+  identifierCopy = identifier;
   v8 = [_HDHeartRateRecoveryAssertion alloc];
-  v9 = v6;
+  v9 = controllerCopy;
   if (v8)
   {
     v15.receiver = v8;
     v15.super_class = _HDHeartRateRecoveryAssertion;
-    v10 = [(HDHeartRateRecoveryManager *)&v15 initWithAssertionIdentifier:@"HDWorkoutSessionAssertionIdentifierHeartRateRecovery" ownerIdentifier:v7];
+    v10 = [(HDHeartRateRecoveryManager *)&v15 initWithAssertionIdentifier:@"HDWorkoutSessionAssertionIdentifierHeartRateRecovery" ownerIdentifier:identifierCopy];
     v8 = v10;
     if (v10)
     {
@@ -78,7 +78,7 @@
   return v12;
 }
 
-- (void)assertionManager:(id)a3 assertionTaken:(id)a4
+- (void)assertionManager:(id)manager assertionTaken:(id)taken
 {
   dispatch_assert_queue_V2(self->_queue);
   if (!self->_powerAssertion)
@@ -91,14 +91,14 @@
   }
 }
 
-- (void)assertionManager:(id)a3 assertionInvalidated:(id)a4
+- (void)assertionManager:(id)manager assertionInvalidated:(id)invalidated
 {
   queue = self->_queue;
-  v6 = a4;
+  invalidatedCopy = invalidated;
   dispatch_assert_queue_V2(queue);
-  if (v6)
+  if (invalidatedCopy)
   {
-    WeakRetained = objc_loadWeakRetained(v6 + 11);
+    WeakRetained = objc_loadWeakRetained(invalidatedCopy + 11);
   }
 
   else

@@ -1,10 +1,10 @@
 @interface SFTranscriptionSegment
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSRange)substringRange;
-- (SFTranscriptionSegment)initWithCoder:(id)a3;
-- (id)_initWithSubstring:(id)a3 range:(_NSRange)a4 timestamp:(double)a5 duration:(double)a6 confidence:(float)a7 alternativeSubstrings:(id)a8 alternativeConfidences:(id)a9 phoneSequence:(id)a10 ipaPhoneSequence:(id)a11 voiceAnalytics:(id)a12;
+- (SFTranscriptionSegment)initWithCoder:(id)coder;
+- (id)_initWithSubstring:(id)substring range:(_NSRange)range timestamp:(double)timestamp duration:(double)duration confidence:(float)confidence alternativeSubstrings:(id)substrings alternativeConfidences:(id)confidences phoneSequence:(id)self0 ipaPhoneSequence:(id)self1 voiceAnalytics:(id)self2;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFTranscriptionSegment
@@ -18,54 +18,54 @@
   return result;
 }
 
-- (id)_initWithSubstring:(id)a3 range:(_NSRange)a4 timestamp:(double)a5 duration:(double)a6 confidence:(float)a7 alternativeSubstrings:(id)a8 alternativeConfidences:(id)a9 phoneSequence:(id)a10 ipaPhoneSequence:(id)a11 voiceAnalytics:(id)a12
+- (id)_initWithSubstring:(id)substring range:(_NSRange)range timestamp:(double)timestamp duration:(double)duration confidence:(float)confidence alternativeSubstrings:(id)substrings alternativeConfidences:(id)confidences phoneSequence:(id)self0 ipaPhoneSequence:(id)self1 voiceAnalytics:(id)self2
 {
-  length = a4.length;
-  location = a4.location;
-  v22 = a3;
-  v23 = a8;
-  v24 = a9;
-  v25 = a10;
-  v26 = a11;
-  v27 = a12;
+  length = range.length;
+  location = range.location;
+  substringCopy = substring;
+  substringsCopy = substrings;
+  confidencesCopy = confidences;
+  sequenceCopy = sequence;
+  phoneSequenceCopy = phoneSequence;
+  analyticsCopy = analytics;
   v44.receiver = self;
   v44.super_class = SFTranscriptionSegment;
   v28 = [(SFTranscriptionSegment *)&v44 init];
   if (v28)
   {
-    v29 = [v22 copy];
+    v29 = [substringCopy copy];
     substring = v28->_substring;
     v28->_substring = v29;
 
     v28->_substringRange.location = location;
     v28->_substringRange.length = length;
-    v28->_timestamp = a5;
-    v28->_duration = a6;
-    v28->_confidence = a7;
-    v31 = [v24 count];
-    if (v31 != [v23 count])
+    v28->_timestamp = timestamp;
+    v28->_duration = duration;
+    v28->_confidence = confidence;
+    v31 = [confidencesCopy count];
+    if (v31 != [substringsCopy count])
     {
-      v43 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v43 handleFailureInMethod:a2 object:v28 file:@"SFTranscriptionSegment.m" lineNumber:96 description:&stru_1F2139F58];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v28 file:@"SFTranscriptionSegment.m" lineNumber:96 description:&stru_1F2139F58];
     }
 
-    v32 = [v23 copy];
+    v32 = [substringsCopy copy];
     alternativeSubstrings = v28->_alternativeSubstrings;
     v28->_alternativeSubstrings = v32;
 
-    v34 = [v24 copy];
+    v34 = [confidencesCopy copy];
     alternativeConfidences = v28->_alternativeConfidences;
     v28->_alternativeConfidences = v34;
 
-    v36 = [v25 copy];
+    v36 = [sequenceCopy copy];
     phoneSequence = v28->_phoneSequence;
     v28->_phoneSequence = v36;
 
-    v38 = [v26 copy];
+    v38 = [phoneSequenceCopy copy];
     ipaPhoneSequence = v28->_ipaPhoneSequence;
     v28->_ipaPhoneSequence = v38;
 
-    v40 = [v27 copy];
+    v40 = [analyticsCopy copy];
     voiceAnalytics = v28->_voiceAnalytics;
     v28->_voiceAnalytics = v40;
   }
@@ -73,26 +73,26 @@
   return v28;
 }
 
-- (SFTranscriptionSegment)initWithCoder:(id)a3
+- (SFTranscriptionSegment)initWithCoder:(id)coder
 {
   v46[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v43.receiver = self;
   v43.super_class = SFTranscriptionSegment;
   v5 = [(SFTranscriptionSegment *)&v43 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_substring"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_substring"];
     substring = v5->_substring;
     v5->_substring = v6;
 
-    v5->_substringRange.location = [v4 decodeIntegerForKey:@"_substringRange.location"];
-    v5->_substringRange.length = [v4 decodeIntegerForKey:@"_substringRange.length"];
-    [v4 decodeDoubleForKey:@"_timestamp"];
+    v5->_substringRange.location = [coderCopy decodeIntegerForKey:@"_substringRange.location"];
+    v5->_substringRange.length = [coderCopy decodeIntegerForKey:@"_substringRange.length"];
+    [coderCopy decodeDoubleForKey:@"_timestamp"];
     v5->_timestamp = v8;
-    [v4 decodeDoubleForKey:@"_duration"];
+    [coderCopy decodeDoubleForKey:@"_duration"];
     v5->_duration = v9;
-    [v4 decodeDoubleForKey:@"_confidence"];
+    [coderCopy decodeDoubleForKey:@"_confidence"];
     *&v10 = v10;
     v5->_confidence = *&v10;
     v11 = MEMORY[0x1E695DFD8];
@@ -100,7 +100,7 @@
     v46[1] = objc_opt_class();
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v46 count:2];
     v13 = [v11 setWithArray:v12];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"_alternativeSubstrings"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"_alternativeSubstrings"];
     alternativeSubstrings = v5->_alternativeSubstrings;
     v5->_alternativeSubstrings = v14;
 
@@ -109,7 +109,7 @@
     v45[1] = objc_opt_class();
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v45 count:2];
     v18 = [v16 setWithArray:v17];
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"_alternativeConfidences"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"_alternativeConfidences"];
     alternativeConfidences = v5->_alternativeConfidences;
     v5->_alternativeConfidences = v19;
 
@@ -154,15 +154,15 @@
       v5->_alternativeConfidences = v29;
     }
 
-    v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_phoneSequence"];
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_phoneSequence"];
     phoneSequence = v5->_phoneSequence;
     v5->_phoneSequence = v31;
 
-    v33 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_ipaPhoneSequence"];
+    v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_ipaPhoneSequence"];
     ipaPhoneSequence = v5->_ipaPhoneSequence;
     v5->_ipaPhoneSequence = v33;
 
-    v35 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_voiceAnalytics"];
+    v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_voiceAnalytics"];
     voiceAnalytics = v5->_voiceAnalytics;
     v5->_voiceAnalytics = v35;
   }
@@ -171,21 +171,21 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   substring = self->_substring;
-  v5 = a3;
-  [v5 encodeObject:substring forKey:@"_substring"];
-  [v5 encodeInteger:self->_substringRange.location forKey:@"_substringRange.location"];
-  [v5 encodeInteger:self->_substringRange.length forKey:@"_substringRange.length"];
-  [v5 encodeDouble:@"_timestamp" forKey:self->_timestamp];
-  [v5 encodeDouble:@"_duration" forKey:self->_duration];
-  [v5 encodeDouble:@"_confidence" forKey:self->_confidence];
-  [v5 encodeObject:self->_alternativeSubstrings forKey:@"_alternativeSubstrings"];
-  [v5 encodeObject:self->_alternativeConfidences forKey:@"_alternativeConfidences"];
-  [v5 encodeObject:self->_phoneSequence forKey:@"_phoneSequence"];
-  [v5 encodeObject:self->_ipaPhoneSequence forKey:@"_ipaPhoneSequence"];
-  [v5 encodeObject:self->_voiceAnalytics forKey:@"_voiceAnalytics"];
+  coderCopy = coder;
+  [coderCopy encodeObject:substring forKey:@"_substring"];
+  [coderCopy encodeInteger:self->_substringRange.location forKey:@"_substringRange.location"];
+  [coderCopy encodeInteger:self->_substringRange.length forKey:@"_substringRange.length"];
+  [coderCopy encodeDouble:@"_timestamp" forKey:self->_timestamp];
+  [coderCopy encodeDouble:@"_duration" forKey:self->_duration];
+  [coderCopy encodeDouble:@"_confidence" forKey:self->_confidence];
+  [coderCopy encodeObject:self->_alternativeSubstrings forKey:@"_alternativeSubstrings"];
+  [coderCopy encodeObject:self->_alternativeConfidences forKey:@"_alternativeConfidences"];
+  [coderCopy encodeObject:self->_phoneSequence forKey:@"_phoneSequence"];
+  [coderCopy encodeObject:self->_ipaPhoneSequence forKey:@"_ipaPhoneSequence"];
+  [coderCopy encodeObject:self->_voiceAnalytics forKey:@"_voiceAnalytics"];
 }
 
 - (id)description
@@ -204,30 +204,30 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v11 = 0;
-  if ((objc_opt_isKindOfClass() & 1) != 0 && self->_substringRange.location == v4[10] && self->_substringRange.length == v4[11] && self->_timestamp == *(v4 + 3) && self->_duration == *(v4 + 4) && self->_confidence == *(v4 + 2))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && self->_substringRange.location == equalCopy[10] && self->_substringRange.length == equalCopy[11] && self->_timestamp == *(equalCopy + 3) && self->_duration == *(equalCopy + 4) && self->_confidence == *(equalCopy + 2))
   {
     substring = self->_substring;
-    if (substring == v4[2] || [(NSString *)substring isEqual:?])
+    if (substring == equalCopy[2] || [(NSString *)substring isEqual:?])
     {
       alternativeSubstrings = self->_alternativeSubstrings;
-      if (alternativeSubstrings == v4[5] || [(NSArray *)alternativeSubstrings isEqual:?])
+      if (alternativeSubstrings == equalCopy[5] || [(NSArray *)alternativeSubstrings isEqual:?])
       {
         alternativeConfidences = self->_alternativeConfidences;
-        if (alternativeConfidences == v4[7] || [(NSArray *)alternativeConfidences isEqual:?])
+        if (alternativeConfidences == equalCopy[7] || [(NSArray *)alternativeConfidences isEqual:?])
         {
           phoneSequence = self->_phoneSequence;
-          if (phoneSequence == v4[8] || [(NSString *)phoneSequence isEqual:?])
+          if (phoneSequence == equalCopy[8] || [(NSString *)phoneSequence isEqual:?])
           {
             ipaPhoneSequence = self->_ipaPhoneSequence;
-            if (ipaPhoneSequence == v4[9] || [(NSString *)ipaPhoneSequence isEqual:?])
+            if (ipaPhoneSequence == equalCopy[9] || [(NSString *)ipaPhoneSequence isEqual:?])
             {
               voiceAnalytics = self->_voiceAnalytics;
-              if (voiceAnalytics == v4[6] || [(SFVoiceAnalytics *)voiceAnalytics isEqual:?])
+              if (voiceAnalytics == equalCopy[6] || [(SFVoiceAnalytics *)voiceAnalytics isEqual:?])
               {
                 v11 = 1;
               }

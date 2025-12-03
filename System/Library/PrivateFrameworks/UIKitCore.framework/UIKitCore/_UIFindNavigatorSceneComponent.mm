@@ -1,32 +1,32 @@
 @interface _UIFindNavigatorSceneComponent
-+ (id)sceneComponentForView:(id)a3;
++ (id)sceneComponentForView:(id)view;
 - (BOOL)_keyboardIsPreservingFindNavigatorAsRestorableResponder;
-- (BOOL)_monitorsView:(id)a3;
+- (BOOL)_monitorsView:(id)view;
 - (BOOL)isFindNavigatorVisible;
 - (UIScene)_scene;
-- (_UIFindNavigatorSceneComponent)initWithScene:(id)a3;
+- (_UIFindNavigatorSceneComponent)initWithScene:(id)scene;
 - (id)_searchableView;
-- (void)_monitoredView:(id)a3 willMoveFromSuperview:(id)a4 toSuperview:(id)a5;
+- (void)_monitoredView:(id)view willMoveFromSuperview:(id)superview toSuperview:(id)toSuperview;
 - (void)_sendPlacementUpdate;
-- (void)dismissFindNavigatorEndingActiveSession:(BOOL)a3;
-- (void)findNavigatorViewControllerViewDidChangeIntrinsicContentSize:(id)a3;
-- (void)presentFindNavigatorWithFindSession:(id)a3 showingReplace:(BOOL)a4 idiom:(int64_t)a5;
+- (void)dismissFindNavigatorEndingActiveSession:(BOOL)session;
+- (void)findNavigatorViewControllerViewDidChangeIntrinsicContentSize:(id)size;
+- (void)presentFindNavigatorWithFindSession:(id)session showingReplace:(BOOL)replace idiom:(int64_t)idiom;
 @end
 
 @implementation _UIFindNavigatorSceneComponent
 
-+ (id)sceneComponentForView:(id)a3
++ (id)sceneComponentForView:(id)view
 {
-  v3 = [a3 _window];
-  v4 = [v3 windowScene];
+  _window = [view _window];
+  windowScene = [_window windowScene];
 
-  if (v4)
+  if (windowScene)
   {
-    v5 = [v4 _sceneComponentForKey:@"_UIFindNavigatorSceneComponentKey"];
+    v5 = [windowScene _sceneComponentForKey:@"_UIFindNavigatorSceneComponentKey"];
     if (!v5)
     {
-      v5 = [[_UIFindNavigatorSceneComponent alloc] initWithScene:v4];
-      [v4 _registerSceneComponent:v5 forKey:@"_UIFindNavigatorSceneComponentKey"];
+      v5 = [[_UIFindNavigatorSceneComponent alloc] initWithScene:windowScene];
+      [windowScene _registerSceneComponent:v5 forKey:@"_UIFindNavigatorSceneComponentKey"];
     }
   }
 
@@ -38,16 +38,16 @@
   return v5;
 }
 
-- (_UIFindNavigatorSceneComponent)initWithScene:(id)a3
+- (_UIFindNavigatorSceneComponent)initWithScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v8.receiver = self;
   v8.super_class = _UIFindNavigatorSceneComponent;
   v5 = [(_UIFindNavigatorSceneComponent *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_scene, v4);
+    objc_storeWeak(&v5->_scene, sceneCopy);
   }
 
   return v6;
@@ -55,22 +55,22 @@
 
 - (BOOL)_keyboardIsPreservingFindNavigatorAsRestorableResponder
 {
-  v2 = [(_UIFindNavigatorSceneComponent *)self findNavigatorViewController];
-  v3 = [v2 findNavigatorView];
+  findNavigatorViewController = [(_UIFindNavigatorSceneComponent *)self findNavigatorViewController];
+  findNavigatorView = [findNavigatorViewController findNavigatorView];
 
   v4 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  if (v3)
+  if (findNavigatorView)
   {
-    v5 = [v3 searchTextField];
-    if ([v4 _isPreservedRestorableResponder:v5])
+    searchTextField = [findNavigatorView searchTextField];
+    if ([v4 _isPreservedRestorableResponder:searchTextField])
     {
       v6 = 1;
     }
 
     else
     {
-      v7 = [v3 replaceTextField];
-      v6 = [v4 _isPreservedRestorableResponder:v7];
+      replaceTextField = [findNavigatorView replaceTextField];
+      v6 = [v4 _isPreservedRestorableResponder:replaceTextField];
     }
   }
 
@@ -84,18 +84,18 @@
 
 - (BOOL)isFindNavigatorVisible
 {
-  v3 = [(_UIFindNavigatorSceneComponent *)self findNavigatorResponder];
-  v4 = [v3 isFirstResponder];
+  findNavigatorResponder = [(_UIFindNavigatorSceneComponent *)self findNavigatorResponder];
+  isFirstResponder = [findNavigatorResponder isFirstResponder];
 
-  if (v4)
+  if (isFirstResponder)
   {
     return 1;
   }
 
-  v6 = [(_UIFindNavigatorSceneComponent *)self findNavigatorViewController];
-  v7 = [v6 findNavigatorView];
+  findNavigatorViewController = [(_UIFindNavigatorSceneComponent *)self findNavigatorViewController];
+  findNavigatorView = [findNavigatorViewController findNavigatorView];
 
-  if (v7)
+  if (findNavigatorView)
   {
     if ([(_UIFindNavigatorSceneComponent *)self _keyboardIsPreservingFindNavigatorAsRestorableResponder])
     {
@@ -104,8 +104,8 @@
 
     else
     {
-      v8 = [v7 firstResponder];
-      v5 = [v7 _containsResponder:v8];
+      firstResponder = [findNavigatorView firstResponder];
+      v5 = [findNavigatorView _containsResponder:firstResponder];
     }
   }
 
@@ -117,192 +117,192 @@
   return v5;
 }
 
-- (void)presentFindNavigatorWithFindSession:(id)a3 showingReplace:(BOOL)a4 idiom:(int64_t)a5
+- (void)presentFindNavigatorWithFindSession:(id)session showingReplace:(BOOL)replace idiom:(int64_t)idiom
 {
-  v5 = a4;
-  v35 = a3;
-  v7 = [(_UIFindNavigatorSceneComponent *)self findNavigatorViewController];
+  replaceCopy = replace;
+  sessionCopy = session;
+  findNavigatorViewController = [(_UIFindNavigatorSceneComponent *)self findNavigatorViewController];
 
-  if (!v7)
+  if (!findNavigatorViewController)
   {
     v8 = [(UIInputViewController *)[_UIFindNavigatorViewController alloc] initWithNibName:0 bundle:0];
     [(_UIFindNavigatorSceneComponent *)self setFindNavigatorViewController:v8];
   }
 
-  v9 = [(_UIFindNavigatorSceneComponent *)self findNavigatorResponder];
+  findNavigatorResponder = [(_UIFindNavigatorSceneComponent *)self findNavigatorResponder];
 
-  if (!v9)
+  if (!findNavigatorResponder)
   {
     v10 = [_UIFindNavigatorResponder alloc];
-    v11 = [(_UIFindNavigatorSceneComponent *)self findNavigatorViewController];
-    v12 = [(_UIFindNavigatorResponder *)v10 initWithFindNavigatorViewController:v11];
+    findNavigatorViewController2 = [(_UIFindNavigatorSceneComponent *)self findNavigatorViewController];
+    v12 = [(_UIFindNavigatorResponder *)v10 initWithFindNavigatorViewController:findNavigatorViewController2];
     [(_UIFindNavigatorSceneComponent *)self setFindNavigatorResponder:v12];
 
-    v13 = [(_UIFindNavigatorSceneComponent *)self findNavigatorViewController];
-    v14 = [v13 findNavigatorView];
+    findNavigatorViewController3 = [(_UIFindNavigatorSceneComponent *)self findNavigatorViewController];
+    findNavigatorView = [findNavigatorViewController3 findNavigatorView];
 
-    v15 = [(_UIFindNavigatorSceneComponent *)self findNavigatorResponder];
-    v16 = [v15 inputAssistantItem];
-    v17 = [v14 searchTextField];
-    [v17 setInputAssistantItem:v16];
+    findNavigatorResponder2 = [(_UIFindNavigatorSceneComponent *)self findNavigatorResponder];
+    inputAssistantItem = [findNavigatorResponder2 inputAssistantItem];
+    searchTextField = [findNavigatorView searchTextField];
+    [searchTextField setInputAssistantItem:inputAssistantItem];
 
-    v18 = [(_UIFindNavigatorSceneComponent *)self findNavigatorResponder];
-    v19 = [v18 inputAssistantItem];
-    v20 = [v14 replaceTextField];
-    [v20 setInputAssistantItem:v19];
+    findNavigatorResponder3 = [(_UIFindNavigatorSceneComponent *)self findNavigatorResponder];
+    inputAssistantItem2 = [findNavigatorResponder3 inputAssistantItem];
+    replaceTextField = [findNavigatorView replaceTextField];
+    [replaceTextField setInputAssistantItem:inputAssistantItem2];
   }
 
-  v21 = [(_UIFindNavigatorSceneComponent *)self findNavigatorViewController];
-  v22 = [v35 searchableResponder];
-  [v21 _overrideInputAccessoryViewNextResponderWithResponder:v22];
+  findNavigatorViewController4 = [(_UIFindNavigatorSceneComponent *)self findNavigatorViewController];
+  searchableResponder = [sessionCopy searchableResponder];
+  [findNavigatorViewController4 _overrideInputAccessoryViewNextResponderWithResponder:searchableResponder];
 
-  if (v5)
+  if (replaceCopy)
   {
-    v23 = [v35 supportsReplacement];
+    supportsReplacement = [sessionCopy supportsReplacement];
   }
 
   else
   {
-    v23 = 0;
+    supportsReplacement = 0;
   }
 
-  v24 = [(_UIFindNavigatorSceneComponent *)self findNavigatorViewController];
-  [v24 setFindSession:v35];
+  findNavigatorViewController5 = [(_UIFindNavigatorSceneComponent *)self findNavigatorViewController];
+  [findNavigatorViewController5 setFindSession:sessionCopy];
 
-  v25 = [(_UIFindNavigatorSceneComponent *)self findNavigatorViewController];
-  [v25 setFindNavigatorViewControllerDelegate:self];
+  findNavigatorViewController6 = [(_UIFindNavigatorSceneComponent *)self findNavigatorViewController];
+  [findNavigatorViewController6 setFindNavigatorViewControllerDelegate:self];
 
-  v26 = [(_UIFindNavigatorSceneComponent *)self findNavigatorViewController];
-  v27 = [v26 findNavigatorView];
+  findNavigatorViewController7 = [(_UIFindNavigatorSceneComponent *)self findNavigatorViewController];
+  findNavigatorView2 = [findNavigatorViewController7 findNavigatorView];
 
-  [v27 setMode:v23];
-  [v27 setVisibleSeparatorEdges:10];
-  [v27 setIntrinsicHeightDerivedFromAssistantBar:1];
-  [v27 setUsesOpaqueBackground:0];
-  v28 = [v35 searchableResponderAsView];
-  v29 = v28;
-  if (v28)
+  [findNavigatorView2 setMode:supportsReplacement];
+  [findNavigatorView2 setVisibleSeparatorEdges:10];
+  [findNavigatorView2 setIntrinsicHeightDerivedFromAssistantBar:1];
+  [findNavigatorView2 setUsesOpaqueBackground:0];
+  searchableResponderAsView = [sessionCopy searchableResponderAsView];
+  v29 = searchableResponderAsView;
+  if (searchableResponderAsView)
   {
-    v30 = [v28 window];
-    [v30 _registerSubtreeMonitor:self];
+    window = [searchableResponderAsView window];
+    [window _registerSubtreeMonitor:self];
   }
 
-  v31 = [(_UIFindNavigatorSceneComponent *)self _searchableView];
-  v32 = [v31 window];
-  [v32 makeKeyWindow];
+  _searchableView = [(_UIFindNavigatorSceneComponent *)self _searchableView];
+  window2 = [_searchableView window];
+  [window2 makeKeyWindow];
 
-  v33 = [(_UIFindNavigatorSceneComponent *)self findNavigatorResponder];
-  [v33 setCanBecomeFirstResponder:1];
+  findNavigatorResponder4 = [(_UIFindNavigatorSceneComponent *)self findNavigatorResponder];
+  [findNavigatorResponder4 setCanBecomeFirstResponder:1];
 
-  v34 = [(_UIFindNavigatorSceneComponent *)self findNavigatorResponder];
-  [v34 becomeFirstResponderAndFocusFindField];
+  findNavigatorResponder5 = [(_UIFindNavigatorSceneComponent *)self findNavigatorResponder];
+  [findNavigatorResponder5 becomeFirstResponderAndFocusFindField];
 }
 
-- (void)dismissFindNavigatorEndingActiveSession:(BOOL)a3
+- (void)dismissFindNavigatorEndingActiveSession:(BOOL)session
 {
-  v3 = a3;
-  v5 = [(_UIFindNavigatorSceneComponent *)self _searchableView];
-  v6 = [v5 window];
-  [v6 _unregisterSubtreeMonitor:self];
+  sessionCopy = session;
+  _searchableView = [(_UIFindNavigatorSceneComponent *)self _searchableView];
+  window = [_searchableView window];
+  [window _unregisterSubtreeMonitor:self];
 
-  v7 = [(_UIFindNavigatorSceneComponent *)self findNavigatorViewController];
-  v17 = [v7 findSession];
+  findNavigatorViewController = [(_UIFindNavigatorSceneComponent *)self findNavigatorViewController];
+  findSession = [findNavigatorViewController findSession];
 
-  if (v17 && v3)
+  if (findSession && sessionCopy)
   {
-    v8 = [v17 parentInteraction];
-    [v8 _didEndActiveFindSession];
+    parentInteraction = [findSession parentInteraction];
+    [parentInteraction _didEndActiveFindSession];
   }
 
   if ([(_UIFindNavigatorSceneComponent *)self _keyboardIsPreservingFindNavigatorAsRestorableResponder])
   {
-    v9 = [(_UIFindNavigatorSceneComponent *)self findNavigatorViewController];
-    v10 = [v9 findNavigatorView];
+    findNavigatorViewController2 = [(_UIFindNavigatorSceneComponent *)self findNavigatorViewController];
+    findNavigatorView = [findNavigatorViewController2 findNavigatorView];
 
     v11 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v12 = [v10 searchTextField];
-    [v11 _clearPreservedInputViewsWithRestorableResponder:v12];
+    searchTextField = [findNavigatorView searchTextField];
+    [v11 _clearPreservedInputViewsWithRestorableResponder:searchTextField];
 
-    v13 = [v10 replaceTextField];
-    [v11 _clearPreservedInputViewsWithRestorableResponder:v13];
+    replaceTextField = [findNavigatorView replaceTextField];
+    [v11 _clearPreservedInputViewsWithRestorableResponder:replaceTextField];
   }
 
-  v14 = [(_UIFindNavigatorSceneComponent *)self findNavigatorResponder];
-  [v14 setCanBecomeFirstResponder:0];
+  findNavigatorResponder = [(_UIFindNavigatorSceneComponent *)self findNavigatorResponder];
+  [findNavigatorResponder setCanBecomeFirstResponder:0];
 
-  v15 = [(_UIFindNavigatorSceneComponent *)self findNavigatorResponder];
-  [v15 resignFirstResponder];
+  findNavigatorResponder2 = [(_UIFindNavigatorSceneComponent *)self findNavigatorResponder];
+  [findNavigatorResponder2 resignFirstResponder];
 
-  v16 = [(_UIFindNavigatorSceneComponent *)self findNavigatorViewController];
-  [v16 resignFirstResponderAndFinishSearching];
+  findNavigatorViewController3 = [(_UIFindNavigatorSceneComponent *)self findNavigatorViewController];
+  [findNavigatorViewController3 resignFirstResponderAndFinishSearching];
 }
 
 - (void)_sendPlacementUpdate
 {
-  v3 = [(_UIFindNavigatorSceneComponent *)self findNavigatorViewController];
-  v11 = [v3 findSession];
+  findNavigatorViewController = [(_UIFindNavigatorSceneComponent *)self findNavigatorViewController];
+  findSession = [findNavigatorViewController findSession];
 
-  v4 = [(_UIFindNavigatorSceneComponent *)self findNavigatorViewController];
-  v5 = [v4 findNavigatorView];
-  v6 = [v5 traitCollection];
+  findNavigatorViewController2 = [(_UIFindNavigatorSceneComponent *)self findNavigatorViewController];
+  findNavigatorView = [findNavigatorViewController2 findNavigatorView];
+  traitCollection = [findNavigatorView traitCollection];
 
-  v7 = [(_UIFindNavigatorSceneComponent *)self findNavigatorResponder];
-  v8 = [v7 hostingTypeForTraitCollection:v6];
+  findNavigatorResponder = [(_UIFindNavigatorSceneComponent *)self findNavigatorResponder];
+  v8 = [findNavigatorResponder hostingTypeForTraitCollection:traitCollection];
 
   v9 = objc_alloc_init(_UIFindNavigatorKeyboardPlacement);
   [(_UIFindNavigatorKeyboardPlacement *)v9 setAsInputAccessoryView:v8 == 1];
-  v10 = [v11 parentInteraction];
-  [v10 _willChangeNavigatorPlacement:v9];
+  parentInteraction = [findSession parentInteraction];
+  [parentInteraction _willChangeNavigatorPlacement:v9];
 }
 
 - (id)_searchableView
 {
-  v2 = [(_UIFindNavigatorSceneComponent *)self findNavigatorViewController];
-  v3 = [v2 findSession];
-  v4 = [v3 searchableResponderAsView];
+  findNavigatorViewController = [(_UIFindNavigatorSceneComponent *)self findNavigatorViewController];
+  findSession = [findNavigatorViewController findSession];
+  searchableResponderAsView = [findSession searchableResponderAsView];
 
-  return v4;
+  return searchableResponderAsView;
 }
 
-- (BOOL)_monitorsView:(id)a3
+- (BOOL)_monitorsView:(id)view
 {
-  v4 = a3;
-  v5 = [(_UIFindNavigatorSceneComponent *)self _searchableView];
-  v6 = [v5 isDescendantOfView:v4];
+  viewCopy = view;
+  _searchableView = [(_UIFindNavigatorSceneComponent *)self _searchableView];
+  v6 = [_searchableView isDescendantOfView:viewCopy];
 
   return v6;
 }
 
-- (void)_monitoredView:(id)a3 willMoveFromSuperview:(id)a4 toSuperview:(id)a5
+- (void)_monitoredView:(id)view willMoveFromSuperview:(id)superview toSuperview:(id)toSuperview
 {
-  v7 = a3;
-  v8 = [(_UIFindNavigatorSceneComponent *)self _searchableView];
-  v9 = [v8 isDescendantOfView:v7];
+  viewCopy = view;
+  _searchableView = [(_UIFindNavigatorSceneComponent *)self _searchableView];
+  v9 = [_searchableView isDescendantOfView:viewCopy];
 
-  if (!a5 && v9)
+  if (!toSuperview && v9)
   {
 
     [(_UIFindNavigatorSceneComponent *)self dismissFindNavigatorEndingActiveSession:1];
   }
 }
 
-- (void)findNavigatorViewControllerViewDidChangeIntrinsicContentSize:(id)a3
+- (void)findNavigatorViewControllerViewDidChangeIntrinsicContentSize:(id)size
 {
   if (+[UIKeyboard usesInputSystemUI])
   {
     v4 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v7 = [v4 remoteInputViewHost];
+    remoteInputViewHost = [v4 remoteInputViewHost];
 
-    [v7 updateInputViewsIfNecessary];
+    [remoteInputViewHost updateInputViewsIfNecessary];
   }
 
   else
   {
-    v7 = +[UIKBKeyplaneChangeContext keyplaneChangeContext];
-    [v7 setUpdateAssistantView:1];
-    v5 = [(_UIFindNavigatorSceneComponent *)self findNavigatorViewController];
-    v6 = [v5 findNavigatorView];
-    [v6 _didChangeKeyplaneWithContext:v7];
+    remoteInputViewHost = +[UIKBKeyplaneChangeContext keyplaneChangeContext];
+    [remoteInputViewHost setUpdateAssistantView:1];
+    findNavigatorViewController = [(_UIFindNavigatorSceneComponent *)self findNavigatorViewController];
+    findNavigatorView = [findNavigatorViewController findNavigatorView];
+    [findNavigatorView _didChangeKeyplaneWithContext:remoteInputViewHost];
   }
 }
 

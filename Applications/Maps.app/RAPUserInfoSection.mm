@@ -1,6 +1,6 @@
 @interface RAPUserInfoSection
 - (RAPUserInfoSection)init;
-- (id)cellForRowAtIndex:(int64_t)a3;
+- (id)cellForRowAtIndex:(int64_t)index;
 - (id)footerView;
 - (void)_footerViewTapped;
 @end
@@ -10,8 +10,8 @@
 - (void)_footerViewTapped
 {
   v4 = [OBPrivacyPresenter presenterForPrivacySplashWithIdentifier:@"com.apple.onboarding.mapsrap"];
-  v3 = [(RAPTablePartSection *)self presentingViewController];
-  [v4 setPresentingViewController:v3];
+  presentingViewController = [(RAPTablePartSection *)self presentingViewController];
+  [v4 setPresentingViewController:presentingViewController];
 
   [v4 present];
 }
@@ -33,7 +33,7 @@
   return footerView;
 }
 
-- (id)cellForRowAtIndex:(int64_t)a3
+- (id)cellForRowAtIndex:(int64_t)index
 {
   cell = self->_cell;
   if (!cell)

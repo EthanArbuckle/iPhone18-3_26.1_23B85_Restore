@@ -1,20 +1,20 @@
 @interface HRCSourceController
 - (HRCHeartRateReceiver)delegate;
-- (HRCSourceController)initWithDelegate:(id)a3 onQueue:(id)a4 analyticsReporter:(id)a5 internalVariant:(BOOL)a6;
-- (HRCSourceController)initWithDelegate:(id)a3 watchSource:(id)a4 aacpSource:(id)a5 bleSource:(id)a6 onQueue:(id)a7 analyticsReporter:(id)a8 internalVariant:(BOOL)a9;
-- (void)_enableWatchSource:(BOOL)a3 enableAacpSource:(BOOL)a4;
-- (void)_setupAppleSource:(id)a3;
-- (void)_streamAppleHeartRates:(BOOL)a3;
+- (HRCSourceController)initWithDelegate:(id)delegate onQueue:(id)queue analyticsReporter:(id)reporter internalVariant:(BOOL)variant;
+- (HRCSourceController)initWithDelegate:(id)delegate watchSource:(id)source aacpSource:(id)aacpSource bleSource:(id)bleSource onQueue:(id)queue analyticsReporter:(id)reporter internalVariant:(BOOL)variant;
+- (void)_enableWatchSource:(BOOL)source enableAacpSource:(BOOL)aacpSource;
+- (void)_setupAppleSource:(id)source;
+- (void)_streamAppleHeartRates:(BOOL)rates;
 - (void)_updateActiveSources;
-- (void)didReceiveAppleHeartRate:(id)a3;
-- (void)didReceiveBLEHeartRate:(id)a3;
-- (void)enableWatchSource:(BOOL)a3 enableAacpSource:(BOOL)a4;
-- (void)handleBleSourceListUpdate:(id)a3;
-- (void)handleSourceUpdate:(const HRCSourceUpdate *)a3;
-- (void)setEnableBluetoothSourceDiscovery:(BOOL)a3;
-- (void)setOpportunisticMode:(BOOL)a3;
-- (void)setStreamingMode:(unint64_t)a3;
-- (void)updateWorkoutActivityType:(unint64_t)a3 withLocationType:(int64_t)a4;
+- (void)didReceiveAppleHeartRate:(id)rate;
+- (void)didReceiveBLEHeartRate:(id)rate;
+- (void)enableWatchSource:(BOOL)source enableAacpSource:(BOOL)aacpSource;
+- (void)handleBleSourceListUpdate:(id)update;
+- (void)handleSourceUpdate:(const HRCSourceUpdate *)update;
+- (void)setEnableBluetoothSourceDiscovery:(BOOL)discovery;
+- (void)setOpportunisticMode:(BOOL)mode;
+- (void)setStreamingMode:(unint64_t)mode;
+- (void)updateWorkoutActivityType:(unint64_t)type withLocationType:(int64_t)locationType;
 @end
 
 @implementation HRCSourceController
@@ -26,46 +26,46 @@
   return WeakRetained;
 }
 
-- (HRCSourceController)initWithDelegate:(id)a3 onQueue:(id)a4 analyticsReporter:(id)a5 internalVariant:(BOOL)a6
+- (HRCSourceController)initWithDelegate:(id)delegate onQueue:(id)queue analyticsReporter:(id)reporter internalVariant:(BOOL)variant
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  delegateCopy = delegate;
+  queueCopy = queue;
+  reporterCopy = reporter;
   v13 = objc_opt_new();
   v14 = objc_opt_new();
-  LOBYTE(v17) = a6;
-  v15 = [(HRCSourceController *)self initWithDelegate:v10 watchSource:0 aacpSource:v13 bleSource:v14 onQueue:v11 analyticsReporter:v12 internalVariant:v17];
+  LOBYTE(v17) = variant;
+  v15 = [(HRCSourceController *)self initWithDelegate:delegateCopy watchSource:0 aacpSource:v13 bleSource:v14 onQueue:queueCopy analyticsReporter:reporterCopy internalVariant:v17];
 
   return v15;
 }
 
-- (HRCSourceController)initWithDelegate:(id)a3 watchSource:(id)a4 aacpSource:(id)a5 bleSource:(id)a6 onQueue:(id)a7 analyticsReporter:(id)a8 internalVariant:(BOOL)a9
+- (HRCSourceController)initWithDelegate:(id)delegate watchSource:(id)source aacpSource:(id)aacpSource bleSource:(id)bleSource onQueue:(id)queue analyticsReporter:(id)reporter internalVariant:(BOOL)variant
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v32 = a6;
-  v33 = a7;
-  v31 = a8;
+  delegateCopy = delegate;
+  sourceCopy = source;
+  aacpSourceCopy = aacpSource;
+  bleSourceCopy = bleSource;
+  queueCopy = queue;
+  reporterCopy = reporter;
   v49.receiver = self;
   v49.super_class = HRCSourceController;
   v18 = [(HRCSourceController *)&v49 init];
-  [(HRCSourceController *)v18 setDelegate:v15];
-  objc_storeStrong(&v18->_bleSource, a6);
-  objc_storeStrong(&v18->_queue, a7);
-  objc_storeStrong(&v18->_analyticsReporter, a8);
-  v18->_internalVariant = a9;
-  objc_storeStrong(&v18->_watchSource, a4);
-  objc_storeStrong(&v18->_aacpSource, a5);
-  [(HRCSourceController *)v18 _setupAppleSource:v16];
-  [(HRCSourceController *)v18 _setupAppleSource:v17];
+  [(HRCSourceController *)v18 setDelegate:delegateCopy];
+  objc_storeStrong(&v18->_bleSource, bleSource);
+  objc_storeStrong(&v18->_queue, queue);
+  objc_storeStrong(&v18->_analyticsReporter, reporter);
+  v18->_internalVariant = variant;
+  objc_storeStrong(&v18->_watchSource, source);
+  objc_storeStrong(&v18->_aacpSource, aacpSource);
+  [(HRCSourceController *)v18 _setupAppleSource:sourceCopy];
+  [(HRCSourceController *)v18 _setupAppleSource:aacpSourceCopy];
   objc_initWeak(&location, v18);
   bleSource = v18->_bleSource;
   v45[0] = _NSConcreteStackBlock;
   v45[1] = 3221225472;
   v45[2] = sub_100008318;
   v45[3] = &unk_1000408B8;
-  v20 = v33;
+  v20 = queueCopy;
   v46 = v20;
   objc_copyWeak(&v47, &location);
   [(HRCSource *)bleSource setHeartRateHandler:v45];
@@ -117,19 +117,19 @@
   return v29;
 }
 
-- (void)updateWorkoutActivityType:(unint64_t)a3 withLocationType:(int64_t)a4
+- (void)updateWorkoutActivityType:(unint64_t)type withLocationType:(int64_t)locationType
 {
   dispatch_assert_queue_V2(self->_queue);
-  [(HRCSource *)self->_watchSource updateWorkoutActivityType:a3 withLocationType:a4];
+  [(HRCSource *)self->_watchSource updateWorkoutActivityType:type withLocationType:locationType];
   aacpSource = self->_aacpSource;
 
-  [(HRCSource *)aacpSource updateWorkoutActivityType:a3 withLocationType:a4];
+  [(HRCSource *)aacpSource updateWorkoutActivityType:type withLocationType:locationType];
 }
 
-- (void)_setupAppleSource:(id)a3
+- (void)_setupAppleSource:(id)source
 {
-  v4 = a3;
-  if (v4)
+  sourceCopy = source;
+  if (sourceCopy)
   {
     objc_initWeak(&location, self);
     v5 = self->_queue;
@@ -140,7 +140,7 @@
     v6 = v5;
     v20 = v6;
     objc_copyWeak(&v21, &location);
-    [v4 setHeartRateHandler:v19];
+    [sourceCopy setHeartRateHandler:v19];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_100008C98;
@@ -148,7 +148,7 @@
     v7 = v6;
     v17 = v7;
     objc_copyWeak(&v18, &location);
-    [v4 setSourceUpdateHandler:v16];
+    [sourceCopy setSourceUpdateHandler:v16];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_100008E18;
@@ -156,7 +156,7 @@
     v8 = v7;
     v14 = v8;
     objc_copyWeak(&v15, &location);
-    [v4 setAnalyticsReportHandler:v13];
+    [sourceCopy setAnalyticsReportHandler:v13];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_100008F48;
@@ -164,8 +164,8 @@
     v9 = v8;
     v11 = v9;
     objc_copyWeak(&v12, &location);
-    [v4 setFitNotificationParamUpdateHandler:v10];
-    [v4 activate];
+    [sourceCopy setFitNotificationParamUpdateHandler:v10];
+    [sourceCopy activate];
     objc_destroyWeak(&v12);
 
     objc_destroyWeak(&v15);
@@ -176,7 +176,7 @@
   }
 }
 
-- (void)enableWatchSource:(BOOL)a3 enableAacpSource:(BOOL)a4
+- (void)enableWatchSource:(BOOL)source enableAacpSource:(BOOL)aacpSource
 {
   queue = self->_queue;
   v5[0] = _NSConcreteStackBlock;
@@ -184,88 +184,88 @@
   v5[2] = sub_1000090DC;
   v5[3] = &unk_100040A30;
   v5[4] = self;
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  aacpSourceCopy = aacpSource;
   dispatch_async(queue, v5);
 }
 
-- (void)didReceiveAppleHeartRate:(id)a3
+- (void)didReceiveAppleHeartRate:(id)rate
 {
-  v4 = a3;
+  rateCopy = rate;
   dispatch_assert_queue_V2(self->_queue);
-  if (self->_internalVariant && self->_activeSource == 2 && self->_streamingMode && [v4 sourceType] == 2 && objc_msgSend(v4, "hrContext") == 2)
+  if (self->_internalVariant && self->_activeSource == 2 && self->_streamingMode && [rateCopy sourceType] == 2 && objc_msgSend(rateCopy, "hrContext") == 2)
   {
     v5 = sub_10000132C();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [v4 uuid];
+      uuid = [rateCopy uuid];
       v8 = 138543362;
-      v9 = v6;
+      v9 = uuid;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "dropping HR received from Platinum with context streamingPPG and uuid : %{public}@", &v8, 0xCu);
     }
   }
 
   else
   {
-    v7 = [(HRCSourceController *)self delegate];
-    [v7 heartRateSampleWasCollected:v4];
+    delegate = [(HRCSourceController *)self delegate];
+    [delegate heartRateSampleWasCollected:rateCopy];
   }
 }
 
-- (void)didReceiveBLEHeartRate:(id)a3
+- (void)didReceiveBLEHeartRate:(id)rate
 {
-  v5 = a3;
+  rateCopy = rate;
   dispatch_assert_queue_V2(self->_queue);
-  v4 = [(HRCSourceController *)self delegate];
-  [v4 heartRateSampleWasCollected:v5];
+  delegate = [(HRCSourceController *)self delegate];
+  [delegate heartRateSampleWasCollected:rateCopy];
 }
 
-- (void)handleSourceUpdate:(const HRCSourceUpdate *)a3
+- (void)handleSourceUpdate:(const HRCSourceUpdate *)update
 {
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [(HRCSourceController *)self delegate];
-  [v5 handleSourceUpdate:a3];
+  delegate = [(HRCSourceController *)self delegate];
+  [delegate handleSourceUpdate:update];
 }
 
-- (void)handleBleSourceListUpdate:(id)a3
+- (void)handleBleSourceListUpdate:(id)update
 {
-  v5 = a3;
+  updateCopy = update;
   dispatch_assert_queue_V2(self->_queue);
-  v4 = [(HRCSourceController *)self delegate];
-  [v4 handleBluetoothLeSourceUpdate:v5];
+  delegate = [(HRCSourceController *)self delegate];
+  [delegate handleBluetoothLeSourceUpdate:updateCopy];
 }
 
-- (void)setStreamingMode:(unint64_t)a3
+- (void)setStreamingMode:(unint64_t)mode
 {
   dispatch_assert_queue_V2(self->_queue);
-  if (self->_streamingMode != a3)
+  if (self->_streamingMode != mode)
   {
     v5 = sub_10000132C();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6[0] = 67109120;
-      v6[1] = a3;
+      v6[1] = mode;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Source controller set streaming mode %d", v6, 8u);
     }
 
-    self->_streamingMode = a3;
-    [(HRCSource *)self->_bleSource setStreamingMode:a3];
+    self->_streamingMode = mode;
+    [(HRCSource *)self->_bleSource setStreamingMode:mode];
     [(HRCSourceController *)self _updateActiveSources];
   }
 }
 
-- (void)setOpportunisticMode:(BOOL)a3
+- (void)setOpportunisticMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   dispatch_assert_queue_V2(self->_queue);
-  if (self->_opportunisticMode != v3)
+  if (self->_opportunisticMode != modeCopy)
   {
-    self->_opportunisticMode = v3;
+    self->_opportunisticMode = modeCopy;
     v5 = sub_10000132C();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6[0] = 67109120;
-      v6[1] = v3;
+      v6[1] = modeCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Source controller set opportunistic mode %{BOOL}u", v6, 8u);
     }
 
@@ -273,18 +273,18 @@
   }
 }
 
-- (void)setEnableBluetoothSourceDiscovery:(BOOL)a3
+- (void)setEnableBluetoothSourceDiscovery:(BOOL)discovery
 {
-  v3 = a3;
+  discoveryCopy = discovery;
   dispatch_assert_queue_V2(self->_queue);
-  if (self->_enableBtLeSourceDiscovery != v3)
+  if (self->_enableBtLeSourceDiscovery != discoveryCopy)
   {
-    self->_enableBtLeSourceDiscovery = v3;
+    self->_enableBtLeSourceDiscovery = discoveryCopy;
     v5 = sub_10000132C();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6[0] = 67109120;
-      v6[1] = v3;
+      v6[1] = discoveryCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Source controller set bt source discovery to %{BOOL}u", v6, 8u);
     }
 
@@ -292,11 +292,11 @@
   }
 }
 
-- (void)_streamAppleHeartRates:(BOOL)a3
+- (void)_streamAppleHeartRates:(BOOL)rates
 {
-  v3 = a3;
+  ratesCopy = rates;
   dispatch_assert_queue_V2(self->_queue);
-  if (v3)
+  if (ratesCopy)
   {
     streamingMode = self->_streamingMode;
   }
@@ -316,10 +316,10 @@
 {
   dispatch_assert_queue_V2(self->_queue);
   activeSource = self->_activeSource;
-  v4 = [(HRCSource *)self->_bleSource available];
+  available = [(HRCSource *)self->_bleSource available];
   v5 = sub_10000132C();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (available)
   {
     if (v6)
     {
@@ -345,7 +345,7 @@
     v7 = 1;
   }
 
-  [(HRCSourceController *)self _streamAppleHeartRates:v4 ^ 1];
+  [(HRCSourceController *)self _streamAppleHeartRates:available ^ 1];
   if (self->_streamingMode)
   {
     v8 = v7;
@@ -359,20 +359,20 @@
   self->_activeSource = v8;
   if (activeSource != v8)
   {
-    v9 = [(HRCSourceController *)self delegate];
-    [v9 activeSourceDidChange:self->_activeSource];
+    delegate = [(HRCSourceController *)self delegate];
+    [delegate activeSourceDidChange:self->_activeSource];
   }
 
   [(HRCSource *)self->_watchSource setOpportunisticMode:self->_opportunisticMode];
   [(HRCSource *)self->_aacpSource setOpportunisticMode:self->_opportunisticMode];
 }
 
-- (void)_enableWatchSource:(BOOL)a3 enableAacpSource:(BOOL)a4
+- (void)_enableWatchSource:(BOOL)source enableAacpSource:(BOOL)aacpSource
 {
-  v4 = a4;
+  aacpSourceCopy = aacpSource;
   dispatch_assert_queue_V2(self->_queue);
   aacpSource = self->_aacpSource;
-  if (v4)
+  if (aacpSourceCopy)
   {
     if (!aacpSource)
     {

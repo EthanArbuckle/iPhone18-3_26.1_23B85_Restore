@@ -1,31 +1,31 @@
 @interface CRSUIClusterZoomBSActionsHandler
 - (CRSUIClusterZoomActionDelegate)delegate;
-- (CRSUIClusterZoomBSActionsHandler)initWithDelegate:(id)a3;
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6;
+- (CRSUIClusterZoomBSActionsHandler)initWithDelegate:(id)delegate;
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context;
 @end
 
 @implementation CRSUIClusterZoomBSActionsHandler
 
-- (CRSUIClusterZoomBSActionsHandler)initWithDelegate:(id)a3
+- (CRSUIClusterZoomBSActionsHandler)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = CRSUIClusterZoomBSActionsHandler;
   v5 = [(CRSUIClusterZoomBSActionsHandler *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
 }
 
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 objectsPassingTest:&__block_literal_global_6];
+  actionsCopy = actions;
+  iSceneCopy = iScene;
+  v10 = [actionsCopy objectsPassingTest:&__block_literal_global_6];
   if ([v10 count])
   {
     objc_opt_class();
@@ -39,18 +39,18 @@
       [v10 enumerateObjectsUsingBlock:v18];
     }
 
-    else if ([v9 conformsToProtocol:&unk_285602540])
+    else if ([iSceneCopy conformsToProtocol:&unk_285602540])
     {
       v13 = MEMORY[0x277D85DD0];
       v14 = 3221225472;
       v15 = __98__CRSUIClusterZoomBSActionsHandler__respondToActions_forFBSScene_inUIScene_fromTransitionContext___block_invoke_3;
       v16 = &unk_278DA0D88;
-      v17 = v9;
+      v17 = iSceneCopy;
       [v10 enumerateObjectsUsingBlock:&v13];
     }
   }
 
-  v11 = [v8 mutableCopy];
+  v11 = [actionsCopy mutableCopy];
   [v11 minusSet:v10];
 
   return v11;

@@ -1,6 +1,6 @@
 @interface FMDCommandHandlerWipe
 - (void)handleCommand;
-- (void)sendAckWithCompletion:(id)a3;
+- (void)sendAckWithCompletion:(id)completion;
 @end
 
 @implementation FMDCommandHandlerWipe
@@ -10,9 +10,9 @@
   v3 = sub_100002880();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(FMDCommandHandler *)self fm_logID];
+    fm_logID = [(FMDCommandHandler *)self fm_logID];
     *buf = 138412290;
-    v44 = v4;
+    v44 = fm_logID;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%@: Handling a Remote Wipe command from server...", buf, 0xCu);
   }
 
@@ -22,8 +22,8 @@
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v7 = [(FMDCommandHandler *)self commandParams];
-  v8 = [v7 countByEnumeratingWithState:&v37 objects:v47 count:16];
+  commandParams = [(FMDCommandHandler *)self commandParams];
+  v8 = [commandParams countByEnumeratingWithState:&v37 objects:v47 count:16];
   if (v8)
   {
     v9 = v8;
@@ -35,12 +35,12 @@
       {
         if (*v38 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(commandParams);
         }
 
         v12 = *(*(&v37 + 1) + 8 * v11);
-        v13 = [(FMDCommandHandler *)self commandParams];
-        v14 = [v13 objectForKeyedSubscript:v12];
+        commandParams2 = [(FMDCommandHandler *)self commandParams];
+        v14 = [commandParams2 objectForKeyedSubscript:v12];
 
         if (CFPropertyListIsValid(v14, kCFPropertyListBinaryFormat_v1_0))
         {
@@ -51,36 +51,36 @@
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v37 objects:v47 count:16];
+      v9 = [commandParams countByEnumeratingWithState:&v37 objects:v47 count:16];
     }
 
     while (v9);
   }
 
   [v5 setObject:v6 forKeyedSubscript:@"commandParams"];
-  v15 = [(FMDCommandHandler *)self provider];
-  v16 = [v15 account];
-  v17 = [v16 authId];
-  [v5 setObject:v17 forKeyedSubscript:@"authId"];
+  provider = [(FMDCommandHandler *)self provider];
+  account = [provider account];
+  authId = [account authId];
+  [v5 setObject:authId forKeyedSubscript:@"authId"];
 
-  v18 = [(FMDCommandHandler *)self commandParams];
-  v19 = [v18 objectForKeyedSubscript:@"mode"];
+  commandParams3 = [(FMDCommandHandler *)self commandParams];
+  v19 = [commandParams3 objectForKeyedSubscript:@"mode"];
 
   if (+[FMDPreferencesMgr simulateWipe](FMDPreferencesMgr, "simulateWipe") || [v19 isEqualToString:@"fake"])
   {
     [v5 setObject:@"fake" forKeyedSubscript:@"wipeMode"];
   }
 
-  v20 = [(FMDCommandHandler *)self commandParams];
-  v21 = [v20 objectForKeyedSubscript:@"maxDelayInSecs"];
+  commandParams4 = [(FMDCommandHandler *)self commandParams];
+  v21 = [commandParams4 objectForKeyedSubscript:@"maxDelayInSecs"];
   [v21 doubleValue];
   v23 = v22;
 
-  v24 = [(FMDCommandHandler *)self commandParams];
-  v25 = [v24 objectForKeyedSubscript:@"message"];
+  commandParams5 = [(FMDCommandHandler *)self commandParams];
+  v25 = [commandParams5 objectForKeyedSubscript:@"message"];
 
-  v26 = [(FMDCommandHandler *)self commandParams];
-  v27 = [v26 objectForKeyedSubscript:@"ownerNbr"];
+  commandParams6 = [(FMDCommandHandler *)self commandParams];
+  v27 = [commandParams6 objectForKeyedSubscript:@"ownerNbr"];
 
   v28 = sub_100002880();
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -140,11 +140,11 @@
   [FMDDispatchTransaction dispatchTransactionAsync:&_dispatch_main_q transactionName:@"FMDCommandHandlerWipeDispatchAction" block:v34];
 }
 
-- (void)sendAckWithCompletion:(id)a3
+- (void)sendAckWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    (*(a3 + 2))(a3, 1);
+    (*(completion + 2))(completion, 1);
   }
 }
 

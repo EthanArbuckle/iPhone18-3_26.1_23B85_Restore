@@ -1,5 +1,5 @@
 @interface CNContactPhotoViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (id)accessibilityHint;
 - (id)accessibilityLabel;
@@ -9,15 +9,15 @@
 
 @implementation CNContactPhotoViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CNContactPhotoView" hasInstanceMethod:@"contact" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNContactPhotoView" hasInstanceMethod:@"isEditing" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CNContactPhotoView" hasInstanceMethod:@"hasPhoto" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CNContactPhotoView" hasInstanceMethod:@"avatarView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNContact" hasInstanceVariable:@"_displayNameOrder" withType:"NSInteger"];
-  [v3 validateClass:@"CNContactPhotoView" hasInstanceVariable:@"_editPhotoButton" withType:"UIButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CNContactPhotoView" hasInstanceMethod:@"contact" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNContactPhotoView" hasInstanceMethod:@"isEditing" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CNContactPhotoView" hasInstanceMethod:@"hasPhoto" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CNContactPhotoView" hasInstanceMethod:@"avatarView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNContact" hasInstanceVariable:@"_displayNameOrder" withType:"NSInteger"];
+  [validationsCopy validateClass:@"CNContactPhotoView" hasInstanceVariable:@"_editPhotoButton" withType:"UIButton"];
 }
 
 - (BOOL)isAccessibilityElement
@@ -55,9 +55,9 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v10 = [v4 givenName];
-  v11 = [v4 familyName];
-  if (!(v10 | v11))
+  givenName = [v4 givenName];
+  familyName = [v4 familyName];
+  if (!(givenName | familyName))
   {
     if (v7)
     {
@@ -68,9 +68,9 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  if (v10)
+  if (givenName)
   {
-    v14 = v10;
+    v14 = givenName;
   }
 
   else
@@ -78,9 +78,9 @@ LABEL_9:
     v14 = &stru_2A2173908;
   }
 
-  if (v11)
+  if (familyName)
   {
-    v15 = v11;
+    v15 = familyName;
   }
 
   else
@@ -101,30 +101,30 @@ LABEL_9:
   if (v7)
   {
     v17 = [(CNContactPhotoViewAccessibility *)self safeValueForKey:@"avatarView"];
-    v18 = [v17 accessibilityLabel];
+    accessibilityLabel = [v17 accessibilityLabel];
   }
 
   else
   {
     v17 = accessibilityLocalizedString(@"missing.photo.for.text");
-    v19 = [MEMORY[0x29EDB9F50] whitespaceCharacterSet];
-    v20 = [v16 stringByTrimmingCharactersInSet:v19];
+    whitespaceCharacterSet = [MEMORY[0x29EDB9F50] whitespaceCharacterSet];
+    v20 = [v16 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
     v21 = [v20 length];
 
     if (!v21)
     {
-      v22 = [v4 phoneNumbers];
-      v23 = [v22 firstObject];
-      v24 = [v23 value];
-      v25 = [v24 stringValue];
+      phoneNumbers = [v4 phoneNumbers];
+      firstObject = [phoneNumbers firstObject];
+      value = [firstObject value];
+      stringValue = [value stringValue];
 
-      v16 = v25;
+      v16 = stringValue;
     }
 
-    v18 = [MEMORY[0x29EDBA0F8] stringWithFormat:v17, v16];
+    accessibilityLabel = [MEMORY[0x29EDBA0F8] stringWithFormat:v17, v16];
   }
 
-  v12 = v18;
+  v12 = accessibilityLabel;
 
 LABEL_11:
 
@@ -134,46 +134,46 @@ LABEL_11:
 - (id)accessibilityValue
 {
   v3 = [(CNContactPhotoViewAccessibility *)self safeValueForKey:@"_editPhotoButton"];
-  v4 = [v3 _accessibilityViewIsVisible];
+  _accessibilityViewIsVisible = [v3 _accessibilityViewIsVisible];
 
-  if (v4)
+  if (_accessibilityViewIsVisible)
   {
     v5 = [(CNContactPhotoViewAccessibility *)self safeValueForKey:@"_editPhotoButton"];
-    v6 = [v5 accessibilityValue];
+    accessibilityValue = [v5 accessibilityValue];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = CNContactPhotoViewAccessibility;
-    v6 = [(CNContactPhotoViewAccessibility *)&v8 accessibilityValue];
+    accessibilityValue = [(CNContactPhotoViewAccessibility *)&v8 accessibilityValue];
   }
 
-  return v6;
+  return accessibilityValue;
 }
 
 - (id)accessibilityHint
 {
   if ([(CNContactPhotoViewAccessibility *)self safeBoolForKey:@"hasPhoto"]&& [(CNContactPhotoViewAccessibility *)self safeBoolForKey:@"isEditing"])
   {
-    v3 = accessibilityLocalizedString(@"edit.photo.hint");
+    accessibilityHint = accessibilityLocalizedString(@"edit.photo.hint");
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = CNContactPhotoViewAccessibility;
-    v3 = [(CNContactPhotoViewAccessibility *)&v5 accessibilityHint];
+    accessibilityHint = [(CNContactPhotoViewAccessibility *)&v5 accessibilityHint];
   }
 
-  return v3;
+  return accessibilityHint;
 }
 
 - (unint64_t)accessibilityTraits
 {
   v7.receiver = self;
   v7.super_class = CNContactPhotoViewAccessibility;
-  v3 = [(CNContactPhotoViewAccessibility *)&v7 accessibilityTraits];
+  accessibilityTraits = [(CNContactPhotoViewAccessibility *)&v7 accessibilityTraits];
   v4 = [(CNContactPhotoViewAccessibility *)self safeBoolForKey:@"isEditing"];
   v5 = *MEMORY[0x29EDC7F70];
   if (!v4)
@@ -181,7 +181,7 @@ LABEL_11:
     v5 = 0;
   }
 
-  return v5 | v3 | *MEMORY[0x29EDC7F88];
+  return v5 | accessibilityTraits | *MEMORY[0x29EDC7F88];
 }
 
 @end

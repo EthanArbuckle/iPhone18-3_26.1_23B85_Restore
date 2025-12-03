@@ -1,10 +1,10 @@
 @interface QLListCellManager
 - (QLListCellManager)init;
-- (void)_operationDidFinish:(id)a3;
+- (void)_operationDidFinish:(id)finish;
 - (void)dealloc;
-- (void)operation:(id)a3 didDetermineFileSize:(id)a4 fileTypeString:(id)a5;
-- (void)operation:(id)a3 didGenerateThumbnail:(id)a4;
-- (void)setupCell:(id)a3 withItem:(id)a4 atIndex:(unint64_t)a5;
+- (void)operation:(id)operation didDetermineFileSize:(id)size fileTypeString:(id)string;
+- (void)operation:(id)operation didGenerateThumbnail:(id)thumbnail;
+- (void)setupCell:(id)cell withItem:(id)item atIndex:(unint64_t)index;
 @end
 
 @implementation QLListCellManager
@@ -43,21 +43,21 @@
   [(QLListCellManager *)&v3 dealloc];
 }
 
-- (void)setupCell:(id)a3 withItem:(id)a4 atIndex:(unint64_t)a5
+- (void)setupCell:(id)cell withItem:(id)item atIndex:(unint64_t)index
 {
-  v8 = a3;
-  v9 = a4;
+  cellCopy = cell;
+  itemCopy = item;
   serialQueue = self->_serialQueue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __48__QLListCellManager_setupCell_withItem_atIndex___block_invoke;
   v13[3] = &unk_278B574D0;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a5;
-  v11 = v9;
-  v12 = v8;
+  v14 = cellCopy;
+  v15 = itemCopy;
+  indexCopy = index;
+  v11 = itemCopy;
+  v12 = cellCopy;
   dispatch_async(serialQueue, v13);
 }
 
@@ -97,10 +97,10 @@ void __48__QLListCellManager_setupCell_withItem_atIndex___block_invoke_2(uint64_
   [WeakRetained _operationDidFinish:v2];
 }
 
-- (void)_operationDidFinish:(id)a3
+- (void)_operationDidFinish:(id)finish
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "index")}];
+  finishCopy = finish;
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(finishCopy, "index")}];
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -108,8 +108,8 @@ void __48__QLListCellManager_setupCell_withItem_atIndex___block_invoke_2(uint64_
   block[3] = &unk_278B56E00;
   block[4] = self;
   v10 = v5;
-  v11 = v4;
-  v7 = v4;
+  v11 = finishCopy;
+  v7 = finishCopy;
   v8 = v5;
   dispatch_sync(serialQueue, block);
 }
@@ -128,19 +128,19 @@ void __41__QLListCellManager__operationDidFinish___block_invoke(void *a1)
   }
 }
 
-- (void)operation:(id)a3 didGenerateThumbnail:(id)a4
+- (void)operation:(id)operation didGenerateThumbnail:(id)thumbnail
 {
-  v6 = a3;
-  v7 = a4;
-  if (([v6 isCancelled] & 1) == 0)
+  operationCopy = operation;
+  thumbnailCopy = thumbnail;
+  if (([operationCopy isCancelled] & 1) == 0)
   {
     serialQueue = self->_serialQueue;
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __52__QLListCellManager_operation_didGenerateThumbnail___block_invoke;
     v9[3] = &unk_278B56E50;
-    v10 = v6;
-    v11 = v7;
+    v10 = operationCopy;
+    v11 = thumbnailCopy;
     dispatch_sync(serialQueue, v9);
   }
 }
@@ -173,21 +173,21 @@ void __52__QLListCellManager_operation_didGenerateThumbnail___block_invoke_2(uin
   [v2 setThumbnail:v1];
 }
 
-- (void)operation:(id)a3 didDetermineFileSize:(id)a4 fileTypeString:(id)a5
+- (void)operation:(id)operation didDetermineFileSize:(id)size fileTypeString:(id)string
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (([v8 isCancelled] & 1) == 0)
+  operationCopy = operation;
+  sizeCopy = size;
+  stringCopy = string;
+  if (([operationCopy isCancelled] & 1) == 0)
   {
     serialQueue = self->_serialQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __67__QLListCellManager_operation_didDetermineFileSize_fileTypeString___block_invoke;
     block[3] = &unk_278B56E00;
-    v13 = v8;
-    v14 = v9;
-    v15 = v10;
+    v13 = operationCopy;
+    v14 = sizeCopy;
+    v15 = stringCopy;
     dispatch_sync(serialQueue, block);
   }
 }

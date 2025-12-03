@@ -1,25 +1,25 @@
 @interface SKUIStarRatingViewElementView
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5;
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-+ (id)_attributedStringWithViewElement:(id)a3 context:(id)a4;
-+ (id)textPropertiesForViewElement:(id)a3 width:(double)a4 context:(id)a5;
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SKUIStarRatingViewElementView)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (void)setContentInset:(UIEdgeInsets)a3;
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
++ (id)_attributedStringWithViewElement:(id)element context:(id)context;
++ (id)textPropertiesForViewElement:(id)element width:(double)width context:(id)context;
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SKUIStarRatingViewElementView)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context;
+- (void)setContentInset:(UIEdgeInsets)inset;
 @end
 
 @implementation SKUIStarRatingViewElementView
 
-- (SKUIStarRatingViewElementView)initWithFrame:(CGRect)a3
+- (SKUIStarRatingViewElementView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -34,18 +34,18 @@
 
   v19.receiver = self;
   v19.super_class = SKUIStarRatingViewElementView;
-  v16 = [(SKUIStarRatingViewElementView *)&v19 initWithFrame:x, y, width, height];
-  v17 = v16;
-  if (v16)
+  height = [(SKUIStarRatingViewElementView *)&v19 initWithFrame:x, y, width, height];
+  v17 = height;
+  if (height)
   {
-    v16->_elementSpacing = 3;
-    [(SKUIStarRatingViewElementView *)v16 setContentMode:3];
+    height->_elementSpacing = 3;
+    [(SKUIStarRatingViewElementView *)height setContentMode:3];
   }
 
   return v17;
 }
 
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context
 {
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
@@ -55,7 +55,7 @@
   return 0;
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
@@ -69,10 +69,10 @@
   return result;
 }
 
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a5;
-  v9 = a3;
+  contextCopy = context;
+  elementCopy = element;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -85,16 +85,16 @@
     }
   }
 
-  v18 = [a1 _attributedStringWithViewElement:v9 context:v8];
-  v19 = [v8 labelLayoutCache];
+  v18 = [self _attributedStringWithViewElement:elementCopy context:contextCopy];
+  labelLayoutCache = [contextCopy labelLayoutCache];
 
-  [v19 requestLayoutForViewElement:v9 attributedString:v18 width:a4];
+  [labelLayoutCache requestLayoutForViewElement:elementCopy attributedString:v18 width:width];
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
-  v7 = a5;
-  v8 = a4;
+  contextCopy = context;
+  elementCopy = element;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -108,15 +108,15 @@
   }
 
   v17 = [SKUIRatingStarsCache cacheWithProperties:1];
-  [v8 ratingValue];
+  [elementCopy ratingValue];
   v19 = [v17 ratingStarsImageForRating:v18];
 
   [v19 size];
   v21 = v20;
   v23 = v22;
-  v24 = [v7 labelLayoutCache];
+  labelLayoutCache = [contextCopy labelLayoutCache];
 
-  [v24 sizeForViewElement:v8 width:a3];
+  [labelLayoutCache sizeForViewElement:elementCopy width:width];
   v26 = v25;
   v28 = v27;
 
@@ -142,10 +142,10 @@
   return result;
 }
 
-+ (id)textPropertiesForViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (id)textPropertiesForViewElement:(id)element width:(double)width context:(id)context
 {
-  v7 = a3;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -158,14 +158,14 @@
     }
   }
 
-  v17 = [v8 labelLayoutCache];
-  v18 = [v17 layoutForWidth:a4 viewElement:v7];
+  labelLayoutCache = [contextCopy labelLayoutCache];
+  v18 = [labelLayoutCache layoutForWidth:width viewElement:elementCopy];
 
   if (v18)
   {
     v19 = [[SKUIViewTextProperties alloc] initWithStringLayout:v18];
     v20 = [SKUIRatingStarsCache cacheWithProperties:1];
-    [v7 ratingValue];
+    [elementCopy ratingValue];
     v22 = [v20 ratingStarsImageForRating:v21];
 
     [v18 boundingSize];
@@ -186,12 +186,12 @@
   return v19;
 }
 
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v14 = a3;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   v9 = [SKUIRatingStarsCache cacheWithProperties:1];
-  [v14 ratingValue];
+  [elementCopy ratingValue];
   v11 = [v9 ratingStarsImageForRating:v10];
 
   if (self->_starRatingImage != v11)
@@ -200,8 +200,8 @@
     [(SKUIStarRatingViewElementView *)self setNeedsDisplay];
   }
 
-  v12 = [v8 labelLayoutCache];
-  v13 = [v12 layoutForWidth:a4 viewElement:v14];
+  labelLayoutCache = [contextCopy labelLayoutCache];
+  v13 = [labelLayoutCache layoutForWidth:width viewElement:elementCopy];
 
   if (v13 != self->_textLayout)
   {
@@ -210,22 +210,22 @@
   }
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = inset.top;
+  v3.f64[1] = inset.left;
+  v4.f64[0] = inset.bottom;
+  v4.f64[1] = inset.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentInset.top, v3), vceqq_f64(*&self->_contentInset.bottom, v4)))) & 1) == 0)
   {
-    self->_contentInset = a3;
+    self->_contentInset = inset;
     [(SKUIStarRatingViewElementView *)self setNeedsDisplay];
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  [(SKUIStarRatingViewElementView *)self bounds:a3.origin.x];
+  [(SKUIStarRatingViewElementView *)self bounds:rect.origin.x];
   v5 = v4;
   v7 = v6;
   v8 = MEMORY[0x277CBF3A0];
@@ -287,19 +287,19 @@
     v18 = CGRectGetMaxX(v34) + self->_elementSpacing;
   }
 
-  v31 = [(SKUIAttributedStringLayout *)self->_textLayout attributedString];
-  if (v31)
+  attributedString = [(SKUIAttributedStringLayout *)self->_textLayout attributedString];
+  if (attributedString)
   {
-    v24 = [(SKUIAttributedStringLayout *)self->_textLayout stringDrawingContext];
-    [v31 drawWithRect:33 options:v24 context:{v22, v10, v9, v11}];
+    stringDrawingContext = [(SKUIAttributedStringLayout *)self->_textLayout stringDrawingContext];
+    [attributedString drawWithRect:33 options:stringDrawingContext context:{v22, v10, v9, v11}];
   }
 
   if (storeShouldReverseLayoutDirection())
   {
     v25 = MEMORY[0x277D755B8];
-    v26 = [(UIImage *)self->_starRatingImage CGImage];
+    cGImage = [(UIImage *)self->_starRatingImage CGImage];
     [(UIImage *)self->_starRatingImage scale];
-    v27 = [v25 imageWithCGImage:v26 scale:4 orientation:?];
+    v27 = [v25 imageWithCGImage:cGImage scale:4 orientation:?];
     v28 = self->_starRatingImage;
     self->_starRatingImage = v27;
   }
@@ -307,12 +307,12 @@
   [(UIImage *)self->_starRatingImage drawInRect:0 blendMode:v18 alpha:v16, recta, v14, 1.0];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   starRatingImage = self->_starRatingImage;
   if (starRatingImage)
   {
-    [(UIImage *)starRatingImage size:a3.width];
+    [(UIImage *)starRatingImage size:fits.width];
     v6 = v5;
     v8 = v7;
   }
@@ -358,16 +358,16 @@
   return result;
 }
 
-+ (id)_attributedStringWithViewElement:(id)a3 context:(id)a4
++ (id)_attributedStringWithViewElement:(id)element context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 style];
-  v8 = SKUIViewElementFontWithStyle(v7);
+  elementCopy = element;
+  contextCopy = context;
+  style = [elementCopy style];
+  v8 = SKUIViewElementFontWithStyle(style);
   if (!v8)
   {
-    v9 = [v6 containerViewElementType];
-    if (v9 == 134 || v9 == 104)
+    containerViewElementType = [contextCopy containerViewElementType];
+    if (containerViewElementType == 134 || containerViewElementType == 104)
     {
       v10 = SKUIFontPreferredFontForTextStyle(21);
     }
@@ -380,16 +380,16 @@
     v8 = v10;
   }
 
-  v11 = [v6 tintColor];
-  v12 = SKUIViewElementPlainColorWithStyle(v7, v11);
+  tintColor = [contextCopy tintColor];
+  v12 = SKUIViewElementPlainColorWithStyle(style, tintColor);
 
   if (!v12)
   {
     v12 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.6];
   }
 
-  v13 = [v5 text];
-  v14 = [v13 attributedStringWithDefaultFont:v8 foregroundColor:v12 style:v7];
+  text = [elementCopy text];
+  v14 = [text attributedStringWithDefaultFont:v8 foregroundColor:v12 style:style];
 
   return v14;
 }

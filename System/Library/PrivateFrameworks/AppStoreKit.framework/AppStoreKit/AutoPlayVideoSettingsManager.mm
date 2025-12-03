@@ -19,14 +19,14 @@
     v5 = v12;
     __swift_project_boxed_opaque_existential_1Tm(v10, v11);
     v6 = *(v5 + 8);
-    v7 = self;
+    selfCopy = self;
     v6(v4, v5);
     __swift_destroy_boxed_opaque_existential_1(v10);
   }
 
   else
   {
-    v8 = self;
+    selfCopy2 = self;
   }
 
   v9 = type metadata accessor for AutoPlayVideoSettingsManager();
@@ -37,13 +37,13 @@
 
 - (void)updateAutoPlayVideoSettings
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E19CC304();
 }
 
 - (BOOL)isAutoPlayAllowed
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1E19CB738();
 
   return v3 & 1;
@@ -62,13 +62,13 @@
   v9 = &v18 - v8;
   MEMORY[0x1EEE9AC00](v10);
   v12 = &v18 - v11;
-  v13 = [objc_opt_self() standardUserDefaults];
+  standardUserDefaults = [objc_opt_self() standardUserDefaults];
   sub_1E138085C(v2);
   if ((*(v4 + 48))(v2, 1, v3) == 1)
   {
     sub_1E1308058(v2, &unk_1ECEBB780);
     v14 = sub_1E1AF5DBC();
-    [v13 setBool:0 forKey:v14];
+    [standardUserDefaults setBool:0 forKey:v14];
   }
 
   else
@@ -81,7 +81,7 @@
     v16 = *(v4 + 8);
     v16(v6, v3);
     v17 = sub_1E1AF5DBC();
-    [v13 setBool:(v15 & 1) == 0 forKey:v17];
+    [standardUserDefaults setBool:(v15 & 1) == 0 forKey:v17];
 
     v16(v9, v3);
     v16(v12, v3);
@@ -93,7 +93,7 @@
   v0 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1ECEBB780);
   MEMORY[0x1EEE9AC00](v0 - 8);
   v2 = &v6 - v1;
-  v3 = [objc_opt_self() standardUserDefaults];
+  standardUserDefaults = [objc_opt_self() standardUserDefaults];
   if (sub_1E1380C5C())
   {
     sub_1E1AEFE5C();

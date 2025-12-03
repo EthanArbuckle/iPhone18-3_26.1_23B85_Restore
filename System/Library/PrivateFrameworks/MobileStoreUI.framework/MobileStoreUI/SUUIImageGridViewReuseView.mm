@@ -1,12 +1,12 @@
 @interface SUUIImageGridViewReuseView
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5;
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5;
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context;
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context;
 - (SUUIImageGridViewReuseView)init;
-- (id)viewForElementIdentifier:(id)a3;
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
+- (id)viewForElementIdentifier:(id)identifier;
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context;
 @end
 
 @implementation SUUIImageGridViewReuseView
@@ -26,10 +26,10 @@
   return v2;
 }
 
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context
 {
-  v7 = a3;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -38,15 +38,15 @@
   v11[1] = 3221225472;
   v11[2] = __77__SUUIImageGridViewReuseView_prefetchResourcesForViewElement_reason_context___block_invoke;
   v11[3] = &unk_2798F5E50;
-  v9 = v8;
+  v9 = contextCopy;
   v13 = &v15;
-  v14 = a4;
+  reasonCopy = reason;
   v12 = v9;
-  [v7 enumerateChildrenUsingBlock:v11];
-  LOBYTE(a4) = *(v16 + 24);
+  [elementCopy enumerateChildrenUsingBlock:v11];
+  LOBYTE(reason) = *(v16 + 24);
 
   _Block_object_dispose(&v15, 8);
-  return a4;
+  return reason;
 }
 
 uint64_t __77__SUUIImageGridViewReuseView_prefetchResourcesForViewElement_reason_context___block_invoke(uint64_t a1, uint64_t a2)
@@ -56,11 +56,11 @@ uint64_t __77__SUUIImageGridViewReuseView_prefetchResourcesForViewElement_reason
   return result;
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
   v56 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  elementCopy = element;
+  contextCopy = context;
   v49 = 0;
   v50 = &v49;
   v51 = 0x3032000000;
@@ -72,16 +72,16 @@ uint64_t __77__SUUIImageGridViewReuseView_prefetchResourcesForViewElement_reason
   v48[2] = __66__SUUIImageGridViewReuseView_preferredSizeForViewElement_context___block_invoke;
   v48[3] = &unk_2798F5FB8;
   v48[4] = &v49;
-  [v5 enumerateChildrenUsingBlock:v48];
-  v7 = [v5 columnCount];
-  if (v7 <= 1)
+  [elementCopy enumerateChildrenUsingBlock:v48];
+  columnCount = [elementCopy columnCount];
+  if (columnCount <= 1)
   {
     v8 = 1;
   }
 
   else
   {
-    v8 = v7;
+    v8 = columnCount;
   }
 
   v9 = [v50[5] count];
@@ -97,7 +97,7 @@ uint64_t __77__SUUIImageGridViewReuseView_prefetchResourcesForViewElement_reason
 
   v11 = malloc_type_calloc(v8, 8uLL, 0x100004000313F17uLL);
   v12 = malloc_type_calloc(v10, 8uLL, 0x100004000313F17uLL);
-  v43 = v5;
+  v43 = elementCopy;
   bzero(v11, 8 * v8);
   if (v10 >= 1)
   {
@@ -125,7 +125,7 @@ uint64_t __77__SUUIImageGridViewReuseView_prefetchResourcesForViewElement_reason
           objc_enumerationMutation(v13);
         }
 
-        [v6 sizeForImageElement:{*(*(&v44 + 1) + 8 * i), v42}];
+        [contextCopy sizeForImageElement:{*(*(&v44 + 1) + 8 * i), v42}];
         if (*(v11 + v15) < v19)
         {
           *(v11 + v15) = v19;
@@ -228,17 +228,17 @@ void __66__SUUIImageGridViewReuseView_preferredSizeForViewElement_context___bloc
   }
 }
 
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context
 {
-  v7 = a5;
+  contextCopy = context;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __72__SUUIImageGridViewReuseView_requestLayoutForViewElement_width_context___block_invoke;
   v9[3] = &unk_2798FA8F8;
-  v11 = a4;
-  v10 = v7;
-  v8 = v7;
-  [a3 enumerateChildrenUsingBlock:v9];
+  widthCopy = width;
+  v10 = contextCopy;
+  v8 = contextCopy;
+  [element enumerateChildrenUsingBlock:v9];
 }
 
 void __72__SUUIImageGridViewReuseView_requestLayoutForViewElement_width_context___block_invoke(uint64_t a1, void *a2)
@@ -250,19 +250,19 @@ void __72__SUUIImageGridViewReuseView_requestLayoutForViewElement_width_context_
   }
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
-  [SUUIImageGridViewReuseView preferredSizeForViewElement:a4 context:a5, a3];
+  [SUUIImageGridViewReuseView preferredSizeForViewElement:element context:context, width];
   result.height = v6;
   result.width = v5;
   return result;
 }
 
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
-  objc_storeStrong(&self->_imageGridViewElement, a3);
+  elementCopy = element;
+  contextCopy = context;
+  objc_storeStrong(&self->_imageGridViewElement, element);
   [(NSMapTable *)self->_viewElementViews removeAllObjects];
   [(NSMapTable *)self->_imageViewToImageResourceCacheKey removeAllObjects];
   v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -270,13 +270,13 @@ void __72__SUUIImageGridViewReuseView_requestLayoutForViewElement_width_context_
   v15 = 3221225472;
   v16 = __66__SUUIImageGridViewReuseView_reloadWithViewElement_width_context___block_invoke;
   v17 = &unk_2798FB240;
-  v18 = v8;
-  v19 = v9;
-  v20 = self;
+  v18 = elementCopy;
+  v19 = contextCopy;
+  selfCopy = self;
   v21 = v10;
   v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v12 = contextCopy;
+  v13 = elementCopy;
   [(SUUIViewReuseView *)self modifyUsingBlock:&v14];
   [(SUUIImageGridViewReuseView *)self setImageViews:v11, v14, v15, v16, v17];
 }
@@ -341,12 +341,12 @@ uint64_t __66__SUUIImageGridViewReuseView_reloadWithViewElement_width_context___
   return MEMORY[0x2821F9730](isKindOfClass);
 }
 
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [a4 requestIdentifier];
+  imageCopy = image;
+  contextCopy = context;
+  requestIdentifier = [request requestIdentifier];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -356,7 +356,7 @@ uint64_t __66__SUUIImageGridViewReuseView_reloadWithViewElement_width_context___
   if (v11)
   {
     v12 = v11;
-    v22 = v8;
+    v22 = imageCopy;
     v13 = *v25;
     while (2)
     {
@@ -369,25 +369,25 @@ uint64_t __66__SUUIImageGridViewReuseView_reloadWithViewElement_width_context___
 
         v15 = *(*(&v24 + 1) + 8 * i);
         v16 = [(NSMapTable *)self->_imageViewToImageResourceCacheKey objectForKey:v15, v22];
-        v17 = [v9 requestIdentifierForResourceCacheKey:v16];
+        v17 = [contextCopy requestIdentifierForResourceCacheKey:v16];
         v18 = v17;
-        if (v17 && [v17 unsignedIntegerValue] == v10)
+        if (v17 && [v17 unsignedIntegerValue] == requestIdentifier)
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v20 = [v15 imageView];
-            v8 = v22;
-            [v20 setImage:v22];
+            imageView = [v15 imageView];
+            imageCopy = v22;
+            [imageView setImage:v22];
           }
 
           else
           {
             objc_opt_class();
-            v8 = v22;
+            imageCopy = v22;
             if (objc_opt_isKindOfClass())
             {
-              [v15 setImage:v22 cacheKey:v16 context:v9];
+              [v15 setImage:v22 cacheKey:v16 context:contextCopy];
             }
 
             else
@@ -411,7 +411,7 @@ uint64_t __66__SUUIImageGridViewReuseView_reloadWithViewElement_width_context___
     }
 
     v19 = 0;
-    v8 = v22;
+    imageCopy = v22;
   }
 
   else
@@ -424,27 +424,27 @@ LABEL_18:
   return v19;
 }
 
-- (id)viewForElementIdentifier:(id)a3
+- (id)viewForElementIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = __Block_byref_object_copy__51;
   v19 = __Block_byref_object_dispose__51;
   v20 = 0;
-  v5 = [(SUUIViewReuseView *)self allExistingViews];
-  v6 = [(SUUIViewElement *)self->_imageGridViewElement flattenedChildren];
+  allExistingViews = [(SUUIViewReuseView *)self allExistingViews];
+  flattenedChildren = [(SUUIViewElement *)self->_imageGridViewElement flattenedChildren];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __55__SUUIImageGridViewReuseView_viewForElementIdentifier___block_invoke;
   v11[3] = &unk_2798F6E20;
-  v7 = v4;
+  v7 = identifierCopy;
   v12 = v7;
-  v8 = v5;
+  v8 = allExistingViews;
   v13 = v8;
   v14 = &v15;
-  [v6 enumerateObjectsUsingBlock:v11];
+  [flattenedChildren enumerateObjectsUsingBlock:v11];
 
   v9 = v16[5];
   _Block_object_dispose(&v15, 8);

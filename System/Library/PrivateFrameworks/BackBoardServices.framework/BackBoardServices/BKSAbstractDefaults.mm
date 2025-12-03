@@ -1,20 +1,20 @@
 @interface BKSAbstractDefaults
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 @end
 
 @implementation BKSAbstractDefaults
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(BKSAbstractDefaults *)self succinctDescriptionBuilder];
+  succinctDescriptionBuilder = [(BKSAbstractDefaults *)self succinctDescriptionBuilder];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __61__BKSAbstractDefaults_descriptionBuilderWithMultilinePrefix___block_invoke;
   v10[3] = &unk_1E6F47C78;
   v10[4] = self;
-  v5 = v4;
+  v5 = succinctDescriptionBuilder;
   v11 = v5;
   v6 = [v5 modifyBody:v10];
   v7 = v11;
@@ -60,20 +60,20 @@ void __61__BKSAbstractDefaults_descriptionBuilderWithMultilinePrefix___block_inv
   }
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BKSAbstractDefaults *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(BKSAbstractDefaults *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(BKSAbstractDefaults *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(BKSAbstractDefaults *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 @end

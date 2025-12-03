@@ -1,18 +1,18 @@
 @interface IMNicknameEncryptionCipherRecordField
-+ (id)cipherRecordFieldWithFieldName:(id)a3 dataRepresentation:(id)a4 error:(id *)a5;
-- (IMNicknameEncryptionCipherRecordField)initWithFieldName:(id)a3 cipherData:(id)a4 IV:(id)a5 tag:(id)a6;
-- (id)dataRepresentationWithError:(id *)a3;
++ (id)cipherRecordFieldWithFieldName:(id)name dataRepresentation:(id)representation error:(id *)error;
+- (IMNicknameEncryptionCipherRecordField)initWithFieldName:(id)name cipherData:(id)data IV:(id)v tag:(id)tag;
+- (id)dataRepresentationWithError:(id *)error;
 - (id)description;
 @end
 
 @implementation IMNicknameEncryptionCipherRecordField
 
-+ (id)cipherRecordFieldWithFieldName:(id)a3 dataRepresentation:(id)a4 error:(id *)a5
++ (id)cipherRecordFieldWithFieldName:(id)name dataRepresentation:(id)representation error:(id *)error
 {
   v32 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E696AE40] propertyListWithData:v8 options:0 format:0 error:a5];
+  nameCopy = name;
+  representationCopy = representation;
+  v9 = [MEMORY[0x1E696AE40] propertyListWithData:representationCopy options:0 format:0 error:error];
   v10 = v9;
   if (v9)
   {
@@ -24,9 +24,9 @@
         v12 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
         {
-          if (a5)
+          if (error)
           {
-            v13 = *a5;
+            v13 = *error;
           }
 
           else
@@ -37,7 +37,7 @@
           v24 = 138412802;
           v25 = v13;
           v26 = 2112;
-          v27 = v7;
+          v27 = nameCopy;
           v28 = 2112;
           v29 = v10;
           _os_log_impl(&dword_1A85E5000, v12, OS_LOG_TYPE_INFO, "Unsupported cipherField version -- nickname decryption failed {error: %@, fieldName: %@, dictionaryRepresentation: %@}", &v24, 0x20u);
@@ -50,12 +50,12 @@
     else
     {
       v16 = [v10 objectForKey:@"t"];
-      v17 = [IMNicknameEncryptionFieldTag tagWithDataRepresentation:v16 error:a5];
+      v17 = [IMNicknameEncryptionFieldTag tagWithDataRepresentation:v16 error:error];
       if (v17)
       {
         v18 = [v10 objectForKey:@"i"];
         v19 = [v10 objectForKey:@"d"];
-        v20 = [[IMNicknameEncryptionCipherRecordField alloc] initWithFieldName:v7 cipherData:v19 IV:v18 tag:v17];
+        v20 = [[IMNicknameEncryptionCipherRecordField alloc] initWithFieldName:nameCopy cipherData:v19 IV:v18 tag:v17];
       }
 
       else
@@ -65,9 +65,9 @@
           v21 = OSLogHandleForIMFoundationCategory();
           if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
           {
-            if (a5)
+            if (error)
             {
-              v22 = *a5;
+              v22 = *error;
             }
 
             else
@@ -78,7 +78,7 @@
             v24 = 138413058;
             v25 = v22;
             v26 = 2112;
-            v27 = v7;
+            v27 = nameCopy;
             v28 = 2112;
             v29 = v16;
             v30 = 2112;
@@ -99,9 +99,9 @@
       v14 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
-        if (a5)
+        if (error)
         {
-          v15 = *a5;
+          v15 = *error;
         }
 
         else
@@ -112,9 +112,9 @@
         v24 = 138412802;
         v25 = v15;
         v26 = 2112;
-        v27 = v7;
+        v27 = nameCopy;
         v28 = 2112;
-        v29 = v8;
+        v29 = representationCopy;
         _os_log_impl(&dword_1A85E5000, v14, OS_LOG_TYPE_INFO, "Failed to parse cipherField dataRepresentation -- nickname decryption failed {error: %@, fieldName: %@, dataRepresentation: %@}", &v24, 0x20u);
       }
     }
@@ -125,41 +125,41 @@
   return v20;
 }
 
-- (IMNicknameEncryptionCipherRecordField)initWithFieldName:(id)a3 cipherData:(id)a4 IV:(id)a5 tag:(id)a6
+- (IMNicknameEncryptionCipherRecordField)initWithFieldName:(id)name cipherData:(id)data IV:(id)v tag:(id)tag
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  nameCopy = name;
+  dataCopy = data;
+  vCopy = v;
+  tagCopy = tag;
   v18.receiver = self;
   v18.super_class = IMNicknameEncryptionCipherRecordField;
   v15 = [(IMNicknameEncryptionCipherRecordField *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_fieldName, a3);
-    objc_storeStrong(&v16->_cipherData, a4);
-    objc_storeStrong(&v16->_IV, a5);
-    objc_storeStrong(&v16->_fieldTag, a6);
+    objc_storeStrong(&v15->_fieldName, name);
+    objc_storeStrong(&v16->_cipherData, data);
+    objc_storeStrong(&v16->_IV, v);
+    objc_storeStrong(&v16->_fieldTag, tag);
   }
 
   return v16;
 }
 
-- (id)dataRepresentationWithError:(id *)a3
+- (id)dataRepresentationWithError:(id *)error
 {
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v6 = [(IMNicknameEncryptionCipherRecordField *)self IV];
   [v5 setObject:v6 forKey:@"i"];
 
-  v7 = [(IMNicknameEncryptionCipherRecordField *)self cipherData];
-  [v5 setObject:v7 forKey:@"d"];
+  cipherData = [(IMNicknameEncryptionCipherRecordField *)self cipherData];
+  [v5 setObject:cipherData forKey:@"d"];
 
-  v8 = [(IMNicknameEncryptionCipherRecordField *)self fieldTag];
-  v9 = [v8 dataRepresentation];
-  [v5 setObject:v9 forKey:@"t"];
+  fieldTag = [(IMNicknameEncryptionCipherRecordField *)self fieldTag];
+  dataRepresentation = [fieldTag dataRepresentation];
+  [v5 setObject:dataRepresentation forKey:@"t"];
 
-  v10 = [MEMORY[0x1E696AE40] dataWithPropertyList:v5 format:200 options:0 error:a3];
+  v10 = [MEMORY[0x1E696AE40] dataWithPropertyList:v5 format:200 options:0 error:error];
 
   return v10;
 }
@@ -168,11 +168,11 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(IMNicknameEncryptionCipherRecordField *)self fieldName];
-  v6 = [(IMNicknameEncryptionCipherRecordField *)self cipherData];
+  fieldName = [(IMNicknameEncryptionCipherRecordField *)self fieldName];
+  cipherData = [(IMNicknameEncryptionCipherRecordField *)self cipherData];
   v7 = [(IMNicknameEncryptionCipherRecordField *)self IV];
-  v8 = [(IMNicknameEncryptionCipherRecordField *)self fieldTag];
-  v9 = [v3 stringWithFormat:@"<%@: %p recordKey: %@, cipherData: %@, IV: %@, tag: %@>", v4, self, v5, v6, v7, v8];
+  fieldTag = [(IMNicknameEncryptionCipherRecordField *)self fieldTag];
+  v9 = [v3 stringWithFormat:@"<%@: %p recordKey: %@, cipherData: %@, IV: %@, tag: %@>", v4, self, fieldName, cipherData, v7, fieldTag];
 
   return v9;
 }

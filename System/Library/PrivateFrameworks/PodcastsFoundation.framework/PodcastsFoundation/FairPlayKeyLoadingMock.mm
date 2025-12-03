@@ -1,18 +1,18 @@
 @interface FairPlayKeyLoadingMock
-- (void)createSessionWithAsset:(id)a3 completion:(id)a4;
-- (void)renewKeyRequestWithAsset:(id)a3 completion:(id)a4;
-- (void)renewKeyRequestsWithAssets:(id)a3 completion:(id)a4;
-- (void)renewKeyWithSession:(id)a3;
-- (void)startKeyRequestWithSession:(id)a3 completion:(id)a4;
-- (void)stopKeyRequestWithAsset:(id)a3 completion:(id)a4;
-- (void)stopKeyRequestWithSession:(id)a3 completion:(id)a4;
+- (void)createSessionWithAsset:(id)asset completion:(id)completion;
+- (void)renewKeyRequestWithAsset:(id)asset completion:(id)completion;
+- (void)renewKeyRequestsWithAssets:(id)assets completion:(id)completion;
+- (void)renewKeyWithSession:(id)session;
+- (void)startKeyRequestWithSession:(id)session completion:(id)completion;
+- (void)stopKeyRequestWithAsset:(id)asset completion:(id)completion;
+- (void)stopKeyRequestWithSession:(id)session completion:(id)completion;
 @end
 
 @implementation FairPlayKeyLoadingMock
 
-- (void)createSessionWithAsset:(id)a3 completion:(id)a4
+- (void)createSessionWithAsset:(id)asset completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     v7 = v6;
@@ -24,9 +24,9 @@
     {
 LABEL_3:
       v11 = *&self->createSessionHandler[8];
-      v12 = a3;
+      assetCopy = asset;
 
-      v10(v12, v9, v8);
+      v10(assetCopy, v9, v8);
       goto LABEL_6;
     }
   }
@@ -42,15 +42,15 @@ LABEL_3:
     }
   }
 
-  v13 = a3;
+  assetCopy2 = asset;
 
 LABEL_6:
   sub_1D8D15664(v9);
 }
 
-- (void)startKeyRequestWithSession:(id)a3 completion:(id)a4
+- (void)startKeyRequestWithSession:(id)session completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     v7 = v6;
@@ -64,7 +64,7 @@ LABEL_3:
       v11 = *&self->startKeyRequestHandler[8];
       swift_unknownObjectRetain();
 
-      v10(a3, v9, v8);
+      v10(session, v9, v8);
       goto LABEL_6;
     }
   }
@@ -87,9 +87,9 @@ LABEL_6:
   swift_unknownObjectRelease();
 }
 
-- (void)renewKeyRequestWithAsset:(id)a3 completion:(id)a4
+- (void)renewKeyRequestWithAsset:(id)asset completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     v7 = v6;
@@ -101,9 +101,9 @@ LABEL_6:
     {
 LABEL_3:
       v11 = *&self->renewKeyRequestHandler[8];
-      v12 = a3;
+      assetCopy = asset;
 
-      v10(v12, v9, v8);
+      v10(assetCopy, v9, v8);
       goto LABEL_6;
     }
   }
@@ -119,15 +119,15 @@ LABEL_3:
     }
   }
 
-  v13 = a3;
+  assetCopy2 = asset;
 
 LABEL_6:
   sub_1D8D15664(v9);
 }
 
-- (void)renewKeyRequestsWithAssets:(id)a3 completion:(id)a4
+- (void)renewKeyRequestsWithAssets:(id)assets completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   type metadata accessor for FairPlayAsset();
   v6 = sub_1D91785FC();
   if (v5)
@@ -162,7 +162,7 @@ LABEL_6:
   sub_1D8D15664(v8);
 }
 
-- (void)renewKeyWithSession:(id)a3
+- (void)renewKeyWithSession:(id)session
 {
   v3 = *self->renewKeyHandler;
   if (v3)
@@ -170,15 +170,15 @@ LABEL_6:
     v5 = *&self->renewKeyHandler[8];
     swift_unknownObjectRetain();
 
-    v3(a3);
+    v3(session);
 
     swift_unknownObjectRelease();
   }
 }
 
-- (void)stopKeyRequestWithAsset:(id)a3 completion:(id)a4
+- (void)stopKeyRequestWithAsset:(id)asset completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     v7 = v6;
@@ -190,9 +190,9 @@ LABEL_6:
     {
 LABEL_3:
       v11 = *&self->stopKeyRequestAssetHandler[8];
-      v12 = a3;
+      assetCopy = asset;
 
-      v10(v12, v9, v8);
+      v10(assetCopy, v9, v8);
       goto LABEL_6;
     }
   }
@@ -208,15 +208,15 @@ LABEL_3:
     }
   }
 
-  v13 = a3;
+  assetCopy2 = asset;
 
 LABEL_6:
   sub_1D8D15664(v9);
 }
 
-- (void)stopKeyRequestWithSession:(id)a3 completion:(id)a4
+- (void)stopKeyRequestWithSession:(id)session completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     v7 = v6;
@@ -230,7 +230,7 @@ LABEL_3:
       v11 = *&self->stopKeyRequestSessionHandler[8];
       swift_unknownObjectRetain();
 
-      v10(a3, v9, v8);
+      v10(session, v9, v8);
       goto LABEL_6;
     }
   }

@@ -1,5 +1,5 @@
 @interface MPVoicemailMailboxTableViewCell
-+ (UIEdgeInsets)separatorInsetForContentSizeCategory:(id)a3;
++ (UIEdgeInsets)separatorInsetForContentSizeCategory:(id)category;
 - (double)subtitleLabelLastBaselineLayoutConstraintConstant;
 - (double)titleLabelFirstBaselineLayoutConstraintConstant;
 - (void)_updateTextColor;
@@ -14,9 +14,9 @@
 
 @implementation MPVoicemailMailboxTableViewCell
 
-+ (UIEdgeInsets)separatorInsetForContentSizeCategory:(id)a3
++ (UIEdgeInsets)separatorInsetForContentSizeCategory:(id)category
 {
-  [a1 titleLabelLeadingAnchorLayoutConstraintConstantForContentCategorySize:a3];
+  [self titleLabelLeadingAnchorLayoutConstraintConstantForContentCategorySize:category];
   v4 = v3;
   v5 = 0.0;
   v6 = 0.0;
@@ -44,28 +44,28 @@
   v3 = objc_alloc_init(UILabel);
   [(MPVoicemailMailboxTableViewCell *)self setTitleLabel:v3];
 
-  v4 = [(MPVoicemailMailboxTableViewCell *)self titleLabel];
-  [v4 setTextAlignment:4];
+  titleLabel = [(MPVoicemailMailboxTableViewCell *)self titleLabel];
+  [titleLabel setTextAlignment:4];
 
-  v5 = [(MPVoicemailMailboxTableViewCell *)self titleLabel];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  titleLabel2 = [(MPVoicemailMailboxTableViewCell *)self titleLabel];
+  [titleLabel2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v6 = [(MPVoicemailMailboxTableViewCell *)self contentView];
-  v7 = [(MPVoicemailMailboxTableViewCell *)self titleLabel];
-  [v6 addSubview:v7];
+  contentView = [(MPVoicemailMailboxTableViewCell *)self contentView];
+  titleLabel3 = [(MPVoicemailMailboxTableViewCell *)self titleLabel];
+  [contentView addSubview:titleLabel3];
 
   v8 = objc_alloc_init(UILabel);
   [(MPVoicemailMailboxTableViewCell *)self setCountLabel:v8];
 
-  v9 = [(MPVoicemailMailboxTableViewCell *)self countLabel];
-  [v9 setTextAlignment:4];
+  countLabel = [(MPVoicemailMailboxTableViewCell *)self countLabel];
+  [countLabel setTextAlignment:4];
 
-  v10 = [(MPVoicemailMailboxTableViewCell *)self countLabel];
-  [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+  countLabel2 = [(MPVoicemailMailboxTableViewCell *)self countLabel];
+  [countLabel2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v11 = [(MPVoicemailMailboxTableViewCell *)self contentView];
-  v12 = [(MPVoicemailMailboxTableViewCell *)self countLabel];
-  [v11 addSubview:v12];
+  contentView2 = [(MPVoicemailMailboxTableViewCell *)self contentView];
+  countLabel3 = [(MPVoicemailMailboxTableViewCell *)self countLabel];
+  [contentView2 addSubview:countLabel3];
 
   [(MPVoicemailMailboxTableViewCell *)self _updateTextColor];
 }
@@ -75,48 +75,48 @@
   v35.receiver = self;
   v35.super_class = MPVoicemailMailboxTableViewCell;
   [(MPVoicemailMailboxTableViewCell *)&v35 loadConstraints];
-  v34 = [(MPVoicemailMailboxTableViewCell *)self titleLabel];
-  v32 = [v34 leadingAnchor];
-  v33 = [(MPVoicemailMailboxTableViewCell *)self contentView];
-  v31 = [v33 leadingAnchor];
-  v30 = [v32 constraintEqualToAnchor:v31 constant:34.0];
+  titleLabel = [(MPVoicemailMailboxTableViewCell *)self titleLabel];
+  leadingAnchor = [titleLabel leadingAnchor];
+  contentView = [(MPVoicemailMailboxTableViewCell *)self contentView];
+  leadingAnchor2 = [contentView leadingAnchor];
+  v30 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:34.0];
   v36[0] = v30;
-  v29 = [(MPVoicemailMailboxTableViewCell *)self titleLabel];
-  v27 = [v29 trailingAnchor];
-  v28 = [(MPVoicemailMailboxTableViewCell *)self countLabel];
-  v26 = [v28 leadingAnchor];
-  v25 = [v27 constraintLessThanOrEqualToAnchor:v26];
+  titleLabel2 = [(MPVoicemailMailboxTableViewCell *)self titleLabel];
+  trailingAnchor = [titleLabel2 trailingAnchor];
+  countLabel = [(MPVoicemailMailboxTableViewCell *)self countLabel];
+  leadingAnchor3 = [countLabel leadingAnchor];
+  v25 = [trailingAnchor constraintLessThanOrEqualToAnchor:leadingAnchor3];
   v36[1] = v25;
-  v24 = [(MPVoicemailMailboxTableViewCell *)self titleLabel];
-  v22 = [v24 centerYAnchor];
-  v23 = [(MPVoicemailMailboxTableViewCell *)self contentView];
-  v21 = [v23 centerYAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21];
+  titleLabel3 = [(MPVoicemailMailboxTableViewCell *)self titleLabel];
+  centerYAnchor = [titleLabel3 centerYAnchor];
+  contentView2 = [(MPVoicemailMailboxTableViewCell *)self contentView];
+  centerYAnchor2 = [contentView2 centerYAnchor];
+  v20 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v36[2] = v20;
-  v19 = [(MPVoicemailMailboxTableViewCell *)self titleLabel];
-  v17 = [v19 firstBaselineAnchor];
-  v18 = [(MPVoicemailMailboxTableViewCell *)self contentView];
-  v16 = [v18 topAnchor];
+  titleLabel4 = [(MPVoicemailMailboxTableViewCell *)self titleLabel];
+  firstBaselineAnchor = [titleLabel4 firstBaselineAnchor];
+  contentView3 = [(MPVoicemailMailboxTableViewCell *)self contentView];
+  topAnchor = [contentView3 topAnchor];
   [(MPVoicemailMailboxTableViewCell *)self titleLabelFirstBaselineLayoutConstraintConstant];
-  v15 = [v17 constraintEqualToAnchor:v16 constant:?];
+  v15 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:?];
   v36[3] = v15;
-  v14 = [(MPVoicemailMailboxTableViewCell *)self countLabel];
-  v13 = [v14 trailingAnchor];
-  v3 = [(MPVoicemailMailboxTableViewCell *)self contentView];
-  v4 = [v3 trailingAnchor];
-  v5 = [v13 constraintEqualToAnchor:v4 constant:-16.0];
+  countLabel2 = [(MPVoicemailMailboxTableViewCell *)self countLabel];
+  trailingAnchor2 = [countLabel2 trailingAnchor];
+  contentView4 = [(MPVoicemailMailboxTableViewCell *)self contentView];
+  trailingAnchor3 = [contentView4 trailingAnchor];
+  v5 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:-16.0];
   v36[4] = v5;
-  v6 = [(MPVoicemailMailboxTableViewCell *)self countLabel];
-  v7 = [v6 centerYAnchor];
-  v8 = [(MPVoicemailMailboxTableViewCell *)self contentView];
-  v9 = [v8 centerYAnchor];
-  v10 = [v7 constraintEqualToAnchor:v9];
+  countLabel3 = [(MPVoicemailMailboxTableViewCell *)self countLabel];
+  centerYAnchor3 = [countLabel3 centerYAnchor];
+  contentView5 = [(MPVoicemailMailboxTableViewCell *)self contentView];
+  centerYAnchor4 = [contentView5 centerYAnchor];
+  v10 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   v36[5] = v10;
   v11 = [NSArray arrayWithObjects:v36 count:6];
   [(MPVoicemailMailboxTableViewCell *)self setAllConstraints:v11];
 
-  v12 = [(MPVoicemailMailboxTableViewCell *)self allConstraints];
-  [NSLayoutConstraint activateConstraints:v12];
+  allConstraints = [(MPVoicemailMailboxTableViewCell *)self allConstraints];
+  [NSLayoutConstraint activateConstraints:allConstraints];
 }
 
 - (void)unloadConstraints
@@ -124,8 +124,8 @@
   v4.receiver = self;
   v4.super_class = MPVoicemailMailboxTableViewCell;
   [(MPVoicemailMailboxTableViewCell *)&v4 unloadConstraints];
-  v3 = [(MPVoicemailMailboxTableViewCell *)self allConstraints];
-  [NSLayoutConstraint deactivateConstraints:v3];
+  allConstraints = [(MPVoicemailMailboxTableViewCell *)self allConstraints];
+  [NSLayoutConstraint deactivateConstraints:allConstraints];
 }
 
 - (void)updateFonts
@@ -143,16 +143,16 @@
     v3 = 1;
   }
 
-  v4 = [(MPVoicemailMailboxTableViewCell *)self titleLabel];
-  [v4 setNumberOfLines:v3];
+  titleLabel = [(MPVoicemailMailboxTableViewCell *)self titleLabel];
+  [titleLabel setNumberOfLines:v3];
 
   v5 = +[UIFont telephonyUISubheadlineShortFont];
-  v6 = [(MPVoicemailMailboxTableViewCell *)self titleLabel];
-  [v6 setFont:v5];
+  titleLabel2 = [(MPVoicemailMailboxTableViewCell *)self titleLabel];
+  [titleLabel2 setFont:v5];
 
   v7 = +[UIFont telephonyUISubheadlineShortFont];
-  v8 = [(MPVoicemailMailboxTableViewCell *)self countLabel];
-  [v8 setFont:v7];
+  countLabel = [(MPVoicemailMailboxTableViewCell *)self countLabel];
+  [countLabel setFont:v7];
 }
 
 - (void)updateConstraints
@@ -175,8 +175,8 @@
 {
   v5 = +[UIColor systemGrayColor];
   v3 = [(MPVoicemailMailboxTableViewCell *)self _accessibilityHigherContrastTintColorForColor:v5];
-  v4 = [(MPVoicemailMailboxTableViewCell *)self countLabel];
-  [v4 setTextColor:v3];
+  countLabel = [(MPVoicemailMailboxTableViewCell *)self countLabel];
+  [countLabel setTextColor:v3];
 }
 
 - (double)titleLabelFirstBaselineLayoutConstraintConstant

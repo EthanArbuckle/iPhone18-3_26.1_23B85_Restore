@@ -2,21 +2,21 @@
 - (CRLProgressContext)init;
 - (double)currentPosition;
 - (double)overallProgress;
-- (id)addProgressObserverBlock:(id)a3;
+- (id)addProgressObserverBlock:(id)block;
 - (id)description;
-- (void)addProgressObserver:(id)a3 selector:(SEL)a4;
-- (void)advanceProgress:(double)a3;
-- (void)createStageWithSteps:(double)a3;
-- (void)createStageWithSteps:(double)a3 takingSteps:(double)a4;
+- (void)addProgressObserver:(id)observer selector:(SEL)selector;
+- (void)advanceProgress:(double)progress;
+- (void)createStageWithSteps:(double)steps;
+- (void)createStageWithSteps:(double)steps takingSteps:(double)takingSteps;
 - (void)dealloc;
 - (void)endStage;
-- (void)nextSubStageWillTakeThisManyOfMySteps:(double)a3;
-- (void)removeProgressObserver:(id)a3;
-- (void)reportProgress:(double)a3 overallProgress:(double)a4;
+- (void)nextSubStageWillTakeThisManyOfMySteps:(double)steps;
+- (void)removeProgressObserver:(id)observer;
+- (void)reportProgress:(double)progress overallProgress:(double)overallProgress;
 - (void)reset;
-- (void)setMessage:(id)a3;
-- (void)setPercentageProgressFromTCProgressContext:(double)a3;
-- (void)setProgress:(double)a3;
+- (void)setMessage:(id)message;
+- (void)setPercentageProgressFromTCProgressContext:(double)context;
+- (void)setProgress:(double)progress;
 @end
 
 @implementation CRLProgressContext
@@ -34,48 +34,48 @@
   objc_sync_exit(obj);
 }
 
-- (void)addProgressObserver:(id)a3 selector:(SEL)a4
+- (void)addProgressObserver:(id)observer selector:(SEL)selector
 {
-  v6 = a3;
+  observerCopy = observer;
   v7 = +[NSNotificationCenter defaultCenter];
-  [v7 addObserver:v6 selector:a4 name:@"CRLProgressNotification" object:self];
+  [v7 addObserver:observerCopy selector:selector name:@"CRLProgressNotification" object:self];
 }
 
-- (id)addProgressObserverBlock:(id)a3
+- (id)addProgressObserverBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = +[NSNotificationCenter defaultCenter];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100244524;
   v9[3] = &unk_10184BC10;
-  v10 = v4;
-  v6 = v4;
+  v10 = blockCopy;
+  v6 = blockCopy;
   v7 = [v5 crl_addObserverForName:@"CRLProgressNotification" object:self queue:0 usingBlock:v9];
 
   return v7;
 }
 
-- (void)removeProgressObserver:(id)a3
+- (void)removeProgressObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v5 = +[NSNotificationCenter defaultCenter];
-  [v5 removeObserver:v4 name:@"CRLProgressNotification" object:self];
+  [v5 removeObserver:observerCopy name:@"CRLProgressNotification" object:self];
 }
 
-- (void)createStageWithSteps:(double)a3 takingSteps:(double)a4
+- (void)createStageWithSteps:(double)steps takingSteps:(double)takingSteps
 {
-  if (a3 >= 0.0)
+  if (steps >= 0.0)
   {
-    v6 = a3;
+    stepsCopy = steps;
   }
 
   else
   {
-    v6 = 1.0;
+    stepsCopy = 1.0;
   }
 
-  if (a4 <= 0.0)
+  if (takingSteps <= 0.0)
   {
     if (qword_101AD5A08 != -1)
     {
@@ -85,24 +85,24 @@
     v7 = off_1019EDA60;
     if (os_log_type_enabled(off_1019EDA60, OS_LOG_TYPE_ERROR))
     {
-      sub_101339354(v7, a4);
+      sub_101339354(v7, takingSteps);
     }
   }
 
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [[CRLProgressStage alloc] initWithSteps:v8 takingSteps:v6 inContext:a4];
-  m_currentStage = v8->m_currentStage;
-  v8->m_currentStage = v9;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v9 = [[CRLProgressStage alloc] initWithSteps:selfCopy takingSteps:stepsCopy inContext:takingSteps];
+  m_currentStage = selfCopy->m_currentStage;
+  selfCopy->m_currentStage = v9;
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)createStageWithSteps:(double)a3
+- (void)createStageWithSteps:(double)steps
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = v4->m_currentStage;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = selfCopy->m_currentStage;
   v6 = v5;
   if (v5)
   {
@@ -116,12 +116,12 @@
     v8 = 1.0;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
-  [(CRLProgressContext *)v4 createStageWithSteps:a3 takingSteps:v8];
+  [(CRLProgressContext *)selfCopy createStageWithSteps:steps takingSteps:v8];
 }
 
-- (void)nextSubStageWillTakeThisManyOfMySteps:(double)a3
+- (void)nextSubStageWillTakeThisManyOfMySteps:(double)steps
 {
   obj = self;
   objc_sync_enter(obj);
@@ -129,7 +129,7 @@
   v5 = v4;
   if (v4)
   {
-    [(CRLProgressStage *)v4 setNextSubStageParentSize:a3];
+    [(CRLProgressStage *)v4 setNextSubStageParentSize:steps];
   }
 
   objc_sync_exit(obj);
@@ -141,94 +141,94 @@
   objc_sync_enter(obj);
   v2 = obj->m_currentStage;
   [(CRLProgressStage *)v2 end];
-  v3 = [(CRLProgressStage *)v2 parentStage];
+  parentStage = [(CRLProgressStage *)v2 parentStage];
   m_currentStage = obj->m_currentStage;
-  obj->m_currentStage = v3;
+  obj->m_currentStage = parentStage;
 
   objc_sync_exit(obj);
 }
 
-- (void)advanceProgress:(double)a3
+- (void)advanceProgress:(double)progress
 {
   obj = self;
   objc_sync_enter(obj);
-  v4 = [(CRLProgressContext *)obj currentStage];
-  [v4 advanceProgress:a3];
+  currentStage = [(CRLProgressContext *)obj currentStage];
+  [currentStage advanceProgress:progress];
 
   objc_sync_exit(obj);
 }
 
-- (void)setProgress:(double)a3
+- (void)setProgress:(double)progress
 {
   obj = self;
   objc_sync_enter(obj);
-  v4 = [(CRLProgressContext *)obj currentStage];
-  [v4 setProgress:a3];
+  currentStage = [(CRLProgressContext *)obj currentStage];
+  [currentStage setProgress:progress];
 
   objc_sync_exit(obj);
 }
 
-- (void)setPercentageProgressFromTCProgressContext:(double)a3
+- (void)setPercentageProgressFromTCProgressContext:(double)context
 {
   obj = self;
   objc_sync_enter(obj);
-  v4 = [(CRLProgressContext *)obj currentStage];
-  [v4 setProgressPercentage:a3];
+  currentStage = [(CRLProgressContext *)obj currentStage];
+  [currentStage setProgressPercentage:context];
 
   objc_sync_exit(obj);
 }
 
-- (void)setMessage:(id)a3
+- (void)setMessage:(id)message
 {
-  if (!a3)
+  if (!message)
   {
-    a3 = &stru_1018BCA28;
+    message = &stru_1018BCA28;
   }
 
-  v5 = [NSDictionary dictionaryWithObject:a3 forKey:@"CRLProgressMessage"];
+  v5 = [NSDictionary dictionaryWithObject:message forKey:@"CRLProgressMessage"];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 postNotificationName:@"CRLProgressNotification" object:self userInfo:v5];
 }
 
 - (double)currentPosition
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(CRLProgressContext *)v2 currentStage];
-  v4 = v3;
-  if (v3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  currentStage = [(CRLProgressContext *)selfCopy currentStage];
+  v4 = currentStage;
+  if (currentStage)
   {
-    [v3 currentPosition];
+    [currentStage currentPosition];
     m_lastProgressReport = v5;
   }
 
   else
   {
-    m_lastProgressReport = v2->m_lastProgressReport;
+    m_lastProgressReport = selfCopy->m_lastProgressReport;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   return m_lastProgressReport;
 }
 
 - (double)overallProgress
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(CRLProgressContext *)v2 currentStage];
-  v4 = v3;
-  if (v3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  currentStage = [(CRLProgressContext *)selfCopy currentStage];
+  v4 = currentStage;
+  if (currentStage)
   {
-    [v3 overallProgress];
+    [currentStage overallProgress];
     m_lastOverallProgress = v5;
   }
 
   else
   {
-    m_lastOverallProgress = v2->m_lastOverallProgress;
+    m_lastOverallProgress = selfCopy->m_lastOverallProgress;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   return m_lastOverallProgress;
 }
 
@@ -238,27 +238,27 @@
   v4 = v3;
   [(CRLProgressContext *)self overallProgress];
   v6 = [NSMutableString stringWithFormat:@"CRLProgressContext %p: currentPosition = %g, overallProgress = %g", self, v4, v5];
-  v7 = [(CRLProgressContext *)self currentStage];
-  v8 = [NSString stringWithFormat:@"\ncurrentStage: %@", v7];
+  currentStage = [(CRLProgressContext *)self currentStage];
+  v8 = [NSString stringWithFormat:@"\ncurrentStage: %@", currentStage];
   [v6 appendString:v8];
 
   v9 = +[NSMutableString string];
-  v10 = [v7 parentStage];
+  parentStage = [currentStage parentStage];
 
-  if (v10)
+  if (parentStage)
   {
     do
     {
       [v9 appendString:@"    "];
-      v11 = [NSString stringWithFormat:@"\n%@parent: %@", v9, v10];
+      v11 = [NSString stringWithFormat:@"\n%@parent: %@", v9, parentStage];
       [v6 appendString:v11];
 
-      v12 = [v10 parentStage];
+      v10ParentStage = [parentStage parentStage];
 
-      v10 = v12;
+      parentStage = v10ParentStage;
     }
 
-    while (v12);
+    while (v10ParentStage);
   }
 
   return v6;
@@ -291,16 +291,16 @@
   [(CRLProgressContext *)&v5 dealloc];
 }
 
-- (void)reportProgress:(double)a3 overallProgress:(double)a4
+- (void)reportProgress:(double)progress overallProgress:(double)overallProgress
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->m_lastOverallProgress = a4;
+  obj->m_lastOverallProgress = overallProgress;
   m_lastReportTime = obj->m_lastReportTime;
-  if (!m_lastReportTime || ([(NSDate *)m_lastReportTime timeIntervalSinceNow], a3 >= 100.0) || v7 < -0.1 || a3 - obj->m_lastProgressReport >= 5.0)
+  if (!m_lastReportTime || ([(NSDate *)m_lastReportTime timeIntervalSinceNow], progress >= 100.0) || v7 < -0.1 || progress - obj->m_lastProgressReport >= 5.0)
   {
-    v8 = [NSNumber numberWithDouble:a3];
-    v9 = [NSNumber numberWithDouble:a4];
+    v8 = [NSNumber numberWithDouble:progress];
+    v9 = [NSNumber numberWithDouble:overallProgress];
     v10 = [NSDictionary dictionaryWithObjectsAndKeys:v8, @"CRLProgressCurrentPosition", v9, @"CRLProgressOverallProgress", 0];
     v11 = +[NSNotificationCenter defaultCenter];
     [v11 postNotificationName:@"CRLProgressNotification" object:obj userInfo:v10];
@@ -309,7 +309,7 @@
     v13 = obj->m_lastReportTime;
     obj->m_lastReportTime = v12;
 
-    obj->m_lastProgressReport = a3;
+    obj->m_lastProgressReport = progress;
   }
 
   objc_sync_exit(obj);

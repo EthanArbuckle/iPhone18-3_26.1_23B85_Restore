@@ -1,54 +1,54 @@
 @interface HKPrescriptionPickerViewController
 - (HKHealthPrivacyServicePickerControllerDelegate)delegate;
-- (HKPrescriptionPickerViewController)initWithHealthStore:(id)a3 samples:(id)a4 enabledSamples:(id)a5 source:(id)a6;
+- (HKPrescriptionPickerViewController)initWithHealthStore:(id)store samples:(id)samples enabledSamples:(id)enabledSamples source:(id)source;
 - (NSMutableSet)enabledSamples;
 - (NSSet)allSamples;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (id)_explanationTextForSource:(id)a3;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (id)_explanationTextForSource:(id)source;
 - (id)_headerIcon;
-- (id)_headerTitleForSource:(id)a3;
-- (id)_loadPreviewControllerForPrescription:(id)a3;
+- (id)_headerTitleForSource:(id)source;
+- (id)_loadPreviewControllerForPrescription:(id)prescription;
 - (id)_noDataTableViewCell;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (void)_enableSample:(id)a3 enabled:(BOOL)a4;
-- (void)_finishWithError:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (void)_enableSample:(id)sample enabled:(BOOL)enabled;
+- (void)_finishWithError:(id)error;
 - (void)_setUpCancelBarButtonItem;
 - (void)_setUpFooterView;
 - (void)_setUpTableView;
 - (void)_updateShareButtonState;
-- (void)cancelButtonTapped:(id)a3;
-- (void)didTapShowDetailsButtonForCell:(id)a3;
-- (void)didToggleSwitchForCell:(id)a3 isOn:(BOOL)a4;
-- (void)learnMoreButtonTapped:(id)a3;
-- (void)shareButtonTapped:(id)a3;
+- (void)cancelButtonTapped:(id)tapped;
+- (void)didTapShowDetailsButtonForCell:(id)cell;
+- (void)didToggleSwitchForCell:(id)cell isOn:(BOOL)on;
+- (void)learnMoreButtonTapped:(id)tapped;
+- (void)shareButtonTapped:(id)tapped;
 - (void)viewDidLoad;
 @end
 
 @implementation HKPrescriptionPickerViewController
 
-- (HKPrescriptionPickerViewController)initWithHealthStore:(id)a3 samples:(id)a4 enabledSamples:(id)a5 source:(id)a6
+- (HKPrescriptionPickerViewController)initWithHealthStore:(id)store samples:(id)samples enabledSamples:(id)enabledSamples source:(id)source
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [(HKPrescriptionPickerViewController *)self _headerTitleForSource:v14];
-  v16 = [(HKPrescriptionPickerViewController *)self _explanationTextForSource:v14];
-  v17 = [(HKPrescriptionPickerViewController *)self _headerIcon];
+  storeCopy = store;
+  samplesCopy = samples;
+  enabledSamplesCopy = enabledSamples;
+  sourceCopy = source;
+  v15 = [(HKPrescriptionPickerViewController *)self _headerTitleForSource:sourceCopy];
+  v16 = [(HKPrescriptionPickerViewController *)self _explanationTextForSource:sourceCopy];
+  _headerIcon = [(HKPrescriptionPickerViewController *)self _headerIcon];
   v27.receiver = self;
   v27.super_class = HKPrescriptionPickerViewController;
-  v18 = [(OBTableWelcomeController *)&v27 initWithTitle:v15 detailText:v16 icon:v17 adoptTableViewScrollView:1];
+  v18 = [(OBTableWelcomeController *)&v27 initWithTitle:v15 detailText:v16 icon:_headerIcon adoptTableViewScrollView:1];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_healthStore, a3);
-    v20 = [MEMORY[0x1E695DFA8] setWithArray:v13];
+    objc_storeStrong(&v18->_healthStore, store);
+    v20 = [MEMORY[0x1E695DFA8] setWithArray:enabledSamplesCopy];
     enabledSamples = v19->_enabledSamples;
     v19->_enabledSamples = v20;
 
-    v22 = [(HKPrescriptionPickerViewController *)v19 _sortedPrescriptions:v12];
+    v22 = [(HKPrescriptionPickerViewController *)v19 _sortedPrescriptions:samplesCopy];
     samples = v19->_samples;
     v19->_samples = v22;
 
@@ -56,7 +56,7 @@
     samplesPendingAuthorizationUpdate = v19->_samplesPendingAuthorizationUpdate;
     v19->_samplesPendingAuthorizationUpdate = v24;
 
-    objc_storeStrong(&v19->_source, a6);
+    objc_storeStrong(&v19->_source, source);
     v19->_hasData = [(NSArray *)v19->_samples count]!= 0;
   }
 
@@ -68,36 +68,36 @@
   v10.receiver = self;
   v10.super_class = HKPrescriptionPickerViewController;
   [(OBTableWelcomeController *)&v10 viewDidLoad];
-  v3 = [(HKPrescriptionPickerViewController *)self traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  traitCollection = [(HKPrescriptionPickerViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v4 != 6)
+  if (userInterfaceIdiom != 6)
   {
-    v5 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    v6 = [(HKPrescriptionPickerViewController *)self view];
-    [v6 setBackgroundColor:v5];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    view = [(HKPrescriptionPickerViewController *)self view];
+    [view setBackgroundColor:systemBackgroundColor];
   }
 
-  v7 = [(HKPrescriptionPickerViewController *)self navigationController];
-  [v7 setModalInPresentation:1];
+  navigationController = [(HKPrescriptionPickerViewController *)self navigationController];
+  [navigationController setModalInPresentation:1];
 
-  v8 = [(HKPrescriptionPickerViewController *)self headerView];
-  [v8 setAllowFullWidthIcon:1];
+  headerView = [(HKPrescriptionPickerViewController *)self headerView];
+  [headerView setAllowFullWidthIcon:1];
 
   [(HKPrescriptionPickerViewController *)self _setUpCancelBarButtonItem];
   [(HKPrescriptionPickerViewController *)self _setUpTableView];
   [(HKPrescriptionPickerViewController *)self _setUpFooterView];
   [(HKPrescriptionPickerViewController *)self _updateShareButtonState];
-  v9 = [(OBTableWelcomeController *)self tableView];
-  [v9 reloadData];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)_setUpCancelBarButtonItem
 {
   v4 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel_cancelButtonTapped_];
   [v4 setAccessibilityIdentifier:@"UIA.Health.Cancel.Button"];
-  v3 = [(OBBaseWelcomeController *)self navigationItem];
-  [v3 setRightBarButtonItem:v4];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v4];
 }
 
 - (void)_setUpTableView
@@ -106,47 +106,47 @@
   v4 = [v3 initWithFrame:2 style:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
   [(OBTableWelcomeController *)self setTableView:v4];
 
-  v5 = [(OBTableWelcomeController *)self tableView];
-  [v5 setDataSource:self];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView setDataSource:self];
 
-  v6 = [(OBTableWelcomeController *)self tableView];
-  [v6 setDelegate:self];
+  tableView2 = [(OBTableWelcomeController *)self tableView];
+  [tableView2 setDelegate:self];
 
-  v7 = [(HKPrescriptionPickerViewController *)self traitCollection];
-  v8 = [v7 userInterfaceIdiom];
+  traitCollection = [(HKPrescriptionPickerViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v8 != 6)
+  if (userInterfaceIdiom != 6)
   {
-    v9 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    v10 = [(OBTableWelcomeController *)self tableView];
-    [v10 setBackgroundColor:v9];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    tableView3 = [(OBTableWelcomeController *)self tableView];
+    [tableView3 setBackgroundColor:systemBackgroundColor];
   }
 
-  v11 = [(OBTableWelcomeController *)self tableView];
-  [v11 hk_onboardingListEdgeInsets];
+  tableView4 = [(OBTableWelcomeController *)self tableView];
+  [tableView4 hk_onboardingListEdgeInsets];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [(OBTableWelcomeController *)self tableView];
-  [v20 _setSectionContentInset:{v13, v15, v17, v19}];
+  tableView5 = [(OBTableWelcomeController *)self tableView];
+  [tableView5 _setSectionContentInset:{v13, v15, v17, v19}];
 
-  v21 = [(OBTableWelcomeController *)self tableView];
+  tableView6 = [(OBTableWelcomeController *)self tableView];
   v22 = objc_opt_class();
   v23 = +[HKPrescriptionPickerCell defaultReuseIdentifier];
-  [v21 registerClass:v22 forCellReuseIdentifier:v23];
+  [tableView6 registerClass:v22 forCellReuseIdentifier:v23];
 
-  v26 = [(OBTableWelcomeController *)self tableView];
+  tableView7 = [(OBTableWelcomeController *)self tableView];
   v24 = objc_opt_class();
   v25 = +[HKObjectPickerNoDataTableViewCell defaultReuseIdentifier];
-  [v26 registerClass:v24 forCellReuseIdentifier:v25];
+  [tableView7 registerClass:v24 forCellReuseIdentifier:v25];
 }
 
 - (void)_setUpFooterView
 {
-  v3 = [MEMORY[0x1E69B7D00] boldButton];
+  boldButton = [MEMORY[0x1E69B7D00] boldButton];
   shareButton = self->_shareButton;
-  self->_shareButton = v3;
+  self->_shareButton = boldButton;
 
   v5 = self->_shareButton;
   v6 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
@@ -155,21 +155,21 @@
 
   [(OBBoldTrayButton *)self->_shareButton addTarget:self action:sel_shareButtonTapped_ forControlEvents:64];
   [(OBBoldTrayButton *)self->_shareButton setAccessibilityIdentifier:@"UIA.Health.Done.Button"];
-  v8 = [(HKPrescriptionPickerViewController *)self buttonTray];
-  [v8 addButton:self->_shareButton];
+  buttonTray = [(HKPrescriptionPickerViewController *)self buttonTray];
+  [buttonTray addButton:self->_shareButton];
 }
 
-- (id)_explanationTextForSource:(id)a3
+- (id)_explanationTextForSource:(id)source
 {
   v3 = MEMORY[0x1E696AAE8];
-  v4 = a3;
+  sourceCopy = source;
   v5 = [v3 bundleWithIdentifier:@"com.apple.HealthUI"];
   v6 = [v5 localizedStringForKey:@"SHARE_DATA_WITH_APP_EXPLANATION" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-VRX"];
 
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [v4 name];
+  name = [sourceCopy name];
 
-  v9 = [v7 stringWithFormat:v6, v8];
+  v9 = [v7 stringWithFormat:v6, name];
 
   return v9;
 }
@@ -183,29 +183,29 @@
   return v4;
 }
 
-- (id)_headerTitleForSource:(id)a3
+- (id)_headerTitleForSource:(id)source
 {
   v3 = MEMORY[0x1E696AAE8];
-  v4 = a3;
+  sourceCopy = source;
   v5 = [v3 bundleWithIdentifier:@"com.apple.HealthUI"];
   v6 = [v5 localizedStringForKey:@"SHARE_PRESCRIPTION_WITH_APP_TITLE" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-VRX"];
 
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [v4 name];
+  name = [sourceCopy name];
 
-  v9 = [v7 stringWithFormat:v6, v8];
+  v9 = [v7 stringWithFormat:v6, name];
 
   return v9;
 }
 
-- (void)learnMoreButtonTapped:(id)a3
+- (void)learnMoreButtonTapped:(id)tapped
 {
   v4 = [MEMORY[0x1E69B7D58] presenterForPrivacySplashWithIdentifier:@"com.apple.onboarding.healthapp"];
   [v4 setPresentingViewController:self];
   [v4 present];
 }
 
-- (void)shareButtonTapped:(id)a3
+- (void)shareButtonTapped:(id)tapped
 {
   _HKInitializeLogging();
   v4 = HKLogAuthorization();
@@ -223,7 +223,7 @@
   [(HKPrescriptionPickerViewController *)self _finishWithError:0];
 }
 
-- (void)cancelButtonTapped:(id)a3
+- (void)cancelButtonTapped:(id)tapped
 {
   _HKInitializeLogging();
   v4 = HKLogAuthorization();
@@ -242,9 +242,9 @@
   [(HKPrescriptionPickerViewController *)self _finishWithError:v7];
 }
 
-- (void)_finishWithError:(id)a3
+- (void)_finishWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   _HKInitializeLogging();
   v5 = HKLogAuthorization();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG);
@@ -258,27 +258,27 @@
     }
   }
 
-  v8 = [(HKPrescriptionPickerViewController *)self delegate];
+  delegate = [(HKPrescriptionPickerViewController *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(HKPrescriptionPickerViewController *)self delegate];
-    [v10 pickerControllerDidFinish:self error:v4];
+    delegate2 = [(HKPrescriptionPickerViewController *)self delegate];
+    [delegate2 pickerControllerDidFinish:self error:errorCopy];
   }
 }
 
-- (void)_enableSample:(id)a3 enabled:(BOOL)a4
+- (void)_enableSample:(id)sample enabled:(BOOL)enabled
 {
   enabledSamples = self->_enabledSamples;
-  if (a4)
+  if (enabled)
   {
-    [(NSMutableSet *)enabledSamples addObject:a3];
+    [(NSMutableSet *)enabledSamples addObject:sample];
   }
 
   else
   {
-    [(NSMutableSet *)enabledSamples removeObject:a3];
+    [(NSMutableSet *)enabledSamples removeObject:sample];
   }
 }
 
@@ -304,10 +304,10 @@
   return v2;
 }
 
-- (void)didTapShowDetailsButtonForCell:(id)a3
+- (void)didTapShowDetailsButtonForCell:(id)cell
 {
-  v4 = [a3 prescription];
-  v6 = [(HKPrescriptionPickerViewController *)self _loadPreviewControllerForPrescription:v4];
+  prescription = [cell prescription];
+  v6 = [(HKPrescriptionPickerViewController *)self _loadPreviewControllerForPrescription:prescription];
 
   v5 = v6;
   if (v6)
@@ -317,37 +317,37 @@
   }
 }
 
-- (void)didToggleSwitchForCell:(id)a3 isOn:(BOOL)a4
+- (void)didToggleSwitchForCell:(id)cell isOn:(BOOL)on
 {
-  v4 = a4;
-  v9 = [a3 prescription];
+  onCopy = on;
+  prescription = [cell prescription];
   v6 = [(NSMutableSet *)self->_samplesPendingAuthorizationUpdate containsObject:?];
   samplesPendingAuthorizationUpdate = self->_samplesPendingAuthorizationUpdate;
   if (v6)
   {
-    [(NSMutableSet *)samplesPendingAuthorizationUpdate removeObject:v9];
+    [(NSMutableSet *)samplesPendingAuthorizationUpdate removeObject:prescription];
   }
 
   else
   {
-    [(NSMutableSet *)samplesPendingAuthorizationUpdate addObject:v9];
+    [(NSMutableSet *)samplesPendingAuthorizationUpdate addObject:prescription];
   }
 
   enabledSamples = self->_enabledSamples;
-  if (v4)
+  if (onCopy)
   {
-    [(NSMutableSet *)enabledSamples addObject:v9];
+    [(NSMutableSet *)enabledSamples addObject:prescription];
   }
 
   else
   {
-    [(NSMutableSet *)enabledSamples removeObject:v9];
+    [(NSMutableSet *)enabledSamples removeObject:prescription];
   }
 
   [(HKPrescriptionPickerViewController *)self _updateShareButtonState];
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   if (self->_hasData)
   {
@@ -360,70 +360,70 @@
   }
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
-    v4 = 0;
+    localizedCapitalizedString = 0;
   }
 
   else
   {
     v5 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     v6 = [v5 localizedStringForKey:@"RECORDS_LIST_TITLE" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-VRX"];
-    v4 = [v6 localizedCapitalizedString];
+    localizedCapitalizedString = [v6 localizedCapitalizedString];
   }
 
-  return v4;
+  return localizedCapitalizedString;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if (!self->_hasData)
   {
-    v9 = [(HKPrescriptionPickerViewController *)self _noDataTableViewCell];
+    _noDataTableViewCell = [(HKPrescriptionPickerViewController *)self _noDataTableViewCell];
     goto LABEL_9;
   }
 
   v8 = +[HKPrescriptionPickerCell defaultReuseIdentifier];
-  v9 = [v6 dequeueReusableCellWithIdentifier:v8];
+  _noDataTableViewCell = [viewCopy dequeueReusableCellWithIdentifier:v8];
 
-  v10 = -[NSArray objectAtIndexedSubscript:](self->_samples, "objectAtIndexedSubscript:", [v7 section]);
-  [v9 setPrescription:v10];
-  v11 = [v9 prescription];
-  v12 = [v11 prescriptionType];
+  v10 = -[NSArray objectAtIndexedSubscript:](self->_samples, "objectAtIndexedSubscript:", [pathCopy section]);
+  [_noDataTableViewCell setPrescription:v10];
+  prescription = [_noDataTableViewCell prescription];
+  prescriptionType = [prescription prescriptionType];
 
-  if (v12 == 2)
+  if (prescriptionType == 2)
   {
     v13 = @"UIA.Health.Contacts.Cell";
 LABEL_7:
-    [v9 setAccessibilityIdentifier:v13];
+    [_noDataTableViewCell setAccessibilityIdentifier:v13];
     goto LABEL_8;
   }
 
-  v14 = [v9 prescription];
-  v15 = [v14 prescriptionType];
+  prescription2 = [_noDataTableViewCell prescription];
+  prescriptionType2 = [prescription2 prescriptionType];
 
-  if (v15 == 1)
+  if (prescriptionType2 == 1)
   {
     v13 = @"UIA.Health.Glasses.Cell";
     goto LABEL_7;
   }
 
 LABEL_8:
-  [v9 setOn:{-[NSMutableSet containsObject:](self->_enabledSamples, "containsObject:", v10)}];
-  [v9 setDelegate:self];
+  [_noDataTableViewCell setOn:{-[NSMutableSet containsObject:](self->_enabledSamples, "containsObject:", v10)}];
+  [_noDataTableViewCell setDelegate:self];
 
 LABEL_9:
 
-  return v9;
+  return _noDataTableViewCell;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     return HKUIOnePixel();
   }
@@ -437,8 +437,8 @@ LABEL_9:
 - (id)_noDataTableViewCell
 {
   v3 = +[HKObjectPickerNoDataTableViewCell defaultReuseIdentifier];
-  v4 = [(OBTableWelcomeController *)self tableView];
-  v5 = [v4 dequeueReusableCellWithIdentifier:v3];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  v5 = [tableView dequeueReusableCellWithIdentifier:v3];
 
   v6 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v7 = [v6 localizedStringForKey:@"NO_MATCHING_DATA" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-VRX"];
@@ -449,9 +449,9 @@ LABEL_9:
   return v5;
 }
 
-- (id)_loadPreviewControllerForPrescription:(id)a3
+- (id)_loadPreviewControllerForPrescription:(id)prescription
 {
-  v4 = a3;
+  prescriptionCopy = prescription;
   if (self->_visionBundle)
   {
     goto LABEL_2;
@@ -496,7 +496,7 @@ LABEL_2:
   v5 = objc_alloc(NSClassFromString(&cfstr_Visionhealthap.isa));
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(NSBundle *)v5 initWithHealthStore:self->_healthStore visionPrescription:v4 canEdit:0];
+    v6 = [(NSBundle *)v5 initWithHealthStore:self->_healthStore visionPrescription:prescriptionCopy canEdit:0];
     v7 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v6];
   }
 

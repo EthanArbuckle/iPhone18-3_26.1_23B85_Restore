@@ -1,12 +1,12 @@
 @interface PAEnrollment
-+ (id)enrollmentWithAudiogram:(id)a3;
++ (id)enrollmentWithAudiogram:(id)audiogram;
 + (id)sharedInstance;
 - (PAEnrollment)init;
-- (id)enrollmentNodeAfter:(id)a3 withSelectedNode:(id)a4;
-- (void)addEnrollmentStepForSection:(unint64_t)a3 comparing:(unint64_t)a4 withOption:(unint64_t)a5 andBlock:(id)a6;
+- (id)enrollmentNodeAfter:(id)after withSelectedNode:(id)node;
+- (void)addEnrollmentStepForSection:(unint64_t)section comparing:(unint64_t)comparing withOption:(unint64_t)option andBlock:(id)block;
 - (void)addHandlers;
-- (void)addLevelEnrollmentStepsStartingWith:(unint64_t)a3;
-- (void)addOffEnrollmentStepComparing:(unint64_t)a3;
+- (void)addLevelEnrollmentStepsStartingWith:(unint64_t)with;
+- (void)addOffEnrollmentStepComparing:(unint64_t)comparing;
 - (void)mediaServerDied;
 - (void)registerNotifications;
 - (void)updateHeadphoneState;
@@ -33,11 +33,11 @@ uint64_t __30__PAEnrollment_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)enrollmentWithAudiogram:(id)a3
++ (id)enrollmentWithAudiogram:(id)audiogram
 {
-  v3 = a3;
+  audiogramCopy = audiogram;
   v4 = objc_alloc_init(PAEnrollment);
-  v5 = [PAAudiogramUtilities normalizedOffsetsFromAudiogram:v3];
+  v5 = [PAAudiogramUtilities normalizedOffsetsFromAudiogram:audiogramCopy];
 
   v6 = [PAConfiguration configurationWithAudiogram:v5];
   [(PAEnrollment *)v4 setAudiogramPreset:v6];
@@ -186,14 +186,14 @@ id __27__PAEnrollment_addHandlers__block_invoke_4(uint64_t a1)
   return v9;
 }
 
-- (void)addOffEnrollmentStepComparing:(unint64_t)a3
+- (void)addOffEnrollmentStepComparing:(unint64_t)comparing
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __46__PAEnrollment_addOffEnrollmentStepComparing___block_invoke;
   v3[3] = &__block_descriptor_40_e65___PAEnrollmentNode_24__0__PAEnrollmentNode_8__PAEnrollmentNode_16l;
-  v3[4] = a3;
-  [(PAEnrollment *)self addEnrollmentStepForSection:4 comparing:0 withOption:a3 andBlock:v3];
+  v3[4] = comparing;
+  [(PAEnrollment *)self addEnrollmentStepForSection:4 comparing:0 withOption:comparing andBlock:v3];
 }
 
 id __46__PAEnrollment_addOffEnrollmentStepComparing___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -239,16 +239,16 @@ LABEL_10:
   return v8;
 }
 
-- (void)addLevelEnrollmentStepsStartingWith:(unint64_t)a3
+- (void)addLevelEnrollmentStepsStartingWith:(unint64_t)with
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __52__PAEnrollment_addLevelEnrollmentStepsStartingWith___block_invoke;
   v5[3] = &__block_descriptor_40_e65___PAEnrollmentNode_24__0__PAEnrollmentNode_8__PAEnrollmentNode_16l;
-  v5[4] = a3;
-  [(PAEnrollment *)self addEnrollmentStepForSection:4 comparing:a3 withOption:a3 + 1 andBlock:v5];
-  [(PAEnrollment *)self addEnrollmentStepForSection:4 comparing:a3 + 1 withOption:a3 + 2 andBlock:&__block_literal_global_9];
-  [(PAEnrollment *)self addEnrollmentStepForSection:4 comparing:a3 withOption:a3 + 2 andBlock:&__block_literal_global_11];
+  v5[4] = with;
+  [(PAEnrollment *)self addEnrollmentStepForSection:4 comparing:with withOption:with + 1 andBlock:v5];
+  [(PAEnrollment *)self addEnrollmentStepForSection:4 comparing:with + 1 withOption:with + 2 andBlock:&__block_literal_global_9];
+  [(PAEnrollment *)self addEnrollmentStepForSection:4 comparing:with withOption:with + 2 andBlock:&__block_literal_global_11];
 }
 
 id __52__PAEnrollment_addLevelEnrollmentStepsStartingWith___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -298,40 +298,40 @@ id __52__PAEnrollment_addLevelEnrollmentStepsStartingWith___block_invoke_3(uint6
   return v6;
 }
 
-- (void)addEnrollmentStepForSection:(unint64_t)a3 comparing:(unint64_t)a4 withOption:(unint64_t)a5 andBlock:(id)a6
+- (void)addEnrollmentStepForSection:(unint64_t)section comparing:(unint64_t)comparing withOption:(unint64_t)option andBlock:(id)block
 {
-  v13 = a6;
-  v10 = [(PAEnrollment *)self enrollmentHandlers];
-  if (!v10)
+  blockCopy = block;
+  enrollmentHandlers = [(PAEnrollment *)self enrollmentHandlers];
+  if (!enrollmentHandlers)
   {
-    v10 = [MEMORY[0x277CBEB38] dictionary];
-    [(PAEnrollment *)self setEnrollmentHandlers:v10];
+    enrollmentHandlers = [MEMORY[0x277CBEB38] dictionary];
+    [(PAEnrollment *)self setEnrollmentHandlers:enrollmentHandlers];
   }
 
-  v11 = MEMORY[0x25F8B3530](v13);
-  v12 = paKeyFromNodeParameters(a3, a4, a5);
-  [v10 setValue:v11 forKey:v12];
+  v11 = MEMORY[0x25F8B3530](blockCopy);
+  v12 = paKeyFromNodeParameters(section, comparing, option);
+  [enrollmentHandlers setValue:v11 forKey:v12];
 }
 
-- (id)enrollmentNodeAfter:(id)a3 withSelectedNode:(id)a4
+- (id)enrollmentNodeAfter:(id)after withSelectedNode:(id)node
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PAEnrollment *)self enrollmentHandlers];
-  v9 = [v6 key];
-  v10 = [v8 objectForKey:v9];
+  afterCopy = after;
+  nodeCopy = node;
+  enrollmentHandlers = [(PAEnrollment *)self enrollmentHandlers];
+  v9 = [afterCopy key];
+  v10 = [enrollmentHandlers objectForKey:v9];
 
-  v11 = [v6 section];
-  v12 = [v6 configuration];
-  if (self->_audiogramPreset && v11 <= 4)
+  section = [afterCopy section];
+  configuration = [afterCopy configuration];
+  if (self->_audiogramPreset && section <= 4)
   {
     v13 = +[PASettings sharedInstance];
     [v13 setPersonalMediaConfiguration:self->_audiogramPreset];
 
     v14 = [PAEnrollmentNode nodeWithSection:6 andType:12 comparing:12 with:0];
-    v15 = [v14 options];
-    v16 = [v15 firstObject];
-    [v16 setConfiguration:self->_audiogramPreset];
+    options = [v14 options];
+    firstObject = [options firstObject];
+    [firstObject setConfiguration:self->_audiogramPreset];
 
     [v14 setConfiguration:self->_audiogramPreset];
     v17 = v14;
@@ -340,17 +340,17 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  if (v11 == 6)
+  if (section == 6)
   {
     v21 = +[PASettings sharedInstance];
     if ([v21 personalMediaEnabled])
     {
-      v22 = [(PAEnrollment *)self currentDevicePSEVersion];
+      currentDevicePSEVersion = [(PAEnrollment *)self currentDevicePSEVersion];
 
-      if (v22)
+      if (currentDevicePSEVersion)
       {
-        v14 = +[PAEnrollmentNode nodeWithSection:andType:comparing:with:](PAEnrollmentNode, "nodeWithSection:andType:comparing:with:", 5, [v6 type], objc_msgSend(v6, "type"), 0);
-        [v14 setConfiguration:v12];
+        v14 = +[PAEnrollmentNode nodeWithSection:andType:comparing:with:](PAEnrollmentNode, "nodeWithSection:andType:comparing:with:", 5, [afterCopy type], objc_msgSend(afterCopy, "type"), 0);
+        [v14 setConfiguration:configuration];
         v17 = v14;
         v18 = 6;
         goto LABEL_5;
@@ -372,7 +372,7 @@ LABEL_4:
 
       if (!audiogramPreset)
       {
-        v17 = +[PAEnrollmentNode nodeWithSection:type:andConfiguration:](PAEnrollmentNode, "nodeWithSection:type:andConfiguration:", 8, [v6 type], 0);
+        v17 = +[PAEnrollmentNode nodeWithSection:type:andConfiguration:](PAEnrollmentNode, "nodeWithSection:type:andConfiguration:", 8, [afterCopy type], 0);
         v14 = v17;
         goto LABEL_4;
       }
@@ -383,7 +383,7 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if (v11 > 4)
+  if (section > 4)
   {
     goto LABEL_23;
   }
@@ -405,17 +405,17 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  v14 = (v10)[2](v10, v6, v7);
+  v14 = (v10)[2](v10, afterCopy, nodeCopy);
   if (!v14)
   {
     goto LABEL_24;
   }
 
 LABEL_6:
-  v19 = [v14 index];
-  if ((v19 - 1) >= 2)
+  index = [v14 index];
+  if ((index - 1) >= 2)
   {
-    if ((v19 - 2) >= 4)
+    if ((index - 2) >= 4)
     {
       v20 = 1;
     }
@@ -442,7 +442,7 @@ LABEL_25:
 - (void)registerNotifications
 {
   v20[3] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D26E58] sharedAVSystemController];
+  mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedAVSystemController];
   v4 = MEMORY[0x277D26C10];
   v5 = MEMORY[0x277D26B00];
   v6 = *MEMORY[0x277D26B00];
@@ -451,33 +451,33 @@ LABEL_25:
   v7 = MEMORY[0x277D26D40];
   v20[2] = *MEMORY[0x277D26D40];
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:3];
-  [v3 setAttribute:v8 forKey:*MEMORY[0x277D26DD0] error:0];
+  [mEMORY[0x277D26E58] setAttribute:v8 forKey:*MEMORY[0x277D26DD0] error:0];
 
-  v9 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v9 addObserver:self selector:sel_headphoneStateChangedNotification_ name:*v4 object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_headphoneStateChangedNotification_ name:*v4 object:0];
 
-  v10 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
   v11 = *MEMORY[0x277CB8210];
-  v12 = [MEMORY[0x277CB83F8] sharedInstance];
-  [v10 addObserver:self selector:sel_headphoneStateChangedNotification_ name:v11 object:v12];
+  mEMORY[0x277CB83F8] = [MEMORY[0x277CB83F8] sharedInstance];
+  [defaultCenter2 addObserver:self selector:sel_headphoneStateChangedNotification_ name:v11 object:mEMORY[0x277CB83F8]];
 
-  v13 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
   v14 = *v5;
-  v15 = [MEMORY[0x277D26E58] sharedAVSystemController];
-  [v13 addObserver:self selector:sel_headphoneStateChangedNotification_ name:v14 object:v15];
+  mEMORY[0x277D26E58]2 = [MEMORY[0x277D26E58] sharedAVSystemController];
+  [defaultCenter3 addObserver:self selector:sel_headphoneStateChangedNotification_ name:v14 object:mEMORY[0x277D26E58]2];
 
-  v16 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
   v17 = *v7;
-  v18 = [MEMORY[0x277D26E58] sharedAVSystemController];
-  [v16 addObserver:self selector:sel_mediaServerDied name:v17 object:v18];
+  mEMORY[0x277D26E58]3 = [MEMORY[0x277D26E58] sharedAVSystemController];
+  [defaultCenter4 addObserver:self selector:sel_mediaServerDied name:v17 object:mEMORY[0x277D26E58]3];
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
 - (void)mediaServerDied
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(PAEnrollment *)self performSelector:sel_registerNotifications withObject:0 afterDelay:2.0];
 
@@ -504,13 +504,13 @@ LABEL_25:
 
   v4 = v3;
   _Block_object_dispose(&v8, 8);
-  v5 = [v3 sharedInstance];
+  sharedInstance = [v3 sharedInstance];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __36__PAEnrollment_updateHeadphoneState__block_invoke;
   v6[3] = &unk_279A1D210;
   v6[4] = self;
-  [v5 getCurrentRouteSupportingHeadphoneAccommodationsWithCompletion:v6];
+  [sharedInstance getCurrentRouteSupportingHeadphoneAccommodationsWithCompletion:v6];
 }
 
 @end

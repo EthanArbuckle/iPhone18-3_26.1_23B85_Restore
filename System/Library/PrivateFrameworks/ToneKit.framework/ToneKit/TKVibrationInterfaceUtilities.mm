@@ -1,33 +1,33 @@
 @interface TKVibrationInterfaceUtilities
-+ (BOOL)vibrationNameTextField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-+ (id)descriptionForDuration:(double)a3;
-+ (void)configureVibrationNameTextField:(id)a3;
++ (BOOL)vibrationNameTextField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
++ (id)descriptionForDuration:(double)duration;
++ (void)configureVibrationNameTextField:(id)field;
 @end
 
 @implementation TKVibrationInterfaceUtilities
 
-+ (void)configureVibrationNameTextField:(id)a3
++ (void)configureVibrationNameTextField:(id)field
 {
-  v4 = a3;
+  fieldCopy = field;
   v3 = TLLocalizedString();
-  [v4 setPlaceholder:v3];
+  [fieldCopy setPlaceholder:v3];
 
-  [v4 setAutocapitalizationType:2];
-  [v4 setReturnKeyType:9];
-  [v4 setEnablesReturnKeyAutomatically:1];
+  [fieldCopy setAutocapitalizationType:2];
+  [fieldCopy setReturnKeyType:9];
+  [fieldCopy setEnablesReturnKeyAutomatically:1];
 }
 
-+ (BOOL)vibrationNameTextField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
++ (BOOL)vibrationNameTextField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 text];
-  if (![v10 length])
+  length = range.length;
+  location = range.location;
+  fieldCopy = field;
+  stringCopy = string;
+  text = [fieldCopy text];
+  if (![text length])
   {
-    v11 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    v12 = [v9 stringByTrimmingCharactersInSet:v11];
+    whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    v12 = [stringCopy stringByTrimmingCharactersInSet:whitespaceCharacterSet];
     v13 = [v12 length];
 
     if (!v13)
@@ -36,15 +36,15 @@
     }
   }
 
-  v14 = [v10 stringByReplacingCharactersInRange:location withString:{length, v9}];
-  v15 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  v16 = [v14 stringByTrimmingCharactersInSet:v15];
+  v14 = [text stringByReplacingCharactersInRange:location withString:{length, stringCopy}];
+  whitespaceCharacterSet2 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  v16 = [v14 stringByTrimmingCharactersInSet:whitespaceCharacterSet2];
   v17 = [v16 length];
 
   if (!v17)
   {
-    [v8 setText:&stru_282E32280];
-    [v8 sendActionsForControlEvents:0x20000];
+    [fieldCopy setText:&stru_282E32280];
+    [fieldCopy sendActionsForControlEvents:0x20000];
 LABEL_6:
     v18 = 0;
     goto LABEL_7;
@@ -56,13 +56,13 @@ LABEL_7:
   return v18;
 }
 
-+ (id)descriptionForDuration:(double)a3
++ (id)descriptionForDuration:(double)duration
 {
-  if (__ROR8__(0xCCCCCCCCCCCCCCCDLL * llround(a3 * 10.0) + 0x1999999999999998, 1) < 0x1999999999999999uLL)
+  if (__ROR8__(0xCCCCCCCCCCCCCCCDLL * llround(duration * 10.0) + 0x1999999999999998, 1) < 0x1999999999999999uLL)
   {
-    v8 = llround(a3);
+    v8 = llround(duration);
     v9 = [MEMORY[0x277CCACA8] localizedStringWithFormat:@"%ld", v8];
-    v4 = v9;
+    durationCopy = v9;
     if (v8 == 1)
     {
       v5 = @"SECONDS_SINGULAR_FORMAT";
@@ -81,21 +81,21 @@ LABEL_7:
 
   else
   {
-    v3 = a3;
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%.1f", v3];
+    durationCopy = duration;
+    durationCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%.1f", durationCopy];
     v5 = @"SECONDS_PLURAL_FORMAT";
-    if (v4)
+    if (durationCopy)
     {
 LABEL_3:
       v6 = TLLocalizedString();
       if (([(__CFString *)v5 isEqualToString:v6]& 1) != 0)
       {
-        v7 = v4;
+        v7 = durationCopy;
       }
 
       else
       {
-        v7 = [MEMORY[0x277CCACA8] stringWithFormat:v6, v4];
+        v7 = [MEMORY[0x277CCACA8] stringWithFormat:v6, durationCopy];
       }
 
       v10 = v7;

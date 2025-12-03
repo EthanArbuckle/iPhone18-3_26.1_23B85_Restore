@@ -1,19 +1,19 @@
 @interface NTKUpNextThumbnailCell
-+ (CGSize)suggestedBodyImageSizeForDevice:(id)a3;
-- (NTKUpNextThumbnailCell)initWithFrame:(CGRect)a3;
-- (id)backgroundColorForView:(id)a3;
-- (id)colorForView:(id)a3 accented:(BOOL)a4;
-- (void)configureWithContent:(id)a3;
++ (CGSize)suggestedBodyImageSizeForDevice:(id)device;
+- (NTKUpNextThumbnailCell)initWithFrame:(CGRect)frame;
+- (id)backgroundColorForView:(id)view;
+- (id)colorForView:(id)view accented:(BOOL)accented;
+- (void)configureWithContent:(id)content;
 - (void)prepareForReuse;
-- (void)setPaused:(BOOL)a3;
-- (void)transitionToMonochromeWithFraction:(double)a3;
+- (void)setPaused:(BOOL)paused;
+- (void)transitionToMonochromeWithFraction:(double)fraction;
 - (void)updateConstraints;
 - (void)updateMonochromeColor;
 @end
 
 @implementation NTKUpNextThumbnailCell
 
-+ (CGSize)suggestedBodyImageSizeForDevice:(id)a3
++ (CGSize)suggestedBodyImageSizeForDevice:(id)device
 {
   v10 = 0u;
   v11 = 0u;
@@ -22,7 +22,7 @@
   v6 = 0u;
   v7 = 0u;
   memset(v5, 0, sizeof(v5));
-  ___LayoutConstants_block_invoke_49(a3, v5);
+  ___LayoutConstants_block_invoke_49(device, v5);
   v3 = *&v8 - (*(&v8 + 1) + *&v6 * 2.0 + *(&v9 + 1));
   v4 = v3;
   result.height = v4;
@@ -30,12 +30,12 @@
   return result;
 }
 
-- (NTKUpNextThumbnailCell)initWithFrame:(CGRect)a3
+- (NTKUpNextThumbnailCell)initWithFrame:(CGRect)frame
 {
   v198[16] = *MEMORY[0x277D85DE8];
   v191.receiver = self;
   v191.super_class = NTKUpNextThumbnailCell;
-  v3 = [(NTKUpNextBaseCell *)&v191 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NTKUpNextBaseCell *)&v191 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -47,26 +47,26 @@
     v186 = 0u;
     v183 = 0u;
     v184 = 0u;
-    v5 = [(NTKUpNextBaseCell *)v3 device];
-    ___LayoutConstants_block_invoke_49(v5, &v183);
+    device = [(NTKUpNextBaseCell *)v3 device];
+    ___LayoutConstants_block_invoke_49(device, &v183);
 
     v6 = *(&v185 + 1);
     v7 = [MEMORY[0x277CBBB08] systemFontOfSize:*(&v185 + 1)];
-    v8 = [v7 fontDescriptor];
-    v9 = [v8 fontDescriptorWithSymbolicTraits:1];
+    fontDescriptor = [v7 fontDescriptor];
+    v9 = [fontDescriptor fontDescriptorWithSymbolicTraits:1];
 
     v10 = [MEMORY[0x277CBBB08] systemFontOfSize:v6];
-    v11 = [v10 fontDescriptor];
-    v12 = [v11 fontDescriptorWithSymbolicTraits:2];
+    fontDescriptor2 = [v10 fontDescriptor];
+    v12 = [fontDescriptor2 fontDescriptorWithSymbolicTraits:2];
 
-    LOBYTE(v11) = CLKIsCurrentLocaleNonLatin();
+    LOBYTE(fontDescriptor2) = CLKIsCurrentLocaleNonLatin();
     v13 = *MEMORY[0x277D74410];
     v14 = [MEMORY[0x277CBBB08] systemFontOfSize:v6 weight:*MEMORY[0x277D74410]];
-    v15 = [v14 fontDescriptor];
-    v16 = v15;
-    if ((v11 & 1) == 0)
+    fontDescriptor3 = [v14 fontDescriptor];
+    v16 = fontDescriptor3;
+    if ((fontDescriptor2 & 1) == 0)
     {
-      v17 = [v15 fontDescriptorWithSymbolicTraits:1];
+      v17 = [fontDescriptor3 fontDescriptorWithSymbolicTraits:1];
 
       v16 = v17;
     }
@@ -87,39 +87,39 @@
 
     v180 = v16;
     v24 = [MEMORY[0x277CBBB08] fontWithDescriptor:v16 size:*(&v190 + 1)];
-    v25 = [MEMORY[0x277D74240] NTKHyphenationParagraphStyle];
-    [v25 setLineBreakMode:4];
-    [v25 lineSpacing];
-    [v25 setLineSpacing:v26 + *&v186];
+    nTKHyphenationParagraphStyle = [MEMORY[0x277D74240] NTKHyphenationParagraphStyle];
+    [nTKHyphenationParagraphStyle setLineBreakMode:4];
+    [nTKHyphenationParagraphStyle lineSpacing];
+    [nTKHyphenationParagraphStyle setLineSpacing:v26 + *&v186];
     v27 = __40__NTKUpNextThumbnailCell_initWithFrame___block_invoke();
     headerLabel = v4->_headerLabel;
     v4->_headerLabel = v27;
 
     [(CLKUIColoringLabel *)v4->_headerLabel setFont:v4->_boldFont];
     v29 = v4->_headerLabel;
-    v30 = [MEMORY[0x277D75348] whiteColor];
-    [(CLKUIColoringLabel *)v29 setTextColor:v30];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(CLKUIColoringLabel *)v29 setTextColor:whiteColor];
 
     [(CLKUIColoringLabel *)v4->_headerLabel setNumberOfLines:2];
-    [(CLKUIColoringLabel *)v4->_headerLabel setParagraphStyle:v25];
+    [(CLKUIColoringLabel *)v4->_headerLabel setParagraphStyle:nTKHyphenationParagraphStyle];
     v31 = __40__NTKUpNextThumbnailCell_initWithFrame___block_invoke();
     descriptionLine1Label = v4->_descriptionLine1Label;
     v4->_descriptionLine1Label = v31;
 
     v33 = v4->_descriptionLine1Label;
-    v34 = [MEMORY[0x277D75348] whiteColor];
-    [(CLKUIColoringLabel *)v33 setTextColor:v34];
+    whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+    [(CLKUIColoringLabel *)v33 setTextColor:whiteColor2];
 
     [(CLKUIColoringLabel *)v4->_descriptionLine1Label setFont:v4->_standardFont];
-    v178 = v25;
-    [(CLKUIColoringLabel *)v4->_descriptionLine1Label setParagraphStyle:v25];
+    v178 = nTKHyphenationParagraphStyle;
+    [(CLKUIColoringLabel *)v4->_descriptionLine1Label setParagraphStyle:nTKHyphenationParagraphStyle];
     v35 = __40__NTKUpNextThumbnailCell_initWithFrame___block_invoke();
     descriptionLine2Label = v4->_descriptionLine2Label;
     v4->_descriptionLine2Label = v35;
 
     v37 = v4->_descriptionLine2Label;
-    v38 = [MEMORY[0x277D75348] whiteColor];
-    [(CLKUIColoringLabel *)v37 setTextColor:v38];
+    whiteColor3 = [MEMORY[0x277D75348] whiteColor];
+    [(CLKUIColoringLabel *)v37 setTextColor:whiteColor3];
 
     [(CLKUIColoringLabel *)v4->_descriptionLine2Label setFont:v4->_italicFont];
     [(CLKUIColoringLabel *)v4->_descriptionLine2Label setNumberOfLines:1];
@@ -128,8 +128,8 @@
     v4->_descriptionLine3Label = v39;
 
     v41 = v4->_descriptionLine3Label;
-    v42 = [MEMORY[0x277D75348] whiteColor];
-    [(CLKUIColoringLabel *)v41 setTextColor:v42];
+    whiteColor4 = [MEMORY[0x277D75348] whiteColor];
+    [(CLKUIColoringLabel *)v41 setTextColor:whiteColor4];
 
     v179 = v24;
     [(CLKUIColoringLabel *)v4->_descriptionLine3Label setFont:v24];
@@ -137,10 +137,10 @@
     [(CLKUIColoringLabel *)v4->_descriptionLine3Label setTextAlignment:1];
     [(CLKUIColoringLabel *)v4->_descriptionLine3Label setAdjustsFontSizeToFitWidth:1];
     [(CLKUIColoringLabel *)v4->_descriptionLine3Label setMinimumScaleFactor:0.7];
-    v43 = [(NTKUpNextBaseCell *)v4 device];
-    v44 = [v43 sizeClass];
+    device2 = [(NTKUpNextBaseCell *)v4 device];
+    sizeClass = [device2 sizeClass];
 
-    if (v44 == 3)
+    if (sizeClass == 3)
     {
       v45 = *&v184;
       [(CLKUIColoringLabel *)v4->_headerLabel setLineSpacing:*&v184];
@@ -155,8 +155,8 @@
 
     [(NTKUpNextImageView *)v4->_imageView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(NTKUpNextImageView *)v4->_imageView setContentMode:1];
-    v49 = [(NTKUpNextImageView *)v4->_imageView layer];
-    [v49 setCornerRadius:*&v183];
+    layer = [(NTKUpNextImageView *)v4->_imageView layer];
+    [layer setCornerRadius:*&v183];
 
     [(NTKUpNextImageView *)v4->_imageView setClipsToBounds:1];
     [(NTKUpNextImageView *)v4->_imageView setFilterProvider:v4];
@@ -164,191 +164,191 @@
     labelLayoutGuide = v4->_labelLayoutGuide;
     v4->_labelLayoutGuide = v50;
 
-    v52 = [(NTKUpNextThumbnailCell *)v4 contentView];
-    [v52 addLayoutGuide:v4->_labelLayoutGuide];
+    contentView = [(NTKUpNextThumbnailCell *)v4 contentView];
+    [contentView addLayoutGuide:v4->_labelLayoutGuide];
 
-    v53 = [(NTKUpNextThumbnailCell *)v4 contentView];
-    [v53 addSubview:v4->_imageView];
+    contentView2 = [(NTKUpNextThumbnailCell *)v4 contentView];
+    [contentView2 addSubview:v4->_imageView];
 
-    v54 = [(NTKUpNextThumbnailCell *)v4 contentView];
-    [v54 addSubview:v4->_headerLabel];
+    contentView3 = [(NTKUpNextThumbnailCell *)v4 contentView];
+    [contentView3 addSubview:v4->_headerLabel];
 
-    v55 = [(NTKUpNextThumbnailCell *)v4 contentView];
-    [v55 addSubview:v4->_descriptionLine1Label];
+    contentView4 = [(NTKUpNextThumbnailCell *)v4 contentView];
+    [contentView4 addSubview:v4->_descriptionLine1Label];
 
-    v56 = [(NTKUpNextThumbnailCell *)v4 contentView];
-    [v56 addSubview:v4->_descriptionLine2Label];
+    contentView5 = [(NTKUpNextThumbnailCell *)v4 contentView];
+    [contentView5 addSubview:v4->_descriptionLine2Label];
 
-    v57 = [(NTKUpNextThumbnailCell *)v4 contentView];
-    [v57 addSubview:v4->_descriptionLine3Label];
+    contentView6 = [(NTKUpNextThumbnailCell *)v4 contentView];
+    [contentView6 addSubview:v4->_descriptionLine3Label];
 
     v58 = objc_alloc_init(MEMORY[0x277D756D0]);
     imageLayoutGuide = v4->_imageLayoutGuide;
     v4->_imageLayoutGuide = v58;
 
-    v60 = [(NTKUpNextThumbnailCell *)v4 contentView];
-    [v60 addLayoutGuide:v4->_imageLayoutGuide];
+    contentView7 = [(NTKUpNextThumbnailCell *)v4 contentView];
+    [contentView7 addLayoutGuide:v4->_imageLayoutGuide];
 
-    v61 = [(UILayoutGuide *)v4->_imageLayoutGuide widthAnchor];
-    v62 = [v61 constraintEqualToConstant:1.0];
+    widthAnchor = [(UILayoutGuide *)v4->_imageLayoutGuide widthAnchor];
+    v62 = [widthAnchor constraintEqualToConstant:1.0];
     imageLayoutGuideWidthConstraint = v4->_imageLayoutGuideWidthConstraint;
     v4->_imageLayoutGuideWidthConstraint = v62;
 
-    v64 = [(UILayoutGuide *)v4->_imageLayoutGuide heightAnchor];
-    v65 = [v64 constraintEqualToConstant:1.0];
+    heightAnchor = [(UILayoutGuide *)v4->_imageLayoutGuide heightAnchor];
+    v65 = [heightAnchor constraintEqualToConstant:1.0];
     imageLayoutGuideHeightConstraint = v4->_imageLayoutGuideHeightConstraint;
     v4->_imageLayoutGuideHeightConstraint = v65;
 
-    v176 = [(NTKUpNextImageView *)v4->_imageView centerYAnchor];
-    v175 = [(UILayoutGuide *)v4->_imageLayoutGuide centerYAnchor];
-    v173 = [v176 constraintEqualToAnchor:v175];
+    centerYAnchor = [(NTKUpNextImageView *)v4->_imageView centerYAnchor];
+    centerYAnchor2 = [(UILayoutGuide *)v4->_imageLayoutGuide centerYAnchor];
+    v173 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v198[0] = v173;
-    v171 = [(NTKUpNextImageView *)v4->_imageView centerXAnchor];
-    v169 = [(UILayoutGuide *)v4->_imageLayoutGuide centerXAnchor];
-    v167 = [v171 constraintEqualToAnchor:v169];
+    centerXAnchor = [(NTKUpNextImageView *)v4->_imageView centerXAnchor];
+    centerXAnchor2 = [(UILayoutGuide *)v4->_imageLayoutGuide centerXAnchor];
+    v167 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v198[1] = v167;
-    v165 = [(NTKUpNextImageView *)v4->_imageView widthAnchor];
-    v163 = [(UILayoutGuide *)v4->_imageLayoutGuide widthAnchor];
-    v161 = [v165 constraintLessThanOrEqualToAnchor:v163];
+    widthAnchor2 = [(NTKUpNextImageView *)v4->_imageView widthAnchor];
+    widthAnchor3 = [(UILayoutGuide *)v4->_imageLayoutGuide widthAnchor];
+    v161 = [widthAnchor2 constraintLessThanOrEqualToAnchor:widthAnchor3];
     v198[2] = v161;
-    v159 = [(NTKUpNextImageView *)v4->_imageView heightAnchor];
-    v157 = [(UILayoutGuide *)v4->_imageLayoutGuide heightAnchor];
-    v155 = [v159 constraintLessThanOrEqualToAnchor:v157];
+    heightAnchor2 = [(NTKUpNextImageView *)v4->_imageView heightAnchor];
+    heightAnchor3 = [(UILayoutGuide *)v4->_imageLayoutGuide heightAnchor];
+    v155 = [heightAnchor2 constraintLessThanOrEqualToAnchor:heightAnchor3];
     v198[3] = v155;
-    v153 = [(UILayoutGuide *)v4->_labelLayoutGuide topAnchor];
-    v154 = [(NTKUpNextThumbnailCell *)v4 contentView];
-    v152 = [v154 topAnchor];
-    v151 = [v153 constraintEqualToAnchor:v152 constant:*(&v187 + 1)];
+    topAnchor = [(UILayoutGuide *)v4->_labelLayoutGuide topAnchor];
+    contentView8 = [(NTKUpNextThumbnailCell *)v4 contentView];
+    topAnchor2 = [contentView8 topAnchor];
+    v151 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:*(&v187 + 1)];
     v198[4] = v151;
-    v149 = [(UILayoutGuide *)v4->_labelLayoutGuide bottomAnchor];
-    v150 = [(NTKUpNextThumbnailCell *)v4 contentView];
-    v148 = [v150 bottomAnchor];
-    v147 = [v149 constraintEqualToAnchor:v148 constant:-*(&v188 + 1)];
+    bottomAnchor = [(UILayoutGuide *)v4->_labelLayoutGuide bottomAnchor];
+    contentView9 = [(NTKUpNextThumbnailCell *)v4 contentView];
+    bottomAnchor2 = [contentView9 bottomAnchor];
+    v147 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-*(&v188 + 1)];
     v198[5] = v147;
-    v146 = [(UILayoutGuide *)v4->_labelLayoutGuide leadingAnchor];
-    v145 = [(UILayoutGuide *)v4->_imageLayoutGuide trailingAnchor];
-    v144 = [v146 constraintEqualToAnchor:v145 constant:*&v185];
+    leadingAnchor = [(UILayoutGuide *)v4->_labelLayoutGuide leadingAnchor];
+    trailingAnchor = [(UILayoutGuide *)v4->_imageLayoutGuide trailingAnchor];
+    v144 = [leadingAnchor constraintEqualToAnchor:trailingAnchor constant:*&v185];
     v198[6] = v144;
-    v142 = [(UILayoutGuide *)v4->_labelLayoutGuide trailingAnchor];
-    v143 = [(NTKUpNextThumbnailCell *)v4 contentView];
-    v141 = [v143 trailingAnchor];
-    v140 = [v142 constraintEqualToAnchor:v141 constant:-*&v189];
+    trailingAnchor2 = [(UILayoutGuide *)v4->_labelLayoutGuide trailingAnchor];
+    contentView10 = [(NTKUpNextThumbnailCell *)v4 contentView];
+    trailingAnchor3 = [contentView10 trailingAnchor];
+    v140 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:-*&v189];
     v198[7] = v140;
-    v139 = [(CLKUIColoringLabel *)v4->_headerLabel leadingAnchor];
-    v138 = [(UILayoutGuide *)v4->_labelLayoutGuide leadingAnchor];
-    v137 = [v139 constraintEqualToAnchor:v138];
+    leadingAnchor2 = [(CLKUIColoringLabel *)v4->_headerLabel leadingAnchor];
+    leadingAnchor3 = [(UILayoutGuide *)v4->_labelLayoutGuide leadingAnchor];
+    v137 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3];
     v198[8] = v137;
-    v136 = [(CLKUIColoringLabel *)v4->_headerLabel trailingAnchor];
-    v135 = [(UILayoutGuide *)v4->_labelLayoutGuide trailingAnchor];
-    v134 = [v136 constraintEqualToAnchor:v135];
+    trailingAnchor4 = [(CLKUIColoringLabel *)v4->_headerLabel trailingAnchor];
+    trailingAnchor5 = [(UILayoutGuide *)v4->_labelLayoutGuide trailingAnchor];
+    v134 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
     v198[9] = v134;
-    v133 = [(CLKUIColoringLabel *)v4->_descriptionLine1Label leadingAnchor];
-    v132 = [(UILayoutGuide *)v4->_labelLayoutGuide leadingAnchor];
-    v131 = [v133 constraintEqualToAnchor:v132];
+    leadingAnchor4 = [(CLKUIColoringLabel *)v4->_descriptionLine1Label leadingAnchor];
+    leadingAnchor5 = [(UILayoutGuide *)v4->_labelLayoutGuide leadingAnchor];
+    v131 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
     v198[10] = v131;
-    v67 = [(CLKUIColoringLabel *)v4->_descriptionLine1Label trailingAnchor];
-    v68 = [(UILayoutGuide *)v4->_labelLayoutGuide trailingAnchor];
-    v69 = [v67 constraintEqualToAnchor:v68];
+    trailingAnchor6 = [(CLKUIColoringLabel *)v4->_descriptionLine1Label trailingAnchor];
+    trailingAnchor7 = [(UILayoutGuide *)v4->_labelLayoutGuide trailingAnchor];
+    v69 = [trailingAnchor6 constraintEqualToAnchor:trailingAnchor7];
     v198[11] = v69;
-    v70 = [(CLKUIColoringLabel *)v4->_descriptionLine2Label leadingAnchor];
-    v71 = [(UILayoutGuide *)v4->_labelLayoutGuide leadingAnchor];
-    v72 = [v70 constraintEqualToAnchor:v71];
+    leadingAnchor6 = [(CLKUIColoringLabel *)v4->_descriptionLine2Label leadingAnchor];
+    leadingAnchor7 = [(UILayoutGuide *)v4->_labelLayoutGuide leadingAnchor];
+    v72 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7];
     v198[12] = v72;
-    v73 = [(CLKUIColoringLabel *)v4->_descriptionLine2Label trailingAnchor];
-    v74 = [(UILayoutGuide *)v4->_labelLayoutGuide trailingAnchor];
-    v75 = [v73 constraintEqualToAnchor:v74];
+    trailingAnchor8 = [(CLKUIColoringLabel *)v4->_descriptionLine2Label trailingAnchor];
+    trailingAnchor9 = [(UILayoutGuide *)v4->_labelLayoutGuide trailingAnchor];
+    v75 = [trailingAnchor8 constraintEqualToAnchor:trailingAnchor9];
     v198[13] = v75;
     v198[14] = v4->_imageLayoutGuideHeightConstraint;
     v198[15] = v4->_imageLayoutGuideWidthConstraint;
     v177 = [MEMORY[0x277CBEA60] arrayWithObjects:v198 count:16];
 
-    v76 = [(CLKUIColoringLabel *)v4->_descriptionLine1Label firstBaselineAnchor];
-    v77 = [(UILayoutGuide *)v4->_labelLayoutGuide topAnchor];
+    firstBaselineAnchor = [(CLKUIColoringLabel *)v4->_descriptionLine1Label firstBaselineAnchor];
+    topAnchor3 = [(UILayoutGuide *)v4->_labelLayoutGuide topAnchor];
     v78 = *(&v183 + 1);
-    v79 = [v76 constraintEqualToAnchor:v77 constant:*(&v183 + 1)];
+    v79 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor3 constant:*(&v183 + 1)];
     v197 = v79;
     v80 = [MEMORY[0x277CBEA60] arrayWithObjects:&v197 count:1];
     withoutHeaderConstraints = v4->_withoutHeaderConstraints;
     v4->_withoutHeaderConstraints = v80;
 
-    v82 = [(CLKUIColoringLabel *)v4->_headerLabel firstBaselineAnchor];
-    v83 = [(UILayoutGuide *)v4->_labelLayoutGuide topAnchor];
-    v84 = [v82 constraintEqualToAnchor:v83 constant:v78];
+    firstBaselineAnchor2 = [(CLKUIColoringLabel *)v4->_headerLabel firstBaselineAnchor];
+    topAnchor4 = [(UILayoutGuide *)v4->_labelLayoutGuide topAnchor];
+    v84 = [firstBaselineAnchor2 constraintEqualToAnchor:topAnchor4 constant:v78];
     v196[0] = v84;
-    v85 = [(CLKUIColoringLabel *)v4->_descriptionLine1Label firstBaselineAnchor];
-    v86 = [(CLKUIColoringLabel *)v4->_headerLabel lastBaselineAnchor];
-    v87 = [v85 constraintEqualToAnchor:v86 constant:*&v184];
+    firstBaselineAnchor3 = [(CLKUIColoringLabel *)v4->_descriptionLine1Label firstBaselineAnchor];
+    lastBaselineAnchor = [(CLKUIColoringLabel *)v4->_headerLabel lastBaselineAnchor];
+    v87 = [firstBaselineAnchor3 constraintEqualToAnchor:lastBaselineAnchor constant:*&v184];
     v196[1] = v87;
     v88 = [MEMORY[0x277CBEA60] arrayWithObjects:v196 count:2];
     withHeaderConstraints = v4->_withHeaderConstraints;
     v4->_withHeaderConstraints = v88;
 
-    v90 = [(CLKUIColoringLabel *)v4->_descriptionLine2Label firstBaselineAnchor];
-    v91 = [(CLKUIColoringLabel *)v4->_descriptionLine1Label lastBaselineAnchor];
+    firstBaselineAnchor4 = [(CLKUIColoringLabel *)v4->_descriptionLine2Label firstBaselineAnchor];
+    lastBaselineAnchor2 = [(CLKUIColoringLabel *)v4->_descriptionLine1Label lastBaselineAnchor];
     v92 = *&v186;
-    v93 = [v90 constraintEqualToAnchor:v91 constant:*(&v184 + 1) + *&v186];
+    v93 = [firstBaselineAnchor4 constraintEqualToAnchor:lastBaselineAnchor2 constant:*(&v184 + 1) + *&v186];
     v195[0] = v93;
-    v94 = [(CLKUIColoringLabel *)v4->_descriptionLine2Label lastBaselineAnchor];
-    v95 = [(UILayoutGuide *)v4->_labelLayoutGuide bottomAnchor];
+    lastBaselineAnchor3 = [(CLKUIColoringLabel *)v4->_descriptionLine2Label lastBaselineAnchor];
+    bottomAnchor3 = [(UILayoutGuide *)v4->_labelLayoutGuide bottomAnchor];
     v96 = *(&v186 + 1);
     v97 = -*(&v186 + 1);
-    v98 = [v94 constraintLessThanOrEqualToAnchor:v95 constant:-*(&v186 + 1)];
+    v98 = [lastBaselineAnchor3 constraintLessThanOrEqualToAnchor:bottomAnchor3 constant:-*(&v186 + 1)];
     v195[1] = v98;
     v99 = [MEMORY[0x277CBEA60] arrayWithObjects:v195 count:2];
     withDescription2Constraints = v4->_withDescription2Constraints;
     v4->_withDescription2Constraints = v99;
 
-    v101 = [(CLKUIColoringLabel *)v4->_descriptionLine1Label lastBaselineAnchor];
-    v102 = [(UILayoutGuide *)v4->_labelLayoutGuide bottomAnchor];
-    v103 = [v101 constraintLessThanOrEqualToAnchor:v102 constant:v97];
+    lastBaselineAnchor4 = [(CLKUIColoringLabel *)v4->_descriptionLine1Label lastBaselineAnchor];
+    bottomAnchor4 = [(UILayoutGuide *)v4->_labelLayoutGuide bottomAnchor];
+    v103 = [lastBaselineAnchor4 constraintLessThanOrEqualToAnchor:bottomAnchor4 constant:v97];
     v194[0] = v103;
-    v104 = [(CLKUIColoringLabel *)v4->_headerLabel lastBaselineAnchor];
-    v105 = [(UILayoutGuide *)v4->_labelLayoutGuide bottomAnchor];
-    v106 = [v104 constraintLessThanOrEqualToAnchor:v105 constant:v97];
+    lastBaselineAnchor5 = [(CLKUIColoringLabel *)v4->_headerLabel lastBaselineAnchor];
+    bottomAnchor5 = [(UILayoutGuide *)v4->_labelLayoutGuide bottomAnchor];
+    v106 = [lastBaselineAnchor5 constraintLessThanOrEqualToAnchor:bottomAnchor5 constant:v97];
     v194[1] = v106;
     v107 = [MEMORY[0x277CBEA60] arrayWithObjects:v194 count:2];
     withoutDescription2Constraints = v4->_withoutDescription2Constraints;
     v4->_withoutDescription2Constraints = v107;
 
-    v172 = [(UILayoutGuide *)v4->_imageLayoutGuide leadingAnchor];
-    v174 = [(NTKUpNextThumbnailCell *)v4 contentView];
-    v170 = [v174 leadingAnchor];
-    v168 = [v172 constraintEqualToAnchor:v170 constant:*&v185];
+    leadingAnchor8 = [(UILayoutGuide *)v4->_imageLayoutGuide leadingAnchor];
+    contentView11 = [(NTKUpNextThumbnailCell *)v4 contentView];
+    leadingAnchor9 = [contentView11 leadingAnchor];
+    v168 = [leadingAnchor8 constraintEqualToAnchor:leadingAnchor9 constant:*&v185];
     v193[0] = v168;
-    v164 = [(UILayoutGuide *)v4->_imageLayoutGuide centerYAnchor];
-    v162 = [(CLKUIColoringLabel *)v4->_descriptionLine3Label firstBaselineAnchor];
-    v166 = [MEMORY[0x277D759A0] mainScreen];
-    [v166 scale];
+    centerYAnchor3 = [(UILayoutGuide *)v4->_imageLayoutGuide centerYAnchor];
+    firstBaselineAnchor5 = [(CLKUIColoringLabel *)v4->_descriptionLine3Label firstBaselineAnchor];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     UIRoundToScale();
-    v160 = [v164 constraintEqualToAnchor:v162 constant:?];
+    v160 = [centerYAnchor3 constraintEqualToAnchor:firstBaselineAnchor5 constant:?];
     v193[1] = v160;
-    v156 = [(CLKUIColoringLabel *)v4->_descriptionLine3Label leadingAnchor];
-    v158 = [(NTKUpNextThumbnailCell *)v4 contentView];
-    v109 = [v158 leadingAnchor];
-    v110 = [v156 constraintEqualToAnchor:v109 constant:1.0];
+    leadingAnchor10 = [(CLKUIColoringLabel *)v4->_descriptionLine3Label leadingAnchor];
+    contentView12 = [(NTKUpNextThumbnailCell *)v4 contentView];
+    leadingAnchor11 = [contentView12 leadingAnchor];
+    v110 = [leadingAnchor10 constraintEqualToAnchor:leadingAnchor11 constant:1.0];
     v193[2] = v110;
-    v111 = [(CLKUIColoringLabel *)v4->_descriptionLine3Label trailingAnchor];
-    v112 = [(UILayoutGuide *)v4->_labelLayoutGuide leadingAnchor];
-    v113 = [v111 constraintEqualToAnchor:v112 constant:-1.0];
+    trailingAnchor10 = [(CLKUIColoringLabel *)v4->_descriptionLine3Label trailingAnchor];
+    leadingAnchor12 = [(UILayoutGuide *)v4->_labelLayoutGuide leadingAnchor];
+    v113 = [trailingAnchor10 constraintEqualToAnchor:leadingAnchor12 constant:-1.0];
     v193[3] = v113;
-    v114 = [(CLKUIColoringLabel *)v4->_descriptionLine3Label firstBaselineAnchor];
-    v115 = [(NTKUpNextThumbnailCell *)v4 contentView];
-    v116 = [v115 bottomAnchor];
-    v117 = [v114 constraintEqualToAnchor:v116 constant:v92 - v96];
+    firstBaselineAnchor6 = [(CLKUIColoringLabel *)v4->_descriptionLine3Label firstBaselineAnchor];
+    contentView13 = [(NTKUpNextThumbnailCell *)v4 contentView];
+    bottomAnchor6 = [contentView13 bottomAnchor];
+    v117 = [firstBaselineAnchor6 constraintEqualToAnchor:bottomAnchor6 constant:v92 - v96];
     v193[4] = v117;
     v118 = [MEMORY[0x277CBEA60] arrayWithObjects:v193 count:5];
     withDescription3Constraints = v4->_withDescription3Constraints;
     v4->_withDescription3Constraints = v118;
 
-    v120 = [(UILayoutGuide *)v4->_imageLayoutGuide leadingAnchor];
-    v121 = [(NTKUpNextThumbnailCell *)v4 contentView];
-    v122 = [v121 leadingAnchor];
-    v123 = [v120 constraintEqualToAnchor:v122 constant:*&v188];
+    leadingAnchor13 = [(UILayoutGuide *)v4->_imageLayoutGuide leadingAnchor];
+    contentView14 = [(NTKUpNextThumbnailCell *)v4 contentView];
+    leadingAnchor14 = [contentView14 leadingAnchor];
+    v123 = [leadingAnchor13 constraintEqualToAnchor:leadingAnchor14 constant:*&v188];
     v192[0] = v123;
-    v124 = [(UILayoutGuide *)v4->_imageLayoutGuide centerYAnchor];
-    v125 = [(NTKUpNextThumbnailCell *)v4 contentView];
-    v126 = [v125 centerYAnchor];
-    v127 = [v124 constraintEqualToAnchor:v126];
+    centerYAnchor4 = [(UILayoutGuide *)v4->_imageLayoutGuide centerYAnchor];
+    contentView15 = [(NTKUpNextThumbnailCell *)v4 contentView];
+    centerYAnchor5 = [contentView15 centerYAnchor];
+    v127 = [centerYAnchor4 constraintEqualToAnchor:centerYAnchor5];
     v192[1] = v127;
     v128 = [MEMORY[0x277CBEA60] arrayWithObjects:v192 count:2];
     withoutDescription3Constraints = v4->_withoutDescription3Constraints;
@@ -381,21 +381,21 @@ id __40__NTKUpNextThumbnailCell_initWithFrame___block_invoke()
 
 - (void)updateConstraints
 {
-  v3 = [(NTKUpNextBaseCell *)self content];
+  content = [(NTKUpNextBaseCell *)self content];
   v4 = objc_opt_new();
   v5 = objc_opt_new();
   v38 = 0u;
   v39 = 0u;
   memset(v37, 0, sizeof(v37));
-  v6 = [(NTKUpNextBaseCell *)self device];
-  ___LayoutConstants_block_invoke_49(v6, v37);
+  device = [(NTKUpNextBaseCell *)self device];
+  ___LayoutConstants_block_invoke_49(device, v37);
 
-  v7 = [v3 description3TextProvider];
-  v8 = v7 != 0;
+  description3TextProvider = [content description3TextProvider];
+  v8 = description3TextProvider != 0;
 
   if (self->_showingSmallThumbnail == v8)
   {
-    if (v7)
+    if (description3TextProvider)
     {
       goto LABEL_24;
     }
@@ -404,8 +404,8 @@ id __40__NTKUpNextThumbnailCell_initWithFrame___block_invoke()
   else
   {
     self->_showingSmallThumbnail = v8;
-    [(CLKUIColoringLabel *)self->_descriptionLine3Label setHidden:v7 == 0];
-    if (v7)
+    [(CLKUIColoringLabel *)self->_descriptionLine3Label setHidden:description3TextProvider == 0];
+    if (description3TextProvider)
     {
       [(NSLayoutConstraint *)self->_imageLayoutGuideWidthConstraint setConstant:*(&v38 + 1)];
       [(NSLayoutConstraint *)self->_imageLayoutGuideHeightConstraint setConstant:*&v39];
@@ -419,8 +419,8 @@ id __40__NTKUpNextThumbnailCell_initWithFrame___block_invoke()
   }
 
   v9 = objc_opt_class();
-  v10 = [(NTKUpNextBaseCell *)self device];
-  [v9 suggestedBodyImageSizeForDevice:v10];
+  device2 = [(NTKUpNextBaseCell *)self device];
+  [v9 suggestedBodyImageSizeForDevice:device2];
   v12 = v11;
   v14 = v13;
 
@@ -457,13 +457,13 @@ id __40__NTKUpNextThumbnailCell_initWithFrame___block_invoke()
 
   [(NSLayoutConstraint *)imageLayoutGuideHeightConstraint setConstant:v22];
 LABEL_24:
-  v23 = [v3 description2TextProvider];
-  v24 = v23 != 0;
+  description2TextProvider = [content description2TextProvider];
+  v24 = description2TextProvider != 0;
 
   if (self->_showingThirdLine != v24)
   {
     self->_showingThirdLine = v24;
-    [(CLKUIColoringLabel *)self->_descriptionLine2Label setHidden:v23 == 0];
+    [(CLKUIColoringLabel *)self->_descriptionLine2Label setHidden:description2TextProvider == 0];
     if (self->_showingThirdLine)
     {
       v25 = &OBJC_IVAR___NTKUpNextThumbnailCell__withoutDescription2Constraints;
@@ -488,15 +488,15 @@ LABEL_24:
     [v4 addObjectsFromArray:*(&self->super.super.super.super.super.super.isa + *v26)];
   }
 
-  v27 = [v3 headerTextProvider];
-  v28 = v27 != 0;
+  headerTextProvider = [content headerTextProvider];
+  v28 = headerTextProvider != 0;
 
   if (self->_showingHeader != v28)
   {
-    v29 = v27 == 0;
-    v30 = v27 == 0;
+    v29 = headerTextProvider == 0;
+    v30 = headerTextProvider == 0;
     self->_showingHeader = v28;
-    if (v27)
+    if (headerTextProvider)
     {
       v31 = &OBJC_IVAR___NTKUpNextThumbnailCell__withoutHeaderConstraints;
     }
@@ -525,10 +525,10 @@ LABEL_24:
   {
     if (self->_showingHeader)
     {
-      v35 = [v3 description1TextProvider];
+      description1TextProvider = [content description1TextProvider];
 
       headerLabel = self->_headerLabel;
-      if (v35)
+      if (description1TextProvider)
       {
         [(CLKUIColoringLabel *)headerLabel setNumberOfLines:2];
         headerLabel = self->_descriptionLine1Label;
@@ -567,31 +567,31 @@ LABEL_49:
   [(NTKUpNextThumbnailCell *)&v36 updateConstraints];
 }
 
-- (void)configureWithContent:(id)a3
+- (void)configureWithContent:(id)content
 {
   v28.receiver = self;
   v28.super_class = NTKUpNextThumbnailCell;
-  v4 = a3;
-  [(NTKUpNextBaseCell *)&v28 configureWithContent:v4];
+  contentCopy = content;
+  [(NTKUpNextBaseCell *)&v28 configureWithContent:contentCopy];
   [NTKUpNextBaseCell clearLabel:self->_headerLabel];
   headerLabel = self->_headerLabel;
-  v6 = [v4 headerTextProvider];
-  [(CLKUIColoringLabel *)headerLabel setTextProvider:v6];
+  headerTextProvider = [contentCopy headerTextProvider];
+  [(CLKUIColoringLabel *)headerLabel setTextProvider:headerTextProvider];
 
   [NTKUpNextBaseCell clearLabel:self->_descriptionLine1Label];
   descriptionLine1Label = self->_descriptionLine1Label;
-  v8 = [v4 description1TextProvider];
-  [(CLKUIColoringLabel *)descriptionLine1Label setTextProvider:v8];
+  description1TextProvider = [contentCopy description1TextProvider];
+  [(CLKUIColoringLabel *)descriptionLine1Label setTextProvider:description1TextProvider];
 
   [NTKUpNextBaseCell clearLabel:self->_descriptionLine2Label];
   descriptionLine2Label = self->_descriptionLine2Label;
-  v10 = [v4 description2TextProvider];
-  [(CLKUIColoringLabel *)descriptionLine2Label setTextProvider:v10];
+  description2TextProvider = [contentCopy description2TextProvider];
+  [(CLKUIColoringLabel *)descriptionLine2Label setTextProvider:description2TextProvider];
 
   [NTKUpNextBaseCell clearLabel:self->_descriptionLine3Label];
   descriptionLine3Label = self->_descriptionLine3Label;
-  v12 = [v4 description3TextProvider];
-  [(CLKUIColoringLabel *)descriptionLine3Label setTextProvider:v12];
+  description3TextProvider = [contentCopy description3TextProvider];
+  [(CLKUIColoringLabel *)descriptionLine3Label setTextProvider:description3TextProvider];
 
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
@@ -599,36 +599,36 @@ LABEL_49:
   aBlock[3] = &unk_278781428;
   aBlock[4] = self;
   v13 = _Block_copy(aBlock);
-  v13[2](v13, self->_headerLabel, [v4 headerFontStyle]);
-  v13[2](v13, self->_descriptionLine1Label, [v4 description1FontStyle]);
-  v13[2](v13, self->_descriptionLine2Label, [v4 description2FontStyle]);
+  v13[2](v13, self->_headerLabel, [contentCopy headerFontStyle]);
+  v13[2](v13, self->_descriptionLine1Label, [contentCopy description1FontStyle]);
+  v13[2](v13, self->_descriptionLine2Label, [contentCopy description2FontStyle]);
   imageView = self->_imageView;
-  v15 = [v4 overrideBodyImage];
-  v16 = [v4 bodyImageProvider];
-  [(NTKUpNextImageView *)imageView setFullColorImage:v15 tintableImageProvider:v16];
+  overrideBodyImage = [contentCopy overrideBodyImage];
+  bodyImageProvider = [contentCopy bodyImageProvider];
+  [(NTKUpNextImageView *)imageView setFullColorImage:overrideBodyImage tintableImageProvider:bodyImageProvider];
 
   v17 = self->_imageView;
-  v18 = [v4 bodyImageCompositingFilter];
-  [(NTKUpNextImageView *)v17 setCompositingFilter:v18];
+  bodyImageCompositingFilter = [contentCopy bodyImageCompositingFilter];
+  [(NTKUpNextImageView *)v17 setCompositingFilter:bodyImageCompositingFilter];
 
-  v19 = [v4 headerTextProvider];
-  [v19 setPaused:{-[NTKUpNextBaseCell isPaused](self, "isPaused")}];
+  headerTextProvider2 = [contentCopy headerTextProvider];
+  [headerTextProvider2 setPaused:{-[NTKUpNextBaseCell isPaused](self, "isPaused")}];
 
-  v20 = [v4 description1TextProvider];
-  [v20 setPaused:{-[NTKUpNextBaseCell isPaused](self, "isPaused")}];
+  description1TextProvider2 = [contentCopy description1TextProvider];
+  [description1TextProvider2 setPaused:{-[NTKUpNextBaseCell isPaused](self, "isPaused")}];
 
-  v21 = [v4 description2TextProvider];
-  [v21 setPaused:{-[NTKUpNextBaseCell isPaused](self, "isPaused")}];
+  description2TextProvider2 = [contentCopy description2TextProvider];
+  [description2TextProvider2 setPaused:{-[NTKUpNextBaseCell isPaused](self, "isPaused")}];
 
-  v22 = [v4 description3TextProvider];
-  [v22 setPaused:{-[NTKUpNextBaseCell isPaused](self, "isPaused")}];
+  description3TextProvider2 = [contentCopy description3TextProvider];
+  [description3TextProvider2 setPaused:{-[NTKUpNextBaseCell isPaused](self, "isPaused")}];
 
-  v23 = [v4 description1Opacity];
+  description1Opacity = [contentCopy description1Opacity];
 
   v24 = self->_descriptionLine1Label;
-  if (v23)
+  if (description1Opacity)
   {
-    [v23 floatValue];
+    [description1Opacity floatValue];
     v26 = v25;
   }
 
@@ -689,40 +689,40 @@ LABEL_12:
   [v8 setAdjustsFontSizeToFitWidth:v6 != 0.0];
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  v3 = a3;
+  pausedCopy = paused;
   v9.receiver = self;
   v9.super_class = NTKUpNextThumbnailCell;
   [(NTKUpNextBaseCell *)&v9 setPaused:?];
-  v5 = [(CLKUIColoringLabel *)self->_headerLabel textProvider];
-  [v5 setPaused:v3];
+  textProvider = [(CLKUIColoringLabel *)self->_headerLabel textProvider];
+  [textProvider setPaused:pausedCopy];
 
-  v6 = [(CLKUIColoringLabel *)self->_descriptionLine1Label textProvider];
-  [v6 setPaused:v3];
+  textProvider2 = [(CLKUIColoringLabel *)self->_descriptionLine1Label textProvider];
+  [textProvider2 setPaused:pausedCopy];
 
-  v7 = [(CLKUIColoringLabel *)self->_descriptionLine2Label textProvider];
-  [v7 setPaused:v3];
+  textProvider3 = [(CLKUIColoringLabel *)self->_descriptionLine2Label textProvider];
+  [textProvider3 setPaused:pausedCopy];
 
-  v8 = [(CLKUIColoringLabel *)self->_descriptionLine3Label textProvider];
-  [v8 setPaused:v3];
+  textProvider4 = [(CLKUIColoringLabel *)self->_descriptionLine3Label textProvider];
+  [textProvider4 setPaused:pausedCopy];
 }
 
-- (id)colorForView:(id)a3 accented:(BOOL)a4
+- (id)colorForView:(id)view accented:(BOOL)accented
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(NTKUpNextBaseCell *)self filterProvider];
-  v8 = [v7 colorForView:v6 accented:v4];
+  accentedCopy = accented;
+  viewCopy = view;
+  filterProvider = [(NTKUpNextBaseCell *)self filterProvider];
+  v8 = [filterProvider colorForView:viewCopy accented:accentedCopy];
 
   return v8;
 }
 
-- (id)backgroundColorForView:(id)a3
+- (id)backgroundColorForView:(id)view
 {
-  v4 = a3;
-  v5 = [(NTKUpNextBaseCell *)self filterProvider];
-  v6 = [v5 backgroundColorForView:v4];
+  viewCopy = view;
+  filterProvider = [(NTKUpNextBaseCell *)self filterProvider];
+  v6 = [filterProvider backgroundColorForView:viewCopy];
 
   return v6;
 }
@@ -733,48 +733,48 @@ LABEL_12:
   v7.super_class = NTKUpNextThumbnailCell;
   [(NTKUpNextBaseCell *)&v7 prepareForReuse];
   [(NTKUpNextImageView *)self->_imageView transitionToMonochromeWithFraction:0.0];
-  v3 = [(CLKUIColoringLabel *)self->_headerLabel layer];
-  [v3 setFilters:0];
+  layer = [(CLKUIColoringLabel *)self->_headerLabel layer];
+  [layer setFilters:0];
 
-  v4 = [(CLKUIColoringLabel *)self->_descriptionLine1Label layer];
-  [v4 setFilters:0];
+  layer2 = [(CLKUIColoringLabel *)self->_descriptionLine1Label layer];
+  [layer2 setFilters:0];
 
-  v5 = [(CLKUIColoringLabel *)self->_descriptionLine2Label layer];
-  [v5 setFilters:0];
+  layer3 = [(CLKUIColoringLabel *)self->_descriptionLine2Label layer];
+  [layer3 setFilters:0];
 
-  v6 = [(CLKUIColoringLabel *)self->_descriptionLine3Label layer];
-  [v6 setFilters:0];
+  layer4 = [(CLKUIColoringLabel *)self->_descriptionLine3Label layer];
+  [layer4 setFilters:0];
 }
 
-- (void)transitionToMonochromeWithFraction:(double)a3
+- (void)transitionToMonochromeWithFraction:(double)fraction
 {
   [(NTKUpNextImageView *)self->_imageView transitionToMonochromeWithFraction:?];
-  if (fabs(a3) >= 0.00000011920929)
+  if (fabs(fraction) >= 0.00000011920929)
   {
-    v8 = [(NTKUpNextBaseCell *)self filterProvider];
-    v19 = [v8 filtersForView:self style:2 fraction:a3];
+    filterProvider = [(NTKUpNextBaseCell *)self filterProvider];
+    layer8 = [filterProvider filtersForView:self style:2 fraction:fraction];
 
-    v9 = v19;
-    if (!v19)
+    v9 = layer8;
+    if (!layer8)
     {
       goto LABEL_10;
     }
 
-    v10 = [(CLKUIColoringLabel *)self->_headerLabel layer];
-    [v10 setFilters:v19];
+    layer = [(CLKUIColoringLabel *)self->_headerLabel layer];
+    [layer setFilters:layer8];
 
-    v11 = [(CLKUIColoringLabel *)self->_descriptionLine3Label layer];
-    [v11 setFilters:v19];
+    layer2 = [(CLKUIColoringLabel *)self->_descriptionLine3Label layer];
+    [layer2 setFilters:layer8];
 
-    v12 = [(NTKUpNextBaseCell *)self content];
-    v13 = [v12 headerTextProvider];
-    if (v13)
+    content = [(NTKUpNextBaseCell *)self content];
+    headerTextProvider = [content headerTextProvider];
+    if (headerTextProvider)
     {
-      v14 = v13;
-      v15 = [(NTKUpNextBaseCell *)self content];
-      v16 = [v15 headerFontStyle];
+      v14 = headerTextProvider;
+      content2 = [(NTKUpNextBaseCell *)self content];
+      headerFontStyle = [content2 headerFontStyle];
 
-      if (v16 == 2)
+      if (headerFontStyle == 2)
       {
         goto LABEL_9;
       }
@@ -784,56 +784,56 @@ LABEL_12:
     {
     }
 
-    v17 = [(CLKUIColoringLabel *)self->_descriptionLine1Label layer];
-    [v17 setFilters:v19];
+    layer3 = [(CLKUIColoringLabel *)self->_descriptionLine1Label layer];
+    [layer3 setFilters:layer8];
 
-    v18 = [(CLKUIColoringLabel *)self->_descriptionLine2Label layer];
-    [v18 setFilters:v19];
+    layer4 = [(CLKUIColoringLabel *)self->_descriptionLine2Label layer];
+    [layer4 setFilters:layer8];
   }
 
   else
   {
-    v5 = [(CLKUIColoringLabel *)self->_headerLabel layer];
-    [v5 setFilters:0];
+    layer5 = [(CLKUIColoringLabel *)self->_headerLabel layer];
+    [layer5 setFilters:0];
 
-    v6 = [(CLKUIColoringLabel *)self->_descriptionLine1Label layer];
-    [v6 setFilters:0];
+    layer6 = [(CLKUIColoringLabel *)self->_descriptionLine1Label layer];
+    [layer6 setFilters:0];
 
-    v7 = [(CLKUIColoringLabel *)self->_descriptionLine2Label layer];
-    [v7 setFilters:0];
+    layer7 = [(CLKUIColoringLabel *)self->_descriptionLine2Label layer];
+    [layer7 setFilters:0];
 
-    v19 = [(CLKUIColoringLabel *)self->_descriptionLine3Label layer];
-    [v19 setFilters:0];
+    layer8 = [(CLKUIColoringLabel *)self->_descriptionLine3Label layer];
+    [layer8 setFilters:0];
   }
 
 LABEL_9:
-  v9 = v19;
+  v9 = layer8;
 LABEL_10:
 }
 
 - (void)updateMonochromeColor
 {
   [(NTKUpNextImageView *)self->_imageView updateMonochromeColor];
-  v3 = [(NTKUpNextBaseCell *)self filterProvider];
-  v13 = [v3 filtersForView:self style:2];
+  filterProvider = [(NTKUpNextBaseCell *)self filterProvider];
+  v13 = [filterProvider filtersForView:self style:2];
 
   if (v13)
   {
-    v4 = [(CLKUIColoringLabel *)self->_headerLabel layer];
-    [v4 setFilters:v13];
+    layer = [(CLKUIColoringLabel *)self->_headerLabel layer];
+    [layer setFilters:v13];
 
-    v5 = [(CLKUIColoringLabel *)self->_descriptionLine3Label layer];
-    [v5 setFilters:v13];
+    layer2 = [(CLKUIColoringLabel *)self->_descriptionLine3Label layer];
+    [layer2 setFilters:v13];
 
-    v6 = [(NTKUpNextBaseCell *)self content];
-    v7 = [v6 headerTextProvider];
-    if (v7)
+    content = [(NTKUpNextBaseCell *)self content];
+    headerTextProvider = [content headerTextProvider];
+    if (headerTextProvider)
     {
-      v8 = v7;
-      v9 = [(NTKUpNextBaseCell *)self content];
-      v10 = [v9 headerFontStyle];
+      v8 = headerTextProvider;
+      content2 = [(NTKUpNextBaseCell *)self content];
+      headerFontStyle = [content2 headerFontStyle];
 
-      if (v10 == 2)
+      if (headerFontStyle == 2)
       {
         goto LABEL_7;
       }
@@ -843,11 +843,11 @@ LABEL_10:
     {
     }
 
-    v11 = [(CLKUIColoringLabel *)self->_descriptionLine1Label layer];
-    [v11 setFilters:v13];
+    layer3 = [(CLKUIColoringLabel *)self->_descriptionLine1Label layer];
+    [layer3 setFilters:v13];
 
-    v12 = [(CLKUIColoringLabel *)self->_descriptionLine2Label layer];
-    [v12 setFilters:v13];
+    layer4 = [(CLKUIColoringLabel *)self->_descriptionLine2Label layer];
+    [layer4 setFilters:v13];
   }
 
 LABEL_7:

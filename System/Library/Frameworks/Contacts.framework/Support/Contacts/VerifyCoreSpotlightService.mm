@@ -7,12 +7,12 @@
 
 + (void)run
 {
-  v3 = +[NSString stringWithUTF8String:](NSString, "stringWithUTF8String:", [a1 activityIdentifier]);
+  v3 = +[NSString stringWithUTF8String:](NSString, "stringWithUTF8String:", [self activityIdentifier]);
   NSLog(@"%@ is verifying CoreSpotlight index.", v3);
 
-  if (([a1 verifyIndex] & 1) == 0)
+  if (([self verifyIndex] & 1) == 0)
   {
-    v4 = +[NSString stringWithUTF8String:](NSString, "stringWithUTF8String:", [a1 activityIdentifier]);
+    v4 = +[NSString stringWithUTF8String:](NSString, "stringWithUTF8String:", [self activityIdentifier]);
     NSLog(@"%@ failed to verify CoreSpotlight index.", v4);
   }
 }

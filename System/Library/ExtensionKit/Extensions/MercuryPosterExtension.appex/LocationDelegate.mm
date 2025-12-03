@@ -1,33 +1,33 @@
 @interface LocationDelegate
 - (_TtC22MercuryPosterExtensionP33_6C370B8E95E1084F848401CE1CB3D33016LocationDelegate)init;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
 @end
 
 @implementation LocationDelegate
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
-  v4 = a3;
-  v5 = self;
-  sub_100026BD0(v4);
+  authorizationCopy = authorization;
+  selfCopy = self;
+  sub_100026BD0(authorizationCopy);
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
+  managerCopy = manager;
+  errorCopy = error;
+  selfCopy = self;
   sub_10002903C();
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
   sub_100012904(0, &qword_100130A48);
   v6 = sub_1000E9A94();
-  v7 = a3;
-  v8 = self;
+  managerCopy = manager;
+  selfCopy = self;
   sub_1000292A8(v6);
 }
 

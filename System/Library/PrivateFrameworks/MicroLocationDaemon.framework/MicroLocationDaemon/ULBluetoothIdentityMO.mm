@@ -1,45 +1,45 @@
 @interface ULBluetoothIdentityMO
-+ (id)createFromDO:(const void *)a3 inManagedObjectContext:(id)a4;
++ (id)createFromDO:(const void *)o inManagedObjectContext:(id)context;
 - (optional<ULBluetoothIdentityDO>)convertToDO;
 @end
 
 @implementation ULBluetoothIdentityMO
 
-+ (id)createFromDO:(const void *)a3 inManagedObjectContext:(id)a4
++ (id)createFromDO:(const void *)o inManagedObjectContext:(id)context
 {
-  v5 = a4;
-  v6 = [[ULBluetoothIdentityMO alloc] initWithContext:v5];
-  v7 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:a3];
-  v8 = [v7 UUIDString];
-  [(ULBluetoothIdentityMO *)v6 setBluetoothId:v8];
+  contextCopy = context;
+  v6 = [[ULBluetoothIdentityMO alloc] initWithContext:contextCopy];
+  v7 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:o];
+  uUIDString = [v7 UUIDString];
+  [(ULBluetoothIdentityMO *)v6 setBluetoothId:uUIDString];
 
-  if (*(a3 + 39) >= 0)
+  if (*(o + 39) >= 0)
   {
-    v9 = a3 + 16;
+    v9 = o + 16;
   }
 
   else
   {
-    v9 = *(a3 + 2);
+    v9 = *(o + 2);
   }
 
   v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:v9];
   [(ULBluetoothIdentityMO *)v6 setDeviceName:v10];
 
-  if (*(a3 + 63) >= 0)
+  if (*(o + 63) >= 0)
   {
-    v11 = a3 + 40;
+    v11 = o + 40;
   }
 
   else
   {
-    v11 = *(a3 + 5);
+    v11 = *(o + 5);
   }
 
   v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:v11];
   [(ULBluetoothIdentityMO *)v6 setStableIdentifier:v12];
 
-  [(ULBluetoothIdentityMO *)v6 setLastSeenTimeStamp:*(a3 + 8)];
+  [(ULBluetoothIdentityMO *)v6 setLastSeenTimeStamp:*(o + 8)];
 
   return v6;
 }
@@ -48,11 +48,11 @@
 {
   v2 = v1;
   v35 = *MEMORY[0x277D85DE8];
-  v4 = [v1 bluetoothId];
-  v5 = v4;
-  if (v4)
+  bluetoothId = [v1 bluetoothId];
+  v5 = bluetoothId;
+  if (bluetoothId)
   {
-    [v4 boostUUID];
+    [bluetoothId boostUUID];
   }
 
   else
@@ -69,11 +69,11 @@
     v34 = 1;
   }
 
-  v6 = [v2 deviceName];
-  v7 = v6;
-  if (v6)
+  deviceName = [v2 deviceName];
+  v7 = deviceName;
+  if (deviceName)
   {
-    [v6 stdString];
+    [deviceName stdString];
   }
 
   else
@@ -84,11 +84,11 @@
 
   if (BYTE8(v25))
   {
-    v8 = [v2 stableIdentifier];
-    v9 = v8;
-    if (v8)
+    stableIdentifier = [v2 stableIdentifier];
+    v9 = stableIdentifier;
+    if (stableIdentifier)
     {
-      [v8 stdString];
+      [stableIdentifier stdString];
     }
 
     else

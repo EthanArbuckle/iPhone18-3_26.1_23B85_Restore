@@ -1,30 +1,30 @@
 @interface SIRINLUEXTERNALRequestID
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsRequester:(id)a3;
+- (int)StringAsRequester:(id)requester;
 - (int)requester;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUEXTERNALRequestID
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v7 = v4;
-  if (*(v4 + 2))
+  fromCopy = from;
+  v7 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(SIRINLUEXTERNALRequestID *)self setIdA:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
   nluRequestId = self->_nluRequestId;
-  v6 = *(v4 + 4);
+  v6 = *(fromCopy + 4);
   if (nluRequestId)
   {
     if (!v6)
@@ -45,35 +45,35 @@
     [(SIRINLUEXTERNALRequestID *)self setNluRequestId:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_9:
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(SIRINLUEXTERNALRequestID *)self setUserId:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(SIRINLUEXTERNALRequestID *)self setLoggableUserId:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(SIRINLUEXTERNALRequestID *)self setTrpId:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(SIRINLUEXTERNALRequestID *)self setConnectionId:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (v4[16])
+  if (fromCopy[16])
   {
-    self->_requester = v4[10];
+    self->_requester = fromCopy[10];
     *&self->_has |= 1u;
   }
 
@@ -101,16 +101,16 @@ LABEL_9:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   idA = self->_idA;
-  if (idA | *(v4 + 2))
+  if (idA | *(equalCopy + 2))
   {
     if (![(NSString *)idA isEqual:?])
     {
@@ -119,7 +119,7 @@ LABEL_9:
   }
 
   nluRequestId = self->_nluRequestId;
-  if (nluRequestId | *(v4 + 4))
+  if (nluRequestId | *(equalCopy + 4))
   {
     if (![(SIRINLUEXTERNALUUID *)nluRequestId isEqual:?])
     {
@@ -128,7 +128,7 @@ LABEL_9:
   }
 
   userId = self->_userId;
-  if (userId | *(v4 + 7))
+  if (userId | *(equalCopy + 7))
   {
     if (![(NSString *)userId isEqual:?])
     {
@@ -137,7 +137,7 @@ LABEL_9:
   }
 
   loggableUserId = self->_loggableUserId;
-  if (loggableUserId | *(v4 + 3))
+  if (loggableUserId | *(equalCopy + 3))
   {
     if (![(NSString *)loggableUserId isEqual:?])
     {
@@ -146,7 +146,7 @@ LABEL_9:
   }
 
   trpId = self->_trpId;
-  if (trpId | *(v4 + 6))
+  if (trpId | *(equalCopy + 6))
   {
     if (![(NSString *)trpId isEqual:?])
     {
@@ -155,7 +155,7 @@ LABEL_9:
   }
 
   connectionId = self->_connectionId;
-  if (connectionId | *(v4 + 1))
+  if (connectionId | *(equalCopy + 1))
   {
     if (![(NSString *)connectionId isEqual:?])
     {
@@ -163,10 +163,10 @@ LABEL_9:
     }
   }
 
-  v11 = (*(v4 + 64) & 1) == 0;
+  v11 = (*(equalCopy + 64) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 64) & 1) != 0 && self->_requester == *(v4 + 10))
+    if ((*(equalCopy + 64) & 1) != 0 && self->_requester == *(equalCopy + 10))
     {
       v11 = 1;
       goto LABEL_19;
@@ -181,30 +181,30 @@ LABEL_19:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_idA copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_idA copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
-  v8 = [(SIRINLUEXTERNALUUID *)self->_nluRequestId copyWithZone:a3];
+  v8 = [(SIRINLUEXTERNALUUID *)self->_nluRequestId copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
-  v10 = [(NSString *)self->_userId copyWithZone:a3];
+  v10 = [(NSString *)self->_userId copyWithZone:zone];
   v11 = *(v5 + 56);
   *(v5 + 56) = v10;
 
-  v12 = [(NSString *)self->_loggableUserId copyWithZone:a3];
+  v12 = [(NSString *)self->_loggableUserId copyWithZone:zone];
   v13 = *(v5 + 24);
   *(v5 + 24) = v12;
 
-  v14 = [(NSString *)self->_trpId copyWithZone:a3];
+  v14 = [(NSString *)self->_trpId copyWithZone:zone];
   v15 = *(v5 + 48);
   *(v5 + 48) = v14;
 
-  v16 = [(NSString *)self->_connectionId copyWithZone:a3];
+  v16 = [(NSString *)self->_connectionId copyWithZone:zone];
   v17 = *(v5 + 8);
   *(v5 + 8) = v16;
 
@@ -217,116 +217,116 @@ LABEL_19:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_idA)
   {
-    [v4 setIdA:?];
-    v4 = v5;
+    [toCopy setIdA:?];
+    toCopy = v5;
   }
 
   if (self->_nluRequestId)
   {
     [v5 setNluRequestId:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_userId)
   {
     [v5 setUserId:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_loggableUserId)
   {
     [v5 setLoggableUserId:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_trpId)
   {
     [v5 setTrpId:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_connectionId)
   {
     [v5 setConnectionId:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 10) = self->_requester;
-    *(v4 + 64) |= 1u;
+    *(toCopy + 10) = self->_requester;
+    *(toCopy + 64) |= 1u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_idA)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_nluRequestId)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_userId)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_loggableUserId)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_trpId)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_connectionId)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     requester = self->_requester;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   idA = self->_idA;
   if (idA)
   {
-    [v3 setObject:idA forKey:@"id_a"];
+    [dictionary setObject:idA forKey:@"id_a"];
   }
 
   nluRequestId = self->_nluRequestId;
   if (nluRequestId)
   {
-    v7 = [(SIRINLUEXTERNALUUID *)nluRequestId dictionaryRepresentation];
-    [v4 setObject:v7 forKey:@"nlu_request_id"];
+    dictionaryRepresentation = [(SIRINLUEXTERNALUUID *)nluRequestId dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"nlu_request_id"];
   }
 
   userId = self->_userId;
@@ -378,41 +378,41 @@ LABEL_19:
   v8.receiver = self;
   v8.super_class = SIRINLUEXTERNALRequestID;
   v4 = [(SIRINLUEXTERNALRequestID *)&v8 description];
-  v5 = [(SIRINLUEXTERNALRequestID *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUEXTERNALRequestID *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsRequester:(id)a3
+- (int)StringAsRequester:(id)requester
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"CDM_REQUESTER_UNKNOWN"])
+  requesterCopy = requester;
+  if ([requesterCopy isEqualToString:@"CDM_REQUESTER_UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"CDM_REQUESTER_ORCHESTRATOR"])
+  else if ([requesterCopy isEqualToString:@"CDM_REQUESTER_ORCHESTRATOR"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CDM_REQUESTER_CURARE"])
+  else if ([requesterCopy isEqualToString:@"CDM_REQUESTER_CURARE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"CDM_REQUESTER_LIGHTHOUSE"])
+  else if ([requesterCopy isEqualToString:@"CDM_REQUESTER_LIGHTHOUSE"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"CDM_REQUESTER_XCODE"])
+  else if ([requesterCopy isEqualToString:@"CDM_REQUESTER_XCODE"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"CDM_REQUESTER_SPOTLIGHT"])
+  else if ([requesterCopy isEqualToString:@"CDM_REQUESTER_SPOTLIGHT"])
   {
     v4 = 5;
   }

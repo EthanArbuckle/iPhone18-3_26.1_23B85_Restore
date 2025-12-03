@@ -1,21 +1,21 @@
 @interface LinkTapOverlay.Coordinator
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (_TtCV17DeviceDiscoveryUIP33_84B88BC285F07FBED29E105A4C9FE90014LinkTapOverlay11Coordinator)init;
-- (void)didTapLabel:(id)a3;
+- (void)didTapLabel:(id)label;
 @end
 
 @implementation LinkTapOverlay.Coordinator
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = [v6 view];
-  if (v9)
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  selfCopy = self;
+  view = [recognizerCopy view];
+  if (view)
   {
-    v10 = v9;
-    [v7 locationInView_];
+    v10 = view;
+    [touchCopy locationInView_];
 
     v11 = sub_2380768FC();
     v12 = v11;
@@ -24,7 +24,7 @@
       sub_23807A454(v11);
     }
 
-    LOBYTE(v9) = v12 != 0;
+    LOBYTE(view) = v12 != 0;
   }
 
   else
@@ -32,18 +32,18 @@
     __break(1u);
   }
 
-  return v9;
+  return view;
 }
 
-- (void)didTapLabel:(id)a3
+- (void)didTapLabel:(id)label
 {
-  v4 = a3;
-  v9 = self;
-  v5 = [v4 view];
-  if (v5)
+  labelCopy = label;
+  selfCopy = self;
+  view = [labelCopy view];
+  if (view)
   {
-    v6 = v5;
-    [v4 locationInView_];
+    v6 = view;
+    [labelCopy locationInView_];
 
     v7 = sub_2380768FC();
     if (v7)

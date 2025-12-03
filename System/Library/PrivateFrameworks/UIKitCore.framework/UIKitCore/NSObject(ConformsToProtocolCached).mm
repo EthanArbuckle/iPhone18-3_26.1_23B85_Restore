@@ -12,23 +12,23 @@
     dispatch_once(&qword_1ED49EC80, &__block_literal_global_323);
   }
 
-  v5 = [[_ConformsToProtocolCachedKey alloc] initWithObject:a1 protocol:v4];
+  v5 = [[_ConformsToProtocolCachedKey alloc] initWithObject:self protocol:v4];
   v6 = [_MergedGlobals_1154 objectForKey:v5];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v8 = [a1 conformsToProtocol:v4];
+    bOOLValue = [self conformsToProtocol:v4];
     v9 = _MergedGlobals_1154;
-    v10 = [MEMORY[0x1E696AD98] numberWithBool:v8];
+    v10 = [MEMORY[0x1E696AD98] numberWithBool:bOOLValue];
     [v9 setObject:v10 forKey:v5];
   }
 
-  return v8;
+  return bOOLValue;
 }
 
 @end

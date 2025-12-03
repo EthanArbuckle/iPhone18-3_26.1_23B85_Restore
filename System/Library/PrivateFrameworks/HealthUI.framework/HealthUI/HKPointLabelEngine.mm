@@ -1,32 +1,32 @@
 @interface HKPointLabelEngine
-- ($637F11F6AA09C3CE9B68EC246BD175A1)_computeRenderingDataForValue:(SEL)a3 transformedPoint:(double)a4 previousSlope:(CGPoint)a5 nextSlope:(int64_t)a6 previousOptions:(int64_t)a7;
+- ($637F11F6AA09C3CE9B68EC246BD175A1)_computeRenderingDataForValue:(SEL)value transformedPoint:(double)point previousSlope:(CGPoint)slope nextSlope:(int64_t)nextSlope previousOptions:(int64_t)options;
 - ($637F11F6AA09C3CE9B68EC246BD175A1)currentRenderingData;
 - ($637F11F6AA09C3CE9B68EC246BD175A1)previousRenderingData;
 - ($637F11F6AA09C3CE9B68EC246BD175A1)renderingData;
 - (BOOL)processLastPoint;
-- (BOOL)processTransformedPoint:(CGPoint)a3 untransformedPoint:(CGPoint)a4;
+- (BOOL)processTransformedPoint:(CGPoint)point untransformedPoint:(CGPoint)untransformedPoint;
 - (CGPoint)currentTransformedPoint;
 - (CGPoint)currentUntransformedPoint;
 - (CGPoint)previousTransformedPoint;
 - (CGPoint)previousUntransformedPoint;
 - (CGRect)boundingRegion;
-- (HKPointLabelEngine)initWithBoundingRegion:(CGRect)a3 isLabelShiftingEnabled:(BOOL)a4 labelSizeBlock:(id)a5;
-- (int64_t)_slopeForPoint:(CGPoint)a3 otherPoint:(CGPoint)a4;
-- (void)_layoutTransformRectVerticallyForData:(id *)a3 withTransformedPoint:(CGPoint)a4;
-- (void)_transformRectIfNeededForData:(id *)a3 withTransformedPoint:(CGPoint)a4;
-- (void)setCurrentRenderingData:(id *)a3;
-- (void)setPreviousRenderingData:(id *)a3;
+- (HKPointLabelEngine)initWithBoundingRegion:(CGRect)region isLabelShiftingEnabled:(BOOL)enabled labelSizeBlock:(id)block;
+- (int64_t)_slopeForPoint:(CGPoint)point otherPoint:(CGPoint)otherPoint;
+- (void)_layoutTransformRectVerticallyForData:(id *)data withTransformedPoint:(CGPoint)point;
+- (void)_transformRectIfNeededForData:(id *)data withTransformedPoint:(CGPoint)point;
+- (void)setCurrentRenderingData:(id *)data;
+- (void)setPreviousRenderingData:(id *)data;
 @end
 
 @implementation HKPointLabelEngine
 
-- (HKPointLabelEngine)initWithBoundingRegion:(CGRect)a3 isLabelShiftingEnabled:(BOOL)a4 labelSizeBlock:(id)a5
+- (HKPointLabelEngine)initWithBoundingRegion:(CGRect)region isLabelShiftingEnabled:(BOOL)enabled labelSizeBlock:(id)block
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a5;
+  height = region.size.height;
+  width = region.size.width;
+  y = region.origin.y;
+  x = region.origin.x;
+  blockCopy = block;
   v19.receiver = self;
   v19.super_class = HKPointLabelEngine;
   v12 = [(HKPointLabelEngine *)&v19 init];
@@ -37,8 +37,8 @@
     v12->_boundingRegion.origin.y = y;
     v12->_boundingRegion.size.width = width;
     v12->_boundingRegion.size.height = height;
-    v12->_isLabelShiftingEnabled = a4;
-    v14 = _Block_copy(v11);
+    v12->_isLabelShiftingEnabled = enabled;
+    v14 = _Block_copy(blockCopy);
     sizeForValue = v13->_sizeForValue;
     v13->_sizeForValue = v14;
 
@@ -61,12 +61,12 @@
   return v13;
 }
 
-- (BOOL)processTransformedPoint:(CGPoint)a3 untransformedPoint:(CGPoint)a4
+- (BOOL)processTransformedPoint:(CGPoint)point untransformedPoint:(CGPoint)untransformedPoint
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
+  y = untransformedPoint.y;
+  x = untransformedPoint.x;
+  v6 = point.y;
+  v7 = point.x;
   state = self->_state;
   if (state == 2)
   {
@@ -100,7 +100,7 @@
   if (state == 1)
   {
     v10 = 1;
-    [(HKPointLabelEngine *)self _computeRenderingDataForValue:1 transformedPoint:[(HKPointLabelEngine *)self _slopeForPoint:self->_previousTransformedPoint.x otherPoint:self->_previousTransformedPoint.y previousSlope:a3.x nextSlope:a3.y] previousOptions:1, self->_previousUntransformedPoint.y, self->_previousTransformedPoint.x, self->_previousTransformedPoint.y];
+    [(HKPointLabelEngine *)self _computeRenderingDataForValue:1 transformedPoint:[(HKPointLabelEngine *)self _slopeForPoint:self->_previousTransformedPoint.x otherPoint:self->_previousTransformedPoint.y previousSlope:point.x nextSlope:point.y] previousOptions:1, self->_previousUntransformedPoint.y, self->_previousTransformedPoint.x, self->_previousTransformedPoint.y];
     self->_currentRenderingData.transformedRect.size = v21;
     *&self->_currentRenderingData.labelValue = v22;
     v13 = self->_currentRenderingData.transformedRect.size;
@@ -120,10 +120,10 @@ LABEL_9:
   v10 = 0;
   if (!state)
   {
-    self->_previousTransformedPoint = a3;
+    self->_previousTransformedPoint = point;
     p_y = &self->_previousUntransformedPoint.y;
     v12 = 1;
-    self->_previousUntransformedPoint.x = a4.x;
+    self->_previousUntransformedPoint.x = untransformedPoint.x;
 LABEL_10:
     *p_y = y;
     self->_state = v12;
@@ -181,13 +181,13 @@ LABEL_10:
   return self;
 }
 
-- (int64_t)_slopeForPoint:(CGPoint)a3 otherPoint:(CGPoint)a4
+- (int64_t)_slopeForPoint:(CGPoint)point otherPoint:(CGPoint)otherPoint
 {
-  v4 = vabdd_f64(a3.x, a4.x);
-  if (a3.x != 0.0 && a4.x != 0.0)
+  v4 = vabdd_f64(point.x, otherPoint.x);
+  if (point.x != 0.0 && otherPoint.x != 0.0)
   {
-    v5 = fabs(a3.x);
-    v6 = fabs(a4.x);
+    v5 = fabs(point.x);
+    v6 = fabs(otherPoint.x);
     if (v5 >= v6)
     {
       v5 = v6;
@@ -198,16 +198,16 @@ LABEL_10:
       goto LABEL_10;
     }
 
-    return 2 * (a3.y > a4.y);
+    return 2 * (point.y > otherPoint.y);
   }
 
-  if (a3.x == 0.0 && a4.x == 0.0)
+  if (point.x == 0.0 && otherPoint.x == 0.0)
   {
-    return 2 * (a3.y > a4.y);
+    return 2 * (point.y > otherPoint.y);
   }
 
 LABEL_10:
-  v8 = (a3.y - a4.y) / v4;
+  v8 = (point.y - otherPoint.y) / v4;
   v9 = 2;
   if (v8 >= -0.05)
   {
@@ -225,17 +225,17 @@ LABEL_10:
   }
 }
 
-- ($637F11F6AA09C3CE9B68EC246BD175A1)_computeRenderingDataForValue:(SEL)a3 transformedPoint:(double)a4 previousSlope:(CGPoint)a5 nextSlope:(int64_t)a6 previousOptions:(int64_t)a7
+- ($637F11F6AA09C3CE9B68EC246BD175A1)_computeRenderingDataForValue:(SEL)value transformedPoint:(double)point previousSlope:(CGPoint)slope nextSlope:(int64_t)nextSlope previousOptions:(int64_t)options
 {
-  y = a5.y;
-  x = a5.x;
+  y = slope.y;
+  x = slope.x;
   retstr->var0.origin = *MEMORY[0x1E695F058];
   retstr->var2 = 0;
-  if (a6 == 2)
+  if (nextSlope == 2)
   {
-    if ((a7 - 1) >= 2)
+    if ((options - 1) >= 2)
     {
-      if (a7)
+      if (options)
       {
         goto LABEL_14;
       }
@@ -246,16 +246,16 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  if (a6 == 1)
+  if (nextSlope == 1)
   {
-    if (a7 == 1)
+    if (options == 1)
     {
 LABEL_13:
       retstr->var2 = a8;
       goto LABEL_14;
     }
 
-    if (a7 != 2)
+    if (options != 2)
     {
       goto LABEL_14;
     }
@@ -265,7 +265,7 @@ LABEL_10:
     goto LABEL_13;
   }
 
-  if (!a6 && a7 == 2)
+  if (!nextSlope && options == 2)
   {
 LABEL_12:
     a8 |= 2uLL;
@@ -273,7 +273,7 @@ LABEL_12:
   }
 
 LABEL_14:
-  retstr->var1 = a4;
+  retstr->var1 = point;
   retstr->var0.size.width = (*(self->_sizeForValue + 2))();
   retstr->var0.size.height = v12;
   result = [(HKPointLabelEngine *)self _layoutTransformRectVerticallyForData:retstr withTransformedPoint:x, y];
@@ -344,55 +344,55 @@ LABEL_14:
   return result;
 }
 
-- (void)_layoutTransformRectVerticallyForData:(id *)a3 withTransformedPoint:(CGPoint)a4
+- (void)_layoutTransformRectVerticallyForData:(id *)data withTransformedPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   [HKPointLabelEngine _transformRectIfNeededForData:"_transformRectIfNeededForData:withTransformedPoint:" withTransformedPoint:?];
-  if (a3->var2)
+  if (data->var2)
   {
-    v10 = a3->var0.origin.y;
+    v10 = data->var0.origin.y;
     [(HKPointLabelEngine *)self boundingRegion];
     if (v10 >= v11)
     {
       return;
     }
 
-    v9 = a3->var2 & 0xFFFFFFFFFFFFFFFELL;
+    v9 = data->var2 & 0xFFFFFFFFFFFFFFFELL;
   }
 
   else
   {
-    MaxY = CGRectGetMaxY(a3->var0);
+    MaxY = CGRectGetMaxY(data->var0);
     [(HKPointLabelEngine *)self boundingRegion];
     if (MaxY <= CGRectGetMaxY(v13))
     {
       return;
     }
 
-    v9 = a3->var2 | 1;
+    v9 = data->var2 | 1;
   }
 
-  a3->var2 = v9;
+  data->var2 = v9;
 
-  [(HKPointLabelEngine *)self _transformRectIfNeededForData:a3 withTransformedPoint:x, y];
+  [(HKPointLabelEngine *)self _transformRectIfNeededForData:data withTransformedPoint:x, y];
 }
 
-- (void)_transformRectIfNeededForData:(id *)a3 withTransformedPoint:(CGPoint)a4
+- (void)_transformRectIfNeededForData:(id *)data withTransformedPoint:(CGPoint)point
 {
-  var2 = a3->var2;
-  a3->var0.origin.x = a4.x + a3->var0.size.width * -0.5;
+  var2 = data->var2;
+  data->var0.origin.x = point.x + data->var0.size.width * -0.5;
   if (var2)
   {
-    v5 = a4.y - *&HKPointLabelEngineVerticalOffset - a3->var0.size.height;
+    v5 = point.y - *&HKPointLabelEngineVerticalOffset - data->var0.size.height;
   }
 
   else
   {
-    v5 = a4.y + *&HKPointLabelEngineVerticalOffset;
+    v5 = point.y + *&HKPointLabelEngineVerticalOffset;
   }
 
-  a3->var0.origin.y = v5;
+  data->var0.origin.y = v5;
 }
 
 - (CGRect)boundingRegion
@@ -453,11 +453,11 @@ LABEL_14:
   return self;
 }
 
-- (void)setPreviousRenderingData:(id *)a3
+- (void)setPreviousRenderingData:(id *)data
 {
-  origin = a3->var0.origin;
-  v4 = *&a3->var1;
-  self->_previousRenderingData.transformedRect.size = a3->var0.size;
+  origin = data->var0.origin;
+  v4 = *&data->var1;
+  self->_previousRenderingData.transformedRect.size = data->var0.size;
   *&self->_previousRenderingData.labelValue = v4;
   self->_previousRenderingData.transformedRect.origin = origin;
 }
@@ -471,11 +471,11 @@ LABEL_14:
   return self;
 }
 
-- (void)setCurrentRenderingData:(id *)a3
+- (void)setCurrentRenderingData:(id *)data
 {
-  origin = a3->var0.origin;
-  v4 = *&a3->var1;
-  self->_currentRenderingData.transformedRect.size = a3->var0.size;
+  origin = data->var0.origin;
+  v4 = *&data->var1;
+  self->_currentRenderingData.transformedRect.size = data->var0.size;
   *&self->_currentRenderingData.labelValue = v4;
   self->_currentRenderingData.transformedRect.origin = origin;
 }

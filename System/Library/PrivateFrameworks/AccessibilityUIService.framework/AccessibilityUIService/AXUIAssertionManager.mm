@@ -1,16 +1,16 @@
 @interface AXUIAssertionManager
 + (id)sharedInstance;
 - (AXUIAssertionManager)init;
-- (id)_serviceClientIDForService:(id)a3 clientIdentifier:(id)a4;
+- (id)_serviceClientIDForService:(id)service clientIdentifier:(id)identifier;
 - (void)_invalidateAssertion;
 - (void)_invalidateAssertionUI;
 - (void)acquireAssertionIfNeeded;
 - (void)acquireAssertionUIIfNeeded;
-- (void)acquireAssertionUIIfNeededForService:(id)a3 clientIdentifier:(id)a4;
+- (void)acquireAssertionUIIfNeededForService:(id)service clientIdentifier:(id)identifier;
 - (void)dealloc;
 - (void)invalidateAssertionIfNeeded;
 - (void)invalidateAssertionUIIfNeeded;
-- (void)invalidateAssertionUIIfNeededForService:(id)a3 clientIdentifier:(id)a4;
+- (void)invalidateAssertionUIIfNeededForService:(id)service clientIdentifier:(id)identifier;
 @end
 
 @implementation AXUIAssertionManager
@@ -21,7 +21,7 @@
   block[1] = 3221225472;
   block[2] = __38__AXUIAssertionManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -80,18 +80,18 @@ uint64_t __38__AXUIAssertionManager_sharedInstance__block_invoke(uint64_t a1)
 - (void)acquireAssertionIfNeeded
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v3 = [(AXUIAssertionManager *)self timerBackground];
-  [v3 cancel];
+  timerBackground = [(AXUIAssertionManager *)self timerBackground];
+  [timerBackground cancel];
 
   assertionBackground = self->_assertionBackground;
-  v5 = AXLogAssertions();
-  v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
+  currentProcess = AXLogAssertions();
+  v6 = os_log_type_enabled(currentProcess, OS_LOG_TYPE_DEFAULT);
   if (assertionBackground)
   {
     if (v6)
     {
       *buf = 0;
-      _os_log_impl(&dword_23DBD1000, v5, OS_LOG_TYPE_DEFAULT, "Background Assertion was already requested, skip", buf, 2u);
+      _os_log_impl(&dword_23DBD1000, currentProcess, OS_LOG_TYPE_DEFAULT, "Background Assertion was already requested, skip", buf, 2u);
     }
   }
 
@@ -100,15 +100,15 @@ uint64_t __38__AXUIAssertionManager_sharedInstance__block_invoke(uint64_t a1)
     if (v6)
     {
       *buf = 0;
-      _os_log_impl(&dword_23DBD1000, v5, OS_LOG_TYPE_DEFAULT, "Acquiring Background assertion", buf, 2u);
+      _os_log_impl(&dword_23DBD1000, currentProcess, OS_LOG_TYPE_DEFAULT, "Acquiring Background assertion", buf, 2u);
     }
 
-    v5 = [MEMORY[0x277D47008] currentProcess];
+    currentProcess = [MEMORY[0x277D47008] currentProcess];
     v7 = [MEMORY[0x277D46E38] attributeWithDomain:@"com.apple.AccessibilityUIServer" name:@"AXUIServerBackground"];
     v8 = objc_alloc(MEMORY[0x277D46DB8]);
     v17[0] = v7;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
-    v10 = [v8 initWithExplanation:@"AXUIServer Running Background Tasks" target:v5 attributes:v9];
+    v10 = [v8 initWithExplanation:@"AXUIServer Running Background Tasks" target:currentProcess attributes:v9];
     v11 = self->_assertionBackground;
     self->_assertionBackground = v10;
 
@@ -264,13 +264,13 @@ LABEL_23:
 
 - (void)invalidateAssertionIfNeeded
 {
-  v3 = [(AXUIAssertionManager *)self timerBackground];
+  timerBackground = [(AXUIAssertionManager *)self timerBackground];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __51__AXUIAssertionManager_invalidateAssertionIfNeeded__block_invoke;
   v4[3] = &unk_278BF3050;
   v4[4] = self;
-  [v3 afterDelay:v4 processBlock:30.0];
+  [timerBackground afterDelay:v4 processBlock:30.0];
 }
 
 void __51__AXUIAssertionManager_invalidateAssertionIfNeeded__block_invoke(uint64_t a1)
@@ -309,18 +309,18 @@ void __51__AXUIAssertionManager_invalidateAssertionIfNeeded__block_invoke(uint64
 - (void)acquireAssertionUIIfNeeded
 {
   v17[2] = *MEMORY[0x277D85DE8];
-  v3 = [(AXUIAssertionManager *)self timerUI];
-  [v3 cancel];
+  timerUI = [(AXUIAssertionManager *)self timerUI];
+  [timerUI cancel];
 
   assertionUI = self->_assertionUI;
-  v5 = AXLogAssertions();
-  v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
+  currentProcess = AXLogAssertions();
+  v6 = os_log_type_enabled(currentProcess, OS_LOG_TYPE_DEFAULT);
   if (assertionUI)
   {
     if (v6)
     {
       *buf = 0;
-      _os_log_impl(&dword_23DBD1000, v5, OS_LOG_TYPE_DEFAULT, "UI Assertion was already requested, skip", buf, 2u);
+      _os_log_impl(&dword_23DBD1000, currentProcess, OS_LOG_TYPE_DEFAULT, "UI Assertion was already requested, skip", buf, 2u);
     }
   }
 
@@ -329,17 +329,17 @@ void __51__AXUIAssertionManager_invalidateAssertionIfNeeded__block_invoke(uint64
     if (v6)
     {
       *buf = 0;
-      _os_log_impl(&dword_23DBD1000, v5, OS_LOG_TYPE_DEFAULT, "Acquiring UI assertion", buf, 2u);
+      _os_log_impl(&dword_23DBD1000, currentProcess, OS_LOG_TYPE_DEFAULT, "Acquiring UI assertion", buf, 2u);
     }
 
-    v5 = [MEMORY[0x277D47008] currentProcess];
+    currentProcess = [MEMORY[0x277D47008] currentProcess];
     v7 = [MEMORY[0x277D46E38] attributeWithDomain:@"com.apple.AccessibilityUIServer" name:@"LegacyUIOverlay"];
     v8 = [MEMORY[0x277D46E50] grantWithNamespace:@"com.apple.frontboard.visibility" endowment:MEMORY[0x277CBEC38]];
     v9 = objc_alloc(MEMORY[0x277D46DB8]);
     v17[0] = v7;
     v17[1] = v8;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:2];
-    v11 = [v9 initWithExplanation:@"AXUIServer Showing UI" target:v5 attributes:v10];
+    v11 = [v9 initWithExplanation:@"AXUIServer Showing UI" target:currentProcess attributes:v10];
     v12 = self->_assertionUI;
     self->_assertionUI = v11;
 
@@ -488,13 +488,13 @@ LABEL_23:
 
 - (void)invalidateAssertionUIIfNeeded
 {
-  v3 = [(AXUIAssertionManager *)self timerUI];
+  timerUI = [(AXUIAssertionManager *)self timerUI];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __53__AXUIAssertionManager_invalidateAssertionUIIfNeeded__block_invoke;
   v4[3] = &unk_278BF3050;
   v4[4] = self;
-  [v3 afterDelay:v4 processBlock:30.0];
+  [timerUI afterDelay:v4 processBlock:30.0];
 }
 
 void __53__AXUIAssertionManager_invalidateAssertionUIIfNeeded__block_invoke(uint64_t a1)
@@ -551,14 +551,14 @@ void __53__AXUIAssertionManager_invalidateAssertionUIIfNeeded__block_invoke(uint
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)acquireAssertionUIIfNeededForService:(id)a3 clientIdentifier:(id)a4
+- (void)acquireAssertionUIIfNeededForService:(id)service clientIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  identifierCopy = identifier;
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v6 serviceTypeForClientWithIdentifier:v7];
+    v8 = [serviceCopy serviceTypeForClientWithIdentifier:identifierCopy];
   }
 
   else
@@ -572,15 +572,15 @@ void __53__AXUIAssertionManager_invalidateAssertionUIIfNeeded__block_invoke(uint
     v12[0] = 67109634;
     v12[1] = v8;
     v13 = 2112;
-    v14 = v7;
+    v14 = identifierCopy;
     v15 = 2112;
-    v16 = v6;
+    v16 = serviceCopy;
     _os_log_impl(&dword_23DBD1000, v9, OS_LOG_TYPE_DEFAULT, "serviceType: %d, client: %@, service: %@", v12, 0x1Cu);
   }
 
   if (v8)
   {
-    v10 = [(AXUIAssertionManager *)self _serviceClientIDForService:v6 clientIdentifier:v7];
+    v10 = [(AXUIAssertionManager *)self _serviceClientIDForService:serviceCopy clientIdentifier:identifierCopy];
     if (v10)
     {
       [(NSMutableSet *)self->_clientsWithUIAssertion addObject:v10];
@@ -592,9 +592,9 @@ void __53__AXUIAssertionManager_invalidateAssertionUIIfNeeded__block_invoke(uint
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)invalidateAssertionUIIfNeededForService:(id)a3 clientIdentifier:(id)a4
+- (void)invalidateAssertionUIIfNeededForService:(id)service clientIdentifier:(id)identifier
 {
-  v5 = [(AXUIAssertionManager *)self _serviceClientIDForService:a3 clientIdentifier:a4];
+  v5 = [(AXUIAssertionManager *)self _serviceClientIDForService:service clientIdentifier:identifier];
   if ([(NSMutableSet *)self->_clientsWithUIAssertion containsObject:?])
   {
     [(NSMutableSet *)self->_clientsWithUIAssertion removeObject:v5];
@@ -605,8 +605,8 @@ void __53__AXUIAssertionManager_invalidateAssertionUIIfNeeded__block_invoke(uint
 - (void)_invalidateAssertion
 {
   v12 = *MEMORY[0x277D85DE8];
-  v2 = *a1;
-  v3 = [a2 userInfo];
+  v2 = *self;
+  userInfo = [a2 userInfo];
   OUTLINED_FUNCTION_0();
   OUTLINED_FUNCTION_1(&dword_23DBD1000, v4, v5, "RB assertion invalidation error: %@. %@", v6, v7, v8, v9, v11);
 
@@ -640,13 +640,13 @@ void __53__AXUIAssertionManager_invalidateAssertionUIIfNeeded__block_invoke(uint
   }
 }
 
-- (id)_serviceClientIDForService:(id)a3 clientIdentifier:(id)a4
+- (id)_serviceClientIDForService:(id)service clientIdentifier:(id)identifier
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = a4;
-  v6 = [v4 stringWithFormat:@"%@_%@", objc_opt_class(), v5];
+  identifierCopy = identifier;
+  identifierCopy = [v4 stringWithFormat:@"%@_%@", objc_opt_class(), identifierCopy];
 
-  return v6;
+  return identifierCopy;
 }
 
 @end

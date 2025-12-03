@@ -1,15 +1,15 @@
 @interface CKPopoverViewLayoutConfiguration
-- (CGSize)optimalSizeForPreferredContentSize:(CGSize)result state:(unint64_t)a4;
-- (CGSize)optimalSizeForPresentingAppInCompactStyle:(BOOL)a3;
-- (CGSize)optimalSizeForPresentingSendMenuWithPreferredContentSize:(CGSize)a3;
+- (CGSize)optimalSizeForPreferredContentSize:(CGSize)result state:(unint64_t)state;
+- (CGSize)optimalSizeForPresentingAppInCompactStyle:(BOOL)style;
+- (CGSize)optimalSizeForPresentingSendMenuWithPreferredContentSize:(CGSize)size;
 @end
 
 @implementation CKPopoverViewLayoutConfiguration
 
-- (CGSize)optimalSizeForPresentingSendMenuWithPreferredContentSize:(CGSize)a3
+- (CGSize)optimalSizeForPresentingSendMenuWithPreferredContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(CKPopoverViewLayoutConfiguration *)self minimumSendMenuDimension];
   if (width < v6)
   {
@@ -38,12 +38,12 @@
   return result;
 }
 
-- (CGSize)optimalSizeForPresentingAppInCompactStyle:(BOOL)a3
+- (CGSize)optimalSizeForPresentingAppInCompactStyle:(BOOL)style
 {
-  v3 = a3;
+  styleCopy = style;
   [(CKPopoverViewLayoutConfiguration *)self preferredAppWidth];
   v6 = v5;
-  if (v3)
+  if (styleCopy)
   {
     [(CKPopoverViewLayoutConfiguration *)self defaultAppCompactHeight];
   }
@@ -60,17 +60,17 @@
   return result;
 }
 
-- (CGSize)optimalSizeForPreferredContentSize:(CGSize)result state:(unint64_t)a4
+- (CGSize)optimalSizeForPreferredContentSize:(CGSize)result state:(unint64_t)state
 {
-  if (a4 - 1 < 2)
+  if (state - 1 < 2)
   {
-    [(CKPopoverViewLayoutConfiguration *)self optimalSizeForPresentingAppInCompactStyle:a4 == 1, result.width, result.height];
+    [(CKPopoverViewLayoutConfiguration *)self optimalSizeForPresentingAppInCompactStyle:state == 1, result.width, result.height];
 LABEL_5:
     v4 = v5;
     goto LABEL_6;
   }
 
-  if (!a4)
+  if (!state)
   {
     [(CKPopoverViewLayoutConfiguration *)self optimalSizeForPresentingSendMenuWithPreferredContentSize:result.width, result.height];
     goto LABEL_5;

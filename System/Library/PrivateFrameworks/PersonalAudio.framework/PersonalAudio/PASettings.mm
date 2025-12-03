@@ -1,9 +1,9 @@
 @interface PASettings
 + (id)sharedInstance;
-- (BOOL)personalMediaEnabledForRouteUID:(id)a3;
-- (BOOL)transparencyAutobeamformerForAddress:(id)a3;
-- (BOOL)transparencyBeamformingForAddress:(id)a3;
-- (BOOL)transparencyCustomizedForAddress:(id)a3;
+- (BOOL)personalMediaEnabledForRouteUID:(id)d;
+- (BOOL)transparencyAutobeamformerForAddress:(id)address;
+- (BOOL)transparencyBeamformingForAddress:(id)address;
+- (BOOL)transparencyCustomizedForAddress:(id)address;
 - (NSDictionary)accommodationTypesByRouteUID;
 - (NSDictionary)audiogramConfigurationByRouteUID;
 - (NSDictionary)personalMediaConfigurationByRouteUID;
@@ -17,33 +17,33 @@
 - (NSDictionary)transparencyNoiseSupressor;
 - (NSDictionary)transparencyOwnVoice;
 - (NSDictionary)transparencyTone;
-- (double)transparencyAmplificationForAddress:(id)a3;
-- (double)transparencyBalanceForAddress:(id)a3;
-- (double)transparencyNoiseSupressorForAddress:(id)a3;
-- (double)transparencyOwnVoiceForAddress:(id)a3;
-- (double)transparencyToneForAddress:(id)a3;
-- (id)archivedDataFromConfiguration:(id)a3;
-- (id)audiogramConfigurationForRouteUID:(id)a3;
-- (id)configurationFromData:(id)a3;
+- (double)transparencyAmplificationForAddress:(id)address;
+- (double)transparencyBalanceForAddress:(id)address;
+- (double)transparencyNoiseSupressorForAddress:(id)address;
+- (double)transparencyOwnVoiceForAddress:(id)address;
+- (double)transparencyToneForAddress:(id)address;
+- (id)archivedDataFromConfiguration:(id)configuration;
+- (id)audiogramConfigurationForRouteUID:(id)d;
+- (id)configurationFromData:(id)data;
 - (id)keysToSync;
-- (id)personalMediaConfigurationForRouteUID:(id)a3;
-- (id)preferenceKeyForSelector:(SEL)a3;
-- (id)sanitizedRouteUID:(id)a3;
-- (id)valueForRouteUID:(id)a3 fromCombinedValue:(id)a4;
-- (unint64_t)accommodationTypesForRouteUID:(id)a3;
-- (void)logMessage:(id)a3;
-- (void)resetValueForSelector:(SEL)a3 forAddress:(id)a4;
-- (void)setAccommodationTypes:(unint64_t)a3 forRouteUID:(id)a4;
-- (void)setAudiogramConfiguration:(id)a3 forRouteUID:(id)a4;
-- (void)setCurrentEnrollmentProgress:(unint64_t)a3;
-- (void)setPersonalMediaConfiguration:(id)a3;
-- (void)setPersonalMediaConfiguration:(id)a3 forRouteUID:(id)a4;
-- (void)setTransparencyAmplification:(double)a3 forAddress:(id)a4;
-- (void)setTransparencyBalance:(double)a3 forAddress:(id)a4;
-- (void)setTransparencyNoiseSupressor:(double)a3 forAddress:(id)a4;
-- (void)setTransparencyOwnVoice:(double)a3 forAddress:(id)a4;
-- (void)setTransparencyTone:(double)a3 forAddress:(id)a4;
-- (void)updateConfiguration:(id *)a3 forRouteID:(id)a4;
+- (id)personalMediaConfigurationForRouteUID:(id)d;
+- (id)preferenceKeyForSelector:(SEL)selector;
+- (id)sanitizedRouteUID:(id)d;
+- (id)valueForRouteUID:(id)d fromCombinedValue:(id)value;
+- (unint64_t)accommodationTypesForRouteUID:(id)d;
+- (void)logMessage:(id)message;
+- (void)resetValueForSelector:(SEL)selector forAddress:(id)address;
+- (void)setAccommodationTypes:(unint64_t)types forRouteUID:(id)d;
+- (void)setAudiogramConfiguration:(id)configuration forRouteUID:(id)d;
+- (void)setCurrentEnrollmentProgress:(unint64_t)progress;
+- (void)setPersonalMediaConfiguration:(id)configuration;
+- (void)setPersonalMediaConfiguration:(id)configuration forRouteUID:(id)d;
+- (void)setTransparencyAmplification:(double)amplification forAddress:(id)address;
+- (void)setTransparencyBalance:(double)balance forAddress:(id)address;
+- (void)setTransparencyNoiseSupressor:(double)supressor forAddress:(id)address;
+- (void)setTransparencyOwnVoice:(double)voice forAddress:(id)address;
+- (void)setTransparencyTone:(double)tone forAddress:(id)address;
+- (void)updateConfiguration:(id *)configuration forRouteID:(id)d;
 @end
 
 @implementation PASettings
@@ -112,7 +112,7 @@ void __24__PASettings_keysToSync__block_invoke()
   return [(HCSettings *)self objectValueForKey:@"accommodationTypesByRouteUID" withClass:v3 andDefaultValue:0];
 }
 
-- (id)preferenceKeyForSelector:(SEL)a3
+- (id)preferenceKeyForSelector:(SEL)selector
 {
   if (preferenceKeyForSelector__onceToken != -1)
   {
@@ -120,7 +120,7 @@ void __24__PASettings_keysToSync__block_invoke()
   }
 
   v5 = preferenceKeyForSelector__SelectorMap;
-  v6 = NSStringFromSelector(a3);
+  v6 = NSStringFromSelector(selector);
   v7 = [v5 objectForKey:v6];
 
   if (v7)
@@ -132,7 +132,7 @@ void __24__PASettings_keysToSync__block_invoke()
   {
     v11.receiver = self;
     v11.super_class = PASettings;
-    v8 = [(HCSettings *)&v11 preferenceKeyForSelector:a3];
+    v8 = [(HCSettings *)&v11 preferenceKeyForSelector:selector];
   }
 
   v9 = v8;
@@ -154,31 +154,31 @@ void __39__PASettings_preferenceKeyForSelector___block_invoke()
   preferenceKeyForSelector__SelectorMap = v6;
 }
 
-- (void)logMessage:(id)a3
+- (void)logMessage:(id)message
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  messageCopy = message;
   v4 = HCLogAudioAccommodations();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v3;
+    v7 = messageCopy;
     _os_log_impl(&dword_25E445000, v4, OS_LOG_TYPE_DEFAULT, "%@", &v6, 0xCu);
   }
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)resetValueForSelector:(SEL)a3 forAddress:(id)a4
+- (void)resetValueForSelector:(SEL)selector forAddress:(id)address
 {
-  v10 = a4;
-  v6 = [(PASettings *)self preferenceKeyForSelector:a3];
+  addressCopy = address;
+  v6 = [(PASettings *)self preferenceKeyForSelector:selector];
   v7 = [(HCSettings *)self objectValueForKey:v6 withClass:objc_opt_class() andDefaultValue:0];
   v8 = v7;
   if (v7)
   {
     v9 = [v7 mutableCopy];
-    [v9 removeObjectForKey:v10];
+    [v9 removeObjectForKey:addressCopy];
     [(HCSettings *)self setValue:v9 forPreferenceKey:v6];
   }
 }
@@ -190,9 +190,9 @@ void __39__PASettings_preferenceKeyForSelector___block_invoke()
   return [(HCSettings *)self objectValueForKey:@"audiogramConfigurationByRouteUID" withClass:v3 andDefaultValue:0];
 }
 
-- (void)setCurrentEnrollmentProgress:(unint64_t)a3
+- (void)setCurrentEnrollmentProgress:(unint64_t)progress
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:progress];
   [(HCSettings *)self setValue:v4 forPreferenceKey:@"currentEnrollmentProgress"];
 }
 
@@ -259,11 +259,11 @@ void __39__PASettings_preferenceKeyForSelector___block_invoke()
   return [(HCSettings *)self objectValueForKey:@"sslEnabled" withClass:v3 andDefaultValue:0];
 }
 
-- (id)configurationFromData:(id)a3
+- (id)configurationFromData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v11 = 0;
-  v4 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:v3 error:&v11];
+  v4 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:dataCopy error:&v11];
   v5 = v11;
   v6 = 0;
   if (!v5)
@@ -277,86 +277,86 @@ void __39__PASettings_preferenceKeyForSelector___block_invoke()
   return v6;
 }
 
-- (id)archivedDataFromConfiguration:(id)a3
+- (id)archivedDataFromConfiguration:(id)configuration
 {
-  v3 = a3;
-  if (v3)
+  configurationCopy = configuration;
+  if (configurationCopy)
   {
     v4 = [objc_alloc(MEMORY[0x277CCAAB0]) initRequiringSecureCoding:1];
-    [v4 encodeObject:v3 forKey:*MEMORY[0x277CCA308]];
+    [v4 encodeObject:configurationCopy forKey:*MEMORY[0x277CCA308]];
     [v4 finishEncoding];
-    v5 = [v4 encodedData];
+    encodedData = [v4 encodedData];
   }
 
   else
   {
-    v5 = 0;
+    encodedData = 0;
   }
 
-  return v5;
+  return encodedData;
 }
 
-- (id)sanitizedRouteUID:(id)a3
+- (id)sanitizedRouteUID:(id)d
 {
-  v3 = [a3 componentsSeparatedByString:@"-"];
-  v4 = [v3 firstObject];
+  v3 = [d componentsSeparatedByString:@"-"];
+  firstObject = [v3 firstObject];
 
-  return v4;
+  return firstObject;
 }
 
-- (id)valueForRouteUID:(id)a3 fromCombinedValue:(id)a4
+- (id)valueForRouteUID:(id)d fromCombinedValue:(id)value
 {
-  v5 = a4;
-  v6 = [v5 valueForKey:a3];
+  valueCopy = value;
+  v6 = [valueCopy valueForKey:d];
   if (!v6)
   {
-    v6 = [v5 valueForKey:@"PAConfigurationWildcard"];
+    v6 = [valueCopy valueForKey:@"PAConfigurationWildcard"];
   }
 
   return v6;
 }
 
-- (void)setPersonalMediaConfiguration:(id)a3
+- (void)setPersonalMediaConfiguration:(id)configuration
 {
-  [(PASettings *)self setPersonalMediaConfiguration:a3 forRouteUID:@"PAConfigurationWildcard"];
-  v4 = [(PASettings *)self personalMediaEnabled];
+  [(PASettings *)self setPersonalMediaConfiguration:configuration forRouteUID:@"PAConfigurationWildcard"];
+  personalMediaEnabled = [(PASettings *)self personalMediaEnabled];
 
-  [(PASettings *)self setPersonalMediaEnabled:v4];
+  [(PASettings *)self setPersonalMediaEnabled:personalMediaEnabled];
 }
 
-- (BOOL)personalMediaEnabledForRouteUID:(id)a3
+- (BOOL)personalMediaEnabledForRouteUID:(id)d
 {
-  v4 = [(PASettings *)self sanitizedRouteUID:a3];
+  v4 = [(PASettings *)self sanitizedRouteUID:d];
   if ([v4 length])
   {
-    v5 = [(PASettings *)self personalMediaEnabledByRouteUID];
-    v6 = [(PASettings *)self valueForRouteUID:v4 fromCombinedValue:v5];
+    personalMediaEnabledByRouteUID = [(PASettings *)self personalMediaEnabledByRouteUID];
+    v6 = [(PASettings *)self valueForRouteUID:v4 fromCombinedValue:personalMediaEnabledByRouteUID];
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v7 = [v6 BOOLValue];
+      bOOLValue = [v6 BOOLValue];
     }
 
     else
     {
-      v7 = 0;
+      bOOLValue = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    bOOLValue = 0;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
-- (id)personalMediaConfigurationForRouteUID:(id)a3
+- (id)personalMediaConfigurationForRouteUID:(id)d
 {
-  v4 = [(PASettings *)self sanitizedRouteUID:a3];
+  v4 = [(PASettings *)self sanitizedRouteUID:d];
   if ([v4 length])
   {
-    v5 = [(PASettings *)self personalMediaConfigurationByRouteUID];
-    v6 = [(PASettings *)self valueForRouteUID:v4 fromCombinedValue:v5];
+    personalMediaConfigurationByRouteUID = [(PASettings *)self personalMediaConfigurationByRouteUID];
+    v6 = [(PASettings *)self valueForRouteUID:v4 fromCombinedValue:personalMediaConfigurationByRouteUID];
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v7 = [(PASettings *)self configurationFromData:v6];
@@ -376,18 +376,18 @@ void __39__PASettings_preferenceKeyForSelector___block_invoke()
   return v7;
 }
 
-- (void)setPersonalMediaConfiguration:(id)a3 forRouteUID:(id)a4
+- (void)setPersonalMediaConfiguration:(id)configuration forRouteUID:(id)d
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(PASettings *)self sanitizedRouteUID:a4];
-  v8 = [(PASettings *)self archivedDataFromConfiguration:v6];
+  configurationCopy = configuration;
+  v7 = [(PASettings *)self sanitizedRouteUID:d];
+  v8 = [(PASettings *)self archivedDataFromConfiguration:configurationCopy];
 
   if ([v7 length] && objc_msgSend(v8, "length"))
   {
     v9 = MEMORY[0x277CBEB38];
-    v10 = [(PASettings *)self personalMediaConfigurationByRouteUID];
-    v11 = [v9 dictionaryWithDictionary:v10];
+    personalMediaConfigurationByRouteUID = [(PASettings *)self personalMediaConfigurationByRouteUID];
+    v11 = [v9 dictionaryWithDictionary:personalMediaConfigurationByRouteUID];
 
     [v11 setValue:v8 forKey:v7];
     [(PASettings *)self setPersonalMediaConfigurationByRouteUID:v11];
@@ -403,13 +403,13 @@ void __39__PASettings_preferenceKeyForSelector___block_invoke()
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)audiogramConfigurationForRouteUID:(id)a3
+- (id)audiogramConfigurationForRouteUID:(id)d
 {
-  v4 = [(PASettings *)self sanitizedRouteUID:a3];
+  v4 = [(PASettings *)self sanitizedRouteUID:d];
   if ([v4 length])
   {
-    v5 = [(PASettings *)self audiogramConfigurationByRouteUID];
-    v6 = [(PASettings *)self valueForRouteUID:v4 fromCombinedValue:v5];
+    audiogramConfigurationByRouteUID = [(PASettings *)self audiogramConfigurationByRouteUID];
+    v6 = [(PASettings *)self valueForRouteUID:v4 fromCombinedValue:audiogramConfigurationByRouteUID];
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v7 = [(PASettings *)self configurationFromData:v6];
@@ -429,60 +429,60 @@ void __39__PASettings_preferenceKeyForSelector___block_invoke()
   return v7;
 }
 
-- (void)setAudiogramConfiguration:(id)a3 forRouteUID:(id)a4
+- (void)setAudiogramConfiguration:(id)configuration forRouteUID:(id)d
 {
-  v6 = a3;
-  v11 = [(PASettings *)self sanitizedRouteUID:a4];
-  v7 = [(PASettings *)self archivedDataFromConfiguration:v6];
+  configurationCopy = configuration;
+  v11 = [(PASettings *)self sanitizedRouteUID:d];
+  v7 = [(PASettings *)self archivedDataFromConfiguration:configurationCopy];
 
   if ([v11 length] && objc_msgSend(v7, "length"))
   {
     v8 = MEMORY[0x277CBEB38];
-    v9 = [(PASettings *)self audiogramConfigurationByRouteUID];
-    v10 = [v8 dictionaryWithDictionary:v9];
+    audiogramConfigurationByRouteUID = [(PASettings *)self audiogramConfigurationByRouteUID];
+    v10 = [v8 dictionaryWithDictionary:audiogramConfigurationByRouteUID];
 
     [v10 setValue:v7 forKey:v11];
     [(PASettings *)self setAudiogramConfigurationByRouteUID:v10];
   }
 }
 
-- (unint64_t)accommodationTypesForRouteUID:(id)a3
+- (unint64_t)accommodationTypesForRouteUID:(id)d
 {
-  v4 = [(PASettings *)self sanitizedRouteUID:a3];
+  v4 = [(PASettings *)self sanitizedRouteUID:d];
   if ([v4 length])
   {
-    v5 = [(PASettings *)self accommodationTypesByRouteUID];
-    v6 = [(PASettings *)self valueForRouteUID:v4 fromCombinedValue:v5];
+    accommodationTypesByRouteUID = [(PASettings *)self accommodationTypesByRouteUID];
+    v6 = [(PASettings *)self valueForRouteUID:v4 fromCombinedValue:accommodationTypesByRouteUID];
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v7 = [v6 unsignedIntegerValue];
+      unsignedIntegerValue = [v6 unsignedIntegerValue];
     }
 
     else
     {
-      v7 = 6;
+      unsignedIntegerValue = 6;
     }
   }
 
   else
   {
-    v7 = 6;
+    unsignedIntegerValue = 6;
   }
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
-- (void)setAccommodationTypes:(unint64_t)a3 forRouteUID:(id)a4
+- (void)setAccommodationTypes:(unint64_t)types forRouteUID:(id)d
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = [(PASettings *)self sanitizedRouteUID:a4];
+  v6 = [(PASettings *)self sanitizedRouteUID:d];
   if ([v6 length])
   {
     v7 = MEMORY[0x277CBEB38];
-    v8 = [(PASettings *)self accommodationTypesByRouteUID];
-    v9 = [v7 dictionaryWithDictionary:v8];
+    accommodationTypesByRouteUID = [(PASettings *)self accommodationTypesByRouteUID];
+    v9 = [v7 dictionaryWithDictionary:accommodationTypesByRouteUID];
 
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:types];
     [v9 setValue:v10 forKey:v6];
 
     [(PASettings *)self setAccommodationTypesByRouteUID:v9];
@@ -498,39 +498,39 @@ void __39__PASettings_preferenceKeyForSelector___block_invoke()
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)transparencyCustomizedForAddress:(id)a3
+- (BOOL)transparencyCustomizedForAddress:(id)address
 {
-  v4 = a3;
-  if ([v4 length])
+  addressCopy = address;
+  if ([addressCopy length])
   {
-    v5 = [(PASettings *)self transparencyCustomized];
-    v6 = [v5 valueForKey:v4];
+    transparencyCustomized = [(PASettings *)self transparencyCustomized];
+    v6 = [transparencyCustomized valueForKey:addressCopy];
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v7 = [v6 BOOLValue];
+      bOOLValue = [v6 BOOLValue];
     }
 
     else
     {
-      v7 = 0;
+      bOOLValue = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    bOOLValue = 0;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
-- (double)transparencyAmplificationForAddress:(id)a3
+- (double)transparencyAmplificationForAddress:(id)address
 {
-  v4 = a3;
-  if ([v4 length])
+  addressCopy = address;
+  if ([addressCopy length])
   {
-    v5 = [(PASettings *)self transparencyAmplification];
-    v6 = [v5 valueForKey:v4];
+    transparencyAmplification = [(PASettings *)self transparencyAmplification];
+    v6 = [transparencyAmplification valueForKey:addressCopy];
     v7 = 0.5;
     if (v6)
     {
@@ -551,29 +551,29 @@ void __39__PASettings_preferenceKeyForSelector___block_invoke()
   return v7;
 }
 
-- (void)setTransparencyAmplification:(double)a3 forAddress:(id)a4
+- (void)setTransparencyAmplification:(double)amplification forAddress:(id)address
 {
-  v10 = a4;
-  if ([v10 length])
+  addressCopy = address;
+  if ([addressCopy length])
   {
     v6 = MEMORY[0x277CBEB38];
-    v7 = [(PASettings *)self transparencyAmplification];
-    v8 = [v6 dictionaryWithDictionary:v7];
+    transparencyAmplification = [(PASettings *)self transparencyAmplification];
+    v8 = [v6 dictionaryWithDictionary:transparencyAmplification];
 
-    v9 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-    [v8 setValue:v9 forKey:v10];
+    v9 = [MEMORY[0x277CCABB0] numberWithDouble:amplification];
+    [v8 setValue:v9 forKey:addressCopy];
 
     [(PASettings *)self setTransparencyAmplification:v8];
   }
 }
 
-- (double)transparencyBalanceForAddress:(id)a3
+- (double)transparencyBalanceForAddress:(id)address
 {
-  v4 = a3;
-  if ([v4 length])
+  addressCopy = address;
+  if ([addressCopy length])
   {
-    v5 = [(PASettings *)self transparencyBalance];
-    v6 = [v5 valueForKey:v4];
+    transparencyBalance = [(PASettings *)self transparencyBalance];
+    v6 = [transparencyBalance valueForKey:addressCopy];
     v7 = 0.5;
     if (v6)
     {
@@ -594,29 +594,29 @@ void __39__PASettings_preferenceKeyForSelector___block_invoke()
   return v7;
 }
 
-- (void)setTransparencyBalance:(double)a3 forAddress:(id)a4
+- (void)setTransparencyBalance:(double)balance forAddress:(id)address
 {
-  v10 = a4;
-  if ([v10 length])
+  addressCopy = address;
+  if ([addressCopy length])
   {
     v6 = MEMORY[0x277CBEB38];
-    v7 = [(PASettings *)self transparencyBalance];
-    v8 = [v6 dictionaryWithDictionary:v7];
+    transparencyBalance = [(PASettings *)self transparencyBalance];
+    v8 = [v6 dictionaryWithDictionary:transparencyBalance];
 
-    v9 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-    [v8 setValue:v9 forKey:v10];
+    v9 = [MEMORY[0x277CCABB0] numberWithDouble:balance];
+    [v8 setValue:v9 forKey:addressCopy];
 
     [(PASettings *)self setTransparencyBalance:v8];
   }
 }
 
-- (double)transparencyToneForAddress:(id)a3
+- (double)transparencyToneForAddress:(id)address
 {
-  v4 = a3;
-  if ([v4 length])
+  addressCopy = address;
+  if ([addressCopy length])
   {
-    v5 = [(PASettings *)self transparencyTone];
-    v6 = [v5 valueForKey:v4];
+    transparencyTone = [(PASettings *)self transparencyTone];
+    v6 = [transparencyTone valueForKey:addressCopy];
     v7 = 0.5;
     if (v6)
     {
@@ -637,55 +637,55 @@ void __39__PASettings_preferenceKeyForSelector___block_invoke()
   return v7;
 }
 
-- (void)setTransparencyTone:(double)a3 forAddress:(id)a4
+- (void)setTransparencyTone:(double)tone forAddress:(id)address
 {
-  v10 = a4;
-  if ([v10 length])
+  addressCopy = address;
+  if ([addressCopy length])
   {
     v6 = MEMORY[0x277CBEB38];
-    v7 = [(PASettings *)self transparencyTone];
-    v8 = [v6 dictionaryWithDictionary:v7];
+    transparencyTone = [(PASettings *)self transparencyTone];
+    v8 = [v6 dictionaryWithDictionary:transparencyTone];
 
-    v9 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-    [v8 setValue:v9 forKey:v10];
+    v9 = [MEMORY[0x277CCABB0] numberWithDouble:tone];
+    [v8 setValue:v9 forKey:addressCopy];
 
     [(PASettings *)self setTransparencyTone:v8];
   }
 }
 
-- (BOOL)transparencyBeamformingForAddress:(id)a3
+- (BOOL)transparencyBeamformingForAddress:(id)address
 {
-  v4 = a3;
-  if ([v4 length])
+  addressCopy = address;
+  if ([addressCopy length])
   {
-    v5 = [(PASettings *)self transparencyBeamforming];
-    v6 = [v5 valueForKey:v4];
+    transparencyBeamforming = [(PASettings *)self transparencyBeamforming];
+    v6 = [transparencyBeamforming valueForKey:addressCopy];
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v7 = [v6 BOOLValue];
+      bOOLValue = [v6 BOOLValue];
     }
 
     else
     {
-      v7 = 0;
+      bOOLValue = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    bOOLValue = 0;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
-- (double)transparencyNoiseSupressorForAddress:(id)a3
+- (double)transparencyNoiseSupressorForAddress:(id)address
 {
-  v4 = a3;
-  if ([v4 length])
+  addressCopy = address;
+  if ([addressCopy length])
   {
-    v5 = [(PASettings *)self transparencyNoiseSupressor];
-    v6 = [v5 valueForKey:v4];
+    transparencyNoiseSupressor = [(PASettings *)self transparencyNoiseSupressor];
+    v6 = [transparencyNoiseSupressor valueForKey:addressCopy];
     v7 = 0.0;
     if (v6)
     {
@@ -706,55 +706,55 @@ void __39__PASettings_preferenceKeyForSelector___block_invoke()
   return v7;
 }
 
-- (void)setTransparencyNoiseSupressor:(double)a3 forAddress:(id)a4
+- (void)setTransparencyNoiseSupressor:(double)supressor forAddress:(id)address
 {
-  v10 = a4;
-  if ([v10 length])
+  addressCopy = address;
+  if ([addressCopy length])
   {
     v6 = MEMORY[0x277CBEB38];
-    v7 = [(PASettings *)self transparencyNoiseSupressor];
-    v8 = [v6 dictionaryWithDictionary:v7];
+    transparencyNoiseSupressor = [(PASettings *)self transparencyNoiseSupressor];
+    v8 = [v6 dictionaryWithDictionary:transparencyNoiseSupressor];
 
-    v9 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-    [v8 setValue:v9 forKey:v10];
+    v9 = [MEMORY[0x277CCABB0] numberWithDouble:supressor];
+    [v8 setValue:v9 forKey:addressCopy];
 
     [(PASettings *)self setTransparencyNoiseSupressor:v8];
   }
 }
 
-- (BOOL)transparencyAutobeamformerForAddress:(id)a3
+- (BOOL)transparencyAutobeamformerForAddress:(id)address
 {
-  v4 = a3;
-  if ([v4 length])
+  addressCopy = address;
+  if ([addressCopy length])
   {
-    v5 = [(PASettings *)self transparencyAutobeamformer];
-    v6 = [v5 valueForKey:v4];
+    transparencyAutobeamformer = [(PASettings *)self transparencyAutobeamformer];
+    v6 = [transparencyAutobeamformer valueForKey:addressCopy];
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v7 = [v6 BOOLValue];
+      bOOLValue = [v6 BOOLValue];
     }
 
     else
     {
-      v7 = 0;
+      bOOLValue = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    bOOLValue = 0;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
-- (double)transparencyOwnVoiceForAddress:(id)a3
+- (double)transparencyOwnVoiceForAddress:(id)address
 {
-  v4 = a3;
-  if ([v4 length])
+  addressCopy = address;
+  if ([addressCopy length])
   {
-    v5 = [(PASettings *)self transparencyOwnVoice];
-    v6 = [v5 valueForKey:v4];
+    transparencyOwnVoice = [(PASettings *)self transparencyOwnVoice];
+    v6 = [transparencyOwnVoice valueForKey:addressCopy];
     v7 = 0.0;
     if (v6)
     {
@@ -775,32 +775,32 @@ void __39__PASettings_preferenceKeyForSelector___block_invoke()
   return v7;
 }
 
-- (void)setTransparencyOwnVoice:(double)a3 forAddress:(id)a4
+- (void)setTransparencyOwnVoice:(double)voice forAddress:(id)address
 {
-  v10 = a4;
-  if ([v10 length])
+  addressCopy = address;
+  if ([addressCopy length])
   {
     v6 = MEMORY[0x277CBEB38];
-    v7 = [(PASettings *)self transparencyOwnVoice];
-    v8 = [v6 dictionaryWithDictionary:v7];
+    transparencyOwnVoice = [(PASettings *)self transparencyOwnVoice];
+    v8 = [v6 dictionaryWithDictionary:transparencyOwnVoice];
 
-    v9 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-    [v8 setValue:v9 forKey:v10];
+    v9 = [MEMORY[0x277CCABB0] numberWithDouble:voice];
+    [v8 setValue:v9 forKey:addressCopy];
 
     [(PASettings *)self setTransparencyOwnVoice:v8];
   }
 }
 
-- (void)updateConfiguration:(id *)a3 forRouteID:(id)a4
+- (void)updateConfiguration:(id *)configuration forRouteID:(id)d
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if ([v6 length])
+  dCopy = d;
+  if ([dCopy length])
   {
     [(PASettings *)self setShouldUpdateAccessory:0];
-    v7 = [PAConfiguration configurationWithLeftMediaLoss:a3->var4 rightMediaLoss:a3->var5 leftSpeechLoss:a3->var2 andRightSpeechLoss:a3->var3];
-    v8 = [(PASettings *)self personalMediaConfigurationByRouteUID];
-    v9 = [(PASettings *)self valueForRouteUID:v6 fromCombinedValue:v8];
+    v7 = [PAConfiguration configurationWithLeftMediaLoss:configuration->var4 rightMediaLoss:configuration->var5 leftSpeechLoss:configuration->var2 andRightSpeechLoss:configuration->var3];
+    personalMediaConfigurationByRouteUID = [(PASettings *)self personalMediaConfigurationByRouteUID];
+    v9 = [(PASettings *)self valueForRouteUID:dCopy fromCombinedValue:personalMediaConfigurationByRouteUID];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v10 = [(PASettings *)self configurationFromData:v9];
@@ -820,7 +820,7 @@ void __39__PASettings_preferenceKeyForSelector___block_invoke()
       if (v13)
       {
         *buf = 138412546;
-        *v33 = v6;
+        *v33 = dCopy;
         *&v33[8] = 2112;
         *&v33[10] = v10;
         _os_log_impl(&dword_25E445000, v12, OS_LOG_TYPE_DEFAULT, "Skipping update. Configuration didn't change %@ = %@", buf, 0x16u);
@@ -832,19 +832,19 @@ void __39__PASettings_preferenceKeyForSelector___block_invoke()
       if (v13)
       {
         *buf = 138412546;
-        *v33 = v6;
+        *v33 = dCopy;
         *&v33[8] = 2112;
         *&v33[10] = v7;
         _os_log_impl(&dword_25E445000, v12, OS_LOG_TYPE_DEFAULT, "Updating config for %@ = %@", buf, 0x16u);
       }
 
-      [(PASettings *)self setPersonalMediaConfiguration:v7 forRouteUID:v6];
+      [(PASettings *)self setPersonalMediaConfiguration:v7 forRouteUID:dCopy];
     }
 
     v14 = HCLogAudioAccommodations();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [MEMORY[0x277CCABB0] numberWithBool:a3->var0];
+      v15 = [MEMORY[0x277CCABB0] numberWithBool:configuration->var0];
       *buf = 138412290;
       *v33 = v15;
       _os_log_impl(&dword_25E445000, v14, OS_LOG_TYPE_DEFAULT, "Speech enabled %@", buf, 0xCu);
@@ -853,19 +853,19 @@ void __39__PASettings_preferenceKeyForSelector___block_invoke()
     v16 = HCLogAudioAccommodations();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [MEMORY[0x277CCABB0] numberWithBool:a3->var1];
+      v17 = [MEMORY[0x277CCABB0] numberWithBool:configuration->var1];
       *buf = 138412290;
       *v33 = v17;
       _os_log_impl(&dword_25E445000, v16, OS_LOG_TYPE_DEFAULT, "Media enabled %@", buf, 0xCu);
     }
 
     v18 = 2;
-    if (!a3->var0)
+    if (!configuration->var0)
     {
       v18 = 0;
     }
 
-    if (a3->var1)
+    if (configuration->var1)
     {
       v19 = v18 | 4;
     }
@@ -875,27 +875,27 @@ void __39__PASettings_preferenceKeyForSelector___block_invoke()
       v19 = v18;
     }
 
-    v20 = [(PASettings *)self accommodationTypesByRouteUID];
+    accommodationTypesByRouteUID = [(PASettings *)self accommodationTypesByRouteUID];
 
-    v21 = [(PASettings *)self valueForRouteUID:v6 fromCombinedValue:v20];
+    v21 = [(PASettings *)self valueForRouteUID:dCopy fromCombinedValue:accommodationTypesByRouteUID];
     v30 = v10;
     if (v21 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v22 = [v21 unsignedIntegerValue];
+      unsignedIntegerValue = [v21 unsignedIntegerValue];
     }
 
     else
     {
-      v22 = 0;
+      unsignedIntegerValue = 0;
     }
 
     v23 = HCLogAudioAccommodations();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v19];
-      v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v22];
+      v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue];
       *buf = 67109634;
-      *v33 = v22 != v19;
+      *v33 = unsignedIntegerValue != v19;
       *&v33[4] = 2112;
       *&v33[6] = v24;
       *&v33[14] = 2112;
@@ -903,7 +903,7 @@ void __39__PASettings_preferenceKeyForSelector___block_invoke()
       _os_log_impl(&dword_25E445000, v23, OS_LOG_TYPE_DEFAULT, "Setting types %d = %@ - %@", buf, 0x1Cu);
     }
 
-    if (v22 == v19)
+    if (unsignedIntegerValue == v19)
     {
       v26 = HCLogAudioAccommodations();
       v28 = v30;
@@ -917,7 +917,7 @@ void __39__PASettings_preferenceKeyForSelector___block_invoke()
 
     else
     {
-      [(PASettings *)self setAccommodationTypes:v19 forRouteUID:v6];
+      [(PASettings *)self setAccommodationTypes:v19 forRouteUID:dCopy];
       v28 = v30;
       v27 = v31;
     }

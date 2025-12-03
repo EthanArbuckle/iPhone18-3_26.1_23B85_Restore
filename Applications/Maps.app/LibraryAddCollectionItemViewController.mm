@@ -1,9 +1,9 @@
 @interface LibraryAddCollectionItemViewController
-- (BOOL)searchDataSource:(id)a3 shouldFilterItem:(id)a4;
+- (BOOL)searchDataSource:(id)source shouldFilterItem:(id)item;
 - (NSString)headerTitle;
-- (_TtC4Maps38LibraryAddCollectionItemViewController)initWithCoder:(id)a3;
-- (_TtC4Maps38LibraryAddCollectionItemViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)saveMapItem:(id)a3;
+- (_TtC4Maps38LibraryAddCollectionItemViewController)initWithCoder:(id)coder;
+- (_TtC4Maps38LibraryAddCollectionItemViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)saveMapItem:(id)item;
 @end
 
 @implementation LibraryAddCollectionItemViewController
@@ -27,12 +27,12 @@
   return v4;
 }
 
-- (BOOL)searchDataSource:(id)a3 shouldFilterItem:(id)a4
+- (BOOL)searchDataSource:(id)source shouldFilterItem:(id)item
 {
-  if (a4)
+  if (item)
   {
-    v6 = a3;
-    v7 = self;
+    sourceCopy = source;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -41,51 +41,51 @@
   else
   {
     memset(v12, 0, sizeof(v12));
-    v8 = a3;
-    v9 = self;
+    sourceCopy2 = source;
+    selfCopy2 = self;
   }
 
-  v10 = sub_10019D8DC(a3, v12);
+  v10 = sub_10019D8DC(source, v12);
 
   sub_1000DB2F4(v12);
   return v10 & 1;
 }
 
-- (void)saveMapItem:(id)a3
+- (void)saveMapItem:(id)item
 {
-  v4 = a3;
-  v5 = self;
-  sub_10019DBAC(v4);
+  itemCopy = item;
+  selfCopy = self;
+  sub_10019DBAC(itemCopy);
 }
 
-- (_TtC4Maps38LibraryAddCollectionItemViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC4Maps38LibraryAddCollectionItemViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
-    v6 = a4;
+    bundleCopy = bundle;
     v7 = String._bridgeToObjectiveC()();
   }
 
   else
   {
-    v8 = a4;
+    bundleCopy2 = bundle;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for LibraryAddCollectionItemViewController();
-  v9 = [(AddFromACViewController *)&v11 initWithNibName:v7 bundle:a4];
+  v9 = [(AddFromACViewController *)&v11 initWithNibName:v7 bundle:bundle];
 
   return v9;
 }
 
-- (_TtC4Maps38LibraryAddCollectionItemViewController)initWithCoder:(id)a3
+- (_TtC4Maps38LibraryAddCollectionItemViewController)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for LibraryAddCollectionItemViewController();
-  v4 = a3;
-  v5 = [(LibraryAddCollectionItemViewController *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(LibraryAddCollectionItemViewController *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

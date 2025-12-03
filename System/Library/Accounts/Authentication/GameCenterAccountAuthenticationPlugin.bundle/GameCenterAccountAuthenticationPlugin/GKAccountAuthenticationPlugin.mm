@@ -1,14 +1,14 @@
 @interface GKAccountAuthenticationPlugin
-- (BOOL)isPushSupportedForAccount:(id)a3;
-- (id)credentialForAccount:(id)a3 client:(id)a4 store:(id)a5 error:(id *)a6;
-- (void)discoverPropertiesForAccount:(id)a3 accountStore:(id)a4 options:(id)a5 completion:(id)a6;
-- (void)renewCredentialsForAccount:(id)a3 accountStore:(id)a4 options:(id)a5 completion:(id)a6;
-- (void)verifyCredentialsForAccount:(id)a3 accountStore:(id)a4 options:(id)a5 completion:(id)a6;
+- (BOOL)isPushSupportedForAccount:(id)account;
+- (id)credentialForAccount:(id)account client:(id)client store:(id)store error:(id *)error;
+- (void)discoverPropertiesForAccount:(id)account accountStore:(id)store options:(id)options completion:(id)completion;
+- (void)renewCredentialsForAccount:(id)account accountStore:(id)store options:(id)options completion:(id)completion;
+- (void)verifyCredentialsForAccount:(id)account accountStore:(id)store options:(id)options completion:(id)completion;
 @end
 
 @implementation GKAccountAuthenticationPlugin
 
-- (void)verifyCredentialsForAccount:(id)a3 accountStore:(id)a4 options:(id)a5 completion:(id)a6
+- (void)verifyCredentialsForAccount:(id)account accountStore:(id)store options:(id)options completion:(id)completion
 {
   sub_AF84();
   v16 = sub_AD70(v10, v11, v12, v13, v14, v15);
@@ -34,7 +34,7 @@
   sub_AF70();
 }
 
-- (void)renewCredentialsForAccount:(id)a3 accountStore:(id)a4 options:(id)a5 completion:(id)a6
+- (void)renewCredentialsForAccount:(id)account accountStore:(id)store options:(id)options completion:(id)completion
 {
   sub_AF84();
   v16 = sub_AD70(v10, v11, v12, v13, v14, v15);
@@ -60,27 +60,27 @@
   sub_AF70();
 }
 
-- (BOOL)isPushSupportedForAccount:(id)a3
+- (BOOL)isPushSupportedForAccount:(id)account
 {
-  v4 = a3;
-  v5 = self;
+  accountCopy = account;
+  selfCopy = self;
   sub_60AC();
 
   return 1;
 }
 
-- (id)credentialForAccount:(id)a3 client:(id)a4 store:(id)a5 error:(id *)a6
+- (id)credentialForAccount:(id)account client:(id)client store:(id)store error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = self;
-  v14 = sub_61E8(a3, a4);
+  accountCopy = account;
+  clientCopy = client;
+  storeCopy = store;
+  selfCopy = self;
+  v14 = sub_61E8(account, client);
 
   return v14;
 }
 
-- (void)discoverPropertiesForAccount:(id)a3 accountStore:(id)a4 options:(id)a5 completion:(id)a6
+- (void)discoverPropertiesForAccount:(id)account accountStore:(id)store options:(id)options completion:(id)completion
 {
   sub_AF84();
   v7 = v6;

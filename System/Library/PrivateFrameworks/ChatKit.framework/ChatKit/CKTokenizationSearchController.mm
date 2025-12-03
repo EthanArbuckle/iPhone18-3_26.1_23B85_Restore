@@ -3,8 +3,8 @@
 - (CKTokenizationSearchController)init;
 - (NSArray)searchTokens;
 - (NSDirectionalEdgeInsets)additionalGroupInsets;
-- (id)cellForItemInCollectionView:(id)a3 atIndexPath:(id)a4 withIdentifier:(id)a5;
-- (id)customLayoutSectionForEnvironment:(id)a3;
+- (id)cellForItemInCollectionView:(id)view atIndexPath:(id)path withIdentifier:(id)identifier;
+- (id)customLayoutSectionForEnvironment:(id)environment;
 - (void)discardSuggestionResults;
 @end
 
@@ -20,10 +20,10 @@
 
 - (NSArray)searchTokens
 {
-  v2 = [(CKSearchController *)self queryController];
-  v3 = [v2 searchTokens];
+  queryController = [(CKSearchController *)self queryController];
+  searchTokens = [queryController searchTokens];
 
-  return v3;
+  return searchTokens;
 }
 
 + (id)supportedCellClasses
@@ -37,15 +37,15 @@
 
 - (void)discardSuggestionResults
 {
-  v2 = [(CKSearchController *)self queryController];
-  [v2 setResults:0];
+  queryController = [(CKSearchController *)self queryController];
+  [queryController setResults:0];
 }
 
-- (id)customLayoutSectionForEnvironment:(id)a3
+- (id)customLayoutSectionForEnvironment:(id)environment
 {
-  v4 = a3;
-  v5 = [(CKSearchController *)self delegate];
-  LODWORD(self) = [v5 shouldInsetResultsForSearchController:self];
+  environmentCopy = environment;
+  delegate = [(CKSearchController *)self delegate];
+  LODWORD(self) = [delegate shouldInsetResultsForSearchController:self];
 
   if (self)
   {
@@ -60,7 +60,7 @@
   v7 = [objc_alloc(MEMORY[0x1E69DC7E0]) initWithAppearance:v6];
   [v7 setShowsSeparators:1];
   [v7 setItemSeparatorHandler:&__block_literal_global_158];
-  v8 = [MEMORY[0x1E6995580] sectionWithListConfiguration:v7 layoutEnvironment:v4];
+  v8 = [MEMORY[0x1E6995580] sectionWithListConfiguration:v7 layoutEnvironment:environmentCopy];
 
   return v8;
 }
@@ -91,11 +91,11 @@ id __68__CKTokenizationSearchController_customLayoutSectionForEnvironment___bloc
   return result;
 }
 
-- (id)cellForItemInCollectionView:(id)a3 atIndexPath:(id)a4 withIdentifier:(id)a5
+- (id)cellForItemInCollectionView:(id)view atIndexPath:(id)path withIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = CKTokenizationSearchController;
-  v5 = [(CKConversationSearchController *)&v7 cellForItemInCollectionView:a3 atIndexPath:a4 withIdentifier:a5];
+  v5 = [(CKConversationSearchController *)&v7 cellForItemInCollectionView:view atIndexPath:path withIdentifier:identifier];
 
   return v5;
 }

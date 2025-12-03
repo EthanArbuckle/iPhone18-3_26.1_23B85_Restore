@@ -2,38 +2,38 @@
 - (BOOL)chartsBloodPressure;
 - (BOOL)hidesOutOfRangeFilter;
 - (BOOL)isLowUtility;
-- (BOOL)unitTesting_isIdentical:(id)a3;
-- (HKMedicalUserDomainConcept)initWithCategoryTypes:(id)a3 countryCode:(id)a4 codingCollection:(id)a5 propertyCollection:(id)a6;
-- (HKMedicalUserDomainConcept)initWithCoder:(id)a3;
+- (BOOL)unitTesting_isIdentical:(id)identical;
+- (HKMedicalUserDomainConcept)initWithCategoryTypes:(id)types countryCode:(id)code codingCollection:(id)collection propertyCollection:(id)propertyCollection;
+- (HKMedicalUserDomainConcept)initWithCoder:(id)coder;
 - (HKOntologyLocalizedEducationContent)educationContent;
-- (id)_dataDescriptionAllowedForPublic:(BOOL)a3;
+- (id)_dataDescriptionAllowedForPublic:(BOOL)public;
 - (id)_generateSemanticIdentifier;
-- (id)medicalConceptByAddingCategoryType:(int64_t)a3;
+- (id)medicalConceptByAddingCategoryType:(int64_t)type;
 @end
 
 @implementation HKMedicalUserDomainConcept
 
-- (HKMedicalUserDomainConcept)initWithCategoryTypes:(id)a3 countryCode:(id)a4 codingCollection:(id)a5 propertyCollection:(id)a6
+- (HKMedicalUserDomainConcept)initWithCategoryTypes:(id)types countryCode:(id)code codingCollection:(id)collection propertyCollection:(id)propertyCollection
 {
   v7.receiver = self;
   v7.super_class = HKMedicalUserDomainConcept;
-  return [(HKMedicalBaseUserDomainConcept *)&v7 initWithCategoryTypes:a3 countryCode:a4 codingCollection:a5 propertyCollection:a6];
+  return [(HKMedicalBaseUserDomainConcept *)&v7 initWithCategoryTypes:types countryCode:code codingCollection:collection propertyCollection:propertyCollection];
 }
 
-- (id)medicalConceptByAddingCategoryType:(int64_t)a3
+- (id)medicalConceptByAddingCategoryType:(int64_t)type
 {
-  v5 = [(HKUserDomainConcept *)self modificationCopy];
-  v6 = [(HKMedicalBaseUserDomainConcept *)self categoryTypes];
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v8 = [v6 arrayByAddingObject:v7];
-  [v5 _setCategoryTypes:v8];
+  modificationCopy = [(HKUserDomainConcept *)self modificationCopy];
+  categoryTypes = [(HKMedicalBaseUserDomainConcept *)self categoryTypes];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:type];
+  v8 = [categoryTypes arrayByAddingObject:v7];
+  [modificationCopy _setCategoryTypes:v8];
 
-  return v5;
+  return modificationCopy;
 }
 
-- (id)_dataDescriptionAllowedForPublic:(BOOL)a3
+- (id)_dataDescriptionAllowedForPublic:(BOOL)public
 {
-  if (a3)
+  if (public)
   {
     v3 = 0;
   }
@@ -45,12 +45,12 @@
     v5 = [(HKMedicalBaseUserDomainConcept *)&v9 _dataDescriptionAllowedForPublic:0];
     v3 = [v5 mutableCopy];
 
-    v6 = [(HKMedicalUserDomainConcept *)self educationContent];
-    if (v6)
+    educationContent = [(HKMedicalUserDomainConcept *)self educationContent];
+    if (educationContent)
     {
       objc_msgSend(v3, "appendString:", @", education (");
-      v7 = [v6 sections];
-      [v3 hk_appendComponentsJoinedByString:@" container:" componentGenerator:{v7, &__block_literal_global_47}];
+      sections = [educationContent sections];
+      [v3 hk_appendComponentsJoinedByString:@" container:" componentGenerator:{sections, &__block_literal_global_47}];
 
       [v3 appendString:@""]);
     }
@@ -66,104 +66,104 @@ __CFString *__63__HKMedicalUserDomainConcept__dataDescriptionAllowedForPublic___
   return HKStringFromOntologyLocalizedEducationContentSectionType(v2);
 }
 
-- (HKMedicalUserDomainConcept)initWithCoder:(id)a3
+- (HKMedicalUserDomainConcept)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = HKMedicalUserDomainConcept;
-  return [(HKMedicalBaseUserDomainConcept *)&v4 initWithCoder:a3];
+  return [(HKMedicalBaseUserDomainConcept *)&v4 initWithCoder:coder];
 }
 
 - (BOOL)chartsBloodPressure
 {
-  v2 = [(HKUserDomainConcept *)self propertyCollection];
-  v3 = [v2 firstBasicPropertyWithType:150004];
-  v4 = [v3 numberValue];
-  v5 = [v4 BOOLValue];
+  propertyCollection = [(HKUserDomainConcept *)self propertyCollection];
+  v3 = [propertyCollection firstBasicPropertyWithType:150004];
+  numberValue = [v3 numberValue];
+  bOOLValue = [numberValue BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (BOOL)hidesOutOfRangeFilter
 {
-  v2 = [(HKUserDomainConcept *)self propertyCollection];
-  v3 = [v2 firstBasicPropertyWithType:150005];
-  v4 = [v3 numberValue];
-  v5 = [v4 BOOLValue];
+  propertyCollection = [(HKUserDomainConcept *)self propertyCollection];
+  v3 = [propertyCollection firstBasicPropertyWithType:150005];
+  numberValue = [v3 numberValue];
+  bOOLValue = [numberValue BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (BOOL)isLowUtility
 {
-  v2 = [(HKUserDomainConcept *)self propertyCollection];
-  v3 = [v2 firstBasicPropertyWithType:150009];
-  v4 = [v3 numberValue];
-  v5 = [v4 BOOLValue];
+  propertyCollection = [(HKUserDomainConcept *)self propertyCollection];
+  v3 = [propertyCollection firstBasicPropertyWithType:150009];
+  numberValue = [v3 numberValue];
+  bOOLValue = [numberValue BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (HKOntologyLocalizedEducationContent)educationContent
 {
-  v2 = [(HKUserDomainConcept *)self propertyCollection];
-  v3 = [v2 firstPropertyWithType:160019];
+  propertyCollection = [(HKUserDomainConcept *)self propertyCollection];
+  v3 = [propertyCollection firstPropertyWithType:160019];
 
   return v3;
 }
 
 - (id)_generateSemanticIdentifier
 {
-  v3 = [(HKUserDomainConcept *)self firstOntologyCoding];
-  v4 = v3;
-  if (v3)
+  firstOntologyCoding = [(HKUserDomainConcept *)self firstOntologyCoding];
+  v4 = firstOntologyCoding;
+  if (firstOntologyCoding)
   {
-    v5 = v3;
+    firstAdhocCoding = firstOntologyCoding;
 LABEL_4:
     v6 = [HKMedicalUserDomainConceptSemanticIdentifier alloc];
-    v7 = [(HKMedicalBaseUserDomainConcept *)self countryCode];
-    v8 = [v7 uppercaseString];
-    v9 = [(HKMedicalUserDomainConceptSemanticIdentifier *)v6 initWithUUID:0 countryCode:v8 medicalCoding:v5];
+    countryCode = [(HKMedicalBaseUserDomainConcept *)self countryCode];
+    uppercaseString = [countryCode uppercaseString];
+    v9 = [(HKMedicalUserDomainConceptSemanticIdentifier *)v6 initWithUUID:0 countryCode:uppercaseString medicalCoding:firstAdhocCoding];
     goto LABEL_5;
   }
 
-  v5 = [(HKUserDomainConcept *)self firstAdhocCoding];
-  if (v5)
+  firstAdhocCoding = [(HKUserDomainConcept *)self firstAdhocCoding];
+  if (firstAdhocCoding)
   {
     goto LABEL_4;
   }
 
   v11 = [HKMedicalUserDomainConceptSemanticIdentifier alloc];
-  v7 = [(HKUserDomainConcept *)self UUID];
-  v8 = [(HKMedicalBaseUserDomainConcept *)self countryCode];
-  v12 = [v8 uppercaseString];
-  v9 = [(HKMedicalUserDomainConceptSemanticIdentifier *)v11 initWithUUID:v7 countryCode:v12 medicalCoding:0];
+  countryCode = [(HKUserDomainConcept *)self UUID];
+  uppercaseString = [(HKMedicalBaseUserDomainConcept *)self countryCode];
+  v8UppercaseString = [uppercaseString uppercaseString];
+  v9 = [(HKMedicalUserDomainConceptSemanticIdentifier *)v11 initWithUUID:countryCode countryCode:v8UppercaseString medicalCoding:0];
 
-  v5 = 0;
+  firstAdhocCoding = 0;
 LABEL_5:
 
   return v9;
 }
 
-- (BOOL)unitTesting_isIdentical:(id)a3
+- (BOOL)unitTesting_isIdentical:(id)identical
 {
-  v4 = a3;
-  if ([(HKUserDomainConcept *)self isEqual:v4]&& (v12.receiver = self, v12.super_class = HKMedicalUserDomainConcept, [(HKMedicalBaseUserDomainConcept *)&v12 unitTesting_isIdentical:v4]))
+  identicalCopy = identical;
+  if ([(HKUserDomainConcept *)self isEqual:identicalCopy]&& (v12.receiver = self, v12.super_class = HKMedicalUserDomainConcept, [(HKMedicalBaseUserDomainConcept *)&v12 unitTesting_isIdentical:identicalCopy]))
   {
-    v5 = [(HKMedicalUserDomainConcept *)self educationContent];
-    v6 = [v4 educationContent];
-    if (v5 == v6)
+    educationContent = [(HKMedicalUserDomainConcept *)self educationContent];
+    educationContent2 = [identicalCopy educationContent];
+    if (educationContent == educationContent2)
     {
       v10 = 1;
     }
 
     else
     {
-      v7 = [v4 educationContent];
-      if (v7)
+      educationContent3 = [identicalCopy educationContent];
+      if (educationContent3)
       {
-        v8 = [(HKMedicalUserDomainConcept *)self educationContent];
-        v9 = [v4 educationContent];
-        v10 = [v8 isEqual:v9];
+        educationContent4 = [(HKMedicalUserDomainConcept *)self educationContent];
+        educationContent5 = [identicalCopy educationContent];
+        v10 = [educationContent4 isEqual:educationContent5];
       }
 
       else

@@ -1,32 +1,32 @@
 @interface VCRateControlMediaController
-- (BOOL)didMediaGetFlushedWithPayloadType:(unsigned __int8)a3 transactionID:(unsigned __int16)a4 packetDropped:(unsigned __int16)a5 sequenceNumberArray:(unsigned __int16 *)a6;
-- (BOOL)increaseFlushCountForAudioStall:(int)a3 audioStallBitrate:(unsigned int)a4;
-- (BOOL)increaseFlushCountForVideoRefresh:(int)a3 transactionID:(unsigned __int16)a4;
-- (BOOL)isProbingLargeFrameRequiredAtTime:(double)a3;
+- (BOOL)didMediaGetFlushedWithPayloadType:(unsigned __int8)type transactionID:(unsigned __int16)d packetDropped:(unsigned __int16)dropped sequenceNumberArray:(unsigned __int16 *)array;
+- (BOOL)increaseFlushCountForAudioStall:(int)stall audioStallBitrate:(unsigned int)bitrate;
+- (BOOL)increaseFlushCountForVideoRefresh:(int)refresh transactionID:(unsigned __int16)d;
+- (BOOL)isProbingLargeFrameRequiredAtTime:(double)time;
 - (BOOL)rampUpAudioFraction;
-- (VCRateControlMediaController)initWithMediaQueue:(tagHANDLE *)a3 delegate:(id)a4;
+- (VCRateControlMediaController)initWithMediaQueue:(tagHANDLE *)queue delegate:(id)delegate;
 - (int)basebandFlushCount;
 - (unsigned)probingLargeFrameSize;
 - (unsigned)probingSequencePacketCount;
 - (unsigned)probingSequencePacketSize;
 - (void)dealloc;
-- (void)decreaseFlushCount:(int)a3;
-- (void)pauseVideoByUser:(BOOL)a3;
-- (void)printLargeFrameStatsAtTime:(double)a3 timestamp:(unsigned int)a4 timeSinceLastProbingSequence:(double)a5 frameSize:(unsigned int)a6 wastedBytes:(unsigned int)a7 fecRatio:(double)a8 isFrameRequested:(BOOL)a9;
-- (void)recordVideoRefreshFrameWithTimestamp:(unsigned int)a3 payloadType:(unsigned __int8)a4 packetCount:(unsigned int)a5 isKeyFrame:(BOOL)a6;
-- (void)scheduleProbingSequenceAtTime:(double)a3;
-- (void)scheduleProbingSequenceWithFrameSize:(unsigned int)a3 paddingBytes:(unsigned int)a4 timestamp:(unsigned int)a5 fecRatio:(double)a6 isProbingSequenceScheduled:(BOOL *)a7;
-- (void)setIsRemoteAudioPaused:(BOOL)a3;
-- (void)setServerBag:(id)a3;
-- (void)setStatisticsCollector:(id)a3;
-- (void)updateBasebandDropPacketCountWithPayloadType:(unsigned __int8)a3 sequenceNumber:(unsigned __int16)a4;
-- (void)updateLargeFrameSizeWithBandwidth:(unsigned int)a3;
+- (void)decreaseFlushCount:(int)count;
+- (void)pauseVideoByUser:(BOOL)user;
+- (void)printLargeFrameStatsAtTime:(double)time timestamp:(unsigned int)timestamp timeSinceLastProbingSequence:(double)sequence frameSize:(unsigned int)size wastedBytes:(unsigned int)bytes fecRatio:(double)ratio isFrameRequested:(BOOL)requested;
+- (void)recordVideoRefreshFrameWithTimestamp:(unsigned int)timestamp payloadType:(unsigned __int8)type packetCount:(unsigned int)count isKeyFrame:(BOOL)frame;
+- (void)scheduleProbingSequenceAtTime:(double)time;
+- (void)scheduleProbingSequenceWithFrameSize:(unsigned int)size paddingBytes:(unsigned int)bytes timestamp:(unsigned int)timestamp fecRatio:(double)ratio isProbingSequenceScheduled:(BOOL *)scheduled;
+- (void)setIsRemoteAudioPaused:(BOOL)paused;
+- (void)setServerBag:(id)bag;
+- (void)setStatisticsCollector:(id)collector;
+- (void)updateBasebandDropPacketCountWithPayloadType:(unsigned __int8)type sequenceNumber:(unsigned __int16)number;
+- (void)updateLargeFrameSizeWithBandwidth:(unsigned int)bandwidth;
 - (void)updateProbingLargeFrameSizeCap;
 @end
 
 @implementation VCRateControlMediaController
 
-- (VCRateControlMediaController)initWithMediaQueue:(tagHANDLE *)a3 delegate:(id)a4
+- (VCRateControlMediaController)initWithMediaQueue:(tagHANDLE *)queue delegate:(id)delegate
 {
   v18 = *MEMORY[0x1E69E9840];
   v11.receiver = self;
@@ -37,8 +37,8 @@
     v7 = objc_alloc_init(SenderLargeFrameInfo);
     v6->_senderLargeFrameInfo = v7;
     [(SenderLargeFrameInfo *)v7 setIsLargeFrameRequestDisabled:1];
-    objc_storeWeak(&v6->_mediaControllerDelegate, a4);
-    v6->_hMediaQueue = a3;
+    objc_storeWeak(&v6->_mediaControllerDelegate, delegate);
+    v6->_hMediaQueue = queue;
     v6->_minProbingSpacingAggressive = 0.099;
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
@@ -70,14 +70,14 @@
   [(VCRateControlMediaController *)&v3 dealloc];
 }
 
-- (void)setServerBag:(id)a3
+- (void)setServerBag:(id)bag
 {
   v36 = *MEMORY[0x1E69E9840];
   serverBag = self->_serverBag;
-  if (serverBag != a3)
+  if (serverBag != bag)
   {
 
-    serverBag = a3;
+    serverBag = bag;
     self->_serverBag = serverBag;
   }
 
@@ -97,7 +97,7 @@
     v11 = *v9;
     if (os_log_type_enabled(*v9, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [@"probingSequence" UTF8String];
+      uTF8String = [@"probingSequence" UTF8String];
       enableAggressiveProbingSequence = self->_enableAggressiveProbingSequence;
       minProbingSpacingAggressive = self->_minProbingSpacingAggressive;
       v20 = 136316930;
@@ -107,9 +107,9 @@
       v24 = 1024;
       v25 = 342;
       v26 = 2048;
-      v27 = self;
+      selfCopy2 = self;
       v28 = 2080;
-      v29 = v12;
+      v29 = uTF8String;
       v30 = 1024;
       v31 = v6;
       v32 = 1024;
@@ -132,7 +132,7 @@
     v17 = *v9;
     if (os_log_type_enabled(*v9, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [@"baseband" UTF8String];
+      uTF8String2 = [@"baseband" UTF8String];
       disableBasebandFlush = self->_disableBasebandFlush;
       v20 = 136316674;
       v21 = v16;
@@ -141,9 +141,9 @@
       v24 = 1024;
       v25 = 348;
       v26 = 2048;
-      v27 = self;
+      selfCopy2 = self;
       v28 = 2080;
-      v29 = v18;
+      v29 = uTF8String2;
       v30 = 1024;
       v31 = v15;
       v32 = 1024;
@@ -153,11 +153,11 @@
   }
 }
 
-- (void)setStatisticsCollector:(id)a3
+- (void)setStatisticsCollector:(id)collector
 {
   v7[5] = *MEMORY[0x1E69E9840];
 
-  self->_statisticsCollector = a3;
+  self->_statisticsCollector = collector;
   v5 = [MEMORY[0x1E6986630] weakObjectHolderWithObject:self];
   statisticsCollector = self->_statisticsCollector;
   v7[0] = MEMORY[0x1E69E9820];
@@ -222,13 +222,13 @@ void __55__VCRateControlMediaController_setStatisticsCollector___block_invoke(ui
   }
 }
 
-- (void)pauseVideoByUser:(BOOL)a3
+- (void)pauseVideoByUser:(BOOL)user
 {
   v29 = *MEMORY[0x1E69E9840];
   if (!self->_isAudioOnly)
   {
-    v3 = a3;
-    if (self->_isVideoPausedByUser && !a3)
+    userCopy = user;
+    if (self->_isVideoPausedByUser && !user)
     {
       VCRateControlMediaController_SetAudioFractionTier(self, 0);
     }
@@ -239,7 +239,7 @@ void __55__VCRateControlMediaController_setStatisticsCollector___block_invoke(ui
       v6 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        if (v3)
+        if (userCopy)
         {
           v7 = "pause";
         }
@@ -269,7 +269,7 @@ void __55__VCRateControlMediaController_setStatisticsCollector___block_invoke(ui
     logBasebandDump = self->_logBasebandDump;
     if (logBasebandDump)
     {
-      if (v3)
+      if (userCopy)
       {
         v10 = "pause";
       }
@@ -283,14 +283,14 @@ void __55__VCRateControlMediaController_setStatisticsCollector___block_invoke(ui
       VRLogfilePrintWithTimestamp(logBasebandDump, "Video %s by user, [rate:%u, BBRate:%u, audioFraction:%d, videoStopped:%d]\n", v11, v12, v13, v14, v15, v16, v10);
     }
 
-    self->_isVideoPausedByUser = v3;
+    self->_isVideoPausedByUser = userCopy;
   }
 }
 
-- (void)setIsRemoteAudioPaused:(BOOL)a3
+- (void)setIsRemoteAudioPaused:(BOOL)paused
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (self->_isRemoteAudioPaused && !a3)
+  if (self->_isRemoteAudioPaused && !paused)
   {
     memset(&v6[4], 0, 13);
     v10 = 0u;
@@ -311,15 +311,15 @@ void __55__VCRateControlMediaController_setStatisticsCollector___block_invoke(ui
     VCRateControlSetStatistics(statisticsCollector, v6);
   }
 
-  self->_isRemoteAudioPaused = a3;
+  self->_isRemoteAudioPaused = paused;
 }
 
-- (void)decreaseFlushCount:(int)a3
+- (void)decreaseFlushCount:(int)count
 {
   v26 = *MEMORY[0x1E69E9840];
   basebandFlushCount = self->_basebandFlushCount;
   v12 = micro();
-  v13 = self->_basebandFlushCount - a3;
+  v13 = self->_basebandFlushCount - count;
   self->_basebandFlushCount = v13;
   self->_lastBasebandFlushCountChangeTime = v12;
   if (v13 >= 1)
@@ -354,18 +354,18 @@ void __55__VCRateControlMediaController_setStatisticsCollector___block_invoke(ui
   }
 }
 
-- (BOOL)didMediaGetFlushedWithPayloadType:(unsigned __int8)a3 transactionID:(unsigned __int16)a4 packetDropped:(unsigned __int16)a5 sequenceNumberArray:(unsigned __int16 *)a6
+- (BOOL)didMediaGetFlushedWithPayloadType:(unsigned __int8)type transactionID:(unsigned __int16)d packetDropped:(unsigned __int16)dropped sequenceNumberArray:(unsigned __int16 *)array
 {
   if (!self->_isRTPFlushBasebandFromVCRateControl)
   {
     return 1;
   }
 
-  v6 = a5;
-  if (self->_videoPayloadType == a3)
+  droppedCopy = dropped;
+  if (self->_videoPayloadType == type)
   {
-    self->_basebandFlushedVideoCount += a5;
-    if (a5 && self->_videoFlushTransactionID < a4)
+    self->_basebandFlushedVideoCount += dropped;
+    if (dropped && self->_videoFlushTransactionID < d)
     {
       v8 = MEMORY[0x1E1289F20](&self->_mediaControllerDelegate, a2);
       [v8 mediaController:self mediaSuggestionDidChange:0x10000];
@@ -380,7 +380,7 @@ void __55__VCRateControlMediaController_setStatisticsCollector___block_invoke(ui
 
   else
   {
-    self->_basebandFlushedAudioCount += a5;
+    self->_basebandFlushedAudioCount += dropped;
   }
 
   if (self->_isAudioStall)
@@ -388,7 +388,7 @@ void __55__VCRateControlMediaController_setStatisticsCollector___block_invoke(ui
     vcMediaQueue = self->_vcMediaQueue;
     if (vcMediaQueue)
     {
-      VCMediaQueue_BasebandFlushAcked(vcMediaQueue, a5, a6, a4);
+      VCMediaQueue_BasebandFlushAcked(vcMediaQueue, dropped, array, d);
     }
 
     else
@@ -396,11 +396,11 @@ void __55__VCRateControlMediaController_setStatisticsCollector___block_invoke(ui
       hMediaQueue = self->_hMediaQueue;
       if (hMediaQueue != 0xFFFFFFFFLL)
       {
-        MediaQueue_BBFlushAcked(hMediaQueue, a5, a6, a4);
+        MediaQueue_BBFlushAcked(hMediaQueue, dropped, array, d);
       }
     }
 
-    if (v6)
+    if (droppedCopy)
     {
       return 1;
     }
@@ -422,13 +422,13 @@ void __55__VCRateControlMediaController_setStatisticsCollector___block_invoke(ui
   }
 }
 
-- (void)updateBasebandDropPacketCountWithPayloadType:(unsigned __int8)a3 sequenceNumber:(unsigned __int16)a4
+- (void)updateBasebandDropPacketCountWithPayloadType:(unsigned __int8)type sequenceNumber:(unsigned __int16)number
 {
-  v4 = a4;
-  v5 = a3;
+  numberCopy = number;
+  typeCopy = type;
   v19 = *MEMORY[0x1E69E9840];
   v6 = 244;
-  if (self->_videoPayloadType == a3)
+  if (self->_videoPayloadType == type)
   {
     v6 = 240;
   }
@@ -447,9 +447,9 @@ void __55__VCRateControlMediaController_setStatisticsCollector___block_invoke(ui
       v13 = 1024;
       v14 = 868;
       v15 = 1024;
-      v16 = v5;
+      v16 = typeCopy;
       v17 = 1024;
-      v18 = v4;
+      v18 = numberCopy;
       _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, "VCRC [%s] %s:%d Baseband dropped media packet with payload type=%u, sequenceNumber=%u", &v9, 0x28u);
     }
   }
@@ -589,13 +589,13 @@ LABEL_10:
   return result;
 }
 
-- (void)scheduleProbingSequenceWithFrameSize:(unsigned int)a3 paddingBytes:(unsigned int)a4 timestamp:(unsigned int)a5 fecRatio:(double)a6 isProbingSequenceScheduled:(BOOL *)a7
+- (void)scheduleProbingSequenceWithFrameSize:(unsigned int)size paddingBytes:(unsigned int)bytes timestamp:(unsigned int)timestamp fecRatio:(double)ratio isProbingSequenceScheduled:(BOOL *)scheduled
 {
   if (self->_isSenderProbingEnabled)
   {
-    v9 = *&a5;
-    LODWORD(v10) = a4;
-    v11 = *&a3;
+    v9 = *&timestamp;
+    LODWORD(v10) = bytes;
+    v11 = *&size;
     if ([(SenderLargeFrameInfo *)self->_senderLargeFrameInfo largeFrameSizeAtCurrentBandwidth])
     {
       if (v10 >= 9)
@@ -608,7 +608,7 @@ LABEL_10:
         v10 = 0;
       }
 
-      if ([(SenderLargeFrameInfo *)self->_senderLargeFrameInfo largeFrameSizeAtCurrentBandwidth]> (v11 * a6))
+      if ([(SenderLargeFrameInfo *)self->_senderLargeFrameInfo largeFrameSizeAtCurrentBandwidth]> (v11 * ratio))
       {
         goto LABEL_7;
       }
@@ -619,13 +619,13 @@ LABEL_10:
       if ([(SenderLargeFrameInfo *)self->_senderLargeFrameInfo largeFrameSizeRequested])
       {
         [(VCRateControlMediaController *)self scheduleProbingSequenceAtTime:v13];
-        v16 = self;
+        selfCopy2 = self;
         v17 = v13;
         v18 = v9;
         v19 = v15;
         v20 = v11;
         v21 = v10;
-        v22 = a6;
+        ratioCopy2 = ratio;
         v23 = 1;
       }
 
@@ -649,7 +649,7 @@ LABEL_10:
         {
 LABEL_7:
           [(SenderLargeFrameInfo *)self->_senderLargeFrameInfo setIsLastFrameProbingSequence:0];
-          if (!a7)
+          if (!scheduled)
           {
             return;
           }
@@ -658,46 +658,46 @@ LABEL_7:
         }
 
         [(VCRateControlMediaController *)self scheduleProbingSequenceAtTime:v13];
-        v16 = self;
+        selfCopy2 = self;
         v17 = v13;
         v18 = v9;
         v19 = v15;
         v20 = v11;
         v21 = v10;
-        v22 = a6;
+        ratioCopy2 = ratio;
         v23 = 0;
       }
 
-      [(VCRateControlMediaController *)v16 printLargeFrameStatsAtTime:v18 timestamp:v20 timeSinceLastProbingSequence:v21 frameSize:v23 wastedBytes:v17 fecRatio:v19 isFrameRequested:v22];
-      if (!a7)
+      [(VCRateControlMediaController *)selfCopy2 printLargeFrameStatsAtTime:v18 timestamp:v20 timeSinceLastProbingSequence:v21 frameSize:v23 wastedBytes:v17 fecRatio:v19 isFrameRequested:ratioCopy2];
+      if (!scheduled)
       {
         return;
       }
 
 LABEL_8:
-      *a7 = [(SenderLargeFrameInfo *)self->_senderLargeFrameInfo isLastFrameProbingSequence];
+      *scheduled = [(SenderLargeFrameInfo *)self->_senderLargeFrameInfo isLastFrameProbingSequence];
     }
   }
 }
 
-- (void)recordVideoRefreshFrameWithTimestamp:(unsigned int)a3 payloadType:(unsigned __int8)a4 packetCount:(unsigned int)a5 isKeyFrame:(BOOL)a6
+- (void)recordVideoRefreshFrameWithTimestamp:(unsigned int)timestamp payloadType:(unsigned __int8)type packetCount:(unsigned int)count isKeyFrame:(BOOL)frame
 {
-  v6 = a6;
+  frameCopy = frame;
   v17 = micro();
   self->_lastVideoRefreshFrameTime = v17;
-  self->_videoRefreshFrameTimestamp = a3;
-  self->_videoRefreshFramePacketCount = a5;
-  if (v6)
+  self->_videoRefreshFrameTimestamp = timestamp;
+  self->_videoRefreshFramePacketCount = count;
+  if (frameCopy)
   {
     self->_lastVideoKeyFrameTime = v17;
-    self->_videoPayloadType = a4;
+    self->_videoPayloadType = type;
   }
 
   logBasebandDump = self->_logBasebandDump;
   if (logBasebandDump)
   {
     v19 = "RefreshFrame";
-    if (v6)
+    if (frameCopy)
     {
       v19 = "KeyFrame";
     }
@@ -706,12 +706,12 @@ LABEL_8:
   }
 }
 
-- (BOOL)increaseFlushCountForVideoRefresh:(int)a3 transactionID:(unsigned __int16)a4
+- (BOOL)increaseFlushCountForVideoRefresh:(int)refresh transactionID:(unsigned __int16)d
 {
   basebandFlushCount = self->_basebandFlushCount;
-  self->_basebandFlushCount = basebandFlushCount + a3;
+  self->_basebandFlushCount = basebandFlushCount + refresh;
   self->_lastBasebandFlushCountChangeTime = micro();
-  self->_videoFlushTransactionID = a4;
+  self->_videoFlushTransactionID = d;
   logBasebandDump = self->_logBasebandDump;
   if (logBasebandDump)
   {
@@ -721,13 +721,13 @@ LABEL_8:
   return self->_basebandFlushableQueueDepth != 0;
 }
 
-- (BOOL)increaseFlushCountForAudioStall:(int)a3 audioStallBitrate:(unsigned int)a4
+- (BOOL)increaseFlushCountForAudioStall:(int)stall audioStallBitrate:(unsigned int)bitrate
 {
-  if (a4)
+  if (bitrate)
   {
     v13 = micro();
     basebandFlushCount = self->_basebandFlushCount;
-    self->_basebandFlushCount = basebandFlushCount + a3;
+    self->_basebandFlushCount = basebandFlushCount + stall;
     self->_lastBasebandFlushCountChangeTime = v13;
     self->_lastAudioStallFlushTime = v13;
     logBasebandDump = self->_logBasebandDump;
@@ -737,22 +737,22 @@ LABEL_8:
     }
   }
 
-  self->_audioStallBitrate = a4;
+  self->_audioStallBitrate = bitrate;
   return self->_basebandFlushableQueueDepth != 0;
 }
 
-- (void)scheduleProbingSequenceAtTime:(double)a3
+- (void)scheduleProbingSequenceAtTime:(double)time
 {
   senderLargeFrameInfo = self->_senderLargeFrameInfo;
   [(SenderLargeFrameInfo *)senderLargeFrameInfo lastProbingSequenceTimeExpect];
   [(SenderLargeFrameInfo *)senderLargeFrameInfo setLastProbingSequenceTimeExpect:v6 + 0.666];
-  [(SenderLargeFrameInfo *)self->_senderLargeFrameInfo setLastProbingSequenceTimeActual:a3];
+  [(SenderLargeFrameInfo *)self->_senderLargeFrameInfo setLastProbingSequenceTimeActual:time];
   [(SenderLargeFrameInfo *)self->_senderLargeFrameInfo lastProbingSequenceTimeExpect];
   v7 = self->_senderLargeFrameInfo;
-  if (v8 >= a3 + -0.666)
+  if (v8 >= time + -0.666)
   {
     [(SenderLargeFrameInfo *)v7 lastProbingSequenceTimeExpect];
-    if (v9 <= a3 + 0.666)
+    if (v9 <= time + 0.666)
     {
       goto LABEL_5;
     }
@@ -768,12 +768,12 @@ LABEL_5:
   [(SenderLargeFrameInfo *)v10 setIsLastFrameProbingSequence:1];
 }
 
-- (void)printLargeFrameStatsAtTime:(double)a3 timestamp:(unsigned int)a4 timeSinceLastProbingSequence:(double)a5 frameSize:(unsigned int)a6 wastedBytes:(unsigned int)a7 fecRatio:(double)a8 isFrameRequested:(BOOL)a9
+- (void)printLargeFrameStatsAtTime:(double)time timestamp:(unsigned int)timestamp timeSinceLastProbingSequence:(double)sequence frameSize:(unsigned int)size wastedBytes:(unsigned int)bytes fecRatio:(double)ratio isFrameRequested:(BOOL)requested
 {
-  v10 = a6;
+  sizeCopy = size;
   [(SenderLargeFrameInfo *)self->_senderLargeFrameInfo startTime];
   [(SenderLargeFrameInfo *)self->_senderLargeFrameInfo probingSequenceCount];
-  [(SenderLargeFrameInfo *)self->_senderLargeFrameInfo setTotalLargeFrameWaste:[(SenderLargeFrameInfo *)self->_senderLargeFrameInfo totalLargeFrameWaste]+ a7];
+  [(SenderLargeFrameInfo *)self->_senderLargeFrameInfo setTotalLargeFrameWaste:[(SenderLargeFrameInfo *)self->_senderLargeFrameInfo totalLargeFrameWaste]+ bytes];
   [(SenderLargeFrameInfo *)self->_senderLargeFrameInfo totalLargeFrameWaste];
   statisticsCollector = self->_statisticsCollector;
   if (statisticsCollector)
@@ -783,16 +783,16 @@ LABEL_5:
 
   logBWEDump = self->_logBWEDump;
   [(SenderLargeFrameInfo *)self->_senderLargeFrameInfo largeFrameSizeAtCurrentBandwidth];
-  VRLogfilePrintWithTimestamp(logBWEDump, "A LARGE FRAME of %d size %s (actual:%d, req:%d), rate:%f, [waste:%d wastBitrate:%d, avgWastBitrate:%d], txRate:%d, remoteBW:%d, throttling:%d, timestamp:%u\n", v14, v15, v16, v17, v18, v19, v10);
+  VRLogfilePrintWithTimestamp(logBWEDump, "A LARGE FRAME of %d size %s (actual:%d, req:%d), rate:%f, [waste:%d wastBitrate:%d, avgWastBitrate:%d], txRate:%d, remoteBW:%d, throttling:%d, timestamp:%u\n", v14, v15, v16, v17, v18, v19, sizeCopy);
 }
 
-- (BOOL)isProbingLargeFrameRequiredAtTime:(double)a3
+- (BOOL)isProbingLargeFrameRequiredAtTime:(double)time
 {
   v42 = *MEMORY[0x1E69E9840];
   if ([(SenderLargeFrameInfo *)self->_senderLargeFrameInfo isLargeFrameRequestDisabled])
   {
     [(SenderLargeFrameInfo *)self->_senderLargeFrameInfo startTime];
-    v6 = a3 - v5;
+    v6 = time - v5;
     if (!self->_shouldDisableLargeFrameRequestsWhenInitialRampUp && v6 >= 3.0 || v6 >= 10.0)
     {
       [(SenderLargeFrameInfo *)self->_senderLargeFrameInfo setIsLargeFrameRequestDisabled:0];
@@ -806,10 +806,10 @@ LABEL_5:
   }
 
   [(SenderLargeFrameInfo *)self->_senderLargeFrameInfo lastProbingSequenceTimeExpect];
-  v8 = a3 - v7;
+  v8 = time - v7;
   [(SenderLargeFrameInfo *)self->_senderLargeFrameInfo lastProbingSequenceTimeActual];
-  v10 = a3 - v9;
-  v11 = a3 - v9 >= 0.333 && v8 >= 0.666;
+  v10 = time - v9;
+  v11 = time - v9 >= 0.333 && v8 >= 0.666;
   if (VRTraceGetErrorLogLevelForModule() < 8)
   {
     goto LABEL_18;
@@ -844,7 +844,7 @@ LABEL_5:
       v30 = 2080;
       v31 = v15;
       v32 = 2048;
-      v33 = a3;
+      timeCopy2 = time;
       v34 = 2048;
       v35 = v17;
       v36 = 2048;
@@ -898,7 +898,7 @@ LABEL_18:
   v30 = 2080;
   v31 = v20;
   v32 = 2048;
-  v33 = a3;
+  timeCopy2 = time;
   v34 = 2048;
   v35 = v22;
   v36 = 2048;
@@ -935,10 +935,10 @@ LABEL_19:
   OUTLINED_FUNCTION_2_1(&dword_1DB56E000, v0, v1, "VCRC [%s] %s:%d Audio sending bitrate used up all available uplink bandwidth, do minimum probing by setting large frame size cap to 0", v2, v3, v4, v5, v6);
 }
 
-- (void)updateLargeFrameSizeWithBandwidth:(unsigned int)a3
+- (void)updateLargeFrameSizeWithBandwidth:(unsigned int)bandwidth
 {
-  probingLargeFrameSizeCap = a3 / 0x190;
-  if (a3 / 0x190 >= self->_probingLargeFrameSizeCap)
+  probingLargeFrameSizeCap = bandwidth / 0x190;
+  if (bandwidth / 0x190 >= self->_probingLargeFrameSizeCap)
   {
     probingLargeFrameSizeCap = self->_probingLargeFrameSizeCap;
   }

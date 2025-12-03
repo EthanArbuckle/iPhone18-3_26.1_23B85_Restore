@@ -26,7 +26,7 @@
 
 + (_TtC8Freeform17CRLiOSApplication)sharedApplication
 {
-  v2 = [objc_opt_self() sharedApplication];
+  sharedApplication = [objc_opt_self() sharedApplication];
   type metadata accessor for CRLiOSApplication();
   v3 = swift_dynamicCastClassUnconditional();
 

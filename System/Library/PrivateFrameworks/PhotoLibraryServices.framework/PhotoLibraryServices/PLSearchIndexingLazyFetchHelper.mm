@@ -1,29 +1,29 @@
 @interface PLSearchIndexingLazyFetchHelper
-- (BOOL)_isEntityLocalizationAllowedForIndexingSearchEntity:(id)a3 withIndexLocaleIdentifier:(id)a4;
-- (PLSearchIndexingLazyFetchHelper)initWithObject:(id)a3 libraryIdentifier:(int64_t)a4 managedObjectContext:(id)a5;
+- (BOOL)_isEntityLocalizationAllowedForIndexingSearchEntity:(id)entity withIndexLocaleIdentifier:(id)identifier;
+- (PLSearchIndexingLazyFetchHelper)initWithObject:(id)object libraryIdentifier:(int64_t)identifier managedObjectContext:(id)context;
 - (id)albumsEligibleForSearchIndexing;
 - (id)allDetectedFaces;
 - (id)allSceneClassifications;
 - (id)memoriesEligibleForSearchIndexing;
-- (void)enumerateMomentSearchEntitiesWithIndexLocaleIdentifier:(id)a3 withBlock:(id)a4;
-- (void)enumerateSearchEntityRelationsForPerson:(id)a3 block:(id)a4;
+- (void)enumerateMomentSearchEntitiesWithIndexLocaleIdentifier:(id)identifier withBlock:(id)block;
+- (void)enumerateSearchEntityRelationsForPerson:(id)person block:(id)block;
 @end
 
 @implementation PLSearchIndexingLazyFetchHelper
 
-- (void)enumerateSearchEntityRelationsForPerson:(id)a3 block:(id)a4
+- (void)enumerateSearchEntityRelationsForPerson:(id)person block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 fullName];
-  if ([v8 length])
+  personCopy = person;
+  blockCopy = block;
+  fullName = [personCopy fullName];
+  if ([fullName length])
   {
   }
 
   else
   {
-    v9 = [v6 displayName];
-    v10 = [v9 length];
+    displayName = [personCopy displayName];
+    v10 = [displayName length];
 
     if (!v10)
     {
@@ -32,8 +32,8 @@
   }
 
   relationsByPersonUUID = self->_relationsByPersonUUID;
-  v12 = [v6 personUUID];
-  v13 = [(NSMutableDictionary *)relationsByPersonUUID objectForKeyedSubscript:v12];
+  personUUID = [personCopy personUUID];
+  v13 = [(NSMutableDictionary *)relationsByPersonUUID objectForKeyedSubscript:personUUID];
 
   if (v13)
   {
@@ -41,7 +41,7 @@
     v18[1] = 3221225472;
     v18[2] = __81__PLSearchIndexingLazyFetchHelper_enumerateSearchEntityRelationsForPerson_block___block_invoke_2;
     v18[3] = &unk_1E7571B30;
-    v19 = v7;
+    v19 = blockCopy;
     [v13 enumerateObjectsUsingBlock:v18];
     v14 = v19;
   }
@@ -54,12 +54,12 @@
     v20[2] = __81__PLSearchIndexingLazyFetchHelper_enumerateSearchEntityRelationsForPerson_block___block_invoke;
     v20[3] = &unk_1E7571B08;
     v21 = v15;
-    v22 = v7;
+    v22 = blockCopy;
     v14 = v15;
-    [v6 enumerateAssetSearchEntityPersonRelationsWithBlock:v20];
+    [personCopy enumerateAssetSearchEntityPersonRelationsWithBlock:v20];
     v16 = self->_relationsByPersonUUID;
-    v17 = [v6 personUUID];
-    [(NSMutableDictionary *)v16 setObject:v14 forKeyedSubscript:v17];
+    personUUID2 = [personCopy personUUID];
+    [(NSMutableDictionary *)v16 setObject:v14 forKeyedSubscript:personUUID2];
   }
 
 LABEL_8:
@@ -74,13 +74,13 @@ void __81__PLSearchIndexingLazyFetchHelper_enumerateSearchEntityRelationsForPers
   [*(a1 + 32) addObject:v7];
 }
 
-- (BOOL)_isEntityLocalizationAllowedForIndexingSearchEntity:(id)a3 withIndexLocaleIdentifier:(id)a4
+- (BOOL)_isEntityLocalizationAllowedForIndexingSearchEntity:(id)entity withIndexLocaleIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = [a3 localeIdentifier];
-  if (v6)
+  identifierCopy = identifier;
+  localeIdentifier = [entity localeIdentifier];
+  if (localeIdentifier)
   {
-    v7 = [v5 isEqualToString:v6];
+    v7 = [identifierCopy isEqualToString:localeIdentifier];
   }
 
   else
@@ -91,11 +91,11 @@ void __81__PLSearchIndexingLazyFetchHelper_enumerateSearchEntityRelationsForPers
   return v7;
 }
 
-- (void)enumerateMomentSearchEntitiesWithIndexLocaleIdentifier:(id)a3 withBlock:(id)a4
+- (void)enumerateMomentSearchEntitiesWithIndexLocaleIdentifier:(id)identifier withBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  identifierCopy = identifier;
+  blockCopy = block;
+  v8 = blockCopy;
   momentSearchEntities = self->_momentSearchEntities;
   if (momentSearchEntities)
   {
@@ -103,28 +103,28 @@ void __81__PLSearchIndexingLazyFetchHelper_enumerateSearchEntityRelationsForPers
     v17[1] = 3221225472;
     v17[2] = __100__PLSearchIndexingLazyFetchHelper_enumerateMomentSearchEntitiesWithIndexLocaleIdentifier_withBlock___block_invoke_2;
     v17[3] = &unk_1E7571AE0;
-    v18 = v7;
+    v18 = blockCopy;
     [(NSArray *)momentSearchEntities enumerateObjectsUsingBlock:v17];
-    v10 = v18;
+    moment = v18;
   }
 
   else
   {
     v11 = self->_object;
-    v10 = [(PLManagedObject *)v11 moment];
+    moment = [(PLManagedObject *)v11 moment];
     v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __100__PLSearchIndexingLazyFetchHelper_enumerateMomentSearchEntitiesWithIndexLocaleIdentifier_withBlock___block_invoke;
     v19[3] = &unk_1E7571AB8;
     v19[4] = self;
-    v20 = v6;
+    v20 = identifierCopy;
     v21 = v11;
     v23 = v8;
     v13 = v12;
     v22 = v13;
     v14 = v11;
-    [v10 enumerateAssetSearchEntitiesWithBlock:v19];
+    [moment enumerateAssetSearchEntitiesWithBlock:v19];
     v15 = self->_momentSearchEntities;
     self->_momentSearchEntities = v13;
     v16 = v13;
@@ -155,14 +155,14 @@ void __100__PLSearchIndexingLazyFetchHelper_enumerateMomentSearchEntitiesWithInd
   albumsEligibleForSearchIndexing = self->_albumsEligibleForSearchIndexing;
   if (!albumsEligibleForSearchIndexing)
   {
-    v4 = [(PLManagedObject *)self->_object objectID];
-    v5 = [PLGenericAlbum fetchAlbumsForAssetObjectID:v4 libraryIdentifier:self->_libraryIdentifier managedObjectContext:self->_moc];
+    objectID = [(PLManagedObject *)self->_object objectID];
+    v5 = [PLGenericAlbum fetchAlbumsForAssetObjectID:objectID libraryIdentifier:self->_libraryIdentifier managedObjectContext:self->_moc];
 
     if ([v5 isSuccess])
     {
-      v6 = [v5 result];
+      result = [v5 result];
       v7 = self->_albumsEligibleForSearchIndexing;
-      self->_albumsEligibleForSearchIndexing = v6;
+      self->_albumsEligibleForSearchIndexing = result;
     }
 
     else
@@ -170,12 +170,12 @@ void __100__PLSearchIndexingLazyFetchHelper_enumerateMomentSearchEntitiesWithInd
       v8 = PLSearchBackendModelTranslationGetLog();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        v9 = [(PLManagedObject *)self->_object objectID];
-        v10 = [v5 error];
+        objectID2 = [(PLManagedObject *)self->_object objectID];
+        error = [v5 error];
         v12 = 138543618;
-        v13 = v9;
+        v13 = objectID2;
         v14 = 2112;
-        v15 = v10;
+        v15 = error;
         _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_ERROR, "Error fetching albums for asset: %{public}@, error: %@", &v12, 0x16u);
       }
     }
@@ -198,8 +198,8 @@ void __100__PLSearchIndexingLazyFetchHelper_enumerateMomentSearchEntitiesWithInd
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = [(PLManagedObject *)v4 memoriesBeingCuratedAssets];
-    v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    memoriesBeingCuratedAssets = [(PLManagedObject *)v4 memoriesBeingCuratedAssets];
+    v7 = [memoriesBeingCuratedAssets countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
       v8 = v7;
@@ -210,7 +210,7 @@ void __100__PLSearchIndexingLazyFetchHelper_enumerateMomentSearchEntitiesWithInd
         {
           if (*v16 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(memoriesBeingCuratedAssets);
           }
 
           v11 = *(*(&v15 + 1) + 8 * i);
@@ -220,7 +220,7 @@ void __100__PLSearchIndexingLazyFetchHelper_enumerateMomentSearchEntitiesWithInd
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v8 = [memoriesBeingCuratedAssets countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v8);
@@ -243,14 +243,14 @@ void __100__PLSearchIndexingLazyFetchHelper_enumerateMomentSearchEntitiesWithInd
   if (!allSceneClasifications)
   {
     v4 = self->_object;
-    v5 = [(PLManagedObject *)v4 additionalAttributes];
-    v6 = [PLSceneClassification fetchSceneClassificationsForAdditionalAttributes:v5 managedObjectContext:self->_moc];
+    additionalAttributes = [(PLManagedObject *)v4 additionalAttributes];
+    v6 = [PLSceneClassification fetchSceneClassificationsForAdditionalAttributes:additionalAttributes managedObjectContext:self->_moc];
 
     if ([v6 isSuccess])
     {
-      v7 = [v6 result];
+      result = [v6 result];
       v8 = self->_allSceneClasifications;
-      self->_allSceneClasifications = v7;
+      self->_allSceneClasifications = result;
     }
 
     else
@@ -258,12 +258,12 @@ void __100__PLSearchIndexingLazyFetchHelper_enumerateMomentSearchEntitiesWithInd
       v9 = PLSearchBackendModelTranslationGetLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        v10 = [(PLManagedObject *)self->_object objectID];
-        v11 = [v6 error];
+        objectID = [(PLManagedObject *)self->_object objectID];
+        error = [v6 error];
         v13 = 138543618;
-        v14 = v10;
+        v14 = objectID;
         v15 = 2112;
-        v16 = v11;
+        v16 = error;
         _os_log_impl(&dword_19BF1F000, v9, OS_LOG_TYPE_ERROR, "Error fetching scenes for asset: %{public}@, error: %@", &v13, 0x16u);
       }
     }
@@ -280,14 +280,14 @@ void __100__PLSearchIndexingLazyFetchHelper_enumerateMomentSearchEntitiesWithInd
   allDetectedFaces = self->_allDetectedFaces;
   if (!allDetectedFaces)
   {
-    v4 = [(PLManagedObject *)self->_object objectID];
-    v5 = [PLDetectedFace fetchDetectedFacesForAssetObjectID:v4 managedObjectContext:self->_moc];
+    objectID = [(PLManagedObject *)self->_object objectID];
+    v5 = [PLDetectedFace fetchDetectedFacesForAssetObjectID:objectID managedObjectContext:self->_moc];
 
     if ([v5 isSuccess])
     {
-      v6 = [v5 result];
+      result = [v5 result];
       v7 = self->_allDetectedFaces;
-      self->_allDetectedFaces = v6;
+      self->_allDetectedFaces = result;
     }
 
     else
@@ -295,12 +295,12 @@ void __100__PLSearchIndexingLazyFetchHelper_enumerateMomentSearchEntitiesWithInd
       v8 = PLSearchBackendModelTranslationGetLog();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        v9 = [(PLManagedObject *)self->_object objectID];
-        v10 = [v5 error];
+        objectID2 = [(PLManagedObject *)self->_object objectID];
+        error = [v5 error];
         v12 = 138543618;
-        v13 = v9;
+        v13 = objectID2;
         v14 = 2112;
-        v15 = v10;
+        v15 = error;
         _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_ERROR, "Error fetching detected faces for asset: %{public}@, error: %@", &v12, 0x16u);
       }
     }
@@ -311,19 +311,19 @@ void __100__PLSearchIndexingLazyFetchHelper_enumerateMomentSearchEntitiesWithInd
   return allDetectedFaces;
 }
 
-- (PLSearchIndexingLazyFetchHelper)initWithObject:(id)a3 libraryIdentifier:(int64_t)a4 managedObjectContext:(id)a5
+- (PLSearchIndexingLazyFetchHelper)initWithObject:(id)object libraryIdentifier:(int64_t)identifier managedObjectContext:(id)context
 {
-  v9 = a3;
-  v10 = a5;
+  objectCopy = object;
+  contextCopy = context;
   v16.receiver = self;
   v16.super_class = PLSearchIndexingLazyFetchHelper;
   v11 = [(PLSearchIndexingLazyFetchHelper *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_object, a3);
-    v12->_libraryIdentifier = a4;
-    objc_storeStrong(&v12->_moc, a5);
+    objc_storeStrong(&v11->_object, object);
+    v12->_libraryIdentifier = identifier;
+    objc_storeStrong(&v12->_moc, context);
     v13 = objc_alloc_init(MEMORY[0x1E695DF90]);
     relationsByPersonUUID = v12->_relationsByPersonUUID;
     v12->_relationsByPersonUUID = v13;

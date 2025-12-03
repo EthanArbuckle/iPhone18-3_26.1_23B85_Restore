@@ -1,36 +1,36 @@
 @interface AVTCoreModelCategory
-- (AVTCoreModelCategory)initWithPresetCategory:(int64_t)a3 presets:(id)a4 tags:(id)a5 rows:(id)a6 pairing:(id)a7;
+- (AVTCoreModelCategory)initWithPresetCategory:(int64_t)category presets:(id)presets tags:(id)tags rows:(id)rows pairing:(id)pairing;
 - (id)description;
 @end
 
 @implementation AVTCoreModelCategory
 
-- (AVTCoreModelCategory)initWithPresetCategory:(int64_t)a3 presets:(id)a4 tags:(id)a5 rows:(id)a6 pairing:(id)a7
+- (AVTCoreModelCategory)initWithPresetCategory:(int64_t)category presets:(id)presets tags:(id)tags rows:(id)rows pairing:(id)pairing
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  presetsCopy = presets;
+  tagsCopy = tags;
+  rowsCopy = rows;
+  pairingCopy = pairing;
   v25.receiver = self;
   v25.super_class = AVTCoreModelCategory;
   v16 = [(AVTCoreModelCategory *)&v25 init];
   v17 = v16;
   if (v16)
   {
-    v16->_presetCategory = a3;
-    v18 = [v12 copy];
+    v16->_presetCategory = category;
+    v18 = [presetsCopy copy];
     presets = v17->_presets;
     v17->_presets = v18;
 
-    v20 = [v14 copy];
+    v20 = [rowsCopy copy];
     pickers = v17->_pickers;
     v17->_pickers = v20;
 
-    v22 = [v13 copy];
+    v22 = [tagsCopy copy];
     tags = v17->_tags;
     v17->_tags = v22;
 
-    objc_storeStrong(&v17->_pairing, a7);
+    objc_storeStrong(&v17->_pairing, pairing);
   }
 
   return v17;
@@ -47,23 +47,23 @@
   v5 = AVTPresetCategoryToString();
   [v4 appendFormat:@" AVTPresetCategory: %@\n", v5];
 
-  v6 = [(AVTCoreModelCategory *)self pairing];
+  pairing = [(AVTCoreModelCategory *)self pairing];
 
-  if (v6)
+  if (pairing)
   {
-    v7 = [(AVTCoreModelCategory *)self pairing];
-    [v7 pairedCategory];
+    pairing2 = [(AVTCoreModelCategory *)self pairing];
+    [pairing2 pairedCategory];
     v8 = AVTPresetCategoryToString();
     [v4 appendFormat:@" paired with: %@\n", v8];
   }
 
-  v9 = [(AVTCoreModelCategory *)self pickers];
-  v10 = [v9 avt_description];
-  [v4 appendFormat:@" rows: %@\n", v10];
+  pickers = [(AVTCoreModelCategory *)self pickers];
+  avt_description = [pickers avt_description];
+  [v4 appendFormat:@" rows: %@\n", avt_description];
 
-  v11 = [(AVTCoreModelCategory *)self presets];
-  v12 = [v11 avt_description];
-  [v4 appendFormat:@" presets: %@\n", v12];
+  presets = [(AVTCoreModelCategory *)self presets];
+  avt_description2 = [presets avt_description];
+  [v4 appendFormat:@" presets: %@\n", avt_description2];
 
   v13 = [v4 copy];
 

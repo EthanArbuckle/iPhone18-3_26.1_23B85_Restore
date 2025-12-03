@@ -1,34 +1,34 @@
 @interface SBSearchPresenter
 - (BOOL)_canPresent;
 - (SBHSearchInteractivePresentationMetrics)interactivePresentationMetrics;
-- (SBSearchPresenter)initWithSettings:(id)a3 identifier:(id)a4;
+- (SBSearchPresenter)initWithSettings:(id)settings identifier:(id)identifier;
 - (SBSearchPresenterDelegate)searchPresenterDelegate;
-- (double)_rubberbandingOffsetForContentOffset:(CGPoint)a3;
-- (double)_searchPresentationProgressForOffset:(double)a3;
-- (id)_noteWillBeginModifyingPresentationProgressForState:(int64_t)a3 animated:(BOOL)a4;
+- (double)_rubberbandingOffsetForContentOffset:(CGPoint)offset;
+- (double)_searchPresentationProgressForOffset:(double)offset;
+- (id)_noteWillBeginModifyingPresentationProgressForState:(int64_t)state animated:(BOOL)animated;
 - (void)_didDismissSearch;
 - (void)_didPresentSearch;
 - (void)_sendDidDismissSearchToDelegateAndObservers;
-- (void)_sendDidDismissSearchToObserver:(id)a3;
+- (void)_sendDidDismissSearchToObserver:(id)observer;
 - (void)_sendDidPresentSearchToDelegateAndObservers;
-- (void)_sendDidPresentSearchToObserver:(id)a3;
-- (void)_sendWillDismissSearch:(BOOL)a3 toObserver:(id)a4;
-- (void)_sendWillDismissSearchToDelegateAndObservers:(BOOL)a3;
-- (void)_sendWillPresentSearch:(BOOL)a3 toObserver:(id)a4;
-- (void)_sendWillPresentSearchToDelegateAndObservers:(BOOL)a3;
+- (void)_sendDidPresentSearchToObserver:(id)observer;
+- (void)_sendWillDismissSearch:(BOOL)search toObserver:(id)observer;
+- (void)_sendWillDismissSearchToDelegateAndObservers:(BOOL)observers;
+- (void)_sendWillPresentSearch:(BOOL)search toObserver:(id)observer;
+- (void)_sendWillPresentSearchToDelegateAndObservers:(BOOL)observers;
 - (void)_setUpInteractivePresentationMetrics;
 - (void)_setUpSearchAnimationSettings;
-- (void)_updatePresentables:(id)a3 withMode:(int64_t)a4;
-- (void)_updatePresentables:(id)a3 withMode:(int64_t)a4 withCompletion:(id)a5;
-- (void)_willDismissSearchAnimated:(BOOL)a3;
-- (void)_willPresentSearchAnimated:(BOOL)a3;
-- (void)dismissSearchAnimated:(BOOL)a3;
-- (void)presentSearchAnimated:(BOOL)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4;
-- (void)setUsesTransitionDistanceAsStartOffset:(BOOL)a3;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
+- (void)_updatePresentables:(id)presentables withMode:(int64_t)mode;
+- (void)_updatePresentables:(id)presentables withMode:(int64_t)mode withCompletion:(id)completion;
+- (void)_willDismissSearchAnimated:(BOOL)animated;
+- (void)_willPresentSearchAnimated:(BOOL)animated;
+- (void)dismissSearchAnimated:(BOOL)animated;
+- (void)presentSearchAnimated:(BOOL)animated;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity;
+- (void)setUsesTransitionDistanceAsStartOffset:(BOOL)offset;
+- (void)settings:(id)settings changedValueForKey:(id)key;
 @end
 
 @implementation SBSearchPresenter
@@ -51,7 +51,7 @@
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid condition not satisfying: %@", @"_presentables != nil"];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    v5 = NSStringFromSelector(a1);
+    v5 = NSStringFromSelector(self);
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     *buf = 138544642;
@@ -111,24 +111,24 @@
   }
 }
 
-- (SBSearchPresenter)initWithSettings:(id)a3 identifier:(id)a4
+- (SBSearchPresenter)initWithSettings:(id)settings identifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  settingsCopy = settings;
+  identifierCopy = identifier;
   v15.receiver = self;
   v15.super_class = SBSearchPresenter;
   v9 = [(SBSearchPresenter *)&v15 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [identifierCopy copy];
     identifier = v9->_identifier;
     v9->_identifier = v10;
 
-    v12 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v9->_observers;
-    v9->_observers = v12;
+    v9->_observers = weakObjectsHashTable;
 
-    objc_storeStrong(&v9->_pullToSearchSettings, a3);
+    objc_storeStrong(&v9->_pullToSearchSettings, settings);
     [(SBHHomePullToSearchSettings *)v9->_pullToSearchSettings addKeyObserver:v9];
     [(SBSearchPresenter *)v9 _setUpSearchAnimationSettings];
     [(SBSearchPresenter *)v9 _setUpInteractivePresentationMetrics];
@@ -137,14 +137,14 @@
   return v9;
 }
 
-- (void)presentSearchAnimated:(BOOL)a3
+- (void)presentSearchAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v20 = *MEMORY[0x277D85DE8];
   if ([(SBSearchPresenter *)self _canPresent])
   {
-    [(SBSearchPresenter *)self _willPresentSearchAnimated:v3];
-    v5 = [(SBSearchPresenter *)self _noteWillBeginModifyingPresentationProgressForState:2 animated:v3];
+    [(SBSearchPresenter *)self _willPresentSearchAnimated:animatedCopy];
+    v5 = [(SBSearchPresenter *)self _noteWillBeginModifyingPresentationProgressForState:2 animated:animatedCopy];
     self->_presentationState = 2;
     self->_presentationVelocity = 0.0;
     trackingScrollView = self->_trackingScrollView;
@@ -153,14 +153,14 @@
       [(UIScrollView *)trackingScrollView _forcePanGestureToEndImmediately];
     }
 
-    if (v3)
+    if (animatedCopy)
     {
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __43__SBSearchPresenter_presentSearchAnimated___block_invoke;
       v16[3] = &unk_2783A8BF0;
       v17 = v5;
-      v18 = self;
+      selfCopy = self;
       [(SBSearchPresenter *)self _updatePresentablesWithMode:3 withCompletion:v16];
     }
 
@@ -246,15 +246,15 @@ void *__43__SBSearchPresenter_presentSearchAnimated___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)dismissSearchAnimated:(BOOL)a3
+- (void)dismissSearchAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v21 = *MEMORY[0x277D85DE8];
   presentationState = self->_presentationState;
   [(SBSearchPresenter *)self _willDismissSearchAnimated:?];
   self->_presentationVelocity = 0.0;
   self->_presentationState = presentationState;
-  v6 = [(SBSearchPresenter *)self _noteWillBeginModifyingPresentationProgressForState:0 animated:v3];
+  v6 = [(SBSearchPresenter *)self _noteWillBeginModifyingPresentationProgressForState:0 animated:animatedCopy];
   self->_presentationState = 0;
   trackingScrollView = self->_trackingScrollView;
   if (trackingScrollView)
@@ -262,14 +262,14 @@ void *__43__SBSearchPresenter_presentSearchAnimated___block_invoke(uint64_t a1)
     [(UIScrollView *)trackingScrollView _forcePanGestureToEndImmediately];
   }
 
-  if (v3)
+  if (animatedCopy)
   {
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __43__SBSearchPresenter_dismissSearchAnimated___block_invoke;
     v17[3] = &unk_2783A8BF0;
     v18 = v6;
-    v19 = self;
+    selfCopy = self;
     [(SBSearchPresenter *)self _updatePresentablesWithMode:3 withCompletion:v17];
   }
 
@@ -354,10 +354,10 @@ void *__43__SBSearchPresenter_dismissSearchAnimated___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  draggingCopy = dragging;
   v6 = SBLogSpotlight();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -370,12 +370,12 @@ void *__43__SBSearchPresenter_dismissSearchAnimated___block_invoke(uint64_t a1)
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "%@ identifier: %@", &v23, 0x16u);
   }
 
-  v9 = [(SBSearchPresenter *)self _canPresent];
-  if (v9)
+  _canPresent = [(SBSearchPresenter *)self _canPresent];
+  if (_canPresent)
   {
-    objc_storeStrong(&self->_trackingScrollView, a3);
-    v10 = [v5 window];
-    if (([v10 interfaceOrientation] - 1) > 1)
+    objc_storeStrong(&self->_trackingScrollView, dragging);
+    window = [draggingCopy window];
+    if (([window interfaceOrientation] - 1) > 1)
     {
     }
 
@@ -385,35 +385,35 @@ void *__43__SBSearchPresenter_dismissSearchAnimated___block_invoke(uint64_t a1)
       [v11 homeGestureSwipeDownHeight];
       v13 = v12;
 
-      v14 = [v5 panGestureRecognizer];
-      [v14 locationInView:v5];
+      panGestureRecognizer = [draggingCopy panGestureRecognizer];
+      [panGestureRecognizer locationInView:draggingCopy];
       v16 = v15;
       v18 = v17;
 
-      [v5 convertPoint:0 toView:{v16, v18}];
+      [draggingCopy convertPoint:0 toView:{v16, v18}];
       v20 = v19;
-      [v10 size];
+      [window size];
       v22 = v21 - v13;
 
       if (v20 > v22)
       {
-        LOBYTE(v9) = 0;
+        LOBYTE(_canPresent) = 0;
         goto LABEL_9;
       }
     }
 
-    [v5 contentOffset];
-    LOBYTE(v9) = BSFloatLessThanOrEqualToFloat();
+    [draggingCopy contentOffset];
+    LOBYTE(_canPresent) = BSFloatLessThanOrEqualToFloat();
   }
 
 LABEL_9:
-  self->_scrollViewBeganScrollingFromTop = v9;
+  self->_scrollViewBeganScrollingFromTop = _canPresent;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   v17 = *MEMORY[0x277D85DE8];
-  [a3 contentOffset];
+  [scroll contentOffset];
   [(SBSearchPresenter *)self _rubberbandingOffsetForContentOffset:?];
   if (self->_scrollViewBeganScrollingFromTop && BSFloatGreaterThanFloat() && !self->_presentationState)
   {
@@ -432,8 +432,8 @@ LABEL_9:
     self->_presentationVelocity = 0.0;
     [(SBSearchPresenter *)self _willPresentSearchAnimated:1];
     v7 = [(SBSearchPresenter *)self _noteWillBeginModifyingPresentationProgressForState:1 animated:1];
-    v8 = [(SBSearchPresenter *)self interactionCompletions];
-    if ([v8 count])
+    interactionCompletions = [(SBSearchPresenter *)self interactionCompletions];
+    if ([interactionCompletions count])
     {
       v9 = SBLogSpotlight();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -447,7 +447,7 @@ LABEL_9:
         _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "%@ identifier: %@ had previous interactive transition completions", &v13, 0x16u);
       }
 
-      v12 = [v7 arrayByAddingObjectsFromArray:v8];
+      v12 = [v7 arrayByAddingObjectsFromArray:interactionCompletions];
 
       v7 = v12;
     }
@@ -463,11 +463,11 @@ LABEL_9:
   }
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity
 {
-  y = a4.y;
+  y = velocity.y;
   v45 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  draggingCopy = dragging;
   self->_scrollViewBeganScrollingFromTop = 0;
   presentationState = self->_presentationState;
   v8 = SBLogSpotlight();
@@ -484,16 +484,16 @@ LABEL_9:
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "%@ interactive: %{BOOL}u identifier: %@", buf, 0x1Cu);
   }
 
-  v11 = [(SBSearchPresenter *)self interactionCompletions];
+  interactionCompletions = [(SBSearchPresenter *)self interactionCompletions];
   [(SBSearchPresenter *)self setInteractionCompletions:0];
   if (presentationState == 1)
   {
     v12 = *MEMORY[0x277D76EB8];
-    [v6 contentOffset];
+    [draggingCopy contentOffset];
     v14 = v13;
     v16 = v15;
-    v17 = [v6 panGestureRecognizer];
-    [v17 velocityInView:v6];
+    panGestureRecognizer = [draggingCopy panGestureRecognizer];
+    [panGestureRecognizer velocityInView:draggingCopy];
     v19 = v18;
     v21 = v20;
 
@@ -516,8 +516,8 @@ LABEL_9:
     v34[2] = __60__SBSearchPresenter_scrollViewWillEndDragging_withVelocity___block_invoke_2;
     v34[3] = &unk_2783B1948;
     v37 = v23;
-    v35 = v11;
-    v36 = self;
+    v35 = interactionCompletions;
+    selfCopy = self;
     [(SBSearchPresenter *)self _updatePresentablesWithMode:3 withCompletion:v34];
     v24 = v35;
   }
@@ -528,7 +528,7 @@ LABEL_9:
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v24 = v11;
+    v24 = interactionCompletions;
     v25 = [v24 countByEnumeratingWithState:&v30 objects:v38 count:16];
     if (v25)
     {
@@ -603,18 +603,18 @@ void *__60__SBSearchPresenter_scrollViewWillEndDragging_withVelocity___block_inv
   return result;
 }
 
-- (void)setUsesTransitionDistanceAsStartOffset:(BOOL)a3
+- (void)setUsesTransitionDistanceAsStartOffset:(BOOL)offset
 {
-  if (self->_usesTransitionDistanceAsStartOffset != a3)
+  if (self->_usesTransitionDistanceAsStartOffset != offset)
   {
-    self->_usesTransitionDistanceAsStartOffset = a3;
+    self->_usesTransitionDistanceAsStartOffset = offset;
     [(SBSearchPresenter *)self _setUpInteractivePresentationMetrics];
   }
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  [(SBSearchPresenter *)self _setUpSearchAnimationSettings:a3];
+  [(SBSearchPresenter *)self _setUpSearchAnimationSettings:settings];
 
   [(SBSearchPresenter *)self _setUpInteractivePresentationMetrics];
 }
@@ -645,9 +645,9 @@ void *__60__SBSearchPresenter_scrollViewWillEndDragging_withVelocity___block_inv
 
 - (void)_setUpSearchAnimationSettings
 {
-  v3 = [(SBHHomePullToSearchSettings *)self->_pullToSearchSettings pullTransitionAnimationSettings];
+  pullTransitionAnimationSettings = [(SBHHomePullToSearchSettings *)self->_pullToSearchSettings pullTransitionAnimationSettings];
   searchAnimationSettings = self->_searchAnimationSettings;
-  self->_searchAnimationSettings = v3;
+  self->_searchAnimationSettings = pullTransitionAnimationSettings;
 }
 
 - (void)_setUpInteractivePresentationMetrics
@@ -665,9 +665,9 @@ void *__60__SBSearchPresenter_scrollViewWillEndDragging_withVelocity___block_inv
   }
 }
 
-- (void)_willPresentSearchAnimated:(BOOL)a3
+- (void)_willPresentSearchAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v46 = *MEMORY[0x277D85DE8];
   v5 = SBLogSpotlight();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -677,7 +677,7 @@ void *__60__SBSearchPresenter_scrollViewWillEndDragging_withVelocity___block_inv
     *buf = 138412802;
     v41 = v6;
     v42 = 1024;
-    v43 = v3;
+    v43 = animatedCopy;
     v44 = 2112;
     v45 = identifier;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "%@ animated: %{BOOL}u identifier: %@", buf, 0x1Cu);
@@ -704,7 +704,7 @@ void *__60__SBSearchPresenter_scrollViewWillEndDragging_withVelocity___block_inv
     v12 = [WeakRetained displayConfigurationForPresenter:self];
     if (v12 && v10)
     {
-      v28 = v3;
+      v28 = animatedCopy;
       v36 = 0u;
       v37 = 0u;
       v34 = 0u;
@@ -737,7 +737,7 @@ void *__60__SBSearchPresenter_scrollViewWillEndDragging_withVelocity___block_inv
         while (v15);
       }
 
-      v3 = v28;
+      animatedCopy = v28;
       p_presentables = &self->_presentables;
     }
   }
@@ -747,7 +747,7 @@ void *__60__SBSearchPresenter_scrollViewWillEndDragging_withVelocity___block_inv
     v12 = 0;
   }
 
-  [(SBSearchPresenter *)self _sendWillPresentSearchToDelegateAndObservers:v3];
+  [(SBSearchPresenter *)self _sendWillPresentSearchToDelegateAndObservers:animatedCopy];
   if (![v10 count])
   {
     v19 = [WeakRetained searchPresentablesForPresenter:self];
@@ -805,12 +805,12 @@ void *__60__SBSearchPresenter_scrollViewWillEndDragging_withVelocity___block_inv
   }
 }
 
-- (void)_sendWillPresentSearchToDelegateAndObservers:(BOOL)a3
+- (void)_sendWillPresentSearchToDelegateAndObservers:(BOOL)observers
 {
-  v3 = a3;
+  observersCopy = observers;
   v16 = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_searchPresenterDelegate);
-  [(SBSearchPresenter *)self _sendWillPresentSearch:v3 toObserver:WeakRetained];
+  [(SBSearchPresenter *)self _sendWillPresentSearch:observersCopy toObserver:WeakRetained];
 
   v13 = 0u;
   v14 = 0u;
@@ -832,7 +832,7 @@ void *__60__SBSearchPresenter_scrollViewWillEndDragging_withVelocity___block_inv
           objc_enumerationMutation(v6);
         }
 
-        [(SBSearchPresenter *)self _sendWillPresentSearch:v3 toObserver:*(*(&v11 + 1) + 8 * v10++)];
+        [(SBSearchPresenter *)self _sendWillPresentSearch:observersCopy toObserver:*(*(&v11 + 1) + 8 * v10++)];
       }
 
       while (v8 != v10);
@@ -843,28 +843,28 @@ void *__60__SBSearchPresenter_scrollViewWillEndDragging_withVelocity___block_inv
   }
 }
 
-- (void)_sendWillPresentSearch:(BOOL)a3 toObserver:(id)a4
+- (void)_sendWillPresentSearch:(BOOL)search toObserver:(id)observer
 {
-  v4 = a3;
-  v6 = a4;
+  searchCopy = search;
+  observerCopy = observer;
   if (objc_opt_respondsToSelector())
   {
-    [v6 searchPresenterWillPresentSearch:self animated:v4];
+    [observerCopy searchPresenterWillPresentSearch:self animated:searchCopy];
   }
 }
 
-- (void)_sendDidPresentSearchToObserver:(id)a3
+- (void)_sendDidPresentSearchToObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   if (objc_opt_respondsToSelector())
   {
-    [v4 searchPresenterDidPresentSearch:self];
+    [observerCopy searchPresenterDidPresentSearch:self];
   }
 }
 
-- (void)_willDismissSearchAnimated:(BOOL)a3
+- (void)_willDismissSearchAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v14 = *MEMORY[0x277D85DE8];
   v5 = SBLogSpotlight();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -874,23 +874,23 @@ void *__60__SBSearchPresenter_scrollViewWillEndDragging_withVelocity___block_inv
     v8 = 138412802;
     v9 = v6;
     v10 = 1024;
-    v11 = v3;
+    v11 = animatedCopy;
     v12 = 2112;
     v13 = identifier;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "%@ animated: %{BOOL}u identifier: %@", &v8, 0x1Cu);
   }
 
   [MEMORY[0x277CD9FF0] setFrameStallSkipRequest:1];
-  [(SBSearchPresenter *)self _sendWillDismissSearchToDelegateAndObservers:v3];
+  [(SBSearchPresenter *)self _sendWillDismissSearchToDelegateAndObservers:animatedCopy];
   self->_presentationState = 0;
 }
 
-- (void)_sendWillDismissSearchToDelegateAndObservers:(BOOL)a3
+- (void)_sendWillDismissSearchToDelegateAndObservers:(BOOL)observers
 {
-  v3 = a3;
+  observersCopy = observers;
   v16 = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_searchPresenterDelegate);
-  [(SBSearchPresenter *)self _sendWillDismissSearch:v3 toObserver:WeakRetained];
+  [(SBSearchPresenter *)self _sendWillDismissSearch:observersCopy toObserver:WeakRetained];
 
   v13 = 0u;
   v14 = 0u;
@@ -912,7 +912,7 @@ void *__60__SBSearchPresenter_scrollViewWillEndDragging_withVelocity___block_inv
           objc_enumerationMutation(v6);
         }
 
-        [(SBSearchPresenter *)self _sendWillDismissSearch:v3 toObserver:*(*(&v11 + 1) + 8 * v10++)];
+        [(SBSearchPresenter *)self _sendWillDismissSearch:observersCopy toObserver:*(*(&v11 + 1) + 8 * v10++)];
       }
 
       while (v8 != v10);
@@ -923,13 +923,13 @@ void *__60__SBSearchPresenter_scrollViewWillEndDragging_withVelocity___block_inv
   }
 }
 
-- (void)_sendWillDismissSearch:(BOOL)a3 toObserver:(id)a4
+- (void)_sendWillDismissSearch:(BOOL)search toObserver:(id)observer
 {
-  v4 = a3;
-  v6 = a4;
+  searchCopy = search;
+  observerCopy = observer;
   if (objc_opt_respondsToSelector())
   {
-    [v6 searchPresenterWillDismissSearch:self animated:v4];
+    [observerCopy searchPresenterWillDismissSearch:self animated:searchCopy];
   }
 }
 
@@ -991,26 +991,26 @@ void *__60__SBSearchPresenter_scrollViewWillEndDragging_withVelocity___block_inv
   }
 }
 
-- (void)_sendDidDismissSearchToObserver:(id)a3
+- (void)_sendDidDismissSearchToObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   if (objc_opt_respondsToSelector())
   {
-    [v4 searchPresenterDidDismissSearch:self];
+    [observerCopy searchPresenterDidDismissSearch:self];
   }
 }
 
-- (id)_noteWillBeginModifyingPresentationProgressForState:(int64_t)a3 animated:(BOOL)a4
+- (id)_noteWillBeginModifyingPresentationProgressForState:(int64_t)state animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v27 = *MEMORY[0x277D85DE8];
-  v19 = [MEMORY[0x277CBEB18] array];
-  v20 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v18 = self;
+  selfCopy = self;
   v7 = self->_presentables;
   v8 = [(NSArray *)v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v8)
@@ -1028,18 +1028,18 @@ void *__60__SBSearchPresenter_scrollViewWillEndDragging_withVelocity___block_inv
 
         v12 = *(*(&v22 + 1) + 8 * i);
         v21 = 0;
-        v13 = [v12 willBeginModifyingPresentationProgressForState:a3 animated:v4 needsInitialLayout:{&v21, v18}];
+        v13 = [v12 willBeginModifyingPresentationProgressForState:state animated:animatedCopy needsInitialLayout:{&v21, selfCopy}];
         v14 = v13;
         if (v13)
         {
           v15 = [v13 copy];
           v16 = MEMORY[0x223D6F7F0]();
-          [v20 addObject:v16];
+          [array2 addObject:v16];
         }
 
         if (v21 == 1)
         {
-          [v19 addObject:v12];
+          [array addObject:v12];
         }
       }
 
@@ -1049,20 +1049,20 @@ void *__60__SBSearchPresenter_scrollViewWillEndDragging_withVelocity___block_inv
     while (v9);
   }
 
-  if ([v19 count])
+  if ([array count])
   {
-    [(SBSearchPresenter *)v18 _updatePresentables:v19 withMode:2 withCompletion:0];
+    [(SBSearchPresenter *)selfCopy _updatePresentables:array withMode:2 withCompletion:0];
   }
 
-  return v20;
+  return array2;
 }
 
-- (double)_rubberbandingOffsetForContentOffset:(CGPoint)a3
+- (double)_rubberbandingOffsetForContentOffset:(CGPoint)offset
 {
   interactiveTransitionStartOffset = self->_interactivePresentationMetrics.interactiveTransitionStartOffset;
   v4 = -interactiveTransitionStartOffset;
-  result = -(a3.y + interactiveTransitionStartOffset);
-  if (a3.y >= v4)
+  result = -(offset.y + interactiveTransitionStartOffset);
+  if (offset.y >= v4)
   {
     return 0.0;
   }
@@ -1070,9 +1070,9 @@ void *__60__SBSearchPresenter_scrollViewWillEndDragging_withVelocity___block_inv
   return result;
 }
 
-- (double)_searchPresentationProgressForOffset:(double)a3
+- (double)_searchPresentationProgressForOffset:(double)offset
 {
-  v3 = a3 / self->_interactivePresentationMetrics.interactiveTransitionDistance;
+  v3 = offset / self->_interactivePresentationMetrics.interactiveTransitionDistance;
   if (v3 <= 0.0)
   {
     v4 = 0.0;
@@ -1086,10 +1086,10 @@ void *__60__SBSearchPresenter_scrollViewWillEndDragging_withVelocity___block_inv
   return fmin(v4, 1.0);
 }
 
-- (void)_updatePresentables:(id)a3 withMode:(int64_t)a4 withCompletion:(id)a5
+- (void)_updatePresentables:(id)presentables withMode:(int64_t)mode withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  presentablesCopy = presentables;
+  completionCopy = completion;
   v10 = MEMORY[0x277D75D18];
   searchAnimationSettings = self->_searchAnimationSettings;
   v16[0] = MEMORY[0x277D85DD0];
@@ -1097,16 +1097,16 @@ void *__60__SBSearchPresenter_scrollViewWillEndDragging_withVelocity___block_inv
   v16[2] = __65__SBSearchPresenter__updatePresentables_withMode_withCompletion___block_invoke;
   v16[3] = &unk_2783AB2A8;
   v16[4] = self;
-  v17 = v8;
-  v18 = a4;
+  v17 = presentablesCopy;
+  modeCopy = mode;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __65__SBSearchPresenter__updatePresentables_withMode_withCompletion___block_invoke_2;
   v14[3] = &unk_2783AE778;
-  v15 = v9;
-  v12 = v9;
-  v13 = v8;
-  [v10 sb_animateWithSettings:searchAnimationSettings mode:a4 animations:v16 completion:v14];
+  v15 = completionCopy;
+  v12 = completionCopy;
+  v13 = presentablesCopy;
+  [v10 sb_animateWithSettings:searchAnimationSettings mode:mode animations:v16 completion:v14];
 }
 
 uint64_t __65__SBSearchPresenter__updatePresentables_withMode_withCompletion___block_invoke_2(uint64_t a1)
@@ -1120,10 +1120,10 @@ uint64_t __65__SBSearchPresenter__updatePresentables_withMode_withCompletion___b
   return result;
 }
 
-- (void)_updatePresentables:(id)a3 withMode:(int64_t)a4
+- (void)_updatePresentables:(id)presentables withMode:(int64_t)mode
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  presentablesCopy = presentables;
   presentationState = self->_presentationState;
   if (presentationState)
   {
@@ -1152,13 +1152,13 @@ uint64_t __65__SBSearchPresenter__updatePresentables_withMode_withCompletion___b
   v26[1] = 3221225472;
   v26[2] = __50__SBSearchPresenter__updatePresentables_withMode___block_invoke;
   v26[3] = &__block_descriptor_40_e43_v24__0__SBFFluidBehaviorSettings_8___v___16l;
-  v26[4] = a4;
+  v26[4] = mode;
   v10 = MEMORY[0x223D6F7F0](v26);
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v11 = v6;
+  v11 = presentablesCopy;
   v12 = [v11 countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v12)
   {

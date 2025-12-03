@@ -2,22 +2,22 @@
 + (id)defaultStyle;
 - (id)description;
 - (id)shallowCopy;
-- (void)applyOverridesFrom:(id)a3;
-- (void)setFill:(id)a3;
+- (void)applyOverridesFrom:(id)from;
+- (void)setFill:(id)fill;
 @end
 
 @implementation OADTableCellStyle
 
-- (void)setFill:(id)a3
+- (void)setFill:(id)fill
 {
-  v5 = a3;
+  fillCopy = fill;
   mFill = self->mFill;
   p_mFill = &self->mFill;
-  if (mFill != v5)
+  if (mFill != fillCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mFill, a3);
-    v5 = v8;
+    v8 = fillCopy;
+    objc_storeStrong(p_mFill, fill);
+    fillCopy = v8;
   }
 }
 
@@ -35,8 +35,8 @@
     [v6 setBorderStyle:v7];
 
     v8 = +[OADTableCellStyle defaultStyle]::defaultStyle;
-    v9 = [a1 defaultFill];
-    [v8 setFill:v9];
+    defaultFill = [self defaultFill];
+    [v8 setFill:defaultFill];
 
     v3 = +[OADTableCellStyle defaultStyle]::defaultStyle;
   }
@@ -47,35 +47,35 @@
 - (id)shallowCopy
 {
   v3 = objc_alloc_init(OADTableCellStyle);
-  v4 = [(OADTableCellStyle *)self fill];
-  [(OADTableCellStyle *)v3 setFill:v4];
+  fill = [(OADTableCellStyle *)self fill];
+  [(OADTableCellStyle *)v3 setFill:fill];
 
-  v5 = [(OADTableCellStyle *)self borderStyle];
-  v6 = [v5 shallowCopy];
+  borderStyle = [(OADTableCellStyle *)self borderStyle];
+  shallowCopy = [borderStyle shallowCopy];
 
-  [(OADTableCellStyle *)v3 setBorderStyle:v6];
+  [(OADTableCellStyle *)v3 setBorderStyle:shallowCopy];
   return v3;
 }
 
-- (void)applyOverridesFrom:(id)a3
+- (void)applyOverridesFrom:(id)from
 {
-  v4 = a3;
-  if (v4)
+  fromCopy = from;
+  if (fromCopy)
   {
-    v9 = v4;
-    v5 = [v4 fill];
+    v9 = fromCopy;
+    fill = [fromCopy fill];
 
-    if (v5)
+    if (fill)
     {
-      v6 = [v9 fill];
-      [(OADTableCellStyle *)self setFill:v6];
+      fill2 = [v9 fill];
+      [(OADTableCellStyle *)self setFill:fill2];
     }
 
-    v7 = [(OADTableCellStyle *)self borderStyle];
-    v8 = [v9 borderStyle];
-    [v7 applyOverridesFrom:v8];
+    borderStyle = [(OADTableCellStyle *)self borderStyle];
+    borderStyle2 = [v9 borderStyle];
+    [borderStyle applyOverridesFrom:borderStyle2];
 
-    v4 = v9;
+    fromCopy = v9;
   }
 }
 

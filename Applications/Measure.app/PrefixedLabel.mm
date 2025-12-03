@@ -1,9 +1,9 @@
 @interface PrefixedLabel
 - (NSString)text;
 - (_TtC7Measure13PrefixedLabel)init;
-- (_TtC7Measure13PrefixedLabel)initWithCoder:(id)a3;
-- (_TtC7Measure13PrefixedLabel)initWithFrame:(CGRect)a3;
-- (void)setText:(id)a3;
+- (_TtC7Measure13PrefixedLabel)initWithCoder:(id)coder;
+- (_TtC7Measure13PrefixedLabel)initWithFrame:(CGRect)frame;
+- (void)setText:(id)text;
 @end
 
 @implementation PrefixedLabel
@@ -16,9 +16,9 @@
   return v2;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  if (a3)
+  if (text)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
@@ -30,7 +30,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_10006EC50(v4, v6);
 }
 
@@ -44,12 +44,12 @@
   return [(PrefixedLabel *)&v4 initWithFrame:0.0, 0.0, 0.0, 0.0];
 }
 
-- (_TtC7Measure13PrefixedLabel)initWithFrame:(CGRect)a3
+- (_TtC7Measure13PrefixedLabel)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = (&self->super.super.super.super.isa + OBJC_IVAR____TtC7Measure13PrefixedLabel_prefix);
   *v7 = 0;
   v7[1] = 0xE000000000000000;
@@ -58,15 +58,15 @@
   return [(PrefixedLabel *)&v9 initWithFrame:x, y, width, height];
 }
 
-- (_TtC7Measure13PrefixedLabel)initWithCoder:(id)a3
+- (_TtC7Measure13PrefixedLabel)initWithCoder:(id)coder
 {
   v4 = (&self->super.super.super.super.isa + OBJC_IVAR____TtC7Measure13PrefixedLabel_prefix);
   *v4 = 0;
   v4[1] = 0xE000000000000000;
   v8.receiver = self;
   v8.super_class = type metadata accessor for PrefixedLabel();
-  v5 = a3;
-  v6 = [(PrefixedLabel *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(PrefixedLabel *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

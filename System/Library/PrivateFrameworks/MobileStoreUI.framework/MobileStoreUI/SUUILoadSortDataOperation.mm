@@ -1,40 +1,40 @@
 @interface SUUILoadSortDataOperation
 - (SSVLoadURLOperation)underlyingOperation;
-- (SUUILoadSortDataOperation)initWithResourceRequest:(id)a3;
+- (SUUILoadSortDataOperation)initWithResourceRequest:(id)request;
 - (void)cancel;
 - (void)main;
 @end
 
 @implementation SUUILoadSortDataOperation
 
-- (SUUILoadSortDataOperation)initWithResourceRequest:(id)a3
+- (SUUILoadSortDataOperation)initWithResourceRequest:(id)request
 {
   v4.receiver = self;
   v4.super_class = SUUILoadSortDataOperation;
-  return [(SUUILoadResourceOperation *)&v4 initWithResourceRequest:a3];
+  return [(SUUILoadResourceOperation *)&v4 initWithResourceRequest:request];
 }
 
 - (void)main
 {
   v3 = objc_alloc(MEMORY[0x277D69CD8]);
-  v4 = [(SUUILoadResourceOperation *)self resourceRequest];
-  v5 = [v4 sortURL];
-  v6 = [v3 initWithURL:v5];
+  resourceRequest = [(SUUILoadResourceOperation *)self resourceRequest];
+  sortURL = [resourceRequest sortURL];
+  v6 = [v3 initWithURL:sortURL];
 
-  v7 = [MEMORY[0x277D69D48] consumer];
-  [v6 setDataConsumer:v7];
+  consumer = [MEMORY[0x277D69D48] consumer];
+  [v6 setDataConsumer:consumer];
 
-  v8 = [(SUUILoadResourceOperation *)self clientContext];
-  v9 = [v8 valueForConfigurationKey:@"sfsuffix"];
+  clientContext = [(SUUILoadResourceOperation *)self clientContext];
+  v9 = [clientContext valueForConfigurationKey:@"sfsuffix"];
   [v6 setStoreFrontSuffix:v9];
 
-  v10 = [(SUUILoadResourceOperation *)self outputBlock];
+  outputBlock = [(SUUILoadResourceOperation *)self outputBlock];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __33__SUUILoadSortDataOperation_main__block_invoke;
   v12[3] = &unk_2798F8A58;
-  v13 = v10;
-  v11 = v10;
+  v13 = outputBlock;
+  v11 = outputBlock;
   [v6 setOutputBlock:v12];
   [(SUUILoadSortDataOperation *)self setUnderlyingOperation:v6];
   [v6 main];
@@ -152,8 +152,8 @@ void __33__SUUILoadSortDataOperation_main__block_invoke(uint64_t a1, void *a2, v
   v4.receiver = self;
   v4.super_class = SUUILoadSortDataOperation;
   [(SUUILoadResourceOperation *)&v4 cancel];
-  v3 = [(SUUILoadSortDataOperation *)self underlyingOperation];
-  [v3 cancel];
+  underlyingOperation = [(SUUILoadSortDataOperation *)self underlyingOperation];
+  [underlyingOperation cancel];
 }
 
 - (SSVLoadURLOperation)underlyingOperation

@@ -1,53 +1,53 @@
 @interface _UISplitViewControllerPanelImplStyle
 - (BOOL)alwaysHideSidebarToggleButton;
-- (_UISplitViewControllerPanelImplStyle)initWithSplitViewController:(id)a3;
-- (double)defaultMaximumWidthForColumn:(int64_t)a3 withSize:(CGSize)a4 splitBehavior:(int64_t)a5;
+- (_UISplitViewControllerPanelImplStyle)initWithSplitViewController:(id)controller;
+- (double)defaultMaximumWidthForColumn:(int64_t)column withSize:(CGSize)size splitBehavior:(int64_t)behavior;
 - (id)primaryBackgroundColor;
 - (id)splitViewController;
-- (int64_t)splitBehaviorForSize:(CGSize)a3;
+- (int64_t)splitBehaviorForSize:(CGSize)size;
 @end
 
 @implementation _UISplitViewControllerPanelImplStyle
 
-- (_UISplitViewControllerPanelImplStyle)initWithSplitViewController:(id)a3
+- (_UISplitViewControllerPanelImplStyle)initWithSplitViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = _UISplitViewControllerPanelImplStyle;
   v5 = [(_UISplitViewControllerPanelImplStyle *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_splitViewController, v4);
+    objc_storeWeak(&v5->_splitViewController, controllerCopy);
   }
 
   return v6;
 }
 
-- (double)defaultMaximumWidthForColumn:(int64_t)a3 withSize:(CGSize)a4 splitBehavior:(int64_t)a5
+- (double)defaultMaximumWidthForColumn:(int64_t)column withSize:(CGSize)size splitBehavior:(int64_t)behavior
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v41 = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->_splitViewController);
 
   if (!WeakRetained)
   {
-    v38 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v38 handleFailureInMethod:a2 object:self file:@"UISplitViewControllerPanelImpl.m" lineNumber:10192 description:@"Style for a dealloced UISplitViewController not expected"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISplitViewControllerPanelImpl.m" lineNumber:10192 description:@"Style for a dealloced UISplitViewController not expected"];
   }
 
   v12 = objc_loadWeakRetained(&self->_splitViewController);
-  v13 = [v12 _panelImpl];
+  _panelImpl = [v12 _panelImpl];
 
-  v14 = [v13 style];
-  if (a3 == 1)
+  style = [_panelImpl style];
+  if (column == 1)
   {
     v18 = 0.0;
-    if (v14 == 2)
+    if (style == 2)
     {
-      [v13 _screenSize];
-      if (width < v19 && a5 == 2)
+      [_panelImpl _screenSize];
+      if (width < v19 && behavior == 2)
       {
         v18 = 320.0;
       }
@@ -61,7 +61,7 @@
     goto LABEL_40;
   }
 
-  if (a3)
+  if (column)
   {
     if (os_variant_has_internal_diagnostics())
     {
@@ -71,7 +71,7 @@
         goto LABEL_18;
       }
 
-      v23 = _UISplitViewControllerColumnDescription(a3);
+      v23 = _UISplitViewControllerColumnDescription(column);
       v39 = 138412290;
       v40 = v23;
       _os_log_fault_impl(&dword_188A29000, v22, OS_LOG_TYPE_FAULT, "Unexpected request for default max width for %@ column. Using CGFLOAT_MAX", &v39, 0xCu);
@@ -88,7 +88,7 @@ LABEL_19:
       }
 
       v22 = v21;
-      v23 = _UISplitViewControllerColumnDescription(a3);
+      v23 = _UISplitViewControllerColumnDescription(column);
       v39 = 138412290;
       v40 = v23;
       _os_log_impl(&dword_188A29000, v22, OS_LOG_TYPE_ERROR, "Unexpected request for default max width for %@ column. Using CGFLOAT_MAX", &v39, 0xCu);
@@ -109,15 +109,15 @@ LABEL_39:
     goto LABEL_40;
   }
 
-  v24 = [(_UISplitViewControllerPanelImplStyle *)self splitViewController];
-  v25 = [v24 _usesExtraWidePrimaryColumn];
+  splitViewController = [(_UISplitViewControllerPanelImplStyle *)self splitViewController];
+  _usesExtraWidePrimaryColumn = [splitViewController _usesExtraWidePrimaryColumn];
 
-  if (!v25)
+  if (!_usesExtraWidePrimaryColumn)
   {
     goto LABEL_38;
   }
 
-  [v13 _screenSize];
+  [_panelImpl _screenSize];
   v18 = 320.0;
   if (width != v27 || height != v26)
   {
@@ -164,14 +164,14 @@ LABEL_38:
     goto LABEL_39;
   }
 
-  v29 = [v13 _layoutPrimaryOnRight];
+  _layoutPrimaryOnRight = [_panelImpl _layoutPrimaryOnRight];
   v30 = objc_loadWeakRetained(&self->_splitViewController);
-  v31 = [v30 view];
-  [v31 safeAreaInsets];
+  view = [v30 view];
+  [view safeAreaInsets];
   v33 = v32;
   v35 = v34;
 
-  if (v29)
+  if (_layoutPrimaryOnRight)
   {
     v36 = v35;
   }
@@ -187,71 +187,71 @@ LABEL_40:
   return v18;
 }
 
-- (int64_t)splitBehaviorForSize:(CGSize)a3
+- (int64_t)splitBehaviorForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v30 = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->_splitViewController);
-  v7 = [WeakRetained _panelImpl];
+  _panelImpl = [WeakRetained _panelImpl];
 
-  v8 = [(_UISplitViewControllerPanelImplStyle *)self splitViewController];
-  LODWORD(WeakRetained) = _UISplitViewControllerAutoHidesColumns(v8);
+  splitViewController = [(_UISplitViewControllerPanelImplStyle *)self splitViewController];
+  LODWORD(WeakRetained) = _UISplitViewControllerAutoHidesColumns(splitViewController);
 
   if (WeakRetained)
   {
-    if (!v7)
+    if (!_panelImpl)
     {
       v16 = 0;
       goto LABEL_36;
     }
 
-    v9 = [v7 style];
-    if (v9 - 3 <= 0xFFFFFFFFFFFFFFFDLL)
+    style = [_panelImpl style];
+    if (style - 3 <= 0xFFFFFFFFFFFFFFFDLL)
     {
-      v21 = [MEMORY[0x1E696AAA8] currentHandler];
-      v22 = _UISplitViewControllerStyleDescription(v9);
-      [v21 handleFailureInMethod:sel__defaultAutoHidingSplitBehaviorUpdatingOverrideFlagsIfNecessaryForSize_ object:v7 file:@"UISplitViewControllerPanelImpl.m" lineNumber:1662 description:{@"Incorrect code path for UISplitViewControllerStyle %@", v22}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      v22 = _UISplitViewControllerStyleDescription(style);
+      [currentHandler handleFailureInMethod:sel__defaultAutoHidingSplitBehaviorUpdatingOverrideFlagsIfNecessaryForSize_ object:_panelImpl file:@"UISplitViewControllerPanelImpl.m" lineNumber:1662 description:{@"Incorrect code path for UISplitViewControllerStyle %@", v22}];
     }
 
-    v10 = objc_loadWeakRetained((v7 + 16));
+    v10 = objc_loadWeakRetained((_panelImpl + 16));
     v11 = _UISplitViewControllerAutoHidesColumns(v10);
 
     if ((v11 & 1) == 0)
     {
-      v23 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v23 handleFailureInMethod:sel__defaultAutoHidingSplitBehaviorUpdatingOverrideFlagsIfNecessaryForSize_ object:v7 file:@"UISplitViewControllerPanelImpl.m" lineNumber:1662 description:@"Method restricted to autohiding context for UISplitViewController"];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:sel__defaultAutoHidingSplitBehaviorUpdatingOverrideFlagsIfNecessaryForSize_ object:_panelImpl file:@"UISplitViewControllerPanelImpl.m" lineNumber:1662 description:@"Method restricted to autohiding context for UISplitViewController"];
     }
 
-    v12 = [v7 currentState];
-    if (v12)
+    currentState = [_panelImpl currentState];
+    if (currentState)
     {
     }
 
-    else if (([v7 _isSecondaryColumnCompactInTotalWidth:width withPrimaryColumnWidth:0.0 supplementaryColumnWidth:0.0] & 1) == 0)
+    else if (([_panelImpl _isSecondaryColumnCompactInTotalWidth:width withPrimaryColumnWidth:0.0 supplementaryColumnWidth:0.0] & 1) == 0)
     {
       v24 = 0.0;
       v25 = 0.0;
-      if (v9 == 2)
+      if (style == 2)
       {
-        v17 = [*(v7 + 8) objectForKeyedSubscript:&unk_1EFE30220];
+        v17 = [*(_panelImpl + 8) objectForKeyedSubscript:&unk_1EFE30220];
         v18 = v17 ? 4 : 2;
-        [v7 getPrimaryColumnWidth:&v25 supplementaryColumnWidth:&v24 forSize:v18 displayMode:1 splitBehavior:0 isCompact:0 shouldUseOverlay:{width, height}];
+        [_panelImpl getPrimaryColumnWidth:&v25 supplementaryColumnWidth:&v24 forSize:v18 displayMode:1 splitBehavior:0 isCompact:0 shouldUseOverlay:{width, height}];
       }
 
       else
       {
-        [v7 getPrimaryColumnWidth:&v25 supplementaryColumnWidth:&v24 forSize:2 displayMode:1 splitBehavior:0 isCompact:0 shouldUseOverlay:{width, height}];
+        [_panelImpl getPrimaryColumnWidth:&v25 supplementaryColumnWidth:&v24 forSize:2 displayMode:1 splitBehavior:0 isCompact:0 shouldUseOverlay:{width, height}];
       }
 
-      if ([v7 _isSecondaryColumnCompactInTotalWidth:width withPrimaryColumnWidth:v25 supplementaryColumnWidth:v24])
+      if ([_panelImpl _isSecondaryColumnCompactInTotalWidth:width withPrimaryColumnWidth:v25 supplementaryColumnWidth:v24])
       {
         if (v24 <= 0.0)
         {
           v16 = 2;
         }
 
-        else if ([v7 _isSecondaryColumnCompactInTotalWidth:width withPrimaryColumnWidth:0.0 supplementaryColumnWidth:v24])
+        else if ([_panelImpl _isSecondaryColumnCompactInTotalWidth:width withPrimaryColumnWidth:0.0 supplementaryColumnWidth:v24])
         {
           v16 = 2;
         }
@@ -269,7 +269,7 @@ LABEL_40:
     v19 = 0;
     v16 = 1;
 LABEL_35:
-    *(v7 + 288) = *(v7 + 288) & 0xFFFFFFFFFFF3FFFFLL | v19;
+    *(_panelImpl + 288) = *(_panelImpl + 288) & 0xFFFFFFFFFFF3FFFFLL | v19;
     goto LABEL_36;
   }
 
@@ -299,7 +299,7 @@ LABEL_35:
 
     if (width >= v14)
     {
-      if ([v7 _hasDoubleSideBar])
+      if ([_panelImpl _hasDoubleSideBar])
       {
         v16 = 3;
       }
@@ -345,9 +345,9 @@ LABEL_36:
 - (BOOL)alwaysHideSidebarToggleButton
 {
   WeakRetained = objc_loadWeakRetained(&self->_splitViewController);
-  v3 = [WeakRetained _panelImpl];
+  _panelImpl = [WeakRetained _panelImpl];
 
-  v4 = ([v3 _forceDisplayModeBarButtonHidden] & 1) != 0 || (objc_msgSend(v3, "_isCollapsedOrCollapsing") & 1) != 0 || (objc_msgSend(v3, "presentsWithGesture") & 1) == 0 && (objc_msgSend(v3, "_visibleToggleButtonRequiresPresentsWithGesture") & 1) != 0 || UIApp == 0;
+  v4 = ([_panelImpl _forceDisplayModeBarButtonHidden] & 1) != 0 || (objc_msgSend(_panelImpl, "_isCollapsedOrCollapsing") & 1) != 0 || (objc_msgSend(_panelImpl, "presentsWithGesture") & 1) == 0 && (objc_msgSend(_panelImpl, "_visibleToggleButtonRequiresPresentsWithGesture") & 1) != 0 || UIApp == 0;
   return v4;
 }
 

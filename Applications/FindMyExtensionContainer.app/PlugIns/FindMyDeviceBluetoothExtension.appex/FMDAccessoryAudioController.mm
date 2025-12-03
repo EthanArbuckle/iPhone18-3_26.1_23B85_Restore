@@ -1,23 +1,23 @@
 @interface FMDAccessoryAudioController
 + (id)_audioCategory;
-- (BOOL)isAccessoryBeingMonitored:(id)a3;
-- (BOOL)setVolume:(float)a3 forRoute:(id)a4;
+- (BOOL)isAccessoryBeingMonitored:(id)monitored;
+- (BOOL)setVolume:(float)volume forRoute:(id)route;
 - (FMDAccessoryAudioController)init;
 - (FMDAccessoryAudioControllerDelegate)delegate;
-- (float)setMaxVolumeForRoute:(id)a3;
-- (id)pickRoute:(id)a3;
+- (float)setMaxVolumeForRoute:(id)route;
+- (id)pickRoute:(id)route;
 - (id)pickedRoute;
-- (id)routeForAccessoryIdentifier:(id)a3;
+- (id)routeForAccessoryIdentifier:(id)identifier;
 - (id)setupAudioSession;
 - (void)fade;
-- (void)pickableRoutesChangedNotification:(id)a3;
-- (void)playSound:(id)a3 channels:(id)a4;
-- (void)routeChanged:(id)a3;
-- (void)setPanForChannels:(id)a3;
-- (void)startMonitoringRoutableAccessory:(id)a3 completion:(id)a4;
-- (void)startPlayingSoundForAccessory:(id)a3 channels:(id)a4 completion:(id)a5;
-- (void)stopMonitoringRoutableAccessory:(id)a3 completion:(id)a4;
-- (void)stopPlayingForAccessory:(id)a3 completion:(id)a4;
+- (void)pickableRoutesChangedNotification:(id)notification;
+- (void)playSound:(id)sound channels:(id)channels;
+- (void)routeChanged:(id)changed;
+- (void)setPanForChannels:(id)channels;
+- (void)startMonitoringRoutableAccessory:(id)accessory completion:(id)completion;
+- (void)startPlayingSoundForAccessory:(id)accessory channels:(id)channels completion:(id)completion;
+- (void)stopMonitoringRoutableAccessory:(id)accessory completion:(id)completion;
+- (void)stopPlayingForAccessory:(id)accessory completion:(id)completion;
 - (void)stopSound;
 @end
 
@@ -61,21 +61,21 @@
   return v2;
 }
 
-- (void)startPlayingSoundForAccessory:(id)a3 channels:(id)a4 completion:(id)a5
+- (void)startPlayingSoundForAccessory:(id)accessory channels:(id)channels completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accessoryCopy = accessory;
+  channelsCopy = channels;
+  completionCopy = completion;
   [@"PlaySoundTransaction" UTF8String];
   v11 = os_transaction_create();
   [(FMDAccessoryAudioController *)self setSoundTransaction:v11];
 
   if ([(FMDAccessoryAudioController *)self isSoundPlaying])
   {
-    v12 = [v8 audioRoutingIdentifier];
-    v13 = [(FMDAccessoryAudioController *)self lastAccessory];
-    v14 = [v13 audioRoutingIdentifier];
-    v15 = [v12 isEqualToString:v14];
+    audioRoutingIdentifier = [accessoryCopy audioRoutingIdentifier];
+    lastAccessory = [(FMDAccessoryAudioController *)self lastAccessory];
+    audioRoutingIdentifier2 = [lastAccessory audioRoutingIdentifier];
+    v15 = [audioRoutingIdentifier isEqualToString:audioRoutingIdentifier2];
 
     if (v15)
     {
@@ -86,10 +86,10 @@
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "FMDAccessoryAudioController: Sound already playing updating pan", buf, 2u);
       }
 
-      [(FMDAccessoryAudioController *)self setPanForChannels:v9];
-      if (v10)
+      [(FMDAccessoryAudioController *)self setPanForChannels:channelsCopy];
+      if (completionCopy)
       {
-        v10[2](v10, 0);
+        completionCopy[2](completionCopy, 0);
       }
     }
 
@@ -102,27 +102,27 @@
       v21 = [NSDictionary dictionaryWithObjects:&v38 forKeys:&v37 count:1];
       v22 = [v19 initWithDomain:v20 code:1 userInfo:v21];
 
-      if (v10)
+      if (completionCopy)
       {
-        (v10)[2](v10, v22);
+        (completionCopy)[2](completionCopy, v22);
       }
     }
   }
 
   else
   {
-    [(FMDAccessoryAudioController *)self setLastAccessory:v8];
-    v17 = [(FMDAccessoryAudioController *)self setupAudioSession];
-    if (v17)
+    [(FMDAccessoryAudioController *)self setLastAccessory:accessoryCopy];
+    setupAudioSession = [(FMDAccessoryAudioController *)self setupAudioSession];
+    if (setupAudioSession)
     {
-      v18 = v17;
-      v10[2](v10, v17);
+      v18 = setupAudioSession;
+      completionCopy[2](completionCopy, setupAudioSession);
     }
 
     else
     {
-      v23 = [v8 audioRoutingIdentifier];
-      v24 = [(FMDAccessoryAudioController *)self routeForAccessoryIdentifier:v23];
+      audioRoutingIdentifier3 = [accessoryCopy audioRoutingIdentifier];
+      v24 = [(FMDAccessoryAudioController *)self routeForAccessoryIdentifier:audioRoutingIdentifier3];
 
       v25 = [(FMDAccessoryAudioController *)self pickRoute:v24];
       v26 = sub_100003BEC();
@@ -134,7 +134,7 @@
           sub_10000D334();
         }
 
-        (v10)[2](v10, v25);
+        (completionCopy)[2](completionCopy, v25);
       }
 
       else
@@ -149,9 +149,9 @@
         [(FMDAccessoryAudioController *)self setMaxVolumeForRoute:v24];
         v29 = v28;
         [(FMDAccessoryAudioController *)self setOriginalRoute:v24];
-        v30 = [(FMDAccessoryAudioController *)self originalState];
+        originalState = [(FMDAccessoryAudioController *)self originalState];
 
-        if (!v30)
+        if (!originalState)
         {
           v31 = objc_opt_new();
           LODWORD(v32) = v29;
@@ -162,24 +162,24 @@
         v33 = sub_100003BEC();
         if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
         {
-          v34 = [(FMDAccessoryAudioController *)self originalState];
-          [v34 volume];
+          originalState2 = [(FMDAccessoryAudioController *)self originalState];
+          [originalState2 volume];
           *buf = 134217984;
           v40 = v35;
           _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "FMDAccessoryAudioController: Original state - volume: %f", buf, 0xCu);
         }
 
-        v10[2](v10, 0);
-        v36 = [v8 audioURL];
-        [(FMDAccessoryAudioController *)self playSound:v36 channels:v9];
+        completionCopy[2](completionCopy, 0);
+        audioURL = [accessoryCopy audioURL];
+        [(FMDAccessoryAudioController *)self playSound:audioURL channels:channelsCopy];
       }
     }
   }
 }
 
-- (void)stopPlayingForAccessory:(id)a3 completion:(id)a4
+- (void)stopPlayingForAccessory:(id)accessory completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   if ([(FMDAccessoryAudioController *)self isSoundPlaying])
   {
     v6[0] = _NSConcreteStackBlock;
@@ -187,29 +187,29 @@
     v6[2] = sub_1000052D0;
     v6[3] = &unk_10001D308;
     v6[4] = self;
-    v7 = v5;
+    v7 = completionCopy;
     dispatch_async(&_dispatch_main_q, v6);
   }
 
-  else if (v5)
+  else if (completionCopy)
   {
-    (*(v5 + 2))(v5, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)playSound:(id)a3 channels:(id)a4
+- (void)playSound:(id)sound channels:(id)channels
 {
-  v6 = a3;
-  v7 = a4;
+  soundCopy = sound;
+  channelsCopy = channels;
   v8 = sub_100003BEC();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v31 = v7;
+    v31 = channelsCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Play sound for channels %@", buf, 0xCu);
   }
 
-  v9 = v6;
+  v9 = soundCopy;
   v29 = 0;
   v10 = [FMDAudioPlayerFactory initWithContentsOfURL:v9 error:&v29];
   v11 = v29;
@@ -242,12 +242,12 @@
     v17 = 0;
   }
 
-  v18 = [(FMDAccessoryAudioController *)self audioPlayer];
-  [v18 setNumberOfLoops:-1];
+  audioPlayer = [(FMDAccessoryAudioController *)self audioPlayer];
+  [audioPlayer setNumberOfLoops:-1];
 
-  [(FMDAccessoryAudioController *)self setPanForChannels:v7];
-  v19 = [(FMDAccessoryAudioController *)self audioPlayer];
-  [v19 prepareToPlay];
+  [(FMDAccessoryAudioController *)self setPanForChannels:channelsCopy];
+  audioPlayer2 = [(FMDAccessoryAudioController *)self audioPlayer];
+  [audioPlayer2 prepareToPlay];
 
   [(FMDAccessoryAudioController *)self setIsSoundPlaying:1];
   [(FMDAccessoryAudioController *)self setWasSoundPlayed:1];
@@ -260,21 +260,21 @@
   {
     [(FMDAccessoryAudioController *)self volumeTargetValue];
     v24 = v23;
-    v25 = [(FMDAccessoryAudioController *)self audioPlayer];
+    audioPlayer3 = [(FMDAccessoryAudioController *)self audioPlayer];
     LODWORD(v26) = v24;
-    [v25 setVolume:v26];
+    [audioPlayer3 setVolume:v26];
   }
 
   else
   {
-    v22 = [(FMDAccessoryAudioController *)self audioPlayer];
-    [v22 setVolume:0.0];
+    audioPlayer4 = [(FMDAccessoryAudioController *)self audioPlayer];
+    [audioPlayer4 setVolume:0.0];
 
     [(FMDAccessoryAudioController *)self fade];
   }
 
-  v27 = [(FMDAccessoryAudioController *)self audioPlayer];
-  [v27 play];
+  audioPlayer5 = [(FMDAccessoryAudioController *)self audioPlayer];
+  [audioPlayer5 play];
 }
 
 - (void)stopSound
@@ -288,37 +288,37 @@
 
   if ([(FMDAccessoryAudioController *)self wasSoundPlayed])
   {
-    v4 = [(FMDAccessoryAudioController *)self originalState];
+    originalState = [(FMDAccessoryAudioController *)self originalState];
 
-    if (v4)
+    if (originalState)
     {
       [(FMDAccessoryAudioController *)self setWasSoundPlayed:0];
-      v5 = [(FMDAccessoryAudioController *)self originalState];
-      [v5 volume];
+      originalState2 = [(FMDAccessoryAudioController *)self originalState];
+      [originalState2 volume];
       v7 = v6;
-      v8 = [(FMDAccessoryAudioController *)self originalRoute];
+      originalRoute = [(FMDAccessoryAudioController *)self originalRoute];
       LODWORD(v9) = v7;
-      [(FMDAccessoryAudioController *)self setVolume:v8 forRoute:v9];
+      [(FMDAccessoryAudioController *)self setVolume:originalRoute forRoute:v9];
 
       v10 = sub_100003BEC();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [(FMDAccessoryAudioController *)self originalState];
-        [v11 volume];
+        originalState3 = [(FMDAccessoryAudioController *)self originalState];
+        [originalState3 volume];
         v23 = 134217984;
         v24 = v12;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "AccessoryAudioController volume set back to original %f", &v23, 0xCu);
       }
 
-      v13 = [(FMDAccessoryAudioController *)self audioPlayer];
-      [v13 stop];
+      audioPlayer = [(FMDAccessoryAudioController *)self audioPlayer];
+      [audioPlayer stop];
 
       [(FMDAccessoryAudioController *)self setAudioPlayer:0];
       [(FMDAccessoryAudioController *)self setSoundTransaction:0];
       [(FMDAccessoryAudioController *)self setOriginalState:0];
       [(FMDAccessoryAudioController *)self setOriginalRoute:0];
-      v14 = [(FMDAccessoryAudioController *)self delegate];
-      [v14 soundDidStop];
+      delegate = [(FMDAccessoryAudioController *)self delegate];
+      [delegate soundDidStop];
 
       if (qword_100028D38)
       {
@@ -334,16 +334,16 @@
         qword_100028D38 = 0;
       }
 
-      v17 = [(FMDAccessoryAudioController *)self lastAccessory];
+      lastAccessory = [(FMDAccessoryAudioController *)self lastAccessory];
       [(FMDAccessoryAudioController *)self setLastAccessory:0];
-      if ([v17 conformsToProtocol:&OBJC_PROTOCOL___FMDAccessory])
+      if ([lastAccessory conformsToProtocol:&OBJC_PROTOCOL___FMDAccessory])
       {
-        v18 = v17;
+        v18 = lastAccessory;
         v19 = +[FMDFMIPManager sharedInstance];
-        v20 = [v18 accessoryIdentifier];
+        accessoryIdentifier = [v18 accessoryIdentifier];
 
-        v21 = [v20 stringValue];
-        [v19 soundStoppedForAccessoryIdentifier:v21];
+        stringValue = [accessoryIdentifier stringValue];
+        [v19 soundStoppedForAccessoryIdentifier:stringValue];
       }
 
       v22 = +[AVAudioSession sharedInstance];
@@ -352,14 +352,14 @@
   }
 }
 
-- (void)setPanForChannels:(id)a3
+- (void)setPanForChannels:(id)channels
 {
-  v4 = a3;
+  channelsCopy = channels;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v27 count:16];
+  v5 = [channelsCopy countByEnumeratingWithState:&v17 objects:v27 count:16];
   if (v5)
   {
     v6 = v5;
@@ -371,7 +371,7 @@
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(channelsCopy);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
@@ -388,7 +388,7 @@
         v7 += v11;
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v17 objects:v27 count:16];
+      v6 = [channelsCopy countByEnumeratingWithState:&v17 objects:v27 count:16];
     }
 
     while (v6);
@@ -402,13 +402,13 @@
   v12 = sub_100003BEC();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [(FMDAccessoryAudioController *)self isSoundPlaying];
+    isSoundPlaying = [(FMDAccessoryAudioController *)self isSoundPlaying];
     *buf = 67109634;
-    v22 = v13;
+    v22 = isSoundPlaying;
     v23 = 1024;
     v24 = v7;
     v25 = 2112;
-    v26 = v4;
+    v26 = channelsCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Audio Player pan %i %i %@", buf, 0x18u);
   }
 
@@ -421,15 +421,15 @@
 
   else
   {
-    v15 = [(FMDAccessoryAudioController *)self audioPlayer];
+    audioPlayer = [(FMDAccessoryAudioController *)self audioPlayer];
     *&v16 = v7;
-    [v15 setPan:v16];
+    [audioPlayer setPan:v16];
   }
 }
 
-- (id)routeForAccessoryIdentifier:(id)a3
+- (id)routeForAccessoryIdentifier:(id)identifier
 {
-  v21 = a3;
+  identifierCopy = identifier;
   v3 = +[FMDAVRouteControllerFactory routeController];
   v4 = +[FMDAccessoryAudioController _audioCategory];
   v5 = [v3 pickableRoutesForCategory:v4];
@@ -466,12 +466,12 @@
         }
 
         v14 = *(*(&v22 + 1) + 8 * i);
-        v15 = [v14 routeID];
-        if (v15)
+        routeID = [v14 routeID];
+        if (routeID)
         {
-          v16 = v15;
-          v17 = [v14 routeID];
-          v18 = [v17 rangeOfString:v21];
+          v16 = routeID;
+          routeID2 = [v14 routeID];
+          v18 = [routeID2 rangeOfString:identifierCopy];
 
           if (v18 != 0x7FFFFFFFFFFFFFFFLL)
           {
@@ -553,11 +553,11 @@
   return v9;
 }
 
-- (id)pickRoute:(id)a3
+- (id)pickRoute:(id)route
 {
-  v3 = a3;
+  routeCopy = route;
   v4 = +[FMDAVRouteControllerFactory routeController];
-  v5 = [v4 setPickedRoute:v3];
+  v5 = [v4 setPickedRoute:routeCopy];
 
   if (v5)
   {
@@ -666,24 +666,24 @@ LABEL_8:
   return v7;
 }
 
-- (BOOL)setVolume:(float)a3 forRoute:(id)a4
+- (BOOL)setVolume:(float)volume forRoute:(id)route
 {
-  v5 = a4;
+  routeCopy = route;
   v6 = +[FMDAVRouteControllerFactory routeController];
   v7 = +[FMDAccessoryAudioController _audioCategory];
-  *&v8 = a3;
-  v9 = [v6 setVolume:v7 forCategory:v5 route:v8];
+  *&v8 = volume;
+  v9 = [v6 setVolume:v7 forCategory:routeCopy route:v8];
 
   return v9;
 }
 
-- (float)setMaxVolumeForRoute:(id)a3
+- (float)setMaxVolumeForRoute:(id)route
 {
-  v4 = a3;
+  routeCopy = route;
   v18 = 0.0;
   v5 = +[FMDAVRouteControllerFactory routeController];
   v6 = +[FMDAccessoryAudioController _audioCategory];
-  v7 = [v5 getVolume:&v18 forCategory:v6 route:v4];
+  v7 = [v5 getVolume:&v18 forCategory:v6 route:routeCopy];
 
   v8 = sub_100003BEC();
   v9 = v8;
@@ -691,9 +691,9 @@ LABEL_8:
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v4 routeID];
+      routeID = [routeCopy routeID];
       *buf = 138412546;
-      v20 = v10;
+      v20 = routeID;
       v21 = 2048;
       v22 = v18;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "AccessoryAudioController %@ original volume %f", buf, 0x16u);
@@ -702,27 +702,27 @@ LABEL_8:
 
   else if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
-    sub_10000D41C(v4);
+    sub_10000D41C(routeCopy);
   }
 
   LODWORD(v11) = 1.0;
-  v12 = [(FMDAccessoryAudioController *)self setVolume:v4 forRoute:v11];
+  v12 = [(FMDAccessoryAudioController *)self setVolume:routeCopy forRoute:v11];
   v13 = sub_100003BEC();
   v14 = v13;
   if (v12)
   {
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v4 routeID];
+      routeID2 = [routeCopy routeID];
       *buf = 138412290;
-      v20 = v15;
+      v20 = routeID2;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "AccessoryAudioController %@ new volume 1.0f", buf, 0xCu);
     }
   }
 
   else if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
-    sub_10000D4A0(v4);
+    sub_10000D4A0(routeCopy);
   }
 
   v16 = v18;
@@ -731,14 +731,14 @@ LABEL_8:
 
 - (void)fade
 {
-  v3 = [(FMDAccessoryAudioController *)self audioPlayer];
+  audioPlayer = [(FMDAccessoryAudioController *)self audioPlayer];
 
-  if (v3)
+  if (audioPlayer)
   {
     [(FMDAccessoryAudioController *)self fadeDuration];
     v5 = 1.0 / (v4 * 15.0);
-    v6 = [(FMDAccessoryAudioController *)self audioPlayer];
-    [v6 volume];
+    audioPlayer2 = [(FMDAccessoryAudioController *)self audioPlayer];
+    [audioPlayer2 volume];
     v8 = v7;
     [(FMDAccessoryAudioController *)self volumeTargetValue];
     v10 = vabds_f32(v8, v9);
@@ -746,18 +746,18 @@ LABEL_8:
     v11 = v5 < v10;
     if (v5 < v10)
     {
-      v12 = [(FMDAccessoryAudioController *)self audioPlayer];
-      [v12 volume];
+      audioPlayer3 = [(FMDAccessoryAudioController *)self audioPlayer];
+      [audioPlayer3 volume];
       v14 = v13;
       [(FMDAccessoryAudioController *)self volumeTargetValue];
       v16 = v15;
 
-      v17 = [(FMDAccessoryAudioController *)self audioPlayer];
-      [v17 volume];
+      audioPlayer4 = [(FMDAccessoryAudioController *)self audioPlayer];
+      [audioPlayer4 volume];
       v19 = v18;
       v20 = v5;
-      v21 = [(FMDAccessoryAudioController *)self audioPlayer];
-      v22 = v21;
+      audioPlayer5 = [(FMDAccessoryAudioController *)self audioPlayer];
+      v22 = audioPlayer5;
       *&v23 = -v20;
       if (v14 <= v16)
       {
@@ -765,7 +765,7 @@ LABEL_8:
       }
 
       *&v23 = v19 + *&v23;
-      [v21 setVolume:v23];
+      [audioPlayer5 setVolume:v23];
 
       v24 = sub_100003BEC();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
@@ -778,9 +778,9 @@ LABEL_8:
     {
       [(FMDAccessoryAudioController *)self volumeTargetValue];
       v26 = v25;
-      v27 = [(FMDAccessoryAudioController *)self audioPlayer];
+      audioPlayer6 = [(FMDAccessoryAudioController *)self audioPlayer];
       LODWORD(v28) = v26;
-      [v27 setVolume:v28];
+      [audioPlayer6 setVolume:v28];
 
       v29 = sub_100003BEC();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
@@ -788,8 +788,8 @@ LABEL_8:
         sub_10000D524(self);
       }
 
-      v31 = [(FMDAccessoryAudioController *)self audioPlayer];
-      [v31 volume];
+      audioPlayer7 = [(FMDAccessoryAudioController *)self audioPlayer];
+      [audioPlayer7 volume];
       v33 = v32;
 
       if (v33 == 0.0)
@@ -798,8 +798,8 @@ LABEL_8:
       }
     }
 
-    v34 = [(FMDAccessoryAudioController *)self audioPlayer];
-    [v34 pan];
+    audioPlayer8 = [(FMDAccessoryAudioController *)self audioPlayer];
+    [audioPlayer8 pan];
     v36 = v35;
     [(FMDAccessoryAudioController *)self panTargetValue];
     v38 = vabds_f32(v36, v37);
@@ -808,9 +808,9 @@ LABEL_8:
     {
       [(FMDAccessoryAudioController *)self panTargetValue];
       v51 = v50;
-      v52 = [(FMDAccessoryAudioController *)self audioPlayer];
+      audioPlayer9 = [(FMDAccessoryAudioController *)self audioPlayer];
       LODWORD(v53) = v51;
-      [v52 setPan:v53];
+      [audioPlayer9 setPan:v53];
 
       v49 = sub_100003BEC();
       if (os_log_type_enabled(v49, OS_LOG_TYPE_DEBUG))
@@ -821,18 +821,18 @@ LABEL_8:
 
     else
     {
-      v39 = [(FMDAccessoryAudioController *)self audioPlayer];
-      [v39 pan];
+      audioPlayer10 = [(FMDAccessoryAudioController *)self audioPlayer];
+      [audioPlayer10 pan];
       v41 = v40;
       [(FMDAccessoryAudioController *)self panTargetValue];
       v43 = v41 > v42;
 
-      v44 = [(FMDAccessoryAudioController *)self audioPlayer];
-      [v44 pan];
+      audioPlayer11 = [(FMDAccessoryAudioController *)self audioPlayer];
+      [audioPlayer11 pan];
       v46 = v45;
-      v47 = [(FMDAccessoryAudioController *)self audioPlayer];
+      audioPlayer12 = [(FMDAccessoryAudioController *)self audioPlayer];
       *&v48 = v46 + flt_100011B50[v43];
-      [v47 setPan:v48];
+      [audioPlayer12 setPan:v48];
 
       v49 = sub_100003BEC();
       if (os_log_type_enabled(v49, OS_LOG_TYPE_DEBUG))
@@ -899,13 +899,13 @@ LABEL_8:
   }
 }
 
-- (void)startMonitoringRoutableAccessory:(id)a3 completion:(id)a4
+- (void)startMonitoringRoutableAccessory:(id)accessory completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(FMDAccessoryAudioController *)self isAccessoryBeingMonitored:v6])
+  accessoryCopy = accessory;
+  completionCopy = completion;
+  if ([(FMDAccessoryAudioController *)self isAccessoryBeingMonitored:accessoryCopy])
   {
-    if (v7)
+    if (completionCopy)
     {
       v8 = [NSError alloc];
       v9 = kFMDAccessoryPlaySoundErrorDomain;
@@ -913,57 +913,57 @@ LABEL_8:
       v19 = @"FMDAccessoryAudioController is already monitoring that accessory";
       v10 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
       v11 = [v8 initWithDomain:v9 code:2 userInfo:v10];
-      v7[2](v7, v11);
+      completionCopy[2](completionCopy, v11);
     }
   }
 
   else
   {
-    v12 = [v6 audioRoutingIdentifier];
-    v13 = [(FMDAccessoryAudioController *)self routeForAccessoryIdentifier:v12];
+    audioRoutingIdentifier = [accessoryCopy audioRoutingIdentifier];
+    v13 = [(FMDAccessoryAudioController *)self routeForAccessoryIdentifier:audioRoutingIdentifier];
 
     if (v13)
     {
-      if (v7)
+      if (completionCopy)
       {
-        v7[2](v7, 0);
+        completionCopy[2](completionCopy, 0);
       }
     }
 
     else
     {
-      v14 = [(FMDAccessoryAudioController *)self monitoredAccessoriesCompletionBlocks];
-      v15 = objc_retainBlock(v7);
-      v16 = [v6 audioRoutingIdentifier];
-      [v14 setObject:v15 forKey:v16];
+      monitoredAccessoriesCompletionBlocks = [(FMDAccessoryAudioController *)self monitoredAccessoriesCompletionBlocks];
+      v15 = objc_retainBlock(completionCopy);
+      audioRoutingIdentifier2 = [accessoryCopy audioRoutingIdentifier];
+      [monitoredAccessoriesCompletionBlocks setObject:v15 forKey:audioRoutingIdentifier2];
 
-      v17 = [(FMDAccessoryAudioController *)self monitoredAccessories];
-      [v17 addObject:v6];
+      monitoredAccessories = [(FMDAccessoryAudioController *)self monitoredAccessories];
+      [monitoredAccessories addObject:accessoryCopy];
     }
   }
 }
 
-- (void)stopMonitoringRoutableAccessory:(id)a3 completion:(id)a4
+- (void)stopMonitoringRoutableAccessory:(id)accessory completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  accessoryCopy = accessory;
+  completionCopy = completion;
   v8 = sub_100003BEC();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v35 = v6;
+    v35 = accessoryCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "FMDAccessoryAudioController stopMonitoringRoutableAccessory %@", buf, 0xCu);
   }
 
-  if ([(FMDAccessoryAudioController *)self isAccessoryBeingMonitored:v6])
+  if ([(FMDAccessoryAudioController *)self isAccessoryBeingMonitored:accessoryCopy])
   {
-    v26 = v7;
+    v26 = completionCopy;
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v9 = [(FMDAccessoryAudioController *)self monitoredAccessories];
-    v10 = [v9 copy];
+    monitoredAccessories = [(FMDAccessoryAudioController *)self monitoredAccessories];
+    v10 = [monitoredAccessories copy];
 
     v11 = [v10 countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v11)
@@ -980,18 +980,18 @@ LABEL_8:
           }
 
           v15 = *(*(&v27 + 1) + 8 * i);
-          v16 = [v15 audioRoutingIdentifier];
-          v17 = [v6 audioRoutingIdentifier];
-          v18 = [v16 isEqualToString:v17];
+          audioRoutingIdentifier = [v15 audioRoutingIdentifier];
+          audioRoutingIdentifier2 = [accessoryCopy audioRoutingIdentifier];
+          v18 = [audioRoutingIdentifier isEqualToString:audioRoutingIdentifier2];
 
           if (v18)
           {
-            v23 = [(FMDAccessoryAudioController *)self monitoredAccessories];
-            [v23 removeObject:v15];
+            monitoredAccessories2 = [(FMDAccessoryAudioController *)self monitoredAccessories];
+            [monitoredAccessories2 removeObject:v15];
 
-            v24 = [(FMDAccessoryAudioController *)self monitoredAccessoriesCompletionBlocks];
-            v25 = [v15 audioRoutingIdentifier];
-            [v24 removeObjectForKey:v25];
+            monitoredAccessoriesCompletionBlocks = [(FMDAccessoryAudioController *)self monitoredAccessoriesCompletionBlocks];
+            audioRoutingIdentifier3 = [v15 audioRoutingIdentifier];
+            [monitoredAccessoriesCompletionBlocks removeObjectForKey:audioRoutingIdentifier3];
 
             goto LABEL_16;
           }
@@ -1009,14 +1009,14 @@ LABEL_8:
 
 LABEL_16:
 
-    v7 = v26;
+    completionCopy = v26;
     if (v26)
     {
       v26[2](v26, 0);
     }
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
     v19 = [NSError alloc];
     v20 = kFMDAccessoryPlaySoundErrorDomain;
@@ -1024,32 +1024,32 @@ LABEL_16:
     v33 = @"FMDAccessoryAudioController is not monitoring that accessory";
     v21 = [NSDictionary dictionaryWithObjects:&v33 forKeys:&v32 count:1];
     v22 = [v19 initWithDomain:v20 code:3 userInfo:v21];
-    v7[2](v7, v22);
+    completionCopy[2](completionCopy, v22);
   }
 }
 
-- (void)routeChanged:(id)a3
+- (void)routeChanged:(id)changed
 {
-  v4 = [(FMDAccessoryAudioController *)self pickedRoute];
+  pickedRoute = [(FMDAccessoryAudioController *)self pickedRoute];
   v5 = sub_100003BEC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v21 = v4;
+    v21 = pickedRoute;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "FMDAccessoryAudioController Route changed notification current route: %@", buf, 0xCu);
   }
 
-  v6 = [(FMDAccessoryAudioController *)self lastAccessory];
-  v7 = [v6 audioRoutingIdentifier];
+  lastAccessory = [(FMDAccessoryAudioController *)self lastAccessory];
+  audioRoutingIdentifier = [lastAccessory audioRoutingIdentifier];
 
-  if (v7)
+  if (audioRoutingIdentifier)
   {
-    v8 = [v4 routeID];
-    if (v8)
+    routeID = [pickedRoute routeID];
+    if (routeID)
     {
-      v9 = v8;
-      v10 = [v4 routeID];
-      v11 = [v10 rangeOfString:v7];
+      v9 = routeID;
+      routeID2 = [pickedRoute routeID];
+      v11 = [routeID2 rangeOfString:audioRoutingIdentifier];
 
       if (v11 != 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -1058,17 +1058,17 @@ LABEL_16:
           goto LABEL_11;
         }
 
-        v15 = [(FMDAccessoryAudioController *)self monitoredAccessoriesCompletionBlocks];
-        v16 = [v15 objectForKey:v7];
+        monitoredAccessoriesCompletionBlocks = [(FMDAccessoryAudioController *)self monitoredAccessoriesCompletionBlocks];
+        v16 = [monitoredAccessoriesCompletionBlocks objectForKey:audioRoutingIdentifier];
 
-        v17 = [(FMDAccessoryAudioController *)self lastAccessory];
+        lastAccessory2 = [(FMDAccessoryAudioController *)self lastAccessory];
         v18[0] = _NSConcreteStackBlock;
         v18[1] = 3221225472;
         v18[2] = sub_1000071F8;
         v18[3] = &unk_10001D358;
         v19 = v16;
-        v14 = v16;
-        [(FMDAccessoryAudioController *)self stopMonitoringRoutableAccessory:v17 completion:v18];
+        lastAccessory4 = v16;
+        [(FMDAccessoryAudioController *)self stopMonitoringRoutableAccessory:lastAccessory2 completion:v18];
 
         goto LABEL_10;
       }
@@ -1080,22 +1080,22 @@ LABEL_16:
     v12 = sub_100003BEC();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(FMDAccessoryAudioController *)self lastAccessory];
+      lastAccessory3 = [(FMDAccessoryAudioController *)self lastAccessory];
       *buf = 138412290;
-      v21 = v13;
+      v21 = lastAccessory3;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "FMDAccessoryAudioController Stopping sound for accessory %@", buf, 0xCu);
     }
 
     [(FMDAccessoryAudioController *)self setRampDownDuration:0.0];
-    v14 = [(FMDAccessoryAudioController *)self lastAccessory];
-    [(FMDAccessoryAudioController *)self stopPlayingForAccessory:v14 completion:0];
+    lastAccessory4 = [(FMDAccessoryAudioController *)self lastAccessory];
+    [(FMDAccessoryAudioController *)self stopPlayingForAccessory:lastAccessory4 completion:0];
 LABEL_10:
   }
 
 LABEL_11:
 }
 
-- (void)pickableRoutesChangedNotification:(id)a3
+- (void)pickableRoutesChangedNotification:(id)notification
 {
   v4 = sub_100003BEC();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1124,14 +1124,14 @@ LABEL_11:
         }
 
         v9 = *(*(&v29 + 1) + 8 * i);
-        v10 = [v9 audioRoutingIdentifier];
-        v11 = [(FMDAccessoryAudioController *)self routeForAccessoryIdentifier:v10];
+        audioRoutingIdentifier = [v9 audioRoutingIdentifier];
+        v11 = [(FMDAccessoryAudioController *)self routeForAccessoryIdentifier:audioRoutingIdentifier];
 
         if (v11)
         {
-          v12 = [(FMDAccessoryAudioController *)self monitoredAccessoriesCompletionBlocks];
-          v13 = [v9 audioRoutingIdentifier];
-          v14 = [v12 objectForKey:v13];
+          monitoredAccessoriesCompletionBlocks = [(FMDAccessoryAudioController *)self monitoredAccessoriesCompletionBlocks];
+          audioRoutingIdentifier2 = [v9 audioRoutingIdentifier];
+          v14 = [monitoredAccessoriesCompletionBlocks objectForKey:audioRoutingIdentifier2];
 
           v27[0] = _NSConcreteStackBlock;
           v27[1] = 3221225472;
@@ -1149,17 +1149,17 @@ LABEL_11:
     while (v6);
   }
 
-  v16 = [(FMDAccessoryAudioController *)self pickedRoute];
-  v17 = [(FMDAccessoryAudioController *)self lastAccessory];
-  v18 = [v17 audioRoutingIdentifier];
+  pickedRoute = [(FMDAccessoryAudioController *)self pickedRoute];
+  lastAccessory = [(FMDAccessoryAudioController *)self lastAccessory];
+  audioRoutingIdentifier3 = [lastAccessory audioRoutingIdentifier];
 
-  if (!v18)
+  if (!audioRoutingIdentifier3)
   {
     goto LABEL_22;
   }
 
-  v19 = [v16 routeID];
-  if (!v19 || (v20 = v19, [v16 routeID], v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "rangeOfString:", v18), v21, v20, v22 == 0x7FFFFFFFFFFFFFFFLL))
+  routeID = [pickedRoute routeID];
+  if (!routeID || (v20 = routeID, [pickedRoute routeID], v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "rangeOfString:", audioRoutingIdentifier3), v21, v20, v22 == 0x7FFFFFFFFFFFFFFFLL))
   {
 LABEL_22:
     if ([(FMDAccessoryAudioController *)self isSoundPlaying])
@@ -1167,28 +1167,28 @@ LABEL_22:
       v23 = sub_100003BEC();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
-        v24 = [(FMDAccessoryAudioController *)self lastAccessory];
+        lastAccessory2 = [(FMDAccessoryAudioController *)self lastAccessory];
         *buf = 138412290;
-        v34 = v24;
+        v34 = lastAccessory2;
         _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "FMDAccessoryAudioController Stopping sound for accessory %@", buf, 0xCu);
       }
 
       [(FMDAccessoryAudioController *)self setRampDownDuration:0.0];
-      v25 = [(FMDAccessoryAudioController *)self lastAccessory];
-      [(FMDAccessoryAudioController *)self stopPlayingForAccessory:v25 completion:0];
+      lastAccessory3 = [(FMDAccessoryAudioController *)self lastAccessory];
+      [(FMDAccessoryAudioController *)self stopPlayingForAccessory:lastAccessory3 completion:0];
     }
   }
 }
 
-- (BOOL)isAccessoryBeingMonitored:(id)a3
+- (BOOL)isAccessoryBeingMonitored:(id)monitored
 {
-  v4 = a3;
+  monitoredCopy = monitored;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(FMDAccessoryAudioController *)self monitoredAccessories];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  monitoredAccessories = [(FMDAccessoryAudioController *)self monitoredAccessories];
+  v6 = [monitoredAccessories countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -1198,12 +1198,12 @@ LABEL_22:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(monitoredAccessories);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) audioRoutingIdentifier];
-        v10 = [v4 audioRoutingIdentifier];
-        v11 = [v9 isEqualToString:v10];
+        audioRoutingIdentifier = [*(*(&v13 + 1) + 8 * i) audioRoutingIdentifier];
+        audioRoutingIdentifier2 = [monitoredCopy audioRoutingIdentifier];
+        v11 = [audioRoutingIdentifier isEqualToString:audioRoutingIdentifier2];
 
         if (v11)
         {
@@ -1212,7 +1212,7 @@ LABEL_22:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [monitoredAccessories countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;

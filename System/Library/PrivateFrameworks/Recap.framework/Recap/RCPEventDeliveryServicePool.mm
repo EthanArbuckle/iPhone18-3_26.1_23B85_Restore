@@ -1,8 +1,8 @@
 @interface RCPEventDeliveryServicePool
-- (BOOL)prewarmForSenderProperties:(id)a3 withError:(id *)a4;
+- (BOOL)prewarmForSenderProperties:(id)properties withError:(id *)error;
 - (RCPEventDeliveryServicePool)init;
-- (id)_findServiceForSenderProperties:(id)a3;
-- (id)deliveryServiceForSenderProperties:(id)a3;
+- (id)_findServiceForSenderProperties:(id)properties;
+- (id)deliveryServiceForSenderProperties:(id)properties;
 - (void)tearDown;
 @end
 
@@ -40,8 +40,8 @@
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [v3 allValues];
-  v6 = [v5 countByEnumeratingWithState:&v19 objects:v24 count:16];
+  allValues = [v3 allValues];
+  v6 = [allValues countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v6)
   {
     v7 = v6;
@@ -53,14 +53,14 @@
       {
         if (*v20 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v19 + 1) + 8 * v9++) stop];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v19 objects:v24 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v19 objects:v24 count:16];
     }
 
     while (v7);
@@ -70,8 +70,8 @@
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v10 = [v4 allValues];
-  v11 = [v10 countByEnumeratingWithState:&v15 objects:v23 count:16];
+  allValues2 = [v4 allValues];
+  v11 = [allValues2 countByEnumeratingWithState:&v15 objects:v23 count:16];
   if (v11)
   {
     v12 = v11;
@@ -83,25 +83,25 @@
       {
         if (*v16 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(allValues2);
         }
 
         [*(*(&v15 + 1) + 8 * v14++) stop];
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v15 objects:v23 count:16];
+      v12 = [allValues2 countByEnumeratingWithState:&v15 objects:v23 count:16];
     }
 
     while (v12);
   }
 }
 
-- (id)deliveryServiceForSenderProperties:(id)a3
+- (id)deliveryServiceForSenderProperties:(id)properties
 {
-  v4 = a3;
-  v5 = [(RCPEventDeliveryServicePool *)self shouldIgnoreSenderProperties];
-  if (!v4 || v5)
+  propertiesCopy = properties;
+  shouldIgnoreSenderProperties = [(RCPEventDeliveryServicePool *)self shouldIgnoreSenderProperties];
+  if (!propertiesCopy || shouldIgnoreSenderProperties)
   {
     v7 = RCPLogPlayback();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -123,7 +123,7 @@
 
   else
   {
-    v6 = [(RCPEventDeliveryServicePool *)self _findServiceForSenderProperties:v4];
+    v6 = [(RCPEventDeliveryServicePool *)self _findServiceForSenderProperties:propertiesCopy];
   }
 
   if (([v6 isRunning] & 1) == 0)
@@ -134,13 +134,13 @@
   return v6;
 }
 
-- (BOOL)prewarmForSenderProperties:(id)a3 withError:(id *)a4
+- (BOOL)prewarmForSenderProperties:(id)properties withError:(id *)error
 {
-  v6 = a3;
-  if (!v6)
+  propertiesCopy = properties;
+  if (!propertiesCopy)
   {
     v8 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_4;
     }
@@ -148,16 +148,16 @@
     goto LABEL_3;
   }
 
-  v7 = [(RCPEventDeliveryServicePool *)self _findServiceForSenderProperties:v6];
+  v7 = [(RCPEventDeliveryServicePool *)self _findServiceForSenderProperties:propertiesCopy];
   v11 = 0;
   [v7 startWithError:&v11];
   v8 = v11;
 
-  if (a4)
+  if (error)
   {
 LABEL_3:
     v9 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
 LABEL_4:
@@ -165,22 +165,22 @@ LABEL_4:
   return v8 == 0;
 }
 
-- (id)_findServiceForSenderProperties:(id)a3
+- (id)_findServiceForSenderProperties:(id)properties
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 senderID];
-  if (v5)
+  propertiesCopy = properties;
+  senderID = [propertiesCopy senderID];
+  if (senderID)
   {
-    v6 = v5;
+    v6 = senderID;
     deliveryServicesBySenderID = self->_deliveryServicesBySenderID;
-    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v5];
+    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:senderID];
     v9 = [(NSMutableDictionary *)deliveryServicesBySenderID objectForKeyedSubscript:v8];
 
     if (!v9)
     {
       v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"recap-%llX", v6];
-      v9 = [RCPVirtualHIDService serviceWithIdentifier:v10 properties:v4];
+      v9 = [RCPVirtualHIDService serviceWithIdentifier:v10 properties:propertiesCopy];
 
       v11 = RCPLogPlayback();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -198,7 +198,7 @@ LABEL_4:
 
   else
   {
-    v14 = [(NSMutableDictionary *)self->_deliveryServicesBySenderProperties objectForKeyedSubscript:v4];
+    v14 = [(NSMutableDictionary *)self->_deliveryServicesBySenderProperties objectForKeyedSubscript:propertiesCopy];
     if (v14)
     {
       v9 = v14;
@@ -206,7 +206,7 @@ LABEL_4:
 
     else
     {
-      v9 = [RCPVirtualHIDService serviceWithIdentifier:@"recapulon" properties:v4];
+      v9 = [RCPVirtualHIDService serviceWithIdentifier:@"recapulon" properties:propertiesCopy];
       v15 = RCPLogPlayback();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
@@ -215,7 +215,7 @@ LABEL_4:
         _os_log_impl(&dword_2619DE000, v15, OS_LOG_TYPE_DEFAULT, "new virtual service %{public}@", buf, 0xCu);
       }
 
-      [(NSMutableDictionary *)self->_deliveryServicesBySenderProperties setObject:v9 forKeyedSubscript:v4];
+      [(NSMutableDictionary *)self->_deliveryServicesBySenderProperties setObject:v9 forKeyedSubscript:propertiesCopy];
     }
   }
 

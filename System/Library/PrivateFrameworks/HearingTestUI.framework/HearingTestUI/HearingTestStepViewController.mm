@@ -1,14 +1,14 @@
 @interface HearingTestStepViewController
-- (_TtC13HearingTestUI29HearingTestStepViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC13HearingTestUI29HearingTestStepViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
-- (void)cancelButtonTapped:(id)a3;
-- (void)takeTestAgainButtonTapped:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC13HearingTestUI29HearingTestStepViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC13HearingTestUI29HearingTestStepViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
+- (void)cancelButtonTapped:(id)tapped;
+- (void)takeTestAgainButtonTapped:(id)tapped;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation HearingTestStepViewController
 
-- (_TtC13HearingTestUI29HearingTestStepViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC13HearingTestUI29HearingTestStepViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   sub_20CE13B84();
   sub_20CE13B74();
@@ -18,11 +18,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v7 = a5;
+  iconCopy = icon;
   sub_20CDB96D8();
 }
 
-- (void)takeTestAgainButtonTapped:(id)a3
+- (void)takeTestAgainButtonTapped:(id)tapped
 {
   sub_20CE13B84();
   sub_20CE13B74();
@@ -33,16 +33,16 @@
   }
 
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_20CE13FC4();
   swift_unknownObjectRelease();
-  v5 = *(&v4->super.super.super.super.super.isa + OBJC_IVAR____TtC13HearingTestUI29HearingTestStepViewController_flowManager);
+  v5 = *(&selfCopy->super.super.super.super.super.isa + OBJC_IVAR____TtC13HearingTestUI29HearingTestStepViewController_flowManager);
   sub_20CDDE578(1);
 
   __swift_destroy_boxed_opaque_existential_1Tm(v6);
 }
 
-- (void)cancelButtonTapped:(id)a3
+- (void)cancelButtonTapped:(id)tapped
 {
   sub_20CE13B84();
   sub_20CE13B74();
@@ -53,7 +53,7 @@
   }
 
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_20CE13FC4();
   swift_unknownObjectRelease();
   sub_20CDB8304();
@@ -61,7 +61,7 @@
   __swift_destroy_boxed_opaque_existential_1Tm(v5);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   sub_20CE13B84();
   sub_20CE13B74();
@@ -71,11 +71,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = self;
-  sub_20CDB86F4(a3);
+  selfCopy = self;
+  sub_20CDB86F4(appear);
 }
 
-- (_TtC13HearingTestUI29HearingTestStepViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC13HearingTestUI29HearingTestStepViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   sub_20CE13B84();
   sub_20CE13B74();

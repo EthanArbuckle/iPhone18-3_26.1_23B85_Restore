@@ -1,75 +1,75 @@
 @interface DAMoveAction
-- (DAMoveAction)initWithCoder:(id)a3;
-- (DAMoveAction)initWithItemChangeType:(unint64_t)a3 changedItem:(id)a4 sourceContainerId:(id)a5 sourceServerId:(id)a6 destinationContainerId:(id)a7;
-- (void)encodeWithCoder:(id)a3;
+- (DAMoveAction)initWithCoder:(id)coder;
+- (DAMoveAction)initWithItemChangeType:(unint64_t)type changedItem:(id)item sourceContainerId:(id)id sourceServerId:(id)serverId destinationContainerId:(id)containerId;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DAMoveAction
 
-- (DAMoveAction)initWithItemChangeType:(unint64_t)a3 changedItem:(id)a4 sourceContainerId:(id)a5 sourceServerId:(id)a6 destinationContainerId:(id)a7
+- (DAMoveAction)initWithItemChangeType:(unint64_t)type changedItem:(id)item sourceContainerId:(id)id sourceServerId:(id)serverId destinationContainerId:(id)containerId
 {
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  idCopy = id;
+  serverIdCopy = serverId;
+  containerIdCopy = containerId;
   v18.receiver = self;
   v18.super_class = DAMoveAction;
-  v15 = [(DAAction *)&v18 initWithItemChangeType:a3 changedItem:a4 serverId:0];
+  v15 = [(DAAction *)&v18 initWithItemChangeType:type changedItem:item serverId:0];
   v16 = v15;
   if (v15)
   {
-    [(DAMoveAction *)v15 setSourceContainerId:v12];
-    [(DAMoveAction *)v16 setSourceServerId:v13];
-    [(DAMoveAction *)v16 setDestinationContainerId:v14];
+    [(DAMoveAction *)v15 setSourceContainerId:idCopy];
+    [(DAMoveAction *)v16 setSourceServerId:serverIdCopy];
+    [(DAMoveAction *)v16 setDestinationContainerId:containerIdCopy];
   }
 
   return v16;
 }
 
-- (DAMoveAction)initWithCoder:(id)a3
+- (DAMoveAction)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if (([v4 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     [DAMoveAction initWithCoder:];
   }
 
   v10.receiver = self;
   v10.super_class = DAMoveAction;
-  v5 = [(DAAction *)&v10 initWithCoder:v4];
+  v5 = [(DAAction *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DAASourceContainerId"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DAASourceContainerId"];
     [(DAMoveAction *)v5 setSourceContainerId:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DAASourceServerId"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DAASourceServerId"];
     [(DAMoveAction *)v5 setSourceServerId:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DAADestinationContainerId"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DAADestinationContainerId"];
     [(DAMoveAction *)v5 setDestinationContainerId:v8];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  if (([v4 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     [DAMoveAction encodeWithCoder:];
   }
 
   v8.receiver = self;
   v8.super_class = DAMoveAction;
-  [(DAAction *)&v8 encodeWithCoder:v4];
-  v5 = [(DAMoveAction *)self sourceContainerId];
-  [v4 encodeObject:v5 forKey:@"DAASourceContainerId"];
+  [(DAAction *)&v8 encodeWithCoder:coderCopy];
+  sourceContainerId = [(DAMoveAction *)self sourceContainerId];
+  [coderCopy encodeObject:sourceContainerId forKey:@"DAASourceContainerId"];
 
-  v6 = [(DAMoveAction *)self sourceServerId];
-  [v4 encodeObject:v6 forKey:@"DAASourceServerId"];
+  sourceServerId = [(DAMoveAction *)self sourceServerId];
+  [coderCopy encodeObject:sourceServerId forKey:@"DAASourceServerId"];
 
-  v7 = [(DAMoveAction *)self destinationContainerId];
-  [v4 encodeObject:v7 forKey:@"DAADestinationContainerId"];
+  destinationContainerId = [(DAMoveAction *)self destinationContainerId];
+  [coderCopy encodeObject:destinationContainerId forKey:@"DAADestinationContainerId"];
 }
 
 - (void)initWithCoder:.cold.1()

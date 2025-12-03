@@ -1,29 +1,29 @@
 @interface SBHomeGestureToSwitcherFloatingSwitcherModifier
-- (SBHomeGestureToSwitcherFloatingSwitcherModifier)initWithTransitionID:(id)a3 multitaskingModifier:(id)a4 selectedAppLayout:(id)a5;
+- (SBHomeGestureToSwitcherFloatingSwitcherModifier)initWithTransitionID:(id)d multitaskingModifier:(id)modifier selectedAppLayout:(id)layout;
 - (id)_layoutSettings;
-- (id)animationAttributesForLayoutElement:(id)a3;
+- (id)animationAttributesForLayoutElement:(id)element;
 - (id)transitionWillBegin;
 - (id)visibleAppLayouts;
 @end
 
 @implementation SBHomeGestureToSwitcherFloatingSwitcherModifier
 
-- (SBHomeGestureToSwitcherFloatingSwitcherModifier)initWithTransitionID:(id)a3 multitaskingModifier:(id)a4 selectedAppLayout:(id)a5
+- (SBHomeGestureToSwitcherFloatingSwitcherModifier)initWithTransitionID:(id)d multitaskingModifier:(id)modifier selectedAppLayout:(id)layout
 {
-  v9 = a4;
-  v10 = a5;
+  modifierCopy = modifier;
+  layoutCopy = layout;
   v17.receiver = self;
   v17.super_class = SBHomeGestureToSwitcherFloatingSwitcherModifier;
-  v11 = [(SBTransitionSwitcherModifier *)&v17 initWithTransitionID:a3];
+  v11 = [(SBTransitionSwitcherModifier *)&v17 initWithTransitionID:d];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_multitaskingModifier, a4);
-    objc_storeStrong(&v12->_selectedAppLayout, a5);
+    objc_storeStrong(&v11->_multitaskingModifier, modifier);
+    objc_storeStrong(&v12->_selectedAppLayout, layout);
     v13 = +[SBAppSwitcherDomain rootSettings];
-    v14 = [v13 animationSettings];
+    animationSettings = [v13 animationSettings];
     animationSettings = v12->_animationSettings;
-    v12->_animationSettings = v14;
+    v12->_animationSettings = animationSettings;
   }
 
   return v12;
@@ -33,17 +33,17 @@
 {
   v11.receiver = self;
   v11.super_class = SBHomeGestureToSwitcherFloatingSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v11 transitionWillBegin];
+  transitionWillBegin = [(SBTransitionSwitcherModifier *)&v11 transitionWillBegin];
   v4 = objc_alloc_init(SBSwitcherModifierEventResponse);
   v5 = [SBScrollToAppLayoutSwitcherEventResponse alloc];
-  v6 = [(SBHomeGestureToSwitcherFloatingSwitcherModifier *)self selectedAppLayout];
-  v7 = [(SBScrollToAppLayoutSwitcherEventResponse *)v5 initWithAppLayout:v6 alignment:0 animated:0];
+  selectedAppLayout = [(SBHomeGestureToSwitcherFloatingSwitcherModifier *)self selectedAppLayout];
+  v7 = [(SBScrollToAppLayoutSwitcherEventResponse *)v5 initWithAppLayout:selectedAppLayout alignment:0 animated:0];
   [(SBChainableModifierEventResponse *)v4 addChildResponse:v7];
 
   v8 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:2 updateMode:2];
   [(SBChainableModifierEventResponse *)v4 addChildResponse:v8];
 
-  v9 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v4 toResponse:v3];
+  v9 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v4 toResponse:transitionWillBegin];
 
   return v9;
 }
@@ -66,7 +66,7 @@
     v7[4] = self;
     v7[5] = &v8;
     [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:multitaskingModifier usingBlock:v7];
-    v4 = v9[5];
+    visibleAppLayouts = v9[5];
     _Block_object_dispose(&v8, 8);
   }
 
@@ -74,10 +74,10 @@
   {
     v6.receiver = self;
     v6.super_class = SBHomeGestureToSwitcherFloatingSwitcherModifier;
-    v4 = [(SBHomeGestureToSwitcherFloatingSwitcherModifier *)&v6 visibleAppLayouts];
+    visibleAppLayouts = [(SBHomeGestureToSwitcherFloatingSwitcherModifier *)&v6 visibleAppLayouts];
   }
 
-  return v4;
+  return visibleAppLayouts;
 }
 
 void __68__SBHomeGestureToSwitcherFloatingSwitcherModifier_visibleAppLayouts__block_invoke(uint64_t a1)
@@ -88,15 +88,15 @@ void __68__SBHomeGestureToSwitcherFloatingSwitcherModifier_visibleAppLayouts__bl
   *(v3 + 40) = v2;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
   v8.receiver = self;
   v8.super_class = SBHomeGestureToSwitcherFloatingSwitcherModifier;
-  v4 = [(SBTransitionSwitcherModifier *)&v8 animationAttributesForLayoutElement:a3];
+  v4 = [(SBTransitionSwitcherModifier *)&v8 animationAttributesForLayoutElement:element];
   v5 = [v4 mutableCopy];
 
-  v6 = [(SBHomeGestureToSwitcherFloatingSwitcherModifier *)self _layoutSettings];
-  [v5 setLayoutSettings:v6];
+  _layoutSettings = [(SBHomeGestureToSwitcherFloatingSwitcherModifier *)self _layoutSettings];
+  [v5 setLayoutSettings:_layoutSettings];
 
   return v5;
 }

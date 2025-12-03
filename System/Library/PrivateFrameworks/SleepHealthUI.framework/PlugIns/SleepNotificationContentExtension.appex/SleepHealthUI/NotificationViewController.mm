@@ -1,8 +1,8 @@
 @interface NotificationViewController
-- (NotificationViewController)initWithCoder:(id)a3;
-- (NotificationViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)didReceiveNotification:(id)a3;
-- (void)didReceiveNotificationResponse:(id)a3 completionHandler:(id)a4;
+- (NotificationViewController)initWithCoder:(id)coder;
+- (NotificationViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)didReceiveNotification:(id)notification;
+- (void)didReceiveNotificationResponse:(id)response completionHandler:(id)handler;
 - (void)viewDidLoad;
 @end
 
@@ -18,11 +18,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_100001720();
 }
 
-- (void)didReceiveNotification:(id)a3
+- (void)didReceiveNotification:(id)notification
 {
   sub_100004C34();
   sub_100004C24();
@@ -32,22 +32,22 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
-  sub_1000018F8(v5);
+  notificationCopy = notification;
+  selfCopy = self;
+  sub_1000018F8(notificationCopy);
 }
 
-- (void)didReceiveNotificationResponse:(id)a3 completionHandler:(id)a4
+- (void)didReceiveNotificationResponse:(id)response completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v9 = self;
-  sub_100002500(v8, sub_100004958, v7);
+  responseCopy = response;
+  selfCopy = self;
+  sub_100002500(responseCopy, sub_100004958, v7);
 }
 
-- (NotificationViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (NotificationViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   sub_100004C34();
   sub_100004C24();
@@ -57,10 +57,10 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a3)
+  if (name)
   {
     v6 = sub_100004BA4();
-    a3 = v7;
+    name = v7;
   }
 
   else
@@ -68,13 +68,13 @@
     v6 = 0;
   }
 
-  v8 = a4;
-  v9 = sub_1000038C8(v6, a3, a4);
+  bundleCopy = bundle;
+  v9 = sub_1000038C8(v6, name, bundle);
 
   return v9;
 }
 
-- (NotificationViewController)initWithCoder:(id)a3
+- (NotificationViewController)initWithCoder:(id)coder
 {
   sub_100004C34();
   sub_100004C24();
@@ -84,7 +84,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = sub_100003A94(a3);
+  v4 = sub_100003A94(coder);
 
   return v4;
 }

@@ -40,11 +40,11 @@
 {
   v8.receiver = self;
   v8.super_class = PKAppleCardApplyExperiment;
-  v3 = [(PKExperiment *)&v8 experimentDetails];
-  v4 = [v3 mutableCopy];
+  experimentDetails = [(PKExperiment *)&v8 experimentDetails];
+  v4 = [experimentDetails mutableCopy];
 
-  v5 = [(PKAppleCardApplyExperiment *)self variant];
-  [v4 safelySetObject:v5 forKey:@"variant"];
+  variant = [(PKAppleCardApplyExperiment *)self variant];
+  [v4 safelySetObject:variant forKey:@"variant"];
 
   v6 = [v4 copy];
 

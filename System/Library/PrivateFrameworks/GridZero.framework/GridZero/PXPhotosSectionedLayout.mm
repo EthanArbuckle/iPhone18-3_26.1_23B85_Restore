@@ -1,57 +1,57 @@
 @interface PXPhotosSectionedLayout
 - ($B01073AA55A67B413588F7AD9EFB6822)maskCornerRadius;
 - ($B01073AA55A67B413588F7AD9EFB6822)preferredCornerRadius;
-- (BOOL)_configureSectionLayout:(id)a3 sectionIndexPath:(PXSimpleIndexPath *)a4;
-- (BOOL)_shouldFaultInSection:(int64_t)a3 inDataSource:(id)a4;
-- (BOOL)layout:(id)a3 shouldPreventFaultOutOfSublayout:(id)a4;
+- (BOOL)_configureSectionLayout:(id)layout sectionIndexPath:(PXSimpleIndexPath *)path;
+- (BOOL)_shouldFaultInSection:(int64_t)section inDataSource:(id)source;
+- (BOOL)layout:(id)layout shouldPreventFaultOutOfSublayout:(id)sublayout;
 - (BOOL)shouldApplySpriteTransformToSublayouts;
 - (CGRect)maskRect;
-- (CGSize)layout:(id)a3 estimatedContentSizeForSublayoutAtIndex:(int64_t)a4 referenceSize:(CGSize)a5;
+- (CGSize)layout:(id)layout estimatedContentSizeForSublayoutAtIndex:(int64_t)index referenceSize:(CGSize)size;
 - (PXPhotosSectionedLayout)init;
-- (PXPhotosSectionedLayout)initWithViewModel:(id)a3;
-- (id)_createAnimationForChangeFromDataSource:(id)a3 toDataSource:(id)a4 changeDetails:(id)a5;
+- (PXPhotosSectionedLayout)initWithViewModel:(id)model;
+- (id)_createAnimationForChangeFromDataSource:(id)source toDataSource:(id)dataSource changeDetails:(id)details;
 - (id)axSpriteIndexes;
-- (id)dateIntervalFutureForContentInRect:(CGRect)a3 type:(unint64_t)a4;
-- (id)layout:(id)a3 createSublayoutAtIndex:(int64_t)a4;
-- (id)layout:(id)a3 navigationObjectReferenceForSublayoutAtIndex:(int64_t)a4;
-- (id)locationNamesFutureForContentInRect:(CGRect)a3;
-- (id)navigationObjectReferenceForLocation:(CGPoint)a3;
-- (id)presentedItemsGeometryForSection:(unint64_t)a3 inDataSource:(id)a4;
-- (id)topmostHeaderSnapshotInRect:(CGRect)a3;
-- (int64_t)sublayoutIndexForObjectReference:(id)a3 options:(unint64_t)a4 updatedObjectReference:(id *)a5;
-- (void)_forceSectionIfNeeded:(int64_t)a3;
+- (id)dateIntervalFutureForContentInRect:(CGRect)rect type:(unint64_t)type;
+- (id)layout:(id)layout createSublayoutAtIndex:(int64_t)index;
+- (id)layout:(id)layout navigationObjectReferenceForSublayoutAtIndex:(int64_t)index;
+- (id)locationNamesFutureForContentInRect:(CGRect)rect;
+- (id)navigationObjectReferenceForLocation:(CGPoint)location;
+- (id)presentedItemsGeometryForSection:(unint64_t)section inDataSource:(id)source;
+- (id)topmostHeaderSnapshotInRect:(CGRect)rect;
+- (int64_t)sublayoutIndexForObjectReference:(id)reference options:(unint64_t)options updatedObjectReference:(id *)objectReference;
+- (void)_forceSectionIfNeeded:(int64_t)needed;
 - (void)_invalidateCaptureSprite;
 - (void)_invalidatePreferredCornerRadius;
 - (void)_invalidateSublayoutsConfiguration;
 - (void)_invalidateSublayoutsDataSource;
 - (void)_invalidateSublayoutsSpec;
-- (void)_performAddActionForSectionLayout:(id)a3;
+- (void)_performAddActionForSectionLayout:(id)layout;
 - (void)_updateCaptureSprite;
 - (void)_updatePreferredCornerRadius;
-- (void)_updateSublayoutGridConfiguratorForLayout:(id)a3;
+- (void)_updateSublayoutGridConfiguratorForLayout:(id)layout;
 - (void)_updateSublayoutsConfiguration;
 - (void)_updateSublayoutsDataSource;
 - (void)_updateSublayoutsSpec;
-- (void)assetSectionLayoutDidConfigureLayouts:(id)a3;
-- (void)didFaultInSublayout:(id)a3 atIndex:(int64_t)a4 fromEstimatedContentSize:(CGSize)a5;
+- (void)assetSectionLayoutDidConfigureLayouts:(id)layouts;
+- (void)didFaultInSublayout:(id)sublayout atIndex:(int64_t)index fromEstimatedContentSize:(CGSize)size;
 - (void)didUpdate;
-- (void)enumerateAssetCollectionsInRect:(CGRect)a3 enumerator:(id)a4;
-- (void)enumerateAssetsInRect:(CGRect)a3 enumerator:(id)a4;
-- (void)enumerateAssetsSectionSublayoutsInRect:(CGRect)a3 usingBlock:(id)a4;
-- (void)enumerateAssetsSectionSublayoutsUsingBlock:(id)a3;
-- (void)enumerateItemsGeometriesInRect:(CGRect)a3 dataSource:(id)a4 usingBlock:(id)a5;
-- (void)enumerateSectionBoundariesWithOptions:(unint64_t)a3 usingBlock:(id)a4;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setBodyLayoutProvider:(id)a3;
-- (void)setHeaderLayoutProvider:(id)a3;
-- (void)setHorizontalScrollingHintFactor:(double)a3;
-- (void)setInterSectionSpacing:(double)a3;
-- (void)setMaskCornerRadius:(id)a3;
-- (void)setMaskRect:(CGRect)a3;
-- (void)setPreferredCornerRadius:(id)a3;
-- (void)setSpec:(id)a3;
+- (void)enumerateAssetCollectionsInRect:(CGRect)rect enumerator:(id)enumerator;
+- (void)enumerateAssetsInRect:(CGRect)rect enumerator:(id)enumerator;
+- (void)enumerateAssetsSectionSublayoutsInRect:(CGRect)rect usingBlock:(id)block;
+- (void)enumerateAssetsSectionSublayoutsUsingBlock:(id)block;
+- (void)enumerateItemsGeometriesInRect:(CGRect)rect dataSource:(id)source usingBlock:(id)block;
+- (void)enumerateSectionBoundariesWithOptions:(unint64_t)options usingBlock:(id)block;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setBodyLayoutProvider:(id)provider;
+- (void)setHeaderLayoutProvider:(id)provider;
+- (void)setHorizontalScrollingHintFactor:(double)factor;
+- (void)setInterSectionSpacing:(double)spacing;
+- (void)setMaskCornerRadius:(id)radius;
+- (void)setMaskRect:(CGRect)rect;
+- (void)setPreferredCornerRadius:(id)radius;
+- (void)setSpec:(id)spec;
 - (void)update;
-- (void)willRemoveSublayout:(id)a3 atIndex:(int64_t)a4 flags:(unint64_t)a5;
+- (void)willRemoveSublayout:(id)sublayout atIndex:(int64_t)index flags:(unint64_t)flags;
 - (void)willUpdate;
 @end
 
@@ -91,18 +91,18 @@
   return v2;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v14 = a3;
-  if (PhotosViewModelObserverContext != a5)
+  observableCopy = observable;
+  if (PhotosViewModelObserverContext != context)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PXPhotosSectionedLayout.m" lineNumber:1048 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosSectionedLayout.m" lineNumber:1048 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if (a4)
+  if (change)
   {
     if (self->_isUpdatingSublayouts)
     {
@@ -119,7 +119,7 @@
     }
   }
 
-  if ((a4 & 0x144100000F06) != 0)
+  if ((change & 0x144100000F06) != 0)
   {
     if (self->_isUpdatingSublayouts)
     {
@@ -132,58 +132,58 @@
     }
   }
 
-  if ((a4 & 0x14000) != 0)
+  if ((change & 0x14000) != 0)
   {
     [(PXPhotosSectionedLayout *)self _invalidateSublayoutsSpec];
     [(PXPhotosSectionedLayout *)self _invalidateSublayoutsConfiguration];
-    if ((~a4 & 0x4004000) == 0)
+    if ((~change & 0x4004000) == 0)
     {
-      v9 = [(PXPhotosSectionedLayout *)self createAnimation];
-      [v9 setDuration:0.3];
+      createAnimation = [(PXPhotosSectionedLayout *)self createAnimation];
+      [createAnimation setDuration:0.3];
     }
 
-    v10 = [(PXPhotosSectionedLayout *)self rootLayout];
-    v11 = [v10 createAnchorForVisibleArea];
-    v12 = [v11 autoInvalidate];
+    rootLayout = [(PXPhotosSectionedLayout *)self rootLayout];
+    createAnchorForVisibleArea = [rootLayout createAnchorForVisibleArea];
+    autoInvalidate = [createAnchorForVisibleArea autoInvalidate];
   }
 
-  if ((a4 & 2) != 0)
+  if ((change & 2) != 0)
   {
     self->_dataSourceIdentifierOfCachedSectionsWithSelectedItems = *MEMORY[0x277D3CF78];
   }
 }
 
-- (BOOL)layout:(id)a3 shouldPreventFaultOutOfSublayout:(id)a4
+- (BOOL)layout:(id)layout shouldPreventFaultOutOfSublayout:(id)sublayout
 {
-  v6 = a3;
-  v7 = a4;
+  layoutCopy = layout;
+  sublayoutCopy = sublayout;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v7 contentLayout];
+    contentLayout = [sublayoutCopy contentLayout];
     if (self->_dataSourceIdentifierOfCachedSectionsWithSelectedItems == *MEMORY[0x277D3CF78])
     {
-      v9 = [(PXPhotosSectionedLayout *)self viewModel];
-      v10 = [v9 selectionSnapshot];
+      viewModel = [(PXPhotosSectionedLayout *)self viewModel];
+      selectionSnapshot = [viewModel selectionSnapshot];
 
-      v11 = [v10 dataSource];
-      self->_dataSourceIdentifierOfCachedSectionsWithSelectedItems = [v11 identifier];
+      dataSource = [selectionSnapshot dataSource];
+      self->_dataSourceIdentifierOfCachedSectionsWithSelectedItems = [dataSource identifier];
 
-      v12 = [v10 selectedIndexPaths];
-      v13 = [v12 sectionsWithItemsForDataSourceIdentifier:self->_dataSourceIdentifierOfCachedSectionsWithSelectedItems];
+      selectedIndexPaths = [selectionSnapshot selectedIndexPaths];
+      v13 = [selectedIndexPaths sectionsWithItemsForDataSourceIdentifier:self->_dataSourceIdentifierOfCachedSectionsWithSelectedItems];
       cachedSectionsWithSelectedItems = self->_cachedSectionsWithSelectedItems;
       self->_cachedSectionsWithSelectedItems = v13;
     }
 
-    v15 = [v8 dataSource];
-    v16 = [v15 identifier];
+    dataSource2 = [contentLayout dataSource];
+    identifier = [dataSource2 identifier];
     dataSourceIdentifierOfCachedSectionsWithSelectedItems = self->_dataSourceIdentifierOfCachedSectionsWithSelectedItems;
 
-    if (v16 == dataSourceIdentifierOfCachedSectionsWithSelectedItems)
+    if (identifier == dataSourceIdentifierOfCachedSectionsWithSelectedItems)
     {
-      v18 = [v8 section];
+      section = [contentLayout section];
       v19 = self->_cachedSectionsWithSelectedItems;
-      v20 = [(NSIndexSet *)v19 containsIndex:v18]|| [(NSIndexSet *)v19 containsIndex:v18 - 1]|| [(NSIndexSet *)v19 containsIndex:v18 + 1];
+      v20 = [(NSIndexSet *)v19 containsIndex:section]|| [(NSIndexSet *)v19 containsIndex:section - 1]|| [(NSIndexSet *)v19 containsIndex:section + 1];
     }
 
     else
@@ -191,87 +191,87 @@
       v20 = 0;
     }
 
-    v21 = [(PXPhotosSectionedLayout *)self bodyLayoutProvider];
-    v22 = [v8 bodyContentLayout];
-    v23 = [v21 shouldPreventFaultOutOfBodyLayout:v22 inAssetSectionLayout:v8];
+    bodyLayoutProvider = [(PXPhotosSectionedLayout *)self bodyLayoutProvider];
+    bodyContentLayout = [contentLayout bodyContentLayout];
+    v23 = [bodyLayoutProvider shouldPreventFaultOutOfBodyLayout:bodyContentLayout inAssetSectionLayout:contentLayout];
 
-    v24 = 1;
+    hasPointReferences = 1;
     if (!v20 && (v23 & 1) == 0)
     {
-      v24 = [v6 hasPointReferences];
+      hasPointReferences = [layoutCopy hasPointReferences];
     }
   }
 
   else
   {
-    v24 = 0;
+    hasPointReferences = 0;
   }
 
-  return v24;
+  return hasPointReferences;
 }
 
-- (void)assetSectionLayoutDidConfigureLayouts:(id)a3
+- (void)assetSectionLayoutDidConfigureLayouts:(id)layouts
 {
-  v7 = a3;
-  v4 = [v7 bodyContentLayout];
+  layoutsCopy = layouts;
+  bodyContentLayout = [layoutsCopy bodyContentLayout];
 
-  if (v4)
+  if (bodyContentLayout)
   {
-    v5 = [(PXPhotosSectionedLayout *)self bodyLayoutProvider];
-    v6 = [v7 bodyContentLayout];
-    [v5 configureSectionBodyLayout:v6 inAssetSectionLayout:v7 forSectionedLayout:self];
+    bodyLayoutProvider = [(PXPhotosSectionedLayout *)self bodyLayoutProvider];
+    bodyContentLayout2 = [layoutsCopy bodyContentLayout];
+    [bodyLayoutProvider configureSectionBodyLayout:bodyContentLayout2 inAssetSectionLayout:layoutsCopy forSectionedLayout:self];
   }
 }
 
-- (id)layout:(id)a3 navigationObjectReferenceForSublayoutAtIndex:(int64_t)a4
+- (id)layout:(id)layout navigationObjectReferenceForSublayoutAtIndex:(int64_t)index
 {
-  v6 = [(PXPhotosSectionedLayout *)self viewModel];
-  [(PXPhotosSectionedLayout *)self _forceSectionIfNeeded:a4];
-  v7 = [v6 currentDataSource];
-  v11[0] = [v7 identifier];
-  v11[1] = a4;
+  viewModel = [(PXPhotosSectionedLayout *)self viewModel];
+  [(PXPhotosSectionedLayout *)self _forceSectionIfNeeded:index];
+  currentDataSource = [viewModel currentDataSource];
+  v11[0] = [currentDataSource identifier];
+  v11[1] = index;
   v8.f64[0] = NAN;
   v8.f64[1] = NAN;
   v12 = vnegq_f64(v8);
-  v9 = [v7 assetCollectionReferenceAtSectionIndexPath:v11];
+  v9 = [currentDataSource assetCollectionReferenceAtSectionIndexPath:v11];
 
   return v9;
 }
 
-- (id)layout:(id)a3 createSublayoutAtIndex:(int64_t)a4
+- (id)layout:(id)layout createSublayoutAtIndex:(int64_t)index
 {
-  v6 = [(PXPhotosSectionedLayout *)self viewModel];
-  [(PXPhotosSectionedLayout *)self _forceSectionIfNeeded:a4];
-  v7 = [v6 currentDataSource];
-  v8 = [(PXPhotosSectionedLayout *)self _shouldFaultInSection:a4 inDataSource:v7];
+  viewModel = [(PXPhotosSectionedLayout *)self viewModel];
+  [(PXPhotosSectionedLayout *)self _forceSectionIfNeeded:index];
+  currentDataSource = [viewModel currentDataSource];
+  v8 = [(PXPhotosSectionedLayout *)self _shouldFaultInSection:index inDataSource:currentDataSource];
 
   if (v8)
   {
     v9 = [PXAssetsSectionLayout alloc];
-    v10 = [(PXPhotosSectionedLayout *)self assetsDataSource];
-    v11 = [v6 loadingStatusManager];
-    v12 = [v6 assetImportStatusManager];
-    v13 = [v6 inlinePlaybackController];
-    v14 = [(PXPhotosSectionedLayout *)self spec];
-    v15 = [v14 assetsSpec];
-    v16 = [(PXAssetsSectionLayout *)v9 initWithSection:a4 dataSource:v10 loadingStatusManager:v11 assetImportStatusManager:v12 inlinePlaybackController:v13 zoomLevel:4 spec:v15];
+    assetsDataSource = [(PXPhotosSectionedLayout *)self assetsDataSource];
+    loadingStatusManager = [viewModel loadingStatusManager];
+    assetImportStatusManager = [viewModel assetImportStatusManager];
+    inlinePlaybackController = [viewModel inlinePlaybackController];
+    spec = [(PXPhotosSectionedLayout *)self spec];
+    assetsSpec = [spec assetsSpec];
+    v16 = [(PXAssetsSectionLayout *)v9 initWithSection:index dataSource:assetsDataSource loadingStatusManager:loadingStatusManager assetImportStatusManager:assetImportStatusManager inlinePlaybackController:inlinePlaybackController zoomLevel:4 spec:assetsSpec];
 
     [(PXAssetsSectionLayout *)v16 setDelegate:self];
-    if ([v6 wantsSingleRowScrollingLayout])
+    if ([viewModel wantsSingleRowScrollingLayout])
     {
       [(PXAssetsSectionLayout *)v16 setPreferredInitialContentLayoutAxis:2];
       [(PXAssetsSectionLayout *)v16 setPreferredInitialContentLayoutNumberOfRows:&unk_282C480F0];
     }
 
-    v17 = [v6 decorationViewClass];
-    v18 = [(PXAssetsSectionLayout *)v16 assetDecorationSource];
-    [v18 setDecorationViewClass:v17];
+    decorationViewClass = [viewModel decorationViewClass];
+    assetDecorationSource = [(PXAssetsSectionLayout *)v16 assetDecorationSource];
+    [assetDecorationSource setDecorationViewClass:decorationViewClass];
 
-    v19 = [(PXPhotosSectionedLayout *)self assetsDataSource];
-    v20 = [v19 identifier];
+    assetsDataSource2 = [(PXPhotosSectionedLayout *)self assetsDataSource];
+    identifier = [assetsDataSource2 identifier];
 
-    v23[0] = v20;
-    v23[1] = a4;
+    v23[0] = identifier;
+    v23[1] = index;
     v21.f64[0] = NAN;
     v21.f64[1] = NAN;
     v24 = vnegq_f64(v21);
@@ -286,25 +286,25 @@
   return v16;
 }
 
-- (void)_forceSectionIfNeeded:(int64_t)a3
+- (void)_forceSectionIfNeeded:(int64_t)needed
 {
-  v5 = [(PXPhotosSectionedLayout *)self viewModel];
-  v6 = v5;
+  viewModel = [(PXPhotosSectionedLayout *)self viewModel];
+  v6 = viewModel;
   if (self->_numberOfForcedSections <= 19)
   {
-    v7 = [v5 currentDataSource];
-    v8 = [v7 numberOfItemsInSection:a3];
+    currentDataSource = [viewModel currentDataSource];
+    v8 = [currentDataSource numberOfItemsInSection:needed];
 
     if (!v8)
     {
-      v9 = [v6 dataSourceManager];
+      dataSourceManager = [v6 dataSourceManager];
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v10[2] = __49__PXPhotosSectionedLayout__forceSectionIfNeeded___block_invoke;
       v10[3] = &unk_278298B90;
       v10[4] = self;
-      v10[5] = a3;
-      [v9 performChanges:v10];
+      v10[5] = needed;
+      [dataSourceManager performChanges:v10];
     }
   }
 }
@@ -323,52 +323,52 @@ void __49__PXPhotosSectionedLayout__forceSectionIfNeeded___block_invoke(uint64_t
   }
 }
 
-- (CGSize)layout:(id)a3 estimatedContentSizeForSublayoutAtIndex:(int64_t)a4 referenceSize:(CGSize)a5
+- (CGSize)layout:(id)layout estimatedContentSizeForSublayoutAtIndex:(int64_t)index referenceSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v9 = [(PXPhotosSectionedLayout *)self assetsDataSource];
-  v10 = [v9 identifier];
-  v11 = [(PXPhotosSectionedLayout *)self bodyLayoutProvider];
-  v12 = v11;
+  height = size.height;
+  width = size.width;
+  assetsDataSource = [(PXPhotosSectionedLayout *)self assetsDataSource];
+  identifier = [assetsDataSource identifier];
+  bodyLayoutProvider = [(PXPhotosSectionedLayout *)self bodyLayoutProvider];
+  v12 = bodyLayoutProvider;
   if (self->_bodyProviderRespondsTo.estimatedContentSize)
   {
-    v28 = v10;
-    v29 = a4;
+    v28 = identifier;
+    indexCopy2 = index;
     v13.f64[0] = NAN;
     v13.f64[1] = NAN;
     v30 = vnegq_f64(v13);
-    [v11 sectionedLayout:self estimatedContentSizeForBodyLayoutAtIndexPath:&v28 dataSource:v9 referenceSize:{width, height}];
+    [bodyLayoutProvider sectionedLayout:self estimatedContentSizeForBodyLayoutAtIndexPath:&v28 dataSource:assetsDataSource referenceSize:{width, height}];
     v15 = v14;
     v17 = v16;
   }
 
   else
   {
-    v28 = v10;
-    v29 = a4;
+    v28 = identifier;
+    indexCopy2 = index;
     v18.f64[0] = NAN;
     v18.f64[1] = NAN;
     v30 = vnegq_f64(v18);
-    v19 = [v9 assetCollectionAtSectionIndexPath:&v28];
-    v20 = [v9 numberOfItemsInSection:a4];
-    v21 = [v9 hasCurationForAssetCollection:v19];
-    if (!v20)
+    v19 = [assetsDataSource assetCollectionAtSectionIndexPath:&v28];
+    estimatedAssetCount = [assetsDataSource numberOfItemsInSection:index];
+    v21 = [assetsDataSource hasCurationForAssetCollection:v19];
+    if (!estimatedAssetCount)
     {
       if ([v19 estimatedAssetCount] == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v20 = 0;
+        estimatedAssetCount = 0;
       }
 
       else
       {
-        v20 = [v19 estimatedAssetCount];
+        estimatedAssetCount = [v19 estimatedAssetCount];
       }
     }
 
-    v22 = [(PXPhotosSectionedLayout *)self spec];
-    v23 = [v22 assetsSpec];
-    [PXAssetsSectionLayout estimatedSizeWithReferenceSize:v19 assetCollection:v20 numberOfAssets:v21 isCurated:4 zoomLevel:v23 spec:width, height];
+    spec = [(PXPhotosSectionedLayout *)self spec];
+    assetsSpec = [spec assetsSpec];
+    [PXAssetsSectionLayout estimatedSizeWithReferenceSize:v19 assetCollection:estimatedAssetCount numberOfAssets:v21 isCurated:4 zoomLevel:assetsSpec spec:width, height];
     v15 = v24;
     v17 = v25;
   }
@@ -382,28 +382,28 @@ void __49__PXPhotosSectionedLayout__forceSectionIfNeeded___block_invoke(uint64_t
 
 - (BOOL)shouldApplySpriteTransformToSublayouts
 {
-  v2 = [(PXPhotosSectionedLayout *)self placementOverride];
-  v3 = v2 == 0;
+  placementOverride = [(PXPhotosSectionedLayout *)self placementOverride];
+  v3 = placementOverride == 0;
 
   return v3;
 }
 
-- (id)navigationObjectReferenceForLocation:(CGPoint)a3
+- (id)navigationObjectReferenceForLocation:(CGPoint)location
 {
   v16.receiver = self;
   v16.super_class = PXPhotosSectionedLayout;
-  v4 = [(PXPhotosSectionedLayout *)&v16 navigationObjectReferenceForLocation:a3.x, a3.y];
-  v5 = [(PXPhotosSectionedLayout *)self viewModel];
-  v6 = [v5 currentDataSource];
-  v7 = [v5 currentDataSource];
-  v8 = [v7 numberOfSections];
+  v4 = [(PXPhotosSectionedLayout *)&v16 navigationObjectReferenceForLocation:location.x, location.y];
+  viewModel = [(PXPhotosSectionedLayout *)self viewModel];
+  currentDataSource = [viewModel currentDataSource];
+  currentDataSource2 = [viewModel currentDataSource];
+  numberOfSections = [currentDataSource2 numberOfSections];
 
-  if (v8 >= 2)
+  if (numberOfSections >= 2)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v6 assetReferenceForAssetReference:v4];
+      v9 = [currentDataSource assetReferenceForAssetReference:v4];
       v10 = v9;
       if (v9)
       {
@@ -415,7 +415,7 @@ void __49__PXPhotosSectionedLayout__forceSectionIfNeeded___block_invoke(uint64_t
           v11.f64[1] = NAN;
           v15[0] = v14;
           v15[1] = vnegq_f64(v11);
-          v12 = [v6 assetCollectionReferenceAtSectionIndexPath:v15];
+          v12 = [currentDataSource assetCollectionReferenceAtSectionIndexPath:v15];
 
           v4 = v12;
         }
@@ -426,20 +426,20 @@ void __49__PXPhotosSectionedLayout__forceSectionIfNeeded___block_invoke(uint64_t
   return v4;
 }
 
-- (void)willRemoveSublayout:(id)a3 atIndex:(int64_t)a4 flags:(unint64_t)a5
+- (void)willRemoveSublayout:(id)sublayout atIndex:(int64_t)index flags:(unint64_t)flags
 {
   v21.receiver = self;
   v21.super_class = PXPhotosSectionedLayout;
-  v9 = a3;
-  [(PXGStackLayout *)&v21 willRemoveSublayout:v9 atIndex:a4 flags:a5];
-  v10 = [v9 px_assetsSectionLayout];
+  sublayoutCopy = sublayout;
+  [(PXGStackLayout *)&v21 willRemoveSublayout:sublayoutCopy atIndex:index flags:flags];
+  px_assetsSectionLayout = [sublayoutCopy px_assetsSectionLayout];
 
-  if (!v10)
+  if (!px_assetsSectionLayout)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v15 = objc_opt_class();
     v16 = NSStringFromClass(v15);
-    [v14 handleFailureInMethod:a2 object:self file:@"PXPhotosSectionedLayout.m" lineNumber:846 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"sublayout.px_assetsSectionLayout", v16}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosSectionedLayout.m" lineNumber:846 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"sublayout.px_assetsSectionLayout", v16}];
 LABEL_6:
 
     goto LABEL_3;
@@ -448,25 +448,25 @@ LABEL_6:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v17 = objc_opt_class();
     v16 = NSStringFromClass(v17);
-    v18 = [v10 px_descriptionForAssertionMessage];
-    [v14 handleFailureInMethod:a2 object:self file:@"PXPhotosSectionedLayout.m" lineNumber:846 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"sublayout.px_assetsSectionLayout", v16, v18}];
+    px_descriptionForAssertionMessage = [px_assetsSectionLayout px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosSectionedLayout.m" lineNumber:846 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"sublayout.px_assetsSectionLayout", v16, px_descriptionForAssertionMessage}];
 
     goto LABEL_6;
   }
 
 LABEL_3:
-  v11 = [v10 assetCollection];
-  v12 = [(PXPhotosSectionedLayout *)self viewModel];
+  assetCollection = [px_assetsSectionLayout assetCollection];
+  viewModel = [(PXPhotosSectionedLayout *)self viewModel];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __61__PXPhotosSectionedLayout_willRemoveSublayout_atIndex_flags___block_invoke;
   v19[3] = &unk_278298B68;
-  v20 = v11;
-  v13 = v11;
-  [v12 performChanges:v19];
+  v20 = assetCollection;
+  v13 = assetCollection;
+  [viewModel performChanges:v19];
 }
 
 void __61__PXPhotosSectionedLayout_willRemoveSublayout_atIndex_flags___block_invoke(uint64_t a1, void *a2)
@@ -475,22 +475,22 @@ void __61__PXPhotosSectionedLayout_willRemoveSublayout_atIndex_flags___block_inv
   [v3 removeObject:*(a1 + 32)];
 }
 
-- (void)didFaultInSublayout:(id)a3 atIndex:(int64_t)a4 fromEstimatedContentSize:(CGSize)a5
+- (void)didFaultInSublayout:(id)sublayout atIndex:(int64_t)index fromEstimatedContentSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
+  height = size.height;
+  width = size.width;
   v22.receiver = self;
   v22.super_class = PXPhotosSectionedLayout;
-  v10 = a3;
-  [(PXPhotosSectionedLayout *)&v22 didFaultInSublayout:v10 atIndex:a4 fromEstimatedContentSize:width, height];
-  v11 = [v10 px_assetsSectionLayout];
+  sublayoutCopy = sublayout;
+  [(PXPhotosSectionedLayout *)&v22 didFaultInSublayout:sublayoutCopy atIndex:index fromEstimatedContentSize:width, height];
+  px_assetsSectionLayout = [sublayoutCopy px_assetsSectionLayout];
 
-  if (!v11)
+  if (!px_assetsSectionLayout)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v16 = objc_opt_class();
     v17 = NSStringFromClass(v16);
-    [v15 handleFailureInMethod:a2 object:self file:@"PXPhotosSectionedLayout.m" lineNumber:836 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"sublayout.px_assetsSectionLayout", v17}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosSectionedLayout.m" lineNumber:836 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"sublayout.px_assetsSectionLayout", v17}];
 LABEL_6:
 
     goto LABEL_3;
@@ -499,25 +499,25 @@ LABEL_6:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v18 = objc_opt_class();
     v17 = NSStringFromClass(v18);
-    v19 = [v11 px_descriptionForAssertionMessage];
-    [v15 handleFailureInMethod:a2 object:self file:@"PXPhotosSectionedLayout.m" lineNumber:836 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"sublayout.px_assetsSectionLayout", v17, v19}];
+    px_descriptionForAssertionMessage = [px_assetsSectionLayout px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosSectionedLayout.m" lineNumber:836 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"sublayout.px_assetsSectionLayout", v17, px_descriptionForAssertionMessage}];
 
     goto LABEL_6;
   }
 
 LABEL_3:
-  v12 = [v11 assetCollection];
-  v13 = [(PXPhotosSectionedLayout *)self viewModel];
+  assetCollection = [px_assetsSectionLayout assetCollection];
+  viewModel = [(PXPhotosSectionedLayout *)self viewModel];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __80__PXPhotosSectionedLayout_didFaultInSublayout_atIndex_fromEstimatedContentSize___block_invoke;
   v20[3] = &unk_278298B68;
-  v21 = v12;
-  v14 = v12;
-  [v13 performChanges:v20];
+  v21 = assetCollection;
+  v14 = assetCollection;
+  [viewModel performChanges:v20];
 }
 
 void __80__PXPhotosSectionedLayout_didFaultInSublayout_atIndex_fromEstimatedContentSize___block_invoke(uint64_t a1, void *a2)
@@ -526,34 +526,34 @@ void __80__PXPhotosSectionedLayout_didFaultInSublayout_atIndex_fromEstimatedCont
   [v3 addObject:*(a1 + 32)];
 }
 
-- (int64_t)sublayoutIndexForObjectReference:(id)a3 options:(unint64_t)a4 updatedObjectReference:(id *)a5
+- (int64_t)sublayoutIndexForObjectReference:(id)reference options:(unint64_t)options updatedObjectReference:(id *)objectReference
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  referenceCopy = reference;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
-    v10 = [(PXPhotosSectionedLayout *)self assetsDataSource];
-    v11 = [v10 assetReferenceForAssetReference:v9];
+    v9 = referenceCopy;
+    assetsDataSource = [(PXPhotosSectionedLayout *)self assetsDataSource];
+    decoratedSpriteReference = [assetsDataSource assetReferenceForAssetReference:v9];
 
-    if (v11)
+    if (decoratedSpriteReference)
     {
-      v12 = v11;
-      *a5 = v11;
+      v12 = decoratedSpriteReference;
+      *objectReference = decoratedSpriteReference;
       [v12 indexPath];
       v13 = v25;
     }
 
-    else if (a4)
+    else if (options)
     {
-      v19 = [(PXPhotosSectionedLayout *)self assetsDataSource];
-      v20 = [v19 objectReferenceNearestToObjectReference:v9];
+      assetsDataSource2 = [(PXPhotosSectionedLayout *)self assetsDataSource];
+      v20 = [assetsDataSource2 objectReferenceNearestToObjectReference:v9];
 
       if (v20)
       {
         v21 = v20;
-        *a5 = v20;
+        *objectReference = v20;
         [v21 indexPath];
         v13 = v24;
       }
@@ -578,13 +578,13 @@ LABEL_22:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
-    v11 = [v9 decoratedSpriteReference];
-    v13 = [(PXPhotosSectionedLayout *)self sublayoutIndexForSpriteReference:v11 options:a4];
+    v9 = referenceCopy;
+    decoratedSpriteReference = [v9 decoratedSpriteReference];
+    v13 = [(PXPhotosSectionedLayout *)self sublayoutIndexForSpriteReference:decoratedSpriteReference options:options];
     if (v13 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v14 = v9;
-      *a5 = v9;
+      *objectReference = v9;
     }
 
     goto LABEL_21;
@@ -593,14 +593,14 @@ LABEL_22:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
-    v15 = [(PXPhotosSectionedLayout *)self assetsDataSource];
-    v16 = [v15 assetCollectionReferenceForAssetCollectionReference:v9];
+    v9 = referenceCopy;
+    assetsDataSource3 = [(PXPhotosSectionedLayout *)self assetsDataSource];
+    v16 = [assetsDataSource3 assetCollectionReferenceForAssetCollectionReference:v9];
 
     if (v16)
     {
       v17 = v16;
-      *a5 = v16;
+      *objectReference = v16;
       [v17 indexPath];
       v13 = v23;
     }
@@ -617,7 +617,7 @@ LABEL_22:
   if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v27 = v8;
+    v27 = referenceCopy;
     _os_log_error_impl(&dword_21ABF3000, v18, OS_LOG_TYPE_ERROR, "Unhandled object reference type: %@", buf, 0xCu);
   }
 
@@ -627,7 +627,7 @@ LABEL_23:
   return v13;
 }
 
-- (void)setPreferredCornerRadius:(id)a3
+- (void)setPreferredCornerRadius:(id)radius
 {
   v7.i64[0] = __PAIR64__(LODWORD(v4), LODWORD(v3));
   v7.i64[1] = __PAIR64__(LODWORD(v6), LODWORD(v5));
@@ -637,11 +637,11 @@ LABEL_23:
     self->_preferredCornerRadius.var0.var0.topRight = v4;
     self->_preferredCornerRadius.var0.var0.bottomLeft = v5;
     self->_preferredCornerRadius.var0.var0.bottomRight = v6;
-    [(PXPhotosSectionedLayout *)self _invalidateSublayoutsConfiguration:*&a3.var0.var0.var0];
+    [(PXPhotosSectionedLayout *)self _invalidateSublayoutsConfiguration:*&radius.var0.var0.var0];
   }
 }
 
-- (void)setMaskCornerRadius:(id)a3
+- (void)setMaskCornerRadius:(id)radius
 {
   v7.i64[0] = __PAIR64__(LODWORD(v4), LODWORD(v3));
   v7.i64[1] = __PAIR64__(LODWORD(v6), LODWORD(v5));
@@ -651,18 +651,18 @@ LABEL_23:
     self->_maskCornerRadius.var0.var0.topRight = v4;
     self->_maskCornerRadius.var0.var0.bottomLeft = v5;
     self->_maskCornerRadius.var0.var0.bottomRight = v6;
-    [(PXPhotosSectionedLayout *)self _invalidateCaptureSprite:*&a3.var0.var0.var0];
+    [(PXPhotosSectionedLayout *)self _invalidateCaptureSprite:*&radius.var0.var0.var0];
   }
 }
 
-- (void)setMaskRect:(CGRect)a3
+- (void)setMaskRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   p_maskRect = &self->_maskRect;
-  if (!CGRectEqualToRect(self->_maskRect, a3))
+  if (!CGRectEqualToRect(self->_maskRect, rect))
   {
     p_maskRect->origin.x = x;
     p_maskRect->origin.y = y;
@@ -697,9 +697,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 0x20) != 0)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosSectionedLayout _invalidatePreferredCornerRadius]"];
-      [v6 handleFailureInFunction:v7 file:@"PXPhotosSectionedLayout.m" lineNumber:753 description:{@"invalidating %lu after it already has been updated", 32}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXPhotosSectionedLayout.m" lineNumber:753 description:{@"invalidating %lu after it already has been updated", 32}];
 
       abort();
     }
@@ -895,9 +895,9 @@ LABEL_6:
 LABEL_5:
     if (self->_postUpdateFlags.updated)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosSectionedLayout _invalidateCaptureSprite]"];
-      [v6 handleFailureInFunction:v7 file:@"PXPhotosSectionedLayout.m" lineNumber:722 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXPhotosSectionedLayout.m" lineNumber:722 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -953,7 +953,7 @@ LABEL_5:
   [(PXPhotosSectionedLayout *)self enumerateAssetsSectionSublayoutsUsingBlock:v6];
   if (*(v8 + 24) == 1)
   {
-    v5 = [(PXPhotosSectionedLayout *)self createDefaultAnimationForCurrentContext];
+    createDefaultAnimationForCurrentContext = [(PXPhotosSectionedLayout *)self createDefaultAnimationForCurrentContext];
   }
 
   self->_shouldRecreateBodyLayouts = 0;
@@ -998,9 +998,9 @@ LABEL_7:
 LABEL_6:
       if ((self->_updateFlags.updated & 0x10) != 0)
       {
-        v6 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosSectionedLayout _invalidateSublayoutsConfiguration]"];
-        [v6 handleFailureInFunction:v7 file:@"PXPhotosSectionedLayout.m" lineNumber:695 description:{@"invalidating %lu after it already has been updated", 16}];
+        [currentHandler handleFailureInFunction:v7 file:@"PXPhotosSectionedLayout.m" lineNumber:695 description:{@"invalidating %lu after it already has been updated", 16}];
 
         abort();
       }
@@ -1023,20 +1023,20 @@ LABEL_6:
   }
 }
 
-- (void)_updateSublayoutGridConfiguratorForLayout:(id)a3
+- (void)_updateSublayoutGridConfiguratorForLayout:(id)layout
 {
-  v4 = a3;
-  v5 = [v4 spec];
-  v6 = [v4 assetCollection];
+  layoutCopy = layout;
+  spec = [layoutCopy spec];
+  assetCollection = [layoutCopy assetCollection];
 
-  v9 = [v5 sectionConfiguratorForAssetCollection:v6 inZoomLevel:4];
+  v9 = [spec sectionConfiguratorForAssetCollection:assetCollection inZoomLevel:4];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [(PXPhotosSectionedLayout *)self viewModel];
-    [v9 setAspectFitContent:{objc_msgSend(v7, "aspectFitContent")}];
-    [v7 zoomStep];
+    viewModel = [(PXPhotosSectionedLayout *)self viewModel];
+    [v9 setAspectFitContent:{objc_msgSend(viewModel, "aspectFitContent")}];
+    [viewModel zoomStep];
     [v9 setZoomStep:v8];
   }
 }
@@ -1084,9 +1084,9 @@ LABEL_7:
 LABEL_6:
       if ((self->_updateFlags.updated & 2) != 0)
       {
-        v6 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosSectionedLayout _invalidateSublayoutsSpec]"];
-        [v6 handleFailureInFunction:v7 file:@"PXPhotosSectionedLayout.m" lineNumber:669 description:{@"invalidating %lu after it already has been updated", 2}];
+        [currentHandler handleFailureInFunction:v7 file:@"PXPhotosSectionedLayout.m" lineNumber:669 description:{@"invalidating %lu after it already has been updated", 2}];
 
         abort();
       }
@@ -1145,72 +1145,72 @@ BOOL __48__PXPhotosSectionedLayout_reloadVideoThumbnails__block_invoke_2(uint64_
 
 - (void)_updateSublayoutsDataSource
 {
-  v4 = [(PXPhotosSectionedLayout *)self viewModel];
-  v5 = [v4 dataSourceManager];
+  viewModel = [(PXPhotosSectionedLayout *)self viewModel];
+  dataSourceManager = [viewModel dataSourceManager];
 
   v6 = self->_assetsDataSource;
-  v7 = [v5 dataSource];
-  if (v6 != v7)
+  dataSource = [dataSourceManager dataSource];
+  if (v6 != dataSource)
   {
-    v8 = [(PXPhotosSectionedLayout *)self sublayoutDataStore];
-    v9 = [(PXAssetsDataSource *)v6 numberOfSections];
-    v45 = v8;
-    if (v9 != [v8 count])
+    sublayoutDataStore = [(PXPhotosSectionedLayout *)self sublayoutDataStore];
+    numberOfSections = [(PXAssetsDataSource *)v6 numberOfSections];
+    v45 = sublayoutDataStore;
+    if (numberOfSections != [sublayoutDataStore count])
     {
-      v37 = [MEMORY[0x277CCA890] currentHandler];
-      [v37 handleFailureInMethod:a2 object:self file:@"PXPhotosSectionedLayout.m" lineNumber:551 description:{@"Invalid parameter not satisfying: %@", @"numberOfSublayoutsBefore == sublayoutDataStore.count"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosSectionedLayout.m" lineNumber:551 description:{@"Invalid parameter not satisfying: %@", @"numberOfSublayoutsBefore == sublayoutDataStore.count"}];
     }
 
-    v10 = [v5 changeHistory];
-    v11 = [v10 changeDetailsFromDataSourceIdentifier:-[PXAssetsDataSource identifier](v6 toDataSourceIdentifier:{"identifier"), -[PXAssetsDataSource identifier](v7, "identifier")}];
+    changeHistory = [dataSourceManager changeHistory];
+    v11 = [changeHistory changeDetailsFromDataSourceIdentifier:-[PXAssetsDataSource identifier](v6 toDataSourceIdentifier:{"identifier"), -[PXAssetsDataSource identifier](dataSource, "identifier")}];
 
     if (self->_isUpdatingSublayouts)
     {
-      v44 = v5;
+      v44 = dataSourceManager;
       if ([v11 count] != 1)
       {
-        v38 = [MEMORY[0x277CCA890] currentHandler];
-        [v38 handleFailureInMethod:a2 object:self file:@"PXPhotosSectionedLayout.m" lineNumber:561 description:{@"While updating sublayouts, expecting only one data source change, got %lu", objc_msgSend(v11, "count")}];
+        currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXPhotosSectionedLayout.m" lineNumber:561 description:{@"While updating sublayouts, expecting only one data source change, got %lu", objc_msgSend(v11, "count")}];
       }
 
-      v12 = [v11 firstObject];
-      v13 = [v12 sectionsWithItemChanges];
+      firstObject = [v11 firstObject];
+      sectionsWithItemChanges = [firstObject sectionsWithItemChanges];
       v58[0] = MEMORY[0x277D85DD0];
       v58[1] = 3221225472;
       v58[2] = __54__PXPhotosSectionedLayout__updateSublayoutsDataSource__block_invoke;
       v58[3] = &unk_278298A10;
       v58[4] = self;
       v58[5] = a2;
-      [v13 enumerateIndexesUsingBlock:v58];
+      [sectionsWithItemChanges enumerateIndexesUsingBlock:v58];
 
-      v14 = [v12 sectionChanges];
-      if (([v14 hasIncrementalChanges] & 1) == 0)
+      sectionChanges = [firstObject sectionChanges];
+      if (([sectionChanges hasIncrementalChanges] & 1) == 0)
       {
-        v39 = [MEMORY[0x277CCA890] currentHandler];
-        [v39 handleFailureInMethod:a2 object:self file:@"PXPhotosSectionedLayout.m" lineNumber:567 description:@"Section changes while updating sublayouts must be incremental."];
+        currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXPhotosSectionedLayout.m" lineNumber:567 description:@"Section changes while updating sublayouts must be incremental."];
       }
 
-      v15 = [v14 insertedIndexes];
-      v16 = [v15 count];
+      insertedIndexes = [sectionChanges insertedIndexes];
+      v16 = [insertedIndexes count];
 
       if (v16)
       {
-        v40 = [MEMORY[0x277CCA890] currentHandler];
-        v41 = [v14 insertedIndexes];
-        [v40 handleFailureInMethod:a2 object:self file:@"PXPhotosSectionedLayout.m" lineNumber:568 description:{@"Sections %@ inserted while updating sublayouts, this is not supported.", v41}];
+        currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
+        insertedIndexes2 = [sectionChanges insertedIndexes];
+        [currentHandler4 handleFailureInMethod:a2 object:self file:@"PXPhotosSectionedLayout.m" lineNumber:568 description:{@"Sections %@ inserted while updating sublayouts, this is not supported.", insertedIndexes2}];
       }
 
-      v17 = [v14 removedIndexes];
-      v18 = [v17 count];
+      removedIndexes = [sectionChanges removedIndexes];
+      v18 = [removedIndexes count];
 
       if (v18)
       {
-        v42 = [MEMORY[0x277CCA890] currentHandler];
-        v43 = [v14 removedIndexes];
-        [v42 handleFailureInMethod:a2 object:self file:@"PXPhotosSectionedLayout.m" lineNumber:569 description:{@"Sections %@ removed while updating sublayouts, this is not supported.", v43}];
+        currentHandler5 = [MEMORY[0x277CCA890] currentHandler];
+        removedIndexes2 = [sectionChanges removedIndexes];
+        [currentHandler5 handleFailureInMethod:a2 object:self file:@"PXPhotosSectionedLayout.m" lineNumber:569 description:{@"Sections %@ removed while updating sublayouts, this is not supported.", removedIndexes2}];
       }
 
-      v5 = v44;
+      dataSourceManager = v44;
     }
 
     else
@@ -1225,28 +1225,28 @@ BOOL __48__PXPhotosSectionedLayout_reloadVideoThumbnails__block_invoke_2(uint64_
         v19 = [(PXAssetsDataSource *)v6 areAllSectionsConsideredAccurate]^ 1;
       }
 
-      if (([(PXAssetsDataSource *)v7 containsAnyItems]& 1) != 0)
+      if (([(PXAssetsDataSource *)dataSource containsAnyItems]& 1) != 0)
       {
         v20 = 0;
       }
 
       else
       {
-        v20 = [(PXAssetsDataSource *)v7 areAllSectionsConsideredAccurate]^ 1;
+        v20 = [(PXAssetsDataSource *)dataSource areAllSectionsConsideredAccurate]^ 1;
       }
 
       if (v19 == v20)
       {
-        v21 = [(PXPhotosSectionedLayout *)self _createAnimationForChangeFromDataSource:v6 toDataSource:v7 changeDetails:v11];
+        v21 = [(PXPhotosSectionedLayout *)self _createAnimationForChangeFromDataSource:v6 toDataSource:dataSource changeDetails:v11];
       }
 
-      v22 = [(PXPhotosSectionedLayout *)self viewModel];
-      v23 = [v22 viewModelHelper];
-      if ([v23 isFiltering])
+      viewModel2 = [(PXPhotosSectionedLayout *)self viewModel];
+      viewModelHelper = [viewModel2 viewModelHelper];
+      if ([viewModelHelper isFiltering])
       {
         if ([(PXAssetsDataSource *)v6 areAllSectionsConsideredAccurate])
         {
-          if ([(PXAssetsDataSource *)v7 areAllSectionsConsideredAccurate])
+          if ([(PXAssetsDataSource *)dataSource areAllSectionsConsideredAccurate])
           {
             v24 = 0;
           }
@@ -1268,20 +1268,20 @@ BOOL __48__PXPhotosSectionedLayout_reloadVideoThumbnails__block_invoke_2(uint64_
         v24 = 0;
       }
 
-      v25 = [(PXPhotosSectionedLayout *)self rootLayout];
-      v26 = [v25 createAnchorForVisibleAreaIgnoringEdges:v24];
-      v27 = [v26 autoInvalidate];
+      rootLayout = [(PXPhotosSectionedLayout *)self rootLayout];
+      v26 = [rootLayout createAnchorForVisibleAreaIgnoringEdges:v24];
+      autoInvalidate = [v26 autoInvalidate];
 
-      v28 = [(PXPhotosSectionedLayout *)self activeAnchor];
+      activeAnchor = [(PXPhotosSectionedLayout *)self activeAnchor];
 
-      if (!v28)
+      if (!activeAnchor)
       {
-        v29 = [(PXPhotosSectionedLayout *)self createAnchorWithAnchor:v27];
-        v30 = [v29 autoInvalidate];
+        v29 = [(PXPhotosSectionedLayout *)self createAnchorWithAnchor:autoInvalidate];
+        autoInvalidate2 = [v29 autoInvalidate];
       }
     }
 
-    objc_storeStrong(&self->_assetsDataSource, v7);
+    objc_storeStrong(&self->_assetsDataSource, dataSource);
     v56 = 0;
     v57 = 0;
     v53[0] = MEMORY[0x277D85DD0];
@@ -1289,7 +1289,7 @@ BOOL __48__PXPhotosSectionedLayout_reloadVideoThumbnails__block_invoke_2(uint64_
     v53[2] = __54__PXPhotosSectionedLayout__updateSublayoutsDataSource__block_invoke_2;
     v53[3] = &unk_278298A38;
     v54 = v6;
-    v31 = v7;
+    v31 = dataSource;
     v55 = v31;
     [(PXPhotosSectionedLayout *)self applySectionedChangeDetails:v11 dataSourceBeforeChanges:v54 dataSourceAfterChanges:v31 sublayoutProvider:self outChangedSections:&v57 outSectionsWithItemChanges:&v56 changeMediaVersionHandler:v53];
     v32 = v57;
@@ -1312,7 +1312,7 @@ BOOL __48__PXPhotosSectionedLayout_reloadVideoThumbnails__block_invoke_2(uint64_
     v36 = v32;
     v47 = v36;
     v48 = v34;
-    v49 = self;
+    selfCopy = self;
     [(PXPhotosSectionedLayout *)self enumerateAssetsSectionSublayoutsUsingBlock:v46];
     if (!self->_isUpdatingSublayouts)
     {
@@ -1484,9 +1484,9 @@ LABEL_6:
 LABEL_5:
     if (self->_updateFlags.updated)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosSectionedLayout _invalidateSublayoutsDataSource]"];
-      [v6 handleFailureInFunction:v7 file:@"PXPhotosSectionedLayout.m" lineNumber:538 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXPhotosSectionedLayout.m" lineNumber:538 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -1515,16 +1515,16 @@ LABEL_5:
   [(PXGStackLayout *)&v7 didUpdate];
   if (self->_updateFlags.willPerformUpdate)
   {
-    v3 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosSectionedLayout didUpdate]"];
-    [v3 handleFailureInFunction:v4 file:@"PXPhotosSectionedLayout.m" lineNumber:533 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.willPerformUpdate"}];
+    [currentHandler handleFailureInFunction:v4 file:@"PXPhotosSectionedLayout.m" lineNumber:533 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.willPerformUpdate"}];
   }
 
   if (self->_postUpdateFlags.willPerformUpdate)
   {
-    v5 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosSectionedLayout didUpdate]"];
-    [v5 handleFailureInFunction:v6 file:@"PXPhotosSectionedLayout.m" lineNumber:534 description:{@"Invalid parameter not satisfying: %@", @"!_postUpdateFlags.willPerformUpdate"}];
+    [currentHandler2 handleFailureInFunction:v6 file:@"PXPhotosSectionedLayout.m" lineNumber:534 description:{@"Invalid parameter not satisfying: %@", @"!_postUpdateFlags.willPerformUpdate"}];
   }
 }
 
@@ -1538,9 +1538,9 @@ LABEL_5:
   {
     if (self->_updateFlags.isPerformingUpdate)
     {
-      v11 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosSectionedLayout update]"];
-      [v11 handleFailureInFunction:v12 file:@"PXPhotosSectionedLayout.m" lineNumber:503 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+      [currentHandler handleFailureInFunction:v12 file:@"PXPhotosSectionedLayout.m" lineNumber:503 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
 
       needsUpdate = p_updateFlags->needsUpdate;
     }
@@ -1553,9 +1553,9 @@ LABEL_5:
       [(PXPhotosSectionedLayout *)self _updateSublayoutsDataSource];
       if (!p_updateFlags->isPerformingUpdate)
       {
-        v13 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
         v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosSectionedLayout update]"];
-        [v13 handleFailureInFunction:v14 file:@"PXPhotosSectionedLayout.m" lineNumber:507 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+        [currentHandler2 handleFailureInFunction:v14 file:@"PXPhotosSectionedLayout.m" lineNumber:507 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
       }
     }
 
@@ -1569,9 +1569,9 @@ LABEL_5:
 
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v15 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
       v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosSectionedLayout update]"];
-      [v15 handleFailureInFunction:v16 file:@"PXPhotosSectionedLayout.m" lineNumber:510 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler3 handleFailureInFunction:v16 file:@"PXPhotosSectionedLayout.m" lineNumber:510 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v6 = p_updateFlags->needsUpdate;
@@ -1584,9 +1584,9 @@ LABEL_5:
 
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v17 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
       v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosSectionedLayout update]"];
-      [v17 handleFailureInFunction:v18 file:@"PXPhotosSectionedLayout.m" lineNumber:513 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler4 handleFailureInFunction:v18 file:@"PXPhotosSectionedLayout.m" lineNumber:513 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v7 = p_updateFlags->needsUpdate;
@@ -1601,9 +1601,9 @@ LABEL_5:
     p_updateFlags->isPerformingUpdate = 0;
     if (v7)
     {
-      v19 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler5 = [MEMORY[0x277CCA890] currentHandler];
       v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosSectionedLayout update]"];
-      [v19 handleFailureInFunction:v20 file:@"PXPhotosSectionedLayout.m" lineNumber:517 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
+      [currentHandler5 handleFailureInFunction:v20 file:@"PXPhotosSectionedLayout.m" lineNumber:517 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
     }
   }
 
@@ -1620,9 +1620,9 @@ LABEL_5:
   {
     if (self->_postUpdateFlags.isPerformingUpdate)
     {
-      v21 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler6 = [MEMORY[0x277CCA890] currentHandler];
       v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosSectionedLayout update]"];
-      [v21 handleFailureInFunction:v22 file:@"PXPhotosSectionedLayout.m" lineNumber:524 description:{@"Invalid parameter not satisfying: %@", @"!_postUpdateFlags.isPerformingUpdate"}];
+      [currentHandler6 handleFailureInFunction:v22 file:@"PXPhotosSectionedLayout.m" lineNumber:524 description:{@"Invalid parameter not satisfying: %@", @"!_postUpdateFlags.isPerformingUpdate"}];
 
       v10 = p_postUpdateFlags->needsUpdate;
     }
@@ -1639,9 +1639,9 @@ LABEL_5:
     self->_postUpdateFlags.isPerformingUpdate = 0;
     if (v10)
     {
-      v23 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler7 = [MEMORY[0x277CCA890] currentHandler];
       v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosSectionedLayout update]"];
-      [v23 handleFailureInFunction:v24 file:@"PXPhotosSectionedLayout.m" lineNumber:528 description:{@"still needing to update %lu after update pass", p_postUpdateFlags->needsUpdate}];
+      [currentHandler7 handleFailureInFunction:v24 file:@"PXPhotosSectionedLayout.m" lineNumber:528 description:{@"still needing to update %lu after update pass", p_postUpdateFlags->needsUpdate}];
     }
   }
 }
@@ -1654,33 +1654,33 @@ LABEL_5:
   self->_updateFlags.willPerformUpdate = 1;
   if (self->_updateFlags.isPerformingUpdate)
   {
-    v3 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosSectionedLayout willUpdate]"];
-    [v3 handleFailureInFunction:v4 file:@"PXPhotosSectionedLayout.m" lineNumber:496 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+    [currentHandler handleFailureInFunction:v4 file:@"PXPhotosSectionedLayout.m" lineNumber:496 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
   }
 
   self->_postUpdateFlags.willPerformUpdate = 1;
   if (self->_postUpdateFlags.isPerformingUpdate)
   {
-    v5 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXPhotosSectionedLayout willUpdate]"];
-    [v5 handleFailureInFunction:v6 file:@"PXPhotosSectionedLayout.m" lineNumber:497 description:{@"Invalid parameter not satisfying: %@", @"!_postUpdateFlags.isPerformingUpdate"}];
+    [currentHandler2 handleFailureInFunction:v6 file:@"PXPhotosSectionedLayout.m" lineNumber:497 description:{@"Invalid parameter not satisfying: %@", @"!_postUpdateFlags.isPerformingUpdate"}];
   }
 }
 
-- (BOOL)_configureSectionLayout:(id)a3 sectionIndexPath:(PXSimpleIndexPath *)a4
+- (BOOL)_configureSectionLayout:(id)layout sectionIndexPath:(PXSimpleIndexPath *)path
 {
-  v6 = a3;
-  v7 = [(PXPhotosSectionedLayout *)self viewModel];
-  v8 = [v6 dropTargetAssetReference];
-  v9 = [v7 dropTargetAssetReference];
+  layoutCopy = layout;
+  viewModel = [(PXPhotosSectionedLayout *)self viewModel];
+  dropTargetAssetReference = [layoutCopy dropTargetAssetReference];
+  dropTargetAssetReference2 = [viewModel dropTargetAssetReference];
 
-  v10 = [v6 tapbackStatusManager];
-  v11 = [v7 tapbackStatusManager];
+  tapbackStatusManager = [layoutCopy tapbackStatusManager];
+  tapbackStatusManager2 = [viewModel tapbackStatusManager];
 
-  v13 = v10 != v11 || v8 != v9;
-  v14 = [v6 headerLayout];
-  if (v14)
+  v13 = tapbackStatusManager != tapbackStatusManager2 || dropTargetAssetReference != dropTargetAssetReference2;
+  headerLayout = [layoutCopy headerLayout];
+  if (headerLayout)
   {
     shouldRecreateHeaderLayouts = self->_shouldRecreateHeaderLayouts;
 
@@ -1692,8 +1692,8 @@ LABEL_5:
 
   else
   {
-    v16 = [(PXPhotosSectionedLayout *)self headerLayoutProvider];
-    if (v16)
+    headerLayoutProvider = [(PXPhotosSectionedLayout *)self headerLayoutProvider];
+    if (headerLayoutProvider)
     {
     }
 
@@ -1704,19 +1704,19 @@ LABEL_5:
   }
 
   v79 = 1;
-  v17 = [(PXPhotosSectionedLayout *)self headerLayoutProvider];
-  v18 = [(PXPhotosSectionedLayout *)self assetsDataSource];
-  v19 = [(PXPhotosSectionedLayout *)self spec];
-  v20 = *&a4->item;
-  *location = *&a4->dataSourceIdentifier;
+  headerLayoutProvider2 = [(PXPhotosSectionedLayout *)self headerLayoutProvider];
+  assetsDataSource = [(PXPhotosSectionedLayout *)self assetsDataSource];
+  spec = [(PXPhotosSectionedLayout *)self spec];
+  v20 = *&path->item;
+  *location = *&path->dataSourceIdentifier;
   v78 = v20;
-  v21 = [v17 createSectionHeaderLayoutForSectionedLayout:self dataSource:v18 sectionIndexPath:location spec:v19 outAlignment:&v79];
+  v21 = [headerLayoutProvider2 createSectionHeaderLayoutForSectionedLayout:self dataSource:assetsDataSource sectionIndexPath:location spec:spec outAlignment:&v79];
 
-  v22 = [v6 headerLayout];
+  headerLayout2 = [layoutCopy headerLayout];
 
-  if (v22 != v21)
+  if (headerLayout2 != v21)
   {
-    [v6 setHeaderLayout:v21];
+    [layoutCopy setHeaderLayout:v21];
     v13 = 1;
   }
 
@@ -1762,14 +1762,14 @@ LABEL_5:
     v30 = v23;
   }
 
-  [v6 setMode:v30];
-  [v6 setFloatingModesRespectSafeArea:v28];
-  [v6 setAdjustSublayoutZPositions:v29];
-  [v6 setShouldExcludeTopAndBottomPaddingFromReferenceSize:v29];
+  [layoutCopy setMode:v30];
+  [layoutCopy setFloatingModesRespectSafeArea:v28];
+  [layoutCopy setAdjustSublayoutZPositions:v29];
+  [layoutCopy setShouldExcludeTopAndBottomPaddingFromReferenceSize:v29];
 
 LABEL_33:
-  v31 = [v6 bodyContentLayout];
-  if (v31)
+  bodyContentLayout = [layoutCopy bodyContentLayout];
+  if (bodyContentLayout)
   {
     shouldRecreateBodyLayouts = self->_shouldRecreateBodyLayouts;
 
@@ -1781,26 +1781,26 @@ LABEL_33:
     goto LABEL_39;
   }
 
-  v33 = [(PXPhotosSectionedLayout *)self bodyLayoutProvider];
-  if (v33)
+  bodyLayoutProvider = [(PXPhotosSectionedLayout *)self bodyLayoutProvider];
+  if (bodyLayoutProvider)
   {
 
 LABEL_39:
     LOBYTE(v79) = 1;
-    v34 = [(PXPhotosSectionedLayout *)self bodyLayoutProvider];
-    v35 = [(PXPhotosSectionedLayout *)self assetsDataSource];
-    v36 = [(PXPhotosSectionedLayout *)self spec];
-    v37 = *&a4->item;
-    *location = *&a4->dataSourceIdentifier;
+    bodyLayoutProvider2 = [(PXPhotosSectionedLayout *)self bodyLayoutProvider];
+    assetsDataSource2 = [(PXPhotosSectionedLayout *)self assetsDataSource];
+    spec2 = [(PXPhotosSectionedLayout *)self spec];
+    v37 = *&path->item;
+    *location = *&path->dataSourceIdentifier;
     v78 = v37;
-    v38 = [v34 createSectionBodyLayoutForSectionedLayout:self dataSource:v35 sectionIndexPath:location spec:v36 outWantsDecoration:&v79];
+    v38 = [bodyLayoutProvider2 createSectionBodyLayoutForSectionedLayout:self dataSource:assetsDataSource2 sectionIndexPath:location spec:spec2 outWantsDecoration:&v79];
 
-    [v6 setDisableConfigurators:v38 != 0];
-    v39 = [v6 bodyContentLayout];
-    LOBYTE(v34) = v39 != v38;
+    [layoutCopy setDisableConfigurators:v38 != 0];
+    bodyContentLayout2 = [layoutCopy bodyContentLayout];
+    LOBYTE(bodyLayoutProvider2) = bodyContentLayout2 != v38;
 
-    v13 |= v34;
-    [v6 setBodyContentLayout:v38 wantsDecoration:v79];
+    v13 |= bodyLayoutProvider2;
+    [layoutCopy setBodyContentLayout:v38 wantsDecoration:v79];
 
     goto LABEL_40;
   }
@@ -1811,62 +1811,62 @@ LABEL_39:
   }
 
 LABEL_40:
-  [v7 headerFloatingThresholdOffset];
-  [v6 setFloatingThresholdOffset:?];
-  v40 = [v7 selectionSnapshot];
-  [v6 setSelectionSnapshot:v40];
+  [viewModel headerFloatingThresholdOffset];
+  [layoutCopy setFloatingThresholdOffset:?];
+  selectionSnapshot = [viewModel selectionSnapshot];
+  [layoutCopy setSelectionSnapshot:selectionSnapshot];
 
-  v41 = [v7 draggedAssetReferences];
-  [v6 setDraggedAssetReferences:v41];
+  draggedAssetReferences = [viewModel draggedAssetReferences];
+  [layoutCopy setDraggedAssetReferences:draggedAssetReferences];
 
-  v42 = [v7 dropTargetAssetReference];
-  [v6 setDropTargetAssetReference:v42];
+  dropTargetAssetReference3 = [viewModel dropTargetAssetReference];
+  [layoutCopy setDropTargetAssetReference:dropTargetAssetReference3];
 
-  [v6 setIsSelecting:{objc_msgSend(v7, "isInSelectMode")}];
-  [v6 setCanStartSelecting:1];
-  [v6 setWantsDimmedSelectionStyle:{objc_msgSend(v7, "wantsDimmedSelectionStyle")}];
-  [v6 setWantsNumberedSelectionStyle:{objc_msgSend(v7, "wantsNumberedSelectionStyle")}];
-  [v6 setWantsFileSizeBadge:{objc_msgSend(v7, "wantsFileSizeBadge")}];
-  [v6 setWantsAssetIndexBadge:{objc_msgSend(v7, "wantsAssetIndexBadge")}];
-  [v6 setRemovesContentLayoutWhenEmpty:0];
-  v43 = [v7 tapbackStatusManager];
-  [v6 setTapbackStatusManager:v43];
+  [layoutCopy setIsSelecting:{objc_msgSend(viewModel, "isInSelectMode")}];
+  [layoutCopy setCanStartSelecting:1];
+  [layoutCopy setWantsDimmedSelectionStyle:{objc_msgSend(viewModel, "wantsDimmedSelectionStyle")}];
+  [layoutCopy setWantsNumberedSelectionStyle:{objc_msgSend(viewModel, "wantsNumberedSelectionStyle")}];
+  [layoutCopy setWantsFileSizeBadge:{objc_msgSend(viewModel, "wantsFileSizeBadge")}];
+  [layoutCopy setWantsAssetIndexBadge:{objc_msgSend(viewModel, "wantsAssetIndexBadge")}];
+  [layoutCopy setRemovesContentLayoutWhenEmpty:0];
+  tapbackStatusManager3 = [viewModel tapbackStatusManager];
+  [layoutCopy setTapbackStatusManager:tapbackStatusManager3];
 
-  v44 = [v7 decorationDataSource];
-  [v6 setDecorationDataSource:v44];
+  decorationDataSource = [viewModel decorationDataSource];
+  [layoutCopy setDecorationDataSource:decorationDataSource];
 
   [(PXPhotosSectionedLayout *)self preferredCornerRadius];
-  [v6 setPreferredCornerRadius:?];
-  [v6 setWantsDecorationSpritesHostedInDecoratedSprite:{objc_msgSend(v7, "wantsDecorationSpritesHostedInDecoratedSprite")}];
-  LOBYTE(v44) = [v6 isFaceModeEnabled];
-  v45 = v44 ^ [v7 isFaceModeEnabled] | v13;
-  [v6 setFaceModeEnabled:{objc_msgSend(v7, "isFaceModeEnabled")}];
-  v46 = [v6 dataSource];
-  v47 = [v46 identifier];
-  v48 = [v6 section];
-  location[0] = v47;
-  location[1] = v48;
+  [layoutCopy setPreferredCornerRadius:?];
+  [layoutCopy setWantsDecorationSpritesHostedInDecoratedSprite:{objc_msgSend(viewModel, "wantsDecorationSpritesHostedInDecoratedSprite")}];
+  LOBYTE(decorationDataSource) = [layoutCopy isFaceModeEnabled];
+  v45 = decorationDataSource ^ [viewModel isFaceModeEnabled] | v13;
+  [layoutCopy setFaceModeEnabled:{objc_msgSend(viewModel, "isFaceModeEnabled")}];
+  dataSource = [layoutCopy dataSource];
+  identifier = [dataSource identifier];
+  section = [layoutCopy section];
+  location[0] = identifier;
+  location[1] = section;
   v49.f64[0] = NAN;
   v49.f64[1] = NAN;
   v78 = vnegq_f64(v49);
-  v50 = [v46 assetCollectionReferenceAtSectionIndexPath:location];
-  v51 = [v7 assetCollectionActionManager];
-  if (![v7 allowsInlineAddBehavior] || (objc_msgSend(v7, "isInSelectMode") & 1) != 0 || !objc_msgSend(v51, "canPerformActionType:assetCollectionReference:", *MEMORY[0x277D3CE68], v50) || (objc_msgSend(v46, "containsAnyItems") & 1) == 0 && (objc_msgSend(v7, "allowsEmptyPlaceholderBehavior") & 1) != 0)
+  v50 = [dataSource assetCollectionReferenceAtSectionIndexPath:location];
+  assetCollectionActionManager = [viewModel assetCollectionActionManager];
+  if (![viewModel allowsInlineAddBehavior] || (objc_msgSend(viewModel, "isInSelectMode") & 1) != 0 || !objc_msgSend(assetCollectionActionManager, "canPerformActionType:assetCollectionReference:", *MEMORY[0x277D3CE68], v50) || (objc_msgSend(dataSource, "containsAnyItems") & 1) == 0 && (objc_msgSend(viewModel, "allowsEmptyPlaceholderBehavior") & 1) != 0)
   {
-    v52 = [v6 addContentActionHandler];
+    addContentActionHandler = [layoutCopy addContentActionHandler];
 
-    if (!v52)
+    if (!addContentActionHandler)
     {
       goto LABEL_48;
     }
 
-    [v6 setAddContentActionHandler:0];
+    [layoutCopy setAddContentActionHandler:0];
     goto LABEL_47;
   }
 
-  v74 = [v6 addContentActionHandler];
+  addContentActionHandler2 = [layoutCopy addContentActionHandler];
 
-  if (!v74)
+  if (!addContentActionHandler2)
   {
     objc_initWeak(location, self);
     v75[0] = MEMORY[0x277D85DD0];
@@ -1874,7 +1874,7 @@ LABEL_40:
     v75[2] = __68__PXPhotosSectionedLayout__configureSectionLayout_sectionIndexPath___block_invoke;
     v75[3] = &unk_2782989E8;
     objc_copyWeak(&v76, location);
-    [v6 setAddContentActionHandler:v75];
+    [layoutCopy setAddContentActionHandler:v75];
     objc_destroyWeak(&v76);
     objc_destroyWeak(location);
 LABEL_47:
@@ -1882,77 +1882,77 @@ LABEL_47:
   }
 
 LABEL_48:
-  [v6 setAutomaticallyUpdatesPadding:1];
+  [layoutCopy setAutomaticallyUpdatesPadding:1];
   [(PXPhotosSectionedLayout *)self interSectionSpacing];
-  [v6 setIntersectionSpacing:?];
-  v53 = [v6 headerLayout];
-  if ([v7 allowsSelectSectionAction])
+  [layoutCopy setIntersectionSpacing:?];
+  headerLayout3 = [layoutCopy headerLayout];
+  if ([viewModel allowsSelectSectionAction])
   {
-    v54 = [v7 isInSelectMode];
+    isInSelectMode = [viewModel isInSelectMode];
   }
 
   else
   {
-    v54 = 0;
+    isInSelectMode = 0;
   }
 
-  [v53 setIsInSelectMode:v54];
-  v55 = [v7 selectionSnapshot];
-  [v53 setSelectionSnapshot:v55];
+  [headerLayout3 setIsInSelectMode:isInSelectMode];
+  selectionSnapshot2 = [viewModel selectionSnapshot];
+  [headerLayout3 setSelectionSnapshot:selectionSnapshot2];
 
-  v56 = [v7 viewBasedDecorationsEnabled];
-  v57 = [v6 assetDecorationSource];
-  v58 = v57;
-  if (!v56)
+  viewBasedDecorationsEnabled = [viewModel viewBasedDecorationsEnabled];
+  assetDecorationSource = [layoutCopy assetDecorationSource];
+  assetDecorationSource3 = assetDecorationSource;
+  if (!viewBasedDecorationsEnabled)
   {
-    v61 = [v7 forbiddenBadges];
-    v60 = [v58 forbiddenBadges] | v61;
+    forbiddenBadges = [viewModel forbiddenBadges];
+    v60 = [assetDecorationSource3 forbiddenBadges] | forbiddenBadges;
     goto LABEL_55;
   }
 
-  [v57 setForbiddenBadges:-1];
+  [assetDecorationSource setForbiddenBadges:-1];
 
-  v59 = [v6 assetDecorationSource];
-  [v59 setDurationAlwaysHidden:1];
+  assetDecorationSource2 = [layoutCopy assetDecorationSource];
+  [assetDecorationSource2 setDurationAlwaysHidden:1];
 
-  if ([v7 wantsAssetIndexBadge])
+  if ([viewModel wantsAssetIndexBadge])
   {
-    v58 = [v6 assetDecorationSource];
-    v60 = [v58 forbiddenBadges] & 0xFFFFDFFFFFFFFFFFLL;
+    assetDecorationSource3 = [layoutCopy assetDecorationSource];
+    v60 = [assetDecorationSource3 forbiddenBadges] & 0xFFFFDFFFFFFFFFFFLL;
 LABEL_55:
-    [v58 setForbiddenBadges:v60];
+    [assetDecorationSource3 setForbiddenBadges:v60];
   }
 
-  v62 = [v7 allowsInteractiveFavoriteBadges];
-  v63 = [v6 assetDecorationSource];
-  [v63 setHidesInteractiveFavoriteBadges:v62 ^ 1u];
+  allowsInteractiveFavoriteBadges = [viewModel allowsInteractiveFavoriteBadges];
+  assetDecorationSource4 = [layoutCopy assetDecorationSource];
+  [assetDecorationSource4 setHidesInteractiveFavoriteBadges:allowsInteractiveFavoriteBadges ^ 1u];
 
-  v64 = [v7 badgesModifier];
-  v65 = [v6 assetDecorationSource];
-  [v65 setBadgesModifier:v64];
+  badgesModifier = [viewModel badgesModifier];
+  assetDecorationSource5 = [layoutCopy assetDecorationSource];
+  [assetDecorationSource5 setBadgesModifier:badgesModifier];
 
-  [v6 setItemCaptionsVisible:{objc_msgSend(v7, "captionsVisible")}];
-  [(PXPhotosSectionedLayout *)self _updateSublayoutGridConfiguratorForLayout:v6];
-  v66 = [v6 headerLayout];
-  if (v66)
+  [layoutCopy setItemCaptionsVisible:{objc_msgSend(viewModel, "captionsVisible")}];
+  [(PXPhotosSectionedLayout *)self _updateSublayoutGridConfiguratorForLayout:layoutCopy];
+  headerLayout4 = [layoutCopy headerLayout];
+  if (headerLayout4)
   {
     configureSectionHeaderLayout = self->_headerProviderRespondsTo.configureSectionHeaderLayout;
 
     if (configureSectionHeaderLayout)
     {
-      v68 = [(PXPhotosSectionedLayout *)self headerLayoutProvider];
-      v69 = [v6 headerLayout];
-      [v68 configureSectionHeaderLayout:v69 inAssetSectionLayout:v6 forSectionedLayout:self];
+      headerLayoutProvider3 = [(PXPhotosSectionedLayout *)self headerLayoutProvider];
+      headerLayout5 = [layoutCopy headerLayout];
+      [headerLayoutProvider3 configureSectionHeaderLayout:headerLayout5 inAssetSectionLayout:layoutCopy forSectionedLayout:self];
     }
   }
 
-  v70 = [v6 bodyContentLayout];
+  bodyContentLayout3 = [layoutCopy bodyContentLayout];
 
-  if (v70)
+  if (bodyContentLayout3)
   {
-    v71 = [(PXPhotosSectionedLayout *)self bodyLayoutProvider];
-    v72 = [v6 bodyContentLayout];
-    [v71 configureSectionBodyLayout:v72 inAssetSectionLayout:v6 forSectionedLayout:self];
+    bodyLayoutProvider3 = [(PXPhotosSectionedLayout *)self bodyLayoutProvider];
+    bodyContentLayout4 = [layoutCopy bodyContentLayout];
+    [bodyLayoutProvider3 configureSectionBodyLayout:bodyContentLayout4 inAssetSectionLayout:layoutCopy forSectionedLayout:self];
   }
 
   return v45 & 1;
@@ -1965,18 +1965,18 @@ void __68__PXPhotosSectionedLayout__configureSectionLayout_sectionIndexPath___bl
   [WeakRetained _performAddActionForSectionLayout:v3];
 }
 
-- (void)enumerateSectionBoundariesWithOptions:(unint64_t)a3 usingBlock:(id)a4
+- (void)enumerateSectionBoundariesWithOptions:(unint64_t)options usingBlock:(id)block
 {
-  v6 = a4;
-  v7 = [(PXPhotosSectionedLayout *)self sublayoutDataStore];
-  v8 = [v7 count];
+  blockCopy = block;
+  sublayoutDataStore = [(PXPhotosSectionedLayout *)self sublayoutDataStore];
+  v8 = [sublayoutDataStore count];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __76__PXPhotosSectionedLayout_enumerateSectionBoundariesWithOptions_usingBlock___block_invoke;
   v10[3] = &unk_2782989C0;
-  v11 = v6;
-  v9 = v6;
-  [v7 enumerateSublayoutGeometriesInRange:0 options:v8 usingBlock:{a3, v10}];
+  v11 = blockCopy;
+  v9 = blockCopy;
+  [sublayoutDataStore enumerateSublayoutGeometriesInRange:0 options:v8 usingBlock:{options, v10}];
 }
 
 uint64_t __76__PXPhotosSectionedLayout_enumerateSectionBoundariesWithOptions_usingBlock___block_invoke(uint64_t a1, __n128 a2, __n128 a3, __n128 a4, __n128 a5, uint64_t a6, void *a7)
@@ -1988,21 +1988,21 @@ uint64_t __76__PXPhotosSectionedLayout_enumerateSectionBoundariesWithOptions_usi
   return (*(*(a1 + 32) + 16))(a2, a3, a4, a5);
 }
 
-- (void)enumerateAssetsSectionSublayoutsInRect:(CGRect)a3 usingBlock:(id)a4
+- (void)enumerateAssetsSectionSublayoutsInRect:(CGRect)rect usingBlock:(id)block
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v10 = [(PXPhotosSectionedLayout *)self sublayoutDataStore];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  blockCopy = block;
+  sublayoutDataStore = [(PXPhotosSectionedLayout *)self sublayoutDataStore];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __77__PXPhotosSectionedLayout_enumerateAssetsSectionSublayoutsInRect_usingBlock___block_invoke;
   v12[3] = &unk_278298998;
-  v13 = v9;
-  v11 = v9;
-  [v10 enumerateSublayoutsInRect:v12 usingBlock:{x, y, width, height}];
+  v13 = blockCopy;
+  v11 = blockCopy;
+  [sublayoutDataStore enumerateSublayoutsInRect:v12 usingBlock:{x, y, width, height}];
 }
 
 uint64_t __77__PXPhotosSectionedLayout_enumerateAssetsSectionSublayoutsInRect_usingBlock___block_invoke(uint64_t a1, double a2, double a3, double a4, double a5, uint64_t a6, void *a7)
@@ -2016,17 +2016,17 @@ uint64_t __77__PXPhotosSectionedLayout_enumerateAssetsSectionSublayoutsInRect_us
   return MEMORY[0x2821F9730](v12);
 }
 
-- (void)enumerateAssetsSectionSublayoutsUsingBlock:(id)a3
+- (void)enumerateAssetsSectionSublayoutsUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(PXPhotosSectionedLayout *)self sublayoutDataStore];
+  blockCopy = block;
+  sublayoutDataStore = [(PXPhotosSectionedLayout *)self sublayoutDataStore];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __70__PXPhotosSectionedLayout_enumerateAssetsSectionSublayoutsUsingBlock___block_invoke;
   v7[3] = &unk_278298E38;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateSublayoutsUsingBlock:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [sublayoutDataStore enumerateSublayoutsUsingBlock:v7];
 }
 
 uint64_t __70__PXPhotosSectionedLayout_enumerateAssetsSectionSublayoutsUsingBlock___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -2040,12 +2040,12 @@ uint64_t __70__PXPhotosSectionedLayout_enumerateAssetsSectionSublayoutsUsingBloc
   return MEMORY[0x2821F9730](v4);
 }
 
-- (BOOL)_shouldFaultInSection:(int64_t)a3 inDataSource:(id)a4
+- (BOOL)_shouldFaultInSection:(int64_t)section inDataSource:(id)source
 {
-  if ([a4 numberOfItemsInSection:a3] <= 0)
+  if ([source numberOfItemsInSection:section] <= 0)
   {
-    v6 = [(PXPhotosSectionedLayout *)self viewModel];
-    v5 = [v6 allowsEmptyPlaceholderBehavior] ^ 1;
+    viewModel = [(PXPhotosSectionedLayout *)self viewModel];
+    v5 = [viewModel allowsEmptyPlaceholderBehavior] ^ 1;
   }
 
   else
@@ -2056,24 +2056,24 @@ uint64_t __70__PXPhotosSectionedLayout_enumerateAssetsSectionSublayoutsUsingBloc
   return v5;
 }
 
-- (void)_performAddActionForSectionLayout:(id)a3
+- (void)_performAddActionForSectionLayout:(id)layout
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 dataSource];
-  v6 = [v5 identifier];
-  v7 = [v4 section];
+  layoutCopy = layout;
+  dataSource = [layoutCopy dataSource];
+  identifier = [dataSource identifier];
+  section = [layoutCopy section];
 
-  *&buf[0] = v6;
-  *(&buf[0] + 1) = v7;
+  *&buf[0] = identifier;
+  *(&buf[0] + 1) = section;
   v8.f64[0] = NAN;
   v8.f64[1] = NAN;
   buf[1] = vnegq_f64(v8);
-  v9 = [v5 assetCollectionReferenceAtSectionIndexPath:buf];
-  v10 = [(PXPhotosSectionedLayout *)self viewModel];
-  v11 = [v10 assetCollectionActionManager];
+  v9 = [dataSource assetCollectionReferenceAtSectionIndexPath:buf];
+  viewModel = [(PXPhotosSectionedLayout *)self viewModel];
+  assetCollectionActionManager = [viewModel assetCollectionActionManager];
 
-  v12 = [v11 actionPerformerForActionType:*MEMORY[0x277D3CE68] assetCollectionReference:v9];
+  v12 = [assetCollectionActionManager actionPerformerForActionType:*MEMORY[0x277D3CE68] assetCollectionReference:v9];
   if (v12)
   {
     v15[0] = MEMORY[0x277D85DD0];
@@ -2090,9 +2090,9 @@ uint64_t __70__PXPhotosSectionedLayout_enumerateAssetsSectionSublayoutsUsingBloc
     v13 = PXGridZeroGetLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v14 = [v9 assetCollection];
+      assetCollection = [v9 assetCollection];
       LODWORD(buf[0]) = 138412290;
-      *(buf + 4) = v14;
+      *(buf + 4) = assetCollection;
       _os_log_impl(&dword_21ABF3000, v13, OS_LOG_TYPE_ERROR, "Missing action performer for add button action. Asset collection: %@", buf, 0xCu);
     }
   }
@@ -2135,33 +2135,33 @@ LABEL_6:
   }
 }
 
-- (id)_createAnimationForChangeFromDataSource:(id)a3 toDataSource:(id)a4 changeDetails:(id)a5
+- (id)_createAnimationForChangeFromDataSource:(id)source toDataSource:(id)dataSource changeDetails:(id)details
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PXPhotosSectionedLayout *)self createDefaultAnimationForCurrentContext];
-  v12 = [v11 delegate];
+  sourceCopy = source;
+  dataSourceCopy = dataSource;
+  detailsCopy = details;
+  createDefaultAnimationForCurrentContext = [(PXPhotosSectionedLayout *)self createDefaultAnimationForCurrentContext];
+  delegate = [createDefaultAnimationForCurrentContext delegate];
 
-  if (!v12 && [MEMORY[0x277D3CDD0] changeDetailsAreOnlyInsertionsOrOnlyRemovalsAtEnd:v10 fromDataSource:v8 toDataSource:v9])
+  if (!delegate && [MEMORY[0x277D3CDD0] changeDetailsAreOnlyInsertionsOrOnlyRemovalsAtEnd:detailsCopy fromDataSource:sourceCopy toDataSource:dataSourceCopy])
   {
     v13 = objc_alloc_init(PXPhotosSlideAnimationDelegate);
-    [v11 setDelegate:v13];
+    [createDefaultAnimationForCurrentContext setDelegate:v13];
   }
 
-  return v11;
+  return createDefaultAnimationForCurrentContext;
 }
 
-- (void)enumerateItemsGeometriesInRect:(CGRect)a3 dataSource:(id)a4 usingBlock:(id)a5
+- (void)enumerateItemsGeometriesInRect:(CGRect)rect dataSource:(id)source usingBlock:(id)block
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a5;
-  v12 = a4;
-  v13 = [(PXPhotosSectionedLayout *)self assetsDataSource];
-  v14 = [v12 isEqual:v13];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  blockCopy = block;
+  sourceCopy = source;
+  assetsDataSource = [(PXPhotosSectionedLayout *)self assetsDataSource];
+  v14 = [sourceCopy isEqual:assetsDataSource];
 
   if (v14)
   {
@@ -2169,7 +2169,7 @@ LABEL_6:
     v15[1] = 3221225472;
     v15[2] = __80__PXPhotosSectionedLayout_enumerateItemsGeometriesInRect_dataSource_usingBlock___block_invoke;
     v15[3] = &unk_278298948;
-    v16 = v11;
+    v16 = blockCopy;
     [(PXPhotosSectionedLayout *)self enumerateAssetsSectionSublayoutsInRect:v15 usingBlock:x, y, width, height];
   }
 }
@@ -2181,17 +2181,17 @@ void __80__PXPhotosSectionedLayout_enumerateItemsGeometriesInRect_dataSource_usi
   (*(v6 + 16))(v6, v7, a2, a4);
 }
 
-- (id)presentedItemsGeometryForSection:(unint64_t)a3 inDataSource:(id)a4
+- (id)presentedItemsGeometryForSection:(unint64_t)section inDataSource:(id)source
 {
-  v6 = a4;
+  sourceCopy = source;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__6775;
   v16 = __Block_byref_object_dispose__6776;
   v17 = 0;
-  v7 = [(PXPhotosSectionedLayout *)self assetsDataSource];
-  v8 = [v6 isEqual:v7];
+  assetsDataSource = [(PXPhotosSectionedLayout *)self assetsDataSource];
+  v8 = [sourceCopy isEqual:assetsDataSource];
 
   if (v8)
   {
@@ -2200,7 +2200,7 @@ void __80__PXPhotosSectionedLayout_enumerateItemsGeometriesInRect_dataSource_usi
     v11[2] = __73__PXPhotosSectionedLayout_presentedItemsGeometryForSection_inDataSource___block_invoke;
     v11[3] = &unk_278298920;
     v11[4] = &v12;
-    v11[5] = a3;
+    v11[5] = section;
     [(PXPhotosSectionedLayout *)self enumerateAssetsSectionSublayoutsUsingBlock:v11];
   }
 
@@ -2223,7 +2223,7 @@ void __73__PXPhotosSectionedLayout_presentedItemsGeometryForSection_inDataSource
   }
 }
 
-- (id)topmostHeaderSnapshotInRect:(CGRect)a3
+- (id)topmostHeaderSnapshotInRect:(CGRect)rect
 {
   if (self->_headerProviderRespondsTo.floatingHeaderSnapshot)
   {
@@ -2238,20 +2238,20 @@ void __73__PXPhotosSectionedLayout_presentedItemsGeometryForSection_inDataSource
     v14[2] = __55__PXPhotosSectionedLayout_topmostHeaderSnapshotInRect___block_invoke;
     v14[3] = &unk_2782988F8;
     v14[4] = &v15;
-    [(PXPhotosSectionedLayout *)self enumerateAssetsSectionSublayoutsInRect:v14 usingBlock:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+    [(PXPhotosSectionedLayout *)self enumerateAssetsSectionSublayoutsInRect:v14 usingBlock:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
     v4 = v16[5];
     if (v4)
     {
-      v5 = [v4 dataSource];
-      v6 = [v5 identifier];
-      v7 = [v16[5] section];
-      v8 = [(PXPhotosSectionedLayout *)self headerLayoutProvider];
-      v12[0] = v6;
-      v12[1] = v7;
+      dataSource = [v4 dataSource];
+      identifier = [dataSource identifier];
+      section = [v16[5] section];
+      headerLayoutProvider = [(PXPhotosSectionedLayout *)self headerLayoutProvider];
+      v12[0] = identifier;
+      v12[1] = section;
       v9.f64[0] = NAN;
       v9.f64[1] = NAN;
       v13 = vnegq_f64(v9);
-      v10 = [v8 floatingHeaderSnapshotForSectionedLayout:self dataSource:v5 sectionIndexPath:v12];
+      v10 = [headerLayoutProvider floatingHeaderSnapshotForSectionedLayout:self dataSource:dataSource sectionIndexPath:v12];
     }
 
     else
@@ -2282,13 +2282,13 @@ void __55__PXPhotosSectionedLayout_topmostHeaderSnapshotInRect___block_invoke(ui
   }
 }
 
-- (void)enumerateAssetsInRect:(CGRect)a3 enumerator:(id)a4
+- (void)enumerateAssetsInRect:(CGRect)rect enumerator:(id)enumerator
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  enumeratorCopy = enumerator;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __60__PXPhotosSectionedLayout_enumerateAssetsInRect_enumerator___block_invoke;
@@ -2298,8 +2298,8 @@ void __55__PXPhotosSectionedLayout_topmostHeaderSnapshotInRect___block_invoke(ui
   v15 = width;
   v16 = height;
   v11[4] = self;
-  v12 = v9;
-  v10 = v9;
+  v12 = enumeratorCopy;
+  v10 = enumeratorCopy;
   [(PXPhotosSectionedLayout *)self enumerateAssetsSectionSublayoutsInRect:v11 usingBlock:x, y, width, height];
 }
 
@@ -2333,20 +2333,20 @@ void __60__PXPhotosSectionedLayout_enumerateAssetsInRect_enumerator___block_invo
   }
 }
 
-- (void)enumerateAssetCollectionsInRect:(CGRect)a3 enumerator:(id)a4
+- (void)enumerateAssetCollectionsInRect:(CGRect)rect enumerator:(id)enumerator
 {
-  v8 = a4;
-  v5 = [(PXPhotosSectionedLayout *)self assetsDataSource];
-  v6 = [v5 containerCollection];
+  enumeratorCopy = enumerator;
+  assetsDataSource = [(PXPhotosSectionedLayout *)self assetsDataSource];
+  containerCollection = [assetsDataSource containerCollection];
 
-  if ([v6 conformsToProtocol:&unk_282C8F100])
+  if ([containerCollection conformsToProtocol:&unk_282C8F100])
   {
-    v7 = v6;
+    v7 = containerCollection;
 
     if (v7)
     {
       [(PXPhotosSectionedLayout *)self visibleRect];
-      v8[2](v8, v7, self);
+      enumeratorCopy[2](enumeratorCopy, v7, self);
     }
   }
 
@@ -2357,12 +2357,12 @@ void __60__PXPhotosSectionedLayout_enumerateAssetsInRect_enumerator___block_invo
   }
 }
 
-- (id)locationNamesFutureForContentInRect:(CGRect)a3
+- (id)locationNamesFutureForContentInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -2448,12 +2448,12 @@ id __63__PXPhotosSectionedLayout_locationNamesFutureForContentInRect___block_inv
   return v9;
 }
 
-- (id)dateIntervalFutureForContentInRect:(CGRect)a3 type:(unint64_t)a4
+- (id)dateIntervalFutureForContentInRect:(CGRect)rect type:(unint64_t)type
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
@@ -2464,7 +2464,7 @@ id __63__PXPhotosSectionedLayout_locationNamesFutureForContentInRect___block_inv
   v24 = y;
   v25 = width;
   v26 = height;
-  v27 = a4;
+  typeCopy = type;
   v11 = v10;
   v22 = v11;
   [(PXPhotosSectionedLayout *)self enumerateAssetsSectionSublayoutsInRect:v21 usingBlock:x, y, width, height];
@@ -2565,49 +2565,49 @@ id __67__PXPhotosSectionedLayout_dateIntervalFutureForContentInRect_type___block
   return v11;
 }
 
-- (void)setHorizontalScrollingHintFactor:(double)a3
+- (void)setHorizontalScrollingHintFactor:(double)factor
 {
   if ((PXFloatApproximatelyEqualToFloat() & 1) == 0)
   {
-    self->_horizontalScrollingHintFactor = a3;
+    self->_horizontalScrollingHintFactor = factor;
 
     [(PXPhotosSectionedLayout *)self _invalidatePreferredCornerRadius];
   }
 }
 
-- (void)setBodyLayoutProvider:(id)a3
+- (void)setBodyLayoutProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   bodyLayoutProvider = self->_bodyLayoutProvider;
-  if (bodyLayoutProvider != v5)
+  if (bodyLayoutProvider != providerCopy)
   {
-    v7 = v5;
+    v7 = providerCopy;
     [(PXPhotosSectionBodyLayoutProvider *)bodyLayoutProvider setInvalidationDelegate:0];
-    objc_storeStrong(&self->_bodyLayoutProvider, a3);
+    objc_storeStrong(&self->_bodyLayoutProvider, provider);
     [(PXPhotosSectionBodyLayoutProvider *)self->_bodyLayoutProvider setInvalidationDelegate:self];
     self->_bodyProviderRespondsTo.estimatedContentSize = objc_opt_respondsToSelector() & 1;
     self->_shouldRecreateBodyLayouts = 1;
     bodyLayoutProvider = [(PXPhotosSectionedLayout *)self _invalidateSublayoutsConfiguration];
-    v5 = v7;
+    providerCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](bodyLayoutProvider, v5);
+  MEMORY[0x2821F96F8](bodyLayoutProvider, providerCopy);
 }
 
-- (void)setHeaderLayoutProvider:(id)a3
+- (void)setHeaderLayoutProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   headerLayoutProvider = self->_headerLayoutProvider;
-  if (headerLayoutProvider != v5)
+  if (headerLayoutProvider != providerCopy)
   {
-    v8 = v5;
+    v8 = providerCopy;
     p_headerProviderRespondsTo = &self->_headerProviderRespondsTo;
     if (self->_headerProviderRespondsTo.invalidationDelegate)
     {
       [(PXPhotosSectionHeaderLayoutProvider *)headerLayoutProvider setInvalidationDelegate:0];
     }
 
-    objc_storeStrong(&self->_headerLayoutProvider, a3);
+    objc_storeStrong(&self->_headerLayoutProvider, provider);
     p_headerProviderRespondsTo->invalidationDelegate = objc_opt_respondsToSelector() & 1;
     self->_headerProviderRespondsTo.floatingHeaderSnapshot = objc_opt_respondsToSelector() & 1;
     self->_headerProviderRespondsTo.configureSectionHeaderLayout = objc_opt_respondsToSelector() & 1;
@@ -2618,47 +2618,47 @@ id __67__PXPhotosSectionedLayout_dateIntervalFutureForContentInRect_type___block
 
     self->_shouldRecreateHeaderLayouts = 1;
     headerLayoutProvider = [(PXPhotosSectionedLayout *)self _invalidateSublayoutsConfiguration];
-    v5 = v8;
+    providerCopy = v8;
   }
 
-  MEMORY[0x2821F96F8](headerLayoutProvider, v5);
+  MEMORY[0x2821F96F8](headerLayoutProvider, providerCopy);
 }
 
-- (void)setInterSectionSpacing:(double)a3
+- (void)setInterSectionSpacing:(double)spacing
 {
-  if (self->_interSectionSpacing != a3)
+  if (self->_interSectionSpacing != spacing)
   {
-    self->_interSectionSpacing = a3;
+    self->_interSectionSpacing = spacing;
     [(PXPhotosSectionedLayout *)self _invalidateSublayoutsConfiguration];
   }
 }
 
-- (void)setSpec:(id)a3
+- (void)setSpec:(id)spec
 {
-  v5 = a3;
-  if (self->_spec != v5)
+  specCopy = spec;
+  if (self->_spec != specCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_spec, a3);
+    v6 = specCopy;
+    objc_storeStrong(&self->_spec, spec);
     [(PXPhotosSectionedLayout *)self _invalidateSublayoutsSpec];
     [(PXPhotosSectionedLayout *)self _invalidateSublayoutsConfiguration];
     [(PXPhotosLayoutSpec *)v6 interSectionSpacing];
     [(PXPhotosSectionedLayout *)self setInterSectionSpacing:?];
-    v5 = v6;
+    specCopy = v6;
   }
 }
 
 - (PXPhotosSectionedLayout)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXPhotosSectionedLayout.m" lineNumber:131 description:{@"%s is not available as initializer", "-[PXPhotosSectionedLayout init]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosSectionedLayout.m" lineNumber:131 description:{@"%s is not available as initializer", "-[PXPhotosSectionedLayout init]"}];
 
   abort();
 }
 
-- (PXPhotosSectionedLayout)initWithViewModel:(id)a3
+- (PXPhotosSectionedLayout)initWithViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v12.receiver = self;
   v12.super_class = PXPhotosSectionedLayout;
   v6 = [(PXGStackLayout *)&v12 init];
@@ -2669,7 +2669,7 @@ id __67__PXPhotosSectionedLayout_dateIntervalFutureForContentInRect_type___block
     *(v6 + 1272) = *MEMORY[0x277CBF390];
     *(v6 + 1288) = v8;
     *(v6 + 292) = -1;
-    if ([v5 wantsSingleRowScrollingLayout])
+    if ([modelCopy wantsSingleRowScrollingLayout])
     {
       v9 = 2;
     }
@@ -2680,15 +2680,15 @@ id __67__PXPhotosSectionedLayout_dateIntervalFutureForContentInRect_type___block
     }
 
     [(PXGStackLayout *)v7 setAxis:v9];
-    objc_storeStrong(&v7->_viewModel, a3);
-    [v5 registerChangeObserver:v7 context:PhotosViewModelObserverContext];
+    objc_storeStrong(&v7->_viewModel, model);
+    [modelCopy registerChangeObserver:v7 context:PhotosViewModelObserverContext];
     [(PXPhotosSectionedLayout *)v7 _invalidateSublayoutsDataSource];
     [(PXPhotosSectionedLayout *)v7 _invalidateSublayoutsSpec];
     [(PXPhotosSectionedLayout *)v7 _invalidateSublayoutsConfiguration];
     [(PXPhotosSectionedLayout *)v7 setContentSource:v7];
     [(PXGStackLayout *)v7 setSublayoutFaultingDelegate:v7];
-    v10 = [(PXPhotosSectionedLayout *)v7 axGroup];
-    [v10 setAxIdentifier:@"photos_sectioned_layout"];
+    axGroup = [(PXPhotosSectionedLayout *)v7 axGroup];
+    [axGroup setAxIdentifier:@"photos_sectioned_layout"];
   }
 
   return v7;

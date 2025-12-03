@@ -1,11 +1,11 @@
 @interface PKPhysicsFieldNoise
 + (id)field;
 - (PKPhysicsFieldNoise)init;
-- (PKPhysicsFieldNoise)initWithField:(shared_ptr<PKCField>)a3;
+- (PKPhysicsFieldNoise)initWithField:(shared_ptr<PKCField>)field;
 - (float)animationSpeed;
 - (float)smoothness;
-- (void)setAnimationSpeed:(float)a3;
-- (void)setSmoothness:(float)a3;
+- (void)setAnimationSpeed:(float)speed;
+- (void)setSmoothness:(float)smoothness;
 @end
 
 @implementation PKPhysicsFieldNoise
@@ -18,12 +18,12 @@
   _ZNSt3__115allocate_sharedB8ne200100I13PKCFieldNoiseNS_9allocatorIS1_EEJELi0EEENS_10shared_ptrIT_EERKT0_DpOT1_();
 }
 
-- (PKPhysicsFieldNoise)initWithField:(shared_ptr<PKCField>)a3
+- (PKPhysicsFieldNoise)initWithField:(shared_ptr<PKCField>)field
 {
-  ptr = a3.__ptr_;
+  ptr = field.__ptr_;
   v10.receiver = self;
   v10.super_class = PKPhysicsFieldNoise;
-  v4 = [(PKPhysicsField *)&v10 init:a3.__ptr_];
+  v4 = [(PKPhysicsField *)&v10 init:field.__ptr_];
   v5 = v4;
   v7 = *ptr;
   v6 = *(ptr + 1);
@@ -64,12 +64,12 @@
   }
 }
 
-- (void)setSmoothness:(float)a3
+- (void)setSmoothness:(float)smoothness
 {
   ptr = self->super._field.__ptr_;
   if (ptr)
   {
-    *(ptr + 62) = a3;
+    *(ptr + 62) = smoothness;
   }
 }
 
@@ -87,12 +87,12 @@
   }
 }
 
-- (void)setAnimationSpeed:(float)a3
+- (void)setAnimationSpeed:(float)speed
 {
   ptr = self->super._field.__ptr_;
   if (ptr)
   {
-    *(ptr + 63) = a3;
+    *(ptr + 63) = speed;
   }
 }
 

@@ -1,40 +1,40 @@
 @interface NSXPCEncoder
-- (NSXPCEncoder)initWithStackSpace:(char *)a3 size:(unint64_t)a4;
+- (NSXPCEncoder)initWithStackSpace:(char *)space size:(unint64_t)size;
 - (id)_newRootXPCObject;
-- (id)_replaceObject:(id)a3;
+- (id)_replaceObject:(id)object;
 - (id)connection;
 - (id)debugDescription;
 - (id)finishEncoding;
-- (unint64_t)_addOOLXPCObject:(id)a3;
-- (void)_checkObject:(id)a3;
-- (void)_encodeArrayOfObjects:(id)a3 forKey:(id)a4;
-- (void)_encodeCString:(const char *)a3 length:(unint64_t)a4 forKey:(id)a5;
-- (void)_encodeInvocation:(id)a3 isReply:(BOOL)a4 into:(id)a5;
-- (void)_encodeInvocationObjectArgumentsOnly:(id *)a3 count:(unint64_t)a4 typeString:(const char *)a5 selector:(SEL)a6 isReply:(BOOL)a7 into:(id)a8;
-- (void)_encodeObject:(id)a3;
-- (void)_encodeUnkeyedObject:(id)a3;
-- (void)_setConnection:(id)a3;
+- (unint64_t)_addOOLXPCObject:(id)object;
+- (void)_checkObject:(id)object;
+- (void)_encodeArrayOfObjects:(id)objects forKey:(id)key;
+- (void)_encodeCString:(const char *)string length:(unint64_t)length forKey:(id)key;
+- (void)_encodeInvocation:(id)invocation isReply:(BOOL)reply into:(id)into;
+- (void)_encodeInvocationObjectArgumentsOnly:(id *)only count:(unint64_t)count typeString:(const char *)string selector:(SEL)selector isReply:(BOOL)reply into:(id)into;
+- (void)_encodeObject:(id)object;
+- (void)_encodeUnkeyedObject:(id)object;
+- (void)_setConnection:(id)connection;
 - (void)dealloc;
-- (void)encodeBool:(BOOL)a3 forKey:(id)a4;
-- (void)encodeBytes:(const char *)a3 length:(unint64_t)a4 forKey:(id)a5;
-- (void)encodeDouble:(double)a3 forKey:(id)a4;
-- (void)encodeFloat:(float)a3 forKey:(id)a4;
-- (void)encodeInt32:(int)a3 forKey:(id)a4;
-- (void)encodeInt64:(int64_t)a3 forKey:(id)a4;
-- (void)encodeInt:(int)a3 forKey:(id)a4;
-- (void)encodeInteger:(int64_t)a3 forKey:(id)a4;
-- (void)encodeObject:(id)a3 forKey:(id)a4;
-- (void)encodeValueOfObjCType:(const char *)a3 at:(const void *)a4;
-- (void)encodeXPCObject:(id)a3 forKey:(id)a4;
+- (void)encodeBool:(BOOL)bool forKey:(id)key;
+- (void)encodeBytes:(const char *)bytes length:(unint64_t)length forKey:(id)key;
+- (void)encodeDouble:(double)double forKey:(id)key;
+- (void)encodeFloat:(float)float forKey:(id)key;
+- (void)encodeInt32:(int)int32 forKey:(id)key;
+- (void)encodeInt64:(int64_t)int64 forKey:(id)key;
+- (void)encodeInt:(int)int forKey:(id)key;
+- (void)encodeInteger:(int64_t)integer forKey:(id)key;
+- (void)encodeObject:(id)object forKey:(id)key;
+- (void)encodeValueOfObjCType:(const char *)type at:(const void *)at;
+- (void)encodeXPCObject:(id)object forKey:(id)key;
 @end
 
 @implementation NSXPCEncoder
 
 - (id)finishEncoding
 {
-  v2 = [(NSXPCEncoder *)self _newRootXPCObject];
+  _newRootXPCObject = [(NSXPCEncoder *)self _newRootXPCObject];
 
-  return v2;
+  return _newRootXPCObject;
 }
 
 - (id)_newRootXPCObject
@@ -97,17 +97,17 @@
   return v2;
 }
 
-- (void)_setConnection:(id)a3
+- (void)_setConnection:(id)connection
 {
   connection = self->_connection;
-  if (connection != a3)
+  if (connection != connection)
   {
 
-    self->_connection = a3;
+    self->_connection = connection;
   }
 }
 
-- (NSXPCEncoder)initWithStackSpace:(char *)a3 size:(unint64_t)a4
+- (NSXPCEncoder)initWithStackSpace:(char *)space size:(unint64_t)size
 {
   v10 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
@@ -116,7 +116,7 @@
   v7 = v6;
   if (v6)
   {
-    _NSXPCSerializationStartWrite(&v6->_encoder, a3, a4);
+    _NSXPCSerializationStartWrite(&v6->_encoder, space, size);
   }
 
   return v7;
@@ -130,33 +130,33 @@
   return [(NSXPCEncoder *)&v3 debugDescription];
 }
 
-- (void)encodeValueOfObjCType:(const char *)a3 at:(const void *)a4
+- (void)encodeValueOfObjCType:(const char *)type at:(const void *)at
 {
   p_encoder = &self->_encoder;
   _reserveSpace(&self->_encoder, 1);
   p_encoder->data[p_encoder->dataLen++] = _NSXPCSerializationAddNull_nullMarker;
   _NSXPCSerializationStartArrayWrite(p_encoder);
-  _NSXPCSerializationAddTypedObjCValuesToArray(self, p_encoder, a3, a4);
+  _NSXPCSerializationAddTypedObjCValuesToArray(self, p_encoder, type, at);
 
   _NSXPCSerializationEndArrayWrite(p_encoder);
 }
 
-- (id)_replaceObject:(id)a3
+- (id)_replaceObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   value[1] = *MEMORY[0x1E69E9840];
-  value[0] = a3;
+  value[0] = object;
   if (self->_askForReplacement)
   {
-    if (a3)
+    if (object)
     {
-      v6 = [a3 replacementObjectForCoder:self];
-      if (v6 == v3 || (value[0] = v6, (v3 = v6) != 0))
+      v6 = [object replacementObjectForCoder:self];
+      if (v6 == objectCopy || (value[0] = v6, (objectCopy = v6) != 0))
       {
         if (objc_loadWeak(&self->_delegate))
         {
           replacedByDelegateObjects = self->_replacedByDelegateObjects;
-          if (replacedByDelegateObjects && CFDictionaryGetValueIfPresent(replacedByDelegateObjects, v3, value))
+          if (replacedByDelegateObjects && CFDictionaryGetValueIfPresent(replacedByDelegateObjects, objectCopy, value))
           {
             return value[0];
           }
@@ -171,7 +171,7 @@
               objc_exception_throw(v13);
             }
 
-            v3 = v9;
+            objectCopy = v9;
             v10 = value[0];
             if (v9 == value[0])
             {
@@ -188,7 +188,7 @@
                 v10 = value[0];
               }
 
-              CFDictionarySetValue(Mutable, v10, v3);
+              CFDictionarySetValue(Mutable, v10, objectCopy);
             }
           }
         }
@@ -196,12 +196,12 @@
     }
   }
 
-  return v3;
+  return objectCopy;
 }
 
-- (void)_checkObject:(id)a3
+- (void)_checkObject:(id)object
 {
-  if (!a3)
+  if (!object)
   {
     return;
   }
@@ -220,7 +220,7 @@
     return;
   }
 
-  if ((objc_opt_isKindOfClass() & 1) == 0 && ([a3 conformsToProtocol:&unk_1EEF5E4A0] & 1) == 0 && (objc_opt_isKindOfClass() & 1) == 0)
+  if ((objc_opt_isKindOfClass() & 1) == 0 && ([object conformsToProtocol:&unk_1EEF5E4A0] & 1) == 0 && (objc_opt_isKindOfClass() & 1) == 0)
   {
     v12 = _NSMethodExceptionProem(self, a2);
     v13 = objc_opt_class();
@@ -238,10 +238,10 @@ LABEL_14:
   }
 }
 
-- (void)_encodeObject:(id)a3
+- (void)_encodeObject:(id)object
 {
   p_encoder = &self->_encoder;
-  if (!a3)
+  if (!object)
   {
     _reserveSpace(&self->_encoder, 1);
     p_encoder->data[p_encoder->dataLen++] = _NSXPCSerializationAddNull_nullMarker;
@@ -251,7 +251,7 @@ LABEL_14:
   objectReferences = self->_encoder._objectReferences;
   if (objectReferences)
   {
-    Value = CFDictionaryGetValue(objectReferences, a3);
+    Value = CFDictionaryGetValue(objectReferences, object);
     if (Value)
     {
 
@@ -260,23 +260,23 @@ LABEL_14:
     }
   }
 
-  if (![a3 _allowsDirectEncoding])
+  if (![object _allowsDirectEncoding])
   {
-    _NSXPCSerializationAddObjectRef(p_encoder, a3);
+    _NSXPCSerializationAddObjectRef(p_encoder, object);
     goto LABEL_14;
   }
 
   if (_NSIsNSString())
   {
 
-    _NSXPCSerializationAddString(p_encoder, a3, 0);
+    _NSXPCSerializationAddString(p_encoder, object, 0);
     return;
   }
 
   if (_NSIsNSNumber())
   {
 
-    _NSXPCSerializationAddNumber(p_encoder, a3);
+    _NSXPCSerializationAddNumber(p_encoder, object);
     return;
   }
 
@@ -288,7 +288,7 @@ LABEL_14:
     _NSXPCSerializationStartDictionaryWrite(p_encoder);
     askForReplacement = self->_askForReplacement;
     self->_askForReplacement = 0;
-    Class = object_getClass(a3);
+    Class = object_getClass(object);
     if (class_isMetaClass(Class))
     {
       v15 = [NSString stringWithFormat:@"%@: Class objects may not be encoded at this time.", _NSMethodExceptionProem(self, a2)];
@@ -296,10 +296,10 @@ LABEL_14:
 
     else
     {
-      v12 = [a3 classForCoder];
-      if (v12)
+      classForCoder = [object classForCoder];
+      if (classForCoder)
       {
-        Name = class_getName(v12);
+        Name = class_getName(classForCoder);
         _NSXPCSerializationAddASCIIString(p_encoder, "$class", 6, 1);
         v14 = strlen(Name);
         _NSXPCSerializationAddASCIIString(p_encoder, Name, v14, 1);
@@ -307,12 +307,12 @@ LABEL_14:
         if (objc_opt_isKindOfClass())
         {
           _NSXPCSerializationAddASCIIString(p_encoder, "$xpc", 4, 1);
-          _NSXPCSerializationAddInteger(p_encoder, [(NSXPCEncoder *)self _addOOLXPCObject:a3]);
+          _NSXPCSerializationAddInteger(p_encoder, [(NSXPCEncoder *)self _addOOLXPCObject:object]);
         }
 
         else
         {
-          [a3 encodeWithCoder:self];
+          [object encodeWithCoder:self];
         }
 
         _NSXPCSerializationEndArrayWrite(p_encoder);
@@ -326,16 +326,16 @@ LABEL_14:
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v15 userInfo:0]);
   }
 
-  _NSXPCSerializationAddData(p_encoder, a3);
+  _NSXPCSerializationAddData(p_encoder, object);
 }
 
-- (void)encodeObject:(id)a3 forKey:(id)a4
+- (void)encodeObject:(id)object forKey:(id)key
 {
-  v6 = [(NSXPCEncoder *)self _replaceObject:a3];
+  v6 = [(NSXPCEncoder *)self _replaceObject:object];
   [(NSXPCEncoder *)self _checkObject:v6];
-  if (a4)
+  if (key)
   {
-    _NSXPCSerializationAddString(&self->_encoder, a4, 1);
+    _NSXPCSerializationAddString(&self->_encoder, key, 1);
   }
 
   else
@@ -347,22 +347,22 @@ LABEL_14:
   [(NSXPCEncoder *)self _encodeObject:v6];
 }
 
-- (void)_encodeUnkeyedObject:(id)a3
+- (void)_encodeUnkeyedObject:(id)object
 {
-  v4 = [(NSXPCEncoder *)self _replaceObject:a3];
+  v4 = [(NSXPCEncoder *)self _replaceObject:object];
   [(NSXPCEncoder *)self _checkObject:v4];
 
   [(NSXPCEncoder *)self _encodeObject:v4];
 }
 
-- (void)_encodeInvocation:(id)a3 isReply:(BOOL)a4 into:(id)a5
+- (void)_encodeInvocation:(id)invocation isReply:(BOOL)reply into:(id)into
 {
-  v6 = a4;
+  replyCopy = reply;
   genericIndex = self->_genericIndex;
   self->_genericIndex = 0;
   p_encoder = &self->_encoder;
   _NSXPCSerializationStartArrayWrite(&self->_encoder);
-  if (v6)
+  if (replyCopy)
   {
     v11 = 1;
     _reserveSpace(p_encoder, 1);
@@ -371,18 +371,18 @@ LABEL_14:
 
   else
   {
-    Name = sel_getName([a3 selector]);
+    Name = sel_getName([invocation selector]);
     v13 = strlen(Name);
     _NSXPCSerializationAddASCIIString(p_encoder, Name, v13, 0);
     v11 = 2;
   }
 
-  v14 = [a3 methodSignature];
-  v15 = [v14 _cTypeString];
-  v16 = strlen(v15);
-  _NSXPCSerializationAddASCIIString(p_encoder, v15, v16, 0);
+  methodSignature = [invocation methodSignature];
+  _cTypeString = [methodSignature _cTypeString];
+  v16 = strlen(_cTypeString);
+  _NSXPCSerializationAddASCIIString(p_encoder, _cTypeString, v16, 0);
   self->_askForReplacement = 1;
-  _NSXPCSerializationAddInvocationArgumentsArray(a3, v14, self, p_encoder, v11);
+  _NSXPCSerializationAddInvocationArgumentsArray(invocation, methodSignature, self, p_encoder, v11);
   self->_askForReplacement = 0;
   _NSXPCSerializationEndArrayWrite(p_encoder);
   self->_genericIndex = genericIndex;
@@ -394,24 +394,24 @@ LABEL_14:
 
   v18 = v17;
   self->_finished = 1;
-  xpc_dictionary_set_value(a5, "root", v17);
+  xpc_dictionary_set_value(into, "root", v17);
   xpc_release(v18);
   oolObjects = self->_oolObjects;
   if (oolObjects)
   {
 
-    xpc_dictionary_set_value(a5, "ool", oolObjects);
+    xpc_dictionary_set_value(into, "ool", oolObjects);
   }
 }
 
-- (void)_encodeInvocationObjectArgumentsOnly:(id *)a3 count:(unint64_t)a4 typeString:(const char *)a5 selector:(SEL)a6 isReply:(BOOL)a7 into:(id)a8
+- (void)_encodeInvocationObjectArgumentsOnly:(id *)only count:(unint64_t)count typeString:(const char *)string selector:(SEL)selector isReply:(BOOL)reply into:(id)into
 {
-  v9 = a7;
+  replyCopy = reply;
   genericIndex = self->_genericIndex;
   self->_genericIndex = 0;
   p_encoder = &self->_encoder;
   _NSXPCSerializationStartArrayWrite(&self->_encoder);
-  if (v9)
+  if (replyCopy)
   {
     _reserveSpace(p_encoder, 1);
     p_encoder->data[p_encoder->dataLen++] = _NSXPCSerializationAddNull_nullMarker;
@@ -419,15 +419,15 @@ LABEL_14:
 
   else
   {
-    Name = sel_getName(a6);
+    Name = sel_getName(selector);
     v18 = strlen(Name);
     _NSXPCSerializationAddASCIIString(p_encoder, Name, v18, 0);
   }
 
-  v19 = strlen(a5);
-  _NSXPCSerializationAddASCIIString(p_encoder, a5, v19, 0);
+  v19 = strlen(string);
+  _NSXPCSerializationAddASCIIString(p_encoder, string, v19, 0);
   self->_askForReplacement = 1;
-  _NSXPCSerializationAddInvocationWithOnlyObjectArgumentsArray(a3, a4, self, p_encoder);
+  _NSXPCSerializationAddInvocationWithOnlyObjectArgumentsArray(only, count, self, p_encoder);
   self->_askForReplacement = 0;
   _NSXPCSerializationEndArrayWrite(p_encoder);
   self->_genericIndex = genericIndex;
@@ -439,26 +439,26 @@ LABEL_14:
 
   v21 = v20;
   self->_finished = 1;
-  xpc_dictionary_set_value(a8, "root", v20);
+  xpc_dictionary_set_value(into, "root", v20);
   xpc_release(v21);
   oolObjects = self->_oolObjects;
   if (oolObjects)
   {
 
-    xpc_dictionary_set_value(a8, "ool", oolObjects);
+    xpc_dictionary_set_value(into, "ool", oolObjects);
   }
 }
 
-- (void)_encodeArrayOfObjects:(id)a3 forKey:(id)a4
+- (void)_encodeArrayOfObjects:(id)objects forKey:(id)key
 {
   v15 = *MEMORY[0x1E69E9840];
-  _NSXPCSerializationAddString(&self->_encoder, a4, 1);
+  _NSXPCSerializationAddString(&self->_encoder, key, 1);
   _NSXPCSerializationStartArrayWrite(&self->_encoder);
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v11 objects:v10 count:16];
+  v6 = [objects countByEnumeratingWithState:&v11 objects:v10 count:16];
   if (v6)
   {
     v7 = v6;
@@ -470,14 +470,14 @@ LABEL_14:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(objects);
         }
 
         [(NSXPCEncoder *)self _encodeUnkeyedObject:*(*(&v11 + 1) + 8 * v9++)];
       }
 
       while (v7 != v9);
-      v7 = [a3 countByEnumeratingWithState:&v11 objects:v10 count:16];
+      v7 = [objects countByEnumeratingWithState:&v11 objects:v10 count:16];
     }
 
     while (v7);
@@ -486,14 +486,14 @@ LABEL_14:
   _NSXPCSerializationEndArrayWrite(self->_encoder.collectionSizeOffset);
 }
 
-- (void)encodeBool:(BOOL)a3 forKey:(id)a4
+- (void)encodeBool:(BOOL)bool forKey:(id)key
 {
-  v4 = a3;
+  boolCopy = bool;
   p_encoder = &self->_encoder;
-  _NSXPCSerializationAddString(&self->_encoder, a4, 1);
+  _NSXPCSerializationAddString(&self->_encoder, key, 1);
   _reserveSpace(p_encoder, 1);
   v6 = &_NSXPCSerializationAddBool_trueMarker;
-  if (!v4)
+  if (!boolCopy)
   {
     v6 = &_NSXPCSerializationAddBool_falseMarker;
   }
@@ -501,77 +501,77 @@ LABEL_14:
   p_encoder->data[p_encoder->dataLen++] = *v6;
 }
 
-- (void)encodeInt:(int)a3 forKey:(id)a4
+- (void)encodeInt:(int)int forKey:(id)key
 {
-  _NSXPCSerializationAddString(&self->_encoder, a4, 1);
+  _NSXPCSerializationAddString(&self->_encoder, key, 1);
 
-  _NSXPCSerializationAddInteger(&self->_encoder, a3);
+  _NSXPCSerializationAddInteger(&self->_encoder, int);
 }
 
-- (void)encodeInt32:(int)a3 forKey:(id)a4
+- (void)encodeInt32:(int)int32 forKey:(id)key
 {
-  _NSXPCSerializationAddString(&self->_encoder, a4, 1);
+  _NSXPCSerializationAddString(&self->_encoder, key, 1);
 
-  _NSXPCSerializationAddInteger(&self->_encoder, a3);
+  _NSXPCSerializationAddInteger(&self->_encoder, int32);
 }
 
-- (void)encodeInt64:(int64_t)a3 forKey:(id)a4
+- (void)encodeInt64:(int64_t)int64 forKey:(id)key
 {
-  _NSXPCSerializationAddString(&self->_encoder, a4, 1);
+  _NSXPCSerializationAddString(&self->_encoder, key, 1);
 
-  _NSXPCSerializationAddInteger(&self->_encoder, a3);
+  _NSXPCSerializationAddInteger(&self->_encoder, int64);
 }
 
-- (void)encodeFloat:(float)a3 forKey:(id)a4
+- (void)encodeFloat:(float)float forKey:(id)key
 {
-  _NSXPCSerializationAddString(&self->_encoder, a4, 1);
+  _NSXPCSerializationAddString(&self->_encoder, key, 1);
 
-  _NSXPCSerializationAddFloat(&self->_encoder, a3);
+  _NSXPCSerializationAddFloat(&self->_encoder, float);
 }
 
-- (void)encodeDouble:(double)a3 forKey:(id)a4
+- (void)encodeDouble:(double)double forKey:(id)key
 {
-  _NSXPCSerializationAddString(&self->_encoder, a4, 1);
+  _NSXPCSerializationAddString(&self->_encoder, key, 1);
 
-  _NSXPCSerializationAddDouble(&self->_encoder, a3);
+  _NSXPCSerializationAddDouble(&self->_encoder, double);
 }
 
-- (void)encodeInteger:(int64_t)a3 forKey:(id)a4
+- (void)encodeInteger:(int64_t)integer forKey:(id)key
 {
-  _NSXPCSerializationAddString(&self->_encoder, a4, 1);
+  _NSXPCSerializationAddString(&self->_encoder, key, 1);
 
-  _NSXPCSerializationAddInteger(&self->_encoder, a3);
+  _NSXPCSerializationAddInteger(&self->_encoder, integer);
 }
 
-- (void)encodeBytes:(const char *)a3 length:(unint64_t)a4 forKey:(id)a5
+- (void)encodeBytes:(const char *)bytes length:(unint64_t)length forKey:(id)key
 {
-  if (!a3 && a4)
+  if (!bytes && length)
   {
-    v7 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: argument inconsistency: bytes pointer is null but length (%ld) is not zero", _NSMethodExceptionProem(self, a2), a4), 0}];
+    v7 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: argument inconsistency: bytes pointer is null but length (%ld) is not zero", _NSMethodExceptionProem(self, a2), length), 0}];
     objc_exception_throw(v7);
   }
 
-  v8 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:a3 length:a4];
-  _NSXPCSerializationAddString(&self->_encoder, a5, 1);
+  v8 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:bytes length:length];
+  _NSXPCSerializationAddString(&self->_encoder, key, 1);
   _NSXPCSerializationAddData(&self->_encoder, v8);
 }
 
-- (void)_encodeCString:(const char *)a3 length:(unint64_t)a4 forKey:(id)a5
+- (void)_encodeCString:(const char *)string length:(unint64_t)length forKey:(id)key
 {
-  _NSXPCSerializationAddString(&self->_encoder, a5, 1);
+  _NSXPCSerializationAddString(&self->_encoder, key, 1);
 
-  _NSXPCSerializationAddASCIIString(&self->_encoder, a3, a4, 1);
+  _NSXPCSerializationAddASCIIString(&self->_encoder, string, length, 1);
 }
 
-- (unint64_t)_addOOLXPCObject:(id)a3
+- (unint64_t)_addOOLXPCObject:(id)object
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v8[0] = a3;
+  v8[0] = object;
   oolObjects = self->_oolObjects;
   if (oolObjects)
   {
     count = xpc_array_get_count(oolObjects);
-    xpc_array_append_value(self->_oolObjects, a3);
+    xpc_array_append_value(self->_oolObjects, object);
     return count;
   }
 
@@ -582,10 +582,10 @@ LABEL_14:
   }
 }
 
-- (void)encodeXPCObject:(id)a3 forKey:(id)a4
+- (void)encodeXPCObject:(id)object forKey:(id)key
 {
-  _NSXPCSerializationAddString(&self->_encoder, a4, 1);
-  v6 = [(NSXPCEncoder *)self _addOOLXPCObject:a3];
+  _NSXPCSerializationAddString(&self->_encoder, key, 1);
+  v6 = [(NSXPCEncoder *)self _addOOLXPCObject:object];
 
   _NSXPCSerializationAddInteger(&self->_encoder, v6);
 }

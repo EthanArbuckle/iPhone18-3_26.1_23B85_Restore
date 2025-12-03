@@ -1,5 +1,5 @@
 @interface PCSCurrentIdentity
-- (PCSCurrentIdentity)initWithIdentity:(_PCSIdentityData *)a3 currentItemPointerModificationTime:(id)a4;
+- (PCSCurrentIdentity)initWithIdentity:(_PCSIdentityData *)identity currentItemPointerModificationTime:(id)time;
 - (void)dealloc;
 @end
 
@@ -19,16 +19,16 @@
   [(PCSCurrentIdentity *)&v4 dealloc];
 }
 
-- (PCSCurrentIdentity)initWithIdentity:(_PCSIdentityData *)a3 currentItemPointerModificationTime:(id)a4
+- (PCSCurrentIdentity)initWithIdentity:(_PCSIdentityData *)identity currentItemPointerModificationTime:(id)time
 {
-  v6 = a4;
+  timeCopy = time;
   v10.receiver = self;
   v10.super_class = PCSCurrentIdentity;
   v7 = [(PCSCurrentIdentity *)&v10 init];
   if (v7)
   {
-    v7->_identity = CFRetain(a3);
-    [(PCSCurrentIdentity *)v7 setCurrentItemPointerModificationTime:v6];
+    v7->_identity = CFRetain(identity);
+    [(PCSCurrentIdentity *)v7 setCurrentItemPointerModificationTime:timeCopy];
     v8 = v7;
   }
 

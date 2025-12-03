@@ -1,21 +1,21 @@
 @interface PKPassFieldView
-+ (id)newViewForField:(id)a3 fieldTemplate:(id)a4;
++ (id)newViewForField:(id)field fieldTemplate:(id)template;
 - (BOOL)_shouldDisplayLabel;
-- (CGSize)_resizeMultiLineValueFontForAvailableSize:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKPassFieldView)initWithField:(id)a3 fieldTemplate:(id)a4;
-- (id)_labelAttributedStringForColorProfile:(id)a3;
-- (id)_labelColorFromColorProfile:(id)a3;
-- (id)_valueAttributedStringForColorProfile:(id)a3;
-- (id)_valueColorFromColorProfile:(id)a3;
+- (CGSize)_resizeMultiLineValueFontForAvailableSize:(CGSize)size;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKPassFieldView)initWithField:(id)field fieldTemplate:(id)template;
+- (id)_labelAttributedStringForColorProfile:(id)profile;
+- (id)_labelColorFromColorProfile:(id)profile;
+- (id)_valueAttributedStringForColorProfile:(id)profile;
+- (id)_valueColorFromColorProfile:(id)profile;
 - (id)description;
 - (void)layoutSubviews;
-- (void)presentDiff:(id)a3 inView:(id)a4 completion:(id)a5;
-- (void)setColorProfile:(id)a3 background:(int64_t)a4;
-- (void)setDiffView:(id)a3;
-- (void)setField:(id)a3;
-- (void)setFieldTemplate:(id)a3;
-- (void)updateVibrancyFiltersFromColorProfile:(id)a3;
+- (void)presentDiff:(id)diff inView:(id)view completion:(id)completion;
+- (void)setColorProfile:(id)profile background:(int64_t)background;
+- (void)setDiffView:(id)view;
+- (void)setField:(id)field;
+- (void)setFieldTemplate:(id)template;
+- (void)updateVibrancyFiltersFromColorProfile:(id)profile;
 @end
 
 @implementation PKPassFieldView
@@ -29,9 +29,9 @@
 
   else if ([(PKPassFieldTemplate *)self->_fieldTemplate suppressesEmptyLabel])
   {
-    v4 = [(UILabel *)self->_labelLabel attributedText];
-    v5 = [v4 string];
-    v3 = [v5 isEqualToString:@" "] ^ 1;
+    attributedText = [(UILabel *)self->_labelLabel attributedText];
+    string = [attributedText string];
+    v3 = [string isEqualToString:@" "] ^ 1;
   }
 
   else
@@ -42,20 +42,20 @@
   return v3;
 }
 
-+ (id)newViewForField:(id)a3 fieldTemplate:(id)a4
++ (id)newViewForField:(id)field fieldTemplate:(id)template
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 viewSubclass];
-  if (!v7)
+  fieldCopy = field;
+  templateCopy = template;
+  viewSubclass = [templateCopy viewSubclass];
+  if (!viewSubclass)
   {
-    v7 = objc_opt_class();
+    viewSubclass = objc_opt_class();
   }
 
-  result = [v7 isSubclassOfClass:objc_opt_class()];
+  result = [viewSubclass isSubclassOfClass:objc_opt_class()];
   if (result)
   {
-    v9 = [[v7 alloc] initWithField:v5 fieldTemplate:v6];
+    v9 = [[viewSubclass alloc] initWithField:fieldCopy fieldTemplate:templateCopy];
 
     return v9;
   }
@@ -68,10 +68,10 @@
   return result;
 }
 
-- (PKPassFieldView)initWithField:(id)a3 fieldTemplate:(id)a4
+- (PKPassFieldView)initWithField:(id)field fieldTemplate:(id)template
 {
-  v6 = a3;
-  v7 = a4;
+  fieldCopy = field;
+  templateCopy = template;
   v18.receiver = self;
   v18.super_class = PKPassFieldView;
   v8 = [(PKPassFieldView *)&v18 init];
@@ -82,8 +82,8 @@
     v8->_labelLabel = v9;
 
     v11 = v8->_labelLabel;
-    v12 = [MEMORY[0x1E69DC888] clearColor];
-    [(UILabel *)v11 setBackgroundColor:v12];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UILabel *)v11 setBackgroundColor:clearColor];
 
     [(UILabel *)v8->_labelLabel setAccessibilityIdentifier:*MEMORY[0x1E69B98D0]];
     [(PKPassFieldView *)v8 addSubview:v8->_labelLabel];
@@ -92,13 +92,13 @@
     v8->_valueLabel = v13;
 
     v15 = v8->_valueLabel;
-    v16 = [MEMORY[0x1E69DC888] clearColor];
-    [(UILabel *)v15 setBackgroundColor:v16];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    [(UILabel *)v15 setBackgroundColor:clearColor2];
 
     [(UILabel *)v8->_valueLabel setAccessibilityIdentifier:*MEMORY[0x1E69B9DC0]];
     [(PKPassFieldView *)v8 addSubview:v8->_valueLabel];
-    [(PKPassFieldView *)v8 setField:v6];
-    [(PKPassFieldView *)v8 setFieldTemplate:v7];
+    [(PKPassFieldView *)v8 setField:fieldCopy];
+    [(PKPassFieldView *)v8 setFieldTemplate:templateCopy];
     [(PKPassFieldView *)v8 invalidateCachedFieldSize];
     [(PKPassFieldView *)v8 setAccessibilityIdentifier:*MEMORY[0x1E69B97E8]];
   }
@@ -111,46 +111,46 @@
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@: %p ", objc_opt_class(), self];;
   [(PKPassFieldView *)self frame];
   [v3 appendFormat:@"frame = (%g %g; %g %g); ", v4, v5, v6, v7];
-  v8 = [(UILabel *)self->_labelLabel text];
-  v9 = [v8 length];
+  text = [(UILabel *)self->_labelLabel text];
+  v9 = [text length];
   v10 = MEMORY[0x1E69DB648];
   if (v9)
   {
-    v11 = [(UILabel *)self->_labelLabel attributedText];
-    v12 = [v11 attribute:*v10 atIndex:0 effectiveRange:0];
+    attributedText = [(UILabel *)self->_labelLabel attributedText];
+    v12 = [attributedText attribute:*v10 atIndex:0 effectiveRange:0];
     [v12 pointSize];
     v14 = v13;
 
-    if ([v8 length] >= 0x1A)
+    if ([text length] >= 0x1A)
     {
-      v15 = [v8 rangeOfComposedCharacterSequencesForRange:{0, 25}];
-      v17 = [v8 substringWithRange:{v15, v16}];
+      v15 = [text rangeOfComposedCharacterSequencesForRange:{0, 25}];
+      v17 = [text substringWithRange:{v15, v16}];
       v18 = [v17 stringByAppendingString:@"..."];
 
-      v8 = v18;
+      text = v18;
     }
 
-    [v3 appendFormat:@"<label = '%@'; font-size: %g>; ", v8, v14];
+    [v3 appendFormat:@"<label = '%@'; font-size: %g>; ", text, v14];
   }
 
-  v19 = [(UILabel *)self->_valueLabel text];
-  if ([v19 length])
+  text2 = [(UILabel *)self->_valueLabel text];
+  if ([text2 length])
   {
-    v20 = [(UILabel *)self->_valueLabel attributedText];
-    v21 = [v20 attribute:*v10 atIndex:0 effectiveRange:0];
+    attributedText2 = [(UILabel *)self->_valueLabel attributedText];
+    v21 = [attributedText2 attribute:*v10 atIndex:0 effectiveRange:0];
     [v21 pointSize];
     v23 = v22;
 
-    if ([v19 length] >= 0x1A)
+    if ([text2 length] >= 0x1A)
     {
-      v24 = [v19 rangeOfComposedCharacterSequencesForRange:{0, 25}];
-      v26 = [v19 substringWithRange:{v24, v25}];
+      v24 = [text2 rangeOfComposedCharacterSequencesForRange:{0, 25}];
+      v26 = [text2 substringWithRange:{v24, v25}];
       v27 = [v26 stringByAppendingString:@"..."];
 
-      v19 = v27;
+      text2 = v27;
     }
 
-    [v3 appendFormat:@"<value = '%@'; font-size: %g>", v19, v23];
+    [v3 appendFormat:@"<value = '%@'; font-size: %g>", text2, v23];
   }
 
   [v3 appendString:@">"];
@@ -159,40 +159,40 @@
   return v28;
 }
 
-- (void)setField:(id)a3
+- (void)setField:(id)field
 {
-  v5 = a3;
-  if (self->_field != v5)
+  fieldCopy = field;
+  if (self->_field != fieldCopy)
   {
-    v10 = v5;
-    objc_storeStrong(&self->_field, a3);
+    v10 = fieldCopy;
+    objc_storeStrong(&self->_field, field);
     labelLabel = self->_labelLabel;
-    v7 = [(PKPassField *)v10 label];
-    [(UILabel *)labelLabel setText:v7];
+    label = [(PKPassField *)v10 label];
+    [(UILabel *)labelLabel setText:label];
 
     valueLabel = self->_valueLabel;
-    v9 = [(PKPassField *)v10 value];
-    [(UILabel *)valueLabel setText:v9];
+    value = [(PKPassField *)v10 value];
+    [(UILabel *)valueLabel setText:value];
 
     [(PKPassFieldView *)self invalidateCachedFieldSize];
-    v5 = v10;
+    fieldCopy = v10;
   }
 }
 
-- (void)setFieldTemplate:(id)a3
+- (void)setFieldTemplate:(id)template
 {
-  v5 = a3;
+  templateCopy = template;
   fieldTemplate = self->_fieldTemplate;
-  v10 = v5;
-  if (fieldTemplate != v5)
+  v10 = templateCopy;
+  if (fieldTemplate != templateCopy)
   {
-    objc_storeStrong(&self->_fieldTemplate, a3);
+    objc_storeStrong(&self->_fieldTemplate, template);
     fieldTemplate = self->_fieldTemplate;
   }
 
   [(UILabel *)self->_labelLabel setHidden:[(PKPassFieldTemplate *)fieldTemplate suppressesLabel]];
-  v7 = [(PKPassFieldTemplate *)self->_fieldTemplate valueCanWrap];
-  if (v7)
+  valueCanWrap = [(PKPassFieldTemplate *)self->_fieldTemplate valueCanWrap];
+  if (valueCanWrap)
   {
     v8 = 2;
   }
@@ -202,7 +202,7 @@
     v8 = 1;
   }
 
-  if (v7)
+  if (valueCanWrap)
   {
     v9 = 0;
   }
@@ -217,29 +217,29 @@
   [(PKPassFieldView *)self invalidateCachedFieldSize];
 }
 
-- (void)setColorProfile:(id)a3 background:(int64_t)a4
+- (void)setColorProfile:(id)profile background:(int64_t)background
 {
-  objc_storeStrong(&self->_colorProfile, a3);
-  v7 = a3;
-  self->_background = a4;
+  objc_storeStrong(&self->_colorProfile, profile);
+  profileCopy = profile;
+  self->_background = background;
   [(PKPassFieldView *)self invalidateCachedFieldSize];
-  [(PKPassFieldView *)self updateVibrancyFiltersFromColorProfile:v7];
+  [(PKPassFieldView *)self updateVibrancyFiltersFromColorProfile:profileCopy];
 }
 
-- (void)setDiffView:(id)a3
+- (void)setDiffView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   diffView = self->_diffView;
-  if (diffView != v5)
+  if (diffView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     if (diffView)
     {
       [(PKDiffView *)diffView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_diffView, a3);
-    v5 = v7;
+    objc_storeStrong(&self->_diffView, view);
+    viewCopy = v7;
   }
 }
 
@@ -253,11 +253,11 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(PKPassFieldTemplate *)self->_fieldTemplate valueSignificant];
-  v12 = [(PKPassFieldView *)self _shouldDisplayLabel];
+  valueSignificant = [(PKPassFieldTemplate *)self->_fieldTemplate valueSignificant];
+  _shouldDisplayLabel = [(PKPassFieldView *)self _shouldDisplayLabel];
   [(PKPassFieldTemplate *)self->_fieldTemplate verticalPadding];
   v14 = v13;
-  if (v11)
+  if (valueSignificant)
   {
     [(UILabel *)self->_valueLabel frame];
     rect = fmax(v10, v25);
@@ -284,10 +284,10 @@
     v57.size.height = rect;
     v10 = CGRectGetMaxY(v57) - v37;
     v6 = v37;
-    if (!v12)
+    if (!_shouldDisplayLabel)
     {
 LABEL_3:
-      if (v11)
+      if (valueSignificant)
       {
         return;
       }
@@ -296,7 +296,7 @@ LABEL_3:
     }
   }
 
-  else if (!v12)
+  else if (!_shouldDisplayLabel)
   {
     goto LABEL_3;
   }
@@ -325,7 +325,7 @@ LABEL_3:
   v59.size.height = v39;
   v10 = CGRectGetMaxY(v59) - v50;
   v6 = v50;
-  if (v11)
+  if (valueSignificant)
   {
     return;
   }
@@ -351,12 +351,12 @@ LABEL_4:
   CGRectGetMaxY(v55);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   if (self->_needsRecalculation)
   {
-    height = a3.height;
-    width = a3.width;
+    height = fits.height;
+    width = fits.width;
     v6 = [(PKPassFieldView *)self _labelAttributedStringForColorProfile:self->_colorProfile];
     if ([(PKPassFieldView *)self _shouldDisplayLabel])
     {
@@ -377,8 +377,8 @@ LABEL_4:
     v12 = [(PKPassFieldView *)self _valueAttributedStringForColorProfile:self->_colorProfile];
     [(UILabel *)valueLabel setAttributedText:v12];
 
-    v13 = [(UILabel *)self->_valueLabel attributedText];
-    [v13 boundingRectWithSize:1 options:0 context:{1.79769313e308, 1.79769313e308}];
+    attributedText = [(UILabel *)self->_valueLabel attributedText];
+    [attributedText boundingRectWithSize:1 options:0 context:{1.79769313e308, 1.79769313e308}];
     v15 = v14;
     v17 = v16;
 
@@ -386,8 +386,8 @@ LABEL_4:
     v19 = height - v10 - v18;
     if (v15 > width && [(PKPassFieldTemplate *)self->_fieldTemplate valueCanWrap])
     {
-      v20 = [(UILabel *)self->_valueLabel attributedText];
-      [v20 boundingRectWithSize:1 options:0 context:{width, 1.79769313e308}];
+      attributedText2 = [(UILabel *)self->_valueLabel attributedText];
+      [attributedText2 boundingRectWithSize:1 options:0 context:{width, 1.79769313e308}];
       v22 = v21;
       v24 = v23;
 
@@ -454,14 +454,14 @@ LABEL_4:
   return result;
 }
 
-- (void)presentDiff:(id)a3 inView:(id)a4 completion:(id)a5
+- (void)presentDiff:(id)diff inView:(id)view completion:(id)completion
 {
-  v32 = a4;
-  v8 = a5;
+  viewCopy = view;
+  completionCopy = completion;
   field = self->_field;
-  v10 = a3;
+  diffCopy = diff;
   v11 = [(PKPassField *)field key];
-  v12 = [v10 getHunkForKey:v11 oldValue:0 newValue:0 message:0];
+  v12 = [diffCopy getHunkForKey:v11 oldValue:0 newValue:0 message:0];
 
   if (v12)
   {
@@ -491,36 +491,36 @@ LABEL_4:
     width = v36.size.width;
     height = v36.size.height;
     v30 = [PKDiffView alloc];
-    [v32 convertRect:self fromView:{x, y, width, height}];
+    [viewCopy convertRect:self fromView:{x, y, width, height}];
     v31 = [(PKDiffView *)v30 initWithFrame:?];
-    [v32 addSubview:v31];
+    [viewCopy addSubview:v31];
     [(PKPassFieldView *)self setDiffView:v31];
-    [(PKDiffView *)v31 performStrokeWithCompletion:v8];
+    [(PKDiffView *)v31 performStrokeWithCompletion:completionCopy];
   }
 
   else
   {
     [(PKPassFieldView *)self setDiffView:0];
-    if (v8)
+    if (completionCopy)
     {
-      v8[2](v8);
+      completionCopy[2](completionCopy);
     }
   }
 }
 
-- (CGSize)_resizeMultiLineValueFontForAvailableSize:(CGSize)a3
+- (CGSize)_resizeMultiLineValueFontForAvailableSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(PKPassFieldTemplate *)self->_fieldTemplate valueFont];
-  [v6 xHeight];
+  height = size.height;
+  width = size.width;
+  valueFont = [(PKPassFieldTemplate *)self->_fieldTemplate valueFont];
+  [valueFont xHeight];
   v8 = v7;
-  v9 = [(PKPassFieldTemplate *)self->_fieldTemplate labelFont];
-  [v9 xHeight];
+  labelFont = [(PKPassFieldTemplate *)self->_fieldTemplate labelFont];
+  [labelFont xHeight];
   v11 = v8 / v10;
 
-  v12 = [(PKPassFieldTemplate *)self->_fieldTemplate valueFont];
-  [v12 pointSize];
+  valueFont2 = [(PKPassFieldTemplate *)self->_fieldTemplate valueFont];
+  [valueFont2 pointSize];
   v14 = v13;
 
   if (v11 <= 1.0)
@@ -536,17 +536,17 @@ LABEL_4:
       v14 = v14 + -1.0;
       fieldTemplate = self->_fieldTemplate;
       v16 = MEMORY[0x1E69DB878];
-      v17 = [(PKPassFieldTemplate *)fieldTemplate valueFont];
-      v18 = [v17 fontDescriptor];
-      v19 = [v16 fontWithDescriptor:v18 size:v14];
+      valueFont3 = [(PKPassFieldTemplate *)fieldTemplate valueFont];
+      fontDescriptor = [valueFont3 fontDescriptor];
+      v19 = [v16 fontWithDescriptor:fontDescriptor size:v14];
       [(PKPassFieldTemplate *)fieldTemplate setValueFont:v19];
 
       valueLabel = self->_valueLabel;
       v21 = [(PKPassFieldView *)self _valueAttributedStringForColorProfile:self->_colorProfile];
       [(UILabel *)valueLabel setAttributedText:v21];
 
-      v22 = [(UILabel *)self->_valueLabel attributedText];
-      [v22 boundingRectWithSize:1 options:0 context:{width, 3.40282347e38}];
+      attributedText = [(UILabel *)self->_valueLabel attributedText];
+      [attributedText boundingRectWithSize:1 options:0 context:{width, 3.40282347e38}];
       v24 = v23;
       v26 = v25;
 
@@ -555,11 +555,11 @@ LABEL_4:
         break;
       }
 
-      v27 = [(PKPassFieldTemplate *)self->_fieldTemplate valueFont];
-      [v27 xHeight];
+      valueFont4 = [(PKPassFieldTemplate *)self->_fieldTemplate valueFont];
+      [valueFont4 xHeight];
       v29 = v28;
-      v30 = [(PKPassFieldTemplate *)self->_fieldTemplate labelFont];
-      [v30 xHeight];
+      labelFont2 = [(PKPassFieldTemplate *)self->_fieldTemplate labelFont];
+      [labelFont2 xHeight];
       v32 = v29 / v31;
     }
 
@@ -582,46 +582,46 @@ LABEL_4:
   return result;
 }
 
-- (id)_labelColorFromColorProfile:(id)a3
+- (id)_labelColorFromColorProfile:(id)profile
 {
-  v4 = a3;
-  if (![v4 supportsAutomaticLabelVibrancy] || (-[PKPassFieldTemplate automaticVibrantLabelColor](self->_fieldTemplate, "automaticVibrantLabelColor"), (v5 = objc_claimAutoreleasedReturnValue()) == 0))
+  profileCopy = profile;
+  if (![profileCopy supportsAutomaticLabelVibrancy] || (-[PKPassFieldTemplate automaticVibrantLabelColor](self->_fieldTemplate, "automaticVibrantLabelColor"), (v5 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v5 = [v4 labelColorOverStrip:self->_background == 1];
+    v5 = [profileCopy labelColorOverStrip:self->_background == 1];
   }
 
   return v5;
 }
 
-- (id)_labelAttributedStringForColorProfile:(id)a3
+- (id)_labelAttributedStringForColorProfile:(id)profile
 {
   v22[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PKPassField *)self->_field label];
-  if (!v5)
+  profileCopy = profile;
+  label = [(PKPassField *)self->_field label];
+  if (!label)
   {
     v18 = 0;
     goto LABEL_16;
   }
 
-  v6 = v5;
-  v7 = [(PKPassField *)self->_field textAlignment];
-  if (v7 == 4)
+  v6 = label;
+  textAlignment = [(PKPassField *)self->_field textAlignment];
+  if (textAlignment == 4)
   {
-    v7 = [(PKPassFieldTemplate *)self->_fieldTemplate textAlignment];
+    textAlignment = [(PKPassFieldTemplate *)self->_fieldTemplate textAlignment];
   }
 
-  v8 = [MEMORY[0x1E69DB7C8] defaultParagraphStyle];
-  v9 = [v8 mutableCopy];
+  defaultParagraphStyle = [MEMORY[0x1E69DB7C8] defaultParagraphStyle];
+  v9 = [defaultParagraphStyle mutableCopy];
 
-  [v9 setAlignment:v7];
+  [v9 setAlignment:textAlignment];
   [v9 setLineBreakMode:4];
-  v10 = [(PKPassFieldView *)self _labelColorFromColorProfile:v4];
-  v11 = [(PKPassField *)self->_field value];
+  v10 = [(PKPassFieldView *)self _labelColorFromColorProfile:profileCopy];
+  value = [(PKPassField *)self->_field value];
 
-  if (!v11 && [(PKPassFieldTemplate *)self->_fieldTemplate preferredSingleStyle]== 2)
+  if (!value && [(PKPassFieldTemplate *)self->_fieldTemplate preferredSingleStyle]== 2)
   {
-    v12 = [(PKPassFieldView *)self _valueColorFromColorProfile:v4];
+    v12 = [(PKPassFieldView *)self _valueColorFromColorProfile:profileCopy];
 
     v10 = v12;
   }
@@ -632,27 +632,27 @@ LABEL_4:
   v22[0] = v10;
   v22[1] = v9;
   v21[2] = *MEMORY[0x1E69DB648];
-  v14 = [(PKPassFieldTemplate *)self->_fieldTemplate labelFont];
-  v22[2] = v14;
+  labelFont = [(PKPassFieldTemplate *)self->_fieldTemplate labelFont];
+  v22[2] = labelFont;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:v21 count:3];
 
-  v16 = [(PKPassFieldTemplate *)self->_fieldTemplate labelCaseStyle];
-  if (v16 == 2)
+  labelCaseStyle = [(PKPassFieldTemplate *)self->_fieldTemplate labelCaseStyle];
+  if (labelCaseStyle == 2)
   {
-    v17 = [v6 pk_capitalizedStringForPreferredLocale];
+    pk_capitalizedStringForPreferredLocale = [v6 pk_capitalizedStringForPreferredLocale];
   }
 
   else
   {
-    if (v16 != 1 && (v16 || self->_background == 1))
+    if (labelCaseStyle != 1 && (labelCaseStyle || self->_background == 1))
     {
       goto LABEL_15;
     }
 
-    v17 = [v6 pk_uppercaseStringForPreferredLocale];
+    pk_capitalizedStringForPreferredLocale = [v6 pk_uppercaseStringForPreferredLocale];
   }
 
-  v19 = v17;
+  v19 = pk_capitalizedStringForPreferredLocale;
 
   v6 = v19;
 LABEL_15:
@@ -663,28 +663,28 @@ LABEL_16:
   return v18;
 }
 
-- (id)_valueColorFromColorProfile:(id)a3
+- (id)_valueColorFromColorProfile:(id)profile
 {
-  v4 = a3;
-  if (![v4 supportsAutomaticForegroundVibrancy] || (-[PKPassFieldTemplate automaticVibrantValueColor](self->_fieldTemplate, "automaticVibrantValueColor"), (v5 = objc_claimAutoreleasedReturnValue()) == 0))
+  profileCopy = profile;
+  if (![profileCopy supportsAutomaticForegroundVibrancy] || (-[PKPassFieldTemplate automaticVibrantValueColor](self->_fieldTemplate, "automaticVibrantValueColor"), (v5 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v5 = [v4 foregroundColorOverStrip:self->_background == 1];
+    v5 = [profileCopy foregroundColorOverStrip:self->_background == 1];
   }
 
   return v5;
 }
 
-- (id)_valueAttributedStringForColorProfile:(id)a3
+- (id)_valueAttributedStringForColorProfile:(id)profile
 {
   v19[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PKPassField *)self->_field value];
-  if (v5)
+  profileCopy = profile;
+  value = [(PKPassField *)self->_field value];
+  if (value)
   {
-    v6 = [(PKPassField *)self->_field textAlignment];
-    if (v6 == 4)
+    textAlignment = [(PKPassField *)self->_field textAlignment];
+    if (textAlignment == 4)
     {
-      v6 = [(PKPassFieldTemplate *)self->_fieldTemplate textAlignment];
+      textAlignment = [(PKPassFieldTemplate *)self->_fieldTemplate textAlignment];
     }
 
     if ([(PKPassFieldTemplate *)self->_fieldTemplate valueCanWrap])
@@ -697,17 +697,17 @@ LABEL_16:
       v7 = 4;
     }
 
-    v8 = [MEMORY[0x1E69DB7C8] defaultParagraphStyle];
-    v9 = [v8 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x1E69DB7C8] defaultParagraphStyle];
+    v9 = [defaultParagraphStyle mutableCopy];
 
-    [v9 setAlignment:v6];
+    [v9 setAlignment:textAlignment];
     [v9 setLineBreakMode:v7];
-    v10 = [(PKPassFieldView *)self _valueColorFromColorProfile:v4];
-    v11 = [(PKPassField *)self->_field label];
+    v10 = [(PKPassFieldView *)self _valueColorFromColorProfile:profileCopy];
+    label = [(PKPassField *)self->_field label];
 
-    if (!v11 && [(PKPassFieldTemplate *)self->_fieldTemplate preferredSingleStyle]== 1)
+    if (!label && [(PKPassFieldTemplate *)self->_fieldTemplate preferredSingleStyle]== 1)
     {
-      v12 = [(PKPassFieldView *)self _labelColorFromColorProfile:v4];
+      v12 = [(PKPassFieldView *)self _labelColorFromColorProfile:profileCopy];
 
       v10 = v12;
     }
@@ -718,11 +718,11 @@ LABEL_16:
     v19[0] = v10;
     v19[1] = v9;
     v18[2] = *MEMORY[0x1E69DB648];
-    v14 = [(PKPassFieldTemplate *)self->_fieldTemplate valueFont];
-    v19[2] = v14;
+    valueFont = [(PKPassFieldTemplate *)self->_fieldTemplate valueFont];
+    v19[2] = valueFont;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:v18 count:3];
 
-    v16 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v5 attributes:v15];
+    v16 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:value attributes:v15];
   }
 
   else
@@ -733,48 +733,48 @@ LABEL_16:
   return v16;
 }
 
-- (void)updateVibrancyFiltersFromColorProfile:(id)a3
+- (void)updateVibrancyFiltersFromColorProfile:(id)profile
 {
-  v16 = a3;
-  v4 = [(PKPassFieldTemplate *)self->_fieldTemplate automaticVibrantLabelBlendMode];
-  v5 = [(PKPassFieldTemplate *)self->_fieldTemplate automaticVibrantValueBlendMode];
-  v6 = [v16 supportsAutomaticLabelVibrancy];
-  if (v6)
+  profileCopy = profile;
+  automaticVibrantLabelBlendMode = [(PKPassFieldTemplate *)self->_fieldTemplate automaticVibrantLabelBlendMode];
+  automaticVibrantValueBlendMode = [(PKPassFieldTemplate *)self->_fieldTemplate automaticVibrantValueBlendMode];
+  supportsAutomaticLabelVibrancy = [profileCopy supportsAutomaticLabelVibrancy];
+  if (supportsAutomaticLabelVibrancy)
   {
-    v7 = v4;
-    v8 = [(PKPassField *)self->_field value];
+    v7 = automaticVibrantLabelBlendMode;
+    value = [(PKPassField *)self->_field value];
 
-    if (!v8 && [(PKPassFieldTemplate *)self->_fieldTemplate preferredSingleStyle]== 2)
+    if (!value && [(PKPassFieldTemplate *)self->_fieldTemplate preferredSingleStyle]== 2)
     {
-      v9 = v5;
+      v9 = automaticVibrantValueBlendMode;
 
       v7 = v9;
     }
 
-    v10 = [(UILabel *)self->_labelLabel layer];
-    [v10 setCompositingFilter:v7];
+    layer = [(UILabel *)self->_labelLabel layer];
+    [layer setCompositingFilter:v7];
   }
 
-  if ([v16 supportsAutomaticForegroundVibrancy])
+  if ([profileCopy supportsAutomaticForegroundVibrancy])
   {
-    v11 = v5;
-    v12 = [(PKPassField *)self->_field label];
+    v11 = automaticVibrantValueBlendMode;
+    label = [(PKPassField *)self->_field label];
 
-    if (!v12 && [(PKPassFieldTemplate *)self->_fieldTemplate preferredSingleStyle]== 1)
+    if (!label && [(PKPassFieldTemplate *)self->_fieldTemplate preferredSingleStyle]== 1)
     {
-      v13 = v4;
+      v13 = automaticVibrantLabelBlendMode;
 
       v11 = v13;
     }
 
-    v14 = [(UILabel *)self->_valueLabel layer];
-    [v14 setCompositingFilter:v11];
+    layer2 = [(UILabel *)self->_valueLabel layer];
+    [layer2 setCompositingFilter:v11];
 
-    v6 = 1;
+    supportsAutomaticLabelVibrancy = 1;
   }
 
-  v15 = [(PKPassFieldView *)self layer];
-  [v15 setAllowsGroupBlending:v6 ^ 1u];
+  layer3 = [(PKPassFieldView *)self layer];
+  [layer3 setAllowsGroupBlending:supportsAutomaticLabelVibrancy ^ 1u];
 }
 
 @end

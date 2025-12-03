@@ -1,11 +1,11 @@
 @interface WLKNetworkRequestUtilities
 + (BOOL)isGDPRAccepted;
-+ (id)_createAMSEncoder:(int64_t)a3 account:(id)a4;
++ (id)_createAMSEncoder:(int64_t)encoder account:(id)account;
 + (id)_defaultAppSessionConfiguration;
 + (id)_sharedCacheSessionConfiguration;
 + (id)defaultSessionConfiguration;
-+ (void)_prepareEncoder:(id)a3 account:(id)a4 sessionConfiguration:(id)a5 options:(int64_t)a6 completionHandler:(id)a7;
-+ (void)startNetworkRequest:(id)a3 account:(id)a4 sessionConfiguration:(id)a5 options:(int64_t)a6 completion:(id)a7;
++ (void)_prepareEncoder:(id)encoder account:(id)account sessionConfiguration:(id)configuration options:(int64_t)options completionHandler:(id)handler;
++ (void)startNetworkRequest:(id)request account:(id)account sessionConfiguration:(id)configuration options:(int64_t)options completion:(id)completion;
 @end
 
 @implementation WLKNetworkRequestUtilities
@@ -13,8 +13,8 @@
 + (BOOL)isGDPRAccepted
 {
   v8 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D6C478] activeOrLocalAccount];
-  v3 = [MEMORY[0x277CEE3D0] acknowledgementNeededForPrivacyIdentifier:@"com.apple.onboarding.tvapp" account:v2];
+  activeOrLocalAccount = [MEMORY[0x277D6C478] activeOrLocalAccount];
+  v3 = [MEMORY[0x277CEE3D0] acknowledgementNeededForPrivacyIdentifier:@"com.apple.onboarding.tvapp" account:activeOrLocalAccount];
   v4 = WLKNetworkingLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -31,7 +31,7 @@
 {
   if (WLKIsTVApp())
   {
-    [a1 _defaultAppSessionConfiguration];
+    [self _defaultAppSessionConfiguration];
   }
 
   else
@@ -81,21 +81,21 @@ void __61__WLKNetworkRequestUtilities__defaultAppSessionConfiguration__block_inv
   v6 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_prepareEncoder:(id)a3 account:(id)a4 sessionConfiguration:(id)a5 options:(int64_t)a6 completionHandler:(id)a7
++ (void)_prepareEncoder:(id)encoder account:(id)account sessionConfiguration:(id)configuration options:(int64_t)options completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
+  encoderCopy = encoder;
+  accountCopy = account;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
   v28 = __Block_byref_object_copy__0;
   v29 = __Block_byref_object_dispose__0;
-  v15 = v11;
+  v15 = encoderCopy;
   v16 = v15;
   v30 = v15;
-  if ((a6 & 4) != 0)
+  if ((options & 4) != 0)
   {
     v18 = [v15 mutableCopy];
     v19[0] = MEMORY[0x277D85DD0];
@@ -105,16 +105,16 @@ void __61__WLKNetworkRequestUtilities__defaultAppSessionConfiguration__block_inv
     v23 = &v25;
     v17 = v18;
     v20 = v17;
-    v24 = a6;
-    v21 = v12;
-    v22 = v14;
+    optionsCopy = options;
+    v21 = accountCopy;
+    v22 = handlerCopy;
     [WLKMescal signNetworkRequest:v17 completionHandler:v19];
   }
 
   else
   {
-    v17 = [WLKNetworkRequestUtilities _createAMSEncoder:a6 account:v12];
-    (*(v14 + 2))(v14, v17, v26[5], 0);
+    v17 = [WLKNetworkRequestUtilities _createAMSEncoder:options account:accountCopy];
+    (*(handlerCopy + 2))(handlerCopy, v17, v26[5], 0);
   }
 
   _Block_object_dispose(&v25, 8);
@@ -148,59 +148,59 @@ void __101__WLKNetworkRequestUtilities__prepareEncoder_account_sessionConfigurat
   (*(*(a1 + 48) + 16))();
 }
 
-+ (id)_createAMSEncoder:(int64_t)a3 account:(id)a4
++ (id)_createAMSEncoder:(int64_t)encoder account:(id)account
 {
-  v4 = a3;
-  v5 = a4;
+  encoderCopy = encoder;
+  accountCopy = account;
   v6 = objc_alloc(MEMORY[0x277CEE6D8]);
-  v7 = [MEMORY[0x277CEE3F8] wlk_defaultBag];
-  v8 = [v6 initWithBag:v7];
+  wlk_defaultBag = [MEMORY[0x277CEE3F8] wlk_defaultBag];
+  v8 = [v6 initWithBag:wlk_defaultBag];
 
-  if (v4)
+  if (encoderCopy)
   {
     [v8 setDialogOptions:1];
   }
 
   [v8 setIncludeClientVersions:0];
-  if (+[WLKNetworkRequestUtilities isGDPRAccepted]|| (*&v4 & 0x200000) != 0)
+  if (+[WLKNetworkRequestUtilities isGDPRAccepted]|| (*&encoderCopy & 0x200000) != 0)
   {
-    if (v5)
+    if (accountCopy)
     {
-      v9 = v5;
+      activeAccount = accountCopy;
     }
 
     else
     {
-      v9 = [MEMORY[0x277D6C478] activeAccount];
+      activeAccount = [MEMORY[0x277D6C478] activeAccount];
     }
 
-    v10 = v9;
-    [v8 setAccount:v9];
+    v10 = activeAccount;
+    [v8 setAccount:activeAccount];
   }
 
   return v8;
 }
 
-+ (void)startNetworkRequest:(id)a3 account:(id)a4 sessionConfiguration:(id)a5 options:(int64_t)a6 completion:(id)a7
++ (void)startNetworkRequest:(id)request account:(id)account sessionConfiguration:(id)configuration options:(int64_t)options completion:(id)completion
 {
-  v11 = a5;
-  v12 = a7;
+  configurationCopy = configuration;
+  completionCopy = completion;
   v13 = MEMORY[0x277CBEAA8];
-  v14 = a4;
-  v15 = a3;
-  v16 = [v13 date];
+  accountCopy = account;
+  requestCopy = request;
+  date = [v13 date];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __98__WLKNetworkRequestUtilities_startNetworkRequest_account_sessionConfiguration_options_completion___block_invoke;
   v20[3] = &unk_279E5E9C0;
   v21 = 0;
-  v22 = v11;
-  v23 = v16;
-  v24 = v12;
-  v17 = v16;
-  v18 = v11;
-  v19 = v12;
-  [WLKNetworkRequestUtilities _prepareEncoder:v15 account:v14 sessionConfiguration:v18 options:a6 completionHandler:v20];
+  v22 = configurationCopy;
+  v23 = date;
+  v24 = completionCopy;
+  v17 = date;
+  v18 = configurationCopy;
+  v19 = completionCopy;
+  [WLKNetworkRequestUtilities _prepareEncoder:requestCopy account:accountCopy sessionConfiguration:v18 options:options completionHandler:v20];
 }
 
 void __98__WLKNetworkRequestUtilities_startNetworkRequest_account_sessionConfiguration_options_completion___block_invoke(uint64_t a1, void *a2, void *a3)

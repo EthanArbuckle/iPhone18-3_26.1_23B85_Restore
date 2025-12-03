@@ -2,7 +2,7 @@
 + (EFSQLSchema)schema;
 + (EFSQLTableSchema)senderAddressesTableSchema;
 + (EFSQLTableSchema)sendersTableSchema;
-+ (int)runWithConnection:(id)a3;
++ (int)runWithConnection:(id)connection;
 @end
 
 @implementation EDAddSendersTableUpgradeStep
@@ -10,14 +10,14 @@
 + (EFSQLSchema)schema
 {
   v11[2] = *MEMORY[0x1E69E9840];
-  v3 = [a1 sendersTableSchema];
-  v4 = [a1 senderAddressesTableSchema];
-  v5 = [v4 columnForName:@"sender"];
-  [v5 setAsForeignKeyForTable:v3 onDelete:2 onUpdate:0];
+  sendersTableSchema = [self sendersTableSchema];
+  senderAddressesTableSchema = [self senderAddressesTableSchema];
+  v5 = [senderAddressesTableSchema columnForName:@"sender"];
+  [v5 setAsForeignKeyForTable:sendersTableSchema onDelete:2 onUpdate:0];
 
   v6 = objc_alloc(MEMORY[0x1E699B940]);
-  v11[0] = v3;
-  v11[1] = v4;
+  v11[0] = sendersTableSchema;
+  v11[1] = senderAddressesTableSchema;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:2];
   v8 = [v6 initWithTables:v7];
 
@@ -70,16 +70,16 @@
   return v5;
 }
 
-+ (int)runWithConnection:(id)a3
++ (int)runWithConnection:(id)connection
 {
-  v4 = a3;
-  [v4 executeStatementString:@"DROP TABLE IF EXISTS senders;" errorMessage:@"Dropping senders table"];
-  [v4 executeStatementString:@"DROP TABLE IF EXISTS sender_addresses;" errorMessage:@"Dropping sender_addresses table"];
-  v5 = [a1 schema];
-  v6 = [v5 definitionWithDatabaseName:0];
+  connectionCopy = connection;
+  [connectionCopy executeStatementString:@"DROP TABLE IF EXISTS senders;" errorMessage:@"Dropping senders table"];
+  [connectionCopy executeStatementString:@"DROP TABLE IF EXISTS sender_addresses;" errorMessage:@"Dropping sender_addresses table"];
+  schema = [self schema];
+  v6 = [schema definitionWithDatabaseName:0];
 
-  LODWORD(v5) = sqlite3_exec([v4 sqlDB], objc_msgSend(v6, "UTF8String"), 0, 0, 0);
-  return v5;
+  LODWORD(schema) = sqlite3_exec([connectionCopy sqlDB], objc_msgSend(v6, "UTF8String"), 0, 0, 0);
+  return schema;
 }
 
 @end

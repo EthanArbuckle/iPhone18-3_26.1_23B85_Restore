@@ -1,18 +1,18 @@
 @interface TCSCallCenter
 - (TCSCallCenter)init;
 - (TCSCallCenterDelegate)delegate;
-- (id)_callPassingPredicate:(id)a3;
+- (id)_callPassingPredicate:(id)predicate;
 - (id)activeCall;
 - (id)currentCall;
 - (id)ringingCall;
-- (void)callConnected:(id)a3;
-- (void)callStatusChanged:(id)a3;
-- (void)completeInvitationFlowForContact:(id)a3;
-- (void)disconnectCall:(id)a3;
+- (void)callConnected:(id)connected;
+- (void)callStatusChanged:(id)changed;
+- (void)completeInvitationFlowForContact:(id)contact;
+- (void)disconnectCall:(id)call;
 - (void)invalidate;
-- (void)logEntryForCallWithUniqueProxyIdentifier:(id)a3 completion:(id)a4;
-- (void)queryIsTinCannable:(id)a3;
-- (void)remoteUplinkMuteChanged:(id)a3;
+- (void)logEntryForCallWithUniqueProxyIdentifier:(id)identifier completion:(id)completion;
+- (void)queryIsTinCannable:(id)cannable;
+- (void)remoteUplinkMuteChanged:(id)changed;
 - (void)sessionViewControllerViewDidAppear;
 - (void)synchronouslyFetchCall;
 @end
@@ -135,9 +135,9 @@ void __21__TCSCallCenter_init__block_invoke_107(uint64_t a1)
   [(NSXPCConnection *)self->_connection invalidate];
 }
 
-- (id)_callPassingPredicate:(id)a3
+- (id)_callPassingPredicate:(id)predicate
 {
-  if ((*(a3 + 2))(a3, self->_call))
+  if ((*(predicate + 2))(predicate, self->_call))
   {
     call = self->_call;
   }
@@ -257,13 +257,13 @@ void __39__TCSCallCenter_synchronouslyFetchCall__block_invoke_111(uint64_t a1, v
 
 - (void)sessionViewControllerViewDidAppear
 {
-  v2 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
-  [v2 sessionViewControllerViewDidAppear];
+  remoteObjectProxy = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+  [remoteObjectProxy sessionViewControllerViewDidAppear];
 }
 
-- (void)queryIsTinCannable:(id)a3
+- (void)queryIsTinCannable:(id)cannable
 {
-  v4 = a3;
+  cannableCopy = cannable;
   if (+[TCSBehavior isRunningInStoreDemoModeOrSimulator])
   {
     _TCSInitializeLogging();
@@ -276,35 +276,35 @@ void __39__TCSCallCenter_synchronouslyFetchCall__block_invoke_111(uint64_t a1, v
 
     v6 = objc_opt_new();
     v7 = [MEMORY[0x277CBEAA8] now];
-    [v6 didReceiveCallFromContact:v4 date:v7];
+    [v6 didReceiveCallFromContact:cannableCopy date:v7];
   }
 
   else
   {
-    v8 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
-    [v8 queryIsTinCannable:v4];
+    remoteObjectProxy = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+    [remoteObjectProxy queryIsTinCannable:cannableCopy];
   }
 }
 
-- (void)completeInvitationFlowForContact:(id)a3
+- (void)completeInvitationFlowForContact:(id)contact
 {
   connection = self->_connection;
-  v4 = a3;
-  v5 = [(NSXPCConnection *)connection remoteObjectProxy];
-  [v5 completeInvitationFlowForContact:v4];
+  contactCopy = contact;
+  remoteObjectProxy = [(NSXPCConnection *)connection remoteObjectProxy];
+  [remoteObjectProxy completeInvitationFlowForContact:contactCopy];
 }
 
-- (void)logEntryForCallWithUniqueProxyIdentifier:(id)a3 completion:(id)a4
+- (void)logEntryForCallWithUniqueProxyIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   connection = self->_connection;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __69__TCSCallCenter_logEntryForCallWithUniqueProxyIdentifier_completion___block_invoke;
   v14[3] = &unk_279DC1DC8;
-  v8 = v6;
+  v8 = completionCopy;
   v15 = v8;
-  v9 = a3;
+  identifierCopy = identifier;
   v10 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v14];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -312,7 +312,7 @@ void __39__TCSCallCenter_synchronouslyFetchCall__block_invoke_111(uint64_t a1, v
   v12[3] = &unk_279DC1DF0;
   v13 = v8;
   v11 = v8;
-  [v10 getLogEntryForCallWithUniqueProxyIdentifier:v9 completion:v12];
+  [v10 getLogEntryForCallWithUniqueProxyIdentifier:identifierCopy completion:v12];
 }
 
 void __69__TCSCallCenter_logEntryForCallWithUniqueProxyIdentifier_completion___block_invoke(uint64_t a1, void *a2)
@@ -392,19 +392,19 @@ uint64_t __47__TCSCallCenter_setUplinkMuted_for_completion___block_invoke_118(ui
   return result;
 }
 
-- (void)disconnectCall:(id)a3
+- (void)disconnectCall:(id)call
 {
   connection = self->_connection;
-  v4 = a3;
-  v5 = [(NSXPCConnection *)connection remoteObjectProxy];
-  [v5 disconnectCall:v4];
+  callCopy = call;
+  remoteObjectProxy = [(NSXPCConnection *)connection remoteObjectProxy];
+  [remoteObjectProxy disconnectCall:callCopy];
 }
 
-- (void)callStatusChanged:(id)a3
+- (void)callStatusChanged:(id)changed
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  objc_storeStrong(&self->_call, a3);
+  changedCopy = changed;
+  objc_storeStrong(&self->_call, changed);
   [(TCSCall *)self->_call setCallCenter:self];
   _TCSInitializeLogging();
   v6 = TCSLogDefault;
@@ -416,17 +416,17 @@ uint64_t __47__TCSCallCenter_setUplinkMuted_for_completion___block_invoke_118(ui
     _os_log_impl(&dword_26F110000, v6, OS_LOG_TYPE_DEFAULT, "TCSCallCenter (callStatusChanged) now tracking call: %@", &v10, 0xCu);
   }
 
-  v8 = [(TCSCallCenter *)self delegate];
-  [v8 callStatusChanged:v5];
+  delegate = [(TCSCallCenter *)self delegate];
+  [delegate callStatusChanged:changedCopy];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)callConnected:(id)a3
+- (void)callConnected:(id)connected
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  objc_storeStrong(&self->_call, a3);
+  connectedCopy = connected;
+  objc_storeStrong(&self->_call, connected);
   [(TCSCall *)self->_call setCallCenter:self];
   _TCSInitializeLogging();
   v6 = TCSLogDefault;
@@ -438,17 +438,17 @@ uint64_t __47__TCSCallCenter_setUplinkMuted_for_completion___block_invoke_118(ui
     _os_log_impl(&dword_26F110000, v6, OS_LOG_TYPE_DEFAULT, "TCSCallCenter (callConnected) now tracking call: %@", &v10, 0xCu);
   }
 
-  v8 = [(TCSCallCenter *)self delegate];
-  [v8 callConnected:v5];
+  delegate = [(TCSCallCenter *)self delegate];
+  [delegate callConnected:connectedCopy];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remoteUplinkMuteChanged:(id)a3
+- (void)remoteUplinkMuteChanged:(id)changed
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  objc_storeStrong(&self->_call, a3);
+  changedCopy = changed;
+  objc_storeStrong(&self->_call, changed);
   [(TCSCall *)self->_call setCallCenter:self];
   _TCSInitializeLogging();
   v6 = TCSLogDefault;
@@ -460,8 +460,8 @@ uint64_t __47__TCSCallCenter_setUplinkMuted_for_completion___block_invoke_118(ui
     _os_log_impl(&dword_26F110000, v6, OS_LOG_TYPE_DEFAULT, "TCSCallCenter (remoteUplinkMuteChanged) now tracking call: %@", &v10, 0xCu);
   }
 
-  v8 = [(TCSCallCenter *)self delegate];
-  [v8 remoteUplinkMuteChanged:v5];
+  delegate = [(TCSCallCenter *)self delegate];
+  [delegate remoteUplinkMuteChanged:changedCopy];
 
   v9 = *MEMORY[0x277D85DE8];
 }

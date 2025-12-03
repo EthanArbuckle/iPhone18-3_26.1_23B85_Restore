@@ -1,20 +1,20 @@
 @interface FLTopLevelViewModel
-+ (id)_prefixFromBundleIdentifier:(id)a3;
-+ (id)redirectURLForItem:(id)a3 withAction:(id)a4;
-- (FLTopLevelViewModel)initWithBundleIdentifier:(id)a3 clientIdentifier:(id)a4;
-- (FLTopLevelViewModel)initWithBundleIdentifier:(id)a3 controller:(id)a4;
-- (id)_groupsForPrimaryAccount:(id)a3 secondaryAccounts:(id)a4 simpleAccountGrouping:(BOOL)a5;
++ (id)_prefixFromBundleIdentifier:(id)identifier;
++ (id)redirectURLForItem:(id)item withAction:(id)action;
+- (FLTopLevelViewModel)initWithBundleIdentifier:(id)identifier clientIdentifier:(id)clientIdentifier;
+- (FLTopLevelViewModel)initWithBundleIdentifier:(id)identifier controller:(id)controller;
+- (id)_groupsForPrimaryAccount:(id)account secondaryAccounts:(id)accounts simpleAccountGrouping:(BOOL)grouping;
 - (id)allPendingItems;
-- (id)extensionToItemMapFromItems:(id)a3;
-- (void)_configureTimerForItem:(id)a3;
-- (void)_refreshItemsWithExtensionToItemMap:(id)a3 completion:(id)a4;
-- (void)_removeTimerForItem:(id)a3;
-- (void)_updateTimerItems:(id)a3;
+- (id)extensionToItemMapFromItems:(id)items;
+- (void)_configureTimerForItem:(id)item;
+- (void)_refreshItemsWithExtensionToItemMap:(id)map completion:(id)completion;
+- (void)_removeTimerForItem:(id)item;
+- (void)_updateTimerItems:(id)items;
 - (void)allPendingItems;
 - (void)dealloc;
-- (void)mapItems:(id)a3 toGroups:(id)a4 unknownGroup:(id)a5 deviceGroup:(id)a6 simpleAccountGrouping:(BOOL)a7;
-- (void)refreshItems:(id)a3 withCompletionHandler:(id)a4;
-- (void)refreshItemsForItem:(id)a3 withCompletionHandler:(id)a4;
+- (void)mapItems:(id)items toGroups:(id)groups unknownGroup:(id)group deviceGroup:(id)deviceGroup simpleAccountGrouping:(BOOL)grouping;
+- (void)refreshItems:(id)items withCompletionHandler:(id)handler;
+- (void)refreshItemsForItem:(id)item withCompletionHandler:(id)handler;
 @end
 
 @implementation FLTopLevelViewModel
@@ -79,8 +79,8 @@
         }
 
         v11 = *(*(&v28 + 1) + 8 * i);
-        v12 = [v11 expirationDate];
-        v13 = v12 == 0;
+        expirationDate = [v11 expirationDate];
+        v13 = expirationDate == 0;
 
         if (v13)
         {
@@ -90,17 +90,17 @@
         else
         {
           timersByID = self->_timersByID;
-          v15 = [v11 uniqueIdentifier];
-          v16 = [(NSMutableDictionary *)timersByID objectForKeyedSubscript:v15];
+          uniqueIdentifier = [v11 uniqueIdentifier];
+          v16 = [(NSMutableDictionary *)timersByID objectForKeyedSubscript:uniqueIdentifier];
 
           if (v16)
           {
             v17 = self->_timersByID;
-            v18 = [v11 uniqueIdentifier];
-            v19 = [(NSMutableDictionary *)v17 objectForKeyedSubscript:v18];
-            v20 = [v19 fireDate];
-            v21 = [v11 _midnightAdjustedDate];
-            v22 = [v20 isEqualToDate:v21];
+            uniqueIdentifier2 = [v11 uniqueIdentifier];
+            v19 = [(NSMutableDictionary *)v17 objectForKeyedSubscript:uniqueIdentifier2];
+            fireDate = [v19 fireDate];
+            _midnightAdjustedDate = [v11 _midnightAdjustedDate];
+            v22 = [fireDate isEqualToDate:_midnightAdjustedDate];
 
             if (v22)
             {
@@ -126,38 +126,38 @@
   return obj;
 }
 
-- (FLTopLevelViewModel)initWithBundleIdentifier:(id)a3 clientIdentifier:(id)a4
+- (FLTopLevelViewModel)initWithBundleIdentifier:(id)identifier clientIdentifier:(id)clientIdentifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[FLFollowUpController alloc] initWithClientIdentifier:v6];
+  clientIdentifierCopy = clientIdentifier;
+  identifierCopy = identifier;
+  v8 = [[FLFollowUpController alloc] initWithClientIdentifier:clientIdentifierCopy];
 
-  v9 = [(FLTopLevelViewModel *)self initWithBundleIdentifier:v7 controller:v8];
+  v9 = [(FLTopLevelViewModel *)self initWithBundleIdentifier:identifierCopy controller:v8];
   return v9;
 }
 
-- (FLTopLevelViewModel)initWithBundleIdentifier:(id)a3 controller:(id)a4
+- (FLTopLevelViewModel)initWithBundleIdentifier:(id)identifier controller:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  controllerCopy = controller;
   v17.receiver = self;
   v17.super_class = FLTopLevelViewModel;
   v9 = [(FLTopLevelViewModel *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_controller, a4);
-    objc_storeStrong(&v10->_bundleIdentifier, a3);
+    objc_storeStrong(&v9->_controller, controller);
+    objc_storeStrong(&v10->_bundleIdentifier, identifier);
     v11 = objc_alloc_init(FLItemChangeObserver);
     observer = v10->_observer;
     v10->_observer = v11;
 
-    v13 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     timersByID = v10->_timersByID;
-    v10->_timersByID = v13;
+    v10->_timersByID = dictionary;
 
-    v15 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v15 addObserver:v10 selector:sel__updateTimerItems_ name:@"com.apple.PreferencesApp.willBecomeActive" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v10 selector:sel__updateTimerItems_ name:@"com.apple.PreferencesApp.willBecomeActive" object:0];
   }
 
   return v10;
@@ -165,8 +165,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:@"com.apple.PreferencesApp.willBecomeActive" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"com.apple.PreferencesApp.willBecomeActive" object:0];
 
   v4.receiver = self;
   v4.super_class = FLTopLevelViewModel;
@@ -229,7 +229,7 @@ LABEL_13:
   return v5;
 }
 
-- (void)_updateTimerItems:(id)a3
+- (void)_updateTimerItems:(id)items
 {
   if ([(NSMutableDictionary *)self->_timersByID count])
   {
@@ -244,27 +244,27 @@ LABEL_13:
   }
 }
 
-- (void)_configureTimerForItem:(id)a3
+- (void)_configureTimerForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_initWeak(&location, self);
   v5 = objc_alloc(MEMORY[0x277CBEBB8]);
-  v6 = [v4 _midnightAdjustedDate];
+  _midnightAdjustedDate = [itemCopy _midnightAdjustedDate];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __46__FLTopLevelViewModel__configureTimerForItem___block_invoke;
   v12[3] = &unk_278852D50;
-  v7 = v4;
+  v7 = itemCopy;
   v13 = v7;
   objc_copyWeak(&v14, &location);
-  v8 = [v5 initWithFireDate:v6 interval:0 repeats:v12 block:0.0];
+  v8 = [v5 initWithFireDate:_midnightAdjustedDate interval:0 repeats:v12 block:0.0];
 
-  v9 = [MEMORY[0x277CBEB88] mainRunLoop];
-  [v9 addTimer:v8 forMode:*MEMORY[0x277CBE640]];
+  mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+  [mainRunLoop addTimer:v8 forMode:*MEMORY[0x277CBE640]];
 
   timersByID = self->_timersByID;
-  v11 = [v7 uniqueIdentifier];
-  [(NSMutableDictionary *)timersByID setObject:v8 forKeyedSubscript:v11];
+  uniqueIdentifier = [v7 uniqueIdentifier];
+  [(NSMutableDictionary *)timersByID setObject:v8 forKeyedSubscript:uniqueIdentifier];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -296,34 +296,34 @@ void __46__FLTopLevelViewModel__configureTimerForItem___block_invoke(uint64_t a1
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_removeTimerForItem:(id)a3
+- (void)_removeTimerForItem:(id)item
 {
   timersByID = self->_timersByID;
-  v5 = a3;
-  v6 = [v5 uniqueIdentifier];
-  v9 = [(NSMutableDictionary *)timersByID objectForKeyedSubscript:v6];
+  itemCopy = item;
+  uniqueIdentifier = [itemCopy uniqueIdentifier];
+  v9 = [(NSMutableDictionary *)timersByID objectForKeyedSubscript:uniqueIdentifier];
 
   [v9 invalidate];
   v7 = self->_timersByID;
-  v8 = [v5 uniqueIdentifier];
+  uniqueIdentifier2 = [itemCopy uniqueIdentifier];
 
-  [(NSMutableDictionary *)v7 setObject:0 forKeyedSubscript:v8];
+  [(NSMutableDictionary *)v7 setObject:0 forKeyedSubscript:uniqueIdentifier2];
 }
 
-- (void)refreshItemsForItem:(id)a3 withCompletionHandler:(id)a4
+- (void)refreshItemsForItem:(id)item withCompletionHandler:(id)handler
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v14[0] = a3;
+  handlerCopy = handler;
+  v14[0] = item;
   v7 = MEMORY[0x277CBEA60];
-  v8 = a3;
+  itemCopy = item;
   v9 = [v7 arrayWithObjects:v14 count:1];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __65__FLTopLevelViewModel_refreshItemsForItem_withCompletionHandler___block_invoke;
   v12[3] = &unk_278852D78;
-  v13 = v6;
-  v10 = v6;
+  v13 = handlerCopy;
+  v10 = handlerCopy;
   [(FLTopLevelViewModel *)self refreshItems:v9 withCompletionHandler:v12];
 
   v11 = *MEMORY[0x277D85DE8];
@@ -338,19 +338,19 @@ void __65__FLTopLevelViewModel_refreshItemsForItem_withCompletionHandler___block
   (*(v4 + 16))(v4, [v7 count] == 1, v6);
 }
 
-- (void)refreshItems:(id)a3 withCompletionHandler:(id)a4
+- (void)refreshItems:(id)items withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(FLTopLevelViewModel *)self extensionToItemMapFromItems:v6];
+  itemsCopy = items;
+  handlerCopy = handler;
+  v8 = [(FLTopLevelViewModel *)self extensionToItemMapFromItems:itemsCopy];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __58__FLTopLevelViewModel_refreshItems_withCompletionHandler___block_invoke;
   v11[3] = &unk_278852DA0;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = itemsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = itemsCopy;
   [(FLTopLevelViewModel *)self _refreshItemsWithExtensionToItemMap:v8 completion:v11];
 }
 
@@ -377,18 +377,18 @@ BOOL __58__FLTopLevelViewModel_refreshItems_withCompletionHandler___block_invoke
   return v3;
 }
 
-- (id)extensionToItemMapFromItems:(id)a3
+- (id)extensionToItemMapFromItems:(id)items
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
-  v5 = [v3 dictionary];
+  itemsCopy = items;
+  dictionary = [v3 dictionary];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __51__FLTopLevelViewModel_extensionToItemMapFromItems___block_invoke;
   v8[3] = &unk_278852DC8;
-  v6 = v5;
+  v6 = dictionary;
   v9 = v6;
-  [v4 enumerateObjectsUsingBlock:v8];
+  [itemsCopy enumerateObjectsUsingBlock:v8];
 
   return v6;
 }
@@ -410,25 +410,25 @@ void __51__FLTopLevelViewModel_extensionToItemMapFromItems___block_invoke(uint64
   }
 }
 
-- (void)_refreshItemsWithExtensionToItemMap:(id)a3 completion:(id)a4
+- (void)_refreshItemsWithExtensionToItemMap:(id)map completion:(id)completion
 {
   v60 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v32 = a4;
-  v34 = [MEMORY[0x277CBEB18] array];
-  v6 = [MEMORY[0x277CBEB18] array];
-  v31 = [MEMORY[0x277CBEB18] array];
-  v7 = [MEMORY[0x277CBEB18] array];
+  mapCopy = map;
+  completionCopy = completion;
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
+  array4 = [MEMORY[0x277CBEB18] array];
   v8 = dispatch_group_create();
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __70__FLTopLevelViewModel__refreshItemsWithExtensionToItemMap_completion___block_invoke;
   aBlock[3] = &unk_278852E18;
-  v29 = v7;
+  v29 = array4;
   v53 = v29;
-  v9 = v5;
+  v9 = mapCopy;
   v54 = v9;
-  v30 = v6;
+  v30 = array2;
   v55 = v30;
   v10 = v8;
   v56 = v10;
@@ -491,14 +491,14 @@ void __51__FLTopLevelViewModel_extensionToItemMapFromItems___block_invoke(uint64
   v37[3] = &unk_278852EB8;
   v37[4] = self;
   v38 = v30;
-  v39 = v34;
-  v40 = v31;
+  v39 = array;
+  v40 = array3;
   v41 = v29;
-  v42 = v32;
-  v23 = v32;
+  v42 = completionCopy;
+  v23 = completionCopy;
   v24 = v29;
-  v25 = v31;
-  v26 = v34;
+  v25 = array3;
+  v26 = array;
   v27 = v30;
   dispatch_group_notify(v10, v22, v37);
 
@@ -647,12 +647,12 @@ void __70__FLTopLevelViewModel__refreshItemsWithExtensionToItemMap_completion___
   [*(a1 + v5) addObject:v6];
 }
 
-- (id)_groupsForPrimaryAccount:(id)a3 secondaryAccounts:(id)a4 simpleAccountGrouping:(BOOL)a5
+- (id)_groupsForPrimaryAccount:(id)account secondaryAccounts:(id)accounts simpleAccountGrouping:(BOOL)grouping
 {
-  v58 = a5;
+  groupingCopy = grouping;
   v73 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  accountCopy = account;
+  accountsCopy = accounts;
   v9 = _FLSignpostCreate();
   v59 = v10;
   v11 = _FLSignpostLogSystem();
@@ -666,53 +666,53 @@ void __70__FLTopLevelViewModel__refreshItemsWithExtensionToItemMap_completion___
   v14 = FLLoc(@"ACCOUNT_MULTI_FOLLOW_LIST_TITLE");
   [(FLGroupViewModelImpl *)v13 setRowTitle:v14];
 
-  [(FLGroupViewModelImpl *)v13 setAccountID:v7];
+  [(FLGroupViewModelImpl *)v13 setAccountID:accountCopy];
   [(FLGroupViewModelImpl *)v13 setNeedsAccountID:0];
   v60 = v13;
   [v12 addObject:v13];
   v15 = [[FLGroupViewModelImpl alloc] initWithIdentifier:?];
-  [(FLGroupViewModelImpl *)v15 setAccountID:v7];
+  [(FLGroupViewModelImpl *)v15 setAccountID:accountCopy];
   [(FLGroupViewModelImpl *)v15 setNeedsAccountID:0];
   v16 = FLLoc(@"SERVICES_MULTI_FOLLOW_LIST_TITLE");
   [(FLGroupViewModelImpl *)v15 setRowTitle:v16];
 
   v57 = v15;
   [v12 addObject:v15];
-  if (v7)
+  if (accountCopy)
   {
     v17 = [[FLGroupViewModelImpl alloc] initWithIdentifier:@"com.apple.followup.group.none"];
-    [(FLGroupViewModelImpl *)v17 setAccountID:v7];
+    [(FLGroupViewModelImpl *)v17 setAccountID:accountCopy];
     [(FLGroupViewModelImpl *)v17 setNeedsAccountID:1];
     [v12 addObject:v17];
   }
 
-  if (v8 && [v8 count])
+  if (accountsCopy && [accountsCopy count])
   {
     v18 = [[FLGroupViewModelImpl alloc] initWithIdentifier:@"com.apple.followup.group.account"];
     v19 = FLLoc(@"ACCOUNT_MULTI_FOLLOW_LIST_TITLE");
     [(FLGroupViewModelImpl *)v18 setRowTitle:v19];
 
-    v20 = [v8 firstObject];
-    [(FLGroupViewModelImpl *)v18 setAccountID:v20];
+    firstObject = [accountsCopy firstObject];
+    [(FLGroupViewModelImpl *)v18 setAccountID:firstObject];
 
     [(FLGroupViewModelImpl *)v18 setNeedsAccountID:1];
     [v12 addObject:v18];
   }
 
   v21 = [[FLGroupViewModelImpl alloc] initWithIdentifier:@"com.apple.followup.group.none"];
-  v22 = [v8 firstObject];
-  [(FLGroupViewModelImpl *)v21 setAccountID:v22];
+  firstObject2 = [accountsCopy firstObject];
+  [(FLGroupViewModelImpl *)v21 setAccountID:firstObject2];
 
   [(FLGroupViewModelImpl *)v21 setNeedsAccountID:0];
   v56 = v21;
   [v12 addObject:v21];
   v23 = [[FLGroupViewModelImpl alloc] initWithIdentifier:@"com.apple.followup.group.device"];
-  v24 = [(FLTopLevelViewModel *)self localizedDeviceRowTitle];
-  v65 = self;
+  localizedDeviceRowTitle = [(FLTopLevelViewModel *)self localizedDeviceRowTitle];
+  selfCopy = self;
   v61 = v9;
-  if (v24)
+  if (localizedDeviceRowTitle)
   {
-    [(FLGroupViewModelImpl *)v23 setRowTitle:v24];
+    [(FLGroupViewModelImpl *)v23 setRowTitle:localizedDeviceRowTitle];
   }
 
   else
@@ -732,14 +732,14 @@ void __70__FLTopLevelViewModel__refreshItemsWithExtensionToItemMap_completion___
   v28 = +[FLEnvironment currentEnvironment];
   LOBYTE(v26) = [v28 isInternal];
 
-  v62 = v8;
-  v63 = v7;
+  v62 = accountsCopy;
+  v63 = accountCopy;
   if (v26)
   {
     v29 = [[FLGroupViewModelImpl alloc] initWithIdentifier:@"com.apple.followup.group.unknown"];
     [(FLGroupViewModelImpl *)v29 setGroupTitle:@"Internal Only - APPROVAL REQUIRED:"];
-    v30 = [(FLGroupViewModelImpl *)v29 groupTitle];
-    [(FLGroupViewModelImpl *)v29 setRowTitle:v30];
+    groupTitle = [(FLGroupViewModelImpl *)v29 groupTitle];
+    [(FLGroupViewModelImpl *)v29 setRowTitle:groupTitle];
 
     v31 = v12;
     v54 = v29;
@@ -752,13 +752,13 @@ void __70__FLTopLevelViewModel__refreshItemsWithExtensionToItemMap_completion___
     v54 = 0;
   }
 
-  v32 = [(FLTopLevelViewModel *)v65 allPendingItems];
+  allPendingItems = [(FLTopLevelViewModel *)selfCopy allPendingItems];
   v33 = [MEMORY[0x277CBEB58] setWithObjects:{@"com.apple.followup.group.account", @"com.apple.followup.group.device", @"com.apple.followup.group.unknown", @"com.apple.followup.group.services", @"com.apple.followup.group.ndo", @"com.apple.followup.secure.mic", @"com.apple.followup.group.none", 0}];
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
-  v34 = v32;
+  v34 = allPendingItems;
   v35 = [v34 countByEnumeratingWithState:&v66 objects:v72 count:16];
   if (v35)
   {
@@ -774,25 +774,25 @@ void __70__FLTopLevelViewModel__refreshItemsWithExtensionToItemMap_completion___
         }
 
         v39 = *(*(&v66 + 1) + 8 * i);
-        v40 = [v39 groupIdentifier];
-        v41 = [v33 containsObject:v40];
+        groupIdentifier = [v39 groupIdentifier];
+        v41 = [v33 containsObject:groupIdentifier];
 
         if ((v41 & 1) == 0)
         {
           v42 = [FLGroupViewModelImpl alloc];
-          v43 = [v39 groupIdentifier];
-          v44 = [(FLGroupViewModelImpl *)v42 initWithIdentifier:v43];
+          groupIdentifier2 = [v39 groupIdentifier];
+          v44 = [(FLGroupViewModelImpl *)v42 initWithIdentifier:groupIdentifier2];
           [v31 addObject:v44];
 
-          v45 = [v39 groupIdentifier];
-          [v33 addObject:v45];
+          groupIdentifier3 = [v39 groupIdentifier];
+          [v33 addObject:groupIdentifier3];
 
           v46 = _FLLogSystem();
           if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
           {
-            v47 = [v39 groupIdentifier];
+            groupIdentifier4 = [v39 groupIdentifier];
             *buf = 138412290;
-            v71 = v47;
+            v71 = groupIdentifier4;
             _os_log_impl(&dword_22E696000, v46, OS_LOG_TYPE_DEFAULT, "Adding dynamic group: %@", buf, 0xCu);
           }
         }
@@ -804,7 +804,7 @@ void __70__FLTopLevelViewModel__refreshItemsWithExtensionToItemMap_completion___
     while (v36);
   }
 
-  [(FLTopLevelViewModel *)v65 mapItems:v34 toGroups:v31 unknownGroup:v54 deviceGroup:v64 simpleAccountGrouping:v58];
+  [(FLTopLevelViewModel *)selfCopy mapItems:v34 toGroups:v31 unknownGroup:v54 deviceGroup:v64 simpleAccountGrouping:groupingCopy];
   v48 = _FLLogSystem();
   if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
   {
@@ -826,18 +826,18 @@ void __70__FLTopLevelViewModel__refreshItemsWithExtensionToItemMap_completion___
   return v51;
 }
 
-- (void)mapItems:(id)a3 toGroups:(id)a4 unknownGroup:(id)a5 deviceGroup:(id)a6 simpleAccountGrouping:(BOOL)a7
+- (void)mapItems:(id)items toGroups:(id)groups unknownGroup:(id)group deviceGroup:(id)deviceGroup simpleAccountGrouping:(BOOL)grouping
 {
   v27 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  itemsCopy = items;
+  groupsCopy = groups;
+  groupCopy = group;
+  deviceGroupCopy = deviceGroup;
   v15 = _FLLogSystem();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v26 = v11;
+    v26 = itemsCopy;
     _os_log_impl(&dword_22E696000, v15, OS_LOG_TYPE_DEFAULT, "Starting to build groups from %@", buf, 0xCu);
   }
 
@@ -845,14 +845,14 @@ void __70__FLTopLevelViewModel__refreshItemsWithExtensionToItemMap_completion___
   v20[1] = 3221225472;
   v20[2] = __88__FLTopLevelViewModel_mapItems_toGroups_unknownGroup_deviceGroup_simpleAccountGrouping___block_invoke;
   v20[3] = &unk_278852EE0;
-  v24 = a7;
-  v21 = v12;
-  v22 = v14;
-  v23 = v13;
-  v16 = v13;
-  v17 = v14;
-  v18 = v12;
-  [v11 enumerateObjectsUsingBlock:v20];
+  groupingCopy = grouping;
+  v21 = groupsCopy;
+  v22 = deviceGroupCopy;
+  v23 = groupCopy;
+  v16 = groupCopy;
+  v17 = deviceGroupCopy;
+  v18 = groupsCopy;
+  [itemsCopy enumerateObjectsUsingBlock:v20];
 
   v19 = *MEMORY[0x277D85DE8];
 }
@@ -968,17 +968,17 @@ LABEL_25:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)redirectURLForItem:(id)a3 withAction:(id)a4
++ (id)redirectURLForItem:(id)item withAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 groupIdentifier];
-  v9 = [v6 uniqueIdentifier];
+  itemCopy = item;
+  actionCopy = action;
+  groupIdentifier = [itemCopy groupIdentifier];
+  uniqueIdentifier = [itemCopy uniqueIdentifier];
   v10 = [FLTopLevelViewModel alloc];
-  v11 = [v6 targetBundleIdentifier];
-  v12 = [(FLTopLevelViewModel *)v10 initWithBundleIdentifier:v11 clientIdentifier:0];
+  targetBundleIdentifier = [itemCopy targetBundleIdentifier];
+  v12 = [(FLTopLevelViewModel *)v10 initWithBundleIdentifier:targetBundleIdentifier clientIdentifier:0];
 
-  v13 = [(FLTopLevelViewModel *)v12 groups];
+  groups = [(FLTopLevelViewModel *)v12 groups];
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -989,17 +989,17 @@ LABEL_25:
   v21 = 3221225472;
   v22 = __53__FLTopLevelViewModel_redirectURLForItem_withAction___block_invoke;
   v23 = &unk_278852F08;
-  v14 = v8;
+  v14 = groupIdentifier;
   v24 = v14;
-  v29 = a1;
-  v15 = v6;
+  selfCopy = self;
+  v15 = itemCopy;
   v25 = v15;
   v28 = &v30;
-  v16 = v9;
+  v16 = uniqueIdentifier;
   v26 = v16;
-  v17 = v7;
+  v17 = actionCopy;
   v27 = v17;
-  [v13 enumerateObjectsUsingBlock:&v20];
+  [groups enumerateObjectsUsingBlock:&v20];
   v18 = [MEMORY[0x277CBEBC0] URLWithString:{v31[5], v20, v21, v22, v23}];
 
   _Block_object_dispose(&v30, 8);
@@ -1078,10 +1078,10 @@ void __53__FLTopLevelViewModel_redirectURLForItem_withAction___block_invoke(uint
   v32 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_prefixFromBundleIdentifier:(id)a3
++ (id)_prefixFromBundleIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"com.apple.Preferences"])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:@"com.apple.Preferences"])
   {
     v4 = FLFollowUpPreferencesUrlPrefix;
 LABEL_5:
@@ -1089,7 +1089,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([v3 isEqualToString:@"com.apple.Bridge"])
+  if ([identifierCopy isEqualToString:@"com.apple.Bridge"])
   {
     v4 = FLFollowUpBridgeUrlPrefix;
     goto LABEL_5;
@@ -1105,7 +1105,7 @@ LABEL_7:
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_22E696000, a2, OS_LOG_TYPE_ERROR, "Failed to fetch pending items, not much we can do here... so lets just log it  %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

@@ -1,35 +1,35 @@
 @interface HRClinicalSharingOnboardingInformationalViewController
-- (HRClinicalSharingOnboardingInformationalViewController)initWithOnboardingSession:(id)a3 flowType:(int64_t)a4 selectedAccount:(id)a5 delegate:(id)a6;
-- (HRClinicalSharingOnboardingInformationalViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (HRClinicalSharingOnboardingInformationalViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
-- (void)cancelButtonTapped:(id)a3;
+- (HRClinicalSharingOnboardingInformationalViewController)initWithOnboardingSession:(id)session flowType:(int64_t)type selectedAccount:(id)account delegate:(id)delegate;
+- (HRClinicalSharingOnboardingInformationalViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (HRClinicalSharingOnboardingInformationalViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
+- (void)cancelButtonTapped:(id)tapped;
 - (void)dealloc;
-- (void)nextButtonTappedForProviderSearch:(id)a3;
+- (void)nextButtonTappedForProviderSearch:(id)search;
 - (void)viewDidLoad;
 @end
 
 @implementation HRClinicalSharingOnboardingInformationalViewController
 
-- (HRClinicalSharingOnboardingInformationalViewController)initWithOnboardingSession:(id)a3 flowType:(int64_t)a4 selectedAccount:(id)a5 delegate:(id)a6
+- (HRClinicalSharingOnboardingInformationalViewController)initWithOnboardingSession:(id)session flowType:(int64_t)type selectedAccount:(id)account delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a5;
+  sessionCopy = session;
+  accountCopy = account;
   swift_unknownObjectRetain();
-  return ClinicalSharingOnboardingInformationalViewController.init(onboardingSession:flowType:selectedAccount:delegate:)(v8, a4, a5);
+  return ClinicalSharingOnboardingInformationalViewController.init(onboardingSession:flowType:selectedAccount:delegate:)(sessionCopy, type, account);
 }
 
 - (void)dealloc
 {
   if (*(&self->super.super.super.super.super.isa + OBJC_IVAR___HRClinicalSharingOnboardingInformationalViewController_accountStateCancellable))
   {
-    v3 = self;
+    selfCopy = self;
 
     sub_1D138F64C();
   }
 
   else
   {
-    v4 = self;
+    selfCopy2 = self;
   }
 
   v5.receiver = self;
@@ -39,14 +39,14 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D12CBBA4();
 }
 
-- (void)nextButtonTappedForProviderSearch:(id)a3
+- (void)nextButtonTappedForProviderSearch:(id)search
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1D139101C();
   swift_unknownObjectRelease();
   sub_1D12CD580();
@@ -54,25 +54,25 @@
   __swift_destroy_boxed_opaque_existential_1Tm(&v5);
 }
 
-- (void)cancelButtonTapped:(id)a3
+- (void)cancelButtonTapped:(id)tapped
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1D139101C();
   swift_unknownObjectRelease();
-  [(HRClinicalSharingOnboardingInformationalViewController *)v4 dismissViewControllerAnimated:1 completion:0];
+  [(HRClinicalSharingOnboardingInformationalViewController *)selfCopy dismissViewControllerAnimated:1 completion:0];
 
   __swift_destroy_boxed_opaque_existential_1Tm(&v5);
 }
 
-- (HRClinicalSharingOnboardingInformationalViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (HRClinicalSharingOnboardingInformationalViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (HRClinicalSharingOnboardingInformationalViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (HRClinicalSharingOnboardingInformationalViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

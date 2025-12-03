@@ -1,9 +1,9 @@
 @interface FCNoOpBundleSubscriptionManager
 - (FCNoOpBundleSubscriptionManager)init;
 - (id)bundleSubscriptionLookupEntry;
-- (void)prepareForUseWithCompletion:(id)a3;
-- (void)refreshBundleSubscriptionWithCachePolicy:(unint64_t)a3 completion:(id)a4;
-- (void)refreshBundleSubscriptionWithCachePolicy:(unint64_t)a3 hideBundleDetectionUI:(BOOL)a4 completion:(id)a5;
+- (void)prepareForUseWithCompletion:(id)completion;
+- (void)refreshBundleSubscriptionWithCachePolicy:(unint64_t)policy completion:(id)completion;
+- (void)refreshBundleSubscriptionWithCachePolicy:(unint64_t)policy hideBundleDetectionUI:(BOOL)i completion:(id)completion;
 @end
 
 @implementation FCNoOpBundleSubscriptionManager
@@ -35,31 +35,31 @@
   return v2;
 }
 
-- (void)refreshBundleSubscriptionWithCachePolicy:(unint64_t)a3 hideBundleDetectionUI:(BOOL)a4 completion:(id)a5
+- (void)refreshBundleSubscriptionWithCachePolicy:(unint64_t)policy hideBundleDetectionUI:(BOOL)i completion:(id)completion
 {
-  if (a5)
+  if (completion)
   {
-    v7 = a5;
-    v8 = [(FCNoOpBundleSubscriptionManager *)self cachedSubscription];
-    (*(a5 + 2))(v7, v8);
+    completionCopy = completion;
+    cachedSubscription = [(FCNoOpBundleSubscriptionManager *)self cachedSubscription];
+    (*(completion + 2))(completionCopy, cachedSubscription);
   }
 }
 
-- (void)refreshBundleSubscriptionWithCachePolicy:(unint64_t)a3 completion:(id)a4
+- (void)refreshBundleSubscriptionWithCachePolicy:(unint64_t)policy completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    v6 = a4;
-    v7 = [(FCNoOpBundleSubscriptionManager *)self cachedSubscription];
-    (*(a4 + 2))(v6, v7);
+    completionCopy = completion;
+    cachedSubscription = [(FCNoOpBundleSubscriptionManager *)self cachedSubscription];
+    (*(completion + 2))(completionCopy, cachedSubscription);
   }
 }
 
-- (void)prepareForUseWithCompletion:(id)a3
+- (void)prepareForUseWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    (*(a3 + 2))(a3);
+    (*(completion + 2))(completion);
   }
 }
 

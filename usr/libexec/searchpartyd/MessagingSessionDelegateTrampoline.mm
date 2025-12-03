@@ -1,14 +1,14 @@
 @interface MessagingSessionDelegateTrampoline
 - (_TtC12searchpartyd34MessagingSessionDelegateTrampoline)init;
-- (void)sessionStarted:(id)a3;
+- (void)sessionStarted:(id)started;
 @end
 
 @implementation MessagingSessionDelegateTrampoline
 
-- (void)sessionStarted:(id)a3
+- (void)sessionStarted:(id)started
 {
-  v4 = a3;
-  v5 = self;
+  startedCopy = started;
+  selfCopy = self;
   sub_1011E9B88();
 }
 

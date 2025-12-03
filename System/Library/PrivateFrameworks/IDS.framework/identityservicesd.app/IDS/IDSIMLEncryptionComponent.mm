@@ -1,49 +1,49 @@
 @interface IDSIMLEncryptionComponent
-- (IDSIMLEncryptionComponent)initWithEncryptionController:(id)a3;
-- (id)runIndividuallyWithInput:(id)a3;
+- (IDSIMLEncryptionComponent)initWithEncryptionController:(id)controller;
+- (id)runIndividuallyWithInput:(id)input;
 @end
 
 @implementation IDSIMLEncryptionComponent
 
-- (IDSIMLEncryptionComponent)initWithEncryptionController:(id)a3
+- (IDSIMLEncryptionComponent)initWithEncryptionController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = IDSIMLEncryptionComponent;
   v6 = [(IDSIMLEncryptionComponent *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_encryptionController, a3);
+    objc_storeStrong(&v6->_encryptionController, controller);
   }
 
   return v7;
 }
 
-- (id)runIndividuallyWithInput:(id)a3
+- (id)runIndividuallyWithInput:(id)input
 {
-  v3 = a3;
-  v4 = [v3 dataToEncrypt];
+  inputCopy = input;
+  dataToEncrypt = [inputCopy dataToEncrypt];
   v5 = +[IDSFoundationLog delivery];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v3 guid];
-    v7 = v6;
+    guid = [inputCopy guid];
+    v7 = guid;
     v8 = @"YES";
-    if (!v4)
+    if (!dataToEncrypt)
     {
       v8 = @"NO";
     }
 
     v11 = 138412546;
-    v12 = v6;
+    v12 = guid;
     v13 = 2112;
     v14 = v8;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "GUID %@ finished encryption with success: %@", &v11, 0x16u);
   }
 
-  [v3 setEncryptedTopLevelPayload:v4];
-  v9 = [CUTUnsafePromise fulfilledPromiseWithValue:v3];
+  [inputCopy setEncryptedTopLevelPayload:dataToEncrypt];
+  v9 = [CUTUnsafePromise fulfilledPromiseWithValue:inputCopy];
 
   return v9;
 }

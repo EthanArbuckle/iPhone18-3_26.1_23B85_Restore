@@ -1,36 +1,36 @@
 @interface CSAction
-+ (id)actionWithContext:(id)a3;
-+ (id)actionWithType:(int64_t)a3;
-+ (id)actionWithType:(int64_t)a3 animated:(BOOL)a4;
-- (id)descriptionWithMultilinePrefix:(id)a3;
++ (id)actionWithContext:(id)context;
++ (id)actionWithType:(int64_t)type;
++ (id)actionWithType:(int64_t)type animated:(BOOL)animated;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
 
 @implementation CSAction
 
-+ (id)actionWithType:(int64_t)a3
++ (id)actionWithType:(int64_t)type
 {
-  v4 = objc_alloc_init(a1);
-  [v4 setType:a3];
+  v4 = objc_alloc_init(self);
+  [v4 setType:type];
 
   return v4;
 }
 
-+ (id)actionWithType:(int64_t)a3 animated:(BOOL)a4
++ (id)actionWithType:(int64_t)type animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = [a1 actionWithType:a3];
-  [v5 setAnimated:v4];
+  animatedCopy = animated;
+  v5 = [self actionWithType:type];
+  [v5 setAnimated:animatedCopy];
 
   return v5;
 }
 
-+ (id)actionWithContext:(id)a3
++ (id)actionWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   NSClassFromString(&cfstr_Sbflockscreena.isa);
-  if (!v5)
+  if (!contextCopy)
   {
     [CSAction actionWithContext:a2];
   }
@@ -40,18 +40,18 @@
     [CSAction actionWithContext:a2];
   }
 
-  v6 = objc_alloc_init(a1);
-  [v6 setContext:v5];
+  v6 = objc_alloc_init(self);
+  [v6 setContext:contextCopy];
 
   return v6;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(CSAction *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(CSAction *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -66,12 +66,12 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(CSAction *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(CSAction *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 + (void)actionWithContext:(const char *)a1 .cold.1(const char *a1)

@@ -1,36 +1,36 @@
 @interface CCSetChange
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSetChange:(id)a3;
-- (CCSetChange)initWithSharedItem:(id)a3 sharedItemChangeType:(unsigned __int16)a4 allDevices:(id)a5 addedDevices:(id)a6 removedDevices:(id)a7 allLocalInstances:(id)a8 addedLocalInstances:(id)a9 removedLocalInstances:(id)a10;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSetChange:(id)change;
+- (CCSetChange)initWithSharedItem:(id)item sharedItemChangeType:(unsigned __int16)type allDevices:(id)devices addedDevices:(id)addedDevices removedDevices:(id)removedDevices allLocalInstances:(id)instances addedLocalInstances:(id)localInstances removedLocalInstances:(id)self0;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation CCSetChange
 
-- (CCSetChange)initWithSharedItem:(id)a3 sharedItemChangeType:(unsigned __int16)a4 allDevices:(id)a5 addedDevices:(id)a6 removedDevices:(id)a7 allLocalInstances:(id)a8 addedLocalInstances:(id)a9 removedLocalInstances:(id)a10
+- (CCSetChange)initWithSharedItem:(id)item sharedItemChangeType:(unsigned __int16)type allDevices:(id)devices addedDevices:(id)addedDevices removedDevices:(id)removedDevices allLocalInstances:(id)instances addedLocalInstances:(id)localInstances removedLocalInstances:(id)self0
 {
-  v26 = a3;
-  v25 = a5;
-  v24 = a6;
-  v23 = a7;
-  v22 = a8;
-  v16 = a9;
-  v17 = a10;
+  itemCopy = item;
+  devicesCopy = devices;
+  addedDevicesCopy = addedDevices;
+  removedDevicesCopy = removedDevices;
+  instancesCopy = instances;
+  localInstancesCopy = localInstances;
+  removedLocalInstancesCopy = removedLocalInstances;
   v27.receiver = self;
   v27.super_class = CCSetChange;
   v18 = [(CCSetChange *)&v27 init];
   v19 = v18;
   if (v18)
   {
-    v18->_sharedItemChangeType = a4;
-    objc_storeStrong(&v18->_sharedItem, a3);
-    objc_storeStrong(&v19->_allDevices, a5);
-    objc_storeStrong(&v19->_addedDevices, a6);
-    objc_storeStrong(&v19->_removedDevices, a7);
-    objc_storeStrong(&v19->_allLocalInstances, a8);
-    objc_storeStrong(&v19->_addedLocalInstances, a9);
-    objc_storeStrong(&v19->_removedLocalInstances, a10);
+    v18->_sharedItemChangeType = type;
+    objc_storeStrong(&v18->_sharedItem, item);
+    objc_storeStrong(&v19->_allDevices, devices);
+    objc_storeStrong(&v19->_addedDevices, addedDevices);
+    objc_storeStrong(&v19->_removedDevices, removedDevices);
+    objc_storeStrong(&v19->_allLocalInstances, instances);
+    objc_storeStrong(&v19->_addedLocalInstances, localInstances);
+    objc_storeStrong(&v19->_removedLocalInstances, removedLocalInstances);
   }
 
   return v19;
@@ -41,43 +41,43 @@
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(CCSetChange *)self sharedItem];
-  v7 = [v6 sharedIdentifier];
-  v8 = [v3 initWithFormat:@"\n%@ with sharedIdentifier: %@", v5, v7];
+  sharedItem = [(CCSetChange *)self sharedItem];
+  sharedIdentifier = [sharedItem sharedIdentifier];
+  v8 = [v3 initWithFormat:@"\n%@ with sharedIdentifier: %@", v5, sharedIdentifier];
 
   v9 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v10 = [(CCSetChange *)self sharedItemChangeType];
+  sharedItemChangeType = [(CCSetChange *)self sharedItemChangeType];
   v11 = @"None";
-  if (!v10)
+  if (!sharedItemChangeType)
   {
     v11 = @"SharedItemAdded";
   }
 
-  if (v10 == 2)
+  if (sharedItemChangeType == 2)
   {
     v11 = @"SharedItemRemoved";
   }
 
   v12 = [v9 initWithFormat:@"sharedItemChangeType: %@", v11];
   v13 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v14 = [(CCSetChange *)self sharedItem];
-  v15 = [v13 initWithFormat:@"sharedItem: %@", v14];
+  sharedItem2 = [(CCSetChange *)self sharedItem];
+  v15 = [v13 initWithFormat:@"sharedItem: %@", sharedItem2];
 
   v16 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v17 = [(CCSetChange *)self addedDevices];
-  v18 = [v16 initWithFormat:@"addedDevices: %@", v17];
+  addedDevices = [(CCSetChange *)self addedDevices];
+  v18 = [v16 initWithFormat:@"addedDevices: %@", addedDevices];
 
   v19 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v20 = [(CCSetChange *)self removedDevices];
-  v39 = [v19 initWithFormat:@"removedDevices: %@", v20];
+  removedDevices = [(CCSetChange *)self removedDevices];
+  v39 = [v19 initWithFormat:@"removedDevices: %@", removedDevices];
 
   v21 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v22 = [(CCSetChange *)self addedLocalInstances];
-  v23 = [v21 initWithFormat:@"addedLocalInstances: %@", v22];
+  addedLocalInstances = [(CCSetChange *)self addedLocalInstances];
+  v23 = [v21 initWithFormat:@"addedLocalInstances: %@", addedLocalInstances];
 
   v24 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v25 = [(CCSetChange *)self removedLocalInstances];
-  v26 = [v24 initWithFormat:@"removedLocalInstances: %@", v25];
+  removedLocalInstances = [(CCSetChange *)self removedLocalInstances];
+  v26 = [v24 initWithFormat:@"removedLocalInstances: %@", removedLocalInstances];
 
   v27 = objc_opt_new();
   v40 = v8;
@@ -85,32 +85,32 @@
   [v27 addObject:v15];
   v28 = v12;
   [v27 addObject:v12];
-  v29 = [(CCSetChange *)self addedDevices];
-  v30 = [v29 count];
+  addedDevices2 = [(CCSetChange *)self addedDevices];
+  v30 = [addedDevices2 count];
 
   if (v30)
   {
     [v27 addObject:v18];
   }
 
-  v31 = [(CCSetChange *)self addedLocalInstances];
-  v32 = [v31 count];
+  addedLocalInstances2 = [(CCSetChange *)self addedLocalInstances];
+  v32 = [addedLocalInstances2 count];
 
   if (v32)
   {
     [v27 addObject:v23];
   }
 
-  v33 = [(CCSetChange *)self removedDevices];
-  v34 = [v33 count];
+  removedDevices2 = [(CCSetChange *)self removedDevices];
+  v34 = [removedDevices2 count];
 
   if (v34)
   {
     [v27 addObject:v39];
   }
 
-  v35 = [(CCSetChange *)self removedLocalInstances];
-  v36 = [v35 count];
+  removedLocalInstances2 = [(CCSetChange *)self removedLocalInstances];
+  v36 = [removedLocalInstances2 count];
 
   if (v36)
   {
@@ -122,58 +122,58 @@
   return v37;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CCSetChange *)self isEqualToSetChange:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CCSetChange *)self isEqualToSetChange:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToSetChange:(id)a3
+- (BOOL)isEqualToSetChange:(id)change
 {
-  v4 = a3;
-  v5 = [(CCSetChange *)self sharedItem];
-  v6 = [v4 sharedItem];
-  v28 = [v5 isEqual:v6];
+  changeCopy = change;
+  sharedItem = [(CCSetChange *)self sharedItem];
+  sharedItem2 = [changeCopy sharedItem];
+  v28 = [sharedItem isEqual:sharedItem2];
 
   sharedItemChangeType = self->_sharedItemChangeType;
-  LOWORD(v5) = [v4 sharedItemChangeType];
+  LOWORD(sharedItem) = [changeCopy sharedItemChangeType];
   allDevices = self->_allDevices;
-  v9 = [v4 allDevices];
-  v10 = [(NSArray *)allDevices isEqualToArray:v9];
+  allDevices = [changeCopy allDevices];
+  v10 = [(NSArray *)allDevices isEqualToArray:allDevices];
 
   addedDevices = self->_addedDevices;
-  v12 = [v4 addedDevices];
-  v13 = [(NSArray *)addedDevices isEqualToArray:v12];
+  addedDevices = [changeCopy addedDevices];
+  v13 = [(NSArray *)addedDevices isEqualToArray:addedDevices];
 
   removedDevices = self->_removedDevices;
-  v15 = [v4 removedDevices];
-  v16 = [(NSArray *)removedDevices isEqualToArray:v15];
+  removedDevices = [changeCopy removedDevices];
+  v16 = [(NSArray *)removedDevices isEqualToArray:removedDevices];
 
   allLocalInstances = self->_allLocalInstances;
-  v18 = [v4 allLocalInstances];
-  v19 = [(NSArray *)allLocalInstances isEqualToArray:v18];
+  allLocalInstances = [changeCopy allLocalInstances];
+  v19 = [(NSArray *)allLocalInstances isEqualToArray:allLocalInstances];
 
   addedLocalInstances = self->_addedLocalInstances;
-  v21 = [v4 addedLocalInstances];
-  v22 = [(NSArray *)addedLocalInstances isEqualToArray:v21];
+  addedLocalInstances = [changeCopy addedLocalInstances];
+  v22 = [(NSArray *)addedLocalInstances isEqualToArray:addedLocalInstances];
 
   removedLocalInstances = self->_removedLocalInstances;
-  v24 = [v4 removedLocalInstances];
+  removedLocalInstances = [changeCopy removedLocalInstances];
 
-  v25 = [(NSArray *)removedLocalInstances isEqualToArray:v24];
+  v25 = [(NSArray *)removedLocalInstances isEqualToArray:removedLocalInstances];
   v26 = v28;
-  if (sharedItemChangeType != v5)
+  if (sharedItemChangeType != sharedItem)
   {
     v26 = 0;
   }

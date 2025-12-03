@@ -1,13 +1,13 @@
 @interface NUAssertionPolicyDebuggerFatal
-- (void)notifyAssertion:(id)a3;
+- (void)notifyAssertion:(id)assertion;
 @end
 
 @implementation NUAssertionPolicyDebuggerFatal
 
-- (void)notifyAssertion:(id)a3
+- (void)notifyAssertion:(id)assertion
 {
-  v3 = a3;
-  if (+[NUUtilities runningUnderDebugger](NUUtilities, "runningUnderDebugger") && [v3 isFatal])
+  assertionCopy = assertion;
+  if (+[NUUtilities runningUnderDebugger](NUUtilities, "runningUnderDebugger") && [assertionCopy isFatal])
   {
     raise(2);
   }

@@ -1,17 +1,17 @@
 @interface RSPointCloud
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (RSPointCloud)init;
-- (RSPointCloud)initWithCount:(unint64_t)a3 points:semanticLabels:semanticVotes:colors:;
-- (RSPointCloud)initWithDictionary:(id)a3;
-- (RSPointCloud)initWithKeyframes:(id)a3 enableCameraPosition:(BOOL)a4;
-- (__n128)mappingIntervalOfKeyframe:(void *)a3;
+- (RSPointCloud)initWithCount:(unint64_t)count points:semanticLabels:semanticVotes:colors:;
+- (RSPointCloud)initWithDictionary:(id)dictionary;
+- (RSPointCloud)initWithKeyframes:(id)keyframes enableCameraPosition:(BOOL)position;
+- (__n128)mappingIntervalOfKeyframe:(void *)keyframe;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)accumulateWithKeyframesInWorld:(id)a3 voxelize:(BOOL)a4;
-- (void)append:(unint64_t)a3 points:semanticLabels:semanticVotes:colors:;
-- (void)processWithVoxelize:(BOOL)a3 asPythonApproach:(BOOL)a4 resample:(BOOL)a5;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)accumulateWithKeyframesInWorld:(id)world voxelize:(BOOL)voxelize;
+- (void)append:(unint64_t)append points:semanticLabels:semanticVotes:colors:;
+- (void)processWithVoxelize:(BOOL)voxelize asPythonApproach:(BOOL)approach resample:(BOOL)resample;
 - (void)reset;
-- (void)select:(unint64_t)a3 indices:(const unint64_t *)a4;
+- (void)select:(unint64_t)select indices:(const unint64_t *)indices;
 @end
 
 @implementation RSPointCloud
@@ -43,18 +43,18 @@
   return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5 == self)
+  equalCopy = equal;
+  v6 = equalCopy;
+  if (equalCopy == self)
   {
     LOBYTE(self) = 1;
   }
 
   else
   {
-    if (v5)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -157,15 +157,15 @@ LABEL_18:
   self->_isCameraPositionEnabled = 0;
 }
 
-- (__n128)mappingIntervalOfKeyframe:(void *)a3
+- (__n128)mappingIntervalOfKeyframe:(void *)keyframe
 {
-  v4 = a3;
-  v5 = v4;
+  keyframeCopy = keyframe;
+  v5 = keyframeCopy;
   v8 = objc_msgSend_UTF8String(v5, v6, v7);
   sub_2621D0F64(__p, v8);
-  if (sub_2621E26D8((a1 + 128), __p))
+  if (sub_2621E26D8((self + 128), __p))
   {
-    v9 = sub_2621D101C((a1 + 128), __p);
+    v9 = sub_2621D101C((self + 128), __p);
     if (!v9)
     {
       sub_2621C84A8("unordered_map::at: key not found");
@@ -188,12 +188,12 @@ LABEL_18:
   return v12;
 }
 
-- (void)select:(unint64_t)a3 indices:(const unint64_t *)a4
+- (void)select:(unint64_t)select indices:(const unint64_t *)indices
 {
   v36 = 0;
   v37 = 0;
   v38 = 0;
-  sub_2622AB9E8(&v36, a4, &a4[a3], a3);
+  sub_2622AB9E8(&v36, indices, &indices[select], select);
   sub_262303130(__p, self->_anon_8, &v36);
   v5 = *self->_anon_8;
   if (v5)
@@ -423,15 +423,15 @@ LABEL_18:
   }
 }
 
-- (void)processWithVoxelize:(BOOL)a3 asPythonApproach:(BOOL)a4 resample:(BOOL)a5
+- (void)processWithVoxelize:(BOOL)voxelize asPythonApproach:(BOOL)approach resample:(BOOL)resample
 {
   v5 = *self->_anon_8;
   v6 = *&self->_anon_8[8];
   if (v5 != v6)
   {
-    v7 = a5;
-    v8 = a4;
-    v9 = a3;
+    resampleCopy = resample;
+    approachCopy = approach;
+    voxelizeCopy = voxelize;
     sub_2621CD160(__p, (v6 - v5) >> 4);
     v12 = __p[0];
     if (__p[0] != __p[1])
@@ -462,10 +462,10 @@ LABEL_18:
       while (v16 != v13);
     }
 
-    if (v9)
+    if (voxelizeCopy)
     {
       v20 = *self->_anon_8;
-      if (v8)
+      if (approachCopy)
       {
         sub_2622C606C(v20, __p);
       }
@@ -476,7 +476,7 @@ LABEL_18:
       }
     }
 
-    if (v7)
+    if (resampleCopy)
     {
       sub_2622C5C44(__p);
     }
@@ -490,13 +490,13 @@ LABEL_18:
   }
 }
 
-- (void)accumulateWithKeyframesInWorld:(id)a3 voxelize:(BOOL)a4
+- (void)accumulateWithKeyframesInWorld:(id)world voxelize:(BOOL)voxelize
 {
-  v189 = a4;
+  voxelizeCopy = voxelize;
   v213 = *MEMORY[0x277D85DE8];
-  v209 = self;
-  v181 = a3;
-  if (objc_msgSend_count(v181, v4, v5))
+  selfCopy = self;
+  worldCopy = world;
+  if (objc_msgSend_count(worldCopy, v4, v5))
   {
     v206 = 0;
     v207 = 0;
@@ -505,7 +505,7 @@ LABEL_18:
     v203 = 0u;
     v204 = 0u;
     v205 = 0u;
-    k = v181;
+    k = worldCopy;
     v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(k, v7, &v202, v212, 16);
     __src = k;
     if (v10)
@@ -529,7 +529,7 @@ LABEL_18:
             v21 = objc_msgSend_UTF8String(v17, v19, v20);
             sub_2621D0F64(&__p, v21);
 
-            v22 = v209;
+            v22 = selfCopy;
             v23 = sub_2621D1580(&__p);
             size = v22->_keyframeVoxelSet.__table_.__bucket_list_.__deleter_.__size_;
             if (size)
@@ -576,8 +576,8 @@ LABEL_18:
                             break;
                           }
 
-                          v33 = v209;
-                          v34 = sub_262295160(&v209->_voxelSet.__table_.__bucket_list_.__ptr_, v32[2]);
+                          v33 = selfCopy;
+                          v34 = sub_262295160(&selfCopy->_voxelSet.__table_.__bucket_list_.__ptr_, v32[2]);
                           if (v34)
                           {
                             v35 = v33->_voxelSet.__table_.__bucket_list_.__deleter_.__size_;
@@ -686,9 +686,9 @@ LABEL_45:
                         }
 
                         p_p = &__p;
-                        v45 = sub_262304510(&v209->_keyframeVoxelSet.__table_.__bucket_list_.__ptr_, &__p);
+                        v45 = sub_262304510(&selfCopy->_keyframeVoxelSet.__table_.__bucket_list_.__ptr_, &__p);
                         sub_2622F7918(v45 + 5);
-                        v22 = v209;
+                        v22 = selfCopy;
                         break;
                       }
                     }
@@ -745,7 +745,7 @@ LABEL_24:
     }
 
     v46 = 126 - 2 * __clz(0xAAAAAAAAAAAAAAABLL * ((v207 - v206) >> 3));
-    p_p = &v209;
+    p_p = &selfCopy;
     if (v207 == v206)
     {
       v47 = 0;
@@ -759,7 +759,7 @@ LABEL_24:
     sub_2623049A4(v206, v207, &p_p, v47, 1);
     v49 = v206;
     v48 = v207;
-    v50 = v209;
+    v50 = selfCopy;
     if (v206 != v207)
     {
       do
@@ -767,21 +767,21 @@ LABEL_24:
         p_p = v49;
         v186 = sub_262305CA8(&v50->_mappingInterval.__table_.__bucket_list_.__ptr_, v49)[5];
         p_p = v49;
-        v51 = *(sub_262305CA8(&v209->_mappingInterval.__table_.__bucket_list_.__ptr_, v49) + 11);
-        v52 = v209;
+        v51 = *(sub_262305CA8(&selfCopy->_mappingInterval.__table_.__bucket_list_.__ptr_, v49) + 11);
+        v52 = selfCopy;
         if (v51)
         {
           v53 = 16 * v51;
-          v54 = *v209->_anon_8;
-          v55 = *&v209->_anon_8[8];
+          v54 = *selfCopy->_anon_8;
+          v55 = *&selfCopy->_anon_8[8];
           v56 = v54 + 16 * v186;
           v57 = (v56 + 16 * v51);
-          v58 = v209;
+          v58 = selfCopy;
           v59 = v55 - v57;
           if (v55 != v57)
           {
             memmove((v54 + 16 * v186), v57, v55 - v57);
-            v58 = v209;
+            v58 = selfCopy;
           }
 
           *&v52->_anon_8[8] = v56 + v59;
@@ -794,7 +794,7 @@ LABEL_24:
           if (v61 != v63)
           {
             memmove((v60 + 4 * v186), v63, v61 - v63);
-            v64 = v209;
+            v64 = selfCopy;
           }
 
           *&v58->_anon_20[8] = v62 + v65;
@@ -807,7 +807,7 @@ LABEL_24:
           if (v67 != v69)
           {
             memmove((v66 + 8 * v186), v69, v67 - v69);
-            v70 = v209;
+            v70 = selfCopy;
           }
 
           v72 = 16 * v186;
@@ -819,7 +819,7 @@ LABEL_24:
           if (v73 != v74 + v53)
           {
             memmove((*v70->_anon_50 + v72), (v74 + v53), v73 - (v74 + v53));
-            v52 = v209;
+            v52 = selfCopy;
           }
 
           *&v70->_anon_50[8] = v74 + v75;
@@ -827,8 +827,8 @@ LABEL_24:
         }
 
         sub_262306104(&v52->_mappingInterval.__table_.__bucket_list_.__ptr_, v49);
-        v50 = v209;
-        for (j = v209->_mappingInterval.__table_.__first_node_.__next_; j; j = *j)
+        v50 = selfCopy;
+        for (j = selfCopy->_mappingInterval.__table_.__first_node_.__next_; j; j = *j)
         {
           v77 = j[5];
           if (v77 > v186)
@@ -851,19 +851,19 @@ LABEL_24:
       p_p = v49;
       v187 = sub_262305CA8(&v50->_rawMappingInterval.__table_.__bucket_list_.__ptr_, v49)[5];
       p_p = v49;
-      v78 = *(sub_262305CA8(&v209->_rawMappingInterval.__table_.__bucket_list_.__ptr_, v49) + 11);
-      v79 = v209;
+      v78 = *(sub_262305CA8(&selfCopy->_rawMappingInterval.__table_.__bucket_list_.__ptr_, v49) + 11);
+      v79 = selfCopy;
       if (v78)
       {
-        v80 = *&v209->_anon_f8[8];
-        v81 = *v209->_anon_f8 + 16 * v187;
+        v80 = *&selfCopy->_anon_f8[8];
+        v81 = *selfCopy->_anon_f8 + 16 * v187;
         v82 = (v81 + 16 * v78);
-        v83 = v209;
+        v83 = selfCopy;
         v84 = v80 - v82;
         if (v80 != v82)
         {
-          memmove((*v209->_anon_f8 + 16 * v187), v82, v80 - v82);
-          v83 = v209;
+          memmove((*selfCopy->_anon_f8 + 16 * v187), v82, v80 - v82);
+          v83 = selfCopy;
         }
 
         *&v79->_anon_f8[8] = v81 + v84;
@@ -871,8 +871,8 @@ LABEL_24:
       }
 
       sub_262306104(&v79->_rawMappingInterval.__table_.__bucket_list_.__ptr_, v49);
-      v50 = v209;
-      v85 = v209->_rawMappingInterval.__table_.__first_node_.__next_;
+      v50 = selfCopy;
+      v85 = selfCopy->_rawMappingInterval.__table_.__first_node_.__next_;
       for (k = __src; v85; v85 = *v85)
       {
         v86 = v85[5];
@@ -929,7 +929,7 @@ LABEL_97:
           if (objc_msgSend_count(v95, v104, v105) > v106)
           {
             v109 = objc_msgSend_pointsToWorld(v95, v107, v108);
-            if (v189)
+            if (voxelizeCopy)
             {
               v112 = vmulq_f32(*(v109 + 16 * v106), v188);
               v112.i32[3] = 0;
@@ -940,7 +940,7 @@ LABEL_97:
               v113.i16[2] = v114.i16[2];
               v113.i16[3] = v113.f32[2];
               v115 = v113.i64[0];
-              v116 = v209->_voxelSet.__table_.__bucket_list_.__deleter_.__size_;
+              v116 = selfCopy->_voxelSet.__table_.__bucket_list_.__deleter_.__size_;
               if (v116)
               {
                 v117 = vcnt_s8(v116);
@@ -959,7 +959,7 @@ LABEL_97:
                   v118 = (*&v116 - 1) & v115;
                 }
 
-                v119 = v209->_voxelSet.__table_.__bucket_list_.__ptr_[v118];
+                v119 = selfCopy->_voxelSet.__table_.__bucket_list_.__ptr_[v118];
                 if (v119)
                 {
                   for (m = *v119; m; m = *m)
@@ -998,9 +998,9 @@ LABEL_97:
                 }
               }
 
-              sub_2622C5E50(&v209->_voxelSet.__table_.__bucket_list_.__ptr_, v115);
+              sub_2622C5E50(&selfCopy->_voxelSet.__table_.__bucket_list_.__ptr_, v115);
               v210 = v191;
-              v122 = sub_262304510(&v209->_keyframeVoxelSet.__table_.__bucket_list_.__ptr_, v191);
+              v122 = sub_262304510(&selfCopy->_keyframeVoxelSet.__table_.__bucket_list_.__ptr_, v191);
               sub_2622C5E50(v122 + 5, v115);
             }
 
@@ -1010,26 +1010,26 @@ LABEL_97:
             sub_2621C7F54(1uLL);
           }
 
-          v127 = *v209->_anon_8;
-          v126 = *&v209->_anon_8[8];
+          v127 = *selfCopy->_anon_8;
+          v126 = *&selfCopy->_anon_8[8];
           v128 = __p;
           v210 = v191;
-          v129 = sub_262305CA8(&v209->_mappingInterval.__table_.__bucket_list_.__ptr_, v191);
+          v129 = sub_262305CA8(&selfCopy->_mappingInterval.__table_.__bucket_list_.__ptr_, v191);
           LODWORD(v130) = (v126 - v127) >> 4;
           HIDWORD(v130) = (*(&v128 + 1) - v128) >> 4;
           v129[5] = v130;
-          sub_262306274(v209->_anon_8, *&v209->_anon_8[8], v128, *(&v128 + 1), (*(&v128 + 1) - v128) >> 4);
-          v131 = sub_262306274(v209->_anon_50, *&v209->_anon_50[8], p_p, v194, (v194 - p_p) >> 4);
-          v133 = *v209->_anon_f8;
-          v132 = *&v209->_anon_f8[8];
+          sub_262306274(selfCopy->_anon_8, *&selfCopy->_anon_8[8], v128, *(&v128 + 1), (*(&v128 + 1) - v128) >> 4);
+          v131 = sub_262306274(selfCopy->_anon_50, *&selfCopy->_anon_50[8], p_p, v194, (v194 - p_p) >> 4);
+          v133 = *selfCopy->_anon_f8;
+          v132 = *&selfCopy->_anon_f8[8];
           v136 = objc_msgSend_count(v95, v134, v135, v131);
           v210 = v191;
-          v137 = sub_262305CA8(&v209->_rawMappingInterval.__table_.__bucket_list_.__ptr_, v191);
+          v137 = sub_262305CA8(&selfCopy->_rawMappingInterval.__table_.__bucket_list_.__ptr_, v191);
           LODWORD(v138) = (v132 - v133) >> 4;
           HIDWORD(v138) = v136;
           v137[5] = v138;
-          v139 = v209;
-          v140 = *&v209->_anon_f8[8];
+          v139 = selfCopy;
+          v140 = *&selfCopy->_anon_f8[8];
           v143 = objc_msgSend_pointsToWorld(v95, v141, v142);
           v146 = objc_msgSend_pointsToWorld(v95, v144, v145);
           v149 = (v146 + 16 * objc_msgSend_count(v95, v147, v148));
@@ -1202,26 +1202,26 @@ LABEL_145:
   v180 = *MEMORY[0x277D85DE8];
 }
 
-- (void)append:(unint64_t)a3 points:semanticLabels:semanticVotes:colors:
+- (void)append:(unint64_t)append points:semanticLabels:semanticVotes:colors:
 {
   v7 = v6;
   v8 = v5;
   v9 = v4;
   v10 = v3;
-  v13 = objc_msgSend_count(self, a2, a3);
-  sub_262232448(self->_anon_8, v13 + a3);
-  memcpy((*self->_anon_8 + 16 * v13), v10, 16 * a3);
-  sub_262307118(self->_anon_20, v13 + a3);
-  memcpy((*self->_anon_20 + 4 * v13), v9, 4 * a3);
-  sub_2622DFB20(self->_anon_38, v13 + a3);
-  memcpy((*self->_anon_38 + 8 * v13), v8, 8 * a3);
-  sub_262232448(self->_anon_50, v13 + a3);
+  v13 = objc_msgSend_count(self, a2, append);
+  sub_262232448(self->_anon_8, v13 + append);
+  memcpy((*self->_anon_8 + 16 * v13), v10, 16 * append);
+  sub_262307118(self->_anon_20, v13 + append);
+  memcpy((*self->_anon_20 + 4 * v13), v9, 4 * append);
+  sub_2622DFB20(self->_anon_38, v13 + append);
+  memcpy((*self->_anon_38 + 8 * v13), v8, 8 * append);
+  sub_262232448(self->_anon_50, v13 + append);
   v14 = (*self->_anon_50 + 16 * v13);
 
-  memcpy(v14, v7, 16 * a3);
+  memcpy(v14, v7, 16 * append);
 }
 
-- (RSPointCloud)initWithCount:(unint64_t)a3 points:semanticLabels:semanticVotes:colors:
+- (RSPointCloud)initWithCount:(unint64_t)count points:semanticLabels:semanticVotes:colors:
 {
   v7 = v6;
   v8 = v5;
@@ -1230,21 +1230,21 @@ LABEL_145:
   v14.receiver = self;
   v14.super_class = RSPointCloud;
   v12 = [(RSPointCloud *)&v14 init];
-  sub_262232448(v12 + 1, a3);
-  memcpy(*(v12 + 1), v10, 16 * a3);
-  sub_262307118(v12 + 4, a3);
-  memcpy(*(v12 + 4), v9, 4 * a3);
-  sub_2622DFB20(v12 + 7, a3);
-  memcpy(*(v12 + 7), v8, 8 * a3);
-  sub_262232448(v12 + 10, a3);
-  memcpy(*(v12 + 10), v7, 16 * a3);
+  sub_262232448(v12 + 1, count);
+  memcpy(*(v12 + 1), v10, 16 * count);
+  sub_262307118(v12 + 4, count);
+  memcpy(*(v12 + 4), v9, 4 * count);
+  sub_2622DFB20(v12 + 7, count);
+  memcpy(*(v12 + 7), v8, 8 * count);
+  sub_262232448(v12 + 10, count);
+  memcpy(*(v12 + 10), v7, 16 * count);
   return v12;
 }
 
-- (RSPointCloud)initWithKeyframes:(id)a3 enableCameraPosition:(BOOL)a4
+- (RSPointCloud)initWithKeyframes:(id)keyframes enableCameraPosition:(BOOL)position
 {
   v82 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  keyframesCopy = keyframes;
   v78.receiver = self;
   v78.super_class = RSPointCloud;
   v7 = [(RSPointCloud *)&v78 init];
@@ -1252,9 +1252,9 @@ LABEL_145:
   v75 = 0u;
   v76 = 0u;
   v77 = 0u;
-  v8 = v6;
+  v8 = keyframesCopy;
   v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v9, &v74, v81, 16);
-  v67 = a4;
+  positionCopy = position;
   v13 = 0;
   if (v12)
   {
@@ -1293,7 +1293,7 @@ LABEL_145:
     while (v12);
   }
 
-  *(v7 + 320) = v67;
+  *(v7 + 320) = positionCopy;
   sub_262232448(v7 + 1, v13);
   sub_262307118(v7 + 4, v13);
   sub_2622DFB20(v7 + 7, v13);
@@ -1362,16 +1362,16 @@ LABEL_145:
   return v7;
 }
 
-- (RSPointCloud)initWithDictionary:(id)a3
+- (RSPointCloud)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v115.receiver = self;
   v115.super_class = RSPointCloud;
   v5 = [(RSPointCloud *)&v115 init];
-  v7 = objc_msgSend_objectForKeyedSubscript_(v4, v6, @"count");
+  v7 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v6, @"count");
   v10 = objc_msgSend_unsignedIntegerValue(v7, v8, v9);
 
-  v12 = objc_msgSend_objectForKeyedSubscript_(v4, v11, @"points");
+  v12 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v11, @"points");
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1440,7 +1440,7 @@ LABEL_145:
     operator delete(v22);
   }
 
-  v32 = objc_msgSend_objectForKeyedSubscript_(v4, v23, @"semanticLabels");
+  v32 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v23, @"semanticLabels");
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1502,7 +1502,7 @@ LABEL_145:
     operator delete(v42);
   }
 
-  v48 = objc_msgSend_objectForKeyedSubscript_(v4, v43, @"semanticVotes");
+  v48 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v43, @"semanticVotes");
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1564,7 +1564,7 @@ LABEL_145:
     operator delete(v58);
   }
 
-  v64 = objc_msgSend_objectForKeyedSubscript_(v4, v59, @"colors");
+  v64 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v59, @"colors");
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1633,11 +1633,11 @@ LABEL_145:
     operator delete(v74);
   }
 
-  v84 = objc_msgSend_objectForKey_(v4, v75, @"cameraPositions");
+  v84 = objc_msgSend_objectForKey_(dictionaryCopy, v75, @"cameraPositions");
 
   if (v84)
   {
-    v86 = objc_msgSend_objectForKeyedSubscript_(v4, v85, @"cameraPositions");
+    v86 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v85, @"cameraPositions");
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1723,7 +1723,7 @@ LABEL_145:
   return v107;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(RSPointCloud);
   v5 = v4;

@@ -1,8 +1,8 @@
 @interface AAPIntentsInfoSyncHandler
-- (id)_pbLocalizedProjectsForVocabularyInfoDictionary:(id)a3;
-- (void)beginSyncWithAnchor:(id)a3 validity:(id)a4 count:(int64_t)a5 forKey:(id)a6 beginInfo:(id)a7;
+- (id)_pbLocalizedProjectsForVocabularyInfoDictionary:(id)dictionary;
+- (void)beginSyncWithAnchor:(id)anchor validity:(id)validity count:(int64_t)count forKey:(id)key beginInfo:(id)info;
 - (void)dealloc;
-- (void)getChangeAfterAnchor:(id)a3 changeInfo:(id)a4;
+- (void)getChangeAfterAnchor:(id)anchor changeInfo:(id)info;
 - (void)syncDidEnd;
 @end
 
@@ -15,19 +15,19 @@
   [(AAPIntentsInfoSyncHandler *)&v3 dealloc];
 }
 
-- (void)beginSyncWithAnchor:(id)a3 validity:(id)a4 count:(int64_t)a5 forKey:(id)a6 beginInfo:(id)a7
+- (void)beginSyncWithAnchor:(id)anchor validity:(id)validity count:(int64_t)count forKey:(id)key beginInfo:(id)info
 {
-  if ([a7 count] >= 1 && (objc_msgSend(a4, "isEqualToString:", @"IntentsInfo") & 1) == 0)
+  if ([info count] >= 1 && (objc_msgSend(validity, "isEqualToString:", @"IntentsInfo") & 1) == 0)
   {
-    [a7 resetWithValidity:@"IntentsInfo"];
+    [info resetWithValidity:@"IntentsInfo"];
   }
 
   if (self->_extensions)
   {
-    sub_11F34(a2, self, a7);
+    sub_11F34(a2, self, info);
   }
 
-  v11 = [objc_msgSend(objc_msgSend(a7 "appMetadata")];
+  v11 = [objc_msgSend(objc_msgSend(info "appMetadata")];
   self->_appBundleId = v11;
   if (v11)
   {
@@ -37,8 +37,8 @@
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v13 = [v12 plugInKitPlugins];
-    v14 = [v13 countByEnumeratingWithState:&v24 objects:v32 count:16];
+    plugInKitPlugins = [v12 plugInKitPlugins];
+    v14 = [plugInKitPlugins countByEnumeratingWithState:&v24 objects:v32 count:16];
     if (v14)
     {
       v15 = v14;
@@ -50,7 +50,7 @@
         {
           if (*v25 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(plugInKitPlugins);
           }
 
           v19 = *(*(&v24 + 1) + 8 * i);
@@ -60,7 +60,7 @@
           }
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v24 objects:v32 count:16];
+        v15 = [plugInKitPlugins countByEnumeratingWithState:&v24 objects:v32 count:16];
       }
 
       while (v15);
@@ -81,9 +81,9 @@
         _os_log_impl(&dword_0, v21, OS_LOG_TYPE_INFO, "%s com.apple.siri.applications: The app %@ no longer supports any intents", buf, 0x16u);
       }
 
-      if ([a7 count] >= 1)
+      if ([info count] >= 1)
       {
-        [a7 resetWithValidity:@"IntentsInfo"];
+        [info resetWithValidity:@"IntentsInfo"];
       }
     }
   }
@@ -98,13 +98,13 @@
   }
 }
 
-- (void)getChangeAfterAnchor:(id)a3 changeInfo:(id)a4
+- (void)getChangeAfterAnchor:(id)anchor changeInfo:(id)info
 {
   if ([-[INAppInfo supportedIntents](self->_appInfo "supportedIntents")])
   {
-    v52 = a3;
-    v7 = [(INAppInfo *)self->_appInfo supportedIntents];
-    if (![v7 count])
+    anchorCopy = anchor;
+    supportedIntents = [(INAppInfo *)self->_appInfo supportedIntents];
+    if (![supportedIntents count])
     {
       v8 = AFSiriLogContextPlugin;
       if (os_log_type_enabled(AFSiriLogContextPlugin, OS_LOG_TYPE_ERROR))
@@ -113,18 +113,18 @@
       }
     }
 
-    v9 = [(INAppInfo *)self->_appInfo actionsRestrictedWhileLocked];
-    v10 = [(INAppInfo *)self->_appInfo supportedMediaCategories];
+    actionsRestrictedWhileLocked = [(INAppInfo *)self->_appInfo actionsRestrictedWhileLocked];
+    supportedMediaCategories = [(INAppInfo *)self->_appInfo supportedMediaCategories];
     v11 = [-[NSMutableArray firstObject](self->_extensions "firstObject")];
     if (!v11 || (v12 = v11, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       v12 = [LSApplicationProxy applicationProxyForIdentifier:self->_appBundleId];
     }
 
-    v53 = self;
-    v54 = a4;
-    v51 = v10;
-    v50 = v9;
+    selfCopy = self;
+    infoCopy = info;
+    v51 = supportedMediaCategories;
+    v50 = actionsRestrictedWhileLocked;
     if ([v12 bundleURL])
     {
       v13 = +[NSBundle bundleWithURL:](NSBundle, "bundleWithURL:", [v12 bundleURL]);
@@ -135,14 +135,14 @@
       v13 = 0;
     }
 
-    v14 = [(NSBundle *)v13 localizations];
-    v55 = [[NSMutableDictionary alloc] initWithCapacity:{-[NSArray count](v14, "count")}];
-    obj = v14;
+    localizations = [(NSBundle *)v13 localizations];
+    v55 = [[NSMutableDictionary alloc] initWithCapacity:{-[NSArray count](localizations, "count")}];
+    obj = localizations;
     v73 = 0u;
     v74 = 0u;
     v75 = 0u;
     v76 = 0u;
-    v15 = [(NSArray *)v14 countByEnumeratingWithState:&v73 objects:v81 count:16];
+    v15 = [(NSArray *)localizations countByEnumeratingWithState:&v73 objects:v81 count:16];
     if (v15)
     {
       v16 = v15;
@@ -180,7 +180,7 @@
     v70 = 0u;
     v71 = 0u;
     v72 = 0u;
-    v24 = [v7 countByEnumeratingWithState:&v69 objects:v80 count:16];
+    v24 = [supportedIntents countByEnumeratingWithState:&v69 objects:v80 count:16];
     if (v24)
     {
       v25 = v24;
@@ -191,7 +191,7 @@
         {
           if (*v70 != v26)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(supportedIntents);
           }
 
           v28 = *(*(&v69 + 1) + 8 * j);
@@ -200,7 +200,7 @@
           [v23 addIntentsSupported:v29];
         }
 
-        v25 = [v7 countByEnumeratingWithState:&v69 objects:v80 count:16];
+        v25 = [supportedIntents countByEnumeratingWithState:&v69 objects:v80 count:16];
       }
 
       while (v25);
@@ -264,7 +264,7 @@
     }
 
     [v22 addIntentSupport:v23];
-    v40 = [(AAPIntentsInfoSyncHandler *)v53 _pbLocalizedProjectsForVocabularyInfoDictionary:INVocabulariesByLocaleByAddingInvocationPhrases()];
+    v40 = [(AAPIntentsInfoSyncHandler *)selfCopy _pbLocalizedProjectsForVocabularyInfoDictionary:INVocabulariesByLocaleByAddingInvocationPhrases()];
     v57 = 0u;
     v58 = 0u;
     v59 = 0u;
@@ -292,15 +292,15 @@
       while (v42);
     }
 
-    v45 = [v22 data];
-    CC_SHA1([v45 bytes], objc_msgSend(v45, "length"), md);
+    data = [v22 data];
+    CC_SHA1([data bytes], objc_msgSend(data, "length"), md);
     v46 = [NSMutableString stringWithCapacity:40];
     for (ii = 0; ii != 20; ++ii)
     {
       [(NSMutableString *)v46 appendFormat:@"%02x", md[ii]];
     }
 
-    if (([(NSMutableString *)v46 isEqualToString:v52]& 1) != 0)
+    if (([(NSMutableString *)v46 isEqualToString:anchorCopy]& 1) != 0)
     {
       v48 = 0;
     }
@@ -308,24 +308,24 @@
     else
     {
       v49 = objc_alloc_init(SAIntentGroupProtobufMessage);
-      [v49 setData:v45];
+      [v49 setData:data];
       [v49 setTypeName:@"sirikit.apps.AppBundleInfo"];
       v48 = objc_alloc_init(SAIntentGroupAceAppIntentPolicyAndVocab);
       [v48 setAceAppBundleInfo:v49];
-      [v48 setIdentifier:{+[NSURL URLWithString:](NSURL, "URLWithString:", v53->_appBundleId)}];
+      [v48 setIdentifier:{+[NSURL URLWithString:](NSURL, "URLWithString:", selfCopy->_appBundleId)}];
     }
 
-    [v54 setObject:v48];
-    [v54 setPostAnchor:v46];
-    [v54 setIsDelete:0];
+    [infoCopy setObject:v48];
+    [infoCopy setPostAnchor:v46];
+    [infoCopy setIsDelete:0];
   }
 
   else
   {
-    [a4 setObject:0];
-    [a4 setIsDelete:0];
+    [info setObject:0];
+    [info setIsDelete:0];
 
-    [a4 setPostAnchor:0];
+    [info setPostAnchor:0];
   }
 }
 
@@ -337,14 +337,14 @@
   self->_appInfo = 0;
 }
 
-- (id)_pbLocalizedProjectsForVocabularyInfoDictionary:(id)a3
+- (id)_pbLocalizedProjectsForVocabularyInfoDictionary:(id)dictionary
 {
-  v53 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(a3, "count")}];
+  v53 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(dictionary, "count")}];
   v107 = 0u;
   v108 = 0u;
   v109 = 0u;
   v110 = 0u;
-  obj = [a3 allKeys];
+  obj = [dictionary allKeys];
   v54 = [obj countByEnumeratingWithState:&v107 objects:v118 count:16];
   if (v54)
   {
@@ -374,7 +374,7 @@
         v57 = v3;
         v4 = *(*(&v107 + 1) + 8 * v3);
         context = objc_autoreleasePoolPush();
-        v5 = [a3 objectForKey:v4];
+        v5 = [dictionary objectForKey:v4];
         v6 = objc_alloc_init(_INPBLocalizedProject);
         v7 = objc_alloc_init(_INPBLanguageTag);
         [v7 setTag:v4];

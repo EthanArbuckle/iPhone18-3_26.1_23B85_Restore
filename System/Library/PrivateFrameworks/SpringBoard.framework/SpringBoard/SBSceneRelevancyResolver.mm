@@ -1,54 +1,54 @@
 @interface SBSceneRelevancyResolver
-+ (BOOL)shouldDisableFlatteningForWindowWithRelevancyScore:(unint64_t)a3;
-+ (BOOL)shouldFreezeWindowWithRelevancyScore:(unint64_t)a3;
-+ (BOOL)shouldResignActiveWindowWithRelevancyScore:(unint64_t)a3;
-+ (char)sceneActivityModeForWindowWithRelevancyScore:(unint64_t)a3;
-+ (char)sceneJetsamModeForWindowWithRelevancyScore:(unint64_t)a3;
-+ (char)sceneResourceElevationForWindowWithRelevancyScore:(unint64_t)a3;
-+ (id)_effectForRelevancyScore:(unint64_t)a3;
++ (BOOL)shouldDisableFlatteningForWindowWithRelevancyScore:(unint64_t)score;
++ (BOOL)shouldFreezeWindowWithRelevancyScore:(unint64_t)score;
++ (BOOL)shouldResignActiveWindowWithRelevancyScore:(unint64_t)score;
++ (char)sceneActivityModeForWindowWithRelevancyScore:(unint64_t)score;
++ (char)sceneJetsamModeForWindowWithRelevancyScore:(unint64_t)score;
++ (char)sceneResourceElevationForWindowWithRelevancyScore:(unint64_t)score;
++ (id)_effectForRelevancyScore:(unint64_t)score;
 + (id)scoresToEffectDictionary;
-+ (unint64_t)windowRelevancyScoreForZOrder:(int64_t)a3 occlusionState:(int64_t)a4 maximumNumberOfVisibleScenesOnStage:(unint64_t)a5 settings:(id)a6;
++ (unint64_t)windowRelevancyScoreForZOrder:(int64_t)order occlusionState:(int64_t)state maximumNumberOfVisibleScenesOnStage:(unint64_t)stage settings:(id)settings;
 @end
 
 @implementation SBSceneRelevancyResolver
 
-+ (unint64_t)windowRelevancyScoreForZOrder:(int64_t)a3 occlusionState:(int64_t)a4 maximumNumberOfVisibleScenesOnStage:(unint64_t)a5 settings:(id)a6
++ (unint64_t)windowRelevancyScoreForZOrder:(int64_t)order occlusionState:(int64_t)state maximumNumberOfVisibleScenesOnStage:(unint64_t)stage settings:(id)settings
 {
-  v9 = a6;
-  v10 = v9;
-  if (a3 > 0x7FFFFFFFFFFFFFFELL)
+  settingsCopy = settings;
+  v10 = settingsCopy;
+  if (order > 0x7FFFFFFFFFFFFFFELL)
   {
     goto LABEL_2;
   }
 
-  v12 = [v9 numberOfFadingScenesOnStage];
-  v13 = a5 - v12;
-  v14 = [v10 numberOfTopMostWindowsToNeverFreeze];
-  if (v14 >= v13)
+  numberOfFadingScenesOnStage = [settingsCopy numberOfFadingScenesOnStage];
+  v13 = stage - numberOfFadingScenesOnStage;
+  numberOfTopMostWindowsToNeverFreeze = [v10 numberOfTopMostWindowsToNeverFreeze];
+  if (numberOfTopMostWindowsToNeverFreeze >= v13)
   {
     v15 = v13;
   }
 
   else
   {
-    v15 = v14;
+    v15 = numberOfTopMostWindowsToNeverFreeze;
   }
 
-  v16 = [v10 highPriorityNonFocalRangeFirstZOrder];
-  if ((v16 & ~(v16 >> 63)) >= v15)
+  highPriorityNonFocalRangeFirstZOrder = [v10 highPriorityNonFocalRangeFirstZOrder];
+  if ((highPriorityNonFocalRangeFirstZOrder & ~(highPriorityNonFocalRangeFirstZOrder >> 63)) >= v15)
   {
     v17 = v15;
   }
 
   else
   {
-    v17 = v16 & ~(v16 >> 63);
+    v17 = highPriorityNonFocalRangeFirstZOrder & ~(highPriorityNonFocalRangeFirstZOrder >> 63);
   }
 
-  v18 = [v10 mediumPriorityNonFocalRangeFirstZOrder];
-  if (v17 <= v18)
+  mediumPriorityNonFocalRangeFirstZOrder = [v10 mediumPriorityNonFocalRangeFirstZOrder];
+  if (v17 <= mediumPriorityNonFocalRangeFirstZOrder)
   {
-    v19 = v18;
+    v19 = mediumPriorityNonFocalRangeFirstZOrder;
   }
 
   else
@@ -66,10 +66,10 @@
     v20 = v19;
   }
 
-  v21 = [v10 lowPriorityNonFocalRangeFirstZOrder];
-  if (v20 <= v21)
+  lowPriorityNonFocalRangeFirstZOrder = [v10 lowPriorityNonFocalRangeFirstZOrder];
+  if (v20 <= lowPriorityNonFocalRangeFirstZOrder)
   {
-    v22 = v21;
+    v22 = lowPriorityNonFocalRangeFirstZOrder;
   }
 
   else
@@ -82,17 +82,17 @@
     v22 = v15;
   }
 
-  if (a3 < v17)
+  if (order < v17)
   {
     v11 = 1;
     goto LABEL_62;
   }
 
-  if (a3 - v17 < v20 - v17)
+  if (order - v17 < v20 - v17)
   {
-    if (a4 >= 2)
+    if (state >= 2)
     {
-      if (a4 == 2)
+      if (state == 2)
       {
         v23 = [v10 freezeFullyOccludedWindows] == 0;
         v24 = 3;
@@ -105,12 +105,12 @@
     goto LABEL_42;
   }
 
-  v25 = a3 < v20 || a3 - v20 >= v22 - v20;
+  v25 = order < v20 || order - v20 >= v22 - v20;
   if (!v25)
   {
-    if (a4 >= 2)
+    if (state >= 2)
     {
-      if (a4 == 2)
+      if (state == 2)
       {
         v23 = [v10 freezeFullyOccludedWindows] == 0;
         v24 = 5;
@@ -139,13 +139,13 @@ LABEL_42:
   }
 
   v26 = v15 - v22;
-  v25 = a3 >= v22;
-  v27 = a3 - v22;
+  v25 = order >= v22;
+  v27 = order - v22;
   if (!v25 || v27 >= v26)
   {
-    if (a3 < v15 || a3 - v15 >= v13 - v15)
+    if (order < v15 || order - v15 >= v13 - v15)
     {
-      if (a3 - v13 < v12 && a3 >= v13)
+      if (order - v13 < numberOfFadingScenesOnStage && order >= v13)
       {
         v11 = 7;
       }
@@ -156,7 +156,7 @@ LABEL_42:
       }
     }
 
-    else if (a4 || ([v10 preventFreezingUnoccludedScenes] & 1) == 0)
+    else if (state || ([v10 preventFreezingUnoccludedScenes] & 1) == 0)
     {
       v11 = 7;
     }
@@ -169,14 +169,14 @@ LABEL_42:
 
   else
   {
-    if (!a4)
+    if (!state)
     {
       goto LABEL_42;
     }
 
-    if (a4 != 2)
+    if (state != 2)
     {
-      if (a4 == 1)
+      if (state == 1)
       {
         v11 = 5;
         goto LABEL_62;
@@ -254,60 +254,60 @@ void __52__SBSceneRelevancyResolver_scoresToEffectDictionary__block_invoke()
   }
 }
 
-+ (char)sceneActivityModeForWindowWithRelevancyScore:(unint64_t)a3
++ (char)sceneActivityModeForWindowWithRelevancyScore:(unint64_t)score
 {
-  v3 = [a1 _effectForRelevancyScore:a3];
-  v4 = [v3 activityMode];
+  v3 = [self _effectForRelevancyScore:score];
+  activityMode = [v3 activityMode];
 
-  return v4;
+  return activityMode;
 }
 
-+ (char)sceneJetsamModeForWindowWithRelevancyScore:(unint64_t)a3
++ (char)sceneJetsamModeForWindowWithRelevancyScore:(unint64_t)score
 {
-  v3 = [a1 _effectForRelevancyScore:a3];
-  v4 = [v3 jetsamMode];
+  v3 = [self _effectForRelevancyScore:score];
+  jetsamMode = [v3 jetsamMode];
 
-  return v4;
+  return jetsamMode;
 }
 
-+ (char)sceneResourceElevationForWindowWithRelevancyScore:(unint64_t)a3
++ (char)sceneResourceElevationForWindowWithRelevancyScore:(unint64_t)score
 {
-  v3 = [a1 _effectForRelevancyScore:a3];
-  v4 = [v3 resourceElevation];
+  v3 = [self _effectForRelevancyScore:score];
+  resourceElevation = [v3 resourceElevation];
 
-  return v4;
+  return resourceElevation;
 }
 
-+ (BOOL)shouldResignActiveWindowWithRelevancyScore:(unint64_t)a3
++ (BOOL)shouldResignActiveWindowWithRelevancyScore:(unint64_t)score
 {
-  v3 = [a1 _effectForRelevancyScore:a3];
-  v4 = [v3 resignActive];
+  v3 = [self _effectForRelevancyScore:score];
+  resignActive = [v3 resignActive];
 
-  return v4;
+  return resignActive;
 }
 
-+ (BOOL)shouldDisableFlatteningForWindowWithRelevancyScore:(unint64_t)a3
++ (BOOL)shouldDisableFlatteningForWindowWithRelevancyScore:(unint64_t)score
 {
-  v3 = [a1 _effectForRelevancyScore:a3];
-  v4 = [v3 flattenMode];
-  v5 = v4 == *MEMORY[0x277CDA9E8];
+  v3 = [self _effectForRelevancyScore:score];
+  flattenMode = [v3 flattenMode];
+  v5 = flattenMode == *MEMORY[0x277CDA9E8];
 
   return v5;
 }
 
-+ (BOOL)shouldFreezeWindowWithRelevancyScore:(unint64_t)a3
++ (BOOL)shouldFreezeWindowWithRelevancyScore:(unint64_t)score
 {
-  v3 = [a1 _effectForRelevancyScore:a3];
-  v4 = [v3 freeze];
+  v3 = [self _effectForRelevancyScore:score];
+  freeze = [v3 freeze];
 
-  return v4;
+  return freeze;
 }
 
-+ (id)_effectForRelevancyScore:(unint64_t)a3
++ (id)_effectForRelevancyScore:(unint64_t)score
 {
-  v4 = [a1 scoresToEffectDictionary];
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  v6 = [v4 objectForKey:v5];
+  scoresToEffectDictionary = [self scoresToEffectDictionary];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:score];
+  v6 = [scoresToEffectDictionary objectForKey:v5];
 
   return v6;
 }

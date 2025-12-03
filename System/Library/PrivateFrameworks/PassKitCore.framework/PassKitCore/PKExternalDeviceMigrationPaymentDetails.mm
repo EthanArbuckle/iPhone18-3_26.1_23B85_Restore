@@ -1,67 +1,67 @@
 @interface PKExternalDeviceMigrationPaymentDetails
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToExternalDeviceMigrationPaymentDetails:(id)a3;
-- (PKExternalDeviceMigrationPaymentDetails)initWithCoder:(id)a3;
-- (PKExternalDeviceMigrationPaymentDetails)initWithFPAN:(id)a3 expiration:(id)a4 cvv:(id)a5 cardholder:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToExternalDeviceMigrationPaymentDetails:(id)details;
+- (PKExternalDeviceMigrationPaymentDetails)initWithCoder:(id)coder;
+- (PKExternalDeviceMigrationPaymentDetails)initWithFPAN:(id)n expiration:(id)expiration cvv:(id)cvv cardholder:(id)cardholder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKExternalDeviceMigrationPaymentDetails
 
-- (PKExternalDeviceMigrationPaymentDetails)initWithFPAN:(id)a3 expiration:(id)a4 cvv:(id)a5 cardholder:(id)a6
+- (PKExternalDeviceMigrationPaymentDetails)initWithFPAN:(id)n expiration:(id)expiration cvv:(id)cvv cardholder:(id)cardholder
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nCopy = n;
+  expirationCopy = expiration;
+  cvvCopy = cvv;
+  cardholderCopy = cardholder;
   v22.receiver = self;
   v22.super_class = PKExternalDeviceMigrationPaymentDetails;
   v14 = [(PKExternalDeviceMigrationPaymentDetails *)&v22 init];
   if (v14)
   {
-    v15 = [v10 pk_zString];
+    pk_zString = [nCopy pk_zString];
     fpan = v14->_fpan;
-    v14->_fpan = v15;
+    v14->_fpan = pk_zString;
 
-    v17 = [v11 pk_zString];
+    pk_zString2 = [expirationCopy pk_zString];
     expiration = v14->_expiration;
-    v14->_expiration = v17;
+    v14->_expiration = pk_zString2;
 
-    v19 = [v12 pk_zString];
+    pk_zString3 = [cvvCopy pk_zString];
     cvv = v14->_cvv;
-    v14->_cvv = v19;
+    v14->_cvv = pk_zString3;
 
-    objc_storeStrong(&v14->_cardholder, a6);
+    objc_storeStrong(&v14->_cardholder, cardholder);
   }
 
   return v14;
 }
 
-- (PKExternalDeviceMigrationPaymentDetails)initWithCoder:(id)a3
+- (PKExternalDeviceMigrationPaymentDetails)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = PKExternalDeviceMigrationPaymentDetails;
   v5 = [(PKExternalDeviceMigrationPaymentDetails *)&v18 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fpan"];
-    v7 = [v6 pk_zString];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fpan"];
+    pk_zString = [v6 pk_zString];
     fpan = v5->_fpan;
-    v5->_fpan = v7;
+    v5->_fpan = pk_zString;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"expiration"];
-    v10 = [v9 pk_zString];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expiration"];
+    pk_zString2 = [v9 pk_zString];
     expiration = v5->_expiration;
-    v5->_expiration = v10;
+    v5->_expiration = pk_zString2;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cvv"];
-    v13 = [v12 pk_zString];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cvv"];
+    pk_zString3 = [v12 pk_zString];
     cvv = v5->_cvv;
-    v5->_cvv = v13;
+    v5->_cvv = pk_zString3;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cardholder"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cardholder"];
     cardholder = v5->_cardholder;
     v5->_cardholder = v15;
   }
@@ -69,14 +69,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   fpan = self->_fpan;
-  v5 = a3;
-  [v5 encodeObject:fpan forKey:@"fpan"];
-  [v5 encodeObject:self->_expiration forKey:@"expiration"];
-  [v5 encodeObject:self->_cvv forKey:@"cvv"];
-  [v5 encodeObject:self->_cardholder forKey:@"cardholder"];
+  coderCopy = coder;
+  [coderCopy encodeObject:fpan forKey:@"fpan"];
+  [coderCopy encodeObject:self->_expiration forKey:@"expiration"];
+  [coderCopy encodeObject:self->_cvv forKey:@"cvv"];
+  [coderCopy encodeObject:self->_cardholder forKey:@"cardholder"];
 }
 
 - (id)description
@@ -93,28 +93,28 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKExternalDeviceMigrationPaymentDetails *)self isEqualToExternalDeviceMigrationPaymentDetails:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKExternalDeviceMigrationPaymentDetails *)self isEqualToExternalDeviceMigrationPaymentDetails:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToExternalDeviceMigrationPaymentDetails:(id)a3
+- (BOOL)isEqualToExternalDeviceMigrationPaymentDetails:(id)details
 {
-  v4 = a3;
+  detailsCopy = details;
   fpan = self->_fpan;
-  v6 = v4[1];
+  v6 = detailsCopy[1];
   if (fpan)
   {
     v7 = v6 == 0;
@@ -139,7 +139,7 @@
   }
 
   expiration = self->_expiration;
-  v9 = v4[2];
+  v9 = detailsCopy[2];
   if (expiration && v9)
   {
     if (([(NSString *)expiration isEqual:?]& 1) == 0)
@@ -154,7 +154,7 @@
   }
 
   cvv = self->_cvv;
-  v11 = v4[3];
+  v11 = detailsCopy[3];
   if (!cvv || !v11)
   {
     if (cvv == v11)
@@ -174,7 +174,7 @@ LABEL_21:
 
 LABEL_17:
   cardholder = self->_cardholder;
-  v13 = v4[4];
+  v13 = detailsCopy[4];
   if (cardholder && v13)
   {
     v14 = [(NSString *)cardholder isEqual:?];

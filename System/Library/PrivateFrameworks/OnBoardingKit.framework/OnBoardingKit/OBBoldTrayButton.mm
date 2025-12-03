@@ -13,19 +13,19 @@
 
 + (id)boldButton
 {
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___OBBoldTrayButton;
   v2 = objc_msgSendSuper2(&v7, sel_buttonWithType_, 0);
-  v3 = [v2 boldConfiguration];
-  [v2 setConfiguration:v3];
+  boldConfiguration = [v2 boldConfiguration];
+  [v2 setConfiguration:boldConfiguration];
 
   if (+[OBFeatureFlags isNaturalUIEnabled])
   {
     [v2 _obk_applyGlassWithProminence:1];
     [v2 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v4 = [v2 heightAnchor];
+    heightAnchor = [v2 heightAnchor];
     +[OBTrayButton standardHeight];
-    v5 = [v4 constraintGreaterThanOrEqualToConstant:?];
+    v5 = [heightAnchor constraintGreaterThanOrEqualToConstant:?];
     [v5 setActive:1];
   }
 
@@ -34,22 +34,22 @@
 
 - (id)boldConfiguration
 {
-  v2 = [MEMORY[0x1E69DC740] filledButtonConfiguration];
-  [v2 setButtonSize:3];
+  filledButtonConfiguration = [MEMORY[0x1E69DC740] filledButtonConfiguration];
+  [filledButtonConfiguration setButtonSize:3];
 
-  return v2;
+  return filledButtonConfiguration;
 }
 
 - (void)showsBusyIndicator
 {
-  v3 = [(OBBoldTrayButton *)self configuration];
-  v4 = [v3 showsActivityIndicator];
+  configuration = [(OBBoldTrayButton *)self configuration];
+  showsActivityIndicator = [configuration showsActivityIndicator];
 
-  if ((v4 & 1) == 0)
+  if ((showsActivityIndicator & 1) == 0)
   {
-    v5 = [(OBBoldTrayButton *)self buttonStateRequiredHeight];
+    buttonStateRequiredHeight = [(OBBoldTrayButton *)self buttonStateRequiredHeight];
 
-    if (!v5)
+    if (!buttonStateRequiredHeight)
     {
       v6 = MEMORY[0x1E696AD98];
       [(OBBoldTrayButton *)self bounds];
@@ -66,17 +66,17 @@
 
 - (void)hidesBusyIndicator
 {
-  v3 = [(OBBoldTrayButton *)self configuration];
-  v4 = [v3 showsActivityIndicator];
+  configuration = [(OBBoldTrayButton *)self configuration];
+  showsActivityIndicator = [configuration showsActivityIndicator];
 
-  if (v4)
+  if (showsActivityIndicator)
   {
     v6.receiver = self;
     v6.super_class = OBBoldTrayButton;
     [(OBTrayButton *)&v6 hidesBusyIndicator];
-    v5 = [(OBBoldTrayButton *)self buttonStateRequiredHeight];
+    buttonStateRequiredHeight = [(OBBoldTrayButton *)self buttonStateRequiredHeight];
 
-    if (v5)
+    if (buttonStateRequiredHeight)
     {
       [(OBBoldTrayButton *)self setButtonStateRequiredHeight:0];
     }
@@ -85,14 +85,14 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(OBBoldTrayButton *)self buttonStateRequiredHeight];
+  buttonStateRequiredHeight = [(OBBoldTrayButton *)self buttonStateRequiredHeight];
 
-  if (v3)
+  if (buttonStateRequiredHeight)
   {
     [(OBBoldTrayButton *)self bounds];
     v5 = v4;
-    v6 = [(OBBoldTrayButton *)self buttonStateRequiredHeight];
-    [v6 floatValue];
+    buttonStateRequiredHeight2 = [(OBBoldTrayButton *)self buttonStateRequiredHeight];
+    [buttonStateRequiredHeight2 floatValue];
     v8 = v7;
   }
 
@@ -117,52 +117,52 @@
   v22.receiver = self;
   v22.super_class = OBBoldTrayButton;
   [(OBBoldTrayButton *)&v22 updateConfiguration];
-  v3 = [(OBBoldTrayButton *)self configuration];
-  v4 = [(OBBoldTrayButton *)self traitCollection];
-  v5 = [v4 userInterfaceIdiom];
+  configuration = [(OBBoldTrayButton *)self configuration];
+  traitCollection = [(OBBoldTrayButton *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v5 == 6)
+  if (userInterfaceIdiom == 6)
   {
-    v6 = [(OBBoldTrayButton *)self tintColor];
-    [v3 setBaseBackgroundColor:v6];
+    tintColor = [(OBBoldTrayButton *)self tintColor];
+    [configuration setBaseBackgroundColor:tintColor];
 
     if ([(OBBoldTrayButton *)self usesWhiteTintColor])
     {
-      v7 = [MEMORY[0x1E69DC888] darkTextColor];
-      [v3 setBaseForegroundColor:v7];
+      darkTextColor = [MEMORY[0x1E69DC888] darkTextColor];
+      [configuration setBaseForegroundColor:darkTextColor];
     }
 
     else
     {
-      [v3 setBaseForegroundColor:0];
+      [configuration setBaseForegroundColor:0];
     }
   }
 
-  v8 = [(OBBoldTrayButton *)self configuration];
-  v9 = [v8 showsActivityIndicator];
+  configuration2 = [(OBBoldTrayButton *)self configuration];
+  showsActivityIndicator = [configuration2 showsActivityIndicator];
 
-  if (v9)
+  if (showsActivityIndicator)
   {
-    [v3 setTitle:0];
+    [configuration setTitle:0];
   }
 
   v21.receiver = self;
   v21.super_class = OBBoldTrayButton;
-  v10 = [(OBTrayButton *)&v21 buttonFont];
-  v11 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-  v12 = [v11 mutableCopy];
+  buttonFont = [(OBTrayButton *)&v21 buttonFont];
+  defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+  v12 = [defaultParagraphStyle mutableCopy];
 
   [v12 setAlignment:1];
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
   v17 = __39__OBBoldTrayButton_updateConfiguration__block_invoke;
   v18 = &unk_1E7C15680;
-  v19 = v10;
+  v19 = buttonFont;
   v20 = v12;
   v13 = v12;
-  v14 = v10;
-  [v3 setTitleTextAttributesTransformer:&v15];
-  [(OBBoldTrayButton *)self setConfiguration:v3, v15, v16, v17, v18];
+  v14 = buttonFont;
+  [configuration setTitleTextAttributesTransformer:&v15];
+  [(OBBoldTrayButton *)self setConfiguration:configuration, v15, v16, v17, v18];
 }
 
 id __39__OBBoldTrayButton_updateConfiguration__block_invoke(uint64_t a1)
@@ -202,8 +202,8 @@ id __39__OBBoldTrayButton_updateConfiguration__block_invoke(uint64_t a1)
   v6 = 0.0;
   v7 = 0.0;
   v5 = 0.0;
-  v2 = [(OBBoldTrayButton *)self tintColor];
-  v3 = [v2 getRed:&v7 green:&v6 blue:&v5 alpha:0];
+  tintColor = [(OBBoldTrayButton *)self tintColor];
+  v3 = [tintColor getRed:&v7 green:&v6 blue:&v5 alpha:0];
 
   return v3 && fabs(v7 + -1.0) < 0.01 && fabs(v6 + -1.0) < 0.01 && fabs(v5 + -1.0) < 0.01;
 }

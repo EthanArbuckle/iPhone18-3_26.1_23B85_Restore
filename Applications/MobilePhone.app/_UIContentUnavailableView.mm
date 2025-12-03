@@ -1,12 +1,12 @@
 @interface _UIContentUnavailableView
-- (_UIContentUnavailableView)initWithFrame:(CGRect)a3 title:(id)a4;
+- (_UIContentUnavailableView)initWithFrame:(CGRect)frame title:(id)title;
 @end
 
 @implementation _UIContentUnavailableView
 
-- (_UIContentUnavailableView)initWithFrame:(CGRect)a3 title:(id)a4
+- (_UIContentUnavailableView)initWithFrame:(CGRect)frame title:(id)title
 {
-  v4 = [(_UIContentUnavailableView *)self initWithFrame:a4 title:0 style:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(_UIContentUnavailableView *)self initWithFrame:title title:0 style:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v5 = v4;
   if (v4)
   {

@@ -1,40 +1,40 @@
 @interface PXStackedDataSectionManager
 - (BOOL)_updateDataSectionIfNecessary;
 - (BOOL)isDataSectionEmpty;
-- (PXStackedDataSectionManager)initWithChildDataSectionManagers:(id)a3;
-- (id)auxiliaryObjectForKey:(id)a3 dataSectionObject:(id)a4 hintIndex:(int64_t)a5;
-- (id)changeDetailsForChangedChildDataSectionManager:(id)a3 childChangeDetails:(id)a4;
-- (id)changeDetailsForChildDataSectionManagersChangeDetails:(id)a3;
-- (id)childDataSectionManagerForObjectAtIndex:(int64_t)a3 localIndex:(int64_t *)a4;
+- (PXStackedDataSectionManager)initWithChildDataSectionManagers:(id)managers;
+- (id)auxiliaryObjectForKey:(id)key dataSectionObject:(id)object hintIndex:(int64_t)index;
+- (id)changeDetailsForChangedChildDataSectionManager:(id)manager childChangeDetails:(id)details;
+- (id)changeDetailsForChildDataSectionManagersChangeDetails:(id)details;
+- (id)childDataSectionManagerForObjectAtIndex:(int64_t)index localIndex:(int64_t *)localIndex;
 - (id)createDataSection;
-- (void)setEnabled:(BOOL)a3;
-- (void)setOutlineObject:(id)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setOutlineObject:(id)object;
 @end
 
 @implementation PXStackedDataSectionManager
 
-- (id)auxiliaryObjectForKey:(id)a3 dataSectionObject:(id)a4 hintIndex:(int64_t)a5
+- (id)auxiliaryObjectForKey:(id)key dataSectionObject:(id)object hintIndex:(int64_t)index
 {
-  v8 = a3;
-  v9 = a4;
+  keyCopy = key;
+  objectCopy = object;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
   v23 = __Block_byref_object_copy__65244;
   v24 = __Block_byref_object_dispose__65245;
   v25 = 0;
-  v10 = [(PXDataSectionManager *)self childDataSectionManagers];
+  childDataSectionManagers = [(PXDataSectionManager *)self childDataSectionManagers];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __81__PXStackedDataSectionManager_auxiliaryObjectForKey_dataSectionObject_hintIndex___block_invoke;
   v15[3] = &unk_1E77345B0;
   v18 = &v20;
-  v11 = v8;
+  v11 = keyCopy;
   v16 = v11;
-  v12 = v9;
+  v12 = objectCopy;
   v17 = v12;
-  v19 = a5;
-  [v10 enumerateObjectsUsingBlock:v15];
+  indexCopy = index;
+  [childDataSectionManagers enumerateObjectsUsingBlock:v15];
   v13 = v21[5];
 
   _Block_object_dispose(&v20, 8);
@@ -55,21 +55,21 @@ void __81__PXStackedDataSectionManager_auxiliaryObjectForKey_dataSectionObject_h
   }
 }
 
-- (id)changeDetailsForChangedChildDataSectionManager:(id)a3 childChangeDetails:(id)a4
+- (id)changeDetailsForChangedChildDataSectionManager:(id)manager childChangeDetails:(id)details
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PXDataSectionManager *)self childDataSectionManagers];
-  v9 = [v8 indexOfObject:v7];
+  detailsCopy = details;
+  managerCopy = manager;
+  childDataSectionManagers = [(PXDataSectionManager *)self childDataSectionManagers];
+  v9 = [childDataSectionManagers indexOfObject:managerCopy];
 
-  v10 = [(PXDataSectionManager *)self dataSectionIfCreated];
-  v11 = v10;
+  dataSectionIfCreated = [(PXDataSectionManager *)self dataSectionIfCreated];
+  v11 = dataSectionIfCreated;
   v12 = 0;
-  if (v9 != 0x7FFFFFFFFFFFFFFFLL && v10)
+  if (v9 != 0x7FFFFFFFFFFFFFFFLL && dataSectionIfCreated)
   {
     if ([(PXStackedDataSectionManager *)self isEnabled])
     {
-      v12 = [v6 changeDetailsShiftedBy:{objc_msgSend(v11, "itemStartIndexForChildDataSourceAtIndex:", v9)}];
+      v12 = [detailsCopy changeDetailsShiftedBy:{objc_msgSend(v11, "itemStartIndexForChildDataSourceAtIndex:", v9)}];
     }
 
     else
@@ -81,38 +81,38 @@ void __81__PXStackedDataSectionManager_auxiliaryObjectForKey_dataSectionObject_h
   return v12;
 }
 
-- (id)changeDetailsForChildDataSectionManagersChangeDetails:(id)a3
+- (id)changeDetailsForChildDataSectionManagersChangeDetails:(id)details
 {
-  v4 = a3;
-  v5 = [(PXDataSectionManager *)self dataSectionIfCreated];
-  if (v5 && [v4 hasIncrementalChanges] && (objc_msgSend(v4, "hasMoves") & 1) == 0)
+  detailsCopy = details;
+  dataSectionIfCreated = [(PXDataSectionManager *)self dataSectionIfCreated];
+  if (dataSectionIfCreated && [detailsCopy hasIncrementalChanges] && (objc_msgSend(detailsCopy, "hasMoves") & 1) == 0)
   {
-    v8 = [(PXStackedDataSectionManager *)self createDataSection];
+    createDataSection = [(PXStackedDataSectionManager *)self createDataSection];
     v9 = objc_opt_new();
-    v10 = [v4 removedIndexes];
+    removedIndexes = [detailsCopy removedIndexes];
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
     v30[2] = __85__PXStackedDataSectionManager_changeDetailsForChildDataSectionManagersChangeDetails___block_invoke;
     v30[3] = &unk_1E774A7B8;
-    v31 = v5;
+    v31 = dataSectionIfCreated;
     v32 = v9;
     v11 = v9;
-    [v10 enumerateIndexesUsingBlock:v30];
+    [removedIndexes enumerateIndexesUsingBlock:v30];
 
     v12 = objc_opt_new();
-    v13 = [v4 insertedIndexes];
+    insertedIndexes = [detailsCopy insertedIndexes];
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __85__PXStackedDataSectionManager_changeDetailsForChildDataSectionManagersChangeDetails___block_invoke_2;
     v27[3] = &unk_1E774A7B8;
-    v14 = v8;
+    v14 = createDataSection;
     v28 = v14;
     v29 = v12;
     v15 = v12;
-    [v13 enumerateIndexesUsingBlock:v27];
+    [insertedIndexes enumerateIndexesUsingBlock:v27];
 
     v16 = objc_opt_new();
-    v17 = [v4 changedIndexes];
+    changedIndexes = [detailsCopy changedIndexes];
     v21 = MEMORY[0x1E69E9820];
     v22 = 3221225472;
     v23 = __85__PXStackedDataSectionManager_changeDetailsForChildDataSectionManagersChangeDetails___block_invoke_3;
@@ -121,7 +121,7 @@ void __81__PXStackedDataSectionManager_auxiliaryObjectForKey_dataSectionObject_h
     v26 = v16;
     v18 = v16;
     v19 = v14;
-    [v17 enumerateIndexesUsingBlock:&v21];
+    [changedIndexes enumerateIndexesUsingBlock:&v21];
 
     v20 = [off_1E7721450 alloc];
     v6 = [v20 initWithIncrementalChangeDetailsRemovedIndexes:v11 insertedIndexes:v15 movesToIndexes:0 movesFromIndexes:0 changedIndexes:{v18, v21, v22, v23, v24}];
@@ -187,25 +187,25 @@ void __85__PXStackedDataSectionManager_changeDetailsForChildDataSectionManagersC
 
   v3 = MEMORY[0x1E695E0F0];
   v4 = [PXStackedDataSection alloc];
-  v5 = [(PXDataSectionManager *)self outlineObject];
-  v6 = [(PXStackedDataSection *)v4 initWithChildDataSections:v3 outlineObject:v5];
+  outlineObject = [(PXDataSectionManager *)self outlineObject];
+  v6 = [(PXStackedDataSection *)v4 initWithChildDataSections:v3 outlineObject:outlineObject];
 
   return v6;
 }
 
-- (void)setOutlineObject:(id)a3
+- (void)setOutlineObject:(id)object
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  objectCopy = object;
   v14.receiver = self;
   v14.super_class = PXStackedDataSectionManager;
-  [(PXDataSectionManager *)&v14 setOutlineObject:v4];
+  [(PXDataSectionManager *)&v14 setOutlineObject:objectCopy];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = [(PXDataSectionManager *)self childDataSectionManagers];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  childDataSectionManagers = [(PXDataSectionManager *)self childDataSectionManagers];
+  v6 = [childDataSectionManagers countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -217,14 +217,14 @@ void __85__PXStackedDataSectionManager_changeDetailsForChildDataSectionManagersC
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(childDataSectionManagers);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) setOutlineObject:v4];
+        [*(*(&v10 + 1) + 8 * v9++) setOutlineObject:objectCopy];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v15 count:16];
+      v7 = [childDataSectionManagers countByEnumeratingWithState:&v10 objects:v15 count:16];
     }
 
     while (v7);
@@ -233,14 +233,14 @@ void __85__PXStackedDataSectionManager_changeDetailsForChildDataSectionManagersC
 
 - (BOOL)_updateDataSectionIfNecessary
 {
-  v3 = [(PXDataSectionManager *)self dataSectionIfCreated];
-  v4 = v3;
-  if (!v3)
+  dataSectionIfCreated = [(PXDataSectionManager *)self dataSectionIfCreated];
+  v4 = dataSectionIfCreated;
+  if (!dataSectionIfCreated)
   {
     goto LABEL_10;
   }
 
-  if ([v3 count] || !-[PXStackedDataSectionManager isEnabled](self, "isEnabled"))
+  if ([dataSectionIfCreated count] || !-[PXStackedDataSectionManager isEnabled](self, "isEnabled"))
   {
     if ([v4 count] < 1)
     {
@@ -261,8 +261,8 @@ void __85__PXStackedDataSectionManager_changeDetailsForChildDataSectionManagersC
 
   else
   {
-    v5 = [(PXStackedDataSectionManager *)self createDataSection];
-    v6 = [off_1E7721450 changeDetailsWithInsertedIndexRange:{0, objc_msgSend(v5, "count")}];
+    createDataSection = [(PXStackedDataSectionManager *)self createDataSection];
+    v6 = [off_1E7721450 changeDetailsWithInsertedIndexRange:{0, objc_msgSend(createDataSection, "count")}];
 
     if (!v6)
     {
@@ -280,9 +280,9 @@ LABEL_11:
   return v7;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
     v7 = v3;
     v8 = v4;
@@ -291,7 +291,7 @@ LABEL_11:
     v5[2] = __42__PXStackedDataSectionManager_setEnabled___block_invoke;
     v5[3] = &unk_1E774C670;
     v5[4] = self;
-    v6 = a3;
+    enabledCopy = enabled;
     [(PXStackedDataSectionManager *)self performChanges:v5];
   }
 }
@@ -310,22 +310,22 @@ uint64_t __42__PXStackedDataSectionManager_setEnabled___block_invoke(uint64_t a1
   return result;
 }
 
-- (id)childDataSectionManagerForObjectAtIndex:(int64_t)a3 localIndex:(int64_t *)a4
+- (id)childDataSectionManagerForObjectAtIndex:(int64_t)index localIndex:(int64_t *)localIndex
 {
-  v7 = [(PXDataSectionManager *)self dataSection];
-  v8 = [v7 indexOfChildDataSourceForObjectAtIndex:a3 localIndex:a4];
+  dataSection = [(PXDataSectionManager *)self dataSection];
+  v8 = [dataSection indexOfChildDataSourceForObjectAtIndex:index localIndex:localIndex];
 
-  v9 = [(PXDataSectionManager *)self childDataSectionManagers];
-  v10 = [v9 objectAtIndexedSubscript:v8];
+  childDataSectionManagers = [(PXDataSectionManager *)self childDataSectionManagers];
+  v10 = [childDataSectionManagers objectAtIndexedSubscript:v8];
 
   return v10;
 }
 
-- (PXStackedDataSectionManager)initWithChildDataSectionManagers:(id)a3
+- (PXStackedDataSectionManager)initWithChildDataSectionManagers:(id)managers
 {
   v4.receiver = self;
   v4.super_class = PXStackedDataSectionManager;
-  result = [(PXDataSectionManager *)&v4 initWithChildDataSectionManagers:a3];
+  result = [(PXDataSectionManager *)&v4 initWithChildDataSectionManagers:managers];
   if (result)
   {
     result->_enabled = 1;

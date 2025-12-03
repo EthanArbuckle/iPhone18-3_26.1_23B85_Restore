@@ -1,8 +1,8 @@
 @interface FMModernPlatterTableView
 - (CGSize)contentSize;
-- (_TtC6FindMyP33_CC23E81230DC16D325E739DF41B02D5424FMModernPlatterTableView)initWithCoder:(id)a3;
-- (_TtC6FindMyP33_CC23E81230DC16D325E739DF41B02D5424FMModernPlatterTableView)initWithFrame:(CGRect)a3 style:(int64_t)a4;
-- (void)setContentSize:(CGSize)a3;
+- (_TtC6FindMyP33_CC23E81230DC16D325E739DF41B02D5424FMModernPlatterTableView)initWithCoder:(id)coder;
+- (_TtC6FindMyP33_CC23E81230DC16D325E739DF41B02D5424FMModernPlatterTableView)initWithFrame:(CGRect)frame style:(int64_t)style;
+- (void)setContentSize:(CGSize)size;
 @end
 
 @implementation FMModernPlatterTableView
@@ -17,10 +17,10 @@
   return result;
 }
 
-- (void)setContentSize:(CGSize)a3
+- (void)setContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6.receiver = self;
   v6.super_class = type metadata accessor for FMModernPlatterTableView();
   v5 = v6.receiver;
@@ -28,7 +28,7 @@
   sub_1004EC60C();
 }
 
-- (_TtC6FindMyP33_CC23E81230DC16D325E739DF41B02D5424FMModernPlatterTableView)initWithCoder:(id)a3
+- (_TtC6FindMyP33_CC23E81230DC16D325E739DF41B02D5424FMModernPlatterTableView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC6FindMyP33_CC23E81230DC16D325E739DF41B02D5424FMModernPlatterTableView_heightConstraint) = 0;
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC6FindMyP33_CC23E81230DC16D325E739DF41B02D5424FMModernPlatterTableView_resizeBlockCount) = 0;
@@ -37,7 +37,7 @@
   return result;
 }
 
-- (_TtC6FindMyP33_CC23E81230DC16D325E739DF41B02D5424FMModernPlatterTableView)initWithFrame:(CGRect)a3 style:(int64_t)a4
+- (_TtC6FindMyP33_CC23E81230DC16D325E739DF41B02D5424FMModernPlatterTableView)initWithFrame:(CGRect)frame style:(int64_t)style
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

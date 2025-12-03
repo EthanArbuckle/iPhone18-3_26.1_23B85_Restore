@@ -9,7 +9,7 @@
   v25 = *MEMORY[0x277D85DE8];
   v5 = a3;
   v6 = a4;
-  v7 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (v6)
   {
     if (v5)
@@ -38,7 +38,7 @@
             v15 = [v5 objectForKey:v13];
             if (([v15 isEqual:v14] & 1) == 0)
             {
-              [v7 setObject:v14 forKey:v13];
+              [dictionary setObject:v14 forKey:v13];
             }
           }
 
@@ -48,7 +48,7 @@
         while (v10);
       }
 
-      v16 = [v7 copy];
+      v16 = [dictionary copy];
     }
 
     else

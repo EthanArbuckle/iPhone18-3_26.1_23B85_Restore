@@ -1,5 +1,5 @@
 @interface AirTagInstallFindMyViewController
-- (_TtC18SharingViewService33AirTagInstallFindMyViewController)initWithContentView:(id)a3;
+- (_TtC18SharingViewService33AirTagInstallFindMyViewController)initWithContentView:(id)view;
 - (void)viewDidLoad;
 @end
 
@@ -7,16 +7,16 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10002EC84();
 }
 
-- (_TtC18SharingViewService33AirTagInstallFindMyViewController)initWithContentView:(id)a3
+- (_TtC18SharingViewService33AirTagInstallFindMyViewController)initWithContentView:(id)view
 {
   swift_unknownObjectWeakInit();
   v6.receiver = self;
   v6.super_class = type metadata accessor for AirTagInstallFindMyViewController();
-  return [(AirTagInstallFindMyViewController *)&v6 initWithContentView:a3];
+  return [(AirTagInstallFindMyViewController *)&v6 initWithContentView:view];
 }
 
 @end

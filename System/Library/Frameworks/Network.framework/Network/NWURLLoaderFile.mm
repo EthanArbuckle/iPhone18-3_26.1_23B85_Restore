@@ -1,12 +1,12 @@
 @interface NWURLLoaderFile
-- (NWURLError)errorForErrorCode:(int)a3 withPOSIXCode:;
+- (NWURLError)errorForErrorCode:(int)code withPOSIXCode:;
 - (OS_nw_connection)underlyingConnection;
-- (void)readDataOfMinimumIncompleteLength:(unint64_t)a3 maximumLength:(unint64_t)a4 completionHandler:(id)a5;
-- (void)readResponse:(id)a3;
-- (void)setError:(uint64_t)a1;
-- (void)start:(id)a3;
+- (void)readDataOfMinimumIncompleteLength:(unint64_t)length maximumLength:(unint64_t)maximumLength completionHandler:(id)handler;
+- (void)readResponse:(id)response;
+- (void)setError:(uint64_t)error;
+- (void)start:(id)start;
 - (void)stop;
-- (void)writeData:(id)a3 complete:(BOOL)a4 completionHandler:(id)a5;
+- (void)writeData:(id)data complete:(BOOL)complete completionHandler:(id)handler;
 @end
 
 @implementation NWURLLoaderFile
@@ -18,17 +18,17 @@
   return result;
 }
 
-- (void)writeData:(id)a3 complete:(BOOL)a4 completionHandler:(id)a5
+- (void)writeData:(id)data complete:(BOOL)complete completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a5;
+  dataCopy = data;
+  handlerCopy = handler;
   _os_crash();
   __break(1u);
 }
 
-- (void)readDataOfMinimumIncompleteLength:(unint64_t)a3 maximumLength:(unint64_t)a4 completionHandler:(id)a5
+- (void)readDataOfMinimumIncompleteLength:(unint64_t)length maximumLength:(unint64_t)maximumLength completionHandler:(id)handler
 {
-  v7 = a5;
+  handlerCopy = handler;
   v16[0] = 0;
   v16[1] = v16;
   v16[2] = 0x3032000000;
@@ -53,16 +53,16 @@
   io_handler[1] = 3221225472;
   io_handler[2] = __85__NWURLLoaderFile_readDataOfMinimumIncompleteLength_maximumLength_completionHandler___block_invoke;
   io_handler[3] = &unk_1E6A332F8;
-  if (a3 <= 0x4000)
+  if (length <= 0x4000)
   {
-    a3 = 0x4000;
+    length = 0x4000;
   }
 
   io_handler[4] = self;
-  v14 = v7;
+  v14 = handlerCopy;
   v15 = v16;
-  v12 = v7;
-  dispatch_io_read(v10, 0, a3, queue, io_handler);
+  v12 = handlerCopy;
+  dispatch_io_read(v10, 0, length, queue, io_handler);
 
   _Block_object_dispose(v16, 8);
 }
@@ -117,18 +117,18 @@ void __85__NWURLLoaderFile_readDataOfMinimumIncompleteLength_maximumLength_compl
   }
 }
 
-- (NWURLError)errorForErrorCode:(int)a3 withPOSIXCode:
+- (NWURLError)errorForErrorCode:(int)code withPOSIXCode:
 {
-  if (a1)
+  if (self)
   {
     v5 = [[NWURLError alloc] initWithErrorCode:a2];
-    if (a3)
+    if (code)
     {
-      v6 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:a3 userInfo:0];
+      v6 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:code userInfo:0];
       [(NWURLError *)v5 setUnderlyingError:v6];
     }
 
-    [(NWURLError *)v5 setFailingURL:*(a1 + 8)];
+    [(NWURLError *)v5 setFailingURL:*(self + 8)];
   }
 
   else
@@ -139,15 +139,15 @@ void __85__NWURLLoaderFile_readDataOfMinimumIncompleteLength_maximumLength_compl
   return v5;
 }
 
-- (void)readResponse:(id)a3
+- (void)readResponse:(id)response
 {
-  v4 = a3;
-  v5 = v4;
+  responseCopy = response;
+  v5 = responseCopy;
   if (self)
   {
     if (self->_error)
     {
-      (*(v4 + 2))(v4, 0);
+      (*(responseCopy + 2))(responseCopy, 0);
       goto LABEL_10;
     }
 
@@ -165,22 +165,22 @@ void __85__NWURLLoaderFile_readDataOfMinimumIncompleteLength_maximumLength_compl
   [(NSURL *)v8 getResourceValue:&v19 forKey:v7 error:0];
   v9 = v19;
 
-  v10 = [v9 preferredMIMEType];
-  if (!v10)
+  preferredMIMEType = [v9 preferredMIMEType];
+  if (!preferredMIMEType)
   {
     Helper_x8__UTTypePlainText = gotLoadHelper_x8__UTTypePlainText(v11);
     v18 = *(v17 + 3912);
-    v10 = *v18;
+    preferredMIMEType = *v18;
     if (*v18)
     {
       if ([v9 isSubtypeOfType:{*v18, Helper_x8__UTTypePlainText}])
       {
-        v10 = [v10 preferredMIMEType];
+        preferredMIMEType = [preferredMIMEType preferredMIMEType];
       }
 
       else
       {
-        v10 = 0;
+        preferredMIMEType = 0;
       }
     }
   }
@@ -206,7 +206,7 @@ void __85__NWURLLoaderFile_readDataOfMinimumIncompleteLength_maximumLength_compl
     fileSize = 0;
   }
 
-  v15 = [v12 initWithURL:v13 MIMEType:v10 expectedContentLength:fileSize textEncodingName:0];
+  v15 = [v12 initWithURL:v13 MIMEType:preferredMIMEType expectedContentLength:fileSize textEncodingName:0];
   (v5)[2](v5, v15, 0);
 
 LABEL_10:
@@ -226,10 +226,10 @@ LABEL_10:
   }
 }
 
-- (void)start:(id)a3
+- (void)start:(id)start
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  startCopy = start;
   if (self)
   {
     URL = self->_URL;
@@ -297,11 +297,11 @@ LABEL_10:
           v18 = gurlLogObj;
           if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
           {
-            v19 = [(NSNumber *)self->_expectedDevice intValue];
+            intValue = [(NSNumber *)self->_expectedDevice intValue];
             *buf = 138412546;
             v36 = v6;
             v37 = 1024;
-            v38 = v19;
+            v38 = intValue;
             _os_log_impl(&dword_181A37000, v18, OS_LOG_TYPE_ERROR, "File %@ not on the expected device %d", buf, 0x12u);
           }
 
@@ -346,7 +346,7 @@ LABEL_10:
 
     dispatch_io_set_low_water(v17, 0xFFFFFFFFFFFFFFFFLL);
 LABEL_17:
-    v4[2](v4);
+    startCopy[2](startCopy);
     goto LABEL_18;
   }
 
@@ -376,15 +376,15 @@ LABEL_17:
   v26 = [(NWURLLoaderFile *)self errorForErrorCode:v25 withPOSIXCode:v22];
   [(NWURLLoaderFile *)self setError:v26];
 
-  v4[2](v4);
+  startCopy[2](startCopy);
 LABEL_18:
 }
 
-- (void)setError:(uint64_t)a1
+- (void)setError:(uint64_t)error
 {
-  if (a1)
+  if (error)
   {
-    objc_storeStrong((a1 + 48), a2);
+    objc_storeStrong((error + 48), a2);
   }
 }
 

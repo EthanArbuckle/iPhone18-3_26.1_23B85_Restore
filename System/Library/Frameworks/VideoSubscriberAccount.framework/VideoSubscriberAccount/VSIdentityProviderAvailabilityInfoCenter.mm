@@ -3,12 +3,12 @@
 - (VSIdentityProviderAvailabilityInfoCenter)init;
 - (VSPreferences)preferences;
 - (int64_t)status;
-- (void)_accountStoreChanged:(id)a3;
-- (void)_beginStatusUpdateAttemptWithCompletionHandler:(id)a3;
+- (void)_accountStoreChanged:(id)changed;
+- (void)_beginStatusUpdateAttemptWithCompletionHandler:(id)handler;
 - (void)_sendStatusChangeNotification;
-- (void)determineIdentityProviderAvailabilityWithCompletionHandler:(id)a3;
-- (void)remoteNotifier:(id)a3 didReceiveRemoteNotificationWithUserInfo:(id)a4;
-- (void)setStatus:(int64_t)a3;
+- (void)determineIdentityProviderAvailabilityWithCompletionHandler:(id)handler;
+- (void)remoteNotifier:(id)notifier didReceiveRemoteNotificationWithUserInfo:(id)info;
+- (void)setStatus:(int64_t)status;
 @end
 
 @implementation VSIdentityProviderAvailabilityInfoCenter
@@ -37,16 +37,16 @@
 
 - (VSPreferences)preferences
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_preferences;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_preferences;
   if (!v3)
   {
     v3 = objc_alloc_init(VSPreferences);
-    objc_storeStrong(&v2->_preferences, v3);
+    objc_storeStrong(&selfCopy->_preferences, v3);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   if (!v3)
   {
@@ -89,15 +89,15 @@ VSIdentityProviderAvailabilityInfoCenter *__57__VSIdentityProviderAvailabilityIn
   return v0;
 }
 
-- (void)_accountStoreChanged:(id)a3
+- (void)_accountStoreChanged:(id)changed
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changedCopy = changed;
   v5 = VSDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = changedCopy;
     _os_log_impl(&dword_23AB8E000, v5, OS_LOG_TYPE_DEFAULT, "Account store changed: %@", &v6, 0xCu);
   }
 
@@ -114,8 +114,8 @@ VSIdentityProviderAvailabilityInfoCenter *__57__VSIdentityProviderAvailabilityIn
     _os_log_impl(&dword_23AB8E000, v3, OS_LOG_TYPE_DEFAULT, "Will send identity provider availability status change notification.", buf, 2u);
   }
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 postNotificationName:@"VSIdentityProviderAvailabilityDidChangeNotification" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"VSIdentityProviderAvailabilityDidChangeNotification" object:self];
   v5 = VSDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -124,16 +124,16 @@ VSIdentityProviderAvailabilityInfoCenter *__57__VSIdentityProviderAvailabilityIn
   }
 }
 
-- (void)_beginStatusUpdateAttemptWithCompletionHandler:(id)a3
+- (void)_beginStatusUpdateAttemptWithCompletionHandler:(id)handler
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(VSIdentityProviderAvailabilityInfoCenter *)self privateQueue];
+  handlerCopy = handler;
+  privateQueue = [(VSIdentityProviderAvailabilityInfoCenter *)self privateQueue];
   v6 = objc_alloc_init(VSDeveloperIdentityProviderFetchAllOperation);
-  v7 = [(VSIdentityProviderAvailabilityInfoCenter *)self developerServiceConnection];
-  [(VSDeveloperIdentityProviderFetchAllOperation *)v6 setConnection:v7];
+  developerServiceConnection = [(VSIdentityProviderAvailabilityInfoCenter *)self developerServiceConnection];
+  [(VSDeveloperIdentityProviderFetchAllOperation *)v6 setConnection:developerServiceConnection];
 
-  [v5 addOperation:v6];
+  [privateQueue addOperation:v6];
   v8 = @"MultipleSystemOperators";
   v9 = objc_alloc_init(VSAMSBagLoadOperation);
   [(VSAMSBagLoadOperation *)v9 setBagKey:v8];
@@ -145,7 +145,7 @@ VSIdentityProviderAvailabilityInfoCenter *__57__VSIdentityProviderAvailabilityIn
     _os_log_impl(&dword_23AB8E000, v10, OS_LOG_TYPE_DEFAULT, "Will load value for bag key %@", buf, 0xCu);
   }
 
-  [v5 addOperation:v9];
+  [privateQueue addOperation:v9];
   v11 = MEMORY[0x277CCA8C8];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -155,14 +155,14 @@ VSIdentityProviderAvailabilityInfoCenter *__57__VSIdentityProviderAvailabilityIn
   v17 = v9;
   v18 = v8;
   v19 = v6;
-  v20 = v4;
-  v12 = v4;
+  v20 = handlerCopy;
+  v12 = handlerCopy;
   v13 = v6;
   v14 = v9;
   v15 = [v11 blockOperationWithBlock:v16];
   [v15 addDependency:v13];
   [v15 addDependency:v14];
-  [v5 addOperation:v15];
+  [privateQueue addOperation:v15];
 }
 
 void __91__VSIdentityProviderAvailabilityInfoCenter__beginStatusUpdateAttemptWithCompletionHandler___block_invoke(uint64_t a1)
@@ -369,32 +369,32 @@ void __91__VSIdentityProviderAvailabilityInfoCenter__beginStatusUpdateAttemptWit
 
 - (int64_t)status
 {
-  v3 = [(VSIdentityProviderAvailabilityInfoCenter *)self preferences];
-  v4 = [v3 forcedAvailabilityStatus];
+  preferences = [(VSIdentityProviderAvailabilityInfoCenter *)self preferences];
+  forcedAvailabilityStatus = [preferences forcedAvailabilityStatus];
 
-  if (!v4)
+  if (!forcedAvailabilityStatus)
   {
     if (![(VSIdentityProviderAvailabilityInfoCenter *)self hasDeterminedInitialStatus])
     {
       [(VSIdentityProviderAvailabilityInfoCenter *)self setHasDeterminedInitialStatus:1];
-      v5 = [(VSIdentityProviderAvailabilityInfoCenter *)self preferences];
-      self->_status = [v5 cachedAvailabilityStatus];
+      preferences2 = [(VSIdentityProviderAvailabilityInfoCenter *)self preferences];
+      self->_status = [preferences2 cachedAvailabilityStatus];
     }
 
     return self->_status;
   }
 
-  return v4;
+  return forcedAvailabilityStatus;
 }
 
-- (void)setStatus:(int64_t)a3
+- (void)setStatus:(int64_t)status
 {
-  if (self->_status != a3)
+  if (self->_status != status)
   {
     [(VSIdentityProviderAvailabilityInfoCenter *)self willChangeValueForKey:@"status"];
-    self->_status = a3;
-    v6 = [(VSIdentityProviderAvailabilityInfoCenter *)self preferences];
-    [v6 setCachedAvailabilityStatus:a3];
+    self->_status = status;
+    preferences = [(VSIdentityProviderAvailabilityInfoCenter *)self preferences];
+    [preferences setCachedAvailabilityStatus:status];
 
     [(VSIdentityProviderAvailabilityInfoCenter *)self _sendStatusChangeNotification];
 
@@ -402,10 +402,10 @@ void __91__VSIdentityProviderAvailabilityInfoCenter__beginStatusUpdateAttemptWit
   }
 }
 
-- (void)determineIdentityProviderAvailabilityWithCompletionHandler:(id)a3
+- (void)determineIdentityProviderAvailabilityWithCompletionHandler:(id)handler
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = VSDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -414,7 +414,7 @@ void __91__VSIdentityProviderAvailabilityInfoCenter__beginStatusUpdateAttemptWit
     _os_log_impl(&dword_23AB8E000, v5, OS_LOG_TYPE_DEFAULT, "Entering %s", buf, 0xCu);
   }
 
-  if (!v4)
+  if (!handlerCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The completionHandler parameter must not be nil."];
   }
@@ -423,12 +423,12 @@ void __91__VSIdentityProviderAvailabilityInfoCenter__beginStatusUpdateAttemptWit
   v7[1] = 3221225472;
   v7[2] = __103__VSIdentityProviderAvailabilityInfoCenter_determineIdentityProviderAvailabilityWithCompletionHandler___block_invoke;
   v7[3] = &unk_278B74AE0;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(VSIdentityProviderAvailabilityInfoCenter *)self _beginStatusUpdateAttemptWithCompletionHandler:v7];
 }
 
-- (void)remoteNotifier:(id)a3 didReceiveRemoteNotificationWithUserInfo:(id)a4
+- (void)remoteNotifier:(id)notifier didReceiveRemoteNotificationWithUserInfo:(id)info
 {
   v5 = VSDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))

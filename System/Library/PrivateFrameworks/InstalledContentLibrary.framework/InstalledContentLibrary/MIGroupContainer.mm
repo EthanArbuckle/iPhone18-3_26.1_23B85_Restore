@@ -1,18 +1,18 @@
 @interface MIGroupContainer
-+ (id)groupContainerWithIdentifier:(id)a3 forPersona:(id)a4 createIfNeeded:(BOOL)a5 error:(id *)a6;
++ (id)groupContainerWithIdentifier:(id)identifier forPersona:(id)persona createIfNeeded:(BOOL)needed error:(id *)error;
 @end
 
 @implementation MIGroupContainer
 
-+ (id)groupContainerWithIdentifier:(id)a3 forPersona:(id)a4 createIfNeeded:(BOOL)a5 error:(id *)a6
++ (id)groupContainerWithIdentifier:(id)identifier forPersona:(id)persona createIfNeeded:(BOOL)needed error:(id *)error
 {
-  v7 = a5;
+  neededCopy = needed;
   v14 = 0;
-  v9 = a4;
-  v10 = a3;
-  v11 = [objc_opt_class() containerWithIdentifier:v10 forPersona:v9 ofContentClass:7 createIfNeeded:v7 created:&v14 error:a6];
+  personaCopy = persona;
+  identifierCopy = identifier;
+  v11 = [objc_opt_class() containerWithIdentifier:identifierCopy forPersona:personaCopy ofContentClass:7 createIfNeeded:neededCopy created:&v14 error:error];
 
-  if ([v11 makeContainerLiveWithError:a6])
+  if ([v11 makeContainerLiveWithError:error])
   {
     v12 = v11;
   }

@@ -1,73 +1,73 @@
 @interface RTFeatureExtractor
-+ (id)countKeyForFeature:(id)a3;
-+ (id)latencyKeyForFeature:(id)a3;
-+ (id)successKeyForFeature:(id)a3;
-+ (int64_t)metricCodeForFeatureExtractorOperationType:(unint64_t)a3;
-+ (void)logFeatureExtractionForFeature:(id)a3 stimulationDate:(id)a4 featureArray:(id)a5 success:(BOOL)a6 toDict:(id)a7;
-- (RTFeatureExtractor)initWithLearnedLocationManager:(id)a3 visitManager:(id)a4 locationManager:(id)a5 eventManager:(id)a6 navigationManager:(id)a7 mapsSupportManager:(id)a8 motionActivityManager:(id)a9 vehicleLocationProvider:(id)a10 visitConsolidator:(id)a11 healthKitManager:(id)a12 homeKitManager:(id)a13 tripLocationPropagator:(id)a14 metricsManager:(id)a15;
-- (id)_extractFeatures:(unint64_t)a3 operationType:(unint64_t)a4 lookbackIntervals:(id)a5 outError:(id *)a6;
-- (id)_fetchLocationOfInterestForMapItem:(id)a3 error:(id *)a4;
-- (id)_getCalendarEventsWithDateInterval:(id)a3 outError:(id *)a4;
-- (id)_getHomeKitHomesWithError:(id *)a3;
-- (id)_getLOIsUUIDsFromVisits:(id)a3;
-- (id)_getLocationHistoriesWithDateInterval:(id)a3 outError:(id *)a4;
-- (id)_getLocationsOfInterestFromVisitedLOIsUUIDs:(id)a3 includeKnownPlaceType:(BOOL)a4 outError:(id *)a5;
-- (id)_getLocationsOfInterestWithDateInterval:(id)a3 outError:(id *)a4;
-- (id)_getMapsActiveNavigationWithError:(id *)a3;
-- (id)_getMapsHistoricalNavigationsWithDateInterval:(id)a3 outError:(id *)a4;
-- (id)_getMapsViewedPlacesWithDateInterval:(id)a3 outError:(id *)a4;
-- (id)_getMotionActivitiesWithDateInterval:(id)a3 outError:(id *)a4;
-- (id)_getParkedCarWithError:(id *)a3;
-- (id)_getPropagatedLocationAtDistance:(double)a3;
-- (id)_getTransitionsWithDateInterval:(id)a3 outError:(id *)a4;
-- (id)_getVisitsWithDateInterval:(id)a3 outError:(id *)a4;
-- (id)_getWorkoutsWithDateInterval:(id)a3 outError:(id *)a4;
-- (id)extractFeaturesWithLookbackIntervals:(id)a3 operationType:(unint64_t)a4 outError:(id *)a5;
-- (void)_fetchLocationsOfInterestWithPlaceTypes:(id)a3 handler:(id)a4;
++ (id)countKeyForFeature:(id)feature;
++ (id)latencyKeyForFeature:(id)feature;
++ (id)successKeyForFeature:(id)feature;
++ (int64_t)metricCodeForFeatureExtractorOperationType:(unint64_t)type;
++ (void)logFeatureExtractionForFeature:(id)feature stimulationDate:(id)date featureArray:(id)array success:(BOOL)success toDict:(id)dict;
+- (RTFeatureExtractor)initWithLearnedLocationManager:(id)manager visitManager:(id)visitManager locationManager:(id)locationManager eventManager:(id)eventManager navigationManager:(id)navigationManager mapsSupportManager:(id)supportManager motionActivityManager:(id)activityManager vehicleLocationProvider:(id)self0 visitConsolidator:(id)self1 healthKitManager:(id)self2 homeKitManager:(id)self3 tripLocationPropagator:(id)self4 metricsManager:(id)self5;
+- (id)_extractFeatures:(unint64_t)features operationType:(unint64_t)type lookbackIntervals:(id)intervals outError:(id *)error;
+- (id)_fetchLocationOfInterestForMapItem:(id)item error:(id *)error;
+- (id)_getCalendarEventsWithDateInterval:(id)interval outError:(id *)error;
+- (id)_getHomeKitHomesWithError:(id *)error;
+- (id)_getLOIsUUIDsFromVisits:(id)visits;
+- (id)_getLocationHistoriesWithDateInterval:(id)interval outError:(id *)error;
+- (id)_getLocationsOfInterestFromVisitedLOIsUUIDs:(id)ds includeKnownPlaceType:(BOOL)type outError:(id *)error;
+- (id)_getLocationsOfInterestWithDateInterval:(id)interval outError:(id *)error;
+- (id)_getMapsActiveNavigationWithError:(id *)error;
+- (id)_getMapsHistoricalNavigationsWithDateInterval:(id)interval outError:(id *)error;
+- (id)_getMapsViewedPlacesWithDateInterval:(id)interval outError:(id *)error;
+- (id)_getMotionActivitiesWithDateInterval:(id)interval outError:(id *)error;
+- (id)_getParkedCarWithError:(id *)error;
+- (id)_getPropagatedLocationAtDistance:(double)distance;
+- (id)_getTransitionsWithDateInterval:(id)interval outError:(id *)error;
+- (id)_getVisitsWithDateInterval:(id)interval outError:(id *)error;
+- (id)_getWorkoutsWithDateInterval:(id)interval outError:(id *)error;
+- (id)extractFeaturesWithLookbackIntervals:(id)intervals operationType:(unint64_t)type outError:(id *)error;
+- (void)_fetchLocationsOfInterestWithPlaceTypes:(id)types handler:(id)handler;
 - (void)_setup;
-- (void)_shutdownWithHandler:(id)a3;
-- (void)_submitMetrics:(id)a3;
-- (void)onNotification:(id)a3;
+- (void)_shutdownWithHandler:(id)handler;
+- (void)_submitMetrics:(id)metrics;
+- (void)onNotification:(id)notification;
 @end
 
 @implementation RTFeatureExtractor
 
-- (RTFeatureExtractor)initWithLearnedLocationManager:(id)a3 visitManager:(id)a4 locationManager:(id)a5 eventManager:(id)a6 navigationManager:(id)a7 mapsSupportManager:(id)a8 motionActivityManager:(id)a9 vehicleLocationProvider:(id)a10 visitConsolidator:(id)a11 healthKitManager:(id)a12 homeKitManager:(id)a13 tripLocationPropagator:(id)a14 metricsManager:(id)a15
+- (RTFeatureExtractor)initWithLearnedLocationManager:(id)manager visitManager:(id)visitManager locationManager:(id)locationManager eventManager:(id)eventManager navigationManager:(id)navigationManager mapsSupportManager:(id)supportManager motionActivityManager:(id)activityManager vehicleLocationProvider:(id)self0 visitConsolidator:(id)self1 healthKitManager:(id)self2 homeKitManager:(id)self3 tripLocationPropagator:(id)self4 metricsManager:(id)self5
 {
-  v39 = a3;
-  v38 = a4;
-  v29 = a5;
-  v37 = a5;
-  v30 = a6;
-  v36 = a6;
-  v35 = a7;
-  v34 = a8;
-  v33 = a9;
-  v32 = a10;
-  v20 = a11;
-  v21 = a12;
-  v22 = a13;
-  v23 = a14;
-  v24 = a15;
+  managerCopy = manager;
+  visitManagerCopy = visitManager;
+  locationManagerCopy = locationManager;
+  locationManagerCopy2 = locationManager;
+  eventManagerCopy = eventManager;
+  eventManagerCopy2 = eventManager;
+  navigationManagerCopy = navigationManager;
+  supportManagerCopy = supportManager;
+  activityManagerCopy = activityManager;
+  providerCopy = provider;
+  consolidatorCopy = consolidator;
+  kitManagerCopy = kitManager;
+  homeKitManagerCopy = homeKitManager;
+  propagatorCopy = propagator;
+  metricsManagerCopy = metricsManager;
   v40.receiver = self;
   v40.super_class = RTFeatureExtractor;
   v25 = [(RTNotifier *)&v40 init];
   v26 = v25;
   if (v25)
   {
-    objc_storeStrong(&v25->_learnedLocationManager, a3);
-    objc_storeStrong(&v26->_visitManager, a4);
-    objc_storeStrong(&v26->_locationManager, v29);
-    objc_storeStrong(&v26->_eventManager, v30);
-    objc_storeStrong(&v26->_navigationManager, a7);
-    objc_storeStrong(&v26->_mapsSupportManager, a8);
-    objc_storeStrong(&v26->_motionActivityManager, a9);
-    objc_storeStrong(&v26->_vehicleLocationProvider, a10);
-    objc_storeStrong(&v26->_visitConsolidator, a11);
-    objc_storeStrong(&v26->_healthKitManager, a12);
-    objc_storeStrong(&v26->_homeKitManager, a13);
-    objc_storeStrong(&v26->_tripLocationPropagator, a14);
-    objc_storeStrong(&v26->_metricsManager, a15);
+    objc_storeStrong(&v25->_learnedLocationManager, manager);
+    objc_storeStrong(&v26->_visitManager, visitManager);
+    objc_storeStrong(&v26->_locationManager, locationManagerCopy);
+    objc_storeStrong(&v26->_eventManager, eventManagerCopy);
+    objc_storeStrong(&v26->_navigationManager, navigationManager);
+    objc_storeStrong(&v26->_mapsSupportManager, supportManager);
+    objc_storeStrong(&v26->_motionActivityManager, activityManager);
+    objc_storeStrong(&v26->_vehicleLocationProvider, provider);
+    objc_storeStrong(&v26->_visitConsolidator, consolidator);
+    objc_storeStrong(&v26->_healthKitManager, kitManager);
+    objc_storeStrong(&v26->_homeKitManager, homeKitManager);
+    objc_storeStrong(&v26->_tripLocationPropagator, propagator);
+    objc_storeStrong(&v26->_metricsManager, metricsManager);
   }
 
   [(RTService *)v26 setup];
@@ -75,10 +75,10 @@
   return v26;
 }
 
-- (void)onNotification:(id)a3
+- (void)onNotification:(id)notification
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityPredictedContext);
@@ -88,7 +88,7 @@
       v7 = 138412546;
       v8 = v6;
       v9 = 2112;
-      v10 = v4;
+      v10 = notificationCopy;
       _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "%@, notification, %@", &v7, 0x16u);
     }
   }
@@ -96,27 +96,27 @@
 
 - (void)_setup
 {
-  v4 = [(RTFeatureExtractor *)self navigationManager];
+  navigationManager = [(RTFeatureExtractor *)self navigationManager];
   v3 = +[(RTNotification *)RTNavigationManagerRouteSummaryNotification];
-  [v4 addObserver:self selector:sel_onNotification_ name:v3];
+  [navigationManager addObserver:self selector:sel_onNotification_ name:v3];
 }
 
-- (void)_shutdownWithHandler:(id)a3
+- (void)_shutdownWithHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
-    (*(a3 + 2))(a3, 0);
+    (*(handler + 2))(handler, 0);
   }
 }
 
-- (void)_submitMetrics:(id)a3
+- (void)_submitMetrics:(id)metrics
 {
   v21 = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CBEAA8];
-  v6 = a3;
+  metricsCopy = metrics;
   v7 = [v5 now];
-  v8 = [(RTFeatureExtractor *)self metricsManager];
-  [v8 submitFeatureExtractorMetrics:v6];
+  metricsManager = [(RTFeatureExtractor *)self metricsManager];
+  [metricsManager submitFeatureExtractorMetrics:metricsCopy];
 
   v9 = [MEMORY[0x277CBEAA8] now];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -139,27 +139,27 @@
   }
 }
 
-- (id)extractFeaturesWithLookbackIntervals:(id)a3 operationType:(unint64_t)a4 outError:(id *)a5
+- (id)extractFeaturesWithLookbackIntervals:(id)intervals operationType:(unint64_t)type outError:(id *)error
 {
-  v8 = a3;
+  intervalsCopy = intervals;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
   v21 = __Block_byref_object_copy__175;
   v22 = __Block_byref_object_dispose__175;
   v23 = 0;
-  v9 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __82__RTFeatureExtractor_extractFeaturesWithLookbackIntervals_operationType_outError___block_invoke;
   block[3] = &unk_2788D1EA8;
   v15 = &v18;
-  v16 = a4;
+  typeCopy = type;
   block[4] = self;
-  v14 = v8;
-  v17 = a5;
-  v10 = v8;
-  dispatch_sync(v9, block);
+  v14 = intervalsCopy;
+  errorCopy = error;
+  v10 = intervalsCopy;
+  dispatch_sync(queue, block);
 
   v11 = v19[5];
   _Block_object_dispose(&v18, 8);
@@ -185,22 +185,22 @@ void __82__RTFeatureExtractor_extractFeaturesWithLookbackIntervals_operationType
   }
 }
 
-- (id)_extractFeatures:(unint64_t)a3 operationType:(unint64_t)a4 lookbackIntervals:(id)a5 outError:(id *)a6
+- (id)_extractFeatures:(unint64_t)features operationType:(unint64_t)type lookbackIntervals:(id)intervals outError:(id *)error
 {
   v116[1] = *MEMORY[0x277D85DE8];
-  v93 = a5;
-  v9 = [MEMORY[0x277CBEB38] dictionary];
-  v10 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(objc_opt_class(), "metricCodeForFeatureExtractorOperationType:", a4)}];
-  [v9 setObject:v10 forKeyedSubscript:@"featureExtractorReason"];
+  intervalsCopy = intervals;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v10 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(objc_opt_class(), "metricCodeForFeatureExtractorOperationType:", type)}];
+  [dictionary setObject:v10 forKeyedSubscript:@"featureExtractorReason"];
 
-  v11 = [MEMORY[0x277CBEB18] array];
-  v12 = [MEMORY[0x277CBEAA8] date];
+  array = [MEMORY[0x277CBEB18] array];
+  date = [MEMORY[0x277CBEAA8] date];
   v13 = objc_alloc_init(MEMORY[0x277D3F870]);
-  [v12 timeIntervalSinceReferenceDate];
+  [date timeIntervalSinceReferenceDate];
   [v13 setCurrentTimeCFAbsolute:?];
-  v89 = [MEMORY[0x277CBEBB0] localTimeZone];
-  v14 = [v89 abbreviation];
-  [v13 setCurrentTimeZoneAbbreviation:v14];
+  localTimeZone = [MEMORY[0x277CBEBB0] localTimeZone];
+  abbreviation = [localTimeZone abbreviation];
+  [v13 setCurrentTimeZoneAbbreviation:abbreviation];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
@@ -210,23 +210,23 @@ void __82__RTFeatureExtractor_extractFeaturesWithLookbackIntervals_operationType
       v16 = NSStringFromSelector(a2);
       [v13 currentTimeCFAbsolute];
       v18 = v17;
-      v19 = [v13 currentTimeZoneAbbreviation];
+      currentTimeZoneAbbreviation = [v13 currentTimeZoneAbbreviation];
       *buf = 138412802;
       v108 = v16;
       v109 = 2048;
       v110 = v18;
       v111 = 2112;
-      v112 = v19;
+      v112 = currentTimeZoneAbbreviation;
       _os_log_impl(&dword_2304B3000, v15, OS_LOG_TYPE_INFO, "%@, currentTimeCFAbsolute, %.2f, currentTimeZoneAbbreviation, %@", buf, 0x20u);
     }
   }
 
   v94 = v13;
-  v90 = v12;
-  if ((a3 & 1) == 0)
+  v90 = date;
+  if ((features & 1) == 0)
   {
     v92 = 0;
-    if ((a3 & 2) == 0)
+    if ((features & 2) == 0)
     {
       goto LABEL_14;
     }
@@ -234,56 +234,56 @@ void __82__RTFeatureExtractor_extractFeaturesWithLookbackIntervals_operationType
     goto LABEL_11;
   }
 
-  v20 = [MEMORY[0x277CBEAA8] date];
-  v21 = [v93 objectForKeyedSubscript:&unk_2845A02C0];
+  date2 = [MEMORY[0x277CBEAA8] date];
+  v21 = [intervalsCopy objectForKeyedSubscript:&unk_2845A02C0];
   v106 = 0;
   v22 = [(RTFeatureExtractor *)self _getVisitsWithDateInterval:v21 outError:&v106];
   v23 = v106;
   v92 = [(RTFeatureExtractor *)self _getLOIsUUIDsFromVisits:v22];
   if (v23)
   {
-    [v11 addObject:v23];
+    [array addObject:v23];
   }
 
   [v13 setVisits:v22];
-  [objc_opt_class() logFeatureExtractionForFeature:@"visits" stimulationDate:v20 featureArray:v22 success:v23 == 0 toDict:v9];
+  [objc_opt_class() logFeatureExtractionForFeature:@"visits" stimulationDate:date2 featureArray:v22 success:v23 == 0 toDict:dictionary];
 
-  if ((a3 & 2) != 0)
+  if ((features & 2) != 0)
   {
 LABEL_11:
-    v24 = [MEMORY[0x277CBEAA8] date];
+    date3 = [MEMORY[0x277CBEAA8] date];
     v105 = 0;
-    v25 = [(RTFeatureExtractor *)self _getLocationsOfInterestFromVisitedLOIsUUIDs:v92 includeKnownPlaceType:(a3 >> 10) & 1 outError:&v105];
+    v25 = [(RTFeatureExtractor *)self _getLocationsOfInterestFromVisitedLOIsUUIDs:v92 includeKnownPlaceType:(features >> 10) & 1 outError:&v105];
     v26 = v105;
     if (v26)
     {
-      [v11 addObject:v26];
+      [array addObject:v26];
     }
 
     [v13 setLocationOfInterests:v25];
-    [objc_opt_class() logFeatureExtractionForFeature:@"LocationsOfInterest" stimulationDate:v24 featureArray:v25 success:v26 == 0 toDict:v9];
+    [objc_opt_class() logFeatureExtractionForFeature:@"LocationsOfInterest" stimulationDate:date3 featureArray:v25 success:v26 == 0 toDict:dictionary];
   }
 
 LABEL_14:
-  if ((a3 & 4) != 0)
+  if ((features & 4) != 0)
   {
-    v27 = [MEMORY[0x277CBEAA8] date];
-    v28 = [v93 objectForKeyedSubscript:&unk_2845A02D8];
+    date4 = [MEMORY[0x277CBEAA8] date];
+    v28 = [intervalsCopy objectForKeyedSubscript:&unk_2845A02D8];
     v104 = 0;
     v29 = [(RTFeatureExtractor *)self _getLocationHistoriesWithDateInterval:v28 outError:&v104];
     v30 = v104;
     if (v30)
     {
-      [v11 addObject:v30];
+      [array addObject:v30];
     }
 
     [v13 setLocationHistorys:v29];
-    [objc_opt_class() logFeatureExtractionForFeature:@"Location History" stimulationDate:v27 featureArray:v29 success:v30 == 0 toDict:v9];
+    [objc_opt_class() logFeatureExtractionForFeature:@"Location History" stimulationDate:date4 featureArray:v29 success:v30 == 0 toDict:dictionary];
 
-    if ((a3 & 0x80) == 0)
+    if ((features & 0x80) == 0)
     {
 LABEL_16:
-      if ((a3 & 0x20) == 0)
+      if ((features & 0x20) == 0)
       {
         goto LABEL_17;
       }
@@ -292,28 +292,28 @@ LABEL_16:
     }
   }
 
-  else if ((a3 & 0x80) == 0)
+  else if ((features & 0x80) == 0)
   {
     goto LABEL_16;
   }
 
-  v31 = [MEMORY[0x277CBEAA8] date];
-  v32 = [v93 objectForKeyedSubscript:&unk_2845A02F0];
+  date5 = [MEMORY[0x277CBEAA8] date];
+  v32 = [intervalsCopy objectForKeyedSubscript:&unk_2845A02F0];
   v103 = 0;
   v33 = [(RTFeatureExtractor *)self _getMotionActivitiesWithDateInterval:v32 outError:&v103];
   v34 = v103;
   if (v34)
   {
-    [v11 addObject:v34];
+    [array addObject:v34];
   }
 
   [v13 setMotionActivitys:v33];
-  [objc_opt_class() logFeatureExtractionForFeature:@"Motion History" stimulationDate:v31 featureArray:v33 success:v34 == 0 toDict:v9];
+  [objc_opt_class() logFeatureExtractionForFeature:@"Motion History" stimulationDate:date5 featureArray:v33 success:v34 == 0 toDict:dictionary];
 
-  if ((a3 & 0x20) == 0)
+  if ((features & 0x20) == 0)
   {
 LABEL_17:
-    if ((a3 & 0x10) == 0)
+    if ((features & 0x10) == 0)
     {
       goto LABEL_18;
     }
@@ -322,23 +322,23 @@ LABEL_17:
   }
 
 LABEL_27:
-  v35 = [MEMORY[0x277CBEAA8] date];
-  v36 = [v93 objectForKeyedSubscript:&unk_2845A0308];
+  date6 = [MEMORY[0x277CBEAA8] date];
+  v36 = [intervalsCopy objectForKeyedSubscript:&unk_2845A0308];
   v102 = 0;
   v37 = [(RTFeatureExtractor *)self _getCalendarEventsWithDateInterval:v36 outError:&v102];
   v38 = v102;
   if (v38)
   {
-    [v11 addObject:v38];
+    [array addObject:v38];
   }
 
   [v13 setCalendarEvents:v37];
-  [objc_opt_class() logFeatureExtractionForFeature:@"calendar" stimulationDate:v35 featureArray:v37 success:v38 == 0 toDict:v9];
+  [objc_opt_class() logFeatureExtractionForFeature:@"calendar" stimulationDate:date6 featureArray:v37 success:v38 == 0 toDict:dictionary];
 
-  if ((a3 & 0x10) == 0)
+  if ((features & 0x10) == 0)
   {
 LABEL_18:
-    if ((a3 & 8) == 0)
+    if ((features & 8) == 0)
     {
       goto LABEL_19;
     }
@@ -347,16 +347,16 @@ LABEL_18:
   }
 
 LABEL_30:
-  v39 = [MEMORY[0x277CBEAA8] date];
+  date7 = [MEMORY[0x277CBEAA8] date];
   v101 = 0;
   v40 = [(RTFeatureExtractor *)self _getMapsActiveNavigationWithError:&v101];
   v41 = v101;
   if (v41)
   {
-    [v11 addObject:v41];
+    [array addObject:v41];
   }
 
-  v88 = v11;
+  v88 = array;
   [v13 setMapsActiveNavigation:v40];
   v85 = v40;
   if (v40)
@@ -372,42 +372,42 @@ LABEL_30:
 
   v84 = v41;
   v83 = v42;
-  [objc_opt_class() logFeatureExtractionForFeature:@"mapsActiveNavigation" stimulationDate:v39 featureArray:v42 success:v41 == 0 toDict:v9];
-  v43 = [MEMORY[0x277CBEAA8] date];
+  [objc_opt_class() logFeatureExtractionForFeature:@"mapsActiveNavigation" stimulationDate:date7 featureArray:v42 success:v41 == 0 toDict:dictionary];
+  date8 = [MEMORY[0x277CBEAA8] date];
 
-  v44 = [v93 objectForKeyedSubscript:&unk_2845A0320];
+  v44 = [intervalsCopy objectForKeyedSubscript:&unk_2845A0320];
   v100 = 0;
   v45 = [(RTFeatureExtractor *)self _getMapsHistoricalNavigationsWithDateInterval:v44 outError:&v100];
   v46 = v100;
   if (v46)
   {
-    [v11 addObject:v46];
+    [array addObject:v46];
   }
 
   [v94 setMapsHistoricalNavigations:v45];
   v82 = v45;
-  [objc_opt_class() logFeatureExtractionForFeature:@"mapsHistoricalNavigation" stimulationDate:v43 featureArray:v45 success:v46 == 0 toDict:v9];
-  v47 = [MEMORY[0x277CBEAA8] date];
+  [objc_opt_class() logFeatureExtractionForFeature:@"mapsHistoricalNavigation" stimulationDate:date8 featureArray:v45 success:v46 == 0 toDict:dictionary];
+  date9 = [MEMORY[0x277CBEAA8] date];
 
   v99 = 0;
   v48 = [(RTFeatureExtractor *)self _getMapsViewedPlacesWithDateInterval:v44 outError:&v99];
   v49 = v99;
   if (v49)
   {
-    [v11 addObject:v49];
+    [array addObject:v49];
   }
 
   [v94 setMapsViewedPlaces:v48];
-  v86 = v9;
-  [objc_opt_class() logFeatureExtractionForFeature:@"mapsViewedPlaces" stimulationDate:v47 featureArray:v48 success:v49 == 0 toDict:v9];
-  v50 = [MEMORY[0x277CBEAA8] date];
+  v86 = dictionary;
+  [objc_opt_class() logFeatureExtractionForFeature:@"mapsViewedPlaces" stimulationDate:date9 featureArray:v48 success:v49 == 0 toDict:dictionary];
+  date10 = [MEMORY[0x277CBEAA8] date];
 
   v98 = 0;
   v51 = [(RTFeatureExtractor *)self _getParkedCarWithError:&v98];
   v52 = v98;
   if (v52)
   {
-    [v11 addObject:v52];
+    [array addObject:v52];
   }
 
   [v94 setParkedCar:v51];
@@ -422,15 +422,15 @@ LABEL_30:
     v53 = MEMORY[0x277CBEBF8];
   }
 
-  [objc_opt_class() logFeatureExtractionForFeature:@"parkedCar" stimulationDate:v50 featureArray:v53 success:v52 == 0 toDict:v86];
+  [objc_opt_class() logFeatureExtractionForFeature:@"parkedCar" stimulationDate:date10 featureArray:v53 success:v52 == 0 toDict:v86];
 
-  v9 = v86;
-  v11 = v88;
-  v12 = v90;
-  if ((a3 & 8) == 0)
+  dictionary = v86;
+  array = v88;
+  date = v90;
+  if ((features & 8) == 0)
   {
 LABEL_19:
-    if ((a3 & 0x40) == 0)
+    if ((features & 0x40) == 0)
     {
       goto LABEL_51;
     }
@@ -439,74 +439,74 @@ LABEL_19:
   }
 
 LABEL_45:
-  v54 = [MEMORY[0x277CBEAA8] date];
-  v55 = [v93 objectForKeyedSubscript:&unk_2845A0338];
+  date11 = [MEMORY[0x277CBEAA8] date];
+  v55 = [intervalsCopy objectForKeyedSubscript:&unk_2845A0338];
   v97 = 0;
   v56 = [(RTFeatureExtractor *)self _getWorkoutsWithDateInterval:v55 outError:&v97];
   v57 = v97;
   if (v57)
   {
-    [v11 addObject:v57];
+    [array addObject:v57];
   }
 
   [v94 setWorkouts:v56];
-  [objc_opt_class() logFeatureExtractionForFeature:@"Workouts" stimulationDate:v54 featureArray:v56 success:v57 == 0 toDict:v9];
+  [objc_opt_class() logFeatureExtractionForFeature:@"Workouts" stimulationDate:date11 featureArray:v56 success:v57 == 0 toDict:dictionary];
 
-  if ((a3 & 0x40) != 0)
+  if ((features & 0x40) != 0)
   {
 LABEL_48:
-    v58 = [MEMORY[0x277CBEAA8] date];
-    v59 = [v93 objectForKeyedSubscript:&unk_2845A0350];
+    date12 = [MEMORY[0x277CBEAA8] date];
+    v59 = [intervalsCopy objectForKeyedSubscript:&unk_2845A0350];
     v96 = 0;
     v60 = [(RTFeatureExtractor *)self _getTransitionsWithDateInterval:v59 outError:&v96];
     v61 = v96;
     if (v61)
     {
-      [v11 addObject:v61];
+      [array addObject:v61];
     }
 
     [v94 setTransitions:v60];
-    [objc_opt_class() logFeatureExtractionForFeature:@"Transitions" stimulationDate:v58 featureArray:v60 success:v61 == 0 toDict:v9];
+    [objc_opt_class() logFeatureExtractionForFeature:@"Transitions" stimulationDate:date12 featureArray:v60 success:v61 == 0 toDict:dictionary];
   }
 
 LABEL_51:
-  if ((a3 & 0x100) != 0)
+  if ((features & 0x100) != 0)
   {
-    v62 = [MEMORY[0x277CBEAA8] date];
+    date13 = [MEMORY[0x277CBEAA8] date];
     v95 = 0;
     v63 = [(RTFeatureExtractor *)self _getHomeKitHomesWithError:&v95];
     v64 = v95;
     if (v64)
     {
-      [v11 addObject:v64];
+      [array addObject:v64];
     }
 
     [v94 setHomeKitHomes:v63];
-    [objc_opt_class() logFeatureExtractionForFeature:@"HomeKitHomes" stimulationDate:v62 featureArray:v63 success:v64 == 0 toDict:v9];
+    [objc_opt_class() logFeatureExtractionForFeature:@"HomeKitHomes" stimulationDate:date13 featureArray:v63 success:v64 == 0 toDict:dictionary];
   }
 
-  if ((~a3 & 0x201) == 0)
+  if ((~features & 0x201) == 0)
   {
-    v65 = [v94 visits];
-    v66 = [v65 lastObject];
-    [v66 entryTimeCFAbsolute];
+    visits = [v94 visits];
+    lastObject = [visits lastObject];
+    [lastObject entryTimeCFAbsolute];
     if (v67 == 0.0)
     {
     }
 
     else
     {
-      v68 = [v94 visits];
-      v69 = [v68 lastObject];
-      [v69 exitTimeCFAbsolute];
+      visits2 = [v94 visits];
+      lastObject2 = [visits2 lastObject];
+      [lastObject2 exitTimeCFAbsolute];
       v71 = v70;
 
       if (v71 != 0.0)
       {
-        v72 = [MEMORY[0x277CBEAA8] date];
+        date14 = [MEMORY[0x277CBEAA8] date];
         v73 = [(RTFeatureExtractor *)self _getPropagatedLocationAtDistance:2000.0];
         [v94 setPropagatedLocations:v73];
-        [objc_opt_class() logFeatureExtractionForFeature:@"PropagatedLocations" stimulationDate:v72 featureArray:v73 success:v73 != 0 toDict:v9];
+        [objc_opt_class() logFeatureExtractionForFeature:@"PropagatedLocations" stimulationDate:date14 featureArray:v73 success:v73 != 0 toDict:dictionary];
         goto LABEL_63;
       }
     }
@@ -516,8 +516,8 @@ LABEL_51:
       goto LABEL_65;
     }
 
-    v72 = _rt_log_facility_get_os_log(RTLogFacilityPredictedContext);
-    if (!os_log_type_enabled(v72, OS_LOG_TYPE_INFO))
+    date14 = _rt_log_facility_get_os_log(RTLogFacilityPredictedContext);
+    if (!os_log_type_enabled(date14, OS_LOG_TYPE_INFO))
     {
       goto LABEL_64;
     }
@@ -525,7 +525,7 @@ LABEL_51:
     v73 = NSStringFromSelector(a2);
     *buf = 138412290;
     v108 = v73;
-    _os_log_impl(&dword_2304B3000, v72, OS_LOG_TYPE_INFO, "%@, Device not in transit, we will not fetch the propogated locations", buf, 0xCu);
+    _os_log_impl(&dword_2304B3000, date14, OS_LOG_TYPE_INFO, "%@, Device not in transit, we will not fetch the propogated locations", buf, 0xCu);
 LABEL_63:
 
 LABEL_64:
@@ -538,8 +538,8 @@ LABEL_65:
     if (os_log_type_enabled(v74, OS_LOG_TYPE_INFO))
     {
       v75 = NSStringFromSelector(a2);
-      v76 = [MEMORY[0x277CBEAA8] date];
-      [v76 timeIntervalSinceDate:v12];
+      date15 = [MEMORY[0x277CBEAA8] date];
+      [date15 timeIntervalSinceDate:date];
       v78 = v77;
       +[RTRuntime footprint];
       *buf = 138413058;
@@ -549,31 +549,31 @@ LABEL_65:
       v111 = 2048;
       v112 = v79;
       v113 = 2112;
-      v114 = v11;
+      v114 = array;
       _os_log_impl(&dword_2304B3000, v74, OS_LOG_TYPE_INFO, "%@, finished, latency, %.2f, footprint, %.4f MB, error(s), %@", buf, 0x2Au);
     }
   }
 
-  [(RTFeatureExtractor *)self _submitMetrics:v9];
-  if (a6)
+  [(RTFeatureExtractor *)self _submitMetrics:dictionary];
+  if (error)
   {
     v80 = _RTSafeArray();
-    *a6 = _RTMultiErrorCreate();
+    *error = _RTMultiErrorCreate();
   }
 
   return v94;
 }
 
-- (id)_getLOIsUUIDsFromVisits:(id)a3
+- (id)_getLOIsUUIDsFromVisits:(id)visits
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  visitsCopy = visits;
   v4 = [MEMORY[0x277CBEB58] set];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = visitsCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -589,13 +589,13 @@ LABEL_65:
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v10 loiIdentifier];
+        loiIdentifier = [v10 loiIdentifier];
 
-        if (v11)
+        if (loiIdentifier)
         {
           v12 = objc_alloc(MEMORY[0x277CCAD78]);
-          v13 = [v10 loiIdentifier];
-          v14 = [v12 initWithUUIDBytes:{objc_msgSend(v13, "bytes")}];
+          loiIdentifier2 = [v10 loiIdentifier];
+          v14 = [v12 initWithUUIDBytes:{objc_msgSend(loiIdentifier2, "bytes")}];
 
           [v4 addObject:v14];
         }
@@ -610,44 +610,44 @@ LABEL_65:
   return v4;
 }
 
-+ (void)logFeatureExtractionForFeature:(id)a3 stimulationDate:(id)a4 featureArray:(id)a5 success:(BOOL)a6 toDict:(id)a7
++ (void)logFeatureExtractionForFeature:(id)feature stimulationDate:(id)date featureArray:(id)array success:(BOOL)success toDict:(id)dict
 {
-  v8 = a6;
+  successCopy = success;
   v51 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a5;
-  v14 = a7;
+  featureCopy = feature;
+  arrayCopy = array;
+  dictCopy = dict;
   v15 = MEMORY[0x277CBEAA8];
-  v16 = a4;
-  v17 = [v15 date];
-  [v17 timeIntervalSinceDate:v16];
+  dateCopy = date;
+  date = [v15 date];
+  [date timeIntervalSinceDate:dateCopy];
   v19 = v18;
 
-  v20 = [v13 count];
-  v21 = [a1 countKeyForFeature:v12];
-  v22 = [a1 latencyKeyForFeature:v12];
-  v23 = [a1 successKeyForFeature:v12];
+  v20 = [arrayCopy count];
+  v21 = [self countKeyForFeature:featureCopy];
+  v22 = [self latencyKeyForFeature:featureCopy];
+  v23 = [self successKeyForFeature:featureCopy];
   if (v21)
   {
     v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v20];
-    [v14 setObject:v24 forKeyedSubscript:v21];
+    [dictCopy setObject:v24 forKeyedSubscript:v21];
   }
 
   if (v22)
   {
     v25 = [MEMORY[0x277CCABB0] numberWithDouble:v19];
-    [v14 setObject:v25 forKeyedSubscript:v22];
+    [dictCopy setObject:v25 forKeyedSubscript:v22];
   }
 
   if (v23)
   {
-    v26 = [MEMORY[0x277CCABB0] numberWithBool:v8];
-    [v14 setObject:v26 forKeyedSubscript:v23];
+    v26 = [MEMORY[0x277CCABB0] numberWithBool:successCopy];
+    [dictCopy setObject:v26 forKeyedSubscript:v23];
   }
 
-  v42 = v14;
-  v27 = [v13 firstObject];
-  v28 = [v27 description];
+  v42 = dictCopy;
+  firstObject = [arrayCopy firstObject];
+  v28 = [firstObject description];
   v29 = v28;
   if (v28)
   {
@@ -661,8 +661,8 @@ LABEL_65:
 
   v31 = v30;
 
-  v32 = [v13 lastObject];
-  v33 = [v32 description];
+  lastObject = [arrayCopy lastObject];
+  v33 = [lastObject description];
   v34 = v33;
   if (v33)
   {
@@ -684,7 +684,7 @@ LABEL_65:
     if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
     {
       *buf = 138413058;
-      v44 = v12;
+      v44 = featureCopy;
       v45 = 2048;
       v46 = v41;
       v47 = 2048;
@@ -701,7 +701,7 @@ LABEL_65:
     if (os_log_type_enabled(v40, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412802;
-      v44 = v12;
+      v44 = featureCopy;
       v45 = 2112;
       v46 = v31;
       v47 = 2112;
@@ -711,10 +711,10 @@ LABEL_65:
   }
 }
 
-+ (id)countKeyForFeature:(id)a3
++ (id)countKeyForFeature:(id)feature
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"visits"])
+  featureCopy = feature;
+  if ([featureCopy isEqualToString:@"visits"])
   {
     v4 = kRTPredictedContextMetricsKeyVisitCount;
 LABEL_27:
@@ -722,73 +722,73 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  if ([v3 isEqualToString:@"LocationsOfInterest"])
+  if ([featureCopy isEqualToString:@"LocationsOfInterest"])
   {
     v4 = kRTPredictedContextMetricsKeyLocationOfInterestCount;
     goto LABEL_27;
   }
 
-  if ([v3 isEqualToString:@"Location History"])
+  if ([featureCopy isEqualToString:@"Location History"])
   {
     v4 = kRTPredictedContextMetricsKeyLocationsCount;
     goto LABEL_27;
   }
 
-  if ([v3 isEqualToString:@"Motion History"])
+  if ([featureCopy isEqualToString:@"Motion History"])
   {
     v4 = kRTPredictedContextMetricsKeyMotionActivitiesCount;
     goto LABEL_27;
   }
 
-  if ([v3 isEqualToString:@"calendar"])
+  if ([featureCopy isEqualToString:@"calendar"])
   {
     v4 = kRTPredictedContextMetricsKeyCalendarEventsCount;
     goto LABEL_27;
   }
 
-  if ([v3 isEqualToString:@"mapsActiveNavigation"])
+  if ([featureCopy isEqualToString:@"mapsActiveNavigation"])
   {
     v4 = kRTPredictedContextMetricsKeyMapsActiveNavigationCount;
     goto LABEL_27;
   }
 
-  if ([v3 isEqualToString:@"mapsViewedPlaces"])
+  if ([featureCopy isEqualToString:@"mapsViewedPlaces"])
   {
     v4 = kRTPredictedContextMetricsKeyMapsViewedPlacesCount;
     goto LABEL_27;
   }
 
-  if ([v3 isEqualToString:@"mapsHistoricalNavigation"])
+  if ([featureCopy isEqualToString:@"mapsHistoricalNavigation"])
   {
     v4 = kRTPredictedContextMetricsKeyMapsHistoricalNavigationCount;
     goto LABEL_27;
   }
 
-  if ([v3 isEqualToString:@"parkedCar"])
+  if ([featureCopy isEqualToString:@"parkedCar"])
   {
     v4 = kRTPredictedContextMetricsKeyParkedCarCount;
     goto LABEL_27;
   }
 
-  if ([v3 isEqualToString:@"Workouts"])
+  if ([featureCopy isEqualToString:@"Workouts"])
   {
     v4 = kRTPredictedContextMetricsKeyWorkoutsCount;
     goto LABEL_27;
   }
 
-  if ([v3 isEqualToString:@"Transitions"])
+  if ([featureCopy isEqualToString:@"Transitions"])
   {
     v4 = kRTPredictedContextMetricsKeyTransitionsCount;
     goto LABEL_27;
   }
 
-  if ([v3 isEqualToString:@"HomeKitHomes"])
+  if ([featureCopy isEqualToString:@"HomeKitHomes"])
   {
     v4 = kRTPredictedContextMetricsKeyHomeKitHomesCount;
     goto LABEL_27;
   }
 
-  if ([v3 isEqualToString:@"PropagatedLocations"])
+  if ([featureCopy isEqualToString:@"PropagatedLocations"])
   {
     v4 = kRTPredictedContextMetricsKeyPropagatedLocationsCount;
     goto LABEL_27;
@@ -800,10 +800,10 @@ LABEL_28:
   return v5;
 }
 
-+ (id)latencyKeyForFeature:(id)a3
++ (id)latencyKeyForFeature:(id)feature
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"visits"])
+  featureCopy = feature;
+  if ([featureCopy isEqualToString:@"visits"])
   {
     v4 = kRTPredictedContextMetricsKeyVisitLatency;
 LABEL_27:
@@ -811,73 +811,73 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  if ([v3 isEqualToString:@"LocationsOfInterest"])
+  if ([featureCopy isEqualToString:@"LocationsOfInterest"])
   {
     v4 = kRTPredictedContextMetricsKeyLocationOfInterestLatency;
     goto LABEL_27;
   }
 
-  if ([v3 isEqualToString:@"Location History"])
+  if ([featureCopy isEqualToString:@"Location History"])
   {
     v4 = kRTPredictedContextMetricsKeyLocationLatency;
     goto LABEL_27;
   }
 
-  if ([v3 isEqualToString:@"Motion History"])
+  if ([featureCopy isEqualToString:@"Motion History"])
   {
     v4 = kRTPredictedContextMetricsKeyMotionActivitiesLatency;
     goto LABEL_27;
   }
 
-  if ([v3 isEqualToString:@"calendar"])
+  if ([featureCopy isEqualToString:@"calendar"])
   {
     v4 = kRTPredictedContextMetricsKeyCalendarEventsLatency;
     goto LABEL_27;
   }
 
-  if ([v3 isEqualToString:@"mapsActiveNavigation"])
+  if ([featureCopy isEqualToString:@"mapsActiveNavigation"])
   {
     v4 = kRTPredictedContextMetricsKeyMapsActiveNavigationLatency;
     goto LABEL_27;
   }
 
-  if ([v3 isEqualToString:@"mapsViewedPlaces"])
+  if ([featureCopy isEqualToString:@"mapsViewedPlaces"])
   {
     v4 = kRTPredictedContextMetricsKeyMapsViewedPlacesLatency;
     goto LABEL_27;
   }
 
-  if ([v3 isEqualToString:@"mapsHistoricalNavigation"])
+  if ([featureCopy isEqualToString:@"mapsHistoricalNavigation"])
   {
     v4 = kRTPredictedContextMetricsKeyMapsHistoricalNavigationLatency;
     goto LABEL_27;
   }
 
-  if ([v3 isEqualToString:@"parkedCar"])
+  if ([featureCopy isEqualToString:@"parkedCar"])
   {
     v4 = kRTPredictedContextMetricsKeyParkedCarLatency;
     goto LABEL_27;
   }
 
-  if ([v3 isEqualToString:@"Workouts"])
+  if ([featureCopy isEqualToString:@"Workouts"])
   {
     v4 = kRTPredictedContextMetricsKeyWorkoutsLatency;
     goto LABEL_27;
   }
 
-  if ([v3 isEqualToString:@"Transitions"])
+  if ([featureCopy isEqualToString:@"Transitions"])
   {
     v4 = kRTPredictedContextMetricsKeyTransitionsLatency;
     goto LABEL_27;
   }
 
-  if ([v3 isEqualToString:@"HomeKitHomes"])
+  if ([featureCopy isEqualToString:@"HomeKitHomes"])
   {
     v4 = kRTPredictedContextMetricsKeyHomeKitHomesLatency;
     goto LABEL_27;
   }
 
-  if ([v3 isEqualToString:@"PropagatedLocations"])
+  if ([featureCopy isEqualToString:@"PropagatedLocations"])
   {
     v4 = kRTPredictedContextMetricsKeyPropagatedLocationsLatency;
     goto LABEL_27;
@@ -889,10 +889,10 @@ LABEL_28:
   return v5;
 }
 
-+ (id)successKeyForFeature:(id)a3
++ (id)successKeyForFeature:(id)feature
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"visits"])
+  featureCopy = feature;
+  if ([featureCopy isEqualToString:@"visits"])
   {
     v4 = kRTPredictedContextMetricsKeyVisitSuccess;
 LABEL_27:
@@ -900,73 +900,73 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  if ([v3 isEqualToString:@"LocationsOfInterest"])
+  if ([featureCopy isEqualToString:@"LocationsOfInterest"])
   {
     v4 = kRTPredictedContextMetricsKeyLocationsOfInterestSuccess;
     goto LABEL_27;
   }
 
-  if ([v3 isEqualToString:@"Location History"])
+  if ([featureCopy isEqualToString:@"Location History"])
   {
     v4 = kRTPredictedContextMetricsKeyLocationsSuccess;
     goto LABEL_27;
   }
 
-  if ([v3 isEqualToString:@"Motion History"])
+  if ([featureCopy isEqualToString:@"Motion History"])
   {
     v4 = kRTPredictedContextMetricsKeyMotionActivitiesSuccess;
     goto LABEL_27;
   }
 
-  if ([v3 isEqualToString:@"calendar"])
+  if ([featureCopy isEqualToString:@"calendar"])
   {
     v4 = kRTPredictedContextMetricsKeyCalendarEventsSuccess;
     goto LABEL_27;
   }
 
-  if ([v3 isEqualToString:@"mapsActiveNavigation"])
+  if ([featureCopy isEqualToString:@"mapsActiveNavigation"])
   {
     v4 = kRTPredictedContextMetricsKeyMapsActiveNavigationSuccess;
     goto LABEL_27;
   }
 
-  if ([v3 isEqualToString:@"mapsViewedPlaces"])
+  if ([featureCopy isEqualToString:@"mapsViewedPlaces"])
   {
     v4 = kRTPredictedContextMetricsKeyMapsViewedPlacesSuccess;
     goto LABEL_27;
   }
 
-  if ([v3 isEqualToString:@"mapsHistoricalNavigation"])
+  if ([featureCopy isEqualToString:@"mapsHistoricalNavigation"])
   {
     v4 = kRTPredictedContextMetricsKeyMapsHistoricalNavigationSuccess;
     goto LABEL_27;
   }
 
-  if ([v3 isEqualToString:@"parkedCar"])
+  if ([featureCopy isEqualToString:@"parkedCar"])
   {
     v4 = kRTPredictedContextMetricsKeyParkedCarSuccess;
     goto LABEL_27;
   }
 
-  if ([v3 isEqualToString:@"Workouts"])
+  if ([featureCopy isEqualToString:@"Workouts"])
   {
     v4 = kRTPredictedContextMetricsKeyWorkoutsSuccess;
     goto LABEL_27;
   }
 
-  if ([v3 isEqualToString:@"Transitions"])
+  if ([featureCopy isEqualToString:@"Transitions"])
   {
     v4 = kRTPredictedContextMetricsKeyTransitionsSuccess;
     goto LABEL_27;
   }
 
-  if ([v3 isEqualToString:@"HomeKitHomes"])
+  if ([featureCopy isEqualToString:@"HomeKitHomes"])
   {
     v4 = kRTPredictedContextMetricsKeyHomeKitHomesSuccess;
     goto LABEL_27;
   }
 
-  if ([v3 isEqualToString:@"PropagatedLocations"])
+  if ([featureCopy isEqualToString:@"PropagatedLocations"])
   {
     v4 = kRTPredictedContextMetricsKeyPropagatedLocationsSuccess;
     goto LABEL_27;
@@ -978,26 +978,26 @@ LABEL_28:
   return v5;
 }
 
-+ (int64_t)metricCodeForFeatureExtractorOperationType:(unint64_t)a3
++ (int64_t)metricCodeForFeatureExtractorOperationType:(unint64_t)type
 {
-  if (a3 - 1 > 3)
+  if (type - 1 > 3)
   {
     return 0;
   }
 
   else
   {
-    return qword_230B01F98[a3 - 1];
+    return qword_230B01F98[type - 1];
   }
 }
 
-- (id)_getVisitsWithDateInterval:(id)a3 outError:(id *)a4
+- (id)_getVisitsWithDateInterval:(id)interval outError:(id *)error
 {
   v78[1] = *MEMORY[0x277D85DE8];
-  v50 = a3;
-  v48 = [MEMORY[0x277CBEB18] array];
+  intervalCopy = interval;
+  array = [MEMORY[0x277CBEB18] array];
   context = objc_autoreleasePoolPush();
-  v5 = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v63 = 0;
   v64 = &v63;
   v65 = 0x3032000000;
@@ -1011,12 +1011,12 @@ LABEL_28:
   v61 = __Block_byref_object_dispose__175;
   v62 = 0;
   v6 = dispatch_semaphore_create(0);
-  v7 = [(RTFeatureExtractor *)self visitConsolidator];
+  visitConsolidator = [(RTFeatureExtractor *)self visitConsolidator];
   v8 = objc_alloc(MEMORY[0x277D01340]);
   v9 = [MEMORY[0x277CCABB0] numberWithDouble:*MEMORY[0x277D01470]];
   v10 = [MEMORY[0x277CBEB98] setWithObjects:{&unk_2845A0368, &unk_2845A0380, 0}];
   LOWORD(v45) = 256;
-  v11 = [v8 initWithAscending:1 confidence:v9 dateInterval:v50 labelVisit:1 limit:0 sources:v10 redact:v45 filterPairedVisitEntries:?];
+  v11 = [v8 initWithAscending:1 confidence:v9 dateInterval:intervalCopy labelVisit:1 limit:0 sources:v10 redact:v45 filterPairedVisitEntries:?];
   v53[0] = MEMORY[0x277D85DD0];
   v53[1] = 3221225472;
   v53[2] = __58__RTFeatureExtractor__getVisitsWithDateInterval_outError___block_invoke;
@@ -1025,7 +1025,7 @@ LABEL_28:
   v56 = &v57;
   v12 = v6;
   v54 = v12;
-  [v7 fetchStoredVisitsWithOptions:v11 handler:v53];
+  [visitConsolidator fetchStoredVisitsWithOptions:v11 handler:v53];
 
   v13 = v12;
   v14 = [MEMORY[0x277CBEAA8] now];
@@ -1037,11 +1037,11 @@ LABEL_28:
     v18 = v17;
     v19 = objc_opt_new();
     v20 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_143];
-    v21 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v22 = [v21 filteredArrayUsingPredicate:v20];
-    v23 = [v22 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v22 = [callStackSymbols filteredArrayUsingPredicate:v20];
+    firstObject = [v22 firstObject];
 
-    [v19 submitToCoreAnalytics:v23 type:1 duration:v18];
+    [v19 submitToCoreAnalytics:firstObject type:1 duration:v18];
     v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v24, OS_LOG_TYPE_FAULT))
     {
@@ -1069,15 +1069,15 @@ LABEL_28:
   v29 = v27;
   if (v29)
   {
-    [v5 addObject:v29];
+    [array2 addObject:v29];
   }
 
   if (v64[5])
   {
-    [v5 addObject:?];
+    [array2 addObject:?];
   }
 
-  if ([v5 count])
+  if ([array2 count])
   {
     v30 = _RTSafeArray();
     v31 = _RTMultiErrorCreate();
@@ -1094,17 +1094,17 @@ LABEL_28:
     if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
     {
       v33 = NSStringFromSelector(a2);
-      v34 = [v50 startDate];
-      v35 = [v34 stringFromDate];
-      v36 = [v50 endDate];
-      v37 = [v36 stringFromDate];
+      startDate = [intervalCopy startDate];
+      stringFromDate = [startDate stringFromDate];
+      endDate = [intervalCopy endDate];
+      stringFromDate2 = [endDate stringFromDate];
       v38 = [v58[5] count];
       *buf = 138413314;
       *&buf[4] = v33;
       v70 = 2112;
-      v71 = v35;
+      v71 = stringFromDate;
       v72 = 2112;
-      v73 = v37;
+      v73 = stringFromDate2;
       v74 = 2048;
       v75 = v38;
       v76 = 2112;
@@ -1129,10 +1129,10 @@ LABEL_28:
   _Block_object_dispose(&v63, 8);
 
   objc_autoreleasePoolPop(context);
-  if (a4)
+  if (error)
   {
     v43 = v31;
-    *a4 = v31;
+    *error = v31;
   }
 
   return v42;
@@ -1161,15 +1161,15 @@ void __58__RTFeatureExtractor__getVisitsWithDateInterval_outError___block_invoke
   [v2 addObject:v5];
 }
 
-- (id)_getTransitionsWithDateInterval:(id)a3 outError:(id *)a4
+- (id)_getTransitionsWithDateInterval:(id)interval outError:(id *)error
 {
   v75[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  intervalCopy = interval;
+  if (intervalCopy)
   {
-    v45 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     context = objc_autoreleasePoolPush();
-    v47 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     v60 = 0;
     v61 = &v60;
     v62 = 0x3032000000;
@@ -1181,11 +1181,11 @@ void __58__RTFeatureExtractor__getVisitsWithDateInterval_outError___block_invoke
     v56 = 0x3032000000;
     v57 = __Block_byref_object_copy__175;
     v58 = __Block_byref_object_dispose__175;
-    v59 = [MEMORY[0x277CBEA60] array];
+    array3 = [MEMORY[0x277CBEA60] array];
     v6 = dispatch_semaphore_create(0);
-    v7 = [(RTFeatureExtractor *)self learnedLocationManager];
-    v8 = [v5 startDate];
-    v9 = [v5 endDate];
+    learnedLocationManager = [(RTFeatureExtractor *)self learnedLocationManager];
+    startDate = [intervalCopy startDate];
+    endDate = [intervalCopy endDate];
     v50[0] = MEMORY[0x277D85DD0];
     v50[1] = 3221225472;
     v50[2] = __63__RTFeatureExtractor__getTransitionsWithDateInterval_outError___block_invoke;
@@ -1194,7 +1194,7 @@ void __58__RTFeatureExtractor__getVisitsWithDateInterval_outError___block_invoke
     v53 = &v54;
     v10 = v6;
     v51 = v10;
-    [v7 fetchTransitionsBetweenStartDate:v8 endDate:v9 handler:v50];
+    [learnedLocationManager fetchTransitionsBetweenStartDate:startDate endDate:endDate handler:v50];
 
     v11 = v10;
     v12 = [MEMORY[0x277CBEAA8] now];
@@ -1206,11 +1206,11 @@ void __58__RTFeatureExtractor__getVisitsWithDateInterval_outError___block_invoke
       v16 = v15;
       v17 = objc_opt_new();
       v18 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_143];
-      v19 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v20 = [v19 filteredArrayUsingPredicate:v18];
-      v21 = [v20 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v20 = [callStackSymbols filteredArrayUsingPredicate:v18];
+      firstObject = [v20 firstObject];
 
-      [v17 submitToCoreAnalytics:v21 type:1 duration:v16];
+      [v17 submitToCoreAnalytics:firstObject type:1 duration:v16];
       v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
       {
@@ -1238,15 +1238,15 @@ void __58__RTFeatureExtractor__getVisitsWithDateInterval_outError___block_invoke
     v29 = v25;
     if (v29)
     {
-      [v47 addObject:v29];
+      [array2 addObject:v29];
     }
 
     if (v61[5])
     {
-      [v47 addObject:?];
+      [array2 addObject:?];
     }
 
-    if ([v47 count])
+    if ([array2 count])
     {
       v30 = _RTSafeArray();
       v27 = _RTMultiErrorCreate();
@@ -1263,17 +1263,17 @@ void __58__RTFeatureExtractor__getVisitsWithDateInterval_outError___block_invoke
       if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
       {
         v32 = NSStringFromSelector(a2);
-        v33 = [v5 startDate];
-        v34 = [v33 stringFromDate];
-        v35 = [v5 endDate];
-        v36 = [v35 stringFromDate];
+        startDate2 = [intervalCopy startDate];
+        stringFromDate = [startDate2 stringFromDate];
+        endDate2 = [intervalCopy endDate];
+        stringFromDate2 = [endDate2 stringFromDate];
         v37 = [v55[5] count];
         *buf = 138413314;
         *&buf[4] = v32;
         v67 = 2112;
-        v68 = v34;
+        v68 = stringFromDate;
         v69 = 2112;
-        v70 = v36;
+        v70 = stringFromDate2;
         v71 = 2048;
         v72 = v37;
         v73 = 2112;
@@ -1298,10 +1298,10 @@ void __58__RTFeatureExtractor__getVisitsWithDateInterval_outError___block_invoke
     _Block_object_dispose(&v60, 8);
 
     objc_autoreleasePoolPop(context);
-    if (a4)
+    if (error)
     {
       v41 = v27;
-      *a4 = v27;
+      *error = v27;
     }
   }
 
@@ -1343,14 +1343,14 @@ void __63__RTFeatureExtractor__getTransitionsWithDateInterval_outError___block_i
   [v2 addObject:v5];
 }
 
-- (id)_getLocationsOfInterestFromVisitedLOIsUUIDs:(id)a3 includeKnownPlaceType:(BOOL)a4 outError:(id *)a5
+- (id)_getLocationsOfInterestFromVisitedLOIsUUIDs:(id)ds includeKnownPlaceType:(BOOL)type outError:(id *)error
 {
-  v62 = a4;
+  typeCopy = type;
   v126[1] = *MEMORY[0x277D85DE8];
-  v68 = a3;
-  v64 = [MEMORY[0x277CBEB18] array];
+  dsCopy = ds;
+  array = [MEMORY[0x277CBEB18] array];
   context = objc_autoreleasePoolPush();
-  v6 = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v103 = 0;
   v104 = &v103;
   v105 = 0x3032000000;
@@ -1362,9 +1362,9 @@ void __63__RTFeatureExtractor__getTransitionsWithDateInterval_outError___block_i
   v99 = 0x3032000000;
   v100 = __Block_byref_object_copy__175;
   v101 = __Block_byref_object_dispose__175;
-  v102 = [MEMORY[0x277CBEA60] array];
+  array3 = [MEMORY[0x277CBEA60] array];
   v7 = dispatch_semaphore_create(0);
-  v8 = [(RTFeatureExtractor *)self learnedLocationManager];
+  learnedLocationManager = [(RTFeatureExtractor *)self learnedLocationManager];
   v93[0] = MEMORY[0x277D85DD0];
   v93[1] = 3221225472;
   v93[2] = __97__RTFeatureExtractor__getLocationsOfInterestFromVisitedLOIsUUIDs_includeKnownPlaceType_outError___block_invoke;
@@ -1373,7 +1373,7 @@ void __63__RTFeatureExtractor__getTransitionsWithDateInterval_outError___block_i
   v96 = &v97;
   v9 = v7;
   v94 = v9;
-  [v8 fetchLocationsOfInterestWithIdentifiers:v68 handler:v93];
+  [learnedLocationManager fetchLocationsOfInterestWithIdentifiers:dsCopy handler:v93];
 
   v10 = v9;
   v11 = [MEMORY[0x277CBEAA8] now];
@@ -1385,11 +1385,11 @@ void __63__RTFeatureExtractor__getTransitionsWithDateInterval_outError___block_i
     v15 = v14;
     v16 = objc_opt_new();
     v17 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_143];
-    v18 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v19 = [v18 filteredArrayUsingPredicate:v17];
-    v20 = [v19 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v19 = [callStackSymbols filteredArrayUsingPredicate:v17];
+    firstObject = [v19 firstObject];
 
-    [v16 submitToCoreAnalytics:v20 type:1 duration:v15];
+    [v16 submitToCoreAnalytics:firstObject type:1 duration:v15];
     v21 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
     {
@@ -1417,15 +1417,15 @@ void __63__RTFeatureExtractor__getTransitionsWithDateInterval_outError___block_i
   v67 = v24;
   if (v67)
   {
-    [v6 addObject:v67];
+    [array2 addObject:v67];
   }
 
   if (v104[5])
   {
-    [v6 addObject:?];
+    [array2 addObject:?];
   }
 
-  if ([v6 count])
+  if ([array2 count])
   {
     v59 = 1;
     v26 = _RTSafeArray();
@@ -1459,10 +1459,10 @@ void __63__RTFeatureExtractor__getTransitionsWithDateInterval_outError___block_i
   v91[1] = 3221225472;
   v91[2] = __97__RTFeatureExtractor__getLocationsOfInterestFromVisitedLOIsUUIDs_includeKnownPlaceType_outError___block_invoke_421;
   v91[3] = &unk_2788D1F20;
-  v65 = v64;
+  v65 = array;
   v92 = v65;
   [v31 enumerateObjectsUsingBlock:v91];
-  if (v62)
+  if (typeCopy)
   {
     v32 = dispatch_semaphore_create(0);
     *buf = 0;
@@ -1470,7 +1470,7 @@ void __63__RTFeatureExtractor__getTransitionsWithDateInterval_outError___block_i
     *&buf[16] = 0x3032000000;
     v123 = __Block_byref_object_copy__175;
     v124 = __Block_byref_object_dispose__175;
-    v125 = [MEMORY[0x277CBEB18] array];
+    array4 = [MEMORY[0x277CBEB18] array];
     v116 = 0;
     v117 = &v116;
     v118 = 0x3032000000;
@@ -1510,11 +1510,11 @@ void __63__RTFeatureExtractor__getTransitionsWithDateInterval_outError___block_i
       v38 = v37;
       v39 = objc_opt_new();
       v40 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_143];
-      v41 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v42 = [v41 filteredArrayUsingPredicate:v40];
-      v43 = [v42 firstObject];
+      callStackSymbols2 = [MEMORY[0x277CCACC8] callStackSymbols];
+      v42 = [callStackSymbols2 filteredArrayUsingPredicate:v40];
+      firstObject2 = [v42 firstObject];
 
-      [v39 submitToCoreAnalytics:v43 type:1 duration:v38];
+      [v39 submitToCoreAnalytics:firstObject2 type:1 duration:v38];
       v44 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v44, OS_LOG_TYPE_FAULT))
       {
@@ -1542,15 +1542,15 @@ void __63__RTFeatureExtractor__getTransitionsWithDateInterval_outError___block_i
     v49 = v47;
     if (v49)
     {
-      [v6 addObject:v49];
+      [array2 addObject:v49];
     }
 
     if (v117[5])
     {
-      [v6 addObject:?];
+      [array2 addObject:?];
     }
 
-    if ([v6 count])
+    if ([array2 count])
     {
       v50 = _RTSafeArray();
       v51 = _RTMultiErrorCreate();
@@ -1583,7 +1583,7 @@ void __63__RTFeatureExtractor__getTransitionsWithDateInterval_outError___block_i
     v69[1] = 3221225472;
     v69[2] = __97__RTFeatureExtractor__getLocationsOfInterestFromVisitedLOIsUUIDs_includeKnownPlaceType_outError___block_invoke_427;
     v69[3] = &unk_2788C6E50;
-    v70 = v68;
+    v70 = dsCopy;
     v72 = a2;
     v71 = v65;
     [v56 enumerateObjectsUsingBlock:v69];
@@ -1599,10 +1599,10 @@ void __63__RTFeatureExtractor__getTransitionsWithDateInterval_outError___block_i
   _Block_object_dispose(&v103, 8);
 
   objc_autoreleasePoolPop(context);
-  if (a5)
+  if (error)
   {
     v57 = v27;
-    *a5 = v27;
+    *error = v27;
   }
 
   return v65;
@@ -1703,14 +1703,14 @@ void __97__RTFeatureExtractor__getLocationsOfInterestFromVisitedLOIsUUIDs_includ
   }
 }
 
-- (void)_fetchLocationsOfInterestWithPlaceTypes:(id)a3 handler:(id)a4
+- (void)_fetchLocationsOfInterestWithPlaceTypes:(id)types handler:(id)handler
 {
   v64[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v36 = v6;
-  v37 = v5;
-  if (!v5)
+  typesCopy = types;
+  handlerCopy = handler;
+  v36 = handlerCopy;
+  v37 = typesCopy;
+  if (!typesCopy)
   {
     v35 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
@@ -1722,7 +1722,7 @@ void __97__RTFeatureExtractor__getLocationsOfInterestFromVisitedLOIsUUIDs_includ
     goto LABEL_25;
   }
 
-  if (!v6)
+  if (!handlerCopy)
   {
     v35 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
@@ -1736,20 +1736,20 @@ LABEL_25:
     goto LABEL_32;
   }
 
-  if ([v5 count])
+  if ([typesCopy count])
   {
-    v43 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     *v54 = 0;
     v55 = v54;
     v56 = 0x3032000000;
     v57 = __Block_byref_object_copy__175;
     v58 = __Block_byref_object_dispose__175;
-    v59 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v50 = 0u;
     v51 = 0u;
     v52 = 0u;
     v53 = 0u;
-    obj = v5;
+    obj = typesCopy;
     v7 = [obj countByEnumeratingWithState:&v50 objects:v63 count:16];
     if (v7)
     {
@@ -1767,18 +1767,18 @@ LABEL_25:
 
           v9 = *(*(&v50 + 1) + 8 * i);
           v10 = dispatch_semaphore_create(0);
-          v11 = [v9 unsignedIntegerValue];
+          unsignedIntegerValue = [v9 unsignedIntegerValue];
           learnedLocationManager = self->_learnedLocationManager;
           v45[0] = MEMORY[0x277D85DD0];
           v45[1] = 3221225472;
           v45[2] = __70__RTFeatureExtractor__fetchLocationsOfInterestWithPlaceTypes_handler___block_invoke;
           v45[3] = &unk_2788C4640;
           v49 = v54;
-          v46 = v43;
+          v46 = dictionary;
           v47 = v9;
           v13 = v10;
           v48 = v13;
-          [(RTLearnedLocationManager *)learnedLocationManager fetchLocationsOfInterestWithPlaceType:v11 handler:v45];
+          [(RTLearnedLocationManager *)learnedLocationManager fetchLocationsOfInterestWithPlaceType:unsignedIntegerValue handler:v45];
           v14 = v13;
           v15 = [MEMORY[0x277CBEAA8] now];
           v16 = dispatch_time(0, 3600000000000);
@@ -1789,11 +1789,11 @@ LABEL_25:
             v19 = v18;
             v20 = objc_opt_new();
             v21 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_143];
-            v22 = [MEMORY[0x277CCACC8] callStackSymbols];
-            v23 = [v22 filteredArrayUsingPredicate:v21];
-            v24 = [v23 firstObject];
+            callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+            v23 = [callStackSymbols filteredArrayUsingPredicate:v21];
+            firstObject = [v23 firstObject];
 
-            [v20 submitToCoreAnalytics:v24 type:1 duration:v19];
+            [v20 submitToCoreAnalytics:firstObject type:1 duration:v19];
             v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
             if (os_log_type_enabled(v25, OS_LOG_TYPE_FAULT))
             {
@@ -1852,7 +1852,7 @@ LABEL_25:
       v34 = 0;
     }
 
-    (v36)[2](v36, v43, v34);
+    (v36)[2](v36, dictionary, v34);
     _Block_object_dispose(v54, 8);
   }
 
@@ -1881,13 +1881,13 @@ void __70__RTFeatureExtractor__fetchLocationsOfInterestWithPlaceTypes_handler___
   dispatch_semaphore_signal(*(a1 + 48));
 }
 
-- (id)_getLocationsOfInterestWithDateInterval:(id)a3 outError:(id *)a4
+- (id)_getLocationsOfInterestWithDateInterval:(id)interval outError:(id *)error
 {
   v69[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v42 = [MEMORY[0x277CBEB18] array];
+  intervalCopy = interval;
+  array = [MEMORY[0x277CBEB18] array];
   context = objc_autoreleasePoolPush();
-  v6 = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v56 = 0;
   v57 = &v56;
   v58 = 0x3032000000;
@@ -1899,11 +1899,11 @@ void __70__RTFeatureExtractor__fetchLocationsOfInterestWithPlaceTypes_handler___
   v52 = 0x3032000000;
   v53 = __Block_byref_object_copy__175;
   v54 = __Block_byref_object_dispose__175;
-  v55 = [MEMORY[0x277CBEA60] array];
+  array3 = [MEMORY[0x277CBEA60] array];
   v7 = dispatch_semaphore_create(0);
-  v8 = [(RTFeatureExtractor *)self learnedLocationManager];
-  v9 = [v5 startDate];
-  v10 = [MEMORY[0x277CBEAA8] distantFuture];
+  learnedLocationManager = [(RTFeatureExtractor *)self learnedLocationManager];
+  startDate = [intervalCopy startDate];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
   v46[0] = MEMORY[0x277D85DD0];
   v46[1] = 3221225472;
   v46[2] = __71__RTFeatureExtractor__getLocationsOfInterestWithDateInterval_outError___block_invoke;
@@ -1912,7 +1912,7 @@ void __70__RTFeatureExtractor__fetchLocationsOfInterestWithPlaceTypes_handler___
   v49 = &v50;
   v11 = v7;
   v47 = v11;
-  [v8 fetchLocationsOfInterestVisitedBetweenStartDate:v9 endDate:v10 includePlaceholders:1 includeVisits:0 includeTransitions:0 handler:v46];
+  [learnedLocationManager fetchLocationsOfInterestVisitedBetweenStartDate:startDate endDate:distantFuture includePlaceholders:1 includeVisits:0 includeTransitions:0 handler:v46];
 
   v12 = v11;
   v13 = [MEMORY[0x277CBEAA8] now];
@@ -1924,11 +1924,11 @@ void __70__RTFeatureExtractor__fetchLocationsOfInterestWithPlaceTypes_handler___
     v17 = v16;
     v18 = objc_opt_new();
     v19 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_143];
-    v20 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v21 = [v20 filteredArrayUsingPredicate:v19];
-    v22 = [v21 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v21 = [callStackSymbols filteredArrayUsingPredicate:v19];
+    firstObject = [v21 firstObject];
 
-    [v18 submitToCoreAnalytics:v22 type:1 duration:v17];
+    [v18 submitToCoreAnalytics:firstObject type:1 duration:v17];
     v23 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
     {
@@ -1956,15 +1956,15 @@ void __70__RTFeatureExtractor__fetchLocationsOfInterestWithPlaceTypes_handler___
   v28 = v26;
   if (v28)
   {
-    [v6 addObject:v28];
+    [array2 addObject:v28];
   }
 
   if (v57[5])
   {
-    [v6 addObject:?];
+    [array2 addObject:?];
   }
 
-  if ([v6 count])
+  if ([array2 count])
   {
     v29 = _RTSafeArray();
     v30 = _RTMultiErrorCreate();
@@ -1981,13 +1981,13 @@ void __70__RTFeatureExtractor__fetchLocationsOfInterestWithPlaceTypes_handler___
     if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
     {
       v32 = NSStringFromSelector(a2);
-      v33 = [v5 startDate];
-      v34 = [v33 stringFromDate];
+      startDate2 = [intervalCopy startDate];
+      stringFromDate = [startDate2 stringFromDate];
       v35 = [v51[5] count];
       *buf = 138413058;
       *&buf[4] = v32;
       v63 = 2112;
-      v64 = v34;
+      v64 = stringFromDate;
       v65 = 2048;
       v66 = v35;
       v67 = 2112;
@@ -2001,7 +2001,7 @@ void __70__RTFeatureExtractor__fetchLocationsOfInterestWithPlaceTypes_handler___
   v44[1] = 3221225472;
   v44[2] = __71__RTFeatureExtractor__getLocationsOfInterestWithDateInterval_outError___block_invoke_434;
   v44[3] = &unk_2788D1F20;
-  v37 = v42;
+  v37 = array;
   v45 = v37;
   [v36 enumerateObjectsUsingBlock:v44];
 
@@ -2009,10 +2009,10 @@ void __70__RTFeatureExtractor__fetchLocationsOfInterestWithPlaceTypes_handler___
   _Block_object_dispose(&v56, 8);
 
   objc_autoreleasePoolPop(context);
-  if (a4)
+  if (error)
   {
     v38 = v30;
-    *a4 = v30;
+    *error = v30;
   }
 
   return v37;
@@ -2041,13 +2041,13 @@ void __71__RTFeatureExtractor__getLocationsOfInterestWithDateInterval_outError__
   [v2 addObject:v5];
 }
 
-- (id)_getLocationHistoriesWithDateInterval:(id)a3 outError:(id *)a4
+- (id)_getLocationHistoriesWithDateInterval:(id)interval outError:(id *)error
 {
   v74[1] = *MEMORY[0x277D85DE8];
-  v46 = a3;
-  v44 = [MEMORY[0x277CBEB18] array];
+  intervalCopy = interval;
+  array = [MEMORY[0x277CBEB18] array];
   context = objc_autoreleasePoolPush();
-  v5 = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v59 = 0;
   v60 = &v59;
   v61 = 0x3032000000;
@@ -2059,11 +2059,11 @@ void __71__RTFeatureExtractor__getLocationsOfInterestWithDateInterval_outError__
   v55 = 0x3032000000;
   v56 = __Block_byref_object_copy__175;
   v57 = __Block_byref_object_dispose__175;
-  v58 = [MEMORY[0x277CBEA60] array];
+  array3 = [MEMORY[0x277CBEA60] array];
   LOBYTE(v40) = 1;
-  v6 = [objc_alloc(MEMORY[0x277D01320]) initWithDateInterval:v46 horizontalAccuracy:20 batchSize:0 boundingBoxLocation:14 type:1 smoothingRequired:1 downsampleRequired:60.0 smoothingErrorThreshold:5.0 ascending:v40];
+  v6 = [objc_alloc(MEMORY[0x277D01320]) initWithDateInterval:intervalCopy horizontalAccuracy:20 batchSize:0 boundingBoxLocation:14 type:1 smoothingRequired:1 downsampleRequired:60.0 smoothingErrorThreshold:5.0 ascending:v40];
   v7 = dispatch_semaphore_create(0);
-  v8 = [(RTFeatureExtractor *)self locationManager];
+  locationManager = [(RTFeatureExtractor *)self locationManager];
   v49[0] = MEMORY[0x277D85DD0];
   v49[1] = 3221225472;
   v49[2] = __69__RTFeatureExtractor__getLocationHistoriesWithDateInterval_outError___block_invoke;
@@ -2072,7 +2072,7 @@ void __71__RTFeatureExtractor__getLocationsOfInterestWithDateInterval_outError__
   v52 = &v53;
   v9 = v7;
   v50 = v9;
-  [v8 fetchStoredLocationsWithOptions:v6 handler:v49];
+  [locationManager fetchStoredLocationsWithOptions:v6 handler:v49];
   v42 = v6;
 
   v10 = v9;
@@ -2085,11 +2085,11 @@ void __71__RTFeatureExtractor__getLocationsOfInterestWithDateInterval_outError__
     v15 = v14;
     v16 = objc_opt_new();
     v17 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_143];
-    v18 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v19 = [v18 filteredArrayUsingPredicate:v17];
-    v20 = [v19 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v19 = [callStackSymbols filteredArrayUsingPredicate:v17];
+    firstObject = [v19 firstObject];
 
-    [v16 submitToCoreAnalytics:v20 type:1 duration:v15];
+    [v16 submitToCoreAnalytics:firstObject type:1 duration:v15];
     v21 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
     {
@@ -2117,15 +2117,15 @@ void __71__RTFeatureExtractor__getLocationsOfInterestWithDateInterval_outError__
   v26 = v24;
   if (v26)
   {
-    [v5 addObject:v26];
+    [array2 addObject:v26];
   }
 
   if (v60[5])
   {
-    [v5 addObject:?];
+    [array2 addObject:?];
   }
 
-  if ([v5 count])
+  if ([array2 count])
   {
     v27 = _RTSafeArray();
     v28 = _RTMultiErrorCreate();
@@ -2142,17 +2142,17 @@ void __71__RTFeatureExtractor__getLocationsOfInterestWithDateInterval_outError__
     if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
     {
       v30 = NSStringFromSelector(a2);
-      v31 = [v46 startDate];
-      v32 = [v31 stringFromDate];
-      v33 = [v46 endDate];
-      v34 = [v33 stringFromDate];
+      startDate = [intervalCopy startDate];
+      stringFromDate = [startDate stringFromDate];
+      endDate = [intervalCopy endDate];
+      stringFromDate2 = [endDate stringFromDate];
       v35 = [v54[5] count];
       *buf = 138413314;
       *&buf[4] = v30;
       v66 = 2112;
-      v67 = v32;
+      v67 = stringFromDate;
       v68 = 2112;
-      v69 = v34;
+      v69 = stringFromDate2;
       v70 = 2048;
       v71 = v35;
       v72 = 2112;
@@ -2166,7 +2166,7 @@ void __71__RTFeatureExtractor__getLocationsOfInterestWithDateInterval_outError__
   v47[1] = 3221225472;
   v47[2] = __69__RTFeatureExtractor__getLocationHistoriesWithDateInterval_outError___block_invoke_436;
   v47[3] = &unk_2788C8170;
-  v37 = v44;
+  v37 = array;
   v48 = v37;
   [v36 enumerateObjectsUsingBlock:v47];
 
@@ -2174,10 +2174,10 @@ void __71__RTFeatureExtractor__getLocationsOfInterestWithDateInterval_outError__
   _Block_object_dispose(&v59, 8);
 
   objc_autoreleasePoolPop(context);
-  if (a4)
+  if (error)
   {
     v38 = v28;
-    *a4 = v28;
+    *error = v28;
   }
 
   return v37;
@@ -2206,13 +2206,13 @@ void __69__RTFeatureExtractor__getLocationHistoriesWithDateInterval_outError___b
   [v2 addObject:v5];
 }
 
-- (id)_getCalendarEventsWithDateInterval:(id)a3 outError:(id *)a4
+- (id)_getCalendarEventsWithDateInterval:(id)interval outError:(id *)error
 {
   v96[1] = *MEMORY[0x277D85DE8];
-  v47 = a3;
-  v45 = [MEMORY[0x277CBEB18] array];
+  intervalCopy = interval;
+  array = [MEMORY[0x277CBEB18] array];
   v44 = objc_autoreleasePoolPush();
-  v54 = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v51 = dispatch_semaphore_create(0);
   v83 = 0;
   v84 = &v83;
@@ -2230,7 +2230,7 @@ void __69__RTFeatureExtractor__getLocationHistoriesWithDateInterval_outError___b
   v74 = __Block_byref_object_copy__175;
   v75 = __Block_byref_object_dispose__175;
   v76 = 0;
-  v52 = [v47 endDate];
+  endDate = [intervalCopy endDate];
   v60 = 0;
   v57 = 0;
   v48 = *MEMORY[0x277D01448];
@@ -2243,9 +2243,9 @@ void __69__RTFeatureExtractor__getLocationHistoriesWithDateInterval_outError___b
     v58 = *(v84 + 6);
     if (v58 < 1501)
     {
-      v8 = [v52 dateByAddingTimeInterval:v5];
-      v9 = [v52 dateByAddingTimeInterval:v60 * 604800.0];
-      v10 = [(RTFeatureExtractor *)self eventManager];
+      v8 = [endDate dateByAddingTimeInterval:v5];
+      v9 = [endDate dateByAddingTimeInterval:v60 * 604800.0];
+      eventManager = [(RTFeatureExtractor *)self eventManager];
       v63[0] = MEMORY[0x277D85DD0];
       v63[1] = 3221225472;
       v63[2] = __66__RTFeatureExtractor__getCalendarEventsWithDateInterval_outError___block_invoke;
@@ -2261,7 +2261,7 @@ void __69__RTFeatureExtractor__getLocationHistoriesWithDateInterval_outError___b
       v12 = v51;
       v66 = v12;
       v56 = v11;
-      [v10 fetchEventsBetweenStartDate:v6 andEndDate:v11 withHandler:v63];
+      [eventManager fetchEventsBetweenStartDate:v6 andEndDate:v11 withHandler:v63];
 
       v13 = v12;
       v14 = [MEMORY[0x277CBEAA8] now];
@@ -2274,11 +2274,11 @@ void __69__RTFeatureExtractor__getLocationHistoriesWithDateInterval_outError___b
         v18 = v17;
         v19 = objc_opt_new();
         v20 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_143];
-        v21 = [MEMORY[0x277CCACC8] callStackSymbols];
-        v22 = [v21 filteredArrayUsingPredicate:v20];
-        v23 = [v22 firstObject];
+        callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+        v22 = [callStackSymbols filteredArrayUsingPredicate:v20];
+        firstObject = [v22 firstObject];
 
-        [v19 submitToCoreAnalytics:v23 type:1 duration:v18];
+        [v19 submitToCoreAnalytics:firstObject type:1 duration:v18];
         v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
         if (os_log_type_enabled(v24, OS_LOG_TYPE_FAULT))
         {
@@ -2304,12 +2304,12 @@ void __69__RTFeatureExtractor__getLocationHistoriesWithDateInterval_outError___b
       v29 = v16;
       if (v29)
       {
-        [v54 addObject:v29];
+        [array2 addObject:v29];
       }
 
       if (v72[5])
       {
-        [v54 addObject:?];
+        [array2 addObject:?];
       }
 
       v57 = v29;
@@ -2343,7 +2343,7 @@ LABEL_17:
   }
 
   while (!v30);
-  if ([v54 count])
+  if ([array2 count])
   {
     v31 = _RTSafeArray();
     v32 = _RTMultiErrorCreate();
@@ -2360,17 +2360,17 @@ LABEL_17:
     if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
     {
       v34 = NSStringFromSelector(a2);
-      v35 = [v47 startDate];
-      v36 = [v35 stringFromDate];
-      v37 = [v47 endDate];
-      v38 = [v37 stringFromDate];
+      startDate = [intervalCopy startDate];
+      stringFromDate = [startDate stringFromDate];
+      endDate2 = [intervalCopy endDate];
+      stringFromDate2 = [endDate2 stringFromDate];
       v39 = *(v84 + 6);
       *buf = 138413314;
       *&buf[4] = v34;
       v88 = 2112;
-      v89 = v36;
+      v89 = stringFromDate;
       v90 = 2112;
-      v91 = v38;
+      v91 = stringFromDate2;
       v92 = 2048;
       v93 = v39;
       v94 = 2112;
@@ -2384,7 +2384,7 @@ LABEL_17:
   v61[1] = 3221225472;
   v61[2] = __66__RTFeatureExtractor__getCalendarEventsWithDateInterval_outError___block_invoke_438;
   v61[3] = &unk_2788D1F98;
-  v41 = v45;
+  v41 = array;
   v62 = v41;
   [v40 enumerateObjectsUsingBlock:v61];
 
@@ -2393,10 +2393,10 @@ LABEL_17:
 
   _Block_object_dispose(&v83, 8);
   objc_autoreleasePoolPop(v44);
-  if (a4)
+  if (error)
   {
     v42 = v32;
-    *a4 = v32;
+    *error = v32;
   }
 
   return v41;
@@ -2451,7 +2451,7 @@ void __66__RTFeatureExtractor__getCalendarEventsWithDateInterval_outError___bloc
   [v2 addObject:v5];
 }
 
-- (id)_getMapsActiveNavigationWithError:(id *)a3
+- (id)_getMapsActiveNavigationWithError:(id *)error
 {
   v66[1] = *MEMORY[0x277D85DE8];
   v55 = 0;
@@ -2461,7 +2461,7 @@ void __66__RTFeatureExtractor__getCalendarEventsWithDateInterval_outError___bloc
   v59 = __Block_byref_object_dispose__175;
   v60 = 0;
   context = objc_autoreleasePoolPush();
-  v4 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v49 = 0;
   v50 = &v49;
   v51 = 0x3032000000;
@@ -2469,7 +2469,7 @@ void __66__RTFeatureExtractor__getCalendarEventsWithDateInterval_outError___bloc
   v53 = __Block_byref_object_dispose__175;
   v54 = 0;
   v5 = dispatch_semaphore_create(0);
-  v6 = [(RTFeatureExtractor *)self navigationManager];
+  navigationManager = [(RTFeatureExtractor *)self navigationManager];
   v45[0] = MEMORY[0x277D85DD0];
   v45[1] = 3221225472;
   v45[2] = __56__RTFeatureExtractor__getMapsActiveNavigationWithError___block_invoke;
@@ -2478,7 +2478,7 @@ void __66__RTFeatureExtractor__getCalendarEventsWithDateInterval_outError___bloc
   v48 = &v49;
   v7 = v5;
   v46 = v7;
-  [v6 fetchNavigationRouteSummaryWithHandler:v45];
+  [navigationManager fetchNavigationRouteSummaryWithHandler:v45];
 
   v8 = v7;
   v9 = [MEMORY[0x277CBEAA8] now];
@@ -2490,11 +2490,11 @@ void __66__RTFeatureExtractor__getCalendarEventsWithDateInterval_outError___bloc
     v13 = v12;
     v14 = objc_opt_new();
     v15 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_143];
-    v16 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v17 = [v16 filteredArrayUsingPredicate:v15];
-    v18 = [v17 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v17 = [callStackSymbols filteredArrayUsingPredicate:v15];
+    firstObject = [v17 firstObject];
 
-    [v14 submitToCoreAnalytics:v18 type:1 duration:v13];
+    [v14 submitToCoreAnalytics:firstObject type:1 duration:v13];
     v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
     {
@@ -2522,12 +2522,12 @@ void __66__RTFeatureExtractor__getCalendarEventsWithDateInterval_outError___bloc
   v24 = v22;
   if (v24)
   {
-    [v4 addObject:v24];
+    [array addObject:v24];
   }
 
   if (v50[5])
   {
-    [v4 addObject:?];
+    [array addObject:?];
   }
 
   v25 = v56[5];
@@ -2538,18 +2538,18 @@ void __66__RTFeatureExtractor__getCalendarEventsWithDateInterval_outError___bloc
 
   else
   {
-    v28 = [v56[5] destinationMapItem];
+    destinationMapItem = [v56[5] destinationMapItem];
     v44 = 0;
-    v29 = [(RTFeatureExtractor *)self _fetchLocationOfInterestForMapItem:v28 error:&v44];
+    v29 = [(RTFeatureExtractor *)self _fetchLocationOfInterestForMapItem:destinationMapItem error:&v44];
     v30 = v44;
 
     if (v30)
     {
-      [v4 addObject:v30];
+      [array addObject:v30];
     }
   }
 
-  if ([v4 count])
+  if ([array count])
   {
     v31 = _RTSafeArray();
     v32 = _RTMultiErrorCreate();
@@ -2579,24 +2579,24 @@ void __66__RTFeatureExtractor__getCalendarEventsWithDateInterval_outError___bloc
 
   _Block_object_dispose(&v49, 8);
   objc_autoreleasePoolPop(context);
-  if (a3)
+  if (error)
   {
     v36 = v32;
-    *a3 = v32;
+    *error = v32;
   }
 
   if (v29)
   {
-    v37 = [v29 identifier];
+    identifier = [v29 identifier];
   }
 
   else
   {
-    v37 = 0;
+    identifier = 0;
   }
 
   v38 = objc_alloc(MEMORY[0x277D3F8B0]);
-  v39 = [v38 initWithRouteSummary:v56[5] loiIdentifier:v37];
+  v39 = [v38 initWithRouteSummary:v56[5] loiIdentifier:identifier];
 
   _Block_object_dispose(&v55, 8);
 
@@ -2623,13 +2623,13 @@ void __56__RTFeatureExtractor__getMapsActiveNavigationWithError___block_invoke(u
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_getMapsHistoricalNavigationsWithDateInterval:(id)a3 outError:(id *)a4
+- (id)_getMapsHistoricalNavigationsWithDateInterval:(id)interval outError:(id *)error
 {
   v73[1] = *MEMORY[0x277D85DE8];
-  v45 = a3;
-  v43 = [MEMORY[0x277CBEB18] array];
+  intervalCopy = interval;
+  array = [MEMORY[0x277CBEB18] array];
   context = objc_autoreleasePoolPush();
-  v5 = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v58 = 0;
   v59 = &v58;
   v60 = 0x3032000000;
@@ -2643,8 +2643,8 @@ void __56__RTFeatureExtractor__getMapsActiveNavigationWithError___block_invoke(u
   v56 = __Block_byref_object_dispose__175;
   v57 = 0;
   v6 = dispatch_semaphore_create(0);
-  v7 = [[RTMapsSupportOptions alloc] initWithDateInterval:v45];
-  v8 = [(RTFeatureExtractor *)self mapsSupportManager];
+  v7 = [[RTMapsSupportOptions alloc] initWithDateInterval:intervalCopy];
+  mapsSupportManager = [(RTFeatureExtractor *)self mapsSupportManager];
   v48[0] = MEMORY[0x277D85DD0];
   v48[1] = 3221225472;
   v48[2] = __77__RTFeatureExtractor__getMapsHistoricalNavigationsWithDateInterval_outError___block_invoke;
@@ -2653,7 +2653,7 @@ void __56__RTFeatureExtractor__getMapsActiveNavigationWithError___block_invoke(u
   v51 = &v52;
   v9 = v6;
   v49 = v9;
-  [v8 fetchHistoryEntryRoutesWithOptions:v7 handler:v48];
+  [mapsSupportManager fetchHistoryEntryRoutesWithOptions:v7 handler:v48];
   v41 = v7;
 
   v10 = v9;
@@ -2666,11 +2666,11 @@ void __56__RTFeatureExtractor__getMapsActiveNavigationWithError___block_invoke(u
     v15 = v14;
     v16 = objc_opt_new();
     v17 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_143];
-    v18 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v19 = [v18 filteredArrayUsingPredicate:v17];
-    v20 = [v19 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v19 = [callStackSymbols filteredArrayUsingPredicate:v17];
+    firstObject = [v19 firstObject];
 
-    [v16 submitToCoreAnalytics:v20 type:1 duration:v15];
+    [v16 submitToCoreAnalytics:firstObject type:1 duration:v15];
     v21 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
     {
@@ -2698,15 +2698,15 @@ void __56__RTFeatureExtractor__getMapsActiveNavigationWithError___block_invoke(u
   v26 = v24;
   if (v26)
   {
-    [v5 addObject:v26];
+    [array2 addObject:v26];
   }
 
   if (v53[5])
   {
-    [v5 addObject:?];
+    [array2 addObject:?];
   }
 
-  if ([v5 count])
+  if ([array2 count])
   {
     v27 = _RTSafeArray();
     v28 = _RTMultiErrorCreate();
@@ -2723,17 +2723,17 @@ void __56__RTFeatureExtractor__getMapsActiveNavigationWithError___block_invoke(u
     if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
     {
       v30 = NSStringFromSelector(a2);
-      v31 = [v45 startDate];
-      v32 = [v31 stringFromDate];
-      v33 = [v45 endDate];
-      v34 = [v33 stringFromDate];
+      startDate = [intervalCopy startDate];
+      stringFromDate = [startDate stringFromDate];
+      endDate = [intervalCopy endDate];
+      stringFromDate2 = [endDate stringFromDate];
       v35 = [v59[5] count];
       *buf = 138413314;
       *&buf[4] = v30;
       v65 = 2112;
-      v66 = v32;
+      v66 = stringFromDate;
       v67 = 2112;
-      v68 = v34;
+      v68 = stringFromDate2;
       v69 = 2048;
       v70 = v35;
       v71 = 2112;
@@ -2747,7 +2747,7 @@ void __56__RTFeatureExtractor__getMapsActiveNavigationWithError___block_invoke(u
   v46[1] = 3221225472;
   v46[2] = __77__RTFeatureExtractor__getMapsHistoricalNavigationsWithDateInterval_outError___block_invoke_441;
   v46[3] = &unk_2788D1FC0;
-  v37 = v43;
+  v37 = array;
   v47 = v37;
   [v36 enumerateObjectsUsingBlock:v46];
 
@@ -2755,10 +2755,10 @@ void __56__RTFeatureExtractor__getMapsActiveNavigationWithError___block_invoke(u
   _Block_object_dispose(&v58, 8);
 
   objc_autoreleasePoolPop(context);
-  if (a4)
+  if (error)
   {
     v38 = v28;
-    *a4 = v28;
+    *error = v28;
   }
 
   return v37;
@@ -2791,13 +2791,13 @@ void __77__RTFeatureExtractor__getMapsHistoricalNavigationsWithDateInterval_outE
   [v2 addObject:v5];
 }
 
-- (id)_getMapsViewedPlacesWithDateInterval:(id)a3 outError:(id *)a4
+- (id)_getMapsViewedPlacesWithDateInterval:(id)interval outError:(id *)error
 {
   v73[1] = *MEMORY[0x277D85DE8];
-  v45 = a3;
-  v43 = [MEMORY[0x277CBEB18] array];
+  intervalCopy = interval;
+  array = [MEMORY[0x277CBEB18] array];
   context = objc_autoreleasePoolPush();
-  v5 = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v58 = 0;
   v59 = &v58;
   v60 = 0x3032000000;
@@ -2810,9 +2810,9 @@ void __77__RTFeatureExtractor__getMapsHistoricalNavigationsWithDateInterval_outE
   v55 = __Block_byref_object_copy__175;
   v56 = __Block_byref_object_dispose__175;
   v57 = 0;
-  v6 = [[RTMapsSupportOptions alloc] initWithDateInterval:v45];
+  v6 = [[RTMapsSupportOptions alloc] initWithDateInterval:intervalCopy];
   v7 = dispatch_semaphore_create(0);
-  v8 = [(RTFeatureExtractor *)self mapsSupportManager];
+  mapsSupportManager = [(RTFeatureExtractor *)self mapsSupportManager];
   v48[0] = MEMORY[0x277D85DD0];
   v48[1] = 3221225472;
   v48[2] = __68__RTFeatureExtractor__getMapsViewedPlacesWithDateInterval_outError___block_invoke;
@@ -2821,7 +2821,7 @@ void __77__RTFeatureExtractor__getMapsHistoricalNavigationsWithDateInterval_outE
   v51 = &v52;
   v9 = v7;
   v49 = v9;
-  [v8 fetchHistoryEntryPlaceDisplaysWithOptions:v6 handler:v48];
+  [mapsSupportManager fetchHistoryEntryPlaceDisplaysWithOptions:v6 handler:v48];
   v41 = v6;
 
   v10 = v9;
@@ -2834,11 +2834,11 @@ void __77__RTFeatureExtractor__getMapsHistoricalNavigationsWithDateInterval_outE
     v15 = v14;
     v16 = objc_opt_new();
     v17 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_143];
-    v18 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v19 = [v18 filteredArrayUsingPredicate:v17];
-    v20 = [v19 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v19 = [callStackSymbols filteredArrayUsingPredicate:v17];
+    firstObject = [v19 firstObject];
 
-    [v16 submitToCoreAnalytics:v20 type:1 duration:v15];
+    [v16 submitToCoreAnalytics:firstObject type:1 duration:v15];
     v21 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
     {
@@ -2866,15 +2866,15 @@ void __77__RTFeatureExtractor__getMapsHistoricalNavigationsWithDateInterval_outE
   v26 = v24;
   if (v26)
   {
-    [v5 addObject:v26];
+    [array2 addObject:v26];
   }
 
   if (v53[5])
   {
-    [v5 addObject:?];
+    [array2 addObject:?];
   }
 
-  if ([v5 count])
+  if ([array2 count])
   {
     v27 = _RTSafeArray();
     v28 = _RTMultiErrorCreate();
@@ -2891,17 +2891,17 @@ void __77__RTFeatureExtractor__getMapsHistoricalNavigationsWithDateInterval_outE
     if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
     {
       v30 = NSStringFromSelector(a2);
-      v31 = [v45 startDate];
-      v32 = [v31 stringFromDate];
-      v33 = [v45 endDate];
-      v34 = [v33 stringFromDate];
+      startDate = [intervalCopy startDate];
+      stringFromDate = [startDate stringFromDate];
+      endDate = [intervalCopy endDate];
+      stringFromDate2 = [endDate stringFromDate];
       v35 = [v59[5] count];
       *buf = 138413314;
       *&buf[4] = v30;
       v65 = 2112;
-      v66 = v32;
+      v66 = stringFromDate;
       v67 = 2112;
-      v68 = v34;
+      v68 = stringFromDate2;
       v69 = 2048;
       v70 = v35;
       v71 = 2112;
@@ -2915,7 +2915,7 @@ void __77__RTFeatureExtractor__getMapsHistoricalNavigationsWithDateInterval_outE
   v46[1] = 3221225472;
   v46[2] = __68__RTFeatureExtractor__getMapsViewedPlacesWithDateInterval_outError___block_invoke_443;
   v46[3] = &unk_2788D1FE8;
-  v37 = v43;
+  v37 = array;
   v47 = v37;
   [v36 enumerateObjectsUsingBlock:v46];
 
@@ -2923,10 +2923,10 @@ void __77__RTFeatureExtractor__getMapsHistoricalNavigationsWithDateInterval_outE
   _Block_object_dispose(&v58, 8);
 
   objc_autoreleasePoolPop(context);
-  if (a4)
+  if (error)
   {
     v38 = v28;
-    *a4 = v28;
+    *error = v28;
   }
 
   return v37;
@@ -2959,13 +2959,13 @@ void __68__RTFeatureExtractor__getMapsViewedPlacesWithDateInterval_outError___bl
   [v2 addObject:v5];
 }
 
-- (id)_getMotionActivitiesWithDateInterval:(id)a3 outError:(id *)a4
+- (id)_getMotionActivitiesWithDateInterval:(id)interval outError:(id *)error
 {
   v73[1] = *MEMORY[0x277D85DE8];
-  v45 = a3;
-  v43 = [MEMORY[0x277CBEB18] array];
+  intervalCopy = interval;
+  array = [MEMORY[0x277CBEB18] array];
   context = objc_autoreleasePoolPush();
-  v5 = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v58 = 0;
   v59 = &v58;
   v60 = 0x3032000000;
@@ -2977,11 +2977,11 @@ void __68__RTFeatureExtractor__getMapsViewedPlacesWithDateInterval_outError___bl
   v54 = 0x3032000000;
   v55 = __Block_byref_object_copy__175;
   v56 = __Block_byref_object_dispose__175;
-  v57 = [MEMORY[0x277CBEA60] array];
+  array3 = [MEMORY[0x277CBEA60] array];
   v6 = dispatch_semaphore_create(0);
-  v7 = [(RTFeatureExtractor *)self motionActivityManager];
-  v8 = [v45 startDate];
-  v9 = [v45 endDate];
+  motionActivityManager = [(RTFeatureExtractor *)self motionActivityManager];
+  startDate = [intervalCopy startDate];
+  endDate = [intervalCopy endDate];
   v48[0] = MEMORY[0x277D85DD0];
   v48[1] = 3221225472;
   v48[2] = __68__RTFeatureExtractor__getMotionActivitiesWithDateInterval_outError___block_invoke;
@@ -2990,7 +2990,7 @@ void __68__RTFeatureExtractor__getMapsViewedPlacesWithDateInterval_outError___bl
   v51 = &v52;
   v10 = v6;
   v49 = v10;
-  [v7 fetchMotionActivitiesFromStartDate:v8 endDate:v9 handler:v48];
+  [motionActivityManager fetchMotionActivitiesFromStartDate:startDate endDate:endDate handler:v48];
 
   v11 = v10;
   v12 = [MEMORY[0x277CBEAA8] now];
@@ -3002,11 +3002,11 @@ void __68__RTFeatureExtractor__getMapsViewedPlacesWithDateInterval_outError___bl
     v16 = v15;
     v17 = objc_opt_new();
     v18 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_143];
-    v19 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v20 = [v19 filteredArrayUsingPredicate:v18];
-    v21 = [v20 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v20 = [callStackSymbols filteredArrayUsingPredicate:v18];
+    firstObject = [v20 firstObject];
 
-    [v17 submitToCoreAnalytics:v21 type:1 duration:v16];
+    [v17 submitToCoreAnalytics:firstObject type:1 duration:v16];
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
     {
@@ -3034,15 +3034,15 @@ void __68__RTFeatureExtractor__getMapsViewedPlacesWithDateInterval_outError___bl
   v27 = v25;
   if (v27)
   {
-    [v5 addObject:v27];
+    [array2 addObject:v27];
   }
 
   if (v59[5])
   {
-    [v5 addObject:?];
+    [array2 addObject:?];
   }
 
-  if ([v5 count])
+  if ([array2 count])
   {
     v28 = _RTSafeArray();
     v29 = _RTMultiErrorCreate();
@@ -3059,17 +3059,17 @@ void __68__RTFeatureExtractor__getMapsViewedPlacesWithDateInterval_outError___bl
     if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
     {
       v31 = NSStringFromSelector(a2);
-      v32 = [v45 startDate];
-      v33 = [v32 stringFromDate];
-      v34 = [v45 endDate];
-      v35 = [v34 stringFromDate];
+      startDate2 = [intervalCopy startDate];
+      stringFromDate = [startDate2 stringFromDate];
+      endDate2 = [intervalCopy endDate];
+      stringFromDate2 = [endDate2 stringFromDate];
       v36 = [v53[5] count];
       *buf = 138413314;
       *&buf[4] = v31;
       v65 = 2112;
-      v66 = v33;
+      v66 = stringFromDate;
       v67 = 2112;
-      v68 = v35;
+      v68 = stringFromDate2;
       v69 = 2048;
       v70 = v36;
       v71 = 2112;
@@ -3083,7 +3083,7 @@ void __68__RTFeatureExtractor__getMapsViewedPlacesWithDateInterval_outError___bl
   v46[1] = 3221225472;
   v46[2] = __68__RTFeatureExtractor__getMotionActivitiesWithDateInterval_outError___block_invoke_445;
   v46[3] = &unk_2788D2010;
-  v38 = v43;
+  v38 = array;
   v47 = v38;
   [v37 enumerateObjectsUsingBlock:v46];
 
@@ -3091,10 +3091,10 @@ void __68__RTFeatureExtractor__getMapsViewedPlacesWithDateInterval_outError___bl
   _Block_object_dispose(&v58, 8);
 
   objc_autoreleasePoolPop(context);
-  if (a4)
+  if (error)
   {
     v39 = v29;
-    *a4 = v29;
+    *error = v29;
   }
 
   return v38;
@@ -3123,10 +3123,10 @@ void __68__RTFeatureExtractor__getMotionActivitiesWithDateInterval_outError___bl
   [v2 addObject:v5];
 }
 
-- (id)_getParkedCarWithError:(id *)a3
+- (id)_getParkedCarWithError:(id *)error
 {
   v55[1] = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v44 = 0;
   v45 = &v44;
   v46 = 0x3032000000;
@@ -3140,7 +3140,7 @@ void __68__RTFeatureExtractor__getMotionActivitiesWithDateInterval_outError___bl
   v42 = __Block_byref_object_dispose__175;
   v43 = 0;
   v6 = dispatch_semaphore_create(0);
-  v7 = [(RTFeatureExtractor *)self vehicleLocationProvider];
+  vehicleLocationProvider = [(RTFeatureExtractor *)self vehicleLocationProvider];
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
   v34[2] = __45__RTFeatureExtractor__getParkedCarWithError___block_invoke;
@@ -3149,7 +3149,7 @@ void __68__RTFeatureExtractor__getMotionActivitiesWithDateInterval_outError___bl
   v37 = &v38;
   v8 = v6;
   v35 = v8;
-  [v7 fetchLastVehicleEventsWithHandler:v34];
+  [vehicleLocationProvider fetchLastVehicleEventsWithHandler:v34];
 
   v9 = v8;
   v10 = [MEMORY[0x277CBEAA8] now];
@@ -3161,11 +3161,11 @@ void __68__RTFeatureExtractor__getMotionActivitiesWithDateInterval_outError___bl
     v14 = v13;
     v15 = objc_opt_new();
     v16 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_143];
-    v17 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v18 = [v17 filteredArrayUsingPredicate:v16];
-    v19 = [v18 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v18 = [callStackSymbols filteredArrayUsingPredicate:v16];
+    firstObject = [v18 firstObject];
 
-    [v15 submitToCoreAnalytics:v19 type:1 duration:v14];
+    [v15 submitToCoreAnalytics:firstObject type:1 duration:v14];
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
     {
@@ -3193,12 +3193,12 @@ void __68__RTFeatureExtractor__getMotionActivitiesWithDateInterval_outError___bl
   v25 = v23;
   if (v25)
   {
-    [v5 addObject:v25];
+    [array addObject:v25];
   }
 
   if (v39[5])
   {
-    [v5 addObject:?];
+    [array addObject:?];
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -3213,15 +3213,15 @@ void __68__RTFeatureExtractor__getMotionActivitiesWithDateInterval_outError___bl
       v51 = 2048;
       v52 = v28;
       v53 = 2112;
-      v54 = v5;
+      v54 = array;
       _os_log_impl(&dword_2304B3000, v26, OS_LOG_TYPE_INFO, "%@, fetched parked car, %lu, error(s), %@", buf, 0x20u);
     }
   }
 
-  if (a3)
+  if (error)
   {
     v29 = _RTSafeArray();
-    *a3 = _RTMultiErrorCreate();
+    *error = _RTMultiErrorCreate();
   }
 
   v30 = objc_alloc(MEMORY[0x277D3F8D0]);
@@ -3249,17 +3249,17 @@ void __45__RTFeatureExtractor__getParkedCarWithError___block_invoke(uint64_t a1,
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_getWorkoutsWithDateInterval:(id)a3 outError:(id *)a4
+- (id)_getWorkoutsWithDateInterval:(id)interval outError:(id *)error
 {
   v42 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [MEMORY[0x277CBEB18] array];
+  intervalCopy = interval;
+  array = [MEMORY[0x277CBEB18] array];
   v9 = objc_autoreleasePoolPush();
-  v10 = [(RTFeatureExtractor *)self healthKitManager];
-  v11 = [v7 startDate];
+  healthKitManager = [(RTFeatureExtractor *)self healthKitManager];
+  startDate = [intervalCopy startDate];
   v12 = +[RTHealthKitManager getWorkoutAllPredictableTypes];
   v31 = 0;
-  v13 = [v10 getRelevantWorkoutsWithStartDate:v11 limit:1000 workoutTypes:v12 error:&v31];
+  v13 = [healthKitManager getRelevantWorkoutsWithStartDate:startDate limit:1000 workoutTypes:v12 error:&v31];
   v14 = v31;
 
   v15 = [v14 copy];
@@ -3269,17 +3269,17 @@ void __45__RTFeatureExtractor__getParkedCarWithError___block_invoke(uint64_t a1,
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       v17 = NSStringFromSelector(a2);
-      v26 = [v7 startDate];
-      v18 = [v26 stringFromDate];
-      [v7 endDate];
+      startDate2 = [intervalCopy startDate];
+      stringFromDate = [startDate2 stringFromDate];
+      [intervalCopy endDate];
       v19 = v28 = v9;
       [v19 stringFromDate];
-      v20 = v27 = v8;
+      v20 = v27 = array;
       v21 = [v13 count];
       *buf = 138413314;
       v33 = v17;
       v34 = 2112;
-      v35 = v18;
+      v35 = stringFromDate;
       v36 = 2112;
       v37 = v20;
       v38 = 2048;
@@ -3289,7 +3289,7 @@ void __45__RTFeatureExtractor__getParkedCarWithError___block_invoke(uint64_t a1,
       _os_log_impl(&dword_2304B3000, v16, OS_LOG_TYPE_INFO, "%@, dateInterval, startDate, %@, endDate, %@, fetched workouts, %lu, error(s), %@", buf, 0x34u);
 
       v9 = v28;
-      v8 = v27;
+      array = v27;
     }
   }
 
@@ -3297,15 +3297,15 @@ void __45__RTFeatureExtractor__getParkedCarWithError___block_invoke(uint64_t a1,
   v29[1] = 3221225472;
   v29[2] = __60__RTFeatureExtractor__getWorkoutsWithDateInterval_outError___block_invoke;
   v29[3] = &unk_2788D2038;
-  v22 = v8;
+  v22 = array;
   v30 = v22;
   [v13 enumerateObjectsUsingBlock:v29];
 
   objc_autoreleasePoolPop(v9);
-  if (a4)
+  if (error)
   {
     v23 = v15;
-    *a4 = v15;
+    *error = v15;
   }
 
   v24 = v22;
@@ -3323,11 +3323,11 @@ void __60__RTFeatureExtractor__getWorkoutsWithDateInterval_outError___block_invo
   [v2 addObject:v5];
 }
 
-- (id)_getHomeKitHomesWithError:(id *)a3
+- (id)_getHomeKitHomesWithError:(id *)error
 {
   v62[1] = *MEMORY[0x277D85DE8];
   context = objc_autoreleasePoolPush();
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v51 = 0;
   v52 = &v51;
   v53 = 0x3032000000;
@@ -3339,9 +3339,9 @@ void __60__RTFeatureExtractor__getWorkoutsWithDateInterval_outError___block_invo
   v47 = 0x3032000000;
   v48 = __Block_byref_object_copy__175;
   v49 = __Block_byref_object_dispose__175;
-  v50 = [MEMORY[0x277CBEA60] array];
+  array2 = [MEMORY[0x277CBEA60] array];
   v6 = dispatch_semaphore_create(0);
-  v7 = [(RTFeatureExtractor *)self homeKitManager];
+  homeKitManager = [(RTFeatureExtractor *)self homeKitManager];
   v41[0] = MEMORY[0x277D85DD0];
   v41[1] = 3221225472;
   v41[2] = __48__RTFeatureExtractor__getHomeKitHomesWithError___block_invoke;
@@ -3350,7 +3350,7 @@ void __60__RTFeatureExtractor__getWorkoutsWithDateInterval_outError___block_invo
   v44 = &v45;
   v8 = v6;
   v42 = v8;
-  [v7 fetchHomesWithHandler:v41];
+  [homeKitManager fetchHomesWithHandler:v41];
 
   v9 = v8;
   v10 = [MEMORY[0x277CBEAA8] now];
@@ -3362,11 +3362,11 @@ void __60__RTFeatureExtractor__getWorkoutsWithDateInterval_outError___block_invo
     v14 = v13;
     v15 = objc_opt_new();
     v16 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_143];
-    v17 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v18 = [v17 filteredArrayUsingPredicate:v16];
-    v19 = [v18 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v18 = [callStackSymbols filteredArrayUsingPredicate:v16];
+    firstObject = [v18 firstObject];
 
-    [v15 submitToCoreAnalytics:v19 type:1 duration:v14];
+    [v15 submitToCoreAnalytics:firstObject type:1 duration:v14];
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
     {
@@ -3394,15 +3394,15 @@ void __60__RTFeatureExtractor__getWorkoutsWithDateInterval_outError___block_invo
   v25 = v23;
   if (v25)
   {
-    [v5 addObject:v25];
+    [array addObject:v25];
   }
 
   if (v52[5])
   {
-    [v5 addObject:?];
+    [array addObject:?];
   }
 
-  if ([v5 count])
+  if ([array count])
   {
     v36 = 1;
     v26 = _RTSafeArray();
@@ -3431,13 +3431,13 @@ void __60__RTFeatureExtractor__getWorkoutsWithDateInterval_outError___block_invo
     }
   }
 
-  v31 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
   v32 = v46[5];
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = 3221225472;
   v39[2] = __48__RTFeatureExtractor__getHomeKitHomesWithError___block_invoke_449;
   v39[3] = &unk_2788D2060;
-  v33 = v31;
+  v33 = array3;
   v40 = v33;
   [v32 enumerateObjectsUsingBlock:v39];
 
@@ -3445,10 +3445,10 @@ void __60__RTFeatureExtractor__getWorkoutsWithDateInterval_outError___block_invo
   _Block_object_dispose(&v51, 8);
 
   objc_autoreleasePoolPop(context);
-  if (a3)
+  if (error)
   {
     v34 = v27;
-    *a3 = v27;
+    *error = v27;
   }
 
   return v33;
@@ -3477,20 +3477,20 @@ void __48__RTFeatureExtractor__getHomeKitHomesWithError___block_invoke_449(uint6
   [v2 addObject:v5];
 }
 
-- (id)_getPropagatedLocationAtDistance:(double)a3
+- (id)_getPropagatedLocationAtDistance:(double)distance
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v7 = objc_autoreleasePoolPush();
-  v8 = [(RTFeatureExtractor *)self tripLocationPropagator];
-  v9 = [(RTFeatureExtractor *)self locationManager];
-  v10 = [v8 getPropagatedLocationWithLocationManager:v9 atDistance:a3];
+  tripLocationPropagator = [(RTFeatureExtractor *)self tripLocationPropagator];
+  locationManager = [(RTFeatureExtractor *)self locationManager];
+  v10 = [tripLocationPropagator getPropagatedLocationWithLocationManager:locationManager atDistance:distance];
 
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __55__RTFeatureExtractor__getPropagatedLocationAtDistance___block_invoke;
   v16[3] = &unk_2788D2088;
-  v11 = v6;
+  v11 = array;
   v17 = v11;
   [v10 enumerateObjectsUsingBlock:v16];
 
@@ -3523,11 +3523,11 @@ void __55__RTFeatureExtractor__getPropagatedLocationAtDistance___block_invoke(ui
   [v2 addObject:v5];
 }
 
-- (id)_fetchLocationOfInterestForMapItem:(id)a3 error:(id *)a4
+- (id)_fetchLocationOfInterestForMapItem:(id)item error:(id *)error
 {
   v60 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (v7)
+  itemCopy = item;
+  if (itemCopy)
   {
     v50 = 0;
     v51 = &v50;
@@ -3542,7 +3542,7 @@ void __55__RTFeatureExtractor__getPropagatedLocationAtDistance___block_invoke(ui
     v48 = __Block_byref_object_dispose__175;
     v49 = 0;
     v8 = dispatch_semaphore_create(0);
-    v9 = [(RTFeatureExtractor *)self learnedLocationManager];
+    learnedLocationManager = [(RTFeatureExtractor *)self learnedLocationManager];
     v35 = MEMORY[0x277D85DD0];
     v36 = 3221225472;
     v37 = __63__RTFeatureExtractor__fetchLocationOfInterestForMapItem_error___block_invoke;
@@ -3550,10 +3550,10 @@ void __55__RTFeatureExtractor__getPropagatedLocationAtDistance___block_invoke(ui
     v41 = &v50;
     v42 = &v44;
     v43 = a2;
-    v39 = v7;
+    v39 = itemCopy;
     v10 = v8;
     v40 = v10;
-    [v9 fetchLocationOfInterestWithMapItem:v39 handler:&v35];
+    [learnedLocationManager fetchLocationOfInterestWithMapItem:v39 handler:&v35];
 
     v11 = v10;
     v12 = [MEMORY[0x277CBEAA8] now];
@@ -3565,11 +3565,11 @@ void __55__RTFeatureExtractor__getPropagatedLocationAtDistance___block_invoke(ui
       v16 = v15;
       v17 = objc_opt_new();
       v18 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_143];
-      v19 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v20 = [v19 filteredArrayUsingPredicate:v18];
-      v21 = [v20 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v20 = [callStackSymbols filteredArrayUsingPredicate:v18];
+      firstObject = [v20 firstObject];
 
-      [v17 submitToCoreAnalytics:v21 type:1 duration:v16];
+      [v17 submitToCoreAnalytics:firstObject type:1 duration:v16];
       v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
       {
@@ -3594,23 +3594,23 @@ LABEL_12:
         v31 = v30;
         if (v27)
         {
-          if (a4)
+          if (error)
           {
             v32 = v45[5];
             if (v32)
             {
-              *a4 = v32;
+              *error = v32;
             }
           }
 
           v29 = v51[5];
         }
 
-        else if (a4)
+        else if (error)
         {
           v33 = v30;
           v29 = 0;
-          *a4 = v31;
+          *error = v31;
         }
 
         else
@@ -3634,12 +3634,12 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  if (a4)
+  if (error)
   {
     v56 = *MEMORY[0x277CCA450];
     v57 = @"requires a non nil map item.";
     v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v57 forKeys:&v56 count:1];
-    *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v28];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v28];
   }
 
   v29 = 0;

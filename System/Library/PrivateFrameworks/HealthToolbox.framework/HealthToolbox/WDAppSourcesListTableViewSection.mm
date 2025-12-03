@@ -1,45 +1,45 @@
 @interface WDAppSourcesListTableViewSection
 - (BOOL)_shouldShowUninstalledSourcesCell;
-- (WDAppSourcesListTableViewSection)initWithDelegate:(id)a3 atSection:(unint64_t)a4;
+- (WDAppSourcesListTableViewSection)initWithDelegate:(id)delegate atSection:(unint64_t)section;
 - (id)_getSourceListToShow;
-- (id)_sourceCellForRow:(unint64_t)a3 tableView:(id)a4;
-- (id)_uninstalledSourcesCellWithTableView:(id)a3;
-- (id)cellForRow:(unint64_t)a3 table:(id)a4;
+- (id)_sourceCellForRow:(unint64_t)row tableView:(id)view;
+- (id)_uninstalledSourcesCellWithTableView:(id)view;
+- (id)cellForRow:(unint64_t)row table:(id)table;
 - (id)noneString;
 - (id)titleForFooter;
 - (id)titleForHeader;
 - (unint64_t)numberOfRows;
 - (void)dataSourceDidUpdate;
-- (void)didSelectRow:(unint64_t)a3 representedByCell:(id)a4 withCompletion:(id)a5;
+- (void)didSelectRow:(unint64_t)row representedByCell:(id)cell withCompletion:(id)completion;
 @end
 
 @implementation WDAppSourcesListTableViewSection
 
-- (WDAppSourcesListTableViewSection)initWithDelegate:(id)a3 atSection:(unint64_t)a4
+- (WDAppSourcesListTableViewSection)initWithDelegate:(id)delegate atSection:(unint64_t)section
 {
   v17.receiver = self;
   v17.super_class = WDAppSourcesListTableViewSection;
-  v4 = [(WDTableViewSection *)&v17 initWithDelegate:a3 atSection:a4];
+  v4 = [(WDTableViewSection *)&v17 initWithDelegate:delegate atSection:section];
   v5 = v4;
   if (v4)
   {
-    v6 = [(WDTableViewSection *)v4 delegate];
-    v7 = [v6 profile];
-    v8 = [v7 healthStore];
-    v9 = [v8 profileIdentifier];
-    v10 = [v9 type];
+    delegate = [(WDTableViewSection *)v4 delegate];
+    profile = [delegate profile];
+    healthStore = [profile healthStore];
+    profileIdentifier = [healthStore profileIdentifier];
+    type = [profileIdentifier type];
 
-    if (v10 == 3)
+    if (type == 3)
     {
       v11 = 1;
     }
 
     else
     {
-      v12 = [(WDTableViewSection *)v5 delegate];
-      v13 = [v12 profile];
-      v14 = [v13 presentationContext];
-      v15 = v14 == @"SettingsPrivacy";
+      delegate2 = [(WDTableViewSection *)v5 delegate];
+      profile2 = [delegate2 profile];
+      presentationContext = [profile2 presentationContext];
+      v15 = presentationContext == @"SettingsPrivacy";
 
       v11 = 2 * v15;
     }
@@ -53,21 +53,21 @@
 - (void)dataSourceDidUpdate
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [(WDAppSourcesListTableViewSection *)self _getSourceListToShow];
-  [(WDAppSourcesListTableViewSection *)self setInstalledSources:v3];
+  _getSourceListToShow = [(WDAppSourcesListTableViewSection *)self _getSourceListToShow];
+  [(WDAppSourcesListTableViewSection *)self setInstalledSources:_getSourceListToShow];
 
-  v4 = [(WDTableViewSection *)self delegate];
-  [v4 reloadTable];
+  delegate = [(WDTableViewSection *)self delegate];
+  [delegate reloadTable];
 
-  v5 = [(WDSourcesListTableViewSection *)self restorationSourceBundleIdentifier];
-  if (v5)
+  restorationSourceBundleIdentifier = [(WDSourcesListTableViewSection *)self restorationSourceBundleIdentifier];
+  if (restorationSourceBundleIdentifier)
   {
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v6 = [(WDAppSourcesListTableViewSection *)self installedSources];
-    v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    installedSources = [(WDAppSourcesListTableViewSection *)self installedSources];
+    v7 = [installedSources countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v7)
     {
       v8 = *v19;
@@ -77,13 +77,13 @@
         {
           if (*v19 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(installedSources);
           }
 
           v10 = *(*(&v18 + 1) + 8 * i);
-          v11 = [v10 source];
-          v12 = [v11 bundleIdentifier];
-          v13 = [v12 isEqualToString:v5];
+          source = [v10 source];
+          bundleIdentifier = [source bundleIdentifier];
+          v13 = [bundleIdentifier isEqualToString:restorationSourceBundleIdentifier];
 
           if (v13)
           {
@@ -100,7 +100,7 @@
           }
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v7 = [installedSources countByEnumeratingWithState:&v18 objects:v22 count:16];
         if (v7)
         {
           continue;
@@ -128,48 +128,48 @@ void __55__WDAppSourcesListTableViewSection_dataSourceDidUpdate__block_invoke(ui
 
 - (id)_getSourceListToShow
 {
-  v4 = [(WDAppSourcesListTableViewSection *)self sourcesStyle];
-  if (!v4)
+  sourcesStyle = [(WDAppSourcesListTableViewSection *)self sourcesStyle];
+  if (!sourcesStyle)
   {
-    v5 = [(WDSourcesListTableViewSection *)self dataSource];
-    v6 = [v5 sources];
-    v2 = [v6 orderedAppSources];
+    dataSource = [(WDSourcesListTableViewSection *)self dataSource];
+    sources = [dataSource sources];
+    orderedAppSources = [sources orderedAppSources];
 LABEL_7:
 
     goto LABEL_8;
   }
 
-  if (v4 != 1)
+  if (sourcesStyle != 1)
   {
-    if (v4 != 2)
+    if (sourcesStyle != 2)
     {
       goto LABEL_9;
     }
 
-    v5 = [(WDSourcesListTableViewSection *)self dataSource];
-    v6 = [(WDSourcesListTableViewSection *)self dataSource];
-    v7 = [v6 sources];
-    v8 = [v7 orderedAppSources];
-    v2 = [v5 fetchFilteredSourcesWithAuthorizationRecordsForSources:v8];
+    dataSource = [(WDSourcesListTableViewSection *)self dataSource];
+    sources = [(WDSourcesListTableViewSection *)self dataSource];
+    v6Sources = [sources sources];
+    orderedAppSources2 = [v6Sources orderedAppSources];
+    orderedAppSources = [dataSource fetchFilteredSourcesWithAuthorizationRecordsForSources:orderedAppSources2];
 
     goto LABEL_7;
   }
 
-  v9 = [(WDSourcesListTableViewSection *)self dataSource];
-  v10 = [v9 sources];
-  v11 = [v10 orderedAppSources];
+  dataSource2 = [(WDSourcesListTableViewSection *)self dataSource];
+  sources2 = [dataSource2 sources];
+  orderedAppSources3 = [sources2 orderedAppSources];
 
-  v12 = [(WDSourcesListTableViewSection *)self dataSource];
-  v13 = [v12 sources];
-  v14 = [v13 orderedUninstalledAppSources];
-  v5 = [v11 arrayByAddingObjectsFromArray:v14];
+  dataSource3 = [(WDSourcesListTableViewSection *)self dataSource];
+  sources3 = [dataSource3 sources];
+  orderedUninstalledAppSources = [sources3 orderedUninstalledAppSources];
+  dataSource = [orderedAppSources3 arrayByAddingObjectsFromArray:orderedUninstalledAppSources];
 
-  v2 = [v5 sortedArrayUsingComparator:&__block_literal_global_9];
+  orderedAppSources = [dataSource sortedArrayUsingComparator:&__block_literal_global_9];
 LABEL_8:
 
 LABEL_9:
 
-  return v2;
+  return orderedAppSources;
 }
 
 uint64_t __56__WDAppSourcesListTableViewSection__getSourceListToShow__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -187,8 +187,8 @@ uint64_t __56__WDAppSourcesListTableViewSection__getSourceListToShow__block_invo
 
 - (unint64_t)numberOfRows
 {
-  v3 = [(WDAppSourcesListTableViewSection *)self installedSources];
-  v4 = [v3 count];
+  installedSources = [(WDAppSourcesListTableViewSection *)self installedSources];
+  v4 = [installedSources count];
 
   if (v4)
   {
@@ -233,22 +233,22 @@ uint64_t __56__WDAppSourcesListTableViewSection__getSourceListToShow__block_invo
   return v3;
 }
 
-- (id)cellForRow:(unint64_t)a3 table:(id)a4
+- (id)cellForRow:(unint64_t)row table:(id)table
 {
-  v6 = a4;
-  if (a3 || ([(WDAppSourcesListTableViewSection *)self installedSources], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
+  tableCopy = table;
+  if (row || ([(WDAppSourcesListTableViewSection *)self installedSources], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
   {
-    v8 = [(WDAppSourcesListTableViewSection *)self installedSources];
-    v9 = [v8 count];
+    installedSources = [(WDAppSourcesListTableViewSection *)self installedSources];
+    v9 = [installedSources count];
 
     if (v9)
     {
-      v10 = [(WDAppSourcesListTableViewSection *)self installedSources];
-      v11 = [v10 count];
+      installedSources2 = [(WDAppSourcesListTableViewSection *)self installedSources];
+      v11 = [installedSources2 count];
 
-      if (v11 != a3)
+      if (v11 != row)
       {
-        v12 = [(WDAppSourcesListTableViewSection *)self _sourceCellForRow:a3 tableView:v6];
+        v12 = [(WDAppSourcesListTableViewSection *)self _sourceCellForRow:row tableView:tableCopy];
 LABEL_9:
         v13 = v12;
         goto LABEL_10;
@@ -257,45 +257,45 @@ LABEL_9:
 
     else if (![(WDAppSourcesListTableViewSection *)self _shouldShowUninstalledSourcesCell])
     {
-      v12 = [(WDSourcesListTableViewSection *)self noneCellForTableView:v6];
+      v12 = [(WDSourcesListTableViewSection *)self noneCellForTableView:tableCopy];
       goto LABEL_9;
     }
 
-    v12 = [(WDAppSourcesListTableViewSection *)self _uninstalledSourcesCellWithTableView:v6];
+    v12 = [(WDAppSourcesListTableViewSection *)self _uninstalledSourcesCellWithTableView:tableCopy];
     goto LABEL_9;
   }
 
   v15 = +[WDSpinnerTableViewCell defaultReuseIdentifier];
-  v13 = [v6 dequeueReusableCellWithIdentifier:v15];
+  v13 = [tableCopy dequeueReusableCellWithIdentifier:v15];
 
 LABEL_10:
 
   return v13;
 }
 
-- (id)_sourceCellForRow:(unint64_t)a3 tableView:(id)a4
+- (id)_sourceCellForRow:(unint64_t)row tableView:(id)view
 {
-  v6 = [a4 dequeueReusableCellWithIdentifier:@"WDAppSourcesListTableViewSectionCell"];
+  v6 = [view dequeueReusableCellWithIdentifier:@"WDAppSourcesListTableViewSectionCell"];
   if (!v6)
   {
     v6 = [[WDSourcesListTableViewCell alloc] initWithStyle:0 reuseIdentifier:@"WDAppSourcesListTableViewSectionCell"];
     [(WDSourcesListTableViewCell *)v6 setAccessoryType:1];
   }
 
-  v7 = [(WDAppSourcesListTableViewSection *)self installedSources];
-  v8 = [v7 objectAtIndexedSubscript:a3];
+  installedSources = [(WDAppSourcesListTableViewSection *)self installedSources];
+  v8 = [installedSources objectAtIndexedSubscript:row];
   [(WDSourcesListTableViewCell *)v6 setSourceModel:v8];
 
   v9 = [MEMORY[0x277D74300] hk_preferredFontForTextStyle:*MEMORY[0x277D76918]];
-  v10 = [(WDSourcesListTableViewCell *)v6 textLabel];
-  [v10 setFont:v9];
+  textLabel = [(WDSourcesListTableViewCell *)v6 textLabel];
+  [textLabel setFont:v9];
 
   return v6;
 }
 
-- (id)_uninstalledSourcesCellWithTableView:(id)a3
+- (id)_uninstalledSourcesCellWithTableView:(id)view
 {
-  v3 = [a3 dequeueReusableCellWithIdentifier:@"WDSourcesListTableViewSectionUninstalledSources"];
+  v3 = [view dequeueReusableCellWithIdentifier:@"WDSourcesListTableViewSectionUninstalledSources"];
   if (!v3)
   {
     v3 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:0 reuseIdentifier:@"WDSourcesListTableViewSectionUninstalledSources"];
@@ -304,54 +304,54 @@ LABEL_10:
   [v3 setAccessoryType:1];
   v4 = WDBundle();
   v5 = [v4 localizedStringForKey:@"UNINSTALLED_APPS" value:&stru_28641D9B8 table:@"WellnessDashboard-Localizable"];
-  v6 = [v3 textLabel];
-  [v6 setText:v5];
+  textLabel = [v3 textLabel];
+  [textLabel setText:v5];
 
   v7 = [MEMORY[0x277D74300] hk_preferredFontForTextStyle:*MEMORY[0x277D76918]];
-  v8 = [v3 textLabel];
-  [v8 setFont:v7];
+  textLabel2 = [v3 textLabel];
+  [textLabel2 setFont:v7];
 
   return v3;
 }
 
-- (void)didSelectRow:(unint64_t)a3 representedByCell:(id)a4 withCompletion:(id)a5
+- (void)didSelectRow:(unint64_t)row representedByCell:(id)cell withCompletion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  if (a3 || ([(WDAppSourcesListTableViewSection *)self installedSources], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
+  cellCopy = cell;
+  completionCopy = completion;
+  if (row || ([(WDAppSourcesListTableViewSection *)self installedSources], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
   {
-    v11 = [v8 reuseIdentifier];
-    v12 = [v11 isEqualToString:@"WDSourcesListTableViewSectionUninstalledSources"];
+    reuseIdentifier = [cellCopy reuseIdentifier];
+    v12 = [reuseIdentifier isEqualToString:@"WDSourcesListTableViewSectionUninstalledSources"];
 
     if (v12)
     {
       v13 = objc_alloc_init(WDUninstalledAppSourcesViewController);
-      v14 = [(WDTableViewSection *)self delegate];
-      v15 = [v14 profile];
-      [(WDUninstalledAppSourcesViewController *)v13 setProfile:v15];
+      delegate = [(WDTableViewSection *)self delegate];
+      profile = [delegate profile];
+      [(WDUninstalledAppSourcesViewController *)v13 setProfile:profile];
 
-      v16 = [(WDSourcesListTableViewSection *)self dataSource];
-      [(WDUninstalledAppSourcesViewController *)v13 setDataSource:v16];
+      dataSource = [(WDSourcesListTableViewSection *)self dataSource];
+      [(WDUninstalledAppSourcesViewController *)v13 setDataSource:dataSource];
 
       v17 = WDBundle();
       v18 = [v17 localizedStringForKey:@"UNINSTALLED_APPS" value:&stru_28641D9B8 table:@"WellnessDashboard-Localizable"];
       [(WDUninstalledAppSourcesViewController *)v13 setTitle:v18];
 
-      v19 = [(WDTableViewSection *)self delegate];
-      [v19 pushViewController:v13];
+      delegate2 = [(WDTableViewSection *)self delegate];
+      [delegate2 pushViewController:v13];
 
-      (*(v9 + 2))(v9, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0);
     }
 
     else
     {
-      v20 = [(WDAppSourcesListTableViewSection *)self installedSources];
-      v21 = [v20 count];
+      installedSources = [(WDAppSourcesListTableViewSection *)self installedSources];
+      v21 = [installedSources count];
 
       if (v21)
       {
-        v22 = [(WDAppSourcesListTableViewSection *)self installedSources];
-        v23 = [v22 objectAtIndexedSubscript:a3];
+        installedSources2 = [(WDAppSourcesListTableViewSection *)self installedSources];
+        v23 = [installedSources2 objectAtIndexedSubscript:row];
 
         objc_initWeak(&location, self);
         v24[0] = MEMORY[0x277D85DD0];
@@ -364,13 +364,13 @@ LABEL_10:
         objc_destroyWeak(&location);
       }
 
-      (*(v9 + 2))(v9, 1, 0);
+      (*(completionCopy + 2))(completionCopy, 1, 0);
     }
   }
 
   else
   {
-    (*(v9 + 2))(v9, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
@@ -389,10 +389,10 @@ void __82__WDAppSourcesListTableViewSection_didSelectRow_representedByCell_withC
     return 0;
   }
 
-  v4 = [(WDSourcesListTableViewSection *)self dataSource];
-  v5 = [v4 sources];
-  v6 = [v5 orderedUninstalledAppSources];
-  v3 = [v6 count] != 0;
+  dataSource = [(WDSourcesListTableViewSection *)self dataSource];
+  sources = [dataSource sources];
+  orderedUninstalledAppSources = [sources orderedUninstalledAppSources];
+  v3 = [orderedUninstalledAppSources count] != 0;
 
   return v3;
 }

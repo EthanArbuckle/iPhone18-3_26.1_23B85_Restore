@@ -2,12 +2,12 @@
 + (id)sharedInstance;
 - (BOOL)isPresent;
 - (CSSpeechDetectionDevicePresentMonitor)init;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_startObservingSpeechDetectionVADPresence;
 - (void)_startObservingSystemControllerLifecycle;
 - (void)_stopMonitoring;
-- (void)_systemControllerDied:(id)a3;
-- (void)handleSpeechDetectionVADPresentChange:(id)a3;
+- (void)_systemControllerDied:(id)died;
+- (void)handleSpeechDetectionVADPresentChange:(id)change;
 @end
 
 @implementation CSSpeechDetectionDevicePresentMonitor
@@ -27,9 +27,9 @@
 - (BOOL)isPresent
 {
   v2 = +[CSFPreferences sharedPreferences];
-  v3 = [v2 programmableAudioInjectionEnabled];
+  programmableAudioInjectionEnabled = [v2 programmableAudioInjectionEnabled];
 
-  if (v3)
+  if (programmableAudioInjectionEnabled)
   {
     return 1;
   }
@@ -44,40 +44,40 @@
     return 1;
   }
 
-  v5 = [MEMORY[0x1E69AED08] sharedAVSystemController];
-  v6 = [v5 attributeForKey:*MEMORY[0x1E69AEA28]];
+  mEMORY[0x1E69AED08] = [MEMORY[0x1E69AED08] sharedAVSystemController];
+  v6 = [mEMORY[0x1E69AED08] attributeForKey:*MEMORY[0x1E69AEA28]];
 
-  LOBYTE(v5) = [v6 containsObject:@"VirtualAudioDevice_SpeechDetection"];
-  return v5;
+  LOBYTE(mEMORY[0x1E69AED08]) = [v6 containsObject:@"VirtualAudioDevice_SpeechDetection"];
+  return mEMORY[0x1E69AED08];
 }
 
 - (void)_startObservingSystemControllerLifecycle
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v4 = MEMORY[0x1E69AECB0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69AECB0] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69AECB0] object:0];
 
   v9 = [MEMORY[0x1E695DEC8] arrayWithObject:*v4];
-  v5 = [MEMORY[0x1E69AED08] sharedAVSystemController];
-  [v5 setAttribute:v9 forKey:*MEMORY[0x1E69AECE0] error:0];
+  mEMORY[0x1E69AED08] = [MEMORY[0x1E69AED08] sharedAVSystemController];
+  [mEMORY[0x1E69AED08] setAttribute:v9 forKey:*MEMORY[0x1E69AECE0] error:0];
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
   v7 = *v4;
-  v8 = [MEMORY[0x1E69AED08] sharedAVSystemController];
-  [v6 addObserver:self selector:sel__systemControllerDied_ name:v7 object:v8];
+  mEMORY[0x1E69AED08]2 = [MEMORY[0x1E69AED08] sharedAVSystemController];
+  [defaultCenter2 addObserver:self selector:sel__systemControllerDied_ name:v7 object:mEMORY[0x1E69AED08]2];
 }
 
-- (void)_systemControllerDied:(id)a3
+- (void)_systemControllerDied:(id)died
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  diedCopy = died;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315394;
     v8 = "[CSSpeechDetectionDevicePresentMonitor _systemControllerDied:]";
     v9 = 2114;
-    v10 = v4;
+    v10 = diedCopy;
     _os_log_impl(&dword_1DDA4B000, v5, OS_LOG_TYPE_DEFAULT, "%s notification = %{public}@", &v7, 0x16u);
   }
 
@@ -90,21 +90,21 @@
 
 - (void)_startObservingSpeechDetectionVADPresence
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v4 = MEMORY[0x1E69AEA30];
-  [v3 removeObserver:self name:*MEMORY[0x1E69AEA30] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69AEA30] object:0];
 
   v9 = [MEMORY[0x1E695DEC8] arrayWithObject:*v4];
-  v5 = [MEMORY[0x1E69AED08] sharedAVSystemController];
-  [v5 setAttribute:v9 forKey:*MEMORY[0x1E69AECE0] error:0];
+  mEMORY[0x1E69AED08] = [MEMORY[0x1E69AED08] sharedAVSystemController];
+  [mEMORY[0x1E69AED08] setAttribute:v9 forKey:*MEMORY[0x1E69AECE0] error:0];
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
   v7 = *v4;
-  v8 = [MEMORY[0x1E69AED08] sharedAVSystemController];
-  [v6 addObserver:self selector:sel_handleSpeechDetectionVADPresentChange_ name:v7 object:v8];
+  mEMORY[0x1E69AED08]2 = [MEMORY[0x1E69AED08] sharedAVSystemController];
+  [defaultCenter2 addObserver:self selector:sel_handleSpeechDetectionVADPresentChange_ name:v7 object:mEMORY[0x1E69AED08]2];
 }
 
-- (void)handleSpeechDetectionVADPresentChange:(id)a3
+- (void)handleSpeechDetectionVADPresentChange:(id)change
 {
   v9 = *MEMORY[0x1E69E9840];
   v4 = CSLogContextFacilityCoreSpeech;
@@ -126,11 +126,11 @@
 
 - (void)_stopMonitoring
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
   [(CSSpeechDetectionDevicePresentMonitor *)self _startObservingSystemControllerLifecycle];
 

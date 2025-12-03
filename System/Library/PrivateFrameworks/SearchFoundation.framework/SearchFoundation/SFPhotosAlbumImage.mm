@@ -1,12 +1,12 @@
 @interface SFPhotosAlbumImage
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFPhotosAlbumImage)initWithCoder:(id)a3;
-- (SFPhotosAlbumImage)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFPhotosAlbumImage)initWithCoder:(id)coder;
+- (SFPhotosAlbumImage)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFPhotosAlbumImage
@@ -16,34 +16,34 @@
   v9.receiver = self;
   v9.super_class = SFPhotosAlbumImage;
   v3 = [(SFImage *)&v9 hash];
-  v4 = [(SFPhotosAlbumImage *)self albumIdentifier];
-  v5 = [v4 hash];
-  v6 = [(SFPhotosAlbumImage *)self applicationBundleIdentifier];
-  v7 = v5 ^ [v6 hash];
+  albumIdentifier = [(SFPhotosAlbumImage *)self albumIdentifier];
+  v5 = [albumIdentifier hash];
+  applicationBundleIdentifier = [(SFPhotosAlbumImage *)self applicationBundleIdentifier];
+  v7 = v5 ^ [applicationBundleIdentifier hash];
 
   return v7 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(SFPhotosAlbumImage *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SFPhotosAlbumImage *)equalCopy isMemberOfClass:objc_opt_class()])
     {
       v22.receiver = self;
       v22.super_class = SFPhotosAlbumImage;
-      if ([(SFImage *)&v22 isEqual:v5])
+      if ([(SFImage *)&v22 isEqual:equalCopy])
       {
-        v6 = v5;
-        v7 = [(SFPhotosAlbumImage *)self albumIdentifier];
-        v8 = [(SFPhotosAlbumImage *)v6 albumIdentifier];
-        if ((v7 != 0) == (v8 == 0))
+        v6 = equalCopy;
+        albumIdentifier = [(SFPhotosAlbumImage *)self albumIdentifier];
+        albumIdentifier2 = [(SFPhotosAlbumImage *)v6 albumIdentifier];
+        if ((albumIdentifier != 0) == (albumIdentifier2 == 0))
         {
           v11 = 0;
 LABEL_20:
@@ -51,12 +51,12 @@ LABEL_20:
           goto LABEL_21;
         }
 
-        v9 = [(SFPhotosAlbumImage *)self albumIdentifier];
-        if (v9)
+        albumIdentifier3 = [(SFPhotosAlbumImage *)self albumIdentifier];
+        if (albumIdentifier3)
         {
-          v3 = [(SFPhotosAlbumImage *)self albumIdentifier];
-          v10 = [(SFPhotosAlbumImage *)v6 albumIdentifier];
-          if (![v3 isEqual:v10])
+          albumIdentifier4 = [(SFPhotosAlbumImage *)self albumIdentifier];
+          albumIdentifier5 = [(SFPhotosAlbumImage *)v6 albumIdentifier];
+          if (![albumIdentifier4 isEqual:albumIdentifier5])
           {
             v11 = 0;
 LABEL_18:
@@ -65,13 +65,13 @@ LABEL_19:
             goto LABEL_20;
           }
 
-          v21 = v10;
+          v21 = albumIdentifier5;
         }
 
-        v12 = [(SFPhotosAlbumImage *)self applicationBundleIdentifier];
-        v13 = [(SFPhotosAlbumImage *)v6 applicationBundleIdentifier];
-        v14 = v13;
-        if ((v12 != 0) == (v13 == 0))
+        applicationBundleIdentifier = [(SFPhotosAlbumImage *)self applicationBundleIdentifier];
+        applicationBundleIdentifier2 = [(SFPhotosAlbumImage *)v6 applicationBundleIdentifier];
+        v14 = applicationBundleIdentifier2;
+        if ((applicationBundleIdentifier != 0) == (applicationBundleIdentifier2 == 0))
         {
 
           v11 = 0;
@@ -79,16 +79,16 @@ LABEL_19:
 
         else
         {
-          v15 = [(SFPhotosAlbumImage *)self applicationBundleIdentifier];
-          if (v15)
+          applicationBundleIdentifier3 = [(SFPhotosAlbumImage *)self applicationBundleIdentifier];
+          if (applicationBundleIdentifier3)
           {
-            v16 = v15;
-            v19 = [(SFPhotosAlbumImage *)self applicationBundleIdentifier];
+            v16 = applicationBundleIdentifier3;
+            applicationBundleIdentifier4 = [(SFPhotosAlbumImage *)self applicationBundleIdentifier];
             [(SFPhotosAlbumImage *)v6 applicationBundleIdentifier];
-            v17 = v20 = v3;
-            v11 = [v19 isEqual:v17];
+            v17 = v20 = albumIdentifier4;
+            v11 = [applicationBundleIdentifier4 isEqual:v17];
 
-            v3 = v20;
+            albumIdentifier4 = v20;
           }
 
           else
@@ -98,8 +98,8 @@ LABEL_19:
           }
         }
 
-        v10 = v21;
-        if (!v9)
+        albumIdentifier5 = v21;
+        if (!albumIdentifier3)
         {
           goto LABEL_19;
         }
@@ -116,17 +116,17 @@ LABEL_21:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = SFPhotosAlbumImage;
-  v4 = [(SFImage *)&v10 copyWithZone:a3];
-  v5 = [(SFPhotosAlbumImage *)self albumIdentifier];
-  v6 = [v5 copy];
+  v4 = [(SFImage *)&v10 copyWithZone:zone];
+  albumIdentifier = [(SFPhotosAlbumImage *)self albumIdentifier];
+  v6 = [albumIdentifier copy];
   [v4 setAlbumIdentifier:v6];
 
-  v7 = [(SFPhotosAlbumImage *)self applicationBundleIdentifier];
-  v8 = [v7 copy];
+  applicationBundleIdentifier = [(SFPhotosAlbumImage *)self applicationBundleIdentifier];
+  v8 = [applicationBundleIdentifier copy];
   [v4 setApplicationBundleIdentifier:v8];
 
   return v4;
@@ -135,31 +135,31 @@ LABEL_21:
 - (NSData)jsonData
 {
   v2 = [[_SFPBPhotosAlbumImage alloc] initWithFacade:self];
-  v3 = [(_SFPBPhotosAlbumImage *)v2 jsonData];
+  jsonData = [(_SFPBPhotosAlbumImage *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBPhotosAlbumImage alloc] initWithFacade:self];
-  v3 = [(_SFPBPhotosAlbumImage *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBPhotosAlbumImage *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBImage alloc] initWithFacade:self];
-  v5 = [(_SFPBImage *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBImage *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFPhotosAlbumImage)initWithCoder:(id)a3
+- (SFPhotosAlbumImage)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBImage alloc] initWithData:v5];
   v9.receiver = self;
@@ -169,28 +169,28 @@ LABEL_21:
   return v7;
 }
 
-- (SFPhotosAlbumImage)initWithProtobuf:(id)a3
+- (SFPhotosAlbumImage)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v12.receiver = self;
   v12.super_class = SFPhotosAlbumImage;
   v5 = [(SFPhotosAlbumImage *)&v12 init];
   if (v5)
   {
-    v6 = [v4 albumIdentifier];
+    albumIdentifier = [protobufCopy albumIdentifier];
 
-    if (v6)
+    if (albumIdentifier)
     {
-      v7 = [v4 albumIdentifier];
-      [(SFPhotosAlbumImage *)v5 setAlbumIdentifier:v7];
+      albumIdentifier2 = [protobufCopy albumIdentifier];
+      [(SFPhotosAlbumImage *)v5 setAlbumIdentifier:albumIdentifier2];
     }
 
-    v8 = [v4 applicationBundleIdentifier];
+    applicationBundleIdentifier = [protobufCopy applicationBundleIdentifier];
 
-    if (v8)
+    if (applicationBundleIdentifier)
     {
-      v9 = [v4 applicationBundleIdentifier];
-      [(SFPhotosAlbumImage *)v5 setApplicationBundleIdentifier:v9];
+      applicationBundleIdentifier2 = [protobufCopy applicationBundleIdentifier];
+      [(SFPhotosAlbumImage *)v5 setApplicationBundleIdentifier:applicationBundleIdentifier2];
     }
 
     v10 = v5;

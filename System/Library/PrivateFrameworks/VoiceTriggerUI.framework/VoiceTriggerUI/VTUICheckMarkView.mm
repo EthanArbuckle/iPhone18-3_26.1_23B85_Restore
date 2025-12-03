@@ -3,15 +3,15 @@
 - (CALayer)xMaskLayer;
 - (CGSize)intrinsicContentSize;
 - (VTUIColorLayer)colorLayer;
-- (void)animateForSuccess:(BOOL)a3 completion:(id)a4;
+- (void)animateForSuccess:(BOOL)success completion:(id)completion;
 @end
 
 @implementation VTUICheckMarkView
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(VTUICheckMarkView *)self checkMaskLayer];
-  [v2 bounds];
+  checkMaskLayer = [(VTUICheckMarkView *)self checkMaskLayer];
+  [checkMaskLayer bounds];
   v4 = v3;
   v6 = v5;
 
@@ -22,10 +22,10 @@
   return result;
 }
 
-- (void)animateForSuccess:(BOOL)a3 completion:(id)a4
+- (void)animateForSuccess:(BOOL)success completion:(id)completion
 {
-  v6 = a4;
-  if (a3)
+  completionCopy = completion;
+  if (success)
   {
     [(VTUICheckMarkView *)self checkMaskLayer];
   }
@@ -47,20 +47,20 @@
   [v7 setAffineTransform:&v37];
   [(VTUICheckMarkView *)self bounds];
   v16 = v15;
-  v17 = [(VTUICheckMarkView *)self colorLayer];
-  [v17 bounds];
+  colorLayer = [(VTUICheckMarkView *)self colorLayer];
+  [colorLayer bounds];
   v19 = v16 / v18;
   [(VTUICheckMarkView *)self bounds];
   v21 = v20;
-  v22 = [(VTUICheckMarkView *)self colorLayer];
-  [v22 bounds];
+  colorLayer2 = [(VTUICheckMarkView *)self colorLayer];
+  [colorLayer2 bounds];
   CGAffineTransformMakeScale(&v36, v19, v21 / v23);
-  v24 = [(VTUICheckMarkView *)self colorLayer];
+  colorLayer3 = [(VTUICheckMarkView *)self colorLayer];
   v37 = v36;
-  [v24 setAffineTransform:&v37];
+  [colorLayer3 setAffineTransform:&v37];
 
-  v25 = [(VTUICheckMarkView *)self layer];
-  [v25 setMask:v7];
+  layer = [(VTUICheckMarkView *)self layer];
+  [layer setMask:v7];
 
   [(VTUICheckMarkView *)self setAlpha:1.0];
   [(VTUICheckMarkView *)self setHidden:0];
@@ -71,10 +71,10 @@
   v31 = 3221225472;
   v32 = __50__VTUICheckMarkView_animateForSuccess_completion___block_invoke;
   v33 = &unk_279E541D0;
-  v34 = self;
-  v35 = v6;
+  selfCopy = self;
+  v35 = completionCopy;
   v26 = MEMORY[0x277CD9FF0];
-  v27 = v6;
+  v27 = completionCopy;
   [v26 setCompletionBlock:&v30];
   v28 = [(VTUICheckMarkView *)self colorLayer:v30];
   LODWORD(v29) = 1.0;
@@ -124,16 +124,16 @@ void __50__VTUICheckMarkView_animateForSuccess_completion___block_invoke_3(uint6
     self->_colorLayer = v4;
 
     [(VTUIColorLayer *)self->_colorLayer setBounds:0.0, 0.0, 400.0, 400.0];
-    v6 = [(VTUICheckMarkView *)self layer];
-    [v6 bounds];
+    layer = [(VTUICheckMarkView *)self layer];
+    [layer bounds];
     MidX = CGRectGetMidX(v13);
-    v8 = [(VTUICheckMarkView *)self layer];
-    [v8 bounds];
+    layer2 = [(VTUICheckMarkView *)self layer];
+    [layer2 bounds];
     MidY = CGRectGetMidY(v14);
 
     [(VTUIColorLayer *)self->_colorLayer setPosition:MidX, MidY];
-    v10 = [(VTUICheckMarkView *)self layer];
-    [v10 addSublayer:self->_colorLayer];
+    layer3 = [(VTUICheckMarkView *)self layer];
+    [layer3 addSublayer:self->_colorLayer];
 
     colorLayer = self->_colorLayer;
   }
@@ -146,7 +146,7 @@ void __50__VTUICheckMarkView_animateForSuccess_completion___block_invoke_3(uint6
   checkMaskLayer = self->_checkMaskLayer;
   if (!checkMaskLayer)
   {
-    v4 = [MEMORY[0x277CD9ED0] layer];
+    layer = [MEMORY[0x277CD9ED0] layer];
     v5 = [MEMORY[0x277D755D0] configurationWithPointSize:7 weight:62.0];
     v6 = [MEMORY[0x277D755B8] systemImageNamed:@"checkmark"];
     v7 = [v6 imageWithConfiguration:v5];
@@ -164,11 +164,11 @@ void __50__VTUICheckMarkView_animateForSuccess_completion___block_invoke_3(uint6
     v18.size.width = v9;
     v18.size.height = v11;
     MidY = CGRectGetMidY(v18);
-    -[CALayer setContents:](v4, "setContents:", [v7 CGImage]);
-    [(CALayer *)v4 setBounds:0.0, 0.0, v9, v11];
-    [(CALayer *)v4 setPosition:MidX, MidY];
+    -[CALayer setContents:](layer, "setContents:", [v7 CGImage]);
+    [(CALayer *)layer setBounds:0.0, 0.0, v9, v11];
+    [(CALayer *)layer setPosition:MidX, MidY];
     v14 = self->_checkMaskLayer;
-    self->_checkMaskLayer = v4;
+    self->_checkMaskLayer = layer;
 
     checkMaskLayer = self->_checkMaskLayer;
   }
@@ -181,21 +181,21 @@ void __50__VTUICheckMarkView_animateForSuccess_completion___block_invoke_3(uint6
   xMaskLayer = self->_xMaskLayer;
   if (!xMaskLayer)
   {
-    v4 = [MEMORY[0x277CD9F90] layer];
-    [(CALayer *)v4 setBounds:0.0, 0.0, 400.0, 400.0];
-    [(CALayer *)v4 setAnchorPoint:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
+    layer = [MEMORY[0x277CD9F90] layer];
+    [(CALayer *)layer setBounds:0.0, 0.0, 400.0, 400.0];
+    [(CALayer *)layer setAnchorPoint:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
     Mutable = CGPathCreateMutable();
     CGPathMoveToPoint(Mutable, 0, 80.0, 80.0);
     CGPathAddLineToPoint(Mutable, 0, 320.0, 320.0);
     CGPathMoveToPoint(Mutable, 0, 80.0, 320.0);
     CGPathAddLineToPoint(Mutable, 0, 320.0, 80.0);
-    [(CALayer *)v4 setPath:Mutable];
+    [(CALayer *)layer setPath:Mutable];
     CGPathRelease(Mutable);
-    [(CALayer *)v4 setFillColor:0];
-    [(CALayer *)v4 setStrokeColor:CGColorGetConstantColor(*MEMORY[0x277CBF3B8])];
-    [(CALayer *)v4 setLineWidth:36.0];
+    [(CALayer *)layer setFillColor:0];
+    [(CALayer *)layer setStrokeColor:CGColorGetConstantColor(*MEMORY[0x277CBF3B8])];
+    [(CALayer *)layer setLineWidth:36.0];
     v6 = self->_xMaskLayer;
-    self->_xMaskLayer = v4;
+    self->_xMaskLayer = layer;
 
     xMaskLayer = self->_xMaskLayer;
   }

@@ -1,7 +1,7 @@
 @interface PKPGSVTransitionInterstitialAlignmentView
 - (CGPoint)alignmentRectAnchorPoint;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKPGSVTransitionInterstitialAlignmentView)initWithView:(id)a3 alignmentRectInsetsAdjustmentProvider:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKPGSVTransitionInterstitialAlignmentView)initWithView:(id)view alignmentRectInsetsAdjustmentProvider:(id)provider;
 - (UIEdgeInsets)alignmentRectInsets;
 - (void)layoutSubviews;
 - (void)sizeToFit;
@@ -9,11 +9,11 @@
 
 @implementation PKPGSVTransitionInterstitialAlignmentView
 
-- (PKPGSVTransitionInterstitialAlignmentView)initWithView:(id)a3 alignmentRectInsetsAdjustmentProvider:(id)a4
+- (PKPGSVTransitionInterstitialAlignmentView)initWithView:(id)view alignmentRectInsetsAdjustmentProvider:(id)provider
 {
-  v7 = a3;
-  result = a4;
-  if (v7 && (v9 = result) != 0)
+  viewCopy = view;
+  result = provider;
+  if (viewCopy && (v9 = result) != 0)
   {
     v19.receiver = self;
     v19.super_class = PKPGSVTransitionInterstitialAlignmentView;
@@ -21,7 +21,7 @@
     v11 = v10;
     if (v10)
     {
-      objc_storeStrong(&v10->_view, a3);
+      objc_storeStrong(&v10->_view, view);
       v12 = _Block_copy(v9);
       provider = v11->_provider;
       v11->_provider = v12;
@@ -85,9 +85,9 @@
   [(PKPGSVTransitionInterstitialAlignmentView *)self setAnchorPoint:vdivq_f64(vsubq_f64(vmlaq_f64(vaddq_f64(v14, vextq_s8(*&self->_effectiveAlignmentInsets.top, *&self->_effectiveAlignmentInsets.top, 8uLL)), vsubq_f64(v17, vextq_s8(v15, v15, 8uLL)), self->_alignmentRectAnchorPoint), v14), v17)];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UIView *)self->_view bounds:a3.width];
+  [(UIView *)self->_view bounds:fits.width];
   v5.f64[1] = v4;
   v6 = vmaxnmq_f64(vsubq_f64(v5, vaddq_f64(*&self->_alignmentInsetAdjustments.top, *&self->_alignmentInsetAdjustments.bottom)), 0);
   v7 = v6.f64[1];

@@ -1,23 +1,23 @@
 @interface MapsRoutePrintingInfo
-- (MapsRoutePrintingInfo)initWithNumberOfPages:(int64_t)a3 routeStepCells:(id)a4 routeStepCalloutCells:(id)a5;
+- (MapsRoutePrintingInfo)initWithNumberOfPages:(int64_t)pages routeStepCells:(id)cells routeStepCalloutCells:(id)calloutCells;
 @end
 
 @implementation MapsRoutePrintingInfo
 
-- (MapsRoutePrintingInfo)initWithNumberOfPages:(int64_t)a3 routeStepCells:(id)a4 routeStepCalloutCells:(id)a5
+- (MapsRoutePrintingInfo)initWithNumberOfPages:(int64_t)pages routeStepCells:(id)cells routeStepCalloutCells:(id)calloutCells
 {
-  v8 = a4;
-  v9 = a5;
+  cellsCopy = cells;
+  calloutCellsCopy = calloutCells;
   v17.receiver = self;
   v17.super_class = MapsRoutePrintingInfo;
-  v10 = [(MapsPrintingInfo *)&v17 initWithNumberOfPages:a3];
+  v10 = [(MapsPrintingInfo *)&v17 initWithNumberOfPages:pages];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [cellsCopy copy];
     routeStepCells = v10->_routeStepCells;
     v10->_routeStepCells = v11;
 
-    v13 = [v9 copy];
+    v13 = [calloutCellsCopy copy];
     routeStepCalloutCells = v10->_routeStepCalloutCells;
     v10->_routeStepCalloutCells = v13;
 

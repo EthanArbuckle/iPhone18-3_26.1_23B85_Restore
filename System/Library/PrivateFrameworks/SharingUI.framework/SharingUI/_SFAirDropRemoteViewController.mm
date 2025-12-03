@@ -1,54 +1,54 @@
 @interface _SFAirDropRemoteViewController
 - (SFAirDropViewServiceHostProtocol)airDropHost;
-- (void)airDropViewServiceDidFinishTransferWithSuccess:(BOOL)a3;
+- (void)airDropViewServiceDidFinishTransferWithSuccess:(BOOL)success;
 - (void)airDropViewServiceDidRequestDismissal;
 - (void)airDropViewServiceDidStartTransfer;
-- (void)airDropViewServiceRequestingSendingAppBundleIdentifierWithCompletionHandler:(id)a3;
-- (void)airDropViewServiceRequestingSharedItemsWithDataRequest:(id)a3 completionHandler:(id)a4;
-- (void)airDropViewServiceWillStartTransferToRecipient:(id)a3;
+- (void)airDropViewServiceRequestingSendingAppBundleIdentifierWithCompletionHandler:(id)handler;
+- (void)airDropViewServiceRequestingSharedItemsWithDataRequest:(id)request completionHandler:(id)handler;
+- (void)airDropViewServiceWillStartTransferToRecipient:(id)recipient;
 @end
 
 @implementation _SFAirDropRemoteViewController
 
-- (void)airDropViewServiceWillStartTransferToRecipient:(id)a3
+- (void)airDropViewServiceWillStartTransferToRecipient:(id)recipient
 {
-  v4 = a3;
-  v5 = [(_SFAirDropRemoteViewController *)self airDropHost];
-  [v5 airDropViewServiceWillStartTransferToRecipient:v4];
+  recipientCopy = recipient;
+  airDropHost = [(_SFAirDropRemoteViewController *)self airDropHost];
+  [airDropHost airDropViewServiceWillStartTransferToRecipient:recipientCopy];
 }
 
 - (void)airDropViewServiceDidStartTransfer
 {
-  v2 = [(_SFAirDropRemoteViewController *)self airDropHost];
-  [v2 airDropViewServiceDidStartTransfer];
+  airDropHost = [(_SFAirDropRemoteViewController *)self airDropHost];
+  [airDropHost airDropViewServiceDidStartTransfer];
 }
 
-- (void)airDropViewServiceDidFinishTransferWithSuccess:(BOOL)a3
+- (void)airDropViewServiceDidFinishTransferWithSuccess:(BOOL)success
 {
-  v3 = a3;
-  v4 = [(_SFAirDropRemoteViewController *)self airDropHost];
-  [v4 airDropViewServiceDidFinishTransferWithSuccess:v3];
+  successCopy = success;
+  airDropHost = [(_SFAirDropRemoteViewController *)self airDropHost];
+  [airDropHost airDropViewServiceDidFinishTransferWithSuccess:successCopy];
 }
 
-- (void)airDropViewServiceRequestingSharedItemsWithDataRequest:(id)a3 completionHandler:(id)a4
+- (void)airDropViewServiceRequestingSharedItemsWithDataRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_SFAirDropRemoteViewController *)self airDropHost];
-  [v8 airDropViewServiceRequestingSharedItemsWithDataRequest:v7 completionHandler:v6];
+  handlerCopy = handler;
+  requestCopy = request;
+  airDropHost = [(_SFAirDropRemoteViewController *)self airDropHost];
+  [airDropHost airDropViewServiceRequestingSharedItemsWithDataRequest:requestCopy completionHandler:handlerCopy];
 }
 
-- (void)airDropViewServiceRequestingSendingAppBundleIdentifierWithCompletionHandler:(id)a3
+- (void)airDropViewServiceRequestingSendingAppBundleIdentifierWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(_SFAirDropRemoteViewController *)self airDropHost];
-  [v5 airDropViewServiceRequestingSendingAppBundleIdentifierWithCompletionHandler:v4];
+  handlerCopy = handler;
+  airDropHost = [(_SFAirDropRemoteViewController *)self airDropHost];
+  [airDropHost airDropViewServiceRequestingSendingAppBundleIdentifierWithCompletionHandler:handlerCopy];
 }
 
 - (void)airDropViewServiceDidRequestDismissal
 {
-  v2 = [(_SFAirDropRemoteViewController *)self airDropHost];
-  [v2 airDropViewServiceDidRequestDismissal];
+  airDropHost = [(_SFAirDropRemoteViewController *)self airDropHost];
+  [airDropHost airDropViewServiceDidRequestDismissal];
 }
 
 - (SFAirDropViewServiceHostProtocol)airDropHost

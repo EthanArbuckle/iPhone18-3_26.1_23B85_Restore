@@ -1,7 +1,7 @@
 @interface CMIOExtensionStreamProperties
 + (CMIOExtensionStreamProperties)streamPropertiesWithDictionary:(NSDictionary *)propertiesDictionary;
 - (CMIOExtensionStreamProperties)initWithDictionary:(NSDictionary *)propertiesDictionary;
-- (CMIOExtensionStreamProperties)initWithPropertyValues:(id)a3 client:(id)a4;
+- (CMIOExtensionStreamProperties)initWithPropertyValues:(id)values client:(id)client;
 - (NSDictionary)frameDuration;
 - (NSDictionary)maxFrameDuration;
 - (NSDictionary)propertiesDictionary;
@@ -54,19 +54,19 @@
   return v5;
 }
 
-- (CMIOExtensionStreamProperties)initWithPropertyValues:(id)a3 client:(id)a4
+- (CMIOExtensionStreamProperties)initWithPropertyValues:(id)values client:(id)client
 {
-  v7 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __63__CMIOExtensionStreamProperties_initWithPropertyValues_client___block_invoke;
   v10[3] = &unk_27885B850;
-  v10[4] = v7;
-  [a3 enumerateKeysAndObjectsUsingBlock:v10];
-  v8 = [(CMIOExtensionStreamProperties *)self initWithDictionary:v7];
+  v10[4] = dictionary;
+  [values enumerateKeysAndObjectsUsingBlock:v10];
+  v8 = [(CMIOExtensionStreamProperties *)self initWithDictionary:dictionary];
   if (v8)
   {
-    v8->_client = [a4 copy];
+    v8->_client = [client copy];
   }
 
   return v8;
@@ -92,14 +92,14 @@ uint64_t __63__CMIOExtensionStreamProperties_initWithPropertyValues_client___blo
   os_unfair_lock_lock(&self->_lock);
   v3 = [(NSMutableDictionary *)self->_propertiesDictionary objectForKey:@"CMIOExtensionPropertyStreamActiveFormatIndex"];
   os_unfair_lock_unlock(&self->_lock);
-  v4 = [v3 value];
-  if (v4)
+  value = [v3 value];
+  if (value)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v5 = CMIOLog();
-      v4 = v5;
+      value = v5;
       if (v5)
       {
         if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -112,7 +112,7 @@ uint64_t __63__CMIOExtensionStreamProperties_initWithPropertyValues_client___blo
     }
   }
 
-  return v4;
+  return value;
 }
 
 - (void)setActiveFormatIndex:(NSNumber *)activeFormatIndex
@@ -145,14 +145,14 @@ LABEL_4:
   os_unfair_lock_lock(&self->_lock);
   v3 = [(NSMutableDictionary *)self->_propertiesDictionary objectForKey:@"CMIOExtensionPropertyStreamFrameDuration"];
   os_unfair_lock_unlock(&self->_lock);
-  v4 = [v3 value];
-  if (v4)
+  value = [v3 value];
+  if (value)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v5 = CMIOLog();
-      v4 = v5;
+      value = v5;
       if (v5)
       {
         if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -165,7 +165,7 @@ LABEL_4:
     }
   }
 
-  return v4;
+  return value;
 }
 
 - (void)setFrameDuration:(NSDictionary *)frameDuration
@@ -198,14 +198,14 @@ LABEL_4:
   os_unfair_lock_lock(&self->_lock);
   v3 = [(NSMutableDictionary *)self->_propertiesDictionary objectForKey:@"CMIOExtensionPropertyStreamMaxFrameDuration"];
   os_unfair_lock_unlock(&self->_lock);
-  v4 = [v3 value];
-  if (v4)
+  value = [v3 value];
+  if (value)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v5 = CMIOLog();
-      v4 = v5;
+      value = v5;
       if (v5)
       {
         if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -218,7 +218,7 @@ LABEL_4:
     }
   }
 
-  return v4;
+  return value;
 }
 
 - (void)setMaxFrameDuration:(NSDictionary *)maxFrameDuration
@@ -251,14 +251,14 @@ LABEL_4:
   os_unfair_lock_lock(&self->_lock);
   v3 = [(NSMutableDictionary *)self->_propertiesDictionary objectForKey:@"CMIOExtensionPropertyStreamSinkBufferQueueSize"];
   os_unfair_lock_unlock(&self->_lock);
-  v4 = [v3 value];
-  if (v4)
+  value = [v3 value];
+  if (value)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v5 = CMIOLog();
-      v4 = v5;
+      value = v5;
       if (v5)
       {
         if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -271,7 +271,7 @@ LABEL_4:
     }
   }
 
-  return v4;
+  return value;
 }
 
 - (void)setSinkBufferQueueSize:(NSNumber *)sinkBufferQueueSize
@@ -304,14 +304,14 @@ LABEL_4:
   os_unfair_lock_lock(&self->_lock);
   v3 = [(NSMutableDictionary *)self->_propertiesDictionary objectForKey:@"CMIOExtensionPropertyStreamSinkBuffersRequiredForStartup"];
   os_unfair_lock_unlock(&self->_lock);
-  v4 = [v3 value];
-  if (v4)
+  value = [v3 value];
+  if (value)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v5 = CMIOLog();
-      v4 = v5;
+      value = v5;
       if (v5)
       {
         if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -324,7 +324,7 @@ LABEL_4:
     }
   }
 
-  return v4;
+  return value;
 }
 
 - (void)setSinkBuffersRequiredForStartup:(NSNumber *)sinkBuffersRequiredForStartup
@@ -357,14 +357,14 @@ LABEL_4:
   os_unfair_lock_lock(&self->_lock);
   v3 = [(NSMutableDictionary *)self->_propertiesDictionary objectForKey:@"CMIOExtensionPropertyStreamSinkBufferUnderrunCount"];
   os_unfair_lock_unlock(&self->_lock);
-  v4 = [v3 value];
-  if (v4)
+  value = [v3 value];
+  if (value)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v5 = CMIOLog();
-      v4 = v5;
+      value = v5;
       if (v5)
       {
         if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -377,7 +377,7 @@ LABEL_4:
     }
   }
 
-  return v4;
+  return value;
 }
 
 - (void)setSinkBufferUnderrunCount:(NSNumber *)sinkBufferUnderrunCount
@@ -410,14 +410,14 @@ LABEL_4:
   os_unfair_lock_lock(&self->_lock);
   v3 = [(NSMutableDictionary *)self->_propertiesDictionary objectForKey:@"CMIOExtensionPropertyStreamSinkEndOfData"];
   os_unfair_lock_unlock(&self->_lock);
-  v4 = [v3 value];
-  if (v4)
+  value = [v3 value];
+  if (value)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v5 = CMIOLog();
-      v4 = v5;
+      value = v5;
       if (v5)
       {
         if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -430,7 +430,7 @@ LABEL_4:
     }
   }
 
-  return v4;
+  return value;
 }
 
 - (void)setSinkEndOfData:(NSNumber *)sinkEndOfData

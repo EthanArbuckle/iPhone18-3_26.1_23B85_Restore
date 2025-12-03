@@ -1,12 +1,12 @@
 @interface AppDelegate
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
 - (_TtC10prototyped11AppDelegate)init;
 - (void)killSpringBoard;
 @end
 
 @implementation AppDelegate
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -16,16 +16,16 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a4)
+  if (options)
   {
     type metadata accessor for LaunchOptionsKey(0);
     sub_10000B4E8(&qword_10001F9C0, type metadata accessor for LaunchOptionsKey);
-    a4 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
+    options = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v7 = a3;
-  v8 = self;
-  v9 = sub_10000A800(a4);
+  applicationCopy = application;
+  selfCopy = self;
+  v9 = sub_10000A800(options);
 
   return v9 & 1;
 }
@@ -59,12 +59,12 @@
   v6 = type metadata accessor for TaskPriority();
   (*(*(v6 - 8) + 56))(v5, 1, 1, v6);
   type metadata accessor for MainActor();
-  v7 = self;
+  selfCopy = self;
   v8 = static MainActor.shared.getter();
   v9 = swift_allocObject();
   v9[2] = v8;
   v9[3] = &protocol witness table for MainActor;
-  v9[4] = v7;
+  v9[4] = selfCopy;
   sub_100008460(0, 0, v5, &unk_100013A68, v9);
 }
 

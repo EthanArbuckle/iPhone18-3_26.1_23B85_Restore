@@ -1,8 +1,8 @@
 @interface _UIViewPropertyAnimationDescription
 - (UIView)view;
 - (_UIViewPropertyAnimationDescription)init;
-- (_UIViewPropertyAnimationDescription)initWithView:(id)a3;
-- (void)_addUpdate:(id)a3;
+- (_UIViewPropertyAnimationDescription)initWithView:(id)view;
+- (void)_addUpdate:(id)update;
 @end
 
 @implementation _UIViewPropertyAnimationDescription
@@ -17,41 +17,41 @@
   return 0;
 }
 
-- (_UIViewPropertyAnimationDescription)initWithView:(id)a3
+- (_UIViewPropertyAnimationDescription)initWithView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v10.receiver = self;
   v10.super_class = _UIViewPropertyAnimationDescription;
   v5 = [(_UIViewPropertyAnimationDescription *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_view, v4);
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    objc_storeWeak(&v5->_view, viewCopy);
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     updates = v6->_updates;
-    v6->_updates = v7;
+    v6->_updates = dictionary;
   }
 
   return v6;
 }
 
-- (void)_addUpdate:(id)a3
+- (void)_addUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   updates = self->_updates;
-  v10 = v4;
-  v6 = [v4 propertyName];
-  v7 = [(NSMutableDictionary *)updates objectForKeyedSubscript:v6];
+  v10 = updateCopy;
+  propertyName = [updateCopy propertyName];
+  array = [(NSMutableDictionary *)updates objectForKeyedSubscript:propertyName];
 
-  if (!v7)
+  if (!array)
   {
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v8 = self->_updates;
-    v9 = [v10 propertyName];
-    [(NSMutableDictionary *)v8 setObject:v7 forKeyedSubscript:v9];
+    propertyName2 = [v10 propertyName];
+    [(NSMutableDictionary *)v8 setObject:array forKeyedSubscript:propertyName2];
   }
 
-  [v7 addObject:v10];
+  [array addObject:v10];
 }
 
 - (UIView)view

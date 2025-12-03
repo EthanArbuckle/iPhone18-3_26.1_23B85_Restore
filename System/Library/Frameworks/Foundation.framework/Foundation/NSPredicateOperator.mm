@@ -1,27 +1,27 @@
 @interface NSPredicateOperator
-+ (NSPredicateOperator)operatorWithCustomSelector:(SEL)a3 modifier:(unint64_t)a4;
-+ (NSPredicateOperator)operatorWithType:(unint64_t)a3 modifier:(unint64_t)a4 options:(unint64_t)a5;
-+ (SEL)_getSelectorForType:(unint64_t)a3;
-+ (id)_getSymbolForType:(unint64_t)a3;
-+ (id)_newOperatorWithType:(unint64_t)a3 modifier:(unint64_t)a4 options:(unint64_t)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)performOperationUsingObject:(id)a3 andObject:(id)a4;
-- (NSPredicateOperator)initWithCoder:(id)a3;
-- (NSPredicateOperator)initWithOperatorType:(unint64_t)a3 modifier:(unint64_t)a4;
-- (void)_setOptions:(unint64_t)a3;
-- (void)acceptVisitor:(id)a3 flags:(unint64_t)a4;
-- (void)encodeWithCoder:(id)a3;
++ (NSPredicateOperator)operatorWithCustomSelector:(SEL)selector modifier:(unint64_t)modifier;
++ (NSPredicateOperator)operatorWithType:(unint64_t)type modifier:(unint64_t)modifier options:(unint64_t)options;
++ (SEL)_getSelectorForType:(unint64_t)type;
++ (id)_getSymbolForType:(unint64_t)type;
++ (id)_newOperatorWithType:(unint64_t)type modifier:(unint64_t)modifier options:(unint64_t)options;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)performOperationUsingObject:(id)object andObject:(id)andObject;
+- (NSPredicateOperator)initWithCoder:(id)coder;
+- (NSPredicateOperator)initWithOperatorType:(unint64_t)type modifier:(unint64_t)modifier;
+- (void)_setOptions:(unint64_t)options;
+- (void)acceptVisitor:(id)visitor flags:(unint64_t)flags;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSPredicateOperator
 
-+ (id)_getSymbolForType:(unint64_t)a3
++ (id)_getSymbolForType:(unint64_t)type
 {
-  if (a3 <= 3)
+  if (type <= 3)
   {
-    if (a3 > 1)
+    if (type > 1)
     {
-      if (a3 == 2)
+      if (type == 2)
       {
         return @">";
       }
@@ -32,9 +32,9 @@
       }
     }
 
-    else if (a3)
+    else if (type)
     {
-      if (a3 != 1)
+      if (type != 1)
       {
         goto LABEL_21;
       }
@@ -48,16 +48,16 @@
     }
   }
 
-  else if (a3 <= 9)
+  else if (type <= 9)
   {
-    if (a3 == 4)
+    if (type == 4)
     {
       return @"==";
     }
 
     else
     {
-      if (a3 != 5)
+      if (type != 5)
       {
         goto LABEL_21;
       }
@@ -68,7 +68,7 @@
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case 0xAuLL:
         return @"IN";
@@ -78,17 +78,17 @@
         return @"BETWEEN";
       default:
 LABEL_21:
-        objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"Unknown predicate type %ld", a3), 0}]);
+        objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"Unknown predicate type %ld", type), 0}]);
     }
   }
 }
 
-+ (SEL)_getSelectorForType:(unint64_t)a3
++ (SEL)_getSelectorForType:(unint64_t)type
 {
   v3 = &selRef_compare_;
-  if (a3 <= 3)
+  if (type <= 3)
   {
-    if (a3 < 4)
+    if (type < 4)
     {
       return *v3;
     }
@@ -96,27 +96,27 @@ LABEL_21:
     goto LABEL_13;
   }
 
-  if (a3 > 98)
+  if (type > 98)
   {
-    if (a3 == 99)
+    if (type == 99)
     {
 LABEL_11:
       v3 = &selRef_containsObject_;
       return *v3;
     }
 
-    if (a3 == 100)
+    if (type == 100)
     {
       return *v3;
     }
 
 LABEL_13:
-    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"Unknown predicate type %ld", a3), 0}]);
+    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"Unknown predicate type %ld", type), 0}]);
   }
 
-  if (a3 - 4 >= 2)
+  if (type - 4 >= 2)
   {
-    if (a3 == 10)
+    if (type == 10)
     {
       goto LABEL_11;
     }
@@ -128,39 +128,39 @@ LABEL_13:
   return *v3;
 }
 
-+ (NSPredicateOperator)operatorWithType:(unint64_t)a3 modifier:(unint64_t)a4 options:(unint64_t)a5
++ (NSPredicateOperator)operatorWithType:(unint64_t)type modifier:(unint64_t)modifier options:(unint64_t)options
 {
-  v5 = [a1 _newOperatorWithType:a3 modifier:a4 options:a5];
+  v5 = [self _newOperatorWithType:type modifier:modifier options:options];
 
   return v5;
 }
 
-+ (id)_newOperatorWithType:(unint64_t)a3 modifier:(unint64_t)a4 options:(unint64_t)a5
++ (id)_newOperatorWithType:(unint64_t)type modifier:(unint64_t)modifier options:(unint64_t)options
 {
-  if (a3 <= 6)
+  if (type <= 6)
   {
-    if (a3 <= 2)
+    if (type <= 2)
     {
-      if (a3)
+      if (type)
       {
-        if (a3 == 1)
+        if (type == 1)
         {
           v18 = [NSComparisonPredicateOperator alloc];
           v19 = 1;
-          v20 = a4;
+          modifierCopy6 = modifier;
           v21 = 1;
         }
 
         else
         {
-          if (a3 != 2)
+          if (type != 2)
           {
             goto LABEL_51;
           }
 
           v18 = [NSComparisonPredicateOperator alloc];
           v19 = 2;
-          v20 = a4;
+          modifierCopy6 = modifier;
           v21 = 2;
         }
       }
@@ -169,65 +169,65 @@ LABEL_13:
       {
         v18 = [NSComparisonPredicateOperator alloc];
         v19 = 0;
-        v20 = a4;
+        modifierCopy6 = modifier;
         v21 = 0;
       }
     }
 
     else
     {
-      if (a3 > 4)
+      if (type > 4)
       {
-        if (a3 != 5)
+        if (type != 5)
         {
           v24 = [NSMatchingPredicateOperator alloc];
           v25 = 6;
 LABEL_38:
 
-          return [(NSMatchingPredicateOperator *)v24 initWithOperatorType:v25 modifier:a4 variant:a5];
+          return [(NSMatchingPredicateOperator *)v24 initWithOperatorType:v25 modifier:modifier variant:options];
         }
 
         v12 = [NSEqualityPredicateOperator alloc];
         v13 = 5;
-        v14 = a4;
+        modifierCopy5 = modifier;
         v15 = 1;
 LABEL_44:
 
-        return [(NSEqualityPredicateOperator *)v12 initWithOperatorType:v13 modifier:v14 negate:v15 options:a5];
+        return [(NSEqualityPredicateOperator *)v12 initWithOperatorType:v13 modifier:modifierCopy5 negate:v15 options:options];
       }
 
-      if (a3 != 3)
+      if (type != 3)
       {
         v12 = [NSEqualityPredicateOperator alloc];
         v13 = 4;
-        v14 = a4;
+        modifierCopy5 = modifier;
         v15 = 0;
         goto LABEL_44;
       }
 
       v18 = [NSComparisonPredicateOperator alloc];
       v19 = 3;
-      v20 = a4;
+      modifierCopy6 = modifier;
       v21 = 3;
     }
 
-    return [(NSComparisonPredicateOperator *)v18 initWithOperatorType:v19 modifier:v20 variant:v21 options:a5];
+    return [(NSComparisonPredicateOperator *)v18 initWithOperatorType:v19 modifier:modifierCopy6 variant:v21 options:options];
   }
 
-  if (a3 <= 98)
+  if (type <= 98)
   {
-    if (a3 <= 8)
+    if (type <= 8)
     {
-      if (a3 != 7)
+      if (type != 7)
       {
         v7 = [NSSubstringPredicateOperator alloc];
         v8 = 8;
-        v9 = a4;
-        v10 = a5;
+        modifierCopy8 = modifier;
+        optionsCopy2 = options;
         v11 = 0;
 LABEL_34:
 
-        return [(NSSubstringPredicateOperator *)v7 initWithOperatorType:v8 modifier:v9 variant:v10 position:v11];
+        return [(NSSubstringPredicateOperator *)v7 initWithOperatorType:v8 modifier:modifierCopy8 variant:optionsCopy2 position:v11];
       }
 
       v24 = [NSLikePredicateOperator alloc];
@@ -235,17 +235,17 @@ LABEL_34:
       goto LABEL_38;
     }
 
-    if (a3 == 9)
+    if (type == 9)
     {
       v7 = [NSSubstringPredicateOperator alloc];
       v8 = 9;
-      v9 = a4;
-      v10 = a5;
+      modifierCopy8 = modifier;
+      optionsCopy2 = options;
       v11 = 1;
       goto LABEL_34;
     }
 
-    if (a3 == 10)
+    if (type == 10)
     {
       v16 = [NSInPredicateOperator alloc];
       v17 = 10;
@@ -255,53 +255,53 @@ LABEL_34:
     goto LABEL_51;
   }
 
-  if (a3 <= 999)
+  if (type <= 999)
   {
-    if (a3 == 99)
+    if (type == 99)
     {
       v16 = [NSInPredicateOperator alloc];
       v17 = 99;
       goto LABEL_30;
     }
 
-    if (a3 == 100)
+    if (type == 100)
     {
       v16 = [NSBetweenPredicateOperator alloc];
       v17 = 100;
 LABEL_30:
 
-      return [(NSInPredicateOperator *)v16 initWithOperatorType:v17 modifier:a4 options:a5];
+      return [(NSInPredicateOperator *)v16 initWithOperatorType:v17 modifier:modifier options:options];
     }
 
 LABEL_51:
-    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"Unknown predicate type %ld", a3), 0}]);
+    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"Unknown predicate type %ld", type), 0}]);
   }
 
-  if (a3 == 1000)
+  if (type == 1000)
   {
     v24 = [NSTokenMatchingPredicateOperator alloc];
     v25 = 1000;
     goto LABEL_38;
   }
 
-  if (a3 != 2000)
+  if (type != 2000)
   {
     goto LABEL_51;
   }
 
   v22 = [NSBoundedByPredicateOperator alloc];
 
-  return [(NSPredicateOperator *)v22 initWithOperatorType:2000 modifier:a4];
+  return [(NSPredicateOperator *)v22 initWithOperatorType:2000 modifier:modifier];
 }
 
-+ (NSPredicateOperator)operatorWithCustomSelector:(SEL)a3 modifier:(unint64_t)a4
++ (NSPredicateOperator)operatorWithCustomSelector:(SEL)selector modifier:(unint64_t)modifier
 {
-  v4 = [[NSCustomPredicateOperator alloc] initWithCustomSelector:a3 modifier:a4];
+  v4 = [[NSCustomPredicateOperator alloc] initWithCustomSelector:selector modifier:modifier];
 
   return v4;
 }
 
-- (NSPredicateOperator)initWithOperatorType:(unint64_t)a3 modifier:(unint64_t)a4
+- (NSPredicateOperator)initWithOperatorType:(unint64_t)type modifier:(unint64_t)modifier
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
@@ -309,85 +309,85 @@ LABEL_51:
   result = [(NSPredicateOperator *)&v7 init];
   if (result)
   {
-    result->_operatorType = a3;
-    result->_modifier = a4;
+    result->_operatorType = type;
+    result->_modifier = modifier;
   }
 
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSPredicates and NSExpressions cannot be encoded by non-keyed archivers" userInfo:0]);
   }
 
-  [a3 encodeInteger:self->_operatorType forKey:@"NSOperatorType"];
+  [coder encodeInteger:self->_operatorType forKey:@"NSOperatorType"];
   modifier = self->_modifier;
 
-  [a3 encodeInteger:modifier forKey:@"NSModifier"];
+  [coder encodeInteger:modifier forKey:@"NSModifier"];
 }
 
-- (NSPredicateOperator)initWithCoder:(id)a3
+- (NSPredicateOperator)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
 
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSPredicates and NSExpressions cannot be decoded by non-keyed archivers" userInfo:0]);
   }
 
-  v5 = [a3 decodeIntegerForKey:@"NSOperatorType"];
-  v6 = [a3 decodeIntegerForKey:@"NSModifier"];
+  v5 = [coder decodeIntegerForKey:@"NSOperatorType"];
+  v6 = [coder decodeIntegerForKey:@"NSModifier"];
 
   return [(NSPredicateOperator *)self initWithOperatorType:v5 modifier:v6];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     return 0;
   }
 
-  v5 = [(NSPredicateOperator *)self operatorType];
-  if (v5 != [a3 operatorType])
+  operatorType = [(NSPredicateOperator *)self operatorType];
+  if (operatorType != [equal operatorType])
   {
     return 0;
   }
 
-  v6 = [(NSPredicateOperator *)self modifier];
-  return v6 == [a3 modifier];
+  modifier = [(NSPredicateOperator *)self modifier];
+  return modifier == [equal modifier];
 }
 
-- (BOOL)performOperationUsingObject:(id)a3 andObject:(id)a4
+- (BOOL)performOperationUsingObject:(id)object andObject:(id)andObject
 {
   v32 = *MEMORY[0x1E69E9840];
-  v7 = [MEMORY[0x1E695DFB0] null];
-  if (v7 == a3)
+  null = [MEMORY[0x1E695DFB0] null];
+  if (null == object)
   {
-    v8 = 0;
+    objectCopy = 0;
   }
 
   else
   {
-    v8 = a3;
+    objectCopy = object;
   }
 
-  if (v7 == a4)
+  if (null == andObject)
   {
-    a4 = 0;
+    andObject = 0;
   }
 
   modifier = self->_modifier;
   if (!modifier)
   {
 
-    LOBYTE(v10) = [(NSPredicateOperator *)self performPrimitiveOperationUsingObject:v8 andObject:a4];
+    LOBYTE(v10) = [(NSPredicateOperator *)self performPrimitiveOperationUsingObject:objectCopy andObject:andObject];
     return v10;
   }
 
-  if (v8)
+  if (objectCopy)
   {
     if ((_NSIsNSArray() & 1) == 0 && (_NSIsNSSet() & 1) == 0 && (_NSIsNSOrderedSet() & 1) == 0)
     {
@@ -400,12 +400,12 @@ LABEL_44:
 
     if (_NSIsNSSet())
     {
-      a3 = [v8 allObjects];
+      object = [objectCopy allObjects];
     }
 
     if (_NSIsNSOrderedSet())
     {
-      a3 = [a3 array];
+      object = [object array];
     }
 
     modifier = self->_modifier;
@@ -413,7 +413,7 @@ LABEL_44:
 
   else
   {
-    a3 = 0;
+    object = 0;
   }
 
   if (modifier == 2)
@@ -422,7 +422,7 @@ LABEL_44:
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v10 = [a3 countByEnumeratingWithState:&v23 objects:v22 count:16];
+    v10 = [object countByEnumeratingWithState:&v23 objects:v22 count:16];
     if (!v10)
     {
       return v10;
@@ -436,17 +436,17 @@ LABEL_33:
     {
       if (*v24 != v16)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(object);
       }
 
-      if ([(NSPredicateOperator *)self performPrimitiveOperationUsingObject:*(*(&v23 + 1) + 8 * v17) andObject:a4])
+      if ([(NSPredicateOperator *)self performPrimitiveOperationUsingObject:*(*(&v23 + 1) + 8 * v17) andObject:andObject])
       {
         break;
       }
 
       if (v15 == ++v17)
       {
-        v15 = [a3 countByEnumeratingWithState:&v23 objects:v22 count:16];
+        v15 = [object countByEnumeratingWithState:&v23 objects:v22 count:16];
         LOBYTE(v10) = 0;
         if (v15)
         {
@@ -474,7 +474,7 @@ LABEL_40:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v11 = [a3 countByEnumeratingWithState:&v28 objects:v27 count:16];
+  v11 = [object countByEnumeratingWithState:&v28 objects:v27 count:16];
   if (!v11)
   {
     goto LABEL_40;
@@ -488,10 +488,10 @@ LABEL_24:
   {
     if (*v29 != v13)
     {
-      objc_enumerationMutation(a3);
+      objc_enumerationMutation(object);
     }
 
-    LODWORD(v10) = [(NSPredicateOperator *)self performPrimitiveOperationUsingObject:*(*(&v28 + 1) + 8 * v14) andObject:a4];
+    LODWORD(v10) = [(NSPredicateOperator *)self performPrimitiveOperationUsingObject:*(*(&v28 + 1) + 8 * v14) andObject:andObject];
     if (!v10)
     {
       return v10;
@@ -499,7 +499,7 @@ LABEL_24:
 
     if (v12 == ++v14)
     {
-      v12 = [a3 countByEnumeratingWithState:&v28 objects:v27 count:16];
+      v12 = [object countByEnumeratingWithState:&v28 objects:v27 count:16];
       LOBYTE(v10) = 1;
       if (v12)
       {
@@ -511,15 +511,15 @@ LABEL_24:
   }
 }
 
-- (void)acceptVisitor:(id)a3 flags:(unint64_t)a4
+- (void)acceptVisitor:(id)visitor flags:(unint64_t)flags
 {
-  if ((a4 & 2) != 0)
+  if ((flags & 2) != 0)
   {
-    [a3 visitPredicateOperator:self];
+    [visitor visitPredicateOperator:self];
   }
 }
 
-- (void)_setOptions:(unint64_t)a3
+- (void)_setOptions:(unint64_t)options
 {
   v5 = NSClassFromString(@"NSPredicateOperator");
 

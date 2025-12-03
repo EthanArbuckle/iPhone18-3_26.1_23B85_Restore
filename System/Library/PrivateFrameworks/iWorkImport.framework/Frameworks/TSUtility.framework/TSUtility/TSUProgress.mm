@@ -1,10 +1,10 @@
 @interface TSUProgress
 - (BOOL)protected_hasProgressObservers;
 - (double)protected_minProgressObserverValueInterval;
-- (id)addProgressObserverWithValueInterval:(double)a3 queue:(id)a4 handler:(id)a5;
+- (id)addProgressObserverWithValueInterval:(double)interval queue:(id)queue handler:(id)handler;
 - (id)initForSubclass;
 - (void)protected_progressDidChange;
-- (void)removeProgressObserver:(id)a3;
+- (void)removeProgressObserver:(id)observer;
 @end
 
 @implementation TSUProgress
@@ -34,14 +34,14 @@
   return v2;
 }
 
-- (id)addProgressObserverWithValueInterval:(double)a3 queue:(id)a4 handler:(id)a5
+- (id)addProgressObserverWithValueInterval:(double)interval queue:(id)queue handler:(id)handler
 {
   v5 = 0;
-  if (a4 && a5)
+  if (queue && handler)
   {
-    v9 = a5;
-    v10 = a4;
-    v11 = [[TSUProgressObserver alloc] initWithValueInterval:v10 queue:v9 handler:a3];
+    handlerCopy = handler;
+    queueCopy = queue;
+    v11 = [[TSUProgressObserver alloc] initWithValueInterval:queueCopy queue:handlerCopy handler:interval];
 
     progressObserversQueue = self->_progressObserversQueue;
     v14[0] = MEMORY[0x277D85DD0];
@@ -57,11 +57,11 @@
   return v5;
 }
 
-- (void)removeProgressObserver:(id)a3
+- (void)removeProgressObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     progressObserversQueue = self->_progressObserversQueue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -69,7 +69,7 @@
     v7[2] = sub_277091EC0;
     v7[3] = &unk_27A702450;
     v7[4] = self;
-    v8 = v4;
+    v8 = observerCopy;
     dispatch_async(progressObserversQueue, v7);
   }
 }

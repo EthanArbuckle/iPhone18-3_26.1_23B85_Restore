@@ -1,16 +1,16 @@
 @interface SAUISnippet
-- (id)_callHistoryRowsForCalls:(id)a3 callOperation:(id)a4;
-- (id)_searchCallHistoryIntentForVoicemail:(BOOL)a3;
-- (id)_searchCallHistoryIntentResponseForCallRecords:(id)a3;
-- (void)sr_applySnippetProperties:(id)a3;
+- (id)_callHistoryRowsForCalls:(id)calls callOperation:(id)operation;
+- (id)_searchCallHistoryIntentForVoicemail:(BOOL)voicemail;
+- (id)_searchCallHistoryIntentResponseForCallRecords:(id)records;
+- (void)sr_applySnippetProperties:(id)properties;
 @end
 
 @implementation SAUISnippet
 
-- (id)_callHistoryRowsForCalls:(id)a3 callOperation:(id)a4
+- (id)_callHistoryRowsForCalls:(id)calls callOperation:(id)operation
 {
-  v5 = a3;
-  v6 = a4;
+  callsCopy = calls;
+  operationCopy = operation;
   v27 = objc_alloc_init(NSMutableArray);
   v7 = objc_alloc_init(NSDateFormatter);
   [v7 setFormattingContext:3];
@@ -21,7 +21,7 @@
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v5;
+  obj = callsCopy;
   v28 = [obj countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v28)
   {
@@ -37,8 +37,8 @@
 
         v9 = *(*(&v29 + 1) + 8 * i);
         v10 = objc_alloc_init(SFRowCardSection);
-        v11 = [v9 callTime];
-        if ([v11 _isToday])
+        callTime = [v9 callTime];
+        if ([callTime _isToday])
         {
           v12 = @"TODAY";
 LABEL_10:
@@ -46,13 +46,13 @@ LABEL_10:
           goto LABEL_15;
         }
 
-        if ([v11 _isYesterday])
+        if ([callTime _isYesterday])
         {
           v12 = @"YESTERDAY";
           goto LABEL_10;
         }
 
-        if ([v11 _isWithinTheLastTimePeriodInDays:7])
+        if ([callTime _isWithinTheLastTimePeriodInDays:7])
         {
           v14 = v24;
           v15 = @"EEEE";
@@ -65,7 +65,7 @@ LABEL_10:
         }
 
         [v14 setDateFormat:v15];
-        v13 = [v24 stringFromDate:v11];
+        v13 = [v24 stringFromDate:callTime];
 LABEL_15:
         v16 = v13;
         v17 = objc_alloc_init(SFRichText);
@@ -78,12 +78,12 @@ LABEL_15:
 
         [v10 setTrailingText:v17];
         v20 = +[NSUUID UUID];
-        v21 = [v20 UUIDString];
-        [v10 setCardSectionId:v21];
+        uUIDString = [v20 UUIDString];
+        [v10 setCardSectionId:uUIDString];
 
-        if (v6)
+        if (operationCopy)
         {
-          v6[2](v6, v9, v10);
+          operationCopy[2](operationCopy, v9, v10);
         }
 
         [v27 addObject:v10];
@@ -100,11 +100,11 @@ LABEL_15:
   return v22;
 }
 
-- (id)_searchCallHistoryIntentForVoicemail:(BOOL)a3
+- (id)_searchCallHistoryIntentForVoicemail:(BOOL)voicemail
 {
-  v3 = a3;
+  voicemailCopy = voicemail;
   v4 = [INSearchCallHistoryIntent alloc];
-  if (v3)
+  if (voicemailCopy)
   {
     v5 = 16;
   }
@@ -115,11 +115,11 @@ LABEL_15:
   }
 
   v6 = [v4 initWithDateCreated:0 recipient:0 callCapabilities:3 callTypes:v5 unseen:0];
-  v7 = [v6 backingStore];
+  backingStore = [v6 backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = backingStore;
     v9 = objc_alloc_init(_INPBIntentMetadata);
     [v9 setLaunchId:@"com.apple.mobilephone"];
     [v8 setIntentMetadata:v9];
@@ -129,55 +129,55 @@ LABEL_15:
   return v6;
 }
 
-- (id)_searchCallHistoryIntentResponseForCallRecords:(id)a3
+- (id)_searchCallHistoryIntentResponseForCallRecords:(id)records
 {
-  v3 = a3;
+  recordsCopy = records;
   v4 = [[INSearchCallHistoryIntentResponse alloc] initWithCode:7 userActivity:0];
-  [v4 setCallRecords:v3];
+  [v4 setCallRecords:recordsCopy];
 
   return v4;
 }
 
-- (void)sr_applySnippetProperties:(id)a3
+- (void)sr_applySnippetProperties:(id)properties
 {
-  v4 = a3;
-  v5 = [v4 aceId];
-  [(SAUISnippet *)self setAceId:v5];
+  propertiesCopy = properties;
+  aceId = [propertiesCopy aceId];
+  [(SAUISnippet *)self setAceId:aceId];
 
-  v6 = [v4 refId];
-  [(SAUISnippet *)self setRefId:v6];
+  refId = [propertiesCopy refId];
+  [(SAUISnippet *)self setRefId:refId];
 
-  -[SAUISnippet setCanBeRefreshed:](self, "setCanBeRefreshed:", [v4 canBeRefreshed]);
-  v7 = [v4 speakableContextInfo];
-  [(SAUISnippet *)self setSpeakableContextInfo:v7];
+  -[SAUISnippet setCanBeRefreshed:](self, "setCanBeRefreshed:", [propertiesCopy canBeRefreshed]);
+  speakableContextInfo = [propertiesCopy speakableContextInfo];
+  [(SAUISnippet *)self setSpeakableContextInfo:speakableContextInfo];
 
-  v8 = [v4 context];
-  [(SAUISnippet *)self setContext:v8];
+  context = [propertiesCopy context];
+  [(SAUISnippet *)self setContext:context];
 
-  v9 = [v4 deferredRendering];
-  [(SAUISnippet *)self setDeferredRendering:v9];
+  deferredRendering = [propertiesCopy deferredRendering];
+  [(SAUISnippet *)self setDeferredRendering:deferredRendering];
 
-  v10 = [v4 listenAfterSpeaking];
-  [(SAUISnippet *)self setListenAfterSpeaking:v10];
+  listenAfterSpeaking = [propertiesCopy listenAfterSpeaking];
+  [(SAUISnippet *)self setListenAfterSpeaking:listenAfterSpeaking];
 
-  v11 = [v4 speakableText];
-  [(SAUISnippet *)self setSpeakableText:v11];
+  speakableText = [propertiesCopy speakableText];
+  [(SAUISnippet *)self setSpeakableText:speakableText];
 
-  v12 = [v4 viewId];
-  [(SAUISnippet *)self setViewId:v12];
+  viewId = [propertiesCopy viewId];
+  [(SAUISnippet *)self setViewId:viewId];
 
-  v13 = [v4 confirmationOptions];
-  [(SAUISnippet *)self setConfirmationOptions:v13];
+  confirmationOptions = [propertiesCopy confirmationOptions];
+  [(SAUISnippet *)self setConfirmationOptions:confirmationOptions];
 
-  v14 = [v4 title];
-  [(SAUISnippet *)self setTitle:v14];
+  title = [propertiesCopy title];
+  [(SAUISnippet *)self setTitle:title];
 
-  v15 = [v4 subtitle];
-  [(SAUISnippet *)self setSubtitle:v15];
+  subtitle = [propertiesCopy subtitle];
+  [(SAUISnippet *)self setSubtitle:subtitle];
 
-  v16 = [v4 summaryTitle];
+  summaryTitle = [propertiesCopy summaryTitle];
 
-  [(SAUISnippet *)self setSummaryTitle:v16];
+  [(SAUISnippet *)self setSummaryTitle:summaryTitle];
 }
 
 @end

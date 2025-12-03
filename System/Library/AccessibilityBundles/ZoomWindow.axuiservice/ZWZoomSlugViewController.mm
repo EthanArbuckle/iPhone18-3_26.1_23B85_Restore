@@ -1,50 +1,50 @@
 @interface ZWZoomSlugViewController
-+ (double)longPressDurationForStandByMode:(BOOL)a3;
++ (double)longPressDurationForStandByMode:(BOOL)mode;
 - (BOOL)_panGestureIsRecognizing;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
 - (CGPoint)deltaFromInitialTouch;
 - (CGPoint)deltaFromLastPanEvent;
-- (CGPoint)offsetForAutopanner:(id)a3;
+- (CGPoint)offsetForAutopanner:(id)autopanner;
 - (CGRect)foreheadRect;
 - (CGRect)slugRingViewBoundsInScreenCoordinates;
-- (ZWZoomSlugViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (ZWZoomSlugViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (ZWZoomSlugViewControllerDelegate)delegate;
 - (void)_didBeginInteractingWithSlug;
 - (void)_didFinishInteractingWithSlug;
 - (void)_dimAfterDelay;
-- (void)_handleDoubleTap:(id)a3;
-- (void)_handleLongPress:(id)a3;
-- (void)_handlePan:(id)a3;
-- (void)_handleSingleTap:(id)a3;
-- (void)_handleTripleTap:(id)a3;
+- (void)_handleDoubleTap:(id)tap;
+- (void)_handleLongPress:(id)press;
+- (void)_handlePan:(id)pan;
+- (void)_handleSingleTap:(id)tap;
+- (void)_handleTripleTap:(id)tap;
 - (void)_updateAccessibilityHint;
 - (void)_updateControllerColor;
 - (void)_updateControllerThickness;
 - (void)_updateGestures;
-- (void)_updateRingAndTriangleVisiblity:(BOOL)a3;
-- (void)_updateSlugAppearanceForMode:(unint64_t)a3;
-- (void)_updateSlugDimStatus:(BOOL)a3 Animated:(BOOL)a4;
+- (void)_updateRingAndTriangleVisiblity:(BOOL)visiblity;
+- (void)_updateSlugAppearanceForMode:(unint64_t)mode;
+- (void)_updateSlugDimStatus:(BOOL)status Animated:(BOOL)animated;
 - (void)dealloc;
 - (void)loadView;
-- (void)setShouldHideWhileOrbing:(BOOL)a3;
-- (void)systemApertureLayoutDidChange:(id)a3;
-- (void)updateIdleSlugOpacityAndPreviewImmediately:(double)a3;
-- (void)updateLongPressDuration:(double)a3;
+- (void)setShouldHideWhileOrbing:(BOOL)orbing;
+- (void)systemApertureLayoutDidChange:(id)change;
+- (void)updateIdleSlugOpacityAndPreviewImmediately:(double)immediately;
+- (void)updateLongPressDuration:(double)duration;
 - (void)updateUIForSpeakFingerStateChange;
-- (void)userInteractionHasBecomeActiveWithFirstTouchAtLocation:(CGPoint)a3;
+- (void)userInteractionHasBecomeActiveWithFirstTouchAtLocation:(CGPoint)location;
 - (void)userInteractionHasBecomeIdle;
 - (void)wakeSlug;
 @end
 
 @implementation ZWZoomSlugViewController
 
-- (ZWZoomSlugViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (ZWZoomSlugViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   v34.receiver = self;
   v34.super_class = ZWZoomSlugViewController;
-  v8 = [(ZWZoomSlugViewController *)&v34 initWithNibName:v6 bundle:v7];
+  v8 = [(ZWZoomSlugViewController *)&v34 initWithNibName:nameCopy bundle:bundleCopy];
   if (v8)
   {
     v9 = +[AXSettings sharedInstance];
@@ -173,104 +173,104 @@ void __51__ZWZoomSlugViewController_initWithNibName_bundle___block_invoke_5(uint
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v7 = [(ZWSlugBackgroundView *)v3 initWithFrame:CGRectZero.origin.x, y, width, height];
-  [(ZWSlugBackgroundView *)v7 setSemanticContentAttribute:2];
-  [(ZWSlugBackgroundView *)v7 setAccessibilityIgnoresInvertColors:1];
-  [(ZWSlugBackgroundView *)v7 setDelegate:self];
-  [(ZWZoomSlugViewController *)self setView:v7];
-  v8 = [(ZWZoomSlugViewController *)self view];
-  [v8 setHidden:1];
+  height = [(ZWSlugBackgroundView *)v3 initWithFrame:CGRectZero.origin.x, y, width, height];
+  [(ZWSlugBackgroundView *)height setSemanticContentAttribute:2];
+  [(ZWSlugBackgroundView *)height setAccessibilityIgnoresInvertColors:1];
+  [(ZWSlugBackgroundView *)height setDelegate:self];
+  [(ZWZoomSlugViewController *)self setView:height];
+  view = [(ZWZoomSlugViewController *)self view];
+  [view setHidden:1];
 
-  v9 = [[ZWSlugCollapsingRingView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
-  [(ZWSlugBackgroundView *)v7 addSubview:v9];
-  [(ZWZoomSlugViewController *)self setSlugRingView:v9];
-  v10 = [[ZWSlugCirclePivotingView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
-  [(ZWSlugBackgroundView *)v7 addSubview:v10];
-  [(ZWZoomSlugViewController *)self setCirclePivotingView:v10];
+  height2 = [[ZWSlugCollapsingRingView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+  [(ZWSlugBackgroundView *)height addSubview:height2];
+  [(ZWZoomSlugViewController *)self setSlugRingView:height2];
+  height3 = [[ZWSlugCirclePivotingView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+  [(ZWSlugBackgroundView *)height addSubview:height3];
+  [(ZWZoomSlugViewController *)self setCirclePivotingView:height3];
   v82 = [[ZWSlugTriangleView alloc] initWithTriangle:3];
-  [(ZWSlugBackgroundView *)v7 addSubview:v82];
+  [(ZWSlugBackgroundView *)height addSubview:v82];
   [(ZWZoomSlugViewController *)self setLeftTriangleView:v82];
   v79 = [[ZWSlugTriangleView alloc] initWithTriangle:1];
-  [(ZWSlugBackgroundView *)v7 addSubview:v79];
+  [(ZWSlugBackgroundView *)height addSubview:v79];
   [(ZWZoomSlugViewController *)self setRightTriangleView:v79];
   v80 = [[ZWSlugTriangleView alloc] initWithTriangle:2];
-  [(ZWSlugBackgroundView *)v7 addSubview:v80];
+  [(ZWSlugBackgroundView *)height addSubview:v80];
   [(ZWZoomSlugViewController *)self setBottomTriangleView:v80];
   v81 = [[ZWSlugTriangleView alloc] initWithTriangle:0];
-  [(ZWSlugBackgroundView *)v7 addSubview:v81];
+  [(ZWSlugBackgroundView *)height addSubview:v81];
   [(ZWZoomSlugViewController *)self setTopTriangleView:v81];
-  [(ZWSlugBackgroundView *)v7 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v11 = [NSLayoutConstraint constraintWithItem:v7 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:150.0];
-  [(ZWSlugBackgroundView *)v7 addConstraint:v11];
+  [(ZWSlugBackgroundView *)height setTranslatesAutoresizingMaskIntoConstraints:0];
+  v11 = [NSLayoutConstraint constraintWithItem:height attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:150.0];
+  [(ZWSlugBackgroundView *)height addConstraint:v11];
 
-  v12 = [NSLayoutConstraint constraintWithItem:v7 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:150.0];
-  [(ZWSlugBackgroundView *)v7 addConstraint:v12];
+  v12 = [NSLayoutConstraint constraintWithItem:height attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:150.0];
+  [(ZWSlugBackgroundView *)height addConstraint:v12];
 
   LODWORD(v13) = 1148846080;
-  [(ZWSlugBackgroundView *)v7 setContentCompressionResistancePriority:0 forAxis:v13];
+  [(ZWSlugBackgroundView *)height setContentCompressionResistancePriority:0 forAxis:v13];
   LODWORD(v14) = 1148846080;
-  [(ZWSlugBackgroundView *)v7 setContentCompressionResistancePriority:1 forAxis:v14];
+  [(ZWSlugBackgroundView *)height setContentCompressionResistancePriority:1 forAxis:v14];
   LODWORD(v15) = 1148846080;
-  [(ZWSlugBackgroundView *)v7 setContentHuggingPriority:0 forAxis:v15];
+  [(ZWSlugBackgroundView *)height setContentHuggingPriority:0 forAxis:v15];
   LODWORD(v16) = 1148846080;
-  [(ZWSlugBackgroundView *)v7 setContentHuggingPriority:1 forAxis:v16];
-  [(ZWSlugCollapsingRingView *)v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+  [(ZWSlugBackgroundView *)height setContentHuggingPriority:1 forAxis:v16];
+  [(ZWSlugCollapsingRingView *)height2 setTranslatesAutoresizingMaskIntoConstraints:0];
   LODWORD(v17) = 1148846080;
-  [(ZWSlugCollapsingRingView *)v9 setContentCompressionResistancePriority:0 forAxis:v17];
+  [(ZWSlugCollapsingRingView *)height2 setContentCompressionResistancePriority:0 forAxis:v17];
   LODWORD(v18) = 1148846080;
-  [(ZWSlugCollapsingRingView *)v9 setContentCompressionResistancePriority:1 forAxis:v18];
+  [(ZWSlugCollapsingRingView *)height2 setContentCompressionResistancePriority:1 forAxis:v18];
   LODWORD(v19) = 1148846080;
-  [(ZWSlugCollapsingRingView *)v9 setContentHuggingPriority:0 forAxis:v19];
+  [(ZWSlugCollapsingRingView *)height2 setContentHuggingPriority:0 forAxis:v19];
   LODWORD(v20) = 1148846080;
-  [(ZWSlugCollapsingRingView *)v9 setContentHuggingPriority:1 forAxis:v20];
-  v21 = [NSLayoutConstraint constraintWithItem:v9 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:60.0];
+  [(ZWSlugCollapsingRingView *)height2 setContentHuggingPriority:1 forAxis:v20];
+  v21 = [NSLayoutConstraint constraintWithItem:height2 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:60.0];
   [(ZWZoomSlugViewController *)self setCollapsingRingWidthConstraint:v21];
 
-  v22 = [NSLayoutConstraint constraintWithItem:v9 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:60.0];
+  v22 = [NSLayoutConstraint constraintWithItem:height2 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:60.0];
   [(ZWZoomSlugViewController *)self setCollapsingRingHeightConstraint:v22];
 
-  v23 = [(ZWZoomSlugViewController *)self collapsingRingWidthConstraint];
-  v84[0] = v23;
-  v24 = [(ZWZoomSlugViewController *)self collapsingRingHeightConstraint];
-  v84[1] = v24;
-  v25 = [NSLayoutConstraint constraintWithItem:v9 attribute:9 relatedBy:0 toItem:v7 attribute:9 multiplier:1.0 constant:0.0];
+  collapsingRingWidthConstraint = [(ZWZoomSlugViewController *)self collapsingRingWidthConstraint];
+  v84[0] = collapsingRingWidthConstraint;
+  collapsingRingHeightConstraint = [(ZWZoomSlugViewController *)self collapsingRingHeightConstraint];
+  v84[1] = collapsingRingHeightConstraint;
+  v25 = [NSLayoutConstraint constraintWithItem:height2 attribute:9 relatedBy:0 toItem:height attribute:9 multiplier:1.0 constant:0.0];
   v84[2] = v25;
-  v26 = [NSLayoutConstraint constraintWithItem:v9 attribute:10 relatedBy:0 toItem:v7 attribute:10 multiplier:1.0 constant:0.0];
+  v26 = [NSLayoutConstraint constraintWithItem:height2 attribute:10 relatedBy:0 toItem:height attribute:10 multiplier:1.0 constant:0.0];
   v84[3] = v26;
   v27 = [NSArray arrayWithObjects:v84 count:4];
-  [(ZWSlugBackgroundView *)v7 addConstraints:v27];
+  [(ZWSlugBackgroundView *)height addConstraints:v27];
 
-  [(ZWSlugCirclePivotingView *)v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+  [(ZWSlugCirclePivotingView *)height3 setTranslatesAutoresizingMaskIntoConstraints:0];
   LODWORD(v28) = 1148846080;
-  [(ZWSlugCirclePivotingView *)v10 setContentCompressionResistancePriority:0 forAxis:v28];
+  [(ZWSlugCirclePivotingView *)height3 setContentCompressionResistancePriority:0 forAxis:v28];
   LODWORD(v29) = 1148846080;
-  [(ZWSlugCirclePivotingView *)v10 setContentCompressionResistancePriority:1 forAxis:v29];
+  [(ZWSlugCirclePivotingView *)height3 setContentCompressionResistancePriority:1 forAxis:v29];
   LODWORD(v30) = 1148846080;
-  [(ZWSlugCirclePivotingView *)v10 setContentHuggingPriority:0 forAxis:v30];
+  [(ZWSlugCirclePivotingView *)height3 setContentHuggingPriority:0 forAxis:v30];
   LODWORD(v31) = 1148846080;
-  [(ZWSlugCirclePivotingView *)v10 setContentHuggingPriority:1 forAxis:v31];
-  v32 = [NSLayoutConstraint constraintWithItem:v10 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:16.0];
+  [(ZWSlugCirclePivotingView *)height3 setContentHuggingPriority:1 forAxis:v31];
+  v32 = [NSLayoutConstraint constraintWithItem:height3 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:16.0];
   [(ZWZoomSlugViewController *)self setCirclePivotWidthConstraint:v32];
 
-  v33 = [NSLayoutConstraint constraintWithItem:v10 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:16.0];
+  v33 = [NSLayoutConstraint constraintWithItem:height3 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:16.0];
   [(ZWZoomSlugViewController *)self setCirclePivotHeightConstraint:v33];
 
-  v34 = [NSLayoutConstraint constraintWithItem:v10 attribute:9 relatedBy:0 toItem:v7 attribute:9 multiplier:1.0 constant:0.0];
+  v34 = [NSLayoutConstraint constraintWithItem:height3 attribute:9 relatedBy:0 toItem:height attribute:9 multiplier:1.0 constant:0.0];
   [(ZWZoomSlugViewController *)self setCirclePivotOffsetXConstraint:v34];
 
-  v35 = [NSLayoutConstraint constraintWithItem:v10 attribute:10 relatedBy:0 toItem:v7 attribute:10 multiplier:1.0 constant:0.0];
+  v35 = [NSLayoutConstraint constraintWithItem:height3 attribute:10 relatedBy:0 toItem:height attribute:10 multiplier:1.0 constant:0.0];
   [(ZWZoomSlugViewController *)self setCirclePivotOffsetYConstraint:v35];
 
-  v36 = [(ZWZoomSlugViewController *)self circlePivotWidthConstraint];
-  v83[0] = v36;
-  v37 = [(ZWZoomSlugViewController *)self circlePivotHeightConstraint];
-  v83[1] = v37;
-  v38 = [(ZWZoomSlugViewController *)self circlePivotOffsetXConstraint];
-  v83[2] = v38;
-  v39 = [(ZWZoomSlugViewController *)self circlePivotOffsetYConstraint];
-  v83[3] = v39;
+  circlePivotWidthConstraint = [(ZWZoomSlugViewController *)self circlePivotWidthConstraint];
+  v83[0] = circlePivotWidthConstraint;
+  circlePivotHeightConstraint = [(ZWZoomSlugViewController *)self circlePivotHeightConstraint];
+  v83[1] = circlePivotHeightConstraint;
+  circlePivotOffsetXConstraint = [(ZWZoomSlugViewController *)self circlePivotOffsetXConstraint];
+  v83[2] = circlePivotOffsetXConstraint;
+  circlePivotOffsetYConstraint = [(ZWZoomSlugViewController *)self circlePivotOffsetYConstraint];
+  v83[3] = circlePivotOffsetYConstraint;
   v40 = [NSArray arrayWithObjects:v83 count:4];
-  [(ZWSlugBackgroundView *)v7 addConstraints:v40];
+  [(ZWSlugBackgroundView *)height addConstraints:v40];
 
   [(ZWSlugTriangleView *)v81 setTranslatesAutoresizingMaskIntoConstraints:0];
   LODWORD(v41) = 1148846080;
@@ -281,14 +281,14 @@ void __51__ZWZoomSlugViewController_initWithNibName_bundle___block_invoke_5(uint
   [(ZWSlugTriangleView *)v81 setContentHuggingPriority:0 forAxis:v43];
   LODWORD(v44) = 1148846080;
   [(ZWSlugTriangleView *)v81 setContentHuggingPriority:1 forAxis:v44];
-  v45 = [NSLayoutConstraint constraintWithItem:v81 attribute:9 relatedBy:0 toItem:v7 attribute:9 multiplier:1.0 constant:0.0];
-  [(ZWSlugBackgroundView *)v7 addConstraint:v45];
+  v45 = [NSLayoutConstraint constraintWithItem:v81 attribute:9 relatedBy:0 toItem:height attribute:9 multiplier:1.0 constant:0.0];
+  [(ZWSlugBackgroundView *)height addConstraint:v45];
 
-  v46 = [NSLayoutConstraint constraintWithItem:v81 attribute:10 relatedBy:0 toItem:v7 attribute:10 multiplier:1.0 constant:-20.0];
+  v46 = [NSLayoutConstraint constraintWithItem:v81 attribute:10 relatedBy:0 toItem:height attribute:10 multiplier:1.0 constant:-20.0];
   [(ZWZoomSlugViewController *)self setTopTriangleRadiusDistanceConstraint:v46];
 
-  v47 = [(ZWZoomSlugViewController *)self topTriangleRadiusDistanceConstraint];
-  [(ZWSlugBackgroundView *)v7 addConstraint:v47];
+  topTriangleRadiusDistanceConstraint = [(ZWZoomSlugViewController *)self topTriangleRadiusDistanceConstraint];
+  [(ZWSlugBackgroundView *)height addConstraint:topTriangleRadiusDistanceConstraint];
 
   [(ZWSlugTriangleView *)v80 setTranslatesAutoresizingMaskIntoConstraints:0];
   LODWORD(v48) = 1148846080;
@@ -299,14 +299,14 @@ void __51__ZWZoomSlugViewController_initWithNibName_bundle___block_invoke_5(uint
   [(ZWSlugTriangleView *)v80 setContentHuggingPriority:0 forAxis:v50];
   LODWORD(v51) = 1148846080;
   [(ZWSlugTriangleView *)v80 setContentHuggingPriority:1 forAxis:v51];
-  v52 = [NSLayoutConstraint constraintWithItem:v80 attribute:9 relatedBy:0 toItem:v7 attribute:9 multiplier:1.0 constant:0.0];
-  [(ZWSlugBackgroundView *)v7 addConstraint:v52];
+  v52 = [NSLayoutConstraint constraintWithItem:v80 attribute:9 relatedBy:0 toItem:height attribute:9 multiplier:1.0 constant:0.0];
+  [(ZWSlugBackgroundView *)height addConstraint:v52];
 
-  v53 = [NSLayoutConstraint constraintWithItem:v80 attribute:10 relatedBy:0 toItem:v7 attribute:10 multiplier:1.0 constant:20.0];
+  v53 = [NSLayoutConstraint constraintWithItem:v80 attribute:10 relatedBy:0 toItem:height attribute:10 multiplier:1.0 constant:20.0];
   [(ZWZoomSlugViewController *)self setBottomTriangleRadiusDistanceConstraint:v53];
 
-  v54 = [(ZWZoomSlugViewController *)self bottomTriangleRadiusDistanceConstraint];
-  [(ZWSlugBackgroundView *)v7 addConstraint:v54];
+  bottomTriangleRadiusDistanceConstraint = [(ZWZoomSlugViewController *)self bottomTriangleRadiusDistanceConstraint];
+  [(ZWSlugBackgroundView *)height addConstraint:bottomTriangleRadiusDistanceConstraint];
 
   [(ZWSlugTriangleView *)v82 setTranslatesAutoresizingMaskIntoConstraints:0];
   LODWORD(v55) = 1148846080;
@@ -317,14 +317,14 @@ void __51__ZWZoomSlugViewController_initWithNibName_bundle___block_invoke_5(uint
   [(ZWSlugTriangleView *)v82 setContentHuggingPriority:0 forAxis:v57];
   LODWORD(v58) = 1148846080;
   [(ZWSlugTriangleView *)v82 setContentHuggingPriority:1 forAxis:v58];
-  v59 = [NSLayoutConstraint constraintWithItem:v82 attribute:10 relatedBy:0 toItem:v7 attribute:10 multiplier:1.0 constant:0.0];
-  [(ZWSlugBackgroundView *)v7 addConstraint:v59];
+  v59 = [NSLayoutConstraint constraintWithItem:v82 attribute:10 relatedBy:0 toItem:height attribute:10 multiplier:1.0 constant:0.0];
+  [(ZWSlugBackgroundView *)height addConstraint:v59];
 
-  v60 = [NSLayoutConstraint constraintWithItem:v82 attribute:9 relatedBy:0 toItem:v7 attribute:9 multiplier:1.0 constant:-20.0];
+  v60 = [NSLayoutConstraint constraintWithItem:v82 attribute:9 relatedBy:0 toItem:height attribute:9 multiplier:1.0 constant:-20.0];
   [(ZWZoomSlugViewController *)self setLeftTriangleRadiusDistanceConstraint:v60];
 
-  v61 = [(ZWZoomSlugViewController *)self leftTriangleRadiusDistanceConstraint];
-  [(ZWSlugBackgroundView *)v7 addConstraint:v61];
+  leftTriangleRadiusDistanceConstraint = [(ZWZoomSlugViewController *)self leftTriangleRadiusDistanceConstraint];
+  [(ZWSlugBackgroundView *)height addConstraint:leftTriangleRadiusDistanceConstraint];
 
   [(ZWSlugTriangleView *)v79 setTranslatesAutoresizingMaskIntoConstraints:0];
   LODWORD(v62) = 1148846080;
@@ -335,18 +335,18 @@ void __51__ZWZoomSlugViewController_initWithNibName_bundle___block_invoke_5(uint
   [(ZWSlugTriangleView *)v79 setContentHuggingPriority:0 forAxis:v64];
   LODWORD(v65) = 1148846080;
   [(ZWSlugTriangleView *)v79 setContentHuggingPriority:1 forAxis:v65];
-  v66 = [NSLayoutConstraint constraintWithItem:v79 attribute:10 relatedBy:0 toItem:v7 attribute:10 multiplier:1.0 constant:0.0];
-  [(ZWSlugBackgroundView *)v7 addConstraint:v66];
+  v66 = [NSLayoutConstraint constraintWithItem:v79 attribute:10 relatedBy:0 toItem:height attribute:10 multiplier:1.0 constant:0.0];
+  [(ZWSlugBackgroundView *)height addConstraint:v66];
 
-  v67 = [NSLayoutConstraint constraintWithItem:v79 attribute:9 relatedBy:0 toItem:v7 attribute:9 multiplier:1.0 constant:20.0];
+  v67 = [NSLayoutConstraint constraintWithItem:v79 attribute:9 relatedBy:0 toItem:height attribute:9 multiplier:1.0 constant:20.0];
   [(ZWZoomSlugViewController *)self setRightTriangleRadiusDistanceConstraint:v67];
 
-  v68 = [(ZWZoomSlugViewController *)self rightTriangleRadiusDistanceConstraint];
-  [(ZWSlugBackgroundView *)v7 addConstraint:v68];
+  rightTriangleRadiusDistanceConstraint = [(ZWZoomSlugViewController *)self rightTriangleRadiusDistanceConstraint];
+  [(ZWSlugBackgroundView *)height addConstraint:rightTriangleRadiusDistanceConstraint];
 
   v69 = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:"_handleLongPress:"];
-  v70 = [(ZWZoomSlugViewController *)self view];
-  [v70 addGestureRecognizer:v69];
+  view2 = [(ZWZoomSlugViewController *)self view];
+  [view2 addGestureRecognizer:v69];
 
   [(ZWZoomSlugViewController *)self setLongPressGesture:v69];
   [v69 setDelegate:self];
@@ -355,30 +355,30 @@ void __51__ZWZoomSlugViewController_initWithNibName_bundle___block_invoke_5(uint
   [(ZWZoomSlugViewController *)self setLongPress:v69];
   v71 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"_handleTripleTap:"];
   [v71 setNumberOfTapsRequired:3];
-  v72 = [(ZWZoomSlugViewController *)self view];
-  [v72 addGestureRecognizer:v71];
+  view3 = [(ZWZoomSlugViewController *)self view];
+  [view3 addGestureRecognizer:v71];
 
   [(ZWZoomSlugViewController *)self setTripleTapGesture:v71];
   [v71 setDelegate:self];
   v73 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"_handleDoubleTap:"];
   [v73 setNumberOfTapsRequired:2];
-  v74 = [(ZWZoomSlugViewController *)self view];
-  [v74 addGestureRecognizer:v73];
+  view4 = [(ZWZoomSlugViewController *)self view];
+  [view4 addGestureRecognizer:v73];
 
   [(ZWZoomSlugViewController *)self setDoubleTapGesture:v73];
   [v73 setDelegate:self];
   [v73 requireGestureRecognizerToFail:v71];
   v75 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"_handleSingleTap:"];
-  v76 = [(ZWZoomSlugViewController *)self view];
-  [v76 addGestureRecognizer:v75];
+  view5 = [(ZWZoomSlugViewController *)self view];
+  [view5 addGestureRecognizer:v75];
 
   [(ZWZoomSlugViewController *)self setSingleTapGesture:v75];
   [v75 setDelegate:self];
   [v75 requireGestureRecognizerToFail:v73];
   [v75 requireGestureRecognizerToFail:v71];
   v77 = [[UIPanGestureRecognizer alloc] initWithTarget:self action:"_handlePan:"];
-  v78 = [(ZWZoomSlugViewController *)self view];
-  [v78 addGestureRecognizer:v77];
+  view6 = [(ZWZoomSlugViewController *)self view];
+  [view6 addGestureRecognizer:v77];
 
   [(ZWZoomSlugViewController *)self setPanGesture:v77];
   [v77 setDelegate:self];
@@ -391,8 +391,8 @@ void __51__ZWZoomSlugViewController_initWithNibName_bundle___block_invoke_5(uint
 
 - (CGRect)slugRingViewBoundsInScreenCoordinates
 {
-  v2 = [(ZWZoomSlugViewController *)self slugRingView];
-  [v2 zw_convertBoundsToScreenCoordinates];
+  slugRingView = [(ZWZoomSlugViewController *)self slugRingView];
+  [slugRingView zw_convertBoundsToScreenCoordinates];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -409,35 +409,35 @@ void __51__ZWZoomSlugViewController_initWithNibName_bundle___block_invoke_5(uint
   return result;
 }
 
-- (void)updateLongPressDuration:(double)a3
+- (void)updateLongPressDuration:(double)duration
 {
-  v4 = [(ZWZoomSlugViewController *)self longPress];
-  [v4 setMinimumPressDuration:a3];
+  longPress = [(ZWZoomSlugViewController *)self longPress];
+  [longPress setMinimumPressDuration:duration];
 }
 
-+ (double)longPressDurationForStandByMode:(BOOL)a3
++ (double)longPressDurationForStandByMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
-    [a1 standByLongPressDuration];
+    [self standByLongPressDuration];
   }
 
   else
   {
-    [a1 zoomedInLongPressDuration];
+    [self zoomedInLongPressDuration];
   }
 
   return result;
 }
 
-- (void)setShouldHideWhileOrbing:(BOOL)a3
+- (void)setShouldHideWhileOrbing:(BOOL)orbing
 {
-  if (self->_shouldHideWhileOrbing != a3)
+  if (self->_shouldHideWhileOrbing != orbing)
   {
-    v3 = a3;
-    self->_shouldHideWhileOrbing = a3;
+    orbingCopy = orbing;
+    self->_shouldHideWhileOrbing = orbing;
     [ZWZoomSlugViewController _updateSlugDimStatus:"_updateSlugDimStatus:Animated:" Animated:?];
-    if (v3)
+    if (orbingCopy)
     {
       if (![(ZWZoomSlugViewController *)self isOrbPanning])
       {
@@ -469,216 +469,216 @@ void __51__ZWZoomSlugViewController_initWithNibName_bundle___block_invoke_5(uint
   return result;
 }
 
-- (void)_updateSlugAppearanceForMode:(unint64_t)a3
+- (void)_updateSlugAppearanceForMode:(unint64_t)mode
 {
-  if ([(ZWZoomSlugViewController *)self slugAppearanceState]!= a3)
+  if ([(ZWZoomSlugViewController *)self slugAppearanceState]!= mode)
   {
-    if (a3 == 2)
+    if (mode == 2)
     {
       v36 = +[AXSettings sharedInstance];
-      v37 = [v36 zoomAutopannerShouldPanWithAcceleration];
+      zoomAutopannerShouldPanWithAcceleration = [v36 zoomAutopannerShouldPanWithAcceleration];
 
-      if (v37)
+      if (zoomAutopannerShouldPanWithAcceleration)
       {
-        v38 = [(ZWZoomSlugViewController *)self collapsingRingWidthConstraint];
-        [v38 setConstant:150.0];
+        collapsingRingWidthConstraint = [(ZWZoomSlugViewController *)self collapsingRingWidthConstraint];
+        [collapsingRingWidthConstraint setConstant:150.0];
 
-        v39 = [(ZWZoomSlugViewController *)self collapsingRingHeightConstraint];
-        [v39 setConstant:150.0];
+        collapsingRingHeightConstraint = [(ZWZoomSlugViewController *)self collapsingRingHeightConstraint];
+        [collapsingRingHeightConstraint setConstant:150.0];
       }
 
       else
       {
-        v40 = [(ZWZoomSlugViewController *)self view];
-        v41 = [v40 superview];
-        [v41 bounds];
+        view = [(ZWZoomSlugViewController *)self view];
+        superview = [view superview];
+        [superview bounds];
         v43 = v42 / 5.0;
-        v44 = [(ZWZoomSlugViewController *)self collapsingRingWidthConstraint];
-        [v44 setConstant:v43];
+        collapsingRingWidthConstraint2 = [(ZWZoomSlugViewController *)self collapsingRingWidthConstraint];
+        [collapsingRingWidthConstraint2 setConstant:v43];
 
-        v45 = [(ZWZoomSlugViewController *)self view];
-        v46 = [v45 superview];
-        [v46 bounds];
+        view2 = [(ZWZoomSlugViewController *)self view];
+        superview2 = [view2 superview];
+        [superview2 bounds];
         v48 = v47 / 5.0;
-        v49 = [(ZWZoomSlugViewController *)self collapsingRingHeightConstraint];
-        [v49 setConstant:v48];
+        collapsingRingHeightConstraint2 = [(ZWZoomSlugViewController *)self collapsingRingHeightConstraint];
+        [collapsingRingHeightConstraint2 setConstant:v48];
 
-        v50 = [(ZWZoomSlugViewController *)self slugRingView];
-        [v50 setShouldUseContinuousCornerRadius:0];
+        slugRingView = [(ZWZoomSlugViewController *)self slugRingView];
+        [slugRingView setShouldUseContinuousCornerRadius:0];
 
-        v39 = [(ZWZoomSlugViewController *)self circlePivotingView];
-        [v39 setShouldUseRoundedRect:1];
+        collapsingRingHeightConstraint = [(ZWZoomSlugViewController *)self circlePivotingView];
+        [collapsingRingHeightConstraint setShouldUseRoundedRect:1];
       }
 
-      v51 = [(ZWZoomSlugViewController *)self circlePivotWidthConstraint];
-      [v51 setConstant:38.0];
+      circlePivotWidthConstraint = [(ZWZoomSlugViewController *)self circlePivotWidthConstraint];
+      [circlePivotWidthConstraint setConstant:38.0];
 
-      v52 = [(ZWZoomSlugViewController *)self circlePivotHeightConstraint];
-      [v52 setConstant:38.0];
+      circlePivotHeightConstraint = [(ZWZoomSlugViewController *)self circlePivotHeightConstraint];
+      [circlePivotHeightConstraint setConstant:38.0];
 
       v53 = +[AXSettings sharedInstance];
-      v54 = [v53 zoomAutopannerShouldPanWithAcceleration];
+      zoomAutopannerShouldPanWithAcceleration2 = [v53 zoomAutopannerShouldPanWithAcceleration];
 
-      if (v54)
+      if (zoomAutopannerShouldPanWithAcceleration2)
       {
-        v55 = [(ZWZoomSlugViewController *)self leftTriangleRadiusDistanceConstraint];
-        [v55 setConstant:-55.0];
+        leftTriangleRadiusDistanceConstraint = [(ZWZoomSlugViewController *)self leftTriangleRadiusDistanceConstraint];
+        [leftTriangleRadiusDistanceConstraint setConstant:-55.0];
 
-        v56 = [(ZWZoomSlugViewController *)self topTriangleRadiusDistanceConstraint];
-        [v56 setConstant:-55.0];
+        topTriangleRadiusDistanceConstraint = [(ZWZoomSlugViewController *)self topTriangleRadiusDistanceConstraint];
+        [topTriangleRadiusDistanceConstraint setConstant:-55.0];
 
-        v57 = [(ZWZoomSlugViewController *)self rightTriangleRadiusDistanceConstraint];
-        [v57 setConstant:55.0];
+        rightTriangleRadiusDistanceConstraint = [(ZWZoomSlugViewController *)self rightTriangleRadiusDistanceConstraint];
+        [rightTriangleRadiusDistanceConstraint setConstant:55.0];
 
-        v34 = [(ZWZoomSlugViewController *)self bottomTriangleRadiusDistanceConstraint];
-        [v34 setConstant:55.0];
+        bottomTriangleRadiusDistanceConstraint = [(ZWZoomSlugViewController *)self bottomTriangleRadiusDistanceConstraint];
+        [bottomTriangleRadiusDistanceConstraint setConstant:55.0];
 LABEL_16:
 
         goto LABEL_17;
       }
 
-      v58 = [(ZWZoomSlugViewController *)self leftTriangleView];
-      [v58 setHidden:1];
+      leftTriangleView = [(ZWZoomSlugViewController *)self leftTriangleView];
+      [leftTriangleView setHidden:1];
 
-      v59 = [(ZWZoomSlugViewController *)self rightTriangleView];
-      [v59 setHidden:1];
+      rightTriangleView = [(ZWZoomSlugViewController *)self rightTriangleView];
+      [rightTriangleView setHidden:1];
 
-      v60 = [(ZWZoomSlugViewController *)self topTriangleView];
-      [v60 setHidden:1];
+      topTriangleView = [(ZWZoomSlugViewController *)self topTriangleView];
+      [topTriangleView setHidden:1];
 
-      v33 = [(ZWZoomSlugViewController *)self bottomTriangleView];
-      v34 = v33;
+      bottomTriangleView = [(ZWZoomSlugViewController *)self bottomTriangleView];
+      bottomTriangleRadiusDistanceConstraint = bottomTriangleView;
       v35 = 1;
 LABEL_15:
-      [v33 setHidden:v35];
+      [bottomTriangleView setHidden:v35];
       goto LABEL_16;
     }
 
-    if (a3 == 1)
+    if (mode == 1)
     {
-      v19 = [(ZWZoomSlugViewController *)self collapsingRingWidthConstraint];
-      [v19 setConstant:78.0];
+      collapsingRingWidthConstraint3 = [(ZWZoomSlugViewController *)self collapsingRingWidthConstraint];
+      [collapsingRingWidthConstraint3 setConstant:78.0];
 
-      v20 = [(ZWZoomSlugViewController *)self collapsingRingHeightConstraint];
-      [v20 setConstant:78.0];
+      collapsingRingHeightConstraint3 = [(ZWZoomSlugViewController *)self collapsingRingHeightConstraint];
+      [collapsingRingHeightConstraint3 setConstant:78.0];
 
-      v21 = [(ZWZoomSlugViewController *)self slugRingView];
-      [v21 setShouldUseContinuousCornerRadius:1];
+      slugRingView2 = [(ZWZoomSlugViewController *)self slugRingView];
+      [slugRingView2 setShouldUseContinuousCornerRadius:1];
 
-      v22 = [(ZWZoomSlugViewController *)self circlePivotingView];
-      [v22 setShouldUseRoundedRect:0];
+      circlePivotingView = [(ZWZoomSlugViewController *)self circlePivotingView];
+      [circlePivotingView setShouldUseRoundedRect:0];
 
-      v23 = [(ZWZoomSlugViewController *)self circlePivotWidthConstraint];
-      [v23 setConstant:38.0];
+      circlePivotWidthConstraint2 = [(ZWZoomSlugViewController *)self circlePivotWidthConstraint];
+      [circlePivotWidthConstraint2 setConstant:38.0];
 
-      v24 = [(ZWZoomSlugViewController *)self circlePivotHeightConstraint];
-      [v24 setConstant:38.0];
+      circlePivotHeightConstraint2 = [(ZWZoomSlugViewController *)self circlePivotHeightConstraint];
+      [circlePivotHeightConstraint2 setConstant:38.0];
 
-      v25 = [(ZWZoomSlugViewController *)self circlePivotOffsetXConstraint];
-      [v25 setConstant:0.0];
+      circlePivotOffsetXConstraint = [(ZWZoomSlugViewController *)self circlePivotOffsetXConstraint];
+      [circlePivotOffsetXConstraint setConstant:0.0];
 
-      v26 = [(ZWZoomSlugViewController *)self circlePivotOffsetYConstraint];
-      [v26 setConstant:0.0];
+      circlePivotOffsetYConstraint = [(ZWZoomSlugViewController *)self circlePivotOffsetYConstraint];
+      [circlePivotOffsetYConstraint setConstant:0.0];
 
-      v27 = [(ZWZoomSlugViewController *)self leftTriangleRadiusDistanceConstraint];
-      [v27 setConstant:-30.0];
+      leftTriangleRadiusDistanceConstraint2 = [(ZWZoomSlugViewController *)self leftTriangleRadiusDistanceConstraint];
+      [leftTriangleRadiusDistanceConstraint2 setConstant:-30.0];
 
-      v28 = [(ZWZoomSlugViewController *)self topTriangleRadiusDistanceConstraint];
-      [v28 setConstant:-30.0];
+      topTriangleRadiusDistanceConstraint2 = [(ZWZoomSlugViewController *)self topTriangleRadiusDistanceConstraint];
+      [topTriangleRadiusDistanceConstraint2 setConstant:-30.0];
 
-      v29 = [(ZWZoomSlugViewController *)self rightTriangleRadiusDistanceConstraint];
-      [v29 setConstant:30.0];
+      rightTriangleRadiusDistanceConstraint2 = [(ZWZoomSlugViewController *)self rightTriangleRadiusDistanceConstraint];
+      [rightTriangleRadiusDistanceConstraint2 setConstant:30.0];
 
-      v16 = [(ZWZoomSlugViewController *)self bottomTriangleRadiusDistanceConstraint];
-      v17 = v16;
+      bottomTriangleRadiusDistanceConstraint2 = [(ZWZoomSlugViewController *)self bottomTriangleRadiusDistanceConstraint];
+      v17 = bottomTriangleRadiusDistanceConstraint2;
       v18 = 30.0;
     }
 
     else
     {
-      if (a3)
+      if (mode)
       {
         goto LABEL_17;
       }
 
-      v5 = [(ZWZoomSlugViewController *)self collapsingRingWidthConstraint];
-      [v5 setConstant:60.0];
+      collapsingRingWidthConstraint4 = [(ZWZoomSlugViewController *)self collapsingRingWidthConstraint];
+      [collapsingRingWidthConstraint4 setConstant:60.0];
 
-      v6 = [(ZWZoomSlugViewController *)self collapsingRingHeightConstraint];
-      [v6 setConstant:60.0];
+      collapsingRingHeightConstraint4 = [(ZWZoomSlugViewController *)self collapsingRingHeightConstraint];
+      [collapsingRingHeightConstraint4 setConstant:60.0];
 
-      v7 = [(ZWZoomSlugViewController *)self slugRingView];
-      [v7 setShouldUseContinuousCornerRadius:1];
+      slugRingView3 = [(ZWZoomSlugViewController *)self slugRingView];
+      [slugRingView3 setShouldUseContinuousCornerRadius:1];
 
-      v8 = [(ZWZoomSlugViewController *)self circlePivotingView];
-      [v8 setShouldUseRoundedRect:0];
+      circlePivotingView2 = [(ZWZoomSlugViewController *)self circlePivotingView];
+      [circlePivotingView2 setShouldUseRoundedRect:0];
 
-      v9 = [(ZWZoomSlugViewController *)self circlePivotWidthConstraint];
-      [v9 setConstant:16.0];
+      circlePivotWidthConstraint3 = [(ZWZoomSlugViewController *)self circlePivotWidthConstraint];
+      [circlePivotWidthConstraint3 setConstant:16.0];
 
-      v10 = [(ZWZoomSlugViewController *)self circlePivotHeightConstraint];
-      [v10 setConstant:16.0];
+      circlePivotHeightConstraint3 = [(ZWZoomSlugViewController *)self circlePivotHeightConstraint];
+      [circlePivotHeightConstraint3 setConstant:16.0];
 
-      v11 = [(ZWZoomSlugViewController *)self circlePivotOffsetXConstraint];
-      [v11 setConstant:0.0];
+      circlePivotOffsetXConstraint2 = [(ZWZoomSlugViewController *)self circlePivotOffsetXConstraint];
+      [circlePivotOffsetXConstraint2 setConstant:0.0];
 
-      v12 = [(ZWZoomSlugViewController *)self circlePivotOffsetYConstraint];
-      [v12 setConstant:0.0];
+      circlePivotOffsetYConstraint2 = [(ZWZoomSlugViewController *)self circlePivotOffsetYConstraint];
+      [circlePivotOffsetYConstraint2 setConstant:0.0];
 
-      v13 = [(ZWZoomSlugViewController *)self leftTriangleRadiusDistanceConstraint];
-      [v13 setConstant:-20.0];
+      leftTriangleRadiusDistanceConstraint3 = [(ZWZoomSlugViewController *)self leftTriangleRadiusDistanceConstraint];
+      [leftTriangleRadiusDistanceConstraint3 setConstant:-20.0];
 
-      v14 = [(ZWZoomSlugViewController *)self topTriangleRadiusDistanceConstraint];
-      [v14 setConstant:-20.0];
+      topTriangleRadiusDistanceConstraint3 = [(ZWZoomSlugViewController *)self topTriangleRadiusDistanceConstraint];
+      [topTriangleRadiusDistanceConstraint3 setConstant:-20.0];
 
-      v15 = [(ZWZoomSlugViewController *)self rightTriangleRadiusDistanceConstraint];
-      [v15 setConstant:20.0];
+      rightTriangleRadiusDistanceConstraint3 = [(ZWZoomSlugViewController *)self rightTriangleRadiusDistanceConstraint];
+      [rightTriangleRadiusDistanceConstraint3 setConstant:20.0];
 
-      v16 = [(ZWZoomSlugViewController *)self bottomTriangleRadiusDistanceConstraint];
-      v17 = v16;
+      bottomTriangleRadiusDistanceConstraint2 = [(ZWZoomSlugViewController *)self bottomTriangleRadiusDistanceConstraint];
+      v17 = bottomTriangleRadiusDistanceConstraint2;
       v18 = 20.0;
     }
 
-    [v16 setConstant:v18];
+    [bottomTriangleRadiusDistanceConstraint2 setConstant:v18];
 
     if (![(ZWZoomSlugViewController *)self inSpeakUnderFingerMode])
     {
-      v30 = [(ZWZoomSlugViewController *)self leftTriangleView];
-      [v30 setHidden:0];
+      leftTriangleView2 = [(ZWZoomSlugViewController *)self leftTriangleView];
+      [leftTriangleView2 setHidden:0];
 
-      v31 = [(ZWZoomSlugViewController *)self rightTriangleView];
-      [v31 setHidden:0];
+      rightTriangleView2 = [(ZWZoomSlugViewController *)self rightTriangleView];
+      [rightTriangleView2 setHidden:0];
 
-      v32 = [(ZWZoomSlugViewController *)self topTriangleView];
-      [v32 setHidden:0];
+      topTriangleView2 = [(ZWZoomSlugViewController *)self topTriangleView];
+      [topTriangleView2 setHidden:0];
 
-      v33 = [(ZWZoomSlugViewController *)self bottomTriangleView];
-      v34 = v33;
+      bottomTriangleView = [(ZWZoomSlugViewController *)self bottomTriangleView];
+      bottomTriangleRadiusDistanceConstraint = bottomTriangleView;
       v35 = 0;
       goto LABEL_15;
     }
 
 LABEL_17:
-    v61 = [(ZWZoomSlugViewController *)self view];
-    [v61 setNeedsLayout];
+    view3 = [(ZWZoomSlugViewController *)self view];
+    [view3 setNeedsLayout];
 
-    v62 = [(ZWZoomSlugViewController *)self circlePivotingView];
-    [v62 setNeedsLayout];
+    circlePivotingView3 = [(ZWZoomSlugViewController *)self circlePivotingView];
+    [circlePivotingView3 setNeedsLayout];
 
-    v63 = [(ZWZoomSlugViewController *)self slugRingView];
-    [v63 setNeedsLayout];
+    slugRingView4 = [(ZWZoomSlugViewController *)self slugRingView];
+    [slugRingView4 setNeedsLayout];
 
-    v64 = [(ZWZoomSlugViewController *)self topTriangleView];
-    [v64 setNeedsLayout];
+    topTriangleView3 = [(ZWZoomSlugViewController *)self topTriangleView];
+    [topTriangleView3 setNeedsLayout];
 
-    v65 = [(ZWZoomSlugViewController *)self rightTriangleView];
-    [v65 setNeedsLayout];
+    rightTriangleView3 = [(ZWZoomSlugViewController *)self rightTriangleView];
+    [rightTriangleView3 setNeedsLayout];
 
-    v66 = [(ZWZoomSlugViewController *)self bottomTriangleView];
-    [v66 setNeedsLayout];
+    bottomTriangleView2 = [(ZWZoomSlugViewController *)self bottomTriangleView];
+    [bottomTriangleView2 setNeedsLayout];
 
-    v67 = [(ZWZoomSlugViewController *)self leftTriangleView];
-    [v67 setNeedsLayout];
+    leftTriangleView3 = [(ZWZoomSlugViewController *)self leftTriangleView];
+    [leftTriangleView3 setNeedsLayout];
 
     v68[0] = _NSConcreteStackBlock;
     v68[1] = 3221225472;
@@ -686,7 +686,7 @@ LABEL_17:
     v68[3] = &unk_78D00;
     v68[4] = self;
     [UIView animateWithDuration:0 delay:v68 options:0 animations:ZWDefaultZoomAnimationDuration() completion:0.0];
-    [(ZWZoomSlugViewController *)self setSlugAppearanceState:a3];
+    [(ZWZoomSlugViewController *)self setSlugAppearanceState:mode];
   }
 }
 
@@ -719,9 +719,9 @@ void __57__ZWZoomSlugViewController__updateSlugAppearanceForMode___block_invoke(
   [(ZWZoomSlugViewController *)self _dimAfterDelay];
 }
 
-- (void)updateIdleSlugOpacityAndPreviewImmediately:(double)a3
+- (void)updateIdleSlugOpacityAndPreviewImmediately:(double)immediately
 {
-  [(ZWZoomSlugViewController *)self setIdleSlugOpacity:a3];
+  [(ZWZoomSlugViewController *)self setIdleSlugOpacity:immediately];
 
   [(ZWZoomSlugViewController *)self _updateSlugDimStatus:1 Animated:0];
 }
@@ -735,27 +735,27 @@ void __57__ZWZoomSlugViewController__updateSlugAppearanceForMode___block_invoke(
 
 - (void)_dimAfterDelay
 {
-  v3 = [(ZWZoomSlugViewController *)self dimTimer];
-  [v3 cancel];
+  dimTimer = [(ZWZoomSlugViewController *)self dimTimer];
+  [dimTimer cancel];
 
-  v4 = [(ZWZoomSlugViewController *)self dimTimer];
+  dimTimer2 = [(ZWZoomSlugViewController *)self dimTimer];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = __42__ZWZoomSlugViewController__dimAfterDelay__block_invoke;
   v5[3] = &unk_78D00;
   v5[4] = self;
-  [v4 afterDelay:v5 processBlock:2.0];
+  [dimTimer2 afterDelay:v5 processBlock:2.0];
 }
 
-- (void)_updateSlugDimStatus:(BOOL)a3 Animated:(BOOL)a4
+- (void)_updateSlugDimStatus:(BOOL)status Animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(ZWZoomSlugViewController *)self dimTimer];
-  [v7 cancel];
+  animatedCopy = animated;
+  statusCopy = status;
+  dimTimer = [(ZWZoomSlugViewController *)self dimTimer];
+  [dimTimer cancel];
 
   v8 = 1.0;
-  if (v5)
+  if (statusCopy)
   {
     v8 = 0.0;
     if (!self->_shouldHideWhileOrbing)
@@ -766,7 +766,7 @@ void __57__ZWZoomSlugViewController__updateSlugAppearanceForMode___block_invoke(
   }
 
   v10 = 0.0;
-  if (v4)
+  if (animatedCopy)
   {
     v10 = ZWDefaultFadeAnimationDuration();
   }
@@ -793,29 +793,29 @@ void __58__ZWZoomSlugViewController__updateSlugDimStatus_Animated___block_invoke
   [v3 zoomControllerColor];
   v4 = AXUIZoomControllerColor();
 
-  v5 = [(ZWZoomSlugViewController *)self circlePivotingView];
-  v6 = [v5 circleLayer];
-  [v6 setFillColor:v4];
+  circlePivotingView = [(ZWZoomSlugViewController *)self circlePivotingView];
+  circleLayer = [circlePivotingView circleLayer];
+  [circleLayer setFillColor:v4];
 
-  v7 = [(ZWZoomSlugViewController *)self topTriangleView];
-  v8 = [v7 triangleLayer];
-  [v8 setFillColor:v4];
+  topTriangleView = [(ZWZoomSlugViewController *)self topTriangleView];
+  triangleLayer = [topTriangleView triangleLayer];
+  [triangleLayer setFillColor:v4];
 
-  v9 = [(ZWZoomSlugViewController *)self rightTriangleView];
-  v10 = [v9 triangleLayer];
-  [v10 setFillColor:v4];
+  rightTriangleView = [(ZWZoomSlugViewController *)self rightTriangleView];
+  triangleLayer2 = [rightTriangleView triangleLayer];
+  [triangleLayer2 setFillColor:v4];
 
-  v11 = [(ZWZoomSlugViewController *)self bottomTriangleView];
-  v12 = [v11 triangleLayer];
-  [v12 setFillColor:v4];
+  bottomTriangleView = [(ZWZoomSlugViewController *)self bottomTriangleView];
+  triangleLayer3 = [bottomTriangleView triangleLayer];
+  [triangleLayer3 setFillColor:v4];
 
-  v13 = [(ZWZoomSlugViewController *)self leftTriangleView];
-  v14 = [v13 triangleLayer];
-  [v14 setFillColor:v4];
+  leftTriangleView = [(ZWZoomSlugViewController *)self leftTriangleView];
+  triangleLayer4 = [leftTriangleView triangleLayer];
+  [triangleLayer4 setFillColor:v4];
 
-  v15 = [(ZWZoomSlugViewController *)self slugRingView];
-  v16 = [v15 layer];
-  [v16 setBorderColor:v4];
+  slugRingView = [(ZWZoomSlugViewController *)self slugRingView];
+  layer = [slugRingView layer];
+  [layer setBorderColor:v4];
 
   [(ZWZoomSlugViewController *)self wakeSlug];
 }
@@ -832,29 +832,29 @@ void __58__ZWZoomSlugViewController__updateSlugDimStatus_Animated___block_invoke
     v3 = 2.0;
   }
 
-  v5 = [(ZWZoomSlugViewController *)self slugRingView];
-  v4 = [v5 layer];
-  [v4 setBorderWidth:v3];
+  slugRingView = [(ZWZoomSlugViewController *)self slugRingView];
+  layer = [slugRingView layer];
+  [layer setBorderWidth:v3];
 }
 
 - (void)_updateGestures
 {
   allGesturesEnabled = self->_allGesturesEnabled;
-  v4 = [(ZWZoomSlugViewController *)self longPressGesture];
-  [v4 setEnabled:allGesturesEnabled];
+  longPressGesture = [(ZWZoomSlugViewController *)self longPressGesture];
+  [longPressGesture setEnabled:allGesturesEnabled];
 
   v5 = self->_allGesturesEnabled;
-  v6 = [(ZWZoomSlugViewController *)self panGesture];
-  [v6 setEnabled:v5];
+  panGesture = [(ZWZoomSlugViewController *)self panGesture];
+  [panGesture setEnabled:v5];
 
   v17 = +[AXSettings sharedInstance];
-  v7 = [v17 zoomSlugSingleTapAction];
-  v8 = [v17 zoomSlugDoubleTapAction];
-  v9 = [v17 zoomSlugTripleTapAction];
-  v10 = [v17 zoomSlugTapAndSlideToAdjustZoomLevelEnabled];
+  zoomSlugSingleTapAction = [v17 zoomSlugSingleTapAction];
+  zoomSlugDoubleTapAction = [v17 zoomSlugDoubleTapAction];
+  zoomSlugTripleTapAction = [v17 zoomSlugTripleTapAction];
+  zoomSlugTapAndSlideToAdjustZoomLevelEnabled = [v17 zoomSlugTapAndSlideToAdjustZoomLevelEnabled];
   if (self->_tapGesturesEnabled)
   {
-    v11 = (v7 != 0) | v10;
+    v11 = (zoomSlugSingleTapAction != 0) | zoomSlugTapAndSlideToAdjustZoomLevelEnabled;
   }
 
   else
@@ -862,10 +862,10 @@ void __58__ZWZoomSlugViewController__updateSlugDimStatus_Animated___block_invoke
     v11 = 0;
   }
 
-  v12 = [(ZWZoomSlugViewController *)self singleTapGesture];
-  [v12 setEnabled:v11 & 1];
+  singleTapGesture = [(ZWZoomSlugViewController *)self singleTapGesture];
+  [singleTapGesture setEnabled:v11 & 1];
 
-  if (v8)
+  if (zoomSlugDoubleTapAction)
   {
     tapGesturesEnabled = self->_tapGesturesEnabled;
   }
@@ -875,10 +875,10 @@ void __58__ZWZoomSlugViewController__updateSlugDimStatus_Animated___block_invoke
     tapGesturesEnabled = 0;
   }
 
-  v14 = [(ZWZoomSlugViewController *)self doubleTapGesture];
-  [v14 setEnabled:tapGesturesEnabled];
+  doubleTapGesture = [(ZWZoomSlugViewController *)self doubleTapGesture];
+  [doubleTapGesture setEnabled:tapGesturesEnabled];
 
-  if (v9)
+  if (zoomSlugTripleTapAction)
   {
     v15 = self->_tapGesturesEnabled;
   }
@@ -888,30 +888,30 @@ void __58__ZWZoomSlugViewController__updateSlugDimStatus_Animated___block_invoke
     v15 = 0;
   }
 
-  v16 = [(ZWZoomSlugViewController *)self tripleTapGesture];
-  [v16 setEnabled:v15];
+  tripleTapGesture = [(ZWZoomSlugViewController *)self tripleTapGesture];
+  [tripleTapGesture setEnabled:v15];
 }
 
 - (BOOL)_panGestureIsRecognizing
 {
-  v2 = [(ZWZoomSlugViewController *)self panGesture];
-  v3 = [v2 state];
+  panGesture = [(ZWZoomSlugViewController *)self panGesture];
+  state = [panGesture state];
 
-  return (v3 - 1) < 2;
+  return (state - 1) < 2;
 }
 
-- (void)_handleSingleTap:(id)a3
+- (void)_handleSingleTap:(id)tap
 {
-  if ([a3 state] == &dword_0 + 3 && !-[ZWZoomSlugViewController _panGestureIsRecognizing](self, "_panGestureIsRecognizing"))
+  if ([tap state] == &dword_0 + 3 && !-[ZWZoomSlugViewController _panGestureIsRecognizing](self, "_panGestureIsRecognizing"))
   {
     v4 = +[AXSettings sharedInstance];
-    v5 = [v4 zoomSlugSingleTapAction];
+    zoomSlugSingleTapAction = [v4 zoomSlugSingleTapAction];
 
-    if (v5)
+    if (zoomSlugSingleTapAction)
     {
       [(ZWZoomSlugViewController *)self _didBeginInteractingWithSlug];
-      v6 = [(ZWZoomSlugViewController *)self delegate];
-      [v6 slugWasSingleTappedWithSlugViewController:self];
+      delegate = [(ZWZoomSlugViewController *)self delegate];
+      [delegate slugWasSingleTappedWithSlugViewController:self];
 
       [(ZWZoomSlugViewController *)self setInUserRepositioningMode:0];
 
@@ -920,18 +920,18 @@ void __58__ZWZoomSlugViewController__updateSlugDimStatus_Animated___block_invoke
   }
 }
 
-- (void)_handleDoubleTap:(id)a3
+- (void)_handleDoubleTap:(id)tap
 {
-  if ([a3 state] == &dword_0 + 3)
+  if ([tap state] == &dword_0 + 3)
   {
     v4 = +[AXSettings sharedInstance];
-    v5 = [v4 zoomSlugDoubleTapAction];
+    zoomSlugDoubleTapAction = [v4 zoomSlugDoubleTapAction];
 
-    if (v5)
+    if (zoomSlugDoubleTapAction)
     {
       [(ZWZoomSlugViewController *)self _didBeginInteractingWithSlug];
-      v6 = [(ZWZoomSlugViewController *)self delegate];
-      [v6 slugWasDoubleTappedWithSlugViewController:self];
+      delegate = [(ZWZoomSlugViewController *)self delegate];
+      [delegate slugWasDoubleTappedWithSlugViewController:self];
 
       [(ZWZoomSlugViewController *)self setInUserRepositioningMode:0];
 
@@ -940,18 +940,18 @@ void __58__ZWZoomSlugViewController__updateSlugDimStatus_Animated___block_invoke
   }
 }
 
-- (void)_handleTripleTap:(id)a3
+- (void)_handleTripleTap:(id)tap
 {
-  if ([a3 state] == &dword_0 + 3)
+  if ([tap state] == &dword_0 + 3)
   {
     v4 = +[AXSettings sharedInstance];
-    v5 = [v4 zoomSlugTripleTapAction];
+    zoomSlugTripleTapAction = [v4 zoomSlugTripleTapAction];
 
-    if (v5)
+    if (zoomSlugTripleTapAction)
     {
       [(ZWZoomSlugViewController *)self _didBeginInteractingWithSlug];
-      v6 = [(ZWZoomSlugViewController *)self delegate];
-      [v6 slugWasTripleTappedWithSlugViewController:self];
+      delegate = [(ZWZoomSlugViewController *)self delegate];
+      [delegate slugWasTripleTappedWithSlugViewController:self];
 
       [(ZWZoomSlugViewController *)self setInUserRepositioningMode:0];
 
@@ -960,15 +960,15 @@ void __58__ZWZoomSlugViewController__updateSlugDimStatus_Animated___block_invoke
   }
 }
 
-- (void)_handleLongPress:(id)a3
+- (void)_handleLongPress:(id)press
 {
-  v4 = [a3 state];
-  if ((v4 - 3) < 3)
+  state = [press state];
+  if ((state - 3) < 3)
   {
     if ([(ZWZoomSlugViewController *)self isOrbPanning])
     {
-      v5 = [(ZWZoomSlugViewController *)self delegate];
-      [v5 endOrbZoomWithSlugViewController:self];
+      delegate = [(ZWZoomSlugViewController *)self delegate];
+      [delegate endOrbZoomWithSlugViewController:self];
 
       [(ZWZoomSlugViewController *)self setIsOrbPanning:0];
     }
@@ -985,19 +985,19 @@ LABEL_9:
     return;
   }
 
-  if (v4 == &dword_0 + 2)
+  if (state == &dword_0 + 2)
   {
     return;
   }
 
-  if (v4 != &dword_0 + 1)
+  if (state != &dword_0 + 1)
   {
     goto LABEL_9;
   }
 
   [(ZWZoomSlugViewController *)self setIsOrbPanning:1];
-  v6 = [(ZWZoomSlugViewController *)self delegate];
-  v7 = [v6 attemptOrbZoomIfAppropriateWithSlugViewController:self];
+  delegate2 = [(ZWZoomSlugViewController *)self delegate];
+  v7 = [delegate2 attemptOrbZoomIfAppropriateWithSlugViewController:self];
 
   if ((v7 & 1) == 0)
   {
@@ -1009,16 +1009,16 @@ LABEL_9:
   }
 }
 
-- (void)_handlePan:(id)a3
+- (void)_handlePan:(id)pan
 {
-  v4 = a3;
-  v5 = [v4 state];
-  if ((v5 - 3) < 3)
+  panCopy = pan;
+  state = [panCopy state];
+  if ((state - 3) < 3)
   {
     [(ZWZoomSlugViewController *)self setDisableDashBoardGesturesForPanAssertion:0];
     [(ZWZoomSlugViewController *)self setTapGesturesEnabled:1];
-    v6 = [(ZWZoomSlugViewController *)self delegate];
-    [v6 wantsToStopAutopannerWithSlugViewController:self];
+    delegate = [(ZWZoomSlugViewController *)self delegate];
+    [delegate wantsToStopAutopannerWithSlugViewController:self];
 
     [(ZWZoomSlugViewController *)self _didFinishInteractingWithSlug];
     [(ZWZoomSlugViewController *)self setInUserRepositioningMode:0];
@@ -1032,10 +1032,10 @@ LABEL_9:
     goto LABEL_35;
   }
 
-  if (v5 == &dword_0 + 2)
+  if (state == &dword_0 + 2)
   {
-    v12 = [(ZWZoomSlugViewController *)self view];
-    [v4 translationInView:v12];
+    view = [(ZWZoomSlugViewController *)self view];
+    [panCopy translationInView:view];
     v14 = v13;
     v16 = v15;
 
@@ -1047,9 +1047,9 @@ LABEL_9:
     [(ZWZoomSlugViewController *)self setDeltaFromInitialTouch:v17, v18];
     if ([(ZWZoomSlugViewController *)self isInPanZoomingMode])
     {
-      v20 = [(ZWZoomSlugViewController *)self delegate];
+      delegate2 = [(ZWZoomSlugViewController *)self delegate];
       [(ZWZoomSlugViewController *)self deltaFromInitialTouch];
-      [v20 zoomSlugViewController:self wantsToAdjustZoomLevelWithDelta:?];
+      [delegate2 zoomSlugViewController:self wantsToAdjustZoomLevelWithDelta:?];
 LABEL_12:
 
 LABEL_13:
@@ -1060,24 +1060,24 @@ LABEL_13:
 
     if ([(ZWZoomSlugViewController *)self isOrbPanning])
     {
-      v21 = [(ZWZoomSlugViewController *)self view];
-      [v21 center];
+      view2 = [(ZWZoomSlugViewController *)self view];
+      [view2 center];
       v23 = v14 + v22;
-      v24 = [(ZWZoomSlugViewController *)self view];
-      [v24 center];
+      view3 = [(ZWZoomSlugViewController *)self view];
+      [view3 center];
       v26 = v16 + v25;
 
-      v20 = [(ZWZoomSlugViewController *)self delegate];
-      [v20 updateOrbZoomAtPoint:self withSlugViewController:{v23, v26}];
+      delegate2 = [(ZWZoomSlugViewController *)self delegate];
+      [delegate2 updateOrbZoomAtPoint:self withSlugViewController:{v23, v26}];
       goto LABEL_12;
     }
 
     if (![(ZWZoomSlugViewController *)self isInUserRepositioningMode])
     {
       v55 = +[AXSettings sharedInstance];
-      v56 = [v55 zoomAutopannerShouldPanWithAcceleration];
+      zoomAutopannerShouldPanWithAcceleration = [v55 zoomAutopannerShouldPanWithAcceleration];
 
-      if (v56)
+      if (zoomAutopannerShouldPanWithAcceleration)
       {
         [(ZWZoomSlugViewController *)self deltaFromInitialTouch];
         v59 = v57;
@@ -1121,20 +1121,20 @@ LABEL_13:
 
       else
       {
-        v62 = [(ZWZoomSlugViewController *)self circlePivotOffsetXConstraint];
-        [v62 constant];
+        circlePivotOffsetXConstraint = [(ZWZoomSlugViewController *)self circlePivotOffsetXConstraint];
+        [circlePivotOffsetXConstraint constant];
         v64 = v63;
         [(ZWZoomSlugViewController *)self deltaFromLastPanEvent];
         v66 = v64 + v65;
-        v67 = [(ZWZoomSlugViewController *)self circlePivotOffsetYConstraint];
-        [v67 constant];
+        circlePivotOffsetYConstraint = [(ZWZoomSlugViewController *)self circlePivotOffsetYConstraint];
+        [circlePivotOffsetYConstraint constant];
         v69 = v68;
         [(ZWZoomSlugViewController *)self deltaFromLastPanEvent];
         v71 = v69 + v70;
 
-        v72 = [(ZWZoomSlugViewController *)self view];
-        v73 = [v72 superview];
-        [v73 bounds];
+        view4 = [(ZWZoomSlugViewController *)self view];
+        superview = [view4 superview];
+        [superview bounds];
         v74 = 5.0 + 5.0;
         v59 = v75 / (5.0 + 5.0) + -19.0 - 3.0;
 
@@ -1143,9 +1143,9 @@ LABEL_13:
           v59 = v66;
         }
 
-        v76 = [(ZWZoomSlugViewController *)self view];
-        v77 = [v76 superview];
-        [v77 bounds];
+        view5 = [(ZWZoomSlugViewController *)self view];
+        superview2 = [view5 superview];
+        [superview2 bounds];
         v79 = -(v78 / v74 + -19.0 - 3.0);
 
         if (v59 < v79)
@@ -1153,9 +1153,9 @@ LABEL_13:
           v59 = v79;
         }
 
-        v80 = [(ZWZoomSlugViewController *)self view];
-        v81 = [v80 superview];
-        [v81 bounds];
+        view6 = [(ZWZoomSlugViewController *)self view];
+        superview3 = [view6 superview];
+        [superview3 bounds];
         v83 = v82 / v74 + -19.0 - 3.0;
 
         if (v71 >= v83)
@@ -1163,9 +1163,9 @@ LABEL_13:
           v71 = v83;
         }
 
-        v84 = [(ZWZoomSlugViewController *)self view];
-        v85 = [v84 superview];
-        [v85 bounds];
+        view7 = [(ZWZoomSlugViewController *)self view];
+        superview4 = [view7 superview];
+        [superview4 bounds];
         v87 = -(v86 / v74 + -19.0 - 3.0);
 
         if (v71 < v87)
@@ -1174,21 +1174,21 @@ LABEL_13:
         }
       }
 
-      v89 = [(ZWZoomSlugViewController *)self circlePivotOffsetXConstraint];
-      [v89 setConstant:v59];
+      circlePivotOffsetXConstraint2 = [(ZWZoomSlugViewController *)self circlePivotOffsetXConstraint];
+      [circlePivotOffsetXConstraint2 setConstant:v59];
 
-      v90 = [(ZWZoomSlugViewController *)self circlePivotOffsetYConstraint];
-      [v90 setConstant:v71];
+      circlePivotOffsetYConstraint2 = [(ZWZoomSlugViewController *)self circlePivotOffsetYConstraint];
+      [circlePivotOffsetYConstraint2 setConstant:v71];
 
       goto LABEL_13;
     }
 
     if (!AXDeviceHasJindo())
     {
-      v20 = [(ZWZoomSlugViewController *)self delegate];
-      v61 = [(ZWZoomSlugViewController *)self view];
+      delegate2 = [(ZWZoomSlugViewController *)self delegate];
+      view8 = [(ZWZoomSlugViewController *)self view];
       [(ZWZoomSlugViewController *)self deltaFromLastPanEvent];
-      [v20 zoomSlugViewController:self didDragSlug:v61 withDelta:?];
+      [delegate2 zoomSlugViewController:self didDragSlug:view8 withDelta:?];
 
       goto LABEL_12;
     }
@@ -1201,28 +1201,28 @@ LABEL_13:
     v36 = *(v131 + 6);
     if (v36 == 4)
     {
-      v129 = [(ZWZoomSlugViewController *)self view];
-      [v129 frame];
+      view9 = [(ZWZoomSlugViewController *)self view];
+      [view9 frame];
       v127 = v91;
       [(ZWZoomSlugViewController *)self deltaFromLastPanEvent];
       v93 = v92;
-      v128 = [(ZWZoomSlugViewController *)self view];
-      v94 = [v128 superview];
-      [v94 bounds];
+      view10 = [(ZWZoomSlugViewController *)self view];
+      superview5 = [view10 superview];
+      [superview5 bounds];
       v96 = v95;
-      v97 = [(ZWZoomSlugViewController *)self view];
-      [v97 frame];
+      view11 = [(ZWZoomSlugViewController *)self view];
+      [view11 frame];
       v99 = v98;
-      v100 = [(ZWZoomSlugViewController *)self view];
-      [v100 frame];
+      view12 = [(ZWZoomSlugViewController *)self view];
+      [view12 frame];
       v102 = v101;
       [(ZWZoomSlugViewController *)self deltaFromLastPanEvent];
       v104 = v103;
-      v105 = [(ZWZoomSlugViewController *)self view];
-      [v105 frame];
+      view13 = [(ZWZoomSlugViewController *)self view];
+      [view13 frame];
       v107 = v106;
-      v108 = [(ZWZoomSlugViewController *)self view];
-      [v108 frame];
+      view14 = [(ZWZoomSlugViewController *)self view];
+      [view14 frame];
       v137.size.height = v109;
       v137.origin.x = v127 + v93;
       v137.origin.y = v96 - (v99 + v102 + 5.0 + v104);
@@ -1233,32 +1233,32 @@ LABEL_13:
       if (IsNull)
       {
 LABEL_30:
-        v53 = [(ZWZoomSlugViewController *)self delegate];
-        v54 = [(ZWZoomSlugViewController *)self view];
+        delegate3 = [(ZWZoomSlugViewController *)self delegate];
+        view15 = [(ZWZoomSlugViewController *)self view];
         [(ZWZoomSlugViewController *)self deltaFromLastPanEvent];
-        [v53 zoomSlugViewController:self didDragSlug:v54 withDelta:?];
+        [delegate3 zoomSlugViewController:self didDragSlug:view15 withDelta:?];
 LABEL_63:
 
         _Block_object_dispose(&v130, 8);
         goto LABEL_13;
       }
 
-      v53 = [(ZWZoomSlugViewController *)self delegate];
-      v54 = [(ZWZoomSlugViewController *)self view];
-      v113 = [(ZWZoomSlugViewController *)self view];
-      v116 = [v113 superview];
-      [v116 bounds];
+      delegate3 = [(ZWZoomSlugViewController *)self delegate];
+      view15 = [(ZWZoomSlugViewController *)self view];
+      view16 = [(ZWZoomSlugViewController *)self view];
+      superview6 = [view16 superview];
+      [superview6 bounds];
       v118 = v117;
       v119 = self->_foreheadRect.origin.y;
       height = self->_foreheadRect.size.height;
-      v121 = [(ZWZoomSlugViewController *)self view];
-      [v121 frame];
+      view17 = [(ZWZoomSlugViewController *)self view];
+      [view17 frame];
       v123 = v122;
-      v124 = [(ZWZoomSlugViewController *)self view];
-      [v124 frame];
+      view18 = [(ZWZoomSlugViewController *)self view];
+      [view18 frame];
       v126 = v125;
       [(ZWZoomSlugViewController *)self deltaFromLastPanEvent];
-      [v53 zoomSlugViewController:self didDragSlug:v54 withDelta:v118 - v119 - height - (v123 + v126)];
+      [delegate3 zoomSlugViewController:self didDragSlug:view15 withDelta:v118 - v119 - height - (v123 + v126)];
     }
 
     else
@@ -1268,21 +1268,21 @@ LABEL_63:
         goto LABEL_30;
       }
 
-      v37 = [(ZWZoomSlugViewController *)self view];
-      [v37 frame];
+      view19 = [(ZWZoomSlugViewController *)self view];
+      [view19 frame];
       v39 = v38;
       [(ZWZoomSlugViewController *)self deltaFromLastPanEvent];
       v41 = v40;
-      v42 = [(ZWZoomSlugViewController *)self view];
-      [v42 frame];
+      view20 = [(ZWZoomSlugViewController *)self view];
+      [view20 frame];
       v44 = v43;
       [(ZWZoomSlugViewController *)self deltaFromLastPanEvent];
       v46 = v45;
-      v47 = [(ZWZoomSlugViewController *)self view];
-      [v47 frame];
+      view21 = [(ZWZoomSlugViewController *)self view];
+      [view21 frame];
       v49 = v48;
-      v50 = [(ZWZoomSlugViewController *)self view];
-      [v50 frame];
+      view22 = [(ZWZoomSlugViewController *)self view];
+      [view22 frame];
       v136.size.height = v51;
       v136.origin.x = v39 + v41;
       v136.origin.y = v44 + v46;
@@ -1295,28 +1295,28 @@ LABEL_63:
         goto LABEL_30;
       }
 
-      v53 = [(ZWZoomSlugViewController *)self delegate];
-      v54 = [(ZWZoomSlugViewController *)self view];
+      delegate3 = [(ZWZoomSlugViewController *)self delegate];
+      view15 = [(ZWZoomSlugViewController *)self view];
       v111 = self->_foreheadRect.origin.y;
       v112 = self->_foreheadRect.size.height;
-      v113 = [(ZWZoomSlugViewController *)self view];
-      [v113 frame];
+      view16 = [(ZWZoomSlugViewController *)self view];
+      [view16 frame];
       v115 = v114;
       [(ZWZoomSlugViewController *)self deltaFromLastPanEvent];
-      [v53 zoomSlugViewController:self didDragSlug:v54 withDelta:v111 + v112 - v115];
+      [delegate3 zoomSlugViewController:self didDragSlug:view15 withDelta:v111 + v112 - v115];
     }
 
     goto LABEL_63;
   }
 
-  if (v5 == &dword_0 + 1)
+  if (state == &dword_0 + 1)
   {
     v8 = [AXAssertion assertionWithType:AXAssertionTypeDisableDashboardSystemGestures identifier:@"Zoom: slug panning"];
     [(ZWZoomSlugViewController *)self setDisableDashBoardGesturesForPanAssertion:v8];
 
-    v9 = [(ZWZoomSlugViewController *)self isInPanZoomingMode];
-    v10 = [(ZWZoomSlugViewController *)self singleTapGesture];
-    if ([v10 state] == &dword_0 + 3)
+    isInPanZoomingMode = [(ZWZoomSlugViewController *)self isInPanZoomingMode];
+    singleTapGesture = [(ZWZoomSlugViewController *)self singleTapGesture];
+    if ([singleTapGesture state] == &dword_0 + 3)
     {
       v11 = +[AXSettings sharedInstance];
       -[ZWZoomSlugViewController setInPanZoomingMode:](self, "setInPanZoomingMode:", [v11 zoomSlugTapAndSlideToAdjustZoomLevelEnabled]);
@@ -1327,20 +1327,20 @@ LABEL_63:
       [(ZWZoomSlugViewController *)self setInPanZoomingMode:0];
     }
 
-    if ((v9 & 1) == 0 && [(ZWZoomSlugViewController *)self isInPanZoomingMode])
+    if ((isInPanZoomingMode & 1) == 0 && [(ZWZoomSlugViewController *)self isInPanZoomingMode])
     {
-      v27 = [(ZWZoomSlugViewController *)self delegate];
-      [v27 prepareForSlugZoomPanningWithSlugViewController:self];
+      delegate4 = [(ZWZoomSlugViewController *)self delegate];
+      [delegate4 prepareForSlugZoomPanningWithSlugViewController:self];
     }
 
     [(ZWZoomSlugViewController *)self setTapGesturesEnabled:0];
-    v28 = [(ZWZoomSlugViewController *)self view];
-    [v4 translationInView:v28];
+    view23 = [(ZWZoomSlugViewController *)self view];
+    [panCopy translationInView:view23];
     self->_lastPanLocation.x = v29;
     self->_lastPanLocation.y = v30;
 
-    v31 = [(ZWZoomSlugViewController *)self view];
-    [v4 translationInView:v31];
+    view24 = [(ZWZoomSlugViewController *)self view];
+    [panCopy translationInView:view24];
     self->_firstTouchLocation.x = v32;
     self->_firstTouchLocation.y = v33;
 
@@ -1361,8 +1361,8 @@ LABEL_63:
       else
       {
         [(ZWZoomSlugViewController *)self _updateSlugAppearanceForMode:2];
-        v60 = [(ZWZoomSlugViewController *)self delegate];
-        [v60 wantsToStartAutopannerWithSlugViewController:self];
+        delegate5 = [(ZWZoomSlugViewController *)self delegate];
+        [delegate5 wantsToStartAutopannerWithSlugViewController:self];
 
         self->_shouldHideWhileOrbing = 1;
         [(ZWZoomSlugViewController *)self _dimAfterDelay];
@@ -1388,23 +1388,23 @@ id __39__ZWZoomSlugViewController__handlePan___block_invoke(uint64_t a1)
 - (void)_updateAccessibilityHint
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 zoomSlugSingleTapAction];
+  zoomSlugSingleTapAction = [v3 zoomSlugSingleTapAction];
 
   v5 = +[AXSettings sharedInstance];
-  v6 = [v5 zoomSlugDoubleTapAction];
+  zoomSlugDoubleTapAction = [v5 zoomSlugDoubleTapAction];
 
   v7 = +[AXSettings sharedInstance];
-  v8 = [v7 zoomSlugTripleTapAction];
+  zoomSlugTripleTapAction = [v7 zoomSlugTripleTapAction];
 
   v16 = objc_alloc_init(NSMutableString);
-  if (v4 == &dword_0 + 1)
+  if (zoomSlugSingleTapAction == &dword_0 + 1)
   {
     v9 = @"ZW_SLUG_HINT_SINGLE_TAP_ZOOM_MENU";
   }
 
   else
   {
-    if (v4 != &dword_0 + 2)
+    if (zoomSlugSingleTapAction != &dword_0 + 2)
     {
       goto LABEL_6;
     }
@@ -1417,14 +1417,14 @@ id __39__ZWZoomSlugViewController__handlePan___block_invoke(uint64_t a1)
 
   [v16 appendString:@" "];
 LABEL_6:
-  if (v6 == &dword_0 + 1)
+  if (zoomSlugDoubleTapAction == &dword_0 + 1)
   {
     v11 = @"ZW_SLUG_HINT_DOUBLE_TAP_ZOOM_MENU";
   }
 
   else
   {
-    if (v6 != &dword_0 + 2)
+    if (zoomSlugDoubleTapAction != &dword_0 + 2)
     {
       goto LABEL_11;
     }
@@ -1437,14 +1437,14 @@ LABEL_6:
 
   [v16 appendString:@" "];
 LABEL_11:
-  if (v8 == &dword_0 + 1)
+  if (zoomSlugTripleTapAction == &dword_0 + 1)
   {
     v13 = @"ZW_SLUG_HINT_TRIPLE_TAP_ZOOM_MENU";
   }
 
   else
   {
-    if (v8 != &dword_0 + 2)
+    if (zoomSlugTripleTapAction != &dword_0 + 2)
     {
       goto LABEL_16;
     }
@@ -1456,55 +1456,55 @@ LABEL_11:
   [v16 appendString:v14];
 
 LABEL_16:
-  v15 = [(ZWZoomSlugViewController *)self view];
-  [v15 setAccessibilityHint:v16];
+  view = [(ZWZoomSlugViewController *)self view];
+  [view setAccessibilityHint:v16];
 }
 
-- (void)_updateRingAndTriangleVisiblity:(BOOL)a3
+- (void)_updateRingAndTriangleVisiblity:(BOOL)visiblity
 {
-  v3 = a3;
-  v5 = [(ZWZoomSlugViewController *)self leftTriangleView];
-  [v5 setHidden:v3];
+  visiblityCopy = visiblity;
+  leftTriangleView = [(ZWZoomSlugViewController *)self leftTriangleView];
+  [leftTriangleView setHidden:visiblityCopy];
 
-  v6 = [(ZWZoomSlugViewController *)self rightTriangleView];
-  [v6 setHidden:v3];
+  rightTriangleView = [(ZWZoomSlugViewController *)self rightTriangleView];
+  [rightTriangleView setHidden:visiblityCopy];
 
-  v7 = [(ZWZoomSlugViewController *)self topTriangleView];
-  [v7 setHidden:v3];
+  topTriangleView = [(ZWZoomSlugViewController *)self topTriangleView];
+  [topTriangleView setHidden:visiblityCopy];
 
-  v8 = [(ZWZoomSlugViewController *)self bottomTriangleView];
-  [v8 setHidden:v3];
+  bottomTriangleView = [(ZWZoomSlugViewController *)self bottomTriangleView];
+  [bottomTriangleView setHidden:visiblityCopy];
 
-  v9 = [(ZWZoomSlugViewController *)self circlePivotingView];
-  [v9 setHidden:v3];
+  circlePivotingView = [(ZWZoomSlugViewController *)self circlePivotingView];
+  [circlePivotingView setHidden:visiblityCopy];
 
-  v10 = [(ZWSlugCollapsingRingView *)self->_slugRingView speakFingerImageView];
-  [v10 setHidden:v3 ^ 1];
+  speakFingerImageView = [(ZWSlugCollapsingRingView *)self->_slugRingView speakFingerImageView];
+  [speakFingerImageView setHidden:visiblityCopy ^ 1];
 }
 
 - (void)updateUIForSpeakFingerStateChange
 {
   v3 = +[AXSpeakFingerManager sharedInstance];
-  v4 = [v3 speakFingerState];
+  speakFingerState = [v3 speakFingerState];
 
-  if (v4 > 2)
+  if (speakFingerState > 2)
   {
-    if (v4 == (&dword_0 + 3))
+    if (speakFingerState == (&dword_0 + 3))
     {
       v5 = [NSBundle bundleForClass:objc_opt_class()];
       v6 = @"Stop";
       goto LABEL_12;
     }
 
-    if (v4 != &dword_4)
+    if (speakFingerState != &dword_4)
     {
       return;
     }
   }
 
-  else if (v4 != (&dword_0 + 1))
+  else if (speakFingerState != (&dword_0 + 1))
   {
-    if (v4 == (&dword_0 + 2))
+    if (speakFingerState == (&dword_0 + 2))
     {
       [(ZWZoomSlugViewController *)self setInSpeakUnderFingerMode:0];
 
@@ -1522,20 +1522,20 @@ LABEL_12:
   [v8 zoomControllerColor];
   v9 = [UIColor colorWithCGColor:AXUIZoomControllerColor()];
   v10 = [v7 _flatImageWithColor:v9];
-  v11 = [(ZWSlugCollapsingRingView *)self->_slugRingView speakFingerImageView];
-  [v11 setImage:v10];
+  speakFingerImageView = [(ZWSlugCollapsingRingView *)self->_slugRingView speakFingerImageView];
+  [speakFingerImageView setImage:v10];
 
   [(ZWZoomSlugViewController *)self _updateRingAndTriangleVisiblity:1];
 
   [(ZWZoomSlugViewController *)self setInSpeakUnderFingerMode:1];
 }
 
-- (void)systemApertureLayoutDidChange:(id)a3
+- (void)systemApertureLayoutDidChange:(id)change
 {
-  v4 = a3;
-  if ([v4 count] == &dword_0 + 1)
+  changeCopy = change;
+  if ([changeCopy count] == &dword_0 + 1)
   {
-    v5 = [v4 objectAtIndexedSubscript:0];
+    v5 = [changeCopy objectAtIndexedSubscript:0];
     [v5 CGRectValue];
     self->_foreheadRect.origin.x = v6;
     self->_foreheadRect.origin.y = v7;
@@ -1545,18 +1545,18 @@ LABEL_12:
 
   else
   {
-    if ([v4 count] != &dword_0 + 2)
+    if ([changeCopy count] != &dword_0 + 2)
     {
       goto LABEL_6;
     }
 
-    v5 = [v4 objectAtIndexedSubscript:0];
+    v5 = [changeCopy objectAtIndexedSubscript:0];
     [v5 CGRectValue];
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
-    v18 = [v4 objectAtIndexedSubscript:1];
+    v18 = [changeCopy objectAtIndexedSubscript:1];
     [v18 CGRectValue];
     v91.origin.x = v19;
     v91.origin.y = v20;
@@ -1581,24 +1581,24 @@ LABEL_6:
     p_foreheadRect = &self->_foreheadRect;
     if (v23 == 4)
     {
-      v79 = [(ZWZoomSlugViewController *)self view];
-      [v79 frame];
+      view = [(ZWZoomSlugViewController *)self view];
+      [view frame];
       v43 = v42;
-      v44 = [(ZWZoomSlugViewController *)self view];
-      v45 = [v44 superview];
-      [v45 bounds];
+      view2 = [(ZWZoomSlugViewController *)self view];
+      superview = [view2 superview];
+      [superview bounds];
       v47 = v46;
-      v48 = [(ZWZoomSlugViewController *)self view];
-      [v48 frame];
+      view3 = [(ZWZoomSlugViewController *)self view];
+      [view3 frame];
       v50 = v49;
-      v51 = [(ZWZoomSlugViewController *)self view];
-      [v51 frame];
+      view4 = [(ZWZoomSlugViewController *)self view];
+      [view4 frame];
       v53 = v52;
-      v54 = [(ZWZoomSlugViewController *)self view];
-      [v54 frame];
+      view5 = [(ZWZoomSlugViewController *)self view];
+      [view5 frame];
       v56 = v55;
-      v57 = [(ZWZoomSlugViewController *)self view];
-      [v57 frame];
+      view6 = [(ZWZoomSlugViewController *)self view];
+      [view6 frame];
       v93.size.height = v58;
       v93.origin.y = v47 - (v50 + v53);
       v87.origin.x = p_foreheadRect->origin.x;
@@ -1612,19 +1612,19 @@ LABEL_6:
 
       if (!IsNull)
       {
-        v37 = [(ZWZoomSlugViewController *)self delegate];
+        delegate = [(ZWZoomSlugViewController *)self delegate];
         height = self->_foreheadRect.size.height;
         y = self->_foreheadRect.origin.y;
-        v40 = [(ZWZoomSlugViewController *)self view];
-        v62 = [v40 superview];
-        [v62 bounds];
+        view7 = [(ZWZoomSlugViewController *)self view];
+        superview2 = [view7 superview];
+        [superview2 bounds];
         v64 = v63;
-        v65 = [(ZWZoomSlugViewController *)self view];
-        [v65 frame];
+        view8 = [(ZWZoomSlugViewController *)self view];
+        [view8 frame];
         v67 = v66;
-        v68 = [(ZWZoomSlugViewController *)self view];
-        [v68 frame];
-        [v37 _moveZoomItemWithControllerToDodgeJindo:self byDelta:{-(height + y + 5.0 + v67 + v69 - v64), 0.0}];
+        view9 = [(ZWZoomSlugViewController *)self view];
+        [view9 frame];
+        [delegate _moveZoomItemWithControllerToDodgeJindo:self byDelta:{-(height + y + 5.0 + v67 + v69 - v64), 0.0}];
 
         goto LABEL_15;
       }
@@ -1632,17 +1632,17 @@ LABEL_6:
 
     else if (v23 == 3)
     {
-      v25 = [(ZWZoomSlugViewController *)self view];
-      [v25 frame];
+      view10 = [(ZWZoomSlugViewController *)self view];
+      [view10 frame];
       v27 = v26;
-      v28 = [(ZWZoomSlugViewController *)self view];
-      [v28 frame];
+      view11 = [(ZWZoomSlugViewController *)self view];
+      [view11 frame];
       v30 = v29;
-      v31 = [(ZWZoomSlugViewController *)self view];
-      [v31 frame];
+      view12 = [(ZWZoomSlugViewController *)self view];
+      [view12 frame];
       v33 = v32;
-      v34 = [(ZWZoomSlugViewController *)self view];
-      [v34 frame];
+      view13 = [(ZWZoomSlugViewController *)self view];
+      [view13 frame];
       v92.size.height = v35;
       v85.origin.x = p_foreheadRect->origin.x;
       v85.origin.y = self->_foreheadRect.origin.y;
@@ -1656,20 +1656,20 @@ LABEL_6:
 
       if (!v36)
       {
-        v37 = [(ZWZoomSlugViewController *)self delegate];
+        delegate = [(ZWZoomSlugViewController *)self delegate];
         v38 = self->_foreheadRect.size.height;
         v39 = self->_foreheadRect.origin.y;
-        v40 = [(ZWZoomSlugViewController *)self view];
-        [v40 frame];
-        [v37 _moveZoomItemWithControllerToDodgeJindo:self byDelta:{v38 + v39 + 5.0 - v41, 0.0}];
+        view7 = [(ZWZoomSlugViewController *)self view];
+        [view7 frame];
+        [delegate _moveZoomItemWithControllerToDodgeJindo:self byDelta:{v38 + v39 + 5.0 - v41, 0.0}];
 LABEL_15:
       }
     }
 
     else
     {
-      v70 = [(ZWZoomSlugViewController *)self view];
-      [v70 frame];
+      view14 = [(ZWZoomSlugViewController *)self view];
+      [view14 frame];
       v94.origin.x = v71;
       v94.origin.y = v72;
       v94.size.width = v73;
@@ -1683,12 +1683,12 @@ LABEL_15:
 
       if (!v75)
       {
-        v37 = [(ZWZoomSlugViewController *)self delegate];
+        delegate = [(ZWZoomSlugViewController *)self delegate];
         v76 = self->_foreheadRect.size.height;
         v77 = self->_foreheadRect.origin.y;
-        v40 = [(ZWZoomSlugViewController *)self view];
-        [v40 frame];
-        [v37 _moveZoomItemWithControllerToDodgeJindo:self byDelta:{0.0, v76 + v77 - v78}];
+        view7 = [(ZWZoomSlugViewController *)self view];
+        [view7 frame];
+        [delegate _moveZoomItemWithControllerToDodgeJindo:self byDelta:{0.0, v76 + v77 - v78}];
         goto LABEL_15;
       }
     }
@@ -1712,26 +1712,26 @@ id __58__ZWZoomSlugViewController_systemApertureLayoutDidChange___block_invoke(u
   [(ZWZoomSlugViewController *)self setInUserRepositioningMode:0];
 }
 
-- (void)userInteractionHasBecomeActiveWithFirstTouchAtLocation:(CGPoint)a3
+- (void)userInteractionHasBecomeActiveWithFirstTouchAtLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   v7.receiver = self;
   v7.super_class = ZWZoomSlugViewController;
   [(ZWZoomViewController *)&v7 userInteractionHasBecomeActiveWithFirstTouchAtLocation:?];
-  v6 = [(ZWZoomSlugViewController *)self view];
-  [v6 bounds];
+  view = [(ZWZoomSlugViewController *)self view];
+  [view bounds];
   v8.x = x;
   v8.y = y;
   CGRectContainsPoint(v9, v8);
 }
 
-- (CGPoint)offsetForAutopanner:(id)a3
+- (CGPoint)offsetForAutopanner:(id)autopanner
 {
   v4 = +[AXSettings sharedInstance];
-  v5 = [v4 zoomAutopannerShouldPanWithAcceleration];
+  zoomAutopannerShouldPanWithAcceleration = [v4 zoomAutopannerShouldPanWithAcceleration];
 
-  if (v5)
+  if (zoomAutopannerShouldPanWithAcceleration)
   {
 
     [(ZWZoomSlugViewController *)self deltaFromInitialTouch];
@@ -1753,47 +1753,47 @@ id __58__ZWZoomSlugViewController_systemApertureLayoutDidChange___block_invoke(u
   return result;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ZWZoomSlugViewController *)self longPressGesture];
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  longPressGesture = [(ZWZoomSlugViewController *)self longPressGesture];
 
-  v9 = [(ZWZoomSlugViewController *)self panGesture];
+  panGesture = [(ZWZoomSlugViewController *)self panGesture];
 
-  if (v8 == v6)
+  if (longPressGesture == recognizerCopy)
   {
-    v10 = v9 == v7;
+    v10 = panGesture == gestureRecognizerCopy;
   }
 
-  else if (v9 == v6)
+  else if (panGesture == recognizerCopy)
   {
-    v11 = [(ZWZoomSlugViewController *)self longPressGesture];
-    if (v11 == v7)
+    longPressGesture2 = [(ZWZoomSlugViewController *)self longPressGesture];
+    if (longPressGesture2 == gestureRecognizerCopy)
     {
       v10 = 1;
     }
 
     else
     {
-      v12 = [(ZWZoomSlugViewController *)self doubleTapGesture];
-      if (v12 == v7)
+      doubleTapGesture = [(ZWZoomSlugViewController *)self doubleTapGesture];
+      if (doubleTapGesture == gestureRecognizerCopy)
       {
         v10 = 1;
       }
 
       else
       {
-        v13 = [(ZWZoomSlugViewController *)self tripleTapGesture];
-        if (v13 == v7)
+        tripleTapGesture = [(ZWZoomSlugViewController *)self tripleTapGesture];
+        if (tripleTapGesture == gestureRecognizerCopy)
         {
           v10 = 1;
         }
 
         else
         {
-          v14 = [(ZWZoomSlugViewController *)self singleTapGesture];
-          v10 = v14 == v7;
+          singleTapGesture = [(ZWZoomSlugViewController *)self singleTapGesture];
+          v10 = singleTapGesture == gestureRecognizerCopy;
         }
       }
     }

@@ -1,47 +1,47 @@
 @interface PKTransactionSearchQuery
-- (BOOL)isEqual:(id)a3;
-- (PKTransactionSearchQuery)initWithCoder:(id)a3;
-- (PKTransactionSearchQuery)initWithIdentifier:(id)a3 keyboardLanguage:(id)a4 passUniqueIdentifier:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (PKTransactionSearchQuery)initWithCoder:(id)coder;
+- (PKTransactionSearchQuery)initWithIdentifier:(id)identifier keyboardLanguage:(id)language passUniqueIdentifier:(id)uniqueIdentifier;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKTransactionSearchQuery
 
-- (PKTransactionSearchQuery)initWithIdentifier:(id)a3 keyboardLanguage:(id)a4 passUniqueIdentifier:(id)a5
+- (PKTransactionSearchQuery)initWithIdentifier:(id)identifier keyboardLanguage:(id)language passUniqueIdentifier:(id)uniqueIdentifier
 {
-  v9 = a5;
+  uniqueIdentifierCopy = uniqueIdentifier;
   v13.receiver = self;
   v13.super_class = PKTransactionSearchQuery;
-  v10 = [(PKSearchQuery *)&v13 initWithIdentifier:a3 keyboardLanguage:a4];
+  v10 = [(PKSearchQuery *)&v13 initWithIdentifier:identifier keyboardLanguage:language];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_passUniqueIdentifier, a5);
+    objc_storeStrong(&v10->_passUniqueIdentifier, uniqueIdentifier);
   }
 
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKTransactionSearchQuery;
-  v4 = a3;
-  [(PKSearchQuery *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_passUniqueIdentifier forKey:{@"passUniqueIdentifier", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(PKSearchQuery *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_passUniqueIdentifier forKey:{@"passUniqueIdentifier", v5.receiver, v5.super_class}];
 }
 
-- (PKTransactionSearchQuery)initWithCoder:(id)a3
+- (PKTransactionSearchQuery)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PKTransactionSearchQuery;
-  v5 = [(PKSearchQuery *)&v9 initWithCoder:v4];
+  v5 = [(PKSearchQuery *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passUniqueIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passUniqueIdentifier"];
     passUniqueIdentifier = v5->_passUniqueIdentifier;
     v5->_passUniqueIdentifier = v6;
   }
@@ -49,14 +49,14 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     passUniqueIdentifier = self->_passUniqueIdentifier;
-    v6 = v4[7];
+    v6 = equalCopy[7];
     if (passUniqueIdentifier)
     {
       v7 = v6 == 0;
@@ -74,7 +74,7 @@
 LABEL_10:
         v10.receiver = self;
         v10.super_class = PKTransactionSearchQuery;
-        v8 = [(PKSearchQuery *)&v10 isEqual:v4];
+        v8 = [(PKSearchQuery *)&v10 isEqual:equalCopy];
         goto LABEL_11;
       }
     }

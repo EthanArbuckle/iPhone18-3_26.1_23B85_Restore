@@ -38,7 +38,7 @@
 
 - (id)operationForRedoing
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DOC_FIRenameOperation.operationForRedoing()();
 
   return v3;
@@ -46,7 +46,7 @@
 
 - (id)operationForUndoing
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DOC_FIRenameOperation.operationForUndoing()();
 
   return v3;

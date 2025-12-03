@@ -1,16 +1,16 @@
 @interface MULabeledValueActionRowViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation MULabeledValueActionRowViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MULabeledValueActionRowView" hasInstanceVariable:@"_titleLabel" withType:"UIView<MULabelViewProtocol>"];
-  [v3 validateClass:@"MULabeledValueActionRowView" hasInstanceVariable:@"_valueLabel" withType:"UIView<MULabelViewProtocol>"];
-  [v3 validateClass:@"MULabeledValueActionRowView" hasInstanceVariable:@"_tertiaryLabel" withType:"UIView<MULabelViewProtocol>"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MULabeledValueActionRowView" hasInstanceVariable:@"_titleLabel" withType:"UIView<MULabelViewProtocol>"];
+  [validationsCopy validateClass:@"MULabeledValueActionRowView" hasInstanceVariable:@"_valueLabel" withType:"UIView<MULabelViewProtocol>"];
+  [validationsCopy validateClass:@"MULabeledValueActionRowView" hasInstanceVariable:@"_tertiaryLabel" withType:"UIView<MULabelViewProtocol>"];
 }
 
 - (unint64_t)accessibilityTraits

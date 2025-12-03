@@ -1,41 +1,41 @@
 @interface HMCHIPHome
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
-- (HMCHIPHome)initWithCoder:(id)a3;
-- (HMCHIPHome)initWithIdentifier:(id)a3 index:(id)a4 name:(id)a5 ecosystem:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (HMCHIPHome)initWithCoder:(id)coder;
+- (HMCHIPHome)initWithIdentifier:(id)identifier index:(id)index name:(id)name ecosystem:(id)ecosystem;
 - (NSArray)attributeDescriptions;
 - (NSString)shortDescription;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMCHIPHome
 
 - (NSArray)attributeDescriptions
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v4 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v5 = [(HMCHIPHome *)self identifier];
-  v6 = [v4 initWithName:@"Identifier" value:v5];
-  [v3 addObject:v6];
+  identifier = [(HMCHIPHome *)self identifier];
+  v6 = [v4 initWithName:@"Identifier" value:identifier];
+  [array addObject:v6];
 
   v7 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v8 = [(HMCHIPHome *)self index];
-  v9 = [v7 initWithName:@"Index" value:v8];
-  [v3 addObject:v9];
+  index = [(HMCHIPHome *)self index];
+  v9 = [v7 initWithName:@"Index" value:index];
+  [array addObject:v9];
 
   v10 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v11 = [(HMCHIPHome *)self name];
-  v12 = [v10 initWithName:@"Name" value:v11];
-  [v3 addObject:v12];
+  name = [(HMCHIPHome *)self name];
+  v12 = [v10 initWithName:@"Name" value:name];
+  [array addObject:v12];
 
   v13 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v14 = [(HMCHIPHome *)self ecosystem];
-  v15 = [v13 initWithName:@"Ecosystem" value:v14];
-  [v3 addObject:v15];
+  ecosystem = [(HMCHIPHome *)self ecosystem];
+  v15 = [v13 initWithName:@"Ecosystem" value:ecosystem];
+  [array addObject:v15];
 
-  v16 = [v3 copy];
+  v16 = [array copy];
 
   return v16;
 }
@@ -47,14 +47,14 @@
   return [v2 shortDescription];
 }
 
-- (HMCHIPHome)initWithCoder:(id)a3
+- (HMCHIPHome)initWithCoder:(id)coder
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMCH.ck.identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMCH.ck.index"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMCH.ck.name"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMCH.ck.ecosystem"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMCH.ck.identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMCH.ck.index"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMCH.ck.name"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMCH.ck.ecosystem"];
   v9 = v8;
   if (v5)
   {
@@ -69,7 +69,7 @@
   if (v10 || v7 == 0 || v8 == 0)
   {
     v13 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -93,38 +93,38 @@
 
   else
   {
-    v16 = [(HMCHIPHome *)self initWithIdentifier:v5 index:v6 name:v7 ecosystem:v8];
-    v17 = v16;
+    selfCopy = [(HMCHIPHome *)self initWithIdentifier:v5 index:v6 name:v7 ecosystem:v8];
+    v17 = selfCopy;
   }
 
   v18 = *MEMORY[0x1E69E9840];
   return v17;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMCHIPHome *)self identifier];
-  [v4 encodeObject:v5 forKey:@"HMCH.ck.identifier"];
+  coderCopy = coder;
+  identifier = [(HMCHIPHome *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"HMCH.ck.identifier"];
 
-  v6 = [(HMCHIPHome *)self index];
-  [v4 encodeObject:v6 forKey:@"HMCH.ck.index"];
+  index = [(HMCHIPHome *)self index];
+  [coderCopy encodeObject:index forKey:@"HMCH.ck.index"];
 
-  v7 = [(HMCHIPHome *)self name];
-  [v4 encodeObject:v7 forKey:@"HMCH.ck.name"];
+  name = [(HMCHIPHome *)self name];
+  [coderCopy encodeObject:name forKey:@"HMCH.ck.name"];
 
-  v8 = [(HMCHIPHome *)self ecosystem];
-  [v4 encodeObject:v8 forKey:@"HMCH.ck.ecosystem"];
+  ecosystem = [(HMCHIPHome *)self ecosystem];
+  [coderCopy encodeObject:ecosystem forKey:@"HMCH.ck.ecosystem"];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [HMMutableCHIPHome allocWithZone:a3];
-  v5 = [(HMCHIPHome *)self identifier];
-  v6 = [(HMCHIPHome *)self index];
-  v7 = [(HMCHIPHome *)self name];
-  v8 = [(HMCHIPHome *)self ecosystem];
-  v9 = [(HMCHIPHome *)v4 initWithIdentifier:v5 index:v6 name:v7 ecosystem:v8];
+  v4 = [HMMutableCHIPHome allocWithZone:zone];
+  identifier = [(HMCHIPHome *)self identifier];
+  index = [(HMCHIPHome *)self index];
+  name = [(HMCHIPHome *)self name];
+  ecosystem = [(HMCHIPHome *)self ecosystem];
+  v9 = [(HMCHIPHome *)v4 initWithIdentifier:identifier index:index name:name ecosystem:ecosystem];
 
   return v9;
 }
@@ -138,19 +138,19 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HMCHIPHome *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(HMCHIPHome *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -161,21 +161,21 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(HMCHIPHome *)self identifier];
-    v8 = [v6 identifier];
-    if ([v7 isEqualToNumber:v8])
+    identifier = [(HMCHIPHome *)self identifier];
+    identifier2 = [v6 identifier];
+    if ([identifier isEqualToNumber:identifier2])
     {
-      v9 = [(HMCHIPHome *)self index];
-      v10 = [v6 index];
-      if ([v9 isEqualToNumber:v10])
+      index = [(HMCHIPHome *)self index];
+      index2 = [v6 index];
+      if ([index isEqualToNumber:index2])
       {
-        v11 = [(HMCHIPHome *)self name];
-        v12 = [v6 name];
-        if ([v11 isEqualToString:v12])
+        name = [(HMCHIPHome *)self name];
+        name2 = [v6 name];
+        if ([name isEqualToString:name2])
         {
-          v16 = [(HMCHIPHome *)self ecosystem];
-          v13 = [v6 ecosystem];
-          v14 = [v16 isEqual:v13];
+          ecosystem = [(HMCHIPHome *)self ecosystem];
+          ecosystem2 = [v6 ecosystem];
+          v14 = [ecosystem isEqual:ecosystem2];
         }
 
         else
@@ -204,34 +204,34 @@
   return v14;
 }
 
-- (HMCHIPHome)initWithIdentifier:(id)a3 index:(id)a4 name:(id)a5 ecosystem:(id)a6
+- (HMCHIPHome)initWithIdentifier:(id)identifier index:(id)index name:(id)name ecosystem:(id)ecosystem
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v10)
+  identifierCopy = identifier;
+  indexCopy = index;
+  nameCopy = name;
+  ecosystemCopy = ecosystem;
+  if (!identifierCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_9;
   }
 
-  if (!v11)
+  if (!indexCopy)
   {
 LABEL_9:
     _HMFPreconditionFailure();
     goto LABEL_10;
   }
 
-  if (!v12)
+  if (!nameCopy)
   {
 LABEL_10:
     _HMFPreconditionFailure();
     goto LABEL_11;
   }
 
-  v14 = v13;
-  if (!v13)
+  v14 = ecosystemCopy;
+  if (!ecosystemCopy)
   {
 LABEL_11:
     v33 = _HMFPreconditionFailure();
@@ -244,15 +244,15 @@ LABEL_11:
   v15 = [(HMCHIPHome *)&v35 init];
   if (v15)
   {
-    v16 = [v10 copy];
+    v16 = [identifierCopy copy];
     identifier = v15->_identifier;
     v15->_identifier = v16;
 
-    v18 = [v11 copy];
+    v18 = [indexCopy copy];
     index = v15->_index;
     v15->_index = v18;
 
-    v20 = [v12 copy];
+    v20 = [nameCopy copy];
     name = v15->_name;
     v15->_name = v20;
 
@@ -261,16 +261,16 @@ LABEL_11:
     v15->_ecosystem = v22;
 
     v24 = v14;
-    v25 = v10;
+    v25 = identifierCopy;
     objc_opt_self();
-    v26 = [v25 integerValue];
+    integerValue = [v25 integerValue];
 
-    v36 = v26;
+    v36 = integerValue;
     v27 = [MEMORY[0x1E695DEF0] dataWithBytes:&v36 length:8];
     v28 = MEMORY[0x1E696AFB0];
-    v29 = [v24 UUID];
+    uUID = [v24 UUID];
 
-    v30 = [v28 hmf_UUIDWithNamespace:v29 data:v27];
+    v30 = [v28 hmf_UUIDWithNamespace:uUID data:v27];
 
     UUID = v15->_UUID;
     v15->_UUID = v30;

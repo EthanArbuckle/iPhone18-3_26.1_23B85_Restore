@@ -1,23 +1,23 @@
 @interface RTMapItemProviderBase
-- (BOOL)mapItemCloseEnough:(id)a3 referenceLocation:(id)a4 distanceThreshold:(double)a5 error:(id *)a6;
-- (RTMapItemProviderBase)initWithDefaultsManager:(id)a3 distanceCalculator:(id)a4;
-- (RTMapItemProviderBase)initWithDistanceCalculator:(id)a3 parameters:(id)a4;
-- (id)filter:(id)a3 byDistance:(double)a4 fromLocation:(id)a5 andAppendSource:(unint64_t)a6 error:(id *)a7;
-- (id)filterInferredMapItems:(id)a3 byDistance:(double)a4 fromLocation:(id)a5 andAppendSource:(unint64_t)a6 error:(id *)a7;
+- (BOOL)mapItemCloseEnough:(id)enough referenceLocation:(id)location distanceThreshold:(double)threshold error:(id *)error;
+- (RTMapItemProviderBase)initWithDefaultsManager:(id)manager distanceCalculator:(id)calculator;
+- (RTMapItemProviderBase)initWithDistanceCalculator:(id)calculator parameters:(id)parameters;
+- (id)filter:(id)filter byDistance:(double)distance fromLocation:(id)location andAppendSource:(unint64_t)source error:(id *)error;
+- (id)filterInferredMapItems:(id)items byDistance:(double)distance fromLocation:(id)location andAppendSource:(unint64_t)source error:(id *)error;
 @end
 
 @implementation RTMapItemProviderBase
 
-- (RTMapItemProviderBase)initWithDefaultsManager:(id)a3 distanceCalculator:(id)a4
+- (RTMapItemProviderBase)initWithDefaultsManager:(id)manager distanceCalculator:(id)calculator
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  managerCopy = manager;
+  calculatorCopy = calculator;
+  if (managerCopy)
   {
-    v8 = [[RTMapItemProviderBaseParameters alloc] initWithDefaultsManager:v6];
-    self = [(RTMapItemProviderBase *)self initWithDistanceCalculator:v7 parameters:v8];
+    v8 = [[RTMapItemProviderBaseParameters alloc] initWithDefaultsManager:managerCopy];
+    self = [(RTMapItemProviderBase *)self initWithDistanceCalculator:calculatorCopy parameters:v8];
 
-    v9 = self;
+    selfCopy = self;
   }
 
   else
@@ -29,25 +29,25 @@
       _os_log_error_impl(&dword_2304B3000, v10, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: defaultsManager", v12, 2u);
     }
 
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (RTMapItemProviderBase)initWithDistanceCalculator:(id)a3 parameters:(id)a4
+- (RTMapItemProviderBase)initWithDistanceCalculator:(id)calculator parameters:(id)parameters
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  calculatorCopy = calculator;
+  parametersCopy = parameters;
+  v9 = parametersCopy;
+  if (!calculatorCopy)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
 LABEL_9:
 
-      v12 = 0;
+      selfCopy = 0;
       goto LABEL_10;
     }
 
@@ -58,7 +58,7 @@ LABEL_12:
     goto LABEL_9;
   }
 
-  if (!v8)
+  if (!parametersCopy)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -77,33 +77,33 @@ LABEL_12:
   p_isa = &v10->super.isa;
   if (v10)
   {
-    objc_storeStrong(&v10->_distanceCalculator, a3);
-    objc_storeStrong(p_isa + 2, a4);
+    objc_storeStrong(&v10->_distanceCalculator, calculator);
+    objc_storeStrong(p_isa + 2, parameters);
   }
 
   self = p_isa;
-  v12 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v12;
+  return selfCopy;
 }
 
-- (BOOL)mapItemCloseEnough:(id)a3 referenceLocation:(id)a4 distanceThreshold:(double)a5 error:(id *)a6
+- (BOOL)mapItemCloseEnough:(id)enough referenceLocation:(id)location distanceThreshold:(double)threshold error:(id *)error
 {
   v45 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = v11;
-  if (a6)
+  enoughCopy = enough;
+  locationCopy = location;
+  v12 = locationCopy;
+  if (error)
   {
-    if (v10)
+    if (enoughCopy)
     {
-      if (v11)
+      if (locationCopy)
       {
-        v13 = [(RTMapItemProviderBase *)self distanceCalculator];
-        v14 = [v10 location];
+        distanceCalculator = [(RTMapItemProviderBase *)self distanceCalculator];
+        location = [enoughCopy location];
         v36 = 0;
-        [v13 distanceFromLocation:v12 toLocation:v14 error:&v36];
+        [distanceCalculator distanceFromLocation:v12 toLocation:location error:&v36];
         v16 = v15;
         v17 = v36;
 
@@ -111,7 +111,7 @@ LABEL_10:
         {
           v18 = v17;
           v19 = 0;
-          *a6 = v17;
+          *error = v17;
         }
 
         else
@@ -130,9 +130,9 @@ LABEL_10:
             v27 = v25;
           }
 
-          v28 = v27 + a5;
-          v29 = [v10 location];
-          [v29 horizontalUncertainty];
+          v28 = v27 + threshold;
+          location2 = [enoughCopy location];
+          [location2 horizontalUncertainty];
           v31 = v30;
 
           [(RTMapItemProviderBaseParameters *)self->_baseParameters mapItemUncertaintyMin];
@@ -155,9 +155,9 @@ LABEL_10:
               if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
               {
                 *buf = 138740739;
-                v38 = v10;
+                v38 = enoughCopy;
                 v39 = 2048;
-                v40 = a5;
+                thresholdCopy = threshold;
                 v41 = 2048;
                 v42 = v16;
                 v43 = 2117;
@@ -201,7 +201,7 @@ LABEL_10:
     }
 
     _RTErrorInvalidParameterCreate(v22);
-    *a6 = v19 = 0;
+    *error = v19 = 0;
     goto LABEL_32;
   }
 
@@ -218,21 +218,21 @@ LABEL_32:
   return v19;
 }
 
-- (id)filter:(id)a3 byDistance:(double)a4 fromLocation:(id)a5 andAppendSource:(unint64_t)a6 error:(id *)a7
+- (id)filter:(id)filter byDistance:(double)distance fromLocation:(id)location andAppendSource:(unint64_t)source error:(id *)error
 {
   v37 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a5;
-  if ([v12 count])
+  filterCopy = filter;
+  locationCopy = location;
+  if ([filterCopy count])
   {
-    v28 = a7;
+    errorCopy = error;
     [MEMORY[0x277CBEB18] array];
-    v30 = v29 = v12;
+    v30 = v29 = filterCopy;
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v14 = v12;
+    v14 = filterCopy;
     v15 = [v14 countByEnumeratingWithState:&v32 objects:v36 count:16];
     if (v15)
     {
@@ -249,12 +249,12 @@ LABEL_32:
 
           v19 = *(*(&v32 + 1) + 8 * i);
           v31 = 0;
-          v20 = [(RTMapItemProviderBase *)self mapItemCloseEnough:v19 referenceLocation:v13 distanceThreshold:&v31 error:a4];
+          v20 = [(RTMapItemProviderBase *)self mapItemCloseEnough:v19 referenceLocation:locationCopy distanceThreshold:&v31 error:distance];
           v21 = v31;
           v22 = v21;
           if (v20)
           {
-            v23 = [v19 appendSource:a6];
+            v23 = [v19 appendSource:source];
             if (v23)
             {
               [v30 addObject:v23];
@@ -263,14 +263,14 @@ LABEL_32:
 
           else if (v21)
           {
-            if (v28)
+            if (errorCopy)
             {
               v26 = v21;
-              *v28 = v22;
+              *errorCopy = v22;
             }
 
             v25 = 0;
-            v12 = v29;
+            filterCopy = v29;
             v24 = v30;
             goto LABEL_19;
           }
@@ -288,33 +288,33 @@ LABEL_32:
 
     v24 = v30;
     v25 = v30;
-    v12 = v29;
+    filterCopy = v29;
 LABEL_19:
   }
 
   else
   {
-    v25 = v12;
+    v25 = filterCopy;
   }
 
   return v25;
 }
 
-- (id)filterInferredMapItems:(id)a3 byDistance:(double)a4 fromLocation:(id)a5 andAppendSource:(unint64_t)a6 error:(id *)a7
+- (id)filterInferredMapItems:(id)items byDistance:(double)distance fromLocation:(id)location andAppendSource:(unint64_t)source error:(id *)error
 {
   v49 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a5;
-  if ([v11 count])
+  itemsCopy = items;
+  locationCopy = location;
+  if ([itemsCopy count])
   {
-    v37 = a7;
+    errorCopy = error;
     [MEMORY[0x277CBEB18] array];
-    v39 = v38 = v11;
+    v39 = v38 = itemsCopy;
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v13 = v11;
+    v13 = itemsCopy;
     v14 = [v13 countByEnumeratingWithState:&v42 objects:v48 count:16];
     if (v14)
     {
@@ -330,15 +330,15 @@ LABEL_4:
         }
 
         v18 = *(*(&v42 + 1) + 8 * v17);
-        v19 = [v18 mapItem];
+        mapItem = [v18 mapItem];
         v41 = 0;
-        v20 = [(RTMapItemProviderBase *)self mapItemCloseEnough:v19 referenceLocation:v12 distanceThreshold:&v41 error:a4];
+        v20 = [(RTMapItemProviderBase *)self mapItemCloseEnough:mapItem referenceLocation:locationCopy distanceThreshold:&v41 error:distance];
         v21 = v41;
 
         if (v20)
         {
-          v22 = [v18 mapItem];
-          v23 = [v22 appendSource:a6];
+          mapItem2 = [v18 mapItem];
+          v23 = [mapItem2 appendSource:source];
 
           if (v23)
           {
@@ -354,17 +354,17 @@ LABEL_4:
               v34 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v47 forKeys:&v46 count:1];
               v28 = [v32 errorWithDomain:v33 code:0 userInfo:v34];
 
-              if (!v37)
+              if (!errorCopy)
               {
                 goto LABEL_16;
               }
 
-              v11 = v38;
+              itemsCopy = v38;
               v29 = v39;
               if (v28)
               {
                 v35 = v28;
-                *v37 = v28;
+                *errorCopy = v28;
               }
 
               goto LABEL_24;
@@ -377,14 +377,14 @@ LABEL_4:
 
         else if (v21)
         {
-          if (v37)
+          if (errorCopy)
           {
             v31 = v21;
-            *v37 = v21;
+            *errorCopy = v21;
           }
 
           v30 = 0;
-          v11 = v38;
+          itemsCopy = v38;
           v29 = v39;
           goto LABEL_25;
         }
@@ -404,7 +404,7 @@ LABEL_4:
 
     v28 = 0;
 LABEL_16:
-    v11 = v38;
+    itemsCopy = v38;
     v29 = v39;
 LABEL_24:
     v30 = v29;
@@ -414,7 +414,7 @@ LABEL_25:
 
   else
   {
-    v30 = v11;
+    v30 = itemsCopy;
   }
 
   return v30;

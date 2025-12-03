@@ -1,26 +1,26 @@
 @interface SGDeduper
-+ (BOOL)eventsHaveSimilarTitles:(id)a3 ekEventFromStore:(id)a4;
-+ (id)_dedupeGenericContactDetails:(id)a3;
-+ (id)_dedupePostalAddresses:(id)a3;
-+ (id)bucketerWithEqualityTest:(id)a3;
-+ (id)bucketerWithLabeledBuckets:(id)a3;
-+ (id)bucketerWithMapping:(id)a3;
-+ (id)dedupe:(id)a3 bucketer:(id)a4 resolver:(id)a5;
-+ (id)dedupeContactDetails:(id)a3;
-+ (id)resolveByPairs:(id)a3;
-+ (id)resolveByScoreBreakTiesArbitrarily:(id)a3;
-+ (id)splitContactDetailsByType:(id)a3;
-+ (unsigned)eventsHaveIdenticalReservationIds:(id)a3 ekEventFromStore:(id)a4;
-+ (void)enumerateEKEventsForPseudoEventBySimilarStartAndEndTime:(id)a3 store:(id)a4 usingBlock:(id)a5;
++ (BOOL)eventsHaveSimilarTitles:(id)titles ekEventFromStore:(id)store;
++ (id)_dedupeGenericContactDetails:(id)details;
++ (id)_dedupePostalAddresses:(id)addresses;
++ (id)bucketerWithEqualityTest:(id)test;
++ (id)bucketerWithLabeledBuckets:(id)buckets;
++ (id)bucketerWithMapping:(id)mapping;
++ (id)dedupe:(id)dedupe bucketer:(id)bucketer resolver:(id)resolver;
++ (id)dedupeContactDetails:(id)details;
++ (id)resolveByPairs:(id)pairs;
++ (id)resolveByScoreBreakTiesArbitrarily:(id)arbitrarily;
++ (id)splitContactDetailsByType:(id)type;
++ (unsigned)eventsHaveIdenticalReservationIds:(id)ids ekEventFromStore:(id)store;
++ (void)enumerateEKEventsForPseudoEventBySimilarStartAndEndTime:(id)time store:(id)store usingBlock:(id)block;
 @end
 
 @implementation SGDeduper
 
-+ (id)splitContactDetailsByType:(id)a3
++ (id)splitContactDetailsByType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = [SGDeduper bucketerWithLabeledBuckets:&__block_literal_global_52_5273];
-  v5 = (v4)[2](v4, v3);
+  v5 = (v4)[2](v4, typeCopy);
 
   return v5;
 }
@@ -33,19 +33,19 @@ uint64_t __39__SGDeduper_splitContactDetailsByType___block_invoke(uint64_t a1, v
   return [v2 numberWithUnsignedInteger:v3];
 }
 
-+ (id)dedupeContactDetails:(id)a3
++ (id)dedupeContactDetails:(id)details
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  detailsCopy = details;
+  if (!detailsCopy)
   {
-    v23 = [MEMORY[0x277CCA890] currentHandler];
-    [v23 handleFailureInMethod:a2 object:a1 file:@"SGDeduper.m" lineNumber:340 description:{@"Invalid parameter not satisfying: %@", @"details"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGDeduper.m" lineNumber:340 description:{@"Invalid parameter not satisfying: %@", @"details"}];
   }
 
   v6 = [SGDeduper bucketerWithMapping:&__block_literal_global_46];
   v7 = +[SGDeduper resolveSGContactDetailsPreferringPhraseExtractionsAndLabels];
-  v8 = [SGDeduper dedupe:v5 bucketer:v6 resolver:v7];
+  v8 = [SGDeduper dedupe:detailsCopy bucketer:v6 resolver:v7];
 
   v9 = objc_opt_new();
   v10 = objc_opt_new();
@@ -88,10 +88,10 @@ uint64_t __39__SGDeduper_splitContactDetailsByType___block_invoke(uint64_t a1, v
     while (v13);
   }
 
-  v18 = [a1 _dedupeGenericContactDetails:v9];
+  v18 = [self _dedupeGenericContactDetails:v9];
   v19 = [v18 mutableCopy];
 
-  v20 = [a1 _dedupePostalAddresses:v10];
+  v20 = [self _dedupePostalAddresses:v10];
   [v19 addObjectsFromArray:v20];
 
   v21 = *MEMORY[0x277D85DE8];
@@ -136,18 +136,18 @@ id __34__SGDeduper_dedupeContactDetails___block_invoke(uint64_t a1, void *a2)
   return v8;
 }
 
-+ (id)_dedupeGenericContactDetails:(id)a3
++ (id)_dedupeGenericContactDetails:(id)details
 {
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __42__SGDeduper__dedupeGenericContactDetails___block_invoke;
   v11 = &__block_descriptor_48_e35___NSString_16__0__SGContactDetail_8l;
   v12 = a2;
-  v13 = a1;
-  v3 = a3;
+  selfCopy = self;
+  detailsCopy = details;
   v4 = [SGDeduper bucketerWithMapping:&v8];
   v5 = [SGDeduper resolveSGContactDetailsPreferringPhraseExtractionsAndLabels:v8];
-  v6 = [SGDeduper dedupe:v3 bucketer:v4 resolver:v5];
+  v6 = [SGDeduper dedupe:detailsCopy bucketer:v4 resolver:v5];
 
   return v6;
 }
@@ -166,10 +166,10 @@ id __42__SGDeduper__dedupeGenericContactDetails___block_invoke(uint64_t a1, void
   return v4;
 }
 
-+ (id)_dedupePostalAddresses:(id)a3
++ (id)_dedupePostalAddresses:(id)addresses
 {
-  v3 = a3;
-  if ([v3 count] > 0x14)
+  addressesCopy = addresses;
+  if ([addressesCopy count] > 0x14)
   {
     [SGDeduper bucketerWithMapping:&__block_literal_global_30];
   }
@@ -180,7 +180,7 @@ id __42__SGDeduper__dedupeGenericContactDetails___block_invoke(uint64_t a1, void
   }
   v4 = ;
   v5 = +[SGDeduper resolveSGContactDetailsPreferringPhraseExtractionsAndLabels];
-  v6 = [SGDeduper dedupe:v3 bucketer:v4 resolver:v5];
+  v6 = [SGDeduper dedupe:addressesCopy bucketer:v4 resolver:v5];
 
   return v6;
 }
@@ -204,34 +204,34 @@ uint64_t __36__SGDeduper__dedupePostalAddresses___block_invoke(uint64_t a1, void
   return v7;
 }
 
-+ (void)enumerateEKEventsForPseudoEventBySimilarStartAndEndTime:(id)a3 store:(id)a4 usingBlock:(id)a5
++ (void)enumerateEKEventsForPseudoEventBySimilarStartAndEndTime:(id)time store:(id)store usingBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [v8 timeRange];
-  v12 = [v11 absoluteRange];
-  [v12 start];
+  timeCopy = time;
+  blockCopy = block;
+  storeCopy = store;
+  timeRange = [timeCopy timeRange];
+  absoluteRange = [timeRange absoluteRange];
+  [absoluteRange start];
   v14 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSince1970:v13];
 
-  v15 = [v8 timeRange];
-  v16 = [v15 absoluteRange];
-  [v16 end];
+  timeRange2 = [timeCopy timeRange];
+  absoluteRange2 = [timeRange2 absoluteRange];
+  [absoluteRange2 end];
   v18 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSince1970:v17];
 
-  v19 = [v10 predicateForEventsWithStartDate:v14 endDate:v18 calendars:0];
+  v19 = [storeCopy predicateForEventsWithStartDate:v14 endDate:v18 calendars:0];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __86__SGDeduper_enumerateEKEventsForPseudoEventBySimilarStartAndEndTime_store_usingBlock___block_invoke;
   v23[3] = &unk_27894C1E0;
   v24 = v14;
-  v25 = v8;
-  v26 = v9;
-  v27 = a1;
-  v20 = v9;
-  v21 = v8;
+  v25 = timeCopy;
+  v26 = blockCopy;
+  selfCopy = self;
+  v20 = blockCopy;
+  v21 = timeCopy;
   v22 = v14;
-  [v10 enumerateEventsMatchingPredicate:v19 usingBlock:v23];
+  [storeCopy enumerateEventsMatchingPredicate:v19 usingBlock:v23];
 }
 
 void __86__SGDeduper_enumerateEKEventsForPseudoEventBySimilarStartAndEndTime_store_usingBlock___block_invoke(uint64_t a1, void *a2)
@@ -248,16 +248,16 @@ void __86__SGDeduper_enumerateEKEventsForPseudoEventBySimilarStartAndEndTime_sto
   }
 }
 
-+ (BOOL)eventsHaveSimilarTitles:(id)a3 ekEventFromStore:(id)a4
++ (BOOL)eventsHaveSimilarTitles:(id)titles ekEventFromStore:(id)store
 {
-  v5 = a4;
-  v6 = [a3 title];
-  v7 = [v5 title];
-  if (([v6 isEqualToString:v7] & 1) == 0)
+  storeCopy = store;
+  title = [titles title];
+  title2 = [storeCopy title];
+  if (([title isEqualToString:title2] & 1) == 0)
   {
-    v10 = [SGLevenshtein distanceBetweenStrings:v6 and:v7];
-    v11 = [v6 length];
-    v12 = [v7 length];
+    v10 = [SGLevenshtein distanceBetweenStrings:title and:title2];
+    v11 = [title length];
+    v12 = [title2 length];
     if (v11 <= v12)
     {
       v13 = v12;
@@ -271,7 +271,7 @@ void __86__SGDeduper_enumerateEKEventsForPseudoEventBySimilarStartAndEndTime_sto
     if (v10 / v13 < 0.5)
     {
       v8 = _PASGetNounsAndNames();
-      v14 = v7;
+      v14 = title2;
       if ([v8 count])
       {
         v15 = _PASGetNounsAndNames();
@@ -317,7 +317,7 @@ LABEL_10:
               goto LABEL_10;
             }
 
-            v32 = v5;
+            v32 = storeCopy;
             v33 = v15;
             v34 = v14;
             v23 = 0;
@@ -346,11 +346,11 @@ LABEL_10:
             if (v23 - v24 < 2)
             {
               v9 = 1;
-              v5 = v32;
+              storeCopy = v32;
               goto LABEL_30;
             }
 
-            v5 = v32;
+            storeCopy = v32;
 LABEL_29:
             v9 = 0;
             goto LABEL_30;
@@ -373,16 +373,16 @@ LABEL_30:
   return v9;
 }
 
-+ (unsigned)eventsHaveIdenticalReservationIds:(id)a3 ekEventFromStore:(id)a4
++ (unsigned)eventsHaveIdenticalReservationIds:(id)ids ekEventFromStore:(id)store
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  storeCopy = store;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = [a3 tags];
-  v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  tags = [ids tags];
+  v7 = [tags countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v7)
   {
     v8 = *v23;
@@ -392,14 +392,14 @@ LABEL_3:
     {
       if (*v23 != v8)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(tags);
       }
 
       v10 = *(*(&v22 + 1) + 8 * v9);
       if ([v10 isEventMetadata])
       {
-        v11 = [v10 eventMetadata];
-        if (v11)
+        eventMetadata = [v10 eventMetadata];
+        if (eventMetadata)
         {
           break;
         }
@@ -407,7 +407,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v7 = [tags countByEnumeratingWithState:&v22 objects:v26 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -417,10 +417,10 @@ LABEL_3:
       }
     }
 
-    v14 = v11;
-    v15 = [v11 objectForKeyedSubscript:*MEMORY[0x277D02450]];
-    v16 = [v15 firstObject];
-    v7 = [v16 objectForKeyedSubscript:@"reservationId"];
+    v14 = eventMetadata;
+    v15 = [eventMetadata objectForKeyedSubscript:*MEMORY[0x277D02450]];
+    firstObject = [v15 firstObject];
+    v7 = [firstObject objectForKeyedSubscript:@"reservationId"];
 
     if (!v7)
     {
@@ -429,10 +429,10 @@ LABEL_3:
       goto LABEL_18;
     }
 
-    v6 = [MEMORY[0x277D01FC8] eventMetadataFromEKEvent:v5];
-    v17 = [v6 schemaOrg];
-    v18 = [v17 firstObject];
-    v12 = [v18 objectForKeyedSubscript:@"reservationId"];
+    tags = [MEMORY[0x277D01FC8] eventMetadataFromEKEvent:storeCopy];
+    schemaOrg = [tags schemaOrg];
+    firstObject2 = [schemaOrg firstObject];
+    v12 = [firstObject2 objectForKeyedSubscript:@"reservationId"];
 
     if (v12 && [v7 isEqualToString:v12])
     {
@@ -506,15 +506,15 @@ uint64_t __72__SGDeduper_resolveSGContactDetailsPreferringPhraseExtractionsAndLa
   return v5;
 }
 
-+ (id)resolveByScoreBreakTiesArbitrarily:(id)a3
++ (id)resolveByScoreBreakTiesArbitrarily:(id)arbitrarily
 {
-  v3 = a3;
+  arbitrarilyCopy = arbitrarily;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__SGDeduper_resolveByScoreBreakTiesArbitrarily___block_invoke;
   v7[3] = &unk_27894C198;
-  v8 = v3;
-  v4 = v3;
+  v8 = arbitrarilyCopy;
+  v4 = arbitrarilyCopy;
   v5 = MEMORY[0x2383809F0](v7);
 
   return v5;
@@ -580,15 +580,15 @@ LABEL_12:
   return v14;
 }
 
-+ (id)resolveByPairs:(id)a3
++ (id)resolveByPairs:(id)pairs
 {
-  v3 = a3;
+  pairsCopy = pairs;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __28__SGDeduper_resolveByPairs___block_invoke;
   v7[3] = &unk_27894C198;
-  v8 = v3;
-  v4 = v3;
+  v8 = pairsCopy;
+  v4 = pairsCopy;
   v5 = MEMORY[0x2383809F0](v7);
 
   return v5;
@@ -654,15 +654,15 @@ LABEL_13:
   return v10;
 }
 
-+ (id)bucketerWithEqualityTest:(id)a3
++ (id)bucketerWithEqualityTest:(id)test
 {
-  v3 = a3;
+  testCopy = test;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__SGDeduper_bucketerWithEqualityTest___block_invoke;
   v7[3] = &unk_27894C170;
-  v8 = v3;
-  v4 = v3;
+  v8 = testCopy;
+  v4 = testCopy;
   v5 = MEMORY[0x2383809F0](v7);
 
   return v5;
@@ -750,15 +750,15 @@ LABEL_16:
   return v19;
 }
 
-+ (id)bucketerWithLabeledBuckets:(id)a3
++ (id)bucketerWithLabeledBuckets:(id)buckets
 {
-  v3 = a3;
+  bucketsCopy = buckets;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __40__SGDeduper_bucketerWithLabeledBuckets___block_invoke;
   v7[3] = &unk_27894C148;
-  v8 = v3;
-  v4 = v3;
+  v8 = bucketsCopy;
+  v4 = bucketsCopy;
   v5 = MEMORY[0x2383809F0](v7);
 
   return v5;
@@ -811,15 +811,15 @@ id __40__SGDeduper_bucketerWithLabeledBuckets___block_invoke(uint64_t a1, void *
   return v4;
 }
 
-+ (id)bucketerWithMapping:(id)a3
++ (id)bucketerWithMapping:(id)mapping
 {
-  v3 = a3;
+  mappingCopy = mapping;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __33__SGDeduper_bucketerWithMapping___block_invoke;
   v7[3] = &unk_27894C120;
-  v8 = v3;
-  v4 = v3;
+  v8 = mappingCopy;
+  v4 = mappingCopy;
   v5 = MEMORY[0x2383809F0](v7);
 
   return v5;
@@ -878,12 +878,12 @@ id __33__SGDeduper_bucketerWithMapping___block_invoke(uint64_t a1, void *a2)
   return v15;
 }
 
-+ (id)dedupe:(id)a3 bucketer:(id)a4 resolver:(id)a5
++ (id)dedupe:(id)dedupe bucketer:(id)bucketer resolver:(id)resolver
 {
   v47 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v31 = a5;
+  dedupeCopy = dedupe;
+  bucketerCopy = bucketer;
+  resolverCopy = resolver;
   Mutable = CFSetCreateMutable(0, 16, 0);
   if (!Mutable)
   {
@@ -896,9 +896,9 @@ id __33__SGDeduper_bucketerWithMapping___block_invoke(uint64_t a1, void *a2)
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v29 = v8;
-  v30 = v7;
-  v11 = (*(v8 + 2))(v8, v7);
+  v29 = bucketerCopy;
+  v30 = dedupeCopy;
+  v11 = (*(bucketerCopy + 2))(bucketerCopy, dedupeCopy);
   v12 = [v11 countByEnumeratingWithState:&v40 objects:v46 count:16];
   if (v12)
   {
@@ -925,7 +925,7 @@ id __33__SGDeduper_bucketerWithMapping___block_invoke(uint64_t a1, void *a2)
           v39 = 0u;
           v36 = 0u;
           v37 = 0u;
-          v16 = v31[2](v31, v15);
+          v16 = resolverCopy[2](resolverCopy, v15);
           v17 = [v16 countByEnumeratingWithState:&v36 objects:v45 count:16];
           if (v17)
           {

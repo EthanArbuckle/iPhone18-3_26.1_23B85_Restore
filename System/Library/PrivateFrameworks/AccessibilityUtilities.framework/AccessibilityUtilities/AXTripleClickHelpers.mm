@@ -1,25 +1,25 @@
 @interface AXTripleClickHelpers
 + (BOOL)_isAccessibilityAppIntentsProcess;
-+ (BOOL)_localValueForAccessibilityShortcutOption:(int)a3;
-+ (BOOL)_npsValueForAccessibilityShortcutOption:(int)a3;
-+ (BOOL)_shouldShowFeatureInShortcutsControlCenterModule:(int)a3 includeGuidedAccess:(BOOL)a4;
-+ (BOOL)valueForAccessibilityShortcutOption:(int)a3 fromSource:(int64_t)a4;
++ (BOOL)_localValueForAccessibilityShortcutOption:(int)option;
++ (BOOL)_npsValueForAccessibilityShortcutOption:(int)option;
++ (BOOL)_shouldShowFeatureInShortcutsControlCenterModule:(int)module includeGuidedAccess:(BOOL)access;
++ (BOOL)valueForAccessibilityShortcutOption:(int)option fromSource:(int64_t)source;
 + (id)_availableFeatures;
 + (id)_displayFilterUIClient;
-+ (id)_npsKeyForTripleClickOption:(int)a3;
-+ (id)allTripleClickOptionsForPlatform:(int64_t)a3;
-+ (id)domainAccessorForTripleClickOption:(int)a3;
-+ (id)localizationKeyForAccessibilityShortcutOption:(int)a3;
-+ (id)localizedTitleForAccessibilityShortcutOption:(int)a3;
-+ (id)symbolNameForAccessibilityShortcutOption:(int)a3;
-+ (id)tripleClickOptionsForAccessibilityShortcutControlCenterModuleIncludingGuidedAccess:(BOOL)a3;
-+ (int64_t)stateForAccessibilityShortcutOption:(int)a3;
-+ (void)_disableSwitchControlWithHandler:(id)a3;
-+ (void)_handleToggleTripleClickTriggeredFromAppIntent:(int)a3;
-+ (void)_localToggleAccessibilityShortcutOption:(int)a3;
-+ (void)_npsSyncTripleClickOption:(int)a3;
-+ (void)_npsToggleTripleClickOption:(int)a3;
-+ (void)_promptToDisableBrightnessFilters:(id)a3 data:(id)a4;
++ (id)_npsKeyForTripleClickOption:(int)option;
++ (id)allTripleClickOptionsForPlatform:(int64_t)platform;
++ (id)domainAccessorForTripleClickOption:(int)option;
++ (id)localizationKeyForAccessibilityShortcutOption:(int)option;
++ (id)localizedTitleForAccessibilityShortcutOption:(int)option;
++ (id)symbolNameForAccessibilityShortcutOption:(int)option;
++ (id)tripleClickOptionsForAccessibilityShortcutControlCenterModuleIncludingGuidedAccess:(BOOL)access;
++ (int64_t)stateForAccessibilityShortcutOption:(int)option;
++ (void)_disableSwitchControlWithHandler:(id)handler;
++ (void)_handleToggleTripleClickTriggeredFromAppIntent:(int)intent;
++ (void)_localToggleAccessibilityShortcutOption:(int)option;
++ (void)_npsSyncTripleClickOption:(int)option;
++ (void)_npsToggleTripleClickOption:(int)option;
++ (void)_promptToDisableBrightnessFilters:(id)filters data:(id)data;
 + (void)_toggleAssistiveTouch;
 + (void)_toggleClassicInvertColors;
 + (void)_toggleLocalizationCaptionPanel;
@@ -30,8 +30,8 @@
 + (void)attemptToPresentNearbyDeviceControlPicker;
 + (void)attemptToToggleConversationBoost;
 + (void)attemptToToggleTwiceRemoteScreen;
-+ (void)registerObserverForAccessibilityShortcutOption:(int)a3;
-+ (void)toggleAccessibilityShortcutOption:(int)a3 fromSource:(int64_t)a4;
++ (void)registerObserverForAccessibilityShortcutOption:(int)option;
++ (void)toggleAccessibilityShortcutOption:(int)option fromSource:(int64_t)source;
 + (void)toggleColorFilter;
 + (void)toggleFullKeyboardAccess;
 + (void)toggleGuidedAccess;
@@ -47,10 +47,10 @@
 
 @implementation AXTripleClickHelpers
 
-+ (id)localizationKeyForAccessibilityShortcutOption:(int)a3
++ (id)localizationKeyForAccessibilityShortcutOption:(int)option
 {
   v3 = 0;
-  switch(a3)
+  switch(option)
   {
     case 1:
       v3 = @"ask.sheet.option.VoiceOver.on";
@@ -75,9 +75,9 @@
       break;
     case 10:
       v6 = +[AXBackBoardServer server];
-      v7 = [v6 supportsAccessibilityDisplayFilters];
+      supportsAccessibilityDisplayFilters = [v6 supportsAccessibilityDisplayFilters];
 
-      if (v7)
+      if (supportsAccessibilityDisplayFilters)
       {
         v3 = @"ask.sheet.option.DisplayFiltersColor.on";
       }
@@ -217,22 +217,22 @@
   return v3;
 }
 
-+ (id)symbolNameForAccessibilityShortcutOption:(int)a3
++ (id)symbolNameForAccessibilityShortcutOption:(int)option
 {
-  if ((a3 - 1) > 0x2D)
+  if ((option - 1) > 0x2D)
   {
     return 0;
   }
 
   else
   {
-    return off_1E71E9D20[a3 - 1];
+    return off_1E71E9D20[option - 1];
   }
 }
 
-+ (id)localizedTitleForAccessibilityShortcutOption:(int)a3
++ (id)localizedTitleForAccessibilityShortcutOption:(int)option
 {
-  v3 = *&a3;
+  v3 = *&option;
   if (!AXProcessIsBackboard())
   {
     v8 = 0;
@@ -273,7 +273,7 @@
       case 42:
       case 44:
       case 45:
-        v9 = [a1 localizationKeyForTripleClickOption:v3];
+        v9 = [self localizationKeyForTripleClickOption:v3];
         goto LABEL_5;
       case 13:
         v8 = @"Loc Caption Panel";
@@ -290,7 +290,7 @@ LABEL_15:
         v8 = soft_AXUIAssistiveTouchStringForName(*v17);
         goto LABEL_7;
       case 46:
-        v9 = [a1 localizationKeyForAccessibilityShortcutOption:46];
+        v9 = [self localizationKeyForAccessibilityShortcutOption:46];
 LABEL_5:
         v6 = v9;
         v7 = AXParameterizedLocalizedString(1, v9, v10, v11, v12, v13, v14, v15, v18);
@@ -311,42 +311,42 @@ LABEL_7:
   return v8;
 }
 
-+ (id)domainAccessorForTripleClickOption:(int)a3
++ (id)domainAccessorForTripleClickOption:(int)option
 {
   v3 = MEMORY[0x1E69E4F30];
-  if (a3 != 11)
+  if (option != 11)
   {
     v3 = MEMORY[0x1E69E4BB0];
   }
 
   v4 = *v3;
-  v5 = [MEMORY[0x1E69B36C0] sharedInstance];
-  v6 = [v5 getActivePairedDevice];
+  mEMORY[0x1E69B36C0] = [MEMORY[0x1E69B36C0] sharedInstance];
+  getActivePairedDevice = [mEMORY[0x1E69B36C0] getActivePairedDevice];
 
-  v7 = [objc_alloc(MEMORY[0x1E69B3588]) initWithDomain:v4 pairedDevice:v6];
+  v7 = [objc_alloc(MEMORY[0x1E69B3588]) initWithDomain:v4 pairedDevice:getActivePairedDevice];
 
   return v7;
 }
 
-+ (BOOL)valueForAccessibilityShortcutOption:(int)a3 fromSource:(int64_t)a4
++ (BOOL)valueForAccessibilityShortcutOption:(int)option fromSource:(int64_t)source
 {
-  switch(a4)
+  switch(source)
   {
     case 3:
-      return [a1 _localValueForAccessibilityShortcutOption:*&a3];
+      return [self _localValueForAccessibilityShortcutOption:*&option];
     case 1:
-      return [a1 _npsValueForAccessibilityShortcutOption:*&a3];
+      return [self _npsValueForAccessibilityShortcutOption:*&option];
     case 0:
-      return [a1 _localValueForAccessibilityShortcutOption:*&a3];
+      return [self _localValueForAccessibilityShortcutOption:*&option];
   }
 
   return 0;
 }
 
-+ (BOOL)_localValueForAccessibilityShortcutOption:(int)a3
++ (BOOL)_localValueForAccessibilityShortcutOption:(int)option
 {
-  v3 = 0;
-  switch(a3)
+  comfortSoundsEnabled = 0;
+  switch(option)
   {
     case 1:
       CategoryEnabled = _AXSVoiceOverTouchEnabled();
@@ -356,7 +356,7 @@ LABEL_7:
       goto LABEL_57;
     case 4:
 
-      return [a1 valueForZoomTripleClickOption];
+      return [self valueForZoomTripleClickOption];
     case 6:
       CategoryEnabled = _AXSAssistiveTouchEnabled();
       goto LABEL_57;
@@ -382,10 +382,10 @@ LABEL_7:
 LABEL_60:
       state64 = 0;
       state = notify_get_state(_AXSGuidedAccessActiveCached_token, &state64);
-      v3 = state64 != 0;
+      comfortSoundsEnabled = state64 != 0;
       if (!state)
       {
-        return v3 & 1;
+        return comfortSoundsEnabled & 1;
       }
 
 LABEL_61:
@@ -397,16 +397,16 @@ LABEL_61:
         _AXSGuidedAccessActiveCached_lastFallbackResult = [v23 isGuidedAccessActive];
       }
 
-      v3 = _AXSGuidedAccessActiveCached_lastFallbackResult;
-      return v3 & 1;
+      comfortSoundsEnabled = _AXSGuidedAccessActiveCached_lastFallbackResult;
+      return comfortSoundsEnabled & 1;
     case 9:
       CategoryEnabled = _AXSAssistiveTouchScannerEnabled();
       goto LABEL_57;
     case 10:
       v11 = +[AXBackBoardServer server];
-      v12 = [v11 supportsAccessibilityDisplayFilters];
+      supportsAccessibilityDisplayFilters = [v11 supportsAccessibilityDisplayFilters];
 
-      if (v12)
+      if (supportsAccessibilityDisplayFilters)
       {
         CategoryEnabled = MADisplayFilterPrefGetCategoryEnabled();
       }
@@ -419,18 +419,18 @@ LABEL_61:
       goto LABEL_57;
     case 11:
       v8 = +[AXSettings sharedInstance];
-      v9 = [v8 touchAccommodationsEnabled];
+      touchAccommodationsEnabled = [v8 touchAccommodationsEnabled];
       goto LABEL_38;
     case 13:
       v8 = +[AXSettings sharedInstance];
-      v9 = [v8 localizationQACaptionMode];
+      touchAccommodationsEnabled = [v8 localizationQACaptionMode];
       goto LABEL_38;
     case 14:
       CategoryEnabled = _AXSReduceWhitePointEnabled();
       goto LABEL_57;
     case 15:
       v8 = +[AXSettings sharedInstance];
-      v9 = [v8 classicInvertColors];
+      touchAccommodationsEnabled = [v8 classicInvertColors];
       goto LABEL_38;
     case 17:
       CategoryEnabled = _AXSCommandAndControlEnabled();
@@ -451,9 +451,9 @@ LABEL_61:
       }
 
       v8 = +[AXSettings sharedInstance];
-      v9 = [v8 liveRecognitionActive];
+      touchAccommodationsEnabled = [v8 liveRecognitionActive];
 LABEL_38:
-      v13 = v9;
+      v13 = touchAccommodationsEnabled;
 
       return v13;
     case 23:
@@ -481,12 +481,12 @@ LABEL_38:
 
       v6 = v5;
       _Block_object_dispose(&v29, 8);
-      v7 = [v5 sharedInstance];
-      v3 = [v7 comfortSoundsEnabled];
+      sharedInstance = [v5 sharedInstance];
+      comfortSoundsEnabled = [sharedInstance comfortSoundsEnabled];
       goto LABEL_54;
     case 26:
       v8 = +[AXSettings sharedInstance];
-      v9 = [v8 leftRightBalanceEnabled];
+      touchAccommodationsEnabled = [v8 leftRightBalanceEnabled];
       goto LABEL_38;
     case 27:
       CategoryEnabled = _AXSHoverTextEnabled();
@@ -494,16 +494,16 @@ LABEL_38:
     case 28:
       if (_AXSTwiceRemoteScreenEnabled())
       {
-        v3 = _AXSTwiceRemoteScreenPlatform() == 0;
+        comfortSoundsEnabled = _AXSTwiceRemoteScreenPlatform() == 0;
       }
 
       else
       {
 LABEL_55:
-        v3 = 0;
+        comfortSoundsEnabled = 0;
       }
 
-      return v3 & 1;
+      return comfortSoundsEnabled & 1;
     case 29:
       CategoryEnabled = _AXSLiveTranscriptionEnabled();
       goto LABEL_57;
@@ -544,23 +544,23 @@ LABEL_55:
         +[AXTripleClickHelpers _localValueForAccessibilityShortcutOption:];
       }
 
-      v7 = v14();
-      v16 = [v7 address];
-      if (![v16 length] || !soft_paCurrentRouteSupportsTransparencyAccommodations() || !soft_paBluetoothDeviceSupportsSSL(v7))
+      sharedInstance = v14();
+      address = [sharedInstance address];
+      if (![address length] || !soft_paCurrentRouteSupportsTransparencyAccommodations() || !soft_paBluetoothDeviceSupportsSSL(sharedInstance))
       {
-        v3 = 0;
+        comfortSoundsEnabled = 0;
         goto LABEL_53;
       }
 
-      v17 = [getPASettingsClass() sharedInstance];
-      if ([v17 personalMediaEnabled])
+      sharedInstance2 = [getPASettingsClass() sharedInstance];
+      if ([sharedInstance2 personalMediaEnabled])
       {
-        v18 = [v7 listeningMode];
+        listeningMode = [sharedInstance listeningMode];
 
-        if (v18 == 3)
+        if (listeningMode == 3)
         {
-          v19 = [getPASettingsClass() sharedInstance];
-          v20 = [v19 transparencyCustomizedForAddress:v16];
+          sharedInstance3 = [getPASettingsClass() sharedInstance];
+          v20 = [sharedInstance3 transparencyCustomizedForAddress:address];
           goto LABEL_66;
         }
       }
@@ -569,15 +569,15 @@ LABEL_55:
       {
       }
 
-      v19 = [getPASettingsClass() sharedInstance];
-      v20 = [v19 sslEnabledForAddress:v16];
+      sharedInstance3 = [getPASettingsClass() sharedInstance];
+      v20 = [sharedInstance3 sslEnabledForAddress:address];
 LABEL_66:
-      v3 = v20;
+      comfortSoundsEnabled = v20;
 
 LABEL_53:
 LABEL_54:
 
-      return v3 & 1;
+      return comfortSoundsEnabled & 1;
     case 40:
       CategoryEnabled = _AXSHoverTextTypingEnabled();
       goto LABEL_57;
@@ -587,21 +587,21 @@ LABEL_54:
     case 42:
       CategoryEnabled = _AXSOnDeviceEyeTrackingEnabled();
 LABEL_57:
-      v3 = CategoryEnabled != 0;
-      return v3 & 1;
+      comfortSoundsEnabled = CategoryEnabled != 0;
+      return comfortSoundsEnabled & 1;
     default:
-      return v3 & 1;
+      return comfortSoundsEnabled & 1;
   }
 }
 
-+ (int64_t)stateForAccessibilityShortcutOption:(int)a3
++ (int64_t)stateForAccessibilityShortcutOption:(int)option
 {
-  if (a3 <= 0x22 && ((1 << a3) & 0x4C0401008) != 0)
+  if (option <= 0x22 && ((1 << option) & 0x4C0401008) != 0)
   {
     return 0;
   }
 
-  if ([a1 valueForAccessibilityShortcutOption:{v3, v4}])
+  if ([self valueForAccessibilityShortcutOption:{v3, v4}])
   {
     return 1;
   }
@@ -609,21 +609,21 @@ LABEL_57:
   return 2;
 }
 
-+ (id)_npsKeyForTripleClickOption:(int)a3
++ (id)_npsKeyForTripleClickOption:(int)option
 {
   v3 = 0;
-  if (a3 > 19)
+  if (option > 19)
   {
-    if (a3 > 25)
+    if (option > 25)
     {
-      if (a3 == 26)
+      if (option == 26)
       {
         v4 = MEMORY[0x1E69E4DE8];
       }
 
       else
       {
-        if (a3 != 33)
+        if (option != 33)
         {
           goto LABEL_21;
         }
@@ -632,14 +632,14 @@ LABEL_57:
       }
     }
 
-    else if (a3 == 20)
+    else if (option == 20)
     {
       v4 = MEMORY[0x1E69E4D08];
     }
 
     else
     {
-      if (a3 != 24)
+      if (option != 24)
       {
         goto LABEL_21;
       }
@@ -648,15 +648,15 @@ LABEL_57:
     }
   }
 
-  else if (a3 > 9)
+  else if (option > 9)
   {
-    if (a3 == 10)
+    if (option == 10)
     {
       v3 = @"ColorFiltersEnabled";
       goto LABEL_21;
     }
 
-    if (a3 != 11)
+    if (option != 11)
     {
       goto LABEL_21;
     }
@@ -664,14 +664,14 @@ LABEL_57:
     v4 = kAXSTouchAccommodationsEnabledPreference;
   }
 
-  else if (a3 == 1)
+  else if (option == 1)
   {
     v4 = MEMORY[0x1E69E4F88];
   }
 
   else
   {
-    if (a3 != 4)
+    if (option != 4)
     {
       goto LABEL_21;
     }
@@ -685,54 +685,54 @@ LABEL_21:
   return v3;
 }
 
-+ (BOOL)_npsValueForAccessibilityShortcutOption:(int)a3
++ (BOOL)_npsValueForAccessibilityShortcutOption:(int)option
 {
-  if (a3 == 23)
+  if (option == 23)
   {
     if (!WatchControlSettingsLibraryCore())
     {
       return 0;
     }
 
-    v3 = [getWatchControlSettingsClass() sharedInstance];
-    v4 = [v3 featureEnabled];
+    sharedInstance = [getWatchControlSettingsClass() sharedInstance];
+    featureEnabled = [sharedInstance featureEnabled];
   }
 
   else
   {
-    v5 = *&a3;
-    v3 = [a1 domainAccessorForTripleClickOption:?];
-    v7 = [a1 _npsKeyForTripleClickOption:v5];
-    v8 = [v3 domain];
+    v5 = *&option;
+    sharedInstance = [self domainAccessorForTripleClickOption:?];
+    v7 = [self _npsKeyForTripleClickOption:v5];
+    domain = [sharedInstance domain];
 
-    v4 = 0;
-    if (v8 && v7)
+    featureEnabled = 0;
+    if (domain && v7)
     {
-      v9 = [v3 synchronize];
-      v4 = [v3 BOOLForKey:v7];
+      synchronize = [sharedInstance synchronize];
+      featureEnabled = [sharedInstance BOOLForKey:v7];
     }
   }
 
-  return v4;
+  return featureEnabled;
 }
 
-+ (void)_npsSyncTripleClickOption:(int)a3
++ (void)_npsSyncTripleClickOption:(int)option
 {
-  v3 = *&a3;
+  v3 = *&option;
   v13[1] = *MEMORY[0x1E69E9840];
-  v5 = [a1 domainAccessorForTripleClickOption:?];
-  v6 = [a1 _npsKeyForTripleClickOption:v3];
-  v7 = [v5 domain];
+  v5 = [self domainAccessorForTripleClickOption:?];
+  v6 = [self _npsKeyForTripleClickOption:v3];
+  domain = [v5 domain];
 
-  if (v7 && v6)
+  if (domain && v6)
   {
     v8 = objc_opt_new();
-    v9 = [v5 domain];
+    domain2 = [v5 domain];
     v10 = MEMORY[0x1E695DFD8];
     v13[0] = v6;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
     v12 = [v10 setWithArray:v11];
-    [v8 synchronizeUserDefaultsDomain:v9 keys:v12];
+    [v8 synchronizeUserDefaultsDomain:domain2 keys:v12];
   }
 }
 
@@ -754,23 +754,23 @@ LABEL_21:
   MEMORY[0x1EEE611A0](v2 == 0, v3);
 }
 
-+ (void)_promptToDisableBrightnessFilters:(id)a3 data:(id)a4
++ (void)_promptToDisableBrightnessFilters:(id)filters data:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  filtersCopy = filters;
+  dataCopy = data;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
-  v16 = [a1 _isAccessibilityAppIntentsProcess];
+  _isAccessibilityAppIntentsProcess = [self _isAccessibilityAppIntentsProcess];
   v8 = +[AXSpringBoardServer server];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __63__AXTripleClickHelpers__promptToDisableBrightnessFilters_data___block_invoke;
   v10[3] = &unk_1E71E9AE8;
-  v9 = v6;
+  v9 = filtersCopy;
   v11 = v9;
   v12 = &v13;
-  [v8 showAlert:7 withHandler:v10 withData:v7];
+  [v8 showAlert:7 withHandler:v10 withData:dataCopy];
 
   while (*(v14 + 24) == 1)
   {
@@ -820,7 +820,7 @@ uint64_t __46__AXTripleClickHelpers__displayFilterUIClient__block_invoke()
   v8[1] = 3221225472;
   v8[2] = __61__AXTripleClickHelpers__toggleSmartInvertColorsOffMainThread__block_invoke;
   v8[3] = &__block_descriptor_41_e5_v8__0l;
-  v8[4] = a1;
+  v8[4] = self;
   v9 = v3 != 0;
   v4 = _Block_copy(v8);
   v4[2](v4, v5, v6, v7);
@@ -915,9 +915,9 @@ void __61__AXTripleClickHelpers__toggleSmartInvertColorsOffMainThread__block_inv
 + (void)_toggleClassicInvertColors
 {
   v4 = +[AXSettings sharedInstance];
-  v2 = [v4 classicInvertColors];
+  classicInvertColors = [v4 classicInvertColors];
   v3 = +[AXSettings sharedInstance];
-  [v3 setClassicInvertColors:v2 ^ 1u];
+  [v3 setClassicInvertColors:classicInvertColors ^ 1u];
 }
 
 + (void)toggleColorFilter
@@ -930,9 +930,9 @@ void __61__AXTripleClickHelpers__toggleSmartInvertColorsOffMainThread__block_inv
 + (void)toggleZoomOffMainThread
 {
   v4 = +[AXSettings sharedInstance];
-  v2 = [v4 zoomEnabled];
+  zoomEnabled = [v4 zoomEnabled];
   v3 = +[AXSettings sharedInstance];
-  [v3 setZoomEnabled:v2 ^ 1u];
+  [v3 setZoomEnabled:zoomEnabled ^ 1u];
 }
 
 + (void)toggleLiveSpeech
@@ -948,9 +948,9 @@ void __61__AXTripleClickHelpers__toggleSmartInvertColorsOffMainThread__block_inv
 + (void)toggleHoverText
 {
   v4 = +[AXSettings sharedInstance];
-  v2 = [v4 hoverTextEnabled];
+  hoverTextEnabled = [v4 hoverTextEnabled];
   v3 = +[AXSettings sharedInstance];
-  [v3 setHoverTextEnabled:v2 ^ 1u];
+  [v3 setHoverTextEnabled:hoverTextEnabled ^ 1u];
 }
 
 + (void)toggleHoverTextTyping
@@ -984,20 +984,20 @@ void __61__AXTripleClickHelpers__toggleSmartInvertColorsOffMainThread__block_inv
 
     v4 = v3;
     _Block_object_dispose(&v7, 8);
-    v5 = [v3 sharedInstance];
-    [v5 speakThisWithOptions:12 errorHandler:0];
+    sharedInstance = [v3 sharedInstance];
+    [sharedInstance speakThisWithOptions:12 errorHandler:0];
   }
 }
 
-+ (void)_disableSwitchControlWithHandler:(id)a3
++ (void)_disableSwitchControlWithHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   if (_AXSClarityBoardEnabled())
   {
     _AXSAssistiveTouchScannerSetEnabled();
-    if (v3)
+    if (handlerCopy)
     {
-      v3[2](v3);
+      handlerCopy[2](handlerCopy);
     }
   }
 
@@ -1009,7 +1009,7 @@ void __61__AXTripleClickHelpers__toggleSmartInvertColorsOffMainThread__block_inv
     v5[1] = 3221225472;
     v5[2] = __57__AXTripleClickHelpers__disableSwitchControlWithHandler___block_invoke;
     v5[3] = &unk_1E71E9B70;
-    v6 = v3;
+    v6 = handlerCopy;
     [v4 showAlert:9 withHandler:v5];
   }
 }
@@ -1049,7 +1049,7 @@ uint64_t __57__AXTripleClickHelpers__disableSwitchControlWithHandler___block_inv
   else
   {
 
-    [a1 _disableSwitchControlWithHandler:&__block_literal_global_550];
+    [self _disableSwitchControlWithHandler:&__block_literal_global_550];
   }
 }
 
@@ -1079,15 +1079,15 @@ uint64_t __45__AXTripleClickHelpers__toggleAssistiveTouch__block_invoke()
 
   else
   {
-    v4 = [v3 guidedAccessEffectiveAppBundleIdentifier];
+    guidedAccessEffectiveAppBundleIdentifier = [v3 guidedAccessEffectiveAppBundleIdentifier];
 
     v5 = dispatch_get_global_queue(25, 0);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __42__AXTripleClickHelpers_toggleGuidedAccess__block_invoke;
     block[3] = &unk_1E71E9B98;
-    v9 = v4;
-    v6 = v4;
+    v9 = guidedAccessEffectiveAppBundleIdentifier;
+    v6 = guidedAccessEffectiveAppBundleIdentifier;
     dispatch_async(v5, block);
   }
 }
@@ -1118,7 +1118,7 @@ void __42__AXTripleClickHelpers_toggleGuidedAccess__block_invoke_2()
     v8 = 0;
     v9 = &v8;
     v10 = 0x2020000000;
-    v11 = [a1 _isAccessibilityAppIntentsProcess];
+    _isAccessibilityAppIntentsProcess = [self _isAccessibilityAppIntentsProcess];
     v5 = +[AXSpringBoardServer server];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
@@ -1187,17 +1187,17 @@ uint64_t __48__AXTripleClickHelpers_toggleFullKeyboardAccess__block_invoke(uint6
 
 + (void)attemptToEnterClarityBoard
 {
-  v2 = [MEMORY[0x1E696AE30] processInfo];
-  v3 = [v2 processIdentifier];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  processIdentifier = [processInfo processIdentifier];
 
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [MEMORY[0x1E696AD98] numberWithInt:v3];
+  v5 = [MEMORY[0x1E696AD98] numberWithInt:processIdentifier];
   v9 = [v4 stringWithFormat:@"ClarityUIClientIdentifier-%@", v5];
 
   v6 = [objc_alloc(getAXUIClientClass()) initWithIdentifier:v9 serviceBundleName:@"ClarityUIServer"];
   v7 = AXTripleClickAttemptToEnterClarityBoardMessageIdentifier;
-  v8 = [MEMORY[0x1E6988748] mainAccessQueue];
-  [v6 sendAsynchronousMessage:0 withIdentifier:v7 targetAccessQueue:v8 completion:&__block_literal_global_562];
+  mainAccessQueue = [MEMORY[0x1E6988748] mainAccessQueue];
+  [v6 sendAsynchronousMessage:0 withIdentifier:v7 targetAccessQueue:mainAccessQueue completion:&__block_literal_global_562];
 }
 
 void __50__AXTripleClickHelpers_attemptToEnterClarityBoard__block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -1238,81 +1238,81 @@ void __50__AXTripleClickHelpers_attemptToEnterClarityBoard__block_invoke(uint64_
   [v2 toggleConversationBoost];
 }
 
-+ (void)toggleAccessibilityShortcutOption:(int)a3 fromSource:(int64_t)a4
++ (void)toggleAccessibilityShortcutOption:(int)option fromSource:(int64_t)source
 {
-  switch(a4)
+  switch(source)
   {
     case 3:
-      [a1 _handleToggleTripleClickTriggeredFromAppIntent:*&a3];
+      [self _handleToggleTripleClickTriggeredFromAppIntent:*&option];
       break;
     case 1:
-      [a1 _npsToggleTripleClickOption:*&a3];
+      [self _npsToggleTripleClickOption:*&option];
       break;
     case 0:
-      [a1 _localToggleTripleClickOption:*&a3];
+      [self _localToggleTripleClickOption:*&option];
       break;
   }
 }
 
-+ (void)_handleToggleTripleClickTriggeredFromAppIntent:(int)a3
++ (void)_handleToggleTripleClickTriggeredFromAppIntent:(int)intent
 {
-  v3 = *&a3;
-  if (a3 == 36)
+  v3 = *&intent;
+  if (intent == 36)
   {
-    [a1 setMotionCuesShowBanner:0];
+    [self setMotionCuesShowBanner:0];
   }
 
-  [a1 _localToggleTripleClickOption:v3];
+  [self _localToggleTripleClickOption:v3];
 }
 
-+ (void)_localToggleAccessibilityShortcutOption:(int)a3
++ (void)_localToggleAccessibilityShortcutOption:(int)option
 {
-  v3 = *&a3;
+  v3 = *&option;
   v35 = *MEMORY[0x1E69E9840];
   v5 = AXLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [a1 titleForTripleClickOption:v3];
+    v6 = [self titleForTripleClickOption:v3];
     *buf = 138412290;
     v34 = v6;
     _os_log_impl(&dword_18B15E000, v5, OS_LOG_TYPE_DEFAULT, "Toggling option: %@", buf, 0xCu);
   }
 
-  [a1 registerObserverForTripleClickOption:v3];
+  [self registerObserverForTripleClickOption:v3];
   switch(v3)
   {
     case 1:
-      [a1 _toggleVoiceOver];
+      [self _toggleVoiceOver];
       goto LABEL_40;
     case 2:
-      [a1 performSelectorInBackground:sel__toggleSmartInvertColorsOffMainThread withObject:0];
+      [self performSelectorInBackground:sel__toggleSmartInvertColorsOffMainThread withObject:0];
       goto LABEL_40;
     case 4:
-      [a1 toggleZoomOffMainThread];
+      [self toggleZoomOffMainThread];
       goto LABEL_40;
     case 6:
-      [a1 _toggleAssistiveTouch];
+      [self _toggleAssistiveTouch];
       goto LABEL_40;
     case 7:
       if (_AXSGuidedAccessEnabled())
       {
-        [a1 toggleGuidedAccess];
+        [self toggleGuidedAccess];
       }
 
       goto LABEL_40;
     case 8:
-      [a1 toggleHearingControlCenter];
+      [self toggleHearingControlCenter];
       goto LABEL_40;
     case 9:
-      [a1 _toggleSwitchOver];
+      [self _toggleSwitchOver];
       goto LABEL_40;
     case 10:
       v19 = +[AXBackBoardServer server];
-      v20 = [v19 supportsAccessibilityDisplayFilters];
+      supportsAccessibilityDisplayFilters = [v19 supportsAccessibilityDisplayFilters];
 
-      if (v20)
+      if (supportsAccessibilityDisplayFilters)
       {
-        [a1 toggleColorFilter];
+        [self toggleColorFilter];
       }
 
       else
@@ -1323,36 +1323,36 @@ void __50__AXTripleClickHelpers_attemptToEnterClarityBoard__block_invoke(uint64_
 
       goto LABEL_40;
     case 11:
-      v7 = +[AXSettings sharedInstance];
-      v11 = [v7 touchAccommodationsEnabled];
+      sharedInstance = +[AXSettings sharedInstance];
+      touchAccommodationsEnabled = [sharedInstance touchAccommodationsEnabled];
       v9 = +[AXSettings sharedInstance];
-      [v9 setTouchAccommodationsEnabled:v11 ^ 1u];
+      [v9 setTouchAccommodationsEnabled:touchAccommodationsEnabled ^ 1u];
       goto LABEL_38;
     case 12:
-      v7 = [getAXPISystemActionHelperClass() sharedInstance];
-      [v7 startMagnifier];
+      sharedInstance = [getAXPISystemActionHelperClass() sharedInstance];
+      [sharedInstance startMagnifier];
       goto LABEL_39;
     case 13:
-      [a1 _toggleLocalizationCaptionPanel];
+      [self _toggleLocalizationCaptionPanel];
       goto LABEL_40;
     case 14:
-      [a1 toggleReduceWhitePoint];
+      [self toggleReduceWhitePoint];
       goto LABEL_40;
     case 15:
-      [a1 _toggleClassicInvertColors];
+      [self _toggleClassicInvertColors];
       goto LABEL_40;
     case 17:
       _AXSCommandAndControlEnabled();
       _AXSCommandAndControlSetEnabled();
       goto LABEL_40;
     case 18:
-      [a1 toggleFullKeyboardAccess];
+      [self toggleFullKeyboardAccess];
       goto LABEL_40;
     case 20:
-      v7 = +[AXSettings sharedInstance];
-      v18 = [v7 enhanceBackgroundContrastEnabled];
+      sharedInstance = +[AXSettings sharedInstance];
+      enhanceBackgroundContrastEnabled = [sharedInstance enhanceBackgroundContrastEnabled];
       v9 = +[AXSettings sharedInstance];
-      [v9 setEnhanceBackgroundContrastEnabled:v18 ^ 1u];
+      [v9 setEnhanceBackgroundContrastEnabled:enhanceBackgroundContrastEnabled ^ 1u];
       goto LABEL_38;
     case 21:
       _AXDarkenSystemColorsGlobal();
@@ -1362,11 +1362,11 @@ void __50__AXTripleClickHelpers_attemptToEnterClarityBoard__block_invoke(uint64_
       if (_AXSVoiceOverTouchEnabled())
       {
         v25 = +[AXSettings sharedInstance];
-        v26 = [v25 liveRecognitionActive];
+        liveRecognitionActive = [v25 liveRecognitionActive];
 
         v27 = +[AXVoiceOverServer server];
-        v7 = v27;
-        if (v26)
+        sharedInstance = v27;
+        if (liveRecognitionActive)
         {
           v28 = 51;
         }
@@ -1381,35 +1381,35 @@ void __50__AXTripleClickHelpers_attemptToEnterClarityBoard__block_invoke(uint64_
 
       else
       {
-        v7 = [getAXPISystemActionHelperClass() sharedInstance];
-        [v7 activateDetectionMode];
+        sharedInstance = [getAXPISystemActionHelperClass() sharedInstance];
+        [sharedInstance activateDetectionMode];
       }
 
       goto LABEL_39;
     case 23:
-      [a1 _toggleWatchControl];
+      [self _toggleWatchControl];
       goto LABEL_40;
     case 24:
-      v7 = +[AXSettings sharedInstance];
-      v12 = [v7 reduceMotionEnabled];
+      sharedInstance = +[AXSettings sharedInstance];
+      reduceMotionEnabled = [sharedInstance reduceMotionEnabled];
       v9 = +[AXSettings sharedInstance];
-      [v9 setReduceMotionEnabled:v12 ^ 1u];
+      [v9 setReduceMotionEnabled:reduceMotionEnabled ^ 1u];
       goto LABEL_38;
     case 25:
-      v7 = +[AXSystemAppServer server];
-      [v7 toggleBackgroundSounds];
+      sharedInstance = +[AXSystemAppServer server];
+      [sharedInstance toggleBackgroundSounds];
       goto LABEL_39;
     case 26:
-      v7 = +[AXSettings sharedInstance];
-      v10 = [v7 leftRightBalanceEnabled];
+      sharedInstance = +[AXSettings sharedInstance];
+      leftRightBalanceEnabled = [sharedInstance leftRightBalanceEnabled];
       v9 = +[AXSettings sharedInstance];
-      [v9 setLeftRightBalanceEnabled:v10 ^ 1u];
+      [v9 setLeftRightBalanceEnabled:leftRightBalanceEnabled ^ 1u];
       goto LABEL_38;
     case 27:
-      [a1 toggleHoverText];
+      [self toggleHoverText];
       goto LABEL_40;
     case 28:
-      [a1 attemptToToggleTwiceRemoteScreen];
+      [self attemptToToggleTwiceRemoteScreen];
       goto LABEL_40;
     case 29:
       if (!_AXSLiveTranscriptionEnabled())
@@ -1425,8 +1425,8 @@ void __50__AXTripleClickHelpers_attemptToEnterClarityBoard__block_invoke(uint64_
 
       else
       {
-        v7 = +[AXSpringBoardServer server];
-        [v7 toggleLiveTranscription];
+        sharedInstance = +[AXSpringBoardServer server];
+        [sharedInstance toggleLiveTranscription];
 LABEL_39:
       }
 
@@ -1434,16 +1434,16 @@ LABEL_40:
       AXPerformBlockAsynchronouslyOnMainThread();
       return;
     case 30:
-      [a1 attemptToEnterClarityBoard];
+      [self attemptToEnterClarityBoard];
       goto LABEL_40;
     case 31:
-      [a1 attemptToPresentNearbyDeviceControlPicker];
+      [self attemptToPresentNearbyDeviceControlPicker];
       goto LABEL_40;
     case 33:
-      [a1 toggleLiveSpeech];
+      [self toggleLiveSpeech];
       goto LABEL_40;
     case 34:
-      [a1 toggleSpeakScreen];
+      [self toggleSpeakScreen];
       goto LABEL_40;
     case 35:
       _AXSPhotosensitiveMitigationEnabled();
@@ -1468,7 +1468,7 @@ LABEL_40:
 
       AnalyticsSendEvent();
       _AXSSetMotionCuesModeAndShowBanner();
-      [a1 setMotionCuesShowBanner:1];
+      [self setMotionCuesShowBanner:1];
 
       goto LABEL_40;
     case 38:
@@ -1489,42 +1489,42 @@ LABEL_40:
       }
 
       v15 = +[AXSettings sharedInstance];
-      v16 = [v15 hapticMusicActive];
+      hapticMusicActive = [v15 hapticMusicActive];
 
-      if (v16)
+      if (hapticMusicActive)
       {
         goto LABEL_40;
       }
 
-      v7 = +[AXSettings sharedInstance];
-      [v7 setHapticMusicActive:1];
+      sharedInstance = +[AXSettings sharedInstance];
+      [sharedInstance setHapticMusicActive:1];
       goto LABEL_39;
     case 39:
-      [a1 attemptToToggleConversationBoost];
+      [self attemptToToggleConversationBoost];
       goto LABEL_40;
     case 40:
-      [a1 toggleHoverTextTyping];
+      [self toggleHoverTextTyping];
       goto LABEL_40;
     case 42:
-      [a1 toggleOnDeviceEyeTracking];
+      [self toggleOnDeviceEyeTracking];
       goto LABEL_40;
     case 45:
       v29 = +[AXSettings sharedInstance];
-      v30 = [v29 guestPassSessionIsActive];
+      guestPassSessionIsActive = [v29 guestPassSessionIsActive];
 
-      if (!v30)
+      if (!guestPassSessionIsActive)
       {
         goto LABEL_40;
       }
 
-      v7 = AXGuestPassManager_Soft();
-      [v7 endGuestPassSessionWithCompletionBlock:&__block_literal_global_569];
+      sharedInstance = AXGuestPassManager_Soft();
+      [sharedInstance endGuestPassSessionWithCompletionBlock:&__block_literal_global_569];
       goto LABEL_39;
     case 46:
-      v7 = +[AXSettings sharedInstance];
-      v8 = [v7 isNameRecognitionEnabled];
+      sharedInstance = +[AXSettings sharedInstance];
+      isNameRecognitionEnabled = [sharedInstance isNameRecognitionEnabled];
       v9 = +[AXSettings sharedInstance];
-      [v9 setNameRecognitionEnabled:v8 ^ 1u];
+      [v9 setNameRecognitionEnabled:isNameRecognitionEnabled ^ 1u];
 LABEL_38:
 
       goto LABEL_39;
@@ -1571,19 +1571,19 @@ void __64__AXTripleClickHelpers__localToggleAccessibilityShortcutOption___block_
   else
   {
 
-    [a1 _disableSwitchControlWithHandler:0];
+    [self _disableSwitchControlWithHandler:0];
   }
 }
 
 + (void)_toggleLocalizationCaptionPanel
 {
   v4 = +[AXSettings sharedInstance];
-  v2 = [v4 localizationQACaptionMode];
+  localizationQACaptionMode = [v4 localizationQACaptionMode];
   v3 = +[AXSettings sharedInstance];
-  [v3 setLocalizationQACaptionMode:v2 ^ 1u];
+  [v3 setLocalizationQACaptionMode:localizationQACaptionMode ^ 1u];
 }
 
-+ (void)registerObserverForAccessibilityShortcutOption:(int)a3
++ (void)registerObserverForAccessibilityShortcutOption:(int)option
 {
   v70[1] = *MEMORY[0x1E69E9840];
   v4 = AXLogCommon();
@@ -1609,7 +1609,7 @@ void __64__AXTripleClickHelpers__localToggleAccessibilityShortcutOption___block_
 
   v9 = 0;
   v10 = 0;
-  switch(a3)
+  switch(option)
   {
     case 1:
     case 5:
@@ -1810,14 +1810,14 @@ LABEL_32:
         v30 = *(*(&v36 + 1) + 8 * j);
         if (([RegisteredTripleClickSelectors containsObject:v30] & 1) == 0)
         {
-          v31 = [v30 pointerValue];
+          pointerValue = [v30 pointerValue];
           v32 = +[AXSettings sharedInstance];
           v35[0] = MEMORY[0x1E69E9820];
           v35[1] = 3221225472;
           v35[2] = __71__AXTripleClickHelpers_registerObserverForAccessibilityShortcutOption___block_invoke;
           v35[3] = &__block_descriptor_40_e5_v8__0l;
-          v35[4] = v31;
-          [v32 registerUpdateBlock:v35 forRetrieveSelector:v31 withListener:a1];
+          v35[4] = pointerValue;
+          [v32 registerUpdateBlock:v35 forRetrieveSelector:pointerValue withListener:self];
 
           [RegisteredTripleClickSelectors addObject:v30];
         }
@@ -1846,29 +1846,29 @@ void __71__AXTripleClickHelpers_registerObserverForAccessibilityShortcutOption__
   [v4 reloadControlsForExtension:@"com.apple.AccessibilityUIServer.AccessibilityControlsExtension" kind:0 reason:@"AX shortcut preference changed"];
 }
 
-+ (void)_npsToggleTripleClickOption:(int)a3
++ (void)_npsToggleTripleClickOption:(int)option
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  if (a3 == 23)
+  if (option == 23)
   {
     if (WatchControlSettingsLibraryCore())
     {
-      v3 = [getWatchControlSettingsClass() sharedInstance];
-      v4 = [v3 featureEnabled];
+      sharedInstance = [getWatchControlSettingsClass() sharedInstance];
+      featureEnabled = [sharedInstance featureEnabled];
 
-      v17 = [getWatchControlSettingsClass() sharedInstance];
-      [v17 setFeatureEnabled:v4 ^ 1u];
+      sharedInstance2 = [getWatchControlSettingsClass() sharedInstance];
+      [sharedInstance2 setFeatureEnabled:featureEnabled ^ 1u];
     }
   }
 
   else
   {
-    v5 = *&a3;
-    v7 = [a1 domainAccessorForTripleClickOption:?];
-    v8 = [a1 _npsKeyForTripleClickOption:v5];
-    v9 = [v7 domain];
+    v5 = *&option;
+    v7 = [self domainAccessorForTripleClickOption:?];
+    v8 = [self _npsKeyForTripleClickOption:v5];
+    domain = [v7 domain];
 
-    if (v9 && v8)
+    if (domain && v8)
     {
       v10 = [v7 BOOLForKey:v8];
       if ([v8 isEqualToString:*MEMORY[0x1E69E4DE8]])
@@ -1882,28 +1882,28 @@ void __71__AXTripleClickHelpers_registerObserverForAccessibilityShortcutOption__
         [v7 setBool:v10 ^ 1u forKey:v8];
       }
 
-      v11 = [v7 synchronize];
+      synchronize = [v7 synchronize];
       v12 = objc_opt_new();
-      v13 = [v7 domain];
+      domain2 = [v7 domain];
       v14 = MEMORY[0x1E695DFD8];
       v18[0] = v8;
       v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
       v16 = [v14 setWithArray:v15];
-      [v12 synchronizeUserDefaultsDomain:v13 keys:v16];
+      [v12 synchronizeUserDefaultsDomain:domain2 keys:v16];
     }
   }
 }
 
-+ (id)allTripleClickOptionsForPlatform:(int64_t)a3
++ (id)allTripleClickOptionsForPlatform:(int64_t)platform
 {
-  if (a3 == 2)
+  if (platform == 2)
   {
-    [a1 _allAvailableFeaturesWatchOS];
+    [self _allAvailableFeaturesWatchOS];
   }
 
   else
   {
-    [a1 _allAvailableFeaturesIOS];
+    [self _allAvailableFeaturesIOS];
   }
   v3 = ;
 
@@ -1917,11 +1917,11 @@ void __71__AXTripleClickHelpers_registerObserverForAccessibilityShortcutOption__
   return v2;
 }
 
-+ (BOOL)_shouldShowFeatureInShortcutsControlCenterModule:(int)a3 includeGuidedAccess:(BOOL)a4
++ (BOOL)_shouldShowFeatureInShortcutsControlCenterModule:(int)module includeGuidedAccess:(BOOL)access
 {
-  if (a3 > 32)
+  if (module > 32)
   {
-    if (a3 != 44 && a3 != 34)
+    if (module != 44 && module != 34)
     {
       return 1;
     }
@@ -1929,17 +1929,17 @@ void __71__AXTripleClickHelpers_registerObserverForAccessibilityShortcutOption__
 
   else
   {
-    if (a3 == 7)
+    if (module == 7)
     {
-      return a4;
+      return access;
     }
 
-    if (a3 == 8)
+    if (module == 8)
     {
       return 0;
     }
 
-    if (a3 != 30)
+    if (module != 30)
     {
       return 1;
     }
@@ -1948,16 +1948,16 @@ void __71__AXTripleClickHelpers_registerObserverForAccessibilityShortcutOption__
   return !_AXSClarityBoardEnabled();
 }
 
-+ (id)tripleClickOptionsForAccessibilityShortcutControlCenterModuleIncludingGuidedAccess:(BOOL)a3
++ (id)tripleClickOptionsForAccessibilityShortcutControlCenterModuleIncludingGuidedAccess:(BOOL)access
 {
-  v5 = [a1 _availableFeatures];
+  _availableFeatures = [self _availableFeatures];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __107__AXTripleClickHelpers_tripleClickOptionsForAccessibilityShortcutControlCenterModuleIncludingGuidedAccess___block_invoke;
   v8[3] = &__block_descriptor_41_e21_B24__0__NSNumber_8Q16l;
-  v8[4] = a1;
-  v9 = a3;
-  v6 = [v5 axFilterObjectsUsingBlock:v8];
+  v8[4] = self;
+  accessCopy = access;
+  v6 = [_availableFeatures axFilterObjectsUsingBlock:v8];
 
   return v6;
 }
@@ -1982,9 +1982,9 @@ uint64_t __107__AXTripleClickHelpers_tripleClickOptionsForAccessibilityShortcutC
 
 + (BOOL)_isAccessibilityAppIntentsProcess
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 bundleIdentifier];
-  v4 = [v3 isEqualToString:@"com.apple.AccessibilityUIServer.AccessibilityAppIntents"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v4 = [bundleIdentifier isEqualToString:@"com.apple.AccessibilityUIServer.AccessibilityAppIntents"];
 
   return v4;
 }

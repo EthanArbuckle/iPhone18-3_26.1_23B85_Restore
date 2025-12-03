@@ -1,5 +1,5 @@
 @interface CPLEngineWriteTransactionBlocker
-- (CPLEngineWriteTransactionBlocker)initWithUnblockBlock:(id)a3;
+- (CPLEngineWriteTransactionBlocker)initWithUnblockBlock:(id)block;
 - (void)dealloc;
 - (void)unblock;
 @end
@@ -35,9 +35,9 @@
   }
 }
 
-- (CPLEngineWriteTransactionBlocker)initWithUnblockBlock:(id)a3
+- (CPLEngineWriteTransactionBlocker)initWithUnblockBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v10.receiver = self;
   v10.super_class = CPLEngineWriteTransactionBlocker;
   v5 = [(CPLEngineWriteTransactionBlocker *)&v10 init];
@@ -45,7 +45,7 @@
   if (v5)
   {
     v5->_lock._os_unfair_lock_opaque = 0;
-    v7 = [v4 copy];
+    v7 = [blockCopy copy];
     unblock = v6->_unblock;
     v6->_unblock = v7;
   }

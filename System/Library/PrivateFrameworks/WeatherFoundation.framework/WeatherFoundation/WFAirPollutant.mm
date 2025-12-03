@@ -1,15 +1,15 @@
 @interface WFAirPollutant
-- (WFAirPollutant)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (WFAirPollutant)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFAirPollutant
 
-- (WFAirPollutant)initWithCoder:(id)a3
+- (WFAirPollutant)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v27.receiver = self;
   v27.super_class = WFAirPollutant;
   v5 = [(WFAirPollutant *)&v27 init];
@@ -17,94 +17,94 @@
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_localizedName);
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     localizedName = v5->_localizedName;
     v5->_localizedName = v8;
 
     v10 = objc_opt_class();
     v11 = NSStringFromSelector(sel_localizedDescription);
-    v12 = [v4 decodeObjectOfClass:v10 forKey:v11];
+    v12 = [coderCopy decodeObjectOfClass:v10 forKey:v11];
     localizedDescription = v5->_localizedDescription;
     v5->_localizedDescription = v12;
 
     v14 = NSStringFromSelector(sel_amount);
-    [v4 decodeDoubleForKey:v14];
+    [coderCopy decodeDoubleForKey:v14];
     v5->_amount = v15;
 
     v16 = objc_opt_class();
     v17 = NSStringFromSelector(sel_unit);
-    v18 = [v4 decodeObjectOfClass:v16 forKey:v17];
+    v18 = [coderCopy decodeObjectOfClass:v16 forKey:v17];
     unit = v5->_unit;
     v5->_unit = v18;
 
     v20 = objc_opt_class();
     v21 = NSStringFromSelector(sel_localizedCategoryDescription);
-    v22 = [v4 decodeObjectOfClass:v20 forKey:v21];
+    v22 = [coderCopy decodeObjectOfClass:v20 forKey:v21];
     localizedCategoryDescription = v5->_localizedCategoryDescription;
     v5->_localizedCategoryDescription = v22;
 
     v24 = NSStringFromSelector(sel_categoryIndex);
-    v5->_categoryIndex = [v4 decodeIntegerForKey:v24];
+    v5->_categoryIndex = [coderCopy decodeIntegerForKey:v24];
 
     v25 = NSStringFromSelector(sel_index);
-    v5->_index = [v4 decodeIntegerForKey:v25];
+    v5->_index = [coderCopy decodeIntegerForKey:v25];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFAirPollutant *)self localizedName];
+  coderCopy = coder;
+  localizedName = [(WFAirPollutant *)self localizedName];
   v6 = NSStringFromSelector(sel_localizedName);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:localizedName forKey:v6];
 
-  v7 = [(WFAirPollutant *)self localizedDescription];
+  localizedDescription = [(WFAirPollutant *)self localizedDescription];
   v8 = NSStringFromSelector(sel_localizedDescription);
-  [v4 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:localizedDescription forKey:v8];
 
   [(WFAirPollutant *)self amount];
   v10 = v9;
   v11 = NSStringFromSelector(sel_amount);
-  [v4 encodeDouble:v11 forKey:v10];
+  [coderCopy encodeDouble:v11 forKey:v10];
 
-  v12 = [(WFAirPollutant *)self unit];
+  unit = [(WFAirPollutant *)self unit];
   v13 = NSStringFromSelector(sel_unit);
-  [v4 encodeObject:v12 forKey:v13];
+  [coderCopy encodeObject:unit forKey:v13];
 
-  v14 = [(WFAirPollutant *)self localizedCategoryDescription];
+  localizedCategoryDescription = [(WFAirPollutant *)self localizedCategoryDescription];
   v15 = NSStringFromSelector(sel_localizedCategoryDescription);
-  [v4 encodeObject:v14 forKey:v15];
+  [coderCopy encodeObject:localizedCategoryDescription forKey:v15];
 
-  v16 = [(WFAirPollutant *)self categoryIndex];
+  categoryIndex = [(WFAirPollutant *)self categoryIndex];
   v17 = NSStringFromSelector(sel_categoryIndex);
-  [v4 encodeInteger:v16 forKey:v17];
+  [coderCopy encodeInteger:categoryIndex forKey:v17];
 
-  v18 = [(WFAirPollutant *)self index];
+  index = [(WFAirPollutant *)self index];
   v19 = NSStringFromSelector(sel_index);
-  [v4 encodeInteger:v18 forKey:v19];
+  [coderCopy encodeInteger:index forKey:v19];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   v4 = objc_opt_new();
   if (v4)
   {
-    v5 = [(WFAirPollutant *)self localizedName];
-    [v4 setLocalizedName:v5];
+    localizedName = [(WFAirPollutant *)self localizedName];
+    [v4 setLocalizedName:localizedName];
 
-    v6 = [(WFAirPollutant *)self localizedDescription];
-    [v4 setLocalizedDescription:v6];
+    localizedDescription = [(WFAirPollutant *)self localizedDescription];
+    [v4 setLocalizedDescription:localizedDescription];
 
     [(WFAirPollutant *)self amount];
     [v4 setAmount:?];
-    v7 = [(WFAirPollutant *)self unit];
-    [v4 setUnit:v7];
+    unit = [(WFAirPollutant *)self unit];
+    [v4 setUnit:unit];
 
-    v8 = [(WFAirPollutant *)self localizedCategoryDescription];
-    [v4 setLocalizedCategoryDescription:v8];
+    localizedCategoryDescription = [(WFAirPollutant *)self localizedCategoryDescription];
+    [v4 setLocalizedCategoryDescription:localizedCategoryDescription];
 
     [v4 setCategoryIndex:{-[WFAirPollutant categoryIndex](self, "categoryIndex")}];
     [v4 setIndex:{-[WFAirPollutant index](self, "index")}];
@@ -116,13 +116,13 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(WFAirPollutant *)self localizedName];
-  v5 = [(WFAirPollutant *)self localizedDescription];
+  localizedName = [(WFAirPollutant *)self localizedName];
+  localizedDescription = [(WFAirPollutant *)self localizedDescription];
   [(WFAirPollutant *)self amount];
   v7 = v6;
-  v8 = [(WFAirPollutant *)self unit];
-  v9 = [(WFAirPollutant *)self localizedCategoryDescription];
-  v10 = [v3 stringWithFormat:@"<WFAirPollutant localizedName: %@, localizedDescription: %@, amount: %f, unit: %@, localizedCategoryDescription: %@, categoryIndex: %lu, index: %lu", v4, v5, v7, v8, v9, -[WFAirPollutant categoryIndex](self, "categoryIndex"), -[WFAirPollutant index](self, "index")];
+  unit = [(WFAirPollutant *)self unit];
+  localizedCategoryDescription = [(WFAirPollutant *)self localizedCategoryDescription];
+  v10 = [v3 stringWithFormat:@"<WFAirPollutant localizedName: %@, localizedDescription: %@, amount: %f, unit: %@, localizedCategoryDescription: %@, categoryIndex: %lu, index: %lu", localizedName, localizedDescription, v7, unit, localizedCategoryDescription, -[WFAirPollutant categoryIndex](self, "categoryIndex"), -[WFAirPollutant index](self, "index")];
 
   return v10;
 }

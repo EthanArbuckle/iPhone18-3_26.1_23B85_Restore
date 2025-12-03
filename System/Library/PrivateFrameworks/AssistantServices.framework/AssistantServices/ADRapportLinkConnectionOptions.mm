@@ -1,39 +1,39 @@
 @interface ADRapportLinkConnectionOptions
-+ (id)newWithBuilder:(id)a3;
-- (ADRapportLinkConnectionOptions)initWithBuilder:(id)a3;
-- (ADRapportLinkConnectionOptions)initWithCoder:(id)a3;
-- (ADRapportLinkConnectionOptions)initWithUsesOnDemandConnection:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (ADRapportLinkConnectionOptions)initWithBuilder:(id)builder;
+- (ADRapportLinkConnectionOptions)initWithCoder:(id)coder;
+- (ADRapportLinkConnectionOptions)initWithUsesOnDemandConnection:(int64_t)connection;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ADRapportLinkConnectionOptions
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   usesOnDemandConnection = self->_usesOnDemandConnection;
-  v4 = a3;
+  coderCopy = coder;
   v5 = [NSNumber numberWithInteger:usesOnDemandConnection];
-  [v4 encodeObject:v5 forKey:@"ADRapportLinkConnectionOptions::usesOnDemandConnection"];
+  [coderCopy encodeObject:v5 forKey:@"ADRapportLinkConnectionOptions::usesOnDemandConnection"];
 }
 
-- (ADRapportLinkConnectionOptions)initWithCoder:(id)a3
+- (ADRapportLinkConnectionOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ADRapportLinkConnectionOptions::usesOnDemandConnection"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ADRapportLinkConnectionOptions::usesOnDemandConnection"];
 
-  v6 = [v5 integerValue];
+  integerValue = [v5 integerValue];
 
-  return [(ADRapportLinkConnectionOptions *)self initWithUsesOnDemandConnection:v6];
+  return [(ADRapportLinkConnectionOptions *)self initWithUsesOnDemandConnection:integerValue];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -44,7 +44,7 @@
     if (objc_opt_isKindOfClass())
     {
       usesOnDemandConnection = self->_usesOnDemandConnection;
-      v6 = usesOnDemandConnection == [(ADRapportLinkConnectionOptions *)v4 usesOnDemandConnection];
+      v6 = usesOnDemandConnection == [(ADRapportLinkConnectionOptions *)equalCopy usesOnDemandConnection];
     }
 
     else
@@ -64,7 +64,7 @@
   return v3;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = [NSString alloc];
   v8.receiver = self;
@@ -75,27 +75,27 @@
   return v6;
 }
 
-- (ADRapportLinkConnectionOptions)initWithUsesOnDemandConnection:(int64_t)a3
+- (ADRapportLinkConnectionOptions)initWithUsesOnDemandConnection:(int64_t)connection
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100283C70;
   v4[3] = &unk_1005186E8;
-  v4[4] = a3;
+  v4[4] = connection;
   return [(ADRapportLinkConnectionOptions *)self initWithBuilder:v4];
 }
 
-- (ADRapportLinkConnectionOptions)initWithBuilder:(id)a3
+- (ADRapportLinkConnectionOptions)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v9.receiver = self;
   v9.super_class = ADRapportLinkConnectionOptions;
   v5 = [(ADRapportLinkConnectionOptions *)&v9 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_ADRapportLinkConnectionOptionsMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_ADRapportLinkConnectionOptionsMutation *)v7 isDirty])
     {
       v6->_usesOnDemandConnection = [(_ADRapportLinkConnectionOptionsMutation *)v7 getUsesOnDemandConnection];
@@ -105,21 +105,21 @@
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_ADRapportLinkConnectionOptionsMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_ADRapportLinkConnectionOptionsMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(ADRapportLinkConnectionOptions);

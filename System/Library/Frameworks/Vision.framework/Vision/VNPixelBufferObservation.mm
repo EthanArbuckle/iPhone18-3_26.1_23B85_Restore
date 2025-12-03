@@ -1,16 +1,16 @@
 @interface VNPixelBufferObservation
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)croppedBoundingBox;
-- (VNPixelBufferObservation)initWithCoder:(id)a3;
-- (VNPixelBufferObservation)initWithOriginatingRequestSpecifier:(id)a3 featureName:(id)a4 CVPixelBuffer:(__CVBuffer *)a5;
-- (__CVBuffer)createPixelBufferInOrientation:(unsigned int)a3 error:(id *)a4;
-- (double)setCroppedBoundingBox:(double)a3;
+- (VNPixelBufferObservation)initWithCoder:(id)coder;
+- (VNPixelBufferObservation)initWithOriginatingRequestSpecifier:(id)specifier featureName:(id)name CVPixelBuffer:(__CVBuffer *)buffer;
+- (__CVBuffer)createPixelBufferInOrientation:(unsigned int)orientation error:(id *)error;
+- (double)setCroppedBoundingBox:(double)box;
 - (id)debugQuickLookObject;
 - (id)description;
 - (id)vn_cloneObject;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VNPixelBufferObservation
@@ -46,9 +46,9 @@
     v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
     v8 = [v5 imageByApplyingFilter:@"CIColorMatrix" withInputParameters:v7];
 
-    v9 = [MEMORY[0x1E695F620] context];
+    context = [MEMORY[0x1E695F620] context];
     [v8 extent];
-    v10 = [v9 createCGImage:v8 fromRect:?];
+    v10 = [context createCGImage:v8 fromRect:?];
     v11 = VNDebugImageFromCGImage(v10);
     CGImageRelease(v10);
   }
@@ -56,12 +56,12 @@
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = VNPixelBufferObservation;
-  v5 = [(VNObservation *)&v7 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [VNCVPixelBufferConversionHelpers isCVPixelBuffer:self->_pixelBuffer equalToCVPixelBuffer:v4[12]];
+  v5 = [(VNObservation *)&v7 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [VNCVPixelBufferConversionHelpers isCVPixelBuffer:self->_pixelBuffer equalToCVPixelBuffer:equalCopy[12]];
 
   return v5;
 }
@@ -81,11 +81,11 @@
   v4 = [(VNObservation *)&v9 description];
   [v3 appendString:v4];
 
-  v5 = [(VNPixelBufferObservation *)self featureName];
-  v6 = v5;
-  if (v5)
+  featureName = [(VNPixelBufferObservation *)self featureName];
+  v6 = featureName;
+  if (featureName)
   {
-    [v3 appendFormat:@" %@", v5];
+    [v3 appendFormat:@" %@", featureName];
   }
 
   v7 = CFCopyDescription(self->_pixelBuffer);
@@ -98,37 +98,37 @@
 {
   v7.receiver = self;
   v7.super_class = VNPixelBufferObservation;
-  v3 = [(VNObservation *)&v7 vn_cloneObject];
-  if (v3)
+  vn_cloneObject = [(VNObservation *)&v7 vn_cloneObject];
+  if (vn_cloneObject)
   {
-    v3[12] = CVPixelBufferRetain(self->_pixelBuffer);
+    vn_cloneObject[12] = CVPixelBufferRetain(self->_pixelBuffer);
     v4 = [(NSString *)self->_featureName copy];
-    v5 = v3[13];
-    v3[13] = v4;
+    v5 = vn_cloneObject[13];
+    vn_cloneObject[13] = v4;
   }
 
-  return v3;
+  return vn_cloneObject;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = VNPixelBufferObservation;
-  [(VNObservation *)&v5 encodeWithCoder:v4];
-  [v4 vn_encodePixelBuffer:self->_pixelBuffer forKey:@"vnpbo_pbdict"];
-  [v4 encodeObject:self->_featureName forKey:@"featureName"];
+  [(VNObservation *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy vn_encodePixelBuffer:self->_pixelBuffer forKey:@"vnpbo_pbdict"];
+  [coderCopy encodeObject:self->_featureName forKey:@"featureName"];
 }
 
-- (VNPixelBufferObservation)initWithCoder:(id)a3
+- (VNPixelBufferObservation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = VNPixelBufferObservation;
-  v5 = [(VNObservation *)&v12 initWithCoder:v4];
-  if (v5 && (v6 = [v4 vn_decodePixelBufferForKey:@"vnpbo_pbdict"], (v5->_pixelBuffer = v6) != 0))
+  v5 = [(VNObservation *)&v12 initWithCoder:coderCopy];
+  if (v5 && (v6 = [coderCopy vn_decodePixelBufferForKey:@"vnpbo_pbdict"], (v5->_pixelBuffer = v6) != 0))
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"featureName"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"featureName"];
     v8 = [v7 copy];
     featureName = v5->_featureName;
     v5->_featureName = v8;
@@ -152,17 +152,17 @@
   [(VNPixelBufferObservation *)&v3 dealloc];
 }
 
-- (VNPixelBufferObservation)initWithOriginatingRequestSpecifier:(id)a3 featureName:(id)a4 CVPixelBuffer:(__CVBuffer *)a5
+- (VNPixelBufferObservation)initWithOriginatingRequestSpecifier:(id)specifier featureName:(id)name CVPixelBuffer:(__CVBuffer *)buffer
 {
-  v8 = a3;
-  v9 = a4;
+  specifierCopy = specifier;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = VNPixelBufferObservation;
-  v10 = [(VNObservation *)&v14 initWithOriginatingRequestSpecifier:v8];
+  v10 = [(VNObservation *)&v14 initWithOriginatingRequestSpecifier:specifierCopy];
   if (v10)
   {
-    v10->_pixelBuffer = CVPixelBufferRetain(a5);
-    v11 = [v9 copy];
+    v10->_pixelBuffer = CVPixelBufferRetain(buffer);
+    v11 = [nameCopy copy];
     featureName = v10->_featureName;
     v10->_featureName = v11;
   }
@@ -170,12 +170,12 @@
   return v10;
 }
 
-- (double)setCroppedBoundingBox:(double)a3
+- (double)setCroppedBoundingBox:(double)box
 {
   if (result)
   {
     result[14] = a2;
-    result[15] = a3;
+    result[15] = box;
     result[16] = a4;
     result[17] = a5;
   }
@@ -183,17 +183,17 @@
   return result;
 }
 
-- (__CVBuffer)createPixelBufferInOrientation:(unsigned int)a3 error:(id *)a4
+- (__CVBuffer)createPixelBufferInOrientation:(unsigned int)orientation error:(id *)error
 {
-  v6 = [(VNPixelBufferObservation *)self pixelBuffer];
-  v7 = [objc_alloc(MEMORY[0x1E695F658]) initWithCVPixelBuffer:v6];
-  v8 = [v7 imageByApplyingTransform:{v18, VNAffineTransformForVisionToTopLeftOriginOrientation(0, a3, v18)}];
+  pixelBuffer = [(VNPixelBufferObservation *)self pixelBuffer];
+  v7 = [objc_alloc(MEMORY[0x1E695F658]) initWithCVPixelBuffer:pixelBuffer];
+  v8 = [v7 imageByApplyingTransform:{v18, VNAffineTransformForVisionToTopLeftOriginOrientation(0, orientation, v18)}];
 
   [v8 extent];
   v10 = v9;
   v12 = v11;
-  PixelFormatType = CVPixelBufferGetPixelFormatType(v6);
-  v14 = [VNCVPixelBufferHelper createPixelBufferUsingIOSurfaceWithWidth:v10 height:v12 pixelFormatType:PixelFormatType error:a4];
+  PixelFormatType = CVPixelBufferGetPixelFormatType(pixelBuffer);
+  v14 = [VNCVPixelBufferHelper createPixelBufferUsingIOSurfaceWithWidth:v10 height:v12 pixelFormatType:PixelFormatType error:error];
   if (v14)
   {
     v15 = objc_alloc(MEMORY[0x1E695F620]);

@@ -10,8 +10,8 @@
   v5.super_class = HROnboardingElectrocardiogramTakeRecordingViewControllerAccessibility;
   [(HROnboardingElectrocardiogramTakeRecordingViewControllerAccessibility *)&v5 _accessibilityLoadAccessibilityInformation];
   v3 = [(HROnboardingElectrocardiogramTakeRecordingViewControllerAccessibility *)self safeValueForKey:@"titleLabel"];
-  v4 = [v3 accessibilityTraits];
-  [v3 setAccessibilityTraits:*MEMORY[0x29EDC7F80] | v4];
+  accessibilityTraits = [v3 accessibilityTraits];
+  [v3 setAccessibilityTraits:*MEMORY[0x29EDC7F80] | accessibilityTraits];
 }
 
 @end

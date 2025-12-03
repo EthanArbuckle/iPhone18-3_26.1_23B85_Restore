@@ -1,10 +1,10 @@
 @interface DMCEvents
 - (DMCEvents)init;
 - (id)_eventsPlistFilePath;
-- (void)_injectTimestamps:(id)a3;
-- (void)_logEvent:(id)a3 category:(id)a4 forTopic:(id)a5;
-- (void)logErrorEventForTopic:(id)a3 reason:(id)a4 error:(id)a5 details:(id)a6;
-- (void)logRegularEventForTopic:(id)a3 reason:(id)a4 details:(id)a5;
+- (void)_injectTimestamps:(id)timestamps;
+- (void)_logEvent:(id)event category:(id)category forTopic:(id)topic;
+- (void)logErrorEventForTopic:(id)topic reason:(id)reason error:(id)error details:(id)details;
+- (void)logRegularEventForTopic:(id)topic reason:(id)reason details:(id)details;
 @end
 
 @implementation DMCEvents
@@ -44,45 +44,45 @@ void __17__DMCEvents_init__block_invoke(uint64_t a1)
   }
 }
 
-- (void)logRegularEventForTopic:(id)a3 reason:(id)a4 details:(id)a5
+- (void)logRegularEventForTopic:(id)topic reason:(id)reason details:(id)details
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (reason)
   {
-    v8 = a4;
+    reasonCopy = reason;
   }
 
   else
   {
-    v8 = @"Unknown";
+    reasonCopy = @"Unknown";
   }
 
   v16 = @"Reason";
-  v17[0] = v8;
+  v17[0] = reasonCopy;
   v9 = MEMORY[0x1E695DF20];
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  detailsCopy = details;
+  reasonCopy2 = reason;
+  topicCopy = topic;
   v13 = [v9 dictionaryWithObjects:v17 forKeys:&v16 count:1];
 
   v14 = [v13 mutableCopy];
   [(DMCEvents *)self _injectTimestamps:v14];
-  [v14 setObject:v10 forKeyedSubscript:@"Details"];
+  [v14 setObject:detailsCopy forKeyedSubscript:@"Details"];
 
-  [(DMCEvents *)self _logEvent:v14 category:@"Regular" forTopic:v12];
+  [(DMCEvents *)self _logEvent:v14 category:@"Regular" forTopic:topicCopy];
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)logErrorEventForTopic:(id)a3 reason:(id)a4 error:(id)a5 details:(id)a6
+- (void)logErrorEventForTopic:(id)topic reason:(id)reason error:(id)error details:(id)details
 {
   v39[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v11)
+  topicCopy = topic;
+  reasonCopy = reason;
+  errorCopy = error;
+  detailsCopy = details;
+  if (reasonCopy)
   {
-    v14 = v11;
+    v14 = reasonCopy;
   }
 
   else
@@ -96,32 +96,32 @@ void __17__DMCEvents_init__block_invoke(uint64_t a1)
   v16 = [v15 mutableCopy];
 
   [(DMCEvents *)self _injectTimestamps:v16];
-  [v16 setObject:v13 forKeyedSubscript:@"Details"];
-  if (v12)
+  [v16 setObject:detailsCopy forKeyedSubscript:@"Details"];
+  if (errorCopy)
   {
-    v17 = [v12 domain];
-    [v16 setObject:v17 forKeyedSubscript:@"Error Domain"];
+    domain = [errorCopy domain];
+    [v16 setObject:domain forKeyedSubscript:@"Error Domain"];
 
-    v18 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v12, "code")}];
+    v18 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(errorCopy, "code")}];
     [v16 setObject:v18 forKeyedSubscript:@"Error Code"];
 
-    v19 = [v12 localizedDescription];
-    [v16 setObject:v19 forKeyedSubscript:@"Error Description"];
+    localizedDescription = [errorCopy localizedDescription];
+    [v16 setObject:localizedDescription forKeyedSubscript:@"Error Description"];
 
-    v20 = [v12 underlyingErrors];
-    v21 = [v20 count];
+    underlyingErrors = [errorCopy underlyingErrors];
+    v21 = [underlyingErrors count];
 
     if (v21)
     {
-      v31 = self;
-      v32 = v10;
+      selfCopy = self;
+      v32 = topicCopy;
       v22 = objc_opt_new();
       v33 = 0u;
       v34 = 0u;
       v35 = 0u;
       v36 = 0u;
-      v23 = [v12 underlyingErrors];
-      v24 = [v23 countByEnumeratingWithState:&v33 objects:v37 count:16];
+      underlyingErrors2 = [errorCopy underlyingErrors];
+      v24 = [underlyingErrors2 countByEnumeratingWithState:&v33 objects:v37 count:16];
       if (v24)
       {
         v25 = v24;
@@ -133,7 +133,7 @@ void __17__DMCEvents_init__block_invoke(uint64_t a1)
           {
             if (*v34 != v26)
             {
-              objc_enumerationMutation(v23);
+              objc_enumerationMutation(underlyingErrors2);
             }
 
             v28 = [*(*(&v33 + 1) + 8 * v27) description];
@@ -143,7 +143,7 @@ void __17__DMCEvents_init__block_invoke(uint64_t a1)
           }
 
           while (v25 != v27);
-          v25 = [v23 countByEnumeratingWithState:&v33 objects:v37 count:16];
+          v25 = [underlyingErrors2 countByEnumeratingWithState:&v33 objects:v37 count:16];
         }
 
         while (v25);
@@ -152,21 +152,21 @@ void __17__DMCEvents_init__block_invoke(uint64_t a1)
       v29 = [v22 copy];
       [v16 setObject:v29 forKeyedSubscript:@"Error Underlying Errors"];
 
-      self = v31;
-      v10 = v32;
+      self = selfCopy;
+      topicCopy = v32;
     }
   }
 
-  [(DMCEvents *)self _logEvent:v16 category:@"Error" forTopic:v10, v31, v32];
+  [(DMCEvents *)self _logEvent:v16 category:@"Error" forTopic:topicCopy, selfCopy, v32];
 
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_logEvent:(id)a3 category:(id)a4 forTopic:(id)a5
+- (void)_logEvent:(id)event category:(id)category forTopic:(id)topic
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  eventCopy = event;
+  categoryCopy = category;
+  topicCopy = topic;
   if (_logEvent_category_forTopic__onceToken != -1)
   {
     [DMCEvents _logEvent:category:forTopic:];
@@ -178,12 +178,12 @@ void __17__DMCEvents_init__block_invoke(uint64_t a1)
   v15[2] = __41__DMCEvents__logEvent_category_forTopic___block_invoke_2;
   v15[3] = &unk_1E7ADC7B0;
   v15[4] = self;
-  v16 = v9;
-  v17 = v10;
-  v18 = v8;
-  v12 = v8;
-  v13 = v10;
-  v14 = v9;
+  v16 = categoryCopy;
+  v17 = topicCopy;
+  v18 = eventCopy;
+  v12 = eventCopy;
+  v13 = topicCopy;
+  v14 = categoryCopy;
   dispatch_async_and_wait(v11, v15);
 }
 
@@ -330,16 +330,16 @@ LABEL_3:
   DMCSetSkipBackupAttributeToItemAtPath(v34, 1);
 }
 
-- (void)_injectTimestamps:(id)a3
+- (void)_injectTimestamps:(id)timestamps
 {
   v3 = MEMORY[0x1E695DF00];
-  v4 = a3;
-  v7 = [v3 date];
+  timestampsCopy = timestamps;
+  date = [v3 date];
   v5 = +[DMCDateFormatterFactory isoLocalTimeZoneDateFormatter];
-  v6 = [v5 stringFromDate:v7];
+  v6 = [v5 stringFromDate:date];
 
-  [v4 setObject:v6 forKeyedSubscript:@"Timestamp (Localized)"];
-  [v4 setObject:v7 forKeyedSubscript:@"Timestamp"];
+  [timestampsCopy setObject:v6 forKeyedSubscript:@"Timestamp (Localized)"];
+  [timestampsCopy setObject:date forKeyedSubscript:@"Timestamp"];
 }
 
 - (id)_eventsPlistFilePath

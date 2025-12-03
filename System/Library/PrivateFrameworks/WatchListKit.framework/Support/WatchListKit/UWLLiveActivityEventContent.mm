@@ -1,20 +1,20 @@
 @interface UWLLiveActivityEventContent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasContentIsDone:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasContentIsDone:(BOOL)done;
+- (void)writeTo:(id)to;
 @end
 
 @implementation UWLLiveActivityEventContent
 
-- (void)setHasContentIsDone:(BOOL)a3
+- (void)setHasContentIsDone:(BOOL)done
 {
-  if (a3)
+  if (done)
   {
     v3 = 2;
   }
@@ -32,8 +32,8 @@
   v7.receiver = self;
   v7.super_class = UWLLiveActivityEventContent;
   v3 = [(UWLLiveActivityEventContent *)&v7 description];
-  v4 = [(UWLLiveActivityEventContent *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(UWLLiveActivityEventContent *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -84,26 +84,26 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_contentCanonicalId)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_contentBrandId)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_contentExternalPlayableId)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -111,7 +111,7 @@
   {
     contentMediaLengthInMilliseconds = self->_contentMediaLengthInMilliseconds;
     PBDataWriterWriteInt64Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -119,71 +119,71 @@
   {
     contentIsDone = self->_contentIsDone;
     PBDataWriterWriteBOOLField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_contentInternalLegId)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_contentCanonicalId)
   {
-    [v4 setContentCanonicalId:?];
-    v4 = v6;
+    [toCopy setContentCanonicalId:?];
+    toCopy = v6;
   }
 
   if (self->_contentBrandId)
   {
     [v6 setContentBrandId:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_contentExternalPlayableId)
   {
     [v6 setContentExternalPlayableId:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 1) = self->_contentMediaLengthInMilliseconds;
-    *(v4 + 52) |= 1u;
+    *(toCopy + 1) = self->_contentMediaLengthInMilliseconds;
+    *(toCopy + 52) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 48) = self->_contentIsDone;
-    *(v4 + 52) |= 2u;
+    *(toCopy + 48) = self->_contentIsDone;
+    *(toCopy + 52) |= 2u;
   }
 
   if (self->_contentInternalLegId)
   {
     [v6 setContentInternalLegId:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_contentCanonicalId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_contentCanonicalId copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
-  v8 = [(NSString *)self->_contentBrandId copyWithZone:a3];
+  v8 = [(NSString *)self->_contentBrandId copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(NSString *)self->_contentExternalPlayableId copyWithZone:a3];
+  v10 = [(NSString *)self->_contentExternalPlayableId copyWithZone:zone];
   v11 = v5[4];
   v5[4] = v10;
 
@@ -201,23 +201,23 @@
     *(v5 + 52) |= 2u;
   }
 
-  v13 = [(NSString *)self->_contentInternalLegId copyWithZone:a3];
+  v13 = [(NSString *)self->_contentInternalLegId copyWithZone:zone];
   v14 = v5[5];
   v5[5] = v13;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   contentCanonicalId = self->_contentCanonicalId;
-  if (contentCanonicalId | *(v4 + 3))
+  if (contentCanonicalId | *(equalCopy + 3))
   {
     if (![(NSString *)contentCanonicalId isEqual:?])
     {
@@ -226,7 +226,7 @@
   }
 
   contentBrandId = self->_contentBrandId;
-  if (contentBrandId | *(v4 + 2))
+  if (contentBrandId | *(equalCopy + 2))
   {
     if (![(NSString *)contentBrandId isEqual:?])
     {
@@ -235,7 +235,7 @@
   }
 
   contentExternalPlayableId = self->_contentExternalPlayableId;
-  if (contentExternalPlayableId | *(v4 + 4))
+  if (contentExternalPlayableId | *(equalCopy + 4))
   {
     if (![(NSString *)contentExternalPlayableId isEqual:?])
     {
@@ -243,23 +243,23 @@
     }
   }
 
-  v8 = *(v4 + 52);
+  v8 = *(equalCopy + 52);
   if (*&self->_has)
   {
-    if ((*(v4 + 52) & 1) == 0 || self->_contentMediaLengthInMilliseconds != *(v4 + 1))
+    if ((*(equalCopy + 52) & 1) == 0 || self->_contentMediaLengthInMilliseconds != *(equalCopy + 1))
     {
       goto LABEL_18;
     }
   }
 
-  else if (*(v4 + 52))
+  else if (*(equalCopy + 52))
   {
     goto LABEL_18;
   }
 
   if ((*&self->_has & 2) == 0)
   {
-    if ((*(v4 + 52) & 2) == 0)
+    if ((*(equalCopy + 52) & 2) == 0)
     {
       goto LABEL_15;
     }
@@ -269,28 +269,28 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if ((*(v4 + 52) & 2) == 0)
+  if ((*(equalCopy + 52) & 2) == 0)
   {
     goto LABEL_18;
   }
 
-  v12 = *(v4 + 48);
+  v12 = *(equalCopy + 48);
   if (self->_contentIsDone)
   {
-    if ((*(v4 + 48) & 1) == 0)
+    if ((*(equalCopy + 48) & 1) == 0)
     {
       goto LABEL_18;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
     goto LABEL_18;
   }
 
 LABEL_15:
   contentInternalLegId = self->_contentInternalLegId;
-  if (contentInternalLegId | *(v4 + 5))
+  if (contentInternalLegId | *(equalCopy + 5))
   {
     v10 = [(NSString *)contentInternalLegId isEqual:?];
   }
@@ -334,46 +334,46 @@ LABEL_3:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ [(NSString *)self->_contentInternalLegId hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 3))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(UWLLiveActivityEventContent *)self setContentCanonicalId:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(UWLLiveActivityEventContent *)self setContentBrandId:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(UWLLiveActivityEventContent *)self setContentExternalPlayableId:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 52);
+  v5 = *(fromCopy + 52);
   if (v5)
   {
-    self->_contentMediaLengthInMilliseconds = *(v4 + 1);
+    self->_contentMediaLengthInMilliseconds = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 52);
+    v5 = *(fromCopy + 52);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_contentIsDone = *(v4 + 48);
+    self->_contentIsDone = *(fromCopy + 48);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(UWLLiveActivityEventContent *)self setContentInternalLegId:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

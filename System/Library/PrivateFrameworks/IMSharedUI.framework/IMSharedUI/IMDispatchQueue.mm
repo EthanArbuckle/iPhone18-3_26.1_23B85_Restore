@@ -1,15 +1,15 @@
 @interface IMDispatchQueue
-+ (id)serialQueueWithDispatchPriority:(int64_t)a3;
-- (BOOL)containsOutstandingBlockForKey:(id)a3;
-- (id)_initWithDispatchAttr:(id)a3 dispatchPriority:(int64_t)a4;
++ (id)serialQueueWithDispatchPriority:(int64_t)priority;
+- (BOOL)containsOutstandingBlockForKey:(id)key;
+- (id)_initWithDispatchAttr:(id)attr dispatchPriority:(int64_t)priority;
 - (id)allKeysOfOutstandingBlocks;
-- (int64_t)queuePriorityOfOutstandingBlockForKey:(id)a3;
-- (void)addBlock:(id)a3 withQueuePriority:(int64_t)a4 forKey:(id)a5;
+- (int64_t)queuePriorityOfOutstandingBlockForKey:(id)key;
+- (void)addBlock:(id)block withQueuePriority:(int64_t)priority forKey:(id)key;
 - (void)dealloc;
 - (void)removeAllOutstandingBlocks;
-- (void)removeOutstandingBlockForKey:(id)a3;
-- (void)setQueuePriority:(int64_t)a3 ofOutstandingBlockForKey:(id)a4;
-- (void)setSuspended:(BOOL)a3;
+- (void)removeOutstandingBlockForKey:(id)key;
+- (void)setQueuePriority:(int64_t)priority ofOutstandingBlockForKey:(id)key;
+- (void)setSuspended:(BOOL)suspended;
 @end
 
 @implementation IMDispatchQueue
@@ -22,17 +22,17 @@
   [(IMDispatchQueue *)&v3 dealloc];
 }
 
-+ (id)serialQueueWithDispatchPriority:(int64_t)a3
++ (id)serialQueueWithDispatchPriority:(int64_t)priority
 {
   v4 = [IMDispatchQueue alloc];
-  v6 = objc_msgSend__initWithDispatchAttr_dispatchPriority_(v4, v5, 0, a3);
+  v6 = objc_msgSend__initWithDispatchAttr_dispatchPriority_(v4, v5, 0, priority);
 
   return v6;
 }
 
-- (id)_initWithDispatchAttr:(id)a3 dispatchPriority:(int64_t)a4
+- (id)_initWithDispatchAttr:(id)attr dispatchPriority:(int64_t)priority
 {
-  v6 = a3;
+  attrCopy = attr;
   v19.receiver = self;
   v19.super_class = IMDispatchQueue;
   v7 = [(IMDispatchQueue *)&v19 init];
@@ -45,8 +45,8 @@
     v8 = CFBinaryHeapCreate(0, 0, &callBacks, 0);
     objc_msgSend_setHeap_(v7, v9, v8);
     CFRelease(v8);
-    v10 = dispatch_queue_create(0, v6);
-    v11 = dispatch_get_global_queue(a4, 0);
+    v10 = dispatch_queue_create(0, attrCopy);
+    v11 = dispatch_get_global_queue(priority, 0);
     dispatch_set_target_queue(v10, v11);
 
     objc_msgSend_setDispatchQueue_(v7, v12, v10);
@@ -59,10 +59,10 @@
   return v7;
 }
 
-- (void)addBlock:(id)a3 withQueuePriority:(int64_t)a4 forKey:(id)a5
+- (void)addBlock:(id)block withQueuePriority:(int64_t)priority forKey:(id)key
 {
-  v8 = a3;
-  v9 = a5;
+  blockCopy = block;
+  keyCopy = key;
   v12 = objc_msgSend_dispatchQueue(self, v10, v11);
   v15 = objc_msgSend_lockQueue(self, v13, v14);
   v18 = objc_msgSend_heap(self, v16, v17);
@@ -70,28 +70,28 @@
   v23 = v21;
   if (!v18 || !v21)
   {
-    objc_msgSend_raise_format_(MEMORY[0x277CBEAD8], v22, *MEMORY[0x277CBE658], @"Tried to add block for key %@ to a cancelled IMDispatchQueue.", v9);
+    objc_msgSend_raise_format_(MEMORY[0x277CBEAD8], v22, *MEMORY[0x277CBE658], @"Tried to add block for key %@ to a cancelled IMDispatchQueue.", keyCopy);
   }
 
-  if (a4 == 0x7FFFFFFFFFFFFFFFLL)
+  if (priority == 0x7FFFFFFFFFFFFFFFLL)
   {
-    objc_msgSend_raise_format_(MEMORY[0x277CBEAD8], v22, *MEMORY[0x277CBE660], @"Tried to add block for key %@ to IMDispatchQueue with priority NSNotFound, which is reserved.", v9);
+    objc_msgSend_raise_format_(MEMORY[0x277CBEAD8], v22, *MEMORY[0x277CBE660], @"Tried to add block for key %@ to IMDispatchQueue with priority NSNotFound, which is reserved.", keyCopy);
   }
 
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_2547FC9D4;
   block[3] = &unk_279788F80;
-  v40 = v8;
-  v41 = a4;
-  v36 = v9;
-  v37 = self;
+  v40 = blockCopy;
+  priorityCopy = priority;
+  v36 = keyCopy;
+  selfCopy = self;
   v24 = v23;
   v38 = v24;
   v25 = v18;
   v39 = v25;
-  v26 = v9;
-  v27 = v8;
+  v26 = keyCopy;
+  v27 = blockCopy;
   dispatch_async(v15, block);
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
@@ -106,9 +106,9 @@
   dispatch_async(v12, v31);
 }
 
-- (void)setQueuePriority:(int64_t)a3 ofOutstandingBlockForKey:(id)a4
+- (void)setQueuePriority:(int64_t)priority ofOutstandingBlockForKey:(id)key
 {
-  v6 = a4;
+  keyCopy = key;
   v9 = objc_msgSend_lockQueue(self, v7, v8);
   v12 = objc_msgSend_dispatchQueueBlocks(self, v10, v11);
   v21 = 0;
@@ -123,19 +123,19 @@
   block[3] = &unk_279788FA8;
   v13 = v12;
   v18 = v13;
-  v14 = v6;
+  v14 = keyCopy;
   v19 = v14;
   v20 = &v21;
   dispatch_sync(v9, block);
   objc_msgSend_removeOutstandingBlockForKey_(self, v15, v14);
-  objc_msgSend_addBlock_withQueuePriority_forKey_(self, v16, v22[5], a3, v14);
+  objc_msgSend_addBlock_withQueuePriority_forKey_(self, v16, v22[5], priority, v14);
 
   _Block_object_dispose(&v21, 8);
 }
 
-- (int64_t)queuePriorityOfOutstandingBlockForKey:(id)a3
+- (int64_t)queuePriorityOfOutstandingBlockForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v7 = objc_msgSend_lockQueue(self, v5, v6);
   v10 = objc_msgSend_dispatchQueueBlocks(self, v8, v9);
   v19 = 0;
@@ -147,9 +147,9 @@
   block[2] = sub_2547FCFA8;
   block[3] = &unk_279788FA8;
   v16 = v10;
-  v17 = v4;
+  v17 = keyCopy;
   v18 = &v19;
-  v11 = v4;
+  v11 = keyCopy;
   v12 = v10;
   dispatch_sync(v7, block);
   v13 = v20[3];
@@ -183,9 +183,9 @@
   return v9;
 }
 
-- (BOOL)containsOutstandingBlockForKey:(id)a3
+- (BOOL)containsOutstandingBlockForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v7 = objc_msgSend_lockQueue(self, v5, v6);
   v10 = objc_msgSend_dispatchQueueBlocks(self, v8, v9);
   v19 = 0;
@@ -197,9 +197,9 @@
   block[2] = sub_2547FD2BC;
   block[3] = &unk_279788FA8;
   v16 = v10;
-  v17 = v4;
+  v17 = keyCopy;
   v18 = &v19;
-  v11 = v4;
+  v11 = keyCopy;
   v12 = v10;
   dispatch_sync(v7, block);
   v13 = *(v20 + 24);
@@ -208,9 +208,9 @@
   return v13;
 }
 
-- (void)removeOutstandingBlockForKey:(id)a3
+- (void)removeOutstandingBlockForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v7 = objc_msgSend_lockQueue(self, v5, v6);
   v10 = objc_msgSend_dispatchQueueBlocks(self, v8, v9);
   v13[0] = MEMORY[0x277D85DD0];
@@ -218,8 +218,8 @@
   v13[2] = sub_2547FD3E8;
   v13[3] = &unk_279789020;
   v14 = v10;
-  v15 = v4;
-  v11 = v4;
+  v15 = keyCopy;
+  v11 = keyCopy;
   v12 = v10;
   dispatch_async(v7, v13);
 }
@@ -240,13 +240,13 @@
   dispatch_async(v4, v13);
 }
 
-- (void)setSuspended:(BOOL)a3
+- (void)setSuspended:(BOOL)suspended
 {
-  if (self->_suspended != a3)
+  if (self->_suspended != suspended)
   {
-    self->_suspended = a3;
+    self->_suspended = suspended;
     dispatchQueue = self->_dispatchQueue;
-    if (a3)
+    if (suspended)
     {
       dispatch_suspend(dispatchQueue);
     }

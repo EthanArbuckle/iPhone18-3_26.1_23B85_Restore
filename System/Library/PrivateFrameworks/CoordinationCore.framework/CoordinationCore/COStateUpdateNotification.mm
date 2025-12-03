@@ -1,35 +1,35 @@
 @interface COStateUpdateNotification
-- (COStateUpdateNotification)initWithCoder:(id)a3;
-- (COStateUpdateNotification)initWithUpdates:(id)a3 removals:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (COStateUpdateNotification)initWithCoder:(id)coder;
+- (COStateUpdateNotification)initWithUpdates:(id)updates removals:(id)removals;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation COStateUpdateNotification
 
-- (COStateUpdateNotification)initWithUpdates:(id)a3 removals:(id)a4
+- (COStateUpdateNotification)initWithUpdates:(id)updates removals:(id)removals
 {
-  v7 = a3;
-  v8 = a4;
+  updatesCopy = updates;
+  removalsCopy = removals;
   v12.receiver = self;
   v12.super_class = COStateUpdateNotification;
   v9 = [(COMeshCommand *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_updates, a3);
-    objc_storeStrong(&v10->_removals, a4);
+    objc_storeStrong(&v9->_updates, updates);
+    objc_storeStrong(&v10->_removals, removals);
   }
 
   return v10;
 }
 
-- (COStateUpdateNotification)initWithCoder:(id)a3
+- (COStateUpdateNotification)initWithCoder:(id)coder
 {
   v69 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v64.receiver = self;
   v64.super_class = COStateUpdateNotification;
-  v5 = [(COMeshCommand *)&v64 initWithCoder:v4];
+  v5 = [(COMeshCommand *)&v64 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = 0x277CBE000uLL;
@@ -39,11 +39,11 @@
     v10 = objc_opt_class();
     v11 = objc_opt_class();
     v12 = [v7 setWithObjects:{v8, v9, v10, v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"updates"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"updates"];
     updates = v5->_updates;
     v5->_updates = v13;
 
-    v15 = [v4 decodeObjectOfClasses:v12 forKey:@"removals"];
+    v15 = [coderCopy decodeObjectOfClasses:v12 forKey:@"removals"];
     removals = v5->_removals;
     v5->_removals = v15;
 
@@ -59,12 +59,12 @@
       v63 = 0u;
       v60 = 0u;
       v61 = 0u;
-      v17 = [(NSDictionary *)v5->_updates allKeys];
-      v18 = [v17 countByEnumeratingWithState:&v60 objects:v68 count:16];
+      allKeys = [(NSDictionary *)v5->_updates allKeys];
+      v18 = [allKeys countByEnumeratingWithState:&v60 objects:v68 count:16];
       if (v18)
       {
         v19 = *v61;
-        v46 = v17;
+        v46 = allKeys;
         v47 = v12;
         v41 = *v61;
 LABEL_6:
@@ -74,7 +74,7 @@ LABEL_6:
         {
           if (*v61 != v19)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(allKeys);
           }
 
           v44 = v20;
@@ -98,8 +98,8 @@ LABEL_44:
           v59 = 0u;
           v56 = 0u;
           v57 = 0u;
-          v23 = [v22 allKeys];
-          v24 = [v23 countByEnumeratingWithState:&v56 objects:v67 count:16];
+          allKeys2 = [v22 allKeys];
+          v24 = [allKeys2 countByEnumeratingWithState:&v56 objects:v67 count:16];
           if (v24)
           {
             v25 = v24;
@@ -110,7 +110,7 @@ LABEL_44:
               {
                 if (*v57 != v26)
                 {
-                  objc_enumerationMutation(v23);
+                  objc_enumerationMutation(allKeys2);
                 }
 
                 v28 = *(*(&v56 + 1) + 8 * i);
@@ -119,13 +119,13 @@ LABEL_44:
                 {
 LABEL_43:
 
-                  v17 = v46;
+                  allKeys = v46;
                   v12 = v47;
                   goto LABEL_44;
                 }
               }
 
-              v25 = [v23 countByEnumeratingWithState:&v56 objects:v67 count:16];
+              v25 = [allKeys2 countByEnumeratingWithState:&v56 objects:v67 count:16];
               if (v25)
               {
                 continue;
@@ -136,7 +136,7 @@ LABEL_43:
           }
 
           v20 = v44 + 1;
-          v17 = v46;
+          allKeys = v46;
           v12 = v47;
           v6 = 0x277CBE000uLL;
           v19 = v41;
@@ -174,8 +174,8 @@ LABEL_48:
       v55 = 0u;
       v52 = 0u;
       v53 = 0u;
-      v17 = [(NSDictionary *)v5->_removals allKeys];
-      v29 = [v17 countByEnumeratingWithState:&v52 objects:v66 count:16];
+      allKeys = [(NSDictionary *)v5->_removals allKeys];
+      v29 = [allKeys countByEnumeratingWithState:&v52 objects:v66 count:16];
       if (!v29)
       {
 LABEL_47:
@@ -184,7 +184,7 @@ LABEL_47:
       }
 
       v30 = *v53;
-      v46 = v17;
+      v46 = allKeys;
       v47 = v12;
       v43 = *v53;
 LABEL_26:
@@ -194,7 +194,7 @@ LABEL_26:
       {
         if (*v53 != v30)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(allKeys);
         }
 
         v32 = *(*(&v52 + 1) + 8 * v31);
@@ -216,8 +216,8 @@ LABEL_26:
         v51 = 0u;
         v48 = 0u;
         v49 = 0u;
-        v23 = v22;
-        v34 = [v23 countByEnumeratingWithState:&v48 objects:v65 count:16];
+        allKeys2 = v22;
+        v34 = [allKeys2 countByEnumeratingWithState:&v48 objects:v65 count:16];
         if (v34)
         {
           v35 = v34;
@@ -228,7 +228,7 @@ LABEL_33:
           {
             if (*v49 != v36)
             {
-              objc_enumerationMutation(v23);
+              objc_enumerationMutation(allKeys2);
             }
 
             v38 = *(*(&v48 + 1) + 8 * v37);
@@ -240,7 +240,7 @@ LABEL_33:
 
             if (v35 == ++v37)
             {
-              v35 = [v23 countByEnumeratingWithState:&v48 objects:v65 count:16];
+              v35 = [allKeys2 countByEnumeratingWithState:&v48 objects:v65 count:16];
               if (v35)
               {
                 goto LABEL_33;
@@ -252,7 +252,7 @@ LABEL_33:
         }
 
         ++v31;
-        v17 = v46;
+        allKeys = v46;
         v12 = v47;
         v6 = 0x277CBE000;
         v30 = v43;
@@ -270,7 +270,7 @@ LABEL_33:
     }
 
 LABEL_42:
-    v17 = v5;
+    allKeys = v5;
 LABEL_46:
     v5 = 0;
     goto LABEL_47;
@@ -282,17 +282,17 @@ LABEL_49:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = COStateUpdateNotification;
-  v4 = a3;
-  [(COMeshCommand *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(COMeshCommand *)&v7 encodeWithCoder:coderCopy];
   v5 = [(COStateUpdateNotification *)self updates:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"updates"];
+  [coderCopy encodeObject:v5 forKey:@"updates"];
 
-  v6 = [(COStateUpdateNotification *)self removals];
-  [v4 encodeObject:v6 forKey:@"removals"];
+  removals = [(COStateUpdateNotification *)self removals];
+  [coderCopy encodeObject:removals forKey:@"removals"];
 }
 
 @end

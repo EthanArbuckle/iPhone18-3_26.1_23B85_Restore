@@ -23,24 +23,24 @@
   v110.receiver = self;
   v110.super_class = CNFullAccessSettingsPromptViewController;
   [(CNFullAccessSettingsPromptViewController *)&v110 viewDidLoad];
-  v3 = [(CNFullAccessSettingsPromptViewController *)self extensionContext];
-  v4 = [v3 inputItems];
-  v5 = [v4 firstObject];
+  extensionContext = [(CNFullAccessSettingsPromptViewController *)self extensionContext];
+  inputItems = [extensionContext inputItems];
+  firstObject = [inputItems firstObject];
 
   v6 = [objc_opt_class() log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v118 = v5;
+    v118 = firstObject;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "InputItem: %@", buf, 0xCu);
   }
 
-  v7 = [v5 userInfo];
-  v103 = [v7 valueForKey:kTCCNotificationExtensionClientDataKey];
+  userInfo = [firstObject userInfo];
+  v103 = [userInfo valueForKey:kTCCNotificationExtensionClientDataKey];
 
-  v104 = v5;
-  v8 = [v5 userInfo];
-  v9 = [v8 valueForKey:@"ClientBundleIdentifier"];
+  v104 = firstObject;
+  userInfo2 = [firstObject userInfo];
+  v9 = [userInfo2 valueForKey:@"ClientBundleIdentifier"];
 
   v109 = 0;
   v107 = v9;
@@ -59,7 +59,7 @@
   v101 = v11;
 
   v102 = v10;
-  v13 = [v10 localizedName];
+  localizedName = [v10 localizedName];
   [(CNFullAccessSettingsPromptViewController *)self setPreferredContentSize:270.0, 800.0];
   v14 = objc_alloc_init(UILabel);
   privacyDescriptionLabel = self->_privacyDescriptionLabel;
@@ -71,8 +71,8 @@
   [(UILabel *)self->_privacyDescriptionLabel setFont:v16];
 
   v17 = +[CNEnvironment currentEnvironment];
-  v18 = [v17 featureFlags];
-  if ([v18 isFeatureEnabled:29])
+  featureFlags = [v17 featureFlags];
+  if ([featureFlags isFeatureEnabled:29])
   {
     v19 = 4;
   }
@@ -86,15 +86,15 @@
 
   v20 = [NSBundle bundleForClass:objc_opt_class()];
   v21 = [v20 localizedStringForKey:@"FULL_ACCESS_PROMPT_ALLOW_ACCESS_TO_ALL_CONTACTS_DESCRIPTION %@" value:&stru_1000041F8 table:@"Localizable"];
-  v106 = v13;
-  v22 = [NSString localizedStringWithFormat:v21, v13];
+  v106 = localizedName;
+  v22 = [NSString localizedStringWithFormat:v21, localizedName];
   [(UILabel *)self->_privacyDescriptionLabel setText:v22];
 
   [(UILabel *)self->_privacyDescriptionLabel setLineBreakStrategy:1];
   [(UILabel *)self->_privacyDescriptionLabel setNumberOfLines:0];
   [(UILabel *)self->_privacyDescriptionLabel setAllowsDefaultTighteningForTruncation:1];
-  v23 = [(CNFullAccessSettingsPromptViewController *)self view];
-  [v23 addSubview:self->_privacyDescriptionLabel];
+  view = [(CNFullAccessSettingsPromptViewController *)self view];
+  [view addSubview:self->_privacyDescriptionLabel];
 
   v24 = objc_alloc_init(CNContactStore);
   v108 = 0;
@@ -149,8 +149,8 @@
     [(UILabel *)self->_countsLabel setFont:v37];
 
     v38 = +[CNEnvironment currentEnvironment];
-    v39 = [v38 featureFlags];
-    if ([v39 isFeatureEnabled:29])
+    featureFlags2 = [v38 featureFlags];
+    if ([featureFlags2 isFeatureEnabled:29])
     {
       v40 = 4;
     }
@@ -169,83 +169,83 @@
     [(UILabel *)self->_countsLabel setText:v43];
 
     [(UILabel *)self->_countsLabel setLineBreakStrategy:1];
-    v44 = [(CNFullAccessSettingsPromptViewController *)self view];
-    [v44 addSubview:self->_countsLabel];
+    view2 = [(CNFullAccessSettingsPromptViewController *)self view];
+    [view2 addSubview:self->_countsLabel];
 
     [(CNFullAccessSettingsPromptViewController *)self addChildViewController:v105];
-    v45 = [v105 view];
+    view3 = [v105 view];
     avatarView = self->_avatarView;
-    self->_avatarView = v45;
+    self->_avatarView = view3;
 
-    v47 = [(CNFullAccessSettingsPromptViewController *)self view];
-    [v47 addSubview:self->_avatarView];
+    view4 = [(CNFullAccessSettingsPromptViewController *)self view];
+    [view4 addSubview:self->_avatarView];
 
     [v105 didMoveToParentViewController:self];
     [(UIView *)self->_avatarView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)self->_avatarView setClipsToBounds:0];
-    v82 = [(UIView *)self->_avatarView topAnchor];
-    v99 = [(CNFullAccessSettingsPromptViewController *)self view];
-    v98 = [v99 topAnchor];
-    v97 = [v82 constraintEqualToAnchor:-5.0 constant:?];
+    topAnchor = [(UIView *)self->_avatarView topAnchor];
+    view5 = [(CNFullAccessSettingsPromptViewController *)self view];
+    topAnchor2 = [view5 topAnchor];
+    v97 = [topAnchor constraintEqualToAnchor:-5.0 constant:?];
     v112[0] = v97;
-    v48 = [(UIView *)self->_avatarView leadingAnchor];
-    v95 = [(CNFullAccessSettingsPromptViewController *)self view];
-    [v95 leadingAnchor];
-    v94 = v96 = v48;
-    v93 = [v48 constraintEqualToAnchor:?];
+    leadingAnchor = [(UIView *)self->_avatarView leadingAnchor];
+    view6 = [(CNFullAccessSettingsPromptViewController *)self view];
+    [view6 leadingAnchor];
+    v94 = view14 = leadingAnchor;
+    v93 = [leadingAnchor constraintEqualToAnchor:?];
     v112[1] = v93;
-    v49 = [(UIView *)self->_avatarView trailingAnchor];
-    v91 = [(CNFullAccessSettingsPromptViewController *)self view];
-    [v91 trailingAnchor];
-    v90 = v92 = v49;
-    v77 = [v49 constraintEqualToAnchor:?];
+    trailingAnchor = [(UIView *)self->_avatarView trailingAnchor];
+    view7 = [(CNFullAccessSettingsPromptViewController *)self view];
+    [view7 trailingAnchor];
+    v90 = view15 = trailingAnchor;
+    v77 = [trailingAnchor constraintEqualToAnchor:?];
     v112[2] = v77;
-    v74 = [(UIView *)self->_avatarView bottomAnchor];
-    v89 = [(UILabel *)self->_countsLabel topAnchor];
-    v88 = [v74 constraintEqualToAnchor:-8.0 constant:?];
+    bottomAnchor = [(UIView *)self->_avatarView bottomAnchor];
+    topAnchor3 = [(UILabel *)self->_countsLabel topAnchor];
+    v88 = [bottomAnchor constraintEqualToAnchor:-8.0 constant:?];
     v112[3] = v88;
-    v50 = [(UILabel *)self->_countsLabel bottomAnchor];
-    v81 = [(UILabel *)self->_privacyDescriptionLabel topAnchor];
-    v87 = v50;
-    v80 = [v50 constraintEqualToAnchor:v81 constant:-8.0];
+    bottomAnchor2 = [(UILabel *)self->_countsLabel bottomAnchor];
+    topAnchor4 = [(UILabel *)self->_privacyDescriptionLabel topAnchor];
+    v87 = bottomAnchor2;
+    v80 = [bottomAnchor2 constraintEqualToAnchor:topAnchor4 constant:-8.0];
     v112[4] = v80;
-    v78 = [(UILabel *)self->_countsLabel leadingAnchor];
-    v79 = [(CNFullAccessSettingsPromptViewController *)self view];
-    v76 = [v79 leadingAnchor];
-    v75 = [v78 constraintEqualToAnchor:v76 constant:16.0];
+    leadingAnchor2 = [(UILabel *)self->_countsLabel leadingAnchor];
+    view8 = [(CNFullAccessSettingsPromptViewController *)self view];
+    leadingAnchor3 = [view8 leadingAnchor];
+    v75 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3 constant:16.0];
     v112[5] = v75;
-    v72 = [(UILabel *)self->_countsLabel trailingAnchor];
-    v73 = [(CNFullAccessSettingsPromptViewController *)self view];
-    v71 = [v73 trailingAnchor];
-    v70 = [v72 constraintEqualToAnchor:v71 constant:-16.0];
+    trailingAnchor2 = [(UILabel *)self->_countsLabel trailingAnchor];
+    view9 = [(CNFullAccessSettingsPromptViewController *)self view];
+    trailingAnchor3 = [view9 trailingAnchor];
+    v70 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:-16.0];
     v112[6] = v70;
-    v68 = [(UILabel *)self->_privacyDescriptionLabel bottomAnchor];
-    v69 = [(CNFullAccessSettingsPromptViewController *)self view];
-    v67 = [v69 bottomAnchor];
-    v51 = [v68 constraintEqualToAnchor:v67 constant:-12.0];
+    bottomAnchor3 = [(UILabel *)self->_privacyDescriptionLabel bottomAnchor];
+    view10 = [(CNFullAccessSettingsPromptViewController *)self view];
+    bottomAnchor4 = [view10 bottomAnchor];
+    v51 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-12.0];
     v112[7] = v51;
     [(UILabel *)self->_privacyDescriptionLabel leadingAnchor];
     v52 = v85 = v26;
-    v53 = [(CNFullAccessSettingsPromptViewController *)self view];
-    v54 = [v53 leadingAnchor];
-    v55 = [v52 constraintEqualToAnchor:v54 constant:16.0];
+    view11 = [(CNFullAccessSettingsPromptViewController *)self view];
+    leadingAnchor4 = [view11 leadingAnchor];
+    v55 = [v52 constraintEqualToAnchor:leadingAnchor4 constant:16.0];
     v112[8] = v55;
-    v56 = [(UILabel *)self->_privacyDescriptionLabel trailingAnchor];
-    v57 = [(CNFullAccessSettingsPromptViewController *)self view];
-    v58 = [v57 trailingAnchor];
-    v59 = [v56 constraintEqualToAnchor:v58 constant:-16.0];
+    trailingAnchor4 = [(UILabel *)self->_privacyDescriptionLabel trailingAnchor];
+    view12 = [(CNFullAccessSettingsPromptViewController *)self view];
+    trailingAnchor5 = [view12 trailingAnchor];
+    v59 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5 constant:-16.0];
     v112[9] = v59;
     v60 = [NSArray arrayWithObjects:v112 count:10];
     [NSLayoutConstraint activateConstraints:v60];
 
-    v61 = v82;
+    view13 = topAnchor;
     v24 = v86;
 
-    v62 = v77;
-    v63 = v74;
+    trailingAnchor6 = v77;
+    view16 = bottomAnchor;
 
     v30 = v83;
-    v64 = v84;
+    topAnchor5 = v84;
 
     v29 = v105;
     v26 = v85;
@@ -253,27 +253,27 @@
 
   else
   {
-    v64 = [(UILabel *)self->_privacyDescriptionLabel topAnchor];
-    v61 = [(CNFullAccessSettingsPromptViewController *)self view];
-    v99 = [v61 topAnchor];
-    v98 = [v64 constraintEqualToAnchor:-5.0 constant:?];
-    v111[0] = v98;
-    v65 = [(UILabel *)self->_privacyDescriptionLabel bottomAnchor];
-    v96 = [(CNFullAccessSettingsPromptViewController *)self view];
-    [v96 bottomAnchor];
-    v95 = v97 = v65;
-    v94 = [v65 constraintEqualToAnchor:-12.0 constant:?];
+    topAnchor5 = [(UILabel *)self->_privacyDescriptionLabel topAnchor];
+    view13 = [(CNFullAccessSettingsPromptViewController *)self view];
+    view5 = [view13 topAnchor];
+    topAnchor2 = [topAnchor5 constraintEqualToAnchor:-5.0 constant:?];
+    v111[0] = topAnchor2;
+    bottomAnchor5 = [(UILabel *)self->_privacyDescriptionLabel bottomAnchor];
+    view14 = [(CNFullAccessSettingsPromptViewController *)self view];
+    [view14 bottomAnchor];
+    view6 = v97 = bottomAnchor5;
+    v94 = [bottomAnchor5 constraintEqualToAnchor:-12.0 constant:?];
     v111[1] = v94;
-    v66 = [(UILabel *)self->_privacyDescriptionLabel leadingAnchor];
-    v92 = [(CNFullAccessSettingsPromptViewController *)self view];
-    [v92 leadingAnchor];
-    v91 = v93 = v66;
-    v90 = [v66 constraintEqualToAnchor:16.0 constant:?];
+    leadingAnchor5 = [(UILabel *)self->_privacyDescriptionLabel leadingAnchor];
+    view15 = [(CNFullAccessSettingsPromptViewController *)self view];
+    [view15 leadingAnchor];
+    view7 = v93 = leadingAnchor5;
+    v90 = [leadingAnchor5 constraintEqualToAnchor:16.0 constant:?];
     v111[2] = v90;
-    v62 = [(UILabel *)self->_privacyDescriptionLabel trailingAnchor];
-    v63 = [(CNFullAccessSettingsPromptViewController *)self view];
-    v89 = [v63 trailingAnchor];
-    v88 = [v62 constraintEqualToAnchor:-16.0 constant:?];
+    trailingAnchor6 = [(UILabel *)self->_privacyDescriptionLabel trailingAnchor];
+    view16 = [(CNFullAccessSettingsPromptViewController *)self view];
+    topAnchor3 = [view16 trailingAnchor];
+    v88 = [trailingAnchor6 constraintEqualToAnchor:-16.0 constant:?];
     v111[3] = v88;
     v87 = [NSArray arrayWithObjects:v111 count:4];
     [NSLayoutConstraint activateConstraints:?];

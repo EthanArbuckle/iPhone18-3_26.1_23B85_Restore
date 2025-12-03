@@ -1,47 +1,47 @@
 @interface WLKFavorite
-- (WLKFavorite)initWithDictionary:(id)a3;
-- (WLKFavorite)initWithID:(id)a3 name:(id)a4 leagueID:(id)a5;
+- (WLKFavorite)initWithDictionary:(id)dictionary;
+- (WLKFavorite)initWithID:(id)d name:(id)name leagueID:(id)iD;
 - (id)description;
 @end
 
 @implementation WLKFavorite
 
-- (WLKFavorite)initWithDictionary:(id)a3
+- (WLKFavorite)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     v17.receiver = self;
     v17.super_class = WLKFavorite;
     v5 = [(WLKFavorite *)&v17 init];
     if (v5)
     {
-      v6 = [v4 wlk_stringForKey:@"id"];
+      v6 = [dictionaryCopy wlk_stringForKey:@"id"];
       v7 = [v6 copy];
       ID = v5->_ID;
       v5->_ID = v7;
 
-      v9 = [v4 wlk_stringForKey:@"name"];
+      v9 = [dictionaryCopy wlk_stringForKey:@"name"];
       v10 = [v9 copy];
       name = v5->_name;
       v5->_name = v10;
 
-      v12 = [v4 wlk_stringForKey:@"leagueId"];
+      v12 = [dictionaryCopy wlk_stringForKey:@"leagueId"];
       v13 = [v12 copy];
       leagueID = v5->_leagueID;
       v5->_leagueID = v13;
     }
 
     self = v5;
-    v15 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
 - (id)description
@@ -55,25 +55,25 @@
   return v7;
 }
 
-- (WLKFavorite)initWithID:(id)a3 name:(id)a4 leagueID:(id)a5
+- (WLKFavorite)initWithID:(id)d name:(id)name leagueID:(id)iD
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  nameCopy = name;
+  iDCopy = iD;
   v19.receiver = self;
   v19.super_class = WLKFavorite;
   v11 = [(WLKFavorite *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [dCopy copy];
     ID = v11->_ID;
     v11->_ID = v12;
 
-    v14 = [v9 copy];
+    v14 = [nameCopy copy];
     name = v11->_name;
     v11->_name = v14;
 
-    v16 = [v10 copy];
+    v16 = [iDCopy copy];
     leagueID = v11->_leagueID;
     v11->_leagueID = v16;
   }

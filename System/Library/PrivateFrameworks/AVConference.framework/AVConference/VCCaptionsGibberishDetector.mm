@@ -1,14 +1,14 @@
 @interface VCCaptionsGibberishDetector
-- (BOOL)gibberishStateForCaptionsToken:(int64_t)a3;
-- (BOOL)processTranscript:(id)a3;
-- (VCCaptionsGibberishDetector)initWithGibberishThreshold:(double)a3 windowLength:(unint64_t)a4;
+- (BOOL)gibberishStateForCaptionsToken:(int64_t)token;
+- (BOOL)processTranscript:(id)transcript;
+- (VCCaptionsGibberishDetector)initWithGibberishThreshold:(double)threshold windowLength:(unint64_t)length;
 - (void)dealloc;
 - (void)reset;
 @end
 
 @implementation VCCaptionsGibberishDetector
 
-- (VCCaptionsGibberishDetector)initWithGibberishThreshold:(double)a3 windowLength:(unint64_t)a4
+- (VCCaptionsGibberishDetector)initWithGibberishThreshold:(double)threshold windowLength:(unint64_t)length
 {
   v12 = *MEMORY[0x1E69E9840];
   v11.receiver = self;
@@ -17,8 +17,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_gibberishThreshold = a3;
-    v6->_windowLength = a4;
+    v6->_gibberishThreshold = threshold;
+    v6->_windowLength = length;
     v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v7->_gibberishStates = v8;
     if (v8)
@@ -53,9 +53,9 @@
   [(VCCaptionsGibberishDetector *)&v3 dealloc];
 }
 
-- (BOOL)gibberishStateForCaptionsToken:(int64_t)a3
+- (BOOL)gibberishStateForCaptionsToken:(int64_t)token
 {
-  v3 = -[NSMutableDictionary objectForKeyedSubscript:](self->_gibberishStates, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithInteger:a3]);
+  v3 = -[NSMutableDictionary objectForKeyedSubscript:](self->_gibberishStates, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithInteger:token]);
 
   return [v3 BOOLValue];
 }
@@ -68,11 +68,11 @@
   [(NSMutableDictionary *)history removeAllObjects];
 }
 
-- (BOOL)processTranscript:(id)a3
+- (BOOL)processTranscript:(id)transcript
 {
   v40 = *MEMORY[0x1E69E9840];
-  v29 = -[VCCaptionsGibberishDetector gibberishStateForCaptionsToken:](self, "gibberishStateForCaptionsToken:", [a3 streamToken]);
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a3, "streamToken")}];
+  v29 = -[VCCaptionsGibberishDetector gibberishStateForCaptionsToken:](self, "gibberishStateForCaptionsToken:", [transcript streamToken]);
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(transcript, "streamToken")}];
   v27 = [(NSMutableDictionary *)self->_history objectForKeyedSubscript:v5];
   if (!v27)
   {
@@ -84,8 +84,8 @@
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v7 = [a3 segments];
-  v8 = [v7 countByEnumeratingWithState:&v36 objects:v35 count:16];
+  segments = [transcript segments];
+  v8 = [segments countByEnumeratingWithState:&v36 objects:v35 count:16];
   if (v8)
   {
     v9 = v8;
@@ -96,7 +96,7 @@
       {
         if (*v37 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(segments);
         }
 
         v12 = *(*(&v36 + 1) + 8 * i);
@@ -106,7 +106,7 @@
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v36 objects:v35 count:16];
+      v9 = [segments countByEnumeratingWithState:&v36 objects:v35 count:16];
     }
 
     while (v9);

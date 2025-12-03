@@ -1,47 +1,47 @@
 @interface HMDBonjourBrowserHelper
 - (BOOL)_startBrowsers;
 - (BOOL)isStarted;
-- (HMDBonjourBrowserHelper)initWithServicesOfTypes:(id)a3 browsingTimeInterval:(double)a4 browsingPeriodicity:(double)a5 workQueue:(id)a6;
-- (unint64_t)discoveredServicesCountForServiceType:(id)a3;
+- (HMDBonjourBrowserHelper)initWithServicesOfTypes:(id)types browsingTimeInterval:(double)interval browsingPeriodicity:(double)periodicity workQueue:(id)queue;
+- (unint64_t)discoveredServicesCountForServiceType:(id)type;
 - (unint64_t)state;
-- (void)_addBrowser:(id)a3;
-- (void)_removeBrowser:(id)a3;
+- (void)_addBrowser:(id)browser;
+- (void)_removeBrowser:(id)browser;
 - (void)_stopBrowsers;
-- (void)_updateTimerWithTimeout:(double)a3;
-- (void)netServiceBrowser:(id)a3 didAddService:(id)a4;
-- (void)netServiceBrowser:(id)a3 didRemoveService:(id)a4;
-- (void)netServiceBrowser:(id)a3 didStopBrowsingWithError:(id)a4;
-- (void)setState:(unint64_t)a3;
-- (void)startWithBrowsingCompletion:(id)a3;
+- (void)_updateTimerWithTimeout:(double)timeout;
+- (void)netServiceBrowser:(id)browser didAddService:(id)service;
+- (void)netServiceBrowser:(id)browser didRemoveService:(id)service;
+- (void)netServiceBrowser:(id)browser didStopBrowsingWithError:(id)error;
+- (void)setState:(unint64_t)state;
+- (void)startWithBrowsingCompletion:(id)completion;
 - (void)stop;
-- (void)timerDidFire:(id)a3;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDBonjourBrowserHelper
 
-- (void)netServiceBrowser:(id)a3 didStopBrowsingWithError:(id)a4
+- (void)netServiceBrowser:(id)browser didStopBrowsingWithError:(id)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  browserCopy = browser;
+  errorCopy = error;
+  if (browserCopy)
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v11 = HMFGetLogIdentifier();
-      v12 = [v6 serviceType];
+      serviceType = [browserCopy serviceType];
       v13 = MEMORY[0x277CCABB0];
-      v14 = [v6 serviceType];
-      v15 = [v13 numberWithUnsignedInteger:{-[HMDBonjourBrowserHelper discoveredServicesCountForServiceType:](v9, "discoveredServicesCountForServiceType:", v14)}];
+      serviceType2 = [browserCopy serviceType];
+      v15 = [v13 numberWithUnsignedInteger:{-[HMDBonjourBrowserHelper discoveredServicesCountForServiceType:](selfCopy, "discoveredServicesCountForServiceType:", serviceType2)}];
       v17 = 138544130;
       v18 = v11;
       v19 = 2112;
-      v20 = v12;
+      v20 = serviceType;
       v21 = 2112;
-      v22 = v7;
+      v22 = errorCopy;
       v23 = 2112;
       v24 = v15;
       _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Stopped browsing for services of type: %@ with error: %@. Found %@ servcies.", &v17, 0x2Au);
@@ -53,21 +53,21 @@
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)netServiceBrowser:(id)a3 didRemoveService:(id)a4
+- (void)netServiceBrowser:(id)browser didRemoveService:(id)service
 {
-  v18 = a3;
-  v6 = a4;
+  browserCopy = browser;
+  serviceCopy = service;
   os_unfair_lock_lock_with_options();
-  v7 = [v6 type];
-  if (v7)
+  type = [serviceCopy type];
+  if (type)
   {
-    v8 = [v6 name];
+    name = [serviceCopy name];
 
-    if (v8)
+    if (name)
     {
       internalDiscoveredServices = self->_internalDiscoveredServices;
-      v10 = [v6 type];
-      v11 = [(NSMutableDictionary *)internalDiscoveredServices objectForKey:v10];
+      type2 = [serviceCopy type];
+      v11 = [(NSMutableDictionary *)internalDiscoveredServices objectForKey:type2];
       v12 = v11;
       if (v11)
       {
@@ -81,33 +81,33 @@
 
       v14 = v13;
 
-      v15 = [v6 name];
-      [v14 removeObject:v15];
+      name2 = [serviceCopy name];
+      [v14 removeObject:name2];
 
       v16 = self->_internalDiscoveredServices;
-      v17 = [v6 type];
-      [(NSMutableDictionary *)v16 setObject:v14 forKey:v17];
+      type3 = [serviceCopy type];
+      [(NSMutableDictionary *)v16 setObject:v14 forKey:type3];
     }
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)netServiceBrowser:(id)a3 didAddService:(id)a4
+- (void)netServiceBrowser:(id)browser didAddService:(id)service
 {
-  v18 = a3;
-  v6 = a4;
+  browserCopy = browser;
+  serviceCopy = service;
   os_unfair_lock_lock_with_options();
-  v7 = [v6 type];
-  if (v7)
+  type = [serviceCopy type];
+  if (type)
   {
-    v8 = [v6 name];
+    name = [serviceCopy name];
 
-    if (v8)
+    if (name)
     {
       internalDiscoveredServices = self->_internalDiscoveredServices;
-      v10 = [v6 type];
-      v11 = [(NSMutableDictionary *)internalDiscoveredServices objectForKey:v10];
+      type2 = [serviceCopy type];
+      v11 = [(NSMutableDictionary *)internalDiscoveredServices objectForKey:type2];
       v12 = v11;
       if (v11)
       {
@@ -121,36 +121,36 @@
 
       v14 = v13;
 
-      v15 = [v6 name];
-      [v14 addObject:v15];
+      name2 = [serviceCopy name];
+      [v14 addObject:name2];
 
       v16 = self->_internalDiscoveredServices;
-      v17 = [v6 type];
-      [(NSMutableDictionary *)v16 setObject:v14 forKey:v17];
+      type3 = [serviceCopy type];
+      [(NSMutableDictionary *)v16 setObject:v14 forKey:type3];
     }
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
-  v4 = a3;
-  v5 = [(HMDBonjourBrowserHelper *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  fireCopy = fire;
+  workQueue = [(HMDBonjourBrowserHelper *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HMDBonjourBrowserHelper *)self timer];
+  timer = [(HMDBonjourBrowserHelper *)self timer];
 
-  if (v6 == v4)
+  if (timer == fireCopy)
   {
-    v7 = [(HMDBonjourBrowserHelper *)self state];
-    if (v7 == 2)
+    state = [(HMDBonjourBrowserHelper *)self state];
+    if (state == 2)
     {
 
       [(HMDBonjourBrowserHelper *)self _startBrowsers];
     }
 
-    else if (v7 == 1)
+    else if (state == 1)
     {
 
       [(HMDBonjourBrowserHelper *)self _stopBrowsers];
@@ -158,47 +158,47 @@
   }
 }
 
-- (void)_updateTimerWithTimeout:(double)a3
+- (void)_updateTimerWithTimeout:(double)timeout
 {
-  v5 = [(HMDBonjourBrowserHelper *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  workQueue = [(HMDBonjourBrowserHelper *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HMDBonjourBrowserHelper *)self timer];
-  [v6 cancel];
+  timer = [(HMDBonjourBrowserHelper *)self timer];
+  [timer cancel];
 
   [(HMDBonjourBrowserHelper *)self setTimer:0];
-  if (a3 > 0.0)
+  if (timeout > 0.0)
   {
-    v8 = [objc_alloc(MEMORY[0x277D0F920]) initWithTimeInterval:0 options:a3];
+    v8 = [objc_alloc(MEMORY[0x277D0F920]) initWithTimeInterval:0 options:timeout];
     [v8 setDelegate:self];
-    v7 = [(HMDBonjourBrowserHelper *)self workQueue];
-    [v8 setDelegateQueue:v7];
+    workQueue2 = [(HMDBonjourBrowserHelper *)self workQueue];
+    [v8 setDelegateQueue:workQueue2];
 
     [v8 resume];
     [(HMDBonjourBrowserHelper *)self setTimer:v8];
   }
 }
 
-- (void)_removeBrowser:(id)a3
+- (void)_removeBrowser:(id)browser
 {
-  v4 = a3;
+  browserCopy = browser;
   os_unfair_lock_lock_with_options();
-  [(NSMutableArray *)self->_browsers removeObject:v4];
+  [(NSMutableArray *)self->_browsers removeObject:browserCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_addBrowser:(id)a3
+- (void)_addBrowser:(id)browser
 {
-  v4 = a3;
+  browserCopy = browser;
   os_unfair_lock_lock_with_options();
-  [(NSMutableArray *)self->_browsers addObject:v4];
+  [(NSMutableArray *)self->_browsers addObject:browserCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
   os_unfair_lock_lock_with_options();
-  self->_state = a3;
+  self->_state = state;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -219,9 +219,9 @@
   return v3;
 }
 
-- (unint64_t)discoveredServicesCountForServiceType:(id)a3
+- (unint64_t)discoveredServicesCountForServiceType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   os_unfair_lock_lock_with_options();
   v5 = self->_latestDiscoveredServices;
   if (!v5)
@@ -237,7 +237,7 @@
 
   v6 = v5;
 LABEL_5:
-  v7 = [(NSDictionary *)v6 objectForKey:v4];
+  v7 = [(NSDictionary *)v6 objectForKey:typeCopy];
   v8 = [v7 count];
 
   os_unfair_lock_unlock(&self->_lock);
@@ -247,8 +247,8 @@ LABEL_5:
 - (void)_stopBrowsers
 {
   v42 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDBonjourBrowserHelper *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDBonjourBrowserHelper *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   os_unfair_lock_lock_with_options();
   if (self->_state == 1 && self->_browsingPeriodicity > 0.0)
@@ -272,9 +272,9 @@ LABEL_5:
     self->_latestDiscoveredServices = v7;
   }
 
-  v9 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v10 = self->_internalDiscoveredServices;
-  self->_internalDiscoveredServices = v9;
+  self->_internalDiscoveredServices = dictionary;
 
   v11 = [(NSMutableArray *)self->_browsers copy];
   [(NSMutableArray *)self->_browsers removeAllObjects];
@@ -284,13 +284,13 @@ LABEL_5:
     [(HMDBonjourBrowserHelper *)self browsingPeriodicity];
     [(HMDBonjourBrowserHelper *)self _updateTimerWithTimeout:?];
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       v15 = HMFGetLogIdentifier();
       v16 = MEMORY[0x277CCABB0];
-      [(HMDBonjourBrowserHelper *)v13 browsingPeriodicity];
+      [(HMDBonjourBrowserHelper *)selfCopy browsingPeriodicity];
       v17 = [v16 numberWithDouble:?];
       *buf = 138543618;
       v39 = v15;
@@ -335,8 +335,8 @@ LABEL_5:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v22 = [(HMDBonjourBrowserHelper *)self browsingCompletions];
-  v23 = [v22 countByEnumeratingWithState:&v28 objects:v36 count:16];
+  browsingCompletions = [(HMDBonjourBrowserHelper *)self browsingCompletions];
+  v23 = [browsingCompletions countByEnumeratingWithState:&v28 objects:v36 count:16];
   if (v23)
   {
     v24 = *v29;
@@ -347,34 +347,34 @@ LABEL_5:
       {
         if (*v29 != v24)
         {
-          objc_enumerationMutation(v22);
+          objc_enumerationMutation(browsingCompletions);
         }
 
         (*(*(*(&v28 + 1) + 8 * v25++) + 16))();
       }
 
       while (v23 != v25);
-      v23 = [v22 countByEnumeratingWithState:&v28 objects:v36 count:16];
+      v23 = [browsingCompletions countByEnumeratingWithState:&v28 objects:v36 count:16];
     }
 
     while (v23);
   }
 
-  v26 = [(HMDBonjourBrowserHelper *)self browsingCompletions];
-  [v26 removeAllObjects];
+  browsingCompletions2 = [(HMDBonjourBrowserHelper *)self browsingCompletions];
+  [browsingCompletions2 removeAllObjects];
 
   v27 = *MEMORY[0x277D85DE8];
 }
 
 - (void)stop
 {
-  v3 = [(HMDBonjourBrowserHelper *)self workQueue];
+  workQueue = [(HMDBonjourBrowserHelper *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __31__HMDBonjourBrowserHelper_stop__block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __31__HMDBonjourBrowserHelper_stop__block_invoke(uint64_t a1)
@@ -395,8 +395,8 @@ uint64_t __31__HMDBonjourBrowserHelper_stop__block_invoke(uint64_t a1)
 - (BOOL)_startBrowsers
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDBonjourBrowserHelper *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDBonjourBrowserHelper *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   os_unfair_lock_lock_with_options();
   if (self->_state == 1)
@@ -407,9 +407,9 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   internalDiscoveredServices = self->_internalDiscoveredServices;
-  self->_internalDiscoveredServices = v4;
+  self->_internalDiscoveredServices = dictionary;
 
   self->_state = 1;
   v6 = self->_serviceTypes;
@@ -510,18 +510,18 @@ void __41__HMDBonjourBrowserHelper__startBrowsers__block_invoke(uint64_t a1, voi
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startWithBrowsingCompletion:(id)a3
+- (void)startWithBrowsingCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HMDBonjourBrowserHelper *)self workQueue];
+  completionCopy = completion;
+  workQueue = [(HMDBonjourBrowserHelper *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__HMDBonjourBrowserHelper_startWithBrowsingCompletion___block_invoke;
   v7[3] = &unk_27868A7A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __55__HMDBonjourBrowserHelper_startWithBrowsingCompletion___block_invoke(uint64_t a1)
@@ -558,39 +558,39 @@ void __55__HMDBonjourBrowserHelper_startWithBrowsingCompletion___block_invoke(ui
 LABEL_9:
 }
 
-- (HMDBonjourBrowserHelper)initWithServicesOfTypes:(id)a3 browsingTimeInterval:(double)a4 browsingPeriodicity:(double)a5 workQueue:(id)a6
+- (HMDBonjourBrowserHelper)initWithServicesOfTypes:(id)types browsingTimeInterval:(double)interval browsingPeriodicity:(double)periodicity workQueue:(id)queue
 {
   v29 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a6;
-  if (a4 > 0.0 && [v11 count])
+  typesCopy = types;
+  queueCopy = queue;
+  if (interval > 0.0 && [typesCopy count])
   {
     v26.receiver = self;
     v26.super_class = HMDBonjourBrowserHelper;
     v13 = [(HMDBonjourBrowserHelper *)&v26 init];
     if (v13)
     {
-      v14 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       internalDiscoveredServices = v13->_internalDiscoveredServices;
-      v13->_internalDiscoveredServices = v14;
+      v13->_internalDiscoveredServices = dictionary;
 
-      v16 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v11, "count")}];
+      v16 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(typesCopy, "count")}];
       browsers = v13->_browsers;
       v13->_browsers = v16;
 
-      v18 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       browsingCompletions = v13->_browsingCompletions;
-      v13->_browsingCompletions = v18;
+      v13->_browsingCompletions = array;
 
-      objc_storeStrong(&v13->_serviceTypes, a3);
-      v13->_browsingInterval = a4;
-      v13->_browsingPeriodicity = a5;
-      objc_storeStrong(&v13->_workQueue, a6);
+      objc_storeStrong(&v13->_serviceTypes, types);
+      v13->_browsingInterval = interval;
+      v13->_browsingPeriodicity = periodicity;
+      objc_storeStrong(&v13->_workQueue, queue);
       v13->_state = 0;
     }
 
     self = v13;
-    v20 = self;
+    selfCopy = self;
   }
 
   else
@@ -606,11 +606,11 @@ LABEL_9:
     }
 
     objc_autoreleasePoolPop(v21);
-    v20 = 0;
+    selfCopy = 0;
   }
 
   v24 = *MEMORY[0x277D85DE8];
-  return v20;
+  return selfCopy;
 }
 
 @end

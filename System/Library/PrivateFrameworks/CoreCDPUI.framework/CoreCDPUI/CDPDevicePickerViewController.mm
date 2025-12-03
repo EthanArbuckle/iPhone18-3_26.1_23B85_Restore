@@ -1,24 +1,24 @@
 @interface CDPDevicePickerViewController
-- (CDPDevicePickerViewController)initWithDevices:(id)a3 delegate:(id)a4 tableViewStyle:(int64_t)a5;
-- (double)heightForFooterInTableView:(id)a3;
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
+- (CDPDevicePickerViewController)initWithDevices:(id)devices delegate:(id)delegate tableViewStyle:(int64_t)style;
+- (double)heightForFooterInTableView:(id)view;
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
 - (id)escapeOffers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)viewForFooterInTableView:(id)a3;
-- (void)setDevices:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)viewForFooterInTableView:(id)view;
+- (void)setDevices:(id)devices;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation CDPDevicePickerViewController
 
-- (CDPDevicePickerViewController)initWithDevices:(id)a3 delegate:(id)a4 tableViewStyle:(int64_t)a5
+- (CDPDevicePickerViewController)initWithDevices:(id)devices delegate:(id)delegate tableViewStyle:(int64_t)style
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 prevailingLocalSecretType];
+  devicesCopy = devices;
+  delegateCopy = delegate;
+  prevailingLocalSecretType = [devicesCopy prevailingLocalSecretType];
   v11 = CDPLocalizedString();
-  if (v10 == 2)
+  if (prevailingLocalSecretType == 2)
   {
     v12 = @"DEVICE_PICKER_SUBTITLE_ALL_MAC";
   }
@@ -29,17 +29,17 @@
   }
 
   v13 = [MEMORY[0x277CFD508] builderForKey:v12];
-  v14 = [MEMORY[0x277CFD4F8] sharedInstance];
-  v15 = [v14 deviceClass];
-  v16 = [v13 addDeviceClass:v15];
-  v17 = [v16 localizedString];
-  v18 = [(CDPTableViewController *)self initWithTitle:v11 subTitle:v17];
+  mEMORY[0x277CFD4F8] = [MEMORY[0x277CFD4F8] sharedInstance];
+  deviceClass = [mEMORY[0x277CFD4F8] deviceClass];
+  v16 = [v13 addDeviceClass:deviceClass];
+  localizedString = [v16 localizedString];
+  v18 = [(CDPTableViewController *)self initWithTitle:v11 subTitle:localizedString];
 
   if (v18)
   {
-    objc_storeStrong(&v18->_devices, a3);
-    objc_storeWeak(&v18->_delegate, v9);
-    [(CDPTableViewController *)v18 setTableViewStyle:a5];
+    objc_storeStrong(&v18->_devices, devices);
+    objc_storeWeak(&v18->_delegate, delegateCopy);
+    [(CDPTableViewController *)v18 setTableViewStyle:style];
   }
 
   return v18;
@@ -61,23 +61,23 @@
   return escapeOffers;
 }
 
-- (double)heightForFooterInTableView:(id)a3
+- (double)heightForFooterInTableView:(id)view
 {
-  v3 = [(CDPDevicePickerViewController *)self escapeOffers];
-  v4 = [v3 count] * 45.0;
+  escapeOffers = [(CDPDevicePickerViewController *)self escapeOffers];
+  v4 = [escapeOffers count] * 45.0;
 
   return v4;
 }
 
-- (id)viewForFooterInTableView:(id)a3
+- (id)viewForFooterInTableView:(id)view
 {
-  v4 = [(CDPDevicePickerViewController *)self escapeOffers];
-  v5 = [v4 count];
+  escapeOffers = [(CDPDevicePickerViewController *)self escapeOffers];
+  v5 = [escapeOffers count];
 
   if (v5)
   {
-    v6 = [(CDPDevicePickerViewController *)self escapeOffers];
-    v7 = [v6 aaf_map:&__block_literal_global_1];
+    escapeOffers2 = [(CDPDevicePickerViewController *)self escapeOffers];
+    v7 = [escapeOffers2 aaf_map:&__block_literal_global_1];
 
     v8 = [objc_alloc(MEMORY[0x277D75A68]) initWithArrangedSubviews:v7];
     [v8 setAxis:1];
@@ -117,12 +117,12 @@ id __58__CDPDevicePickerViewController_viewForFooterInTableView___block_invoke(u
   return v4;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CDPTableViewController *)self tableView];
-  v9 = [v8 dequeueReusableCellWithIdentifier:@"CDPDeviceCell"];
+  pathCopy = path;
+  viewCopy = view;
+  tableView = [(CDPTableViewController *)self tableView];
+  v9 = [tableView dequeueReusableCellWithIdentifier:@"CDPDeviceCell"];
 
   if (!v9)
   {
@@ -130,25 +130,25 @@ id __58__CDPDevicePickerViewController_viewForFooterInTableView___block_invoke(u
     [v9 setAccessoryType:1];
   }
 
-  v10 = -[NSArray objectAtIndexedSubscript:](self->_devices, "objectAtIndexedSubscript:", [v6 row]);
-  v11 = [v10 localizedName];
-  v12 = [v9 textLabel];
-  [v12 setText:v11];
+  v10 = -[NSArray objectAtIndexedSubscript:](self->_devices, "objectAtIndexedSubscript:", [pathCopy row]);
+  localizedName = [v10 localizedName];
+  textLabel = [v9 textLabel];
+  [textLabel setText:localizedName];
 
   v13 = MEMORY[0x277D74300];
-  v14 = [v9 textLabel];
-  v15 = [v14 font];
-  [v15 pointSize];
+  textLabel2 = [v9 textLabel];
+  font = [textLabel2 font];
+  [font pointSize];
   v16 = [v13 boldSystemFontOfSize:?];
-  v17 = [v9 textLabel];
-  [v17 setFont:v16];
+  textLabel3 = [v9 textLabel];
+  [textLabel3 setFont:v16];
 
-  v18 = [v10 model];
-  v19 = [v9 detailTextLabel];
-  [v19 setText:v18];
+  model = [v10 model];
+  detailTextLabel = [v9 detailTextLabel];
+  [detailTextLabel setText:model];
 
-  v20 = [v7 style];
-  if (v20 == 2)
+  style = [viewCopy style];
+  if (style == 2)
   {
     [MEMORY[0x277D75348] systemGray6Color];
   }
@@ -163,22 +163,22 @@ id __58__CDPDevicePickerViewController_viewForFooterInTableView___block_invoke(u
   return v9;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   devices = self->_devices;
-  v7 = [v5 row];
+  v7 = [pathCopy row];
 
   v8 = [(NSArray *)devices objectAtIndexedSubscript:v7];
   [WeakRetained devicePicker:self didSelectDevice:v8];
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v4 = [(CDPDevicePickerViewController *)self traitCollection:a3];
-  v5 = [v4 preferredContentSizeCategory];
-  if (UIContentSizeCategoryIsAccessibilityCategory(v5))
+  v4 = [(CDPDevicePickerViewController *)self traitCollection:view];
+  preferredContentSizeCategory = [v4 preferredContentSizeCategory];
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
     v6 = *MEMORY[0x277D76F30];
   }
@@ -191,27 +191,27 @@ id __58__CDPDevicePickerViewController_viewForFooterInTableView___block_invoke(u
   return v6;
 }
 
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section
 {
   result = 0.0;
-  if (!a4)
+  if (!section)
   {
-    [(UIButton *)self->_remoteApprovalButton frame:a3];
+    [(UIButton *)self->_remoteApprovalButton frame:view];
     return v7 + 45.0;
   }
 
   return result;
 }
 
-- (void)setDevices:(id)a3
+- (void)setDevices:(id)devices
 {
-  objc_storeStrong(&self->_devices, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_devices, devices);
+  devicesCopy = devices;
   escapeOffers = self->_escapeOffers;
   self->_escapeOffers = 0;
 
-  v7 = [(CDPTableViewController *)self tableView];
-  [v7 reloadData];
+  tableView = [(CDPTableViewController *)self tableView];
+  [tableView reloadData];
 }
 
 @end

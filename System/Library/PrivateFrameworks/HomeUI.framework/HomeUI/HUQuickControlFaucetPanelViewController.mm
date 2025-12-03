@@ -6,8 +6,8 @@
 - (HFChildServiceControlItem)childValvesControlItem;
 - (HFPrimaryStateWriter)primaryStateControlItem;
 - (HFTemperatureThresholdControlItem)temperatureControlItem;
-- (HUQuickControlFaucetPanelViewController)initWithControlItems:(id)a3 home:(id)a4 itemUpdater:(id)a5 controlOrientation:(unint64_t)a6 preferredControl:(unint64_t)a7;
-- (id)_controlItemMatchingPredicate:(id)a3;
+- (HUQuickControlFaucetPanelViewController)initWithControlItems:(id)items home:(id)home itemUpdater:(id)updater controlOrientation:(unint64_t)orientation preferredControl:(unint64_t)control;
+- (id)_controlItemMatchingPredicate:(id)predicate;
 - (id)childQuickControlContentViewControllers;
 - (void)viewDidLoad;
 @end
@@ -39,41 +39,41 @@
 {
   v12[1] = *MEMORY[0x277D85DE8];
   v3 = [HUQuickControlCompoundItemPredicate alloc];
-  v4 = [a1 _primaryStatePredicate];
-  v12[0] = v4;
+  _primaryStatePredicate = [self _primaryStatePredicate];
+  v12[0] = _primaryStatePredicate;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
-  v6 = [a1 _temperaturePredicate];
-  v7 = [a1 _childValvesPredicate];
-  v11[1] = v7;
+  _temperaturePredicate = [self _temperaturePredicate];
+  _childValvesPredicate = [self _childValvesPredicate];
+  v11[1] = _childValvesPredicate;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:2];
   v9 = [(HUQuickControlCompoundItemPredicate *)v3 initWithRequiredSubpredicates:v5 optionalSubpredicates:v8 minimumNumberOfMatchedPredicates:2];
 
   return v9;
 }
 
-- (HUQuickControlFaucetPanelViewController)initWithControlItems:(id)a3 home:(id)a4 itemUpdater:(id)a5 controlOrientation:(unint64_t)a6 preferredControl:(unint64_t)a7
+- (HUQuickControlFaucetPanelViewController)initWithControlItems:(id)items home:(id)home itemUpdater:(id)updater controlOrientation:(unint64_t)orientation preferredControl:(unint64_t)control
 {
-  v13 = a3;
+  itemsCopy = items;
   v34.receiver = self;
   v34.super_class = HUQuickControlFaucetPanelViewController;
-  v14 = [(HUQuickControlViewController *)&v34 initWithControlItems:v13 home:a4 itemUpdater:a5 controlOrientation:a6 preferredControl:a7];
+  v14 = [(HUQuickControlViewController *)&v34 initWithControlItems:itemsCopy home:home itemUpdater:updater controlOrientation:orientation preferredControl:control];
   v15 = v14;
   if (v14)
   {
-    v16 = [(HUQuickControlFaucetPanelViewController *)v14 primaryStateControlItem];
+    primaryStateControlItem = [(HUQuickControlFaucetPanelViewController *)v14 primaryStateControlItem];
 
-    if (!v16)
+    if (!primaryStateControlItem)
     {
-      v29 = [MEMORY[0x277CCA890] currentHandler];
-      [v29 handleFailureInMethod:a2 object:v15 file:@"HUQuickControlFaucetPanelViewController.m" lineNumber:56 description:{@"%@ was initialized with missing control items! Items: %@", v15, v13}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v15 file:@"HUQuickControlFaucetPanelViewController.m" lineNumber:56 description:{@"%@ was initialized with missing control items! Items: %@", v15, itemsCopy}];
     }
 
     v17 = MEMORY[0x277CBEB58];
-    v18 = [(HUQuickControlFaucetPanelViewController *)v15 primaryStateControlItem];
-    v19 = [v17 setWithObject:v18];
+    primaryStateControlItem2 = [(HUQuickControlFaucetPanelViewController *)v15 primaryStateControlItem];
+    v19 = [v17 setWithObject:primaryStateControlItem2];
 
-    v20 = [(HUQuickControlFaucetPanelViewController *)v15 temperatureControlItem];
-    [v19 na_safeAddObject:v20];
+    temperatureControlItem = [(HUQuickControlFaucetPanelViewController *)v15 temperatureControlItem];
+    [v19 na_safeAddObject:temperatureControlItem];
 
     v21 = [v19 na_map:&__block_literal_global_60];
     v22 = [HUQuickControlCollectionItemManager alloc];
@@ -166,103 +166,103 @@ id __117__HUQuickControlFaucetPanelViewController_initWithControlItems_home_item
   v38.receiver = self;
   v38.super_class = HUQuickControlFaucetPanelViewController;
   [(HUQuickControlFaucetPanelViewController *)&v38 viewDidLoad];
-  v3 = [(HUQuickControlFaucetPanelViewController *)self collectionViewController];
-  [(HUQuickControlFaucetPanelViewController *)self addChildViewController:v3];
+  collectionViewController = [(HUQuickControlFaucetPanelViewController *)self collectionViewController];
+  [(HUQuickControlFaucetPanelViewController *)self addChildViewController:collectionViewController];
 
-  v4 = [(HUQuickControlFaucetPanelViewController *)self collectionViewController];
-  v5 = [v4 view];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  collectionViewController2 = [(HUQuickControlFaucetPanelViewController *)self collectionViewController];
+  view = [collectionViewController2 view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v6 = [(HUQuickControlFaucetPanelViewController *)self collectionViewController];
-  v7 = [v6 view];
-  [v7 setPreservesSuperviewLayoutMargins:1];
+  collectionViewController3 = [(HUQuickControlFaucetPanelViewController *)self collectionViewController];
+  view2 = [collectionViewController3 view];
+  [view2 setPreservesSuperviewLayoutMargins:1];
 
-  v8 = [(HUQuickControlFaucetPanelViewController *)self view];
-  v9 = [(HUQuickControlFaucetPanelViewController *)self collectionViewController];
-  v10 = [v9 view];
-  [v8 addSubview:v10];
+  view3 = [(HUQuickControlFaucetPanelViewController *)self view];
+  collectionViewController4 = [(HUQuickControlFaucetPanelViewController *)self collectionViewController];
+  view4 = [collectionViewController4 view];
+  [view3 addSubview:view4];
 
   v26 = MEMORY[0x277CCAAD0];
-  v37 = [(HUQuickControlFaucetPanelViewController *)self view];
-  v35 = [v37 leadingAnchor];
-  v36 = [(HUQuickControlFaucetPanelViewController *)self collectionViewController];
-  v34 = [v36 view];
-  v33 = [v34 leadingAnchor];
-  v32 = [v35 constraintEqualToAnchor:v33];
+  view5 = [(HUQuickControlFaucetPanelViewController *)self view];
+  leadingAnchor = [view5 leadingAnchor];
+  collectionViewController5 = [(HUQuickControlFaucetPanelViewController *)self collectionViewController];
+  view6 = [collectionViewController5 view];
+  leadingAnchor2 = [view6 leadingAnchor];
+  v32 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v39[0] = v32;
-  v31 = [(HUQuickControlFaucetPanelViewController *)self view];
-  v29 = [v31 trailingAnchor];
-  v30 = [(HUQuickControlFaucetPanelViewController *)self collectionViewController];
-  v28 = [v30 view];
-  v27 = [v28 trailingAnchor];
-  v25 = [v29 constraintEqualToAnchor:v27];
+  view7 = [(HUQuickControlFaucetPanelViewController *)self view];
+  trailingAnchor = [view7 trailingAnchor];
+  collectionViewController6 = [(HUQuickControlFaucetPanelViewController *)self collectionViewController];
+  view8 = [collectionViewController6 view];
+  trailingAnchor2 = [view8 trailingAnchor];
+  v25 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v39[1] = v25;
-  v24 = [(HUQuickControlFaucetPanelViewController *)self view];
-  v22 = [v24 topAnchor];
-  v23 = [(HUQuickControlFaucetPanelViewController *)self collectionViewController];
-  v21 = [v23 view];
-  v11 = [v21 topAnchor];
-  v12 = [v22 constraintEqualToAnchor:v11];
+  view9 = [(HUQuickControlFaucetPanelViewController *)self view];
+  topAnchor = [view9 topAnchor];
+  collectionViewController7 = [(HUQuickControlFaucetPanelViewController *)self collectionViewController];
+  view10 = [collectionViewController7 view];
+  topAnchor2 = [view10 topAnchor];
+  v12 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v39[2] = v12;
-  v13 = [(HUQuickControlFaucetPanelViewController *)self view];
-  v14 = [v13 bottomAnchor];
-  v15 = [(HUQuickControlFaucetPanelViewController *)self collectionViewController];
-  v16 = [v15 view];
-  v17 = [v16 bottomAnchor];
-  v18 = [v14 constraintEqualToAnchor:v17];
+  view11 = [(HUQuickControlFaucetPanelViewController *)self view];
+  bottomAnchor = [view11 bottomAnchor];
+  collectionViewController8 = [(HUQuickControlFaucetPanelViewController *)self collectionViewController];
+  view12 = [collectionViewController8 view];
+  bottomAnchor2 = [view12 bottomAnchor];
+  v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v39[3] = v18;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:4];
   [v26 activateConstraints:v19];
 
-  v20 = [(HUQuickControlFaucetPanelViewController *)self collectionViewController];
-  [v20 didMoveToParentViewController:self];
+  collectionViewController9 = [(HUQuickControlFaucetPanelViewController *)self collectionViewController];
+  [collectionViewController9 didMoveToParentViewController:self];
 }
 
 - (id)childQuickControlContentViewControllers
 {
   v5[1] = *MEMORY[0x277D85DE8];
-  v2 = [(HUQuickControlFaucetPanelViewController *)self collectionViewController];
-  v5[0] = v2;
+  collectionViewController = [(HUQuickControlFaucetPanelViewController *)self collectionViewController];
+  v5[0] = collectionViewController;
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v5 count:1];
 
   return v3;
 }
 
-- (id)_controlItemMatchingPredicate:(id)a3
+- (id)_controlItemMatchingPredicate:(id)predicate
 {
-  v4 = a3;
-  v5 = [(HUQuickControlViewController *)self controlItems];
+  predicateCopy = predicate;
+  controlItems = [(HUQuickControlViewController *)self controlItems];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __73__HUQuickControlFaucetPanelViewController__controlItemMatchingPredicate___block_invoke;
   v9[3] = &unk_277DB7330;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 na_firstObjectPassingTest:v9];
+  v10 = predicateCopy;
+  v6 = predicateCopy;
+  v7 = [controlItems na_firstObjectPassingTest:v9];
 
   return v7;
 }
 
 - (HFPrimaryStateWriter)primaryStateControlItem
 {
-  v3 = [objc_opt_class() _primaryStatePredicate];
-  v4 = [(HUQuickControlFaucetPanelViewController *)self _controlItemMatchingPredicate:v3];
+  _primaryStatePredicate = [objc_opt_class() _primaryStatePredicate];
+  v4 = [(HUQuickControlFaucetPanelViewController *)self _controlItemMatchingPredicate:_primaryStatePredicate];
 
   return v4;
 }
 
 - (HFTemperatureThresholdControlItem)temperatureControlItem
 {
-  v3 = [objc_opt_class() _temperaturePredicate];
-  v4 = [(HUQuickControlFaucetPanelViewController *)self _controlItemMatchingPredicate:v3];
+  _temperaturePredicate = [objc_opt_class() _temperaturePredicate];
+  v4 = [(HUQuickControlFaucetPanelViewController *)self _controlItemMatchingPredicate:_temperaturePredicate];
 
   return v4;
 }
 
 - (HFChildServiceControlItem)childValvesControlItem
 {
-  v3 = [objc_opt_class() _childValvesPredicate];
-  v4 = [(HUQuickControlFaucetPanelViewController *)self _controlItemMatchingPredicate:v3];
+  _childValvesPredicate = [objc_opt_class() _childValvesPredicate];
+  v4 = [(HUQuickControlFaucetPanelViewController *)self _controlItemMatchingPredicate:_childValvesPredicate];
 
   return v4;
 }

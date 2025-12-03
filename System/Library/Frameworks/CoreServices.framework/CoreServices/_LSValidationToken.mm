@@ -1,24 +1,24 @@
 @interface _LSValidationToken
-- (_LSValidationToken)initWithCoder:(id)a3;
-- (_LSValidationToken)initWithPayload:(id)a3;
+- (_LSValidationToken)initWithCoder:(id)coder;
+- (_LSValidationToken)initWithPayload:(id)payload;
 - (id)setOwner:(id *)result;
-- (uint64_t)isCorrectForPayload:(uint64_t)a1;
-- (void)encodeWithCoder:(id)a3;
+- (uint64_t)isCorrectForPayload:(uint64_t)payload;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _LSValidationToken
 
-- (_LSValidationToken)initWithPayload:(id)a3
+- (_LSValidationToken)initWithPayload:(id)payload
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  payloadCopy = payload;
   v14.receiver = self;
   v14.super_class = _LSValidationToken;
   v5 = [(_LSValidationToken *)&v14 init];
   _LSAssertRunningInServer("[_LSValidationToken initWithPayload:]");
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [payloadCopy copy];
     payload = v5->_payload;
     v5->_payload = v6;
 
@@ -36,28 +36,28 @@
   return v5;
 }
 
-- (uint64_t)isCorrectForPayload:(uint64_t)a1
+- (uint64_t)isCorrectForPayload:(uint64_t)payload
 {
   v3 = a2;
-  if (a1)
+  if (payload)
   {
     _LSAssertRunningInServer("[_LSValidationToken isCorrectForPayload:]");
-    if (*(a1 + 8))
+    if (*(payload + 8))
     {
-      if (*(a1 + 16))
+      if (*(payload + 16))
       {
-        v4 = *(a1 + 24);
+        v4 = *(payload + 24);
         if (v4)
         {
           v5 = v4;
-          v6 = _LSValidationTokenComputeHMAC(v3, *(a1 + 16));
+          v6 = _LSValidationTokenComputeHMAC(v3, *(payload + 16));
           if (v6 && (v7 = [v5 length], v7 == objc_msgSend(v6, "length")))
           {
             v8 = timingsafe_bcmp([v5 bytes], objc_msgSend(v6, "bytes"), v7);
 
             if (!v8)
             {
-              a1 = 1;
+              payload = 1;
               goto LABEL_20;
             }
           }
@@ -71,14 +71,14 @@
 
     if ([__LSDefaultsGetSharedInstance() isAppleInternal])
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 32));
+      WeakRetained = objc_loadWeakRetained((payload + 32));
 
       if (WeakRetained)
       {
         v10 = _LSDefaultLog();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
         {
-          [(_LSValidationToken *)(a1 + 32) isCorrectForPayload:v10];
+          [(_LSValidationToken *)(payload + 32) isCorrectForPayload:v10];
         }
       }
 
@@ -98,33 +98,33 @@
       [_LSValidationToken isCorrectForPayload:v11];
     }
 
-    a1 = 0;
+    payload = 0;
   }
 
 LABEL_20:
 
-  return a1;
+  return payload;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_payload forKey:@"payload"];
-  [v4 encodeObject:self->_nonce forKey:@"nonce"];
-  [v4 encodeObject:self->_HMAC forKey:@"HMAC"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_payload forKey:@"payload"];
+  [coderCopy encodeObject:self->_nonce forKey:@"nonce"];
+  [coderCopy encodeObject:self->_HMAC forKey:@"HMAC"];
 }
 
-- (_LSValidationToken)initWithCoder:(id)a3
+- (_LSValidationToken)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = _LSValidationToken;
   v5 = [(_LSValidationToken *)&v12 init];
   if (v5)
   {
-    v6 = [v4 ls_decodeObjectOfClass:objc_opt_class() forKey:@"payload"];
-    v7 = [v4 ls_decodeObjectOfClass:objc_opt_class() forKey:@"nonce"];
-    v8 = [v4 ls_decodeObjectOfClass:objc_opt_class() forKey:@"HMAC"];
+    v6 = [coderCopy ls_decodeObjectOfClass:objc_opt_class() forKey:@"payload"];
+    v7 = [coderCopy ls_decodeObjectOfClass:objc_opt_class() forKey:@"nonce"];
+    v8 = [coderCopy ls_decodeObjectOfClass:objc_opt_class() forKey:@"HMAC"];
     v9 = v8;
     if (v6 && v7 && v8)
     {
@@ -137,13 +137,13 @@ LABEL_20:
       }
 
       v10 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A250], 4864, 0, "[_LSValidationToken initWithCoder:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/LSValidationToken.mm", 114);
-      [v4 failWithError:v10];
+      [coderCopy failWithError:v10];
     }
 
     else
     {
       v10 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A250], 4865, 0, "[_LSValidationToken initWithCoder:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Base/LSValidationToken.mm", 118);
-      [v4 failWithError:v10];
+      [coderCopy failWithError:v10];
     }
 
     v5 = 0;

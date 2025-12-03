@@ -1,70 +1,70 @@
 @interface PLGraphBitset
-+ (__CFBitVector)_immutableBitVectorFromRleEncodedData:(id)a3;
-+ (id)_dataFromRleEncodedData:(id)a3;
-+ (id)_rleEncodedDataFromBitVector:(__CFBitVector *)a3;
-+ (id)_rleEncodedDataFromData:(id)a3;
-+ (unsigned)_decodeLittleEndianBase128:(const char *)a3 bufferLength:(unint64_t)a4 bytesRead:(unint64_t *)a5;
-+ (unsigned)dataFormatFromEncodedData:(id)a3;
-+ (void)_encodeLittleEndianBase128:(unsigned int)a3 toData:(id)a4;
-+ (void)_rleEncodeData:(id)a3 intoData:(id)a4;
-- (BOOL)bitAtIndex:(unint64_t)a3 error:(id *)a4;
-- (BOOL)intersectsBitset:(id)a3;
++ (__CFBitVector)_immutableBitVectorFromRleEncodedData:(id)data;
++ (id)_dataFromRleEncodedData:(id)data;
++ (id)_rleEncodedDataFromBitVector:(__CFBitVector *)vector;
++ (id)_rleEncodedDataFromData:(id)data;
++ (unsigned)_decodeLittleEndianBase128:(const char *)base128 bufferLength:(unint64_t)length bytesRead:(unint64_t *)read;
++ (unsigned)dataFormatFromEncodedData:(id)data;
++ (void)_encodeLittleEndianBase128:(unsigned int)base128 toData:(id)data;
++ (void)_rleEncodeData:(id)data intoData:(id)intoData;
+- (BOOL)bitAtIndex:(unint64_t)index error:(id *)error;
+- (BOOL)intersectsBitset:(id)bitset;
 - (NSArray)indexesWithBitsSet;
 - (NSData)encodedData;
 - (NSIndexSet)indexSetWithBitsSet;
 - (PLGraphBitset)init;
-- (PLGraphBitset)initWithBitVectorBuffer:(void *)a3 bitCount:(unint64_t)a4;
-- (PLGraphBitset)initWithEncodedData:(id)a3 error:(id *)a4;
-- (PLGraphBitset)initWithIndexSet:(id)a3;
+- (PLGraphBitset)initWithBitVectorBuffer:(void *)buffer bitCount:(unint64_t)count;
+- (PLGraphBitset)initWithEncodedData:(id)data error:(id *)error;
+- (PLGraphBitset)initWithIndexSet:(id)set;
 - (__CFBitVector)bitVector;
 - (__CFBitVector)mutableBitVector;
 - (unint64_t)_pageCount;
 - (unint64_t)count;
 - (unint64_t)onesCount;
-- (unsigned)_pageAtIndex:(int64_t)a3;
+- (unsigned)_pageAtIndex:(int64_t)index;
 - (void)_createBitVectorBuffer;
-- (void)_enumerateIndexes:(id)a3;
-- (void)_enumeratePages:(id)a3;
+- (void)_enumerateIndexes:(id)indexes;
+- (void)_enumeratePages:(id)pages;
 - (void)dealloc;
-- (void)setBit:(BOOL)a3 atIndex:(unint64_t)a4;
+- (void)setBit:(BOOL)bit atIndex:(unint64_t)index;
 @end
 
 @implementation PLGraphBitset
 
-- (void)setBit:(BOOL)a3 atIndex:(unint64_t)a4
+- (void)setBit:(BOOL)bit atIndex:(unint64_t)index
 {
-  v5 = a3;
-  v8 = [(PLGraphBitset *)self mutableBitVector];
-  if (!v8)
+  bitCopy = bit;
+  mutableBitVector = [(PLGraphBitset *)self mutableBitVector];
+  if (!mutableBitVector)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PLGraphBitset.m" lineNumber:523 description:@"no bitVector set."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLGraphBitset.m" lineNumber:523 description:@"no bitVector set."];
   }
 
-  if ((a4 + 1) > CFBitVectorGetCount(self->_bitVector))
+  if ((index + 1) > CFBitVectorGetCount(self->_bitVector))
   {
-    CFBitVectorSetCount(v8, a4 + 1);
+    CFBitVectorSetCount(mutableBitVector, index + 1);
   }
 
-  CFBitVectorSetBitAtIndex(v8, a4, v5);
+  CFBitVectorSetBitAtIndex(mutableBitVector, index, bitCopy);
   encodedData = self->_encodedData;
   self->_encodedData = 0;
 }
 
-- (BOOL)intersectsBitset:(id)a3
+- (BOOL)intersectsBitset:(id)bitset
 {
-  v4 = a3;
+  bitsetCopy = bitset;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v5 = [v4 _pageCount];
+  _pageCount = [bitsetCopy _pageCount];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __34__PLGraphBitset_intersectsBitset___block_invoke;
   v8[3] = &unk_1E756B550;
-  v11 = v5;
-  v6 = v4;
+  v11 = _pageCount;
+  v6 = bitsetCopy;
   v9 = v6;
   v10 = &v12;
   [(PLGraphBitset *)self _enumeratePages:v8];
@@ -133,11 +133,11 @@ void __35__PLGraphBitset_indexesWithBitsSet__block_invoke(uint64_t a1, uint64_t 
   if (result)
   {
     Count = CFBitVectorGetCount([(PLGraphBitset *)self bitVector]);
-    v5 = [(PLGraphBitset *)self bitVector];
+    bitVector = [(PLGraphBitset *)self bitVector];
     v6.location = 0;
     v6.length = Count;
 
-    return CFBitVectorGetCountOfBit(v5, v6, 1u);
+    return CFBitVectorGetCountOfBit(bitVector, v6, 1u);
   }
 
   return result;
@@ -148,32 +148,32 @@ void __35__PLGraphBitset_indexesWithBitsSet__block_invoke(uint64_t a1, uint64_t 
   result = [(PLGraphBitset *)self bitVector];
   if (result)
   {
-    v4 = [(PLGraphBitset *)self bitVector];
+    bitVector = [(PLGraphBitset *)self bitVector];
 
-    return CFBitVectorGetCount(v4);
+    return CFBitVectorGetCount(bitVector);
   }
 
   return result;
 }
 
-- (BOOL)bitAtIndex:(unint64_t)a3 error:(id *)a4
+- (BOOL)bitAtIndex:(unint64_t)index error:(id *)error
 {
-  v8 = [(PLGraphBitset *)self bitVector];
-  if (!v8)
+  bitVector = [(PLGraphBitset *)self bitVector];
+  if (!bitVector)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PLGraphBitset.m" lineNumber:445 description:@"no bitVector set."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLGraphBitset.m" lineNumber:445 description:@"no bitVector set."];
   }
 
-  if (CFBitVectorGetCount([(PLGraphBitset *)self bitVector]) > a3)
+  if (CFBitVectorGetCount([(PLGraphBitset *)self bitVector]) > index)
   {
-    return CFBitVectorGetBitAtIndex(v8, a3) != 0;
+    return CFBitVectorGetBitAtIndex(bitVector, index) != 0;
   }
 
-  if (a4)
+  if (error)
   {
     v10 = PLErrorCreate();
-    *a4 = v10;
+    *error = v10;
   }
 
   return 0;
@@ -211,14 +211,14 @@ LABEL_5:
     if (self->_encodedData)
     {
       v5 = objc_opt_class();
-      v6 = [(PLGraphBitset *)self encodedData];
-      v7 = [v5 dataFormatFromEncodedData:v6];
+      encodedData = [(PLGraphBitset *)self encodedData];
+      v7 = [v5 dataFormatFromEncodedData:encodedData];
 
       if (v7 == 1)
       {
         v8 = objc_opt_class();
-        v9 = [(PLGraphBitset *)self encodedData];
-        v10 = [v8 _immutableBitVectorFromRleEncodedData:v9];
+        encodedData2 = [(PLGraphBitset *)self encodedData];
+        v10 = [v8 _immutableBitVectorFromRleEncodedData:encodedData2];
 
         if (v10)
         {
@@ -228,8 +228,8 @@ LABEL_5:
 
       else
       {
-        v11 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v11 handleFailureInMethod:a2 object:self file:@"PLGraphBitset.m" lineNumber:392 description:{@"unsupported bitset data version: %d", v7}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PLGraphBitset.m" lineNumber:392 description:{@"unsupported bitset data version: %d", v7}];
       }
     }
 
@@ -277,13 +277,13 @@ LABEL_5:
   return [(PLGraphBitset *)&v3 init];
 }
 
-- (PLGraphBitset)initWithIndexSet:(id)a3
+- (PLGraphBitset)initWithIndexSet:(id)set
 {
-  v5 = a3;
-  if (!v5)
+  setCopy = set;
+  if (!setCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PLGraphBitset.m" lineNumber:345 description:{@"Invalid parameter not satisfying: %@", @"indexSet"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLGraphBitset.m" lineNumber:345 description:{@"Invalid parameter not satisfying: %@", @"indexSet"}];
   }
 
   v11.receiver = self;
@@ -291,24 +291,24 @@ LABEL_5:
   v6 = [(PLGraphBitset *)&v11 init];
   if (v6)
   {
-    v6->_bitVector = CFBitVectorCreateMutable(*MEMORY[0x1E695E480], [v5 count]);
+    v6->_bitVector = CFBitVectorCreateMutable(*MEMORY[0x1E695E480], [setCopy count]);
     v6->_isMutable = 1;
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __34__PLGraphBitset_initWithIndexSet___block_invoke;
     v9[3] = &unk_1E7576338;
     v10 = v6;
-    [v5 enumerateIndexesUsingBlock:v9];
+    [setCopy enumerateIndexesUsingBlock:v9];
   }
 
   return v6;
 }
 
-- (PLGraphBitset)initWithBitVectorBuffer:(void *)a3 bitCount:(unint64_t)a4
+- (PLGraphBitset)initWithBitVectorBuffer:(void *)buffer bitCount:(unint64_t)count
 {
-  if (a3)
+  if (buffer)
   {
-    if (a4)
+    if (count)
     {
       goto LABEL_3;
     }
@@ -316,17 +316,17 @@ LABEL_5:
 
   else
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PLGraphBitset.m" lineNumber:335 description:{@"Invalid parameter not satisfying: %@", @"buffer"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLGraphBitset.m" lineNumber:335 description:{@"Invalid parameter not satisfying: %@", @"buffer"}];
 
-    if (a4)
+    if (count)
     {
       goto LABEL_3;
     }
   }
 
-  v12 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v12 handleFailureInMethod:a2 object:self file:@"PLGraphBitset.m" lineNumber:336 description:@"bad size"];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLGraphBitset.m" lineNumber:336 description:@"bad size"];
 
 LABEL_3:
   v13.receiver = self;
@@ -335,19 +335,19 @@ LABEL_3:
   if (v8)
   {
     Default = CFAllocatorGetDefault();
-    v8->_bitVector = CFBitVectorCreate(Default, a3, a4);
+    v8->_bitVector = CFBitVectorCreate(Default, buffer, count);
   }
 
   return v8;
 }
 
-- (PLGraphBitset)initWithEncodedData:(id)a3 error:(id *)a4
+- (PLGraphBitset)initWithEncodedData:(id)data error:(id *)error
 {
-  v8 = a3;
-  if (!v8)
+  dataCopy = data;
+  if (!dataCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PLGraphBitset.m" lineNumber:312 description:{@"Invalid parameter not satisfying: %@", @"encodedData"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLGraphBitset.m" lineNumber:312 description:{@"Invalid parameter not satisfying: %@", @"encodedData"}];
   }
 
   v14.receiver = self;
@@ -355,11 +355,11 @@ LABEL_3:
   v9 = [(PLGraphBitset *)&v14 init];
   if (v9)
   {
-    v10 = [objc_opt_class() _immutableBitVectorFromRleEncodedData:v8];
+    v10 = [objc_opt_class() _immutableBitVectorFromRleEncodedData:dataCopy];
     if (v10)
     {
       v11 = v10;
-      objc_storeStrong(&v9->_encodedData, a3);
+      objc_storeStrong(&v9->_encodedData, data);
       v9->_bitVector = CFRetain(v11);
     }
 
@@ -367,9 +367,9 @@ LABEL_3:
     {
 
       v9 = 0;
-      if (a4)
+      if (error)
       {
-        *a4 = 0;
+        *error = 0;
       }
     }
   }
@@ -377,13 +377,13 @@ LABEL_3:
   return v9;
 }
 
-- (void)_enumerateIndexes:(id)a3
+- (void)_enumerateIndexes:(id)indexes
 {
-  v5 = a3;
-  if (!v5)
+  indexesCopy = indexes;
+  if (!indexesCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PLGraphBitset.m" lineNumber:81 description:{@"Invalid parameter not satisfying: %@", @"handler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLGraphBitset.m" lineNumber:81 description:{@"Invalid parameter not satisfying: %@", @"handler"}];
   }
 
   v6 = [(PLGraphBitset *)self count];
@@ -391,10 +391,10 @@ LABEL_3:
   v9[1] = 3221225472;
   v9[2] = __35__PLGraphBitset__enumerateIndexes___block_invoke;
   v9[3] = &unk_1E756B4D8;
-  v10 = v5;
+  v10 = indexesCopy;
   v11 = v6;
   v9[4] = self;
-  v7 = v5;
+  v7 = indexesCopy;
   [(PLGraphBitset *)self _enumeratePages:v9];
 }
 
@@ -428,23 +428,23 @@ uint64_t __35__PLGraphBitset__enumerateIndexes___block_invoke(uint64_t result, i
   return result;
 }
 
-- (void)_enumeratePages:(id)a3
+- (void)_enumeratePages:(id)pages
 {
-  v5 = a3;
-  if (!v5)
+  pagesCopy = pages;
+  if (!pagesCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PLGraphBitset.m" lineNumber:64 description:{@"Invalid parameter not satisfying: %@", @"handler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLGraphBitset.m" lineNumber:64 description:{@"Invalid parameter not satisfying: %@", @"handler"}];
   }
 
-  v6 = [(PLGraphBitset *)self _createBitVectorBuffer];
+  _createBitVectorBuffer = [(PLGraphBitset *)self _createBitVectorBuffer];
   v9 = 0;
   if ([(PLGraphBitset *)self _pageCount])
   {
     v7 = 0;
     do
     {
-      v5[2](v5, v6[v7], v7, &v9);
+      pagesCopy[2](pagesCopy, _createBitVectorBuffer[v7], v7, &v9);
       if (v9)
       {
         break;
@@ -456,16 +456,16 @@ uint64_t __35__PLGraphBitset__enumerateIndexes___block_invoke(uint64_t result, i
     while ([(PLGraphBitset *)self _pageCount]> v7);
   }
 
-  free(v6);
+  free(_createBitVectorBuffer);
 }
 
-- (unsigned)_pageAtIndex:(int64_t)a3
+- (unsigned)_pageAtIndex:(int64_t)index
 {
   bytes = 0;
-  v4 = [(PLGraphBitset *)self bitVector];
-  v7.location = 8 * a3;
+  bitVector = [(PLGraphBitset *)self bitVector];
+  v7.location = 8 * index;
   v7.length = 8;
-  CFBitVectorGetBits(v4, v7, &bytes);
+  CFBitVectorGetBits(bitVector, v7, &bytes);
   return bytes;
 }
 
@@ -473,10 +473,10 @@ uint64_t __35__PLGraphBitset__enumerateIndexes___block_invoke(uint64_t result, i
 {
   Count = CFBitVectorGetCount([(PLGraphBitset *)self bitVector]);
   v4 = malloc_type_calloc(1uLL, [(PLGraphBitset *)self _pageCount], 0xA8D12D7EuLL);
-  v5 = [(PLGraphBitset *)self bitVector];
+  bitVector = [(PLGraphBitset *)self bitVector];
   v7.location = 0;
   v7.length = Count;
-  CFBitVectorGetBits(v5, v7, v4);
+  CFBitVectorGetBits(bitVector, v7, v4);
   return v4;
 }
 
@@ -494,12 +494,12 @@ uint64_t __35__PLGraphBitset__enumerateIndexes___block_invoke(uint64_t result, i
   }
 }
 
-+ (unsigned)dataFormatFromEncodedData:(id)a3
++ (unsigned)dataFormatFromEncodedData:(id)data
 {
-  v3 = a3;
-  if ([v3 bytes])
+  dataCopy = data;
+  if ([dataCopy bytes])
   {
-    v4 = *[v3 bytes];
+    v4 = *[dataCopy bytes];
   }
 
   else
@@ -510,18 +510,18 @@ uint64_t __35__PLGraphBitset__enumerateIndexes___block_invoke(uint64_t result, i
   return v4;
 }
 
-+ (__CFBitVector)_immutableBitVectorFromRleEncodedData:(id)a3
++ (__CFBitVector)_immutableBitVectorFromRleEncodedData:(id)data
 {
-  v4 = a3;
-  if ([v4 length] >= 2 && (v5 = objc_msgSend(v4, "bytes"), *v5 == 1))
+  dataCopy = data;
+  if ([dataCopy length] >= 2 && (v5 = objc_msgSend(dataCopy, "bytes"), *v5 == 1))
   {
-    v6 = [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:v5 + 1 length:objc_msgSend(v4 freeWhenDone:{"length") - 1, 0}];
-    v7 = [a1 _dataFromRleEncodedData:v6];
+    v6 = [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:v5 + 1 length:objc_msgSend(dataCopy freeWhenDone:{"length") - 1, 0}];
+    v7 = [self _dataFromRleEncodedData:v6];
     v8 = v7;
     if (v7)
     {
-      v9 = [v7 bytes];
-      v10 = CFBitVectorCreate(*MEMORY[0x1E695E480], v9, 8 * [v8 length]);
+      bytes = [v7 bytes];
+      v10 = CFBitVectorCreate(*MEMORY[0x1E695E480], bytes, 8 * [v8 length]);
       v11 = CFAutorelease(v10);
     }
 
@@ -539,16 +539,16 @@ uint64_t __35__PLGraphBitset__enumerateIndexes___block_invoke(uint64_t result, i
   return v11;
 }
 
-+ (id)_rleEncodedDataFromBitVector:(__CFBitVector *)a3
++ (id)_rleEncodedDataFromBitVector:(__CFBitVector *)vector
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!vector)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"PLGraphBitset.m" lineNumber:239 description:{@"Invalid parameter not satisfying: %@", @"bitVector"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLGraphBitset.m" lineNumber:239 description:{@"Invalid parameter not satisfying: %@", @"bitVector"}];
   }
 
-  Count = CFBitVectorGetCount(a3);
+  Count = CFBitVectorGetCount(vector);
   v6 = Count;
   if (Count)
   {
@@ -568,12 +568,12 @@ uint64_t __35__PLGraphBitset__enumerateIndexes___block_invoke(uint64_t result, i
       v9 = v8;
       v19.length = v6;
       v19.location = 0;
-      CFBitVectorGetBits(a3, v19, v8);
+      CFBitVectorGetBits(vector, v19, v8);
       v10 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytesNoCopy:v9 length:v7 freeWhenDone:1];
-      v11 = [MEMORY[0x1E695DF88] data];
+      data = [MEMORY[0x1E695DF88] data];
       buf[0] = 1;
-      [v11 appendBytes:buf length:1];
-      [a1 _rleEncodeData:v10 intoData:v11];
+      [data appendBytes:buf length:1];
+      [self _rleEncodeData:v10 intoData:data];
     }
 
     else
@@ -586,40 +586,40 @@ uint64_t __35__PLGraphBitset__enumerateIndexes___block_invoke(uint64_t result, i
         _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_ERROR, "Failed to allocate bitset buffer of byte size: %ld", buf, 0xCu);
       }
 
-      v11 = 0;
+      data = 0;
     }
   }
 
   else
   {
-    v11 = 0;
+    data = 0;
   }
 
-  return v11;
+  return data;
 }
 
-+ (id)_dataFromRleEncodedData:(id)a3
++ (id)_dataFromRleEncodedData:(id)data
 {
-  v5 = a3;
-  if (!v5)
+  dataCopy = data;
+  if (!dataCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"PLGraphBitset.m" lineNumber:202 description:{@"Invalid parameter not satisfying: %@", @"encodedData"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLGraphBitset.m" lineNumber:202 description:{@"Invalid parameter not satisfying: %@", @"encodedData"}];
   }
 
-  v6 = [MEMORY[0x1E695DF88] data];
-  v7 = [v5 bytes];
-  v8 = [v5 length];
+  data = [MEMORY[0x1E695DF88] data];
+  bytes = [dataCopy bytes];
+  v8 = [dataCopy length];
   if (v8)
   {
     v9 = v8;
     v10 = 0;
     do
     {
-      v17 = *(v7 + v10);
+      v17 = *(bytes + v10);
       if (v17 - 255 > 0xFFFFFF01)
       {
-        [v6 appendBytes:&v17 length:1];
+        [data appendBytes:&v17 length:1];
         ++v10;
       }
 
@@ -627,13 +627,13 @@ uint64_t __35__PLGraphBitset__enumerateIndexes___block_invoke(uint64_t result, i
       {
         v11 = v10 + 1;
         v16 = 0;
-        v12 = [a1 _decodeLittleEndianBase128:v7 + v11 bufferLength:v9 - v11 bytesRead:&v16];
+        v12 = [self _decodeLittleEndianBase128:bytes + v11 bufferLength:v9 - v11 bytesRead:&v16];
         if (v12)
         {
           v13 = v12;
           do
           {
-            [v6 appendBytes:&v17 length:1];
+            [data appendBytes:&v17 length:1];
             --v13;
           }
 
@@ -647,27 +647,27 @@ uint64_t __35__PLGraphBitset__enumerateIndexes___block_invoke(uint64_t result, i
     while (v10 < v9);
   }
 
-  return v6;
+  return data;
 }
 
-+ (id)_rleEncodedDataFromData:(id)a3
++ (id)_rleEncodedDataFromData:(id)data
 {
   v4 = MEMORY[0x1E695DF88];
-  v5 = a3;
-  v6 = [v4 data];
-  [a1 _rleEncodeData:v5 intoData:v6];
+  dataCopy = data;
+  data = [v4 data];
+  [self _rleEncodeData:dataCopy intoData:data];
 
-  return v6;
+  return data;
 }
 
-+ (void)_rleEncodeData:(id)a3 intoData:(id)a4
++ (void)_rleEncodeData:(id)data intoData:(id)intoData
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  dataCopy = data;
+  intoDataCopy = intoData;
+  v9 = intoDataCopy;
+  if (dataCopy)
   {
-    if (v8)
+    if (intoDataCopy)
     {
       goto LABEL_3;
     }
@@ -675,8 +675,8 @@ uint64_t __35__PLGraphBitset__enumerateIndexes___block_invoke(uint64_t result, i
 
   else
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:a1 file:@"PLGraphBitset.m" lineNumber:150 description:{@"Invalid parameter not satisfying: %@", @"decodedData"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLGraphBitset.m" lineNumber:150 description:{@"Invalid parameter not satisfying: %@", @"decodedData"}];
 
     if (v9)
     {
@@ -684,15 +684,15 @@ uint64_t __35__PLGraphBitset__enumerateIndexes___block_invoke(uint64_t result, i
     }
   }
 
-  v20 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v20 handleFailureInMethod:a2 object:a1 file:@"PLGraphBitset.m" lineNumber:151 description:{@"Invalid parameter not satisfying: %@", @"encodedData"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLGraphBitset.m" lineNumber:151 description:{@"Invalid parameter not satisfying: %@", @"encodedData"}];
 
 LABEL_3:
-  if ([v7 length])
+  if ([dataCopy length])
   {
-    v10 = [v7 bytes];
-    v11 = [v7 length];
-    v12 = [MEMORY[0x1E695DF88] data];
+    bytes = [dataCopy bytes];
+    v11 = [dataCopy length];
+    data = [MEMORY[0x1E695DF88] data];
     v36 = 0;
     v37 = &v36;
     v38 = 0x2020000000;
@@ -700,7 +700,7 @@ LABEL_3:
     v32 = 0;
     v33 = &v32;
     v34 = 0x2020000000;
-    v35 = *v10;
+    v35 = *bytes;
     v28 = 0;
     v29 = &v28;
     v30 = 0x2020000000;
@@ -713,8 +713,8 @@ LABEL_3:
     v22 = v9;
     v25 = &v32;
     v26 = &v36;
-    v27 = a1;
-    v13 = v12;
+    selfCopy = self;
+    v13 = data;
     v23 = v13;
     v14 = _Block_copy(aBlock);
     if (v11 >= 2)
@@ -722,10 +722,10 @@ LABEL_3:
       v15 = v33;
       for (i = 1; i != v11; ++i)
       {
-        if (v10[i] != *(v15 + 24) || (*(v29 + 24) == 1 ? (v17 = i >= v11 - 1) : (v17 = 1), v17))
+        if (bytes[i] != *(v15 + 24) || (*(v29 + 24) == 1 ? (v17 = i >= v11 - 1) : (v17 = 1), v17))
         {
           v14[2](v14);
-          v18 = v10[i];
+          v18 = bytes[i];
           v15 = v33;
           *(v33 + 24) = v18;
           *(v29 + 24) = (v18 - 255) < 0xFFFFFF02;
@@ -763,25 +763,25 @@ uint64_t __41__PLGraphBitset__rleEncodeData_intoData___block_invoke(uint64_t a1)
   return result;
 }
 
-+ (unsigned)_decodeLittleEndianBase128:(const char *)a3 bufferLength:(unint64_t)a4 bytesRead:(unint64_t *)a5
++ (unsigned)_decodeLittleEndianBase128:(const char *)base128 bufferLength:(unint64_t)length bytesRead:(unint64_t *)read
 {
   v5 = 0;
   v6 = 0;
   result = 0;
-  v8 = 5;
-  if (a4 < 5)
+  lengthCopy = 5;
+  if (length < 5)
   {
-    v8 = a4;
+    lengthCopy = length;
   }
 
-  while (v8 != v5)
+  while (lengthCopy != v5)
   {
-    v9 = a3[v5++];
+    v9 = base128[v5++];
     result |= (v9 & 0x7F) << v6;
     v6 += 7;
     if ((v9 & 0x80) == 0)
     {
-      if (!a5)
+      if (!read)
       {
         return result;
       }
@@ -790,32 +790,32 @@ uint64_t __41__PLGraphBitset__rleEncodeData_intoData___block_invoke(uint64_t a1)
     }
   }
 
-  v5 = v8;
-  if (a5)
+  v5 = lengthCopy;
+  if (read)
   {
 LABEL_6:
-    *a5 = v5;
+    *read = v5;
   }
 
   return result;
 }
 
-+ (void)_encodeLittleEndianBase128:(unsigned int)a3 toData:(id)a4
++ (void)_encodeLittleEndianBase128:(unsigned int)base128 toData:(id)data
 {
-  v7 = a4;
-  if (!v7)
+  dataCopy = data;
+  if (!dataCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"PLGraphBitset.m" lineNumber:106 description:{@"Invalid parameter not satisfying: %@", @"data"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLGraphBitset.m" lineNumber:106 description:{@"Invalid parameter not satisfying: %@", @"data"}];
   }
 
-  [v7 setLength:0];
+  [dataCopy setLength:0];
   do
   {
-    v10 = a3 & 0x7F | ((a3 > 0x7F) << 7);
-    [v7 appendBytes:&v10 length:1];
-    v8 = a3 > 0x7F;
-    a3 >>= 7;
+    v10 = base128 & 0x7F | ((base128 > 0x7F) << 7);
+    [dataCopy appendBytes:&v10 length:1];
+    v8 = base128 > 0x7F;
+    base128 >>= 7;
   }
 
   while (v8);

@@ -1,55 +1,55 @@
 @interface SBUISFloatingDockFileStackActionContext
 - (NSArray)fromURLs;
-- (SBUISFloatingDockFileStackActionContext)initWithActionContext:(id)a3;
-- (SBUISFloatingDockFileStackActionContext)initWithBSXPCCoder:(id)a3;
-- (SBUISFloatingDockFileStackActionContext)initWithUUID:(id)a3 iconIdentifier:(id)a4 actionType:(unint64_t)a5 toIconURL:(id)a6 fromSecurityURLWrappers:(id)a7 thumbnail:(id)a8;
-- (SBUISFloatingDockFileStackActionContext)initWithUUID:(id)a3 iconIdentifier:(id)a4 actionType:(unint64_t)a5 toIconURL:(id)a6 fromURLs:(id)a7;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (SBUISFloatingDockFileStackActionContext)initWithActionContext:(id)context;
+- (SBUISFloatingDockFileStackActionContext)initWithBSXPCCoder:(id)coder;
+- (SBUISFloatingDockFileStackActionContext)initWithUUID:(id)d iconIdentifier:(id)identifier actionType:(unint64_t)type toIconURL:(id)l fromSecurityURLWrappers:(id)wrappers thumbnail:(id)thumbnail;
+- (SBUISFloatingDockFileStackActionContext)initWithUUID:(id)d iconIdentifier:(id)identifier actionType:(unint64_t)type toIconURL:(id)l fromURLs:(id)ls;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation SBUISFloatingDockFileStackActionContext
 
-- (SBUISFloatingDockFileStackActionContext)initWithUUID:(id)a3 iconIdentifier:(id)a4 actionType:(unint64_t)a5 toIconURL:(id)a6 fromSecurityURLWrappers:(id)a7 thumbnail:(id)a8
+- (SBUISFloatingDockFileStackActionContext)initWithUUID:(id)d iconIdentifier:(id)identifier actionType:(unint64_t)type toIconURL:(id)l fromSecurityURLWrappers:(id)wrappers thumbnail:(id)thumbnail
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  dCopy = d;
+  identifierCopy = identifier;
+  lCopy = l;
+  wrappersCopy = wrappers;
+  thumbnailCopy = thumbnail;
   v31.receiver = self;
   v31.super_class = SBUISFloatingDockFileStackActionContext;
   v19 = [(SBUISFloatingDockFileStackActionContext *)&v31 init];
   if (v19)
   {
-    v20 = [v14 copy];
+    v20 = [dCopy copy];
     uuid = v19->_uuid;
     v19->_uuid = v20;
 
-    v22 = [v15 copy];
+    v22 = [identifierCopy copy];
     iconIdentifier = v19->_iconIdentifier;
     v19->_iconIdentifier = v22;
 
-    v19->_actionType = a5;
-    if (v16)
+    v19->_actionType = type;
+    if (lCopy)
     {
-      v24 = [v16 copy];
+      v24 = [lCopy copy];
       iconURL = v19->_iconURL;
       v19->_iconURL = v24;
     }
 
-    if (v17)
+    if (wrappersCopy)
     {
-      v26 = [MEMORY[0x1E695DEC8] arrayWithArray:v17];
+      v26 = [MEMORY[0x1E695DEC8] arrayWithArray:wrappersCopy];
       fromSecurityURLWrappers = v19->_fromSecurityURLWrappers;
       v19->_fromSecurityURLWrappers = v26;
     }
 
-    if (v18)
+    if (thumbnailCopy)
     {
-      v28 = [MEMORY[0x1E695DEF0] dataWithData:v18];
+      v28 = [MEMORY[0x1E695DEF0] dataWithData:thumbnailCopy];
       iconThumbnail = v19->_iconThumbnail;
       v19->_iconThumbnail = v28;
     }
@@ -58,59 +58,59 @@
   return v19;
 }
 
-- (SBUISFloatingDockFileStackActionContext)initWithActionContext:(id)a3
+- (SBUISFloatingDockFileStackActionContext)initWithActionContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 uuid];
-  v6 = [v4 iconIdentifier];
-  v7 = [v4 actionType];
-  v8 = [v4 iconURL];
-  v9 = [v4 fromSecurityURLWrappers];
+  contextCopy = context;
+  uuid = [contextCopy uuid];
+  iconIdentifier = [contextCopy iconIdentifier];
+  actionType = [contextCopy actionType];
+  iconURL = [contextCopy iconURL];
+  fromSecurityURLWrappers = [contextCopy fromSecurityURLWrappers];
 
-  v10 = [(SBUISFloatingDockFileStackActionContext *)self initWithUUID:v5 iconIdentifier:v6 actionType:v7 toIconURL:v8 fromSecurityURLWrappers:v9];
+  v10 = [(SBUISFloatingDockFileStackActionContext *)self initWithUUID:uuid iconIdentifier:iconIdentifier actionType:actionType toIconURL:iconURL fromSecurityURLWrappers:fromSecurityURLWrappers];
   return v10;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(SBUISFloatingDockFileStackActionContext *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBUISFloatingDockFileStackActionContext *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v27 = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
-  v4 = [(SBUISFloatingDockFileStackActionContext *)self uuid];
-  [v3 appendString:v4 withName:@"uuid"];
+  uuid = [(SBUISFloatingDockFileStackActionContext *)self uuid];
+  [v3 appendString:uuid withName:@"uuid"];
 
-  v5 = [(SBUISFloatingDockFileStackActionContext *)self iconIdentifier];
-  [v3 appendString:v5 withName:@"iconIdentifier"];
+  iconIdentifier = [(SBUISFloatingDockFileStackActionContext *)self iconIdentifier];
+  [v3 appendString:iconIdentifier withName:@"iconIdentifier"];
 
   v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lul", -[SBUISFloatingDockFileStackActionContext actionType](self, "actionType")];
   [v3 appendString:v6 withName:@"actionType"];
 
-  v7 = [(SBUISFloatingDockFileStackActionContext *)self iconURL];
+  iconURL = [(SBUISFloatingDockFileStackActionContext *)self iconURL];
 
-  if (v7)
+  if (iconURL)
   {
-    v8 = [(SBUISFloatingDockFileStackActionContext *)self iconURL];
-    v9 = [v8 absoluteString];
-    [v3 appendString:v9 withName:@"iconURL"];
+    iconURL2 = [(SBUISFloatingDockFileStackActionContext *)self iconURL];
+    absoluteString = [iconURL2 absoluteString];
+    [v3 appendString:absoluteString withName:@"iconURL"];
   }
 
-  v10 = [(SBUISFloatingDockFileStackActionContext *)self fromSecurityURLWrappers];
+  fromSecurityURLWrappers = [(SBUISFloatingDockFileStackActionContext *)self fromSecurityURLWrappers];
 
-  if (v10)
+  if (fromSecurityURLWrappers)
   {
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v11 = [(SBUISFloatingDockFileStackActionContext *)self fromSecurityURLWrappers];
-    v12 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    fromSecurityURLWrappers2 = [(SBUISFloatingDockFileStackActionContext *)self fromSecurityURLWrappers];
+    v12 = [fromSecurityURLWrappers2 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v12)
     {
       v13 = v12;
@@ -121,105 +121,105 @@
         {
           if (*v23 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(fromSecurityURLWrappers2);
           }
 
           v16 = [*(*(&v22 + 1) + 8 * i) url];
-          v17 = [v16 absoluteString];
-          [v3 appendString:v17 withName:@"fromSecurityURLWrapper"];
+          absoluteString2 = [v16 absoluteString];
+          [v3 appendString:absoluteString2 withName:@"fromSecurityURLWrapper"];
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v13 = [fromSecurityURLWrappers2 countByEnumeratingWithState:&v22 objects:v26 count:16];
       }
 
       while (v13);
     }
   }
 
-  v18 = [(SBUISFloatingDockFileStackActionContext *)self iconThumbnail];
+  iconThumbnail = [(SBUISFloatingDockFileStackActionContext *)self iconThumbnail];
 
-  if (v18)
+  if (iconThumbnail)
   {
-    v19 = [(SBUISFloatingDockFileStackActionContext *)self iconThumbnail];
-    v20 = [v19 description];
+    iconThumbnail2 = [(SBUISFloatingDockFileStackActionContext *)self iconThumbnail];
+    v20 = [iconThumbnail2 description];
     [v3 appendString:v20 withName:@"iconThumbnail"];
   }
 
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBUISFloatingDockFileStackActionContext *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBUISFloatingDockFileStackActionContext *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v11 = a3;
+  coderCopy = coder;
   v4 = [(NSString *)self->_uuid copy];
-  [v11 encodeObject:v4 forKey:@"kFloatingDockFileStackActionContextUUIDKey"];
+  [coderCopy encodeObject:v4 forKey:@"kFloatingDockFileStackActionContextUUIDKey"];
 
   v5 = [(NSString *)self->_iconIdentifier copy];
-  [v11 encodeObject:v5 forKey:@"kFloatingDockFileStackActionContextIconIdentifierKey"];
+  [coderCopy encodeObject:v5 forKey:@"kFloatingDockFileStackActionContextIconIdentifierKey"];
 
-  [v11 encodeUInt64:self->_actionType forKey:@"kFloatingDockFileStackActionContextActionTypeKey"];
+  [coderCopy encodeUInt64:self->_actionType forKey:@"kFloatingDockFileStackActionContextActionTypeKey"];
   iconURL = self->_iconURL;
   if (iconURL)
   {
     v7 = [(NSURL *)iconURL copy];
-    [v11 encodeObject:v7 forKey:@"kFloatingDockFileStackActionContextIconURLKey"];
+    [coderCopy encodeObject:v7 forKey:@"kFloatingDockFileStackActionContextIconURLKey"];
   }
 
   fromSecurityURLWrappers = self->_fromSecurityURLWrappers;
   if (fromSecurityURLWrappers)
   {
-    [v11 encodeCollection:fromSecurityURLWrappers forKey:@"kFloatingDockFileStackActionContextFromSecurityURLWrappersKey"];
+    [coderCopy encodeCollection:fromSecurityURLWrappers forKey:@"kFloatingDockFileStackActionContextFromSecurityURLWrappersKey"];
   }
 
   iconThumbnail = self->_iconThumbnail;
-  v10 = v11;
+  v10 = coderCopy;
   if (iconThumbnail)
   {
-    [v11 encodeObject:iconThumbnail forKey:@"kFloatingDockFileStackActionContextIconThumbnailKey"];
-    v10 = v11;
+    [coderCopy encodeObject:iconThumbnail forKey:@"kFloatingDockFileStackActionContextIconThumbnailKey"];
+    v10 = coderCopy;
   }
 }
 
-- (SBUISFloatingDockFileStackActionContext)initWithBSXPCCoder:(id)a3
+- (SBUISFloatingDockFileStackActionContext)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeStringForKey:@"kFloatingDockFileStackActionContextUUIDKey"];
-  v6 = [v4 decodeStringForKey:@"kFloatingDockFileStackActionContextIconIdentifierKey"];
-  v7 = [v4 decodeUInt64ForKey:@"kFloatingDockFileStackActionContextActionTypeKey"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kFloatingDockFileStackActionContextIconURLKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeStringForKey:@"kFloatingDockFileStackActionContextUUIDKey"];
+  v6 = [coderCopy decodeStringForKey:@"kFloatingDockFileStackActionContextIconIdentifierKey"];
+  v7 = [coderCopy decodeUInt64ForKey:@"kFloatingDockFileStackActionContextActionTypeKey"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kFloatingDockFileStackActionContextIconURLKey"];
   v9 = objc_opt_class();
-  v10 = [v4 decodeCollectionOfClass:v9 containingClass:objc_opt_class() forKey:@"kFloatingDockFileStackActionContextFromSecurityURLWrappersKey"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kFloatingDockFileStackActionContextIconThumbnailKey"];
+  v10 = [coderCopy decodeCollectionOfClass:v9 containingClass:objc_opt_class() forKey:@"kFloatingDockFileStackActionContextFromSecurityURLWrappersKey"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kFloatingDockFileStackActionContextIconThumbnailKey"];
 
   v12 = [(SBUISFloatingDockFileStackActionContext *)self initWithUUID:v5 iconIdentifier:v6 actionType:v7 toIconURL:v8 fromSecurityURLWrappers:v10 thumbnail:v11];
   return v12;
 }
 
-- (SBUISFloatingDockFileStackActionContext)initWithUUID:(id)a3 iconIdentifier:(id)a4 actionType:(unint64_t)a5 toIconURL:(id)a6 fromURLs:(id)a7
+- (SBUISFloatingDockFileStackActionContext)initWithUUID:(id)d iconIdentifier:(id)identifier actionType:(unint64_t)type toIconURL:(id)l fromURLs:(id)ls
 {
   v32 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  if (v15)
+  dCopy = d;
+  identifierCopy = identifier;
+  lCopy = l;
+  lsCopy = ls;
+  if (lsCopy)
   {
-    v25 = a5;
-    v26 = v12;
-    v16 = [MEMORY[0x1E695DF70] array];
+    typeCopy = type;
+    v26 = dCopy;
+    array = [MEMORY[0x1E695DF70] array];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v17 = v15;
+    v17 = lsCopy;
     v18 = [v17 countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v18)
     {
@@ -235,7 +235,7 @@
           }
 
           v22 = [objc_alloc(MEMORY[0x1E696AE98]) initWithURL:*(*(&v27 + 1) + 8 * i)];
-          [v16 addObject:v22];
+          [array addObject:v22];
         }
 
         v19 = [v17 countByEnumeratingWithState:&v27 objects:v31 count:16];
@@ -244,16 +244,16 @@
       while (v19);
     }
 
-    a5 = v25;
-    v12 = v26;
+    type = typeCopy;
+    dCopy = v26;
   }
 
   else
   {
-    v16 = 0;
+    array = 0;
   }
 
-  v23 = [(SBUISFloatingDockFileStackActionContext *)self initWithUUID:v12 iconIdentifier:v13 actionType:a5 toIconURL:v14 fromSecurityURLWrappers:v16];
+  v23 = [(SBUISFloatingDockFileStackActionContext *)self initWithUUID:dCopy iconIdentifier:identifierCopy actionType:type toIconURL:lCopy fromSecurityURLWrappers:array];
 
   return v23;
 }
@@ -261,13 +261,13 @@
 - (NSArray)fromURLs
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(SBUISFloatingDockFileStackActionContext *)self fromSecurityURLWrappers];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  fromSecurityURLWrappers = [(SBUISFloatingDockFileStackActionContext *)self fromSecurityURLWrappers];
+  v5 = [fromSecurityURLWrappers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -278,20 +278,20 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(fromSecurityURLWrappers);
         }
 
         v9 = [*(*(&v11 + 1) + 8 * i) url];
-        [v3 addObject:v9];
+        [array addObject:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [fromSecurityURLWrappers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
 @end

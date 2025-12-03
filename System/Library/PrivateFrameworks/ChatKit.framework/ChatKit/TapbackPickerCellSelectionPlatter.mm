@@ -1,7 +1,7 @@
 @interface TapbackPickerCellSelectionPlatter
 - (_TtC7ChatKitP33_F9B6E841E8DE6EE361333F7360F8ABF333TapbackPickerCellSelectionPlatter)init;
-- (_TtC7ChatKitP33_F9B6E841E8DE6EE361333F7360F8ABF333TapbackPickerCellSelectionPlatter)initWithCoder:(id)a3;
-- (_TtC7ChatKitP33_F9B6E841E8DE6EE361333F7360F8ABF333TapbackPickerCellSelectionPlatter)initWithFrame:(CGRect)a3;
+- (_TtC7ChatKitP33_F9B6E841E8DE6EE361333F7360F8ABF333TapbackPickerCellSelectionPlatter)initWithCoder:(id)coder;
+- (_TtC7ChatKitP33_F9B6E841E8DE6EE361333F7360F8ABF333TapbackPickerCellSelectionPlatter)initWithFrame:(CGRect)frame;
 @end
 
 @implementation TapbackPickerCellSelectionPlatter
@@ -15,7 +15,7 @@
   return [(TapbackPickerCircleView *)&v3 initWithFrame:0.0, 0.0, 0.0, 0.0];
 }
 
-- (_TtC7ChatKitP33_F9B6E841E8DE6EE361333F7360F8ABF333TapbackPickerCellSelectionPlatter)initWithCoder:(id)a3
+- (_TtC7ChatKitP33_F9B6E841E8DE6EE361333F7360F8ABF333TapbackPickerCellSelectionPlatter)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC7ChatKitP33_F9B6E841E8DE6EE361333F7360F8ABF333TapbackPickerCellSelectionPlatter_isSelected) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC7ChatKitP33_F9B6E841E8DE6EE361333F7360F8ABF333TapbackPickerCellSelectionPlatter_selectionColor) = 1;
@@ -24,7 +24,7 @@
   return result;
 }
 
-- (_TtC7ChatKitP33_F9B6E841E8DE6EE361333F7360F8ABF333TapbackPickerCellSelectionPlatter)initWithFrame:(CGRect)a3
+- (_TtC7ChatKitP33_F9B6E841E8DE6EE361333F7360F8ABF333TapbackPickerCellSelectionPlatter)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

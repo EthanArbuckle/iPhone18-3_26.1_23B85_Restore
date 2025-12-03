@@ -1,25 +1,25 @@
 @interface _HDMaintenanceWorkCoordinatorAsynchronousOperation
-- (_HDMaintenanceWorkCoordinatorAsynchronousOperation)initWithName:(id)a3 operationBlock:(id)a4 canceledBlock:(id)a5;
+- (_HDMaintenanceWorkCoordinatorAsynchronousOperation)initWithName:(id)name operationBlock:(id)block canceledBlock:(id)canceledBlock;
 - (void)cancel;
 - (void)main;
 @end
 
 @implementation _HDMaintenanceWorkCoordinatorAsynchronousOperation
 
-- (_HDMaintenanceWorkCoordinatorAsynchronousOperation)initWithName:(id)a3 operationBlock:(id)a4 canceledBlock:(id)a5
+- (_HDMaintenanceWorkCoordinatorAsynchronousOperation)initWithName:(id)name operationBlock:(id)block canceledBlock:(id)canceledBlock
 {
-  v8 = a4;
-  v9 = a5;
+  blockCopy = block;
+  canceledBlockCopy = canceledBlock;
   v16.receiver = self;
   v16.super_class = _HDMaintenanceWorkCoordinatorAsynchronousOperation;
-  v10 = [(HDMaintenanceOperation *)&v16 initWithName:a3];
+  v10 = [(HDMaintenanceOperation *)&v16 initWithName:name];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [blockCopy copy];
     operationBlock = v10->_operationBlock;
     v10->_operationBlock = v11;
 
-    v13 = _Block_copy(v9);
+    v13 = _Block_copy(canceledBlockCopy);
     canceledBlock = v10->_canceledBlock;
     v10->_canceledBlock = v13;
   }

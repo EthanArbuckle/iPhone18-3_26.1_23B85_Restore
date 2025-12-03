@@ -1,7 +1,7 @@
 @interface AMSUIDDynamicImpressionItem
 - (AMSUIDDynamicImpressionMetrics)impressionMetrics;
 - (CGRect)frame;
-- (void)setImpressionMetrics:(id)a3;
+- (void)setImpressionMetrics:(id)metrics;
 @end
 
 @implementation AMSUIDDynamicImpressionItem
@@ -23,11 +23,11 @@
   return v2;
 }
 
-- (void)setImpressionMetrics:(id)a3
+- (void)setImpressionMetrics:(id)metrics
 {
-  v4 = a3;
-  v5 = self;
-  DynamicImpressionItem.impressionMetrics.setter(v4);
+  metricsCopy = metrics;
+  selfCopy = self;
+  DynamicImpressionItem.impressionMetrics.setter(metricsCopy);
 }
 
 @end

@@ -1,20 +1,20 @@
 @interface PGFeatureExtractorPlayCount
 - (id)featureNames;
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4;
+- (id)floatVectorWithEntity:(id)entity error:(id *)error;
 @end
 
 @implementation PGFeatureExtractorPlayCount
 
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4
+- (id)floatVectorWithEntity:(id)entity error:(id *)error
 {
-  v5 = [a3 assetUserActivityProperties];
-  v6 = [v5 playCount];
+  assetUserActivityProperties = [entity assetUserActivityProperties];
+  playCount = [assetUserActivityProperties playCount];
 
   v7 = MEMORY[0x277D22C40];
-  v8 = [(PGFeatureExtractorPlayCount *)self featureLength];
-  *&v9 = v6;
+  featureLength = [(PGFeatureExtractorPlayCount *)self featureLength];
+  *&v9 = playCount;
 
-  return [v7 vectorRepeatingFloat:v8 count:v9];
+  return [v7 vectorRepeatingFloat:featureLength count:v9];
 }
 
 - (id)featureNames

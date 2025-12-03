@@ -1,9 +1,9 @@
 @interface CNAutocompleteLocalQuery
 + (id)groupsQuery;
 + (id)peopleQuery;
-+ (id)queryWithDelegate:(id)a3;
-- (id)autocompleteResultsForFetchResults:(id)a3 resultFactory:(id)a4;
-- (id)fetchResultsForString:(id)a3;
++ (id)queryWithDelegate:(id)delegate;
+- (id)autocompleteResultsForFetchResults:(id)results resultFactory:(id)factory;
+- (id)fetchResultsForString:(id)string;
 - (id)makeResultFactory;
 - (id)run;
 - (void)cancel;
@@ -14,7 +14,7 @@
 + (id)peopleQuery
 {
   v3 = objc_alloc_init(CNAutocompleteLocalContactsFetcher);
-  v4 = [a1 queryWithDelegate:v3];
+  v4 = [self queryWithDelegate:v3];
 
   return v4;
 }
@@ -22,61 +22,61 @@
 + (id)groupsQuery
 {
   v3 = objc_alloc_init(CNAutocompleteLocalGroupsFetcher);
-  v4 = [a1 queryWithDelegate:v3];
+  v4 = [self queryWithDelegate:v3];
 
   return v4;
 }
 
-+ (id)queryWithDelegate:(id)a3
++ (id)queryWithDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
+  delegateCopy = delegate;
+  v5 = objc_alloc_init(self);
   v6 = v5[4];
-  v5[4] = v4;
+  v5[4] = delegateCopy;
 
   return v5;
 }
 
 - (id)run
 {
-  v3 = [(CNAutocompleteLocalQuery *)self request];
-  v4 = [v3 searchNames];
+  request = [(CNAutocompleteLocalQuery *)self request];
+  searchNames = [request searchNames];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __31__CNAutocompleteLocalQuery_run__block_invoke;
   v9[3] = &unk_2781C4308;
   v9[4] = self;
-  v5 = [v4 _cn_flatMap:v9];
+  v5 = [searchNames _cn_flatMap:v9];
 
-  v6 = [(CNAutocompleteLocalQuery *)self makeResultFactory];
-  v7 = [(CNAutocompleteLocalQuery *)self autocompleteResultsForFetchResults:v5 resultFactory:v6];
+  makeResultFactory = [(CNAutocompleteLocalQuery *)self makeResultFactory];
+  v7 = [(CNAutocompleteLocalQuery *)self autocompleteResultsForFetchResults:v5 resultFactory:makeResultFactory];
 
   return v7;
 }
 
-- (id)fetchResultsForString:(id)a3
+- (id)fetchResultsForString:(id)string
 {
   v64 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 _cn_tokens];
-  v6 = [(CNAutocompleteLocalQuery *)self searchableProperties];
-  v7 = [MEMORY[0x277CFBED0] defaultProvider];
-  [v7 timestamp];
+  stringCopy = string;
+  _cn_tokens = [stringCopy _cn_tokens];
+  searchableProperties = [(CNAutocompleteLocalQuery *)self searchableProperties];
+  defaultProvider = [MEMORY[0x277CFBED0] defaultProvider];
+  [defaultProvider timestamp];
   v9 = v8;
 
   v10 = CNALoggingContextTriage();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     [(CNAutocompleteFetchRequest *)self->_request triageIdentifier];
-    v12 = v11 = v6;
-    v13 = [(CNAutocompleteLocalQueryDelegate *)self->_delegate queryNameForLogging];
+    v12 = v11 = searchableProperties;
+    queryNameForLogging = [(CNAutocompleteLocalQueryDelegate *)self->_delegate queryNameForLogging];
     *buf = 138543618;
     v55 = v12;
     v56 = 2114;
-    v57 = v13;
+    v57 = queryNameForLogging;
     _os_log_impl(&dword_2155FE000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] %{public}@: Will search", buf, 0x16u);
 
-    v6 = v11;
+    searchableProperties = v11;
   }
 
   v14 = CNALoggingContextTriage();
@@ -93,7 +93,7 @@
   delegate = self->_delegate;
   contactStore = self->_contactStore;
   v53 = 0;
-  v20 = [(CNAutocompleteLocalQueryDelegate *)delegate resultsForSearchString:v4 terms:v5 properties:v6 contactStore:contactStore error:&v53];
+  v20 = [(CNAutocompleteLocalQueryDelegate *)delegate resultsForSearchString:stringCopy terms:_cn_tokens properties:searchableProperties contactStore:contactStore error:&v53];
   v52 = v53;
   v21 = CNALoggingContextPerformance();
   v22 = v21;
@@ -103,8 +103,8 @@
     _os_signpost_emit_with_name_impl(&dword_2155FE000, v22, OS_SIGNPOST_INTERVAL_END, v15, "Searching Contacts", "", buf, 2u);
   }
 
-  v23 = [MEMORY[0x277CFBED0] defaultProvider];
-  [v23 timestamp];
+  defaultProvider2 = [MEMORY[0x277CFBED0] defaultProvider];
+  [defaultProvider2 timestamp];
   v25 = v24;
 
   v26 = [MEMORY[0x277CFBEC8] stringForTimeInterval:v25 - v9];
@@ -114,20 +114,20 @@
   {
     if (v28)
     {
-      v29 = [(CNAutocompleteFetchRequest *)self->_request triageIdentifier];
-      v30 = [(CNAutocompleteLocalQueryDelegate *)self->_delegate queryNameForLogging];
+      triageIdentifier = [(CNAutocompleteFetchRequest *)self->_request triageIdentifier];
+      queryNameForLogging2 = [(CNAutocompleteLocalQueryDelegate *)self->_delegate queryNameForLogging];
       v31 = [v20 count];
       v32 = [v20 count];
       *buf = 138544386;
       v33 = "results";
-      v55 = v29;
+      v55 = triageIdentifier;
       v56 = 2114;
       if (v32 == 1)
       {
         v33 = "result";
       }
 
-      v57 = v30;
+      v57 = queryNameForLogging2;
       v58 = 2048;
       v59 = v31;
       v60 = 2080;
@@ -140,13 +140,13 @@
     v34 = CNALoggingContextDebug();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
     {
-      v35 = [(CNAutocompleteLocalQueryDelegate *)self->_delegate queryNameForLogging];
+      queryNameForLogging3 = [(CNAutocompleteLocalQueryDelegate *)self->_delegate queryNameForLogging];
       v51 = self->_delegate;
       v36 = [v20 count];
       v37 = v26;
-      v38 = v4;
-      v39 = v6;
-      v40 = v5;
+      v38 = stringCopy;
+      v39 = searchableProperties;
+      v40 = _cn_tokens;
       if (v36 >= 0xC8)
       {
         v41 = 200;
@@ -160,14 +160,14 @@
       v42 = [v20 count];
       v43 = [v20 _cn_take:200];
       *buf = 138544387;
-      v55 = v35;
+      v55 = queryNameForLogging3;
       v56 = 2112;
       v57 = v51;
       v58 = 2048;
       v59 = v41;
-      v5 = v40;
-      v6 = v39;
-      v4 = v38;
+      _cn_tokens = v40;
+      searchableProperties = v39;
+      stringCopy = v38;
       v26 = v37;
       v60 = 2048;
       v61 = v42;
@@ -184,12 +184,12 @@
     v44 = v52;
     if (v28)
     {
-      v45 = [(CNAutocompleteFetchRequest *)self->_request triageIdentifier];
-      v46 = [(CNAutocompleteLocalQueryDelegate *)self->_delegate queryNameForLogging];
+      triageIdentifier2 = [(CNAutocompleteFetchRequest *)self->_request triageIdentifier];
+      queryNameForLogging4 = [(CNAutocompleteLocalQueryDelegate *)self->_delegate queryNameForLogging];
       *buf = 138544130;
-      v55 = v45;
+      v55 = triageIdentifier2;
       v56 = 2114;
-      v57 = v46;
+      v57 = queryNameForLogging4;
       v58 = 2114;
       v59 = v26;
       v60 = 2112;
@@ -205,9 +205,9 @@
       *buf = 138413314;
       v55 = v47;
       v56 = 2112;
-      v57 = v4;
+      v57 = stringCopy;
       v58 = 2112;
-      v59 = v5;
+      v59 = _cn_tokens;
       v60 = 2112;
       v61 = v48;
       v62 = 2112;
@@ -223,20 +223,20 @@
 
 - (id)makeResultFactory
 {
-  v3 = [(CNAutocompleteFetchRequest *)self->_request priorityDomainForSorting];
-  v4 = [(CNAutocompleteFetchRequest *)self->_request fetchContext];
-  v5 = [v4 sendingAddress];
-  v6 = [CNAutocompleteResultFactory factoryWithPriorityDomain:v3 sendingAddress:v5];
+  priorityDomainForSorting = [(CNAutocompleteFetchRequest *)self->_request priorityDomainForSorting];
+  fetchContext = [(CNAutocompleteFetchRequest *)self->_request fetchContext];
+  sendingAddress = [fetchContext sendingAddress];
+  v6 = [CNAutocompleteResultFactory factoryWithPriorityDomain:priorityDomainForSorting sendingAddress:sendingAddress];
 
   return v6;
 }
 
-- (id)autocompleteResultsForFetchResults:(id)a3 resultFactory:(id)a4
+- (id)autocompleteResultsForFetchResults:(id)results resultFactory:(id)factory
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CNAutocompleteLocalQuery *)self searchableProperties];
-  v9 = [(CNAutocompleteLocalQueryDelegate *)self->_delegate autocompleteResultsForProperties:v8 fetchResults:v7 resultFactory:v6 contactStore:self->_contactFetcherStore];
+  factoryCopy = factory;
+  resultsCopy = results;
+  searchableProperties = [(CNAutocompleteLocalQuery *)self searchableProperties];
+  v9 = [(CNAutocompleteLocalQueryDelegate *)self->_delegate autocompleteResultsForProperties:searchableProperties fetchResults:resultsCopy resultFactory:factoryCopy contactStore:self->_contactFetcherStore];
 
   return v9;
 }
@@ -248,7 +248,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_2155FE000, v3, OS_LOG_TYPE_DEFAULT, "Cancel: %@", &v5, 0xCu);
   }
 

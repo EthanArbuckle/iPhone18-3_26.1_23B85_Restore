@@ -1,26 +1,26 @@
 @interface PlaybackContinuityActivityDelegate
 - (_TtC8Podcasts34PlaybackContinuityActivityDelegate)init;
 - (uint64_t)userActivityWasContinued:;
-- (void)userActivity:(id)a3 didReceiveInputStream:(id)a4 outputStream:(id)a5;
-- (void)userActivityWillSave:(id)a3;
+- (void)userActivity:(id)activity didReceiveInputStream:(id)stream outputStream:(id)outputStream;
+- (void)userActivityWillSave:(id)save;
 @end
 
 @implementation PlaybackContinuityActivityDelegate
 
-- (void)userActivityWillSave:(id)a3
+- (void)userActivityWillSave:(id)save
 {
-  v4 = a3;
-  v5 = self;
-  sub_100269C14(v4);
+  saveCopy = save;
+  selfCopy = self;
+  sub_100269C14(saveCopy);
 }
 
-- (void)userActivity:(id)a3 didReceiveInputStream:(id)a4 outputStream:(id)a5
+- (void)userActivity:(id)activity didReceiveInputStream:(id)stream outputStream:(id)outputStream
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_10026C2C4(v10);
+  activityCopy = activity;
+  streamCopy = stream;
+  outputStreamCopy = outputStream;
+  selfCopy = self;
+  sub_10026C2C4(outputStreamCopy);
 }
 
 - (_TtC8Podcasts34PlaybackContinuityActivityDelegate)init

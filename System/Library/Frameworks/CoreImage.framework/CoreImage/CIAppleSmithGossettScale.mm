@@ -54,10 +54,10 @@
   }
 
   v8 = v3;
-  v9 = [(CIImage *)self->inputImage imageByClampingToExtent];
+  imageByClampingToExtent = [(CIImage *)self->inputImage imageByClampingToExtent];
   v10 = 0.0;
   v11 = [CIVector vectorWithX:1.0 / v8 Y:1.0 Z:1.0 W:0.0];
-  [(CIImage *)v9 extent];
+  [(CIImage *)imageByClampingToExtent extent];
   v16 = v12;
   v17 = v13;
   v18 = v14;
@@ -113,7 +113,7 @@ LABEL_13:
   Rectangle::integralize(&v55, 0.0001, &v48);
   v42 = v49;
   v46 = v48;
-  v21 = COERCE_DOUBLE([(CIImage *)v9 imageBySamplingNearest]);
+  v21 = COERCE_DOUBLE([(CIImage *)imageByClampingToExtent imageBySamplingNearest]);
   v22 = [CIKernel kernelWithInternalRepresentation:&CI::_asgDownH];
   if (vmaxv_u16(vmovn_s32(vmvnq_s8(vuzp1q_s32(vceqq_f64(v46, vdupq_n_s64(0xFFDFFFFFFFFFFFFFLL)), vceqq_f64(v42, vdupq_n_s64(0x7FEFFFFFFFFFFFFFuLL)))))))
   {

@@ -1,15 +1,15 @@
 @interface LSSController
 + (id)sharedInstance;
 - (LSSController)init;
-- (__CFString)_resolveProvider:(uint64_t)a1;
-- (id)addAssertion:(unsigned int)a3 reason:(id)a4;
+- (__CFString)_resolveProvider:(uint64_t)provider;
+- (id)addAssertion:(unsigned int)assertion reason:(id)reason;
 - (uint64_t)_resolveFeatures;
 - (void)_selectProviderFromSettings;
-- (void)_setExtendedProviderTo:(uint64_t)a1;
-- (void)_setProviderTo:(uint64_t)a1;
+- (void)_setExtendedProviderTo:(uint64_t)to;
+- (void)_setProviderTo:(uint64_t)to;
 - (void)_start;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)provider:(id)a3 updatedLight:(id)a4;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)provider:(id)provider updatedLight:(id)light;
 @end
 
 @implementation LSSController
@@ -17,16 +17,16 @@
 - (void)_selectProviderFromSettings
 {
   v9 = *MEMORY[0x277D85DE8];
-  if (!a1)
+  if (!self)
   {
     goto LABEL_8;
   }
 
-  dispatch_assert_queue_V2(*(a1 + 8));
-  [(LSSSettings *)*(a1 + 112) logDebugInfo];
-  v2 = [(LSSController *)a1 _resolveFeatures];
-  *(a1 + 104) = v2;
-  v3 = [(LSSController *)a1 _resolveProvider:v2];
+  dispatch_assert_queue_V2(*(self + 8));
+  [(LSSSettings *)*(self + 112) logDebugInfo];
+  _resolveFeatures = [(LSSController *)self _resolveFeatures];
+  *(self + 104) = _resolveFeatures;
+  v3 = [(LSSController *)self _resolveProvider:_resolveFeatures];
   if (qword_280D2F4F0 != -1)
   {
     [LSSController _selectProviderFromSettings];
@@ -49,21 +49,21 @@ LABEL_4:
   }
 
 LABEL_5:
-  [(LSSController *)a1 _setProviderTo:v3];
-  if (!*(a1 + 32))
+  [(LSSController *)self _setProviderTo:v3];
+  if (!*(self + 32))
   {
     [LSSController _selectProviderFromSettings];
   }
 
   v5 = @"stationary";
-  [(LSSController *)a1 _setExtendedProviderTo:v5];
-  if (!*(a1 + 24))
+  [(LSSController *)self _setExtendedProviderTo:v5];
+  if (!*(self + 24))
   {
     [LSSController _selectProviderFromSettings];
   }
 
-  [*(a1 + 32) setFeatures:*(a1 + 104)];
-  [*(a1 + 24) setFeatures:*(a1 + 104)];
+  [*(self + 32) setFeatures:*(self + 104)];
+  [*(self + 24) setFeatures:*(self + 104)];
 
 LABEL_8:
   v6 = *MEMORY[0x277D85DE8];
@@ -118,20 +118,20 @@ uint64_t __31__LSSController_sharedInstance__block_invoke()
 
 - (void)_start
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
   v2 = objc_opt_new();
-  v3 = *(a1 + 32);
-  *(a1 + 32) = v2;
+  v3 = *(self + 32);
+  *(self + 32) = v2;
 
   v4 = objc_opt_new();
-  v5 = *(a1 + 24);
-  *(a1 + 24) = v4;
+  v5 = *(self + 24);
+  *(self + 24) = v4;
 
-  objc_initWeak(&location, a1);
+  objc_initWeak(&location, self);
   v35 = MEMORY[0x277D85DD0];
   v36 = 3221225472;
   v37 = __23__LSSController__start__block_invoke;
@@ -139,24 +139,24 @@ uint64_t __31__LSSController_sharedInstance__block_invoke()
   objc_copyWeak(&v39, &location);
   v6 = MEMORY[0x259C50010](&v35);
   v7 = [MEMORY[0x277CF0BD0] assertionWithIdentifier:@"disableOutput" stateDidChangeHandler:{v6, v35, v36, v37, v38}];
-  v8 = *(a1 + 64);
-  *(a1 + 64) = v7;
+  v8 = *(self + 64);
+  *(self + 64) = v7;
 
   v9 = [MEMORY[0x277CF0BD0] assertionWithIdentifier:@"lowPower" stateDidChangeHandler:v6];
-  v10 = *(a1 + 72);
-  *(a1 + 72) = v9;
+  v10 = *(self + 72);
+  *(self + 72) = v9;
 
   v11 = [MEMORY[0x277CF0BD0] assertionWithIdentifier:@"needsOrientation" stateDidChangeHandler:v6];
-  v12 = *(a1 + 80);
-  *(a1 + 80) = v11;
+  v12 = *(self + 80);
+  *(self + 80) = v11;
 
   v13 = [MEMORY[0x277CF0BD0] assertionWithIdentifier:@"needsLight" stateDidChangeHandler:v6];
-  v14 = *(a1 + 88);
-  *(a1 + 88) = v13;
+  v14 = *(self + 88);
+  *(self + 88) = v13;
 
   v15 = [MEMORY[0x277CF0BD0] assertionWithIdentifier:@"responsiveMotion" stateDidChangeHandler:v6];
-  v16 = *(a1 + 96);
-  *(a1 + 96) = v15;
+  v16 = *(self + 96);
+  *(self + 96) = v15;
 
   if (qword_280D2F4F0 != -1)
   {
@@ -164,7 +164,7 @@ uint64_t __31__LSSController_sharedInstance__block_invoke()
   }
 
   v17 = qword_280D2F4E8;
-  [*(a1 + 64) setLog:v17];
+  [*(self + 64) setLog:v17];
 
   if (qword_280D2F4F0 != -1)
   {
@@ -172,7 +172,7 @@ uint64_t __31__LSSController_sharedInstance__block_invoke()
   }
 
   v18 = qword_280D2F4E8;
-  [*(a1 + 72) setLog:v18];
+  [*(self + 72) setLog:v18];
 
   if (qword_280D2F4F0 != -1)
   {
@@ -180,7 +180,7 @@ uint64_t __31__LSSController_sharedInstance__block_invoke()
   }
 
   v19 = qword_280D2F4E8;
-  [*(a1 + 80) setLog:v19];
+  [*(self + 80) setLog:v19];
 
   if (qword_280D2F4F0 != -1)
   {
@@ -188,7 +188,7 @@ uint64_t __31__LSSController_sharedInstance__block_invoke()
   }
 
   v20 = qword_280D2F4E8;
-  [*(a1 + 88) setLog:v20];
+  [*(self + 88) setLog:v20];
 
   if (qword_280D2F4F0 != -1)
   {
@@ -196,13 +196,13 @@ uint64_t __31__LSSController_sharedInstance__block_invoke()
   }
 
   v21 = qword_280D2F4E8;
-  [*(a1 + 96) setLog:v21];
+  [*(self + 96) setLog:v21];
 
-  v22 = [[LSSXPCService alloc] initWithTargetQueue:a1 subscriber:?];
-  v23 = *(a1 + 16);
-  *(a1 + 16) = v22;
+  v22 = [[LSSXPCService alloc] initWithTargetQueue:self subscriber:?];
+  v23 = *(self + 16);
+  *(self + 16) = v22;
 
-  if (!*(a1 + 16))
+  if (!*(self + 16))
   {
     if (qword_280D2F4F0 == -1)
     {
@@ -232,27 +232,27 @@ LABEL_15:
 
   if (v28)
   {
-    v29 = [[LSSCAService alloc] initWithTargetQueue:*(a1 + 8) subscriber:a1];
-    v30 = *(a1 + 56);
-    *(a1 + 56) = v29;
+    v29 = [[LSSCAService alloc] initWithTargetQueue:*(self + 8) subscriber:self];
+    v30 = *(self + 56);
+    *(self + 56) = v29;
 
-    if (!*(a1 + 56))
+    if (!*(self + 56))
     {
       __assert_rtn("[LSSController _start]", "LSSController.m", 130, "_caService != nil");
     }
   }
 
   v31 = +[LSSSettings currentSettings];
-  v32 = *(a1 + 112);
-  *(a1 + 112) = v31;
+  v32 = *(self + 112);
+  *(self + 112) = v31;
 
-  if ([(LSSSettings *)*(a1 + 112) dynamic])
+  if ([(LSSSettings *)*(self + 112) dynamic])
   {
-    v33 = [(LSSSettings *)*(a1 + 112) defaults];
-    [v33 addObserver:a1 forKeyPath:@"provider" options:1 context:0];
+    defaults = [(LSSSettings *)*(self + 112) defaults];
+    [defaults addObserver:self forKeyPath:@"provider" options:1 context:0];
 
-    v34 = [(LSSSettings *)*(a1 + 112) defaults];
-    [v34 addObserver:a1 forKeyPath:@"lowPerformance" options:1 context:0];
+    defaults2 = [(LSSSettings *)*(self + 112) defaults];
+    [defaults2 addObserver:self forKeyPath:@"lowPerformance" options:1 context:0];
   }
 
   objc_destroyWeak(&v39);
@@ -275,7 +275,7 @@ void __23__LSSController__start__block_invoke(uint64_t a1)
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -286,16 +286,16 @@ void __23__LSSController__start__block_invoke(uint64_t a1)
   dispatch_async(queue, block);
 }
 
-- (void)_setExtendedProviderTo:(uint64_t)a1
+- (void)_setExtendedProviderTo:(uint64_t)to
 {
   v4 = a2;
   v5 = v4;
-  if (!a1 || ([v4 isEqualToString:*(a1 + 40)] & 1) != 0)
+  if (!to || ([v4 isEqualToString:*(to + 40)] & 1) != 0)
   {
     goto LABEL_11;
   }
 
-  objc_storeStrong((a1 + 40), a2);
+  objc_storeStrong((to + 40), a2);
   if (qword_280D2F4F0 != -1)
   {
     [LSSController _selectProviderFromSettings];
@@ -317,11 +317,11 @@ LABEL_5:
   }
 
 LABEL_6:
-  [*(a1 + 24) invalidate];
-  [*(a1 + 24) setDelegate:0];
+  [*(to + 24) invalidate];
+  [*(to + 24) setDelegate:0];
   if ([v5 isEqualToString:@"stationary"])
   {
-    v7 = [[LSSStationaryProvider alloc] initWithQueue:*(a1 + 8) delegate:a1];
+    v7 = [[LSSStationaryProvider alloc] initWithQueue:*(to + 8) delegate:to];
   }
 
   else
@@ -334,19 +334,19 @@ LABEL_6:
     v7 = objc_alloc_init(LSSNullProvider);
   }
 
-  v8 = *(a1 + 24);
-  *(a1 + 24) = v7;
+  v8 = *(to + 24);
+  *(to + 24) = v7;
 
 LABEL_11:
 }
 
-- (void)provider:(id)a3 updatedLight:(id)a4
+- (void)provider:(id)provider updatedLight:(id)light
 {
-  var0 = a4.var0;
+  var0 = light.var0;
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  providerCopy = provider;
   dispatch_assert_queue_V2(self->_queue);
-  if (self->_provider == v6)
+  if (self->_provider == providerCopy)
   {
     v11 = *(*&var0 + 84);
     idling = self->_idling;
@@ -438,7 +438,7 @@ LABEL_24:
         v28[1] = 3221225472;
         v28[2] = __39__LSSController_provider_updatedLight___block_invoke;
         v28[3] = &unk_279812798;
-        v35 = self;
+        selfCopy = self;
         v24 = *(*&var0 + 48);
         v31 = *(*&var0 + 32);
         v32 = v24;
@@ -468,7 +468,7 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  if (self->_extendedProvider == v6)
+  if (self->_extendedProvider == providerCopy)
   {
     caService = self->_caService;
     v8 = *(*&var0 + 48);
@@ -506,15 +506,15 @@ uint64_t __39__LSSController_provider_updatedLight___block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)addAssertion:(unsigned int)a3 reason:(id)a4
+- (id)addAssertion:(unsigned int)assertion reason:(id)reason
 {
-  v6 = a4;
+  reasonCopy = reason;
   v7 = 0;
-  if (a3 <= 1)
+  if (assertion <= 1)
   {
-    if (a3)
+    if (assertion)
     {
-      if (a3 != 1)
+      if (assertion != 1)
       {
         goto LABEL_13;
       }
@@ -530,7 +530,7 @@ uint64_t __39__LSSController_provider_updatedLight___block_invoke(uint64_t a1)
 
   else
   {
-    switch(a3)
+    switch(assertion)
     {
       case 2u:
         v8 = 96;
@@ -546,21 +546,21 @@ uint64_t __39__LSSController_provider_updatedLight___block_invoke(uint64_t a1)
     }
   }
 
-  v7 = [*(&self->super.isa + v8) acquireForReason:v6];
+  v7 = [*(&self->super.isa + v8) acquireForReason:reasonCopy];
 LABEL_13:
 
   return v7;
 }
 
-- (__CFString)_resolveProvider:(uint64_t)a1
+- (__CFString)_resolveProvider:(uint64_t)provider
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (provider)
   {
     v3 = +[LSSSettings currentSettings];
-    v4 = [(LSSSettings *)v3 defaults];
+    defaults = [(LSSSettings *)v3 defaults];
 
-    v5 = [v4 objectForKey:@"provider"];
+    v5 = [defaults objectForKey:@"provider"];
     if (qword_280D2F4F0 != -1)
     {
       dispatch_once(&qword_280D2F4F0, &__block_literal_global_116);
@@ -622,10 +622,10 @@ LABEL_13:
     return 0;
   }
 
-  v6 = [*(v1 + 80) isActive];
-  v7 = [*(v1 + 88) isActive];
-  v8 = v7;
-  if ((v6 & 1) == 0 && (v7 & 1) == 0)
+  isActive = [*(v1 + 80) isActive];
+  isActive2 = [*(v1 + 88) isActive];
+  v8 = isActive2;
+  if ((isActive & 1) == 0 && (isActive2 & 1) == 0)
   {
     if (qword_280D2F4F0 != -1)
     {
@@ -644,7 +644,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v9 = [*(v1 + 72) isActive];
+  isActive3 = [*(v1 + 72) isActive];
   if ([*(v1 + 96) isActive])
   {
     if (qword_280D2F4F0 != -1)
@@ -666,7 +666,7 @@ LABEL_13:
     }
 
 LABEL_23:
-    if (v9)
+    if (isActive3)
     {
       if (qword_280D2F4F0 != -1)
       {
@@ -721,7 +721,7 @@ LABEL_34:
   }
 
 LABEL_36:
-  if ((v9 & ((v12 & 8) == 0)) != 0)
+  if ((isActive3 & ((v12 & 8) == 0)) != 0)
   {
     v17 = v12;
   }
@@ -731,7 +731,7 @@ LABEL_36:
     v17 = v12 | 4;
   }
 
-  if (v6)
+  if (isActive)
   {
     return v17;
   }
@@ -742,11 +742,11 @@ LABEL_36:
   }
 }
 
-- (void)_setProviderTo:(uint64_t)a1
+- (void)_setProviderTo:(uint64_t)to
 {
   v4 = a2;
   v5 = v4;
-  if (!a1 || ([v4 isEqualToString:*(a1 + 48)] & 1) != 0)
+  if (!to || ([v4 isEqualToString:*(to + 48)] & 1) != 0)
   {
     goto LABEL_29;
   }
@@ -763,9 +763,9 @@ LABEL_36:
     OUTLINED_FUNCTION_0_0(&dword_255E8B000, v6, v7, "changing provider", v30);
   }
 
-  objc_storeStrong((a1 + 48), a2);
-  [*(a1 + 32) invalidate];
-  [*(a1 + 32) setDelegate:0];
+  objc_storeStrong((to + 48), a2);
+  [*(to + 32) invalidate];
+  [*(to + 32) setDelegate:0];
   if ([v5 isEqualToString:@"stationary"])
   {
     v8 = LSSStationaryProvider;
@@ -775,17 +775,17 @@ LABEL_36:
   {
     if ([v5 isEqualToString:@"motion"])
     {
-      v10 = [[LSSMotionBasedProvider alloc] initWithQueue:*(a1 + 8) delegate:0];
-      [(LSSSettings *)*(a1 + 112) doubleForKey:?];
-      v11 = *(a1 + 56);
+      v10 = [[LSSMotionBasedProvider alloc] initWithQueue:*(to + 8) delegate:0];
+      [(LSSSettings *)*(to + 112) doubleForKey:?];
+      v11 = *(to + 56);
       if (v11 && ([v11 displayForDisplayLink], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
       {
         v13 = v12;
         v14 = [LSSDisplayLinkResampler alloc];
         [(LSSMotionBasedProvider *)v10 updateInterval];
-        v15 = [LSSDisplayLinkResampler initWithProvider:v14 display:"initWithProvider:display:inUpdateInterval:outUpdateInterval:delegate:" inUpdateInterval:v10 outUpdateInterval:v13 delegate:a1];
-        v16 = *(a1 + 32);
-        *(a1 + 32) = v15;
+        v15 = [LSSDisplayLinkResampler initWithProvider:v14 display:"initWithProvider:display:inUpdateInterval:outUpdateInterval:delegate:" inUpdateInterval:v10 outUpdateInterval:v13 delegate:to];
+        v16 = *(to + 32);
+        *(to + 32) = v15;
       }
 
       else
@@ -804,9 +804,9 @@ LABEL_36:
 
         v19 = [LSSResampler alloc];
         [(LSSMotionBasedProvider *)v10 updateInterval];
-        v20 = [LSSResampler initWithProvider:v19 inUpdateInterval:"initWithProvider:inUpdateInterval:outUpdateInterval:delegate:" outUpdateInterval:v10 delegate:a1];
-        v13 = *(a1 + 32);
-        *(a1 + 32) = v20;
+        v20 = [LSSResampler initWithProvider:v19 inUpdateInterval:"initWithProvider:inUpdateInterval:outUpdateInterval:delegate:" outUpdateInterval:v10 delegate:to];
+        v13 = *(to + 32);
+        *(to + 32) = v20;
       }
 
       goto LABEL_23;
@@ -835,8 +835,8 @@ LABEL_36:
             OUTLINED_FUNCTION_1_0(&dword_255E8B000, v25, v26, "invalid provider setting.", v28);
           }
 
-          v10 = *(a1 + 32);
-          *(a1 + 32) = 0;
+          v10 = *(to + 32);
+          *(to + 32) = 0;
           goto LABEL_23;
         }
 
@@ -848,13 +848,13 @@ LABEL_36:
     }
   }
 
-  v9 = [[v8 alloc] initWithQueue:*(a1 + 8) delegate:a1];
+  v9 = [[v8 alloc] initWithQueue:*(to + 8) delegate:to];
 LABEL_10:
-  v10 = *(a1 + 32);
-  *(a1 + 32) = v9;
+  v10 = *(to + 32);
+  *(to + 32) = v9;
 LABEL_23:
 
-  if (!*(a1 + 32))
+  if (!*(to + 32))
   {
     if (qword_280D2F4F0 != -1)
     {
@@ -868,9 +868,9 @@ LABEL_23:
       OUTLINED_FUNCTION_1_0(&dword_255E8B000, v21, v22, "provider is not available (failed to init?). using fallback.", v27);
     }
 
-    v23 = [[LSSStationaryProvider alloc] initWithQueue:*(a1 + 8) delegate:a1];
-    v24 = *(a1 + 32);
-    *(a1 + 32) = v23;
+    v23 = [[LSSStationaryProvider alloc] initWithQueue:*(to + 8) delegate:to];
+    v24 = *(to + 32);
+    *(to + 32) = v23;
   }
 
 LABEL_29:

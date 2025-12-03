@@ -1,87 +1,87 @@
 @interface APWebProcessPlugInLoadDelegate
-- (id)webProcessPlugInBrowserContextController:(id)a3 frame:(id)a4 willSendRequestForResource:(unint64_t)a5 request:(id)a6 redirectResponse:(id)a7;
-- (void)actionDidFailWithErrorDescription:(id)a3;
-- (void)contentSizeDidChange:(id)a3;
-- (void)creativeStateDidChange:(int64_t)a3;
+- (id)webProcessPlugInBrowserContextController:(id)controller frame:(id)frame willSendRequestForResource:(unint64_t)resource request:(id)request redirectResponse:(id)response;
+- (void)actionDidFailWithErrorDescription:(id)description;
+- (void)contentSizeDidChange:(id)change;
+- (void)creativeStateDidChange:(int64_t)change;
 - (void)resetSession;
 - (void)resetVideoTagPlaytime;
-- (void)setExpandedWidth:(double)a3 andHeight:(double)a4;
-- (void)setWebViewProcessAdIdentifier:(id)a3 maxRequestCount:(id)a4;
-- (void)webProcessDiagnosticJSOStatusReported:(id)a3 status:(id)a4;
+- (void)setExpandedWidth:(double)width andHeight:(double)height;
+- (void)setWebViewProcessAdIdentifier:(id)identifier maxRequestCount:(id)count;
+- (void)webProcessDiagnosticJSOStatusReported:(id)reported status:(id)status;
 - (void)webProcessMRAIDJSODidCallClose;
-- (void)webProcessMRAIDJSODidCallCreateCalendarEvent:(id)a3;
-- (void)webProcessMRAIDJSODidCallExpand:(id)a3 withMaximumWidth:(double)a4 andHeight:(double)a5;
-- (void)webProcessMRAIDJSODidCallOpen:(id)a3;
-- (void)webProcessPlugInBrowserContextController:(id)a3 didFinishDocumentLoadForFrame:(id)a4;
-- (void)webProcessPlugInBrowserContextController:(id)a3 globalObjectIsAvailableForFrame:(id)a4 inScriptWorld:(id)a5;
-- (void)webProcessVideoAdJSOAudioMuted:(float)a3;
-- (void)webProcessVideoAdJSOAudioUnmuted:(float)a3 volume:(float)a4;
+- (void)webProcessMRAIDJSODidCallCreateCalendarEvent:(id)event;
+- (void)webProcessMRAIDJSODidCallExpand:(id)expand withMaximumWidth:(double)width andHeight:(double)height;
+- (void)webProcessMRAIDJSODidCallOpen:(id)open;
+- (void)webProcessPlugInBrowserContextController:(id)controller didFinishDocumentLoadForFrame:(id)frame;
+- (void)webProcessPlugInBrowserContextController:(id)controller globalObjectIsAvailableForFrame:(id)frame inScriptWorld:(id)world;
+- (void)webProcessVideoAdJSOAudioMuted:(float)muted;
+- (void)webProcessVideoAdJSOAudioUnmuted:(float)unmuted volume:(float)volume;
 - (void)webProcessVideoAdJSOCreativeViewLoaded;
-- (void)webProcessVideoAdJSOExitFullScreenTapped:(float)a3 volume:(float)a4;
-- (void)webProcessVideoAdJSOFullScreenTapped:(float)a3 volume:(float)a4;
-- (void)webProcessVideoAdJSOMediaPlaybackFailedWithErrorDescription:(id)a3;
-- (void)webProcessVideoAdJSOMoreInfoTapped:(float)a3 volume:(float)a4;
-- (void)webProcessVideoAdJSOPlayCompletedWithVolume:(float)a3;
-- (void)webProcessVideoAdJSOPlayPaused:(float)a3 volume:(float)a4;
-- (void)webProcessVideoAdJSOPlayProgressed:(float)a3 volume:(float)a4;
-- (void)webProcessVideoAdJSOPlayResumed:(float)a3 volume:(float)a4;
-- (void)webProcessVideoAdJSOPlayStarted:(float)a3 volume:(float)a4;
-- (void)webProcessVideoAdJSOSkipAdTapped:(float)a3 volume:(float)a4;
-- (void)webProcessVideoAdJSOVideoTapped:(float)a3 volume:(float)a4;
-- (void)webProcessVideoAdJSOVolumeChanged:(float)a3 playTime:(float)a4;
+- (void)webProcessVideoAdJSOExitFullScreenTapped:(float)tapped volume:(float)volume;
+- (void)webProcessVideoAdJSOFullScreenTapped:(float)tapped volume:(float)volume;
+- (void)webProcessVideoAdJSOMediaPlaybackFailedWithErrorDescription:(id)description;
+- (void)webProcessVideoAdJSOMoreInfoTapped:(float)tapped volume:(float)volume;
+- (void)webProcessVideoAdJSOPlayCompletedWithVolume:(float)volume;
+- (void)webProcessVideoAdJSOPlayPaused:(float)paused volume:(float)volume;
+- (void)webProcessVideoAdJSOPlayProgressed:(float)progressed volume:(float)volume;
+- (void)webProcessVideoAdJSOPlayResumed:(float)resumed volume:(float)volume;
+- (void)webProcessVideoAdJSOPlayStarted:(float)started volume:(float)volume;
+- (void)webProcessVideoAdJSOSkipAdTapped:(float)tapped volume:(float)volume;
+- (void)webProcessVideoAdJSOVideoTapped:(float)tapped volume:(float)volume;
+- (void)webProcessVideoAdJSOVolumeChanged:(float)changed playTime:(float)time;
 @end
 
 @implementation APWebProcessPlugInLoadDelegate
 
-- (id)webProcessPlugInBrowserContextController:(id)a3 frame:(id)a4 willSendRequestForResource:(unint64_t)a5 request:(id)a6 redirectResponse:(id)a7
+- (id)webProcessPlugInBrowserContextController:(id)controller frame:(id)frame willSendRequestForResource:(unint64_t)resource request:(id)request redirectResponse:(id)response
 {
-  v8 = a6;
-  v9 = [v8 URL];
-  v10 = [v9 host];
-  v11 = [APProxyURLUtilities shouldProxyRequestToHost:v10];
+  requestCopy = request;
+  v9 = [requestCopy URL];
+  host = [v9 host];
+  v11 = [APProxyURLUtilities shouldProxyRequestToHost:host];
 
   if ((v11 & 1) == 0)
   {
-    v13 = v8;
+    v13 = requestCopy;
     goto LABEL_29;
   }
 
-  v12 = [v8 mutableCopy];
+  v12 = [requestCopy mutableCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v13 = v12;
-    v14 = [v8 URL];
-    v15 = [v14 videoAdIdentifier];
+    v14 = [requestCopy URL];
+    videoAdIdentifier = [v14 videoAdIdentifier];
 
-    [APProxyURLUtilities changeSchemeTo:2 * (v15 != 0) forUrlRequest:v13];
-    v16 = [(APWebProcessPlugInLoadDelegate *)self advertisingIdentifier];
-    v17 = [v13 adIdentifier];
-    if (v17)
+    [APProxyURLUtilities changeSchemeTo:2 * (videoAdIdentifier != 0) forUrlRequest:v13];
+    advertisingIdentifier = [(APWebProcessPlugInLoadDelegate *)self advertisingIdentifier];
+    adIdentifier = [v13 adIdentifier];
+    if (adIdentifier)
     {
-      [(APWebProcessPlugInLoadDelegate *)self setAdvertisingIdentifier:v17];
+      [(APWebProcessPlugInLoadDelegate *)self setAdvertisingIdentifier:adIdentifier];
     }
 
-    v18 = [v13 maximumRequestCount];
-    if (v18)
+    maximumRequestCount = [v13 maximumRequestCount];
+    if (maximumRequestCount)
     {
-      [(APWebProcessPlugInLoadDelegate *)self setMaximumRequestCount:v18];
+      [(APWebProcessPlugInLoadDelegate *)self setMaximumRequestCount:maximumRequestCount];
     }
 
-    v19 = [(APWebProcessPlugInLoadDelegate *)self advertisingIdentifier];
-    if (v19)
+    advertisingIdentifier2 = [(APWebProcessPlugInLoadDelegate *)self advertisingIdentifier];
+    if (advertisingIdentifier2)
     {
-      v20 = v19;
-      v21 = [(APWebProcessPlugInLoadDelegate *)self maximumRequestCount];
-      if (v21)
+      webViewProcessMaxRequestCount = advertisingIdentifier2;
+      maximumRequestCount2 = [(APWebProcessPlugInLoadDelegate *)self maximumRequestCount];
+      if (maximumRequestCount2)
       {
 
 LABEL_17:
 LABEL_18:
-        if ([v16 length])
+        if ([advertisingIdentifier length])
         {
-          v23 = [(APWebProcessPlugInLoadDelegate *)self advertisingIdentifier];
-          v24 = [v23 isEqualToString:v16];
+          advertisingIdentifier3 = [(APWebProcessPlugInLoadDelegate *)self advertisingIdentifier];
+          v24 = [advertisingIdentifier3 isEqualToString:advertisingIdentifier];
 
           if ((v24 & 1) == 0)
           {
@@ -89,51 +89,51 @@ LABEL_18:
           }
         }
 
-        if (!v17)
+        if (!adIdentifier)
         {
-          v25 = [(APWebProcessPlugInLoadDelegate *)self advertisingIdentifier];
+          advertisingIdentifier4 = [(APWebProcessPlugInLoadDelegate *)self advertisingIdentifier];
 
-          if (v25)
+          if (advertisingIdentifier4)
           {
-            v26 = [(APWebProcessPlugInLoadDelegate *)self advertisingIdentifier];
-            [v13 setAdIdentifier:v26];
+            advertisingIdentifier5 = [(APWebProcessPlugInLoadDelegate *)self advertisingIdentifier];
+            [v13 setAdIdentifier:advertisingIdentifier5];
           }
         }
 
-        if (!v18)
+        if (!maximumRequestCount)
         {
-          v27 = [(APWebProcessPlugInLoadDelegate *)self maximumRequestCount];
+          maximumRequestCount3 = [(APWebProcessPlugInLoadDelegate *)self maximumRequestCount];
 
-          if (v27)
+          if (maximumRequestCount3)
           {
-            v28 = [(APWebProcessPlugInLoadDelegate *)self maximumRequestCount];
-            [v13 setMaximumRequestCount:v28];
+            maximumRequestCount4 = [(APWebProcessPlugInLoadDelegate *)self maximumRequestCount];
+            [v13 setMaximumRequestCount:maximumRequestCount4];
           }
         }
 
         goto LABEL_28;
       }
 
-      if (v17)
+      if (adIdentifier)
       {
         goto LABEL_15;
       }
     }
 
-    else if (v17)
+    else if (adIdentifier)
     {
 LABEL_15:
-      if (v18)
+      if (maximumRequestCount)
       {
         goto LABEL_18;
       }
     }
 
-    v22 = [(APWebProcessPlugInLoadDelegate *)self webViewProcessAdIdentifier];
-    [(APWebProcessPlugInLoadDelegate *)self setAdvertisingIdentifier:v22];
+    webViewProcessAdIdentifier = [(APWebProcessPlugInLoadDelegate *)self webViewProcessAdIdentifier];
+    [(APWebProcessPlugInLoadDelegate *)self setAdvertisingIdentifier:webViewProcessAdIdentifier];
 
-    v20 = [(APWebProcessPlugInLoadDelegate *)self webViewProcessMaxRequestCount];
-    [(APWebProcessPlugInLoadDelegate *)self setMaximumRequestCount:v20];
+    webViewProcessMaxRequestCount = [(APWebProcessPlugInLoadDelegate *)self webViewProcessMaxRequestCount];
+    [(APWebProcessPlugInLoadDelegate *)self setMaximumRequestCount:webViewProcessMaxRequestCount];
     goto LABEL_17;
   }
 
@@ -145,257 +145,257 @@ LABEL_29:
   return v13;
 }
 
-- (void)webProcessPlugInBrowserContextController:(id)a3 globalObjectIsAvailableForFrame:(id)a4 inScriptWorld:(id)a5
+- (void)webProcessPlugInBrowserContextController:(id)controller globalObjectIsAvailableForFrame:(id)frame inScriptWorld:(id)world
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(APWebProcessPlugInLoadDelegate *)self currentJSContext];
+  frameCopy = frame;
+  worldCopy = world;
+  currentJSContext = [(APWebProcessPlugInLoadDelegate *)self currentJSContext];
 
-  if (!v9)
+  if (!currentJSContext)
   {
-    v10 = [v7 jsContextForWorld:v8];
+    v10 = [frameCopy jsContextForWorld:worldCopy];
     [(APWebProcessPlugInLoadDelegate *)self setCurrentJSContext:v10];
 
     v11 = objc_alloc_init(APWebProcessMRAIDJSO);
     [(APWebProcessPlugInLoadDelegate *)self setWebProcessMRAIDJSO:v11];
 
-    v12 = [(APWebProcessPlugInLoadDelegate *)self webProcessMRAIDJSO];
-    [v12 setDelegate:self];
+    webProcessMRAIDJSO = [(APWebProcessPlugInLoadDelegate *)self webProcessMRAIDJSO];
+    [webProcessMRAIDJSO setDelegate:self];
 
-    v13 = [(APWebProcessPlugInLoadDelegate *)self webProcessMRAIDJSO];
-    v14 = [(APWebProcessPlugInLoadDelegate *)self currentJSContext];
-    [v14 setObject:v13 forKeyedSubscript:@"mraid"];
+    webProcessMRAIDJSO2 = [(APWebProcessPlugInLoadDelegate *)self webProcessMRAIDJSO];
+    currentJSContext2 = [(APWebProcessPlugInLoadDelegate *)self currentJSContext];
+    [currentJSContext2 setObject:webProcessMRAIDJSO2 forKeyedSubscript:@"mraid"];
 
     v15 = objc_alloc_init(APWebProcessDiagnosticJSO);
     [(APWebProcessPlugInLoadDelegate *)self setWebProcessDiagnosticJSO:v15];
 
-    v16 = [(APWebProcessPlugInLoadDelegate *)self webProcessDiagnosticJSO];
-    [v16 setDelegate:self];
+    webProcessDiagnosticJSO = [(APWebProcessPlugInLoadDelegate *)self webProcessDiagnosticJSO];
+    [webProcessDiagnosticJSO setDelegate:self];
 
-    v17 = [(APWebProcessPlugInLoadDelegate *)self webProcessDiagnosticJSO];
-    v18 = [(APWebProcessPlugInLoadDelegate *)self currentJSContext];
-    [v18 setObject:v17 forKeyedSubscript:@"diagnosticUtility"];
+    webProcessDiagnosticJSO2 = [(APWebProcessPlugInLoadDelegate *)self webProcessDiagnosticJSO];
+    currentJSContext3 = [(APWebProcessPlugInLoadDelegate *)self currentJSContext];
+    [currentJSContext3 setObject:webProcessDiagnosticJSO2 forKeyedSubscript:@"diagnosticUtility"];
 
-    v19 = [(APWebProcessPlugInLoadDelegate *)self webProcessDelegate];
+    webProcessDelegate = [(APWebProcessPlugInLoadDelegate *)self webProcessDelegate];
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_4910;
     v20[3] = &unk_103F0;
     v20[4] = self;
-    [v19 webProcessVideoAdJSOGetVideoInfo:v20];
+    [webProcessDelegate webProcessVideoAdJSOGetVideoInfo:v20];
   }
 }
 
-- (void)webProcessPlugInBrowserContextController:(id)a3 didFinishDocumentLoadForFrame:(id)a4
+- (void)webProcessPlugInBrowserContextController:(id)controller didFinishDocumentLoadForFrame:(id)frame
 {
-  v4 = [(APWebProcessPlugInLoadDelegate *)self webProcessDelegate:a3];
+  v4 = [(APWebProcessPlugInLoadDelegate *)self webProcessDelegate:controller];
   [v4 webProcessPlugInBrowserContextControllerGlobalObjectIsAvailableForFrame];
 }
 
-- (void)webProcessDiagnosticJSOStatusReported:(id)a3 status:(id)a4
+- (void)webProcessDiagnosticJSOStatusReported:(id)reported status:(id)status
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(APWebProcessPlugInLoadDelegate *)self webProcessDelegate];
-  [v8 webProcessDiagnosticJSOStatusReported:v7 status:v6];
+  statusCopy = status;
+  reportedCopy = reported;
+  webProcessDelegate = [(APWebProcessPlugInLoadDelegate *)self webProcessDelegate];
+  [webProcessDelegate webProcessDiagnosticJSOStatusReported:reportedCopy status:statusCopy];
 }
 
-- (void)webProcessVideoAdJSOMediaPlaybackFailedWithErrorDescription:(id)a3
+- (void)webProcessVideoAdJSOMediaPlaybackFailedWithErrorDescription:(id)description
 {
-  v4 = a3;
-  v5 = [(APWebProcessPlugInLoadDelegate *)self webProcessDelegate];
-  [v5 webProcessVideoAdJSOMediaPlaybackFailedWithErrorDescription:v4];
+  descriptionCopy = description;
+  webProcessDelegate = [(APWebProcessPlugInLoadDelegate *)self webProcessDelegate];
+  [webProcessDelegate webProcessVideoAdJSOMediaPlaybackFailedWithErrorDescription:descriptionCopy];
 }
 
 - (void)webProcessVideoAdJSOCreativeViewLoaded
 {
-  v2 = [(APWebProcessPlugInLoadDelegate *)self webProcessDelegate];
-  [v2 webProcessVideoAdJSOCreativeViewLoaded];
+  webProcessDelegate = [(APWebProcessPlugInLoadDelegate *)self webProcessDelegate];
+  [webProcessDelegate webProcessVideoAdJSOCreativeViewLoaded];
 }
 
-- (void)webProcessVideoAdJSOPlayStarted:(float)a3 volume:(float)a4
+- (void)webProcessVideoAdJSOPlayStarted:(float)started volume:(float)volume
 {
-  v8 = [(APWebProcessPlugInLoadDelegate *)self webProcessDelegate];
-  *&v6 = a3;
-  *&v7 = a4;
-  [v8 webProcessVideoAdJSODidCallPlayStarted:v6 volume:v7];
+  webProcessDelegate = [(APWebProcessPlugInLoadDelegate *)self webProcessDelegate];
+  *&v6 = started;
+  *&v7 = volume;
+  [webProcessDelegate webProcessVideoAdJSODidCallPlayStarted:v6 volume:v7];
 }
 
-- (void)webProcessVideoAdJSOPlayResumed:(float)a3 volume:(float)a4
+- (void)webProcessVideoAdJSOPlayResumed:(float)resumed volume:(float)volume
 {
-  v8 = [(APWebProcessPlugInLoadDelegate *)self webProcessDelegate];
-  *&v6 = a3;
-  *&v7 = a4;
-  [v8 webProcessVideoAdJSODidCallPlayResumed:v6 volume:v7];
+  webProcessDelegate = [(APWebProcessPlugInLoadDelegate *)self webProcessDelegate];
+  *&v6 = resumed;
+  *&v7 = volume;
+  [webProcessDelegate webProcessVideoAdJSODidCallPlayResumed:v6 volume:v7];
 }
 
-- (void)webProcessVideoAdJSOPlayPaused:(float)a3 volume:(float)a4
+- (void)webProcessVideoAdJSOPlayPaused:(float)paused volume:(float)volume
 {
-  v8 = [(APWebProcessPlugInLoadDelegate *)self webProcessDelegate];
-  *&v6 = a3;
-  *&v7 = a4;
-  [v8 webProcessVideoAdJSODidCallPlayPaused:v6 volume:v7];
+  webProcessDelegate = [(APWebProcessPlugInLoadDelegate *)self webProcessDelegate];
+  *&v6 = paused;
+  *&v7 = volume;
+  [webProcessDelegate webProcessVideoAdJSODidCallPlayPaused:v6 volume:v7];
 }
 
-- (void)webProcessVideoAdJSOPlayProgressed:(float)a3 volume:(float)a4
+- (void)webProcessVideoAdJSOPlayProgressed:(float)progressed volume:(float)volume
 {
-  v8 = [(APWebProcessPlugInLoadDelegate *)self webProcessDelegate];
-  *&v6 = a3;
-  *&v7 = a4;
-  [v8 webProcessVideoAdJSODidCallPlayProgressed:v6 volume:v7];
+  webProcessDelegate = [(APWebProcessPlugInLoadDelegate *)self webProcessDelegate];
+  *&v6 = progressed;
+  *&v7 = volume;
+  [webProcessDelegate webProcessVideoAdJSODidCallPlayProgressed:v6 volume:v7];
 }
 
-- (void)webProcessVideoAdJSOPlayCompletedWithVolume:(float)a3
+- (void)webProcessVideoAdJSOPlayCompletedWithVolume:(float)volume
 {
-  v5 = [(APWebProcessPlugInLoadDelegate *)self webProcessDelegate];
-  *&v4 = a3;
-  [v5 webProcessVideoAdJSODidCallPlayCompletedWithVolume:v4];
+  webProcessDelegate = [(APWebProcessPlugInLoadDelegate *)self webProcessDelegate];
+  *&v4 = volume;
+  [webProcessDelegate webProcessVideoAdJSODidCallPlayCompletedWithVolume:v4];
 }
 
-- (void)webProcessVideoAdJSOVolumeChanged:(float)a3 playTime:(float)a4
+- (void)webProcessVideoAdJSOVolumeChanged:(float)changed playTime:(float)time
 {
-  v8 = [(APWebProcessPlugInLoadDelegate *)self webProcessDelegate];
-  *&v6 = a3;
-  *&v7 = a4;
-  [v8 webProcessVideoAdJSODidCallVolumeChanged:v6 playTime:v7];
+  webProcessDelegate = [(APWebProcessPlugInLoadDelegate *)self webProcessDelegate];
+  *&v6 = changed;
+  *&v7 = time;
+  [webProcessDelegate webProcessVideoAdJSODidCallVolumeChanged:v6 playTime:v7];
 }
 
-- (void)webProcessVideoAdJSOAudioMuted:(float)a3
+- (void)webProcessVideoAdJSOAudioMuted:(float)muted
 {
-  v5 = [(APWebProcessPlugInLoadDelegate *)self webProcessDelegate];
-  *&v4 = a3;
-  [v5 webProcessVideoAdJSODidCallAudioMuted:v4];
+  webProcessDelegate = [(APWebProcessPlugInLoadDelegate *)self webProcessDelegate];
+  *&v4 = muted;
+  [webProcessDelegate webProcessVideoAdJSODidCallAudioMuted:v4];
 }
 
-- (void)webProcessVideoAdJSOAudioUnmuted:(float)a3 volume:(float)a4
+- (void)webProcessVideoAdJSOAudioUnmuted:(float)unmuted volume:(float)volume
 {
-  v8 = [(APWebProcessPlugInLoadDelegate *)self webProcessDelegate];
-  *&v6 = a3;
-  *&v7 = a4;
-  [v8 webProcessVideoAdJSODidCallAudioUnmuted:v6 volume:v7];
+  webProcessDelegate = [(APWebProcessPlugInLoadDelegate *)self webProcessDelegate];
+  *&v6 = unmuted;
+  *&v7 = volume;
+  [webProcessDelegate webProcessVideoAdJSODidCallAudioUnmuted:v6 volume:v7];
 }
 
-- (void)webProcessVideoAdJSOMoreInfoTapped:(float)a3 volume:(float)a4
+- (void)webProcessVideoAdJSOMoreInfoTapped:(float)tapped volume:(float)volume
 {
-  v8 = [(APWebProcessPlugInLoadDelegate *)self webProcessDelegate];
-  *&v6 = a3;
-  *&v7 = a4;
-  [v8 webProcessVideoAdJSODidCallMoreInfoTapped:v6 volume:v7];
+  webProcessDelegate = [(APWebProcessPlugInLoadDelegate *)self webProcessDelegate];
+  *&v6 = tapped;
+  *&v7 = volume;
+  [webProcessDelegate webProcessVideoAdJSODidCallMoreInfoTapped:v6 volume:v7];
 }
 
-- (void)webProcessVideoAdJSOVideoTapped:(float)a3 volume:(float)a4
+- (void)webProcessVideoAdJSOVideoTapped:(float)tapped volume:(float)volume
 {
-  v8 = [(APWebProcessPlugInLoadDelegate *)self webProcessDelegate];
-  *&v6 = a3;
-  *&v7 = a4;
-  [v8 webProcessVideoAdJSODidCallVideoTapped:v6 volume:v7];
+  webProcessDelegate = [(APWebProcessPlugInLoadDelegate *)self webProcessDelegate];
+  *&v6 = tapped;
+  *&v7 = volume;
+  [webProcessDelegate webProcessVideoAdJSODidCallVideoTapped:v6 volume:v7];
 }
 
-- (void)webProcessVideoAdJSOSkipAdTapped:(float)a3 volume:(float)a4
+- (void)webProcessVideoAdJSOSkipAdTapped:(float)tapped volume:(float)volume
 {
-  v8 = [(APWebProcessPlugInLoadDelegate *)self webProcessDelegate];
-  *&v6 = a3;
-  *&v7 = a4;
-  [v8 webProcessVideoAdJSODidCallSkipAdTapped:v6 volume:v7];
+  webProcessDelegate = [(APWebProcessPlugInLoadDelegate *)self webProcessDelegate];
+  *&v6 = tapped;
+  *&v7 = volume;
+  [webProcessDelegate webProcessVideoAdJSODidCallSkipAdTapped:v6 volume:v7];
 }
 
-- (void)webProcessVideoAdJSOFullScreenTapped:(float)a3 volume:(float)a4
+- (void)webProcessVideoAdJSOFullScreenTapped:(float)tapped volume:(float)volume
 {
-  v8 = [(APWebProcessPlugInLoadDelegate *)self webProcessDelegate];
-  *&v6 = a3;
-  *&v7 = a4;
-  [v8 webProcessVideoAdJSODidCallFullScreenTapped:v6 volume:v7];
+  webProcessDelegate = [(APWebProcessPlugInLoadDelegate *)self webProcessDelegate];
+  *&v6 = tapped;
+  *&v7 = volume;
+  [webProcessDelegate webProcessVideoAdJSODidCallFullScreenTapped:v6 volume:v7];
 }
 
-- (void)webProcessVideoAdJSOExitFullScreenTapped:(float)a3 volume:(float)a4
+- (void)webProcessVideoAdJSOExitFullScreenTapped:(float)tapped volume:(float)volume
 {
-  v8 = [(APWebProcessPlugInLoadDelegate *)self webProcessDelegate];
-  *&v6 = a3;
-  *&v7 = a4;
-  [v8 webProcessVideoAdJSODidCallExitFullScreenTapped:v6 volume:v7];
+  webProcessDelegate = [(APWebProcessPlugInLoadDelegate *)self webProcessDelegate];
+  *&v6 = tapped;
+  *&v7 = volume;
+  [webProcessDelegate webProcessVideoAdJSODidCallExitFullScreenTapped:v6 volume:v7];
 }
 
 - (void)webProcessMRAIDJSODidCallClose
 {
-  v2 = [(APWebProcessPlugInLoadDelegate *)self webProcessDelegate];
-  [v2 webProcessMRAIDJSODidCallClose];
+  webProcessDelegate = [(APWebProcessPlugInLoadDelegate *)self webProcessDelegate];
+  [webProcessDelegate webProcessMRAIDJSODidCallClose];
 }
 
-- (void)webProcessMRAIDJSODidCallExpand:(id)a3 withMaximumWidth:(double)a4 andHeight:(double)a5
+- (void)webProcessMRAIDJSODidCallExpand:(id)expand withMaximumWidth:(double)width andHeight:(double)height
 {
-  v8 = a3;
-  v9 = [(APWebProcessPlugInLoadDelegate *)self webProcessDelegate];
-  [v9 webProcessMRAIDJSODidCallExpand:v8 withMaximumWidth:a4 andHeight:a5];
+  expandCopy = expand;
+  webProcessDelegate = [(APWebProcessPlugInLoadDelegate *)self webProcessDelegate];
+  [webProcessDelegate webProcessMRAIDJSODidCallExpand:expandCopy withMaximumWidth:width andHeight:height];
 }
 
-- (void)webProcessMRAIDJSODidCallOpen:(id)a3
+- (void)webProcessMRAIDJSODidCallOpen:(id)open
 {
-  v4 = a3;
-  v5 = [(APWebProcessPlugInLoadDelegate *)self webProcessDelegate];
-  [v5 webProcessMRAIDJSODidCallOpen:v4];
+  openCopy = open;
+  webProcessDelegate = [(APWebProcessPlugInLoadDelegate *)self webProcessDelegate];
+  [webProcessDelegate webProcessMRAIDJSODidCallOpen:openCopy];
 }
 
-- (void)webProcessMRAIDJSODidCallCreateCalendarEvent:(id)a3
+- (void)webProcessMRAIDJSODidCallCreateCalendarEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(APWebProcessPlugInLoadDelegate *)self webProcessDelegate];
-  [v5 webProcessMRAIDJSODidCallCreateCalendarEvent:v4];
+  eventCopy = event;
+  webProcessDelegate = [(APWebProcessPlugInLoadDelegate *)self webProcessDelegate];
+  [webProcessDelegate webProcessMRAIDJSODidCallCreateCalendarEvent:eventCopy];
 }
 
-- (void)creativeStateDidChange:(int64_t)a3
+- (void)creativeStateDidChange:(int64_t)change
 {
-  v5 = [(APWebProcessPlugInLoadDelegate *)self webProcessMRAIDJSO];
+  webProcessMRAIDJSO = [(APWebProcessPlugInLoadDelegate *)self webProcessMRAIDJSO];
 
-  if (v5)
+  if (webProcessMRAIDJSO)
   {
-    v6 = [(APWebProcessPlugInLoadDelegate *)self webProcessMRAIDJSO];
-    [v6 setState:a3];
+    webProcessMRAIDJSO2 = [(APWebProcessPlugInLoadDelegate *)self webProcessMRAIDJSO];
+    [webProcessMRAIDJSO2 setState:change];
   }
 }
 
-- (void)contentSizeDidChange:(id)a3
+- (void)contentSizeDidChange:(id)change
 {
-  v6 = a3;
-  v4 = [(APWebProcessPlugInLoadDelegate *)self webProcessVideoAdJSO];
+  changeCopy = change;
+  webProcessVideoAdJSO = [(APWebProcessPlugInLoadDelegate *)self webProcessVideoAdJSO];
 
-  if (v4)
+  if (webProcessVideoAdJSO)
   {
-    v5 = [(APWebProcessPlugInLoadDelegate *)self webProcessVideoAdJSO];
-    [v5 contentSizeDidChange:v6];
+    webProcessVideoAdJSO2 = [(APWebProcessPlugInLoadDelegate *)self webProcessVideoAdJSO];
+    [webProcessVideoAdJSO2 contentSizeDidChange:changeCopy];
   }
 }
 
-- (void)setExpandedWidth:(double)a3 andHeight:(double)a4
+- (void)setExpandedWidth:(double)width andHeight:(double)height
 {
-  v7 = [(APWebProcessPlugInLoadDelegate *)self webProcessMRAIDJSO];
+  webProcessMRAIDJSO = [(APWebProcessPlugInLoadDelegate *)self webProcessMRAIDJSO];
 
-  if (v7)
+  if (webProcessMRAIDJSO)
   {
-    v8 = [(APWebProcessPlugInLoadDelegate *)self webProcessMRAIDJSO];
-    [v8 setExpandedSize:{a3, a4}];
+    webProcessMRAIDJSO2 = [(APWebProcessPlugInLoadDelegate *)self webProcessMRAIDJSO];
+    [webProcessMRAIDJSO2 setExpandedSize:{width, height}];
   }
 }
 
-- (void)actionDidFailWithErrorDescription:(id)a3
+- (void)actionDidFailWithErrorDescription:(id)description
 {
-  v6 = a3;
-  v4 = [(APWebProcessPlugInLoadDelegate *)self webProcessMRAIDJSO];
+  descriptionCopy = description;
+  webProcessMRAIDJSO = [(APWebProcessPlugInLoadDelegate *)self webProcessMRAIDJSO];
 
-  if (v4)
+  if (webProcessMRAIDJSO)
   {
-    v5 = [(APWebProcessPlugInLoadDelegate *)self webProcessMRAIDJSO];
-    [v5 actionDidFailWithErrorDescription:v6];
+    webProcessMRAIDJSO2 = [(APWebProcessPlugInLoadDelegate *)self webProcessMRAIDJSO];
+    [webProcessMRAIDJSO2 actionDidFailWithErrorDescription:descriptionCopy];
   }
 }
 
 - (void)resetVideoTagPlaytime
 {
-  v3 = [(APWebProcessPlugInLoadDelegate *)self webProcessMRAIDJSO];
+  webProcessMRAIDJSO = [(APWebProcessPlugInLoadDelegate *)self webProcessMRAIDJSO];
 
-  if (v3)
+  if (webProcessMRAIDJSO)
   {
-    v4 = [(APWebProcessPlugInLoadDelegate *)self webProcessMRAIDJSO];
-    [v4 resetVideoTagPlaytime];
+    webProcessMRAIDJSO2 = [(APWebProcessPlugInLoadDelegate *)self webProcessMRAIDJSO];
+    [webProcessMRAIDJSO2 resetVideoTagPlaytime];
   }
 }
 
@@ -410,9 +410,9 @@ LABEL_29:
   if (os_log_type_enabled(qword_162B8, OS_LOG_TYPE_INFO))
   {
     v4 = v3;
-    v5 = [(APWebProcessPlugInLoadDelegate *)self advertisingIdentifier];
+    advertisingIdentifier = [(APWebProcessPlugInLoadDelegate *)self advertisingIdentifier];
     v6 = 138543362;
-    v7 = v5;
+    v7 = advertisingIdentifier;
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_INFO, "Resetting session %{public}@", &v6, 0xCu);
   }
 
@@ -423,18 +423,18 @@ LABEL_29:
   [(APWebProcessPlugInLoadDelegate *)self setWebProcessVideoAdJSO:0];
 }
 
-- (void)setWebViewProcessAdIdentifier:(id)a3 maxRequestCount:(id)a4
+- (void)setWebViewProcessAdIdentifier:(id)identifier maxRequestCount:(id)count
 {
-  v7 = a3;
-  v6 = a4;
-  if (v7)
+  identifierCopy = identifier;
+  countCopy = count;
+  if (identifierCopy)
   {
-    [(APWebProcessPlugInLoadDelegate *)self setWebViewProcessAdIdentifier:v7];
+    [(APWebProcessPlugInLoadDelegate *)self setWebViewProcessAdIdentifier:identifierCopy];
   }
 
-  if (v6)
+  if (countCopy)
   {
-    [(APWebProcessPlugInLoadDelegate *)self setWebViewProcessMaxRequestCount:v6];
+    [(APWebProcessPlugInLoadDelegate *)self setWebViewProcessMaxRequestCount:countCopy];
   }
 }
 

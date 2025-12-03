@@ -5,13 +5,13 @@
 - (SKUIStorePageSectionsViewController)parentViewController;
 - (UIColor)placeholderColor;
 - (double)horizontalPadding;
-- (void)_setActivePageWidth:(double)a3;
-- (void)_setCollectionView:(id)a3;
-- (void)_setColorScheme:(id)a3;
-- (void)_setMetricsController:(id)a3;
-- (void)_setParentViewController:(id)a3;
-- (void)_setResourceLoader:(id)a3;
-- (void)_setTextLayoutCache:(id)a3;
+- (void)_setActivePageWidth:(double)width;
+- (void)_setCollectionView:(id)view;
+- (void)_setColorScheme:(id)scheme;
+- (void)_setMetricsController:(id)controller;
+- (void)_setParentViewController:(id)controller;
+- (void)_setResourceLoader:(id)loader;
+- (void)_setTextLayoutCache:(id)cache;
 - (void)init;
 @end
 
@@ -29,8 +29,8 @@
   v3 = [(SKUIStorePageSectionContext *)&v10 init];
   if (v3)
   {
-    v4 = [MEMORY[0x277D759A0] mainScreen];
-    [v4 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     v6 = v5;
     v8 = v7;
 
@@ -45,15 +45,15 @@
 - (SKUIClientContext)clientContext
 {
   WeakRetained = objc_loadWeakRetained(&self->_parentViewController);
-  v3 = [WeakRetained clientContext];
+  clientContext = [WeakRetained clientContext];
 
-  return v3;
+  return clientContext;
 }
 
 - (double)horizontalPadding
 {
-  v3 = [MEMORY[0x277D75DA0] keyWindow];
-  [v3 bounds];
+  keyWindow = [MEMORY[0x277D75DA0] keyWindow];
+  [keyWindow bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -114,9 +114,9 @@
   placeholderColor = self->_placeholderColor;
   if (!placeholderColor)
   {
-    v4 = [(UICollectionView *)self->_collectionView backgroundColor];
-    v5 = v4;
-    if (!v4)
+    backgroundColor = [(UICollectionView *)self->_collectionView backgroundColor];
+    v5 = backgroundColor;
+    if (!backgroundColor)
     {
       v7 = [MEMORY[0x277D75348] colorWithWhite:0.85 alpha:1.0];
 LABEL_13:
@@ -126,7 +126,7 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    v6 = SKUIColorSchemeStyleForColor(v4);
+    v6 = SKUIColorSchemeStyleForColor(backgroundColor);
     if (v6 > 1)
     {
       if (v6 != 2)
@@ -166,91 +166,91 @@ LABEL_15:
   return placeholderColor;
 }
 
-- (void)_setActivePageWidth:(double)a3
+- (void)_setActivePageWidth:(double)width
 {
-  if (self->_activePageWidth != a3)
+  if (self->_activePageWidth != width)
   {
-    self->_portraitPageWidth = a3;
-    self->_activePageWidth = a3;
+    self->_portraitPageWidth = width;
+    self->_activePageWidth = width;
   }
 }
 
-- (void)_setCollectionView:(id)a3
+- (void)_setCollectionView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   p_collectionView = &self->_collectionView;
-  if (self->_collectionView != v5)
+  if (self->_collectionView != viewCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_collectionView, a3);
+    v8 = viewCopy;
+    objc_storeStrong(p_collectionView, view);
     placeholderColor = self->_placeholderColor;
     self->_placeholderColor = 0;
 
-    v5 = v8;
+    viewCopy = v8;
   }
 
-  MEMORY[0x2821F96F8](p_collectionView, v5);
+  MEMORY[0x2821F96F8](p_collectionView, viewCopy);
 }
 
-- (void)_setColorScheme:(id)a3
+- (void)_setColorScheme:(id)scheme
 {
-  v5 = a3;
+  schemeCopy = scheme;
   p_colorScheme = &self->_colorScheme;
-  if (self->_colorScheme != v5)
+  if (self->_colorScheme != schemeCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_colorScheme, a3);
+    v8 = schemeCopy;
+    objc_storeStrong(p_colorScheme, scheme);
     placeholderColor = self->_placeholderColor;
     self->_placeholderColor = 0;
 
-    v5 = v8;
+    schemeCopy = v8;
   }
 
-  MEMORY[0x2821F96F8](p_colorScheme, v5);
+  MEMORY[0x2821F96F8](p_colorScheme, schemeCopy);
 }
 
-- (void)_setMetricsController:(id)a3
+- (void)_setMetricsController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   metricsController = self->_metricsController;
   p_metricsController = &self->_metricsController;
-  if (metricsController != v5)
+  if (metricsController != controllerCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_metricsController, a3);
-    v5 = v8;
+    v8 = controllerCopy;
+    objc_storeStrong(p_metricsController, controller);
+    controllerCopy = v8;
   }
 }
 
-- (void)_setParentViewController:(id)a3
+- (void)_setParentViewController:(id)controller
 {
-  v4 = a3;
-  objc_storeWeak(&self->_parentViewController, v4);
+  controllerCopy = controller;
+  objc_storeWeak(&self->_parentViewController, controllerCopy);
 }
 
-- (void)_setResourceLoader:(id)a3
+- (void)_setResourceLoader:(id)loader
 {
-  v5 = a3;
+  loaderCopy = loader;
   resourceLoader = self->_resourceLoader;
   p_resourceLoader = &self->_resourceLoader;
-  if (resourceLoader != v5)
+  if (resourceLoader != loaderCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_resourceLoader, a3);
-    v5 = v8;
+    v8 = loaderCopy;
+    objc_storeStrong(p_resourceLoader, loader);
+    loaderCopy = v8;
   }
 }
 
-- (void)_setTextLayoutCache:(id)a3
+- (void)_setTextLayoutCache:(id)cache
 {
-  v5 = a3;
+  cacheCopy = cache;
   textLayoutCache = self->_textLayoutCache;
   p_textLayoutCache = &self->_textLayoutCache;
-  if (textLayoutCache != v5)
+  if (textLayoutCache != cacheCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_textLayoutCache, a3);
-    v5 = v8;
+    v8 = cacheCopy;
+    objc_storeStrong(p_textLayoutCache, cache);
+    cacheCopy = v8;
   }
 }
 

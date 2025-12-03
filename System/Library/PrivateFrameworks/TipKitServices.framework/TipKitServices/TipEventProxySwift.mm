@@ -1,19 +1,19 @@
 @interface TipEventProxySwift
-+ (void)donateWithEventIdentifier:(NSString *)a3 for:(NSString *)a4 completionHandler:(id)a5;
++ (void)donateWithEventIdentifier:(NSString *)identifier for:(NSString *)for completionHandler:(id)handler;
 @end
 
 @implementation TipEventProxySwift
 
-+ (void)donateWithEventIdentifier:(NSString *)a3 for:(NSString *)a4 completionHandler:(id)a5
++ (void)donateWithEventIdentifier:(NSString *)identifier for:(NSString *)for completionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
-  v9[2] = a3;
-  v9[3] = a4;
+  v9[2] = identifier;
+  v9[3] = for;
   v9[4] = v8;
-  v9[5] = a1;
-  v10 = a3;
-  v11 = a4;
+  v9[5] = self;
+  identifierCopy = identifier;
+  forCopy = for;
 
   sub_26F1319A4(&unk_26F135390, v9);
 }

@@ -3,25 +3,25 @@
 - (ATXLocationManagerGPSDelegate)delegate;
 - (BOOL)locationEnabled;
 - (BOOL)preciseLocationEnabled;
-- (id)_existingRegionWithIdentifierOnCLQueue:(id)a3;
+- (id)_existingRegionWithIdentifierOnCLQueue:(id)queue;
 - (id)_init;
-- (id)updateLocationWithTimeout:(double)a3 requestPreciseLocation:(BOOL)a4;
-- (int64_t)stateForRegion:(id)a3 withTimeout:(double)a4;
-- (void)_requestStateIfNeededForRegion:(id)a3;
-- (void)_startUpdateIfNeededWithPreciseLocation:(BOOL)a3;
-- (void)_updateConditionAndInvokeLocationBlocks:(id)a3 error:(id)a4;
-- (void)beginMonitoringRegion:(id)a3;
+- (id)updateLocationWithTimeout:(double)timeout requestPreciseLocation:(BOOL)location;
+- (int64_t)stateForRegion:(id)region withTimeout:(double)timeout;
+- (void)_requestStateIfNeededForRegion:(id)region;
+- (void)_startUpdateIfNeededWithPreciseLocation:(BOOL)location;
+- (void)_updateConditionAndInvokeLocationBlocks:(id)blocks error:(id)error;
+- (void)beginMonitoringRegion:(id)region;
 - (void)dealloc;
-- (void)locationManager:(id)a3 didDetermineState:(int64_t)a4 forRegion:(id)a5;
-- (void)locationManager:(id)a3 didEnterRegion:(id)a4;
-- (void)locationManager:(id)a3 didExitRegion:(id)a4;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didStartMonitoringForRegion:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManager:(id)a3 monitoringDidFailForRegion:(id)a4 withError:(id)a5;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
-- (void)stopMonitoringRegionWithIdentifier:(id)a3;
-- (void)updateLocationWithCompletionHandler:(id)a3;
+- (void)locationManager:(id)manager didDetermineState:(int64_t)state forRegion:(id)region;
+- (void)locationManager:(id)manager didEnterRegion:(id)region;
+- (void)locationManager:(id)manager didExitRegion:(id)region;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didStartMonitoringForRegion:(id)region;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManager:(id)manager monitoringDidFailForRegion:(id)region withError:(id)error;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
+- (void)stopMonitoringRegionWithIdentifier:(id)identifier;
+- (void)updateLocationWithCompletionHandler:(id)handler;
 @end
 
 @implementation ATXLocationManagerGPSCoreLocation
@@ -79,7 +79,7 @@ uint64_t __42__ATXLocationManagerGPSCoreLocation__init__block_invoke(uint64_t a1
   block[1] = 3221225472;
   block[2] = __51__ATXLocationManagerGPSCoreLocation_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance__pasOnceToken2 != -1)
   {
     dispatch_once(&sharedInstance__pasOnceToken2, block);
@@ -116,25 +116,25 @@ void __51__ATXLocationManagerGPSCoreLocation_sharedInstance__block_invoke(uint64
 
 - (BOOL)locationEnabled
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  locationEnabled = v2->_locationEnabled;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  locationEnabled = selfCopy->_locationEnabled;
+  objc_sync_exit(selfCopy);
 
   return locationEnabled;
 }
 
 - (BOOL)preciseLocationEnabled
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  preciseLocationEnabled = v2->_preciseLocationEnabled;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  preciseLocationEnabled = selfCopy->_preciseLocationEnabled;
+  objc_sync_exit(selfCopy);
 
   return preciseLocationEnabled;
 }
 
-- (void)_startUpdateIfNeededWithPreciseLocation:(BOOL)a3
+- (void)_startUpdateIfNeededWithPreciseLocation:(BOOL)location
 {
   if (!self->_updatePending)
   {
@@ -145,7 +145,7 @@ void __51__ATXLocationManagerGPSCoreLocation_sharedInstance__block_invoke(uint64
     v4[2] = __77__ATXLocationManagerGPSCoreLocation__startUpdateIfNeededWithPreciseLocation___block_invoke;
     v4[3] = &unk_279AB89A0;
     v4[4] = self;
-    v5 = a3;
+    locationCopy = location;
     dispatch_async(clQueue, v4);
   }
 }
@@ -185,19 +185,19 @@ uint64_t __77__ATXLocationManagerGPSCoreLocation__startUpdateIfNeededWithPrecise
   return result;
 }
 
-- (id)updateLocationWithTimeout:(double)a3 requestPreciseLocation:(BOOL)a4
+- (id)updateLocationWithTimeout:(double)timeout requestPreciseLocation:(BOOL)location
 {
-  v4 = a4;
+  locationCopy = location;
   v17 = *MEMORY[0x277D85DE8];
-  if (a3 <= 0.0)
+  if (timeout <= 0.0)
   {
     [ATXLocationManagerGPSCoreLocation updateLocationWithTimeout:a2 requestPreciseLocation:self];
   }
 
-  v7 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:a3];
-  v8 = [(ATXLocationManagerGPSCoreLocation *)self preciseLocationEnabled];
+  v7 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:timeout];
+  preciseLocationEnabled = [(ATXLocationManagerGPSCoreLocation *)self preciseLocationEnabled];
   [(NSCondition *)self->_updateCondition lock];
-  [(ATXLocationManagerGPSCoreLocation *)self _startUpdateIfNeededWithPreciseLocation:v8 & v4];
+  [(ATXLocationManagerGPSCoreLocation *)self _startUpdateIfNeededWithPreciseLocation:preciseLocationEnabled & locationCopy];
   while (self->_updatePending)
   {
     if (![(NSCondition *)self->_updateCondition waitUntilDate:v7])
@@ -217,16 +217,16 @@ uint64_t __77__ATXLocationManagerGPSCoreLocation__startUpdateIfNeededWithPrecise
   }
 
   [(NSCondition *)self->_updateCondition unlock];
-  v12 = [(ATXLocationManagerGPSCoreLocation *)self location];
+  location = [(ATXLocationManagerGPSCoreLocation *)self location];
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return location;
 }
 
-- (void)updateLocationWithCompletionHandler:(id)a3
+- (void)updateLocationWithCompletionHandler:(id)handler
 {
-  v8 = a3;
+  handlerCopy = handler;
   [(NSCondition *)self->_updateCondition lock];
   locationBlocksToInvoke = self->_locationBlocksToInvoke;
   if (!locationBlocksToInvoke)
@@ -238,39 +238,39 @@ uint64_t __77__ATXLocationManagerGPSCoreLocation__startUpdateIfNeededWithPrecise
     locationBlocksToInvoke = self->_locationBlocksToInvoke;
   }
 
-  v7 = MEMORY[0x2666EC640](v8);
+  v7 = MEMORY[0x2666EC640](handlerCopy);
   [(NSMutableSet *)locationBlocksToInvoke addObject:v7];
 
   [(ATXLocationManagerGPSCoreLocation *)self _startUpdateIfNeededWithPreciseLocation:0];
   [(NSCondition *)self->_updateCondition unlock];
 }
 
-- (void)beginMonitoringRegion:(id)a3
+- (void)beginMonitoringRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   clQueue = self->_clQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__ATXLocationManagerGPSCoreLocation_beginMonitoringRegion___block_invoke;
   v7[3] = &unk_279AB89C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = regionCopy;
+  v6 = regionCopy;
   dispatch_async(clQueue, v7);
 }
 
-- (int64_t)stateForRegion:(id)a3 withTimeout:(double)a4
+- (int64_t)stateForRegion:(id)region withTimeout:(double)timeout
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (a4 <= 0.0)
+  regionCopy = region;
+  if (timeout <= 0.0)
   {
     [ATXLocationManagerGPSCoreLocation stateForRegion:a2 withTimeout:self];
   }
 
-  v8 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:a4];
+  v8 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:timeout];
   [(NSCondition *)self->_requestStateCondition lock];
-  [(ATXLocationManagerGPSCoreLocation *)self _requestStateIfNeededForRegion:v7];
+  [(ATXLocationManagerGPSCoreLocation *)self _requestStateIfNeededForRegion:regionCopy];
   while (self->_regionRequested)
   {
     if (![(NSCondition *)self->_requestStateCondition waitUntilDate:v8])
@@ -294,12 +294,12 @@ uint64_t __77__ATXLocationManagerGPSCoreLocation__startUpdateIfNeededWithPrecise
   v11 = __atxlog_handle_default();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v7 identifier];
+    identifier = [regionCopy identifier];
     state = self->_state;
     v17 = 136315650;
     v18 = "[ATXLocationManagerGPSCoreLocation stateForRegion:withTimeout:]";
     v19 = 2112;
-    v20 = v12;
+    v20 = identifier;
     v21 = 2048;
     v22 = state;
     _os_log_impl(&dword_260C9F000, v11, OS_LOG_TYPE_DEFAULT, "%s: region: %@, state: %ld", &v17, 0x20u);
@@ -310,12 +310,12 @@ uint64_t __77__ATXLocationManagerGPSCoreLocation__startUpdateIfNeededWithPrecise
   return v14;
 }
 
-- (void)_requestStateIfNeededForRegion:(id)a3
+- (void)_requestStateIfNeededForRegion:(id)region
 {
-  v5 = a3;
+  regionCopy = region;
   if (!self->_regionRequested)
   {
-    objc_storeStrong(&self->_regionRequested, a3);
+    objc_storeStrong(&self->_regionRequested, region);
     self->_state = 0;
     clQueue = self->_clQueue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -323,22 +323,22 @@ uint64_t __77__ATXLocationManagerGPSCoreLocation__startUpdateIfNeededWithPrecise
     v7[2] = __68__ATXLocationManagerGPSCoreLocation__requestStateIfNeededForRegion___block_invoke;
     v7[3] = &unk_279AB89C8;
     v7[4] = self;
-    v8 = v5;
+    v8 = regionCopy;
     dispatch_async(clQueue, v7);
   }
 }
 
-- (id)_existingRegionWithIdentifierOnCLQueue:(id)a3
+- (id)_existingRegionWithIdentifierOnCLQueue:(id)queue
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  queueCopy = queue;
   dispatch_assert_queue_V2(self->_clQueue);
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(CLLocationManager *)self->_locationManager monitoredRegions];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  monitoredRegions = [(CLLocationManager *)self->_locationManager monitoredRegions];
+  v6 = [monitoredRegions countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -348,12 +348,12 @@ uint64_t __77__ATXLocationManagerGPSCoreLocation__startUpdateIfNeededWithPrecise
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(monitoredRegions);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        v11 = [v10 isEqualToString:v4];
+        identifier = [v9 identifier];
+        v11 = [identifier isEqualToString:queueCopy];
 
         if (v11)
         {
@@ -362,7 +362,7 @@ uint64_t __77__ATXLocationManagerGPSCoreLocation__startUpdateIfNeededWithPrecise
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [monitoredRegions countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -379,17 +379,17 @@ LABEL_11:
   return v6;
 }
 
-- (void)stopMonitoringRegionWithIdentifier:(id)a3
+- (void)stopMonitoringRegionWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   clQueue = self->_clQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __72__ATXLocationManagerGPSCoreLocation_stopMonitoringRegionWithIdentifier___block_invoke;
   v7[3] = &unk_279AB89C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_async(clQueue, v7);
 }
 
@@ -404,11 +404,11 @@ uint64_t __72__ATXLocationManagerGPSCoreLocation_stopMonitoringRegionWithIdentif
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_updateConditionAndInvokeLocationBlocks:(id)a3 error:(id)a4
+- (void)_updateConditionAndInvokeLocationBlocks:(id)blocks error:(id)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  blocksCopy = blocks;
+  errorCopy = error;
   [(NSCondition *)self->_updateCondition lock];
   self->_updatePending = 0;
   [(NSCondition *)self->_updateCondition broadcast];
@@ -450,18 +450,18 @@ uint64_t __72__ATXLocationManagerGPSCoreLocation_stopMonitoringRegionWithIdentif
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = [a4 lastObject];
+  lastObject = [locations lastObject];
   v6 = __atxlog_handle_default();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    [v5 coordinate];
+    [lastObject coordinate];
     v10 = v9;
-    [v5 coordinate];
+    [lastObject coordinate];
     v13 = 138412803;
     v14 = v8;
     v15 = 2053;
@@ -471,63 +471,63 @@ uint64_t __72__ATXLocationManagerGPSCoreLocation_stopMonitoringRegionWithIdentif
     _os_log_impl(&dword_260C9F000, v6, OS_LOG_TYPE_DEFAULT, "%@ - Got location update: %{sensitive}f, %{sensitive}f", &v13, 0x20u);
   }
 
-  [(ATXLocationManagerGPSCoreLocation *)self _updateConditionAndInvokeLocationBlocks:v5 error:0];
+  [(ATXLocationManagerGPSCoreLocation *)self _updateConditionAndInvokeLocationBlocks:lastObject error:0];
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)locationManager:(id)a3 didStartMonitoringForRegion:(id)a4
+- (void)locationManager:(id)manager didStartMonitoringForRegion:(id)region
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a4;
+  regionCopy = region;
   v5 = __atxlog_handle_default();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 identifier];
+    identifier = [regionCopy identifier];
     v8 = 138412290;
-    v9 = v6;
+    v9 = identifier;
     _os_log_impl(&dword_260C9F000, v5, OS_LOG_TYPE_DEFAULT, "Started monitoring region: %@", &v8, 0xCu);
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)locationManager:(id)a3 monitoringDidFailForRegion:(id)a4 withError:(id)a5
+- (void)locationManager:(id)manager monitoringDidFailForRegion:(id)region withError:(id)error
 {
-  v6 = a4;
-  v7 = a5;
+  regionCopy = region;
+  errorCopy = error;
   v8 = __atxlog_handle_default();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
-    [ATXLocationManagerGPSCoreLocation locationManager:v6 monitoringDidFailForRegion:v7 withError:v8];
+    [ATXLocationManagerGPSCoreLocation locationManager:regionCopy monitoringDidFailForRegion:errorCopy withError:v8];
   }
 }
 
-- (void)locationManager:(id)a3 didEnterRegion:(id)a4
+- (void)locationManager:(id)manager didEnterRegion:(id)region
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  regionCopy = region;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
-    v7 = __atxlog_handle_default();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    v6 = regionCopy;
+    identifier2 = __atxlog_handle_default();
+    if (os_log_type_enabled(identifier2, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v6 identifier];
+      identifier = [v6 identifier];
       [v6 center];
       v10 = v9;
       [v6 center];
       v12 = v11;
       [v6 radius];
       *buf = 138413058;
-      v20 = v8;
+      v20 = identifier;
       v21 = 2048;
       v22 = v10;
       v23 = 2048;
       v24 = v12;
       v25 = 2048;
       v26 = v13;
-      _os_log_impl(&dword_260C9F000, v7, OS_LOG_TYPE_DEFAULT, "did enter region: %@, region center: (%f, %f), region radius: %f", buf, 0x2Au);
+      _os_log_impl(&dword_260C9F000, identifier2, OS_LOG_TYPE_DEFAULT, "did enter region: %@, region center: (%f, %f), region radius: %f", buf, 0x2Au);
     }
 
     goto LABEL_6;
@@ -536,9 +536,9 @@ uint64_t __72__ATXLocationManagerGPSCoreLocation_stopMonitoringRegionWithIdentif
   v6 = __atxlog_handle_default();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 identifier];
+    identifier2 = [regionCopy identifier];
     *buf = 138412546;
-    v20 = v7;
+    v20 = identifier2;
     v21 = 2112;
     v22 = objc_opt_class();
     _os_log_impl(&dword_260C9F000, v6, OS_LOG_TYPE_DEFAULT, "did enter region: %@, class: %@", buf, 0x16u);
@@ -551,8 +551,8 @@ LABEL_6:
   v17[2] = __68__ATXLocationManagerGPSCoreLocation_locationManager_didEnterRegion___block_invoke;
   v17[3] = &unk_279AB89C8;
   v17[4] = self;
-  v18 = v5;
-  v15 = v5;
+  v18 = regionCopy;
+  v15 = regionCopy;
   dispatch_async(v14, v17);
 
   v16 = *MEMORY[0x277D85DE8];
@@ -566,32 +566,32 @@ void __68__ATXLocationManagerGPSCoreLocation_locationManager_didEnterRegion___bl
   [v4 locationManagerGPS:v2 didEnterRegionWithIdentifier:v3];
 }
 
-- (void)locationManager:(id)a3 didExitRegion:(id)a4
+- (void)locationManager:(id)manager didExitRegion:(id)region
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  regionCopy = region;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
-    v7 = __atxlog_handle_default();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    v6 = regionCopy;
+    identifier2 = __atxlog_handle_default();
+    if (os_log_type_enabled(identifier2, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v6 identifier];
+      identifier = [v6 identifier];
       [v6 center];
       v10 = v9;
       [v6 center];
       v12 = v11;
       [v6 radius];
       *buf = 138413058;
-      v20 = v8;
+      v20 = identifier;
       v21 = 2048;
       v22 = v10;
       v23 = 2048;
       v24 = v12;
       v25 = 2048;
       v26 = v13;
-      _os_log_impl(&dword_260C9F000, v7, OS_LOG_TYPE_DEFAULT, "did exit region: %@, region center: (%f, %f), region radius: %f", buf, 0x2Au);
+      _os_log_impl(&dword_260C9F000, identifier2, OS_LOG_TYPE_DEFAULT, "did exit region: %@, region center: (%f, %f), region radius: %f", buf, 0x2Au);
     }
 
     goto LABEL_6;
@@ -600,9 +600,9 @@ void __68__ATXLocationManagerGPSCoreLocation_locationManager_didEnterRegion___bl
   v6 = __atxlog_handle_default();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 identifier];
+    identifier2 = [regionCopy identifier];
     *buf = 138412546;
-    v20 = v7;
+    v20 = identifier2;
     v21 = 2112;
     v22 = objc_opt_class();
     _os_log_impl(&dword_260C9F000, v6, OS_LOG_TYPE_DEFAULT, "did exit region: %@, class: %@", buf, 0x16u);
@@ -615,8 +615,8 @@ LABEL_6:
   v17[2] = __67__ATXLocationManagerGPSCoreLocation_locationManager_didExitRegion___block_invoke;
   v17[3] = &unk_279AB89C8;
   v17[4] = self;
-  v18 = v5;
-  v15 = v5;
+  v18 = regionCopy;
+  v15 = regionCopy;
   dispatch_async(v14, v17);
 
   v16 = *MEMORY[0x277D85DE8];
@@ -630,18 +630,18 @@ void __67__ATXLocationManagerGPSCoreLocation_locationManager_didExitRegion___blo
   [v4 locationManagerGPS:v2 didExitRegionWithIdentifier:v3];
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  locationEnabled = v5->_locationEnabled;
-  v7 = [v4 authorizationStatus] == 3;
-  v5->_locationEnabled = v7;
-  preciseLocationEnabled = v5->_preciseLocationEnabled;
-  v9 = [v4 accuracyAuthorization] == 0;
-  v5->_preciseLocationEnabled = v9;
-  objc_sync_exit(v5);
+  authorizationCopy = authorization;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  locationEnabled = selfCopy->_locationEnabled;
+  v7 = [authorizationCopy authorizationStatus] == 3;
+  selfCopy->_locationEnabled = v7;
+  preciseLocationEnabled = selfCopy->_preciseLocationEnabled;
+  v9 = [authorizationCopy accuracyAuthorization] == 0;
+  selfCopy->_preciseLocationEnabled = v9;
+  objc_sync_exit(selfCopy);
 
   if (locationEnabled != v7)
   {
@@ -650,7 +650,7 @@ void __67__ATXLocationManagerGPSCoreLocation_locationManager_didExitRegion___blo
     block[1] = 3221225472;
     block[2] = __75__ATXLocationManagerGPSCoreLocation_locationManagerDidChangeAuthorization___block_invoke;
     block[3] = &unk_279AB89A0;
-    block[4] = v5;
+    block[4] = selfCopy;
     v15 = v7;
     dispatch_async(v10, block);
   }
@@ -662,7 +662,7 @@ void __67__ATXLocationManagerGPSCoreLocation_locationManager_didExitRegion___blo
     v12[1] = 3221225472;
     v12[2] = __75__ATXLocationManagerGPSCoreLocation_locationManagerDidChangeAuthorization___block_invoke_2;
     v12[3] = &unk_279AB89A0;
-    v12[4] = v5;
+    v12[4] = selfCopy;
     v13 = v9;
     dispatch_async(v11, v12);
   }
@@ -680,43 +680,43 @@ void __75__ATXLocationManagerGPSCoreLocation_locationManagerDidChangeAuthorizati
   [v2 didChangePreciseLocationEnabled:*(a1 + 40)];
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = __atxlog_handle_default();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    [ATXLocationManagerGPSCoreLocation locationManager:v5 didFailWithError:v6];
+    [ATXLocationManagerGPSCoreLocation locationManager:errorCopy didFailWithError:v6];
   }
 
-  [(ATXLocationManagerGPSCoreLocation *)self _updateConditionAndInvokeLocationBlocks:0 error:v5];
+  [(ATXLocationManagerGPSCoreLocation *)self _updateConditionAndInvokeLocationBlocks:0 error:errorCopy];
 }
 
-- (void)locationManager:(id)a3 didDetermineState:(int64_t)a4 forRegion:(id)a5
+- (void)locationManager:(id)manager didDetermineState:(int64_t)state forRegion:(id)region
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a5;
+  regionCopy = region;
   v8 = __atxlog_handle_default();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v7 identifier];
+    identifier = [regionCopy identifier];
     v13 = 136315650;
     v14 = "[ATXLocationManagerGPSCoreLocation locationManager:didDetermineState:forRegion:]";
     v15 = 2112;
-    v16 = v9;
+    v16 = identifier;
     v17 = 2048;
-    v18 = a4;
+    stateCopy = state;
     _os_log_impl(&dword_260C9F000, v8, OS_LOG_TYPE_DEFAULT, "%s: region: %@, state: %ld", &v13, 0x20u);
   }
 
   [(NSCondition *)self->_requestStateCondition lock];
   regionRequested = self->_regionRequested;
-  if (regionRequested && [(CLRegion *)regionRequested isEqual:v7])
+  if (regionRequested && [(CLRegion *)regionRequested isEqual:regionCopy])
   {
     v11 = self->_regionRequested;
     self->_regionRequested = 0;
 
-    self->_state = a4;
+    self->_state = state;
     [(NSCondition *)self->_requestStateCondition broadcast];
   }
 

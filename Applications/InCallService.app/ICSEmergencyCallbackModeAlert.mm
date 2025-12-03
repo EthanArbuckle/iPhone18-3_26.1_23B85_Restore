@@ -1,5 +1,5 @@
 @interface ICSEmergencyCallbackModeAlert
-- (ICSEmergencyCallbackModeAlert)initWithDialRequest:(id)a3 completion:(id)a4;
+- (ICSEmergencyCallbackModeAlert)initWithDialRequest:(id)request completion:(id)completion;
 - (id)alternateButtonTitle;
 - (id)defaultButtonTitle;
 - (id)message;
@@ -10,51 +10,51 @@
 
 @implementation ICSEmergencyCallbackModeAlert
 
-- (ICSEmergencyCallbackModeAlert)initWithDialRequest:(id)a3 completion:(id)a4
+- (ICSEmergencyCallbackModeAlert)initWithDialRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v30.receiver = self;
   v30.super_class = ICSEmergencyCallbackModeAlert;
   v8 = [(ICSEmergencyCallbackModeAlert *)&v30 init];
   if (v8)
   {
-    v9 = [v6 localSenderIdentityAccountUUID];
-    v10 = [v6 provider];
-    v11 = [v10 prioritizedSenderIdentities];
+    localSenderIdentityAccountUUID = [requestCopy localSenderIdentityAccountUUID];
+    provider = [requestCopy provider];
+    prioritizedSenderIdentities = [provider prioritizedSenderIdentities];
 
-    v12 = [v11 firstObject];
-    v13 = [v12 accountUUID];
-    v14 = [v13 isEqual:v9];
+    firstObject = [prioritizedSenderIdentities firstObject];
+    accountUUID = [firstObject accountUUID];
+    v14 = [accountUUID isEqual:localSenderIdentityAccountUUID];
 
     if (v14)
     {
-      v15 = [v11 firstObject];
-      v16 = [v15 localizedName];
-      v17 = [v16 copy];
+      firstObject2 = [prioritizedSenderIdentities firstObject];
+      localizedName = [firstObject2 localizedName];
+      v17 = [localizedName copy];
       dialRequestAccountDescription = v8->_dialRequestAccountDescription;
       v8->_dialRequestAccountDescription = v17;
 
-      [v11 lastObject];
+      [prioritizedSenderIdentities lastObject];
     }
 
     else
     {
-      v19 = [v11 lastObject];
-      v20 = [v19 localizedName];
-      v21 = [v20 copy];
+      lastObject = [prioritizedSenderIdentities lastObject];
+      localizedName2 = [lastObject localizedName];
+      v21 = [localizedName2 copy];
       v22 = v8->_dialRequestAccountDescription;
       v8->_dialRequestAccountDescription = v21;
 
-      [v11 firstObject];
+      [prioritizedSenderIdentities firstObject];
     }
     v23 = ;
-    v24 = [v23 localizedName];
-    v25 = [v24 copy];
+    localizedName3 = [v23 localizedName];
+    v25 = [localizedName3 copy];
     emergencyAccountDescription = v8->_emergencyAccountDescription;
     v8->_emergencyAccountDescription = v25;
 
-    v27 = objc_retainBlock(v7);
+    v27 = objc_retainBlock(completionCopy);
     alertCompletion = v8->_alertCompletion;
     v8->_alertCompletion = v27;
   }
@@ -74,9 +74,9 @@
 {
   v3 = +[NSBundle mainBundle];
   v4 = [v3 localizedStringForKey:@"EMERGENCY_CALLBACK_MODE_ALERT_CONTROLLER_MESSAGE_%@_%@" value:&stru_100361FD0 table:@"InCallService"];
-  v5 = [(ICSEmergencyCallbackModeAlert *)self dialRequestAccountDescription];
-  v6 = [(ICSEmergencyCallbackModeAlert *)self emergencyAccountDescription];
-  v7 = [NSString stringWithFormat:v4, v5, v6];
+  dialRequestAccountDescription = [(ICSEmergencyCallbackModeAlert *)self dialRequestAccountDescription];
+  emergencyAccountDescription = [(ICSEmergencyCallbackModeAlert *)self emergencyAccountDescription];
+  v7 = [NSString stringWithFormat:v4, dialRequestAccountDescription, emergencyAccountDescription];
 
   return v7;
 }
@@ -99,14 +99,14 @@
 
 - (void)defaultResponse
 {
-  v2 = [(ICSEmergencyCallbackModeAlert *)self alertCompletion];
-  v2[2](v2, 0);
+  alertCompletion = [(ICSEmergencyCallbackModeAlert *)self alertCompletion];
+  alertCompletion[2](alertCompletion, 0);
 }
 
 - (void)alternateResponse
 {
-  v2 = [(ICSEmergencyCallbackModeAlert *)self alertCompletion];
-  v2[2](v2, 1);
+  alertCompletion = [(ICSEmergencyCallbackModeAlert *)self alertCompletion];
+  alertCompletion[2](alertCompletion, 1);
 }
 
 @end

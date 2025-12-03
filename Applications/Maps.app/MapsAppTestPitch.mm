@@ -1,12 +1,12 @@
 @interface MapsAppTestPitch
 - ($1AB5FA073B851C12C2339EC22442E995)testPoint;
 - (BOOL)runTest;
-- (MapsAppTestPitch)initWithApplication:(id)a3 testName:(id)a4 options:(id)a5;
-- (void)addFullyDrawnCallback:(id)a3;
-- (void)onFullyDrawn:(id)a3;
+- (MapsAppTestPitch)initWithApplication:(id)application testName:(id)name options:(id)options;
+- (void)addFullyDrawnCallback:(id)callback;
+- (void)onFullyDrawn:(id)drawn;
 - (void)pitchLoadCompleted;
 - (void)pitchLoadFinished;
-- (void)pitchToDegree:(unsigned int)a3;
+- (void)pitchToDegree:(unsigned int)degree;
 @end
 
 @implementation MapsAppTestPitch
@@ -22,30 +22,30 @@
   return result;
 }
 
-- (void)onFullyDrawn:(id)a3
+- (void)onFullyDrawn:(id)drawn
 {
-  v18 = a3;
-  v5 = [v18 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"hasFailedTiles"];
-  v7 = [v6 BOOLValue];
+  drawnCopy = drawn;
+  userInfo = [drawnCopy userInfo];
+  object2 = [userInfo objectForKeyedSubscript:@"hasFailedTiles"];
+  bOOLValue = [object2 BOOLValue];
 
-  v8 = [v18 object];
-  if (v8)
+  object = [drawnCopy object];
+  if (object)
   {
-    v6 = [v18 object];
-    v9 = [(MapsAppTest *)self mainVKMapView];
-    v3 = v9;
-    if (v6 != v9)
+    object2 = [drawnCopy object];
+    mainVKMapView = [(MapsAppTest *)self mainVKMapView];
+    v3 = mainVKMapView;
+    if (object2 != mainVKMapView)
     {
 
       goto LABEL_11;
     }
   }
 
-  v10 = [(MapsAppTest *)self mainVKMapView];
-  v11 = [v10 isFullyDrawn] & (v7 ^ 1);
+  mainVKMapView2 = [(MapsAppTest *)self mainVKMapView];
+  v11 = [mainVKMapView2 isFullyDrawn] & (bOOLValue ^ 1);
 
-  if (v8)
+  if (object)
   {
 
     if ((v11 & 1) == 0)
@@ -64,34 +64,34 @@
 
   while (1)
   {
-    v13 = [(MapsAppTest *)self fullyDrawnCallbacks];
-    v14 = [v13 count];
+    fullyDrawnCallbacks = [(MapsAppTest *)self fullyDrawnCallbacks];
+    v14 = [fullyDrawnCallbacks count];
 
     if (!v14)
     {
       break;
     }
 
-    v15 = [(MapsAppTest *)self fullyDrawnCallbacks];
-    v16 = [v15 firstObject];
+    fullyDrawnCallbacks2 = [(MapsAppTest *)self fullyDrawnCallbacks];
+    firstObject = [fullyDrawnCallbacks2 firstObject];
 
-    v17 = [(MapsAppTest *)self fullyDrawnCallbacks];
-    [v17 removeObjectAtIndex:0];
+    fullyDrawnCallbacks3 = [(MapsAppTest *)self fullyDrawnCallbacks];
+    [fullyDrawnCallbacks3 removeObjectAtIndex:0];
 
-    v16[2](v16);
+    firstObject[2](firstObject);
   }
 
 LABEL_11:
 }
 
-- (void)addFullyDrawnCallback:(id)a3
+- (void)addFullyDrawnCallback:(id)callback
 {
-  v4 = a3;
-  v5 = [(MapsAppTest *)self fullyDrawnCallbacks];
-  v6 = [v4 copy];
+  callbackCopy = callback;
+  fullyDrawnCallbacks = [(MapsAppTest *)self fullyDrawnCallbacks];
+  v6 = [callbackCopy copy];
 
   v7 = objc_retainBlock(v6);
-  [v5 addObject:v7];
+  [fullyDrawnCallbacks addObject:v7];
 
   v8 = dispatch_time(0, 100000000);
   block[0] = _NSConcreteStackBlock;
@@ -104,21 +104,21 @@ LABEL_11:
 
 - (void)pitchLoadCompleted
 {
-  v3 = [(MapsAppTest *)self mainVKMapView];
-  [v3 stopPitchingWithFocusPoint:{self->_focusPoint.x, self->_focusPoint.y}];
-  [v3 disableTestStatistics];
-  [v3 disableTileStatistics];
+  mainVKMapView = [(MapsAppTest *)self mainVKMapView];
+  [mainVKMapView stopPitchingWithFocusPoint:{self->_focusPoint.x, self->_focusPoint.y}];
+  [mainVKMapView disableTestStatistics];
+  [mainVKMapView disableTileStatistics];
   savedDebugDrawContinuously = self->_savedDebugDrawContinuously;
   v5 = +[VKDebugSettings sharedSettingsExt];
   [v5 setLayoutContinuously:savedDebugDrawContinuously];
 
-  v17 = v3;
-  v6 = [v3 testStatistics];
+  v17 = mainVKMapView;
+  testStatistics = [mainVKMapView testStatistics];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v7 = [testStatistics countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
     v8 = v7;
@@ -129,27 +129,27 @@ LABEL_11:
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(testStatistics);
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v6 objectForKey:v11];
-        v13 = [(MapsAppTest *)self results];
+        v12 = [testStatistics objectForKey:v11];
+        results = [(MapsAppTest *)self results];
         v14 = [NSString stringWithFormat:@"sub:pitch:%@", v11];
-        [v13 setObject:v12 forKey:v14];
+        [results setObject:v12 forKey:v14];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v8 = [testStatistics countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v8);
   }
 
-  v15 = [v17 tileStatistics];
-  if (v15)
+  tileStatistics = [v17 tileStatistics];
+  if (tileStatistics)
   {
-    v16 = [(MapsAppTest *)self results];
-    [v16 addEntriesFromDictionary:v15];
+    results2 = [(MapsAppTest *)self results];
+    [results2 addEntriesFromDictionary:tileStatistics];
   }
 
   [v17 resetTestStatistics];
@@ -168,19 +168,19 @@ LABEL_11:
   dispatch_after(v3, &_dispatch_main_q, block);
 }
 
-- (void)pitchToDegree:(unsigned int)a3
+- (void)pitchToDegree:(unsigned int)degree
 {
-  if (a3 < 0x64)
+  if (degree < 0x64)
   {
-    v5 = [(MapsAppTest *)self mainVKMapView];
-    [v5 updatePitchWithFocusPoint:self->_focusPoint.x degrees:{self->_focusPoint.y, self->_pitchDegrees[a3]}];
+    mainVKMapView = [(MapsAppTest *)self mainVKMapView];
+    [mainVKMapView updatePitchWithFocusPoint:self->_focusPoint.x degrees:{self->_focusPoint.y, self->_pitchDegrees[degree]}];
     v6 = dispatch_time(0, (self->_animationDuration * 1000000000.0));
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_10072D0A4;
     v7[3] = &unk_10164DC48;
     v7[4] = self;
-    v8 = a3;
+    degreeCopy = degree;
     dispatch_after(v6, &_dispatch_main_q, v7);
   }
 
@@ -198,12 +198,12 @@ LABEL_11:
     [(MapsAppTest *)self setupForVKTest];
   }
 
-  v3 = [(MapsAppTest *)self mainMKMapView];
-  [v3 _setLocationPulseEnabled:0];
+  mainMKMapView = [(MapsAppTest *)self mainMKMapView];
+  [mainMKMapView _setLocationPulseEnabled:0];
 
-  v4 = [(MapsAppTest *)self mainVKMapView];
-  v5 = [(MapsAppTest *)self options];
-  -[MapsAppTest switchToMapType:](self, "switchToMapType:", [v5 _mapstest_mapType]);
+  mainVKMapView = [(MapsAppTest *)self mainVKMapView];
+  options = [(MapsAppTest *)self options];
+  -[MapsAppTest switchToMapType:](self, "switchToMapType:", [options _mapstest_mapType]);
   [(MapsAppTestPitch *)self endPitch];
   v7 = v6;
   [(MapsAppTestPitch *)self startPitch];
@@ -221,7 +221,7 @@ LABEL_11:
   [(MapsAppTestPitch *)self startPitch];
   v14 = v13;
   [(MapsAppTestPitch *)self yaw];
-  [v4 setMapRegion:v12 pitch:v14 yaw:v15];
+  [mainVKMapView setMapRegion:v12 pitch:v14 yaw:v15];
   objc_initWeak(&location, self);
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
@@ -235,59 +235,59 @@ LABEL_11:
   return 1;
 }
 
-- (MapsAppTestPitch)initWithApplication:(id)a3 testName:(id)a4 options:(id)a5
+- (MapsAppTestPitch)initWithApplication:(id)application testName:(id)name options:(id)options
 {
-  v8 = a4;
-  v9 = a5;
+  nameCopy = name;
+  optionsCopy = options;
   v30.receiver = self;
   v30.super_class = MapsAppTestPitch;
-  v10 = [(MapsAppTest *)&v30 initWithApplication:a3 testName:v8 options:v9];
+  v10 = [(MapsAppTest *)&v30 initWithApplication:application testName:nameCopy options:optionsCopy];
   if (v10)
   {
-    v10->_isSubTest = [v8 rangeOfString:@"pitch"] != 0;
+    v10->_isSubTest = [nameCopy rangeOfString:@"pitch"] != 0;
     v10->_startPitch = 0.0;
     v10->_endPitch = 60.0;
-    if (v9)
+    if (optionsCopy)
     {
-      v11 = [v9 allKeys];
-      v12 = [v11 containsObject:@"isSubTest"];
+      allKeys = [optionsCopy allKeys];
+      v12 = [allKeys containsObject:@"isSubTest"];
 
       if (v12)
       {
-        v13 = [v9 valueForKey:@"isSubTest"];
+        v13 = [optionsCopy valueForKey:@"isSubTest"];
         v10->_isSubTest = [v13 BOOLValue];
       }
 
-      v14 = [v9 allKeys];
-      v15 = [v14 containsObject:@"startPitch"];
+      allKeys2 = [optionsCopy allKeys];
+      v15 = [allKeys2 containsObject:@"startPitch"];
 
       if (v15)
       {
-        v16 = [(MapsAppTest *)v10 options];
-        v17 = [v16 objectForKeyedSubscript:@"startPitch"];
+        options = [(MapsAppTest *)v10 options];
+        v17 = [options objectForKeyedSubscript:@"startPitch"];
         [v17 doubleValue];
         v10->_startPitch = v18;
       }
 
-      v19 = [v9 allKeys];
-      v20 = [v19 containsObject:@"endPitch"];
+      allKeys3 = [optionsCopy allKeys];
+      v20 = [allKeys3 containsObject:@"endPitch"];
 
       if (v20)
       {
-        v21 = [(MapsAppTest *)v10 options];
-        v22 = [v21 objectForKeyedSubscript:@"endPitch"];
+        options2 = [(MapsAppTest *)v10 options];
+        v22 = [options2 objectForKeyedSubscript:@"endPitch"];
         [v22 doubleValue];
         v10->_endPitch = v23;
       }
     }
 
-    [v9 _mapstest_pointWithKeys:&off_1016EC980];
+    [optionsCopy _mapstest_pointWithKeys:&off_1016EC980];
     v10->_testPoint.latitude = v24;
     v10->_testPoint.longitude = v25;
     v10->_testPoint.altitude = v26;
-    [v9 _mapstest_animationDurationWithDefault:3.0];
+    [optionsCopy _mapstest_animationDurationWithDefault:3.0];
     v10->_animationDuration = v27 * 0.01;
-    [v9 _mapstest_yaw];
+    [optionsCopy _mapstest_yaw];
     v10->_yaw = v28;
   }
 

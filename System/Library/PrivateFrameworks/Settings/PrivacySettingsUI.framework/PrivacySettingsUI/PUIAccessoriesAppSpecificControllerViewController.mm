@@ -1,8 +1,8 @@
 @interface PUIAccessoriesAppSpecificControllerViewController
-- (BOOL)deviceSupportsMultitech:(id)a3;
-- (id)specifierForDevice:(id)a3;
+- (BOOL)deviceSupportsMultitech:(id)multitech;
+- (id)specifierForDevice:(id)device;
 - (id)specifiers;
-- (void)handleSessionEvent:(id)a3;
+- (void)handleSessionEvent:(id)event;
 - (void)refreshDADevices;
 - (void)viewDidLoad;
 @end
@@ -58,9 +58,9 @@
     appBundleID = self->_appBundleID;
     self->_appBundleID = v3;
 
-    v5 = [(PUIAccessoriesAppSpecificControllerViewController *)self session];
+    session = [(PUIAccessoriesAppSpecificControllerViewController *)self session];
 
-    if (!v5)
+    if (!session)
     {
       v6 = objc_opt_new();
       [(PUIAccessoriesAppSpecificControllerViewController *)self setSession:v6];
@@ -71,8 +71,8 @@
       v7 = [(PUIAccessoriesAppSpecificControllerViewController *)self session:v9];
       [v7 setEventHandler:&v9];
 
-      v8 = [(PUIAccessoriesAppSpecificControllerViewController *)self session];
-      [v8 activate];
+      session2 = [(PUIAccessoriesAppSpecificControllerViewController *)self session];
+      [session2 activate];
 
       objc_destroyWeak(&v10);
       objc_destroyWeak(&location);
@@ -87,18 +87,18 @@ void __64__PUIAccessoriesAppSpecificControllerViewController_viewDidLoad__block_
   [WeakRetained handleSessionEvent:v3];
 }
 
-- (id)specifierForDevice:(id)a3
+- (id)specifierForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = MEMORY[0x277D3FAD8];
-  v6 = [v4 name];
-  v7 = [v5 preferenceSpecifierNamed:v6 target:self set:0 get:0 detail:NSClassFromString(&cfstr_Asaccessoryinf.isa) cell:2 edit:0];
+  name = [deviceCopy name];
+  v7 = [v5 preferenceSpecifierNamed:name target:self set:0 get:0 detail:NSClassFromString(&cfstr_Asaccessoryinf.isa) cell:2 edit:0];
 
-  v8 = [v4 identifier];
-  [v7 setIdentifier:v8];
+  identifier = [deviceCopy identifier];
+  [v7 setIdentifier:identifier];
 
   [v7 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D40020]];
-  if ([(PUIAccessoriesAppSpecificControllerViewController *)self deviceSupportsMultitech:v4])
+  if ([(PUIAccessoriesAppSpecificControllerViewController *)self deviceSupportsMultitech:deviceCopy])
   {
     v9 = *MEMORY[0x277D3FFD8];
     v10 = @"com.apple.graphic-icon.accessories";
@@ -106,10 +106,10 @@ void __64__PUIAccessoriesAppSpecificControllerViewController_viewDidLoad__block_
 
   else
   {
-    v11 = [v4 bluetoothIdentifier];
+    bluetoothIdentifier = [deviceCopy bluetoothIdentifier];
 
     v9 = *MEMORY[0x277D3FFD8];
-    if (v11)
+    if (bluetoothIdentifier)
     {
       v10 = @"com.apple.graphic-icon.bluetooth";
     }
@@ -121,28 +121,28 @@ void __64__PUIAccessoriesAppSpecificControllerViewController_viewDidLoad__block_
   }
 
   [v7 setObject:v10 forKeyedSubscript:v9];
-  [v7 setProperty:v4 forKey:@"device"];
+  [v7 setProperty:deviceCopy forKey:@"device"];
   [v7 setProperty:self->_session forKey:@"session"];
 
   return v7;
 }
 
-- (BOOL)deviceSupportsMultitech:(id)a3
+- (BOOL)deviceSupportsMultitech:(id)multitech
 {
-  v3 = a3;
-  v4 = [v3 bluetoothIdentifier];
-  if (v4)
+  multitechCopy = multitech;
+  bluetoothIdentifier = [multitechCopy bluetoothIdentifier];
+  if (bluetoothIdentifier)
   {
-    v5 = [v3 wifiAwareDevicePairingID];
-    if (v5)
+    wifiAwareDevicePairingID = [multitechCopy wifiAwareDevicePairingID];
+    if (wifiAwareDevicePairingID)
     {
       v6 = 1;
     }
 
     else
     {
-      v7 = [v3 SSID];
-      v6 = v7 != 0;
+      sSID = [multitechCopy SSID];
+      v6 = sSID != 0;
     }
   }
 
@@ -154,10 +154,10 @@ void __64__PUIAccessoriesAppSpecificControllerViewController_viewDidLoad__block_
   return v6;
 }
 
-- (void)handleSessionEvent:(id)a3
+- (void)handleSessionEvent:(id)event
 {
-  v4 = [a3 eventType];
-  if (v4 <= 0x2A && ((1 << v4) & 0x60000000400) != 0)
+  eventType = [event eventType];
+  if (eventType <= 0x2A && ((1 << eventType) & 0x60000000400) != 0)
   {
 
     [(PUIAccessoriesAppSpecificControllerViewController *)self refreshDADevices];
@@ -166,13 +166,13 @@ void __64__PUIAccessoriesAppSpecificControllerViewController_viewDidLoad__block_
 
 - (void)refreshDADevices
 {
-  v3 = [(PUIAccessoriesAppSpecificControllerViewController *)self session];
+  session = [(PUIAccessoriesAppSpecificControllerViewController *)self session];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __69__PUIAccessoriesAppSpecificControllerViewController_refreshDADevices__block_invoke;
   v4[3] = &unk_279BA1828;
   v4[4] = self;
-  [v3 getDevicesWithFlags:8 completionHandler:v4];
+  [session getDevicesWithFlags:8 completionHandler:v4];
 }
 
 void __69__PUIAccessoriesAppSpecificControllerViewController_refreshDADevices__block_invoke(uint64_t a1, void *a2, void *a3)

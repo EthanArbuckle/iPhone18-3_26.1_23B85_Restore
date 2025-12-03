@@ -1,8 +1,8 @@
 @interface DRSSystemProfile
-+ (id)SHA256DigestForString:(id)a3;
++ (id)SHA256DigestForString:(id)string;
 + (id)sharedInstance;
-+ (unint64_t)hashForSHA256Digest:(id)a3;
-+ (unint64_t)uploadSessionUploadCapBytesWithIsInternal:(BOOL)a3 isSeed:(BOOL)a4 deviceModelHash:(unint64_t)a5;
++ (unint64_t)hashForSHA256Digest:(id)digest;
++ (unint64_t)uploadSessionUploadCapBytesWithIsInternal:(BOOL)internal isSeed:(BOOL)seed deviceModelHash:(unint64_t)hash;
 - (BOOL)customerApprovesAnalytics;
 - (BOOL)isCarrier;
 - (BOOL)isInternal;
@@ -200,31 +200,31 @@ LABEL_6:
   }
 }
 
-+ (id)SHA256DigestForString:(id)a3
++ (id)SHA256DigestForString:(id)string
 {
-  v3 = [a3 dataUsingEncoding:4];
+  v3 = [string dataUsingEncoding:4];
   v4 = [MEMORY[0x277CBEB28] dataWithLength:32];
   CC_SHA256([v3 bytes], objc_msgSend(v3, "length"), objc_msgSend(v4, "mutableBytes"));
 
   return v4;
 }
 
-+ (unint64_t)hashForSHA256Digest:(id)a3
++ (unint64_t)hashForSHA256Digest:(id)digest
 {
-  v3 = a3;
-  if ([v3 length] != 32)
+  digestCopy = digest;
+  if ([digestCopy length] != 32)
   {
     v9 = DPLogHandle_SystemProfileError();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
     {
-      [(DRSSystemProfile *)v3 hashForSHA256Digest:v9];
+      [(DRSSystemProfile *)digestCopy hashForSHA256Digest:v9];
     }
 
     goto LABEL_9;
   }
 
-  v4 = [v3 bytes];
-  v5 = [v3 length];
+  bytes = [digestCopy bytes];
+  v5 = [digestCopy length];
   v6 = (v5 >> 3);
   if (!(v5 >> 3))
   {
@@ -236,7 +236,7 @@ LABEL_9:
   v7 = 0;
   do
   {
-    v8 = *v4++;
+    v8 = *bytes++;
     v7 ^= v8;
     --v6;
   }
@@ -259,20 +259,20 @@ LABEL_10:
     self->_deviceSHA256Digest = v7;
 
     v9 = objc_opt_class();
-    v10 = [(DRSSystemProfile *)self deviceSHA256Digest];
-    self->_deviceHash = [v9 hashForSHA256Digest:v10];
+    deviceSHA256Digest = [(DRSSystemProfile *)self deviceSHA256Digest];
+    self->_deviceHash = [v9 hashForSHA256Digest:deviceSHA256Digest];
 
     v5 = DPLogHandle_SystemProfile();
     if (os_signpost_enabled(v5))
     {
-      v11 = [(DRSSystemProfile *)self deviceHash];
-      v12 = [(DRSSystemProfile *)self deviceSHA256Digest];
+      deviceHash = [(DRSSystemProfile *)self deviceHash];
+      deviceSHA256Digest2 = [(DRSSystemProfile *)self deviceSHA256Digest];
       v13 = 134349570;
-      v14 = v11;
+      v14 = deviceHash;
       v15 = 2114;
       v16 = v4;
       v17 = 2114;
-      v18 = v12;
+      v18 = deviceSHA256Digest2;
       _os_signpost_emit_with_name_impl(&dword_232906000, v5, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "DeviceHashCalculation", "Device hash %{public}llx from UDID %{public}@ -> digest %{public}@", &v13, 0x20u);
     }
   }
@@ -291,18 +291,18 @@ LABEL_10:
 
 - (NSString)platformString
 {
-  v2 = [(DRSSystemProfile *)self platform];
+  platform = [(DRSSystemProfile *)self platform];
 
-  return DRSSystemProfilePlatformStringForPlatform(v2);
+  return DRSSystemProfilePlatformStringForPlatform(platform);
 }
 
 - (NSString)buildVariant
 {
-  v3 = [(DRSSystemProfile *)self isInternal];
-  v4 = [(DRSSystemProfile *)self isSeed];
-  v5 = [(DRSSystemProfile *)self isCarrier];
+  isInternal = [(DRSSystemProfile *)self isInternal];
+  isSeed = [(DRSSystemProfile *)self isSeed];
+  isCarrier = [(DRSSystemProfile *)self isCarrier];
 
-  return DRSSystemProfileVariantStringForParameters(v3, v4, v5);
+  return DRSSystemProfileVariantStringForParameters(isInternal, isSeed, isCarrier);
 }
 
 - (void)_populateBuildVariant
@@ -347,9 +347,9 @@ LABEL_10:
       hwModel = DPLogHandle_SystemProfile();
       if (os_signpost_enabled(hwModel))
       {
-        v12 = [(DRSSystemProfile *)self hwModel];
+        hwModel = [(DRSSystemProfile *)self hwModel];
         *buf = 138543362;
-        v16[0] = v12;
+        v16[0] = hwModel;
         _os_signpost_emit_with_name_impl(&dword_232906000, hwModel, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "HWModelLookupSuccess", "hw.model: '%{public}@'", buf, 0xCu);
       }
     }
@@ -371,17 +371,17 @@ LABEL_10:
   if ([(DRSSystemProfile *)self isInternal])
   {
     v3 = CFPreferencesCopyValue(@"ExperimentGroup", @"com.apple.da", @"mobile", *MEMORY[0x277CBF010]);
-    v4 = [v3 lowercaseString];
+    lowercaseString = [v3 lowercaseString];
 
     v5 = MEMORY[0x277CCABB0];
-    if (([v4 containsString:@"carry"]& 1) != 0)
+    if (([lowercaseString containsString:@"carry"]& 1) != 0)
     {
       v6 = 1;
     }
 
     else
     {
-      v6 = [v4 containsString:@"walkabout"];
+      v6 = [lowercaseString containsString:@"walkabout"];
     }
 
     v7 = [v5 numberWithInt:v6];
@@ -391,18 +391,18 @@ LABEL_10:
     v9 = DPLogHandle_SystemProfile();
     if (os_signpost_enabled(v9))
     {
-      v10 = [(DRSSystemProfile *)self isLikelyCarryGroupNum];
-      v11 = [v10 BOOLValue];
+      isLikelyCarryGroupNum = [(DRSSystemProfile *)self isLikelyCarryGroupNum];
+      bOOLValue = [isLikelyCarryGroupNum BOOLValue];
       v12 = @"Not likely carry";
-      if (v11)
+      if (bOOLValue)
       {
         v12 = @"Likely carry";
       }
 
       v13 = @"<no string>";
-      if (v4)
+      if (lowercaseString)
       {
-        v13 = v4;
+        v13 = lowercaseString;
       }
 
       v15 = 138543618;
@@ -415,11 +415,11 @@ LABEL_10:
 
   else
   {
-    v4 = DPLogHandle_SystemProfile();
-    if (os_signpost_enabled(v4))
+    lowercaseString = DPLogHandle_SystemProfile();
+    if (os_signpost_enabled(lowercaseString))
     {
       LOWORD(v15) = 0;
-      _os_signpost_emit_with_name_impl(&dword_232906000, v4, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "IsLikelyCarryLookupSkipped", "We dont reason about carry for non-Internal devices", &v15, 2u);
+      _os_signpost_emit_with_name_impl(&dword_232906000, lowercaseString, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "IsLikelyCarryLookupSkipped", "We dont reason about carry for non-Internal devices", &v15, 2u);
     }
   }
 
@@ -518,20 +518,20 @@ LABEL_10:
 
 - (BOOL)isLogUploadEnabled
 {
-  v3 = [(DRSSystemProfile *)self customerApprovesAnalytics];
-  if (v3)
+  customerApprovesAnalytics = [(DRSSystemProfile *)self customerApprovesAnalytics];
+  if (customerApprovesAnalytics)
   {
-    LOBYTE(v3) = ![(DRSSystemProfile *)self hasForbiddenAutomatedDeviceGroup];
+    LOBYTE(customerApprovesAnalytics) = ![(DRSSystemProfile *)self hasForbiddenAutomatedDeviceGroup];
   }
 
-  return v3;
+  return customerApprovesAnalytics;
 }
 
 - (BOOL)isTaskingEnabled
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(DRSSystemProfile *)self customerApprovesAnalytics];
-  if (v3)
+  customerApprovesAnalytics = [(DRSSystemProfile *)self customerApprovesAnalytics];
+  if (customerApprovesAnalytics)
   {
     v4 = ![(DRSSystemProfile *)self isCarrier];
   }
@@ -545,9 +545,9 @@ LABEL_10:
   if (os_signpost_enabled(v5))
   {
     v8[0] = 67240704;
-    v8[1] = v3;
+    v8[1] = customerApprovesAnalytics;
     v9 = 1026;
-    v10 = [(DRSSystemProfile *)self isCarrier];
+    isCarrier = [(DRSSystemProfile *)self isCarrier];
     v11 = 1026;
     v12 = v4;
     _os_signpost_emit_with_name_impl(&dword_232906000, v5, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "IsTaskingEnabledDetails", "customerApprovesAnalytics = %{public}u isCarrier = %{public}u isTaskingEnabled = %{public}u", v8, 0x14u);
@@ -557,20 +557,20 @@ LABEL_10:
   return v4;
 }
 
-+ (unint64_t)uploadSessionUploadCapBytesWithIsInternal:(BOOL)a3 isSeed:(BOOL)a4 deviceModelHash:(unint64_t)a5
++ (unint64_t)uploadSessionUploadCapBytesWithIsInternal:(BOOL)internal isSeed:(BOOL)seed deviceModelHash:(unint64_t)hash
 {
   v5 = 0x40000000;
-  if (a5 == 0x14C201DB1898C936)
+  if (hash == 0x14C201DB1898C936)
   {
     v5 = 0x80000000;
   }
 
-  if (!a4)
+  if (!seed)
   {
     v5 = 0x8000000;
   }
 
-  if (a3)
+  if (internal)
   {
     return 0x140000000;
   }

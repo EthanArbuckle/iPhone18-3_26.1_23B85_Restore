@@ -1,25 +1,25 @@
 @interface TISKMetricDefinition
-+ (double)pointsToMM:(double)a3;
++ (double)pointsToMM:(double)m;
 + (id)metricDefinitions;
-- (id)init:(id)a3 type:(int)a4 metricDef:(id *)a5 size:(unint64_t)a6 isPointMetric:(BOOL)a7;
+- (id)init:(id)init type:(int)type metricDef:(id *)def size:(unint64_t)size isPointMetric:(BOOL)metric;
 @end
 
 @implementation TISKMetricDefinition
 
-- (id)init:(id)a3 type:(int)a4 metricDef:(id *)a5 size:(unint64_t)a6 isPointMetric:(BOOL)a7
+- (id)init:(id)init type:(int)type metricDef:(id *)def size:(unint64_t)size isPointMetric:(BOOL)metric
 {
-  v13 = a3;
+  initCopy = init;
   v17.receiver = self;
   v17.super_class = TISKMetricDefinition;
   v14 = [(TISKMetricDefinition *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_metricName, a3);
-    v15->_metricType = a4;
-    v15->_isPointMetric = a7;
-    v15->_positionalSize = a6;
-    v15->_metricDefinition = a5;
+    objc_storeStrong(&v14->_metricName, init);
+    v15->_metricType = type;
+    v15->_isPointMetric = metric;
+    v15->_positionalSize = size;
+    v15->_metricDefinition = def;
   }
 
   return v15;
@@ -1919,11 +1919,11 @@ LABEL_257:
   v182 = *MEMORY[0x277D85DE8];
 }
 
-+ (double)pointsToMM:(double)a3
++ (double)pointsToMM:(double)m
 {
   v4 = MGGetSInt32Answer();
   MGGetFloat32Answer();
-  return a3 * 25.3999996 * v5 / v4;
+  return m * 25.3999996 * v5 / v4;
 }
 
 @end

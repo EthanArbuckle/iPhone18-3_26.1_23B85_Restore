@@ -1,14 +1,14 @@
 @interface StocksOpenURLHelper
-+ (id)URLForStockComponents:(id)a3;
-+ (id)componentDictionaryFromURL:(id)a3;
++ (id)URLForStockComponents:(id)components;
++ (id)componentDictionaryFromURL:(id)l;
 @end
 
 @implementation StocksOpenURLHelper
 
-+ (id)URLForStockComponents:(id)a3
++ (id)URLForStockComponents:(id)components
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v3 = [a3 objectForKeyedSubscript:@"symbol"];
+  v3 = [components objectForKeyedSubscript:@"symbol"];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277CCACE0]);
@@ -29,17 +29,17 @@
   return v7;
 }
 
-+ (id)componentDictionaryFromURL:(id)a3
++ (id)componentDictionaryFromURL:(id)l
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCACE0] componentsWithURL:a3 resolvingAgainstBaseURL:0];
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  v3 = [MEMORY[0x277CCACE0] componentsWithURL:l resolvingAgainstBaseURL:0];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v3 queryItems];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  queryItems = [v3 queryItems];
+  v6 = [queryItems countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -50,22 +50,22 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(queryItems);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 value];
-        v12 = [v10 name];
-        [v4 na_safeSetObject:v11 forKey:v12];
+        value = [v10 value];
+        name = [v10 name];
+        [dictionary na_safeSetObject:value forKey:name];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [queryItems countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
   }
 
-  return v4;
+  return dictionary;
 }
 
 @end

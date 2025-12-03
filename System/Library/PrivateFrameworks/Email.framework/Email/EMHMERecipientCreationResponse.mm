@@ -1,6 +1,6 @@
 @interface EMHMERecipientCreationResponse
 + (id)log;
-- (EMHMERecipientCreationResponse)initWithHTTPResponse:(id)a3 data:(id)a4;
+- (EMHMERecipientCreationResponse)initWithHTTPResponse:(id)response data:(id)data;
 @end
 
 @implementation EMHMERecipientCreationResponse
@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __37__EMHMERecipientCreationResponse_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_93 != -1)
   {
     dispatch_once(&log_onceToken_93, block);
@@ -30,14 +30,14 @@ void __37__EMHMERecipientCreationResponse_log__block_invoke(uint64_t a1)
   log_log_92 = v1;
 }
 
-- (EMHMERecipientCreationResponse)initWithHTTPResponse:(id)a3 data:(id)a4
+- (EMHMERecipientCreationResponse)initWithHTTPResponse:(id)response data:(id)data
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  dataCopy = data;
   v22.receiver = self;
   v22.super_class = EMHMERecipientCreationResponse;
-  v8 = [(AAResponse *)&v22 initWithHTTPResponse:v6 data:v7];
+  v8 = [(AAResponse *)&v22 initWithHTTPResponse:responseCopy data:dataCopy];
   v9 = v8;
   if (v8)
   {
@@ -45,7 +45,7 @@ void __37__EMHMERecipientCreationResponse_log__block_invoke(uint64_t a1)
     if ([*(&v8->super.super.isa + v10) statusCode] == 200)
     {
       v21 = 0;
-      v11 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v7 options:0 error:&v21];
+      v11 = [MEMORY[0x1E696ACB0] JSONObjectWithData:dataCopy options:0 error:&v21];
       v12 = v21;
       if (v12)
       {

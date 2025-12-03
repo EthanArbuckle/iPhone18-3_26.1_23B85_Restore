@@ -1,8 +1,8 @@
 @interface PXDateRange
-- (BOOL)intersectsRange:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isStrictlyBeforeRange:(id)a3;
-- (PXDateRange)initWithStartDate:(double)a3 endDate:(double)a4;
+- (BOOL)intersectsRange:(id)range;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isStrictlyBeforeRange:(id)range;
+- (PXDateRange)initWithStartDate:(double)date endDate:(double)endDate;
 - (id)description;
 @end
 
@@ -25,10 +25,10 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -36,11 +36,11 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && ([(PXDateRange *)self startDate], v6 = v5, [(PXDateRange *)v4 startDate], v6 == v7))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && ([(PXDateRange *)self startDate], v6 = v5, [(PXDateRange *)equalCopy startDate], v6 == v7))
     {
       [(PXDateRange *)self endDate];
       v9 = v8;
-      [(PXDateRange *)v4 endDate];
+      [(PXDateRange *)equalCopy endDate];
       v11 = v9 == v10;
     }
 
@@ -53,15 +53,15 @@
   return v11;
 }
 
-- (BOOL)isStrictlyBeforeRange:(id)a3
+- (BOOL)isStrictlyBeforeRange:(id)range
 {
-  v4 = a3;
+  rangeCopy = range;
   startDate = self->_startDate;
-  [v4 startDate];
+  [rangeCopy startDate];
   if (startDate <= v6)
   {
     endDate = self->_endDate;
-    [v4 startDate];
+    [rangeCopy startDate];
     v7 = endDate <= v9;
   }
 
@@ -73,15 +73,15 @@
   return v7;
 }
 
-- (BOOL)intersectsRange:(id)a3
+- (BOOL)intersectsRange:(id)range
 {
-  v4 = a3;
+  rangeCopy = range;
   startDate = self->_startDate;
-  [v4 endDate];
+  [rangeCopy endDate];
   if (startDate <= v6)
   {
     endDate = self->_endDate;
-    [v4 startDate];
+    [rangeCopy startDate];
     v7 = endDate >= v9;
   }
 
@@ -93,12 +93,12 @@
   return v7;
 }
 
-- (PXDateRange)initWithStartDate:(double)a3 endDate:(double)a4
+- (PXDateRange)initWithStartDate:(double)date endDate:(double)endDate
 {
-  if (a3 > a4)
+  if (date > endDate)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXDateRangeSet.m" lineNumber:16 description:{@"Invalid parameter not satisfying: %@", @"startDate <= endDate"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXDateRangeSet.m" lineNumber:16 description:{@"Invalid parameter not satisfying: %@", @"startDate <= endDate"}];
   }
 
   v10.receiver = self;
@@ -106,8 +106,8 @@
   result = [(PXDateRange *)&v10 init];
   if (result)
   {
-    result->_startDate = a3;
-    result->_endDate = a4;
+    result->_startDate = date;
+    result->_endDate = endDate;
   }
 
   return result;

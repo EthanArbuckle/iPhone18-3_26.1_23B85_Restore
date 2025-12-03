@@ -1,12 +1,12 @@
 @interface NTCatchUpOperation
 - (BOOL)validateOperation;
 - (NTCatchUpOperation)init;
-- (void)_fetchArticleListAndArticleIDsResultsIfNeededWithCompletion:(id)a3;
-- (void)_fetchForYouResultsIfNeededWithCompletion:(id)a3;
-- (void)addArticleIDsRequest:(id)a3;
-- (void)addArticleIDsToExclude:(id)a3;
-- (void)addArticleListRequest:(id)a3;
-- (void)operationWillFinishWithError:(id)a3;
+- (void)_fetchArticleListAndArticleIDsResultsIfNeededWithCompletion:(id)completion;
+- (void)_fetchForYouResultsIfNeededWithCompletion:(id)completion;
+- (void)addArticleIDsRequest:(id)request;
+- (void)addArticleIDsToExclude:(id)exclude;
+- (void)addArticleListRequest:(id)request;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 - (void)prepareOperation;
 - (void)validateOperation;
@@ -37,71 +37,71 @@
   return v2;
 }
 
-- (void)addArticleListRequest:(id)a3
+- (void)addArticleListRequest:(id)request
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  requestCopy = request;
+  if (!requestCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTCatchUpOperation addArticleListRequest:];
   }
 
-  v5 = [(NTCatchUpOperation *)self articleListRequests];
-  [v5 addObject:v4];
+  articleListRequests = [(NTCatchUpOperation *)self articleListRequests];
+  [articleListRequests addObject:requestCopy];
 }
 
-- (void)addArticleIDsRequest:(id)a3
+- (void)addArticleIDsRequest:(id)request
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  requestCopy = request;
+  if (!requestCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTCatchUpOperation addArticleIDsRequest:];
   }
 
-  v5 = [(NTCatchUpOperation *)self articleIDsRequests];
-  [v5 addObject:v4];
+  articleIDsRequests = [(NTCatchUpOperation *)self articleIDsRequests];
+  [articleIDsRequests addObject:requestCopy];
 }
 
-- (void)addArticleIDsToExclude:(id)a3
+- (void)addArticleIDsToExclude:(id)exclude
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  excludeCopy = exclude;
+  if (!excludeCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTCatchUpOperation addArticleIDsToExclude:];
   }
 
-  v5 = [(NTCatchUpOperation *)self articleIDsToExclude];
-  [v5 unionSet:v4];
+  articleIDsToExclude = [(NTCatchUpOperation *)self articleIDsToExclude];
+  [articleIDsToExclude unionSet:excludeCopy];
 }
 
 - (BOOL)validateOperation
 {
-  v4 = [(NTCatchUpOperation *)self appConfiguration];
+  appConfiguration = [(NTCatchUpOperation *)self appConfiguration];
 
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!appConfiguration && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTCatchUpOperation validateOperation];
   }
 
-  v5 = [(NTCatchUpOperation *)self contentContext];
+  contentContext = [(NTCatchUpOperation *)self contentContext];
 
-  if (!v5 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!contentContext && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTCatchUpOperation validateOperation];
   }
 
-  v6 = [(NTCatchUpOperation *)self feedPersonalizer];
+  feedPersonalizer = [(NTCatchUpOperation *)self feedPersonalizer];
 
-  if (!v6 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!feedPersonalizer && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTCatchUpOperation validateOperation];
   }
 
-  v7 = [(NTCatchUpOperation *)self articleIDsRequests];
-  v8 = [v7 count];
+  articleIDsRequests = [(NTCatchUpOperation *)self articleIDsRequests];
+  v8 = [articleIDsRequests count];
   if (!v8)
   {
-    v2 = [(NTCatchUpOperation *)self articleListRequests];
-    if (![v2 count])
+    articleListRequests = [(NTCatchUpOperation *)self articleListRequests];
+    if (![articleListRequests count])
     {
 
 LABEL_19:
@@ -110,13 +110,13 @@ LABEL_19:
     }
   }
 
-  v9 = [(NTCatchUpOperation *)self todayConfigOperationHeldRecordsByType];
+  todayConfigOperationHeldRecordsByType = [(NTCatchUpOperation *)self todayConfigOperationHeldRecordsByType];
 
   if (!v8)
   {
   }
 
-  if (v9)
+  if (todayConfigOperationHeldRecordsByType)
   {
     goto LABEL_19;
   }
@@ -143,16 +143,16 @@ LABEL_20:
     v12 = 1;
   }
 
-  v13 = [(NTCatchUpOperation *)self catchUpCompletionHandler];
+  catchUpCompletionHandler = [(NTCatchUpOperation *)self catchUpCompletionHandler];
 
-  if (!v13 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!catchUpCompletionHandler && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTCatchUpOperation validateOperation];
   }
 
-  if (v4)
+  if (appConfiguration)
   {
-    v14 = v5 == 0;
+    v14 = contentContext == 0;
   }
 
   else
@@ -160,7 +160,7 @@ LABEL_20:
     v14 = 1;
   }
 
-  if (v14 || v6 == 0)
+  if (v14 || feedPersonalizer == 0)
   {
     v16 = 0;
   }
@@ -171,7 +171,7 @@ LABEL_20:
   }
 
   v17 = v16 & v12;
-  if (v13)
+  if (catchUpCompletionHandler)
   {
     return v17;
   }
@@ -184,8 +184,8 @@ LABEL_20:
 
 - (void)prepareOperation
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  [(NTCatchUpOperation *)self setFetchDate:v3];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(NTCatchUpOperation *)self setFetchDate:date];
 }
 
 - (void)performOperation
@@ -378,60 +378,60 @@ LABEL_9:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  errorCopy = error;
+  if (errorCopy)
   {
     v5 = NTSharedLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       v8 = 138543362;
-      v9 = v4;
+      v9 = errorCopy;
       _os_log_impl(&dword_25BF21000, v5, OS_LOG_TYPE_ERROR, "Catch up operation failed with error: %{public}@", &v8, 0xCu);
     }
   }
 
-  v6 = [(NTCatchUpOperation *)self catchUpCompletionHandler];
-  (v6)[2](v6, self, v4);
+  catchUpCompletionHandler = [(NTCatchUpOperation *)self catchUpCompletionHandler];
+  (catchUpCompletionHandler)[2](catchUpCompletionHandler, self, errorCopy);
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fetchForYouResultsIfNeededWithCompletion:(id)a3
+- (void)_fetchForYouResultsIfNeededWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  completionCopy = completion;
+  if (!completionCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTCatchUpOperation _fetchForYouResultsIfNeededWithCompletion:];
   }
 
   if ([(NTCatchUpOperation *)self isForYouEnabled])
   {
-    v5 = [(NTCatchUpOperation *)self forYouSource];
-    if (v5 == 2)
+    forYouSource = [(NTCatchUpOperation *)self forYouSource];
+    if (forYouSource == 2)
     {
-      v8 = 1;
+      widgetForYouFromDaemonEnabled = 1;
     }
 
-    else if (v5)
+    else if (forYouSource)
     {
-      v8 = 0;
+      widgetForYouFromDaemonEnabled = 0;
     }
 
     else
     {
-      v6 = [(NTCatchUpOperation *)self appConfiguration];
+      appConfiguration = [(NTCatchUpOperation *)self appConfiguration];
       if (objc_opt_respondsToSelector())
       {
-        v7 = [(NTCatchUpOperation *)self appConfiguration];
-        v8 = [v7 widgetForYouFromDaemonEnabled];
+        appConfiguration2 = [(NTCatchUpOperation *)self appConfiguration];
+        widgetForYouFromDaemonEnabled = [appConfiguration2 widgetForYouFromDaemonEnabled];
       }
 
       else
       {
-        v8 = 0;
+        widgetForYouFromDaemonEnabled = 0;
       }
     }
 
@@ -439,21 +439,21 @@ LABEL_9:
     v18[1] = 3221225472;
     v18[2] = __64__NTCatchUpOperation__fetchForYouResultsIfNeededWithCompletion___block_invoke_2;
     v18[3] = &unk_279982F38;
-    v19 = v8;
+    v19 = widgetForYouFromDaemonEnabled;
     v18[4] = self;
     v10 = __64__NTCatchUpOperation__fetchForYouResultsIfNeededWithCompletion___block_invoke_2(v18);
-    v11 = [(NTCatchUpOperation *)self forYouRequest];
-    v12 = [(NTCatchUpOperation *)self appConfiguration];
-    v13 = [(NTCatchUpOperation *)self fetchDate];
+    forYouRequest = [(NTCatchUpOperation *)self forYouRequest];
+    appConfiguration3 = [(NTCatchUpOperation *)self appConfiguration];
+    fetchDate = [(NTCatchUpOperation *)self fetchDate];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __64__NTCatchUpOperation__fetchForYouResultsIfNeededWithCompletion___block_invoke_3;
     v15[3] = &unk_279982F88;
-    v17 = v8;
+    v17 = widgetForYouFromDaemonEnabled;
     v15[4] = self;
-    v16 = v4;
-    v14 = v4;
-    [v10 fetchForYouWithRequest:v11 configuration:v12 fetchDate:v13 completionHandler:v15];
+    v16 = completionCopy;
+    v14 = completionCopy;
+    [v10 fetchForYouWithRequest:forYouRequest configuration:appConfiguration3 fetchDate:fetchDate completionHandler:v15];
   }
 
   else
@@ -462,9 +462,9 @@ LABEL_9:
     v21 = 3221225472;
     v22 = __64__NTCatchUpOperation__fetchForYouResultsIfNeededWithCompletion___block_invoke;
     v23 = &unk_2799827B8;
-    v24 = v4;
-    v9 = v4;
-    if (v4)
+    v24 = completionCopy;
+    v9 = completionCopy;
+    if (completionCopy)
     {
       (*(v9 + 2))(v9, 0, 0, 0);
     }
@@ -590,26 +590,26 @@ uint64_t __64__NTCatchUpOperation__fetchForYouResultsIfNeededWithCompletion___bl
   return v6;
 }
 
-- (void)_fetchArticleListAndArticleIDsResultsIfNeededWithCompletion:(id)a3
+- (void)_fetchArticleListAndArticleIDsResultsIfNeededWithCompletion:(id)completion
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  completionCopy = completion;
+  if (!completionCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTCatchUpOperation _fetchArticleListAndArticleIDsResultsIfNeededWithCompletion:];
   }
 
-  v5 = [(NTCatchUpOperation *)self articleListRequests];
-  v6 = [(NTCatchUpOperation *)self articleIDsRequests];
-  if ([v5 count] || objc_msgSend(v6, "count"))
+  articleListRequests = [(NTCatchUpOperation *)self articleListRequests];
+  articleIDsRequests = [(NTCatchUpOperation *)self articleIDsRequests];
+  if ([articleListRequests count] || objc_msgSend(articleIDsRequests, "count"))
   {
     v7 = objc_opt_new();
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v25 = v6;
-    v8 = v6;
+    v25 = articleIDsRequests;
+    v8 = articleIDsRequests;
     v9 = [v8 countByEnumeratingWithState:&v31 objects:v43 count:16];
     if (v9)
     {
@@ -624,8 +624,8 @@ uint64_t __64__NTCatchUpOperation__fetchForYouResultsIfNeededWithCompletion___bl
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v31 + 1) + 8 * i) articleIDs];
-          v14 = [v13 set];
+          articleIDs = [*(*(&v31 + 1) + 8 * i) articleIDs];
+          v14 = [articleIDs set];
           [v7 unionSet:v14];
         }
 
@@ -635,7 +635,7 @@ uint64_t __64__NTCatchUpOperation__fetchForYouResultsIfNeededWithCompletion___bl
       while (v10);
     }
 
-    v15 = [v5 fc_arrayByTransformingWithBlock:&__block_literal_global_5];
+    v15 = [articleListRequests fc_arrayByTransformingWithBlock:&__block_literal_global_5];
     v16 = NTSharedLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
@@ -652,38 +652,38 @@ uint64_t __64__NTCatchUpOperation__fetchForYouResultsIfNeededWithCompletion___bl
       _os_log_impl(&dword_25BF21000, v16, OS_LOG_TYPE_INFO, "NTCatchUpOperation fetching headlines for articleListIDs (%lu): %@  articleIDs (%lu): %@", buf, 0x2Au);
     }
 
-    v19 = [(NTCatchUpOperation *)self contentContext];
+    contentContext = [(NTCatchUpOperation *)self contentContext];
     v20 = objc_opt_new();
-    v21 = [(NTCatchUpOperation *)self appConfiguration];
-    [v20 setConfiguration:v21];
+    appConfiguration = [(NTCatchUpOperation *)self appConfiguration];
+    [v20 setConfiguration:appConfiguration];
 
-    [v20 setContext:v19];
+    [v20 setContext:contentContext];
     [v20 setArticleListIDs:v15];
-    v22 = [v7 allObjects];
-    [v20 setArticleIDs:v22];
+    allObjects = [v7 allObjects];
+    [v20 setArticleIDs:allObjects];
 
     [v20 setShouldBypassRecordSourcePersistence:1];
-    v23 = [(NTCatchUpOperation *)self todayConfigOperationHeldRecordsByType];
-    [v20 setHeldRecordsByType:v23];
+    todayConfigOperationHeldRecordsByType = [(NTCatchUpOperation *)self todayConfigOperationHeldRecordsByType];
+    [v20 setHeldRecordsByType:todayConfigOperationHeldRecordsByType];
 
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __82__NTCatchUpOperation__fetchArticleListAndArticleIDsResultsIfNeededWithCompletion___block_invoke_96;
     v26[3] = &unk_279983048;
-    v27 = v5;
-    v28 = self;
+    v27 = articleListRequests;
+    selfCopy = self;
     v29 = v8;
-    v30 = v4;
+    v30 = completionCopy;
     [v20 setHeadlinesCompletionHandler:v26];
     [(FCOperation *)self associateChildOperation:v20];
     [v20 start];
 
-    v6 = v25;
+    articleIDsRequests = v25;
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0);
   }
 
   v24 = *MEMORY[0x277D85DE8];

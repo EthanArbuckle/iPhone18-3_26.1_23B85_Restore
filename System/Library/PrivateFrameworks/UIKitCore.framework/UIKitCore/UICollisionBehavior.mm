@@ -4,20 +4,20 @@
 - (UICollisionBehavior)initWithItems:(NSArray *)items;
 - (id)collisionDelegate;
 - (id)description;
-- (void)_addCollisionItem:(id)a3;
+- (void)_addCollisionItem:(id)item;
 - (void)_applySettings;
 - (void)_associate;
-- (void)_didBeginContact:(id)a3;
-- (void)_didEndContact:(id)a3;
+- (void)_didBeginContact:(id)contact;
+- (void)_didEndContact:(id)contact;
 - (void)_dissociate;
-- (void)_reevaluate:(unint64_t)a3;
-- (void)_registerBodyForIdentifier:(id)a3 path:(id)a4;
-- (void)_registerBoundaryForIdentifier:(id)a3 path:(id)a4;
+- (void)_reevaluate:(unint64_t)_reevaluate;
+- (void)_registerBodyForIdentifier:(id)identifier path:(id)path;
+- (void)_registerBoundaryForIdentifier:(id)identifier path:(id)path;
 - (void)_removeExplicitBoundaryBodies;
 - (void)_removeExplicitBoundaryPaths;
 - (void)_removeImplicitBoundaries;
-- (void)_setCollisions:(BOOL)a3 forBody:(id)a4 isEdge:(BOOL)a5;
-- (void)_setTranslatesReferenceItemBounds:(BOOL)a3 intoBoundaryWithInsets:(UIEdgeInsets)a4;
+- (void)_setCollisions:(BOOL)collisions forBody:(id)body isEdge:(BOOL)edge;
+- (void)_setTranslatesReferenceItemBounds:(BOOL)bounds intoBoundaryWithInsets:(UIEdgeInsets)insets;
 - (void)_setupExplicitBoundaries;
 - (void)_setupImplicitBoundaries;
 - (void)addBoundaryWithIdentifier:(id)identifier forPath:(UIBezierPath *)bezierPath;
@@ -52,17 +52,17 @@
 - (NSArray)items
 {
   v2 = MEMORY[0x1E695DEC8];
-  v3 = [(UIDynamicBehavior *)self _items];
-  v4 = [v2 arrayWithArray:v3];
+  _items = [(UIDynamicBehavior *)self _items];
+  v4 = [v2 arrayWithArray:_items];
 
   return v4;
 }
 
-- (void)_addCollisionItem:(id)a3
+- (void)_addCollisionItem:(id)item
 {
-  v4 = a3;
-  v5 = [(UIDynamicBehavior *)self _context];
-  v6 = [v5 _registerBodyForItem:v4];
+  itemCopy = item;
+  _context = [(UIDynamicBehavior *)self _context];
+  v6 = [_context _registerBodyForItem:itemCopy];
 
   [(UICollisionBehavior *)self _setCollisions:1 forBody:v6 isEdge:0];
 }
@@ -70,15 +70,15 @@
 - (void)addItem:(id)item
 {
   v7 = item;
-  v4 = [(UIDynamicBehavior *)self _items];
-  v5 = [v4 containsObject:v7];
+  _items = [(UIDynamicBehavior *)self _items];
+  v5 = [_items containsObject:v7];
 
   if ((v5 & 1) == 0)
   {
     [(UIDynamicBehavior *)self _addItem:v7];
-    v6 = [(UIDynamicBehavior *)self _context];
+    _context = [(UIDynamicBehavior *)self _context];
 
-    if (v6)
+    if (_context)
     {
       [(UICollisionBehavior *)self _addCollisionItem:v7];
     }
@@ -88,22 +88,22 @@
 - (void)removeItem:(id)item
 {
   v4 = item;
-  v5 = [(UIDynamicBehavior *)self _items];
-  v6 = [v5 containsObject:v4];
+  _items = [(UIDynamicBehavior *)self _items];
+  v6 = [_items containsObject:v4];
 
   if (v6)
   {
-    v7 = [(UIDynamicBehavior *)self _context];
+    _context = [(UIDynamicBehavior *)self _context];
 
-    if (v7)
+    if (_context)
     {
-      v8 = [(UIDynamicBehavior *)self _context];
+      _context2 = [(UIDynamicBehavior *)self _context];
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __34__UICollisionBehavior_removeItem___block_invoke;
       v9[3] = &unk_1E7106990;
       v9[4] = self;
-      [v8 _unregisterBodyForItem:v4 action:v9];
+      [_context2 _unregisterBodyForItem:v4 action:v9];
     }
 
     [(UIDynamicBehavior *)self _removeItem:v4];
@@ -117,8 +117,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(UIDynamicBehavior *)self _items];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  _items = [(UIDynamicBehavior *)self _items];
+  v4 = [_items countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -130,14 +130,14 @@
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_items);
         }
 
         [(UICollisionBehavior *)self _addCollisionItem:*(*(&v8 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [_items countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -154,8 +154,8 @@
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v4 = [(UIDynamicBehavior *)self _items];
-    v5 = [v4 countByEnumeratingWithState:&v22 objects:v27 count:16];
+    _items = [(UIDynamicBehavior *)self _items];
+    v5 = [_items countByEnumeratingWithState:&v22 objects:v27 count:16];
     if (v5)
     {
       v6 = v5;
@@ -166,17 +166,17 @@
         {
           if (*v23 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(_items);
           }
 
           v9 = *(*(&v22 + 1) + 8 * i);
-          v10 = [(UIDynamicBehavior *)self _context];
-          v11 = [v10 _bodyForItem:v9];
+          _context = [(UIDynamicBehavior *)self _context];
+          v11 = [_context _bodyForItem:v9];
 
           [(UICollisionBehavior *)self _setCollisions:1 forBody:v11 isEdge:0];
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v22 objects:v27 count:16];
+        v6 = [_items countByEnumeratingWithState:&v22 objects:v27 count:16];
       }
 
       while (v6);
@@ -214,31 +214,31 @@
   }
 }
 
-- (void)_setCollisions:(BOOL)a3 forBody:(id)a4 isEdge:(BOOL)a5
+- (void)_setCollisions:(BOOL)collisions forBody:(id)body isEdge:(BOOL)edge
 {
-  if (!a4)
+  if (!body)
   {
     return;
   }
 
-  v5 = a3;
+  collisionsCopy = collisions;
   v7 = 4;
-  if (a5)
+  if (edge)
   {
     v7 = 3;
   }
 
   v8 = *(&self->super.super.isa + OBJC_IVAR___UICollisionBehavior__collisionMode[v7]);
-  v14 = a4;
-  v9 = [(UICollisionBehavior *)self collisionMode];
-  if (v9 == 1)
+  bodyCopy = body;
+  collisionMode = [(UICollisionBehavior *)self collisionMode];
+  if (collisionMode == 1)
   {
     v10 = 128;
   }
 
   else
   {
-    if (v9 != 2)
+    if (collisionMode != 2)
     {
       v11 = self->_groupBID | self->_groupVID;
       goto LABEL_11;
@@ -249,79 +249,79 @@
 
   v11 = *(&self->super.super.isa + v10);
 LABEL_11:
-  v12 = [v14 collisionBitMask] & ~(self->_groupBID | self->_groupVID);
-  if (v5)
+  v12 = [bodyCopy collisionBitMask] & ~(self->_groupBID | self->_groupVID);
+  if (collisionsCopy)
   {
     v12 = v12 | v11;
-    [v14 setCollisionBitMask:v12];
-    v13 = [v14 categoryBitMask] & ~(self->_groupBID | self->_groupVID) | v8;
+    [bodyCopy setCollisionBitMask:v12];
+    v13 = [bodyCopy categoryBitMask] & ~(self->_groupBID | self->_groupVID) | v8;
   }
 
   else
   {
-    [v14 setCollisionBitMask:v12];
-    v13 = [v14 categoryBitMask] & ~(self->_groupBID | self->_groupVID);
+    [bodyCopy setCollisionBitMask:v12];
+    v13 = [bodyCopy categoryBitMask] & ~(self->_groupBID | self->_groupVID);
   }
 
-  [v14 setCategoryBitMask:v13];
-  [v14 setContactTestBitMask:v12];
-  [(UIDynamicBehavior *)self _changedParameterForBody:v14];
+  [bodyCopy setCategoryBitMask:v13];
+  [bodyCopy setContactTestBitMask:v12];
+  [(UIDynamicBehavior *)self _changedParameterForBody:bodyCopy];
 }
 
-- (void)_didBeginContact:(id)a3
+- (void)_didBeginContact:(id)contact
 {
-  v4 = a3;
-  v5 = [v4 bodyA];
-  v6 = [v4 bodyB];
-  v7 = [(PKExtendedPhysicsBody *)v5 representedObject];
-  v8 = [(PKExtendedPhysicsBody *)v6 representedObject];
-  v9 = [(UIDynamicBehavior *)self _items];
-  v10 = [v9 containsObject:v7];
+  contactCopy = contact;
+  bodyA = [contactCopy bodyA];
+  bodyB = [contactCopy bodyB];
+  representedObject = [(PKExtendedPhysicsBody *)bodyA representedObject];
+  representedObject2 = [(PKExtendedPhysicsBody *)bodyB representedObject];
+  _items = [(UIDynamicBehavior *)self _items];
+  v10 = [_items containsObject:representedObject];
 
   if ((v10 & 1) == 0)
   {
 
-    v7 = 0;
+    representedObject = 0;
   }
 
-  v11 = [(UIDynamicBehavior *)self _items];
-  v12 = [v11 containsObject:v8];
+  _items2 = [(UIDynamicBehavior *)self _items];
+  v12 = [_items2 containsObject:representedObject2];
 
   if ((v12 & 1) == 0)
   {
 
-    v8 = 0;
+    representedObject2 = 0;
   }
 
-  if (v7 | v8)
+  if (representedObject | representedObject2)
   {
-    if (v7 && v8 && (*&self->_collisionBehaviorFlags & 1) != 0)
+    if (representedObject && representedObject2 && (*&self->_collisionBehaviorFlags & 1) != 0)
     {
       WeakRetained = objc_loadWeakRetained(&self->_collisionDelegate);
-      [v4 contactPoint];
-      [WeakRetained collisionBehavior:self beganContactForItem:v7 withItem:v8 atPoint:?];
+      [contactCopy contactPoint];
+      [WeakRetained collisionBehavior:self beganContactForItem:representedObject withItem:representedObject2 atPoint:?];
     }
 
     else
     {
       implicitBoundsBody = self->_implicitBoundsBody;
-      if (v5 == implicitBoundsBody)
+      if (bodyA == implicitBoundsBody)
       {
-        if ((*&self->_collisionBehaviorFlags & 4) == 0 || !v8)
+        if ((*&self->_collisionBehaviorFlags & 4) == 0 || !representedObject2)
         {
           goto LABEL_22;
         }
 
         WeakRetained = objc_loadWeakRetained(&self->_collisionDelegate);
-        [v4 contactPoint];
+        [contactCopy contactPoint];
         v16 = WeakRetained;
-        v17 = self;
-        v18 = v8;
+        selfCopy3 = self;
+        v18 = representedObject2;
       }
 
       else
       {
-        if (v6 != implicitBoundsBody)
+        if (bodyB != implicitBoundsBody)
         {
           if ((*&self->_collisionBehaviorFlags & 4) != 0)
           {
@@ -330,31 +330,31 @@ LABEL_11:
             v19[1] = 3221225472;
             v19[2] = __40__UICollisionBehavior__didBeginContact___block_invoke;
             v19[3] = &unk_1E71069B8;
-            v20 = v5;
-            v21 = self;
-            v22 = v8;
-            v23 = v4;
-            v24 = v6;
-            v25 = v7;
+            v20 = bodyA;
+            selfCopy2 = self;
+            v22 = representedObject2;
+            v23 = contactCopy;
+            v24 = bodyB;
+            v25 = representedObject;
             [(NSMutableDictionary *)boundaryBodies enumerateKeysAndObjectsUsingBlock:v19];
           }
 
           goto LABEL_22;
         }
 
-        if (!v7 || (*&self->_collisionBehaviorFlags & 4) == 0)
+        if (!representedObject || (*&self->_collisionBehaviorFlags & 4) == 0)
         {
           goto LABEL_22;
         }
 
         WeakRetained = objc_loadWeakRetained(&self->_collisionDelegate);
-        [v4 contactPoint];
+        [contactCopy contactPoint];
         v16 = WeakRetained;
-        v17 = self;
-        v18 = v7;
+        selfCopy3 = self;
+        v18 = representedObject;
       }
 
-      [v16 collisionBehavior:v17 beganContactForItem:v18 withBoundaryIdentifier:0 atPoint:?];
+      [v16 collisionBehavior:selfCopy3 beganContactForItem:v18 withBoundaryIdentifier:0 atPoint:?];
     }
   }
 
@@ -440,43 +440,43 @@ LABEL_6:
   *&self->_collisionBehaviorFlags = *&self->_collisionBehaviorFlags & 0xF7 | v8;
 }
 
-- (void)_didEndContact:(id)a3
+- (void)_didEndContact:(id)contact
 {
-  v4 = a3;
-  v5 = [v4 bodyA];
-  v6 = [v4 bodyB];
+  contactCopy = contact;
+  bodyA = [contactCopy bodyA];
+  bodyB = [contactCopy bodyB];
 
-  v7 = [(PKExtendedPhysicsBody *)v5 representedObject];
-  v8 = [(PKExtendedPhysicsBody *)v6 representedObject];
-  v9 = [(UIDynamicBehavior *)self _items];
-  v10 = [v9 containsObject:v7];
+  representedObject = [(PKExtendedPhysicsBody *)bodyA representedObject];
+  representedObject2 = [(PKExtendedPhysicsBody *)bodyB representedObject];
+  _items = [(UIDynamicBehavior *)self _items];
+  v10 = [_items containsObject:representedObject];
 
   if ((v10 & 1) == 0)
   {
 
-    v7 = 0;
+    representedObject = 0;
   }
 
-  v11 = [(UIDynamicBehavior *)self _items];
-  v12 = [v11 containsObject:v8];
+  _items2 = [(UIDynamicBehavior *)self _items];
+  v12 = [_items2 containsObject:representedObject2];
 
   if ((v12 & 1) == 0)
   {
 
-    v8 = 0;
+    representedObject2 = 0;
   }
 
-  if (!(v7 | v8))
+  if (!(representedObject | representedObject2))
   {
     goto LABEL_21;
   }
 
-  if (v7 && v8)
+  if (representedObject && representedObject2)
   {
     if ((*&self->_collisionBehaviorFlags & 2) != 0)
     {
       WeakRetained = objc_loadWeakRetained(&self->_collisionDelegate);
-      [WeakRetained collisionBehavior:self endedContactForItem:v7 withItem:v8];
+      [WeakRetained collisionBehavior:self endedContactForItem:representedObject withItem:representedObject2];
 LABEL_20:
 
       goto LABEL_21;
@@ -486,45 +486,45 @@ LABEL_20:
   }
 
   implicitBoundsBody = self->_implicitBoundsBody;
-  if (v5 == implicitBoundsBody)
+  if (bodyA == implicitBoundsBody)
   {
-    if ((*&self->_collisionBehaviorFlags & 8) == 0 || !v8)
+    if ((*&self->_collisionBehaviorFlags & 8) == 0 || !representedObject2)
     {
       goto LABEL_21;
     }
 
     v16 = objc_loadWeakRetained(&self->_collisionDelegate);
     WeakRetained = v16;
-    v17 = self;
-    v18 = v8;
+    selfCopy3 = self;
+    v18 = representedObject2;
 LABEL_19:
-    [v16 collisionBehavior:v17 endedContactForItem:v18 withBoundaryIdentifier:0];
+    [v16 collisionBehavior:selfCopy3 endedContactForItem:v18 withBoundaryIdentifier:0];
     goto LABEL_20;
   }
 
-  if (v6 != implicitBoundsBody)
+  if (bodyB != implicitBoundsBody)
   {
     boundaryBodies = self->_boundaryBodies;
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __38__UICollisionBehavior__didEndContact___block_invoke;
     v19[3] = &unk_1E71069E0;
-    v20 = v5;
-    v21 = self;
-    v22 = v8;
-    v23 = v6;
-    v24 = v7;
+    v20 = bodyA;
+    selfCopy2 = self;
+    v22 = representedObject2;
+    v23 = bodyB;
+    v24 = representedObject;
     [(NSMutableDictionary *)boundaryBodies enumerateKeysAndObjectsUsingBlock:v19];
 
     goto LABEL_21;
   }
 
-  if (v7 && (*&self->_collisionBehaviorFlags & 8) != 0)
+  if (representedObject && (*&self->_collisionBehaviorFlags & 8) != 0)
   {
     v16 = objc_loadWeakRetained(&self->_collisionDelegate);
     WeakRetained = v16;
-    v17 = self;
-    v18 = v7;
+    selfCopy3 = self;
+    v18 = representedObject;
     goto LABEL_19;
   }
 
@@ -567,9 +567,9 @@ LABEL_7:
 LABEL_9:
 }
 
-- (void)_reevaluate:(unint64_t)a3
+- (void)_reevaluate:(unint64_t)_reevaluate
 {
-  if (a3 == 1)
+  if (_reevaluate == 1)
   {
     [(UICollisionBehavior *)self _setupImplicitBoundaries];
   }
@@ -577,17 +577,17 @@ LABEL_9:
 
 - (void)_associate
 {
-  v3 = [(UIDynamicBehavior *)self _context];
-  v4 = [v3 _registerCollisionGroup];
+  _context = [(UIDynamicBehavior *)self _context];
+  _registerCollisionGroup = [_context _registerCollisionGroup];
 
   if (self->_usesImplicitBounds)
   {
-    v5 = [(UIDynamicBehavior *)self _context];
-    [v5 _registerImplicitBounds];
+    _context2 = [(UIDynamicBehavior *)self _context];
+    [_context2 _registerImplicitBounds];
   }
 
-  self->_groupVID = 1 << (2 * v4);
-  self->_groupBID = 2 << (2 * v4);
+  self->_groupVID = 1 << (2 * _registerCollisionGroup);
+  self->_groupBID = 2 << (2 * _registerCollisionGroup);
   [(UICollisionBehavior *)self _applySettings];
   [(UICollisionBehavior *)self _setupImplicitBoundaries];
 
@@ -597,13 +597,13 @@ LABEL_9:
 - (void)_dissociate
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(UIDynamicBehavior *)self _context];
-  [v3 _unregisterCollisionGroup];
+  _context = [(UIDynamicBehavior *)self _context];
+  [_context _unregisterCollisionGroup];
 
   if (self->_usesImplicitBounds)
   {
-    v4 = [(UIDynamicBehavior *)self _context];
-    [v4 _unregisterImplicitBounds];
+    _context2 = [(UIDynamicBehavior *)self _context];
+    [_context2 _unregisterImplicitBounds];
   }
 
   [(UICollisionBehavior *)self _removeImplicitBoundaries];
@@ -612,8 +612,8 @@ LABEL_9:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(UIDynamicBehavior *)self _items];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  _items = [(UIDynamicBehavior *)self _items];
+  v6 = [_items countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -625,36 +625,36 @@ LABEL_9:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_items);
         }
 
         v10 = *(*(&v13 + 1) + 8 * v9);
-        v11 = [(UIDynamicBehavior *)self _context];
+        _context3 = [(UIDynamicBehavior *)self _context];
         v12[0] = MEMORY[0x1E69E9820];
         v12[1] = 3221225472;
         v12[2] = __34__UICollisionBehavior__dissociate__block_invoke;
         v12[3] = &unk_1E7106990;
         v12[4] = self;
-        [v11 _unregisterBodyForItem:v10 action:v12];
+        [_context3 _unregisterBodyForItem:v10 action:v12];
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [_items countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_setTranslatesReferenceItemBounds:(BOOL)a3 intoBoundaryWithInsets:(UIEdgeInsets)a4
+- (void)_setTranslatesReferenceItemBounds:(BOOL)bounds intoBoundaryWithInsets:(UIEdgeInsets)insets
 {
-  v4 = a3;
-  if (a3)
+  boundsCopy = bounds;
+  if (bounds)
   {
     self->_usesImplicitBounds = 1;
-    self->_implicitBoundsInsets = a4;
+    self->_implicitBoundsInsets = insets;
   }
 
   else
@@ -664,20 +664,20 @@ LABEL_9:
     *&self->_implicitBoundsInsets.bottom = 0u;
   }
 
-  v6 = [(UIDynamicBehavior *)self _context];
+  _context = [(UIDynamicBehavior *)self _context];
 
-  if (v6)
+  if (_context)
   {
-    v7 = [(UIDynamicBehavior *)self _context];
-    v8 = v7;
-    if (v4)
+    _context2 = [(UIDynamicBehavior *)self _context];
+    v8 = _context2;
+    if (boundsCopy)
     {
-      [v7 _registerImplicitBounds];
+      [_context2 _registerImplicitBounds];
     }
 
     else
     {
-      [v7 _unregisterImplicitBounds];
+      [_context2 _unregisterImplicitBounds];
     }
 
     [(UICollisionBehavior *)self _setupImplicitBoundaries];
@@ -688,9 +688,9 @@ LABEL_9:
 {
   if (self->_implicitBoundsBody)
   {
-    v3 = [(UIDynamicBehavior *)self _context];
-    v4 = [v3 _world];
-    [v4 removeBody:self->_implicitBoundsBody];
+    _context = [(UIDynamicBehavior *)self _context];
+    _world = [_context _world];
+    [_world removeBody:self->_implicitBoundsBody];
 
     implicitBoundsBody = self->_implicitBoundsBody;
     self->_implicitBoundsBody = 0;
@@ -699,8 +699,8 @@ LABEL_9:
 
 - (void)_setupImplicitBoundaries
 {
-  v3 = [(UIDynamicBehavior *)self _context];
-  [v3 _referenceSystemBounds];
+  _context = [(UIDynamicBehavior *)self _context];
+  [_context _referenceSystemBounds];
   v4 = CGRectEqualToRect(v25, *MEMORY[0x1E695F050]);
 
   if (!v4)
@@ -708,8 +708,8 @@ LABEL_9:
     [(UICollisionBehavior *)self _removeImplicitBoundaries];
     if (self->_usesImplicitBounds)
     {
-      v5 = [(UIDynamicBehavior *)self _context];
-      [v5 _referenceSystemBounds];
+      _context2 = [(UIDynamicBehavior *)self _context];
+      [_context2 _referenceSystemBounds];
       v7 = v6;
       v9 = v8;
       v11 = v10;
@@ -732,9 +732,9 @@ LABEL_9:
       [(PKExtendedPhysicsBody *)self->_implicitBoundsBody setAffectedByGravity:0];
       [(PKExtendedPhysicsBody *)self->_implicitBoundsBody setDynamic:0];
       [(UICollisionBehavior *)self _setCollisions:1 forBody:self->_implicitBoundsBody isEdge:1];
-      v22 = [(UIDynamicBehavior *)self _context];
-      v23 = [v22 _world];
-      [v23 addBody:self->_implicitBoundsBody];
+      _context3 = [(UIDynamicBehavior *)self _context];
+      _world = [_context3 _world];
+      [_world addBody:self->_implicitBoundsBody];
 
       CGPathRelease(v19);
 
@@ -774,10 +774,10 @@ LABEL_9:
   }
 }
 
-- (void)_registerBoundaryForIdentifier:(id)a3 path:(id)a4
+- (void)_registerBoundaryForIdentifier:(id)identifier path:(id)path
 {
-  v10 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  pathCopy = path;
   boundaryPaths = self->_boundaryPaths;
   if (!boundaryPaths)
   {
@@ -788,17 +788,17 @@ LABEL_9:
     boundaryPaths = self->_boundaryPaths;
   }
 
-  [(NSMutableDictionary *)boundaryPaths setObject:v6 forKey:v10];
-  [(UICollisionBehavior *)self _registerBodyForIdentifier:v10 path:v6];
+  [(NSMutableDictionary *)boundaryPaths setObject:pathCopy forKey:identifierCopy];
+  [(UICollisionBehavior *)self _registerBodyForIdentifier:identifierCopy path:pathCopy];
 }
 
-- (void)_registerBodyForIdentifier:(id)a3 path:(id)a4
+- (void)_registerBodyForIdentifier:(id)identifier path:(id)path
 {
-  v24 = a3;
-  v7 = a4;
-  v8 = [(UIDynamicBehavior *)self _context];
+  identifierCopy = identifier;
+  pathCopy = path;
+  _context = [(UIDynamicBehavior *)self _context];
 
-  if (!v8)
+  if (!_context)
   {
     goto LABEL_13;
   }
@@ -809,12 +809,12 @@ LABEL_9:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [v7 firstObject];
-      [v10 CGPointValue];
+      firstObject = [pathCopy firstObject];
+      [firstObject CGPointValue];
       v12 = v11;
       v14 = v13;
-      v15 = [v7 lastObject];
-      [v15 CGPointValue];
+      lastObject = [pathCopy lastObject];
+      [lastObject CGPointValue];
       v9 = [PKExtendedPhysicsBody bodyWithEdgeFromPoint:v12 toPoint:v14, v16, v17];
 
       if (v9)
@@ -826,12 +826,12 @@ LABEL_9:
     goto LABEL_7;
   }
 
-  v9 = +[PKExtendedPhysicsBody bodyWithEdgeLoopFromPath:](PKExtendedPhysicsBody, "bodyWithEdgeLoopFromPath:", [v7 CGPath]);
+  v9 = +[PKExtendedPhysicsBody bodyWithEdgeLoopFromPath:](PKExtendedPhysicsBody, "bodyWithEdgeLoopFromPath:", [pathCopy CGPath]);
   if (!v9)
   {
 LABEL_7:
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"UICollisionBehavior.m" lineNumber:368 description:@"invalid path for collision boundary"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UICollisionBehavior.m" lineNumber:368 description:@"invalid path for collision boundary"];
 
     v9 = 0;
   }
@@ -844,19 +844,19 @@ LABEL_8:
     self->_boundaryBodies = v19;
   }
 
-  v21 = [v9 representedObject];
+  representedObject = [v9 representedObject];
 
-  if (!v21)
+  if (!representedObject)
   {
     [v9 setRepresentedObject:self];
   }
 
-  [(NSMutableDictionary *)self->_boundaryBodies setObject:v9 forKey:v24];
+  [(NSMutableDictionary *)self->_boundaryBodies setObject:v9 forKey:identifierCopy];
   [v9 setAffectedByGravity:0];
   [v9 setDynamic:0];
-  v22 = [(UIDynamicBehavior *)self _context];
-  v23 = [v22 _world];
-  [v23 addBody:v9];
+  _context2 = [(UIDynamicBehavior *)self _context];
+  _world = [_context2 _world];
+  [_world addBody:v9];
 
   [(UICollisionBehavior *)self _setCollisions:1 forBody:v9 isEdge:1];
   [(UIDynamicBehavior *)self _changedParameterForBody:0];
@@ -880,8 +880,8 @@ LABEL_13:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v11 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v11 handleFailureInMethod:a2 object:self file:@"UICollisionBehavior.m" lineNumber:397 description:0];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"UICollisionBehavior.m" lineNumber:397 description:0];
       }
 
       v7 = v5;
@@ -915,9 +915,9 @@ LABEL_13:
     if (v5)
     {
       [(UICollisionBehavior *)self _setCollisions:0 forBody:v5 isEdge:1];
-      v6 = [(UIDynamicBehavior *)self _context];
-      v7 = [v6 _world];
-      [v7 removeBody:v5];
+      _context = [(UIDynamicBehavior *)self _context];
+      _world = [_context _world];
+      [_world removeBody:v5];
 
       [(NSMutableDictionary *)self->_boundaryBodies removeObjectForKey:v8];
     }
@@ -984,9 +984,9 @@ void __47__UICollisionBehavior__setupExplicitBoundaries__block_invoke(uint64_t a
 
         v8 = [(NSMutableDictionary *)self->_boundaryBodies objectForKey:*(*(&v12 + 1) + 8 * v7), v12];
         [(UICollisionBehavior *)self _setCollisions:0 forBody:v8 isEdge:0];
-        v9 = [(UIDynamicBehavior *)self _context];
-        v10 = [v9 _world];
-        [v10 removeBody:v8];
+        _context = [(UIDynamicBehavior *)self _context];
+        _world = [_context _world];
+        [_world removeBody:v8];
 
         ++v7;
       }
@@ -1018,14 +1018,14 @@ void __47__UICollisionBehavior__setupExplicitBoundaries__block_invoke(uint64_t a
   v4 = [(UIDynamicBehavior *)&v16 description];
   v5 = [v3 stringWithString:v4];
 
-  v6 = [(UICollisionBehavior *)self collisionMode];
+  collisionMode = [(UICollisionBehavior *)self collisionMode];
   v7 = @" (All) ";
-  if (v6 == 1)
+  if (collisionMode == 1)
   {
     v7 = @" (Items) ";
   }
 
-  if (v6 == 2)
+  if (collisionMode == 2)
   {
     v8 = @" (Boundaries) ";
   }
@@ -1059,8 +1059,8 @@ void __47__UICollisionBehavior__setupExplicitBoundaries__block_invoke(uint64_t a
     [v5 appendFormat:@"(%@) ", self->_boundaryPaths];
   }
 
-  v14 = [(UIDynamicBehavior *)self _itemsDescription];
-  [v5 appendString:v14];
+  _itemsDescription = [(UIDynamicBehavior *)self _itemsDescription];
+  [v5 appendString:_itemsDescription];
 
   return v5;
 }

@@ -1,29 +1,29 @@
 @interface SXArticleLinkComponentAssembly
-- (void)loadInRegistry:(id)a3;
+- (void)loadInRegistry:(id)registry;
 @end
 
 @implementation SXArticleLinkComponentAssembly
 
-- (void)loadInRegistry:(id)a3
+- (void)loadInRegistry:(id)registry
 {
-  v3 = a3;
-  v4 = [v3 callback];
+  registryCopy = registry;
+  callback = [registryCopy callback];
   v5 = TFCallbackScopeAny();
-  [v4 whenResolvingProtocol:&unk_1F53E41E0 scope:v5 callbackBlock:&__block_literal_global_90];
+  [callback whenResolvingProtocol:&unk_1F53E41E0 scope:v5 callbackBlock:&__block_literal_global_90];
 
-  v6 = [v3 callback];
+  callback2 = [registryCopy callback];
   v7 = TFCallbackScopeAny();
-  [v6 whenResolvingProtocol:&unk_1F5415A30 scope:v7 callbackBlock:&__block_literal_global_55_20];
+  [callback2 whenResolvingProtocol:&unk_1F5415A30 scope:v7 callbackBlock:&__block_literal_global_55_20];
 
-  v8 = [v3 publicContainer];
-  v9 = [v8 registerClass:objc_opt_class() factory:&__block_literal_global_59_18];
+  publicContainer = [registryCopy publicContainer];
+  v9 = [publicContainer registerClass:objc_opt_class() factory:&__block_literal_global_59_18];
 
-  v10 = [v3 publicContainer];
-  v11 = [v10 registerClass:objc_opt_class() factory:&__block_literal_global_122_1];
+  publicContainer2 = [registryCopy publicContainer];
+  v11 = [publicContainer2 registerClass:objc_opt_class() factory:&__block_literal_global_122_1];
 
-  v13 = [v3 publicContainer];
+  publicContainer3 = [registryCopy publicContainer];
 
-  v12 = [v13 registerProtocol:&unk_1F540E160 factory:&__block_literal_global_124_1];
+  v12 = [publicContainer3 registerProtocol:&unk_1F540E160 factory:&__block_literal_global_124_1];
 }
 
 void __49__SXArticleLinkComponentAssembly_loadInRegistry___block_invoke(uint64_t a1, void *a2, void *a3)

@@ -7,14 +7,14 @@
 + (id)interface
 {
   v2 = objc_opt_self();
-  v3 = [v2 interfaceWithProtocol_];
-  v4 = [v2 interfaceWithProtocol_];
-  [v3 setInterface:v4 forSelector:sel_runWithClient_scheme_ argumentIndex:0 ofReply:0];
+  interfaceWithProtocol_ = [v2 interfaceWithProtocol_];
+  interfaceWithProtocol_2 = [v2 interfaceWithProtocol_];
+  [interfaceWithProtocol_ setInterface:interfaceWithProtocol_2 forSelector:sel_runWithClient_scheme_ argumentIndex:0 ofReply:0];
 
-  v5 = [v2 interfaceWithProtocol_];
-  [v3 setInterface:v5 forSelector:sel_addWithClient_ argumentIndex:0 ofReply:0];
+  interfaceWithProtocol_3 = [v2 interfaceWithProtocol_];
+  [interfaceWithProtocol_ setInterface:interfaceWithProtocol_3 forSelector:sel_addWithClient_ argumentIndex:0 ofReply:0];
 
-  return v3;
+  return interfaceWithProtocol_;
 }
 
 @end

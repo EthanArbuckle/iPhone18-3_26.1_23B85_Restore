@@ -1,20 +1,20 @@
 @interface AddFromACViewController
-- (AddFromACViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (AddFromACViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (AddFromACViewControllerDelegate)addFromACDelegate;
-- (BOOL)searchDataSource:(id)a3 shouldFilterItem:(id)a4;
+- (BOOL)searchDataSource:(id)source shouldFilterItem:(id)item;
 - (id)emptyStateDataSource;
 - (id)recentlyViewedDataSource;
 - (id)searchDataSource;
 - (id)suggestionsDataSource;
-- (void)_enableTextFieldNotification:(BOOL)a3;
-- (void)_handleItem:(id)a3;
+- (void)_enableTextFieldNotification:(BOOL)notification;
+- (void)_handleItem:(id)item;
 - (void)_setPlaceHolder;
-- (void)_textFieldDidChange:(id)a3;
-- (void)dataSourceUpdated:(id)a3;
+- (void)_textFieldDidChange:(id)change;
+- (void)dataSourceUpdated:(id)updated;
 - (void)didBecomeCurrent;
 - (void)didResignCurrent;
-- (void)searchBar:(id)a3 didPasteMapsLink:(id)a4;
-- (void)setInputText:(id)a3;
+- (void)searchBar:(id)bar didPasteMapsLink:(id)link;
+- (void)setInputText:(id)text;
 - (void)updateDataSource;
 - (void)updateTheme;
 - (void)viewDidLoad;
@@ -29,127 +29,127 @@
   return WeakRetained;
 }
 
-- (void)_textFieldDidChange:(id)a3
+- (void)_textFieldDidChange:(id)change
 {
-  v4 = [(UITextField *)self->_searchField text];
-  [(AddFromACViewController *)self setInputText:v4];
+  text = [(UITextField *)self->_searchField text];
+  [(AddFromACViewController *)self setInputText:text];
 
   [(AddFromACViewController *)self updateDataSource];
 }
 
-- (void)searchBar:(id)a3 didPasteMapsLink:(id)a4
+- (void)searchBar:(id)bar didPasteMapsLink:(id)link
 {
-  v5 = a4;
-  v13 = [(AddFromACViewController *)self _maps_platformController];
-  v6 = [v13 entryPointsCoordinator];
-  v7 = [(AddFromACViewController *)self _maps_uiScene];
-  v8 = [v7 session];
-  v9 = [(AddFromACViewController *)self view];
-  v10 = [v9 window];
-  [v10 bounds];
-  [v6 openURL:v5 session:v8 sceneOptions:0 mkOptions:0 windowSize:{v11, v12}];
+  linkCopy = link;
+  _maps_platformController = [(AddFromACViewController *)self _maps_platformController];
+  entryPointsCoordinator = [_maps_platformController entryPointsCoordinator];
+  _maps_uiScene = [(AddFromACViewController *)self _maps_uiScene];
+  session = [_maps_uiScene session];
+  view = [(AddFromACViewController *)self view];
+  window = [view window];
+  [window bounds];
+  [entryPointsCoordinator openURL:linkCopy session:session sceneOptions:0 mkOptions:0 windowSize:{v11, v12}];
 }
 
-- (void)setInputText:(id)a3
+- (void)setInputText:(id)text
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_inputText != v4)
+  textCopy = text;
+  v5 = textCopy;
+  if (self->_inputText != textCopy)
   {
-    v13 = v4;
-    v6 = [(NSString *)v4 isEqualToString:?];
+    v13 = textCopy;
+    v6 = [(NSString *)textCopy isEqualToString:?];
     v5 = v13;
     if ((v6 & 1) == 0)
     {
-      v7 = [(NSString *)v13 _maps_stringByTrimmingLeadingWhitespace];
-      if (![v7 length])
+      _maps_stringByTrimmingLeadingWhitespace = [(NSString *)v13 _maps_stringByTrimmingLeadingWhitespace];
+      if (![_maps_stringByTrimmingLeadingWhitespace length])
       {
 
-        v7 = 0;
+        _maps_stringByTrimmingLeadingWhitespace = 0;
       }
 
-      v8 = [v7 copy];
+      v8 = [_maps_stringByTrimmingLeadingWhitespace copy];
       inputText = self->_inputText;
       self->_inputText = v8;
 
-      v10 = [(AddFromACViewController *)self addFromACDelegate];
-      v11 = [v10 traitsForAddFromACViewController:self];
+      addFromACDelegate = [(AddFromACViewController *)self addFromACDelegate];
+      v11 = [addFromACDelegate traitsForAddFromACViewController:self];
 
-      v12 = [(AddFromACViewController *)self searchDataSource];
-      [v12 setInputText:self->_inputText traits:v11 source:11];
+      searchDataSource = [(AddFromACViewController *)self searchDataSource];
+      [searchDataSource setInputText:self->_inputText traits:v11 source:11];
 
       v5 = v13;
     }
   }
 }
 
-- (BOOL)searchDataSource:(id)a3 shouldFilterItem:(id)a4
+- (BOOL)searchDataSource:(id)source shouldFilterItem:(id)item
 {
-  v4 = a4;
+  itemCopy = item;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_7;
   }
 
-  v5 = v4;
-  v6 = [v5 mapItem];
-  v7 = [v6 _hasHikeInfo];
+  v5 = itemCopy;
+  mapItem = [v5 mapItem];
+  _hasHikeInfo = [mapItem _hasHikeInfo];
 
-  if ((v7 & 1) == 0 && [v5 _type] != 2)
+  if ((_hasHikeInfo & 1) == 0 && [v5 _type] != 2)
   {
-    v8 = [v5 _type];
+    _type = [v5 _type];
 
-    if (v8 == 1)
+    if (_type == 1)
     {
-      v7 = 0;
+      _hasHikeInfo = 0;
       goto LABEL_8;
     }
 
 LABEL_7:
-    v7 = 1;
+    _hasHikeInfo = 1;
     goto LABEL_8;
   }
 
 LABEL_8:
-  return v7;
+  return _hasHikeInfo;
 }
 
-- (void)dataSourceUpdated:(id)a3
+- (void)dataSourceUpdated:(id)updated
 {
-  if (self->_currentDataSource == a3)
+  if (self->_currentDataSource == updated)
   {
     [(UITableView *)self->_tableView reloadData];
   }
 }
 
-- (void)_handleItem:(id)a3
+- (void)_handleItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(AddFromACViewController *)self addFromACDelegate];
-    if (v6)
+    v5 = itemCopy;
+    addFromACDelegate = [(AddFromACViewController *)self addFromACDelegate];
+    if (addFromACDelegate)
     {
-      v7 = [(AddFromACViewController *)self addFromACDelegate];
-      [v7 traitsForAddFromACViewController:self];
+      addFromACDelegate2 = [(AddFromACViewController *)self addFromACDelegate];
+      [addFromACDelegate2 traitsForAddFromACViewController:self];
     }
 
     else
     {
-      v7 = +[MKMapService sharedService];
-      [v7 defaultTraits];
+      addFromACDelegate2 = +[MKMapService sharedService];
+      [addFromACDelegate2 defaultTraits];
     }
     v8 = ;
 
     [v8 setSource:{-[AddFromACViewController requestSource](self, "requestSource")}];
     v9 = +[MKMapService sharedService];
-    v10 = [v5 queryLine];
-    v11 = [v5 geoCompletionItem];
+    queryLine = [v5 queryLine];
+    geoCompletionItem = [v5 geoCompletionItem];
 
-    v12 = [v9 ticketForSearchQuery:v10 completionItem:v11 traits:v8 searchSessionData:0];
+    v12 = [v9 ticketForSearchQuery:queryLine completionItem:geoCompletionItem traits:v8 searchSessionData:0];
 
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
@@ -164,7 +164,7 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(AddFromACViewController *)self saveMapItem:v4];
+      [(AddFromACViewController *)self saveMapItem:itemCopy];
     }
 
     else
@@ -172,18 +172,18 @@ LABEL_8:
       objc_opt_class();
       if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
       {
-        [(AddFromACViewController *)self saveShortcut:v4];
+        [(AddFromACViewController *)self saveShortcut:itemCopy];
       }
     }
   }
 }
 
-- (void)_enableTextFieldNotification:(BOOL)a3
+- (void)_enableTextFieldNotification:(BOOL)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   v5 = +[NSNotificationCenter defaultCenter];
   v6 = v5;
-  if (v3)
+  if (notificationCopy)
   {
     [v5 addObserver:self selector:"_textFieldDidChange:" name:UITextFieldTextDidChangeNotification object:self->_searchField];
   }
@@ -196,8 +196,8 @@ LABEL_8:
 
 - (void)updateDataSource
 {
-  v3 = [(UITextField *)self->_searchField text];
-  if ([v3 length])
+  text = [(UITextField *)self->_searchField text];
+  if ([text length])
   {
     [(AddFromACViewController *)self searchDataSource];
   }
@@ -213,11 +213,11 @@ LABEL_8:
   {
     [currentDataSource setActive:0];
     objc_storeStrong(&self->_currentDataSource, obj);
-    v5 = [(AddFromACViewController *)self tableView];
-    [v5 setDataSource:obj];
+    tableView = [(AddFromACViewController *)self tableView];
+    [tableView setDataSource:obj];
 
-    v6 = [(AddFromACViewController *)self tableView];
-    [v6 setDelegate:obj];
+    tableView2 = [(AddFromACViewController *)self tableView];
+    [tableView2 setDelegate:obj];
 
     [(DataSource *)obj setActive:1];
   }
@@ -245,15 +245,15 @@ LABEL_8:
   if (!searchDataSource)
   {
     v4 = [SearchDataSource alloc];
-    v5 = [(AddFromACViewController *)self tableView];
-    v6 = [(SearchDataSource *)v4 initWithTableView:v5];
+    tableView = [(AddFromACViewController *)self tableView];
+    v6 = [(SearchDataSource *)v4 initWithTableView:tableView];
 
     [(DataSource *)v6 setDelegate:self];
     [(SearchDataSource *)v6 setUseLegacyCellsForSearchAC:1];
     [(SearchDataSource *)v6 setShowAddAccessory:1];
     [(SearchDataSource *)v6 setAccessoryType:[(AddFromACViewController *)self accessoryTypeToShow]];
-    v7 = [(SearchDataSource *)v6 searchDataProvider];
-    [v7 setResultTypes:3];
+    searchDataProvider = [(SearchDataSource *)v6 searchDataProvider];
+    [searchDataProvider setResultTypes:3];
 
     v8 = self->_searchDataSource;
     self->_searchDataSource = v6;
@@ -270,8 +270,8 @@ LABEL_8:
   if (!recentlyViewedDataSource)
   {
     v4 = [RecentlyViewedDataSource alloc];
-    v5 = [(AddFromACViewController *)self tableView];
-    v6 = [(RecentlyViewedDataSource *)v4 initWithTableView:v5 updateLocation:0];
+    tableView = [(AddFromACViewController *)self tableView];
+    v6 = [(RecentlyViewedDataSource *)v4 initWithTableView:tableView updateLocation:0];
 
     [(DataSource *)v6 setDelegate:self];
     [(RecentlyViewedDataSource *)v6 setShowAddAccessory:1];
@@ -290,8 +290,8 @@ LABEL_8:
   if (!suggestionsDataSource)
   {
     v4 = [ShortcutSuggestionsDataSource alloc];
-    v5 = [(AddFromACViewController *)self tableView];
-    v6 = [(ShortcutSuggestionsDataSource *)v4 initWithTableView:v5 updateLocation:0 shortcutType:[(AddFromACViewController *)self shortcutType]];
+    tableView = [(AddFromACViewController *)self tableView];
+    v6 = [(ShortcutSuggestionsDataSource *)v4 initWithTableView:tableView updateLocation:0 shortcutType:[(AddFromACViewController *)self shortcutType]];
 
     [(DataSource *)v6 setDelegate:self];
     v7 = self->_suggestionsDataSource;
@@ -305,13 +305,13 @@ LABEL_8:
 
 - (void)updateTheme
 {
-  v3 = [(AddFromACViewController *)self theme];
-  v4 = [v3 searchBarPlaceHolderColor];
-  v5 = [(UITextField *)self->_searchField _placeholderLabel];
-  [v5 setTextColor:v4];
+  theme = [(AddFromACViewController *)self theme];
+  searchBarPlaceHolderColor = [theme searchBarPlaceHolderColor];
+  _placeholderLabel = [(UITextField *)self->_searchField _placeholderLabel];
+  [_placeholderLabel setTextColor:searchBarPlaceHolderColor];
 
-  v6 = [(AddFromACViewController *)self theme];
-  -[UITextField setKeyboardAppearance:](self->_searchField, "setKeyboardAppearance:", [v6 textFieldKeyboardAppearance]);
+  theme2 = [(AddFromACViewController *)self theme];
+  -[UITextField setKeyboardAppearance:](self->_searchField, "setKeyboardAppearance:", [theme2 textFieldKeyboardAppearance]);
 }
 
 - (void)_setPlaceHolder
@@ -319,8 +319,8 @@ LABEL_8:
   if ((+[UIApplication shouldMakeUIForDefaultPNG]& 1) == 0)
   {
     v3 = +[NSLocale preferredLanguages];
-    v4 = [v3 firstObject];
-    v11 = [NSString stringWithFormat:@"%@-%@", @"__internal__searchBarPlaceholderV2", v4];
+    firstObject = [v3 firstObject];
+    v11 = [NSString stringWithFormat:@"%@-%@", @"__internal__searchBarPlaceholderV2", firstObject];
 
     v5 = +[NSUserDefaults standardUserDefaults];
     v6 = [v5 objectForKey:v11];
@@ -338,8 +338,8 @@ LABEL_8:
       [(UITextField *)searchField setPlaceholder:v9];
     }
 
-    v10 = [(UITextField *)self->_searchField _placeholderLabel];
-    [v10 setAllowsDefaultTighteningForTruncation:1];
+    _placeholderLabel = [(UITextField *)self->_searchField _placeholderLabel];
+    [_placeholderLabel setAllowsDefaultTighteningForTruncation:1];
   }
 }
 
@@ -376,38 +376,38 @@ LABEL_8:
   v83.super_class = AddFromACViewController;
   [(ContaineeViewController *)&v83 viewDidLoad];
   [(AddFromACViewController *)self setAccessibilityIdentifier:@"AddFromACView"];
-  v3 = [(ContaineeViewController *)self headerView];
-  v4 = [(ContaineeViewController *)self contentView];
+  headerView = [(ContaineeViewController *)self headerView];
+  contentView = [(ContaineeViewController *)self contentView];
   v5 = [_TtC4Maps19ModalCardHeaderView alloc];
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v9 = [(ModalCardHeaderView *)v5 initWithFrame:CGRectZero.origin.x, y, width, height];
-  [(ModalCardHeaderView *)v9 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v10 = [(AddFromACViewController *)self headerTitle];
-  [(ModalCardHeaderView *)v9 setTitle:v10];
+  height = [(ModalCardHeaderView *)v5 initWithFrame:CGRectZero.origin.x, y, width, height];
+  [(ModalCardHeaderView *)height setTranslatesAutoresizingMaskIntoConstraints:0];
+  headerTitle = [(AddFromACViewController *)self headerTitle];
+  [(ModalCardHeaderView *)height setTitle:headerTitle];
 
   if (sub_10000FA08(self) != 5)
   {
     v11 = [MapsThemeButton buttonWithType:1];
     [v11 addTarget:self action:"headerViewButtonTapped:buttonType:" forControlEvents:64];
-    [(ModalCardHeaderView *)v9 setTrailingButton:v11];
+    [(ModalCardHeaderView *)height setTrailingButton:v11];
   }
 
-  objc_storeStrong(&self->_modalHeaderView, v9);
+  objc_storeStrong(&self->_modalHeaderView, height);
   v12 = objc_alloc_init(PassthruSearchBar);
   [(PassthruSearchBar *)v12 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v3 addSubview:v12];
+  [headerView addSubview:v12];
   [(PassthruSearchBar *)v12 setDelegate:self];
   [(PassthruSearchBar *)v12 setTextFieldDelegate:self];
   objc_storeStrong(&self->_searchBar, v12);
   v81 = v12;
-  v13 = [(PassthruSearchBar *)v12 searchTextField];
-  [v13 setReturnKeyType:6];
-  v78 = v13;
-  objc_storeStrong(&self->_searchField, v13);
-  v82 = v9;
-  [v3 addSubview:v9];
+  searchTextField = [(PassthruSearchBar *)v12 searchTextField];
+  [searchTextField setReturnKeyType:6];
+  v78 = searchTextField;
+  objc_storeStrong(&self->_searchField, searchTextField);
+  v82 = height;
+  [headerView addSubview:height];
   v14 = [[UITableView alloc] initWithFrame:2 style:{CGRectZero.origin.x, y, width, height}];
   [v14 setAccessibilityIdentifier:@"AddFromACTableView"];
   [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -417,11 +417,11 @@ LABEL_8:
   [v14 _setHeaderAndFooterViewsFloat:0];
   [v14 setPreservesSuperviewLayoutMargins:1];
   [v14 setSectionHeaderTopPadding:0.0];
-  [v4 addSubview:v14];
+  [contentView addSubview:v14];
   [(AddFromACViewController *)self setTableView:v14];
   v16 = &_s10MapsDesign17ListCellViewModelCMa_ptr_0;
-  v79 = v4;
-  v80 = v3;
+  v79 = contentView;
+  v80 = headerView;
   if (sub_10000FA08(self) == 5)
   {
     v17 = [[MacFooterView alloc] initWithRightButtonType:8];
@@ -431,109 +431,109 @@ LABEL_8:
     [(MacFooterView *)self->_footerView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(MacFooterView *)self->_footerView setRightButtonEnabled:1];
     [(MacFooterView *)self->_footerView setDelegate:self];
-    v19 = [(ContaineeViewController *)self contentView];
-    [v19 addSubview:self->_footerView];
+    contentView2 = [(ContaineeViewController *)self contentView];
+    [contentView2 addSubview:self->_footerView];
 
-    v63 = [(MacFooterView *)self->_footerView bottomAnchor];
-    v69 = [(AddFromACViewController *)self view];
-    v65 = [v69 bottomAnchor];
-    v76 = [v63 constraintEqualToAnchor:v65];
+    bottomAnchor = [(MacFooterView *)self->_footerView bottomAnchor];
+    view = [(AddFromACViewController *)self view];
+    bottomAnchor2 = [view bottomAnchor];
+    v76 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v86[0] = v76;
-    v20 = [(MacFooterView *)self->_footerView leadingAnchor];
-    v72 = [(AddFromACViewController *)self view];
-    v21 = [v72 leadingAnchor];
-    v74 = v20;
-    v67 = [v20 constraintEqualToAnchor:v21];
+    leadingAnchor = [(MacFooterView *)self->_footerView leadingAnchor];
+    view2 = [(AddFromACViewController *)self view];
+    leadingAnchor2 = [view2 leadingAnchor];
+    bottomAnchor4 = leadingAnchor;
+    v67 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v86[1] = v67;
-    v59 = [(MacFooterView *)self->_footerView trailingAnchor];
-    v61 = [(AddFromACViewController *)self view];
-    v56 = [v61 trailingAnchor];
-    v54 = [v59 constraintEqualToAnchor:v56];
+    trailingAnchor = [(MacFooterView *)self->_footerView trailingAnchor];
+    view3 = [(AddFromACViewController *)self view];
+    trailingAnchor2 = [view3 trailingAnchor];
+    v54 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v86[2] = v54;
-    v22 = [v14 leadingAnchor];
-    v23 = [v4 leadingAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23 constant:10.0];
+    leadingAnchor3 = [v14 leadingAnchor];
+    leadingAnchor4 = [contentView leadingAnchor];
+    v24 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:10.0];
     v86[3] = v24;
     [v14 bottomAnchor];
     v26 = v25 = v14;
-    v27 = [(MacFooterView *)self->_footerView topAnchor];
-    v28 = [v26 constraintEqualToAnchor:v27];
+    topAnchor = [(MacFooterView *)self->_footerView topAnchor];
+    v28 = [v26 constraintEqualToAnchor:topAnchor];
     v86[4] = v28;
     v29 = [NSArray arrayWithObjects:v86 count:5];
     [NSLayoutConstraint activateConstraints:v29];
 
-    v30 = v63;
-    v31 = v69;
+    leadingAnchor5 = bottomAnchor;
+    leadingAnchor6 = view;
 
     v14 = v25;
-    v32 = v65;
+    v32 = bottomAnchor2;
 
-    v3 = v80;
-    v4 = v79;
+    headerView = v80;
+    contentView = v79;
 
     v16 = &_s10MapsDesign17ListCellViewModelCMa_ptr_0;
   }
 
   else
   {
-    v30 = [v14 leadingAnchor];
-    v31 = [v4 leadingAnchor];
-    v32 = [v30 constraintEqualToAnchor:v31];
+    leadingAnchor5 = [v14 leadingAnchor];
+    leadingAnchor6 = [contentView leadingAnchor];
+    v32 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
     v85[0] = v32;
-    v33 = [v14 bottomAnchor];
-    v74 = [v4 bottomAnchor];
-    v76 = v33;
-    v72 = [v33 constraintEqualToAnchor:?];
-    v85[1] = v72;
-    v21 = [NSArray arrayWithObjects:v85 count:2];
-    [NSLayoutConstraint activateConstraints:v21];
+    bottomAnchor3 = [v14 bottomAnchor];
+    bottomAnchor4 = [contentView bottomAnchor];
+    v76 = bottomAnchor3;
+    view2 = [bottomAnchor3 constraintEqualToAnchor:?];
+    v85[1] = view2;
+    leadingAnchor2 = [NSArray arrayWithObjects:v85 count:2];
+    [NSLayoutConstraint activateConstraints:leadingAnchor2];
   }
 
   v55 = v16[433];
-  v77 = [(ModalCardHeaderView *)v82 topAnchor];
-  v75 = [v3 topAnchor];
-  v73 = [v77 constraintEqualToAnchor:v75];
+  topAnchor2 = [(ModalCardHeaderView *)v82 topAnchor];
+  topAnchor3 = [headerView topAnchor];
+  v73 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
   v84[0] = v73;
-  v71 = [(ModalCardHeaderView *)v82 leadingAnchor];
-  v70 = [v3 leadingAnchor];
-  v68 = [v71 constraintEqualToAnchor:v70];
+  leadingAnchor7 = [(ModalCardHeaderView *)v82 leadingAnchor];
+  leadingAnchor8 = [headerView leadingAnchor];
+  v68 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
   v84[1] = v68;
-  v66 = [(ModalCardHeaderView *)v82 trailingAnchor];
-  v64 = [v3 trailingAnchor];
-  v62 = [v66 constraintEqualToAnchor:v64];
+  trailingAnchor3 = [(ModalCardHeaderView *)v82 trailingAnchor];
+  trailingAnchor4 = [headerView trailingAnchor];
+  v62 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v84[2] = v62;
-  v60 = [(ModalCardHeaderView *)v82 bottomAnchor];
-  v57 = [(PassthruSearchBar *)v81 topAnchor];
-  v53 = [v60 constraintEqualToAnchor:v57 constant:10.0];
+  bottomAnchor5 = [(ModalCardHeaderView *)v82 bottomAnchor];
+  topAnchor4 = [(PassthruSearchBar *)v81 topAnchor];
+  v53 = [bottomAnchor5 constraintEqualToAnchor:topAnchor4 constant:10.0];
   v84[3] = v53;
-  v52 = [(PassthruSearchBar *)v81 leadingAnchor];
-  v51 = [v3 leadingAnchor];
-  v50 = [v52 constraintEqualToAnchor:v51];
+  leadingAnchor9 = [(PassthruSearchBar *)v81 leadingAnchor];
+  leadingAnchor10 = [headerView leadingAnchor];
+  v50 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10];
   v84[4] = v50;
-  v49 = [(PassthruSearchBar *)v81 trailingAnchor];
-  v48 = [v3 trailingAnchor];
-  v47 = [v49 constraintEqualToAnchor:v48];
+  trailingAnchor5 = [(PassthruSearchBar *)v81 trailingAnchor];
+  trailingAnchor6 = [headerView trailingAnchor];
+  v47 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v84[5] = v47;
-  v46 = [(PassthruSearchBar *)v81 bottomAnchor];
-  v34 = [v3 bottomAnchor];
-  v35 = [v46 constraintEqualToAnchor:v34];
+  bottomAnchor6 = [(PassthruSearchBar *)v81 bottomAnchor];
+  bottomAnchor7 = [headerView bottomAnchor];
+  v35 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7];
   v84[6] = v35;
-  v36 = [v14 topAnchor];
-  v37 = [v4 topAnchor];
-  v38 = [v36 constraintEqualToAnchor:v37];
+  topAnchor5 = [v14 topAnchor];
+  topAnchor6 = [contentView topAnchor];
+  v38 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
   v39 = v14;
   v58 = v14;
   v40 = v38;
   v84[7] = v38;
-  v41 = [v39 trailingAnchor];
-  v42 = [v4 trailingAnchor];
-  v43 = [v41 constraintEqualToAnchor:v42];
+  trailingAnchor7 = [v39 trailingAnchor];
+  trailingAnchor8 = [contentView trailingAnchor];
+  v43 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
   v84[8] = v43;
   v44 = [NSArray arrayWithObjects:v84 count:9];
   [v55 activateConstraints:v44];
 
-  v45 = [(AddFromACViewController *)self view];
-  [v45 layoutIfNeeded];
+  view4 = [(AddFromACViewController *)self view];
+  [view4 layoutIfNeeded];
 
   +[KeyboardAvoidingView startObservingKeyboard];
   [(AddFromACViewController *)self updateTheme];
@@ -541,19 +541,19 @@ LABEL_8:
   [(AddFromACViewController *)self _setPlaceHolder];
 }
 
-- (AddFromACViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (AddFromACViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v9.receiver = self;
   v9.super_class = AddFromACViewController;
-  v4 = [(AddFromACViewController *)&v9 initWithNibName:a3 bundle:a4];
+  v4 = [(AddFromACViewController *)&v9 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
-    v6 = [(ContaineeViewController *)v4 cardPresentationController];
-    [v6 setPresentedModally:1];
+    cardPresentationController = [(ContaineeViewController *)v4 cardPresentationController];
+    [cardPresentationController setPresentedModally:1];
 
-    v7 = [(ContaineeViewController *)v5 cardPresentationController];
-    [v7 setTakesAvailableHeight:1];
+    cardPresentationController2 = [(ContaineeViewController *)v5 cardPresentationController];
+    [cardPresentationController2 setTakesAvailableHeight:1];
 
     [(ContaineeViewController *)v5 setPreferredPresentationStyle:5];
     [(AddFromACViewController *)v5 setPreferredContentSize:341.0, 500.0];

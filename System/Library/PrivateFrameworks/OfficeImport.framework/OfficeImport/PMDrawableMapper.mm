@@ -1,17 +1,17 @@
 @interface PMDrawableMapper
-- (CGRect)shapeTextBoxWithState:(id)a3;
+- (CGRect)shapeTextBoxWithState:(id)state;
 - (CGRect)slideRect;
 - (CGRect)transformRectToPage:(CGRect)result;
-- (void)mapAt:(id)a3 withState:(id)a4;
+- (void)mapAt:(id)at withState:(id)state;
 - (void)mapBounds;
-- (void)mapChartAt:(id)a3 withState:(id)a4;
-- (void)mapDiagramAt:(id)a3 withState:(id)a4;
-- (void)mapFreeForm:(id)a3 orientedBounds:(id)a4 transformedBounds:(CGRect *)a5 state:(id)a6;
-- (void)mapOfficeArtGroupAt:(id)a3 withState:(id)a4;
-- (void)mapOfficeArtImageAt:(id)a3 withState:(id)a4;
-- (void)mapOfficeArtShapeAt:(id)a3 withState:(id)a4;
-- (void)mapRectangularShapeAt:(id)a3 withState:(id)a4;
-- (void)mapShapeAsBackgroundAt:(id)a3 withState:(id)a4;
+- (void)mapChartAt:(id)at withState:(id)state;
+- (void)mapDiagramAt:(id)at withState:(id)state;
+- (void)mapFreeForm:(id)form orientedBounds:(id)bounds transformedBounds:(CGRect *)transformedBounds state:(id)state;
+- (void)mapOfficeArtGroupAt:(id)at withState:(id)state;
+- (void)mapOfficeArtImageAt:(id)at withState:(id)state;
+- (void)mapOfficeArtShapeAt:(id)at withState:(id)state;
+- (void)mapRectangularShapeAt:(id)at withState:(id)state;
+- (void)mapShapeAsBackgroundAt:(id)at withState:(id)state;
 @end
 
 @implementation PMDrawableMapper
@@ -43,11 +43,11 @@
 
 - (CGRect)slideRect
 {
-  v2 = [(CMMapper *)self root];
+  root = [(CMMapper *)self root];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v2 slideSize];
+    [root slideSize];
     v4 = v3;
     v6 = v5;
     v7 = 0.0;
@@ -73,11 +73,11 @@
   return result;
 }
 
-- (void)mapAt:(id)a3 withState:(id)a4
+- (void)mapAt:(id)at withState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 childrenCount];
+  atCopy = at;
+  stateCopy = state;
+  childrenCount = [atCopy childrenCount];
   if (self->mDrawingContext)
   {
     v9 = 0;
@@ -108,7 +108,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(PMDrawableMapper *)self mapOfficeArtImageAt:v6 withState:v7];
+    [(PMDrawableMapper *)self mapOfficeArtImageAt:atCopy withState:stateCopy];
   }
 
   else
@@ -116,7 +116,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(PMDrawableMapper *)self mapDiagramAt:v6 withState:v7];
+      [(PMDrawableMapper *)self mapDiagramAt:atCopy withState:stateCopy];
     }
 
     else
@@ -124,7 +124,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [(PMDrawableMapper *)self mapOfficeArtShapeAt:v6 withState:v7];
+        [(PMDrawableMapper *)self mapOfficeArtShapeAt:atCopy withState:stateCopy];
       }
 
       else
@@ -132,7 +132,7 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [(PMDrawableMapper *)self mapOfficeArtGroupAt:v6 withState:v7];
+          [(PMDrawableMapper *)self mapOfficeArtGroupAt:atCopy withState:stateCopy];
         }
 
         else
@@ -141,7 +141,7 @@
           if (objc_opt_isKindOfClass())
           {
             v14 = [[PMTableMapper alloc] initWithOadTable:self->super.mDrawable bounds:self->super.mOrientedBounds parent:self];
-            [(PMTableMapper *)v14 mapAt:v6 withState:v7];
+            [(PMTableMapper *)v14 mapAt:atCopy withState:stateCopy];
           }
 
           else
@@ -149,7 +149,7 @@
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              [(PMDrawableMapper *)self mapChartAt:v6 withState:v7];
+              [(PMDrawableMapper *)self mapChartAt:atCopy withState:stateCopy];
             }
           }
         }
@@ -159,24 +159,24 @@
 
   if (v9)
   {
-    [v6 addChild:v9];
+    [atCopy addChild:v9];
   }
 
   else if ([(PMDrawableMapper *)self isTopLevelMapper])
   {
-    v15 = [(CMDrawingContext *)self->mDrawingContext copyPDF];
-    if (v15)
+    copyPDF = [(CMDrawingContext *)self->mDrawingContext copyPDF];
+    if (copyPDF)
     {
       v9 = [OIXMLElement elementWithType:9];
-      [v6 insertChild:v9 atIndex:v8];
+      [atCopy insertChild:v9 atIndex:childrenCount];
       v16 = +[CMGlobalCache drawableElementCache];
       v17 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:self->super.mDrawable];
       [v16 setObject:v9 forKey:v17];
 
       v30.receiver = self;
       v30.super_class = PMDrawableMapper;
-      v18 = [(CMMapper *)&v30 archiver];
-      v19 = [v18 addResourceForDrawable:v15 withType:7 drawable:self->super.mDrawable];
+      archiver = [(CMMapper *)&v30 archiver];
+      v19 = [archiver addResourceForDrawable:copyPDF withType:7 drawable:self->super.mDrawable];
       [(CMMapper *)self addAttribute:0x286F07DB0 toNode:v9 value:v19];
       [(CMDrawingContext *)self->mDrawingContext pdfFrame];
       v21 = v20;
@@ -202,34 +202,34 @@
   }
 }
 
-- (void)mapOfficeArtImageAt:(id)a3 withState:(id)a4
+- (void)mapOfficeArtImageAt:(id)at withState:(id)state
 {
-  v18 = a3;
-  v19 = a4;
+  atCopy = at;
+  stateCopy = state;
   v6 = self->super.mDrawable;
   [(OADDrawable *)v6 movie];
 
   v7 = [OIXMLElement elementWithType:9];
-  v8 = [(OADDrawable *)self->super.mDrawable imageProperties];
-  if ([v8 hasImageFill])
+  imageProperties = [(OADDrawable *)self->super.mDrawable imageProperties];
+  if ([imageProperties hasImageFill])
   {
-    v17 = [v8 imageFill];
+    imageFill = [imageProperties imageFill];
     v9 = [CMImageFillMapper alloc];
     [(OADOrientedBounds *)self->super.mOrientedBounds bounds];
     [(PMDrawableMapper *)self transformRectToPage:?];
-    v10 = [(CMImageFillMapper *)v9 initWithOadFill:v17 bounds:self parent:?];
+    v10 = [(CMImageFillMapper *)v9 initWithOadFill:imageFill bounds:self parent:?];
     if ([(CMImageFillMapper *)v10 isCropped])
     {
       v11 = [OIXMLElement elementWithType:3];
-      v12 = objc_alloc_init(CMDrawableStyle);
+      orientedBounds2 = objc_alloc_init(CMDrawableStyle);
       [(CMStyle *)self->super.mStyle appendPropertyForName:0x286EF4D30 stringWithColons:@":hidden;"];
       [(CMImageFillMapper *)v10 uncroppedBox];
-      [(CMDrawableStyle *)v12 addPositionProperties:?];
-      [(CMMapper *)self addStyleUsingGlobalCacheTo:v7 style:v12 embedStyle:1];
+      [(CMDrawableStyle *)orientedBounds2 addPositionProperties:?];
+      [(CMMapper *)self addStyleUsingGlobalCacheTo:v7 style:orientedBounds2 embedStyle:1];
       [v11 addChild:v7];
       mStyle = self->super.mStyle;
-      v14 = [v8 orientedBounds];
-      [v14 bounds];
+      orientedBounds = [imageProperties orientedBounds];
+      [orientedBounds bounds];
       [(PMDrawableMapper *)self transformRectToPage:?];
       [(CMDrawableStyle *)mStyle addPositionProperties:?];
     }
@@ -238,13 +238,13 @@
     {
       v11 = v7;
       v15 = self->super.mStyle;
-      v12 = [v8 orientedBounds];
-      [(CMDrawableStyle *)v12 bounds];
+      orientedBounds2 = [imageProperties orientedBounds];
+      [(CMDrawableStyle *)orientedBounds2 bounds];
       [(PMDrawableMapper *)self transformRectToPage:?];
       [(CMDrawableStyle *)v15 addPositionProperties:?];
     }
 
-    v16 = [(CMImageFillMapper *)v10 mapImageFill:v7 withState:v19];
+    v16 = [(CMImageFillMapper *)v10 mapImageFill:v7 withState:stateCopy];
     if (v16)
     {
       [(CMMapper *)self addAttribute:0x286F07DB0 toNode:v7 value:v16];
@@ -256,7 +256,7 @@
     }
 
     [(CMMapper *)self addStyleUsingGlobalCacheTo:v11 style:self->super.mStyle embedStyle:1];
-    [v18 addChild:v11];
+    [atCopy addChild:v11];
   }
 
   else
@@ -265,59 +265,59 @@
   }
 }
 
-- (void)mapOfficeArtShapeAt:(id)a3 withState:(id)a4
+- (void)mapOfficeArtShapeAt:(id)at withState:(id)state
 {
-  v32 = a3;
-  v6 = a4;
+  atCopy = at;
+  stateCopy = state;
   objc_storeStrong(&self->mShape, self->super.mDrawable);
-  v7 = [(OADShape *)self->mShape type];
-  v8 = [(OADShape *)self->mShape shapeProperties];
-  v9 = [v8 orientedBounds];
-  v10 = [v8 fill];
-  v11 = [v8 isTextBox];
-  if (v7 == 202)
+  type = [(OADShape *)self->mShape type];
+  shapeProperties = [(OADShape *)self->mShape shapeProperties];
+  orientedBounds = [shapeProperties orientedBounds];
+  fill = [shapeProperties fill];
+  isTextBox = [shapeProperties isTextBox];
+  if (type == 202)
   {
     v12 = 1;
   }
 
   else
   {
-    v12 = v11;
+    v12 = isTextBox;
   }
 
-  [v9 rotation];
+  [orientedBounds rotation];
   v14 = v13;
-  [v10 alpha];
+  [fill alpha];
   v16 = v15;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v17 = [v10 color];
-    [CMColorProperty transformedAlphaFromOADColor:v17];
+    color = [fill color];
+    [CMColorProperty transformedAlphaFromOADColor:color];
     v16 = v16 * v18;
   }
 
-  if (((v12 & 1) != 0 || v7 == 75 || v7 == 1) && (v14 == 0.0 ? (v19 = v16 == 1.0) : (v19 = 0), v19 && [(PMDrawableMapper *)self isTopLevelMapper]))
+  if (((v12 & 1) != 0 || type == 75 || type == 1) && (v14 == 0.0 ? (v19 = v16 == 1.0) : (v19 = 0), v19 && [(PMDrawableMapper *)self isTopLevelMapper]))
   {
-    [(PMDrawableMapper *)self mapRectangularShapeAt:v32 withState:v6];
+    [(PMDrawableMapper *)self mapRectangularShapeAt:atCopy withState:stateCopy];
   }
 
   else
   {
-    [(PMDrawableMapper *)self mapShapeAsBackgroundAt:v32 withState:v6];
-    v20 = [(OADShape *)self->mShape textBody];
-    if (v20)
+    [(PMDrawableMapper *)self mapShapeAsBackgroundAt:atCopy withState:stateCopy];
+    textBody = [(OADShape *)self->mShape textBody];
+    if (textBody)
     {
-      v21 = [(OADShape *)self->mShape textBody];
-      v22 = [v21 isEmpty];
+      textBody2 = [(OADShape *)self->mShape textBody];
+      isEmpty = [textBody2 isEmpty];
 
-      if ((v22 & 1) == 0)
+      if ((isEmpty & 1) == 0)
       {
         v31 = [OIXMLElement elementWithType:3];
-        [(PMDrawableMapper *)self shapeTextBoxWithState:v6];
+        [(PMDrawableMapper *)self shapeTextBoxWithState:stateCopy];
         if (v24 <= 0.0 || v23 <= 0.0)
         {
-          [v9 bounds];
+          [orientedBounds bounds];
           [(PMDrawableMapper *)self transformRectToPage:?];
         }
 
@@ -330,36 +330,36 @@
         mStyle = self->super.mStyle;
         [v25 bounds];
         [(CMDrawableStyle *)mStyle addPositionProperties:?];
-        [v32 addChild:v31];
+        [atCopy addChild:v31];
         v27 = self->super.mStyle;
         v33.receiver = self;
         v33.super_class = PMDrawableMapper;
         [(CMMapper *)&v33 addStyleUsingGlobalCacheTo:v31 style:v27 embedStyle:1];
         v28 = [PMShapeTextMapper alloc];
-        v29 = [(OADShape *)self->mShape textBody];
-        v30 = [(PMShapeTextMapper *)v28 initWithOadTextBody:v29 bounds:v25 parent:self];
+        textBody3 = [(OADShape *)self->mShape textBody];
+        v30 = [(PMShapeTextMapper *)v28 initWithOadTextBody:textBody3 bounds:v25 parent:self];
 
-        [(PMShapeTextMapper *)v30 mapAt:v31 withState:v6];
+        [(PMShapeTextMapper *)v30 mapAt:v31 withState:stateCopy];
       }
     }
   }
 }
 
-- (void)mapRectangularShapeAt:(id)a3 withState:(id)a4
+- (void)mapRectangularShapeAt:(id)at withState:(id)state
 {
-  v25 = a3;
-  v24 = a4;
-  v6 = [(OADShape *)self->mShape shapeProperties];
-  v7 = [v6 orientedBounds];
-  [v7 bounds];
+  atCopy = at;
+  stateCopy = state;
+  shapeProperties = [(OADShape *)self->mShape shapeProperties];
+  orientedBounds = [shapeProperties orientedBounds];
+  [orientedBounds bounds];
   [(PMDrawableMapper *)self transformRectToPage:?];
   v8 = [OADOrientedBounds orientedBoundsWithBounds:?];
 
   mStyle = self->super.mStyle;
   [v8 bounds];
   [(CMDrawableStyle *)mStyle addPositionProperties:?];
-  v10 = [v6 fill];
-  if (v10)
+  fill = [shapeProperties fill];
+  if (fill)
   {
     objc_opt_class();
     v11 = objc_opt_isKindOfClass() ^ 1;
@@ -370,17 +370,17 @@
     v11 = 0;
   }
 
-  v12 = [v6 stroke];
-  v13 = [v12 fill];
+  stroke = [shapeProperties stroke];
+  fill2 = [stroke fill];
 
-  if (v13)
+  if (fill2)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v14 = [CMBordersProperty alloc];
-      v15 = [v6 stroke];
-      v16 = [(CMBordersProperty *)v14 initWithOADStroke:v15];
+      stroke2 = [shapeProperties stroke];
+      v16 = [(CMBordersProperty *)v14 initWithOADStroke:stroke2];
 
       [(CMStyle *)self->super.mStyle addProperty:v16 forKey:0x286F07E30];
     }
@@ -390,30 +390,30 @@
   {
     v17 = [CMImageFillMapper alloc];
     [(OADOrientedBounds *)self->super.mOrientedBounds bounds];
-    v18 = [(CMImageFillMapper *)v17 initWithOadFill:v10 bounds:self parent:?];
-    [(CMImageFillMapper *)v18 mapNonImageFillAt:v25 toStyle:self->super.mStyle withState:v24];
+    v18 = [(CMImageFillMapper *)v17 initWithOadFill:fill bounds:self parent:?];
+    [(CMImageFillMapper *)v18 mapNonImageFillAt:atCopy toStyle:self->super.mStyle withState:stateCopy];
   }
 
   v19 = [OIXMLElement elementWithType:3];
-  [v25 addChild:v19];
+  [atCopy addChild:v19];
   v20 = self->super.mStyle;
   v26.receiver = self;
   v26.super_class = PMDrawableMapper;
   [(CMMapper *)&v26 addStyleUsingGlobalCacheTo:v19 style:v20 embedStyle:1];
   v21 = [PMShapeTextMapper alloc];
-  v22 = [(OADShape *)self->mShape textBody];
-  v23 = [(PMShapeTextMapper *)v21 initWithOadTextBody:v22 bounds:v8 parent:self];
+  textBody = [(OADShape *)self->mShape textBody];
+  v23 = [(PMShapeTextMapper *)v21 initWithOadTextBody:textBody bounds:v8 parent:self];
 
   [(PMShapeTextMapper *)v23 setRectangular:1];
-  [(PMShapeTextMapper *)v23 mapAt:v19 withState:v24];
+  [(PMShapeTextMapper *)v23 mapAt:v19 withState:stateCopy];
 }
 
-- (void)mapOfficeArtGroupAt:(id)a3 withState:(id)a4
+- (void)mapOfficeArtGroupAt:(id)at withState:(id)state
 {
-  v28 = a3;
-  v6 = a4;
+  atCopy = at;
+  stateCopy = state;
   v7 = self->super.mDrawable;
-  v8 = [(OADDrawable *)v7 childCount];
+  childCount = [(OADDrawable *)v7 childCount];
   [(OADDrawable *)v7 logicalBounds];
   v10 = v9;
   v12 = v11;
@@ -421,10 +421,10 @@
   v16 = v15;
   v27 = [OAITOrientedBounds relativeOrientedBoundsOfDrawable:v7];
   v17 = [CMShapeUtils transformFromBounds:v27 toOrientedBounds:v10, v12, v14, v16];
-  v18 = [(PMDrawableMapper *)self drawingContext];
-  [v18 addTransform:v17];
+  drawingContext = [(PMDrawableMapper *)self drawingContext];
+  [drawingContext addTransform:v17];
 
-  if (v8)
+  if (childCount)
   {
     v19 = 0;
     v20 = 0;
@@ -436,14 +436,14 @@
       if (([v22 hidden] & 1) == 0)
       {
         v23 = [(CMDrawableMapper *)[PMDrawableMapper alloc] initWithOadDrawable:v22 parent:self];
-        v24 = [(PMDrawableMapper *)self drawingContext];
-        [(PMDrawableMapper *)v23 setDrawingContext:v24];
+        drawingContext2 = [(PMDrawableMapper *)self drawingContext];
+        [(PMDrawableMapper *)v23 setDrawingContext:drawingContext2];
 
-        [(PMDrawableMapper *)v23 mapAt:v28 withState:v6];
+        [(PMDrawableMapper *)v23 mapAt:atCopy withState:stateCopy];
       }
 
       v19 = v21;
-      v25 = v8 > v21++;
+      v25 = childCount > v21++;
       v20 = v22;
     }
 
@@ -455,25 +455,25 @@
     v22 = 0;
   }
 
-  v26 = [(PMDrawableMapper *)self drawingContext];
-  [v26 restoreLastTransform];
+  drawingContext3 = [(PMDrawableMapper *)self drawingContext];
+  [drawingContext3 restoreLastTransform];
 }
 
-- (void)mapDiagramAt:(id)a3 withState:(id)a4
+- (void)mapDiagramAt:(id)at withState:(id)state
 {
-  v8 = a3;
-  v6 = a4;
+  atCopy = at;
+  stateCopy = state;
   v7 = [[CMDiagramMapper alloc] initWithOddDiagram:self->super.mDrawable drawingContext:self->mDrawingContext orientedBounds:self->super.mOrientedBounds parent:self];
-  [(CMDiagramMapper *)v7 mapAt:v8 withState:v6];
+  [(CMDiagramMapper *)v7 mapAt:atCopy withState:stateCopy];
 }
 
-- (void)mapChartAt:(id)a3 withState:(id)a4
+- (void)mapChartAt:(id)at withState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  atCopy = at;
+  stateCopy = state;
   v8 = [[EMChartMapper alloc] initWithChart:self->super.mDrawable parent:self];
   [(OADOrientedBounds *)self->super.mOrientedBounds bounds];
-  v11 = [(EMChartMapper *)v8 copyPdfWithState:v7 withSize:v9, v10];
+  v11 = [(EMChartMapper *)v8 copyPdfWithState:stateCopy withSize:v9, v10];
   v12 = [OIXMLElement elementWithType:9];
   if (v11)
   {
@@ -488,45 +488,45 @@
     [(CMStyle *)self->super.mStyle appendPropertyForName:0x286F07E30 stringWithColons:@": 1px solid black;"];
   }
 
-  [v6 addChild:v12];
+  [atCopy addChild:v12];
   [(CMDrawableStyle *)self->super.mStyle addPositionProperties:self->super.mBox.origin.x, self->super.mBox.origin.y, self->super.mBox.size.width, self->super.mBox.size.height];
   [(CMMapper *)self addStyleUsingGlobalCacheTo:v12 style:self->super.mStyle embedStyle:1];
 }
 
-- (void)mapShapeAsBackgroundAt:(id)a3 withState:(id)a4
+- (void)mapShapeAsBackgroundAt:(id)at withState:(id)state
 {
-  v20 = a4;
-  v5 = [(OADShape *)self->mShape type];
-  if (!v5)
+  stateCopy = state;
+  type = [(OADShape *)self->mShape type];
+  if (!type)
   {
     if ([CMShapeUtils isShapeALine:self->mShape])
     {
-      v5 = 20;
+      type = 20;
     }
 
     else
     {
-      v5 = 0;
+      type = 0;
     }
   }
 
-  v6 = [(OADShape *)self->mShape shapeProperties];
-  v7 = [v6 orientedBounds];
+  shapeProperties = [(OADShape *)self->mShape shapeProperties];
+  orientedBounds = [shapeProperties orientedBounds];
 
   v8 = *(MEMORY[0x277CBF3A0] + 16);
   v21[0] = *MEMORY[0x277CBF3A0];
   v21[1] = v8;
-  switch(v5)
+  switch(type)
   {
     case 0:
-      v17 = [(OADShape *)self->mShape geometry];
+      geometry = [(OADShape *)self->mShape geometry];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v19 = [(OADShape *)self->mShape geometry];
-        [(PMDrawableMapper *)self mapFreeForm:v19 orientedBounds:v7 transformedBounds:v21 state:v20];
+        geometry2 = [(OADShape *)self->mShape geometry];
+        [(PMDrawableMapper *)self mapFreeForm:geometry2 orientedBounds:orientedBounds transformedBounds:v21 state:stateCopy];
       }
 
       goto LABEL_8;
@@ -642,27 +642,27 @@
     case 38:
     case 39:
     case 40:
-      v9 = [(OADShape *)self->mShape shapeProperties];
-      v10 = [v9 stroke];
-      v11 = [(OADShape *)self->mShape geometry];
-      v15 = [v11 adjustValues];
-      [CMShapeRenderer renderLine:v5 stroke:v10 adjustValues:v15 orientedBounds:v7 state:v20 drawingContext:self->mDrawingContext];
+      shapeProperties2 = [(OADShape *)self->mShape shapeProperties];
+      stroke = [shapeProperties2 stroke];
+      geometry3 = [(OADShape *)self->mShape geometry];
+      adjustValues = [geometry3 adjustValues];
+      [CMShapeRenderer renderLine:type stroke:stroke adjustValues:adjustValues orientedBounds:orientedBounds state:stateCopy drawingContext:self->mDrawingContext];
 
       goto LABEL_7;
     default:
-      if ((v5 - 176) > 0x23 || ((1 << (v5 + 80)) & 0xF04000841) == 0)
+      if ((type - 176) > 0x23 || ((1 << (type + 80)) & 0xF04000841) == 0)
       {
         goto LABEL_8;
       }
 
 LABEL_6:
-      v9 = [(OADShape *)self->mShape shapeProperties];
-      v10 = [v9 fill];
-      v11 = [(OADShape *)self->mShape shapeProperties];
-      v12 = [v11 stroke];
-      v13 = [(OADShape *)self->mShape geometry];
-      v14 = [v13 adjustValues];
-      [CMShapeRenderer renderCanonicalShape:v5 fill:v10 stroke:v12 adjustValues:v14 orientedBounds:v7 state:v20 drawingContext:self->mDrawingContext];
+      shapeProperties2 = [(OADShape *)self->mShape shapeProperties];
+      stroke = [shapeProperties2 fill];
+      geometry3 = [(OADShape *)self->mShape shapeProperties];
+      stroke2 = [geometry3 stroke];
+      geometry4 = [(OADShape *)self->mShape geometry];
+      adjustValues2 = [geometry4 adjustValues];
+      [CMShapeRenderer renderCanonicalShape:type fill:stroke stroke:stroke2 adjustValues:adjustValues2 orientedBounds:orientedBounds state:stateCopy drawingContext:self->mDrawingContext];
 
 LABEL_7:
 LABEL_8:
@@ -671,68 +671,68 @@ LABEL_8:
   }
 }
 
-- (void)mapFreeForm:(id)a3 orientedBounds:(id)a4 transformedBounds:(CGRect *)a5 state:(id)a6
+- (void)mapFreeForm:(id)form orientedBounds:(id)bounds transformedBounds:(CGRect *)transformedBounds state:(id)state
 {
-  v15 = a3;
-  v9 = a4;
-  v10 = a6;
-  if ([v15 pathCount])
+  formCopy = form;
+  boundsCopy = bounds;
+  stateCopy = state;
+  if ([formCopy pathCount])
   {
-    v11 = [(OADShape *)self->mShape shapeProperties];
-    v12 = [v11 fill];
-    v13 = [(OADShape *)self->mShape shapeProperties];
-    v14 = [v13 stroke];
-    [CMShapeRenderer renderFreeForm:v15 fill:v12 stroke:v14 orientedBounds:v9 state:v10 drawingContext:self->mDrawingContext];
+    shapeProperties = [(OADShape *)self->mShape shapeProperties];
+    fill = [shapeProperties fill];
+    shapeProperties2 = [(OADShape *)self->mShape shapeProperties];
+    stroke = [shapeProperties2 stroke];
+    [CMShapeRenderer renderFreeForm:formCopy fill:fill stroke:stroke orientedBounds:boundsCopy state:stateCopy drawingContext:self->mDrawingContext];
   }
 }
 
-- (CGRect)shapeTextBoxWithState:(id)a3
+- (CGRect)shapeTextBoxWithState:(id)state
 {
-  v4 = a3;
-  v5 = [(OADShape *)self->mShape geometry];
+  stateCopy = state;
+  geometry = [(OADShape *)self->mShape geometry];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    equivalentCustomGeometry = geometry;
 LABEL_5:
-    v7 = v6;
+    equivalentCustomGeometry2 = equivalentCustomGeometry;
     goto LABEL_7;
   }
 
-  if ([v4 sourceFormat] == 5)
+  if ([stateCopy sourceFormat] == 5)
   {
-    v6 = [v5 equivalentCustomGeometry];
+    equivalentCustomGeometry = [geometry equivalentCustomGeometry];
     goto LABEL_5;
   }
 
-  v7 = [v5 equivalentCustomGeometry];
+  equivalentCustomGeometry2 = [geometry equivalentCustomGeometry];
   [CMShapeUtils setCoordSpaceForCustomeGeometry:self->super.mBox.size.width fromSize:self->super.mBox.size.height];
 LABEL_7:
-  if ([v7 textBodyRectCount])
+  if ([equivalentCustomGeometry2 textBodyRectCount])
   {
-    v8 = [v7 textBodyRectAtIndex:0];
-    +[CMShapeUtils mapAdjustCoord:geometry:](CMShapeUtils, "mapAdjustCoord:geometry:", [v8 left], v7);
+    v8 = [equivalentCustomGeometry2 textBodyRectAtIndex:0];
+    +[CMShapeUtils mapAdjustCoord:geometry:](CMShapeUtils, "mapAdjustCoord:geometry:", [v8 left], equivalentCustomGeometry2);
     v10 = v9;
-    +[CMShapeUtils mapAdjustCoord:geometry:](CMShapeUtils, "mapAdjustCoord:geometry:", [v8 right], v7);
+    +[CMShapeUtils mapAdjustCoord:geometry:](CMShapeUtils, "mapAdjustCoord:geometry:", [v8 right], equivalentCustomGeometry2);
     v12 = v11;
-    +[CMShapeUtils mapAdjustCoord:geometry:](CMShapeUtils, "mapAdjustCoord:geometry:", [v8 top], v7);
+    +[CMShapeUtils mapAdjustCoord:geometry:](CMShapeUtils, "mapAdjustCoord:geometry:", [v8 top], equivalentCustomGeometry2);
     v14 = v13;
-    +[CMShapeUtils mapAdjustCoord:geometry:](CMShapeUtils, "mapAdjustCoord:geometry:", [v8 bottom], v7);
+    +[CMShapeUtils mapAdjustCoord:geometry:](CMShapeUtils, "mapAdjustCoord:geometry:", [v8 bottom], equivalentCustomGeometry2);
     v16 = v15;
-    v17 = [v7 isEscher];
+    isEscher = [equivalentCustomGeometry2 isEscher];
     v24.f32[0] = v10;
     v25.f32[0] = v12;
-    if (v17)
+    if (isEscher)
     {
       v38 = v16;
       v39 = v14;
       v40 = v12;
       v42 = v10;
-      if (v7)
+      if (equivalentCustomGeometry2)
       {
         *&v18 = v14;
         *&v22 = v16;
-        [v7 geometryCoordSpace];
+        [equivalentCustomGeometry2 geometryCoordSpace];
       }
 
       v26 = vsub_f32(__PAIR64__(LODWORD(v38), LODWORD(v40)), __PAIR64__(LODWORD(v39), LODWORD(v42)));

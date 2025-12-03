@@ -1,33 +1,33 @@
 @interface DMFFetchProvisioningProfilesRequest
-- (DMFFetchProvisioningProfilesRequest)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (DMFFetchProvisioningProfilesRequest)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DMFFetchProvisioningProfilesRequest
 
-- (DMFFetchProvisioningProfilesRequest)initWithCoder:(id)a3
+- (DMFFetchProvisioningProfilesRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = DMFFetchProvisioningProfilesRequest;
-  v5 = [(CATTaskRequest *)&v8 initWithCoder:v4];
+  v5 = [(CATTaskRequest *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"managedOnly"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"managedOnly"];
     *(&v5->super.super._handlesNotifications + 1) = [v6 BOOLValue];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = DMFFetchProvisioningProfilesRequest;
-  v4 = a3;
-  [(CATTaskRequest *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CATTaskRequest *)&v6 encodeWithCoder:coderCopy];
   v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[DMFFetchProvisioningProfilesRequest managedOnly](self, "managedOnly", v6.receiver, v6.super_class)}];
-  [v4 encodeObject:v5 forKey:@"managedOnly"];
+  [coderCopy encodeObject:v5 forKey:@"managedOnly"];
 }
 
 @end

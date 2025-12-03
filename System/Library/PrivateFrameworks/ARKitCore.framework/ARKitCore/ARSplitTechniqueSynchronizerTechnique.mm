@@ -1,17 +1,17 @@
 @interface ARSplitTechniqueSynchronizerTechnique
-- (ARSplitTechniqueSynchronizerTechnique)initWithSynchronizedResultDataClasses:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (void)_recursivelyGatherData:(id)a3 fromContext:(id)a4;
-- (void)requestResultDataAtTimestamp:(double)a3 context:(id)a4;
-- (void)technique:(id)a3 didFailWithError:(id)a4;
-- (void)technique:(id)a3 didOutputResultData:(id)a4 timestamp:(double)a5 context:(id)a6;
+- (ARSplitTechniqueSynchronizerTechnique)initWithSynchronizedResultDataClasses:(id)classes;
+- (BOOL)isEqual:(id)equal;
+- (void)_recursivelyGatherData:(id)data fromContext:(id)context;
+- (void)requestResultDataAtTimestamp:(double)timestamp context:(id)context;
+- (void)technique:(id)technique didFailWithError:(id)error;
+- (void)technique:(id)technique didOutputResultData:(id)data timestamp:(double)timestamp context:(id)context;
 @end
 
 @implementation ARSplitTechniqueSynchronizerTechnique
 
-- (ARSplitTechniqueSynchronizerTechnique)initWithSynchronizedResultDataClasses:(id)a3
+- (ARSplitTechniqueSynchronizerTechnique)initWithSynchronizedResultDataClasses:(id)classes
 {
-  v4 = a3;
+  classesCopy = classes;
   v16.receiver = self;
   v16.super_class = ARSplitTechniqueSynchronizerTechnique;
   v5 = [(ARTechnique *)&v16 init];
@@ -21,40 +21,40 @@
     lastReceivedResultsSemaphore = v5->_lastReceivedResultsSemaphore;
     v5->_lastReceivedResultsSemaphore = v6;
 
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     lastReceivedResults = v5->_lastReceivedResults;
-    v5->_lastReceivedResults = v8;
+    v5->_lastReceivedResults = array;
 
     if ([ARKitUserDefaults BOOLForKey:@"com.apple.arkit.session.qatracing.dumpSemanticSegmantationData"])
     {
-      v10 = [v4 mutableCopy];
+      v10 = [classesCopy mutableCopy];
       [v10 addObject:objc_opt_class()];
 
-      v4 = v10;
+      classesCopy = v10;
     }
 
-    objc_storeStrong(&v5->_synchronizedResultDataClasses, v4);
+    objc_storeStrong(&v5->_synchronizedResultDataClasses, classesCopy);
     v11 = [[ARCircularArray alloc] initWithCapacity:2];
     contextsWaitingForSynchronizationData = v5->_contextsWaitingForSynchronizationData;
     v5->_contextsWaitingForSynchronizationData = v11;
 
-    v13 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     pendingResults = v5->_pendingResults;
-    v5->_pendingResults = v13;
+    v5->_pendingResults = dictionary;
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = ARSplitTechniqueSynchronizerTechnique;
-  if ([(ARTechnique *)&v8 isEqual:v4])
+  if ([(ARTechnique *)&v8 isEqual:equalCopy])
   {
-    v5 = [v4 synchronizedResultDataClasses];
-    v6 = [v5 isEqualToSet:self->_synchronizedResultDataClasses];
+    synchronizedResultDataClasses = [equalCopy synchronizedResultDataClasses];
+    v6 = [synchronizedResultDataClasses isEqualToSet:self->_synchronizedResultDataClasses];
   }
 
   else
@@ -65,15 +65,15 @@
   return v6;
 }
 
-- (void)requestResultDataAtTimestamp:(double)a3 context:(id)a4
+- (void)requestResultDataAtTimestamp:(double)timestamp context:(id)context
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  contextCopy = context;
   dispatch_semaphore_wait(self->_lastReceivedResultsSemaphore, 0xFFFFFFFFFFFFFFFFLL);
   if ([(NSMutableArray *)self->_lastReceivedResults count])
   {
-    v19 = v6;
-    v7 = [MEMORY[0x1E695DF70] array];
+    v19 = contextCopy;
+    array = [MEMORY[0x1E695DF70] array];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
@@ -98,12 +98,12 @@
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [v7 addObjectsFromArray:v13];
+            [array addObjectsFromArray:v13];
           }
 
           else
           {
-            [v7 addObject:v13];
+            [array addObject:v13];
           }
 
           ++v12;
@@ -119,32 +119,32 @@
     [(NSMutableArray *)self->_lastReceivedResults removeAllObjects];
     dispatch_semaphore_signal(self->_lastReceivedResultsSemaphore);
     v14 = [ARNonSynchronousData alloc];
-    v6 = v19;
-    v15 = [v19 imageData];
-    [v15 timestamp];
-    v16 = [(ARNonSynchronousData *)v14 initWithGatheredData:v7 timestamp:?];
+    contextCopy = v19;
+    imageData = [v19 imageData];
+    [imageData timestamp];
+    v16 = [(ARNonSynchronousData *)v14 initWithGatheredData:array timestamp:?];
 
-    v17 = [(ARTechnique *)self delegate];
+    delegate = [(ARTechnique *)self delegate];
     v24 = v16;
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v24 count:1];
-    [v17 technique:self didOutputResultData:v18 timestamp:v19 context:a3];
+    [delegate technique:self didOutputResultData:v18 timestamp:v19 context:timestamp];
   }
 
   else
   {
     dispatch_semaphore_signal(self->_lastReceivedResultsSemaphore);
-    v7 = [(ARTechnique *)self delegate];
-    [v7 technique:self didOutputResultData:MEMORY[0x1E695E0F0] timestamp:v6 context:a3];
+    array = [(ARTechnique *)self delegate];
+    [array technique:self didOutputResultData:MEMORY[0x1E695E0F0] timestamp:contextCopy context:timestamp];
   }
 }
 
-- (void)technique:(id)a3 didOutputResultData:(id)a4 timestamp:(double)a5 context:(id)a6
+- (void)technique:(id)technique didOutputResultData:(id)data timestamp:(double)timestamp context:(id)context
 {
   v59 = *MEMORY[0x1E69E9840];
-  v8 = a6;
-  v9 = [MEMORY[0x1E695DF70] arrayWithArray:a4];
-  [(ARSplitTechniqueSynchronizerTechnique *)self _recursivelyGatherData:v9 fromContext:v8];
-  v10 = [MEMORY[0x1E695DF70] array];
+  contextCopy = context;
+  v9 = [MEMORY[0x1E695DF70] arrayWithArray:data];
+  [(ARSplitTechniqueSynchronizerTechnique *)self _recursivelyGatherData:v9 fromContext:contextCopy];
+  array = [MEMORY[0x1E695DF70] array];
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
@@ -167,7 +167,7 @@
         v15 = *(*(&v52 + 1) + 8 * i);
         if ([(NSSet *)self->_synchronizedResultDataClasses containsObject:objc_opt_class()])
         {
-          [v10 addObject:v15];
+          [array addObject:v15];
         }
       }
 
@@ -179,23 +179,23 @@
 
   if ([(NSSet *)self->_synchronizedResultDataClasses containsObject:objc_opt_class()])
   {
-    v16 = [v8 imageData];
-    [v10 addObject:v16];
+    imageData = [contextCopy imageData];
+    [array addObject:imageData];
   }
 
-  v38 = v10;
-  v40 = v8;
-  if ([v10 count])
+  v38 = array;
+  v40 = contextCopy;
+  if ([array count])
   {
     v17 = MEMORY[0x1E696AD98];
-    v18 = [v8 imageData];
-    [v18 timestamp];
+    imageData2 = [contextCopy imageData];
+    [imageData2 timestamp];
     v19 = [v17 numberWithDouble:?];
 
     contextsWaitingForSynchronizationData = self->_contextsWaitingForSynchronizationData;
     v21 = MEMORY[0x1E696AD98];
-    v22 = [v8 imageData];
-    [v22 timestamp];
+    imageData3 = [contextCopy imageData];
+    [imageData3 timestamp];
     v23 = [v21 numberWithDouble:?];
     v24 = [(ARCircularArray *)contextsWaitingForSynchronizationData addObject:v23];
 
@@ -204,22 +204,22 @@
       [(NSMutableDictionary *)self->_pendingResults removeObjectForKey:v24];
     }
 
-    v25 = [(NSMutableDictionary *)self->_pendingResults objectForKeyedSubscript:v19];
-    if (!v25)
+    array2 = [(NSMutableDictionary *)self->_pendingResults objectForKeyedSubscript:v19];
+    if (!array2)
     {
-      v25 = [MEMORY[0x1E695DF70] array];
+      array2 = [MEMORY[0x1E695DF70] array];
     }
 
-    [v25 addObjectsFromArray:v10];
-    [(NSMutableDictionary *)self->_pendingResults setObject:v25 forKeyedSubscript:v19];
+    [array2 addObjectsFromArray:array];
+    [(NSMutableDictionary *)self->_pendingResults setObject:array2 forKeyedSubscript:v19];
   }
 
   v50 = 0u;
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v41 = [(NSMutableDictionary *)self->_pendingResults allKeys];
-  v26 = [v41 countByEnumeratingWithState:&v48 objects:v57 count:16];
+  allKeys = [(NSMutableDictionary *)self->_pendingResults allKeys];
+  v26 = [allKeys countByEnumeratingWithState:&v48 objects:v57 count:16];
   if (v26)
   {
     v27 = v26;
@@ -230,7 +230,7 @@
       {
         if (*v49 != v43)
         {
-          objc_enumerationMutation(v41);
+          objc_enumerationMutation(allKeys);
         }
 
         v29 = *(*(&v48 + 1) + 8 * j);
@@ -275,38 +275,38 @@
         }
       }
 
-      v27 = [v41 countByEnumeratingWithState:&v48 objects:v57 count:16];
+      v27 = [allKeys countByEnumeratingWithState:&v48 objects:v57 count:16];
     }
 
     while (v27);
   }
 }
 
-- (void)_recursivelyGatherData:(id)a3 fromContext:(id)a4
+- (void)_recursivelyGatherData:(id)data fromContext:(id)context
 {
-  v10 = a3;
-  v6 = a4;
-  if (v6)
+  dataCopy = data;
+  contextCopy = context;
+  if (contextCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
-      v8 = [v7 gatheredData];
-      [v10 addObjectsFromArray:v8];
+      v7 = contextCopy;
+      gatheredData = [v7 gatheredData];
+      [dataCopy addObjectsFromArray:gatheredData];
 
-      v9 = [v7 parentContext];
+      parentContext = [v7 parentContext];
 
-      [(ARSplitTechniqueSynchronizerTechnique *)self _recursivelyGatherData:v10 fromContext:v9];
+      [(ARSplitTechniqueSynchronizerTechnique *)self _recursivelyGatherData:dataCopy fromContext:parentContext];
     }
   }
 }
 
-- (void)technique:(id)a3 didFailWithError:(id)a4
+- (void)technique:(id)technique didFailWithError:(id)error
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  techniqueCopy = technique;
+  errorCopy = error;
   if (ARShouldUseLogTypeError_onceToken_18 != -1)
   {
     [ARSplitTechniqueSynchronizerTechnique technique:didFailWithError:];
@@ -321,16 +321,16 @@
     {
       v11 = objc_opt_class();
       v12 = NSStringFromClass(v11);
-      v13 = [v7 code];
-      v14 = [v7 localizedDescription];
+      code = [errorCopy code];
+      localizedDescription = [errorCopy localizedDescription];
       v20 = 138544130;
       v21 = v12;
       v22 = 2048;
-      v23 = self;
+      selfCopy2 = self;
       v24 = 2048;
-      v25 = v13;
+      v25 = code;
       v26 = 2112;
-      v27 = v14;
+      v27 = localizedDescription;
       v15 = "%{public}@ <%p>: Split technique pipeline failed with error: %ld - %@";
       v16 = v10;
       v17 = OS_LOG_TYPE_ERROR;
@@ -343,16 +343,16 @@ LABEL_8:
   {
     v18 = objc_opt_class();
     v12 = NSStringFromClass(v18);
-    v19 = [v7 code];
-    v14 = [v7 localizedDescription];
+    code2 = [errorCopy code];
+    localizedDescription = [errorCopy localizedDescription];
     v20 = 138544130;
     v21 = v12;
     v22 = 2048;
-    v23 = self;
+    selfCopy2 = self;
     v24 = 2048;
-    v25 = v19;
+    v25 = code2;
     v26 = 2112;
-    v27 = v14;
+    v27 = localizedDescription;
     v15 = "Error: %{public}@ <%p>: Split technique pipeline failed with error: %ld - %@";
     v16 = v10;
     v17 = OS_LOG_TYPE_INFO;

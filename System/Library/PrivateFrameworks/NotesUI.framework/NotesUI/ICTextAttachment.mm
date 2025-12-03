@@ -1,15 +1,15 @@
 @interface ICTextAttachment
-+ (BOOL)textAttachmentIsContent:(id)a3;
-+ (Class)textAttachmentClassForAttachment:(id)a3;
-+ (id)textAttachmentWithAttachment:(id)a3;
++ (BOOL)textAttachmentIsContent:(id)content;
++ (Class)textAttachmentClassForAttachment:(id)attachment;
++ (id)textAttachmentWithAttachment:(id)attachment;
 - ($01BB1521EC52D44A8E7628F5261DCEC8)attachmentBoundsMargins;
 - (BOOL)isUnsupported;
-- (CGRect)attachmentBoundsForAttributes:(id)a3 location:(id)a4 textContainer:(id)a5 proposedLineFragment:(CGRect)a6 position:(CGPoint)a7;
-- (CGRect)attachmentBoundsForTextContainer:(id)a3 proposedLineFragment:(CGRect)a4 glyphPosition:(CGPoint)a5 characterIndex:(unint64_t)a6;
-- (CGRect)attachmentBoundsIncludingMarginsFromAttachmentBounds:(CGRect)a3;
-- (CGSize)attachmentSizeForTextContainer:(id)a3;
-- (ICTextAttachment)initWithData:(id)a3 ofType:(id)a4;
-- (double)availableWidthForTextContainer:(id)a3;
+- (CGRect)attachmentBoundsForAttributes:(id)attributes location:(id)location textContainer:(id)container proposedLineFragment:(CGRect)fragment position:(CGPoint)position;
+- (CGRect)attachmentBoundsForTextContainer:(id)container proposedLineFragment:(CGRect)fragment glyphPosition:(CGPoint)position characterIndex:(unint64_t)index;
+- (CGRect)attachmentBoundsIncludingMarginsFromAttachmentBounds:(CGRect)bounds;
+- (CGSize)attachmentSizeForTextContainer:(id)container;
+- (ICTextAttachment)initWithData:(id)data ofType:(id)type;
+- (double)availableWidthForTextContainer:(id)container;
 - (id)attachmentAsNSTextAttachment;
 - (id)attachmentFileWrapper;
 - (void)attachmentFileWrapper;
@@ -19,12 +19,12 @@
 
 - ($01BB1521EC52D44A8E7628F5261DCEC8)attachmentBoundsMargins
 {
-  v3 = [(ICAbstractTextAttachment *)self attachment];
-  if ([v3 preferredViewSize] == 1)
+  attachment = [(ICAbstractTextAttachment *)self attachment];
+  if ([attachment preferredViewSize] == 1)
   {
-    v4 = [(ICAbstractTextAttachment *)self supportsMultipleThumbnailsOnSameLine];
+    supportsMultipleThumbnailsOnSameLine = [(ICAbstractTextAttachment *)self supportsMultipleThumbnailsOnSameLine];
 
-    if (v4)
+    if (supportsMultipleThumbnailsOnSameLine)
     {
       v5 = 2.0;
     }
@@ -35,7 +35,7 @@
     }
 
     v6 = 4.0;
-    if (!v4)
+    if (!supportsMultipleThumbnailsOnSameLine)
     {
       v6 = 0.0;
     }
@@ -57,32 +57,32 @@
   return result;
 }
 
-+ (Class)textAttachmentClassForAttachment:(id)a3
++ (Class)textAttachmentClassForAttachment:(id)attachment
 {
-  v3 = a3;
-  if ([v3 isAuthenticated])
+  attachmentCopy = attachment;
+  if ([attachmentCopy isAuthenticated])
   {
-    v4 = [v3 media];
-    if (v4)
+    media = [attachmentCopy media];
+    if (media)
     {
-      v5 = [v3 media];
-      v6 = [v5 isAuthenticated];
+      media2 = [attachmentCopy media];
+      isAuthenticated = [media2 isAuthenticated];
     }
 
     else
     {
-      v6 = 1;
+      isAuthenticated = 1;
     }
   }
 
   else
   {
-    v6 = 0;
+    isAuthenticated = 0;
   }
 
-  if (([v3 needsInitialFetchFromCloud] & 1) != 0 || v6 & 1 | ((objc_msgSend(v3, "isPasswordProtected") & 1) == 0))
+  if (([attachmentCopy needsInitialFetchFromCloud] & 1) != 0 || isAuthenticated & 1 | ((objc_msgSend(attachmentCopy, "isPasswordProtected") & 1) == 0))
   {
-    switch([v3 attachmentType])
+    switch([attachmentCopy attachmentType])
     {
       case 0u:
       case 2u:
@@ -95,7 +95,7 @@
       case 0xCu:
         break;
       case 1u:
-        if ((([v3 isPasswordProtected] & 1) != 0 || !objc_msgSend(v3, "hasFallbackPDF")) && (objc_msgSend(v3, "isPasswordProtected") & 1) == 0)
+        if ((([attachmentCopy isPasswordProtected] & 1) != 0 || !objc_msgSend(attachmentCopy, "hasFallbackPDF")) && (objc_msgSend(attachmentCopy, "isPasswordProtected") & 1) == 0)
         {
           goto LABEL_21;
         }
@@ -120,10 +120,10 @@
         if (!+[ICPaperDocumentTextAttachment isEnabled])
         {
 LABEL_19:
-          if (![v3 hasFallbackPDF])
+          if (![attachmentCopy hasFallbackPDF])
           {
 LABEL_21:
-            [v3 hasFallbackImage];
+            [attachmentCopy hasFallbackImage];
           }
         }
 
@@ -132,7 +132,7 @@ LABEL_21:
         v8 = os_log_create("com.apple.notes", "UI");
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
         {
-          [(ICTextAttachment *)v3 textAttachmentClassForAttachment:v8];
+          [(ICTextAttachment *)attachmentCopy textAttachmentClassForAttachment:v8];
         }
 
         break;
@@ -151,17 +151,17 @@ LABEL_21:
   return v9;
 }
 
-+ (id)textAttachmentWithAttachment:(id)a3
++ (id)textAttachmentWithAttachment:(id)attachment
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_msgSend(a1 textAttachmentClassForAttachment:{v4)), "initWithAttachment:", v4}];
+  attachmentCopy = attachment;
+  v5 = [objc_alloc(objc_msgSend(self textAttachmentClassForAttachment:{attachmentCopy)), "initWithAttachment:", attachmentCopy}];
 
   return v5;
 }
 
-+ (BOOL)textAttachmentIsContent:(id)a3
++ (BOOL)textAttachmentIsContent:(id)content
 {
-  v3 = a3;
+  contentCopy = content;
   if (!textAttachmentIsContent__UIDictationClass)
   {
     textAttachmentIsContent__UIDictationClass = NSClassFromString(&cfstr_Uidictationatt.isa);
@@ -187,57 +187,57 @@ LABEL_21:
   return v4;
 }
 
-- (ICTextAttachment)initWithData:(id)a3 ofType:(id)a4
+- (ICTextAttachment)initWithData:(id)data ofType:(id)type
 {
   v5.receiver = self;
   v5.super_class = ICTextAttachment;
-  return [(ICAbstractTextAttachment *)&v5 initWithData:a3 ofType:a4];
+  return [(ICAbstractTextAttachment *)&v5 initWithData:data ofType:type];
 }
 
 - (id)attachmentFileWrapper
 {
-  v3 = [(ICAbstractTextAttachment *)self attachment];
-  v4 = [v3 media];
-  v5 = [v4 isValid];
+  attachment = [(ICAbstractTextAttachment *)self attachment];
+  media = [attachment media];
+  isValid = [media isValid];
 
-  if (!v5)
+  if (!isValid)
   {
     goto LABEL_8;
   }
 
-  v6 = [(ICAbstractTextAttachment *)self attachment];
-  v7 = [v6 media];
-  v8 = [v7 isPasswordProtected];
+  attachment2 = [(ICAbstractTextAttachment *)self attachment];
+  media2 = [attachment2 media];
+  isPasswordProtected = [media2 isPasswordProtected];
 
-  if (v8)
+  if (isPasswordProtected)
   {
-    v9 = [(ICAbstractTextAttachment *)self attachment];
-    v10 = [v9 media];
-    v11 = [v10 isAuthenticated];
+    attachment3 = [(ICAbstractTextAttachment *)self attachment];
+    media3 = [attachment3 media];
+    isAuthenticated = [media3 isAuthenticated];
 
-    if (v11)
+    if (isAuthenticated)
     {
-      v12 = [(ICAbstractTextAttachment *)self attachment];
-      v13 = [v12 media];
-      v14 = [v13 decryptedData];
+      attachment4 = [(ICAbstractTextAttachment *)self attachment];
+      media4 = [attachment4 media];
+      decryptedData = [media4 decryptedData];
 
-      if (v14)
+      if (decryptedData)
       {
-        v15 = [objc_alloc(MEMORY[0x1E696AC38]) initRegularFileWithContents:v14];
-        v16 = [(ICAbstractTextAttachment *)self attachment];
-        v17 = [v16 media];
-        v18 = [v17 filename];
+        v15 = [objc_alloc(MEMORY[0x1E696AC38]) initRegularFileWithContents:decryptedData];
+        attachment5 = [(ICAbstractTextAttachment *)self attachment];
+        media5 = [attachment5 media];
+        filename = [media5 filename];
 
-        if (![v18 length])
+        if (![filename length])
         {
           v19 = MEMORY[0x1E69B7680];
-          v20 = [(ICBaseTextAttachment *)self attachmentUTI];
-          v21 = [v19 filenameFromUTI:v20];
+          attachmentUTI = [(ICBaseTextAttachment *)self attachmentUTI];
+          v21 = [v19 filenameFromUTI:attachmentUTI];
 
-          v18 = v21;
+          filename = v21;
         }
 
-        [v15 setPreferredFilename:v18];
+        [v15 setPreferredFilename:filename];
       }
 
       else
@@ -254,11 +254,11 @@ LABEL_8:
   }
 
   v23 = objc_alloc(MEMORY[0x1E696AC38]);
-  v24 = [(ICAbstractTextAttachment *)self attachment];
-  v25 = [v24 media];
-  v26 = [v25 mediaURL];
+  attachment6 = [(ICAbstractTextAttachment *)self attachment];
+  media6 = [attachment6 media];
+  mediaURL = [media6 mediaURL];
   v29 = 0;
-  v15 = [v23 initWithURL:v26 options:0 error:&v29];
+  v15 = [v23 initWithURL:mediaURL options:0 error:&v29];
   v27 = v29;
 
   if (v27)
@@ -277,11 +277,11 @@ LABEL_9:
 
 - (id)attachmentAsNSTextAttachment
 {
-  v2 = [(ICTextAttachment *)self attachmentFileWrapper];
-  if (v2)
+  attachmentFileWrapper = [(ICTextAttachment *)self attachmentFileWrapper];
+  if (attachmentFileWrapper)
   {
     v3 = [objc_alloc(MEMORY[0x1E69DB7F0]) initWithData:0 ofType:0];
-    [v3 setFileWrapper:v2];
+    [v3 setFileWrapper:attachmentFileWrapper];
   }
 
   else
@@ -294,15 +294,15 @@ LABEL_9:
 
 - (BOOL)isUnsupported
 {
-  v2 = [(ICAbstractTextAttachment *)self attachment];
-  v3 = [v2 isUnsupported];
+  attachment = [(ICAbstractTextAttachment *)self attachment];
+  isUnsupported = [attachment isUnsupported];
 
-  return v3;
+  return isUnsupported;
 }
 
-- (CGRect)attachmentBoundsForTextContainer:(id)a3 proposedLineFragment:(CGRect)a4 glyphPosition:(CGPoint)a5 characterIndex:(unint64_t)a6
+- (CGRect)attachmentBoundsForTextContainer:(id)container proposedLineFragment:(CGRect)fragment glyphPosition:(CGPoint)position characterIndex:(unint64_t)index
 {
-  [(ICTextAttachment *)self attachmentSizeForTextContainer:a3 proposedLineFragment:a6, a4.origin.x, a4.origin.y, a4.size.width, a4.size.height, a5.x, a5.y];
+  [(ICTextAttachment *)self attachmentSizeForTextContainer:container proposedLineFragment:index, fragment.origin.x, fragment.origin.y, fragment.size.width, fragment.size.height, position.x, position.y];
   if (v7 >= 1.0)
   {
     v9 = v7;
@@ -325,10 +325,10 @@ LABEL_9:
 
   if ([(ICAbstractTextAttachment *)self supportsMultipleThumbnailsOnSameLine])
   {
-    v11 = [(ICAbstractTextAttachment *)self attachment];
-    v12 = [v11 preferredViewSize];
+    attachment = [(ICAbstractTextAttachment *)self attachment];
+    preferredViewSize = [attachment preferredViewSize];
 
-    if (v12 == 1)
+    if (preferredViewSize == 1)
     {
       [objc_opt_class() defaultAttachmentThumbnailViewHeight];
       v10 = v13;
@@ -344,19 +344,19 @@ LABEL_9:
   return result;
 }
 
-- (CGRect)attachmentBoundsForAttributes:(id)a3 location:(id)a4 textContainer:(id)a5 proposedLineFragment:(CGRect)a6 position:(CGPoint)a7
+- (CGRect)attachmentBoundsForAttributes:(id)attributes location:(id)location textContainer:(id)container proposedLineFragment:(CGRect)fragment position:(CGPoint)position
 {
-  y = a7.y;
-  x = a7.x;
-  height = a6.size.height;
-  width = a6.size.width;
-  v11 = a6.origin.y;
-  v12 = a6.origin.x;
-  v16 = a3;
-  v17 = a5;
+  y = position.y;
+  x = position.x;
+  height = fragment.size.height;
+  width = fragment.size.width;
+  v11 = fragment.origin.y;
+  v12 = fragment.origin.x;
+  attributesCopy = attributes;
+  containerCopy = container;
   v44.receiver = self;
   v44.super_class = ICTextAttachment;
-  [(ICBaseTextAttachment *)&v44 attachmentBoundsForAttributes:v16 location:a4 textContainer:v17 proposedLineFragment:v12 position:v11, width, height, x, y];
+  [(ICBaseTextAttachment *)&v44 attachmentBoundsForAttributes:attributesCopy location:location textContainer:containerCopy proposedLineFragment:v12 position:v11, width, height, x, y];
   v19 = v18;
   v21 = v20;
   objc_opt_class();
@@ -365,7 +365,7 @@ LABEL_9:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v22 = [v16 objectForKeyedSubscript:*MEMORY[0x1E69DB648]];
+      v22 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x1E69DB648]];
       v23 = v22;
       if (v22)
       {
@@ -375,7 +375,7 @@ LABEL_9:
     }
   }
 
-  [(ICTextAttachment *)self attachmentSizeForTextContainer:v17 proposedLineFragment:v12, v11, width, height];
+  [(ICTextAttachment *)self attachmentSizeForTextContainer:containerCopy proposedLineFragment:v12, v11, width, height];
   if (v25 >= 1.0)
   {
     v27 = v25;
@@ -398,10 +398,10 @@ LABEL_9:
 
   if ([(ICAbstractTextAttachment *)self supportsMultipleThumbnailsOnSameLine])
   {
-    v29 = [(ICAbstractTextAttachment *)self attachment];
-    v30 = [v29 preferredViewSize];
+    attachment = [(ICAbstractTextAttachment *)self attachment];
+    preferredViewSize = [attachment preferredViewSize];
 
-    if (v30 == 1)
+    if (preferredViewSize == 1)
     {
       [objc_opt_class() defaultAttachmentThumbnailViewHeight];
       v28 = v31;
@@ -426,7 +426,7 @@ LABEL_9:
   return result;
 }
 
-- (CGSize)attachmentSizeForTextContainer:(id)a3
+- (CGSize)attachmentSizeForTextContainer:(id)container
 {
   v4 = os_log_create("com.apple.notes", "UI");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -441,12 +441,12 @@ LABEL_9:
   return result;
 }
 
-- (double)availableWidthForTextContainer:(id)a3
+- (double)availableWidthForTextContainer:(id)container
 {
-  v3 = a3;
-  [v3 size];
+  containerCopy = container;
+  [containerCopy size];
   v5 = v4;
-  [v3 lineFragmentPadding];
+  [containerCopy lineFragmentPadding];
   v7 = v6;
 
   result = v5 + v7 * -2.0;
@@ -458,12 +458,12 @@ LABEL_9:
   return result;
 }
 
-- (CGRect)attachmentBoundsIncludingMarginsFromAttachmentBounds:(CGRect)a3
+- (CGRect)attachmentBoundsIncludingMarginsFromAttachmentBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(ICTextAttachment *)self attachmentBoundsMargins];
   v9 = width + v7 + v8;
   v12 = height + v10 + v11;
@@ -489,7 +489,7 @@ LABEL_9:
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1D4171000, a2, OS_LOG_TYPE_ERROR, "Error creating attachment file wrapper: %@", &v2, 0xCu);
 }
 

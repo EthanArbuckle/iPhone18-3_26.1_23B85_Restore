@@ -1,12 +1,12 @@
 @interface DebugSliderCell
-- (_TtC20ProductPageExtension15DebugSliderCell)initWithCoder:(id)a3;
-- (_TtC20ProductPageExtension15DebugSliderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC20ProductPageExtension15DebugSliderCell)initWithCoder:(id)coder;
+- (_TtC20ProductPageExtension15DebugSliderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
 @end
 
 @implementation DebugSliderCell
 
-- (_TtC20ProductPageExtension15DebugSliderCell)initWithCoder:(id)a3
+- (_TtC20ProductPageExtension15DebugSliderCell)initWithCoder:(id)coder
 {
   result = sub_10077156C();
   __break(1u);
@@ -15,11 +15,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100501E78();
 }
 
-- (_TtC20ProductPageExtension15DebugSliderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC20ProductPageExtension15DebugSliderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

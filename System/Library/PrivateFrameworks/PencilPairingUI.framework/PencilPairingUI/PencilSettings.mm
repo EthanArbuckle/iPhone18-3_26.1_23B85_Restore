@@ -3,13 +3,13 @@
 + (id)sharedPencilSettings;
 - (PencilSettings)init;
 - (id)daemonQueue;
-- (void)_dispatchWithErrorHandler:(id)a3 successHandler:(id)a4;
+- (void)_dispatchWithErrorHandler:(id)handler successHandler:(id)successHandler;
 - (void)_postPencilSettingsDidChangeRemoteNotification;
 - (void)loadSettings;
 - (void)migrateObsoletedAXOpaqueTouchSetting;
-- (void)setAutoRefineEnabled:(BOOL)a3;
-- (void)setPreferredSqueezeAction:(int64_t)a3;
-- (void)setPreferredTapAction:(int64_t)a3;
+- (void)setAutoRefineEnabled:(BOOL)enabled;
+- (void)setPreferredSqueezeAction:(int64_t)action;
+- (void)setPreferredTapAction:(int64_t)action;
 - (void)syncSettingsToBackboard;
 @end
 
@@ -116,22 +116,22 @@ uint64_t __36__PencilSettings_pencilUserDefaults__block_invoke()
   objc_opt_class();
   if (objc_opt_respondsToSelector())
   {
-    v3 = [MEMORY[0x277D75820] preferredSqueezeAction];
+    preferredSqueezeAction = [MEMORY[0x277D75820] preferredSqueezeAction];
   }
 
   else
   {
-    v3 = 0;
+    preferredSqueezeAction = 0;
   }
 
-  self->_preferredSqueezeAction = v3;
+  self->_preferredSqueezeAction = preferredSqueezeAction;
 }
 
-- (void)setPreferredTapAction:(int64_t)a3
+- (void)setPreferredTapAction:(int64_t)action
 {
-  if (self->_preferredTapAction != a3)
+  if (self->_preferredTapAction != action)
   {
-    self->_preferredTapAction = a3;
+    self->_preferredTapAction = action;
     v5 = +[PencilSettings pencilUserDefaults];
     [v5 setInteger:self->_preferredTapAction forKey:*MEMORY[0x277D76DE0]];
 
@@ -145,11 +145,11 @@ uint64_t __36__PencilSettings_pencilUserDefaults__block_invoke()
   }
 }
 
-- (void)setPreferredSqueezeAction:(int64_t)a3
+- (void)setPreferredSqueezeAction:(int64_t)action
 {
-  if (self->_preferredSqueezeAction != a3)
+  if (self->_preferredSqueezeAction != action)
   {
-    self->_preferredSqueezeAction = a3;
+    self->_preferredSqueezeAction = action;
     v5 = +[PencilSettings pencilUserDefaults];
     [v5 setInteger:self->_preferredSqueezeAction forKey:*MEMORY[0x277D76DD8]];
 
@@ -172,13 +172,13 @@ uint64_t __36__PencilSettings_pencilUserDefaults__block_invoke()
   }
 }
 
-- (void)setAutoRefineEnabled:(BOOL)a3
+- (void)setAutoRefineEnabled:(BOOL)enabled
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __39__PencilSettings_setAutoRefineEnabled___block_invoke_36;
   v3[3] = &__block_descriptor_33_e38_v16__0___CHPKRemoteSettingsProtocol__8l;
-  v4 = a3;
+  enabledCopy = enabled;
   [(PencilSettings *)self _dispatchWithErrorHandler:&__block_literal_global_35 successHandler:v3];
 }
 
@@ -225,20 +225,20 @@ void __39__PencilSettings_setAutoRefineEnabled___block_invoke_45()
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"PKRemoteAutoRefineSettingsDidChange", 0, 0, 1u);
 }
 
-- (void)_dispatchWithErrorHandler:(id)a3 successHandler:(id)a4
+- (void)_dispatchWithErrorHandler:(id)handler successHandler:(id)successHandler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PencilSettings *)self daemonQueue];
+  handlerCopy = handler;
+  successHandlerCopy = successHandler;
+  daemonQueue = [(PencilSettings *)self daemonQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __59__PencilSettings__dispatchWithErrorHandler_successHandler___block_invoke;
   v11[3] = &unk_279A0A2D8;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = handlerCopy;
+  v13 = successHandlerCopy;
+  v9 = successHandlerCopy;
+  v10 = handlerCopy;
+  dispatch_async(daemonQueue, v11);
 }
 
 void __59__PencilSettings__dispatchWithErrorHandler_successHandler___block_invoke(uint64_t a1)

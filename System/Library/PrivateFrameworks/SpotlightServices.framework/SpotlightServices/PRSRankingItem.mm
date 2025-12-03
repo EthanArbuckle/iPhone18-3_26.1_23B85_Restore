@@ -1,92 +1,92 @@
 @interface PRSRankingItem
-+ (float)inAppEngagementScoreWithEvaluator:(id)a3 currentTime:(double)a4 queriesInApp:(id)a5 datesInApp:(id)a6 topicalityScore:(float)a7;
-+ (float)matchScoreLaunchString:(id)a3 withEvaluator:(id)a4;
-+ (float)matchScoreServerCompletion:(id)a3 withEvaluator:(id)a4;
-+ (float)outOfSpotlightEngagementScore:(double)a3 datesOutOfSpotlight:(id)a4 topicalityScore:(float)a5 alternativeOutOfSpotlightCount:(float)a6;
-+ (id)tokenizeContactsEmailAddress:(id)a3 removeTLD:(BOOL)a4 usernameTokenCount:(unint64_t *)a5 usernameLength:(unint64_t *)a6 domainLength:(unint64_t *)a7 username:(id *)a8;
-+ (id)tokenizeContactsName:(id)a3 tokenCount:(unint64_t *)a4;
-+ (id)tokenizeTitleString:(id)a3;
-+ (id)tokenizeTitleString:(id)a3 matchOption:(unsigned __int8)a4;
-+ (id)tokenizeURLString:(id)a3 removeTLD:(BOOL)a4 hostTokenCount:(unint64_t *)a5 hostLength:(unint64_t *)a6 pathLength:(unint64_t *)a7 queryLength:(unint64_t *)a8 fragmentLength:(unint64_t *)a9;
-+ (int)preferencePriorityFromIdentity:(id)a3;
-+ (int)preferencePriorityFromIdentityWithPrefixPrefs:(id)a3;
-+ (int)preferencePriorityFromIdentityWithPrefixSettingsNavigation:(id)a3;
-+ (void)matchScoreTokensFromText:(id)a3 withEvaluator:(id)a4 withHandler:(id)a5;
-+ (void)parsePreferenceIdentity:(id)a3 withHandler:(id)a4;
-- (BOOL)_isWalletPass:(id)a3;
-- (BOOL)_isWalletTransaction:(id)a3;
-- (BOOL)isAssociatedWithTophitContactsFromItems:(id)a3;
++ (float)inAppEngagementScoreWithEvaluator:(id)evaluator currentTime:(double)time queriesInApp:(id)app datesInApp:(id)inApp topicalityScore:(float)score;
++ (float)matchScoreLaunchString:(id)string withEvaluator:(id)evaluator;
++ (float)matchScoreServerCompletion:(id)completion withEvaluator:(id)evaluator;
++ (float)outOfSpotlightEngagementScore:(double)score datesOutOfSpotlight:(id)spotlight topicalityScore:(float)topicalityScore alternativeOutOfSpotlightCount:(float)count;
++ (id)tokenizeContactsEmailAddress:(id)address removeTLD:(BOOL)d usernameTokenCount:(unint64_t *)count usernameLength:(unint64_t *)length domainLength:(unint64_t *)domainLength username:(id *)username;
++ (id)tokenizeContactsName:(id)name tokenCount:(unint64_t *)count;
++ (id)tokenizeTitleString:(id)string;
++ (id)tokenizeTitleString:(id)string matchOption:(unsigned __int8)option;
++ (id)tokenizeURLString:(id)string removeTLD:(BOOL)d hostTokenCount:(unint64_t *)count hostLength:(unint64_t *)length pathLength:(unint64_t *)pathLength queryLength:(unint64_t *)queryLength fragmentLength:(unint64_t *)fragmentLength;
++ (int)preferencePriorityFromIdentity:(id)identity;
++ (int)preferencePriorityFromIdentityWithPrefixPrefs:(id)prefs;
++ (int)preferencePriorityFromIdentityWithPrefixSettingsNavigation:(id)navigation;
++ (void)matchScoreTokensFromText:(id)text withEvaluator:(id)evaluator withHandler:(id)handler;
++ (void)parsePreferenceIdentity:(id)identity withHandler:(id)handler;
+- (BOOL)_isWalletPass:(id)pass;
+- (BOOL)_isWalletTransaction:(id)transaction;
+- (BOOL)isAssociatedWithTophitContactsFromItems:(id)items;
 - (BOOL)isCCCD;
-- (BOOL)isGoodMatchAlternateName:(id)a3 withEvaluator:(id)a4;
-- (BOOL)isSearchResultPage:(id)a3;
+- (BOOL)isGoodMatchAlternateName:(id)name withEvaluator:(id)evaluator;
+- (BOOL)isSearchResultPage:(id)page;
 - (float)computeCalibratedSparseScore;
-- (float)engagementScoreWithEvaluator:(id)a3 currentTime:(double)a4 launchString:(id)a5 topicalityScore:(float)a6;
-- (float)inSpotlightEngagementScoreWithEvaluator:(id)a3 currentTime:(double)a4 queriesInSpotlight:(id)a5 datesInSpotlight:(id)a6 queriesInSpotlightNonUnique:(id)a7 datesInSpotlightNonUnique:(id)a8 launchString:(id)a9 lastUsedDate:(id)a10 topicalityScore:(float)a11;
-- (float)matchScoreAppName:(id)a3 withEvaluator:(id)a4;
-- (float)matchScoreAppName:(id)a3 withEvaluator:(id)a4 matchOption:(unsigned __int8)a5;
-- (float)matchScoreContactsEmailAddress:(id)a3 withEvaluator:(id)a4;
-- (float)matchScoreContactsName:(id)a3 withEvaluator:(id)a4;
-- (float)matchScoreFileName:(id)a3 withEvaluator:(id)a4;
-- (float)matchScoreFileNameForSearchTool:(id)a3 withEvaluator:(id)a4;
-- (float)matchScoreForApplicationsWithEvaluator:(id)a3;
-- (float)matchScoreForBooksWithEvaluator:(id)a3 quParsedEvaluator:(id)a4 isSearchToolClient:(BOOL)a5;
-- (float)matchScoreForCalendarWithEvaluator:(id)a3 quParsedEvaluator:(id)a4 isSearchToolClient:(BOOL)a5;
-- (float)matchScoreForContactsWithEvaluator:(id)a3 quParsedEvaluator:(id)a4;
-- (float)matchScoreForDictionaryWithEvaluator:(id)a3;
-- (float)matchScoreForFilesWithEvaluator:(id)a3 quParsedEvaluator:(id)a4 isSearchToolClient:(BOOL)a5;
-- (float)matchScoreForHelpWithEvaluator:(id)a3;
-- (float)matchScoreForMailWithEvaluator:(id)a3 isSearchToolClient:(BOOL)a4;
-- (float)matchScoreForMessagesWithEvaluator:(id)a3 isSearchToolClient:(BOOL)a4;
-- (float)matchScoreForMusicWithEvaluator:(id)a3 quParsedEvaluator:(id)a4 isSearchToolClient:(BOOL)a5;
-- (float)matchScoreForNotesWithEvaluator:(id)a3 isSearchToolClient:(BOOL)a4;
-- (float)matchScoreForPeopleItemsWithEvaluator:(id)a3;
-- (float)matchScoreForPreferencesWithEvaluator:(id)a3;
-- (float)matchScoreForPreferencesWithEvaluator:(id)a3 subject:(id)a4 isFirstParty:(BOOL)a5 preferencePriority:(int)a6;
-- (float)matchScoreForPreferencesWithEvaluator:(id)a3 subject:(id)a4 preferenceType:(id)a5 preferenceId:(id)a6;
-- (float)matchScoreForSafariWithEvaluator:(id)a3 quParsedEvaluator:(id)a4 isSearchToolClient:(BOOL)a5;
-- (float)matchScoreForShortcutsAppWithEvaluator:(id)a3;
-- (float)matchScoreForShortcutsSettingWithEvaluator:(id)a3 name:(id)a4 preferencePriority:(int)a5;
-- (float)matchScoreForShortcutsWithEvaluator:(id)a3 isSearchToolClient:(BOOL)a4;
-- (float)matchScoreForTipsWithEvaluator:(id)a3;
-- (float)matchScoreForTokensFromText:(id)a3 withEvaluator:(id)a4;
-- (float)matchScoreForWalletWithEvaluator:(id)a3 quParsedEvaluator:(id)a4 isSearchToolClient:(BOOL)a5;
-- (float)matchScoreGeneric:(id)a3 quParsedEvaluator:(id)a4 isSearchToolClient:(BOOL)a5;
-- (float)matchScoreSettings:(id)a3 withEvaluator:(id)a4 matchOption:(unsigned __int8)a5;
-- (float)matchScoreTitle:(id)a3 withEvaluator:(id)a4;
-- (float)matchScoreTitle:(id)a3 withEvaluator:(id)a4 matchOption:(unsigned __int8)a5;
-- (float)matchScoreURLString:(id)a3 withEvaluator:(id)a4;
-- (float)mostRecentTimeToQueryInMinutesWithCurrentTime:(double)a3 topicality:(float)a4;
-- (float)staleDemotionWithCurrentTime:(double)a3 topicality:(float)a4;
-- (int)shortcutPriorityFromIdentifier:(id)a3;
-- (int64_t)compareAppsTopHitCandidate:(id)a3;
-- (int64_t)compareContactsTopHitCandidate:(id)a3;
-- (int64_t)compareLocalTopHitCandidate:(id)a3;
-- (int64_t)compareParsecTopHitCandidate:(id)a3;
-- (int64_t)comparePeopleItemTopHitCandidate:(id)a3;
-- (int64_t)compareSafariTopHitCandidate:(id)a3;
-- (int64_t)compareShortcutTopHitCandidate:(id)a3;
-- (int64_t)compareWithCCCDTopHitCandidate:(id)a3;
-- (int64_t)itemSparseMatchStrengthTypeForMailWithEvaluator:(id)a3 attributeMatchesForToken:(id)a4;
-- (int64_t)itemSparseMatchStrengthTypeForMessagesAndCalendarWithEvaluator:(id)a3 attributeMatchesForToken:(id)a4;
-- (int64_t)itemSparseMatchStrengthTypeForNotesAndFilesWithEvaluator:(id)a3 attributeMatchesForToken:(id)a4;
-- (int64_t)itemSparseMatchStrengthTypeWithEvaluator:(id)a3;
-- (void)calculateFreshnessForSearchTool:(id)a3 userSpecifiedStartTime:(double)a4 userSpecifiedEndTime:(double)a5;
+- (float)engagementScoreWithEvaluator:(id)evaluator currentTime:(double)time launchString:(id)string topicalityScore:(float)score;
+- (float)inSpotlightEngagementScoreWithEvaluator:(id)evaluator currentTime:(double)time queriesInSpotlight:(id)spotlight datesInSpotlight:(id)inSpotlight queriesInSpotlightNonUnique:(id)unique datesInSpotlightNonUnique:(id)nonUnique launchString:(id)string lastUsedDate:(id)self0 topicalityScore:(float)self1;
+- (float)matchScoreAppName:(id)name withEvaluator:(id)evaluator;
+- (float)matchScoreAppName:(id)name withEvaluator:(id)evaluator matchOption:(unsigned __int8)option;
+- (float)matchScoreContactsEmailAddress:(id)address withEvaluator:(id)evaluator;
+- (float)matchScoreContactsName:(id)name withEvaluator:(id)evaluator;
+- (float)matchScoreFileName:(id)name withEvaluator:(id)evaluator;
+- (float)matchScoreFileNameForSearchTool:(id)tool withEvaluator:(id)evaluator;
+- (float)matchScoreForApplicationsWithEvaluator:(id)evaluator;
+- (float)matchScoreForBooksWithEvaluator:(id)evaluator quParsedEvaluator:(id)parsedEvaluator isSearchToolClient:(BOOL)client;
+- (float)matchScoreForCalendarWithEvaluator:(id)evaluator quParsedEvaluator:(id)parsedEvaluator isSearchToolClient:(BOOL)client;
+- (float)matchScoreForContactsWithEvaluator:(id)evaluator quParsedEvaluator:(id)parsedEvaluator;
+- (float)matchScoreForDictionaryWithEvaluator:(id)evaluator;
+- (float)matchScoreForFilesWithEvaluator:(id)evaluator quParsedEvaluator:(id)parsedEvaluator isSearchToolClient:(BOOL)client;
+- (float)matchScoreForHelpWithEvaluator:(id)evaluator;
+- (float)matchScoreForMailWithEvaluator:(id)evaluator isSearchToolClient:(BOOL)client;
+- (float)matchScoreForMessagesWithEvaluator:(id)evaluator isSearchToolClient:(BOOL)client;
+- (float)matchScoreForMusicWithEvaluator:(id)evaluator quParsedEvaluator:(id)parsedEvaluator isSearchToolClient:(BOOL)client;
+- (float)matchScoreForNotesWithEvaluator:(id)evaluator isSearchToolClient:(BOOL)client;
+- (float)matchScoreForPeopleItemsWithEvaluator:(id)evaluator;
+- (float)matchScoreForPreferencesWithEvaluator:(id)evaluator;
+- (float)matchScoreForPreferencesWithEvaluator:(id)evaluator subject:(id)subject isFirstParty:(BOOL)party preferencePriority:(int)priority;
+- (float)matchScoreForPreferencesWithEvaluator:(id)evaluator subject:(id)subject preferenceType:(id)type preferenceId:(id)id;
+- (float)matchScoreForSafariWithEvaluator:(id)evaluator quParsedEvaluator:(id)parsedEvaluator isSearchToolClient:(BOOL)client;
+- (float)matchScoreForShortcutsAppWithEvaluator:(id)evaluator;
+- (float)matchScoreForShortcutsSettingWithEvaluator:(id)evaluator name:(id)name preferencePriority:(int)priority;
+- (float)matchScoreForShortcutsWithEvaluator:(id)evaluator isSearchToolClient:(BOOL)client;
+- (float)matchScoreForTipsWithEvaluator:(id)evaluator;
+- (float)matchScoreForTokensFromText:(id)text withEvaluator:(id)evaluator;
+- (float)matchScoreForWalletWithEvaluator:(id)evaluator quParsedEvaluator:(id)parsedEvaluator isSearchToolClient:(BOOL)client;
+- (float)matchScoreGeneric:(id)generic quParsedEvaluator:(id)evaluator isSearchToolClient:(BOOL)client;
+- (float)matchScoreSettings:(id)settings withEvaluator:(id)evaluator matchOption:(unsigned __int8)option;
+- (float)matchScoreTitle:(id)title withEvaluator:(id)evaluator;
+- (float)matchScoreTitle:(id)title withEvaluator:(id)evaluator matchOption:(unsigned __int8)option;
+- (float)matchScoreURLString:(id)string withEvaluator:(id)evaluator;
+- (float)mostRecentTimeToQueryInMinutesWithCurrentTime:(double)time topicality:(float)topicality;
+- (float)staleDemotionWithCurrentTime:(double)time topicality:(float)topicality;
+- (int)shortcutPriorityFromIdentifier:(id)identifier;
+- (int64_t)compareAppsTopHitCandidate:(id)candidate;
+- (int64_t)compareContactsTopHitCandidate:(id)candidate;
+- (int64_t)compareLocalTopHitCandidate:(id)candidate;
+- (int64_t)compareParsecTopHitCandidate:(id)candidate;
+- (int64_t)comparePeopleItemTopHitCandidate:(id)candidate;
+- (int64_t)compareSafariTopHitCandidate:(id)candidate;
+- (int64_t)compareShortcutTopHitCandidate:(id)candidate;
+- (int64_t)compareWithCCCDTopHitCandidate:(id)candidate;
+- (int64_t)itemSparseMatchStrengthTypeForMailWithEvaluator:(id)evaluator attributeMatchesForToken:(id)token;
+- (int64_t)itemSparseMatchStrengthTypeForMessagesAndCalendarWithEvaluator:(id)evaluator attributeMatchesForToken:(id)token;
+- (int64_t)itemSparseMatchStrengthTypeForNotesAndFilesWithEvaluator:(id)evaluator attributeMatchesForToken:(id)token;
+- (int64_t)itemSparseMatchStrengthTypeWithEvaluator:(id)evaluator;
+- (void)calculateFreshnessForSearchTool:(id)tool userSpecifiedStartTime:(double)time userSpecifiedEndTime:(double)endTime;
 - (void)extractDocumentSignals;
-- (void)resetScoreForShortcutsSetting:(id)a3;
+- (void)resetScoreForShortcutsSetting:(id)setting;
 @end
 
 @implementation PRSRankingItem
 
-- (float)staleDemotionWithCurrentTime:(double)a3 topicality:(float)a4
+- (float)staleDemotionWithCurrentTime:(double)time topicality:(float)topicality
 {
-  [(PRSRankingItem *)self mostRecentTimeToQueryInMinutesWithCurrentTime:a3 topicality:?];
+  [(PRSRankingItem *)self mostRecentTimeToQueryInMinutesWithCurrentTime:time topicality:?];
   v6 = v5;
   [(PRSRankingItem *)self setMostRecentTimeToQueryInDaysForFreshness:(v5 / 1440.0)];
 
   return timeDecay(&unk_1F55B75C8, v6);
 }
 
-- (float)mostRecentTimeToQueryInMinutesWithCurrentTime:(double)a3 topicality:(float)a4
+- (float)mostRecentTimeToQueryInMinutesWithCurrentTime:(double)time topicality:(float)topicality
 {
   v70 = *MEMORY[0x1E69E9840];
   v7 = SSCompactRankingAttrsGetValue([(PRSRankingItem *)self attributes], 9uLL);
@@ -98,7 +98,7 @@
   if (v9)
   {
     [v9 timeIntervalSinceReferenceDate];
-    [(PRSRankingItem *)self setCardExpirationDateToNowInSeconds:(a3 - v12)];
+    [(PRSRankingItem *)self setCardExpirationDateToNowInSeconds:(time - v12)];
   }
 
   if ([v10 count])
@@ -140,7 +140,7 @@
 
     else
     {
-      if (!v8 || ([v8 timeIntervalSinceReferenceDate], (a3 - v21) / 60.0 >= 5.0))
+      if (!v8 || ([v8 timeIntervalSinceReferenceDate], (time - v21) / 60.0 >= 5.0))
       {
         v22 = 0;
         goto LABEL_34;
@@ -161,7 +161,7 @@ LABEL_34:
     {
       if (!v16)
       {
-        v34 = [(PRSRankingItem *)self attributes];
+        attributes = [(PRSRankingItem *)self attributes];
         v35 = 365;
         goto LABEL_80;
       }
@@ -195,7 +195,7 @@ LABEL_35:
 
 LABEL_46:
         [v22 timeIntervalSinceReferenceDate];
-        v23 = (a3 - v24) / 60.0;
+        v23 = (time - v24) / 60.0;
         [(PRSRankingItem *)self setMostRecentUseInMinutes:v23];
         if (([(PRSRankingItem *)self bundleIDType]& 0x100) != 0)
         {
@@ -256,7 +256,7 @@ LABEL_46:
                     }
 
                     [*(*(&v64 + 1) + 8 * i) timeIntervalSinceReferenceDate];
-                    v32 = (a3 - v31) / 60.0;
+                    v32 = (time - v31) / 60.0;
                     if (v23 > v32 && v32 > 0.0)
                     {
                       v23 = v32;
@@ -296,7 +296,7 @@ LABEL_46:
               if (v42)
               {
                 [v42 timeIntervalSinceReferenceDate];
-                if ((a3 - v45) / 60.0 > 1440.0)
+                if ((time - v45) / 60.0 > 1440.0)
                 {
                   v23 = v23 + 129600.0;
                 }
@@ -305,7 +305,7 @@ LABEL_46:
               else if (v43)
               {
                 [v43 timeIntervalSinceReferenceDate];
-                v49 = (v48 - a3) / 60.0;
+                v49 = (v48 - time) / 60.0;
                 v50 = v23 >= v49 ? v49 : v23;
                 if (v49 < 1440.0 && v49 > 0.0)
                 {
@@ -402,7 +402,7 @@ LABEL_94:
 
       if (([(PRSRankingItem *)self bundleIDType]& 0x40) != 0)
       {
-        v34 = [(PRSRankingItem *)self attributes];
+        attributes = [(PRSRankingItem *)self attributes];
         v35 = 29;
       }
 
@@ -412,30 +412,30 @@ LABEL_94:
         {
           if (([(PRSRankingItem *)self bundleIDType]& 0x10000000000) != 0 && ([(PRSRankingItem *)self lastUsedDate], v17 = objc_claimAutoreleasedReturnValue(), v17, v17) || ([(PRSRankingItem *)self bundleIDType]& 0x200000) != 0)
           {
-            v18 = [(PRSRankingItem *)self lastUsedDate];
+            lastUsedDate = [(PRSRankingItem *)self lastUsedDate];
           }
 
           else if (([(PRSRankingItem *)self bundleIDType]& 0x200) != 0)
           {
-            v18 = v8;
+            lastUsedDate = v8;
           }
 
           else
           {
-            v18 = [(PRSRankingItem *)self interestingDate];
+            lastUsedDate = [(PRSRankingItem *)self interestingDate];
           }
 
           goto LABEL_81;
         }
 
-        v34 = [(PRSRankingItem *)self attributes];
+        attributes = [(PRSRankingItem *)self attributes];
         v35 = 18;
       }
 
 LABEL_80:
-      v18 = SSCompactRankingAttrsGetValue(v34, v35);
+      lastUsedDate = SSCompactRankingAttrsGetValue(attributes, v35);
 LABEL_81:
-      v22 = v18;
+      v22 = lastUsedDate;
       goto LABEL_35;
     }
   }
@@ -456,13 +456,13 @@ LABEL_36:
   if (([(PRSRankingItem *)self bundleIDType]& 4) != 0)
   {
     v22 = 0;
-    if (a4 > 0.96)
+    if (topicality > 0.96)
     {
       v23 = 259200.0;
       goto LABEL_105;
     }
 
-    v36 = a4 < 0.9;
+    v36 = topicality < 0.9;
     v37 = &unk_1DA0D58A0;
 LABEL_84:
     v23 = v37[v36];
@@ -472,7 +472,7 @@ LABEL_84:
   if (([(PRSRankingItem *)self bundleIDType]& 0x10) != 0)
   {
     v22 = 0;
-    v36 = a4 > 0.6;
+    v36 = topicality > 0.6;
     v37 = &unk_1DA0D58A8;
     goto LABEL_84;
   }
@@ -487,8 +487,8 @@ LABEL_84:
       goto LABEL_105;
     }
 
-    v52 = [(PRSRankingItem *)self sectionBundleIdentifier];
-    v63 = [v52 hasPrefix:@"com.apple.parsec"];
+    sectionBundleIdentifier = [(PRSRankingItem *)self sectionBundleIdentifier];
+    v63 = [sectionBundleIdentifier hasPrefix:@"com.apple.parsec"];
 
     if ((v63 & 1) == 0)
     {
@@ -496,7 +496,7 @@ LABEL_84:
       {
         v56 = SSCompactRankingAttrsGetValue([(PRSRankingItem *)self attributes], 0x48uLL);
         v57 = v56;
-        if (a4 > 0.6 && [v56 length] && (objc_msgSend(v57, "isEqualToString:", @"com.apple.Preferences") & 1) != 0)
+        if (topicality > 0.6 && [v56 length] && (objc_msgSend(v57, "isEqualToString:", @"com.apple.Preferences") & 1) != 0)
         {
           v23 = 43200.0;
         }
@@ -528,7 +528,7 @@ LABEL_84:
         if (v53)
         {
           [v53 timeIntervalSinceReferenceDate];
-          v23 = (v55 - a3) / 60.0 + 259200.0;
+          v23 = (v55 - time) / 60.0 + 259200.0;
         }
 
         else
@@ -546,9 +546,9 @@ LABEL_105:
   return v23;
 }
 
-- (void)calculateFreshnessForSearchTool:(id)a3 userSpecifiedStartTime:(double)a4 userSpecifiedEndTime:(double)a5
+- (void)calculateFreshnessForSearchTool:(id)tool userSpecifiedStartTime:(double)time userSpecifiedEndTime:(double)endTime
 {
-  v57 = a3;
+  toolCopy = tool;
   [(PRSRankingItem *)self setStartDueDateToNowInSeconds:0];
   [(PRSRankingItem *)self setMostRecentTimeToQueryInMinutesForFreshness:-259200];
   [(PRSRankingItem *)self setCreationDate:0];
@@ -565,7 +565,7 @@ LABEL_105:
     v21 = SSCompactRankingAttrsGetValue([(PRSRankingItem *)self attributes], 0x16DuLL);
     if (v21)
     {
-      v20 = v21;
+      lastObject = v21;
       goto LABEL_28;
     }
 
@@ -573,9 +573,9 @@ LABEL_105:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v28 count])
     {
-      v20 = [v28 lastObject];
+      lastObject = [v28 lastObject];
 
-      if (v20)
+      if (lastObject)
       {
         goto LABEL_28;
       }
@@ -589,17 +589,17 @@ LABEL_105:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v29 count])
     {
-      v20 = [v29 lastObject];
+      lastObject = [v29 lastObject];
     }
 
     else
     {
-      v20 = 0;
+      lastObject = 0;
     }
 
 LABEL_28:
-    [(PRSRankingItem *)self setCreationDate:v20];
-    if (v20)
+    [(PRSRankingItem *)self setCreationDate:lastObject];
+    if (lastObject)
     {
       goto LABEL_36;
     }
@@ -609,20 +609,20 @@ LABEL_28:
 
   if (([(PRSRankingItem *)self bundleIDType]& 0x40) != 0)
   {
-    v20 = SSCompactRankingAttrsGetValue([(PRSRankingItem *)self attributes], 0x1CuLL);
+    lastObject = SSCompactRankingAttrsGetValue([(PRSRankingItem *)self attributes], 0x1CuLL);
     v22 = SSCompactRankingAttrsGetValue([(PRSRankingItem *)self attributes], 0x1DuLL);
     v23 = v22;
-    if (!v20)
+    if (!lastObject)
     {
-      v20 = v22;
+      lastObject = v22;
     }
 
-    [(PRSRankingItem *)self setCreationDate:v20];
+    [(PRSRankingItem *)self setCreationDate:lastObject];
     if (v23)
     {
       [v23 timeIntervalSinceReferenceDate];
       v25 = v24;
-      [v57 currentTime];
+      [toolCopy currentTime];
       v27 = (v25 - v26);
     }
 
@@ -633,7 +633,7 @@ LABEL_28:
 
     [(PRSRankingItem *)self setStartDueDateToNowInSeconds:v27];
 
-    if (!v20)
+    if (!lastObject)
     {
       goto LABEL_35;
     }
@@ -647,11 +647,11 @@ LABEL_28:
     if (v9)
     {
       [(PRSRankingItem *)self setCreationDate:v9];
-      if (!v8 || ([v8 timeIntervalSinceReferenceDate], v11 = v10, objc_msgSend(v57, "currentTime"), v11 < v12) || (objc_msgSend(v9, "timeIntervalSinceReferenceDate"), v14 = v13, objc_msgSend(v57, "currentTime"), v14 > v15) || objc_msgSend(v57, "earliestTokenFromQU") && objc_msgSend(v57, "isSingle") && objc_msgSend(v57, "orderByTimeAscending"))
+      if (!v8 || ([v8 timeIntervalSinceReferenceDate], v11 = v10, objc_msgSend(toolCopy, "currentTime"), v11 < v12) || (objc_msgSend(v9, "timeIntervalSinceReferenceDate"), v14 = v13, objc_msgSend(toolCopy, "currentTime"), v14 > v15) || objc_msgSend(toolCopy, "earliestTokenFromQU") && objc_msgSend(toolCopy, "isSingle") && objc_msgSend(toolCopy, "orderByTimeAscending"))
       {
         [v9 timeIntervalSinceReferenceDate];
         v17 = v16;
-        [v57 currentTime];
+        [toolCopy currentTime];
         v19 = (v17 - v18);
       }
 
@@ -660,48 +660,48 @@ LABEL_28:
         v19 = 0;
       }
 
-      v20 = v9;
+      lastObject = v9;
     }
 
     else
     {
-      v20 = v8;
-      [(PRSRankingItem *)self setCreationDate:v20];
+      lastObject = v8;
+      [(PRSRankingItem *)self setCreationDate:lastObject];
       v19 = 0x7FFFFFFFFFFFFFFFLL;
     }
 
     [(PRSRankingItem *)self setStartDueDateToNowInSeconds:v19];
 
-    if (!v20)
+    if (!lastObject)
     {
       goto LABEL_35;
     }
   }
 
-  else if (([(PRSRankingItem *)self bundleIDType]& 0x1000000000000806) == 0 || (SSCompactRankingAttrsGetValue([(PRSRankingItem *)self attributes], 9uLL), (v20 = objc_claimAutoreleasedReturnValue()) == 0))
+  else if (([(PRSRankingItem *)self bundleIDType]& 0x1000000000000806) == 0 || (SSCompactRankingAttrsGetValue([(PRSRankingItem *)self attributes], 9uLL), (lastObject = objc_claimAutoreleasedReturnValue()) == 0))
   {
 LABEL_35:
-    v20 = v6;
+    lastObject = v6;
   }
 
 LABEL_36:
-  v30 = [(PRSRankingItem *)self creationDate];
+  creationDate = [(PRSRankingItem *)self creationDate];
 
-  if (!v30)
+  if (!creationDate)
   {
     [(PRSRankingItem *)self setCreationDate:v6];
   }
 
   v31 = SSCompactRankingAttrsGetValue([(PRSRankingItem *)self attributes], 0x19uLL);
   v32 = v31;
-  if (!v20)
+  if (!lastObject)
   {
-    v20 = v31;
+    lastObject = v31;
   }
 
-  v33 = [(PRSRankingItem *)self creationDate];
+  creationDate2 = [(PRSRankingItem *)self creationDate];
 
-  if (!v33)
+  if (!creationDate2)
   {
     [(PRSRankingItem *)self setCreationDate:v32];
   }
@@ -710,10 +710,10 @@ LABEL_36:
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
 
-    v20 = 0;
+    lastObject = 0;
   }
 
-  v34 = [(PRSRankingItem *)self creationDate];
+  creationDate3 = [(PRSRankingItem *)self creationDate];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -724,11 +724,11 @@ LABEL_36:
 
   if (([(PRSRankingItem *)self bundleIDType]& 0x100008) != 0)
   {
-    if (v20)
+    if (lastObject)
     {
-      [v20 timeIntervalSinceReferenceDate];
+      [lastObject timeIntervalSinceReferenceDate];
       v37 = v36;
-      [v57 currentTime];
+      [toolCopy currentTime];
       v39 = (v37 - v38);
     }
 
@@ -747,15 +747,15 @@ LABEL_36:
         goto LABEL_57;
       }
 
-      if (v20)
+      if (lastObject)
       {
         [v40 timeIntervalSinceReferenceDate];
         v42 = v41;
-        [v57 currentTime];
+        [toolCopy currentTime];
         v44 = vabdd_f64(v42, v43);
-        [v20 timeIntervalSinceReferenceDate];
+        [lastObject timeIntervalSinceReferenceDate];
         v46 = v45;
-        [v57 currentTime];
+        [toolCopy currentTime];
         if (v44 >= vabdd_f64(v46, v47))
         {
           goto LABEL_57;
@@ -763,8 +763,8 @@ LABEL_36:
       }
 
       v48 = v40;
-      v40 = v20;
-      v20 = v48;
+      v40 = lastObject;
+      lastObject = v48;
     }
 
     else
@@ -776,16 +776,16 @@ LABEL_36:
 LABEL_57:
   }
 
-  if (v20)
+  if (lastObject)
   {
-    [v20 timeIntervalSinceReferenceDate];
+    [lastObject timeIntervalSinceReferenceDate];
     v50 = v49;
-    [v57 currentTime];
+    [toolCopy currentTime];
     [(PRSRankingItem *)self setMostRecentTimeToQueryInMinutesForFreshness:((v50 - v51) / 60.0)];
   }
 
   [(PRSRankingItem *)self setMostRecentTimeToQueryInDaysForFreshness:[(PRSRankingItem *)self mostRecentTimeToQueryInMinutesForFreshness]/ 1440];
-  if (!v6 || ([v6 timeIntervalSinceReferenceDate], v53 = v52, objc_msgSend(v57, "currentTime"), v55 = v54, v56 = 0.0, v53 <= v55))
+  if (!v6 || ([v6 timeIntervalSinceReferenceDate], v53 = v52, objc_msgSend(toolCopy, "currentTime"), v55 = v54, v56 = 0.0, v53 <= v55))
   {
     v56 = exp(-fabsf([(PRSRankingItem *)self mostRecentTimeToQueryInMinutesForFreshness]* 0.0000053483));
   }
@@ -793,63 +793,63 @@ LABEL_57:
   [(PRSRankingItem *)self setFreshnessScore:v56];
 }
 
-- (float)inSpotlightEngagementScoreWithEvaluator:(id)a3 currentTime:(double)a4 queriesInSpotlight:(id)a5 datesInSpotlight:(id)a6 queriesInSpotlightNonUnique:(id)a7 datesInSpotlightNonUnique:(id)a8 launchString:(id)a9 lastUsedDate:(id)a10 topicalityScore:(float)a11
+- (float)inSpotlightEngagementScoreWithEvaluator:(id)evaluator currentTime:(double)time queriesInSpotlight:(id)spotlight datesInSpotlight:(id)inSpotlight queriesInSpotlightNonUnique:(id)unique datesInSpotlightNonUnique:(id)nonUnique launchString:(id)string lastUsedDate:(id)self0 topicalityScore:(float)self1
 {
-  v18 = a3;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
-  v76 = a9;
-  v23 = a10;
-  v79 = v20;
-  v24 = [v20 count];
-  v25 = [v19 count];
-  v26 = [v22 count];
-  v77 = v21;
-  v27 = [v21 count];
+  evaluatorCopy = evaluator;
+  spotlightCopy = spotlight;
+  inSpotlightCopy = inSpotlight;
+  uniqueCopy = unique;
+  nonUniqueCopy = nonUnique;
+  stringCopy = string;
+  dateCopy = date;
+  v79 = inSpotlightCopy;
+  v24 = [inSpotlightCopy count];
+  v25 = [spotlightCopy count];
+  v26 = [nonUniqueCopy count];
+  v77 = uniqueCopy;
+  v27 = [uniqueCopy count];
   if (v24 && v25 && v24 == v25 && v26 == v27)
   {
-    v74 = v23;
+    v74 = dateCopy;
     v28 = 0;
-    v29 = 0.0;
+    scoreCopy2 = 0.0;
     while (1)
     {
-      v30 = [v19 objectAtIndexedSubscript:{v28, v74}];
-      [PRSRankingItem matchScoreLaunchString:v30 withEvaluator:v18];
-      v32 = v31;
+      v30 = [spotlightCopy objectAtIndexedSubscript:{v28, v74}];
+      [PRSRankingItem matchScoreLaunchString:v30 withEvaluator:evaluatorCopy];
+      scoreCopy = v31;
 
-      if (v32 == 1.0)
+      if (scoreCopy == 1.0)
       {
         [(PRSRankingItem *)self setExactMatchedLaunchString:1];
       }
 
-      v33 = v32;
-      if (v32 < 0.01)
+      v33 = scoreCopy;
+      if (scoreCopy < 0.01)
       {
         v34 = objc_alloc(MEMORY[0x1E6964DF0]);
-        v35 = [v19 objectAtIndexedSubscript:v28];
-        v36 = [v18 language];
-        v37 = [v34 initWithQuery:v35 language:v36 fuzzyThreshold:0 options:0];
+        v35 = [spotlightCopy objectAtIndexedSubscript:v28];
+        language = [evaluatorCopy language];
+        v37 = [v34 initWithQuery:v35 language:language fuzzyThreshold:0 options:0];
 
-        v38 = [v18 queryString];
-        [PRSRankingItem matchScoreLaunchString:v38 withEvaluator:v37];
+        queryString = [evaluatorCopy queryString];
+        [PRSRankingItem matchScoreLaunchString:queryString withEvaluator:v37];
         v40 = v39;
 
         if (v40 > 0.9)
         {
-          v32 = v40;
+          scoreCopy = v40;
         }
       }
 
-      if (v32 == 0.0)
+      if (scoreCopy == 0.0)
       {
         goto LABEL_17;
       }
 
-      v41 = [v20 objectAtIndexedSubscript:{v28, v33}];
+      v41 = [inSpotlightCopy objectAtIndexedSubscript:{v28, v33}];
       [v41 timeIntervalSinceReferenceDate];
-      v43 = (a4 - v42) / 60.0;
+      v43 = (time - v42) / 60.0;
 
       if (v43 > 0.0)
       {
@@ -859,29 +859,29 @@ LABEL_57:
 LABEL_19:
       if (v24 == ++v28)
       {
-        v44 = [MEMORY[0x1E695DF70] array];
+        array = [MEMORY[0x1E695DF70] array];
         if (v26)
         {
           v45 = 0;
           v46 = 0x1E695D000uLL;
-          v75 = v22;
+          v75 = nonUniqueCopy;
           do
           {
-            v47 = [v22 objectAtIndexedSubscript:v45];
+            v47 = [nonUniqueCopy objectAtIndexedSubscript:v45];
             v48 = *(v46 + 3840);
             objc_opt_class();
             isKindOfClass = objc_opt_isKindOfClass();
 
             if (isKindOfClass)
             {
-              v50 = [v22 objectAtIndexedSubscript:v45];
+              v50 = [nonUniqueCopy objectAtIndexedSubscript:v45];
               [v50 timeIntervalSinceReferenceDate];
-              v52 = (a4 - v51) / 60.0;
+              v52 = (time - v51) / 60.0;
 
               if (v52 < 10080.0)
               {
                 v53 = [v77 objectAtIndexedSubscript:v45];
-                [PRSRankingItem matchScoreLaunchString:v53 withEvaluator:v18];
+                [PRSRankingItem matchScoreLaunchString:v53 withEvaluator:evaluatorCopy];
                 v55 = v54;
 
                 v56 = v55;
@@ -889,28 +889,28 @@ LABEL_19:
                 {
                   v57 = objc_alloc(MEMORY[0x1E6964DF0]);
                   v58 = [v77 objectAtIndexedSubscript:v45];
-                  [v18 language];
+                  [evaluatorCopy language];
                   v59 = v26;
                   v60 = v46;
-                  v62 = v61 = v44;
+                  v62 = v61 = array;
                   v63 = [v57 initWithQuery:v58 language:v62 fuzzyThreshold:0 options:0];
 
-                  v64 = [v18 queryString];
-                  [PRSRankingItem matchScoreLaunchString:v64 withEvaluator:v63];
+                  queryString2 = [evaluatorCopy queryString];
+                  [PRSRankingItem matchScoreLaunchString:queryString2 withEvaluator:v63];
                   v66 = v65;
 
-                  v44 = v61;
+                  array = v61;
                   v46 = v60;
                   v26 = v59;
-                  v22 = v75;
+                  nonUniqueCopy = v75;
 
                   v56 = v66;
                 }
 
                 if (v56 > 0.9)
                 {
-                  v67 = [v22 objectAtIndexedSubscript:v45];
-                  [v44 addObject:v67];
+                  v67 = [nonUniqueCopy objectAtIndexedSubscript:v45];
+                  [array addObject:v67];
                 }
               }
             }
@@ -921,100 +921,100 @@ LABEL_19:
           while (v26 != v45);
         }
 
-        if ([v44 count] > 1)
+        if ([array count] > 1)
         {
-          [v44 sortWithOptions:1 usingComparator:&__block_literal_global_106];
-          if ([v44 count] >= 3)
+          [array sortWithOptions:1 usingComparator:&__block_literal_global_106];
+          if ([array count] >= 3)
           {
-            [v44 removeObjectsInRange:{2, objc_msgSend(v44, "count") - 2}];
+            [array removeObjectsInRange:{2, objc_msgSend(array, "count") - 2}];
           }
         }
 
-        v68 = [MEMORY[0x1E695DEC8] arrayWithArray:v44];
+        v68 = [MEMORY[0x1E695DEC8] arrayWithArray:array];
         [(PRSRankingItem *)self setRecentSimilarIntentEngagementDates:v68];
 
-        v69 = v76;
-        v23 = v74;
+        v69 = stringCopy;
+        dateCopy = v74;
         goto LABEL_42;
       }
     }
 
-    if (v32 <= a11)
+    if (scoreCopy <= score)
     {
-      v32 = a11;
+      scoreCopy = score;
     }
 
-    v32 = v32 * timeDecay(&unk_1F55B75E0, v43);
+    scoreCopy = scoreCopy * timeDecay(&unk_1F55B75E0, v43);
 LABEL_17:
-    if (v32 >= v29)
+    if (scoreCopy >= scoreCopy2)
     {
-      v29 = v32;
+      scoreCopy2 = scoreCopy;
     }
 
     goto LABEL_19;
   }
 
-  v69 = v76;
-  if ([v76 length])
+  v69 = stringCopy;
+  if ([stringCopy length])
   {
-    [PRSRankingItem matchScoreLaunchString:v76 withEvaluator:v18];
-    v29 = v70;
+    [PRSRankingItem matchScoreLaunchString:stringCopy withEvaluator:evaluatorCopy];
+    scoreCopy2 = v70;
     if (v70 == 1.0)
     {
       [(PRSRankingItem *)self setExactMatchedLaunchString:1];
     }
 
-    if (v29 <= a11)
+    if (scoreCopy2 <= score)
     {
-      v29 = a11;
+      scoreCopy2 = score;
     }
 
-    if (v23)
+    if (dateCopy)
     {
-      [v23 timeIntervalSinceReferenceDate];
-      v72 = (a4 - v71) / 60.0;
+      [dateCopy timeIntervalSinceReferenceDate];
+      v72 = (time - v71) / 60.0;
       if (v72 > 0.0)
       {
-        v29 = v29 * timeDecay(&unk_1F55B75E0, v72);
+        scoreCopy2 = scoreCopy2 * timeDecay(&unk_1F55B75E0, v72);
       }
     }
   }
 
   else
   {
-    v29 = 0.0;
+    scoreCopy2 = 0.0;
   }
 
 LABEL_42:
 
-  return v29;
+  return scoreCopy2;
 }
 
-+ (float)inAppEngagementScoreWithEvaluator:(id)a3 currentTime:(double)a4 queriesInApp:(id)a5 datesInApp:(id)a6 topicalityScore:(float)a7
++ (float)inAppEngagementScoreWithEvaluator:(id)evaluator currentTime:(double)time queriesInApp:(id)app datesInApp:(id)inApp topicalityScore:(float)score
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v13 count];
-  v15 = [v12 count];
+  evaluatorCopy = evaluator;
+  appCopy = app;
+  inAppCopy = inApp;
+  v14 = [inAppCopy count];
+  v15 = [appCopy count];
   v16 = 0.0;
   if (v14 && v15 && v14 == v15)
   {
     v17 = 0;
     while (1)
     {
-      v18 = [v12 objectAtIndexedSubscript:v17];
-      [PRSRankingItem matchScoreLaunchString:v18 withEvaluator:v11];
-      v20 = v19;
+      v18 = [appCopy objectAtIndexedSubscript:v17];
+      [PRSRankingItem matchScoreLaunchString:v18 withEvaluator:evaluatorCopy];
+      scoreCopy = v19;
 
-      if (v20 <= 0.0)
+      if (scoreCopy <= 0.0)
       {
         goto LABEL_10;
       }
 
-      v21 = [v13 objectAtIndexedSubscript:v17];
+      v21 = [inAppCopy objectAtIndexedSubscript:v17];
       [v21 timeIntervalSinceReferenceDate];
-      v23 = (a4 - v22) / 60.0;
+      v23 = (time - v22) / 60.0;
 
       if (v23 > 0.0)
       {
@@ -1028,16 +1028,16 @@ LABEL_12:
       }
     }
 
-    if (v20 <= a7)
+    if (scoreCopy <= score)
     {
-      v20 = a7;
+      scoreCopy = score;
     }
 
-    v20 = v20 * timeDecay(&unk_1F55B75E0, v23);
+    scoreCopy = scoreCopy * timeDecay(&unk_1F55B75E0, v23);
 LABEL_10:
-    if (v20 >= v16)
+    if (scoreCopy >= v16)
     {
-      v16 = v20;
+      v16 = scoreCopy;
     }
 
     goto LABEL_12;
@@ -1048,34 +1048,34 @@ LABEL_13:
   return v16;
 }
 
-+ (float)outOfSpotlightEngagementScore:(double)a3 datesOutOfSpotlight:(id)a4 topicalityScore:(float)a5 alternativeOutOfSpotlightCount:(float)a6
++ (float)outOfSpotlightEngagementScore:(double)score datesOutOfSpotlight:(id)spotlight topicalityScore:(float)topicalityScore alternativeOutOfSpotlightCount:(float)count
 {
-  v9 = a4;
-  v10 = [v9 count];
+  spotlightCopy = spotlight;
+  v10 = [spotlightCopy count];
   if (v10)
   {
     v11 = v10;
     v12 = 0;
-    if (a5 >= 1.0)
+    if (topicalityScore >= 1.0)
     {
-      v13 = a5;
+      topicalityScoreCopy = topicalityScore;
     }
 
     else
     {
-      v13 = 1.0;
+      topicalityScoreCopy = 1.0;
     }
 
     v14 = 0.0;
     do
     {
-      v15 = [v9 objectAtIndexedSubscript:v12];
+      v15 = [spotlightCopy objectAtIndexedSubscript:v12];
       [v15 timeIntervalSinceReferenceDate];
-      v17 = (a3 - v16) / 60.0;
+      v17 = (score - v16) / 60.0;
 
       if (v17 > 0.0)
       {
-        v18 = v13 * timeDecay(&unk_1F55B75E0, v17);
+        v18 = topicalityScoreCopy * timeDecay(&unk_1F55B75E0, v17);
         if (v18 >= v14)
         {
           v14 = v18;
@@ -1091,12 +1091,12 @@ LABEL_13:
   else
   {
     v19 = 1.0;
-    if (a6 < 5.0)
+    if (count < 5.0)
     {
       v19 = 0.5;
     }
 
-    if (a6 == 0.0)
+    if (count == 0.0)
     {
       v14 = 0.0;
     }
@@ -1110,10 +1110,10 @@ LABEL_13:
   return v14;
 }
 
-- (float)engagementScoreWithEvaluator:(id)a3 currentTime:(double)a4 launchString:(id)a5 topicalityScore:(float)a6
+- (float)engagementScoreWithEvaluator:(id)evaluator currentTime:(double)time launchString:(id)string topicalityScore:(float)score
 {
-  v10 = a5;
-  v11 = a3;
+  stringCopy = string;
+  evaluatorCopy = evaluator;
   v12 = SSCompactRankingAttrsGetValue([(PRSRankingItem *)self attributes], 0x6DuLL);
   v13 = SSCompactRankingAttrsGetValue([(PRSRankingItem *)self attributes], 0x6EuLL);
   v34 = SSCompactRankingAttrsGetValue([(PRSRankingItem *)self attributes], 0x70uLL);
@@ -1122,32 +1122,32 @@ LABEL_13:
   v15 = SSCompactRankingAttrsGetValue([(PRSRankingItem *)self attributes], 0x74uLL);
   v16 = SSCompactRankingAttrsGetValue([(PRSRankingItem *)self attributes], 0x75uLL);
   v17 = SSCompactRankingAttrsGetValue([(PRSRankingItem *)self attributes], 9uLL);
-  if ([v10 length] || objc_msgSend(v12, "count") && objc_msgSend(v13, "count") && (v32 = objc_msgSend(v12, "count"), v32 == objc_msgSend(v13, "count")))
+  if ([stringCopy length] || objc_msgSend(v12, "count") && objc_msgSend(v13, "count") && (v32 = objc_msgSend(v12, "count"), v32 == objc_msgSend(v13, "count")))
   {
     [(PRSRankingItem *)self setWasEngaged:1];
     [(PRSRankingItem *)self setWasEngagedInSpotlight:1];
   }
 
-  *&v18 = a6;
-  [(PRSRankingItem *)self inSpotlightEngagementScoreWithEvaluator:v11 currentTime:v13 queriesInSpotlight:v12 datesInSpotlight:v33 queriesInSpotlightNonUnique:v34 datesInSpotlightNonUnique:v10 launchString:a4 lastUsedDate:v18 topicalityScore:v17];
+  *&v18 = score;
+  [(PRSRankingItem *)self inSpotlightEngagementScoreWithEvaluator:evaluatorCopy currentTime:v13 queriesInSpotlight:v12 datesInSpotlight:v33 queriesInSpotlightNonUnique:v34 datesInSpotlightNonUnique:stringCopy launchString:time lastUsedDate:v18 topicalityScore:v17];
   v20 = v19;
-  *&v21 = a6;
-  [PRSRankingItem inAppEngagementScoreWithEvaluator:v11 currentTime:v15 queriesInApp:v14 datesInApp:a4 topicalityScore:v21];
+  *&v21 = score;
+  [PRSRankingItem inAppEngagementScoreWithEvaluator:evaluatorCopy currentTime:v15 queriesInApp:v14 datesInApp:time topicalityScore:v21];
   v23 = v22;
 
   if (SSEnableSpotlightPersonalizedRanking2024())
   {
     v35 = 0;
-    v24 = [(PRSRankingItem *)self bundleIDType];
+    bundleIDType = [(PRSRankingItem *)self bundleIDType];
     v26 = 0.0;
-    if ((v24 & 0x200000) != 0)
+    if ((bundleIDType & 0x200000) != 0)
     {
       SSCompactRankingAttrsGetFloat([(PRSRankingItem *)self attributes], 0x76uLL, &v35);
       LODWORD(v26) = v35;
     }
 
-    *&v25 = a6;
-    [PRSRankingItem outOfSpotlightEngagementScore:v16 datesOutOfSpotlight:a4 topicalityScore:v25 alternativeOutOfSpotlightCount:v26];
+    *&v25 = score;
+    [PRSRankingItem outOfSpotlightEngagementScore:v16 datesOutOfSpotlight:time topicalityScore:v25 alternativeOutOfSpotlightCount:v26];
     v28 = 1.0;
     if (v20 > 0.0)
     {
@@ -1167,15 +1167,15 @@ LABEL_13:
   return v30;
 }
 
-- (int64_t)itemSparseMatchStrengthTypeWithEvaluator:(id)a3
+- (int64_t)itemSparseMatchStrengthTypeWithEvaluator:(id)evaluator
 {
   v40 = *MEMORY[0x1E69E9840];
-  v25 = a3;
-  v4 = [v25 language];
-  v24 = self;
-  v5 = [(PRSRankingItem *)self getMatchInfoDictionaryWithKeyboardLanguage:v4];
+  evaluatorCopy = evaluator;
+  language = [evaluatorCopy language];
+  selfCopy = self;
+  v5 = [(PRSRankingItem *)self getMatchInfoDictionaryWithKeyboardLanguage:language];
 
-  v6 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
@@ -1217,8 +1217,8 @@ LABEL_13:
               }
 
               v14 = *(*(&v30 + 1) + 8 * i);
-              v15 = [v14 original];
-              v16 = [v6 objectForKey:v15];
+              original = [v14 original];
+              v16 = [dictionary objectForKey:original];
 
               if (v16)
               {
@@ -1228,8 +1228,8 @@ LABEL_13:
               else
               {
                 v16 = [MEMORY[0x1E695DFA8] setWithObject:v8];
-                v17 = [v14 original];
-                [v6 setObject:v16 forKey:v17];
+                original2 = [v14 original];
+                [dictionary setObject:v16 forKey:original2];
               }
             }
 
@@ -1249,57 +1249,57 @@ LABEL_13:
     while (v27);
   }
 
-  if (([(PRSRankingItem *)v24 bundleIDType]& 0x80) != 0)
+  if (([(PRSRankingItem *)selfCopy bundleIDType]& 0x80) != 0)
   {
-    v20 = [v6 copy];
-    v18 = v25;
-    v21 = [(PRSRankingItem *)v24 itemSparseMatchStrengthTypeForSafariWithEvaluator:v25 attributeMatchesForToken:v20];
+    v20 = [dictionary copy];
+    v18 = evaluatorCopy;
+    v21 = [(PRSRankingItem *)selfCopy itemSparseMatchStrengthTypeForSafariWithEvaluator:evaluatorCopy attributeMatchesForToken:v20];
 LABEL_33:
     v19 = v21;
 
     goto LABEL_34;
   }
 
-  v18 = v25;
-  if (([(PRSRankingItem *)v24 bundleIDType]& 2) != 0)
+  v18 = evaluatorCopy;
+  if (([(PRSRankingItem *)selfCopy bundleIDType]& 2) != 0)
   {
-    v20 = [v6 copy];
-    v21 = [(PRSRankingItem *)v24 itemSparseMatchStrengthTypeForNotesWithEvaluator:v25 attributeMatchesForToken:v20];
+    v20 = [dictionary copy];
+    v21 = [(PRSRankingItem *)selfCopy itemSparseMatchStrengthTypeForNotesWithEvaluator:evaluatorCopy attributeMatchesForToken:v20];
     goto LABEL_33;
   }
 
-  if (([(PRSRankingItem *)v24 bundleIDType]& 0x800) != 0)
+  if (([(PRSRankingItem *)selfCopy bundleIDType]& 0x800) != 0)
   {
-    v20 = [v6 copy];
-    v21 = [(PRSRankingItem *)v24 itemSparseMatchStrengthTypeForFilesWithEvaluator:v25 attributeMatchesForToken:v20];
+    v20 = [dictionary copy];
+    v21 = [(PRSRankingItem *)selfCopy itemSparseMatchStrengthTypeForFilesWithEvaluator:evaluatorCopy attributeMatchesForToken:v20];
     goto LABEL_33;
   }
 
-  if (([(PRSRankingItem *)v24 bundleIDType]& 0x20) != 0)
+  if (([(PRSRankingItem *)selfCopy bundleIDType]& 0x20) != 0)
   {
-    v20 = [v6 copy];
-    v21 = [(PRSRankingItem *)v24 itemSparseMatchStrengthTypeForCalendarWithEvaluator:v25 attributeMatchesForToken:v20];
+    v20 = [dictionary copy];
+    v21 = [(PRSRankingItem *)selfCopy itemSparseMatchStrengthTypeForCalendarWithEvaluator:evaluatorCopy attributeMatchesForToken:v20];
     goto LABEL_33;
   }
 
-  if (([(PRSRankingItem *)v24 bundleIDType]& 0x40) != 0)
+  if (([(PRSRankingItem *)selfCopy bundleIDType]& 0x40) != 0)
   {
-    v20 = [v6 copy];
-    v21 = [(PRSRankingItem *)v24 itemSparseMatchStrengthTypeForRemindersWithEvaluator:v25 attributeMatchesForToken:v20];
+    v20 = [dictionary copy];
+    v21 = [(PRSRankingItem *)selfCopy itemSparseMatchStrengthTypeForRemindersWithEvaluator:evaluatorCopy attributeMatchesForToken:v20];
     goto LABEL_33;
   }
 
-  if (([(PRSRankingItem *)v24 bundleIDType]& 0x100000) != 0)
+  if (([(PRSRankingItem *)selfCopy bundleIDType]& 0x100000) != 0)
   {
-    v20 = [v6 copy];
-    v21 = [(PRSRankingItem *)v24 itemSparseMatchStrengthTypeForMailWithEvaluator:v25 attributeMatchesForToken:v20];
+    v20 = [dictionary copy];
+    v21 = [(PRSRankingItem *)selfCopy itemSparseMatchStrengthTypeForMailWithEvaluator:evaluatorCopy attributeMatchesForToken:v20];
     goto LABEL_33;
   }
 
-  if (([(PRSRankingItem *)v24 bundleIDType]& 8) != 0)
+  if (([(PRSRankingItem *)selfCopy bundleIDType]& 8) != 0)
   {
-    v20 = [v6 copy];
-    v21 = [(PRSRankingItem *)v24 itemSparseMatchStrengthTypeForMessagesWithEvaluator:v25 attributeMatchesForToken:v20];
+    v20 = [dictionary copy];
+    v21 = [(PRSRankingItem *)selfCopy itemSparseMatchStrengthTypeForMessagesWithEvaluator:evaluatorCopy attributeMatchesForToken:v20];
     goto LABEL_33;
   }
 
@@ -1310,18 +1310,18 @@ LABEL_34:
   return v19;
 }
 
-- (int64_t)itemSparseMatchStrengthTypeForMailWithEvaluator:(id)a3 attributeMatchesForToken:(id)a4
+- (int64_t)itemSparseMatchStrengthTypeForMailWithEvaluator:(id)evaluator attributeMatchesForToken:(id)token
 {
   v123 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v105 = a4;
+  evaluatorCopy = evaluator;
+  tokenCopy = token;
   v117 = 0u;
   v118 = 0u;
   v119 = 0u;
   v120 = 0u;
-  obj = [v5 itemQPQUOutputTokenInfo];
+  obj = [evaluatorCopy itemQPQUOutputTokenInfo];
   v6 = [obj countByEnumeratingWithState:&v117 objects:v122 count:16];
-  v95 = v5;
+  v95 = evaluatorCopy;
   if (v6)
   {
     v7 = v6;
@@ -1347,7 +1347,7 @@ LABEL_34:
         v13 = [v12 objectForKeyedSubscript:@"kQPQUOutputToken"];
         v14 = [v12 objectForKeyedSubscript:@"kQPQUOutputTokenArgScores"];
         v15 = [v12 objectForKeyedSubscript:@"kQPQUOutputTokenArgLabels"];
-        v16 = [v105 objectForKey:v13];
+        v16 = [tokenCopy objectForKey:v13];
         HIDWORD(v112) += [v15 isEqualToString:@"ARG_MEDIA_TYPE"];
         if (v16)
         {
@@ -1472,7 +1472,7 @@ LABEL_34:
     while (v7);
     LODWORD(v90) = v9 != 0;
     HIDWORD(v90) = v8 != 0;
-    v5 = v95;
+    evaluatorCopy = v95;
   }
 
   else
@@ -1491,7 +1491,7 @@ LABEL_34:
   v114 = 0u;
   v115 = 0u;
   v116 = 0u;
-  v34 = v105;
+  v34 = tokenCopy;
   v35 = [v34 countByEnumeratingWithState:&v113 objects:v121 count:16];
   if (v35)
   {
@@ -1519,8 +1519,8 @@ LABEL_34:
 
         v39 = *(*(&v113 + 1) + 8 * v38);
         v40 = [v33 numberOfMatchesInString:v39 options:0 range:{0, objc_msgSend(v39, "length", v90)}];
-        v41 = [v5 queryString];
-        v42 = [v41 localizedCaseInsensitiveContainsString:v39];
+        queryString = [evaluatorCopy queryString];
+        v42 = [queryString localizedCaseInsensitiveContainsString:v39];
 
         if (v42)
         {
@@ -1563,7 +1563,7 @@ LABEL_34:
           v69 = HIDWORD(v101) + v47;
           v70 = v100 + v48;
           v33 = v94;
-          v5 = v95;
+          evaluatorCopy = v95;
           v71 = v99 + v49;
           v34 = v93;
           v72 = v98;
@@ -1669,10 +1669,10 @@ LABEL_34:
     v98 = 0;
   }
 
-  if ([v5 countQPUSpecialToken] != 1 || (v76 = 0, !v112) && !*(&v111 + 4))
+  if ([evaluatorCopy countQPUSpecialToken] != 1 || (v76 = 0, !v112) && !*(&v111 + 4))
   {
     v77 = v110 + HIDWORD(v110) + HIDWORD(v109) + v109 + v111 + DWORD1(v111) + DWORD2(v111) + HIDWORD(v111) + v112 + HIDWORD(v112);
-    if ([v5 countQPUSpecialToken])
+    if ([evaluatorCopy countQPUSpecialToken])
     {
       v76 = 0;
       if (DWORD2(v111))
@@ -1797,18 +1797,18 @@ LABEL_105:
   return v76;
 }
 
-- (int64_t)itemSparseMatchStrengthTypeForMessagesAndCalendarWithEvaluator:(id)a3 attributeMatchesForToken:(id)a4
+- (int64_t)itemSparseMatchStrengthTypeForMessagesAndCalendarWithEvaluator:(id)evaluator attributeMatchesForToken:(id)token
 {
   v75 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v57 = a4;
+  evaluatorCopy = evaluator;
+  tokenCopy = token;
   v69 = 0u;
   v70 = 0u;
   v71 = 0u;
   v72 = 0u;
-  obj = [v5 itemQPQUOutputTokenInfo];
+  obj = [evaluatorCopy itemQPQUOutputTokenInfo];
   v6 = [obj countByEnumeratingWithState:&v69 objects:v74 count:16];
-  v51 = v5;
+  v51 = evaluatorCopy;
   if (v6)
   {
     v7 = v6;
@@ -1832,7 +1832,7 @@ LABEL_105:
         v12 = [v11 objectForKeyedSubscript:@"kQPQUOutputToken"];
         v13 = [v11 objectForKeyedSubscript:@"kQPQUOutputTokenArgScores"];
         v14 = [v11 objectForKeyedSubscript:@"kQPQUOutputTokenArgLabels"];
-        v15 = [v57 objectForKey:v12];
+        v15 = [tokenCopy objectForKey:v12];
         v16 = [v14 isEqualToString:@"ARG_MEDIA_TYPE"];
         if (v15)
         {
@@ -1903,7 +1903,7 @@ LABEL_105:
 
     while (v7);
     v50 = v8 != 0;
-    v5 = v51;
+    evaluatorCopy = v51;
   }
 
   else
@@ -1921,7 +1921,7 @@ LABEL_105:
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
-  v25 = v57;
+  v25 = tokenCopy;
   v26 = [v25 countByEnumeratingWithState:&v65 objects:v73 count:16];
   if (v26)
   {
@@ -1942,8 +1942,8 @@ LABEL_105:
 
         v30 = *(*(&v65 + 1) + 8 * j);
         v31 = [v60 numberOfMatchesInString:v30 options:0 range:{0, objc_msgSend(v30, "length")}];
-        v32 = [v5 queryString];
-        v33 = [v32 localizedCaseInsensitiveContainsString:v30];
+        queryString = [evaluatorCopy queryString];
+        v33 = [queryString localizedCaseInsensitiveContainsString:v30];
 
         if (v33)
         {
@@ -1958,19 +1958,19 @@ LABEL_105:
         if (v34)
         {
           v35 = [v25 objectForKey:v30];
-          v36 = [(PRSRankingItem *)self bundleIDType];
+          bundleIDType = [(PRSRankingItem *)self bundleIDType];
           if (v31 == 2)
           {
-            if ((v36 & 0x20) != 0 || ([(PRSRankingItem *)self bundleIDType]& 0x40) != 0)
+            if ((bundleIDType & 0x20) != 0 || ([(PRSRankingItem *)self bundleIDType]& 0x40) != 0)
             {
               v38 = @"kMDItemTitle";
             }
 
             else
             {
-              v37 = [(PRSRankingItem *)self bundleIDType];
+              bundleIDType2 = [(PRSRankingItem *)self bundleIDType];
               v38 = @"kMDItemTextContent";
-              if ((v37 & 8) == 0)
+              if ((bundleIDType2 & 8) == 0)
               {
 LABEL_51:
                 v58 += [v35 containsObject:@"kMDItemAuthors"];
@@ -1985,16 +1985,16 @@ LABEL_55:
             goto LABEL_51;
           }
 
-          if ((v36 & 0x20) != 0 || ([(PRSRankingItem *)self bundleIDType]& 0x40) != 0)
+          if ((bundleIDType & 0x20) != 0 || ([(PRSRankingItem *)self bundleIDType]& 0x40) != 0)
           {
             v40 = @"kMDItemTitle";
           }
 
           else
           {
-            v39 = [(PRSRankingItem *)self bundleIDType];
+            bundleIDType3 = [(PRSRankingItem *)self bundleIDType];
             v40 = @"kMDItemTextContent";
-            if ((v39 & 8) == 0)
+            if ((bundleIDType3 & 8) == 0)
             {
               goto LABEL_54;
             }
@@ -2137,17 +2137,17 @@ LABEL_80:
   return v43;
 }
 
-- (int64_t)itemSparseMatchStrengthTypeForNotesAndFilesWithEvaluator:(id)a3 attributeMatchesForToken:(id)a4
+- (int64_t)itemSparseMatchStrengthTypeForNotesAndFilesWithEvaluator:(id)evaluator attributeMatchesForToken:(id)token
 {
   v92 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v61 = a4;
-  v63 = v5;
+  evaluatorCopy = evaluator;
+  tokenCopy = token;
+  v63 = evaluatorCopy;
   v86 = 0u;
   v87 = 0u;
   v88 = 0u;
   v89 = 0u;
-  obj = [v5 itemQPQUOutputTokenInfo];
+  obj = [evaluatorCopy itemQPQUOutputTokenInfo];
   v64 = [obj countByEnumeratingWithState:&v86 objects:v91 count:16];
   if (v64)
   {
@@ -2174,7 +2174,7 @@ LABEL_80:
         v12 = [v11 objectForKeyedSubscript:@"kQPQUOutputToken"];
         v13 = [v11 objectForKeyedSubscript:@"kQPQUOutputTokenArgScores"];
         v14 = [v11 objectForKeyedSubscript:@"kQPQUOutputTokenArgLabels"];
-        v15 = [v61 objectForKey:v12];
+        v15 = [tokenCopy objectForKey:v12];
         v16 = [v14 isEqualToString:@"ARG_MEDIA_TYPE"];
         if (v15)
         {
@@ -2278,7 +2278,7 @@ LABEL_80:
   v83 = 0u;
   v84 = 0u;
   v85 = 0u;
-  v29 = v61;
+  v29 = tokenCopy;
   v30 = [v29 countByEnumeratingWithState:&v82 objects:v90 count:16];
   if (v30)
   {
@@ -2307,8 +2307,8 @@ LABEL_80:
 
         v33 = *(*(&v82 + 1) + 8 * v32);
         v34 = [v28 numberOfMatchesInString:v33 options:0 range:{0, objc_msgSend(v33, "length", v52)}];
-        v35 = [v63 queryString];
-        v36 = [v35 localizedCaseInsensitiveContainsString:v33];
+        queryString = [v63 queryString];
+        v36 = [queryString localizedCaseInsensitiveContainsString:v33];
 
         if (v36)
         {
@@ -2463,20 +2463,20 @@ LABEL_80:
 {
   [(PRSRankingItem *)self pommesL1Score];
   v4 = v3;
-  v5 = [(PRSRankingItem *)self bundleIDType];
-  v6 = [(PRSRankingItem *)self itemSparseMatchStrengthType];
+  bundleIDType = [(PRSRankingItem *)self bundleIDType];
+  itemSparseMatchStrengthType = [(PRSRankingItem *)self itemSparseMatchStrengthType];
   if (v4 <= 0.00000011921)
   {
     return 0.0;
   }
 
-  switch(v6)
+  switch(itemSparseMatchStrengthType)
   {
     case 0:
       v10 = 1.5;
       v7 = 1.0;
       v8 = 0.8;
-      if ((v5 & 0x100000) != 0)
+      if ((bundleIDType & 0x100000) != 0)
       {
         v11 = 0.4;
       }
@@ -2484,9 +2484,9 @@ LABEL_80:
       else
       {
         v11 = 0.5;
-        if ((v5 & 0x862) == 0)
+        if ((bundleIDType & 0x862) == 0)
         {
-          if ((v5 & 8) != 0)
+          if ((bundleIDType & 8) != 0)
           {
             v11 = 0.5;
           }
@@ -2498,7 +2498,7 @@ LABEL_80:
 
           v10 = 1.5;
           v7 = 1.0;
-          if ((v5 & 8) == 0)
+          if ((bundleIDType & 8) == 0)
           {
             v10 = 1.0;
           }
@@ -2509,7 +2509,7 @@ LABEL_80:
     case 1:
       v8 = 0.5;
       v7 = 0.78;
-      if ((v5 & 0x100000) != 0)
+      if ((bundleIDType & 0x100000) != 0)
       {
         goto LABEL_26;
       }
@@ -2518,12 +2518,12 @@ LABEL_80:
     case 2:
       v7 = 0.48;
       v8 = 0.1;
-      if ((v5 & 0x100000) != 0)
+      if ((bundleIDType & 0x100000) != 0)
       {
 LABEL_26:
-        if (v6 != 1)
+        if (itemSparseMatchStrengthType != 1)
         {
-          if (v6 == 2)
+          if (itemSparseMatchStrengthType == 2)
           {
             v10 = 0.5;
             v11 = 0.2;
@@ -2543,7 +2543,7 @@ LABEL_36:
     default:
       v7 = 1.0;
       v8 = 0.0;
-      if ((v5 & 0x100000) != 0)
+      if ((bundleIDType & 0x100000) != 0)
       {
         goto LABEL_26;
       }
@@ -2551,11 +2551,11 @@ LABEL_36:
       break;
   }
 
-  if ((v5 & 0x20) != 0)
+  if ((bundleIDType & 0x20) != 0)
   {
-    if (v6 != 1)
+    if (itemSparseMatchStrengthType != 1)
     {
-      if (v6 != 2)
+      if (itemSparseMatchStrengthType != 2)
       {
         goto LABEL_36;
       }
@@ -2569,11 +2569,11 @@ LABEL_35:
     goto LABEL_39;
   }
 
-  if ((v5 & 2) != 0 || (v5 & 0x40) != 0 || (v5 & 0x800) != 0)
+  if ((bundleIDType & 2) != 0 || (bundleIDType & 0x40) != 0 || (bundleIDType & 0x800) != 0)
   {
-    if (v6 != 1)
+    if (itemSparseMatchStrengthType != 1)
     {
-      if (v6 != 2)
+      if (itemSparseMatchStrengthType != 2)
       {
         goto LABEL_36;
       }
@@ -2590,9 +2590,9 @@ LABEL_39:
 
   v10 = 1.0;
   v11 = 0.0;
-  if ((v5 & 8) != 0)
+  if ((bundleIDType & 8) != 0)
   {
-    if (v6 == 1)
+    if (itemSparseMatchStrengthType == 1)
     {
 LABEL_37:
       v10 = 0.75;
@@ -2601,7 +2601,7 @@ LABEL_40:
       return v8 + (sqrtf((fminf(fmaxf(v4, v11), v10) - v11) / ((v10 - v11) + 0.00000011921)) * (v7 - v8));
     }
 
-    if (v6 != 2)
+    if (itemSparseMatchStrengthType != 2)
     {
       return v8 + (sqrtf((fminf(fmaxf(v4, v11), v10) - v11) / ((v10 - v11) + 0.00000011921)) * (v7 - v8));
     }
@@ -2612,38 +2612,38 @@ LABEL_40:
   return v8 + (sqrtf((fminf(fmaxf(v4, v11), v10) - v11) / ((v10 - v11) + 0.00000011921)) * (v7 - v8));
 }
 
-+ (id)tokenizeURLString:(id)a3 removeTLD:(BOOL)a4 hostTokenCount:(unint64_t *)a5 hostLength:(unint64_t *)a6 pathLength:(unint64_t *)a7 queryLength:(unint64_t *)a8 fragmentLength:(unint64_t *)a9
++ (id)tokenizeURLString:(id)string removeTLD:(BOOL)d hostTokenCount:(unint64_t *)count hostLength:(unint64_t *)length pathLength:(unint64_t *)pathLength queryLength:(unint64_t *)queryLength fragmentLength:(unint64_t *)fragmentLength
 {
-  v13 = a4;
-  v14 = a3;
+  dCopy = d;
+  stringCopy = string;
   if (tokenizeURLString_removeTLD_hostTokenCount_hostLength_pathLength_queryLength_fragmentLength__onceToken != -1)
   {
     +[PRSRankingItem(Scoring) tokenizeURLString:removeTLD:hostTokenCount:hostLength:pathLength:queryLength:fragmentLength:];
   }
 
-  *a5 = 0;
-  *a6 = 0;
-  *a7 = 0;
-  *a8 = 0;
-  *a9 = 0;
-  if (![v14 length])
+  *count = 0;
+  *length = 0;
+  *pathLength = 0;
+  *queryLength = 0;
+  *fragmentLength = 0;
+  if (![stringCopy length])
   {
     v27 = &stru_1F556FE60;
     goto LABEL_23;
   }
 
-  v15 = [v14 lowercaseString];
+  lowercaseString = [stringCopy lowercaseString];
 
-  v16 = [MEMORY[0x1E695DFF8] URLWithString:v15];
+  v16 = [MEMORY[0x1E695DFF8] URLWithString:lowercaseString];
   v17 = v16;
   if (v16)
   {
-    v18 = [v16 host];
-    if (v18)
+    host = [v16 host];
+    if (host)
     {
-      v19 = v18;
-      v44 = v15;
-      v20 = [v18 componentsSeparatedByString:@"."];
+      v19 = host;
+      v44 = lowercaseString;
+      v20 = [host componentsSeparatedByString:@"."];
       v21 = [v20 mutableCopy];
 
       if ([v21 count] < 3)
@@ -2651,13 +2651,13 @@ LABEL_40:
         goto LABEL_16;
       }
 
-      v41 = v13;
+      v41 = dCopy;
       v22 = [v21 objectAtIndexedSubscript:0];
       v23 = [v22 length];
 
       if (v23 > 4)
       {
-        v13 = v41;
+        dCopy = v41;
       }
 
       else
@@ -2667,7 +2667,7 @@ LABEL_40:
         {
 LABEL_11:
 
-          v13 = v41;
+          dCopy = v41;
 LABEL_12:
           [v21 removeObjectAtIndex:0];
           v26 = [v21 componentsJoinedByString:@"."];
@@ -2688,7 +2688,7 @@ LABEL_12:
         v40 = [v38 isEqualToString:@"ww"];
 
         v19 = v46;
-        v13 = v41;
+        dCopy = v41;
         if (v40)
         {
           goto LABEL_12;
@@ -2702,28 +2702,28 @@ LABEL_16:
       v29 = [v28 mutableCopy];
 
       [v29 removeObject:&stru_1F556FE60];
-      if (v13 && [v29 count] >= 2)
+      if (dCopy && [v29 count] >= 2)
       {
         [v29 removeLastObject];
       }
 
-      *a5 = [v29 count];
-      v30 = [v17 path];
-      v42 = [v17 query];
-      v39 = [v17 fragment];
-      v31 = [v30 stringByDeletingPathExtension];
+      *count = [v29 count];
+      path = [v17 path];
+      query = [v17 query];
+      fragment = [v17 fragment];
+      stringByDeletingPathExtension = [path stringByDeletingPathExtension];
 
-      v32 = [v31 componentsSeparatedByCharactersInSet:tokenizeURLString_removeTLD_hostTokenCount_hostLength_pathLength_queryLength_fragmentLength__removeCharsPath];
+      v32 = [stringByDeletingPathExtension componentsSeparatedByCharactersInSet:tokenizeURLString_removeTLD_hostTokenCount_hostLength_pathLength_queryLength_fragmentLength__removeCharsPath];
       v33 = [v32 componentsJoinedByString:@" "];
 
-      v34 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-      v35 = [v33 stringByTrimmingCharactersInSet:v34];
+      whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+      v35 = [v33 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
       v27 = [v29 componentsJoinedByString:@" "];
-      *a6 = [(__CFString *)v27 length];
-      *a7 = [v35 length];
-      *a8 = [v42 length];
-      *a9 = [v39 length];
+      *length = [(__CFString *)v27 length];
+      *pathLength = [v35 length];
+      *queryLength = [query length];
+      *fragmentLength = [fragment length];
       if ([v35 length])
       {
         v36 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@", v27, v35];
@@ -2731,7 +2731,7 @@ LABEL_16:
         v27 = v36;
       }
 
-      v15 = v44;
+      lowercaseString = v44;
       goto LABEL_22;
     }
   }
@@ -2739,7 +2739,7 @@ LABEL_16:
   v27 = &stru_1F556FE60;
 LABEL_22:
 
-  v14 = v15;
+  stringCopy = lowercaseString;
 LABEL_23:
 
   return v27;
@@ -2756,46 +2756,46 @@ uint64_t __119__PRSRankingItem_Scoring__tokenizeURLString_removeTLD_hostTokenCou
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)tokenizeContactsEmailAddress:(id)a3 removeTLD:(BOOL)a4 usernameTokenCount:(unint64_t *)a5 usernameLength:(unint64_t *)a6 domainLength:(unint64_t *)a7 username:(id *)a8
++ (id)tokenizeContactsEmailAddress:(id)address removeTLD:(BOOL)d usernameTokenCount:(unint64_t *)count usernameLength:(unint64_t *)length domainLength:(unint64_t *)domainLength username:(id *)username
 {
-  v13 = a3;
+  addressCopy = address;
   if (tokenizeContactsEmailAddress_removeTLD_usernameTokenCount_usernameLength_domainLength_username__onceToken != -1)
   {
     +[PRSRankingItem(Scoring) tokenizeContactsEmailAddress:removeTLD:usernameTokenCount:usernameLength:domainLength:username:];
   }
 
   v14 = &stru_1F556FE60;
-  *a8 = &stru_1F556FE60;
-  v15 = [tokenizeContactsEmailAddress_removeTLD_usernameTokenCount_usernameLength_domainLength_username__emailAddressRegularExpression firstMatchInString:v13 options:0 range:{0, objc_msgSend(v13, "length")}];
+  *username = &stru_1F556FE60;
+  v15 = [tokenizeContactsEmailAddress_removeTLD_usernameTokenCount_usernameLength_domainLength_username__emailAddressRegularExpression firstMatchInString:addressCopy options:0 range:{0, objc_msgSend(addressCopy, "length")}];
   v16 = v15;
   if (v15)
   {
     v17 = [v15 rangeAtIndex:1];
-    v19 = [v13 substringWithRange:{v17, v18}];
-    *a8 = [v19 lowercaseString];
+    v19 = [addressCopy substringWithRange:{v17, v18}];
+    *username = [v19 lowercaseString];
 
-    v20 = [*a8 componentsSeparatedByCharactersInSet:tokenizeContactsEmailAddress_removeTLD_usernameTokenCount_usernameLength_domainLength_username__removeCharsUsername];
-    *a5 = [v20 count];
+    v20 = [*username componentsSeparatedByCharactersInSet:tokenizeContactsEmailAddress_removeTLD_usernameTokenCount_usernameLength_domainLength_username__removeCharsUsername];
+    *count = [v20 count];
     [v20 componentsJoinedByString:@" "];
-    v22 = v21 = a7;
-    *a6 = [*a8 length];
+    v22 = v21 = domainLength;
+    *length = [*username length];
     v23 = [v16 rangeAtIndex:2];
-    v25 = [v13 substringWithRange:{v23, v24}];
-    v26 = [v25 lowercaseString];
+    v25 = [addressCopy substringWithRange:{v23, v24}];
+    lowercaseString = [v25 lowercaseString];
 
-    v27 = [v26 componentsSeparatedByCharactersInSet:tokenizeContactsEmailAddress_removeTLD_usernameTokenCount_usernameLength_domainLength_username__removeCharsDomain];
+    v27 = [lowercaseString componentsSeparatedByCharactersInSet:tokenizeContactsEmailAddress_removeTLD_usernameTokenCount_usernameLength_domainLength_username__removeCharsDomain];
     v28 = [v27 componentsJoinedByString:@" "];
 
-    *v21 = [v26 length];
+    *v21 = [lowercaseString length];
     v29 = v22;
     v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@", v22, v28];
     v30 = [v16 rangeAtIndex:3];
-    v32 = [v13 substringWithRange:{v30, v31}];
-    v33 = [v32 lowercaseString];
+    v32 = [addressCopy substringWithRange:{v30, v31}];
+    lowercaseString2 = [v32 lowercaseString];
 
-    if (!a4)
+    if (!d)
     {
-      v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@", v14, v33];
+      v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@", v14, lowercaseString2];
 
       v14 = v34;
     }
@@ -2819,33 +2819,33 @@ uint64_t __122__PRSRankingItem_Scoring__tokenizeContactsEmailAddress_removeTLD_u
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)tokenizeContactsName:(id)a3 tokenCount:(unint64_t *)a4
++ (id)tokenizeContactsName:(id)name tokenCount:(unint64_t *)count
 {
-  v5 = a3;
+  nameCopy = name;
   if (tokenizeContactsName_tokenCount__onceToken != -1)
   {
     +[PRSRankingItem(Scoring) tokenizeContactsName:tokenCount:];
   }
 
-  *a4 = 0;
-  if ([v5 length])
+  *count = 0;
+  if ([nameCopy length])
   {
-    v6 = [v5 componentsSeparatedByCharactersInSet:tokenizeContactsName_tokenCount__removeCharsContactsName];
+    v6 = [nameCopy componentsSeparatedByCharactersInSet:tokenizeContactsName_tokenCount__removeCharsContactsName];
     v7 = [v6 componentsJoinedByString:&stru_1F556FE60];
 
     v8 = [v7 componentsSeparatedByCharactersInSet:tokenizeContactsName_tokenCount__replaceCharsContactsName];
-    *a4 = [v8 count];
+    *count = [v8 count];
     v9 = [v8 componentsJoinedByString:@" "];
-    v10 = [v9 lowercaseString];
+    lowercaseString = [v9 lowercaseString];
   }
 
   else
   {
-    v7 = v5;
-    v10 = v7;
+    v7 = nameCopy;
+    lowercaseString = v7;
   }
 
-  return v10;
+  return lowercaseString;
 }
 
 uint64_t __59__PRSRankingItem_Scoring__tokenizeContactsName_tokenCount___block_invoke()
@@ -2859,15 +2859,15 @@ uint64_t __59__PRSRankingItem_Scoring__tokenizeContactsName_tokenCount___block_i
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)tokenizeTitleString:(id)a3 matchOption:(unsigned __int8)a4
++ (id)tokenizeTitleString:(id)string matchOption:(unsigned __int8)option
 {
   v35 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if ((a4 & 8) == 0)
+  stringCopy = string;
+  if ((option & 8) == 0)
   {
-    v6 = [PRSRankingItem tokenizeTitleString:v5];
+    v6 = [PRSRankingItem tokenizeTitleString:stringCopy];
 LABEL_18:
-    v21 = v6;
+    lowercaseString2 = v6;
     goto LABEL_19;
   }
 
@@ -2876,14 +2876,14 @@ LABEL_18:
     +[PRSRankingItem(Scoring) tokenizeTitleString:matchOption:];
   }
 
-  if (![v5 length])
+  if (![stringCopy length])
   {
-    v6 = v5;
+    v6 = stringCopy;
     goto LABEL_18;
   }
 
-  v24 = v5;
-  v7 = [v5 componentsSeparatedByCharactersInSet:removeCharsTitle];
+  v24 = stringCopy;
+  v7 = [stringCopy componentsSeparatedByCharactersInSet:removeCharsTitle];
   v8 = [MEMORY[0x1E696AE70] regularExpressionWithPattern:patternForTokenizingCamelCase options:0 error:0];
   v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v29 = 0u;
@@ -2923,8 +2923,8 @@ LABEL_18:
 
         else
         {
-          v18 = [v14 lowercaseString];
-          v33 = v18;
+          lowercaseString = [v14 lowercaseString];
+          v33 = lowercaseString;
           v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v33 count:1];
           [v9 addObjectsFromArray:v19];
         }
@@ -2937,14 +2937,14 @@ LABEL_18:
   }
 
   v20 = [v9 componentsJoinedByString:@" "];
-  v21 = [v20 lowercaseString];
+  lowercaseString2 = [v20 lowercaseString];
 
-  v5 = v24;
+  stringCopy = v24;
 LABEL_19:
 
   v22 = *MEMORY[0x1E69E9840];
 
-  return v21;
+  return lowercaseString2;
 }
 
 void __59__PRSRankingItem_Scoring__tokenizeTitleString_matchOption___block_invoke()
@@ -2967,28 +2967,28 @@ void __59__PRSRankingItem_Scoring__tokenizeTitleString_matchOption___block_invok
   [v2 addObject:v6];
 }
 
-+ (id)tokenizeTitleString:(id)a3
++ (id)tokenizeTitleString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   if (tokenizeTitleString__onceToken != -1)
   {
     +[PRSRankingItem(Scoring) tokenizeTitleString:];
   }
 
-  if ([v3 length])
+  if ([stringCopy length])
   {
-    v4 = [v3 componentsSeparatedByCharactersInSet:removeCharsTitle];
+    v4 = [stringCopy componentsSeparatedByCharactersInSet:removeCharsTitle];
     v5 = [v4 componentsJoinedByString:@" "];
 
-    v6 = [v5 lowercaseString];
+    lowercaseString = [v5 lowercaseString];
   }
 
   else
   {
-    v6 = v3;
+    lowercaseString = stringCopy;
   }
 
-  return v6;
+  return lowercaseString;
 }
 
 uint64_t __47__PRSRankingItem_Scoring__tokenizeTitleString___block_invoke()
@@ -2998,19 +2998,19 @@ uint64_t __47__PRSRankingItem_Scoring__tokenizeTitleString___block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (float)matchScoreURLString:(id)a3 withEvaluator:(id)a4
+- (float)matchScoreURLString:(id)string withEvaluator:(id)evaluator
 {
-  v5 = a3;
-  v6 = a4;
-  v90 = [v6 queryTerms];
-  v7 = [v90 count];
+  stringCopy = string;
+  evaluatorCopy = evaluator;
+  queryTerms = [evaluatorCopy queryTerms];
+  v7 = [queryTerms count];
   v8 = 0.0;
-  if (![v5 length] || !v7)
+  if (![stringCopy length] || !v7)
   {
     goto LABEL_111;
   }
 
-  v89 = v5;
+  v89 = stringCopy;
   v108 = 0;
   v109 = &v108;
   v110 = 0x3032000000;
@@ -3036,7 +3036,7 @@ uint64_t __47__PRSRankingItem_Scoring__tokenizeTitleString___block_invoke()
   v98 = 0;
   v99 = 0;
   v97 = 0;
-  v88 = [PRSRankingItem tokenizeURLString:v5 removeTLD:1 hostTokenCount:&v101 hostLength:&v99 pathLength:&v100 queryLength:&v98 fragmentLength:&v97];
+  v88 = [PRSRankingItem tokenizeURLString:stringCopy removeTLD:1 hostTokenCount:&v101 hostLength:&v99 pathLength:&v100 queryLength:&v98 fragmentLength:&v97];
   v8 = 0.0;
   if (!v99 || !v101)
   {
@@ -3048,19 +3048,19 @@ uint64_t __47__PRSRankingItem_Scoring__tokenizeTitleString___block_invoke()
   v91[2] = __61__PRSRankingItem_Scoring__matchScoreURLString_withEvaluator___block_invoke;
   v91[3] = &unk_1E8596A98;
   v95 = v7;
-  v10 = v90;
+  v10 = queryTerms;
   v92 = v10;
   v93 = &v108;
   v96 = v101;
   v94 = &v102;
-  [v6 evaluateAttribute:v88 ignoreSubtokens:1 strongCompounds:1 skipTranscriptions:0 withHandler:v91];
+  [evaluatorCopy evaluateAttribute:v88 ignoreSubtokens:1 strongCompounds:1 skipTranscriptions:0 withHandler:v91];
   v11 = [v109[5] objectAtIndexedSubscript:0];
-  v12 = [v11 intValue];
+  intValue = [v11 intValue];
 
-  v13 = v12 != -1;
+  v13 = intValue != -1;
   v14 = v101;
-  v15 = v12 < v101 && v12 != -1;
-  v87 = v6;
+  v15 = intValue < v101 && intValue != -1;
+  v87 = evaluatorCopy;
   if (v7 < 2)
   {
     v86 = 0;
@@ -3073,21 +3073,21 @@ uint64_t __47__PRSRankingItem_Scoring__tokenizeTitleString___block_invoke()
     while (v16 < [v109[5] count])
     {
       v18 = [v109[5] objectAtIndexedSubscript:v16];
-      v19 = [v18 intValue];
+      intValue2 = [v18 intValue];
 
-      if (v19 == -1 || v12 != -1 && v19 - v12 != 1)
+      if (intValue2 == -1 || intValue != -1 && intValue2 - intValue != 1)
       {
         v17 = 0;
       }
 
-      v13 += v19 >= 0;
-      if (v19 < v101)
+      v13 += intValue2 >= 0;
+      if (intValue2 < v101)
       {
         ++v15;
       }
 
       ++v16;
-      v12 = v19;
+      intValue = intValue2;
     }
 
     v86 = v17;
@@ -3108,14 +3108,14 @@ uint64_t __47__PRSRankingItem_Scoring__tokenizeTitleString___block_invoke()
     v29 = v28;
 
     v30 = [v109[5] objectAtIndexedSubscript:v22];
-    v31 = [v30 intValue];
+    intValue3 = [v30 intValue];
 
     v32 = [v10 objectAtIndexedSubscript:v22];
-    v33 = [v32 composedLength];
+    composedLength = [v32 composedLength];
 
-    if ((v31 & 0x80000000) == 0 && v31 < v101)
+    if ((intValue3 & 0x80000000) == 0 && intValue3 < v101)
     {
-      if (!v31 && (v33 > 2 || v101 == 1))
+      if (!intValue3 && (composedLength > 2 || v101 == 1))
       {
         v36 = v29;
         if (v29 > 0.94)
@@ -3123,8 +3123,8 @@ uint64_t __47__PRSRankingItem_Scoring__tokenizeTitleString___block_invoke()
           goto LABEL_29;
         }
 
-        v37 = v36 > 0.27 && v33 > 2;
-        if (v37 || (v36 > 0.24 ? (v38 = v33 > 3) : (v38 = 0), v38 || v36 > 0.2 && v33 > 4 || v36 > 0.1 && v33 >= 6))
+        v37 = v36 > 0.27 && composedLength > 2;
+        if (v37 || (v36 > 0.24 ? (v38 = composedLength > 3) : (v38 = 0), v38 || v36 > 0.2 && composedLength > 4 || v36 > 0.1 && composedLength >= 6))
         {
           v29 = (v36 + 1.0) * 0.95 * 0.5;
           goto LABEL_29;
@@ -3157,9 +3157,9 @@ LABEL_29:
       goto LABEL_41;
     }
 
-    if (v31 >= v101 && v100 != 0)
+    if (intValue3 >= v101 && v100 != 0)
     {
-      v29 = v29 * (v33 / v100);
+      v29 = v29 * (composedLength / v100);
     }
 
 LABEL_42:
@@ -3181,9 +3181,9 @@ LABEL_42:
       v40 = v26 + v26;
     }
 
-    v41 = [v87 queryString];
-    v42 = [v41 composedLength];
-    v43 = v42 / [v88 length];
+    queryString = [v87 queryString];
+    composedLength2 = [queryString composedLength];
+    v43 = composedLength2 / [v88 length];
 
     v44 = 1.0;
     if (v43 <= 1.0)
@@ -3209,22 +3209,22 @@ LABEL_42:
     goto LABEL_95;
   }
 
-  v50 = [v87 queryString];
-  v51 = [v50 lowercaseString];
+  queryString2 = [v87 queryString];
+  lowercaseString = [queryString2 lowercaseString];
 
-  v52 = [v88 lowercaseString];
+  lowercaseString2 = [v88 lowercaseString];
   v53 = v45 / (v46 + v45 + v47 + v48);
-  if ([v51 rangeOfString:@" "] != 0x7FFFFFFFFFFFFFFFLL)
+  if ([lowercaseString rangeOfString:@" "] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v54 = [v51 stringByReplacingOccurrencesOfString:@" " withString:&stru_1F556FE60];
-    if ([v52 rangeOfString:v54])
+    v54 = [lowercaseString stringByReplacingOccurrencesOfString:@" " withString:&stru_1F556FE60];
+    if ([lowercaseString2 rangeOfString:v54])
     {
 
       goto LABEL_72;
     }
 
     v80 = v55;
-    v81 = [v52 length];
+    v81 = [lowercaseString2 length];
     v82 = 0.95;
     if (v80 == v81)
     {
@@ -3248,18 +3248,18 @@ LABEL_108:
   }
 
 LABEL_72:
-  v56 = v52;
+  v56 = lowercaseString2;
   v57 = [MEMORY[0x1E695DFF8] URLWithString:v89];
-  v58 = [v57 host];
+  host = [v57 host];
 
-  if ([v58 hasCommonSubDomainPrefix])
+  if ([host hasCommonSubDomainPrefix])
   {
-    v59 = [v87 queryString];
-    v60 = [v59 hasCommonSubDomainPrefix];
+    queryString3 = [v87 queryString];
+    hasCommonSubDomainPrefix = [queryString3 hasCommonSubDomainPrefix];
 
-    if ((v60 & 1) == 0)
+    if ((hasCommonSubDomainPrefix & 1) == 0)
     {
-      v61 = [v58 componentsSeparatedByString:@"."];
+      v61 = [host componentsSeparatedByString:@"."];
       v62 = [v61 mutableCopy];
 
       if ([v62 count] >= 3)
@@ -3272,20 +3272,20 @@ LABEL_72:
           [v62 removeObjectAtIndex:0];
           v65 = [v62 componentsJoinedByString:@"."];
 
-          v58 = v65;
+          host = v65;
         }
       }
     }
   }
 
-  v67 = [v58 rangeOfString:v51];
+  v67 = [host rangeOfString:lowercaseString];
   if (v67 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v68 = v66;
-    if ([v58 length])
+    if ([host length])
     {
-      v69 = v68 / [v58 length];
-      if (v67 || (v70 = 1.0, v69 <= 0.5) && [v51 rangeOfString:@"."] == 0x7FFFFFFFFFFFFFFFLL)
+      v69 = v68 / [host length];
+      if (v67 || (v70 = 1.0, v69 <= 0.5) && [lowercaseString rangeOfString:@"."] == 0x7FFFFFFFFFFFFFFFLL)
       {
         v70 = v69 * 0.3;
       }
@@ -3306,11 +3306,11 @@ LABEL_72:
     }
   }
 
-  v71 = [v89 lowercaseString];
-  if ([v71 rangeOfString:v51] == 0x7FFFFFFFFFFFFFFFLL || (v73 = v72, !objc_msgSend(v71, "length")))
+  lowercaseString3 = [v89 lowercaseString];
+  if ([lowercaseString3 rangeOfString:lowercaseString] == 0x7FFFFFFFFFFFFFFFLL || (v73 = v72, !objc_msgSend(lowercaseString3, "length")))
   {
     v76 = [PRSRankingItem tokenizeURLString:v89 removeTLD:0 hostTokenCount:&v101 hostLength:&v99 pathLength:&v100 queryLength:&v98 fragmentLength:&v97];
-    if ([v76 rangeOfString:v51] == 0x7FFFFFFFFFFFFFFFLL || (v78 = v77, !objc_msgSend(v76, "length")))
+    if ([v76 rangeOfString:lowercaseString] == 0x7FFFFFFFFFFFFFFFLL || (v78 = v77, !objc_msgSend(v76, "length")))
     {
       v75 = v13 >= v7;
       v8 = 0.0;
@@ -3326,7 +3326,7 @@ LABEL_72:
 
   else
   {
-    v74 = [v71 length];
+    v74 = [lowercaseString3 length];
     v75 = 0;
     v8 = (v73 / v74) <= 0.6 ? v73 / v74 : 1.0;
   }
@@ -3339,13 +3339,13 @@ LABEL_95:
 
 LABEL_109:
 
-  v6 = v87;
+  evaluatorCopy = v87;
 LABEL_110:
 
   _Block_object_dispose(&v102, 8);
   _Block_object_dispose(&v108, 8);
 
-  v5 = v89;
+  stringCopy = v89;
 LABEL_111:
 
   return v8;
@@ -3486,24 +3486,24 @@ LABEL_27:
   [*(*(*(a1 + 48) + 8) + 40) setObject:v35 atIndexedSubscript:a6];
 }
 
-+ (float)matchScoreLaunchString:(id)a3 withEvaluator:(id)a4
++ (float)matchScoreLaunchString:(id)string withEvaluator:(id)evaluator
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 queryTerms];
-  v9 = [v8 count];
+  stringCopy = string;
+  evaluatorCopy = evaluator;
+  queryTerms = [evaluatorCopy queryTerms];
+  v9 = [queryTerms count];
   v10 = 0.0;
-  if ([v6 length])
+  if ([stringCopy length])
   {
     if (v9)
     {
-      if (![v6 length])
+      if (![stringCopy length])
       {
         goto LABEL_6;
       }
 
-      v11 = [v7 queryString];
-      if (!v11 || (v12 = v11, [v7 queryString], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v6, "isEqualToString:", v13), v13, v12, v10 = 1.0, (v14 & 1) == 0))
+      queryString = [evaluatorCopy queryString];
+      if (!queryString || (v12 = queryString, [evaluatorCopy queryString], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(stringCopy, "isEqualToString:", v13), v13, v12, v10 = 1.0, (v14 & 1) == 0))
       {
 LABEL_6:
         v20 = 0;
@@ -3516,8 +3516,8 @@ LABEL_6:
         v16[3] = &unk_1E8596AC0;
         v18 = &v20;
         v19 = v9;
-        v17 = v8;
-        [a1 matchScoreTokensFromText:v6 withEvaluator:v7 withHandler:v16];
+        v17 = queryTerms;
+        [self matchScoreTokensFromText:stringCopy withEvaluator:evaluatorCopy withHandler:v16];
         v10 = fminf(v21[6], 1.0);
 
         _Block_object_dispose(&v20, 8);
@@ -3623,17 +3623,17 @@ LABEL_20:
 LABEL_21:
 }
 
-- (float)matchScoreAppName:(id)a3 withEvaluator:(id)a4
+- (float)matchScoreAppName:(id)name withEvaluator:(id)evaluator
 {
   v49 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  [(PRSRankingItem *)self matchScoreAppName:v6 withEvaluator:v7 matchOption:2];
+  nameCopy = name;
+  evaluatorCopy = evaluator;
+  [(PRSRankingItem *)self matchScoreAppName:nameCopy withEvaluator:evaluatorCopy matchOption:2];
   v9 = v8;
   v10 = v8;
   if (v8 < 0.95)
   {
-    [(PRSRankingItem *)self matchScoreAppName:v6 withEvaluator:v7 matchOption:0];
+    [(PRSRankingItem *)self matchScoreAppName:nameCopy withEvaluator:evaluatorCopy matchOption:0];
     if (v9 < v11)
     {
       v9 = v11;
@@ -3644,20 +3644,20 @@ LABEL_21:
 
   if (v10 < 0.8)
   {
-    v12 = [v7 queryString];
-    v13 = [v12 rangeOfString:@" "];
+    queryString = [evaluatorCopy queryString];
+    v13 = [queryString rangeOfString:@" "];
 
     if (v13 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v14 = [v7 queryString];
-      v15 = [v14 lowercaseString];
-      v16 = [v15 stringByReplacingOccurrencesOfString:@" " withString:&stru_1F556FE60];
+      queryString2 = [evaluatorCopy queryString];
+      lowercaseString = [queryString2 lowercaseString];
+      v16 = [lowercaseString stringByReplacingOccurrencesOfString:@" " withString:&stru_1F556FE60];
 
       v17 = objc_alloc(MEMORY[0x1E6964DF0]);
-      v18 = [v7 language];
-      v19 = [v17 initWithQuery:v16 language:v18 fuzzyThreshold:0 options:0];
+      language = [evaluatorCopy language];
+      v19 = [v17 initWithQuery:v16 language:language fuzzyThreshold:0 options:0];
 
-      [(PRSRankingItem *)self matchScoreAppName:v6 withEvaluator:v19 matchOption:2];
+      [(PRSRankingItem *)self matchScoreAppName:nameCopy withEvaluator:v19 matchOption:2];
       if (v9 < v20)
       {
         v9 = v20;
@@ -3666,7 +3666,7 @@ LABEL_21:
       v10 = v9;
       if (v9 < 0.95)
       {
-        [(PRSRankingItem *)self matchScoreAppName:v6 withEvaluator:v19 matchOption:0];
+        [(PRSRankingItem *)self matchScoreAppName:nameCopy withEvaluator:v19 matchOption:0];
         if (v9 < v21)
         {
           v9 = v21;
@@ -3679,14 +3679,14 @@ LABEL_21:
 
   if (v10 < 0.8)
   {
-    v22 = [PRSRankingItem tokenizeTitleString:v6];
+    v22 = [PRSRankingItem tokenizeTitleString:nameCopy];
     if ([v22 rangeOfString:@" "] != 0x7FFFFFFFFFFFFFFFLL)
     {
       v23 = [v22 componentsSeparatedByString:@" "];
       if ([v23 count] >= 2)
       {
         v24 = [v23 componentsJoinedByString:&stru_1F556FE60];
-        [(PRSRankingItem *)self matchScoreAppName:v24 withEvaluator:v7 matchOption:0];
+        [(PRSRankingItem *)self matchScoreAppName:v24 withEvaluator:evaluatorCopy matchOption:0];
         if (v9 < v25)
         {
           v9 = v25;
@@ -3699,10 +3699,10 @@ LABEL_21:
 
   if (v10 < 0.8)
   {
-    v26 = [v6 componentsSeparatedByString:@" "];
-    v27 = [v7 queryString];
-    v28 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-    v29 = [v27 stringByTrimmingCharactersInSet:v28];
+    v26 = [nameCopy componentsSeparatedByString:@" "];
+    queryString3 = [evaluatorCopy queryString];
+    whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+    v29 = [queryString3 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
     v46 = 0u;
     v47 = 0u;
@@ -3725,7 +3725,7 @@ LABEL_21:
 
           v35 = *(*(&v44 + 1) + 8 * i);
           v36 = [v29 length];
-          if ((v36 / [v6 length]) <= 0.38)
+          if ((v36 / [nameCopy length]) <= 0.38)
           {
             if (![v35 localizedCaseInsensitiveContainsString:v29])
             {
@@ -3739,7 +3739,7 @@ LABEL_21:
             }
           }
 
-          [(PRSRankingItem *)self matchScoreAppName:v6 withEvaluator:v7 matchOption:8];
+          [(PRSRankingItem *)self matchScoreAppName:nameCopy withEvaluator:evaluatorCopy matchOption:8];
           if (v9 < v38)
           {
             v9 = v38;
@@ -3762,12 +3762,12 @@ LABEL_21:
 LABEL_38:
   }
 
-  if (v10 < 0.8 && [v6 length] >= 3)
+  if (v10 < 0.8 && [nameCopy length] >= 3)
   {
-    if ([v6 containsString:@"&"])
+    if ([nameCopy containsString:@"&"])
     {
-      v39 = [v6 stringByReplacingOccurrencesOfString:@"&" withString:&stru_1F556FE60];
-      [(PRSRankingItem *)self matchScoreAppName:v39 withEvaluator:v7 matchOption:8];
+      v39 = [nameCopy stringByReplacingOccurrencesOfString:@"&" withString:&stru_1F556FE60];
+      [(PRSRankingItem *)self matchScoreAppName:v39 withEvaluator:evaluatorCopy matchOption:8];
       v41 = v40;
 
       if (v9 < v41)
@@ -3781,29 +3781,29 @@ LABEL_38:
   return v9;
 }
 
-- (float)matchScoreAppName:(id)a3 withEvaluator:(id)a4 matchOption:(unsigned __int8)a5
+- (float)matchScoreAppName:(id)name withEvaluator:(id)evaluator matchOption:(unsigned __int8)option
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 queryTerms];
-  v10 = [v9 count];
-  v11 = v7;
+  nameCopy = name;
+  evaluatorCopy = evaluator;
+  queryTerms = [evaluatorCopy queryTerms];
+  v10 = [queryTerms count];
+  v11 = nameCopy;
   v12 = v11;
-  v13 = v11;
-  if ((a5 & 8) == 0)
+  lowercaseString = v11;
+  if ((option & 8) == 0)
   {
-    v13 = [v11 lowercaseString];
+    lowercaseString = [v11 lowercaseString];
   }
 
-  if ((a5 & 2) != 0)
+  if ((option & 2) != 0)
   {
-    v14 = [PRSRankingItem tokenizeTitleString:v13];
+    v14 = [PRSRankingItem tokenizeTitleString:lowercaseString];
 
-    v13 = v14;
+    lowercaseString = v14;
   }
 
   v15 = 0.0;
-  if ([v13 length] && v10)
+  if ([lowercaseString length] && v10)
   {
     v22 = 0;
     v23 = &v22;
@@ -3816,8 +3816,8 @@ LABEL_38:
     v20 = &v22;
     v21 = v10;
     v18 = v12;
-    v19 = v8;
-    [PRSRankingItem matchScoreTokensFromText:v13 withEvaluator:v19 withHandler:v17];
+    v19 = evaluatorCopy;
+    [PRSRankingItem matchScoreTokensFromText:lowercaseString withEvaluator:v19 withHandler:v17];
     v15 = v23[6];
 
     _Block_object_dispose(&v22, 8);
@@ -3916,14 +3916,14 @@ LABEL_25:
 LABEL_26:
 }
 
-- (float)matchScoreContactsName:(id)a3 withEvaluator:(id)a4
+- (float)matchScoreContactsName:(id)name withEvaluator:(id)evaluator
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 queryTerms];
-  v8 = [v7 count];
+  nameCopy = name;
+  evaluatorCopy = evaluator;
+  queryTerms = [evaluatorCopy queryTerms];
+  v8 = [queryTerms count];
   v21 = 0;
-  v9 = [PRSRankingItem tokenizeContactsName:v5 tokenCount:&v21];
+  v9 = [PRSRankingItem tokenizeContactsName:nameCopy tokenCount:&v21];
   v10 = 0.0;
   if ([v9 length])
   {
@@ -3947,8 +3947,8 @@ LABEL_26:
     v13[3] = &unk_1E8596AC0;
     v15 = &v17;
     v16 = v8;
-    v14 = v7;
-    [PRSRankingItem matchScoreTokensFromText:v9 withEvaluator:v6 withHandler:v13];
+    v14 = queryTerms;
+    [PRSRankingItem matchScoreTokensFromText:v9 withEvaluator:evaluatorCopy withHandler:v13];
     v10 = fminf(v18[6], 1.0);
 
     _Block_object_dispose(&v17, 8);
@@ -4078,19 +4078,19 @@ LABEL_12:
 LABEL_36:
 }
 
-- (float)matchScoreContactsEmailAddress:(id)a3 withEvaluator:(id)a4
+- (float)matchScoreContactsEmailAddress:(id)address withEvaluator:(id)evaluator
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 queryTerms];
-  v8 = [v7 count];
+  addressCopy = address;
+  evaluatorCopy = evaluator;
+  queryTerms = [evaluatorCopy queryTerms];
+  v8 = [queryTerms count];
   v9 = 0.0;
-  if (![v5 length] || !v8)
+  if (![addressCopy length] || !v8)
   {
     goto LABEL_95;
   }
 
-  v78 = v7;
+  v78 = queryTerms;
   v98 = 0;
   v99 = &v98;
   v100 = 0x3032000000;
@@ -4115,9 +4115,9 @@ LABEL_36:
   v91 = 0;
   v88 = 0;
   v89 = 0;
-  v79 = [PRSRankingItem tokenizeContactsEmailAddress:v5 removeTLD:1 usernameTokenCount:&v91 usernameLength:&v90 domainLength:&v89 username:&v88];
+  v79 = [PRSRankingItem tokenizeContactsEmailAddress:addressCopy removeTLD:1 usernameTokenCount:&v91 usernameLength:&v90 domainLength:&v89 username:&v88];
   v11 = v88;
-  v12 = [v5 length];
+  v12 = [addressCopy length];
   v13 = [v11 length];
   v77 = v11;
   v9 = 0.0;
@@ -4126,7 +4126,7 @@ LABEL_36:
     goto LABEL_94;
   }
 
-  v14 = v7;
+  v14 = queryTerms;
   v15 = v12 + ~v13;
   v81[0] = MEMORY[0x1E69E9820];
   v81[1] = 3221225472;
@@ -4139,15 +4139,15 @@ LABEL_36:
   v86 = v91;
   v87 = v15;
   v84 = &v92;
-  [v6 evaluateAttribute:v79 ignoreSubtokens:1 strongCompounds:1 skipTranscriptions:0 withHandler:v81];
+  [evaluatorCopy evaluateAttribute:v79 ignoreSubtokens:1 strongCompounds:1 skipTranscriptions:0 withHandler:v81];
   v17 = [v99[5] objectAtIndexedSubscript:0];
-  v18 = [v17 intValue];
-  v73 = v5;
+  intValue = [v17 intValue];
+  v73 = addressCopy;
 
-  v19 = v18 != -1;
+  v19 = intValue != -1;
   v20 = v91;
-  v21 = v18 < v91 && v18 != -1;
-  v74 = v6;
+  v21 = intValue < v91 && intValue != -1;
+  v74 = evaluatorCopy;
   if (v8 < 2)
   {
     v23 = 0;
@@ -4160,21 +4160,21 @@ LABEL_36:
     while (v22 < [v99[5] count])
     {
       v24 = [v99[5] objectAtIndexedSubscript:v22];
-      v25 = [v24 intValue];
+      intValue2 = [v24 intValue];
 
-      if (v25 == -1 || v18 != -1 && v25 - v18 != 1)
+      if (intValue2 == -1 || intValue != -1 && intValue2 - intValue != 1)
       {
         v23 = 0;
       }
 
-      v19 += v25 >= 0;
-      if (v25 < v91)
+      v19 += intValue2 >= 0;
+      if (intValue2 < v91)
       {
         ++v21;
       }
 
       ++v22;
-      v18 = v25;
+      intValue = intValue2;
     }
 
     v20 = v91;
@@ -4193,14 +4193,14 @@ LABEL_36:
     v34 = v33;
 
     v35 = [v99[5] objectAtIndexedSubscript:v27];
-    v36 = [v35 intValue];
+    intValue3 = [v35 intValue];
 
     v37 = [v16 objectAtIndexedSubscript:v27];
-    v38 = [v37 composedLength];
+    composedLength = [v37 composedLength];
 
-    if ((v36 & 0x80000000) == 0 && v36 < v91)
+    if ((intValue3 & 0x80000000) == 0 && intValue3 < v91)
     {
-      if (!v36)
+      if (!intValue3)
       {
         v39 = v34;
         if (v34 > 0.94)
@@ -4208,8 +4208,8 @@ LABEL_36:
           goto LABEL_51;
         }
 
-        v41 = v39 > 0.39 && v38 > 1;
-        if (v41 || (v39 > 0.27 ? (v42 = v38 > 2) : (v42 = 0), v42 || (v39 > 0.24 ? (v43 = v38 > 3) : (v43 = 0), v43 || v39 > 0.2 && v38 > 4 || v39 > 0.1 && v38 >= 6)))
+        v41 = v39 > 0.39 && composedLength > 1;
+        if (v41 || (v39 > 0.27 ? (v42 = composedLength > 2) : (v42 = 0), v42 || (v39 > 0.24 ? (v43 = composedLength > 3) : (v43 = 0), v43 || v39 > 0.2 && composedLength > 4 || v39 > 0.1 && composedLength >= 6)))
         {
           v39 = (v39 + 1.0) * 0.95 * 0.5;
           v34 = v39;
@@ -4222,7 +4222,7 @@ LABEL_36:
         v26 = 0;
         v34 = v30 * v34;
 LABEL_54:
-        v44 = v38 / v90;
+        v44 = composedLength / v90;
         if (v44 >= 0.5)
         {
           *&v39 = v34;
@@ -4248,9 +4248,9 @@ LABEL_51:
       goto LABEL_54;
     }
 
-    if (v36 >= v91 && v89 != 0)
+    if (intValue3 >= v91 && v89 != 0)
     {
-      *&v39 = v38 / v89;
+      *&v39 = composedLength / v89;
       v34 = v34 * *&v39;
     }
 
@@ -4273,10 +4273,10 @@ LABEL_58:
       v46 = v31 + v31;
     }
 
-    v6 = v74;
-    v47 = [v74 queryString];
-    v48 = [v47 composedLength];
-    v49 = v48 / [v79 length];
+    evaluatorCopy = v74;
+    queryString = [v74 queryString];
+    composedLength2 = [queryString composedLength];
+    v49 = composedLength2 / [v79 length];
 
     LODWORD(v39) = 1.0;
     if (v49 <= 1.0)
@@ -4285,14 +4285,14 @@ LABEL_58:
     }
 
     v31 = v46 * *&v39;
-    v5 = v73;
+    addressCopy = v73;
   }
 
   else
   {
     v45 = v8;
-    v5 = v73;
-    v6 = v74;
+    addressCopy = v73;
+    evaluatorCopy = v74;
   }
 
   v50 = v31 / v45;
@@ -4307,14 +4307,14 @@ LABEL_69:
     }
   }
 
-  v51 = [v6 queryString];
-  v52 = [v51 lowercaseString];
+  queryString2 = [evaluatorCopy queryString];
+  lowercaseString = [queryString2 lowercaseString];
 
-  v76 = [v79 lowercaseString];
-  if ([v52 rangeOfString:@" "] == 0x7FFFFFFFFFFFFFFFLL)
+  lowercaseString2 = [v79 lowercaseString];
+  if ([lowercaseString rangeOfString:@" "] == 0x7FFFFFFFFFFFFFFFLL)
   {
 LABEL_73:
-    if ([v77 rangeOfString:v52] != 0x7FFFFFFFFFFFFFFFLL)
+    if ([v77 rangeOfString:lowercaseString] != 0x7FFFFFFFFFFFFFFFLL)
     {
       v56 = v55;
       if ([v77 length])
@@ -4324,17 +4324,17 @@ LABEL_73:
       }
     }
 
-    v53 = [v5 lowercaseString];
-    v58 = [v53 rangeOfString:v52];
+    lowercaseString3 = [addressCopy lowercaseString];
+    v58 = [lowercaseString3 rangeOfString:lowercaseString];
     if (v58 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v59 = v57;
-      if ([v53 length])
+      if ([lowercaseString3 length])
       {
-        v60 = [v53 length];
+        v60 = [lowercaseString3 length];
         if (v58 > [v77 length])
         {
-          v61 = [v53 length];
+          v61 = [lowercaseString3 length];
           v60 = v60 + (v61 + ~[v77 length]);
         }
 
@@ -4344,10 +4344,10 @@ LABEL_73:
     }
 
     v80 = v77;
-    v62 = [PRSRankingItem tokenizeContactsEmailAddress:v5 removeTLD:0 usernameTokenCount:&v91 usernameLength:&v90 domainLength:&v89 username:&v80];
+    v62 = [PRSRankingItem tokenizeContactsEmailAddress:addressCopy removeTLD:0 usernameTokenCount:&v91 usernameLength:&v90 domainLength:&v89 username:&v80];
     v63 = v80;
 
-    v64 = [v62 rangeOfString:v52];
+    v64 = [v62 rangeOfString:lowercaseString];
     v75 = v65;
     v66 = v64;
     v77 = v63;
@@ -4378,17 +4378,17 @@ LABEL_73:
 
   else
   {
-    v53 = [v52 stringByReplacingOccurrencesOfString:@" " withString:&stru_1F556FE60];
-    if ([v76 rangeOfString:v53])
+    lowercaseString3 = [lowercaseString stringByReplacingOccurrencesOfString:@" " withString:&stru_1F556FE60];
+    if ([lowercaseString2 rangeOfString:lowercaseString3])
     {
 
       goto LABEL_73;
     }
 
     v9 = 1.0;
-    if (v54 != [v76 length])
+    if (v54 != [lowercaseString2 length])
     {
-      v71 = [v53 length];
+      v71 = [lowercaseString3 length];
       v9 = v29 * 0.7 * fmin((v71 / v90), 1.0);
     }
 
@@ -4399,7 +4399,7 @@ LABEL_92:
 
 LABEL_93:
 
-  v7 = v78;
+  queryTerms = v78;
 LABEL_94:
 
   _Block_object_dispose(&v92, 8);
@@ -4577,12 +4577,12 @@ LABEL_45:
   [*(*(*(a1 + 48) + 8) + 40) setObject:v36 atIndexedSubscript:a6];
 }
 
-- (float)matchScoreForTokensFromText:(id)a3 withEvaluator:(id)a4
+- (float)matchScoreForTokensFromText:(id)text withEvaluator:(id)evaluator
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 queryTerms];
-  v8 = [v7 count];
+  textCopy = text;
+  evaluatorCopy = evaluator;
+  queryTerms = [evaluatorCopy queryTerms];
+  v8 = [queryTerms count];
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -4593,7 +4593,7 @@ LABEL_45:
   v11[3] = &unk_1E8596B38;
   v11[4] = &v12;
   v11[5] = v8;
-  [PRSRankingItem matchScoreTokensFromText:v5 withEvaluator:v6 withHandler:v11];
+  [PRSRankingItem matchScoreTokensFromText:textCopy withEvaluator:evaluatorCopy withHandler:v11];
   v9 = v13[6];
   _Block_object_dispose(&v12, 8);
 
@@ -4627,17 +4627,17 @@ uint64_t __69__PRSRankingItem_Scoring__matchScoreForTokensFromText_withEvaluator
   return result;
 }
 
-- (float)matchScoreFileNameForSearchTool:(id)a3 withEvaluator:(id)a4
+- (float)matchScoreFileNameForSearchTool:(id)tool withEvaluator:(id)evaluator
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length])
+  toolCopy = tool;
+  evaluatorCopy = evaluator;
+  if ([toolCopy length])
   {
-    v8 = [PRSRankingItem tokenizeTitleString:v6 matchOption:8];
-    v9 = [PRSRankingItem tokenizeTitleString:v6];
-    [(PRSRankingItem *)self matchScoreForTokensFromText:v8 withEvaluator:v7];
+    v8 = [PRSRankingItem tokenizeTitleString:toolCopy matchOption:8];
+    v9 = [PRSRankingItem tokenizeTitleString:toolCopy];
+    [(PRSRankingItem *)self matchScoreForTokensFromText:v8 withEvaluator:evaluatorCopy];
     v11 = v10;
-    [(PRSRankingItem *)self matchScoreForTokensFromText:v9 withEvaluator:v7];
+    [(PRSRankingItem *)self matchScoreForTokensFromText:v9 withEvaluator:evaluatorCopy];
     if (v11 < v12)
     {
       v11 = v12;
@@ -4645,17 +4645,17 @@ uint64_t __69__PRSRankingItem_Scoring__matchScoreForTokensFromText_withEvaluator
 
     if (fabs(v11 + -1.0) >= 2.22044605e-16)
     {
-      v13 = [v6 stringByDeletingPathExtension];
-      v14 = [PRSRankingItem tokenizeTitleString:v13 matchOption:8];
+      stringByDeletingPathExtension = [toolCopy stringByDeletingPathExtension];
+      v14 = [PRSRankingItem tokenizeTitleString:stringByDeletingPathExtension matchOption:8];
 
-      v15 = [v6 stringByDeletingPathExtension];
-      v16 = [PRSRankingItem tokenizeTitleString:v15];
+      stringByDeletingPathExtension2 = [toolCopy stringByDeletingPathExtension];
+      v16 = [PRSRankingItem tokenizeTitleString:stringByDeletingPathExtension2];
 
       if (![v14 isEqualToString:v8] || (objc_msgSend(v16, "isEqualToString:", v9) & 1) == 0)
       {
-        [(PRSRankingItem *)self matchScoreForTokensFromText:v14 withEvaluator:v7];
+        [(PRSRankingItem *)self matchScoreForTokensFromText:v14 withEvaluator:evaluatorCopy];
         v18 = v17;
-        [(PRSRankingItem *)self matchScoreForTokensFromText:v16 withEvaluator:v7];
+        [(PRSRankingItem *)self matchScoreForTokensFromText:v16 withEvaluator:evaluatorCopy];
         if (v18 >= v19)
         {
           v19 = v18;
@@ -4679,21 +4679,21 @@ uint64_t __69__PRSRankingItem_Scoring__matchScoreForTokensFromText_withEvaluator
   return v11;
 }
 
-- (float)matchScoreFileName:(id)a3 withEvaluator:(id)a4
+- (float)matchScoreFileName:(id)name withEvaluator:(id)evaluator
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 queryTerms];
-  v8 = [v7 count];
-  if (([v7 containsObject:@"keynote"] & 1) != 0 || (objc_msgSend(v7, "containsObject:", @"document") & 1) != 0 || (objc_msgSend(v7, "containsObject:", @"file") & 1) != 0 || (objc_msgSend(v7, "containsObject:", @"keynotes") & 1) != 0 || (objc_msgSend(v7, "containsObject:", @"documents") & 1) != 0 || objc_msgSend(v7, "containsObject:", @"files"))
+  nameCopy = name;
+  evaluatorCopy = evaluator;
+  queryTerms = [evaluatorCopy queryTerms];
+  v8 = [queryTerms count];
+  if (([queryTerms containsObject:@"keynote"] & 1) != 0 || (objc_msgSend(queryTerms, "containsObject:", @"document") & 1) != 0 || (objc_msgSend(queryTerms, "containsObject:", @"file") & 1) != 0 || (objc_msgSend(queryTerms, "containsObject:", @"keynotes") & 1) != 0 || (objc_msgSend(queryTerms, "containsObject:", @"documents") & 1) != 0 || objc_msgSend(queryTerms, "containsObject:", @"files"))
   {
     --v8;
   }
 
   v9 = 0.0;
-  if ([v5 length] && v8)
+  if ([nameCopy length] && v8)
   {
-    v10 = [PRSRankingItem tokenizeTitleString:v5];
+    v10 = [PRSRankingItem tokenizeTitleString:nameCopy];
     v21 = 0;
     v22 = &v21;
     v23 = 0x2020000000;
@@ -4704,12 +4704,12 @@ uint64_t __69__PRSRankingItem_Scoring__matchScoreForTokensFromText_withEvaluator
     v20[3] = &unk_1E8596B38;
     v20[4] = &v21;
     v20[5] = v8;
-    [PRSRankingItem matchScoreTokensFromText:v10 withEvaluator:v6 withHandler:v20];
+    [PRSRankingItem matchScoreTokensFromText:v10 withEvaluator:evaluatorCopy withHandler:v20];
     v9 = v22[6];
     if (fabs(v9 + -1.0) >= 2.22044605e-16)
     {
-      v11 = [v5 stringByDeletingPathExtension];
-      v12 = [PRSRankingItem tokenizeTitleString:v11];
+      stringByDeletingPathExtension = [nameCopy stringByDeletingPathExtension];
+      v12 = [PRSRankingItem tokenizeTitleString:stringByDeletingPathExtension];
 
       if ([v12 isEqualToString:v10])
       {
@@ -4728,7 +4728,7 @@ uint64_t __69__PRSRankingItem_Scoring__matchScoreForTokensFromText_withEvaluator
         v15[3] = &unk_1E8596B38;
         v15[4] = &v16;
         v15[5] = v8;
-        [PRSRankingItem matchScoreTokensFromText:v12 withEvaluator:v6 withHandler:v15];
+        [PRSRankingItem matchScoreTokensFromText:v12 withEvaluator:evaluatorCopy withHandler:v15];
         v13 = v17[6] * 0.9;
         if (v13 <= v22[6])
         {
@@ -4810,20 +4810,20 @@ float __60__PRSRankingItem_Scoring__matchScoreFileName_withEvaluator___block_inv
   return result;
 }
 
-- (float)matchScoreTitle:(id)a3 withEvaluator:(id)a4
+- (float)matchScoreTitle:(id)title withEvaluator:(id)evaluator
 {
-  v6 = a3;
-  v7 = a4;
-  [(PRSRankingItem *)self matchScoreTitle:v6 withEvaluator:v7 matchOption:2];
+  titleCopy = title;
+  evaluatorCopy = evaluator;
+  [(PRSRankingItem *)self matchScoreTitle:titleCopy withEvaluator:evaluatorCopy matchOption:2];
   v9 = v8;
   if (v8 < 0.1)
   {
-    v10 = [v7 queryString];
-    v11 = [v10 rangeOfCharacterFromSet:removeCharsTitle];
+    queryString = [evaluatorCopy queryString];
+    v11 = [queryString rangeOfCharacterFromSet:removeCharsTitle];
 
     if (v11 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [(PRSRankingItem *)self matchScoreTitle:v6 withEvaluator:v7 matchOption:0];
+      [(PRSRankingItem *)self matchScoreTitle:titleCopy withEvaluator:evaluatorCopy matchOption:0];
       if (v9 < v12)
       {
         v9 = v12;
@@ -4834,15 +4834,15 @@ float __60__PRSRankingItem_Scoring__matchScoreFileName_withEvaluator___block_inv
   return v9;
 }
 
-- (float)matchScoreTitle:(id)a3 withEvaluator:(id)a4 matchOption:(unsigned __int8)a5
+- (float)matchScoreTitle:(id)title withEvaluator:(id)evaluator matchOption:(unsigned __int8)option
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 queryTerms];
-  v10 = [v9 count];
-  v11 = v7;
+  titleCopy = title;
+  evaluatorCopy = evaluator;
+  queryTerms = [evaluatorCopy queryTerms];
+  v10 = [queryTerms count];
+  v11 = titleCopy;
   v12 = v11;
-  if ((a5 & 2) != 0)
+  if ((option & 2) != 0)
   {
     v12 = [PRSRankingItem tokenizeTitleString:v11];
   }
@@ -4860,9 +4860,9 @@ float __60__PRSRankingItem_Scoring__matchScoreFileName_withEvaluator___block_inv
     v15[3] = &unk_1E8596B60;
     v17 = &v20;
     v18 = v10;
-    v19 = a5;
+    optionCopy = option;
     v16 = v12;
-    [PRSRankingItem matchScoreTokensFromText:v16 withEvaluator:v8 withHandler:v15];
+    [PRSRankingItem matchScoreTokensFromText:v16 withEvaluator:evaluatorCopy withHandler:v15];
     v13 = v21[6];
 
     _Block_object_dispose(&v20, 8);
@@ -4950,17 +4950,17 @@ LABEL_23:
 LABEL_24:
 }
 
-- (float)matchScoreSettings:(id)a3 withEvaluator:(id)a4 matchOption:(unsigned __int8)a5
+- (float)matchScoreSettings:(id)settings withEvaluator:(id)evaluator matchOption:(unsigned __int8)option
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 queryTerms];
-  v10 = [v9 count];
+  settingsCopy = settings;
+  evaluatorCopy = evaluator;
+  queryTerms = [evaluatorCopy queryTerms];
+  v10 = [queryTerms count];
   v11 = 0.0;
-  if ([v7 length] && v10)
+  if ([settingsCopy length] && v10)
   {
-    v12 = v7;
-    if ((a5 & 2) != 0)
+    v12 = settingsCopy;
+    if ((option & 2) != 0)
     {
       v13 = [PRSRankingItem tokenizeTitleString:v12];
 
@@ -4979,9 +4979,9 @@ LABEL_24:
       v15[3] = &unk_1E8596B88;
       v19 = &v21;
       v20 = v10;
-      v16 = v8;
+      v16 = evaluatorCopy;
       v17 = v12;
-      v18 = v9;
+      v18 = queryTerms;
       [PRSRankingItem matchScoreTokensFromText:v17 withEvaluator:v16 withHandler:v15];
       v11 = v22[6];
 
@@ -5141,14 +5141,14 @@ LABEL_28:
 LABEL_29:
 }
 
-+ (float)matchScoreServerCompletion:(id)a3 withEvaluator:(id)a4
++ (float)matchScoreServerCompletion:(id)completion withEvaluator:(id)evaluator
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 queryTerms];
-  v8 = [v7 count];
+  completionCopy = completion;
+  evaluatorCopy = evaluator;
+  queryTerms = [evaluatorCopy queryTerms];
+  v8 = [queryTerms count];
   v9 = 0.0;
-  if ([v5 length] && v8)
+  if ([completionCopy length] && v8)
   {
     v28 = 0;
     v29 = &v28;
@@ -5163,27 +5163,27 @@ LABEL_29:
     }
 
     while (v8 != v10);
-    v11 = [v6 language];
-    if (v11)
+    language = [evaluatorCopy language];
+    if (language)
     {
-      v12 = [v6 language];
-      if ([v12 hasPrefix:@"zh"])
+      language2 = [evaluatorCopy language];
+      if ([language2 hasPrefix:@"zh"])
       {
         v13 = 0;
       }
 
       else
       {
-        v14 = [v6 language];
-        if ([v14 hasPrefix:@"ja"])
+        language3 = [evaluatorCopy language];
+        if ([language3 hasPrefix:@"ja"])
         {
           v13 = 0;
         }
 
         else
         {
-          v15 = [v6 language];
-          v13 = [v15 hasPrefix:@"ko"] ^ 1;
+          language4 = [evaluatorCopy language];
+          v13 = [language4 hasPrefix:@"ko"] ^ 1;
         }
       }
     }
@@ -5199,15 +5199,15 @@ LABEL_29:
     v27[3] = &unk_1E8596BB0;
     v27[4] = &v28;
     v27[5] = v8;
-    [v6 evaluateAttribute:v5 ignoreSubtokens:v13 strongCompounds:1 skipTranscriptions:0 withHandler:v27];
+    [evaluatorCopy evaluateAttribute:completionCopy ignoreSubtokens:v13 strongCompounds:1 skipTranscriptions:0 withHandler:v27];
     v16 = 0;
     while (1)
     {
       v17 = [v29[5] objectAtIndexedSubscript:v16];
-      v18 = [v17 intValue];
+      intValue = [v17 intValue];
 
       v9 = 0.0;
-      if (v18 == -1)
+      if (intValue == -1)
       {
         break;
       }
@@ -5216,11 +5216,11 @@ LABEL_29:
       if (v16)
       {
         v20 = [v19 objectAtIndexedSubscript:v16 - 1];
-        v21 = [v20 intValue];
+        intValue2 = [v20 intValue];
         v22 = [v29[5] objectAtIndexedSubscript:v16];
-        v23 = [v22 intValue];
+        intValue3 = [v22 intValue];
 
-        if (v21 + 1 != v23)
+        if (intValue2 + 1 != intValue3)
         {
           break;
         }
@@ -5229,9 +5229,9 @@ LABEL_29:
       else
       {
         v24 = [v19 objectAtIndexedSubscript:0];
-        v25 = [v24 intValue];
+        intValue4 = [v24 intValue];
 
-        if (v25)
+        if (intValue4)
         {
           break;
         }
@@ -5288,13 +5288,13 @@ LABEL_14:
   }
 }
 
-+ (void)matchScoreTokensFromText:(id)a3 withEvaluator:(id)a4 withHandler:(id)a5
++ (void)matchScoreTokensFromText:(id)text withEvaluator:(id)evaluator withHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 queryTerms];
-  v11 = [v10 count];
+  textCopy = text;
+  evaluatorCopy = evaluator;
+  handlerCopy = handler;
+  queryTerms = [evaluatorCopy queryTerms];
+  v11 = [queryTerms count];
   v51 = 0;
   v52 = &v51;
   v53 = 0x2020000000;
@@ -5313,33 +5313,33 @@ LABEL_14:
     }
   }
 
-  v13 = [v7 length];
+  v13 = [textCopy length];
   if (v11 && v13)
   {
-    v36 = v10;
-    v37 = v7;
-    v14 = [v8 language];
-    v35 = v9;
-    if (v14)
+    v36 = queryTerms;
+    v37 = textCopy;
+    language = [evaluatorCopy language];
+    v35 = handlerCopy;
+    if (language)
     {
-      v15 = [v8 language];
-      if ([v15 hasPrefix:@"zh"])
+      language2 = [evaluatorCopy language];
+      if ([language2 hasPrefix:@"zh"])
       {
         v16 = 0;
       }
 
       else
       {
-        v17 = [v8 language];
-        if ([v17 hasPrefix:@"ja"])
+        language3 = [evaluatorCopy language];
+        if ([language3 hasPrefix:@"ja"])
         {
           v16 = 0;
         }
 
         else
         {
-          v18 = [v8 language];
-          v16 = [v18 hasPrefix:@"ko"] ^ 1;
+          language4 = [evaluatorCopy language];
+          v16 = [language4 hasPrefix:@"ko"] ^ 1;
         }
       }
     }
@@ -5355,10 +5355,10 @@ LABEL_14:
     v38[3] = &unk_1E8596BD8;
     v44 = v11;
     v42 = &v45;
-    v39 = v8;
-    v40 = v7;
+    v39 = evaluatorCopy;
+    v40 = textCopy;
     v43 = &v51;
-    v41 = v10;
+    v41 = queryTerms;
     v19 = [v39 evaluateAttribute:v40 ignoreSubtokens:v16 strongCompounds:1 skipTranscriptions:0 withHandler:v38];
     v20 = 0;
     v21 = 0;
@@ -5378,10 +5378,10 @@ LABEL_14:
 
     while (v11 != v20);
     v27 = [v46[5] objectAtIndexedSubscript:0];
-    v28 = [v27 intValue];
-    v34 = v8;
+    intValue = [v27 intValue];
+    v34 = evaluatorCopy;
 
-    v29 = v28 != -1;
+    v29 = intValue != -1;
     if (v11 < 2)
     {
       v31 = 0;
@@ -5394,32 +5394,32 @@ LABEL_14:
       do
       {
         v32 = [v46[5] objectAtIndexedSubscript:v30];
-        v33 = [v32 intValue];
+        intValue2 = [v32 intValue];
 
-        if (v33 == -1 || v28 != -1 && v33 - v28 != 1)
+        if (intValue2 == -1 || intValue != -1 && intValue2 - intValue != 1)
         {
           v31 = 0;
         }
 
-        v29 += v33 >= 0;
+        v29 += intValue2 >= 0;
         ++v30;
-        v28 = v33;
+        intValue = intValue2;
       }
 
       while (v11 != v30);
     }
 
-    v9 = v35;
+    handlerCopy = v35;
     (*(v35 + 2))(v35, v46[5], v19, v31 & 1, v21 & 1, v22 & 1, v29, v52[6]);
-    v8 = v34;
+    evaluatorCopy = v34;
 
-    v10 = v36;
-    v7 = v37;
+    queryTerms = v36;
+    textCopy = v37;
   }
 
   else
   {
-    (*(v9 + 2))(v9, v46[5], 0, 0, 0, 0, 0, v52[6]);
+    (*(handlerCopy + 2))(handlerCopy, v46[5], 0, 0, 0, 0, 0, v52[6]);
   }
 
   _Block_object_dispose(&v45, 8);
@@ -5532,38 +5532,38 @@ LABEL_24:
   }
 }
 
-- (float)matchScoreForApplicationsWithEvaluator:(id)a3
+- (float)matchScoreForApplicationsWithEvaluator:(id)evaluator
 {
   v63 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  evaluatorCopy = evaluator;
   v5 = SSCompactRankingAttrsGetValue([(PRSRankingItem *)self attributes], 7uLL);
   v6 = 0.0;
   v7 = 0.0;
   if ([v5 length])
   {
-    [(PRSRankingItem *)self matchScoreAppName:v5 withEvaluator:v4];
+    [(PRSRankingItem *)self matchScoreAppName:v5 withEvaluator:evaluatorCopy];
     v7 = v8;
   }
 
-  v9 = [(PRSRankingItem *)self firstMatchedAltName];
-  v10 = [v9 length];
+  firstMatchedAltName = [(PRSRankingItem *)self firstMatchedAltName];
+  v10 = [firstMatchedAltName length];
 
   if (v10)
   {
-    v11 = [v4 queryString];
-    v12 = [v11 length];
-    v13 = [(PRSRankingItem *)self firstMatchedAltName];
-    v14 = (v12 / [v13 length]);
+    queryString = [evaluatorCopy queryString];
+    v12 = [queryString length];
+    firstMatchedAltName2 = [(PRSRankingItem *)self firstMatchedAltName];
+    v14 = (v12 / [firstMatchedAltName2 length]);
 
-    v15 = [(PRSRankingItem *)self firstMatchedAltName];
+    firstMatchedAltName3 = [(PRSRankingItem *)self firstMatchedAltName];
     if (v14 <= 0.1)
     {
-      [(PRSRankingItem *)self matchScoreTitle:v15 withEvaluator:v4 matchOption:0];
+      [(PRSRankingItem *)self matchScoreTitle:firstMatchedAltName3 withEvaluator:evaluatorCopy matchOption:0];
     }
 
     else
     {
-      [(PRSRankingItem *)self matchScoreAppName:v15 withEvaluator:v4];
+      [(PRSRankingItem *)self matchScoreAppName:firstMatchedAltName3 withEvaluator:evaluatorCopy];
     }
 
     v6 = v16;
@@ -5576,12 +5576,12 @@ LABEL_24:
       {
         if ([v18 length])
         {
-          v19 = [v4 queryString];
-          v20 = [v19 composedLength];
+          queryString2 = [evaluatorCopy queryString];
+          composedLength = [queryString2 composedLength];
 
-          if (v20 >= 4)
+          if (composedLength >= 4)
           {
-            [(PRSRankingItem *)self matchScoreTitle:v18 withEvaluator:v4 matchOption:0];
+            [(PRSRankingItem *)self matchScoreTitle:v18 withEvaluator:evaluatorCopy matchOption:0];
             v22 = v21;
             v23 = v22 * 0.4 + 0.600000024;
             if (v23 > 1.0)
@@ -5610,8 +5610,8 @@ LABEL_24:
     v17 = 0.6;
   }
 
-  v25 = [v4 isCJK];
-  if (v25)
+  isCJK = [evaluatorCopy isCJK];
+  if (isCJK)
   {
     v26 = 0.59;
   }
@@ -5621,7 +5621,7 @@ LABEL_24:
     v26 = 0.2;
   }
 
-  if ((v25 & (v17 < 0.91)) != 0)
+  if ((isCJK & (v17 < 0.91)) != 0)
   {
     v17 = 0.91;
   }
@@ -5649,7 +5649,7 @@ LABEL_24:
               v34 = [v30 objectAtIndexedSubscript:v33];
               if ([v34 composedLength] >= 2 && (!v5 || (objc_msgSend(v5, "localizedCaseInsensitiveContainsString:", v34) & 1) == 0))
               {
-                [(PRSRankingItem *)self matchScoreAppName:v34 withEvaluator:v4 matchOption:0];
+                [(PRSRankingItem *)self matchScoreAppName:v34 withEvaluator:evaluatorCopy matchOption:0];
                 if (v35 >= 1.0)
                 {
                   break;
@@ -5689,11 +5689,11 @@ LABEL_39:
 
   if (SSEnableAppSearchV2())
   {
-    v38 = [v4 queryString];
+    queryString3 = [evaluatorCopy queryString];
     if ((isAppPrefixMatch() & 1) == 0 && v37 < 0.5)
     {
-      v39 = [v5 lowercaseString];
-      [v4 isCJK];
+      lowercaseString = [v5 lowercaseString];
+      [evaluatorCopy isCJK];
       appErrorScore();
       v41 = v40;
 
@@ -5709,7 +5709,7 @@ LABEL_39:
         v43 = SSGeneralLog();
         if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
         {
-          v44 = SSRedactString(v38, 1);
+          v44 = SSRedactString(queryString3, 1);
           v45 = SSRedactString(v5, 1);
           *buf = 138413058;
           v56 = v44;
@@ -5738,7 +5738,7 @@ LABEL_39:
         if ([v48 length] && objc_msgSend(v5, "length"))
         {
           v49 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@", v5, v48];
-          [(PRSRankingItem *)self matchScoreAppName:v49 withEvaluator:v4 matchOption:2];
+          [(PRSRankingItem *)self matchScoreAppName:v49 withEvaluator:evaluatorCopy matchOption:2];
           if (v50 > 0.9)
           {
             v37 = v50;
@@ -5757,37 +5757,37 @@ LABEL_39:
   return v52;
 }
 
-- (float)matchScoreForContactsWithEvaluator:(id)a3 quParsedEvaluator:(id)a4
+- (float)matchScoreForContactsWithEvaluator:(id)evaluator quParsedEvaluator:(id)parsedEvaluator
 {
-  v6 = a3;
-  v7 = a4;
+  evaluatorCopy = evaluator;
+  parsedEvaluatorCopy = parsedEvaluator;
   v8 = SSCompactRankingAttrsGetValue([(PRSRankingItem *)self attributes], 7uLL);
   v9 = 0.0;
   v10 = 0.0;
   if ([v8 length])
   {
-    [(PRSRankingItem *)self matchScoreContactsName:v8 withEvaluator:v6];
+    [(PRSRankingItem *)self matchScoreContactsName:v8 withEvaluator:evaluatorCopy];
     v10 = v11;
     if (v11 < 2.2204e-16)
     {
-      [(PRSRankingItem *)self matchScoreContactsName:v8 withEvaluator:v7];
+      [(PRSRankingItem *)self matchScoreContactsName:v8 withEvaluator:parsedEvaluatorCopy];
       v10 = v12;
     }
   }
 
-  v13 = [(PRSRankingItem *)self firstMatchedAltName];
-  v14 = [v13 length];
+  firstMatchedAltName = [(PRSRankingItem *)self firstMatchedAltName];
+  v14 = [firstMatchedAltName length];
 
   if (v14)
   {
-    v15 = [(PRSRankingItem *)self firstMatchedAltName];
-    [(PRSRankingItem *)self matchScoreContactsName:v15 withEvaluator:v6];
+    firstMatchedAltName2 = [(PRSRankingItem *)self firstMatchedAltName];
+    [(PRSRankingItem *)self matchScoreContactsName:firstMatchedAltName2 withEvaluator:evaluatorCopy];
     v9 = v16;
 
     if (v9 < 2.2204e-16)
     {
-      v17 = [(PRSRankingItem *)self firstMatchedAltName];
-      [(PRSRankingItem *)self matchScoreContactsName:v17 withEvaluator:v7];
+      firstMatchedAltName3 = [(PRSRankingItem *)self firstMatchedAltName];
+      [(PRSRankingItem *)self matchScoreContactsName:firstMatchedAltName3 withEvaluator:parsedEvaluatorCopy];
       v9 = v18;
     }
   }
@@ -5810,11 +5810,11 @@ LABEL_39:
   return v21;
 }
 
-- (float)matchScoreForSafariWithEvaluator:(id)a3 quParsedEvaluator:(id)a4 isSearchToolClient:(BOOL)a5
+- (float)matchScoreForSafariWithEvaluator:(id)evaluator quParsedEvaluator:(id)parsedEvaluator isSearchToolClient:(BOOL)client
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  clientCopy = client;
+  evaluatorCopy = evaluator;
+  parsedEvaluatorCopy = parsedEvaluator;
   v26 = 0;
   SSCompactRankingAttrsGetFloat([(PRSRankingItem *)self attributes], 0x15AuLL, &v26 + 1);
   SSCompactRankingAttrsGetFloat([(PRSRankingItem *)self attributes], 0x41uLL, &v26);
@@ -5839,11 +5839,11 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      [(PRSRankingItem *)self matchScoreURLString:v14 withEvaluator:v8];
+      [(PRSRankingItem *)self matchScoreURLString:v14 withEvaluator:evaluatorCopy];
       v13 = *&v17;
       if (*&v17 < 2.2204e-16)
       {
-        [(PRSRankingItem *)self matchScoreURLString:v14 withEvaluator:v9];
+        [(PRSRankingItem *)self matchScoreURLString:v14 withEvaluator:parsedEvaluatorCopy];
         v13 = *&v17;
       }
 
@@ -5853,11 +5853,11 @@ LABEL_18:
 
     if ([v15 length])
     {
-      [(PRSRankingItem *)self matchScoreTitle:v15 withEvaluator:v8];
+      [(PRSRankingItem *)self matchScoreTitle:v15 withEvaluator:evaluatorCopy];
       v16 = *&v19;
       if (*&v19 < 2.2204e-16)
       {
-        [(PRSRankingItem *)self matchScoreTitle:v15 withEvaluator:v9];
+        [(PRSRankingItem *)self matchScoreTitle:v15 withEvaluator:parsedEvaluatorCopy];
         v16 = *&v19;
       }
 
@@ -5879,10 +5879,10 @@ LABEL_18:
     [(PRSRankingItem *)self keywordMatchScore];
     [(PRSRankingItem *)self embeddingSimilarity];
     [(PRSRankingItem *)self pommesL1Score];
-    v20 = [(PRSRankingItem *)self bundleIDType];
-    v21 = [v8 queryString];
-    v22 = [v8 language];
-    chooseTopicality(v20, 0, v5);
+    bundleIDType = [(PRSRankingItem *)self bundleIDType];
+    queryString = [evaluatorCopy queryString];
+    language = [evaluatorCopy language];
+    chooseTopicality(bundleIDType, 0, clientCopy);
     v24 = v23;
 
     v13 = v24 * 0.8;
@@ -5894,14 +5894,14 @@ LABEL_19:
   return v13;
 }
 
-- (float)matchScoreForNotesWithEvaluator:(id)a3 isSearchToolClient:(BOOL)a4
+- (float)matchScoreForNotesWithEvaluator:(id)evaluator isSearchToolClient:(BOOL)client
 {
-  v4 = a4;
-  v6 = a3;
+  clientCopy = client;
+  evaluatorCopy = evaluator;
   v7 = SSCompactRankingAttrsGetValue([(PRSRankingItem *)self attributes], 7uLL);
   if ([v7 length])
   {
-    [(PRSRankingItem *)self matchScoreTitle:v7 withEvaluator:v6];
+    [(PRSRankingItem *)self matchScoreTitle:v7 withEvaluator:evaluatorCopy];
   }
 
   else
@@ -5913,17 +5913,17 @@ LABEL_19:
   [(PRSRankingItem *)self keywordMatchScore];
   [(PRSRankingItem *)self embeddingSimilarity];
   [(PRSRankingItem *)self pommesL1Score];
-  v9 = [(PRSRankingItem *)self bundleIDType];
-  v10 = [v6 queryString];
-  v11 = [v6 language];
-  chooseTopicality(v9, 0, v4);
+  bundleIDType = [(PRSRankingItem *)self bundleIDType];
+  queryString = [evaluatorCopy queryString];
+  language = [evaluatorCopy language];
+  chooseTopicality(bundleIDType, 0, clientCopy);
   v13 = v12;
 
   v14 = v13;
   if (v14 >= 0.4)
   {
-    v16 = [v6 queryTerms];
-    v17 = [v16 count];
+    queryTerms = [evaluatorCopy queryTerms];
+    v17 = [queryTerms count];
 
     if (v17 == 2)
     {
@@ -5931,8 +5931,8 @@ LABEL_19:
       goto LABEL_10;
     }
 
-    v18 = [v6 queryTerms];
-    v19 = [v18 count];
+    queryTerms2 = [evaluatorCopy queryTerms];
+    v19 = [queryTerms2 count];
 
     if (v19 > 2)
     {
@@ -5948,11 +5948,11 @@ LABEL_10:
   return v20;
 }
 
-- (float)matchScoreForFilesWithEvaluator:(id)a3 quParsedEvaluator:(id)a4 isSearchToolClient:(BOOL)a5
+- (float)matchScoreForFilesWithEvaluator:(id)evaluator quParsedEvaluator:(id)parsedEvaluator isSearchToolClient:(BOOL)client
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  clientCopy = client;
+  evaluatorCopy = evaluator;
+  parsedEvaluatorCopy = parsedEvaluator;
   v10 = SSCompactRankingAttrsGetValue([(PRSRankingItem *)self attributes], 0x35uLL);
   if (![v10 length])
   {
@@ -5961,33 +5961,33 @@ LABEL_10:
     v10 = v11;
   }
 
-  if (v5)
+  if (clientCopy)
   {
-    [(PRSRankingItem *)self matchScoreFileNameForSearchTool:v10 withEvaluator:v9];
+    [(PRSRankingItem *)self matchScoreFileNameForSearchTool:v10 withEvaluator:parsedEvaluatorCopy];
     v13 = v12;
     [(PRSRankingItem *)self setKeywordMatchScore:?];
   }
 
   else
   {
-    [(PRSRankingItem *)self matchScoreFileName:v10 withEvaluator:v8];
+    [(PRSRankingItem *)self matchScoreFileName:v10 withEvaluator:evaluatorCopy];
     v15 = v14;
     if (v14 < 2.2204e-16)
     {
-      [(PRSRankingItem *)self matchScoreTitle:v10 withEvaluator:v8 matchOption:0];
+      [(PRSRankingItem *)self matchScoreTitle:v10 withEvaluator:evaluatorCopy matchOption:0];
       v15 = v16;
-      if (v9)
+      if (parsedEvaluatorCopy)
       {
         if (v16 == 0.0)
         {
-          [(PRSRankingItem *)self matchScoreTitle:v10 withEvaluator:v9 matchOption:0];
+          [(PRSRankingItem *)self matchScoreTitle:v10 withEvaluator:parsedEvaluatorCopy matchOption:0];
           v15 = v17;
         }
       }
     }
 
-    v18 = [(PRSRankingItem *)self contentType];
-    v19 = [v18 isEqualToString:@"public.folder"];
+    contentType = [(PRSRankingItem *)self contentType];
+    v19 = [contentType isEqualToString:@"public.folder"];
 
     v20 = 0.8;
     v21 = v15 * 0.8;
@@ -6003,15 +6003,15 @@ LABEL_10:
     [(PRSRankingItem *)self embeddingSimilarity];
     [(PRSRankingItem *)self pommesL1Score];
     v25 = v24;
-    v26 = [(PRSRankingItem *)self bundleIDType];
-    v27 = [v8 queryString];
-    v28 = [v8 language];
+    bundleIDType = [(PRSRankingItem *)self bundleIDType];
+    queryString = [evaluatorCopy queryString];
+    language = [evaluatorCopy language];
     _os_feature_enabled_impl();
     _os_feature_enabled_impl();
     _os_feature_enabled_impl();
     if (_os_feature_enabled_impl())
     {
-      if ((v26 & 0x200000080) != 0)
+      if ((bundleIDType & 0x200000080) != 0)
       {
         if (v25 >= v23)
         {
@@ -6023,7 +6023,7 @@ LABEL_10:
           v29 = v23;
         }
 
-        if ((v26 & 0x80) != 0)
+        if ((bundleIDType & 0x80) != 0)
         {
           v30 = v23;
         }
@@ -6044,7 +6044,7 @@ LABEL_10:
         else
         {
           v30 = v25;
-          if ((v26 & 0x20) != 0)
+          if ((bundleIDType & 0x20) != 0)
           {
             v30 = v25 * 0.2 + v23 * 0.8;
           }
@@ -6059,13 +6059,13 @@ LABEL_10:
 
     if (v30 >= 0.4)
     {
-      v31 = [v8 queryTerms];
-      v32 = [v31 count];
+      queryTerms = [evaluatorCopy queryTerms];
+      v32 = [queryTerms count];
 
       if (v32 != 2)
       {
-        v33 = [v8 queryTerms];
-        v34 = [v33 count] > 2;
+        queryTerms2 = [evaluatorCopy queryTerms];
+        v34 = [queryTerms2 count] > 2;
 
         v20 = dbl_1DA0D59E0[v34];
       }
@@ -6082,11 +6082,11 @@ LABEL_10:
   return v13;
 }
 
-- (float)matchScoreForCalendarWithEvaluator:(id)a3 quParsedEvaluator:(id)a4 isSearchToolClient:(BOOL)a5
+- (float)matchScoreForCalendarWithEvaluator:(id)evaluator quParsedEvaluator:(id)parsedEvaluator isSearchToolClient:(BOOL)client
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  clientCopy = client;
+  evaluatorCopy = evaluator;
+  parsedEvaluatorCopy = parsedEvaluator;
   v10 = SSCompactRankingAttrsGetValue([(PRSRankingItem *)self attributes], 0xCuLL);
   v11 = SSCompactRankingAttrsGetValue([(PRSRankingItem *)self attributes], 5uLL);
   v12 = extractStringFromArray(v11, 0);
@@ -6100,14 +6100,14 @@ LABEL_8:
     {
       v17 = [v10 stringByAppendingFormat:@" %@", v16];
 
-      [(PRSRankingItem *)self matchScoreTitle:v17 withEvaluator:v8];
+      [(PRSRankingItem *)self matchScoreTitle:v17 withEvaluator:evaluatorCopy];
       v14 = v18;
       v10 = v17;
     }
 
-    if (v9 && v14 < 2.2204e-16)
+    if (parsedEvaluatorCopy && v14 < 2.2204e-16)
     {
-      [(PRSRankingItem *)self matchScoreTitle:v10 withEvaluator:v9];
+      [(PRSRankingItem *)self matchScoreTitle:v10 withEvaluator:parsedEvaluatorCopy];
       v14 = v19;
     }
 
@@ -6116,11 +6116,11 @@ LABEL_8:
     goto LABEL_14;
   }
 
-  [(PRSRankingItem *)self matchScoreTitle:v10 withEvaluator:v8];
+  [(PRSRankingItem *)self matchScoreTitle:v10 withEvaluator:evaluatorCopy];
   v14 = v13;
-  if (v9 && v13 < 2.2204e-16)
+  if (parsedEvaluatorCopy && v13 < 2.2204e-16)
   {
-    [(PRSRankingItem *)self matchScoreTitle:v10 withEvaluator:v9];
+    [(PRSRankingItem *)self matchScoreTitle:v10 withEvaluator:parsedEvaluatorCopy];
     v14 = v15;
   }
 
@@ -6132,7 +6132,7 @@ LABEL_8:
 LABEL_14:
   if ([v12 length])
   {
-    [(PRSRankingItem *)self matchScoreContactsName:v12 withEvaluator:v8];
+    [(PRSRankingItem *)self matchScoreContactsName:v12 withEvaluator:evaluatorCopy];
     v21 = v20;
   }
 
@@ -6150,13 +6150,13 @@ LABEL_14:
 
     else
     {
-      v23 = [v8 queryTerms];
-      v24 = [v23 count];
+      queryTerms = [evaluatorCopy queryTerms];
+      v24 = [queryTerms count];
 
       if (v24 < 3)
       {
-        v27 = [v8 queryTerms];
-        v28 = [v27 count];
+        queryTerms2 = [evaluatorCopy queryTerms];
+        v28 = [queryTerms2 count];
 
         if (v28 != 2)
         {
@@ -6178,8 +6178,8 @@ LABEL_14:
   {
     if (v14 >= 0.4)
     {
-      v25 = [v8 queryTerms];
-      v26 = [v25 count];
+      queryTerms3 = [evaluatorCopy queryTerms];
+      v26 = [queryTerms3 count];
 
       if (v26 >= 3)
       {
@@ -6187,8 +6187,8 @@ LABEL_14:
         goto LABEL_32;
       }
 
-      v29 = [v8 queryTerms];
-      v30 = [v29 count];
+      queryTerms4 = [evaluatorCopy queryTerms];
+      v30 = [queryTerms4 count];
 
       if (v30 == 2)
       {
@@ -6209,25 +6209,25 @@ LABEL_33:
   [(PRSRankingItem *)self keywordMatchScore];
   [(PRSRankingItem *)self embeddingSimilarity];
   [(PRSRankingItem *)self pommesL1Score];
-  v33 = [(PRSRankingItem *)self bundleIDType];
-  v34 = [v8 queryString];
-  v35 = [v8 language];
-  chooseTopicality(v33, 0, v5);
+  bundleIDType = [(PRSRankingItem *)self bundleIDType];
+  queryString = [evaluatorCopy queryString];
+  language = [evaluatorCopy language];
+  chooseTopicality(bundleIDType, 0, clientCopy);
   v37 = v36;
 
   return v37;
 }
 
-- (float)matchScoreForMailWithEvaluator:(id)a3 isSearchToolClient:(BOOL)a4
+- (float)matchScoreForMailWithEvaluator:(id)evaluator isSearchToolClient:(BOOL)client
 {
-  v4 = a4;
-  v6 = a3;
+  clientCopy = client;
+  evaluatorCopy = evaluator;
   v7 = SSCompactRankingAttrsGetValue([(PRSRankingItem *)self attributes], 4uLL);
   v8 = 0.0;
   v9 = 0.0;
   if ([v7 length])
   {
-    [(PRSRankingItem *)self matchScoreTitle:v7 withEvaluator:v6 matchOption:6];
+    [(PRSRankingItem *)self matchScoreTitle:v7 withEvaluator:evaluatorCopy matchOption:6];
     v9 = v10 * 0.55;
   }
 
@@ -6236,7 +6236,7 @@ LABEL_33:
 
   if ([v12 length])
   {
-    [(PRSRankingItem *)self matchScoreContactsName:v12 withEvaluator:v6];
+    [(PRSRankingItem *)self matchScoreContactsName:v12 withEvaluator:evaluatorCopy];
     v8 = v13 * 0.3;
   }
 
@@ -6245,7 +6245,7 @@ LABEL_33:
 
   if ([v15 length])
   {
-    [(PRSRankingItem *)self matchScoreContactsEmailAddress:v15 withEvaluator:v6];
+    [(PRSRankingItem *)self matchScoreContactsEmailAddress:v15 withEvaluator:evaluatorCopy];
     v17 = v16 * 0.55;
   }
 
@@ -6275,19 +6275,19 @@ LABEL_33:
   [(PRSRankingItem *)self keywordMatchScore];
   [(PRSRankingItem *)self embeddingSimilarity];
   [(PRSRankingItem *)self pommesL1Score];
-  v20 = [(PRSRankingItem *)self bundleIDType];
-  v21 = [v6 queryString];
-  v22 = [v6 language];
-  chooseTopicality(v20, 0, v4);
+  bundleIDType = [(PRSRankingItem *)self bundleIDType];
+  queryString = [evaluatorCopy queryString];
+  language = [evaluatorCopy language];
+  chooseTopicality(bundleIDType, 0, clientCopy);
   v24 = v23;
 
-  v25 = [v6 queryTerms];
-  v26 = [v25 count];
+  queryTerms = [evaluatorCopy queryTerms];
+  v26 = [queryTerms count];
 
   if (v26 >= 2)
   {
-    v28 = [v6 queryTerms];
-    v29 = [v28 count];
+    queryTerms2 = [evaluatorCopy queryTerms];
+    v29 = [queryTerms2 count];
 
     v27 = 0.8;
     if (v29 != 2)
@@ -6306,27 +6306,27 @@ LABEL_33:
   return v30;
 }
 
-- (float)matchScoreForMessagesWithEvaluator:(id)a3 isSearchToolClient:(BOOL)a4
+- (float)matchScoreForMessagesWithEvaluator:(id)evaluator isSearchToolClient:(BOOL)client
 {
-  v4 = a4;
-  v6 = a3;
+  clientCopy = client;
+  evaluatorCopy = evaluator;
   [(PRSRankingItem *)self setKeywordMatchScore:0.0];
   [(PRSRankingItem *)self keywordMatchScore];
   [(PRSRankingItem *)self embeddingSimilarity];
   [(PRSRankingItem *)self pommesL1Score];
-  v7 = [(PRSRankingItem *)self bundleIDType];
-  v8 = [v6 queryString];
-  v9 = [v6 language];
-  chooseTopicality(v7, 0, v4);
+  bundleIDType = [(PRSRankingItem *)self bundleIDType];
+  queryString = [evaluatorCopy queryString];
+  language = [evaluatorCopy language];
+  chooseTopicality(bundleIDType, 0, clientCopy);
   v11 = v10;
 
-  v12 = [v6 queryTerms];
-  v13 = [v12 count];
+  queryTerms = [evaluatorCopy queryTerms];
+  v13 = [queryTerms count];
 
   if (v13 >= 2)
   {
-    v15 = [v6 queryTerms];
-    v16 = [v15 count];
+    queryTerms2 = [evaluatorCopy queryTerms];
+    v16 = [queryTerms2 count];
 
     v14 = 0.8;
     if (v16 != 2)
@@ -6345,13 +6345,13 @@ LABEL_33:
   return v17;
 }
 
-+ (void)parsePreferenceIdentity:(id)a3 withHandler:(id)a4
++ (void)parsePreferenceIdentity:(id)identity withHandler:(id)handler
 {
-  v14 = a3;
-  v5 = a4;
-  if ([v14 length] > 0xB)
+  identityCopy = identity;
+  handlerCopy = handler;
+  if ([identityCopy length] > 0xB)
   {
-    v8 = [v14 substringFromIndex:6];
+    v8 = [identityCopy substringFromIndex:6];
     v9 = [v8 componentsSeparatedByString:@"root="];
 
     if ([v9 count] == 2 && (objc_msgSend(v9, "objectAtIndexedSubscript:", 1), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "length"), v10, v11))
@@ -6372,13 +6372,13 @@ LABEL_33:
           v6 = [v13 objectAtIndexedSubscript:1];
         }
 
-        v5[2](v5, v7, v6);
+        handlerCopy[2](handlerCopy, v7, v6);
       }
 
       else
       {
         v6 = &stru_1F556FE60;
-        v5[2](v5, &stru_1F556FE60, &stru_1F556FE60);
+        handlerCopy[2](handlerCopy, &stru_1F556FE60, &stru_1F556FE60);
         v7 = &stru_1F556FE60;
       }
     }
@@ -6386,7 +6386,7 @@ LABEL_33:
     else
     {
       v6 = &stru_1F556FE60;
-      v5[2](v5, &stru_1F556FE60, &stru_1F556FE60);
+      handlerCopy[2](handlerCopy, &stru_1F556FE60, &stru_1F556FE60);
       v7 = &stru_1F556FE60;
     }
   }
@@ -6394,33 +6394,33 @@ LABEL_33:
   else
   {
     v6 = &stru_1F556FE60;
-    v5[2](v5, &stru_1F556FE60, &stru_1F556FE60);
+    handlerCopy[2](handlerCopy, &stru_1F556FE60, &stru_1F556FE60);
     v7 = &stru_1F556FE60;
   }
 }
 
-+ (int)preferencePriorityFromIdentity:(id)a3
++ (int)preferencePriorityFromIdentity:(id)identity
 {
-  v3 = a3;
+  identityCopy = identity;
   if (preferencePriorityFromIdentity__onceToken != -1)
   {
     +[PRSRankingItem(Scoring) preferencePriorityFromIdentity:];
   }
 
-  if ([v3 hasPrefix:preferencePriorityFromIdentity__prefsString])
+  if ([identityCopy hasPrefix:preferencePriorityFromIdentity__prefsString])
   {
-    v4 = [PRSRankingItem preferencePriorityFromIdentityWithPrefixPrefs:v3];
+    v4 = [PRSRankingItem preferencePriorityFromIdentityWithPrefixPrefs:identityCopy];
   }
 
   else
   {
-    if (![v3 hasPrefix:preferencePriorityFromIdentity__settingsNavigationString])
+    if (![identityCopy hasPrefix:preferencePriorityFromIdentity__settingsNavigationString])
     {
       v5 = 6;
       goto LABEL_9;
     }
 
-    v4 = [PRSRankingItem preferencePriorityFromIdentityWithPrefixSettingsNavigation:v3];
+    v4 = [PRSRankingItem preferencePriorityFromIdentityWithPrefixSettingsNavigation:identityCopy];
   }
 
   v5 = v4;
@@ -6438,9 +6438,9 @@ void __58__PRSRankingItem_Scoring__preferencePriorityFromIdentity___block_invoke
   preferencePriorityFromIdentity__settingsNavigationString = @"settings-navigation://";
 }
 
-+ (int)preferencePriorityFromIdentityWithPrefixPrefs:(id)a3
++ (int)preferencePriorityFromIdentityWithPrefixPrefs:(id)prefs
 {
-  v3 = a3;
+  prefsCopy = prefs;
   if (preferencePriorityFromIdentityWithPrefixPrefs__onceToken != -1)
   {
     +[PRSRankingItem(Scoring) preferencePriorityFromIdentityWithPrefixPrefs:];
@@ -6450,14 +6450,14 @@ void __58__PRSRankingItem_Scoring__preferencePriorityFromIdentity___block_invoke
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 6;
-  if ([v3 length])
+  if ([prefsCopy length])
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __73__PRSRankingItem_Scoring__preferencePriorityFromIdentityWithPrefixPrefs___block_invoke_2;
     v6[3] = &unk_1E8596C00;
     v6[4] = &v7;
-    [PRSRankingItem parsePreferenceIdentity:v3 withHandler:v6];
+    [PRSRankingItem parsePreferenceIdentity:prefsCopy withHandler:v6];
   }
 
   v4 = *(v8 + 6);
@@ -6588,52 +6588,52 @@ LABEL_17:
 LABEL_18:
 }
 
-+ (int)preferencePriorityFromIdentityWithPrefixSettingsNavigation:(id)a3
++ (int)preferencePriorityFromIdentityWithPrefixSettingsNavigation:(id)navigation
 {
   v43 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  navigationCopy = navigation;
   if (preferencePriorityFromIdentityWithPrefixSettingsNavigation__onceToken != -1)
   {
     +[PRSRankingItem(Scoring) preferencePriorityFromIdentityWithPrefixSettingsNavigation:];
   }
 
-  if ([v3 length])
+  if ([navigationCopy length])
   {
-    v4 = [MEMORY[0x1E695DFF8] URLWithString:v3];
+    v4 = [MEMORY[0x1E695DFF8] URLWithString:navigationCopy];
     v5 = v4;
     if (v4 && ([v4 scheme], (v6 = objc_claimAutoreleasedReturnValue()) != 0) && (v7 = v6, objc_msgSend(v5, "host"), v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v8))
     {
-      v9 = [v5 host];
-      if ([v9 hasPrefix:preferencePriorityFromIdentityWithPrefixSettingsNavigation__settingsURLPrefix] && (v10 = objc_msgSend(v9, "length"), v10 > objc_msgSend(preferencePriorityFromIdentityWithPrefixSettingsNavigation__settingsURLPrefix, "length")))
+      host = [v5 host];
+      if ([host hasPrefix:preferencePriorityFromIdentityWithPrefixSettingsNavigation__settingsURLPrefix] && (v10 = objc_msgSend(host, "length"), v10 > objc_msgSend(preferencePriorityFromIdentityWithPrefixSettingsNavigation__settingsURLPrefix, "length")))
       {
-        v11 = [preferencePriorityFromIdentityWithPrefixSettingsNavigation__hostPriorityOverrides objectForKey:v9];
-        v12 = [v11 intValue];
-        if (v12 <= 1)
+        v11 = [preferencePriorityFromIdentityWithPrefixSettingsNavigation__hostPriorityOverrides objectForKey:host];
+        intValue = [v11 intValue];
+        if (intValue <= 1)
         {
           v13 = 1;
         }
 
         else
         {
-          v13 = v12;
+          v13 = intValue;
         }
 
-        v14 = [v5 pathComponents];
-        v15 = [v14 count];
+        pathComponents = [v5 pathComponents];
+        v15 = [pathComponents count];
 
         v16 = v15 - 2;
         if (v15 >= 2)
         {
-          v17 = [v5 host];
-          v18 = [v17 isEqualToString:preferencePriorityFromIdentityWithPrefixSettingsNavigation__appSettingsPrefix];
+          host2 = [v5 host];
+          v18 = [host2 isEqualToString:preferencePriorityFromIdentityWithPrefixSettingsNavigation__appSettingsPrefix];
 
           if (v18)
           {
             v19 = preferencePriorityFromIdentityWithPrefixSettingsNavigation__appPriorityOverrides;
-            v20 = [v5 pathComponents];
-            v21 = [v20 objectAtIndexedSubscript:1];
+            pathComponents2 = [v5 pathComponents];
+            v21 = [pathComponents2 objectAtIndexedSubscript:1];
             v22 = [v19 objectForKey:v21];
-            v23 = [v22 intValue];
+            intValue2 = [v22 intValue];
             if (preferencePriorityFromIdentityWithPrefixSettingsNavigation__defaultAppPriority)
             {
               v24 = 2;
@@ -6644,9 +6644,9 @@ LABEL_18:
               v24 = 0;
             }
 
-            if (v23)
+            if (intValue2)
             {
-              v13 = v23;
+              v13 = intValue2;
             }
 
             else
@@ -6664,8 +6664,8 @@ LABEL_18:
           v41 = 0u;
           v38 = 0u;
           v39 = 0u;
-          v26 = [v5 pathComponents];
-          v27 = [v26 countByEnumeratingWithState:&v38 objects:v42 count:16];
+          pathComponents3 = [v5 pathComponents];
+          v27 = [pathComponents3 countByEnumeratingWithState:&v38 objects:v42 count:16];
           if (v27)
           {
             v28 = v27;
@@ -6676,13 +6676,13 @@ LABEL_18:
               {
                 if (*v39 != v29)
                 {
-                  objc_enumerationMutation(v26);
+                  objc_enumerationMutation(pathComponents3);
                 }
 
                 v16 -= [*(*(&v38 + 1) + 8 * i) isEqualToString:@"root"];
               }
 
-              v28 = [v26 countByEnumeratingWithState:&v38 objects:v42 count:16];
+              v28 = [pathComponents3 countByEnumeratingWithState:&v38 objects:v42 count:16];
             }
 
             while (v28);
@@ -6691,19 +6691,19 @@ LABEL_18:
           v13 += v16 & ~(v16 >> 31);
         }
 
-        v31 = [v5 fragment];
-        if (v31)
+        fragment = [v5 fragment];
+        if (fragment)
         {
-          v32 = v31;
-          v33 = [v5 fragment];
-          v34 = [v33 isEqualToString:@"root"];
+          v32 = fragment;
+          fragment2 = [v5 fragment];
+          v34 = [fragment2 isEqualToString:@"root"];
 
           v13 += (v34 & 1) == 0;
         }
 
-        v35 = [v5 query];
+        query = [v5 query];
 
-        if (v35)
+        if (query)
         {
           v25 = v13 + 1;
         }
@@ -6768,9 +6768,9 @@ void __86__PRSRankingItem_Scoring__preferencePriorityFromIdentityWithPrefixSetti
   preferencePriorityFromIdentityWithPrefixSettingsNavigation__hostPriorityOverrides = v3;
 }
 
-- (float)matchScoreForPreferencesWithEvaluator:(id)a3
+- (float)matchScoreForPreferencesWithEvaluator:(id)evaluator
 {
-  v4 = a3;
+  evaluatorCopy = evaluator;
   v5 = SSCompactRankingAttrsGetValue([(PRSRankingItem *)self attributes], 4uLL);
   v6 = SSCompactRankingAttrsGetValue([(PRSRankingItem *)self attributes], 0);
   v7 = SSCompactRankingAttrsGetValue([(PRSRankingItem *)self attributes], 1uLL);
@@ -6782,25 +6782,25 @@ void __86__PRSRankingItem_Scoring__preferencePriorityFromIdentityWithPrefixSetti
     {
       if (v8)
       {
-        v11 = v8;
+        identifier2 = v8;
 LABEL_8:
-        v13 = v11;
+        v13 = identifier2;
 
         v7 = v13;
         goto LABEL_9;
       }
 
-      v12 = [(PRSRankingItem *)self identifier];
+      identifier = [(PRSRankingItem *)self identifier];
 
-      if (v12)
+      if (identifier)
       {
-        v11 = [(PRSRankingItem *)self identifier];
+        identifier2 = [(PRSRankingItem *)self identifier];
         goto LABEL_8;
       }
     }
 
 LABEL_9:
-    [(PRSRankingItem *)self matchScoreForPreferencesWithEvaluator:v4 subject:v5 preferenceType:v6 preferenceId:v7];
+    [(PRSRankingItem *)self matchScoreForPreferencesWithEvaluator:evaluatorCopy subject:v5 preferenceType:v6 preferenceId:v7];
     v10 = LODWORD(v9);
   }
 
@@ -6812,33 +6812,33 @@ LABEL_9:
   return v15;
 }
 
-- (float)matchScoreForPreferencesWithEvaluator:(id)a3 subject:(id)a4 isFirstParty:(BOOL)a5 preferencePriority:(int)a6
+- (float)matchScoreForPreferencesWithEvaluator:(id)evaluator subject:(id)subject isFirstParty:(BOOL)party preferencePriority:(int)priority
 {
-  v10 = a3;
-  v11 = a4;
-  if (![v11 length])
+  evaluatorCopy = evaluator;
+  subjectCopy = subject;
+  if (![subjectCopy length])
   {
     v16 = 0.0;
     goto LABEL_26;
   }
 
-  v12 = [v10 queryString];
+  queryString = [evaluatorCopy queryString];
   v13 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@"-&"];
-  v14 = [v12 rangeOfCharacterFromSet:v13] == 0x7FFFFFFFFFFFFFFFLL;
+  v14 = [queryString rangeOfCharacterFromSet:v13] == 0x7FFFFFFFFFFFFFFFLL;
 
-  [(PRSRankingItem *)self matchScoreSettings:v11 withEvaluator:v10 matchOption:(2 * v14)];
+  [(PRSRankingItem *)self matchScoreSettings:subjectCopy withEvaluator:evaluatorCopy matchOption:(2 * v14)];
   v16 = v15;
   if (v15 != 0.0)
   {
-    if (!a5)
+    if (!party)
     {
       v16 = v15 * 0.25;
       goto LABEL_26;
     }
 
-    if (a6 <= 2)
+    if (priority <= 2)
     {
-      if (a6 == 1)
+      if (priority == 1)
       {
         v17 = v15;
         v18 = 0.96;
@@ -6846,7 +6846,7 @@ LABEL_9:
 
       else
       {
-        if (a6 != 2)
+        if (priority != 2)
         {
           goto LABEL_20;
         }
@@ -6858,7 +6858,7 @@ LABEL_9:
 
     else
     {
-      switch(a6)
+      switch(priority)
       {
         case 3:
           v17 = v15;
@@ -6895,15 +6895,15 @@ LABEL_18:
           break;
         default:
 LABEL_20:
-          v16 = v15 / a6;
+          v16 = v15 / priority;
           goto LABEL_24;
       }
     }
 
     v16 = v17 * v18;
 LABEL_24:
-    v19 = [v10 queryString];
-    v20 = [v19 length];
+    queryString2 = [evaluatorCopy queryString];
+    v20 = [queryString2 length];
 
     if (v20 < 2)
     {
@@ -6916,39 +6916,39 @@ LABEL_26:
   return v16;
 }
 
-- (float)matchScoreForPreferencesWithEvaluator:(id)a3 subject:(id)a4 preferenceType:(id)a5 preferenceId:(id)a6
+- (float)matchScoreForPreferencesWithEvaluator:(id)evaluator subject:(id)subject preferenceType:(id)type preferenceId:(id)id
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = a4;
-  v13 = a3;
-  if ([v10 isEqualToString:@"com.apple.Preferences.firstParty"])
+  typeCopy = type;
+  idCopy = id;
+  subjectCopy = subject;
+  evaluatorCopy = evaluator;
+  if ([typeCopy isEqualToString:@"com.apple.Preferences.firstParty"])
   {
     v14 = 1;
   }
 
   else
   {
-    v14 = [v10 isEqualToString:@"com.apple.systempreference.prefpane"];
+    v14 = [typeCopy isEqualToString:@"com.apple.systempreference.prefpane"];
   }
 
-  [(PRSRankingItem *)self setSettingsPreferencePriority:[PRSRankingItem preferencePriorityFromIdentity:v11]];
-  [(PRSRankingItem *)self matchScoreForPreferencesWithEvaluator:v13 subject:v12 isFirstParty:v14 preferencePriority:[(PRSRankingItem *)self settingsPreferencePriority]];
+  [(PRSRankingItem *)self setSettingsPreferencePriority:[PRSRankingItem preferencePriorityFromIdentity:idCopy]];
+  [(PRSRankingItem *)self matchScoreForPreferencesWithEvaluator:evaluatorCopy subject:subjectCopy isFirstParty:v14 preferencePriority:[(PRSRankingItem *)self settingsPreferencePriority]];
   v16 = v15;
 
   return v16;
 }
 
-- (int)shortcutPriorityFromIdentifier:(id)a3
+- (int)shortcutPriorityFromIdentifier:(id)identifier
 {
   v3 = shortcutPriorityFromIdentifier__onceToken;
-  v4 = a3;
+  identifierCopy = identifier;
   if (v3 != -1)
   {
     [PRSRankingItem(Scoring) shortcutPriorityFromIdentifier:];
   }
 
-  if ([0 containsObject:v4])
+  if ([0 containsObject:identifierCopy])
   {
     v5 = -1;
   }
@@ -6958,7 +6958,7 @@ LABEL_26:
     v5 = 2;
   }
 
-  v6 = [shortcutPriorityFromIdentifier__setOfFirstPriority containsObject:v4];
+  v6 = [shortcutPriorityFromIdentifier__setOfFirstPriority containsObject:identifierCopy];
 
   if (v6)
   {
@@ -6978,29 +6978,29 @@ uint64_t __58__PRSRankingItem_Scoring__shortcutPriorityFromIdentifier___block_in
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (float)matchScoreForShortcutsSettingWithEvaluator:(id)a3 name:(id)a4 preferencePriority:(int)a5
+- (float)matchScoreForShortcutsSettingWithEvaluator:(id)evaluator name:(id)name preferencePriority:(int)priority
 {
-  v8 = a3;
-  v9 = a4;
+  evaluatorCopy = evaluator;
+  nameCopy = name;
   v10 = 0.0;
-  if ([v9 length])
+  if ([nameCopy length])
   {
-    v11 = [v8 queryString];
+    queryString = [evaluatorCopy queryString];
     v12 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@"-&"];
-    v13 = [v11 rangeOfCharacterFromSet:v12] == 0x7FFFFFFFFFFFFFFFLL;
+    v13 = [queryString rangeOfCharacterFromSet:v12] == 0x7FFFFFFFFFFFFFFFLL;
 
-    [(PRSRankingItem *)self matchScoreSettings:v9 withEvaluator:v8 matchOption:(2 * v13)];
+    [(PRSRankingItem *)self matchScoreSettings:nameCopy withEvaluator:evaluatorCopy matchOption:(2 * v13)];
     v10 = v14;
     if (v14 >= 2.2204e-16)
     {
-      if (a5 == -1)
+      if (priority == -1)
       {
         v10 = 0.0;
       }
 
-      else if (a5 != 2)
+      else if (priority != 2)
       {
-        if (a5 == 1)
+        if (priority == 1)
         {
           v16 = v14 * 1.1;
           if (v16 > 1.0)
@@ -7022,25 +7022,25 @@ uint64_t __58__PRSRankingItem_Scoring__shortcutPriorityFromIdentifier___block_in
   return v10;
 }
 
-- (float)matchScoreForShortcutsAppWithEvaluator:(id)a3
+- (float)matchScoreForShortcutsAppWithEvaluator:(id)evaluator
 {
-  v4 = a3;
+  evaluatorCopy = evaluator;
   v5 = SSCompactRankingAttrsGetValue([(PRSRankingItem *)self attributes], 7uLL);
   v6 = 0.0;
   v7 = 0.0;
   if ([v5 length])
   {
-    [(PRSRankingItem *)self matchScoreTitle:v5 withEvaluator:v4];
+    [(PRSRankingItem *)self matchScoreTitle:v5 withEvaluator:evaluatorCopy];
     v7 = v8;
   }
 
-  v9 = [(PRSRankingItem *)self firstMatchedAltName];
-  v10 = [v9 length];
+  firstMatchedAltName = [(PRSRankingItem *)self firstMatchedAltName];
+  v10 = [firstMatchedAltName length];
 
   if (v10)
   {
-    v11 = [(PRSRankingItem *)self firstMatchedAltName];
-    [(PRSRankingItem *)self matchScoreTitle:v11 withEvaluator:v4];
+    firstMatchedAltName2 = [(PRSRankingItem *)self firstMatchedAltName];
+    [(PRSRankingItem *)self matchScoreTitle:firstMatchedAltName2 withEvaluator:evaluatorCopy];
     v6 = v12;
   }
 
@@ -7056,8 +7056,8 @@ uint64_t __58__PRSRankingItem_Scoring__shortcutPriorityFromIdentifier___block_in
 
   if (v7 < 1.0 && v6 < 1.0)
   {
-    v14 = [v4 queryString];
-    v15 = [v14 composedLength];
+    queryString = [evaluatorCopy queryString];
+    composedLength = [queryString composedLength];
 
     v16 = 0.2;
     if (v13 < 0.2)
@@ -7065,7 +7065,7 @@ uint64_t __58__PRSRankingItem_Scoring__shortcutPriorityFromIdentifier___block_in
       v16 = v13;
     }
 
-    if (v15 < 4)
+    if (composedLength < 4)
     {
       v13 = v16;
     }
@@ -7074,9 +7074,9 @@ uint64_t __58__PRSRankingItem_Scoring__shortcutPriorityFromIdentifier___block_in
   return v13;
 }
 
-- (float)matchScoreForShortcutsWithEvaluator:(id)a3 isSearchToolClient:(BOOL)a4
+- (float)matchScoreForShortcutsWithEvaluator:(id)evaluator isSearchToolClient:(BOOL)client
 {
-  v6 = a3;
+  evaluatorCopy = evaluator;
   v7 = SSCompactRankingAttrsGetValue([(PRSRankingItem *)self attributes], 0x48uLL);
   v8 = SSCompactRankingAttrsGetValue([(PRSRankingItem *)self attributes], 0x32uLL);
   if (matchScoreForShortcutsWithEvaluator_isSearchToolClient__onceToken != -1)
@@ -7086,15 +7086,15 @@ uint64_t __58__PRSRankingItem_Scoring__shortcutPriorityFromIdentifier___block_in
 
   if ([v7 isEqualToString:@"com.apple.Preferences"])
   {
-    if (a4 || (-[PRSRankingItem matchInfo](self, "matchInfo"), v9 = objc_claimAutoreleasedReturnValue(), [v9 objectForKey:*MEMORY[0x1E6963F48]], v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v10))
+    if (client || (-[PRSRankingItem matchInfo](self, "matchInfo"), v9 = objc_claimAutoreleasedReturnValue(), [v9 objectForKey:*MEMORY[0x1E6963F48]], v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v10))
     {
       v11 = SSCompactRankingAttrsGetValue([(PRSRankingItem *)self attributes], 7uLL);
-      v12 = [(PRSRankingItem *)self identifier];
-      v13 = [(PRSRankingItem *)self shortcutPriorityFromIdentifier:v12];
+      identifier = [(PRSRankingItem *)self identifier];
+      v13 = [(PRSRankingItem *)self shortcutPriorityFromIdentifier:identifier];
 
       if ([v11 length])
       {
-        [(PRSRankingItem *)self matchScoreForShortcutsSettingWithEvaluator:v6 name:v11 preferencePriority:v13];
+        [(PRSRankingItem *)self matchScoreForShortcutsSettingWithEvaluator:evaluatorCopy name:v11 preferencePriority:v13];
 LABEL_13:
         v17 = v14;
         v18 = 1.0;
@@ -7111,12 +7111,12 @@ LABEL_19:
 
   if ([matchScoreForShortcutsWithEvaluator_isSearchToolClient__appPrefixActionBundleIDs containsObject:v7])
   {
-    if (a4 || (-[PRSRankingItem matchInfo](self, "matchInfo"), v15 = objc_claimAutoreleasedReturnValue(), [v15 objectForKey:*MEMORY[0x1E6964AC8]], v16 = objc_claimAutoreleasedReturnValue(), v16, v15, v16))
+    if (client || (-[PRSRankingItem matchInfo](self, "matchInfo"), v15 = objc_claimAutoreleasedReturnValue(), [v15 objectForKey:*MEMORY[0x1E6964AC8]], v16 = objc_claimAutoreleasedReturnValue(), v16, v15, v16))
     {
       v11 = SSCompactRankingAttrsGetValue([(PRSRankingItem *)self attributes], 0xADuLL);
       if ([v11 length])
       {
-        [(PRSRankingItem *)self matchScoreTitle:v11 withEvaluator:v6];
+        [(PRSRankingItem *)self matchScoreTitle:v11 withEvaluator:evaluatorCopy];
         goto LABEL_13;
       }
 
@@ -7133,28 +7133,28 @@ LABEL_43:
 
   if (![v8 isEqualToString:@"app-shortcut"])
   {
-    if (!a4)
+    if (!client)
     {
-      v25 = [(PRSRankingItem *)self matchInfo];
-      v26 = [v25 objectForKey:*MEMORY[0x1E6963F48]];
+      matchInfo = [(PRSRankingItem *)self matchInfo];
+      v26 = [matchInfo objectForKey:*MEMORY[0x1E6963F48]];
       if (v26)
       {
       }
 
       else
       {
-        v35 = [(PRSRankingItem *)self firstMatchedAltName];
+        firstMatchedAltName = [(PRSRankingItem *)self firstMatchedAltName];
 
-        if (!v35)
+        if (!firstMatchedAltName)
         {
           goto LABEL_43;
         }
       }
     }
 
-    [(PRSRankingItem *)self matchScoreForShortcutsAppWithEvaluator:v6];
+    [(PRSRankingItem *)self matchScoreForShortcutsAppWithEvaluator:evaluatorCopy];
     v17 = v36;
-    if ([v7 length] && (objc_msgSend(v7, "hasPrefix:", @"com.apple.") & 1) != 0 || (v21 = v17, v17 > 1.0) || (objc_msgSend(v6, "queryString", v21), v37 = objc_claimAutoreleasedReturnValue(), v38 = objc_msgSend(v37, "composedLength"), v37, v38 >= 8))
+    if ([v7 length] && (objc_msgSend(v7, "hasPrefix:", @"com.apple.") & 1) != 0 || (v21 = v17, v17 > 1.0) || (objc_msgSend(evaluatorCopy, "queryString", v21), v37 = objc_claimAutoreleasedReturnValue(), v38 = objc_msgSend(v37, "composedLength"), v37, v38 >= 8))
     {
       v18 = 0.8;
     }
@@ -7167,28 +7167,28 @@ LABEL_43:
     goto LABEL_20;
   }
 
-  if (!a4)
+  if (!client)
   {
-    v19 = [(PRSRankingItem *)self matchInfo];
-    v20 = [v19 objectForKey:*MEMORY[0x1E6963F48]];
+    matchInfo2 = [(PRSRankingItem *)self matchInfo];
+    v20 = [matchInfo2 objectForKey:*MEMORY[0x1E6963F48]];
     if (v20)
     {
     }
 
     else
     {
-      v27 = [(PRSRankingItem *)self firstMatchedAltName];
+      firstMatchedAltName2 = [(PRSRankingItem *)self firstMatchedAltName];
 
-      if (!v27)
+      if (!firstMatchedAltName2)
       {
         goto LABEL_43;
       }
     }
   }
 
-  [(PRSRankingItem *)self matchScoreForShortcutsAppWithEvaluator:v6];
+  [(PRSRankingItem *)self matchScoreForShortcutsAppWithEvaluator:evaluatorCopy];
   v17 = v28;
-  if ([v7 length] && (objc_msgSend(v7, "hasPrefix:", @"com.apple.") & 1) != 0 || (v21 = v17, v17 > 1.0) || (objc_msgSend(v6, "queryString", v21), v29 = objc_claimAutoreleasedReturnValue(), v30 = objc_msgSend(v29, "composedLength"), v29, v18 = 0.25, v30 >= 8))
+  if ([v7 length] && (objc_msgSend(v7, "hasPrefix:", @"com.apple.") & 1) != 0 || (v21 = v17, v17 > 1.0) || (objc_msgSend(evaluatorCopy, "queryString", v21), v29 = objc_claimAutoreleasedReturnValue(), v30 = objc_msgSend(v29, "composedLength"), v29, v18 = 0.25, v30 >= 8))
   {
     v31 = SSCompactRankingAttrsGetValue([(PRSRankingItem *)self attributes], 0xA5uLL);
     v32 = v31;
@@ -7200,15 +7200,15 @@ LABEL_49:
       goto LABEL_20;
     }
 
-    v33 = [v31 intValue];
-    if (v33 == 1)
+    intValue = [v31 intValue];
+    if (intValue == 1)
     {
       v34 = 1.2;
     }
 
     else
     {
-      if (v33)
+      if (intValue)
       {
         goto LABEL_47;
       }
@@ -7254,11 +7254,11 @@ void __82__PRSRankingItem_Scoring__matchScoreForShortcutsWithEvaluator_isSearchT
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (float)matchScoreForDictionaryWithEvaluator:(id)a3
+- (float)matchScoreForDictionaryWithEvaluator:(id)evaluator
 {
-  v4 = [a3 queryTerms];
+  queryTerms = [evaluator queryTerms];
   v6 = 0.0;
-  if (-[PRSRankingItem hasPolicyMultipleTermsPhraseMatch](self, "hasPolicyMultipleTermsPhraseMatch") && [v4 count] >= 2)
+  if (-[PRSRankingItem hasPolicyMultipleTermsPhraseMatch](self, "hasPolicyMultipleTermsPhraseMatch") && [queryTerms count] >= 2)
   {
     v7 = SSCompactRankingAttrsGetValue([(PRSRankingItem *)self attributes], 7uLL);
     if ([v7 composedLength] > 1)
@@ -7280,20 +7280,20 @@ void __82__PRSRankingItem_Scoring__matchScoreForShortcutsWithEvaluator_isSearchT
   return v9;
 }
 
-- (float)matchScoreForBooksWithEvaluator:(id)a3 quParsedEvaluator:(id)a4 isSearchToolClient:(BOOL)a5
+- (float)matchScoreForBooksWithEvaluator:(id)evaluator quParsedEvaluator:(id)parsedEvaluator isSearchToolClient:(BOOL)client
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  clientCopy = client;
+  evaluatorCopy = evaluator;
+  parsedEvaluatorCopy = parsedEvaluator;
   v10 = SSCompactRankingAttrsGetValue([(PRSRankingItem *)self attributes], 7uLL);
   v11 = SSCompactRankingAttrsGetValue([(PRSRankingItem *)self attributes], 0x5CuLL);
   if ([v10 composedLength])
   {
-    [(PRSRankingItem *)self matchScoreTitle:v10 withEvaluator:v8];
+    [(PRSRankingItem *)self matchScoreTitle:v10 withEvaluator:evaluatorCopy];
     v13 = v12;
-    if (v9 && v12 < 0.00000011921)
+    if (parsedEvaluatorCopy && v12 < 0.00000011921)
     {
-      [(PRSRankingItem *)self matchScoreTitle:v10 withEvaluator:v9];
+      [(PRSRankingItem *)self matchScoreTitle:v10 withEvaluator:parsedEvaluatorCopy];
       v13 = v14;
     }
 
@@ -7310,10 +7310,10 @@ void __82__PRSRankingItem_Scoring__matchScoreForShortcutsWithEvaluator_isSearchT
 
   if ([v11 composedLength])
   {
-    [(PRSRankingItem *)self matchScoreTitle:v11 withEvaluator:v8];
-    if (v9 && *&v15 < 0.00000011921)
+    [(PRSRankingItem *)self matchScoreTitle:v11 withEvaluator:evaluatorCopy];
+    if (parsedEvaluatorCopy && *&v15 < 0.00000011921)
     {
-      [(PRSRankingItem *)self matchScoreTitle:v11 withEvaluator:v9];
+      [(PRSRankingItem *)self matchScoreTitle:v11 withEvaluator:parsedEvaluatorCopy];
     }
 
     v16 = *&v15 * 0.4;
@@ -7328,45 +7328,45 @@ void __82__PRSRankingItem_Scoring__matchScoreForShortcutsWithEvaluator_isSearchT
   [(PRSRankingItem *)self keywordMatchScore];
   [(PRSRankingItem *)self embeddingSimilarity];
   [(PRSRankingItem *)self pommesL1Score];
-  v17 = [(PRSRankingItem *)self bundleIDType];
-  v18 = [v8 queryString];
-  v19 = [v8 language];
-  chooseTopicality(v17, 0, v5);
+  bundleIDType = [(PRSRankingItem *)self bundleIDType];
+  queryString = [evaluatorCopy queryString];
+  language = [evaluatorCopy language];
+  chooseTopicality(bundleIDType, 0, clientCopy);
   v21 = v20;
 
-  v22 = [v8 queryTerms];
-  v23 = [v22 count];
+  queryTerms = [evaluatorCopy queryTerms];
+  v23 = [queryTerms count];
 
   if (v23 <= 3)
   {
-    v24 = [v8 queryTerms];
-    v21 = ([v24 count] * 0.599999994 * 0.25 + 0.400000006) * v21;
+    queryTerms2 = [evaluatorCopy queryTerms];
+    v21 = ([queryTerms2 count] * 0.599999994 * 0.25 + 0.400000006) * v21;
   }
 
   return v21;
 }
 
-- (float)matchScoreForTipsWithEvaluator:(id)a3
+- (float)matchScoreForTipsWithEvaluator:(id)evaluator
 {
-  v4 = a3;
-  v5 = [v4 queryString];
-  v6 = [v5 composedLength];
+  evaluatorCopy = evaluator;
+  queryString = [evaluatorCopy queryString];
+  composedLength = [queryString composedLength];
 
   v7 = 0.0;
-  if (v6 >= 4)
+  if (composedLength >= 4)
   {
     v8 = SSCompactRankingAttrsGetValue([(PRSRankingItem *)self attributes], 7uLL);
     if ([v8 composedLength])
     {
-      [(PRSRankingItem *)self matchScoreTitle:v8 withEvaluator:v4];
+      [(PRSRankingItem *)self matchScoreTitle:v8 withEvaluator:evaluatorCopy];
       v7 = v9;
       if (v9 < 1.0)
       {
-        v10 = [v4 queryString];
-        v11 = [v10 composedLength];
+        queryString2 = [evaluatorCopy queryString];
+        composedLength2 = [queryString2 composedLength];
 
         v12 = v7 * 0.1;
-        if (v11 >= 0xA)
+        if (composedLength2 >= 0xA)
         {
           v12 = v7;
         }
@@ -7375,13 +7375,13 @@ void __82__PRSRankingItem_Scoring__matchScoreForShortcutsWithEvaluator_isSearchT
       }
     }
 
-    v13 = [v4 queryTerms];
-    v14 = [v13 count];
+    queryTerms = [evaluatorCopy queryTerms];
+    v14 = [queryTerms count];
 
     if (v14 <= 3)
     {
-      v16 = [v4 queryTerms];
-      v7 = vcvtd_n_f64_u64([v16 count], 2uLL) * v7;
+      queryTerms2 = [evaluatorCopy queryTerms];
+      v7 = vcvtd_n_f64_u64([queryTerms2 count], 2uLL) * v7;
     }
 
     *&v15 = v7;
@@ -7393,27 +7393,27 @@ void __82__PRSRankingItem_Scoring__matchScoreForShortcutsWithEvaluator_isSearchT
   return v7;
 }
 
-- (float)matchScoreForHelpWithEvaluator:(id)a3
+- (float)matchScoreForHelpWithEvaluator:(id)evaluator
 {
-  v4 = a3;
-  v5 = [v4 queryString];
-  v6 = [v5 composedLength];
+  evaluatorCopy = evaluator;
+  queryString = [evaluatorCopy queryString];
+  composedLength = [queryString composedLength];
 
   v7 = 0.0;
-  if (v6 >= 4)
+  if (composedLength >= 4)
   {
     v8 = SSCompactRankingAttrsGetValue([(PRSRankingItem *)self attributes], 7uLL);
     if ([v8 composedLength])
     {
-      [(PRSRankingItem *)self matchScoreTitle:v8 withEvaluator:v4];
+      [(PRSRankingItem *)self matchScoreTitle:v8 withEvaluator:evaluatorCopy];
       v7 = v9;
       if (v9 < 1.0)
       {
-        v10 = [v4 queryString];
-        v11 = [v10 composedLength];
+        queryString2 = [evaluatorCopy queryString];
+        composedLength2 = [queryString2 composedLength];
 
         v12 = v7 * 0.1;
-        if (v11 >= 0xA)
+        if (composedLength2 >= 0xA)
         {
           v12 = v7;
         }
@@ -7422,13 +7422,13 @@ void __82__PRSRankingItem_Scoring__matchScoreForShortcutsWithEvaluator_isSearchT
       }
     }
 
-    v13 = [v4 queryTerms];
-    v14 = [v13 count];
+    queryTerms = [evaluatorCopy queryTerms];
+    v14 = [queryTerms count];
 
     if (v14 <= 3)
     {
-      v16 = [v4 queryTerms];
-      v7 = vcvtd_n_f64_u64([v16 count], 2uLL) * v7;
+      queryTerms2 = [evaluatorCopy queryTerms];
+      v7 = vcvtd_n_f64_u64([queryTerms2 count], 2uLL) * v7;
     }
 
     *&v15 = v7;
@@ -7440,17 +7440,17 @@ void __82__PRSRankingItem_Scoring__matchScoreForShortcutsWithEvaluator_isSearchT
   return v7;
 }
 
-- (BOOL)_isWalletTransaction:(id)a3
+- (BOOL)_isWalletTransaction:(id)transaction
 {
-  v3 = a3;
+  transactionCopy = transaction;
   if (_isWalletTransaction__onceToken != -1)
   {
     [PRSRankingItem(Scoring) _isWalletTransaction:];
   }
 
-  if ([v3 length])
+  if ([transactionCopy length])
   {
-    v4 = [_isWalletTransaction__transactionContentTypes containsObject:v3];
+    v4 = [_isWalletTransaction__transactionContentTypes containsObject:transactionCopy];
   }
 
   else
@@ -7468,17 +7468,17 @@ uint64_t __48__PRSRankingItem_Scoring___isWalletTransaction___block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)_isWalletPass:(id)a3
+- (BOOL)_isWalletPass:(id)pass
 {
-  v3 = a3;
+  passCopy = pass;
   if (_isWalletPass__onceToken != -1)
   {
     [PRSRankingItem(Scoring) _isWalletPass:];
   }
 
-  if ([v3 length])
+  if ([passCopy length])
   {
-    v4 = [_isWalletPass__walletPassContentTypes containsObject:v3];
+    v4 = [_isWalletPass__walletPassContentTypes containsObject:passCopy];
   }
 
   else
@@ -7496,13 +7496,13 @@ uint64_t __41__PRSRankingItem_Scoring___isWalletPass___block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (float)matchScoreForWalletWithEvaluator:(id)a3 quParsedEvaluator:(id)a4 isSearchToolClient:(BOOL)a5
+- (float)matchScoreForWalletWithEvaluator:(id)evaluator quParsedEvaluator:(id)parsedEvaluator isSearchToolClient:(BOOL)client
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  clientCopy = client;
+  evaluatorCopy = evaluator;
+  parsedEvaluatorCopy = parsedEvaluator;
   v10 = SSCompactRankingAttrsGetValue([(PRSRankingItem *)self attributes], 0);
-  if (v5)
+  if (clientCopy)
   {
     v11 = 0;
     v12 = 4;
@@ -7522,11 +7522,11 @@ uint64_t __41__PRSRankingItem_Scoring___isWalletPass___block_invoke()
     }
   }
 
-  v13 = [v8 queryString];
-  v14 = [v13 composedLength];
+  queryString = [evaluatorCopy queryString];
+  composedLength = [queryString composedLength];
 
   v15 = 0.0;
-  if (v14 >= v12)
+  if (composedLength >= v12)
   {
     v16 = [(PRSRankingItem *)self _isWalletTransaction:v10];
     v17 = SSCompactRankingAttrsGetValue([(PRSRankingItem *)self attributes], 7uLL);
@@ -7543,7 +7543,7 @@ uint64_t __41__PRSRankingItem_Scoring___isWalletPass___block_invoke()
 
     if (v11)
     {
-      [(PRSRankingItem *)self matchScoreTitle:v17 withEvaluator:v8];
+      [(PRSRankingItem *)self matchScoreTitle:v17 withEvaluator:evaluatorCopy];
       v15 = v20;
       if (v20 < 0.00000011921)
       {
@@ -7555,23 +7555,23 @@ uint64_t __41__PRSRankingItem_Scoring___isWalletPass___block_invoke()
           v17 = v22;
         }
 
-        [(PRSRankingItem *)self matchScoreTitle:v17 withEvaluator:v8];
+        [(PRSRankingItem *)self matchScoreTitle:v17 withEvaluator:evaluatorCopy];
         v15 = v23;
       }
 
-      if (v9 && v15 < 0.00000011921)
+      if (parsedEvaluatorCopy && v15 < 0.00000011921)
       {
-        [(PRSRankingItem *)self matchScoreTitle:v17 withEvaluator:v9];
+        [(PRSRankingItem *)self matchScoreTitle:v17 withEvaluator:parsedEvaluatorCopy];
         v15 = v24;
       }
 
       v25 = v15;
       if (v15 < 1.0)
       {
-        v26 = [v8 queryString];
-        v27 = [v26 composedLength];
+        queryString2 = [evaluatorCopy queryString];
+        composedLength2 = [queryString2 composedLength];
 
-        if (v27 < 0xA)
+        if (composedLength2 < 0xA)
         {
           v15 = v15 * 0.6;
         }
@@ -7580,19 +7580,19 @@ uint64_t __41__PRSRankingItem_Scoring___isWalletPass___block_invoke()
 
     else if ([v17 composedLength])
     {
-      [(PRSRankingItem *)self matchScoreTitle:v17 withEvaluator:v8];
+      [(PRSRankingItem *)self matchScoreTitle:v17 withEvaluator:evaluatorCopy];
       v15 = *&v25;
-      if (v9)
+      if (parsedEvaluatorCopy)
       {
         HIDWORD(v25) = 872415232;
         if (*&v25 < 0.00000011921)
         {
-          [(PRSRankingItem *)self matchScoreTitle:v17 withEvaluator:v9];
+          [(PRSRankingItem *)self matchScoreTitle:v17 withEvaluator:parsedEvaluatorCopy];
           v15 = *&v25;
         }
       }
 
-      if (v16 || (v25 = v15, v15 < 1.0) && ([v8 queryString], v28 = objc_claimAutoreleasedReturnValue(), v29 = objc_msgSend(v28, "composedLength"), v28, v29 <= 9))
+      if (v16 || (v25 = v15, v15 < 1.0) && ([evaluatorCopy queryString], v28 = objc_claimAutoreleasedReturnValue(), v29 = objc_msgSend(v28, "composedLength"), v28, v29 <= 9))
       {
         v15 = v15 * 0.1;
       }
@@ -7603,10 +7603,10 @@ uint64_t __41__PRSRankingItem_Scoring___isWalletPass___block_invoke()
     [(PRSRankingItem *)self keywordMatchScore];
     [(PRSRankingItem *)self embeddingSimilarity];
     [(PRSRankingItem *)self pommesL1Score];
-    v30 = [(PRSRankingItem *)self bundleIDType];
-    v31 = [v8 queryString];
-    v32 = [v8 language];
-    chooseTopicality(v30, 0, v5);
+    bundleIDType = [(PRSRankingItem *)self bundleIDType];
+    queryString3 = [evaluatorCopy queryString];
+    language = [evaluatorCopy language];
+    chooseTopicality(bundleIDType, 0, clientCopy);
     v34 = v33;
 
     v15 = v34 * 0.6;
@@ -7615,20 +7615,20 @@ uint64_t __41__PRSRankingItem_Scoring___isWalletPass___block_invoke()
   return v15;
 }
 
-- (float)matchScoreForMusicWithEvaluator:(id)a3 quParsedEvaluator:(id)a4 isSearchToolClient:(BOOL)a5
+- (float)matchScoreForMusicWithEvaluator:(id)evaluator quParsedEvaluator:(id)parsedEvaluator isSearchToolClient:(BOOL)client
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  clientCopy = client;
+  evaluatorCopy = evaluator;
+  parsedEvaluatorCopy = parsedEvaluator;
   v10 = SSCompactRankingAttrsGetValue([(PRSRankingItem *)self attributes], 7uLL);
   v11 = SSCompactRankingAttrsGetValue([(PRSRankingItem *)self attributes], 0x25uLL);
   if ([v10 composedLength])
   {
-    [(PRSRankingItem *)self matchScoreTitle:v10 withEvaluator:v8];
+    [(PRSRankingItem *)self matchScoreTitle:v10 withEvaluator:evaluatorCopy];
     v13 = v12;
-    if (v9 && v12 < 0.00000011921)
+    if (parsedEvaluatorCopy && v12 < 0.00000011921)
     {
-      [(PRSRankingItem *)self matchScoreTitle:v10 withEvaluator:v9];
+      [(PRSRankingItem *)self matchScoreTitle:v10 withEvaluator:parsedEvaluatorCopy];
       v13 = v14;
     }
   }
@@ -7640,10 +7640,10 @@ uint64_t __41__PRSRankingItem_Scoring___isWalletPass___block_invoke()
 
   if ([v11 composedLength])
   {
-    [(PRSRankingItem *)self matchScoreTitle:v11 withEvaluator:v8];
-    if (v9 && v15 < 0.00000011921)
+    [(PRSRankingItem *)self matchScoreTitle:v11 withEvaluator:evaluatorCopy];
+    if (parsedEvaluatorCopy && v15 < 0.00000011921)
     {
-      [(PRSRankingItem *)self matchScoreTitle:v11 withEvaluator:v9];
+      [(PRSRankingItem *)self matchScoreTitle:v11 withEvaluator:parsedEvaluatorCopy];
     }
 
     v16 = v15 * 0.25;
@@ -7665,22 +7665,22 @@ uint64_t __41__PRSRankingItem_Scoring___isWalletPass___block_invoke()
   [(PRSRankingItem *)self keywordMatchScore];
   [(PRSRankingItem *)self embeddingSimilarity];
   [(PRSRankingItem *)self pommesL1Score];
-  v18 = [(PRSRankingItem *)self bundleIDType];
-  v19 = [v8 queryString];
-  v20 = [v8 language];
-  chooseTopicality(v18, 0, v5);
+  bundleIDType = [(PRSRankingItem *)self bundleIDType];
+  queryString = [evaluatorCopy queryString];
+  language = [evaluatorCopy language];
+  chooseTopicality(bundleIDType, 0, clientCopy);
   v22 = v21;
 
   return v22 * 0.61;
 }
 
-- (float)matchScoreForPeopleItemsWithEvaluator:(id)a3
+- (float)matchScoreForPeopleItemsWithEvaluator:(id)evaluator
 {
-  v4 = a3;
+  evaluatorCopy = evaluator;
   v5 = SSCompactRankingAttrsGetValue([(PRSRankingItem *)self attributes], 0xCuLL);
   if ([v5 composedLength])
   {
-    [(PRSRankingItem *)self matchScoreTitle:v5 withEvaluator:v4];
+    [(PRSRankingItem *)self matchScoreTitle:v5 withEvaluator:evaluatorCopy];
     v7 = v6;
     if (v7 >= 1.0)
     {
@@ -7708,23 +7708,23 @@ uint64_t __41__PRSRankingItem_Scoring___isWalletPass___block_invoke()
   return v11;
 }
 
-- (float)matchScoreGeneric:(id)a3 quParsedEvaluator:(id)a4 isSearchToolClient:(BOOL)a5
+- (float)matchScoreGeneric:(id)generic quParsedEvaluator:(id)evaluator isSearchToolClient:(BOOL)client
 {
-  v44 = a5;
+  clientCopy = client;
   v50 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E695DF70] array];
+  genericCopy = generic;
+  evaluatorCopy = evaluator;
+  array = [MEMORY[0x1E695DF70] array];
   v10 = SSCompactRankingAttrsGetValue([(PRSRankingItem *)self attributes], 7uLL);
   if (v10)
   {
-    [v9 addObject:v10];
+    [array addObject:v10];
   }
 
   v11 = SSCompactRankingAttrsGetValue([(PRSRankingItem *)self attributes], 0xCuLL);
   if (v11)
   {
-    [v9 addObject:v11];
+    [array addObject:v11];
   }
 
   v43 = v10;
@@ -7732,7 +7732,7 @@ uint64_t __41__PRSRankingItem_Scoring___isWalletPass___block_invoke()
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v12 = v9;
+  v12 = array;
   v13 = [v12 countByEnumeratingWithState:&v45 objects:v49 count:16];
   if (!v13)
   {
@@ -7756,11 +7756,11 @@ uint64_t __41__PRSRankingItem_Scoring___isWalletPass___block_invoke()
       v18 = *(*(&v45 + 1) + 8 * v17);
       if ([v18 length])
       {
-        [(PRSRankingItem *)self matchScoreTitle:v18 withEvaluator:v7];
+        [(PRSRankingItem *)self matchScoreTitle:v18 withEvaluator:genericCopy];
         v20 = v19;
-        if (v8 && v19 < 2.2204e-16)
+        if (evaluatorCopy && v19 < 2.2204e-16)
         {
-          [(PRSRankingItem *)self matchScoreTitle:v18 withEvaluator:v8];
+          [(PRSRankingItem *)self matchScoreTitle:v18 withEvaluator:evaluatorCopy];
           v20 = v21;
         }
       }
@@ -7775,8 +7775,8 @@ uint64_t __41__PRSRankingItem_Scoring___isWalletPass___block_invoke()
       {
         if (v20 >= 0.4)
         {
-          v26 = [v7 queryTerms];
-          v27 = [v26 count];
+          queryTerms = [genericCopy queryTerms];
+          v27 = [queryTerms count];
 
           if (v27 >= 3)
           {
@@ -7784,8 +7784,8 @@ uint64_t __41__PRSRankingItem_Scoring___isWalletPass___block_invoke()
             goto LABEL_31;
           }
 
-          v31 = [v7 queryTerms];
-          v32 = [v31 count];
+          queryTerms2 = [genericCopy queryTerms];
+          v32 = [queryTerms2 count];
 
           if (v32 == 2)
           {
@@ -7806,8 +7806,8 @@ LABEL_31:
         goto LABEL_31;
       }
 
-      v24 = [v7 queryTerms];
-      v25 = [v24 count];
+      queryTerms3 = [genericCopy queryTerms];
+      v25 = [queryTerms3 count];
 
       if (v25 >= 3)
       {
@@ -7815,8 +7815,8 @@ LABEL_31:
         goto LABEL_31;
       }
 
-      v28 = [v7 queryTerms];
-      v29 = [v28 count];
+      queryTerms4 = [genericCopy queryTerms];
+      v29 = [queryTerms4 count];
 
       if (v29 == 2)
       {
@@ -7849,27 +7849,27 @@ LABEL_40:
   [(PRSRankingItem *)self keywordMatchScore];
   [(PRSRankingItem *)self embeddingSimilarity];
   [(PRSRankingItem *)self pommesL1Score];
-  v36 = [(PRSRankingItem *)self bundleIDType];
-  v37 = [v7 queryString];
-  v38 = [v7 language];
-  chooseTopicality(v36, 0, v44);
+  bundleIDType = [(PRSRankingItem *)self bundleIDType];
+  queryString = [genericCopy queryString];
+  language = [genericCopy language];
+  chooseTopicality(bundleIDType, 0, clientCopy);
   v40 = v39;
 
   v41 = *MEMORY[0x1E69E9840];
   return v40;
 }
 
-- (int64_t)compareShortcutTopHitCandidate:(id)a3
+- (int64_t)compareShortcutTopHitCandidate:(id)candidate
 {
   v65 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [(PRSRankingItem *)self recentSimilarIntentEngagementDates];
-  v9 = [v8 count];
+  candidateCopy = candidate;
+  recentSimilarIntentEngagementDates = [(PRSRankingItem *)self recentSimilarIntentEngagementDates];
+  v9 = [recentSimilarIntentEngagementDates count];
 
-  v10 = [v7 recentSimilarIntentEngagementDates];
-  v11 = [v10 count];
+  recentSimilarIntentEngagementDates2 = [candidateCopy recentSimilarIntentEngagementDates];
+  recentSimilarIntentEngagementDates8 = [recentSimilarIntentEngagementDates2 count];
 
-  if (!(v9 | v11))
+  if (!(v9 | recentSimilarIntentEngagementDates8))
   {
     goto LABEL_19;
   }
@@ -7879,22 +7879,22 @@ LABEL_40:
     goto LABEL_8;
   }
 
-  if (!v11)
+  if (!recentSimilarIntentEngagementDates8)
   {
     goto LABEL_6;
   }
 
-  v10 = [(PRSRankingItem *)self recentSimilarIntentEngagementDates];
-  v3 = [v10 lastObject];
-  v4 = [v7 recentSimilarIntentEngagementDates];
-  v5 = [v4 firstObject];
-  if ([v3 compare:v5] == 1)
+  recentSimilarIntentEngagementDates2 = [(PRSRankingItem *)self recentSimilarIntentEngagementDates];
+  lastObject = [recentSimilarIntentEngagementDates2 lastObject];
+  recentSimilarIntentEngagementDates3 = [candidateCopy recentSimilarIntentEngagementDates];
+  firstObject = [recentSimilarIntentEngagementDates3 firstObject];
+  if ([lastObject compare:firstObject] == 1)
   {
 LABEL_6:
-    v12 = [(PRSRankingItem *)self sectionBundleIdentifier];
-    IsSyndicatedPhotos = SSSectionIsSyndicatedPhotos(v12);
+    sectionBundleIdentifier = [(PRSRankingItem *)self sectionBundleIdentifier];
+    IsSyndicatedPhotos = SSSectionIsSyndicatedPhotos(sectionBundleIdentifier);
 
-    if (v11)
+    if (recentSimilarIntentEngagementDates8)
     {
 
       if (IsSyndicatedPhotos)
@@ -7911,44 +7911,44 @@ LABEL_6:
     v28 = PRSLogCategoryDefault();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
-      v48 = [(PRSRankingItem *)self sectionBundleIdentifier];
-      v46 = [(PRSRankingItem *)self recentSimilarIntentEngagementDates];
-      v42 = [v46 count];
-      v44 = [(PRSRankingItem *)self recentSimilarIntentEngagementDates];
-      v29 = [v44 lastObject];
+      sectionBundleIdentifier2 = [(PRSRankingItem *)self sectionBundleIdentifier];
+      recentSimilarIntentEngagementDates4 = [(PRSRankingItem *)self recentSimilarIntentEngagementDates];
+      v42 = [recentSimilarIntentEngagementDates4 count];
+      recentSimilarIntentEngagementDates5 = [(PRSRankingItem *)self recentSimilarIntentEngagementDates];
+      lastObject2 = [recentSimilarIntentEngagementDates5 lastObject];
       [(PRSRankingItem *)self likelihood];
       v31 = v30;
-      v32 = [v7 sectionBundleIdentifier];
-      v33 = [v7 recentSimilarIntentEngagementDates];
-      v34 = [v33 count];
-      v35 = [v7 recentSimilarIntentEngagementDates];
-      v36 = [v35 count];
+      sectionBundleIdentifier3 = [candidateCopy sectionBundleIdentifier];
+      recentSimilarIntentEngagementDates6 = [candidateCopy recentSimilarIntentEngagementDates];
+      v34 = [recentSimilarIntentEngagementDates6 count];
+      recentSimilarIntentEngagementDates7 = [candidateCopy recentSimilarIntentEngagementDates];
+      v36 = [recentSimilarIntentEngagementDates7 count];
       if (v36)
       {
-        v10 = [v7 recentSimilarIntentEngagementDates];
-        v37 = [v10 firstObject];
+        recentSimilarIntentEngagementDates2 = [candidateCopy recentSimilarIntentEngagementDates];
+        firstObject2 = [recentSimilarIntentEngagementDates2 firstObject];
       }
 
       else
       {
-        v37 = @"nil";
+        firstObject2 = @"nil";
       }
 
-      [v7 likelihood];
+      [candidateCopy likelihood];
       *buf = 138414082;
-      v50 = v48;
+      v50 = sectionBundleIdentifier2;
       v51 = 2048;
       v52 = v42;
       v53 = 2112;
-      v54 = v29;
+      v54 = lastObject2;
       v55 = 2048;
       v56 = v31;
       v57 = 2112;
-      v58 = v32;
+      v58 = sectionBundleIdentifier3;
       v59 = 2048;
       v60 = v34;
       v61 = 2112;
-      v62 = v37;
+      v62 = firstObject2;
       v63 = 2048;
       v64 = v38;
       _os_log_impl(&dword_1D9F69000, v28, OS_LOG_TYPE_DEFAULT, "[SpotlightRanking] <Engagement_Debug> Rule: %@ (%lu, %@, %f) overtakes %@ (%lu, %@, %f) (compareShortcutTopHitCandidate)", buf, 0x52u);
@@ -7962,7 +7962,7 @@ LABEL_6:
   }
 
 LABEL_8:
-  if (v11 != 2)
+  if (recentSimilarIntentEngagementDates8 != 2)
   {
 LABEL_19:
     v25 = 0;
@@ -7971,19 +7971,19 @@ LABEL_19:
 
   if (v9)
   {
-    v11 = [v7 recentSimilarIntentEngagementDates];
-    v10 = [v11 lastObject];
-    v3 = [(PRSRankingItem *)self recentSimilarIntentEngagementDates];
-    v4 = [v3 firstObject];
-    if ([v10 compare:v4] != 1)
+    recentSimilarIntentEngagementDates8 = [candidateCopy recentSimilarIntentEngagementDates];
+    recentSimilarIntentEngagementDates2 = [recentSimilarIntentEngagementDates8 lastObject];
+    lastObject = [(PRSRankingItem *)self recentSimilarIntentEngagementDates];
+    recentSimilarIntentEngagementDates3 = [lastObject firstObject];
+    if ([recentSimilarIntentEngagementDates2 compare:recentSimilarIntentEngagementDates3] != 1)
     {
 
       goto LABEL_19;
     }
   }
 
-  v14 = [v7 sectionBundleIdentifier];
-  v15 = SSSectionIsSyndicatedPhotos(v14);
+  sectionBundleIdentifier4 = [candidateCopy sectionBundleIdentifier];
+  v15 = SSSectionIsSyndicatedPhotos(sectionBundleIdentifier4);
 
   if (v9)
   {
@@ -7997,44 +7997,44 @@ LABEL_19:
   v16 = PRSLogCategoryDefault();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v45 = [v7 sectionBundleIdentifier];
-    v43 = [v7 recentSimilarIntentEngagementDates];
-    v40 = [v43 count];
-    v41 = [v7 recentSimilarIntentEngagementDates];
-    v47 = [v41 lastObject];
-    [v7 likelihood];
+    sectionBundleIdentifier5 = [candidateCopy sectionBundleIdentifier];
+    recentSimilarIntentEngagementDates9 = [candidateCopy recentSimilarIntentEngagementDates];
+    v40 = [recentSimilarIntentEngagementDates9 count];
+    recentSimilarIntentEngagementDates10 = [candidateCopy recentSimilarIntentEngagementDates];
+    lastObject3 = [recentSimilarIntentEngagementDates10 lastObject];
+    [candidateCopy likelihood];
     v18 = v17;
-    v19 = [(PRSRankingItem *)self sectionBundleIdentifier];
-    v20 = [(PRSRankingItem *)self recentSimilarIntentEngagementDates];
-    v21 = [v20 count];
-    v22 = [(PRSRankingItem *)self recentSimilarIntentEngagementDates];
-    v23 = [v22 count];
+    sectionBundleIdentifier6 = [(PRSRankingItem *)self sectionBundleIdentifier];
+    recentSimilarIntentEngagementDates11 = [(PRSRankingItem *)self recentSimilarIntentEngagementDates];
+    v21 = [recentSimilarIntentEngagementDates11 count];
+    recentSimilarIntentEngagementDates12 = [(PRSRankingItem *)self recentSimilarIntentEngagementDates];
+    v23 = [recentSimilarIntentEngagementDates12 count];
     if (v23)
     {
-      v11 = [(PRSRankingItem *)self recentSimilarIntentEngagementDates];
-      v24 = [v11 firstObject];
+      recentSimilarIntentEngagementDates8 = [(PRSRankingItem *)self recentSimilarIntentEngagementDates];
+      firstObject3 = [recentSimilarIntentEngagementDates8 firstObject];
     }
 
     else
     {
-      v24 = @"nil";
+      firstObject3 = @"nil";
     }
 
     [(PRSRankingItem *)self likelihood];
     *buf = 138414082;
-    v50 = v45;
+    v50 = sectionBundleIdentifier5;
     v51 = 2048;
     v52 = v40;
     v53 = 2112;
-    v54 = v47;
+    v54 = lastObject3;
     v55 = 2048;
     v56 = v18;
     v57 = 2112;
-    v58 = v19;
+    v58 = sectionBundleIdentifier6;
     v59 = 2048;
     v60 = v21;
     v61 = 2112;
-    v62 = v24;
+    v62 = firstObject3;
     v63 = 2048;
     v64 = v39;
     _os_log_impl(&dword_1D9F69000, v16, OS_LOG_TYPE_DEFAULT, "[SpotlightRanking] <Engagement_Debug> Rule: %@ (%lu, %@, %f) overtakes %@ (%lu, %@, %f) (compareShortcutTopHitCandidate)", buf, 0x52u);
@@ -8050,21 +8050,21 @@ LABEL_20:
   return v25;
 }
 
-- (int64_t)compareWithCCCDTopHitCandidate:(id)a3
+- (int64_t)compareWithCCCDTopHitCandidate:(id)candidate
 {
-  v4 = a3;
-  if (!-[PRSRankingItem isLocalTopHitCandidate](self, "isLocalTopHitCandidate") || ![v4 isLocalTopHitCandidate])
+  candidateCopy = candidate;
+  if (!-[PRSRankingItem isLocalTopHitCandidate](self, "isLocalTopHitCandidate") || ![candidateCopy isLocalTopHitCandidate])
   {
     goto LABEL_11;
   }
 
-  if (![v4 isCCCD] || (-[PRSRankingItem bundleIDType](self, "bundleIDType"), -[PRSRankingItem topicalityScore](self, "topicalityScore"), v5 <= 0.8) && (-[PRSRankingItem engagementScore](self, "engagementScore"), v6 <= 0.8))
+  if (![candidateCopy isCCCD] || (-[PRSRankingItem bundleIDType](self, "bundleIDType"), -[PRSRankingItem topicalityScore](self, "topicalityScore"), v5 <= 0.8) && (-[PRSRankingItem engagementScore](self, "engagementScore"), v6 <= 0.8))
   {
     if ([(PRSRankingItem *)self isCCCD])
     {
-      [v4 bundleIDType];
-      [v4 topicalityScore];
-      if (v8 > 0.8 || ([v4 engagementScore], v9 > 0.8))
+      [candidateCopy bundleIDType];
+      [candidateCopy topicalityScore];
+      if (v8 > 0.8 || ([candidateCopy engagementScore], v9 > 0.8))
       {
         v7 = -1;
         goto LABEL_12;
@@ -8082,25 +8082,25 @@ LABEL_12:
   return v7;
 }
 
-- (int64_t)compareAppsTopHitCandidate:(id)a3
+- (int64_t)compareAppsTopHitCandidate:(id)candidate
 {
-  v4 = a3;
-  if (!v4 || -[PRSRankingItem isLocalTopHitCandidate](self, "isLocalTopHitCandidate") && ![v4 isLocalTopHitCandidate])
+  candidateCopy = candidate;
+  if (!candidateCopy || -[PRSRankingItem isLocalTopHitCandidate](self, "isLocalTopHitCandidate") && ![candidateCopy isLocalTopHitCandidate])
   {
     goto LABEL_18;
   }
 
-  if (!-[PRSRankingItem isLocalTopHitCandidate](self, "isLocalTopHitCandidate") && ([v4 isLocalTopHitCandidate] & 1) != 0)
+  if (!-[PRSRankingItem isLocalTopHitCandidate](self, "isLocalTopHitCandidate") && ([candidateCopy isLocalTopHitCandidate] & 1) != 0)
   {
     goto LABEL_20;
   }
 
-  if (!-[PRSRankingItem isLocalTopHitCandidate](self, "isLocalTopHitCandidate") || ([v4 isLocalTopHitCandidate] & 1) == 0) && (-[PRSRankingItem isLocalTopHitCandidate](self, "isLocalTopHitCandidate") || (objc_msgSend(v4, "isLocalTopHitCandidate")))
+  if (!-[PRSRankingItem isLocalTopHitCandidate](self, "isLocalTopHitCandidate") || ([candidateCopy isLocalTopHitCandidate] & 1) == 0) && (-[PRSRankingItem isLocalTopHitCandidate](self, "isLocalTopHitCandidate") || (objc_msgSend(candidateCopy, "isLocalTopHitCandidate")))
   {
     goto LABEL_10;
   }
 
-  v15 = [(PRSRankingItem *)self compareShortcutTopHitCandidate:v4];
+  v15 = [(PRSRankingItem *)self compareShortcutTopHitCandidate:candidateCopy];
   if (v15)
   {
     v14 = v15;
@@ -8109,7 +8109,7 @@ LABEL_12:
 
   [(PRSRankingItem *)self likelihood];
   v17 = v16;
-  [v4 likelihood];
+  [candidateCopy likelihood];
   if (v17 > v18)
   {
 LABEL_18:
@@ -8119,7 +8119,7 @@ LABEL_18:
 
   [(PRSRankingItem *)self likelihood];
   v20 = v19;
-  [v4 likelihood];
+  [candidateCopy likelihood];
   if (v20 < v21)
   {
     goto LABEL_20;
@@ -8128,12 +8128,12 @@ LABEL_18:
   [(PRSRankingItem *)self likelihood];
   if (v25 == 1.0)
   {
-    if (-[PRSRankingItem wasEngagedInSpotlight](self, "wasEngagedInSpotlight") && ![v4 wasEngagedInSpotlight])
+    if (-[PRSRankingItem wasEngagedInSpotlight](self, "wasEngagedInSpotlight") && ![candidateCopy wasEngagedInSpotlight])
     {
       goto LABEL_18;
     }
 
-    if (!-[PRSRankingItem wasEngagedInSpotlight](self, "wasEngagedInSpotlight") && ([v4 wasEngagedInSpotlight] & 1) != 0)
+    if (!-[PRSRankingItem wasEngagedInSpotlight](self, "wasEngagedInSpotlight") && ([candidateCopy wasEngagedInSpotlight] & 1) != 0)
     {
 LABEL_20:
       v14 = -1;
@@ -8147,7 +8147,7 @@ LABEL_20:
     goto LABEL_10;
   }
 
-  [v4 likelihood];
+  [candidateCopy likelihood];
   if (v27 <= 0.0)
   {
     goto LABEL_10;
@@ -8155,14 +8155,14 @@ LABEL_20:
 
   [(PRSRankingItem *)self likelihood];
   v29 = v28;
-  [v4 likelihood];
+  [candidateCopy likelihood];
   if (vabdd_f64(v29, v30) >= 0.00000011920929)
   {
     goto LABEL_10;
   }
 
   v11 = SSCompactRankingAttrsGetValue([(PRSRankingItem *)self attributes], 9uLL);
-  v31 = SSCompactRankingAttrsGetValue([v4 attributes], 9uLL);
+  v31 = SSCompactRankingAttrsGetValue([candidateCopy attributes], 9uLL);
   v13 = v31;
   if (!v11 || !v31)
   {
@@ -8186,16 +8186,16 @@ LABEL_20:
 LABEL_10:
     [(PRSRankingItem *)self topicalityScore];
     v6 = v5;
-    [v4 topicalityScore];
+    [candidateCopy topicalityScore];
     if (v6 <= v7)
     {
       [(PRSRankingItem *)self topicalityScore];
       v9 = v8;
-      [v4 topicalityScore];
+      [candidateCopy topicalityScore];
       if (v9 >= v10)
       {
         v11 = SSCompactRankingAttrsGetValue([(PRSRankingItem *)self attributes], 0x16CuLL);
-        v12 = SSCompactRankingAttrsGetValue([v4 attributes], 0x16CuLL);
+        v12 = SSCompactRankingAttrsGetValue([candidateCopy attributes], 0x16CuLL);
         v13 = v12;
         if (v11 && v12)
         {
@@ -8206,7 +8206,7 @@ LABEL_41:
         }
 
         v22 = SSCompactRankingAttrsGetValue([(PRSRankingItem *)self attributes], 7uLL);
-        v23 = SSCompactRankingAttrsGetValue([v4 attributes], 7uLL);
+        v23 = SSCompactRankingAttrsGetValue([candidateCopy attributes], 7uLL);
         if ([v22 length] && objc_msgSend(v23, "length"))
         {
           v24 = [v22 length];
@@ -8241,20 +8241,20 @@ LABEL_42:
   return v14;
 }
 
-- (int64_t)compareContactsTopHitCandidate:(id)a3
+- (int64_t)compareContactsTopHitCandidate:(id)candidate
 {
-  v4 = a3;
-  if (!v4 || -[PRSRankingItem isLocalTopHitCandidate](self, "isLocalTopHitCandidate") && ![v4 isLocalTopHitCandidate])
+  candidateCopy = candidate;
+  if (!candidateCopy || -[PRSRankingItem isLocalTopHitCandidate](self, "isLocalTopHitCandidate") && ![candidateCopy isLocalTopHitCandidate])
   {
     goto LABEL_22;
   }
 
-  if (!-[PRSRankingItem isLocalTopHitCandidate](self, "isLocalTopHitCandidate") && ([v4 isLocalTopHitCandidate] & 1) != 0)
+  if (!-[PRSRankingItem isLocalTopHitCandidate](self, "isLocalTopHitCandidate") && ([candidateCopy isLocalTopHitCandidate] & 1) != 0)
   {
     goto LABEL_24;
   }
 
-  if (!-[PRSRankingItem isLocalTopHitCandidate](self, "isLocalTopHitCandidate") || ([v4 isLocalTopHitCandidate] & 1) == 0) && (-[PRSRankingItem isLocalTopHitCandidate](self, "isLocalTopHitCandidate") || (objc_msgSend(v4, "isLocalTopHitCandidate")))
+  if (!-[PRSRankingItem isLocalTopHitCandidate](self, "isLocalTopHitCandidate") || ([candidateCopy isLocalTopHitCandidate] & 1) == 0) && (-[PRSRankingItem isLocalTopHitCandidate](self, "isLocalTopHitCandidate") || (objc_msgSend(candidateCopy, "isLocalTopHitCandidate")))
   {
     [(PRSRankingItem *)self topicalityScore];
     v6 = v5;
@@ -8262,7 +8262,7 @@ LABEL_42:
     [v7 floatValue];
     if (v6 >= v8)
     {
-      [v4 topicalityScore];
+      [candidateCopy topicalityScore];
       v17 = v16;
       v18 = [&unk_1F55B75C8 objectAtIndexedSubscript:3];
       [v18 floatValue];
@@ -8270,12 +8270,12 @@ LABEL_42:
 
       if (v17 >= v20)
       {
-        if (-[PRSRankingItem wasEngagedInSpotlight](self, "wasEngagedInSpotlight") && ![v4 wasEngagedInSpotlight])
+        if (-[PRSRankingItem wasEngagedInSpotlight](self, "wasEngagedInSpotlight") && ![candidateCopy wasEngagedInSpotlight])
         {
           goto LABEL_22;
         }
 
-        if (!-[PRSRankingItem wasEngagedInSpotlight](self, "wasEngagedInSpotlight") && ([v4 wasEngagedInSpotlight] & 1) != 0)
+        if (!-[PRSRankingItem wasEngagedInSpotlight](self, "wasEngagedInSpotlight") && ([candidateCopy wasEngagedInSpotlight] & 1) != 0)
         {
           goto LABEL_24;
         }
@@ -8289,12 +8289,12 @@ LABEL_42:
     goto LABEL_21;
   }
 
-  v9 = [(PRSRankingItem *)self compareShortcutTopHitCandidate:v4];
+  v9 = [(PRSRankingItem *)self compareShortcutTopHitCandidate:candidateCopy];
   if (!v9)
   {
     [(PRSRankingItem *)self likelihood];
     v11 = v10;
-    [v4 likelihood];
+    [candidateCopy likelihood];
     if (v11 > v12)
     {
 LABEL_22:
@@ -8304,7 +8304,7 @@ LABEL_22:
 
     [(PRSRankingItem *)self likelihood];
     v14 = v13;
-    [v4 likelihood];
+    [candidateCopy likelihood];
     if (v14 < v15)
     {
 LABEL_24:
@@ -8315,7 +8315,7 @@ LABEL_24:
 LABEL_21:
     [(PRSRankingItem *)self topicalityScore];
     v22 = v21;
-    [v4 topicalityScore];
+    [candidateCopy topicalityScore];
     if (v22 > v23)
     {
       goto LABEL_22;
@@ -8323,11 +8323,11 @@ LABEL_21:
 
     [(PRSRankingItem *)self topicalityScore];
     v25 = v24;
-    [v4 topicalityScore];
+    [candidateCopy topicalityScore];
     if (v25 >= v26)
     {
       v27 = SSCompactRankingAttrsGetValue([(PRSRankingItem *)self attributes], 7uLL);
-      v28 = SSCompactRankingAttrsGetValue([v4 attributes], 7uLL);
+      v28 = SSCompactRankingAttrsGetValue([candidateCopy attributes], 7uLL);
       v9 = -[v27 compare:v28];
 
       goto LABEL_26;
@@ -8341,17 +8341,17 @@ LABEL_26:
   return v9;
 }
 
-- (int64_t)comparePeopleItemTopHitCandidate:(id)a3
+- (int64_t)comparePeopleItemTopHitCandidate:(id)candidate
 {
-  v4 = a3;
-  if (!v4)
+  candidateCopy = candidate;
+  if (!candidateCopy)
   {
     v7 = 1;
     goto LABEL_12;
   }
 
   v5 = SSCompactRankingAttrsGetValue([(PRSRankingItem *)self attributes], 0x9AuLL);
-  v6 = SSCompactRankingAttrsGetValue([v4 attributes], 0x9AuLL);
+  v6 = SSCompactRankingAttrsGetValue([candidateCopy attributes], 0x9AuLL);
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -8364,7 +8364,7 @@ LABEL_26:
     goto LABEL_9;
   }
 
-  [v4 bundleIDType];
+  [candidateCopy bundleIDType];
   if ([v5 intValue] == 1 && objc_msgSend(v6, "intValue") != 1)
   {
     v7 = 1;
@@ -8379,7 +8379,7 @@ LABEL_26:
   else
   {
 LABEL_9:
-    v7 = [(PRSRankingItem *)self compareLocalTopHitCandidate:v4];
+    v7 = [(PRSRankingItem *)self compareLocalTopHitCandidate:candidateCopy];
   }
 
 LABEL_10:
@@ -8388,22 +8388,22 @@ LABEL_12:
   return v7;
 }
 
-- (int64_t)compareSafariTopHitCandidate:(id)a3
+- (int64_t)compareSafariTopHitCandidate:(id)candidate
 {
-  v4 = a3;
-  if (!v4 || -[PRSRankingItem isLocalTopHitCandidate](self, "isLocalTopHitCandidate") && ![v4 isLocalTopHitCandidate])
+  candidateCopy = candidate;
+  if (!candidateCopy || -[PRSRankingItem isLocalTopHitCandidate](self, "isLocalTopHitCandidate") && ![candidateCopy isLocalTopHitCandidate])
   {
     goto LABEL_18;
   }
 
-  if (!-[PRSRankingItem isLocalTopHitCandidate](self, "isLocalTopHitCandidate") && ([v4 isLocalTopHitCandidate] & 1) != 0)
+  if (!-[PRSRankingItem isLocalTopHitCandidate](self, "isLocalTopHitCandidate") && ([candidateCopy isLocalTopHitCandidate] & 1) != 0)
   {
     goto LABEL_6;
   }
 
-  if (-[PRSRankingItem isLocalTopHitCandidate](self, "isLocalTopHitCandidate") && ([v4 isLocalTopHitCandidate] & 1) != 0 || !-[PRSRankingItem isLocalTopHitCandidate](self, "isLocalTopHitCandidate") && (objc_msgSend(v4, "isLocalTopHitCandidate") & 1) == 0)
+  if (-[PRSRankingItem isLocalTopHitCandidate](self, "isLocalTopHitCandidate") && ([candidateCopy isLocalTopHitCandidate] & 1) != 0 || !-[PRSRankingItem isLocalTopHitCandidate](self, "isLocalTopHitCandidate") && (objc_msgSend(candidateCopy, "isLocalTopHitCandidate") & 1) == 0)
   {
-    v5 = [(PRSRankingItem *)self compareShortcutTopHitCandidate:v4];
+    v5 = [(PRSRankingItem *)self compareShortcutTopHitCandidate:candidateCopy];
     if (v5)
     {
       goto LABEL_19;
@@ -8411,7 +8411,7 @@ LABEL_12:
 
     [(PRSRankingItem *)self likelihood];
     v13 = v12;
-    [v4 likelihood];
+    [candidateCopy likelihood];
     if (v13 > v14)
     {
       goto LABEL_18;
@@ -8419,21 +8419,21 @@ LABEL_12:
 
     [(PRSRankingItem *)self likelihood];
     v17 = v16;
-    [v4 likelihood];
+    [candidateCopy likelihood];
     if (v17 < v18)
     {
       goto LABEL_6;
     }
   }
 
-  if (!-[PRSRankingItem wasEngaged](self, "wasEngaged") || ![v4 wasEngaged])
+  if (!-[PRSRankingItem wasEngaged](self, "wasEngaged") || ![candidateCopy wasEngaged])
   {
     goto LABEL_15;
   }
 
   [(PRSRankingItem *)self topicalityScore];
   v7 = v6;
-  [v4 topicalityScore];
+  [candidateCopy topicalityScore];
   if (v7 > v8)
   {
 LABEL_18:
@@ -8443,7 +8443,7 @@ LABEL_18:
 
   [(PRSRankingItem *)self topicalityScore];
   v10 = v9;
-  [v4 topicalityScore];
+  [candidateCopy topicalityScore];
   if (v10 >= v11)
   {
 LABEL_15:
@@ -8458,27 +8458,27 @@ LABEL_19:
   return v5;
 }
 
-- (int64_t)compareLocalTopHitCandidate:(id)a3
+- (int64_t)compareLocalTopHitCandidate:(id)candidate
 {
-  v4 = a3;
-  if (!v4 || -[PRSRankingItem isLocalTopHitCandidate](self, "isLocalTopHitCandidate") && ![v4 isLocalTopHitCandidate])
+  candidateCopy = candidate;
+  if (!candidateCopy || -[PRSRankingItem isLocalTopHitCandidate](self, "isLocalTopHitCandidate") && ![candidateCopy isLocalTopHitCandidate])
   {
     goto LABEL_14;
   }
 
-  if (!-[PRSRankingItem isLocalTopHitCandidate](self, "isLocalTopHitCandidate") && ([v4 isLocalTopHitCandidate] & 1) != 0)
+  if (!-[PRSRankingItem isLocalTopHitCandidate](self, "isLocalTopHitCandidate") && ([candidateCopy isLocalTopHitCandidate] & 1) != 0)
   {
     goto LABEL_6;
   }
 
-  if (!-[PRSRankingItem isLocalTopHitCandidate](self, "isLocalTopHitCandidate") || ([v4 isLocalTopHitCandidate] & 1) == 0) && (-[PRSRankingItem isLocalTopHitCandidate](self, "isLocalTopHitCandidate") || (objc_msgSend(v4, "isLocalTopHitCandidate")))
+  if (!-[PRSRankingItem isLocalTopHitCandidate](self, "isLocalTopHitCandidate") || ([candidateCopy isLocalTopHitCandidate] & 1) == 0) && (-[PRSRankingItem isLocalTopHitCandidate](self, "isLocalTopHitCandidate") || (objc_msgSend(candidateCopy, "isLocalTopHitCandidate")))
   {
 LABEL_11:
     v5 = 0;
     goto LABEL_15;
   }
 
-  v5 = [(PRSRankingItem *)self compareShortcutTopHitCandidate:v4];
+  v5 = [(PRSRankingItem *)self compareShortcutTopHitCandidate:candidateCopy];
   if (v5)
   {
     goto LABEL_15;
@@ -8486,7 +8486,7 @@ LABEL_11:
 
   [(PRSRankingItem *)self likelihood];
   v7 = v6;
-  [v4 likelihood];
+  [candidateCopy likelihood];
   if (v7 > v8)
   {
 LABEL_14:
@@ -8496,18 +8496,18 @@ LABEL_14:
 
   [(PRSRankingItem *)self likelihood];
   v11 = v10;
-  [v4 likelihood];
+  [candidateCopy likelihood];
   if (v11 >= v12)
   {
     [(PRSRankingItem *)self likelihood];
     if (v13 == 1.0)
     {
-      if (-[PRSRankingItem wasEngagedInSpotlight](self, "wasEngagedInSpotlight") && ![v4 wasEngagedInSpotlight])
+      if (-[PRSRankingItem wasEngagedInSpotlight](self, "wasEngagedInSpotlight") && ![candidateCopy wasEngagedInSpotlight])
       {
         goto LABEL_14;
       }
 
-      if (-[PRSRankingItem wasEngagedInSpotlight](self, "wasEngagedInSpotlight") || ([v4 wasEngagedInSpotlight] & 1) == 0)
+      if (-[PRSRankingItem wasEngagedInSpotlight](self, "wasEngagedInSpotlight") || ([candidateCopy wasEngagedInSpotlight] & 1) == 0)
       {
         goto LABEL_11;
       }
@@ -8517,7 +8517,7 @@ LABEL_14:
     {
       [(PRSRankingItem *)self freshnessScore];
       v15 = v14;
-      [v4 freshnessScore];
+      [candidateCopy freshnessScore];
       if (v15 > v16)
       {
         goto LABEL_14;
@@ -8525,7 +8525,7 @@ LABEL_14:
 
       [(PRSRankingItem *)self freshnessScore];
       v18 = v17;
-      [v4 freshnessScore];
+      [candidateCopy freshnessScore];
       if (v18 >= v19)
       {
         goto LABEL_11;
@@ -8540,17 +8540,17 @@ LABEL_15:
   return v5;
 }
 
-- (int64_t)compareParsecTopHitCandidate:(id)a3
+- (int64_t)compareParsecTopHitCandidate:(id)candidate
 {
-  v4 = a3;
-  if (v4)
+  candidateCopy = candidate;
+  if (candidateCopy)
   {
-    v5 = [(PRSRankingItem *)self compareShortcutTopHitCandidate:v4];
+    v5 = [(PRSRankingItem *)self compareShortcutTopHitCandidate:candidateCopy];
     if (!v5)
     {
       [(PRSRankingItem *)self engagementScore];
       v7 = v6;
-      [v4 engagementScore];
+      [candidateCopy engagementScore];
       v9 = v8;
       if (v7 >= v9)
       {
@@ -8582,11 +8582,11 @@ LABEL_15:
   return v5;
 }
 
-- (BOOL)isAssociatedWithTophitContactsFromItems:(id)a3
+- (BOOL)isAssociatedWithTophitContactsFromItems:(id)items
 {
   v43 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ((-[PRSRankingItem bundleIDType](self, "bundleIDType") & 0x20) == 0 && (-[PRSRankingItem bundleIDType](self, "bundleIDType") & 8) == 0 && (-[PRSRankingItem bundleIDType](self, "bundleIDType") & 0x100000) == 0 || ![v4 count])
+  itemsCopy = items;
+  if ((-[PRSRankingItem bundleIDType](self, "bundleIDType") & 0x20) == 0 && (-[PRSRankingItem bundleIDType](self, "bundleIDType") & 8) == 0 && (-[PRSRankingItem bundleIDType](self, "bundleIDType") & 0x100000) == 0 || ![itemsCopy count])
   {
     v23 = 0;
     goto LABEL_42;
@@ -8604,7 +8604,7 @@ LABEL_15:
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v7 = v4;
+  v7 = itemsCopy;
   v8 = [v7 countByEnumeratingWithState:&v36 objects:v42 count:16];
   if (!v8)
   {
@@ -8744,13 +8744,13 @@ LABEL_42:
   return v23;
 }
 
-- (BOOL)isGoodMatchAlternateName:(id)a3 withEvaluator:(id)a4
+- (BOOL)isGoodMatchAlternateName:(id)name withEvaluator:(id)evaluator
 {
-  v6 = a3;
-  v7 = a4;
-  [(PRSRankingItem *)self matchScoreAppName:v6 withEvaluator:v7];
+  nameCopy = name;
+  evaluatorCopy = evaluator;
+  [(PRSRankingItem *)self matchScoreAppName:nameCopy withEvaluator:evaluatorCopy];
   v9 = v8;
-  if (v8 > 0.99 || v9 > 0.97 && ([v7 isCJK] & 1) != 0)
+  if (v8 > 0.99 || v9 > 0.97 && ([evaluatorCopy isCJK] & 1) != 0)
   {
     goto LABEL_2;
   }
@@ -8760,23 +8760,23 @@ LABEL_42:
     goto LABEL_14;
   }
 
-  v12 = [v7 queryString];
-  if ([v12 length] < 2 || objc_msgSend(v6, "length") > 5)
+  queryString = [evaluatorCopy queryString];
+  if ([queryString length] < 2 || objc_msgSend(nameCopy, "length") > 5)
   {
     goto LABEL_13;
   }
 
-  v13 = [v6 length];
-  v14 = [v7 queryString];
-  if ((v13 - [v14 length]) >= 2)
+  v13 = [nameCopy length];
+  queryString2 = [evaluatorCopy queryString];
+  if ((v13 - [queryString2 length]) >= 2)
   {
 
 LABEL_13:
     goto LABEL_14;
   }
 
-  v15 = [v6 localizedUppercaseString];
-  v16 = [v15 isEqualToString:v6];
+  localizedUppercaseString = [nameCopy localizedUppercaseString];
+  v16 = [localizedUppercaseString isEqualToString:nameCopy];
 
   if (v16)
   {
@@ -8784,12 +8784,12 @@ LABEL_13:
   }
 
 LABEL_14:
-  [(PRSRankingItem *)self matchScoreTitle:v6 withEvaluator:v7];
+  [(PRSRankingItem *)self matchScoreTitle:nameCopy withEvaluator:evaluatorCopy];
   v18 = v17;
   if (v9 > 0.9)
   {
-    v19 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-    v20 = [v6 rangeOfCharacterFromSet:v19];
+    whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+    v20 = [nameCopy rangeOfCharacterFromSet:whitespaceCharacterSet];
 
     if (v20 != 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -8798,8 +8798,8 @@ LABEL_14:
 
     if (v9 > 0.95)
     {
-      v21 = [v7 queryString];
-      v22 = [v21 length];
+      queryString3 = [evaluatorCopy queryString];
+      v22 = [queryString3 length];
 
       if (v22 > 3)
       {
@@ -8807,13 +8807,13 @@ LABEL_14:
       }
     }
 
-    if ([v6 containsCJK])
+    if ([nameCopy containsCJK])
     {
 LABEL_26:
       if (v18 <= 0.35)
       {
-        v23 = [v7 queryString];
-        v24 = [v23 length];
+        queryString4 = [evaluatorCopy queryString];
+        v24 = [queryString4 length];
 
         if (v24 <= 2)
         {
@@ -8830,8 +8830,8 @@ LABEL_2:
 LABEL_21:
   if (v18 >= 0.6)
   {
-    v25 = [v7 queryString];
-    v10 = [v25 length] > 2;
+    queryString5 = [evaluatorCopy queryString];
+    v10 = [queryString5 length] > 2;
   }
 
   else
@@ -8846,32 +8846,32 @@ LABEL_3:
 
 - (BOOL)isCCCD
 {
-  v3 = [(PRSRankingItem *)self sectionBundleIdentifier];
-  if ([v3 isEqualToString:@"com.apple.conversion"])
+  sectionBundleIdentifier = [(PRSRankingItem *)self sectionBundleIdentifier];
+  if ([sectionBundleIdentifier isEqualToString:@"com.apple.conversion"])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(PRSRankingItem *)self sectionBundleIdentifier];
-    if ([v5 isEqualToString:@"com.apple.calculation"])
+    sectionBundleIdentifier2 = [(PRSRankingItem *)self sectionBundleIdentifier];
+    if ([sectionBundleIdentifier2 isEqualToString:@"com.apple.calculation"])
     {
       v4 = 1;
     }
 
     else
     {
-      v6 = [(PRSRankingItem *)self sectionBundleIdentifier];
-      if ([v6 isEqualToString:@"com.apple.worldclock"])
+      sectionBundleIdentifier3 = [(PRSRankingItem *)self sectionBundleIdentifier];
+      if ([sectionBundleIdentifier3 isEqualToString:@"com.apple.worldclock"])
       {
         v4 = 1;
       }
 
       else
       {
-        v7 = [(PRSRankingItem *)self sectionBundleIdentifier];
-        v4 = [v7 isEqualToString:@"com.apple.datadetector.quick_actions"];
+        sectionBundleIdentifier4 = [(PRSRankingItem *)self sectionBundleIdentifier];
+        v4 = [sectionBundleIdentifier4 isEqualToString:@"com.apple.datadetector.quick_actions"];
       }
     }
   }
@@ -8879,19 +8879,19 @@ LABEL_3:
   return v4;
 }
 
-- (BOOL)isSearchResultPage:(id)a3
+- (BOOL)isSearchResultPage:(id)page
 {
   v52 = *MEMORY[0x1E69E9840];
   v3 = isSearchResultPage__onceToken;
-  v4 = a3;
+  pageCopy = page;
   if (v3 != -1)
   {
     [PRSRankingItem(Scoring) isSearchResultPage:];
   }
 
-  v5 = [v4 lowercaseString];
+  lowercaseString = [pageCopy lowercaseString];
 
-  v6 = [MEMORY[0x1E695DFF8] URLWithString:v5];
+  v6 = [MEMORY[0x1E695DFF8] URLWithString:lowercaseString];
   v7 = v6;
   if (!v6)
   {
@@ -8899,15 +8899,15 @@ LABEL_3:
     goto LABEL_51;
   }
 
-  v8 = [v6 host];
-  if (!v8)
+  host = [v6 host];
+  if (!host)
   {
     v28 = 0;
     goto LABEL_50;
   }
 
-  v9 = [v7 path];
-  v10 = [v7 query];
+  path = [v7 path];
+  query = [v7 query];
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
@@ -8921,8 +8921,8 @@ LABEL_3:
   }
 
   v35 = *v45;
-  v31 = v5;
-  v32 = v10;
+  v31 = lowercaseString;
+  v32 = query;
   while (2)
   {
     for (i = 0; i != v34; ++i)
@@ -8964,7 +8964,7 @@ LABEL_3:
             objc_enumerationMutation(v14);
           }
 
-          v18 |= [v8 containsString:*(*(&v40 + 1) + 8 * j)];
+          v18 |= [host containsString:*(*(&v40 + 1) + 8 * j)];
         }
 
         v17 = [v14 countByEnumeratingWithState:&v40 objects:v49 count:16];
@@ -8996,7 +8996,7 @@ LABEL_3:
 
               if (*(*(&v36 + 1) + 8 * k))
               {
-                v26 = v9 == 0;
+                v26 = path == 0;
               }
 
               else
@@ -9004,7 +9004,7 @@ LABEL_3:
                 v26 = 1;
               }
 
-              if (!v26 && ([v9 isEqualToString:?] & 1) != 0)
+              if (!v26 && ([path isEqualToString:?] & 1) != 0)
               {
                 v27 = v16;
                 goto LABEL_45;
@@ -9021,7 +9021,7 @@ LABEL_3:
           }
         }
 
-        if (![v16 count] && objc_msgSend(v9, "length") > 1)
+        if (![v16 count] && objc_msgSend(path, "length") > 1)
         {
           v28 = 0;
           goto LABEL_46;
@@ -9034,8 +9034,8 @@ LABEL_45:
 
           v28 = 1;
 LABEL_46:
-          v5 = v31;
-          v10 = v32;
+          lowercaseString = v31;
+          query = v32;
 
           goto LABEL_49;
         }
@@ -9045,8 +9045,8 @@ LABEL_39:
     }
 
     v28 = 0;
-    v5 = v31;
-    v10 = v32;
+    lowercaseString = v31;
+    query = v32;
     v34 = [obj countByEnumeratingWithState:&v44 objects:v51 count:16];
     if (v34)
     {
@@ -9120,16 +9120,16 @@ void __46__PRSRankingItem_Scoring__isSearchResultPage___block_invoke()
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)resetScoreForShortcutsSetting:(id)a3
+- (void)resetScoreForShortcutsSetting:(id)setting
 {
-  v24 = a3;
+  settingCopy = setting;
   v4 = SSCompactRankingAttrsGetValue([(PRSRankingItem *)self attributes], 0x48uLL);
   if ([v4 isEqualToString:@"com.apple.Preferences"])
   {
     v5 = SSCompactRankingAttrsGetValue([(PRSRankingItem *)self attributes], 0xA8uLL);
-    if (v24)
+    if (settingCopy)
     {
-      v6 = [v24 objectForKeyedSubscript:v5];
+      v6 = [settingCopy objectForKeyedSubscript:v5];
       if (v6)
       {
         [(PRSRankingItem *)self topicalityScore];

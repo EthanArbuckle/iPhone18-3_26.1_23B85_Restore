@@ -1,49 +1,49 @@
 @interface CKBlackholeTranscriptCell
-- (CKBlackholeTranscriptCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)configureForMessageItem:(id)a3 showSender:(BOOL)a4;
+- (CKBlackholeTranscriptCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)configureForMessageItem:(id)item showSender:(BOOL)sender;
 - (void)prepareForReuse;
 @end
 
 @implementation CKBlackholeTranscriptCell
 
-- (CKBlackholeTranscriptCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CKBlackholeTranscriptCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v57.receiver = self;
   v57.super_class = CKBlackholeTranscriptCell;
-  v4 = [(CKBlackholeTranscriptCell *)&v57 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CKBlackholeTranscriptCell *)&v57 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
     [(CKBlackholeTranscriptCell *)v4 setSelectionStyle:0];
-    v6 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
     v7 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     fromLabel = v5->_fromLabel;
     v5->_fromLabel = v7;
 
     [(CKBlackholeTranscriptCell *)v5 addSubview:v5->_fromLabel];
     [(UILabel *)v5->_fromLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(UILabel *)v5->_fromLabel setTextColor:v6];
+    [(UILabel *)v5->_fromLabel setTextColor:secondaryLabelColor];
     v9 = v5->_fromLabel;
     v10 = +[CKUIBehavior sharedBehaviors];
-    v11 = [v10 conversationListSenderFont];
-    [(UILabel *)v9 setFont:v11];
+    conversationListSenderFont = [v10 conversationListSenderFont];
+    [(UILabel *)v9 setFont:conversationListSenderFont];
 
-    v12 = [(UILabel *)v5->_fromLabel topAnchor];
-    v13 = [(CKBlackholeTranscriptCell *)v5 layoutMarginsGuide];
-    v14 = [v13 topAnchor];
-    v15 = [v12 constraintEqualToAnchor:v14];
+    topAnchor = [(UILabel *)v5->_fromLabel topAnchor];
+    layoutMarginsGuide = [(CKBlackholeTranscriptCell *)v5 layoutMarginsGuide];
+    topAnchor2 = [layoutMarginsGuide topAnchor];
+    v15 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v15 setActive:1];
 
-    v16 = [(UILabel *)v5->_fromLabel leftAnchor];
-    v17 = [(CKBlackholeTranscriptCell *)v5 layoutMarginsGuide];
-    v18 = [v17 leftAnchor];
-    v19 = [v16 constraintEqualToAnchor:v18];
+    leftAnchor = [(UILabel *)v5->_fromLabel leftAnchor];
+    layoutMarginsGuide2 = [(CKBlackholeTranscriptCell *)v5 layoutMarginsGuide];
+    leftAnchor2 = [layoutMarginsGuide2 leftAnchor];
+    v19 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     [v19 setActive:1];
 
-    v20 = [(UILabel *)v5->_fromLabel rightAnchor];
-    v21 = [(CKBlackholeTranscriptCell *)v5 layoutMarginsGuide];
-    v22 = [v21 rightAnchor];
-    v23 = [v20 constraintEqualToAnchor:v22];
+    rightAnchor = [(UILabel *)v5->_fromLabel rightAnchor];
+    layoutMarginsGuide3 = [(CKBlackholeTranscriptCell *)v5 layoutMarginsGuide];
+    rightAnchor2 = [layoutMarginsGuide3 rightAnchor];
+    v23 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     [v23 setActive:1];
 
     v24 = objc_alloc_init(MEMORY[0x1E69DC918]);
@@ -52,25 +52,25 @@
 
     [(CKBlackholeTranscriptCell *)v5 addSubview:v5->_dateLabel];
     [(UIDateLabel *)v5->_dateLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(UIDateLabel *)v5->_dateLabel setTextColor:v6];
+    [(UIDateLabel *)v5->_dateLabel setTextColor:secondaryLabelColor];
     v26 = v5->_dateLabel;
     v27 = +[CKUIBehavior sharedBehaviors];
-    v28 = [v27 conversationListDateFont];
-    [(UIDateLabel *)v26 setFont:v28];
+    conversationListDateFont = [v27 conversationListDateFont];
+    [(UIDateLabel *)v26 setFont:conversationListDateFont];
 
-    v29 = [(UIDateLabel *)v5->_dateLabel topAnchor];
-    v30 = [(UILabel *)v5->_fromLabel bottomAnchor];
-    v31 = [v29 constraintEqualToAnchor:v30];
+    topAnchor3 = [(UIDateLabel *)v5->_dateLabel topAnchor];
+    bottomAnchor = [(UILabel *)v5->_fromLabel bottomAnchor];
+    v31 = [topAnchor3 constraintEqualToAnchor:bottomAnchor];
     [v31 setActive:1];
 
-    v32 = [(UIDateLabel *)v5->_dateLabel leftAnchor];
-    v33 = [(UILabel *)v5->_fromLabel leftAnchor];
-    v34 = [v32 constraintEqualToAnchor:v33];
+    leftAnchor3 = [(UIDateLabel *)v5->_dateLabel leftAnchor];
+    leftAnchor4 = [(UILabel *)v5->_fromLabel leftAnchor];
+    v34 = [leftAnchor3 constraintEqualToAnchor:leftAnchor4];
     [v34 setActive:1];
 
-    v35 = [(UIDateLabel *)v5->_dateLabel rightAnchor];
-    v36 = [(UILabel *)v5->_fromLabel rightAnchor];
-    v37 = [v35 constraintEqualToAnchor:v36];
+    rightAnchor3 = [(UIDateLabel *)v5->_dateLabel rightAnchor];
+    rightAnchor4 = [(UILabel *)v5->_fromLabel rightAnchor];
+    v37 = [rightAnchor3 constraintEqualToAnchor:rightAnchor4];
     [v37 setActive:1];
 
     v38 = objc_alloc_init(MEMORY[0x1E69DCC10]);
@@ -79,32 +79,32 @@
 
     [(CKBlackholeTranscriptCell *)v5 addSubview:v5->_bodyLabel];
     [(UILabel *)v5->_bodyLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(UILabel *)v5->_bodyLabel setTextColor:v6];
+    [(UILabel *)v5->_bodyLabel setTextColor:secondaryLabelColor];
     v40 = v5->_bodyLabel;
     v41 = +[CKUIBehavior sharedBehaviors];
-    v42 = [v41 conversationListSummaryFont];
-    [(UILabel *)v40 setFont:v42];
+    conversationListSummaryFont = [v41 conversationListSummaryFont];
+    [(UILabel *)v40 setFont:conversationListSummaryFont];
 
     [(UILabel *)v5->_bodyLabel setNumberOfLines:0];
-    v43 = [(UILabel *)v5->_bodyLabel topAnchor];
-    v44 = [(UIDateLabel *)v5->_dateLabel bottomAnchor];
-    v45 = [v43 constraintEqualToAnchor:v44 constant:16.0];
+    topAnchor4 = [(UILabel *)v5->_bodyLabel topAnchor];
+    bottomAnchor2 = [(UIDateLabel *)v5->_dateLabel bottomAnchor];
+    v45 = [topAnchor4 constraintEqualToAnchor:bottomAnchor2 constant:16.0];
     [v45 setActive:1];
 
-    v46 = [(UILabel *)v5->_bodyLabel leftAnchor];
-    v47 = [(UIDateLabel *)v5->_dateLabel leftAnchor];
-    v48 = [v46 constraintEqualToAnchor:v47];
+    leftAnchor5 = [(UILabel *)v5->_bodyLabel leftAnchor];
+    leftAnchor6 = [(UIDateLabel *)v5->_dateLabel leftAnchor];
+    v48 = [leftAnchor5 constraintEqualToAnchor:leftAnchor6];
     [v48 setActive:1];
 
-    v49 = [(UILabel *)v5->_bodyLabel rightAnchor];
-    v50 = [(UIDateLabel *)v5->_dateLabel rightAnchor];
-    v51 = [v49 constraintEqualToAnchor:v50];
+    rightAnchor5 = [(UILabel *)v5->_bodyLabel rightAnchor];
+    rightAnchor6 = [(UIDateLabel *)v5->_dateLabel rightAnchor];
+    v51 = [rightAnchor5 constraintEqualToAnchor:rightAnchor6];
     [v51 setActive:1];
 
-    v52 = [(UILabel *)v5->_bodyLabel bottomAnchor];
-    v53 = [(CKBlackholeTranscriptCell *)v5 layoutMarginsGuide];
-    v54 = [v53 bottomAnchor];
-    v55 = [v52 constraintEqualToAnchor:v54];
+    bottomAnchor3 = [(UILabel *)v5->_bodyLabel bottomAnchor];
+    layoutMarginsGuide4 = [(CKBlackholeTranscriptCell *)v5 layoutMarginsGuide];
+    bottomAnchor4 = [layoutMarginsGuide4 bottomAnchor];
+    v55 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     [v55 setActive:1];
   }
 
@@ -121,39 +121,39 @@
   [(UILabel *)self->_bodyLabel setText:0];
 }
 
-- (void)configureForMessageItem:(id)a3 showSender:(BOOL)a4
+- (void)configureForMessageItem:(id)item showSender:(BOOL)sender
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v4)
+  senderCopy = sender;
+  itemCopy = item;
+  v7 = itemCopy;
+  if (senderCopy)
   {
     fromLabel = self->_fromLabel;
-    v9 = [v6 handle];
-    [(UILabel *)fromLabel setText:v9];
+    handle = [itemCopy handle];
+    [(UILabel *)fromLabel setText:handle];
   }
 
   dateLabel = self->_dateLabel;
-  v11 = [v7 time];
-  [(UIDateLabel *)dateLabel setDate:v11];
+  time = [v7 time];
+  [(UIDateLabel *)dateLabel setDate:time];
 
-  v12 = [v7 fileTransferGUIDs];
+  fileTransferGUIDs = [v7 fileTransferGUIDs];
   v13 = objc_alloc_init(MEMORY[0x1E696AD60]);
   v14 = v13;
-  if (v12)
+  if (fileTransferGUIDs)
   {
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __64__CKBlackholeTranscriptCell_configureForMessageItem_showSender___block_invoke;
     v19[3] = &unk_1E72F0A10;
     v20 = v13;
-    [v12 enumerateObjectsUsingBlock:v19];
+    [fileTransferGUIDs enumerateObjectsUsingBlock:v19];
   }
 
-  v15 = [v7 body];
-  v16 = [v15 string];
+  body = [v7 body];
+  string = [body string];
 
-  v17 = [v16 stringByReplacingOccurrencesOfString:@"\uFFFD" withString:&stru_1F04268F8];
+  v17 = [string stringByReplacingOccurrencesOfString:@"\uFFFD" withString:&stru_1F04268F8];
   v18 = [v17 stringByReplacingOccurrencesOfString:@"\uFFFC" withString:&stru_1F04268F8];
 
   if (v18)

@@ -1,50 +1,50 @@
 @interface TRIClientNamespaceMetadataStorage
-- (TRIClientNamespaceMetadataStorage)initWithPaths:(id)a3;
-- (id)loadNamespaceMetadataForNamespaceName:(id)a3 error:(id *)a4;
-- (id)urlForNamespaceMetadataForNamespaceName:(id)a3;
+- (TRIClientNamespaceMetadataStorage)initWithPaths:(id)paths;
+- (id)loadNamespaceMetadataForNamespaceName:(id)name error:(id *)error;
+- (id)urlForNamespaceMetadataForNamespaceName:(id)name;
 @end
 
 @implementation TRIClientNamespaceMetadataStorage
 
-- (TRIClientNamespaceMetadataStorage)initWithPaths:(id)a3
+- (TRIClientNamespaceMetadataStorage)initWithPaths:(id)paths
 {
-  v5 = a3;
+  pathsCopy = paths;
   v9.receiver = self;
   v9.super_class = TRIClientNamespaceMetadataStorage;
   v6 = [(TRIClientNamespaceMetadataStorage *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_paths, a3);
+    objc_storeStrong(&v6->_paths, paths);
   }
 
   return v7;
 }
 
-- (id)loadNamespaceMetadataForNamespaceName:(id)a3 error:(id *)a4
+- (id)loadNamespaceMetadataForNamespaceName:(id)name error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(TRIClientNamespaceMetadataStorage *)self urlForNamespaceMetadataForNamespaceName:v6];
+  nameCopy = name;
+  v7 = [(TRIClientNamespaceMetadataStorage *)self urlForNamespaceMetadataForNamespaceName:nameCopy];
   v24 = 0;
   v8 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfURL:v7 options:1 error:&v24];
   v9 = v24;
   v10 = v9;
   if (!v8)
   {
-    v15 = [v9 domain];
-    v16 = v15;
-    if (v15 == *MEMORY[0x277CCA050])
+    domain = [v9 domain];
+    v16 = domain;
+    if (domain == *MEMORY[0x277CCA050])
     {
-      v17 = [v10 code];
+      code = [v10 code];
 
-      if (v17 == 260)
+      if (code == 260)
       {
         v18 = TRILogCategory_ClientFramework();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412290;
-          v26 = v6;
+          v26 = nameCopy;
           _os_log_debug_impl(&dword_22EA6B000, v18, OS_LOG_TYPE_DEBUG, "No namespace metadata found for namespace name %@", buf, 0xCu);
         }
 
@@ -66,11 +66,11 @@ LABEL_20:
       _os_log_error_impl(&dword_22EA6B000, v19, OS_LOG_TYPE_ERROR, "Unable to read metadata URL: %@", buf, 0xCu);
     }
 
-    if (a4)
+    if (error)
     {
       v20 = v10;
       v14 = 0;
-      *a4 = v10;
+      *error = v10;
       goto LABEL_21;
     }
 
@@ -90,11 +90,11 @@ LABEL_20:
       _os_log_error_impl(&dword_22EA6B000, v12, OS_LOG_TYPE_ERROR, "Failed to deserialize TRIClientNamespaceMetadata data with error %@", buf, 0xCu);
     }
 
-    if (a4)
+    if (error)
     {
       v13 = v10;
       v14 = 0;
-      *a4 = v10;
+      *error = v10;
     }
 
     else
@@ -114,22 +114,22 @@ LABEL_21:
   return v14;
 }
 
-- (id)urlForNamespaceMetadataForNamespaceName:(id)a3
+- (id)urlForNamespaceMetadataForNamespaceName:(id)name
 {
   v13[3] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  nameCopy = name;
   v6 = MEMORY[0x277CBEBC0];
-  v7 = [(TRIPaths *)self->_paths treatmentsDir];
-  v13[0] = v7;
-  v13[1] = v5;
+  treatmentsDir = [(TRIPaths *)self->_paths treatmentsDir];
+  v13[0] = treatmentsDir;
+  v13[1] = nameCopy;
   v13[2] = @"metadata.pb";
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:3];
   v9 = [v6 fileURLWithPathComponents:v8];
 
   if (!v9)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"TRIClientNamespaceMetadataStorage.m" lineNumber:71 description:{@"Expression was unexpectedly nil/false: %@", @"[NSURL fileURLWithPathComponents:@[[_paths treatmentsDir], namespaceName, @metadata.pb]]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIClientNamespaceMetadataStorage.m" lineNumber:71 description:{@"Expression was unexpectedly nil/false: %@", @"[NSURL fileURLWithPathComponents:@[[_paths treatmentsDir], namespaceName, @metadata.pb]]"}];
   }
 
   v10 = *MEMORY[0x277D85DE8];

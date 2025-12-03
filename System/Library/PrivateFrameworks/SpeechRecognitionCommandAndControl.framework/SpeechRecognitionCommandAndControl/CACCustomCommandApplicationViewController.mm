@@ -1,10 +1,10 @@
 @interface CACCustomCommandApplicationViewController
 - (CACCustomCommandApplicationViewController)init;
 - (CACCustomCommandApplicationViewControllerDelegate)delegate;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)setApplicationIdentifiersToNames:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)setApplicationIdentifiersToNames:(id)names;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -22,29 +22,29 @@
   return v2;
 }
 
-- (void)setApplicationIdentifiersToNames:(id)a3
+- (void)setApplicationIdentifiersToNames:(id)names
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (self->_applicationIdentifiersToNames != v5)
+  namesCopy = names;
+  if (self->_applicationIdentifiersToNames != namesCopy)
   {
-    objc_storeStrong(&self->_applicationIdentifiersToNames, a3);
-    v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{-[NSDictionary count](v5, "count") + 1}];
+    objc_storeStrong(&self->_applicationIdentifiersToNames, names);
+    v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{-[NSDictionary count](namesCopy, "count") + 1}];
     [v6 addObject:@"com.apple.speech.SystemWideScope"];
-    v7 = [(NSDictionary *)v5 allKeys];
+    allKeys = [(NSDictionary *)namesCopy allKeys];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __78__CACCustomCommandApplicationViewController_setApplicationIdentifiersToNames___block_invoke;
     v24[3] = &unk_279CEB718;
-    v8 = v5;
+    v8 = namesCopy;
     v25 = v8;
-    v9 = [v7 sortedArrayUsingComparator:v24];
+    v9 = [allKeys sortedArrayUsingComparator:v24];
 
     [v6 addObjectsFromArray:v9];
     [(CACCustomCommandApplicationViewController *)self setSortedIdentifiers:v6];
     v10 = MEMORY[0x277CBEB18];
-    v11 = [(CACCustomCommandApplicationViewController *)self sortedIdentifiers];
-    v12 = [v10 arrayWithCapacity:{objc_msgSend(v11, "count")}];
+    sortedIdentifiers = [(CACCustomCommandApplicationViewController *)self sortedIdentifiers];
+    v12 = [v10 arrayWithCapacity:{objc_msgSend(sortedIdentifiers, "count")}];
 
     v13 = [CACLocaleUtilities localizedUIStringForKey:@"CustomCommand.AnyApplication"];
     [v12 addObject:v13];
@@ -102,31 +102,31 @@ uint64_t __78__CACCustomCommandApplicationViewController_setApplicationIdentifie
   v5.receiver = self;
   v5.super_class = CACCustomCommandApplicationViewController;
   [(CACCustomCommandApplicationViewController *)&v5 viewDidLoad];
-  v3 = [(CACCustomCommandApplicationViewController *)self tableView];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"ApplicationCell"];
+  tableView = [(CACCustomCommandApplicationViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"ApplicationCell"];
 
-  v4 = [(CACCustomCommandApplicationViewController *)self tableView];
-  [v4 registerClass:objc_opt_class() forCellReuseIdentifier:@"AnyCell"];
+  tableView2 = [(CACCustomCommandApplicationViewController *)self tableView];
+  [tableView2 registerClass:objc_opt_class() forCellReuseIdentifier:@"AnyCell"];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if (!a4)
+  if (!section)
   {
     return 1;
   }
 
-  v4 = [(CACCustomCommandApplicationViewController *)self sortedNames];
-  v5 = [v4 count] - 1;
+  sortedNames = [(CACCustomCommandApplicationViewController *)self sortedNames];
+  v5 = [sortedNames count] - 1;
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  if ([v6 section])
+  pathCopy = path;
+  viewCopy = view;
+  if ([pathCopy section])
   {
     v8 = @"ApplicationCell";
   }
@@ -136,11 +136,11 @@ uint64_t __78__CACCustomCommandApplicationViewController_setApplicationIdentifie
     v8 = @"AnyCell";
   }
 
-  v9 = [v7 dequeueReusableCellWithIdentifier:v8 forIndexPath:v6];
+  v9 = [viewCopy dequeueReusableCellWithIdentifier:v8 forIndexPath:pathCopy];
 
-  v10 = [v6 section];
-  v11 = [v6 row];
-  if (v10)
+  section = [pathCopy section];
+  v11 = [pathCopy row];
+  if (section)
   {
     v12 = v11 + 1;
   }
@@ -150,16 +150,16 @@ uint64_t __78__CACCustomCommandApplicationViewController_setApplicationIdentifie
     v12 = v11;
   }
 
-  v13 = [(CACCustomCommandApplicationViewController *)self sortedNames];
-  v14 = [v13 objectAtIndexedSubscript:v12];
-  v15 = [v9 textLabel];
-  [v15 setText:v14];
+  sortedNames = [(CACCustomCommandApplicationViewController *)self sortedNames];
+  v14 = [sortedNames objectAtIndexedSubscript:v12];
+  textLabel = [v9 textLabel];
+  [textLabel setText:v14];
 
-  v16 = [(CACCustomCommandApplicationViewController *)self commandItem];
-  v17 = [v16 customScope];
-  v18 = [(CACCustomCommandApplicationViewController *)self sortedIdentifiers];
-  v19 = [v18 objectAtIndexedSubscript:v12];
-  if ([v17 isEqualToString:v19])
+  commandItem = [(CACCustomCommandApplicationViewController *)self commandItem];
+  customScope = [commandItem customScope];
+  sortedIdentifiers = [(CACCustomCommandApplicationViewController *)self sortedIdentifiers];
+  v19 = [sortedIdentifiers objectAtIndexedSubscript:v12];
+  if ([customScope isEqualToString:v19])
   {
     v20 = 3;
   }
@@ -171,37 +171,37 @@ uint64_t __78__CACCustomCommandApplicationViewController_setApplicationIdentifie
 
   [v9 setAccessoryType:v20];
 
-  if ([v6 section])
+  if ([pathCopy section])
   {
     v21 = MEMORY[0x277D755B8];
-    v22 = [(CACCustomCommandApplicationViewController *)self sortedIdentifiers];
-    v23 = [v22 objectAtIndexedSubscript:v12];
-    v24 = [MEMORY[0x277D759A0] mainScreen];
-    [v24 scale];
+    sortedIdentifiers2 = [(CACCustomCommandApplicationViewController *)self sortedIdentifiers];
+    v23 = [sortedIdentifiers2 objectAtIndexedSubscript:v12];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v25 = [v21 _applicationIconImageForBundleIdentifier:v23 format:0 scale:?];
 
-    v26 = [v9 imageView];
-    [v26 setImage:v25];
+    imageView = [v9 imageView];
+    [imageView setImage:v25];
 
-    v27 = [v9 imageView];
-    v28 = [v27 layer];
-    [v28 setMasksToBounds:1];
+    imageView2 = [v9 imageView];
+    layer = [imageView2 layer];
+    [layer setMasksToBounds:1];
 
-    v29 = [v9 imageView];
-    v30 = [v29 layer];
-    [v30 setCornerRadius:5.0];
+    imageView3 = [v9 imageView];
+    layer2 = [imageView3 layer];
+    [layer2 setCornerRadius:5.0];
   }
 
   return v9;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [v5 section];
-  v7 = [v5 row];
-  if (v6)
+  pathCopy = path;
+  section = [pathCopy section];
+  v7 = [pathCopy row];
+  if (section)
   {
     v8 = v7 + 1;
   }
@@ -211,22 +211,22 @@ uint64_t __78__CACCustomCommandApplicationViewController_setApplicationIdentifie
     v8 = v7;
   }
 
-  v9 = [(CACCustomCommandApplicationViewController *)self sortedIdentifiers];
-  v10 = [v9 objectAtIndexedSubscript:v8];
-  v11 = [(CACCustomCommandApplicationViewController *)self commandItem];
-  [v11 setCustomScope:v10];
+  sortedIdentifiers = [(CACCustomCommandApplicationViewController *)self sortedIdentifiers];
+  v10 = [sortedIdentifiers objectAtIndexedSubscript:v8];
+  commandItem = [(CACCustomCommandApplicationViewController *)self commandItem];
+  [commandItem setCustomScope:v10];
 
-  v12 = [(CACCustomCommandApplicationViewController *)self tableView];
-  v13 = [v12 cellForRowAtIndexPath:v5];
+  tableView = [(CACCustomCommandApplicationViewController *)self tableView];
+  v13 = [tableView cellForRowAtIndexPath:pathCopy];
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v14 = [(CACCustomCommandApplicationViewController *)self tableView];
-  v15 = [v14 visibleCells];
+  tableView2 = [(CACCustomCommandApplicationViewController *)self tableView];
+  visibleCells = [tableView2 visibleCells];
 
-  v16 = [v15 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  v16 = [visibleCells countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v16)
   {
     v17 = v16;
@@ -238,7 +238,7 @@ uint64_t __78__CACCustomCommandApplicationViewController_setApplicationIdentifie
       {
         if (*v25 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(visibleCells);
         }
 
         v20 = *(*(&v24 + 1) + 8 * v19);
@@ -257,17 +257,17 @@ uint64_t __78__CACCustomCommandApplicationViewController_setApplicationIdentifie
       }
 
       while (v17 != v19);
-      v17 = [v15 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v17 = [visibleCells countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v17);
   }
 
-  v22 = [(CACCustomCommandApplicationViewController *)self tableView];
-  [v22 deselectRowAtIndexPath:v5 animated:1];
+  tableView3 = [(CACCustomCommandApplicationViewController *)self tableView];
+  [tableView3 deselectRowAtIndexPath:pathCopy animated:1];
 
-  v23 = [(CACCustomCommandApplicationViewController *)self delegate];
-  [v23 didUpdateCommandItemForApplicationViewController:self];
+  delegate = [(CACCustomCommandApplicationViewController *)self delegate];
+  [delegate didUpdateCommandItemForApplicationViewController:self];
 }
 
 - (CACCustomCommandApplicationViewControllerDelegate)delegate

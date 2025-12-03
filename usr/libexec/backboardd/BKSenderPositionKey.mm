@@ -1,22 +1,22 @@
 @interface BKSenderPositionKey
-- (BOOL)isEqual:(id)a3;
-- (void)appendDescriptionToFormatter:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (void)appendDescriptionToFormatter:(id)formatter;
 @end
 
 @implementation BKSenderPositionKey
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v6 = a3;
-  v4 = [v6 appendUInt64:self->_senderID withName:@"senderID" format:1];
-  v5 = [v6 appendInteger:self->_positionID withName:@"positionID"];
+  formatterCopy = formatter;
+  v4 = [formatterCopy appendUInt64:self->_senderID withName:@"senderID" format:1];
+  v5 = [formatterCopy appendInteger:self->_positionID withName:@"positionID"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = equalCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())

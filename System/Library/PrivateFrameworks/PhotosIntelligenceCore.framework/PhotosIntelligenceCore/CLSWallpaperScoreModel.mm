@@ -1,6 +1,6 @@
 @interface CLSWallpaperScoreModel
-+ (unint64_t)baseSceneAnalysisVersionWithSceneAnalysisVersion:(unint64_t)a3;
-- (CLSWallpaperScoreModel)initWithSceneAnalysisVersion:(unint64_t)a3;
++ (unint64_t)baseSceneAnalysisVersionWithSceneAnalysisVersion:(unint64_t)version;
+- (CLSWallpaperScoreModel)initWithSceneAnalysisVersion:(unint64_t)version;
 - (void)setupVersion77;
 - (void)setupVersion88;
 @end
@@ -83,7 +83,7 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (CLSWallpaperScoreModel)initWithSceneAnalysisVersion:(unint64_t)a3
+- (CLSWallpaperScoreModel)initWithSceneAnalysisVersion:(unint64_t)version
 {
   v14 = *MEMORY[0x277D85DE8];
   v9.receiver = self;
@@ -92,15 +92,15 @@
   v5 = v4;
   if (v4)
   {
-    if (a3 < 0x58)
+    if (version < 0x58)
     {
-      if (a3 < 0x4D)
+      if (version < 0x4D)
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
         {
           v6 = objc_opt_class();
           *buf = 67109378;
-          v11 = a3;
+          versionCopy = version;
           v12 = 2112;
           v13 = v6;
           _os_log_impl(&dword_25E5F0000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Unsupported version %d in %@", buf, 0x12u);
@@ -125,15 +125,15 @@
   return v5;
 }
 
-+ (unint64_t)baseSceneAnalysisVersionWithSceneAnalysisVersion:(unint64_t)a3
++ (unint64_t)baseSceneAnalysisVersionWithSceneAnalysisVersion:(unint64_t)version
 {
   v3 = 77;
-  if (a3 < 0x4D)
+  if (version < 0x4D)
   {
     v3 = 0;
   }
 
-  if (a3 >= 0x58)
+  if (version >= 0x58)
   {
     return 88;
   }

@@ -1,20 +1,20 @@
 @interface HKDataMetadataDetailSection
-- (HKDataMetadataDetailSection)initWithMetadataObject:(id)a3 metadataDataSource:(id)a4 displayTypeController:(id)a5 unitController:(id)a6;
-- (HKDataMetadataDetailSection)initWithSample:(id)a3 displayTypeController:(id)a4 unitController:(id)a5;
-- (HKDataMetadataDetailSection)initWithWorkoutActivity:(id)a3 displayTypeController:(id)a4 unitController:(id)a5;
-- (HKDataMetadataDetailSection)initWithWorkoutEvent:(id)a3;
+- (HKDataMetadataDetailSection)initWithMetadataObject:(id)object metadataDataSource:(id)source displayTypeController:(id)controller unitController:(id)unitController;
+- (HKDataMetadataDetailSection)initWithSample:(id)sample displayTypeController:(id)controller unitController:(id)unitController;
+- (HKDataMetadataDetailSection)initWithWorkoutActivity:(id)activity displayTypeController:(id)controller unitController:(id)unitController;
+- (HKDataMetadataDetailSection)initWithWorkoutEvent:(id)event;
 - (id)sectionFooter;
 - (void)_addDetailValues;
 @end
 
 @implementation HKDataMetadataDetailSection
 
-- (HKDataMetadataDetailSection)initWithMetadataObject:(id)a3 metadataDataSource:(id)a4 displayTypeController:(id)a5 unitController:(id)a6
+- (HKDataMetadataDetailSection)initWithMetadataObject:(id)object metadataDataSource:(id)source displayTypeController:(id)controller unitController:(id)unitController
 {
-  v20 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  objectCopy = object;
+  sourceCopy = source;
+  controllerCopy = controller;
+  unitControllerCopy = unitController;
   v14 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v15 = [v14 localizedStringForKey:@"SAMPLE_DETAILS" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
   v21.receiver = self;
@@ -23,10 +23,10 @@
 
   if (v16)
   {
-    objc_storeStrong(&v16->_object, a3);
-    objc_storeStrong(&v16->_displayTypeController, a5);
-    objc_storeStrong(&v16->_unitController, a6);
-    objc_storeStrong(&v16->_metadataDataSource, a4);
+    objc_storeStrong(&v16->_object, object);
+    objc_storeStrong(&v16->_displayTypeController, controller);
+    objc_storeStrong(&v16->_unitController, unitController);
+    objc_storeStrong(&v16->_metadataDataSource, source);
     v17 = objc_alloc_init(MEMORY[0x1E696BF70]);
     calendarCache = v16->_calendarCache;
     v16->_calendarCache = v17;
@@ -37,11 +37,11 @@
   return v16;
 }
 
-- (HKDataMetadataDetailSection)initWithSample:(id)a3 displayTypeController:(id)a4 unitController:(id)a5
+- (HKDataMetadataDetailSection)initWithSample:(id)sample displayTypeController:(id)controller unitController:(id)unitController
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  sampleCopy = sample;
+  controllerCopy = controller;
+  unitControllerCopy = unitController;
   v12 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v13 = [v12 localizedStringForKey:@"SAMPLE_DETAILS" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
   v20.receiver = self;
@@ -50,10 +50,10 @@
 
   if (v14)
   {
-    objc_storeStrong(&v14->_object, a3);
-    objc_storeStrong(&v14->_displayTypeController, a4);
-    objc_storeStrong(&v14->_unitController, a5);
-    v15 = [[HKDataMetadataDataSource alloc] initWithSample:v9 unitPreferenceController:v11];
+    objc_storeStrong(&v14->_object, sample);
+    objc_storeStrong(&v14->_displayTypeController, controller);
+    objc_storeStrong(&v14->_unitController, unitController);
+    v15 = [[HKDataMetadataDataSource alloc] initWithSample:sampleCopy unitPreferenceController:unitControllerCopy];
     metadataDataSource = v14->_metadataDataSource;
     v14->_metadataDataSource = v15;
 
@@ -67,9 +67,9 @@
   return v14;
 }
 
-- (HKDataMetadataDetailSection)initWithWorkoutEvent:(id)a3
+- (HKDataMetadataDetailSection)initWithWorkoutEvent:(id)event
 {
-  v5 = a3;
+  eventCopy = event;
   v6 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v7 = [v6 localizedStringForKey:@"EVENT_DETAILS" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
   v10.receiver = self;
@@ -78,18 +78,18 @@
 
   if (v8)
   {
-    objc_storeStrong(&v8->_object, a3);
+    objc_storeStrong(&v8->_object, event);
     [(HKDataMetadataDetailSection *)v8 _addDetailValues];
   }
 
   return v8;
 }
 
-- (HKDataMetadataDetailSection)initWithWorkoutActivity:(id)a3 displayTypeController:(id)a4 unitController:(id)a5
+- (HKDataMetadataDetailSection)initWithWorkoutActivity:(id)activity displayTypeController:(id)controller unitController:(id)unitController
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  activityCopy = activity;
+  controllerCopy = controller;
+  unitControllerCopy = unitController;
   v12 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v13 = [v12 localizedStringForKey:@"WORKOUT_ACTIVITY_DETAILS" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
   v16.receiver = self;
@@ -98,9 +98,9 @@
 
   if (v14)
   {
-    objc_storeStrong(&v14->_object, a3);
-    objc_storeStrong(&v14->_displayTypeController, a4);
-    objc_storeStrong(&v14->_unitController, a5);
+    objc_storeStrong(&v14->_object, activity);
+    objc_storeStrong(&v14->_displayTypeController, controller);
+    objc_storeStrong(&v14->_unitController, unitController);
     [(HKDataMetadataDetailSection *)v14 _addDetailValues];
   }
 
@@ -119,15 +119,15 @@
   v2 = self->_object;
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(HKDataMetadataObject *)v2 detailFooter];
+    detailFooter = [(HKDataMetadataObject *)v2 detailFooter];
   }
 
   else
   {
-    v3 = 0;
+    detailFooter = 0;
   }
 
-  return v3;
+  return detailFooter;
 }
 
 @end

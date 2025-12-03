@@ -14,8 +14,8 @@
 - (NSArray)accountIdentities;
 - (NSDictionary)standaloneAccountStateByAccountId;
 - (NSString)signature;
-- (id)_getValueForKey:(id)a3;
-- (id)_getValueForKey:(id)a3 perGizmo:(BOOL)a4;
+- (id)_getValueForKey:(id)key;
+- (id)_getValueForKey:(id)key perGizmo:(BOOL)gizmo;
 - (id)_includeMailMailbox;
 - (id)_includeMailMailboxesFromDisk;
 - (id)_loadAccounts;
@@ -26,16 +26,16 @@
 - (id)_swipeRightAction;
 - (id)bridgeSettingsMailboxSelection;
 - (id)domainAccessor;
-- (id)readFromSharedPreferencesValueForKey:(id)a3;
+- (id)readFromSharedPreferencesValueForKey:(id)key;
 - (unint64_t)_linesOfPreview;
-- (void)_saveValueToSharedPreference:(id)a3 forKey:(id)a4;
-- (void)_setDefaultAccountId:(id)a3;
-- (void)_setIncludeMailMailboxes:(id)a3;
-- (void)_setLinesOfPreview:(unint64_t)a3;
-- (void)_setSignature:(id)a3;
-- (void)_setSwipeRightAction:(id)a3;
-- (void)_setValue:(id)a3 forKey:(id)a4 syncWithClient:(BOOL)a5 perGizmo:(BOOL)a6;
-- (void)addSharedSettingsToArray:(id)a3 ifFilterTypes:(unint64_t)a4 containsFilter:(unint64_t)a5;
+- (void)_saveValueToSharedPreference:(id)preference forKey:(id)key;
+- (void)_setDefaultAccountId:(id)id;
+- (void)_setIncludeMailMailboxes:(id)mailboxes;
+- (void)_setLinesOfPreview:(unint64_t)preview;
+- (void)_setSignature:(id)signature;
+- (void)_setSwipeRightAction:(id)action;
+- (void)_setValue:(id)value forKey:(id)key syncWithClient:(BOOL)client perGizmo:(BOOL)gizmo;
+- (void)addSharedSettingsToArray:(id)array ifFilterTypes:(unint64_t)types containsFilter:(unint64_t)filter;
 - (void)notifyMirrorSettingsFromCompanionChanged;
 - (void)notifyMobileMailAccountsChanged;
 - (void)notifyMobileMailAskBeforeDeletingChanged;
@@ -44,12 +44,12 @@
 - (void)notifyMobileMailOrganizeByThreadChanged;
 - (void)notifyMobileMailPrivacyProtectionChanged;
 - (void)notifyMobileMailSwipeRightActionChanged;
-- (void)registry:(id)a3 didActivate:(id)a4;
-- (void)registry:(id)a3 didUnpair:(id)a4;
+- (void)registry:(id)registry didActivate:(id)activate;
+- (void)registry:(id)registry didUnpair:(id)unpair;
 - (void)reloadCachedAccounts;
-- (void)setAccountIdentities:(id)a3;
-- (void)setStandaloneAccountStateByAccountId:(id)a3;
-- (void)setUpdateMailboxSelection:(id)a3;
+- (void)setAccountIdentities:(id)identities;
+- (void)setStandaloneAccountStateByAccountId:(id)id;
+- (void)setUpdateMailboxSelection:(id)selection;
 - (void)updateSharedPreferences;
 @end
 
@@ -84,9 +84,9 @@
       accountByMailboxId = v3->_accountByMailboxId;
       v3->_accountByMailboxId = v6;
 
-      v8 = [(MFNanoBridgeSettingsManager *)v3 _loadAccounts];
+      _loadAccounts = [(MFNanoBridgeSettingsManager *)v3 _loadAccounts];
       activeAccounts = v3->_activeAccounts;
-      v3->_activeAccounts = v8;
+      v3->_activeAccounts = _loadAccounts;
 
       v19 = 0;
       v20 = &v19;
@@ -117,15 +117,15 @@
     }
 
     self = v3;
-    v15 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
 - (void)updateSharedPreferences
@@ -140,16 +140,16 @@
 - (id)bridgeSettingsMailboxSelection
 {
   v16 = objc_alloc_init(MFBridgeSettingsMailboxSelection);
-  v3 = [(MFNanoBridgeSettingsManager *)self includeMailMailboxes];
-  v4 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v3 count]);
+  includeMailMailboxes = [(MFNanoBridgeSettingsManager *)self includeMailMailboxes];
+  v4 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [includeMailMailboxes count]);
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(MFNanoBridgeSettingsManager *)self includeMailMailboxes];
+  includeMailMailboxes2 = [(MFNanoBridgeSettingsManager *)self includeMailMailboxes];
   v6 = 0;
-  v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v7 = [includeMailMailboxes2 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = *v18;
@@ -159,7 +159,7 @@
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(includeMailMailboxes2);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
@@ -167,8 +167,8 @@
         if (objc_opt_isKindOfClass())
         {
           v11 = v10;
-          v12 = [v11 mailboxId];
-          [v4 addObject:v12];
+          mailboxId = [v11 mailboxId];
+          [v4 addObject:mailboxId];
         }
 
         else
@@ -177,9 +177,9 @@
           if (objc_opt_isKindOfClass())
           {
             v13 = v10;
-            v14 = [v13 mailboxFilterType];
+            mailboxFilterType = [v13 mailboxFilterType];
 
-            v6 |= v14;
+            v6 |= mailboxFilterType;
           }
 
           else
@@ -190,7 +190,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v7 = [includeMailMailboxes2 countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v7);
@@ -202,16 +202,16 @@
   return v16;
 }
 
-- (void)setUpdateMailboxSelection:(id)a3
+- (void)setUpdateMailboxSelection:(id)selection
 {
-  v14 = a3;
+  selectionCopy = selection;
   v15 = +[NSMutableArray array];
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [v14 mailboxesWithAllMessagesSyncEnabledIds];
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  mailboxesWithAllMessagesSyncEnabledIds = [selectionCopy mailboxesWithAllMessagesSyncEnabledIds];
+  v5 = [mailboxesWithAllMessagesSyncEnabledIds countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = *v17;
@@ -221,7 +221,7 @@
       {
         if (*v17 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(mailboxesWithAllMessagesSyncEnabledIds);
         }
 
         v8 = *(*(&v16 + 1) + 8 * i);
@@ -236,19 +236,19 @@
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v5 = [mailboxesWithAllMessagesSyncEnabledIds countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v5);
   }
 
-  -[MFNanoBridgeSettingsManager addSharedSettingsToArray:ifFilterTypes:containsFilter:](self, "addSharedSettingsToArray:ifFilterTypes:containsFilter:", v15, [v14 aggregatedMailboxesFilterTypes], 2);
-  -[MFNanoBridgeSettingsManager addSharedSettingsToArray:ifFilterTypes:containsFilter:](self, "addSharedSettingsToArray:ifFilterTypes:containsFilter:", v15, [v14 aggregatedMailboxesFilterTypes], 4);
-  -[MFNanoBridgeSettingsManager addSharedSettingsToArray:ifFilterTypes:containsFilter:](self, "addSharedSettingsToArray:ifFilterTypes:containsFilter:", v15, [v14 aggregatedMailboxesFilterTypes], 8);
-  -[MFNanoBridgeSettingsManager addSharedSettingsToArray:ifFilterTypes:containsFilter:](self, "addSharedSettingsToArray:ifFilterTypes:containsFilter:", v15, [v14 aggregatedMailboxesFilterTypes], 16);
-  -[MFNanoBridgeSettingsManager addSharedSettingsToArray:ifFilterTypes:containsFilter:](self, "addSharedSettingsToArray:ifFilterTypes:containsFilter:", v15, [v14 aggregatedMailboxesFilterTypes], 32);
-  -[MFNanoBridgeSettingsManager addSharedSettingsToArray:ifFilterTypes:containsFilter:](self, "addSharedSettingsToArray:ifFilterTypes:containsFilter:", v15, [v14 aggregatedMailboxesFilterTypes], 64);
-  if ([v14 aggregatedMailboxesFilterTypes])
+  -[MFNanoBridgeSettingsManager addSharedSettingsToArray:ifFilterTypes:containsFilter:](self, "addSharedSettingsToArray:ifFilterTypes:containsFilter:", v15, [selectionCopy aggregatedMailboxesFilterTypes], 2);
+  -[MFNanoBridgeSettingsManager addSharedSettingsToArray:ifFilterTypes:containsFilter:](self, "addSharedSettingsToArray:ifFilterTypes:containsFilter:", v15, [selectionCopy aggregatedMailboxesFilterTypes], 4);
+  -[MFNanoBridgeSettingsManager addSharedSettingsToArray:ifFilterTypes:containsFilter:](self, "addSharedSettingsToArray:ifFilterTypes:containsFilter:", v15, [selectionCopy aggregatedMailboxesFilterTypes], 8);
+  -[MFNanoBridgeSettingsManager addSharedSettingsToArray:ifFilterTypes:containsFilter:](self, "addSharedSettingsToArray:ifFilterTypes:containsFilter:", v15, [selectionCopy aggregatedMailboxesFilterTypes], 16);
+  -[MFNanoBridgeSettingsManager addSharedSettingsToArray:ifFilterTypes:containsFilter:](self, "addSharedSettingsToArray:ifFilterTypes:containsFilter:", v15, [selectionCopy aggregatedMailboxesFilterTypes], 32);
+  -[MFNanoBridgeSettingsManager addSharedSettingsToArray:ifFilterTypes:containsFilter:](self, "addSharedSettingsToArray:ifFilterTypes:containsFilter:", v15, [selectionCopy aggregatedMailboxesFilterTypes], 64);
+  if ([selectionCopy aggregatedMailboxesFilterTypes])
   {
     v13 = [[MFNanoBridgeSettingsUnifiedMailbox alloc] initWithType:7];
     [v15 addObject:v13];
@@ -257,13 +257,13 @@
   [(MFNanoBridgeSettingsManager *)self setIncludeMailMailboxes:v15];
 }
 
-- (void)addSharedSettingsToArray:(id)a3 ifFilterTypes:(unint64_t)a4 containsFilter:(unint64_t)a5
+- (void)addSharedSettingsToArray:(id)array ifFilterTypes:(unint64_t)types containsFilter:(unint64_t)filter
 {
-  v8 = a3;
-  if ((a5 & a4) != 0)
+  arrayCopy = array;
+  if ((filter & types) != 0)
   {
-    v7 = [[MFNanoBridgeSettingsSharedMailbox alloc] initWithType:[MFNanoBridgeSettingsMailbox sourceTypeForMailboxFilterType:a5]];
-    [v8 addObject:v7];
+    v7 = [[MFNanoBridgeSettingsSharedMailbox alloc] initWithType:[MFNanoBridgeSettingsMailbox sourceTypeForMailboxFilterType:filter]];
+    [arrayCopy addObject:v7];
   }
 }
 
@@ -288,9 +288,9 @@
   return v5;
 }
 
-- (void)setStandaloneAccountStateByAccountId:(id)a3
+- (void)setStandaloneAccountStateByAccountId:(id)id
 {
-  v4 = [NSKeyedArchiver archivedDataWithRootObject:a3 requiringSecureCoding:1 error:0];
+  v4 = [NSKeyedArchiver archivedDataWithRootObject:id requiringSecureCoding:1 error:0];
   [MFNanoBridgeSettingsManager _setValue:"_setValue:forKey:syncWithClient:" forKey:? syncWithClient:?];
 }
 
@@ -332,17 +332,17 @@
   return v7;
 }
 
-- (void)setAccountIdentities:(id)a3
+- (void)setAccountIdentities:(id)identities
 {
-  v4 = [NSKeyedArchiver archivedDataWithRootObject:a3 requiringSecureCoding:1 error:0];
+  v4 = [NSKeyedArchiver archivedDataWithRootObject:identities requiringSecureCoding:1 error:0];
   [MFNanoBridgeSettingsManager _setValue:"_setValue:forKey:syncWithClient:" forKey:? syncWithClient:?];
 }
 
 - (NSString)signature
 {
   v2 = +[MFNanoBridgeSettingsManager sharedInstance];
-  v3 = [v2 htmlSignature];
-  v4 = [v3 dataUsingEncoding:4];
+  htmlSignature = [v2 htmlSignature];
+  v4 = [htmlSignature dataUsingEncoding:4];
 
   v5 = [NSAttributedString alloc];
   v19[0] = NSDocumentTypeDocumentAttribute;
@@ -363,9 +363,9 @@
     }
   }
 
-  v10 = [v7 string];
+  string = [v7 string];
   v11 = +[NSCharacterSet newlineCharacterSet];
-  v12 = [v10 _stringByReplacingCharactersInSet:v11 withCharacter:10];
+  v12 = [string _stringByReplacingCharactersInSet:v11 withCharacter:10];
 
   if (v12)
   {
@@ -386,14 +386,14 @@
 
 - (BOOL)privacyProtectionEnabled
 {
-  v3 = [(MFNanoBridgeSettingsManager *)self mirrorSettingsFromCompanion];
-  if (v3)
+  mirrorSettingsFromCompanion = [(MFNanoBridgeSettingsManager *)self mirrorSettingsFromCompanion];
+  if (mirrorSettingsFromCompanion)
   {
 
-    LOBYTE(v3) = [(MFNanoBridgeSettingsManager *)self _mobileMailPrivacyProtectionEnabled];
+    LOBYTE(mirrorSettingsFromCompanion) = [(MFNanoBridgeSettingsManager *)self _mobileMailPrivacyProtectionEnabled];
   }
 
-  return v3;
+  return mirrorSettingsFromCompanion;
 }
 
 - (void)notifyMirrorSettingsFromCompanionChanged
@@ -417,52 +417,52 @@
 
 - (void)notifyMobileMailAskBeforeDeletingChanged
 {
-  v3 = [(MFNanoBridgeSettingsManager *)self _mobileMailAskBeforeDeleting];
+  _mobileMailAskBeforeDeleting = [(MFNanoBridgeSettingsManager *)self _mobileMailAskBeforeDeleting];
 
-  [(MFNanoBridgeSettingsManager *)self _setAskBeforeDeleting:v3];
+  [(MFNanoBridgeSettingsManager *)self _setAskBeforeDeleting:_mobileMailAskBeforeDeleting];
 }
 
 - (void)notifyMobileMailLoadRemoteImagesChanged
 {
-  v3 = [(MFNanoBridgeSettingsManager *)self _mobileMailLoadRemoteImages];
+  _mobileMailLoadRemoteImages = [(MFNanoBridgeSettingsManager *)self _mobileMailLoadRemoteImages];
 
-  [(MFNanoBridgeSettingsManager *)self _setLoadRemoteImages:v3];
+  [(MFNanoBridgeSettingsManager *)self _setLoadRemoteImages:_mobileMailLoadRemoteImages];
 }
 
 - (void)notifyMobileMailPrivacyProtectionChanged
 {
-  v3 = [(MFNanoBridgeSettingsManager *)self privacyProtectionEnabled];
+  privacyProtectionEnabled = [(MFNanoBridgeSettingsManager *)self privacyProtectionEnabled];
 
-  [(MFNanoBridgeSettingsManager *)self _setPrivacyProtectionEnabled:v3];
+  [(MFNanoBridgeSettingsManager *)self _setPrivacyProtectionEnabled:privacyProtectionEnabled];
 }
 
 - (void)notifyMobileMailOrganizeByThreadChanged
 {
-  v3 = [(MFNanoBridgeSettingsManager *)self _mobileMailOrganizeByThread];
+  _mobileMailOrganizeByThread = [(MFNanoBridgeSettingsManager *)self _mobileMailOrganizeByThread];
 
-  [(MFNanoBridgeSettingsManager *)self _setOrganizeByThread:v3];
+  [(MFNanoBridgeSettingsManager *)self _setOrganizeByThread:_mobileMailOrganizeByThread];
 }
 
 - (void)notifyMobileMailSwipeRightActionChanged
 {
-  v3 = [(MFNanoBridgeSettingsManager *)self _mobileMailSwipeRightAction];
+  _mobileMailSwipeRightAction = [(MFNanoBridgeSettingsManager *)self _mobileMailSwipeRightAction];
   [(MFNanoBridgeSettingsManager *)self _setSwipeRightAction:?];
 }
 
 - (void)notifyMobileMailDefaultAccountUidChanged
 {
-  v3 = [(MFNanoBridgeSettingsManager *)self _mobileMailDefaultAccountId];
+  _mobileMailDefaultAccountId = [(MFNanoBridgeSettingsManager *)self _mobileMailDefaultAccountId];
   [(MFNanoBridgeSettingsManager *)self _setDefaultAccountId:?];
 }
 
 - (void)notifyMobileMailAccountsChanged
 {
   v17 = self->_activeAccounts;
-  v3 = [(MFNanoBridgeSettingsManager *)self _loadAccounts];
+  _loadAccounts = [(MFNanoBridgeSettingsManager *)self _loadAccounts];
   activeAccounts = self->_activeAccounts;
-  self->_activeAccounts = v3;
+  self->_activeAccounts = _loadAccounts;
 
-  v16 = [(MFNanoBridgeSettingsManager *)self includeMailMailboxes];
+  includeMailMailboxes = [(MFNanoBridgeSettingsManager *)self includeMailMailboxes];
   v5 = [NSMutableSet setWithArray:?];
   v6 = [[MFNanoBridgeSettingsUnifiedMailbox alloc] initWithType:7];
   v7 = [v5 containsObject:v6];
@@ -484,7 +484,7 @@ LABEL_17:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = v16;
+  v8 = includeMailMailboxes;
   v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
@@ -523,69 +523,69 @@ LABEL_17:
   }
 
 LABEL_18:
-  v15 = [v5 allObjects];
-  [(MFNanoBridgeSettingsManager *)self _setIncludeMailMailboxes:v15];
+  allObjects = [v5 allObjects];
+  [(MFNanoBridgeSettingsManager *)self _setIncludeMailMailboxes:allObjects];
 }
 
 - (void)reloadCachedAccounts
 {
   +[MailAccount reloadAccounts];
-  v3 = [(MFNanoBridgeSettingsManager *)self _loadAccounts];
+  _loadAccounts = [(MFNanoBridgeSettingsManager *)self _loadAccounts];
   activeAccounts = self->_activeAccounts;
-  self->_activeAccounts = v3;
+  self->_activeAccounts = _loadAccounts;
 
   _objc_release_x1();
 }
 
 - (id)_includeMailMailbox
 {
-  v19 = [(MFNanoBridgeSettingsManager *)self _mailboxSelectionFromPreviousOSVersion];
-  if (v19)
+  _mailboxSelectionFromPreviousOSVersion = [(MFNanoBridgeSettingsManager *)self _mailboxSelectionFromPreviousOSVersion];
+  if (_mailboxSelectionFromPreviousOSVersion)
   {
     v2 = MFLogGeneral();
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v28 = v19;
+      v28 = _mailboxSelectionFromPreviousOSVersion;
       _os_log_impl(&dword_0, v2, OS_LOG_TYPE_DEFAULT, "#Nano Mailbox selection list is from legacy OS. %{public}@", buf, 0xCu);
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v20 = 0;
+      _includeMailMailboxesFromDisk = 0;
     }
 
     else
     {
-      v26 = v19;
-      v20 = [NSArray arrayWithObjects:&v26 count:1];
+      v26 = _mailboxSelectionFromPreviousOSVersion;
+      _includeMailMailboxesFromDisk = [NSArray arrayWithObjects:&v26 count:1];
       [(MFNanoBridgeSettingsManager *)self _setIncludeMailMailboxes:?];
     }
   }
 
   else
   {
-    v20 = [(MFNanoBridgeSettingsManager *)self _includeMailMailboxesFromDisk];
+    _includeMailMailboxesFromDisk = [(MFNanoBridgeSettingsManager *)self _includeMailMailboxesFromDisk];
     v3 = MFLogGeneral();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v28 = v20;
+      v28 = _includeMailMailboxesFromDisk;
       _os_log_impl(&dword_0, v3, OS_LOG_TYPE_INFO, "#Nano Mailbox selection list read from disk. %{public}@", buf, 0xCu);
     }
   }
 
   v4 = +[MailAccount nano_activeMailAccounts];
   v5 = 0;
-  if ([v4 count] && v20)
+  if ([v4 count] && _includeMailMailboxesFromDisk)
   {
-    v6 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v20 count]);
+    v6 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [_includeMailMailboxesFromDisk count]);
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v7 = v20;
+    v7 = _includeMailMailboxesFromDisk;
     v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (!v8)
     {
@@ -691,10 +691,10 @@ LABEL_27:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [v4 unsignedIntegerValue];
+      unsignedIntegerValue = [v4 unsignedIntegerValue];
 LABEL_8:
 
-      return v5;
+      return unsignedIntegerValue;
     }
   }
 
@@ -714,7 +714,7 @@ LABEL_8:
   _Block_object_dispose(&v11, 8);
   if (v6)
   {
-    v5 = *v6;
+    unsignedIntegerValue = *v6;
     goto LABEL_8;
   }
 
@@ -736,10 +736,10 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [v4 BOOLValue];
+      bOOLValue = [v4 BOOLValue];
 LABEL_8:
 
-      return v5 & 1;
+      return bOOLValue & 1;
     }
   }
 
@@ -759,7 +759,7 @@ LABEL_8:
   _Block_object_dispose(&v11, 8);
   if (v6)
   {
-    v5 = *v6;
+    bOOLValue = *v6;
     goto LABEL_8;
   }
 
@@ -781,10 +781,10 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [v4 BOOLValue];
+      bOOLValue = [v4 BOOLValue];
 LABEL_8:
 
-      return v5 & 1;
+      return bOOLValue & 1;
     }
   }
 
@@ -804,7 +804,7 @@ LABEL_8:
   _Block_object_dispose(&v11, 8);
   if (v6)
   {
-    v5 = *v6;
+    bOOLValue = *v6;
     goto LABEL_8;
   }
 
@@ -826,10 +826,10 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [v4 BOOLValue];
+      bOOLValue = [v4 BOOLValue];
 LABEL_8:
 
-      return v5 & 1;
+      return bOOLValue & 1;
     }
   }
 
@@ -849,7 +849,7 @@ LABEL_8:
   _Block_object_dispose(&v11, 8);
   if (v6)
   {
-    v5 = *v6;
+    bOOLValue = *v6;
     goto LABEL_8;
   }
 
@@ -978,10 +978,10 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [v4 BOOLValue];
+      bOOLValue = [v4 BOOLValue];
 LABEL_8:
 
-      return v5 & 1;
+      return bOOLValue & 1;
     }
   }
 
@@ -1001,7 +1001,7 @@ LABEL_8:
   _Block_object_dispose(&v11, 8);
   if (v6)
   {
-    v5 = *v6;
+    bOOLValue = *v6;
     goto LABEL_8;
   }
 
@@ -1023,10 +1023,10 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [v4 BOOLValue];
+      bOOLValue = [v4 BOOLValue];
 LABEL_8:
 
-      return v5 & 1;
+      return bOOLValue & 1;
     }
   }
 
@@ -1046,7 +1046,7 @@ LABEL_8:
   _Block_object_dispose(&v11, 8);
   if (v6)
   {
-    v5 = *v6;
+    bOOLValue = *v6;
     goto LABEL_8;
   }
 
@@ -1058,9 +1058,9 @@ LABEL_8:
   return result;
 }
 
-- (void)_setIncludeMailMailboxes:(id)a3
+- (void)_setIncludeMailMailboxes:(id)mailboxes
 {
-  v4 = [NSKeyedArchiver archivedDataWithRootObject:a3 requiringSecureCoding:1 error:0];
+  v4 = [NSKeyedArchiver archivedDataWithRootObject:mailboxes requiringSecureCoding:1 error:0];
   [MFNanoBridgeSettingsManager _setValue:"_setValue:forKey:syncWithClient:" forKey:? syncWithClient:?];
 }
 
@@ -1099,30 +1099,30 @@ LABEL_8:
   return v4;
 }
 
-- (void)_setLinesOfPreview:(unint64_t)a3
+- (void)_setLinesOfPreview:(unint64_t)preview
 {
-  v5 = [NSNumber numberWithUnsignedInteger:a3];
+  v5 = [NSNumber numberWithUnsignedInteger:preview];
   v4 = sub_1511C();
   [(MFNanoBridgeSettingsManager *)self _setValue:v5 forKey:v4 syncWithClient:1];
 }
 
-- (void)_setSwipeRightAction:(id)a3
+- (void)_setSwipeRightAction:(id)action
 {
-  v5 = a3;
+  actionCopy = action;
   v4 = sub_15EC8();
-  [(MFNanoBridgeSettingsManager *)self _setValue:v5 forKey:v4 syncWithClient:1 perGizmo:0];
+  [(MFNanoBridgeSettingsManager *)self _setValue:actionCopy forKey:v4 syncWithClient:1 perGizmo:0];
 }
 
-- (void)_setSignature:(id)a3
+- (void)_setSignature:(id)signature
 {
-  v5 = a3;
+  signatureCopy = signature;
   v4 = sub_16344();
-  [(MFNanoBridgeSettingsManager *)self _setValue:v5 forKey:v4 syncWithClient:1];
+  [(MFNanoBridgeSettingsManager *)self _setValue:signatureCopy forKey:v4 syncWithClient:1];
 }
 
-- (void)_setDefaultAccountId:(id)a3
+- (void)_setDefaultAccountId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -1139,7 +1139,7 @@ LABEL_8:
   _Block_object_dispose(&v9, 8);
   if (v5)
   {
-    [(MFNanoBridgeSettingsManager *)self _setValue:v4 forKey:*v5 syncWithClient:1];
+    [(MFNanoBridgeSettingsManager *)self _setValue:idCopy forKey:*v5 syncWithClient:1];
   }
 
   else
@@ -1159,15 +1159,15 @@ LABEL_8:
 
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)_mobileMailLoadRemoteImages
@@ -1215,70 +1215,70 @@ LABEL_8:
 - (id)_mobileMailDefaultAccountId
 {
   v2 = +[NSUserDefaults em_userDefaults];
-  v3 = [v2 objectForKey:MailDefaultSendingAccountKey];
+  uniqueID = [v2 objectForKey:MailDefaultSendingAccountKey];
 
-  if (!v3)
+  if (!uniqueID)
   {
     v4 = +[MailAccount defaultMailAccountForDelivery];
-    v3 = [v4 uniqueID];
+    uniqueID = [v4 uniqueID];
   }
 
+  return uniqueID;
+}
+
+- (id)_getValueForKey:(id)key
+{
+  v3 = [(MFNanoBridgeSettingsManager *)self _getValueForKey:key perGizmo:1];
+
   return v3;
 }
 
-- (id)_getValueForKey:(id)a3
+- (id)_getValueForKey:(id)key perGizmo:(BOOL)gizmo
 {
-  v3 = [(MFNanoBridgeSettingsManager *)self _getValueForKey:a3 perGizmo:1];
-
-  return v3;
-}
-
-- (id)_getValueForKey:(id)a3 perGizmo:(BOOL)a4
-{
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  gizmoCopy = gizmo;
+  keyCopy = key;
+  if (gizmoCopy)
   {
-    v7 = [(MFNanoBridgeSettingsManager *)self domainAccessor];
-    v8 = [v7 synchronize];
+    domainAccessor = [(MFNanoBridgeSettingsManager *)self domainAccessor];
+    synchronize = [domainAccessor synchronize];
 
-    v9 = [(MFNanoBridgeSettingsManager *)self domainAccessor];
-    v10 = [v9 objectForKey:v6];
+    domainAccessor2 = [(MFNanoBridgeSettingsManager *)self domainAccessor];
+    v10 = [domainAccessor2 objectForKey:keyCopy];
   }
 
   else
   {
-    v10 = [(MFNanoBridgeSettingsManager *)self readFromSharedPreferencesValueForKey:v6];
+    v10 = [(MFNanoBridgeSettingsManager *)self readFromSharedPreferencesValueForKey:keyCopy];
   }
 
   return v10;
 }
 
-- (void)_setValue:(id)a3 forKey:(id)a4 syncWithClient:(BOOL)a5 perGizmo:(BOOL)a6
+- (void)_setValue:(id)value forKey:(id)key syncWithClient:(BOOL)client perGizmo:(BOOL)gizmo
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = [(MFNanoBridgeSettingsManager *)self readFromSharedPreferencesValueForKey:v11];
-  [(MFNanoBridgeSettingsManager *)self _saveValueToSharedPreference:v10 forKey:v11];
-  if (v6)
+  gizmoCopy = gizmo;
+  clientCopy = client;
+  valueCopy = value;
+  keyCopy = key;
+  v12 = [(MFNanoBridgeSettingsManager *)self readFromSharedPreferencesValueForKey:keyCopy];
+  [(MFNanoBridgeSettingsManager *)self _saveValueToSharedPreference:valueCopy forKey:keyCopy];
+  if (gizmoCopy)
   {
-    v13 = [(MFNanoBridgeSettingsManager *)self domainAccessor];
-    v14 = [v13 objectForKey:v11];
+    domainAccessor = [(MFNanoBridgeSettingsManager *)self domainAccessor];
+    v14 = [domainAccessor objectForKey:keyCopy];
 
-    if (([v14 isEqual:v10] & 1) == 0)
+    if (([v14 isEqual:valueCopy] & 1) == 0)
     {
-      v15 = [(MFNanoBridgeSettingsManager *)self domainAccessor];
-      [v15 setObject:v10 forKey:v11];
+      domainAccessor2 = [(MFNanoBridgeSettingsManager *)self domainAccessor];
+      [domainAccessor2 setObject:valueCopy forKey:keyCopy];
 
-      v16 = [(MFNanoBridgeSettingsManager *)self domainAccessor];
-      v17 = [v16 synchronize];
+      domainAccessor3 = [(MFNanoBridgeSettingsManager *)self domainAccessor];
+      synchronize = [domainAccessor3 synchronize];
 
-      if (v7)
+      if (clientCopy)
       {
         syncManager = self->_syncManager;
-        v19 = [NSSet setWithObject:v11];
+        v19 = [NSSet setWithObject:keyCopy];
         [(NPSManager *)syncManager synchronizeNanoDomain:@"com.apple.NanoMail" keys:v19];
       }
     }
@@ -1286,25 +1286,25 @@ LABEL_8:
 
   else
   {
-    if (([v12 isEqual:v10] | !v7))
+    if (([v12 isEqual:valueCopy] | !clientCopy))
     {
       goto LABEL_8;
     }
 
     v20 = self->_syncManager;
-    v14 = [NSSet setWithObject:v11];
+    v14 = [NSSet setWithObject:keyCopy];
     [(NPSManager *)v20 synchronizeUserDefaultsDomain:@"com.apple.NanoMail" keys:v14];
   }
 
 LABEL_8:
   v21 = sub_15B6C();
-  if ([v11 isEqualToString:v21])
+  if ([keyCopy isEqualToString:v21])
   {
   }
 
   else
   {
-    v22 = [v11 isEqualToString:@"kIncludeMailBoxesKey"];
+    v22 = [keyCopy isEqualToString:@"kIncludeMailBoxesKey"];
 
     if ((v22 & 1) == 0)
     {
@@ -1313,18 +1313,18 @@ LABEL_8:
   }
 
   v23 = MFUserAgent();
-  v24 = [v23 isMaild];
+  isMaild = [v23 isMaild];
 
-  if (v24)
+  if (isMaild)
   {
     v25 = MFLogGeneral();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
     {
-      sub_25A08(v11, v25);
+      sub_25A08(keyCopy, v25);
     }
 
     v26 = +[NSNotificationCenter defaultCenter];
-    [v26 postNotificationName:@"MailDefaultsChangedNotification" object:v11 userInfo:0];
+    [v26 postNotificationName:@"MailDefaultsChangedNotification" object:keyCopy userInfo:0];
   }
 
   else
@@ -1333,7 +1333,7 @@ LABEL_8:
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
       v29 = 138412290;
-      v30 = v11;
+      v30 = keyCopy;
       _os_log_impl(&dword_0, v27, OS_LOG_TYPE_DEFAULT, "#Nano Posting Darwin Notification Bridge Setting has Changed for key: %@", &v29, 0xCu);
     }
 
@@ -1344,29 +1344,29 @@ LABEL_8:
 LABEL_18:
 }
 
-- (void)_saveValueToSharedPreference:(id)a3 forKey:(id)a4
+- (void)_saveValueToSharedPreference:(id)preference forKey:(id)key
 {
-  value = a3;
-  v5 = a4;
-  CFPreferencesSetValue(v5, value, @"com.apple.NanoMail", kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
+  value = preference;
+  keyCopy = key;
+  CFPreferencesSetValue(keyCopy, value, @"com.apple.NanoMail", kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
   CFPreferencesSynchronize(@"com.apple.NanoMail", kCFPreferencesCurrentUser, kCFPreferencesAnyApplication);
 }
 
-- (id)readFromSharedPreferencesValueForKey:(id)a3
+- (id)readFromSharedPreferencesValueForKey:(id)key
 {
-  v3 = CFPreferencesCopyValue(a3, @"com.apple.NanoMail", kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
+  v3 = CFPreferencesCopyValue(key, @"com.apple.NanoMail", kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
 
   return v3;
 }
 
-- (void)registry:(id)a3 didUnpair:(id)a4
+- (void)registry:(id)registry didUnpair:(id)unpair
 {
   domainAccessor = self->_domainAccessor;
   self->_domainAccessor = 0;
   _objc_release_x1();
 }
 
-- (void)registry:(id)a3 didActivate:(id)a4
+- (void)registry:(id)registry didActivate:(id)activate
 {
   domainAccessor = self->_domainAccessor;
   self->_domainAccessor = 0;
@@ -1406,8 +1406,8 @@ LABEL_18:
           v20 = 0u;
           v17 = 0u;
           v18 = 0u;
-          v7 = [v6 allMailboxUids];
-          v8 = [v7 countByEnumeratingWithState:&v17 objects:v25 count:16];
+          allMailboxUids = [v6 allMailboxUids];
+          v8 = [allMailboxUids countByEnumeratingWithState:&v17 objects:v25 count:16];
           if (v8)
           {
             v9 = *v18;
@@ -1417,19 +1417,19 @@ LABEL_18:
               {
                 if (*v18 != v9)
                 {
-                  objc_enumerationMutation(v7);
+                  objc_enumerationMutation(allMailboxUids);
                 }
 
                 v11 = *(*(&v17 + 1) + 8 * j);
-                v12 = [v11 nano_mailboxId];
-                if (v12)
+                nano_mailboxId = [v11 nano_mailboxId];
+                if (nano_mailboxId)
                 {
-                  [(NSMutableDictionary *)self->_accountByMailboxId setObject:v6 forKeyedSubscript:v12];
-                  [(NSMutableDictionary *)self->_mailboxUidById setObject:v11 forKeyedSubscript:v12];
+                  [(NSMutableDictionary *)self->_accountByMailboxId setObject:v6 forKeyedSubscript:nano_mailboxId];
+                  [(NSMutableDictionary *)self->_mailboxUidById setObject:v11 forKeyedSubscript:nano_mailboxId];
                 }
               }
 
-              v8 = [v7 countByEnumeratingWithState:&v17 objects:v25 count:16];
+              v8 = [allMailboxUids countByEnumeratingWithState:&v17 objects:v25 count:16];
             }
 
             while (v8);

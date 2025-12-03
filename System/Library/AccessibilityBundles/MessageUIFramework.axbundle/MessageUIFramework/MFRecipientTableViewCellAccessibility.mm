@@ -12,27 +12,27 @@
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__1;
   v21 = __Block_byref_object_dispose__1;
-  v4 = [v3 _accessibilityViewIsVisible];
-  v5 = 0;
-  if (v4)
+  _accessibilityViewIsVisible = [v3 _accessibilityViewIsVisible];
+  accessibilityLabel = 0;
+  if (_accessibilityViewIsVisible)
   {
-    v5 = [v3 accessibilityLabel];
+    accessibilityLabel = [v3 accessibilityLabel];
   }
 
-  v22 = v5;
+  v22 = accessibilityLabel;
   v16 = 0;
   v6 = [(MFRecipientTableViewCellAccessibility *)self safeValueForKey:@"detailLabel"];
   v7 = __UIAccessibilitySafeClass();
 
   if ([v7 _accessibilityViewIsVisible])
   {
-    v8 = [v7 attributedText];
-    v9 = [v8 length];
+    attributedText = [v7 attributedText];
+    v9 = [attributedText length];
     v13[0] = MEMORY[0x29EDCA5F8];
     v13[1] = 3221225472;
     v13[2] = __59__MFRecipientTableViewCellAccessibility_accessibilityLabel__block_invoke;
     v13[3] = &unk_29F2D1A88;
-    v10 = v8;
+    v10 = attributedText;
     v14 = v10;
     v15 = &v17;
     [v10 enumerateAttribute:@"mf_tintType" inRange:0 options:v9 usingBlock:{0, v13}];

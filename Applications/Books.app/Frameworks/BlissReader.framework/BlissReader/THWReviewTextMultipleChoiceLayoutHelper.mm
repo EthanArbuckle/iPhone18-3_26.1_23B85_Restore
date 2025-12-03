@@ -1,24 +1,24 @@
 @interface THWReviewTextMultipleChoiceLayoutHelper
-- (CGPoint)stackedControlContainerOrigin:(id)a3;
+- (CGPoint)stackedControlContainerOrigin:(id)origin;
 - (CGSize)answerStackSize;
-- (CGSize)answerStackSizeForWidth:(double)a3;
-- (THWReviewTextMultipleChoiceLayoutHelper)initWithQuestion:(id)a3;
-- (UIEdgeInsets)stackedControlContainerInsets:(id)a3;
-- (id)reviewTextAnswerLayoutListLabelParagraphStyle:(id)a3;
+- (CGSize)answerStackSizeForWidth:(double)width;
+- (THWReviewTextMultipleChoiceLayoutHelper)initWithQuestion:(id)question;
+- (UIEdgeInsets)stackedControlContainerInsets:(id)insets;
+- (id)reviewTextAnswerLayoutListLabelParagraphStyle:(id)style;
 - (void)_setupAnswerLayouts;
 - (void)dealloc;
 @end
 
 @implementation THWReviewTextMultipleChoiceLayoutHelper
 
-- (THWReviewTextMultipleChoiceLayoutHelper)initWithQuestion:(id)a3
+- (THWReviewTextMultipleChoiceLayoutHelper)initWithQuestion:(id)question
 {
   v6.receiver = self;
   v6.super_class = THWReviewTextMultipleChoiceLayoutHelper;
   v4 = [(THWReviewTextMultipleChoiceLayoutHelper *)&v6 init];
   if (v4)
   {
-    v4->_question = a3;
+    v4->_question = question;
     [(THWReviewTextMultipleChoiceLayoutHelper *)v4 _setupAnswerLayouts];
   }
 
@@ -32,10 +32,10 @@
   [(THWReviewTextMultipleChoiceLayoutHelper *)&v3 dealloc];
 }
 
-- (CGSize)answerStackSizeForWidth:(double)a3
+- (CGSize)answerStackSizeForWidth:(double)width
 {
   [(THWReviewTextMultipleChoiceLayoutHelper *)self answerLayoutWidth];
-  if (v5 != a3)
+  if (v5 != width)
   {
     v14 = 0;
     v15 = &v14;
@@ -45,7 +45,7 @@
     v11 = &v10;
     v12 = 0x2020000000;
     v13 = 0;
-    [(THWReviewTextMultipleChoiceLayoutHelper *)self setAnswerLayoutWidth:a3];
+    [(THWReviewTextMultipleChoiceLayoutHelper *)self setAnswerLayoutWidth:width];
     v6 = [[THWStackedControlContainer alloc] initWithDelegate:self];
     v18 = v6;
     v9[0] = _NSConcreteStackBlock;
@@ -68,7 +68,7 @@
   return result;
 }
 
-- (CGPoint)stackedControlContainerOrigin:(id)a3
+- (CGPoint)stackedControlContainerOrigin:(id)origin
 {
   x = CGPointZero.x;
   y = CGPointZero.y;
@@ -77,7 +77,7 @@
   return result;
 }
 
-- (UIEdgeInsets)stackedControlContainerInsets:(id)a3
+- (UIEdgeInsets)stackedControlContainerInsets:(id)insets
 {
   v3 = 0.0;
   v4 = 0.0;
@@ -90,24 +90,24 @@
   return result;
 }
 
-- (id)reviewTextAnswerLayoutListLabelParagraphStyle:(id)a3
+- (id)reviewTextAnswerLayoutListLabelParagraphStyle:(id)style
 {
-  v3 = [(THWReviewTextMultipleChoiceLayoutHelper *)self question];
+  question = [(THWReviewTextMultipleChoiceLayoutHelper *)self question];
 
-  return [(THWReviewQuestion *)v3 choiceNumberStyle];
+  return [(THWReviewQuestion *)question choiceNumberStyle];
 }
 
 - (void)_setupAnswerLayouts
 {
   if (!self->_answerLayouts)
   {
-    v3 = [(THWReviewQuestion *)self->_question choices];
-    v4 = [NSMutableArray arrayWithCapacity:[(NSArray *)v3 count]];
+    choices = [(THWReviewQuestion *)self->_question choices];
+    v4 = [NSMutableArray arrayWithCapacity:[(NSArray *)choices count]];
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [(NSArray *)v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    v5 = [(NSArray *)choices countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v5)
     {
       v6 = v5;
@@ -120,7 +120,7 @@
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(choices);
           }
 
           v10 = [[THWReviewTextAnswerLayout alloc] initWithChoice:*(*(&v11 + 1) + 8 * v9) index:v7 delegate:self];
@@ -131,7 +131,7 @@
         }
 
         while (v6 != v9);
-        v6 = [(NSArray *)v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v6 = [(NSArray *)choices countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v6);

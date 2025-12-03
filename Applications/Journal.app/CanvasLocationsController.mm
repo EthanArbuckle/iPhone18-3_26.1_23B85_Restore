@@ -1,11 +1,11 @@
 @interface CanvasLocationsController
-- (_TtC7Journal25CanvasLocationsController)initWithCollectionViewLayout:(id)a3;
-- (_TtC7Journal25CanvasLocationsController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC7Journal25CanvasLocationsController)initWithCollectionViewLayout:(id)layout;
+- (_TtC7Journal25CanvasLocationsController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)addLocation;
 - (void)done;
 - (void)loadView;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -13,16 +13,16 @@
 
 - (void)loadView
 {
-  v6 = self;
+  selfCopy = self;
   v2 = sub_100833B6C();
   v3 = [objc_allocWithZone(UICollectionView) initWithFrame:v2 collectionViewLayout:{0.0, 0.0, 0.0, 0.0}];
 
-  [(CanvasLocationsController *)v6 setCollectionView:v3];
-  v4 = [(CanvasLocationsController *)v6 collectionView];
-  if (v4)
+  [(CanvasLocationsController *)selfCopy setCollectionView:v3];
+  collectionView = [(CanvasLocationsController *)selfCopy collectionView];
+  if (collectionView)
   {
-    v5 = v4;
-    [v4 setDelegate:v6];
+    v5 = collectionView;
+    [collectionView setDelegate:selfCopy];
   }
 
   else
@@ -33,34 +33,34 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100832738();
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v3 = a3;
+  appearingCopy = appearing;
   v9.receiver = self;
   v9.super_class = type metadata accessor for CanvasLocationsController();
   v4 = v9.receiver;
-  [(CanvasLocationsController *)&v9 viewIsAppearing:v3];
-  v5 = [v4 traitCollection];
-  v6 = [v5 userInterfaceIdiom];
+  [(CanvasLocationsController *)&v9 viewIsAppearing:appearingCopy];
+  traitCollection = [v4 traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v6 == 5)
+  if (userInterfaceIdiom == 5)
   {
-    v7 = [v4 navigationController];
-    if (v7)
+    navigationController = [v4 navigationController];
+    if (navigationController)
     {
-      v8 = v7;
-      [v7 setToolbarHidden:0 animated:v3];
+      v8 = navigationController;
+      [navigationController setToolbarHidden:0 animated:appearingCopy];
     }
   }
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1008333D4();
 }
 
@@ -70,7 +70,7 @@
   if (Strong)
   {
     v4 = *(Strong + OBJC_IVAR____TtC7Journal20CanvasViewController_coordinator);
-    v5 = self;
+    selfCopy = self;
     sub_1001737C8(1, v4);
     sub_100170C4C(1);
     swift_unknownObjectRelease();
@@ -79,21 +79,21 @@
 
 - (void)addLocation
 {
-  v2 = self;
+  selfCopy = self;
   sub_10083BE24();
 }
 
-- (_TtC7Journal25CanvasLocationsController)initWithCollectionViewLayout:(id)a3
+- (_TtC7Journal25CanvasLocationsController)initWithCollectionViewLayout:(id)layout
 {
-  v3 = a3;
-  v4 = sub_1008459EC(v3);
+  layoutCopy = layout;
+  v4 = sub_1008459EC(layoutCopy);
 
   return v4;
 }
 
-- (_TtC7Journal25CanvasLocationsController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7Journal25CanvasLocationsController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -105,8 +105,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_10083C49C(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_10083C49C(v5, v7, bundle);
 }
 
 @end

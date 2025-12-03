@@ -2,7 +2,7 @@
 - (CSLPRFNanoAppRegistryApplicationSource)init;
 - (CSLPRFNanoAppRegistryApplicationSourceDelegate)delegate;
 - (void)_appsDidChange;
-- (void)allApplicationsWithCompletion:(id)a3;
+- (void)allApplicationsWithCompletion:(id)completion;
 - (void)dealloc;
 @end
 
@@ -33,17 +33,17 @@ void __56__CSLPRFNanoAppRegistryApplicationSource__appsDidChange__block_invoke(u
   [WeakRetained nanoRegistrySource:*(a1 + 32) updatedWithAllApplications:v4];
 }
 
-- (void)allApplicationsWithCompletion:(id)a3
+- (void)allApplicationsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   workspace = self->_workspace;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __72__CSLPRFNanoAppRegistryApplicationSource_allApplicationsWithCompletion___block_invoke;
   v7[3] = &unk_2787448B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(NARApplicationWorkspace *)workspace getWorkspaceInfoIncludingHiddenApps:1 completion:v7];
 }
 

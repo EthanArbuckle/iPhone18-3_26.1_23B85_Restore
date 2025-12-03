@@ -1,301 +1,301 @@
 @interface PLModelMigrator
-+ (BOOL)_readBooleanFlagWithKey:(id)a3 fromMetadataWithMOC:(id)a4 pathManager:(id)a5;
-+ (BOOL)_writeNumber:(id)a3 forKey:(id)a4 pathManager:(id)a5 error:(id *)a6;
-+ (BOOL)enumerateObjectsWithIncrementalSaveDefaultBatchSizeFetchRequest:(id)a3 managedObjectContext:(id)a4 count:(unint64_t *)a5 error:(id *)a6 block:(id)a7;
-+ (BOOL)executeBatchDeleteWithEntityName:(id)a3 predicate:(id)a4 managedObjectContext:(id)a5 error:(id *)a6;
-+ (BOOL)executeBatchUpdateWithEntityName:(id)a3 predicate:(id)a4 propertiesToUpdate:(id)a5 managedObjectContext:(id)a6 error:(id *)a7;
-+ (BOOL)markAssetsWithThumbsForTableRebuildInContext:(id)a3;
-+ (BOOL)performFaceAnalysisResetWithResetLevel:(int64_t)a3 pathManager:(id)a4 context:(id)a5;
-+ (BOOL)rebuildMomentsInContext:(id)a3 pathManager:(id)a4 deleteExistingMoments:(BOOL)a5 targetedAssetOIDs:(id)a6;
-+ (BOOL)resetThumbnailIndexesAndInitiateThumbnailRebuildRequestIfSuccessfulForForThumbnailManager:(id)a3 deferHintChanges:(BOOL)a4 inContext:(id)a5;
-+ (BOOL)shouldImportAssetsFromDCIMSubDirectoryAtURL:(id)a3 assetsKind:(int *)a4;
-+ (BOOL)shouldPromptUserForRebuildWithLibraryPathManager:(id)a3;
++ (BOOL)_readBooleanFlagWithKey:(id)key fromMetadataWithMOC:(id)c pathManager:(id)manager;
++ (BOOL)_writeNumber:(id)number forKey:(id)key pathManager:(id)manager error:(id *)error;
++ (BOOL)enumerateObjectsWithIncrementalSaveDefaultBatchSizeFetchRequest:(id)request managedObjectContext:(id)context count:(unint64_t *)count error:(id *)error block:(id)block;
++ (BOOL)executeBatchDeleteWithEntityName:(id)name predicate:(id)predicate managedObjectContext:(id)context error:(id *)error;
++ (BOOL)executeBatchUpdateWithEntityName:(id)name predicate:(id)predicate propertiesToUpdate:(id)update managedObjectContext:(id)context error:(id *)error;
++ (BOOL)markAssetsWithThumbsForTableRebuildInContext:(id)context;
++ (BOOL)performFaceAnalysisResetWithResetLevel:(int64_t)level pathManager:(id)manager context:(id)context;
++ (BOOL)rebuildMomentsInContext:(id)context pathManager:(id)manager deleteExistingMoments:(BOOL)moments targetedAssetOIDs:(id)ds;
++ (BOOL)resetThumbnailIndexesAndInitiateThumbnailRebuildRequestIfSuccessfulForForThumbnailManager:(id)manager deferHintChanges:(BOOL)changes inContext:(id)context;
++ (BOOL)shouldImportAssetsFromDCIMSubDirectoryAtURL:(id)l assetsKind:(int *)kind;
++ (BOOL)shouldPromptUserForRebuildWithLibraryPathManager:(id)manager;
 + (BOOL)waitForDataMigratorToExit;
-+ (id)_readNumberWithKey:(id)a3 fromMetadataWithMOC:(id)a4 pathManager:(id)a5 error:(id *)a6;
-+ (id)extractPathToAssetUUIDRecoveryMappingFromDatabasePath:(id)a3;
-+ (id)schemaIncompatibilityDetailsForStoreMetadata:(id)a3 model:(id)a4;
-- (BOOL)_addCameraCaptureDeviceForAssetsInStore:(id)a3;
-- (BOOL)_addCloudKindSubtypeAndBurstFlagsInStore:(id)a3;
-- (BOOL)_addLocalVideoKeyFrameResourceInStore:(id)a3 deferHintChanges:(BOOL)a4;
-- (BOOL)_addLocationHashesToAssets:(id)a3;
-- (BOOL)_addRAWPackedBadgeAttributeForAllRAWAssetsInStore:(id)a3;
-- (BOOL)_addUUIDsToCollectionLists:(id)a3 skipMomentLists:(BOOL)a4;
-- (BOOL)_addUUIDsToExistingKeywordsInStore:(id)a3;
++ (id)_readNumberWithKey:(id)key fromMetadataWithMOC:(id)c pathManager:(id)manager error:(id *)error;
++ (id)extractPathToAssetUUIDRecoveryMappingFromDatabasePath:(id)path;
++ (id)schemaIncompatibilityDetailsForStoreMetadata:(id)metadata model:(id)model;
+- (BOOL)_addCameraCaptureDeviceForAssetsInStore:(id)store;
+- (BOOL)_addCloudKindSubtypeAndBurstFlagsInStore:(id)store;
+- (BOOL)_addLocalVideoKeyFrameResourceInStore:(id)store deferHintChanges:(BOOL)changes;
+- (BOOL)_addLocationHashesToAssets:(id)assets;
+- (BOOL)_addRAWPackedBadgeAttributeForAllRAWAssetsInStore:(id)store;
+- (BOOL)_addUUIDsToCollectionLists:(id)lists skipMomentLists:(BOOL)momentLists;
+- (BOOL)_addUUIDsToExistingKeywordsInStore:(id)store;
 - (BOOL)_applyDataProtectionToDCIMFromClassBToClassC;
-- (BOOL)_batchOfflineDeleteFromDatabaseOnlyAssets:(id)a3 inManagedObjectContext:(id)a4 error:(id *)a5;
-- (BOOL)_cleanupInvalidAlbumsAndFoldersInStore:(id)a3;
-- (BOOL)_convertNameSourceFromBoolToIntForDeferredRebuildFaceInStore:(id)a3;
-- (BOOL)_copyAssetDescriptionToAccessibilityDescription:(id)a3;
-- (BOOL)_createImportSessionAlbums:(id)a3;
-- (BOOL)_createPhotoDataDirectoryIfNecessary:(BOOL *)a3 error:(id *)a4;
-- (BOOL)_deleteAllMemoriesInStore:(id)a3;
-- (BOOL)_deleteCloudSharedAndSynced:(BOOL)a3 assetReferencesInStore:(id)a4;
-- (BOOL)_deleteEmptyFolderWithProjectRootCloudGUIDOfWrongKindInStore:(id)a3;
-- (BOOL)_deleteExtraneousAdjustedFullSizeResourcesForSloMoAssetsWithStore:(id)a3;
-- (BOOL)_deleteLocalVideoKeyFrameResourcesForNonVideosInStore:(id)a3 deferHintChanges:(BOOL)a4;
-- (BOOL)_deleteOrphanedUnverifiedPeople:(id)a3;
-- (BOOL)_deletePersistentHistoryInStore:(id)a3;
-- (BOOL)_deletePersonsMissingUUIDInStore:(id)a3;
-- (BOOL)_deletePhotoCloudSharingMetadataInManagedObjectContext:(id)a3 error:(id *)a4;
-- (BOOL)_deletePhotoStreamAssetReferencesInStore:(id)a3;
-- (BOOL)_deleteVideoThumbsMadeFromPreferredFrameInStore:(id)a3;
+- (BOOL)_batchOfflineDeleteFromDatabaseOnlyAssets:(id)assets inManagedObjectContext:(id)context error:(id *)error;
+- (BOOL)_cleanupInvalidAlbumsAndFoldersInStore:(id)store;
+- (BOOL)_convertNameSourceFromBoolToIntForDeferredRebuildFaceInStore:(id)store;
+- (BOOL)_copyAssetDescriptionToAccessibilityDescription:(id)description;
+- (BOOL)_createImportSessionAlbums:(id)albums;
+- (BOOL)_createPhotoDataDirectoryIfNecessary:(BOOL *)necessary error:(id *)error;
+- (BOOL)_deleteAllMemoriesInStore:(id)store;
+- (BOOL)_deleteCloudSharedAndSynced:(BOOL)synced assetReferencesInStore:(id)store;
+- (BOOL)_deleteEmptyFolderWithProjectRootCloudGUIDOfWrongKindInStore:(id)store;
+- (BOOL)_deleteExtraneousAdjustedFullSizeResourcesForSloMoAssetsWithStore:(id)store;
+- (BOOL)_deleteLocalVideoKeyFrameResourcesForNonVideosInStore:(id)store deferHintChanges:(BOOL)changes;
+- (BOOL)_deleteOrphanedUnverifiedPeople:(id)people;
+- (BOOL)_deletePersistentHistoryInStore:(id)store;
+- (BOOL)_deletePersonsMissingUUIDInStore:(id)store;
+- (BOOL)_deletePhotoCloudSharingMetadataInManagedObjectContext:(id)context error:(id *)error;
+- (BOOL)_deletePhotoStreamAssetReferencesInStore:(id)store;
+- (BOOL)_deleteVideoThumbsMadeFromPreferredFrameInStore:(id)store;
 - (BOOL)_disableICloudPhoto;
-- (BOOL)_emptyResourceTablesInStagedStore:(id)a3;
-- (BOOL)_ensureAllUserVerifiedPersonsHaveFaceCropsInStore:(id)a3;
-- (BOOL)_filterSceneClassificationsInStore:(id)a3;
-- (BOOL)_fixAdjustedAssets:(id)a3;
-- (BOOL)_fixAlbumAndFolderSortAscending:(id)a3;
-- (BOOL)_fixAssetMasterResources:(id)a3;
-- (BOOL)_fixCloudMasterCloudLocalState:(id)a3;
-- (BOOL)_fixCloudSharedGIFsInStore:(id)a3;
-- (BOOL)_fixCloudSharedVideosInStore:(id)a3;
-- (BOOL)_fixCorruptedOrientationsInStore:(id)a3;
-- (BOOL)_fixCustomRenderedValues:(id)a3;
-- (BOOL)_fixDuplicatedAssets:(id)a3;
-- (BOOL)_fixDuplicatedRootFolderAndOrphanedAlbumsInStore:(id)a3;
-- (BOOL)_fixEmptyVideoResourcePathsInStore:(id)a3;
-- (BOOL)_fixFaceAlgorithmVersion:(id)a3;
-- (BOOL)_fixImportedAssetsFromCMMSavedInDCIMWithWrongSavedAssetType:(id)a3;
-- (BOOL)_fixIncorrectAddedDateForAssetsInStore:(id)a3;
-- (BOOL)_fixIncorrectHeifMetadataInStore:(id)a3;
-- (BOOL)_fixIncorrectThumbnailTablesInStore:(id)a3 deferHintChanges:(BOOL)a4;
+- (BOOL)_emptyResourceTablesInStagedStore:(id)store;
+- (BOOL)_ensureAllUserVerifiedPersonsHaveFaceCropsInStore:(id)store;
+- (BOOL)_filterSceneClassificationsInStore:(id)store;
+- (BOOL)_fixAdjustedAssets:(id)assets;
+- (BOOL)_fixAlbumAndFolderSortAscending:(id)ascending;
+- (BOOL)_fixAssetMasterResources:(id)resources;
+- (BOOL)_fixCloudMasterCloudLocalState:(id)state;
+- (BOOL)_fixCloudSharedGIFsInStore:(id)store;
+- (BOOL)_fixCloudSharedVideosInStore:(id)store;
+- (BOOL)_fixCorruptedOrientationsInStore:(id)store;
+- (BOOL)_fixCustomRenderedValues:(id)values;
+- (BOOL)_fixDuplicatedAssets:(id)assets;
+- (BOOL)_fixDuplicatedRootFolderAndOrphanedAlbumsInStore:(id)store;
+- (BOOL)_fixEmptyVideoResourcePathsInStore:(id)store;
+- (BOOL)_fixFaceAlgorithmVersion:(id)version;
+- (BOOL)_fixImportedAssetsFromCMMSavedInDCIMWithWrongSavedAssetType:(id)type;
+- (BOOL)_fixIncorrectAddedDateForAssetsInStore:(id)store;
+- (BOOL)_fixIncorrectHeifMetadataInStore:(id)store;
+- (BOOL)_fixIncorrectThumbnailTablesInStore:(id)store deferHintChanges:(BOOL)changes;
 - (BOOL)_fixInitialSyncMarker;
-- (BOOL)_fixItemIdentifierForVideoCmplInStore:(id)a3;
-- (BOOL)_fixKeywordsInStagedStore:(id)a3;
-- (BOOL)_fixLastPrefetchDateInStore:(id)a3;
-- (BOOL)_fixLocalPathForVideoCmplDerivativesInStore:(id)a3;
-- (BOOL)_fixLocallyAvailableFlagForThumbnailsInStore:(id)a3;
-- (BOOL)_fixMasterCloudLocalStateEnum:(id)a3;
-- (BOOL)_fixMemoriesWithAssetLists:(id)a3;
-- (BOOL)_fixMergedPeopleThatShouldBeVerified:(id)a3;
-- (BOOL)_fixMovieAttributesInStore:(id)a3;
-- (BOOL)_fixNilCloudMasterGUID:(id)a3;
-- (BOOL)_fixNonDuplicatedAssets:(id)a3 adjusted:(BOOL)a4;
-- (BOOL)_fixOriginalPropertiesForCloudSharedAssetsInStore:(id)a3;
-- (BOOL)_fixRawWithZeroDimensions:(id)a3;
-- (BOOL)_fixRejectedKeyFace:(id)a3;
-- (BOOL)_fixSharedStreamVideoResourcesInStore:(id)a3;
-- (BOOL)_fixSidecarUTIsAndDataStoreSubtype:(id)a3;
-- (BOOL)_fixTrashedDate:(id)a3;
-- (BOOL)_fixUTIforSlowMoInStore:(id)a3;
-- (BOOL)_fixUnpushedVideoComplementResourcesInStore:(id)a3;
-- (BOOL)_fixUploadedButNotRemotelyAvailalbeCPLResourcesInStore:(id)a3;
-- (BOOL)_fixVideoDimensionsForAsset:(id)a3;
-- (BOOL)_fixVideoDimensionsInStore:(id)a3;
-- (BOOL)_fixVideoJPGPath:(id)a3;
-- (BOOL)_fixVisibleBurstAsset:(id)a3;
-- (BOOL)_fixWhitelistOwnerForPendingInvitationsInStore:(id)a3;
-- (BOOL)_fixZeroDurationPhotoIrisWithLocalResourcesInStore:(id)a3 assumeAdjustedIrisIsVisible:(BOOL)a4;
-- (BOOL)_fixZeroTrashedDateForEntityName:(id)a3 inManagedObjectContext:(id)a4;
-- (BOOL)_fixupAlbumOrderInAlbumListInStore:(id)a3;
-- (BOOL)_fixupAssetPersistence:(id)a3;
-- (BOOL)_fixupBrokenBurstPicksInStore:(id)a3;
-- (BOOL)_fixupCroppedUnadjustedAssets:(id)a3;
-- (BOOL)_fixupImportedAssetsInStore:(id)a3;
-- (BOOL)_fixupImportedEventsInStore:(id)a3;
-- (BOOL)_fixupSharedStreamOrientationsInStore:(id)a3;
-- (BOOL)_fixupSyncedAssetAttributesInStore:(id)a3;
-- (BOOL)_flattenUnknownCustomRenderedValues:(id)a3;
-- (BOOL)_forceAlbumMetadataToDiskInStore:(id)a3;
+- (BOOL)_fixItemIdentifierForVideoCmplInStore:(id)store;
+- (BOOL)_fixKeywordsInStagedStore:(id)store;
+- (BOOL)_fixLastPrefetchDateInStore:(id)store;
+- (BOOL)_fixLocalPathForVideoCmplDerivativesInStore:(id)store;
+- (BOOL)_fixLocallyAvailableFlagForThumbnailsInStore:(id)store;
+- (BOOL)_fixMasterCloudLocalStateEnum:(id)enum;
+- (BOOL)_fixMemoriesWithAssetLists:(id)lists;
+- (BOOL)_fixMergedPeopleThatShouldBeVerified:(id)verified;
+- (BOOL)_fixMovieAttributesInStore:(id)store;
+- (BOOL)_fixNilCloudMasterGUID:(id)d;
+- (BOOL)_fixNonDuplicatedAssets:(id)assets adjusted:(BOOL)adjusted;
+- (BOOL)_fixOriginalPropertiesForCloudSharedAssetsInStore:(id)store;
+- (BOOL)_fixRawWithZeroDimensions:(id)dimensions;
+- (BOOL)_fixRejectedKeyFace:(id)face;
+- (BOOL)_fixSharedStreamVideoResourcesInStore:(id)store;
+- (BOOL)_fixSidecarUTIsAndDataStoreSubtype:(id)subtype;
+- (BOOL)_fixTrashedDate:(id)date;
+- (BOOL)_fixUTIforSlowMoInStore:(id)store;
+- (BOOL)_fixUnpushedVideoComplementResourcesInStore:(id)store;
+- (BOOL)_fixUploadedButNotRemotelyAvailalbeCPLResourcesInStore:(id)store;
+- (BOOL)_fixVideoDimensionsForAsset:(id)asset;
+- (BOOL)_fixVideoDimensionsInStore:(id)store;
+- (BOOL)_fixVideoJPGPath:(id)path;
+- (BOOL)_fixVisibleBurstAsset:(id)asset;
+- (BOOL)_fixWhitelistOwnerForPendingInvitationsInStore:(id)store;
+- (BOOL)_fixZeroDurationPhotoIrisWithLocalResourcesInStore:(id)store assumeAdjustedIrisIsVisible:(BOOL)visible;
+- (BOOL)_fixZeroTrashedDateForEntityName:(id)name inManagedObjectContext:(id)context;
+- (BOOL)_fixupAlbumOrderInAlbumListInStore:(id)store;
+- (BOOL)_fixupAssetPersistence:(id)persistence;
+- (BOOL)_fixupBrokenBurstPicksInStore:(id)store;
+- (BOOL)_fixupCroppedUnadjustedAssets:(id)assets;
+- (BOOL)_fixupImportedAssetsInStore:(id)store;
+- (BOOL)_fixupImportedEventsInStore:(id)store;
+- (BOOL)_fixupSharedStreamOrientationsInStore:(id)store;
+- (BOOL)_fixupSyncedAssetAttributesInStore:(id)store;
+- (BOOL)_flattenUnknownCustomRenderedValues:(id)values;
+- (BOOL)_forceAlbumMetadataToDiskInStore:(id)store;
 - (BOOL)_forceSoftResetSync;
-- (BOOL)_generateAddedDateForAssetsInStore:(id)a3;
-- (BOOL)_identifyVariationsAndDepthAdjustmentsForAsset:(id)a3;
-- (BOOL)_identifyVariationsAndDepthAdjustmentsIncludingBakedInLongExposure:(BOOL)a3 inStore:(id)a4;
-- (BOOL)_initiateLightweightReimportOfAllPhotoCloudSharingMetadataInStore:(id)a3;
-- (BOOL)_invalidateReverseGeocodingDataInStore:(id)a3;
-- (BOOL)_invalidateZeroHDRGainInStore:(id)a3;
-- (BOOL)_isFileSystemImportRequiredForLibrary:(id)a3;
+- (BOOL)_generateAddedDateForAssetsInStore:(id)store;
+- (BOOL)_identifyVariationsAndDepthAdjustmentsForAsset:(id)asset;
+- (BOOL)_identifyVariationsAndDepthAdjustmentsIncludingBakedInLongExposure:(BOOL)exposure inStore:(id)store;
+- (BOOL)_initiateLightweightReimportOfAllPhotoCloudSharingMetadataInStore:(id)store;
+- (BOOL)_invalidateReverseGeocodingDataInStore:(id)store;
+- (BOOL)_invalidateZeroHDRGainInStore:(id)store;
+- (BOOL)_isFileSystemImportRequiredForLibrary:(id)library;
 - (BOOL)_isFilesystemImportConfigurationDisabled;
-- (BOOL)_isReasonableCreationDate:(id)a3;
-- (BOOL)_markAllProcessedAnalysisStatesDirtyForWorkerType:(signed __int16)a3 withStartingWorkerFlags:(int)a4 inStore:(id)a5;
-- (BOOL)_markMigrationVerifiedTypePersonsInStore:(id)a3;
-- (BOOL)_markOldPhotoIrisEditsEvaluatedInStore:(id)a3;
-- (BOOL)_markPhotoIrisVideoOrphansInStore:(id)a3;
-- (BOOL)_migrateAssetLocationData:(id)a3;
-- (BOOL)_migrateCandidateBitsToDeferredProcessingCandidateOptions:(id)a3;
-- (BOOL)_migrateCloudResourcesRelationshipsInStagedStore:(id)a3;
-- (BOOL)_migrateDetectedFacesGroupInStagedStore:(id)a3;
-- (BOOL)_migrateLegacySlomoAdjustmentsInStore:(id)a3 fromLegacySLMFormat:(BOOL)a4;
-- (BOOL)_migrateMetadataAndMigrationHistoryWithStore:(id)a3;
-- (BOOL)_migrateOriginalColorSpaceInStagedStore:(id)a3;
-- (BOOL)_migrateRejectedFacesGroupInStagedStore:(id)a3;
-- (BOOL)_migrateResourceUTIAndCodecInStagedStore:(id)a3;
-- (BOOL)_migrateTransformableUUIDsToStringsInStore:(id)a3;
-- (BOOL)_migrateVideoKeyFrameTimeValuesInStagedStore:(id)a3;
-- (BOOL)_moveCloudSharedDerivativesInStore:(id)a3;
-- (BOOL)_moveGpsHorizontalAccuracyToNewAttribute:(id)a3;
-- (BOOL)_moveMyPhotoStreamToAlbumsListInStore:(id)a3;
-- (BOOL)_nukeWallpaperRemnantsInStore:(id)a3;
-- (BOOL)_performChangesOnBatchFetchedObjects:(id)a3 inMOC:(id)a4 batchSize:(unint64_t)a5 objectHandler:(id)a6 error:(id *)a7;
-- (BOOL)_performMigrationCacheDateCreatedOnResources:(BOOL)a3 cacheItemIdentifierOnResources:(BOOL)a4 store:(id)a5;
-- (BOOL)_persistImportSessionAlbumType:(id)a3;
-- (BOOL)_persistMemoriesInStore:(id)a3;
-- (BOOL)_persistMetadataToFileSystemForAlbum:(id)a3;
-- (BOOL)_persistPersonsInStore:(id)a3;
-- (BOOL)_persistPhotoIrisVisibilityStateToDiskInStore:(id)a3;
-- (BOOL)_persistPlaceAnnotationData:(id)a3;
-- (BOOL)_persistResourceTypeAttributeOnAlternateImageResourcesInStore:(id)a3;
-- (BOOL)_persistStoreUUIDToMobileCPLPlist:(id)a3;
-- (BOOL)_persistVideoComplPropertiesInStore:(id)a3;
-- (BOOL)_populateAdjustmentTimestampsOnAssets:(id)a3;
-- (BOOL)_populateAdjustmentsStateForAssetsInStore:(id)a3;
-- (BOOL)_populateAlbumAndFolderOrderKeysInStagedStore:(id)a3;
-- (BOOL)_populateCloudNameSourceOnFacesInStore:(id)a3;
-- (BOOL)_populateCloudResourceLocalStateInStor:(id)a3;
-- (BOOL)_populateCloudVerifiedTypeOnPersonsInStore:(id)a3;
-- (BOOL)_populateDurationAndHDRTypeFromAdditionalAssetAttributesInStagedStore:(id)a3;
-- (BOOL)_populateFaceRegionsInStore:(id)a3;
-- (BOOL)_populateLatLongInAsset:(id)a3;
-- (BOOL)_populateLightweightReimportDirectoryWithPhotoCloudSharingAssetsInManagedObjectContext:(id)a3 error:(id *)a4;
-- (BOOL)_populateNilOriginalFilename:(id)a3;
-- (BOOL)_populateNilOriginalFilenameOnMaster:(id)a3;
-- (BOOL)_populateRepresentativeAssets:(id)a3;
-- (BOOL)_populateUserKeyFacePickSourceForPersonInStore:(id)a3;
-- (BOOL)_populateVideoCpFieldsInStagedStore:(id)a3;
-- (BOOL)_postProcessFromVersion6006Store:(id)a3;
-- (BOOL)_processDeletesForUUIDs:(id)a3;
-- (BOOL)_purgeCloudSharedResourcesInStore:(id)a3;
-- (BOOL)_rebuildMomentsInStore:(id)a3 deleteExistingMoments:(BOOL)a4 targetedAssetOIDs:(id)a5;
-- (BOOL)_rebuildWideCaptureThumbsInStore:(id)a3;
-- (BOOL)_reconstructImageExtendedAttributes:(id)a3;
-- (BOOL)_recordCurrentVersionMetadataInPersistentStore:(id)a3 migrationType:(int64_t)a4 forceRebuildReason:(id)a5 sourceModelVersion:(id)a6 updateLegacyMigrationState:(BOOL)a7 journalRebuildRequred:(BOOL)a8;
-- (BOOL)_recoverSingleBurstPhotos:(id)a3;
-- (BOOL)_refactorLargeVideoRecipeResourcesInStore:(id)a3;
-- (BOOL)_refreshTriggerValues:(id)a3;
-- (BOOL)_regenerateMonthHighlightTitlesWithStore:(id)a3;
-- (BOOL)_regenerateReferenceKeyDataInStore:(id)a3;
-- (BOOL)_regenerateSharedStreamsDataStoreKeysDataInStore:(id)a3 deferHintChanges:(BOOL)a4;
-- (BOOL)_removeAllLocalVideoKeyFrameResourcesRevert14037InStore:(id)a3;
+- (BOOL)_isReasonableCreationDate:(id)date;
+- (BOOL)_markAllProcessedAnalysisStatesDirtyForWorkerType:(signed __int16)type withStartingWorkerFlags:(int)flags inStore:(id)store;
+- (BOOL)_markMigrationVerifiedTypePersonsInStore:(id)store;
+- (BOOL)_markOldPhotoIrisEditsEvaluatedInStore:(id)store;
+- (BOOL)_markPhotoIrisVideoOrphansInStore:(id)store;
+- (BOOL)_migrateAssetLocationData:(id)data;
+- (BOOL)_migrateCandidateBitsToDeferredProcessingCandidateOptions:(id)options;
+- (BOOL)_migrateCloudResourcesRelationshipsInStagedStore:(id)store;
+- (BOOL)_migrateDetectedFacesGroupInStagedStore:(id)store;
+- (BOOL)_migrateLegacySlomoAdjustmentsInStore:(id)store fromLegacySLMFormat:(BOOL)format;
+- (BOOL)_migrateMetadataAndMigrationHistoryWithStore:(id)store;
+- (BOOL)_migrateOriginalColorSpaceInStagedStore:(id)store;
+- (BOOL)_migrateRejectedFacesGroupInStagedStore:(id)store;
+- (BOOL)_migrateResourceUTIAndCodecInStagedStore:(id)store;
+- (BOOL)_migrateTransformableUUIDsToStringsInStore:(id)store;
+- (BOOL)_migrateVideoKeyFrameTimeValuesInStagedStore:(id)store;
+- (BOOL)_moveCloudSharedDerivativesInStore:(id)store;
+- (BOOL)_moveGpsHorizontalAccuracyToNewAttribute:(id)attribute;
+- (BOOL)_moveMyPhotoStreamToAlbumsListInStore:(id)store;
+- (BOOL)_nukeWallpaperRemnantsInStore:(id)store;
+- (BOOL)_performChangesOnBatchFetchedObjects:(id)objects inMOC:(id)c batchSize:(unint64_t)size objectHandler:(id)handler error:(id *)error;
+- (BOOL)_performMigrationCacheDateCreatedOnResources:(BOOL)resources cacheItemIdentifierOnResources:(BOOL)onResources store:(id)store;
+- (BOOL)_persistImportSessionAlbumType:(id)type;
+- (BOOL)_persistMemoriesInStore:(id)store;
+- (BOOL)_persistMetadataToFileSystemForAlbum:(id)album;
+- (BOOL)_persistPersonsInStore:(id)store;
+- (BOOL)_persistPhotoIrisVisibilityStateToDiskInStore:(id)store;
+- (BOOL)_persistPlaceAnnotationData:(id)data;
+- (BOOL)_persistResourceTypeAttributeOnAlternateImageResourcesInStore:(id)store;
+- (BOOL)_persistStoreUUIDToMobileCPLPlist:(id)plist;
+- (BOOL)_persistVideoComplPropertiesInStore:(id)store;
+- (BOOL)_populateAdjustmentTimestampsOnAssets:(id)assets;
+- (BOOL)_populateAdjustmentsStateForAssetsInStore:(id)store;
+- (BOOL)_populateAlbumAndFolderOrderKeysInStagedStore:(id)store;
+- (BOOL)_populateCloudNameSourceOnFacesInStore:(id)store;
+- (BOOL)_populateCloudResourceLocalStateInStor:(id)stor;
+- (BOOL)_populateCloudVerifiedTypeOnPersonsInStore:(id)store;
+- (BOOL)_populateDurationAndHDRTypeFromAdditionalAssetAttributesInStagedStore:(id)store;
+- (BOOL)_populateFaceRegionsInStore:(id)store;
+- (BOOL)_populateLatLongInAsset:(id)asset;
+- (BOOL)_populateLightweightReimportDirectoryWithPhotoCloudSharingAssetsInManagedObjectContext:(id)context error:(id *)error;
+- (BOOL)_populateNilOriginalFilename:(id)filename;
+- (BOOL)_populateNilOriginalFilenameOnMaster:(id)master;
+- (BOOL)_populateRepresentativeAssets:(id)assets;
+- (BOOL)_populateUserKeyFacePickSourceForPersonInStore:(id)store;
+- (BOOL)_populateVideoCpFieldsInStagedStore:(id)store;
+- (BOOL)_postProcessFromVersion6006Store:(id)store;
+- (BOOL)_processDeletesForUUIDs:(id)ds;
+- (BOOL)_purgeCloudSharedResourcesInStore:(id)store;
+- (BOOL)_rebuildMomentsInStore:(id)store deleteExistingMoments:(BOOL)moments targetedAssetOIDs:(id)ds;
+- (BOOL)_rebuildWideCaptureThumbsInStore:(id)store;
+- (BOOL)_reconstructImageExtendedAttributes:(id)attributes;
+- (BOOL)_recordCurrentVersionMetadataInPersistentStore:(id)store migrationType:(int64_t)type forceRebuildReason:(id)reason sourceModelVersion:(id)version updateLegacyMigrationState:(BOOL)state journalRebuildRequred:(BOOL)requred;
+- (BOOL)_recoverSingleBurstPhotos:(id)photos;
+- (BOOL)_refactorLargeVideoRecipeResourcesInStore:(id)store;
+- (BOOL)_refreshTriggerValues:(id)values;
+- (BOOL)_regenerateMonthHighlightTitlesWithStore:(id)store;
+- (BOOL)_regenerateReferenceKeyDataInStore:(id)store;
+- (BOOL)_regenerateSharedStreamsDataStoreKeysDataInStore:(id)store deferHintChanges:(BOOL)changes;
+- (BOOL)_removeAllLocalVideoKeyFrameResourcesRevert14037InStore:(id)store;
 - (BOOL)_removeAutoloopCacheIfExists;
-- (BOOL)_removeAutoloopWorkerStatesInStore:(id)a3;
-- (BOOL)_removeCameraRollInStore:(id)a3;
-- (BOOL)_removeCloudSharedFileAtPath:(id)a3 withFileManager:(id)a4 error:(id *)a5;
-- (BOOL)_removeEvents:(id)a3;
-- (BOOL)_removeInvalidAdjustmentResourceDataInStore:(id)a3;
-- (BOOL)_removeInvalidImportSessionAlbums:(id)a3;
-- (BOOL)_removeOldPersonMetadataInStore:(id)a3;
-- (BOOL)_removeResourceModelManualIdentityConstraintInStore:(id)a3;
-- (BOOL)_removeUnneededAnalysisStateTableEntries:(id)a3;
-- (BOOL)_removeUntrackedCloudResourceImageDerivativesInStore:(id)a3;
-- (BOOL)_removeUntrackedPersonMetadataInStore:(id)a3;
-- (BOOL)_removingDuplicatedCloudAssetGuid:(id)a3;
-- (BOOL)_repairCTMOriginalVideosWithSOCAvailableBitInStore:(id)a3;
-- (BOOL)_repairCTMOriginalVideosWithoutAdjustmentsInStore:(id)a3;
-- (BOOL)_repairReframedAssetsWithoutSOCAvailableBitWithStore:(id)a3;
-- (BOOL)_repairWallpaperAlbumsInStore:(id)a3 containerUUID:(id)a4 title:(id)a5;
-- (BOOL)_repersistDuplicatedAssets:(id)a3;
-- (BOOL)_repushAssetsMatchingPredicate:(id)a3 inStore:(id)a4 withMaster:(BOOL)a5;
-- (BOOL)_repushAssetsWithAnyUserConfirmedFaceInStore:(id)a3;
-- (BOOL)_repushMemoriesWithNewFeaturesInStore:(id)a3;
-- (BOOL)_repushPersonsWithMergeTargetInStore:(id)a3;
-- (BOOL)_requestAvailabilityChangeForAssetsMissing1kResourcesInStore:(id)a3;
-- (BOOL)_resetAlbumToFolderOrderKeyForAlbums:(id)a3;
-- (BOOL)_resetAnalysisStateForVideosInStore:(id)a3;
-- (BOOL)_resetDeferredRepairAdjustmentFailureAndCloudRecoveryStateInStore:(id)a3;
-- (BOOL)_resetFailedAssets:(id)a3;
-- (BOOL)_resetFailedCloudMasters:(id)a3;
-- (BOOL)_resetUploadAttempts:(id)a3;
-- (BOOL)_retryQuarantinedAssetsAndFixResourceRelation:(id)a3;
-- (BOOL)_revalidateImportSessionDates:(id)a3;
-- (BOOL)_runMigrationStepWithName:(id)a3 fetchRequest:(id)a4 store:(id)a5 migrationHandler:(id)a6;
-- (BOOL)_runMigrationStepWithPrettyFunction:(const char *)a3 store:(id)a4 migrationHandler:(id)a5;
-- (BOOL)_runPairingForAssetsInStore:(id)a3;
-- (BOOL)_saveChangesToPhotoIrisInStore:(id)a3 matchingPredicate:(id)a4 countChanged:(unint64_t *)a5 error:(id *)a6 changeBlock:(id)a7;
-- (BOOL)_scavengeCameraProcessingAdjustmentMetadataForAssetsInStore:(id)a3;
-- (BOOL)_setImportedByInPLCloudMaster:(id)a3;
-- (BOOL)_setPlaybackStyleForAnimatedGIFsInStore:(id)a3;
-- (BOOL)_setUserTypeOnKeyFace:(id)a3;
-- (BOOL)_setupRootFolderInStore:(id)a3;
+- (BOOL)_removeAutoloopWorkerStatesInStore:(id)store;
+- (BOOL)_removeCameraRollInStore:(id)store;
+- (BOOL)_removeCloudSharedFileAtPath:(id)path withFileManager:(id)manager error:(id *)error;
+- (BOOL)_removeEvents:(id)events;
+- (BOOL)_removeInvalidAdjustmentResourceDataInStore:(id)store;
+- (BOOL)_removeInvalidImportSessionAlbums:(id)albums;
+- (BOOL)_removeOldPersonMetadataInStore:(id)store;
+- (BOOL)_removeResourceModelManualIdentityConstraintInStore:(id)store;
+- (BOOL)_removeUnneededAnalysisStateTableEntries:(id)entries;
+- (BOOL)_removeUntrackedCloudResourceImageDerivativesInStore:(id)store;
+- (BOOL)_removeUntrackedPersonMetadataInStore:(id)store;
+- (BOOL)_removingDuplicatedCloudAssetGuid:(id)guid;
+- (BOOL)_repairCTMOriginalVideosWithSOCAvailableBitInStore:(id)store;
+- (BOOL)_repairCTMOriginalVideosWithoutAdjustmentsInStore:(id)store;
+- (BOOL)_repairReframedAssetsWithoutSOCAvailableBitWithStore:(id)store;
+- (BOOL)_repairWallpaperAlbumsInStore:(id)store containerUUID:(id)d title:(id)title;
+- (BOOL)_repersistDuplicatedAssets:(id)assets;
+- (BOOL)_repushAssetsMatchingPredicate:(id)predicate inStore:(id)store withMaster:(BOOL)master;
+- (BOOL)_repushAssetsWithAnyUserConfirmedFaceInStore:(id)store;
+- (BOOL)_repushMemoriesWithNewFeaturesInStore:(id)store;
+- (BOOL)_repushPersonsWithMergeTargetInStore:(id)store;
+- (BOOL)_requestAvailabilityChangeForAssetsMissing1kResourcesInStore:(id)store;
+- (BOOL)_resetAlbumToFolderOrderKeyForAlbums:(id)albums;
+- (BOOL)_resetAnalysisStateForVideosInStore:(id)store;
+- (BOOL)_resetDeferredRepairAdjustmentFailureAndCloudRecoveryStateInStore:(id)store;
+- (BOOL)_resetFailedAssets:(id)assets;
+- (BOOL)_resetFailedCloudMasters:(id)masters;
+- (BOOL)_resetUploadAttempts:(id)attempts;
+- (BOOL)_retryQuarantinedAssetsAndFixResourceRelation:(id)relation;
+- (BOOL)_revalidateImportSessionDates:(id)dates;
+- (BOOL)_runMigrationStepWithName:(id)name fetchRequest:(id)request store:(id)store migrationHandler:(id)handler;
+- (BOOL)_runMigrationStepWithPrettyFunction:(const char *)function store:(id)store migrationHandler:(id)handler;
+- (BOOL)_runPairingForAssetsInStore:(id)store;
+- (BOOL)_saveChangesToPhotoIrisInStore:(id)store matchingPredicate:(id)predicate countChanged:(unint64_t *)changed error:(id *)error changeBlock:(id)block;
+- (BOOL)_scavengeCameraProcessingAdjustmentMetadataForAssetsInStore:(id)store;
+- (BOOL)_setImportedByInPLCloudMaster:(id)master;
+- (BOOL)_setPlaybackStyleForAnimatedGIFsInStore:(id)store;
+- (BOOL)_setUserTypeOnKeyFace:(id)face;
+- (BOOL)_setupRootFolderInStore:(id)store;
 - (BOOL)_shouldTriggerLightweightMigrationFailureForInternalTesting;
-- (BOOL)_storeContainsFaceCrops:(id)a3 success:(BOOL *)a4;
-- (BOOL)_tagScreenshotsForAssetsInStore:(id)a3;
+- (BOOL)_storeContainsFaceCrops:(id)crops success:(BOOL *)success;
+- (BOOL)_tagScreenshotsForAssetsInStore:(id)store;
 - (BOOL)_trimInvalidAlbumAssetsMappingRecords;
-- (BOOL)_tryToPromoteUnknownAssetsInStore:(id)a3;
-- (BOOL)_unquarantineClass:(Class)a3 inManagedObject:(id)a4;
-- (BOOL)_unquarantinedQuarantinedItems:(id)a3;
-- (BOOL)_updateAlbumDatesInStore:(id)a3;
+- (BOOL)_tryToPromoteUnknownAssetsInStore:(id)store;
+- (BOOL)_unquarantineClass:(Class)class inManagedObject:(id)object;
+- (BOOL)_unquarantinedQuarantinedItems:(id)items;
+- (BOOL)_updateAlbumDatesInStore:(id)store;
 - (BOOL)_updateCPLMarkerFiles;
-- (BOOL)_updateKeyAssetInMemory:(id)a3;
-- (BOOL)_updateKindSubtypeForPanoramaPhotosNeedsReset:(BOOL)a3 inStore:(id)a4;
-- (BOOL)_updateMissingFileSystemVolumeUuidInStore:(id)a3;
-- (BOOL)_updateMogulSubtypeAndSetHighFrameRateStateOnAssetsInStore:(id)a3;
-- (BOOL)_updatePlaybackStylesAndVariationsInStore:(id)a3;
-- (BOOL)_updatePlaybackWithBatchUpdateRequest:(id)a3 targetDescription:(id)a4 inContext:(id)a5;
-- (BOOL)_updateSuggestionStartAndEndDatesInStore:(id)a3;
-- (BOOL)_validateOrDeleteFileAtPath:(id)a3 forCloudResource:(id)a4;
-- (BOOL)_verifyAndFixBrokenLocalAvailabilityForResourceWithFileIDsInStore:(id)a3;
-- (BOOL)_verifyCloudAssetsLocalAvailability:(id)a3;
+- (BOOL)_updateKeyAssetInMemory:(id)memory;
+- (BOOL)_updateKindSubtypeForPanoramaPhotosNeedsReset:(BOOL)reset inStore:(id)store;
+- (BOOL)_updateMissingFileSystemVolumeUuidInStore:(id)store;
+- (BOOL)_updateMogulSubtypeAndSetHighFrameRateStateOnAssetsInStore:(id)store;
+- (BOOL)_updatePlaybackStylesAndVariationsInStore:(id)store;
+- (BOOL)_updatePlaybackWithBatchUpdateRequest:(id)request targetDescription:(id)description inContext:(id)context;
+- (BOOL)_updateSuggestionStartAndEndDatesInStore:(id)store;
+- (BOOL)_validateOrDeleteFileAtPath:(id)path forCloudResource:(id)resource;
+- (BOOL)_verifyAndFixBrokenLocalAvailabilityForResourceWithFileIDsInStore:(id)store;
+- (BOOL)_verifyCloudAssetsLocalAvailability:(id)availability;
 - (BOOL)clearVisionWorkerCache;
-- (BOOL)debug_resetThumbnailsAndInitiateRebuildRequestInStore:(id)a3;
-- (BOOL)deleteAllAssetAnalysisStatesInStore:(id)a3;
-- (BOOL)deleteAnalysisStatesInStore:(id)a3 forWorkerType:(signed __int16)a4;
-- (BOOL)fixPossiblyIncorrectAddedDateForAsset:(id)a3;
-- (BOOL)fixupStatesWithUnreachableAssetUUIDsInStore:(id)a3;
-- (BOOL)fixupUnknownAnalysisStatesInStore:(id)a3;
+- (BOOL)debug_resetThumbnailsAndInitiateRebuildRequestInStore:(id)store;
+- (BOOL)deleteAllAssetAnalysisStatesInStore:(id)store;
+- (BOOL)deleteAnalysisStatesInStore:(id)store forWorkerType:(signed __int16)type;
+- (BOOL)fixPossiblyIncorrectAddedDateForAsset:(id)asset;
+- (BOOL)fixupStatesWithUnreachableAssetUUIDsInStore:(id)store;
+- (BOOL)fixupUnknownAnalysisStatesInStore:(id)store;
 - (BOOL)isCloudPhotoLibraryEnabled;
 - (BOOL)isLoadingFacesFromFileSystem;
-- (BOOL)isPhotoLibraryDatabaseReadyForOpen:(id *)a3;
-- (BOOL)markAllDirtyFaceAnalysisStatesWithFaceDetectionWorkerFlagsInStore:(id)a3;
-- (BOOL)markAllSceneAnalysisStatesDirtyAndClearDistanceIdentitiesInStoreAndClearSceneprints:(id)a3;
-- (BOOL)markUserConfirmedFacesAndCorrespondingFaceAnalysisStatesDirtyInStore:(id)a3;
+- (BOOL)isPhotoLibraryDatabaseReadyForOpen:(id *)open;
+- (BOOL)markAllDirtyFaceAnalysisStatesWithFaceDetectionWorkerFlagsInStore:(id)store;
+- (BOOL)markAllSceneAnalysisStatesDirtyAndClearDistanceIdentitiesInStoreAndClearSceneprints:(id)sceneprints;
+- (BOOL)markUserConfirmedFacesAndCorrespondingFaceAnalysisStatesDirtyInStore:(id)store;
 - (BOOL)migratePurgeableResources;
-- (BOOL)postProcessMigratedStore:(id)a3 migrationUUID:(id)a4 fromVersion:(int)a5 progress:(id)a6 progressUnitCount:(unint64_t)a7;
-- (BOOL)postProcessThumbnailsOnlyIfVersionMismatchOrMissing:(BOOL *)a3 coordinator:(id)a4;
-- (BOOL)processWelterweightMigrationStageOnStore:(id)a3 migrationUUID:(id)a4 fromVersion:(int)a5 toVersion:(int)a6 migrationContext:(id)a7 progress:(id)a8 progressUnitCount:(unint64_t)a9;
-- (BOOL)reconsiderAllowedForAnalysisOnAssetsMarkedNotAllowedInStore:(id)a3;
-- (BOOL)resetAnalysisStateForVideosWithMoc:(id)a3;
-- (BOOL)resetFaceQualityInStore:(id)a3;
-- (BOOL)resetManualOrderForNonFavoritePeopleInManagedObjectContext:(id)a3;
-- (BOOL)resetManualOrderForNonFavoritePeopleInStore:(id)a3;
-- (BOOL)resetRejectedFacesOnAllPersonsInStore:(id)a3;
+- (BOOL)postProcessMigratedStore:(id)store migrationUUID:(id)d fromVersion:(int)version progress:(id)progress progressUnitCount:(unint64_t)count;
+- (BOOL)postProcessThumbnailsOnlyIfVersionMismatchOrMissing:(BOOL *)missing coordinator:(id)coordinator;
+- (BOOL)processWelterweightMigrationStageOnStore:(id)store migrationUUID:(id)d fromVersion:(int)version toVersion:(int)toVersion migrationContext:(id)context progress:(id)progress progressUnitCount:(unint64_t)count;
+- (BOOL)reconsiderAllowedForAnalysisOnAssetsMarkedNotAllowedInStore:(id)store;
+- (BOOL)resetAnalysisStateForVideosWithMoc:(id)moc;
+- (BOOL)resetFaceQualityInStore:(id)store;
+- (BOOL)resetManualOrderForNonFavoritePeopleInManagedObjectContext:(id)context;
+- (BOOL)resetManualOrderForNonFavoritePeopleInStore:(id)store;
+- (BOOL)resetRejectedFacesOnAllPersonsInStore:(id)store;
 - (BOOL)shouldCreateDatabase;
-- (BOOL)skipDataProtectionForFilePath:(id)a3;
-- (BOOL)touchAnalysisStateSortTokensInStoreInStore:(id)a3;
-- (BOOL)updateCompletedMigrationStateWithError:(id *)a3;
-- (BOOL)validateModelEntityNames:(id *)a3;
-- (PLModelMigrator)initWithPathManager:(id)a3;
+- (BOOL)skipDataProtectionForFilePath:(id)path;
+- (BOOL)touchAnalysisStateSortTokensInStoreInStore:(id)store;
+- (BOOL)updateCompletedMigrationStateWithError:(id *)error;
+- (BOOL)validateModelEntityNames:(id *)names;
+- (PLModelMigrator)initWithPathManager:(id)manager;
 - (id)_dateForFirstCRVSPhoto;
 - (id)_dateForVariations;
 - (id)_dateForWideGamutCapture;
-- (id)_eventNameFromDate:(id)a3;
+- (id)_eventNameFromDate:(id)date;
 - (id)_fetchRequestToIdentifyAdjustedDepthAndVariationsCandidates;
-- (id)_fetchRequestToIdentifyBakedInVariationsCandidatesIncludingLongExposure:(BOOL)a3;
+- (id)_fetchRequestToIdentifyBakedInVariationsCandidatesIncludingLongExposure:(BOOL)exposure;
 - (id)_iTunesPhotosLastSyncMetadata;
-- (id)_importFileSystemImportAssets:(id)a3 intoLibrary:(id)a4 type:(unsigned __int8)a5 progress:(id)a6;
-- (id)_loadOriginalVideoMetadataFromAsset:(id)a3 timeZoneLookup:(id)a4 error:(id *)a5;
-- (id)_migrationThumbnailManagerWithStore:(id)a3;
-- (id)_newSyncedPropertiesByAssetUUIDs:(BOOL)a3;
-- (id)_orderedAssetsToImportInLibrary:(id)a3;
-- (id)_orderedAssetsToImportInLibrary:(id)a3 cameraRollOnly:(BOOL)a4;
+- (id)_importFileSystemImportAssets:(id)assets intoLibrary:(id)library type:(unsigned __int8)type progress:(id)progress;
+- (id)_loadOriginalVideoMetadataFromAsset:(id)asset timeZoneLookup:(id)lookup error:(id *)error;
+- (id)_migrationThumbnailManagerWithStore:(id)store;
+- (id)_newSyncedPropertiesByAssetUUIDs:(BOOL)ds;
+- (id)_orderedAssetsToImportInLibrary:(id)library;
+- (id)_orderedAssetsToImportInLibrary:(id)library cameraRollOnly:(BOOL)only;
 - (id)_predicateForInconsistentHeifAssets;
-- (id)_syncedPropertiesForAssetUUID:(id)a3;
-- (id)archivedAssetUUIDForURL:(id)a3;
+- (id)_syncedPropertiesForAssetUUID:(id)d;
+- (id)archivedAssetUUIDForURL:(id)l;
 - (id)generatePathToAssetUUIDRecoveryMapping;
-- (id)managedObjectContextForMigrationInStore:(id)a3 name:(const char *)a4 concurrencyType:(unint64_t)a5;
-- (id)managedObjectContextForMigrationWithName:(const char *)a3 persistentStoreCoordinator:(id)a4 concurrencyType:(unint64_t)a5;
+- (id)managedObjectContextForMigrationInStore:(id)store name:(const char *)name concurrencyType:(unint64_t)type;
+- (id)managedObjectContextForMigrationWithName:(const char *)name persistentStoreCoordinator:(id)coordinator concurrencyType:(unint64_t)type;
 - (id)newDeviceRestoreMigrationSupport;
-- (id)newShortLivedLibraryForRebuildWithName:(const char *)a3;
-- (id)newShortLivedLibraryWithName:(const char *)a3;
-- (int)_migrateLegacySlomoAdjustmentsForAsset:(id)a3;
-- (int64_t)attemptLightweightMigrationFromVersion:(id)a3 onStore:(id)a4 withMetadata:(id)a5 orStoreURL:(id)a6 options:(id)a7 coordinator:(id)a8 migrationPolicy:(unsigned int)a9 error:(id *)a10;
+- (id)newShortLivedLibraryForRebuildWithName:(const char *)name;
+- (id)newShortLivedLibraryWithName:(const char *)name;
+- (int)_migrateLegacySlomoAdjustmentsForAsset:(id)asset;
+- (int64_t)attemptLightweightMigrationFromVersion:(id)version onStore:(id)store withMetadata:(id)metadata orStoreURL:(id)l options:(id)options coordinator:(id)coordinator migrationPolicy:(unsigned int)policy error:(id *)self0;
 - (int64_t)checkForceRebuildIndicatorFile;
-- (int64_t)createNewDatabaseWithMigrationType:(int64_t)a3 forceRebuildReason:(id)a4 coordinator:(id)a5 error:(id *)a6;
+- (int64_t)createNewDatabaseWithMigrationType:(int64_t)type forceRebuildReason:(id)reason coordinator:(id)coordinator error:(id *)error;
 - (int64_t)legacyMigrationState;
 - (int64_t)loadFileSystemDataInProgressCount;
-- (int64_t)migrateOrCreateDatabaseIfNecessaryWithPersistentContainer:(id)a3 migrationPolicy:(unsigned int)a4 error:(id *)a5;
-- (int64_t)promptUserIfNeededForRebuildReason:(id)a3 migrationError:(id)a4;
+- (int64_t)migrateOrCreateDatabaseIfNecessaryWithPersistentContainer:(id)container migrationPolicy:(unsigned int)policy error:(id *)error;
+- (int64_t)promptUserIfNeededForRebuildReason:(id)reason migrationError:(id)error;
 - (signed)_migrationHistoryOriginFromLatestDataMigration;
-- (unint64_t)_assetCountForContext:(id)a3;
-- (unint64_t)_assetCountForLibrary:(id)a3;
-- (unint64_t)assetCountForStore:(id)a3;
-- (void)_addUBFBundleScopedOrderedAssetsToImport:(id)a3 onDiskURLsToSkip:(id)a4;
-- (void)_applySyncedProperties:(id)a3 toAsset:(id)a4;
+- (unint64_t)_assetCountForContext:(id)context;
+- (unint64_t)_assetCountForLibrary:(id)library;
+- (unint64_t)assetCountForStore:(id)store;
+- (void)_addUBFBundleScopedOrderedAssetsToImport:(id)import onDiskURLsToSkip:(id)skip;
+- (void)_applySyncedProperties:(id)properties toAsset:(id)asset;
 - (void)_convertImplicitDownloadAndKeepOriginalsEnabledToExplicit;
 - (void)_failed_recordCurrentVersionMetadata;
-- (void)_failed_repairSingletonObjectsInNewDatabaseWithNilContextError:(id)a3;
+- (void)_failed_repairSingletonObjectsInNewDatabaseWithNilContextError:(id)error;
 - (void)_failed_repairSingletonObjectsInNewDatabaseWithNoPersistentStores;
-- (void)_failed_repairSingletonObjectsInNewDatabaseWithRepairError:(id)a3;
-- (void)_failed_repairSingletonObjectsWithError:(id)a3;
+- (void)_failed_repairSingletonObjectsInNewDatabaseWithRepairError:(id)error;
+- (void)_failed_repairSingletonObjectsWithError:(id)error;
 - (void)_failed_repairSingletonObjectsWithErrorTypeNSCoreDataError;
 - (void)_failed_repairSingletonObjectsWithErrorTypeNSPersistentStoreIncompatibleSchemaError;
 - (void)_failed_repairSingletonObjectsWithErrorTypeNSPersistentStoreIncompatibleVersionHashError;
@@ -322,54 +322,54 @@
 - (void)_failed_repairSingletonObjectsWithInvalidFileTypeLibraryDirectory;
 - (void)_failed_repairSingletonObjectsWithMissingDatabaseFile;
 - (void)_failed_repairSingletonObjectsWithMissingLibraryDirectory;
-- (void)_failed_repairSingletonObjectsWithNilContextError:(id)a3;
+- (void)_failed_repairSingletonObjectsWithNilContextError:(id)error;
 - (void)_failed_repairSingletonObjectsWithNoPersistentStores;
-- (void)_failed_repairSingletonObjectsWithRepairError:(id)a3;
-- (void)_fixIncorrectHeifMetadataForAsset:(id)a3;
-- (void)_fixPathForResource:(id)a3 withPath:(id)a4;
+- (void)_failed_repairSingletonObjectsWithRepairError:(id)error;
+- (void)_fixIncorrectHeifMetadataForAsset:(id)asset;
+- (void)_fixPathForResource:(id)resource withPath:(id)path;
 - (void)_generateAlbumMetadataFromLastiTunesSyncedPlist;
-- (void)_handleCreateOptionsUsingContext:(id)a3;
-- (void)_importAfterCrash:(id)a3 completionBlock:(id)a4;
-- (void)_importAllDCIMAssetsInLibrary:(id)a3 progress:(id)a4 progressFraction:(id)a5 rebuildComplete:(BOOL)a6;
+- (void)_handleCreateOptionsUsingContext:(id)context;
+- (void)_importAfterCrash:(id)crash completionBlock:(id)block;
+- (void)_importAllDCIMAssetsInLibrary:(id)library progress:(id)progress progressFraction:(id)fraction rebuildComplete:(BOOL)complete;
 - (void)_loadFacesFileSystemDataIntoDatabase;
-- (void)_loadFileSystemDataIntoDatabaseIfNeededWithReason:(id)a3 progress:(id)a4 requestBackgroundMigrationRegistration:(BOOL *)a5;
+- (void)_loadFileSystemDataIntoDatabaseIfNeededWithReason:(id)reason progress:(id)progress requestBackgroundMigrationRegistration:(BOOL *)registration;
 - (void)_migratePersonContactInfo;
-- (void)_populateFaceRegionsForAsset:(id)a3;
-- (void)_prepareForImportDeleteCorruptAssetsWithImporter:(id)a3 context:(id)a4;
-- (void)_rebuildAssetsFromJournal:(id)a3 inLibrary:(id)a4 progress:(id)a5 progressFraction:(id)a6;
-- (void)_recordCurrentVersionMetadataIfNeededForDataMigrationInPersistentStore:(id)a3;
-- (void)_removeFileAt:(id)a3 forResource:(id)a4;
-- (void)_repairMetadataAndSingletonsForMigrationType:(int64_t)a3 forceRebuildReason:(id)a4 journalRebuildRequired:(BOOL)a5;
-- (void)_repairPotentialModelCorruptionInLibrary:(id)a3;
-- (void)_updateImportedSavedAssetTypeForFileSystemImportedAsset:(id)a3 type:(unsigned __int8)a4 importAssetKind:(int)a5 isCPLAssetsDirectory:(BOOL)a6 destinationAlbum:(id)a7;
-- (void)_validateCurrentModelVersionAttempt:(int64_t)a3;
-- (void)_validateCurrentModelVersionFailedWithMismatchedVersion:(int64_t)a3;
+- (void)_populateFaceRegionsForAsset:(id)asset;
+- (void)_prepareForImportDeleteCorruptAssetsWithImporter:(id)importer context:(id)context;
+- (void)_rebuildAssetsFromJournal:(id)journal inLibrary:(id)library progress:(id)progress progressFraction:(id)fraction;
+- (void)_recordCurrentVersionMetadataIfNeededForDataMigrationInPersistentStore:(id)store;
+- (void)_removeFileAt:(id)at forResource:(id)resource;
+- (void)_repairMetadataAndSingletonsForMigrationType:(int64_t)type forceRebuildReason:(id)reason journalRebuildRequired:(BOOL)required;
+- (void)_repairPotentialModelCorruptionInLibrary:(id)library;
+- (void)_updateImportedSavedAssetTypeForFileSystemImportedAsset:(id)asset type:(unsigned __int8)type importAssetKind:(int)kind isCPLAssetsDirectory:(BOOL)directory destinationAlbum:(id)album;
+- (void)_validateCurrentModelVersionAttempt:(int64_t)attempt;
+- (void)_validateCurrentModelVersionFailedWithMismatchedVersion:(int64_t)version;
 - (void)_validateCurrentModelVersionFailedWithNoVersionFromServer;
 - (void)applyDataProtectionToAllPhotosFilesOnce;
-- (void)applyDataProtectionToPhotosPaths:(id)a3 fromKeyClass:(int)a4 toKeyClass:(int)a5;
-- (void)archiveAssetUUIDForPathPlist:(id)a3;
-- (void)cleanupModelForDataMigrationForRestoreType:(int64_t)a3;
-- (void)dontImportFileSystemDataIntoDatabaseWithPhotoLibrary:(id)a3;
-- (void)filesystemImportResultsUpdateKeywordWithImportedAssets:(id)a3;
-- (void)handleGreenChanges:(id)a3;
-- (void)importAfterCrash:(id)a3 completionBlock:(id)a4;
+- (void)applyDataProtectionToPhotosPaths:(id)paths fromKeyClass:(int)class toKeyClass:(int)keyClass;
+- (void)archiveAssetUUIDForPathPlist:(id)plist;
+- (void)cleanupModelForDataMigrationForRestoreType:(int64_t)type;
+- (void)dontImportFileSystemDataIntoDatabaseWithPhotoLibrary:(id)library;
+- (void)filesystemImportResultsUpdateKeywordWithImportedAssets:(id)assets;
+- (void)handleGreenChanges:(id)changes;
+- (void)importAfterCrash:(id)crash completionBlock:(id)block;
 - (void)loadFacesFileSystemDataIntoDatabase;
-- (void)loadFileSystemAssetsNotifyCompleted:(id)a3;
-- (void)loadFileSystemDataIntoDatabaseIfNeededWithReason:(id)a3 completionHandler:(id)a4;
+- (void)loadFileSystemAssetsNotifyCompleted:(id)completed;
+- (void)loadFileSystemDataIntoDatabaseIfNeededWithReason:(id)reason completionHandler:(id)handler;
 - (void)migratePersonContactInfo;
-- (void)postProcessFixesAfterOTARestoreForCompleteAsset:(id)a3 fixAddedDate:(BOOL)a4 isMegaBackup:(BOOL)a5;
-- (void)removeUnpairedTimelapsePreviewsInContext:(id)a3 fromDuplicatedUUIDs:(id)a4;
-- (void)setLoadingFacesFromFileSystem:(BOOL)a3;
+- (void)postProcessFixesAfterOTARestoreForCompleteAsset:(id)asset fixAddedDate:(BOOL)date isMegaBackup:(BOOL)backup;
+- (void)removeUnpairedTimelapsePreviewsInContext:(id)context fromDuplicatedUUIDs:(id)ds;
+- (void)setLoadingFacesFromFileSystem:(BOOL)system;
 @end
 
 @implementation PLModelMigrator
 
-- (BOOL)reconsiderAllowedForAnalysisOnAssetsMarkedNotAllowedInStore:(id)a3
+- (BOOL)reconsiderAllowedForAnalysisOnAssetsMarkedNotAllowedInStore:(id)store
 {
   v23[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator(AssetAnalysis) reconsiderAllowedForAnalysisOnAssetsMarkedNotAllowedInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator(AssetAnalysis) reconsiderAllowedForAnalysisOnAssetsMarkedNotAllowedInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = MEMORY[0x1E695D5E0];
   v8 = +[PLManagedAsset entityName];
   v9 = [v7 fetchRequestWithEntityName:v8];
@@ -426,10 +426,10 @@ void __94__PLModelMigrator_AssetAnalysis__reconsiderAllowedForAnalysisOnAssetsMa
   [v4 setAllowedForAnalysis:v3];
 }
 
-- (BOOL)resetAnalysisStateForVideosWithMoc:(id)a3
+- (BOOL)resetAnalysisStateForVideosWithMoc:(id)moc
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  mocCopy = moc;
   v4 = MEMORY[0x1E695D5E0];
   v5 = +[PLManagedAsset entityName];
   v6 = [v4 fetchRequestWithEntityName:v5];
@@ -444,8 +444,8 @@ void __94__PLModelMigrator_AssetAnalysis__reconsiderAllowedForAnalysisOnAssetsMa
   [v6 setFetchBatchSize:100];
   [v6 setResultType:1];
   v17 = 0;
-  v9 = [v3 executeFetchRequest:v6 error:&v17];
-  if (v9 && ([MEMORY[0x1E696AE18] predicateWithFormat:@"asset IN %@ AND analysisState = %d", v9, 20], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_opt_class(), +[PLAssetAnalysisState entityName](PLAssetAnalysisState, "entityName"), v12 = objc_claimAutoreleasedReturnValue(), LODWORD(v11) = objc_msgSend(v11, "executeBatchUpdateWithEntityName:predicate:propertiesToUpdate:managedObjectContext:error:", v12, v10, &unk_1F0FC05C8, v3, 0), v12, v10, v11))
+  v9 = [mocCopy executeFetchRequest:v6 error:&v17];
+  if (v9 && ([MEMORY[0x1E696AE18] predicateWithFormat:@"asset IN %@ AND analysisState = %d", v9, 20], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_opt_class(), +[PLAssetAnalysisState entityName](PLAssetAnalysisState, "entityName"), v12 = objc_claimAutoreleasedReturnValue(), LODWORD(v11) = objc_msgSend(v11, "executeBatchUpdateWithEntityName:predicate:propertiesToUpdate:managedObjectContext:error:", v12, v10, &unk_1F0FC05C8, mocCopy, 0), v12, v10, v11))
   {
     v13 = PLMigrationGetLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -472,11 +472,11 @@ void __94__PLModelMigrator_AssetAnalysis__reconsiderAllowedForAnalysisOnAssetsMa
   return v14;
 }
 
-- (BOOL)markUserConfirmedFacesAndCorrespondingFaceAnalysisStatesDirtyInStore:(id)a3
+- (BOOL)markUserConfirmedFacesAndCorrespondingFaceAnalysisStatesDirtyInStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator(AssetAnalysis) markUserConfirmedFacesAndCorrespondingFaceAnalysisStatesDirtyInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator(AssetAnalysis) markUserConfirmedFacesAndCorrespondingFaceAnalysisStatesDirtyInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"nameSource == %d", 1];
   v8 = objc_opt_class();
   v9 = +[PLDetectedFace entityName];
@@ -536,11 +536,11 @@ void __94__PLModelMigrator_AssetAnalysis__reconsiderAllowedForAnalysisOnAssetsMa
   return v23;
 }
 
-- (BOOL)markAllDirtyFaceAnalysisStatesWithFaceDetectionWorkerFlagsInStore:(id)a3
+- (BOOL)markAllDirtyFaceAnalysisStatesWithFaceDetectionWorkerFlagsInStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator(AssetAnalysis) markAllDirtyFaceAnalysisStatesWithFaceDetectionWorkerFlagsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator(AssetAnalysis) markAllDirtyFaceAnalysisStatesWithFaceDetectionWorkerFlagsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"workerType == %d AND analysisState != %d AND analysisState != %d", 4, 20, 10];
   v8 = +[PLAssetAnalysisState entityName];
   LOBYTE(self) = [objc_opt_class() executeBatchUpdateWithEntityName:v8 predicate:v7 propertiesToUpdate:&unk_1F0FC0528 managedObjectContext:v6 error:0];
@@ -549,12 +549,12 @@ void __94__PLModelMigrator_AssetAnalysis__reconsiderAllowedForAnalysisOnAssetsMa
   return self;
 }
 
-- (BOOL)resetRejectedFacesOnAllPersonsInStore:(id)a3
+- (BOOL)resetRejectedFacesOnAllPersonsInStore:(id)store
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator(AssetAnalysis) resetRejectedFacesOnAllPersonsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator(AssetAnalysis) resetRejectedFacesOnAllPersonsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"rejectedFaces.@count > 0"];
   v8 = MEMORY[0x1E695D5E0];
   v9 = +[PLPerson entityName];
@@ -615,14 +615,14 @@ void __72__PLModelMigrator_AssetAnalysis__resetRejectedFacesOnAllPersonsInStore_
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEFAULT, "Clearing vision worker cache files...", buf, 2u);
   }
 
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [(PLModelMigrator *)self pathManager];
-  v6 = [v5 privateCacheDirectoryWithSubType:5];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  pathManager = [(PLModelMigrator *)self pathManager];
+  v6 = [pathManager privateCacheDirectoryWithSubType:5];
 
-  if ([v4 fileExistsAtPath:v6])
+  if ([defaultManager fileExistsAtPath:v6])
   {
     v16 = 0;
-    v7 = [v4 removeItemAtPath:v6 error:&v16];
+    v7 = [defaultManager removeItemAtPath:v6 error:&v16];
     v8 = v16;
     v9 = PLMigrationGetLog();
     v10 = v9;
@@ -667,11 +667,11 @@ LABEL_14:
   return v7;
 }
 
-- (BOOL)touchAnalysisStateSortTokensInStoreInStore:(id)a3
+- (BOOL)touchAnalysisStateSortTokensInStoreInStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator(AssetAnalysis) touchAnalysisStateSortTokensInStoreInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator(AssetAnalysis) touchAnalysisStateSortTokensInStoreInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = MEMORY[0x1E695D5E0];
   v8 = +[PLAssetAnalysisState entityName];
   v9 = [v7 fetchRequestWithEntityName:v8];
@@ -692,11 +692,11 @@ void __77__PLModelMigrator_AssetAnalysis__touchAnalysisStateSortTokensInStoreInS
   [v2 setSortToken:?];
 }
 
-- (BOOL)fixupStatesWithUnreachableAssetUUIDsInStore:(id)a3
+- (BOOL)fixupStatesWithUnreachableAssetUUIDsInStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator(AssetAnalysis) fixupStatesWithUnreachableAssetUUIDsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator(AssetAnalysis) fixupStatesWithUnreachableAssetUUIDsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = MEMORY[0x1E695D5E0];
   v8 = +[PLAssetAnalysisState entityName];
   v9 = [v7 fetchRequestWithEntityName:v8];
@@ -725,12 +725,12 @@ void __78__PLModelMigrator_AssetAnalysis__fixupStatesWithUnreachableAssetUUIDsIn
   }
 }
 
-- (BOOL)fixupUnknownAnalysisStatesInStore:(id)a3
+- (BOOL)fixupUnknownAnalysisStatesInStore:(id)store
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator(AssetAnalysis) fixupUnknownAnalysisStatesInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator(AssetAnalysis) fixupUnknownAnalysisStatesInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = objc_alloc(MEMORY[0x1E695D5E0]);
   v8 = +[PLAssetAnalysisState entityName];
   v9 = [v7 initWithEntityName:v8];
@@ -748,11 +748,11 @@ void __78__PLModelMigrator_AssetAnalysis__fixupStatesWithUnreachableAssetUUIDsIn
   {
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v16 = [v13 userInfo];
+      userInfo = [v13 userInfo];
       *buf = 138412546;
       v20 = v13;
       v21 = 2112;
-      v22 = v16;
+      v22 = userInfo;
       _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_ERROR, "fixupUnknownAnalysisStatesInStore: failed: %@ %@", buf, 0x16u);
     }
   }
@@ -767,27 +767,27 @@ void __78__PLModelMigrator_AssetAnalysis__fixupStatesWithUnreachableAssetUUIDsIn
   return v13 == 0;
 }
 
-- (BOOL)deleteAnalysisStatesInStore:(id)a3 forWorkerType:(signed __int16)a4
+- (BOOL)deleteAnalysisStatesInStore:(id)store forWorkerType:(signed __int16)type
 {
-  v4 = a4;
-  v6 = a3;
+  typeCopy = type;
+  storeCopy = store;
   v7 = objc_autoreleasePoolPush();
-  v8 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v6 name:"[PLModelMigrator(AssetAnalysis) deleteAnalysisStatesInStore:forWorkerType:]" concurrencyType:*MEMORY[0x1E695D708]];
-  v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"workerType", v4];
+  v8 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator(AssetAnalysis) deleteAnalysisStatesInStore:forWorkerType:]" concurrencyType:*MEMORY[0x1E695D708]];
+  typeCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"workerType", typeCopy];
   v10 = objc_opt_class();
   v11 = +[PLAssetAnalysisState entityName];
-  LOBYTE(v10) = [v10 executeBatchDeleteWithEntityName:v11 predicate:v9 managedObjectContext:v8 error:0];
+  LOBYTE(v10) = [v10 executeBatchDeleteWithEntityName:v11 predicate:typeCopy managedObjectContext:v8 error:0];
 
   objc_autoreleasePoolPop(v7);
   return v10;
 }
 
-- (BOOL)deleteAllAssetAnalysisStatesInStore:(id)a3
+- (BOOL)deleteAllAssetAnalysisStatesInStore:(id)store
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator(AssetAnalysis) deleteAllAssetAnalysisStatesInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator(AssetAnalysis) deleteAllAssetAnalysisStatesInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = objc_alloc(MEMORY[0x1E695D5E0]);
   v8 = +[PLAssetAnalysisState entityName];
   v9 = [v7 initWithEntityName:v8];
@@ -802,11 +802,11 @@ void __78__PLModelMigrator_AssetAnalysis__fixupStatesWithUnreachableAssetUUIDsIn
   {
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v15 = [v12 userInfo];
+      userInfo = [v12 userInfo];
       *buf = 138412546;
       v19 = v12;
       v20 = 2112;
-      v21 = v15;
+      v21 = userInfo;
       _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_ERROR, "deleteAllAssetAnalysisStatesInStore: failed: %@ %@", buf, 0x16u);
     }
   }
@@ -821,15 +821,15 @@ void __78__PLModelMigrator_AssetAnalysis__fixupStatesWithUnreachableAssetUUIDsIn
   return v12 == 0;
 }
 
-- (BOOL)_markAllProcessedAnalysisStatesDirtyForWorkerType:(signed __int16)a3 withStartingWorkerFlags:(int)a4 inStore:(id)a5
+- (BOOL)_markAllProcessedAnalysisStatesDirtyForWorkerType:(signed __int16)type withStartingWorkerFlags:(int)flags inStore:(id)store
 {
-  v5 = *&a4;
-  v6 = a3;
+  v5 = *&flags;
+  typeCopy = type;
   v17[2] = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  storeCopy = store;
   v9 = objc_autoreleasePoolPush();
-  v10 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v8 name:"[PLModelMigrator(AssetAnalysis) _markAllProcessedAnalysisStatesDirtyForWorkerType:withStartingWorkerFlags:inStore:]" concurrencyType:*MEMORY[0x1E695D708]];
-  v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"workerType == %ld AND analysisState == %ld", v6, 20];
+  v10 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator(AssetAnalysis) _markAllProcessedAnalysisStatesDirtyForWorkerType:withStartingWorkerFlags:inStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"workerType == %ld AND analysisState == %ld", typeCopy, 20];
   v16[0] = @"analysisState";
   v16[1] = @"workerFlags";
   v17[0] = &unk_1F0FBAC60;
@@ -844,12 +844,12 @@ void __78__PLModelMigrator_AssetAnalysis__fixupStatesWithUnreachableAssetUUIDsIn
   return self;
 }
 
-- (BOOL)resetFaceQualityInStore:(id)a3
+- (BOOL)resetFaceQualityInStore:(id)store
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator(AssetAnalysis) resetFaceQualityInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator(AssetAnalysis) resetFaceQualityInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != %d", @"qualityMeasure", 0];
   v12 = @"qualityMeasure";
   v13[0] = &unk_1F0FBAC48;
@@ -862,19 +862,19 @@ void __78__PLModelMigrator_AssetAnalysis__fixupStatesWithUnreachableAssetUUIDsIn
   return v9;
 }
 
-- (BOOL)resetManualOrderForNonFavoritePeopleInStore:(id)a3
+- (BOOL)resetManualOrderForNonFavoritePeopleInStore:(id)store
 {
-  v3 = self;
-  v4 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:a3 name:"[PLModelMigrator(AssetAnalysis) resetManualOrderForNonFavoritePeopleInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
-  LOBYTE(v3) = [(PLModelMigrator *)v3 resetManualOrderForNonFavoritePeopleInManagedObjectContext:v4];
+  selfCopy = self;
+  v4 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:store name:"[PLModelMigrator(AssetAnalysis) resetManualOrderForNonFavoritePeopleInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  LOBYTE(selfCopy) = [(PLModelMigrator *)selfCopy resetManualOrderForNonFavoritePeopleInManagedObjectContext:v4];
 
-  return v3;
+  return selfCopy;
 }
 
-- (BOOL)resetManualOrderForNonFavoritePeopleInManagedObjectContext:(id)a3
+- (BOOL)resetManualOrderForNonFavoritePeopleInManagedObjectContext:(id)context
 {
   v47[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  contextCopy = context;
   v38 = objc_autoreleasePoolPush();
   v4 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != %d AND (%K == nil OR %K == %@)", @"type", 1, @"fullName", @"fullName", &stru_1F0F06D80];
   v5 = +[PLPerson fetchRequest];
@@ -888,7 +888,7 @@ void __78__PLModelMigrator_AssetAnalysis__fixupStatesWithUnreachableAssetUUIDsIn
 
   [v5 setSortDescriptors:v8];
   v41 = 0;
-  v9 = [v3 executeFetchRequest:v5 error:&v41];
+  v9 = [contextCopy executeFetchRequest:v5 error:&v41];
   v10 = v41;
   if (!v9)
   {
@@ -906,7 +906,7 @@ void __78__PLModelMigrator_AssetAnalysis__fixupStatesWithUnreachableAssetUUIDsIn
     v27 = 0;
     v12 = v5;
     v16 = v8;
-    v19 = v3;
+    v19 = contextCopy;
     goto LABEL_25;
   }
 
@@ -924,10 +924,10 @@ void __78__PLModelMigrator_AssetAnalysis__fixupStatesWithUnreachableAssetUUIDsIn
 
   [v12 setSortDescriptors:v16];
   v40 = v10;
-  v17 = [v3 executeFetchRequest:v12 error:&v40];
+  v17 = [contextCopy executeFetchRequest:v12 error:&v40];
   v18 = v40;
 
-  v19 = v3;
+  v19 = contextCopy;
   if (!v17)
   {
     v34 = PLMigrationGetLog();
@@ -954,7 +954,7 @@ void __78__PLModelMigrator_AssetAnalysis__fixupStatesWithUnreachableAssetUUIDsIn
     goto LABEL_27;
   }
 
-  v20 = v3;
+  v20 = contextCopy;
   v21 = 4294966271;
   v22 = [v9 count];
   v23 = [v17 count] + v22;
@@ -1047,13 +1047,13 @@ uint64_t __93__PLModelMigrator_AssetAnalysis__resetManualOrderForNonFavoritePeop
   return [a2 setManualOrder:v3];
 }
 
-- (BOOL)markAllSceneAnalysisStatesDirtyAndClearDistanceIdentitiesInStoreAndClearSceneprints:(id)a3
+- (BOOL)markAllSceneAnalysisStatesDirtyAndClearDistanceIdentitiesInStoreAndClearSceneprints:(id)sceneprints
 {
   v43[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sceneprintsCopy = sceneprints;
   v5 = objc_autoreleasePoolPush();
   v6 = *MEMORY[0x1E695D708];
-  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator(AssetAnalysis) markAllSceneAnalysisStatesDirtyAndClearDistanceIdentitiesInStoreAndClearSceneprints:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:sceneprintsCopy name:"[PLModelMigrator(AssetAnalysis) markAllSceneAnalysisStatesDirtyAndClearDistanceIdentitiesInStoreAndClearSceneprints:]" concurrencyType:*MEMORY[0x1E695D708]];
   v8 = MEMORY[0x1E695D560];
   v9 = +[PLAdditionalAssetAttributes entityName];
   v10 = [v8 batchUpdateRequestWithEntityName:v9];
@@ -1087,7 +1087,7 @@ uint64_t __93__PLModelMigrator_AssetAnalysis__resetManualOrderForNonFavoritePeop
 
   objc_autoreleasePoolPop(v5);
   v18 = objc_autoreleasePoolPush();
-  v19 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator(AssetAnalysis) markAllSceneAnalysisStatesDirtyAndClearDistanceIdentitiesInStoreAndClearSceneprints:]" concurrencyType:v6];
+  v19 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:sceneprintsCopy name:"[PLModelMigrator(AssetAnalysis) markAllSceneAnalysisStatesDirtyAndClearDistanceIdentitiesInStoreAndClearSceneprints:]" concurrencyType:v6];
   v20 = MEMORY[0x1E695D5E0];
   v21 = +[PLSceneprint entityName];
   v22 = [v20 fetchRequestWithEntityName:v21];
@@ -1166,25 +1166,25 @@ LABEL_16:
   return v16;
 }
 
-+ (BOOL)performFaceAnalysisResetWithResetLevel:(int64_t)a3 pathManager:(id)a4 context:(id)a5
++ (BOOL)performFaceAnalysisResetWithResetLevel:(int64_t)level pathManager:(id)manager context:(id)context
 {
   v37[1] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  if (a3 < 1)
+  managerCopy = manager;
+  contextCopy = context;
+  if (level < 1)
   {
     v14 = 1;
     goto LABEL_22;
   }
 
   v36 = @"faceAdjustmentVersion";
-  v9 = [MEMORY[0x1E695DFB0] null];
-  v37[0] = v9;
+  null = [MEMORY[0x1E695DFB0] null];
+  v37[0] = null;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v37 forKeys:&v36 count:1];
 
   v11 = +[PLManagedAsset entityName];
   v29 = 0;
-  v12 = [PLModelMigrator executeBatchUpdateWithEntityName:v11 predicate:0 propertiesToUpdate:v10 managedObjectContext:v8 error:&v29];
+  v12 = [PLModelMigrator executeBatchUpdateWithEntityName:v11 predicate:0 propertiesToUpdate:v10 managedObjectContext:contextCopy error:&v29];
   v13 = v29;
 
   if (!v12)
@@ -1193,7 +1193,7 @@ LABEL_16:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v31 = v13;
+      levelCopy = v13;
       _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_ERROR, "Failed to batch reset faceAdjustmentVersion: %@", buf, 0xCu);
     }
 
@@ -1201,11 +1201,11 @@ LABEL_16:
     goto LABEL_21;
   }
 
-  if (a3 != 1)
+  if (level != 1)
   {
     context = objc_autoreleasePoolPush();
     v16 = +[PLDetectedFaceGroup entityName];
-    v17 = [PLModelMigrator executeBatchDeleteWithEntityName:v16 predicate:0 managedObjectContext:v8 error:0];
+    v17 = [PLModelMigrator executeBatchDeleteWithEntityName:v16 predicate:0 managedObjectContext:contextCopy error:0];
 
     if (!v17)
     {
@@ -1213,7 +1213,7 @@ LABEL_16:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v31 = 0;
+        levelCopy = 0;
         _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_ERROR, "Failed to batch delete face groups %@", buf, 0xCu);
       }
     }
@@ -1225,7 +1225,7 @@ LABEL_16:
     {
       v20 = +[PLFaceCrop entityName];
       v28 = 0;
-      v21 = [PLModelMigrator executeBatchUpdateWithEntityName:v20 predicate:0 propertiesToUpdate:v19 managedObjectContext:v8 error:&v28];
+      v21 = [PLModelMigrator executeBatchUpdateWithEntityName:v20 predicate:0 propertiesToUpdate:v19 managedObjectContext:contextCopy error:&v28];
       v22 = v28;
 
       if (v21)
@@ -1247,7 +1247,7 @@ LABEL_20:
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v31 = v22;
+      levelCopy = v22;
       _os_log_impl(&dword_19BF1F000, v23, OS_LOG_TYPE_ERROR, "Failed to batch set face crops to dirty: %@", buf, 0xCu);
     }
 
@@ -1269,7 +1269,7 @@ LABEL_22:
     }
 
     *buf = 134218242;
-    v31 = a3;
+    levelCopy = level;
     v32 = 2112;
     v33 = v25;
     _os_log_impl(&dword_19BF1F000, v24, OS_LOG_TYPE_INFO, "Performed face analysis reset with level: %lu, success: %@", buf, 0x16u);
@@ -1278,13 +1278,13 @@ LABEL_22:
   return v14;
 }
 
-- (BOOL)_migrateResourceUTIAndCodecInStagedStore:(id)a3
+- (BOOL)_migrateResourceUTIAndCodecInStagedStore:(id)store
 {
   v43 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   context = objc_autoreleasePoolPush();
-  v28 = v4;
-  v5 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _migrateResourceUTIAndCodecInStagedStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v28 = storeCopy;
+  v5 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _migrateResourceUTIAndCodecInStagedStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v6 = [PLPersistentHistoryTransactionModifiers transactionAuthorFromChangeSource:2];
   [v5 setTransactionAuthor:v6];
 
@@ -1299,9 +1299,9 @@ LABEL_22:
   v39 = 0x3020000000;
   v40 = 0;
   v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLModelMigrator _migrateResourceUTIAndCodecInStagedStore:]"];
-  v11 = [v5 pathManager];
-  v12 = [v5 persistentStoreCoordinator];
-  v13 = [v5 transactionAuthor];
+  pathManager = [v5 pathManager];
+  persistentStoreCoordinator = [v5 persistentStoreCoordinator];
+  transactionAuthor = [v5 transactionAuthor];
   v14 = [PLEnumerateAndSaveController alloc];
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
@@ -1309,11 +1309,11 @@ LABEL_22:
   v32[3] = &unk_1E756C520;
   v15 = v10;
   v33 = v15;
-  v16 = v12;
+  v16 = persistentStoreCoordinator;
   v34 = v16;
-  v17 = v11;
+  v17 = pathManager;
   v35 = v17;
-  v18 = v13;
+  v18 = transactionAuthor;
   v36 = v18;
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
@@ -1465,14 +1465,14 @@ BOOL __61__PLModelMigrator__discardUnusedCustomRenderedValuesInStore___block_inv
   return v8 != 0;
 }
 
-- (BOOL)_deleteLocalVideoKeyFrameResourcesForNonVideosInStore:(id)a3 deferHintChanges:(BOOL)a4
+- (BOOL)_deleteLocalVideoKeyFrameResourcesForNonVideosInStore:(id)store deferHintChanges:(BOOL)changes
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __90__PLModelMigrator__deleteLocalVideoKeyFrameResourcesForNonVideosInStore_deferHintChanges___block_invoke;
   v5[3] = &__block_descriptor_33_e32_B16__0__NSManagedObjectContext_8l;
-  v6 = a4;
-  return [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _deleteLocalVideoKeyFrameResourcesForNonVideosInStore:deferHintChanges:]" store:a3 migrationHandler:v5];
+  changesCopy = changes;
+  return [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _deleteLocalVideoKeyFrameResourcesForNonVideosInStore:deferHintChanges:]" store:store migrationHandler:v5];
 }
 
 uint64_t __90__PLModelMigrator__deleteLocalVideoKeyFrameResourcesForNonVideosInStore_deferHintChanges___block_invoke(uint64_t a1, void *a2)
@@ -1581,7 +1581,7 @@ void __90__PLModelMigrator__deleteLocalVideoKeyFrameResourcesForNonVideosInStore
   ++*(*(*(a1 + 40) + 8) + 24);
 }
 
-- (BOOL)_deleteEmptyFolderWithProjectRootCloudGUIDOfWrongKindInStore:(id)a3
+- (BOOL)_deleteEmptyFolderWithProjectRootCloudGUIDOfWrongKindInStore:(id)store
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
@@ -1589,7 +1589,7 @@ void __90__PLModelMigrator__deleteLocalVideoKeyFrameResourcesForNonVideosInStore
   v4[3] = &unk_1E7569168;
   v4[4] = self;
   v4[5] = a2;
-  return [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _deleteEmptyFolderWithProjectRootCloudGUIDOfWrongKindInStore:]" store:a3 migrationHandler:v4];
+  return [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _deleteEmptyFolderWithProjectRootCloudGUIDOfWrongKindInStore:]" store:store migrationHandler:v4];
 }
 
 uint64_t __80__PLModelMigrator__deleteEmptyFolderWithProjectRootCloudGUIDOfWrongKindInStore___block_invoke(uint64_t a1, void *a2)
@@ -1948,14 +1948,14 @@ BOOL __62__PLModelMigrator__convertAssetDepthStatesToDepthTypeInStore___block_in
   return v8 != 0;
 }
 
-- (BOOL)_updateMogulSubtypeAndSetHighFrameRateStateOnAssetsInStore:(id)a3
+- (BOOL)_updateMogulSubtypeAndSetHighFrameRateStateOnAssetsInStore:(id)store
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __78__PLModelMigrator__updateMogulSubtypeAndSetHighFrameRateStateOnAssetsInStore___block_invoke;
   v4[3] = &unk_1E7569528;
   v4[4] = self;
-  return [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _updateMogulSubtypeAndSetHighFrameRateStateOnAssetsInStore:]" store:a3 migrationHandler:v4];
+  return [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _updateMogulSubtypeAndSetHighFrameRateStateOnAssetsInStore:]" store:store migrationHandler:v4];
 }
 
 uint64_t __78__PLModelMigrator__updateMogulSubtypeAndSetHighFrameRateStateOnAssetsInStore___block_invoke(uint64_t a1, void *a2)
@@ -2235,37 +2235,37 @@ void __78__PLModelMigrator__updateMogulSubtypeAndSetHighFrameRateStateOnAssetsIn
   }
 }
 
-- (id)_loadOriginalVideoMetadataFromAsset:(id)a3 timeZoneLookup:(id)a4 error:(id *)a5
+- (id)_loadOriginalVideoMetadataFromAsset:(id)asset timeZoneLookup:(id)lookup error:(id *)error
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 master];
-  v10 = [v9 mediaMetadata];
-  v11 = [v10 data];
+  assetCopy = asset;
+  lookupCopy = lookup;
+  master = [assetCopy master];
+  mediaMetadata = [master mediaMetadata];
+  data = [mediaMetadata data];
 
-  if (v11)
+  if (data)
   {
     v12 = objc_alloc(MEMORY[0x1E69C0718]);
-    v13 = [v7 master];
-    v14 = [v13 mediaMetadata];
-    v15 = [v14 data];
-    v16 = [v12 initWithAVProxyData:v15 timeZoneLookup:v8];
+    master2 = [assetCopy master];
+    mediaMetadata2 = [master2 mediaMetadata];
+    data2 = [mediaMetadata2 data];
+    v16 = [v12 initWithAVProxyData:data2 timeZoneLookup:lookupCopy];
 
     goto LABEL_7;
   }
 
-  if (([v7 isReferencedAsset] & 1) == 0)
+  if (([assetCopy isReferencedAsset] & 1) == 0)
   {
     v21 = objc_alloc(MEMORY[0x1E69C0718]);
     v22 = MEMORY[0x1E695DFF8];
-    v23 = [v7 pathForOriginalFile];
-    v24 = [v22 fileURLWithPath:v23];
-    v16 = [v21 initWithAVURL:v24 timeZoneLookup:v8];
+    pathForOriginalFile = [assetCopy pathForOriginalFile];
+    v24 = [v22 fileURLWithPath:pathForOriginalFile];
+    v16 = [v21 initWithAVURL:v24 timeZoneLookup:lookupCopy];
 
 LABEL_7:
     v20 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_9;
     }
@@ -2281,11 +2281,11 @@ LABEL_7:
   v20 = [v17 errorWithDomain:v18 code:46502 userInfo:v19];
 
   v16 = 0;
-  if (a5)
+  if (error)
   {
 LABEL_8:
     v25 = v20;
-    *a5 = v20;
+    *error = v20;
   }
 
 LABEL_9:
@@ -2353,14 +2353,14 @@ LABEL_6:
   return v8 != 0;
 }
 
-- (BOOL)_resetDeferredRepairAdjustmentFailureAndCloudRecoveryStateInStore:(id)a3
+- (BOOL)_resetDeferredRepairAdjustmentFailureAndCloudRecoveryStateInStore:(id)store
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __85__PLModelMigrator__resetDeferredRepairAdjustmentFailureAndCloudRecoveryStateInStore___block_invoke;
   v4[3] = &__block_descriptor_40_e32_B16__0__NSManagedObjectContext_8l;
   v4[4] = a2;
-  return [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _resetDeferredRepairAdjustmentFailureAndCloudRecoveryStateInStore:]" store:a3 migrationHandler:v4];
+  return [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _resetDeferredRepairAdjustmentFailureAndCloudRecoveryStateInStore:]" store:store migrationHandler:v4];
 }
 
 uint64_t __85__PLModelMigrator__resetDeferredRepairAdjustmentFailureAndCloudRecoveryStateInStore___block_invoke(uint64_t a1, void *a2)
@@ -2428,11 +2428,11 @@ void __85__PLModelMigrator__resetDeferredRepairAdjustmentFailureAndCloudRecovery
   }
 }
 
-- (BOOL)_invalidateZeroHDRGainInStore:(id)a3
+- (BOOL)_invalidateZeroHDRGainInStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   pl_dispatch_once();
-  LOBYTE(self) = [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _invalidateZeroHDRGainInStore:]" store:v4 migrationHandler:&__block_literal_global_2600];
+  LOBYTE(self) = [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _invalidateZeroHDRGainInStore:]" store:storeCopy migrationHandler:&__block_literal_global_2600];
 
   return self;
 }
@@ -2489,23 +2489,23 @@ BOOL __49__PLModelMigrator__invalidateZeroHDRGainInStore___block_invoke(uint64_t
   return v11 == 0;
 }
 
-- (BOOL)_repairWallpaperAlbumsInStore:(id)a3 containerUUID:(id)a4 title:(id)a5
+- (BOOL)_repairWallpaperAlbumsInStore:(id)store containerUUID:(id)d title:(id)title
 {
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  titleCopy = title;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __69__PLModelMigrator__repairWallpaperAlbumsInStore_containerUUID_title___block_invoke;
   v14[3] = &unk_1E7569798;
-  v15 = v9;
-  v16 = self;
-  v17 = v10;
+  v15 = dCopy;
+  selfCopy = self;
+  v17 = titleCopy;
   v18 = a2;
-  v11 = v10;
-  v12 = v9;
-  LOBYTE(a3) = [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _repairWallpaperAlbumsInStore:containerUUID:title:]" store:a3 migrationHandler:v14];
+  v11 = titleCopy;
+  v12 = dCopy;
+  LOBYTE(store) = [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _repairWallpaperAlbumsInStore:containerUUID:title:]" store:store migrationHandler:v14];
 
-  return a3;
+  return store;
 }
 
 uint64_t __69__PLModelMigrator__repairWallpaperAlbumsInStore_containerUUID_title___block_invoke(void *a1, void *a2)
@@ -2849,14 +2849,14 @@ uint64_t __56__PLModelMigrator__removeDuplicatedCloudSharedComments___block_invo
   return 1;
 }
 
-- (BOOL)_refactorLargeVideoRecipeResourcesInStore:(id)a3
+- (BOOL)_refactorLargeVideoRecipeResourcesInStore:(id)store
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __61__PLModelMigrator__refactorLargeVideoRecipeResourcesInStore___block_invoke;
   v4[3] = &__block_descriptor_40_e32_B16__0__NSManagedObjectContext_8l;
   v4[4] = a2;
-  return [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _refactorLargeVideoRecipeResourcesInStore:]" store:a3 migrationHandler:v4];
+  return [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _refactorLargeVideoRecipeResourcesInStore:]" store:store migrationHandler:v4];
 }
 
 BOOL __61__PLModelMigrator__refactorLargeVideoRecipeResourcesInStore___block_invoke(uint64_t a1, void *a2)
@@ -2999,14 +2999,14 @@ void __61__PLModelMigrator__refactorLargeVideoRecipeResourcesInStore___block_inv
   }
 }
 
-- (BOOL)_repairCTMOriginalVideosWithoutAdjustmentsInStore:(id)a3
+- (BOOL)_repairCTMOriginalVideosWithoutAdjustmentsInStore:(id)store
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __69__PLModelMigrator__repairCTMOriginalVideosWithoutAdjustmentsInStore___block_invoke;
   v4[3] = &__block_descriptor_40_e32_B16__0__NSManagedObjectContext_8l;
   v4[4] = a2;
-  return [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _repairCTMOriginalVideosWithoutAdjustmentsInStore:]" store:a3 migrationHandler:v4];
+  return [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _repairCTMOriginalVideosWithoutAdjustmentsInStore:]" store:store migrationHandler:v4];
 }
 
 BOOL __69__PLModelMigrator__repairCTMOriginalVideosWithoutAdjustmentsInStore___block_invoke(uint64_t a1, void *a2)
@@ -3096,15 +3096,15 @@ void __69__PLModelMigrator__repairCTMOriginalVideosWithoutAdjustmentsInStore___b
   }
 }
 
-- (BOOL)_addLocalVideoKeyFrameResourceInStore:(id)a3 deferHintChanges:(BOOL)a4
+- (BOOL)_addLocalVideoKeyFrameResourceInStore:(id)store deferHintChanges:(BOOL)changes
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __74__PLModelMigrator__addLocalVideoKeyFrameResourceInStore_deferHintChanges___block_invoke;
   v5[3] = &__block_descriptor_41_e32_B16__0__NSManagedObjectContext_8l;
-  v6 = a4;
+  changesCopy = changes;
   v5[4] = a2;
-  return [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _addLocalVideoKeyFrameResourceInStore:deferHintChanges:]" store:a3 migrationHandler:v5];
+  return [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _addLocalVideoKeyFrameResourceInStore:deferHintChanges:]" store:store migrationHandler:v5];
 }
 
 uint64_t __74__PLModelMigrator__addLocalVideoKeyFrameResourceInStore_deferHintChanges___block_invoke(uint64_t a1, void *a2)
@@ -3204,14 +3204,14 @@ void __74__PLModelMigrator__addLocalVideoKeyFrameResourceInStore_deferHintChange
   }
 }
 
-- (BOOL)_addRAWPackedBadgeAttributeForAllRAWAssetsInStore:(id)a3
+- (BOOL)_addRAWPackedBadgeAttributeForAllRAWAssetsInStore:(id)store
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __69__PLModelMigrator__addRAWPackedBadgeAttributeForAllRAWAssetsInStore___block_invoke;
   v4[3] = &__block_descriptor_40_e32_B16__0__NSManagedObjectContext_8l;
   v4[4] = a2;
-  return [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _addRAWPackedBadgeAttributeForAllRAWAssetsInStore:]" store:a3 migrationHandler:v4];
+  return [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _addRAWPackedBadgeAttributeForAllRAWAssetsInStore:]" store:store migrationHandler:v4];
 }
 
 uint64_t __69__PLModelMigrator__addRAWPackedBadgeAttributeForAllRAWAssetsInStore___block_invoke(uint64_t a1, void *a2)
@@ -3279,14 +3279,14 @@ void __69__PLModelMigrator__addRAWPackedBadgeAttributeForAllRAWAssetsInStore___b
   ++*(*(*(a1 + 32) + 8) + 24);
 }
 
-- (BOOL)_persistResourceTypeAttributeOnAlternateImageResourcesInStore:(id)a3
+- (BOOL)_persistResourceTypeAttributeOnAlternateImageResourcesInStore:(id)store
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __81__PLModelMigrator__persistResourceTypeAttributeOnAlternateImageResourcesInStore___block_invoke;
   v4[3] = &__block_descriptor_40_e32_B16__0__NSManagedObjectContext_8l;
   v4[4] = a2;
-  return [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _persistResourceTypeAttributeOnAlternateImageResourcesInStore:]" store:a3 migrationHandler:v4];
+  return [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _persistResourceTypeAttributeOnAlternateImageResourcesInStore:]" store:store migrationHandler:v4];
 }
 
 BOOL __81__PLModelMigrator__persistResourceTypeAttributeOnAlternateImageResourcesInStore___block_invoke(uint64_t a1, void *a2)
@@ -3368,14 +3368,14 @@ void __81__PLModelMigrator__persistResourceTypeAttributeOnAlternateImageResource
 LABEL_7:
 }
 
-- (BOOL)_repairCTMOriginalVideosWithSOCAvailableBitInStore:(id)a3
+- (BOOL)_repairCTMOriginalVideosWithSOCAvailableBitInStore:(id)store
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __70__PLModelMigrator__repairCTMOriginalVideosWithSOCAvailableBitInStore___block_invoke;
   v4[3] = &__block_descriptor_40_e32_B16__0__NSManagedObjectContext_8l;
   v4[4] = a2;
-  return [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _repairCTMOriginalVideosWithSOCAvailableBitInStore:]" store:a3 migrationHandler:v4];
+  return [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _repairCTMOriginalVideosWithSOCAvailableBitInStore:]" store:store migrationHandler:v4];
 }
 
 BOOL __70__PLModelMigrator__repairCTMOriginalVideosWithSOCAvailableBitInStore___block_invoke(uint64_t a1, void *a2)
@@ -3473,14 +3473,14 @@ void __70__PLModelMigrator__repairCTMOriginalVideosWithSOCAvailableBitInStore___
   }
 }
 
-- (BOOL)_removeResourceModelManualIdentityConstraintInStore:(id)a3
+- (BOOL)_removeResourceModelManualIdentityConstraintInStore:(id)store
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __71__PLModelMigrator__removeResourceModelManualIdentityConstraintInStore___block_invoke;
   v4[3] = &unk_1E7569528;
   v4[4] = self;
-  return [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _removeResourceModelManualIdentityConstraintInStore:]" store:a3 migrationHandler:v4];
+  return [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _removeResourceModelManualIdentityConstraintInStore:]" store:store migrationHandler:v4];
 }
 
 uint64_t __71__PLModelMigrator__removeResourceModelManualIdentityConstraintInStore___block_invoke(uint64_t a1)
@@ -3554,14 +3554,14 @@ LABEL_18:
   return v8;
 }
 
-- (BOOL)_removeAllLocalVideoKeyFrameResourcesRevert14037InStore:(id)a3
+- (BOOL)_removeAllLocalVideoKeyFrameResourcesRevert14037InStore:(id)store
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __75__PLModelMigrator__removeAllLocalVideoKeyFrameResourcesRevert14037InStore___block_invoke;
   v4[3] = &__block_descriptor_40_e32_B16__0__NSManagedObjectContext_8l;
   v4[4] = a2;
-  return [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _removeAllLocalVideoKeyFrameResourcesRevert14037InStore:]" store:a3 migrationHandler:v4];
+  return [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _removeAllLocalVideoKeyFrameResourcesRevert14037InStore:]" store:store migrationHandler:v4];
 }
 
 uint64_t __75__PLModelMigrator__removeAllLocalVideoKeyFrameResourcesRevert14037InStore___block_invoke(uint64_t a1, void *a2)
@@ -3624,14 +3624,14 @@ uint64_t __75__PLModelMigrator__removeAllLocalVideoKeyFrameResourcesRevert14037I
   return result;
 }
 
-- (BOOL)_copyAssetDescriptionToAccessibilityDescription:(id)a3
+- (BOOL)_copyAssetDescriptionToAccessibilityDescription:(id)description
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __67__PLModelMigrator__copyAssetDescriptionToAccessibilityDescription___block_invoke;
   v4[3] = &__block_descriptor_40_e32_B16__0__NSManagedObjectContext_8l;
   v4[4] = a2;
-  return [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _copyAssetDescriptionToAccessibilityDescription:]" store:a3 migrationHandler:v4];
+  return [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _copyAssetDescriptionToAccessibilityDescription:]" store:description migrationHandler:v4];
 }
 
 uint64_t __67__PLModelMigrator__copyAssetDescriptionToAccessibilityDescription___block_invoke(uint64_t a1, void *a2)
@@ -3749,14 +3749,14 @@ BOOL __67__PLModelMigrator__clearAvalancheUUIDOnCloudSharedAssetsWithStore___blo
   return v13 != 0;
 }
 
-- (BOOL)_repairReframedAssetsWithoutSOCAvailableBitWithStore:(id)a3
+- (BOOL)_repairReframedAssetsWithoutSOCAvailableBitWithStore:(id)store
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __72__PLModelMigrator__repairReframedAssetsWithoutSOCAvailableBitWithStore___block_invoke;
   v4[3] = &__block_descriptor_40_e32_B16__0__NSManagedObjectContext_8l;
   v4[4] = a2;
-  return [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _repairReframedAssetsWithoutSOCAvailableBitWithStore:]" store:a3 migrationHandler:v4];
+  return [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _repairReframedAssetsWithoutSOCAvailableBitWithStore:]" store:store migrationHandler:v4];
 }
 
 BOOL __72__PLModelMigrator__repairReframedAssetsWithoutSOCAvailableBitWithStore___block_invoke(uint64_t a1, void *a2)
@@ -3863,16 +3863,16 @@ void __72__PLModelMigrator__repairReframedAssetsWithoutSOCAvailableBitWithStore_
   }
 }
 
-- (BOOL)_migrateMetadataAndMigrationHistoryWithStore:(id)a3
+- (BOOL)_migrateMetadataAndMigrationHistoryWithStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __64__PLModelMigrator__migrateMetadataAndMigrationHistoryWithStore___block_invoke;
   v7[3] = &unk_1E7569500;
-  v8 = v4;
-  v9 = self;
-  v5 = v4;
+  v8 = storeCopy;
+  selfCopy = self;
+  v5 = storeCopy;
   LOBYTE(self) = [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _migrateMetadataAndMigrationHistoryWithStore:]" store:v5 migrationHandler:v7];
 
   return self;
@@ -4158,14 +4158,14 @@ id __64__PLModelMigrator__migrateMetadataAndMigrationHistoryWithStore___block_in
   return v3;
 }
 
-- (BOOL)_moveGpsHorizontalAccuracyToNewAttribute:(id)a3
+- (BOOL)_moveGpsHorizontalAccuracyToNewAttribute:(id)attribute
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __60__PLModelMigrator__moveGpsHorizontalAccuracyToNewAttribute___block_invoke;
   v4[3] = &__block_descriptor_40_e32_B16__0__NSManagedObjectContext_8l;
   v4[4] = a2;
-  return [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _moveGpsHorizontalAccuracyToNewAttribute:]" store:a3 migrationHandler:v4];
+  return [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _moveGpsHorizontalAccuracyToNewAttribute:]" store:attribute migrationHandler:v4];
 }
 
 uint64_t __60__PLModelMigrator__moveGpsHorizontalAccuracyToNewAttribute___block_invoke(uint64_t a1, void *a2)
@@ -4260,7 +4260,7 @@ void __60__PLModelMigrator__moveGpsHorizontalAccuracyToNewAttribute___block_invo
   ++*(*(*(a1 + 32) + 8) + 24);
 }
 
-- (BOOL)_migrateCandidateBitsToDeferredProcessingCandidateOptions:(id)a3
+- (BOOL)_migrateCandidateBitsToDeferredProcessingCandidateOptions:(id)options
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
@@ -4269,7 +4269,7 @@ void __60__PLModelMigrator__moveGpsHorizontalAccuracyToNewAttribute___block_invo
   v5 = 2097154;
   v6 = 16;
   v4[4] = a2;
-  return [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _migrateCandidateBitsToDeferredProcessingCandidateOptions:]" store:a3 migrationHandler:v4];
+  return [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _migrateCandidateBitsToDeferredProcessingCandidateOptions:]" store:options migrationHandler:v4];
 }
 
 uint64_t __77__PLModelMigrator__migrateCandidateBitsToDeferredProcessingCandidateOptions___block_invoke(uint64_t a1, void *a2)
@@ -4407,14 +4407,14 @@ void __77__PLModelMigrator__migrateCandidateBitsToDeferredProcessingCandidateOpt
   ++*(*(*(a1 + 32) + 8) + 24);
 }
 
-- (BOOL)_runPairingForAssetsInStore:(id)a3
+- (BOOL)_runPairingForAssetsInStore:(id)store
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __47__PLModelMigrator__runPairingForAssetsInStore___block_invoke;
   v4[3] = &__block_descriptor_40_e32_B16__0__NSManagedObjectContext_8l;
   v4[4] = a2;
-  return [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _runPairingForAssetsInStore:]" store:a3 migrationHandler:v4];
+  return [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _runPairingForAssetsInStore:]" store:store migrationHandler:v4];
 }
 
 uint64_t __47__PLModelMigrator__runPairingForAssetsInStore___block_invoke(uint64_t a1, void *a2)
@@ -4476,9 +4476,9 @@ LABEL_14:
   return v7;
 }
 
-- (BOOL)_scavengeCameraProcessingAdjustmentMetadataForAssetsInStore:(id)a3
+- (BOOL)_scavengeCameraProcessingAdjustmentMetadataForAssetsInStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v6 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:590400000.0];
   v18[0] = 0;
   v18[1] = v18;
@@ -4501,7 +4501,7 @@ LABEL_14:
   v15 = v18;
   v16 = a2;
   v14 = v9;
-  LOBYTE(self) = [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _scavengeCameraProcessingAdjustmentMetadataForAssetsInStore:]" store:v5 migrationHandler:v11];
+  LOBYTE(self) = [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _scavengeCameraProcessingAdjustmentMetadataForAssetsInStore:]" store:storeCopy migrationHandler:v11];
 
   _Block_object_dispose(v18, 8);
   return self;
@@ -4641,14 +4641,14 @@ void __79__PLModelMigrator__scavengeCameraProcessingAdjustmentMetadataForAssetsI
   }
 }
 
-- (BOOL)_fixUnpushedVideoComplementResourcesInStore:(id)a3
+- (BOOL)_fixUnpushedVideoComplementResourcesInStore:(id)store
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __63__PLModelMigrator__fixUnpushedVideoComplementResourcesInStore___block_invoke;
   v4[3] = &__block_descriptor_40_e32_B16__0__NSManagedObjectContext_8l;
   v4[4] = a2;
-  return [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _fixUnpushedVideoComplementResourcesInStore:]" store:a3 migrationHandler:v4];
+  return [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _fixUnpushedVideoComplementResourcesInStore:]" store:store migrationHandler:v4];
 }
 
 uint64_t __63__PLModelMigrator__fixUnpushedVideoComplementResourcesInStore___block_invoke(uint64_t a1, void *a2)
@@ -4809,14 +4809,14 @@ LABEL_7:
   }
 }
 
-- (BOOL)_fixUploadedButNotRemotelyAvailalbeCPLResourcesInStore:(id)a3
+- (BOOL)_fixUploadedButNotRemotelyAvailalbeCPLResourcesInStore:(id)store
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __74__PLModelMigrator__fixUploadedButNotRemotelyAvailalbeCPLResourcesInStore___block_invoke;
   v4[3] = &__block_descriptor_40_e32_B16__0__NSManagedObjectContext_8l;
   v4[4] = a2;
-  return [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _fixUploadedButNotRemotelyAvailalbeCPLResourcesInStore:]" store:a3 migrationHandler:v4];
+  return [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _fixUploadedButNotRemotelyAvailalbeCPLResourcesInStore:]" store:store migrationHandler:v4];
 }
 
 BOOL __74__PLModelMigrator__fixUploadedButNotRemotelyAvailalbeCPLResourcesInStore___block_invoke(uint64_t a1, void *a2)
@@ -4914,14 +4914,14 @@ void __74__PLModelMigrator__fixUploadedButNotRemotelyAvailalbeCPLResourcesInStor
   }
 }
 
-- (BOOL)_fixSharedStreamVideoResourcesInStore:(id)a3
+- (BOOL)_fixSharedStreamVideoResourcesInStore:(id)store
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __57__PLModelMigrator__fixSharedStreamVideoResourcesInStore___block_invoke;
   v4[3] = &__block_descriptor_40_e32_B16__0__NSManagedObjectContext_8l;
   v4[4] = a2;
-  return [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _fixSharedStreamVideoResourcesInStore:]" store:a3 migrationHandler:v4];
+  return [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _fixSharedStreamVideoResourcesInStore:]" store:store migrationHandler:v4];
 }
 
 uint64_t __57__PLModelMigrator__fixSharedStreamVideoResourcesInStore___block_invoke(uint64_t a1, void *a2)
@@ -5034,25 +5034,25 @@ BOOL __57__PLModelMigrator__fixSharedStreamVideoResourcesInStore___block_invoke_
   return v3;
 }
 
-- (BOOL)_removeCloudSharedFileAtPath:(id)a3 withFileManager:(id)a4 error:(id *)a5
+- (BOOL)_removeCloudSharedFileAtPath:(id)path withFileManager:(id)manager error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  managerCopy = manager;
   v9 = MEMORY[0x1E69BF2A0];
-  v10 = a3;
-  v11 = [v9 systemLibraryPathManager];
+  pathCopy = path;
+  systemLibraryPathManager = [v9 systemLibraryPathManager];
   v12 = MEMORY[0x1E695DFF8];
-  v13 = [v11 photoDirectoryWithType:23];
+  v13 = [systemLibraryPathManager photoDirectoryWithType:23];
   v14 = [v12 fileURLWithPath:v13];
 
-  v15 = [MEMORY[0x1E695DFF8] fileURLWithPath:v10];
+  v15 = [MEMORY[0x1E695DFF8] fileURLWithPath:pathCopy];
 
   v20 = 2;
-  if ([v8 getRelationship:&v20 ofDirectoryAtURL:v14 toItemAtURL:v15 error:a5])
+  if ([managerCopy getRelationship:&v20 ofDirectoryAtURL:v14 toItemAtURL:v15 error:error])
   {
     if (!v20)
     {
-      v18 = [v8 removeItemAtURL:v15 error:a5];
+      v18 = [managerCopy removeItemAtURL:v15 error:error];
       goto LABEL_7;
     }
 
@@ -5074,21 +5074,21 @@ LABEL_7:
   return v18;
 }
 
-- (BOOL)_verifyAndFixBrokenLocalAvailabilityForResourceWithFileIDsInStore:(id)a3
+- (BOOL)_verifyAndFixBrokenLocalAvailabilityForResourceWithFileIDsInStore:(id)store
 {
-  v5 = a3;
-  v6 = [(PLModelMigrator *)self pathManager];
-  v7 = [v6 capabilities];
-  v8 = [v7 isCentralizedCacheDeleteCapable];
+  storeCopy = store;
+  pathManager = [(PLModelMigrator *)self pathManager];
+  capabilities = [pathManager capabilities];
+  isCentralizedCacheDeleteCapable = [capabilities isCentralizedCacheDeleteCapable];
 
-  if (v8)
+  if (isCentralizedCacheDeleteCapable)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __85__PLModelMigrator__verifyAndFixBrokenLocalAvailabilityForResourceWithFileIDsInStore___block_invoke;
     v10[3] = &__block_descriptor_40_e32_B16__0__NSManagedObjectContext_8l;
     v10[4] = a2;
-    [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _verifyAndFixBrokenLocalAvailabilityForResourceWithFileIDsInStore:]" store:v5 migrationHandler:v10];
+    [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _verifyAndFixBrokenLocalAvailabilityForResourceWithFileIDsInStore:]" store:storeCopy migrationHandler:v10];
   }
 
   return 1;
@@ -5135,14 +5135,14 @@ uint64_t __85__PLModelMigrator__verifyAndFixBrokenLocalAvailabilityForResourceWi
   return 1;
 }
 
-- (BOOL)_requestAvailabilityChangeForAssetsMissing1kResourcesInStore:(id)a3
+- (BOOL)_requestAvailabilityChangeForAssetsMissing1kResourcesInStore:(id)store
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __80__PLModelMigrator__requestAvailabilityChangeForAssetsMissing1kResourcesInStore___block_invoke;
   v4[3] = &__block_descriptor_40_e32_B16__0__NSManagedObjectContext_8l;
   v4[4] = a2;
-  return [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _requestAvailabilityChangeForAssetsMissing1kResourcesInStore:]" store:a3 migrationHandler:v4];
+  return [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _requestAvailabilityChangeForAssetsMissing1kResourcesInStore:]" store:store migrationHandler:v4];
 }
 
 BOOL __80__PLModelMigrator__requestAvailabilityChangeForAssetsMissing1kResourcesInStore___block_invoke(uint64_t a1, void *a2)
@@ -5257,11 +5257,11 @@ void __80__PLModelMigrator__requestAvailabilityChangeForAssetsMissing1kResources
   }
 }
 
-- (BOOL)_regenerateReferenceKeyDataInStore:(id)a3
+- (BOOL)_regenerateReferenceKeyDataInStore:(id)store
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695D5E0];
-  v5 = a3;
+  storeCopy = store;
   v6 = +[PLManagedAsset entityName];
   v7 = [v4 fetchRequestWithEntityName:v6];
 
@@ -5279,7 +5279,7 @@ void __80__PLModelMigrator__requestAvailabilityChangeForAssetsMissing1kResources
   v13[2] = __54__PLModelMigrator__regenerateReferenceKeyDataInStore___block_invoke;
   v13[3] = &__block_descriptor_40_e28_B24__0__NSManagedObject_8Q16lu32l8;
   v13[4] = v10;
-  LOBYTE(self) = [(PLModelMigrator *)self _runMigrationStepWithName:v11 fetchRequest:v7 store:v5 migrationHandler:v13];
+  LOBYTE(self) = [(PLModelMigrator *)self _runMigrationStepWithName:v11 fetchRequest:v7 store:storeCopy migrationHandler:v13];
 
   return self;
 }
@@ -5465,13 +5465,13 @@ BOOL __80__PLModelMigrator__renumberLocalAvailabilityAndLocalAvailabilityTargets
 - (BOOL)migratePurgeableResources
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [(PLModelMigrator *)self pathManager];
-  v4 = [v3 capabilities];
-  v5 = [v4 isCentralizedCacheDeleteCapable];
+  pathManager = [(PLModelMigrator *)self pathManager];
+  capabilities = [pathManager capabilities];
+  isCentralizedCacheDeleteCapable = [capabilities isCentralizedCacheDeleteCapable];
 
   v6 = PLMigrationGetLog();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (v5)
+  if (isCentralizedCacheDeleteCapable)
   {
     if (v7)
     {
@@ -5479,30 +5479,30 @@ BOOL __80__PLModelMigrator__renumberLocalAvailabilityAndLocalAvailabilityTargets
       _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_DEFAULT, "Migrating purgeable resources", &v12, 2u);
     }
 
-    v8 = [(PLModelMigrator *)self pathManager];
-    v6 = [PLCPLSettings settingsWithPathManager:v8];
+    pathManager2 = [(PLModelMigrator *)self pathManager];
+    v6 = [PLCPLSettings settingsWithPathManager:pathManager2];
 
     [v6 setRunOnceFlag:4 error:0];
   }
 
   else if (v7)
   {
-    v9 = [(PLModelMigrator *)self pathManager];
-    v10 = [v9 libraryURL];
+    pathManager3 = [(PLModelMigrator *)self pathManager];
+    libraryURL = [pathManager3 libraryURL];
     v12 = 138412290;
-    v13 = v10;
+    v13 = libraryURL;
     _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_DEFAULT, "Skip migrating purgeable resources, not supported for library at %@", &v12, 0xCu);
   }
 
   return 1;
 }
 
-- (BOOL)_migrateVideoKeyFrameTimeValuesInStagedStore:(id)a3
+- (BOOL)_migrateVideoKeyFrameTimeValuesInStagedStore:(id)store
 {
   v28[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _migrateVideoKeyFrameTimeValuesInStagedStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _migrateVideoKeyFrameTimeValuesInStagedStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = MEMORY[0x1E695D560];
   v8 = +[PLManagedAsset entityName];
   v9 = [v7 batchUpdateRequestWithEntityName:v8];
@@ -5526,22 +5526,22 @@ BOOL __80__PLModelMigrator__renumberLocalAvailabilityAndLocalAvailabilityTargets
   {
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v13 result];
+      result = [v13 result];
       *buf = 138412290;
-      v22 = v17;
+      v22 = result;
       _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_DEFAULT, "Migrated %@ assets video key frame values from MediaAnalysisAttributes table to Asset table", buf, 0xCu);
     }
   }
 
   else if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
   {
-    v18 = [v14 userInfo];
+    userInfo = [v14 userInfo];
     *buf = 136315650;
     v22 = "[PLModelMigrator _migrateVideoKeyFrameTimeValuesInStagedStore:]";
     v23 = 2112;
     v24 = v14;
     v25 = 2112;
-    v26 = v18;
+    v26 = userInfo;
     _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_ERROR, "%s: failed to update: %@ %@", buf, 0x20u);
   }
 
@@ -5549,9 +5549,9 @@ BOOL __80__PLModelMigrator__renumberLocalAvailabilityAndLocalAvailabilityTargets
   return v13 != 0;
 }
 
-- (BOOL)_emptyResourceTablesInStagedStore:(id)a3
+- (BOOL)_emptyResourceTablesInStagedStore:(id)store
 {
-  v3 = [PLResourceInstaller resetInternalResourcesInStore:a3 resetUTIs:1 resetCodecs:1 resetMasters:0 migrator:self];
+  v3 = [PLResourceInstaller resetInternalResourcesInStore:store resetUTIs:1 resetCodecs:1 resetMasters:0 migrator:self];
   if (!v3)
   {
     v4 = PLMigrationGetLog();
@@ -5565,15 +5565,15 @@ BOOL __80__PLModelMigrator__renumberLocalAvailabilityAndLocalAvailabilityTargets
   return v3;
 }
 
-- (BOOL)_invalidateReverseGeocodingDataInStore:(id)a3
+- (BOOL)_invalidateReverseGeocodingDataInStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 1;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _invalidateReverseGeocodingDataInStore:]" concurrencyType:1];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _invalidateReverseGeocodingDataInStore:]" concurrencyType:1];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __58__PLModelMigrator__invalidateReverseGeocodingDataInStore___block_invoke;
@@ -5638,11 +5638,11 @@ void __58__PLModelMigrator__invalidateReverseGeocodingDataInStore___block_invoke
   }
 }
 
-- (BOOL)_regenerateSharedStreamsDataStoreKeysDataInStore:(id)a3 deferHintChanges:(BOOL)a4
+- (BOOL)_regenerateSharedStreamsDataStoreKeysDataInStore:(id)store deferHintChanges:(BOOL)changes
 {
   v16[2] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E695D5E0];
-  v7 = a3;
+  storeCopy = store;
   v8 = +[PLManagedAsset entityName];
   v9 = [v6 fetchRequestWithEntityName:v8];
 
@@ -5659,8 +5659,8 @@ void __58__PLModelMigrator__invalidateReverseGeocodingDataInStore___block_invoke
   v14[1] = 3221225472;
   v14[2] = __85__PLModelMigrator__regenerateSharedStreamsDataStoreKeysDataInStore_deferHintChanges___block_invoke;
   v14[3] = &__block_descriptor_33_e28_B24__0__NSManagedObject_8Q16l;
-  v15 = a4;
-  LOBYTE(self) = [(PLModelMigrator *)self _runMigrationStepWithName:v12 fetchRequest:v9 store:v7 migrationHandler:v14];
+  changesCopy = changes;
+  LOBYTE(self) = [(PLModelMigrator *)self _runMigrationStepWithName:v12 fetchRequest:v9 store:storeCopy migrationHandler:v14];
 
   return self;
 }
@@ -5742,10 +5742,10 @@ uint64_t __85__PLModelMigrator__regenerateSharedStreamsDataStoreKeysDataInStore_
   return 1;
 }
 
-- (BOOL)_fixSidecarUTIsAndDataStoreSubtype:(id)a3
+- (BOOL)_fixSidecarUTIsAndDataStoreSubtype:(id)subtype
 {
   v4 = MEMORY[0x1E695D5E0];
-  v5 = a3;
+  subtypeCopy = subtype;
   v6 = +[PLInternalResource entityName];
   v7 = [v4 fetchRequestWithEntityName:v6];
 
@@ -5753,7 +5753,7 @@ uint64_t __85__PLModelMigrator__regenerateSharedStreamsDataStoreKeysDataInStore_
   [v7 setPredicate:v8];
 
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s", "-[PLModelMigrator _fixSidecarUTIsAndDataStoreSubtype:]"];
-  LOBYTE(self) = [(PLModelMigrator *)self _runMigrationStepWithName:v9 fetchRequest:v7 store:v5 migrationHandler:&__block_literal_global_2439];
+  LOBYTE(self) = [(PLModelMigrator *)self _runMigrationStepWithName:v9 fetchRequest:v7 store:subtypeCopy migrationHandler:&__block_literal_global_2439];
 
   return self;
 }
@@ -5798,10 +5798,10 @@ uint64_t __54__PLModelMigrator__fixSidecarUTIsAndDataStoreSubtype___block_invoke
   return 1;
 }
 
-- (BOOL)_removeUnneededAnalysisStateTableEntries:(id)a3
+- (BOOL)_removeUnneededAnalysisStateTableEntries:(id)entries
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:a3 name:"[PLModelMigrator _removeUnneededAnalysisStateTableEntries:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v3 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:entries name:"[PLModelMigrator _removeUnneededAnalysisStateTableEntries:]" concurrencyType:*MEMORY[0x1E695D708]];
   v4 = objc_alloc(MEMORY[0x1E695D5E0]);
   v5 = +[PLAssetAnalysisState entityName];
   v6 = [v4 initWithEntityName:v5];
@@ -5845,11 +5845,11 @@ LABEL_6:
   return v11 != 0;
 }
 
-- (BOOL)_reconstructImageExtendedAttributes:(id)a3
+- (BOOL)_reconstructImageExtendedAttributes:(id)attributes
 {
   v13[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695D5E0];
-  v5 = a3;
+  attributesCopy = attributes;
   v6 = +[PLManagedAsset entityName];
   v7 = [v4 fetchRequestWithEntityName:v6];
 
@@ -5866,7 +5866,7 @@ LABEL_6:
   v12[2] = __55__PLModelMigrator__reconstructImageExtendedAttributes___block_invoke;
   v12[3] = &unk_1E7569250;
   v12[4] = self;
-  LOBYTE(self) = [(PLModelMigrator *)self _runMigrationStepWithName:v10 fetchRequest:v7 store:v5 migrationHandler:v12];
+  LOBYTE(self) = [(PLModelMigrator *)self _runMigrationStepWithName:v10 fetchRequest:v7 store:attributesCopy migrationHandler:v12];
 
   return self;
 }
@@ -5889,16 +5889,16 @@ uint64_t __55__PLModelMigrator__reconstructImageExtendedAttributes___block_invok
   return 1;
 }
 
-- (BOOL)_updateAlbumDatesInStore:(id)a3
+- (BOOL)_updateAlbumDatesInStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 1;
   pl_dispatch_once();
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _updateAlbumDatesInStore:]" concurrencyType:1];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _updateAlbumDatesInStore:]" concurrencyType:1];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __44__PLModelMigrator__updateAlbumDatesInStore___block_invoke;
@@ -5952,19 +5952,19 @@ void __44__PLModelMigrator__updateAlbumDatesInStore___block_invoke(uint64_t a1)
 - (BOOL)_updateCPLMarkerFiles
 {
   v47 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v4 = [@"/var/mobile/Media/PhotoData" stringByAppendingPathComponent:@"pauseICloudPhotos"];
-  if (![v3 fileExistsAtPath:v4])
+  if (![defaultManager fileExistsAtPath:v4])
   {
     v8 = 0;
     goto LABEL_10;
   }
 
-  v5 = [(PLModelMigrator *)self pathManager];
-  v6 = [v5 pauseICloudPhotosFilePath];
+  pathManager = [(PLModelMigrator *)self pathManager];
+  pauseICloudPhotosFilePath = [pathManager pauseICloudPhotosFilePath];
 
   v40 = 0;
-  v7 = [v3 moveItemAtPath:v4 toPath:v6 error:&v40];
+  v7 = [defaultManager moveItemAtPath:v4 toPath:pauseICloudPhotosFilePath error:&v40];
   v8 = v40;
   v9 = PLMigrationGetLog();
   v10 = v9;
@@ -5975,7 +5975,7 @@ void __44__PLModelMigrator__updateAlbumDatesInStore___block_invoke(uint64_t a1)
       *buf = 138412546;
       v42 = v4;
       v43 = 2112;
-      v44 = v6;
+      v44 = pauseICloudPhotosFilePath;
       v11 = "Migrated pause marker from %@ to %@";
       v12 = v10;
       v13 = OS_LOG_TYPE_DEFAULT;
@@ -5990,7 +5990,7 @@ LABEL_8:
     *buf = 138412802;
     v42 = v4;
     v43 = 2112;
-    v44 = v6;
+    v44 = pauseICloudPhotosFilePath;
     v45 = 2112;
     v46 = v8;
     v11 = "Failed to migrate pause marker from %@ to %@: %@";
@@ -6002,17 +6002,17 @@ LABEL_8:
 
 LABEL_10:
   v15 = [@"/var/mobile/Media/PhotoData" stringByAppendingPathComponent:@"enableICloudPhotos"];
-  if (![v3 fileExistsAtPath:v15])
+  if (![defaultManager fileExistsAtPath:v15])
   {
     v19 = v8;
     goto LABEL_19;
   }
 
-  v16 = [(PLModelMigrator *)self pathManager];
-  v17 = [v16 enableICloudPhotosFilePath];
+  pathManager2 = [(PLModelMigrator *)self pathManager];
+  enableICloudPhotosFilePath = [pathManager2 enableICloudPhotosFilePath];
 
   v39 = v8;
-  v18 = [v3 moveItemAtPath:v15 toPath:v17 error:&v39];
+  v18 = [defaultManager moveItemAtPath:v15 toPath:enableICloudPhotosFilePath error:&v39];
   v19 = v39;
 
   v20 = PLMigrationGetLog();
@@ -6024,7 +6024,7 @@ LABEL_10:
       *buf = 138412546;
       v42 = v15;
       v43 = 2112;
-      v44 = v17;
+      v44 = enableICloudPhotosFilePath;
       v22 = "Migrated enable marker from %@ to %@";
       v23 = v21;
       v24 = OS_LOG_TYPE_DEFAULT;
@@ -6039,7 +6039,7 @@ LABEL_17:
     *buf = 138412802;
     v42 = v15;
     v43 = 2112;
-    v44 = v17;
+    v44 = enableICloudPhotosFilePath;
     v45 = 2112;
     v46 = v19;
     v22 = "Failed to migrate enable marker from %@ to %@: %@";
@@ -6051,13 +6051,13 @@ LABEL_17:
 
 LABEL_19:
   v26 = [@"/var/mobile/Media/PhotoData" stringByAppendingPathComponent:@"disableICloudPhotos"];
-  if ([v3 fileExistsAtPath:v26])
+  if ([defaultManager fileExistsAtPath:v26])
   {
-    v27 = [(PLModelMigrator *)self pathManager];
-    v28 = [v27 disableICloudPhotosFilePath];
+    pathManager3 = [(PLModelMigrator *)self pathManager];
+    disableICloudPhotosFilePath = [pathManager3 disableICloudPhotosFilePath];
 
     v38 = v19;
-    v29 = [v3 moveItemAtPath:v26 toPath:v28 error:&v38];
+    v29 = [defaultManager moveItemAtPath:v26 toPath:disableICloudPhotosFilePath error:&v38];
     v30 = v38;
 
     v31 = PLMigrationGetLog();
@@ -6069,7 +6069,7 @@ LABEL_19:
         *buf = 138412546;
         v42 = v15;
         v43 = 2112;
-        v44 = v28;
+        v44 = disableICloudPhotosFilePath;
         v33 = "Migrated disable marker from %@ to %@";
         v34 = v32;
         v35 = OS_LOG_TYPE_DEFAULT;
@@ -6084,7 +6084,7 @@ LABEL_26:
       *buf = 138412802;
       v42 = v26;
       v43 = 2112;
-      v44 = v28;
+      v44 = disableICloudPhotosFilePath;
       v45 = 2112;
       v46 = v30;
       v33 = "Failed to migrate disable marker from %@ to %@: %@";
@@ -6103,10 +6103,10 @@ LABEL_28:
   return 1;
 }
 
-- (BOOL)_updateMissingFileSystemVolumeUuidInStore:(id)a3
+- (BOOL)_updateMissingFileSystemVolumeUuidInStore:(id)store
 {
   v4 = MEMORY[0x1E695D5E0];
-  v5 = a3;
+  storeCopy = store;
   v6 = +[PLFileSystemVolume entityName];
   v7 = [v4 fetchRequestWithEntityName:v6];
 
@@ -6114,7 +6114,7 @@ LABEL_28:
   [v7 setPredicate:v8];
 
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s", "-[PLModelMigrator _updateMissingFileSystemVolumeUuidInStore:]"];
-  LOBYTE(self) = [(PLModelMigrator *)self _runMigrationStepWithName:v9 fetchRequest:v7 store:v5 migrationHandler:&__block_literal_global_2413];
+  LOBYTE(self) = [(PLModelMigrator *)self _runMigrationStepWithName:v9 fetchRequest:v7 store:storeCopy migrationHandler:&__block_literal_global_2413];
 
   return self;
 }
@@ -6129,12 +6129,12 @@ uint64_t __61__PLModelMigrator__updateMissingFileSystemVolumeUuidInStore___block
   return 1;
 }
 
-- (BOOL)_deleteExtraneousAdjustedFullSizeResourcesForSloMoAssetsWithStore:(id)a3
+- (BOOL)_deleteExtraneousAdjustedFullSizeResourcesForSloMoAssetsWithStore:(id)store
 {
   v29[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _deleteExtraneousAdjustedFullSizeResourcesForSloMoAssetsWithStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _deleteExtraneousAdjustedFullSizeResourcesForSloMoAssetsWithStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = MEMORY[0x1E695D5E0];
   v8 = +[PLInternalResource entityName];
   v9 = [v7 fetchRequestWithEntityName:v8];
@@ -6144,8 +6144,8 @@ uint64_t __61__PLModelMigrator__updateMissingFileSystemVolumeUuidInStore___block
   v29[0] = v11;
   v12 = [PLManagedAsset predicateForAdjustedAssetsWithKeyPathToAsset:@"asset"];
   v29[1] = v12;
-  v13 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K <= %d", @"localAvailability", 0xFFFFFFFFLL];
-  v29[2] = v13;
+  0xFFFFFFFFLL = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K <= %d", @"localAvailability", 0xFFFFFFFFLL];
+  v29[2] = 0xFFFFFFFFLL;
   v14 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"remoteAvailability", 0];
   v29[3] = v14;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:4];
@@ -6163,11 +6163,11 @@ uint64_t __61__PLModelMigrator__updateMissingFileSystemVolumeUuidInStore___block
   {
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [v18 result];
+      result = [v18 result];
       *buf = 136315394;
       v26 = "[PLModelMigrator _deleteExtraneousAdjustedFullSizeResourcesForSloMoAssetsWithStore:]";
       v27 = 2112;
-      v28 = v22;
+      v28 = result;
       _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_DEFAULT, "%s deleted %@ resource rows.", buf, 0x16u);
     }
   }
@@ -6187,14 +6187,14 @@ uint64_t __61__PLModelMigrator__updateMissingFileSystemVolumeUuidInStore___block
   return v18 != 0;
 }
 
-- (BOOL)_fixImportedAssetsFromCMMSavedInDCIMWithWrongSavedAssetType:(id)a3
+- (BOOL)_fixImportedAssetsFromCMMSavedInDCIMWithWrongSavedAssetType:(id)type
 {
   v46[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typeCopy = type;
   context = objc_autoreleasePoolPush();
   v5 = *MEMORY[0x1E695D708];
-  v35 = v4;
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _fixImportedAssetsFromCMMSavedInDCIMWithWrongSavedAssetType:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v35 = typeCopy;
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:typeCopy name:"[PLModelMigrator _fixImportedAssetsFromCMMSavedInDCIMWithWrongSavedAssetType:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = MEMORY[0x1E695D5E0];
   v8 = +[PLManagedAsset entityName];
   v9 = [v7 fetchRequestWithEntityName:v8];
@@ -6219,13 +6219,13 @@ uint64_t __61__PLModelMigrator__updateMissingFileSystemVolumeUuidInStore___block
     v18 = PLMigrationGetLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v31 = [v17 userInfo];
+      userInfo = [v17 userInfo];
       *buf = 136315650;
       v41 = "[PLModelMigrator _fixImportedAssetsFromCMMSavedInDCIMWithWrongSavedAssetType:]";
       v42 = 2112;
       v43 = v17;
       v44 = 2112;
-      v45 = v31;
+      v45 = userInfo;
       _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_ERROR, "%s: failed to fetch object IDs: %@ %@", buf, 0x20u);
     }
 
@@ -6236,7 +6236,7 @@ uint64_t __61__PLModelMigrator__updateMissingFileSystemVolumeUuidInStore___block
   if ([v16 count])
   {
     v33 = v6;
-    v18 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _fixImportedAssetsFromCMMSavedInDCIMWithWrongSavedAssetType:]" concurrencyType:v5];
+    v18 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:typeCopy name:"[PLModelMigrator _fixImportedAssetsFromCMMSavedInDCIMWithWrongSavedAssetType:]" concurrencyType:v5];
     v19 = MEMORY[0x1E695D560];
     v20 = +[PLManagedAsset entityName];
     v21 = [v19 batchUpdateRequestWithEntityName:v20];
@@ -6261,9 +6261,9 @@ uint64_t __61__PLModelMigrator__updateMissingFileSystemVolumeUuidInStore___block
     {
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
       {
-        v30 = [v25 result];
+        result = [v25 result];
         *buf = 138412290;
-        v41 = v30;
+        v41 = result;
         _os_log_impl(&dword_19BF1F000, v29, OS_LOG_TYPE_DEFAULT, "Set savedAssetType to Camera for %@ imported CMM assets that are saved in DCIM folder with CloudPhotoLibrary savedAssetType", buf, 0xCu);
       }
     }
@@ -6288,26 +6288,26 @@ LABEL_14:
   return v27;
 }
 
-- (BOOL)_resetAnalysisStateForVideosInStore:(id)a3
+- (BOOL)_resetAnalysisStateForVideosInStore:(id)store
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __55__PLModelMigrator__resetAnalysisStateForVideosInStore___block_invoke;
   v4[3] = &unk_1E7569528;
   v4[4] = self;
-  return [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _resetAnalysisStateForVideosInStore:]" store:a3 migrationHandler:v4];
+  return [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _resetAnalysisStateForVideosInStore:]" store:store migrationHandler:v4];
 }
 
-- (BOOL)_deleteVideoThumbsMadeFromPreferredFrameInStore:(id)a3
+- (BOOL)_deleteVideoThumbsMadeFromPreferredFrameInStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __67__PLModelMigrator__deleteVideoThumbsMadeFromPreferredFrameInStore___block_invoke;
   v7[3] = &unk_1E7569500;
   v7[4] = self;
-  v8 = v4;
-  v5 = v4;
+  v8 = storeCopy;
+  v5 = storeCopy;
   LOBYTE(self) = [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _deleteVideoThumbsMadeFromPreferredFrameInStore:]" store:v5 migrationHandler:v7];
 
   return self;
@@ -6397,10 +6397,10 @@ void __67__PLModelMigrator__deleteVideoThumbsMadeFromPreferredFrameInStore___blo
   [v8 setEffectiveThumbnailIndex:0x7FFFFFFFFFFFFFFFLL];
 }
 
-- (BOOL)_filterSceneClassificationsInStore:(id)a3
+- (BOOL)_filterSceneClassificationsInStore:(id)store
 {
   v36 = *MEMORY[0x1E69E9840];
-  v26 = a3;
+  storeCopy = store;
   context = objc_autoreleasePoolPush();
   v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s", "-[PLModelMigrator _filterSceneClassificationsInStore:]"];
   v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", @"scene-thresholds", &unk_1F0FBBF38];
@@ -6408,7 +6408,7 @@ void __67__PLModelMigrator__deleteVideoThumbsMadeFromPreferredFrameInStore___blo
   v5 = [v4 URLForResource:v25 withExtension:@"plist"];
 
   v6 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfURL:v5];
-  v23 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v26 name:"[PLModelMigrator _filterSceneClassificationsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v23 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _filterSceneClassificationsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = MEMORY[0x1E695D5E0];
   v8 = +[PLSceneClassification entityName];
   v9 = [v7 fetchRequestWithEntityName:v8];
@@ -6428,7 +6428,7 @@ void __67__PLModelMigrator__deleteVideoThumbsMadeFromPreferredFrameInStore___blo
     v28[3] = &unk_1E75694D8;
     v29 = v6;
     v30 = &v33;
-    if ([(PLModelMigrator *)self _runMigrationStepWithName:v24 fetchRequest:v9 store:v26 migrationHandler:v28])
+    if ([(PLModelMigrator *)self _runMigrationStepWithName:v24 fetchRequest:v9 store:storeCopy migrationHandler:v28])
     {
       v11 = PLMigrationGetLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -6476,9 +6476,9 @@ void __67__PLModelMigrator__deleteVideoThumbsMadeFromPreferredFrameInStore___blo
     {
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [v15 result];
+        result = [v15 result];
         LODWORD(v33) = 138412290;
-        *(&v33 + 4) = v20;
+        *(&v33 + 4) = result;
         _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_DEFAULT, "Deleted %@ sceneclassifications", &v33, 0xCu);
       }
     }
@@ -6528,15 +6528,15 @@ uint64_t __54__PLModelMigrator__filterSceneClassificationsInStore___block_invoke
   return 1;
 }
 
-- (BOOL)_ensureAllUserVerifiedPersonsHaveFaceCropsInStore:(id)a3
+- (BOOL)_ensureAllUserVerifiedPersonsHaveFaceCropsInStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v5 = +[PLPerson fetchRequest];
   v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %d AND %K.@count > 0 AND SUBQUERY(%K, $f, $f.%K = %d).@count = 0", @"verifiedType", 1, @"detectedFaces", @"detectedFaces", @"nameSource", 1];
   [v5 setPredicate:v6];
 
   v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s", "-[PLModelMigrator _ensureAllUserVerifiedPersonsHaveFaceCropsInStore:]"];
-  LOBYTE(self) = [(PLModelMigrator *)self _runMigrationStepWithName:v7 fetchRequest:v5 store:v4 migrationHandler:&__block_literal_global_2370];
+  LOBYTE(self) = [(PLModelMigrator *)self _runMigrationStepWithName:v7 fetchRequest:v5 store:storeCopy migrationHandler:&__block_literal_global_2370];
 
   return self;
 }
@@ -6555,12 +6555,12 @@ uint64_t __69__PLModelMigrator__ensureAllUserVerifiedPersonsHaveFaceCropsInStore
   return 1;
 }
 
-- (BOOL)_removeUntrackedPersonMetadataInStore:(id)a3
+- (BOOL)_removeUntrackedPersonMetadataInStore:(id)store
 {
   v79[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _removeUntrackedPersonMetadataInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _removeUntrackedPersonMetadataInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = +[PLPerson fetchRequest];
   v8 = +[PLPerson predicateForPersistence];
   [v7 setPredicate:v8];
@@ -6598,8 +6598,8 @@ uint64_t __69__PLModelMigrator__ensureAllUserVerifiedPersonsHaveFaceCropsInStore
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v66 + 1) + 8 * i) personUUID];
-          [v12 addObject:v18];
+          personUUID = [*(*(&v66 + 1) + 8 * i) personUUID];
+          [v12 addObject:personUUID];
         }
 
         v15 = [v13 countByEnumeratingWithState:&v66 objects:v78 count:16];
@@ -6608,14 +6608,14 @@ uint64_t __69__PLModelMigrator__ensureAllUserVerifiedPersonsHaveFaceCropsInStore
       while (v15);
     }
 
-    v19 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v20 = MEMORY[0x1E695DFF8];
-    v21 = [(PLModelMigrator *)self pathManager];
-    v22 = [v21 privateDirectoryWithSubType:5 createIfNeeded:0 error:0];
+    pathManager = [(PLModelMigrator *)self pathManager];
+    v22 = [pathManager privateDirectoryWithSubType:5 createIfNeeded:0 error:0];
     v23 = [v20 fileURLWithPath:v22 isDirectory:1];
 
     v65 = v11;
-    v24 = [v19 contentsOfDirectoryAtURL:v23 includingPropertiesForKeys:0 options:1 error:&v65];
+    v24 = [defaultManager contentsOfDirectoryAtURL:v23 includingPropertiesForKeys:0 options:1 error:&v65];
     v25 = v65;
 
     v50 = v24;
@@ -6623,7 +6623,7 @@ uint64_t __69__PLModelMigrator__ensureAllUserVerifiedPersonsHaveFaceCropsInStore
     if (v24)
     {
       v48 = v5;
-      v49 = v4;
+      v49 = storeCopy;
       v63 = 0u;
       v64 = 0u;
       v61 = 0u;
@@ -6646,15 +6646,15 @@ uint64_t __69__PLModelMigrator__ensureAllUserVerifiedPersonsHaveFaceCropsInStore
             }
 
             v30 = *(*(&v61 + 1) + 8 * j);
-            v31 = [v30 path];
+            path = [v30 path];
             v60 = 0;
-            v32 = [PLPersistedPersonMetadata isValidPath:v31 outPersonUUID:&v60];
+            v32 = [PLPersistedPersonMetadata isValidPath:path outPersonUUID:&v60];
             v33 = v60;
 
             if (v32 && ([v12 containsObject:v33]& 1) == 0)
             {
               v59 = v25;
-              v34 = [v19 removeItemAtURL:v30 error:&v59];
+              v34 = [defaultManager removeItemAtURL:v30 error:&v59];
               v35 = v59;
 
               if (v34)
@@ -6668,13 +6668,13 @@ uint64_t __69__PLModelMigrator__ensureAllUserVerifiedPersonsHaveFaceCropsInStore
                 v36 = PLMigrationGetLog();
                 if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
                 {
-                  v37 = [v35 userInfo];
+                  userInfo = [v35 userInfo];
                   buf = 136315650;
                   v72 = "[PLModelMigrator _removeUntrackedPersonMetadataInStore:]";
                   v73 = 2112;
                   v74 = v35;
                   v75 = 2112;
-                  v76 = v37;
+                  v76 = userInfo;
                   _os_log_impl(&dword_19BF1F000, v36, OS_LOG_TYPE_ERROR, "%s: failed to remove item: %@ %@", &buf, 0x20u);
                 }
 
@@ -6706,7 +6706,7 @@ uint64_t __69__PLModelMigrator__ensureAllUserVerifiedPersonsHaveFaceCropsInStore
       }
 
       v5 = v48;
-      v4 = v49;
+      storeCopy = v49;
       v7 = v53;
       v6 = v54;
     }
@@ -6714,8 +6714,8 @@ uint64_t __69__PLModelMigrator__ensureAllUserVerifiedPersonsHaveFaceCropsInStore
     else
     {
       v58 = 0;
-      v40 = [v23 path];
-      v41 = [v19 fileExistsAtPath:v40 isDirectory:&v58];
+      path2 = [v23 path];
+      v41 = [defaultManager fileExistsAtPath:path2 isDirectory:&v58];
       v42 = (v41 & v58);
 
       v43 = PLMigrationGetLog();
@@ -6726,13 +6726,13 @@ uint64_t __69__PLModelMigrator__ensureAllUserVerifiedPersonsHaveFaceCropsInStore
         v6 = v54;
         if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
         {
-          v45 = [v25 userInfo];
+          userInfo2 = [v25 userInfo];
           buf = 136315650;
           v72 = "[PLModelMigrator _removeUntrackedPersonMetadataInStore:]";
           v73 = 2112;
           v74 = v25;
           v75 = 2112;
-          v76 = v45;
+          v76 = userInfo2;
           _os_log_impl(&dword_19BF1F000, v44, OS_LOG_TYPE_ERROR, "%s: failed to return contents of directory: %@ %@", &buf, 0x20u);
         }
       }
@@ -6763,13 +6763,13 @@ uint64_t __69__PLModelMigrator__ensureAllUserVerifiedPersonsHaveFaceCropsInStore
     v12 = PLMigrationGetLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v38 = [v11 userInfo];
+      userInfo3 = [v11 userInfo];
       buf = 136315650;
       v72 = "[PLModelMigrator _removeUntrackedPersonMetadataInStore:]";
       v73 = 2112;
       v74 = v11;
       v75 = 2112;
-      v76 = v38;
+      v76 = userInfo3;
       _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_ERROR, "%s: failed to fetch persons: %@ %@", &buf, 0x20u);
     }
 
@@ -6780,18 +6780,18 @@ uint64_t __69__PLModelMigrator__ensureAllUserVerifiedPersonsHaveFaceCropsInStore
   return v39 & 1;
 }
 
-- (BOOL)_populateCloudVerifiedTypeOnPersonsInStore:(id)a3
+- (BOOL)_populateCloudVerifiedTypeOnPersonsInStore:(id)store
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _populateCloudVerifiedTypeOnPersonsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _populateCloudVerifiedTypeOnPersonsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = MEMORY[0x1E695D560];
   v8 = +[PLPerson entityName];
   v9 = [v7 batchUpdateRequestWithEntityName:v8];
 
-  v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != %d AND %K != %d", @"verifiedType", 0, @"verifiedType", 0xFFFFFFFFLL];
-  [v9 setPredicate:v10];
+  0xFFFFFFFFLL = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != %d AND %K != %d", @"verifiedType", 0, @"verifiedType", 0xFFFFFFFFLL];
+  [v9 setPredicate:0xFFFFFFFFLL];
 
   v27 = @"cloudVerifiedType";
   v11 = [MEMORY[0x1E696ABC8] expressionForKeyPath:@"verifiedType"];
@@ -6809,22 +6809,22 @@ uint64_t __69__PLModelMigrator__ensureAllUserVerifiedPersonsHaveFaceCropsInStore
   {
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v13 result];
+      result = [v13 result];
       *buf = 138412290;
-      v22 = v17;
+      v22 = result;
       _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_DEFAULT, "Populated cloud verified type for %@ persons", buf, 0xCu);
     }
   }
 
   else if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
   {
-    v18 = [v14 userInfo];
+    userInfo = [v14 userInfo];
     *buf = 136315650;
     v22 = "[PLModelMigrator _populateCloudVerifiedTypeOnPersonsInStore:]";
     v23 = 2112;
     v24 = v14;
     v25 = 2112;
-    v26 = v18;
+    v26 = userInfo;
     _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_ERROR, "%s: failed to update: %@ %@", buf, 0x20u);
   }
 
@@ -6832,12 +6832,12 @@ uint64_t __69__PLModelMigrator__ensureAllUserVerifiedPersonsHaveFaceCropsInStore
   return v13 != 0;
 }
 
-- (BOOL)_populateCloudNameSourceOnFacesInStore:(id)a3
+- (BOOL)_populateCloudNameSourceOnFacesInStore:(id)store
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _populateCloudNameSourceOnFacesInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _populateCloudNameSourceOnFacesInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = MEMORY[0x1E695D560];
   v8 = +[PLDetectedFace entityName];
   v9 = [v7 batchUpdateRequestWithEntityName:v8];
@@ -6861,22 +6861,22 @@ uint64_t __69__PLModelMigrator__ensureAllUserVerifiedPersonsHaveFaceCropsInStore
   {
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v13 result];
+      result = [v13 result];
       *buf = 138412290;
-      v22 = v17;
+      v22 = result;
       _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_DEFAULT, "Populated cloud name source for %@ faces", buf, 0xCu);
     }
   }
 
   else if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
   {
-    v18 = [v14 userInfo];
+    userInfo = [v14 userInfo];
     *buf = 136315650;
     v22 = "[PLModelMigrator _populateCloudNameSourceOnFacesInStore:]";
     v23 = 2112;
     v24 = v14;
     v25 = 2112;
-    v26 = v18;
+    v26 = userInfo;
     _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_ERROR, "%s: failed to update: %@ %@", buf, 0x20u);
   }
 
@@ -6884,12 +6884,12 @@ uint64_t __69__PLModelMigrator__ensureAllUserVerifiedPersonsHaveFaceCropsInStore
   return v13 != 0;
 }
 
-- (BOOL)_markMigrationVerifiedTypePersonsInStore:(id)a3
+- (BOOL)_markMigrationVerifiedTypePersonsInStore:(id)store
 {
   v58[5] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   context = objc_autoreleasePoolPush();
-  v5 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _markMigrationVerifiedTypePersonsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v5 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _markMigrationVerifiedTypePersonsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %d", @"verifiedType", 1];
   v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K.@count = 0", @"detectedFaces"];
   v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = nil OR %K = %@", @"fullName", @"fullName", &stru_1F0F06D80];
@@ -6919,7 +6919,7 @@ uint64_t __69__PLModelMigrator__ensureAllUserVerifiedPersonsHaveFaceCropsInStore
   v18 = v49;
   if (v17)
   {
-    v40 = v4;
+    v40 = storeCopy;
     v19 = MEMORY[0x1E695D560];
     v20 = +[PLPerson entityName];
     v21 = [v19 batchUpdateRequestWithEntityName:v20];
@@ -6982,7 +6982,7 @@ LABEL_10:
       goto LABEL_10;
     }
 
-    v4 = v40;
+    storeCopy = v40;
     goto LABEL_12;
   }
 
@@ -6992,13 +6992,13 @@ LABEL_10:
   v21 = PLMigrationGetLog();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
   {
-    v38 = [v18 userInfo];
+    userInfo = [v18 userInfo];
     *buf = 136315650;
     v51 = "[PLModelMigrator _markMigrationVerifiedTypePersonsInStore:]";
     v52 = 2112;
     v53 = v18;
     v54 = 2112;
-    v55 = v38;
+    v55 = userInfo;
     _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_ERROR, "%s: failed to fetch object IDs: %@ %@", buf, 0x20u);
   }
 
@@ -7013,12 +7013,12 @@ LABEL_12:
   return v26;
 }
 
-- (BOOL)_storeContainsFaceCrops:(id)a3 success:(BOOL *)a4
+- (BOOL)_storeContainsFaceCrops:(id)crops success:(BOOL *)success
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  cropsCopy = crops;
   v7 = objc_autoreleasePoolPush();
-  v8 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v6 name:"[PLModelMigrator _storeContainsFaceCrops:success:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v8 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:cropsCopy name:"[PLModelMigrator _storeContainsFaceCrops:success:]" concurrencyType:*MEMORY[0x1E695D708]];
   v9 = MEMORY[0x1E695D5E0];
   v10 = +[PLFaceCrop entityName];
   v11 = [v9 fetchRequestWithEntityName:v10];
@@ -7035,13 +7035,13 @@ LABEL_12:
       v13 = PLMigrationGetLog();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        v15 = [v14 userInfo];
+        userInfo = [v14 userInfo];
         *buf = 136315650;
         v19 = "[PLModelMigrator _storeContainsFaceCrops:success:]";
         v20 = 2112;
         v21 = v14;
         v22 = 2112;
-        v23 = v15;
+        v23 = userInfo;
         _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_ERROR, "%s failed to count face crops in store: %@ %@", buf, 0x20u);
       }
 
@@ -7064,9 +7064,9 @@ LABEL_12:
   }
 
   objc_autoreleasePoolPop(v7);
-  if (a4)
+  if (success)
   {
-    *a4 = v12;
+    *success = v12;
   }
 
   return v13;
@@ -7075,21 +7075,21 @@ LABEL_12:
 - (BOOL)_removeAutoloopCacheIfExists
 {
   v2 = MEMORY[0x1E695DFF8];
-  v3 = [(PLModelMigrator *)self pathManager];
-  v4 = [v3 privateCacheDirectoryWithSubType:11];
+  pathManager = [(PLModelMigrator *)self pathManager];
+  v4 = [pathManager privateCacheDirectoryWithSubType:11];
   v5 = 1;
   v6 = [v2 fileURLWithPath:v4 isDirectory:1];
 
   if (v6)
   {
-    v7 = [MEMORY[0x1E696AC08] defaultManager];
-    v8 = [v6 path];
-    v9 = [v7 directoryExistsAtPath:v8];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    path = [v6 path];
+    v9 = [defaultManager directoryExistsAtPath:path];
 
     if (v9)
     {
-      v10 = [MEMORY[0x1E696AC08] defaultManager];
-      v5 = [v10 removeItemAtURL:v6 error:0];
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+      v5 = [defaultManager2 removeItemAtURL:v6 error:0];
     }
 
     else
@@ -7101,26 +7101,26 @@ LABEL_12:
   return v5;
 }
 
-- (BOOL)_fixUTIforSlowMoInStore:(id)a3
+- (BOOL)_fixUTIforSlowMoInStore:(id)store
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   pl_dispatch_once();
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _fixUTIforSlowMoInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _fixUTIforSlowMoInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = objc_alloc(MEMORY[0x1E695D560]);
   v8 = +[PLManagedAsset entityName];
   v9 = [v7 initWithEntityName:v8];
 
   [v9 setResultType:2];
   v10 = MEMORY[0x1E696AE18];
-  v11 = [*MEMORY[0x1E6982E58] identifier];
-  v12 = [v10 predicateWithFormat:@"%K = %d AND %K = %@", @"kindSubtype", 101, @"uniformTypeIdentifier", v11];
+  identifier = [*MEMORY[0x1E6982E58] identifier];
+  v12 = [v10 predicateWithFormat:@"%K = %d AND %K = %@", @"kindSubtype", 101, @"uniformTypeIdentifier", identifier];
 
   [v9 setPredicate:v12];
   v29 = @"uniformTypeIdentifier";
-  v13 = [*MEMORY[0x1E6982F80] identifier];
-  v30[0] = v13;
+  identifier2 = [*MEMORY[0x1E6982F80] identifier];
+  v30[0] = identifier2;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:&v29 count:1];
   [v9 setPropertiesToUpdate:v14];
 
@@ -7133,22 +7133,22 @@ LABEL_12:
   {
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v15 result];
+      result = [v15 result];
       *buf = 138412290;
-      v24 = v19;
+      v24 = result;
       _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_DEFAULT, "Fixed UTI for %@ slow-mo videos", buf, 0xCu);
     }
   }
 
   else if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
   {
-    v20 = [v16 userInfo];
+    userInfo = [v16 userInfo];
     *buf = 136315650;
     v24 = "[PLModelMigrator _fixUTIforSlowMoInStore:]";
     v25 = 2112;
     v26 = v16;
     v27 = 2112;
-    v28 = v20;
+    v28 = userInfo;
     _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_ERROR, "%s: failed to update: %@ %@", buf, 0x20u);
   }
 
@@ -7156,19 +7156,19 @@ LABEL_12:
   return v15 != 0;
 }
 
-- (BOOL)_unquarantineClass:(Class)a3 inManagedObject:(id)a4
+- (BOOL)_unquarantineClass:(Class)class inManagedObject:(id)object
 {
   v24 = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E695D5E0];
-  v6 = a4;
-  v7 = [(objc_class *)a3 entityName];
-  v8 = [v5 fetchRequestWithEntityName:v7];
+  objectCopy = object;
+  entityName = [(objc_class *)class entityName];
+  v8 = [v5 fetchRequestWithEntityName:entityName];
 
   v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"cloudLocalState == %d", 4];
   [v8 setPredicate:v9];
   [v8 setFetchBatchSize:100];
-  v10 = [v6 executeFetchRequest:v8 error:0];
-  v11 = [v6 enumerateWithIncrementalSaveUsingObjects:v10 withBlock:&__block_literal_global_2324];
+  v10 = [objectCopy executeFetchRequest:v8 error:0];
+  v11 = [objectCopy enumerateWithIncrementalSaveUsingObjects:v10 withBlock:&__block_literal_global_2324];
 
   v12 = PLMigrationGetLog();
   v13 = v12;
@@ -7176,14 +7176,14 @@ LABEL_12:
   {
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v14 = [(objc_class *)a3 entityName];
-      v15 = [v11 userInfo];
+      entityName2 = [(objc_class *)class entityName];
+      userInfo = [v11 userInfo];
       *buf = 138412802;
-      v19 = v14;
+      v19 = entityName2;
       v20 = 2112;
       v21 = v11;
       v22 = 2112;
-      v23 = v15;
+      v23 = userInfo;
       _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_ERROR, "unquarantined %@ failed: %@ %@", buf, 0x20u);
 
 LABEL_6:
@@ -7193,11 +7193,11 @@ LABEL_6:
   else if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v16 = [v10 count];
-    v14 = [(objc_class *)a3 entityName];
+    entityName2 = [(objc_class *)class entityName];
     *buf = 134218242;
     v19 = v16;
     v20 = 2112;
-    v21 = v14;
+    v21 = entityName2;
     _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_DEFAULT, "unquarantined %lu %@", buf, 0x16u);
     goto LABEL_6;
   }
@@ -7222,12 +7222,12 @@ void __54__PLModelMigrator__unquarantineClass_inManagedObject___block_invoke(uin
   }
 }
 
-- (BOOL)_unquarantinedQuarantinedItems:(id)a3
+- (BOOL)_unquarantinedQuarantinedItems:(id)items
 {
   v19[8] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemsCopy = items;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _unquarantinedQuarantinedItems:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:itemsCopy name:"[PLModelMigrator _unquarantinedQuarantinedItems:]" concurrencyType:*MEMORY[0x1E695D708]];
   v19[0] = objc_opt_class();
   v19[1] = objc_opt_class();
   v19[2] = objc_opt_class();
@@ -7279,12 +7279,12 @@ LABEL_11:
   return v12;
 }
 
-- (BOOL)_retryQuarantinedAssetsAndFixResourceRelation:(id)a3
+- (BOOL)_retryQuarantinedAssetsAndFixResourceRelation:(id)relation
 {
   v22[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  relationCopy = relation;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _retryQuarantinedAssetsAndFixResourceRelation:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:relationCopy name:"[PLModelMigrator _retryQuarantinedAssetsAndFixResourceRelation:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = MEMORY[0x1E695D5E0];
   v8 = +[PLCloudResource entityName];
   v9 = [v7 fetchRequestWithEntityName:v8];
@@ -7305,11 +7305,11 @@ LABEL_11:
   {
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v16 = [v13 userInfo];
+      userInfo = [v13 userInfo];
       v18 = 138412546;
       v19 = v13;
       v20 = 2112;
-      v21 = v16;
+      v21 = userInfo;
       _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_ERROR, "_retryQuarantinedAssetsAndFixResourceRelation saveResource: failed: %@ %@", &v18, 0x16u);
     }
   }
@@ -7337,17 +7337,17 @@ void __65__PLModelMigrator__retryQuarantinedAssetsAndFixResourceRelation___block
   [v2 setAsset:0];
 }
 
-- (BOOL)_deletePersonsMissingUUIDInStore:(id)a3
+- (BOOL)_deletePersonsMissingUUIDInStore:(id)store
 {
   v4 = MEMORY[0x1E695D5E0];
-  v5 = a3;
+  storeCopy = store;
   v6 = +[PLPerson entityName];
   v7 = [v4 fetchRequestWithEntityName:v6];
 
   v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"personUUID == nil OR personUUID == ''"];
   [v7 setPredicate:v8];
 
-  LOBYTE(self) = [(PLModelMigrator *)self _runMigrationStepWithName:@"deletePersonsMissingUUID" fetchRequest:v7 store:v5 migrationHandler:&__block_literal_global_2316];
+  LOBYTE(self) = [(PLModelMigrator *)self _runMigrationStepWithName:@"deletePersonsMissingUUID" fetchRequest:v7 store:storeCopy migrationHandler:&__block_literal_global_2316];
   return self;
 }
 
@@ -7367,13 +7367,13 @@ uint64_t __52__PLModelMigrator__deletePersonsMissingUUIDInStore___block_invoke(u
   return 1;
 }
 
-- (BOOL)_repushPersonsWithMergeTargetInStore:(id)a3
+- (BOOL)_repushPersonsWithMergeTargetInStore:(id)store
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   pl_dispatch_once();
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _repushPersonsWithMergeTargetInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _repushPersonsWithMergeTargetInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = MEMORY[0x1E695D5E0];
   v8 = +[PLPerson entityName];
   v9 = [v7 fetchRequestWithEntityName:v8];
@@ -7442,24 +7442,24 @@ void __56__PLModelMigrator__repushPersonsWithMergeTargetInStore___block_invoke(u
   }
 }
 
-- (BOOL)_persistStoreUUIDToMobileCPLPlist:(id)a3
+- (BOOL)_persistStoreUUIDToMobileCPLPlist:(id)plist
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  plistCopy = plist;
   v5 = objc_autoreleasePoolPush();
   v6 = MEMORY[0x1E69BF1C0];
   v7 = *MEMORY[0x1E69BF418];
-  v8 = [(PLModelMigrator *)self pathManager];
-  v9 = [v6 readCPLPlistObjectWithKey:v7 pathManager:v8];
+  pathManager = [(PLModelMigrator *)self pathManager];
+  v9 = [v6 readCPLPlistObjectWithKey:v7 pathManager:pathManager];
 
   if (!v9)
   {
-    v10 = [v4 metadata];
-    v11 = [v10 objectForKey:*MEMORY[0x1E695D4B8]];
+    metadata = [plistCopy metadata];
+    v11 = [metadata objectForKey:*MEMORY[0x1E695D4B8]];
 
     v12 = MEMORY[0x1E69BF1C0];
-    v13 = [(PLModelMigrator *)self pathManager];
-    [v12 saveCPLPlistObject:v11 forKey:v7 pathManager:v13];
+    pathManager2 = [(PLModelMigrator *)self pathManager];
+    [v12 saveCPLPlistObject:v11 forKey:v7 pathManager:pathManager2];
 
     v14 = PLMigrationGetLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -7474,10 +7474,10 @@ void __56__PLModelMigrator__repushPersonsWithMergeTargetInStore___block_invoke(u
   return 1;
 }
 
-- (BOOL)_fixNilCloudMasterGUID:(id)a3
+- (BOOL)_fixNilCloudMasterGUID:(id)d
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v27 = 0;
   v28 = &v27;
   v29 = 0x2020000000;
@@ -7487,7 +7487,7 @@ void __56__PLModelMigrator__repushPersonsWithMergeTargetInStore___block_invoke(u
   v25 = 0x2020000000;
   v26 = 0;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _fixNilCloudMasterGUID:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:dCopy name:"[PLModelMigrator _fixNilCloudMasterGUID:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = MEMORY[0x1E695D5E0];
   v8 = +[PLCloudMaster entityName];
   v9 = [v7 fetchRequestWithEntityName:v8];
@@ -7510,11 +7510,11 @@ void __56__PLModelMigrator__repushPersonsWithMergeTargetInStore___block_invoke(u
     v14 = PLMigrationGetLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v15 = [v13 userInfo];
+      userInfo = [v13 userInfo];
       *buf = 138412546;
       *v32 = v13;
       *&v32[8] = 2112;
-      v33 = v15;
+      v33 = userInfo;
       _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_ERROR, "_fixNilCloudMasterGUID failed: %@ %@", buf, 0x16u);
     }
   }
@@ -7599,10 +7599,10 @@ void __42__PLModelMigrator__fixNilCloudMasterGUID___block_invoke(uint64_t a1, vo
   ++*(*(*(a1 + 48) + 8) + 24);
 }
 
-- (BOOL)_fixAssetMasterResources:(id)a3
+- (BOOL)_fixAssetMasterResources:(id)resources
 {
   v41[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resourcesCopy = resources;
   v32 = 0;
   v33 = &v32;
   v34 = 0x2020000000;
@@ -7612,7 +7612,7 @@ void __42__PLModelMigrator__fixNilCloudMasterGUID___block_invoke(uint64_t a1, vo
   v30 = 0x2020000000;
   v31 = 0;
   context = objc_autoreleasePoolPush();
-  v5 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _fixAssetMasterResources:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v5 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:resourcesCopy name:"[PLModelMigrator _fixAssetMasterResources:]" concurrencyType:*MEMORY[0x1E695D708]];
   v6 = MEMORY[0x1E695D5E0];
   v7 = +[PLManagedAsset entityName];
   v8 = [v6 fetchRequestWithEntityName:v7];
@@ -7643,11 +7643,11 @@ void __42__PLModelMigrator__fixNilCloudMasterGUID___block_invoke(uint64_t a1, vo
       v15 = PLMigrationGetLog();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        v16 = [v13 userInfo];
+        userInfo = [v13 userInfo];
         *buf = 138412546;
         v37 = v13;
         v38 = 2112;
-        *v39 = v16;
+        *v39 = userInfo;
         _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_ERROR, "_fixAssetMasterResources failed: %@ %@", buf, 0x16u);
       }
     }
@@ -7789,41 +7789,41 @@ void __44__PLModelMigrator__fixAssetMasterResources___block_invoke(uint64_t a1, 
   }
 }
 
-- (BOOL)_repushAssetsWithAnyUserConfirmedFaceInStore:(id)a3
+- (BOOL)_repushAssetsWithAnyUserConfirmedFaceInStore:(id)store
 {
   v4 = MEMORY[0x1E696AE18];
-  v5 = a3;
+  storeCopy = store;
   v6 = [v4 predicateWithFormat:@"SUBQUERY(detectedFaces, $f, $f.nameSource == %d).@count != 0", 1];
-  LOBYTE(self) = [(PLModelMigrator *)self _repushAssetsMatchingPredicate:v6 inStore:v5 withMaster:0];
+  LOBYTE(self) = [(PLModelMigrator *)self _repushAssetsMatchingPredicate:v6 inStore:storeCopy withMaster:0];
 
   return self;
 }
 
-- (BOOL)_repushAssetsMatchingPredicate:(id)a3 inStore:(id)a4 withMaster:(BOOL)a5
+- (BOOL)_repushAssetsMatchingPredicate:(id)predicate inStore:(id)store withMaster:(BOOL)master
 {
-  v5 = a5;
+  masterCopy = master;
   v47 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  predicateCopy = predicate;
+  storeCopy = store;
   pl_dispatch_once();
   context = objc_autoreleasePoolPush();
-  v28 = v9;
-  v10 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v9 name:"[PLModelMigrator _repushAssetsMatchingPredicate:inStore:withMaster:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v28 = storeCopy;
+  v10 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _repushAssetsMatchingPredicate:inStore:withMaster:]" concurrencyType:*MEMORY[0x1E695D708]];
   v11 = MEMORY[0x1E695D5E0];
   v12 = +[PLManagedAsset entityName];
   v13 = [v11 fetchRequestWithEntityName:v12];
 
   v31 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != %d AND %K != %d", @"cloudLocalState", 0, @"cloudLocalState", 4];
   v14 = +[PLManagedAsset predicateForSupportedAssetTypesForUpload];
-  v15 = [MEMORY[0x1E695DF70] array];
-  [v15 addObject:v31];
-  [v15 addObject:v14];
-  if (v8)
+  array = [MEMORY[0x1E695DF70] array];
+  [array addObject:v31];
+  [array addObject:v14];
+  if (predicateCopy)
   {
-    [v15 addObject:v8];
+    [array addObject:predicateCopy];
   }
 
-  v16 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:v15];
+  v16 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:array];
   [v13 setPredicate:v16];
 
   [v13 setFetchBatchSize:100];
@@ -7844,8 +7844,8 @@ void __44__PLModelMigrator__fixAssetMasterResources___block_invoke(uint64_t a1, 
     v32[1] = 3221225472;
     v32[2] = __69__PLModelMigrator__repushAssetsMatchingPredicate_inStore_withMaster___block_invoke;
     v32[3] = &unk_1E7569400;
-    v18 = v5;
-    v33 = v5;
+    v18 = masterCopy;
+    v33 = masterCopy;
     v32[4] = &v34;
     v32[5] = v45;
     v19 = [v10 enumerateWithIncrementalSaveUsingObjects:v17 withBlock:v32];
@@ -7907,7 +7907,7 @@ void __44__PLModelMigrator__fixAssetMasterResources___block_invoke(uint64_t a1, 
       *v45 = 136315650;
       *&v45[4] = "[PLModelMigrator _repushAssetsMatchingPredicate:inStore:withMaster:]";
       *&v45[12] = 2112;
-      *&v45[14] = v8;
+      *&v45[14] = predicateCopy;
       *&v45[22] = 2112;
       v46 = v30;
       _os_log_impl(&dword_19BF1F000, v22, OS_LOG_TYPE_ERROR, "%s fetch failed with predicate %@, error: %@", v45, 0x20u);
@@ -7951,12 +7951,12 @@ void __69__PLModelMigrator__repushAssetsMatchingPredicate_inStore_withMaster___b
   return v7;
 }
 
-- (void)_fixIncorrectHeifMetadataForAsset:(id)a3
+- (void)_fixIncorrectHeifMetadataForAsset:(id)asset
 {
   v69 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(PLModelMigrator *)self _predicateForInconsistentHeifAssets];
-  if ([v6 evaluateWithObject:v5])
+  assetCopy = asset;
+  _predicateForInconsistentHeifAssets = [(PLModelMigrator *)self _predicateForInconsistentHeifAssets];
+  if ([_predicateForInconsistentHeifAssets evaluateWithObject:assetCopy])
   {
     v7 = PLMigrationGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -7965,30 +7965,30 @@ void __69__PLModelMigrator__repushAssetsMatchingPredicate_inStore_withMaster___b
       *buf = 138412546;
       v64 = v8;
       v65 = 2112;
-      v66 = v5;
+      v66 = assetCopy;
       _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_DEFAULT, "%@: Attempting to fix incorrect HEIF metadata for asset: %@", buf, 0x16u);
     }
 
-    if ([v5 width] && objc_msgSend(v5, "height"))
+    if ([assetCopy width] && objc_msgSend(assetCopy, "height"))
     {
 LABEL_13:
-      v59 = v6;
-      v61 = [v5 additionalAttributes];
-      v15 = [v61 originalFilename];
-      v16 = [v15 pathExtension];
-      v17 = [v16 uppercaseString];
+      v59 = _predicateForInconsistentHeifAssets;
+      additionalAttributes = [assetCopy additionalAttributes];
+      originalFilename = [additionalAttributes originalFilename];
+      pathExtension = [originalFilename pathExtension];
+      uppercaseString = [pathExtension uppercaseString];
 
-      v18 = [v5 pathForOriginalFile];
-      v19 = [v5 filename];
-      v20 = [v19 stringByDeletingPathExtension];
-      v21 = [v20 stringByAppendingPathExtension:v17];
+      pathForOriginalFile = [assetCopy pathForOriginalFile];
+      filename = [assetCopy filename];
+      stringByDeletingPathExtension = [filename stringByDeletingPathExtension];
+      v21 = [stringByDeletingPathExtension stringByAppendingPathExtension:uppercaseString];
 
-      v22 = [v18 stringByDeletingPathExtension];
-      v60 = v17;
-      v23 = [v22 stringByAppendingPathExtension:v17];
+      stringByDeletingPathExtension2 = [pathForOriginalFile stringByDeletingPathExtension];
+      v60 = uppercaseString;
+      v23 = [stringByDeletingPathExtension2 stringByAppendingPathExtension:uppercaseString];
 
-      v24 = [MEMORY[0x1E696AC08] defaultManager];
-      v25 = [v24 fileExistsAtPath:v18];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      v25 = [defaultManager fileExistsAtPath:pathForOriginalFile];
 
       if (!v25)
       {
@@ -7996,9 +7996,9 @@ LABEL_13:
         goto LABEL_22;
       }
 
-      v26 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
       v62 = 0;
-      v27 = [v26 moveItemAtPath:v18 toPath:v23 error:&v62];
+      v27 = [defaultManager2 moveItemAtPath:pathForOriginalFile toPath:v23 error:&v62];
       v58 = v62;
 
       v28 = PLMigrationGetLog();
@@ -8011,7 +8011,7 @@ LABEL_13:
           *buf = 138412802;
           v64 = v30;
           v65 = 2112;
-          v66 = v18;
+          v66 = pathForOriginalFile;
           v67 = 2112;
           v68 = v23;
           v31 = "%@: Moved original resource from %@ to %@";
@@ -8028,7 +8028,7 @@ LABEL_20:
         *buf = 138412802;
         v64 = v30;
         v65 = 2112;
-        v66 = v18;
+        v66 = pathForOriginalFile;
         v67 = 2112;
         v68 = v23;
         v31 = "%@: Failed to move the original resource from %@ to %@";
@@ -8038,7 +8038,7 @@ LABEL_20:
       }
 
 LABEL_22:
-      [v5 setFilename:v21];
+      [assetCopy setFilename:v21];
       v34 = PLMigrationGetLog();
       if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
       {
@@ -8053,9 +8053,9 @@ LABEL_22:
       v36 = v21;
       v37 = a2;
 
-      v38 = [v5 master];
-      v39 = [v5 uuid];
-      v40 = [PLCloudResource cloudResourceForResourceType:1 forAssetUuid:v39 forCloudMaster:v38];
+      master = [assetCopy master];
+      uuid = [assetCopy uuid];
+      v40 = [PLCloudResource cloudResourceForResourceType:1 forAssetUuid:uuid forCloudMaster:master];
 
       if (v40)
       {
@@ -8072,52 +8072,52 @@ LABEL_22:
         }
       }
 
-      [v5 setUniformTypeIdentifierFromOriginalFile];
-      if (v38)
+      [assetCopy setUniformTypeIdentifierFromOriginalFile];
+      if (master)
       {
-        v43 = [v5 uniformTypeIdentifier];
-        [v38 setUniformTypeIdentifier:v43];
+        uniformTypeIdentifier = [assetCopy uniformTypeIdentifier];
+        [master setUniformTypeIdentifier:uniformTypeIdentifier];
       }
 
       v44 = v37;
       if (v40)
       {
-        v45 = [v5 uniformTypeIdentifier];
-        [v40 setUniformTypeIdentifier:v45];
+        uniformTypeIdentifier2 = [assetCopy uniformTypeIdentifier];
+        [v40 setUniformTypeIdentifier:uniformTypeIdentifier2];
       }
 
       v46 = PLMigrationGetLog();
       if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
       {
         v47 = NSStringFromSelector(v37);
-        v48 = [v5 uniformTypeIdentifier];
+        uniformTypeIdentifier3 = [assetCopy uniformTypeIdentifier];
         *buf = 138412546;
         v64 = v47;
         v65 = 2112;
-        v66 = v48;
+        v66 = uniformTypeIdentifier3;
         _os_log_impl(&dword_19BF1F000, v46, OS_LOG_TYPE_DEFAULT, "%@: Changed UTI to %@", buf, 0x16u);
 
         v44 = v37;
       }
 
-      if ([v5 kind] != 3)
+      if ([assetCopy kind] != 3)
       {
         goto LABEL_42;
       }
 
-      v49 = [v5 promoteFromUnknownKind];
+      promoteFromUnknownKind = [assetCopy promoteFromUnknownKind];
       v50 = PLMigrationGetLog();
       v51 = v50;
-      if (v49)
+      if (promoteFromUnknownKind)
       {
         if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
         {
           v52 = NSStringFromSelector(v44);
-          v53 = [v5 kind];
+          kind = [assetCopy kind];
           *buf = 138412546;
           v64 = v52;
           v65 = 1024;
-          LODWORD(v66) = v53;
+          LODWORD(v66) = kind;
           v54 = "%@: Promoted asset kind from Unknown to %d";
           v55 = v51;
           v56 = OS_LOG_TYPE_DEFAULT;
@@ -8140,15 +8140,15 @@ LABEL_40:
       }
 
 LABEL_42:
-      v6 = v59;
+      _predicateForInconsistentHeifAssets = v59;
       goto LABEL_43;
     }
 
-    v9 = [v5 imageProperties];
-    if (v9)
+    imageProperties = [assetCopy imageProperties];
+    if (imageProperties)
     {
-      [v5 setOriginalSizeAndOrientationFromImageProperties:v9];
-      [v5 setSizeAndOrientationFromImageProperties:v9];
+      [assetCopy setOriginalSizeAndOrientationFromImageProperties:imageProperties];
+      [assetCopy setSizeAndOrientationFromImageProperties:imageProperties];
       v10 = PLMigrationGetLog();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
@@ -8184,18 +8184,18 @@ LABEL_11:
 LABEL_43:
 }
 
-- (BOOL)_fixIncorrectHeifMetadataInStore:(id)a3
+- (BOOL)_fixIncorrectHeifMetadataInStore:(id)store
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _fixIncorrectHeifMetadataInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _fixIncorrectHeifMetadataInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = MEMORY[0x1E695D5E0];
   v8 = +[PLManagedAsset entityName];
   v9 = [v7 fetchRequestWithEntityName:v8];
 
-  v10 = [(PLModelMigrator *)self _predicateForInconsistentHeifAssets];
-  [v9 setPredicate:v10];
+  _predicateForInconsistentHeifAssets = [(PLModelMigrator *)self _predicateForInconsistentHeifAssets];
+  [v9 setPredicate:_predicateForInconsistentHeifAssets];
 
   [v9 setFetchBatchSize:100];
   v23 = 0;
@@ -8257,10 +8257,10 @@ LABEL_12:
   return v14;
 }
 
-- (BOOL)_fixRawWithZeroDimensions:(id)a3
+- (BOOL)_fixRawWithZeroDimensions:(id)dimensions
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dimensionsCopy = dimensions;
   v6 = objc_autoreleasePoolPush();
   v7 = MEMORY[0x1E695D5E0];
   v8 = +[PLManagedAsset entityName];
@@ -8280,7 +8280,7 @@ LABEL_12:
   v14[2] = __45__PLModelMigrator__fixRawWithZeroDimensions___block_invoke;
   v14[3] = &__block_descriptor_40_e28_B24__0__NSManagedObject_8Q16l;
   v14[4] = a2;
-  [(PLModelMigrator *)self _runMigrationStepWithName:v12 fetchRequest:v9 store:v5 migrationHandler:v14];
+  [(PLModelMigrator *)self _runMigrationStepWithName:v12 fetchRequest:v9 store:dimensionsCopy migrationHandler:v14];
 
   objc_autoreleasePoolPop(v6);
   return 1;
@@ -8358,13 +8358,13 @@ BOOL __45__PLModelMigrator__fixRawWithZeroDimensions___block_invoke(uint64_t a1,
   return v8;
 }
 
-- (BOOL)_populateCloudResourceLocalStateInStor:(id)a3
+- (BOOL)_populateCloudResourceLocalStateInStor:(id)stor
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storCopy = stor;
   pl_dispatch_once();
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _populateCloudResourceLocalStateInStor:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storCopy name:"[PLModelMigrator _populateCloudResourceLocalStateInStor:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = PLMigrationGetLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -8452,16 +8452,16 @@ uint64_t __58__PLModelMigrator__populateCloudResourceLocalStateInStor___block_in
   return result;
 }
 
-- (BOOL)_fixZeroTrashedDateForEntityName:(id)a3 inManagedObjectContext:(id)a4
+- (BOOL)_fixZeroTrashedDateForEntityName:(id)name inManagedObjectContext:(id)context
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  nameCopy = name;
+  contextCopy = context;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
-  v7 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:v5];
+  v7 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:nameCopy];
   v8 = MEMORY[0x1E696AE18];
   v9 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:0.0];
   v10 = [v8 predicateWithFormat:@"trashedDate == %@", v9];
@@ -8469,7 +8469,7 @@ uint64_t __58__PLModelMigrator__populateCloudResourceLocalStateInStor___block_in
 
   [v7 setFetchBatchSize:100];
   v19 = 0;
-  v11 = [v6 executeFetchRequest:v7 error:&v19];
+  v11 = [contextCopy executeFetchRequest:v7 error:&v19];
   v12 = v19;
   if (v11)
   {
@@ -8478,7 +8478,7 @@ uint64_t __58__PLModelMigrator__populateCloudResourceLocalStateInStor___block_in
     v18[2] = __75__PLModelMigrator__fixZeroTrashedDateForEntityName_inManagedObjectContext___block_invoke;
     v18[3] = &unk_1E75691B8;
     v18[4] = &v20;
-    v13 = [v6 enumerateWithIncrementalSaveUsingObjects:v11 withBlock:v18];
+    v13 = [contextCopy enumerateWithIncrementalSaveUsingObjects:v11 withBlock:v18];
 
     if (v13)
     {
@@ -8486,7 +8486,7 @@ uint64_t __58__PLModelMigrator__populateCloudResourceLocalStateInStor___block_in
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        *v25 = v5;
+        *v25 = nameCopy;
         *&v25[8] = 2112;
         *&v25[10] = v13;
         _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_ERROR, "Failed to zero trashed date (%@): %@", buf, 0x16u);
@@ -8504,7 +8504,7 @@ uint64_t __58__PLModelMigrator__populateCloudResourceLocalStateInStor___block_in
         *buf = 67109378;
         *v25 = v16;
         *&v25[4] = 2112;
-        *&v25[6] = v5;
+        *&v25[6] = nameCopy;
         _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_DEFAULT, "Fixed %d zero trashed date (%@), setting them to nil", buf, 0x12u);
       }
 
@@ -8519,7 +8519,7 @@ uint64_t __58__PLModelMigrator__populateCloudResourceLocalStateInStor___block_in
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      *v25 = v5;
+      *v25 = nameCopy;
       *&v25[8] = 2112;
       *&v25[10] = v12;
       _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_ERROR, "Can't fetch request _fixZeroTrashedDate (%@): %@", buf, 0x16u);
@@ -8540,12 +8540,12 @@ uint64_t __75__PLModelMigrator__fixZeroTrashedDateForEntityName_inManagedObjectC
   return result;
 }
 
-- (BOOL)_fixTrashedDate:(id)a3
+- (BOOL)_fixTrashedDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   pl_dispatch_once();
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _fixTrashedDate:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:dateCopy name:"[PLModelMigrator _fixTrashedDate:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = +[PLManagedAsset entityName];
   v8 = [(PLModelMigrator *)self _fixZeroTrashedDateForEntityName:v7 inManagedObjectContext:v6];
 
@@ -8566,10 +8566,10 @@ uint64_t __75__PLModelMigrator__fixZeroTrashedDateForEntityName_inManagedObjectC
   return v10;
 }
 
-- (BOOL)_fixMasterCloudLocalStateEnum:(id)a3
+- (BOOL)_fixMasterCloudLocalStateEnum:(id)enum
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  enumCopy = enum;
   pl_dispatch_once();
   v5 = objc_autoreleasePoolPush();
   v6 = PLMigrationGetLog();
@@ -8579,7 +8579,7 @@ uint64_t __75__PLModelMigrator__fixZeroTrashedDateForEntityName_inManagedObjectC
     _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_DEFAULT, "Fixing cloudLocalState enum for master", buf, 2u);
   }
 
-  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _fixMasterCloudLocalStateEnum:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:enumCopy name:"[PLModelMigrator _fixMasterCloudLocalStateEnum:]" concurrencyType:*MEMORY[0x1E695D708]];
   v8 = objc_alloc(MEMORY[0x1E695D560]);
   v9 = +[PLCloudMaster entityName];
   v10 = [v8 initWithEntityName:v9];
@@ -8606,9 +8606,9 @@ uint64_t __75__PLModelMigrator__fixZeroTrashedDateForEntityName_inManagedObjectC
 
   else if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [v12 result];
+    result = [v12 result];
     *buf = 138412290;
-    v20 = v16;
+    v20 = result;
     _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_DEFAULT, "Fixed %@ pushed masters, setting them to CPLIsUploaded", buf, 0xCu);
   }
 
@@ -8618,14 +8618,14 @@ uint64_t __75__PLModelMigrator__fixZeroTrashedDateForEntityName_inManagedObjectC
   return v13 == 0;
 }
 
-- (BOOL)_tryToPromoteUnknownAssetsInStore:(id)a3
+- (BOOL)_tryToPromoteUnknownAssetsInStore:(id)store
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   if ([(PLModelMigrator *)self isCloudPhotoLibraryEnabled])
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _tryToPromoteUnknownAssetsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+    v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _tryToPromoteUnknownAssetsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
     v20 = 0;
     v7 = [PLManagedAsset assetsToConsiderForTypePromotionInContext:v6 withExtensions:&unk_1F0FBF9B8 error:&v20];
     v8 = v20;
@@ -8657,7 +8657,7 @@ uint64_t __75__PLModelMigrator__fixZeroTrashedDateForEntityName_inManagedObjectC
 
       else
       {
-        v12 = [(PLModelMigrator *)self _migrationThumbnailManagerWithStore:v4];
+        v12 = [(PLModelMigrator *)self _migrationThumbnailManagerWithStore:storeCopy];
         [v12 addRebuildThumbnailsRequest];
 
         v10 = PLMigrationGetLog();
@@ -8711,20 +8711,20 @@ uint64_t __53__PLModelMigrator__tryToPromoteUnknownAssetsInStore___block_invoke(
   return result;
 }
 
-- (BOOL)_rebuildWideCaptureThumbsInStore:(id)a3
+- (BOOL)_rebuildWideCaptureThumbsInStore:(id)store
 {
   v44[2] = *MEMORY[0x1E69E9840];
-  v34 = a3;
+  storeCopy = store;
   context = objc_autoreleasePoolPush();
-  v33 = self;
-  v32 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v34 name:"[PLModelMigrator _rebuildWideCaptureThumbsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  selfCopy = self;
+  v32 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _rebuildWideCaptureThumbsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v4 = MEMORY[0x1E695D5E0];
   v5 = +[PLManagedAsset entityName];
   v6 = [v4 fetchRequestWithEntityName:v5];
 
-  v7 = [(PLModelMigrator *)self _dateForWideGamutCapture];
+  _dateForWideGamutCapture = [(PLModelMigrator *)self _dateForWideGamutCapture];
   v8 = MEMORY[0x1E696AB28];
-  v31 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K >= %@", @"dateCreated", v7];
+  v31 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K >= %@", @"dateCreated", _dateForWideGamutCapture];
   v43[0] = v31;
   v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %@", @"originalColorSpace", @"Display P3"];
   v43[1] = v9;
@@ -8734,8 +8734,8 @@ uint64_t __53__PLModelMigrator__tryToPromoteUnknownAssetsInStore___block_invoke(
   v12 = MEMORY[0x1E696AB28];
   v13 = [PLManagedAsset predicateForAdjustedAssetsWithKeyPathToAsset:0];
   v42[0] = v13;
-  v35 = v7;
-  v14 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K >= %@", @"adjustmentTimestamp", v7];
+  v35 = _dateForWideGamutCapture;
+  v14 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K >= %@", @"adjustmentTimestamp", _dateForWideGamutCapture];
   v42[1] = v14;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v42 count:2];
   v16 = [v12 andPredicateWithSubpredicates:v15];
@@ -8746,7 +8746,7 @@ uint64_t __53__PLModelMigrator__tryToPromoteUnknownAssetsInStore___block_invoke(
 
   v19 = v6;
   [v6 setFetchBatchSize:100];
-  v20 = [(PLModelMigrator *)v33 _migrationThumbnailManagerWithStore:v34];
+  v20 = [(PLModelMigrator *)selfCopy _migrationThumbnailManagerWithStore:storeCopy];
   v39 = 0;
   v21 = [v32 executeFetchRequest:v6 error:&v39];
   v22 = v39;
@@ -8830,12 +8830,12 @@ void __52__PLModelMigrator__rebuildWideCaptureThumbsInStore___block_invoke(uint6
   return v4;
 }
 
-- (BOOL)_removeUntrackedCloudResourceImageDerivativesInStore:(id)a3
+- (BOOL)_removeUntrackedCloudResourceImageDerivativesInStore:(id)store
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _removeUntrackedCloudResourceImageDerivativesInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _removeUntrackedCloudResourceImageDerivativesInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = MEMORY[0x1E695D5E0];
   v8 = +[PLCloudResource entityName];
   v9 = [v7 fetchRequestWithEntityName:v8];
@@ -8934,12 +8934,12 @@ void __72__PLModelMigrator__removeUntrackedCloudResourceImageDerivativesInStore_
   }
 }
 
-- (BOOL)_fixupCroppedUnadjustedAssets:(id)a3
+- (BOOL)_fixupCroppedUnadjustedAssets:(id)assets
 {
   v31[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  assetsCopy = assets;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _fixupCroppedUnadjustedAssets:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:assetsCopy name:"[PLModelMigrator _fixupCroppedUnadjustedAssets:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = MEMORY[0x1E695D5E0];
   v8 = +[PLManagedAsset entityName];
   v9 = [v7 fetchRequestWithEntityName:v8];
@@ -9035,11 +9035,11 @@ void __49__PLModelMigrator__fixupCroppedUnadjustedAssets___block_invoke(uint64_t
 - (BOOL)_trimInvalidAlbumAssetsMappingRecords
 {
   v20 = *MEMORY[0x1E69E9840];
-  v2 = [(PLModelMigrator *)self pathManager];
-  v3 = [v2 photosDatabasePath];
-  v4 = [v3 fileSystemRepresentation];
+  pathManager = [(PLModelMigrator *)self pathManager];
+  photosDatabasePath = [pathManager photosDatabasePath];
+  fileSystemRepresentation = [photosDatabasePath fileSystemRepresentation];
 
-  v5 = PLOpenSQLTransactionWithDBPath(v4);
+  v5 = PLOpenSQLTransactionWithDBPath(fileSystemRepresentation);
   if (!v5)
   {
     return 1;
@@ -9083,13 +9083,13 @@ void __49__PLModelMigrator__fixupCroppedUnadjustedAssets___block_invoke(uint64_t
   return v9;
 }
 
-- (BOOL)_fixRejectedKeyFace:(id)a3
+- (BOOL)_fixRejectedKeyFace:(id)face
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  faceCopy = face;
   pl_dispatch_once();
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _fixRejectedKeyFace:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:faceCopy name:"[PLModelMigrator _fixRejectedKeyFace:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = MEMORY[0x1E695D5E0];
   v8 = +[PLPerson entityName];
   v9 = [v7 fetchRequestWithEntityName:v8];
@@ -9165,13 +9165,13 @@ void __39__PLModelMigrator__fixRejectedKeyFace___block_invoke(uint64_t a1, void 
   }
 }
 
-- (BOOL)_fixMergedPeopleThatShouldBeVerified:(id)a3
+- (BOOL)_fixMergedPeopleThatShouldBeVerified:(id)verified
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  verifiedCopy = verified;
   pl_dispatch_once();
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _fixMergedPeopleThatShouldBeVerified:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:verifiedCopy name:"[PLModelMigrator _fixMergedPeopleThatShouldBeVerified:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = MEMORY[0x1E695D5E0];
   v8 = +[PLPerson entityName];
   v9 = [v7 fetchRequestWithEntityName:v8];
@@ -9288,15 +9288,15 @@ void __56__PLModelMigrator__fixMergedPeopleThatShouldBeVerified___block_invoke(u
 LABEL_13:
 }
 
-- (BOOL)_refreshTriggerValues:(id)a3
+- (BOOL)_refreshTriggerValues:(id)values
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  valuesCopy = values;
   pl_dispatch_once();
   v4 = objc_autoreleasePoolPush();
-  v5 = [v3 persistentStoreCoordinator];
+  persistentStoreCoordinator = [valuesCopy persistentStoreCoordinator];
   v15 = 0;
-  v6 = [v5 _refreshTriggerValuesInStore:v3 error:&v15];
+  v6 = [persistentStoreCoordinator _refreshTriggerValuesInStore:valuesCopy error:&v15];
   v7 = v15;
   v8 = PLMigrationGetLog();
   v9 = v8;
@@ -9329,14 +9329,14 @@ LABEL_6:
   return 1;
 }
 
-- (BOOL)_setUserTypeOnKeyFace:(id)a3
+- (BOOL)_setUserTypeOnKeyFace:(id)face
 {
   v50[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  faceCopy = face;
   pl_dispatch_once();
   context = objc_autoreleasePoolPush();
-  v36 = v4;
-  v5 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _setUserTypeOnKeyFace:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v36 = faceCopy;
+  v5 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:faceCopy name:"[PLModelMigrator _setUserTypeOnKeyFace:]" concurrencyType:*MEMORY[0x1E695D708]];
   v6 = MEMORY[0x1E695D5E0];
   v7 = +[PLDetectedFace entityName];
   v8 = [v6 fetchRequestWithEntityName:v7];
@@ -9492,13 +9492,13 @@ void __41__PLModelMigrator__setUserTypeOnKeyFace___block_invoke_2189(uint64_t a1
   }
 }
 
-- (BOOL)_recoverSingleBurstPhotos:(id)a3
+- (BOOL)_recoverSingleBurstPhotos:(id)photos
 {
   v55[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  photosCopy = photos;
   v40 = objc_autoreleasePoolPush();
-  v41 = v4;
-  v5 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _recoverSingleBurstPhotos:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v41 = photosCopy;
+  v5 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:photosCopy name:"[PLModelMigrator _recoverSingleBurstPhotos:]" concurrencyType:*MEMORY[0x1E695D708]];
   v6 = objc_alloc_init(MEMORY[0x1E695D5C8]);
   [v6 setName:@"count"];
   v7 = [MEMORY[0x1E696ABC8] expressionWithFormat:@"count:(avalancheUUID)"];
@@ -9529,8 +9529,8 @@ void __41__PLModelMigrator__setUserTypeOnKeyFace___block_invoke_2189(uint64_t a1
   v17 = [v15 fetchRequestWithEntityName:v16];
 
   v18 = MEMORY[0x1E696AE18];
-  v19 = [v13 allObjects];
-  v20 = [v18 predicateWithFormat:@"avalancheUUID IN %@", v19];
+  allObjects = [v13 allObjects];
+  v20 = [v18 predicateWithFormat:@"avalancheUUID IN %@", allObjects];
   [v17 setPredicate:v20];
 
   v47 = v14;
@@ -9543,11 +9543,11 @@ void __41__PLModelMigrator__setUserTypeOnKeyFace___block_invoke_2189(uint64_t a1
     v31 = PLMigrationGetLog();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
     {
-      v33 = [v22 userInfo];
+      userInfo = [v22 userInfo];
       *buf = 138412546;
       v52 = v22;
       v53 = 2112;
-      v54 = v33;
+      v54 = userInfo;
       _os_log_impl(&dword_19BF1F000, v31, OS_LOG_TYPE_ERROR, "_recoverSingleBurstPhotos: failed: %@ %@", buf, 0x16u);
     }
 
@@ -9611,11 +9611,11 @@ void __41__PLModelMigrator__setUserTypeOnKeyFace___block_invoke_2189(uint64_t a1
       v35 = PLMigrationGetLog();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
       {
-        v36 = [v31 userInfo];
+        userInfo2 = [v31 userInfo];
         *buf = 138412546;
         v52 = v31;
         v53 = 2112;
-        v54 = v36;
+        v54 = userInfo2;
         _os_log_impl(&dword_19BF1F000, v35, OS_LOG_TYPE_ERROR, "_recoverSingleBurstPhotos: failed: %@ %@", buf, 0x16u);
       }
 
@@ -9651,19 +9651,19 @@ void __45__PLModelMigrator__recoverSingleBurstPhotos___block_invoke(uint64_t a1,
   }
 }
 
-- (void)_repairMetadataAndSingletonsForMigrationType:(int64_t)a3 forceRebuildReason:(id)a4 journalRebuildRequired:(BOOL)a5
+- (void)_repairMetadataAndSingletonsForMigrationType:(int64_t)type forceRebuildReason:(id)reason journalRebuildRequired:(BOOL)required
 {
-  v7 = a4;
+  reasonCopy = reason;
   if ((PLIsAssetsd() & 1) == 0)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:10602 description:@"-[PLModelMigrator addSingletonObjectsToDatabase] can only be called from assetsd"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:10602 description:@"-[PLModelMigrator addSingletonObjectsToDatabase] can only be called from assetsd"];
   }
 
   if (PLIsAssetsd())
   {
     pl_dispatch_once();
-    v9 = v7;
+    v9 = reasonCopy;
     pl_dispatch_sync();
   }
 }
@@ -9842,99 +9842,99 @@ void __106__PLModelMigrator__repairMetadataAndSingletonsForMigrationType_forceRe
   __break(1u);
 }
 
-- (void)_failed_repairSingletonObjectsWithRepairError:(id)a3
+- (void)_failed_repairSingletonObjectsWithRepairError:(id)error
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v5 = PLMigrationGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = errorCopy;
     _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_ERROR, "_failed_repairSingletonObjectsWithRepairError: %@", &v6, 0xCu);
   }
 
-  [(PLModelMigrator *)self _failed_repairSingletonObjectsWithError:v4];
+  [(PLModelMigrator *)self _failed_repairSingletonObjectsWithError:errorCopy];
 }
 
-- (void)_failed_repairSingletonObjectsInNewDatabaseWithRepairError:(id)a3
+- (void)_failed_repairSingletonObjectsInNewDatabaseWithRepairError:(id)error
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v5 = PLMigrationGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = errorCopy;
     _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_ERROR, "_failed_repairSingletonObjectsInNewDatabaseWithRepairError: %@", &v6, 0xCu);
   }
 
-  [(PLModelMigrator *)self _failed_repairSingletonObjectsWithError:v4];
+  [(PLModelMigrator *)self _failed_repairSingletonObjectsWithError:errorCopy];
 }
 
-- (void)_failed_repairSingletonObjectsInNewDatabaseWithNilContextError:(id)a3
+- (void)_failed_repairSingletonObjectsInNewDatabaseWithNilContextError:(id)error
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v5 = PLMigrationGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = errorCopy;
     _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_ERROR, "_failed_repairSingletonObjectsInNewDatabaseWithNilContextError: %@", &v6, 0xCu);
   }
 
-  [(PLModelMigrator *)self _failed_repairSingletonObjectsWithError:v4];
+  [(PLModelMigrator *)self _failed_repairSingletonObjectsWithError:errorCopy];
 }
 
-- (void)_failed_repairSingletonObjectsWithNilContextError:(id)a3
+- (void)_failed_repairSingletonObjectsWithNilContextError:(id)error
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v5 = PLMigrationGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = errorCopy;
     _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_ERROR, "_failed_repairSingletonObjectsWithNilContextError: %@", &v6, 0xCu);
   }
 
-  [(PLModelMigrator *)self _failed_repairSingletonObjectsWithError:v4];
+  [(PLModelMigrator *)self _failed_repairSingletonObjectsWithError:errorCopy];
 }
 
-- (void)_failed_repairSingletonObjectsWithError:(id)a3
+- (void)_failed_repairSingletonObjectsWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = PLMigrationGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     v16 = 138412290;
-    v17 = v4;
+    v17 = errorCopy;
     _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_ERROR, "_failed_repairSingletonObjectsWithError: %@", &v16, 0xCu);
   }
 
-  v6 = [v4 domain];
-  v7 = [v6 isEqualToString:*MEMORY[0x1E69BFF48]];
+  domain = [errorCopy domain];
+  v7 = [domain isEqualToString:*MEMORY[0x1E69BFF48]];
 
   if (!v7)
   {
-    v9 = [v4 domain];
-    v10 = [v9 isEqualToString:*MEMORY[0x1E696A250]];
+    domain2 = [errorCopy domain];
+    v10 = [domain2 isEqualToString:*MEMORY[0x1E696A250]];
 
     if (!v10)
     {
       goto LABEL_54;
     }
 
-    v11 = [v4 userInfo];
-    v12 = [v11 objectForKey:*MEMORY[0x1E695D488]];
+    userInfo = [errorCopy userInfo];
+    v12 = [userInfo objectForKey:*MEMORY[0x1E695D488]];
 
     if (!v12)
     {
-      v13 = [v4 code];
-      if (v13 <= 134059)
+      code = [errorCopy code];
+      if (code <= 134059)
       {
-        switch(v13)
+        switch(code)
         {
           case 134000:
             [(PLModelMigrator *)self _failed_repairSingletonObjectsWithErrorTypeNSPersistentStoreInvalidTypeError];
@@ -9948,15 +9948,15 @@ void __106__PLModelMigrator__repairMetadataAndSingletonsForMigrationType_forceRe
         }
       }
 
-      else if (v13 > 134089)
+      else if (code > 134089)
       {
-        if (v13 == 134090)
+        if (code == 134090)
         {
           [(PLModelMigrator *)self _failed_repairSingletonObjectsWithErrorTypeNSPersistentStoreTimeoutError];
           goto LABEL_53;
         }
 
-        if (v13 == 134100)
+        if (code == 134100)
         {
           [(PLModelMigrator *)self _failed_repairSingletonObjectsWithErrorTypeNSPersistentStoreIncompatibleVersionHashError];
           goto LABEL_53;
@@ -9965,13 +9965,13 @@ void __106__PLModelMigrator__repairMetadataAndSingletonsForMigrationType_forceRe
 
       else
       {
-        if (v13 == 134060)
+        if (code == 134060)
         {
           [(PLModelMigrator *)self _failed_repairSingletonObjectsWithErrorTypeNSCoreDataError];
           goto LABEL_53;
         }
 
-        if (v13 == 134080)
+        if (code == 134080)
         {
           [(PLModelMigrator *)self _failed_repairSingletonObjectsWithErrorTypeNSPersistentStoreOpenError];
 LABEL_53:
@@ -9984,18 +9984,18 @@ LABEL_53:
       goto LABEL_53;
     }
 
-    v14 = [v12 intValue];
-    if (v14 > 0xC)
+    intValue = [v12 intValue];
+    if (intValue > 0xC)
     {
-      if (v14 > 20)
+      if (intValue > 20)
       {
-        if (v14 == 21)
+        if (intValue == 21)
         {
           [(PLModelMigrator *)self _failed_repairSingletonObjectsWithErrorTypeSQLITE_MISUSE];
           goto LABEL_53;
         }
 
-        if (v14 == 26)
+        if (intValue == 26)
         {
           [(PLModelMigrator *)self _failed_repairSingletonObjectsWithErrorTypeSQLITE_NOTADB];
           goto LABEL_53;
@@ -10004,13 +10004,13 @@ LABEL_53:
 
       else
       {
-        if (v14 == 13)
+        if (intValue == 13)
         {
           [(PLModelMigrator *)self _failed_repairSingletonObjectsWithErrorTypeSQLITE_FULL];
           goto LABEL_53;
         }
 
-        if (v14 == 14)
+        if (intValue == 14)
         {
           [(PLModelMigrator *)self _failed_repairSingletonObjectsWithErrorTypeSQLITE_CANTOPEN];
           goto LABEL_53;
@@ -10018,15 +10018,15 @@ LABEL_53:
       }
     }
 
-    else if (v14 > 5)
+    else if (intValue > 5)
     {
-      if (v14 == 6)
+      if (intValue == 6)
       {
         [(PLModelMigrator *)self _failed_repairSingletonObjectsWithErrorTypeSQLITE_LOCKED];
         goto LABEL_53;
       }
 
-      if (v14 == 11)
+      if (intValue == 11)
       {
         [(PLModelMigrator *)self _failed_repairSingletonObjectsWithErrorTypeSQLITE_CORRUPT];
         goto LABEL_53;
@@ -10035,13 +10035,13 @@ LABEL_53:
 
     else
     {
-      if (v14 == 1)
+      if (intValue == 1)
       {
         [(PLModelMigrator *)self _failed_repairSingletonObjectsWithErrorTypeSQLITE_ERROR];
         goto LABEL_53;
       }
 
-      if (v14 == 3)
+      if (intValue == 3)
       {
         [(PLModelMigrator *)self _failed_repairSingletonObjectsWithErrorTypeSQLITE_PERM];
         goto LABEL_53;
@@ -10052,12 +10052,12 @@ LABEL_53:
     goto LABEL_53;
   }
 
-  v8 = [v4 code];
-  if (v8 > 46101)
+  code2 = [errorCopy code];
+  if (code2 > 46101)
   {
-    if (v8 != 46102)
+    if (code2 != 46102)
     {
-      if (v8 == 46502)
+      if (code2 == 46502)
       {
         [(PLModelMigrator *)self _failed_repairSingletonObjectsWithErrorTypePLPhotosErrorInvalidState];
         goto LABEL_54;
@@ -10071,9 +10071,9 @@ LABEL_53:
 
   else
   {
-    if (v8 != 46006)
+    if (code2 != 46006)
     {
-      if (v8 == 46007)
+      if (code2 == 46007)
       {
         [(PLModelMigrator *)self _failed_repairSingletonObjectsWithErrorTypePLPhotosErrorLibraryRequiresMigration];
         goto LABEL_54;
@@ -10092,7 +10092,7 @@ LABEL_54:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
   {
     v16 = 138412290;
-    v17 = v4;
+    v17 = errorCopy;
     _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_ERROR, "_failed_repairSingletonObjectsWithError: %@", &v16, 0xCu);
   }
 
@@ -10422,20 +10422,20 @@ LABEL_54:
 
 - (void)_failed_repairSingletonObjectsWithNoPersistentStores
 {
-  v3 = [MEMORY[0x1E69BF238] fileManager];
+  fileManager = [MEMORY[0x1E69BF238] fileManager];
   v13 = 0;
-  v4 = [(PLModelMigrator *)self pathManager];
-  v5 = [v4 libraryURL];
-  v6 = [v5 path];
-  v7 = [v3 fileExistsAtPath:v6 isDirectory:&v13];
+  pathManager = [(PLModelMigrator *)self pathManager];
+  libraryURL = [pathManager libraryURL];
+  path = [libraryURL path];
+  v7 = [fileManager fileExistsAtPath:path isDirectory:&v13];
 
   if (v7)
   {
     if (v13)
     {
-      v8 = [(PLModelMigrator *)self pathManager];
-      v9 = [v8 photosDatabasePath];
-      v10 = [v3 fileExistsAtPath:v9 isDirectory:0];
+      pathManager2 = [(PLModelMigrator *)self pathManager];
+      photosDatabasePath = [pathManager2 photosDatabasePath];
+      v10 = [fileManager fileExistsAtPath:photosDatabasePath isDirectory:0];
 
       if (v10)
       {
@@ -10517,14 +10517,14 @@ LABEL_54:
   __break(1u);
 }
 
-- (BOOL)_deletePhotoCloudSharingMetadataInManagedObjectContext:(id)a3 error:(id *)a4
+- (BOOL)_deletePhotoCloudSharingMetadataInManagedObjectContext:(id)context error:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  contextCopy = context;
   if ((PLIsAssetsd() & 1) == 0)
   {
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v33 handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:10351 description:@"_deleteAllLocalSharedAlbumsMetadataAndMoveTheAssetDataIntoACacheFolder only valid in assetsd!"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:10351 description:@"_deleteAllLocalSharedAlbumsMetadataAndMoveTheAssetDataIntoACacheFolder only valid in assetsd!"];
   }
 
   v8 = PLMigrationGetLog();
@@ -10535,7 +10535,7 @@ LABEL_54:
   }
 
   v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"collectionShareKind", 2];
-  v10 = [(PLShare *)PLCollectionShare sharesWithPredicate:v9 fetchLimit:0 inManagedObjectContext:v7];
+  v10 = [(PLShare *)PLCollectionShare sharesWithPredicate:v9 fetchLimit:0 inManagedObjectContext:contextCopy];
   if ([v10 count])
   {
     v11 = PLMigrationGetLog();
@@ -10547,7 +10547,7 @@ LABEL_54:
       _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_DEFAULT, "Deleting %tu shared albums", buf, 0xCu);
     }
 
-    v13 = [v7 enumerateWithIncrementalSaveUsingObjects:v10 withBlock:&__block_literal_global_2140];
+    v13 = [contextCopy enumerateWithIncrementalSaveUsingObjects:v10 withBlock:&__block_literal_global_2140];
     v14 = v13 == 0;
   }
 
@@ -10557,7 +10557,7 @@ LABEL_54:
     v14 = 1;
   }
 
-  v15 = [PLGenericAlbum albumsWithKind:1505 inManagedObjectContext:v7];
+  v15 = [PLGenericAlbum albumsWithKind:1505 inManagedObjectContext:contextCopy];
   if (![v15 count])
   {
     if (!v14)
@@ -10566,7 +10566,7 @@ LABEL_54:
     }
 
 LABEL_17:
-    v19 = +[PLManagedAsset assetsWithValidatedSavedAssetTypeMask:inManagedObjectContext:](PLManagedAsset, "assetsWithValidatedSavedAssetTypeMask:inManagedObjectContext:", [MEMORY[0x1E69BF328] maskForCloudSharedAsset], v7);
+    v19 = +[PLManagedAsset assetsWithValidatedSavedAssetTypeMask:inManagedObjectContext:](PLManagedAsset, "assetsWithValidatedSavedAssetTypeMask:inManagedObjectContext:", [MEMORY[0x1E69BF328] maskForCloudSharedAsset], contextCopy);
     if (![v19 count])
     {
       goto LABEL_23;
@@ -10584,7 +10584,7 @@ LABEL_17:
     _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_DEFAULT, "Deleting %tu shared albums", buf, 0xCu);
   }
 
-  v18 = [v7 enumerateWithIncrementalSaveUsingObjects:v15 withBlock:&__block_literal_global_2144];
+  v18 = [contextCopy enumerateWithIncrementalSaveUsingObjects:v15 withBlock:&__block_literal_global_2144];
 
   v13 = v18;
   if (!v18)
@@ -10611,7 +10611,7 @@ LABEL_18:
     _os_log_impl(&dword_19BF1F000, v22, OS_LOG_TYPE_DEFAULT, "Deleting %tu shared assets", buf, 0xCu);
   }
 
-  v24 = [v7 enumerateWithIncrementalSaveUsingObjects:v19 withBlock:&__block_literal_global_2147];
+  v24 = [contextCopy enumerateWithIncrementalSaveUsingObjects:v19 withBlock:&__block_literal_global_2147];
 
   v21 = 0;
   if (v24)
@@ -10623,7 +10623,7 @@ LABEL_18:
 
   v13 = 0;
 LABEL_23:
-  v21 = [PLCloudFeedEntry allEntriesInManagedObjectContext:v7];
+  v21 = [PLCloudFeedEntry allEntriesInManagedObjectContext:contextCopy];
   v20 = 1;
 LABEL_24:
   if ([v21 count])
@@ -10641,7 +10641,7 @@ LABEL_24:
     v34[1] = 3221225472;
     v34[2] = __80__PLModelMigrator__deletePhotoCloudSharingMetadataInManagedObjectContext_error___block_invoke_2149;
     v34[3] = &unk_1E7569318;
-    v35 = v7;
+    v35 = contextCopy;
     v27 = [v35 enumerateWithIncrementalSaveUsingObjects:v21 withBlock:v34];
 
     v28 = v27;
@@ -10664,11 +10664,11 @@ LABEL_33:
   }
 
 LABEL_30:
-  if (a4)
+  if (error)
   {
     v30 = v29;
     v31 = 0;
-    *a4 = v29;
+    *error = v29;
   }
 
   else
@@ -10681,19 +10681,19 @@ LABEL_35:
   return v31;
 }
 
-- (BOOL)_deletePhotoStreamAssetReferencesInStore:(id)a3
+- (BOOL)_deletePhotoStreamAssetReferencesInStore:(id)store
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  storeCopy = store;
   if ((PLIsAssetsd() & 1) == 0)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v21 = NSStringFromSelector(a2);
-    [v20 handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:10324 description:{@"%@ can only be called from assetsd", v21}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:10324 description:{@"%@ can only be called from assetsd", v21}];
   }
 
   v6 = objc_autoreleasePoolPush();
-  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v5 name:"[PLModelMigrator _deletePhotoStreamAssetReferencesInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _deletePhotoStreamAssetReferencesInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v8 = +[PLManagedAsset assetsWithValidatedSavedAssetTypeMask:inManagedObjectContext:](PLManagedAsset, "assetsWithValidatedSavedAssetTypeMask:inManagedObjectContext:", [MEMORY[0x1E69BF328] maskForPhotoStreamAsset], v7);
   if (![v8 count])
   {
@@ -10763,20 +10763,20 @@ LABEL_19:
   return v18;
 }
 
-- (BOOL)_deleteCloudSharedAndSynced:(BOOL)a3 assetReferencesInStore:(id)a4
+- (BOOL)_deleteCloudSharedAndSynced:(BOOL)synced assetReferencesInStore:(id)store
 {
-  v4 = a3;
+  syncedCopy = synced;
   v44 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  storeCopy = store;
   if ((PLIsAssetsd() & 1) == 0)
   {
-    v32 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v33 = NSStringFromSelector(a2);
-    [v32 handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:10276 description:{@"%@ can only be called from assetsd", v33}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:10276 description:{@"%@ can only be called from assetsd", v33}];
   }
 
   v8 = objc_autoreleasePoolPush();
-  v9 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v7 name:"[PLModelMigrator _deleteCloudSharedAndSynced:assetReferencesInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v9 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _deleteCloudSharedAndSynced:assetReferencesInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v40 = 0;
   v10 = [(PLModelMigrator *)self _deletePhotoCloudSharingMetadataInManagedObjectContext:v9 error:&v40];
   v11 = v40;
@@ -10801,7 +10801,7 @@ LABEL_19:
     _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_DEFAULT, "Deleted all iCloud shared albums, assets, and feed entries", buf, 2u);
   }
 
-  if (!v4)
+  if (!syncedCopy)
   {
     v25 = 1;
     goto LABEL_25;
@@ -10903,27 +10903,27 @@ LABEL_25:
   return v25;
 }
 
-- (BOOL)_batchOfflineDeleteFromDatabaseOnlyAssets:(id)a3 inManagedObjectContext:(id)a4 error:(id *)a5
+- (BOOL)_batchOfflineDeleteFromDatabaseOnlyAssets:(id)assets inManagedObjectContext:(id)context error:(id *)error
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  assetsCopy = assets;
+  contextCopy = context;
+  if ([assetsCopy count])
   {
     v8 = objc_alloc_init(MEMORY[0x1E695D5E0]);
-    v26 = [(PLManagedObject *)PLManagedAsset entityInManagedObjectContext:v7];
+    v26 = [(PLManagedObject *)PLManagedAsset entityInManagedObjectContext:contextCopy];
     [v8 setEntity:v26];
     [v8 setReturnsObjectsAsFaults:0];
     [v8 setFetchBatchSize:100];
-    v9 = [v26 relationshipsByName];
-    v10 = [v9 allKeys];
-    [v8 setRelationshipKeyPathsForPrefetching:v10];
+    relationshipsByName = [v26 relationshipsByName];
+    allKeys = [relationshipsByName allKeys];
+    [v8 setRelationshipKeyPathsForPrefetching:allKeys];
 
-    v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self IN %@", v6];
-    [v8 setPredicate:v11];
+    assetsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"self IN %@", assetsCopy];
+    [v8 setPredicate:assetsCopy];
 
     v29[0] = 0;
-    v12 = [v7 executeFetchRequest:v8 error:v29];
+    v12 = [contextCopy executeFetchRequest:v8 error:v29];
     v24 = v29[0];
     v27 = v12 != 0;
     if (v12)
@@ -10942,7 +10942,7 @@ LABEL_25:
         v17 = 0;
         do
         {
-          v18 = [v6 objectAtIndex:v15];
+          v18 = [assetsCopy objectAtIndex:v15];
           [v18 deleteFromDatabaseOnly];
 
           ++v15;
@@ -10956,7 +10956,7 @@ LABEL_25:
 
         while (v15 < v13);
         v28 = v14;
-        v19 = [v7 save:&v28];
+        v19 = [contextCopy save:&v28];
         v20 = v28;
 
         v14 = v20;
@@ -10970,17 +10970,17 @@ LABEL_25:
             _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_ERROR, "Save failed. Rolling back changes. (%@)", buf, 0xCu);
           }
 
-          [v7 rollback];
+          [contextCopy rollback];
         }
 
         objc_autoreleasePoolPop(v16);
       }
 
       while ((v19 & 1) != 0);
-      if (a5)
+      if (error)
       {
         v22 = v14;
-        *a5 = v14;
+        *error = v14;
       }
     }
 
@@ -11046,14 +11046,14 @@ BOOL __53__PLModelMigrator__deleteOrphanedExtendedAttributes___block_invoke(uint
   return v7 != 0;
 }
 
-- (BOOL)_updateSuggestionStartAndEndDatesInStore:(id)a3
+- (BOOL)_updateSuggestionStartAndEndDatesInStore:(id)store
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __60__PLModelMigrator__updateSuggestionStartAndEndDatesInStore___block_invoke;
   v4[3] = &__block_descriptor_40_e32_B16__0__NSManagedObjectContext_8l;
   v4[4] = a2;
-  return [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _updateSuggestionStartAndEndDatesInStore:]" store:a3 migrationHandler:v4];
+  return [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _updateSuggestionStartAndEndDatesInStore:]" store:store migrationHandler:v4];
 }
 
 BOOL __60__PLModelMigrator__updateSuggestionStartAndEndDatesInStore___block_invoke(uint64_t a1, void *a2)
@@ -11096,10 +11096,10 @@ BOOL __60__PLModelMigrator__updateSuggestionStartAndEndDatesInStore___block_invo
   return v8 == 0;
 }
 
-- (BOOL)_addUUIDsToExistingKeywordsInStore:(id)a3
+- (BOOL)_addUUIDsToExistingKeywordsInStore:(id)store
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:a3 name:"[PLModelMigrator _addUUIDsToExistingKeywordsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v3 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:store name:"[PLModelMigrator _addUUIDsToExistingKeywordsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v4 = MEMORY[0x1E695D5E0];
   v5 = +[PLManagedKeyword entityName];
   v6 = [v4 fetchRequestWithEntityName:v5];
@@ -11149,14 +11149,14 @@ void __54__PLModelMigrator__addUUIDsToExistingKeywordsInStore___block_invoke(uin
   [v3 setUuid:v4];
 }
 
-- (BOOL)_deletePersistentHistoryInStore:(id)a3
+- (BOOL)_deletePersistentHistoryInStore:(id)store
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __51__PLModelMigrator__deletePersistentHistoryInStore___block_invoke;
   v4[3] = &__block_descriptor_40_e32_B16__0__NSManagedObjectContext_8l;
   v4[4] = a2;
-  return [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _deletePersistentHistoryInStore:]" store:a3 migrationHandler:v4];
+  return [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _deletePersistentHistoryInStore:]" store:store migrationHandler:v4];
 }
 
 BOOL __51__PLModelMigrator__deletePersistentHistoryInStore___block_invoke(uint64_t a1, uint64_t a2)
@@ -11200,18 +11200,18 @@ LABEL_6:
   return v3;
 }
 
-- (BOOL)_nukeWallpaperRemnantsInStore:(id)a3
+- (BOOL)_nukeWallpaperRemnantsInStore:(id)store
 {
   v45 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  storeCopy = store;
   v6 = objc_autoreleasePoolPush();
-  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v5 name:"[PLModelMigrator _nukeWallpaperRemnantsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
-  v8 = [v5 metadata];
-  v9 = [v8 mutableCopy];
+  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _nukeWallpaperRemnantsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  metadata = [storeCopy metadata];
+  v9 = [metadata mutableCopy];
 
   [v9 removeObjectForKey:@"PLWallpaperFileHash"];
-  v10 = [v7 persistentStoreCoordinator];
-  [v10 setMetadata:v9 forPersistentStore:v5];
+  persistentStoreCoordinator = [v7 persistentStoreCoordinator];
+  [persistentStoreCoordinator setMetadata:v9 forPersistentStore:storeCopy];
 
   v11 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:@"AlbumList"];
   v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"identifier = %d", 6];
@@ -11320,19 +11320,19 @@ LABEL_21:
   return v24;
 }
 
-- (BOOL)_identifyVariationsAndDepthAdjustmentsIncludingBakedInLongExposure:(BOOL)a3 inStore:(id)a4
+- (BOOL)_identifyVariationsAndDepthAdjustmentsIncludingBakedInLongExposure:(BOOL)exposure inStore:(id)store
 {
-  v4 = a3;
+  exposureCopy = exposure;
   v17[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(PLModelMigrator *)self _fetchRequestToIdentifyBakedInVariationsCandidatesIncludingLongExposure:v4];
+  storeCopy = store;
+  v7 = [(PLModelMigrator *)self _fetchRequestToIdentifyBakedInVariationsCandidatesIncludingLongExposure:exposureCopy];
   v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s (BakedInVariations)", "-[PLModelMigrator _identifyVariationsAndDepthAdjustmentsIncludingBakedInLongExposure:inStore:]"];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __94__PLModelMigrator__identifyVariationsAndDepthAdjustmentsIncludingBakedInLongExposure_inStore___block_invoke;
   v16[3] = &unk_1E7569250;
   v16[4] = self;
-  v9 = [(PLModelMigrator *)self _runMigrationStepWithName:v8 fetchRequest:v7 store:v6 migrationHandler:v16];
+  v9 = [(PLModelMigrator *)self _runMigrationStepWithName:v8 fetchRequest:v7 store:storeCopy migrationHandler:v16];
 
   if (v9)
   {
@@ -11343,10 +11343,10 @@ LABEL_21:
 
     else
     {
-      v11 = [(PLModelMigrator *)self _fetchRequestToIdentifyAdjustedDepthAndVariationsCandidates];
+      _fetchRequestToIdentifyAdjustedDepthAndVariationsCandidates = [(PLModelMigrator *)self _fetchRequestToIdentifyAdjustedDepthAndVariationsCandidates];
       v17[0] = @"additionalAttributes.unmanagedAdjustment";
       v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
-      [v11 setRelationshipKeyPathsForPrefetching:v12];
+      [_fetchRequestToIdentifyAdjustedDepthAndVariationsCandidates setRelationshipKeyPathsForPrefetching:v12];
 
       v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s (adjustments_iCPLOff)", "-[PLModelMigrator _identifyVariationsAndDepthAdjustmentsIncludingBakedInLongExposure:inStore:]"];
       v15[0] = MEMORY[0x1E69E9820];
@@ -11354,7 +11354,7 @@ LABEL_21:
       v15[2] = __94__PLModelMigrator__identifyVariationsAndDepthAdjustmentsIncludingBakedInLongExposure_inStore___block_invoke_2;
       v15[3] = &unk_1E7569250;
       v15[4] = self;
-      v10 = [(PLModelMigrator *)self _runMigrationStepWithName:v13 fetchRequest:v11 store:v6 migrationHandler:v15];
+      v10 = [(PLModelMigrator *)self _runMigrationStepWithName:v13 fetchRequest:_fetchRequestToIdentifyAdjustedDepthAndVariationsCandidates store:storeCopy migrationHandler:v15];
     }
   }
 
@@ -11371,8 +11371,8 @@ LABEL_21:
   v16[4] = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %d", @"playbackVariation", 0];
   v4 = MEMORY[0x1E696AE18];
-  v5 = [(PLModelMigrator *)self _dateForVariations];
-  v6 = [v4 predicateWithFormat:@"%K >= %@", @"adjustmentTimestamp", v5];
+  _dateForVariations = [(PLModelMigrator *)self _dateForVariations];
+  v6 = [v4 predicateWithFormat:@"%K >= %@", @"adjustmentTimestamp", _dateForVariations];
 
   v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K in %@", @"playbackStyle", &unk_1F0FBF970];
   v8 = [PLManagedAsset predicateForAdjustedAssetsWithKeyPathToAsset:0];
@@ -11393,10 +11393,10 @@ LABEL_21:
   return v14;
 }
 
-- (id)_fetchRequestToIdentifyBakedInVariationsCandidatesIncludingLongExposure:(BOOL)a3
+- (id)_fetchRequestToIdentifyBakedInVariationsCandidatesIncludingLongExposure:(BOOL)exposure
 {
   v18[4] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (exposure)
   {
     v4 = [&unk_1F0FBF958 arrayByAddingObject:&unk_1F0FBBE60];
   }
@@ -11408,8 +11408,8 @@ LABEL_21:
 
   v5 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %d", @"playbackVariation", 0];
   v6 = MEMORY[0x1E696AE18];
-  v7 = [(PLModelMigrator *)self _dateForVariations];
-  v8 = [v6 predicateWithFormat:@"%K >= %@", @"dateCreated", v7];
+  _dateForVariations = [(PLModelMigrator *)self _dateForVariations];
+  v8 = [v6 predicateWithFormat:@"%K >= %@", @"dateCreated", _dateForVariations];
 
   v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K in %@", @"playbackStyle", v4];
   v10 = [PLManagedAsset predicateForUnadjustedAssetsWithKeyPathToAsset:0];
@@ -11430,18 +11430,18 @@ LABEL_21:
   return v16;
 }
 
-- (BOOL)_identifyVariationsAndDepthAdjustmentsForAsset:(id)a3
+- (BOOL)_identifyVariationsAndDepthAdjustmentsForAsset:(id)asset
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (![v3 hasAdjustments])
+  assetCopy = asset;
+  if (![assetCopy hasAdjustments])
   {
-    if ([v3 isVideo])
+    if ([assetCopy isVideo])
     {
-      v4 = [v3 avAssetProxyForOriginalAllowReadFromFile:1];
-      if (v4)
+      metadataFromMediaPropertiesOrOriginalResource = [assetCopy avAssetProxyForOriginalAllowReadFromFile:1];
+      if (metadataFromMediaPropertiesOrOriginalResource)
       {
-        v18 = [v3 updatePlaybackVariationAndLoopingStyleFromAVAsset:v4];
+        v18 = [assetCopy updatePlaybackVariationAndLoopingStyleFromAVAsset:metadataFromMediaPropertiesOrOriginalResource];
 LABEL_15:
         v13 = v18;
 LABEL_30:
@@ -11452,12 +11452,12 @@ LABEL_30:
       v26 = PLMigrationGetLog();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
-        v27 = [v3 uuid];
-        v28 = [v3 pathToOriginalVideoFile];
+        uuid = [assetCopy uuid];
+        pathToOriginalVideoFile = [assetCopy pathToOriginalVideoFile];
         v31 = 138412546;
-        v32 = v27;
+        v32 = uuid;
         v33 = 2112;
-        v34 = v28;
+        v34 = pathToOriginalVideoFile;
         v29 = "Failed to create avAsset from video asset %@, %@";
 LABEL_27:
         _os_log_impl(&dword_19BF1F000, v26, OS_LOG_TYPE_ERROR, v29, &v31, 0x16u);
@@ -11466,27 +11466,27 @@ LABEL_27:
 
     else
     {
-      if (![v3 isPhotoIris])
+      if (![assetCopy isPhotoIris])
       {
         goto LABEL_20;
       }
 
-      v4 = [v3 metadataFromMediaPropertiesOrOriginalResource];
-      if (v4)
+      metadataFromMediaPropertiesOrOriginalResource = [assetCopy metadataFromMediaPropertiesOrOriginalResource];
+      if (metadataFromMediaPropertiesOrOriginalResource)
       {
-        v18 = [v3 updatePlaybackVariationAndStyleFromOriginalMetadata:v4];
+        v18 = [assetCopy updatePlaybackVariationAndStyleFromOriginalMetadata:metadataFromMediaPropertiesOrOriginalResource];
         goto LABEL_15;
       }
 
       v26 = PLMigrationGetLog();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
-        v27 = [v3 uuid];
-        v28 = [v3 mainFileURL];
+        uuid = [assetCopy uuid];
+        pathToOriginalVideoFile = [assetCopy mainFileURL];
         v31 = 138412546;
-        v32 = v27;
+        v32 = uuid;
         v33 = 2112;
-        v34 = v28;
+        v34 = pathToOriginalVideoFile;
         v29 = "Failed to get image properties from live photo asset %@, %@";
         goto LABEL_27;
       }
@@ -11495,26 +11495,26 @@ LABEL_27:
     goto LABEL_29;
   }
 
-  if (([v3 isPhotoIris] & 1) != 0 || objc_msgSend(v3, "isVideo"))
+  if (([assetCopy isPhotoIris] & 1) != 0 || objc_msgSend(assetCopy, "isVideo"))
   {
-    v4 = [v3 pathForFullsizeRenderVideoFile];
-    v5 = [MEMORY[0x1E696AC08] defaultManager];
-    v6 = [v5 fileExistsAtPath:v4];
+    metadataFromMediaPropertiesOrOriginalResource = [assetCopy pathForFullsizeRenderVideoFile];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v6 = [defaultManager fileExistsAtPath:metadataFromMediaPropertiesOrOriginalResource];
 
     if (v6)
     {
       v7 = MEMORY[0x1E6987E28];
-      v8 = [MEMORY[0x1E695DFF8] fileURLWithPath:v4];
+      v8 = [MEMORY[0x1E695DFF8] fileURLWithPath:metadataFromMediaPropertiesOrOriginalResource];
       v9 = [v7 assetWithURL:v8];
 
       if (v9)
       {
-        v10 = [v3 additionalAttributes];
-        v11 = [v10 unmanagedAdjustment];
-        v12 = [v11 adjustmentRenderTypes];
+        additionalAttributes = [assetCopy additionalAttributes];
+        unmanagedAdjustment = [additionalAttributes unmanagedAdjustment];
+        adjustmentRenderTypes = [unmanagedAdjustment adjustmentRenderTypes];
 
-        v13 = [v3 updatePlaybackVariationAndLoopingStyleFromAVAsset:v9];
-        v14 = [v3 updateAdjustmentRenderTypes:v12 withPlaybackVariation:{objc_msgSend(v3, "playbackVariation")}];
+        v13 = [assetCopy updatePlaybackVariationAndLoopingStyleFromAVAsset:v9];
+        v14 = [assetCopy updateAdjustmentRenderTypes:adjustmentRenderTypes withPlaybackVariation:{objc_msgSend(assetCopy, "playbackVariation")}];
         goto LABEL_7;
       }
 
@@ -11524,36 +11524,36 @@ LABEL_27:
     goto LABEL_29;
   }
 
-  if ([v3 isPhoto])
+  if ([assetCopy isPhoto])
   {
-    v4 = [v3 pathForFullsizeRenderImageFile];
-    v19 = [MEMORY[0x1E696AC08] defaultManager];
-    v20 = [v19 fileExistsAtPath:v4];
+    metadataFromMediaPropertiesOrOriginalResource = [assetCopy pathForFullsizeRenderImageFile];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+    v20 = [defaultManager2 fileExistsAtPath:metadataFromMediaPropertiesOrOriginalResource];
 
     if (v20)
     {
       v21 = objc_alloc(MEMORY[0x1E69C0718]);
-      v22 = [MEMORY[0x1E695DFF8] fileURLWithPath:v4 isDirectory:0];
+      v22 = [MEMORY[0x1E695DFF8] fileURLWithPath:metadataFromMediaPropertiesOrOriginalResource isDirectory:0];
       v23 = objc_alloc_init(MEMORY[0x1E69C08E8]);
       v9 = [v21 initWithMediaURL:v22 options:12 timeZoneLookup:v23 shouldCache:0];
 
       if (v9)
       {
-        v24 = [v3 additionalAttributes];
-        v25 = [v24 unmanagedAdjustment];
-        v12 = [v25 adjustmentRenderTypes];
+        additionalAttributes2 = [assetCopy additionalAttributes];
+        unmanagedAdjustment2 = [additionalAttributes2 unmanagedAdjustment];
+        adjustmentRenderTypes = [unmanagedAdjustment2 adjustmentRenderTypes];
 
-        LODWORD(v24) = [v3 depthType];
-        [v3 setDepthTypeFromMetadata:v9];
-        v13 = [v3 depthType] != v24;
-        v14 = [v3 updateAdjustmentRenderTypes:v12 withDepthType:{objc_msgSend(v3, "depthType")}];
+        LODWORD(additionalAttributes2) = [assetCopy depthType];
+        [assetCopy setDepthTypeFromMetadata:v9];
+        v13 = [assetCopy depthType] != additionalAttributes2;
+        v14 = [assetCopy updateAdjustmentRenderTypes:adjustmentRenderTypes withDepthType:{objc_msgSend(assetCopy, "depthType")}];
 LABEL_7:
-        if (v14 != v12)
+        if (v14 != adjustmentRenderTypes)
         {
           v15 = v14;
-          v16 = [v3 additionalAttributes];
-          v17 = [v16 unmanagedAdjustment];
-          [v17 setAdjustmentRenderTypes:v15];
+          additionalAttributes3 = [assetCopy additionalAttributes];
+          unmanagedAdjustment3 = [additionalAttributes3 unmanagedAdjustment];
+          [unmanagedAdjustment3 setAdjustmentRenderTypes:v15];
 
           v13 = 1;
         }
@@ -11592,24 +11592,24 @@ LABEL_31:
   return v4;
 }
 
-- (BOOL)_runMigrationStepWithName:(id)a3 fetchRequest:(id)a4 store:(id)a5 migrationHandler:(id)a6
+- (BOOL)_runMigrationStepWithName:(id)name fetchRequest:(id)request store:(id)store migrationHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  requestCopy = request;
+  storeCopy = store;
+  handlerCopy = handler;
   v31 = 0;
   v32 = &v31;
   v33 = 0x2020000000;
   v34 = 1;
   pl_dispatch_once();
   v14 = objc_autoreleasePoolPush();
-  v15 = -[PLModelMigrator managedObjectContextForMigrationInStore:name:concurrencyType:](self, "managedObjectContextForMigrationInStore:name:concurrencyType:", v12, [v10 UTF8String], 1);
-  v16 = [v11 fetchBatchSize];
-  if (!v16)
+  v15 = -[PLModelMigrator managedObjectContextForMigrationInStore:name:concurrencyType:](self, "managedObjectContextForMigrationInStore:name:concurrencyType:", storeCopy, [nameCopy UTF8String], 1);
+  fetchBatchSize = [requestCopy fetchBatchSize];
+  if (!fetchBatchSize)
   {
-    v16 = 100;
-    [v11 setFetchBatchSize:100];
+    fetchBatchSize = 100;
+    [requestCopy setFetchBatchSize:100];
   }
 
   v23[0] = MEMORY[0x1E69E9820];
@@ -11618,14 +11618,14 @@ LABEL_31:
   v23[3] = &unk_1E756FCE8;
   v17 = v15;
   v24 = v17;
-  v18 = v11;
+  v18 = requestCopy;
   v25 = v18;
-  v19 = v10;
+  v19 = nameCopy;
   v26 = v19;
-  v27 = self;
+  selfCopy = self;
   v29 = &v31;
-  v30 = v16;
-  v20 = v13;
+  v30 = fetchBatchSize;
+  v20 = handlerCopy;
   v28 = v20;
   [v17 performBlockAndWait:v23];
 
@@ -11718,23 +11718,23 @@ uint64_t __81__PLModelMigrator__runMigrationStepWithName_fetchRequest_store_migr
   return result;
 }
 
-- (BOOL)_runMigrationStepWithPrettyFunction:(const char *)a3 store:(id)a4 migrationHandler:(id)a5
+- (BOOL)_runMigrationStepWithPrettyFunction:(const char *)function store:(id)store migrationHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  storeCopy = store;
+  handlerCopy = handler;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
   v22 = 1;
   v10 = objc_autoreleasePoolPush();
   pl_dispatch_once();
-  v11 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v8 name:a3 concurrencyType:1];
+  v11 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:function concurrencyType:1];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __78__PLModelMigrator__runMigrationStepWithPrettyFunction_store_migrationHandler___block_invoke;
   v15[3] = &unk_1E7577918;
   v18 = &v19;
-  v12 = v9;
+  v12 = handlerCopy;
   v17 = v12;
   v13 = v11;
   v16 = v13;
@@ -11755,14 +11755,14 @@ uint64_t __78__PLModelMigrator__runMigrationStepWithPrettyFunction_store_migrati
   return [v2 reset];
 }
 
-- (BOOL)_updatePlaybackStylesAndVariationsInStore:(id)a3
+- (BOOL)_updatePlaybackStylesAndVariationsInStore:(id)store
 {
   v67[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   v5 = objc_autoreleasePoolPush();
   pl_dispatch_once();
   v6 = objc_autoreleasePoolPush();
-  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _updatePlaybackStylesAndVariationsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _updatePlaybackStylesAndVariationsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v8 = MEMORY[0x1E695D560];
   v9 = +[PLManagedAsset entityName];
   v10 = [v8 batchUpdateRequestWithEntityName:v9];
@@ -11827,9 +11827,9 @@ uint64_t __78__PLModelMigrator__runMigrationStepWithPrettyFunction_store_migrati
       {
         if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
         {
-          v48 = [v43 result];
+          result = [v43 result];
           *buf = 138412290;
-          v54 = v48;
+          v54 = result;
           _os_log_impl(&dword_19BF1F000, v47, OS_LOG_TYPE_DEFAULT, "updating autoloop playback successful with result %@", buf, 0xCu);
 
           v6 = v51;
@@ -11867,15 +11867,15 @@ uint64_t __78__PLModelMigrator__runMigrationStepWithPrettyFunction_store_migrati
   return v45;
 }
 
-- (BOOL)_updatePlaybackWithBatchUpdateRequest:(id)a3 targetDescription:(id)a4 inContext:(id)a5
+- (BOOL)_updatePlaybackWithBatchUpdateRequest:(id)request targetDescription:(id)description inContext:(id)context
 {
   v21 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
-  [v9 setResultType:2];
+  descriptionCopy = description;
+  contextCopy = context;
+  requestCopy = request;
+  [requestCopy setResultType:2];
   v16 = 0;
-  v10 = [v8 executeRequest:v9 error:&v16];
+  v10 = [contextCopy executeRequest:requestCopy error:&v16];
 
   v11 = v16;
   v12 = PLMigrationGetLog();
@@ -11884,11 +11884,11 @@ uint64_t __78__PLModelMigrator__runMigrationStepWithPrettyFunction_store_migrati
   {
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v10 result];
+      result = [v10 result];
       *buf = 138412546;
-      v18 = v7;
+      v18 = descriptionCopy;
       v19 = 2112;
-      v20 = v14;
+      v20 = result;
       _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_DEFAULT, "Updating %@ playback successful with result %@", buf, 0x16u);
     }
   }
@@ -11896,7 +11896,7 @@ uint64_t __78__PLModelMigrator__runMigrationStepWithPrettyFunction_store_migrati
   else if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412546;
-    v18 = v7;
+    v18 = descriptionCopy;
     v19 = 2112;
     v20 = v11;
     _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_ERROR, "Batch update request failed, updating %@ playback, error: %@", buf, 0x16u);
@@ -11905,15 +11905,15 @@ uint64_t __78__PLModelMigrator__runMigrationStepWithPrettyFunction_store_migrati
   return v10 != 0;
 }
 
-- (BOOL)_fixMovieAttributesInStore:(id)a3
+- (BOOL)_fixMovieAttributesInStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 1;
   v6 = objc_autoreleasePoolPush();
-  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v5 name:"[PLModelMigrator _fixMovieAttributesInStore:]" concurrencyType:1];
+  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _fixMovieAttributesInStore:]" concurrencyType:1];
   v8 = MEMORY[0x1E695D5E0];
   v9 = +[PLManagedAsset entityName];
   v10 = [v8 fetchRequestWithEntityName:v9];
@@ -12033,22 +12033,22 @@ void __46__PLModelMigrator__fixMovieAttributesInStore___block_invoke_2036(uint64
   }
 }
 
-- (BOOL)_setPlaybackStyleForAnimatedGIFsInStore:(id)a3
+- (BOOL)_setPlaybackStyleForAnimatedGIFsInStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
   v25 = 1;
   v6 = objc_autoreleasePoolPush();
-  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v5 name:"[PLModelMigrator _setPlaybackStyleForAnimatedGIFsInStore:]" concurrencyType:1];
+  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _setPlaybackStyleForAnimatedGIFsInStore:]" concurrencyType:1];
   v8 = MEMORY[0x1E695D5E0];
   v9 = +[PLManagedAsset entityName];
   v10 = [v8 fetchRequestWithEntityName:v9];
 
   v11 = MEMORY[0x1E696AE18];
-  v12 = [*MEMORY[0x1E6982DE8] identifier];
-  v13 = [v11 predicateWithFormat:@"kind == %d AND uniformTypeIdentifier == %@ AND playbackStyle != %d", 0, v12, 2];
+  identifier = [*MEMORY[0x1E6982DE8] identifier];
+  v13 = [v11 predicateWithFormat:@"kind == %d AND uniformTypeIdentifier == %@ AND playbackStyle != %d", 0, identifier, 2];
   [v10 setPredicate:v13];
 
   [v10 setFetchBatchSize:100];
@@ -12160,12 +12160,12 @@ void __59__PLModelMigrator__setPlaybackStyleForAnimatedGIFsInStore___block_invok
   }
 }
 
-- (BOOL)_removeAutoloopWorkerStatesInStore:(id)a3
+- (BOOL)_removeAutoloopWorkerStatesInStore:(id)store
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _removeAutoloopWorkerStatesInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _removeAutoloopWorkerStatesInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = MEMORY[0x1E695D5E0];
   v8 = +[PLAssetAnalysisState entityName];
   v9 = [v7 fetchRequestWithEntityName:v8];
@@ -12184,9 +12184,9 @@ void __59__PLModelMigrator__setPlaybackStyleForAnimatedGIFsInStore___block_invok
   {
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [v12 result];
+      result = [v12 result];
       *buf = 138412290;
-      v20 = v16;
+      v20 = result;
       _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_DEFAULT, "_removeAutoloopWorkerStatesInStore deleted %@ autoloop analysis states.", buf, 0xCu);
     }
   }
@@ -12207,11 +12207,11 @@ void __59__PLModelMigrator__setPlaybackStyleForAnimatedGIFsInStore___block_invok
 - (BOOL)_fixInitialSyncMarker
 {
   v17 = *MEMORY[0x1E69E9840];
-  v2 = [(PLModelMigrator *)self pathManager];
-  v3 = CPLStatusFromPathManager(v2);
-  v4 = [v3 initialSyncDate];
+  pathManager = [(PLModelMigrator *)self pathManager];
+  v3 = CPLStatusFromPathManager(pathManager);
+  initialSyncDate = [v3 initialSyncDate];
 
-  if (v4)
+  if (initialSyncDate)
   {
     v14 = 0;
     v5 = [v3 writeInitialSyncMarker:&v14];
@@ -12247,16 +12247,16 @@ LABEL_7:
   return 1;
 }
 
-- (BOOL)_removingDuplicatedCloudAssetGuid:(id)a3
+- (BOOL)_removingDuplicatedCloudAssetGuid:(id)guid
 {
   v28[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  guidCopy = guid;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
   v27 = 1;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _removingDuplicatedCloudAssetGuid:]" concurrencyType:1];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:guidCopy name:"[PLModelMigrator _removingDuplicatedCloudAssetGuid:]" concurrencyType:1];
   v7 = MEMORY[0x1E695D5E0];
   v8 = +[PLManagedAsset entityName];
   v9 = [v7 fetchRequestWithEntityName:v8];
@@ -12284,7 +12284,7 @@ LABEL_7:
   v20 = v16;
   v17 = v9;
   v21 = v17;
-  v22 = self;
+  selfCopy = self;
   v23 = &v24;
   [v16 performBlockAndWait:v19];
 
@@ -12590,16 +12590,16 @@ LABEL_41:
   }
 }
 
-- (BOOL)_convertNameSourceFromBoolToIntForDeferredRebuildFaceInStore:(id)a3
+- (BOOL)_convertNameSourceFromBoolToIntForDeferredRebuildFaceInStore:(id)store
 {
   v43 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  storeCopy = store;
   v35 = 0;
   v36 = &v35;
   v37 = 0x2020000000;
   v38 = 1;
   v6 = objc_autoreleasePoolPush();
-  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v5 name:"[PLModelMigrator _convertNameSourceFromBoolToIntForDeferredRebuildFaceInStore:]" concurrencyType:1];
+  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _convertNameSourceFromBoolToIntForDeferredRebuildFaceInStore:]" concurrencyType:1];
   v8 = MEMORY[0x1E695D5E0];
   v9 = +[PLDeferredRebuildFace entityName];
   v10 = [v8 fetchRequestWithEntityName:v9];
@@ -12703,16 +12703,16 @@ void __80__PLModelMigrator__convertNameSourceFromBoolToIntForDeferredRebuildFace
   [v2 setNameSource:{objc_msgSend(v2, "nameSource") == 0}];
 }
 
-- (BOOL)_populateUserKeyFacePickSourceForPersonInStore:(id)a3
+- (BOOL)_populateUserKeyFacePickSourceForPersonInStore:(id)store
 {
   v44 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  storeCopy = store;
   v36 = 0;
   v37 = &v36;
   v38 = 0x2020000000;
   v39 = 1;
   v6 = objc_autoreleasePoolPush();
-  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v5 name:"[PLModelMigrator _populateUserKeyFacePickSourceForPersonInStore:]" concurrencyType:1];
+  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _populateUserKeyFacePickSourceForPersonInStore:]" concurrencyType:1];
   v8 = MEMORY[0x1E695D5E0];
   v9 = +[PLPerson entityName];
   v10 = [v8 fetchRequestWithEntityName:v9];
@@ -12813,16 +12813,16 @@ void __66__PLModelMigrator__populateUserKeyFacePickSourceForPersonInStore___bloc
   }
 }
 
-- (BOOL)_populateAdjustmentTimestampsOnAssets:(id)a3
+- (BOOL)_populateAdjustmentTimestampsOnAssets:(id)assets
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  assetsCopy = assets;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
   v24 = 1;
   v6 = objc_autoreleasePoolPush();
-  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v5 name:"[PLModelMigrator _populateAdjustmentTimestampsOnAssets:]" concurrencyType:1];
+  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:assetsCopy name:"[PLModelMigrator _populateAdjustmentTimestampsOnAssets:]" concurrencyType:1];
   v8 = MEMORY[0x1E695D5E0];
   v9 = +[PLManagedAsset entityName];
   v10 = [v8 fetchRequestWithEntityName:v9];
@@ -12905,13 +12905,13 @@ void __57__PLModelMigrator__populateAdjustmentTimestampsOnAssets___block_invoke_
   [v2 setAdjustmentTimestamp:v5];
 }
 
-- (BOOL)_migrateCloudResourcesRelationshipsInStagedStore:(id)a3
+- (BOOL)_migrateCloudResourcesRelationshipsInStagedStore:(id)store
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  storeCopy = store;
   pl_dispatch_once();
   v6 = objc_autoreleasePoolPush();
-  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v5 name:"[PLModelMigrator _migrateCloudResourcesRelationshipsInStagedStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _migrateCloudResourcesRelationshipsInStagedStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v8 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:@"AdditionalAssetAttributes"];
   v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"cloudMaster != nil OR cloudResources.@count > 0"];
   [v8 setPredicate:v9];
@@ -12978,10 +12978,10 @@ void __68__PLModelMigrator__migrateCloudResourcesRelationshipsInStagedStore___bl
   ++*(*(*(a1 + 32) + 8) + 24);
 }
 
-- (BOOL)_revalidateImportSessionDates:(id)a3
+- (BOOL)_revalidateImportSessionDates:(id)dates
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  datesCopy = dates;
   v5 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:@"ImportSession"];
   [v5 setFetchBatchSize:100];
   v16 = 0;
@@ -12994,7 +12994,7 @@ void __68__PLModelMigrator__migrateCloudResourcesRelationshipsInStagedStore___bl
   v15[2] = __49__PLModelMigrator__revalidateImportSessionDates___block_invoke;
   v15[3] = &unk_1E7569190;
   v15[4] = &v16;
-  v7 = [(PLModelMigrator *)self _runMigrationStepWithName:v6 fetchRequest:v5 store:v4 migrationHandler:v15];
+  v7 = [(PLModelMigrator *)self _runMigrationStepWithName:v6 fetchRequest:v5 store:datesCopy migrationHandler:v15];
 
   if (v7)
   {
@@ -13038,10 +13038,10 @@ uint64_t __49__PLModelMigrator__revalidateImportSessionDates___block_invoke(uint
   return 1;
 }
 
-- (BOOL)_setImportedByInPLCloudMaster:(id)a3
+- (BOOL)_setImportedByInPLCloudMaster:(id)master
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  masterCopy = master;
   v5 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:@"CloudMaster"];
   [v5 setFetchBatchSize:100];
   v16 = 0;
@@ -13054,7 +13054,7 @@ uint64_t __49__PLModelMigrator__revalidateImportSessionDates___block_invoke(uint
   v15[2] = __49__PLModelMigrator__setImportedByInPLCloudMaster___block_invoke;
   v15[3] = &unk_1E7569190;
   v15[4] = &v16;
-  v7 = [(PLModelMigrator *)self _runMigrationStepWithName:v6 fetchRequest:v5 store:v4 migrationHandler:v15];
+  v7 = [(PLModelMigrator *)self _runMigrationStepWithName:v6 fetchRequest:v5 store:masterCopy migrationHandler:v15];
 
   if (v7)
   {
@@ -13109,12 +13109,12 @@ uint64_t __49__PLModelMigrator__setImportedByInPLCloudMaster___block_invoke(uint
   return 1;
 }
 
-- (BOOL)_persistImportSessionAlbumType:(id)a3
+- (BOOL)_persistImportSessionAlbumType:(id)type
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typeCopy = type;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _persistImportSessionAlbumType:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:typeCopy name:"[PLModelMigrator _persistImportSessionAlbumType:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:@"ImportSession"];
   [v7 setFetchBatchSize:100];
   v13 = 0;
@@ -13154,13 +13154,13 @@ uint64_t __50__PLModelMigrator__persistImportSessionAlbumType___block_invoke(uin
   return result;
 }
 
-- (BOOL)_createImportSessionAlbums:(id)a3
+- (BOOL)_createImportSessionAlbums:(id)albums
 {
   v40[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  albumsCopy = albums;
   pl_dispatch_once();
   v6 = objc_autoreleasePoolPush();
-  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v5 name:"[PLModelMigrator _createImportSessionAlbums:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:albumsCopy name:"[PLModelMigrator _createImportSessionAlbums:]" concurrencyType:*MEMORY[0x1E695D708]];
   v8 = MEMORY[0x1E695D5E0];
   v9 = +[PLManagedAsset entityName];
   v10 = [v8 fetchRequestWithEntityName:v9];
@@ -13204,13 +13204,13 @@ uint64_t __50__PLModelMigrator__persistImportSessionAlbumType___block_invoke(uin
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       v19 = NSStringFromSelector(a2);
-      v20 = [v17 userInfo];
+      userInfo = [v17 userInfo];
       *buf = 138543874;
       v34 = v19;
       v35 = 2112;
       v36 = v17;
       v37 = 2112;
-      v38 = v20;
+      v38 = userInfo;
       _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_ERROR, "%{public}@: failed: %@ %@", buf, 0x20u);
     }
   }
@@ -13293,7 +13293,7 @@ LABEL_12:
 LABEL_13:
 }
 
-- (BOOL)_removeInvalidImportSessionAlbums:(id)a3
+- (BOOL)_removeInvalidImportSessionAlbums:(id)albums
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
@@ -13301,7 +13301,7 @@ LABEL_13:
   v4[3] = &unk_1E7569168;
   v4[4] = self;
   v4[5] = a2;
-  return [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _removeInvalidImportSessionAlbums:]" store:a3 migrationHandler:v4];
+  return [(PLModelMigrator *)self _runMigrationStepWithPrettyFunction:"[PLModelMigrator _removeInvalidImportSessionAlbums:]" store:albums migrationHandler:v4];
 }
 
 BOOL __53__PLModelMigrator__removeInvalidImportSessionAlbums___block_invoke(uint64_t a1, void *a2)
@@ -13368,14 +13368,14 @@ void __53__PLModelMigrator__removeInvalidImportSessionAlbums___block_invoke_2(ui
   ++*(*(*(a1 + 40) + 8) + 24);
 }
 
-- (BOOL)_migrateDetectedFacesGroupInStagedStore:(id)a3
+- (BOOL)_migrateDetectedFacesGroupInStagedStore:(id)store
 {
   v42 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  storeCopy = store;
   context = objc_autoreleasePoolPush();
   pl_dispatch_once();
   v6 = objc_autoreleasePoolPush();
-  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v5 name:"[PLModelMigrator _migrateDetectedFacesGroupInStagedStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _migrateDetectedFacesGroupInStagedStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v8 = MEMORY[0x1E695D5E0];
   v9 = +[PLDetectedFace entityName];
   v10 = [v8 fetchRequestWithEntityName:v9];
@@ -13406,13 +13406,13 @@ void __53__PLModelMigrator__removeInvalidImportSessionAlbums___block_invoke_2(ui
     v15 = PLMigrationGetLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      v16 = [v14 userInfo];
+      userInfo = [v14 userInfo];
       *buf = 136315650;
       v38 = "[PLModelMigrator _migrateDetectedFacesGroupInStagedStore:]";
       v39 = 2112;
       *v40 = v14;
       *&v40[8] = 2112;
-      v41 = v16;
+      v41 = userInfo;
       _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_ERROR, "%s: failed to migrate detected faces group: %@ %@", buf, 0x20u);
     }
   }
@@ -13529,14 +13529,14 @@ LABEL_14:
 LABEL_15:
 }
 
-- (BOOL)_migrateRejectedFacesGroupInStagedStore:(id)a3
+- (BOOL)_migrateRejectedFacesGroupInStagedStore:(id)store
 {
   v42 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  storeCopy = store;
   context = objc_autoreleasePoolPush();
   pl_dispatch_once();
   v6 = objc_autoreleasePoolPush();
-  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v5 name:"[PLModelMigrator _migrateRejectedFacesGroupInStagedStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _migrateRejectedFacesGroupInStagedStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v8 = MEMORY[0x1E695D5E0];
   v9 = +[PLPerson entityName];
   v10 = [v8 fetchRequestWithEntityName:v9];
@@ -13568,13 +13568,13 @@ LABEL_15:
     v15 = PLMigrationGetLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      v16 = [v14 userInfo];
+      userInfo = [v14 userInfo];
       *buf = 136315650;
       v38 = "[PLModelMigrator _migrateRejectedFacesGroupInStagedStore:]";
       v39 = 2112;
       *v40 = v14;
       *&v40[8] = 2112;
-      v41 = v16;
+      v41 = userInfo;
       _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_ERROR, "%s: failed to migrate rejected faces group: %@ %@", buf, 0x20u);
     }
   }
@@ -13640,12 +13640,12 @@ void __59__PLModelMigrator__migrateRejectedFacesGroupInStagedStore___block_invok
   }
 }
 
-- (BOOL)_migrateOriginalColorSpaceInStagedStore:(id)a3
+- (BOOL)_migrateOriginalColorSpaceInStagedStore:(id)store
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _migrateOriginalColorSpaceInStagedStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _migrateOriginalColorSpaceInStagedStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = MEMORY[0x1E695D560];
   v8 = +[PLManagedAsset entityName];
   v9 = [v7 batchUpdateRequestWithEntityName:v8];
@@ -13666,22 +13666,22 @@ void __59__PLModelMigrator__migrateRejectedFacesGroupInStagedStore___block_invok
   {
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [v12 result];
+      result = [v12 result];
       *buf = 138412290;
-      v21 = v16;
+      v21 = result;
       _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_DEFAULT, "Updated %@ assets", buf, 0xCu);
     }
   }
 
   else if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {
-    v17 = [v13 userInfo];
+    userInfo = [v13 userInfo];
     *buf = 136315650;
     v21 = "[PLModelMigrator _migrateOriginalColorSpaceInStagedStore:]";
     v22 = 2112;
     v23 = v13;
     v24 = 2112;
-    v25 = v17;
+    v25 = userInfo;
     _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_ERROR, "%s: failed to update: %@ %@", buf, 0x20u);
   }
 
@@ -13689,18 +13689,18 @@ void __59__PLModelMigrator__migrateRejectedFacesGroupInStagedStore___block_invok
   return v12 != 0;
 }
 
-- (BOOL)_performMigrationCacheDateCreatedOnResources:(BOOL)a3 cacheItemIdentifierOnResources:(BOOL)a4 store:(id)a5
+- (BOOL)_performMigrationCacheDateCreatedOnResources:(BOOL)resources cacheItemIdentifierOnResources:(BOOL)onResources store:(id)store
 {
-  v5 = a4;
+  onResourcesCopy = onResources;
   v31[2] = *MEMORY[0x1E69E9840];
-  v9 = a5;
-  v10 = v9;
-  if (a3 || v5)
+  storeCopy = store;
+  v10 = storeCopy;
+  if (resources || onResourcesCopy)
   {
-    if (!v9)
+    if (!storeCopy)
     {
-      v23 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v23 handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:9077 description:{@"Invalid parameter not satisfying: %@", @"store != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:9077 description:{@"Invalid parameter not satisfying: %@", @"store != nil"}];
     }
 
     v12 = objc_autoreleasePoolPush();
@@ -13720,8 +13720,8 @@ void __59__PLModelMigrator__migrateRejectedFacesGroupInStagedStore___block_invok
     v24[1] = 3221225472;
     v24[2] = __101__PLModelMigrator__performMigrationCacheDateCreatedOnResources_cacheItemIdentifierOnResources_store___block_invoke;
     v24[3] = &__block_descriptor_34_e31_v32__0__PLManagedAsset_8Q16_B24l;
-    v25 = a3;
-    v26 = v5;
+    resourcesCopy = resources;
+    v26 = onResourcesCopy;
     v19 = [v13 enumerateWithIncrementalSaveUsingObjects:v18 withBlock:v24];
     v11 = v19 == 0;
     if (v19)
@@ -13729,11 +13729,11 @@ void __59__PLModelMigrator__migrateRejectedFacesGroupInStagedStore___block_invok
       v20 = PLMigrationGetLog();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
-        v21 = [v19 userInfo];
+        userInfo = [v19 userInfo];
         *buf = 138412546;
         v28 = v19;
         v29 = 2112;
-        v30 = v21;
+        v30 = userInfo;
         _os_log_impl(&dword_19BF1F000, v20, OS_LOG_TYPE_ERROR, "_performMigrationWithMarkThumbnailsAsAltAvailable:cacheDateCreatedOnResources:cacheItemIdentifierOnResources:store: failed: %@ %@", buf, 0x16u);
       }
     }
@@ -13905,29 +13905,29 @@ void __101__PLModelMigrator__performMigrationCacheDateCreatedOnResources_cacheIt
   }
 }
 
-- (BOOL)_moveMyPhotoStreamToAlbumsListInStore:(id)a3
+- (BOOL)_moveMyPhotoStreamToAlbumsListInStore:(id)store
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  storeCopy = store;
   if ((PLIsAssetsd() & 1) == 0)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v21 = NSStringFromSelector(a2);
-    [v20 handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:9029 description:{@"%@ can only be called from assetsd", v21}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:9029 description:{@"%@ can only be called from assetsd", v21}];
   }
 
   v6 = objc_autoreleasePoolPush();
-  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v5 name:"[PLModelMigrator _moveMyPhotoStreamToAlbumsListInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _moveMyPhotoStreamToAlbumsListInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v8 = [(PLGenericAlbum *)PLManagedAlbum albumWithKind:1500 inManagedObjectContext:v7];
   if (v8)
   {
     v9 = [PLManagedAlbumList allStreamedAlbumsListInManagedObjectContext:v7];
     v10 = [PLManagedAlbumList albumListInManagedObjectContext:v7];
-    v11 = [v9 albums];
-    v12 = [v11 indexOfObject:v8];
+    albums = [v9 albums];
+    v12 = [albums indexOfObject:v8];
     if (v12 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v11 removeObjectAtIndex:v12];
+      [albums removeObjectAtIndex:v12];
       v13 = PLMigrationGetLog();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
@@ -13936,8 +13936,8 @@ void __101__PLModelMigrator__performMigrationCacheDateCreatedOnResources_cacheIt
       }
     }
 
-    v14 = [v10 albums];
-    if ([v14 indexOfObject:v8] == 0x7FFFFFFFFFFFFFFFLL)
+    albums2 = [v10 albums];
+    if ([albums2 indexOfObject:v8] == 0x7FFFFFFFFFFFFFFFLL)
     {
       [v10 insertIntoOrderedAlbumsAtIndexByPriorityForAlbum:v8];
       v15 = PLMigrationGetLog();
@@ -13959,11 +13959,11 @@ void __101__PLModelMigrator__performMigrationCacheDateCreatedOnResources_cacheIt
         v18 = PLMigrationGetLog();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
         {
-          v22 = [v17 userInfo];
+          userInfo = [v17 userInfo];
           *buf = 138412546;
           v26 = v17;
           v27 = 2112;
-          v28 = v22;
+          v28 = userInfo;
           _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_ERROR, "Failed to move My Photo Stream to albums list %@ %@", buf, 0x16u);
         }
       }
@@ -13986,13 +13986,13 @@ void __101__PLModelMigrator__performMigrationCacheDateCreatedOnResources_cacheIt
   return v16;
 }
 
-- (BOOL)_fixupAssetPersistence:(id)a3
+- (BOOL)_fixupAssetPersistence:(id)persistence
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  persistenceCopy = persistence;
   pl_dispatch_once();
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _fixupAssetPersistence:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:persistenceCopy name:"[PLModelMigrator _fixupAssetPersistence:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = MEMORY[0x1E695D5E0];
   v8 = +[PLManagedAsset entityName];
   v9 = [v7 fetchRequestWithEntityName:v8];
@@ -14017,13 +14017,13 @@ void __101__PLModelMigrator__performMigrationCacheDateCreatedOnResources_cacheIt
   return 1;
 }
 
-- (BOOL)_persistVideoComplPropertiesInStore:(id)a3
+- (BOOL)_persistVideoComplPropertiesInStore:(id)store
 {
   v36[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   pl_dispatch_once();
   context = objc_autoreleasePoolPush();
-  v5 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _persistVideoComplPropertiesInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v5 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _persistVideoComplPropertiesInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v6 = MEMORY[0x1E695D5E0];
   v7 = +[PLManagedAsset entityName];
   v8 = [v6 fetchRequestWithEntityName:v7];
@@ -14049,12 +14049,12 @@ void __101__PLModelMigrator__performMigrationCacheDateCreatedOnResources_cacheIt
   v28 = &v27;
   v29 = 0x2020000000;
   v30 = 0;
-  v17 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __55__PLModelMigrator__persistVideoComplPropertiesInStore___block_invoke;
   v24[3] = &unk_1E75721F8;
-  v18 = v17;
+  v18 = defaultManager;
   v25 = v18;
   v26 = &v27;
   v19 = [v5 enumerateObjectsFromFetchRequest:v8 count:0 usingDefaultBatchSizeWithBlock:v24];
@@ -14101,13 +14101,13 @@ void __55__PLModelMigrator__persistVideoComplPropertiesInStore___block_invoke(ui
   }
 }
 
-- (BOOL)_persistPlaceAnnotationData:(id)a3
+- (BOOL)_persistPlaceAnnotationData:(id)data
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   pl_dispatch_once();
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _persistPlaceAnnotationData:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:dataCopy name:"[PLModelMigrator _persistPlaceAnnotationData:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = MEMORY[0x1E695D5E0];
   v8 = +[PLManagedAsset entityName];
   v9 = [v7 fetchRequestWithEntityName:v8];
@@ -14126,13 +14126,13 @@ void __55__PLModelMigrator__persistVideoComplPropertiesInStore___block_invoke(ui
   return 1;
 }
 
-- (BOOL)_fixVideoDimensionsInStore:(id)a3
+- (BOOL)_fixVideoDimensionsInStore:(id)store
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   pl_dispatch_once();
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _fixVideoDimensionsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _fixVideoDimensionsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = MEMORY[0x1E695D5E0];
   v8 = +[PLManagedAsset entityName];
   v9 = [v7 fetchRequestWithEntityName:v8];
@@ -14165,11 +14165,11 @@ void __55__PLModelMigrator__persistVideoComplPropertiesInStore___block_invoke(ui
       v15 = PLMigrationGetLog();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        v16 = [v14 userInfo];
+        userInfo = [v14 userInfo];
         *buf = 138412546;
         *v27 = v14;
         *&v27[8] = 2112;
-        v28 = v16;
+        v28 = userInfo;
         _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_ERROR, "_fixVideoDimensionsInStore: failed: %@ %@", buf, 0x16u);
       }
     }
@@ -14209,30 +14209,30 @@ uint64_t __46__PLModelMigrator__fixVideoDimensionsInStore___block_invoke(uint64_
   return result;
 }
 
-- (BOOL)_fixVideoDimensionsForAsset:(id)a3
+- (BOOL)_fixVideoDimensionsForAsset:(id)asset
 {
-  v3 = a3;
-  if (![v3 height] || !objc_msgSend(v3, "width"))
+  assetCopy = asset;
+  if (![assetCopy height] || !objc_msgSend(assetCopy, "width"))
   {
-    v6 = [v3 fileURLForFullsizeRenderVideo];
-    v5 = [MEMORY[0x1E696AC08] defaultManager];
-    if (v6 && ([v6 path], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v5, "fileExistsAtPath:", v7), v7, (v8 & 1) != 0))
+    fileURLForFullsizeRenderVideo = [assetCopy fileURLForFullsizeRenderVideo];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    if (fileURLForFullsizeRenderVideo && ([fileURLForFullsizeRenderVideo path], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(defaultManager, "fileExistsAtPath:", v7), v7, (v8 & 1) != 0))
     {
-      v9 = v6;
+      mainFileURL = fileURLForFullsizeRenderVideo;
     }
 
     else
     {
-      v9 = [v3 mainFileURL];
+      mainFileURL = [assetCopy mainFileURL];
 
-      if (!v9)
+      if (!mainFileURL)
       {
         v4 = 0;
         goto LABEL_14;
       }
 
-      v10 = [v9 path];
-      v11 = [v5 fileExistsAtPath:v10];
+      path = [mainFileURL path];
+      v11 = [defaultManager fileExistsAtPath:path];
 
       if (!v11)
       {
@@ -14240,13 +14240,13 @@ uint64_t __46__PLModelMigrator__fixVideoDimensionsInStore___block_invoke(uint64_
         goto LABEL_13;
       }
 
-      v6 = v9;
+      fileURLForFullsizeRenderVideo = mainFileURL;
     }
 
-    [PLManagedAsset dimensionsForVideoAtURL:v6];
+    [PLManagedAsset dimensionsForVideoAtURL:fileURLForFullsizeRenderVideo];
     v13 = v12;
-    [v3 setHeight:v14];
-    [v3 setWidth:v13];
+    [assetCopy setHeight:v14];
+    [assetCopy setWidth:v13];
     v4 = 1;
 LABEL_13:
 
@@ -14254,28 +14254,28 @@ LABEL_13:
   }
 
   v4 = 0;
-  v5 = 0;
+  defaultManager = 0;
 LABEL_14:
-  if (![v3 originalHeight] || !objc_msgSend(v3, "originalWidth"))
+  if (![assetCopy originalHeight] || !objc_msgSend(assetCopy, "originalWidth"))
   {
-    if (!v5)
+    if (!defaultManager)
     {
-      v5 = objc_opt_new();
+      defaultManager = objc_opt_new();
     }
 
-    v15 = [v3 mainFileURL];
-    v16 = [v15 path];
-    v17 = [v5 fileExistsAtPath:v16];
+    mainFileURL2 = [assetCopy mainFileURL];
+    path2 = [mainFileURL2 path];
+    v17 = [defaultManager fileExistsAtPath:path2];
 
     if (v17)
     {
-      v18 = [v3 mainFileURL];
-      [PLManagedAsset dimensionsForVideoAtURL:v18];
+      mainFileURL3 = [assetCopy mainFileURL];
+      [PLManagedAsset dimensionsForVideoAtURL:mainFileURL3];
       v20 = v19;
       v22 = v21;
 
-      [v3 setOriginalHeight:v22];
-      [v3 setOriginalWidth:v20];
+      [assetCopy setOriginalHeight:v22];
+      [assetCopy setOriginalWidth:v20];
       v4 = 1;
     }
   }
@@ -14283,13 +14283,13 @@ LABEL_14:
   return v4;
 }
 
-- (BOOL)_populateAdjustmentsStateForAssetsInStore:(id)a3
+- (BOOL)_populateAdjustmentsStateForAssetsInStore:(id)store
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   pl_dispatch_once();
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _populateAdjustmentsStateForAssetsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _populateAdjustmentsStateForAssetsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = MEMORY[0x1E695D5E0];
   v8 = +[PLManagedAsset entityName];
   v9 = [v7 fetchRequestWithEntityName:v8];
@@ -14309,11 +14309,11 @@ LABEL_14:
       v14 = PLMigrationGetLog();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        v15 = [v13 userInfo];
+        userInfo = [v13 userInfo];
         *buf = 138412546;
         *v21 = v13;
         *&v21[8] = 2112;
-        *&v21[10] = v15;
+        *&v21[10] = userInfo;
         _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_ERROR, "_populateHasAdjustmentsForAssetsInStore: failed: %@ %@", buf, 0x16u);
       }
     }
@@ -14338,12 +14338,12 @@ LABEL_14:
   return v12;
 }
 
-- (BOOL)_fixEmptyVideoResourcePathsInStore:(id)a3
+- (BOOL)_fixEmptyVideoResourcePathsInStore:(id)store
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _fixEmptyVideoResourcePathsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _fixEmptyVideoResourcePathsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:@"CloudResource"];
   v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(type = %d OR type = %d OR type = %d) AND cloudMaster != nil AND filePath = nil", 18, 6, 7];
   [v7 setPredicate:v8];
@@ -14371,11 +14371,11 @@ LABEL_14:
     v12 = PLMigrationGetLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v13 = [v11 userInfo];
+      userInfo = [v11 userInfo];
       *buf = 138412546;
       *v31 = v11;
       *&v31[8] = 2112;
-      *&v31[10] = v13;
+      *&v31[10] = userInfo;
       _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_ERROR, "_fixEmptyVideoResourcePathsInStore: failed: %@ %@", buf, 0x16u);
     }
   }
@@ -14462,16 +14462,16 @@ void __54__PLModelMigrator__fixEmptyVideoResourcePathsInStore___block_invoke(voi
   }
 }
 
-- (BOOL)_fixLocalPathForVideoCmplDerivativesInStore:(id)a3
+- (BOOL)_fixLocalPathForVideoCmplDerivativesInStore:(id)store
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   context = objc_autoreleasePoolPush();
-  v5 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _fixLocalPathForVideoCmplDerivativesInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v5 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _fixLocalPathForVideoCmplDerivativesInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v6 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:@"CloudResource"];
   v7 = MEMORY[0x1E696AE18];
-  v8 = [*MEMORY[0x1E6982F80] identifier];
-  v9 = [v7 predicateWithFormat:@"(type = %d OR type = %d) AND cloudMaster != nil AND filePath LIKE %@ AND uniformTypeIdentifier == %@", 6, 7, @"*.MP4", v8];
+  identifier = [*MEMORY[0x1E6982F80] identifier];
+  v9 = [v7 predicateWithFormat:@"(type = %d OR type = %d) AND cloudMaster != nil AND filePath LIKE %@ AND uniformTypeIdentifier == %@", 6, 7, @"*.MP4", identifier];
 
   [v6 setPredicate:v9];
   [v6 setFetchBatchSize:100];
@@ -14484,12 +14484,12 @@ void __54__PLModelMigrator__fixEmptyVideoResourcePathsInStore___block_invoke(voi
   v28 = &v27;
   v29 = 0x2020000000;
   v30 = 0;
-  v11 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __63__PLModelMigrator__fixLocalPathForVideoCmplDerivativesInStore___block_invoke;
   v22[3] = &unk_1E7569080;
-  v12 = v11;
+  v12 = defaultManager;
   v23 = v12;
   v13 = v5;
   v24 = v13;
@@ -14501,11 +14501,11 @@ void __54__PLModelMigrator__fixEmptyVideoResourcePathsInStore___block_invoke(voi
     v15 = PLMigrationGetLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      v16 = [v14 userInfo];
+      userInfo = [v14 userInfo];
       *buf = 138412546;
       *v36 = v14;
       *&v36[8] = 2112;
-      *&v36[10] = v16;
+      *&v36[10] = userInfo;
       _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_ERROR, "_fixLocalPathForVideoCmplDerivativesInStore: failed: %@ %@", buf, 0x16u);
     }
   }
@@ -14641,12 +14641,12 @@ void __63__PLModelMigrator__fixLocalPathForVideoCmplDerivativesInStore___block_i
   }
 }
 
-- (BOOL)_fixItemIdentifierForVideoCmplInStore:(id)a3
+- (BOOL)_fixItemIdentifierForVideoCmplInStore:(id)store
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _fixItemIdentifierForVideoCmplInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _fixItemIdentifierForVideoCmplInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:@"CloudResource"];
   v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(type = %d OR type = %d) AND itemIdentifier != cloudMaster.cloudMasterGUID", 6, 7];
   [v7 setPredicate:v8];
@@ -14660,12 +14660,12 @@ void __63__PLModelMigrator__fixLocalPathForVideoCmplDerivativesInStore___block_i
   v23 = &v22;
   v24 = 0x2020000000;
   v25 = 0;
-  v11 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __57__PLModelMigrator__fixItemIdentifierForVideoCmplInStore___block_invoke;
   v19[3] = &unk_1E7568F28;
-  v12 = v11;
+  v12 = defaultManager;
   v20 = v12;
   v21 = &v22;
   v13 = [v6 enumerateWithIncrementalSaveUsingObjects:v10 shouldRefreshAfterSave:1 withBlock:v19];
@@ -14674,11 +14674,11 @@ void __63__PLModelMigrator__fixLocalPathForVideoCmplDerivativesInStore___block_i
     v14 = PLMigrationGetLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v15 = [v13 userInfo];
+      userInfo = [v13 userInfo];
       *buf = 138412546;
       *v27 = v13;
       *&v27[8] = 2112;
-      *&v27[10] = v15;
+      *&v27[10] = userInfo;
       _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_ERROR, "_fixItemIdentifierForVideoCmplInStore: failed: %@ %@", buf, 0x16u);
     }
   }
@@ -14721,18 +14721,18 @@ void __57__PLModelMigrator__fixItemIdentifierForVideoCmplInStore___block_invoke(
   ++*(*(*(a1 + 40) + 8) + 24);
 }
 
-- (BOOL)_markPhotoIrisVideoOrphansInStore:(id)a3
+- (BOOL)_markPhotoIrisVideoOrphansInStore:(id)store
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _markPhotoIrisVideoOrphansInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _markPhotoIrisVideoOrphansInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = MEMORY[0x1E695D5E0];
   v8 = +[PLManagedAsset entityName];
   v9 = [v7 fetchRequestWithEntityName:v8];
 
-  v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"kind = %d and kindSubtype = %d AND complete != 0 AND duration != nil AND duration > 0 AND duration < %f", 1, 0, 0x4010000000000000];
-  [v9 setPredicate:v10];
+  0x4010000000000000 = [MEMORY[0x1E696AE18] predicateWithFormat:@"kind = %d and kindSubtype = %d AND complete != 0 AND duration != nil AND duration > 0 AND duration < %f", 1, 0, 0x4010000000000000];
+  [v9 setPredicate:0x4010000000000000];
   [v9 setFetchBatchSize:100];
   v11 = [v6 executeFetchRequest:v9 error:0];
   v19 = 0;
@@ -14750,11 +14750,11 @@ void __57__PLModelMigrator__fixItemIdentifierForVideoCmplInStore___block_invoke(
     v13 = PLMigrationGetLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v14 = [v12 userInfo];
+      userInfo = [v12 userInfo];
       *buf = 138412546;
       *v24 = v12;
       *&v24[8] = 2112;
-      *&v24[10] = v14;
+      *&v24[10] = userInfo;
       _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_ERROR, "_markPhotoIrisVideoOrphansInStore: failed: %@ %@", buf, 0x16u);
     }
   }
@@ -14794,20 +14794,20 @@ void __53__PLModelMigrator__markPhotoIrisVideoOrphansInStore___block_invoke(uint
   }
 }
 
-- (BOOL)_fixZeroDurationPhotoIrisWithLocalResourcesInStore:(id)a3 assumeAdjustedIrisIsVisible:(BOOL)a4
+- (BOOL)_fixZeroDurationPhotoIrisWithLocalResourcesInStore:(id)store assumeAdjustedIrisIsVisible:(BOOL)visible
 {
   v21 = *MEMORY[0x1E69E9840];
   v18 = 0;
   v6 = MEMORY[0x1E696AE18];
-  v7 = a3;
+  storeCopy = store;
   v8 = [v6 predicateWithFormat:@"videoCpDurationValue == 0"];
   v17 = 0;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __98__PLModelMigrator__fixZeroDurationPhotoIrisWithLocalResourcesInStore_assumeAdjustedIrisIsVisible___block_invoke;
   v15[3] = &__block_descriptor_33_e51_v24__0__PLManagedAsset_8__NSManagedObjectContext_16l;
-  v16 = a4;
-  v9 = [(PLModelMigrator *)self _saveChangesToPhotoIrisInStore:v7 matchingPredicate:v8 countChanged:&v18 error:&v17 changeBlock:v15];
+  visibleCopy = visible;
+  v9 = [(PLModelMigrator *)self _saveChangesToPhotoIrisInStore:storeCopy matchingPredicate:v8 countChanged:&v18 error:&v17 changeBlock:v15];
 
   v10 = v17;
   if (!v9)
@@ -14815,11 +14815,11 @@ void __53__PLModelMigrator__markPhotoIrisVideoOrphansInStore___block_invoke(uint
     v11 = PLMigrationGetLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v12 = [v10 userInfo];
+      userInfo = [v10 userInfo];
       *buf = 138412546;
       *v20 = v10;
       *&v20[8] = 2112;
-      *&v20[10] = v12;
+      *&v20[10] = userInfo;
       _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_ERROR, "_fixZeroDurationPhotoIrisInStore: failed: %@ %@", buf, 0x16u);
     }
   }
@@ -14917,13 +14917,13 @@ void __98__PLModelMigrator__fixZeroDurationPhotoIrisWithLocalResourcesInStore_as
   }
 }
 
-- (BOOL)_repushMemoriesWithNewFeaturesInStore:(id)a3
+- (BOOL)_repushMemoriesWithNewFeaturesInStore:(id)store
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   pl_dispatch_once();
   context = objc_autoreleasePoolPush();
-  v5 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _repushMemoriesWithNewFeaturesInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v5 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _repushMemoriesWithNewFeaturesInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v6 = MEMORY[0x1E695D5E0];
   v7 = +[PLMemory entityName];
   v8 = [v6 fetchRequestWithEntityName:v7];
@@ -15009,13 +15009,13 @@ uint64_t __57__PLModelMigrator__repushMemoriesWithNewFeaturesInStore___block_inv
   return result;
 }
 
-- (BOOL)_fixWhitelistOwnerForPendingInvitationsInStore:(id)a3
+- (BOOL)_fixWhitelistOwnerForPendingInvitationsInStore:(id)store
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   pl_dispatch_once();
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _fixWhitelistOwnerForPendingInvitationsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _fixWhitelistOwnerForPendingInvitationsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = objc_alloc(MEMORY[0x1E695D560]);
   v8 = +[PLCloudSharedAlbum entityName];
   v9 = [v7 initWithEntityName:v8];
@@ -15033,9 +15033,9 @@ uint64_t __57__PLModelMigrator__repushMemoriesWithNewFeaturesInStore___block_inv
   {
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v11 result];
+      result = [v11 result];
       *buf = 138412290;
-      v19 = v15;
+      v19 = result;
       _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_DEFAULT, "Reset cloudOwnerIsWhitelisted to NO for %@ pending shared album invitations.", buf, 0xCu);
     }
   }
@@ -15053,15 +15053,15 @@ uint64_t __57__PLModelMigrator__repushMemoriesWithNewFeaturesInStore___block_inv
   return v11 != 0;
 }
 
-- (BOOL)_persistPhotoIrisVisibilityStateToDiskInStore:(id)a3
+- (BOOL)_persistPhotoIrisVisibilityStateToDiskInStore:(id)store
 {
   v17 = *MEMORY[0x1E69E9840];
   v14 = 0;
   v4 = MEMORY[0x1E696AE18];
-  v5 = a3;
+  storeCopy = store;
   v6 = [v4 predicateWithFormat:@"videoCpVisibilityState != %d", 0];
   v13 = 0;
-  v7 = [(PLModelMigrator *)self _saveChangesToPhotoIrisInStore:v5 matchingPredicate:v6 countChanged:&v14 error:&v13 changeBlock:&__block_literal_global_1873];
+  v7 = [(PLModelMigrator *)self _saveChangesToPhotoIrisInStore:storeCopy matchingPredicate:v6 countChanged:&v14 error:&v13 changeBlock:&__block_literal_global_1873];
 
   v8 = v13;
   if (!v7)
@@ -15069,11 +15069,11 @@ uint64_t __57__PLModelMigrator__repushMemoriesWithNewFeaturesInStore___block_inv
     v9 = PLMigrationGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [v8 userInfo];
+      userInfo = [v8 userInfo];
       *buf = 138412546;
       *v16 = v8;
       *&v16[8] = 2112;
-      *&v16[10] = v10;
+      *&v16[10] = userInfo;
       _os_log_impl(&dword_19BF1F000, v9, OS_LOG_TYPE_ERROR, "_persistPhotoIrisVisibilityStateToDiskInStore: failed: %@ %@", buf, 0x16u);
     }
   }
@@ -15091,15 +15091,15 @@ uint64_t __57__PLModelMigrator__repushMemoriesWithNewFeaturesInStore___block_inv
   return v7;
 }
 
-- (BOOL)_markOldPhotoIrisEditsEvaluatedInStore:(id)a3
+- (BOOL)_markOldPhotoIrisEditsEvaluatedInStore:(id)store
 {
   v17 = *MEMORY[0x1E69E9840];
   v14 = 0;
   v4 = MEMORY[0x1E696AE18];
-  v5 = a3;
+  storeCopy = store;
   v6 = [v4 predicateWithFormat:@"videoCpVisibilityState = %d AND additionalAttributes.unmanagedAdjustment != nil", 0];
   v13 = 0;
-  v7 = [(PLModelMigrator *)self _saveChangesToPhotoIrisInStore:v5 matchingPredicate:v6 countChanged:&v14 error:&v13 changeBlock:&__block_literal_global_1868];
+  v7 = [(PLModelMigrator *)self _saveChangesToPhotoIrisInStore:storeCopy matchingPredicate:v6 countChanged:&v14 error:&v13 changeBlock:&__block_literal_global_1868];
 
   v8 = v13;
   if (!v7)
@@ -15107,11 +15107,11 @@ uint64_t __57__PLModelMigrator__repushMemoriesWithNewFeaturesInStore___block_inv
     v9 = PLMigrationGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [v8 userInfo];
+      userInfo = [v8 userInfo];
       *buf = 138412546;
       *v16 = v8;
       *&v16[8] = 2112;
-      *&v16[10] = v10;
+      *&v16[10] = userInfo;
       _os_log_impl(&dword_19BF1F000, v9, OS_LOG_TYPE_ERROR, "_markOldPhotoIrisEditsEvaluatedInStore: failed: %@ %@", buf, 0x16u);
     }
   }
@@ -15129,32 +15129,32 @@ uint64_t __57__PLModelMigrator__repushMemoriesWithNewFeaturesInStore___block_inv
   return v7;
 }
 
-- (BOOL)_saveChangesToPhotoIrisInStore:(id)a3 matchingPredicate:(id)a4 countChanged:(unint64_t *)a5 error:(id *)a6 changeBlock:(id)a7
+- (BOOL)_saveChangesToPhotoIrisInStore:(id)store matchingPredicate:(id)predicate countChanged:(unint64_t *)changed error:(id *)error changeBlock:(id)block
 {
   v44[2] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  if (!v14)
+  storeCopy = store;
+  predicateCopy = predicate;
+  blockCopy = block;
+  if (!blockCopy)
   {
     v24 = 1;
     goto LABEL_15;
   }
 
   v15 = objc_autoreleasePoolPush();
-  v16 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v12 name:"[PLModelMigrator _saveChangesToPhotoIrisInStore:matchingPredicate:countChanged:error:changeBlock:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v16 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _saveChangesToPhotoIrisInStore:matchingPredicate:countChanged:error:changeBlock:]" concurrencyType:*MEMORY[0x1E695D708]];
   v17 = MEMORY[0x1E695D5E0];
   v18 = +[PLManagedAsset entityName];
   v19 = [v17 fetchRequestWithEntityName:v18];
 
   v20 = [MEMORY[0x1E696AE18] predicateWithFormat:@"kindSubtype = %d", 2];
-  v39 = v13;
+  v39 = predicateCopy;
   v37 = v20;
-  if (v13)
+  if (predicateCopy)
   {
     v21 = MEMORY[0x1E696AB28];
     v44[0] = v20;
-    v44[1] = v13;
+    v44[1] = predicateCopy;
     v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v44 count:2];
     v23 = [v21 andPredicateWithSubpredicates:v22];
   }
@@ -15171,12 +15171,12 @@ uint64_t __57__PLModelMigrator__repushMemoriesWithNewFeaturesInStore___block_inv
   v43 = 0;
   v25 = [v16 executeFetchRequest:v19 error:&v43];
   v26 = v43;
-  v38 = v14;
+  v38 = blockCopy;
   if (!v25)
   {
     v27 = v16;
     v24 = 0;
-    if (!a5)
+    if (!changed)
     {
       goto LABEL_9;
     }
@@ -15188,31 +15188,31 @@ uint64_t __57__PLModelMigrator__repushMemoriesWithNewFeaturesInStore___block_inv
   v40[1] = 3221225472;
   v40[2] = __99__PLModelMigrator__saveChangesToPhotoIrisInStore_matchingPredicate_countChanged_error_changeBlock___block_invoke;
   v40[3] = &unk_1E7568FF0;
-  v42 = v14;
+  v42 = blockCopy;
   v27 = v16;
   v41 = v16;
   [v41 enumerateWithIncrementalSaveUsingObjects:v25 shouldRefreshAfterSave:1 withBlock:v40];
   v28 = v15;
-  v29 = a5;
-  v30 = a6;
-  v32 = v31 = v12;
+  changedCopy = changed;
+  errorCopy = error;
+  v32 = v31 = storeCopy;
 
   v24 = v32 == 0;
   v26 = v32;
-  v12 = v31;
-  a6 = v30;
-  a5 = v29;
+  storeCopy = v31;
+  error = errorCopy;
+  changed = changedCopy;
   v15 = v28;
-  if (a5)
+  if (changed)
   {
 LABEL_8:
-    *a5 = [v25 count];
+    *changed = [v25 count];
   }
 
 LABEL_9:
 
   objc_autoreleasePoolPop(v15);
-  if (a6)
+  if (error)
   {
     v33 = v24;
   }
@@ -15225,22 +15225,22 @@ LABEL_9:
   if ((v33 & 1) == 0)
   {
     v34 = v26;
-    *a6 = v26;
+    *error = v26;
   }
 
-  v14 = v38;
-  v13 = v39;
+  blockCopy = v38;
+  predicateCopy = v39;
 LABEL_15:
 
   return v24;
 }
 
-- (BOOL)_moveCloudSharedDerivativesInStore:(id)a3
+- (BOOL)_moveCloudSharedDerivativesInStore:(id)store
 {
   v40[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _moveCloudSharedDerivativesInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _moveCloudSharedDerivativesInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = MEMORY[0x1E695D5E0];
   v8 = +[PLManagedAsset entityName];
   v9 = [v7 fetchRequestWithEntityName:v8];
@@ -15248,8 +15248,8 @@ LABEL_15:
   v10 = MEMORY[0x1E696AB28];
   v11 = [MEMORY[0x1E69BF328] predicateForIncludeMask:objc_msgSend(MEMORY[0x1E69BF328] useIndex:{"maskForCloudSharedAsset"), 1}];
   v40[0] = v11;
-  v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K > %d", @"thumbnailIndex", 0xFFFFFFFFLL];
-  v40[1] = v12;
+  0xFFFFFFFFLL = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K > %d", @"thumbnailIndex", 0xFFFFFFFFLL];
+  v40[1] = 0xFFFFFFFFLL;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:2];
   v14 = [v10 andPredicateWithSubpredicates:v13];
 
@@ -15264,12 +15264,12 @@ LABEL_15:
   v29 = &v28;
   v30 = 0x2020000000;
   v31 = 0;
-  v16 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __54__PLModelMigrator__moveCloudSharedDerivativesInStore___block_invoke;
   v24[3] = &unk_1E7569428;
-  v17 = v16;
+  v17 = defaultManager;
   v25 = v17;
   v26 = &v32;
   v27 = &v28;
@@ -15369,13 +15369,13 @@ void __54__PLModelMigrator__moveCloudSharedDerivativesInStore___block_invoke(uin
   }
 }
 
-- (BOOL)_purgeCloudSharedResourcesInStore:(id)a3
+- (BOOL)_purgeCloudSharedResourcesInStore:(id)store
 {
   v25[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   v5 = objc_autoreleasePoolPush();
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
-  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _purgeCloudSharedResourcesInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _purgeCloudSharedResourcesInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v8 = MEMORY[0x1E695D5E0];
   v9 = +[PLManagedAsset entityName];
   v10 = [v8 fetchRequestWithEntityName:v9];
@@ -15383,8 +15383,8 @@ void __54__PLModelMigrator__moveCloudSharedDerivativesInStore___block_invoke(uin
   v11 = MEMORY[0x1E696AB28];
   v12 = [MEMORY[0x1E69BF328] predicateForIncludeMask:objc_msgSend(MEMORY[0x1E69BF328] useIndex:{"maskForCloudSharedAsset"), 1}];
   v25[0] = v12;
-  v13 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K > %d", @"thumbnailIndex", 0xFFFFFFFFLL];
-  v25[1] = v13;
+  0xFFFFFFFFLL = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K > %d", @"thumbnailIndex", 0xFFFFFFFFLL];
+  v25[1] = 0xFFFFFFFFLL;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:2];
   v15 = [v11 andPredicateWithSubpredicates:v14];
 
@@ -15395,8 +15395,8 @@ void __54__PLModelMigrator__moveCloudSharedDerivativesInStore___block_invoke(uin
   v21[1] = 3221225472;
   v21[2] = __53__PLModelMigrator__purgeCloudSharedResourcesInStore___block_invoke;
   v21[3] = &unk_1E7575368;
-  v22 = v6;
-  v17 = v6;
+  v22 = defaultManager;
+  v17 = defaultManager;
   v18 = [v7 enumerateWithIncrementalSaveUsingObjects:v16 withBlock:v21];
   if (v18)
   {
@@ -15527,13 +15527,13 @@ LABEL_13:
   }
 }
 
-- (BOOL)_fixOriginalPropertiesForCloudSharedAssetsInStore:(id)a3
+- (BOOL)_fixOriginalPropertiesForCloudSharedAssetsInStore:(id)store
 {
   v46[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   pl_dispatch_once();
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _fixOriginalPropertiesForCloudSharedAssetsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _fixOriginalPropertiesForCloudSharedAssetsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = MEMORY[0x1E695D5E0];
   v8 = +[PLManagedAsset entityName];
   v9 = [v7 fetchRequestWithEntityName:v8];
@@ -15579,11 +15579,11 @@ LABEL_13:
       v18 = PLMigrationGetLog();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        v19 = [v17 userInfo];
+        userInfo = [v17 userInfo];
         *buf = 138412546;
         *v41 = v17;
         *&v41[8] = 2112;
-        *&v41[10] = v19;
+        *&v41[10] = userInfo;
         _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_ERROR, "_fixOriginalPropertiesForCloudSharedAssetsInStore: failed: %@ %@", buf, 0x16u);
       }
     }
@@ -15649,13 +15649,13 @@ void __69__PLModelMigrator__fixOriginalPropertiesForCloudSharedAssetsInStore___b
   }
 }
 
-- (BOOL)_fixCloudSharedGIFsInStore:(id)a3
+- (BOOL)_fixCloudSharedGIFsInStore:(id)store
 {
   v29[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   pl_dispatch_once();
   context = objc_autoreleasePoolPush();
-  v5 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _fixCloudSharedGIFsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v5 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _fixCloudSharedGIFsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v6 = MEMORY[0x1E695D5E0];
   v7 = +[PLManagedAsset entityName];
   v8 = [v6 fetchRequestWithEntityName:v7];
@@ -15665,8 +15665,8 @@ void __69__PLModelMigrator__fixOriginalPropertiesForCloudSharedAssetsInStore___b
   v11 = [MEMORY[0x1E69BF328] predicateForIncludeMask:objc_msgSend(MEMORY[0x1E69BF328] useIndex:{"maskForCloudSharedAsset"), 1}];
   v29[0] = v11;
   v12 = MEMORY[0x1E696AE18];
-  v13 = [*MEMORY[0x1E6982DE8] identifier];
-  v14 = [v12 predicateWithFormat:@"%K == %@", @"uniformTypeIdentifier", v13];
+  identifier = [*MEMORY[0x1E6982DE8] identifier];
+  v14 = [v12 predicateWithFormat:@"%K == %@", @"uniformTypeIdentifier", identifier];
   v29[1] = v14;
   v15 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K ENDSWITH[c] %@", @"filename", @"JPG"];
   v29[2] = v15;
@@ -15686,11 +15686,11 @@ void __69__PLModelMigrator__fixOriginalPropertiesForCloudSharedAssetsInStore___b
       v20 = PLMigrationGetLog();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
-        v21 = [v19 userInfo];
+        userInfo = [v19 userInfo];
         *buf = 138412546;
         *v28 = v19;
         *&v28[8] = 2112;
-        *&v28[10] = v21;
+        *&v28[10] = userInfo;
         _os_log_impl(&dword_19BF1F000, v20, OS_LOG_TYPE_ERROR, "_fixCloudSharedGIFsInStore: failed: %@ %@", buf, 0x16u);
       }
     }
@@ -15723,17 +15723,17 @@ void __46__PLModelMigrator__fixCloudSharedGIFsInStore___block_invoke(uint64_t a1
   }
 }
 
-- (BOOL)_fixCloudSharedVideosInStore:(id)a3
+- (BOOL)_fixCloudSharedVideosInStore:(id)store
 {
   v65[3] = *MEMORY[0x1E69E9840];
-  v34 = a3;
+  storeCopy = store;
   pl_dispatch_once();
   context = objc_autoreleasePoolPush();
-  v32 = [MEMORY[0x1E696AC08] defaultManager];
-  v3 = [(PLModelMigrator *)self pathManager];
-  v31 = [v3 photoDirectoryWithType:12];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  pathManager = [(PLModelMigrator *)self pathManager];
+  v31 = [pathManager photoDirectoryWithType:12];
 
-  v33 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v34 name:"[PLModelMigrator _fixCloudSharedVideosInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v33 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _fixCloudSharedVideosInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v4 = MEMORY[0x1E695D5E0];
   v5 = +[PLManagedAsset entityName];
   v35 = [v4 fetchRequestWithEntityName:v5];
@@ -15745,8 +15745,8 @@ void __46__PLModelMigrator__fixCloudSharedGIFsInStore___block_invoke(uint64_t a1
   v65[1] = v8;
   v9 = MEMORY[0x1E696AB28];
   v10 = MEMORY[0x1E696AE18];
-  v11 = [*MEMORY[0x1E6982E58] identifier];
-  v12 = [v10 predicateWithFormat:@"%K == %@", @"uniformTypeIdentifier", v11];
+  identifier = [*MEMORY[0x1E6982E58] identifier];
+  v12 = [v10 predicateWithFormat:@"%K == %@", @"uniformTypeIdentifier", identifier];
   v64[0] = v12;
   v13 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K BEGINSWITH %@", @"directory", @"/var/mobile/Media"];
   v64[1] = v13;
@@ -15776,11 +15776,11 @@ void __46__PLModelMigrator__fixCloudSharedGIFsInStore___block_invoke(uint64_t a1
   v38[3] = &unk_1E7568FA0;
   v18 = v31;
   v39 = v18;
-  v40 = self;
+  selfCopy = self;
   v42 = &v53;
   v43 = &v49;
   v44 = &v45;
-  v19 = v32;
+  v19 = defaultManager;
   v41 = v19;
   v20 = [v33 enumerateObjectsFromFetchRequest:v35 count:&v57 usingDefaultBatchSizeWithBlock:v38];
   if ([v33 hasChanges])
@@ -15793,11 +15793,11 @@ void __46__PLModelMigrator__fixCloudSharedGIFsInStore___block_invoke(uint64_t a1
       v23 = PLMigrationGetLog();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
-        v24 = [v22 userInfo];
+        userInfo = [v22 userInfo];
         *buf = 138412546;
         *v59 = v22;
         *&v59[8] = 2112;
-        *&v59[10] = v24;
+        *&v59[10] = userInfo;
         _os_log_impl(&dword_19BF1F000, v23, OS_LOG_TYPE_ERROR, "_fixCloudSharedVideosInStore: failed: %@ %@", buf, 0x16u);
       }
     }
@@ -15910,13 +15910,13 @@ void __48__PLModelMigrator__fixCloudSharedVideosInStore___block_invoke(uint64_t 
   }
 }
 
-- (BOOL)_addCloudKindSubtypeAndBurstFlagsInStore:(id)a3
+- (BOOL)_addCloudKindSubtypeAndBurstFlagsInStore:(id)store
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   pl_dispatch_once();
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _addCloudKindSubtypeAndBurstFlagsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _addCloudKindSubtypeAndBurstFlagsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = MEMORY[0x1E695D5E0];
   v8 = +[PLManagedAsset entityName];
   v9 = [v7 fetchRequestWithEntityName:v8];
@@ -15941,11 +15941,11 @@ void __48__PLModelMigrator__fixCloudSharedVideosInStore___block_invoke(uint64_t 
     v13 = PLMigrationGetLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v14 = [v12 userInfo];
+      userInfo = [v12 userInfo];
       *buf = 138412546;
       *v25 = v12;
       *&v25[8] = 2112;
-      *&v25[10] = v14;
+      *&v25[10] = userInfo;
       _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_ERROR, "_addCloudKindSubtypeAndBurstFlagsInStore: failed: %@ %@", buf, 0x16u);
     }
   }
@@ -15990,13 +15990,13 @@ void __60__PLModelMigrator__addCloudKindSubtypeAndBurstFlagsInStore___block_invo
   }
 }
 
-- (BOOL)_tagScreenshotsForAssetsInStore:(id)a3
+- (BOOL)_tagScreenshotsForAssetsInStore:(id)store
 {
   v36[5] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   context = objc_autoreleasePoolPush();
-  v25 = v4;
-  v5 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _tagScreenshotsForAssetsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v25 = storeCopy;
+  v5 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _tagScreenshotsForAssetsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
@@ -16013,8 +16013,8 @@ void __60__PLModelMigrator__addCloudKindSubtypeAndBurstFlagsInStore___block_invo
   v12 = [MEMORY[0x1E69BF328] predicateForExcludeMask:objc_msgSend(MEMORY[0x1E69BF328] useIndex:{"maskForTagScreenshotsExclusions"), 1}];
   v36[2] = v12;
   v13 = MEMORY[0x1E696AE18];
-  v14 = [*MEMORY[0x1E6982F28] identifier];
-  v15 = [v13 predicateWithFormat:@"%K == %@", @"uniformTypeIdentifier", v14];
+  identifier = [*MEMORY[0x1E6982F28] identifier];
+  v15 = [v13 predicateWithFormat:@"%K == %@", @"uniformTypeIdentifier", identifier];
   v36[3] = v15;
   v16 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != 0", @"complete"];
   v36[4] = v16;
@@ -16036,11 +16036,11 @@ void __60__PLModelMigrator__addCloudKindSubtypeAndBurstFlagsInStore___block_invo
     v21 = PLMigrationGetLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      v22 = [v20 userInfo];
+      userInfo = [v20 userInfo];
       *buf = 138412546;
       v33 = v20;
       v34 = 2112;
-      v35 = v22;
+      v35 = userInfo;
       _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_ERROR, "_tagScreenshotsForAssetsInStore: failed: %@ %@", buf, 0x16u);
     }
   }
@@ -16076,12 +16076,12 @@ void __51__PLModelMigrator__tagScreenshotsForAssetsInStore___block_invoke(uint64
   }
 }
 
-- (BOOL)_addCameraCaptureDeviceForAssetsInStore:(id)a3
+- (BOOL)_addCameraCaptureDeviceForAssetsInStore:(id)store
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _addCameraCaptureDeviceForAssetsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _addCameraCaptureDeviceForAssetsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -16091,8 +16091,8 @@ void __51__PLModelMigrator__tagScreenshotsForAssetsInStore___block_invoke(uint64
   v9 = [v7 fetchRequestWithEntityName:v8];
 
   v10 = MEMORY[0x1E696AE18];
-  v11 = [*MEMORY[0x1E6982E58] identifier];
-  v12 = [v10 predicateWithFormat:@"uniformTypeIdentifier == %@ AND complete != 0 AND width <= 1280 AND height <= 1280", v11];
+  identifier = [*MEMORY[0x1E6982E58] identifier];
+  v12 = [v10 predicateWithFormat:@"uniformTypeIdentifier == %@ AND complete != 0 AND width <= 1280 AND height <= 1280", identifier];
   [v9 setPredicate:v12];
 
   [v9 setFetchBatchSize:100];
@@ -16108,11 +16108,11 @@ void __51__PLModelMigrator__tagScreenshotsForAssetsInStore___block_invoke(uint64
     v15 = PLMigrationGetLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      v16 = [v14 userInfo];
+      userInfo = [v14 userInfo];
       *buf = 138412546;
       v25 = v14;
       v26 = 2112;
-      v27 = v16;
+      v27 = userInfo;
       _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_ERROR, "_addCameraCaptureDeviceForAssetsInStore: failed: %@ %@", buf, 0x16u);
     }
   }
@@ -16147,13 +16147,13 @@ void __59__PLModelMigrator__addCameraCaptureDeviceForAssetsInStore___block_invok
   }
 }
 
-- (BOOL)_fixIncorrectAddedDateForAssetsInStore:(id)a3
+- (BOOL)_fixIncorrectAddedDateForAssetsInStore:(id)store
 {
   v30[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   pl_dispatch_once();
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _fixIncorrectAddedDateForAssetsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _fixIncorrectAddedDateForAssetsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -16185,11 +16185,11 @@ void __59__PLModelMigrator__addCameraCaptureDeviceForAssetsInStore___block_invok
     v17 = PLMigrationGetLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      v18 = [v16 userInfo];
+      userInfo = [v16 userInfo];
       *buf = 138412546;
       v27 = v16;
       v28 = 2112;
-      v29 = v18;
+      v29 = userInfo;
       _os_log_impl(&dword_19BF1F000, v17, OS_LOG_TYPE_ERROR, "_fixIncorrectAddedDateForAssetsInStore: failed: %@ %@", buf, 0x16u);
     }
   }
@@ -16223,15 +16223,15 @@ uint64_t __58__PLModelMigrator__fixIncorrectAddedDateForAssetsInStore___block_in
   return result;
 }
 
-- (BOOL)fixPossiblyIncorrectAddedDateForAsset:(id)a3
+- (BOOL)fixPossiblyIncorrectAddedDateForAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [v4 dateCreated];
-  v6 = [v4 addedDate];
-  v7 = v6;
-  if (v6)
+  assetCopy = asset;
+  dateCreated = [assetCopy dateCreated];
+  addedDate = [assetCopy addedDate];
+  v7 = addedDate;
+  if (addedDate)
   {
-    [v6 timeIntervalSinceDate:v5];
+    [addedDate timeIntervalSinceDate:dateCreated];
     if (v8 <= 60.0)
     {
       v11 = 0;
@@ -16239,32 +16239,32 @@ uint64_t __58__PLModelMigrator__fixIncorrectAddedDateForAssetsInStore___block_in
       goto LABEL_28;
     }
 
-    v9 = [v4 cameraMake];
-    if ([v9 isEqualToString:@"Apple"] && -[PLModelMigrator _isReasonableCreationDate:](self, "_isReasonableCreationDate:", v5))
+    cameraMake = [assetCopy cameraMake];
+    if ([cameraMake isEqualToString:@"Apple"] && -[PLModelMigrator _isReasonableCreationDate:](self, "_isReasonableCreationDate:", dateCreated))
     {
-      v10 = v5;
+      v10 = dateCreated;
     }
 
     else
     {
-      v12 = [v4 pathForOriginalFile];
-      v13 = [MEMORY[0x1E696AC08] defaultManager];
+      pathForOriginalFile = [assetCopy pathForOriginalFile];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
       v10 = 0;
-      if ([v13 fileExistsAtPath:v12 isDirectory:0])
+      if ([defaultManager fileExistsAtPath:pathForOriginalFile isDirectory:0])
       {
         v24 = 0;
-        v14 = [v13 attributesOfItemAtPath:v12 error:&v24];
+        v14 = [defaultManager attributesOfItemAtPath:pathForOriginalFile error:&v24];
         v15 = v14;
         if (v14)
         {
-          v16 = [v14 fileCreationDate];
-          v17 = v16;
-          if (!v16)
+          fileCreationDate = [v14 fileCreationDate];
+          v17 = fileCreationDate;
+          if (!fileCreationDate)
           {
             goto LABEL_22;
           }
 
-          [v16 timeIntervalSinceDate:v5];
+          [fileCreationDate timeIntervalSinceDate:dateCreated];
           if (v18 < 0.0)
           {
             v18 = -v18;
@@ -16275,8 +16275,8 @@ uint64_t __58__PLModelMigrator__fixIncorrectAddedDateForAssetsInStore___block_in
             goto LABEL_20;
           }
 
-          v19 = [v4 modificationDate];
-          [v17 timeIntervalSinceDate:v19];
+          modificationDate = [assetCopy modificationDate];
+          [v17 timeIntervalSinceDate:modificationDate];
           v21 = v20;
 
           v22 = -v21;
@@ -16313,7 +16313,7 @@ LABEL_22:
 
   else
   {
-    v10 = v5;
+    v10 = dateCreated;
     if (!v10)
     {
 LABEL_27:
@@ -16322,11 +16322,11 @@ LABEL_27:
     }
   }
 
-  [v4 setAddedDate:v10];
-  [v4 persistMetadataToFilesystem];
-  if ([v4 cloudLocalState])
+  [assetCopy setAddedDate:v10];
+  [assetCopy persistMetadataToFilesystem];
+  if ([assetCopy cloudLocalState])
   {
-    [v4 setCloudLocalState:0];
+    [assetCopy setCloudLocalState:0];
   }
 
   v11 = 1;
@@ -16335,12 +16335,12 @@ LABEL_28:
   return v11;
 }
 
-- (BOOL)_isReasonableCreationDate:(id)a3
+- (BOOL)_isReasonableCreationDate:(id)date
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF00] date];
+  dateCopy = date;
+  date = [MEMORY[0x1E695DF00] date];
   v5 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:0.0];
-  [v3 timeIntervalSinceDate:v4];
+  [dateCopy timeIntervalSinceDate:date];
   if (v6 >= 0.0)
   {
     v8 = 0;
@@ -16348,20 +16348,20 @@ LABEL_28:
 
   else
   {
-    [v5 timeIntervalSinceDate:v3];
+    [v5 timeIntervalSinceDate:dateCopy];
     v8 = v7 < 0.0;
   }
 
   return v8;
 }
 
-- (BOOL)_generateAddedDateForAssetsInStore:(id)a3
+- (BOOL)_generateAddedDateForAssetsInStore:(id)store
 {
   v27[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   pl_dispatch_once();
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _generateAddedDateForAssetsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _generateAddedDateForAssetsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = MEMORY[0x1E695D5E0];
   v8 = +[PLManagedAsset entityName];
   v9 = [v7 fetchRequestWithEntityName:v8];
@@ -16388,11 +16388,11 @@ LABEL_28:
       v19 = PLMigrationGetLog();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
-        v20 = [v18 userInfo];
+        userInfo = [v18 userInfo];
         *buf = 138412546;
         v24 = v18;
         v25 = 2112;
-        v26 = v20;
+        v26 = userInfo;
         _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_ERROR, "_generateAddedDateForAssetsInStore: failed: %@ %@", buf, 0x16u);
       }
     }
@@ -16416,15 +16416,15 @@ void __54__PLModelMigrator__generateAddedDateForAssetsInStore___block_invoke(uin
   [v3 persistMetadataToFilesystem];
 }
 
-- (BOOL)_repersistDuplicatedAssets:(id)a3
+- (BOOL)_repersistDuplicatedAssets:(id)assets
 {
   v140 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  assetsCopy = assets;
   v81 = objc_autoreleasePoolPush();
-  v88 = self;
-  v82 = v4;
-  v5 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _repersistDuplicatedAssets:]" concurrencyType:*MEMORY[0x1E695D708]];
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
+  selfCopy = self;
+  v82 = assetsCopy;
+  v5 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:assetsCopy name:"[PLModelMigrator _repersistDuplicatedAssets:]" concurrencyType:*MEMORY[0x1E695D708]];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v7 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:@"CloudMaster"];
   v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"assets.@count > 1"];
   [v7 setPredicate:v8];
@@ -16483,10 +16483,10 @@ void __54__PLModelMigrator__generateAddedDateForAssetsInStore___block_invoke(uin
               v107 = v15;
               v16 = *(*(&v124 + 1) + 8 * v15);
               v17 = objc_autoreleasePoolPush();
-              v18 = [v16 filePath];
-              v19 = [v13 containsObject:v18];
+              filePath = [v16 filePath];
+              v19 = [v13 containsObject:filePath];
 
-              v20 = [v16 filePath];
+              filePath2 = [v16 filePath];
               if (v19)
               {
                 v21 = v111;
@@ -16497,20 +16497,20 @@ void __54__PLModelMigrator__generateAddedDateForAssetsInStore___block_invoke(uin
                 v21 = v13;
               }
 
-              [v21 addObject:v20];
+              [v21 addObject:filePath2];
 
               v22 = v9[53];
-              v23 = [v16 assetUuid];
-              v24 = [(__objc2_class *)v22 assetWithUUID:v23 inManagedObjectContext:v5];
+              assetUuid = [v16 assetUuid];
+              v24 = [(__objc2_class *)v22 assetWithUUID:assetUuid inManagedObjectContext:v5];
 
               v25 = MEMORY[0x1E695D5E0];
-              v26 = [(__objc2_class *)v9[53] entityName];
-              v27 = [v25 fetchRequestWithEntityName:v26];
+              entityName = [(__objc2_class *)v9[53] entityName];
+              v27 = [v25 fetchRequestWithEntityName:entityName];
 
               v28 = MEMORY[0x1E696AE18];
               v103 = v24;
-              v29 = [v24 cloudAssetGUID];
-              v30 = [v28 predicateWithFormat:@"cloudAssetGUID == %@", v29];
+              cloudAssetGUID = [v24 cloudAssetGUID];
+              v30 = [v28 predicateWithFormat:@"cloudAssetGUID == %@", cloudAssetGUID];
 
               v99 = v30;
               [v27 setPredicate:v30];
@@ -16553,10 +16553,10 @@ void __54__PLModelMigrator__generateAddedDateForAssetsInStore___block_invoke(uin
                       }
 
                       v39 = *(*(&v119 + 1) + 8 * i);
-                      v40 = [v39 pathForOriginalFile];
+                      pathForOriginalFile = [v39 pathForOriginalFile];
                       [v39 setCloudAssetGUID:0];
                       [v39 setCloudLocalState:0];
-                      if (([v6 fileExistsAtPath:v40 isDirectory:0] & 1) == 0)
+                      if (([defaultManager fileExistsAtPath:pathForOriginalFile isDirectory:0] & 1) == 0)
                       {
                         v41 = [PLAssetTransactionReason transactionReason:@"[_repersistDuplicatedAssets]The original file is not on disk, deleting asset."];
                         [v39 deleteWithReason:v41];
@@ -16589,8 +16589,8 @@ LABEL_26:
 
               v14 = 0;
 LABEL_30:
-              v42 = [v103 pathForOriginalFile];
-              v43 = [v6 fileExistsAtPath:v42 isDirectory:0];
+              pathForOriginalFile2 = [v103 pathForOriginalFile];
+              v43 = [defaultManager fileExistsAtPath:pathForOriginalFile2 isDirectory:0];
 
               if (v43)
               {
@@ -16629,63 +16629,63 @@ LABEL_30:
 
               v46 = *(*(&v115 + 1) + 8 * j);
               v47 = objc_autoreleasePoolPush();
-              v48 = [v46 filePath];
-              v49 = [v111 containsObject:v48];
+              filePath3 = [v46 filePath];
+              v49 = [v111 containsObject:filePath3];
 
               if (v49)
               {
                 v50 = v9[53];
-                v51 = [v46 assetUuid];
-                v52 = [(__objc2_class *)v50 assetWithUUID:v51 inManagedObjectContext:v5];
+                assetUuid2 = [v46 assetUuid];
+                v52 = [(__objc2_class *)v50 assetWithUUID:assetUuid2 inManagedObjectContext:v5];
 
                 if (v52)
                 {
-                  v53 = [v52 cloudAssetGUID];
+                  cloudAssetGUID2 = [v52 cloudAssetGUID];
 
-                  if (!v53)
+                  if (!cloudAssetGUID2)
                   {
-                    v104 = [v52 pathForOriginalFile];
-                    v54 = [v52 uuid];
-                    v55 = [v52 photoDataCPLResourceDestinationDirectoryCreateIfNeededWithIdentifier:v54];
+                    pathForOriginalFile3 = [v52 pathForOriginalFile];
+                    uuid = [v52 uuid];
+                    v55 = [v52 photoDataCPLResourceDestinationDirectoryCreateIfNeededWithIdentifier:uuid];
 
-                    v56 = [(PLModelMigrator *)v88 pathManager];
-                    v57 = [v56 assetAbbreviatedMetadataDirectoryForDirectory:v55 type:32 bundleScope:0];
+                    pathManager = [(PLModelMigrator *)selfCopy pathManager];
+                    v57 = [pathManager assetAbbreviatedMetadataDirectoryForDirectory:v55 type:32 bundleScope:0];
                     [v52 setDirectory:v57];
 
                     v58 = v9[53];
-                    v59 = [v52 uniformTypeIdentifier];
-                    v60 = [(__objc2_class *)v58 preferredFileExtensionForType:v59];
+                    uniformTypeIdentifier = [v52 uniformTypeIdentifier];
+                    v60 = [(__objc2_class *)v58 preferredFileExtensionForType:uniformTypeIdentifier];
 
                     v61 = MEMORY[0x1E696AEC0];
-                    v62 = [v52 uuid];
+                    uuid2 = [v52 uuid];
                     v102 = v60;
-                    v63 = [v61 stringWithFormat:@"%@.%@", v62, v60];
+                    v63 = [v61 stringWithFormat:@"%@.%@", uuid2, v60];
 
                     v100 = v63;
                     [v52 setFilename:v63];
-                    v64 = [v52 pathForOriginalFile];
-                    v65 = [v64 stringByDeletingLastPathComponent];
+                    pathForOriginalFile4 = [v52 pathForOriginalFile];
+                    stringByDeletingLastPathComponent = [pathForOriginalFile4 stringByDeletingLastPathComponent];
 
                     v114 = 0;
-                    v98 = v65;
-                    LOBYTE(v65) = [v6 createDirectoryIfNeededAtPath:v65 error:&v114];
+                    v98 = stringByDeletingLastPathComponent;
+                    LOBYTE(stringByDeletingLastPathComponent) = [defaultManager createDirectoryIfNeededAtPath:stringByDeletingLastPathComponent error:&v114];
                     v66 = v114;
-                    if ((v65 & 1) == 0)
+                    if ((stringByDeletingLastPathComponent & 1) == 0)
                     {
                       v67 = PLMigrationGetLog();
                       if (os_log_type_enabled(v67, OS_LOG_TYPE_ERROR))
                       {
-                        v68 = [v66 userInfo];
+                        userInfo = [v66 userInfo];
                         *buf = 138412546;
                         v133 = v66;
                         v134 = 2112;
-                        v135 = v68;
+                        v135 = userInfo;
                         _os_log_impl(&dword_19BF1F000, v67, OS_LOG_TYPE_ERROR, "_repersistDuplicatedAssets: failed to create directory: %@ %@", buf, 0x16u);
                       }
                     }
 
                     v113 = v66;
-                    v69 = [v6 copyItemAtPath:v104 toPath:v64 error:&v113];
+                    v69 = [defaultManager copyItemAtPath:pathForOriginalFile3 toPath:pathForOriginalFile4 error:&v113];
                     v70 = v113;
 
                     if ((v69 & 1) == 0)
@@ -16693,11 +16693,11 @@ LABEL_30:
                       v71 = PLMigrationGetLog();
                       if (os_log_type_enabled(v71, OS_LOG_TYPE_ERROR))
                       {
-                        v72 = [v70 userInfo];
+                        userInfo2 = [v70 userInfo];
                         *buf = 138412546;
                         v133 = v70;
                         v134 = 2112;
-                        v135 = v72;
+                        v135 = userInfo2;
                         _os_log_impl(&dword_19BF1F000, v71, OS_LOG_TYPE_ERROR, "_repersistDuplicatedAssets: failed to copy originalFile: %@ %@", buf, 0x16u);
                       }
                     }
@@ -16763,17 +16763,17 @@ LABEL_30:
   return v73;
 }
 
-- (BOOL)_fixKeywordsInStagedStore:(id)a3
+- (BOOL)_fixKeywordsInStagedStore:(id)store
 {
   v80[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   context = objc_autoreleasePoolPush();
-  v55 = v4;
-  v5 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _fixKeywordsInStagedStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v55 = storeCopy;
+  v5 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _fixKeywordsInStagedStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v6 = [(PLManagedObject *)PLManagedKeyword entityInManagedObjectContext:v5];
   v7 = MEMORY[0x1E695D5E0];
-  v8 = [v6 name];
-  v9 = [v7 fetchRequestWithEntityName:v8];
+  name = [v6 name];
+  v9 = [v7 fetchRequestWithEntityName:name];
 
   v10 = [MEMORY[0x1E696ABC8] expressionWithFormat:@"count:(title)"];
   v11 = objc_alloc_init(MEMORY[0x1E695D5C8]);
@@ -16782,8 +16782,8 @@ LABEL_30:
   [v11 setExpression:v10];
   [v11 setExpressionResultType:300];
   v61 = v6;
-  v12 = [v6 propertiesByName];
-  v13 = [v12 objectForKey:@"title"];
+  propertiesByName = [v6 propertiesByName];
+  v13 = [propertiesByName objectForKey:@"title"];
 
   v80[0] = v13;
   v80[1] = v11;
@@ -16799,7 +16799,7 @@ LABEL_30:
   [v9 setResultType:2];
   v53 = v9;
   v16 = [v5 executeFetchRequest:v9 error:0];
-  v17 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v71 = 0u;
   v72 = 0u;
   v73 = 0u;
@@ -16821,9 +16821,9 @@ LABEL_30:
 
         v22 = *(*(&v71 + 1) + 8 * i);
         v23 = [v22 objectForKey:@"count"];
-        v24 = [v23 integerValue];
+        integerValue = [v23 integerValue];
 
-        if (v24 >= 2)
+        if (integerValue >= 2)
         {
           v25 = [v22 objectForKey:@"title"];
           v26 = PLMigrationGetLog();
@@ -16834,7 +16834,7 @@ LABEL_30:
             _os_log_impl(&dword_19BF1F000, v26, OS_LOG_TYPE_DEFAULT, "Found dupeKeyword: %@", buf, 0xCu);
           }
 
-          [v17 addObject:v25];
+          [array addObject:v25];
         }
       }
 
@@ -16844,12 +16844,12 @@ LABEL_30:
     while (v19);
   }
 
-  v60 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
-  v56 = v17;
+  v56 = array;
   v27 = [v56 countByEnumeratingWithState:&v67 objects:v75 count:16];
   if (v27)
   {
@@ -16867,8 +16867,8 @@ LABEL_30:
 
         v30 = *(*(&v67 + 1) + 8 * j);
         v31 = MEMORY[0x1E695D5E0];
-        v32 = [v61 name];
-        v33 = [v31 fetchRequestWithEntityName:v32];
+        name2 = [v61 name];
+        v33 = [v31 fetchRequestWithEntityName:name2];
 
         v34 = [MEMORY[0x1E696AE18] predicateWithFormat:@"title == %@", v30];
         [v33 setPredicate:v34];
@@ -16885,7 +16885,7 @@ LABEL_30:
         v63[3] = &unk_1E7568F78;
         v38 = v37;
         v64 = v38;
-        v65 = v60;
+        v65 = array2;
         v39 = [v5 enumerateWithIncrementalSaveUsingObjects:v35 withBlock:v63];
         if (v39)
         {
@@ -16917,9 +16917,9 @@ LABEL_30:
     v58 = 1;
   }
 
-  if ([v60 count])
+  if ([array2 count])
   {
-    v41 = [objc_alloc(MEMORY[0x1E695D538]) initWithObjectIDs:v60];
+    v41 = [objc_alloc(MEMORY[0x1E695D538]) initWithObjectIDs:array2];
     v62 = 0;
     v42 = [v5 executeRequest:v41 error:&v62];
     v43 = v62;
@@ -16996,13 +16996,13 @@ void __45__PLModelMigrator__fixKeywordsInStagedStore___block_invoke(uint64_t a1,
   [v10 addObject:v11];
 }
 
-- (BOOL)_fixFaceAlgorithmVersion:(id)a3
+- (BOOL)_fixFaceAlgorithmVersion:(id)version
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  versionCopy = version;
   pl_dispatch_once();
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _fixFaceAlgorithmVersion:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:versionCopy name:"[PLModelMigrator _fixFaceAlgorithmVersion:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = MEMORY[0x1E695D560];
   v8 = +[PLDetectedFace entityName];
   v9 = [v7 batchUpdateRequestWithEntityName:v8];
@@ -17021,9 +17021,9 @@ void __45__PLModelMigrator__fixKeywordsInStagedStore___block_invoke(uint64_t a1,
   {
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v11 result];
+      result = [v11 result];
       *buf = 138412290;
-      v19 = v15;
+      v19 = result;
       _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_DEFAULT, "Fixing faceAlgorithmVersion successful with result %@", buf, 0xCu);
     }
   }
@@ -17041,12 +17041,12 @@ void __45__PLModelMigrator__fixKeywordsInStagedStore___block_invoke(uint64_t a1,
   return v11 != 0;
 }
 
-- (BOOL)_fixAlbumAndFolderSortAscending:(id)a3
+- (BOOL)_fixAlbumAndFolderSortAscending:(id)ascending
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  ascendingCopy = ascending;
   v22 = objc_autoreleasePoolPush();
-  v5 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _fixAlbumAndFolderSortAscending:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v5 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:ascendingCopy name:"[PLModelMigrator _fixAlbumAndFolderSortAscending:]" concurrencyType:*MEMORY[0x1E695D708]];
   v6 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:@"GenericAlbum"];
   v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"customSortAscending == NO"];
   [v6 setPredicate:v7];
@@ -17102,11 +17102,11 @@ void __45__PLModelMigrator__fixKeywordsInStagedStore___block_invoke(uint64_t a1,
       v19 = PLMigrationGetLog();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
-        v20 = [v17 userInfo];
+        userInfo = [v17 userInfo];
         *buf = 138412546;
         v29 = v17;
         v30 = 2112;
-        v31 = v20;
+        v31 = userInfo;
         _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_ERROR, "_fixAlbumAndFolderSortAscending: failed: %@ %@", buf, 0x16u);
       }
     }
@@ -17122,15 +17122,15 @@ void __45__PLModelMigrator__fixKeywordsInStagedStore___block_invoke(uint64_t a1,
   return v16;
 }
 
-- (void)_handleCreateOptionsUsingContext:(id)a3
+- (void)_handleCreateOptionsUsingContext:(id)context
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PLModelMigrator *)self options];
-  v6 = v5;
-  if (v5)
+  contextCopy = context;
+  options = [(PLModelMigrator *)self options];
+  v6 = options;
+  if (options)
   {
-    v7 = [v5 objectForKeyedSubscript:@"DefaultAlbumUUID"];
+    v7 = [options objectForKeyedSubscript:@"DefaultAlbumUUID"];
     v8 = [v6 objectForKeyedSubscript:@"DefaultAlbumTitle"];
     if (v7)
     {
@@ -17152,18 +17152,18 @@ void __45__PLModelMigrator__fixKeywordsInStagedStore___block_invoke(uint64_t a1,
         _os_log_impl(&dword_19BF1F000, v9, OS_LOG_TYPE_DEFAULT, "creating album %@ from migration options", &v12, 0xCu);
       }
 
-      v11 = [(PLGenericAlbum *)PLManagedAlbum insertAlbumWithKind:2 title:v8 uuid:v7 inManagedObjectContext:v4];
+      v11 = [(PLGenericAlbum *)PLManagedAlbum insertAlbumWithKind:2 title:v8 uuid:v7 inManagedObjectContext:contextCopy];
     }
   }
 }
 
-- (BOOL)_deleteOrphanedUnverifiedPeople:(id)a3
+- (BOOL)_deleteOrphanedUnverifiedPeople:(id)people
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  peopleCopy = people;
   pl_dispatch_once();
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _deleteOrphanedUnverifiedPeople:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:peopleCopy name:"[PLModelMigrator _deleteOrphanedUnverifiedPeople:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = MEMORY[0x1E695D5E0];
   v8 = +[PLPerson entityName];
   v9 = [v7 fetchRequestWithEntityName:v8];
@@ -17182,9 +17182,9 @@ void __45__PLModelMigrator__fixKeywordsInStagedStore___block_invoke(uint64_t a1,
   {
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [v12 result];
+      result = [v12 result];
       *buf = 138412290;
-      v20 = v16;
+      v20 = result;
       _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_DEFAULT, "_deleteOrphanedUnverifiedPeople deleted %@ orphaned people", buf, 0xCu);
     }
   }
@@ -17202,28 +17202,28 @@ void __45__PLModelMigrator__fixKeywordsInStagedStore___block_invoke(uint64_t a1,
   return v12 != 0;
 }
 
-- (BOOL)_processDeletesForUUIDs:(id)a3
+- (BOOL)_processDeletesForUUIDs:(id)ds
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 count];
+  dsCopy = ds;
+  v5 = [dsCopy count];
   if (v5)
   {
     v6 = v5;
-    v7 = [(PLPhotoLibraryPathManager *)self->_pathManager deletedMemoryUUIDsFilePath];
-    v8 = [MEMORY[0x1E696AC08] defaultManager];
-    v9 = [v8 fileExistsAtPath:v7];
+    deletedMemoryUUIDsFilePath = [(PLPhotoLibraryPathManager *)self->_pathManager deletedMemoryUUIDsFilePath];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v9 = [defaultManager fileExistsAtPath:deletedMemoryUUIDsFilePath];
 
     if (v9)
     {
-      v10 = [MEMORY[0x1E695DEC8] arrayWithContentsOfFile:v7];
+      v10 = [MEMORY[0x1E695DEC8] arrayWithContentsOfFile:deletedMemoryUUIDsFilePath];
       if ([v10 count])
       {
-        [v4 addObjectsFromArray:v10];
+        [dsCopy addObjectsFromArray:v10];
       }
     }
 
-    v11 = [v4 writeToFile:v7 atomically:1];
+    v11 = [dsCopy writeToFile:deletedMemoryUUIDsFilePath atomically:1];
     v12 = PLMigrationGetLog();
     v13 = v12;
     if (v11)
@@ -17233,7 +17233,7 @@ void __45__PLModelMigrator__fixKeywordsInStagedStore___block_invoke(uint64_t a1,
         v18 = 134218242;
         v19 = v6;
         v20 = 2112;
-        v21 = v7;
+        v21 = deletedMemoryUUIDsFilePath;
         v14 = "Persisted %lu deletedMemoryUUIDs to %@";
         v15 = v13;
         v16 = OS_LOG_TYPE_DEFAULT;
@@ -17247,7 +17247,7 @@ LABEL_12:
       v18 = 134218242;
       v19 = v6;
       v20 = 2112;
-      v21 = v7;
+      v21 = deletedMemoryUUIDsFilePath;
       v14 = "Failed to persist %lu deletedMemoryUUIDs to %@";
       v15 = v13;
       v16 = OS_LOG_TYPE_ERROR;
@@ -17263,31 +17263,31 @@ LABEL_14:
   return v11;
 }
 
-- (BOOL)_fixMemoriesWithAssetLists:(id)a3
+- (BOOL)_fixMemoriesWithAssetLists:(id)lists
 {
   v122 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  listsCopy = lists;
   pl_dispatch_once();
   v69 = objc_autoreleasePoolPush();
-  v70 = v4;
-  v5 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _fixMemoriesWithAssetLists:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v70 = listsCopy;
+  v5 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:listsCopy name:"[PLModelMigrator _fixMemoriesWithAssetLists:]" concurrencyType:*MEMORY[0x1E695D708]];
   v6 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:@"Memory"];
   v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"representativeAssets.@count > 500"];
   [v6 setPredicate:v7];
 
   [v6 setFetchBatchSize:100];
-  v8 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v68 = v6;
   v9 = [v5 executeFetchRequest:v6 error:0];
-  v10 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v110 = 0u;
   v111 = 0u;
   v112 = 0u;
   v113 = 0u;
   obj = v9;
   v11 = [obj countByEnumeratingWithState:&v110 objects:v121 count:16];
-  v96 = v8;
-  v80 = v10;
+  v96 = array;
+  v80 = dictionary;
   if (v11)
   {
     v12 = v11;
@@ -17311,14 +17311,14 @@ LABEL_14:
         v91 = v15;
         v87 = v89 = v16;
         v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"curated%lu+movie%lu+rep%lu", objc_msgSend(v15, "count"), objc_msgSend(v16, "count"), objc_msgSend(v87, "count")];
-        v10 = v80;
+        dictionary = v80;
         v18 = [v80 objectForKey:v17];
         if (v18)
         {
           v19 = v18;
           v76 = v17;
-          v20 = [v18 allKeys];
-          v21 = [v20 count];
+          allKeys = [v18 allKeys];
+          v21 = [allKeys count];
 
           v85 = v19;
           if (v21)
@@ -17335,10 +17335,10 @@ LABEL_14:
                 v23 = [MEMORY[0x1E695DF70] arrayWithObject:v14];
               }
 
-              v24 = [v23 firstObject];
-              v25 = [v24 valueForKeyPath:@"curatedAssets.objectID"];
-              v26 = [v24 valueForKeyPath:@"movieCuratedAssets.objectID"];
-              v27 = [v24 valueForKeyPath:@"representativeAssets.objectID"];
+              firstObject = [v23 firstObject];
+              v25 = [firstObject valueForKeyPath:@"curatedAssets.objectID"];
+              v26 = [firstObject valueForKeyPath:@"movieCuratedAssets.objectID"];
+              v27 = [firstObject valueForKeyPath:@"representativeAssets.objectID"];
               v93 = v25;
               v28 = [MEMORY[0x1E695DFA8] setWithSet:v25];
               [v28 minusSet:v91];
@@ -17355,18 +17355,18 @@ LABEL_14:
 
               ++v22;
               v19 = v85;
-              v32 = [v85 allKeys];
-              v33 = [v32 count];
+              allKeys2 = [v85 allKeys];
+              v33 = [allKeys2 count];
 
               v14 = v83;
             }
 
             while (v33 > v22);
-            v8 = v96;
+            array = v96;
             v12 = v71;
             if (v78)
             {
-              v10 = v80;
+              dictionary = v80;
               v34 = v81;
               v17 = v76;
               goto LABEL_21;
@@ -17374,24 +17374,24 @@ LABEL_14:
           }
 
           v35 = MEMORY[0x1E696AEC0];
-          v36 = [v19 allKeys];
-          v37 = [v35 stringWithFormat:@"variant%lu", objc_msgSend(v36, "count")];
+          allKeys3 = [v19 allKeys];
+          v37 = [v35 stringWithFormat:@"variant%lu", objc_msgSend(allKeys3, "count")];
 
           v38 = [MEMORY[0x1E695DF70] arrayWithObject:v14];
           [v19 setObject:v38 forKey:v37];
 
-          v10 = v80;
+          dictionary = v80;
           v34 = v81;
           v17 = v76;
         }
 
         else
         {
-          v39 = [MEMORY[0x1E695DF90] dictionary];
-          [v80 setObject:v39 forKey:v17];
+          dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+          [v80 setObject:dictionary2 forKey:v17];
           v37 = [MEMORY[0x1E695DF70] arrayWithObject:v14];
-          v85 = v39;
-          [v39 setObject:v37 forKey:@"variant0"];
+          v85 = dictionary2;
+          [dictionary2 setObject:v37 forKey:@"variant0"];
           v34 = v81;
         }
 
@@ -17406,15 +17406,15 @@ LABEL_21:
     while (v12);
   }
 
-  v40 = [(PLModelMigrator *)self isCloudPhotoLibraryEnabled];
-  v41 = v10;
-  v42 = v40;
+  isCloudPhotoLibraryEnabled = [(PLModelMigrator *)self isCloudPhotoLibraryEnabled];
+  v41 = dictionary;
+  v42 = isCloudPhotoLibraryEnabled;
   v106 = 0u;
   v107 = 0u;
   v108 = 0u;
   v109 = 0u;
-  v72 = [v41 allKeys];
-  v77 = [v72 countByEnumeratingWithState:&v106 objects:v120 count:16];
+  allKeys4 = [v41 allKeys];
+  v77 = [allKeys4 countByEnumeratingWithState:&v106 objects:v120 count:16];
   v43 = 0;
   if (v77)
   {
@@ -17427,7 +17427,7 @@ LABEL_21:
         if (*v107 != v75)
         {
           v45 = v44;
-          objc_enumerationMutation(v72);
+          objc_enumerationMutation(allKeys4);
           v44 = v45;
         }
 
@@ -17437,8 +17437,8 @@ LABEL_21:
         v103 = 0u;
         v104 = 0u;
         v105 = 0u;
-        v88 = [v46 allKeys];
-        v47 = [v88 countByEnumeratingWithState:&v102 objects:v119 count:16];
+        allKeys5 = [v46 allKeys];
+        v47 = [allKeys5 countByEnumeratingWithState:&v102 objects:v119 count:16];
         if (v47)
         {
           v48 = v47;
@@ -17453,7 +17453,7 @@ LABEL_21:
             {
               if (*v103 != v49)
               {
-                objc_enumerationMutation(v88);
+                objc_enumerationMutation(allKeys5);
               }
 
               v51 = [v46 objectForKey:*(*(&v102 + 1) + 8 * v50)];
@@ -17484,10 +17484,10 @@ LABEL_21:
                       v57 = *(*(&v98 + 1) + 8 * i);
                       if (v42 && [*(*(&v98 + 1) + 8 * i) cloudLocalState] == 1)
                       {
-                        v58 = [v57 uuid];
-                        if (v58)
+                        uuid = [v57 uuid];
+                        if (uuid)
                         {
-                          [v8 addObject:v58];
+                          [array addObject:uuid];
                         }
 
                         else
@@ -17500,12 +17500,12 @@ LABEL_21:
                             _os_log_impl(&dword_19BF1F000, v59, OS_LOG_TYPE_ERROR, "Memory %@ missing uuid", buf, 0xCu);
                           }
 
-                          v8 = v96;
+                          array = v96;
                         }
                       }
 
-                      v60 = [(PLModelMigrator *)self pathManager];
-                      [v57 removePersistedFileSystemDataWithPathManager:v60];
+                      pathManager = [(PLModelMigrator *)self pathManager];
+                      [v57 removePersistedFileSystemDataWithPathManager:pathManager];
 
                       [v5 deleteObject:v57];
                     }
@@ -17528,7 +17528,7 @@ LABEL_21:
             }
 
             while (v50 != v48);
-            v48 = [v88 countByEnumeratingWithState:&v102 objects:v119 count:16];
+            v48 = [allKeys5 countByEnumeratingWithState:&v102 objects:v119 count:16];
           }
 
           while (v48);
@@ -17538,7 +17538,7 @@ LABEL_21:
       }
 
       while (v79 + 1 != v77);
-      v77 = [v72 countByEnumeratingWithState:&v106 objects:v120 count:16];
+      v77 = [allKeys4 countByEnumeratingWithState:&v106 objects:v120 count:16];
     }
 
     while (v77);
@@ -17558,18 +17558,18 @@ LABEL_21:
       _os_log_impl(&dword_19BF1F000, v64, OS_LOG_TYPE_DEFAULT, "_fixMemoriesWithAssetLists deleted %ld", buf, 0xCu);
     }
 
-    v65 = [(PLModelMigrator *)self _processDeletesForUUIDs:v8];
+    v65 = [(PLModelMigrator *)self _processDeletesForUUIDs:array];
   }
 
   else
   {
     if (os_log_type_enabled(v63, OS_LOG_TYPE_ERROR))
     {
-      v66 = [v62 userInfo];
+      userInfo = [v62 userInfo];
       *buf = 138412546;
       v115 = v62;
       v116 = 2112;
-      v117 = v66;
+      v117 = userInfo;
       _os_log_impl(&dword_19BF1F000, v64, OS_LOG_TYPE_ERROR, "_fixMemoriesWithAssetLists failed: %@ %@", buf, 0x16u);
     }
 
@@ -17582,13 +17582,13 @@ LABEL_21:
   return v65;
 }
 
-- (BOOL)_updateKeyAssetInMemory:(id)a3
+- (BOOL)_updateKeyAssetInMemory:(id)memory
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  memoryCopy = memory;
   pl_dispatch_once();
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _updateKeyAssetInMemory:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:memoryCopy name:"[PLModelMigrator _updateKeyAssetInMemory:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:@"Memory"];
   v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"keyAsset = nil"];
   [v7 setPredicate:v8];
@@ -17602,8 +17602,8 @@ LABEL_21:
   v31 = &v30;
   v32 = 0x2020000000;
   v33 = 0;
-  v9 = [MEMORY[0x1E695DF70] array];
-  objc_initWeak(&location, v9);
+  array = [MEMORY[0x1E695DF70] array];
+  objc_initWeak(&location, array);
 
   v10 = [v6 executeFetchRequest:v7 error:0];
   v20 = MEMORY[0x1E69E9820];
@@ -17611,7 +17611,7 @@ LABEL_21:
   v22 = __43__PLModelMigrator__updateKeyAssetInMemory___block_invoke;
   v23 = &unk_1E7568F50;
   v26 = &v34;
-  v24 = self;
+  selfCopy = self;
   objc_copyWeak(&v28, &location);
   v11 = v6;
   v25 = v11;
@@ -17622,15 +17622,15 @@ LABEL_21:
     v13 = PLMigrationGetLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v14 = [v12 userInfo];
+      userInfo = [v12 userInfo];
       *buf = 138412546;
       v39 = v12;
       v40 = 2112;
-      v41 = v14;
+      v41 = userInfo;
       _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_ERROR, "_updateKeyAssetInMemory failed: %@ %@", buf, 0x16u);
     }
 
-    v15 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -17648,7 +17648,7 @@ LABEL_21:
     }
 
     v13 = objc_loadWeakRetained(&location);
-    v15 = [(PLModelMigrator *)self _processDeletesForUUIDs:v13, v20, v21, v22, v23, v24];
+    selfCopy = [(PLModelMigrator *)self _processDeletesForUUIDs:v13, v20, v21, v22, v23, selfCopy];
   }
 
   [v11 reset];
@@ -17659,7 +17659,7 @@ LABEL_21:
   _Block_object_dispose(&v34, 8);
 
   objc_autoreleasePoolPop(v5);
-  return v15;
+  return selfCopy;
 }
 
 void __43__PLModelMigrator__updateKeyAssetInMemory___block_invoke(id *a1, void *a2)
@@ -17706,14 +17706,14 @@ void __43__PLModelMigrator__updateKeyAssetInMemory___block_invoke(id *a1, void *
   ++*(*(a1[v5] + 1) + 24);
 }
 
-- (BOOL)_fixLocallyAvailableFlagForThumbnailsInStore:(id)a3
+- (BOOL)_fixLocallyAvailableFlagForThumbnailsInStore:(id)store
 {
   v46[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   pl_dispatch_once();
   context = objc_autoreleasePoolPush();
-  v30 = v4;
-  v33 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _fixLocallyAvailableFlagForThumbnailsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v30 = storeCopy;
+  v33 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _fixLocallyAvailableFlagForThumbnailsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v5 = MEMORY[0x1E695D5E0];
   v6 = +[PLCloudResource entityName];
   v34 = [v5 fetchRequestWithEntityName:v6];
@@ -17746,12 +17746,12 @@ void __43__PLModelMigrator__updateKeyAssetInMemory___block_invoke(id *a1, void *
   v39 = &v38;
   v40 = 0x2020000000;
   v41 = 0;
-  v20 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v35[0] = MEMORY[0x1E69E9820];
   v35[1] = 3221225472;
   v35[2] = __64__PLModelMigrator__fixLocallyAvailableFlagForThumbnailsInStore___block_invoke;
   v35[3] = &unk_1E7568F28;
-  v21 = v20;
+  v21 = defaultManager;
   v36 = v21;
   v37 = &v38;
   v22 = [v33 enumerateWithIncrementalSaveUsingObjects:v19 withBlock:v35];
@@ -17823,13 +17823,13 @@ void __64__PLModelMigrator__fixLocallyAvailableFlagForThumbnailsInStore___block_
   ++*(*(*(a1 + 40) + 8) + 24);
 }
 
-- (BOOL)_fixLastPrefetchDateInStore:(id)a3
+- (BOOL)_fixLastPrefetchDateInStore:(id)store
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   pl_dispatch_once();
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _fixLastPrefetchDateInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _fixLastPrefetchDateInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = MEMORY[0x1E695D560];
   v8 = +[PLCloudResource entityName];
   v9 = [v7 batchUpdateRequestWithEntityName:v8];
@@ -17853,9 +17853,9 @@ void __64__PLModelMigrator__fixLocallyAvailableFlagForThumbnailsInStore___block_
   {
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v13 result];
+      result = [v13 result];
       *buf = 138412290;
-      v21 = v17;
+      v21 = result;
       _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_DEFAULT, "Fixing lastPrefetchDate successful with result %@", buf, 0xCu);
     }
   }
@@ -17873,16 +17873,16 @@ void __64__PLModelMigrator__fixLocallyAvailableFlagForThumbnailsInStore___block_
   return v13 != 0;
 }
 
-- (BOOL)_removeCameraRollInStore:(id)a3
+- (BOOL)_removeCameraRollInStore:(id)store
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   pl_dispatch_once();
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _removeCameraRollInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _removeCameraRollInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:@"GenericAlbum"];
-  v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"kind = %d", 1000];
-  [v7 setPredicate:v8];
+  1000 = [MEMORY[0x1E696AE18] predicateWithFormat:@"kind = %d", 1000];
+  [v7 setPredicate:1000];
 
   v22 = 0;
   v9 = [v6 executeFetchRequest:v7 error:&v22];
@@ -17930,8 +17930,8 @@ LABEL_6:
 - (BOOL)_applyDataProtectionToDCIMFromClassBToClassC
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PLModelMigrator *)self pathManager];
-  v4 = [v3 photoDirectoryWithType:4];
+  pathManager = [(PLModelMigrator *)self pathManager];
+  v4 = [pathManager photoDirectoryWithType:4];
 
   v7[0] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
@@ -17940,13 +17940,13 @@ LABEL_6:
   return 1;
 }
 
-- (BOOL)_deleteAllMemoriesInStore:(id)a3
+- (BOOL)_deleteAllMemoriesInStore:(id)store
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   pl_dispatch_once();
   context = objc_autoreleasePoolPush();
-  v5 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _deleteAllMemoriesInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v5 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _deleteAllMemoriesInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v6 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:@"Memory"];
   [v6 setFetchBatchSize:100];
   v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:100];
@@ -17957,12 +17957,12 @@ LABEL_6:
   v32 = 0x2020000000;
   v33 = 0;
   v8 = [v5 executeFetchRequest:v6 error:0];
-  v9 = [(PLModelMigrator *)self isCloudPhotoLibraryEnabled];
+  isCloudPhotoLibraryEnabled = [(PLModelMigrator *)self isCloudPhotoLibraryEnabled];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __45__PLModelMigrator__deleteAllMemoriesInStore___block_invoke;
   v25[3] = &unk_1E7568ED8;
-  v29 = v9;
+  v29 = isCloudPhotoLibraryEnabled;
   objc_copyWeak(&v28, &location);
   v10 = v5;
   v26 = v10;
@@ -17970,12 +17970,12 @@ LABEL_6:
   v11 = [v10 enumerateWithIncrementalSaveUsingObjects:v8 withBlock:v25];
   if (v11)
   {
-    v12 = PLMigrationGetLog();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    deletedMemoryUUIDsFilePath = PLMigrationGetLog();
+    if (os_log_type_enabled(deletedMemoryUUIDsFilePath, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       v36 = v11;
-      _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_ERROR, "Failed to delete memories: %@", buf, 0xCu);
+      _os_log_impl(&dword_19BF1F000, deletedMemoryUUIDsFilePath, OS_LOG_TYPE_ERROR, "Failed to delete memories: %@", buf, 0xCu);
     }
 
     goto LABEL_14;
@@ -17995,9 +17995,9 @@ LABEL_6:
 
   if (v16)
   {
-    v12 = [(PLPhotoLibraryPathManager *)self->_pathManager deletedMemoryUUIDsFilePath];
+    deletedMemoryUUIDsFilePath = [(PLPhotoLibraryPathManager *)self->_pathManager deletedMemoryUUIDsFilePath];
     v17 = objc_loadWeakRetained(&location);
-    v18 = [v17 writeToFile:v12 atomically:1];
+    v18 = [v17 writeToFile:deletedMemoryUUIDsFilePath atomically:1];
 
     if (v18)
     {
@@ -18007,7 +18007,7 @@ LABEL_6:
         *buf = 134218242;
         v36 = v16;
         v37 = 2112;
-        v38 = v12;
+        v38 = deletedMemoryUUIDsFilePath;
         v20 = "Persisted %lu deletedMemoryUUIDs to %@";
         v21 = v19;
         v22 = OS_LOG_TYPE_DEFAULT;
@@ -18024,7 +18024,7 @@ LABEL_12:
         *buf = 134218242;
         v36 = v16;
         v37 = 2112;
-        v38 = v12;
+        v38 = deletedMemoryUUIDsFilePath;
         v20 = "Failed to persist %lu deletedMemoryUUIDs to %@";
         v21 = v19;
         v22 = OS_LOG_TYPE_ERROR;
@@ -18075,21 +18075,21 @@ void __45__PLModelMigrator__deleteAllMemoriesInStore___block_invoke(uint64_t a1,
   ++*(*(*(a1 + 40) + 8) + 24);
 }
 
-- (BOOL)_fixCustomRenderedValues:(id)a3
+- (BOOL)_fixCustomRenderedValues:(id)values
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  valuesCopy = values;
   pl_dispatch_once();
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _fixCustomRenderedValues:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:valuesCopy name:"[PLModelMigrator _fixCustomRenderedValues:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = MEMORY[0x1E695D5E0];
   v8 = +[PLManagedAsset entityName];
   v9 = [v7 fetchRequestWithEntityName:v8];
 
   v10 = MEMORY[0x1E696AE18];
-  v11 = [(PLModelMigrator *)self _dateForFirstCRVSPhoto];
-  v12 = [*MEMORY[0x1E6982E58] identifier];
-  v13 = [v10 predicateWithFormat:@"dateCreated >= %@ AND %K == %@ AND uniformTypeIdentifier == %@", v11, @"hdrType", &unk_1F0FBBE00, v12];
+  _dateForFirstCRVSPhoto = [(PLModelMigrator *)self _dateForFirstCRVSPhoto];
+  identifier = [*MEMORY[0x1E6982E58] identifier];
+  v13 = [v10 predicateWithFormat:@"dateCreated >= %@ AND %K == %@ AND uniformTypeIdentifier == %@", _dateForFirstCRVSPhoto, @"hdrType", &unk_1F0FBBE00, identifier];
   [v9 setPredicate:v13];
 
   [v9 setFetchBatchSize:100];
@@ -18154,23 +18154,23 @@ void __44__PLModelMigrator__fixCustomRenderedValues___block_invoke(uint64_t a1, 
 
 - (id)_dateForFirstCRVSPhoto
 {
-  v2 = [MEMORY[0x1E695DEE8] currentCalendar];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
   v3 = objc_alloc_init(MEMORY[0x1E695DF10]);
   [v3 setYear:2016];
   [v3 setMonth:5];
   [v3 setDay:1];
-  v4 = [v2 dateFromComponents:v3];
+  v4 = [currentCalendar dateFromComponents:v3];
 
   return v4;
 }
 
-- (BOOL)_flattenUnknownCustomRenderedValues:(id)a3
+- (BOOL)_flattenUnknownCustomRenderedValues:(id)values
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  valuesCopy = values;
   pl_dispatch_once();
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _flattenUnknownCustomRenderedValues:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:valuesCopy name:"[PLModelMigrator _flattenUnknownCustomRenderedValues:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = MEMORY[0x1E695D560];
   v8 = +[PLManagedAsset entityName];
   v9 = [v7 batchUpdateRequestWithEntityName:v8];
@@ -18193,9 +18193,9 @@ void __44__PLModelMigrator__fixCustomRenderedValues___block_invoke(uint64_t a1, 
   {
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [v12 result];
+      result = [v12 result];
       *buf = 138412290;
-      v20 = v16;
+      v20 = result;
       _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_DEFAULT, "Flattened assets successful with result %@", buf, 0xCu);
     }
   }
@@ -18213,13 +18213,13 @@ void __44__PLModelMigrator__fixCustomRenderedValues___block_invoke(uint64_t a1, 
   return v12 != 0;
 }
 
-- (BOOL)_populateNilOriginalFilename:(id)a3
+- (BOOL)_populateNilOriginalFilename:(id)filename
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  filenameCopy = filename;
   pl_dispatch_once();
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _populateNilOriginalFilename:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:filenameCopy name:"[PLModelMigrator _populateNilOriginalFilename:]" concurrencyType:*MEMORY[0x1E695D708]];
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -18244,11 +18244,11 @@ void __44__PLModelMigrator__fixCustomRenderedValues___block_invoke(uint64_t a1, 
     v13 = PLMigrationGetLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v14 = [v12 userInfo];
+      userInfo = [v12 userInfo];
       *buf = 138412546;
       v23 = v12;
       v24 = 2112;
-      v25 = v14;
+      v25 = userInfo;
       _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_ERROR, "_populateNilOriginalFilename: failed: %@ %@", buf, 0x16u);
     }
   }
@@ -18287,15 +18287,15 @@ void __48__PLModelMigrator__populateNilOriginalFilename___block_invoke(uint64_t 
   }
 }
 
-- (BOOL)_populateNilOriginalFilenameOnMaster:(id)a3
+- (BOOL)_populateNilOriginalFilenameOnMaster:(id)master
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  masterCopy = master;
   if ([(PLModelMigrator *)self isCloudPhotoLibraryEnabled])
   {
     pl_dispatch_once();
     v5 = objc_autoreleasePoolPush();
-    v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _populateNilOriginalFilenameOnMaster:]" concurrencyType:*MEMORY[0x1E695D708]];
+    v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:masterCopy name:"[PLModelMigrator _populateNilOriginalFilenameOnMaster:]" concurrencyType:*MEMORY[0x1E695D708]];
     v7 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:@"CloudMaster"];
     v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"originalFilename == nil"];
     [v7 setPredicate:v8];
@@ -18309,11 +18309,11 @@ void __48__PLModelMigrator__populateNilOriginalFilename___block_invoke(uint64_t 
     {
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v14 = [v10 userInfo];
+        userInfo = [v10 userInfo];
         v16 = 138412546;
         v17 = v10;
         v18 = 2112;
-        v19 = v14;
+        v19 = userInfo;
         _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_ERROR, "_populateNilOriginalFilenameOnMaster: failed: %@ %@", &v16, 0x16u);
       }
     }
@@ -18349,27 +18349,27 @@ void __56__PLModelMigrator__populateNilOriginalFilenameOnMaster___block_invoke(u
   [v2 setCloudLocalState:0];
 }
 
-- (BOOL)_removeOldPersonMetadataInStore:(id)a3
+- (BOOL)_removeOldPersonMetadataInStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v5 = objc_autoreleasePoolPush();
   v6 = MEMORY[0x1E695DFF8];
-  v7 = [(PLModelMigrator *)self pathManager];
-  v8 = [v7 privateDirectoryWithSubType:4 createIfNeeded:1 error:0];
+  pathManager = [(PLModelMigrator *)self pathManager];
+  v8 = [pathManager privateDirectoryWithSubType:4 createIfNeeded:1 error:0];
   v9 = [v6 fileURLWithPath:v8 isDirectory:1];
 
-  LOBYTE(v7) = [PLPhotoLibrary removeFaceMetadataAtURL:v9 includingPeople:1];
+  LOBYTE(pathManager) = [PLPhotoLibrary removeFaceMetadataAtURL:v9 includingPeople:1];
   objc_autoreleasePoolPop(v5);
 
-  return v7;
+  return pathManager;
 }
 
-- (BOOL)_persistPersonsInStore:(id)a3
+- (BOOL)_persistPersonsInStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   pl_dispatch_once();
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _persistPersonsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _persistPersonsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = +[PLPerson fetchRequest];
   v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != %d", @"verifiedType", 0];
   [v7 setPredicate:v8];
@@ -18393,13 +18393,13 @@ void __42__PLModelMigrator__persistPersonsInStore___block_invoke(uint64_t a1, vo
   [v3 persistMetadataToFileSystemWithPathManager:v4];
 }
 
-- (BOOL)_persistMemoriesInStore:(id)a3
+- (BOOL)_persistMemoriesInStore:(id)store
 {
   v13[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   pl_dispatch_once();
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _persistMemoriesInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _persistMemoriesInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:@"Memory"];
   v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != %d", @"pendingState", 1];
   [v7 setPredicate:v8];
@@ -18430,13 +18430,13 @@ void __43__PLModelMigrator__persistMemoriesInStore___block_invoke(uint64_t a1, v
   [v3 persistMetadataToFileSystemWithPathManager:v4];
 }
 
-- (BOOL)_populateLatLongInAsset:(id)a3
+- (BOOL)_populateLatLongInAsset:(id)asset
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  assetCopy = asset;
   pl_dispatch_once();
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _populateLatLongInAsset:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:assetCopy name:"[PLModelMigrator _populateLatLongInAsset:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = MEMORY[0x1E695D5E0];
   v8 = +[PLManagedAsset entityName];
   v9 = [v7 fetchRequestWithEntityName:v8];
@@ -18452,11 +18452,11 @@ void __43__PLModelMigrator__persistMemoriesInStore___block_invoke(uint64_t a1, v
     v13 = PLMigrationGetLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v14 = [v12 userInfo];
+      userInfo = [v12 userInfo];
       v16 = 138412546;
       v17 = v12;
       v18 = 2112;
-      v19 = v14;
+      v19 = userInfo;
       _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_ERROR, "_populateLatLongInAsset failed: %@ %@", &v16, 0x16u);
     }
   }
@@ -18488,13 +18488,13 @@ void __43__PLModelMigrator__populateLatLongInAsset___block_invoke(uint64_t a1, v
   }
 }
 
-- (BOOL)_populateRepresentativeAssets:(id)a3
+- (BOOL)_populateRepresentativeAssets:(id)assets
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  assetsCopy = assets;
   pl_dispatch_once();
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _populateRepresentativeAssets:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:assetsCopy name:"[PLModelMigrator _populateRepresentativeAssets:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:@"Memory"];
   v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"representativeAssets.@count = 0 && curatedAssets.@count > 0"];
   [v7 setPredicate:v8];
@@ -18511,11 +18511,11 @@ void __43__PLModelMigrator__populateLatLongInAsset___block_invoke(uint64_t a1, v
     v12 = PLMigrationGetLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v13 = [v11 userInfo];
+      userInfo = [v11 userInfo];
       v15 = 138412546;
       v16 = v11;
       v17 = 2112;
-      v18 = v13;
+      v18 = userInfo;
       _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_ERROR, "_fixupCloudResourcesInStore failed: %@ %@", &v15, 0x16u);
     }
   }
@@ -18531,12 +18531,12 @@ void __49__PLModelMigrator__populateRepresentativeAssets___block_invoke(uint64_t
   [v2 setValue:v3 forKey:@"representativeAssets"];
 }
 
-- (BOOL)_fixCloudMasterCloudLocalState:(id)a3
+- (BOOL)_fixCloudMasterCloudLocalState:(id)state
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stateCopy = state;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _fixCloudMasterCloudLocalState:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:stateCopy name:"[PLModelMigrator _fixCloudMasterCloudLocalState:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:@"CloudMaster"];
   v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"cloudLocalState == %d", 0];
   [v7 setPredicate:v8];
@@ -18549,11 +18549,11 @@ void __49__PLModelMigrator__populateRepresentativeAssets___block_invoke(uint64_t
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v13 = [v10 userInfo];
+      userInfo = [v10 userInfo];
       *buf = 138412546;
       v16 = v10;
       v17 = 2112;
-      v18 = v13;
+      v18 = userInfo;
       _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_ERROR, "_fixCloudMasterCloudLocalState: failed: %@ %@", buf, 0x16u);
     }
   }
@@ -18582,12 +18582,12 @@ void __50__PLModelMigrator__fixCloudMasterCloudLocalState___block_invoke(uint64_
   }
 }
 
-- (BOOL)_resetUploadAttempts:(id)a3
+- (BOOL)_resetUploadAttempts:(id)attempts
 {
   v25[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  attemptsCopy = attempts;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _resetUploadAttempts:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:attemptsCopy name:"[PLModelMigrator _resetUploadAttempts:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = MEMORY[0x1E695D5E0];
   v8 = +[PLManagedAsset entityName];
   v9 = [v7 fetchRequestWithEntityName:v8];
@@ -18611,11 +18611,11 @@ void __50__PLModelMigrator__fixCloudMasterCloudLocalState___block_invoke(uint64_
   {
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      v19 = [v16 userInfo];
+      userInfo = [v16 userInfo];
       v21 = 138412546;
       v22 = v16;
       v23 = 2112;
-      v24 = v19;
+      v24 = userInfo;
       _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_ERROR, "_resetUploadAttempts: failed: %@ %@", &v21, 0x16u);
     }
   }
@@ -18639,12 +18639,12 @@ void __40__PLModelMigrator__resetUploadAttempts___block_invoke(uint64_t a1, void
   [v2 setCloudLocalState:0];
 }
 
-- (BOOL)_resetFailedCloudMasters:(id)a3
+- (BOOL)_resetFailedCloudMasters:(id)masters
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  mastersCopy = masters;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _resetFailedCloudMasters:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:mastersCopy name:"[PLModelMigrator _resetFailedCloudMasters:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:@"CloudMaster"];
   v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"cloudLocalState == %d", 2];
   [v7 setPredicate:v8];
@@ -18657,11 +18657,11 @@ void __40__PLModelMigrator__resetUploadAttempts___block_invoke(uint64_t a1, void
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v13 = [v10 userInfo];
+      userInfo = [v10 userInfo];
       *buf = 138412546;
       v16 = v10;
       v17 = 2112;
-      v18 = v13;
+      v18 = userInfo;
       _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_ERROR, "_resetFailedCloudMasters failed: %@ %@", buf, 0x16u);
     }
   }
@@ -18677,12 +18677,12 @@ void __40__PLModelMigrator__resetUploadAttempts___block_invoke(uint64_t a1, void
   return v10 == 0;
 }
 
-- (BOOL)_resetFailedAssets:(id)a3
+- (BOOL)_resetFailedAssets:(id)assets
 {
   v25[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  assetsCopy = assets;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _resetFailedAssets:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:assetsCopy name:"[PLModelMigrator _resetFailedAssets:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = MEMORY[0x1E695D5E0];
   v8 = +[PLManagedAsset entityName];
   v9 = [v7 fetchRequestWithEntityName:v8];
@@ -18705,11 +18705,11 @@ void __40__PLModelMigrator__resetUploadAttempts___block_invoke(uint64_t a1, void
   {
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      v19 = [v16 userInfo];
+      userInfo = [v16 userInfo];
       *buf = 138412546;
       v22 = v16;
       v23 = 2112;
-      v24 = v19;
+      v24 = userInfo;
       _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_ERROR, "_resetFailedAssets: failed: %@ %@", buf, 0x16u);
     }
   }
@@ -18733,13 +18733,13 @@ void __38__PLModelMigrator__resetFailedAssets___block_invoke(uint64_t a1, void *
   [v2 setCloudLocalState:0];
 }
 
-- (BOOL)_fixVideoJPGPath:(id)a3
+- (BOOL)_fixVideoJPGPath:(id)path
 {
   v78 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathCopy = path;
   v41 = objc_autoreleasePoolPush();
-  v42 = v4;
-  v5 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _fixVideoJPGPath:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v42 = pathCopy;
+  v5 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:pathCopy name:"[PLModelMigrator _fixVideoJPGPath:]" concurrencyType:*MEMORY[0x1E695D708]];
   v6 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:@"CloudMaster"];
   [v6 setFetchBatchSize:100];
   v39 = v6;
@@ -18768,8 +18768,8 @@ void __38__PLModelMigrator__resetFailedAssets___block_invoke(uint64_t a1, void *
         v8 = *(*(&v66 + 1) + 8 * v7);
         context = objc_autoreleasePoolPush();
         v9 = MEMORY[0x1E69C08F0];
-        v10 = [v8 uniformTypeIdentifier];
-        v11 = [v9 typeWithIdentifier:v10];
+        uniformTypeIdentifier = [v8 uniformTypeIdentifier];
+        v11 = [v9 typeWithIdentifier:uniformTypeIdentifier];
         v12 = [v11 conformsToType:v44];
 
         if (v12)
@@ -18778,8 +18778,8 @@ void __38__PLModelMigrator__resetFailedAssets___block_invoke(uint64_t a1, void *
           v65 = 0u;
           v62 = 0u;
           v63 = 0u;
-          v49 = [v8 assets];
-          v51 = [v49 countByEnumeratingWithState:&v62 objects:v76 count:16];
+          assets = [v8 assets];
+          v51 = [assets countByEnumeratingWithState:&v62 objects:v76 count:16];
           if (v51)
           {
             v50 = *v63;
@@ -18790,7 +18790,7 @@ void __38__PLModelMigrator__resetFailedAssets___block_invoke(uint64_t a1, void *
               {
                 if (*v63 != v50)
                 {
-                  objc_enumerationMutation(v49);
+                  objc_enumerationMutation(assets);
                 }
 
                 v14 = *(*(&v62 + 1) + 8 * v13);
@@ -18799,12 +18799,12 @@ void __38__PLModelMigrator__resetFailedAssets___block_invoke(uint64_t a1, void *
                   v31 = PLMigrationGetLog();
                   if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
                   {
-                    v32 = [v14 uuid];
-                    v33 = [v8 scopedIdentifier];
+                    uuid = [v14 uuid];
+                    scopedIdentifier = [v8 scopedIdentifier];
                     *buf = 138412546;
-                    v73 = v32;
+                    v73 = uuid;
                     v74 = 2112;
-                    v75 = v33;
+                    v75 = scopedIdentifier;
                     _os_log_impl(&dword_19BF1F000, v31, OS_LOG_TYPE_ERROR, "_fixVideoJPGPath: asset %@ kind is showing that this is not a video while the master %@ uti thinks it is.", buf, 0x16u);
                   }
 
@@ -18831,9 +18831,9 @@ void __38__PLModelMigrator__resetFailedAssets___block_invoke(uint64_t a1, void *
                       }
 
                       v19 = *(*(&v58 + 1) + 8 * i);
-                      v20 = [v19 unsignedIntegerValue];
-                      v21 = [v14 uuid];
-                      v22 = [PLCloudResource cloudResourceForResourceType:v20 forAssetUuid:v21 forCloudMaster:v8];
+                      unsignedIntegerValue = [v19 unsignedIntegerValue];
+                      uuid2 = [v14 uuid];
+                      v22 = [PLCloudResource cloudResourceForResourceType:unsignedIntegerValue forAssetUuid:uuid2 forCloudMaster:v8];
 
                       if (v22)
                       {
@@ -18888,7 +18888,7 @@ void __38__PLModelMigrator__resetFailedAssets___block_invoke(uint64_t a1, void *
               }
 
               while (v52 + 1 != v51);
-              v51 = [v49 countByEnumeratingWithState:&v62 objects:v76 count:16];
+              v51 = [assets countByEnumeratingWithState:&v62 objects:v76 count:16];
               if (v51)
               {
                 continue;
@@ -18922,11 +18922,11 @@ LABEL_38:
       v36 = PLMigrationGetLog();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
       {
-        v37 = [v35 userInfo];
+        userInfo = [v35 userInfo];
         *buf = 138412546;
         v73 = v35;
         v74 = 2112;
-        v75 = v37;
+        v75 = userInfo;
         _os_log_impl(&dword_19BF1F000, v36, OS_LOG_TYPE_ERROR, "_fixVideoJPGPath: failed: %@ %@", buf, 0x16u);
       }
     }
@@ -18941,48 +18941,48 @@ LABEL_38:
   return v34;
 }
 
-- (void)_fixPathForResource:(id)a3 withPath:(id)a4
+- (void)_fixPathForResource:(id)resource withPath:(id)path
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  resourceCopy = resource;
+  pathCopy = path;
+  if (pathCopy)
   {
-    v8 = [v6 filePath];
-    v9 = v8;
-    if (v8)
+    filePath = [resourceCopy filePath];
+    v9 = filePath;
+    if (filePath)
     {
-      if (([v8 isEqualToString:v7]& 1) != 0)
+      if (([filePath isEqualToString:pathCopy]& 1) != 0)
       {
 LABEL_13:
-        [v6 setIsLocallyAvailable:{-[PLModelMigrator _validateOrDeleteFileAtPath:forCloudResource:](self, "_validateOrDeleteFileAtPath:forCloudResource:", v7, v6)}];
+        [resourceCopy setIsLocallyAvailable:{-[PLModelMigrator _validateOrDeleteFileAtPath:forCloudResource:](self, "_validateOrDeleteFileAtPath:forCloudResource:", pathCopy, resourceCopy)}];
         goto LABEL_14;
       }
 
-      [v6 setFilePath:v7];
-      v10 = [MEMORY[0x1E696AC08] defaultManager];
-      if ([v10 fileExistsAtPath:v9])
+      [resourceCopy setFilePath:pathCopy];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      if ([defaultManager fileExistsAtPath:v9])
       {
-        if (![(PLModelMigrator *)self _validateOrDeleteFileAtPath:v7 forCloudResource:v6])
+        if (![(PLModelMigrator *)self _validateOrDeleteFileAtPath:pathCopy forCloudResource:resourceCopy])
         {
-          [v10 moveItemAtPath:v9 toPath:v7 error:0];
+          [defaultManager moveItemAtPath:v9 toPath:pathCopy error:0];
         }
 
-        [v10 removeItemAtPath:v9 error:0];
+        [defaultManager removeItemAtPath:v9 error:0];
       }
     }
 
     else
     {
-      [v6 setFilePath:v7];
-      v10 = PLMigrationGetLog();
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+      [resourceCopy setFilePath:pathCopy];
+      defaultManager = PLMigrationGetLog();
+      if (os_log_type_enabled(defaultManager, OS_LOG_TYPE_ERROR))
       {
         v11 = 138412546;
-        v12 = v6;
+        v12 = resourceCopy;
         v13 = 2112;
-        v14 = v7;
-        _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_ERROR, "_fixVideoJPGPath: resource %@, found nil resourcePath, setting to corrected path %@", &v11, 0x16u);
+        v14 = pathCopy;
+        _os_log_impl(&dword_19BF1F000, defaultManager, OS_LOG_TYPE_ERROR, "_fixVideoJPGPath: resource %@, found nil resourcePath, setting to corrected path %@", &v11, 0x16u);
       }
     }
 
@@ -18993,30 +18993,30 @@ LABEL_13:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
     v11 = 138412290;
-    v12 = v6;
+    v12 = resourceCopy;
     _os_log_impl(&dword_19BF1F000, v9, OS_LOG_TYPE_ERROR, "_fixVideoJPGPath: can't correct cloudResource %@ path to nil", &v11, 0xCu);
   }
 
 LABEL_14:
 }
 
-- (BOOL)_validateOrDeleteFileAtPath:(id)a3 forCloudResource:(id)a4
+- (BOOL)_validateOrDeleteFileAtPath:(id)path forCloudResource:(id)resource
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
-  if ([v8 fileExistsAtPath:v6])
+  pathCopy = path;
+  resourceCopy = resource;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  if ([defaultManager fileExistsAtPath:pathCopy])
   {
-    v9 = [MEMORY[0x1E695DFF8] fileURLWithPath:v6 isDirectory:0];
+    v9 = [MEMORY[0x1E695DFF8] fileURLWithPath:pathCopy isDirectory:0];
     v17 = 0;
     v10 = [v9 getResourceValue:&v17 forKey:*MEMORY[0x1E695DB50] error:0];
     v11 = v17;
     v12 = v11;
     if (v10)
     {
-      v13 = [v11 integerValue];
-      if (v13 == [v7 fileSize])
+      integerValue = [v11 integerValue];
+      if (integerValue == [resourceCopy fileSize])
       {
         v14 = 1;
 LABEL_10:
@@ -19031,14 +19031,14 @@ LABEL_10:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v19 = v7;
+        v19 = resourceCopy;
         v20 = 2112;
-        v21 = v6;
+        v21 = pathCopy;
         _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_ERROR, "_fixVideoJPGPath: resource %@ can't get the fileSize for file at path %@", buf, 0x16u);
       }
     }
 
-    [(PLModelMigrator *)self _removeFileAt:v6 forResource:v7];
+    [(PLModelMigrator *)self _removeFileAt:pathCopy forResource:resourceCopy];
     v14 = 0;
     goto LABEL_10;
   }
@@ -19049,15 +19049,15 @@ LABEL_11:
   return v14;
 }
 
-- (void)_removeFileAt:(id)a3 forResource:(id)a4
+- (void)_removeFileAt:(id)at forResource:(id)resource
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  atCopy = at;
+  resourceCopy = resource;
+  if (atCopy)
   {
-    v7 = [MEMORY[0x1E696AC08] defaultManager];
-    v8 = [v7 removeItemAtPath:v5 error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v8 = [defaultManager removeItemAtPath:atCopy error:0];
     v9 = PLMigrationGetLog();
     v10 = v9;
     if (v8)
@@ -19065,9 +19065,9 @@ LABEL_11:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         v14 = 138412546;
-        v15 = v6;
+        v15 = resourceCopy;
         v16 = 2112;
-        v17 = v5;
+        v17 = atCopy;
         v11 = "_fixVideoJPGPath: resource %@ removing file at: %@";
         v12 = v10;
         v13 = OS_LOG_TYPE_DEFAULT;
@@ -19079,9 +19079,9 @@ LABEL_9:
     else if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v14 = 138412546;
-      v15 = v6;
+      v15 = resourceCopy;
       v16 = 2112;
-      v17 = v5;
+      v17 = atCopy;
       v11 = "_fixVideoJPGPath: resource %@, can't delete resource from %@";
       v12 = v10;
       v13 = OS_LOG_TYPE_ERROR;
@@ -19091,25 +19091,25 @@ LABEL_9:
     goto LABEL_11;
   }
 
-  v7 = PLMigrationGetLog();
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+  defaultManager = PLMigrationGetLog();
+  if (os_log_type_enabled(defaultManager, OS_LOG_TYPE_ERROR))
   {
     v14 = 138412290;
-    v15 = v6;
-    _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_ERROR, "_fixVideoJPGPath: resource %@, can't delete resource from nil path", &v14, 0xCu);
+    v15 = resourceCopy;
+    _os_log_impl(&dword_19BF1F000, defaultManager, OS_LOG_TYPE_ERROR, "_fixVideoJPGPath: resource %@, can't delete resource from nil path", &v14, 0xCu);
   }
 
 LABEL_11:
 }
 
-- (BOOL)_fixNonDuplicatedAssets:(id)a3 adjusted:(BOOL)a4
+- (BOOL)_fixNonDuplicatedAssets:(id)assets adjusted:(BOOL)adjusted
 {
-  v4 = a4;
+  adjustedCopy = adjusted;
   v77[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  assetsCopy = assets;
   v64 = objc_autoreleasePoolPush();
-  v65 = v6;
-  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v6 name:"[PLModelMigrator _fixNonDuplicatedAssets:adjusted:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v65 = assetsCopy;
+  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:assetsCopy name:"[PLModelMigrator _fixNonDuplicatedAssets:adjusted:]" concurrencyType:*MEMORY[0x1E695D708]];
   v8 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:@"CloudMaster"];
   v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(SUBQUERY(assets, $att, $att.adjustmentsState != %d).@count != 0)", 0];
   v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(SUBQUERY(assets, $att, $att.adjustmentsState == %d).@count == 0)", 0];
@@ -19118,7 +19118,7 @@ LABEL_11:
   v13 = v12;
   v60 = v10;
   v61 = v9;
-  if (v4)
+  if (adjustedCopy)
   {
     v14 = v9;
   }
@@ -19158,79 +19158,79 @@ LABEL_11:
 
         v21 = *(*(&v68 + 1) + 8 * i);
         v22 = objc_autoreleasePoolPush();
-        v23 = [v21 assets];
-        v24 = [v23 anyObject];
+        assets = [v21 assets];
+        anyObject = [assets anyObject];
 
         v25 = [PLCloudResource cloudResourcesForResourceType:5 forCloudMaster:v21];
-        v26 = [v25 firstObject];
+        firstObject = [v25 firstObject];
 
-        if (v26)
+        if (firstObject)
         {
-          v27 = [v24 uuid];
-          [v26 setAssetUuid:v27];
+          uuid = [anyObject uuid];
+          [firstObject setAssetUuid:uuid];
         }
 
         v28 = [PLCloudResource cloudResourcesForResourceType:4 forCloudMaster:v21];
-        v29 = [v28 firstObject];
+        firstObject2 = [v28 firstObject];
 
-        if (v29)
+        if (firstObject2)
         {
-          v30 = [v24 uuid];
-          [v29 setAssetUuid:v30];
+          uuid2 = [anyObject uuid];
+          [firstObject2 setAssetUuid:uuid2];
         }
 
         v31 = [PLCloudResource cloudResourcesForResourceType:3 forCloudMaster:v21];
-        v32 = [v31 firstObject];
+        firstObject3 = [v31 firstObject];
 
-        if (v32)
+        if (firstObject3)
         {
-          v33 = [v24 uuid];
-          [v32 setAssetUuid:v33];
+          uuid3 = [anyObject uuid];
+          [firstObject3 setAssetUuid:uuid3];
         }
 
         v34 = [PLCloudResource cloudResourcesForResourceType:2 forCloudMaster:v21];
-        v35 = [v34 firstObject];
+        firstObject4 = [v34 firstObject];
 
-        if (v35)
+        if (firstObject4)
         {
-          v36 = [v24 uuid];
-          [v35 setAssetUuid:v36];
+          uuid4 = [anyObject uuid];
+          [firstObject4 setAssetUuid:uuid4];
         }
 
         v37 = [PLCloudResource cloudResourcesForResourceType:7 forCloudMaster:v21];
-        v38 = [v37 firstObject];
+        firstObject5 = [v37 firstObject];
 
-        if (v38)
+        if (firstObject5)
         {
-          v39 = [v24 uuid];
-          [v38 setAssetUuid:v39];
+          uuid5 = [anyObject uuid];
+          [firstObject5 setAssetUuid:uuid5];
         }
 
         v40 = [PLCloudResource cloudResourcesForResourceType:6 forCloudMaster:v21];
-        v41 = [v40 firstObject];
+        firstObject6 = [v40 firstObject];
 
-        if (v41)
+        if (firstObject6)
         {
-          v42 = [v24 uuid];
-          [v41 setAssetUuid:v42];
+          uuid6 = [anyObject uuid];
+          [firstObject6 setAssetUuid:uuid6];
         }
 
         v43 = [PLCloudResource cloudResourcesForResourceType:1 forCloudMaster:v21];
-        v44 = [v43 firstObject];
+        firstObject7 = [v43 firstObject];
 
-        if (v44)
+        if (firstObject7)
         {
-          v45 = [v24 uuid];
-          [v44 setAssetUuid:v45];
+          uuid7 = [anyObject uuid];
+          [firstObject7 setAssetUuid:uuid7];
         }
 
         v46 = [PLCloudResource cloudResourcesForResourceType:17 forCloudMaster:v21];
-        v47 = [v46 firstObject];
+        firstObject8 = [v46 firstObject];
 
-        if (v47)
+        if (firstObject8)
         {
-          v48 = [v24 uuid];
-          [v47 setAssetUuid:v48];
+          uuid8 = [anyObject uuid];
+          [firstObject8 setAssetUuid:uuid8];
         }
 
         objc_autoreleasePoolPop(v22);
@@ -19256,11 +19256,11 @@ LABEL_11:
       v55 = PLMigrationGetLog();
       if (os_log_type_enabled(v55, OS_LOG_TYPE_ERROR))
       {
-        v56 = [v50 userInfo];
+        userInfo = [v50 userInfo];
         *buf = 138412546;
         v73 = v50;
         v74 = 2112;
-        v75 = v56;
+        v75 = userInfo;
         _os_log_impl(&dword_19BF1F000, v55, OS_LOG_TYPE_ERROR, "_fixNonAdjustedNonDuplicatedAssets: failed: %@ %@", buf, 0x16u);
       }
     }
@@ -19282,14 +19282,14 @@ LABEL_11:
   return v49;
 }
 
-- (BOOL)_fixDuplicatedAssets:(id)a3
+- (BOOL)_fixDuplicatedAssets:(id)assets
 {
   v62 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  assetsCopy = assets;
   v42 = objc_autoreleasePoolPush();
-  v46 = self;
-  v43 = v4;
-  v5 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _fixDuplicatedAssets:]" concurrencyType:*MEMORY[0x1E695D708]];
+  selfCopy = self;
+  v43 = assetsCopy;
+  v5 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:assetsCopy name:"[PLModelMigrator _fixDuplicatedAssets:]" concurrencyType:*MEMORY[0x1E695D708]];
   v6 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:@"CloudMaster"];
   [v6 setFetchBatchSize:100];
   v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"assets.@count > 1"];
@@ -19325,8 +19325,8 @@ LABEL_11:
         v49 = 0u;
         v50 = 0u;
         v51 = 0u;
-        v12 = [v11 assets];
-        v13 = [v12 countByEnumeratingWithState:&v48 objects:v60 count:16];
+        assets = [v11 assets];
+        v13 = [assets countByEnumeratingWithState:&v48 objects:v60 count:16];
         if (v13)
         {
           v14 = v13;
@@ -19337,12 +19337,12 @@ LABEL_11:
             {
               if (*v49 != v15)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(assets);
               }
 
               v17 = *(*(&v48 + 1) + 8 * i);
-              v18 = [v17 uuid];
-              v19 = [PLCloudResource cloudResourceForResourceType:1 forAssetUuid:v18 forCloudMaster:v11];
+              uuid = [v17 uuid];
+              v19 = [PLCloudResource cloudResourceForResourceType:1 forAssetUuid:uuid forCloudMaster:v11];
 
               if (v19 || ([v17 cloudAssetGUID], v20 = objc_claimAutoreleasedReturnValue(), v20, !v20))
               {
@@ -19352,22 +19352,22 @@ LABEL_11:
               {
                 if ([v17 isCloudPhotoLibraryAsset])
                 {
-                  v21 = [v17 cloudAssetGUID];
-                  v22 = [v17 photoDataCPLResourceDestinationDirectoryCreateIfNeededWithIdentifier:v21];
+                  cloudAssetGUID = [v17 cloudAssetGUID];
+                  v22 = [v17 photoDataCPLResourceDestinationDirectoryCreateIfNeededWithIdentifier:cloudAssetGUID];
 
-                  v23 = [(PLModelMigrator *)v46 pathManager];
-                  v24 = [v23 assetAbbreviatedMetadataDirectoryForDirectory:v22 type:32 bundleScope:0];
+                  pathManager = [(PLModelMigrator *)selfCopy pathManager];
+                  v24 = [pathManager assetAbbreviatedMetadataDirectoryForDirectory:v22 type:32 bundleScope:0];
                   [v17 setDirectory:v24];
 
-                  v25 = [v17 uniformTypeIdentifier];
-                  v26 = [PLManagedAsset preferredFileExtensionForType:v25];
+                  uniformTypeIdentifier = [v17 uniformTypeIdentifier];
+                  v26 = [PLManagedAsset preferredFileExtensionForType:uniformTypeIdentifier];
 
                   v27 = MEMORY[0x1E696AEC0];
                   [v17 cloudAssetGUID];
-                  v29 = v28 = v12;
+                  v29 = v28 = assets;
                   v30 = [v27 stringWithFormat:@"%@.%@", v29, v26];
 
-                  v12 = v28;
+                  assets = v28;
                   [v17 setFilename:v30];
 
                   v5 = v45;
@@ -19385,7 +19385,7 @@ LABEL_11:
               }
             }
 
-            v14 = [v12 countByEnumeratingWithState:&v48 objects:v60 count:16];
+            v14 = [assets countByEnumeratingWithState:&v48 objects:v60 count:16];
             if (v14)
             {
               continue;
@@ -19423,11 +19423,11 @@ LABEL_11:
       v35 = PLMigrationGetLog();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
       {
-        v36 = [v32 userInfo];
+        userInfo = [v32 userInfo];
         *buf = 138412546;
         v57 = v32;
         v58 = 2112;
-        v59 = v36;
+        v59 = userInfo;
         _os_log_impl(&dword_19BF1F000, v35, OS_LOG_TYPE_ERROR, "_fixDuplicatedAssets: failed: %@ %@", buf, 0x16u);
       }
 
@@ -19446,13 +19446,13 @@ LABEL_25:
   return v33;
 }
 
-- (BOOL)_fixVisibleBurstAsset:(id)a3
+- (BOOL)_fixVisibleBurstAsset:(id)asset
 {
   v49 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  assetCopy = asset;
   v35 = objc_autoreleasePoolPush();
-  v36 = v4;
-  v5 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _fixVisibleBurstAsset:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v36 = assetCopy;
+  v5 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:assetCopy name:"[PLModelMigrator _fixVisibleBurstAsset:]" concurrencyType:*MEMORY[0x1E695D708]];
   v6 = MEMORY[0x1E695D5E0];
   v7 = +[PLManagedAsset entityName];
   v8 = [v6 fetchRequestWithEntityName:v7];
@@ -19485,17 +19485,17 @@ LABEL_25:
 
         v15 = *(*(&v40 + 1) + 8 * i);
         v16 = objc_autoreleasePoolPush();
-        v17 = [v15 avalancheUUID];
-        v18 = [v15 avalanchePickType];
-        if ((v18 & 8) == 0)
+        avalancheUUID = [v15 avalancheUUID];
+        avalanchePickType = [v15 avalanchePickType];
+        if ((avalanchePickType & 8) == 0)
         {
-          v19 = v18;
+          v19 = avalanchePickType;
           v20 = MEMORY[0x1E695D5E0];
           v21 = +[PLManagedAsset entityName];
           v22 = [v20 fetchRequestWithEntityName:v21];
 
           [v22 setFetchBatchSize:100];
-          v23 = [MEMORY[0x1E696AE18] predicateWithFormat:@"avalancheUUID == %@ AND trashedState != %d", v17, 0];
+          v23 = [MEMORY[0x1E696AE18] predicateWithFormat:@"avalancheUUID == %@ AND trashedState != %d", avalancheUUID, 0];
           [v22 setPredicate:v23];
 
           v24 = [v10 executeFetchRequest:v22 error:0];
@@ -19538,11 +19538,11 @@ LABEL_25:
       v30 = PLMigrationGetLog();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
       {
-        v31 = [v26 userInfo];
+        userInfo = [v26 userInfo];
         *buf = 138412546;
         v45 = v26;
         v46 = 2112;
-        v47 = v31;
+        v47 = userInfo;
         _os_log_impl(&dword_19BF1F000, v30, OS_LOG_TYPE_ERROR, "_fixVisibleBurstAsset: failed: %@ %@", buf, 0x16u);
       }
     }
@@ -19568,16 +19568,16 @@ LABEL_25:
   return v25;
 }
 
-- (BOOL)_fixAdjustedAssets:(id)a3
+- (BOOL)_fixAdjustedAssets:(id)assets
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  assetsCopy = assets;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
   v27 = 1;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _fixAdjustedAssets:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:assetsCopy name:"[PLModelMigrator _fixAdjustedAssets:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = MEMORY[0x1E695D5E0];
   v8 = +[PLManagedAsset entityName];
   v9 = [v7 fetchRequestWithEntityName:v8];
@@ -19585,12 +19585,12 @@ LABEL_25:
   v10 = [PLManagedAsset predicateForAdjustedAssetsWithKeyPathToAsset:0];
   [v9 setPredicate:v10];
 
-  v11 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __38__PLModelMigrator__fixAdjustedAssets___block_invoke;
   v21[3] = &unk_1E75721F8;
-  v12 = v11;
+  v12 = defaultManager;
   v22 = v12;
   v23 = &v24;
   v13 = [v6 enumerateObjectsFromFetchRequest:v9 count:0 usingDefaultBatchSizeWithBlock:v21];
@@ -19605,11 +19605,11 @@ LABEL_25:
       v16 = PLMigrationGetLog();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
-        v17 = [v15 userInfo];
+        userInfo = [v15 userInfo];
         *buf = 138412546;
         v29 = v15;
         v30 = 2112;
-        v31 = v17;
+        v31 = userInfo;
         _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_ERROR, "_fixAdjustedAssets: failed: %@ %@", buf, 0x16u);
       }
     }
@@ -19748,16 +19748,16 @@ LABEL_24:
   }
 }
 
-- (BOOL)_migrateLegacySlomoAdjustmentsInStore:(id)a3 fromLegacySLMFormat:(BOOL)a4
+- (BOOL)_migrateLegacySlomoAdjustmentsInStore:(id)store fromLegacySLMFormat:(BOOL)format
 {
-  v56 = a4;
+  formatCopy = format;
   v74[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  storeCopy = store;
   pl_dispatch_once();
   v54 = objc_autoreleasePoolPush();
-  v6 = self;
-  v55 = v5;
-  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v5 name:"[PLModelMigrator _migrateLegacySlomoAdjustmentsInStore:fromLegacySLMFormat:]" concurrencyType:*MEMORY[0x1E695D708]];
+  selfCopy = self;
+  v55 = storeCopy;
+  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _migrateLegacySlomoAdjustmentsInStore:fromLegacySLMFormat:]" concurrencyType:*MEMORY[0x1E695D708]];
   v8 = MEMORY[0x1E695D5E0];
   v9 = +[PLManagedAsset entityName];
   v10 = [v8 fetchRequestWithEntityName:v9];
@@ -19814,7 +19814,7 @@ LABEL_24:
 
       v24 = *(*(&v62 + 1) + 8 * i);
       v25 = objc_autoreleasePoolPush();
-      v26 = [(PLModelMigrator *)v6 _migrateLegacySlomoAdjustmentsForAsset:v24];
+      v26 = [(PLModelMigrator *)selfCopy _migrateLegacySlomoAdjustmentsForAsset:v24];
       if (!v26)
       {
         ++v60;
@@ -19822,9 +19822,9 @@ LABEL_24:
       }
 
       v27 = v26;
-      v28 = [v24 pathForAdjustmentFile];
-      v29 = [MEMORY[0x1E696AC08] defaultManager];
-      v30 = [v29 fileExistsAtPath:v28];
+      pathForAdjustmentFile = [v24 pathForAdjustmentFile];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      v30 = [defaultManager fileExistsAtPath:pathForAdjustmentFile];
 
       if (v30)
       {
@@ -19845,15 +19845,15 @@ LABEL_24:
       v32 = os_log_type_enabled(v31, OS_LOG_TYPE_ERROR);
       if (v27 == 1)
       {
-        if (v56)
+        if (formatCopy)
         {
           if (v32)
           {
-            v33 = [v24 pathForLegacySlalomRegionsArchive];
+            pathForLegacySlalomRegionsArchive = [v24 pathForLegacySlalomRegionsArchive];
             *buf = 138412546;
-            v67 = v33;
+            v67 = pathForLegacySlalomRegionsArchive;
             v68 = 2112;
-            v69 = v28;
+            v69 = pathForAdjustmentFile;
             _os_log_impl(&dword_19BF1F000, v31, OS_LOG_TYPE_ERROR, "_migrateLegacySlomoAdjustmentsInStore failed to migrate %@ to %@", buf, 0x16u);
           }
 
@@ -19863,7 +19863,7 @@ LABEL_24:
         if (v32)
         {
           *buf = 138412290;
-          v67 = v28;
+          v67 = pathForAdjustmentFile;
           v34 = v31;
           v35 = "_migrateLegacySlomoAdjustmentsInStore failed to migrate %@ to updated format";
           goto LABEL_21;
@@ -19873,7 +19873,7 @@ LABEL_24:
       else if (v32)
       {
         *buf = 138412290;
-        v67 = v28;
+        v67 = pathForAdjustmentFile;
         v34 = v31;
         v35 = "_migrateLegacySlomoAdjustmentsInStore failed to create default adjustments at %@";
 LABEL_21:
@@ -19895,7 +19895,7 @@ LABEL_28:
 
   v36 = PLMigrationGetLog();
   v37 = os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT);
-  if (v56)
+  if (formatCopy)
   {
     v39 = v54;
     v38 = v55;
@@ -19945,11 +19945,11 @@ LABEL_33:
       v46 = PLMigrationGetLog();
       if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
       {
-        v47 = [v44 userInfo];
+        userInfo = [v44 userInfo];
         *buf = 138412546;
         v67 = v44;
         v68 = 2112;
-        v69 = v47;
+        v69 = userInfo;
         _os_log_impl(&dword_19BF1F000, v46, OS_LOG_TYPE_ERROR, "_migrateLegacySlomoAdjustmentsInStore failed: %@ %@", buf, 0x16u);
       }
     }
@@ -19965,15 +19965,15 @@ LABEL_33:
   return v43;
 }
 
-- (int)_migrateLegacySlomoAdjustmentsForAsset:(id)a3
+- (int)_migrateLegacySlomoAdjustmentsForAsset:(id)asset
 {
-  v3 = a3;
-  if ([v3 migrateLegacyVideoAdjustments])
+  assetCopy = asset;
+  if ([assetCopy migrateLegacyVideoAdjustments])
   {
     v4 = 1;
   }
 
-  else if ([v3 setDefaultAdjustmentsIfNecessaryWithMainFileMetadata:0])
+  else if ([assetCopy setDefaultAdjustmentsIfNecessaryWithMainFileMetadata:0])
   {
     v4 = 2;
   }
@@ -19986,11 +19986,11 @@ LABEL_33:
   return v4;
 }
 
-- (BOOL)_performChangesOnBatchFetchedObjects:(id)a3 inMOC:(id)a4 batchSize:(unint64_t)a5 objectHandler:(id)a6 error:(id *)a7
+- (BOOL)_performChangesOnBatchFetchedObjects:(id)objects inMOC:(id)c batchSize:(unint64_t)size objectHandler:(id)handler error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  objectsCopy = objects;
+  cCopy = c;
+  handlerCopy = handler;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
@@ -19999,23 +19999,23 @@ LABEL_33:
   v23 = 3221225472;
   v24 = __92__PLModelMigrator__performChangesOnBatchFetchedObjects_inMOC_batchSize_objectHandler_error___block_invoke;
   v25 = &unk_1E7576208;
-  v21 = v12;
+  v21 = cCopy;
   v26 = v21;
   v27 = &v29;
-  v28 = a7;
+  errorCopy = error;
   v14 = _Block_copy(&aBlock);
   v15 = 0;
   do
   {
-    if (v15 >= [v11 count])
+    if (v15 >= [objectsCopy count])
     {
       break;
     }
 
     v16 = objc_autoreleasePoolPush();
-    v17 = [v11 objectAtIndexedSubscript:v15];
-    v13[2](v13, v17, v15);
-    if (a5 && !((v15 + 1) % a5))
+    v17 = [objectsCopy objectAtIndexedSubscript:v15];
+    handlerCopy[2](handlerCopy, v17, v15);
+    if (size && !((v15 + 1) % size))
     {
       v14[2](v14);
       [v21 reset];
@@ -20055,12 +20055,12 @@ uint64_t __92__PLModelMigrator__performChangesOnBatchFetchedObjects_inMOC_batchS
   return result;
 }
 
-- (BOOL)_fixCorruptedOrientationsInStore:(id)a3
+- (BOOL)_fixCorruptedOrientationsInStore:(id)store
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  storeCopy = store;
   v6 = objc_autoreleasePoolPush();
-  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v5 name:"[PLModelMigrator _fixCorruptedOrientationsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _fixCorruptedOrientationsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(additionalAttributes.unmanagedAdjustment != nil) AND (complete != 0)"];
   v9 = MEMORY[0x1E695D5E0];
   v10 = +[PLManagedAsset entityName];
@@ -20136,9 +20136,9 @@ void __52__PLModelMigrator__fixCorruptedOrientationsInStore___block_invoke(uint6
   }
 }
 
-- (BOOL)_persistMetadataToFileSystemForAlbum:(id)a3
+- (BOOL)_persistMetadataToFileSystemForAlbum:(id)album
 {
-  v4 = a3;
+  albumCopy = album;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -20146,7 +20146,7 @@ void __52__PLModelMigrator__fixCorruptedOrientationsInStore___block_invoke(uint6
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       objc_opt_class();
-      if ((objc_opt_isKindOfClass() & 1) != 0 && [v4 isValidForPersistence])
+      if ((objc_opt_isKindOfClass() & 1) != 0 && [albumCopy isValidForPersistence])
       {
         goto LABEL_4;
       }
@@ -20157,14 +20157,14 @@ LABEL_7:
     }
   }
 
-  if (([v4 isValidForPersistence] & 1) == 0)
+  if (([albumCopy isValidForPersistence] & 1) == 0)
   {
     goto LABEL_7;
   }
 
 LABEL_4:
-  v5 = [(PLModelMigrator *)self pathManager];
-  [v4 persistMetadataToFileSystemWithPathManager:v5];
+  pathManager = [(PLModelMigrator *)self pathManager];
+  [albumCopy persistMetadataToFileSystemWithPathManager:pathManager];
 
   v6 = 1;
 LABEL_8:
@@ -20172,20 +20172,20 @@ LABEL_8:
   return v6;
 }
 
-- (BOOL)_forceAlbumMetadataToDiskInStore:(id)a3
+- (BOOL)_forceAlbumMetadataToDiskInStore:(id)store
 {
   v38 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  storeCopy = store;
   if ((PLIsAssetsd() & 1) == 0)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v25 = NSStringFromSelector(a2);
-    [v24 handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:6308 description:{@"%@ can only be called from assetsd", v25}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:6308 description:{@"%@ can only be called from assetsd", v25}];
   }
 
   pl_dispatch_once();
   v6 = objc_autoreleasePoolPush();
-  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v5 name:"[PLModelMigrator _forceAlbumMetadataToDiskInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _forceAlbumMetadataToDiskInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v8 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:@"GenericAlbum"];
   v34 = 0;
   v9 = [v7 executeFetchRequest:v8 error:&v34];
@@ -20197,7 +20197,7 @@ LABEL_8:
       v26 = v10;
       v27 = v7;
       v28 = v6;
-      v29 = v5;
+      v29 = storeCopy;
       v32 = 0u;
       v33 = 0u;
       v30 = 0u;
@@ -20236,7 +20236,7 @@ LABEL_8:
       }
 
       v6 = v28;
-      v5 = v29;
+      storeCopy = v29;
       v10 = v26;
       v7 = v27;
     }
@@ -20277,20 +20277,20 @@ LABEL_20:
   return 1;
 }
 
-- (BOOL)_setupRootFolderInStore:(id)a3
+- (BOOL)_setupRootFolderInStore:(id)store
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  storeCopy = store;
   if ((PLIsAssetsd() & 1) == 0)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v16 = NSStringFromSelector(a2);
-    [v15 handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:6278 description:{@"%@ can only be called from assetsd", v16}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:6278 description:{@"%@ can only be called from assetsd", v16}];
   }
 
   pl_dispatch_once();
   v6 = objc_autoreleasePoolPush();
-  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v5 name:"[PLModelMigrator _setupRootFolderInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _setupRootFolderInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v8 = [PLManagedAlbumList albumListInManagedObjectContext:v7];
   v9 = [(PLGenericAlbum *)PLManagedFolder albumWithKind:3999 inManagedObjectContext:v7];
   [PLManagedAlbumList pushChangesFromAlbumContainer:v8 toAlbumContainer:v9];
@@ -20304,11 +20304,11 @@ LABEL_20:
       v12 = PLMigrationGetLog();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v13 = [v11 userInfo];
+        userInfo = [v11 userInfo];
         *buf = 138412546;
         v19 = v11;
         v20 = 2112;
-        v21 = v13;
+        v21 = userInfo;
         _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_ERROR, "_setupRootFolderInStore: failed: %@ %@", buf, 0x16u);
       }
     }
@@ -20323,20 +20323,20 @@ LABEL_20:
   return v10;
 }
 
-- (BOOL)_fixDuplicatedRootFolderAndOrphanedAlbumsInStore:(id)a3
+- (BOOL)_fixDuplicatedRootFolderAndOrphanedAlbumsInStore:(id)store
 {
   v95 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  storeCopy = store;
   pl_dispatch_once();
   v6 = objc_autoreleasePoolPush();
-  v71 = self;
-  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v5 name:"[PLModelMigrator _fixDuplicatedRootFolderAndOrphanedAlbumsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  selfCopy = self;
+  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _fixDuplicatedRootFolderAndOrphanedAlbumsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v8 = MEMORY[0x1E695D5E0];
   v9 = +[PLManagedFolder entityName];
   v10 = [v8 fetchRequestWithEntityName:v9];
 
-  v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"kind = %d", 3999];
-  [v10 setPredicate:v11];
+  3999 = [MEMORY[0x1E696AE18] predicateWithFormat:@"kind = %d", 3999];
+  [v10 setPredicate:3999];
 
   v86 = 0;
   v12 = [v7 executeFetchRequest:v10 error:&v86];
@@ -20357,7 +20357,7 @@ LABEL_20:
 
     aSelector = a2;
 
-    v16 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v82 = 0u;
     v83 = 0u;
     v84 = 0u;
@@ -20369,7 +20369,7 @@ LABEL_20:
     {
       v19 = v18;
       v67 = v6;
-      v68 = v5;
+      v68 = storeCopy;
       v20 = 0;
       v21 = 0;
       v22 = *v83;
@@ -20383,8 +20383,8 @@ LABEL_20:
           }
 
           v24 = *(*(&v82 + 1) + 8 * i);
-          v25 = [v24 albums];
-          v26 = [v25 count];
+          albums = [v24 albums];
+          v26 = [albums count];
 
           if (v26 > v20)
           {
@@ -20403,11 +20403,11 @@ LABEL_20:
       if (!v20)
       {
         v6 = v67;
-        v5 = v68;
+        storeCopy = v68;
         goto LABEL_34;
       }
 
-      v28 = [v21 albums];
+      albums2 = [v21 albums];
       v78 = 0u;
       v79 = 0u;
       v80 = 0u;
@@ -20430,18 +20430,18 @@ LABEL_20:
             v34 = *(*(&v78 + 1) + 8 * j);
             if (v34 != v21)
             {
-              v35 = [*(*(&v78 + 1) + 8 * j) albums];
-              v36 = [v35 count];
+              albums3 = [*(*(&v78 + 1) + 8 * j) albums];
+              v36 = [albums3 count];
 
               if (v36)
               {
-                v37 = [v34 albums];
-                v38 = [v37 array];
-                [v28 addObjectsFromArray:v38];
+                albums4 = [v34 albums];
+                array2 = [albums4 array];
+                [albums2 addObjectsFromArray:array2];
               }
 
               [v34 delete];
-              [v16 addObject:v34];
+              [array addObject:v34];
             }
           }
 
@@ -20452,13 +20452,13 @@ LABEL_20:
       }
 
       v6 = v67;
-      v5 = v68;
+      storeCopy = v68;
     }
 
     else
     {
       v21 = 0;
-      v28 = v17;
+      albums2 = v17;
     }
 
 LABEL_34:
@@ -20478,9 +20478,9 @@ LABEL_34:
       v48 = [v46 fetchRequestWithEntityName:v47];
 
       v49 = MEMORY[0x1E696AE18];
-      v50 = [v44 allObjects];
-      v51 = [v49 predicateWithFormat:@"%K IN %@ AND %K = NULL", @"kind", v50, @"parentFolder", aSelector];
-      [v48 setPredicate:v51];
+      allObjects = [v44 allObjects];
+      aSelector = [v49 predicateWithFormat:@"%K IN %@ AND %K = NULL", @"kind", allObjects, @"parentFolder", aSelector];
+      [v48 setPredicate:aSelector];
 
       v77 = v73;
       v52 = [v74 executeFetchRequest:v48 error:&v77];
@@ -20497,8 +20497,8 @@ LABEL_34:
           _os_log_impl(&dword_19BF1F000, v54, OS_LOG_TYPE_DEFAULT, "Found %lu orpaned albums/folders, adding to root folder", buf, 0xCu);
         }
 
-        v56 = [v21 albums];
-        [v56 addObjectsFromArray:v52];
+        albums5 = [v21 albums];
+        [albums5 addObjectsFromArray:v52];
       }
 
       v73 = v53;
@@ -20508,15 +20508,15 @@ LABEL_34:
     {
       v57 = [PLManagedAlbumList albumListInManagedObjectContext:v74];
       [PLManagedAlbumList pushChangesFromAlbumContainer:v21 toAlbumContainer:v57];
-      v58 = [(PLModelMigrator *)v71 pathManager];
-      [v21 persistMetadataToFileSystemWithPathManager:v58];
+      pathManager = [(PLModelMigrator *)selfCopy pathManager];
+      [v21 persistMetadataToFileSystemWithPathManager:pathManager];
 
       v76[0] = MEMORY[0x1E69E9820];
       v76[1] = 3221225472;
       v76[2] = __68__PLModelMigrator__fixDuplicatedRootFolderAndOrphanedAlbumsInStore___block_invoke;
       v76[3] = &unk_1E7577F08;
-      v76[4] = v71;
-      [v16 enumerateObjectsUsingBlock:v76];
+      v76[4] = selfCopy;
+      [array enumerateObjectsUsingBlock:v76];
       v75 = 0;
       v39 = [v74 save:&v75];
       v59 = v75;
@@ -20526,7 +20526,7 @@ LABEL_34:
       {
         if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
         {
-          v62 = [v16 count];
+          v62 = [array count];
           *buf = 134217984;
           v88 = v62;
           _os_log_impl(&dword_19BF1F000, v61, OS_LOG_TYPE_DEFAULT, "Deleted %lu duplicated root folders, attempting repair", buf, 0xCu);
@@ -20536,14 +20536,14 @@ LABEL_34:
       else if (os_log_type_enabled(v60, OS_LOG_TYPE_ERROR))
       {
         v72 = NSStringFromSelector(aSelector);
-        v63 = [v59 userInfo];
+        userInfo = [v59 userInfo];
         *buf = 138543874;
         v88 = v72;
         v89 = 2112;
         v90 = v59;
         v91 = 2112;
-        v92 = v63;
-        v64 = v63;
+        v92 = userInfo;
+        v64 = userInfo;
         _os_log_impl(&dword_19BF1F000, v61, OS_LOG_TYPE_ERROR, "%{public}@: failed: %@ %@", buf, 0x20u);
       }
     }
@@ -20595,12 +20595,12 @@ void __68__PLModelMigrator__fixDuplicatedRootFolderAndOrphanedAlbumsInStore___bl
   [v3 removePersistedFileSystemDataWithPathManager:v4];
 }
 
-- (BOOL)_removeInvalidAdjustmentResourceDataInStore:(id)a3
+- (BOOL)_removeInvalidAdjustmentResourceDataInStore:(id)store
 {
   v26[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _removeInvalidAdjustmentResourceDataInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _removeInvalidAdjustmentResourceDataInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = MEMORY[0x1E695D5E0];
   v8 = +[PLManagedAsset entityName];
   v9 = [v7 fetchRequestWithEntityName:v8];
@@ -20625,11 +20625,11 @@ void __68__PLModelMigrator__fixDuplicatedRootFolderAndOrphanedAlbumsInStore___bl
       v18 = PLMigrationGetLog();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        v19 = [v17 userInfo];
+        userInfo = [v17 userInfo];
         *buf = 138412546;
         v23 = v17;
         v24 = 2112;
-        v25 = v19;
+        v25 = userInfo;
         _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_ERROR, "_removeInvalidAdjustmentResourceDataInStore: failed: %@ %@", buf, 0x16u);
       }
     }
@@ -20723,12 +20723,12 @@ LABEL_12:
 LABEL_19:
 }
 
-- (BOOL)_migrateAssetLocationData:(id)a3
+- (BOOL)_migrateAssetLocationData:(id)data
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _migrateAssetLocationData:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:dataCopy name:"[PLModelMigrator _migrateAssetLocationData:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = MEMORY[0x1E695D5E0];
   v8 = +[PLManagedAsset entityName];
   v9 = [v7 fetchRequestWithEntityName:v8];
@@ -20789,11 +20789,11 @@ LABEL_19:
       v20 = PLMigrationGetLog();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
-        v22 = [v19 userInfo];
+        userInfo = [v19 userInfo];
         *buf = 138412546;
         v30 = v19;
         v31 = 2112;
-        v32 = v22;
+        v32 = userInfo;
         _os_log_impl(&dword_19BF1F000, v20, OS_LOG_TYPE_ERROR, "_migrateAssetLocationData failed: %@ %@", buf, 0x16u);
       }
     }
@@ -20808,12 +20808,12 @@ LABEL_19:
   return v18;
 }
 
-- (BOOL)_addLocationHashesToAssets:(id)a3
+- (BOOL)_addLocationHashesToAssets:(id)assets
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  assetsCopy = assets;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _addLocationHashesToAssets:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:assetsCopy name:"[PLModelMigrator _addLocationHashesToAssets:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = MEMORY[0x1E695D5E0];
   v8 = +[PLManagedAsset entityName];
   v9 = [v7 fetchRequestWithEntityName:v8];
@@ -20845,11 +20845,11 @@ LABEL_19:
       v14 = PLMigrationGetLog();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        v15 = [v13 userInfo];
+        userInfo = [v13 userInfo];
         *buf = 138412546;
         v20 = v13;
         v21 = 2112;
-        v22 = v15;
+        v22 = userInfo;
         _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_ERROR, "_addLocationHashesToAssets failed: %@ %@", buf, 0x16u);
       }
     }
@@ -20888,21 +20888,21 @@ void __46__PLModelMigrator__addLocationHashesToAssets___block_invoke(uint64_t a1
   [v2 setLocationHash:v4];
 }
 
-- (BOOL)_addUUIDsToCollectionLists:(id)a3 skipMomentLists:(BOOL)a4
+- (BOOL)_addUUIDsToCollectionLists:(id)lists skipMomentLists:(BOOL)momentLists
 {
   v55 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  listsCopy = lists;
   if ((PLIsAssetsd() & 1) == 0)
   {
-    v34 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v35 = NSStringFromSelector(a2);
-    [v34 handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:6029 description:{@"%@ can only be called from assetsd", v35}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:6029 description:{@"%@ can only be called from assetsd", v35}];
   }
 
   pl_dispatch_once();
   v37 = objc_autoreleasePoolPush();
-  v38 = v6;
-  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v6 name:"[PLModelMigrator _addUUIDsToCollectionLists:skipMomentLists:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v38 = listsCopy;
+  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:listsCopy name:"[PLModelMigrator _addUUIDsToCollectionLists:skipMomentLists:]" concurrencyType:*MEMORY[0x1E695D708]];
   v8 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:@"AlbumList"];
   v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"uuid == nil"];
   [v8 setPredicate:v9];
@@ -20929,8 +20929,8 @@ void __46__PLModelMigrator__addLocationHashesToAssets___block_invoke(uint64_t a1
 
         v15 = *(*(&v45 + 1) + 8 * i);
         v16 = objc_autoreleasePoolPush();
-        v17 = [MEMORY[0x1E69BF320] UUIDString];
-        [v15 setValue:v17 forKey:@"uuid"];
+        uUIDString = [MEMORY[0x1E69BF320] UUIDString];
+        [v15 setValue:uUIDString forKey:@"uuid"];
 
         objc_autoreleasePoolPop(v16);
       }
@@ -20941,7 +20941,7 @@ void __46__PLModelMigrator__addLocationHashesToAssets___block_invoke(uint64_t a1
     while (v12);
   }
 
-  if (!a4)
+  if (!momentLists)
   {
     v18 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:@"MomentList"];
     v19 = [MEMORY[0x1E696AE18] predicateWithFormat:@"uuid == nil"];
@@ -20968,8 +20968,8 @@ void __46__PLModelMigrator__addLocationHashesToAssets___block_invoke(uint64_t a1
 
           v25 = *(*(&v41 + 1) + 8 * j);
           v26 = objc_autoreleasePoolPush();
-          v27 = [MEMORY[0x1E69BF320] UUIDString];
-          [v25 setValue:v27 forKey:@"uuid"];
+          uUIDString2 = [MEMORY[0x1E69BF320] UUIDString];
+          [v25 setValue:uUIDString2 forKey:@"uuid"];
 
           objc_autoreleasePoolPop(v26);
         }
@@ -20992,11 +20992,11 @@ void __46__PLModelMigrator__addLocationHashesToAssets___block_invoke(uint64_t a1
       v31 = PLMigrationGetLog();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
       {
-        v32 = [v29 userInfo];
+        userInfo = [v29 userInfo];
         *buf = 138412546;
         v50 = v29;
         v51 = 2112;
-        v52 = v32;
+        v52 = userInfo;
         _os_log_impl(&dword_19BF1F000, v31, OS_LOG_TYPE_ERROR, "_addUUIDsToCollectionLists:skipMomentLists: failed: %@ %@", buf, 0x16u);
       }
     }
@@ -21012,20 +21012,20 @@ void __46__PLModelMigrator__addLocationHashesToAssets___block_invoke(uint64_t a1
   return v28;
 }
 
-- (BOOL)_regenerateMonthHighlightTitlesWithStore:(id)a3
+- (BOOL)_regenerateMonthHighlightTitlesWithStore:(id)store
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _regenerateMonthHighlightTitlesWithStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _regenerateMonthHighlightTitlesWithStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = [PLMomentGenerationDataManager alloc];
-  v8 = [(PLModelMigrator *)self pathManager];
-  v9 = [(PLMomentGenerationDataManager *)v7 initWithManagedObjectContext:v6 pathManagerForLightweightMigration:v8];
+  pathManager = [(PLModelMigrator *)self pathManager];
+  v9 = [(PLMomentGenerationDataManager *)v7 initWithManagedObjectContext:v6 pathManagerForLightweightMigration:pathManager];
 
   objc_autoreleasePoolPop(v5);
-  v10 = [(PLMomentGenerationDataManager *)v9 generator];
+  generator = [(PLMomentGenerationDataManager *)v9 generator];
   v15 = 0;
-  v11 = [v10 regenerateMonthHighlightTitlesWithManager:v9 error:&v15];
+  v11 = [generator regenerateMonthHighlightTitlesWithManager:v9 error:&v15];
   v12 = v15;
 
   if ((v11 & 1) == 0)
@@ -21042,18 +21042,18 @@ void __46__PLModelMigrator__addLocationHashesToAssets___block_invoke(uint64_t a1
   return v11;
 }
 
-- (BOOL)_rebuildMomentsInStore:(id)a3 deleteExistingMoments:(BOOL)a4 targetedAssetOIDs:(id)a5
+- (BOOL)_rebuildMomentsInStore:(id)store deleteExistingMoments:(BOOL)moments targetedAssetOIDs:(id)ds
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  momentsCopy = moments;
+  storeCopy = store;
+  dsCopy = ds;
   if (PLPlatformMomentsSupported())
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v8 name:"[PLModelMigrator _rebuildMomentsInStore:deleteExistingMoments:targetedAssetOIDs:]" concurrencyType:*MEMORY[0x1E695D708]];
+    v11 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _rebuildMomentsInStore:deleteExistingMoments:targetedAssetOIDs:]" concurrencyType:*MEMORY[0x1E695D708]];
     v12 = objc_opt_class();
-    v13 = [(PLModelMigrator *)self pathManager];
-    v14 = [v12 rebuildMomentsInContext:v11 pathManager:v13 deleteExistingMoments:v6 targetedAssetOIDs:v9];
+    pathManager = [(PLModelMigrator *)self pathManager];
+    v14 = [v12 rebuildMomentsInContext:v11 pathManager:pathManager deleteExistingMoments:momentsCopy targetedAssetOIDs:dsCopy];
 
     objc_autoreleasePoolPop(v10);
   }
@@ -21066,17 +21066,17 @@ void __46__PLModelMigrator__addLocationHashesToAssets___block_invoke(uint64_t a1
   return v14;
 }
 
-- (BOOL)_fixupSyncedAssetAttributesInStore:(id)a3
+- (BOOL)_fixupSyncedAssetAttributesInStore:(id)store
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   v5 = 1;
   v6 = [(PLModelMigrator *)self _newSyncedPropertiesByAssetUUIDs:1];
   if ([v6 count])
   {
     pl_dispatch_once();
     v7 = objc_autoreleasePoolPush();
-    v8 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _fixupSyncedAssetAttributesInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+    v8 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _fixupSyncedAssetAttributesInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
     v9 = MEMORY[0x1E695D5E0];
     v10 = +[PLManagedAsset entityName];
     v11 = [v9 fetchRequestWithEntityName:v10];
@@ -21092,7 +21092,7 @@ void __46__PLModelMigrator__addLocationHashesToAssets___block_invoke(uint64_t a1
     v19[2] = __54__PLModelMigrator__fixupSyncedAssetAttributesInStore___block_invoke;
     v19[3] = &unk_1E75781C0;
     v20 = v6;
-    v21 = self;
+    selfCopy = self;
     v13 = [v8 enumerateObjectsFromFetchRequest:v11 count:0 usingDefaultBatchSizeWithBlock:v19];
     if ([v8 hasChanges])
     {
@@ -21104,11 +21104,11 @@ void __46__PLModelMigrator__addLocationHashesToAssets___block_invoke(uint64_t a1
         v15 = PLMigrationGetLog();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
         {
-          v16 = [v14 userInfo];
+          userInfo = [v14 userInfo];
           *buf = 138412546;
           v23 = v14;
           v24 = 2112;
-          v25 = v16;
+          v25 = userInfo;
           _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_ERROR, "_fixupSyncedAssetAttributesInStore failed: %@ %@", buf, 0x16u);
         }
       }
@@ -21128,25 +21128,25 @@ void __54__PLModelMigrator__fixupSyncedAssetAttributesInStore___block_invoke(uin
   [*(a1 + 40) _applySyncedProperties:v4 toAsset:v3];
 }
 
-- (BOOL)_cleanupInvalidAlbumsAndFoldersInStore:(id)a3
+- (BOOL)_cleanupInvalidAlbumsAndFoldersInStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   pl_dispatch_once();
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _cleanupInvalidAlbumsAndFoldersInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _cleanupInvalidAlbumsAndFoldersInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   [PLGenericAlbum removeInvalidAlbumsAndFoldersInManagedObjectContext:v6];
 
   objc_autoreleasePoolPop(v5);
   return 1;
 }
 
-- (BOOL)_fixupSharedStreamOrientationsInStore:(id)a3
+- (BOOL)_fixupSharedStreamOrientationsInStore:(id)store
 {
   v35[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   pl_dispatch_once();
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _fixupSharedStreamOrientationsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _fixupSharedStreamOrientationsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = MEMORY[0x1E695D5E0];
   v8 = +[PLManagedAsset entityName];
   v9 = [v7 fetchRequestWithEntityName:v8];
@@ -21199,11 +21199,11 @@ void __54__PLModelMigrator__fixupSyncedAssetAttributesInStore___block_invoke(uin
       v22 = PLMigrationGetLog();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
-        v23 = [v21 userInfo];
+        userInfo = [v21 userInfo];
         *buf = 138412546;
         v31 = v21;
         v32 = 2112;
-        v33 = v23;
+        v33 = userInfo;
         _os_log_impl(&dword_19BF1F000, v22, OS_LOG_TYPE_ERROR, "_fixupSharedStreamOrientationsInStore failed: %@ %@", buf, 0x16u);
       }
     }
@@ -21218,12 +21218,12 @@ void __54__PLModelMigrator__fixupSyncedAssetAttributesInStore___block_invoke(uin
   return v20;
 }
 
-- (BOOL)_populateFaceRegionsInStore:(id)a3
+- (BOOL)_populateFaceRegionsInStore:(id)store
 {
   v32[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  storeCopy = store;
   v6 = objc_autoreleasePoolPush();
-  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v5 name:"[PLModelMigrator _populateFaceRegionsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _populateFaceRegionsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v8 = MEMORY[0x1E695D5E0];
   v9 = +[PLManagedAsset entityName];
   v10 = [v8 fetchRequestWithEntityName:v9];
@@ -21262,13 +21262,13 @@ void __54__PLModelMigrator__fixupSyncedAssetAttributesInStore___block_invoke(uin
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
       v21 = NSStringFromSelector(a2);
-      v22 = [v19 userInfo];
+      userInfo = [v19 userInfo];
       *buf = 138412802;
       v27 = v21;
       v28 = 2112;
       v29 = v19;
       v30 = 2112;
-      v31 = v22;
+      v31 = userInfo;
       _os_log_impl(&dword_19BF1F000, v20, OS_LOG_TYPE_ERROR, "%@ failed: %@ %@", buf, 0x20u);
     }
   }
@@ -21277,14 +21277,14 @@ void __54__PLModelMigrator__fixupSyncedAssetAttributesInStore___block_invoke(uin
   return v18;
 }
 
-- (void)_populateFaceRegionsForAsset:(id)a3
+- (void)_populateFaceRegionsForAsset:(id)asset
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 mainFileURL];
-  if (v4)
+  assetCopy = asset;
+  mainFileURL = [assetCopy mainFileURL];
+  if (mainFileURL)
   {
-    v5 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfURL:v4 options:1 error:0];
+    v5 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfURL:mainFileURL options:1 error:0];
   }
 
   else
@@ -21292,11 +21292,11 @@ void __54__PLModelMigrator__fixupSyncedAssetAttributesInStore___block_invoke(uin
     v6 = PLMigrationGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v3 uuid];
+      uuid = [assetCopy uuid];
       v11 = 138412546;
-      v12 = v7;
+      v12 = uuid;
       v13 = 1024;
-      v14 = [v3 savedAssetType];
+      savedAssetType = [assetCopy savedAssetType];
       _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_DEFAULT, "Found asset %@ of type %hd with nil mainFileURL, skipping", &v11, 0x12u);
     }
 
@@ -21310,7 +21310,7 @@ void __54__PLModelMigrator__fixupSyncedAssetAttributesInStore___block_invoke(uin
     if (v9)
     {
       v10 = v9;
-      [v3 setFaceRegionsFromImageMetadata:v9];
+      [assetCopy setFaceRegionsFromImageMetadata:v9];
       CFRelease(v10);
     }
 
@@ -21318,13 +21318,13 @@ void __54__PLModelMigrator__fixupSyncedAssetAttributesInStore___block_invoke(uin
   }
 }
 
-- (BOOL)_populateVideoCpFieldsInStagedStore:(id)a3
+- (BOOL)_populateVideoCpFieldsInStagedStore:(id)store
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  storeCopy = store;
   pl_dispatch_once();
   v6 = objc_autoreleasePoolPush();
-  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v5 name:"[PLModelMigrator _populateVideoCpFieldsInStagedStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _populateVideoCpFieldsInStagedStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v8 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:@"AdditionalAssetAttributes"];
   v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"videoCpVisibilityState != 0 OR videoCpDurationValue != 0"];
   [v8 setPredicate:v9];
@@ -21391,15 +21391,15 @@ void __55__PLModelMigrator__populateVideoCpFieldsInStagedStore___block_invoke(vo
   ++*(*(a1[6] + 8) + 24);
 }
 
-- (BOOL)_populateAlbumAndFolderOrderKeysInStagedStore:(id)a3
+- (BOOL)_populateAlbumAndFolderOrderKeysInStagedStore:(id)store
 {
   v171 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   pl_dispatch_once();
   v5 = objc_autoreleasePoolPush();
-  v107 = v4;
+  v107 = storeCopy;
   v117 = *MEMORY[0x1E695D708];
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _populateAlbumAndFolderOrderKeysInStagedStore:]" concurrencyType:?];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _populateAlbumAndFolderOrderKeysInStagedStore:]" concurrencyType:?];
   v7 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:@"Album"];
   v8 = +[PLManagedAlbum albumSupportsAssetOrderKeysPredicate];
   [v7 setPredicate:v8];
@@ -21442,14 +21442,14 @@ LABEL_10:
     {
       v115 = v12;
       v15 = NSStringFromSelector(a2);
-      v16 = [v13 userInfo];
+      userInfo = [v13 userInfo];
       *buf = 138412802;
       v166 = v15;
       v167 = 2112;
       v168 = v13;
       v169 = 2112;
-      v113 = v16;
-      v170 = v16;
+      v113 = userInfo;
+      v170 = userInfo;
       _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_ERROR, "%@ failed to update order values for album assets: %@ %@", buf, 0x20u);
       v110 = v15;
 
@@ -21472,8 +21472,8 @@ LABEL_11:
   v116 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v107 name:"[PLModelMigrator _populateAlbumAndFolderOrderKeysInStagedStore:]" concurrencyType:v117];
   context = objc_autoreleasePoolPush();
   v114 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:@"GenericAlbum"];
-  v18 = [MEMORY[0x1E696AE18] predicateWithFormat:@"kind == %d OR kind == %d", 4000, 3999];
-  [v114 setPredicate:v18];
+  3999 = [MEMORY[0x1E696AE18] predicateWithFormat:@"kind == %d OR kind == %d", 4000, 3999];
+  [v114 setPredicate:3999];
 
   v152 = 0;
   v19 = [v116 executeFetchRequest:v114 error:&v152];
@@ -21484,13 +21484,13 @@ LABEL_11:
     if (os_log_type_enabled(v72, OS_LOG_TYPE_ERROR))
     {
       v73 = NSStringFromSelector(a2);
-      v74 = [v106 userInfo];
+      userInfo2 = [v106 userInfo];
       *buf = 138412802;
       v166 = v73;
       v167 = 2112;
       v168 = v106;
       v169 = 2112;
-      v170 = v74;
+      v170 = userInfo2;
       _os_log_impl(&dword_19BF1F000, v72, OS_LOG_TYPE_ERROR, "%@ failed to fetch folder: %@ %@", buf, 0x20u);
     }
 
@@ -21551,13 +21551,13 @@ LABEL_11:
       if (os_log_type_enabled(v78, OS_LOG_TYPE_ERROR))
       {
         v79 = NSStringFromSelector(a2);
-        v80 = [v31 userInfo];
+        userInfo3 = [v31 userInfo];
         *buf = 138412802;
         v166 = v79;
         v167 = 2112;
         v168 = v31;
         v169 = 2112;
-        v170 = v80;
+        v170 = userInfo3;
         _os_log_impl(&dword_19BF1F000, v78, OS_LOG_TYPE_ERROR, "%@ failed to fixup child order keys: %@ %@", buf, 0x20u);
       }
 
@@ -21585,13 +21585,13 @@ LABEL_11:
     if (os_log_type_enabled(v75, OS_LOG_TYPE_ERROR))
     {
       v76 = NSStringFromSelector(a2);
-      v77 = [v106 userInfo];
+      userInfo4 = [v106 userInfo];
       *buf = 138412802;
       v166 = v76;
       v167 = 2112;
       v168 = v106;
       v169 = 2112;
-      v170 = v77;
+      v170 = userInfo4;
       _os_log_impl(&dword_19BF1F000, v75, OS_LOG_TYPE_ERROR, "%@ failed to fetch folders: %@ %@", buf, 0x20u);
     }
 
@@ -21657,8 +21657,8 @@ LABEL_74:
             }
 
             v45 = *(*(&v134 + 1) + 8 * k);
-            v46 = [v45 objectID];
-            [v40 addObject:v46];
+            objectID = [v45 objectID];
+            [v40 addObject:objectID];
 
             v47 = [v45 valueForKey:@"albumToFolderOrderKey"];
             [v40 addObject:v47];
@@ -21679,13 +21679,13 @@ LABEL_74:
         if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
         {
           v81 = NSStringFromSelector(a2);
-          v82 = [v49 userInfo];
+          userInfo5 = [v49 userInfo];
           *buf = 138412802;
           v166 = v81;
           v167 = 2112;
           v168 = v49;
           v169 = 2112;
-          v170 = v82;
+          v170 = userInfo5;
           _os_log_impl(&dword_19BF1F000, v52, OS_LOG_TYPE_ERROR, "%@ failed to update location values in childCollections: %@ %@", buf, 0x20u);
         }
 
@@ -21702,13 +21702,13 @@ LABEL_74:
         if (os_log_type_enabled(v83, OS_LOG_TYPE_ERROR))
         {
           v84 = NSStringFromSelector(a2);
-          v85 = [v52 userInfo];
+          userInfo6 = [v52 userInfo];
           *buf = 138412802;
           v166 = v84;
           v167 = 2112;
           v168 = v52;
           v169 = 2112;
-          v170 = v85;
+          v170 = userInfo6;
           _os_log_impl(&dword_19BF1F000, v83, OS_LOG_TYPE_ERROR, "%@ failed to save updated location values in childCollections: %@ %@", buf, 0x20u);
         }
 
@@ -21772,8 +21772,8 @@ LABEL_42:
       v112 = *(*(&v127 + 1) + 8 * v109);
       v105 = objc_autoreleasePoolPush();
       v119 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:@"AssetToAlbumOrder"];
-      v54 = [MEMORY[0x1E696AE18] predicateWithFormat:@"album = %@", v112];
-      [v119 setPredicate:v54];
+      v112 = [MEMORY[0x1E696AE18] predicateWithFormat:@"album = %@", v112];
+      [v119 setPredicate:v112];
 
       v55 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"orderValue" ascending:1];
       v159 = v55;
@@ -21804,11 +21804,11 @@ LABEL_42:
 
             v63 = *(*(&v122 + 1) + 8 * m);
             v64 = [v63 objectIDsForRelationshipNamed:@"asset"];
-            v65 = [v64 firstObject];
+            firstObject = [v64 firstObject];
 
-            if (v65)
+            if (firstObject)
             {
-              [v58 addObject:v65];
+              [v58 addObject:firstObject];
               v66 = [v63 valueForKey:@"orderValue"];
               [v58 addObject:v66];
             }
@@ -21838,13 +21838,13 @@ LABEL_42:
         if (os_log_type_enabled(v91, OS_LOG_TYPE_ERROR))
         {
           v92 = NSStringFromSelector(a2);
-          v93 = [v71 userInfo];
+          userInfo7 = [v71 userInfo];
           *buf = 138412802;
           v166 = v92;
           v167 = 2112;
           v168 = v71;
           v169 = 2112;
-          v170 = v93;
+          v170 = userInfo7;
           _os_log_impl(&dword_19BF1F000, v91, OS_LOG_TYPE_ERROR, "%@ failed to save updated location values in assets: %@ %@", buf, 0x20u);
         }
 
@@ -21871,13 +21871,13 @@ LABEL_85:
     if (os_log_type_enabled(v71, OS_LOG_TYPE_ERROR))
     {
       v89 = NSStringFromSelector(a2);
-      v90 = [v68 userInfo];
+      userInfo8 = [v68 userInfo];
       *buf = 138412802;
       v166 = v89;
       v167 = 2112;
       v168 = v68;
       v169 = 2112;
-      v170 = v90;
+      v170 = userInfo8;
       _os_log_impl(&dword_19BF1F000, v71, OS_LOG_TYPE_ERROR, "%@ failed to update location values in assets: %@ %@", buf, 0x20u);
     }
 
@@ -21888,13 +21888,13 @@ LABEL_85:
   if (os_log_type_enabled(v95, OS_LOG_TYPE_ERROR))
   {
     v87 = NSStringFromSelector(a2);
-    v88 = [v106 userInfo];
+    userInfo9 = [v106 userInfo];
     *buf = 138412802;
     v166 = v87;
     v167 = 2112;
     v168 = v106;
     v169 = 2112;
-    v170 = v88;
+    v170 = userInfo9;
     _os_log_impl(&dword_19BF1F000, v95, OS_LOG_TYPE_ERROR, "%@ failed to fetch albums: %@ %@", buf, 0x20u);
   }
 
@@ -21927,13 +21927,13 @@ id __65__PLModelMigrator__populateAlbumAndFolderOrderKeysInStagedStore___block_i
   return v5;
 }
 
-- (BOOL)_resetAlbumToFolderOrderKeyForAlbums:(id)a3
+- (BOOL)_resetAlbumToFolderOrderKeyForAlbums:(id)albums
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  albumsCopy = albums;
   pl_dispatch_once();
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _resetAlbumToFolderOrderKeyForAlbums:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:albumsCopy name:"[PLModelMigrator _resetAlbumToFolderOrderKeyForAlbums:]" concurrencyType:*MEMORY[0x1E695D708]];
   v7 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:@"GenericAlbum"];
   v8 = MEMORY[0x1E696AE18];
   v9 = [MEMORY[0x1E696AD98] numberWithInt:2];
@@ -21982,11 +21982,11 @@ id __65__PLModelMigrator__populateAlbumAndFolderOrderKeysInStagedStore___block_i
       v21 = PLMigrationGetLog();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
-        v22 = [v20 userInfo];
+        userInfo = [v20 userInfo];
         *buf = 138412546;
         v30 = v20;
         v31 = 2112;
-        v32 = v22;
+        v32 = userInfo;
         _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_ERROR, "_resetAlbumToFolderOrderKeyForAlbums failed: %@ %@", buf, 0x16u);
       }
     }
@@ -22001,18 +22001,18 @@ id __65__PLModelMigrator__populateAlbumAndFolderOrderKeysInStagedStore___block_i
   return v19;
 }
 
-- (BOOL)_fixupAlbumOrderInAlbumListInStore:(id)a3
+- (BOOL)_fixupAlbumOrderInAlbumListInStore:(id)store
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   pl_dispatch_once();
   v25 = objc_autoreleasePoolPush();
-  v5 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _fixupAlbumOrderInAlbumListInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v5 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _fixupAlbumOrderInAlbumListInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v6 = [PLManagedAlbumList albumListInManagedObjectContext:v5];
-  v7 = [v6 albums];
-  v8 = [v7 copy];
+  albums = [v6 albums];
+  v8 = [albums copy];
 
-  v9 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
@@ -22036,7 +22036,7 @@ id __65__PLModelMigrator__populateAlbumAndFolderOrderKeysInStagedStore___block_i
         v16 = objc_autoreleasePoolPush();
         if ([v15 kindValue] == 2)
         {
-          [v9 addObject:v15];
+          [array addObject:v15];
         }
 
         else
@@ -22053,11 +22053,11 @@ id __65__PLModelMigrator__populateAlbumAndFolderOrderKeysInStagedStore___block_i
     while (v12);
   }
 
-  v17 = [v6 albums];
-  [v17 removeObjectsInArray:v9];
+  albums2 = [v6 albums];
+  [albums2 removeObjectsInArray:array];
 
-  v18 = [v6 albums];
-  [v18 addObjectsFromArray:v9];
+  albums3 = [v6 albums];
+  [albums3 addObjectsFromArray:array];
 
   v19 = [(PLGenericAlbum *)PLManagedFolder albumWithKind:3999 inManagedObjectContext:v5];
   [PLManagedAlbumList pushChangesFromAlbumContainer:v6 toAlbumContainer:v19];
@@ -22071,11 +22071,11 @@ id __65__PLModelMigrator__populateAlbumAndFolderOrderKeysInStagedStore___block_i
       v22 = PLMigrationGetLog();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
-        v23 = [v21 userInfo];
+        userInfo = [v21 userInfo];
         *buf = 138412546;
         v32 = v21;
         v33 = 2112;
-        v34 = v23;
+        v34 = userInfo;
         _os_log_impl(&dword_19BF1F000, v22, OS_LOG_TYPE_ERROR, "_fixupAlbumOrderInAlbumListInStore failed: %@ %@", buf, 0x16u);
       }
     }
@@ -22090,27 +22090,27 @@ id __65__PLModelMigrator__populateAlbumAndFolderOrderKeysInStagedStore___block_i
   return v20;
 }
 
-- (BOOL)_fixupImportedAssetsInStore:(id)a3
+- (BOOL)_fixupImportedAssetsInStore:(id)store
 {
   v61 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   pl_dispatch_once();
   v36 = objc_autoreleasePoolPush();
-  v37 = v4;
-  v40 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _fixupImportedAssetsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v37 = storeCopy;
+  v40 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _fixupImportedAssetsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v5 = [PLGenericAlbum albumWithKind:1604 inManagedObjectContext:?];
-  v6 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v35 = v5;
-  v7 = [v5 assets];
-  v8 = [v7 countByEnumeratingWithState:&v50 objects:v60 count:16];
+  assets = [v5 assets];
+  v8 = [assets countByEnumeratingWithState:&v50 objects:v60 count:16];
   if (v8)
   {
     v9 = v8;
-    v10 = 0;
+    array2 = 0;
     v11 = *v51;
     do
     {
@@ -22118,28 +22118,28 @@ id __65__PLModelMigrator__populateAlbumAndFolderOrderKeysInStagedStore___block_i
       {
         if (*v51 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(assets);
         }
 
         v13 = *(*(&v50 + 1) + 8 * i);
         if (![v13 savedAssetType])
         {
-          if (!v10)
+          if (!array2)
           {
-            v10 = [MEMORY[0x1E695DF70] array];
-            [v6 addObject:v10];
+            array2 = [MEMORY[0x1E695DF70] array];
+            [array addObject:array2];
           }
 
-          [v10 addObject:v13];
-          if ([v10 count]>= 0x64)
+          [array2 addObject:v13];
+          if ([array2 count]>= 0x64)
           {
 
-            v10 = 0;
+            array2 = 0;
           }
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v50 objects:v60 count:16];
+      v9 = [assets countByEnumeratingWithState:&v50 objects:v60 count:16];
     }
 
     while (v9);
@@ -22147,14 +22147,14 @@ id __65__PLModelMigrator__populateAlbumAndFolderOrderKeysInStagedStore___block_i
 
   else
   {
-    v10 = 0;
+    array2 = 0;
   }
 
   v48 = 0u;
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v14 = v6;
+  v14 = array;
   v15 = [v14 countByEnumeratingWithState:&v46 objects:v59 count:16];
   if (v15)
   {
@@ -22178,8 +22178,8 @@ id __65__PLModelMigrator__populateAlbumAndFolderOrderKeysInStagedStore___block_i
         v43 = 0u;
         v44 = 0u;
         v45 = 0u;
-        v10 = v19;
-        v21 = [v10 countByEnumeratingWithState:&v42 objects:v58 count:16];
+        array2 = v19;
+        v21 = [array2 countByEnumeratingWithState:&v42 objects:v58 count:16];
         if (v21)
         {
           v22 = v21;
@@ -22190,14 +22190,14 @@ id __65__PLModelMigrator__populateAlbumAndFolderOrderKeysInStagedStore___block_i
             {
               if (*v43 != v23)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(array2);
               }
 
               [*(*(&v42 + 1) + 8 * k) setSavedAssetType:{objc_msgSend(MEMORY[0x1E69BF328], "savedAssetTypeForImportedByCameraConnectionKit")}];
             }
 
             v17 += v22;
-            v22 = [v10 countByEnumeratingWithState:&v42 objects:v58 count:16];
+            v22 = [array2 countByEnumeratingWithState:&v42 objects:v58 count:16];
           }
 
           while (v22);
@@ -22212,11 +22212,11 @@ id __65__PLModelMigrator__populateAlbumAndFolderOrderKeysInStagedStore___block_i
           v32 = PLMigrationGetLog();
           if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
           {
-            v33 = [v27 userInfo];
+            userInfo = [v27 userInfo];
             *buf = 138412546;
             v55 = v27;
             v56 = 2112;
-            v57 = v33;
+            v57 = userInfo;
             _os_log_impl(&dword_19BF1F000, v32, OS_LOG_TYPE_ERROR, "_fixupImportedAssetsInStore failed: %@ %@", buf, 0x16u);
           }
 
@@ -22249,14 +22249,14 @@ id __65__PLModelMigrator__populateAlbumAndFolderOrderKeysInStagedStore___block_i
       goto LABEL_40;
     }
 
-    v10 = PLMigrationGetLog();
+    array2 = PLMigrationGetLog();
     v29 = v35;
     v28 = v36;
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(array2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
       LODWORD(v55) = v17;
-      _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_DEFAULT, "Fixed asset save type on %d CCK assets", buf, 8u);
+      _os_log_impl(&dword_19BF1F000, array2, OS_LOG_TYPE_DEFAULT, "Fixed asset save type on %d CCK assets", buf, 8u);
     }
 
     v30 = 1;
@@ -22267,7 +22267,7 @@ id __65__PLModelMigrator__populateAlbumAndFolderOrderKeysInStagedStore___block_i
   {
 
     v30 = 1;
-    v10 = v14;
+    array2 = v14;
 LABEL_38:
     v28 = v36;
     v31 = v37;
@@ -22280,21 +22280,21 @@ LABEL_40:
   return v30;
 }
 
-- (BOOL)_fixupImportedEventsInStore:(id)a3
+- (BOOL)_fixupImportedEventsInStore:(id)store
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   pl_dispatch_once();
   context = objc_autoreleasePoolPush();
-  v25 = v4;
-  v5 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _fixupImportedEventsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v25 = storeCopy;
+  v5 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _fixupImportedEventsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v26 = [PLManagedAlbumList importListInManagedObjectContext:v5];
   v6 = [PLManagedAlbumList eventListInManagedObjectContext:v5];
-  v7 = [v6 albums];
-  v8 = [MEMORY[0x1E695DFB8] orderedSetWithOrderedSet:v7];
+  albums = [v6 albums];
+  v8 = [MEMORY[0x1E695DFB8] orderedSetWithOrderedSet:albums];
   v9 = [v8 count];
-  v10 = [MEMORY[0x1E695DF70] array];
-  v11 = [MEMORY[0x1E696AD50] indexSet];
+  array = [MEMORY[0x1E695DF70] array];
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
   if (v9)
   {
     for (i = 0; i != v9; ++i)
@@ -22303,21 +22303,21 @@ LABEL_40:
       v14 = [v8 objectAtIndex:i];
       if ([v14 kindValue] == 12)
       {
-        [v10 addObject:v14];
-        [v11 addIndex:i];
+        [array addObject:v14];
+        [indexSet addIndex:i];
       }
 
       objc_autoreleasePoolPop(v13);
     }
   }
 
-  v15 = [v10 count];
+  v15 = [array count];
   if (v15)
   {
-    v16 = [v26 albums];
+    albums2 = [v26 albums];
     v17 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{0, v15}];
-    [v16 insertObjects:v10 atIndexes:v17];
-    [v7 removeObjectsAtIndexes:v11];
+    [albums2 insertObjects:array atIndexes:v17];
+    [albums removeObjectsAtIndexes:indexSet];
   }
 
   if ([v5 hasChanges])
@@ -22339,11 +22339,11 @@ LABEL_40:
 
     else if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      v22 = [v19 userInfo];
+      userInfo = [v19 userInfo];
       *buf = 138412546;
       v29 = v19;
       v30 = 2112;
-      v31 = v22;
+      v31 = userInfo;
       _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_ERROR, "_fixupImportedEventsInStore failed: %@ %@", buf, 0x16u);
     }
   }
@@ -22357,23 +22357,23 @@ LABEL_40:
   return v18;
 }
 
-- (BOOL)_updateKindSubtypeForPanoramaPhotosNeedsReset:(BOOL)a3 inStore:(id)a4
+- (BOOL)_updateKindSubtypeForPanoramaPhotosNeedsReset:(BOOL)reset inStore:(id)store
 {
-  v4 = a3;
+  resetCopy = reset;
   v34 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  storeCopy = store;
   if ((PLIsAssetsd() & 1) == 0)
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v28 = NSStringFromSelector(a2);
-    [v27 handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:5397 description:{@"%@ can only be called from assetsd", v28}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:5397 description:{@"%@ can only be called from assetsd", v28}];
   }
 
-  v8 = [v7 URL];
-  v9 = [v8 path];
-  v10 = [v9 fileSystemRepresentation];
+  v8 = [storeCopy URL];
+  path = [v8 path];
+  fileSystemRepresentation = [path fileSystemRepresentation];
 
-  v11 = PLOpenSQLTransactionWithDBPath(v10);
+  v11 = PLOpenSQLTransactionWithDBPath(fileSystemRepresentation);
   if (!v11)
   {
     goto LABEL_17;
@@ -22381,13 +22381,13 @@ LABEL_40:
 
   v12 = v11;
   errmsg = 0;
-  if (!v4)
+  if (!resetCopy)
   {
 LABEL_10:
     v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SET ZKINDSUBTYPE=%d, ZCLOUDLOCALSTATE=%d", 1, 0];
-    v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(((cast(ZWIDTH as real) / cast(ZHEIGHT as real)) > %f) OR (cast(ZHEIGHT as real) / cast(ZWIDTH as real)) > %f) ", 0x4000000000000000, 0x4000000000000000];
-    v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(ZHEIGHT > %d AND ZHEIGHT < %d AND ZWIDTH > %d and ZWIDTH < %d)", 800, 30000, 800, 30000];
-    v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"UPDATE ZASSET %@ WHERE %@ AND %@", v18, v19, v20];
+    0x4000000000000000 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(((cast(ZWIDTH as real) / cast(ZHEIGHT as real)) > %f) OR (cast(ZHEIGHT as real) / cast(ZWIDTH as real)) > %f) ", 0x4000000000000000, 0x4000000000000000];
+    30000 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(ZHEIGHT > %d AND ZHEIGHT < %d AND ZWIDTH > %d and ZWIDTH < %d)", 800, 30000, 800, 30000];
+    v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"UPDATE ZASSET %@ WHERE %@ AND %@", v18, 0x4000000000000000, 30000];
     v15 = sqlite3_exec(v12, [v21 UTF8String], 0, 0, &errmsg);
 
     if (v15)
@@ -22446,19 +22446,19 @@ LABEL_18:
   return v23;
 }
 
-- (BOOL)_initiateLightweightReimportOfAllPhotoCloudSharingMetadataInStore:(id)a3
+- (BOOL)_initiateLightweightReimportOfAllPhotoCloudSharingMetadataInStore:(id)store
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   v5 = MEMORY[0x1E69BF2A0];
-  v6 = [(PLModelMigrator *)self pathManager];
-  v7 = [v6 libraryURL];
-  LODWORD(v5) = [v5 isSystemPhotoLibraryURL:v7];
+  pathManager = [(PLModelMigrator *)self pathManager];
+  libraryURL = [pathManager libraryURL];
+  LODWORD(v5) = [v5 isSystemPhotoLibraryURL:libraryURL];
 
   if (v5)
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _initiateLightweightReimportOfAllPhotoCloudSharingMetadataInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+    v9 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _initiateLightweightReimportOfAllPhotoCloudSharingMetadataInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
     v29 = 0;
     v10 = [(PLModelMigrator *)self _populateLightweightReimportDirectoryWithPhotoCloudSharingAssetsInManagedObjectContext:v9 error:&v29];
     v11 = v29;
@@ -22467,11 +22467,11 @@ LABEL_18:
       v12 = PLMigrationGetLog();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v13 = [v11 userInfo];
+        userInfo = [v11 userInfo];
         *buf = 138412546;
         v31 = v11;
         v32 = 2112;
-        v33 = v13;
+        v33 = userInfo;
         _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_ERROR, "Unable to populate the photo cloud sharing lightweight reimport cache %@ %@", buf, 0x16u);
       }
     }
@@ -22515,11 +22515,11 @@ LABEL_17:
     v21 = PLMigrationGetLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      v23 = [v19 localizedDescription];
-      v24 = [v19 userInfo];
-      v25 = [v24 description];
+      localizedDescription = [v19 localizedDescription];
+      userInfo2 = [v19 userInfo];
+      v25 = [userInfo2 description];
       *buf = 138412546;
-      v31 = v23;
+      v31 = localizedDescription;
       v32 = 2112;
       v33 = v25;
       _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_ERROR, "Failed to initiate lightweight reimport of photo cloud sharing metadata %@ %@", buf, 0x16u);
@@ -22536,16 +22536,16 @@ LABEL_18:
   return v22;
 }
 
-- (BOOL)_populateLightweightReimportDirectoryWithPhotoCloudSharingAssetsInManagedObjectContext:(id)a3 error:(id *)a4
+- (BOOL)_populateLightweightReimportDirectoryWithPhotoCloudSharingAssetsInManagedObjectContext:(id)context error:(id *)error
 {
   v136 = *MEMORY[0x1E69E9840];
-  v82 = a3;
-  v102 = [MEMORY[0x1E696AC08] defaultManager];
-  v6 = [(PLModelMigrator *)self pathManager];
-  v83 = [v6 photoDirectoryWithType:23];
+  contextCopy = context;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  pathManager = [(PLModelMigrator *)self pathManager];
+  v83 = [pathManager photoDirectoryWithType:23];
 
-  v7 = [(PLModelMigrator *)self pathManager];
-  v88 = [v7 privateCacheDirectoryWithSubType:3];
+  pathManager2 = [(PLModelMigrator *)self pathManager];
+  v88 = [pathManager2 privateCacheDirectoryWithSubType:3];
 
   v8 = PLMigrationGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -22555,10 +22555,10 @@ LABEL_18:
     _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_DEFAULT, "Moving all photo cloud sharing asset data into lightweight reimport cache directory %@", buf, 0xCu);
   }
 
-  v9 = v102;
-  if ([v102 fileExistsAtPath:v83])
+  v9 = defaultManager;
+  if ([defaultManager fileExistsAtPath:v83])
   {
-    v10 = [PLGenericAlbum albumsWithKind:1505 inManagedObjectContext:v82];
+    v10 = [PLGenericAlbum albumsWithKind:1505 inManagedObjectContext:contextCopy];
     if (![v10 count])
     {
       v12 = PLMigrationGetLog();
@@ -22572,7 +22572,7 @@ LABEL_18:
     }
 
     v124 = 0;
-    if ([v102 fileExistsAtPath:v88 isDirectory:&v124] && (v124 & 1) != 0)
+    if ([defaultManager fileExistsAtPath:v88 isDirectory:&v124] && (v124 & 1) != 0)
     {
       v11 = PLMigrationGetLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -22587,32 +22587,32 @@ LABEL_18:
     else
     {
       v123 = 0;
-      v14 = [v102 createDirectoryAtPath:v88 withIntermediateDirectories:1 attributes:0 error:&v123];
+      v14 = [defaultManager createDirectoryAtPath:v88 withIntermediateDirectories:1 attributes:0 error:&v123];
       v12 = v123;
       if ((v14 & 1) == 0)
       {
         v75 = PLMigrationGetLog();
         if (os_log_type_enabled(v75, OS_LOG_TYPE_ERROR))
         {
-          v76 = [v12 localizedDescription];
-          v77 = [v12 userInfo];
-          v78 = [v77 description];
+          localizedDescription = [v12 localizedDescription];
+          userInfo = [v12 userInfo];
+          v78 = [userInfo description];
           *buf = 138412802;
           *v126 = v88;
           *&v126[8] = 2112;
-          v127 = v76;
+          v127 = localizedDescription;
           v128 = 2112;
           v129 = v78;
           _os_log_impl(&dword_19BF1F000, v75, OS_LOG_TYPE_ERROR, "Unable to create photo cloud sharing lightweight reimport cache directory %@: %@ %@", buf, 0x20u);
 
-          v9 = v102;
+          v9 = defaultManager;
         }
 
-        if (a4)
+        if (error)
         {
           v79 = v12;
           v13 = 0;
-          *a4 = v12;
+          *error = v12;
 LABEL_107:
 
           goto LABEL_108;
@@ -22647,15 +22647,15 @@ LABEL_113:
           }
 
           v17 = *(*(&v119 + 1) + 8 * i);
-          v18 = [v17 assets];
-          v19 = [v18 copy];
+          assets = [v17 assets];
+          v19 = [assets copy];
 
           v20 = v19;
           if ([v19 count])
           {
-            v21 = [v17 cloudPersonID];
-            v94 = [v17 cloudGUID];
-            v95 = v21;
+            cloudPersonID = [v17 cloudPersonID];
+            cloudGUID = [v17 cloudGUID];
+            v95 = cloudPersonID;
             v96 = [PLCloudSharedAlbum lightweightReimportDirectoryNameWithGUID:"lightweightReimportDirectoryNameWithGUID:cloudPersonID:" cloudPersonID:?];
             v107 = [v88 stringByAppendingPathComponent:?];
             v97 = i;
@@ -22673,8 +22673,8 @@ LABEL_113:
 LABEL_27:
               v91 = v12;
               context = objc_autoreleasePoolPush();
-              v105 = [MEMORY[0x1E695DF90] dictionary];
-              v24 = [MEMORY[0x1E695DF90] dictionary];
+              dictionary = [MEMORY[0x1E695DF90] dictionary];
+              dictionary2 = [MEMORY[0x1E695DF90] dictionary];
               v114 = 0u;
               v115 = 0u;
               v116 = 0u;
@@ -22682,7 +22682,7 @@ LABEL_27:
               v90 = v20;
               obj = v20;
               v25 = [obj countByEnumeratingWithState:&v114 objects:v134 count:16];
-              v104 = v24;
+              v104 = dictionary2;
               if (!v25)
               {
                 goto LABEL_67;
@@ -22702,17 +22702,17 @@ LABEL_30:
                 }
 
                 v29 = *(*(&v114 + 1) + 8 * v28);
-                v30 = [v29 cloudAssetGUID];
+                cloudAssetGUID = [v29 cloudAssetGUID];
                 if ([v29 hasAllThumbs])
                 {
-                  v31 = [v29 filename];
-                  if (v31)
+                  filename = [v29 filename];
+                  if (filename)
                   {
-                    v32 = [v24 objectForKey:v31];
+                    v32 = [dictionary2 objectForKey:filename];
                     if (v32)
                     {
                       v33 = v32;
-                      [v105 removeObjectForKey:v32];
+                      [dictionary removeObjectForKey:v32];
                       v34 = [PLManagedAsset lightweightReimportFileNameWithGUID:v33 type:0];
                       v35 = [v107 stringByAppendingPathComponent:v34];
                       v36 = PLMigrationGetLog();
@@ -22721,7 +22721,7 @@ LABEL_30:
                         *buf = 138412802;
                         *v126 = v34;
                         *&v126[8] = 2112;
-                        v127 = v30;
+                        v127 = cloudAssetGUID;
                         v128 = 2112;
                         v129 = v33;
                         _os_log_impl(&dword_19BF1F000, v36, OS_LOG_TYPE_DEBUG, "Found two assets pointing to the same file %@ on disk, ommiting %@ and %@ from the reimport cache", buf, 0x20u);
@@ -22735,23 +22735,23 @@ LABEL_30:
                         v39 = PLMigrationGetLog();
                         if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
                         {
-                          v98 = [v38 localizedDescription];
-                          v100 = [v38 userInfo];
-                          v40 = [v100 description];
+                          localizedDescription2 = [v38 localizedDescription];
+                          userInfo2 = [v38 userInfo];
+                          v40 = [userInfo2 description];
                           *buf = 138413314;
-                          *v126 = v30;
+                          *v126 = cloudAssetGUID;
                           *&v126[8] = 2112;
                           v127 = v33;
                           v128 = 2112;
                           v129 = v35;
                           v130 = 2112;
-                          v131 = v98;
+                          v131 = localizedDescription2;
                           v132 = 2112;
                           v133 = v40;
                           _os_log_impl(&dword_19BF1F000, v39, OS_LOG_TYPE_ERROR, "Unable to remove shared asset data with references from %@ and %@ at path %@, %@ %@", buf, 0x34u);
 
-                          v24 = v104;
-                          v9 = v102;
+                          dictionary2 = v104;
+                          v9 = defaultManager;
                         }
                       }
 
@@ -22759,11 +22759,11 @@ LABEL_30:
                     }
                   }
 
-                  v41 = [v29 pathForOriginalFile];
-                  v33 = v41;
-                  if (v31)
+                  pathForOriginalFile = [v29 pathForOriginalFile];
+                  v33 = pathForOriginalFile;
+                  if (filename)
                   {
-                    v42 = v41 == 0;
+                    v42 = pathForOriginalFile == 0;
                   }
 
                   else
@@ -22777,9 +22777,9 @@ LABEL_30:
                     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
                     {
                       *buf = 138412802;
-                      *v126 = v30;
+                      *v126 = cloudAssetGUID;
                       *&v126[8] = 2112;
-                      v127 = v31;
+                      v127 = filename;
                       v128 = 2112;
                       v129 = v33;
                       _os_log_impl(&dword_19BF1F000, v34, OS_LOG_TYPE_DEFAULT, "Skipping asset %@ with missing filename or path (%@, %@)", buf, 0x20u);
@@ -22790,8 +22790,8 @@ LABEL_30:
 
                   else
                   {
-                    [v24 setObject:v30 forKey:v31];
-                    v34 = [PLManagedAsset lightweightReimportFileNameWithGUID:v30 type:0];
+                    [dictionary2 setObject:cloudAssetGUID forKey:filename];
+                    v34 = [PLManagedAsset lightweightReimportFileNameWithGUID:cloudAssetGUID type:0];
                     v43 = [v107 stringByAppendingPathComponent:v34];
                     v112 = 0;
                     v44 = [v9 linkItemAtPath:v33 toPath:v43 error:&v112];
@@ -22811,45 +22811,45 @@ LABEL_30:
                     if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
                     {
                       *buf = 138412290;
-                      *v126 = v30;
+                      *v126 = cloudAssetGUID;
                       _os_log_impl(&dword_19BF1F000, v47, OS_LOG_TYPE_DEFAULT, "Attempting to replace existing cached image for %@", buf, 0xCu);
                     }
 
-                    if ([v9 removeItemAtPath:v33 error:0] && (v111 = v38, v48 = objc_msgSend(v9, "linkItemAtPath:toPath:error:", v33, v43, &v111), v49 = v111, v38, v38 = v49, v9 = v102, (v48 & 1) != 0))
+                    if ([v9 removeItemAtPath:v33 error:0] && (v111 = v38, v48 = objc_msgSend(v9, "linkItemAtPath:toPath:error:", v33, v43, &v111), v49 = v111, v38, v38 = v49, v9 = defaultManager, (v48 & 1) != 0))
                     {
 LABEL_54:
                       ++HIDWORD(v103);
-                      v46 = [MEMORY[0x1E695DF90] dictionary];
-                      [v105 setObject:v46 forKey:v30];
+                      dictionary3 = [MEMORY[0x1E695DF90] dictionary];
+                      [dictionary setObject:dictionary3 forKey:cloudAssetGUID];
                     }
 
                     else
                     {
 LABEL_60:
                       LODWORD(v103) = v103 + 1;
-                      v46 = PLMigrationGetLog();
-                      if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
+                      dictionary3 = PLMigrationGetLog();
+                      if (os_log_type_enabled(dictionary3, OS_LOG_TYPE_ERROR))
                       {
-                        v99 = [v38 localizedDescription];
-                        v101 = [v38 userInfo];
-                        v50 = [v101 description];
+                        localizedDescription3 = [v38 localizedDescription];
+                        userInfo3 = [v38 userInfo];
+                        v50 = [userInfo3 description];
                         *buf = 138413314;
-                        *v126 = v30;
+                        *v126 = cloudAssetGUID;
                         *&v126[8] = 2112;
                         v127 = v33;
                         v128 = 2112;
                         v129 = v43;
                         v130 = 2112;
-                        v131 = v99;
+                        v131 = localizedDescription3;
                         v132 = 2112;
                         v133 = v50;
-                        _os_log_impl(&dword_19BF1F000, v46, OS_LOG_TYPE_ERROR, "Unable to link shared asset data for %@ from %@ to %@, %@ %@", buf, 0x34u);
+                        _os_log_impl(&dword_19BF1F000, dictionary3, OS_LOG_TYPE_ERROR, "Unable to link shared asset data for %@ from %@ to %@, %@ %@", buf, 0x34u);
 
-                        v9 = v102;
+                        v9 = defaultManager;
                       }
                     }
 
-                    v24 = v104;
+                    dictionary2 = v104;
 LABEL_63:
                     v27 = v106;
                     v26 = v108;
@@ -22858,12 +22858,12 @@ LABEL_63:
 
                 else
                 {
-                  v31 = PLMigrationGetLog();
-                  if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
+                  filename = PLMigrationGetLog();
+                  if (os_log_type_enabled(filename, OS_LOG_TYPE_DEBUG))
                   {
                     *buf = 138412290;
-                    *v126 = v30;
-                    _os_log_impl(&dword_19BF1F000, v31, OS_LOG_TYPE_DEBUG, "Skipping cloud shared asset %@ with missing thumbs", buf, 0xCu);
+                    *v126 = cloudAssetGUID;
+                    _os_log_impl(&dword_19BF1F000, filename, OS_LOG_TYPE_DEBUG, "Skipping cloud shared asset %@ with missing thumbs", buf, 0xCu);
                   }
 
                   v38 = 0;
@@ -22876,8 +22876,8 @@ LABEL_63:
                   {
 LABEL_67:
 
-                    v51 = v105;
-                    if ([v105 count])
+                    v51 = dictionary;
+                    if ([dictionary count])
                     {
                       v52 = [v107 stringByAppendingPathComponent:v84];
                       v15 = v85;
@@ -22890,11 +22890,11 @@ LABEL_67:
                         v54 = v53;
                         if (v53 && [v53 count])
                         {
-                          [v54 addEntriesFromDictionary:v105];
+                          [v54 addEntriesFromDictionary:dictionary];
                           v55 = v54;
 
                           v110 = v91;
-                          v56 = [v102 removeItemAtPath:v52 error:&v110];
+                          v56 = [defaultManager removeItemAtPath:v52 error:&v110];
                           v57 = v110;
 
                           if ((v56 & 1) == 0)
@@ -22902,25 +22902,25 @@ LABEL_67:
                             v58 = PLMigrationGetLog();
                             if (os_log_type_enabled(v58, OS_LOG_TYPE_ERROR))
                             {
-                              v59 = [v57 localizedDescription];
-                              v60 = [v57 userInfo];
-                              v61 = [v60 description];
+                              localizedDescription4 = [v57 localizedDescription];
+                              userInfo4 = [v57 userInfo];
+                              v61 = [userInfo4 description];
                               *buf = 138412802;
                               *v126 = v52;
                               *&v126[8] = 2112;
-                              v127 = v59;
+                              v127 = localizedDescription4;
                               v128 = 2112;
                               v129 = v61;
                               _os_log_impl(&dword_19BF1F000, v58, OS_LOG_TYPE_ERROR, "Unable to remove previous cached album info dictionary from %@, %@ %@", buf, 0x20u);
                             }
                           }
 
-                          v24 = v104;
+                          dictionary2 = v104;
                         }
 
                         else
                         {
-                          v55 = v105;
+                          v55 = dictionary;
                           v57 = v91;
                         }
 
@@ -22931,7 +22931,7 @@ LABEL_67:
 
                       else
                       {
-                        v67 = v105;
+                        v67 = dictionary;
                       }
 
                       v68 = v67;
@@ -22949,7 +22949,7 @@ LABEL_67:
                         i = v97;
                       }
 
-                      v9 = v102;
+                      v9 = defaultManager;
                       v51 = v68;
                     }
 
@@ -22987,8 +22987,8 @@ LABEL_67:
             {
               [v12 localizedDescription];
               v64 = v63 = v20;
-              v65 = [v12 userInfo];
-              v66 = [v65 description];
+              userInfo5 = [v12 userInfo];
+              v66 = [userInfo5 description];
               *buf = 138412802;
               *v126 = v107;
               *&v126[8] = 2112;
@@ -22997,7 +22997,7 @@ LABEL_67:
               v129 = v66;
               _os_log_impl(&dword_19BF1F000, v62, OS_LOG_TYPE_ERROR, "Unable to create photo cloud sharing lightweight reimport cache directory '%@' for album: %@ %@", buf, 0x20u);
 
-              v9 = v102;
+              v9 = defaultManager;
               i = v97;
 
               v20 = v63;
@@ -23080,9 +23080,9 @@ LABEL_108:
   return v13;
 }
 
-- (BOOL)_postProcessFromVersion6006Store:(id)a3
+- (BOOL)_postProcessFromVersion6006Store:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v5 = PLMigrationGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -23090,7 +23090,7 @@ LABEL_108:
     _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_DEFAULT, "Rebuild photo cloud sharing metadata", buf, 2u);
   }
 
-  if (![(PLModelMigrator *)self _initiateLightweightReimportOfAllPhotoCloudSharingMetadataInStore:v4])
+  if (![(PLModelMigrator *)self _initiateLightweightReimportOfAllPhotoCloudSharingMetadataInStore:storeCopy])
   {
     goto LABEL_17;
   }
@@ -23102,7 +23102,7 @@ LABEL_108:
     _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_DEFAULT, "Fixing imported CCK events list.", v17, 2u);
   }
 
-  if (![(PLModelMigrator *)self _fixupImportedEventsInStore:v4])
+  if (![(PLModelMigrator *)self _fixupImportedEventsInStore:storeCopy])
   {
     goto LABEL_17;
   }
@@ -23114,15 +23114,15 @@ LABEL_108:
     _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_DEFAULT, "Fixing CCK asset types", v16, 2u);
   }
 
-  if (![(PLModelMigrator *)self _fixupImportedAssetsInStore:v4])
+  if (![(PLModelMigrator *)self _fixupImportedAssetsInStore:storeCopy])
   {
     goto LABEL_17;
   }
 
-  v8 = [(PLModelMigrator *)self pathManager];
-  v9 = [v8 isDCIM];
+  pathManager = [(PLModelMigrator *)self pathManager];
+  isDCIM = [pathManager isDCIM];
 
-  if (!v9)
+  if (!isDCIM)
   {
     goto LABEL_14;
   }
@@ -23134,7 +23134,7 @@ LABEL_108:
     _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_DEFAULT, "Fixing sync'd asset attributes", v15, 2u);
   }
 
-  if ([(PLModelMigrator *)self _fixupSyncedAssetAttributesInStore:v4])
+  if ([(PLModelMigrator *)self _fixupSyncedAssetAttributesInStore:storeCopy])
   {
 LABEL_14:
     v11 = PLMigrationGetLog();
@@ -23144,7 +23144,7 @@ LABEL_14:
       _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_DEFAULT, "Moving My Photo Stream to Albums list.", v14, 2u);
     }
 
-    v12 = [(PLModelMigrator *)self _moveMyPhotoStreamToAlbumsListInStore:v4];
+    v12 = [(PLModelMigrator *)self _moveMyPhotoStreamToAlbumsListInStore:storeCopy];
   }
 
   else
@@ -23158,12 +23158,12 @@ LABEL_17:
 
 - (void)applyDataProtectionToAllPhotosFilesOnce
 {
-  v2 = self;
+  selfCopy = self;
   v76[3] = *MEMORY[0x1E69E9840];
-  v3 = [(PLModelMigrator *)self pathManager];
-  v4 = [v3 isDataProtectionComplete];
+  pathManager = [(PLModelMigrator *)self pathManager];
+  isDataProtectionComplete = [pathManager isDataProtectionComplete];
 
-  if (v4)
+  if (isDataProtectionComplete)
   {
     return;
   }
@@ -23178,22 +23178,22 @@ LABEL_17:
   v6 = 0x1E695D000uLL;
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   v8 = v7;
-  v9 = [(PLModelMigrator *)v2 pathManager];
-  if ([v9 isDCIM])
+  pathManager2 = [(PLModelMigrator *)selfCopy pathManager];
+  if ([pathManager2 isDCIM])
   {
-    v10 = [v9 photoDirectoryWithType:4];
+    v10 = [pathManager2 photoDirectoryWithType:4];
     v76[0] = v10;
-    v11 = [v9 iTunesPhotosDirectory];
-    v76[1] = v11;
-    v12 = [v9 photoDirectoryWithType:15];
+    iTunesPhotosDirectory = [pathManager2 iTunesPhotosDirectory];
+    v76[1] = iTunesPhotosDirectory;
+    v12 = [pathManager2 photoDirectoryWithType:15];
     v76[2] = v12;
     v55 = [MEMORY[0x1E695DEC8] arrayWithObjects:v76 count:3];
 
-    v56 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     context = objc_autoreleasePoolPush();
-    v13 = [v9 photoDirectoryWithType:34];
-    v14 = [MEMORY[0x1E696AC08] defaultManager];
-    v15 = [v14 contentsOfDirectoryAtPath:v13 error:0];
+    v13 = [pathManager2 photoDirectoryWithType:34];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v15 = [defaultManager contentsOfDirectoryAtPath:v13 error:0];
 
     v69 = 0u;
     v70 = 0u;
@@ -23205,10 +23205,10 @@ LABEL_17:
     {
       v18 = v17;
       obj = v16;
-      v53 = v9;
+      v53 = pathManager2;
       v19 = 0;
       v20 = *v68;
-      v21 = v56;
+      v21 = array;
       do
       {
         for (i = 0; i != v18; ++i)
@@ -23230,9 +23230,9 @@ LABEL_17:
 
           else
           {
-            if (![(PLModelMigrator *)v2 skipDataProtectionForFilePath:v25])
+            if (![(PLModelMigrator *)selfCopy skipDataProtectionForFilePath:v25])
             {
-              [v56 addObject:v26];
+              [array addObject:v26];
             }
 
             v27 = v26;
@@ -23247,21 +23247,21 @@ LABEL_17:
 
       if (!v19)
       {
-        v9 = v53;
+        pathManager2 = v53;
         v6 = 0x1E695D000;
 LABEL_46:
 
         objc_autoreleasePoolPop(context);
         [v55 arrayByAddingObjectsFromArray:v21];
         v49 = v48 = v21;
-        [(PLModelMigrator *)v2 applyDataProtectionToPhotosPaths:v49 fromKeyClass:4 toKeyClass:3];
+        [(PLModelMigrator *)selfCopy applyDataProtectionToPhotosPaths:v49 fromKeyClass:4 toKeyClass:3];
 
         goto LABEL_47;
       }
 
-      v57 = v2;
-      v28 = [MEMORY[0x1E696AC08] defaultManager];
-      v29 = [v28 contentsOfDirectoryAtPath:v19 error:0];
+      v57 = selfCopy;
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+      v29 = [defaultManager2 contentsOfDirectoryAtPath:v19 error:0];
 
       v65 = 0u;
       v66 = 0u;
@@ -23297,7 +23297,7 @@ LABEL_46:
             {
               if (![(PLModelMigrator *)v57 skipDataProtectionForFilePath:v38])
               {
-                [v56 addObject:v39];
+                [array addObject:v39];
               }
 
               v40 = v39;
@@ -23311,16 +23311,16 @@ LABEL_46:
 
         if (!v33)
         {
-          v9 = v53;
+          pathManager2 = v53;
           v6 = 0x1E695D000;
-          v21 = v56;
-          v2 = v57;
+          v21 = array;
+          selfCopy = v57;
           v16 = obj;
           goto LABEL_46;
         }
 
-        v41 = [MEMORY[0x1E696AC08] defaultManager];
-        v42 = [v41 contentsOfDirectoryAtPath:v33 error:0];
+        defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
+        v42 = [defaultManager3 contentsOfDirectoryAtPath:v33 error:0];
 
         v61 = 0u;
         v62 = 0u;
@@ -23328,7 +23328,7 @@ LABEL_46:
         v60 = 0u;
         v30 = v42;
         v43 = [v30 countByEnumeratingWithState:&v59 objects:v73 count:16];
-        v9 = v53;
+        pathManager2 = v53;
         v6 = 0x1E695D000;
         if (v43)
         {
@@ -23346,7 +23346,7 @@ LABEL_46:
               v47 = [v33 stringByAppendingPathComponent:*(*(&v59 + 1) + 8 * k)];
               if (![(PLModelMigrator *)v57 skipDataProtectionForFilePath:v47])
               {
-                [v56 addObject:v47];
+                [array addObject:v47];
               }
             }
 
@@ -23356,17 +23356,17 @@ LABEL_46:
           while (v44);
         }
 
-        v21 = v56;
+        v21 = array;
       }
 
       else
       {
         v33 = v30;
-        v9 = v53;
+        pathManager2 = v53;
         v6 = 0x1E695D000uLL;
       }
 
-      v2 = v57;
+      selfCopy = v57;
       v16 = obj;
     }
 
@@ -23374,15 +23374,15 @@ LABEL_46:
     {
       v19 = 0;
       v33 = v16;
-      v21 = v56;
+      v21 = array;
     }
 
     goto LABEL_46;
   }
 
 LABEL_47:
-  v50 = [(PLModelMigrator *)v2 pathManager];
-  [v50 setDataProtectionComplete:1];
+  pathManager3 = [(PLModelMigrator *)selfCopy pathManager];
+  [pathManager3 setDataProtectionComplete:1];
 
   v51 = PLMigrationGetLog();
   if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
@@ -23394,16 +23394,16 @@ LABEL_47:
   }
 }
 
-- (void)applyDataProtectionToPhotosPaths:(id)a3 fromKeyClass:(int)a4 toKeyClass:(int)a5
+- (void)applyDataProtectionToPhotosPaths:(id)paths fromKeyClass:(int)class toKeyClass:(int)keyClass
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
+  pathsCopy = paths;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v8 = v6;
+  v8 = pathsCopy;
   v9 = [v8 countByEnumeratingWithState:&v25 objects:v37 count:16];
   if (v9)
   {
@@ -23424,7 +23424,7 @@ LABEL_47:
         v14 = *(*(&v25 + 1) + 8 * i);
         if (![(PLModelMigrator *)self skipDataProtectionForFilePath:v14, v22])
         {
-          if ([v7 fileExistsAtPath:v14 isDirectory:0])
+          if ([defaultManager fileExistsAtPath:v14 isDirectory:0])
           {
             [v14 fileSystemRepresentation];
             inited = aks_migrate_path_delayInitStub(v15);
@@ -23461,16 +23461,16 @@ LABEL_47:
   }
 }
 
-- (BOOL)skipDataProtectionForFilePath:(id)a3
+- (BOOL)skipDataProtectionForFilePath:(id)path
 {
-  v4 = a3;
-  if ([v4 hasSuffix:@".sqlite"] & 1) != 0 || (objc_msgSend(v4, "hasSuffix:", @"-wal") & 1) != 0 || (objc_msgSend(v4, "hasSuffix:", @"-shm") & 1) != 0 || (objc_msgSend(v4, "hasSuffix:", @"-journal"))
+  pathCopy = path;
+  if ([pathCopy hasSuffix:@".sqlite"] & 1) != 0 || (objc_msgSend(pathCopy, "hasSuffix:", @"-wal") & 1) != 0 || (objc_msgSend(pathCopy, "hasSuffix:", @"-shm") & 1) != 0 || (objc_msgSend(pathCopy, "hasSuffix:", @"-journal"))
   {
     goto LABEL_5;
   }
 
-  v7 = [(PLModelMigrator *)self pathManager];
-  if (![v7 isDCIM])
+  pathManager = [(PLModelMigrator *)self pathManager];
+  if (![pathManager isDCIM])
   {
 
 LABEL_11:
@@ -23478,7 +23478,7 @@ LABEL_11:
     goto LABEL_6;
   }
 
-  v8 = [v4 hasSuffix:*MEMORY[0x1E69BF448]];
+  v8 = [pathCopy hasSuffix:*MEMORY[0x1E69BF448]];
 
   if ((v8 & 1) == 0)
   {
@@ -23492,13 +23492,13 @@ LABEL_6:
   return v5;
 }
 
-- (BOOL)_fixupBrokenBurstPicksInStore:(id)a3
+- (BOOL)_fixupBrokenBurstPicksInStore:(id)store
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   pl_dispatch_once();
   v26 = objc_autoreleasePoolPush();
-  v5 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _fixupBrokenBurstPicksInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v5 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _fixupBrokenBurstPicksInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v6 = MEMORY[0x1E695D5E0];
   v7 = +[PLManagedAsset entityName];
   v8 = [v6 fetchRequestWithEntityName:v7];
@@ -23556,13 +23556,13 @@ LABEL_6:
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
         v21 = NSStringFromSelector(a2);
-        v22 = [v19 userInfo];
+        userInfo = [v19 userInfo];
         *buf = 138412802;
         v33 = v21;
         v34 = 2112;
         v35 = v19;
         v36 = 2112;
-        v37 = v22;
+        v37 = userInfo;
         _os_log_impl(&dword_19BF1F000, v20, OS_LOG_TYPE_ERROR, "%@ failed: %@ %@", buf, 0x20u);
       }
     }
@@ -23588,15 +23588,15 @@ LABEL_6:
   return v18;
 }
 
-- (BOOL)_populateDurationAndHDRTypeFromAdditionalAssetAttributesInStagedStore:(id)a3
+- (BOOL)_populateDurationAndHDRTypeFromAdditionalAssetAttributesInStagedStore:(id)store
 {
   aSelector = a2;
   v47[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   pl_dispatch_once();
   context = objc_autoreleasePoolPush();
-  v33 = v4;
-  v5 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v4 name:"[PLModelMigrator _populateDurationAndHDRTypeFromAdditionalAssetAttributesInStagedStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v33 = storeCopy;
+  v5 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _populateDurationAndHDRTypeFromAdditionalAssetAttributesInStagedStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v6 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:@"AdditionalAssetAttributes"];
   v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"((duration != NULL) AND (duration > 0.0)) OR ((highDynamicRangeType != NULL) && (highDynamicRangeType != 0))"];
   [v6 setPredicate:v7];
@@ -23697,13 +23697,13 @@ LABEL_17:
   if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
   {
     v26 = NSStringFromSelector(aSelector);
-    v27 = [v22 userInfo];
+    userInfo = [v22 userInfo];
     *buf = 138412802;
     *v42 = v26;
     *&v42[8] = 2112;
     v43 = v22;
     v44 = 2112;
-    v45 = v27;
+    v45 = userInfo;
     _os_log_impl(&dword_19BF1F000, v25, OS_LOG_TYPE_ERROR, "%@ failed: %@ %@", buf, 0x20u);
   }
 
@@ -23715,16 +23715,16 @@ LABEL_26:
   return v24;
 }
 
-- (BOOL)_migrateTransformableUUIDsToStringsInStore:(id)a3
+- (BOOL)_migrateTransformableUUIDsToStringsInStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 1;
   pl_dispatch_once();
   v6 = objc_autoreleasePoolPush();
-  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v5 name:"[PLModelMigrator _migrateTransformableUUIDsToStringsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _migrateTransformableUUIDsToStringsInStore:]" concurrencyType:*MEMORY[0x1E695D708]];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __62__PLModelMigrator__migrateTransformableUUIDsToStringsInStore___block_invoke;
@@ -23908,39 +23908,39 @@ void __62__PLModelMigrator__migrateTransformableUUIDsToStringsInStore___block_in
   }
 }
 
-- (BOOL)processWelterweightMigrationStageOnStore:(id)a3 migrationUUID:(id)a4 fromVersion:(int)a5 toVersion:(int)a6 migrationContext:(id)a7 progress:(id)a8 progressUnitCount:(unint64_t)a9
+- (BOOL)processWelterweightMigrationStageOnStore:(id)store migrationUUID:(id)d fromVersion:(int)version toVersion:(int)toVersion migrationContext:(id)context progress:(id)progress progressUnitCount:(unint64_t)count
 {
-  v11 = *&a6;
-  v12 = *&a5;
+  v11 = *&toVersion;
+  v12 = *&version;
   v142 = *MEMORY[0x1E69E9840];
-  v77 = a3;
-  v81 = a4;
-  v79 = a7;
-  v80 = a8;
+  storeCopy = store;
+  dCopy = d;
+  contextCopy = context;
+  progressCopy = progress;
   if ((PLIsAssetsd() & 1) == 0)
   {
-    v70 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v71 = NSStringFromSelector(a2);
-    [v70 handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:4765 description:{@"%@ only valid in assetsd!", v71}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:4765 description:{@"%@ only valid in assetsd!", v71}];
   }
 
   v16 = +[PLModelMigrator currentModelVersion];
   if (v16 <= v12)
   {
-    v72 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v72 handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:4769 description:{@"Previous store version %d must be less than current version %d", v12, v16}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:4769 description:{@"Previous store version %d must be less than current version %d", v12, v16}];
   }
 
   if (v16 <= v11)
   {
-    v73 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v73 handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:4770 description:{@"target version %d must be less than the current version %d", v11, v16}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:4770 description:{@"target version %d must be less than the current version %d", v11, v16}];
   }
 
   if (v12 <= 6005)
   {
-    v74 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v74 handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:4771 description:@"Previous store version is unsupported"];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:4771 description:@"Previous store version is unsupported"];
   }
 
   v17 = v11 == 8012 || v11 == 8000;
@@ -23996,17 +23996,17 @@ void __62__PLModelMigrator__migrateTransformableUUIDsToStringsInStore___block_in
 
   v28 = v21 + v18 + v25;
   v29 = [PLModelMigrationActionProcessor alloc];
-  v30 = [(PLModelMigrator *)self pathManager];
-  v31 = [(PLModelMigrator *)self analyticsEventManager];
-  v32 = [(PLModelMigrator *)self migrationLogger];
-  v33 = [(PLModelMigrationActionProcessor *)v29 initWithUUID:v81 pathManager:v30 migrationActionType:5 analyticsEventManager:v31 logger:v32 progressUnitCount:v27 + v28];
+  pathManager = [(PLModelMigrator *)self pathManager];
+  analyticsEventManager = [(PLModelMigrator *)self analyticsEventManager];
+  migrationLogger = [(PLModelMigrator *)self migrationLogger];
+  v33 = [(PLModelMigrationActionProcessor *)v29 initWithUUID:dCopy pathManager:pathManager migrationActionType:5 analyticsEventManager:analyticsEventManager logger:migrationLogger progressUnitCount:v27 + v28];
 
-  v34 = [(PLModelMigrationActionProcessor *)v33 progress];
+  progress = [(PLModelMigrationActionProcessor *)v33 progress];
 
-  if (v34)
+  if (progress)
   {
-    v35 = [(PLModelMigrationActionProcessor *)v33 progress];
-    [v80 addChild:v35 withPendingUnitCount:a9];
+    progress2 = [(PLModelMigrationActionProcessor *)v33 progress];
+    [progressCopy addChild:progress2 withPendingUnitCount:count];
   }
 
   v36 = objc_autoreleasePoolPush();
@@ -24015,7 +24015,7 @@ void __62__PLModelMigrator__migrateTransformableUUIDsToStringsInStore___block_in
   v104[2] = __140__PLModelMigrator_processWelterweightMigrationStageOnStore_migrationUUID_fromVersion_toVersion_migrationContext_progress_progressUnitCount___block_invoke;
   v104[3] = &unk_1E7570878;
   v104[4] = self;
-  v37 = v77;
+  v37 = storeCopy;
   v105 = v37;
   [(PLModelMigrationActionProcessor *)v33 performActionWithName:@"Populating duration and HDR type on assets" ifRequired:v11 == 8000 block:v104];
   v102[0] = MEMORY[0x1E69E9820];
@@ -24117,9 +24117,9 @@ void __62__PLModelMigrator__migrateTransformableUUIDsToStringsInStore___block_in
       goto LABEL_69;
     }
 
-    v62 = [(PLModelMigrator *)self migrationLogger];
+    migrationLogger2 = [(PLModelMigrator *)self migrationLogger];
 
-    if (v62)
+    if (migrationLogger2)
     {
       v52 = v36;
       v141 = 0u;
@@ -24197,9 +24197,9 @@ LABEL_68:
     goto LABEL_69;
   }
 
-  v51 = [(PLModelMigrator *)self migrationLogger];
+  migrationLogger3 = [(PLModelMigrator *)self migrationLogger];
 
-  if (!v51)
+  if (!migrationLogger3)
   {
     v64 = PLMigrationGetLog();
     if (os_log_type_enabled(v64, OS_LOG_TYPE_DEFAULT))
@@ -24278,100 +24278,100 @@ LABEL_60:
 LABEL_69:
 
   objc_autoreleasePoolPop(v36);
-  v68 = [(PLModelMigrationActionProcessor *)v33 isSuccess];
+  isSuccess = [(PLModelMigrationActionProcessor *)v33 isSuccess];
 
-  return v68;
+  return isSuccess;
 }
 
-- (void)postProcessFixesAfterOTARestoreForCompleteAsset:(id)a3 fixAddedDate:(BOOL)a4 isMegaBackup:(BOOL)a5
+- (void)postProcessFixesAfterOTARestoreForCompleteAsset:(id)asset fixAddedDate:(BOOL)date isMegaBackup:(BOOL)backup
 {
-  v6 = a4;
+  dateCopy = date;
   v60 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  assetCopy = asset;
   if (PLIsAssetsd())
   {
-    if (a5)
+    if (backup)
     {
 LABEL_3:
-      v10 = 1;
+      hasAllThumbs = 1;
       goto LABEL_6;
     }
   }
 
   else
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v12 = NSStringFromSelector(a2);
-    [v11 handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:4679 description:{@"%@ only valid in assetsd!", v12}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:4679 description:{@"%@ only valid in assetsd!", v12}];
 
-    if (a5)
+    if (backup)
     {
       goto LABEL_3;
     }
   }
 
-  v10 = [v9 hasAllThumbs];
+  hasAllThumbs = [assetCopy hasAllThumbs];
 LABEL_6:
   v13 = PLMigrationGetLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v14 = NSStringFromSelector(a2);
-    v15 = [v9 filename];
-    v16 = [v9 uuid];
-    v17 = [v9 objectID];
+    filename = [assetCopy filename];
+    uuid = [assetCopy uuid];
+    objectID = [assetCopy objectID];
     *buf = 138413314;
     v51 = v14;
     v52 = 2112;
-    v53 = v15;
+    v53 = filename;
     v54 = 2112;
-    v55 = v16;
+    v55 = uuid;
     v56 = 2112;
-    v57 = v17;
+    v57 = objectID;
     v58 = 1024;
-    v59 = v10 ^ 1;
+    v59 = hasAllThumbs ^ 1;
     _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_DEFAULT, "%@ for %@ %@ (%@), shouldGenerateThumbnails: %d", buf, 0x30u);
   }
 
   v18 = objc_autoreleasePoolPush();
-  v19 = [v9 addedDate];
+  addedDate = [assetCopy addedDate];
 
-  if (v19)
+  if (addedDate)
   {
-    if (v6)
+    if (dateCopy)
     {
-      [(PLModelMigrator *)self fixPossiblyIncorrectAddedDateForAsset:v9];
+      [(PLModelMigrator *)self fixPossiblyIncorrectAddedDateForAsset:assetCopy];
     }
   }
 
   else
   {
-    v20 = [v9 dateCreated];
-    [v9 setAddedDate:v20];
+    dateCreated = [assetCopy dateCreated];
+    [assetCopy setAddedDate:dateCreated];
   }
 
-  if ([v9 hasAdjustments])
+  if ([assetCopy hasAdjustments])
   {
-    [v9 adjustmentTimestamp];
+    [assetCopy adjustmentTimestamp];
   }
 
   else
   {
-    [v9 dateCreated];
+    [assetCopy dateCreated];
   }
   v21 = ;
-  v22 = [(PLModelMigrator *)self _dateForVariations];
-  v23 = [v22 compare:v21];
+  _dateForVariations = [(PLModelMigrator *)self _dateForVariations];
+  v23 = [_dateForVariations compare:v21];
 
-  if ([v9 isVideo])
+  if ([assetCopy isVideo])
   {
-    [(PLModelMigrator *)self _fixVideoDimensionsForAsset:v9];
-    if ([v9 kindSubtype] == 101)
+    [(PLModelMigrator *)self _fixVideoDimensionsForAsset:assetCopy];
+    if ([assetCopy kindSubtype] == 101)
     {
       [MEMORY[0x1E69BF328] maskForMigrateLegacyVideoAdjustmentsExclusions];
-      [v9 savedAssetType];
+      [assetCopy savedAssetType];
       if ((PLValidatedSavedAssetTypeApplies() & 1) == 0)
       {
-        v24 = [(PLModelMigrator *)self _migrateLegacySlomoAdjustmentsForAsset:v9];
+        v24 = [(PLModelMigrator *)self _migrateLegacySlomoAdjustmentsForAsset:assetCopy];
         if (v24)
         {
           v25 = v24;
@@ -24394,35 +24394,35 @@ LABEL_6:
 
     if (v23 == -1)
     {
-      [(PLModelMigrator *)self _identifyVariationsAndDepthAdjustmentsForAsset:v9];
+      [(PLModelMigrator *)self _identifyVariationsAndDepthAdjustmentsForAsset:assetCopy];
     }
 
     goto LABEL_40;
   }
 
-  if (![v9 isPhoto])
+  if (![assetCopy isPhoto])
   {
-    if (![v9 isUnknown])
+    if (![assetCopy isUnknown])
     {
       goto LABEL_40;
     }
 
-    v29 = [v9 promoteFromUnknownKind];
+    promoteFromUnknownKind = [assetCopy promoteFromUnknownKind];
     v30 = PLMigrationGetLog();
     v31 = os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT);
-    if (v29)
+    if (promoteFromUnknownKind)
     {
       if (v31)
       {
-        v32 = [v9 filename];
-        v33 = [v9 uuid];
-        v34 = [v9 kind];
+        filename2 = [assetCopy filename];
+        uuid2 = [assetCopy uuid];
+        kind = [assetCopy kind];
         *buf = 138412802;
-        v51 = v32;
+        v51 = filename2;
         v52 = 2112;
-        v53 = v33;
+        v53 = uuid2;
         v54 = 1024;
-        LODWORD(v55) = v34;
+        LODWORD(v55) = kind;
         v35 = "Promoted unkown asset %@ %@ to type %d";
         v36 = v30;
         v37 = 28;
@@ -24433,12 +24433,12 @@ LABEL_38:
 
     else if (v31)
     {
-      v32 = [v9 filename];
-      v33 = [v9 uuid];
+      filename2 = [assetCopy filename];
+      uuid2 = [assetCopy uuid];
       *buf = 138412546;
-      v51 = v32;
+      v51 = filename2;
       v52 = 2112;
-      v53 = v33;
+      v53 = uuid2;
       v35 = "Failed to promote unknown asset %@ %@";
       v36 = v30;
       v37 = 22;
@@ -24448,28 +24448,28 @@ LABEL_38:
     goto LABEL_40;
   }
 
-  [v9 updateKindSubtypeIfScreenshot];
-  v28 = [v9 metadataFromMediaPropertiesOrOriginalResource];
-  [v9 setCameraCaptureDeviceFromMetadata:v28];
-  [(PLModelMigrator *)self _populateFaceRegionsForAsset:v9];
-  [v9 updatePlaybackVariationAndStyleFromOriginalMetadata:v28];
-  [(PLModelMigrator *)self _fixIncorrectHeifMetadataForAsset:v9];
-  if (v23 == -1 && (([v9 hasAdjustments] & 1) != 0 || objc_msgSend(v9, "isPhotoIris")))
+  [assetCopy updateKindSubtypeIfScreenshot];
+  metadataFromMediaPropertiesOrOriginalResource = [assetCopy metadataFromMediaPropertiesOrOriginalResource];
+  [assetCopy setCameraCaptureDeviceFromMetadata:metadataFromMediaPropertiesOrOriginalResource];
+  [(PLModelMigrator *)self _populateFaceRegionsForAsset:assetCopy];
+  [assetCopy updatePlaybackVariationAndStyleFromOriginalMetadata:metadataFromMediaPropertiesOrOriginalResource];
+  [(PLModelMigrator *)self _fixIncorrectHeifMetadataForAsset:assetCopy];
+  if (v23 == -1 && (([assetCopy hasAdjustments] & 1) != 0 || objc_msgSend(assetCopy, "isPhotoIris")))
   {
-    [(PLModelMigrator *)self _identifyVariationsAndDepthAdjustmentsForAsset:v9];
+    [(PLModelMigrator *)self _identifyVariationsAndDepthAdjustmentsForAsset:assetCopy];
   }
 
 LABEL_40:
-  [v9 migrateLocationDataIfNeededAfterOTARestore:1];
-  [v9 persistMetadataToFilesystem];
-  if ((v10 & 1) == 0)
+  [assetCopy migrateLocationDataIfNeededAfterOTARestore:1];
+  [assetCopy persistMetadataToFilesystem];
+  if ((hasAllThumbs & 1) == 0)
   {
-    v38 = [v9 persistedResourcesMatching:&__block_literal_global_1294];
+    v38 = [assetCopy persistedResourcesMatching:&__block_literal_global_1294];
     v48[0] = MEMORY[0x1E69E9820];
     v48[1] = 3221225472;
     v48[2] = __93__PLModelMigrator_postProcessFixesAfterOTARestoreForCompleteAsset_fixAddedDate_isMegaBackup___block_invoke_2;
     v48[3] = &unk_1E756B120;
-    v39 = v9;
+    v39 = assetCopy;
     v49 = v39;
     [v38 enumerateObjectsUsingBlock:v48];
     [(__CFString *)v39 generateAndUpdateThumbnailsWithPreviewImage:0 thumbnailImage:0 fromImageSource:0 imageData:0 forceSRGBConversion:0];
@@ -24492,11 +24492,11 @@ LABEL_40:
     [(__CFString *)v39 setDeferredProcessingNeeded:[(__CFString *)v39 expectedDeferredProcessingNeededOnAssetCreation]];
     if ([(__CFString *)v39 deferredProcessingNeeded])
     {
-      v43 = [(__CFString *)v39 photoLibrary];
-      v44 = [v43 libraryServicesManager];
-      v45 = [v44 backgroundJobService];
-      v46 = [(__CFString *)v39 photoLibrary];
-      [v45 signalBackgroundProcessingNeededOnLibrary:v46];
+      photoLibrary = [(__CFString *)v39 photoLibrary];
+      libraryServicesManager = [photoLibrary libraryServicesManager];
+      backgroundJobService = [libraryServicesManager backgroundJobService];
+      photoLibrary2 = [(__CFString *)v39 photoLibrary];
+      [backgroundJobService signalBackgroundProcessingNeededOnLibrary:photoLibrary2];
     }
   }
 
@@ -24519,23 +24519,23 @@ void __93__PLModelMigrator_postProcessFixesAfterOTARestoreForCompleteAsset_fixAd
     return 0;
   }
 
-  v3 = [(PLModelMigrator *)self pathManager];
-  v4 = [v3 photoDirectoryWithType:34];
+  pathManager = [(PLModelMigrator *)self pathManager];
+  v4 = [pathManager photoDirectoryWithType:34];
   v5 = [v4 stringByAppendingPathComponent:@"lightweightfail"];
 
-  v6 = [(PLModelMigrator *)self pathManager];
-  v7 = [v6 photoDirectoryWithType:34];
+  pathManager2 = [(PLModelMigrator *)self pathManager];
+  v7 = [pathManager2 photoDirectoryWithType:34];
   v8 = [v7 stringByAppendingPathComponent:@"lightweightcrash"];
 
-  v9 = [MEMORY[0x1E696AC08] defaultManager];
-  LODWORD(v7) = [v9 fileExistsAtPath:v5];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  LODWORD(v7) = [defaultManager fileExistsAtPath:v5];
 
-  v10 = [MEMORY[0x1E696AC08] defaultManager];
-  v11 = v10;
+  defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+  v11 = defaultManager2;
   if (v7)
   {
     v24 = 0;
-    v12 = [v10 removeItemAtPath:v5 error:&v24];
+    v12 = [defaultManager2 removeItemAtPath:v5 error:&v24];
     v13 = v24;
 
     v14 = PLMigrationGetLog();
@@ -24563,7 +24563,7 @@ void __93__PLModelMigrator_postProcessFixesAfterOTARestoreForCompleteAsset_fixAd
     goto LABEL_15;
   }
 
-  v17 = [v10 fileExistsAtPath:v8];
+  v17 = [defaultManager2 fileExistsAtPath:v8];
 
   if (!v17)
   {
@@ -24571,9 +24571,9 @@ void __93__PLModelMigrator_postProcessFixesAfterOTARestoreForCompleteAsset_fixAd
     goto LABEL_18;
   }
 
-  v18 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
   v23 = 0;
-  v19 = [v18 removeItemAtPath:v8 error:&v23];
+  v19 = [defaultManager3 removeItemAtPath:v8 error:&v23];
   v13 = v23;
 
   v14 = PLMigrationGetLog();
@@ -24608,17 +24608,17 @@ LABEL_18:
   return result;
 }
 
-- (BOOL)postProcessMigratedStore:(id)a3 migrationUUID:(id)a4 fromVersion:(int)a5 progress:(id)a6 progressUnitCount:(unint64_t)a7
+- (BOOL)postProcessMigratedStore:(id)store migrationUUID:(id)d fromVersion:(int)version progress:(id)progress progressUnitCount:(unint64_t)count
 {
   v972 = *MEMORY[0x1E69E9840];
-  v428 = a3;
-  v503 = a4;
-  v480 = a6;
+  storeCopy = store;
+  dCopy = d;
+  progressCopy = progress;
   if ((PLIsAssetsd() & 1) == 0)
   {
-    v415 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v416 = NSStringFromSelector(a2);
-    [v415 handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:3197 description:{@"%@ only valid in assetsd!", v416}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:3197 description:{@"%@ only valid in assetsd!", v416}];
   }
 
   v12 = postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount__postProcessMigratedStoreGuard;
@@ -24628,13 +24628,13 @@ LABEL_18:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       v14 = postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount__postProcessMigratedStoreGuard;
-      v15 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
       v941[0] = 67109634;
       v941[1] = v14;
       LOWORD(v941[2]) = 2112;
       *(&v941[2] + 2) = 0;
       HIWORD(v941[4]) = 2112;
-      *&v941[5] = v15;
+      *&v941[5] = callStackSymbols;
       _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_ERROR, "Violating post processing guard (%d), postProcessMigratedStore:fromVersion: should never run simultaneously:\n\n----------------------PREVIOUS STACK %@\n\n-------------------CURRENT STACK %@", v941, 0x1Cu);
     }
 
@@ -24644,16 +24644,16 @@ LABEL_18:
   postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount__postProcessMigratedStoreGuard = v12 + 1;
   [(PLModelMigrator *)self _setIsPostProcessingLightWeightMigration:1];
   v16 = +[PLModelMigrator currentModelVersion];
-  if (v16 <= a5)
+  if (v16 <= version)
   {
-    v417 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v417 handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:3211 description:@"Previous store version must be less than current version"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:3211 description:@"Previous store version must be less than current version"];
   }
 
-  if (a5 <= 6005)
+  if (version <= 6005)
   {
-    v418 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v418 handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:3212 description:@"Previous store version is unsupported"];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:3212 description:@"Previous store version is unsupported"];
   }
 
   context = objc_autoreleasePoolPush();
@@ -24662,9 +24662,9 @@ LABEL_18:
 
   if (v18)
   {
-    v19 = [(PLModelMigrator *)self migrationLogger];
+    migrationLogger = [(PLModelMigrator *)self migrationLogger];
 
-    if (v19)
+    if (migrationLogger)
     {
       v970 = 0u;
       v971 = 0u;
@@ -24700,7 +24700,7 @@ LABEL_18:
       v20 = PLMigrationGetLog();
       os_log_type_enabled(v20, OS_LOG_TYPE_INFO);
       v937 = 67109376;
-      v938 = a5;
+      versionCopy4 = version;
       v939 = 1024;
       v940 = v16;
       LODWORD(v419) = 14;
@@ -24721,7 +24721,7 @@ LABEL_18:
       if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
       {
         v941[0] = 67109376;
-        v941[1] = a5;
+        v941[1] = version;
         LOWORD(v941[2]) = 1024;
         *(&v941[2] + 2) = v16;
         _os_log_impl(&dword_19BF1F000, v23, OS_LOG_TYPE_INFO, "Beginning post-processing lightweight migration from %d to %d", v941, 0xEu);
@@ -24731,8 +24731,8 @@ LABEL_18:
 
   v24 = _os_feature_enabled_impl();
   v501 = PLPlatformMomentsSupported();
-  v25 = (a5 < 0x428E) & v24;
-  v26 = (a5 - 16040) < 0x8D || a5 < 13340;
+  v25 = (version < 0x428E) & v24;
+  v26 = (version - 16040) < 0x8D || version < 13340;
   v477 = v26 | v25;
   v27 = PLPlatformMomentsSupported() & (v26 | v25);
   if (v27)
@@ -24745,7 +24745,7 @@ LABEL_18:
     v28 = 1;
   }
 
-  if (a5 == 6006)
+  if (version == 6006)
   {
     v29 = v28;
   }
@@ -24755,16 +24755,16 @@ LABEL_18:
     v29 = v27;
   }
 
-  v30 = [(PLModelMigrator *)self isCloudPhotoLibraryEnabled];
-  v31 = [(PLModelMigrator *)self pathManager];
-  v425 = [v31 isDeviceRestoreSupported];
+  isCloudPhotoLibraryEnabled = [(PLModelMigrator *)self isCloudPhotoLibraryEnabled];
+  pathManager = [(PLModelMigrator *)self pathManager];
+  isDeviceRestoreSupported = [pathManager isDeviceRestoreSupported];
 
-  v32 = [(PLModelMigrator *)self pathManager];
-  v33 = [v32 isDeviceRestoreSupported];
+  pathManager2 = [(PLModelMigrator *)self pathManager];
+  isDeviceRestoreSupported2 = [pathManager2 isDeviceRestoreSupported];
 
-  v34 = v29 + v33;
+  v34 = v29 + isDeviceRestoreSupported2;
   v420 = v16;
-  if (a5 < 12136 || (a5 - 13001) <= 0x103)
+  if (version < 12136 || (version - 13001) <= 0x103)
   {
     v438 = PLPlatformSearchSupported();
     v34 += PLPlatformSearchSupported();
@@ -24775,17 +24775,17 @@ LABEL_18:
     v438 = 0;
   }
 
-  v483 = a5 - 9000;
-  v35 = (a5 - 9000) < 0x2C || a5 < 8062;
+  v483 = version - 9000;
+  v35 = (version - 9000) < 0x2C || version < 8062;
   v486 = v35;
-  LODWORD(v36) = (a5 - 9306) < 0x460 || (a5 - 9000) < 0x2C;
-  if (a5 < 8023)
+  LODWORD(v36) = (version - 9306) < 0x460 || (version - 9000) < 0x2C;
+  if (version < 8023)
   {
     LODWORD(v36) = 1;
   }
 
-  v499 = a5 - 11000;
-  if ((a5 - 11000) < 0x13)
+  v499 = version - 11000;
+  if ((version - 11000) < 0x13)
   {
     v36 = 1;
   }
@@ -24796,51 +24796,51 @@ LABEL_18:
   }
 
   v485 = v36;
-  v37 = a5 < 8027;
-  v487 = a5 < 8044 && !v30;
-  v488 = v37 ^ (a5 < 8049);
-  v38 = [(PLModelMigrator *)self pathManager];
-  v39 = [v38 isDeviceRestoreSupported];
+  v37 = version < 8027;
+  v487 = version < 8044 && !isCloudPhotoLibraryEnabled;
+  v488 = v37 ^ (version < 8049);
+  pathManager3 = [(PLModelMigrator *)self pathManager];
+  isDeviceRestoreSupported3 = [pathManager3 isDeviceRestoreSupported];
 
-  if (v39)
+  if (isDeviceRestoreSupported3)
   {
-    v40 = [(PLModelMigrator *)self deviceRestoreMigrationSupport];
-    if ([v40 isRestoreFromBackupSourceCloud])
+    deviceRestoreMigrationSupport = [(PLModelMigrator *)self deviceRestoreMigrationSupport];
+    if ([deviceRestoreMigrationSupport isRestoreFromBackupSourceCloud])
     {
-      v41 = [(PLModelMigrator *)self postProcessingToken];
+      postProcessingToken = [(PLModelMigrator *)self postProcessingToken];
       v489 = v34;
-      v34 = [v41 isModelMigrationRestorePostProcessingComplete] ^ 1;
+      v34 = [postProcessingToken isModelMigrationRestorePostProcessingComplete] ^ 1;
 
-      v39 = v34;
+      isDeviceRestoreSupported3 = v34;
       LOWORD(v34) = v489;
     }
 
     else
     {
-      v39 = 0;
+      isDeviceRestoreSupported3 = 0;
     }
   }
 
-  v42 = (a5 < 8008) + (a5 < 8006) + (a5 < 8011) + v37 + (a5 < 8029) + (a5 < 8030) + (a5 < 8061) + (a5 < 8033) + (a5 < 8045) + (a5 < 8046) + (a5 < 8052);
-  if (a5 < 8058)
+  v42 = (version < 8008) + (version < 8006) + (version < 8011) + v37 + (version < 8029) + (version < 8030) + (version < 8061) + (version < 8033) + (version < 8045) + (version < 8046) + (version < 8052);
+  if (version < 8058)
   {
     ++v42;
   }
 
-  if (a5 < 8064)
+  if (version < 8064)
   {
     ++v42;
   }
 
-  if (a5 < 8065)
+  if (version < 8065)
   {
     ++v42;
   }
 
-  v43 = a5 >= 8200 && (a5 - 8300) >= 3;
+  v43 = version >= 8200 && (version - 8300) >= 3;
   v44 = !v43;
   v429 = v44;
-  v45 = v42 + (v37 ^ (a5 < 8049)) + ((a5 - 8047) < 4) + v486;
+  v45 = v42 + (v37 ^ (version < 8049)) + ((version - 8047) < 4) + v486;
   if (v43)
   {
     v46 = v45;
@@ -24851,18 +24851,18 @@ LABEL_18:
     v46 = v45 + 1;
   }
 
-  v47 = a5 & 0x7FFFFFFE;
-  v48 = a5 < 8101 || v47 == 8200;
+  v47 = version & 0x7FFFFFFE;
+  v48 = version < 8101 || v47 == 8200;
   v49 = v48;
   v484 = v49;
   if (v48)
   {
-    v50 = v30 + 1;
+    v50 = isCloudPhotoLibraryEnabled + 1;
   }
 
   else
   {
-    v50 = v30;
+    v50 = isCloudPhotoLibraryEnabled;
   }
 
   if (!v48)
@@ -24870,79 +24870,79 @@ LABEL_18:
     v50 = 0;
   }
 
-  v51 = v46 + v485 + (a5 < 8044 && !v30) + v34 + v50;
-  v423 = v39;
-  v52 = a5 < 8304;
-  v53 = a5 < 9015 && v30;
-  v54 = a5 < 9009 && v30;
+  v51 = v46 + v485 + (version < 8044 && !isCloudPhotoLibraryEnabled) + v34 + v50;
+  v423 = isDeviceRestoreSupported3;
+  v52 = version < 8304;
+  v53 = version < 9015 && isCloudPhotoLibraryEnabled;
+  v54 = version < 9009 && isCloudPhotoLibraryEnabled;
   v431 = v54;
-  v55 = a5 < 9051 && v30;
-  if (a5 < 8312)
+  v55 = version < 9051 && isCloudPhotoLibraryEnabled;
+  if (version < 8312)
   {
     ++v52;
   }
 
-  if (a5 < 9001)
+  if (version < 9001)
   {
     ++v52;
   }
 
-  if (a5 < 9004)
+  if (version < 9004)
   {
     ++v52;
   }
 
-  if (a5 < 9010)
+  if (version < 9010)
   {
     ++v52;
   }
 
-  if (a5 < 9011)
+  if (version < 9011)
   {
     ++v52;
   }
 
-  if (a5 < 9023)
+  if (version < 9023)
   {
     ++v52;
   }
 
-  if (a5 < 9037)
+  if (version < 9037)
   {
     ++v52;
   }
 
-  if (a5 < 9041)
+  if (version < 9041)
   {
     ++v52;
   }
 
-  if (a5 < 9042)
+  if (version < 9042)
   {
     ++v52;
   }
 
-  if (a5 < 9046)
+  if (version < 9046)
   {
     ++v52;
   }
 
-  if (a5 < 9047)
+  if (version < 9047)
   {
     ++v52;
   }
 
-  if (a5 < 9048)
+  if (version < 9048)
   {
     ++v52;
   }
 
-  if (a5 < 9201)
+  if (version < 9201)
   {
     ++v52;
   }
 
-  if (a5 < 9204)
+  if (version < 9204)
   {
     ++v52;
   }
@@ -24957,10 +24957,10 @@ LABEL_18:
     ++v52;
   }
 
-  v56 = a5 < 8318 || v47 == 9000;
+  v56 = version < 8318 || v47 == 9000;
   v57 = v56;
   v430 = v57;
-  v58 = v52 + ((a5 < 8029) ^ (a5 < 9038));
+  v58 = v52 + ((version < 8029) ^ (version < 9038));
   if (v56)
   {
     ++v58;
@@ -24968,9 +24968,9 @@ LABEL_18:
 
   v433 = v55;
   v432 = v53;
-  v424 = (a5 < 8302) & (v39 ^ 1u);
-  v59 = v53 + v55 + v51 + ((a5 < 8302) & (v39 ^ 1));
-  if (a5 >= 9205)
+  v424 = (version < 8302) & (isDeviceRestoreSupported3 ^ 1u);
+  v59 = v53 + v55 + v51 + ((version < 8302) & (isDeviceRestoreSupported3 ^ 1));
+  if (version >= 9205)
   {
     v60 = 0;
   }
@@ -24981,67 +24981,67 @@ LABEL_18:
   }
 
   v61 = v58 + v59 + v60;
-  v437 = [(PLModelMigrator *)self sceneStepRequiredForPreviousStoreVersion:a5];
-  v62 = [(PLModelMigrator *)self sceneStepRequiredForPreviousStoreVersion:a5];
-  v63 = 0;
-  v64 = a5 < 10067 && v30;
-  if (a5 >= 10027)
+  v437 = [(PLModelMigrator *)self sceneStepRequiredForPreviousStoreVersion:version];
+  v62 = [(PLModelMigrator *)self sceneStepRequiredForPreviousStoreVersion:version];
+  serverSupportsVision = 0;
+  v64 = version < 10067 && isCloudPhotoLibraryEnabled;
+  if (version >= 10027)
   {
-    v65 = a5 < 9302;
+    v65 = version < 9302;
   }
 
   else
   {
-    v65 = (a5 < 9302) + 1;
+    v65 = (version < 9302) + 1;
   }
 
-  v66 = a5 - 10000;
-  if (a5 < 10036)
+  v66 = version - 10000;
+  if (version < 10036)
   {
     ++v65;
   }
 
-  if (a5 < 10041)
+  if (version < 10041)
   {
     ++v65;
   }
 
-  if (a5 < 10065)
+  if (version < 10065)
   {
     ++v65;
   }
 
-  if (a5 < 10070)
+  if (version < 10070)
   {
     ++v65;
   }
 
-  if (a5 < 10079)
+  if (version < 10079)
   {
     ++v65;
   }
 
-  if (a5 < 10088)
+  if (version < 10088)
   {
     ++v65;
   }
 
-  if (a5 < 10102)
+  if (version < 10102)
   {
     ++v65;
   }
 
-  if (a5 < 10106)
+  if (version < 10106)
   {
     ++v65;
   }
 
-  if (a5 < 10109)
+  if (version < 10109)
   {
     ++v65;
   }
 
-  if (a5 < 10112)
+  if (version < 10112)
   {
     ++v65;
   }
@@ -25051,7 +25051,7 @@ LABEL_18:
     ++v65;
   }
 
-  if ((a5 & 0xFFFFFFFC) == 0x2754)
+  if ((version & 0xFFFFFFFC) == 0x2754)
   {
     ++v65;
   }
@@ -25061,7 +25061,7 @@ LABEL_18:
     ++v65;
   }
 
-  v426 = a5 - 10000;
+  v426 = version - 10000;
   if (v66 < 0x75)
   {
     ++v65;
@@ -25069,7 +25069,7 @@ LABEL_18:
 
   v434 = v64;
   v67 = v65 + v64 + v62;
-  v435 = a5 < 10118 && v30;
+  v435 = version < 10118 && isCloudPhotoLibraryEnabled;
   if (v435)
   {
     v68 = 2;
@@ -25081,156 +25081,156 @@ LABEL_18:
   }
 
   v475 = v67 + v68 + v61;
-  v482 = a5 & 0xFFFFFFFE;
-  v481 = a5 - 11001;
-  v69 = (a5 - 11001) < 0x30 || a5 < 10203;
+  v482 = version & 0xFFFFFFFE;
+  v481 = version - 11001;
+  v69 = (version - 11001) < 0x30 || version < 10203;
   v490 = v69;
-  v71 = a5 < 10300 || (a5 - 10400) < 3;
+  v71 = version < 10300 || (version - 10400) < 3;
   v494 = v71;
-  v73 = a5 < 10427 || v499 < 0x17;
+  v73 = version < 10427 || v499 < 0x17;
   v493 = v73;
-  v74 = a5 < 11007 && v30;
+  v74 = version < 11007 && isCloudPhotoLibraryEnabled;
   v496 = v74;
-  v75 = a5 < 11011 && v30;
+  v75 = version < 11011 && isCloudPhotoLibraryEnabled;
   v495 = v75;
-  v76 = (a5 - 11014) < 7 && v30;
+  v76 = (version - 11014) < 7 && isCloudPhotoLibraryEnabled;
   v497 = v76;
-  v78 = a5 < 10428 || v499 < 0x1B;
+  v78 = version < 10428 || v499 < 0x1B;
   v492 = v78;
-  v79 = (a5 - 11004) < 0x1B && v30;
+  v79 = (version - 11004) < 0x1B && isCloudPhotoLibraryEnabled;
   v498 = v79;
-  v80 = a5 == 11038 && v30;
+  v80 = version == 11038 && isCloudPhotoLibraryEnabled;
   v500 = v80;
-  v491 = (a5 < 10151) & v30;
-  v81 = a5 < 11043;
-  if (v81 && v30)
+  v491 = (version < 10151) & isCloudPhotoLibraryEnabled;
+  v81 = version < 11043;
+  if (v81 && isCloudPhotoLibraryEnabled)
   {
-    v63 = [MEMORY[0x1E6994A80] serverSupportsVision];
+    serverSupportsVision = [MEMORY[0x1E6994A80] serverSupportsVision];
   }
 
-  v440 = v63;
+  v440 = serverSupportsVision;
   v421 = v501 & v477;
-  v427 = v484 & v30;
-  v439 = [(PLModelMigrator *)self faceQualityResetRequiredForPreviousStoreVersion:a5];
-  v82 = [(PLModelMigrator *)self faceQualityResetRequiredForPreviousStoreVersion:a5];
-  v83 = (a5 - 11048) < 0x10 && v30;
-  v84 = a5 < 11074 && v30;
-  v85 = a5 < 11075 && v30;
-  v86 = a5 < 11076 && v30;
-  v87 = a5 < 11077 && v30;
-  v88 = a5 < 11081 && v30;
-  v89 = a5 < 11089 && v30;
-  v90 = a5 < 13016 && v30;
-  v91 = (a5 < 10150) + (a5 < 10123) + (a5 < 10203) + (a5 < 10204) + (a5 < 10206) + (a5 < 10207) + (a5 < 11000) + (a5 < 11001) + (a5 < 11022) + (a5 < 11024) + (a5 < 11025) + v81;
-  if (a5 < 11047)
+  v427 = v484 & isCloudPhotoLibraryEnabled;
+  v439 = [(PLModelMigrator *)self faceQualityResetRequiredForPreviousStoreVersion:version];
+  v82 = [(PLModelMigrator *)self faceQualityResetRequiredForPreviousStoreVersion:version];
+  v83 = (version - 11048) < 0x10 && isCloudPhotoLibraryEnabled;
+  v84 = version < 11074 && isCloudPhotoLibraryEnabled;
+  v85 = version < 11075 && isCloudPhotoLibraryEnabled;
+  v86 = version < 11076 && isCloudPhotoLibraryEnabled;
+  v87 = version < 11077 && isCloudPhotoLibraryEnabled;
+  v88 = version < 11081 && isCloudPhotoLibraryEnabled;
+  v89 = version < 11089 && isCloudPhotoLibraryEnabled;
+  v90 = version < 13016 && isCloudPhotoLibraryEnabled;
+  v91 = (version < 10150) + (version < 10123) + (version < 10203) + (version < 10204) + (version < 10206) + (version < 10207) + (version < 11000) + (version < 11001) + (version < 11022) + (version < 11024) + (version < 11025) + v81;
+  if (version < 11047)
   {
     ++v91;
   }
 
-  if (a5 < 11048)
+  if (version < 11048)
   {
     ++v91;
   }
 
-  if (a5 < 11049)
+  if (version < 11049)
   {
     ++v91;
   }
 
-  if (a5 < 11052)
+  if (version < 11052)
   {
     ++v91;
   }
 
-  if (a5 < 11060)
+  if (version < 11060)
   {
     ++v91;
   }
 
-  if (a5 < 11061)
+  if (version < 11061)
   {
     ++v91;
   }
 
-  v92 = !v30;
-  if (a5 < 11063)
+  v92 = !isCloudPhotoLibraryEnabled;
+  if (version < 11063)
   {
     ++v91;
   }
 
-  if (a5 < 11068)
+  if (version < 11068)
   {
     ++v91;
   }
 
-  if (a5 < 11069)
+  if (version < 11069)
   {
     ++v91;
   }
 
-  if (a5 < 11070)
+  if (version < 11070)
   {
     ++v91;
   }
 
-  if (a5 < 11079)
+  if (version < 11079)
   {
     ++v91;
   }
 
-  if (a5 < 11080)
+  if (version < 11080)
   {
     ++v91;
   }
 
-  if (a5 < 11200)
+  if (version < 11200)
   {
     ++v91;
   }
 
-  if (a5 < 11203)
+  if (version < 11203)
   {
     ++v91;
   }
 
-  if (a5 < 12000)
+  if (version < 12000)
   {
     ++v91;
     v92 = 1;
   }
 
-  if (a5 < 12035)
+  if (version < 12035)
   {
     ++v91;
   }
 
-  if (a5 < 13027)
+  if (version < 13027)
   {
     ++v91;
   }
 
-  if (a5 < 13036)
+  if (version < 13036)
   {
     ++v91;
   }
 
-  if (a5 < 13050)
+  if (version < 13050)
   {
     ++v91;
   }
 
-  if (a5 < 12036)
+  if (version < 12036)
   {
     ++v91;
   }
 
-  v93 = v91 + ((a5 & 0xFFFFFFFE) == 10124) + ((a5 - 11022) < 4) + ((a5 - 10425) < 0x25B);
+  v93 = v91 + ((version & 0xFFFFFFFE) == 10124) + ((version - 11022) < 4) + ((version - 10425) < 0x25B);
   if (v481 < 0x40)
   {
     ++v93;
   }
 
-  if ((a5 - 10075) >= 0x3F1)
+  if ((version - 10075) >= 0x3F1)
   {
     v94 = v93;
   }
@@ -25240,13 +25240,13 @@ LABEL_18:
     v94 = v93 + 1;
   }
 
-  v95 = a5 - 12000;
-  if ((a5 - 11079) < 0xC)
+  v95 = version - 12000;
+  if ((version - 11079) < 0xC)
   {
     ++v94;
   }
 
-  v96 = a5 - 13000;
+  v96 = version - 13000;
   v97 = v95 >= 0x42 && v96 >= 0x1A;
   v98 = !v97;
   v447 = v98;
@@ -25280,8 +25280,8 @@ LABEL_18:
   v446 = v89;
   v449 = v90;
   v436 = v83;
-  v104 = v99 + (a5 < 10151 && v30) + v496 + v495 + v500 + v84 + v85 + v86 + v87 + v88 + v89 + v90 + v497 + v498 + v83 + v475 + v82;
-  v106 = a5 < 0x2F3E || v96 < 0x3E || a5 == 12097;
+  v104 = v99 + (version < 10151 && isCloudPhotoLibraryEnabled) + v496 + v495 + v500 + v84 + v85 + v86 + v87 + v88 + v89 + v90 + v497 + v498 + v83 + v475 + v82;
+  v106 = version < 0x2F3E || v96 < 0x3E || version == 12097;
   v107 = v106;
   if (v106)
   {
@@ -25315,44 +25315,44 @@ LABEL_18:
     v111 = v104;
   }
 
-  v112 = a5 < 13089;
-  v113 = a5 < 13180 && v30;
-  if (a5 < 13099)
+  v112 = version < 13089;
+  v113 = version < 13180 && isCloudPhotoLibraryEnabled;
+  if (version < 13099)
   {
     ++v112;
   }
 
-  if (a5 < 13103)
+  if (version < 13103)
   {
     ++v112;
   }
 
-  if (a5 < 13106)
+  if (version < 13106)
   {
     ++v112;
   }
 
-  if (a5 < 13117)
+  if (version < 13117)
   {
     ++v112;
   }
 
-  if (a5 < 13119)
+  if (version < 13119)
   {
     ++v112;
   }
 
-  if (a5 < 13137)
+  if (version < 13137)
   {
     ++v112;
   }
 
-  if (a5 < 13152)
+  if (version < 13152)
   {
     ++v112;
   }
 
-  if (a5 < 13187)
+  if (version < 13187)
   {
     ++v112;
   }
@@ -25387,13 +25387,13 @@ LABEL_18:
     v121 = v118 + 1;
   }
 
-  if (!v30)
+  if (!isCloudPhotoLibraryEnabled)
   {
     v120 = 0;
   }
 
   v455 = v120;
-  if (v30)
+  if (isCloudPhotoLibraryEnabled)
   {
     v122 = v121;
   }
@@ -25426,128 +25426,128 @@ LABEL_18:
     v126 = 0;
   }
 
-  v127 = (a5 - 13355) < 0x9D && v30;
-  if (a5 >= 13193)
+  v127 = (version - 13355) < 0x9D && isCloudPhotoLibraryEnabled;
+  if (version >= 13193)
   {
-    v128 = a5 < 13191;
+    v128 = version < 13191;
   }
 
   else
   {
-    v128 = (a5 < 13191) + 1;
+    v128 = (version < 13191) + 1;
   }
 
-  if (a5 < 13195)
+  if (version < 13195)
   {
     ++v128;
   }
 
-  if (a5 < 13196)
+  if (version < 13196)
   {
     ++v128;
   }
 
-  if (a5 < 13200)
+  if (version < 13200)
   {
     ++v128;
   }
 
-  if (a5 < 13307)
+  if (version < 13307)
   {
     ++v128;
   }
 
-  if (a5 < 13222)
+  if (version < 13222)
   {
     ++v128;
   }
 
-  if (a5 < 13242)
+  if (version < 13242)
   {
     ++v128;
   }
 
-  if (a5 < 13301)
+  if (version < 13301)
   {
     ++v128;
   }
 
-  if (a5 < 13304)
+  if (version < 13304)
   {
     ++v128;
   }
 
-  if (a5 < 13309)
+  if (version < 13309)
   {
     ++v128;
   }
 
-  if (a5 < 13323)
+  if (version < 13323)
   {
     ++v128;
   }
 
-  if (a5 < 13260)
+  if (version < 13260)
   {
     ++v128;
   }
 
-  if (a5 < 13351)
+  if (version < 13351)
   {
     ++v128;
   }
 
-  if (a5 < 13533)
+  if (version < 13533)
   {
     ++v128;
   }
 
-  if (a5 < 14005)
+  if (version < 14005)
   {
     ++v128;
   }
 
-  if (a5 < 14009)
+  if (version < 14009)
   {
     ++v128;
   }
 
-  if (a5 < 18083)
+  if (version < 18083)
   {
     ++v128;
   }
 
-  if (a5 < 14016)
+  if (version < 14016)
   {
     ++v128;
   }
 
-  if (a5 < 14021)
+  if (version < 14021)
   {
     ++v128;
   }
 
-  if (a5 < 14025)
+  if (version < 14025)
   {
     ++v128;
   }
 
-  if (a5 < 14027)
+  if (version < 14027)
   {
     ++v128;
   }
 
-  if (a5 < 14032)
+  if (version < 14032)
   {
     ++v128;
   }
 
-  if (a5 == 14037)
+  if (version == 14037)
   {
     ++v128;
   }
 
-  if (a5 < 14039)
+  if (version < 14039)
   {
     ++v128;
   }
@@ -25577,13 +25577,13 @@ LABEL_18:
     ++v128;
   }
 
-  if ((a5 - 13513) < 3)
+  if ((version - 13513) < 3)
   {
     ++v128;
   }
 
-  v129 = a5 - 15000;
-  v130 = (a5 - 14021) >= 0x13 && v129 >= 3;
+  v129 = version - 15000;
+  v130 = (version - 14021) >= 0x13 && v129 >= 3;
   v131 = !v130;
   v459 = v131;
   if (!v130)
@@ -25591,7 +25591,7 @@ LABEL_18:
     ++v128;
   }
 
-  v132 = a5 < 14043 || (a5 & 0x7FFFFFF8) == 15000;
+  v132 = version < 14043 || (version & 0x7FFFFFF8) == 15000;
   v133 = v132;
   v460 = v133;
   if (v132)
@@ -25599,7 +25599,7 @@ LABEL_18:
     ++v128;
   }
 
-  v134 = a5 >= 14044 && v129 >= 9;
+  v134 = version >= 14044 && v129 >= 9;
   v135 = !v134;
   v461 = v135;
   if (!v134)
@@ -25607,7 +25607,7 @@ LABEL_18:
     ++v128;
   }
 
-  v136 = a5 >= 14045 && v129 >= 0xA;
+  v136 = version >= 14045 && v129 >= 0xA;
   v137 = !v136;
   v464 = v137;
   if (!v136)
@@ -25615,7 +25615,7 @@ LABEL_18:
     ++v128;
   }
 
-  v138 = (a5 - 14040) >= 6 && (a5 - 15003) >= 8;
+  v138 = (version - 14040) >= 6 && (version - 15003) >= 8;
   v139 = !v138;
   v466 = v139;
   if (!v138)
@@ -25623,7 +25623,7 @@ LABEL_18:
     ++v128;
   }
 
-  v140 = a5 >= 14047 && v129 >= 0xD;
+  v140 = version >= 14047 && v129 >= 0xD;
   v141 = !v140;
   v468 = v141;
   if (!v140)
@@ -25631,7 +25631,7 @@ LABEL_18:
     ++v128;
   }
 
-  v142 = a5 >= 14051 && v129 >= 0x10;
+  v142 = version >= 14051 && v129 >= 0x10;
   v143 = !v142;
   v471 = v143;
   if (!v142)
@@ -25641,15 +25641,15 @@ LABEL_18:
 
   v458 = v127;
   v144 = v128 + v127 + v122 + v126;
-  if ((a5 - 14001) < 0x3A || v129 <= 0x15)
+  if ((version - 14001) < 0x3A || v129 <= 0x15)
   {
-    v145 = [(PLModelMigrator *)self options];
-    if (v145)
+    options = [(PLModelMigrator *)self options];
+    if (options)
     {
       v146 = MEMORY[0x1E69BF2A0];
-      v147 = [(PLModelMigrator *)self pathManager];
-      v148 = [v147 libraryURL];
-      v469 = [v146 isSystemPhotoLibraryURL:v148] ^ 1;
+      pathManager4 = [(PLModelMigrator *)self pathManager];
+      libraryURL = [pathManager4 libraryURL];
+      v469 = [v146 isSystemPhotoLibraryURL:libraryURL] ^ 1;
     }
 
     else
@@ -25657,14 +25657,14 @@ LABEL_18:
       v469 = 0;
     }
 
-    v149 = [(PLModelMigrator *)self options];
-    if (v149)
+    options2 = [(PLModelMigrator *)self options];
+    if (options2)
     {
-      v150 = v149;
+      v150 = options2;
       v151 = MEMORY[0x1E69BF2A0];
-      v152 = [(PLModelMigrator *)self pathManager];
-      v153 = [v152 libraryURL];
-      LOBYTE(v151) = [v151 isSystemPhotoLibraryURL:v153];
+      pathManager5 = [(PLModelMigrator *)self pathManager];
+      libraryURL2 = [pathManager5 libraryURL];
+      LOBYTE(v151) = [v151 isSystemPhotoLibraryURL:libraryURL2];
 
       v144 += (v151 & 1) == 0;
     }
@@ -25675,11 +25675,11 @@ LABEL_18:
     v469 = 0;
   }
 
-  v154 = [(PLModelMigrator *)self pathManager];
-  v155 = [(PLThumbnailManagerCore *)PLThumbnailManager requiredThumbnailResetTypeWithPathManager:v154 comparedToConfigPhase:1];
+  pathManager6 = [(PLModelMigrator *)self pathManager];
+  v155 = [(PLThumbnailManagerCore *)PLThumbnailManager requiredThumbnailResetTypeWithPathManager:pathManager6 comparedToConfigPhase:1];
 
   v156 = v155 - 1;
-  if (a5 >= 15059)
+  if (version >= 15059)
   {
     v157 = 1;
   }
@@ -25689,8 +25689,8 @@ LABEL_18:
     v157 = 2;
   }
 
-  v158 = a5 >= 14060 && v129 >= 0x17;
-  v159 = vdupq_n_s32(a5);
+  v158 = version >= 14060 && v129 >= 0x17;
+  v159 = vdupq_n_s32(version);
   v160 = !v158;
   v462 = v160;
   v161 = vorrq_s8(vcgtq_s32(xmmword_19C60AF70, v159), vcgtq_u32(xmmword_19C60AF80, vdupq_n_s32(v129)));
@@ -25703,9 +25703,9 @@ LABEL_18:
     v164 = v163 + 1;
   }
 
-  v165 = a5 >= 14087 && v129 >= 0x1E;
+  v165 = version >= 14087 && v129 >= 0x1E;
   v166 = !v165;
-  v167 = a5 - 14000;
+  v167 = version - 14000;
   if (v165)
   {
     v168 = 1;
@@ -25730,7 +25730,7 @@ LABEL_18:
     v168 = v166;
   }
 
-  v172 = a5 >= 14204 && v129 >= 0x32;
+  v172 = version >= 14204 && v129 >= 0x32;
   v173 = !v172;
   if (v172)
   {
@@ -25756,7 +25756,7 @@ LABEL_18:
     v177 = v174;
   }
 
-  v178 = a5 >= 14205 && v129 >= 0x34;
+  v178 = version >= 14205 && v129 >= 0x34;
   v179 = !v178;
   if (v178)
   {
@@ -25768,7 +25768,7 @@ LABEL_18:
     v180 = 2;
   }
 
-  v182 = a5 < 14201 || v129 < 0x2D || v482 == 10124;
+  v182 = version < 14201 || v129 < 0x2D || v482 == 10124;
   v422 = v155;
   v183 = v182 || v155 == 2;
   v184 = v183;
@@ -25791,17 +25791,17 @@ LABEL_18:
 
   v186 = v164 + v168 + v177 + v180 + v185 + v157;
   v187 = [PLModelMigrationActionProcessor alloc];
-  v188 = [(PLModelMigrator *)self pathManager];
-  v189 = [(PLModelMigrator *)self analyticsEventManager];
-  v190 = [(PLModelMigrator *)self migrationLogger];
-  v191 = [(PLModelMigrationActionProcessor *)v187 initWithUUID:v503 pathManager:v188 migrationActionType:2 analyticsEventManager:v189 logger:v190 progressUnitCount:v186];
+  pathManager7 = [(PLModelMigrator *)self pathManager];
+  analyticsEventManager = [(PLModelMigrator *)self analyticsEventManager];
+  migrationLogger2 = [(PLModelMigrator *)self migrationLogger];
+  v191 = [(PLModelMigrationActionProcessor *)v187 initWithUUID:dCopy pathManager:pathManager7 migrationActionType:2 analyticsEventManager:analyticsEventManager logger:migrationLogger2 progressUnitCount:v186];
 
-  v192 = [(PLModelMigrationActionProcessor *)v191 progress];
+  progress = [(PLModelMigrationActionProcessor *)v191 progress];
 
-  if (v192)
+  if (progress)
   {
-    v193 = [(PLModelMigrationActionProcessor *)v191 progress];
-    [v480 addChild:v193 withPendingUnitCount:a7];
+    progress2 = [(PLModelMigrationActionProcessor *)v191 progress];
+    [progressCopy addChild:progress2 withPendingUnitCount:count];
   }
 
   if ([(PLModelMigrator *)self _shouldTriggerLightweightMigrationFailureForInternalTesting])
@@ -25814,10 +25814,10 @@ LABEL_18:
   v934[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke;
   v934[3] = &unk_1E7568D08;
   v934[4] = self;
-  v194 = v428;
+  v194 = storeCopy;
   v935 = v194;
   v936 = v423 & 1;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Delete iCloud restore synced/shared content" ifRequired:v425 block:v934];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Delete iCloud restore synced/shared content" ifRequired:isDeviceRestoreSupported block:v934];
   v932[0] = MEMORY[0x1E69E9820];
   v932[1] = 3221225472;
   v932[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_461;
@@ -25825,7 +25825,7 @@ LABEL_18:
   v932[4] = self;
   v195 = v194;
   v933 = v195;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Post processing from 6006" ifRequired:a5 == 6006 block:v932];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Post processing from 6006" ifRequired:version == 6006 block:v932];
   v930[0] = MEMORY[0x1E69E9820];
   v930[1] = 3221225472;
   v930[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_2;
@@ -25841,7 +25841,7 @@ LABEL_18:
   v927[4] = self;
   v197 = v196;
   v928 = v197;
-  v929 = (a5 - 16040) < 0x8D;
+  v929 = (version - 16040) < 0x8D;
   [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Rebuilding all moments after lightweight migration." ifRequired:v421 block:v927];
   v924[0] = MEMORY[0x1E69E9820];
   v924[1] = 3221225472;
@@ -25850,8 +25850,8 @@ LABEL_18:
   v924[4] = self;
   v198 = v197;
   v925 = v198;
-  v926 = a5 < 13340;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Adding UUIDs to AlbumLists and MomentLists" ifRequired:a5 < 8006 block:v924];
+  v926 = version < 13340;
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Adding UUIDs to AlbumLists and MomentLists" ifRequired:version < 8006 block:v924];
   v922[0] = MEMORY[0x1E69E9820];
   v922[1] = 3221225472;
   v922[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_2_480;
@@ -25859,7 +25859,7 @@ LABEL_18:
   v922[4] = self;
   v199 = v198;
   v923 = v199;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Generating location hashes for assets" ifRequired:a5 < 8008 block:v922];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Generating location hashes for assets" ifRequired:version < 8008 block:v922];
   v920[0] = MEMORY[0x1E69E9820];
   v920[1] = 3221225472;
   v920[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_3_484;
@@ -25875,7 +25875,7 @@ LABEL_18:
   v918[4] = self;
   v201 = v200;
   v919 = v201;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Setting up root folder" ifRequired:a5 < 8011 block:v918];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Setting up root folder" ifRequired:version < 8011 block:v918];
   v916[0] = MEMORY[0x1E69E9820];
   v916[1] = 3221225472;
   v916[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_5;
@@ -25892,7 +25892,7 @@ LABEL_18:
   v913[4] = self;
   v203 = v202;
   v914 = v203;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Migrating SLM files" ifRequired:a5 < 8027 block:v913];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Migrating SLM files" ifRequired:version < 8027 block:v913];
   v910[0] = MEMORY[0x1E69E9820];
   v910[1] = 3221225472;
   v910[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_499;
@@ -25901,7 +25901,7 @@ LABEL_18:
   v910[4] = self;
   v204 = v203;
   v911 = v204;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Persisting place annotation data" ifRequired:a5 < 9201 block:v910];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Persisting place annotation data" ifRequired:version < 9201 block:v910];
   v907[0] = MEMORY[0x1E69E9820];
   v907[1] = 3221225472;
   v907[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_504;
@@ -25919,7 +25919,7 @@ LABEL_18:
   v904[4] = self;
   v206 = v205;
   v905 = v206;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Generating addedDate for assets" ifRequired:a5 < 8029 block:v904];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Generating addedDate for assets" ifRequired:version < 8029 block:v904];
   v902[0] = MEMORY[0x1E69E9820];
   v902[1] = 3221225472;
   v902[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_514;
@@ -25927,7 +25927,7 @@ LABEL_18:
   v902[4] = self;
   v207 = v206;
   v903 = v207;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Populating adjustmentsState" ifRequired:a5 < 8030 block:v902];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Populating adjustmentsState" ifRequired:version < 8030 block:v902];
   v899[0] = MEMORY[0x1E69E9820];
   v899[1] = 3221225472;
   v899[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_2_518;
@@ -25936,7 +25936,7 @@ LABEL_18:
   v899[4] = self;
   v208 = v207;
   v900 = v208;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fixing video dimensions" ifRequired:a5 < 8033 block:v899];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fixing video dimensions" ifRequired:version < 8033 block:v899];
   v896[0] = MEMORY[0x1E69E9820];
   v896[1] = 3221225472;
   v896[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_523;
@@ -25945,7 +25945,7 @@ LABEL_18:
   v896[4] = self;
   v209 = v208;
   v897 = v209;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fixing orientations previously corrupted by adjustment migration" ifRequired:(a5 - 8047) < 4 block:v896];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fixing orientations previously corrupted by adjustment migration" ifRequired:(version - 8047) < 4 block:v896];
   v894[0] = MEMORY[0x1E69E9820];
   v894[1] = 3221225472;
   v894[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_528;
@@ -25953,7 +25953,7 @@ LABEL_18:
   v894[4] = self;
   v210 = v209;
   v895 = v210;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fixing album order in Albums list." ifRequired:a5 < 8052 block:v894];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fixing album order in Albums list." ifRequired:version < 8052 block:v894];
   v892[0] = MEMORY[0x1E69E9820];
   v892[1] = 3221225472;
   v892[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_2_532;
@@ -25961,7 +25961,7 @@ LABEL_18:
   v892[4] = self;
   v211 = v210;
   v893 = v211;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fixing orientation of images in Shared Photo Streams" ifRequired:a5 < 8058 block:v892];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fixing orientation of images in Shared Photo Streams" ifRequired:version < 8058 block:v892];
   v890[0] = MEMORY[0x1E69E9820];
   v890[1] = 3221225472;
   v890[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_3_536;
@@ -25969,7 +25969,7 @@ LABEL_18:
   v890[4] = self;
   v212 = v211;
   v891 = v212;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fixing broken burst picks" ifRequired:a5 < 8045 block:v890];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fixing broken burst picks" ifRequired:version < 8045 block:v890];
   v887[0] = MEMORY[0x1E69E9820];
   v887[1] = 3221225472;
   v887[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_4_540;
@@ -25987,7 +25987,7 @@ LABEL_18:
   v884[4] = self;
   v214 = v213;
   v885 = v214;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fixing HEIF assets with incorrect metadata" ifRequired:a5 < 11068 block:v884];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fixing HEIF assets with incorrect metadata" ifRequired:version < 11068 block:v884];
   v880[0] = MEMORY[0x1E69E9820];
   v880[1] = 3221225472;
   v880[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_549;
@@ -26005,7 +26005,7 @@ LABEL_18:
   v878[4] = self;
   v216 = v215;
   v879 = v216;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Verifying cloud assets local availability" ifRequired:a5 < 8061 block:v878];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Verifying cloud assets local availability" ifRequired:version < 8061 block:v878];
   v877[0] = MEMORY[0x1E69E9820];
   v877[1] = 3221225472;
   v877[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_3_557;
@@ -26019,7 +26019,7 @@ LABEL_18:
   v875[4] = self;
   v217 = v216;
   v876 = v217;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Removing events from database" ifRequired:a5 < 8046 block:v875];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Removing events from database" ifRequired:version < 8046 block:v875];
   v873[0] = MEMORY[0x1E69E9820];
   v873[1] = 3221225472;
   v873[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_5_565;
@@ -26035,7 +26035,7 @@ LABEL_18:
   v871[4] = self;
   v219 = v218;
   v872 = v219;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fixinf multiple master relationships" ifRequired:a5 < 8064 block:v871];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fixinf multiple master relationships" ifRequired:version < 8064 block:v871];
   v869[0] = MEMORY[0x1E69E9820];
   v869[1] = 3221225472;
   v869[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_577;
@@ -26043,7 +26043,7 @@ LABEL_18:
   v869[4] = self;
   v220 = v219;
   v870 = v220;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Repersist duplicated originals" ifRequired:a5 < 8065 block:v869];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Repersist duplicated originals" ifRequired:version < 8065 block:v869];
   v866[0] = MEMORY[0x1E69E9820];
   v866[1] = 3221225472;
   v866[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_2_581;
@@ -26066,7 +26066,7 @@ LABEL_18:
   v863[4] = self;
   v222 = v221;
   v864 = v222;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Resetting orderKey for albums" ifRequired:a5 < 8304 block:v863];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Resetting orderKey for albums" ifRequired:version < 8304 block:v863];
   v861[0] = MEMORY[0x1E69E9820];
   v861[1] = 3221225472;
   v861[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_3_594;
@@ -26074,7 +26074,7 @@ LABEL_18:
   v861[4] = self;
   v223 = v222;
   v862 = v223;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fixing duplicate assets" ifRequired:a5 < 8312 block:v861];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fixing duplicate assets" ifRequired:version < 8312 block:v861];
   v859[0] = MEMORY[0x1E69E9820];
   v859[1] = 3221225472;
   v859[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_4_598;
@@ -26082,7 +26082,7 @@ LABEL_18:
   v859[4] = self;
   v224 = v223;
   v860 = v224;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fixing visible single burst assets" ifRequired:a5 < 9001 block:v859];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fixing visible single burst assets" ifRequired:version < 9001 block:v859];
   v857[0] = MEMORY[0x1E69E9820];
   v857[1] = 3221225472;
   v857[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_5_602;
@@ -26098,7 +26098,7 @@ LABEL_18:
   v855[4] = self;
   v226 = v225;
   v856 = v226;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fixing sort ascending for album and folder" ifRequired:a5 < 9004 block:v855];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fixing sort ascending for album and folder" ifRequired:version < 9004 block:v855];
   v851[0] = MEMORY[0x1E69E9820];
   v851[1] = 3221225472;
   v851[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_7;
@@ -26116,7 +26116,7 @@ LABEL_18:
   v849[4] = self;
   v228 = v227;
   v850 = v228;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Recovering single burst photos." ifRequired:a5 < 9010 block:v849];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Recovering single burst photos." ifRequired:version < 9010 block:v849];
   v847[0] = MEMORY[0x1E69E9820];
   v847[1] = 3221225472;
   v847[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_2_619;
@@ -26124,7 +26124,7 @@ LABEL_18:
   v847[4] = self;
   v229 = v228;
   v848 = v229;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Populating adjustmentTimestamp on assets." ifRequired:a5 < 9011 block:v847];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Populating adjustmentTimestamp on assets." ifRequired:version < 9011 block:v847];
   v844[0] = MEMORY[0x1E69E9820];
   v844[1] = 3221225472;
   v844[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_3_623;
@@ -26133,7 +26133,7 @@ LABEL_18:
   v844[4] = self;
   v230 = v229;
   v845 = v230;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fixing incorrect added date." ifRequired:(a5 < 8029) ^ (a5 < 9038) block:v844];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fixing incorrect added date." ifRequired:(version < 8029) ^ (version < 9038) block:v844];
   v842[0] = MEMORY[0x1E69E9820];
   v842[1] = 3221225472;
   v842[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_628;
@@ -26141,7 +26141,7 @@ LABEL_18:
   v842[4] = self;
   v231 = v230;
   v843 = v231;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Adding Camera capture device." ifRequired:a5 < 9037 block:v842];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Adding Camera capture device." ifRequired:version < 9037 block:v842];
   v840[0] = MEMORY[0x1E69E9820];
   v840[1] = 3221225472;
   v840[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_2_632;
@@ -26149,7 +26149,7 @@ LABEL_18:
   v840[4] = self;
   v232 = v231;
   v841 = v232;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Tagging screenshots." ifRequired:a5 < 9023 block:v840];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Tagging screenshots." ifRequired:version < 9023 block:v840];
   v838[0] = MEMORY[0x1E69E9820];
   v838[1] = 3221225472;
   v838[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_3_636;
@@ -26173,7 +26173,7 @@ LABEL_18:
   v834[4] = self;
   v235 = v234;
   v835 = v235;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Adding cloud kindSubtype and Burst flags." ifRequired:a5 < 9041 block:v834];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Adding cloud kindSubtype and Burst flags." ifRequired:version < 9041 block:v834];
   v832[0] = MEMORY[0x1E69E9820];
   v832[1] = 3221225472;
   v832[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_6_648;
@@ -26181,7 +26181,7 @@ LABEL_18:
   v832[4] = self;
   v236 = v235;
   v833 = v236;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fixup itemIdentifier on videocmpl resources" ifRequired:a5 < 9042 block:v832];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fixup itemIdentifier on videocmpl resources" ifRequired:version < 9042 block:v832];
   v830[0] = MEMORY[0x1E69E9820];
   v830[1] = 3221225472;
   v830[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_7_652;
@@ -26197,7 +26197,7 @@ LABEL_18:
   v828[4] = self;
   v238 = v237;
   v829 = v238;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fixup empty local path for video resources" ifRequired:a5 < 9048 block:v828];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fixup empty local path for video resources" ifRequired:version < 9048 block:v828];
   v826[0] = MEMORY[0x1E69E9820];
   v826[1] = 3221225472;
   v826[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_9;
@@ -26205,19 +26205,19 @@ LABEL_18:
   v826[4] = self;
   v239 = v238;
   v827 = v239;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Persist videoCompl properties" ifRequired:a5 < 9046 block:v826];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Persist videoCompl properties" ifRequired:version < 9046 block:v826];
   v825[0] = MEMORY[0x1E69E9820];
   v825[1] = 3221225472;
   v825[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_10;
   v825[3] = &unk_1E7573368;
   v825[4] = self;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Clean out invalid asset <--> album mapping records." ifRequired:a5 < 9047 block:v825];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Clean out invalid asset <--> album mapping records." ifRequired:version < 9047 block:v825];
   v824[0] = MEMORY[0x1E69E9820];
   v824[1] = 3221225472;
   v824[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_11;
   v824[3] = &unk_1E7573368;
   v824[4] = self;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Applying data protection to DCIM (B->C)" ifRequired:a5 < 9204 block:v824];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Applying data protection to DCIM (B->C)" ifRequired:version < 9204 block:v824];
   v822[0] = MEMORY[0x1E69E9820];
   v822[1] = 3221225472;
   v822[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_12;
@@ -26225,7 +26225,7 @@ LABEL_18:
   v822[4] = self;
   v240 = v239;
   v823 = v240;
-  v241 = a5 < 9205;
+  v241 = version < 9205;
   [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Resetting failed assets" ifRequired:v241 block:v822];
   v820[0] = MEMORY[0x1E69E9820];
   v820[1] = 3221225472;
@@ -26250,7 +26250,7 @@ LABEL_18:
   v816[4] = self;
   v244 = v243;
   v817 = v244;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fix cloudMaster cloudLocalState" ifRequired:a5 < 9302 block:v816];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fix cloudMaster cloudLocalState" ifRequired:version < 9302 block:v816];
   v814[0] = MEMORY[0x1E69E9820];
   v814[1] = 3221225472;
   v814[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_16;
@@ -26258,7 +26258,7 @@ LABEL_18:
   v814[4] = self;
   v245 = v244;
   v815 = v245;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Populating representative assets" ifRequired:a5 < 10027 block:v814];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Populating representative assets" ifRequired:version < 10027 block:v814];
   v812[0] = MEMORY[0x1E69E9820];
   v812[1] = 3221225472;
   v812[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_17;
@@ -26274,7 +26274,7 @@ LABEL_18:
   v810[4] = self;
   v247 = v246;
   v811 = v247;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fixing up unknown analysis states" ifRequired:a5 < 10070 block:v810];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fixing up unknown analysis states" ifRequired:version < 10070 block:v810];
   v808[0] = MEMORY[0x1E69E9820];
   v808[1] = 3221225472;
   v808[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_19;
@@ -26282,7 +26282,7 @@ LABEL_18:
   v808[4] = self;
   v248 = v247;
   v809 = v248;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fixing up mismatched analysis state uuids" ifRequired:(a5 & 0xFFFFFFFC) == 10068 block:v808];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fixing up mismatched analysis state uuids" ifRequired:(version & 0xFFFFFFFC) == 10068 block:v808];
   v806[0] = MEMORY[0x1E69E9820];
   v806[1] = 3221225472;
   v806[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_20;
@@ -26290,7 +26290,7 @@ LABEL_18:
   v806[4] = self;
   v249 = v248;
   v807 = v249;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Touching analysis state sort tokens" ifRequired:a5 < 10079 block:v806];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Touching analysis state sort tokens" ifRequired:version < 10079 block:v806];
   v804[0] = MEMORY[0x1E69E9820];
   v804[1] = 3221225472;
   v804[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_21;
@@ -26298,7 +26298,7 @@ LABEL_18:
   v804[4] = self;
   v250 = v249;
   v805 = v250;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Populating latitude and longitude in assets" ifRequired:a5 < 10036 block:v804];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Populating latitude and longitude in assets" ifRequired:version < 10036 block:v804];
   v802[0] = MEMORY[0x1E69E9820];
   v802[1] = 3221225472;
   v802[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_22;
@@ -26306,7 +26306,7 @@ LABEL_18:
   v802[4] = self;
   v251 = v250;
   v803 = v251;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Forcing file system persistence for memories" ifRequired:a5 < 10041 block:v802];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Forcing file system persistence for memories" ifRequired:version < 10041 block:v802];
   v800[0] = MEMORY[0x1E69E9820];
   v800[1] = 3221225472;
   v800[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_23;
@@ -26322,7 +26322,7 @@ LABEL_18:
   v798[4] = self;
   v253 = v252;
   v799 = v253;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Removing old file system persistence for persons" ifRequired:a5 < 10203 block:v798];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Removing old file system persistence for persons" ifRequired:version < 10203 block:v798];
   v796[0] = MEMORY[0x1E69E9820];
   v796[1] = 3221225472;
   v796[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_25;
@@ -26330,7 +26330,7 @@ LABEL_18:
   v796[4] = self;
   v254 = v253;
   v797 = v254;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Populating asset's filename with nil originalFilename" ifRequired:a5 < 11052 block:v796];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Populating asset's filename with nil originalFilename" ifRequired:version < 11052 block:v796];
   v794[0] = MEMORY[0x1E69E9820];
   v794[1] = 3221225472;
   v794[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_712;
@@ -26338,7 +26338,7 @@ LABEL_18:
   v794[4] = self;
   v255 = v254;
   v795 = v255;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Flattening unknown custom rendered values (0 or 1) to 0" ifRequired:a5 < 10065 block:v794];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Flattening unknown custom rendered values (0 or 1) to 0" ifRequired:version < 10065 block:v794];
   v792[0] = MEMORY[0x1E69E9820];
   v792[1] = 3221225472;
   v792[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_2_716;
@@ -26354,7 +26354,7 @@ LABEL_18:
   v790[4] = self;
   v257 = v256;
   v791 = v257;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Deleting all memories" ifRequired:a5 < 10088 block:v790];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Deleting all memories" ifRequired:version < 10088 block:v790];
   v789[0] = MEMORY[0x1E69E9820];
   v789[1] = 3221225472;
   v789[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_4_724;
@@ -26368,7 +26368,7 @@ LABEL_18:
   v787[4] = self;
   v258 = v257;
   v788 = v258;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fixing faceAlgorithmVersion" ifRequired:a5 < 10106 block:v787];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fixing faceAlgorithmVersion" ifRequired:version < 10106 block:v787];
   v785[0] = MEMORY[0x1E69E9820];
   v785[1] = 3221225472;
   v785[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_6_732;
@@ -26384,7 +26384,7 @@ LABEL_18:
   v783[4] = self;
   v260 = v259;
   v784 = v260;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Removing CameraRoll" ifRequired:a5 < 10112 block:v783];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Removing CameraRoll" ifRequired:version < 10112 block:v783];
   v781[0] = MEMORY[0x1E69E9820];
   v781[1] = 3221225472;
   v781[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_8_740;
@@ -26408,7 +26408,7 @@ LABEL_18:
   v777[4] = self;
   v263 = v262;
   v778 = v263;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Updating key asset in memory" ifRequired:a5 < 11000 block:v777];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Updating key asset in memory" ifRequired:version < 11000 block:v777];
   v775[0] = MEMORY[0x1E69E9820];
   v775[1] = 3221225472;
   v775[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_11_752;
@@ -26416,7 +26416,7 @@ LABEL_18:
   v775[4] = self;
   v264 = v263;
   v776 = v264;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Delete orphaned unverified people" ifRequired:a5 < 10123 block:v775];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Delete orphaned unverified people" ifRequired:version < 10123 block:v775];
   v773[0] = MEMORY[0x1E69E9820];
   v773[1] = 3221225472;
   v773[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_12_756;
@@ -26424,7 +26424,7 @@ LABEL_18:
   v773[4] = self;
   v265 = v264;
   v774 = v265;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fixing memories with duplicate assetLists" ifRequired:a5 < 10150 block:v773];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fixing memories with duplicate assetLists" ifRequired:version < 10150 block:v773];
   v771[0] = MEMORY[0x1E69E9820];
   v771[1] = 3221225472;
   v771[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_13_760;
@@ -26440,7 +26440,7 @@ LABEL_18:
   v769[4] = self;
   v267 = v266;
   v770 = v267;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Rebuilding thumbnails for wide gamut captures" ifRequired:a5 < 10206 block:v769];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Rebuilding thumbnails for wide gamut captures" ifRequired:version < 10206 block:v769];
   v766[0] = MEMORY[0x1E69E9820];
   v766[1] = 3221225472;
   v766[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_15_768;
@@ -26466,7 +26466,7 @@ LABEL_18:
   v761[4] = self;
   v270 = v269;
   v762 = v270;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Set playback style for all animated GIFs." ifRequired:a5 < 11061 block:v761];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Set playback style for all animated GIFs." ifRequired:version < 11061 block:v761];
   v759[0] = MEMORY[0x1E69E9820];
   v759[1] = 3221225472;
   v759[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_782;
@@ -26496,7 +26496,7 @@ LABEL_18:
   v754[4] = self;
   v273 = v272;
   v755 = v273;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fix name source const" ifRequired:a5 < 10102 block:v754];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fix name source const" ifRequired:version < 10102 block:v754];
   v752[0] = MEMORY[0x1E69E9820];
   v752[1] = 3221225472;
   v752[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_5_798;
@@ -26504,13 +26504,13 @@ LABEL_18:
   v752[4] = self;
   v274 = v273;
   v753 = v274;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Refresh trigger values" ifRequired:a5 < 10109 block:v752];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Refresh trigger values" ifRequired:version < 10109 block:v752];
   v751[0] = MEMORY[0x1E69E9820];
   v751[1] = 3221225472;
   v751[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_6_802;
   v751[3] = &unk_1E7573368;
   v751[4] = self;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Clear vision worker" ifRequired:a5 < 10204 block:v751];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Clear vision worker" ifRequired:version < 10204 block:v751];
   v749[0] = MEMORY[0x1E69E9820];
   v749[1] = 3221225472;
   v749[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_7_806;
@@ -26518,7 +26518,7 @@ LABEL_18:
   v749[4] = self;
   v275 = v274;
   v750 = v275;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fix rejected key face" ifRequired:a5 < 10207 block:v749];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fix rejected key face" ifRequired:version < 10207 block:v749];
   v747[0] = MEMORY[0x1E69E9820];
   v747[1] = 3221225472;
   v747[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_8_810;
@@ -26534,7 +26534,7 @@ LABEL_18:
   v745[4] = self;
   v277 = v276;
   v746 = v277;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Prompt unknown assets" ifRequired:a5 < 13027 block:v745];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Prompt unknown assets" ifRequired:version < 13027 block:v745];
   v743[0] = MEMORY[0x1E69E9820];
   v743[1] = 3221225472;
   v743[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_10_818;
@@ -26542,7 +26542,7 @@ LABEL_18:
   v743[4] = self;
   v278 = v277;
   v744 = v278;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fix zero trash date" ifRequired:a5 < 11001 block:v743];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fix zero trash date" ifRequired:version < 11001 block:v743];
   v741[0] = MEMORY[0x1E69E9820];
   v741[1] = 3221225472;
   v741[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_11_822;
@@ -26574,7 +26574,7 @@ LABEL_18:
   v735[4] = self;
   v282 = v281;
   v736 = v282;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Populating user keyFacePickSource on Person" ifRequired:a5 < 11022 block:v735];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Populating user keyFacePickSource on Person" ifRequired:version < 11022 block:v735];
   v733[0] = MEMORY[0x1E69E9820];
   v733[1] = 3221225472;
   v733[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_15_838;
@@ -26582,7 +26582,7 @@ LABEL_18:
   v733[4] = self;
   v283 = v282;
   v734 = v283;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Converting nameSource from BOOL to int on DeferredRebuildFace" ifRequired:a5 < 11024 block:v733];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Converting nameSource from BOOL to int on DeferredRebuildFace" ifRequired:version < 11024 block:v733];
   v731[0] = MEMORY[0x1E69E9820];
   v731[1] = 3221225472;
   v731[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_16_842;
@@ -26590,7 +26590,7 @@ LABEL_18:
   v731[4] = self;
   v284 = v283;
   v732 = v284;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Removing duplicated cloud asset guid from the database" ifRequired:a5 < 11025 block:v731];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Removing duplicated cloud asset guid from the database" ifRequired:version < 11025 block:v731];
   v729[0] = MEMORY[0x1E69E9820];
   v729[1] = 3221225472;
   v729[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_17_843;
@@ -26598,7 +26598,7 @@ LABEL_18:
   v729[4] = self;
   v285 = v284;
   v730 = v285;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Removing duplicated cloud asset guid from the database" ifRequired:(a5 - 11022) < 4 block:v729];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Removing duplicated cloud asset guid from the database" ifRequired:(version - 11022) < 4 block:v729];
   v727[0] = MEMORY[0x1E69E9820];
   v727[1] = 3221225472;
   v727[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_18_847;
@@ -26606,7 +26606,7 @@ LABEL_18:
   v727[4] = self;
   v286 = v285;
   v728 = v286;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fixing whitelist owner for pending invitations" ifRequired:(a5 - 10425) < 0x25B block:v727];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fixing whitelist owner for pending invitations" ifRequired:(version - 10425) < 0x25B block:v727];
   v725[0] = MEMORY[0x1E69E9820];
   v725[1] = 3221225472;
   v725[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_19_851;
@@ -26627,12 +26627,12 @@ LABEL_18:
   v719[1] = 3221225472;
   v719[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_21_859;
   v719[3] = &unk_1E7568D80;
-  v721 = a5;
+  versionCopy2 = version;
   v719[4] = self;
   v289 = v288;
   v720 = v289;
   v722 = v440;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Preparing library for faces sync" ifRequired:a5 < 11043 block:v719];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Preparing library for faces sync" ifRequired:version < 11043 block:v719];
   v717[0] = MEMORY[0x1E69E9820];
   v717[1] = 3221225472;
   v717[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_869;
@@ -26640,7 +26640,7 @@ LABEL_18:
   v717[4] = self;
   v290 = v289;
   v718 = v290;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Populate faces with cloudNameSource" ifRequired:a5 < 11047 block:v717];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Populate faces with cloudNameSource" ifRequired:version < 11047 block:v717];
   v715[0] = MEMORY[0x1E69E9820];
   v715[1] = 3221225472;
   v715[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_2_873;
@@ -26648,7 +26648,7 @@ LABEL_18:
   v715[4] = self;
   v291 = v290;
   v716 = v291;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Update playback styles and variations" ifRequired:a5 < 11048 block:v715];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Update playback styles and variations" ifRequired:version < 11048 block:v715];
   v712[0] = MEMORY[0x1E69E9820];
   v712[1] = 3221225472;
   v712[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_3_877;
@@ -26657,7 +26657,7 @@ LABEL_18:
   v712[4] = self;
   v292 = v291;
   v713 = v292;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Identifying variations and new depth adjustments" ifRequired:a5 < 11070 block:v712];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Identifying variations and new depth adjustments" ifRequired:version < 11070 block:v712];
   v710[0] = MEMORY[0x1E69E9820];
   v710[1] = 3221225472;
   v710[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_882;
@@ -26665,7 +26665,7 @@ LABEL_18:
   v710[4] = self;
   v293 = v292;
   v711 = v293;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Populate persons with cloudVerifiedType" ifRequired:a5 < 11049 block:v710];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Populate persons with cloudVerifiedType" ifRequired:version < 11049 block:v710];
   v708[0] = MEMORY[0x1E69E9820];
   v708[1] = 3221225472;
   v708[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_2_886;
@@ -26681,7 +26681,7 @@ LABEL_18:
   v706[4] = self;
   v295 = v294;
   v707 = v295;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Removing untracked person metadata" ifRequired:a5 < 11060 block:v706];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Removing untracked person metadata" ifRequired:version < 11060 block:v706];
   v704[0] = MEMORY[0x1E69E9820];
   v704[1] = 3221225472;
   v704[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_4_894;
@@ -26689,7 +26689,7 @@ LABEL_18:
   v704[4] = self;
   v296 = v295;
   v705 = v296;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Resetting manual order on non-favorite persons" ifRequired:a5 < 11063 block:v704];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Resetting manual order on non-favorite persons" ifRequired:version < 11063 block:v704];
   v703[0] = MEMORY[0x1E69E9820];
   v703[1] = 3221225472;
   v703[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_5_898;
@@ -26703,7 +26703,7 @@ LABEL_18:
   v701[4] = self;
   v297 = v296;
   v702 = v297;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fixing asset master relationship" ifRequired:a5 < 11069 block:v701];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fixing asset master relationship" ifRequired:version < 11069 block:v701];
   v700[0] = MEMORY[0x1E69E9820];
   v700[1] = 3221225472;
   v700[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_7_906;
@@ -26741,7 +26741,7 @@ LABEL_18:
   v692[4] = self;
   v301 = v300;
   v693 = v301;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Puring cloud shared resources" ifRequired:a5 < 11079 block:v692];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Puring cloud shared resources" ifRequired:version < 11079 block:v692];
   v690[0] = MEMORY[0x1E69E9820];
   v690[1] = 3221225472;
   v690[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_931;
@@ -26749,7 +26749,7 @@ LABEL_18:
   v690[4] = self;
   v302 = v301;
   v691 = v302;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Deleting persons without UUID" ifRequired:a5 < 11080 block:v690];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Deleting persons without UUID" ifRequired:version < 11080 block:v690];
   v688[0] = MEMORY[0x1E69E9820];
   v688[1] = 3221225472;
   v688[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_2_935;
@@ -26765,7 +26765,7 @@ LABEL_18:
   v686[4] = self;
   v304 = v303;
   v687 = v304;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fix UTI for slow-mo videos" ifRequired:(a5 - 10075) < 0x3F1 block:v686];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fix UTI for slow-mo videos" ifRequired:(version - 10075) < 0x3F1 block:v686];
   v685[0] = MEMORY[0x1E69E9820];
   v685[1] = 3221225472;
   v685[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_4_943;
@@ -26779,7 +26779,7 @@ LABEL_18:
   v683[4] = self;
   v305 = v304;
   v684 = v305;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Moving cloud shared derivatives" ifRequired:(a5 - 11079) < 0xC block:v683];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Moving cloud shared derivatives" ifRequired:(version - 11079) < 0xC block:v683];
   v681[0] = MEMORY[0x1E69E9820];
   v681[1] = 3221225472;
   v681[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_6_951;
@@ -26787,15 +26787,15 @@ LABEL_18:
   v681[4] = self;
   v306 = v305;
   v682 = v306;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fixing duplicated root folder/orphaned albums" ifRequired:a5 < 11203 block:v681];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fixing duplicated root folder/orphaned albums" ifRequired:version < 11203 block:v681];
   v678[0] = MEMORY[0x1E69E9820];
   v678[1] = 3221225472;
   v678[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_7_955;
   v678[3] = &unk_1E7570878;
   v307 = v306;
   v679 = v307;
-  v680 = self;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Reconsidering saved asset type" ifRequired:a5 < 12035 block:v678];
+  selfCopy = self;
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Reconsidering saved asset type" ifRequired:version < 12035 block:v678];
   v308 = *MEMORY[0x1E69BF6D0];
   v309 = *MEMORY[0x1E69BF710];
   v676[0] = MEMORY[0x1E69E9820];
@@ -26805,15 +26805,15 @@ LABEL_18:
   v676[4] = self;
   v310 = v307;
   v677 = v310;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Resetting and populating internal resources" ifRequired:a5 < 13106 recordTimedCoreAnalyticsEvent:v308 coreAnalyticsEventKey:v309 block:v676];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Resetting and populating internal resources" ifRequired:version < 13106 recordTimedCoreAnalyticsEvent:v308 coreAnalyticsEventKey:v309 block:v676];
   v673[0] = MEMORY[0x1E69E9820];
   v673[1] = 3221225472;
   v673[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_965;
   v673[3] = &unk_1E7570878;
   v311 = v310;
   v674 = v311;
-  v675 = self;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Deleting legacy cloud resources" ifRequired:a5 < 13119 block:v673];
+  selfCopy2 = self;
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Deleting legacy cloud resources" ifRequired:version < 13119 block:v673];
   v671[0] = MEMORY[0x1E69E9820];
   v671[1] = 3221225472;
   v671[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_2_969;
@@ -26821,7 +26821,7 @@ LABEL_18:
   v671[4] = self;
   v312 = v311;
   v672 = v312;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Deleting dummy worker analysis states" ifRequired:a5 < 11200 block:v671];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Deleting dummy worker analysis states" ifRequired:version < 11200 block:v671];
   v669[0] = MEMORY[0x1E69E9820];
   v669[1] = 3221225472;
   v669[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_3_973;
@@ -26829,7 +26829,7 @@ LABEL_18:
   v669[4] = self;
   v313 = v312;
   v670 = v313;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Cleaning up wallpaper remnants" ifRequired:a5 < 12000 block:v669];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Cleaning up wallpaper remnants" ifRequired:version < 12000 block:v669];
   v667[0] = MEMORY[0x1E69E9820];
   v667[1] = 3221225472;
   v667[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_4_977;
@@ -26861,7 +26861,7 @@ LABEL_18:
   v661[4] = self;
   v317 = v316;
   v662 = v317;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Remove invalid importSession albums" ifRequired:a5 < 13036 block:v661];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Remove invalid importSession albums" ifRequired:version < 13036 block:v661];
   v659[0] = MEMORY[0x1E69E9820];
   v659[1] = 3221225472;
   v659[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_2_994;
@@ -26869,7 +26869,7 @@ LABEL_18:
   v659[4] = self;
   v318 = v317;
   v660 = v318;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fix zero dimensions for local raw images" ifRequired:a5 < 13050 block:v659];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fix zero dimensions for local raw images" ifRequired:version < 13050 block:v659];
   v657[0] = MEMORY[0x1E69E9820];
   v657[1] = 3221225472;
   v657[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_3_998;
@@ -26877,7 +26877,7 @@ LABEL_18:
   v657[4] = self;
   v319 = v318;
   v658 = v319;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Remove scenes that are below the previous threshold" ifRequired:a5 < 12036 block:v657];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Remove scenes that are below the previous threshold" ifRequired:version < 12036 block:v657];
   v655[0] = MEMORY[0x1E69E9820];
   v655[1] = 3221225472;
   v655[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_4_1002;
@@ -26918,7 +26918,7 @@ LABEL_18:
   v646[4] = self;
   v324 = v323;
   v647 = v324;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fix CMM assets in DCIM folder with wrong saved asset type" ifRequired:a5 < 13089 block:v646];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fix CMM assets in DCIM folder with wrong saved asset type" ifRequired:version < 13089 block:v646];
   v644[0] = MEMORY[0x1E69E9820];
   v644[1] = 3221225472;
   v644[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_3_1023;
@@ -26926,7 +26926,7 @@ LABEL_18:
   v644[4] = self;
   v325 = v324;
   v645 = v325;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Add UUIDs to existing keywords" ifRequired:a5 < 13099 block:v644];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Add UUIDs to existing keywords" ifRequired:version < 13099 block:v644];
   v642[0] = MEMORY[0x1E69E9820];
   v642[1] = 3221225472;
   v642[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_4_1027;
@@ -26934,7 +26934,7 @@ LABEL_18:
   v642[4] = self;
   v326 = v325;
   v643 = v326;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Update start and end dates for suggestions missing them" ifRequired:a5 < 13103 block:v642];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Update start and end dates for suggestions missing them" ifRequired:version < 13103 block:v642];
   v640[0] = MEMORY[0x1E69E9820];
   v640[1] = 3221225472;
   v640[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_5_1031;
@@ -26942,7 +26942,7 @@ LABEL_18:
   v640[4] = self;
   v327 = v326;
   v641 = v327;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Deleting all orphaned ExtendedAttributes" ifRequired:a5 < 13117 block:v640];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Deleting all orphaned ExtendedAttributes" ifRequired:version < 13117 block:v640];
   v638[0] = MEMORY[0x1E69E9820];
   v638[1] = 3221225472;
   v638[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_6_1035;
@@ -26950,7 +26950,7 @@ LABEL_18:
   v638[4] = self;
   v328 = v327;
   v639 = v328;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Deleting extraneous adjusted full size resource rows" ifRequired:a5 < 13137 block:v638];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Deleting extraneous adjusted full size resource rows" ifRequired:version < 13137 block:v638];
   v636[0] = MEMORY[0x1E69E9820];
   v636[1] = 3221225472;
   v636[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_7_1039;
@@ -26958,7 +26958,7 @@ LABEL_18:
   v636[4] = self;
   v329 = v328;
   v637 = v329;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Updating missing FileSystemVolume.uuid values" ifRequired:a5 < 13152 block:v636];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Updating missing FileSystemVolume.uuid values" ifRequired:version < 13152 block:v636];
   v635[0] = MEMORY[0x1E69E9820];
   v635[1] = 3221225472;
   v635[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_8_1043;
@@ -26972,7 +26972,7 @@ LABEL_18:
   v633[4] = self;
   v330 = v329;
   v634 = v330;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Updating album start/end dates" ifRequired:a5 < 13187 block:v633];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Updating album start/end dates" ifRequired:version < 13187 block:v633];
   v632[0] = MEMORY[0x1E69E9820];
   v632[1] = 3221225472;
   v632[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_10_1051;
@@ -26986,7 +26986,7 @@ LABEL_18:
   v630[4] = self;
   v331 = v330;
   v631 = v331;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fixing kindSubtype for live photos with LoopingVideo playbackStyle" ifRequired:a5 < 13191 block:v630];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fixing kindSubtype for live photos with LoopingVideo playbackStyle" ifRequired:version < 13191 block:v630];
   v628[0] = MEMORY[0x1E69E9820];
   v628[1] = 3221225472;
   v628[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_12_1059;
@@ -26994,7 +26994,7 @@ LABEL_18:
   v628[4] = self;
   v332 = v331;
   v629 = v332;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fixing white balance values" ifRequired:a5 < 13193 block:v628];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fixing white balance values" ifRequired:version < 13193 block:v628];
   v626[0] = MEMORY[0x1E69E9820];
   v626[1] = 3221225472;
   v626[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_13_1063;
@@ -27002,7 +27002,7 @@ LABEL_18:
   v626[4] = self;
   v333 = v332;
   v627 = v333;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Removing unneeded analysis state table entries" ifRequired:a5 < 13195 block:v626];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Removing unneeded analysis state table entries" ifRequired:version < 13195 block:v626];
   v624[0] = MEMORY[0x1E69E9820];
   v624[1] = 3221225472;
   v624[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_14_1067;
@@ -27010,7 +27010,7 @@ LABEL_18:
   v624[4] = self;
   v334 = v333;
   v625 = v334;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fixing UTI for RD Migration" ifRequired:a5 < 13196 block:v624];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fixing UTI for RD Migration" ifRequired:version < 13196 block:v624];
   v621[0] = MEMORY[0x1E69E9820];
   v621[1] = 3221225472;
   v621[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_15_1071;
@@ -27027,7 +27027,7 @@ LABEL_18:
   v619[4] = self;
   v336 = v335;
   v620 = v336;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fixing location values" ifRequired:a5 < 13200 block:v619];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fixing location values" ifRequired:version < 13200 block:v619];
   v617[0] = MEMORY[0x1E69E9820];
   v617[1] = 3221225472;
   v617[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_17_1079;
@@ -27035,7 +27035,7 @@ LABEL_18:
   v617[4] = self;
   v337 = v336;
   v618 = v337;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Invalidating reverse geocoding data" ifRequired:a5 < 13307 block:v617];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Invalidating reverse geocoding data" ifRequired:version < 13307 block:v617];
   v615[0] = MEMORY[0x1E69E9820];
   v615[1] = 3221225472;
   v615[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_18_1083;
@@ -27043,7 +27043,7 @@ LABEL_18:
   v615[4] = self;
   v338 = v337;
   v616 = v338;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fixing has location query on Smart Album" ifRequired:a5 < 13222 block:v615];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fixing has location query on Smart Album" ifRequired:version < 13222 block:v615];
   v613[0] = MEMORY[0x1E69E9820];
   v613[1] = 3221225472;
   v613[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_19_1087;
@@ -27057,7 +27057,7 @@ LABEL_18:
   v612[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_20_1091;
   v612[3] = &unk_1E7573368;
   v612[4] = self;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Migrate purgeable resources" ifRequired:a5 < 13260 block:v612];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Migrate purgeable resources" ifRequired:version < 13260 block:v612];
   v610[0] = MEMORY[0x1E69E9820];
   v610[1] = 3221225472;
   v610[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_21_1095;
@@ -27065,7 +27065,7 @@ LABEL_18:
   v610[4] = self;
   v340 = v339;
   v611 = v340;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Renumbering localAvailability/localAvailabilityTargets" ifRequired:a5 < 13242 block:v610];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Renumbering localAvailability/localAvailabilityTargets" ifRequired:version < 13242 block:v610];
   v607[0] = MEMORY[0x1E69E9820];
   v607[1] = 3221225472;
   v607[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_22_1099;
@@ -27098,7 +27098,7 @@ LABEL_18:
   v601[4] = self;
   v344 = v343;
   v602 = v344;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Moving 1k resources out of masters dir" ifRequired:a5 < 13301 block:v601];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Moving 1k resources out of masters dir" ifRequired:version < 13301 block:v601];
   v599[0] = MEMORY[0x1E69E9820];
   v599[1] = 3221225472;
   v599[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_26;
@@ -27121,13 +27121,13 @@ LABEL_18:
   v596[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_28;
   v596[3] = &unk_1E7573368;
   v596[4] = self;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Relocate CPL marker files" ifRequired:a5 < 13304 block:v596];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Relocate CPL marker files" ifRequired:version < 13304 block:v596];
   v595[0] = MEMORY[0x1E69E9820];
   v595[1] = 3221225472;
   v595[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_29;
   v595[3] = &unk_1E7573368;
   v595[4] = self;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Cleanup legacy files" ifRequired:a5 < 13309 block:v595];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Cleanup legacy files" ifRequired:version < 13309 block:v595];
   v593[0] = MEMORY[0x1E69E9820];
   v593[1] = 3221225472;
   v593[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_30;
@@ -27135,7 +27135,7 @@ LABEL_18:
   v593[4] = self;
   v348 = v347;
   v594 = v348;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Relocate original UBF files" ifRequired:a5 < 13323 block:v593];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Relocate original UBF files" ifRequired:version < 13323 block:v593];
   v591[0] = MEMORY[0x1E69E9820];
   v591[1] = 3221225472;
   v591[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_31;
@@ -27143,7 +27143,7 @@ LABEL_18:
   v591[4] = self;
   v349 = v348;
   v592 = v349;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"verifying and fixing local availability for resources with broken fileIDs..." ifRequired:a5 < 13351 block:v591];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"verifying and fixing local availability for resources with broken fileIDs..." ifRequired:version < 13351 block:v591];
   v589[0] = MEMORY[0x1E69E9820];
   v589[1] = 3221225472;
   v589[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_32;
@@ -27197,7 +27197,7 @@ LABEL_18:
   v578[4] = self;
   v355 = v354;
   v579 = v355;
-  v356 = a5 < 13533;
+  v356 = version < 13533;
   [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Scavenging for snowplowGroupUUIDs..." ifRequired:v356 block:v578];
   v576[0] = MEMORY[0x1E69E9820];
   v576[1] = 3221225472;
@@ -27206,7 +27206,7 @@ LABEL_18:
   v576[4] = self;
   v357 = v355;
   v577 = v357;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fix invalid post migration filesystem imported assets" ifRequired:(a5 - 13513) < 3 block:v576];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fix invalid post migration filesystem imported assets" ifRequired:(version - 13513) < 3 block:v576];
   v574[0] = MEMORY[0x1E69E9820];
   v574[1] = 3221225472;
   v574[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_40;
@@ -27252,7 +27252,7 @@ LABEL_18:
   v565[4] = self;
   v362 = v361;
   v566 = v362;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Migrating candidate bits to deferred processing candidate bits..." ifRequired:a5 < 14005 block:v565];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Migrating candidate bits to deferred processing candidate bits..." ifRequired:version < 14005 block:v565];
   v563[0] = MEMORY[0x1E69E9820];
   v563[1] = 3221225472;
   v563[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_46;
@@ -27260,7 +27260,7 @@ LABEL_18:
   v563[4] = self;
   v363 = v362;
   v564 = v363;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Moving GPS horizontal accuracy to new attribute..." ifRequired:a5 < 14009 block:v563];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Moving GPS horizontal accuracy to new attribute..." ifRequired:version < 14009 block:v563];
   v561[0] = MEMORY[0x1E69E9820];
   v561[1] = 3221225472;
   v561[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_47;
@@ -27268,7 +27268,7 @@ LABEL_18:
   v561[4] = self;
   v364 = v363;
   v562 = v364;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Reconsidering allowed for analysis on assets marked as not allowed..." ifRequired:a5 < 18083 block:v561];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Reconsidering allowed for analysis on assets marked as not allowed..." ifRequired:version < 18083 block:v561];
   v559[0] = MEMORY[0x1E69E9820];
   v559[1] = 3221225472;
   v559[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_48;
@@ -27276,7 +27276,7 @@ LABEL_18:
   v559[4] = self;
   v365 = v364;
   v560 = v365;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Migrating metadata and migration history..." ifRequired:a5 < 14016 block:v559];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Migrating metadata and migration history..." ifRequired:version < 14016 block:v559];
   v557[0] = MEMORY[0x1E69E9820];
   v557[1] = 3221225472;
   v557[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_49;
@@ -27284,7 +27284,7 @@ LABEL_18:
   v557[4] = self;
   v366 = v365;
   v558 = v366;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Repairing reframe videos without SOC available bit..." ifRequired:a5 < 14021 block:v557];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Repairing reframe videos without SOC available bit..." ifRequired:version < 14021 block:v557];
   v555[0] = MEMORY[0x1E69E9820];
   v555[1] = 3221225472;
   v555[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_50;
@@ -27292,7 +27292,7 @@ LABEL_18:
   v555[4] = self;
   v367 = v366;
   v556 = v367;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fixing avalancheUUID for cloud shared assets..." ifRequired:a5 < 14025 block:v555];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Fixing avalancheUUID for cloud shared assets..." ifRequired:version < 14025 block:v555];
   v553[0] = MEMORY[0x1E69E9820];
   v553[1] = 3221225472;
   v553[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_51;
@@ -27300,7 +27300,7 @@ LABEL_18:
   v553[4] = self;
   v368 = v367;
   v554 = v368;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Regenerating month highlight titles..." ifRequired:a5 < 14027 block:v553];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Regenerating month highlight titles..." ifRequired:version < 14027 block:v553];
   v551[0] = MEMORY[0x1E69E9820];
   v551[1] = 3221225472;
   v551[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_52;
@@ -27308,7 +27308,7 @@ LABEL_18:
   v551[4] = self;
   v369 = v368;
   v552 = v369;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Copying asset description to accessibility description..." ifRequired:a5 < 14032 block:v551];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Copying asset description to accessibility description..." ifRequired:version < 14032 block:v551];
   v549[0] = MEMORY[0x1E69E9820];
   v549[1] = 3221225472;
   v549[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_53;
@@ -27316,7 +27316,7 @@ LABEL_18:
   v549[4] = self;
   v370 = v369;
   v550 = v370;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Removing all local video key frame resources to revert 14037..." ifRequired:a5 == 14037 block:v549];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Removing all local video key frame resources to revert 14037..." ifRequired:version == 14037 block:v549];
   v547[0] = MEMORY[0x1E69E9820];
   v547[1] = 3221225472;
   v547[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_54;
@@ -27324,7 +27324,7 @@ LABEL_18:
   v547[4] = self;
   v371 = v370;
   v548 = v371;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Removing resource model manual constraint..." ifRequired:a5 < 14039 block:v547];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Removing resource model manual constraint..." ifRequired:version < 14039 block:v547];
   v545[0] = MEMORY[0x1E69E9820];
   v545[1] = 3221225472;
   v545[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_55;
@@ -27476,7 +27476,7 @@ LABEL_18:
   v508[4] = self;
   v389 = v388;
   v509 = v389;
-  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Discard unused custom rendered values" ifRequired:a5 < 15059 block:v508];
+  [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Discard unused custom rendered values" ifRequired:version < 15059 block:v508];
   v506[0] = MEMORY[0x1E69E9820];
   v506[1] = 3221225472;
   v506[2] = __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke_12_1272;
@@ -27493,10 +27493,10 @@ LABEL_18:
   v391 = v390;
   v505 = v391;
   [(PLModelMigrationActionProcessor *)v191 performActionWithName:@"Repairing duplicate singleton fetching albums" ifRequired:1 block:v504];
-  v392 = [MEMORY[0x1E696AC08] defaultManager];
-  v393 = [(PLModelMigrator *)self pathManager];
-  v394 = [v393 privateCacheDirectoryWithSubType:10];
-  [v392 removeItemAtPath:v394 error:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  pathManager8 = [(PLModelMigrator *)self pathManager];
+  v394 = [pathManager8 privateCacheDirectoryWithSubType:10];
+  [defaultManager removeItemAtPath:v394 error:0];
 
   [(PLModelMigrator *)self applyDataProtectionToAllPhotosFilesOnce];
   if ([(PLModelMigrationActionProcessor *)v191 isSuccess])
@@ -27509,9 +27509,9 @@ LABEL_18:
       goto LABEL_587;
     }
 
-    v397 = [(PLModelMigrator *)self migrationLogger];
+    migrationLogger3 = [(PLModelMigrator *)self migrationLogger];
 
-    if (v397)
+    if (migrationLogger3)
     {
       v970 = 0u;
       v971 = 0u;
@@ -27547,7 +27547,7 @@ LABEL_18:
       v398 = PLMigrationGetLog();
       os_log_type_enabled(v398, OS_LOG_TYPE_DEFAULT);
       v937 = 67109376;
-      v938 = a5;
+      versionCopy4 = version;
       v939 = 1024;
       v940 = v420;
       LODWORD(v419) = 14;
@@ -27565,7 +27565,7 @@ LABEL_18:
     if (os_log_type_enabled(v409, OS_LOG_TYPE_DEFAULT))
     {
       v941[0] = 67109376;
-      v941[1] = a5;
+      v941[1] = version;
       LOWORD(v941[2]) = 1024;
       *(&v941[2] + 2) = v420;
       v410 = "Successfully finished post-processing lightweight migration of photo database from version %d to %d.";
@@ -27588,15 +27588,15 @@ LABEL_585:
     goto LABEL_587;
   }
 
-  v407 = [(PLModelMigrator *)self migrationLogger];
+  migrationLogger4 = [(PLModelMigrator *)self migrationLogger];
 
-  if (!v407)
+  if (!migrationLogger4)
   {
     v409 = PLMigrationGetLog();
     if (os_log_type_enabled(v409, OS_LOG_TYPE_ERROR))
     {
       v941[0] = 67109376;
-      v941[1] = a5;
+      v941[1] = version;
       LOWORD(v941[2]) = 1024;
       *(&v941[2] + 2) = v420;
       v410 = "Failed to post-process lightweight migration of photo database from version %d to %d.  Requires full database rebuild.";
@@ -27644,7 +27644,7 @@ LABEL_586:
   v408 = PLMigrationGetLog();
   os_log_type_enabled(v408, OS_LOG_TYPE_ERROR);
   v937 = 67109376;
-  v938 = a5;
+  versionCopy4 = version;
   v939 = 1024;
   v940 = v420;
   LODWORD(v419) = 14;
@@ -27668,9 +27668,9 @@ LABEL_587:
   objc_autoreleasePoolPop(context);
   --postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount__postProcessMigratedStoreGuard;
   [(PLModelMigrator *)self _setIsPostProcessingLightWeightMigration:0];
-  v413 = [(PLModelMigrationActionProcessor *)v191 isSuccess];
+  isSuccess = [(PLModelMigrationActionProcessor *)v191 isSuccess];
 
-  return v413;
+  return isSuccess;
 }
 
 uint64_t __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_progress_progressUnitCount___block_invoke(uint64_t a1)
@@ -30921,12 +30921,12 @@ BOOL __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_pr
   return v2;
 }
 
-- (BOOL)validateModelEntityNames:(id *)a3
+- (BOOL)validateModelEntityNames:(id *)names
 {
   v25 = *MEMORY[0x1E69E9840];
   v4 = +[PLManagedObjectContext managedObjectModel];
-  v5 = [v4 entitiesByName];
-  v6 = [v5 allKeys];
+  entitiesByName = [v4 entitiesByName];
+  allKeys = [entitiesByName allKeys];
 
   v7 = PLXPCStoreAllowedEntityNames();
   v8 = PLXPCStoreDeniedEntityNames();
@@ -30935,7 +30935,7 @@ BOOL __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_pr
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v10 = v6;
+  v10 = allKeys;
   v11 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v11)
   {
@@ -30965,26 +30965,26 @@ BOOL __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_pr
 
   v16 = [v9 count];
   v17 = v16;
-  if (a3 && v16)
+  if (names && v16)
   {
     v18 = v9;
-    *a3 = v9;
+    *names = v9;
   }
 
   return v17 == 0;
 }
 
-- (int64_t)attemptLightweightMigrationFromVersion:(id)a3 onStore:(id)a4 withMetadata:(id)a5 orStoreURL:(id)a6 options:(id)a7 coordinator:(id)a8 migrationPolicy:(unsigned int)a9 error:(id *)a10
+- (int64_t)attemptLightweightMigrationFromVersion:(id)version onStore:(id)store withMetadata:(id)metadata orStoreURL:(id)l options:(id)options coordinator:(id)coordinator migrationPolicy:(unsigned int)policy error:(id *)self0
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v34 = a7;
-  v21 = a8;
-  if (v17)
+  versionCopy = version;
+  storeCopy = store;
+  metadataCopy = metadata;
+  lCopy = l;
+  optionsCopy = options;
+  coordinatorCopy = coordinator;
+  if (versionCopy)
   {
-    if (v19)
+    if (metadataCopy)
     {
       goto LABEL_3;
     }
@@ -30992,23 +30992,23 @@ BOOL __97__PLModelMigrator_postProcessMigratedStore_migrationUUID_fromVersion_pr
 
   else
   {
-    v31 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v31 handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:3037 description:{@"Invalid parameter not satisfying: %@", @"previousStoreVersion", v34}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:3037 description:{@"Invalid parameter not satisfying: %@", @"previousStoreVersion", optionsCopy}];
 
-    if (v19)
+    if (metadataCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v32 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v32 handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:3038 description:{@"Invalid parameter not satisfying: %@", @"storeMetadata"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:3038 description:{@"Invalid parameter not satisfying: %@", @"storeMetadata"}];
 
 LABEL_3:
-  if (!v21)
+  if (!coordinatorCopy)
   {
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v33 handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:3039 description:{@"Invalid parameter not satisfying: %@", @"coordinator"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:3039 description:{@"Invalid parameter not satisfying: %@", @"coordinator"}];
   }
 
   v37 = 0;
@@ -31020,14 +31020,14 @@ LABEL_3:
   v35[2] = 0x3032000000;
   v35[3] = __Block_byref_object_copy__21558;
   v35[4] = __Block_byref_object_dispose__21559;
-  v22 = v18;
+  v22 = storeCopy;
   v36 = v22;
-  v23 = v17;
+  v23 = versionCopy;
   v24 = v22;
-  v25 = v19;
-  v26 = v20;
-  v27 = v21;
-  v28 = v34;
+  v25 = metadataCopy;
+  v26 = lCopy;
+  v27 = coordinatorCopy;
+  v28 = optionsCopy;
   PLRunWithUnfairLock();
   if (*(v38 + 24))
   {
@@ -31511,16 +31511,16 @@ LABEL_49:
   [*(v15 + 32) migrationLoggerClose];
 }
 
-- (void)_updateImportedSavedAssetTypeForFileSystemImportedAsset:(id)a3 type:(unsigned __int8)a4 importAssetKind:(int)a5 isCPLAssetsDirectory:(BOOL)a6 destinationAlbum:(id)a7
+- (void)_updateImportedSavedAssetTypeForFileSystemImportedAsset:(id)asset type:(unsigned __int8)type importAssetKind:(int)kind isCPLAssetsDirectory:(BOOL)directory destinationAlbum:(id)album
 {
-  v8 = a6;
-  v10 = a4;
-  v18 = a3;
-  v11 = a7;
-  if (v11)
+  directoryCopy = directory;
+  typeCopy = type;
+  assetCopy = asset;
+  albumCopy = album;
+  if (albumCopy)
   {
     [MEMORY[0x1E69BF328] maskForPhotoStreamAsset];
-    [v18 savedAssetType];
+    [assetCopy savedAssetType];
     if (PLValidatedSavedAssetTypeApplies())
     {
       goto LABEL_22;
@@ -31528,15 +31528,15 @@ LABEL_49:
   }
 
   [MEMORY[0x1E69BF328] maskForAssetsEligibleForFileSystemImportSavedAssetTypeUpdate];
-  [v18 savedAssetType];
+  [assetCopy savedAssetType];
   if (!PLValidatedSavedAssetTypeApplies())
   {
     goto LABEL_22;
   }
 
-  if (v10 == 1)
+  if (typeCopy == 1)
   {
-    v12 = [v18 isInTrash] ^ 1;
+    v12 = [assetCopy isInTrash] ^ 1;
   }
 
   else
@@ -31545,24 +31545,24 @@ LABEL_49:
   }
 
   v13 = 0;
-  if (a5 > 7)
+  if (kind > 7)
   {
     goto LABEL_20;
   }
 
-  if (((1 << a5) & 0x8D) != 0)
+  if (((1 << kind) & 0x8D) != 0)
   {
     v14 = MEMORY[0x1E69BF328];
     if (!v12)
     {
-      if (v8)
+      if (directoryCopy)
       {
-        v15 = [MEMORY[0x1E69BF328] savedAssetTypeForAssetsInCPLAssetsDirectory];
+        savedAssetTypeForAssetsInCPLAssetsDirectory = [MEMORY[0x1E69BF328] savedAssetTypeForAssetsInCPLAssetsDirectory];
       }
 
       else
       {
-        v15 = [MEMORY[0x1E69BF328] defaultSavedAssetTypeForUnknownFilesystemImportAssets];
+        savedAssetTypeForAssetsInCPLAssetsDirectory = [MEMORY[0x1E69BF328] defaultSavedAssetTypeForUnknownFilesystemImportAssets];
       }
 
       goto LABEL_19;
@@ -31571,14 +31571,14 @@ LABEL_49:
 
   else
   {
-    v16 = v18;
-    if (a5 != 1)
+    v16 = assetCopy;
+    if (kind != 1)
     {
-      if (a5 == 4)
+      if (kind == 4)
       {
-        v17 = [MEMORY[0x1E69BF328] savedAssetTypeForFinderSyncedAsset];
-        v16 = v18;
-        v13 = v17;
+        savedAssetTypeForFinderSyncedAsset = [MEMORY[0x1E69BF328] savedAssetTypeForFinderSyncedAsset];
+        v16 = assetCopy;
+        v13 = savedAssetTypeForFinderSyncedAsset;
       }
 
       goto LABEL_21;
@@ -31587,30 +31587,30 @@ LABEL_49:
     v14 = MEMORY[0x1E69BF328];
     if (!v12)
     {
-      v15 = [MEMORY[0x1E69BF328] savedAssetTypeForImportedByCameraConnectionKit];
+      savedAssetTypeForAssetsInCPLAssetsDirectory = [MEMORY[0x1E69BF328] savedAssetTypeForImportedByCameraConnectionKit];
       goto LABEL_19;
     }
   }
 
-  v15 = [v14 savedAssetTypeForRecoveredAsset];
+  savedAssetTypeForAssetsInCPLAssetsDirectory = [v14 savedAssetTypeForRecoveredAsset];
 LABEL_19:
-  v13 = v15;
+  v13 = savedAssetTypeForAssetsInCPLAssetsDirectory;
 LABEL_20:
-  v16 = v18;
+  v16 = assetCopy;
 LABEL_21:
   [v16 setSavedAssetType:v13];
 LABEL_22:
 }
 
-- (id)_importFileSystemImportAssets:(id)a3 intoLibrary:(id)a4 type:(unsigned __int8)a5 progress:(id)a6
+- (id)_importFileSystemImportAssets:(id)assets intoLibrary:(id)library type:(unsigned __int8)type progress:(id)progress
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [v11 libraryServicesManager];
-  v14 = [v13 wellKnownPhotoLibraryIdentifier];
+  assetsCopy = assets;
+  libraryCopy = library;
+  progressCopy = progress;
+  libraryServicesManager = [libraryCopy libraryServicesManager];
+  wellKnownPhotoLibraryIdentifier = [libraryServicesManager wellKnownPhotoLibraryIdentifier];
 
-  if (v14 == 3)
+  if (wellKnownPhotoLibraryIdentifier == 3)
   {
     v15 = PLMigrationGetLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -31619,27 +31619,27 @@ LABEL_22:
       _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_ERROR, "_importFileSystemImportAssets is unsupported for the syndication photo library", buf, 2u);
     }
 
-    [v12 setCompletedUnitCount:{objc_msgSend(v12, "totalUnitCount")}];
+    [progressCopy setCompletedUnitCount:{objc_msgSend(progressCopy, "totalUnitCount")}];
     v16 = MEMORY[0x1E695E0F0];
   }
 
   else
   {
-    v17 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v18 = objc_autoreleasePoolPush();
-    v19 = [v11 libraryServicesManager];
+    libraryServicesManager2 = [libraryCopy libraryServicesManager];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __75__PLModelMigrator__importFileSystemImportAssets_intoLibrary_type_progress___block_invoke;
     v21[3] = &unk_1E7568CB8;
-    v22 = v11;
-    v23 = self;
-    v24 = v10;
-    v25 = v12;
-    v27 = a5;
-    v16 = v17;
+    v22 = libraryCopy;
+    selfCopy = self;
+    v24 = assetsCopy;
+    v25 = progressCopy;
+    typeCopy = type;
+    v16 = array;
     v26 = v16;
-    [v19 performFileSystemAssetImporterWorkWithLibrary:v22 block:v21];
+    [libraryServicesManager2 performFileSystemAssetImporterWorkWithLibrary:v22 block:v21];
 
     objc_autoreleasePoolPop(v18);
   }
@@ -32141,16 +32141,16 @@ void __75__PLModelMigrator__importFileSystemImportAssets_intoLibrary_type_progre
   [v7 reducePendingItemsCountBy:v6];
 }
 
-- (void)_prepareForImportDeleteCorruptAssetsWithImporter:(id)a3 context:(id)a4
+- (void)_prepareForImportDeleteCorruptAssetsWithImporter:(id)importer context:(id)context
 {
   v100 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 photoLibrary];
-  v8 = [v7 libraryServicesManager];
-  v9 = [v8 wellKnownPhotoLibraryIdentifier];
+  importerCopy = importer;
+  contextCopy = context;
+  photoLibrary = [contextCopy photoLibrary];
+  libraryServicesManager = [photoLibrary libraryServicesManager];
+  wellKnownPhotoLibraryIdentifier = [libraryServicesManager wellKnownPhotoLibraryIdentifier];
 
-  if (v9 == 3)
+  if (wellKnownPhotoLibraryIdentifier == 3)
   {
     v10 = PLMigrationGetLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -32170,8 +32170,8 @@ void __75__PLModelMigrator__importFileSystemImportAssets_intoLibrary_type_progre
   [v14 setResultType:2];
   v15 = objc_alloc_init(MEMORY[0x1E695D5C8]);
   [v15 setName:@"objectID"];
-  v16 = [MEMORY[0x1E696ABC8] expressionForEvaluatedObject];
-  [v15 setExpression:v16];
+  expressionForEvaluatedObject = [MEMORY[0x1E696ABC8] expressionForEvaluatedObject];
+  [v15 setExpression:expressionForEvaluatedObject];
 
   [v15 setExpressionResultType:2000];
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:{v15, @"uuid", @"directory", @"filename", @"savedAssetType", 0}];
@@ -32179,7 +32179,7 @@ void __75__PLModelMigrator__importFileSystemImportAssets_intoLibrary_type_progre
 
   v95 = 0;
   v71 = v14;
-  v18 = [v6 executeFetchRequest:v14 error:&v95];
+  v18 = [contextCopy executeFetchRequest:v14 error:&v95];
   v78 = v95;
   if (!v18)
   {
@@ -32196,7 +32196,7 @@ void __75__PLModelMigrator__importFileSystemImportAssets_intoLibrary_type_progre
 
   v67 = v15;
   v68 = v11;
-  v69 = v5;
+  v69 = importerCopy;
   v74 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v18, "count")}];
   v76 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v18, "count")}];
   v73 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v18, "count")}];
@@ -32208,7 +32208,7 @@ void __75__PLModelMigrator__importFileSystemImportAssets_intoLibrary_type_progre
   v70 = v18;
   obj = v18;
   v19 = [obj countByEnumeratingWithState:&v91 objects:v99 count:16];
-  v79 = v6;
+  v79 = contextCopy;
   if (!v19)
   {
     goto LABEL_41;
@@ -32236,10 +32236,10 @@ void __75__PLModelMigrator__importFileSystemImportAssets_intoLibrary_type_progre
       if (v22 == -100 * (v20 / 0x64))
       {
         v26 = v24;
-        if ([v6 hasChanges])
+        if ([contextCopy hasChanges])
         {
           v90 = v78;
-          v27 = [v6 save:&v90];
+          v27 = [contextCopy save:&v90];
           v28 = v90;
 
           if ((v27 & 1) == 0)
@@ -32268,20 +32268,20 @@ void __75__PLModelMigrator__importFileSystemImportAssets_intoLibrary_type_progre
       v31 = [v23 objectForKey:@"directory"];
       v32 = [v23 objectForKey:@"filename"];
       v33 = [v31 stringByAppendingPathComponent:v32];
-      v34 = [v33 uppercaseString];
+      uppercaseString = [v33 uppercaseString];
 
-      if ([v34 length])
+      if ([uppercaseString length])
       {
         v35 = v81;
         if (!v30)
         {
-          v6 = v79;
+          contextCopy = v79;
           v39 = [v79 existingObjectWithID:v29 error:0];
           v40 = v39;
           if (v39 && ([v39 isDeleted] & 1) == 0)
           {
-            v41 = [MEMORY[0x1E69BF320] UUIDString];
-            [v40 setUuid:v41];
+            uUIDString = [MEMORY[0x1E69BF320] UUIDString];
+            [v40 setUuid:uUIDString];
 
             [v40 persistMetadataToFilesystem];
           }
@@ -32289,9 +32289,9 @@ void __75__PLModelMigrator__importFileSystemImportAssets_intoLibrary_type_progre
           goto LABEL_26;
         }
 
-        v36 = [v76 objectForKey:v34];
+        v36 = [v76 objectForKey:uppercaseString];
 
-        v6 = v79;
+        contextCopy = v79;
         if (v36)
         {
           [v75 addObject:v29];
@@ -32313,16 +32313,16 @@ LABEL_26:
           goto LABEL_33;
         }
 
-        v44 = [MEMORY[0x1E69BF320] UUIDString];
+        uUIDString2 = [MEMORY[0x1E69BF320] UUIDString];
 
-        [v43 setUuid:v44];
+        [v43 setUuid:uUIDString2];
         [v43 persistMetadataToFilesystem];
 
-        v30 = v44;
-        if (v44)
+        v30 = uUIDString2;
+        if (uUIDString2)
         {
 LABEL_32:
-          [v76 setObject:v30 forKey:v34];
+          [v76 setObject:v30 forKey:uppercaseString];
           [v74 addObject:v30];
           [v73 setObject:v29 forKey:v30];
         }
@@ -32341,7 +32341,7 @@ LABEL_32:
           [v75 addObject:v29];
         }
 
-        v6 = v79;
+        contextCopy = v79;
       }
 
 LABEL_33:
@@ -32365,13 +32365,13 @@ LABEL_33:
 
 LABEL_41:
 
-  if ([v6 hasChanges])
+  if ([contextCopy hasChanges])
   {
     v89 = v78;
-    v47 = [v6 save:&v89];
+    v47 = [contextCopy save:&v89];
     v48 = v89;
 
-    v5 = v69;
+    importerCopy = v69;
     v49 = v75;
     if ((v47 & 1) == 0)
     {
@@ -32390,15 +32390,15 @@ LABEL_41:
   else
   {
     v48 = v78;
-    v5 = v69;
+    importerCopy = v69;
     v18 = v70;
     v49 = v75;
   }
 
   v45 = v74;
-  [v5 setExistingUUIDs:v74];
-  [v5 setExistingUUIDsByUppercasePath:v76];
-  [v5 setExistingOIDsByUUID:v73];
+  [importerCopy setExistingUUIDs:v74];
+  [importerCopy setExistingUUIDsByUppercasePath:v76];
+  [importerCopy setExistingOIDsByUUID:v73];
   if ([v49 count])
   {
     v51 = objc_autoreleasePoolPush();
@@ -32410,7 +32410,7 @@ LABEL_41:
     [v54 setPredicate:v55];
 
     v88 = v48;
-    v56 = [v6 executeFetchRequest:v54 error:&v88];
+    v56 = [contextCopy executeFetchRequest:v54 error:&v88];
     v57 = v88;
 
     v11 = v68;
@@ -32453,7 +32453,7 @@ LABEL_41:
           }
 
           while (v62);
-          v6 = v79;
+          contextCopy = v79;
         }
 
         goto LABEL_64;
@@ -32484,10 +32484,10 @@ LABEL_64:
     v11 = v68;
   }
 
-  if ([v6 hasChanges])
+  if ([contextCopy hasChanges])
   {
     v83 = v57;
-    v65 = [v6 save:&v83];
+    v65 = [contextCopy save:&v83];
     v78 = v83;
 
     if (v65)
@@ -32521,9 +32521,9 @@ LABEL_75:
 LABEL_76:
 }
 
-- (id)_syncedPropertiesForAssetUUID:(id)a3
+- (id)_syncedPropertiesForAssetUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   syncedPropertiesByUUID = self->_syncedPropertiesByUUID;
   if (!syncedPropertiesByUUID)
   {
@@ -32534,48 +32534,48 @@ LABEL_76:
     syncedPropertiesByUUID = self->_syncedPropertiesByUUID;
   }
 
-  v8 = [(NSDictionary *)syncedPropertiesByUUID objectForKey:v4];
+  v8 = [(NSDictionary *)syncedPropertiesByUUID objectForKey:dCopy];
 
   return v8;
 }
 
-- (void)_applySyncedProperties:(id)a3 toAsset:(id)a4
+- (void)_applySyncedProperties:(id)properties toAsset:(id)asset
 {
-  v24 = a3;
-  v6 = a4;
-  if ([v24 count])
+  propertiesCopy = properties;
+  assetCopy = asset;
+  if ([propertiesCopy count])
   {
-    v7 = [v24 objectForKey:@"exposureDate"];
-    if (v7 || ([v24 objectForKey:@"modificationDate"], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+    v7 = [propertiesCopy objectForKey:@"exposureDate"];
+    if (v7 || ([propertiesCopy objectForKey:@"modificationDate"], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v8 = v7;
       [v7 doubleValue];
       v9 = [(PLModelMigrator *)self _dateWithiTunesTimeInterval:?];
-      [v6 setDateCreated:v9];
-      v10 = [v6 dateCreated];
-      [v10 timeIntervalSinceReferenceDate];
-      [v6 setSortToken:?];
+      [assetCopy setDateCreated:v9];
+      dateCreated = [assetCopy dateCreated];
+      [dateCreated timeIntervalSinceReferenceDate];
+      [assetCopy setSortToken:?];
     }
 
-    v11 = [v24 objectForKey:@"modificationDate"];
+    v11 = [propertiesCopy objectForKey:@"modificationDate"];
     v12 = v11;
     if (v11)
     {
       [v11 doubleValue];
       v13 = [(PLModelMigrator *)self _dateWithiTunesTimeInterval:?];
-      [v6 setModificationDate:v13];
+      [assetCopy setModificationDate:v13];
     }
 
-    v14 = [v24 objectForKey:@"originalFileName"];
+    v14 = [propertiesCopy objectForKey:@"originalFileName"];
     if (v14)
     {
-      [v6 setOriginalFilename:v14];
+      [assetCopy setOriginalFilename:v14];
     }
 
     latitude = *MEMORY[0x1E6985CC0];
     longitude = *(MEMORY[0x1E6985CC0] + 8);
-    v17 = [v24 objectForKey:@"latitude"];
-    v18 = [v24 objectForKey:@"longitude"];
+    v17 = [propertiesCopy objectForKey:@"latitude"];
+    v18 = [propertiesCopy objectForKey:@"longitude"];
     if (v18 && v17)
     {
       [v17 doubleValue];
@@ -32589,31 +32589,31 @@ LABEL_76:
     if ([PLLocationUtils canUseCoordinate:latitude, longitude])
     {
       v23 = [objc_alloc(MEMORY[0x1E6985C40]) initWithLatitude:latitude longitude:longitude];
-      [v6 setLocation:v23];
+      [assetCopy setLocation:v23];
     }
 
     else
     {
-      [v6 setLocation:0];
+      [assetCopy setLocation:0];
     }
   }
 }
 
-- (id)_newSyncedPropertiesByAssetUUIDs:(BOOL)a3
+- (id)_newSyncedPropertiesByAssetUUIDs:(BOOL)ds
 {
-  v3 = a3;
+  dsCopy = ds;
   v37 = *MEMORY[0x1E69E9840];
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PLModelMigrator *)self _iTunesPhotosLastSyncMetadata];
-  v7 = [v6 objectForKey:@"updates"];
+  _iTunesPhotosLastSyncMetadata = [(PLModelMigrator *)self _iTunesPhotosLastSyncMetadata];
+  v7 = [_iTunesPhotosLastSyncMetadata objectForKey:@"updates"];
   v29 = v7;
   if (![v7 count])
   {
     goto LABEL_14;
   }
 
-  v26 = v3;
-  v27 = self;
+  v26 = dsCopy;
+  selfCopy = self;
   v28 = v5;
   v30 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v7, "count")}];
   v32 = 0u;
@@ -32657,8 +32657,8 @@ LABEL_76:
   v17 = v16;
   v5 = v28;
   v7 = v29;
-  self = v27;
-  v3 = v26;
+  self = selfCopy;
+  dsCopy = v26;
   if (!v16)
   {
 LABEL_14:
@@ -32666,33 +32666,33 @@ LABEL_14:
     v16 = 0;
   }
 
-  if (v6 && [v6 count] && v3)
+  if (_iTunesPhotosLastSyncMetadata && [_iTunesPhotosLastSyncMetadata count] && dsCopy)
   {
-    v18 = [(PLModelMigrator *)self pathManager];
-    v19 = [v18 syncInfoPath];
+    pathManager = [(PLModelMigrator *)self pathManager];
+    syncInfoPath = [pathManager syncInfoPath];
 
-    v20 = [MEMORY[0x1E696AC08] defaultManager];
-    if ([v20 fileExistsAtPath:v19])
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    if ([defaultManager fileExistsAtPath:syncInfoPath])
     {
       v31 = 0;
-      [v20 removeItemAtPath:v19 error:&v31];
+      [defaultManager removeItemAtPath:syncInfoPath error:&v31];
     }
 
-    v21 = [MEMORY[0x1E695DF90] dictionary];
-    v22 = [v6 objectForKey:@"iTunesUserAgent"];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    v22 = [_iTunesPhotosLastSyncMetadata objectForKey:@"iTunesUserAgent"];
     if (v22)
     {
-      [v21 setObject:v22 forKey:@"userAgent"];
+      [dictionary setObject:v22 forKey:@"userAgent"];
     }
 
-    v23 = [v6 objectForKey:@"libraryKind"];
+    v23 = [_iTunesPhotosLastSyncMetadata objectForKey:@"libraryKind"];
     if (v23)
     {
-      [v21 setObject:v23 forKey:@"libraryKind"];
+      [dictionary setObject:v23 forKey:@"libraryKind"];
     }
 
-    v24 = [MEMORY[0x1E696AE40] dataWithPropertyList:v21 format:100 options:0 error:0];
-    [v24 writeToFile:v19 options:1073741825 error:0];
+    v24 = [MEMORY[0x1E696AE40] dataWithPropertyList:dictionary format:100 options:0 error:0];
+    [v24 writeToFile:syncInfoPath options:1073741825 error:0];
 
     v7 = v29;
   }
@@ -32701,14 +32701,14 @@ LABEL_14:
   return v17;
 }
 
-- (void)_importAfterCrash:(id)a3 completionBlock:(id)a4
+- (void)_importAfterCrash:(id)crash completionBlock:(id)block
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  crashCopy = crash;
+  blockCopy = block;
   v8 = [MEMORY[0x1E69BF360] transaction:"-[PLModelMigrator _importAfterCrash:completionBlock:]"];
   v9 = [(PLModelMigrator *)self newShortLivedLibraryWithName:"[PLModelMigrator _importAfterCrash:completionBlock:]"];
-  v10 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v11 = PLMigrationGetLog();
   v12 = os_signpost_id_generate(v11);
   v13 = v11;
@@ -32716,7 +32716,7 @@ LABEL_14:
   if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
   {
     *buf = 134217984;
-    v33 = [v6 count];
+    v33 = [crashCopy count];
     _os_signpost_emit_with_name_impl(&dword_19BF1F000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v12, "ImportAfterCrash", "fileURLs count: %lu", buf, 0xCu);
   }
 
@@ -32724,10 +32724,10 @@ LABEL_14:
   v27[1] = 3221225472;
   v27[2] = __53__PLModelMigrator__importAfterCrash_completionBlock___block_invoke;
   v27[3] = &unk_1E7578100;
-  v28 = v6;
-  v29 = self;
+  v28 = crashCopy;
+  selfCopy = self;
   v30 = v9;
-  v31 = v10;
+  v31 = array;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __53__PLModelMigrator__importAfterCrash_completionBlock___block_invoke_3;
@@ -32735,14 +32735,14 @@ LABEL_14:
   v22 = v31;
   v23 = v8;
   v24 = v14;
-  v25 = v7;
+  v25 = blockCopy;
   v26 = v12;
   v15 = v14;
   v16 = v8;
   v17 = v31;
-  v18 = v7;
+  v18 = blockCopy;
   v19 = v9;
-  v20 = v6;
+  v20 = crashCopy;
   [v19 performTransaction:v27 completionHandler:v21];
 }
 
@@ -32782,17 +32782,17 @@ void __53__PLModelMigrator__importAfterCrash_completionBlock___block_invoke_3(ui
   }
 }
 
-- (void)_importAllDCIMAssetsInLibrary:(id)a3 progress:(id)a4 progressFraction:(id)a5 rebuildComplete:(BOOL)a6
+- (void)_importAllDCIMAssetsInLibrary:(id)library progress:(id)progress progressFraction:(id)fraction rebuildComplete:(BOOL)complete
 {
-  v6 = a6;
+  completeCopy = complete;
   v53 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v10 libraryServicesManager];
-  v14 = [v13 wellKnownPhotoLibraryIdentifier];
+  libraryCopy = library;
+  progressCopy = progress;
+  fractionCopy = fraction;
+  libraryServicesManager = [libraryCopy libraryServicesManager];
+  wellKnownPhotoLibraryIdentifier = [libraryServicesManager wellKnownPhotoLibraryIdentifier];
 
-  if (v14 == 3)
+  if (wellKnownPhotoLibraryIdentifier == 3)
   {
     v15 = PLMigrationGetLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -32801,8 +32801,8 @@ void __53__PLModelMigrator__importAfterCrash_completionBlock___block_invoke_3(ui
       _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_ERROR, "_importAllDCIMAssetsInLibrary is unsupported for the syndication photo library", buf, 2u);
     }
 
-    [v12 progressFractionForType:2];
-    [v11 setCompletedUnitCount:{(v16 * objc_msgSend(v11, "totalUnitCount"))}];
+    [fractionCopy progressFractionForType:2];
+    [progressCopy setCompletedUnitCount:{(v16 * objc_msgSend(progressCopy, "totalUnitCount"))}];
   }
 
   else
@@ -32820,15 +32820,15 @@ void __53__PLModelMigrator__importAfterCrash_completionBlock___block_invoke_3(ui
       _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_DEFAULT, "Beginning file system import %@", buf, 0xCu);
     }
 
-    v21 = [(PLModelMigrator *)self pathManager];
-    if ([v21 isUBF])
+    pathManager = [(PLModelMigrator *)self pathManager];
+    if ([pathManager isUBF])
     {
-      [(PLModelMigrator *)self _orderedAssetsToImportInLibrary:v10];
+      [(PLModelMigrator *)self _orderedAssetsToImportInLibrary:libraryCopy];
     }
 
     else
     {
-      [(PLModelMigrator *)self _orderedAssetsToImportInLibrary:v10 cameraRollOnly:0];
+      [(PLModelMigrator *)self _orderedAssetsToImportInLibrary:libraryCopy cameraRollOnly:0];
     }
     v48 = ;
 
@@ -32844,9 +32844,9 @@ void __53__PLModelMigrator__importAfterCrash_completionBlock___block_invoke_3(ui
     [v48 count];
     proc_set_cpumon_params();
     LODWORD(v44) = v24;
-    [v12 progressFractionForType:{2, v44}];
+    [fractionCopy progressFractionForType:{2, v44}];
     v26 = v25;
-    v27 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:100 parent:v11 pendingUnitCount:{(v25 * objc_msgSend(v11, "totalUnitCount"))}];
+    v27 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:100 parent:progressCopy pendingUnitCount:{(v25 * objc_msgSend(progressCopy, "totalUnitCount"))}];
     if (v26 == 1.0)
     {
       v28 = 0.75;
@@ -32857,11 +32857,11 @@ void __53__PLModelMigrator__importAfterCrash_completionBlock___block_invoke_3(ui
       v28 = 0.05;
     }
 
-    v47 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:100 parent:v27 pendingUnitCount:{llroundf(v28 * objc_msgSend(v11, "totalUnitCount"))}];
-    if (v6)
+    v47 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:100 parent:v27 pendingUnitCount:{llroundf(v28 * objc_msgSend(progressCopy, "totalUnitCount"))}];
+    if (completeCopy)
     {
-      v29 = [v10 globalValues];
-      v30 = [v29 importFilesystemAssetsState] == -1;
+      globalValues = [libraryCopy globalValues];
+      v30 = [globalValues importFilesystemAssetsState] == -1;
     }
 
     else
@@ -32869,33 +32869,33 @@ void __53__PLModelMigrator__importAfterCrash_completionBlock___block_invoke_3(ui
       v30 = 0;
     }
 
-    v31 = [(PLModelMigrator *)self _importFileSystemImportAssets:v48 intoLibrary:v10 type:v30 progress:v47];
-    v32 = [(PLModelMigrator *)self analyticsEventManager];
+    v31 = [(PLModelMigrator *)self _importFileSystemImportAssets:v48 intoLibrary:libraryCopy type:v30 progress:v47];
+    analyticsEventManager = [(PLModelMigrator *)self analyticsEventManager];
     v33 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v31, "count")}];
-    [v32 setPayloadValue:v33 forKey:*MEMORY[0x1E69BF758] onEventWithName:*MEMORY[0x1E69BF740]];
+    [analyticsEventManager setPayloadValue:v33 forKey:*MEMORY[0x1E69BF758] onEventWithName:*MEMORY[0x1E69BF740]];
 
-    if ([v12 isLegacyRecoveryEnabled])
+    if ([fractionCopy isLegacyRecoveryEnabled])
     {
       [(PLModelMigrator *)self filesystemImportResultsUpdateKeywordWithImportedAssets:v31];
     }
 
-    if (!v6)
+    if (!completeCopy)
     {
-      v34 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:100 parent:v27 pendingUnitCount:{llround((1.0 - v28) * objc_msgSend(v11, "totalUnitCount"))}];
-      v35 = [(PLModelMigrator *)self pathManager];
-      v36 = [PLRebuildJournalManager isEnabledWithPathManager:v35 error:0];
+      v34 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:100 parent:v27 pendingUnitCount:{llround((1.0 - v28) * objc_msgSend(progressCopy, "totalUnitCount"))}];
+      pathManager2 = [(PLModelMigrator *)self pathManager];
+      v36 = [PLRebuildJournalManager isEnabledWithPathManager:pathManager2 error:0];
 
       if (v36)
       {
-        v37 = [v10 libraryServicesManager];
-        v38 = [v37 rebuildJournalManager];
-        v39 = [v10 managedObjectContext];
-        [v38 recreateNonAssetsInManagedObjectContext:v39 progress:v34];
+        libraryServicesManager2 = [libraryCopy libraryServicesManager];
+        rebuildJournalManager = [libraryServicesManager2 rebuildJournalManager];
+        managedObjectContext = [libraryCopy managedObjectContext];
+        [rebuildJournalManager recreateNonAssetsInManagedObjectContext:managedObjectContext progress:v34];
       }
 
       else
       {
-        [v10 recreateAlbumsAndPersonsFromMetadata];
+        [libraryCopy recreateAlbumsAndPersonsFromMetadata];
         [v34 setCompletedUnitCount:{objc_msgSend(v34, "totalUnitCount")}];
       }
     }
@@ -32909,7 +32909,7 @@ void __53__PLModelMigrator__importAfterCrash_completionBlock___block_invoke_3(ui
       _os_log_impl(&dword_19BF1F000, v40, OS_LOG_TYPE_DEFAULT, "Migration took %1.1fs", buf, 0xCu);
     }
 
-    [v10 cleanupAfterImportAllDCIMAssets];
+    [libraryCopy cleanupAfterImportAllDCIMAssets];
     v42 = PLMigrationGetLog();
     if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
     {
@@ -32926,13 +32926,13 @@ void __53__PLModelMigrator__importAfterCrash_completionBlock___block_invoke_3(ui
   }
 }
 
-- (void)_rebuildAssetsFromJournal:(id)a3 inLibrary:(id)a4 progress:(id)a5 progressFraction:(id)a6
+- (void)_rebuildAssetsFromJournal:(id)journal inLibrary:(id)library progress:(id)progress progressFraction:(id)fraction
 {
   v32 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  journalCopy = journal;
+  libraryCopy = library;
+  progressCopy = progress;
+  fractionCopy = fraction;
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   v14 = v13;
   v15 = PLMigrationGetLog();
@@ -32954,11 +32954,11 @@ void __53__PLModelMigrator__importAfterCrash_completionBlock___block_invoke_3(ui
   v19 = pthread_self();
   pthread_setschedparam(v19, v28, &v29);
   v20 = MEMORY[0x1E696AE38];
-  v21 = [v11 totalUnitCount];
-  [v12 progressFractionForType:0];
-  v23 = [v20 progressWithTotalUnitCount:100 parent:v11 pendingUnitCount:llroundf(v22 * v21)];
-  v24 = [v10 managedObjectContext];
-  [v9 recreateAssetsInManagedObjectContext:v24 options:0 progress:v23];
+  totalUnitCount = [progressCopy totalUnitCount];
+  [fractionCopy progressFractionForType:0];
+  v23 = [v20 progressWithTotalUnitCount:100 parent:progressCopy pendingUnitCount:llroundf(v22 * totalUnitCount)];
+  managedObjectContext = [libraryCopy managedObjectContext];
+  [journalCopy recreateAssetsInManagedObjectContext:managedObjectContext options:0 progress:v23];
 
   v25 = PLMigrationGetLog();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -32974,20 +32974,20 @@ void __53__PLModelMigrator__importAfterCrash_completionBlock___block_invoke_3(ui
   pthread_setschedparam(v27, v28, &v29);
 }
 
-- (id)_orderedAssetsToImportInLibrary:(id)a3 cameraRollOnly:(BOOL)a4
+- (id)_orderedAssetsToImportInLibrary:(id)library cameraRollOnly:(BOOL)only
 {
-  v4 = a4;
+  onlyCopy = only;
   v66 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  libraryCopy = library;
   if (([(PLPhotoLibraryPathManager *)self->_pathManager isDCIM]& 1) == 0)
   {
-    v42 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v42 handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:2303 description:@"Expected DCIM library"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:2303 description:@"Expected DCIM library"];
   }
 
-  v8 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v9 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v63 = [v8 count];
+  v63 = [array count];
   v52 = objc_alloc_init(MEMORY[0x1E696AC08]);
   [(PLModelMigrator *)self setFileManager:?];
   v10 = MEMORY[0x1E695DFF8];
@@ -33008,8 +33008,8 @@ void __53__PLModelMigrator__importAfterCrash_completionBlock___block_invoke_3(ui
   }
 
   v48 = v16;
-  v54 = self;
-  if (!v4)
+  selfCopy = self;
+  if (!onlyCopy)
   {
     v46 = v13;
     v45 = [v13 URLByAppendingPathComponent:@"Sync"];
@@ -33021,8 +33021,8 @@ void __53__PLModelMigrator__importAfterCrash_completionBlock___block_invoke_3(ui
 
     v44 = v17;
     v47 = v14;
-    v18 = v7;
-    v19 = [PLRebuildableDirectory rebuildableDirectoryWithURL:v51 isCPLAssets:1 isPhotoStream:0 photoLibrary:v7 startTime:self->_startTime];
+    v18 = libraryCopy;
+    v19 = [PLRebuildableDirectory rebuildableDirectoryWithURL:v51 isCPLAssets:1 isPhotoStream:0 photoLibrary:libraryCopy startTime:self->_startTime];
     if (v19)
     {
       [v15 addObject:v19];
@@ -33047,7 +33047,7 @@ void __53__PLModelMigrator__importAfterCrash_completionBlock___block_invoke_3(ui
             objc_enumerationMutation(v20);
           }
 
-          v25 = [PLRebuildableDirectory rebuildableDirectoryWithURL:*(*(&v59 + 1) + 8 * i) isCPLAssets:0 isPhotoStream:1 photoLibrary:v18 startTime:v54->_startTime];
+          v25 = [PLRebuildableDirectory rebuildableDirectoryWithURL:*(*(&v59 + 1) + 8 * i) isCPLAssets:0 isPhotoStream:1 photoLibrary:v18 startTime:selfCopy->_startTime];
           if (v25)
           {
             [v15 addObject:v25];
@@ -33061,20 +33061,20 @@ void __53__PLModelMigrator__importAfterCrash_completionBlock___block_invoke_3(ui
     }
 
     v26 = [v53 URLByAppendingPathComponent:@"CPLAssets"];
-    v27 = [PLRebuildableDirectory rebuildableDirectoryWithURL:v26 isCPLAssets:1 isPhotoStream:0 photoLibrary:v18 startTime:v54->_startTime];
+    v27 = [PLRebuildableDirectory rebuildableDirectoryWithURL:v26 isCPLAssets:1 isPhotoStream:0 photoLibrary:v18 startTime:selfCopy->_startTime];
     if (v27)
     {
       [v15 addObject:v27];
     }
 
     v28 = [v53 URLByAppendingPathComponent:@"DCIM"];
-    v29 = [PLRebuildableDirectory rebuildableDirectoryWithURL:v28 isCPLAssets:0 isPhotoStream:0 photoLibrary:v18 startTime:v54->_startTime];
+    v29 = [PLRebuildableDirectory rebuildableDirectoryWithURL:v28 isCPLAssets:0 isPhotoStream:0 photoLibrary:v18 startTime:selfCopy->_startTime];
     if (v29)
     {
       [v15 addObject:v29];
     }
 
-    v7 = v18;
+    libraryCopy = v18;
     v13 = v46;
     v14 = v47;
   }
@@ -33098,7 +33098,7 @@ void __53__PLModelMigrator__importAfterCrash_completionBlock___block_invoke_3(ui
           objc_enumerationMutation(v30);
         }
 
-        [*(*(&v55 + 1) + 8 * j) gatherAssetsToImport:v8 pendingAssetsCount:&v63 onDiskURLsToSkip:v9 cameraRollOnly:v4];
+        [*(*(&v55 + 1) + 8 * j) gatherAssetsToImport:array pendingAssetsCount:&v63 onDiskURLsToSkip:v9 cameraRollOnly:onlyCopy];
       }
 
       v32 = [v30 countByEnumeratingWithState:&v55 objects:v64 count:16];
@@ -33107,15 +33107,15 @@ void __53__PLModelMigrator__importAfterCrash_completionBlock___block_invoke_3(ui
     while (v32);
   }
 
-  [(PLModelMigrator *)v54 _addUBFBundleScopedOrderedAssetsToImport:v8 onDiskURLsToSkip:v9];
-  if (!v4)
+  [(PLModelMigrator *)selfCopy _addUBFBundleScopedOrderedAssetsToImport:array onDiskURLsToSkip:v9];
+  if (!onlyCopy)
   {
-    v35 = [v7 filesystemImportProgressAlbum];
-    v36 = [v7 globalValues];
+    filesystemImportProgressAlbum = [libraryCopy filesystemImportProgressAlbum];
+    globalValues = [libraryCopy globalValues];
     v37 = v13;
-    v38 = [v36 isRebuildComplete];
+    isRebuildComplete = [globalValues isRebuildComplete];
 
-    v39 = v38 == 0;
+    v39 = isRebuildComplete == 0;
     v13 = v37;
     if (v39)
     {
@@ -33127,13 +33127,13 @@ void __53__PLModelMigrator__importAfterCrash_completionBlock___block_invoke_3(ui
       v40 = 8;
     }
 
-    [v35 setPendingItemsType:v40];
-    [v35 setPendingItemsCount:v63];
+    [filesystemImportProgressAlbum setPendingItemsType:v40];
+    [filesystemImportProgressAlbum setPendingItemsCount:v63];
   }
 
-  [v8 sortUsingComparator:&__block_literal_global_378];
+  [array sortUsingComparator:&__block_literal_global_378];
 
-  return v8;
+  return array;
 }
 
 uint64_t __66__PLModelMigrator__orderedAssetsToImportInLibrary_cameraRollOnly___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -33155,20 +33155,20 @@ uint64_t __66__PLModelMigrator__orderedAssetsToImportInLibrary_cameraRollOnly___
   return 1;
 }
 
-- (id)_orderedAssetsToImportInLibrary:(id)a3
+- (id)_orderedAssetsToImportInLibrary:(id)library
 {
   v4 = MEMORY[0x1E695DF70];
-  v5 = a3;
-  v6 = [v4 array];
+  libraryCopy = library;
+  array = [v4 array];
   v7 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v8 = objc_alloc_init(MEMORY[0x1E696AC08]);
   [(PLModelMigrator *)self setFileManager:v8];
-  [(PLModelMigrator *)self _addUBFBundleScopedOrderedAssetsToImport:v6 onDiskURLsToSkip:v7];
-  v9 = [v5 filesystemImportProgressAlbum];
-  v10 = [v5 globalValues];
+  [(PLModelMigrator *)self _addUBFBundleScopedOrderedAssetsToImport:array onDiskURLsToSkip:v7];
+  filesystemImportProgressAlbum = [libraryCopy filesystemImportProgressAlbum];
+  globalValues = [libraryCopy globalValues];
 
-  LODWORD(v5) = [v10 isRebuildComplete];
-  if (v5)
+  LODWORD(libraryCopy) = [globalValues isRebuildComplete];
+  if (libraryCopy)
   {
     v11 = 8;
   }
@@ -33178,27 +33178,27 @@ uint64_t __66__PLModelMigrator__orderedAssetsToImportInLibrary_cameraRollOnly___
     v11 = 24;
   }
 
-  [v9 setPendingItemsType:v11];
-  [v9 setPendingItemsCount:{objc_msgSend(v6, "count")}];
-  [v6 sortUsingComparator:&__block_literal_global_355_22367];
+  [filesystemImportProgressAlbum setPendingItemsType:v11];
+  [filesystemImportProgressAlbum setPendingItemsCount:{objc_msgSend(array, "count")}];
+  [array sortUsingComparator:&__block_literal_global_355_22367];
 
-  return v6;
+  return array;
 }
 
-- (void)_addUBFBundleScopedOrderedAssetsToImport:(id)a3 onDiskURLsToSkip:(id)a4
+- (void)_addUBFBundleScopedOrderedAssetsToImport:(id)import onDiskURLsToSkip:(id)skip
 {
-  v6 = a3;
-  v7 = a4;
+  importCopy = import;
+  skipCopy = skip;
   pathManager = self->_pathManager;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __77__PLModelMigrator__addUBFBundleScopedOrderedAssetsToImport_onDiskURLsToSkip___block_invoke;
   v11[3] = &unk_1E7568C50;
   v11[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = skipCopy;
+  v13 = importCopy;
+  v9 = importCopy;
+  v10 = skipCopy;
   [(PLPhotoLibraryPathManager *)pathManager enumerateBundleScopesWithBlock:v11];
 }
 
@@ -33219,13 +33219,13 @@ void __77__PLModelMigrator__addUBFBundleScopedOrderedAssetsToImport_onDiskURLsTo
   }
 }
 
-- (void)dontImportFileSystemDataIntoDatabaseWithPhotoLibrary:(id)a3
+- (void)dontImportFileSystemDataIntoDatabaseWithPhotoLibrary:(id)library
 {
-  v4 = a3;
-  v8 = v4;
-  if (v4)
+  libraryCopy = library;
+  v8 = libraryCopy;
+  if (libraryCopy)
   {
-    v5 = v4;
+    v5 = libraryCopy;
   }
 
   else
@@ -33234,23 +33234,23 @@ void __77__PLModelMigrator__addUBFBundleScopedOrderedAssetsToImport_onDiskURLsTo
   }
 
   v6 = v5;
-  v7 = [v5 globalValues];
-  [v7 dontImportFileSystemDataIntoDatabase];
+  globalValues = [v5 globalValues];
+  [globalValues dontImportFileSystemDataIntoDatabase];
 }
 
-- (void)_repairPotentialModelCorruptionInLibrary:(id)a3
+- (void)_repairPotentialModelCorruptionInLibrary:(id)library
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  libraryCopy = library;
+  v5 = libraryCopy;
+  if (libraryCopy)
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __60__PLModelMigrator__repairPotentialModelCorruptionInLibrary___block_invoke;
     v7[3] = &unk_1E7578848;
-    v8 = v4;
-    v9 = self;
+    v8 = libraryCopy;
+    selfCopy = self;
     [v8 performTransactionAndWait:v7];
     v6 = v8;
   }
@@ -33650,19 +33650,19 @@ void __60__PLModelMigrator__repairPotentialModelCorruptionInLibrary___block_invo
   }
 }
 
-- (void)removeUnpairedTimelapsePreviewsInContext:(id)a3 fromDuplicatedUUIDs:(id)a4
+- (void)removeUnpairedTimelapsePreviewsInContext:(id)context fromDuplicatedUUIDs:(id)ds
 {
   v66[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  contextCopy = context;
+  dsCopy = ds;
   v7 = MEMORY[0x1E695D5E0];
   v8 = +[PLManagedAsset entityName];
   v9 = [v7 fetchRequestWithEntityName:v8];
 
-  v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K in %@", @"uuid", v6];
+  dsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K in %@", @"uuid", dsCopy];
   v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %d AND %K = %d", @"kind", 1, @"kindSubtype", 102];
   v12 = MEMORY[0x1E696AB28];
-  v66[0] = v10;
+  v66[0] = dsCopy;
   v66[1] = v11;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v66 count:2];
   v14 = [v12 andPredicateWithSubpredicates:v13];
@@ -33676,17 +33676,17 @@ void __60__PLModelMigrator__repairPotentialModelCorruptionInLibrary___block_invo
   [v9 setSortDescriptors:v17];
 
   v57 = 0;
-  v18 = [v5 executeFetchRequest:v9 error:&v57];
+  v18 = [contextCopy executeFetchRequest:v9 error:&v57];
   v19 = v57;
   v20 = v19;
   if (v18)
   {
     v42 = v19;
     v44 = v11;
-    v45 = v10;
+    v45 = dsCopy;
     v46 = v9;
-    v47 = v6;
-    v48 = v5;
+    v47 = dsCopy;
+    v48 = contextCopy;
     v21 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v22 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v53 = 0u;
@@ -33720,15 +33720,15 @@ void __60__PLModelMigrator__repairPotentialModelCorruptionInLibrary___block_invo
             v33 = v21;
             if (v32)
             {
-              v34 = [v28 uuid];
-              v35 = [v28 mainFileURL];
-              v36 = [v35 path];
+              uuid = [v28 uuid];
+              mainFileURL = [v28 mainFileURL];
+              path = [mainFileURL path];
               *buf = 136446722;
               v59 = "[PLModelMigrator removeUnpairedTimelapsePreviewsInContext:fromDuplicatedUUIDs:]";
               v60 = 2114;
-              v61 = v34;
+              v61 = uuid;
               v62 = 2112;
-              v63 = v36;
+              v63 = path;
               _os_log_impl(&dword_19BF1F000, v31, OS_LOG_TYPE_DEFAULT, "%{public}s found zero-duration, unpaired, timelapse preview %{public}@ missing video path %@", buf, 0x20u);
 
               v22 = v26;
@@ -33741,15 +33741,15 @@ void __60__PLModelMigrator__repairPotentialModelCorruptionInLibrary___block_invo
             v33 = v22;
             if (v32)
             {
-              v37 = [v28 uuid];
-              v38 = [v28 mainFileURL];
-              v39 = [v38 path];
+              uuid2 = [v28 uuid];
+              mainFileURL2 = [v28 mainFileURL];
+              path2 = [mainFileURL2 path];
               *buf = 136446722;
               v59 = "[PLModelMigrator removeUnpairedTimelapsePreviewsInContext:fromDuplicatedUUIDs:]";
               v60 = 2114;
-              v61 = v37;
+              v61 = uuid2;
               v62 = 2112;
-              v63 = v39;
+              v63 = path2;
               _os_log_impl(&dword_19BF1F000, v31, OS_LOG_TYPE_DEFAULT, "%{public}s found unpaired timelapse video %{public}@ with valid path %@", buf, 0x20u);
 
               v22 = v26;
@@ -33757,8 +33757,8 @@ void __60__PLModelMigrator__repairPotentialModelCorruptionInLibrary___block_invo
             }
           }
 
-          v40 = [v28 uuid];
-          [v33 setObject:v28 forKeyedSubscript:v40];
+          uuid3 = [v28 uuid];
+          [v33 setObject:v28 forKeyedSubscript:uuid3];
         }
 
         v24 = [obj countByEnumeratingWithState:&v53 objects:v64 count:16];
@@ -33772,13 +33772,13 @@ void __60__PLModelMigrator__repairPotentialModelCorruptionInLibrary___block_invo
     v50[2] = __80__PLModelMigrator_removeUnpairedTimelapsePreviewsInContext_fromDuplicatedUUIDs___block_invoke;
     v50[3] = &unk_1E7568C00;
     v51 = v21;
-    v6 = v47;
+    dsCopy = v47;
     v52 = v47;
     v41 = v21;
     [v22 enumerateKeysAndObjectsUsingBlock:v50];
 
-    v5 = v48;
-    v10 = v45;
+    contextCopy = v48;
+    dsCopy = v45;
     v9 = v46;
     v18 = v43;
     v11 = v44;
@@ -33829,27 +33829,27 @@ void __80__PLModelMigrator_removeUnpairedTimelapsePreviewsInContext_fromDuplicat
   }
 }
 
-- (void)cleanupModelForDataMigrationForRestoreType:(int64_t)a3
+- (void)cleanupModelForDataMigrationForRestoreType:(int64_t)type
 {
   v29 = *MEMORY[0x1E69E9840];
   v5 = PLMigrationGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    if ((a3 - 1) > 2)
+    if ((type - 1) > 2)
     {
       v6 = @"none";
     }
 
     else
     {
-      v6 = off_1E7573E80[a3 - 1];
+      v6 = off_1E7573E80[type - 1];
     }
 
     v7 = v6;
     qos_class_self();
     v8 = PLStringFromQoSClass();
     *buf = 138543618;
-    v26 = v7;
+    typeCopy = v7;
     v27 = 2114;
     v28 = v8;
     _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_DEFAULT, "Clean up model after data migration for restore type %{public}@ at QoS: %{public}@", buf, 0x16u);
@@ -33862,21 +33862,21 @@ void __80__PLModelMigrator_removeUnpairedTimelapsePreviewsInContext_fromDuplicat
     _os_log_impl(&dword_19BF1F000, v9, OS_LOG_TYPE_DEFAULT, "Data migrator plugin is requesting library migration, updating in-flight device restore migration state", buf, 2u);
   }
 
-  v10 = [(PLModelMigrator *)self deviceRestoreMigrationSupport];
-  [v10 setDataMigratorPluginHasRequestedLibraryMigration:1];
+  deviceRestoreMigrationSupport = [(PLModelMigrator *)self deviceRestoreMigrationSupport];
+  [deviceRestoreMigrationSupport setDataMigratorPluginHasRequestedLibraryMigration:1];
 
   v11 = [(PLModelMigrator *)self newShortLivedLibraryWithName:"[PLModelMigrator cleanupModelForDataMigrationForRestoreType:]"];
   v12 = v11;
   if (v11)
   {
-    v13 = [v11 managedObjectContext];
-    v14 = [v13 persistentStoreCoordinator];
-    v15 = [v14 persistentStores];
-    v16 = [v15 firstObject];
+    managedObjectContext = [v11 managedObjectContext];
+    persistentStoreCoordinator = [managedObjectContext persistentStoreCoordinator];
+    persistentStores = [persistentStoreCoordinator persistentStores];
+    firstObject = [persistentStores firstObject];
 
     v17 = PLMigrationGetLog();
     v18 = v17;
-    if (v16)
+    if (firstObject)
     {
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
@@ -33884,7 +33884,7 @@ void __80__PLModelMigrator_removeUnpairedTimelapsePreviewsInContext_fromDuplicat
         _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_DEFAULT, "Photo library loaded successfully", buf, 2u);
       }
 
-      [(PLModelMigrator *)self _recordCurrentVersionMetadataIfNeededForDataMigrationInPersistentStore:v16];
+      [(PLModelMigrator *)self _recordCurrentVersionMetadataIfNeededForDataMigrationInPersistentStore:firstObject];
     }
 
     else
@@ -33892,7 +33892,7 @@ void __80__PLModelMigrator_removeUnpairedTimelapsePreviewsInContext_fromDuplicat
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v26 = v12;
+        typeCopy = v12;
         v27 = 2082;
         v28 = "[PLModelMigrator cleanupModelForDataMigrationForRestoreType:]";
         _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_ERROR, "Failed to access persistent store on photo library %@ for %{public}s", buf, 0x16u);
@@ -33902,23 +33902,23 @@ void __80__PLModelMigrator_removeUnpairedTimelapsePreviewsInContext_fromDuplicat
 
   else
   {
-    v13 = PLMigrationGetLog();
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    managedObjectContext = PLMigrationGetLog();
+    if (os_log_type_enabled(managedObjectContext, OS_LOG_TYPE_ERROR))
     {
       *buf = 136446210;
-      v26 = "[PLModelMigrator cleanupModelForDataMigrationForRestoreType:]";
-      _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_ERROR, "Failed to load photo library for %{public}s", buf, 0xCu);
+      typeCopy = "[PLModelMigrator cleanupModelForDataMigrationForRestoreType:]";
+      _os_log_impl(&dword_19BF1F000, managedObjectContext, OS_LOG_TYPE_ERROR, "Failed to load photo library for %{public}s", buf, 0xCu);
     }
   }
 
   v19 = objc_alloc_init(PLGreenController);
-  if (a3)
+  if (type)
   {
     v20 = PLMigrationGetLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v26 = a3;
+      typeCopy = type;
       _os_log_impl(&dword_19BF1F000, v20, OS_LOG_TYPE_DEFAULT, "Resetting resources after restore %ld", buf, 0xCu);
     }
 
@@ -33933,9 +33933,9 @@ void __80__PLModelMigrator_removeUnpairedTimelapsePreviewsInContext_fromDuplicat
 
   if ([(PLGreenController *)v19 isGreenStateValid])
   {
-    v21 = [(PLGreenController *)v19 currentGreenValues];
-    v22 = [v12 globalValues];
-    [v22 setGreenValues:v21];
+    currentGreenValues = [(PLGreenController *)v19 currentGreenValues];
+    globalValues = [v12 globalValues];
+    [globalValues setGreenValues:currentGreenValues];
   }
 
   [v12 dataMigratorSupportCleanupModelForDataMigrationPurgeMissingSynced];
@@ -33982,17 +33982,17 @@ void __62__PLModelMigrator_cleanupModelForDataMigrationForRestoreType___block_in
   }
 }
 
-- (void)handleGreenChanges:(id)a3
+- (void)handleGreenChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   v5 = [(PLModelMigrator *)self newShortLivedLibraryWithName:"[PLModelMigrator handleGreenChanges:]"];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __38__PLModelMigrator_handleGreenChanges___block_invoke;
   v8[3] = &unk_1E7578848;
   v9 = v5;
-  v10 = v4;
-  v6 = v4;
+  v10 = changesCopy;
+  v6 = changesCopy;
   v7 = v5;
   [v7 performTransactionAndWait:v8];
 }
@@ -34117,10 +34117,10 @@ uint64_t __55__PLModelMigrator__loadFacesFileSystemDataIntoDatabase__block_invok
   return [*(a1 + 40) stillAlive];
 }
 
-- (void)setLoadingFacesFromFileSystem:(BOOL)a3
+- (void)setLoadingFacesFromFileSystem:(BOOL)system
 {
   pthread_mutex_lock(&sLoadingFacesFromFileSystemLock);
-  sLoadingFacesFromFileSystem = a3;
+  sLoadingFacesFromFileSystem = system;
 
   pthread_mutex_unlock(&sLoadingFacesFromFileSystemLock);
 }
@@ -34133,50 +34133,50 @@ uint64_t __55__PLModelMigrator__loadFacesFileSystemDataIntoDatabase__block_invok
   return v2;
 }
 
-- (void)_loadFileSystemDataIntoDatabaseIfNeededWithReason:(id)a3 progress:(id)a4 requestBackgroundMigrationRegistration:(BOOL *)a5
+- (void)_loadFileSystemDataIntoDatabaseIfNeededWithReason:(id)reason progress:(id)progress requestBackgroundMigrationRegistration:(BOOL *)registration
 {
   v50 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  reasonCopy = reason;
+  progressCopy = progress;
   v10 = [(PLModelMigrator *)self newShortLivedLibraryForRebuildWithName:"[PLModelMigrator _loadFileSystemDataIntoDatabaseIfNeededWithReason:progress:requestBackgroundMigrationRegistration:]"];
-  v11 = [v10 globalValues];
-  v12 = [(PLModelMigrator *)self deviceRestoreMigrationSupport];
-  v13 = [(PLModelMigrator *)self pathManager];
-  if (![v13 isDeviceRestoreSupported])
+  globalValues = [v10 globalValues];
+  deviceRestoreMigrationSupport = [(PLModelMigrator *)self deviceRestoreMigrationSupport];
+  pathManager = [(PLModelMigrator *)self pathManager];
+  if (![pathManager isDeviceRestoreSupported])
   {
 
     goto LABEL_7;
   }
 
-  v14 = [v12 isRestoreFromBackupSourceCloud];
+  isRestoreFromBackupSourceCloud = [deviceRestoreMigrationSupport isRestoreFromBackupSourceCloud];
 
-  if (!v14)
+  if (!isRestoreFromBackupSourceCloud)
   {
 LABEL_7:
     v18 = 0;
     goto LABEL_8;
   }
 
-  v15 = [(PLModelMigrator *)self postProcessingToken];
-  v16 = [v15 isModelMigrationRestorePostProcessingComplete];
+  postProcessingToken = [(PLModelMigrator *)self postProcessingToken];
+  isModelMigrationRestorePostProcessingComplete = [postProcessingToken isModelMigrationRestorePostProcessingComplete];
 
-  if ((v16 & 1) == 0)
+  if ((isModelMigrationRestorePostProcessingComplete & 1) == 0)
   {
     v18 = @"OTA restore post-processing not yet complete (did not find post-processing complete token)";
 LABEL_23:
     v32 = PLMigrationGetLog();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
     {
-      v33 = [(PLModelMigrator *)self postProcessingToken];
-      v34 = [v33 needsToPrepareForBackgroundRestore];
+      postProcessingToken2 = [(PLModelMigrator *)self postProcessingToken];
+      needsToPrepareForBackgroundRestore = [postProcessingToken2 needsToPrepareForBackgroundRestore];
       v35 = @"NO";
-      if (v34)
+      if (needsToPrepareForBackgroundRestore)
       {
         v35 = @"YES";
       }
 
       *buf = 138543618;
-      v47 = v8;
+      v47 = reasonCopy;
       v48 = 2114;
       v49 = v35;
       _os_log_impl(&dword_19BF1F000, v32, OS_LOG_TYPE_DEFAULT, "Ignoring request to load file system data during OTA restore [%{public}@] needs to prepare for background restore is %{public}@", buf, 0x16u);
@@ -34190,12 +34190,12 @@ LABEL_23:
       _os_log_impl(&dword_19BF1F000, v36, OS_LOG_TYPE_DEFAULT, "OTA Restore status: %{public}@", buf, 0xCu);
     }
 
-    [v9 setCompletedUnitCount:{objc_msgSend(v9, "totalUnitCount")}];
+    [progressCopy setCompletedUnitCount:{objc_msgSend(progressCopy, "totalUnitCount")}];
     goto LABEL_21;
   }
 
   v45 = 0;
-  v17 = [v12 isOTARestoreInProgressWithStatus:&v45];
+  v17 = [deviceRestoreMigrationSupport isOTARestoreInProgressWithStatus:&v45];
   v18 = v45;
   if (v17)
   {
@@ -34203,9 +34203,9 @@ LABEL_23:
   }
 
 LABEL_8:
-  v37 = v12;
+  v37 = deviceRestoreMigrationSupport;
   v19 = v18;
-  v20 = v8;
+  v20 = reasonCopy;
   v21 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.mobileslideshow"];
   v22 = [v21 BOOLForKey:@"com.apple.Photos.SuppressFileSystemImport"];
 
@@ -34219,14 +34219,14 @@ LABEL_8:
       _os_log_impl(&dword_19BF1F000, v23, OS_LOG_TYPE_DEFAULT, "Ignoring request to load file system data - %@ user default is enabled", buf, 0xCu);
     }
 
-    v8 = v20;
-    if (([v11 didImportFileSystemAssets] & 1) == 0)
+    reasonCopy = v20;
+    if (([globalValues didImportFileSystemAssets] & 1) == 0)
     {
-      [v11 setImportFilesystemAssetsState:1];
+      [globalValues setImportFilesystemAssetsState:1];
     }
 
-    v24 = [(PLModelMigrator *)self pathManager];
-    v25 = [PLRebuildJournalManager isEnabledWithPathManager:v24 error:0];
+    pathManager2 = [(PLModelMigrator *)self pathManager];
+    v25 = [PLRebuildJournalManager isEnabledWithPathManager:pathManager2 error:0];
 
     if (v25)
     {
@@ -34242,12 +34242,12 @@ LABEL_8:
 
   else
   {
-    v27 = [(PLModelMigrator *)self pathManager];
-    v28 = 0;
-    if ([PLRebuildJournalManager isEnabledWithPathManager:v27 error:0])
+    pathManager3 = [(PLModelMigrator *)self pathManager];
+    rebuildJournalManager = 0;
+    if ([PLRebuildJournalManager isEnabledWithPathManager:pathManager3 error:0])
     {
-      v29 = [v10 libraryServicesManager];
-      v28 = [v29 rebuildJournalManager];
+      libraryServicesManager = [v10 libraryServicesManager];
+      rebuildJournalManager = [libraryServicesManager rebuildJournalManager];
     }
 
     v38[0] = MEMORY[0x1E69E9820];
@@ -34256,20 +34256,20 @@ LABEL_8:
     v38[3] = &unk_1E7568BD8;
     v38[4] = self;
     v39 = v10;
-    v40 = v11;
-    v8 = v20;
+    v40 = globalValues;
+    reasonCopy = v20;
     v41 = v20;
-    v42 = v28;
-    v30 = v9;
+    v42 = rebuildJournalManager;
+    v30 = progressCopy;
     v43 = v30;
-    v44 = a5;
-    v31 = v28;
+    registrationCopy = registration;
+    v31 = rebuildJournalManager;
     [v39 performTransactionAndWait:v38];
     [v30 setCompletedUnitCount:{objc_msgSend(v30, "totalUnitCount")}];
   }
 
   v18 = v19;
-  v12 = v37;
+  deviceRestoreMigrationSupport = v37;
 LABEL_21:
 }
 
@@ -34391,14 +34391,14 @@ void __117__PLModelMigrator__loadFileSystemDataIntoDatabaseIfNeededWithReason_pr
   }
 }
 
-- (BOOL)_isFileSystemImportRequiredForLibrary:(id)a3
+- (BOOL)_isFileSystemImportRequiredForLibrary:(id)library
 {
-  v4 = [a3 globalValues];
-  v5 = [v4 importFilesystemAssetsState];
-  v6 = v5 != 1;
-  if (v5 == -1 && [v4 isRebuildComplete] && -[PLModelMigrator _isFilesystemImportConfigurationDisabled](self, "_isFilesystemImportConfigurationDisabled"))
+  globalValues = [library globalValues];
+  importFilesystemAssetsState = [globalValues importFilesystemAssetsState];
+  v6 = importFilesystemAssetsState != 1;
+  if (importFilesystemAssetsState == -1 && [globalValues isRebuildComplete] && -[PLModelMigrator _isFilesystemImportConfigurationDisabled](self, "_isFilesystemImportConfigurationDisabled"))
   {
-    [v4 setImportFilesystemAssetsState:1];
+    [globalValues setImportFilesystemAssetsState:1];
     v6 = 0;
   }
 
@@ -34409,8 +34409,8 @@ void __117__PLModelMigrator__loadFileSystemDataIntoDatabaseIfNeededWithReason_pr
 {
   v21 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E695DFF8]);
-  v4 = [(PLModelMigrator *)self pathManager];
-  v5 = [v4 cplDataDirectoryCreateIfNeeded:0];
+  pathManager = [(PLModelMigrator *)self pathManager];
+  v5 = [pathManager cplDataDirectoryCreateIfNeeded:0];
   v6 = [v3 initFileURLWithPath:v5 isDirectory:1];
 
   v7 = [objc_alloc(MEMORY[0x1E6994AA0]) initWithClientLibraryBaseURL:v6];
@@ -34418,11 +34418,11 @@ void __117__PLModelMigrator__loadFileSystemDataIntoDatabaseIfNeededWithReason_pr
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 integerValue];
+    integerValue = [v8 integerValue];
     v11 = PLMigrationGetLog();
     v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
-    v13 = v10 <= 0;
-    v14 = v10 > 0;
+    v13 = integerValue <= 0;
+    v14 = integerValue > 0;
     if (v13)
     {
       if (v12)
@@ -34456,13 +34456,13 @@ LABEL_10:
   return v14;
 }
 
-- (id)_eventNameFromDate:(id)a3
+- (id)_eventNameFromDate:(id)date
 {
   v3 = MEMORY[0x1E696AB78];
-  v4 = a3;
+  dateCopy = date;
   v5 = objc_alloc_init(v3);
   [v5 setDateStyle:2];
-  v6 = [v5 stringFromDate:v4];
+  v6 = [v5 stringFromDate:dateCopy];
 
   return v6;
 }
@@ -34470,52 +34470,52 @@ LABEL_10:
 - (void)_generateAlbumMetadataFromLastiTunesSyncedPlist
 {
   v71 = *MEMORY[0x1E69E9840];
-  v3 = [(PLModelMigrator *)self pathManager];
-  if ([v3 isDCIM])
+  pathManager = [(PLModelMigrator *)self pathManager];
+  if ([pathManager isDCIM])
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = [(PLModelMigrator *)self _iTunesPhotosLastSyncMetadata];
-    v6 = [v5 objectForKey:@"updates"];
+    _iTunesPhotosLastSyncMetadata = [(PLModelMigrator *)self _iTunesPhotosLastSyncMetadata];
+    v6 = [_iTunesPhotosLastSyncMetadata objectForKey:@"updates"];
     v65 = 0;
-    v7 = [v3 iTunesSyncedAssetsDirectory];
+    iTunesSyncedAssetsDirectory = [pathManager iTunesSyncedAssetsDirectory];
     if ([v6 count])
     {
-      v8 = [MEMORY[0x1E696AC08] defaultManager];
-      if (![v8 fileExistsAtPath:v7 isDirectory:&v65])
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      if (![defaultManager fileExistsAtPath:iTunesSyncedAssetsDirectory isDirectory:&v65])
       {
         goto LABEL_43;
       }
 
-      v50 = self;
+      selfCopy = self;
       v9 = v65;
 
       if (v9 == 1)
       {
-        v45 = v7;
-        v47 = v5;
+        v45 = iTunesSyncedAssetsDirectory;
+        v47 = _iTunesPhotosLastSyncMetadata;
         v48 = v4;
-        v8 = [v3 iTunesSyncedFaceDataDirectory];
+        defaultManager = [pathManager iTunesSyncedFaceDataDirectory];
         v10 = MEMORY[0x1E695DFF8];
-        v49 = v3;
-        v11 = [v3 persistedAlbumDataDirectoryCreateIfNeeded:1 error:0];
+        v49 = pathManager;
+        v11 = [pathManager persistedAlbumDataDirectoryCreateIfNeeded:1 error:0];
         v56 = [v10 fileURLWithPath:v11 isDirectory:1];
 
-        v12 = [MEMORY[0x1E696AC08] defaultManager];
-        v57 = [v12 fileExistsAtPath:v8];
+        defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+        v57 = [defaultManager2 fileExistsAtPath:defaultManager];
 
-        v51 = [MEMORY[0x1E695DF70] array];
-        v13 = [MEMORY[0x1E695DF70] array];
-        v14 = [MEMORY[0x1E695DF70] array];
+        array = [MEMORY[0x1E695DF70] array];
+        array2 = [MEMORY[0x1E695DF70] array];
+        array3 = [MEMORY[0x1E695DF70] array];
         v61 = 0u;
         v62 = 0u;
         v63 = 0u;
         v64 = 0u;
         v46 = v6;
         v15 = v6;
-        v16 = v14;
+        v16 = array3;
         obj = v15;
         v17 = [v15 countByEnumeratingWithState:&v61 objects:v70 count:16];
-        v55 = v14;
+        v55 = array3;
         if (!v17)
         {
           goto LABEL_36;
@@ -34524,8 +34524,8 @@ LABEL_10:
         v18 = v17;
         v52 = 0;
         v59 = *v62;
-        v53 = v13;
-        v54 = v8;
+        v53 = array2;
+        v54 = defaultManager;
         while (1)
         {
           v19 = 0;
@@ -34547,7 +34547,7 @@ LABEL_10:
                 if ((v52 & 1) == 0)
                 {
                   v60 = 0;
-                  v24 = [MEMORY[0x1E69BF238] createDirectoryAtPath:v8 error:&v60];
+                  v24 = [MEMORY[0x1E69BF238] createDirectoryAtPath:defaultManager error:&v60];
                   v25 = v60;
                   if ((v24 & 1) == 0)
                   {
@@ -34555,7 +34555,7 @@ LABEL_10:
                     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
                     {
                       *buf = 138412546;
-                      v67 = v8;
+                      v67 = defaultManager;
                       v68 = 2112;
                       v69 = v25;
                       _os_log_impl(&dword_19BF1F000, v26, OS_LOG_TYPE_ERROR, "Unable to create directory: %@, reason: %@", buf, 0x16u);
@@ -34564,7 +34564,7 @@ LABEL_10:
                 }
 
                 v27 = [v20 objectForKey:@"uuid"];
-                v28 = [v8 stringByAppendingPathComponent:v27];
+                v28 = [defaultManager stringByAppendingPathComponent:v27];
                 v29 = [v28 stringByAppendingPathExtension:@"plist"];
 
                 v30 = [MEMORY[0x1E696AE40] dataWithPropertyList:v23 format:100 options:0 error:0];
@@ -34592,24 +34592,24 @@ LABEL_10:
             if ([v21 isEqual:@"Album"])
             {
               v31 = [v20 objectForKey:@"subclass"];
-              v32 = [v31 unsignedIntValue];
+              unsignedIntValue = [v31 unsignedIntValue];
 
-              if (v32 == 3)
+              if (unsignedIntValue == 3)
               {
                 v33 = 15;
-                v13 = v16;
+                array2 = v16;
                 goto LABEL_27;
               }
 
-              if (v32 == 5)
+              if (unsignedIntValue == 5)
               {
                 goto LABEL_29;
               }
 
-              if (v32 != 4)
+              if (unsignedIntValue != 4)
               {
                 v33 = 1550;
-                v13 = v51;
+                array2 = array;
                 goto LABEL_27;
               }
             }
@@ -34617,7 +34617,7 @@ LABEL_10:
             v33 = 1551;
 LABEL_27:
             v34 = [v20 objectForKey:@"uuid"];
-            [v13 addObject:v34];
+            [array2 addObject:v34];
 
             v35 = [PLPersistedAlbumMetadata alloc];
             v36 = [v20 objectForKey:@"albumName"];
@@ -34629,8 +34629,8 @@ LABEL_27:
 
             [v23 setAllowsOverwrite:0];
             [v23 persistAlbumData];
-            v13 = v53;
-            v8 = v54;
+            array2 = v53;
+            defaultManager = v54;
             v16 = v55;
 LABEL_28:
 
@@ -34645,29 +34645,29 @@ LABEL_29:
           {
 LABEL_36:
 
-            if ([v51 count])
+            if ([array count])
             {
-              v42 = [(PLModelMigrator *)v50 pathManager];
-              [PLManagedAlbumList persistAlbumListUUIDs:v51 type:0 pathManager:v42 allowsOverwrite:0];
+              pathManager2 = [(PLModelMigrator *)selfCopy pathManager];
+              [PLManagedAlbumList persistAlbumListUUIDs:array type:0 pathManager:pathManager2 allowsOverwrite:0];
             }
 
-            v5 = v47;
+            _iTunesPhotosLastSyncMetadata = v47;
             v4 = v48;
-            v7 = v45;
+            iTunesSyncedAssetsDirectory = v45;
             v6 = v46;
-            if ([v13 count])
+            if ([array2 count])
             {
-              v43 = [(PLModelMigrator *)v50 pathManager];
-              [PLManagedAlbumList persistAlbumListUUIDs:v13 type:1 pathManager:v43 allowsOverwrite:0];
+              pathManager3 = [(PLModelMigrator *)selfCopy pathManager];
+              [PLManagedAlbumList persistAlbumListUUIDs:array2 type:1 pathManager:pathManager3 allowsOverwrite:0];
             }
 
             if ([v55 count])
             {
-              v44 = [(PLModelMigrator *)v50 pathManager];
-              [PLManagedAlbumList persistAlbumListUUIDs:v55 type:2 pathManager:v44 allowsOverwrite:0];
+              pathManager4 = [(PLModelMigrator *)selfCopy pathManager];
+              [PLManagedAlbumList persistAlbumListUUIDs:v55 type:2 pathManager:pathManager4 allowsOverwrite:0];
             }
 
-            v3 = v49;
+            pathManager = v49;
 LABEL_43:
 
             break;
@@ -34682,22 +34682,22 @@ LABEL_43:
 
 - (id)_iTunesPhotosLastSyncMetadata
 {
-  v3 = [(PLModelMigrator *)self pathManager];
-  v4 = [v3 isDCIM];
+  pathManager = [(PLModelMigrator *)self pathManager];
+  isDCIM = [pathManager isDCIM];
 
-  if (v4)
+  if (isDCIM)
   {
     v5 = MEMORY[0x1E695DF20];
-    v6 = [(PLModelMigrator *)self pathManager];
-    v7 = [v6 iTunesPhotosLastSyncMetadataFilePath];
-    v8 = [v5 dictionaryWithContentsOfFile:v7];
+    pathManager2 = [(PLModelMigrator *)self pathManager];
+    iTunesPhotosLastSyncMetadataFilePath = [pathManager2 iTunesPhotosLastSyncMetadataFilePath];
+    v8 = [v5 dictionaryWithContentsOfFile:iTunesPhotosLastSyncMetadataFilePath];
 
     if (![v8 count])
     {
       v9 = MEMORY[0x1E695DF20];
-      v10 = [(PLModelMigrator *)self pathManager];
-      v11 = [v10 iTunesPhotosSyncMetadataFilePath];
-      v12 = [v9 dictionaryWithContentsOfFile:v11];
+      pathManager3 = [(PLModelMigrator *)self pathManager];
+      iTunesPhotosSyncMetadataFilePath = [pathManager3 iTunesPhotosSyncMetadataFilePath];
+      v12 = [v9 dictionaryWithContentsOfFile:iTunesPhotosSyncMetadataFilePath];
 
       v8 = v12;
     }
@@ -34715,9 +34715,9 @@ LABEL_43:
 {
   if ((PLIsAssetsd() & 1) == 0)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v10 = NSStringFromSelector(a2);
-    [v9 handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:1558 description:{@"%@ only valid in assetsd!", v10}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:1558 description:{@"%@ only valid in assetsd!", v10}];
   }
 
   v4 = PLMigrationGetLog();
@@ -34727,18 +34727,18 @@ LABEL_43:
     _os_log_impl(&dword_19BF1F000, v4, OS_LOG_TYPE_DEBUG, "Creating path to uuid mappings for UUID recovery", buf, 2u);
   }
 
-  v5 = [(PLModelMigrator *)self pathManager];
-  v6 = [v5 photosDatabasePath];
+  pathManager = [(PLModelMigrator *)self pathManager];
+  photosDatabasePath = [pathManager photosDatabasePath];
 
-  v7 = [objc_opt_class() extractPathToAssetUUIDRecoveryMappingFromDatabasePath:v6];
+  v7 = [objc_opt_class() extractPathToAssetUUIDRecoveryMappingFromDatabasePath:photosDatabasePath];
 
   return v7;
 }
 
-- (void)archiveAssetUUIDForPathPlist:(id)a3
+- (void)archiveAssetUUIDForPathPlist:(id)plist
 {
   v41 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  plistCopy = plist;
   v6 = PLMigrationGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -34746,17 +34746,17 @@ LABEL_43:
     _os_log_impl(&dword_19BF1F000, v6, OS_LOG_TYPE_DEFAULT, "Archiving asset path to uuid mappings", buf, 2u);
   }
 
-  v7 = self;
-  objc_sync_enter(v7);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v8 = archivedAssetUUIDForPathDictionary;
   archivedAssetUUIDForPathDictionary = 0;
 
-  v9 = [(PLModelMigrator *)v7 pathManager];
+  pathManager = [(PLModelMigrator *)selfCopy pathManager];
   v31 = 0;
   v32 = 0;
-  v10 = [v9 photosDatabasePath];
-  [PLManagedObjectContext getPersistentStoreURL:&v32 options:&v31 forDatabasePath:v10];
-  v27 = v9;
+  photosDatabasePath = [pathManager photosDatabasePath];
+  [PLManagedObjectContext getPersistentStoreURL:&v32 options:&v31 forDatabasePath:photosDatabasePath];
+  v27 = pathManager;
   v28 = v32;
   v11 = v31;
 
@@ -34771,23 +34771,23 @@ LABEL_43:
     v16 = [v13 valueForKey:*MEMORY[0x1E695D4B8]];
   }
 
-  v17 = [v5 count];
+  v17 = [plistCopy count];
   if (v16)
   {
-    [v5 setObject:v16 forKey:@"storeUUID"];
+    [plistCopy setObject:v16 forKey:@"storeUUID"];
   }
 
-  if (v5)
+  if (plistCopy)
   {
     v25 = v17;
-    v18 = [MEMORY[0x1E696AE40] dataWithPropertyList:v5 format:100 options:0 error:0];
-    v19 = [(PLModelMigrator *)v7 pathManager];
-    v26 = [v19 assetUUIDRecoveryMappingPath];
+    v18 = [MEMORY[0x1E696AE40] dataWithPropertyList:plistCopy format:100 options:0 error:0];
+    pathManager2 = [(PLModelMigrator *)selfCopy pathManager];
+    assetUUIDRecoveryMappingPath = [pathManager2 assetUUIDRecoveryMappingPath];
 
     if (v18)
     {
       v29 = 0;
-      v20 = [v18 writeToFile:v26 options:1073741825 error:&v29];
+      v20 = [v18 writeToFile:assetUUIDRecoveryMappingPath options:1073741825 error:&v29];
       v21 = v29;
       if (v20)
       {
@@ -34835,44 +34835,44 @@ LABEL_16:
 
 LABEL_17:
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)archivedAssetUUIDForURL:(id)a3
+- (id)archivedAssetUUIDForURL:(id)l
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 path];
-  v6 = [(PLModelMigrator *)self pathManager];
-  v7 = [v6 photoDirectoryWithType:1];
-  if ([v5 hasPrefix:@"/private"])
+  lCopy = l;
+  path = [lCopy path];
+  pathManager = [(PLModelMigrator *)self pathManager];
+  v7 = [pathManager photoDirectoryWithType:1];
+  if ([path hasPrefix:@"/private"])
   {
-    v8 = [v5 substringFromIndex:{objc_msgSend(@"/private", "length")}];
+    v8 = [path substringFromIndex:{objc_msgSend(@"/private", "length")}];
 
-    v5 = v8;
+    path = v8;
   }
 
-  if ([v5 hasPrefix:v7])
+  if ([path hasPrefix:v7])
   {
-    v9 = [v5 substringFromIndex:{objc_msgSend(v7, "length") + (objc_msgSend(v7, "hasSuffix:", @"/"}];
+    v9 = [path substringFromIndex:{objc_msgSend(v7, "length") + (objc_msgSend(v7, "hasSuffix:", @"/"}];
 
-    v5 = v9;
+    path = v9;
   }
 
-  v10 = self;
-  objc_sync_enter(v10);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v11 = archivedAssetUUIDForPathDictionary;
   if (!archivedAssetUUIDForPathDictionary)
   {
-    v34 = [v6 assetUUIDRecoveryMappingPath];
-    v12 = [objc_alloc(MEMORY[0x1E695DF20]) initWithContentsOfFile:v34];
+    assetUUIDRecoveryMappingPath = [pathManager assetUUIDRecoveryMappingPath];
+    v12 = [objc_alloc(MEMORY[0x1E695DF20]) initWithContentsOfFile:assetUUIDRecoveryMappingPath];
     v13 = archivedAssetUUIDForPathDictionary;
     archivedAssetUUIDForPathDictionary = v12;
 
     v37 = 0;
     v38 = 0;
-    v14 = [v6 photosDatabasePath];
-    [PLManagedObjectContext getPersistentStoreURL:&v38 options:&v37 forDatabasePath:v14];
+    photosDatabasePath = [pathManager photosDatabasePath];
+    [PLManagedObjectContext getPersistentStoreURL:&v38 options:&v37 forDatabasePath:photosDatabasePath];
     v32 = v38;
     v33 = v37;
 
@@ -34914,20 +34914,20 @@ LABEL_17:
     v11 = archivedAssetUUIDForPathDictionary;
   }
 
-  v26 = [v11 objectForKey:{v5, v31}];
-  objc_sync_exit(v10);
+  v26 = [v11 objectForKey:{path, v31}];
+  objc_sync_exit(selfCopy);
 
   v27 = PLMigrationGetLog();
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
   {
     v28 = NSStringFromSelector(a2);
-    v29 = [v4 path];
+    path2 = [lCopy path];
     *buf = 138413058;
     v40 = v28;
     v41 = 2112;
-    v42 = v29;
+    v42 = path2;
     v43 = 2112;
-    v44 = v5;
+    v44 = path;
     v45 = 2112;
     v46 = v26;
     _os_log_impl(&dword_19BF1F000, v27, OS_LOG_TYPE_DEBUG, "%@ %@[%@] -> %@", buf, 0x2Au);
@@ -34936,18 +34936,18 @@ LABEL_17:
   return v26;
 }
 
-- (BOOL)isPhotoLibraryDatabaseReadyForOpen:(id *)a3
+- (BOOL)isPhotoLibraryDatabaseReadyForOpen:(id *)open
 {
   if ((PLIsAssetsd() & 1) == 0)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:1453 description:@"Only Assetsd should be checking if isPhotoLibraryDatabaseReadyForOpen!"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:1453 description:@"Only Assetsd should be checking if isPhotoLibraryDatabaseReadyForOpen!"];
   }
 
-  v6 = [MEMORY[0x1E69BF238] fileManager];
-  v7 = [(PLModelMigrator *)self pathManager];
-  v8 = [v7 photosDatabasePath];
-  v9 = [v6 fileExistsAtPath:v8];
+  fileManager = [MEMORY[0x1E69BF238] fileManager];
+  pathManager = [(PLModelMigrator *)self pathManager];
+  photosDatabasePath = [pathManager photosDatabasePath];
+  v9 = [fileManager fileExistsAtPath:photosDatabasePath];
 
   if (!v9)
   {
@@ -34956,15 +34956,15 @@ LABEL_17:
 
   os_unfair_lock_lock(&self->_storeMetadataLock);
   v10 = objc_opt_class();
-  v11 = [(PLModelMigrator *)self pathManager];
-  v12 = [v10 _readNumberWithKey:@"PLModelVersion" fromMetadataWithMOC:0 pathManager:v11 error:0];
+  pathManager2 = [(PLModelMigrator *)self pathManager];
+  v12 = [v10 _readNumberWithKey:@"PLModelVersion" fromMetadataWithMOC:0 pathManager:pathManager2 error:0];
 
   os_unfair_lock_unlock(&self->_storeMetadataLock);
   if (![(PLModelMigrator *)self checkForceRebuildIndicatorFile])
   {
-    v16 = [v12 integerValue];
-    v13 = v16 == [objc_opt_class() currentModelVersion];
-    if (!a3)
+    integerValue = [v12 integerValue];
+    v13 = integerValue == [objc_opt_class() currentModelVersion];
+    if (!open)
     {
       goto LABEL_7;
     }
@@ -34973,11 +34973,11 @@ LABEL_17:
   }
 
   v13 = 0;
-  if (a3)
+  if (open)
   {
 LABEL_6:
     v14 = v12;
-    *a3 = v12;
+    *open = v12;
   }
 
 LABEL_7:
@@ -34985,16 +34985,16 @@ LABEL_7:
   return v13;
 }
 
-- (BOOL)updateCompletedMigrationStateWithError:(id *)a3
+- (BOOL)updateCompletedMigrationStateWithError:(id *)error
 {
   os_unfair_lock_lock(&self->_storeMetadataLock);
   v5 = objc_opt_class();
   v6 = *MEMORY[0x1E69BFEE0];
-  v7 = [(PLModelMigrator *)self pathManager];
-  LOBYTE(a3) = [v5 _writeNumber:&unk_1F0FBBD40 forKey:v6 pathManager:v7 error:a3];
+  pathManager = [(PLModelMigrator *)self pathManager];
+  LOBYTE(error) = [v5 _writeNumber:&unk_1F0FBBD40 forKey:v6 pathManager:pathManager error:error];
 
   os_unfair_lock_unlock(&self->_storeMetadataLock);
-  return a3;
+  return error;
 }
 
 - (int64_t)legacyMigrationState
@@ -35002,52 +35002,52 @@ LABEL_7:
   os_unfair_lock_lock(&self->_storeMetadataLock);
   v3 = objc_opt_class();
   v4 = *MEMORY[0x1E69BFEE0];
-  v5 = [(PLModelMigrator *)self pathManager];
+  pathManager = [(PLModelMigrator *)self pathManager];
   v19 = 0;
-  v6 = [v3 _readNumberWithKey:v4 fromMetadataWithMOC:0 pathManager:v5 error:&v19];
+  v6 = [v3 _readNumberWithKey:v4 fromMetadataWithMOC:0 pathManager:pathManager error:&v19];
   v7 = v19;
-  v8 = [v6 integerValue];
+  integerValue = [v6 integerValue];
 
   os_unfair_lock_unlock(&self->_storeMetadataLock);
-  if (!v8)
+  if (!integerValue)
   {
     os_unfair_lock_lock(&self->_storeMetadataLock);
     v9 = objc_opt_class();
-    v10 = [(PLModelMigrator *)self pathManager];
+    pathManager2 = [(PLModelMigrator *)self pathManager];
     v18 = v7;
-    v11 = [v9 _readNumberWithKey:@"PLModelVersion" fromMetadataWithMOC:0 pathManager:v10 error:&v18];
+    v11 = [v9 _readNumberWithKey:@"PLModelVersion" fromMetadataWithMOC:0 pathManager:pathManager2 error:&v18];
     v12 = v18;
 
     os_unfair_lock_unlock(&self->_storeMetadataLock);
-    v8 = 4 * (v11 == 0);
+    integerValue = 4 * (v11 == 0);
 
     v7 = v12;
   }
 
   if (v7)
   {
-    v13 = [v7 userInfo];
-    v14 = [v13 objectForKeyedSubscript:*MEMORY[0x1E695D488]];
+    userInfo = [v7 userInfo];
+    v14 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E695D488]];
 
     if (v14)
     {
-      v15 = [v14 intValue];
-      if (v15 == 26 || v15 == 11)
+      intValue = [v14 intValue];
+      if (intValue == 26 || intValue == 11)
       {
-        v8 = 3;
+        integerValue = 3;
       }
     }
   }
 
-  return v8;
+  return integerValue;
 }
 
-- (void)importAfterCrash:(id)a3 completionBlock:(id)a4
+- (void)importAfterCrash:(id)crash completionBlock:(id)block
 {
-  v8 = a3;
-  v6 = a4;
+  crashCopy = crash;
+  blockCopy = block;
   v7 = objc_autoreleasePoolPush();
-  [(PLModelMigrator *)self _importAfterCrash:v8 completionBlock:v6];
+  [(PLModelMigrator *)self _importAfterCrash:crashCopy completionBlock:blockCopy];
   objc_autoreleasePoolPop(v7);
 }
 
@@ -35067,21 +35067,21 @@ LABEL_7:
   objc_autoreleasePoolPop(v3);
 }
 
-- (void)loadFileSystemDataIntoDatabaseIfNeededWithReason:(id)a3 completionHandler:(id)a4
+- (void)loadFileSystemDataIntoDatabaseIfNeededWithReason:(id)reason completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  reasonCopy = reason;
+  handlerCopy = handler;
+  if (!reasonCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:1306 description:{@"Invalid parameter not satisfying: %@", @"reason != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:1306 description:{@"Invalid parameter not satisfying: %@", @"reason != nil"}];
   }
 
   v23 = MEMORY[0x1E69E9820];
   v24 = 3221225472;
   v25 = __86__PLModelMigrator_loadFileSystemDataIntoDatabaseIfNeededWithReason_completionHandler___block_invoke;
   v26 = &unk_1E75781E8;
-  v27 = self;
+  selfCopy = self;
   PLRunWithUnfairLock();
   v9 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:100];
   v10 = [MEMORY[0x1E69BF360] transaction:"-[PLModelMigrator loadFileSystemDataIntoDatabaseIfNeededWithReason:completionHandler:]"];
@@ -35090,15 +35090,15 @@ LABEL_7:
   block[1] = 3221225472;
   block[2] = __86__PLModelMigrator_loadFileSystemDataIntoDatabaseIfNeededWithReason_completionHandler___block_invoke_2;
   block[3] = &unk_1E7576EE8;
-  v18 = v7;
-  v19 = self;
+  v18 = reasonCopy;
+  selfCopy2 = self;
   v21 = v10;
-  v22 = v8;
+  v22 = handlerCopy;
   v20 = v9;
   v12 = v10;
-  v13 = v8;
+  v13 = handlerCopy;
   v14 = v9;
-  v15 = v7;
+  v15 = reasonCopy;
   dispatch_async(fileSystemLoadQueue, block);
 }
 
@@ -35139,9 +35139,9 @@ void __86__PLModelMigrator_loadFileSystemDataIntoDatabaseIfNeededWithReason_comp
   return v2;
 }
 
-- (void)loadFileSystemAssetsNotifyCompleted:(id)a3
+- (void)loadFileSystemAssetsNotifyCompleted:(id)completed
 {
-  v4 = a3;
+  completedCopy = completed;
   p_fileSystemLoadQueue = &self->_fileSystemLoadQueue;
   fileSystemLoadQueue = self->_fileSystemLoadQueue;
   v6 = p_fileSystemLoadQueue[1];
@@ -35149,43 +35149,43 @@ void __86__PLModelMigrator_loadFileSystemDataIntoDatabaseIfNeededWithReason_comp
   block[1] = 3221225472;
   block[2] = __55__PLModelMigrator_loadFileSystemAssetsNotifyCompleted___block_invoke;
   block[3] = &unk_1E7576AA0;
-  v10 = v4;
-  v8 = v4;
+  v10 = completedCopy;
+  v8 = completedCopy;
   dispatch_group_notify(v6, fileSystemLoadQueue, block);
 }
 
-- (BOOL)_recordCurrentVersionMetadataInPersistentStore:(id)a3 migrationType:(int64_t)a4 forceRebuildReason:(id)a5 sourceModelVersion:(id)a6 updateLegacyMigrationState:(BOOL)a7 journalRebuildRequred:(BOOL)a8
+- (BOOL)_recordCurrentVersionMetadataInPersistentStore:(id)store migrationType:(int64_t)type forceRebuildReason:(id)reason sourceModelVersion:(id)version updateLegacyMigrationState:(BOOL)state journalRebuildRequred:(BOOL)requred
 {
-  v47 = a7;
+  stateCopy = state;
   v52[1] = *MEMORY[0x1E69E9840];
-  v43 = a6;
-  v42 = a5;
-  v11 = a3;
+  versionCopy = version;
+  reasonCopy = reason;
+  storeCopy = store;
   os_unfair_lock_lock(&self->_recordMigrationMetadataLock);
-  v12 = [(PLModelMigrator *)self _migrationHistoryOriginFromLatestDataMigration];
-  v46 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v11 name:"[PLModelMigrator _recordCurrentVersionMetadataInPersistentStore:migrationType:forceRebuildReason:sourceModelVersion:updateLegacyMigrationState:journalRebuildRequred:]" concurrencyType:1];
+  _migrationHistoryOriginFromLatestDataMigration = [(PLModelMigrator *)self _migrationHistoryOriginFromLatestDataMigration];
+  v46 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _recordCurrentVersionMetadataInPersistentStore:migrationType:forceRebuildReason:sourceModelVersion:updateLegacyMigrationState:journalRebuildRequred:]" concurrencyType:1];
 
-  v13 = [(PLModelMigrator *)self options];
-  v14 = [v13 objectForKeyedSubscript:@"PLPhotoLibraryCreateOptions"];
+  options = [(PLModelMigrator *)self options];
+  v14 = [options objectForKeyedSubscript:@"PLPhotoLibraryCreateOptions"];
 
   v41 = v14;
   if (v14)
   {
     v15 = MEMORY[0x1E69BF188];
-    v16 = [(PLModelMigrator *)self pathManager];
-    v17 = [v16 libraryURL];
-    v18 = [v15 appPrivateDataForLibraryURL:v17];
+    pathManager = [(PLModelMigrator *)self pathManager];
+    libraryURL = [pathManager libraryURL];
+    v18 = [v15 appPrivateDataForLibraryURL:libraryURL];
 
     v51 = @"PLPhotoLibraryCreateOptions";
     v52[0] = v14;
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v52 forKeys:&v51 count:1];
     v48 = 0;
-    LODWORD(v16) = [v18 setValue:v19 forKey:@"PLModelMigrator.CreateOptions" error:&v48];
+    LODWORD(pathManager) = [v18 setValue:v19 forKey:@"PLModelMigrator.CreateOptions" error:&v48];
     v20 = v48;
 
     v21 = PLMigrationGetLog();
     v22 = v21;
-    if (v16)
+    if (pathManager)
     {
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
       {
@@ -35210,27 +35210,27 @@ LABEL_8:
       goto LABEL_8;
     }
 
-    v27 = [v14 unsignedIntegerValue];
+    unsignedIntegerValue = [v14 unsignedIntegerValue];
     goto LABEL_10;
   }
 
-  v27 = 0;
+  unsignedIntegerValue = 0;
 LABEL_10:
   v28 = MGCopyAnswer();
   v29 = MGCopyAnswer();
-  v30 = [(PLModelMigrator *)self pathManager];
-  v31 = CPLStatusFromPathManager(v30);
+  pathManager2 = [(PLModelMigrator *)self pathManager];
+  v31 = CPLStatusFromPathManager(pathManager2);
 
-  v32 = [(PLModelMigrator *)self pathManager];
-  v33 = [v32 libraryURL];
-  v34 = PLIsCloudPhotoLibraryEnabledForPhotoLibraryURL(v33);
+  pathManager3 = [(PLModelMigrator *)self pathManager];
+  libraryURL2 = [pathManager3 libraryURL];
+  v34 = PLIsCloudPhotoLibraryEnabledForPhotoLibraryURL(libraryURL2);
 
-  v35 = [(PLModelMigrator *)self pathManager];
-  v36 = [v31 initialSyncDate];
+  pathManager4 = [(PLModelMigrator *)self pathManager];
+  initialSyncDate = [v31 initialSyncDate];
   LOBYTE(v40) = v34;
-  WORD1(v39) = v12;
-  LOBYTE(v39) = a8;
-  v37 = [PLMigrationHistory recordCurrentMigrationStateInManagedObjectContext:v46 withPathManager:v35 migrationType:a4 forceRebuildReason:v42 sourceModelVersion:v43 updateLegacyMigrationState:v47 journalRebuildRequred:v39 origin:v27 libraryCreateOptions:v28 hardwareModel:v29 deviceUniqueID:v40 cplEnabled:v36 initialSyncDate:?];
+  WORD1(v39) = _migrationHistoryOriginFromLatestDataMigration;
+  LOBYTE(v39) = requred;
+  v37 = [PLMigrationHistory recordCurrentMigrationStateInManagedObjectContext:v46 withPathManager:pathManager4 migrationType:type forceRebuildReason:reasonCopy sourceModelVersion:versionCopy updateLegacyMigrationState:stateCopy journalRebuildRequred:v39 origin:unsignedIntegerValue libraryCreateOptions:v28 hardwareModel:v29 deviceUniqueID:v40 cplEnabled:initialSyncDate initialSyncDate:?];
 
   [(PLModelMigrator *)self setDidRecordCurrentMigrationMetadata:v37];
   os_unfair_lock_unlock(&self->_recordMigrationMetadataLock);
@@ -35238,27 +35238,27 @@ LABEL_10:
   return v37;
 }
 
-- (void)_recordCurrentVersionMetadataIfNeededForDataMigrationInPersistentStore:(id)a3
+- (void)_recordCurrentVersionMetadataIfNeededForDataMigrationInPersistentStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   os_unfair_lock_lock(&self->_recordMigrationMetadataLock);
-  v4 = [(PLModelMigrator *)self didRecordCurrentMigrationMetadata];
+  didRecordCurrentMigrationMetadata = [(PLModelMigrator *)self didRecordCurrentMigrationMetadata];
   os_unfair_lock_unlock(&self->_recordMigrationMetadataLock);
-  if (!v4)
+  if (!didRecordCurrentMigrationMetadata)
   {
-    [(PLModelMigrator *)self _recordCurrentVersionMetadataInPersistentStore:v5 migrationType:0 forceRebuildReason:0 sourceModelVersion:0 updateLegacyMigrationState:0 journalRebuildRequred:0];
+    [(PLModelMigrator *)self _recordCurrentVersionMetadataInPersistentStore:storeCopy migrationType:0 forceRebuildReason:0 sourceModelVersion:0 updateLegacyMigrationState:0 journalRebuildRequred:0];
   }
 }
 
 - (signed)_migrationHistoryOriginFromLatestDataMigration
 {
-  v3 = [(PLModelMigrator *)self deviceRestoreMigrationSupport];
-  v4 = [(PLModelMigrator *)self pathManager];
-  if (![v4 isDeviceRestoreSupported])
+  deviceRestoreMigrationSupport = [(PLModelMigrator *)self deviceRestoreMigrationSupport];
+  pathManager = [(PLModelMigrator *)self pathManager];
+  if (![pathManager isDeviceRestoreSupported])
   {
 
 LABEL_14:
-    if ([v3 isEraseWithoutRestore])
+    if ([deviceRestoreMigrationSupport isEraseWithoutRestore])
     {
       v6 = 9;
     }
@@ -35271,14 +35271,14 @@ LABEL_14:
     goto LABEL_17;
   }
 
-  v5 = [v3 isRestoreFromBackup];
+  isRestoreFromBackup = [deviceRestoreMigrationSupport isRestoreFromBackup];
 
-  if (!v5)
+  if (!isRestoreFromBackup)
   {
     goto LABEL_14;
   }
 
-  if ([v3 isRestoreFromBackupSourceCloud])
+  if ([deviceRestoreMigrationSupport isRestoreFromBackupSourceCloud])
   {
     v6 = 2;
   }
@@ -35288,17 +35288,17 @@ LABEL_14:
     v6 = 0;
   }
 
-  if ([v3 isRestoreFromBackupSourceMegaBackup])
+  if ([deviceRestoreMigrationSupport isRestoreFromBackupSourceMegaBackup])
   {
     v6 = 7;
   }
 
-  if ([v3 isRestoreFromBackupSourceiTunes])
+  if ([deviceRestoreMigrationSupport isRestoreFromBackupSourceiTunes])
   {
     v6 = 1;
   }
 
-  if ([v3 isRestoreFromBackupSourceDeviceToDevice])
+  if ([deviceRestoreMigrationSupport isRestoreFromBackupSourceDeviceToDevice])
   {
     v6 = 3;
   }
@@ -35308,27 +35308,27 @@ LABEL_17:
   return v6;
 }
 
-- (int64_t)createNewDatabaseWithMigrationType:(int64_t)a3 forceRebuildReason:(id)a4 coordinator:(id)a5 error:(id *)a6
+- (int64_t)createNewDatabaseWithMigrationType:(int64_t)type forceRebuildReason:(id)reason coordinator:(id)coordinator error:(id *)error
 {
   v157 = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
+  reasonCopy = reason;
+  coordinatorCopy = coordinator;
   if ((PLIsAssetsd() & 1) == 0)
   {
-    v122 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v123 = NSStringFromSelector(a2);
-    [v122 handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:952 description:{@"%@ can only be called from assetsd", v123}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:952 description:{@"%@ can only be called from assetsd", v123}];
   }
 
-  if ((a3 | 2) != 3)
+  if ((type | 2) != 3)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:953 description:{@"Invalid parameter not satisfying: %@", @"requestedType == PLMigrationTypeCreated || requestedType == PLMigrationTypeRebuild"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:953 description:{@"Invalid parameter not satisfying: %@", @"requestedType == PLMigrationTypeCreated || requestedType == PLMigrationTypeRebuild"}];
   }
 
-  v14 = [(PLModelMigrator *)self pathManager];
-  v15 = [v14 isSystemPhotoLibraryPathManager];
-  if (a3 == 4)
+  pathManager = [(PLModelMigrator *)self pathManager];
+  isSystemPhotoLibraryPathManager = [pathManager isSystemPhotoLibraryPathManager];
+  if (type == 4)
   {
     v16 = 0;
     goto LABEL_7;
@@ -35336,10 +35336,10 @@ LABEL_17:
 
   v130 = a2;
   v16 = 0;
-  if ([PLRebuildJournalManager isEnabledWithPathManager:v14 error:0])
+  if ([PLRebuildJournalManager isEnabledWithPathManager:pathManager error:0])
   {
     v152 = 0;
-    v20 = [PLRebuildJournalManager existingJournalsCompatibleForRebuild:v14 error:&v152];
+    v20 = [PLRebuildJournalManager existingJournalsCompatibleForRebuild:pathManager error:&v152];
     v16 = v152;
     if (!v20)
     {
@@ -35358,10 +35358,10 @@ LABEL_7:
       if (v16)
       {
 LABEL_8:
-        if (a6)
+        if (error)
         {
           v19 = v18;
-          *a6 = v18;
+          *error = v18;
         }
 
         v16 = v18;
@@ -35374,19 +35374,19 @@ LABEL_8:
 
   v151 = 0;
   v21 = PLMigrationGetLog();
-  v132 = a6;
-  v133 = v15;
+  errorCopy = error;
+  v133 = isSystemPhotoLibraryPathManager;
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
-    v22 = PLStringFromMigrationType(a3, 1);
-    v23 = [v14 libraryURL];
+    v22 = PLStringFromMigrationType(type, 1);
+    libraryURL = [pathManager libraryURL];
     *buf = 138543618;
     v154 = v22;
     v155 = 2112;
-    v156 = v23;
+    v156 = libraryURL;
     _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_DEFAULT, "Started %{public}@ of %@", buf, 0x16u);
 
-    a6 = v132;
+    error = errorCopy;
   }
 
   v150 = 0;
@@ -35396,44 +35396,44 @@ LABEL_8:
   {
 
     context = objc_autoreleasePoolPush();
-    v127 = v12;
+    v127 = coordinatorCopy;
     if (v151)
     {
-      v129 = [MEMORY[0x1E695DF90] dictionary];
-      v125 = a3;
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      typeCopy2 = type;
     }
 
     else
     {
-      v27 = [v14 photosDatabasePath];
-      v28 = [MEMORY[0x1E696AC08] defaultManager];
-      v29 = [v28 fileExistsAtPath:v27];
+      photosDatabasePath = [pathManager photosDatabasePath];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      v29 = [defaultManager fileExistsAtPath:photosDatabasePath];
 
       if (v29)
       {
-        v30 = [v14 libraryURL];
-        if (v30)
+        libraryURL2 = [pathManager libraryURL];
+        if (libraryURL2)
         {
-          v31 = [v14 capabilities];
-          v32 = [v31 isCentralizedCacheDeleteCapable];
+          capabilities = [pathManager capabilities];
+          isCentralizedCacheDeleteCapable = [capabilities isCentralizedCacheDeleteCapable];
 
-          if (v32)
+          if (isCentralizedCacheDeleteCapable)
           {
             v33 = PLMigrationGetLog();
             if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
-              v154 = v30;
+              v154 = libraryURL2;
               _os_log_impl(&dword_19BF1F000, v33, OS_LOG_TYPE_DEFAULT, "Clearing purgeable flags before rebuild for photo library at %@", buf, 0xCu);
             }
 
-            if (![PLCacheDeleteSupport clearPurgeableFlagsForAllResourcesInPhotoLibraryURL:v30])
+            if (![PLCacheDeleteSupport clearPurgeableFlagsForAllResourcesInPhotoLibraryURL:libraryURL2])
             {
               v34 = PLMigrationGetLog();
               if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
               {
                 *buf = 138412290;
-                v154 = v30;
+                v154 = libraryURL2;
                 _os_log_impl(&dword_19BF1F000, v34, OS_LOG_TYPE_ERROR, "Failed to clear purgeable flags for photo library %@", buf, 0xCu);
               }
             }
@@ -35447,27 +35447,27 @@ LABEL_8:
           _os_log_impl(&dword_19BF1F000, v35, OS_LOG_TYPE_DEFAULT, "Trying to persist path->uuid mapping", buf, 2u);
         }
 
-        v129 = [(PLModelMigrator *)self generatePathToAssetUUIDRecoveryMapping];
-        [PLManagedObjectContext removePhotosDatabaseWithPathManager:v14];
-        v125 = 1;
+        dictionary = [(PLModelMigrator *)self generatePathToAssetUUIDRecoveryMapping];
+        [PLManagedObjectContext removePhotosDatabaseWithPathManager:pathManager];
+        typeCopy2 = 1;
       }
 
       else
       {
-        v30 = PLMigrationGetLog();
-        if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
+        libraryURL2 = PLMigrationGetLog();
+        if (os_log_type_enabled(libraryURL2, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v154 = v27;
-          _os_log_impl(&dword_19BF1F000, v30, OS_LOG_TYPE_ERROR, "No store file to move aside at %@", buf, 0xCu);
+          v154 = photosDatabasePath;
+          _os_log_impl(&dword_19BF1F000, libraryURL2, OS_LOG_TYPE_ERROR, "No store file to move aside at %@", buf, 0xCu);
         }
 
-        v129 = 0;
-        v125 = a3;
+        dictionary = 0;
+        typeCopy2 = type;
       }
     }
 
-    v128 = v11;
+    v128 = reasonCopy;
     v36 = PLMigrationGetLog();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
     {
@@ -35475,16 +35475,16 @@ LABEL_8:
       _os_log_impl(&dword_19BF1F000, v36, OS_LOG_TYPE_DEFAULT, "Removing derivatives", buf, 2u);
     }
 
-    if ([PLRebuildJournalManager isEnabledWithPathManager:v14 error:0])
+    if ([PLRebuildJournalManager isEnabledWithPathManager:pathManager error:0])
     {
-      v37 = [(PLModelMigrator *)self pathManager];
-      v38 = [PLRebuildJournalManager assetJournalExists:v37 error:0];
+      pathManager2 = [(PLModelMigrator *)self pathManager];
+      v38 = [PLRebuildJournalManager assetJournalExists:pathManager2 error:0];
 
       if (v38)
       {
-        [v14 photoDirectoryCreationMaskResetWithType:11];
+        [pathManager photoDirectoryCreationMaskResetWithType:11];
         v149 = 0;
-        v39 = [v14 photoDirectoryWithType:11 createIfNeeded:1 error:&v149];
+        v39 = [pathManager photoDirectoryWithType:11 createIfNeeded:1 error:&v149];
         v40 = v149;
 
         if (!v39)
@@ -35498,30 +35498,30 @@ LABEL_8:
           }
         }
 
-        v42 = [(PLModelMigrator *)self pathManager];
-        [(PLThumbnailManagerCore *)PLThumbnailManager removeThumbnailTablesUnsupportedOnly:0 withPathManager:v42];
+        pathManager3 = [(PLModelMigrator *)self pathManager];
+        [(PLThumbnailManagerCore *)PLThumbnailManager removeThumbnailTablesUnsupportedOnly:0 withPathManager:pathManager3];
 
-        v43 = [(PLModelMigrator *)self pathManager];
-        v44 = [(PLThumbnailManagerCore *)PLThumbnailManager thumbnailConfigurationDictWithPathManager:v43];
+        pathManager4 = [(PLModelMigrator *)self pathManager];
+        v44 = [(PLThumbnailManagerCore *)PLThumbnailManager thumbnailConfigurationDictWithPathManager:pathManager4];
 
-        v45 = [(PLModelMigrator *)self pathManager];
+        pathManager5 = [(PLModelMigrator *)self pathManager];
         v46 = 1;
-        [(PLThumbnailManagerCore *)PLThumbnailManager stampThumbnailConfiguration:v44 toFile:1 withPathManager:v45];
+        [(PLThumbnailManagerCore *)PLThumbnailManager stampThumbnailConfiguration:v44 toFile:1 withPathManager:pathManager5];
         goto LABEL_88;
       }
     }
 
-    v47 = [(PLModelMigrator *)self pathManager];
-    [(PLThumbnailManagerCore *)PLThumbnailManager removeThumbnailTablesUnsupportedOnly:0 withPathManager:v47];
+    pathManager6 = [(PLModelMigrator *)self pathManager];
+    [(PLThumbnailManagerCore *)PLThumbnailManager removeThumbnailTablesUnsupportedOnly:0 withPathManager:pathManager6];
 
     v148 = 0;
-    v48 = [v14 photoDirectoryWithType:12 createIfNeeded:0 error:&v148];
+    v48 = [pathManager photoDirectoryWithType:12 createIfNeeded:0 error:&v148];
     v49 = v148;
     if (v48)
     {
-      v50 = [MEMORY[0x1E69BF238] fileManager];
+      fileManager = [MEMORY[0x1E69BF238] fileManager];
       v147 = v49;
-      v51 = [v50 removeItemAtPath:v48 error:&v147];
+      v51 = [fileManager removeItemAtPath:v48 error:&v147];
       v52 = v147;
 
       if ((v51 & 1) == 0)
@@ -35533,24 +35533,24 @@ LABEL_8:
           goto LABEL_58;
         }
 
-        v50 = PLMigrationGetLog();
-        if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
+        fileManager = PLMigrationGetLog();
+        if (os_log_type_enabled(fileManager, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
           v154 = v52;
-          _os_log_impl(&dword_19BF1F000, v50, OS_LOG_TYPE_ERROR, "Error removing master thumbs directory: %@", buf, 0xCu);
+          _os_log_impl(&dword_19BF1F000, fileManager, OS_LOG_TYPE_ERROR, "Error removing master thumbs directory: %@", buf, 0xCu);
         }
       }
     }
 
     else
     {
-      v50 = PLMigrationGetLog();
-      if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
+      fileManager = PLMigrationGetLog();
+      if (os_log_type_enabled(fileManager, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
         v154 = v49;
-        _os_log_impl(&dword_19BF1F000, v50, OS_LOG_TYPE_ERROR, "Error obtaining path for master thumbs directory: %@", buf, 0xCu);
+        _os_log_impl(&dword_19BF1F000, fileManager, OS_LOG_TYPE_ERROR, "Error obtaining path for master thumbs directory: %@", buf, 0xCu);
       }
 
       v52 = v49;
@@ -35558,13 +35558,13 @@ LABEL_8:
 
 LABEL_58:
     v124 = v48;
-    if (![v14 isDCIM])
+    if (![pathManager isDCIM])
     {
 LABEL_71:
-      v61 = [MEMORY[0x1E696AC08] defaultManager];
-      v62 = [v14 photoDirectoryWithType:10];
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+      v62 = [pathManager photoDirectoryWithType:10];
       v144 = v52;
-      v63 = [v61 removeItemAtPath:v62 error:&v144];
+      v63 = [defaultManager2 removeItemAtPath:v62 error:&v144];
       v64 = v144;
 
       if ((v63 & 1) == 0)
@@ -35578,11 +35578,11 @@ LABEL_71:
         }
       }
 
-      [v14 photoDirectoryCreationMaskResetWithType:10];
-      [v14 photoDirectoryCreationMaskResetWithType:11];
-      [v14 photoDirectoryCreationMaskResetWithType:12];
+      [pathManager photoDirectoryCreationMaskResetWithType:10];
+      [pathManager photoDirectoryCreationMaskResetWithType:11];
+      [pathManager photoDirectoryCreationMaskResetWithType:12];
       v143 = v64;
-      v66 = [v14 photoDirectoryWithType:10 createIfNeeded:1 error:&v143];
+      v66 = [pathManager photoDirectoryWithType:10 createIfNeeded:1 error:&v143];
       v67 = v143;
 
       if (!v66)
@@ -35597,7 +35597,7 @@ LABEL_71:
       }
 
       v142 = v67;
-      v69 = [v14 photoDirectoryWithType:11 createIfNeeded:1 error:&v142];
+      v69 = [pathManager photoDirectoryWithType:11 createIfNeeded:1 error:&v142];
       v70 = v142;
 
       if (!v69)
@@ -35612,7 +35612,7 @@ LABEL_71:
       }
 
       v141 = v70;
-      v72 = [v14 photoDirectoryWithType:12 createIfNeeded:1 error:&v141];
+      v72 = [pathManager photoDirectoryWithType:12 createIfNeeded:1 error:&v141];
       v40 = v141;
 
       if (!v72)
@@ -35626,18 +35626,18 @@ LABEL_71:
         }
       }
 
-      v74 = [(PLModelMigrator *)self pathManager];
-      v45 = [(PLThumbnailManagerCore *)PLThumbnailManager thumbnailConfigurationDictWithPathManager:v74];
+      pathManager7 = [(PLModelMigrator *)self pathManager];
+      pathManager5 = [(PLThumbnailManagerCore *)PLThumbnailManager thumbnailConfigurationDictWithPathManager:pathManager7];
 
-      v75 = [(PLModelMigrator *)self pathManager];
-      [(PLThumbnailManagerCore *)PLThumbnailManager stampThumbnailConfiguration:v45 toFile:1 withPathManager:v75];
+      pathManager8 = [(PLModelMigrator *)self pathManager];
+      [(PLThumbnailManagerCore *)PLThumbnailManager stampThumbnailConfiguration:pathManager5 toFile:1 withPathManager:pathManager8];
 
       v46 = 0;
       v44 = v124;
 LABEL_88:
 
-      [v14 removePartialVideoDirectory];
-      [v14 removeComputeDirectory];
+      [pathManager removePartialVideoDirectory];
+      [pathManager removeComputeDirectory];
       v76 = PLMigrationGetLog();
       if (os_log_type_enabled(v76, OS_LOG_TYPE_DEFAULT))
       {
@@ -35645,8 +35645,8 @@ LABEL_88:
         _os_log_impl(&dword_19BF1F000, v76, OS_LOG_TYPE_DEFAULT, "Creating database", buf, 2u);
       }
 
-      [(PLModelMigrator *)self _repairMetadataAndSingletonsForMigrationType:a3 forceRebuildReason:v11 journalRebuildRequired:v46];
-      [(PLModelMigrator *)self archiveAssetUUIDForPathPlist:v129];
+      [(PLModelMigrator *)self _repairMetadataAndSingletonsForMigrationType:type forceRebuildReason:reasonCopy journalRebuildRequired:v46];
+      [(PLModelMigrator *)self archiveAssetUUIDForPathPlist:dictionary];
       v77 = v133;
       if (v133)
       {
@@ -35666,8 +35666,8 @@ LABEL_88:
       v137[1] = 3221225472;
       v137[2] = __91__PLModelMigrator_createNewDatabaseWithMigrationType_forceRebuildReason_coordinator_error___block_invoke;
       v137[3] = &unk_1E7568BA8;
-      v80 = v14;
-      v139 = self;
+      v80 = pathManager;
+      selfCopy = self;
       v140 = v130;
       v138 = v80;
       [v80 enumerateBundleScopesWithBlock:v137];
@@ -35708,13 +35708,13 @@ LABEL_88:
           _os_log_impl(&dword_19BF1F000, v86, OS_LOG_TYPE_INFO, "Dropping any prior search index", buf, 2u);
         }
 
-        v87 = [(PLModelMigrator *)self pathManager];
-        v88 = [v87 libraryURL];
-        v89 = [PLLibraryServicesManager libraryServicesManagerForLibraryURL:v88];
+        pathManager9 = [(PLModelMigrator *)self pathManager];
+        libraryURL3 = [pathManager9 libraryURL];
+        v89 = [PLLibraryServicesManager libraryServicesManagerForLibraryURL:libraryURL3];
 
-        v90 = [v89 searchIndexingEngine];
-        v91 = [MEMORY[0x1E696AEC0] stringWithFormat:@"new database (force rebuild reason: %@)", v11];
-        [v90 dropSearchIndexWithSourceName:v91 completion:0];
+        searchIndexingEngine = [v89 searchIndexingEngine];
+        reasonCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"new database (force rebuild reason: %@)", reasonCopy];
+        [searchIndexingEngine dropSearchIndexWithSourceName:reasonCopy completion:0];
 
         v77 = v133;
       }
@@ -35722,13 +35722,13 @@ LABEL_88:
       [(PLModelMigrator *)self applyDataProtectionToAllPhotosFilesOnce];
       if (([v80 isDCIM] & v77) == 1 && -[PLModelMigrator isCloudPhotoLibraryEnabled](self, "isCloudPhotoLibraryEnabled"))
       {
-        v92 = [(PLModelMigrator *)self deviceRestoreMigrationSupport];
-        if ([v92 isRestoreFromBackup])
+        deviceRestoreMigrationSupport = [(PLModelMigrator *)self deviceRestoreMigrationSupport];
+        if ([deviceRestoreMigrationSupport isRestoreFromBackup])
         {
-          v93 = [(PLModelMigrator *)self postProcessingToken];
-          v94 = [v93 isModelMigrationRestorePostProcessingComplete];
+          postProcessingToken = [(PLModelMigrator *)self postProcessingToken];
+          isModelMigrationRestorePostProcessingComplete = [postProcessingToken isModelMigrationRestorePostProcessingComplete];
 
-          if (!v94)
+          if (!isModelMigrationRestorePostProcessingComplete)
           {
             goto LABEL_115;
           }
@@ -35749,44 +35749,44 @@ LABEL_88:
       }
 
 LABEL_115:
-      v96 = [v11 integerValue];
-      if (v96 >= 1)
+      integerValue = [reasonCopy integerValue];
+      if (integerValue >= 1)
       {
-        v97 = v96;
-        v98 = [(PLModelMigrator *)self analyticsEventManager];
+        v97 = integerValue;
+        analyticsEventManager = [(PLModelMigrator *)self analyticsEventManager];
         v99 = [MEMORY[0x1E696AD98] numberWithInteger:v97];
         [v99 stringValue];
-        v131 = v14;
-        v100 = self;
+        v131 = pathManager;
+        selfCopy2 = self;
         v101 = v80;
         v102 = v16;
-        v103 = a3;
+        typeCopy3 = type;
         v105 = v104 = v40;
         v106 = *MEMORY[0x1E69BF740];
-        [v98 setPayloadValue:v105 forKey:*MEMORY[0x1E69BF770] onEventWithName:*MEMORY[0x1E69BF740]];
+        [analyticsEventManager setPayloadValue:v105 forKey:*MEMORY[0x1E69BF770] onEventWithName:*MEMORY[0x1E69BF740]];
 
         v40 = v104;
-        a3 = v103;
+        type = typeCopy3;
         v16 = v102;
         v80 = v101;
-        self = v100;
-        v14 = v131;
+        self = selfCopy2;
+        pathManager = v131;
 
-        v107 = [(PLModelMigrator *)self analyticsEventManager];
+        analyticsEventManager2 = [(PLModelMigrator *)self analyticsEventManager];
         v108 = PLRebuildReasonToShortString(v97);
         v109 = v106;
-        v11 = v128;
-        [v107 setPayloadValue:v108 forKey:*MEMORY[0x1E69BF768] onEventWithName:v109];
+        reasonCopy = v128;
+        [analyticsEventManager2 setPayloadValue:v108 forKey:*MEMORY[0x1E69BF768] onEventWithName:v109];
       }
 
-      v110 = [(PLModelMigrator *)self pathManager];
-      [PLModelMigrationAction_CPLPrompting shouldRepromptUserIfNeededWithPathManager:v110];
+      pathManager10 = [(PLModelMigrator *)self pathManager];
+      [PLModelMigrationAction_CPLPrompting shouldRepromptUserIfNeededWithPathManager:pathManager10];
 
       objc_autoreleasePoolPop(context);
-      v17 = v125;
-      if (v125 == 1)
+      v17 = typeCopy2;
+      if (typeCopy2 == 1)
       {
-        v12 = v127;
+        coordinatorCopy = v127;
         if ([v80 isDCIM])
         {
           v111 = MEMORY[0x1E695DFF8];
@@ -35822,20 +35822,20 @@ LABEL_115:
       else
       {
         v18 = v16;
-        v12 = v127;
+        coordinatorCopy = v127;
       }
 
-      a6 = v132;
-      v15 = v133;
+      error = errorCopy;
+      isSystemPhotoLibraryPathManager = v133;
       if (v18)
       {
         goto LABEL_8;
       }
 
 LABEL_127:
-      if (a3 == 3 && v17 == 3)
+      if (type == 3 && v17 == 3)
       {
-        v116 = v15;
+        v116 = isSystemPhotoLibraryPathManager;
       }
 
       else
@@ -35846,9 +35846,9 @@ LABEL_127:
       if (v116 == 1)
       {
         v117 = MEMORY[0x1E69BF2A0];
-        v118 = [v14 libraryURL];
+        libraryURL4 = [pathManager libraryURL];
         v134 = 0;
-        LOBYTE(v117) = [v117 setSystemLibraryURL:v118 options:0 error:&v134];
+        LOBYTE(v117) = [v117 setSystemLibraryURL:libraryURL4 options:0 error:&v134];
         v119 = v134;
 
         if ((v117 & 1) == 0)
@@ -35875,7 +35875,7 @@ LABEL_127:
     }
 
     v146 = v52;
-    v54 = [v14 photoDirectoryWithType:31 createIfNeeded:0 error:&v146];
+    v54 = [pathManager photoDirectoryWithType:31 createIfNeeded:0 error:&v146];
     v55 = v146;
 
     if (!v54)
@@ -35892,9 +35892,9 @@ LABEL_127:
       goto LABEL_70;
     }
 
-    v56 = [MEMORY[0x1E69BF238] fileManager];
+    fileManager2 = [MEMORY[0x1E69BF238] fileManager];
     v145 = v55;
-    v57 = [v56 removeItemAtPath:v54 error:&v145];
+    v57 = [fileManager2 removeItemAtPath:v54 error:&v145];
     v52 = v145;
 
     if (v57)
@@ -35919,16 +35919,16 @@ LABEL_127:
       }
     }
 
-    [v14 photoDirectoryCreationMaskResetWithType:31];
+    [pathManager photoDirectoryCreationMaskResetWithType:31];
 LABEL_70:
 
     goto LABEL_71;
   }
 
-  if (a6)
+  if (error)
   {
     v25 = v25;
-    *a6 = v25;
+    *error = v25;
   }
 
   v17 = 4;
@@ -36011,27 +36011,27 @@ LABEL_16:
   }
 }
 
-- (int64_t)promptUserIfNeededForRebuildReason:(id)a3 migrationError:(id)a4
+- (int64_t)promptUserIfNeededForRebuildReason:(id)reason migrationError:(id)error
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  reasonCopy = reason;
+  errorCopy = error;
   if ([objc_opt_class() shouldPromptUserForLibrarySchemaMismatch] && objc_msgSend(objc_opt_class(), "shouldPromptUserForRebuildWithLibraryPathManager:", self->_pathManager))
   {
-    if (v6)
+    if (reasonCopy)
     {
       v8 = PLMigrationGetLog();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [v6 integerValue];
-        if ((v9 - 1) > 0x14)
+        integerValue = [reasonCopy integerValue];
+        if ((integerValue - 1) > 0x14)
         {
           v10 = @"PLRebuildReasonUnknown";
         }
 
         else
         {
-          v10 = off_1E7573690[v9 - 1];
+          v10 = off_1E7573690[integerValue - 1];
         }
 
         v16 = v10;
@@ -36053,7 +36053,7 @@ LABEL_36:
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v27 = v7;
+        v27 = errorCopy;
         _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_DEFAULT, "Skipping rebuild prompt due to non-prompting migration error: %@", buf, 0xCu);
       }
 
@@ -36061,8 +36061,8 @@ LABEL_36:
     }
 
     v12 = MEMORY[0x1E696AEC0];
-    v13 = [(__CFString *)v7 userInfo];
-    v14 = [v13 objectForKeyedSubscript:*MEMORY[0x1E696A278]];
+    userInfo = [(__CFString *)errorCopy userInfo];
+    v14 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696A278]];
     v15 = v14;
     if (v14)
     {
@@ -36071,16 +36071,16 @@ LABEL_36:
 
     else
     {
-      v17 = [(__CFString *)v7 debugDescription];
+      v17 = [(__CFString *)errorCopy debugDescription];
       v8 = [v12 stringWithFormat:@"Photos cannot proceed with the library in its current state.\n\n%@\n\nSelect Rebuild to allow rebuild of the photo library database (possible data loss) or Not now to stop now and leave it as-is", v17];
     }
 
     v18 = [[PLRebuildUserNotification alloc] initWithMessage:v8];
-    v19 = [(PLRebuildUserNotification *)v18 showAlertAndWaitForResponse];
-    if (v19 != 2)
+    showAlertAndWaitForResponse = [(PLRebuildUserNotification *)v18 showAlertAndWaitForResponse];
+    if (showAlertAndWaitForResponse != 2)
     {
-      v11 = v19;
-      if (v19 == 1)
+      v11 = showAlertAndWaitForResponse;
+      if (showAlertAndWaitForResponse == 1)
       {
         v24 = PLMigrationGetLog();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -36102,7 +36102,7 @@ LABEL_36:
         goto LABEL_34;
       }
 
-      if (v19)
+      if (showAlertAndWaitForResponse)
       {
 LABEL_35:
 
@@ -36150,15 +36150,15 @@ LABEL_37:
   return v11;
 }
 
-- (BOOL)_createPhotoDataDirectoryIfNecessary:(BOOL *)a3 error:(id *)a4
+- (BOOL)_createPhotoDataDirectoryIfNecessary:(BOOL *)necessary error:(id *)error
 {
   v45 = *MEMORY[0x1E69E9840];
   v7 = objc_alloc_init(MEMORY[0x1E696AC08]);
-  v8 = [(PLModelMigrator *)self pathManager];
-  v9 = [v8 photosDatabasePath];
+  pathManager = [(PLModelMigrator *)self pathManager];
+  photosDatabasePath = [pathManager photosDatabasePath];
 
-  v10 = [v9 stringByDeletingLastPathComponent];
-  v11 = [v7 fileExistsAtPath:v10 isDirectory:0];
+  stringByDeletingLastPathComponent = [photosDatabasePath stringByDeletingLastPathComponent];
+  v11 = [v7 fileExistsAtPath:stringByDeletingLastPathComponent isDirectory:0];
   if ((v11 & 1) == 0)
   {
     v23 = PLMigrationGetLog();
@@ -36169,7 +36169,7 @@ LABEL_37:
     }
 
     v40 = 0;
-    v24 = [v7 createDirectoryAtPath:v10 withIntermediateDirectories:1 attributes:0 error:&v40];
+    v24 = [v7 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v40];
     v13 = v40;
     if (v24)
     {
@@ -36180,16 +36180,16 @@ LABEL_37:
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v42 = v10;
+      v42 = stringByDeletingLastPathComponent;
       v43 = 2112;
       v44 = v13;
       _os_log_impl(&dword_19BF1F000, v28, OS_LOG_TYPE_ERROR, "Unable to create database directory at %@: %@", buf, 0x16u);
     }
 
-    if (a4)
+    if (error)
     {
       v29 = v13;
-      *a4 = v13;
+      *error = v13;
     }
 
 LABEL_20:
@@ -36198,13 +36198,13 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v12 = [(PLModelMigrator *)self pathManager];
-  v13 = [v12 photoDirectoryWithType:6];
+  pathManager2 = [(PLModelMigrator *)self pathManager];
+  v13 = [pathManager2 photoDirectoryWithType:6];
 
   v39 = 0;
-  LOBYTE(v12) = [v7 createDirectoryAtPath:v13 withIntermediateDirectories:1 attributes:0 error:&v39];
+  LOBYTE(pathManager2) = [v7 createDirectoryAtPath:v13 withIntermediateDirectories:1 attributes:0 error:&v39];
   v14 = v39;
-  if ((v12 & 1) == 0)
+  if ((pathManager2 & 1) == 0)
   {
     v26 = PLMigrationGetLog();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -36216,44 +36216,44 @@ LABEL_20:
       _os_log_impl(&dword_19BF1F000, v26, OS_LOG_TYPE_ERROR, "Unable to create private cache subdirectory at %@: %@", buf, 0x16u);
     }
 
-    if (a4)
+    if (error)
     {
       v27 = v14;
-      *a4 = v14;
+      *error = v14;
     }
 
     goto LABEL_20;
   }
 
   v35 = v7;
-  v36 = v10;
-  v37 = v9;
-  v33 = a3;
-  v34 = a4;
+  v36 = stringByDeletingLastPathComponent;
+  v37 = photosDatabasePath;
+  necessaryCopy = necessary;
+  errorCopy = error;
   v15 = objc_alloc_init(MEMORY[0x1E696AB78]);
   [v15 setDateFormat:@"yyyyMMdd-HHmmssZZZZZ"];
-  v16 = [MEMORY[0x1E695DF00] date];
-  v17 = [v15 stringFromDate:v16];
+  date = [MEMORY[0x1E695DF00] date];
+  v17 = [v15 stringFromDate:date];
 
   v18 = [@"CreateDatabase_" stringByAppendingString:v17];
   v19 = [v13 stringByAppendingPathComponent:v18];
-  v20 = [MEMORY[0x1E695DEF0] data];
+  data = [MEMORY[0x1E695DEF0] data];
   v38 = v14;
-  v21 = [v20 writeToFile:v19 options:0 error:&v38];
+  v21 = [data writeToFile:v19 options:0 error:&v38];
   v22 = v38;
 
   if (v21)
   {
 
-    a3 = v33;
-    v10 = v36;
-    v9 = v37;
+    necessary = necessaryCopy;
+    stringByDeletingLastPathComponent = v36;
+    photosDatabasePath = v37;
     v7 = v35;
 LABEL_8:
 
-    if (a3)
+    if (necessary)
     {
-      *a3 = v11 ^ 1;
+      *necessary = v11 ^ 1;
     }
 
     v25 = 1;
@@ -36270,15 +36270,15 @@ LABEL_8:
     _os_log_impl(&dword_19BF1F000, v31, OS_LOG_TYPE_ERROR, "Unable to write file %{public}@ to cacheDir %@", buf, 0x16u);
   }
 
-  if (v34)
+  if (errorCopy)
   {
     v32 = v22;
-    *v34 = v22;
+    *errorCopy = v22;
   }
 
   v25 = 0;
-  v10 = v36;
-  v9 = v37;
+  stringByDeletingLastPathComponent = v36;
+  photosDatabasePath = v37;
   v7 = v35;
 LABEL_21:
 
@@ -36289,14 +36289,14 @@ LABEL_21:
 {
   if ((PLIsAssetsd() & 1) == 0)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:801 description:@"Only Assetsd should be checking if _shouldCreateDatabase!"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:801 description:@"Only Assetsd should be checking if _shouldCreateDatabase!"];
   }
 
-  v4 = [MEMORY[0x1E69BF238] fileManager];
-  v5 = [(PLModelMigrator *)self pathManager];
-  v6 = [v5 photosDatabasePath];
-  v7 = [v4 fileExistsAtPath:v6];
+  fileManager = [MEMORY[0x1E69BF238] fileManager];
+  pathManager = [(PLModelMigrator *)self pathManager];
+  photosDatabasePath = [pathManager photosDatabasePath];
+  v7 = [fileManager fileExistsAtPath:photosDatabasePath];
 
   if (!v7)
   {
@@ -36314,18 +36314,18 @@ LABEL_12:
     return 1;
   }
 
-  v8 = [(PLModelMigrator *)self pathManager];
-  v9 = [v8 isDeviceRestoreSupported];
+  pathManager2 = [(PLModelMigrator *)self pathManager];
+  isDeviceRestoreSupported = [pathManager2 isDeviceRestoreSupported];
 
-  if (v9)
+  if (isDeviceRestoreSupported)
   {
-    v10 = [(PLModelMigrator *)self postProcessingToken];
-    if ([v10 needsToPrepareForBackgroundRestore])
+    postProcessingToken = [(PLModelMigrator *)self postProcessingToken];
+    if ([postProcessingToken needsToPrepareForBackgroundRestore])
     {
-      v11 = [(PLModelMigrator *)self postProcessingToken];
-      v12 = [v11 isBackgroundRestorePostProcessingInProgressTokenValid];
+      postProcessingToken2 = [(PLModelMigrator *)self postProcessingToken];
+      isBackgroundRestorePostProcessingInProgressTokenValid = [postProcessingToken2 isBackgroundRestorePostProcessingInProgressTokenValid];
 
-      if ((v12 & 1) == 0)
+      if ((isBackgroundRestorePostProcessingInProgressTokenValid & 1) == 0)
       {
         v13 = PLMigrationGetLog();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
@@ -36350,16 +36350,16 @@ LABEL_11:
   return 0;
 }
 
-- (int64_t)migrateOrCreateDatabaseIfNecessaryWithPersistentContainer:(id)a3 migrationPolicy:(unsigned int)a4 error:(id *)a5
+- (int64_t)migrateOrCreateDatabaseIfNecessaryWithPersistentContainer:(id)container migrationPolicy:(unsigned int)policy error:(id *)error
 {
-  v6 = *&a4;
+  v6 = *&policy;
   v46[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  containerCopy = container;
   v9 = objc_autoreleasePoolPush();
-  v10 = [(PLModelMigrator *)self shouldCreateDatabase];
+  shouldCreateDatabase = [(PLModelMigrator *)self shouldCreateDatabase];
   v11 = PLMigrationGetLog();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
-  if (v10)
+  if (shouldCreateDatabase)
   {
     v38 = v9;
     if (v12)
@@ -36371,16 +36371,16 @@ LABEL_11:
     v40 = 0;
     v13 = [(PLModelMigrator *)self createNewDatabaseWithMigrationType:3 forceRebuildReason:0 coordinator:0 error:&v40];
     v14 = v40;
-    v15 = [(PLModelMigrator *)self analyticsEventManager];
+    analyticsEventManager = [(PLModelMigrator *)self analyticsEventManager];
     v16 = [MEMORY[0x1E696AD98] numberWithInt:v13 != 4];
     v17 = *MEMORY[0x1E69BF6A8];
-    [v15 setPayloadValue:v16 forKey:*MEMORY[0x1E69BF6C0] onEventWithName:*MEMORY[0x1E69BF6A8]];
+    [analyticsEventManager setPayloadValue:v16 forKey:*MEMORY[0x1E69BF6C0] onEventWithName:*MEMORY[0x1E69BF6A8]];
 
     v18 = [MEMORY[0x1E696AD98] numberWithInt:{+[PLModelMigrator currentModelVersion](PLModelMigrator, "currentModelVersion")}];
-    v19 = [v18 stringValue];
-    [v15 setPayloadValue:v19 forKey:*MEMORY[0x1E69BF6B8] onEventWithName:v17];
+    stringValue = [v18 stringValue];
+    [analyticsEventManager setPayloadValue:stringValue forKey:*MEMORY[0x1E69BF6B8] onEventWithName:v17];
 
-    [v15 setPayloadValue:v14 forKey:*MEMORY[0x1E69BF6B0] onEventWithName:v17];
+    [analyticsEventManager setPayloadValue:v14 forKey:*MEMORY[0x1E69BF6B0] onEventWithName:v17];
     v20 = v14;
 LABEL_5:
 
@@ -36395,30 +36395,30 @@ LABEL_5:
   }
 
   v39 = 0;
-  v13 = [v8 configureSharedPersistentStoreCoordinatorAndMigrateOrRebuildIfNecessaryWithModelMigrator:self migrationPolicy:v6 error:&v39];
-  v15 = v39;
+  v13 = [containerCopy configureSharedPersistentStoreCoordinatorAndMigrateOrRebuildIfNecessaryWithModelMigrator:self migrationPolicy:v6 error:&v39];
+  analyticsEventManager = v39;
   if (v13 != 4)
   {
-    v21 = [(PLModelMigrator *)self options];
+    options = [(PLModelMigrator *)self options];
 
-    if (!v21)
+    if (!options)
     {
       v38 = v9;
-      v14 = [v8 sharedPersistentStoreCoordinatorWithError:0];
+      v14 = [containerCopy sharedPersistentStoreCoordinatorWithError:0];
       v27 = [(PLModelMigrator *)self managedObjectContextForMigrationWithName:"migrateOrCreateDatabaseIfNecessaryWithPersistentContainer" persistentStoreCoordinator:v14 concurrencyType:1];
       v28 = [[PLGlobalValues alloc] initWithManagedObjectContext:v27];
-      v29 = [(PLGlobalValues *)v28 libraryCreateOptions];
-      if (v29)
+      libraryCreateOptions = [(PLGlobalValues *)v28 libraryCreateOptions];
+      if (libraryCreateOptions)
       {
-        v30 = v29;
+        v30 = libraryCreateOptions;
         v36 = v28;
         v37 = v27;
-        v31 = [(PLModelMigrator *)self options];
+        options2 = [(PLModelMigrator *)self options];
 
-        if (v31)
+        if (options2)
         {
-          v32 = [(PLModelMigrator *)self options];
-          v33 = [v32 mutableCopy];
+          options3 = [(PLModelMigrator *)self options];
+          v33 = [options3 mutableCopy];
 
           v34 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v30];
           [v33 setObject:v34 forKeyedSubscript:@"PLPhotoLibraryCreateOptions"];
@@ -36439,12 +36439,12 @@ LABEL_5:
         v27 = v37;
       }
 
-      v20 = v15;
+      v20 = analyticsEventManager;
       goto LABEL_5;
     }
   }
 
-  v20 = v15;
+  v20 = analyticsEventManager;
 LABEL_11:
 
   [(NSProgress *)self->_progress setCompletedUnitCount:[(NSProgress *)self->_progress totalUnitCount]];
@@ -36461,10 +36461,10 @@ LABEL_11:
   }
 
   objc_autoreleasePoolPop(v9);
-  if (a5)
+  if (error)
   {
     v25 = v20;
-    *a5 = v20;
+    *error = v20;
   }
 
   return v13;
@@ -36472,37 +36472,37 @@ LABEL_11:
 
 - (int64_t)checkForceRebuildIndicatorFile
 {
-  v3 = [(PLModelMigrator *)self pathManager];
-  v4 = [v3 sqliteErrorIndicatorFileExists];
+  pathManager = [(PLModelMigrator *)self pathManager];
+  sqliteErrorIndicatorFileExists = [pathManager sqliteErrorIndicatorFileExists];
 
-  return v4 && !self->_didCreateSqliteErrorFileForLightweightMigration;
+  return sqliteErrorIndicatorFileExists && !self->_didCreateSqliteErrorFileForLightweightMigration;
 }
 
-- (BOOL)debug_resetThumbnailsAndInitiateRebuildRequestInStore:(id)a3
+- (BOOL)debug_resetThumbnailsAndInitiateRebuildRequestInStore:(id)store
 {
   v4 = *MEMORY[0x1E695D708];
-  v5 = a3;
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v5 name:"[PLModelMigrator debug_resetThumbnailsAndInitiateRebuildRequestInStore:]" concurrencyType:v4];
-  v7 = [(PLModelMigrator *)self _migrationThumbnailManagerWithStore:v5];
+  storeCopy = store;
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator debug_resetThumbnailsAndInitiateRebuildRequestInStore:]" concurrencyType:v4];
+  v7 = [(PLModelMigrator *)self _migrationThumbnailManagerWithStore:storeCopy];
 
-  LOBYTE(v5) = [v7 resetThumbnailsForced:1 isMissingTables:0 inContext:v6];
-  return v5;
+  LOBYTE(storeCopy) = [v7 resetThumbnailsForced:1 isMissingTables:0 inContext:v6];
+  return storeCopy;
 }
 
-- (BOOL)_removeEvents:(id)a3
+- (BOOL)_removeEvents:(id)events
 {
   v39 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  eventsCopy = events;
   if ((PLIsAssetsd() & 1) == 0)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v25 = NSStringFromSelector(a2);
-    [v24 handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:678 description:{@"%@ can be called only from assetsd.", v25}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:678 description:{@"%@ can be called only from assetsd.", v25}];
   }
 
   aSelector = a2;
   v6 = objc_autoreleasePoolPush();
-  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v5 name:"[PLModelMigrator _removeEvents:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v7 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:eventsCopy name:"[PLModelMigrator _removeEvents:]" concurrencyType:*MEMORY[0x1E695D708]];
   v8 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:@"GenericAlbum"];
   v9 = MEMORY[0x1E696AE18];
   v10 = [MEMORY[0x1E696AD98] numberWithInt:12];
@@ -36578,18 +36578,18 @@ LABEL_11:
 {
   if ((PLIsAssetsd() & 1) == 0)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v11 = NSStringFromSelector(a2);
-    [v10 handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:666 description:{@"%@ can be called only from assetsd.", v11}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:666 description:{@"%@ can be called only from assetsd.", v11}];
   }
 
   v4 = +[PLPhotoLibraryBundleController sharedBundleController];
-  v5 = [(PLModelMigrator *)self pathManager];
-  v6 = [v5 libraryURL];
-  v7 = [v4 openBundleAtLibraryURL:v6];
+  pathManager = [(PLModelMigrator *)self pathManager];
+  libraryURL = [pathManager libraryURL];
+  v7 = [v4 openBundleAtLibraryURL:libraryURL];
 
-  v8 = [v7 indicatorFileCoordinator];
-  [v8 forceSoftResetSync];
+  indicatorFileCoordinator = [v7 indicatorFileCoordinator];
+  [indicatorFileCoordinator forceSoftResetSync];
 
   return 1;
 }
@@ -36598,35 +36598,35 @@ LABEL_11:
 {
   if ((PLIsAssetsd() & 1) == 0)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v9 = NSStringFromSelector(a2);
-    [v8 handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:655 description:{@"%@ can be called only from assetsd.", v9}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:655 description:{@"%@ can be called only from assetsd.", v9}];
   }
 
-  v4 = [(PLModelMigrator *)self pathManager];
-  v5 = [v4 libraryURL];
-  v6 = [PLLibraryServicesManager libraryServicesManagerForLibraryURL:v5];
+  pathManager = [(PLModelMigrator *)self pathManager];
+  libraryURL = [pathManager libraryURL];
+  v6 = [PLLibraryServicesManager libraryServicesManagerForLibraryURL:libraryURL];
 
   [v6 setICloudPhotosEnabledInternal:0];
   return 1;
 }
 
-- (BOOL)_verifyCloudAssetsLocalAvailability:(id)a3
+- (BOOL)_verifyCloudAssetsLocalAvailability:(id)availability
 {
   v41 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  availabilityCopy = availability;
   if ((PLIsAssetsd() & 1) == 0)
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v26 = NSStringFromSelector(a2);
-    [v25 handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:618 description:{@"%@ can be called only from assetsd.", v26}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:618 description:{@"%@ can be called only from assetsd.", v26}];
   }
 
   aSelector = a2;
   v29 = objc_autoreleasePoolPush();
-  v30 = v5;
-  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v5 name:"[PLModelMigrator _verifyCloudAssetsLocalAvailability:]" concurrencyType:*MEMORY[0x1E695D708]];
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
+  v30 = availabilityCopy;
+  v6 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:availabilityCopy name:"[PLModelMigrator _verifyCloudAssetsLocalAvailability:]" concurrencyType:*MEMORY[0x1E695D708]];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v28 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:@"CloudResource"];
   v8 = [v6 executeFetchRequest:? error:?];
   v32 = 0u;
@@ -36650,8 +36650,8 @@ LABEL_11:
         }
 
         v15 = *(*(&v32 + 1) + 8 * i);
-        v16 = [v15 filePath];
-        [v15 setIsLocallyAvailable:{objc_msgSend(v7, "fileExistsAtPath:isDirectory:", v16, 0)}];
+        filePath = [v15 filePath];
+        [v15 setIsLocallyAvailable:{objc_msgSend(defaultManager, "fileExistsAtPath:isDirectory:", filePath, 0)}];
 
         v11 += [v15 isLocallyAvailable];
       }
@@ -36715,37 +36715,37 @@ LABEL_11:
   return v18;
 }
 
-- (id)managedObjectContextForMigrationInStore:(id)a3 name:(const char *)a4 concurrencyType:(unint64_t)a5
+- (id)managedObjectContextForMigrationInStore:(id)store name:(const char *)name concurrencyType:(unint64_t)type
 {
-  v8 = [a3 persistentStoreCoordinator];
-  v9 = [(PLModelMigrator *)self managedObjectContextForMigrationWithName:a4 persistentStoreCoordinator:v8 concurrencyType:a5];
+  persistentStoreCoordinator = [store persistentStoreCoordinator];
+  v9 = [(PLModelMigrator *)self managedObjectContextForMigrationWithName:name persistentStoreCoordinator:persistentStoreCoordinator concurrencyType:type];
 
   return v9;
 }
 
-- (id)managedObjectContextForMigrationWithName:(const char *)a3 persistentStoreCoordinator:(id)a4 concurrencyType:(unint64_t)a5
+- (id)managedObjectContextForMigrationWithName:(const char *)name persistentStoreCoordinator:(id)coordinator concurrencyType:(unint64_t)type
 {
-  v9 = a4;
+  coordinatorCopy = coordinator;
   v10 = *MEMORY[0x1E695D708];
-  if (a5 != 1 && v10 != a5)
+  if (type != 1 && v10 != type)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:589 description:@"unexpected concurrency type for migration context"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLModelMigrator.m" lineNumber:589 description:@"unexpected concurrency type for migration context"];
   }
 
   pl_dispatch_once();
   v11 = managedObjectContextForMigrationWithName_persistentStoreCoordinator_concurrencyType__pl_once_object_21;
-  v12 = [objc_alloc(MEMORY[0x1E695D628]) initWithConcurrencyType:a5];
-  v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:a3];
+  v12 = [objc_alloc(MEMORY[0x1E695D628]) initWithConcurrencyType:type];
+  v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:name];
   [v12 setName:v13];
 
-  [v12 setPersistentStoreCoordinator:v9];
+  [v12 setPersistentStoreCoordinator:coordinatorCopy];
   [v12 setMergePolicy:v11];
-  if (v10 == a5)
+  if (v10 == type)
   {
-    v14 = [(PLModelMigrator *)self pathManager];
-    v15 = [v12 userInfo];
-    [v15 setObject:v14 forKeyedSubscript:@"com.apple.photos.PLModelMigratorPathManagerKey"];
+    pathManager = [(PLModelMigrator *)self pathManager];
+    userInfo = [v12 userInfo];
+    [userInfo setObject:pathManager forKeyedSubscript:@"com.apple.photos.PLModelMigratorPathManagerKey"];
   }
 
   else
@@ -36755,7 +36755,7 @@ LABEL_11:
     v18[2] = __103__PLModelMigrator_managedObjectContextForMigrationWithName_persistentStoreCoordinator_concurrencyType___block_invoke_2;
     v18[3] = &unk_1E7578848;
     v19 = v12;
-    v20 = self;
+    selfCopy = self;
     [v19 performBlockAndWait:v18];
   }
 
@@ -36776,35 +36776,35 @@ void __103__PLModelMigrator_managedObjectContextForMigrationWithName_persistentS
   managedObjectContextForMigrationWithName_persistentStoreCoordinator_concurrencyType__pl_once_object_21 = v0;
 }
 
-- (BOOL)_fixIncorrectThumbnailTablesInStore:(id)a3 deferHintChanges:(BOOL)a4
+- (BOOL)_fixIncorrectThumbnailTablesInStore:(id)store deferHintChanges:(BOOL)changes
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(PLModelMigrator *)self pathManager];
-  [(PLThumbnailManagerCore *)PLThumbnailManager removeThumbnailTablesUnsupportedOnly:1 withPathManager:v7];
+  changesCopy = changes;
+  storeCopy = store;
+  pathManager = [(PLModelMigrator *)self pathManager];
+  [(PLThumbnailManagerCore *)PLThumbnailManager removeThumbnailTablesUnsupportedOnly:1 withPathManager:pathManager];
 
-  v8 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v6 name:"[PLModelMigrator _fixIncorrectThumbnailTablesInStore:deferHintChanges:]" concurrencyType:*MEMORY[0x1E695D708]];
+  v8 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:storeCopy name:"[PLModelMigrator _fixIncorrectThumbnailTablesInStore:deferHintChanges:]" concurrencyType:*MEMORY[0x1E695D708]];
   v9 = objc_opt_class();
-  v10 = [(PLModelMigrator *)self _migrationThumbnailManagerWithStore:v6];
+  v10 = [(PLModelMigrator *)self _migrationThumbnailManagerWithStore:storeCopy];
 
-  LOBYTE(v4) = [v9 resetThumbnailIndexesAndInitiateThumbnailRebuildRequestIfSuccessfulForForThumbnailManager:v10 deferHintChanges:v4 inContext:v8];
-  return v4;
+  LOBYTE(changesCopy) = [v9 resetThumbnailIndexesAndInitiateThumbnailRebuildRequestIfSuccessfulForForThumbnailManager:v10 deferHintChanges:changesCopy inContext:v8];
+  return changesCopy;
 }
 
-- (BOOL)postProcessThumbnailsOnlyIfVersionMismatchOrMissing:(BOOL *)a3 coordinator:(id)a4
+- (BOOL)postProcessThumbnailsOnlyIfVersionMismatchOrMissing:(BOOL *)missing coordinator:(id)coordinator
 {
-  v6 = a4;
-  v7 = [(PLModelMigrator *)self pathManager];
-  v8 = [(PLThumbnailManagerCore *)PLThumbnailManager hasThumbnailConfigMismatchWithPathManager:v7 comparedToConfigPhase:1];
+  coordinatorCopy = coordinator;
+  pathManager = [(PLModelMigrator *)self pathManager];
+  v8 = [(PLThumbnailManagerCore *)PLThumbnailManager hasThumbnailConfigMismatchWithPathManager:pathManager comparedToConfigPhase:1];
 
-  v9 = [(PLModelMigrator *)self pathManager];
-  v10 = [(PLThumbnailManagerCore *)PLThumbnailManager isMissingThumbnailTablesWithPathManager:v9];
+  pathManager2 = [(PLModelMigrator *)self pathManager];
+  v10 = [(PLThumbnailManagerCore *)PLThumbnailManager isMissingThumbnailTablesWithPathManager:pathManager2];
 
   if (PLIsAssetsdProxyService() || !v8 && !v10)
   {
-    if (a3)
+    if (missing)
     {
-      *a3 = 0;
+      *missing = 0;
     }
 
     v15 = 1;
@@ -36812,25 +36812,25 @@ void __103__PLModelMigrator_managedObjectContextForMigrationWithName_persistentS
 
   else
   {
-    if (a3)
+    if (missing)
     {
-      *a3 = 1;
+      *missing = 1;
     }
 
-    v11 = [v6 persistentStores];
-    v12 = [v11 firstObject];
+    persistentStores = [coordinatorCopy persistentStores];
+    firstObject = [persistentStores firstObject];
 
-    v13 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:v12 name:"[PLModelMigrator postProcessThumbnailsOnlyIfVersionMismatchOrMissing:coordinator:]" concurrencyType:*MEMORY[0x1E695D708]];
-    v14 = [(PLModelMigrator *)self _migrationThumbnailManagerWithStore:v12];
+    v13 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:firstObject name:"[PLModelMigrator postProcessThumbnailsOnlyIfVersionMismatchOrMissing:coordinator:]" concurrencyType:*MEMORY[0x1E695D708]];
+    v14 = [(PLModelMigrator *)self _migrationThumbnailManagerWithStore:firstObject];
     v15 = [v14 resetThumbnailsForced:0 isMissingTables:v10 inContext:v13];
   }
 
   return v15;
 }
 
-- (unint64_t)_assetCountForContext:(id)a3
+- (unint64_t)_assetCountForContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -36840,7 +36840,7 @@ void __103__PLModelMigrator_managedObjectContextForMigrationWithName_persistentS
   v7[2] = __41__PLModelMigrator__assetCountForContext___block_invoke;
   v7[3] = &unk_1E7578910;
   v9 = &v10;
-  v4 = v3;
+  v4 = contextCopy;
   v8 = v4;
   [v4 performBlockAndWait:v7];
   v5 = v11[3];
@@ -36875,61 +36875,61 @@ void __41__PLModelMigrator__assetCountForContext___block_invoke(uint64_t a1)
   }
 }
 
-- (unint64_t)_assetCountForLibrary:(id)a3
+- (unint64_t)_assetCountForLibrary:(id)library
 {
-  v4 = [a3 managedObjectContext];
+  managedObjectContext = [library managedObjectContext];
+  v5 = [(PLModelMigrator *)self _assetCountForContext:managedObjectContext];
+
+  return v5;
+}
+
+- (unint64_t)assetCountForStore:(id)store
+{
+  v4 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:store name:"[PLModelMigrator assetCountForStore:]" concurrencyType:1];
   v5 = [(PLModelMigrator *)self _assetCountForContext:v4];
 
   return v5;
 }
 
-- (unint64_t)assetCountForStore:(id)a3
-{
-  v4 = [(PLModelMigrator *)self managedObjectContextForMigrationInStore:a3 name:"[PLModelMigrator assetCountForStore:]" concurrencyType:1];
-  v5 = [(PLModelMigrator *)self _assetCountForContext:v4];
-
-  return v5;
-}
-
-- (void)_validateCurrentModelVersionAttempt:(int64_t)a3
+- (void)_validateCurrentModelVersionAttempt:(int64_t)attempt
 {
   v13 = *MEMORY[0x1E69E9840];
   if ((PLIsAssetsd() & 1) == 0)
   {
-    v5 = [MEMORY[0x1E69BF2A0] systemLibraryURL];
-    v6 = [PLPhotoLibraryBundleController sharedAssetsdClientForPhotoLibraryURL:v5];
-    v7 = [v6 libraryClient];
-    v8 = [v7 getCurrentModelVersion];
+    systemLibraryURL = [MEMORY[0x1E69BF2A0] systemLibraryURL];
+    v6 = [PLPhotoLibraryBundleController sharedAssetsdClientForPhotoLibraryURL:systemLibraryURL];
+    libraryClient = [v6 libraryClient];
+    getCurrentModelVersion = [libraryClient getCurrentModelVersion];
 
-    if (a3 <= 9 && v8 == -1)
+    if (attempt <= 9 && getCurrentModelVersion == -1)
     {
       v9 = PLMigrationGetLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         v10[0] = 67109376;
-        v10[1] = a3 + 1;
+        v10[1] = attempt + 1;
         v11 = 1024;
         v12 = 10;
         _os_log_impl(&dword_19BF1F000, v9, OS_LOG_TYPE_DEFAULT, "Error getting current model version. Will retry (%d/%d).", v10, 0xEu);
       }
 
       sleep(1u);
-      [(PLModelMigrator *)self _validateCurrentModelVersionAttempt:a3 + 1];
+      [(PLModelMigrator *)self _validateCurrentModelVersionAttempt:attempt + 1];
     }
 
-    else if (v8 == -1)
+    else if (getCurrentModelVersion == -1)
     {
       [(PLModelMigrator *)self _validateCurrentModelVersionFailedWithNoVersionFromServer];
     }
 
-    else if (v8 != +[PLModelMigrator currentModelVersion])
+    else if (getCurrentModelVersion != +[PLModelMigrator currentModelVersion])
     {
-      [(PLModelMigrator *)self _validateCurrentModelVersionFailedWithMismatchedVersion:v8];
+      [(PLModelMigrator *)self _validateCurrentModelVersionFailedWithMismatchedVersion:getCurrentModelVersion];
     }
   }
 }
 
-- (void)_validateCurrentModelVersionFailedWithMismatchedVersion:(int64_t)a3
+- (void)_validateCurrentModelVersionFailedWithMismatchedVersion:(int64_t)version
 {
   objc_opt_class();
   v4 = PLMigrationGetLog();
@@ -36938,7 +36938,7 @@ void __41__PLModelMigrator__assetCountForContext___block_invoke(uint64_t a1)
     v5[0] = 67109634;
     v5[1] = [objc_opt_class() currentModelVersion];
     v6 = 2048;
-    v7 = a3;
+    versionCopy = version;
     v8 = 2112;
     v9 = @"Your Photos installation appears to be broken, reinstall root and reboot";
     _os_log_impl(&dword_19BF1F000, v4, OS_LOG_TYPE_ERROR, "Cannot open or create database with model version %d, assetsd is using model version %lld. %@", v5, 0x1Cu);
@@ -36979,14 +36979,14 @@ void __41__PLModelMigrator__assetCountForContext___block_invoke(uint64_t a1)
 
 - (BOOL)isCloudPhotoLibraryEnabled
 {
-  v2 = [(PLModelMigrator *)self pathManager];
-  v3 = [v2 libraryURL];
-  v4 = PLIsCloudPhotoLibraryEnabledForPhotoLibraryURL(v3);
+  pathManager = [(PLModelMigrator *)self pathManager];
+  libraryURL = [pathManager libraryURL];
+  v4 = PLIsCloudPhotoLibraryEnabledForPhotoLibraryURL(libraryURL);
 
   return v4;
 }
 
-- (id)newShortLivedLibraryForRebuildWithName:(const char *)a3
+- (id)newShortLivedLibraryForRebuildWithName:(const char *)name
 {
   v19 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(PLPhotoLibraryOptions);
@@ -36994,51 +36994,51 @@ void __41__PLModelMigrator__assetCountForContext___block_invoke(uint64_t a1)
   [(PLPhotoLibraryOptions *)v5 setRefreshesAfterSave:0];
   [(PLPhotoLibraryOptions *)v5 setLibraryRole:3];
   [(PLPhotoLibraryOptions *)v5 setAutomaticallyPinToFirstFetch:0];
-  v6 = [(PLModelMigrator *)self pathManager];
-  v7 = [v6 libraryURL];
+  pathManager = [(PLModelMigrator *)self pathManager];
+  libraryURL = [pathManager libraryURL];
 
   v14 = 0;
-  v8 = [PLPhotoLibrary newPhotoLibraryWithName:a3 loadedFromURL:v7 options:v5 error:&v14];
+  v8 = [PLPhotoLibrary newPhotoLibraryWithName:name loadedFromURL:libraryURL options:v5 error:&v14];
   v9 = v14;
   if (!v8)
   {
-    v12 = PLMigrationGetLog();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    managedObjectContext = PLMigrationGetLog();
+    if (os_log_type_enabled(managedObjectContext, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v16 = v7;
+      v16 = libraryURL;
       v17 = 2112;
       v18 = v9;
-      _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_ERROR, "failed to load photo library with url %@, error: %@", buf, 0x16u);
+      _os_log_impl(&dword_19BF1F000, managedObjectContext, OS_LOG_TYPE_ERROR, "failed to load photo library with url %@, error: %@", buf, 0x16u);
     }
 
     goto LABEL_6;
   }
 
-  v10 = [(PLModelMigrator *)self pathManager];
-  v11 = [PLRebuildJournalManager isEnabledWithPathManager:v10 error:0];
+  pathManager2 = [(PLModelMigrator *)self pathManager];
+  v11 = [PLRebuildJournalManager isEnabledWithPathManager:pathManager2 error:0];
 
   if (!v11)
   {
-    v12 = [v8 managedObjectContext];
-    [v12 setChangeSource:2];
+    managedObjectContext = [v8 managedObjectContext];
+    [managedObjectContext setChangeSource:2];
 LABEL_6:
   }
 
   return v8;
 }
 
-- (id)newShortLivedLibraryWithName:(const char *)a3
+- (id)newShortLivedLibraryWithName:(const char *)name
 {
   v17 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(PLPhotoLibraryOptions);
   [(PLPhotoLibraryOptions *)v5 setRequiredState:6];
   [(PLPhotoLibraryOptions *)v5 setRefreshesAfterSave:0];
-  v6 = [(PLModelMigrator *)self pathManager];
-  v7 = [v6 libraryURL];
+  pathManager = [(PLModelMigrator *)self pathManager];
+  libraryURL = [pathManager libraryURL];
 
   v12 = 0;
-  v8 = [PLPhotoLibrary newPhotoLibraryWithName:a3 loadedFromURL:v7 options:v5 error:&v12];
+  v8 = [PLPhotoLibrary newPhotoLibraryWithName:name loadedFromURL:libraryURL options:v5 error:&v12];
   v9 = v12;
   if (!v8)
   {
@@ -37046,7 +37046,7 @@ LABEL_6:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v14 = v7;
+      v14 = libraryURL;
       v15 = 2112;
       v16 = v9;
       _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_ERROR, "failed to load photo library with url %@, error: %@", buf, 0x16u);
@@ -37058,46 +37058,46 @@ LABEL_6:
 
 - (id)newDeviceRestoreMigrationSupport
 {
-  v3 = [(PLModelMigrator *)self pathManager];
-  v4 = [v3 isDeviceRestoreSupported];
+  pathManager = [(PLModelMigrator *)self pathManager];
+  isDeviceRestoreSupported = [pathManager isDeviceRestoreSupported];
 
-  if (!v4)
+  if (!isDeviceRestoreSupported)
   {
     return 0;
   }
 
-  v5 = [(PLModelMigrator *)self pathManager];
-  v6 = [v5 libraryURL];
-  v7 = [PLLibraryServicesManager libraryServicesManagerForLibraryURL:v6];
+  pathManager2 = [(PLModelMigrator *)self pathManager];
+  libraryURL = [pathManager2 libraryURL];
+  v7 = [PLLibraryServicesManager libraryServicesManagerForLibraryURL:libraryURL];
 
   v8 = [[PLDeviceRestoreMigrationSupport alloc] initWithLibraryServicesManager:v7];
   return v8;
 }
 
-- (id)_migrationThumbnailManagerWithStore:(id)a3
+- (id)_migrationThumbnailManagerWithStore:(id)store
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  thumbnailManager = v5->_thumbnailManager;
+  storeCopy = store;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  thumbnailManager = selfCopy->_thumbnailManager;
   if (!thumbnailManager)
   {
-    v7 = [[PLThumbnailManager alloc] initWithPhotoLibraryPathManager:v5->_pathManager storeFromMigration:v4];
-    v8 = v5->_thumbnailManager;
-    v5->_thumbnailManager = v7;
+    v7 = [[PLThumbnailManager alloc] initWithPhotoLibraryPathManager:selfCopy->_pathManager storeFromMigration:storeCopy];
+    v8 = selfCopy->_thumbnailManager;
+    selfCopy->_thumbnailManager = v7;
 
-    thumbnailManager = v5->_thumbnailManager;
+    thumbnailManager = selfCopy->_thumbnailManager;
   }
 
   v9 = thumbnailManager;
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
 
-- (PLModelMigrator)initWithPathManager:(id)a3
+- (PLModelMigrator)initWithPathManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v47.receiver = self;
   v47.super_class = PLModelMigrator;
   v6 = [(PLModelMigrator *)&v47 init];
@@ -37105,7 +37105,7 @@ LABEL_6:
   {
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
     v6->_startTime = v7;
-    objc_storeStrong(&v6->_pathManager, a3);
+    objc_storeStrong(&v6->_pathManager, manager);
     v6->_recordMigrationMetadataLock._os_unfair_lock_opaque = 0;
     *&v6->_storeMetadataLock._os_unfair_lock_opaque = 0;
     v6->_fileSystemLoadInProgressLock._os_unfair_lock_opaque = 0;
@@ -37272,31 +37272,31 @@ PLGraphCache *__39__PLModelMigrator_initWithPathManager___block_invoke_5(uint64_
   return v2;
 }
 
-+ (BOOL)rebuildMomentsInContext:(id)a3 pathManager:(id)a4 deleteExistingMoments:(BOOL)a5 targetedAssetOIDs:(id)a6
++ (BOOL)rebuildMomentsInContext:(id)context pathManager:(id)manager deleteExistingMoments:(BOOL)moments targetedAssetOIDs:(id)ds
 {
-  v7 = a5;
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  momentsCopy = moments;
+  contextCopy = context;
+  managerCopy = manager;
+  dsCopy = ds;
   if (PLPlatformMomentsSupported())
   {
-    v12 = [[PLMomentGenerationDataManager alloc] initWithManagedObjectContext:v9 pathManagerForLightweightMigration:v10];
+    v12 = [[PLMomentGenerationDataManager alloc] initWithManagedObjectContext:contextCopy pathManagerForLightweightMigration:managerCopy];
     pl_dispatch_once();
     [PLMomentGenerationDataManager setManagerMomentarilyBlessed:v12];
     v13 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v14 = v13;
-    if (v7)
+    if (momentsCopy)
     {
       [v13 setObject:MEMORY[0x1E695E118] forKeyedSubscript:PLMomentGenerationShouldDeleteAllMomentsKey];
     }
 
-    if ([v11 count])
+    if ([dsCopy count])
     {
-      [v14 setObject:v11 forKeyedSubscript:PLMomentGenerationTargetedAssetOIDsKey];
+      [v14 setObject:dsCopy forKeyedSubscript:PLMomentGenerationTargetedAssetOIDsKey];
     }
 
-    v15 = [(PLMomentGenerationDataManager *)v12 generator];
-    [v15 rebuildAllMomentsWithOptions:v14 completionHandler:0];
+    generator = [(PLMomentGenerationDataManager *)v12 generator];
+    [generator rebuildAllMomentsWithOptions:v14 completionHandler:0];
 
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
@@ -37332,23 +37332,23 @@ void __95__PLModelMigrator_rebuildMomentsInContext_pathManager_deleteExistingMom
   }
 }
 
-+ (id)schemaIncompatibilityDetailsForStoreMetadata:(id)a3 model:(id)a4
++ (id)schemaIncompatibilityDetailsForStoreMetadata:(id)metadata model:(id)model
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [a3 objectForKey:@"NSStoreModelVersionHashes"];
-  v24 = v5;
-  v7 = [v5 entityVersionHashesByName];
+  modelCopy = model;
+  v6 = [metadata objectForKey:@"NSStoreModelVersionHashes"];
+  v24 = modelCopy;
+  entityVersionHashesByName = [modelCopy entityVersionHashesByName];
   v8 = MEMORY[0x1E695DFA8];
-  v9 = [v6 allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [v6 allKeys];
+  v10 = [v8 setWithArray:allKeys];
 
   v11 = MEMORY[0x1E695DFD8];
-  v12 = [v7 allKeys];
-  v13 = [v11 setWithArray:v12];
+  allKeys2 = [entityVersionHashesByName allKeys];
+  v13 = [v11 setWithArray:allKeys2];
   [v10 unionSet:v13];
 
-  v25 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -37370,11 +37370,11 @@ void __95__PLModelMigrator_rebuildMomentsInContext_pathManager_deleteExistingMom
 
         v19 = *(*(&v26 + 1) + 8 * i);
         v20 = [v6 objectForKeyedSubscript:v19];
-        v21 = [v7 objectForKeyedSubscript:v19];
+        v21 = [entityVersionHashesByName objectForKeyedSubscript:v19];
         if ((PLObjectIsEqual() & 1) == 0)
         {
           v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"model(%@) vs. store(%@)", v21, v20];
-          [v25 setObject:v22 forKeyedSubscript:v19];
+          [dictionary setObject:v22 forKeyedSubscript:v19];
         }
       }
 
@@ -37384,15 +37384,15 @@ void __95__PLModelMigrator_rebuildMomentsInContext_pathManager_deleteExistingMom
     while (v16);
   }
 
-  return v25;
+  return dictionary;
 }
 
-+ (BOOL)shouldImportAssetsFromDCIMSubDirectoryAtURL:(id)a3 assetsKind:(int *)a4
++ (BOOL)shouldImportAssetsFromDCIMSubDirectoryAtURL:(id)l assetsKind:(int *)kind
 {
-  v5 = a3;
+  lCopy = l;
   v6 = objc_autoreleasePoolPush();
   v24 = 0;
-  v7 = [v5 getResourceValue:&v24 forKey:*MEMORY[0x1E695DC30] error:0];
+  v7 = [lCopy getResourceValue:&v24 forKey:*MEMORY[0x1E695DC30] error:0];
   v8 = v24;
   if (v7)
   {
@@ -37416,22 +37416,22 @@ void __95__PLModelMigrator_rebuildMomentsInContext_pathManager_deleteExistingMom
 
     else
     {
-      v13 = [MEMORY[0x1E696AB08] alphanumericCharacterSet];
+      alphanumericCharacterSet = [MEMORY[0x1E696AB08] alphanumericCharacterSet];
       v22 = 0;
-      v14 = [v9 scanCharactersFromSet:v13 intoString:&v22];
+      v14 = [v9 scanCharactersFromSet:alphanumericCharacterSet intoString:&v22];
       v15 = v22;
       v11 = v15;
       if (v14)
       {
-        v16 = [v9 isAtEnd];
+        isAtEnd = [v9 isAtEnd];
 
-        if (v16)
+        if (isAtEnd)
         {
           v17 = [v11 isEqualToString:@"APPLE"];
           v18 = [v11 isEqualToString:@"IMPRT"];
           v19 = [v11 isEqualToString:@"SYNCD"];
           v12 = v19 | v18 | v17;
-          if (a4)
+          if (kind)
           {
             if (v17)
             {
@@ -37453,7 +37453,7 @@ void __95__PLModelMigrator_rebuildMomentsInContext_pathManager_deleteExistingMom
               v20 = 4;
             }
 
-            *a4 = v20;
+            *kind = v20;
           }
 
           goto LABEL_22;
@@ -37478,13 +37478,13 @@ LABEL_23:
   return v12 & 1;
 }
 
-+ (id)extractPathToAssetUUIDRecoveryMappingFromDatabasePath:(id)a3
++ (id)extractPathToAssetUUIDRecoveryMappingFromDatabasePath:(id)path
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  pathCopy = path;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v5 = objc_autoreleasePoolPush();
-  v6 = PLOpenSQLTransactionWithDBPath([v3 UTF8String]);
+  v6 = PLOpenSQLTransactionWithDBPath([pathCopy UTF8String]);
   v7 = v6;
   if (v6)
   {
@@ -37536,7 +37536,7 @@ LABEL_23:
 
         if ([v16 length])
         {
-          [v4 setObject:v16 forKey:v14];
+          [dictionary setObject:v16 forKey:v14];
         }
       }
 
@@ -37579,21 +37579,21 @@ LABEL_22:
 
   objc_autoreleasePoolPop(v5);
 
-  return v4;
+  return dictionary;
 }
 
-+ (BOOL)_writeNumber:(id)a3 forKey:(id)a4 pathManager:(id)a5 error:(id *)a6
++ (BOOL)_writeNumber:(id)number forKey:(id)key pathManager:(id)manager error:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  numberCopy = number;
+  keyCopy = key;
+  managerCopy = manager;
   context = objc_autoreleasePoolPush();
-  v28 = v10;
+  v28 = managerCopy;
   v32 = 0;
   v33 = 0;
-  v11 = [v10 photosDatabasePath];
-  [PLManagedObjectContext getPersistentStoreURL:&v33 options:&v32 forDatabasePath:v11];
+  photosDatabasePath = [managerCopy photosDatabasePath];
+  [PLManagedObjectContext getPersistentStoreURL:&v33 options:&v32 forDatabasePath:photosDatabasePath];
   v12 = v33;
   v13 = v32;
 
@@ -37618,7 +37618,7 @@ LABEL_22:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v35 = v9;
+      v35 = keyCopy;
       v36 = 2112;
       v37 = v18;
       _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_ERROR, "Failed to get metadata while setting %@ %@", buf, 0x16u);
@@ -37627,71 +37627,71 @@ LABEL_22:
     goto LABEL_9;
   }
 
-  v19 = [v15 valueForKey:v9];
-  if (([v19 isEqual:v8]& 1) != 0)
+  v19 = [v15 valueForKey:keyCopy];
+  if (([v19 isEqual:numberCopy]& 1) != 0)
   {
     v18 = 0;
 LABEL_9:
     v20 = 1;
-    v21 = a6;
+    errorCopy2 = error;
     goto LABEL_15;
   }
 
   v22 = [v15 mutableCopy];
-  v26 = v8;
-  [v22 setObject:v8 forKey:v9];
+  v26 = numberCopy;
+  [v22 setObject:numberCopy forKey:keyCopy];
   v30 = 0;
   v20 = [MEMORY[0x1E695D6C0] setMetadata:v22 forPersistentStoreOfType:v14 URL:v12 options:v13 error:&v30];
   v18 = v30;
-  v21 = a6;
+  errorCopy2 = error;
   if ((v20 & 1) == 0)
   {
     v23 = PLMigrationGetLog();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v35 = v9;
+      v35 = keyCopy;
       v36 = 2112;
       v37 = v18;
       _os_log_impl(&dword_19BF1F000, v23, OS_LOG_TYPE_ERROR, "Failed to set %@ %@", buf, 0x16u);
     }
   }
 
-  v8 = v26;
+  numberCopy = v26;
 LABEL_15:
 
   objc_autoreleasePoolPop(context);
-  if (v21 && v18)
+  if (errorCopy2 && v18)
   {
     v24 = v18;
-    *v21 = v18;
+    *errorCopy2 = v18;
   }
 
   return v20;
 }
 
-+ (BOOL)_readBooleanFlagWithKey:(id)a3 fromMetadataWithMOC:(id)a4 pathManager:(id)a5
++ (BOOL)_readBooleanFlagWithKey:(id)key fromMetadataWithMOC:(id)c pathManager:(id)manager
 {
-  v5 = [a1 _readNumberWithKey:a3 fromMetadataWithMOC:a4 pathManager:a5 error:0];
-  v6 = [v5 BOOLValue];
+  v5 = [self _readNumberWithKey:key fromMetadataWithMOC:c pathManager:manager error:0];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
-+ (id)_readNumberWithKey:(id)a3 fromMetadataWithMOC:(id)a4 pathManager:(id)a5 error:(id *)a6
++ (id)_readNumberWithKey:(id)key fromMetadataWithMOC:(id)c pathManager:(id)manager error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  keyCopy = key;
+  cCopy = c;
+  managerCopy = manager;
   v12 = objc_autoreleasePoolPush();
-  if (v10)
+  if (cCopy)
   {
-    v13 = [v10 persistentStoreCoordinator];
-    v14 = [v13 persistentStores];
-    if ([v14 count])
+    persistentStoreCoordinator = [cCopy persistentStoreCoordinator];
+    persistentStores = [persistentStoreCoordinator persistentStores];
+    if ([persistentStores count])
     {
-      v15 = [v14 firstObject];
-      v16 = [v13 metadataForPersistentStore:v15];
+      firstObject = [persistentStores firstObject];
+      v16 = [persistentStoreCoordinator metadataForPersistentStore:firstObject];
 
       if (v16)
       {
@@ -37707,8 +37707,8 @@ LABEL_15:
 
   v27 = 0;
   v28 = 0;
-  v18 = [v11 photosDatabasePath];
-  [PLManagedObjectContext getPersistentStoreURL:&v28 options:&v27 forDatabasePath:v18];
+  photosDatabasePath = [managerCopy photosDatabasePath];
+  [PLManagedObjectContext getPersistentStoreURL:&v28 options:&v27 forDatabasePath:photosDatabasePath];
   v19 = v28;
   v20 = v27;
 
@@ -37730,7 +37730,7 @@ LABEL_7:
 
   if (v22)
   {
-    v23 = [v16 valueForKey:v9];
+    v23 = [v16 valueForKey:keyCopy];
 
     objc_autoreleasePoolPop(v12);
   }
@@ -37740,11 +37740,11 @@ LABEL_7:
 
     objc_autoreleasePoolPop(v12);
     v23 = 0;
-    if (a6 && v17)
+    if (error && v17)
     {
       v24 = v17;
       v23 = 0;
-      *a6 = v17;
+      *error = v17;
     }
   }
 
@@ -37833,11 +37833,11 @@ LABEL_12:
   v4();
 }
 
-+ (BOOL)shouldPromptUserForRebuildWithLibraryPathManager:(id)a3
++ (BOOL)shouldPromptUserForRebuildWithLibraryPathManager:(id)manager
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 isSystemPhotoLibraryPathManager])
+  managerCopy = manager;
+  if ([managerCopy isSystemPhotoLibraryPathManager])
   {
     v4 = 1;
   }
@@ -37845,8 +37845,8 @@ LABEL_12:
   else
   {
     v5 = MEMORY[0x1E69BF2A0];
-    v6 = [v3 libraryURL];
-    v7 = [v5 wellKnownPhotoLibraryIdentifierForURL:v6];
+    libraryURL = [managerCopy libraryURL];
+    v7 = [v5 wellKnownPhotoLibraryIdentifierForURL:libraryURL];
 
     if (v7 > 1)
     {
@@ -37855,9 +37855,9 @@ LABEL_12:
 
     else
     {
-      v8 = [v3 libraryURL];
+      libraryURL2 = [managerCopy libraryURL];
       v14 = 0;
-      v9 = [PLPhotoLibraryIdentifier photoLibraryIdentifierWithPhotoLibraryURL:v8 createIfMissing:1 error:&v14];
+      v9 = [PLPhotoLibraryIdentifier photoLibraryIdentifierWithPhotoLibraryURL:libraryURL2 createIfMissing:1 error:&v14];
       v10 = v14;
 
       if (!v9)
@@ -37866,24 +37866,24 @@ LABEL_12:
         if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412546;
-          v16 = v3;
+          v16 = managerCopy;
           v17 = 2112;
           v18 = v10;
           _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_ERROR, "Failed to create identifier for library with path manager %@ %@.", buf, 0x16u);
         }
       }
 
-      v12 = [v9 containerIdentifier];
-      v4 = [v12 containsString:@"com.apple."];
+      containerIdentifier = [v9 containerIdentifier];
+      v4 = [containerIdentifier containsString:@"com.apple."];
     }
   }
 
   return v4;
 }
 
-+ (BOOL)markAssetsWithThumbsForTableRebuildInContext:(id)a3
++ (BOOL)markAssetsWithThumbsForTableRebuildInContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -37892,7 +37892,7 @@ LABEL_12:
   v7[1] = 3221225472;
   v7[2] = __64__PLModelMigrator_markAssetsWithThumbsForTableRebuildInContext___block_invoke;
   v7[3] = &unk_1E7578910;
-  v4 = v3;
+  v4 = contextCopy;
   v8 = v4;
   v9 = &v10;
   [v4 pl_performBlockAndWait:v7];
@@ -37954,21 +37954,21 @@ void __64__PLModelMigrator_markAssetsWithThumbsForTableRebuildInContext___block_
   }
 }
 
-+ (BOOL)resetThumbnailIndexesAndInitiateThumbnailRebuildRequestIfSuccessfulForForThumbnailManager:(id)a3 deferHintChanges:(BOOL)a4 inContext:(id)a5
++ (BOOL)resetThumbnailIndexesAndInitiateThumbnailRebuildRequestIfSuccessfulForForThumbnailManager:(id)manager deferHintChanges:(BOOL)changes inContext:(id)context
 {
-  v7 = a3;
-  v8 = a5;
+  managerCopy = manager;
+  contextCopy = context;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 1;
-  [v7 addRebuildThumbnailsRequest];
+  [managerCopy addRebuildThumbnailsRequest];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __136__PLModelMigrator_resetThumbnailIndexesAndInitiateThumbnailRebuildRequestIfSuccessfulForForThumbnailManager_deferHintChanges_inContext___block_invoke;
   v12[3] = &unk_1E7573CD8;
-  v9 = v8;
-  v15 = a4;
+  v9 = contextCopy;
+  changesCopy = changes;
   v13 = v9;
   v14 = &v16;
   [v9 pl_performBlockAndWait:v12];
@@ -37979,7 +37979,7 @@ void __64__PLModelMigrator_markAssetsWithThumbsForTableRebuildInContext___block_
 
   else
   {
-    [v7 removeRebuildThumbnailsRequest:"+[PLModelMigrator resetThumbnailIndexesAndInitiateThumbnailRebuildRequestIfSuccessfulForForThumbnailManager:deferHintChanges:inContext:]"];
+    [managerCopy removeRebuildThumbnailsRequest:"+[PLModelMigrator resetThumbnailIndexesAndInitiateThumbnailRebuildRequestIfSuccessfulForForThumbnailManager:deferHintChanges:inContext:]"];
     v10 = *(v17 + 24);
   }
 
@@ -38065,22 +38065,22 @@ void __136__PLModelMigrator_resetThumbnailIndexesAndInitiateThumbnailRebuildRequ
   }
 }
 
-- (void)filesystemImportResultsUpdateKeywordWithImportedAssets:(id)a3
+- (void)filesystemImportResultsUpdateKeywordWithImportedAssets:(id)assets
 {
-  v4 = a3;
-  if ([v4 count])
+  assetsCopy = assets;
+  if ([assetsCopy count])
   {
-    v5 = [v4 firstObject];
-    v6 = [v5 photoLibrary];
+    firstObject = [assetsCopy firstObject];
+    photoLibrary = [firstObject photoLibrary];
 
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __84__PLModelMigrator_Recovery__filesystemImportResultsUpdateKeywordWithImportedAssets___block_invoke;
     v8[3] = &unk_1E75761B8;
-    v9 = v6;
-    v10 = v4;
-    v11 = self;
-    v7 = v6;
+    v9 = photoLibrary;
+    v10 = assetsCopy;
+    selfCopy = self;
+    v7 = photoLibrary;
     [v7 performTransaction:v8];
   }
 }
@@ -38133,25 +38133,25 @@ LABEL_6:
   }
 }
 
-+ (BOOL)enumerateObjectsWithIncrementalSaveDefaultBatchSizeFetchRequest:(id)a3 managedObjectContext:(id)a4 count:(unint64_t *)a5 error:(id *)a6 block:(id)a7
++ (BOOL)enumerateObjectsWithIncrementalSaveDefaultBatchSizeFetchRequest:(id)request managedObjectContext:(id)context count:(unint64_t *)count error:(id *)error block:(id)block
 {
-  v11 = a4;
-  v12 = a7;
-  v13 = a3;
-  [v13 setFetchBatchSize:100];
+  contextCopy = context;
+  blockCopy = block;
+  requestCopy = request;
+  [requestCopy setFetchBatchSize:100];
   v20 = 0;
-  v14 = [v11 executeFetchRequest:v13 error:&v20];
+  v14 = [contextCopy executeFetchRequest:requestCopy error:&v20];
 
   v15 = v20;
   if (v14)
   {
-    v16 = [v11 enumerateWithIncrementalSaveUsingObjects:v14 withBlock:v12];
+    v16 = [contextCopy enumerateWithIncrementalSaveUsingObjects:v14 withBlock:blockCopy];
 
     v15 = v16;
     if (!v16)
     {
       v18 = 1;
-      if (!a5)
+      if (!count)
       {
         goto LABEL_7;
       }
@@ -38160,17 +38160,17 @@ LABEL_6:
     }
   }
 
-  if (a6)
+  if (error)
   {
     v17 = v15;
-    *a6 = v15;
+    *error = v15;
   }
 
   v18 = 0;
-  if (a5)
+  if (count)
   {
 LABEL_6:
-    *a5 = [v14 count];
+    *count = [v14 count];
   }
 
 LABEL_7:
@@ -38178,20 +38178,20 @@ LABEL_7:
   return v18;
 }
 
-+ (BOOL)executeBatchUpdateWithEntityName:(id)a3 predicate:(id)a4 propertiesToUpdate:(id)a5 managedObjectContext:(id)a6 error:(id *)a7
++ (BOOL)executeBatchUpdateWithEntityName:(id)name predicate:(id)predicate propertiesToUpdate:(id)update managedObjectContext:(id)context error:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  nameCopy = name;
+  predicateCopy = predicate;
+  updateCopy = update;
   v14 = MEMORY[0x1E695D560];
-  v15 = a6;
-  v16 = [v14 batchUpdateRequestWithEntityName:v11];
-  [v16 setPredicate:v12];
-  [v16 setPropertiesToUpdate:v13];
+  contextCopy = context;
+  v16 = [v14 batchUpdateRequestWithEntityName:nameCopy];
+  [v16 setPredicate:predicateCopy];
+  [v16 setPropertiesToUpdate:updateCopy];
   [v16 setResultType:2];
   v24 = 0;
-  v17 = [v15 executeRequest:v16 error:&v24];
+  v17 = [contextCopy executeRequest:v16 error:&v24];
 
   v18 = v24;
   v19 = PLMigrationGetLog();
@@ -38200,15 +38200,15 @@ LABEL_7:
   {
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [v17 result];
+      result = [v17 result];
       *buf = 138413058;
-      v26 = v21;
+      v26 = result;
       v27 = 2112;
-      v28 = v11;
+      v28 = nameCopy;
       v29 = 2112;
-      v30 = v12;
+      v30 = predicateCopy;
       v31 = 2112;
-      v32 = v13;
+      v32 = updateCopy;
       _os_log_impl(&dword_19BF1F000, v20, OS_LOG_TYPE_DEFAULT, "Batch updated %@ %@ objects with predicate %@, updated properties %@", buf, 0x2Au);
     }
   }
@@ -38218,40 +38218,40 @@ LABEL_7:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
       *buf = 138413058;
-      v26 = v11;
+      v26 = nameCopy;
       v27 = 2112;
-      v28 = v12;
+      v28 = predicateCopy;
       v29 = 2112;
-      v30 = v13;
+      v30 = updateCopy;
       v31 = 2112;
       v32 = v18;
       _os_log_impl(&dword_19BF1F000, v20, OS_LOG_TYPE_ERROR, "Batch update request failed, for entity %@, predicate %@, properties to update %@, error: %@", buf, 0x2Au);
     }
 
-    if (a7)
+    if (error)
     {
       v22 = v18;
-      *a7 = v18;
+      *error = v18;
     }
   }
 
   return v17 != 0;
 }
 
-+ (BOOL)executeBatchDeleteWithEntityName:(id)a3 predicate:(id)a4 managedObjectContext:(id)a5 error:(id *)a6
++ (BOOL)executeBatchDeleteWithEntityName:(id)name predicate:(id)predicate managedObjectContext:(id)context error:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  nameCopy = name;
   v10 = MEMORY[0x1E695D5E0];
-  v11 = a5;
-  v12 = a4;
-  v13 = [v10 fetchRequestWithEntityName:v9];
-  [v13 setPredicate:v12];
+  contextCopy = context;
+  predicateCopy = predicate;
+  v13 = [v10 fetchRequestWithEntityName:nameCopy];
+  [v13 setPredicate:predicateCopy];
 
   v14 = [objc_alloc(MEMORY[0x1E695D538]) initWithFetchRequest:v13];
   [v14 setResultType:2];
   v22 = 0;
-  v15 = [v11 executeRequest:v14 error:&v22];
+  v15 = [contextCopy executeRequest:v14 error:&v22];
 
   v16 = v22;
   v17 = PLMigrationGetLog();
@@ -38261,16 +38261,16 @@ LABEL_7:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v24 = v9;
+      v24 = nameCopy;
       v25 = 2112;
       v26 = v16;
       _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_ERROR, "Batch delete of %@ returned error: %@", buf, 0x16u);
     }
 
-    if (a6)
+    if (error)
     {
       v19 = v16;
-      *a6 = v16;
+      *error = v16;
     }
   }
 
@@ -38278,11 +38278,11 @@ LABEL_7:
   {
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
-      v20 = [v15 result];
+      result = [v15 result];
       *buf = 138412546;
-      v24 = v9;
+      v24 = nameCopy;
       v25 = 2112;
-      v26 = v20;
+      v26 = result;
       _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_DEBUG, "Batch delete of %@ with result: %@", buf, 0x16u);
     }
   }

@@ -1,11 +1,11 @@
 @interface DownloadsActivity
 - (ActionPanel)parentViewController;
-- (BOOL)canPerformWithTabDocument:(id)a3;
+- (BOOL)canPerformWithTabDocument:(id)document;
 - (DownloadsActivity)init;
 - (id)_activityBadgeText;
 - (id)_navigationController;
 - (void)_downloadsDidChange;
-- (void)performActivityWithTabDocument:(id)a3;
+- (void)performActivityWithTabDocument:(id)document;
 @end
 
 @implementation DownloadsActivity
@@ -17,10 +17,10 @@
   v2 = [(UIActivity *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel__downloadsDidChange name:*MEMORY[0x277CDB9C0] object:0];
-    [v3 addObserver:v2 selector:sel__downloadsDidChange name:*MEMORY[0x277CDB998] object:0];
-    [v3 addObserver:v2 selector:sel__downloadsDidChange name:*MEMORY[0x277CDB9A0] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__downloadsDidChange name:*MEMORY[0x277CDB9C0] object:0];
+    [defaultCenter addObserver:v2 selector:sel__downloadsDidChange name:*MEMORY[0x277CDB998] object:0];
+    [defaultCenter addObserver:v2 selector:sel__downloadsDidChange name:*MEMORY[0x277CDB9A0] object:0];
     v4 = v2;
   }
 
@@ -29,24 +29,24 @@
 
 - (id)_activityBadgeText
 {
-  v2 = [MEMORY[0x277CDB7A8] sharedManager];
-  v3 = [v2 runningDownloadsCount];
+  mEMORY[0x277CDB7A8] = [MEMORY[0x277CDB7A8] sharedManager];
+  runningDownloadsCount = [mEMORY[0x277CDB7A8] runningDownloadsCount];
 
-  if (v3)
+  if (runningDownloadsCount)
   {
     v4 = MEMORY[0x277CCABB8];
-    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v3];
-    v3 = [v4 localizedStringFromNumber:v5 numberStyle:1];
+    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:runningDownloadsCount];
+    runningDownloadsCount = [v4 localizedStringFromNumber:v5 numberStyle:1];
   }
 
-  return v3;
+  return runningDownloadsCount;
 }
 
-- (BOOL)canPerformWithTabDocument:(id)a3
+- (BOOL)canPerformWithTabDocument:(id)document
 {
-  v3 = [MEMORY[0x277CDB7A8] sharedManager];
-  v4 = [v3 downloads];
-  v5 = [v4 count] != 0;
+  mEMORY[0x277CDB7A8] = [MEMORY[0x277CDB7A8] sharedManager];
+  downloads = [mEMORY[0x277CDB7A8] downloads];
+  v5 = [downloads count] != 0;
 
   return v5;
 }
@@ -62,9 +62,9 @@
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_parentViewController);
-    v6 = [WeakRetained downloadsViewController];
+    downloadsViewController = [WeakRetained downloadsViewController];
 
-    v7 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v6];
+    v7 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:downloadsViewController];
     v8 = self->_navigationController;
     self->_navigationController = v7;
 
@@ -74,15 +74,15 @@
   return v3;
 }
 
-- (void)performActivityWithTabDocument:(id)a3
+- (void)performActivityWithTabDocument:(id)document
 {
-  v4 = a3;
+  documentCopy = document;
   [(_SFActivity *)self activityDidFinish:1];
-  v7 = [v4 browserController];
+  browserController = [documentCopy browserController];
 
-  v5 = [v7 viewControllerToPresentFrom];
-  v6 = [(DownloadsActivity *)self _navigationController];
-  [v5 presentViewController:v6 animated:1 completion:0];
+  viewControllerToPresentFrom = [browserController viewControllerToPresentFrom];
+  _navigationController = [(DownloadsActivity *)self _navigationController];
+  [viewControllerToPresentFrom presentViewController:_navigationController animated:1 completion:0];
 }
 
 - (void)_downloadsDidChange
@@ -93,9 +93,9 @@
     [WeakRetained _reloadActivity:self];
   }
 
-  v3 = [MEMORY[0x277CDB7A8] sharedManager];
-  v4 = [v3 downloads];
-  v5 = [v4 count];
+  mEMORY[0x277CDB7A8] = [MEMORY[0x277CDB7A8] sharedManager];
+  downloads = [mEMORY[0x277CDB7A8] downloads];
+  v5 = [downloads count];
 
   if (!v5)
   {

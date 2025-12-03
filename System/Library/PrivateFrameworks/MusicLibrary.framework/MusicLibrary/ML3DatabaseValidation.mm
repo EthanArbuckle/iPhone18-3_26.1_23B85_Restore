@@ -1,10 +1,10 @@
 @interface ML3DatabaseValidation
 - (BOOL)_internalUserAgreesToRebuildUnmigratableDatabase;
-- (BOOL)_performDatabasePreprocessingWithLibrary:(id)a3 error:(id *)a4;
-- (BOOL)_performSchemaUpgradeWithLibrary:(id)a3 error:(id *)a4;
-- (BOOL)_truncateDatabaseFileForLibrary:(id)a3 withError:(id *)a4;
-- (BOOL)_validateLibraryDatabaseIfNecessary:(id)a3 withError:(id *)a4;
-- (ML3DatabaseValidation)initWithLibrary:(id)a3 delegate:(id)a4 completion:(id)a5;
+- (BOOL)_performDatabasePreprocessingWithLibrary:(id)library error:(id *)error;
+- (BOOL)_performSchemaUpgradeWithLibrary:(id)library error:(id *)error;
+- (BOOL)_truncateDatabaseFileForLibrary:(id)library withError:(id *)error;
+- (BOOL)_validateLibraryDatabaseIfNecessary:(id)necessary withError:(id *)error;
+- (ML3DatabaseValidation)initWithLibrary:(id)library delegate:(id)delegate completion:(id)completion;
 - (ML3DatabaseValidationDelegate)delegate;
 - (void)_logDatabasePathDirectoryAttributes;
 - (void)runValidation;
@@ -22,30 +22,30 @@
 - (void)_logDatabasePathDirectoryAttributes
 {
   v25 = *MEMORY[0x277D85DE8];
-  v2 = [(ML3DatabaseValidation *)self library];
-  v3 = [v2 databasePath];
+  library = [(ML3DatabaseValidation *)self library];
+  databasePath = [library databasePath];
 
   v4 = MLMobileUserHomeDirectory();
   v5 = [v4 stringByAppendingPathComponent:@"Media"];
 
-  v6 = [v3 stringByDeletingLastPathComponent];
+  stringByDeletingLastPathComponent = [databasePath stringByDeletingLastPathComponent];
 
-  if ([v6 hasPrefix:v5])
+  if ([stringByDeletingLastPathComponent hasPrefix:v5])
   {
     *&v7 = 138543362;
     v17 = v7;
-    v8 = v6;
+    v8 = stringByDeletingLastPathComponent;
     do
     {
       v9 = [v8 isEqualToString:{v5, v17}];
-      v10 = [MEMORY[0x277CCAA00] defaultManager];
-      v11 = [v10 fileExistsAtPath:v8];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      v11 = [defaultManager fileExistsAtPath:v8];
 
       if (v11)
       {
-        v12 = [MEMORY[0x277CCAA00] defaultManager];
+        defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
         v18 = 0;
-        v13 = [v12 attributesOfItemAtPath:v8 error:&v18];
+        v13 = [defaultManager2 attributesOfItemAtPath:v8 error:&v18];
         v14 = v18;
 
         v15 = os_log_create("com.apple.amp.medialibrary", "Default_Oversize");
@@ -72,9 +72,9 @@
         }
       }
 
-      v6 = [v8 stringByDeletingLastPathComponent];
+      stringByDeletingLastPathComponent = [v8 stringByDeletingLastPathComponent];
 
-      v8 = v6;
+      v8 = stringByDeletingLastPathComponent;
     }
 
     while ((v9 & 1) == 0);
@@ -86,7 +86,7 @@
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v20 = v6;
+      v20 = stringByDeletingLastPathComponent;
       v21 = 2114;
       v22 = v5;
       _os_log_impl(&dword_22D2FA000, v16, OS_LOG_TYPE_ERROR, "database at %{public}@ is not a subdirectory of %{public}@", buf, 0x16u);
@@ -133,10 +133,10 @@ intptr_t __73__ML3DatabaseValidation__internalUserAgreesToRebuildUnmigratableDat
   return dispatch_semaphore_signal(v3);
 }
 
-- (BOOL)_performDatabasePreprocessingWithLibrary:(id)a3 error:(id *)a4
+- (BOOL)_performDatabasePreprocessingWithLibrary:(id)library error:(id *)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  libraryCopy = library;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -144,13 +144,13 @@ intptr_t __73__ML3DatabaseValidation__internalUserAgreesToRebuildUnmigratableDat
   v6 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 databasePath];
+    databasePath = [libraryCopy databasePath];
     *buf = 138543362;
-    v19 = v7;
+    v19 = databasePath;
     _os_log_impl(&dword_22D2FA000, v6, OS_LOG_TYPE_DEFAULT, "Preprocessing database for library at path %{public}@", buf, 0xCu);
   }
 
-  v8 = [v5 coerceValidDatabaseWithError:a4];
+  v8 = [libraryCopy coerceValidDatabaseWithError:error];
   *(v15 + 24) = v8;
   if (v8)
   {
@@ -159,7 +159,7 @@ intptr_t __73__ML3DatabaseValidation__internalUserAgreesToRebuildUnmigratableDat
     v11[2] = __72__ML3DatabaseValidation__performDatabasePreprocessingWithLibrary_error___block_invoke;
     v11[3] = &unk_278762A98;
     v13 = &v14;
-    v12 = v5;
+    v12 = libraryCopy;
     [v12 performDatabaseTransactionWithBlock:v11];
 
     v9 = *(v15 + 24);
@@ -234,27 +234,27 @@ LABEL_13:
   return v4;
 }
 
-- (BOOL)_performSchemaUpgradeWithLibrary:(id)a3 error:(id *)a4
+- (BOOL)_performSchemaUpgradeWithLibrary:(id)library error:(id *)error
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  libraryCopy = library;
   v6 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 databasePath];
+    databasePath = [libraryCopy databasePath];
     v10 = 138543362;
-    v11 = v7;
+    v11 = databasePath;
     _os_log_impl(&dword_22D2FA000, v6, OS_LOG_TYPE_DEFAULT, "Upgrading schema for library at path %{public}@", &v10, 0xCu);
   }
 
-  v8 = [v5 coerceValidDatabaseWithError:a4];
+  v8 = [libraryCopy coerceValidDatabaseWithError:error];
   return v8;
 }
 
-- (BOOL)_validateLibraryDatabaseIfNecessary:(id)a3 withError:(id *)a4
+- (BOOL)_validateLibraryDatabaseIfNecessary:(id)necessary withError:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  necessaryCopy = necessary;
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
@@ -268,7 +268,7 @@ LABEL_13:
   v20[2] = __71__ML3DatabaseValidation__validateLibraryDatabaseIfNecessary_withError___block_invoke;
   v20[3] = &unk_278762A70;
   v22 = &v28;
-  v7 = v6;
+  v7 = necessaryCopy;
   v21 = v7;
   v23 = &v24;
   [v7 databaseConnectionAllowingWrites:0 withBlock:v20];
@@ -289,13 +289,13 @@ LABEL_13:
     v11 = os_log_create("com.apple.amp.medialibrary", "Default");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v7 databasePath];
+      databasePath = [v7 databasePath];
       *buf = 138543362;
-      *v33 = v12;
+      *v33 = databasePath;
       _os_log_impl(&dword_22D2FA000, v11, OS_LOG_TYPE_DEFAULT, "Database requires preprocessing before schema updates for library at path %{public}@", buf, 0xCu);
     }
 
-    v13 = [(ML3DatabaseValidation *)self _performDatabasePreprocessingWithLibrary:v7 error:a4];
+    v13 = [(ML3DatabaseValidation *)self _performDatabasePreprocessingWithLibrary:v7 error:error];
   }
 
   else
@@ -308,13 +308,13 @@ LABEL_13:
     v14 = os_log_create("com.apple.amp.medialibrary", "Default");
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v7 databasePath];
+      databasePath2 = [v7 databasePath];
       *buf = 138543362;
-      *v33 = v15;
+      *v33 = databasePath2;
       _os_log_impl(&dword_22D2FA000, v14, OS_LOG_TYPE_DEFAULT, "Database requires schema upgrades for library at path %{public}@", buf, 0xCu);
     }
 
-    v13 = [(ML3DatabaseValidation *)self _performSchemaUpgradeWithLibrary:v7 error:a4];
+    v13 = [(ML3DatabaseValidation *)self _performSchemaUpgradeWithLibrary:v7 error:error];
   }
 
   if (!v13)
@@ -361,16 +361,16 @@ void __71__ML3DatabaseValidation__validateLibraryDatabaseIfNecessary_withError__
   [v3 executeUpdate:@"DELETE FROM entity_revision WHERE entity_pid=0"];
 }
 
-- (BOOL)_truncateDatabaseFileForLibrary:(id)a3 withError:(id *)a4
+- (BOOL)_truncateDatabaseFileForLibrary:(id)library withError:(id *)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  libraryCopy = library;
   v6 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 databasePath];
+    databasePath = [libraryCopy databasePath];
     v19 = 138543362;
-    v20 = v7;
+    v20 = databasePath;
     _os_log_impl(&dword_22D2FA000, v6, OS_LOG_TYPE_DEFAULT, "*** Truncating database files at path: %{public}@ ***", &v19, 0xCu);
   }
 
@@ -381,8 +381,8 @@ void __71__ML3DatabaseValidation__validateLibraryDatabaseIfNecessary_withError__
     _os_log_impl(&dword_22D2FA000, v8, OS_LOG_TYPE_DEFAULT, "Closing all local database connections...", &v19, 2u);
   }
 
-  v9 = [v5 connectionPool];
-  [v9 closeAllConnections];
+  connectionPool = [libraryCopy connectionPool];
+  [connectionPool closeAllConnections];
   v10 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -399,8 +399,8 @@ void __71__ML3DatabaseValidation__validateLibraryDatabaseIfNecessary_withError__
     _os_log_impl(&dword_22D2FA000, v11, OS_LOG_TYPE_DEFAULT, "Performing truncation...", &v19, 2u);
   }
 
-  v12 = [v5 databasePath];
-  v13 = ML3TruncateDatabase(v12, 1);
+  databasePath2 = [libraryCopy databasePath];
+  v13 = ML3TruncateDatabase(databasePath2, 1);
 
   v14 = os_log_create("com.apple.amp.medialibrary", "Default");
   v15 = v14;
@@ -413,14 +413,14 @@ void __71__ML3DatabaseValidation__validateLibraryDatabaseIfNecessary_withError__
     }
 
     v16 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_18;
     }
 
 LABEL_17:
     v17 = v16;
-    *a4 = v16;
+    *error = v16;
     goto LABEL_18;
   }
 
@@ -431,7 +431,7 @@ LABEL_17:
   }
 
   v16 = [ML3MediaLibraryWriter writerErrorWithCode:301 description:@"failed to truncate database files"];
-  if (a4)
+  if (error)
   {
     goto LABEL_17;
   }
@@ -444,13 +444,13 @@ LABEL_18:
 - (void)runValidation
 {
   v49 = *MEMORY[0x277D85DE8];
-  v34 = [(ML3DatabaseValidation *)self library];
-  v2 = [(ML3DatabaseValidation *)self delegate];
-  v32 = v2;
-  if (v2)
+  library = [(ML3DatabaseValidation *)self library];
+  delegate = [(ML3DatabaseValidation *)self delegate];
+  v32 = delegate;
+  if (delegate)
   {
-    v3 = [v2 shouldValidateDatabaseForLibrary:v34];
-    v4 = self;
+    v3 = [delegate shouldValidateDatabaseForLibrary:library];
+    selfCopy2 = self;
     if (![(ML3DatabaseValidation *)self truncateBeforeValidating]&& (v3 & 1) == 0)
     {
       v5 = os_log_create("com.apple.amp.medialibrary", "Service");
@@ -460,22 +460,22 @@ LABEL_18:
         _os_log_impl(&dword_22D2FA000, v5, OS_LOG_TYPE_DEFAULT, "Database already validated. Returning immediately.", buf, 2u);
       }
 
-      v33 = [(ML3DatabaseValidation *)self completionHandler];
-      v33[2](v33, 1, 0);
+      completionHandler = [(ML3DatabaseValidation *)self completionHandler];
+      completionHandler[2](completionHandler, 1, 0);
       goto LABEL_45;
     }
   }
 
   else
   {
-    v4 = self;
+    selfCopy2 = self;
     [(ML3DatabaseValidation *)self truncateBeforeValidating];
   }
 
-  if ([(ML3DatabaseValidation *)v4 truncateBeforeValidating])
+  if ([(ML3DatabaseValidation *)selfCopy2 truncateBeforeValidating])
   {
     v43 = 0;
-    v31 = [(ML3DatabaseValidation *)v4 _truncateDatabaseFileForLibrary:v34 withError:&v43];
+    v31 = [(ML3DatabaseValidation *)selfCopy2 _truncateDatabaseFileForLibrary:library withError:&v43];
     v6 = v43;
     v7 = v31;
     if (v6)
@@ -505,20 +505,20 @@ LABEL_18:
   v8 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v34 databasePath];
+    databasePath = [library databasePath];
     *buf = 138543362;
-    v46 = v9;
+    v46 = databasePath;
     _os_log_impl(&dword_22D2FA000, v8, OS_LOG_TYPE_DEFAULT, "Starting validation at path=%{public}@", buf, 0xCu);
   }
 
   v42 = 0;
-  v10 = [(ML3DatabaseValidation *)self _validateLibraryDatabaseIfNecessary:v34 withError:&v42];
+  v10 = [(ML3DatabaseValidation *)self _validateLibraryDatabaseIfNecessary:library withError:&v42];
   v11 = v42;
   v31 = v10;
   if (v11)
   {
 LABEL_19:
-    v33 = v11;
+    completionHandler = v11;
     if ([v11 code] == 3 && MSVDeviceOSIsInternalInstall())
     {
       v14 = os_log_create("com.apple.amp.medialibrary", "Default");
@@ -528,10 +528,10 @@ LABEL_19:
         _os_log_impl(&dword_22D2FA000, v14, OS_LOG_TYPE_DEFAULT, "Device is running an internal install. Asking user for permission to rebuild.", buf, 2u);
       }
 
-      v15 = [(ML3DatabaseValidation *)self _internalUserAgreesToRebuildUnmigratableDatabase];
+      _internalUserAgreesToRebuildUnmigratableDatabase = [(ML3DatabaseValidation *)self _internalUserAgreesToRebuildUnmigratableDatabase];
       v16 = os_log_create("com.apple.amp.medialibrary", "Default");
       v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
-      if (v15)
+      if (_internalUserAgreesToRebuildUnmigratableDatabase)
       {
         if (v17)
         {
@@ -539,10 +539,10 @@ LABEL_19:
           _os_log_impl(&dword_22D2FA000, v16, OS_LOG_TYPE_DEFAULT, "User agrees to rebuild. Deleting database and re-attempting validation.", buf, 2u);
         }
 
-        [v34 databaseConnectionAllowingWrites:1 withBlock:&__block_literal_global_9266];
+        [library databaseConnectionAllowingWrites:1 withBlock:&__block_literal_global_9266];
         v41 = 0;
-        v31 = [(ML3DatabaseValidation *)self _validateLibraryDatabaseIfNecessary:v34 withError:&v41];
-        v33 = v41;
+        v31 = [(ML3DatabaseValidation *)self _validateLibraryDatabaseIfNecessary:library withError:&v41];
+        completionHandler = v41;
       }
 
       else
@@ -557,8 +557,8 @@ LABEL_19:
 
     else
     {
-      v18 = [v33 domain];
-      if ([v18 isEqualToString:*MEMORY[0x277CCA050]] && objc_msgSend(v33, "code") == 513)
+      domain = [completionHandler domain];
+      if ([domain isEqualToString:*MEMORY[0x277CCA050]] && objc_msgSend(completionHandler, "code") == 513)
       {
         [(ML3DatabaseValidation *)self _logDatabasePathDirectoryAttributes];
       }
@@ -567,19 +567,19 @@ LABEL_19:
 
   else
   {
-    v33 = 0;
+    completionHandler = 0;
   }
 
-  v19 = [MEMORY[0x277CCAA00] defaultManager];
-  v20 = [MEMORY[0x277CBEB18] array];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  array = [MEMORY[0x277CBEB18] array];
   v21 = [ML3MusicLibrary pathForBaseLocationPath:250];
-  [v20 addObject:v21];
+  [array addObject:v21];
 
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v22 = v20;
+  v22 = array;
   v23 = [v22 countByEnumeratingWithState:&v37 objects:v44 count:16];
   if (v23)
   {
@@ -594,10 +594,10 @@ LABEL_19:
         }
 
         v26 = *(*(&v37 + 1) + 8 * i);
-        if (([v19 fileExistsAtPath:v26] & 1) == 0)
+        if (([defaultManager fileExistsAtPath:v26] & 1) == 0)
         {
           v36 = 0;
-          v27 = [v19 createDirectoryAtPath:v26 withIntermediateDirectories:1 attributes:0 error:&v36];
+          v27 = [defaultManager createDirectoryAtPath:v26 withIntermediateDirectories:1 attributes:0 error:&v36];
           v28 = v36;
           if ((v27 & 1) == 0)
           {
@@ -620,27 +620,27 @@ LABEL_19:
     while (v23);
   }
 
-  v30 = [(ML3DatabaseValidation *)self completionHandler];
-  (v30)[2](v30, v31, v33);
+  completionHandler2 = [(ML3DatabaseValidation *)self completionHandler];
+  (completionHandler2)[2](completionHandler2, v31, completionHandler);
 
 LABEL_45:
 }
 
-- (ML3DatabaseValidation)initWithLibrary:(id)a3 delegate:(id)a4 completion:(id)a5
+- (ML3DatabaseValidation)initWithLibrary:(id)library delegate:(id)delegate completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  libraryCopy = library;
+  delegateCopy = delegate;
+  completionCopy = completion;
   v17.receiver = self;
   v17.super_class = ML3DatabaseValidation;
   v12 = [(ML3DatabaseValidation *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_library, a3);
-    objc_storeWeak(&v13->_delegate, v10);
+    objc_storeStrong(&v12->_library, library);
+    objc_storeWeak(&v13->_delegate, delegateCopy);
     v13->_truncateBeforeValidating = 0;
-    v14 = [v11 copy];
+    v14 = [completionCopy copy];
     completionHandler = v13->_completionHandler;
     v13->_completionHandler = v14;
   }

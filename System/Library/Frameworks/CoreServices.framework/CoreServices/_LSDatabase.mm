@@ -9,13 +9,13 @@
 - (uint64_t)store;
 - (void)dealloc;
 - (void)isSeeded;
-- (void)setAccessContext:(uint64_t)a1;
-- (void)setApplicationsChanged:(_LSDatabase *)a1;
-- (void)setDocumentTypesChanged:(_LSDatabase *)a1;
-- (void)setSeeded:(_LSDatabase *)a1;
-- (void)setSeedingComplete:(_LSDatabase *)a1;
-- (void)setTypeDeclarationsChanged:(_LSDatabase *)a1;
-- (void)setURLTypesChanged:(_LSDatabase *)a1;
+- (void)setAccessContext:(uint64_t)context;
+- (void)setApplicationsChanged:(_LSDatabase *)changed;
+- (void)setDocumentTypesChanged:(_LSDatabase *)changed;
+- (void)setSeeded:(_LSDatabase *)seeded;
+- (void)setSeedingComplete:(_LSDatabase *)complete;
+- (void)setTypeDeclarationsChanged:(_LSDatabase *)changed;
+- (void)setURLTypesChanged:(_LSDatabase *)changed;
 @end
 
 @implementation _LSDatabase
@@ -32,9 +32,9 @@
 
 - (uint64_t)schema
 {
-  if (a1)
+  if (self)
   {
-    return a1 + 48;
+    return self + 48;
   }
 
   else
@@ -76,7 +76,7 @@
 - (uint64_t)isSeeded
 {
   v24 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     v14 = 0;
     goto LABEL_40;
@@ -84,7 +84,7 @@
 
   memset(v20, 0, sizeof(v20));
   memset(v19, 0, sizeof(v19));
-  _LSDatabaseGetHeader(a1, v19);
+  _LSDatabaseGetHeader(self, v19);
   LSDBHeader::GetCurrentBuildVersion(&__p);
   size = HIBYTE(__p.__r_.__value_.__r.__words[2]);
   if ((__p.__r_.__value_.__r.__words[2] & 0x8000000000000000) != 0)
@@ -307,10 +307,10 @@ LABEL_9:
   return v10;
 }
 
-- (void)setSeeded:(_LSDatabase *)a1
+- (void)setSeeded:(_LSDatabase *)seeded
 {
   v32 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (seeded)
   {
     v30 = 0u;
     v31 = 0u;
@@ -321,7 +321,7 @@ LABEL_9:
     v24 = 0u;
     v25 = 0u;
     memset(v23, 0, sizeof(v23));
-    _LSDatabaseGetHeader(a1, v23);
+    _LSDatabaseGetHeader(seeded, v23);
     if (a2)
     {
       _LSGetCurrentSystemVersion((v23 + 8));
@@ -457,7 +457,7 @@ LABEL_9:
     v15 = v24;
     *__p = v23[0];
     v11 = v23[1];
-    _LSDatabaseSetHeader(a1);
+    _LSDatabaseSetHeader(seeded);
   }
 
   v9 = *MEMORY[0x1E69E9840];
@@ -473,9 +473,9 @@ LABEL_9:
   return result;
 }
 
-- (void)setAccessContext:(uint64_t)a1
+- (void)setAccessContext:(uint64_t)context
 {
-  if (a1)
+  if (context)
   {
     OUTLINED_FUNCTION_14();
     v4 = *(v3 + 24);
@@ -502,17 +502,17 @@ LABEL_9:
 
 - (BOOL)cryptexContentChanged
 {
-  v1 = a1;
+  selfCopy = self;
   v9 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     bzero(v7, 0xD0uLL);
-    _LSDatabaseGetHeader(v1, v7);
+    _LSDatabaseGetHeader(selfCopy, v7);
     _LSGetCurrentCryptexVersion(v6);
     v5[0] = v8[0];
     v5[1] = v8[1];
     v2 = _LSVersionNumberCompare(v6, v5);
-    v1 = v2 != 0;
+    selfCopy = v2 != 0;
     if (v2)
     {
       _LSGetCurrentCryptexVersion(v8);
@@ -520,46 +520,46 @@ LABEL_9:
   }
 
   v3 = *MEMORY[0x1E69E9840];
-  return v1;
+  return selfCopy;
 }
 
-- (void)setSeedingComplete:(_LSDatabase *)a1
+- (void)setSeedingComplete:(_LSDatabase *)complete
 {
-  if (a1)
+  if (complete)
   {
-    _LSDatabaseSetHeaderFlag(a1, 2, a2 ^ 1);
+    _LSDatabaseSetHeaderFlag(complete, 2, a2 ^ 1);
   }
 }
 
-- (void)setApplicationsChanged:(_LSDatabase *)a1
+- (void)setApplicationsChanged:(_LSDatabase *)changed
 {
-  if (a1)
+  if (changed)
   {
-    _LSDatabaseSetHeaderFlag(a1, 0x1000000, a2);
+    _LSDatabaseSetHeaderFlag(changed, 0x1000000, a2);
   }
 }
 
-- (void)setDocumentTypesChanged:(_LSDatabase *)a1
+- (void)setDocumentTypesChanged:(_LSDatabase *)changed
 {
-  if (a1)
+  if (changed)
   {
-    _LSDatabaseSetHeaderFlag(a1, 0x2000000, a2);
+    _LSDatabaseSetHeaderFlag(changed, 0x2000000, a2);
   }
 }
 
-- (void)setURLTypesChanged:(_LSDatabase *)a1
+- (void)setURLTypesChanged:(_LSDatabase *)changed
 {
-  if (a1)
+  if (changed)
   {
-    _LSDatabaseSetHeaderFlag(a1, 0x4000000, a2);
+    _LSDatabaseSetHeaderFlag(changed, 0x4000000, a2);
   }
 }
 
-- (void)setTypeDeclarationsChanged:(_LSDatabase *)a1
+- (void)setTypeDeclarationsChanged:(_LSDatabase *)changed
 {
-  if (a1)
+  if (changed)
   {
-    _LSDatabaseSetHeaderFlag(a1, 0x8000000, a2);
+    _LSDatabaseSetHeaderFlag(changed, 0x8000000, a2);
   }
 }
 

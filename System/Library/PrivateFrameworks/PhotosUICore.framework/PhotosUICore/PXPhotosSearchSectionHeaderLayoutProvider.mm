@@ -1,58 +1,58 @@
 @interface PXPhotosSearchSectionHeaderLayoutProvider
-- (BOOL)wantsHeaderForDataSource:(id)a3 sectionIndexPath:(PXSimpleIndexPath *)a4;
-- (PXPhotosSearchSectionHeaderLayoutProvider)initWithViewModel:(id)a3 viewProvider:(id)a4;
-- (id)filterButtonConfigurationForLayout:(id)a3;
-- (id)primaryTextForDataSource:(id)a3 sectionIndexPath:(PXSimpleIndexPath *)a4;
-- (int64_t)actionTypeForHeaderLayout:(id)a3;
-- (void)sectionHeader:(id)a3 didPressButtonForActionType:(int64_t)a4 sender:(id)a5;
+- (BOOL)wantsHeaderForDataSource:(id)source sectionIndexPath:(PXSimpleIndexPath *)path;
+- (PXPhotosSearchSectionHeaderLayoutProvider)initWithViewModel:(id)model viewProvider:(id)provider;
+- (id)filterButtonConfigurationForLayout:(id)layout;
+- (id)primaryTextForDataSource:(id)source sectionIndexPath:(PXSimpleIndexPath *)path;
+- (int64_t)actionTypeForHeaderLayout:(id)layout;
+- (void)sectionHeader:(id)header didPressButtonForActionType:(int64_t)type sender:(id)sender;
 @end
 
 @implementation PXPhotosSearchSectionHeaderLayoutProvider
 
-- (id)filterButtonConfigurationForLayout:(id)a3
+- (id)filterButtonConfigurationForLayout:(id)layout
 {
   v3 = MEMORY[0x1E69DC740];
-  v4 = a3;
-  v5 = [v3 grayButtonConfiguration];
+  layoutCopy = layout;
+  grayButtonConfiguration = [v3 grayButtonConfiguration];
   v6 = +[PXPhotosSearchFeatureAvailabilityManagerObjcHelper wantsSearchReportAConcernStyling];
-  v7 = [v4 spec];
+  spec = [layoutCopy spec];
 
-  v8 = [v7 sectionHeaderSpec];
+  sectionHeaderSpec = [spec sectionHeaderSpec];
   if (v6)
   {
-    [PXCuratedLibraryOverlayButtonConfiguration configurationWithButtonType:1 spec:v8];
+    [PXCuratedLibraryOverlayButtonConfiguration configurationWithButtonType:1 spec:sectionHeaderSpec];
   }
 
   else
   {
-    [PXCuratedLibraryOverlayButtonConfiguration configurationWithSystemImageName:@"arrow.up.arrow.down" spec:v8];
+    [PXCuratedLibraryOverlayButtonConfiguration configurationWithSystemImageName:@"arrow.up.arrow.down" spec:sectionHeaderSpec];
   }
   v9 = ;
 
   v10 = [PXCuratedLibraryOverlayButton iconImageSymbolConfigurationFromConfiguration:v9];
   v11 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"arrow.up.arrow.down" withConfiguration:v10];
-  [v5 setImage:v11];
+  [grayButtonConfiguration setImage:v11];
 
-  v12 = [MEMORY[0x1E69DC6E8] clearConfiguration];
-  [v5 setBackground:v12];
+  clearConfiguration = [MEMORY[0x1E69DC6E8] clearConfiguration];
+  [grayButtonConfiguration setBackground:clearConfiguration];
 
-  [v5 setCornerStyle:4];
-  [v5 setButtonSize:2];
+  [grayButtonConfiguration setCornerStyle:4];
+  [grayButtonConfiguration setButtonSize:2];
 
-  return v5;
+  return grayButtonConfiguration;
 }
 
-- (void)sectionHeader:(id)a3 didPressButtonForActionType:(int64_t)a4 sender:(id)a5
+- (void)sectionHeader:(id)header didPressButtonForActionType:(int64_t)type sender:(id)sender
 {
-  v6 = a3;
-  v7 = [(PXActionableSectionHeaderLayoutProvider *)self viewModel];
+  headerCopy = header;
+  viewModel = [(PXActionableSectionHeaderLayoutProvider *)self viewModel];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __94__PXPhotosSearchSectionHeaderLayoutProvider_sectionHeader_didPressButtonForActionType_sender___block_invoke;
   v9[3] = &unk_1E7748CB8;
-  v10 = v6;
-  v8 = v6;
-  [v7 performChanges:v9];
+  v10 = headerCopy;
+  v8 = headerCopy;
+  [viewModel performChanges:v9];
 }
 
 void __94__PXPhotosSearchSectionHeaderLayoutProvider_sectionHeader_didPressButtonForActionType_sender___block_invoke(uint64_t a1, void *a2)
@@ -62,20 +62,20 @@ void __94__PXPhotosSearchSectionHeaderLayoutProvider_sectionHeader_didPressButto
   [v3 attemptSetInSelectMode:{objc_msgSend(v3, "isInSelectMode") ^ 1}];
 }
 
-- (int64_t)actionTypeForHeaderLayout:(id)a3
+- (int64_t)actionTypeForHeaderLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   if (MEMORY[0x1A590D320]())
   {
     goto LABEL_19;
   }
 
   memset(v18, 0, sizeof(v18));
-  v5 = [v4 dataSource];
-  v6 = v5;
-  if (v5)
+  dataSource = [layoutCopy dataSource];
+  v6 = dataSource;
+  if (dataSource)
   {
-    [v5 lastSectionIndexPath];
+    [dataSource lastSectionIndexPath];
   }
 
   else
@@ -90,10 +90,10 @@ void __94__PXPhotosSearchSectionHeaderLayoutProvider_sectionHeader_didPressButto
 
   while (1)
   {
-    v7 = [v4 dataSource];
+    dataSource2 = [layoutCopy dataSource];
     v16 = v18[0];
     v17 = v18[1];
-    v8 = [(PXPhotosSearchSectionHeaderLayoutProvider *)self wantsHeaderForDataSource:v7 sectionIndexPath:&v16];
+    v8 = [(PXPhotosSearchSectionHeaderLayoutProvider *)self wantsHeaderForDataSource:dataSource2 sectionIndexPath:&v16];
 
     if (v8)
     {
@@ -107,9 +107,9 @@ void __94__PXPhotosSearchSectionHeaderLayoutProvider_sectionHeader_didPressButto
     }
   }
 
-  if (v4)
+  if (layoutCopy)
   {
-    [v4 sectionIndexPath];
+    [layoutCopy sectionIndexPath];
     v10 = *(&v16 + 1);
     v11 = v16;
     v12 = v17;
@@ -126,8 +126,8 @@ void __94__PXPhotosSearchSectionHeaderLayoutProvider_sectionHeader_didPressButto
 
   if (v11 == *&v18[0] && __PAIR128__(v12, v10) == *(v18 + 8) && *(&v17 + 1) == *(&v18[1] + 1))
   {
-    v13 = [(PXActionableSectionHeaderLayoutProvider *)self viewModel];
-    if ([v13 isInSelectMode])
+    viewModel = [(PXActionableSectionHeaderLayoutProvider *)self viewModel];
+    if ([viewModel isInSelectMode])
     {
       v14 = 6;
     }
@@ -147,14 +147,14 @@ LABEL_19:
   return v14;
 }
 
-- (id)primaryTextForDataSource:(id)a3 sectionIndexPath:(PXSimpleIndexPath *)a4
+- (id)primaryTextForDataSource:(id)source sectionIndexPath:(PXSimpleIndexPath *)path
 {
-  v6 = a3;
-  v7 = v6;
+  sourceCopy = source;
+  v7 = sourceCopy;
   memset(v18, 0, sizeof(v18));
-  if (v6)
+  if (sourceCopy)
   {
-    [v6 lastSectionIndexPath];
+    [sourceCopy lastSectionIndexPath];
     if ((*(&v18[0] + 1) & 0x8000000000000000) != 0)
     {
       goto LABEL_13;
@@ -177,46 +177,46 @@ LABEL_19:
     }
   }
 
-  if (a4->dataSourceIdentifier == *&v18[0] && *&a4->section == *(v18 + 8) && a4->subitem == *(&v18[1] + 1))
+  if (path->dataSourceIdentifier == *&v18[0] && *&path->section == *(v18 + 8) && path->subitem == *(&v18[1] + 1))
   {
-    v9 = [v7 numberOfItemsInSection:?];
-    v10 = [(PXActionableSectionHeaderLayoutProvider *)self viewModel];
-    v11 = [v10 search_overriddenAllAssetsCount];
+    integerValue = [v7 numberOfItemsInSection:?];
+    viewModel = [(PXActionableSectionHeaderLayoutProvider *)self viewModel];
+    search_overriddenAllAssetsCount = [viewModel search_overriddenAllAssetsCount];
 
-    if (v11 && a4->section == 2)
+    if (search_overriddenAllAssetsCount && path->section == 2)
     {
-      v9 = [v11 integerValue];
+      integerValue = [search_overriddenAllAssetsCount integerValue];
     }
 
     v12 = MEMORY[0x1E696AEC0];
     v13 = PXLocalizedStringFromTable(@"%ld_SEARCH_ALL_RESULTS", @"PhotosUICore");
-    v14 = [v12 localizedStringWithFormat:v13, v9];
+    localizedTitle = [v12 localizedStringWithFormat:v13, integerValue];
   }
 
   else
   {
 LABEL_13:
-    v15 = *&a4->item;
-    v18[0] = *&a4->dataSourceIdentifier;
+    v15 = *&path->item;
+    v18[0] = *&path->dataSourceIdentifier;
     v18[1] = v15;
-    v11 = [v7 assetCollectionAtSectionIndexPath:v18];
-    v14 = [v11 localizedTitle];
+    search_overriddenAllAssetsCount = [v7 assetCollectionAtSectionIndexPath:v18];
+    localizedTitle = [search_overriddenAllAssetsCount localizedTitle];
   }
 
-  return v14;
+  return localizedTitle;
 }
 
-- (BOOL)wantsHeaderForDataSource:(id)a3 sectionIndexPath:(PXSimpleIndexPath *)a4
+- (BOOL)wantsHeaderForDataSource:(id)source sectionIndexPath:(PXSimpleIndexPath *)path
 {
-  v5 = a3;
-  v6 = *&a4->item;
-  v11[0] = *&a4->dataSourceIdentifier;
+  sourceCopy = source;
+  v6 = *&path->item;
+  v11[0] = *&path->dataSourceIdentifier;
   v11[1] = v6;
-  v7 = [v5 assetCollectionAtSectionIndexPath:v11];
-  v8 = [v7 localizedTitle];
-  if (v8)
+  v7 = [sourceCopy assetCollectionAtSectionIndexPath:v11];
+  localizedTitle = [v7 localizedTitle];
+  if (localizedTitle)
   {
-    v9 = [v5 numberOfItemsInSection:a4->section] > 0;
+    v9 = [sourceCopy numberOfItemsInSection:path->section] > 0;
   }
 
   else
@@ -227,26 +227,26 @@ LABEL_13:
   return v9;
 }
 
-- (PXPhotosSearchSectionHeaderLayoutProvider)initWithViewModel:(id)a3 viewProvider:(id)a4
+- (PXPhotosSearchSectionHeaderLayoutProvider)initWithViewModel:(id)model viewProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  modelCopy = model;
+  providerCopy = provider;
   v9 = objc_opt_class();
   v17.receiver = self;
   v17.super_class = PXPhotosSearchSectionHeaderLayoutProvider;
-  v10 = [(PXActionableSectionHeaderLayoutProvider *)&v17 initWithViewModel:v7 viewProvider:v8 viewClass:v9];
+  v10 = [(PXActionableSectionHeaderLayoutProvider *)&v17 initWithViewModel:modelCopy viewProvider:providerCopy viewClass:v9];
   if (v10)
   {
-    v11 = [v8 gridView];
-    [v11 setCustomAssetImageViewClass:objc_opt_class()];
+    gridView = [providerCopy gridView];
+    [gridView setCustomAssetImageViewClass:objc_opt_class()];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __76__PXPhotosSearchSectionHeaderLayoutProvider_initWithViewModel_viewProvider___block_invoke;
     v13[3] = &unk_1E77499B0;
     v16 = a2;
     v14 = v10;
-    v15 = v7;
-    [v11 setCustomAssetImageViewClassConfigurator:v13];
+    v15 = modelCopy;
+    [gridView setCustomAssetImageViewClassConfigurator:v13];
   }
 
   return v10;

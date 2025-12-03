@@ -1,5 +1,5 @@
 @interface HDCloudSyncDeleteOrphanedRecordsOperation
-- (HDCloudSyncDeleteOrphanedRecordsOperation)initWithConfiguration:(id)a3 cloudState:(id)a4;
+- (HDCloudSyncDeleteOrphanedRecordsOperation)initWithConfiguration:(id)configuration cloudState:(id)state;
 - (void)main;
 @end
 
@@ -7,15 +7,15 @@
 
 - (void)main
 {
-  v2 = self;
+  selfCopy = self;
   HDCloudSyncDeleteOrphanedRecordsOperation.main()();
 }
 
-- (HDCloudSyncDeleteOrphanedRecordsOperation)initWithConfiguration:(id)a3 cloudState:(id)a4
+- (HDCloudSyncDeleteOrphanedRecordsOperation)initWithConfiguration:(id)configuration cloudState:(id)state
 {
   v5.receiver = self;
   v5.super_class = HDCloudSyncDeleteOrphanedRecordsOperation;
-  return [(HDCloudSyncOperation *)&v5 initWithConfiguration:a3 cloudState:a4];
+  return [(HDCloudSyncOperation *)&v5 initWithConfiguration:configuration cloudState:state];
 }
 
 @end

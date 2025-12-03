@@ -1,27 +1,27 @@
 @interface VSApplicationControllerResponseHandler
-- (id)_accountAuthenticationWithJavascriptResponse:(id)a3 error:(id *)a4;
-- (id)_parseSAMLResponseString:(id)a3 error:(id *)a4;
-- (void)_handleJavascriptResponseInternal:(id)a3 requestType:(int64_t)a4 accountAuthentication:(id)a5 completionHandler:(id)a6;
-- (void)_setSubscriptionDataWithResponse:(id)a3 forJavascriptResponse:(id)a4;
-- (void)handleJavascriptResponse:(id)a3 requestType:(int64_t)a4 completionHandler:(id)a5;
+- (id)_accountAuthenticationWithJavascriptResponse:(id)response error:(id *)error;
+- (id)_parseSAMLResponseString:(id)string error:(id *)error;
+- (void)_handleJavascriptResponseInternal:(id)internal requestType:(int64_t)type accountAuthentication:(id)authentication completionHandler:(id)handler;
+- (void)_setSubscriptionDataWithResponse:(id)response forJavascriptResponse:(id)javascriptResponse;
+- (void)handleJavascriptResponse:(id)response requestType:(int64_t)type completionHandler:(id)handler;
 @end
 
 @implementation VSApplicationControllerResponseHandler
 
-- (void)handleJavascriptResponse:(id)a3 requestType:(int64_t)a4 completionHandler:(id)a5
+- (void)handleJavascriptResponse:(id)response requestType:(int64_t)type completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 authN];
-  if ([v10 length])
+  responseCopy = response;
+  handlerCopy = handler;
+  authN = [responseCopy authN];
+  if ([authN length])
   {
     v15 = 0;
-    v11 = [(VSApplicationControllerResponseHandler *)self _accountAuthenticationWithJavascriptResponse:v8 error:&v15];
+    v11 = [(VSApplicationControllerResponseHandler *)self _accountAuthenticationWithJavascriptResponse:responseCopy error:&v15];
     v12 = v15;
     v13 = v12;
     if (v11)
     {
-      [(VSApplicationControllerResponseHandler *)self _handleJavascriptResponseInternal:v8 requestType:a4 accountAuthentication:v11 completionHandler:v9];
+      [(VSApplicationControllerResponseHandler *)self _handleJavascriptResponseInternal:responseCopy requestType:type accountAuthentication:v11 completionHandler:handlerCopy];
     }
 
     else
@@ -32,40 +32,40 @@
       }
 
       v14 = [MEMORY[0x277CE2250] failableWithError:v13];
-      v9[2](v9, v14);
+      handlerCopy[2](handlerCopy, v14);
     }
   }
 
   else
   {
-    [(VSApplicationControllerResponseHandler *)self _handleJavascriptResponseInternal:v8 requestType:a4 accountAuthentication:0 completionHandler:v9];
+    [(VSApplicationControllerResponseHandler *)self _handleJavascriptResponseInternal:responseCopy requestType:type accountAuthentication:0 completionHandler:handlerCopy];
   }
 }
 
-- (id)_accountAuthenticationWithJavascriptResponse:(id)a3 error:(id *)a4
+- (id)_accountAuthenticationWithJavascriptResponse:(id)response error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 authenticationScheme];
-  v7 = [v6 isEqual:*MEMORY[0x277CE2438]];
+  responseCopy = response;
+  authenticationScheme = [responseCopy authenticationScheme];
+  v7 = [authenticationScheme isEqual:*MEMORY[0x277CE2438]];
 
   if (v7)
   {
-    v8 = [v5 authN];
+    authN = [responseCopy authN];
     v9 = VSSharedSAMLParserController();
     v35 = 0;
-    v10 = [v9 parseResponse:v8 error:&v35];
+    v10 = [v9 parseResponse:authN error:&v35];
     v11 = v35;
 
     if (v10)
     {
       v12 = objc_alloc_init(VSAccountAuthentication);
-      v13 = [v10 userName];
-      [(VSAccountAuthentication *)v12 setUsername:v13];
+      userName = [v10 userName];
+      [(VSAccountAuthentication *)v12 setUsername:userName];
 
       if ([v10 expectedAction] == 1 && objc_msgSend(v10, "hasValidAuthentication"))
       {
         v14 = objc_alloc_init(MEMORY[0x277CE22C8]);
-        [v14 setBody:v8];
+        [v14 setBody:authN];
       }
 
       else
@@ -86,7 +86,7 @@
     }
 
 LABEL_19:
-    if (!a4)
+    if (!error)
     {
       goto LABEL_21;
     }
@@ -94,25 +94,25 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v15 = [v5 expectedAction];
-  v16 = [v15 integerValue];
+  expectedAction = [responseCopy expectedAction];
+  integerValue = [expectedAction integerValue];
 
-  if (v16 == 1)
+  if (integerValue == 1)
   {
-    v8 = objc_alloc_init(MEMORY[0x277CE2290]);
-    v17 = [v5 expirationDate];
-    [v8 setExpirationDate:v17];
+    authN = objc_alloc_init(MEMORY[0x277CE2290]);
+    expirationDate = [responseCopy expirationDate];
+    [authN setExpirationDate:expirationDate];
 
-    v18 = [v5 authN];
-    [v8 setBody:v18];
+    authN2 = [responseCopy authN];
+    [authN setBody:authN2];
 
-    if ([v8 isValid])
+    if ([authN isValid])
     {
       v12 = objc_alloc_init(VSAccountAuthentication);
-      v19 = [v5 username];
-      [(VSAccountAuthentication *)v12 setUsername:v19];
+      username = [responseCopy username];
+      [(VSAccountAuthentication *)v12 setUsername:username];
 
-      v20 = [MEMORY[0x277CE2298] optionalWithObject:v8];
+      v20 = [MEMORY[0x277CE2298] optionalWithObject:authN];
       [(VSAccountAuthentication *)v12 setAuthenticationToken:v20];
       v21 = 0;
     }
@@ -137,34 +137,34 @@ LABEL_19:
   v21 = VSPublicError();
 
   v12 = 0;
-  if (a4)
+  if (error)
   {
 LABEL_20:
     v32 = v21;
-    *a4 = v21;
+    *error = v21;
   }
 
 LABEL_21:
-  v33 = [v5 appBundleIdentifier];
-  [(VSAccountAuthentication *)v12 setAppBundleIdentifier:v33];
+  appBundleIdentifier = [responseCopy appBundleIdentifier];
+  [(VSAccountAuthentication *)v12 setAppBundleIdentifier:appBundleIdentifier];
 
-  -[VSAccountAuthentication setSynchronizable:](v12, "setSynchronizable:", [v5 isSynchronizable]);
+  -[VSAccountAuthentication setSynchronizable:](v12, "setSynchronizable:", [responseCopy isSynchronizable]);
 
   return v12;
 }
 
-- (void)_handleJavascriptResponseInternal:(id)a3 requestType:(int64_t)a4 accountAuthentication:(id)a5 completionHandler:(id)a6
+- (void)_handleJavascriptResponseInternal:(id)internal requestType:(int64_t)type accountAuthentication:(id)authentication completionHandler:(id)handler
 {
   v72 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (a4 <= 3)
+  internalCopy = internal;
+  authenticationCopy = authentication;
+  handlerCopy = handler;
+  if (type <= 3)
   {
-    if ((a4 - 1) < 2)
+    if ((type - 1) < 2)
     {
-      v13 = [v10 authN];
-      if (!v13)
+      authN = [internalCopy authN];
+      if (!authN)
       {
         goto LABEL_38;
       }
@@ -172,10 +172,10 @@ LABEL_21:
       goto LABEL_13;
     }
 
-    if (a4 == 3)
+    if (type == 3)
     {
-      v13 = [v10 userMetadata];
-      if (!v13)
+      authN = [internalCopy userMetadata];
+      if (!authN)
       {
         goto LABEL_38;
       }
@@ -186,18 +186,18 @@ LABEL_21:
     goto LABEL_26;
   }
 
-  if (a4 != 4)
+  if (type != 4)
   {
-    if (a4 == 5)
+    if (type == 5)
     {
-      v14 = [v10 expectedAction];
-      v15 = [v14 integerValue];
+      expectedAction = [internalCopy expectedAction];
+      integerValue = [expectedAction integerValue];
 
-      if (v15 == 1)
+      if (integerValue == 1)
       {
         v16 = objc_alloc_init(VSApplicationControllerResponse);
-        v17 = [v10 expectedAction];
-        [(VSApplicationControllerResponse *)v16 setExpectedAction:v17];
+        expectedAction2 = [internalCopy expectedAction];
+        [(VSApplicationControllerResponse *)v16 setExpectedAction:expectedAction2];
 
         v18 = [MEMORY[0x277CE2250] failableWithObject:v16];
         goto LABEL_36;
@@ -241,34 +241,34 @@ LABEL_26:
     goto LABEL_35;
   }
 
-  v13 = [v10 logout];
-  if (!v13)
+  authN = [internalCopy logout];
+  if (!authN)
   {
     goto LABEL_38;
   }
 
 LABEL_13:
-  v19 = v13;
-  v20 = [v10 authenticationScheme];
+  v19 = authN;
+  authenticationScheme = [internalCopy authenticationScheme];
   v21 = MEMORY[0x277CE2438];
-  if (!v20)
+  if (!authenticationScheme)
   {
-    v20 = *MEMORY[0x277CE2438];
+    authenticationScheme = *MEMORY[0x277CE2438];
   }
 
-  v22 = [v10 userChannelList];
-  v63 = self;
-  v64 = v20;
-  v65 = v22;
-  if ([v22 count])
+  userChannelList = [internalCopy userChannelList];
+  selfCopy = self;
+  v64 = authenticationScheme;
+  v65 = userChannelList;
+  if ([userChannelList count])
   {
-    v61 = v11;
+    v61 = authenticationCopy;
     v23 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v67 = 0u;
     v68 = 0u;
     v69 = 0u;
     v70 = 0u;
-    v24 = v22;
+    v24 = userChannelList;
     v25 = [v24 countByEnumeratingWithState:&v67 objects:v71 count:16];
     if (v25)
     {
@@ -297,8 +297,8 @@ LABEL_13:
       while (v26);
     }
 
-    v11 = v61;
-    self = v63;
+    authenticationCopy = v61;
+    self = selfCopy;
     v21 = MEMORY[0x277CE2438];
   }
 
@@ -308,7 +308,7 @@ LABEL_13:
   }
 
   v38 = *v21;
-  if ([v20 isEqual:v38])
+  if ([authenticationScheme isEqual:v38])
   {
     v66 = 0;
     v39 = [(VSApplicationControllerResponseHandler *)self _parseSAMLResponseString:v19 error:&v66];
@@ -320,23 +320,23 @@ LABEL_13:
       v42 = v39;
       v43 = objc_alloc_init(VSApplicationControllerResponse);
       [(VSApplicationControllerResponse *)v43 setAuthenticationScheme:v38];
-      v44 = [v42 primaryStatusCode];
-      [(VSApplicationControllerResponse *)v43 setResponseStatusCode:v44];
+      primaryStatusCode = [v42 primaryStatusCode];
+      [(VSApplicationControllerResponse *)v43 setResponseStatusCode:primaryStatusCode];
 
       [(VSApplicationControllerResponse *)v43 setResponseString:v19];
       v45 = MEMORY[0x277CCABB0];
-      v46 = [v42 expectedAction];
+      expectedAction3 = [v42 expectedAction];
 
-      v20 = v64;
-      v47 = [v45 numberWithInteger:v46];
+      authenticationScheme = v64;
+      v47 = [v45 numberWithInteger:expectedAction3];
       [(VSApplicationControllerResponse *)v43 setExpectedAction:v47];
 
       [(VSApplicationControllerResponse *)v43 setAccountChannelIDs:v23];
-      [(VSApplicationControllerResponse *)v43 setAccountAuthentication:v11];
-      v48 = [v10 userAccounts];
-      [(VSApplicationControllerResponse *)v43 setApplicationUserAccounts:v48];
+      [(VSApplicationControllerResponse *)v43 setAccountAuthentication:authenticationCopy];
+      userAccounts = [internalCopy userAccounts];
+      [(VSApplicationControllerResponse *)v43 setApplicationUserAccounts:userAccounts];
 
-      [(VSApplicationControllerResponseHandler *)v63 _setSubscriptionDataWithResponse:v43 forJavascriptResponse:v10];
+      [(VSApplicationControllerResponseHandler *)selfCopy _setSubscriptionDataWithResponse:v43 forJavascriptResponse:internalCopy];
       v49 = [MEMORY[0x277CE2250] failableWithObject:v43];
 
       v39 = v62;
@@ -356,20 +356,20 @@ LABEL_13:
   else
   {
     v41 = objc_alloc_init(VSApplicationControllerResponse);
-    [(VSApplicationControllerResponse *)v41 setAuthenticationScheme:v20];
+    [(VSApplicationControllerResponse *)v41 setAuthenticationScheme:authenticationScheme];
     [(VSApplicationControllerResponse *)v41 setResponseString:v19];
-    v50 = [v10 statusCode];
-    [(VSApplicationControllerResponse *)v41 setResponseStatusCode:v50];
+    statusCode = [internalCopy statusCode];
+    [(VSApplicationControllerResponse *)v41 setResponseStatusCode:statusCode];
 
-    v51 = [v10 expectedAction];
-    [(VSApplicationControllerResponse *)v41 setExpectedAction:v51];
+    expectedAction4 = [internalCopy expectedAction];
+    [(VSApplicationControllerResponse *)v41 setExpectedAction:expectedAction4];
 
     [(VSApplicationControllerResponse *)v41 setAccountChannelIDs:v23];
-    [(VSApplicationControllerResponse *)v41 setAccountAuthentication:v11];
-    v52 = [v10 userAccounts];
-    [(VSApplicationControllerResponse *)v41 setApplicationUserAccounts:v52];
+    [(VSApplicationControllerResponse *)v41 setAccountAuthentication:authenticationCopy];
+    userAccounts2 = [internalCopy userAccounts];
+    [(VSApplicationControllerResponse *)v41 setApplicationUserAccounts:userAccounts2];
 
-    [(VSApplicationControllerResponseHandler *)self _setSubscriptionDataWithResponse:v41 forJavascriptResponse:v10];
+    [(VSApplicationControllerResponseHandler *)self _setSubscriptionDataWithResponse:v41 forJavascriptResponse:internalCopy];
     v49 = [MEMORY[0x277CE2250] failableWithObject:v41];
   }
 
@@ -379,17 +379,17 @@ LABEL_13:
   }
 
 LABEL_45:
-  v12[2](v12, v49);
+  handlerCopy[2](handlerCopy, v49);
 
   v60 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_parseSAMLResponseString:(id)a3 error:(id *)a4
+- (id)_parseSAMLResponseString:(id)string error:(id *)error
 {
-  v5 = a3;
+  stringCopy = string;
   v6 = VSSharedSAMLParserController();
   v12 = 0;
-  v7 = [v6 parseResponse:v5 error:&v12];
+  v7 = [v6 parseResponse:stringCopy error:&v12];
 
   v8 = v12;
   v9 = 0;
@@ -398,38 +398,38 @@ LABEL_45:
     v9 = VSPublicError();
   }
 
-  if (a4)
+  if (error)
   {
     v10 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
   return v7;
 }
 
-- (void)_setSubscriptionDataWithResponse:(id)a3 forJavascriptResponse:(id)a4
+- (void)_setSubscriptionDataWithResponse:(id)response forJavascriptResponse:(id)javascriptResponse
 {
-  v12 = a3;
-  v5 = a4;
-  v6 = [v5 subscriptions];
-  v7 = [v6 count];
+  responseCopy = response;
+  javascriptResponseCopy = javascriptResponse;
+  subscriptions = [javascriptResponseCopy subscriptions];
+  v7 = [subscriptions count];
 
   if (v7)
   {
-    v8 = [v5 subscriptions];
+    subscriptions2 = [javascriptResponseCopy subscriptions];
 
-    if (!v8)
+    if (!subscriptions2)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The [javascriptResponse subscriptions] parameter must not be nil."];
     }
 
-    v9 = [v5 subscriptions];
-    v10 = [VSJSSubscription toVSSubscriptions:v9];
-    [v12 setSubscriptionsToAdd:v10];
+    subscriptions3 = [javascriptResponseCopy subscriptions];
+    v10 = [VSJSSubscription toVSSubscriptions:subscriptions3];
+    [responseCopy setSubscriptionsToAdd:v10];
   }
 
-  v11 = [v5 clearSubscriptions];
-  [v12 setSubscriptionsToRemoveByBundleID:v11];
+  clearSubscriptions = [javascriptResponseCopy clearSubscriptions];
+  [responseCopy setSubscriptionsToRemoveByBundleID:clearSubscriptions];
 }
 
 @end

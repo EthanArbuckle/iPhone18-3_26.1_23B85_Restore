@@ -1,16 +1,16 @@
 @interface SKUITextBoxTableViewCell
-- (SKUITextBoxTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (SKUITextBoxTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (UIEdgeInsets)textBoxInsets;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setBackgroundColor:(id)a3;
+- (void)setBackgroundColor:(id)color;
 @end
 
 @implementation SKUITextBoxTableViewCell
 
-- (SKUITextBoxTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (SKUITextBoxTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUITextBoxTableViewCell initWithStyle:reuseIdentifier:];
@@ -18,22 +18,22 @@
 
   v15.receiver = self;
   v15.super_class = SKUITextBoxTableViewCell;
-  v7 = [(SKUITableViewCell *)&v15 initWithStyle:a3 reuseIdentifier:v6];
+  v7 = [(SKUITableViewCell *)&v15 initWithStyle:style reuseIdentifier:identifierCopy];
   v8 = v7;
   if (v7)
   {
-    v9 = [(SKUITextBoxTableViewCell *)v7 contentView];
+    contentView = [(SKUITextBoxTableViewCell *)v7 contentView];
     v10 = *(MEMORY[0x277D768C8] + 16);
     *&v8->_textBoxInsets.top = *MEMORY[0x277D768C8];
     *&v8->_textBoxInsets.bottom = v10;
     v11 = [SKUITextBoxView alloc];
-    [v9 bounds];
+    [contentView bounds];
     v12 = [(SKUITextBoxView *)v11 initWithFrame:?];
     textBoxView = v8->_textBoxView;
     v8->_textBoxView = v12;
 
     [(SKUITextBoxView *)v8->_textBoxView setEnabled:0];
-    [v9 addSubview:v8->_textBoxView];
+    [contentView addSubview:v8->_textBoxView];
   }
 
   return v8;
@@ -49,14 +49,14 @@
   *&self->_textBoxInsets.bottom = v3;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   textBoxView = self->_textBoxView;
-  v5 = a3;
-  [(SKUITextBoxView *)textBoxView setBackgroundColor:v5];
+  colorCopy = color;
+  [(SKUITextBoxView *)textBoxView setBackgroundColor:colorCopy];
   v6.receiver = self;
   v6.super_class = SKUITextBoxTableViewCell;
-  [(SKUITextBoxTableViewCell *)&v6 setBackgroundColor:v5];
+  [(SKUITextBoxTableViewCell *)&v6 setBackgroundColor:colorCopy];
 }
 
 - (void)layoutSubviews

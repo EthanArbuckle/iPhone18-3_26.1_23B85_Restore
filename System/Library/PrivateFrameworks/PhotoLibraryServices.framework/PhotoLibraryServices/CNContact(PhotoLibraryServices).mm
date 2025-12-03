@@ -13,7 +13,7 @@
   v12 = a6;
   if ([v9 count] == 1)
   {
-    v13 = [v9 firstObject];
+    firstObject = [v9 firstObject];
     goto LABEL_26;
   }
 
@@ -40,8 +40,8 @@
         v19 = *(*(&v25 + 1) + 8 * i);
         if (!v12)
         {
-          v13 = v19;
-          if (v13)
+          firstObject = v19;
+          if (firstObject)
           {
             goto LABEL_25;
           }
@@ -58,7 +58,7 @@
             goto LABEL_21;
           }
 
-          v13 = v19;
+          firstObject = v19;
           if (v11)
           {
 LABEL_16:
@@ -71,20 +71,20 @@ LABEL_21:
 
             v22 = v19;
 
-            v13 = v22;
+            firstObject = v22;
           }
         }
 
         else
         {
-          v13 = 0;
+          firstObject = 0;
           if (v11)
           {
             goto LABEL_16;
           }
         }
 
-        if (v13)
+        if (firstObject)
         {
           goto LABEL_25;
         }
@@ -96,13 +96,13 @@ LABEL_21:
     while (v16);
   }
 
-  v13 = 0;
+  firstObject = 0;
 LABEL_25:
 
   v9 = v24;
 LABEL_26:
 
-  return v13;
+  return firstObject;
 }
 
 @end

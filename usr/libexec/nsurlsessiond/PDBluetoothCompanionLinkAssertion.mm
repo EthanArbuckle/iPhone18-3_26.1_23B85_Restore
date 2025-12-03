@@ -17,8 +17,8 @@
     {
       self->_hasLoadedCompanionPeerIdentifier = 1;
       v3 = +[NRPairedDeviceRegistry sharedInstance];
-      v4 = [v3 getActivePairedDevice];
-      v5 = [v3 deviceIDForNRDevice:v4];
+      getActivePairedDevice = [v3 getActivePairedDevice];
+      v5 = [v3 deviceIDForNRDevice:getActivePairedDevice];
       companionPeerIdentifier = self->_companionPeerIdentifier;
       self->_companionPeerIdentifier = v5;
     }
@@ -100,7 +100,7 @@
       if (os_log_type_enabled(qword_1000EB1D8, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v10 = self;
+        selfCopy2 = self;
         v11 = 2112;
         v12 = companionPeerIdentifier;
         _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Relinquishing link requirements for %@", buf, 0x16u);
@@ -115,7 +115,7 @@
     {
       v7 = self->_pipeManager;
       *buf = 138543618;
-      v10 = self;
+      selfCopy2 = self;
       v11 = 2114;
       v12 = v7;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: Releasing %{public}@", buf, 0x16u);

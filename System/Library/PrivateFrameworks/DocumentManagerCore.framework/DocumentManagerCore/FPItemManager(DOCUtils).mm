@@ -25,8 +25,8 @@
 
   else
   {
-    v9 = [MEMORY[0x277CC6408] defaultManager];
-    [v9 fetchRootItemForProviderDomain:v5 completionHandler:v6];
+    defaultManager = [MEMORY[0x277CC6408] defaultManager];
+    [defaultManager fetchRootItemForProviderDomain:v5 completionHandler:v6];
   }
 }
 

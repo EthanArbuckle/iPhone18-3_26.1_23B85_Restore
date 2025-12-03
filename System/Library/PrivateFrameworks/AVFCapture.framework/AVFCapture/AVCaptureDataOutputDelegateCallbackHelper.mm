@@ -1,8 +1,8 @@
 @interface AVCaptureDataOutputDelegateCallbackHelper
-- (AVCaptureDataOutputDelegateCallbackHelper)initWithQueueName:(id)a3 canSetClientDelegateCallbackQueueWhenRunningInsideMediaserverd:(BOOL)a4;
-- (BOOL)_validateCallbackQueue:(id)a3 exceptionReason:(id *)a4;
-- (BOOL)setClientDelegate:(id)a3 clientCallbackQueue:(id)a4 exceptionReason:(id *)a5;
-- (BOOL)setDelegateOverride:(id)a3 delegateOverrideCallbackQueue:(id)a4 exceptionReason:(id *)a5;
+- (AVCaptureDataOutputDelegateCallbackHelper)initWithQueueName:(id)name canSetClientDelegateCallbackQueueWhenRunningInsideMediaserverd:(BOOL)mediaserverd;
+- (BOOL)_validateCallbackQueue:(id)queue exceptionReason:(id *)reason;
+- (BOOL)setClientDelegate:(id)delegate clientCallbackQueue:(id)queue exceptionReason:(id *)reason;
+- (BOOL)setDelegateOverride:(id)override delegateOverrideCallbackQueue:(id)queue exceptionReason:(id *)reason;
 - (OS_dispatch_queue)activeCallbackQueue;
 - (OS_dispatch_queue)clientCallbackQueue;
 - (OS_dispatch_queue)delegateOverrideCallbackQueue;
@@ -13,21 +13,21 @@
 - (id)delegateOverride;
 - (void)dealloc;
 - (void)releaseRemoteQueueReceiver;
-- (void)updateLocalQueue:(localQueueOpaque *)a3 handler:(id)a4;
-- (void)updateRemoteQueueReceiver:(remoteQueueReceiverOpaque *)a3 handler:(id)a4;
+- (void)updateLocalQueue:(localQueueOpaque *)queue handler:(id)handler;
+- (void)updateRemoteQueueReceiver:(remoteQueueReceiverOpaque *)receiver handler:(id)handler;
 @end
 
 @implementation AVCaptureDataOutputDelegateCallbackHelper
 
-- (AVCaptureDataOutputDelegateCallbackHelper)initWithQueueName:(id)a3 canSetClientDelegateCallbackQueueWhenRunningInsideMediaserverd:(BOOL)a4
+- (AVCaptureDataOutputDelegateCallbackHelper)initWithQueueName:(id)name canSetClientDelegateCallbackQueueWhenRunningInsideMediaserverd:(BOOL)mediaserverd
 {
   v8.receiver = self;
   v8.super_class = AVCaptureDataOutputDelegateCallbackHelper;
   v6 = [(AVCaptureDataOutputDelegateCallbackHelper *)&v8 init];
   if (v6)
   {
-    v6->_defaultCallbackQueueName = a3;
-    v6->_canSetClientDelegateCallbackQueueWhenRunningInsideMediaserverd = a4;
+    v6->_defaultCallbackQueueName = name;
+    v6->_canSetClientDelegateCallbackQueueWhenRunningInsideMediaserverd = mediaserverd;
     v6->_stateMutex = FigSimpleMutexCreate();
     v6->_delegateStorage = objc_alloc_init(MEMORY[0x1E69881A0]);
   }
@@ -58,25 +58,25 @@
 - (id)activeDelegate
 {
   FigSimpleMutexLock();
-  v3 = [(AVCaptureDataOutputDelegateCallbackHelper *)self _activeDelegate];
+  _activeDelegate = [(AVCaptureDataOutputDelegateCallbackHelper *)self _activeDelegate];
   FigSimpleMutexUnlock();
-  return v3;
+  return _activeDelegate;
 }
 
 - (OS_dispatch_queue)activeCallbackQueue
 {
   FigSimpleMutexLock();
-  v3 = [(AVCaptureDataOutputDelegateCallbackHelper *)self _activeCallbackQueue];
+  _activeCallbackQueue = [(AVCaptureDataOutputDelegateCallbackHelper *)self _activeCallbackQueue];
   FigSimpleMutexUnlock();
-  return v3;
+  return _activeCallbackQueue;
 }
 
-- (BOOL)setClientDelegate:(id)a3 clientCallbackQueue:(id)a4 exceptionReason:(id *)a5
+- (BOOL)setClientDelegate:(id)delegate clientCallbackQueue:(id)queue exceptionReason:(id *)reason
 {
-  if (a3)
+  if (delegate)
   {
-    v7 = a4;
-    v8 = [(AVCaptureDataOutputDelegateCallbackHelper *)self _validateCallbackQueue:a4 exceptionReason:a5];
+    queueCopy = queue;
+    v8 = [(AVCaptureDataOutputDelegateCallbackHelper *)self _validateCallbackQueue:queue exceptionReason:reason];
     if (!v8)
     {
       return v8;
@@ -85,11 +85,11 @@
 
   else
   {
-    v7 = 0;
+    queueCopy = 0;
   }
 
   FigSimpleMutexLock();
-  [(AVWeakReferencingDelegateStorage *)self->_delegateStorage setDelegate:a3 queue:v7];
+  [(AVWeakReferencingDelegateStorage *)self->_delegateStorage setDelegate:delegate queue:queueCopy];
   if (!self->_delegateOverrideStorage && self->_remoteQueueReceiver)
   {
     [(AVCaptureDataOutputDelegateCallbackHelper *)self _activeCallbackQueue];
@@ -104,24 +104,24 @@
 - (id)clientDelegate
 {
   FigSimpleMutexLock();
-  v3 = [(AVWeakReferencingDelegateStorage *)self->_delegateStorage delegate];
+  delegate = [(AVWeakReferencingDelegateStorage *)self->_delegateStorage delegate];
   FigSimpleMutexUnlock();
-  return v3;
+  return delegate;
 }
 
 - (OS_dispatch_queue)clientCallbackQueue
 {
   FigSimpleMutexLock();
-  v3 = [(AVWeakReferencingDelegateStorage *)self->_delegateStorage delegateQueue];
+  delegateQueue = [(AVWeakReferencingDelegateStorage *)self->_delegateStorage delegateQueue];
   FigSimpleMutexUnlock();
-  return v3;
+  return delegateQueue;
 }
 
-- (BOOL)setDelegateOverride:(id)a3 delegateOverrideCallbackQueue:(id)a4 exceptionReason:(id *)a5
+- (BOOL)setDelegateOverride:(id)override delegateOverrideCallbackQueue:(id)queue exceptionReason:(id *)reason
 {
-  if (a3)
+  if (override)
   {
-    v8 = [(AVCaptureDataOutputDelegateCallbackHelper *)self _validateCallbackQueue:a4 exceptionReason:a5];
+    v8 = [(AVCaptureDataOutputDelegateCallbackHelper *)self _validateCallbackQueue:queue exceptionReason:reason];
     if (!v8)
     {
       return v8;
@@ -135,7 +135,7 @@
       self->_delegateOverrideStorage = delegateOverrideStorage;
     }
 
-    [(AVWeakReferencingDelegateStorage *)delegateOverrideStorage setDelegate:a3 queue:a4];
+    [(AVWeakReferencingDelegateStorage *)delegateOverrideStorage setDelegate:override queue:queue];
   }
 
   else
@@ -159,27 +159,27 @@
 - (id)delegateOverride
 {
   FigSimpleMutexLock();
-  v3 = [(AVWeakReferencingDelegateStorage *)self->_delegateOverrideStorage delegate];
+  delegate = [(AVWeakReferencingDelegateStorage *)self->_delegateOverrideStorage delegate];
   FigSimpleMutexUnlock();
-  return v3;
+  return delegate;
 }
 
 - (OS_dispatch_queue)delegateOverrideCallbackQueue
 {
   FigSimpleMutexLock();
-  v3 = [(AVWeakReferencingDelegateStorage *)self->_delegateOverrideStorage delegateQueue];
+  delegateQueue = [(AVWeakReferencingDelegateStorage *)self->_delegateOverrideStorage delegateQueue];
   FigSimpleMutexUnlock();
 
-  return v3;
+  return delegateQueue;
 }
 
-- (void)updateRemoteQueueReceiver:(remoteQueueReceiverOpaque *)a3 handler:(id)a4
+- (void)updateRemoteQueueReceiver:(remoteQueueReceiverOpaque *)receiver handler:(id)handler
 {
   FigSimpleMutexLock();
   if (self->_localQueue)
   {
     FigSimpleMutexUnlock();
-    if (a3)
+    if (receiver)
     {
       v9 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:0];
       objc_exception_throw(v9);
@@ -199,10 +199,10 @@
       remoteQueueReceiver = 0;
     }
 
-    self->_remoteQueueReceiver = a3;
-    if (a3)
+    self->_remoteQueueReceiver = receiver;
+    if (receiver)
     {
-      CFRetain(a3);
+      CFRetain(receiver);
     }
 
     if (remoteQueueReceiver)
@@ -211,7 +211,7 @@
     }
 
     remoteQueueHandler = self->_remoteQueueHandler;
-    self->_remoteQueueHandler = a4;
+    self->_remoteQueueHandler = handler;
 
     if (self->_remoteQueueReceiver && self->_remoteQueueHandler)
     {
@@ -240,13 +240,13 @@
   FigSimpleMutexUnlock();
 }
 
-- (void)updateLocalQueue:(localQueueOpaque *)a3 handler:(id)a4
+- (void)updateLocalQueue:(localQueueOpaque *)queue handler:(id)handler
 {
   FigSimpleMutexLock();
   if (self->_remoteQueueReceiver)
   {
     FigSimpleMutexUnlock();
-    if (a3)
+    if (queue)
     {
       v8 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:0];
       objc_exception_throw(v8);
@@ -266,10 +266,10 @@
       localQueue = 0;
     }
 
-    self->_localQueue = a3;
-    if (a3)
+    self->_localQueue = queue;
+    if (queue)
     {
-      CFRetain(a3);
+      CFRetain(queue);
     }
 
     if (localQueue)
@@ -277,7 +277,7 @@
       CFRelease(localQueue);
     }
 
-    if (a4 && self->_localQueue)
+    if (handler && self->_localQueue)
     {
       [(AVCaptureDataOutputDelegateCallbackHelper *)self _activeCallbackQueue];
       FigLocalQueueSetReceiverHandler();
@@ -289,9 +289,9 @@
 
 - (id)_activeDelegate
 {
-  v3 = [(AVWeakReferencingDelegateStorage *)self->_delegateOverrideStorage delegate];
+  delegate = [(AVWeakReferencingDelegateStorage *)self->_delegateOverrideStorage delegate];
   v4 = 40;
-  if (!v3)
+  if (!delegate)
   {
     v4 = 32;
   }
@@ -323,15 +323,15 @@
       defaultCallbackQueueName = self->_defaultCallbackQueueName;
       if (defaultCallbackQueueName)
       {
-        v6 = [(NSString *)defaultCallbackQueueName UTF8String];
+        uTF8String = [(NSString *)defaultCallbackQueueName UTF8String];
       }
 
       else
       {
-        v6 = "com.apple.avfoundation.dataoutput.delegate_callback_queue";
+        uTF8String = "com.apple.avfoundation.dataoutput.delegate_callback_queue";
       }
 
-      result = dispatch_queue_create(v6, 0);
+      result = dispatch_queue_create(uTF8String, 0);
       self->_defaultCallbackQueue = result;
     }
   }
@@ -339,16 +339,16 @@
   return result;
 }
 
-- (BOOL)_validateCallbackQueue:(id)a3 exceptionReason:(id *)a4
+- (BOOL)_validateCallbackQueue:(id)queue exceptionReason:(id *)reason
 {
   if (AVCaptureIsRunningInMediaserverd() && !self->_canSetClientDelegateCallbackQueueWhenRunningInsideMediaserverd)
   {
-    if (!a3)
+    if (!queue)
     {
       return 1;
     }
 
-    if (a4)
+    if (reason)
     {
       v8 = @"A callback queue can not be used in conjunction with a local queue";
       goto LABEL_10;
@@ -357,17 +357,17 @@
 
   else
   {
-    if (a3)
+    if (queue)
     {
       return 1;
     }
 
-    if (a4)
+    if (reason)
     {
       v8 = @"NULL queue passed";
 LABEL_10:
       result = 0;
-      *a4 = v8;
+      *reason = v8;
       return result;
     }
   }

@@ -5,12 +5,12 @@
 - (HSUserListViewControllerDelegate)delegate;
 - (void)_doneTapped;
 - (void)_updateEditButton;
-- (void)managerDidCancelInvite:(id)a3 error:(id)a4;
-- (void)managerDidDismissWithError:(id)a3;
-- (void)managerDidRemoveUser:(id)a3 error:(id)a4;
-- (void)managerDidSendInvitations:(id)a3;
-- (void)setHome:(id)a3;
-- (void)updateHome:(id)a3;
+- (void)managerDidCancelInvite:(id)invite error:(id)error;
+- (void)managerDidDismissWithError:(id)error;
+- (void)managerDidRemoveUser:(id)user error:(id)error;
+- (void)managerDidSendInvitations:(id)invitations;
+- (void)setHome:(id)home;
+- (void)updateHome:(id)home;
 - (void)viewDidLoad;
 @end
 
@@ -24,8 +24,8 @@
   if (v2)
   {
     v3 = [HUUserListTableManager alloc];
-    v4 = [(HSUserListViewController *)v2 tableView];
-    v5 = [v3 initWithTableView:v4 viewController:v2];
+    tableView = [(HSUserListViewController *)v2 tableView];
+    v5 = [v3 initWithTableView:tableView viewController:v2];
     tableViewManager = v2->_tableViewManager;
     v2->_tableViewManager = v5;
 
@@ -42,29 +42,29 @@
   [(HSUserListViewController *)&v5 viewDidLoad];
   [(HSUserListViewController *)self setEdgesForExtendedLayout:0];
   v3 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"_doneTapped"];
-  v4 = [(HSUserListViewController *)self navigationItem];
-  [v4 setLeftBarButtonItem:v3];
+  navigationItem = [(HSUserListViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v3];
 }
 
 - (HMHome)home
 {
-  v2 = [(HSUserListViewController *)self tableViewManager];
-  v3 = [v2 home];
+  tableViewManager = [(HSUserListViewController *)self tableViewManager];
+  home = [tableViewManager home];
 
-  return v3;
+  return home;
 }
 
-- (void)setHome:(id)a3
+- (void)setHome:(id)home
 {
-  v4 = a3;
-  v5 = [(HSUserListViewController *)self tableViewManager];
-  [v5 setHome:v4];
+  homeCopy = home;
+  tableViewManager = [(HSUserListViewController *)self tableViewManager];
+  [tableViewManager setHome:homeCopy];
 
-  v7 = [v4 name];
+  name = [homeCopy name];
 
-  if (v7)
+  if (name)
   {
-    [(HSUserListViewController *)self setTitle:v7];
+    [(HSUserListViewController *)self setTitle:name];
   }
 
   else
@@ -74,39 +74,39 @@
   }
 }
 
-- (void)updateHome:(id)a3
+- (void)updateHome:(id)home
 {
-  [(HSUserListViewController *)self setHome:a3];
+  [(HSUserListViewController *)self setHome:home];
 
   [(HSUserListViewController *)self _updateEditButton];
 }
 
-- (void)managerDidDismissWithError:(id)a3
+- (void)managerDidDismissWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(HSUserListViewController *)self delegate];
-  [v5 controllerDidDismissWithError:v4];
+  errorCopy = error;
+  delegate = [(HSUserListViewController *)self delegate];
+  [delegate controllerDidDismissWithError:errorCopy];
 }
 
-- (void)managerDidSendInvitations:(id)a3
+- (void)managerDidSendInvitations:(id)invitations
 {
-  v4 = a3;
-  v5 = [(HSUserListViewController *)self delegate];
-  [v5 controllerDidSendInvitations:v4];
+  invitationsCopy = invitations;
+  delegate = [(HSUserListViewController *)self delegate];
+  [delegate controllerDidSendInvitations:invitationsCopy];
 }
 
-- (void)managerDidRemoveUser:(id)a3 error:(id)a4
+- (void)managerDidRemoveUser:(id)user error:(id)error
 {
-  if ([(HSUserListViewController *)self _isUserListEmpty:a3]&& [(HSUserListViewController *)self isEditing])
+  if ([(HSUserListViewController *)self _isUserListEmpty:user]&& [(HSUserListViewController *)self isEditing])
   {
 
     [(HSUserListViewController *)self setEditing:0 animated:1];
   }
 }
 
-- (void)managerDidCancelInvite:(id)a3 error:(id)a4
+- (void)managerDidCancelInvite:(id)invite error:(id)error
 {
-  if ([(HSUserListViewController *)self _isUserListEmpty:a3]&& [(HSUserListViewController *)self isEditing])
+  if ([(HSUserListViewController *)self _isUserListEmpty:invite]&& [(HSUserListViewController *)self isEditing])
   {
 
     [(HSUserListViewController *)self setEditing:0 animated:1];
@@ -115,24 +115,24 @@
 
 - (void)_doneTapped
 {
-  v2 = [(HSUserListViewController *)self delegate];
-  [v2 controllerDidDismissWithError:0];
+  delegate = [(HSUserListViewController *)self delegate];
+  [delegate controllerDidDismissWithError:0];
 }
 
 - (BOOL)_isUserListEmpty
 {
-  v3 = [(HSUserListViewController *)self tableViewManager];
-  v4 = [v3 users];
-  if ([v4 count])
+  tableViewManager = [(HSUserListViewController *)self tableViewManager];
+  users = [tableViewManager users];
+  if ([users count])
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [(HSUserListViewController *)self tableViewManager];
-    v7 = [v6 invitations];
-    v5 = [v7 count] == 0;
+    tableViewManager2 = [(HSUserListViewController *)self tableViewManager];
+    invitations = [tableViewManager2 invitations];
+    v5 = [invitations count] == 0;
   }
 
   return v5;
@@ -140,16 +140,16 @@
 
 - (void)_updateEditButton
 {
-  v4 = [(HSUserListViewController *)self navigationItem];
+  navigationItem = [(HSUserListViewController *)self navigationItem];
   if ([(HSUserListViewController *)self _isUserListEmpty])
   {
-    [v4 setRightBarButtonItem:0 animated:1];
+    [navigationItem setRightBarButtonItem:0 animated:1];
   }
 
   else
   {
-    v3 = [(HSUserListViewController *)self editButtonItem];
-    [v4 setRightBarButtonItem:v3 animated:1];
+    editButtonItem = [(HSUserListViewController *)self editButtonItem];
+    [navigationItem setRightBarButtonItem:editButtonItem animated:1];
   }
 }
 

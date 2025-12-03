@@ -1,11 +1,11 @@
 @interface MPCVocalAttenuationLowPowerModePolicy
-- (MPCVocalAttenuationLowPowerModePolicy)initWithCalloutQueue:(id)a3 delegate:(id)a4;
-- (MPCVocalAttenuationLowPowerModePolicy)initWithPowerModeMonitor:(id)a3 calloutQueue:(id)a4 delegate:(id)a5;
+- (MPCVocalAttenuationLowPowerModePolicy)initWithCalloutQueue:(id)queue delegate:(id)delegate;
+- (MPCVocalAttenuationLowPowerModePolicy)initWithPowerModeMonitor:(id)monitor calloutQueue:(id)queue delegate:(id)delegate;
 - (MPCVocalAttenuationPolicyDelegate)delegate;
 - (id)evaluation;
-- (void)powerModeDidChange:(BOOL)a3;
-- (void)processInfoPowerStateDidChange:(id)a3;
-- (void)updateEvaluationWithReason:(id)a3;
+- (void)powerModeDidChange:(BOOL)change;
+- (void)processInfoPowerStateDidChange:(id)change;
+- (void)updateEvaluationWithReason:(id)reason;
 @end
 
 @implementation MPCVocalAttenuationLowPowerModePolicy
@@ -17,22 +17,22 @@
   return WeakRetained;
 }
 
-- (void)updateEvaluationWithReason:(id)a3
+- (void)updateEvaluationWithReason:(id)reason
 {
-  v4 = a3;
-  v5 = [(MPCVocalAttenuationLowPowerModePolicy *)self evaluation];
-  v6 = [v5 explanation];
-  v7 = [v6 stringByAppendingFormat:@" [%@]", v4];
+  reasonCopy = reason;
+  evaluation = [(MPCVocalAttenuationLowPowerModePolicy *)self evaluation];
+  explanation = [evaluation explanation];
+  reasonCopy = [explanation stringByAppendingFormat:@" [%@]", reasonCopy];
 
-  [v5 setExplanation:v7];
+  [evaluation setExplanation:reasonCopy];
   calloutQueue = self->_calloutQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __68__MPCVocalAttenuationLowPowerModePolicy_updateEvaluationWithReason___block_invoke;
   block[3] = &unk_1E82392C0;
   block[4] = self;
-  v11 = v5;
-  v9 = v5;
+  v11 = evaluation;
+  v9 = evaluation;
   dispatch_async(calloutQueue, block);
 }
 
@@ -42,36 +42,36 @@ void __68__MPCVocalAttenuationLowPowerModePolicy_updateEvaluationWithReason___bl
   [v2 vocalAttenuationPolicy:*(a1 + 32) didChangeEvaluation:*(a1 + 40)];
 }
 
-- (void)powerModeDidChange:(BOOL)a3
+- (void)powerModeDidChange:(BOOL)change
 {
-  v3 = a3;
+  changeCopy = change;
   v14 = *MEMORY[0x1E69E9840];
-  if ([(MPCVocalAttenuationLowPowerModePolicy *)self isLowPowerModeEnabled]!= a3)
+  if ([(MPCVocalAttenuationLowPowerModePolicy *)self isLowPowerModeEnabled]!= change)
   {
-    [(MPCVocalAttenuationLowPowerModePolicy *)self setLowPowerModeEnabled:v3];
-    [(MPCVocalAttenuationLowPowerModePolicy *)self setDisableVocalAttenuation:v3];
+    [(MPCVocalAttenuationLowPowerModePolicy *)self setLowPowerModeEnabled:changeCopy];
+    [(MPCVocalAttenuationLowPowerModePolicy *)self setDisableVocalAttenuation:changeCopy];
     [(MPCVocalAttenuationLowPowerModePolicy *)self updateEvaluationWithReason:@"value changed"];
     v5 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(MPCVocalAttenuationLowPowerModePolicy *)self evaluation];
-      v7 = [v6 explanation];
+      evaluation = [(MPCVocalAttenuationLowPowerModePolicy *)self evaluation];
+      explanation = [evaluation explanation];
       v8 = 138543874;
-      v9 = self;
+      selfCopy = self;
       v10 = 2114;
-      v11 = v7;
+      v11 = explanation;
       v12 = 1024;
-      v13 = [(MPCVocalAttenuationLowPowerModePolicy *)self shouldDisableVocalAttenuation];
+      shouldDisableVocalAttenuation = [(MPCVocalAttenuationLowPowerModePolicy *)self shouldDisableVocalAttenuation];
       _os_log_impl(&dword_1C5C61000, v5, OS_LOG_TYPE_DEFAULT, "[AP] - %{public}@ - %{public}@ - _disableVocalAttenuation=%{BOOL}u", &v8, 0x1Cu);
     }
   }
 }
 
-- (void)processInfoPowerStateDidChange:(id)a3
+- (void)processInfoPowerStateDidChange:(id)change
 {
-  v4 = [(NSProcessInfo *)self->_powerMonitor isLowPowerModeEnabled];
+  isLowPowerModeEnabled = [(NSProcessInfo *)self->_powerMonitor isLowPowerModeEnabled];
 
-  [(MPCVocalAttenuationLowPowerModePolicy *)self powerModeDidChange:v4];
+  [(MPCVocalAttenuationLowPowerModePolicy *)self powerModeDidChange:isLowPowerModeEnabled];
 }
 
 - (id)evaluation
@@ -80,9 +80,9 @@ void __68__MPCVocalAttenuationLowPowerModePolicy_updateEvaluationWithReason___bl
   v3 = objc_opt_new();
   [v3 setDisableVocalAttenuation:{-[MPCVocalAttenuationLowPowerModePolicy shouldDisableVocalAttenuation](self, "shouldDisableVocalAttenuation")}];
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(MPCVocalAttenuationLowPowerModePolicy *)self shouldDisableVocalAttenuation];
+  shouldDisableVocalAttenuation = [(MPCVocalAttenuationLowPowerModePolicy *)self shouldDisableVocalAttenuation];
   v6 = @"off";
-  if (v5)
+  if (shouldDisableVocalAttenuation)
   {
     v6 = @"on";
   }
@@ -97,11 +97,11 @@ void __68__MPCVocalAttenuationLowPowerModePolicy_updateEvaluationWithReason___bl
   return v3;
 }
 
-- (MPCVocalAttenuationLowPowerModePolicy)initWithPowerModeMonitor:(id)a3 calloutQueue:(id)a4 delegate:(id)a5
+- (MPCVocalAttenuationLowPowerModePolicy)initWithPowerModeMonitor:(id)monitor calloutQueue:(id)queue delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  monitorCopy = monitor;
+  queueCopy = queue;
+  delegateCopy = delegate;
   v16.receiver = self;
   v16.super_class = MPCVocalAttenuationLowPowerModePolicy;
   v12 = [(MPCVocalAttenuationLowPowerModePolicy *)&v16 init];
@@ -109,12 +109,12 @@ void __68__MPCVocalAttenuationLowPowerModePolicy_updateEvaluationWithReason___bl
   if (v12)
   {
     v12->_type = 1;
-    objc_storeStrong(&v12->_powerMonitor, a3);
-    objc_storeStrong(&v13->_calloutQueue, a4);
-    objc_storeWeak(&v13->_delegate, v11);
+    objc_storeStrong(&v12->_powerMonitor, monitor);
+    objc_storeStrong(&v13->_calloutQueue, queue);
+    objc_storeWeak(&v13->_delegate, delegateCopy);
     v13->_disableVocalAttenuation = 0;
-    v14 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v14 addObserver:v13 selector:sel_processInfoPowerStateDidChange_ name:*MEMORY[0x1E696A7D8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v13 selector:sel_processInfoPowerStateDidChange_ name:*MEMORY[0x1E696A7D8] object:0];
 
     v13->_dataLock._os_unfair_lock_opaque = 0;
     [(MPCVocalAttenuationLowPowerModePolicy *)v13 powerModeDidChange:[(NSProcessInfo *)v13->_powerMonitor isLowPowerModeEnabled]];
@@ -123,13 +123,13 @@ void __68__MPCVocalAttenuationLowPowerModePolicy_updateEvaluationWithReason___bl
   return v13;
 }
 
-- (MPCVocalAttenuationLowPowerModePolicy)initWithCalloutQueue:(id)a3 delegate:(id)a4
+- (MPCVocalAttenuationLowPowerModePolicy)initWithCalloutQueue:(id)queue delegate:(id)delegate
 {
   v6 = MEMORY[0x1E696AE30];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 processInfo];
-  v10 = [(MPCVocalAttenuationLowPowerModePolicy *)self initWithPowerModeMonitor:v9 calloutQueue:v8 delegate:v7];
+  delegateCopy = delegate;
+  queueCopy = queue;
+  processInfo = [v6 processInfo];
+  v10 = [(MPCVocalAttenuationLowPowerModePolicy *)self initWithPowerModeMonitor:processInfo calloutQueue:queueCopy delegate:delegateCopy];
 
   return v10;
 }

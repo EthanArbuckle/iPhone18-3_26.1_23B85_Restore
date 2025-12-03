@@ -13,61 +13,61 @@
 - (id)_currentPurchaseDAAPServers;
 - (id)_dsids;
 - (id)_familyPurchaseDAAPServers;
-- (id)_fetchItemsForNeedsImport:(BOOL)a3;
-- (id)_fetchRequestForNotInStoreAccountIDs:(id)a3;
-- (id)_newPurchaseDAAPServerWithDSID:(id)a3;
-- (id)fetchAllBookletIDsWithParentStoreIDs:(id)a3;
-- (id)fetchItemsForStoreIDs:(id)a3;
-- (id)fetchRequestForAllStoreIDs:(id)a3;
-- (id)fetchRequestForAllStoreIDsWithNonEmptyPurchasedToken:(id)a3;
-- (id)fetchRequestForBookletItems:(id)a3;
-- (id)fetchRequestForBuyParameters:(id)a3;
+- (id)_fetchItemsForNeedsImport:(BOOL)import;
+- (id)_fetchRequestForNotInStoreAccountIDs:(id)ds;
+- (id)_newPurchaseDAAPServerWithDSID:(id)d;
+- (id)fetchAllBookletIDsWithParentStoreIDs:(id)ds;
+- (id)fetchItemsForStoreIDs:(id)ds;
+- (id)fetchRequestForAllStoreIDs:(id)ds;
+- (id)fetchRequestForAllStoreIDsWithNonEmptyPurchasedToken:(id)token;
+- (id)fetchRequestForBookletItems:(id)items;
+- (id)fetchRequestForBuyParameters:(id)parameters;
 - (id)fetchRequestForHiddenItems;
-- (id)fetchRequestForStoreID:(id)a3;
-- (id)fetchRequestForStoreIDIncludingHidden:(id)a3;
-- (id)fetchRequestForStoreIDs:(id)a3;
+- (id)fetchRequestForStoreID:(id)d;
+- (id)fetchRequestForStoreIDIncludingHidden:(id)hidden;
+- (id)fetchRequestForStoreIDs:(id)ds;
 - (id)newManagedObjectContext;
 - (id)newManagedObjectContextWithPrivateQueueConcurrency;
 - (id)persistentStoreCoordinator;
 - (void)_addPurchaseServerForCurrentUser;
-- (void)_processFamilyCircleAdded:(id)a3 removed:(id)a4 unchanged:(id)a5 completion:(id)a6;
-- (void)_resetPurchaseDAAPServersWithQueue:(id)a3;
-- (void)_sendCompletionHandlersWithSuccess:(BOOL)a3 generation:(unint64_t)a4;
+- (void)_processFamilyCircleAdded:(id)added removed:(id)removed unchanged:(id)unchanged completion:(id)completion;
+- (void)_resetPurchaseDAAPServersWithQueue:(id)queue;
+- (void)_sendCompletionHandlersWithSuccess:(BOOL)success generation:(unint64_t)generation;
 - (void)_startObservingNotifications;
 - (void)_stopObservingNotifications;
-- (void)account:(unint64_t)a3 didChangeWithReason:(unint64_t)a4;
+- (void)account:(unint64_t)account didChangeWithReason:(unint64_t)reason;
 - (void)dealloc;
-- (void)deleteItemsWithStoreIDs:(id)a3 completion:(id)a4;
-- (void)fetchAllHiddenItemStoreIDsWithCompletion:(id)a3;
-- (void)fetchItemsForBuyParameters:(id)a3 completion:(id)a4;
-- (void)fetchItemsForStoreIDs:(id)a3 completion:(id)a4;
-- (void)forceJaliscoArtworkUpdateWithCompletion:(id)a3;
-- (void)hideItemsWithStoreIDs:(id)a3 completion:(id)a4;
+- (void)deleteItemsWithStoreIDs:(id)ds completion:(id)completion;
+- (void)fetchAllHiddenItemStoreIDsWithCompletion:(id)completion;
+- (void)fetchItemsForBuyParameters:(id)parameters completion:(id)completion;
+- (void)fetchItemsForStoreIDs:(id)ds completion:(id)completion;
+- (void)forceJaliscoArtworkUpdateWithCompletion:(id)completion;
+- (void)hideItemsWithStoreIDs:(id)ds completion:(id)completion;
 - (void)jaliscoArtworkTimebombed;
 - (void)purchaseServerHandleClientExpired;
 - (void)refreshSignInStatus;
-- (void)refreshStoreWithCompletion:(id)a3;
-- (void)resetPurchasedTokenForStoreIDs:(id)a3 completion:(id)a4;
-- (void)resetStaleJaliscoDatabaseWithCompletion:(id)a3;
-- (void)setIsGDPRPrivacyAcknowledgementRequired:(BOOL)a3;
-- (void)setStoreAuthenticationRequired:(BOOL)a3;
-- (void)storeIDsWithNonEmptyPurchasedToken:(id)a3 completion:(id)a4;
-- (void)updateFamilyPolitely:(BOOL)a3 reason:(int64_t)a4 completion:(id)a5;
-- (void)updatePolitely:(BOOL)a3 reason:(int64_t)a4 completion:(id)a5;
+- (void)refreshStoreWithCompletion:(id)completion;
+- (void)resetPurchasedTokenForStoreIDs:(id)ds completion:(id)completion;
+- (void)resetStaleJaliscoDatabaseWithCompletion:(id)completion;
+- (void)setIsGDPRPrivacyAcknowledgementRequired:(BOOL)required;
+- (void)setStoreAuthenticationRequired:(BOOL)required;
+- (void)storeIDsWithNonEmptyPurchasedToken:(id)token completion:(id)completion;
+- (void)updateFamilyPolitely:(BOOL)politely reason:(int64_t)reason completion:(id)completion;
+- (void)updatePolitely:(BOOL)politely reason:(int64_t)reason completion:(id)completion;
 @end
 
 @implementation BLJaliscoDAAPClient
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v2 = [MEMORY[0x277CBEAC0] dictionary];
-    [v4 setObject:v2 forKey:@"kJaliscoDAAPClientLastSuccessfulFullUpdateDateDictionary"];
+    dictionary = [MEMORY[0x277CBEAC0] dictionary];
+    [v4 setObject:dictionary forKey:@"kJaliscoDAAPClientLastSuccessfulFullUpdateDateDictionary"];
 
-    v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v3 registerDefaults:v4];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults registerDefaults:v4];
   }
 }
 
@@ -97,11 +97,11 @@
     goto LABEL_6;
   }
 
-  v3 = [MEMORY[0x277CF32F0] sharedProvider];
-  v4 = [v3 activeStoreAccount];
-  v5 = [v4 ams_DSID];
+  mEMORY[0x277CF32F0] = [MEMORY[0x277CF32F0] sharedProvider];
+  activeStoreAccount = [mEMORY[0x277CF32F0] activeStoreAccount];
+  ams_DSID = [activeStoreAccount ams_DSID];
   v6 = *(v2 + 1);
-  *(v2 + 1) = v5;
+  *(v2 + 1) = ams_DSID;
 
   v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v8 = dispatch_queue_create("Jalisco_DAAP_Server_Worker_Queue", v7);
@@ -148,9 +148,9 @@
 
   if (v23)
   {
-    v24 = [v2 newManagedObjectContextWithPrivateQueueConcurrency];
+    newManagedObjectContextWithPrivateQueueConcurrency = [v2 newManagedObjectContextWithPrivateQueueConcurrency];
     v25 = *(v2 + 17);
-    *(v2 + 17) = v24;
+    *(v2 + 17) = newManagedObjectContextWithPrivateQueueConcurrency;
 
     [v2 _startObservingNotifications];
 LABEL_6:
@@ -174,15 +174,15 @@ LABEL_10:
 - (id)newManagedObjectContextWithPrivateQueueConcurrency
 {
   v2 = +[BLJaliscoServerSource sharedSource];
-  v3 = [v2 newManagedObjectContextWithPrivateQueueConcurrency];
+  newManagedObjectContextWithPrivateQueueConcurrency = [v2 newManagedObjectContextWithPrivateQueueConcurrency];
 
-  return v3;
+  return newManagedObjectContextWithPrivateQueueConcurrency;
 }
 
 - (void)_startObservingNotifications
 {
-  v3 = [MEMORY[0x277CF32F0] sharedProvider];
-  [v3 addObserver:self accountTypes:1];
+  mEMORY[0x277CF32F0] = [MEMORY[0x277CF32F0] sharedProvider];
+  [mEMORY[0x277CF32F0] addObserver:self accountTypes:1];
 }
 
 - (void)dealloc
@@ -195,26 +195,26 @@ LABEL_10:
 
 - (void)_stopObservingNotifications
 {
-  v3 = [MEMORY[0x277CF32F0] sharedProvider];
-  [v3 removeObserver:self accountTypes:1];
+  mEMORY[0x277CF32F0] = [MEMORY[0x277CF32F0] sharedProvider];
+  [mEMORY[0x277CF32F0] removeObserver:self accountTypes:1];
 }
 
 - (NSPersistentHistoryToken)currentJaliscoHistoryToken
 {
   v2 = +[BLJaliscoServerSource sharedSource];
-  v3 = [v2 currentJaliscoHistoryToken];
+  currentJaliscoHistoryToken = [v2 currentJaliscoHistoryToken];
 
-  return v3;
+  return currentJaliscoHistoryToken;
 }
 
-- (void)setIsGDPRPrivacyAcknowledgementRequired:(BOOL)a3
+- (void)setIsGDPRPrivacyAcknowledgementRequired:(BOOL)required
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = sub_241D57164;
   v4[3] = &unk_278D17BC0;
   v4[4] = self;
-  v5 = a3;
+  requiredCopy = required;
   os_unfair_lock_lock(&self->_isGDPRPrivacyAcknowledgementLock);
   sub_241D57164(v4);
   os_unfair_lock_unlock(&self->_isGDPRPrivacyAcknowledgementLock);
@@ -222,7 +222,7 @@ LABEL_10:
 
 - (BOOL)isGDPRPrivacyAcknowledgementRequired
 {
-  v2 = self;
+  selfCopy = self;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -231,26 +231,26 @@ LABEL_10:
   v5[1] = 3221225472;
   v6 = sub_241D5725C;
   v7 = &unk_278D17BE8;
-  v8 = self;
+  selfCopy2 = self;
   v9 = &v10;
   v3 = v5;
-  os_unfair_lock_lock(&v2->_isGDPRPrivacyAcknowledgementLock);
+  os_unfair_lock_lock(&selfCopy->_isGDPRPrivacyAcknowledgementLock);
   v6(v3);
-  os_unfair_lock_unlock(&v2->_isGDPRPrivacyAcknowledgementLock);
+  os_unfair_lock_unlock(&selfCopy->_isGDPRPrivacyAcknowledgementLock);
 
-  LOBYTE(v2) = *(v11 + 24);
+  LOBYTE(selfCopy) = *(v11 + 24);
   _Block_object_dispose(&v10, 8);
-  return v2;
+  return selfCopy;
 }
 
-- (void)setStoreAuthenticationRequired:(BOOL)a3
+- (void)setStoreAuthenticationRequired:(BOOL)required
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = sub_241D57300;
   v4[3] = &unk_278D17BC0;
   v4[4] = self;
-  v5 = a3;
+  requiredCopy = required;
   os_unfair_lock_lock(&self->_authenticationLock);
   sub_241D57300(v4);
   os_unfair_lock_unlock(&self->_authenticationLock);
@@ -258,7 +258,7 @@ LABEL_10:
 
 - (BOOL)storeAuthenticationRequired
 {
-  v2 = self;
+  selfCopy = self;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -267,16 +267,16 @@ LABEL_10:
   v5[1] = 3221225472;
   v6 = sub_241D573F8;
   v7 = &unk_278D17BE8;
-  v8 = self;
+  selfCopy2 = self;
   v9 = &v10;
   v3 = v5;
-  os_unfair_lock_lock(&v2->_authenticationLock);
+  os_unfair_lock_lock(&selfCopy->_authenticationLock);
   v6(v3);
-  os_unfair_lock_unlock(&v2->_authenticationLock);
+  os_unfair_lock_unlock(&selfCopy->_authenticationLock);
 
-  LOBYTE(v2) = *(v11 + 24);
+  LOBYTE(selfCopy) = *(v11 + 24);
   _Block_object_dispose(&v10, 8);
-  return v2;
+  return selfCopy;
 }
 
 - (void)refreshSignInStatus
@@ -320,51 +320,51 @@ LABEL_10:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)forceJaliscoArtworkUpdateWithCompletion:(id)a3
+- (void)forceJaliscoArtworkUpdateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   serverWorkerQueue = self->_serverWorkerQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_241D5773C;
   v7[3] = &unk_278D17C10;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(serverWorkerQueue, v7);
 }
 
-- (void)fetchItemsForStoreIDs:(id)a3 completion:(id)a4
+- (void)fetchItemsForStoreIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  completionCopy = completion;
   moc = self->_moc;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = sub_241D579B8;
   v11[3] = &unk_278D17C60;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dsCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = dsCopy;
   [(NSManagedObjectContext *)moc performBlock:v11];
 }
 
-- (id)fetchItemsForStoreIDs:(id)a3
+- (id)fetchItemsForStoreIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v5 = objc_opt_new();
   moc = self->_moc;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = sub_241D57C1C;
   v12[3] = &unk_278D17C88;
-  v13 = v4;
-  v14 = self;
+  v13 = dsCopy;
+  selfCopy = self;
   v7 = v5;
   v15 = v7;
-  v8 = v4;
+  v8 = dsCopy;
   [(NSManagedObjectContext *)moc performBlockAndWait:v12];
   v9 = v15;
   v10 = v7;
@@ -372,83 +372,83 @@ LABEL_10:
   return v7;
 }
 
-- (id)fetchAllBookletIDsWithParentStoreIDs:(id)a3
+- (id)fetchAllBookletIDsWithParentStoreIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v5 = objc_opt_new();
   moc = self->_moc;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = sub_241D57E6C;
   v11[3] = &unk_278D17C88;
-  v12 = v4;
-  v13 = self;
+  v12 = dsCopy;
+  selfCopy = self;
   v14 = v5;
   v7 = v5;
-  v8 = v4;
+  v8 = dsCopy;
   [(NSManagedObjectContext *)moc performBlockAndWait:v11];
   v9 = [MEMORY[0x277CBEA60] arrayWithArray:v7];
 
   return v9;
 }
 
-- (void)fetchItemsForBuyParameters:(id)a3 completion:(id)a4
+- (void)fetchItemsForBuyParameters:(id)parameters completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  parametersCopy = parameters;
+  completionCopy = completion;
   moc = self->_moc;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = sub_241D5808C;
   v11[3] = &unk_278D17C60;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = parametersCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = parametersCopy;
   [(NSManagedObjectContext *)moc performBlock:v11];
 }
 
-- (void)hideItemsWithStoreIDs:(id)a3 completion:(id)a4
+- (void)hideItemsWithStoreIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  completionCopy = completion;
   serverWorkerQueue = self->_serverWorkerQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_241D582E0;
   block[3] = &unk_278D17C60;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dsCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = dsCopy;
   dispatch_async(serverWorkerQueue, block);
 }
 
-- (void)fetchAllHiddenItemStoreIDsWithCompletion:(id)a3
+- (void)fetchAllHiddenItemStoreIDsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   moc = self->_moc;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_241D58530;
   v7[3] = &unk_278D17C10;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(NSManagedObjectContext *)moc performBlock:v7];
 }
 
-- (void)resetPurchasedTokenForStoreIDs:(id)a3 completion:(id)a4
+- (void)resetPurchasedTokenForStoreIDs:(id)ds completion:(id)completion
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BLJaliscoDAAPClient *)self newManagedObjectContext];
-  v9 = [(BLJaliscoDAAPClient *)self fetchRequestForAllStoreIDs:v6];
+  dsCopy = ds;
+  completionCopy = completion;
+  newManagedObjectContext = [(BLJaliscoDAAPClient *)self newManagedObjectContext];
+  v9 = [(BLJaliscoDAAPClient *)self fetchRequestForAllStoreIDs:dsCopy];
   v28 = 0;
-  v10 = [v8 executeFetchRequest:v9 error:&v28];
+  v10 = [newManagedObjectContext executeFetchRequest:v9 error:&v28];
   v11 = v28;
   v24 = 0u;
   v25 = 0u;
@@ -478,10 +478,10 @@ LABEL_10:
     while (v14);
   }
 
-  if ([v8 hasChanges])
+  if ([newManagedObjectContext hasChanges])
   {
     v23 = 0;
-    LODWORD(v17) = [v8 save:&v23];
+    LODWORD(v17) = [newManagedObjectContext save:&v23];
     v18 = v23;
     if (v18)
     {
@@ -510,7 +510,7 @@ LABEL_10:
     v17 = 1;
   }
 
-  v20 = MEMORY[0x245CFF560](v7);
+  v20 = MEMORY[0x245CFF560](completionCopy);
   v21 = v20;
   if (v20)
   {
@@ -520,13 +520,13 @@ LABEL_10:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)storeIDsWithNonEmptyPurchasedToken:(id)a3 completion:(id)a4
+- (void)storeIDsWithNonEmptyPurchasedToken:(id)token completion:(id)completion
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BLJaliscoDAAPClient *)self newManagedObjectContext];
-  v9 = [(BLJaliscoDAAPClient *)self fetchRequestForAllStoreIDsWithNonEmptyPurchasedToken:v7];
+  completionCopy = completion;
+  tokenCopy = token;
+  newManagedObjectContext = [(BLJaliscoDAAPClient *)self newManagedObjectContext];
+  v9 = [(BLJaliscoDAAPClient *)self fetchRequestForAllStoreIDsWithNonEmptyPurchasedToken:tokenCopy];
 
   v25[0] = @"storeID";
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:1];
@@ -534,7 +534,7 @@ LABEL_10:
 
   [v9 setResultType:2];
   v22 = 0;
-  v11 = [v8 executeFetchRequest:v9 error:&v22];
+  v11 = [newManagedObjectContext executeFetchRequest:v9 error:&v22];
   v12 = v22;
   if (v12)
   {
@@ -548,19 +548,19 @@ LABEL_10:
   }
 
   v14 = [v11 valueForKey:@"storeID"];
-  v15 = [v14 bu_arrayByRemovingNSNulls];
-  v16 = v15;
+  bu_arrayByRemovingNSNulls = [v14 bu_arrayByRemovingNSNulls];
+  v16 = bu_arrayByRemovingNSNulls;
   v17 = MEMORY[0x277CBEBF8];
-  if (v15)
+  if (bu_arrayByRemovingNSNulls)
   {
-    v17 = v15;
+    v17 = bu_arrayByRemovingNSNulls;
   }
 
   v18 = v17;
 
   v19 = [MEMORY[0x277CBEB98] setWithArray:v18];
 
-  v20 = MEMORY[0x245CFF560](v6);
+  v20 = MEMORY[0x245CFF560](completionCopy);
   if (v20)
   {
     (v20)[2](v20, v19, v12 == 0);
@@ -569,27 +569,27 @@ LABEL_10:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updatePolitely:(BOOL)a3 reason:(int64_t)a4 completion:(id)a5
+- (void)updatePolitely:(BOOL)politely reason:(int64_t)reason completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   serverWorkerQueue = self->_serverWorkerQueue;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = sub_241D5909C;
   v11[3] = &unk_278D17DF0;
   v11[4] = self;
-  v12 = v8;
-  v14 = a3;
-  v13 = a4;
-  v10 = v8;
+  v12 = completionCopy;
+  politelyCopy = politely;
+  reasonCopy = reason;
+  v10 = completionCopy;
   dispatch_async(serverWorkerQueue, v11);
 }
 
-- (id)_newPurchaseDAAPServerWithDSID:(id)a3
+- (id)_newPurchaseDAAPServerWithDSID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[BLPrivacyInfo sharedPrivacyInfo];
-  v6 = [[BLPurchaseDAAPServer alloc] initWithDSID:v4 delegate:self privacyInfo:v5];
+  v6 = [[BLPurchaseDAAPServer alloc] initWithDSID:dCopy delegate:self privacyInfo:v5];
 
   return v6;
 }
@@ -631,33 +631,33 @@ LABEL_10:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)refreshStoreWithCompletion:(id)a3
+- (void)refreshStoreWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[BLJaliscoServerSource sharedSource];
-  [v4 refreshStoreWithCompletion:v3];
+  [v4 refreshStoreWithCompletion:completionCopy];
 }
 
-- (void)updateFamilyPolitely:(BOOL)a3 reason:(int64_t)a4 completion:(id)a5
+- (void)updateFamilyPolitely:(BOOL)politely reason:(int64_t)reason completion:(id)completion
 {
-  v6 = a3;
+  politelyCopy = politely;
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  completionCopy = completion;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = sub_241D5AE08;
   v21[3] = &unk_278D17E68;
   v21[4] = self;
-  v9 = v8;
+  v9 = completionCopy;
   v22 = v9;
-  v23 = a4;
-  v24 = v6;
+  reasonCopy = reason;
+  v24 = politelyCopy;
   v10 = MEMORY[0x245CFF560](v21);
   v11 = BLJaliscoLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 67109120;
-    HIDWORD(buf) = v6;
+    HIDWORD(buf) = politelyCopy;
     _os_log_impl(&dword_241D1F000, v11, OS_LOG_TYPE_DEFAULT, "Starting jalisco family purchase update (politely: %d)", &buf, 8u);
   }
 
@@ -699,74 +699,74 @@ LABEL_10:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)fetchRequestForStoreID:(id)a3
+- (id)fetchRequestForStoreID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[BLJaliscoServerSource sharedSource];
-  v6 = [MEMORY[0x277CBEB98] setWithObject:v4];
+  v6 = [MEMORY[0x277CBEB98] setWithObject:dCopy];
 
-  v7 = [(BLJaliscoDAAPClient *)self _dsids];
-  v8 = [v5 fetchRequestForStoreIDs:v6 dsids:v7];
+  _dsids = [(BLJaliscoDAAPClient *)self _dsids];
+  v8 = [v5 fetchRequestForStoreIDs:v6 dsids:_dsids];
 
   return v8;
 }
 
-- (id)fetchRequestForStoreIDIncludingHidden:(id)a3
+- (id)fetchRequestForStoreIDIncludingHidden:(id)hidden
 {
-  v4 = a3;
+  hiddenCopy = hidden;
   v5 = +[BLJaliscoServerSource sharedSource];
-  v6 = [MEMORY[0x277CBEB98] setWithObject:v4];
+  v6 = [MEMORY[0x277CBEB98] setWithObject:hiddenCopy];
 
-  v7 = [(BLJaliscoDAAPClient *)self _dsids];
-  v8 = [v5 fetchRequestForAllStoreIDs:v6 dsids:v7];
+  _dsids = [(BLJaliscoDAAPClient *)self _dsids];
+  v8 = [v5 fetchRequestForAllStoreIDs:v6 dsids:_dsids];
 
   return v8;
 }
 
-- (id)fetchRequestForStoreIDs:(id)a3
+- (id)fetchRequestForStoreIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v5 = +[BLJaliscoServerSource sharedSource];
-  v6 = [(BLJaliscoDAAPClient *)self _dsids];
-  v7 = [v5 fetchRequestForStoreIDs:v4 dsids:v6];
+  _dsids = [(BLJaliscoDAAPClient *)self _dsids];
+  v7 = [v5 fetchRequestForStoreIDs:dsCopy dsids:_dsids];
 
   return v7;
 }
 
-- (id)fetchRequestForAllStoreIDs:(id)a3
+- (id)fetchRequestForAllStoreIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v5 = +[BLJaliscoServerSource sharedSource];
-  v6 = [(BLJaliscoDAAPClient *)self _dsids];
-  v7 = [v5 fetchRequestForAllStoreIDs:v4 dsids:v6];
+  _dsids = [(BLJaliscoDAAPClient *)self _dsids];
+  v7 = [v5 fetchRequestForAllStoreIDs:dsCopy dsids:_dsids];
 
   return v7;
 }
 
-- (id)fetchRequestForAllStoreIDsWithNonEmptyPurchasedToken:(id)a3
+- (id)fetchRequestForAllStoreIDsWithNonEmptyPurchasedToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v5 = +[BLJaliscoServerSource sharedSource];
-  v6 = [(BLJaliscoDAAPClient *)self _dsids];
-  v7 = [v5 fetchRequestForAllStoreIDsWithNonEmptyPurchasedToken:v4 dsids:v6];
+  _dsids = [(BLJaliscoDAAPClient *)self _dsids];
+  v7 = [v5 fetchRequestForAllStoreIDsWithNonEmptyPurchasedToken:tokenCopy dsids:_dsids];
 
   return v7;
 }
 
-- (id)fetchRequestForBuyParameters:(id)a3
+- (id)fetchRequestForBuyParameters:(id)parameters
 {
-  v3 = a3;
+  parametersCopy = parameters;
   v4 = +[BLJaliscoServerSource sharedSource];
-  v5 = [v4 fetchRequestForBuyParameters:v3];
+  v5 = [v4 fetchRequestForBuyParameters:parametersCopy];
 
   return v5;
 }
 
-- (id)fetchRequestForBookletItems:(id)a3
+- (id)fetchRequestForBookletItems:(id)items
 {
-  v3 = a3;
+  itemsCopy = items;
   v4 = +[BLJaliscoServerSource sharedSource];
-  v5 = [v4 fetchRequestForBookletItemsForStoreIDs:v3];
+  v5 = [v4 fetchRequestForBookletItemsForStoreIDs:itemsCopy];
 
   return v5;
 }
@@ -774,8 +774,8 @@ LABEL_10:
 - (id)fetchRequestForHiddenItems
 {
   v3 = +[BLJaliscoServerSource sharedSource];
-  v4 = [(BLJaliscoDAAPClient *)self _dsids];
-  v5 = [v3 fetchRequestForHiddenItemsWithAccountIDs:v4];
+  _dsids = [(BLJaliscoDAAPClient *)self _dsids];
+  v5 = [v3 fetchRequestForHiddenItemsWithAccountIDs:_dsids];
 
   return v5;
 }
@@ -783,37 +783,37 @@ LABEL_10:
 - (id)newManagedObjectContext
 {
   v2 = +[BLJaliscoServerSource sharedSource];
-  v3 = [v2 newManagedObjectContext];
+  newManagedObjectContext = [v2 newManagedObjectContext];
 
-  return v3;
+  return newManagedObjectContext;
 }
 
 - (id)persistentStoreCoordinator
 {
   v2 = +[BLJaliscoServerSource sharedSource];
-  v3 = [v2 persistentStoreCoordinator];
+  persistentStoreCoordinator = [v2 persistentStoreCoordinator];
 
-  return v3;
+  return persistentStoreCoordinator;
 }
 
 - (BOOL)resetPoliteTimers
 {
   v12 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
   v3 = BLJaliscoLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [v2 valueForKey:@"kJaliscoDAAPClientLastSuccessfulFullUpdateDateDictionary"];
+    v4 = [standardUserDefaults valueForKey:@"kJaliscoDAAPClientLastSuccessfulFullUpdateDateDictionary"];
     v10 = 138412290;
     v11 = v4;
     _os_log_impl(&dword_241D1F000, v3, OS_LOG_TYPE_DEFAULT, "Resetting polite timers ... clearing old dictionary:%@", &v10, 0xCu);
   }
 
-  v5 = [MEMORY[0x277CBEAC0] dictionary];
-  [v2 setObject:v5 forKey:@"kJaliscoDAAPClientLastSuccessfulFullUpdateDateDictionary"];
+  dictionary = [MEMORY[0x277CBEAC0] dictionary];
+  [standardUserDefaults setObject:dictionary forKey:@"kJaliscoDAAPClientLastSuccessfulFullUpdateDateDictionary"];
 
-  v6 = [v2 synchronize];
-  if ((v6 & 1) == 0)
+  synchronize = [standardUserDefaults synchronize];
+  if ((synchronize & 1) == 0)
   {
     v7 = BLJaliscoLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -824,19 +824,19 @@ LABEL_10:
   }
 
   v8 = *MEMORY[0x277D85DE8];
-  return v6;
+  return synchronize;
 }
 
-- (void)deleteItemsWithStoreIDs:(id)a3 completion:(id)a4
+- (void)deleteItemsWithStoreIDs:(id)ds completion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  completionCopy = completion;
   v8 = BLJaliscoLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v17 = v6;
+    v17 = dsCopy;
     _os_log_impl(&dword_241D1F000, v8, OS_LOG_TYPE_ERROR, "deleteItemsWithStoreIDs storeIDs:%@", buf, 0xCu);
   }
 
@@ -846,16 +846,16 @@ LABEL_10:
   v13[2] = sub_241D5C220;
   v13[3] = &unk_278D17C60;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v14 = dsCopy;
+  v15 = completionCopy;
+  v10 = completionCopy;
+  v11 = dsCopy;
   [(NSManagedObjectContext *)moc performBlockAndWait:v13];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_fetchItemsForNeedsImport:(BOOL)a3
+- (id)_fetchItemsForNeedsImport:(BOOL)import
 {
   v5 = objc_opt_new();
   moc = self->_moc;
@@ -863,7 +863,7 @@ LABEL_10:
   v11[1] = 3221225472;
   v11[2] = sub_241D5C664;
   v11[3] = &unk_278D17EB8;
-  v13 = a3;
+  importCopy = import;
   v11[4] = self;
   v7 = v5;
   v12 = v7;
@@ -882,14 +882,14 @@ LABEL_10:
   v10 = sub_241D57854;
   v11 = sub_241D57864;
   v12 = 0;
-  v3 = [(BLJaliscoDAAPClient *)self dsidQueue];
+  dsidQueue = [(BLJaliscoDAAPClient *)self dsidQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = sub_241D5C8DC;
   v6[3] = &unk_278D17BE8;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(dsidQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -905,14 +905,14 @@ LABEL_10:
   v10 = sub_241D57854;
   v11 = sub_241D57864;
   v12 = 0;
-  v3 = [(BLJaliscoDAAPClient *)self dsidQueue];
+  dsidQueue = [(BLJaliscoDAAPClient *)self dsidQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = sub_241D5CA60;
   v6[3] = &unk_278D175C0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(dsidQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -928,14 +928,14 @@ LABEL_10:
   v10 = sub_241D57854;
   v11 = sub_241D57864;
   v12 = 0;
-  v3 = [(BLJaliscoDAAPClient *)self dsidQueue];
+  dsidQueue = [(BLJaliscoDAAPClient *)self dsidQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = sub_241D5CC40;
   v6[3] = &unk_278D17BE8;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(dsidQueue, v6);
 
   v4 = [v8[5] copy];
   _Block_object_dispose(&v7, 8);
@@ -951,14 +951,14 @@ LABEL_10:
   v10 = sub_241D57854;
   v11 = sub_241D57864;
   v12 = 0;
-  v3 = [(BLJaliscoDAAPClient *)self dsidQueue];
+  dsidQueue = [(BLJaliscoDAAPClient *)self dsidQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = sub_241D5CE3C;
   v6[3] = &unk_278D17BE8;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(dsidQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -966,39 +966,39 @@ LABEL_10:
   return v4;
 }
 
-- (id)_fetchRequestForNotInStoreAccountIDs:(id)a3
+- (id)_fetchRequestForNotInStoreAccountIDs:(id)ds
 {
-  v3 = a3;
+  dsCopy = ds;
   v4 = +[BLJaliscoServerSource sharedSource];
-  v5 = [v4 fetchRequestForNotInStoreAccountIDs:v3];
+  v5 = [v4 fetchRequestForNotInStoreAccountIDs:dsCopy];
 
   return v5;
 }
 
-- (void)_processFamilyCircleAdded:(id)a3 removed:(id)a4 unchanged:(id)a5 completion:(id)a6
+- (void)_processFamilyCircleAdded:(id)added removed:(id)removed unchanged:(id)unchanged completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  addedCopy = added;
+  removedCopy = removed;
+  unchangedCopy = unchanged;
+  completionCopy = completion;
   dsidQueue = self->_dsidQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_241D5D06C;
   block[3] = &unk_278D17F30;
-  v20 = v10;
-  v21 = v12;
-  v22 = self;
-  v23 = v11;
-  v24 = v13;
-  v15 = v13;
-  v16 = v11;
-  v17 = v12;
-  v18 = v10;
+  v20 = addedCopy;
+  v21 = unchangedCopy;
+  selfCopy = self;
+  v23 = removedCopy;
+  v24 = completionCopy;
+  v15 = completionCopy;
+  v16 = removedCopy;
+  v17 = unchangedCopy;
+  v18 = addedCopy;
   dispatch_async(dsidQueue, block);
 }
 
-- (void)_sendCompletionHandlersWithSuccess:(BOOL)a3 generation:(unint64_t)a4
+- (void)_sendCompletionHandlersWithSuccess:(BOOL)success generation:(unint64_t)generation
 {
   serverWorkerQueue = self->_serverWorkerQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -1006,21 +1006,21 @@ LABEL_10:
   block[2] = sub_241D5D9EC;
   block[3] = &unk_278D17F80;
   block[4] = self;
-  block[5] = a4;
-  v6 = a3;
+  block[5] = generation;
+  successCopy = success;
   dispatch_async(serverWorkerQueue, block);
 }
 
-- (void)_resetPurchaseDAAPServersWithQueue:(id)a3
+- (void)_resetPurchaseDAAPServersWithQueue:(id)queue
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(BLJaliscoDAAPClient *)self _allPurchaseDAAPServers];
+  queueCopy = queue;
+  _allPurchaseDAAPServers = [(BLJaliscoDAAPClient *)self _allPurchaseDAAPServers];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v6 = [_allPurchaseDAAPServers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1032,14 +1032,14 @@ LABEL_10:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_allPurchaseDAAPServers);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) resetWithQueue:v4];
+        [*(*(&v11 + 1) + 8 * v9++) resetWithQueue:queueCopy];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [_allPurchaseDAAPServers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -1051,21 +1051,21 @@ LABEL_10:
 + (BOOL)workaround_18397698
 {
   v2 = +[BLJaliscoServerSource sharedSource];
-  v3 = [v2 workaround];
+  workaround = [v2 workaround];
 
-  return v3;
+  return workaround;
 }
 
 - (void)purchaseServerHandleClientExpired
 {
-  v3 = [(BLJaliscoDAAPClient *)self delegate];
-  [v3 clientDetectedPurchaseServerClientExpired:self];
+  delegate = [(BLJaliscoDAAPClient *)self delegate];
+  [delegate clientDetectedPurchaseServerClientExpired:self];
 }
 
-- (void)resetStaleJaliscoDatabaseWithCompletion:(id)a3
+- (void)resetStaleJaliscoDatabaseWithCompletion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[BLJaliscoServerSource sharedSource];
   v15 = 0;
   v5 = [v4 truncateDatabaseError:&v15];
@@ -1105,7 +1105,7 @@ LABEL_10:
   _os_log_impl(&dword_241D1F000, v10, v11, v9, buf, v12);
 LABEL_7:
 
-  v13 = MEMORY[0x245CFF560](v3);
+  v13 = MEMORY[0x245CFF560](completionCopy);
   if (v13)
   {
     (v13)[2](v13, v6);
@@ -1114,10 +1114,10 @@ LABEL_7:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)account:(unint64_t)a3 didChangeWithReason:(unint64_t)a4
+- (void)account:(unint64_t)account didChangeWithReason:(unint64_t)reason
 {
   v39 = *MEMORY[0x277D85DE8];
-  if (!a4)
+  if (!reason)
   {
     goto LABEL_20;
   }
@@ -1126,28 +1126,28 @@ LABEL_7:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     currentAccountNumber = self->_currentAccountNumber;
-    v8 = [MEMORY[0x277CF32F0] sharedProvider];
-    v9 = [v8 activeStoreAccount];
-    v10 = [v9 ams_DSID];
+    mEMORY[0x277CF32F0] = [MEMORY[0x277CF32F0] sharedProvider];
+    activeStoreAccount = [mEMORY[0x277CF32F0] activeStoreAccount];
+    ams_DSID = [activeStoreAccount ams_DSID];
     *buf = 134218499;
-    v34 = a4;
+    reasonCopy = reason;
     v35 = 2113;
     v36 = currentAccountNumber;
     v37 = 2113;
-    v38 = v10;
+    v38 = ams_DSID;
     _os_log_impl(&dword_241D1F000, v6, OS_LOG_TYPE_DEFAULT, "Account Changed. Resetting and refreshing... with reason %lu. Updating accountNumber from old:%{private}@ to new:%{private}@", buf, 0x20u);
   }
 
-  v11 = [MEMORY[0x277CF32F0] sharedProvider];
-  v12 = [v11 activeStoreAccount];
-  v13 = [v12 ams_DSID];
+  mEMORY[0x277CF32F0]2 = [MEMORY[0x277CF32F0] sharedProvider];
+  activeStoreAccount2 = [mEMORY[0x277CF32F0]2 activeStoreAccount];
+  ams_DSID2 = [activeStoreAccount2 ams_DSID];
   v14 = self->_currentAccountNumber;
-  self->_currentAccountNumber = v13;
+  self->_currentAccountNumber = ams_DSID2;
 
-  v15 = a4 - 101;
-  if (a4 - 101 > 1)
+  v15 = reason - 101;
+  if (reason - 101 > 1)
   {
-    if (a4 != 100 || !self->_currentAccountNumber)
+    if (reason != 100 || !self->_currentAccountNumber)
     {
       goto LABEL_12;
     }
@@ -1157,7 +1157,7 @@ LABEL_7:
     v24 = 3221225472;
     v25 = sub_241D5E2AC;
     v26 = &unk_278D173A8;
-    v27 = self;
+    selfCopy = self;
     v18 = &v23;
   }
 
@@ -1175,14 +1175,14 @@ LABEL_7:
     v29 = 3221225472;
     v30 = sub_241D5E268;
     v31 = &unk_278D173A8;
-    v32 = self;
+    selfCopy2 = self;
     v18 = &v28;
   }
 
   dispatch_sync(dsidQueue, v18);
 LABEL_12:
-  [(BLJaliscoDAAPClient *)self _resetPurchaseDAAPServersWithQueue:self->_serverWorkerQueue, v23, v24, v25, v26, v27, v28, v29, v30, v31, v32];
-  v19 = [(BLJaliscoDAAPClient *)self delegate];
+  [(BLJaliscoDAAPClient *)self _resetPurchaseDAAPServersWithQueue:self->_serverWorkerQueue, v23, v24, v25, v26, selfCopy, v28, v29, v30, v31, selfCopy2];
+  delegate = [(BLJaliscoDAAPClient *)self delegate];
   if (v15 > 1)
   {
     v21 = BLJaliscoLog();
@@ -1192,7 +1192,7 @@ LABEL_12:
       _os_log_impl(&dword_241D1F000, v21, OS_LOG_TYPE_DEFAULT, "Triggering clientDetectedStoreChange", buf, 2u);
     }
 
-    [v19 clientDetectedStoreChange:self];
+    [delegate clientDetectedStoreChange:self];
   }
 
   else
@@ -1205,7 +1205,7 @@ LABEL_12:
       _os_log_impl(&dword_241D1F000, v20, OS_LOG_TYPE_DEFAULT, "Triggering clientDetectedStoreChangeAndAccountChange", buf, 2u);
     }
 
-    [v19 clientDetectedStoreChangeAndAccountChange:self];
+    [delegate clientDetectedStoreChangeAndAccountChange:self];
   }
 
 LABEL_20:

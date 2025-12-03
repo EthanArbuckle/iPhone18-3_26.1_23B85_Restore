@@ -1,14 +1,14 @@
 @interface CCMutableSetChange
 - (BOOL)containsChangesAfterDeduplication;
-- (BOOL)containsContentHash:(id)a3;
-- (CCMutableSetChange)initWithSharedItem:(id)a3 changeType:(unsigned __int16)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)appendAddedDevices:(id)a3;
-- (void)appendAddedLocalInstances:(id)a3;
-- (void)appendAllDevices:(id)a3;
-- (void)appendAllLocalInstances:(id)a3;
-- (void)appendRemovedDevices:(id)a3;
-- (void)appendRemovedLocalInstances:(id)a3;
+- (BOOL)containsContentHash:(id)hash;
+- (CCMutableSetChange)initWithSharedItem:(id)item changeType:(unsigned __int16)type;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)appendAddedDevices:(id)devices;
+- (void)appendAddedLocalInstances:(id)instances;
+- (void)appendAllDevices:(id)devices;
+- (void)appendAllLocalInstances:(id)instances;
+- (void)appendRemovedDevices:(id)devices;
+- (void)appendRemovedLocalInstances:(id)instances;
 @end
 
 @implementation CCMutableSetChange
@@ -32,156 +32,156 @@
   return [(NSMutableSet *)self->_addedDevices count]|| [(NSMutableSet *)self->_removedDevices count]|| [(NSMutableSet *)self->_addedLocalInstances count]|| [(NSMutableSet *)self->_removedLocalInstances count]!= 0;
 }
 
-- (CCMutableSetChange)initWithSharedItem:(id)a3 changeType:(unsigned __int16)a4
+- (CCMutableSetChange)initWithSharedItem:(id)item changeType:(unsigned __int16)type
 {
-  v7 = a3;
+  itemCopy = item;
   v11.receiver = self;
   v11.super_class = CCMutableSetChange;
   v8 = [(CCMutableSetChange *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_sharedItem, a3);
-    v9->_sharedItemChangeType = a4;
+    objc_storeStrong(&v8->_sharedItem, item);
+    v9->_sharedItemChangeType = type;
   }
 
   return v9;
 }
 
-- (void)appendAllDevices:(id)a3
+- (void)appendAllDevices:(id)devices
 {
-  v4 = a3;
+  devicesCopy = devices;
   allDevices = self->_allDevices;
-  v8 = v4;
+  v8 = devicesCopy;
   if (!allDevices)
   {
     v6 = objc_opt_new();
     v7 = self->_allDevices;
     self->_allDevices = v6;
 
-    v4 = v8;
+    devicesCopy = v8;
     allDevices = self->_allDevices;
   }
 
-  [(NSMutableSet *)allDevices addObject:v4];
+  [(NSMutableSet *)allDevices addObject:devicesCopy];
 }
 
-- (void)appendAddedDevices:(id)a3
+- (void)appendAddedDevices:(id)devices
 {
-  v4 = a3;
+  devicesCopy = devices;
   addedDevices = self->_addedDevices;
-  v8 = v4;
+  v8 = devicesCopy;
   if (!addedDevices)
   {
     v6 = objc_opt_new();
     v7 = self->_addedDevices;
     self->_addedDevices = v6;
 
-    v4 = v8;
+    devicesCopy = v8;
     addedDevices = self->_addedDevices;
   }
 
-  [(NSMutableSet *)addedDevices addObject:v4];
+  [(NSMutableSet *)addedDevices addObject:devicesCopy];
 }
 
-- (void)appendRemovedDevices:(id)a3
+- (void)appendRemovedDevices:(id)devices
 {
-  v4 = a3;
+  devicesCopy = devices;
   removedDevices = self->_removedDevices;
-  v8 = v4;
+  v8 = devicesCopy;
   if (!removedDevices)
   {
     v6 = objc_opt_new();
     v7 = self->_removedDevices;
     self->_removedDevices = v6;
 
-    v4 = v8;
+    devicesCopy = v8;
     removedDevices = self->_removedDevices;
   }
 
-  [(NSMutableSet *)removedDevices addObject:v4];
+  [(NSMutableSet *)removedDevices addObject:devicesCopy];
 }
 
-- (void)appendAllLocalInstances:(id)a3
+- (void)appendAllLocalInstances:(id)instances
 {
-  v4 = a3;
+  instancesCopy = instances;
   allLocalInstances = self->_allLocalInstances;
-  v8 = v4;
+  v8 = instancesCopy;
   if (!allLocalInstances)
   {
     v6 = objc_opt_new();
     v7 = self->_allLocalInstances;
     self->_allLocalInstances = v6;
 
-    v4 = v8;
+    instancesCopy = v8;
     allLocalInstances = self->_allLocalInstances;
   }
 
-  [(NSMutableSet *)allLocalInstances addObject:v4];
+  [(NSMutableSet *)allLocalInstances addObject:instancesCopy];
 }
 
-- (void)appendAddedLocalInstances:(id)a3
+- (void)appendAddedLocalInstances:(id)instances
 {
-  v4 = a3;
+  instancesCopy = instances;
   addedLocalInstances = self->_addedLocalInstances;
-  v8 = v4;
+  v8 = instancesCopy;
   if (!addedLocalInstances)
   {
     v6 = objc_opt_new();
     v7 = self->_addedLocalInstances;
     self->_addedLocalInstances = v6;
 
-    v4 = v8;
+    instancesCopy = v8;
     addedLocalInstances = self->_addedLocalInstances;
   }
 
-  [(NSMutableSet *)addedLocalInstances addObject:v4];
+  [(NSMutableSet *)addedLocalInstances addObject:instancesCopy];
 }
 
-- (void)appendRemovedLocalInstances:(id)a3
+- (void)appendRemovedLocalInstances:(id)instances
 {
-  v4 = a3;
+  instancesCopy = instances;
   removedLocalInstances = self->_removedLocalInstances;
-  v8 = v4;
+  v8 = instancesCopy;
   if (!removedLocalInstances)
   {
     v6 = objc_opt_new();
     v7 = self->_removedLocalInstances;
     self->_removedLocalInstances = v6;
 
-    v4 = v8;
+    instancesCopy = v8;
     removedLocalInstances = self->_removedLocalInstances;
   }
 
-  [(NSMutableSet *)removedLocalInstances addObject:v4];
+  [(NSMutableSet *)removedLocalInstances addObject:instancesCopy];
 }
 
-- (BOOL)containsContentHash:(id)a3
+- (BOOL)containsContentHash:(id)hash
 {
-  if (!a3)
+  if (!hash)
   {
     return 0;
   }
 
   sharedItem = self->_sharedItem;
-  v4 = a3;
-  v5 = [(CCSharedItem *)sharedItem sharedIdentifier];
-  v6 = [v5 isEqualToNumber:v4];
+  hashCopy = hash;
+  sharedIdentifier = [(CCSharedItem *)sharedItem sharedIdentifier];
+  v6 = [sharedIdentifier isEqualToNumber:hashCopy];
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v29 = [CCSetChange alloc];
   sharedItemChangeType = self->_sharedItemChangeType;
   sharedItem = self->_sharedItem;
-  v4 = [(NSMutableSet *)self->_allDevices allObjects];
-  v5 = v4;
+  allObjects = [(NSMutableSet *)self->_allDevices allObjects];
+  v5 = allObjects;
   v6 = MEMORY[0x1E695E0F0];
-  if (v4)
+  if (allObjects)
   {
-    v7 = v4;
+    v7 = allObjects;
   }
 
   else
@@ -190,11 +190,11 @@
   }
 
   v26 = v7;
-  v8 = [(NSMutableSet *)self->_addedDevices allObjects];
-  v9 = v8;
-  if (v8)
+  allObjects2 = [(NSMutableSet *)self->_addedDevices allObjects];
+  v9 = allObjects2;
+  if (allObjects2)
   {
-    v10 = v8;
+    v10 = allObjects2;
   }
 
   else
@@ -203,11 +203,11 @@
   }
 
   v25 = v10;
-  v11 = [(NSMutableSet *)self->_removedDevices allObjects];
-  v12 = v11;
-  if (v11)
+  allObjects3 = [(NSMutableSet *)self->_removedDevices allObjects];
+  v12 = allObjects3;
+  if (allObjects3)
   {
-    v13 = v11;
+    v13 = allObjects3;
   }
 
   else
@@ -215,11 +215,11 @@
     v13 = v6;
   }
 
-  v14 = [(NSMutableSet *)self->_allLocalInstances allObjects];
-  v15 = v14;
-  if (v14)
+  allObjects4 = [(NSMutableSet *)self->_allLocalInstances allObjects];
+  v15 = allObjects4;
+  if (allObjects4)
   {
-    v16 = v14;
+    v16 = allObjects4;
   }
 
   else
@@ -227,11 +227,11 @@
     v16 = v6;
   }
 
-  v17 = [(NSMutableSet *)self->_addedLocalInstances allObjects];
-  v18 = v17;
-  if (v17)
+  allObjects5 = [(NSMutableSet *)self->_addedLocalInstances allObjects];
+  v18 = allObjects5;
+  if (allObjects5)
   {
-    v19 = v17;
+    v19 = allObjects5;
   }
 
   else
@@ -239,11 +239,11 @@
     v19 = v6;
   }
 
-  v20 = [(NSMutableSet *)self->_removedLocalInstances allObjects];
-  v21 = v20;
-  if (v20)
+  allObjects6 = [(NSMutableSet *)self->_removedLocalInstances allObjects];
+  v21 = allObjects6;
+  if (allObjects6)
   {
-    v22 = v20;
+    v22 = allObjects6;
   }
 
   else

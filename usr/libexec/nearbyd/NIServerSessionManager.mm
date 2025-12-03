@@ -1,30 +1,30 @@
 @interface NIServerSessionManager
-- (BOOL)_registerObserverSessionWithConnection:(id)a3;
-- (BOOL)_registerSessionWithConnection:(id)a3;
-- (BOOL)isSessionAllowedToActivate:(id)a3;
-- (BOOL)registerSessionWithConnection:(id)a3 observerSession:(BOOL)a4;
-- (NIServerSessionManager)initWithQueue:(id)a3;
+- (BOOL)_registerObserverSessionWithConnection:(id)connection;
+- (BOOL)_registerSessionWithConnection:(id)connection;
+- (BOOL)isSessionAllowedToActivate:(id)activate;
+- (BOOL)registerSessionWithConnection:(id)connection observerSession:(BOOL)session;
+- (NIServerSessionManager)initWithQueue:(id)queue;
 - (id)allSessionsPrintableState;
-- (void)_handleObserverSessionXPCDisconnection:(id)a3;
-- (void)_handleXPCDisconnection:(id)a3;
-- (void)_startObserving:(id)a3;
-- (void)_stopObserving:(id)a3;
+- (void)_handleObserverSessionXPCDisconnection:(id)disconnection;
+- (void)_handleXPCDisconnection:(id)disconnection;
+- (void)_startObserving:(id)observing;
+- (void)_stopObserving:(id)observing;
 - (void)enableInternalObserverSession;
-- (void)registerObserversForSession:(id)a3;
+- (void)registerObserversForSession:(id)session;
 @end
 
 @implementation NIServerSessionManager
 
-- (NIServerSessionManager)initWithQueue:(id)a3
+- (NIServerSessionManager)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v20.receiver = self;
   v20.super_class = NIServerSessionManager;
   v6 = [(NIServerSessionManager *)&v20 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     v7->_sessionsLock._os_unfair_lock_opaque = 0;
     v8 = objc_opt_new();
     sessions = v7->_sessions;
@@ -72,18 +72,18 @@
   os_unfair_lock_unlock(&self->_sessionsLock);
 }
 
-- (BOOL)registerSessionWithConnection:(id)a3 observerSession:(BOOL)a4
+- (BOOL)registerSessionWithConnection:(id)connection observerSession:(BOOL)session
 {
-  v6 = a3;
+  connectionCopy = connection;
   os_unfair_lock_lock(&self->_sessionsLock);
-  if (a4)
+  if (session)
   {
-    v7 = [(NIServerSessionManager *)self _registerObserverSessionWithConnection:v6];
+    v7 = [(NIServerSessionManager *)self _registerObserverSessionWithConnection:connectionCopy];
   }
 
   else
   {
-    v7 = [(NIServerSessionManager *)self _registerSessionWithConnection:v6];
+    v7 = [(NIServerSessionManager *)self _registerSessionWithConnection:connectionCopy];
   }
 
   v8 = v7;
@@ -92,22 +92,22 @@
   return v8;
 }
 
-- (BOOL)_registerSessionWithConnection:(id)a3
+- (BOOL)_registerSessionWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   os_unfair_lock_assert_owner(&self->_sessionsLock);
-  v5 = [v4 processIdentifier];
+  processIdentifier = [connectionCopy processIdentifier];
   v6 = sub_10036AE64();
-  [v4 setRemoteObjectInterface:v6];
+  [connectionCopy setRemoteObjectInterface:v6];
 
   v7 = sub_100369ECC();
-  [v4 setExportedInterface:v7];
+  [connectionCopy setExportedInterface:v7];
 
   v50 = 0u;
   v51 = 0u;
-  if (v4)
+  if (connectionCopy)
   {
-    [v4 auditToken];
+    [connectionCopy auditToken];
   }
 
   v8 = xpc_copy_code_signing_identity_for_token();
@@ -121,21 +121,21 @@
     v47 = sub_1001DC7A4;
     v48 = sub_1001DC7B4;
     v49 = 0;
-    v9 = [v4 _queue];
+    _queue = [connectionCopy _queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3321888768;
     block[2] = sub_1001DC7BC;
     block[3] = &unk_10099CF30;
     v41 = &v44;
-    v10 = v4;
+    v10 = connectionCopy;
     v39 = v10;
-    v43 = v5;
+    v43 = processIdentifier;
     v25 = v27;
     v42 = v25;
-    v40 = self;
-    dispatch_sync(v9, block);
+    selfCopy = self;
+    dispatch_sync(_queue, block);
 
-    v11 = [NSNumber numberWithInt:v5];
+    v11 = [NSNumber numberWithInt:processIdentifier];
     v12 = [(NSMutableDictionary *)self->_sessions objectForKeyedSubscript:v11];
     v13 = v12 == 0;
 
@@ -156,7 +156,7 @@
       *buf = 138478595;
       v53 = @"Adding session to ";
       v54 = 1025;
-      v55 = v5;
+      v55 = processIdentifier;
       v56 = 2113;
       v57 = @"pid dict. Current count:";
       v58 = 2048;
@@ -167,16 +167,16 @@
     v19 = [(NSMutableDictionary *)self->_processMonitors objectForKey:v11];
     if (!v19)
     {
-      v19 = [[PRAppStateMonitor alloc] initWithPID:v5];
+      v19 = [[PRAppStateMonitor alloc] initWithPID:processIdentifier];
       processMonitors = self->_processMonitors;
-      v21 = [NSNumber numberWithInt:v5];
+      v21 = [NSNumber numberWithInt:processIdentifier];
       [(NSMutableDictionary *)processMonitors setObject:v19 forKey:v21];
 
       [(PRAppStateMonitor *)v19 addObserver:self];
     }
 
     objc_initWeak(buf, self);
-    v22 = [v10 _queue];
+    _queue2 = [v10 _queue];
     v34[0] = _NSConcreteStackBlock;
     v34[1] = 3221225472;
     v34[2] = sub_1001DC8A0;
@@ -184,15 +184,15 @@
     v37 = &v44;
     v23 = v19;
     v35 = v23;
-    v36 = self;
-    dispatch_sync(v22, v34);
+    selfCopy2 = self;
+    dispatch_sync(_queue2, v34);
 
     [v10 setExportedObject:v45[5]];
     v31[0] = _NSConcreteStackBlock;
     v31[1] = 3221225472;
     v31[2] = sub_1001DC924;
     v31[3] = &unk_10099CF90;
-    v33 = v5;
+    v33 = processIdentifier;
     objc_copyWeak(&v32, buf);
     v31[4] = &v44;
     [v10 setInterruptionHandler:v31];
@@ -200,7 +200,7 @@
     v28[1] = 3221225472;
     v28[2] = sub_1001DCA04;
     v28[3] = &unk_10099CF90;
-    v30 = v5;
+    v30 = processIdentifier;
     objc_copyWeak(&v29, buf);
     v28[4] = &v44;
     [v10 setInvalidationHandler:v28];
@@ -220,37 +220,37 @@
   return v8 != 0;
 }
 
-- (BOOL)_registerObserverSessionWithConnection:(id)a3
+- (BOOL)_registerObserverSessionWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   os_unfair_lock_assert_owner(&self->_sessionsLock);
-  v5 = [v4 processIdentifier];
+  processIdentifier = [connectionCopy processIdentifier];
   v6 = sub_10036AE64();
-  [v4 setRemoteObjectInterface:v6];
+  [connectionCopy setRemoteObjectInterface:v6];
 
   v7 = sub_100369ECC();
-  [v4 setExportedInterface:v7];
+  [connectionCopy setExportedInterface:v7];
 
   v34 = 0u;
   v35 = 0u;
-  if (v4)
+  if (connectionCopy)
   {
-    [v4 auditToken];
+    [connectionCopy auditToken];
   }
 
   v8 = xpc_copy_code_signing_identity_for_token();
   if (v8)
   {
     v32 = [NSString stringWithCString:v8 encoding:4];
-    v33 = v5;
+    v33 = processIdentifier;
     free(v8);
-    v9 = [[NIServerObservationSession alloc] initWithClientInfo:&v32 connection:v4];
-    [v4 setExportedObject:v9];
+    v9 = [[NIServerObservationSession alloc] initWithClientInfo:&v32 connection:connectionCopy];
+    [connectionCopy setExportedObject:v9];
     v10 = v9 != 0;
     if (v9)
     {
       [(NIServerSessionManager *)self _startObserving:v9];
-      v23 = [NSNumber numberWithInt:v5];
+      v23 = [NSNumber numberWithInt:processIdentifier];
       v11 = [(NSMutableDictionary *)self->_observerSessions objectForKeyedSubscript:?];
       v12 = v11 == 0;
 
@@ -271,7 +271,7 @@
         *buf = 138478595;
         v37 = @"Adding observer session to ";
         v38 = 1025;
-        v39 = v5;
+        v39 = processIdentifier;
         v40 = 2113;
         v41 = @"pid dict. Current count:";
         v42 = 2048;
@@ -282,9 +282,9 @@
       v18 = [(NSMutableDictionary *)self->_processMonitors objectForKey:v23];
       if (!v18)
       {
-        v18 = [[PRAppStateMonitor alloc] initWithPID:v5];
+        v18 = [[PRAppStateMonitor alloc] initWithPID:processIdentifier];
         processMonitors = self->_processMonitors;
-        v20 = [NSNumber numberWithInt:v5];
+        v20 = [NSNumber numberWithInt:processIdentifier];
         [(NSMutableDictionary *)processMonitors setObject:v18 forKey:v20];
 
         [(PRAppStateMonitor *)v18 addObserver:self];
@@ -295,20 +295,20 @@
       v28[1] = 3221225472;
       v28[2] = sub_1001DD04C;
       v28[3] = &unk_10098B138;
-      v31 = v5;
+      v31 = processIdentifier;
       objc_copyWeak(&v30, buf);
       v21 = v9;
       v29 = v21;
-      [v4 setInterruptionHandler:v28];
+      [connectionCopy setInterruptionHandler:v28];
       v24[0] = _NSConcreteStackBlock;
       v24[1] = 3221225472;
       v24[2] = sub_1001DD124;
       v24[3] = &unk_10098B138;
-      v27 = v5;
+      v27 = processIdentifier;
       objc_copyWeak(&v26, buf);
       v25 = v21;
-      [v4 setInvalidationHandler:v24];
-      [v4 resume];
+      [connectionCopy setInvalidationHandler:v24];
+      [connectionCopy resume];
 
       objc_destroyWeak(&v26);
       objc_destroyWeak(&v30);
@@ -334,11 +334,11 @@
   return v10;
 }
 
-- (void)_handleXPCDisconnection:(id)a3
+- (void)_handleXPCDisconnection:(id)disconnection
 {
-  v5 = a3;
+  disconnectionCopy = disconnection;
   os_unfair_lock_lock(&self->_sessionsLock);
-  if (!v5)
+  if (!disconnectionCopy)
   {
     v18 = +[NSAssertionHandler currentHandler];
     [v18 handleFailureInMethod:a2 object:self file:@"NIServerSessionManager.mm" lineNumber:221 description:{@"Invalid parameter not satisfying: %@", @"session"}];
@@ -348,16 +348,16 @@
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138477827;
-    v20 = v5;
+    v20 = disconnectionCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "#nisessmgr,disconnection for session %{private}@.", buf, 0xCu);
   }
 
-  v7 = [v5 pid];
-  [v5 invalidate];
+  v7 = [disconnectionCopy pid];
+  [disconnectionCopy invalidate];
   sessions = self->_sessions;
   v9 = [NSNumber numberWithInt:v7];
   v10 = [(NSMutableDictionary *)sessions objectForKeyedSubscript:v9];
-  [v10 removeObject:v5];
+  [v10 removeObject:disconnectionCopy];
 
   v11 = self->_sessions;
   v12 = [NSNumber numberWithInt:v7];
@@ -381,11 +381,11 @@
   os_unfair_lock_unlock(&self->_sessionsLock);
 }
 
-- (void)_handleObserverSessionXPCDisconnection:(id)a3
+- (void)_handleObserverSessionXPCDisconnection:(id)disconnection
 {
-  v5 = a3;
+  disconnectionCopy = disconnection;
   os_unfair_lock_lock(&self->_sessionsLock);
-  if (!v5)
+  if (!disconnectionCopy)
   {
     v18 = +[NSAssertionHandler currentHandler];
     [v18 handleFailureInMethod:a2 object:self file:@"NIServerSessionManager.mm" lineNumber:238 description:{@"Invalid parameter not satisfying: %@", @"observationSession"}];
@@ -395,17 +395,17 @@
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138477827;
-    v20 = v5;
+    v20 = disconnectionCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "#nisessmgr,disconnection for observer session %{private}@.", buf, 0xCu);
   }
 
-  [(NIServerSessionManager *)self _stopObserving:v5];
-  v7 = [v5 pid];
-  [v5 invalidate];
+  [(NIServerSessionManager *)self _stopObserving:disconnectionCopy];
+  v7 = [disconnectionCopy pid];
+  [disconnectionCopy invalidate];
   observerSessions = self->_observerSessions;
   v9 = [NSNumber numberWithInt:v7];
   v10 = [(NSMutableDictionary *)observerSessions objectForKeyedSubscript:v9];
-  [v10 removeObject:v5];
+  [v10 removeObject:disconnectionCopy];
 
   v11 = self->_observerSessions;
   v12 = [NSNumber numberWithInt:v7];
@@ -429,13 +429,13 @@
   os_unfair_lock_unlock(&self->_sessionsLock);
 }
 
-- (BOOL)isSessionAllowedToActivate:(id)a3
+- (BOOL)isSessionAllowedToActivate:(id)activate
 {
-  v4 = a3;
+  activateCopy = activate;
   os_unfair_lock_lock(&self->_sessionsLock);
-  if (v4)
+  if (activateCopy)
   {
-    v5 = [v4 pid];
+    v5 = [activateCopy pid];
     v6 = [NSNumber numberWithInt:v5];
     v7 = [(NSMutableDictionary *)self->_sessions objectForKey:v6];
     v8 = [v7 count];
@@ -555,15 +555,15 @@
   return v20;
 }
 
-- (void)registerObserversForSession:(id)a3
+- (void)registerObserversForSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   os_unfair_lock_lock(&self->_sessionsLock);
   if (self->_recentlyObservedObjectsCache)
   {
     recentlyObservedObjectsCache = self->_recentlyObservedObjectsCache;
     v5 = [NSArray arrayWithObjects:&recentlyObservedObjectsCache count:1];
-    [v4 addObservers:v5];
+    [sessionCopy addObservers:v5];
   }
 
   observerSessions = self->_observerSessions;
@@ -571,38 +571,38 @@
   v8[1] = 3221225472;
   v8[2] = sub_1001DEB10;
   v8[3] = &unk_10099D080;
-  v7 = v4;
+  v7 = sessionCopy;
   v9 = v7;
   [(NSMutableDictionary *)observerSessions enumerateKeysAndObjectsUsingBlock:v8];
 
   os_unfair_lock_unlock(&self->_sessionsLock);
 }
 
-- (void)_startObserving:(id)a3
+- (void)_startObserving:(id)observing
 {
-  v4 = a3;
+  observingCopy = observing;
   os_unfair_lock_assert_owner(&self->_sessionsLock);
   sessions = self->_sessions;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001DEBDC;
   v7[3] = &unk_10099D080;
-  v8 = v4;
-  v6 = v4;
+  v8 = observingCopy;
+  v6 = observingCopy;
   [(NSMutableDictionary *)sessions enumerateKeysAndObjectsUsingBlock:v7];
 }
 
-- (void)_stopObserving:(id)a3
+- (void)_stopObserving:(id)observing
 {
-  v4 = a3;
+  observingCopy = observing;
   os_unfair_lock_assert_owner(&self->_sessionsLock);
   sessions = self->_sessions;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001DEE10;
   v7[3] = &unk_10099D080;
-  v8 = v4;
-  v6 = v4;
+  v8 = observingCopy;
+  v6 = observingCopy;
   [(NSMutableDictionary *)sessions enumerateKeysAndObjectsUsingBlock:v7];
 }
 

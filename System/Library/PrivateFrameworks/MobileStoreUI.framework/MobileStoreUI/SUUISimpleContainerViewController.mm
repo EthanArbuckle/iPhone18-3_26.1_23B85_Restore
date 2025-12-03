@@ -1,26 +1,26 @@
 @interface SUUISimpleContainerViewController
 - (void)loadView;
-- (void)setContentViewController:(id)a3;
-- (void)setPreferredContentSize:(CGSize)a3;
+- (void)setContentViewController:(id)controller;
+- (void)setPreferredContentSize:(CGSize)size;
 @end
 
 @implementation SUUISimpleContainerViewController
 
-- (void)setContentViewController:(id)a3
+- (void)setContentViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   contentViewController = self->_contentViewController;
-  v11 = v5;
-  if (contentViewController != v5)
+  v11 = controllerCopy;
+  if (contentViewController != controllerCopy)
   {
     if ([(UIViewController *)contentViewController isViewLoaded])
     {
-      v7 = [(UIViewController *)self->_contentViewController view];
-      [v7 removeFromSuperview];
+      view = [(UIViewController *)self->_contentViewController view];
+      [view removeFromSuperview];
     }
 
     [(UIViewController *)self->_contentViewController removeFromParentViewController];
-    objc_storeStrong(&self->_contentViewController, a3);
+    objc_storeStrong(&self->_contentViewController, controller);
     if (self->_contentViewController)
     {
       [(SUUISimpleContainerViewController *)self addChildViewController:?];
@@ -29,12 +29,12 @@
       [(UIViewController *)v8 setPreferredContentSize:?];
       if ([(SUUISimpleContainerViewController *)self isViewLoaded])
       {
-        v9 = [(SUUISimpleContainerViewController *)self view];
-        v10 = [(UIViewController *)self->_contentViewController view];
-        [v10 setAutoresizingMask:18];
-        [v9 bounds];
-        [v10 setFrame:?];
-        [v9 addSubview:v10];
+        view2 = [(SUUISimpleContainerViewController *)self view];
+        view3 = [(UIViewController *)self->_contentViewController view];
+        [view3 setAutoresizingMask:18];
+        [view2 bounds];
+        [view3 setFrame:?];
+        [view2 addSubview:view3];
       }
     }
   }
@@ -47,19 +47,19 @@
   [(SUUISimpleContainerViewController *)&v5 loadView];
   if (self->_contentViewController)
   {
-    v3 = [(SUUISimpleContainerViewController *)self view];
-    v4 = [(UIViewController *)self->_contentViewController view];
-    [v4 setAutoresizingMask:18];
-    [v3 bounds];
-    [v4 setFrame:?];
-    [v3 addSubview:v4];
+    view = [(SUUISimpleContainerViewController *)self view];
+    view2 = [(UIViewController *)self->_contentViewController view];
+    [view2 setAutoresizingMask:18];
+    [view bounds];
+    [view2 setFrame:?];
+    [view addSubview:view2];
   }
 }
 
-- (void)setPreferredContentSize:(CGSize)a3
+- (void)setPreferredContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6.receiver = self;
   v6.super_class = SUUISimpleContainerViewController;
   [(SUUISimpleContainerViewController *)&v6 setPreferredContentSize:?];

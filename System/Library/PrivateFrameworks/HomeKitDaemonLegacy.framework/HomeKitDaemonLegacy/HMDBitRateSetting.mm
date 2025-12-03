@@ -1,34 +1,34 @@
 @interface HMDBitRateSetting
-+ (id)arrayWithSettings:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (HMDBitRateSetting)initWithBitRateSetting:(unint64_t)a3;
-- (HMDBitRateSetting)initWithCoder:(id)a3;
-- (HMDBitRateSetting)initWithTLVData:(id)a3;
++ (id)arrayWithSettings:(id)settings;
+- (BOOL)isEqual:(id)equal;
+- (HMDBitRateSetting)initWithBitRateSetting:(unint64_t)setting;
+- (HMDBitRateSetting)initWithCoder:(id)coder;
+- (HMDBitRateSetting)initWithTLVData:(id)data;
 - (id)description;
-- (void)description:(id)a3 indent:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)description:(id)description indent:(id)indent;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDBitRateSetting
 
-- (HMDBitRateSetting)initWithBitRateSetting:(unint64_t)a3
+- (HMDBitRateSetting)initWithBitRateSetting:(unint64_t)setting
 {
   v5.receiver = self;
   v5.super_class = HMDBitRateSetting;
   result = [(HMDBitRateSetting *)&v5 init];
   if (result)
   {
-    result->_bitrateSetting = a3;
+    result->_bitrateSetting = setting;
   }
 
   return result;
 }
 
-- (HMDBitRateSetting)initWithTLVData:(id)a3
+- (HMDBitRateSetting)initWithTLVData:(id)data
 {
   v6.receiver = self;
   v6.super_class = HMDBitRateSetting;
-  v3 = [(HAPNumberParser *)&v6 initWithTLVData:a3];
+  v3 = [(HAPNumberParser *)&v6 initWithTLVData:data];
   v4 = v3;
   if (v3)
   {
@@ -38,12 +38,12 @@
   return v4;
 }
 
-- (void)description:(id)a3 indent:(id)a4
+- (void)description:(id)description indent:(id)indent
 {
-  v6 = a4;
-  v7 = a3;
+  indentCopy = indent;
+  descriptionCopy = description;
   v8 = HMDBitRateSettingTypeAsString([(HMDBitRateSetting *)self bitrateSetting]);
-  [v7 appendFormat:@"\n%@ bitrateSetting = %@", v6, v8];
+  [descriptionCopy appendFormat:@"\n%@ bitrateSetting = %@", indentCopy, v8];
 }
 
 - (id)description
@@ -55,10 +55,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -68,8 +68,8 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(HMDBitRateSetting *)self bitrateSetting];
-      v6 = v5 == [(HMDBitRateSetting *)v4 bitrateSetting];
+      bitrateSetting = [(HMDBitRateSetting *)self bitrateSetting];
+      v6 = bitrateSetting == [(HMDBitRateSetting *)equalCopy bitrateSetting];
     }
 
     else
@@ -81,39 +81,39 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMDBitRateSetting *)self bitrateSetting];
+  coderCopy = coder;
+  bitrateSetting = [(HMDBitRateSetting *)self bitrateSetting];
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s_%s", "HMDBitRateSetting", "bitrateSetting"];
-  [v4 encodeInt32:v5 forKey:v6];
+  [coderCopy encodeInt32:bitrateSetting forKey:v6];
 }
 
-- (HMDBitRateSetting)initWithCoder:(id)a3
+- (HMDBitRateSetting)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = HMDBitRateSetting;
   v5 = [(HMDBitRateSetting *)&v8 init];
   if (v5)
   {
     v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s_%s", "HMDBitRateSetting", "bitrateSetting"];
-    v5->_bitrateSetting = [v4 decodeInt32ForKey:v6];
+    v5->_bitrateSetting = [coderCopy decodeInt32ForKey:v6];
   }
 
   return v5;
 }
 
-+ (id)arrayWithSettings:(id)a3
++ (id)arrayWithSettings:(id)settings
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  settingsCopy = settings;
+  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(settingsCopy, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = settingsCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {

@@ -1,21 +1,21 @@
 @interface ICIAMApplicationMessageSyncResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addSyncCommands:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addSyncCommands:(id)commands;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ICIAMApplicationMessageSyncResponse
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
     [(ICIAMApplicationMessageSyncResponse *)self setBundleID:?];
   }
@@ -24,7 +24,7 @@
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = *(v4 + 2);
+  v5 = *(fromCopy + 2);
   v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
@@ -49,13 +49,13 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((bundleID = self->_bundleID, !(bundleID | v4[1])) || -[NSString isEqual:](bundleID, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((bundleID = self->_bundleID, !(bundleID | equalCopy[1])) || -[NSString isEqual:](bundleID, "isEqual:")))
   {
     syncCommands = self->_syncCommands;
-    if (syncCommands | v4[2])
+    if (syncCommands | equalCopy[2])
     {
       v7 = [(NSMutableArray *)syncCommands isEqual:?];
     }
@@ -74,11 +74,11 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_bundleID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_bundleID copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
@@ -102,7 +102,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v15 + 1) + 8 * v12) copyWithZone:{a3, v15}];
+        v13 = [*(*(&v15 + 1) + 8 * v12) copyWithZone:{zone, v15}];
         [v5 addSyncCommands:v13];
 
         ++v12;
@@ -118,34 +118,34 @@
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_bundleID)
   {
-    [v8 setBundleID:?];
+    [toCopy setBundleID:?];
   }
 
   if ([(ICIAMApplicationMessageSyncResponse *)self syncCommandsCount])
   {
-    [v8 clearSyncCommands];
-    v4 = [(ICIAMApplicationMessageSyncResponse *)self syncCommandsCount];
-    if (v4)
+    [toCopy clearSyncCommands];
+    syncCommandsCount = [(ICIAMApplicationMessageSyncResponse *)self syncCommandsCount];
+    if (syncCommandsCount)
     {
-      v5 = v4;
+      v5 = syncCommandsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(ICIAMApplicationMessageSyncResponse *)self syncCommandsAtIndex:i];
-        [v8 addSyncCommands:v7];
+        [toCopy addSyncCommands:v7];
       }
     }
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_bundleID)
   {
     PBDataWriterWriteStringField();
@@ -186,12 +186,12 @@
 - (id)dictionaryRepresentation
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   bundleID = self->_bundleID;
   if (bundleID)
   {
-    [v3 setObject:bundleID forKey:@"bundleID"];
+    [dictionary setObject:bundleID forKey:@"bundleID"];
   }
 
   if ([(NSMutableArray *)self->_syncCommands count])
@@ -216,8 +216,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -238,28 +238,28 @@
   v8.receiver = self;
   v8.super_class = ICIAMApplicationMessageSyncResponse;
   v4 = [(ICIAMApplicationMessageSyncResponse *)&v8 description];
-  v5 = [(ICIAMApplicationMessageSyncResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ICIAMApplicationMessageSyncResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addSyncCommands:(id)a3
+- (void)addSyncCommands:(id)commands
 {
-  v4 = a3;
+  commandsCopy = commands;
   syncCommands = self->_syncCommands;
-  v8 = v4;
+  v8 = commandsCopy;
   if (!syncCommands)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_syncCommands;
     self->_syncCommands = v6;
 
-    v4 = v8;
+    commandsCopy = v8;
     syncCommands = self->_syncCommands;
   }
 
-  [(NSMutableArray *)syncCommands addObject:v4];
+  [(NSMutableArray *)syncCommands addObject:commandsCopy];
 }
 
 @end

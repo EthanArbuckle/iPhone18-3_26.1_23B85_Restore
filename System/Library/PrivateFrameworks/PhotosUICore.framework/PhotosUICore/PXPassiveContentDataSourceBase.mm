@@ -1,44 +1,44 @@
 @interface PXPassiveContentDataSourceBase
-+ (id)baseSuggestionFetchOptionsForPhotoLibrary:(id)a3;
-+ (id)fallbackSystemImageNameForSingleSmartAlbumType:(unint64_t)a3;
-+ (id)fetchSuggestionsWithSubtype:(unsigned __int16)a3 options:(id)a4;
-+ (id)fetchSuggestionsWithSubtypes:(id)a3 options:(id)a4;
-+ (id)localizedTitleForSingleSmartAlbumType:(unint64_t)a3;
-+ (id)suggestionPredicateForSmartAlbumTypes:(unint64_t)a3;
-+ (id)systemImageNameForSingleSmartAlbumType:(unint64_t)a3;
++ (id)baseSuggestionFetchOptionsForPhotoLibrary:(id)library;
++ (id)fallbackSystemImageNameForSingleSmartAlbumType:(unint64_t)type;
++ (id)fetchSuggestionsWithSubtype:(unsigned __int16)subtype options:(id)options;
++ (id)fetchSuggestionsWithSubtypes:(id)subtypes options:(id)options;
++ (id)localizedTitleForSingleSmartAlbumType:(unint64_t)type;
++ (id)suggestionPredicateForSmartAlbumTypes:(unint64_t)types;
++ (id)systemImageNameForSingleSmartAlbumType:(unint64_t)type;
 + (unint64_t)supportedTypes;
-- (PXPassiveContentDataSourceBase)initWithPhotoLibrary:(id)a3 changeObserver:(id)a4;
-- (id)combineSuggestionsForSelectedTypes:(unint64_t)a3 maxCount:(int64_t)a4;
+- (PXPassiveContentDataSourceBase)initWithPhotoLibrary:(id)library changeObserver:(id)observer;
+- (id)combineSuggestionsForSelectedTypes:(unint64_t)types maxCount:(int64_t)count;
 - (id)customPeopleSuggestions;
-- (id)fetchSuggestionsForPersonLocalIdentifier:(id)a3;
+- (id)fetchSuggestionsForPersonLocalIdentifier:(id)identifier;
 - (id)keyAssetFetchOptions;
-- (void)addChangeObserver:(id)a3;
-- (void)cacheKeyAssetForSuggestionOids:(id)a3;
-- (void)cacheSuggestionsAndKeyAssetsForPersons:(id)a3;
+- (void)addChangeObserver:(id)observer;
+- (void)cacheKeyAssetForSuggestionOids:(id)oids;
+- (void)cacheSuggestionsAndKeyAssetsForPersons:(id)persons;
 - (void)fetchSuggestions;
 - (void)fetchSuggestionsAndAssets;
 - (void)notifyAvailableTypeDidChange;
 - (void)notifyPreviewAssetsDidChange;
-- (void)removeChangeObserver:(id)a3;
-- (void)setPeopleLocalIdentifiers:(id)a3;
-- (void)setSelectedTypes:(unint64_t)a3;
+- (void)removeChangeObserver:(id)observer;
+- (void)setPeopleLocalIdentifiers:(id)identifiers;
+- (void)setSelectedTypes:(unint64_t)types;
 - (void)setupPreviewAssets;
 @end
 
 @implementation PXPassiveContentDataSourceBase
 
-- (void)removeChangeObserver:(id)a3
+- (void)removeChangeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(PXPassiveContentDataSourceBase *)self workQueue];
+  observerCopy = observer;
+  workQueue = [(PXPassiveContentDataSourceBase *)self workQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __55__PXPassiveContentDataSourceBase_removeChangeObserver___block_invoke;
   v7[3] = &unk_1E774C620;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = observerCopy;
+  v6 = observerCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __55__PXPassiveContentDataSourceBase_removeChangeObserver___block_invoke(uint64_t a1)
@@ -47,18 +47,18 @@ void __55__PXPassiveContentDataSourceBase_removeChangeObserver___block_invoke(ui
   [v2 removeObject:*(a1 + 40)];
 }
 
-- (void)addChangeObserver:(id)a3
+- (void)addChangeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(PXPassiveContentDataSourceBase *)self workQueue];
+  observerCopy = observer;
+  workQueue = [(PXPassiveContentDataSourceBase *)self workQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52__PXPassiveContentDataSourceBase_addChangeObserver___block_invoke;
   v7[3] = &unk_1E774C620;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = observerCopy;
+  v6 = observerCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __52__PXPassiveContentDataSourceBase_addChangeObserver___block_invoke(uint64_t a1)
@@ -74,8 +74,8 @@ void __52__PXPassiveContentDataSourceBase_addChangeObserver___block_invoke(uint6
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(PXPassiveContentDataSourceBase *)self changeObservers];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  changeObservers = [(PXPassiveContentDataSourceBase *)self changeObservers];
+  v4 = [changeObservers countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -87,14 +87,14 @@ void __52__PXPassiveContentDataSourceBase_addChangeObserver___block_invoke(uint6
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(changeObservers);
         }
 
         [*(*(&v8 + 1) + 8 * v7++) passiveContentDataSourceAvailableTypesDidChange:self];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [changeObservers countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -108,8 +108,8 @@ void __52__PXPassiveContentDataSourceBase_addChangeObserver___block_invoke(uint6
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(PXPassiveContentDataSourceBase *)self changeObservers];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  changeObservers = [(PXPassiveContentDataSourceBase *)self changeObservers];
+  v4 = [changeObservers countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -121,56 +121,56 @@ void __52__PXPassiveContentDataSourceBase_addChangeObserver___block_invoke(uint6
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(changeObservers);
         }
 
         [*(*(&v8 + 1) + 8 * v7++) passiveContentDataSourcePreviewAssetsDidChange:self];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [changeObservers countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
   }
 }
 
-- (id)combineSuggestionsForSelectedTypes:(unint64_t)a3 maxCount:(int64_t)a4
+- (id)combineSuggestionsForSelectedTypes:(unint64_t)types maxCount:(int64_t)count
 {
-  v5 = a3;
+  typesCopy = types;
   v58 = *MEMORY[0x1E69E9840];
-  v7 = [(PXPassiveContentDataSourceBase *)self petSuggestions];
-  v8 = [v7 count];
+  petSuggestions = [(PXPassiveContentDataSourceBase *)self petSuggestions];
+  v8 = [petSuggestions count];
 
-  v9 = [(PXPassiveContentDataSourceBase *)self landscapeSuggestions];
-  v10 = [v9 count];
+  landscapeSuggestions = [(PXPassiveContentDataSourceBase *)self landscapeSuggestions];
+  v10 = [landscapeSuggestions count];
 
-  v11 = [(PXPassiveContentDataSourceBase *)self cityscapeSuggestions];
-  v12 = [v11 count];
+  cityscapeSuggestions = [(PXPassiveContentDataSourceBase *)self cityscapeSuggestions];
+  v12 = [cityscapeSuggestions count];
 
-  v13 = [(PXPassiveContentDataSourceBase *)self featuredSuggestions];
-  v14 = [v13 count];
+  featuredSuggestions = [(PXPassiveContentDataSourceBase *)self featuredSuggestions];
+  v14 = [featuredSuggestions count];
 
-  v37 = [(PXPassiveContentDataSourceBase *)self customPeopleSuggestions];
-  v15 = [v37 count];
+  customPeopleSuggestions = [(PXPassiveContentDataSourceBase *)self customPeopleSuggestions];
+  v15 = [customPeopleSuggestions count];
   v16 = v15;
   v44 = v10;
   v45 = v8;
   v43 = v12;
-  if (v10 + v8 + v12 + v14 + v15 >= a4)
+  if (v10 + v8 + v12 + v14 + v15 >= count)
   {
-    v17 = a4;
+    countCopy = count;
   }
 
   else
   {
-    v17 = v10 + v8 + v12 + v14 + v15;
+    countCopy = v10 + v8 + v12 + v14 + v15;
   }
 
-  if (v5)
+  if (typesCopy)
   {
-    v19 = [(PXPassiveContentDataSourceBase *)self peopleLocalIdentifiers];
-    v18 = [v19 count] != 0;
+    peopleLocalIdentifiers = [(PXPassiveContentDataSourceBase *)self peopleLocalIdentifiers];
+    v18 = [peopleLocalIdentifiers count] != 0;
   }
 
   else
@@ -188,7 +188,7 @@ void __52__PXPassiveContentDataSourceBase_addChangeObserver___block_invoke(uint6
   }
 
   v22 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (v17 < 1)
+  if (countCopy < 1)
   {
     v41 = 0;
     v42 = 0;
@@ -208,45 +208,45 @@ void __52__PXPassiveContentDataSourceBase_addChangeObserver___block_invoke(uint6
     do
     {
       v24 = v23 < v16 && v18;
-      if (v24 && [v22 count] < v17)
+      if (v24 && [v22 count] < countCopy)
       {
-        v25 = [v37 objectAtIndex:v23];
+        v25 = [customPeopleSuggestions objectAtIndex:v23];
         [v22 addObject:v25];
 
         ++v38;
       }
 
-      if ((v5 & 2) != 0 && v23 < v45 && [v22 count] < v17)
+      if ((typesCopy & 2) != 0 && v23 < v45 && [v22 count] < countCopy)
       {
-        v26 = [(PXPassiveContentDataSourceBase *)self petSuggestions];
-        v27 = [v26 objectAtIndex:v23];
+        petSuggestions2 = [(PXPassiveContentDataSourceBase *)self petSuggestions];
+        v27 = [petSuggestions2 objectAtIndex:v23];
         [v22 addObject:v27];
 
         ++v39;
       }
 
-      if ((v5 & 4) != 0 && v23 < v44 && [v22 count] < v17)
+      if ((typesCopy & 4) != 0 && v23 < v44 && [v22 count] < countCopy)
       {
-        v28 = [(PXPassiveContentDataSourceBase *)self landscapeSuggestions];
-        v29 = [v28 objectAtIndex:v23];
+        landscapeSuggestions2 = [(PXPassiveContentDataSourceBase *)self landscapeSuggestions];
+        v29 = [landscapeSuggestions2 objectAtIndex:v23];
         [v22 addObject:v29];
 
         ++v40;
       }
 
-      if ((v5 & 8) != 0 && v23 < v43 && [v22 count] < v17)
+      if ((typesCopy & 8) != 0 && v23 < v43 && [v22 count] < countCopy)
       {
-        v30 = [(PXPassiveContentDataSourceBase *)self cityscapeSuggestions];
-        v31 = [v30 objectAtIndex:v23];
+        cityscapeSuggestions2 = [(PXPassiveContentDataSourceBase *)self cityscapeSuggestions];
+        v31 = [cityscapeSuggestions2 objectAtIndex:v23];
         [v22 addObject:v31];
 
         ++v41;
       }
 
-      if ((v5 & 0x10) != 0 && v23 < v14 && [v22 count] < v17)
+      if ((typesCopy & 0x10) != 0 && v23 < v14 && [v22 count] < countCopy)
       {
-        v32 = [(PXPassiveContentDataSourceBase *)self featuredSuggestions];
-        v33 = [v32 objectAtIndex:v23];
+        featuredSuggestions2 = [(PXPassiveContentDataSourceBase *)self featuredSuggestions];
+        v33 = [featuredSuggestions2 objectAtIndex:v23];
         [v22 addObject:v33];
 
         ++v42;
@@ -255,7 +255,7 @@ void __52__PXPassiveContentDataSourceBase_addChangeObserver___block_invoke(uint6
       ++v23;
     }
 
-    while (v17 != v23);
+    while (countCopy != v23);
   }
 
   v34 = PLWallpaperGetLog();
@@ -283,13 +283,13 @@ void __52__PXPassiveContentDataSourceBase_addChangeObserver___block_invoke(uint6
 - (id)customPeopleSuggestions
 {
   v37 = *MEMORY[0x1E69E9840];
-  v3 = [(PXPassiveContentDataSourceBase *)self peopleLocalIdentifiers];
+  peopleLocalIdentifiers = [(PXPassiveContentDataSourceBase *)self peopleLocalIdentifiers];
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v5 = v3;
+  v5 = peopleLocalIdentifiers;
   v6 = [v5 countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v6)
   {
@@ -305,14 +305,14 @@ void __52__PXPassiveContentDataSourceBase_addChangeObserver___block_invoke(uint6
         }
 
         v10 = *(*(&v31 + 1) + 8 * i);
-        v11 = [(PXPassiveContentDataSourceBase *)self personSuggestionsByPersonLocalIdentifier];
-        v12 = [v11 objectForKeyedSubscript:v10];
+        personSuggestionsByPersonLocalIdentifier = [(PXPassiveContentDataSourceBase *)self personSuggestionsByPersonLocalIdentifier];
+        v12 = [personSuggestionsByPersonLocalIdentifier objectForKeyedSubscript:v10];
 
         if ([v12 count])
         {
           v13 = objc_alloc(MEMORY[0x1E695DF70]);
-          v14 = [v12 fetchedObjects];
-          v15 = [v13 initWithArray:v14];
+          fetchedObjects = [v12 fetchedObjects];
+          v15 = [v13 initWithArray:fetchedObjects];
 
           [v4 addObject:v15];
         }
@@ -348,11 +348,11 @@ void __52__PXPassiveContentDataSourceBase_addChangeObserver___block_invoke(uint6
           }
 
           v23 = *(*(&v27 + 1) + 8 * j);
-          v24 = [v23 firstObject];
-          if (v24)
+          firstObject = [v23 firstObject];
+          if (firstObject)
           {
-            [v16 addObject:v24];
-            [v23 removeObject:v24];
+            [v16 addObject:firstObject];
+            [v23 removeObject:firstObject];
           }
 
           if (![v23 count])
@@ -375,16 +375,16 @@ void __52__PXPassiveContentDataSourceBase_addChangeObserver___block_invoke(uint6
   return v16;
 }
 
-- (void)cacheKeyAssetForSuggestionOids:(id)a3
+- (void)cacheKeyAssetForSuggestionOids:(id)oids
 {
-  v10 = a3;
+  oidsCopy = oids;
   v4 = objc_autoreleasePoolPush();
   v5 = objc_alloc(MEMORY[0x1E69788E0]);
-  v6 = [(PXPassiveContentDataSourceBase *)self photoLibrary];
-  v7 = [v5 initWithOids:v10 photoLibrary:v6 fetchType:*MEMORY[0x1E6978DE0] fetchPropertySets:0 identifier:0 registerIfNeeded:0];
+  photoLibrary = [(PXPassiveContentDataSourceBase *)self photoLibrary];
+  v7 = [v5 initWithOids:oidsCopy photoLibrary:photoLibrary fetchType:*MEMORY[0x1E6978DE0] fetchPropertySets:0 identifier:0 registerIfNeeded:0];
 
-  v8 = [(PXPassiveContentDataSourceBase *)self keyAssetFetchOptions];
-  v9 = [MEMORY[0x1E6978630] fetchKeyAssetBySuggestionUUIDForSuggestions:v7 options:v8];
+  keyAssetFetchOptions = [(PXPassiveContentDataSourceBase *)self keyAssetFetchOptions];
+  v9 = [MEMORY[0x1E6978630] fetchKeyAssetBySuggestionUUIDForSuggestions:v7 options:keyAssetFetchOptions];
   [(NSMutableDictionary *)self->_keyAssetBySuggestionUUID addEntriesFromDictionary:v9];
 
   objc_autoreleasePoolPop(v4);
@@ -392,26 +392,26 @@ void __52__PXPassiveContentDataSourceBase_addChangeObserver___block_invoke(uint6
 
 - (id)keyAssetFetchOptions
 {
-  v2 = [(PXPassiveContentDataSourceBase *)self photoLibrary];
-  v3 = [v2 librarySpecificFetchOptions];
+  photoLibrary = [(PXPassiveContentDataSourceBase *)self photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  [v3 setIncludeGuestAssets:1];
+  [librarySpecificFetchOptions setIncludeGuestAssets:1];
 
-  return v3;
+  return librarySpecificFetchOptions;
 }
 
-- (id)fetchSuggestionsForPersonLocalIdentifier:(id)a3
+- (id)fetchSuggestionsForPersonLocalIdentifier:(id)identifier
 {
   v16[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_opt_class();
-  v6 = [(PXPassiveContentDataSourceBase *)self photoLibrary];
-  v7 = [v5 baseSuggestionFetchOptionsForPhotoLibrary:v6];
+  photoLibrary = [(PXPassiveContentDataSourceBase *)self photoLibrary];
+  v7 = [v5 baseSuggestionFetchOptionsForPhotoLibrary:photoLibrary];
 
   v8 = MEMORY[0x1E696AB28];
-  v9 = [v7 internalPredicate];
+  internalPredicate = [v7 internalPredicate];
   v10 = [objc_opt_class() suggestionPredicateForSmartAlbumTypes:1];
-  v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"suggestionContext", v4, v9, v10];
+  v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"suggestionContext", identifierCopy, internalPredicate, v10];
 
   v16[2] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:3];
@@ -423,18 +423,18 @@ void __52__PXPassiveContentDataSourceBase_addChangeObserver___block_invoke(uint6
   return v14;
 }
 
-- (void)cacheSuggestionsAndKeyAssetsForPersons:(id)a3
+- (void)cacheSuggestionsAndKeyAssetsForPersons:(id)persons
 {
-  v4 = a3;
-  v5 = [(PXPassiveContentDataSourceBase *)self workQueue];
+  personsCopy = persons;
+  workQueue = [(PXPassiveContentDataSourceBase *)self workQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __73__PXPassiveContentDataSourceBase_cacheSuggestionsAndKeyAssetsForPersons___block_invoke;
   v7[3] = &unk_1E774C620;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = personsCopy;
+  selfCopy = self;
+  v6 = personsCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __73__PXPassiveContentDataSourceBase_cacheSuggestionsAndKeyAssetsForPersons___block_invoke(uint64_t a1)
@@ -488,31 +488,31 @@ void __73__PXPassiveContentDataSourceBase_cacheSuggestionsAndKeyAssetsForPersons
 
 - (void)setupPreviewAssets
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXPassiveContentDataSourceBase.m" lineNumber:132 description:{@"Method %s is a responsibility of subclass %@", "-[PXPassiveContentDataSourceBase setupPreviewAssets]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXPassiveContentDataSourceBase.m" lineNumber:132 description:{@"Method %s is a responsibility of subclass %@", "-[PXPassiveContentDataSourceBase setupPreviewAssets]", v6}];
 
   abort();
 }
 
 - (void)fetchSuggestions
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXPassiveContentDataSourceBase.m" lineNumber:128 description:{@"Method %s is a responsibility of subclass %@", "-[PXPassiveContentDataSourceBase fetchSuggestions]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXPassiveContentDataSourceBase.m" lineNumber:128 description:{@"Method %s is a responsibility of subclass %@", "-[PXPassiveContentDataSourceBase fetchSuggestions]", v6}];
 
   abort();
 }
 
-- (void)setPeopleLocalIdentifiers:(id)a3
+- (void)setPeopleLocalIdentifiers:(id)identifiers
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (![(NSArray *)self->_peopleLocalIdentifiers isEqualToArray:v4])
+  identifiersCopy = identifiers;
+  if (![(NSArray *)self->_peopleLocalIdentifiers isEqualToArray:identifiersCopy])
   {
-    v5 = [v4 copy];
+    v5 = [identifiersCopy copy];
     peopleLocalIdentifiers = self->_peopleLocalIdentifiers;
     self->_peopleLocalIdentifiers = v5;
 
@@ -537,12 +537,12 @@ void __73__PXPassiveContentDataSourceBase_cacheSuggestionsAndKeyAssetsForPersons
   }
 }
 
-- (void)setSelectedTypes:(unint64_t)a3
+- (void)setSelectedTypes:(unint64_t)types
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (self->_selectedTypes != a3)
+  if (self->_selectedTypes != types)
   {
-    self->_selectedTypes = a3;
+    self->_selectedTypes = types;
     v4 = PLWallpaperGetLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
@@ -561,13 +561,13 @@ void __73__PXPassiveContentDataSourceBase_cacheSuggestionsAndKeyAssetsForPersons
 
 - (void)fetchSuggestionsAndAssets
 {
-  v3 = [(PXPassiveContentDataSourceBase *)self workQueue];
+  workQueue = [(PXPassiveContentDataSourceBase *)self workQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __59__PXPassiveContentDataSourceBase_fetchSuggestionsAndAssets__block_invoke;
   block[3] = &unk_1E774C648;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 void __59__PXPassiveContentDataSourceBase_fetchSuggestionsAndAssets__block_invoke(uint64_t a1)
@@ -686,17 +686,17 @@ void __59__PXPassiveContentDataSourceBase_fetchSuggestionsAndAssets__block_invok
   }
 }
 
-- (PXPassiveContentDataSourceBase)initWithPhotoLibrary:(id)a3 changeObserver:(id)a4
+- (PXPassiveContentDataSourceBase)initWithPhotoLibrary:(id)library changeObserver:(id)observer
 {
-  v7 = a3;
-  v8 = a4;
+  libraryCopy = library;
+  observerCopy = observer;
   v12.receiver = self;
   v12.super_class = PXPassiveContentDataSourceBase;
   v9 = [(PXPassiveContentDataSourceBase *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_photoLibrary, a3);
+    objc_storeStrong(&v9->_photoLibrary, library);
     v10->_selectedTypes = 0;
     px_dispatch_queue_create_serial();
   }
@@ -704,11 +704,11 @@ void __59__PXPassiveContentDataSourceBase_fetchSuggestionsAndAssets__block_invok
   return 0;
 }
 
-+ (id)localizedTitleForSingleSmartAlbumType:(unint64_t)a3
++ (id)localizedTitleForSingleSmartAlbumType:(unint64_t)type
 {
-  if (a3 > 3)
+  if (type > 3)
   {
-    switch(a3)
+    switch(type)
     {
       case 4uLL:
         v3 = @"PXWallpaperPickerDataSourceModeLandscape";
@@ -726,40 +726,40 @@ void __59__PXPassiveContentDataSourceBase_fetchSuggestionsAndAssets__block_invok
     goto LABEL_12;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     v3 = @"PXWallpaperPickerDataSourceModeTopPeople";
     goto LABEL_12;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     v3 = @"PXWallpaperPickerDataSourceModePet";
 LABEL_12:
-    a1 = PXLocalizedStringFromTable(v3, @"PhotosUICore");
+    self = PXLocalizedStringFromTable(v3, @"PhotosUICore");
     goto LABEL_13;
   }
 
-  v5 = a1;
-  if (!a3)
+  selfCopy = self;
+  if (!type)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:v5 file:@"PXPassiveContentDataSourceBase.m" lineNumber:375 description:{@"Invalid parameter not satisfying: %@", @"type != PFPosterShuffleSmartAlbumsNone"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"PXPassiveContentDataSourceBase.m" lineNumber:375 description:{@"Invalid parameter not satisfying: %@", @"type != PFPosterShuffleSmartAlbumsNone"}];
 
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:v5 file:@"PXPassiveContentDataSourceBase.m" lineNumber:378 description:@"Code which should be unreachable has been reached"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:selfCopy file:@"PXPassiveContentDataSourceBase.m" lineNumber:378 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
 LABEL_13:
 
-  return a1;
+  return self;
 }
 
-+ (id)fallbackSystemImageNameForSingleSmartAlbumType:(unint64_t)a3
++ (id)fallbackSystemImageNameForSingleSmartAlbumType:(unint64_t)type
 {
-  v4 = __ROR8__(a3, 1);
+  v4 = __ROR8__(type, 1);
   result = @"person.circle.fill";
   if (v4 > 3)
   {
@@ -789,11 +789,11 @@ LABEL_13:
       case 2:
         return @"leaf.circle.fill";
       case 0:
-        v7 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v7 handleFailureInMethod:a2 object:a1 file:@"PXPassiveContentDataSourceBase.m" lineNumber:357 description:{@"Invalid parameter not satisfying: %@", @"type != PFPosterShuffleSmartAlbumsNone"}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PXPassiveContentDataSourceBase.m" lineNumber:357 description:{@"Invalid parameter not satisfying: %@", @"type != PFPosterShuffleSmartAlbumsNone"}];
 
-        v8 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v8 handleFailureInMethod:a2 object:a1 file:@"PXPassiveContentDataSourceBase.m" lineNumber:360 description:@"Code which should be unreachable has been reached"];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXPassiveContentDataSourceBase.m" lineNumber:360 description:@"Code which should be unreachable has been reached"];
 
         abort();
     }
@@ -802,9 +802,9 @@ LABEL_13:
   return result;
 }
 
-+ (id)systemImageNameForSingleSmartAlbumType:(unint64_t)a3
++ (id)systemImageNameForSingleSmartAlbumType:(unint64_t)type
 {
-  v4 = __ROR8__(a3, 1);
+  v4 = __ROR8__(type, 1);
   result = @"person.fill";
   if (v4 > 3)
   {
@@ -834,11 +834,11 @@ LABEL_13:
       case 2:
         return @"leaf.fill";
       case 0:
-        v7 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v7 handleFailureInMethod:a2 object:a1 file:@"PXPassiveContentDataSourceBase.m" lineNumber:339 description:{@"Invalid parameter not satisfying: %@", @"type != PFPosterShuffleSmartAlbumsNone"}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PXPassiveContentDataSourceBase.m" lineNumber:339 description:{@"Invalid parameter not satisfying: %@", @"type != PFPosterShuffleSmartAlbumsNone"}];
 
-        v8 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v8 handleFailureInMethod:a2 object:a1 file:@"PXPassiveContentDataSourceBase.m" lineNumber:342 description:@"Code which should be unreachable has been reached"];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXPassiveContentDataSourceBase.m" lineNumber:342 description:@"Code which should be unreachable has been reached"];
 
         abort();
     }
@@ -847,16 +847,16 @@ LABEL_13:
   return result;
 }
 
-+ (id)fetchSuggestionsWithSubtypes:(id)a3 options:(id)a4
++ (id)fetchSuggestionsWithSubtypes:(id)subtypes options:(id)options
 {
   v33[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [a4 copy];
+  subtypesCopy = subtypes;
+  v6 = [options copy];
   v7 = MEMORY[0x1E696AB28];
-  v8 = [v6 internalPredicate];
-  v33[0] = v8;
-  v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"subtype", v5];
-  v33[1] = v9;
+  internalPredicate = [v6 internalPredicate];
+  v33[0] = internalPredicate;
+  subtypesCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"subtype", subtypesCopy];
+  v33[1] = subtypesCopy;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:2];
   v11 = [v7 andPredicateWithSubpredicates:v10];
   [v6 setInternalPredicate:v11];
@@ -867,7 +867,7 @@ LABEL_13:
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v14 = v5;
+  v14 = subtypesCopy;
   v15 = [v14 countByEnumeratingWithState:&v24 objects:v32 count:16];
   if (v15)
   {
@@ -908,57 +908,57 @@ LABEL_13:
   return v12;
 }
 
-+ (id)fetchSuggestionsWithSubtype:(unsigned __int16)a3 options:(id)a4
++ (id)fetchSuggestionsWithSubtype:(unsigned __int16)subtype options:(id)options
 {
-  v4 = a3;
+  subtypeCopy = subtype;
   v12[1] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E696AD98];
-  v7 = a4;
-  v8 = [v6 numberWithUnsignedShort:v4];
+  optionsCopy = options;
+  v8 = [v6 numberWithUnsignedShort:subtypeCopy];
   v12[0] = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
-  v10 = [a1 fetchSuggestionsWithSubtypes:v9 options:v7];
+  v10 = [self fetchSuggestionsWithSubtypes:v9 options:optionsCopy];
 
   return v10;
 }
 
-+ (id)baseSuggestionFetchOptionsForPhotoLibrary:(id)a3
++ (id)baseSuggestionFetchOptionsForPhotoLibrary:(id)library
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v3 = [a3 librarySpecificFetchOptions];
+  librarySpecificFetchOptions = [library librarySpecificFetchOptions];
   v4 = MEMORY[0x1E696AB28];
   v5 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != %d", @"state", 4];
   v13[0] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
   v7 = [v4 andPredicateWithSubpredicates:v6];
-  [v3 setInternalPredicate:v7];
+  [librarySpecificFetchOptions setInternalPredicate:v7];
 
   v8 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"creationDate" ascending:0];
   v12[0] = v8;
   v9 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"uuid" ascending:0];
   v12[1] = v9;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:2];
-  [v3 setSortDescriptors:v10];
+  [librarySpecificFetchOptions setSortDescriptors:v10];
 
-  return v3;
+  return librarySpecificFetchOptions;
 }
 
-+ (id)suggestionPredicateForSmartAlbumTypes:(unint64_t)a3
++ (id)suggestionPredicateForSmartAlbumTypes:(unint64_t)types
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  [v5 handleFailureInMethod:a2 object:a1 file:@"PXPassiveContentDataSourceBase.m" lineNumber:136 description:{@"Method %s is a responsibility of subclass %@", "+[PXPassiveContentDataSourceBase suggestionPredicateForSmartAlbumTypes:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXPassiveContentDataSourceBase.m" lineNumber:136 description:{@"Method %s is a responsibility of subclass %@", "+[PXPassiveContentDataSourceBase suggestionPredicateForSmartAlbumTypes:]", v7}];
 
   abort();
 }
 
 + (unint64_t)supportedTypes
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:a1 file:@"PXPassiveContentDataSourceBase.m" lineNumber:122 description:{@"Method %s is a responsibility of subclass %@", "+[PXPassiveContentDataSourceBase supportedTypes]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXPassiveContentDataSourceBase.m" lineNumber:122 description:{@"Method %s is a responsibility of subclass %@", "+[PXPassiveContentDataSourceBase supportedTypes]", v6}];
 
   abort();
 }

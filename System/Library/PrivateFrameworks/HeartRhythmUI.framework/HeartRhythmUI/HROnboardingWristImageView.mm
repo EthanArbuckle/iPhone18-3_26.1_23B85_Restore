@@ -1,14 +1,14 @@
 @interface HROnboardingWristImageView
-- (HROnboardingWristImageView)initWithImageStyle:(int64_t)a3;
-- (id)_wristWatchContentViewForStyle:(int64_t)a3;
+- (HROnboardingWristImageView)initWithImageStyle:(int64_t)style;
+- (id)_wristWatchContentViewForStyle:(int64_t)style;
 - (void)layoutSubviews;
-- (void)setContentMode:(int64_t)a3;
-- (void)setTimeRemaining:(double)a3;
+- (void)setContentMode:(int64_t)mode;
+- (void)setTimeRemaining:(double)remaining;
 @end
 
 @implementation HROnboardingWristImageView
 
-- (HROnboardingWristImageView)initWithImageStyle:(int64_t)a3
+- (HROnboardingWristImageView)initWithImageStyle:(int64_t)style
 {
   v17.receiver = self;
   v17.super_class = HROnboardingWristImageView;
@@ -16,25 +16,25 @@
   v5 = v4;
   if (v4)
   {
-    v4->_watchImageStyle = a3;
+    v4->_watchImageStyle = style;
     v6 = objc_alloc(MEMORY[0x277D755E8]);
-    v7 = [MEMORY[0x277D755B8] hrui_ECGOnboardingWristImage];
-    v8 = [v6 initWithImage:v7];
+    hrui_ECGOnboardingWristImage = [MEMORY[0x277D755B8] hrui_ECGOnboardingWristImage];
+    v8 = [v6 initWithImage:hrui_ECGOnboardingWristImage];
     wristWatchImageView = v5->_wristWatchImageView;
     v5->_wristWatchImageView = v8;
 
-    v10 = [(HROnboardingWristImageView *)v5 wristWatchImageView];
-    [(HROnboardingWristImageView *)v5 addSubview:v10];
+    wristWatchImageView = [(HROnboardingWristImageView *)v5 wristWatchImageView];
+    [(HROnboardingWristImageView *)v5 addSubview:wristWatchImageView];
 
-    v11 = [(HROnboardingWristImageView *)v5 wristWatchImageView];
-    [v11 hk_alignConstraintsWithView:v5];
+    wristWatchImageView2 = [(HROnboardingWristImageView *)v5 wristWatchImageView];
+    [wristWatchImageView2 hk_alignConstraintsWithView:v5];
 
-    v12 = [(HROnboardingWristImageView *)v5 wristWatchImageView];
-    v13 = [v12 image];
-    [v13 size];
+    wristWatchImageView3 = [(HROnboardingWristImageView *)v5 wristWatchImageView];
+    image = [wristWatchImageView3 image];
+    [image size];
     [(UIView *)v5 hrui_constraintAspectRatioFromSize:?];
 
-    v14 = [(HROnboardingWristImageView *)v5 _wristWatchContentViewForStyle:a3];
+    v14 = [(HROnboardingWristImageView *)v5 _wristWatchContentViewForStyle:style];
     wristWatchContentView = v5->_wristWatchContentView;
     v5->_wristWatchContentView = v14;
 
@@ -44,24 +44,24 @@
   return v5;
 }
 
-- (id)_wristWatchContentViewForStyle:(int64_t)a3
+- (id)_wristWatchContentViewForStyle:(int64_t)style
 {
-  if (a3 == 1)
+  if (style == 1)
   {
     v7 = [HRElectrocardiogramSessionSimulationView alloc];
     v6 = [(HRElectrocardiogramSessionSimulationView *)v7 initWithFrame:0 isLargeDevice:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
-    v5 = [MEMORY[0x277D75348] blackColor];
-    [(HRElectrocardiogramSessionSimulationView *)v6 setBackgroundColor:v5];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(HRElectrocardiogramSessionSimulationView *)v6 setBackgroundColor:blackColor];
     goto LABEL_5;
   }
 
-  if (!a3)
+  if (!style)
   {
     v3 = MEMORY[0x277D755B8];
     v4 = HRHeartRhythmUIFrameworkBundle();
-    v5 = [v3 imageNamed:@"ECG-Setup" inBundle:v4 compatibleWithTraitCollection:0];
+    blackColor = [v3 imageNamed:@"ECG-Setup" inBundle:v4 compatibleWithTraitCollection:0];
 
-    v6 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v5];
+    v6 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:blackColor];
 LABEL_5:
 
     goto LABEL_7;
@@ -78,8 +78,8 @@ LABEL_7:
   v19.receiver = self;
   v19.super_class = HROnboardingWristImageView;
   [(HROnboardingWristImageView *)&v19 layoutSubviews];
-  v3 = [MEMORY[0x277D759A0] hrui_currentDeviceHasLargePhoneScreen];
-  if (v3)
+  hrui_currentDeviceHasLargePhoneScreen = [MEMORY[0x277D759A0] hrui_currentDeviceHasLargePhoneScreen];
+  if (hrui_currentDeviceHasLargePhoneScreen)
   {
     v4 = 0.353;
   }
@@ -89,7 +89,7 @@ LABEL_7:
     v4 = 0.338;
   }
 
-  if (v3)
+  if (hrui_currentDeviceHasLargePhoneScreen)
   {
     v5 = 0.233;
   }
@@ -99,7 +99,7 @@ LABEL_7:
     v5 = 0.232;
   }
 
-  if (v3)
+  if (hrui_currentDeviceHasLargePhoneScreen)
   {
     v6 = 0.294;
   }
@@ -109,7 +109,7 @@ LABEL_7:
     v6 = 0.324;
   }
 
-  if (v3)
+  if (hrui_currentDeviceHasLargePhoneScreen)
   {
     v7 = 0.473;
   }
@@ -124,39 +124,39 @@ LABEL_7:
   v11 = v5 * v10;
   v12 = v6 * v8;
   v13 = v7 * v10;
-  v14 = [(HROnboardingWristImageView *)self wristWatchContentView];
-  [v14 setFrame:{v9, v11, v12, v13}];
+  wristWatchContentView = [(HROnboardingWristImageView *)self wristWatchContentView];
+  [wristWatchContentView setFrame:{v9, v11, v12, v13}];
 
-  v15 = [(HROnboardingWristImageView *)self wristWatchContentView];
-  [v15 layoutIfNeeded];
+  wristWatchContentView2 = [(HROnboardingWristImageView *)self wristWatchContentView];
+  [wristWatchContentView2 layoutIfNeeded];
 
-  v16 = [(HROnboardingWristImageView *)self wristWatchContentView];
-  v17 = [v16 layer];
-  [v17 setCornerRadius:20.0];
+  wristWatchContentView3 = [(HROnboardingWristImageView *)self wristWatchContentView];
+  layer = [wristWatchContentView3 layer];
+  [layer setCornerRadius:20.0];
 
-  v18 = [(HROnboardingWristImageView *)self wristWatchContentView];
-  [v18 setClipsToBounds:1];
+  wristWatchContentView4 = [(HROnboardingWristImageView *)self wristWatchContentView];
+  [wristWatchContentView4 setClipsToBounds:1];
 }
 
-- (void)setContentMode:(int64_t)a3
+- (void)setContentMode:(int64_t)mode
 {
   v6.receiver = self;
   v6.super_class = HROnboardingWristImageView;
   [(HROnboardingWristImageView *)&v6 setContentMode:?];
-  v5 = [(HROnboardingWristImageView *)self wristWatchImageView];
-  [v5 setContentMode:a3];
+  wristWatchImageView = [(HROnboardingWristImageView *)self wristWatchImageView];
+  [wristWatchImageView setContentMode:mode];
 }
 
-- (void)setTimeRemaining:(double)a3
+- (void)setTimeRemaining:(double)remaining
 {
-  v5 = [(HROnboardingWristImageView *)self wristWatchContentView];
+  wristWatchContentView = [(HROnboardingWristImageView *)self wristWatchContentView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [(HROnboardingWristImageView *)self wristWatchContentView];
-    [v7 setTimeRemaining:a3];
+    wristWatchContentView2 = [(HROnboardingWristImageView *)self wristWatchContentView];
+    [wristWatchContentView2 setTimeRemaining:remaining];
   }
 }
 

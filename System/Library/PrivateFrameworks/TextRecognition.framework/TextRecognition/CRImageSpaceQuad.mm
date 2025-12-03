@@ -1,12 +1,12 @@
 @interface CRImageSpaceQuad
-- (BOOL)containsPoint:(CGPoint)a3;
-- (BOOL)entirelyContainsQuad:(id)a3;
+- (BOOL)containsPoint:(CGPoint)point;
+- (BOOL)entirelyContainsQuad:(id)quad;
 - (BOOL)hasIntersectingEdges;
-- (BOOL)intersectsImageMargin:(double)a3 imageSize:(CGSize)a4;
-- (BOOL)intersectsQuad:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)linesIntersectLine1P1:(double)a3 line1P2:(double)a4 line2P1:(double)a5 line2P2:(double)a6;
-- (BOOL)overlapsQuad:(id)a3;
+- (BOOL)intersectsImageMargin:(double)margin imageSize:(CGSize)size;
+- (BOOL)intersectsQuad:(id)quad;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)linesIntersectLine1P1:(double)p1 line1P2:(double)p2 line2P1:(double)line2P1 line2P2:(double)line2P2;
+- (BOOL)overlapsQuad:(id)quad;
 - (CGPoint)bottomLeft;
 - (CGPoint)bottomRight;
 - (CGPoint)midPoint;
@@ -14,36 +14,36 @@
 - (CGPoint)topRight;
 - (CGRect)boundingBox;
 - (CGSize)size;
-- (CRImageSpaceQuad)applyHomographyTransform:(float32x4_t)a3 downscaleRate:(float32x4_t)a4;
-- (CRImageSpaceQuad)initWithCRCodableDataRepresentation:(id)a3;
-- (CRImageSpaceQuad)initWithCoder:(id)a3;
-- (CRImageSpaceQuad)initWithTopLeft:(CGPoint)a3 topRight:(CGPoint)a4 bottomRight:(CGPoint)a5 bottomLeft:(CGPoint)a6;
+- (CRImageSpaceQuad)applyHomographyTransform:(float32x4_t)transform downscaleRate:(float32x4_t)rate;
+- (CRImageSpaceQuad)initWithCRCodableDataRepresentation:(id)representation;
+- (CRImageSpaceQuad)initWithCoder:(id)coder;
+- (CRImageSpaceQuad)initWithTopLeft:(CGPoint)left topRight:(CGPoint)right bottomRight:(CGPoint)bottomRight bottomLeft:(CGPoint)bottomLeft;
 - (double)aspectRatio;
-- (double)boundingBoxIOUWithQuad:(id)a3;
+- (double)boundingBoxIOUWithQuad:(id)quad;
 - (double)orthogonalityScore;
-- (double)shortestDistanceFromCornersOfQuad:(id)a3;
-- (double)shortestDistanceFromPoint:(CGPoint)a3;
-- (double)squaredDistanceFromCorrespondingCornersOfQuad:(id)a3;
-- (double)squaredDistanceMaxRatioFromCorrespondingCornersOfQuad:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (double)shortestDistanceFromCornersOfQuad:(id)quad;
+- (double)shortestDistanceFromPoint:(CGPoint)point;
+- (double)squaredDistanceFromCorrespondingCornersOfQuad:(id)quad;
+- (double)squaredDistanceMaxRatioFromCorrespondingCornersOfQuad:(id)quad;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)cornerAngles;
 - (id)crCodableDataRepresentation;
-- (id)normalizedQuadForImageSize:(CGSize)a3;
+- (id)normalizedQuadForImageSize:(CGSize)size;
 - (id)rotated180;
-- (id)rotatedAroundPoint:(CGPoint)a3 angle:(float)a4;
-- (id)scaledBy:(CGPoint)a3 offset:(CGPoint)a4;
-- (id)unionWithQuad:(id)a3 baselineAngle:(float)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)homographyFromSelfToQuad:(void *)a3;
+- (id)rotatedAroundPoint:(CGPoint)point angle:(float)angle;
+- (id)scaledBy:(CGPoint)by offset:(CGPoint)offset;
+- (id)unionWithQuad:(id)quad baselineAngle:(float)angle;
+- (void)encodeWithCoder:(id)coder;
+- (void)homographyFromSelfToQuad:(void *)quad;
 @end
 
 @implementation CRImageSpaceQuad
 
-- (CRImageSpaceQuad)initWithCoder:(id)a3
+- (CRImageSpaceQuad)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CRQuadData"];
-  v6 = [v4 decodeIntegerForKey:@"CRQuadUncompressedDataSize"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CRQuadData"];
+  v6 = [coderCopy decodeIntegerForKey:@"CRQuadUncompressedDataSize"];
 
   v7 = uncompressDataOfSize(v5, v6);
   v8 = [(CRImageSpaceQuad *)self initWithCRCodableDataRepresentation:v7];
@@ -51,41 +51,41 @@
   return v8;
 }
 
-- (CRImageSpaceQuad)applyHomographyTransform:(float32x4_t)a3 downscaleRate:(float32x4_t)a4
+- (CRImageSpaceQuad)applyHomographyTransform:(float32x4_t)transform downscaleRate:(float32x4_t)rate
 {
   *&v6 = a5;
   v7 = vdupq_lane_s64(v6, 0);
-  v8 = vdivq_f64(*(a1 + 8), v7);
+  v8 = vdivq_f64(*(self + 8), v7);
   v9 = v8.f64[0];
   v10 = v8.f64[1];
-  v11 = vaddq_f32(a4, vmlaq_n_f32(vmulq_n_f32(a2, v9), a3, v10));
+  v11 = vaddq_f32(rate, vmlaq_n_f32(vmulq_n_f32(a2, v9), transform, v10));
   if (*&v11.i32[2] != 0.0)
   {
     v8 = vcvtq_f64_f32(vdiv_f32(*v11.i8, vdup_laneq_s32(v11, 2)));
   }
 
-  v12 = vdivq_f64(*(a1 + 24), v7);
+  v12 = vdivq_f64(*(self + 24), v7);
   v13 = v12.f64[0];
   v14 = v12.f64[1];
-  v15 = vaddq_f32(a4, vmlaq_n_f32(vmulq_n_f32(a2, v13), a3, v14));
+  v15 = vaddq_f32(rate, vmlaq_n_f32(vmulq_n_f32(a2, v13), transform, v14));
   if (*&v15.i32[2] != 0.0)
   {
     v12 = vcvtq_f64_f32(vdiv_f32(*v15.i8, vdup_laneq_s32(v15, 2)));
   }
 
-  v16 = vdivq_f64(*(a1 + 56), v7);
+  v16 = vdivq_f64(*(self + 56), v7);
   v17 = v16.f64[0];
   v18 = v16.f64[1];
-  v19 = vaddq_f32(a4, vmlaq_n_f32(vmulq_n_f32(a2, v17), a3, v18));
+  v19 = vaddq_f32(rate, vmlaq_n_f32(vmulq_n_f32(a2, v17), transform, v18));
   if (*&v19.i32[2] != 0.0)
   {
     v16 = vcvtq_f64_f32(vdiv_f32(*v19.i8, vdup_laneq_s32(v19, 2)));
   }
 
-  v20 = vdivq_f64(*(a1 + 40), v7);
+  v20 = vdivq_f64(*(self + 40), v7);
   v21 = v20.f64[0];
   v22 = v20.f64[1];
-  v23 = vaddq_f32(a4, vmlaq_n_f32(vmulq_n_f32(a2, v21), a3, v22));
+  v23 = vaddq_f32(rate, vmlaq_n_f32(vmulq_n_f32(a2, v21), transform, v22));
   if (*&v23.i32[2] != 0.0)
   {
     v20 = vcvtq_f64_f32(vdiv_f32(*v23.i8, vdup_laneq_s32(v23, 2)));
@@ -96,25 +96,25 @@
   return v24;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(CRImageSpaceQuad *)self crCodableDataRepresentation];
-  v5 = compressData(v6);
-  [v4 encodeObject:v5 forKey:@"CRQuadData"];
-  [v4 encodeInteger:objc_msgSend(v6 forKey:{"length"), @"CRQuadUncompressedDataSize"}];
+  coderCopy = coder;
+  crCodableDataRepresentation = [(CRImageSpaceQuad *)self crCodableDataRepresentation];
+  v5 = compressData(crCodableDataRepresentation);
+  [coderCopy encodeObject:v5 forKey:@"CRQuadData"];
+  [coderCopy encodeInteger:objc_msgSend(crCodableDataRepresentation forKey:{"length"), @"CRQuadUncompressedDataSize"}];
 }
 
-- (CRImageSpaceQuad)initWithTopLeft:(CGPoint)a3 topRight:(CGPoint)a4 bottomRight:(CGPoint)a5 bottomLeft:(CGPoint)a6
+- (CRImageSpaceQuad)initWithTopLeft:(CGPoint)left topRight:(CGPoint)right bottomRight:(CGPoint)bottomRight bottomLeft:(CGPoint)bottomLeft
 {
-  y = a6.y;
-  x = a6.x;
-  v8 = a5.y;
-  v9 = a5.x;
-  v10 = a4.y;
-  v11 = a4.x;
-  v12 = a3.y;
-  v13 = a3.x;
+  y = bottomLeft.y;
+  x = bottomLeft.x;
+  v8 = bottomRight.y;
+  v9 = bottomRight.x;
+  v10 = right.y;
+  v11 = right.x;
+  v12 = left.y;
+  v13 = left.x;
   v15.receiver = self;
   v15.super_class = CRImageSpaceQuad;
   result = [(CRImageSpaceQuad *)&v15 init];
@@ -228,20 +228,20 @@
   return v2;
 }
 
-- (id)normalizedQuadForImageSize:(CGSize)a3
+- (id)normalizedQuadForImageSize:(CGSize)size
 {
-  v3 = [[CRNormalizedQuad alloc] initWithDenormalizedQuad:self size:a3.width, a3.height];
+  v3 = [[CRNormalizedQuad alloc] initWithDenormalizedQuad:self size:size.width, size.height];
 
   return v3;
 }
 
-- (id)rotatedAroundPoint:(CGPoint)a3 angle:(float)a4
+- (id)rotatedAroundPoint:(CGPoint)point angle:(float)angle
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v7 = self->_topLeft.x;
   v8 = self->_topLeft.y;
-  v9 = __sincos_stret(a4);
+  v9 = __sincos_stret(angle);
   v10 = (v7 - x) * v9.__cosval - (v8 - y) * v9.__sinval;
   v11 = v9.__cosval * (v8 - y) + (v7 - x) * v9.__sinval;
   v12 = x + v10;
@@ -267,22 +267,22 @@
   return v28;
 }
 
-- (id)scaledBy:(CGPoint)a3 offset:(CGPoint)a4
+- (id)scaledBy:(CGPoint)by offset:(CGPoint)offset
 {
-  v4 = [[CRImageSpaceQuad alloc] initWithTopLeft:a4.x + self->_topLeft.x * a3.x topRight:a4.y + self->_topLeft.y * a3.y bottomRight:a4.x + self->_topRight.x * a3.x bottomLeft:a4.y + self->_topRight.y * a3.y, a4.x + self->_bottomRight.x * a3.x, a4.y + self->_bottomRight.y * a3.y, a4.x + self->_bottomLeft.x * a3.x, a4.y + self->_bottomLeft.y * a3.y];
+  v4 = [[CRImageSpaceQuad alloc] initWithTopLeft:offset.x + self->_topLeft.x * by.x topRight:offset.y + self->_topLeft.y * by.y bottomRight:offset.x + self->_topRight.x * by.x bottomLeft:offset.y + self->_topRight.y * by.y, offset.x + self->_bottomRight.x * by.x, offset.y + self->_bottomRight.y * by.y, offset.x + self->_bottomLeft.x * by.x, offset.y + self->_bottomLeft.y * by.y];
 
   return v4;
 }
 
-- (id)unionWithQuad:(id)a3 baselineAngle:(float)a4
+- (id)unionWithQuad:(id)quad baselineAngle:(float)angle
 {
-  v6 = a3;
+  quadCopy = quad;
   [(CRImageSpaceQuad *)self boundingBox];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  [v6 boundingBox];
+  [quadCopy boundingBox];
   v63.origin.x = v15;
   v63.origin.y = v16;
   v63.size.width = v17;
@@ -295,11 +295,11 @@
   v62.size.width = v62.size.width * 0.5;
   v20 = v62.origin.y + v62.size.height * 0.5;
   v19 = v62.origin.x + v62.size.width;
-  v59 = a4;
-  *&v62.size.width = a4;
+  angleCopy = angle;
+  *&v62.size.width = angle;
   v21 = [(CRImageSpaceQuad *)self rotatedAroundPoint:v19 angle:v20, v62.size.width];
-  *&v22 = a4;
-  v23 = [v6 rotatedAroundPoint:v19 angle:{v20, v22}];
+  *&v22 = angle;
+  v23 = [quadCopy rotatedAroundPoint:v19 angle:{v20, v22}];
 
   [v23 bottomLeft];
   v25 = v24;
@@ -405,21 +405,21 @@
   }
 
   v55 = [[CRImageSpaceQuad alloc] initWithTopLeft:v25 topRight:v32 bottomRight:v40 bottomLeft:v32, v40, v54, v25, v54];
-  *&v56 = -v59;
+  *&v56 = -angleCopy;
   v57 = [(CRImageSpaceQuad *)v55 rotatedAroundPoint:v19 angle:v20, v56];
 
   return v57;
 }
 
-- (double)boundingBoxIOUWithQuad:(id)a3
+- (double)boundingBoxIOUWithQuad:(id)quad
 {
-  v4 = a3;
+  quadCopy = quad;
   [(CRImageSpaceQuad *)self boundingBox];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  [v4 boundingBox];
+  [quadCopy boundingBox];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -448,39 +448,39 @@
   return v26.size.width * v26.size.height / (width * height + 1.0e-23);
 }
 
-- (BOOL)overlapsQuad:(id)a3
+- (BOOL)overlapsQuad:(id)quad
 {
   v37[8] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  [(CRImageSpaceQuad *)v5 topLeft];
+  quadCopy = quad;
+  selfCopy = self;
+  [(CRImageSpaceQuad *)selfCopy topLeft];
   v37[0] = v6;
   v37[1] = v7;
-  [(CRImageSpaceQuad *)v5 topRight];
+  [(CRImageSpaceQuad *)selfCopy topRight];
   v37[2] = v8;
   v37[3] = v9;
-  [(CRImageSpaceQuad *)v5 bottomRight];
+  [(CRImageSpaceQuad *)selfCopy bottomRight];
   v37[4] = v10;
   v37[5] = v11;
-  [(CRImageSpaceQuad *)v5 bottomLeft];
+  [(CRImageSpaceQuad *)selfCopy bottomLeft];
   v37[6] = v12;
   v37[7] = v13;
-  [v4 topLeft];
+  [quadCopy topLeft];
   v35 = v14;
   v36[0] = v15;
-  [v4 topRight];
+  [quadCopy topRight];
   v36[1] = v16;
   v36[2] = v17;
-  [v4 bottomRight];
+  [quadCopy bottomRight];
   v36[3] = v18;
   v36[4] = v19;
-  [v4 bottomLeft];
+  [quadCopy bottomLeft];
   v20 = 0;
   v36[5] = v21;
   v36[6] = v22;
   do
   {
-    if (-[CRImageSpaceQuad containsPoint:](v5, "containsPoint:", *&v36[v20 - 1], *&v36[v20]) || ([v4 containsPoint:{*&v37[v20], *&v37[v20 + 1]}] & 1) != 0)
+    if (-[CRImageSpaceQuad containsPoint:](selfCopy, "containsPoint:", *&v36[v20 - 1], *&v36[v20]) || ([quadCopy containsPoint:{*&v37[v20], *&v37[v20 + 1]}] & 1) != 0)
     {
 LABEL_12:
       v33 = 1;
@@ -504,7 +504,7 @@ LABEL_12:
     v31 = v36;
     while (v30 != 5)
     {
-      v32 = [(CRImageSpaceQuad *)v5 linesIntersectLine1P1:v25 line1P2:v26 line2P1:v28 line2P2:v29, *(v31 - 1), *v31, *&v36[2 * (v30 & 3) - 1], *&v36[2 * (v30 & 3)]];
+      v32 = [(CRImageSpaceQuad *)selfCopy linesIntersectLine1P1:v25 line1P2:v26 line2P1:v28 line2P2:v29, *(v31 - 1), *v31, *&v36[2 * (v30 & 3) - 1], *&v36[2 * (v30 & 3)]];
       v31 += 2;
       ++v30;
       if (v32)
@@ -522,14 +522,14 @@ LABEL_13:
   return v33;
 }
 
-- (BOOL)linesIntersectLine1P1:(double)a3 line1P2:(double)a4 line2P1:(double)a5 line2P2:(double)a6
+- (BOOL)linesIntersectLine1P1:(double)p1 line1P2:(double)p2 line2P1:(double)line2P1 line2P2:(double)line2P2
 {
   if (result)
   {
-    v9 = (a5 - a3) * (a6 - a4) - (a4 - a2) * (a7 - a5);
-    v10 = (a5 - a3) * (a8 - a4) - (a4 - a2) * (a9 - a5);
-    v11 = (a9 - a7) * (a4 - a8) - (a8 - a6) * (a5 - a9);
-    v12 = (a9 - a7) * (a2 - a8) - (a8 - a6) * (a3 - a9);
+    v9 = (line2P1 - p1) * (line2P2 - p2) - (p2 - a2) * (a7 - line2P1);
+    v10 = (line2P1 - p1) * (a8 - p2) - (p2 - a2) * (a9 - line2P1);
+    v11 = (a9 - a7) * (p2 - a8) - (a8 - line2P2) * (line2P1 - a9);
+    v12 = (a9 - a7) * (a2 - a8) - (a8 - line2P2) * (p1 - a9);
     v13 = (v10 != 0.0) & ((v9 > 0.0) ^ (v10 <= 0.0));
     if (v9 == 0.0)
     {
@@ -545,27 +545,27 @@ LABEL_13:
     result = 1;
     if ((v13 & 1) != 0 || v14)
     {
-      if (v9 != 0.0 || (a2 >= a4 ? (v15 = a2) : (v15 = a4), a2 >= a4 ? (v16 = a4) : (v16 = a2), a6 <= v15 ? (v17 = a6 < v16) : (v17 = 1), v17 || (a3 >= a5 ? (v30 = a3) : (v30 = a5), a3 >= a5 ? (v31 = a5) : (v31 = a3), a7 > v30 || a7 < v31)))
+      if (v9 != 0.0 || (a2 >= p2 ? (v15 = a2) : (v15 = p2), a2 >= p2 ? (v16 = p2) : (v16 = a2), line2P2 <= v15 ? (v17 = line2P2 < v16) : (v17 = 1), v17 || (p1 >= line2P1 ? (v30 = p1) : (v30 = line2P1), p1 >= line2P1 ? (v31 = line2P1) : (v31 = p1), a7 > v30 || a7 < v31)))
       {
-        if (v10 != 0.0 || (a2 >= a4 ? (v18 = a2) : (v18 = a4), a2 >= a4 ? (v19 = a4) : (v19 = a2), a8 > v18 || a8 < v19 || (a3 >= a5 ? (v20 = a3) : (v20 = a5), a3 >= a5 ? (v21 = a5) : (v21 = a3), a9 > v20 || a9 < v21)))
+        if (v10 != 0.0 || (a2 >= p2 ? (v18 = a2) : (v18 = p2), a2 >= p2 ? (v19 = p2) : (v19 = a2), a8 > v18 || a8 < v19 || (p1 >= line2P1 ? (v20 = p1) : (v20 = line2P1), p1 >= line2P1 ? (v21 = line2P1) : (v21 = p1), a9 > v20 || a9 < v21)))
         {
-          if (v12 != 0.0 || (a6 >= a8 ? (v22 = a6) : (v22 = a8), a6 >= a8 ? (v23 = a8) : (v23 = a6), a2 > v22 || a2 < v23 || (a7 >= a9 ? (v24 = a7) : (v24 = a9), a7 >= a9 ? (v25 = a9) : (v25 = a7), a3 > v24 || a3 < v25)))
+          if (v12 != 0.0 || (line2P2 >= a8 ? (v22 = line2P2) : (v22 = a8), line2P2 >= a8 ? (v23 = a8) : (v23 = line2P2), a2 > v22 || a2 < v23 || (a7 >= a9 ? (v24 = a7) : (v24 = a9), a7 >= a9 ? (v25 = a9) : (v25 = a7), p1 > v24 || p1 < v25)))
           {
             if (v11 != 0.0)
             {
               return 0;
             }
 
-            v26 = a6 >= a8 ? a6 : a8;
-            v27 = a6 >= a8 ? a8 : a6;
-            if (a4 > v26 || a4 < v27)
+            v26 = line2P2 >= a8 ? line2P2 : a8;
+            v27 = line2P2 >= a8 ? a8 : line2P2;
+            if (p2 > v26 || p2 < v27)
             {
               return 0;
             }
 
             v28 = a7 >= a9 ? a7 : a9;
             v29 = a7 >= a9 ? a9 : a7;
-            if (a5 > v28 || a5 < v29)
+            if (line2P1 > v28 || line2P1 < v29)
             {
               return 0;
             }
@@ -578,20 +578,20 @@ LABEL_13:
   return result;
 }
 
-- (double)shortestDistanceFromCornersOfQuad:(id)a3
+- (double)shortestDistanceFromCornersOfQuad:(id)quad
 {
   v17[8] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 topLeft];
+  quadCopy = quad;
+  [quadCopy topLeft];
   v17[0] = v5;
   v17[1] = v6;
-  [v4 topRight];
+  [quadCopy topRight];
   v17[2] = v7;
   v17[3] = v8;
-  [v4 bottomRight];
+  [quadCopy bottomRight];
   v17[4] = v9;
   v17[5] = v10;
-  [v4 bottomLeft];
+  [quadCopy bottomLeft];
   v11 = 0;
   v17[6] = v12;
   v17[7] = v13;
@@ -612,20 +612,20 @@ LABEL_13:
   return v14;
 }
 
-- (double)squaredDistanceFromCorrespondingCornersOfQuad:(id)a3
+- (double)squaredDistanceFromCorrespondingCornersOfQuad:(id)quad
 {
   v22[8] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 topLeft];
+  quadCopy = quad;
+  [quadCopy topLeft];
   v22[0] = v5;
   v22[1] = v6;
-  [v4 topRight];
+  [quadCopy topRight];
   v22[2] = v7;
   v22[3] = v8;
-  [v4 bottomRight];
+  [quadCopy bottomRight];
   v22[4] = v9;
   v22[5] = v10;
-  [v4 bottomLeft];
+  [quadCopy bottomLeft];
   v11 = 0;
   v22[6] = v12;
   v22[7] = v13;
@@ -650,20 +650,20 @@ LABEL_13:
   return v16;
 }
 
-- (double)squaredDistanceMaxRatioFromCorrespondingCornersOfQuad:(id)a3
+- (double)squaredDistanceMaxRatioFromCorrespondingCornersOfQuad:(id)quad
 {
   v22[8] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 topLeft];
+  quadCopy = quad;
+  [quadCopy topLeft];
   v22[0] = v5;
   v22[1] = v6;
-  [v4 topRight];
+  [quadCopy topRight];
   v22[2] = v7;
   v22[3] = v8;
-  [v4 bottomRight];
+  [quadCopy bottomRight];
   v22[4] = v9;
   v22[5] = v10;
-  [v4 bottomLeft];
+  [quadCopy bottomLeft];
   v11 = 0;
   v22[6] = v12;
   v22[7] = v13;
@@ -697,12 +697,12 @@ LABEL_13:
   return v16 / v17;
 }
 
-- (double)shortestDistanceFromPoint:(CGPoint)a3
+- (double)shortestDistanceFromPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v27 = *MEMORY[0x1E69E9840];
-  v5 = [(CRImageSpaceQuad *)self containsPoint:a3.x, a3.y, *&self->_topLeft.x, *&self->_topLeft.y, *&self->_topRight.x, *&self->_topRight.y, *&self->_bottomRight.x, *&self->_bottomRight.y, *&self->_bottomLeft.x, *&self->_bottomLeft.y];
+  v5 = [(CRImageSpaceQuad *)self containsPoint:point.x, point.y, *&self->_topLeft.x, *&self->_topLeft.y, *&self->_topRight.x, *&self->_topRight.y, *&self->_bottomRight.x, *&self->_bottomRight.y, *&self->_bottomLeft.x, *&self->_bottomLeft.y];
   result = 0.0;
   if (!v5)
   {
@@ -754,10 +754,10 @@ LABEL_13:
   return result;
 }
 
-- (BOOL)containsPoint:(CGPoint)a3
+- (BOOL)containsPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(CRImageSpaceQuad *)self midPoint];
   v8 = v7;
   v10 = v9;
@@ -851,8 +851,8 @@ LABEL_13:
 
 - (double)orthogonalityScore
 {
-  v2 = [(CRImageSpaceQuad *)self cornerAngles];
-  v3 = [v2 sortedArrayUsingSelector:sel_compare_];
+  cornerAngles = [(CRImageSpaceQuad *)self cornerAngles];
+  v3 = [cornerAngles sortedArrayUsingSelector:sel_compare_];
 
   v4 = [v3 objectAtIndexedSubscript:0];
   [v4 doubleValue];
@@ -882,10 +882,10 @@ LABEL_13:
   return [(CRImageSpaceQuad *)self linesIntersectLine1P1:y line1P2:v7 line2P1:v8 line2P2:v5, v6, v9, v10];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v18 = 1;
   }
@@ -895,7 +895,7 @@ LABEL_13:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       [(CRImageSpaceQuad *)v5 topLeft];
       v8 = vabdd_f64(self->_topLeft.y, v7);
       v9 = vabdd_f64(self->_topLeft.x, v6) > 0.5 || v8 > 0.5;
@@ -921,9 +921,9 @@ LABEL_13:
   return v18;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [CRImageSpaceQuad allocWithZone:a3];
+  v4 = [CRImageSpaceQuad allocWithZone:zone];
   x = self->_topLeft.x;
   y = self->_topLeft.y;
   v7 = self->_topRight.x;
@@ -948,49 +948,49 @@ LABEL_13:
   return v3;
 }
 
-- (CRImageSpaceQuad)initWithCRCodableDataRepresentation:(id)a3
+- (CRImageSpaceQuad)initWithCRCodableDataRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v21 = 0;
-  if ([CRCodingUtilities integerFromEncodingData:v4 offset:&v21]== 1)
+  if ([CRCodingUtilities integerFromEncodingData:representationCopy offset:&v21]== 1)
   {
-    [CRCodingUtilities pointFromEncodingData:v4 offset:&v21];
+    [CRCodingUtilities pointFromEncodingData:representationCopy offset:&v21];
     v6 = v5;
     v8 = v7;
-    [CRCodingUtilities pointFromEncodingData:v4 offset:&v21];
+    [CRCodingUtilities pointFromEncodingData:representationCopy offset:&v21];
     v10 = v9;
     v12 = v11;
-    [CRCodingUtilities pointFromEncodingData:v4 offset:&v21];
+    [CRCodingUtilities pointFromEncodingData:representationCopy offset:&v21];
     v14 = v13;
     v16 = v15;
-    [CRCodingUtilities pointFromEncodingData:v4 offset:&v21];
+    [CRCodingUtilities pointFromEncodingData:representationCopy offset:&v21];
     self = [(CRImageSpaceQuad *)self initWithTopLeft:v6 topRight:v8 bottomRight:v10 bottomLeft:v12, v14, v16, v17, v18];
-    v19 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v19 = 0;
+    selfCopy = 0;
   }
 
-  return v19;
+  return selfCopy;
 }
 
-- (BOOL)intersectsImageMargin:(double)a3 imageSize:(CGSize)a4
+- (BOOL)intersectsImageMargin:(double)margin imageSize:(CGSize)size
 {
-  v4 = a4.width - a3;
-  v5 = a4.height - a3;
+  v4 = size.width - margin;
+  v5 = size.height - margin;
   topLeft = self->_topLeft;
   topRight = self->_topRight;
   bottomLeft = self->_bottomLeft;
-  v9 = vdupq_lane_s64(*&a3, 0);
+  v9 = vdupq_lane_s64(*&margin, 0);
   v10.f64[0] = v4;
   v10.f64[1] = v5;
   v11 = vuzp1q_s32(vcgeq_f64(topLeft, v10), vcgeq_f64(topRight, v10));
   v12 = vcgeq_f64(bottomLeft, v10);
   *v12.i8 = vmovn_s64(v12);
   *v12.i8 = vmovn_s16(vuzp1q_s16(v11, v12));
-  v12.i16[3] = vuzp1_s8(*&a3, vuzp1_s16(*&a3, vmovn_s64(vcgeq_f64(v9, *&topLeft)))).i16[3];
+  v12.i16[3] = vuzp1_s8(*&margin, vuzp1_s16(*&margin, vmovn_s64(vcgeq_f64(v9, *&topLeft)))).i16[3];
   v13 = 1;
   if ((vmaxv_u8(vcltz_s8(vshl_n_s8(*v12.i8, 7uLL))) & 1) == 0 && (vaddvq_s32(vandq_s8(vuzp1q_s32(vcgeq_f64(v9, topRight), vcgeq_f64(v9, bottomLeft)), xmmword_1B42AF430)) & 0xF) == 0)
   {
@@ -1004,7 +1004,7 @@ LABEL_13:
       v13 = 1;
     }
 
-    if (v17 <= a3)
+    if (v17 <= margin)
     {
       return 1;
     }
@@ -1013,25 +1013,25 @@ LABEL_13:
   return v13;
 }
 
-- (BOOL)entirelyContainsQuad:(id)a3
+- (BOOL)entirelyContainsQuad:(id)quad
 {
-  v4 = a3;
+  quadCopy = quad;
   [(CRImageSpaceQuad *)self area];
   v6 = v5;
-  [v4 area];
+  [quadCopy area];
   v8 = 0;
   if (v6 > v7)
   {
-    [v4 topLeft];
+    [quadCopy topLeft];
     if ([(CRImageSpaceQuad *)self containsPoint:?])
     {
-      [v4 topRight];
+      [quadCopy topRight];
       if ([(CRImageSpaceQuad *)self containsPoint:?])
       {
-        [v4 bottomRight];
+        [quadCopy bottomRight];
         if ([(CRImageSpaceQuad *)self containsPoint:?])
         {
-          [v4 bottomLeft];
+          [quadCopy bottomLeft];
           if ([(CRImageSpaceQuad *)self containsPoint:?])
           {
             v8 = 1;
@@ -1044,24 +1044,24 @@ LABEL_13:
   return v8;
 }
 
-- (BOOL)intersectsQuad:(id)a3
+- (BOOL)intersectsQuad:(id)quad
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  quadCopy = quad;
   topRight = self->_topRight;
   v22[0] = self->_topLeft;
   v22[1] = topRight;
   bottomLeft = self->_bottomLeft;
   v22[2] = self->_bottomRight;
   v22[3] = bottomLeft;
-  [v4 topLeft];
-  [v4 topRight];
+  [quadCopy topLeft];
+  [quadCopy topRight];
   v21[2] = v9;
   v21[3] = v10;
-  [v4 bottomRight];
+  [quadCopy bottomRight];
   v21[4] = v11;
   v21[5] = v12;
-  [v4 bottomLeft];
+  [quadCopy bottomLeft];
   v13 = 0;
   v21[6] = v14;
   v21[7] = v15;
@@ -1094,37 +1094,37 @@ LABEL_13:
     break;
   }
 
-  if ([(CRImageSpaceQuad *)self entirelyContainsQuad:v4])
+  if ([(CRImageSpaceQuad *)self entirelyContainsQuad:quadCopy])
   {
 LABEL_8:
     v19 = 1;
     goto LABEL_9;
   }
 
-  v19 = [v4 entirelyContainsQuad:self];
+  v19 = [quadCopy entirelyContainsQuad:self];
 LABEL_9:
 
   return v19;
 }
 
-- (void)homographyFromSelfToQuad:(void *)a3
+- (void)homographyFromSelfToQuad:(void *)quad
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = *(a1 + 24);
-  v17[0] = *(a1 + 8);
+  v3 = *(self + 24);
+  v17[0] = *(self + 8);
   v17[1] = v3;
-  v4 = *(a1 + 56);
-  v17[2] = *(a1 + 40);
+  v4 = *(self + 56);
+  v17[2] = *(self + 40);
   v17[3] = v4;
-  v5 = a3;
-  [v5 topLeft];
-  [v5 topRight];
+  quadCopy = quad;
+  [quadCopy topLeft];
+  [quadCopy topRight];
   v16[2] = v8;
   v16[3] = v9;
-  [v5 bottomRight];
+  [quadCopy bottomRight];
   v16[4] = v10;
   v16[5] = v11;
-  [v5 bottomLeft];
+  [quadCopy bottomLeft];
   v13 = v12;
   v15 = v14;
 

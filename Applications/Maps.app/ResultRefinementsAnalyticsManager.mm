@@ -1,30 +1,30 @@
 @interface ResultRefinementsAnalyticsManager
-- (ResultRefinementsAnalyticsManager)initWithRefinementsFromWaypointEditor:(BOOL)a3;
-- (void)logRefinementsEvent:(unint64_t)a3 fromSource:(unint64_t)a4;
-- (void)resultRefinementTappedWithKey:(id)a3 source:(unint64_t)a4 refinementType:(unint64_t)a5 isSelected:(BOOL)a6;
+- (ResultRefinementsAnalyticsManager)initWithRefinementsFromWaypointEditor:(BOOL)editor;
+- (void)logRefinementsEvent:(unint64_t)event fromSource:(unint64_t)source;
+- (void)resultRefinementTappedWithKey:(id)key source:(unint64_t)source refinementType:(unint64_t)type isSelected:(BOOL)selected;
 @end
 
 @implementation ResultRefinementsAnalyticsManager
 
-- (void)resultRefinementTappedWithKey:(id)a3 source:(unint64_t)a4 refinementType:(unint64_t)a5 isSelected:(BOOL)a6
+- (void)resultRefinementTappedWithKey:(id)key source:(unint64_t)source refinementType:(unint64_t)type isSelected:(BOOL)selected
 {
-  v6 = a6;
-  v16 = a3;
-  if (a4 == 2)
+  selectedCopy = selected;
+  keyCopy = key;
+  if (source == 2)
   {
     v11 = 176;
     v12 = 197;
     v10 = 22;
   }
 
-  else if (a4 == 1)
+  else if (source == 1)
   {
     v11 = 176;
     v12 = 197;
     v10 = 23;
   }
 
-  else if (a4)
+  else if (source)
   {
     v10 = 0;
     v12 = 0;
@@ -47,7 +47,7 @@
     v12 = 200;
   }
 
-  if (v6)
+  if (selectedCopy)
   {
     v13 = 158;
   }
@@ -57,17 +57,17 @@
     v13 = 202;
   }
 
-  if (v6)
+  if (selectedCopy)
   {
     v11 = v12;
   }
 
-  if (a5)
+  if (type)
   {
     v11 = 0;
   }
 
-  if (a5 == 1)
+  if (type == 1)
   {
     v14 = v13;
   }
@@ -78,22 +78,22 @@
   }
 
   v15 = +[MKMapService sharedService];
-  [v15 captureUserAction:v14 onTarget:v10 eventValue:v16];
+  [v15 captureUserAction:v14 onTarget:v10 eventValue:keyCopy];
 }
 
-- (void)logRefinementsEvent:(unint64_t)a3 fromSource:(unint64_t)a4
+- (void)logRefinementsEvent:(unint64_t)event fromSource:(unint64_t)source
 {
-  if (a4 == 2)
+  if (source == 2)
   {
     v6 = 22;
   }
 
-  else if (a4 == 1)
+  else if (source == 1)
   {
     v6 = 23;
   }
 
-  else if (a4)
+  else if (source)
   {
     v6 = 0;
   }
@@ -108,7 +108,7 @@
     v6 = 21;
   }
 
-  if (a3 == 3)
+  if (event == 3)
   {
     v7 = 157;
   }
@@ -118,7 +118,7 @@
     v7 = 0;
   }
 
-  if (a3 == 2)
+  if (event == 2)
   {
     v8 = 155;
   }
@@ -128,7 +128,7 @@
     v8 = v7;
   }
 
-  if (a4 == 1)
+  if (source == 1)
   {
     v9 = 186;
   }
@@ -138,7 +138,7 @@
     v9 = 205;
   }
 
-  if (a4 == 1)
+  if (source == 1)
   {
     v10 = 168;
   }
@@ -148,17 +148,17 @@
     v10 = 167;
   }
 
-  if (a3 != 1)
+  if (event != 1)
   {
     v10 = 0;
   }
 
-  if (a3)
+  if (event)
   {
     v9 = v10;
   }
 
-  if (a3 <= 1)
+  if (event <= 1)
   {
     v11 = v9;
   }
@@ -172,14 +172,14 @@
   [v12 captureUserAction:v11 onTarget:v6 eventValue:0];
 }
 
-- (ResultRefinementsAnalyticsManager)initWithRefinementsFromWaypointEditor:(BOOL)a3
+- (ResultRefinementsAnalyticsManager)initWithRefinementsFromWaypointEditor:(BOOL)editor
 {
   v5.receiver = self;
   v5.super_class = ResultRefinementsAnalyticsManager;
   result = [(ResultRefinementsAnalyticsManager *)&v5 init];
   if (result)
   {
-    result->_isFromWaypointEditor = a3;
+    result->_isFromWaypointEditor = editor;
   }
 
   return result;

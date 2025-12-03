@@ -1,49 +1,49 @@
 @interface CarplayNavigationController
-- (CarplayNavigationController)initWithModel:(id)a3;
+- (CarplayNavigationController)initWithModel:(id)model;
 - (void)_dismissPresentedViewController;
 - (void)_initializeAndPushListView;
-- (void)_showEvent:(id)a3 animated:(BOOL)a4;
-- (void)_showListScrolledToDate:(id)a3;
-- (void)handleURL:(id)a3;
+- (void)_showEvent:(id)event animated:(BOOL)animated;
+- (void)_showListScrolledToDate:(id)date;
+- (void)handleURL:(id)l;
 @end
 
 @implementation CarplayNavigationController
 
-- (CarplayNavigationController)initWithModel:(id)a3
+- (CarplayNavigationController)initWithModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v24.receiver = self;
   v24.super_class = CarplayNavigationController;
   v6 = [(CarplayNavigationController *)&v24 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_model, a3);
-    v8 = [(CUIKCalendarModel *)v7->_model undoManager];
-    v9 = [v8 undoableEditor];
+    objc_storeStrong(&v6->_model, model);
+    undoManager = [(CUIKCalendarModel *)v7->_model undoManager];
+    undoableEditor = [undoManager undoableEditor];
 
     v10 = [[EKUIIntegrationAlertDisplayer alloc] initWithViewController:v7 options:0];
     alertDisplayer = v7->_alertDisplayer;
     v7->_alertDisplayer = v10;
 
     v12 = [CUIKIPendingReminderTracker alloc];
-    v13 = [(CUIKCalendarModel *)v7->_model eventStore];
-    v14 = [v12 initWithEventStore:v13];
+    eventStore = [(CUIKCalendarModel *)v7->_model eventStore];
+    v14 = [v12 initWithEventStore:eventStore];
 
-    [v5 setPendingReminderTracker:v14];
+    [modelCopy setPendingReminderTracker:v14];
     v15 = [CUIKIReminderEditor alloc];
-    v16 = [(CUIKCalendarModel *)v7->_model eventStore];
-    v17 = [(CUIKCalendarModel *)v7->_model undoManager];
-    v18 = [v15 initWithEventStore:v16 undoManager:v17 alertDisplayer:v7->_alertDisplayer pendingReminderTracker:v14];
+    eventStore2 = [(CUIKCalendarModel *)v7->_model eventStore];
+    undoManager2 = [(CUIKCalendarModel *)v7->_model undoManager];
+    v18 = [v15 initWithEventStore:eventStore2 undoManager:undoManager2 alertDisplayer:v7->_alertDisplayer pendingReminderTracker:v14];
 
     v19 = [CUIKCompositeEditor alloc];
-    v25[0] = v9;
+    v25[0] = undoableEditor;
     v25[1] = v18;
     v20 = [NSArray arrayWithObjects:v25 count:2];
     v21 = [v19 initWithEditors:v20];
 
-    v22 = [(CUIKCalendarModel *)v7->_model undoManager];
-    [v22 setUndoableEditor:v21];
+    undoManager3 = [(CUIKCalendarModel *)v7->_model undoManager];
+    [undoManager3 setUndoableEditor:v21];
 
     [(CarplayNavigationController *)v7 _initializeAndPushListView];
   }
@@ -51,28 +51,28 @@
   return v7;
 }
 
-- (void)handleURL:(id)a3
+- (void)handleURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = self->_model;
-  v6 = [v4 scheme];
-  if ([v6 isEqualToString:_EKEventURLScheme])
+  scheme = [lCopy scheme];
+  if ([scheme isEqualToString:_EKEventURLScheme])
   {
-    v7 = [(CUIKCalendarModel *)v5 eventStore];
-    v8 = [v7 _eventWithURI:v4 checkValid:1];
+    eventStore = [(CUIKCalendarModel *)v5 eventStore];
+    resourceSpecifier = [eventStore _eventWithURI:lCopy checkValid:1];
 
-    if (v8)
+    if (resourceSpecifier)
     {
       v9 = kCalUILogCarplayHandle;
       if (os_log_type_enabled(kCalUILogCarplayHandle, OS_LOG_TYPE_INFO))
       {
         v15 = 138412290;
-        v16 = v8;
+        v16 = resourceSpecifier;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "handling url as showing event:%@", &v15, 0xCu);
       }
 
       [(CarplayNavigationController *)self _dismissPresentedViewController];
-      [(CarplayNavigationController *)self _showEvent:v8 animated:0];
+      [(CarplayNavigationController *)self _showEvent:resourceSpecifier animated:0];
     }
 
 LABEL_11:
@@ -80,12 +80,12 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:@"calshow"])
+  if ([scheme isEqualToString:@"calshow"])
   {
-    v8 = [v4 resourceSpecifier];
-    if ([v8 length])
+    resourceSpecifier = [lCopy resourceSpecifier];
+    if ([resourceSpecifier length])
     {
-      v10 = +[NSDate dateWithTimeIntervalSinceReferenceDate:](NSDate, "dateWithTimeIntervalSinceReferenceDate:", [v8 intValue]);
+      v10 = +[NSDate dateWithTimeIntervalSinceReferenceDate:](NSDate, "dateWithTimeIntervalSinceReferenceDate:", [resourceSpecifier intValue]);
       v11 = kCalUILogCarplayHandle;
       if (os_log_type_enabled(kCalUILogCarplayHandle, OS_LOG_TYPE_INFO))
       {
@@ -95,9 +95,9 @@ LABEL_11:
       }
 
       [(CarplayNavigationController *)self _dismissPresentedViewController];
-      v12 = [(CUIKCalendarModel *)v5 calendar];
-      v13 = [v12 timeZone];
-      v14 = [EKCalendarDate calendarDateWithDate:v10 timeZone:v13];
+      calendar = [(CUIKCalendarModel *)v5 calendar];
+      timeZone = [calendar timeZone];
+      v14 = [EKCalendarDate calendarDateWithDate:v10 timeZone:timeZone];
       [(CarplayNavigationController *)self _showListScrolledToDate:v14];
     }
 
@@ -109,8 +109,8 @@ LABEL_12:
 
 - (void)_dismissPresentedViewController
 {
-  v4 = [(CarplayNavigationController *)self presentedViewController];
-  if (v4)
+  presentedViewController = [(CarplayNavigationController *)self presentedViewController];
+  if (presentedViewController)
   {
     [(CarplayNavigationController *)self dismissViewControllerAnimated:1 completion:0];
   }
@@ -118,10 +118,10 @@ LABEL_12:
   v3 = [(CarplayNavigationController *)self popToRootViewControllerAnimated:1];
 }
 
-- (void)_showEvent:(id)a3 animated:(BOOL)a4
+- (void)_showEvent:(id)event animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  eventCopy = event;
   v7 = kCalUILogCarplayHandle;
   if (os_log_type_enabled(kCalUILogCarplayHandle, OS_LOG_TYPE_DEBUG))
   {
@@ -129,15 +129,15 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "Showing detail view on nav stack", v9, 2u);
   }
 
-  v8 = [[CarplayDetailViewController alloc] initWithEvent:v6 showDayName:0];
-  [(CarplayNavigationController *)self pushViewController:v8 animated:v4];
+  v8 = [[CarplayDetailViewController alloc] initWithEvent:eventCopy showDayName:0];
+  [(CarplayNavigationController *)self pushViewController:v8 animated:animatedCopy];
 }
 
-- (void)_showListScrolledToDate:(id)a3
+- (void)_showListScrolledToDate:(id)date
 {
-  v4 = a3;
-  v5 = [(CarplayNavigationController *)self bottomViewController];
-  [v5 scrollToDate:v4];
+  dateCopy = date;
+  bottomViewController = [(CarplayNavigationController *)self bottomViewController];
+  [bottomViewController scrollToDate:dateCopy];
 }
 
 - (void)_initializeAndPushListView

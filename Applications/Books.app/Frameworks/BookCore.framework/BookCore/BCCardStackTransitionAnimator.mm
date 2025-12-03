@@ -1,35 +1,35 @@
 @interface BCCardStackTransitionAnimator
 + (BOOL)_isSlowModeEnabled;
-- (BCCardStackTransitionAnimator)initWithType:(int64_t)a3 allowsCardExpansion:(BOOL)a4;
+- (BCCardStackTransitionAnimator)initWithType:(int64_t)type allowsCardExpansion:(BOOL)expansion;
 - (BOOL)_prefersCrossfade;
-- (CGAffineTransform)_translationForTitleLabel:(SEL)a3 cardSuperview:(id)a4 cardCurrentFrame:(id)a5 cardTargetFrame:(CGRect)a6;
-- (CGVector)_dismissSpringVelocityWithFromFrame:(CGRect)a3 toFrame:(CGRect)a4;
+- (CGAffineTransform)_translationForTitleLabel:(SEL)label cardSuperview:(id)superview cardCurrentFrame:(id)frame cardTargetFrame:(CGRect)targetFrame;
+- (CGVector)_dismissSpringVelocityWithFromFrame:(CGRect)frame toFrame:(CGRect)toFrame;
 - (double)_debugDragCoefficient;
-- (double)transitionDuration:(id)a3;
-- (id)_addCoverForCoverMove:(id)a3 inView:(id)a4 isDismiss:(BOOL)a5 fromFrame:(CGRect *)a6 toFrame:(CGRect *)a7;
-- (id)_addCoverForCoverSource:(id)a3 inView:(id)a4;
-- (id)_adjustSpring:(id)a3;
-- (id)_cardSlideDownSpringWithVelocity:(CGVector)a3;
+- (double)transitionDuration:(id)duration;
+- (id)_addCoverForCoverMove:(id)move inView:(id)view isDismiss:(BOOL)dismiss fromFrame:(CGRect *)frame toFrame:(CGRect *)toFrame;
+- (id)_addCoverForCoverSource:(id)source inView:(id)view;
+- (id)_adjustSpring:(id)spring;
+- (id)_cardSlideDownSpringWithVelocity:(CGVector)velocity;
 - (id)_coverScaleSpring;
 - (id)_coverSpring;
-- (id)_coverSpringForDismissWithVelocity:(CGVector)a3 isCompact:(BOOL)a4;
+- (id)_coverSpringForDismissWithVelocity:(CGVector)velocity isCompact:(BOOL)compact;
 - (id)_customCurve;
-- (void)_animatePopByCoverTransitioning:(id)a3;
-- (void)_animatePopByCrossfading:(id)a3;
-- (void)_animatePopBySliding:(id)a3;
-- (void)_animatePushByCoverTransitioning:(id)a3;
-- (void)_animatePushByCrossfading:(id)a3;
-- (void)_animatePushBySliding:(id)a3;
-- (void)_clearTranslationForView:(id)a3;
-- (void)_prepareCardForCardMove:(id)a3 isDismiss:(BOOL)a4 fromFrame:(CGRect *)a5 toFrame:(CGRect *)a6;
-- (void)addAnimations:(id)a3;
-- (void)animateTransition:(id)a3;
-- (void)animationEnded:(BOOL)a3;
+- (void)_animatePopByCoverTransitioning:(id)transitioning;
+- (void)_animatePopByCrossfading:(id)crossfading;
+- (void)_animatePopBySliding:(id)sliding;
+- (void)_animatePushByCoverTransitioning:(id)transitioning;
+- (void)_animatePushByCrossfading:(id)crossfading;
+- (void)_animatePushBySliding:(id)sliding;
+- (void)_clearTranslationForView:(id)view;
+- (void)_prepareCardForCardMove:(id)move isDismiss:(BOOL)dismiss fromFrame:(CGRect *)frame toFrame:(CGRect *)toFrame;
+- (void)addAnimations:(id)animations;
+- (void)animateTransition:(id)transition;
+- (void)animationEnded:(BOOL)ended;
 @end
 
 @implementation BCCardStackTransitionAnimator
 
-- (BCCardStackTransitionAnimator)initWithType:(int64_t)a3 allowsCardExpansion:(BOOL)a4
+- (BCCardStackTransitionAnimator)initWithType:(int64_t)type allowsCardExpansion:(BOOL)expansion
 {
   v13.receiver = self;
   v13.super_class = BCCardStackTransitionAnimator;
@@ -37,7 +37,7 @@
   v7 = v6;
   if (v6)
   {
-    v6->_animationType = a3;
+    v6->_animationType = type;
     v8 = objc_opt_new();
     additionalAnimations = v7->_additionalAnimations;
     v7->_additionalAnimations = v8;
@@ -46,22 +46,22 @@
     viewsToBeCleanedUp = v7->_viewsToBeCleanedUp;
     v7->_viewsToBeCleanedUp = v10;
 
-    v7->_cardsCanExpand = a4;
+    v7->_cardsCanExpand = expansion;
   }
 
   return v7;
 }
 
-- (void)addAnimations:(id)a3
+- (void)addAnimations:(id)animations
 {
   additionalAnimations = self->_additionalAnimations;
-  v4 = objc_retainBlock(a3);
+  v4 = objc_retainBlock(animations);
   [(NSMutableArray *)additionalAnimations addObject:v4];
 }
 
-- (double)transitionDuration:(id)a3
+- (double)transitionDuration:(id)duration
 {
-  v4 = a3;
+  durationCopy = duration;
   if ([(BCCardStackTransitionAnimator *)self _prefersCrossfade])
   {
     [(BCCardStackTransitionAnimator *)self _adjustDuration:0.3];
@@ -80,17 +80,17 @@
         goto LABEL_13;
       }
 
-      v8 = [(BCCardStackTransitionAnimator *)self _coverSpring];
+      _coverSpring = [(BCCardStackTransitionAnimator *)self _coverSpring];
     }
 
     else
     {
-      v8 = [(BCCardStackTransitionAnimator *)self _cardSlideUpSpring];
+      _coverSpring = [(BCCardStackTransitionAnimator *)self _cardSlideUpSpring];
     }
 
 LABEL_12:
-    v12 = v8;
-    [v8 settlingDuration];
+    v12 = _coverSpring;
+    [_coverSpring settlingDuration];
     v6 = v13;
 
     goto LABEL_13;
@@ -98,13 +98,13 @@ LABEL_12:
 
   if (animationType == 2)
   {
-    v8 = [(BCCardStackTransitionAnimator *)self _cardSlideDownSpringWithVelocity:0.0, 0.0];
+    _coverSpring = [(BCCardStackTransitionAnimator *)self _cardSlideDownSpringWithVelocity:0.0, 0.0];
     goto LABEL_12;
   }
 
   if (animationType == 3)
   {
-    v9 = [v4 viewControllerForKey:UITransitionContextFromViewControllerKey];
+    v9 = [durationCopy viewControllerForKey:UITransitionContextFromViewControllerKey];
     v10 = -[BCCardStackTransitionAnimator _coverSpringForDismissWithVelocity:isCompact:](self, "_coverSpringForDismissWithVelocity:isCompact:", [v9 im_isCompactWidth], 0.0, 0.0);
     [v10 settlingDuration];
     v6 = v11;
@@ -115,9 +115,9 @@ LABEL_13:
   return v6;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v6 = a3;
+  transitionCopy = transition;
   animationType = self->_animationType;
   if (animationType > 1)
   {
@@ -125,7 +125,7 @@ LABEL_13:
     {
       if (![(BCCardStackTransitionAnimator *)self _prefersCrossfade])
       {
-        [(BCCardStackTransitionAnimator *)self _animatePopBySliding:v6];
+        [(BCCardStackTransitionAnimator *)self _animatePopBySliding:transitionCopy];
         goto LABEL_16;
       }
     }
@@ -139,12 +139,12 @@ LABEL_13:
 
       if (![(BCCardStackTransitionAnimator *)self _prefersCrossfade])
       {
-        [(BCCardStackTransitionAnimator *)self _animatePopByCoverTransitioning:v6];
+        [(BCCardStackTransitionAnimator *)self _animatePopByCoverTransitioning:transitionCopy];
         goto LABEL_16;
       }
     }
 
-    [(BCCardStackTransitionAnimator *)self _animatePopByCrossfading:v6];
+    [(BCCardStackTransitionAnimator *)self _animatePopByCrossfading:transitionCopy];
     goto LABEL_16;
   }
 
@@ -157,7 +157,7 @@ LABEL_13:
 
     if (![(BCCardStackTransitionAnimator *)self _prefersCrossfade])
     {
-      [(BCCardStackTransitionAnimator *)self _animatePushByCoverTransitioning:v6];
+      [(BCCardStackTransitionAnimator *)self _animatePushByCoverTransitioning:transitionCopy];
       goto LABEL_16;
     }
 
@@ -167,23 +167,23 @@ LABEL_13:
   if ([(BCCardStackTransitionAnimator *)self _prefersCrossfade])
   {
 LABEL_11:
-    [(BCCardStackTransitionAnimator *)self _animatePushByCrossfading:v6];
+    [(BCCardStackTransitionAnimator *)self _animatePushByCrossfading:transitionCopy];
     goto LABEL_16;
   }
 
-  [(BCCardStackTransitionAnimator *)self _animatePushBySliding:v6];
+  [(BCCardStackTransitionAnimator *)self _animatePushBySliding:transitionCopy];
 LABEL_16:
   v5 = +[NSNotificationCenter defaultCenter];
   [v5 postNotificationName:@"BCCardStackTransitionTestAnimationWillBeginNotification" object:self];
 }
 
-- (void)animationEnded:(BOOL)a3
+- (void)animationEnded:(BOOL)ended
 {
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(BCCardStackTransitionAnimator *)self viewsToBeCleanedUp:a3];
+  v4 = [(BCCardStackTransitionAnimator *)self viewsToBeCleanedUp:ended];
   v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
@@ -210,8 +210,8 @@ LABEL_16:
     while (v6);
   }
 
-  v9 = [(BCCardStackTransitionAnimator *)self viewsToBeCleanedUp];
-  [v9 removeAllObjects];
+  viewsToBeCleanedUp = [(BCCardStackTransitionAnimator *)self viewsToBeCleanedUp];
+  [viewsToBeCleanedUp removeAllObjects];
 
   [(BCCardStackTransitionAnimator *)self setCoverControllers:0];
 }
@@ -226,20 +226,20 @@ LABEL_16:
   return UIAccessibilityIsReduceMotionEnabled();
 }
 
-- (void)_animatePushBySliding:(id)a3
+- (void)_animatePushBySliding:(id)sliding
 {
-  v4 = a3;
-  v5 = [v4 viewControllerForKey:UITransitionContextToViewControllerKey];
-  v6 = [v4 viewControllerForKey:UITransitionContextFromViewControllerKey];
-  v7 = [v4 viewForKey:@"BCUITransitionContextBackgroundViewKey"];
-  v8 = [v4 viewForKey:@"BCUITransitionContextTitleLabelKey"];
+  slidingCopy = sliding;
+  v5 = [slidingCopy viewControllerForKey:UITransitionContextToViewControllerKey];
+  v6 = [slidingCopy viewControllerForKey:UITransitionContextFromViewControllerKey];
+  v7 = [slidingCopy viewForKey:@"BCUITransitionContextBackgroundViewKey"];
+  v8 = [slidingCopy viewForKey:@"BCUITransitionContextTitleLabelKey"];
   if (self->_cardsCanExpand || !v6)
   {
-    v9 = [v4 containerView];
-    [v9 addSubview:v7];
+    containerView = [slidingCopy containerView];
+    [containerView addSubview:v7];
 
-    v10 = [v4 containerView];
-    [v10 addSubview:v8];
+    containerView2 = [slidingCopy containerView];
+    [containerView2 addSubview:v8];
   }
 
   v46 = v6;
@@ -249,24 +249,24 @@ LABEL_16:
     [v8 setAlpha:0.0];
   }
 
-  v11 = [v4 containerView];
-  v12 = [v5 view];
-  [v11 addSubview:v12];
+  containerView3 = [slidingCopy containerView];
+  view = [v5 view];
+  [containerView3 addSubview:view];
 
-  [v4 initialFrameForViewController:v5];
+  [slidingCopy initialFrameForViewController:v5];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  v21 = [v5 view];
-  [v21 setFrame:{v14, v16, v18, v20}];
+  view2 = [v5 view];
+  [view2 setFrame:{v14, v16, v18, v20}];
 
   v22 = objc_alloc_init(BCViewPropertyAnimatorCounter);
   v58[0] = _NSConcreteStackBlock;
   v58[1] = 3221225472;
   v58[2] = sub_ADCD4;
   v58[3] = &unk_2C7D40;
-  v23 = v4;
+  v23 = slidingCopy;
   v59 = v23;
   [(BCViewPropertyAnimatorCounter *)v22 setAnimationDidEnd:v58];
   v24 = [UIViewPropertyAnimator alloc];
@@ -292,8 +292,8 @@ LABEL_16:
   v31 = [v27 initWithDuration:0 curve:v54 animations:v29];
   [(BCViewPropertyAnimatorCounter *)v22 animate:v31];
   v32 = [UIViewPropertyAnimator alloc];
-  v33 = [(BCCardStackTransitionAnimator *)self _cardSlideUpSpring];
-  v34 = [v32 initWithDuration:v33 timingParameters:0.0];
+  _cardSlideUpSpring = [(BCCardStackTransitionAnimator *)self _cardSlideUpSpring];
+  v34 = [v32 initWithDuration:_cardSlideUpSpring timingParameters:0.0];
 
   v51[0] = _NSConcreteStackBlock;
   v51[1] = 3221225472;
@@ -339,31 +339,31 @@ LABEL_16:
   }
 }
 
-- (id)_cardSlideDownSpringWithVelocity:(CGVector)a3
+- (id)_cardSlideDownSpringWithVelocity:(CGVector)velocity
 {
-  v4 = [[UISpringTimingParameters alloc] initWithMass:1.0 stiffness:350.0 damping:30.0 initialVelocity:{a3.dx, a3.dy}];
+  v4 = [[UISpringTimingParameters alloc] initWithMass:1.0 stiffness:350.0 damping:30.0 initialVelocity:{velocity.dx, velocity.dy}];
   v5 = [(BCCardStackTransitionAnimator *)self _adjustSpring:v4];
 
   return v5;
 }
 
-- (CGAffineTransform)_translationForTitleLabel:(SEL)a3 cardSuperview:(id)a4 cardCurrentFrame:(id)a5 cardTargetFrame:(CGRect)a6
+- (CGAffineTransform)_translationForTitleLabel:(SEL)label cardSuperview:(id)superview cardCurrentFrame:(id)frame cardTargetFrame:(CGRect)targetFrame
 {
   width = a7.size.width;
   height = a7.size.height;
   y = a7.origin.y;
   x = a7.origin.x;
-  v7 = a6.size.height;
-  v8 = a6.size.width;
-  v9 = a6.origin.y;
-  v10 = a6.origin.x;
-  v13 = a5;
-  v14 = a4;
-  [v14 frame];
-  v34 = [v14 superview];
+  v7 = targetFrame.size.height;
+  v8 = targetFrame.size.width;
+  v9 = targetFrame.origin.y;
+  v10 = targetFrame.origin.x;
+  frameCopy = frame;
+  superviewCopy = superview;
+  [superviewCopy frame];
+  superview = [superviewCopy superview];
 
   CGRectGetCenterNoRounding();
-  [v34 convertRect:v13 fromView:{v10, v9, v8, v7}];
+  [superview convertRect:frameCopy fromView:{v10, v9, v8, v7}];
   v15 = v36.origin.x;
   v16 = v36.origin.y;
   v17 = v36.size.width;
@@ -376,7 +376,7 @@ LABEL_16:
   CGRectGetMinY(v37);
   CGRectGetCenterNoRounding();
   CGPointSubtract();
-  [v34 convertRect:v13 fromView:{x, y, width, height}];
+  [superview convertRect:frameCopy fromView:{x, y, width, height}];
   v20 = v19;
   v22 = v21;
   v24 = v23;
@@ -399,18 +399,18 @@ LABEL_16:
   return result;
 }
 
-- (void)_animatePopBySliding:(id)a3
+- (void)_animatePopBySliding:(id)sliding
 {
-  v4 = a3;
-  v5 = [v4 viewControllerForKey:UITransitionContextFromViewControllerKey];
-  v6 = [v4 viewControllerForKey:UITransitionContextToViewControllerKey];
-  v85 = [v4 viewForKey:@"BCUITransitionContextBackgroundViewKey"];
-  obj = v4;
-  v89 = [v4 viewForKey:@"BCUITransitionContextTitleLabelKey"];
+  slidingCopy = sliding;
+  v5 = [slidingCopy viewControllerForKey:UITransitionContextFromViewControllerKey];
+  v6 = [slidingCopy viewControllerForKey:UITransitionContextToViewControllerKey];
+  v85 = [slidingCopy viewForKey:@"BCUITransitionContextBackgroundViewKey"];
+  obj = slidingCopy;
+  v89 = [slidingCopy viewForKey:@"BCUITransitionContextTitleLabelKey"];
   v87 = v6;
   v95 = self->_cardsCanExpand || v6 == 0;
-  v7 = [v5 view];
-  [v7 bounds];
+  view = [v5 view];
+  [view bounds];
   MaxY = CGRectGetMaxY(v144);
 
   v8 = *&CGAffineTransformIdentity.c;
@@ -421,8 +421,8 @@ LABEL_16:
   v135 = 0u;
   v136 = 0u;
   v137 = 0u;
-  v9 = [(BCCardStackTransitionAnimator *)self cardSlideItems];
-  v10 = [v9 countByEnumeratingWithState:&v134 objects:v143 count:16];
+  cardSlideItems = [(BCCardStackTransitionAnimator *)self cardSlideItems];
+  v10 = [cardSlideItems countByEnumeratingWithState:&v134 objects:v143 count:16];
   if (v10)
   {
     v11 = v10;
@@ -435,22 +435,22 @@ LABEL_16:
       {
         if (*v135 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(cardSlideItems);
         }
 
         v14 = *(*(&v134 + 1) + 8 * i);
-        v15 = [v14 card];
-        v16 = [v15 cardStackTransitioningCardView];
+        card = [v14 card];
+        cardStackTransitioningCardView = [card cardStackTransitioningCardView];
 
-        v17 = [v16 superview];
-        [(BCCardStackTransitionAnimator *)self _clearTranslationForView:v16];
-        [v16 frame];
+        superview = [cardStackTransitioningCardView superview];
+        [(BCCardStackTransitionAnimator *)self _clearTranslationForView:cardStackTransitioningCardView];
+        [cardStackTransitioningCardView frame];
         v19 = v18;
         v21 = v20;
         v23 = v22;
         v25 = v24;
-        v26 = [v5 view];
-        [v17 convertPoint:v26 fromView:{0.0, MaxY}];
+        view2 = [v5 view];
+        [superview convertPoint:view2 fromView:{0.0, MaxY}];
         v28 = v27;
 
         v145.origin.x = v19;
@@ -477,7 +477,7 @@ LABEL_16:
           if (v95)
           {
             memset(&v133, 0, sizeof(v133));
-            [(BCCardStackTransitionAnimator *)self _translationForTitleLabel:v89 cardSuperview:v17 cardCurrentFrame:v19 cardTargetFrame:v21, v23, v25, x, y, width, height];
+            [(BCCardStackTransitionAnimator *)self _translationForTitleLabel:v89 cardSuperview:superview cardCurrentFrame:v19 cardTargetFrame:v21, v23, v25, x, y, width, height];
             if (v89)
             {
               [v89 transform];
@@ -494,7 +494,7 @@ LABEL_16:
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v134 objects:v143 count:16];
+      v11 = [cardSlideItems countByEnumeratingWithState:&v134 objects:v143 count:16];
     }
 
     while (v11);
@@ -513,8 +513,8 @@ LABEL_16:
   v128 = 0u;
   v129 = 0u;
   v130 = 0u;
-  v36 = [(BCCardStackTransitionAnimator *)self coverFadeItems];
-  v37 = [v36 countByEnumeratingWithState:&v127 objects:v142 count:16];
+  coverFadeItems = [(BCCardStackTransitionAnimator *)self coverFadeItems];
+  v37 = [coverFadeItems countByEnumeratingWithState:&v127 objects:v142 count:16];
   if (v37)
   {
     v38 = v37;
@@ -525,18 +525,18 @@ LABEL_16:
       {
         if (*v128 != v39)
         {
-          objc_enumerationMutation(v36);
+          objc_enumerationMutation(coverFadeItems);
         }
 
         v41 = *(*(&v127 + 1) + 8 * j);
         v42 = [v41 key];
         v43 = [obj viewForKey:@"BCUITransitionContextClippedCoverContainerViewKey"];
-        v44 = [v41 coverSource];
-        v45 = [(BCCardStackTransitionAnimator *)self _addCoverForCoverSource:v44 inView:v43];
+        coverSource = [v41 coverSource];
+        v45 = [(BCCardStackTransitionAnimator *)self _addCoverForCoverSource:coverSource inView:v43];
         [v99 setObject:v45 forKeyedSubscript:v42];
       }
 
-      v38 = [v36 countByEnumeratingWithState:&v127 objects:v142 count:16];
+      v38 = [coverFadeItems countByEnumeratingWithState:&v127 objects:v142 count:16];
     }
 
     while (v38);
@@ -573,8 +573,8 @@ LABEL_16:
   [v54 addAnimations:v118];
   v90 = v54;
   [(BCViewPropertyAnimatorCounter *)v46 animate:v54];
-  v55 = [(BCCardStackTransitionAnimator *)self coverFadeItems];
-  v56 = [v55 count];
+  coverFadeItems2 = [(BCCardStackTransitionAnimator *)self coverFadeItems];
+  v56 = [coverFadeItems2 count];
 
   if (v56)
   {
@@ -605,15 +605,15 @@ LABEL_16:
 
           v63 = [*(*(&v114 + 1) + 8 * k) key];
           v64 = [v99 objectForKeyedSubscript:v63];
-          v65 = [v64 coverView];
+          coverView = [v64 coverView];
 
-          [v65 setAlpha:0.0];
+          [coverView setAlpha:0.0];
           v112[0] = _NSConcreteStackBlock;
           v112[1] = 3221225472;
           v112[2] = sub_AEC68;
           v112[3] = &unk_2C7D40;
-          v113 = v65;
-          v66 = v65;
+          v113 = coverView;
+          v66 = coverView;
           [v58 addAnimations:v112];
         }
 
@@ -665,8 +665,8 @@ LABEL_16:
   v107 = 0u;
   v104 = 0u;
   v105 = 0u;
-  v73 = [v99 allValues];
-  v74 = [v73 countByEnumeratingWithState:&v104 objects:v140 count:16];
+  allValues = [v99 allValues];
+  v74 = [allValues countByEnumeratingWithState:&v104 objects:v140 count:16];
   if (v74)
   {
     v75 = v74;
@@ -677,13 +677,13 @@ LABEL_16:
       {
         if (*v105 != v76)
         {
-          objc_enumerationMutation(v73);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v104 + 1) + 8 * m) setCounter:v46];
       }
 
-      v75 = [v73 countByEnumeratingWithState:&v104 objects:v140 count:16];
+      v75 = [allValues countByEnumeratingWithState:&v104 objects:v140 count:16];
     }
 
     while (v75);
@@ -727,13 +727,13 @@ LABEL_16:
   return v4;
 }
 
-- (id)_coverSpringForDismissWithVelocity:(CGVector)a3 isCompact:(BOOL)a4
+- (id)_coverSpringForDismissWithVelocity:(CGVector)velocity isCompact:(BOOL)compact
 {
-  v4 = a4;
-  dy = a3.dy;
-  dx = a3.dx;
+  compactCopy = compact;
+  dy = velocity.dy;
+  dx = velocity.dx;
   v8 = [UISpringTimingParameters alloc];
-  if (v4)
+  if (compactCopy)
   {
     v9 = 30.0;
   }
@@ -768,43 +768,43 @@ LABEL_16:
   return v6;
 }
 
-- (void)_animatePushByCoverTransitioning:(id)a3
+- (void)_animatePushByCoverTransitioning:(id)transitioning
 {
-  v4 = a3;
-  v5 = [v4 viewControllerForKey:UITransitionContextToViewControllerKey];
-  v6 = [v4 viewControllerForKey:UITransitionContextFromViewControllerKey];
-  v7 = [v4 viewForKey:@"BCUITransitionContextBackgroundViewKey"];
-  v8 = [v4 viewForKey:@"BCUITransitionContextTitleLabelKey"];
+  transitioningCopy = transitioning;
+  v5 = [transitioningCopy viewControllerForKey:UITransitionContextToViewControllerKey];
+  v6 = [transitioningCopy viewControllerForKey:UITransitionContextFromViewControllerKey];
+  v7 = [transitioningCopy viewForKey:@"BCUITransitionContextBackgroundViewKey"];
+  v8 = [transitioningCopy viewForKey:@"BCUITransitionContextTitleLabelKey"];
   v132 = v6;
   v141 = self->_cardsCanExpand || v6 == 0;
   if (self->_cardsCanExpand || v6 == 0)
   {
-    v9 = [v4 containerView];
-    [v9 bringSubviewToFront:v7];
+    containerView = [transitioningCopy containerView];
+    [containerView bringSubviewToFront:v7];
 
-    v10 = [v4 containerView];
-    [v10 bringSubviewToFront:v8];
+    containerView2 = [transitioningCopy containerView];
+    [containerView2 bringSubviewToFront:v8];
   }
 
   v135 = v7;
-  v11 = [v4 containerView];
-  [v11 layoutIfNeeded];
+  containerView3 = [transitioningCopy containerView];
+  [containerView3 layoutIfNeeded];
 
-  [v4 finalFrameForViewController:v5];
+  [transitioningCopy finalFrameForViewController:v5];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [v5 view];
-  [v20 setFrame:{v13, v15, v17, v19}];
+  view = [v5 view];
+  [view setFrame:{v13, v15, v17, v19}];
 
-  v21 = [v4 containerView];
-  v22 = [v5 view];
-  [v21 addSubview:v22];
+  containerView4 = [transitioningCopy containerView];
+  view2 = [v5 view];
+  [containerView4 addSubview:view2];
 
   v133 = v5;
-  v23 = [v5 view];
-  [v23 layoutIfNeeded];
+  view3 = [v5 view];
+  [view3 layoutIfNeeded];
 
   +[NSMutableDictionary dictionary];
   v144 = v143 = self;
@@ -812,8 +812,8 @@ LABEL_16:
   v207 = 0u;
   v208 = 0u;
   v209 = 0u;
-  v24 = [(BCCardStackTransitionAnimator *)self cardMoveItems];
-  v25 = [v24 countByEnumeratingWithState:&v206 objects:v218 count:16];
+  cardMoveItems = [(BCCardStackTransitionAnimator *)self cardMoveItems];
+  v25 = [cardMoveItems countByEnumeratingWithState:&v206 objects:v218 count:16];
   if (v25)
   {
     v26 = v25;
@@ -824,18 +824,18 @@ LABEL_16:
       {
         if (*v207 != v27)
         {
-          objc_enumerationMutation(v24);
+          objc_enumerationMutation(cardMoveItems);
         }
 
         v29 = *(*(&v206 + 1) + 8 * i);
-        v30 = [v29 card];
-        [v30 cardStackTransitioningCardExtraXOffset];
+        card = [v29 card];
+        [card cardStackTransitioningCardExtraXOffset];
         v32 = v31;
-        v33 = [v29 coverSource];
-        [v33 setCardStackTransitioningCoverSourceExtraXOffset:v32];
+        coverSource = [v29 coverSource];
+        [coverSource setCardStackTransitioningCoverSourceExtraXOffset:v32];
       }
 
-      v26 = [v24 countByEnumeratingWithState:&v206 objects:v218 count:16];
+      v26 = [cardMoveItems countByEnumeratingWithState:&v206 objects:v218 count:16];
     }
 
     while (v26);
@@ -845,8 +845,8 @@ LABEL_16:
   v204 = 0u;
   v203 = 0u;
   v202 = 0u;
-  v34 = [(BCCardStackTransitionAnimator *)v143 coverMoveItems];
-  v35 = [v34 countByEnumeratingWithState:&v202 objects:v217 count:16];
+  coverMoveItems = [(BCCardStackTransitionAnimator *)v143 coverMoveItems];
+  v35 = [coverMoveItems countByEnumeratingWithState:&v202 objects:v217 count:16];
   if (v35)
   {
     v36 = v35;
@@ -857,17 +857,17 @@ LABEL_16:
       {
         if (*v203 != v37)
         {
-          objc_enumerationMutation(v34);
+          objc_enumerationMutation(coverMoveItems);
         }
 
         v39 = *(*(&v202 + 1) + 8 * j);
-        v40 = [v4 containerView];
-        v41 = [(BCCardStackTransitionAnimator *)v143 _addCoverForCoverMove:v39 inView:v40 isDismiss:0 fromFrame:0 toFrame:0];
+        containerView5 = [transitioningCopy containerView];
+        v41 = [(BCCardStackTransitionAnimator *)v143 _addCoverForCoverMove:v39 inView:containerView5 isDismiss:0 fromFrame:0 toFrame:0];
         v42 = [v39 key];
         [v144 setObject:v41 forKeyedSubscript:v42];
       }
 
-      v36 = [v34 countByEnumeratingWithState:&v202 objects:v217 count:16];
+      v36 = [coverMoveItems countByEnumeratingWithState:&v202 objects:v217 count:16];
     }
 
     while (v36);
@@ -877,8 +877,8 @@ LABEL_16:
   v200 = 0u;
   v199 = 0u;
   v198 = 0u;
-  v43 = [(BCCardStackTransitionAnimator *)v143 cardMoveItems];
-  v44 = [v43 countByEnumeratingWithState:&v198 objects:v216 count:16];
+  cardMoveItems2 = [(BCCardStackTransitionAnimator *)v143 cardMoveItems];
+  v44 = [cardMoveItems2 countByEnumeratingWithState:&v198 objects:v216 count:16];
   if (v44)
   {
     v45 = v44;
@@ -891,7 +891,7 @@ LABEL_16:
       {
         if (*v199 != v46)
         {
-          objc_enumerationMutation(v43);
+          objc_enumerationMutation(cardMoveItems2);
           v48 = 0uLL;
         }
 
@@ -904,10 +904,10 @@ LABEL_16:
         if ((v141 & [v49 isFocusedCard]) == 1)
         {
           memset(&v193, 0, sizeof(v193));
-          v50 = [v49 card];
-          v51 = [v50 cardStackTransitioningCardView];
-          v52 = [v51 superview];
-          [(BCCardStackTransitionAnimator *)v143 _translationForTitleLabel:v8 cardSuperview:v52 cardCurrentFrame:v194 cardTargetFrame:v195, v196, v197];
+          card2 = [v49 card];
+          cardStackTransitioningCardView = [card2 cardStackTransitioningCardView];
+          superview = [cardStackTransitioningCardView superview];
+          [(BCCardStackTransitionAnimator *)v143 _translationForTitleLabel:v8 cardSuperview:superview cardCurrentFrame:v194 cardTargetFrame:v195, v196, v197];
 
           if (v8)
           {
@@ -930,7 +930,7 @@ LABEL_16:
       }
 
       while (v45 != v47);
-      v45 = [v43 countByEnumeratingWithState:&v198 objects:v216 count:{16, 0.0}];
+      v45 = [cardMoveItems2 countByEnumeratingWithState:&v198 objects:v216 count:{16, 0.0}];
     }
 
     while (v45);
@@ -942,8 +942,8 @@ LABEL_16:
   v189 = 0u;
   v186 = 0u;
   v187 = 0u;
-  v53 = [(BCCardStackTransitionAnimator *)v143 coverFadeItems];
-  v54 = [v53 countByEnumeratingWithState:&v186 objects:v215 count:16];
+  coverFadeItems = [(BCCardStackTransitionAnimator *)v143 coverFadeItems];
+  v54 = [coverFadeItems countByEnumeratingWithState:&v186 objects:v215 count:16];
   if (v54)
   {
     v55 = v54;
@@ -954,18 +954,18 @@ LABEL_16:
       {
         if (*v187 != v56)
         {
-          objc_enumerationMutation(v53);
+          objc_enumerationMutation(coverFadeItems);
         }
 
         v58 = *(*(&v186 + 1) + 8 * k);
         v59 = [v58 key];
-        v60 = [v4 viewForKey:@"BCUITransitionContextClippedCoverContainerViewKey"];
-        v61 = [v58 coverSource];
-        v62 = [(BCCardStackTransitionAnimator *)v143 _addCoverForCoverSource:v61 inView:v60];
+        v60 = [transitioningCopy viewForKey:@"BCUITransitionContextClippedCoverContainerViewKey"];
+        coverSource2 = [v58 coverSource];
+        v62 = [(BCCardStackTransitionAnimator *)v143 _addCoverForCoverSource:coverSource2 inView:v60];
         [v144 setObject:v62 forKeyedSubscript:v59];
       }
 
-      v55 = [v53 countByEnumeratingWithState:&v186 objects:v215 count:16];
+      v55 = [coverFadeItems countByEnumeratingWithState:&v186 objects:v215 count:16];
     }
 
     while (v55);
@@ -976,7 +976,7 @@ LABEL_16:
   v184[1] = 3221225472;
   v184[2] = sub_AFEDC;
   v184[3] = &unk_2C7D40;
-  v64 = v4;
+  v64 = transitioningCopy;
   v185 = v64;
   [(BCViewPropertyAnimatorCounter *)v63 setAnimationDidEnd:v184];
   v65 = 1.0;
@@ -1022,18 +1022,18 @@ LABEL_16:
   }
 
   v75 = [UIViewPropertyAnimator alloc];
-  v76 = [(BCCardStackTransitionAnimator *)v67 _coverSpring];
-  v142 = [v75 initWithDuration:v76 timingParameters:0.0];
+  _coverSpring = [(BCCardStackTransitionAnimator *)v67 _coverSpring];
+  v142 = [v75 initWithDuration:_coverSpring timingParameters:0.0];
 
   v77 = [UIViewPropertyAnimator alloc];
-  v78 = [(BCCardStackTransitionAnimator *)v67 _coverScaleSpring];
-  v140 = [v77 initWithDuration:v78 timingParameters:0.0];
+  _coverScaleSpring = [(BCCardStackTransitionAnimator *)v67 _coverScaleSpring];
+  v140 = [v77 initWithDuration:_coverScaleSpring timingParameters:0.0];
 
   v79 = [UIViewPropertyAnimator alloc];
   [(BCCardStackTransitionAnimator *)v67 _adjustDuration:0.05];
   v81 = v80;
-  v82 = [(BCCardStackTransitionAnimator *)v67 _customCurve];
-  v139 = [v79 initWithDuration:v82 timingParameters:v81];
+  _customCurve = [(BCCardStackTransitionAnimator *)v67 _customCurve];
+  v139 = [v79 initWithDuration:_customCurve timingParameters:v81];
 
   v178 = 0u;
   v179 = 0u;
@@ -1057,13 +1057,13 @@ LABEL_16:
         v87 = *(*(&v176 + 1) + 8 * m);
         v88 = [v87 key];
         v89 = [v144 objectForKeyedSubscript:v88];
-        v90 = [v89 coverView];
+        coverView = [v89 coverView];
 
         v173[0] = _NSConcreteStackBlock;
         v173[1] = 3221225472;
         v173[2] = sub_AFF00;
         v173[3] = &unk_2C7BE8;
-        v91 = v90;
+        v91 = coverView;
         v174 = v91;
         v175 = v87;
         [v142 addAnimations:v173];
@@ -1103,12 +1103,12 @@ LABEL_16:
         }
 
         v97 = *(*(&v166 + 1) + 8 * n);
-        v98 = [v97 card];
+        card3 = [v97 card];
         v163[0] = _NSConcreteStackBlock;
         v163[1] = 3221225472;
         v163[2] = sub_AFFA0;
         v163[3] = &unk_2C7BE8;
-        v99 = v98;
+        v99 = card3;
         v164 = v99;
         v165 = v97;
         [v142 addAnimations:v163];
@@ -1146,8 +1146,8 @@ LABEL_16:
   [(BCViewPropertyAnimatorCounter *)v134 animate:v142];
   [(BCViewPropertyAnimatorCounter *)v134 animate:v140];
   [(BCViewPropertyAnimatorCounter *)v134 animate:v139];
-  v106 = [(BCCardStackTransitionAnimator *)v143 coverFadeItems];
-  v107 = [v106 count];
+  coverFadeItems2 = [(BCCardStackTransitionAnimator *)v143 coverFadeItems];
+  v107 = [coverFadeItems2 count];
 
   if (v107)
   {
@@ -1158,8 +1158,8 @@ LABEL_16:
     v156 = 0u;
     v157 = 0u;
     v158 = 0u;
-    v110 = [(BCCardStackTransitionAnimator *)v143 coverFadeItems];
-    v111 = [v110 countByEnumeratingWithState:&v155 objects:v212 count:16];
+    coverFadeItems3 = [(BCCardStackTransitionAnimator *)v143 coverFadeItems];
+    v111 = [coverFadeItems3 countByEnumeratingWithState:&v155 objects:v212 count:16];
     if (v111)
     {
       v112 = v111;
@@ -1170,24 +1170,24 @@ LABEL_16:
         {
           if (*v156 != v113)
           {
-            objc_enumerationMutation(v110);
+            objc_enumerationMutation(coverFadeItems3);
           }
 
           v115 = [*(*(&v155 + 1) + 8 * ii) key];
           v116 = [v144 objectForKeyedSubscript:v115];
-          v117 = [v116 coverView];
+          coverView2 = [v116 coverView];
 
-          [v117 setAlpha:1.0];
+          [coverView2 setAlpha:1.0];
           v153[0] = _NSConcreteStackBlock;
           v153[1] = 3221225472;
           v153[2] = sub_B00C0;
           v153[3] = &unk_2C7D40;
-          v154 = v117;
-          v118 = v117;
+          v154 = coverView2;
+          v118 = coverView2;
           [v109 addAnimations:v153];
         }
 
-        v112 = [v110 countByEnumeratingWithState:&v155 objects:v212 count:16];
+        v112 = [coverFadeItems3 countByEnumeratingWithState:&v155 objects:v212 count:16];
       }
 
       while (v112);
@@ -1203,8 +1203,8 @@ LABEL_16:
   v152 = 0u;
   v149 = 0u;
   v150 = 0u;
-  v119 = [v144 allValues];
-  v120 = [v119 countByEnumeratingWithState:&v149 objects:v211 count:16];
+  allValues = [v144 allValues];
+  v120 = [allValues countByEnumeratingWithState:&v149 objects:v211 count:16];
   if (v120)
   {
     v121 = v120;
@@ -1215,13 +1215,13 @@ LABEL_16:
       {
         if (*v150 != v122)
         {
-          objc_enumerationMutation(v119);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v149 + 1) + 8 * jj) setCounter:v105];
       }
 
-      v121 = [v119 countByEnumeratingWithState:&v149 objects:v211 count:16];
+      v121 = [allValues countByEnumeratingWithState:&v149 objects:v211 count:16];
     }
 
     while (v121);
@@ -1259,66 +1259,66 @@ LABEL_16:
   }
 }
 
-- (id)_addCoverForCoverSource:(id)a3 inView:(id)a4
+- (id)_addCoverForCoverSource:(id)source inView:(id)view
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 cardStackTransitioningCoverSourceFrame];
+  viewCopy = view;
+  sourceCopy = source;
+  [sourceCopy cardStackTransitioningCoverSourceFrame];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [v7 cardStackTransitioningCoverSourceReferenceView];
-  [v6 convertRect:v16 fromView:{v9, v11, v13, v15}];
+  cardStackTransitioningCoverSourceReferenceView = [sourceCopy cardStackTransitioningCoverSourceReferenceView];
+  [viewCopy convertRect:cardStackTransitioningCoverSourceReferenceView fromView:{v9, v11, v13, v15}];
   v18 = v17;
   v20 = v19;
   v22 = v21;
   v24 = v23;
 
   v25 = [[BCCardStackTransitionCoverView alloc] initWithFrame:v18, v20, v22, v24];
-  [v6 addSubview:v25];
+  [viewCopy addSubview:v25];
 
-  v26 = [(BCCardStackTransitionAnimator *)self viewsToBeCleanedUp];
-  [v26 addObject:v25];
+  viewsToBeCleanedUp = [(BCCardStackTransitionAnimator *)self viewsToBeCleanedUp];
+  [viewsToBeCleanedUp addObject:v25];
 
   v27 = objc_alloc_init(_BCCardStackTransitionCoverController);
-  [(_BCCardStackTransitionCoverController *)v27 setupWithCoverSource:v7 coverView:v25];
+  [(_BCCardStackTransitionCoverController *)v27 setupWithCoverSource:sourceCopy coverView:v25];
 
   return v27;
 }
 
-- (id)_addCoverForCoverMove:(id)a3 inView:(id)a4 isDismiss:(BOOL)a5 fromFrame:(CGRect *)a6 toFrame:(CGRect *)a7
+- (id)_addCoverForCoverMove:(id)move inView:(id)view isDismiss:(BOOL)dismiss fromFrame:(CGRect *)frame toFrame:(CGRect *)toFrame
 {
-  v9 = a5;
-  v12 = a3;
-  v13 = a4;
-  v14 = [v12 coverSource];
-  v15 = [v12 cardCoverSource];
-  [v14 cardStackTransitioningCoverSourceFrame];
+  dismissCopy = dismiss;
+  moveCopy = move;
+  viewCopy = view;
+  coverSource = [moveCopy coverSource];
+  cardCoverSource = [moveCopy cardCoverSource];
+  [coverSource cardStackTransitioningCoverSourceFrame];
   v17 = v16;
   v19 = v18;
   v21 = v20;
   v23 = v22;
-  v24 = [v14 cardStackTransitioningCoverSourceReferenceView];
-  [v13 convertRect:v24 fromView:{v17, v19, v21, v23}];
+  cardStackTransitioningCoverSourceReferenceView = [coverSource cardStackTransitioningCoverSourceReferenceView];
+  [viewCopy convertRect:cardStackTransitioningCoverSourceReferenceView fromView:{v17, v19, v21, v23}];
   x = v25;
   y = v27;
   width = v29;
   height = v31;
 
-  [v15 cardStackTransitioningCoverSourceFrame];
+  [cardCoverSource cardStackTransitioningCoverSourceFrame];
   v34 = v33;
   v36 = v35;
   v38 = v37;
   v40 = v39;
-  v41 = [v15 cardStackTransitioningCoverSourceReferenceView];
-  [v13 convertRect:v41 fromView:{v34, v36, v38, v40}];
+  cardStackTransitioningCoverSourceReferenceView2 = [cardCoverSource cardStackTransitioningCoverSourceReferenceView];
+  [viewCopy convertRect:cardStackTransitioningCoverSourceReferenceView2 fromView:{v34, v36, v38, v40}];
   v43 = v42;
   v45 = v44;
   v47 = v46;
   v49 = v48;
 
-  if (v9)
+  if (dismissCopy)
   {
     v50 = v47;
   }
@@ -1328,7 +1328,7 @@ LABEL_16:
     v50 = width;
   }
 
-  if (v9)
+  if (dismissCopy)
   {
     v51 = v49;
   }
@@ -1340,7 +1340,7 @@ LABEL_16:
 
   v62 = v51;
   v63 = v50;
-  if (v9)
+  if (dismissCopy)
   {
     v52 = v45;
   }
@@ -1350,7 +1350,7 @@ LABEL_16:
     v52 = y;
   }
 
-  if (v9)
+  if (dismissCopy)
   {
     v53 = v43;
   }
@@ -1362,9 +1362,9 @@ LABEL_16:
 
   v60 = v53;
   v61 = v52;
-  if (!v9)
+  if (!dismissCopy)
   {
-    [v14 cardStackTransitioningCoverSourceExtraXOffset];
+    [coverSource cardStackTransitioningCoverSourceExtraXOffset];
     v55 = v54;
     v67.origin.x = v43;
     v67.origin.y = v45;
@@ -1378,47 +1378,47 @@ LABEL_16:
   }
 
   v56 = [[BCCardStackTransitionCoverView alloc] initWithFrame:v60, v61, v63, v62];
-  [v13 addSubview:v56];
-  v57 = [(BCCardStackTransitionAnimator *)self viewsToBeCleanedUp];
-  [v57 addObject:v56];
+  [viewCopy addSubview:v56];
+  viewsToBeCleanedUp = [(BCCardStackTransitionAnimator *)self viewsToBeCleanedUp];
+  [viewsToBeCleanedUp addObject:v56];
 
   CGRectGetCenterNoRounding();
-  [v12 setCoverToCenter:?];
+  [moveCopy setCoverToCenter:?];
   sub_B04B8(&v65, v60, v61, v63, v62, x, y, width, height);
   v64 = v65;
-  [v12 setCoverToTransform:&v64];
-  if (a6)
+  [moveCopy setCoverToTransform:&v64];
+  if (frame)
   {
-    a6->origin.x = v60;
-    a6->origin.y = v61;
-    a6->size.width = v63;
-    a6->size.height = v62;
+    frame->origin.x = v60;
+    frame->origin.y = v61;
+    frame->size.width = v63;
+    frame->size.height = v62;
   }
 
-  if (a7)
+  if (toFrame)
   {
-    a7->origin.x = x;
-    a7->origin.y = y;
-    a7->size.width = width;
-    a7->size.height = height;
+    toFrame->origin.x = x;
+    toFrame->origin.y = y;
+    toFrame->size.width = width;
+    toFrame->size.height = height;
   }
 
   v58 = objc_alloc_init(_BCCardStackTransitionCoverController);
-  [(_BCCardStackTransitionCoverController *)v58 setupWithCoverSource:v14 cardCoverSource:v15 coverView:v56 isDismiss:v9];
+  [(_BCCardStackTransitionCoverController *)v58 setupWithCoverSource:coverSource cardCoverSource:cardCoverSource coverView:v56 isDismiss:dismissCopy];
 
   return v58;
 }
 
-- (void)_clearTranslationForView:(id)a3
+- (void)_clearTranslationForView:(id)view
 {
-  v3 = a3;
-  v4 = v3;
+  viewCopy = view;
+  v4 = viewCopy;
   v7 = 0u;
   v8 = 0u;
   v6 = 0u;
-  if (v3)
+  if (viewCopy)
   {
-    [v3 transform];
+    [viewCopy transform];
   }
 
   [v4 center];
@@ -1431,31 +1431,31 @@ LABEL_16:
   [v4 setTransform:v5];
 }
 
-- (void)_prepareCardForCardMove:(id)a3 isDismiss:(BOOL)a4 fromFrame:(CGRect *)a5 toFrame:(CGRect *)a6
+- (void)_prepareCardForCardMove:(id)move isDismiss:(BOOL)dismiss fromFrame:(CGRect *)frame toFrame:(CGRect *)toFrame
 {
-  v10 = a3;
-  v11 = [v10 card];
-  v12 = [v10 coverSource];
-  v13 = [v11 cardStackTransitioningCardView];
-  v14 = [v13 superview];
-  [v11 cardStackTransitioningCardFinalFrame];
+  moveCopy = move;
+  card = [moveCopy card];
+  coverSource = [moveCopy coverSource];
+  cardStackTransitioningCardView = [card cardStackTransitioningCardView];
+  superview = [cardStackTransitioningCardView superview];
+  [card cardStackTransitioningCardFinalFrame];
   v58 = v16;
   v59 = v15;
   v18 = v17;
   v20 = v19;
-  [v12 cardStackTransitioningCoverSourceFrame];
+  [coverSource cardStackTransitioningCoverSourceFrame];
   v22 = v21;
   v24 = v23;
   v26 = v25;
   v28 = v27;
-  v29 = [v12 cardStackTransitioningCoverSourceReferenceView];
-  [v14 convertRect:v29 fromView:{v22, v24, v26, v28}];
+  cardStackTransitioningCoverSourceReferenceView = [coverSource cardStackTransitioningCoverSourceReferenceView];
+  [superview convertRect:cardStackTransitioningCoverSourceReferenceView fromView:{v22, v24, v26, v28}];
   v31 = v30;
   v33 = v32;
   v35 = v34;
   v37 = v36;
 
-  [v14 convertRect:0 toView:{v31, v33, v35, v37}];
+  [superview convertRect:0 toView:{v31, v33, v35, v37}];
   [(BCCardStackTransitionAnimator *)self _insetPercentageForAbsoluteCoverRect:?];
   v39 = v38;
   v65.origin.x = v31;
@@ -1481,15 +1481,15 @@ LABEL_16:
   v47 = v46;
   v49 = v48;
   v51 = v50;
-  [(BCCardStackTransitionAnimator *)self _clearTranslationForView:v13];
+  [(BCCardStackTransitionAnimator *)self _clearTranslationForView:cardStackTransitioningCardView];
   CGRectGetCenterNoRounding();
   v53 = v52;
   v55 = v54;
   memset(&v64, 0, sizeof(v64));
   sub_B04B8(&t1, v59, v58, v18, v20, v45, v47, v49, v51);
-  if (v13)
+  if (cardStackTransitioningCardView)
   {
-    [v13 transform];
+    [cardStackTransitioningCardView transform];
   }
 
   else
@@ -1498,44 +1498,44 @@ LABEL_16:
   }
 
   CGAffineTransformConcat(&v64, &t1, &t2);
-  if (a4)
+  if (dismiss)
   {
-    [v10 setCardToCenter:{v53, v55}];
+    [moveCopy setCardToCenter:{v53, v55}];
     t1 = v64;
-    [v10 setCardToTransform:&t1];
+    [moveCopy setCardToTransform:&t1];
     v56 = *&CGAffineTransformIdentity.c;
     *&t1.a = *&CGAffineTransformIdentity.a;
     *&t1.c = v56;
     *&t1.tx = *&CGAffineTransformIdentity.tx;
-    [v10 setCardSuperviewToTransform:&t1];
-    if (a5)
+    [moveCopy setCardSuperviewToTransform:&t1];
+    if (frame)
     {
-      a5->origin.x = v59;
-      a5->origin.y = v58;
-      a5->size.width = v18;
-      a5->size.height = v20;
+      frame->origin.x = v59;
+      frame->origin.y = v58;
+      frame->size.width = v18;
+      frame->size.height = v20;
     }
 
     v18 = v49;
     v20 = v51;
-    if (!a6)
+    if (!toFrame)
     {
       goto LABEL_16;
     }
 
 LABEL_15:
-    a6->origin.x = v45;
-    a6->origin.y = v47;
-    a6->size.width = v18;
-    a6->size.height = v20;
+    toFrame->origin.x = v45;
+    toFrame->origin.y = v47;
+    toFrame->size.width = v18;
+    toFrame->size.height = v20;
     goto LABEL_16;
   }
 
-  [v13 center];
-  [v10 setCardToCenter:?];
-  if (v13)
+  [cardStackTransitioningCardView center];
+  [moveCopy setCardToCenter:?];
+  if (cardStackTransitioningCardView)
   {
-    [v13 transform];
+    [cardStackTransitioningCardView transform];
   }
 
   else
@@ -1544,25 +1544,25 @@ LABEL_15:
   }
 
   t1 = v61;
-  [v10 setCardToTransform:&t1];
-  [v11 cardStackTransitioningCardExtraXOffset];
+  [moveCopy setCardToTransform:&t1];
+  [card cardStackTransitioningCardExtraXOffset];
   CGAffineTransformMakeTranslation(&v60, v57, 0.0);
   t1 = v60;
-  [v10 setCardSuperviewToTransform:&t1];
-  [v13 setCenter:{v53, v55}];
+  [moveCopy setCardSuperviewToTransform:&t1];
+  [cardStackTransitioningCardView setCenter:{v53, v55}];
   t1 = v64;
-  [v13 setTransform:&t1];
-  if (a5)
+  [cardStackTransitioningCardView setTransform:&t1];
+  if (frame)
   {
-    a5->origin.x = v45;
-    a5->origin.y = v47;
-    a5->size.width = v49;
-    a5->size.height = v51;
+    frame->origin.x = v45;
+    frame->origin.y = v47;
+    frame->size.width = v49;
+    frame->size.height = v51;
   }
 
   v47 = v58;
   v45 = v59;
-  if (a6)
+  if (toFrame)
   {
     goto LABEL_15;
   }
@@ -1570,13 +1570,13 @@ LABEL_15:
 LABEL_16:
 }
 
-- (CGVector)_dismissSpringVelocityWithFromFrame:(CGRect)a3 toFrame:(CGRect)a4
+- (CGVector)_dismissSpringVelocityWithFromFrame:(CGRect)frame toFrame:(CGRect)toFrame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  MidY = CGRectGetMidY(a4);
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  MidY = CGRectGetMidY(toFrame);
   v18.origin.x = x;
   v18.origin.y = y;
   v18.size.width = width;
@@ -1602,13 +1602,13 @@ LABEL_16:
   return result;
 }
 
-- (void)_animatePopByCoverTransitioning:(id)a3
+- (void)_animatePopByCoverTransitioning:(id)transitioning
 {
-  v4 = a3;
-  v5 = [v4 viewControllerForKey:UITransitionContextToViewControllerKey];
-  v121 = [v4 viewControllerForKey:UITransitionContextFromViewControllerKey];
-  v129 = [v4 viewForKey:@"BCUITransitionContextBackgroundViewKey"];
-  [v4 viewForKey:@"BCUITransitionContextTitleLabelKey"];
+  transitioningCopy = transitioning;
+  v5 = [transitioningCopy viewControllerForKey:UITransitionContextToViewControllerKey];
+  v121 = [transitioningCopy viewControllerForKey:UITransitionContextFromViewControllerKey];
+  v129 = [transitioningCopy viewForKey:@"BCUITransitionContextBackgroundViewKey"];
+  [transitioningCopy viewForKey:@"BCUITransitionContextTitleLabelKey"];
   v133 = v131 = v5;
   cardsCanExpand = self->_cardsCanExpand;
   v124 = v5 == 0;
@@ -1621,12 +1621,12 @@ LABEL_16:
   v203 = 0u;
   v204 = 0u;
   v205 = 0u;
-  v7 = [(BCCardStackTransitionAnimator *)self coverMoveItems];
-  v8 = [v7 countByEnumeratingWithState:&v202 objects:v214 count:16];
+  coverMoveItems = [(BCCardStackTransitionAnimator *)self coverMoveItems];
+  v8 = [coverMoveItems countByEnumeratingWithState:&v202 objects:v214 count:16];
   v9 = 0.0;
   v10 = 0.0;
   v11 = 0.0;
-  v135 = self;
+  selfCopy = self;
   if (v8)
   {
     v12 = v8;
@@ -1637,18 +1637,18 @@ LABEL_16:
       {
         if (*v203 != v13)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(coverMoveItems);
         }
 
         v15 = *(*(&v202 + 1) + 8 * i);
         if ([v15 animatesInInnerContainerView])
         {
-          [v4 viewForKey:@"BCUITransitionContextClippedCoverContainerViewKey"];
+          [transitioningCopy viewForKey:@"BCUITransitionContextClippedCoverContainerViewKey"];
         }
 
         else
         {
-          [v4 containerView];
+          [transitioningCopy containerView];
         }
         v16 = ;
         memset(&v193, 0, 32);
@@ -1657,16 +1657,16 @@ LABEL_16:
         v18 = [v15 key];
         [v136 setObject:v17 forKeyedSubscript:v18];
 
-        self = v135;
+        self = selfCopy;
         if ([v15 isFocusedCover])
         {
-          [(BCCardStackTransitionAnimator *)v135 _dismissSpringVelocityWithFromFrame:*&v193.a toFrame:*&v193.c, t2.a, t2.b, t2.c, t2.d];
+          [(BCCardStackTransitionAnimator *)selfCopy _dismissSpringVelocityWithFromFrame:*&v193.a toFrame:*&v193.c, t2.a, t2.b, t2.c, t2.d];
           v11 = v19;
           v10 = v20;
         }
       }
 
-      v12 = [v7 countByEnumeratingWithState:&v202 objects:v214 count:16];
+      v12 = [coverMoveItems countByEnumeratingWithState:&v202 objects:v214 count:16];
     }
 
     while (v12);
@@ -1676,8 +1676,8 @@ LABEL_16:
   v200 = 0u;
   v199 = 0u;
   v198 = 0u;
-  v21 = [(BCCardStackTransitionAnimator *)self cardMoveItems];
-  v22 = [v21 countByEnumeratingWithState:&v198 objects:v213 count:16];
+  cardMoveItems = [(BCCardStackTransitionAnimator *)self cardMoveItems];
+  v22 = [cardMoveItems countByEnumeratingWithState:&v198 objects:v213 count:16];
   v23 = 0.0;
   if (v22)
   {
@@ -1690,7 +1690,7 @@ LABEL_16:
       {
         if (*v199 != v25)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(cardMoveItems);
         }
 
         v27 = *(*(&v198 + 1) + 8 * j);
@@ -1707,12 +1707,12 @@ LABEL_16:
           if (cardsCanExpand || v124)
           {
             memset(&v193, 0, sizeof(v193));
-            v30 = [v27 card];
-            v31 = [v30 cardStackTransitioningCardView];
-            v32 = [v31 superview];
-            v33 = self;
-            v34 = v32;
-            [(BCCardStackTransitionAnimator *)v33 _translationForTitleLabel:v133 cardSuperview:v32 cardCurrentFrame:v196 cardTargetFrame:v197, v194, v195];
+            card = [v27 card];
+            cardStackTransitioningCardView = [card cardStackTransitioningCardView];
+            superview = [cardStackTransitioningCardView superview];
+            selfCopy2 = self;
+            v34 = superview;
+            [(BCCardStackTransitionAnimator *)selfCopy2 _translationForTitleLabel:v133 cardSuperview:superview cardCurrentFrame:v196 cardTargetFrame:v197, v194, v195];
 
             if (v133)
             {
@@ -1726,12 +1726,12 @@ LABEL_16:
 
             t1 = v193;
             CGAffineTransformConcat(&v206, &t1, &t2);
-            self = v135;
+            self = selfCopy;
           }
         }
       }
 
-      v24 = [v21 countByEnumeratingWithState:&v198 objects:v213 count:16];
+      v24 = [cardMoveItems countByEnumeratingWithState:&v198 objects:v213 count:16];
     }
 
     while (v24);
@@ -1743,8 +1743,8 @@ LABEL_16:
   v189 = 0u;
   v187 = 0u;
   v188 = 0u;
-  v35 = [(BCCardStackTransitionAnimator *)self coverFadeItems];
-  v36 = [v35 countByEnumeratingWithState:&v187 objects:v212 count:16];
+  coverFadeItems = [(BCCardStackTransitionAnimator *)self coverFadeItems];
+  v36 = [coverFadeItems countByEnumeratingWithState:&v187 objects:v212 count:16];
   if (v36)
   {
     v37 = v36;
@@ -1755,18 +1755,18 @@ LABEL_16:
       {
         if (*v188 != v38)
         {
-          objc_enumerationMutation(v35);
+          objc_enumerationMutation(coverFadeItems);
         }
 
         v40 = *(*(&v187 + 1) + 8 * k);
         v41 = [v40 key];
-        v42 = [v4 viewForKey:@"BCUITransitionContextClippedCoverContainerViewKey"];
-        v43 = [v40 coverSource];
-        v44 = [(BCCardStackTransitionAnimator *)v135 _addCoverForCoverSource:v43 inView:v42];
+        v42 = [transitioningCopy viewForKey:@"BCUITransitionContextClippedCoverContainerViewKey"];
+        coverSource = [v40 coverSource];
+        v44 = [(BCCardStackTransitionAnimator *)selfCopy _addCoverForCoverSource:coverSource inView:v42];
         [v136 setObject:v44 forKeyedSubscript:v41];
       }
 
-      v37 = [v35 countByEnumeratingWithState:&v187 objects:v212 count:16];
+      v37 = [coverFadeItems countByEnumeratingWithState:&v187 objects:v212 count:16];
     }
 
     while (v37);
@@ -1783,13 +1783,13 @@ LABEL_16:
   v184 = v46;
   v120 = v133;
   v185 = v120;
-  v115 = v4;
+  v115 = transitioningCopy;
   v186 = v115;
   [(BCViewPropertyAnimatorCounter *)v45 setAnimationDidEnd:v182];
   if (cardsCanExpand || v124)
   {
     v47 = [UIViewPropertyAnimator alloc];
-    [(BCCardStackTransitionAnimator *)v135 _adjustDuration:0.17];
+    [(BCCardStackTransitionAnimator *)selfCopy _adjustDuration:0.17];
     v49 = v48;
     v180[0] = _NSConcreteStackBlock;
     v180[1] = 3221225472;
@@ -1800,7 +1800,7 @@ LABEL_16:
     [(BCViewPropertyAnimatorCounter *)v45 animate:v50];
 
     v51 = [UIViewPropertyAnimator alloc];
-    [(BCCardStackTransitionAnimator *)v135 _adjustDuration:0.18];
+    [(BCCardStackTransitionAnimator *)selfCopy _adjustDuration:0.18];
     v53 = v52;
     v178[0] = _NSConcreteStackBlock;
     v178[1] = 3221225472;
@@ -1813,30 +1813,30 @@ LABEL_16:
 
   v116 = v46;
   v118 = v45;
-  v55 = [v121 im_isCompactWidth];
+  im_isCompactWidth = [v121 im_isCompactWidth];
   v56 = [UIViewPropertyAnimator alloc];
-  v57 = [(BCCardStackTransitionAnimator *)v135 _coverSpringForDismissWithVelocity:v55 isCompact:v11, v10];
+  v57 = [(BCCardStackTransitionAnimator *)selfCopy _coverSpringForDismissWithVelocity:im_isCompactWidth isCompact:v11, v10];
   v130 = [v56 initWithDuration:v57 timingParameters:0.0];
 
   v58 = [UIViewPropertyAnimator alloc];
-  v59 = [(BCCardStackTransitionAnimator *)v135 _coverSpringForDismissWithVelocity:v55 isCompact:v23, v9];
+  v59 = [(BCCardStackTransitionAnimator *)selfCopy _coverSpringForDismissWithVelocity:im_isCompactWidth isCompact:v23, v9];
   v132 = [v58 initWithDuration:v59 timingParameters:0.0];
 
   v60 = [UIViewPropertyAnimator alloc];
-  v61 = [(BCCardStackTransitionAnimator *)v135 _coverSpringForDismissWithVelocity:v55 isCompact:0.0, 0.0];
+  v61 = [(BCCardStackTransitionAnimator *)selfCopy _coverSpringForDismissWithVelocity:im_isCompactWidth isCompact:0.0, 0.0];
   v134 = [v60 initWithDuration:v61 timingParameters:0.0];
 
   v62 = [UIViewPropertyAnimator alloc];
-  [(BCCardStackTransitionAnimator *)v135 _adjustDuration:0.15];
+  [(BCCardStackTransitionAnimator *)selfCopy _adjustDuration:0.15];
   v64 = v63;
-  v65 = [(BCCardStackTransitionAnimator *)v135 _customCurve];
-  v128 = [v62 initWithDuration:v65 timingParameters:v64];
+  _customCurve = [(BCCardStackTransitionAnimator *)selfCopy _customCurve];
+  v128 = [v62 initWithDuration:_customCurve timingParameters:v64];
 
   v176 = 0u;
   v177 = 0u;
   v174 = 0u;
   v175 = 0u;
-  obj = [(BCCardStackTransitionAnimator *)v135 coverMoveItems];
+  obj = [(BCCardStackTransitionAnimator *)selfCopy coverMoveItems];
   v66 = [obj countByEnumeratingWithState:&v174 objects:v211 count:16];
   if (v66)
   {
@@ -1855,13 +1855,13 @@ LABEL_16:
         v70 = *(*(&v174 + 1) + 8 * m);
         v71 = [v70 key];
         v72 = [v136 objectForKeyedSubscript:v71];
-        v73 = [v72 coverView];
+        coverView = [v72 coverView];
 
         v171[0] = _NSConcreteStackBlock;
         v171[1] = 3221225472;
         v171[2] = sub_B1C64;
         v171[3] = &unk_2C7BE8;
-        v74 = v73;
+        v74 = coverView;
         v172 = v74;
         v173 = v70;
         [v130 addAnimations:v171];
@@ -1878,7 +1878,7 @@ LABEL_16:
           if (!v68)
           {
             v76 = [UIViewPropertyAnimator alloc];
-            [(BCCardStackTransitionAnimator *)v135 _adjustDuration:0.15];
+            [(BCCardStackTransitionAnimator *)selfCopy _adjustDuration:0.15];
             v68 = [v76 initWithDuration:0 curve:0 animations:?];
           }
 
@@ -1909,8 +1909,8 @@ LABEL_16:
   v165 = 0u;
   v162 = 0u;
   v163 = 0u;
-  v126 = [(BCCardStackTransitionAnimator *)v135 cardMoveItems];
-  v77 = [v126 countByEnumeratingWithState:&v162 objects:v210 count:16];
+  cardMoveItems2 = [(BCCardStackTransitionAnimator *)selfCopy cardMoveItems];
+  v77 = [cardMoveItems2 countByEnumeratingWithState:&v162 objects:v210 count:16];
   if (v77)
   {
     v78 = v77;
@@ -1921,18 +1921,18 @@ LABEL_16:
       {
         if (*v163 != v79)
         {
-          objc_enumerationMutation(v126);
+          objc_enumerationMutation(cardMoveItems2);
         }
 
         v81 = *(*(&v162 + 1) + 8 * n);
-        v82 = [v81 card];
-        v83 = [v82 cardStackTransitioningCardView];
+        card2 = [v81 card];
+        cardStackTransitioningCardView2 = [card2 cardStackTransitioningCardView];
 
         v159[0] = _NSConcreteStackBlock;
         v159[1] = 3221225472;
         v159[2] = sub_B1D10;
         v159[3] = &unk_2C7BE8;
-        v84 = v83;
+        v84 = cardStackTransitioningCardView2;
         v160 = v84;
         v161 = v81;
         [v132 addAnimations:v159];
@@ -1953,7 +1953,7 @@ LABEL_16:
         [v128 addAnimations:v154];
       }
 
-      v78 = [v126 countByEnumeratingWithState:&v162 objects:v210 count:16];
+      v78 = [cardMoveItems2 countByEnumeratingWithState:&v162 objects:v210 count:16];
     }
 
     while (v78);
@@ -1975,28 +1975,28 @@ LABEL_16:
   [(BCViewPropertyAnimatorCounter *)v118 animate:v132];
   [(BCViewPropertyAnimatorCounter *)v118 animate:v134];
   [(BCViewPropertyAnimatorCounter *)v118 animate:v128];
-  p_isa = &v135->super.isa;
+  p_isa = &selfCopy->super.isa;
   v89 = v68;
   if (v68)
   {
-    [(BCCardStackTransitionAnimator *)v135 _adjustDuration:0.1];
+    [(BCCardStackTransitionAnimator *)selfCopy _adjustDuration:0.1];
     [(BCViewPropertyAnimatorCounter *)v118 animate:v68 afterDelay:?];
   }
 
-  v90 = [(BCCardStackTransitionAnimator *)v135 coverFadeItems];
-  v91 = [v90 count];
+  coverFadeItems2 = [(BCCardStackTransitionAnimator *)selfCopy coverFadeItems];
+  v91 = [coverFadeItems2 count];
 
   if (v91)
   {
     v92 = [UIViewPropertyAnimator alloc];
-    [(BCCardStackTransitionAnimator *)v135 _adjustDuration:0.3];
+    [(BCCardStackTransitionAnimator *)selfCopy _adjustDuration:0.3];
     v93 = [v92 initWithDuration:0 curve:0 animations:?];
     v147 = 0u;
     v148 = 0u;
     v149 = 0u;
     v150 = 0u;
-    v94 = [(BCCardStackTransitionAnimator *)v135 coverFadeItems];
-    v95 = [v94 countByEnumeratingWithState:&v147 objects:v209 count:16];
+    coverFadeItems3 = [(BCCardStackTransitionAnimator *)selfCopy coverFadeItems];
+    v95 = [coverFadeItems3 countByEnumeratingWithState:&v147 objects:v209 count:16];
     if (v95)
     {
       v96 = v95;
@@ -2007,24 +2007,24 @@ LABEL_16:
         {
           if (*v148 != v97)
           {
-            objc_enumerationMutation(v94);
+            objc_enumerationMutation(coverFadeItems3);
           }
 
           v99 = [*(*(&v147 + 1) + 8 * ii) key];
           v100 = [v136 objectForKeyedSubscript:v99];
-          v101 = [v100 coverView];
+          coverView2 = [v100 coverView];
 
-          [v101 setAlpha:0.0];
+          [coverView2 setAlpha:0.0];
           v145[0] = _NSConcreteStackBlock;
           v145[1] = 3221225472;
           v145[2] = sub_B1DF8;
           v145[3] = &unk_2C7D40;
-          v146 = v101;
-          v102 = v101;
+          v146 = coverView2;
+          v102 = coverView2;
           [v93 addAnimations:v145];
         }
 
-        v96 = [v94 countByEnumeratingWithState:&v147 objects:v209 count:16];
+        v96 = [coverFadeItems3 countByEnumeratingWithState:&v147 objects:v209 count:16];
       }
 
       while (v96);
@@ -2033,7 +2033,7 @@ LABEL_16:
     v87 = v118;
     [(BCViewPropertyAnimatorCounter *)v118 animate:v93];
 
-    p_isa = &v135->super.isa;
+    p_isa = &selfCopy->super.isa;
     v89 = v122;
   }
 
@@ -2041,8 +2041,8 @@ LABEL_16:
   v144 = 0u;
   v141 = 0u;
   v142 = 0u;
-  v103 = [v136 allValues];
-  v104 = [v103 countByEnumeratingWithState:&v141 objects:v208 count:16];
+  allValues = [v136 allValues];
+  v104 = [allValues countByEnumeratingWithState:&v141 objects:v208 count:16];
   if (v104)
   {
     v105 = v104;
@@ -2053,13 +2053,13 @@ LABEL_16:
       {
         if (*v142 != v106)
         {
-          objc_enumerationMutation(v103);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v141 + 1) + 8 * jj) setCounter:v87];
       }
 
-      v105 = [v103 countByEnumeratingWithState:&v141 objects:v208 count:16];
+      v105 = [allValues countByEnumeratingWithState:&v141 objects:v208 count:16];
     }
 
     while (v105);
@@ -2097,24 +2097,24 @@ LABEL_16:
   }
 }
 
-- (void)_animatePushByCrossfading:(id)a3
+- (void)_animatePushByCrossfading:(id)crossfading
 {
-  v4 = a3;
-  v5 = [v4 viewControllerForKey:UITransitionContextToViewControllerKey];
-  v6 = [v4 viewControllerForKey:UITransitionContextFromViewControllerKey];
-  v7 = [v4 viewForKey:@"BCUITransitionContextBackgroundViewKey"];
+  crossfadingCopy = crossfading;
+  v5 = [crossfadingCopy viewControllerForKey:UITransitionContextToViewControllerKey];
+  v6 = [crossfadingCopy viewControllerForKey:UITransitionContextFromViewControllerKey];
+  v7 = [crossfadingCopy viewForKey:@"BCUITransitionContextBackgroundViewKey"];
   v8 = self->_cardsCanExpand || v6 == 0;
-  [v4 finalFrameForViewController:v5];
+  [crossfadingCopy finalFrameForViewController:v5];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [v5 view];
-  [v17 setFrame:{v10, v12, v14, v16}];
+  view = [v5 view];
+  [view setFrame:{v10, v12, v14, v16}];
 
-  v18 = [v4 containerView];
-  v19 = [v5 view];
-  [v18 addSubview:v19];
+  containerView = [crossfadingCopy containerView];
+  view2 = [v5 view];
+  [containerView addSubview:view2];
 
   v20 = 1.0;
   if (v8)
@@ -2137,7 +2137,7 @@ LABEL_16:
   v37[1] = 3221225472;
   v37[2] = sub_B2188;
   v37[3] = &unk_2C99D8;
-  v25 = v4;
+  v25 = crossfadingCopy;
   v38 = v25;
   [UIView animateWithDuration:v39 animations:v37 completion:v22];
   [(BCCardStackTransitionAnimator *)self _adjustDuration:0.3];
@@ -2171,12 +2171,12 @@ LABEL_16:
   }
 }
 
-- (void)_animatePopByCrossfading:(id)a3
+- (void)_animatePopByCrossfading:(id)crossfading
 {
-  v4 = a3;
-  v5 = [v4 viewControllerForKey:UITransitionContextToViewControllerKey];
-  v6 = [v4 viewControllerForKey:UITransitionContextFromViewControllerKey];
-  v7 = [v4 viewForKey:@"BCUITransitionContextBackgroundViewKey"];
+  crossfadingCopy = crossfading;
+  v5 = [crossfadingCopy viewControllerForKey:UITransitionContextToViewControllerKey];
+  v6 = [crossfadingCopy viewControllerForKey:UITransitionContextFromViewControllerKey];
+  v7 = [crossfadingCopy viewForKey:@"BCUITransitionContextBackgroundViewKey"];
   v8 = self->_cardsCanExpand || v5 == 0;
   [(BCCardStackTransitionAnimator *)self _adjustDuration:0.3];
   v10 = v9;
@@ -2193,7 +2193,7 @@ LABEL_16:
   v25[1] = 3221225472;
   v25[2] = sub_B2498;
   v25[3] = &unk_2C99D8;
-  v13 = v4;
+  v13 = crossfadingCopy;
   v26 = v13;
   [UIView animateWithDuration:v27 animations:v25 completion:v10];
   [(BCCardStackTransitionAnimator *)self _adjustDuration:0.3];
@@ -2254,19 +2254,19 @@ LABEL_16:
   return v2 * v3;
 }
 
-- (id)_adjustSpring:(id)a3
+- (id)_adjustSpring:(id)spring
 {
-  v4 = a3;
+  springCopy = spring;
   [(BCCardStackTransitionAnimator *)self _debugDragCoefficient];
   v6 = v5;
   v7 = [UISpringTimingParameters alloc];
-  [v4 mass];
+  [springCopy mass];
   v9 = v8;
-  [v4 stiffness];
+  [springCopy stiffness];
   v11 = v10 / (v6 * v6);
-  [v4 damping];
+  [springCopy damping];
   v13 = v12 / v6;
-  [v4 initialVelocity];
+  [springCopy initialVelocity];
   v15 = v14;
   v17 = v16;
 

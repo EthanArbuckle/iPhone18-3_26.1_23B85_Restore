@@ -1,31 +1,31 @@
 @interface CSVoiceTriggerEventsCoordinator
 + (CSVoiceTriggerEventsCoordinator)sharedInstance;
-- (BOOL)_isVoiceTriggerFromHearst:(id)a3;
-- (BOOL)_isVoiceTriggerFromRemora:(id)a3;
-- (BOOL)_shouldIgnoreVoiceTriggerEvent:(id)a3;
+- (BOOL)_isVoiceTriggerFromHearst:(id)hearst;
+- (BOOL)_isVoiceTriggerFromRemora:(id)remora;
+- (BOOL)_shouldIgnoreVoiceTriggerEvent:(id)event;
 - (CSVoiceTriggerEventsCoordinator)init;
-- (id)_createVoiceTriggerEventInfoString:(id)a3;
-- (id)_myriadPhashFromVoiceTriggerInfo:(id)a3;
-- (void)CSAudioRouteChangeMonitor:(id)a3 didReceiveAudioRouteChangeEvent:(int64_t)a4;
-- (void)CSBluetoothWirelessSplitterMonitor:(id)a3 didReceiveSplitterStateChange:(unint64_t)a4 shouldDisableSpeakerVerificationInSplitterMode:(BOOL)a5;
+- (id)_createVoiceTriggerEventInfoString:(id)string;
+- (id)_myriadPhashFromVoiceTriggerInfo:(id)info;
+- (void)CSAudioRouteChangeMonitor:(id)monitor didReceiveAudioRouteChangeEvent:(int64_t)event;
+- (void)CSBluetoothWirelessSplitterMonitor:(id)monitor didReceiveSplitterStateChange:(unint64_t)change shouldDisableSpeakerVerificationInSplitterMode:(BOOL)mode;
 - (void)_notifyKeywordDetect;
-- (void)_notifyKeywordReject:(id)a3 deviceId:(id)a4;
-- (void)_notifyNearMissEvent:(id)a3 deviceId:(id)a4;
-- (void)_notifyRemoteTriggerEvent:(id)a3 myriadHash:(id)a4 remoteTriggerType:(unint64_t)a5 remoteDeviceId:(id)a6 isTriggeredFromFullWake:(BOOL)a7 completion:(id)a8;
-- (void)_notifySpeakerReject:(id)a3;
-- (void)_notifySuperVector:(id)a3;
-- (void)_notifyTriggerEvent:(id)a3 deviceId:(id)a4 completion:(id)a5;
-- (void)_notifyWakeKeywordSpokenEvent:(id)a3 deviceId:(id)a4;
-- (void)_printVoiceTriggerMetricsString:(id)a3;
-- (void)registerObserver:(id)a3;
-- (void)setTargetQueue:(id)a3;
+- (void)_notifyKeywordReject:(id)reject deviceId:(id)id;
+- (void)_notifyNearMissEvent:(id)event deviceId:(id)id;
+- (void)_notifyRemoteTriggerEvent:(id)event myriadHash:(id)hash remoteTriggerType:(unint64_t)type remoteDeviceId:(id)id isTriggeredFromFullWake:(BOOL)wake completion:(id)completion;
+- (void)_notifySpeakerReject:(id)reject;
+- (void)_notifySuperVector:(id)vector;
+- (void)_notifyTriggerEvent:(id)event deviceId:(id)id completion:(id)completion;
+- (void)_notifyWakeKeywordSpokenEvent:(id)event deviceId:(id)id;
+- (void)_printVoiceTriggerMetricsString:(id)string;
+- (void)registerObserver:(id)observer;
+- (void)setTargetQueue:(id)queue;
 - (void)start;
-- (void)unregisterObserver:(id)a3;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CSVoiceTriggerEventsCoordinator
 
-- (void)CSBluetoothWirelessSplitterMonitor:(id)a3 didReceiveSplitterStateChange:(unint64_t)a4 shouldDisableSpeakerVerificationInSplitterMode:(BOOL)a5
+- (void)CSBluetoothWirelessSplitterMonitor:(id)monitor didReceiveSplitterStateChange:(unint64_t)change shouldDisableSpeakerVerificationInSplitterMode:(BOOL)mode
 {
   queue = self->_queue;
   v6[0] = _NSConcreteStackBlock;
@@ -33,11 +33,11 @@
   v6[2] = sub_100111044;
   v6[3] = &unk_100253C98;
   v6[4] = self;
-  v6[5] = a4;
+  v6[5] = change;
   dispatch_async(queue, v6);
 }
 
-- (void)CSAudioRouteChangeMonitor:(id)a3 didReceiveAudioRouteChangeEvent:(int64_t)a4
+- (void)CSAudioRouteChangeMonitor:(id)monitor didReceiveAudioRouteChangeEvent:(int64_t)event
 {
   queue = self->_queue;
   v5[0] = _NSConcreteStackBlock;
@@ -45,21 +45,21 @@
   v5[2] = sub_1001110C4;
   v5[3] = &unk_100253C98;
   v5[4] = self;
-  v5[5] = a4;
+  v5[5] = event;
   dispatch_async(queue, v5);
 }
 
-- (void)_notifySuperVector:(id)a3
+- (void)_notifySuperVector:(id)vector
 {
-  v4 = a3;
+  vectorCopy = vector;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100111180;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = vectorCopy;
+  v6 = vectorCopy;
   dispatch_async(queue, v7);
 }
 
@@ -74,27 +74,27 @@
   dispatch_async(queue, block);
 }
 
-- (void)_notifyKeywordReject:(id)a3 deviceId:(id)a4
+- (void)_notifyKeywordReject:(id)reject deviceId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
+  rejectCopy = reject;
+  idCopy = id;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001114F0;
   block[3] = &unk_100253680;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = rejectCopy;
+  v13 = idCopy;
+  v9 = idCopy;
+  v10 = rejectCopy;
   dispatch_async(queue, block);
 }
 
-- (void)_notifySpeakerReject:(id)a3
+- (void)_notifySpeakerReject:(id)reject
 {
-  v4 = a3;
-  [(CSVoiceTriggerEventsCoordinator *)self _notifyWakeKeywordSpokenEvent:v4 deviceId:0];
+  rejectCopy = reject;
+  [(CSVoiceTriggerEventsCoordinator *)self _notifyWakeKeywordSpokenEvent:rejectCopy deviceId:0];
   if (CSIsInternalBuild())
   {
     notify_post("com.apple.voicetrigger.PHSReject");
@@ -106,15 +106,15 @@
   v7[2] = sub_1001116DC;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = rejectCopy;
+  v6 = rejectCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_notifyNearMissEvent:(id)a3 deviceId:(id)a4
+- (void)_notifyNearMissEvent:(id)event deviceId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  idCopy = id;
   if (CSIsInternalBuild())
   {
     notify_post("com.apple.voicetrigger.NearTrigger");
@@ -126,19 +126,19 @@
   block[2] = sub_1001118DC;
   block[3] = &unk_100253680;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = eventCopy;
+  v13 = idCopy;
+  v9 = idCopy;
+  v10 = eventCopy;
   dispatch_async(queue, block);
 }
 
-- (void)_notifyRemoteTriggerEvent:(id)a3 myriadHash:(id)a4 remoteTriggerType:(unint64_t)a5 remoteDeviceId:(id)a6 isTriggeredFromFullWake:(BOOL)a7 completion:(id)a8
+- (void)_notifyRemoteTriggerEvent:(id)event myriadHash:(id)hash remoteTriggerType:(unint64_t)type remoteDeviceId:(id)id isTriggeredFromFullWake:(BOOL)wake completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a8;
+  eventCopy = event;
+  hashCopy = hash;
+  idCopy = id;
+  completionCopy = completion;
   v18 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -152,31 +152,31 @@
   block[1] = 3221225472;
   block[2] = sub_100111BAC;
   block[3] = &unk_100251CE8;
-  v30 = a7;
-  v28 = v17;
-  v29 = a5;
+  wakeCopy = wake;
+  v28 = completionCopy;
+  typeCopy = type;
   block[4] = self;
-  v25 = v14;
-  v26 = v16;
-  v27 = v15;
-  v20 = v15;
-  v21 = v16;
-  v22 = v14;
-  v23 = v17;
+  v25 = eventCopy;
+  v26 = idCopy;
+  v27 = hashCopy;
+  v20 = hashCopy;
+  v21 = idCopy;
+  v22 = eventCopy;
+  v23 = completionCopy;
   dispatch_async(queue, block);
 }
 
-- (BOOL)_shouldIgnoreVoiceTriggerEvent:(id)a3
+- (BOOL)_shouldIgnoreVoiceTriggerEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (CSIsAppleSiliconMac())
   {
     if (+[CSUtils shouldBlockVoiceTriggerWhenOtherAppRecording])
     {
       v5 = +[CSOtherAppRecordingStateMonitorFactory otherAppRecordingStateMonitor];
-      v6 = [v5 isOtherNonEligibleAppRecording];
+      isOtherNonEligibleAppRecording = [v5 isOtherNonEligibleAppRecording];
 
-      if (v6)
+      if (isOtherNonEligibleAppRecording)
       {
         v7 = CSLogContextFacilityCoreSpeech;
         if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -194,7 +194,7 @@ LABEL_12:
     }
   }
 
-  if ([(CSVoiceTriggerEventsCoordinator *)self _isVoiceTriggerFromHearst:v4]|| !+[CSUtils supportRemoteDarwinVoiceTrigger])
+  if ([(CSVoiceTriggerEventsCoordinator *)self _isVoiceTriggerFromHearst:eventCopy]|| !+[CSUtils supportRemoteDarwinVoiceTrigger])
   {
     goto LABEL_15;
   }
@@ -207,9 +207,9 @@ LABEL_12:
   }
 
   v10 = +[CSRemoteDarwinDeviceInfo sharedInstance];
-  v11 = [v10 hasDarwinDeviceHandleVoiceTrigger];
+  hasDarwinDeviceHandleVoiceTrigger = [v10 hasDarwinDeviceHandleVoiceTrigger];
 
-  if (!v11)
+  if (!hasDarwinDeviceHandleVoiceTrigger)
   {
 LABEL_15:
     v12 = 0;
@@ -232,14 +232,14 @@ LABEL_16:
   return v12;
 }
 
-- (BOOL)_isVoiceTriggerFromHearst:(id)a3
+- (BOOL)_isVoiceTriggerFromHearst:(id)hearst
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  hearstCopy = hearst;
+  v4 = hearstCopy;
+  if (hearstCopy)
   {
     v5 = kVTEIfirstPassTriggerSource;
-    v6 = [v3 objectForKeyedSubscript:kVTEIfirstPassTriggerSource];
+    v6 = [hearstCopy objectForKeyedSubscript:kVTEIfirstPassTriggerSource];
     if (v6)
     {
       v7 = [v4 objectForKeyedSubscript:v5];
@@ -269,14 +269,14 @@ LABEL_16:
   return v8;
 }
 
-- (BOOL)_isVoiceTriggerFromRemora:(id)a3
+- (BOOL)_isVoiceTriggerFromRemora:(id)remora
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  remoraCopy = remora;
+  v4 = remoraCopy;
+  if (remoraCopy)
   {
     v5 = kVTEIfirstPassTriggerSource;
-    v6 = [v3 objectForKeyedSubscript:kVTEIfirstPassTriggerSource];
+    v6 = [remoraCopy objectForKeyedSubscript:kVTEIfirstPassTriggerSource];
     if (v6)
     {
       v7 = [v4 objectForKeyedSubscript:v5];
@@ -297,20 +297,20 @@ LABEL_16:
   return v8;
 }
 
-- (id)_myriadPhashFromVoiceTriggerInfo:(id)a3
+- (id)_myriadPhashFromVoiceTriggerInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   v4 = objc_alloc_init(CSMyriadPHash);
-  v5 = [(CSMyriadPHash *)v4 generatePHashFromVoiceTriggerInfo:v3 writeFile:0];
+  v5 = [(CSMyriadPHash *)v4 generatePHashFromVoiceTriggerInfo:infoCopy writeFile:0];
 
   return v5;
 }
 
-- (void)_notifyTriggerEvent:(id)a3 deviceId:(id)a4 completion:(id)a5
+- (void)_notifyTriggerEvent:(id)event deviceId:(id)id completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  eventCopy = event;
+  idCopy = id;
+  completionCopy = completion;
   v11 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -319,26 +319,26 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%s EventNotifier received VoiceTrigger event", buf, 0xCu);
   }
 
-  [(CSVoiceTriggerEventsCoordinator *)self _notifyWakeKeywordSpokenEvent:v8 deviceId:v9];
+  [(CSVoiceTriggerEventsCoordinator *)self _notifyWakeKeywordSpokenEvent:eventCopy deviceId:idCopy];
   queue = self->_queue;
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1001126D4;
   v16[3] = &unk_100252E58;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
-  v13 = v9;
-  v14 = v10;
-  v15 = v8;
+  v17 = eventCopy;
+  v18 = idCopy;
+  v19 = completionCopy;
+  v13 = idCopy;
+  v14 = completionCopy;
+  v15 = eventCopy;
   dispatch_async(queue, v16);
 }
 
-- (void)_notifyWakeKeywordSpokenEvent:(id)a3 deviceId:(id)a4
+- (void)_notifyWakeKeywordSpokenEvent:(id)event deviceId:(id)id
 {
-  v5 = a3;
-  v6 = a4;
+  eventCopy = event;
+  idCopy = id;
   v7 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -348,26 +348,26 @@ LABEL_16:
   }
 
   notify_post("com.apple.voicetrigger.KeywordSpoken");
-  if (v5)
+  if (eventCopy)
   {
     v8 = kVTEIfirstPassTriggerSource;
-    v9 = [v5 objectForKeyedSubscript:kVTEIfirstPassTriggerSource];
+    v9 = [eventCopy objectForKeyedSubscript:kVTEIfirstPassTriggerSource];
 
     if (v9)
     {
-      v10 = [v5 objectForKeyedSubscript:v8];
+      v10 = [eventCopy objectForKeyedSubscript:v8];
       if ([v10 isEqualToString:kVTEIFirstPassTriggeredFromHearst])
       {
 
 LABEL_8:
         v13 = +[CSSiriLauncher sharedLauncher];
-        [v13 notifyWakeKeywordSpokenBluetoothDevice:v5 deviceId:v6];
+        [v13 notifyWakeKeywordSpokenBluetoothDevice:eventCopy deviceId:idCopy];
 LABEL_9:
 
         goto LABEL_10;
       }
 
-      v11 = [v5 objectForKeyedSubscript:v8];
+      v11 = [eventCopy objectForKeyedSubscript:v8];
       v12 = [v11 isEqualToString:kVTEIFirstPassTriggeredFromHearstAP];
 
       if (v12)
@@ -375,23 +375,23 @@ LABEL_9:
         goto LABEL_8;
       }
 
-      v14 = [v5 objectForKeyedSubscript:v8];
+      v14 = [eventCopy objectForKeyedSubscript:v8];
       v15 = [v14 isEqualToString:kVTEIFirstPassTriggeredFromJarvis];
 
       if (v15)
       {
         v13 = +[CSSiriLauncher sharedLauncher];
-        [v13 notifyWakeKeywordSpokenCarPlay:v5 deviceId:v6];
+        [v13 notifyWakeKeywordSpokenCarPlay:eventCopy deviceId:idCopy];
         goto LABEL_9;
       }
 
-      v16 = [v5 objectForKeyedSubscript:v8];
+      v16 = [eventCopy objectForKeyedSubscript:v8];
       v17 = [v16 isEqualToString:kVTEIFirstPassTriggeredFromRemora];
 
       if (v17)
       {
         v13 = +[CSSiriLauncher sharedLauncher];
-        [v13 notifyWakeKeywordSpokenRemora:v5 deviceId:v6];
+        [v13 notifyWakeKeywordSpokenRemora:eventCopy deviceId:idCopy];
         goto LABEL_9;
       }
 
@@ -408,9 +408,9 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)_printVoiceTriggerMetricsString:(id)a3
+- (void)_printVoiceTriggerMetricsString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   if (CSIsInternalBuild())
   {
     if (qword_10029E3F8 != -1)
@@ -439,11 +439,11 @@ LABEL_10:
           }
 
           v10 = *(*(&v15 + 1) + 8 * i);
-          v11 = [v3 objectForKey:v10];
+          v11 = [stringCopy objectForKey:v10];
 
           if (v11)
           {
-            v12 = [v3 objectForKey:v10];
+            v12 = [stringCopy objectForKey:v10];
             v13 = [NSString stringWithFormat:@"\t%@: %@\n", v10, v12, v15];
             [v4 appendString:v13];
           }
@@ -468,9 +468,9 @@ LABEL_10:
   }
 }
 
-- (id)_createVoiceTriggerEventInfoString:(id)a3
+- (id)_createVoiceTriggerEventInfoString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   if (qword_10029E3E8 != -1)
   {
     dispatch_once(&qword_10029E3E8, &stru_100251CA0);
@@ -497,11 +497,11 @@ LABEL_10:
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v3 objectForKey:v10];
+        v11 = [stringCopy objectForKey:v10];
 
         if (v11)
         {
-          v12 = [v3 objectForKey:v10];
+          v12 = [stringCopy objectForKey:v10];
           v13 = [NSString stringWithFormat:@"\t%@: %@\n", v10, v12, v15];
           [v4 appendString:v13];
         }
@@ -518,31 +518,31 @@ LABEL_10:
   return v4;
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100113774;
   v7[3] = &unk_100253C48;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = observerCopy;
+  selfCopy = self;
+  v6 = observerCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100113824;
   v7[3] = &unk_100253C48;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = observerCopy;
+  selfCopy = self;
+  v6 = observerCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -557,10 +557,10 @@ LABEL_10:
   dispatch_async(queue, block);
 }
 
-- (void)setTargetQueue:(id)a3
+- (void)setTargetQueue:(id)queue
 {
-  v6 = a3;
-  objc_storeStrong(&self->_targetQueue, a3);
+  queueCopy = queue;
+  objc_storeStrong(&self->_targetQueue, queue);
   targetQueue = self->_targetQueue;
   if (targetQueue)
   {

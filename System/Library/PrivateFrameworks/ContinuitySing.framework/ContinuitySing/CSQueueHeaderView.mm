@@ -1,9 +1,9 @@
 @interface CSQueueHeaderView
-- (CSQueueHeaderView)initWithFrame:(CGRect)a3;
+- (CSQueueHeaderView)initWithFrame:(CGRect)frame;
 - (void)_onBackwardPressed;
 - (void)_onForwardPressed;
 - (void)_onPlayPausePressed;
-- (void)setNowPlayingItem:(id)a3;
+- (void)setNowPlayingItem:(id)item;
 - (void)setupArtistLabel;
 - (void)setupArtworkView;
 - (void)setupConstraints;
@@ -14,11 +14,11 @@
 
 @implementation CSQueueHeaderView
 
-- (CSQueueHeaderView)initWithFrame:(CGRect)a3
+- (CSQueueHeaderView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CSQueueHeaderView;
-  v3 = [(CSQueueHeaderView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CSQueueHeaderView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -29,13 +29,13 @@
   return v4;
 }
 
-- (void)setNowPlayingItem:(id)a3
+- (void)setNowPlayingItem:(id)item
 {
-  v16 = a3;
-  v4 = [v16 metadataObject];
-  v5 = [(CSArtworkImageView *)self->_artworkView content];
-  v6 = [v5 metadataObject];
-  v7 = [v4 isEqual:v6];
+  itemCopy = item;
+  metadataObject = [itemCopy metadataObject];
+  content = [(CSArtworkImageView *)self->_artworkView content];
+  metadataObject2 = [content metadataObject];
+  v7 = [metadataObject isEqual:metadataObject2];
 
   if ((v7 & 1) == 0)
   {
@@ -43,19 +43,19 @@
     [(CSArtworkImageView *)self->_artworkView setImage:v8];
 
     [(CSArtworkImageView *)self->_artworkView setContentMode:4];
-    [(CSArtworkImageView *)self->_artworkView setContent:v16];
+    [(CSArtworkImageView *)self->_artworkView setContent:itemCopy];
   }
 
-  v9 = [v16 metadataObject];
-  v10 = [v9 song];
-  v11 = [v10 title];
-  [(UILabel *)self->_titleLabel setText:v11];
+  metadataObject3 = [itemCopy metadataObject];
+  song = [metadataObject3 song];
+  title = [song title];
+  [(UILabel *)self->_titleLabel setText:title];
 
-  v12 = [v16 metadataObject];
-  v13 = [v12 song];
-  v14 = [v13 artist];
-  v15 = [v14 name];
-  [(UILabel *)self->_artistLabel setText:v15];
+  metadataObject4 = [itemCopy metadataObject];
+  song2 = [metadataObject4 song];
+  artist = [song2 artist];
+  name = [artist name];
+  [(UILabel *)self->_artistLabel setText:name];
 }
 
 - (void)setupSubviews
@@ -76,8 +76,8 @@
   v5 = CSArtworkPlaceholderImage(28);
   [(CSArtworkImageView *)self->_artworkView setImage:v5];
 
-  v6 = [(CSArtworkImageView *)self->_artworkView layer];
-  [v6 setCornerRadius:12.0];
+  layer = [(CSArtworkImageView *)self->_artworkView layer];
+  [layer setCornerRadius:12.0];
 
   [(CSArtworkImageView *)self->_artworkView setClipsToBounds:1];
   v7 = [MEMORY[0x277D75340] colorWithRed:0.196078431 green:0.192156863 blue:0.215686275 alpha:1.0];
@@ -98,8 +98,8 @@
   v5 = [MEMORY[0x277D74300] _preferredFontForTextStyle:*MEMORY[0x277D76A30] weight:*MEMORY[0x277D74420]];
   [(UILabel *)self->_titleLabel setFont:v5];
 
-  v6 = [MEMORY[0x277D75340] labelColor];
-  [(UILabel *)self->_titleLabel setTextColor:v6];
+  labelColor = [MEMORY[0x277D75340] labelColor];
+  [(UILabel *)self->_titleLabel setTextColor:labelColor];
 
   [(UILabel *)self->_titleLabel setMarqueeEnabled:1];
   v7 = self->_titleLabel;
@@ -116,8 +116,8 @@
   v5 = [MEMORY[0x277D74300] _preferredFontForTextStyle:*MEMORY[0x277D76928] weight:*MEMORY[0x277D74418]];
   [(UILabel *)self->_artistLabel setFont:v5];
 
-  v6 = [MEMORY[0x277D75340] secondaryLabelColor];
-  [(UILabel *)self->_artistLabel setTextColor:v6];
+  secondaryLabelColor = [MEMORY[0x277D75340] secondaryLabelColor];
+  [(UILabel *)self->_artistLabel setTextColor:secondaryLabelColor];
 
   [(UILabel *)self->_artistLabel setMarqueeEnabled:1];
   v7 = self->_artistLabel;
@@ -187,56 +187,56 @@ void __44__CSQueueHeaderView_setupPlayerControlsView__block_invoke_3(uint64_t a1
   [(UILabel *)self->_artistLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   [(CSQueuePlaybackControlsView *)self->_playerControlsView setTranslatesAutoresizingMaskIntoConstraints:0];
   v28 = MEMORY[0x277CCAAD0];
-  v42 = [(CSArtworkImageView *)self->_artworkView leadingAnchor];
-  v41 = [(CSQueueHeaderView *)self leadingAnchor];
-  v40 = [v42 constraintEqualToAnchor:v41 constant:32.0];
+  leadingAnchor = [(CSArtworkImageView *)self->_artworkView leadingAnchor];
+  leadingAnchor2 = [(CSQueueHeaderView *)self leadingAnchor];
+  v40 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:32.0];
   v43[0] = v40;
-  v39 = [(CSArtworkImageView *)self->_artworkView topAnchor];
-  v38 = [(CSQueueHeaderView *)self topAnchor];
-  v37 = [v39 constraintEqualToAnchor:v38 constant:32.0];
+  topAnchor = [(CSArtworkImageView *)self->_artworkView topAnchor];
+  topAnchor2 = [(CSQueueHeaderView *)self topAnchor];
+  v37 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:32.0];
   v43[1] = v37;
-  v36 = [(CSArtworkImageView *)self->_artworkView widthAnchor];
-  v35 = [v36 constraintEqualToConstant:66.0];
+  widthAnchor = [(CSArtworkImageView *)self->_artworkView widthAnchor];
+  v35 = [widthAnchor constraintEqualToConstant:66.0];
   v43[2] = v35;
-  v34 = [(CSArtworkImageView *)self->_artworkView heightAnchor];
-  v33 = [(CSArtworkImageView *)self->_artworkView widthAnchor];
-  v32 = [v34 constraintEqualToAnchor:v33];
+  heightAnchor = [(CSArtworkImageView *)self->_artworkView heightAnchor];
+  widthAnchor2 = [(CSArtworkImageView *)self->_artworkView widthAnchor];
+  v32 = [heightAnchor constraintEqualToAnchor:widthAnchor2];
   v43[3] = v32;
-  v31 = [(UILabel *)self->_titleLabel leadingAnchor];
-  v30 = [(CSArtworkImageView *)self->_artworkView trailingAnchor];
-  v29 = [v31 constraintEqualToAnchor:v30 constant:20.0];
+  leadingAnchor3 = [(UILabel *)self->_titleLabel leadingAnchor];
+  trailingAnchor = [(CSArtworkImageView *)self->_artworkView trailingAnchor];
+  v29 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:20.0];
   v43[4] = v29;
-  v27 = [(UILabel *)self->_titleLabel trailingAnchor];
-  v26 = [(CSQueueHeaderView *)self trailingAnchor];
-  v25 = [v27 constraintEqualToAnchor:v26 constant:-35.0];
+  trailingAnchor2 = [(UILabel *)self->_titleLabel trailingAnchor];
+  trailingAnchor3 = [(CSQueueHeaderView *)self trailingAnchor];
+  v25 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:-35.0];
   v43[5] = v25;
-  v24 = [(UILabel *)self->_titleLabel bottomAnchor];
-  v23 = [(CSArtworkImageView *)self->_artworkView centerYAnchor];
-  v22 = [v24 constraintEqualToAnchor:v23];
+  bottomAnchor = [(UILabel *)self->_titleLabel bottomAnchor];
+  centerYAnchor = [(CSArtworkImageView *)self->_artworkView centerYAnchor];
+  v22 = [bottomAnchor constraintEqualToAnchor:centerYAnchor];
   v43[6] = v22;
-  v21 = [(UILabel *)self->_artistLabel leadingAnchor];
-  v20 = [(UILabel *)self->_titleLabel leadingAnchor];
-  v19 = [v21 constraintEqualToAnchor:v20];
+  leadingAnchor4 = [(UILabel *)self->_artistLabel leadingAnchor];
+  leadingAnchor5 = [(UILabel *)self->_titleLabel leadingAnchor];
+  v19 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
   v43[7] = v19;
-  v18 = [(UILabel *)self->_artistLabel trailingAnchor];
-  v17 = [(UILabel *)self->_titleLabel trailingAnchor];
-  v16 = [v18 constraintEqualToAnchor:v17];
+  trailingAnchor4 = [(UILabel *)self->_artistLabel trailingAnchor];
+  trailingAnchor5 = [(UILabel *)self->_titleLabel trailingAnchor];
+  v16 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
   v43[8] = v16;
-  v15 = [(UILabel *)self->_artistLabel topAnchor];
-  v14 = [(UILabel *)self->_titleLabel bottomAnchor];
-  v13 = [v15 constraintEqualToAnchor:v14 constant:2.0];
+  topAnchor3 = [(UILabel *)self->_artistLabel topAnchor];
+  bottomAnchor2 = [(UILabel *)self->_titleLabel bottomAnchor];
+  v13 = [topAnchor3 constraintEqualToAnchor:bottomAnchor2 constant:2.0];
   v43[9] = v13;
-  v3 = [(CSQueuePlaybackControlsView *)self->_playerControlsView leadingAnchor];
-  v4 = [(CSQueueHeaderView *)self leadingAnchor];
-  v5 = [v3 constraintEqualToAnchor:v4];
+  leadingAnchor6 = [(CSQueuePlaybackControlsView *)self->_playerControlsView leadingAnchor];
+  leadingAnchor7 = [(CSQueueHeaderView *)self leadingAnchor];
+  v5 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7];
   v43[10] = v5;
-  v6 = [(CSQueuePlaybackControlsView *)self->_playerControlsView trailingAnchor];
-  v7 = [(CSQueueHeaderView *)self trailingAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7];
+  trailingAnchor6 = [(CSQueuePlaybackControlsView *)self->_playerControlsView trailingAnchor];
+  trailingAnchor7 = [(CSQueueHeaderView *)self trailingAnchor];
+  v8 = [trailingAnchor6 constraintEqualToAnchor:trailingAnchor7];
   v43[11] = v8;
-  v9 = [(CSQueuePlaybackControlsView *)self->_playerControlsView topAnchor];
-  v10 = [(CSArtworkImageView *)self->_artworkView bottomAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10 constant:20.0];
+  topAnchor4 = [(CSQueuePlaybackControlsView *)self->_playerControlsView topAnchor];
+  bottomAnchor3 = [(CSArtworkImageView *)self->_artworkView bottomAnchor];
+  v11 = [topAnchor4 constraintEqualToAnchor:bottomAnchor3 constant:20.0];
   v43[12] = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v43 count:13];
   [v28 activateConstraints:v12];
@@ -253,19 +253,19 @@ void __44__CSQueueHeaderView_setupPlayerControlsView__block_invoke_3(uint64_t a1
   }
 
   v3 = +[CSShieldManager sharedManager];
-  v4 = [v3 playbackManager];
+  playbackManager = [v3 playbackManager];
 
-  v5 = [v4 currentState];
-  v6 = [v5 playerState];
+  currentState = [playbackManager currentState];
+  playerState = [currentState playerState];
 
-  if (v6 == 2)
+  if (playerState == 2)
   {
-    [v4 pause];
+    [playbackManager pause];
   }
 
   else
   {
-    [v4 play];
+    [playbackManager play];
   }
 }
 
@@ -280,8 +280,8 @@ void __44__CSQueueHeaderView_setupPlayerControlsView__block_invoke_3(uint64_t a1
   }
 
   v3 = +[CSShieldManager sharedManager];
-  v4 = [v3 playbackManager];
-  [v4 forward];
+  playbackManager = [v3 playbackManager];
+  [playbackManager forward];
 }
 
 - (void)_onBackwardPressed
@@ -295,8 +295,8 @@ void __44__CSQueueHeaderView_setupPlayerControlsView__block_invoke_3(uint64_t a1
   }
 
   v3 = +[CSShieldManager sharedManager];
-  v4 = [v3 playbackManager];
-  [v4 backward];
+  playbackManager = [v3 playbackManager];
+  [playbackManager backward];
 }
 
 @end

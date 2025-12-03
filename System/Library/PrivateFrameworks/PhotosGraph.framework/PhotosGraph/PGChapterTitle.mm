@@ -1,6 +1,6 @@
 @interface PGChapterTitle
-- (BOOL)isEqual:(id)a3;
-- (PGChapterTitle)initWithLocalizedTitleString:(id)a3 chapterDateInterval:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (PGChapterTitle)initWithLocalizedTitleString:(id)string chapterDateInterval:(id)interval;
 - (id)dictionaryRepresentation;
 @end
 
@@ -9,24 +9,24 @@
 - (id)dictionaryRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v4 = [(PGChapterTitle *)self localizedTitleString];
-  [v3 setObject:v4 forKeyedSubscript:@"title"];
+  localizedTitleString = [(PGChapterTitle *)self localizedTitleString];
+  [v3 setObject:localizedTitleString forKeyedSubscript:@"title"];
 
-  v5 = [(PGChapterTitle *)self chapterDateInterval];
-  v6 = [v5 startDate];
-  [v3 setObject:v6 forKeyedSubscript:@"startDate"];
+  chapterDateInterval = [(PGChapterTitle *)self chapterDateInterval];
+  startDate = [chapterDateInterval startDate];
+  [v3 setObject:startDate forKeyedSubscript:@"startDate"];
 
-  v7 = [(PGChapterTitle *)self chapterDateInterval];
-  v8 = [v7 endDate];
-  [v3 setObject:v8 forKeyedSubscript:@"endDate"];
+  chapterDateInterval2 = [(PGChapterTitle *)self chapterDateInterval];
+  endDate = [chapterDateInterval2 endDate];
+  [v3 setObject:endDate forKeyedSubscript:@"endDate"];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -36,14 +36,14 @@
     v5 = objc_opt_class();
     if (v5 == objc_opt_class())
     {
-      v7 = v4;
+      v7 = equalCopy;
       chapterDateInterval = self->_chapterDateInterval;
-      v9 = [(PGChapterTitle *)v7 chapterDateInterval];
-      if ([(NSDateInterval *)chapterDateInterval isEqualToDateInterval:v9])
+      chapterDateInterval = [(PGChapterTitle *)v7 chapterDateInterval];
+      if ([(NSDateInterval *)chapterDateInterval isEqualToDateInterval:chapterDateInterval])
       {
         localizedTitleString = self->_localizedTitleString;
-        v11 = [(PGChapterTitle *)v7 localizedTitleString];
-        v6 = [(NSString *)localizedTitleString isEqualToString:v11];
+        localizedTitleString = [(PGChapterTitle *)v7 localizedTitleString];
+        v6 = [(NSString *)localizedTitleString isEqualToString:localizedTitleString];
       }
 
       else
@@ -61,20 +61,20 @@
   return v6;
 }
 
-- (PGChapterTitle)initWithLocalizedTitleString:(id)a3 chapterDateInterval:(id)a4
+- (PGChapterTitle)initWithLocalizedTitleString:(id)string chapterDateInterval:(id)interval
 {
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  intervalCopy = interval;
   v14.receiver = self;
   v14.super_class = PGChapterTitle;
   v8 = [(PGChapterTitle *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [stringCopy copy];
     localizedTitleString = v8->_localizedTitleString;
     v8->_localizedTitleString = v9;
 
-    v11 = [v7 copy];
+    v11 = [intervalCopy copy];
     chapterDateInterval = v8->_chapterDateInterval;
     v8->_chapterDateInterval = v11;
   }

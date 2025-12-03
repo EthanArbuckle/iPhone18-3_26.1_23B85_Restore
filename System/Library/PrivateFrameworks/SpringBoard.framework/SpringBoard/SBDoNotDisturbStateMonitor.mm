@@ -2,10 +2,10 @@
 + (SBDoNotDisturbStateMonitor)sharedInstance;
 - (DNDState)state;
 - (SBDoNotDisturbStateMonitor)init;
-- (void)_noteNewDNDState:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)stateService:(id)a3 didReceiveDoNotDisturbStateUpdate:(id)a4;
+- (void)_noteNewDNDState:(id)state;
+- (void)addObserver:(id)observer;
+- (void)removeObserver:(id)observer;
+- (void)stateService:(id)service didReceiveDoNotDisturbStateUpdate:(id)update;
 @end
 
 @implementation SBDoNotDisturbStateMonitor
@@ -38,9 +38,9 @@ void __44__SBDoNotDisturbStateMonitor_sharedInstance__block_invoke()
   if (v2)
   {
     v2->_lock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     lock_observers = v3->_lock_observers;
-    v3->_lock_observers = v4;
+    v3->_lock_observers = weakObjectsHashTable;
 
     v6 = [MEMORY[0x277D05AB0] serviceForClientIdentifier:@"com.apple.springboard.dndstatemonitor"];
     stateService = v3->_stateService;
@@ -78,33 +78,33 @@ uint64_t __34__SBDoNotDisturbStateMonitor_init__block_invoke(uint64_t result, ui
   return v3;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_lock_observers addObject:v4];
+  [(NSHashTable *)self->_lock_observers addObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_lock_observers removeObject:v4];
+  [(NSHashTable *)self->_lock_observers removeObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)stateService:(id)a3 didReceiveDoNotDisturbStateUpdate:(id)a4
+- (void)stateService:(id)service didReceiveDoNotDisturbStateUpdate:(id)update
 {
-  v5 = [a4 state];
-  [(SBDoNotDisturbStateMonitor *)self _noteNewDNDState:v5];
+  state = [update state];
+  [(SBDoNotDisturbStateMonitor *)self _noteNewDNDState:state];
 }
 
-- (void)_noteNewDNDState:(id)a3
+- (void)_noteNewDNDState:(id)state
 {
-  v4 = [a3 copy];
+  v4 = [state copy];
   os_unfair_lock_lock(&self->_lock);
   objc_storeStrong(&self->_lock_state, v4);
   v5 = [(NSHashTable *)self->_lock_observers copy];
@@ -114,7 +114,7 @@ uint64_t __34__SBDoNotDisturbStateMonitor_init__block_invoke(uint64_t result, ui
   block[2] = __47__SBDoNotDisturbStateMonitor__noteNewDNDState___block_invoke;
   block[3] = &unk_2783A8ED8;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   v11 = v4;
   v6 = v4;
   v7 = v5;

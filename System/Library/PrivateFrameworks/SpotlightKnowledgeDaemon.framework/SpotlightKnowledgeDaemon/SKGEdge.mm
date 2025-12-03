@@ -1,11 +1,11 @@
 @interface SKGEdge
 + (MAEdgeFilter)filter;
-+ (id)edgeFromNode:(id)a3 toNode:(id)a4;
-+ (id)edgeWithElementIdentifier:(unint64_t)a3 inGraph:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToEdge:(id)a3;
-- (SKGEdge)initWithLabel:(id)a3 sourceNode:(id)a4 targetNode:(id)a5 domain:(unsigned __int16)a6 weight:(float)a7 properties:(id)a8;
-- (SKGEdge)initWithSourceNode:(id)a3 targetNode:(id)a4;
++ (id)edgeFromNode:(id)node toNode:(id)toNode;
++ (id)edgeWithElementIdentifier:(unint64_t)identifier inGraph:(id)graph;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToEdge:(id)edge;
+- (SKGEdge)initWithLabel:(id)label sourceNode:(id)node targetNode:(id)targetNode domain:(unsigned __int16)domain weight:(float)weight properties:(id)properties;
+- (SKGEdge)initWithSourceNode:(id)node targetNode:(id)targetNode;
 - (id)label;
 - (id)propertyDictionary;
 @end
@@ -15,17 +15,17 @@
 + (MAEdgeFilter)filter
 {
   v2 = objc_alloc(MEMORY[0x277D22C20]);
-  v3 = [objc_opt_class() name];
-  v4 = [v2 initWithLabel:v3 domain:100];
+  name = [objc_opt_class() name];
+  v4 = [v2 initWithLabel:name domain:100];
 
   return v4;
 }
 
-+ (id)edgeWithElementIdentifier:(unint64_t)a3 inGraph:(id)a4
++ (id)edgeWithElementIdentifier:(unint64_t)identifier inGraph:(id)graph
 {
-  v5 = a4;
-  v6 = [v5 graph];
-  v7 = [v6 edgeForIdentifier:a3];
+  graphCopy = graph;
+  graph = [graphCopy graph];
+  v7 = [graph edgeForIdentifier:identifier];
 
   if (!v7)
   {
@@ -33,17 +33,17 @@
     goto LABEL_36;
   }
 
-  v8 = [v7 sourceNode];
-  v9 = +[SKGNode nodeWithElementIdentifier:inGraph:](SKGNode, "nodeWithElementIdentifier:inGraph:", [v8 identifier], v5);
+  sourceNode = [v7 sourceNode];
+  v9 = +[SKGNode nodeWithElementIdentifier:inGraph:](SKGNode, "nodeWithElementIdentifier:inGraph:", [sourceNode identifier], graphCopy);
 
-  v10 = [v7 targetNode];
-  v11 = +[SKGNode nodeWithElementIdentifier:inGraph:](SKGNode, "nodeWithElementIdentifier:inGraph:", [v10 identifier], v5);
+  targetNode = [v7 targetNode];
+  v11 = +[SKGNode nodeWithElementIdentifier:inGraph:](SKGNode, "nodeWithElementIdentifier:inGraph:", [targetNode identifier], graphCopy);
 
   v12 = 0;
   if (v9 && v11)
   {
-    v13 = [v7 label];
-    v14 = [v13 isEqualToString:SKGPeoplePersonUser];
+    label = [v7 label];
+    v14 = [label isEqualToString:SKGPeoplePersonUser];
 
     if (v14)
     {
@@ -53,8 +53,8 @@ LABEL_34:
       goto LABEL_35;
     }
 
-    v16 = [v7 label];
-    v17 = [v16 isEqualToString:SKGPeoplePersonIdentifier];
+    label2 = [v7 label];
+    v17 = [label2 isEqualToString:SKGPeoplePersonIdentifier];
 
     if (v17)
     {
@@ -62,8 +62,8 @@ LABEL_34:
       goto LABEL_34;
     }
 
-    v18 = [v7 label];
-    v19 = [v18 isEqualToString:SKGPeopleContactIdentifier];
+    label3 = [v7 label];
+    v19 = [label3 isEqualToString:SKGPeopleContactIdentifier];
 
     if (v19)
     {
@@ -71,8 +71,8 @@ LABEL_34:
       goto LABEL_34;
     }
 
-    v20 = [v7 label];
-    v21 = [v20 isEqualToString:SKGPeoplePhotoPersonIdentifier];
+    label4 = [v7 label];
+    v21 = [label4 isEqualToString:SKGPeoplePhotoPersonIdentifier];
 
     if (v21)
     {
@@ -80,8 +80,8 @@ LABEL_34:
       goto LABEL_34;
     }
 
-    v22 = [v7 label];
-    v23 = [v22 isEqualToString:SKGPeopleEntityIdentifier];
+    label5 = [v7 label];
+    v23 = [label5 isEqualToString:SKGPeopleEntityIdentifier];
 
     if (v23)
     {
@@ -89,8 +89,8 @@ LABEL_34:
       goto LABEL_34;
     }
 
-    v24 = [v7 label];
-    v25 = [v24 isEqualToString:SKGPeopleDisplayName];
+    label6 = [v7 label];
+    v25 = [label6 isEqualToString:SKGPeopleDisplayName];
 
     if (v25)
     {
@@ -98,8 +98,8 @@ LABEL_34:
       goto LABEL_34;
     }
 
-    v26 = [v7 label];
-    v27 = [v26 isEqualToString:SKGPeopleName];
+    label7 = [v7 label];
+    v27 = [label7 isEqualToString:SKGPeopleName];
 
     if (v27)
     {
@@ -107,8 +107,8 @@ LABEL_34:
       goto LABEL_34;
     }
 
-    v28 = [v7 label];
-    v29 = [v28 isEqualToString:SKGPeopleNameKey];
+    label8 = [v7 label];
+    v29 = [label8 isEqualToString:SKGPeopleNameKey];
 
     if (v29)
     {
@@ -116,8 +116,8 @@ LABEL_34:
       goto LABEL_34;
     }
 
-    v30 = [v7 label];
-    v31 = [v30 isEqualToString:SKGPeopleEmailAddress];
+    label9 = [v7 label];
+    v31 = [label9 isEqualToString:SKGPeopleEmailAddress];
 
     if (v31)
     {
@@ -125,8 +125,8 @@ LABEL_34:
       goto LABEL_34;
     }
 
-    v32 = [v7 label];
-    v33 = [v32 isEqualToString:SKGPeoplePhoneNumber];
+    label10 = [v7 label];
+    v33 = [label10 isEqualToString:SKGPeoplePhoneNumber];
 
     if (v33)
     {
@@ -134,8 +134,8 @@ LABEL_34:
       goto LABEL_34;
     }
 
-    v34 = [v7 label];
-    v35 = [v34 isEqualToString:SKGContentReferenceIdentifier];
+    label11 = [v7 label];
+    v35 = [label11 isEqualToString:SKGContentReferenceIdentifier];
 
     if (v35)
     {
@@ -143,8 +143,8 @@ LABEL_34:
       goto LABEL_34;
     }
 
-    v36 = [v7 label];
-    v37 = [v36 isEqualToString:SKGContentPersonaIdentifier];
+    label12 = [v7 label];
+    v37 = [label12 isEqualToString:SKGContentPersonaIdentifier];
 
     if (v37)
     {
@@ -152,8 +152,8 @@ LABEL_34:
       goto LABEL_34;
     }
 
-    v38 = [v7 label];
-    v39 = [v38 isEqualToString:SKGContentDomainIdentifier];
+    label13 = [v7 label];
+    v39 = [label13 isEqualToString:SKGContentDomainIdentifier];
 
     if (v39)
     {
@@ -161,9 +161,9 @@ LABEL_34:
       goto LABEL_34;
     }
 
-    v40 = [v7 label];
+    label14 = [v7 label];
     v41 = +[(SKGEdge *)SKGInteractionEdge];
-    v42 = [v40 isEqualToString:v41];
+    v42 = [label14 isEqualToString:v41];
 
     if (!v42)
     {
@@ -173,10 +173,10 @@ LABEL_34:
 
     v43 = v7;
     v44 = [SKGInteractionEdge alloc];
-    v45 = [v43 domainIdentifier];
-    v46 = [v43 relationship];
-    v47 = [v43 score];
-    v12 = [(SKGInteractionEdge *)v44 initWithSourceNode:v9 targetNode:v11 domainIdentifier:v45 relationship:v46 score:v47];
+    domainIdentifier = [v43 domainIdentifier];
+    relationship = [v43 relationship];
+    score = [v43 score];
+    v12 = [(SKGInteractionEdge *)v44 initWithSourceNode:v9 targetNode:v11 domainIdentifier:domainIdentifier relationship:relationship score:score];
   }
 
 LABEL_35:
@@ -186,14 +186,14 @@ LABEL_36:
   return v12;
 }
 
-+ (id)edgeFromNode:(id)a3 toNode:(id)a4
++ (id)edgeFromNode:(id)node toNode:(id)toNode
 {
-  v5 = a3;
-  v6 = a4;
+  nodeCopy = node;
+  toNodeCopy = toNode;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [SKGUserEdge edgeFromUser:v5 toNode:v6];
+    v7 = [SKGUserEdge edgeFromUser:nodeCopy toNode:toNodeCopy];
 LABEL_27:
     v8 = v7;
     goto LABEL_28;
@@ -202,84 +202,84 @@ LABEL_27:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [SKGPersonEdge edgeFromPerson:v5 toNode:v6];
+    v7 = [SKGPersonEdge edgeFromPerson:nodeCopy toNode:toNodeCopy];
     goto LABEL_27;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [SKGContactEdge edgeFromContact:v5 toNode:v6];
+    v7 = [SKGContactEdge edgeFromContact:nodeCopy toNode:toNodeCopy];
     goto LABEL_27;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [SKGPhotoEdge edgeFromPhoto:v5 toNode:v6];
+    v7 = [SKGPhotoEdge edgeFromPhoto:nodeCopy toNode:toNodeCopy];
     goto LABEL_27;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [SKGEntityEdge edgeFromEntity:v5 toNode:v6];
+    v7 = [SKGEntityEdge edgeFromEntity:nodeCopy toNode:toNodeCopy];
     goto LABEL_27;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [SKGDisplayNameEdge edgeFromDisplayName:v5 toNode:v6];
+    v7 = [SKGDisplayNameEdge edgeFromDisplayName:nodeCopy toNode:toNodeCopy];
     goto LABEL_27;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [SKGNameEdge edgeFromName:v5 toNode:v6];
+    v7 = [SKGNameEdge edgeFromName:nodeCopy toNode:toNodeCopy];
     goto LABEL_27;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [SKGNameKeyEdge edgeFromNameKey:v5 toNode:v6];
+    v7 = [SKGNameKeyEdge edgeFromNameKey:nodeCopy toNode:toNodeCopy];
     goto LABEL_27;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [SKGEmailEdge edgeFromEmail:v5 toNode:v6];
+    v7 = [SKGEmailEdge edgeFromEmail:nodeCopy toNode:toNodeCopy];
     goto LABEL_27;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [SKGPhoneEdge edgeFromPhone:v5 toNode:v6];
+    v7 = [SKGPhoneEdge edgeFromPhone:nodeCopy toNode:toNodeCopy];
     goto LABEL_27;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [SKGReferenceEdge edgeFromReference:v5 toNode:v6];
+    v7 = [SKGReferenceEdge edgeFromReference:nodeCopy toNode:toNodeCopy];
     goto LABEL_27;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [SKGPersonaEdge edgeFromPersona:v5 toNode:v6];
+    v7 = [SKGPersonaEdge edgeFromPersona:nodeCopy toNode:toNodeCopy];
     goto LABEL_27;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [SKGDomainEdge edgeFromDomain:v5 toNode:v6];
+    v7 = [SKGDomainEdge edgeFromDomain:nodeCopy toNode:toNodeCopy];
     goto LABEL_27;
   }
 
@@ -289,53 +289,53 @@ LABEL_28:
   return v8;
 }
 
-- (SKGEdge)initWithLabel:(id)a3 sourceNode:(id)a4 targetNode:(id)a5 domain:(unsigned __int16)a6 weight:(float)a7 properties:(id)a8
+- (SKGEdge)initWithLabel:(id)label sourceNode:(id)node targetNode:(id)targetNode domain:(unsigned __int16)domain weight:(float)weight properties:(id)properties
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = [a8 objectForKey:@"relationship"];
+  nodeCopy = node;
+  targetNodeCopy = targetNode;
+  v13 = [properties objectForKey:@"relationship"];
   if (v13)
   {
     v16.receiver = self;
     v16.super_class = SKGEdge;
-    self = [(MAEdge *)&v16 initWithSourceNode:v11 targetNode:v12];
-    v14 = self;
+    self = [(MAEdge *)&v16 initWithSourceNode:nodeCopy targetNode:targetNodeCopy];
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (SKGEdge)initWithSourceNode:(id)a3 targetNode:(id)a4
+- (SKGEdge)initWithSourceNode:(id)node targetNode:(id)targetNode
 {
   v5.receiver = self;
   v5.super_class = SKGEdge;
-  return [(MAEdge *)&v5 initWithSourceNode:a3 targetNode:a4];
+  return [(MAEdge *)&v5 initWithSourceNode:node targetNode:targetNode];
 }
 
-- (BOOL)isEqualToEdge:(id)a3
+- (BOOL)isEqualToEdge:(id)edge
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  edgeCopy = edge;
+  v5 = edgeCopy;
+  if (!edgeCopy)
   {
     goto LABEL_8;
   }
 
-  v6 = [v4 label];
-  v7 = [(SKGEdge *)self label];
-  if (([v6 isEqualToString:v7] & 1) == 0)
+  label = [edgeCopy label];
+  label2 = [(SKGEdge *)self label];
+  if (([label isEqualToString:label2] & 1) == 0)
   {
     goto LABEL_7;
   }
 
-  v8 = [v5 propertyDictionary];
-  v9 = [(SKGEdge *)self propertyDictionary];
-  v10 = [v8 isEqualToDictionary:v9];
+  propertyDictionary = [v5 propertyDictionary];
+  propertyDictionary2 = [(SKGEdge *)self propertyDictionary];
+  v10 = [propertyDictionary isEqualToDictionary:propertyDictionary2];
 
   if ((v10 & 1) == 0)
   {
@@ -344,18 +344,18 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v6 = [v5 sourceNode];
-  v7 = [(MAEdge *)self sourceNode];
-  if (([v6 isEqualToNode:v7] & 1) == 0)
+  label = [v5 sourceNode];
+  label2 = [(MAEdge *)self sourceNode];
+  if (([label isEqualToNode:label2] & 1) == 0)
   {
 LABEL_7:
 
     goto LABEL_8;
   }
 
-  v11 = [v5 targetNode];
-  v12 = [(MAEdge *)self targetNode];
-  v13 = [v11 isEqualToNode:v12];
+  targetNode = [v5 targetNode];
+  targetNode2 = [(MAEdge *)self targetNode];
+  v13 = [targetNode isEqualToNode:targetNode2];
 
   if ((v13 & 1) == 0)
   {
@@ -368,10 +368,10 @@ LABEL_9:
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -379,7 +379,7 @@ LABEL_9:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(SKGEdge *)self isEqualToEdge:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(SKGEdge *)self isEqualToEdge:equalCopy];
   }
 
   return v5;
@@ -389,11 +389,11 @@ LABEL_9:
 {
   v9[2] = *MEMORY[0x277D85DE8];
   v8[0] = @"relationship";
-  v3 = [(SKGEdge *)self label];
+  label = [(SKGEdge *)self label];
   v8[1] = @"score";
-  v9[0] = v3;
-  v4 = [(SKGEdge *)self score];
-  v9[1] = v4;
+  v9[0] = label;
+  score = [(SKGEdge *)self score];
+  v9[1] = score;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:v8 count:2];
 
   v6 = *MEMORY[0x277D85DE8];

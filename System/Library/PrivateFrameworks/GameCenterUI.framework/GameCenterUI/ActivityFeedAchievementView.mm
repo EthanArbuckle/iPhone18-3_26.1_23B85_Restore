@@ -1,15 +1,15 @@
 @interface ActivityFeedAchievementView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)accessibilityLabel;
 - (void)layoutSubviews;
-- (void)setAccessibilityLabel:(id)a3;
+- (void)setAccessibilityLabel:(id)label;
 @end
 
 @implementation ActivityFeedAchievementView
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   sub_24E2E8FF0();
   v5 = v4;
   v7 = v6;
@@ -23,13 +23,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E2E916C();
 }
 
 - (NSString)accessibilityLabel
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E2EA818();
   v4 = v3;
 
@@ -46,9 +46,9 @@
   return v5;
 }
 
-- (void)setAccessibilityLabel:(id)a3
+- (void)setAccessibilityLabel:(id)label
 {
-  if (a3)
+  if (label)
   {
     v4 = sub_24E347CF8();
     v6 = v5;
@@ -60,7 +60,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_24E018BB0(v4, v6);
 }
 

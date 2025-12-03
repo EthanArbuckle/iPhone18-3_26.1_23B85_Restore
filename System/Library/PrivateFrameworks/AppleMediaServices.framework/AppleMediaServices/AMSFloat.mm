@@ -1,73 +1,73 @@
 @interface AMSFloat
-+ (id)floatWithFloat:(float)a3;
-- (AMSFloat)initWithCoder:(id)a3;
-- (AMSFloat)initWithFloat:(float)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToFloat:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)floatWithFloat:(float)float;
+- (AMSFloat)initWithCoder:(id)coder;
+- (AMSFloat)initWithFloat:(float)float;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToFloat:(id)float;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AMSFloat
 
-- (AMSFloat)initWithFloat:(float)a3
+- (AMSFloat)initWithFloat:(float)float
 {
   v5.receiver = self;
   v5.super_class = AMSFloat;
   result = [(AMSFloat *)&v5 init];
   if (result)
   {
-    result->_value = a3;
+    result->_value = float;
   }
 
   return result;
 }
 
-+ (id)floatWithFloat:(float)a3
++ (id)floatWithFloat:(float)float
 {
-  v4 = [a1 alloc];
-  *&v5 = a3;
+  v4 = [self alloc];
+  *&v5 = float;
   v6 = [v4 initWithFloat:v5];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(AMSFloat *)self isEqualToFloat:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(AMSFloat *)self isEqualToFloat:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToFloat:(id)a3
+- (BOOL)isEqualToFloat:(id)float
 {
-  if (!a3)
+  if (!float)
   {
     return 0;
   }
 
-  v4 = a3;
+  floatCopy = float;
   [(AMSFloat *)self value];
   v6 = v5;
-  [v4 value];
+  [floatCopy value];
   v8 = v7;
 
   return v6 == v8;
 }
 
-- (AMSFloat)initWithCoder:(id)a3
+- (AMSFloat)initWithCoder:(id)coder
 {
-  [a3 decodeFloatForKey:@"value"];
+  [coder decodeFloatForKey:@"value"];
 
   return [(AMSFloat *)self initWithFloat:?];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(AMSFloat *)self value];
-  [v4 encodeFloat:@"value" forKey:?];
+  [coderCopy encodeFloat:@"value" forKey:?];
 }
 
 @end

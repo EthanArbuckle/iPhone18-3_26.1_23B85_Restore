@@ -1,5 +1,5 @@
 @interface BLSHBacklightDisplayStateMachineAbortContext
-- (BLSHBacklightDisplayStateMachineAbortContext)initWithDisplayMode:(int64_t)a3 prewarmingDisplayMode:(int64_t)a4 lastSteadyStateDisplayMode:(int64_t)a5 caDisplayState:(int64_t)a6 cbDisplayMode:(int64_t)a7 showingBlankingWindow:(BOOL)a8 sleepMonitorAggregateState:(id)a9 hasEnsureFlipbookCurrent:(BOOL)a10;
+- (BLSHBacklightDisplayStateMachineAbortContext)initWithDisplayMode:(int64_t)mode prewarmingDisplayMode:(int64_t)displayMode lastSteadyStateDisplayMode:(int64_t)stateDisplayMode caDisplayState:(int64_t)state cbDisplayMode:(int64_t)cbDisplayMode showingBlankingWindow:(BOOL)window sleepMonitorAggregateState:(id)aggregateState hasEnsureFlipbookCurrent:(BOOL)self0;
 - (NSString)abortReasonString;
 - (NSString)description;
 - (void)_populatePayload;
@@ -8,23 +8,23 @@
 
 @implementation BLSHBacklightDisplayStateMachineAbortContext
 
-- (BLSHBacklightDisplayStateMachineAbortContext)initWithDisplayMode:(int64_t)a3 prewarmingDisplayMode:(int64_t)a4 lastSteadyStateDisplayMode:(int64_t)a5 caDisplayState:(int64_t)a6 cbDisplayMode:(int64_t)a7 showingBlankingWindow:(BOOL)a8 sleepMonitorAggregateState:(id)a9 hasEnsureFlipbookCurrent:(BOOL)a10
+- (BLSHBacklightDisplayStateMachineAbortContext)initWithDisplayMode:(int64_t)mode prewarmingDisplayMode:(int64_t)displayMode lastSteadyStateDisplayMode:(int64_t)stateDisplayMode caDisplayState:(int64_t)state cbDisplayMode:(int64_t)cbDisplayMode showingBlankingWindow:(BOOL)window sleepMonitorAggregateState:(id)aggregateState hasEnsureFlipbookCurrent:(BOOL)self0
 {
-  v17 = a9;
+  aggregateStateCopy = aggregateState;
   v21.receiver = self;
   v21.super_class = BLSHBacklightDisplayStateMachineAbortContext;
   v18 = [(BLSHBacklightDisplayStateMachineAbortContext *)&v21 init];
   v19 = v18;
   if (v18)
   {
-    v18->_displayMode = a3;
-    v18->_prewarmingDisplayMode = a4;
-    v18->_lastSteadyStateDisplayMode = a5;
-    v18->_caDisplayState = a6;
-    v18->_cbDisplayMode = a7;
-    v18->_showingBlankingWindow = a8;
-    v18->_hasEnsureFlipbookCurrent = a10;
-    objc_storeStrong(&v18->_sleepMonitorAggregateState, a9);
+    v18->_displayMode = mode;
+    v18->_prewarmingDisplayMode = displayMode;
+    v18->_lastSteadyStateDisplayMode = stateDisplayMode;
+    v18->_caDisplayState = state;
+    v18->_cbDisplayMode = cbDisplayMode;
+    v18->_showingBlankingWindow = window;
+    v18->_hasEnsureFlipbookCurrent = current;
+    objc_storeStrong(&v18->_sleepMonitorAggregateState, aggregateState);
     v19->_abortTimestamp = mach_continuous_time();
     v19->_abortReason = 2;
     v19->_payloadSize = 20;
@@ -106,9 +106,9 @@
   v14 = [v3 appendObject:v13 withName:@"cbDisplayMode"];
 
   v15 = [v3 appendBool:self->_showingBlankingWindow withName:@"showingBlankingWindow"];
-  v16 = [v3 build];
+  build = [v3 build];
 
-  return v16;
+  return build;
 }
 
 - (void)dealloc

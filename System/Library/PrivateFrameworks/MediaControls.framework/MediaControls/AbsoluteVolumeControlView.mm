@@ -1,11 +1,11 @@
 @interface AbsoluteVolumeControlView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGRect)hitRect;
-- (_TtC13MediaControls25AbsoluteVolumeControlView)initWithFrame:(CGRect)a3;
+- (_TtC13MediaControls25AbsoluteVolumeControlView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)sliderTouchDown:(id)a3;
-- (void)sliderTouchUpInside:(id)a3;
-- (void)sliderValueChanged:(id)a3;
+- (void)sliderTouchDown:(id)down;
+- (void)sliderTouchUpInside:(id)inside;
+- (void)sliderValueChanged:(id)changed;
 @end
 
 @implementation AbsoluteVolumeControlView
@@ -26,9 +26,9 @@
   v21.receiver = self;
   v21.super_class = type metadata accessor for AbsoluteVolumeControlView(0);
   v2 = v21.receiver;
-  v3 = [(AbsoluteVolumeControlView *)&v21 hitRect];
+  hitRect = [(AbsoluteVolumeControlView *)&v21 hitRect];
   v4 = *((*MEMORY[0x1E69E7D40] & *v2) + 0xF8);
-  v4(v3);
+  v4(hitRect);
   v7 = (v4)(v5, v6);
   v8 = (v4)(v7);
   v4(v8);
@@ -49,12 +49,12 @@
   return result;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = self;
-  [(AbsoluteVolumeControlView *)v6 hitRect];
+  y = inside.y;
+  x = inside.x;
+  selfCopy = self;
+  [(AbsoluteVolumeControlView *)selfCopy hitRect];
   v9.x = x;
   v9.y = y;
   v7 = CGRectContainsPoint(v10, v9);
@@ -62,31 +62,31 @@
   return v7;
 }
 
-- (void)sliderTouchDown:(id)a3
+- (void)sliderTouchDown:(id)down
 {
   v3 = *((*MEMORY[0x1E69E7D40] & self->super.super.super.isa) + 0xC0);
-  v4 = self;
+  selfCopy = self;
   v3(1);
 }
 
-- (void)sliderValueChanged:(id)a3
+- (void)sliderValueChanged:(id)changed
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC13MediaControls25AbsoluteVolumeControlView_slider);
-  v4 = self;
+  selfCopy = self;
   [v3 value];
-  (*((*MEMORY[0x1E69E7D40] & v4->super.super.super.isa) + 0xE0))();
+  (*((*MEMORY[0x1E69E7D40] & selfCopy->super.super.super.isa) + 0xE0))();
   sub_1A22813BC();
 }
 
-- (void)sliderTouchUpInside:(id)a3
+- (void)sliderTouchUpInside:(id)inside
 {
-  v3 = self;
+  selfCopy = self;
   sub_1A22813BC();
-  (*((*MEMORY[0x1E69E7D40] & v3->super.super.super.isa) + 0xC0))(0);
+  (*((*MEMORY[0x1E69E7D40] & selfCopy->super.super.super.isa) + 0xC0))(0);
   sub_1A2280DEC();
 }
 
-- (_TtC13MediaControls25AbsoluteVolumeControlView)initWithFrame:(CGRect)a3
+- (_TtC13MediaControls25AbsoluteVolumeControlView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -12,8 +12,8 @@
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v3 = [a1 cardSections];
-  v4 = [v3 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  cardSections = [self cardSections];
+  v4 = [cardSections countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v4)
   {
     v5 = v4;
@@ -24,7 +24,7 @@
       {
         if (*v22 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(cardSections);
         }
 
         v8 = *(*(&v21 + 1) + 8 * i);
@@ -33,8 +33,8 @@
         v20 = 0u;
         v17 = 0u;
         v18 = 0u;
-        v9 = [v8 resolvedCardSections];
-        v10 = [v9 countByEnumeratingWithState:&v17 objects:v25 count:16];
+        resolvedCardSections = [v8 resolvedCardSections];
+        v10 = [resolvedCardSections countByEnumeratingWithState:&v17 objects:v25 count:16];
         if (v10)
         {
           v11 = v10;
@@ -45,20 +45,20 @@
             {
               if (*v18 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(resolvedCardSections);
               }
 
               [v2 addObject:*(*(&v17 + 1) + 8 * j)];
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v17 objects:v25 count:16];
+            v11 = [resolvedCardSections countByEnumeratingWithState:&v17 objects:v25 count:16];
           }
 
           while (v11);
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v5 = [cardSections countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v5);

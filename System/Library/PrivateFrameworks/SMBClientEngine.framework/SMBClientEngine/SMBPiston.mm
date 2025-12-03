@@ -1,14 +1,14 @@
 @interface SMBPiston
 - (SMBPiston)init;
 - (SMBSocket)sock;
-- (id)getShare:(unsigned int)a3;
-- (int)getPeerAddress:(sockaddr_storage *)a3 withLength:(unsigned int *)a4;
+- (id)getShare:(unsigned int)share;
+- (int)getPeerAddress:(sockaddr_storage *)address withLength:(unsigned int *)length;
 - (void)dealloc;
 - (void)disconnect;
 - (void)init;
-- (void)logoff:(smb_login_out *)a3 callBack:(id)a4;
-- (void)setEventHandler:(id)a3;
-- (void)setOption:(const char *)a3 toValue:(unsigned int)a4;
+- (void)logoff:(smb_login_out *)logoff callBack:(id)back;
+- (void)setEventHandler:(id)handler;
+- (void)setOption:(const char *)option toValue:(unsigned int)value;
 @end
 
 @implementation SMBPiston
@@ -180,9 +180,9 @@ LABEL_21:
   }
 }
 
-- (void)logoff:(smb_login_out *)a3 callBack:(id)a4
+- (void)logoff:(smb_login_out *)logoff callBack:(id)back
 {
-  piston_logoff(self, a3, a4);
+  piston_logoff(self, logoff, back);
   WeakRetained = objc_loadWeakRetained(&self->_sock);
 
   if (WeakRetained)
@@ -194,9 +194,9 @@ LABEL_21:
   }
 }
 
-- (int)getPeerAddress:(sockaddr_storage *)a3 withLength:(unsigned int *)a4
+- (int)getPeerAddress:(sockaddr_storage *)address withLength:(unsigned int *)length
 {
-  if (!a3 || !a4)
+  if (!address || !length)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
@@ -206,7 +206,7 @@ LABEL_21:
     return 22;
   }
 
-  v5 = *a4;
+  v5 = *length;
   if (!v5)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -217,10 +217,10 @@ LABEL_21:
     return 22;
   }
 
-  bzero(a3, v5);
-  v8 = [(SMBPiston *)self sock];
+  bzero(address, v5);
+  sock = [(SMBPiston *)self sock];
 
-  if (!v8)
+  if (!sock)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
@@ -230,10 +230,10 @@ LABEL_21:
     return 22;
   }
 
-  v9 = [(SMBPiston *)self sock];
-  v10 = [v9 getServerAddress];
+  sock2 = [(SMBPiston *)self sock];
+  getServerAddress = [sock2 getServerAddress];
 
-  if (!v10)
+  if (!getServerAddress)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
@@ -243,10 +243,10 @@ LABEL_21:
     return 22;
   }
 
-  v11 = *v10;
-  if (*a4 >= v11)
+  v11 = *getServerAddress;
+  if (*length >= v11)
   {
-    *a4 = v11;
+    *length = v11;
   }
 
   else
@@ -256,20 +256,20 @@ LABEL_21:
       [SMBPiston getPeerAddress:withLength:];
     }
 
-    v11 = *a4;
+    v11 = *length;
   }
 
-  memcpy(a3, v10, v11);
-  if (*a4 >= 5)
+  memcpy(address, getServerAddress, v11);
+  if (*length >= 5)
   {
-    v13 = [(SMBPiston *)self sock];
-    *a3->__ss_pad1 = [v13 port];
+    sock3 = [(SMBPiston *)self sock];
+    *address->__ss_pad1 = [sock3 port];
   }
 
   return 0;
 }
 
-- (id)getShare:(unsigned int)a3
+- (id)getShare:(unsigned int)share
 {
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:?];
   [(SMBPiston *)self share_list_lock];
@@ -277,27 +277,27 @@ LABEL_21:
   if (v5)
   {
     v6 = v5;
-    v7 = 0;
-    v8 = 0;
+    nextObject = 0;
+    keyEnumerator = 0;
   }
 
   else
   {
     if ([(NSMutableDictionary *)self->_shareList count]== 1)
     {
-      v8 = [(NSMutableDictionary *)self->_shareList keyEnumerator];
-      v7 = 0;
+      keyEnumerator = [(NSMutableDictionary *)self->_shareList keyEnumerator];
+      nextObject = 0;
       while (1)
       {
-        v9 = v7;
-        v7 = [v8 nextObject];
+        v9 = nextObject;
+        nextObject = [keyEnumerator nextObject];
 
-        if (!v7)
+        if (!nextObject)
         {
           break;
         }
 
-        v10 = [(NSMutableDictionary *)self->_shareList objectForKey:v7];
+        v10 = [(NSMutableDictionary *)self->_shareList objectForKey:nextObject];
         if (v10)
         {
           v6 = v10;
@@ -313,7 +313,7 @@ LABEL_21:
 
     else
     {
-      v8 = 0;
+      keyEnumerator = 0;
     }
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -321,7 +321,7 @@ LABEL_21:
       [SMBPiston getShare:];
     }
 
-    v7 = 0;
+    nextObject = 0;
     v6 = 0;
   }
 
@@ -331,31 +331,31 @@ LABEL_13:
   return v6;
 }
 
-- (void)setEventHandler:(id)a3
+- (void)setEventHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_sock);
-  [WeakRetained setEventHandler:v4];
+  [WeakRetained setEventHandler:handlerCopy];
 }
 
-- (void)setOption:(const char *)a3 toValue:(unsigned int)a4
+- (void)setOption:(const char *)option toValue:(unsigned int)value
 {
-  v7 = strnlen(a3, 0xFFuLL);
+  v7 = strnlen(option, 0xFFuLL);
   if (v7 <= 12)
   {
     if (v7 != 7)
     {
       if (v7 != 9)
       {
-        if (v7 == 11 && !strcmp(a3, "debug_level"))
+        if (v7 == 11 && !strcmp(option, "debug_level"))
         {
-          piston_log_level = a4;
+          piston_log_level = value;
         }
 
         return;
       }
 
-      if (strcmp(a3, "ntlm_only"))
+      if (strcmp(option, "ntlm_only"))
       {
         return;
       }
@@ -368,7 +368,7 @@ LABEL_25:
 
     v9 = "minauth";
 LABEL_17:
-    if (strcmp(a3, v9))
+    if (strcmp(option, v9))
     {
       return;
     }
@@ -385,14 +385,14 @@ LABEL_17:
 
   if (v7 == 16)
   {
-    if (!strcmp(a3, "signing_required"))
+    if (!strcmp(option, "signing_required"))
     {
       v8 = self->session.option_flags | 0x100;
     }
 
     else
     {
-      if (strcmp(a3, "validate_neg_off"))
+      if (strcmp(option, "validate_neg_off"))
       {
         return;
       }
@@ -403,14 +403,14 @@ LABEL_17:
     goto LABEL_25;
   }
 
-  if (v7 == 17 && !strcmp(a3, "protocol_vers_map"))
+  if (v7 == 17 && !strcmp(option, "protocol_vers_map"))
   {
-    if ((a4 & 2) != 0)
+    if ((value & 2) != 0)
     {
       self->session.option_flags |= 2uLL;
     }
 
-    if ((a4 & 0x1000) != 0)
+    if ((value & 0x1000) != 0)
     {
       v8 = self->session.option_flags | 0x1000;
       goto LABEL_25;

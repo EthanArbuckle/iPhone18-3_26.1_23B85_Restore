@@ -7,12 +7,12 @@
 
 - (NSUUID)deviceIdentifier
 {
-  v3 = [(CBDevice *)self identifier];
-  if (v3)
+  identifier = [(CBDevice *)self identifier];
+  if (identifier)
   {
     v4 = [NSUUID alloc];
-    v5 = [(CBDevice *)self identifier];
-    v6 = [v4 initWithUUIDString:v5];
+    identifier2 = [(CBDevice *)self identifier];
+    v6 = [v4 initWithUUIDString:identifier2];
   }
 
   else
@@ -25,12 +25,12 @@
 
 - (NSUUID)pairingAgentDeviceIdentifier
 {
-  v3 = [(CBDevice *)self identifier];
-  if (v3)
+  identifier = [(CBDevice *)self identifier];
+  if (identifier)
   {
     v4 = [NSUUID alloc];
-    v5 = [(CBDevice *)self identifier];
-    v6 = [v4 initWithUUIDString:v5];
+    identifier2 = [(CBDevice *)self identifier];
+    v6 = [v4 initWithUUIDString:identifier2];
   }
 
   else

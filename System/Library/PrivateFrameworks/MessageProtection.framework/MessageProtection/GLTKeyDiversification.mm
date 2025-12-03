@@ -1,18 +1,18 @@
 @interface GLTKeyDiversification
-+ (id)diversifyPublicKey:(__SecKey *)a3 trackingPreventionSalt:(id)a4 withDocumentIdentifier:(id)a5 error:(id *)a6;
++ (id)diversifyPublicKey:(__SecKey *)key trackingPreventionSalt:(id)salt withDocumentIdentifier:(id)identifier error:(id *)error;
 @end
 
 @implementation GLTKeyDiversification
 
-+ (id)diversifyPublicKey:(__SecKey *)a3 trackingPreventionSalt:(id)a4 withDocumentIdentifier:(id)a5 error:(id *)a6
++ (id)diversifyPublicKey:(__SecKey *)key trackingPreventionSalt:(id)salt withDocumentIdentifier:(id)identifier error:(id *)error
 {
-  v6 = [_TtC17MessageProtection26GLTKeyDiversificationSwift diversifyWithPublicKey:a3 trackingPreventionSalt:a4 docId:a5 error:a6];
+  v6 = [_TtC17MessageProtection26GLTKeyDiversificationSwift diversifyWithPublicKey:key trackingPreventionSalt:salt docId:identifier error:error];
   if (v6)
   {
     v7 = [GLTDiversifiedKeyAndTPS alloc];
-    v8 = [v6 diversifiedKey];
-    v9 = [v6 trackingPreventionSalt];
-    v10 = [(GLTDiversifiedKeyAndTPS *)v7 initWithKey:v8 trackingPreventionSalt:v9];
+    diversifiedKey = [v6 diversifiedKey];
+    trackingPreventionSalt = [v6 trackingPreventionSalt];
+    v10 = [(GLTDiversifiedKeyAndTPS *)v7 initWithKey:diversifiedKey trackingPreventionSalt:trackingPreventionSalt];
   }
 
   else

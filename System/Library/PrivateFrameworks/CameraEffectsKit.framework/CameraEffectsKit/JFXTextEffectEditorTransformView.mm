@@ -1,52 +1,52 @@
 @interface JFXTextEffectEditorTransformView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (JFXTextEffectEditorTransformView)initWithFrame:(CGRect)a3 textView:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (JFXTextEffectEditorTransformView)initWithFrame:(CGRect)frame textView:(id)view;
 @end
 
 @implementation JFXTextEffectEditorTransformView
 
-- (JFXTextEffectEditorTransformView)initWithFrame:(CGRect)a3 textView:(id)a4
+- (JFXTextEffectEditorTransformView)initWithFrame:(CGRect)frame textView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
   v18.receiver = self;
   v18.super_class = JFXTextEffectEditorTransformView;
-  v11 = [(JFXTextEffectEditorTransformView *)&v18 initWithFrame:x, y, width, height];
-  v12 = v11;
-  if (v11)
+  height = [(JFXTextEffectEditorTransformView *)&v18 initWithFrame:x, y, width, height];
+  v12 = height;
+  if (height)
   {
     v13 = *MEMORY[0x277CBF348];
     v14 = *(MEMORY[0x277CBF348] + 8);
-    v15 = [(JFXTextEffectEditorTransformView *)v11 layer];
-    [v15 setAnchorPoint:{v13, v14}];
+    layer = [(JFXTextEffectEditorTransformView *)height layer];
+    [layer setAnchorPoint:{v13, v14}];
 
-    v16 = [(JFXTextEffectEditorTransformView *)v12 layer];
-    [v16 setGeometryFlipped:1];
+    layer2 = [(JFXTextEffectEditorTransformView *)v12 layer];
+    [layer2 setGeometryFlipped:1];
 
     [(JFXTextEffectEditorTransformView *)v12 setClipsToBounds:0];
-    objc_storeStrong(&v12->_textView, a4);
+    objc_storeStrong(&v12->_textView, view);
   }
 
   return v12;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(JFXTextEffectEditorTransformView *)self textView];
-  [(JFXTextEffectEditorTransformView *)self convertPoint:v8 toView:x, y];
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
+  textView = [(JFXTextEffectEditorTransformView *)self textView];
+  [(JFXTextEffectEditorTransformView *)self convertPoint:textView toView:x, y];
   v10 = v9;
   v12 = v11;
 
-  v13 = [(JFXTextEffectEditorTransformView *)self textView];
-  LOBYTE(v8) = [v13 pointInside:v7 withEvent:{v10, v12}];
+  textView2 = [(JFXTextEffectEditorTransformView *)self textView];
+  LOBYTE(textView) = [textView2 pointInside:eventCopy withEvent:{v10, v12}];
 
-  return v8;
+  return textView;
 }
 
 @end

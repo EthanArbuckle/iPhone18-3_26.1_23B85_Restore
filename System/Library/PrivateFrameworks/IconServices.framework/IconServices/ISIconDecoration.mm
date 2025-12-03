@@ -1,23 +1,23 @@
 @interface ISIconDecoration
-+ (id)decorationsFromDescriptor:(id)a3;
++ (id)decorationsFromDescriptor:(id)descriptor;
 - (ISIconDecoration)init;
-- (ISIconDecoration)initWithBundleIdentifier:(id)a3;
-- (ISIconDecoration)initWithCoder:(id)a3;
-- (ISIconDecoration)initWithKind:(unint64_t)a3 identifier:(id)a4;
-- (ISIconDecoration)initWithResourceURL:(id)a3;
-- (ISIconDecoration)initWithType:(id)a3;
+- (ISIconDecoration)initWithBundleIdentifier:(id)identifier;
+- (ISIconDecoration)initWithCoder:(id)coder;
+- (ISIconDecoration)initWithKind:(unint64_t)kind identifier:(id)identifier;
+- (ISIconDecoration)initWithResourceURL:(id)l;
+- (ISIconDecoration)initWithType:(id)type;
 - (ISScalableCompositorResource)compositorResource;
 - (NSString)description;
 - (NSUUID)uuid;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)imageForDescriptor:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)imageForDescriptor:(id)descriptor;
 - (id)resourceFingerprint;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ISIconDecoration
 
-+ (id)decorationsFromDescriptor:(id)a3
++ (id)decorationsFromDescriptor:(id)descriptor
 {
   v3 = objc_opt_new();
 
@@ -43,9 +43,9 @@
   return v3;
 }
 
-- (ISIconDecoration)initWithType:(id)a3
+- (ISIconDecoration)initWithType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v10.receiver = self;
   v10.super_class = ISIconDecoration;
   v5 = [(ISIconDecoration *)&v10 init];
@@ -53,7 +53,7 @@
   if (v5)
   {
     v5->_identifierKind = 2;
-    v7 = [v4 copy];
+    v7 = [typeCopy copy];
     identifier = v6->_identifier;
     v6->_identifier = v7;
 
@@ -64,17 +64,17 @@
   return v6;
 }
 
-- (ISIconDecoration)initWithKind:(unint64_t)a3 identifier:(id)a4
+- (ISIconDecoration)initWithKind:(unint64_t)kind identifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = ISIconDecoration;
   v7 = [(ISIconDecoration *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_identifierKind = a3;
-    v9 = [v6 copy];
+    v7->_identifierKind = kind;
+    v9 = [identifierCopy copy];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
@@ -85,9 +85,9 @@
   return v8;
 }
 
-- (ISIconDecoration)initWithBundleIdentifier:(id)a3
+- (ISIconDecoration)initWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v10.receiver = self;
   v10.super_class = ISIconDecoration;
   v5 = [(ISIconDecoration *)&v10 init];
@@ -95,7 +95,7 @@
   if (v5)
   {
     v5->_identifierKind = 1;
-    v7 = [v4 copy];
+    v7 = [identifierCopy copy];
     identifier = v6->_identifier;
     v6->_identifier = v7;
 
@@ -106,9 +106,9 @@
   return v6;
 }
 
-- (ISIconDecoration)initWithResourceURL:(id)a3
+- (ISIconDecoration)initWithResourceURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v10.receiver = self;
   v10.super_class = ISIconDecoration;
   v6 = [(ISIconDecoration *)&v10 init];
@@ -116,7 +116,7 @@
   if (v6)
   {
     v6->_identifierKind = 3;
-    objc_storeStrong(&v6->_resourceURL, a3);
+    objc_storeStrong(&v6->_resourceURL, l);
     identifier = v7->_identifier;
     v7->_identifier = @"com.apple.icon-decoration.folderbadge";
   }
@@ -124,7 +124,7 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(ISIconDecoration);
   objc_storeStrong(&v4->_identifier, self->_identifier);
@@ -135,26 +135,26 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifierKind = self->_identifierKind;
-  v5 = a3;
-  [v5 encodeInteger:identifierKind forKey:@"_identifierKind"];
-  [v5 encodeObject:self->_identifier forKey:@"_identifier"];
-  [v5 encodeInteger:self->_position forKey:@"_position"];
-  [v5 encodeInteger:self->_mode forKey:@"_mode"];
-  v6 = [(NSURL *)self->_resourceURL absoluteString];
-  [v5 encodeObject:v6 forKey:@"_resourceURL"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:identifierKind forKey:@"_identifierKind"];
+  [coderCopy encodeObject:self->_identifier forKey:@"_identifier"];
+  [coderCopy encodeInteger:self->_position forKey:@"_position"];
+  [coderCopy encodeInteger:self->_mode forKey:@"_mode"];
+  absoluteString = [(NSURL *)self->_resourceURL absoluteString];
+  [coderCopy encodeObject:absoluteString forKey:@"_resourceURL"];
 }
 
-- (ISIconDecoration)initWithCoder:(id)a3
+- (ISIconDecoration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(ISIconDecoration *)self init];
   if (v5)
   {
-    v5->_identifierKind = [v4 decodeIntegerForKey:@"_identifierKind"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_identifier"];
+    v5->_identifierKind = [coderCopy decodeIntegerForKey:@"_identifierKind"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_identifier"];
     v7 = v6;
     if (v6)
     {
@@ -168,9 +168,9 @@
 
     objc_storeStrong(&v5->_identifier, v8);
 
-    v5->_position = [v4 decodeIntegerForKey:@"_position"];
-    v5->_mode = [v4 decodeIntegerForKey:@"_mode"];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_resourceURL"];
+    v5->_position = [coderCopy decodeIntegerForKey:@"_position"];
+    v5->_mode = [coderCopy decodeIntegerForKey:@"_mode"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_resourceURL"];
     if (v9)
     {
       v10 = [MEMORY[0x1E695DFF8] URLWithString:v9];
@@ -194,8 +194,8 @@
   {
     v15[0] = v6;
     v8 = MEMORY[0x1E696AFB0];
-    v9 = [(NSURL *)self->_resourceURL absoluteString];
-    v10 = [v8 _IF_UUIDWithString:v9];
+    absoluteString = [(NSURL *)self->_resourceURL absoluteString];
+    v10 = [v8 _IF_UUIDWithString:absoluteString];
     v15[1] = v10;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:2];
     v12 = [v5 _IF_UUIDByXORingUUIDs:v11];
@@ -231,18 +231,18 @@
   if (identifierKind == 3)
   {
     v20 = MEMORY[0x1E696AFB0];
-    v21 = [(NSURL *)self->_resourceURL absoluteString];
-    v19 = [v20 _IF_UUIDWithString:v21];
+    absoluteString = [(NSURL *)self->_resourceURL absoluteString];
+    _IF_nullUUID = [v20 _IF_UUIDWithString:absoluteString];
   }
 
   else if (identifierKind == 2)
   {
     v4 = UTTypeCopyDeclaringBundleURL(self->_identifier);
-    v5 = [(__CFURL *)v4 absoluteString];
-    v6 = v5;
-    if (v5)
+    absoluteString2 = [(__CFURL *)v4 absoluteString];
+    v6 = absoluteString2;
+    if (absoluteString2)
     {
-      v7 = v5;
+      v7 = absoluteString2;
     }
 
     else
@@ -283,17 +283,17 @@
 
     v17 = MEMORY[0x1E696AFB0];
     v18 = [v16 componentsJoinedByString:{&stru_1F1A4DB80, v24, v25}];
-    v19 = [v17 _IF_UUIDWithString:v18];
+    _IF_nullUUID = [v17 _IF_UUIDWithString:v18];
   }
 
   else
   {
-    v19 = [MEMORY[0x1E696AFB0] _IF_nullUUID];
+    _IF_nullUUID = [MEMORY[0x1E696AFB0] _IF_nullUUID];
   }
 
   v22 = *MEMORY[0x1E69E9840];
 
-  return v19;
+  return _IF_nullUUID;
 }
 
 - (ISScalableCompositorResource)compositorResource
@@ -301,9 +301,9 @@
   if (self->_identifierKind == 2)
   {
     v2 = [MEMORY[0x1E69636B0] typeRecordWithIdentifier:self->_identifier];
-    v3 = [v2 iconResourceBundleURL];
-    v4 = [v2 iconDictionary];
-    v5 = [ISResourceProvider resourceWithBundleURL:v3 iconDictionary:v4 options:0];
+    iconResourceBundleURL = [v2 iconResourceBundleURL];
+    iconDictionary = [v2 iconDictionary];
+    v5 = [ISResourceProvider resourceWithBundleURL:iconResourceBundleURL iconDictionary:iconDictionary options:0];
   }
 
   else
@@ -314,17 +314,17 @@
   return v5;
 }
 
-- (id)imageForDescriptor:(id)a3
+- (id)imageForDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [(ISIconDecoration *)self compositorResource];
-  [v4 size];
+  descriptorCopy = descriptor;
+  compositorResource = [(ISIconDecoration *)self compositorResource];
+  [descriptorCopy size];
   v7 = v6;
   v9 = v8;
-  [v4 scale];
+  [descriptorCopy scale];
   v11 = v10;
 
-  v12 = [v5 imageForSize:v7 scale:{v9, v11}];
+  v12 = [compositorResource imageForSize:v7 scale:{v9, v11}];
 
   return v12;
 }

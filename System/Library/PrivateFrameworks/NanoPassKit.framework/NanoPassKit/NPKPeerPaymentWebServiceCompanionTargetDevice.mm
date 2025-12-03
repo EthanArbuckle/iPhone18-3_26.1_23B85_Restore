@@ -1,32 +1,32 @@
 @interface NPKPeerPaymentWebServiceCompanionTargetDevice
-+ (void)attemptToDownloadPeerPaymentPassAtURL:(id)a3 withWebService:(id)a4 completion:(id)a5;
++ (void)attemptToDownloadPeerPaymentPassAtURL:(id)l withWebService:(id)service completion:(id)completion;
 - (BOOL)userHasDisabledPeerPayment;
 - (NPKPeerPaymentWebServiceCompanionTargetDevice)init;
 - (PKPeerPaymentWebService)peerPaymentWebService;
 - (id)account;
 - (id)appleAccountInformation;
 - (id)preferences;
-- (void)_handleAccountChanged:(id)a3;
-- (void)checkTLKsMissingWithCompletion:(id)a3;
-- (void)cloudStoreStatusWithCompletion:(id)a3;
+- (void)_handleAccountChanged:(id)changed;
+- (void)checkTLKsMissingWithCompletion:(id)completion;
+- (void)cloudStoreStatusWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)downloadPassIfNecessaryWithCompletion:(id)a3;
-- (void)initalizeCloudStoreIfNecessaryWithCompletion:(id)a3;
-- (void)initalizeCloudStoreIfNecessaryWithHandler:(id)a3;
-- (void)peerPaymentReRegisterWithURL:(id)a3 pushToken:(id)a4 peerPaymentWebService:(id)a5 completion:(id)a6;
-- (void)provisionPeerPaymentPassWithProvisioningController:(id)a3 credential:(id)a4 completion:(id)a5;
-- (void)resetApplePayManateeViewWithCompletion:(id)a3;
-- (void)setPreferences:(id)a3 completion:(id)a4;
-- (void)updateAccountWithCompletion:(id)a3;
+- (void)downloadPassIfNecessaryWithCompletion:(id)completion;
+- (void)initalizeCloudStoreIfNecessaryWithCompletion:(id)completion;
+- (void)initalizeCloudStoreIfNecessaryWithHandler:(id)handler;
+- (void)peerPaymentReRegisterWithURL:(id)l pushToken:(id)token peerPaymentWebService:(id)service completion:(id)completion;
+- (void)provisionPeerPaymentPassWithProvisioningController:(id)controller credential:(id)credential completion:(id)completion;
+- (void)resetApplePayManateeViewWithCompletion:(id)completion;
+- (void)setPreferences:(id)preferences completion:(id)completion;
+- (void)updateAccountWithCompletion:(id)completion;
 @end
 
 @implementation NPKPeerPaymentWebServiceCompanionTargetDevice
 
-+ (void)attemptToDownloadPeerPaymentPassAtURL:(id)a3 withWebService:(id)a4 completion:(id)a5
++ (void)attemptToDownloadPeerPaymentPassAtURL:(id)l withWebService:(id)service completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  lCopy = l;
+  serviceCopy = service;
+  completionCopy = completion;
   v10 = pk_Payment_log();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
 
@@ -44,11 +44,11 @@
   v15[1] = 3221225472;
   v15[2] = __113__NPKPeerPaymentWebServiceCompanionTargetDevice_attemptToDownloadPeerPaymentPassAtURL_withWebService_completion___block_invoke;
   v15[3] = &unk_279947520;
-  v16 = v8;
-  v17 = v9;
-  v13 = v9;
-  v14 = v8;
-  [v14 passAtURL:v7 completion:v15];
+  v16 = serviceCopy;
+  v17 = completionCopy;
+  v13 = completionCopy;
+  v14 = serviceCopy;
+  [v14 passAtURL:lCopy completion:v15];
 }
 
 void __113__NPKPeerPaymentWebServiceCompanionTargetDevice_attemptToDownloadPeerPaymentPassAtURL_withWebService_completion___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -121,8 +121,8 @@ uint64_t __113__NPKPeerPaymentWebServiceCompanionTargetDevice_attemptToDownloadP
   v2 = [(NPKPeerPaymentWebServiceCompanionTargetDevice *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel__handleAccountChanged_ name:@"NPKSharedPeerPaymentAccountDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__handleAccountChanged_ name:@"NPKSharedPeerPaymentAccountDidChangeNotification" object:0];
   }
 
   return v2;
@@ -130,37 +130,37 @@ uint64_t __113__NPKPeerPaymentWebServiceCompanionTargetDevice_attemptToDownloadP
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = NPKPeerPaymentWebServiceCompanionTargetDevice;
   [(NPKPeerPaymentWebServiceCompanionTargetDevice *)&v4 dealloc];
 }
 
-- (void)downloadPassIfNecessaryWithCompletion:(id)a3
+- (void)downloadPassIfNecessaryWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    (*(a3 + 2))(a3, 1);
+    (*(completion + 2))(completion, 1);
   }
 }
 
 - (id)account
 {
   v2 = +[NPKSharedWebServiceProvider sharedWebServiceProvider];
-  v3 = [v2 peerPaymentAccount];
+  peerPaymentAccount = [v2 peerPaymentAccount];
 
-  return v3;
+  return peerPaymentAccount;
 }
 
-- (void)updateAccountWithCompletion:(id)a3
+- (void)updateAccountWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[NPKSharedWebServiceProvider sharedWebServiceProvider];
-  v5 = [v4 targetDevice];
+  targetDevice = [v4 targetDevice];
 
-  [v5 updatePeerPaymentAccountWithCompletion:v3];
+  [targetDevice updatePeerPaymentAccountWithCompletion:completionCopy];
 }
 
 - (BOOL)userHasDisabledPeerPayment
@@ -171,25 +171,25 @@ uint64_t __113__NPKPeerPaymentWebServiceCompanionTargetDevice_attemptToDownloadP
   return v3;
 }
 
-- (void)provisionPeerPaymentPassWithProvisioningController:(id)a3 credential:(id)a4 completion:(id)a5
+- (void)provisionPeerPaymentPassWithProvisioningController:(id)controller credential:(id)credential completion:(id)completion
 {
-  v7 = a5;
-  v8 = a3;
+  completionCopy = completion;
+  controllerCopy = controller;
   v9 = +[NPKSharedWebServiceProvider sharedWebServiceProvider];
-  v10 = [v9 targetDevice];
+  targetDevice = [v9 targetDevice];
 
-  v11 = [v8 webService];
+  webService = [controllerCopy webService];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __122__NPKPeerPaymentWebServiceCompanionTargetDevice_provisionPeerPaymentPassWithProvisioningController_credential_completion___block_invoke;
   v14[3] = &unk_279947548;
   v14[4] = self;
-  v15 = v11;
-  v16 = v7;
-  v12 = v7;
-  v13 = v11;
-  [v10 provisionPeerPaymentPassWithCompletion:v14];
+  v15 = webService;
+  v16 = completionCopy;
+  v12 = completionCopy;
+  v13 = webService;
+  [targetDevice provisionPeerPaymentPassWithCompletion:v14];
 }
 
 void __122__NPKPeerPaymentWebServiceCompanionTargetDevice_provisionPeerPaymentPassWithProvisioningController_credential_completion___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -248,65 +248,65 @@ void __122__NPKPeerPaymentWebServiceCompanionTargetDevice_provisionPeerPaymentPa
   }
 }
 
-- (void)initalizeCloudStoreIfNecessaryWithCompletion:(id)a3
+- (void)initalizeCloudStoreIfNecessaryWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[NPKSharedWebServiceProvider sharedWebServiceProvider];
-  v5 = [v4 targetDevice];
+  targetDevice = [v4 targetDevice];
 
-  [v5 initializeCloudStoreIfNecessaryWithCompletion:v3];
+  [targetDevice initializeCloudStoreIfNecessaryWithCompletion:completionCopy];
 }
 
-- (void)initalizeCloudStoreIfNecessaryWithHandler:(id)a3
+- (void)initalizeCloudStoreIfNecessaryWithHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = +[NPKSharedWebServiceProvider sharedWebServiceProvider];
-  v5 = [v4 targetDevice];
+  targetDevice = [v4 targetDevice];
 
-  [v5 initializeCloudStoreIfNecessaryWithHandler:v3];
+  [targetDevice initializeCloudStoreIfNecessaryWithHandler:handlerCopy];
 }
 
-- (void)checkTLKsMissingWithCompletion:(id)a3
+- (void)checkTLKsMissingWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[NPKSharedWebServiceProvider sharedWebServiceProvider];
-  v5 = [v4 targetDevice];
+  targetDevice = [v4 targetDevice];
 
-  [v5 checkTLKsMissingWithCompletion:v3];
+  [targetDevice checkTLKsMissingWithCompletion:completionCopy];
 }
 
-- (void)resetApplePayManateeViewWithCompletion:(id)a3
+- (void)resetApplePayManateeViewWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[NPKSharedWebServiceProvider sharedWebServiceProvider];
-  v5 = [v4 targetDevice];
+  targetDevice = [v4 targetDevice];
 
-  [v5 resetApplePayManateeViewWithCompletion:v3];
+  [targetDevice resetApplePayManateeViewWithCompletion:completionCopy];
 }
 
-- (void)cloudStoreStatusWithCompletion:(id)a3
+- (void)cloudStoreStatusWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[NPKSharedWebServiceProvider sharedWebServiceProvider];
-  v5 = [v4 targetDevice];
+  targetDevice = [v4 targetDevice];
 
-  [v5 cloudStoreStatusWithCompletion:v3];
+  [targetDevice cloudStoreStatusWithCompletion:completionCopy];
 }
 
-- (void)peerPaymentReRegisterWithURL:(id)a3 pushToken:(id)a4 peerPaymentWebService:(id)a5 completion:(id)a6
+- (void)peerPaymentReRegisterWithURL:(id)l pushToken:(id)token peerPaymentWebService:(id)service completion:(id)completion
 {
-  v7 = a6;
-  v8 = a3;
+  completionCopy = completion;
+  lCopy = l;
   v9 = +[NPKSharedWebServiceProvider sharedWebServiceProvider];
-  v10 = [v9 targetDevice];
+  targetDevice = [v9 targetDevice];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __121__NPKPeerPaymentWebServiceCompanionTargetDevice_peerPaymentReRegisterWithURL_pushToken_peerPaymentWebService_completion___block_invoke;
   v12[3] = &unk_279947570;
-  v13 = v7;
-  v11 = v7;
-  [v10 peerPaymentRegisterWithURL:v8 forceReRegistration:1 completion:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [targetDevice peerPaymentRegisterWithURL:lCopy forceReRegistration:1 completion:v12];
 }
 
 void __121__NPKPeerPaymentWebServiceCompanionTargetDevice_peerPaymentReRegisterWithURL_pushToken_peerPaymentWebService_completion___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -338,18 +338,18 @@ void __121__NPKPeerPaymentWebServiceCompanionTargetDevice_peerPaymentReRegisterW
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleAccountChanged:(id)a3
+- (void)_handleAccountChanged:(id)changed
 {
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 postNotificationName:*MEMORY[0x277D38970] object:self userInfo:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:*MEMORY[0x277D38970] object:self userInfo:0];
 }
 
 - (id)appleAccountInformation
 {
-  v2 = [MEMORY[0x277D37D38] sharedInstance];
-  v3 = [v2 appleAccountInformation];
+  mEMORY[0x277D37D38] = [MEMORY[0x277D37D38] sharedInstance];
+  appleAccountInformation = [mEMORY[0x277D37D38] appleAccountInformation];
 
-  return v3;
+  return appleAccountInformation;
 }
 
 - (id)preferences
@@ -357,7 +357,7 @@ void __121__NPKPeerPaymentWebServiceCompanionTargetDevice_peerPaymentReRegisterW
   v2 = NPKPairedDevicePeerPaymentPreferences();
   if (v2)
   {
-    v3 = v2;
+    preferences = v2;
     goto LABEL_11;
   }
 
@@ -372,9 +372,9 @@ void __121__NPKPeerPaymentWebServiceCompanionTargetDevice_peerPaymentReRegisterW
   else
   {
     v7 = objc_alloc_init(MEMORY[0x277D381A0]);
-    v3 = [v7 preferences];
+    preferences = [v7 preferences];
 
-    if (v3)
+    if (preferences)
     {
       goto LABEL_11;
     }
@@ -393,17 +393,17 @@ void __121__NPKPeerPaymentWebServiceCompanionTargetDevice_peerPaymentReRegisterW
     }
   }
 
-  v3 = 0;
+  preferences = 0;
 LABEL_11:
 
-  return v3;
+  return preferences;
 }
 
-- (void)setPreferences:(id)a3 completion:(id)a4
+- (void)setPreferences:(id)preferences completion:(id)completion
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  preferencesCopy = preferences;
+  completionCopy = completion;
   v8 = pk_Payment_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -413,7 +413,7 @@ LABEL_11:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v29 = v6;
+      v29 = preferencesCopy;
       _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, "Notice: Requested to set peer payment preferences:%@", buf, 0xCu);
     }
   }
@@ -425,14 +425,14 @@ LABEL_11:
   if (v13)
   {
     v14 = +[NPKSharedWebServiceProvider sharedWebServiceProvider];
-    v15 = [v14 targetDevice];
+    targetDevice = [v14 targetDevice];
 
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __75__NPKPeerPaymentWebServiceCompanionTargetDevice_setPreferences_completion___block_invoke;
     v26[3] = &unk_279947598;
-    v27 = v7;
-    [v15 setPeerPaymentPreferences:v6 completion:v26];
+    v27 = completionCopy;
+    [targetDevice setPeerPaymentPreferences:preferencesCopy completion:v26];
     v16 = v27;
 LABEL_13:
 
@@ -456,15 +456,15 @@ LABEL_13:
       }
     }
 
-    v15 = [objc_alloc(MEMORY[0x277D381A8]) initWithPeerPaymentPreferences:v6];
+    targetDevice = [objc_alloc(MEMORY[0x277D381A8]) initWithPeerPaymentPreferences:preferencesCopy];
     v21 = objc_loadWeakRetained(&self->_peerPaymentWebService);
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __75__NPKPeerPaymentWebServiceCompanionTargetDevice_setPreferences_completion___block_invoke_96;
     v24[3] = &unk_2799475C0;
     v24[4] = self;
-    v25 = v7;
-    [v21 peerPaymentUpdatePreferencesWithRequest:v15 completion:v24];
+    v25 = completionCopy;
+    [v21 peerPaymentUpdatePreferencesWithRequest:targetDevice completion:v24];
 
     v16 = v25;
     goto LABEL_13;
@@ -480,8 +480,8 @@ LABEL_13:
     }
   }
 
-  v15 = [(NPKPeerPaymentWebServiceCompanionTargetDevice *)self preferences];
-  (*(v7 + 2))(v7, v15, 0);
+  targetDevice = [(NPKPeerPaymentWebServiceCompanionTargetDevice *)self preferences];
+  (*(completionCopy + 2))(completionCopy, targetDevice, 0);
 LABEL_14:
 
   v22 = *MEMORY[0x277D85DE8];

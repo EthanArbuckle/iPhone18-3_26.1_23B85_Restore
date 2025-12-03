@@ -1,29 +1,29 @@
 @interface _INPBModifyRelationship
-- (BOOL)isEqual:(id)a3;
-- (_INPBModifyRelationship)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBModifyRelationship)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBModifyRelationship
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBModifyRelationship *)self hasIsRemoval])
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBModifyRelationship isRemoval](self, "isRemoval")}];
-    [v3 setObject:v4 forKeyedSubscript:@"isRemoval"];
+    [dictionary setObject:v4 forKeyedSubscript:@"isRemoval"];
   }
 
-  v5 = [(_INPBModifyRelationship *)self targetRelationship];
-  v6 = [v5 dictionaryRepresentation];
-  [v3 setObject:v6 forKeyedSubscript:@"targetRelationship"];
+  targetRelationship = [(_INPBModifyRelationship *)self targetRelationship];
+  dictionaryRepresentation = [targetRelationship dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"targetRelationship"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -41,23 +41,23 @@
   return [(_INPBString *)self->_targetRelationship hash]^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_INPBModifyRelationship *)self hasIsRemoval];
-    if (v5 == [v4 hasIsRemoval])
+    hasIsRemoval = [(_INPBModifyRelationship *)self hasIsRemoval];
+    if (hasIsRemoval == [equalCopy hasIsRemoval])
     {
-      if (!-[_INPBModifyRelationship hasIsRemoval](self, "hasIsRemoval") || ![v4 hasIsRemoval] || (isRemoval = self->_isRemoval, isRemoval == objc_msgSend(v4, "isRemoval")))
+      if (!-[_INPBModifyRelationship hasIsRemoval](self, "hasIsRemoval") || ![equalCopy hasIsRemoval] || (isRemoval = self->_isRemoval, isRemoval == objc_msgSend(equalCopy, "isRemoval")))
       {
-        v7 = [(_INPBModifyRelationship *)self targetRelationship];
-        v8 = [v4 targetRelationship];
-        v9 = v8;
-        if ((v7 != 0) != (v8 == 0))
+        targetRelationship = [(_INPBModifyRelationship *)self targetRelationship];
+        targetRelationship2 = [equalCopy targetRelationship];
+        v9 = targetRelationship2;
+        if ((targetRelationship != 0) != (targetRelationship2 == 0))
         {
-          v10 = [(_INPBModifyRelationship *)self targetRelationship];
-          if (!v10)
+          targetRelationship3 = [(_INPBModifyRelationship *)self targetRelationship];
+          if (!targetRelationship3)
           {
 
 LABEL_14:
@@ -65,10 +65,10 @@ LABEL_14:
             goto LABEL_12;
           }
 
-          v11 = v10;
-          v12 = [(_INPBModifyRelationship *)self targetRelationship];
-          v13 = [v4 targetRelationship];
-          v14 = [v12 isEqual:v13];
+          v11 = targetRelationship3;
+          targetRelationship4 = [(_INPBModifyRelationship *)self targetRelationship];
+          targetRelationship5 = [equalCopy targetRelationship];
+          v14 = [targetRelationship4 isEqual:targetRelationship5];
 
           if (v14)
           {
@@ -89,7 +89,7 @@ LABEL_12:
   return v15;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBModifyRelationship allocWithZone:](_INPBModifyRelationship init];
   if ([(_INPBModifyRelationship *)self hasIsRemoval])
@@ -97,54 +97,54 @@ LABEL_12:
     [(_INPBModifyRelationship *)v5 setIsRemoval:[(_INPBModifyRelationship *)self isRemoval]];
   }
 
-  v6 = [(_INPBString *)self->_targetRelationship copyWithZone:a3];
+  v6 = [(_INPBString *)self->_targetRelationship copyWithZone:zone];
   [(_INPBModifyRelationship *)v5 setTargetRelationship:v6];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBModifyRelationship *)self data];
+  coderCopy = coder;
+  data = [(_INPBModifyRelationship *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBModifyRelationship)initWithCoder:(id)a3
+- (_INPBModifyRelationship)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBModifyRelationship *)self initWithData:v6];
+    self = [(_INPBModifyRelationship *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(_INPBModifyRelationship *)self hasIsRemoval])
   {
     isRemoval = self->_isRemoval;
     PBDataWriterWriteBOOLField();
   }
 
-  v5 = [(_INPBModifyRelationship *)self targetRelationship];
+  targetRelationship = [(_INPBModifyRelationship *)self targetRelationship];
 
-  v6 = v8;
-  if (v5)
+  v6 = toCopy;
+  if (targetRelationship)
   {
-    v7 = [(_INPBModifyRelationship *)self targetRelationship];
+    targetRelationship2 = [(_INPBModifyRelationship *)self targetRelationship];
     PBDataWriterWriteSubmessage();
 
-    v6 = v8;
+    v6 = toCopy;
   }
 }
 

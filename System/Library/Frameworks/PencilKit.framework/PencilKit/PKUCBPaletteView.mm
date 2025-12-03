@@ -5,35 +5,35 @@
 - (BOOL)_shouldHideTrailingButtonGroupView;
 - (BOOL)_shouldShowCenterButtonGroupView;
 - (BOOL)isPalettePresentingPopover;
-- (CGSize)paletteSizeForEdge:(unint64_t)a3;
-- (PKUCBPaletteView)initWithFrame:(CGRect)a3;
-- (double)borderWidthForTraitCollection:(id)a3;
-- (double)dampingRatioForThrowingFromPosition:(int64_t)a3 toPosition:(int64_t)a4 withVelocity:(CGPoint)a5;
-- (double)responseForThrowingFromPosition:(int64_t)a3 toPosition:(int64_t)a4 withVelocity:(CGPoint)a5;
+- (CGSize)paletteSizeForEdge:(unint64_t)edge;
+- (PKUCBPaletteView)initWithFrame:(CGRect)frame;
+- (double)borderWidthForTraitCollection:(id)collection;
+- (double)dampingRatioForThrowingFromPosition:(int64_t)position toPosition:(int64_t)toPosition withVelocity:(CGPoint)velocity;
+- (double)responseForThrowingFromPosition:(int64_t)position toPosition:(int64_t)toPosition withVelocity:(CGPoint)velocity;
 - (double)shadowOpacity;
 - (id)_centeredBarButtons;
-- (id)borderColorForTraitCollection:(id)a3;
+- (id)borderColorForTraitCollection:(id)collection;
 - (void)_flashLanguageIndicatorIfNeeded;
 - (void)_handleReturnKey;
-- (void)_performUpdateUIBlock:(id)a3;
+- (void)_performUpdateUIBlock:(id)block;
 - (void)_updateCenteredButtonGroup;
 - (void)_updateLeadingButtonGroup;
 - (void)_updateReturnKeyButton;
 - (void)_updateSubviewLayoutAxis;
 - (void)_updateTrailingButtonGroup;
 - (void)_updateUI;
-- (void)buttonDidChangeIntrinsicContentSize:(id)a3;
+- (void)buttonDidChangeIntrinsicContentSize:(id)size;
 - (void)didChangePaletteScaleFactor;
-- (void)dismissPalettePopoverWithCompletion:(id)a3;
-- (void)setCenteredBarButtons:(id)a3;
-- (void)setLeadingBarButtons:(id)a3;
-- (void)setLocaleIdentifier:(id)a3;
-- (void)setReturnKeyEnabled:(BOOL)a3;
-- (void)setReturnKeyType:(int64_t)a3;
-- (void)setTrailingBarButtons:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)dismissPalettePopoverWithCompletion:(id)completion;
+- (void)setCenteredBarButtons:(id)buttons;
+- (void)setLeadingBarButtons:(id)buttons;
+- (void)setLocaleIdentifier:(id)identifier;
+- (void)setReturnKeyEnabled:(BOOL)enabled;
+- (void)setReturnKeyType:(int64_t)type;
+- (void)setTrailingBarButtons:(id)buttons;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateConstraints;
-- (void)willStartAppearanceAnimation:(BOOL)a3;
+- (void)willStartAppearanceAnimation:(BOOL)animation;
 @end
 
 @implementation PKUCBPaletteView
@@ -46,12 +46,12 @@
   return v3;
 }
 
-- (PKUCBPaletteView)initWithFrame:(CGRect)a3
+- (PKUCBPaletteView)initWithFrame:(CGRect)frame
 {
   v87[2] = *MEMORY[0x1E69E9840];
   v83.receiver = self;
   v83.super_class = PKUCBPaletteView;
-  v3 = [(PKPaletteView *)&v83 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKPaletteView *)&v83 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -64,55 +64,55 @@
     v4->__contentView = v6;
 
     [(UIView *)v4->__contentView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v8 = [(PKPaletteView *)v4 containerView];
-    v9 = [v8 contentView];
-    [v9 addSubview:v4->__contentView];
+    containerView = [(PKPaletteView *)v4 containerView];
+    contentView = [containerView contentView];
+    [contentView addSubview:v4->__contentView];
 
-    v81 = [(UIView *)v4->__contentView centerXAnchor];
-    v10 = [(PKPaletteView *)v4 containerView];
-    v11 = [v10 contentView];
-    v12 = [v11 centerXAnchor];
-    v13 = [v81 constraintEqualToAnchor:v12];
+    centerXAnchor = [(UIView *)v4->__contentView centerXAnchor];
+    containerView2 = [(PKPaletteView *)v4 containerView];
+    contentView2 = [containerView2 contentView];
+    centerXAnchor2 = [contentView2 centerXAnchor];
+    v13 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v87[0] = v13;
-    v14 = [(UIView *)v4->__contentView centerYAnchor];
-    v15 = [(PKPaletteView *)v4 containerView];
-    v16 = [v15 contentView];
-    v17 = [v16 centerYAnchor];
-    v18 = [v14 constraintEqualToAnchor:v17];
+    centerYAnchor = [(UIView *)v4->__contentView centerYAnchor];
+    containerView3 = [(PKPaletteView *)v4 containerView];
+    contentView3 = [containerView3 contentView];
+    centerYAnchor2 = [contentView3 centerYAnchor];
+    v18 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v87[1] = v18;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v87 count:2];
     nonCompactContentViewConstraints = v4->_nonCompactContentViewConstraints;
     v4->_nonCompactContentViewConstraints = v19;
 
-    v21 = [(UIView *)v4->__contentView topAnchor];
-    v22 = [(PKPaletteView *)v4 containerView];
-    v23 = [v22 contentView];
-    v24 = [v23 topAnchor];
-    v25 = [v21 constraintEqualToAnchor:v24];
+    topAnchor = [(UIView *)v4->__contentView topAnchor];
+    containerView4 = [(PKPaletteView *)v4 containerView];
+    contentView4 = [containerView4 contentView];
+    topAnchor2 = [contentView4 topAnchor];
+    v25 = [topAnchor constraintEqualToAnchor:topAnchor2];
     contentViewTopAnchor = v4->__contentViewTopAnchor;
     v4->__contentViewTopAnchor = v25;
 
-    v27 = [(UIView *)v4->__contentView bottomAnchor];
-    v28 = [(PKPaletteView *)v4 containerView];
-    v29 = [v28 contentView];
-    v30 = [v29 bottomAnchor];
-    v31 = [v27 constraintEqualToAnchor:v30];
+    bottomAnchor = [(UIView *)v4->__contentView bottomAnchor];
+    containerView5 = [(PKPaletteView *)v4 containerView];
+    contentView5 = [containerView5 contentView];
+    bottomAnchor2 = [contentView5 bottomAnchor];
+    v31 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     contentViewBottomAnchor = v4->__contentViewBottomAnchor;
     v4->__contentViewBottomAnchor = v31;
 
-    v33 = [(UIView *)v4->__contentView leadingAnchor];
-    v34 = [(PKPaletteView *)v4 containerView];
-    v35 = [v34 contentView];
-    v36 = [v35 leadingAnchor];
-    v37 = [v33 constraintEqualToAnchor:v36];
+    leadingAnchor = [(UIView *)v4->__contentView leadingAnchor];
+    containerView6 = [(PKPaletteView *)v4 containerView];
+    contentView6 = [containerView6 contentView];
+    leadingAnchor2 = [contentView6 leadingAnchor];
+    v37 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     contentViewLeadingAnchor = v4->__contentViewLeadingAnchor;
     v4->__contentViewLeadingAnchor = v37;
 
-    v39 = [(UIView *)v4->__contentView trailingAnchor];
-    v40 = [(PKPaletteView *)v4 containerView];
-    v41 = [v40 contentView];
-    v42 = [v41 trailingAnchor];
-    v43 = [v39 constraintEqualToAnchor:v42];
+    trailingAnchor = [(UIView *)v4->__contentView trailingAnchor];
+    containerView7 = [(PKPaletteView *)v4 containerView];
+    contentView7 = [containerView7 contentView];
+    trailingAnchor2 = [contentView7 trailingAnchor];
+    v43 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     contentViewTrailingAnchor = v4->__contentViewTrailingAnchor;
     v4->__contentViewTrailingAnchor = v43;
 
@@ -125,8 +125,8 @@
     v4->_compactContentViewConstraints = v45;
 
     v82 = objc_alloc_init(PKPaletteConcreteHandwritingTool);
-    v47 = [(PKPaletteView *)v4 toolPreview];
-    [v47 showPreviewForTool:v82 animated:0];
+    toolPreview = [(PKPaletteView *)v4 toolPreview];
+    [toolPreview showPreviewForTool:v82 animated:0];
 
     v48 = objc_alloc_init(PKPaletteButtonGroupView);
     leadingButtonGroupView = v4->__leadingButtonGroupView;
@@ -163,31 +163,31 @@
     [(UIStackView *)v4->__buttonStackView setDistribution:3];
     [(UIStackView *)v4->__buttonStackView setAlignment:3];
     [(UIView *)v4->__contentView addSubview:v4->__buttonStackView];
-    v62 = [(UIStackView *)v4->__buttonStackView bottomAnchor];
-    v63 = [(UIView *)v4->__contentView bottomAnchor];
-    v64 = [v62 constraintEqualToAnchor:v63];
+    bottomAnchor3 = [(UIStackView *)v4->__buttonStackView bottomAnchor];
+    bottomAnchor4 = [(UIView *)v4->__contentView bottomAnchor];
+    v64 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     buttonStackViewBottomConstraint = v4->__buttonStackViewBottomConstraint;
     v4->__buttonStackViewBottomConstraint = v64;
 
-    v66 = [(UIStackView *)v4->__buttonStackView heightAnchor];
+    heightAnchor = [(UIStackView *)v4->__buttonStackView heightAnchor];
     [(PKUCBPaletteView *)v4 compactPaletteHeight];
-    v67 = [v66 constraintEqualToConstant:?];
+    v67 = [heightAnchor constraintEqualToConstant:?];
     buttonStackViewHeightConstraint = v4->__buttonStackViewHeightConstraint;
     v4->__buttonStackViewHeightConstraint = v67;
 
     v79 = MEMORY[0x1E696ACD8];
-    v80 = [(UIStackView *)v4->__buttonStackView topAnchor];
-    v69 = [(UIView *)v4->__contentView topAnchor];
-    v70 = [v80 constraintEqualToAnchor:v69];
+    topAnchor3 = [(UIStackView *)v4->__buttonStackView topAnchor];
+    topAnchor4 = [(UIView *)v4->__contentView topAnchor];
+    v70 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v84[0] = v70;
     v84[1] = v4->__buttonStackViewBottomConstraint;
-    v71 = [(UIStackView *)v4->__buttonStackView leadingAnchor];
-    v72 = [(UIView *)v4->__contentView leadingAnchor];
-    v73 = [v71 constraintEqualToAnchor:v72];
+    leadingAnchor3 = [(UIStackView *)v4->__buttonStackView leadingAnchor];
+    leadingAnchor4 = [(UIView *)v4->__contentView leadingAnchor];
+    v73 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v84[2] = v73;
-    v74 = [(UIStackView *)v4->__buttonStackView trailingAnchor];
-    v75 = [(UIView *)v4->__contentView trailingAnchor];
-    v76 = [v74 constraintEqualToAnchor:v75];
+    trailingAnchor3 = [(UIStackView *)v4->__buttonStackView trailingAnchor];
+    trailingAnchor4 = [(UIView *)v4->__contentView trailingAnchor];
+    v76 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v84[3] = v76;
     v77 = [MEMORY[0x1E695DEC8] arrayWithObjects:v84 count:4];
     [v79 activateConstraints:v77];
@@ -204,17 +204,17 @@
   {
     [(PKUCBPaletteView *)self _contentMargin];
     v4 = v3;
-    v5 = [(PKUCBPaletteView *)self _contentViewLeadingAnchor];
-    [v5 setConstant:v4];
+    _contentViewLeadingAnchor = [(PKUCBPaletteView *)self _contentViewLeadingAnchor];
+    [_contentViewLeadingAnchor setConstant:v4];
 
     [(PKUCBPaletteView *)self _contentMargin];
     v7 = -v6;
-    v8 = [(PKUCBPaletteView *)self _contentViewTrailingAnchor];
-    [v8 setConstant:v7];
+    _contentViewTrailingAnchor = [(PKUCBPaletteView *)self _contentViewTrailingAnchor];
+    [_contentViewTrailingAnchor setConstant:v7];
 
     v9 = MEMORY[0x1E696ACD8];
-    v10 = [(PKUCBPaletteView *)self nonCompactContentViewConstraints];
-    [v9 deactivateConstraints:v10];
+    nonCompactContentViewConstraints = [(PKUCBPaletteView *)self nonCompactContentViewConstraints];
+    [v9 deactivateConstraints:nonCompactContentViewConstraints];
 
     v11 = MEMORY[0x1E696ACD8];
     [(PKUCBPaletteView *)self compactContentViewConstraints];
@@ -223,8 +223,8 @@
   else
   {
     v12 = MEMORY[0x1E696ACD8];
-    v13 = [(PKUCBPaletteView *)self compactContentViewConstraints];
-    [v12 deactivateConstraints:v13];
+    compactContentViewConstraints = [(PKUCBPaletteView *)self compactContentViewConstraints];
+    [v12 deactivateConstraints:compactContentViewConstraints];
 
     v11 = MEMORY[0x1E696ACD8];
     [(PKUCBPaletteView *)self nonCompactContentViewConstraints];
@@ -237,16 +237,16 @@
   [(PKUCBPaletteView *)&v15 updateConstraints];
 }
 
-- (double)responseForThrowingFromPosition:(int64_t)a3 toPosition:(int64_t)a4 withVelocity:(CGPoint)a5
+- (double)responseForThrowingFromPosition:(int64_t)position toPosition:(int64_t)toPosition withVelocity:(CGPoint)velocity
 {
-  v5 = sqrt(a5.y * a5.y + a5.x * a5.x);
-  if (a3 <= 2)
+  v5 = sqrt(velocity.y * velocity.y + velocity.x * velocity.x);
+  if (position <= 2)
   {
-    if (a3 != 1)
+    if (position != 1)
     {
-      if (a3 == 2)
+      if (position == 2)
       {
-        v6 = (a4 & 0xFFFFFFFFFFFFFFFELL) == 6;
+        v6 = (toPosition & 0xFFFFFFFFFFFFFFFELL) == 6;
         goto LABEL_14;
       }
 
@@ -255,7 +255,7 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    v7 = a4 - 5;
+    v7 = toPosition - 5;
 LABEL_12:
     if (v7 < 2)
     {
@@ -266,19 +266,19 @@ LABEL_12:
     goto LABEL_17;
   }
 
-  if (a3 == 3)
+  if (position == 3)
   {
-    v7 = a4 - 7;
+    v7 = toPosition - 7;
     goto LABEL_12;
   }
 
-  if (a3 != 4)
+  if (position != 4)
   {
     goto LABEL_17;
   }
 
   v6 = 1;
-  if (a4 != 5 && a4 != 8)
+  if (toPosition != 5 && toPosition != 8)
   {
     goto LABEL_17;
   }
@@ -291,17 +291,17 @@ LABEL_14:
   }
 
 LABEL_18:
-  if ((a3 & 0xFFFFFFFFFFFFFFFDLL) != 1 || a4 != 2 && a4 != 4)
+  if ((position & 0xFFFFFFFFFFFFFFFDLL) != 1 || toPosition != 2 && toPosition != 4)
   {
     v9 = 0;
-    if (a3 > 2)
+    if (position > 2)
     {
-      if (a3 == 3)
+      if (position == 3)
       {
         goto LABEL_34;
       }
 
-      if (a3 != 4)
+      if (position != 4)
       {
         goto LABEL_36;
       }
@@ -309,22 +309,22 @@ LABEL_18:
 
     else
     {
-      if (a3 == 1)
+      if (position == 1)
       {
 LABEL_32:
-        v11 = a4 - 7;
+        v11 = toPosition - 7;
 LABEL_35:
         v9 = v11 < 2;
         goto LABEL_36;
       }
 
-      if (a3 != 2)
+      if (position != 2)
       {
         goto LABEL_36;
       }
     }
 
-    v8 &= (a4 & 0xFFFFFFFFFFFFFFFDLL) == 1;
+    v8 &= (toPosition & 0xFFFFFFFFFFFFFFFDLL) == 1;
   }
 
   if (v8)
@@ -332,41 +332,41 @@ LABEL_35:
     return 0.456;
   }
 
-  if (a3 > 2)
+  if (position > 2)
   {
-    if (a3 != 3)
+    if (position != 3)
     {
       goto LABEL_39;
     }
 
 LABEL_34:
-    v11 = a4 - 5;
+    v11 = toPosition - 5;
     goto LABEL_35;
   }
 
-  if (a3 == 1)
+  if (position == 1)
   {
     goto LABEL_32;
   }
 
 LABEL_39:
-  if (a4 == 4 || a4 == 2)
+  if (toPosition == 4 || toPosition == 2)
   {
-    v12 = [(PKUCBPaletteView *)self window];
-    v13 = [v12 windowScene];
-    v14 = dbl_1C801E690[([v13 interfaceOrientation] - 1) < 2];
+    window = [(PKUCBPaletteView *)self window];
+    windowScene = [window windowScene];
+    v14 = dbl_1C801E690[([windowScene interfaceOrientation] - 1) < 2];
 
     return dbl_1C801E6A0[v5 > v14];
   }
 
-  if (a3 == 2)
+  if (position == 2)
   {
-    v15 = a4 == 5 || a4 == 8;
+    v15 = toPosition == 5 || toPosition == 8;
   }
 
   else
   {
-    v15 = (a4 & 0xFFFFFFFFFFFFFFFELL) == 6;
+    v15 = (toPosition & 0xFFFFFFFFFFFFFFFELL) == 6;
   }
 
   v9 = v15;
@@ -380,29 +380,29 @@ LABEL_36:
   return result;
 }
 
-- (double)dampingRatioForThrowingFromPosition:(int64_t)a3 toPosition:(int64_t)a4 withVelocity:(CGPoint)a5
+- (double)dampingRatioForThrowingFromPosition:(int64_t)position toPosition:(int64_t)toPosition withVelocity:(CGPoint)velocity
 {
-  v5 = sqrt(a5.y * a5.y + a5.x * a5.x);
-  if (a3 <= 2)
+  v5 = sqrt(velocity.y * velocity.y + velocity.x * velocity.x);
+  if (position <= 2)
   {
-    if (a3 != 1)
+    if (position != 1)
     {
-      if (a3 != 2)
+      if (position != 2)
       {
         goto LABEL_16;
       }
 
-      v6 = (a4 & 0xFFFFFFFFFFFFFFFELL) == 6;
+      v6 = (toPosition & 0xFFFFFFFFFFFFFFFELL) == 6;
       goto LABEL_14;
     }
 
-    v7 = a4 - 5;
+    v7 = toPosition - 5;
     goto LABEL_12;
   }
 
-  if (a3 == 3)
+  if (position == 3)
   {
-    v7 = a4 - 7;
+    v7 = toPosition - 7;
 LABEL_12:
     if (v7 >= 2)
     {
@@ -413,16 +413,16 @@ LABEL_12:
     goto LABEL_14;
   }
 
-  if (a3 != 4)
+  if (position != 4)
   {
     goto LABEL_16;
   }
 
   v6 = 1;
-  if (a4 != 5 && a4 != 8)
+  if (toPosition != 5 && toPosition != 8)
   {
 LABEL_21:
-    v8 = (a4 & 0xFFFFFFFFFFFFFFFDLL) == 1;
+    v8 = (toPosition & 0xFFFFFFFFFFFFFFFDLL) == 1;
     goto LABEL_22;
   }
 
@@ -433,17 +433,17 @@ LABEL_14:
   }
 
 LABEL_16:
-  if ((a3 & 0xFFFFFFFFFFFFFFFDLL) != 1)
+  if ((position & 0xFFFFFFFFFFFFFFFDLL) != 1)
   {
     goto LABEL_19;
   }
 
 LABEL_17:
   v8 = 1;
-  if (a4 != 2 && a4 != 4)
+  if (toPosition != 2 && toPosition != 4)
   {
 LABEL_19:
-    if (a3 != 4 && a3 != 2)
+    if (position != 4 && position != 2)
     {
       goto LABEL_33;
     }
@@ -457,9 +457,9 @@ LABEL_22:
     return 0.95;
   }
 
-  if (a3 == 4 || a3 == 2)
+  if (position == 4 || position == 2)
   {
-    v11 = a4 == 2 || a4 == 4;
+    v11 = toPosition == 2 || toPosition == 4;
     goto LABEL_34;
   }
 
@@ -476,20 +476,20 @@ LABEL_34:
   return result;
 }
 
-- (id)borderColorForTraitCollection:(id)a3
+- (id)borderColorForTraitCollection:(id)collection
 {
-  v3 = a3;
+  collectionCopy = collection;
   if (UIAccessibilityDarkerSystemColorsEnabled())
   {
-    v4 = [MEMORY[0x1E69DC888] systemGray4Color];
+    systemGray4Color = [MEMORY[0x1E69DC888] systemGray4Color];
   }
 
   else
   {
-    v5 = [v3 userInterfaceStyle];
-    v6 = [MEMORY[0x1E69DC888] systemGray4Color];
-    v7 = v6;
-    if (v5 == 2)
+    userInterfaceStyle = [collectionCopy userInterfaceStyle];
+    systemGray4Color2 = [MEMORY[0x1E69DC888] systemGray4Color];
+    v7 = systemGray4Color2;
+    if (userInterfaceStyle == 2)
     {
       v8 = 0.4;
     }
@@ -499,13 +499,13 @@ LABEL_34:
       v8 = 0.5;
     }
 
-    v4 = [v6 colorWithAlphaComponent:v8];
+    systemGray4Color = [systemGray4Color2 colorWithAlphaComponent:v8];
   }
 
-  return v4;
+  return systemGray4Color;
 }
 
-- (double)borderWidthForTraitCollection:(id)a3
+- (double)borderWidthForTraitCollection:(id)collection
 {
   v3 = UIAccessibilityDarkerSystemColorsEnabled();
   result = 0.5;
@@ -538,15 +538,15 @@ LABEL_34:
   [(PKUCBPaletteView *)self setNeedsUpdateConstraints];
 }
 
-- (CGSize)paletteSizeForEdge:(unint64_t)a3
+- (CGSize)paletteSizeForEdge:(unint64_t)edge
 {
-  v5 = [(PKUCBPaletteView *)self _buttonStackView];
-  [v5 systemLayoutSizeFittingSize:{*MEMORY[0x1E69DE090], *(MEMORY[0x1E69DE090] + 8)}];
+  _buttonStackView = [(PKUCBPaletteView *)self _buttonStackView];
+  [_buttonStackView systemLayoutSizeFittingSize:{*MEMORY[0x1E69DE090], *(MEMORY[0x1E69DE090] + 8)}];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(PKPaletteView *)self palettePosition];
-  if (v10 == 4 || v10 == 2)
+  palettePosition = [(PKPaletteView *)self palettePosition];
+  if (palettePosition == 4 || palettePosition == 2)
   {
     [(PKUCBPaletteView *)self _contentMargin];
     v12 = v11 + v11;
@@ -564,7 +564,7 @@ LABEL_34:
     v16 = 0;
   }
 
-  v19 = a3 == 2 || a3 == 8;
+  v19 = edge == 2 || edge == 8;
   v20 = v19 ^ v16;
   if (v20)
   {
@@ -586,13 +586,13 @@ LABEL_34:
   return result;
 }
 
-- (void)willStartAppearanceAnimation:(BOOL)a3
+- (void)willStartAppearanceAnimation:(BOOL)animation
 {
-  v3 = a3;
+  animationCopy = animation;
   v5.receiver = self;
   v5.super_class = PKUCBPaletteView;
   [(PKPaletteView *)&v5 willStartAppearanceAnimation:?];
-  if (v3)
+  if (animationCopy)
   {
     [(PKUCBPaletteView *)self _flashLanguageIndicatorIfNeeded];
   }
@@ -600,10 +600,10 @@ LABEL_34:
 
 - (BOOL)isPalettePresentingPopover
 {
-  v2 = [(PKPaletteView *)self palettePopoverPresentingController];
-  v3 = [v2 presentedViewController];
+  palettePopoverPresentingController = [(PKPaletteView *)self palettePopoverPresentingController];
+  presentedViewController = [palettePopoverPresentingController presentedViewController];
 
-  if (v3)
+  if (presentedViewController)
   {
     v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v5 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
@@ -618,35 +618,35 @@ LABEL_34:
   return v6;
 }
 
-- (void)setReturnKeyType:(int64_t)a3
+- (void)setReturnKeyType:(int64_t)type
 {
-  if (self->_returnKeyType != a3)
+  if (self->_returnKeyType != type)
   {
-    self->_returnKeyType = a3;
+    self->_returnKeyType = type;
     [(PKUCBPaletteView *)self _updateUI];
-    v5 = [(PKPaletteView *)self internalDelegate];
-    [v5 paletteViewContentSizeDidChange:self];
+    internalDelegate = [(PKPaletteView *)self internalDelegate];
+    [internalDelegate paletteViewContentSizeDidChange:self];
 
-    v6 = [(PKPaletteView *)self internalDelegate];
-    [v6 paletteViewReturnKeyTypeDidChange:self];
+    internalDelegate2 = [(PKPaletteView *)self internalDelegate];
+    [internalDelegate2 paletteViewReturnKeyTypeDidChange:self];
   }
 }
 
-- (void)setReturnKeyEnabled:(BOOL)a3
+- (void)setReturnKeyEnabled:(BOOL)enabled
 {
-  if (self->_returnKeyEnabled != a3)
+  if (self->_returnKeyEnabled != enabled)
   {
-    self->_returnKeyEnabled = a3;
+    self->_returnKeyEnabled = enabled;
     [(PKUCBPaletteView *)self _updateUI];
   }
 }
 
-- (void)setLocaleIdentifier:(id)a3
+- (void)setLocaleIdentifier:(id)identifier
 {
-  v6 = a3;
+  identifierCopy = identifier;
   if (![(NSString *)self->_localeIdentifier isEqualToString:?])
   {
-    v4 = [v6 copy];
+    v4 = [identifierCopy copy];
     localeIdentifier = self->_localeIdentifier;
     self->_localeIdentifier = v4;
 
@@ -654,26 +654,26 @@ LABEL_34:
   }
 }
 
-- (void)setLeadingBarButtons:(id)a3
+- (void)setLeadingBarButtons:(id)buttons
 {
-  if (self->_leadingBarButtons != a3)
+  if (self->_leadingBarButtons != buttons)
   {
-    v4 = [a3 copy];
+    v4 = [buttons copy];
     leadingBarButtons = self->_leadingBarButtons;
     self->_leadingBarButtons = v4;
 
     [(PKUCBPaletteView *)self _updateUI];
-    v6 = [(PKPaletteView *)self internalDelegate];
-    [v6 paletteViewContentSizeDidChange:self];
+    internalDelegate = [(PKPaletteView *)self internalDelegate];
+    [internalDelegate paletteViewContentSizeDidChange:self];
   }
 }
 
-- (void)setCenteredBarButtons:(id)a3
+- (void)setCenteredBarButtons:(id)buttons
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  buttonsCopy = buttons;
   centeredBarButtons = self->_centeredBarButtons;
-  if (centeredBarButtons != v4)
+  if (centeredBarButtons != buttonsCopy)
   {
     v25 = 0u;
     v26 = 0u;
@@ -705,13 +705,13 @@ LABEL_34:
       while (v8);
     }
 
-    v11 = [(NSArray *)v4 copy];
+    v11 = [(NSArray *)buttonsCopy copy];
     v12 = self->_centeredBarButtons;
     self->_centeredBarButtons = v11;
 
     [(PKUCBPaletteView *)self _updateUI];
-    v13 = [(PKPaletteView *)self internalDelegate];
-    [v13 paletteViewContentSizeDidChange:self];
+    internalDelegate = [(PKPaletteView *)self internalDelegate];
+    [internalDelegate paletteViewContentSizeDidChange:self];
 
     v21 = 0u;
     v22 = 0u;
@@ -745,17 +745,17 @@ LABEL_34:
   }
 }
 
-- (void)setTrailingBarButtons:(id)a3
+- (void)setTrailingBarButtons:(id)buttons
 {
-  if (self->_trailingBarButtons != a3)
+  if (self->_trailingBarButtons != buttons)
   {
-    v4 = [a3 copy];
+    v4 = [buttons copy];
     trailingBarButtons = self->_trailingBarButtons;
     self->_trailingBarButtons = v4;
 
     [(PKUCBPaletteView *)self _updateUI];
-    v6 = [(PKPaletteView *)self internalDelegate];
-    [v6 paletteViewContentSizeDidChange:self];
+    internalDelegate = [(PKPaletteView *)self internalDelegate];
+    [internalDelegate paletteViewContentSizeDidChange:self];
   }
 }
 
@@ -767,65 +767,65 @@ LABEL_34:
     v3 = +[PKTextInputLanguageSelectionController sharedInstance];
     if ([v3 shouldIdentifyLanguages])
     {
-      v4 = [v3 languageIdentificationIcon];
-      v5 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v4];
+      languageIdentificationIcon = [v3 languageIdentificationIcon];
+      v5 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:languageIdentificationIcon];
       [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-      v6 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-      [v5 setTintColor:v6];
+      secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+      [v5 setTintColor:secondaryLabelColor];
 
-      [v4 size];
+      [languageIdentificationIcon size];
       v7 = 1.0;
       if (v8 > 0.0)
       {
-        [v4 size];
+        [languageIdentificationIcon size];
         v10 = v9;
-        [v4 size];
+        [languageIdentificationIcon size];
         v7 = v10 / v11;
       }
 
       v12 = MEMORY[0x1E696ACD8];
-      v13 = [v5 heightAnchor];
-      v14 = [v13 constraintEqualToConstant:28.0];
+      heightAnchor = [v5 heightAnchor];
+      v14 = [heightAnchor constraintEqualToConstant:28.0];
       v21[0] = v14;
-      v15 = [v5 widthAnchor];
-      v16 = [v5 heightAnchor];
-      v17 = [v15 constraintEqualToAnchor:v16 multiplier:v7];
+      widthAnchor = [v5 widthAnchor];
+      heightAnchor2 = [v5 heightAnchor];
+      v17 = [widthAnchor constraintEqualToAnchor:heightAnchor2 multiplier:v7];
       v21[1] = v17;
       [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:2];
-      v18 = v20 = v4;
+      v18 = v20 = languageIdentificationIcon;
       [v12 activateConstraints:v18];
 
-      v19 = [(PKPaletteView *)self toolPreview];
-      [v19 flashAlternatePreviewView:v5];
+      toolPreview = [(PKPaletteView *)self toolPreview];
+      [toolPreview flashAlternatePreviewView:v5];
     }
   }
 }
 
-- (void)buttonDidChangeIntrinsicContentSize:(id)a3
+- (void)buttonDidChangeIntrinsicContentSize:(id)size
 {
   if (![(PKUCBPaletteView *)self isUpdatingUI])
   {
-    v4 = [(PKPaletteView *)self internalDelegate];
-    [v4 paletteViewContentSizeDidChange:self];
+    internalDelegate = [(PKPaletteView *)self internalDelegate];
+    [internalDelegate paletteViewContentSizeDidChange:self];
   }
 }
 
 - (void)_handleReturnKey
 {
-  v3 = [(PKUCBPaletteView *)self returnKeyHandler];
+  returnKeyHandler = [(PKUCBPaletteView *)self returnKeyHandler];
 
-  if (v3)
+  if (returnKeyHandler)
   {
-    v4 = [(PKUCBPaletteView *)self returnKeyHandler];
-    v4[2](v4, self);
+    returnKeyHandler2 = [(PKUCBPaletteView *)self returnKeyHandler];
+    returnKeyHandler2[2](returnKeyHandler2, self);
   }
 }
 
-- (void)_performUpdateUIBlock:(id)a3
+- (void)_performUpdateUIBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(PKUCBPaletteView *)self setUpdatingUI:1];
-  v4[2](v4);
+  blockCopy[2](blockCopy);
 
   [(PKUCBPaletteView *)self setUpdatingUI:0];
 }
@@ -893,26 +893,26 @@ uint64_t __29__PKUCBPaletteView__updateUI__block_invoke(uint64_t a1)
 
 - (void)_updateReturnKeyButton
 {
-  v3 = [(PKUCBPaletteView *)self returnKeyType];
-  v4 = [(PKUCBPaletteView *)self _returnKeyButton];
-  [v4 setReturnKeyType:v3];
+  returnKeyType = [(PKUCBPaletteView *)self returnKeyType];
+  _returnKeyButton = [(PKUCBPaletteView *)self _returnKeyButton];
+  [_returnKeyButton setReturnKeyType:returnKeyType];
 
-  v5 = [(PKUCBPaletteView *)self isReturnKeyEnabled];
-  v6 = [(PKUCBPaletteView *)self _returnKeyButton];
-  [v6 setEnabled:v5];
+  isReturnKeyEnabled = [(PKUCBPaletteView *)self isReturnKeyEnabled];
+  _returnKeyButton2 = [(PKUCBPaletteView *)self _returnKeyButton];
+  [_returnKeyButton2 setEnabled:isReturnKeyEnabled];
 
-  v7 = [(PKUCBPaletteView *)self _shouldHideReturnKeyButtonGroupView];
-  v8 = [(PKUCBPaletteView *)self _returnKeyButtonGroupView];
-  [v8 setHidden:v7];
+  _shouldHideReturnKeyButtonGroupView = [(PKUCBPaletteView *)self _shouldHideReturnKeyButtonGroupView];
+  _returnKeyButtonGroupView = [(PKUCBPaletteView *)self _returnKeyButtonGroupView];
+  [_returnKeyButtonGroupView setHidden:_shouldHideReturnKeyButtonGroupView];
 
   if (![(PKUCBPaletteView *)self _shouldHideReturnKeyButtonGroupView])
   {
-    v9 = [(PKUCBPaletteView *)self _returnKeyButtonGroupView];
-    [v9 removeAllButtons];
+    _returnKeyButtonGroupView2 = [(PKUCBPaletteView *)self _returnKeyButtonGroupView];
+    [_returnKeyButtonGroupView2 removeAllButtons];
 
-    v11 = [(PKUCBPaletteView *)self _returnKeyButtonGroupView];
-    v10 = [(PKUCBPaletteView *)self _returnKeyButton];
-    [v11 addButton:v10];
+    _returnKeyButtonGroupView3 = [(PKUCBPaletteView *)self _returnKeyButtonGroupView];
+    _returnKeyButton3 = [(PKUCBPaletteView *)self _returnKeyButton];
+    [_returnKeyButtonGroupView3 addButton:_returnKeyButton3];
   }
 }
 
@@ -932,27 +932,27 @@ uint64_t __29__PKUCBPaletteView__updateUI__block_invoke(uint64_t a1)
 - (void)_updateLeadingButtonGroup
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(PKUCBPaletteView *)self _shouldHideLeadingButtonGroupView];
-  v4 = [(PKUCBPaletteView *)self _leadingButtonGroupView];
-  [v4 setHidden:v3];
+  _shouldHideLeadingButtonGroupView = [(PKUCBPaletteView *)self _shouldHideLeadingButtonGroupView];
+  _leadingButtonGroupView = [(PKUCBPaletteView *)self _leadingButtonGroupView];
+  [_leadingButtonGroupView setHidden:_shouldHideLeadingButtonGroupView];
 
   if (![(PKUCBPaletteView *)self _shouldHideLeadingButtonGroupView])
   {
-    v5 = [(PKUCBPaletteView *)self _leadingButtonGroupView];
-    [v5 removeAllButtons];
+    _leadingButtonGroupView2 = [(PKUCBPaletteView *)self _leadingButtonGroupView];
+    [_leadingButtonGroupView2 removeAllButtons];
 
-    v6 = [(PKUCBPaletteView *)self _leadingButtonGroupView];
-    v7 = [(PKUCBPaletteView *)self leadingBarButtons];
-    [v6 addButtonsFromArray:v7];
+    _leadingButtonGroupView3 = [(PKUCBPaletteView *)self _leadingButtonGroupView];
+    leadingBarButtons = [(PKUCBPaletteView *)self leadingBarButtons];
+    [_leadingButtonGroupView3 addButtonsFromArray:leadingBarButtons];
 
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v8 = [(PKUCBPaletteView *)self _leadingButtonGroupView];
-    v9 = [v8 buttons];
+    _leadingButtonGroupView4 = [(PKUCBPaletteView *)self _leadingButtonGroupView];
+    buttons = [_leadingButtonGroupView4 buttons];
 
-    v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v10 = [buttons countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v10)
     {
       v11 = v10;
@@ -964,14 +964,14 @@ uint64_t __29__PKUCBPaletteView__updateUI__block_invoke(uint64_t a1)
         {
           if (*v15 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(buttons);
           }
 
           [*(*(&v14 + 1) + 8 * v13++) setUseCompactLayout:{-[UIView _pk_useCompactLayout](self, "_pk_useCompactLayout")}];
         }
 
         while (v11 != v13);
-        v11 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v11 = [buttons countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v11);
@@ -981,48 +981,48 @@ uint64_t __29__PKUCBPaletteView__updateUI__block_invoke(uint64_t a1)
 
 - (BOOL)_shouldHideLeadingButtonGroupView
 {
-  v3 = [(PKUCBPaletteView *)self leadingBarButtons];
-  if ([v3 count])
+  leadingBarButtons = [(PKUCBPaletteView *)self leadingBarButtons];
+  if ([leadingBarButtons count])
   {
-    v4 = [(UIView *)self _pk_useCompactLayout];
+    _pk_useCompactLayout = [(UIView *)self _pk_useCompactLayout];
   }
 
   else
   {
-    v4 = 1;
+    _pk_useCompactLayout = 1;
   }
 
-  return v4;
+  return _pk_useCompactLayout;
 }
 
 - (void)_updateCenteredButtonGroup
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(PKUCBPaletteView *)self _shouldShowCenterButtonGroupView];
-  v4 = [(PKUCBPaletteView *)self _centeredButtonGroupView];
-  [v4 setHidden:!v3];
+  _shouldShowCenterButtonGroupView = [(PKUCBPaletteView *)self _shouldShowCenterButtonGroupView];
+  _centeredButtonGroupView = [(PKUCBPaletteView *)self _centeredButtonGroupView];
+  [_centeredButtonGroupView setHidden:!_shouldShowCenterButtonGroupView];
 
   if ([(PKUCBPaletteView *)self _shouldShowCenterButtonGroupView])
   {
-    v5 = [(PKUCBPaletteView *)self _centeredButtonGroupView];
-    [v5 removeAllButtons];
+    _centeredButtonGroupView2 = [(PKUCBPaletteView *)self _centeredButtonGroupView];
+    [_centeredButtonGroupView2 removeAllButtons];
 
-    v6 = [(PKUCBPaletteView *)self _centeredButtonGroupView];
-    v7 = [(PKUCBPaletteView *)self _centeredBarButtons];
-    [v6 addButtonsFromArray:v7];
+    _centeredButtonGroupView3 = [(PKUCBPaletteView *)self _centeredButtonGroupView];
+    _centeredBarButtons = [(PKUCBPaletteView *)self _centeredBarButtons];
+    [_centeredButtonGroupView3 addButtonsFromArray:_centeredBarButtons];
 
-    v8 = [(PKUCBPaletteView *)self _shouldHideLeadingButtonGroupView]|| [(PKUCBPaletteView *)self _shouldHideTrailingButtonGroupView];
-    v9 = [(PKUCBPaletteView *)self _centeredButtonGroupView];
-    [v9 setUseEqualInterItemSpacing:v8];
+    _shouldHideTrailingButtonGroupView = [(PKUCBPaletteView *)self _shouldHideLeadingButtonGroupView]|| [(PKUCBPaletteView *)self _shouldHideTrailingButtonGroupView];
+    _centeredButtonGroupView4 = [(PKUCBPaletteView *)self _centeredButtonGroupView];
+    [_centeredButtonGroupView4 setUseEqualInterItemSpacing:_shouldHideTrailingButtonGroupView];
 
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v10 = [(PKUCBPaletteView *)self _centeredButtonGroupView];
-    v11 = [v10 buttons];
+    _centeredButtonGroupView5 = [(PKUCBPaletteView *)self _centeredButtonGroupView];
+    buttons = [_centeredButtonGroupView5 buttons];
 
-    v12 = [v11 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    v12 = [buttons countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v12)
     {
       v13 = v12;
@@ -1034,14 +1034,14 @@ uint64_t __29__PKUCBPaletteView__updateUI__block_invoke(uint64_t a1)
         {
           if (*v17 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(buttons);
           }
 
           [*(*(&v16 + 1) + 8 * v15++) setUseCompactLayout:{-[UIView _pk_useCompactLayout](self, "_pk_useCompactLayout")}];
         }
 
         while (v13 != v15);
-        v13 = [v11 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v13 = [buttons countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v13);
@@ -1061,24 +1061,24 @@ uint64_t __29__PKUCBPaletteView__updateUI__block_invoke(uint64_t a1)
     return 0;
   }
 
-  v4 = [(PKUCBPaletteView *)self _centeredBarButtons];
-  v3 = [v4 count] != 0;
+  _centeredBarButtons = [(PKUCBPaletteView *)self _centeredBarButtons];
+  v3 = [_centeredBarButtons count] != 0;
 
   return v3;
 }
 
 - (id)_centeredBarButtons
 {
-  v3 = [MEMORY[0x1E695DEC8] array];
-  v4 = [(UIView *)self _pk_useCompactLayout];
-  v5 = [(PKUCBPaletteView *)self centeredBarButtons];
-  v6 = v5;
-  if (v4)
+  array = [MEMORY[0x1E695DEC8] array];
+  _pk_useCompactLayout = [(UIView *)self _pk_useCompactLayout];
+  centeredBarButtons = [(PKUCBPaletteView *)self centeredBarButtons];
+  v6 = centeredBarButtons;
+  if (_pk_useCompactLayout)
   {
-    v7 = [v5 indexesOfObjectsPassingTest:&__block_literal_global_58];
+    v7 = [centeredBarButtons indexesOfObjectsPassingTest:&__block_literal_global_58];
 
-    v8 = [(PKUCBPaletteView *)self leadingBarButtons];
-    if ([v8 count])
+    leadingBarButtons = [(PKUCBPaletteView *)self leadingBarButtons];
+    if ([leadingBarButtons count])
     {
       v9 = [v7 count];
 
@@ -1088,22 +1088,22 @@ uint64_t __29__PKUCBPaletteView__updateUI__block_invoke(uint64_t a1)
       }
 
       [(PKUCBPaletteView *)self leadingBarButtons];
-      v3 = v8 = v3;
+      array = leadingBarButtons = array;
     }
 
 LABEL_6:
     if ([(PKUCBPaletteView *)self _shouldShowReturnKey])
     {
-      v10 = [(PKUCBPaletteView *)self _returnKeyButton];
-      v11 = [v3 arrayByAddingObject:v10];
+      _returnKeyButton = [(PKUCBPaletteView *)self _returnKeyButton];
+      v11 = [array arrayByAddingObject:_returnKeyButton];
 
-      v3 = v11;
+      array = v11;
     }
 
     if ([v7 count])
     {
-      v12 = [(PKUCBPaletteView *)self centeredBarButtons];
-      v13 = [v12 objectsAtIndexes:v7];
+      centeredBarButtons2 = [(PKUCBPaletteView *)self centeredBarButtons];
+      v13 = [centeredBarButtons2 objectsAtIndexes:v7];
 
       v14 = [v13 count];
       if (v14 >= 8)
@@ -1117,33 +1117,33 @@ LABEL_6:
       }
 
       v16 = [v13 subarrayWithRange:{0, v15}];
-      v17 = [v3 arrayByAddingObjectsFromArray:v16];
+      v17 = [array arrayByAddingObjectsFromArray:v16];
 
-      v3 = v17;
+      array = v17;
     }
 
-    v18 = [(PKUCBPaletteView *)self trailingBarButtons];
-    if ([v18 count])
+    trailingBarButtons = [(PKUCBPaletteView *)self trailingBarButtons];
+    if ([trailingBarButtons count])
     {
       v19 = [v7 count];
 
       if (v19 > 5)
       {
 LABEL_17:
-        v6 = v3;
+        v6 = array;
         goto LABEL_19;
       }
 
-      v18 = [(PKUCBPaletteView *)self trailingBarButtons];
-      v20 = [v3 arrayByAddingObjectsFromArray:v18];
+      trailingBarButtons = [(PKUCBPaletteView *)self trailingBarButtons];
+      v20 = [array arrayByAddingObjectsFromArray:trailingBarButtons];
 
-      v3 = v20;
+      array = v20;
     }
 
     goto LABEL_17;
   }
 
-  v7 = v3;
+  v7 = array;
 LABEL_19:
 
   return v6;
@@ -1152,27 +1152,27 @@ LABEL_19:
 - (void)_updateTrailingButtonGroup
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(PKUCBPaletteView *)self _shouldHideTrailingButtonGroupView];
-  v4 = [(PKUCBPaletteView *)self _trailingButtonGroupView];
-  [v4 setHidden:v3];
+  _shouldHideTrailingButtonGroupView = [(PKUCBPaletteView *)self _shouldHideTrailingButtonGroupView];
+  _trailingButtonGroupView = [(PKUCBPaletteView *)self _trailingButtonGroupView];
+  [_trailingButtonGroupView setHidden:_shouldHideTrailingButtonGroupView];
 
   if (![(PKUCBPaletteView *)self _shouldHideTrailingButtonGroupView])
   {
-    v5 = [(PKUCBPaletteView *)self _trailingButtonGroupView];
-    [v5 removeAllButtons];
+    _trailingButtonGroupView2 = [(PKUCBPaletteView *)self _trailingButtonGroupView];
+    [_trailingButtonGroupView2 removeAllButtons];
 
-    v6 = [(PKUCBPaletteView *)self _trailingButtonGroupView];
-    v7 = [(PKUCBPaletteView *)self trailingBarButtons];
-    [v6 addButtonsFromArray:v7];
+    _trailingButtonGroupView3 = [(PKUCBPaletteView *)self _trailingButtonGroupView];
+    trailingBarButtons = [(PKUCBPaletteView *)self trailingBarButtons];
+    [_trailingButtonGroupView3 addButtonsFromArray:trailingBarButtons];
 
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v8 = [(PKUCBPaletteView *)self _trailingButtonGroupView];
-    v9 = [v8 buttons];
+    _trailingButtonGroupView4 = [(PKUCBPaletteView *)self _trailingButtonGroupView];
+    buttons = [_trailingButtonGroupView4 buttons];
 
-    v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v10 = [buttons countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v10)
     {
       v11 = v10;
@@ -1184,14 +1184,14 @@ LABEL_19:
         {
           if (*v15 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(buttons);
           }
 
           [*(*(&v14 + 1) + 8 * v13++) setUseCompactLayout:{-[UIView _pk_useCompactLayout](self, "_pk_useCompactLayout")}];
         }
 
         while (v11 != v13);
-        v11 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v11 = [buttons countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v11);
@@ -1201,51 +1201,51 @@ LABEL_19:
 
 - (BOOL)_shouldHideTrailingButtonGroupView
 {
-  v3 = [(PKUCBPaletteView *)self trailingBarButtons];
-  if ([v3 count])
+  trailingBarButtons = [(PKUCBPaletteView *)self trailingBarButtons];
+  if ([trailingBarButtons count])
   {
-    v4 = [(UIView *)self _pk_useCompactLayout];
+    _pk_useCompactLayout = [(UIView *)self _pk_useCompactLayout];
   }
 
   else
   {
-    v4 = 1;
+    _pk_useCompactLayout = 1;
   }
 
-  return v4;
+  return _pk_useCompactLayout;
 }
 
 - (void)_updateSubviewLayoutAxis
 {
   v3 = (([(PKPaletteView *)self palettePosition]- 2) & 0xFFFFFFFFFFFFFFFDLL) == 0;
-  v4 = [(PKUCBPaletteView *)self _buttonStackView];
-  [v4 setAxis:v3];
+  _buttonStackView = [(PKUCBPaletteView *)self _buttonStackView];
+  [_buttonStackView setAxis:v3];
 
-  v5 = [(PKUCBPaletteView *)self _leadingButtonGroupView];
-  [v5 setAxis:v3];
+  _leadingButtonGroupView = [(PKUCBPaletteView *)self _leadingButtonGroupView];
+  [_leadingButtonGroupView setAxis:v3];
 
-  v6 = [(PKUCBPaletteView *)self _centeredButtonGroupView];
-  [v6 setAxis:v3];
+  _centeredButtonGroupView = [(PKUCBPaletteView *)self _centeredButtonGroupView];
+  [_centeredButtonGroupView setAxis:v3];
 
-  v7 = [(PKUCBPaletteView *)self _trailingButtonGroupView];
-  [v7 setAxis:v3];
+  _trailingButtonGroupView = [(PKUCBPaletteView *)self _trailingButtonGroupView];
+  [_trailingButtonGroupView setAxis:v3];
 
-  v8 = [(PKUCBPaletteView *)self _returnKeyButton];
-  [v8 setAxis:v3];
+  _returnKeyButton = [(PKUCBPaletteView *)self _returnKeyButton];
+  [_returnKeyButton setAxis:v3];
 }
 
-- (void)dismissPalettePopoverWithCompletion:(id)a3
+- (void)dismissPalettePopoverWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __56__PKUCBPaletteView_dismissPalettePopoverWithCompletion___block_invoke;
   v7[3] = &unk_1E82D7AE8;
   v7[4] = self;
-  v8 = v4;
+  v8 = completionCopy;
   v6.receiver = self;
   v6.super_class = PKUCBPaletteView;
-  v5 = v4;
+  v5 = completionCopy;
   [(PKPaletteView *)&v6 dismissPalettePopoverWithCompletion:v7];
 }
 
@@ -1269,21 +1269,21 @@ void __56__PKUCBPaletteView_dismissPalettePopoverWithCompletion___block_invoke(u
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v10.receiver = self;
   v10.super_class = PKUCBPaletteView;
-  [(PKPaletteView *)&v10 traitCollectionDidChange:v4];
-  v5 = [(PKUCBPaletteView *)self traitCollection];
-  v6 = [v5 verticalSizeClass];
-  if (v6 == [v4 verticalSizeClass])
+  [(PKPaletteView *)&v10 traitCollectionDidChange:changeCopy];
+  traitCollection = [(PKUCBPaletteView *)self traitCollection];
+  verticalSizeClass = [traitCollection verticalSizeClass];
+  if (verticalSizeClass == [changeCopy verticalSizeClass])
   {
-    v7 = [(PKUCBPaletteView *)self traitCollection];
-    v8 = [v7 horizontalSizeClass];
-    v9 = [v4 horizontalSizeClass];
+    traitCollection2 = [(PKUCBPaletteView *)self traitCollection];
+    horizontalSizeClass = [traitCollection2 horizontalSizeClass];
+    horizontalSizeClass2 = [changeCopy horizontalSizeClass];
 
-    if (v8 == v9)
+    if (horizontalSizeClass == horizontalSizeClass2)
     {
       goto LABEL_6;
     }

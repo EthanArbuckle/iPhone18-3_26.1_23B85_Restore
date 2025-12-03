@@ -1,23 +1,23 @@
 @interface CHRemoteBasicRequestHandler
-+ (id)invalidInputErrorWithDescription:(id)a3 failureReason:(id)a4 recoverySuggestion:(id)a5 errorCode:(int64_t)a6;
-- (CHRemoteBasicRequestHandler)initWithServerQueue:(id)a3;
-- (void)_stageEvictionOfResourceWithTargetLifetime:(double)a3 block:(id)a4;
++ (id)invalidInputErrorWithDescription:(id)description failureReason:(id)reason recoverySuggestion:(id)suggestion errorCode:(int64_t)code;
+- (CHRemoteBasicRequestHandler)initWithServerQueue:(id)queue;
+- (void)_stageEvictionOfResourceWithTargetLifetime:(double)lifetime block:(id)block;
 - (void)setDirty;
 - (void)setIdle;
 @end
 
 @implementation CHRemoteBasicRequestHandler
 
-- (CHRemoteBasicRequestHandler)initWithServerQueue:(id)a3
+- (CHRemoteBasicRequestHandler)initWithServerQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v10.receiver = self;
   v10.super_class = CHRemoteBasicRequestHandler;
   v5 = [(CHRemoteBasicRequestHandler *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    v5->_serverQueue = v4;
+    v5->_serverQueue = queueCopy;
     v7 = objc_opt_new();
     modelPowerLogger = v6->_modelPowerLogger;
     v6->_modelPowerLogger = v7;
@@ -45,25 +45,25 @@
   _objc_release_x1();
 }
 
-- (void)_stageEvictionOfResourceWithTargetLifetime:(double)a3 block:(id)a4
+- (void)_stageEvictionOfResourceWithTargetLifetime:(double)lifetime block:(id)block
 {
-  v6 = a4;
-  v7 = dispatch_time(0, (a3 * 1000000000.0));
-  v8 = [(CHRemoteBasicRequestHandler *)self serverQueue];
+  blockCopy = block;
+  v7 = dispatch_time(0, (lifetime * 1000000000.0));
+  serverQueue = [(CHRemoteBasicRequestHandler *)self serverQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000A8E8;
   block[3] = &unk_100024AE8;
-  v11 = v6;
-  v9 = v6;
-  dispatch_after(v7, v8, block);
+  v11 = blockCopy;
+  v9 = blockCopy;
+  dispatch_after(v7, serverQueue, block);
 }
 
-+ (id)invalidInputErrorWithDescription:(id)a3 failureReason:(id)a4 recoverySuggestion:(id)a5 errorCode:(int64_t)a6
++ (id)invalidInputErrorWithDescription:(id)description failureReason:(id)reason recoverySuggestion:(id)suggestion errorCode:(int64_t)code
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  descriptionCopy = description;
+  reasonCopy = reason;
+  suggestionCopy = suggestion;
   if (qword_10002AD20 != -1)
   {
     dispatch_once(&qword_10002AD20, &stru_1000249F0);
@@ -73,19 +73,19 @@
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
     *buf = 138413058;
-    v26 = v9;
+    v26 = descriptionCopy;
     v27 = 2112;
-    v28 = v10;
+    v28 = reasonCopy;
     v29 = 2112;
-    v30 = v11;
+    v30 = suggestionCopy;
     v31 = 2048;
-    v32 = a6;
+    codeCopy = code;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "invalidInputErrorWithDescription with description: %@, failureReason: %@, recoverySuggestion:%@, errorCode:%ld", buf, 0x2Au);
   }
 
-  if (v9)
+  if (descriptionCopy)
   {
-    v13 = v9;
+    v13 = descriptionCopy;
   }
 
   else
@@ -95,9 +95,9 @@
 
   v19 = NSLocalizedDescriptionKey;
   v20 = NSLocalizedFailureReasonErrorKey;
-  if (v10)
+  if (reasonCopy)
   {
-    v14 = v10;
+    v14 = reasonCopy;
   }
 
   else
@@ -108,9 +108,9 @@
   v22 = v13;
   v23 = v14;
   v21 = NSLocalizedRecoverySuggestionErrorKey;
-  if (v11)
+  if (suggestionCopy)
   {
-    v15 = v11;
+    v15 = suggestionCopy;
   }
 
   else
@@ -120,7 +120,7 @@
 
   v24 = v15;
   v16 = [NSDictionary dictionaryWithObjects:&v22 forKeys:&v19 count:3];
-  v17 = [NSError errorWithDomain:@"com.apple.corehandwriting" code:a6 userInfo:v16, v19, v20, v21, v22, v23];
+  v17 = [NSError errorWithDomain:@"com.apple.corehandwriting" code:code userInfo:v16, v19, v20, v21, v22, v23];
 
   return v17;
 }

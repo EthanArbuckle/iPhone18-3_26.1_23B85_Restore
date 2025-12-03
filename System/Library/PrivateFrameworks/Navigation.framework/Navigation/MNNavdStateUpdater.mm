@@ -3,8 +3,8 @@
 - (BOOL)isNavigatingOrPredictingDestination;
 - (BOOL)isNavigatingWithETA;
 - (id)initPrivate;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation MNNavdStateUpdater
@@ -24,9 +24,9 @@
 - (BOOL)isNavigatingWithETA
 {
   v2 = +[MNNavigationStateManager sharedManager];
-  v3 = [v2 currentStateType];
+  currentStateType = [v2 currentStateType];
 
-  return ((v3 + 1) > 7) | (0x70u >> (v3 + 1)) & 1;
+  return ((currentStateType + 1) > 7) | (0x70u >> (currentStateType + 1)) & 1;
 }
 
 - (BOOL)isNavigatingOrPredictingDestination
@@ -55,12 +55,12 @@
   return v4;
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v7 = v4;
+    v7 = observerCopy;
     v5 = self->_innerObservers;
     objc_sync_enter(v5);
     [(GEOObserverHashTable *)self->_innerObservers unregisterObserver:v7];
@@ -73,16 +73,16 @@
 
     objc_sync_exit(v5);
 
-    v4 = v7;
+    observerCopy = v7;
   }
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v6 = a3;
+  observerCopy = observer;
   v4 = self->_innerObservers;
   objc_sync_enter(v4);
-  if (v6)
+  if (observerCopy)
   {
     [(GEOObserverHashTable *)self->_innerObservers registerObserver:?];
     if (!self->_hasObservers)
@@ -98,10 +98,10 @@
 
 - (id)initPrivate
 {
-  v3 = [MEMORY[0x1E696AE30] processInfo];
-  v4 = [v3 _navigation_isNavd];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  _navigation_isNavd = [processInfo _navigation_isNavd];
 
-  if (v4)
+  if (_navigation_isNavd)
   {
     v15.receiver = self;
     v15.super_class = MNNavdStateUpdater;
@@ -122,15 +122,15 @@
     }
 
     self = v6;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 void __35__MNNavdStateUpdater_sharedUpdater__block_invoke()

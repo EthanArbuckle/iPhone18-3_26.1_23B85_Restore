@@ -2,7 +2,7 @@
 - (CGPoint)presentationValue;
 - (CGPoint)value;
 - (VKPointAnimatableProperty)init;
-- (void)setValue:(CGPoint)a3;
+- (void)setValue:(CGPoint)value;
 @end
 
 @implementation VKPointAnimatableProperty
@@ -26,10 +26,10 @@
   return v2;
 }
 
-- (void)setValue:(CGPoint)a3
+- (void)setValue:(CGPoint)value
 {
-  y = a3.y;
-  [(UIViewFloatAnimatableProperty *)self->_x setValue:a3.x];
+  y = value.y;
+  [(UIViewFloatAnimatableProperty *)self->_x setValue:value.x];
   v5 = self->_y;
 
   [(UIViewFloatAnimatableProperty *)v5 setValue:y];

@@ -1,8 +1,8 @@
 @interface VCPImageConverter
 - (VCPImageConverter)init;
-- (VCPImageConverter)initWithPixelFormat:(int)a3;
-- (int)convertImage:(CGImage *)a3 yuvFrame:(__CVBuffer *)a4;
-- (int)resize:(int)a3 height:(int)a4;
+- (VCPImageConverter)initWithPixelFormat:(int)format;
+- (int)convertImage:(CGImage *)image yuvFrame:(__CVBuffer *)frame;
+- (int)resize:(int)resize height:(int)height;
 - (void)dealloc;
 @end
 
@@ -42,7 +42,7 @@
   return v5;
 }
 
-- (VCPImageConverter)initWithPixelFormat:(int)a3
+- (VCPImageConverter)initWithPixelFormat:(int)format
 {
   v9.receiver = self;
   v9.super_class = VCPImageConverter;
@@ -50,7 +50,7 @@
   p_isa = &v4->super.isa;
   if (v4)
   {
-    v4->_pixelFormat = a3;
+    v4->_pixelFormat = format;
     v4->_rgbFrame = 0;
     v4->_yuvFrames = 0;
     v4->_cgContext = 0;
@@ -113,9 +113,9 @@
   [(VCPImageConverter *)&v8 dealloc];
 }
 
-- (int)resize:(int)a3 height:(int)a4
+- (int)resize:(int)resize height:(int)height
 {
-  if (self->_width == a3 && self->_height == a4)
+  if (self->_width == resize && self->_height == height)
   {
     return 0;
   }
@@ -139,7 +139,7 @@
         *p_rgbFrame = 0;
       }
 
-      v11 = CVPixelBufferCreate(0, a3, a4, 0x20u, pixelBufferAttributes, &self->_rgbFrame);
+      v11 = CVPixelBufferCreate(0, resize, height, 0x20u, pixelBufferAttributes, &self->_rgbFrame);
       if (v11)
       {
         v12 = 0;
@@ -151,7 +151,7 @@
         theDict = v13;
         if (v13)
         {
-          valuePtr = a3;
+          valuePtr = resize;
           v14 = CFNumberCreate(0, kCFNumberSInt32Type, &valuePtr);
           v24[0] = v14;
           if (v14)
@@ -161,7 +161,7 @@
 
           CF<__CVBuffer *>::~CF(v24);
           v15 = theDict;
-          valuePtr = a4;
+          valuePtr = height;
           v16 = CFNumberCreate(0, kCFNumberSInt32Type, &valuePtr);
           v24[0] = v16;
           if (v16)
@@ -205,15 +205,15 @@
 
             CVPixelBufferLock::CVPixelBufferLock(v24, *p_rgbFrame, 0);
             v11 = v24[0];
-            if (LODWORD(v24[0]) || (BaseAddress = CVPixelBufferGetBaseAddress(*p_rgbFrame), BytesPerRow = CVPixelBufferGetBytesPerRow(*p_rgbFrame), self->_cgContext = CGBitmapContextCreate(BaseAddress, a3, a4, 8uLL, BytesPerRow, self->_rgbColorSpace, 6u), (v11 = CVPixelBufferLock::Unlock(v24)) != 0))
+            if (LODWORD(v24[0]) || (BaseAddress = CVPixelBufferGetBaseAddress(*p_rgbFrame), BytesPerRow = CVPixelBufferGetBytesPerRow(*p_rgbFrame), self->_cgContext = CGBitmapContextCreate(BaseAddress, resize, height, 8uLL, BytesPerRow, self->_rgbColorSpace, 6u), (v11 = CVPixelBufferLock::Unlock(v24)) != 0))
             {
               v12 = 0;
             }
 
             else
             {
-              self->_width = a3;
-              self->_height = a4;
+              self->_width = resize;
+              self->_height = height;
               v12 = 1;
             }
 
@@ -254,15 +254,15 @@
   return v11;
 }
 
-- (int)convertImage:(CGImage *)a3 yuvFrame:(__CVBuffer *)a4
+- (int)convertImage:(CGImage *)image yuvFrame:(__CVBuffer *)frame
 {
-  *a4 = 0;
+  *frame = 0;
   Property = CGImageGetProperty();
   pixelBufferOut = 0;
   if (!Property || (CVPixelBufferCreateWithIOSurface(0, Property, 0, &pixelBufferOut), CVPixelBufferGetPixelFormatType(pixelBufferOut) != self->_pixelFormat))
   {
-    Width = CGImageGetWidth(a3);
-    v9 = [(VCPImageConverter *)self resize:Width height:CGImageGetHeight(a3)];
+    Width = CGImageGetWidth(image);
+    v9 = [(VCPImageConverter *)self resize:Width height:CGImageGetHeight(image)];
     if (v9)
     {
       goto LABEL_28;
@@ -298,13 +298,13 @@
       else
       {
         cgContext = self->_cgContext;
-        v14 = CGImageGetWidth(a3);
-        Height = CGImageGetHeight(a3);
+        v14 = CGImageGetWidth(image);
+        Height = CGImageGetHeight(image);
         v23.size.width = v14;
         v23.size.height = Height;
         v23.origin.x = 0.0;
         v23.origin.y = 0.0;
-        CGContextDrawImage(cgContext, v23, a3);
+        CGContextDrawImage(cgContext, v23, image);
         v9 = CVPixelBufferLock::Unlock(&v18);
         if (!v9)
         {
@@ -349,7 +349,7 @@ LABEL_24:
       }
 
       v9 = 0;
-      *a4 = v16;
+      *frame = v16;
     }
 
 LABEL_27:
@@ -364,7 +364,7 @@ LABEL_27:
   }
 
   v9 = 0;
-  *a4 = v8;
+  *frame = v8;
 LABEL_28:
   CF<__CVBuffer *>::~CF(&pixelBufferOut);
   return v9;

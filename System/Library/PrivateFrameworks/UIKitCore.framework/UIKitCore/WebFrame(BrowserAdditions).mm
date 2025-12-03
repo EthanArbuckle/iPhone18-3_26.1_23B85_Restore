@@ -6,9 +6,9 @@
 
 - (BOOL)isMainFrame
 {
-  v2 = [a1 webView];
-  v3 = [v2 mainFrame];
-  v4 = v3 == a1;
+  webView = [self webView];
+  mainFrame = [webView mainFrame];
+  v4 = mainFrame == self;
 
   return v4;
 }

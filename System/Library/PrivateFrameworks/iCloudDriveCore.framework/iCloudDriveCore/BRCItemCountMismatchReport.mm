@@ -1,34 +1,34 @@
 @interface BRCItemCountMismatchReport
-+ (void)_finishReport:(id)a3 session:(id)a4 completionHandler:(id)a5;
-+ (void)generateReportForSharedFolder:(id)a3 qualityOfService:(int64_t)a4 completionHandler:(id)a5;
-- (BRCItemCountMismatchReport)initWithURL:(id)a3;
++ (void)_finishReport:(id)report session:(id)session completionHandler:(id)handler;
++ (void)generateReportForSharedFolder:(id)folder qualityOfService:(int64_t)service completionHandler:(id)handler;
+- (BRCItemCountMismatchReport)initWithURL:(id)l;
 - (id)telemetryEvent;
-- (void)incrementErrorRetryCountWithSession:(id)a3;
-- (void)shareChangedDuringCheckWithSession:(id)a3;
+- (void)incrementErrorRetryCountWithSession:(id)session;
+- (void)shareChangedDuringCheckWithSession:(id)session;
 @end
 
 @implementation BRCItemCountMismatchReport
 
-- (BRCItemCountMismatchReport)initWithURL:(id)a3
+- (BRCItemCountMismatchReport)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = BRCItemCountMismatchReport;
   v6 = [(BRCItemCountMismatchReport *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_fileURL, a3);
+    objc_storeStrong(&v6->_fileURL, l);
   }
 
   return v7;
 }
 
-- (void)shareChangedDuringCheckWithSession:(id)a3
+- (void)shareChangedDuringCheckWithSession:(id)session
 {
-  v4 = a3;
-  v5 = [v4 clientDB];
-  [v5 assertOnQueue];
+  sessionCopy = session;
+  clientDB = [sessionCopy clientDB];
+  [clientDB assertOnQueue];
 
   if (self->_lastError)
   {
@@ -42,34 +42,34 @@
 
   else
   {
-    v8 = [MEMORY[0x277CCA9B8] brc_errorItemChanged];
+    brc_errorItemChanged = [MEMORY[0x277CCA9B8] brc_errorItemChanged];
     lastError = self->_lastError;
-    self->_lastError = v8;
+    self->_lastError = brc_errorItemChanged;
 
-    [(BRCItemCountMismatchReport *)self incrementErrorRetryCountWithSession:v4];
+    [(BRCItemCountMismatchReport *)self incrementErrorRetryCountWithSession:sessionCopy];
   }
 }
 
-- (void)incrementErrorRetryCountWithSession:(id)a3
+- (void)incrementErrorRetryCountWithSession:(id)session
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 clientDB];
-  v6 = [(BRCItemGlobalID *)self->_itemGlobalID itemID];
-  v7 = [(BRCItemGlobalID *)self->_itemGlobalID zoneRowID];
-  v8 = [v5 numberWithSQL:{@"SELECT retry_count FROM telemetry_failure_counts WHERE item_id = %@ AND zone_rowid = %@", v6, v7}];
+  sessionCopy = session;
+  clientDB = [sessionCopy clientDB];
+  itemID = [(BRCItemGlobalID *)self->_itemGlobalID itemID];
+  zoneRowID = [(BRCItemGlobalID *)self->_itemGlobalID zoneRowID];
+  v8 = [clientDB numberWithSQL:{@"SELECT retry_count FROM telemetry_failure_counts WHERE item_id = %@ AND zone_rowid = %@", itemID, zoneRowID}];
 
   self->_failureRetryCount = [v8 longLongValue] + 1;
   v9 = brc_bread_crumbs();
   v10 = brc_default_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(NSURL *)self->_fileURL path];
-    v12 = [v11 fp_obfuscatedPath];
+    path = [(NSURL *)self->_fileURL path];
+    fp_obfuscatedPath = [path fp_obfuscatedPath];
     lastError = self->_lastError;
     failureRetryCount = self->_failureRetryCount;
     *buf = 138413058;
-    v21 = v12;
+    v21 = fp_obfuscatedPath;
     v22 = 2112;
     v23 = lastError;
     v24 = 2048;
@@ -79,33 +79,33 @@
     _os_log_impl(&dword_223E7A000, v10, OS_LOG_TYPE_DEFAULT, "[WARNING] Telemetry report at %@ finished with error %@ retry count %llu%@", buf, 0x2Au);
   }
 
-  v15 = [v4 clientDB];
+  clientDB2 = [sessionCopy clientDB];
 
   v16 = self->_failureRetryCount;
-  v17 = [(BRCItemGlobalID *)self->_itemGlobalID itemID];
-  v18 = [(BRCItemGlobalID *)self->_itemGlobalID zoneRowID];
-  [v15 execute:{@"INSERT OR REPLACE INTO telemetry_failure_counts (retry_count, item_id, zone_rowid) VALUES (%lld, %@, %@)", v16, v17, v18}];
+  itemID2 = [(BRCItemGlobalID *)self->_itemGlobalID itemID];
+  zoneRowID2 = [(BRCItemGlobalID *)self->_itemGlobalID zoneRowID];
+  [clientDB2 execute:{@"INSERT OR REPLACE INTO telemetry_failure_counts (retry_count, item_id, zone_rowid) VALUES (%lld, %@, %@)", v16, itemID2, zoneRowID2}];
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_finishReport:(id)a3 session:(id)a4 completionHandler:(id)a5
++ (void)_finishReport:(id)report session:(id)session completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 clientTruthWorkloop];
+  reportCopy = report;
+  sessionCopy = session;
+  handlerCopy = handler;
+  clientTruthWorkloop = [sessionCopy clientTruthWorkloop];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__BRCItemCountMismatchReport__finishReport_session_completionHandler___block_invoke;
   block[3] = &unk_2784FF5B8;
-  v15 = v7;
-  v16 = v8;
-  v17 = v9;
-  v11 = v9;
-  v12 = v8;
-  v13 = v7;
-  dispatch_async(v10, block);
+  v15 = reportCopy;
+  v16 = sessionCopy;
+  v17 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = sessionCopy;
+  v13 = reportCopy;
+  dispatch_async(clientTruthWorkloop, block);
 }
 
 uint64_t __70__BRCItemCountMismatchReport__finishReport_session_completionHandler___block_invoke(uint64_t a1)
@@ -187,28 +187,28 @@ LABEL_3:
   return result;
 }
 
-+ (void)generateReportForSharedFolder:(id)a3 qualityOfService:(int64_t)a4 completionHandler:(id)a5
++ (void)generateReportForSharedFolder:(id)folder qualityOfService:(int64_t)service completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  folderCopy = folder;
+  handlerCopy = handler;
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __95__BRCItemCountMismatchReport_generateReportForSharedFolder_qualityOfService_completionHandler___block_invoke;
   v22[3] = &unk_278500388;
-  v24 = a1;
-  v10 = v9;
+  selfCopy = self;
+  v10 = handlerCopy;
   v23 = v10;
-  v25 = a4;
+  serviceCopy = service;
   v11 = MEMORY[0x22AA4A310](v22);
-  v12 = [v8 session];
-  v13 = [v12 personaIdentifier];
-  v18 = v8;
-  v19 = v12;
+  session = [folderCopy session];
+  personaIdentifier = [session personaIdentifier];
+  v18 = folderCopy;
+  v19 = session;
   v20 = v10;
   v21 = v11;
   v14 = v11;
-  v15 = v12;
-  v16 = v8;
+  v15 = session;
+  v16 = folderCopy;
   v17 = v10;
   BRPerformWithPersonaAndError();
 }
@@ -487,9 +487,9 @@ void __95__BRCItemCountMismatchReport_generateReportForSharedFolder_qualityOfSer
   {
     failureRetryCount = self->_failureRetryCount;
     v4 = [BRCUserDefaults defaultsForMangledID:0];
-    v5 = [v4 telemetryRetryCountForPermenentFailure];
+    telemetryRetryCountForPermenentFailure = [v4 telemetryRetryCountForPermenentFailure];
 
-    if (failureRetryCount > v5)
+    if (failureRetryCount > telemetryRetryCountForPermenentFailure)
     {
       v6 = [AppTelemetryTimeSeriesEvent newPermanentlyInconsistentEventWithZoneMangledID:self->_zoneMangledID enhancedDrivePrivacyEnabled:self->_isEnhancedDrivePrivacyEnabled];
       goto LABEL_10;

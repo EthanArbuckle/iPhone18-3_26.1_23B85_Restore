@@ -1,10 +1,10 @@
 @interface NRPBSystemVersionResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NRPBSystemVersionResponse
@@ -14,8 +14,8 @@
   v7.receiver = self;
   v7.super_class = NRPBSystemVersionResponse;
   v3 = [(NRPBSystemVersionResponse *)&v7 description];
-  v4 = [(NRPBSystemVersionResponse *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(NRPBSystemVersionResponse *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -99,16 +99,16 @@ LABEL_7:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v11 = v4;
+  v11 = toCopy;
   if ((has & 8) != 0)
   {
     pairingCompatibilityVersion = self->_pairingCompatibilityVersion;
     PBDataWriterWriteInt32Field();
-    v4 = v11;
+    toCopy = v11;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -129,7 +129,7 @@ LABEL_3:
 
   maxPairingCompatibilityVersion = self->_maxPairingCompatibilityVersion;
   PBDataWriterWriteInt32Field();
-  v4 = v11;
+  toCopy = v11;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -145,7 +145,7 @@ LABEL_4:
 LABEL_14:
   minPairingCompatibilityVersion = self->_minPairingCompatibilityVersion;
   PBDataWriterWriteInt32Field();
-  v4 = v11;
+  toCopy = v11;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -161,26 +161,26 @@ LABEL_5:
 LABEL_15:
   minQuickSwitchCompatibilityVersion = self->_minQuickSwitchCompatibilityVersion;
   PBDataWriterWriteInt32Field();
-  v4 = v11;
+  toCopy = v11;
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_6:
     isOverrideActive = self->_isOverrideActive;
     PBDataWriterWriteBOOLField();
-    v4 = v11;
+    toCopy = v11;
   }
 
 LABEL_7:
   if (self->_osVersion)
   {
     PBDataWriterWriteStringField();
-    v4 = v11;
+    toCopy = v11;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 8) != 0)
@@ -245,77 +245,77 @@ LABEL_6:
   }
 
 LABEL_7:
-  v8 = [(NSString *)self->_osVersion copyWithZone:a3];
+  v8 = [(NSString *)self->_osVersion copyWithZone:zone];
   v9 = v6[3];
   v6[3] = v8;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
-  v5 = *(v4 + 40);
+  v5 = *(equalCopy + 40);
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 40) & 8) == 0 || self->_pairingCompatibilityVersion != *(v4 + 8))
+    if ((*(equalCopy + 40) & 8) == 0 || self->_pairingCompatibilityVersion != *(equalCopy + 8))
     {
       goto LABEL_27;
     }
   }
 
-  else if ((*(v4 + 40) & 8) != 0)
+  else if ((*(equalCopy + 40) & 8) != 0)
   {
     goto LABEL_27;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_maxPairingCompatibilityVersion != *(v4 + 2))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_maxPairingCompatibilityVersion != *(equalCopy + 2))
     {
       goto LABEL_27;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
     goto LABEL_27;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_minPairingCompatibilityVersion != *(v4 + 3))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_minPairingCompatibilityVersion != *(equalCopy + 3))
     {
       goto LABEL_27;
     }
   }
 
-  else if ((*(v4 + 40) & 2) != 0)
+  else if ((*(equalCopy + 40) & 2) != 0)
   {
     goto LABEL_27;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 40) & 4) == 0 || self->_minQuickSwitchCompatibilityVersion != *(v4 + 4))
+    if ((*(equalCopy + 40) & 4) == 0 || self->_minQuickSwitchCompatibilityVersion != *(equalCopy + 4))
     {
       goto LABEL_27;
     }
   }
 
-  else if ((*(v4 + 40) & 4) != 0)
+  else if ((*(equalCopy + 40) & 4) != 0)
   {
     goto LABEL_27;
   }
 
   if ((*&self->_has & 0x10) == 0)
   {
-    if ((*(v4 + 40) & 0x10) == 0)
+    if ((*(equalCopy + 40) & 0x10) == 0)
     {
       goto LABEL_24;
     }
@@ -325,28 +325,28 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  if ((*(v4 + 40) & 0x10) == 0)
+  if ((*(equalCopy + 40) & 0x10) == 0)
   {
     goto LABEL_27;
   }
 
-  v9 = *(v4 + 36);
+  v9 = *(equalCopy + 36);
   if (self->_isOverrideActive)
   {
-    if ((*(v4 + 36) & 1) == 0)
+    if ((*(equalCopy + 36) & 1) == 0)
     {
       goto LABEL_27;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
     goto LABEL_27;
   }
 
 LABEL_24:
   osVersion = self->_osVersion;
-  if (osVersion | *(v4 + 3))
+  if (osVersion | *(equalCopy + 3))
   {
     v7 = [(NSString *)osVersion isEqual:?];
   }

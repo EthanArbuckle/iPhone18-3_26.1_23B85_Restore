@@ -1,39 +1,39 @@
 @interface DeviceManagementEndpoint
 - (DeviceManagementEndpoint)init;
-- (void)addPipe:(id)a3;
-- (void)connectDevice:(id)a3 quickDisconnectEnabled:(id)a4;
-- (void)disconnectDevice:(id)a3;
-- (void)handleClassicDeviceUnexpectedDisconnectionCommand:(id)a3 message:(id)a4;
-- (void)handleClassicPairStateRequestCommand:(id)a3 message:(id)a4;
-- (void)handleClassicPairStateResponseCommand:(id)a3 message:(id)a4;
-- (void)handleConnectClassicDeviceCommand:(id)a3 message:(id)a4;
-- (void)handleDisconnectClassicDeviceCommand:(id)a3 message:(id)a4;
-- (void)handleLeaEasyPairRequestCommand:(id)a3 message:(id)a4;
-- (void)handleLeaEasyPairResponseCommand:(id)a3 message:(id)a4;
-- (void)handleLeaStoreBondingInfoRequestCommand:(id)a3 message:(id)a4;
-- (void)handleLeaStoreBondingInfoResponseCommand:(id)a3 message:(id)a4;
-- (void)handleNotifyPrimaryBudSideCommand:(id)a3 message:(id)a4;
-- (void)handleStoreClassicDeviceSettingsCommand:(id)a3 message:(id)a4;
-- (void)handleStoreClassicLinkKeyRequestCommand:(id)a3 message:(id)a4;
-- (void)handleStoreClassicLinkKeyRequestExtendedCommand:(id)a3 message:(id)a4;
-- (void)handleStoreClassicLinkKeyResponseCommand:(id)a3 message:(id)a4;
-- (void)handleVersionInfoRequestCommand:(id)a3 message:(id)a4;
-- (void)handleVersionInfoResponseCommand:(id)a3 message:(id)a4;
-- (void)notifyPrimaryBudSide:(id)a3 device:(id)a4;
-- (void)removePipe:(id)a3;
-- (void)requestLeaEasyPair:(id)a3 deviceIdentifier:(id)a4 deviceTags:(id)a5;
-- (void)requestLeaStoreBondingInfo:(id)a3 rand:(id)a4 ltk:(id)a5 irk:(id)a6 name:(id)a7 device:(id)a8;
-- (void)requestPairStateForDevice:(id)a3;
-- (void)requestStoreLinkKey:(id)a3 name:(id)a4 device:(id)a5;
-- (void)requestStoreLinkKeyExtended:(id)a3 name:(id)a4 device:(id)a5 deviceServiceMask:(id)a6 classOfDevice:(id)a7;
-- (void)requestVersionInfo:(id)a3 cloudAccount:(id)a4;
-- (void)respondToLeaEasyPair:(id)a3 device:(id)a4;
-- (void)respondToLeaStoreBondingInfo:(id)a3 device:(id)a4;
-- (void)respondToPairState:(id)a3 device:(id)a4;
-- (void)respondToStoreLinkKey:(id)a3 device:(id)a4;
-- (void)respondVersionInfo:(id)a3 cloudAccount:(id)a4 easyPairingStatus:(id)a5;
-- (void)storeDeviceSettings:(id)a3 inEarEnable:(id)a4 doubleTapMode:(id)a5 deviceSettings:(id)a6 deviceName:(id)a7 device:(id)a8;
-- (void)unexpectedDisconnection:(id)a3;
+- (void)addPipe:(id)pipe;
+- (void)connectDevice:(id)device quickDisconnectEnabled:(id)enabled;
+- (void)disconnectDevice:(id)device;
+- (void)handleClassicDeviceUnexpectedDisconnectionCommand:(id)command message:(id)message;
+- (void)handleClassicPairStateRequestCommand:(id)command message:(id)message;
+- (void)handleClassicPairStateResponseCommand:(id)command message:(id)message;
+- (void)handleConnectClassicDeviceCommand:(id)command message:(id)message;
+- (void)handleDisconnectClassicDeviceCommand:(id)command message:(id)message;
+- (void)handleLeaEasyPairRequestCommand:(id)command message:(id)message;
+- (void)handleLeaEasyPairResponseCommand:(id)command message:(id)message;
+- (void)handleLeaStoreBondingInfoRequestCommand:(id)command message:(id)message;
+- (void)handleLeaStoreBondingInfoResponseCommand:(id)command message:(id)message;
+- (void)handleNotifyPrimaryBudSideCommand:(id)command message:(id)message;
+- (void)handleStoreClassicDeviceSettingsCommand:(id)command message:(id)message;
+- (void)handleStoreClassicLinkKeyRequestCommand:(id)command message:(id)message;
+- (void)handleStoreClassicLinkKeyRequestExtendedCommand:(id)command message:(id)message;
+- (void)handleStoreClassicLinkKeyResponseCommand:(id)command message:(id)message;
+- (void)handleVersionInfoRequestCommand:(id)command message:(id)message;
+- (void)handleVersionInfoResponseCommand:(id)command message:(id)message;
+- (void)notifyPrimaryBudSide:(id)side device:(id)device;
+- (void)removePipe:(id)pipe;
+- (void)requestLeaEasyPair:(id)pair deviceIdentifier:(id)identifier deviceTags:(id)tags;
+- (void)requestLeaStoreBondingInfo:(id)info rand:(id)rand ltk:(id)ltk irk:(id)irk name:(id)name device:(id)device;
+- (void)requestPairStateForDevice:(id)device;
+- (void)requestStoreLinkKey:(id)key name:(id)name device:(id)device;
+- (void)requestStoreLinkKeyExtended:(id)extended name:(id)name device:(id)device deviceServiceMask:(id)mask classOfDevice:(id)ofDevice;
+- (void)requestVersionInfo:(id)info cloudAccount:(id)account;
+- (void)respondToLeaEasyPair:(id)pair device:(id)device;
+- (void)respondToLeaStoreBondingInfo:(id)info device:(id)device;
+- (void)respondToPairState:(id)state device:(id)device;
+- (void)respondToStoreLinkKey:(id)key device:(id)device;
+- (void)respondVersionInfo:(id)info cloudAccount:(id)account easyPairingStatus:(id)status;
+- (void)storeDeviceSettings:(id)settings inEarEnable:(id)enable doubleTapMode:(id)mode deviceSettings:(id)deviceSettings deviceName:(id)name device:(id)device;
+- (void)unexpectedDisconnection:(id)disconnection;
 @end
 
 @implementation DeviceManagementEndpoint
@@ -53,20 +53,20 @@
   return v4;
 }
 
-- (void)addPipe:(id)a3
+- (void)addPipe:(id)pipe
 {
   v7.receiver = self;
   v7.super_class = DeviceManagementEndpoint;
-  v3 = a3;
-  [(Endpoint *)&v7 addPipe:v3];
-  v4 = [v3 peer];
+  pipeCopy = pipe;
+  [(Endpoint *)&v7 addPipe:pipeCopy];
+  peer = [pipeCopy peer];
 
-  v5 = [v4 identifier];
+  identifier = [peer identifier];
 
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
   {
     sub_10007276C();
-    if (!v5)
+    if (!identifier)
     {
       goto LABEL_4;
     }
@@ -74,30 +74,30 @@
     goto LABEL_3;
   }
 
-  if (v5)
+  if (identifier)
   {
 LABEL_3:
     v6 = +[BTLEXpcServer instance];
-    [v6 sendDevMgmtPipeConnectedMsg:v5];
+    [v6 sendDevMgmtPipeConnectedMsg:identifier];
   }
 
 LABEL_4:
 }
 
-- (void)removePipe:(id)a3
+- (void)removePipe:(id)pipe
 {
   v7.receiver = self;
   v7.super_class = DeviceManagementEndpoint;
-  v3 = a3;
-  [(Endpoint *)&v7 removePipe:v3];
-  v4 = [v3 peer];
+  pipeCopy = pipe;
+  [(Endpoint *)&v7 removePipe:pipeCopy];
+  peer = [pipeCopy peer];
 
-  v5 = [v4 identifier];
+  identifier = [peer identifier];
 
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
   {
     sub_1000727AC();
-    if (!v5)
+    if (!identifier)
     {
       goto LABEL_4;
     }
@@ -105,25 +105,25 @@ LABEL_4:
     goto LABEL_3;
   }
 
-  if (v5)
+  if (identifier)
   {
 LABEL_3:
     v6 = +[BTLEXpcServer instance];
-    [v6 sendDevMgmtPipeDisconnectedMsg:v5];
+    [v6 sendDevMgmtPipeDisconnectedMsg:identifier];
   }
 
 LABEL_4:
 }
 
-- (void)connectDevice:(id)a3 quickDisconnectEnabled:(id)a4
+- (void)connectDevice:(id)device quickDisconnectEnabled:(id)enabled
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  enabledCopy = enabled;
   v8 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v27 = v6;
+    v27 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Sending 'connect classic device' message for device %@", buf, 0xCu);
   }
 
@@ -148,11 +148,11 @@ LABEL_4:
         }
 
         v13 = *(*(&v17 + 1) + 8 * v12);
-        v22[1] = v7;
+        v22[1] = enabledCopy;
         v23 = @"ConnectClassicDevice";
         v21[0] = @"kDeviceAddress";
         v21[1] = @"kQuickDisconnectEnabled";
-        v22[0] = v6;
+        v22[0] = deviceCopy;
         v14 = [NSDictionary dictionaryWithObjects:v22 forKeys:v21 count:2];
         v24 = v14;
         v15 = [NSDictionary dictionaryWithObjects:&v24 forKeys:&v23 count:1];
@@ -169,14 +169,14 @@ LABEL_4:
   }
 }
 
-- (void)disconnectDevice:(id)a3
+- (void)disconnectDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v24 = v4;
+    v24 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Sending 'disconnect classic device' message for device %@", buf, 0xCu);
   }
 
@@ -201,7 +201,7 @@ LABEL_4:
         }
 
         v10 = *(*(&v14 + 1) + 8 * v9);
-        v19 = v4;
+        v19 = deviceCopy;
         v20 = @"DisconnectClassicDevice";
         v18 = @"kDeviceAddress";
         v11 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
@@ -220,14 +220,14 @@ LABEL_4:
   }
 }
 
-- (void)unexpectedDisconnection:(id)a3
+- (void)unexpectedDisconnection:(id)disconnection
 {
-  v4 = a3;
+  disconnectionCopy = disconnection;
   v5 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v24 = v4;
+    v24 = disconnectionCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Sending 'unexpected disconnection' message for device %@", buf, 0xCu);
   }
 
@@ -252,7 +252,7 @@ LABEL_4:
         }
 
         v10 = *(*(&v14 + 1) + 8 * v9);
-        v19 = v4;
+        v19 = disconnectionCopy;
         v20 = @"ClassicDeviceUnexpectedDisconnection";
         v18 = @"kDeviceAddress";
         v11 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
@@ -271,10 +271,10 @@ LABEL_4:
   }
 }
 
-- (void)requestVersionInfo:(id)a3 cloudAccount:(id)a4
+- (void)requestVersionInfo:(id)info cloudAccount:(id)account
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  accountCopy = account;
   v8 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
@@ -303,11 +303,11 @@ LABEL_4:
         }
 
         v13 = *(*(&v17 + 1) + 8 * v12);
-        v23[1] = v7;
+        v23[1] = accountCopy;
         v24 = @"VersionInfoRequest";
         v22[0] = @"kEasyPairingVersion";
         v22[1] = @"kCloudAccount";
-        v23[0] = v6;
+        v23[0] = infoCopy;
         v14 = [NSDictionary dictionaryWithObjects:v23 forKeys:v22 count:2];
         v25 = v14;
         v15 = [NSDictionary dictionaryWithObjects:&v25 forKeys:&v24 count:1];
@@ -324,11 +324,11 @@ LABEL_4:
   }
 }
 
-- (void)respondVersionInfo:(id)a3 cloudAccount:(id)a4 easyPairingStatus:(id)a5
+- (void)respondVersionInfo:(id)info cloudAccount:(id)account easyPairingStatus:(id)status
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  infoCopy = info;
+  accountCopy = account;
+  statusCopy = status;
   v11 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
@@ -357,12 +357,12 @@ LABEL_4:
         }
 
         v16 = *(*(&v20 + 1) + 8 * v15);
-        v26[2] = v10;
+        v26[2] = statusCopy;
         v27 = @"VersionInfoResponse";
         v25[0] = @"kEasyPairingVersion";
         v25[1] = @"kCloudAccount";
-        v26[0] = v8;
-        v26[1] = v9;
+        v26[0] = infoCopy;
+        v26[1] = accountCopy;
         v25[2] = @"kEasyPairingStatus";
         v17 = [NSDictionary dictionaryWithObjects:v26 forKeys:v25 count:3];
         v28 = v17;
@@ -380,14 +380,14 @@ LABEL_4:
   }
 }
 
-- (void)requestPairStateForDevice:(id)a3
+- (void)requestPairStateForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v24 = v4;
+    v24 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Sending 'classic pair state request' message for device %@", buf, 0xCu);
   }
 
@@ -412,7 +412,7 @@ LABEL_4:
         }
 
         v10 = *(*(&v14 + 1) + 8 * v9);
-        v19 = v4;
+        v19 = deviceCopy;
         v20 = @"ClassicPairStateRequest";
         v18 = @"kDeviceAddress";
         v11 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
@@ -431,15 +431,15 @@ LABEL_4:
   }
 }
 
-- (void)respondToPairState:(id)a3 device:(id)a4
+- (void)respondToPairState:(id)state device:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  deviceCopy = device;
   v8 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v27 = v7;
+    v27 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Sending 'classic pair state response' message for device %@", buf, 0xCu);
   }
 
@@ -464,11 +464,11 @@ LABEL_4:
         }
 
         v13 = *(*(&v17 + 1) + 8 * v12);
-        v22[1] = v7;
+        v22[1] = deviceCopy;
         v23 = @"ClassicPairStateResponse";
         v21[0] = @"kDevicePairState";
         v21[1] = @"kDeviceAddress";
-        v22[0] = v6;
+        v22[0] = stateCopy;
         v14 = [NSDictionary dictionaryWithObjects:v22 forKeys:v21 count:2];
         v24 = v14;
         v15 = [NSDictionary dictionaryWithObjects:&v24 forKeys:&v23 count:1];
@@ -485,16 +485,16 @@ LABEL_4:
   }
 }
 
-- (void)requestStoreLinkKey:(id)a3 name:(id)a4 device:(id)a5
+- (void)requestStoreLinkKey:(id)key name:(id)name device:(id)device
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  keyCopy = key;
+  nameCopy = name;
+  deviceCopy = device;
   v11 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v30 = v10;
+    v30 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Sending 'store classic link key request' message for device %@", buf, 0xCu);
   }
 
@@ -519,12 +519,12 @@ LABEL_4:
         }
 
         v16 = *(*(&v20 + 1) + 8 * v15);
-        v25[2] = v8;
+        v25[2] = keyCopy;
         v26 = @"StoreClassicLinkKeyRequest";
         v24[0] = @"kDeviceAddress";
         v24[1] = @"kDeviceName";
-        v25[0] = v10;
-        v25[1] = v9;
+        v25[0] = deviceCopy;
+        v25[1] = nameCopy;
         v24[2] = @"kDeviceLinkKey";
         v17 = [NSDictionary dictionaryWithObjects:v25 forKeys:v24 count:3];
         v27 = v17;
@@ -542,18 +542,18 @@ LABEL_4:
   }
 }
 
-- (void)requestStoreLinkKeyExtended:(id)a3 name:(id)a4 device:(id)a5 deviceServiceMask:(id)a6 classOfDevice:(id)a7
+- (void)requestStoreLinkKeyExtended:(id)extended name:(id)name device:(id)device deviceServiceMask:(id)mask classOfDevice:(id)ofDevice
 {
-  v25 = a3;
-  v24 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  extendedCopy = extended;
+  nameCopy = name;
+  deviceCopy = device;
+  maskCopy = mask;
+  ofDeviceCopy = ofDevice;
   v15 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v36 = v12;
+    v36 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Sending 'store classic link key request extended' message for device %@", buf, 0xCu);
   }
 
@@ -581,14 +581,14 @@ LABEL_4:
         v32 = @"StoreClassicLinkKeyRequestExtended";
         v30[0] = @"kDeviceAddress";
         v30[1] = @"kDeviceName";
-        v31[0] = v12;
-        v31[1] = v24;
+        v31[0] = deviceCopy;
+        v31[1] = nameCopy;
         v30[2] = @"kDeviceLinkKey";
         v30[3] = @"kDeviceServiceMask";
-        v31[2] = v25;
-        v31[3] = v13;
+        v31[2] = extendedCopy;
+        v31[3] = maskCopy;
         v30[4] = @"kClassOfDeviceMask";
-        v31[4] = v14;
+        v31[4] = ofDeviceCopy;
         v21 = [NSDictionary dictionaryWithObjects:v31 forKeys:v30 count:5];
         v33 = v21;
         v22 = [NSDictionary dictionaryWithObjects:&v33 forKeys:&v32 count:1];
@@ -605,15 +605,15 @@ LABEL_4:
   }
 }
 
-- (void)respondToStoreLinkKey:(id)a3 device:(id)a4
+- (void)respondToStoreLinkKey:(id)key device:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  deviceCopy = device;
   v8 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v27 = v7;
+    v27 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Sending 'store classic link key response' message for device %@", buf, 0xCu);
   }
 
@@ -638,11 +638,11 @@ LABEL_4:
         }
 
         v13 = *(*(&v17 + 1) + 8 * v12);
-        v22[1] = v7;
+        v22[1] = deviceCopy;
         v23 = @"StoreClassicLinkKeyResponse";
         v21[0] = @"kStoreClassicLinkKeyResult";
         v21[1] = @"kDeviceAddress";
-        v22[0] = v6;
+        v22[0] = keyCopy;
         v14 = [NSDictionary dictionaryWithObjects:v22 forKeys:v21 count:2];
         v24 = v14;
         v15 = [NSDictionary dictionaryWithObjects:&v24 forKeys:&v23 count:1];
@@ -659,23 +659,23 @@ LABEL_4:
   }
 }
 
-- (void)storeDeviceSettings:(id)a3 inEarEnable:(id)a4 doubleTapMode:(id)a5 deviceSettings:(id)a6 deviceName:(id)a7 device:(id)a8
+- (void)storeDeviceSettings:(id)settings inEarEnable:(id)enable doubleTapMode:(id)mode deviceSettings:(id)deviceSettings deviceName:(id)name device:(id)device
 {
-  v27 = a3;
-  v26 = a4;
-  v28 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = a8;
+  settingsCopy = settings;
+  enableCopy = enable;
+  modeCopy = mode;
+  deviceSettingsCopy = deviceSettings;
+  nameCopy = name;
+  deviceCopy = device;
   v17 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v39 = v16;
+    v39 = deviceCopy;
     v40 = 2112;
-    v41 = v15;
+    v41 = nameCopy;
     v42 = 2112;
-    v43 = v28;
+    v43 = modeCopy;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Sending 'store classic device settings' message for device %@, devName = %@, doubleTap = %@", buf, 0x20u);
   }
 
@@ -703,16 +703,16 @@ LABEL_4:
         v35 = @"StoreClassicDeviceSettings";
         v33[0] = @"kClassicDeviceMicMode";
         v33[1] = @"kClassicDeviceInEarEnable";
-        v34[0] = v27;
-        v34[1] = v26;
+        v34[0] = settingsCopy;
+        v34[1] = enableCopy;
         v33[2] = @"kClassicDeviceDoubleTapMode";
         v33[3] = @"kClassicDeviceSettings";
-        v34[2] = v28;
-        v34[3] = v14;
+        v34[2] = modeCopy;
+        v34[3] = deviceSettingsCopy;
         v33[4] = @"kDeviceName";
         v33[5] = @"kDeviceAddress";
-        v34[4] = v15;
-        v34[5] = v16;
+        v34[4] = nameCopy;
+        v34[5] = deviceCopy;
         v23 = [NSDictionary dictionaryWithObjects:v34 forKeys:v33 count:6];
         v36 = v23;
         v24 = [NSDictionary dictionaryWithObjects:&v36 forKeys:&v35 count:1];
@@ -729,15 +729,15 @@ LABEL_4:
   }
 }
 
-- (void)notifyPrimaryBudSide:(id)a3 device:(id)a4
+- (void)notifyPrimaryBudSide:(id)side device:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  sideCopy = side;
+  deviceCopy = device;
   v8 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v27 = v7;
+    v27 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Sending 'notifiy primary bud side' message for device %@", buf, 0xCu);
   }
 
@@ -762,11 +762,11 @@ LABEL_4:
         }
 
         v13 = *(*(&v17 + 1) + 8 * v12);
-        v22[1] = v7;
+        v22[1] = deviceCopy;
         v23 = @"NotifyPrimaryBudSide";
         v21[0] = @"kPrimaryBudSide";
         v21[1] = @"kDeviceAddress";
-        v22[0] = v6;
+        v22[0] = sideCopy;
         v14 = [NSDictionary dictionaryWithObjects:v22 forKeys:v21 count:2];
         v24 = v14;
         v15 = [NSDictionary dictionaryWithObjects:&v24 forKeys:&v23 count:1];
@@ -783,16 +783,16 @@ LABEL_4:
   }
 }
 
-- (void)requestLeaEasyPair:(id)a3 deviceIdentifier:(id)a4 deviceTags:(id)a5
+- (void)requestLeaEasyPair:(id)pair deviceIdentifier:(id)identifier deviceTags:(id)tags
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pairCopy = pair;
+  identifierCopy = identifier;
+  tagsCopy = tags;
   v11 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v30 = v8;
+    v30 = pairCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Sending 'LEA easy pair request' message for device %@", buf, 0xCu);
   }
 
@@ -817,12 +817,12 @@ LABEL_4:
         }
 
         v16 = *(*(&v20 + 1) + 8 * v15);
-        v25[2] = v10;
+        v25[2] = tagsCopy;
         v26 = @"LeaEasyPairRequest";
         v24[0] = @"kLeaDeviceAddress";
         v24[1] = @"kLeaDeviceIdentifier";
-        v25[0] = v8;
-        v25[1] = v9;
+        v25[0] = pairCopy;
+        v25[1] = identifierCopy;
         v24[2] = @"kLeaDeviceTags";
         v17 = [NSDictionary dictionaryWithObjects:v25 forKeys:v24 count:3];
         v27 = v17;
@@ -840,15 +840,15 @@ LABEL_4:
   }
 }
 
-- (void)respondToLeaEasyPair:(id)a3 device:(id)a4
+- (void)respondToLeaEasyPair:(id)pair device:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  pairCopy = pair;
+  deviceCopy = device;
   v8 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v27 = v7;
+    v27 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Sending 'LEA easy pair response' message for device %@", buf, 0xCu);
   }
 
@@ -873,11 +873,11 @@ LABEL_4:
         }
 
         v13 = *(*(&v17 + 1) + 8 * v12);
-        v22[1] = v7;
+        v22[1] = deviceCopy;
         v23 = @"LeaEasyPairResponse";
         v21[0] = @"kLeaDevicePairState";
         v21[1] = @"kLeaDeviceAddress";
-        v22[0] = v6;
+        v22[0] = pairCopy;
         v14 = [NSDictionary dictionaryWithObjects:v22 forKeys:v21 count:2];
         v24 = v14;
         v15 = [NSDictionary dictionaryWithObjects:&v24 forKeys:&v23 count:1];
@@ -894,19 +894,19 @@ LABEL_4:
   }
 }
 
-- (void)requestLeaStoreBondingInfo:(id)a3 rand:(id)a4 ltk:(id)a5 irk:(id)a6 name:(id)a7 device:(id)a8
+- (void)requestLeaStoreBondingInfo:(id)info rand:(id)rand ltk:(id)ltk irk:(id)irk name:(id)name device:(id)device
 {
-  v28 = a3;
-  v27 = a4;
-  v26 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = a8;
+  infoCopy = info;
+  randCopy = rand;
+  ltkCopy = ltk;
+  irkCopy = irk;
+  nameCopy = name;
+  deviceCopy = device;
   v17 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v39 = v16;
+    v39 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Sending 'LEA store bonding info request' message for device %@", buf, 0xCu);
   }
 
@@ -934,16 +934,16 @@ LABEL_4:
         v35 = @"LeaStoreBondingInfoRequest";
         v33[0] = @"kLeaDeviceAddress";
         v33[1] = @"kLeaDeviceName";
-        v34[0] = v16;
-        v34[1] = v15;
+        v34[0] = deviceCopy;
+        v34[1] = nameCopy;
         v33[2] = @"kLeaDeviceEdiv";
         v33[3] = @"kLeaDeviceRand";
-        v34[2] = v28;
-        v34[3] = v27;
+        v34[2] = infoCopy;
+        v34[3] = randCopy;
         v33[4] = @"kLeaDeviceLtk";
         v33[5] = @"kLeaDeviceIrk";
-        v34[4] = v26;
-        v34[5] = v14;
+        v34[4] = ltkCopy;
+        v34[5] = irkCopy;
         v23 = [NSDictionary dictionaryWithObjects:v34 forKeys:v33 count:6];
         v36 = v23;
         v24 = [NSDictionary dictionaryWithObjects:&v36 forKeys:&v35 count:1];
@@ -960,15 +960,15 @@ LABEL_4:
   }
 }
 
-- (void)respondToLeaStoreBondingInfo:(id)a3 device:(id)a4
+- (void)respondToLeaStoreBondingInfo:(id)info device:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  deviceCopy = device;
   v8 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v27 = v7;
+    v27 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Sending 'LEA store bonding info response' message for device %@", buf, 0xCu);
   }
 
@@ -993,11 +993,11 @@ LABEL_4:
         }
 
         v13 = *(*(&v17 + 1) + 8 * v12);
-        v22[1] = v7;
+        v22[1] = deviceCopy;
         v23 = @"LeaStoreBondingInfoResponse";
         v21[0] = @"kLeaStoreBondingInfoResult";
         v21[1] = @"kLeaDeviceAddress";
-        v22[0] = v6;
+        v22[0] = infoCopy;
         v14 = [NSDictionary dictionaryWithObjects:v22 forKeys:v21 count:2];
         v24 = v14;
         v15 = [NSDictionary dictionaryWithObjects:&v24 forKeys:&v23 count:1];
@@ -1014,11 +1014,11 @@ LABEL_4:
   }
 }
 
-- (void)handleConnectClassicDeviceCommand:(id)a3 message:(id)a4
+- (void)handleConnectClassicDeviceCommand:(id)command message:(id)message
 {
-  v4 = a4;
-  v5 = [v4 objectForKeyedSubscript:@"kDeviceAddress"];
-  v6 = [v4 objectForKeyedSubscript:@"kQuickDisconnectEnabled"];
+  messageCopy = message;
+  v5 = [messageCopy objectForKeyedSubscript:@"kDeviceAddress"];
+  v6 = [messageCopy objectForKeyedSubscript:@"kQuickDisconnectEnabled"];
 
   v7 = qword_1000DDBC8;
   if (v5)
@@ -1045,9 +1045,9 @@ LABEL_4:
   }
 }
 
-- (void)handleDisconnectClassicDeviceCommand:(id)a3 message:(id)a4
+- (void)handleDisconnectClassicDeviceCommand:(id)command message:(id)message
 {
-  v4 = [a4 objectForKeyedSubscript:@"kDeviceAddress"];
+  v4 = [message objectForKeyedSubscript:@"kDeviceAddress"];
   v5 = qword_1000DDBC8;
   if (v4)
   {
@@ -1071,9 +1071,9 @@ LABEL_4:
   }
 }
 
-- (void)handleClassicDeviceUnexpectedDisconnectionCommand:(id)a3 message:(id)a4
+- (void)handleClassicDeviceUnexpectedDisconnectionCommand:(id)command message:(id)message
 {
-  v4 = [a4 objectForKeyedSubscript:@"kDeviceAddress"];
+  v4 = [message objectForKeyedSubscript:@"kDeviceAddress"];
   v5 = qword_1000DDBC8;
   if (v4)
   {
@@ -1097,11 +1097,11 @@ LABEL_4:
   }
 }
 
-- (void)handleVersionInfoRequestCommand:(id)a3 message:(id)a4
+- (void)handleVersionInfoRequestCommand:(id)command message:(id)message
 {
-  v4 = a4;
-  v5 = [v4 objectForKeyedSubscript:@"kEasyPairingVersion"];
-  v6 = [v4 objectForKeyedSubscript:@"kCloudAccount"];
+  messageCopy = message;
+  v5 = [messageCopy objectForKeyedSubscript:@"kEasyPairingVersion"];
+  v6 = [messageCopy objectForKeyedSubscript:@"kCloudAccount"];
 
   v7 = qword_1000DDBC8;
   if (v5)
@@ -1127,13 +1127,13 @@ LABEL_4:
   }
 }
 
-- (void)handleVersionInfoResponseCommand:(id)a3 message:(id)a4
+- (void)handleVersionInfoResponseCommand:(id)command message:(id)message
 {
-  v4 = a4;
-  v5 = [v4 objectForKeyedSubscript:@"kDeviceAddress"];
-  v6 = [v4 objectForKeyedSubscript:@"kEasyPairingVersion"];
-  v7 = [v4 objectForKeyedSubscript:@"kCloudAccount"];
-  v8 = [v4 objectForKeyedSubscript:@"kEasyPairingStatus"];
+  messageCopy = message;
+  v5 = [messageCopy objectForKeyedSubscript:@"kDeviceAddress"];
+  v6 = [messageCopy objectForKeyedSubscript:@"kEasyPairingVersion"];
+  v7 = [messageCopy objectForKeyedSubscript:@"kCloudAccount"];
+  v8 = [messageCopy objectForKeyedSubscript:@"kEasyPairingStatus"];
 
   v9 = qword_1000DDBC8;
   if (v6 && v8)
@@ -1161,9 +1161,9 @@ LABEL_4:
   }
 }
 
-- (void)handleClassicPairStateRequestCommand:(id)a3 message:(id)a4
+- (void)handleClassicPairStateRequestCommand:(id)command message:(id)message
 {
-  v4 = [a4 objectForKeyedSubscript:@"kDeviceAddress"];
+  v4 = [message objectForKeyedSubscript:@"kDeviceAddress"];
   v5 = qword_1000DDBC8;
   if (v4)
   {
@@ -1187,11 +1187,11 @@ LABEL_4:
   }
 }
 
-- (void)handleClassicPairStateResponseCommand:(id)a3 message:(id)a4
+- (void)handleClassicPairStateResponseCommand:(id)command message:(id)message
 {
-  v4 = a4;
-  v5 = [v4 objectForKeyedSubscript:@"kDeviceAddress"];
-  v6 = [v4 objectForKeyedSubscript:@"kDevicePairState"];
+  messageCopy = message;
+  v5 = [messageCopy objectForKeyedSubscript:@"kDeviceAddress"];
+  v6 = [messageCopy objectForKeyedSubscript:@"kDevicePairState"];
 
   v7 = qword_1000DDBC8;
   if (v5 && v6)
@@ -1218,12 +1218,12 @@ LABEL_4:
   }
 }
 
-- (void)handleStoreClassicLinkKeyRequestCommand:(id)a3 message:(id)a4
+- (void)handleStoreClassicLinkKeyRequestCommand:(id)command message:(id)message
 {
-  v4 = a4;
-  v5 = [v4 objectForKeyedSubscript:@"kDeviceAddress"];
-  v6 = [v4 objectForKeyedSubscript:@"kDeviceLinkKey"];
-  v7 = [v4 objectForKeyedSubscript:@"kDeviceName"];
+  messageCopy = message;
+  v5 = [messageCopy objectForKeyedSubscript:@"kDeviceAddress"];
+  v6 = [messageCopy objectForKeyedSubscript:@"kDeviceLinkKey"];
+  v7 = [messageCopy objectForKeyedSubscript:@"kDeviceName"];
 
   v8 = qword_1000DDBC8;
   if (v5 && v6 && v7)
@@ -1252,14 +1252,14 @@ LABEL_4:
   }
 }
 
-- (void)handleStoreClassicLinkKeyRequestExtendedCommand:(id)a3 message:(id)a4
+- (void)handleStoreClassicLinkKeyRequestExtendedCommand:(id)command message:(id)message
 {
-  v4 = a4;
-  v5 = [v4 objectForKeyedSubscript:@"kDeviceAddress"];
-  v6 = [v4 objectForKeyedSubscript:@"kDeviceLinkKey"];
-  v7 = [v4 objectForKeyedSubscript:@"kDeviceName"];
-  v8 = [v4 objectForKeyedSubscript:@"kDeviceServiceMask"];
-  v9 = [v4 objectForKeyedSubscript:@"kClassOfDeviceMask"];
+  messageCopy = message;
+  v5 = [messageCopy objectForKeyedSubscript:@"kDeviceAddress"];
+  v6 = [messageCopy objectForKeyedSubscript:@"kDeviceLinkKey"];
+  v7 = [messageCopy objectForKeyedSubscript:@"kDeviceName"];
+  v8 = [messageCopy objectForKeyedSubscript:@"kDeviceServiceMask"];
+  v9 = [messageCopy objectForKeyedSubscript:@"kClassOfDeviceMask"];
 
   v10 = qword_1000DDBC8;
   if (v5 && v6 && v7 && v8)
@@ -1292,11 +1292,11 @@ LABEL_4:
   }
 }
 
-- (void)handleStoreClassicLinkKeyResponseCommand:(id)a3 message:(id)a4
+- (void)handleStoreClassicLinkKeyResponseCommand:(id)command message:(id)message
 {
-  v4 = a4;
-  v5 = [v4 objectForKeyedSubscript:@"kDeviceAddress"];
-  v6 = [v4 objectForKeyedSubscript:@"kStoreClassicLinkKeyResult"];
+  messageCopy = message;
+  v5 = [messageCopy objectForKeyedSubscript:@"kDeviceAddress"];
+  v6 = [messageCopy objectForKeyedSubscript:@"kStoreClassicLinkKeyResult"];
 
   v7 = qword_1000DDBC8;
   if (v5 && v6)
@@ -1323,15 +1323,15 @@ LABEL_4:
   }
 }
 
-- (void)handleStoreClassicDeviceSettingsCommand:(id)a3 message:(id)a4
+- (void)handleStoreClassicDeviceSettingsCommand:(id)command message:(id)message
 {
-  v4 = a4;
-  v5 = [v4 objectForKeyedSubscript:@"kDeviceAddress"];
-  v6 = [v4 objectForKeyedSubscript:@"kDeviceName"];
-  v7 = [v4 objectForKeyedSubscript:@"kClassicDeviceMicMode"];
-  v8 = [v4 objectForKeyedSubscript:@"kClassicDeviceInEarEnable"];
-  v9 = [v4 objectForKeyedSubscript:@"kClassicDeviceDoubleTapMode"];
-  v10 = [v4 objectForKeyedSubscript:@"kClassicDeviceSettings"];
+  messageCopy = message;
+  v5 = [messageCopy objectForKeyedSubscript:@"kDeviceAddress"];
+  v6 = [messageCopy objectForKeyedSubscript:@"kDeviceName"];
+  v7 = [messageCopy objectForKeyedSubscript:@"kClassicDeviceMicMode"];
+  v8 = [messageCopy objectForKeyedSubscript:@"kClassicDeviceInEarEnable"];
+  v9 = [messageCopy objectForKeyedSubscript:@"kClassicDeviceDoubleTapMode"];
+  v10 = [messageCopy objectForKeyedSubscript:@"kClassicDeviceSettings"];
 
   v11 = qword_1000DDBC8;
   if (v5 && v7 && v8 && v9 && v6)
@@ -1394,11 +1394,11 @@ LABEL_4:
   }
 }
 
-- (void)handleNotifyPrimaryBudSideCommand:(id)a3 message:(id)a4
+- (void)handleNotifyPrimaryBudSideCommand:(id)command message:(id)message
 {
-  v4 = a4;
-  v5 = [v4 objectForKeyedSubscript:@"kDeviceAddress"];
-  v6 = [v4 objectForKeyedSubscript:@"kPrimaryBudSide"];
+  messageCopy = message;
+  v5 = [messageCopy objectForKeyedSubscript:@"kDeviceAddress"];
+  v6 = [messageCopy objectForKeyedSubscript:@"kPrimaryBudSide"];
 
   v7 = qword_1000DDBC8;
   if (v5 && v6)
@@ -1425,14 +1425,14 @@ LABEL_4:
   }
 }
 
-- (void)handleLeaEasyPairRequestCommand:(id)a3 message:(id)a4
+- (void)handleLeaEasyPairRequestCommand:(id)command message:(id)message
 {
-  v4 = a4;
-  v5 = [v4 objectForKeyedSubscript:@"kLeaDeviceAddress"];
+  messageCopy = message;
+  v5 = [messageCopy objectForKeyedSubscript:@"kLeaDeviceAddress"];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"kLeaDeviceIdentifier"];
-    v7 = [v4 objectForKeyedSubscript:@"kLeaDeviceTags"];
+    v6 = [messageCopy objectForKeyedSubscript:@"kLeaDeviceIdentifier"];
+    v7 = [messageCopy objectForKeyedSubscript:@"kLeaDeviceTags"];
     v8 = qword_1000DDBC8;
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
     {
@@ -1458,11 +1458,11 @@ LABEL_4:
   }
 }
 
-- (void)handleLeaEasyPairResponseCommand:(id)a3 message:(id)a4
+- (void)handleLeaEasyPairResponseCommand:(id)command message:(id)message
 {
-  v4 = a4;
-  v5 = [v4 objectForKeyedSubscript:@"kLeaDeviceAddress"];
-  v6 = [v4 objectForKeyedSubscript:@"kLeaDevicePairState"];
+  messageCopy = message;
+  v5 = [messageCopy objectForKeyedSubscript:@"kLeaDeviceAddress"];
+  v6 = [messageCopy objectForKeyedSubscript:@"kLeaDevicePairState"];
 
   v7 = qword_1000DDBC8;
   if (v5 && v6)
@@ -1489,15 +1489,15 @@ LABEL_4:
   }
 }
 
-- (void)handleLeaStoreBondingInfoRequestCommand:(id)a3 message:(id)a4
+- (void)handleLeaStoreBondingInfoRequestCommand:(id)command message:(id)message
 {
-  v4 = a4;
-  v5 = [v4 objectForKeyedSubscript:@"kLeaDeviceAddress"];
-  v6 = [v4 objectForKeyedSubscript:@"kLeaDeviceEdiv"];
-  v7 = [v4 objectForKeyedSubscript:@"kLeaDeviceRand"];
-  v8 = [v4 objectForKeyedSubscript:@"kLeaDeviceLtk"];
-  v9 = [v4 objectForKeyedSubscript:@"kLeaDeviceIrk"];
-  v10 = [v4 objectForKeyedSubscript:@"kLeaDeviceName"];
+  messageCopy = message;
+  v5 = [messageCopy objectForKeyedSubscript:@"kLeaDeviceAddress"];
+  v6 = [messageCopy objectForKeyedSubscript:@"kLeaDeviceEdiv"];
+  v7 = [messageCopy objectForKeyedSubscript:@"kLeaDeviceRand"];
+  v8 = [messageCopy objectForKeyedSubscript:@"kLeaDeviceLtk"];
+  v9 = [messageCopy objectForKeyedSubscript:@"kLeaDeviceIrk"];
+  v10 = [messageCopy objectForKeyedSubscript:@"kLeaDeviceName"];
 
   v11 = qword_1000DDBC8;
   if (v5 && v6 && v7 && v8 && v9 && v10)
@@ -1532,11 +1532,11 @@ LABEL_4:
   }
 }
 
-- (void)handleLeaStoreBondingInfoResponseCommand:(id)a3 message:(id)a4
+- (void)handleLeaStoreBondingInfoResponseCommand:(id)command message:(id)message
 {
-  v4 = a4;
-  v5 = [v4 objectForKeyedSubscript:@"kLeaDeviceAddress"];
-  v6 = [v4 objectForKeyedSubscript:@"kLeaStoreBondingInfoResult"];
+  messageCopy = message;
+  v5 = [messageCopy objectForKeyedSubscript:@"kLeaDeviceAddress"];
+  v6 = [messageCopy objectForKeyedSubscript:@"kLeaStoreBondingInfoResult"];
 
   v7 = qword_1000DDBC8;
   if (v5 && v6)

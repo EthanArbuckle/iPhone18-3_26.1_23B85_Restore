@@ -2,11 +2,11 @@
 + (id)sharedInstance;
 - (CSAlarmMonitor)init;
 - (int64_t)alarmState;
-- (void)_alarmDismissed:(id)a3;
-- (void)_alarmIsFiring:(id)a3;
-- (void)_alarmStateReset:(id)a3;
-- (void)_notifyObserver:(id)a3 alarmIsFiringState:(int64_t)a4;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_alarmDismissed:(id)dismissed;
+- (void)_alarmIsFiring:(id)firing;
+- (void)_alarmStateReset:(id)reset;
+- (void)_notifyObserver:(id)observer alarmIsFiringState:(int64_t)state;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
 - (void)initializeAlarmState;
 @end
@@ -32,27 +32,27 @@
   return v3;
 }
 
-- (void)_notifyObserver:(id)a3 alarmIsFiringState:(int64_t)a4
+- (void)_notifyObserver:(id)observer alarmIsFiringState:(int64_t)state
 {
-  v6 = a3;
-  self->_alarmFiringState = a4;
-  [(CSAlarmMonitor *)self notifyObserver:v6];
+  observerCopy = observer;
+  self->_alarmFiringState = state;
+  [(CSAlarmMonitor *)self notifyObserver:observerCopy];
   if (objc_opt_respondsToSelector())
   {
-    [v6 CSAlarmMonitor:self didReceiveAlarmChanged:a4];
+    [observerCopy CSAlarmMonitor:self didReceiveAlarmChanged:state];
   }
 }
 
-- (void)_alarmStateReset:(id)a3
+- (void)_alarmStateReset:(id)reset
 {
-  v4 = a3;
+  resetCopy = reset;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v8 = "[CSAlarmMonitor _alarmStateReset:]";
     v9 = 2112;
-    v10 = v4;
+    v10 = resetCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s notification = %@", buf, 0x16u);
   }
 
@@ -67,16 +67,16 @@
   }
 }
 
-- (void)_alarmDismissed:(id)a3
+- (void)_alarmDismissed:(id)dismissed
 {
-  v4 = a3;
+  dismissedCopy = dismissed;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v8 = "[CSAlarmMonitor _alarmDismissed:]";
     v9 = 2112;
-    v10 = v4;
+    v10 = dismissedCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s notification = %@", buf, 0x16u);
   }
 
@@ -91,16 +91,16 @@
   }
 }
 
-- (void)_alarmIsFiring:(id)a3
+- (void)_alarmIsFiring:(id)firing
 {
-  v4 = a3;
+  firingCopy = firing;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v8 = "[CSAlarmMonitor _alarmIsFiring:]";
     v9 = 2112;
-    v10 = v4;
+    v10 = firingCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s notification = %@", buf, 0x16u);
   }
 
@@ -152,9 +152,9 @@
   self->_alarmFiringState = 0;
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -213,13 +213,13 @@
 
 - (void)initializeAlarmState
 {
-  v3 = [(MTAlarmManager *)self->_alarmManager alarms];
+  alarms = [(MTAlarmManager *)self->_alarmManager alarms];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000C6F48;
   v6[3] = &unk_100250B18;
   v6[4] = self;
-  v4 = [v3 addSuccessBlock:v6];
+  v4 = [alarms addSuccessBlock:v6];
   v5 = [v4 addFailureBlock:&stru_100250B58];
 }
 

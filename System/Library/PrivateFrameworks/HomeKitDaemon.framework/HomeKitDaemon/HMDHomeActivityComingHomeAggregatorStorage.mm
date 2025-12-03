@@ -1,7 +1,7 @@
 @interface HMDHomeActivityComingHomeAggregatorStorage
 + (id)logCategory;
-- (id)userActivityReportWithActivityStatus:(id)a3 user:(id)a4;
-- (void)updateMKFUserActivityStatus:(id)a3 withReport:(id)a4;
+- (id)userActivityReportWithActivityStatus:(id)status user:(id)user;
+- (void)updateMKFUserActivityStatus:(id)status withReport:(id)report;
 @end
 
 @implementation HMDHomeActivityComingHomeAggregatorStorage
@@ -26,33 +26,33 @@ void __57__HMDHomeActivityComingHomeAggregatorStorage_logCategory__block_invoke(
   logCategory__hmf_once_v3_18699 = v1;
 }
 
-- (id)userActivityReportWithActivityStatus:(id)a3 user:(id)a4
+- (id)userActivityReportWithActivityStatus:(id)status user:(id)user
 {
-  v5 = a4;
-  v6 = a3;
+  userCopy = user;
+  statusCopy = status;
   v7 = [HMDUserActivityType6Report alloc];
-  v8 = [v6 state];
-  v9 = [v8 unsignedIntegerValue];
-  v10 = [v6 transitionTimestamp];
-  v11 = [v6 statusChangeReason];
-  v12 = [v11 unsignedIntegerValue];
-  v13 = [v6 statusChangedTimestamp];
-  v14 = [v6 lastReportTimestamp];
+  state = [statusCopy state];
+  unsignedIntegerValue = [state unsignedIntegerValue];
+  transitionTimestamp = [statusCopy transitionTimestamp];
+  statusChangeReason = [statusCopy statusChangeReason];
+  unsignedIntegerValue2 = [statusChangeReason unsignedIntegerValue];
+  statusChangedTimestamp = [statusCopy statusChangedTimestamp];
+  lastReportTimestamp = [statusCopy lastReportTimestamp];
 
-  v15 = [(HMDUserActivityType6Report *)v7 initWithUser:v5 state:v9 stateEnd:v10 withReason:v12 changedTimestamp:v13 lastUpdateTimestamp:v14];
+  v15 = [(HMDUserActivityType6Report *)v7 initWithUser:userCopy state:unsignedIntegerValue stateEnd:transitionTimestamp withReason:unsignedIntegerValue2 changedTimestamp:statusChangedTimestamp lastUpdateTimestamp:lastReportTimestamp];
 
   return v15;
 }
 
-- (void)updateMKFUserActivityStatus:(id)a3 withReport:(id)a4
+- (void)updateMKFUserActivityStatus:(id)status withReport:(id)report
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  statusCopy = status;
+  reportCopy = report;
   v8 = +[HMCContext currentContext];
   [v8 assertIsExecuting];
 
-  v9 = v7;
+  v9 = reportCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -71,27 +71,27 @@ void __57__HMDHomeActivityComingHomeAggregatorStorage_logCategory__block_invoke(
     _HMFPreconditionFailure();
   }
 
-  v12 = [v6 state];
+  state = [statusCopy state];
   v13 = 0x277CCA000uLL;
-  if (!v12)
+  if (!state)
   {
     goto LABEL_14;
   }
 
-  v14 = v12;
+  v14 = state;
   v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v11, "state")}];
-  v16 = [v6 state];
-  if (![v15 isEqual:v16])
+  state2 = [statusCopy state];
+  if (![v15 isEqual:state2])
   {
     goto LABEL_13;
   }
 
-  v17 = [v6 transitionTimestamp];
-  v18 = [v11 stateEnd];
+  transitionTimestamp = [statusCopy transitionTimestamp];
+  stateEnd = [v11 stateEnd];
   v19 = HMFEqualObjects();
 
   v13 = 0x277CCA000;
-  if (!v19 || ([v6 lastReportTimestamp], (v20 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!v19 || ([statusCopy lastReportTimestamp], (v20 = objc_claimAutoreleasedReturnValue()) == 0))
   {
 LABEL_13:
 
@@ -99,8 +99,8 @@ LABEL_13:
   }
 
   v21 = v20;
-  v36 = [v6 lastReportTimestamp];
-  v22 = [v36 dateByAddingTimeInterval:3600.0];
+  lastReportTimestamp = [statusCopy lastReportTimestamp];
+  v22 = [lastReportTimestamp dateByAddingTimeInterval:3600.0];
   [v9 lastUpdateTimestamp];
   v24 = v23 = self;
   v37 = [v22 compare:v24];
@@ -111,20 +111,20 @@ LABEL_13:
   if (v37 == -1)
   {
 LABEL_14:
-    v30 = [v11 lastUpdateTimestamp];
-    [v6 setLastReportTimestamp:v30];
+    lastUpdateTimestamp = [v11 lastUpdateTimestamp];
+    [statusCopy setLastReportTimestamp:lastUpdateTimestamp];
 
-    v31 = [v11 changedTimestamp];
-    [v6 setStatusChangedTimestamp:v31];
+    changedTimestamp = [v11 changedTimestamp];
+    [statusCopy setStatusChangedTimestamp:changedTimestamp];
 
     v32 = [*(v13 + 2992) numberWithUnsignedInteger:{objc_msgSend(v11, "reason")}];
-    [v6 setStatusChangeReason:v32];
+    [statusCopy setStatusChangeReason:v32];
 
     v33 = [*(v13 + 2992) numberWithUnsignedInteger:{objc_msgSend(v11, "state")}];
-    [v6 setState:v33];
+    [statusCopy setState:v33];
 
-    v34 = [v11 stateEnd];
-    [v6 setTransitionTimestamp:v34];
+    stateEnd2 = [v11 stateEnd];
+    [statusCopy setTransitionTimestamp:stateEnd2];
 
     goto LABEL_15;
   }

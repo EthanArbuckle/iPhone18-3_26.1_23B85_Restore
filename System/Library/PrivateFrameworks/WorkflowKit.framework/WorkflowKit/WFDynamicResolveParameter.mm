@@ -1,13 +1,13 @@
 @interface WFDynamicResolveParameter
-- (WFDynamicResolveParameter)initWithDefinition:(id)a3;
+- (WFDynamicResolveParameter)initWithDefinition:(id)definition;
 - (WFDynamicResolveParameterDataSource)dataSource;
 - (WFDynamicResolveParameterDelegate)delegate;
-- (id)localizedLabelForState:(id)a3;
-- (id)wf_pickerLocalizedImageForState:(id)a3;
+- (id)localizedLabelForState:(id)state;
+- (id)wf_pickerLocalizedImageForState:(id)state;
 - (void)endResolutionSession;
-- (void)localizedDisambiguationPromptForItems:(id)a3 intent:(id)a4 completion:(id)a5;
-- (void)resolveOptionsForUserInput:(id)a3 completionBlock:(id)a4;
-- (void)wf_loadStatesWithSearchTerm:(id)a3 completionHandler:(id)a4;
+- (void)localizedDisambiguationPromptForItems:(id)items intent:(id)intent completion:(id)completion;
+- (void)resolveOptionsForUserInput:(id)input completionBlock:(id)block;
+- (void)wf_loadStatesWithSearchTerm:(id)term completionHandler:(id)handler;
 @end
 
 @implementation WFDynamicResolveParameter
@@ -26,94 +26,94 @@
   return WeakRetained;
 }
 
-- (void)localizedDisambiguationPromptForItems:(id)a3 intent:(id)a4 completion:(id)a5
+- (void)localizedDisambiguationPromptForItems:(id)items intent:(id)intent completion:(id)completion
 {
-  v16 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WFDynamicResolveParameter *)self dataSource];
+  itemsCopy = items;
+  intentCopy = intent;
+  completionCopy = completion;
+  dataSource = [(WFDynamicResolveParameter *)self dataSource];
 
-  if (!v11)
+  if (!dataSource)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"WFDynamicResolveParameter.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"self.dataSource"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFDynamicResolveParameter.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"self.dataSource"}];
   }
 
-  v12 = [(WFDynamicResolveParameter *)self dataSource];
+  dataSource2 = [(WFDynamicResolveParameter *)self dataSource];
   v13 = objc_opt_respondsToSelector();
 
   if (v13)
   {
-    v14 = [(WFDynamicResolveParameter *)self dataSource];
-    [v14 localizedDisambiguationPromptForItems:v16 intent:v9 dynamicResolveParameter:self completion:v10];
+    dataSource3 = [(WFDynamicResolveParameter *)self dataSource];
+    [dataSource3 localizedDisambiguationPromptForItems:itemsCopy intent:intentCopy dynamicResolveParameter:self completion:completionCopy];
   }
 }
 
 - (void)endResolutionSession
 {
-  v4 = [(WFDynamicResolveParameter *)self delegate];
+  delegate = [(WFDynamicResolveParameter *)self delegate];
 
-  if (!v4)
+  if (!delegate)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"WFDynamicResolveParameter.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"self.delegate"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFDynamicResolveParameter.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"self.delegate"}];
   }
 
-  v5 = [(WFDynamicResolveParameter *)self delegate];
+  delegate2 = [(WFDynamicResolveParameter *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v8 = [(WFDynamicResolveParameter *)self delegate];
-    [v8 dynamicResolveParameterDidEndResolutionSession:self];
+    delegate3 = [(WFDynamicResolveParameter *)self delegate];
+    [delegate3 dynamicResolveParameterDidEndResolutionSession:self];
   }
 }
 
-- (void)resolveOptionsForUserInput:(id)a3 completionBlock:(id)a4
+- (void)resolveOptionsForUserInput:(id)input completionBlock:(id)block
 {
-  v13 = a3;
-  v7 = a4;
-  v8 = [(WFDynamicResolveParameter *)self dataSource];
+  inputCopy = input;
+  blockCopy = block;
+  dataSource = [(WFDynamicResolveParameter *)self dataSource];
 
-  if (!v8)
+  if (!dataSource)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"WFDynamicResolveParameter.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"self.dataSource"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFDynamicResolveParameter.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"self.dataSource"}];
   }
 
-  v9 = [(WFDynamicResolveParameter *)self dataSource];
+  dataSource2 = [(WFDynamicResolveParameter *)self dataSource];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(WFDynamicResolveParameter *)self dataSource];
-    [v11 resolveOptionsForUserInput:v13 forDynamicResolveParameter:self completion:v7];
+    dataSource3 = [(WFDynamicResolveParameter *)self dataSource];
+    [dataSource3 resolveOptionsForUserInput:inputCopy forDynamicResolveParameter:self completion:blockCopy];
   }
 }
 
-- (id)localizedLabelForState:(id)a3
+- (id)localizedLabelForState:(id)state
 {
-  v4 = [a3 value];
-  v5 = [(WFDynamicResolveParameter *)self stringLocalizer];
-  if (v5)
+  value = [state value];
+  stringLocalizer = [(WFDynamicResolveParameter *)self stringLocalizer];
+  if (stringLocalizer)
   {
-    v6 = [v4 _intents_readableTitleWithLocalizer:v5];
+    v6 = [value _intents_readableTitleWithLocalizer:stringLocalizer];
   }
 
   else
   {
     v7 = [MEMORY[0x1E696EA80] localizerForLanguage:0];
-    v6 = [v4 _intents_readableTitleWithLocalizer:v7];
+    v6 = [value _intents_readableTitleWithLocalizer:v7];
   }
 
   return v6;
 }
 
-- (WFDynamicResolveParameter)initWithDefinition:(id)a3
+- (WFDynamicResolveParameter)initWithDefinition:(id)definition
 {
   v7.receiver = self;
   v7.super_class = WFDynamicResolveParameter;
-  v3 = [(WFParameter *)&v7 initWithDefinition:a3];
+  v3 = [(WFParameter *)&v7 initWithDefinition:definition];
   v4 = v3;
   if (v3)
   {
@@ -123,37 +123,37 @@
   return v4;
 }
 
-- (id)wf_pickerLocalizedImageForState:(id)a3
+- (id)wf_pickerLocalizedImageForState:(id)state
 {
-  v4 = [a3 value];
-  v5 = [(WFDynamicResolveParameter *)self stringLocalizer];
-  v6 = v5;
-  if (!v5)
+  value = [state value];
+  stringLocalizer = [(WFDynamicResolveParameter *)self stringLocalizer];
+  v6 = stringLocalizer;
+  if (!stringLocalizer)
   {
     v6 = [MEMORY[0x1E696EA80] localizerForLanguage:0];
   }
 
-  v7 = [v4 _intents_displayImageWithLocalizer:v6];
-  v8 = [v7 wf_image];
+  v7 = [value _intents_displayImageWithLocalizer:v6];
+  wf_image = [v7 wf_image];
 
-  if (!v5)
+  if (!stringLocalizer)
   {
   }
 
-  return v8;
+  return wf_image;
 }
 
-- (void)wf_loadStatesWithSearchTerm:(id)a3 completionHandler:(id)a4
+- (void)wf_loadStatesWithSearchTerm:(id)term completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __94__WFDynamicResolveParameter_WFParameterPicker__wf_loadStatesWithSearchTerm_completionHandler___block_invoke;
   v8[3] = &unk_1E837E270;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [(WFDynamicResolveParameter *)self resolveOptionsForUserInput:a3 completionBlock:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [(WFDynamicResolveParameter *)self resolveOptionsForUserInput:term completionBlock:v8];
 }
 
 void __94__WFDynamicResolveParameter_WFParameterPicker__wf_loadStatesWithSearchTerm_completionHandler___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4, uint64_t a5)

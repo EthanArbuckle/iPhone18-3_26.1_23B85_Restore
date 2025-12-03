@@ -1,36 +1,36 @@
 @interface TSCEFunction_EOMONTH
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
 @end
 
 @implementation TSCEFunction_EOMONTH
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
-  v8 = **a5;
+  v8 = **arguments;
   v79 = 0;
-  v10 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(v8, v9, a3, a4, 0, &v79);
+  v10 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(v8, v9, context, spec, 0, &v79);
   v15 = v79;
   if (!v15)
   {
     if (!v10)
     {
-      v34 = objc_msgSend_typeErrorForValue_context_functionSpec_argumentIndex_(TSCEError, v11, v8, a3, a4, 0);
-      v16 = objc_msgSend_raiseErrorOrConvert_(a3, v35, v34, v36, v37);
+      v34 = objc_msgSend_typeErrorForValue_context_functionSpec_argumentIndex_(TSCEError, v11, v8, context, spec, 0);
+      v16 = objc_msgSend_raiseErrorOrConvert_(context, v35, v34, v36, v37);
       goto LABEL_18;
     }
 
     v17 = objc_msgSend_gregorianCalendar(TSCECalendar, v11, v12, v13, v14);
     v21 = objc_msgSend_clearOffTime_(v17, v18, v10, v19, v20);
 
-    v22 = *(*a5 + 8);
+    v22 = *(*arguments + 8);
     v78 = 0;
-    v24 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v22, v23, a3, a4, 1, &v78);
+    v24 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v22, v23, context, spec, 1, &v78);
     v15 = v78;
     v29 = objc_msgSend_trunc(v24, v25, v26, v27, v28);
 
     if (v15)
     {
-      v16 = objc_msgSend_raiseErrorOrConvert_(a3, v30, v15, v32, v33);
+      v16 = objc_msgSend_raiseErrorOrConvert_(context, v30, v15, v32, v33);
 LABEL_16:
 
       v10 = v21;
@@ -43,9 +43,9 @@ LABEL_16:
     v44 = v43;
     if (fabs(v43) > 1200000.0)
     {
-      v45 = objc_msgSend_functionName(a4, v39, v40, v41, v42);
+      v45 = objc_msgSend_functionName(spec, v39, v40, v41, v42);
       v47 = objc_msgSend_outOfBoundsArgumentErrorForArgument_functionName_lowerBound_lowerBoundInclusive_upperBound_upperBoundInclusive_(TSCEError, v46, 2, v45, 1, 1, -1200000.0, 1200000.0);
-      v51 = objc_msgSend_raiseErrorOrConvert_(a3, v48, v47, v49, v50);
+      v51 = objc_msgSend_raiseErrorOrConvert_(context, v48, v47, v49, v50);
 LABEL_15:
       v16 = v51;
 
@@ -71,7 +71,7 @@ LABEL_14:
         v21 = objc_msgSend_dateWithYear_month_day_(v17, v58, v77, v76, v61);
 
         v62 = MEMORY[0x277D80658];
-        v67 = objc_msgSend_locale(a3, v63, v64, v65, v66);
+        v67 = objc_msgSend_locale(context, v63, v64, v65, v66);
         v47 = objc_msgSend_defaultDateOnlyShortFormatForLocale_(v62, v68, v67, v69, v70);
 
         TSCEFormat::TSCEFormat(&v74, v47, 0);
@@ -99,7 +99,7 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v16 = objc_msgSend_raiseErrorOrConvert_(a3, v11, v15, v13, v14);
+  v16 = objc_msgSend_raiseErrorOrConvert_(context, v11, v15, v13, v14);
 LABEL_17:
 
   v34 = v15;

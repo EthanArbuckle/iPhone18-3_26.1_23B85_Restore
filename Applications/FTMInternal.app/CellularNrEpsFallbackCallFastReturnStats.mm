@@ -1,28 +1,28 @@
 @interface CellularNrEpsFallbackCallFastReturnStats
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsFirstCampedSys:(id)a3;
+- (int)StringAsFirstCampedSys:(id)sys;
 - (int)firstCampedSys;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasFastReturnResult:(BOOL)a3;
-- (void)setHasFastReturnState:(BOOL)a3;
-- (void)setHasFirstCampedSys:(BOOL)a3;
-- (void)setHasNumSubs:(BOOL)a3;
-- (void)setHasPsPref:(BOOL)a3;
-- (void)setHasReturnDelay:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasFastReturnResult:(BOOL)result;
+- (void)setHasFastReturnState:(BOOL)state;
+- (void)setHasFirstCampedSys:(BOOL)sys;
+- (void)setHasNumSubs:(BOOL)subs;
+- (void)setHasPsPref:(BOOL)pref;
+- (void)setHasReturnDelay:(BOOL)delay;
+- (void)setHasSubsId:(BOOL)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CellularNrEpsFallbackCallFastReturnStats
 
-- (void)setHasFastReturnState:(BOOL)a3
+- (void)setHasFastReturnState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 4;
   }
@@ -35,9 +35,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasFastReturnResult:(BOOL)a3
+- (void)setHasFastReturnResult:(BOOL)result
 {
-  if (a3)
+  if (result)
   {
     v3 = 2;
   }
@@ -50,9 +50,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasReturnDelay:(BOOL)a3
+- (void)setHasReturnDelay:(BOOL)delay
 {
-  if (a3)
+  if (delay)
   {
     v3 = 64;
   }
@@ -78,9 +78,9 @@
   }
 }
 
-- (void)setHasFirstCampedSys:(BOOL)a3
+- (void)setHasFirstCampedSys:(BOOL)sys
 {
-  if (a3)
+  if (sys)
   {
     v3 = 8;
   }
@@ -93,75 +93,75 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (int)StringAsFirstCampedSys:(id)a3
+- (int)StringAsFirstCampedSys:(id)sys
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SYS_MODE_NO_SRV"])
+  sysCopy = sys;
+  if ([sysCopy isEqualToString:@"SYS_MODE_NO_SRV"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_LTE_V2"])
+  else if ([sysCopy isEqualToString:@"SYS_MODE_LTE_V2"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_CDMA"])
+  else if ([sysCopy isEqualToString:@"SYS_MODE_CDMA"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_GSM"])
+  else if ([sysCopy isEqualToString:@"SYS_MODE_GSM"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_HDR"])
+  else if ([sysCopy isEqualToString:@"SYS_MODE_HDR"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_WCDMA"])
+  else if ([sysCopy isEqualToString:@"SYS_MODE_WCDMA"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_EHRPD"])
+  else if ([sysCopy isEqualToString:@"SYS_MODE_EHRPD"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_GW"])
+  else if ([sysCopy isEqualToString:@"SYS_MODE_GW"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_WLAN"])
+  else if ([sysCopy isEqualToString:@"SYS_MODE_WLAN"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_LTE"])
+  else if ([sysCopy isEqualToString:@"SYS_MODE_LTE"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_GWL"])
+  else if ([sysCopy isEqualToString:@"SYS_MODE_GWL"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_UMTS"])
+  else if ([sysCopy isEqualToString:@"SYS_MODE_UMTS"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_NR5G"])
+  else if ([sysCopy isEqualToString:@"SYS_MODE_NR5G"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"SYS_MODE_CDMA_HDR"])
+  else if ([sysCopy isEqualToString:@"SYS_MODE_CDMA_HDR"])
   {
     v4 = 15;
   }
@@ -174,9 +174,9 @@
   return v4;
 }
 
-- (void)setHasNumSubs:(BOOL)a3
+- (void)setHasNumSubs:(BOOL)subs
 {
-  if (a3)
+  if (subs)
   {
     v3 = 16;
   }
@@ -189,9 +189,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasPsPref:(BOOL)a3
+- (void)setHasPsPref:(BOOL)pref
 {
-  if (a3)
+  if (pref)
   {
     v3 = 32;
   }
@@ -204,9 +204,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 0x80;
   }
@@ -224,8 +224,8 @@
   v7.receiver = self;
   v7.super_class = CellularNrEpsFallbackCallFastReturnStats;
   v3 = [(CellularNrEpsFallbackCallFastReturnStats *)&v7 description];
-  v4 = [(CellularNrEpsFallbackCallFastReturnStats *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CellularNrEpsFallbackCallFastReturnStats *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -357,9 +357,9 @@ LABEL_9:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v13 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -465,14 +465,14 @@ LABEL_9:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 52) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 52) |= 1u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -491,8 +491,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 5) = self->_fastReturnState;
-  *(v4 + 52) |= 4u;
+  *(toCopy + 5) = self->_fastReturnState;
+  *(toCopy + 52) |= 4u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -506,8 +506,8 @@ LABEL_4:
   }
 
 LABEL_18:
-  *(v4 + 4) = self->_fastReturnResult;
-  *(v4 + 52) |= 2u;
+  *(toCopy + 4) = self->_fastReturnResult;
+  *(toCopy + 52) |= 2u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -521,8 +521,8 @@ LABEL_5:
   }
 
 LABEL_19:
-  *(v4 + 11) = self->_returnDelay;
-  *(v4 + 52) |= 0x40u;
+  *(toCopy + 11) = self->_returnDelay;
+  *(toCopy + 52) |= 0x40u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -536,8 +536,8 @@ LABEL_6:
   }
 
 LABEL_20:
-  *(v4 + 6) = self->_firstCampedSys;
-  *(v4 + 52) |= 8u;
+  *(toCopy + 6) = self->_firstCampedSys;
+  *(toCopy + 52) |= 8u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -551,33 +551,33 @@ LABEL_7:
   }
 
 LABEL_21:
-  *(v4 + 7) = self->_numSubs;
-  *(v4 + 52) |= 0x10u;
+  *(toCopy + 7) = self->_numSubs;
+  *(toCopy + 52) |= 0x10u;
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_8:
-    *(v4 + 10) = self->_psPref;
-    *(v4 + 52) |= 0x20u;
+    *(toCopy + 10) = self->_psPref;
+    *(toCopy + 52) |= 0x20u;
   }
 
 LABEL_9:
   if (self->_plmn)
   {
-    v6 = v4;
-    [v4 setPlmn:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setPlmn:?];
+    toCopy = v6;
   }
 
   if ((*&self->_has & 0x80000000) != 0)
   {
-    *(v4 + 12) = self->_subsId;
-    *(v4 + 52) |= 0x80u;
+    *(toCopy + 12) = self->_subsId;
+    *(toCopy + 52) |= 0x80u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -672,7 +672,7 @@ LABEL_8:
   }
 
 LABEL_9:
-  v8 = [(NSData *)self->_plmn copyWithZone:a3];
+  v8 = [(NSData *)self->_plmn copyWithZone:zone];
   v9 = v6[4];
   v6[4] = v8;
 
@@ -685,109 +685,109 @@ LABEL_9:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_45;
   }
 
   has = self->_has;
-  v6 = v4[52];
+  v6 = equalCopy[52];
   if (has)
   {
-    if ((v4[52] & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((equalCopy[52] & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_45;
     }
   }
 
-  else if (v4[52])
+  else if (equalCopy[52])
   {
     goto LABEL_45;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((v4[52] & 4) == 0 || self->_fastReturnState != *(v4 + 5))
+    if ((equalCopy[52] & 4) == 0 || self->_fastReturnState != *(equalCopy + 5))
     {
       goto LABEL_45;
     }
   }
 
-  else if ((v4[52] & 4) != 0)
+  else if ((equalCopy[52] & 4) != 0)
   {
     goto LABEL_45;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((v4[52] & 2) == 0 || self->_fastReturnResult != *(v4 + 4))
+    if ((equalCopy[52] & 2) == 0 || self->_fastReturnResult != *(equalCopy + 4))
     {
       goto LABEL_45;
     }
   }
 
-  else if ((v4[52] & 2) != 0)
+  else if ((equalCopy[52] & 2) != 0)
   {
     goto LABEL_45;
   }
 
   if ((*&self->_has & 0x40) != 0)
   {
-    if ((v4[52] & 0x40) == 0 || self->_returnDelay != *(v4 + 11))
+    if ((equalCopy[52] & 0x40) == 0 || self->_returnDelay != *(equalCopy + 11))
     {
       goto LABEL_45;
     }
   }
 
-  else if ((v4[52] & 0x40) != 0)
+  else if ((equalCopy[52] & 0x40) != 0)
   {
     goto LABEL_45;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((v4[52] & 8) == 0 || self->_firstCampedSys != *(v4 + 6))
+    if ((equalCopy[52] & 8) == 0 || self->_firstCampedSys != *(equalCopy + 6))
     {
       goto LABEL_45;
     }
   }
 
-  else if ((v4[52] & 8) != 0)
+  else if ((equalCopy[52] & 8) != 0)
   {
     goto LABEL_45;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((v4[52] & 0x10) == 0 || self->_numSubs != *(v4 + 7))
+    if ((equalCopy[52] & 0x10) == 0 || self->_numSubs != *(equalCopy + 7))
     {
       goto LABEL_45;
     }
   }
 
-  else if ((v4[52] & 0x10) != 0)
+  else if ((equalCopy[52] & 0x10) != 0)
   {
     goto LABEL_45;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((v4[52] & 0x20) == 0 || self->_psPref != *(v4 + 10))
+    if ((equalCopy[52] & 0x20) == 0 || self->_psPref != *(equalCopy + 10))
     {
       goto LABEL_45;
     }
   }
 
-  else if ((v4[52] & 0x20) != 0)
+  else if ((equalCopy[52] & 0x20) != 0)
   {
     goto LABEL_45;
   }
 
   plmn = self->_plmn;
-  if (plmn | *(v4 + 4))
+  if (plmn | *(equalCopy + 4))
   {
     if (![(NSData *)plmn isEqual:?])
     {
@@ -799,10 +799,10 @@ LABEL_45:
     has = self->_has;
   }
 
-  v8 = v4[52];
+  v8 = equalCopy[52];
   if (has < 0)
   {
-    if ((v8 & 0x80000000) == 0 || self->_subsId != *(v4 + 12))
+    if ((v8 & 0x80000000) == 0 || self->_subsId != *(equalCopy + 12))
     {
       goto LABEL_45;
     }
@@ -928,15 +928,15 @@ LABEL_16:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v11 ^ v10;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4[52];
+  fromCopy = from;
+  v5 = fromCopy[52];
   if (v5)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = v4[52];
+    v5 = fromCopy[52];
     if ((v5 & 4) == 0)
     {
 LABEL_3:
@@ -949,14 +949,14 @@ LABEL_3:
     }
   }
 
-  else if ((v4[52] & 4) == 0)
+  else if ((fromCopy[52] & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_fastReturnState = *(v4 + 5);
+  self->_fastReturnState = *(fromCopy + 5);
   *&self->_has |= 4u;
-  v5 = v4[52];
+  v5 = fromCopy[52];
   if ((v5 & 2) == 0)
   {
 LABEL_4:
@@ -969,9 +969,9 @@ LABEL_4:
   }
 
 LABEL_18:
-  self->_fastReturnResult = *(v4 + 4);
+  self->_fastReturnResult = *(fromCopy + 4);
   *&self->_has |= 2u;
-  v5 = v4[52];
+  v5 = fromCopy[52];
   if ((v5 & 0x40) == 0)
   {
 LABEL_5:
@@ -984,9 +984,9 @@ LABEL_5:
   }
 
 LABEL_19:
-  self->_returnDelay = *(v4 + 11);
+  self->_returnDelay = *(fromCopy + 11);
   *&self->_has |= 0x40u;
-  v5 = v4[52];
+  v5 = fromCopy[52];
   if ((v5 & 8) == 0)
   {
 LABEL_6:
@@ -999,9 +999,9 @@ LABEL_6:
   }
 
 LABEL_20:
-  self->_firstCampedSys = *(v4 + 6);
+  self->_firstCampedSys = *(fromCopy + 6);
   *&self->_has |= 8u;
-  v5 = v4[52];
+  v5 = fromCopy[52];
   if ((v5 & 0x10) == 0)
   {
 LABEL_7:
@@ -1014,26 +1014,26 @@ LABEL_7:
   }
 
 LABEL_21:
-  self->_numSubs = *(v4 + 7);
+  self->_numSubs = *(fromCopy + 7);
   *&self->_has |= 0x10u;
-  if ((v4[52] & 0x20) != 0)
+  if ((fromCopy[52] & 0x20) != 0)
   {
 LABEL_8:
-    self->_psPref = *(v4 + 10);
+    self->_psPref = *(fromCopy + 10);
     *&self->_has |= 0x20u;
   }
 
 LABEL_9:
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(CellularNrEpsFallbackCallFastReturnStats *)self setPlmn:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (v4[52] < 0)
+  if (fromCopy[52] < 0)
   {
-    self->_subsId = *(v4 + 12);
+    self->_subsId = *(fromCopy + 12);
     *&self->_has |= 0x80u;
   }
 }

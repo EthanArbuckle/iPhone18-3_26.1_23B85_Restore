@@ -1,13 +1,13 @@
 @interface IMDAbstractDatabaseDowngrader
-- (BOOL)copyDatabase:(id)a3;
+- (BOOL)copyDatabase:(id)database;
 @end
 
 @implementation IMDAbstractDatabaseDowngrader
 
-- (BOOL)copyDatabase:(id)a3
+- (BOOL)copyDatabase:(id)database
 {
   v62 = *MEMORY[0x1E69E9840];
-  DowngradeHelper = objc_msgSend_createDowngradeHelper(self, a2, a3);
+  DowngradeHelper = objc_msgSend_createDowngradeHelper(self, a2, database);
   v55 = 0;
   v56 = &v55;
   v57 = 0x3052000000;
@@ -225,9 +225,9 @@ LABEL_32:
   }
 
 LABEL_33:
-  if (a3)
+  if (database)
   {
-    (*(a3 + 2))(a3, v56[5] == 0);
+    (*(database + 2))(database, v56[5] == 0);
   }
 
   v37 = v56[5] == 0;

@@ -1,36 +1,36 @@
 @interface NTKUpNextImageView
 - (BOOL)_hasMultipartImages;
-- (CGRect)contentsLayerBoundsForLayout:(id)a3;
+- (CGRect)contentsLayerBoundsForLayout:(id)layout;
 - (CGSize)intrinsicContentSize;
 - (CLKMonochromeFilterProvider)filterProvider;
-- (NTKUpNextImageView)initWithFrame:(CGRect)a3 parentCell:(id)a4;
+- (NTKUpNextImageView)initWithFrame:(CGRect)frame parentCell:(id)cell;
 - (void)_updateColors;
 - (void)layoutSubviews;
-- (void)setCompositingFilter:(id)a3;
-- (void)setContentMode:(int64_t)a3;
-- (void)setFullColorImage:(id)a3 tintableImageProvider:(id)a4;
-- (void)setImageProvider:(id)a3;
-- (void)setOverrideImage:(id)a3;
-- (void)transitionToMonochromeWithFraction:(double)a3;
+- (void)setCompositingFilter:(id)filter;
+- (void)setContentMode:(int64_t)mode;
+- (void)setFullColorImage:(id)image tintableImageProvider:(id)provider;
+- (void)setImageProvider:(id)provider;
+- (void)setOverrideImage:(id)image;
+- (void)transitionToMonochromeWithFraction:(double)fraction;
 - (void)updateMonochromeColor;
 @end
 
 @implementation NTKUpNextImageView
 
-- (NTKUpNextImageView)initWithFrame:(CGRect)a3 parentCell:(id)a4
+- (NTKUpNextImageView)initWithFrame:(CGRect)frame parentCell:(id)cell
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  cellCopy = cell;
   v30.receiver = self;
   v30.super_class = NTKUpNextImageView;
-  v10 = [(NTKUpNextImageView *)&v30 initWithFrame:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = [(NTKUpNextImageView *)&v30 initWithFrame:x, y, width, height];
+  v11 = height;
+  if (height)
   {
-    objc_storeWeak(&v10->_parentCell, v9);
+    objc_storeWeak(&height->_parentCell, cellCopy);
     v12 = objc_alloc(MEMORY[0x277D755E8]);
     v13 = *MEMORY[0x277CBF3A0];
     v14 = *(MEMORY[0x277CBF3A0] + 8);
@@ -64,52 +64,52 @@
     foregroundAccentBackdrop = v11->_foregroundAccentBackdrop;
     v11->_foregroundAccentBackdrop = v25;
 
-    v27 = [(NTKUpNextImageView *)v11 layer];
-    [v27 insertSublayer:v11->_foregroundAccentBackdrop atIndex:0];
+    layer = [(NTKUpNextImageView *)v11 layer];
+    [layer insertSublayer:v11->_foregroundAccentBackdrop atIndex:0];
 
-    [v9 addContentsLayerProvider:v11];
-    v28 = [(NTKUpNextImageView *)v11 layer];
-    [v28 setAllowsGroupBlending:0];
+    [cellCopy addContentsLayerProvider:v11];
+    layer2 = [(NTKUpNextImageView *)v11 layer];
+    [layer2 setAllowsGroupBlending:0];
   }
 
   return v11;
 }
 
-- (void)setCompositingFilter:(id)a3
+- (void)setCompositingFilter:(id)filter
 {
-  v11 = a3;
-  objc_storeStrong(&self->_compositingFilter, a3);
+  filterCopy = filter;
+  objc_storeStrong(&self->_compositingFilter, filter);
   [(CALayer *)self->_foregroundAccentBackdrop setHidden:self->_compositingFilter == 0];
-  v5 = [(UIImageView *)self->_foregroundAccentImageView layer];
-  v6 = v5;
-  if (v11)
+  layer = [(UIImageView *)self->_foregroundAccentImageView layer];
+  v6 = layer;
+  if (filterCopy)
   {
-    v7 = [MEMORY[0x277CD9EA0] filterWithType:v11];
+    v7 = [MEMORY[0x277CD9EA0] filterWithType:filterCopy];
     [v6 setCompositingFilter:v7];
   }
 
   else
   {
-    [v5 setCompositingFilter:0];
+    [layer setCompositingFilter:0];
   }
 
-  v8 = [(UIImageView *)self->_backgroundImageView layer];
-  v9 = v8;
-  if (v11)
+  layer2 = [(UIImageView *)self->_backgroundImageView layer];
+  v9 = layer2;
+  if (filterCopy)
   {
-    v10 = [MEMORY[0x277CD9EA0] filterWithType:v11];
+    v10 = [MEMORY[0x277CD9EA0] filterWithType:filterCopy];
     [v9 setCompositingFilter:v10];
   }
 
   else
   {
-    [v8 setCompositingFilter:0];
+    [layer2 setCompositingFilter:0];
   }
 }
 
-- (CGRect)contentsLayerBoundsForLayout:(id)a3
+- (CGRect)contentsLayerBoundsForLayout:(id)layout
 {
-  [a3 unitFrameOnScreen];
+  [layout unitFrameOnScreen];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -157,36 +157,36 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [(UIImageView *)self->_backgroundImageView image];
-      v8[2](v8, v9);
+      image = [(UIImageView *)self->_backgroundImageView image];
+      v8[2](v8, image);
 
-      v10 = [(UIImageView *)self->_foregroundImageView image];
-      v8[2](v8, v10);
+      image2 = [(UIImageView *)self->_foregroundImageView image];
+      v8[2](v8, image2);
 
-      v11 = [(UIImageView *)self->_foregroundAccentImageView image];
-      v8[2](v8, v11);
+      image3 = [(UIImageView *)self->_foregroundAccentImageView image];
+      v8[2](v8, image3);
     }
 
     else
     {
       if (![(NTKUpNextImageView *)self _hasMultipartImages])
       {
-        v14 = [(CLKImageProvider *)self->_imageProvider onePieceImage];
-        [v14 size];
+        onePieceImage = [(CLKImageProvider *)self->_imageProvider onePieceImage];
+        [onePieceImage size];
         v5 = v15;
         v7 = v16;
 
         goto LABEL_11;
       }
 
-      v12 = [(CLKImageProvider *)self->_imageProvider twoPieceImageBackground];
-      v8[2](v8, v12);
+      twoPieceImageBackground = [(CLKImageProvider *)self->_imageProvider twoPieceImageBackground];
+      v8[2](v8, twoPieceImageBackground);
 
-      v13 = [(CLKImageProvider *)self->_imageProvider twoPieceImageForeground];
-      v8[2](v8, v13);
+      twoPieceImageForeground = [(CLKImageProvider *)self->_imageProvider twoPieceImageForeground];
+      v8[2](v8, twoPieceImageForeground);
 
-      v11 = [(CLKImageProvider *)self->_imageProvider foregroundAccentImage];
-      v8[2](v8, v11);
+      image3 = [(CLKImageProvider *)self->_imageProvider foregroundAccentImage];
+      v8[2](v8, image3);
     }
 
     v5 = v21[4];
@@ -268,18 +268,18 @@ void __42__NTKUpNextImageView_intrinsicContentSize__block_invoke(uint64_t a1, vo
   imageProvider = self->_imageProvider;
   if ((isKindOfClass & 1) == 0)
   {
-    v6 = [(CLKImageProvider *)imageProvider twoPieceImageBackground];
-    if (v6 && ([(CLKImageProvider *)self->_imageProvider twoPieceImageForeground], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+    twoPieceImageBackground = [(CLKImageProvider *)imageProvider twoPieceImageBackground];
+    if (twoPieceImageBackground && ([(CLKImageProvider *)self->_imageProvider twoPieceImageForeground], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v8 = 1;
     }
 
     else
     {
-      v9 = [(CLKImageProvider *)self->_imageProvider foregroundAccentImage];
-      v8 = v9 != 0;
+      foregroundAccentImage = [(CLKImageProvider *)self->_imageProvider foregroundAccentImage];
+      v8 = foregroundAccentImage != 0;
 
-      if (!v6)
+      if (!twoPieceImageBackground)
       {
 LABEL_11:
 
@@ -295,61 +295,61 @@ LABEL_11:
   return [(CLKImageProvider *)imageProvider isTwoPiece];
 }
 
-- (void)setFullColorImage:(id)a3 tintableImageProvider:(id)a4
+- (void)setFullColorImage:(id)image tintableImageProvider:(id)provider
 {
-  v6 = a3;
-  [(NTKUpNextImageView *)self setImageProvider:a4];
-  [(NTKUpNextImageView *)self setOverrideImage:v6];
+  imageCopy = image;
+  [(NTKUpNextImageView *)self setImageProvider:provider];
+  [(NTKUpNextImageView *)self setOverrideImage:imageCopy];
 
   [(NTKUpNextImageView *)self invalidateIntrinsicContentSize];
 }
 
-- (void)setImageProvider:(id)a3
+- (void)setImageProvider:(id)provider
 {
-  v42 = a3;
-  v5 = [(UIImageView *)self->_backgroundImageView layer];
-  [v5 setFilters:0];
+  providerCopy = provider;
+  layer = [(UIImageView *)self->_backgroundImageView layer];
+  [layer setFilters:0];
 
-  v6 = [(UIImageView *)self->_foregroundImageView layer];
-  [v6 setFilters:0];
+  layer2 = [(UIImageView *)self->_foregroundImageView layer];
+  [layer2 setFilters:0];
 
-  v7 = [(UIImageView *)self->_foregroundAccentImageView layer];
-  [v7 setFilters:0];
+  layer3 = [(UIImageView *)self->_foregroundAccentImageView layer];
+  [layer3 setFilters:0];
 
-  v8 = [(UIImageView *)self->_overrideImageView layer];
-  [v8 setFilters:0];
+  layer4 = [(UIImageView *)self->_overrideImageView layer];
+  [layer4 setFilters:0];
 
-  v9 = v42;
-  if (self->_imageProvider != v42)
+  v9 = providerCopy;
+  if (self->_imageProvider != providerCopy)
   {
-    objc_storeStrong(&self->_imageProvider, a3);
-    v9 = v42;
-    if (v42)
+    objc_storeStrong(&self->_imageProvider, provider);
+    v9 = providerCopy;
+    if (providerCopy)
     {
       [(UIImageView *)self->_overrideImageView setHidden:1];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v10 = v42;
-        v11 = [(CLKImageProvider *)self->_imageProvider tintColor];
-        fallbackTintColor = v11;
-        if (v11 || (fallbackTintColor = self->_fallbackTintColor) != 0)
+        layer7 = providerCopy;
+        tintColor = [(CLKImageProvider *)self->_imageProvider tintColor];
+        fallbackTintColor = tintColor;
+        if (tintColor || (fallbackTintColor = self->_fallbackTintColor) != 0)
         {
-          v13 = fallbackTintColor;
+          whiteColor = fallbackTintColor;
         }
 
         else
         {
-          v13 = [MEMORY[0x277D75348] whiteColor];
+          whiteColor = [MEMORY[0x277D75348] whiteColor];
         }
 
-        v14 = v13;
+        v14 = whiteColor;
 
-        if ([(CLKImageProvider *)v10 isTwoPiece])
+        if ([(CLKImageProvider *)layer7 isTwoPiece])
         {
-          v15 = [(CLKImageProvider *)v10 createSymbolImageForType:3 color:v14];
-          v16 = [MEMORY[0x277D75348] whiteColor];
-          v17 = [(CLKImageProvider *)v10 createSymbolImageForType:2 color:v16];
+          v15 = [(CLKImageProvider *)layer7 createSymbolImageForType:3 color:v14];
+          whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+          v17 = [(CLKImageProvider *)layer7 createSymbolImageForType:2 color:whiteColor2];
 
           [(UIImageView *)self->_foregroundImageView setHidden:0];
           [(UIImageView *)self->_backgroundImageView setHidden:0];
@@ -366,45 +366,45 @@ LABEL_11:
           [(UIImageView *)self->_foregroundImageView setHidden:1];
           [(UIImageView *)self->_foregroundAccentImageView setHidden:1];
           v31 = self->_backgroundImageView;
-          v32 = [(CLKImageProvider *)v10 createSymbolImage];
-          [(UIImageView *)v31 setImage:v32];
+          createSymbolImage = [(CLKImageProvider *)layer7 createSymbolImage];
+          [(UIImageView *)v31 setImage:createSymbolImage];
 
           [(UIImageView *)self->_foregroundImageView setImage:0];
         }
 
         WeakRetained = objc_loadWeakRetained(&self->_parentCell);
-        v34 = [WeakRetained device];
-        [v34 screenScale];
+        device = [WeakRetained device];
+        [device screenScale];
         v36 = v35;
-        v37 = [(NTKUpNextImageView *)self layer];
-        [v37 setRasterizationScale:v36];
+        layer5 = [(NTKUpNextImageView *)self layer];
+        [layer5 setRasterizationScale:v36];
 
-        v38 = [(NTKUpNextImageView *)self layer];
-        [v38 setShouldRasterize:1];
+        layer6 = [(NTKUpNextImageView *)self layer];
+        [layer6 setShouldRasterize:1];
       }
 
       else
       {
-        v20 = [(NTKUpNextImageView *)self _hasMultipartImages];
+        _hasMultipartImages = [(NTKUpNextImageView *)self _hasMultipartImages];
         [(UIImageView *)self->_backgroundImageView setHidden:0];
         foregroundImageView = self->_foregroundImageView;
-        if (v20)
+        if (_hasMultipartImages)
         {
           [(UIImageView *)foregroundImageView setHidden:0];
           [(UIImageView *)self->_foregroundAccentImageView setHidden:0];
           v22 = self->_foregroundImageView;
-          v23 = [(CLKImageProvider *)self->_imageProvider twoPieceImageForeground];
-          v24 = [v23 imageWithRenderingMode:2];
+          twoPieceImageForeground = [(CLKImageProvider *)self->_imageProvider twoPieceImageForeground];
+          v24 = [twoPieceImageForeground imageWithRenderingMode:2];
           [(UIImageView *)v22 setImage:v24];
 
           v25 = self->_backgroundImageView;
-          v26 = [(CLKImageProvider *)self->_imageProvider twoPieceImageBackground];
-          v27 = [v26 imageWithRenderingMode:2];
+          twoPieceImageBackground = [(CLKImageProvider *)self->_imageProvider twoPieceImageBackground];
+          v27 = [twoPieceImageBackground imageWithRenderingMode:2];
           [(UIImageView *)v25 setImage:v27];
 
           foregroundAccentImageView = self->_foregroundAccentImageView;
-          v29 = [(CLKImageProvider *)self->_imageProvider foregroundAccentImage];
-          v30 = [v29 imageWithRenderingMode:1];
+          foregroundAccentImage = [(CLKImageProvider *)self->_imageProvider foregroundAccentImage];
+          v30 = [foregroundAccentImage imageWithRenderingMode:1];
           [(UIImageView *)foregroundAccentImageView setImage:v30];
         }
 
@@ -413,31 +413,31 @@ LABEL_11:
           [(UIImageView *)foregroundImageView setHidden:1];
           [(UIImageView *)self->_foregroundAccentImageView setHidden:1];
           v39 = self->_backgroundImageView;
-          v40 = [(CLKImageProvider *)self->_imageProvider onePieceImage];
-          v41 = [v40 imageWithRenderingMode:2];
+          onePieceImage = [(CLKImageProvider *)self->_imageProvider onePieceImage];
+          v41 = [onePieceImage imageWithRenderingMode:2];
           [(UIImageView *)v39 setImage:v41];
 
           [(UIImageView *)self->_foregroundImageView setImage:0];
         }
 
-        v10 = [(NTKUpNextImageView *)self layer];
-        [(CLKImageProvider *)v10 setShouldRasterize:0];
+        layer7 = [(NTKUpNextImageView *)self layer];
+        [(CLKImageProvider *)layer7 setShouldRasterize:0];
       }
 
       [(NTKUpNextImageView *)self _updateColors];
-      v9 = v42;
+      v9 = providerCopy;
     }
   }
 }
 
-- (void)setOverrideImage:(id)a3
+- (void)setOverrideImage:(id)image
 {
-  v5 = a3;
-  if (self->_overrideImage != v5)
+  imageCopy = image;
+  if (self->_overrideImage != imageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_overrideImage, a3);
-    v5 = v6;
+    v6 = imageCopy;
+    objc_storeStrong(&self->_overrideImage, image);
+    imageCopy = v6;
     if (v6)
     {
       [(UIImageView *)self->_foregroundImageView setHidden:1];
@@ -445,32 +445,32 @@ LABEL_11:
       [(UIImageView *)self->_foregroundAccentImageView setHidden:1];
       [(UIImageView *)self->_overrideImageView setHidden:0];
       [(UIImageView *)self->_overrideImageView setImage:self->_overrideImage];
-      v5 = v6;
+      imageCopy = v6;
     }
   }
 }
 
 - (void)_updateColors
 {
-  v3 = [(CLKImageProvider *)self->_imageProvider tintColor];
-  fallbackTintColor = v3;
-  if (v3 || (fallbackTintColor = self->_fallbackTintColor) != 0)
+  tintColor = [(CLKImageProvider *)self->_imageProvider tintColor];
+  fallbackTintColor = tintColor;
+  if (tintColor || (fallbackTintColor = self->_fallbackTintColor) != 0)
   {
-    v5 = fallbackTintColor;
+    whiteColor = fallbackTintColor;
   }
 
   else
   {
-    v5 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
   }
 
-  v9 = v5;
+  v9 = whiteColor;
 
   if ([(NTKUpNextImageView *)self _hasMultipartImages]|| (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     foregroundImageView = self->_foregroundImageView;
-    v7 = [MEMORY[0x277D75348] whiteColor];
-    [(UIImageView *)foregroundImageView setTintColor:v7];
+    whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+    [(UIImageView *)foregroundImageView setTintColor:whiteColor2];
 
     v8 = &OBJC_IVAR___NTKUpNextImageView__backgroundImageView;
   }
@@ -483,61 +483,61 @@ LABEL_11:
   [*(&self->super.super.super.isa + *v8) setTintColor:v9];
 }
 
-- (void)setContentMode:(int64_t)a3
+- (void)setContentMode:(int64_t)mode
 {
   v5.receiver = self;
   v5.super_class = NTKUpNextImageView;
   [(NTKUpNextImageView *)&v5 setContentMode:?];
-  [(UIImageView *)self->_foregroundImageView setContentMode:a3];
-  [(UIImageView *)self->_backgroundImageView setContentMode:a3];
-  [(UIImageView *)self->_foregroundAccentImageView setContentMode:a3];
-  [(UIImageView *)self->_overrideImageView setContentMode:a3];
+  [(UIImageView *)self->_foregroundImageView setContentMode:mode];
+  [(UIImageView *)self->_backgroundImageView setContentMode:mode];
+  [(UIImageView *)self->_foregroundAccentImageView setContentMode:mode];
+  [(UIImageView *)self->_overrideImageView setContentMode:mode];
 }
 
-- (void)transitionToMonochromeWithFraction:(double)a3
+- (void)transitionToMonochromeWithFraction:(double)fraction
 {
   if (self->_overrideImage && self->_imageProvider)
   {
     [(NTKUpNextImageView *)self updateMonochromeColor];
     [(UIImageView *)self->_overrideImageView setHidden:0];
-    v5 = [(UIImageView *)self->_overrideImageView layer];
-    [v5 setFilters:0];
+    layer = [(UIImageView *)self->_overrideImageView layer];
+    [layer setFilters:0];
 
     overrideImageView = self->_overrideImageView;
 
-    [(UIImageView *)overrideImageView setAlpha:1.0 - a3];
+    [(UIImageView *)overrideImageView setAlpha:1.0 - fraction];
   }
 
   else
   {
-    v7 = [(NTKUpNextImageView *)self filterProvider];
-    v16 = [v7 filtersForView:self style:2 fraction:a3];
+    filterProvider = [(NTKUpNextImageView *)self filterProvider];
+    v16 = [filterProvider filtersForView:self style:2 fraction:fraction];
 
     if (v16)
     {
-      v8 = [(UIImageView *)self->_backgroundImageView layer];
-      [v8 setFilters:v16];
+      layer2 = [(UIImageView *)self->_backgroundImageView layer];
+      [layer2 setFilters:v16];
     }
 
-    v9 = [(NTKUpNextImageView *)self filterProvider];
-    v10 = [v9 filtersForView:self style:0 fraction:a3];
+    filterProvider2 = [(NTKUpNextImageView *)self filterProvider];
+    v10 = [filterProvider2 filtersForView:self style:0 fraction:fraction];
 
     if (v10)
     {
-      v11 = [(UIImageView *)self->_foregroundImageView layer];
-      [v11 setFilters:v10];
+      layer3 = [(UIImageView *)self->_foregroundImageView layer];
+      [layer3 setFilters:v10];
     }
 
-    v12 = [(NTKUpNextImageView *)self filterProvider];
-    v13 = [v12 filtersForView:self style:1 fraction:a3];
+    filterProvider3 = [(NTKUpNextImageView *)self filterProvider];
+    v13 = [filterProvider3 filtersForView:self style:1 fraction:fraction];
 
     if (v13)
     {
-      v14 = [(UIImageView *)self->_foregroundAccentImageView layer];
-      [v14 setFilters:v13];
+      layer4 = [(UIImageView *)self->_foregroundAccentImageView layer];
+      [layer4 setFilters:v13];
 
-      v15 = [(UIImageView *)self->_overrideImageView layer];
-      [v15 setFilters:v13];
+      layer5 = [(UIImageView *)self->_overrideImageView layer];
+      [layer5 setFilters:v13];
     }
   }
 }
@@ -553,34 +553,34 @@ LABEL_11:
     [(UIImageView *)self->_backgroundImageView setHidden:0];
   }
 
-  v3 = [(NTKUpNextImageView *)self filterProvider];
-  v12 = [v3 filtersForView:self style:2];
+  filterProvider = [(NTKUpNextImageView *)self filterProvider];
+  v12 = [filterProvider filtersForView:self style:2];
 
   if (v12)
   {
-    v4 = [(UIImageView *)self->_backgroundImageView layer];
-    [v4 setFilters:v12];
+    layer = [(UIImageView *)self->_backgroundImageView layer];
+    [layer setFilters:v12];
   }
 
-  v5 = [(NTKUpNextImageView *)self filterProvider];
-  v6 = [v5 filtersForView:self style:0];
+  filterProvider2 = [(NTKUpNextImageView *)self filterProvider];
+  v6 = [filterProvider2 filtersForView:self style:0];
 
   if (v6)
   {
-    v7 = [(UIImageView *)self->_foregroundImageView layer];
-    [v7 setFilters:v6];
+    layer2 = [(UIImageView *)self->_foregroundImageView layer];
+    [layer2 setFilters:v6];
   }
 
-  v8 = [(NTKUpNextImageView *)self filterProvider];
-  v9 = [v8 filtersForView:self style:1];
+  filterProvider3 = [(NTKUpNextImageView *)self filterProvider];
+  v9 = [filterProvider3 filtersForView:self style:1];
 
   if (v9)
   {
-    v10 = [(UIImageView *)self->_foregroundAccentImageView layer];
-    [v10 setFilters:v9];
+    layer3 = [(UIImageView *)self->_foregroundAccentImageView layer];
+    [layer3 setFilters:v9];
 
-    v11 = [(UIImageView *)self->_overrideImageView layer];
-    [v11 setFilters:v9];
+    layer4 = [(UIImageView *)self->_overrideImageView layer];
+    [layer4 setFilters:v9];
   }
 }
 

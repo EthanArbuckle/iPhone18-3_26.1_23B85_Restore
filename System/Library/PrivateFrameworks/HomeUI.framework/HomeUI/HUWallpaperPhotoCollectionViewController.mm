@@ -1,35 +1,35 @@
 @interface HUWallpaperPhotoCollectionViewController
 - (HUWallpaperPhotoCollectionFlowLayout)flowLayout;
-- (HUWallpaperPhotoCollectionViewController)initWithTitle:(id)a3 fetchResult:(id)a4 assetCollectionSubtype:(int64_t)a5 delegate:(id)a6;
+- (HUWallpaperPhotoCollectionViewController)initWithTitle:(id)title fetchResult:(id)result assetCollectionSubtype:(int64_t)subtype delegate:(id)delegate;
 - (HUWallpaperPhotoCollectionViewControllerDelegate)delegate;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (id)imageFutureForAsset:(id)a3 cloudAllowed:(BOOL)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (id)imageFutureForAsset:(id)asset cloudAllowed:(BOOL)allowed;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)dealloc;
-- (void)photoLibraryDidChange:(id)a3;
+- (void)photoLibraryDidChange:(id)change;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation HUWallpaperPhotoCollectionViewController
 
-- (HUWallpaperPhotoCollectionViewController)initWithTitle:(id)a3 fetchResult:(id)a4 assetCollectionSubtype:(int64_t)a5 delegate:(id)a6
+- (HUWallpaperPhotoCollectionViewController)initWithTitle:(id)title fetchResult:(id)result assetCollectionSubtype:(int64_t)subtype delegate:(id)delegate
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [[HUWallpaperPhotoCollectionFlowLayout alloc] initWithAssetCollectionSubtype:a5];
-  if ([v11 count] >= 0x33)
+  titleCopy = title;
+  resultCopy = result;
+  delegateCopy = delegate;
+  v13 = [[HUWallpaperPhotoCollectionFlowLayout alloc] initWithAssetCollectionSubtype:subtype];
+  if ([resultCopy count] >= 0x33)
   {
     v14 = [HUWallpaperPhotoCollectionFooterView alloc];
     v15 = [(HUWallpaperPhotoCollectionFooterView *)v14 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
-    v16 = [v11 count];
+    v16 = [resultCopy count];
     v23 = HULocalizedStringWithFormat(@"HUWallpaperPhotoCollectionViewControllerFooterFormat", @"%lu", v17, v18, v19, v20, v21, v22, v16);
-    v24 = [(HUWallpaperPhotoCollectionFooterView *)v15 label];
-    [v24 setText:v23];
+    label = [(HUWallpaperPhotoCollectionFooterView *)v15 label];
+    [label setText:v23];
 
     [(HUWallpaperPhotoCollectionFooterView *)v15 systemLayoutSizeFittingSize:*MEMORY[0x277D76C78], *(MEMORY[0x277D76C78] + 8)];
     [(UICollectionViewFlowLayout *)v13 setFooterReferenceSize:?];
@@ -46,11 +46,11 @@
     imageManager = v26->_imageManager;
     v26->_imageManager = v27;
 
-    objc_storeStrong(&v26->_assetsFetchResult, a4);
-    objc_storeWeak(&v26->_delegate, v12);
+    objc_storeStrong(&v26->_assetsFetchResult, result);
+    objc_storeWeak(&v26->_delegate, delegateCopy);
     v26->_initialScrollToBottom = 1;
-    v26->_assetCollectionSubtype = a5;
-    [(HUWallpaperPhotoCollectionViewController *)v26 setTitle:v10];
+    v26->_assetCollectionSubtype = subtype;
+    [(HUWallpaperPhotoCollectionViewController *)v26 setTitle:titleCopy];
   }
 
   return v26;
@@ -58,8 +58,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CD9948] sharedPhotoLibrary];
-  [v3 unregisterChangeObserver:self];
+  mEMORY[0x277CD9948] = [MEMORY[0x277CD9948] sharedPhotoLibrary];
+  [mEMORY[0x277CD9948] unregisterChangeObserver:self];
 
   v4.receiver = self;
   v4.super_class = HUWallpaperPhotoCollectionViewController;
@@ -71,48 +71,48 @@
   v20.receiver = self;
   v20.super_class = HUWallpaperPhotoCollectionViewController;
   [(HUWallpaperPhotoCollectionViewController *)&v20 viewDidLoad];
-  v3 = [(HUWallpaperPhotoCollectionViewController *)self collectionView];
+  collectionView = [(HUWallpaperPhotoCollectionViewController *)self collectionView];
   v4 = objc_opt_class();
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v3 registerClass:v4 forCellWithReuseIdentifier:v6];
+  [collectionView registerClass:v4 forCellWithReuseIdentifier:v6];
 
-  v7 = [(HUWallpaperPhotoCollectionViewController *)self collectionView];
+  collectionView2 = [(HUWallpaperPhotoCollectionViewController *)self collectionView];
   v8 = objc_opt_class();
   v9 = *MEMORY[0x277D767D0];
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
-  [v7 registerClass:v8 forSupplementaryViewOfKind:v9 withReuseIdentifier:v11];
+  [collectionView2 registerClass:v8 forSupplementaryViewOfKind:v9 withReuseIdentifier:v11];
 
-  v12 = [MEMORY[0x277D75348] systemBackgroundColor];
-  v13 = [(HUWallpaperPhotoCollectionViewController *)self collectionView];
-  [v13 setBackgroundColor:v12];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  collectionView3 = [(HUWallpaperPhotoCollectionViewController *)self collectionView];
+  [collectionView3 setBackgroundColor:systemBackgroundColor];
 
-  v14 = [(HUWallpaperPhotoCollectionViewController *)self collectionView];
-  [v14 setAlwaysBounceVertical:1];
+  collectionView4 = [(HUWallpaperPhotoCollectionViewController *)self collectionView];
+  [collectionView4 setAlwaysBounceVertical:1];
 
-  v15 = [(HUWallpaperPhotoCollectionViewController *)self assetCollectionSubtype];
-  v16 = [(HUWallpaperPhotoCollectionViewController *)self collectionView];
-  v17 = v16;
+  assetCollectionSubtype = [(HUWallpaperPhotoCollectionViewController *)self assetCollectionSubtype];
+  collectionView5 = [(HUWallpaperPhotoCollectionViewController *)self collectionView];
+  v17 = collectionView5;
   v18 = 8.0;
-  if (v15 != 201)
+  if (assetCollectionSubtype != 201)
   {
     v18 = 0.0;
   }
 
-  [v16 setContentInset:{8.0, v18, 8.0, v18}];
+  [collectionView5 setContentInset:{8.0, v18, 8.0, v18}];
 
-  v19 = [MEMORY[0x277CD9948] sharedPhotoLibrary];
-  [v19 registerChangeObserver:self];
+  mEMORY[0x277CD9948] = [MEMORY[0x277CD9948] sharedPhotoLibrary];
+  [mEMORY[0x277CD9948] registerChangeObserver:self];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = HUWallpaperPhotoCollectionViewController;
-  [(HUWallpaperPhotoCollectionViewController *)&v5 viewWillDisappear:a3];
-  v4 = [(HUWallpaperPhotoCollectionViewController *)self imageDownloadFuture];
-  [v4 cancel];
+  [(HUWallpaperPhotoCollectionViewController *)&v5 viewWillDisappear:disappear];
+  imageDownloadFuture = [(HUWallpaperPhotoCollectionViewController *)self imageDownloadFuture];
+  [imageDownloadFuture cancel];
 }
 
 - (void)viewDidLayoutSubviews
@@ -123,54 +123,54 @@
   if ([(HUWallpaperPhotoCollectionViewController *)self initialScrollToBottom])
   {
     v3 = MEMORY[0x277CCAA70];
-    v4 = [(HUWallpaperPhotoCollectionViewController *)self collectionView];
-    v5 = [v3 indexPathForItem:objc_msgSend(v4 inSection:{"numberOfItemsInSection:", 0) - 1, 0}];
+    collectionView = [(HUWallpaperPhotoCollectionViewController *)self collectionView];
+    v5 = [v3 indexPathForItem:objc_msgSend(collectionView inSection:{"numberOfItemsInSection:", 0) - 1, 0}];
 
-    v6 = [(HUWallpaperPhotoCollectionViewController *)self collectionView];
-    [v6 scrollToItemAtIndexPath:v5 atScrollPosition:4 animated:0];
+    collectionView2 = [(HUWallpaperPhotoCollectionViewController *)self collectionView];
+    [collectionView2 scrollToItemAtIndexPath:v5 atScrollPosition:4 animated:0];
 
     [(HUWallpaperPhotoCollectionViewController *)self setInitialScrollToBottom:0];
   }
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(HUWallpaperPhotoCollectionViewController *)self assetsFetchResult:a3];
+  v4 = [(HUWallpaperPhotoCollectionViewController *)self assetsFetchResult:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  v10 = [v7 dequeueReusableCellWithReuseIdentifier:v9 forIndexPath:v6];
+  v10 = [viewCopy dequeueReusableCellWithReuseIdentifier:v9 forIndexPath:pathCopy];
 
-  v11 = [(HUWallpaperPhotoCollectionViewController *)self assetsFetchResult];
-  v12 = [v6 item];
+  assetsFetchResult = [(HUWallpaperPhotoCollectionViewController *)self assetsFetchResult];
+  item = [pathCopy item];
 
-  v13 = [v11 objectAtIndexedSubscript:v12];
+  v13 = [assetsFetchResult objectAtIndexedSubscript:item];
 
-  v14 = [v13 localIdentifier];
-  [v10 setAssetIdentifier:v14];
+  localIdentifier = [v13 localIdentifier];
+  [v10 setAssetIdentifier:localIdentifier];
 
-  v15 = [(HUWallpaperPhotoCollectionViewController *)self flowLayout];
-  [v15 itemSize];
+  flowLayout = [(HUWallpaperPhotoCollectionViewController *)self flowLayout];
+  [flowLayout itemSize];
   v17 = v16;
-  v18 = [MEMORY[0x277D759A0] mainScreen];
-  [v18 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v20 = v17 * v19;
-  v21 = [(HUWallpaperPhotoCollectionViewController *)self flowLayout];
-  [v21 itemSize];
+  flowLayout2 = [(HUWallpaperPhotoCollectionViewController *)self flowLayout];
+  [flowLayout2 itemSize];
   v23 = v22;
-  v24 = [MEMORY[0x277D759A0] mainScreen];
-  [v24 scale];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 scale];
   v26 = v23 * v25;
 
-  v27 = [(HUWallpaperPhotoCollectionViewController *)self imageManager];
+  imageManager = [(HUWallpaperPhotoCollectionViewController *)self imageManager];
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __82__HUWallpaperPhotoCollectionViewController_collectionView_cellForItemAtIndexPath___block_invoke;
@@ -179,7 +179,7 @@
   v34 = v28;
   v35 = v13;
   v29 = v13;
-  [v27 requestImageForAsset:v29 targetSize:0 contentMode:0 options:v33 resultHandler:{v20, v26}];
+  [imageManager requestImageForAsset:v29 targetSize:0 contentMode:0 options:v33 resultHandler:{v20, v26}];
 
   v30 = v35;
   v31 = v28;
@@ -200,39 +200,39 @@ void __82__HUWallpaperPhotoCollectionViewController_collectionView_cellForItemAt
   }
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v8 = a4;
+  kindCopy = kind;
   v9 = *MEMORY[0x277D767D0];
-  v10 = a5;
-  v11 = a3;
-  if (([v8 isEqualToString:v9] & 1) == 0)
+  pathCopy = path;
+  viewCopy = view;
+  if (([kindCopy isEqualToString:v9] & 1) == 0)
   {
-    NSLog(&cfstr_AskedForAViewF.isa, v8);
+    NSLog(&cfstr_AskedForAViewF.isa, kindCopy);
   }
 
   v12 = objc_opt_class();
   v13 = NSStringFromClass(v12);
-  v14 = [v11 dequeueReusableSupplementaryViewOfKind:v8 withReuseIdentifier:v13 forIndexPath:v10];
+  v14 = [viewCopy dequeueReusableSupplementaryViewOfKind:kindCopy withReuseIdentifier:v13 forIndexPath:pathCopy];
 
-  v15 = [(HUWallpaperPhotoCollectionViewController *)self assetsFetchResult];
-  v16 = [v15 count];
+  assetsFetchResult = [(HUWallpaperPhotoCollectionViewController *)self assetsFetchResult];
+  v16 = [assetsFetchResult count];
   v23 = HULocalizedStringWithFormat(@"HUWallpaperPhotoCollectionCount", @"%ld", v17, v18, v19, v20, v21, v22, v16);
-  v24 = [v14 label];
-  [v24 setText:v23];
+  label = [v14 label];
+  [label setText:v23];
 
   return v14;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 deselectItemAtIndexPath:v7 animated:1];
-  [v6 setAllowsSelection:0];
+  viewCopy = view;
+  pathCopy = path;
+  [viewCopy deselectItemAtIndexPath:pathCopy animated:1];
+  [viewCopy setAllowsSelection:0];
   objc_opt_class();
-  v8 = [(HUWallpaperPhotoCollectionViewController *)self collectionView];
-  v9 = [v8 cellForItemAtIndexPath:v7];
+  collectionView = [(HUWallpaperPhotoCollectionViewController *)self collectionView];
+  v9 = [collectionView cellForItemAtIndexPath:pathCopy];
   if (objc_opt_isKindOfClass())
   {
     v10 = v9;
@@ -245,13 +245,13 @@ void __82__HUWallpaperPhotoCollectionViewController_collectionView_cellForItemAt
 
   v11 = v10;
 
-  v12 = [(HUWallpaperPhotoCollectionViewController *)self assetsFetchResult];
-  v13 = [v12 objectAtIndexedSubscript:{objc_msgSend(v7, "item")}];
+  assetsFetchResult = [(HUWallpaperPhotoCollectionViewController *)self assetsFetchResult];
+  v13 = [assetsFetchResult objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
 
   objc_initWeak(location, self);
   v14 = [(HUWallpaperPhotoCollectionViewController *)self imageFutureForAsset:v13 cloudAllowed:0];
-  v15 = [MEMORY[0x277D2C938] mainThreadScheduler];
-  v16 = [v14 reschedule:v15];
+  mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
+  v16 = [v14 reschedule:mainThreadScheduler];
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __84__HUWallpaperPhotoCollectionViewController_collectionView_didSelectItemAtIndexPath___block_invoke;
@@ -264,18 +264,18 @@ void __82__HUWallpaperPhotoCollectionViewController_collectionView_cellForItemAt
   v19 = [v16 recover:v33];
   [(HUWallpaperPhotoCollectionViewController *)self setImageDownloadFuture:v19];
 
-  v20 = [(HUWallpaperPhotoCollectionViewController *)self imageDownloadFuture];
+  imageDownloadFuture = [(HUWallpaperPhotoCollectionViewController *)self imageDownloadFuture];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __84__HUWallpaperPhotoCollectionViewController_collectionView_didSelectItemAtIndexPath___block_invoke_64;
   v30[3] = &unk_277DC4478;
-  v21 = v6;
+  v21 = viewCopy;
   v31 = v21;
   v22 = v17;
   v32 = v22;
-  v23 = [v20 addCompletionBlock:v30];
+  v23 = [imageDownloadFuture addCompletionBlock:v30];
 
-  v24 = [(HUWallpaperPhotoCollectionViewController *)self imageDownloadFuture];
+  imageDownloadFuture2 = [(HUWallpaperPhotoCollectionViewController *)self imageDownloadFuture];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __84__HUWallpaperPhotoCollectionViewController_collectionView_didSelectItemAtIndexPath___block_invoke_2;
@@ -283,7 +283,7 @@ void __82__HUWallpaperPhotoCollectionViewController_collectionView_cellForItemAt
   objc_copyWeak(&v29, location);
   v25 = v18;
   v28 = v25;
-  v26 = [v24 addSuccessBlock:v27];
+  v26 = [imageDownloadFuture2 addSuccessBlock:v27];
 
   objc_destroyWeak(&v29);
   objc_destroyWeak(&v36);
@@ -351,16 +351,16 @@ void __84__HUWallpaperPhotoCollectionViewController_collectionView_didSelectItem
   [v9 photoCollectionController:WeakRetained didChooseWallpaper:v7 image:v10];
 }
 
-- (void)photoLibraryDidChange:(id)a3
+- (void)photoLibraryDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __66__HUWallpaperPhotoCollectionViewController_photoLibraryDidChange___block_invoke;
   v6[3] = &unk_277DB7558;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = changeCopy;
+  selfCopy = self;
+  v5 = changeCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -383,23 +383,23 @@ void __66__HUWallpaperPhotoCollectionViewController_photoLibraryDidChange___bloc
   }
 }
 
-- (id)imageFutureForAsset:(id)a3 cloudAllowed:(BOOL)a4
+- (id)imageFutureForAsset:(id)asset cloudAllowed:(BOOL)allowed
 {
-  v4 = a4;
+  allowedCopy = allowed;
   v6 = MEMORY[0x277CD98A0];
-  v7 = a3;
+  assetCopy = asset;
   v8 = objc_alloc_init(v6);
   [v8 setDeliveryMode:1];
-  [v8 setNetworkAccessAllowed:v4];
+  [v8 setNetworkAccessAllowed:allowedCopy];
   v9 = objc_alloc_init(MEMORY[0x277D2C900]);
-  v10 = [(HUWallpaperPhotoCollectionViewController *)self imageManager];
+  imageManager = [(HUWallpaperPhotoCollectionViewController *)self imageManager];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __77__HUWallpaperPhotoCollectionViewController_imageFutureForAsset_cloudAllowed___block_invoke;
   v13[3] = &unk_277DBBBA0;
   v11 = v9;
   v14 = v11;
-  [v10 requestImageForAsset:v7 targetSize:0 contentMode:v8 options:v13 resultHandler:{*MEMORY[0x277CD9C08], *(MEMORY[0x277CD9C08] + 8)}];
+  [imageManager requestImageForAsset:assetCopy targetSize:0 contentMode:v8 options:v13 resultHandler:{*MEMORY[0x277CD9C08], *(MEMORY[0x277CD9C08] + 8)}];
 
   return v11;
 }

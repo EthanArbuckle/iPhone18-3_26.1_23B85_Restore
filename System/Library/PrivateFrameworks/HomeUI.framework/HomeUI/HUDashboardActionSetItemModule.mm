@@ -1,37 +1,37 @@
 @interface HUDashboardActionSetItemModule
-+ (BOOL)homeHasEnoughActionSetsForPredictions:(id)a3;
++ (BOOL)homeHasEnoughActionSetsForPredictions:(id)predictions;
 - (BOOL)showPredictedScenes;
-- (BOOL)supportsReorderingForItem:(id)a3;
+- (BOOL)supportsReorderingForItem:(id)item;
 - (HFPredictionsManager)predictionsManager;
-- (HUDashboardActionSetItemModule)initWithContext:(id)a3 itemUpdater:(id)a4;
+- (HUDashboardActionSetItemModule)initWithContext:(id)context itemUpdater:(id)updater;
 - (NSSet)predictedActionSetItems;
 - (id)_itemComparator;
-- (id)_itemsToHideInSet:(id)a3;
+- (id)_itemsToHideInSet:(id)set;
 - (id)buildItemProviders;
-- (id)buildSectionsWithDisplayedItems:(id)a3;
+- (id)buildSectionsWithDisplayedItems:(id)items;
 - (void)_fetchInitialPredictions;
 - (void)_updateFilters;
 - (void)dealloc;
-- (void)executionEnvironmentDidEnterBackground:(id)a3;
-- (void)executionEnvironmentWillEnterForeground:(id)a3;
-- (void)predictionsManagerDidUpdatePredictions:(id)a3;
+- (void)executionEnvironmentDidEnterBackground:(id)background;
+- (void)executionEnvironmentWillEnterForeground:(id)foreground;
+- (void)predictionsManagerDidUpdatePredictions:(id)predictions;
 @end
 
 @implementation HUDashboardActionSetItemModule
 
-- (HUDashboardActionSetItemModule)initWithContext:(id)a3 itemUpdater:(id)a4
+- (HUDashboardActionSetItemModule)initWithContext:(id)context itemUpdater:(id)updater
 {
-  v7 = a3;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = HUDashboardActionSetItemModule;
-  v8 = [(HFItemModule *)&v12 initWithItemUpdater:a4];
+  v8 = [(HFItemModule *)&v12 initWithItemUpdater:updater];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_context, a3);
+    objc_storeStrong(&v8->_context, context);
     [(HUDashboardActionSetItemModule *)v9 _fetchInitialPredictions];
-    v10 = [MEMORY[0x277D14670] sharedInstance];
-    [v10 addObserver:v9];
+    mEMORY[0x277D14670] = [MEMORY[0x277D14670] sharedInstance];
+    [mEMORY[0x277D14670] addObserver:v9];
   }
 
   return v9;
@@ -39,23 +39,23 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277D14670] sharedInstance];
-  [v3 removeObserver:self];
+  mEMORY[0x277D14670] = [MEMORY[0x277D14670] sharedInstance];
+  [mEMORY[0x277D14670] removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = HUDashboardActionSetItemModule;
   [(HUDashboardActionSetItemModule *)&v4 dealloc];
 }
 
-+ (BOOL)homeHasEnoughActionSetsForPredictions:(id)a3
++ (BOOL)homeHasEnoughActionSetsForPredictions:(id)predictions
 {
   v14 = *MEMORY[0x277D85DE8];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [a3 actionSets];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  actionSets = [predictions actionSets];
+  v4 = [actionSets countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = 0;
@@ -66,7 +66,7 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(actionSets);
         }
 
         if ([*(*(&v9 + 1) + 8 * i) hf_isVisible])
@@ -81,7 +81,7 @@
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [actionSets countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -98,12 +98,12 @@ LABEL_13:
 
 - (NSSet)predictedActionSetItems
 {
-  v2 = [(HUDashboardActionSetItemModule *)self predictedActionSetItemProvider];
-  v3 = [v2 items];
-  v4 = v3;
-  if (v3)
+  predictedActionSetItemProvider = [(HUDashboardActionSetItemModule *)self predictedActionSetItemProvider];
+  items = [predictedActionSetItemProvider items];
+  v4 = items;
+  if (items)
   {
-    v5 = v3;
+    v5 = items;
   }
 
   else
@@ -118,87 +118,87 @@ LABEL_13:
 
 - (HFPredictionsManager)predictionsManager
 {
-  v2 = [(HUDashboardActionSetItemModule *)self predictedActionSetItemProvider];
-  v3 = [v2 predictionsManager];
+  predictedActionSetItemProvider = [(HUDashboardActionSetItemModule *)self predictedActionSetItemProvider];
+  predictionsManager = [predictedActionSetItemProvider predictionsManager];
 
-  return v3;
+  return predictionsManager;
 }
 
 - (id)buildItemProviders
 {
   v3 = [MEMORY[0x277CBEB58] set];
   v4 = objc_alloc(MEMORY[0x277D143A8]);
-  v5 = [(HUDashboardActionSetItemModule *)self context];
-  v6 = [v5 home];
-  v7 = [v4 initWithHome:v6 actionSetItemStyle:1];
+  context = [(HUDashboardActionSetItemModule *)self context];
+  home = [context home];
+  v7 = [v4 initWithHome:home actionSetItemStyle:1];
   [(HUDashboardActionSetItemModule *)self setActionSetItemProvider:v7];
 
-  v8 = [(HUDashboardActionSetItemModule *)self context];
-  v9 = [v8 room];
-  v10 = [(HUDashboardActionSetItemModule *)self actionSetItemProvider];
-  [v10 setRoom:v9];
+  context2 = [(HUDashboardActionSetItemModule *)self context];
+  room = [context2 room];
+  actionSetItemProvider = [(HUDashboardActionSetItemModule *)self actionSetItemProvider];
+  [actionSetItemProvider setRoom:room];
 
-  v11 = [(HUDashboardActionSetItemModule *)self context];
-  LODWORD(v9) = [v11 includePredictedScenes];
+  context3 = [(HUDashboardActionSetItemModule *)self context];
+  LODWORD(room) = [context3 includePredictedScenes];
 
-  if (v9)
+  if (room)
   {
     v12 = objc_alloc(MEMORY[0x277D14950]);
-    v13 = [(HUDashboardActionSetItemModule *)self context];
-    v14 = [v13 home];
-    v15 = [v12 initWithHome:v14 predictionsManagerDelegate:self itemCount:2];
+    context4 = [(HUDashboardActionSetItemModule *)self context];
+    home2 = [context4 home];
+    v15 = [v12 initWithHome:home2 predictionsManagerDelegate:self itemCount:2];
     [(HUDashboardActionSetItemModule *)self setPredictedActionSetItemProvider:v15];
   }
 
   [(HUDashboardActionSetItemModule *)self _updateFilters];
-  v16 = [(HUDashboardActionSetItemModule *)self valueSource];
+  valueSource = [(HUDashboardActionSetItemModule *)self valueSource];
 
-  if (v16)
+  if (valueSource)
   {
-    v17 = [(HUDashboardActionSetItemModule *)self valueSource];
-    v18 = [(HUDashboardActionSetItemModule *)self actionSetItemProvider];
-    [v18 setValueSource:v17];
+    valueSource2 = [(HUDashboardActionSetItemModule *)self valueSource];
+    actionSetItemProvider2 = [(HUDashboardActionSetItemModule *)self actionSetItemProvider];
+    [actionSetItemProvider2 setValueSource:valueSource2];
 
-    v19 = [(HUDashboardActionSetItemModule *)self valueSource];
-    v20 = [(HUDashboardActionSetItemModule *)self predictedActionSetItemProvider];
-    [v20 setValueSource:v19];
+    valueSource3 = [(HUDashboardActionSetItemModule *)self valueSource];
+    predictedActionSetItemProvider = [(HUDashboardActionSetItemModule *)self predictedActionSetItemProvider];
+    [predictedActionSetItemProvider setValueSource:valueSource3];
   }
 
-  v21 = [(HUDashboardActionSetItemModule *)self actionSetItemProvider];
-  [v3 na_safeAddObject:v21];
+  actionSetItemProvider3 = [(HUDashboardActionSetItemModule *)self actionSetItemProvider];
+  [v3 na_safeAddObject:actionSetItemProvider3];
 
-  v22 = [(HUDashboardActionSetItemModule *)self predictedActionSetItemProvider];
-  [v3 na_safeAddObject:v22];
+  predictedActionSetItemProvider2 = [(HUDashboardActionSetItemModule *)self predictedActionSetItemProvider];
+  [v3 na_safeAddObject:predictedActionSetItemProvider2];
 
   return v3;
 }
 
-- (id)buildSectionsWithDisplayedItems:(id)a3
+- (id)buildSectionsWithDisplayedItems:(id)items
 {
   v20[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D14850];
-  v5 = a3;
+  itemsCopy = items;
   v6 = [[v4 alloc] initWithIdentifier:@"scenesSection"];
   v7 = _HULocalizedStringWithDefaultValue(@"HUGridScenesSectionTitle", @"HUGridScenesSectionTitle", 1);
   [v6 setHeaderTitle:v7];
 
-  v8 = [MEMORY[0x277CBEB18] array];
-  v9 = [(HUDashboardActionSetItemModule *)self predictedActionSetItemProvider];
-  v10 = [v9 orderedItems];
+  array = [MEMORY[0x277CBEB18] array];
+  predictedActionSetItemProvider = [(HUDashboardActionSetItemModule *)self predictedActionSetItemProvider];
+  orderedItems = [predictedActionSetItemProvider orderedItems];
 
-  [v8 na_safeAddObjectsFromArray:v10];
-  v11 = [(HUDashboardActionSetItemModule *)self actionSetItemProvider];
-  v12 = [v11 items];
-  v13 = [v12 allObjects];
-  v14 = [(HUDashboardActionSetItemModule *)self _itemComparator];
-  v15 = [v13 sortedArrayUsingComparator:v14];
+  [array na_safeAddObjectsFromArray:orderedItems];
+  actionSetItemProvider = [(HUDashboardActionSetItemModule *)self actionSetItemProvider];
+  items = [actionSetItemProvider items];
+  allObjects = [items allObjects];
+  _itemComparator = [(HUDashboardActionSetItemModule *)self _itemComparator];
+  v15 = [allObjects sortedArrayUsingComparator:_itemComparator];
 
-  [v8 na_safeAddObjectsFromArray:v15];
-  [v6 setItems:v8];
+  [array na_safeAddObjectsFromArray:v15];
+  [v6 setItems:array];
   v16 = MEMORY[0x277D14778];
   v20[0] = v6;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
-  v18 = [v16 filterSections:v17 toDisplayedItems:v5];
+  v18 = [v16 filterSections:v17 toDisplayedItems:itemsCopy];
 
   return v18;
 }
@@ -207,38 +207,38 @@ LABEL_13:
 {
   v21.receiver = self;
   v21.super_class = HUDashboardActionSetItemModule;
-  v3 = [(HFItemModule *)&v21 _itemComparator];
-  v4 = [(HUDashboardActionSetItemModule *)self context];
-  v5 = [v4 accessoryTypeGroup];
+  _itemComparator = [(HFItemModule *)&v21 _itemComparator];
+  context = [(HUDashboardActionSetItemModule *)self context];
+  accessoryTypeGroup = [context accessoryTypeGroup];
 
-  if (v5)
+  if (accessoryTypeGroup)
   {
-    v6 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
-    v7 = [(HUDashboardActionSetItemModule *)self actionSetItemProvider];
-    v8 = [v7 items];
-    v9 = [v8 allObjects];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    actionSetItemProvider = [(HUDashboardActionSetItemModule *)self actionSetItemProvider];
+    items = [actionSetItemProvider items];
+    allObjects = [items allObjects];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __49__HUDashboardActionSetItemModule__itemComparator__block_invoke;
     v18[3] = &unk_277DBDF90;
-    v19 = v5;
-    v10 = v6;
+    v19 = accessoryTypeGroup;
+    v10 = strongToStrongObjectsMapTable;
     v20 = v10;
-    [v9 na_each:v18];
+    [allObjects na_each:v18];
 
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __49__HUDashboardActionSetItemModule__itemComparator__block_invoke_2;
     v15[3] = &unk_277DBDFB8;
     v16 = v10;
-    v17 = self;
+    selfCopy = self;
     v11 = v10;
     v12 = _Block_copy(v15);
 
-    v3 = v12;
+    _itemComparator = v12;
   }
 
-  v13 = _Block_copy(v3);
+  v13 = _Block_copy(_itemComparator);
 
   return v13;
 }
@@ -274,45 +274,45 @@ uint64_t __49__HUDashboardActionSetItemModule__itemComparator__block_invoke_2(ui
   return v9;
 }
 
-- (void)predictionsManagerDidUpdatePredictions:(id)a3
+- (void)predictionsManagerDidUpdatePredictions:(id)predictions
 {
-  v4 = [(HUDashboardActionSetItemModule *)self initialPredictionUpdateFuture];
-  v5 = [v4 isFinished];
+  initialPredictionUpdateFuture = [(HUDashboardActionSetItemModule *)self initialPredictionUpdateFuture];
+  isFinished = [initialPredictionUpdateFuture isFinished];
 
-  if ((v5 & 1) == 0)
+  if ((isFinished & 1) == 0)
   {
-    v6 = [(HUDashboardActionSetItemModule *)self initialPredictionUpdateFuture];
-    [v6 finishWithNoResult];
+    initialPredictionUpdateFuture2 = [(HUDashboardActionSetItemModule *)self initialPredictionUpdateFuture];
+    [initialPredictionUpdateFuture2 finishWithNoResult];
   }
 }
 
-- (void)executionEnvironmentWillEnterForeground:(id)a3
+- (void)executionEnvironmentWillEnterForeground:(id)foreground
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = [(HUDashboardActionSetItemModule *)self initialPredictionUpdateFuture];
+  initialPredictionUpdateFuture = [(HUDashboardActionSetItemModule *)self initialPredictionUpdateFuture];
 
-  if (!v4)
+  if (!initialPredictionUpdateFuture)
   {
     v5 = HFLogForCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 134217984;
-      v8 = self;
+      selfCopy = self;
       _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "<HUDashboardActionSetItemModule %p>: Invalidating predictions and awaiting fetch", &v7, 0xCu);
     }
 
-    v6 = [(HUDashboardActionSetItemModule *)self predictedActionSetItemProvider];
-    [v6 invalidatePredictions];
+    predictedActionSetItemProvider = [(HUDashboardActionSetItemModule *)self predictedActionSetItemProvider];
+    [predictedActionSetItemProvider invalidatePredictions];
 
     [(HUDashboardActionSetItemModule *)self _fetchInitialPredictions];
   }
 }
 
-- (void)executionEnvironmentDidEnterBackground:(id)a3
+- (void)executionEnvironmentDidEnterBackground:(id)background
 {
-  v4 = [(HUDashboardActionSetItemModule *)self initialPredictionUpdateFuture];
-  v5 = [MEMORY[0x277CCA9B8] na_cancelledError];
-  [v4 finishWithError:v5];
+  initialPredictionUpdateFuture = [(HUDashboardActionSetItemModule *)self initialPredictionUpdateFuture];
+  na_cancelledError = [MEMORY[0x277CCA9B8] na_cancelledError];
+  [initialPredictionUpdateFuture finishWithError:na_cancelledError];
 
   [(HUDashboardActionSetItemModule *)self setInitialPredictionUpdateFuture:0];
 }
@@ -321,31 +321,31 @@ uint64_t __49__HUDashboardActionSetItemModule__itemComparator__block_invoke_2(ui
 {
   location[3] = *MEMORY[0x277D85DE8];
   v4 = objc_opt_class();
-  v5 = [(HUDashboardActionSetItemModule *)self context];
-  v6 = [v5 home];
-  LOBYTE(v4) = [v4 homeHasEnoughActionSetsForPredictions:v6];
+  context = [(HUDashboardActionSetItemModule *)self context];
+  home = [context home];
+  LOBYTE(v4) = [v4 homeHasEnoughActionSetsForPredictions:home];
 
   if (v4)
   {
-    v7 = [(HUDashboardActionSetItemModule *)self initialPredictionUpdateFuture];
+    initialPredictionUpdateFuture = [(HUDashboardActionSetItemModule *)self initialPredictionUpdateFuture];
 
-    if (v7)
+    if (initialPredictionUpdateFuture)
     {
-      v8 = [(HUDashboardActionSetItemModule *)self initialPredictionUpdateFuture];
-      v9 = [MEMORY[0x277CCA9B8] na_cancelledError];
-      [v8 finishWithError:v9];
+      initialPredictionUpdateFuture2 = [(HUDashboardActionSetItemModule *)self initialPredictionUpdateFuture];
+      na_cancelledError = [MEMORY[0x277CCA9B8] na_cancelledError];
+      [initialPredictionUpdateFuture2 finishWithError:na_cancelledError];
     }
 
     v10 = objc_alloc_init(MEMORY[0x277D2C900]);
-    v11 = [MEMORY[0x277D2C938] mainThreadScheduler];
+    mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __58__HUDashboardActionSetItemModule__fetchInitialPredictions__block_invoke;
     v25[3] = &unk_277DB7558;
     v12 = v10;
     v26 = v12;
-    v27 = self;
-    v13 = [v11 afterDelay:v25 performBlock:5.0];
+    selfCopy = self;
+    v13 = [mainThreadScheduler afterDelay:v25 performBlock:5.0];
 
     v14 = HFLogForCategory();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -358,24 +358,24 @@ uint64_t __49__HUDashboardActionSetItemModule__itemComparator__block_invoke_2(ui
     v15 = objc_alloc_init(MEMORY[0x277D2C900]);
     [(HUDashboardActionSetItemModule *)self setInitialPredictionUpdateFuture:v15];
 
-    v16 = [(HUDashboardActionSetItemModule *)self initialPredictionUpdateFuture];
+    initialPredictionUpdateFuture3 = [(HUDashboardActionSetItemModule *)self initialPredictionUpdateFuture];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __58__HUDashboardActionSetItemModule__fetchInitialPredictions__block_invoke_102;
     v23[3] = &unk_277DB7530;
     v17 = v13;
     v24 = v17;
-    v18 = [v16 addCompletionBlock:v23];
+    v18 = [initialPredictionUpdateFuture3 addCompletionBlock:v23];
 
     objc_initWeak(location, self);
-    v19 = [(HUDashboardActionSetItemModule *)self initialPredictionUpdateFuture];
+    initialPredictionUpdateFuture4 = [(HUDashboardActionSetItemModule *)self initialPredictionUpdateFuture];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __58__HUDashboardActionSetItemModule__fetchInitialPredictions__block_invoke_2;
     v21[3] = &unk_277DB9D18;
     objc_copyWeak(v22, location);
     v22[1] = a2;
-    v20 = [v19 addSuccessBlock:v21];
+    v20 = [initialPredictionUpdateFuture4 addSuccessBlock:v21];
 
     objc_destroyWeak(v22);
     objc_destroyWeak(location);
@@ -437,11 +437,11 @@ void __58__HUDashboardActionSetItemModule__fetchInitialPredictions__block_invoke
 
 - (BOOL)showPredictedScenes
 {
-  v2 = [(HUDashboardActionSetItemModule *)self context];
-  v3 = [v2 home];
-  v4 = [v3 hf_showPredictedScenesOnDashboard];
+  context = [(HUDashboardActionSetItemModule *)self context];
+  home = [context home];
+  hf_showPredictedScenesOnDashboard = [home hf_showPredictedScenesOnDashboard];
 
-  return v4;
+  return hf_showPredictedScenesOnDashboard;
 }
 
 - (void)_updateFilters
@@ -466,30 +466,30 @@ uint64_t __48__HUDashboardActionSetItemModule__updateFilters__block_invoke(uint6
   return v6 ^ 1u;
 }
 
-- (id)_itemsToHideInSet:(id)a3
+- (id)_itemsToHideInSet:(id)set
 {
-  if (-[HUDashboardActionSetItemModule showPredictedScenes](self, "showPredictedScenes", a3) && (-[HUDashboardActionSetItemModule context](self, "context"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 includePredictedScenes], v4, v5))
+  if (-[HUDashboardActionSetItemModule showPredictedScenes](self, "showPredictedScenes", set) && (-[HUDashboardActionSetItemModule context](self, "context"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 includePredictedScenes], v4, v5))
   {
-    v6 = [(HUDashboardActionSetItemModule *)self predictedActionSetItems];
-    v7 = [v6 na_map:&__block_literal_global_126];
+    predictedActionSetItems = [(HUDashboardActionSetItemModule *)self predictedActionSetItems];
+    v7 = [predictedActionSetItems na_map:&__block_literal_global_126];
 
-    v8 = [(HUDashboardActionSetItemModule *)self actionSetItemProvider];
-    v9 = [v8 items];
+    actionSetItemProvider = [(HUDashboardActionSetItemModule *)self actionSetItemProvider];
+    items = [actionSetItemProvider items];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __52__HUDashboardActionSetItemModule__itemsToHideInSet___block_invoke_2;
     v13[3] = &unk_277DBE000;
     v14 = v7;
     v10 = v7;
-    v11 = [v9 na_filter:v13];
+    predictedActionSetItems2 = [items na_filter:v13];
   }
 
   else
   {
-    v11 = [(HUDashboardActionSetItemModule *)self predictedActionSetItems];
+    predictedActionSetItems2 = [(HUDashboardActionSetItemModule *)self predictedActionSetItems];
   }
 
-  return v11;
+  return predictedActionSetItems2;
 }
 
 id __52__HUDashboardActionSetItemModule__itemsToHideInSet___block_invoke(uint64_t a1, void *a2)
@@ -510,31 +510,31 @@ uint64_t __52__HUDashboardActionSetItemModule__itemsToHideInSet___block_invoke_2
   return v5;
 }
 
-- (BOOL)supportsReorderingForItem:(id)a3
+- (BOOL)supportsReorderingForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUDashboardActionSetItemModule *)self predictedActionSetItemProvider];
-  v6 = [v5 items];
-  v7 = [v6 containsObject:v4];
+  itemCopy = item;
+  predictedActionSetItemProvider = [(HUDashboardActionSetItemModule *)self predictedActionSetItemProvider];
+  items = [predictedActionSetItemProvider items];
+  v7 = [items containsObject:itemCopy];
 
   if (v7)
   {
     return 0;
   }
 
-  v9 = [(HUDashboardActionSetItemModule *)self context];
-  v10 = [v9 accessoryTypeGroup];
-  if (v10)
+  context = [(HUDashboardActionSetItemModule *)self context];
+  accessoryTypeGroup = [context accessoryTypeGroup];
+  if (accessoryTypeGroup)
   {
-    v8 = 0;
+    supportsReordering = 0;
   }
 
   else
   {
-    v8 = [(HFItemModule *)self supportsReordering];
+    supportsReordering = [(HFItemModule *)self supportsReordering];
   }
 
-  return v8;
+  return supportsReordering;
 }
 
 @end

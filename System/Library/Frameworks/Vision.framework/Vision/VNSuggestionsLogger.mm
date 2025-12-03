@@ -1,33 +1,33 @@
 @interface VNSuggestionsLogger
-- (VNSuggestionsLogger)initWithOptions:(id)a3 logEnabled:(BOOL)a4;
-- (void)logConnectedGroups:(id)a3;
-- (void)logFinalSuggestionsList:(id)a3;
-- (void)logInputFaceIdsWithFlags:(id)a3;
-- (void)logString:(id)a3;
-- (void)logSuggestons:(id)a3 description:(id)a4;
+- (VNSuggestionsLogger)initWithOptions:(id)options logEnabled:(BOOL)enabled;
+- (void)logConnectedGroups:(id)groups;
+- (void)logFinalSuggestionsList:(id)list;
+- (void)logInputFaceIdsWithFlags:(id)flags;
+- (void)logString:(id)string;
+- (void)logSuggestons:(id)suggestons description:(id)description;
 @end
 
 @implementation VNSuggestionsLogger
 
-- (void)logString:(id)a3
+- (void)logString:(id)string
 {
-  v13 = a3;
-  v4 = [v13 UTF8String];
-  VNValidatedLog(1, @"%s", v5, v6, v7, v8, v9, v10, v4);
+  stringCopy = string;
+  uTF8String = [stringCopy UTF8String];
+  VNValidatedLog(1, @"%s", v5, v6, v7, v8, v9, v10, uTF8String);
   if ([(VNClusteringLogger *)self logEnabled])
   {
-    v11 = [(VNClusteringLogger *)self logFileURL];
-    v12 = [v11 path];
-    [VNClusteringLogger appendString:v13 toLogFile:v12];
+    logFileURL = [(VNClusteringLogger *)self logFileURL];
+    path = [logFileURL path];
+    [VNClusteringLogger appendString:stringCopy toLogFile:path];
   }
 }
 
-- (void)logFinalSuggestionsList:(id)a3
+- (void)logFinalSuggestionsList:(id)list
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  listCopy = list;
+  v5 = listCopy;
+  if (listCopy && [listCopy count])
   {
     v6 = [MEMORY[0x1E696AD60] stringWithFormat:@"Final list of suggestions face IDs (results):\n"];
     v13 = 0u;
@@ -65,19 +65,19 @@
   }
 }
 
-- (void)logConnectedGroups:(id)a3
+- (void)logConnectedGroups:(id)groups
 {
   v29 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  if (v16 && [v16 count])
+  groupsCopy = groups;
+  if (groupsCopy && [groupsCopy count])
   {
-    v15 = self;
+    selfCopy = self;
     v4 = [MEMORY[0x1E696AD60] stringWithFormat:@"Connected groups of suggestions face IDs (connectedSuggestedInputs):\n"];
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    obj = v16;
+    obj = groupsCopy;
     v5 = [obj countByEnumeratingWithState:&v23 objects:v28 count:16];
     if (v5)
     {
@@ -142,21 +142,21 @@
       while (v5);
     }
 
-    [(VNSuggestionsLogger *)v15 logString:v4];
+    [(VNSuggestionsLogger *)selfCopy logString:v4];
   }
 }
 
-- (void)logSuggestons:(id)a3 description:(id)a4
+- (void)logSuggestons:(id)suggestons description:(id)description
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v19 = a4;
-  v22 = v6;
-  if (v6 && [v6 count])
+  suggestonsCopy = suggestons;
+  descriptionCopy = description;
+  v22 = suggestonsCopy;
+  if (suggestonsCopy && [suggestonsCopy count])
   {
-    v18 = self;
-    v7 = [MEMORY[0x1E696AD60] stringWithFormat:@"Suggested face IDs: %@:\n", v19];
-    [v6 allKeys];
+    selfCopy = self;
+    descriptionCopy = [MEMORY[0x1E696AD60] stringWithFormat:@"Suggested face IDs: %@:\n", descriptionCopy];
+    [suggestonsCopy allKeys];
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
@@ -177,7 +177,7 @@
           v10 = *(*(&v27 + 1) + 8 * i);
           v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ClusterId: %@   ", v10];
           v12 = [VNClusteringLogger padStringWithSpaces:v11 toSize:20];
-          [v7 appendFormat:@"%@Suggestions: ", v12];
+          [descriptionCopy appendFormat:@"%@Suggestions: ", v12];
           v13 = [v22 objectForKeyedSubscript:v10];
           v25 = 0u;
           v26 = 0u;
@@ -197,7 +197,7 @@
                   objc_enumerationMutation(v14);
                 }
 
-                [v7 appendFormat:@"%@, ", *(*(&v23 + 1) + 8 * j)];
+                [descriptionCopy appendFormat:@"%@, ", *(*(&v23 + 1) + 8 * j)];
               }
 
               v15 = [v14 countByEnumeratingWithState:&v23 objects:v31 count:16];
@@ -208,10 +208,10 @@
 
           if ([v14 count])
           {
-            [v7 deleteCharactersInRange:{objc_msgSend(v7, "length") - 2, 2}];
+            [descriptionCopy deleteCharactersInRange:{objc_msgSend(descriptionCopy, "length") - 2, 2}];
           }
 
-          [v7 appendString:@"\n"];
+          [descriptionCopy appendString:@"\n"];
         }
 
         v8 = [obj countByEnumeratingWithState:&v27 objects:v32 count:16];
@@ -220,18 +220,18 @@
       while (v8);
     }
 
-    [(VNSuggestionsLogger *)v18 logString:v7];
+    [(VNSuggestionsLogger *)selfCopy logString:descriptionCopy];
   }
 }
 
-- (void)logInputFaceIdsWithFlags:(id)a3
+- (void)logInputFaceIdsWithFlags:(id)flags
 {
   v19 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  if (v13 && [v13 count])
+  flagsCopy = flags;
+  if (flagsCopy && [flagsCopy count])
   {
     v12 = [MEMORY[0x1E696AD60] stringWithFormat:@"Input query - face IDs with flags (clusterIdsWithFlags):\n"];
-    [v13 allKeys];
+    [flagsCopy allKeys];
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
@@ -252,7 +252,7 @@
           v6 = *(*(&v14 + 1) + 8 * i);
           v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"faceId: %@", v6];
           v8 = [VNClusteringLogger padStringWithSpaces:v7 toSize:20];
-          v9 = [v13 objectForKeyedSubscript:v6];
+          v9 = [flagsCopy objectForKeyedSubscript:v6];
           [v12 appendFormat:@"%@can be returned: %@\n", v8, v9];
         }
 
@@ -266,11 +266,11 @@
   }
 }
 
-- (VNSuggestionsLogger)initWithOptions:(id)a3 logEnabled:(BOOL)a4
+- (VNSuggestionsLogger)initWithOptions:(id)options logEnabled:(BOOL)enabled
 {
   v5.receiver = self;
   v5.super_class = VNSuggestionsLogger;
-  return [(VNClusteringLogger *)&v5 initWithOptions:a3 logEnabled:a4 logFileNameBase:@"VNSuggestionLog"];
+  return [(VNClusteringLogger *)&v5 initWithOptions:options logEnabled:enabled logFileNameBase:@"VNSuggestionLog"];
 }
 
 @end

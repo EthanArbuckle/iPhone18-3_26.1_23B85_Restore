@@ -1,5 +1,5 @@
 @interface ICLiveLinkQueueEventContentAdded
-- (ICLiveLinkQueueEventContentAdded)initWithItemIdentifiers:(id)a3 containerKind:(int64_t)a4 containerIdentifier:(id)a5 containerMediaIdentifier:(id)a6;
+- (ICLiveLinkQueueEventContentAdded)initWithItemIdentifiers:(id)identifiers containerKind:(int64_t)kind containerIdentifier:(id)identifier containerMediaIdentifier:(id)mediaIdentifier;
 - (id)description;
 @end
 
@@ -23,26 +23,26 @@
   return v6;
 }
 
-- (ICLiveLinkQueueEventContentAdded)initWithItemIdentifiers:(id)a3 containerKind:(int64_t)a4 containerIdentifier:(id)a5 containerMediaIdentifier:(id)a6
+- (ICLiveLinkQueueEventContentAdded)initWithItemIdentifiers:(id)identifiers containerKind:(int64_t)kind containerIdentifier:(id)identifier containerMediaIdentifier:(id)mediaIdentifier
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  identifiersCopy = identifiers;
+  identifierCopy = identifier;
+  mediaIdentifierCopy = mediaIdentifier;
   v21.receiver = self;
   v21.super_class = ICLiveLinkQueueEventContentAdded;
   v13 = [(ICLiveLinkQueueEventContentAdded *)&v21 init];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [identifiersCopy copy];
     itemIdentifiers = v13->_itemIdentifiers;
     v13->_itemIdentifiers = v14;
 
-    v16 = [v11 copy];
+    v16 = [identifierCopy copy];
     containerIdentifier = v13->_containerIdentifier;
     v13->_containerIdentifier = v16;
 
-    v13->_containerKind = a4;
-    v18 = [v12 copy];
+    v13->_containerKind = kind;
+    v18 = [mediaIdentifierCopy copy];
     containerMediaIdentifier = v13->_containerMediaIdentifier;
     v13->_containerMediaIdentifier = v18;
   }

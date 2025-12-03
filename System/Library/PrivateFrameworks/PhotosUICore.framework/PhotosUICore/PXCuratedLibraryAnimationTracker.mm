@@ -1,9 +1,9 @@
 @interface PXCuratedLibraryAnimationTracker
 + (PXCuratedLibraryAnimationTracker)sharedTracker;
-+ (void)_scrollAnimationOccurredWithContext:(id)a3 isBegin:(BOOL)a4;
++ (void)_scrollAnimationOccurredWithContext:(id)context isBegin:(BOOL)begin;
 - (PXCuratedLibraryAnimationTracker)init;
-- (void)_zoomLevelTransitionOccurred:(id)a3 isPreparation:(BOOL)a4 isBegin:(BOOL)a5;
-- (void)zoomLevelTransitionDidBegin:(id)a3;
+- (void)_zoomLevelTransitionOccurred:(id)occurred isPreparation:(BOOL)preparation isBegin:(BOOL)begin;
+- (void)zoomLevelTransitionDidBegin:(id)begin;
 - (void)zoomLevelTransitionsDidEndEarly;
 @end
 
@@ -12,8 +12,8 @@
 - (void)zoomLevelTransitionsDidEndEarly
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(PXCuratedLibraryAnimationTracker *)self inFlightAnimations];
-  v4 = [v3 copy];
+  inFlightAnimations = [(PXCuratedLibraryAnimationTracker *)self inFlightAnimations];
+  v4 = [inFlightAnimations copy];
 
   v12 = 0u;
   v13 = 0u;
@@ -46,23 +46,23 @@
   }
 }
 
-- (void)_zoomLevelTransitionOccurred:(id)a3 isPreparation:(BOOL)a4 isBegin:(BOOL)a5
+- (void)_zoomLevelTransitionOccurred:(id)occurred isPreparation:(BOOL)preparation isBegin:(BOOL)begin
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
-  v9 = operator||(v8, @"PXCuratedLibraryZoomLevelChangeFromKey");
-  v10 = operator||(v8, @"PXCuratedLibraryZoomLevelChangeToKey");
-  v11 = [(PXCuratedLibraryAnimationTracker *)self inFlightAnimations];
-  v12 = v11;
+  beginCopy = begin;
+  preparationCopy = preparation;
+  occurredCopy = occurred;
+  v9 = operator||(occurredCopy, @"PXCuratedLibraryZoomLevelChangeFromKey");
+  v10 = operator||(occurredCopy, @"PXCuratedLibraryZoomLevelChangeToKey");
+  inFlightAnimations = [(PXCuratedLibraryAnimationTracker *)self inFlightAnimations];
+  v12 = inFlightAnimations;
   if (v9 | v10)
   {
-    if (v5)
+    if (beginCopy)
     {
-      [v11 addObject:v8];
+      [inFlightAnimations addObject:occurredCopy];
     }
 
-    if ([v12 containsObject:v8])
+    if ([v12 containsObject:occurredCopy])
     {
       if (v9 > 2)
       {
@@ -74,11 +74,11 @@
             {
               v13 = PLAnimationTelemetryGetLog();
               v32 = PLAnimationTelemetryGetLog();
-              v15 = os_signpost_id_make_with_pointer(v32, v8);
+              v15 = os_signpost_id_make_with_pointer(v32, occurredCopy);
 
-              if (v6)
+              if (preparationCopy)
               {
-                if (v5)
+                if (beginCopy)
                 {
                   if (v15 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v13))
                   {
@@ -103,7 +103,7 @@
 
               else
               {
-                if (v5)
+                if (beginCopy)
                 {
                   if (v15 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v13))
                   {
@@ -133,11 +133,11 @@
             {
               v13 = PLAnimationTelemetryGetLog();
               v24 = PLAnimationTelemetryGetLog();
-              v15 = os_signpost_id_make_with_pointer(v24, v8);
+              v15 = os_signpost_id_make_with_pointer(v24, occurredCopy);
 
-              if (v6)
+              if (preparationCopy)
               {
-                if (v5)
+                if (beginCopy)
                 {
                   if (v15 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v13))
                   {
@@ -162,7 +162,7 @@
 
               else
               {
-                if (v5)
+                if (beginCopy)
                 {
                   if (v15 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v13))
                   {
@@ -195,11 +195,11 @@
             {
               v13 = PLAnimationTelemetryGetLog();
               v30 = PLAnimationTelemetryGetLog();
-              v15 = os_signpost_id_make_with_pointer(v30, v8);
+              v15 = os_signpost_id_make_with_pointer(v30, occurredCopy);
 
-              if (v6)
+              if (preparationCopy)
               {
-                if (v5)
+                if (beginCopy)
                 {
                   if (v15 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v13))
                   {
@@ -224,7 +224,7 @@
 
               else
               {
-                if (v5)
+                if (beginCopy)
                 {
                   if (v15 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v13))
                   {
@@ -254,11 +254,11 @@
             {
               v13 = PLAnimationTelemetryGetLog();
               v20 = PLAnimationTelemetryGetLog();
-              v15 = os_signpost_id_make_with_pointer(v20, v8);
+              v15 = os_signpost_id_make_with_pointer(v20, occurredCopy);
 
-              if (v6)
+              if (preparationCopy)
               {
-                if (v5)
+                if (beginCopy)
                 {
                   if (v15 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v13))
                   {
@@ -283,7 +283,7 @@
 
               else
               {
-                if (v5)
+                if (beginCopy)
                 {
                   if (v15 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v13))
                   {
@@ -319,11 +319,11 @@
             {
               v13 = PLAnimationTelemetryGetLog();
               v28 = PLAnimationTelemetryGetLog();
-              v15 = os_signpost_id_make_with_pointer(v28, v8);
+              v15 = os_signpost_id_make_with_pointer(v28, occurredCopy);
 
-              if (v6)
+              if (preparationCopy)
               {
-                if (v5)
+                if (beginCopy)
                 {
                   if (v15 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v13))
                   {
@@ -348,7 +348,7 @@
 
               else
               {
-                if (v5)
+                if (beginCopy)
                 {
                   if (v15 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v13))
                   {
@@ -378,11 +378,11 @@
             {
               v13 = PLAnimationTelemetryGetLog();
               v22 = PLAnimationTelemetryGetLog();
-              v15 = os_signpost_id_make_with_pointer(v22, v8);
+              v15 = os_signpost_id_make_with_pointer(v22, occurredCopy);
 
-              if (v6)
+              if (preparationCopy)
               {
-                if (v5)
+                if (beginCopy)
                 {
                   if (v15 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v13))
                   {
@@ -407,7 +407,7 @@
 
               else
               {
-                if (v5)
+                if (beginCopy)
                 {
                   if (v15 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v13))
                   {
@@ -440,11 +440,11 @@
             {
               v13 = PLAnimationTelemetryGetLog();
               v26 = PLAnimationTelemetryGetLog();
-              v15 = os_signpost_id_make_with_pointer(v26, v8);
+              v15 = os_signpost_id_make_with_pointer(v26, occurredCopy);
 
-              if (v6)
+              if (preparationCopy)
               {
-                if (v5)
+                if (beginCopy)
                 {
                   if (v15 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v13))
                   {
@@ -469,7 +469,7 @@
 
               else
               {
-                if (v5)
+                if (beginCopy)
                 {
                   if (v15 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v13))
                   {
@@ -499,11 +499,11 @@
             {
               v13 = PLAnimationTelemetryGetLog();
               v18 = PLAnimationTelemetryGetLog();
-              v15 = os_signpost_id_make_with_pointer(v18, v8);
+              v15 = os_signpost_id_make_with_pointer(v18, occurredCopy);
 
-              if (v6)
+              if (preparationCopy)
               {
-                if (v5)
+                if (beginCopy)
                 {
                   if (v15 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v13))
                   {
@@ -528,7 +528,7 @@
 
               else
               {
-                if (v5)
+                if (beginCopy)
                 {
                   if (v15 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v13))
                   {
@@ -565,11 +565,11 @@
           {
             v13 = PLAnimationTelemetryGetLog();
             v31 = PLAnimationTelemetryGetLog();
-            v15 = os_signpost_id_make_with_pointer(v31, v8);
+            v15 = os_signpost_id_make_with_pointer(v31, occurredCopy);
 
-            if (v6)
+            if (preparationCopy)
             {
-              if (v5)
+              if (beginCopy)
               {
                 if (v15 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v13))
                 {
@@ -594,7 +594,7 @@
 
             else
             {
-              if (v5)
+              if (beginCopy)
               {
                 if (v15 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v13))
                 {
@@ -624,11 +624,11 @@
           {
             v13 = PLAnimationTelemetryGetLog();
             v23 = PLAnimationTelemetryGetLog();
-            v15 = os_signpost_id_make_with_pointer(v23, v8);
+            v15 = os_signpost_id_make_with_pointer(v23, occurredCopy);
 
-            if (v6)
+            if (preparationCopy)
             {
-              if (v5)
+              if (beginCopy)
               {
                 if (v15 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v13))
                 {
@@ -653,7 +653,7 @@
 
             else
             {
-              if (v5)
+              if (beginCopy)
               {
                 if (v15 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v13))
                 {
@@ -686,11 +686,11 @@
           {
             v13 = PLAnimationTelemetryGetLog();
             v29 = PLAnimationTelemetryGetLog();
-            v15 = os_signpost_id_make_with_pointer(v29, v8);
+            v15 = os_signpost_id_make_with_pointer(v29, occurredCopy);
 
-            if (v6)
+            if (preparationCopy)
             {
-              if (v5)
+              if (beginCopy)
               {
                 if (v15 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v13))
                 {
@@ -715,7 +715,7 @@
 
             else
             {
-              if (v5)
+              if (beginCopy)
               {
                 if (v15 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v13))
                 {
@@ -745,11 +745,11 @@
           {
             v13 = PLAnimationTelemetryGetLog();
             v19 = PLAnimationTelemetryGetLog();
-            v15 = os_signpost_id_make_with_pointer(v19, v8);
+            v15 = os_signpost_id_make_with_pointer(v19, occurredCopy);
 
-            if (v6)
+            if (preparationCopy)
             {
-              if (v5)
+              if (beginCopy)
               {
                 if (v15 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v13))
                 {
@@ -774,7 +774,7 @@
 
             else
             {
-              if (v5)
+              if (beginCopy)
               {
                 if (v15 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v13))
                 {
@@ -810,11 +810,11 @@
           {
             v13 = PLAnimationTelemetryGetLog();
             v27 = PLAnimationTelemetryGetLog();
-            v15 = os_signpost_id_make_with_pointer(v27, v8);
+            v15 = os_signpost_id_make_with_pointer(v27, occurredCopy);
 
-            if (v6)
+            if (preparationCopy)
             {
-              if (v5)
+              if (beginCopy)
               {
                 if (v15 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v13))
                 {
@@ -839,7 +839,7 @@
 
             else
             {
-              if (v5)
+              if (beginCopy)
               {
                 if (v15 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v13))
                 {
@@ -869,11 +869,11 @@
           {
             v13 = PLAnimationTelemetryGetLog();
             v21 = PLAnimationTelemetryGetLog();
-            v15 = os_signpost_id_make_with_pointer(v21, v8);
+            v15 = os_signpost_id_make_with_pointer(v21, occurredCopy);
 
-            if (v6)
+            if (preparationCopy)
             {
-              if (v5)
+              if (beginCopy)
               {
                 if (v15 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v13))
                 {
@@ -898,7 +898,7 @@
 
             else
             {
-              if (v5)
+              if (beginCopy)
               {
                 if (v15 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v13))
                 {
@@ -931,11 +931,11 @@
           {
             v13 = PLAnimationTelemetryGetLog();
             v25 = PLAnimationTelemetryGetLog();
-            v15 = os_signpost_id_make_with_pointer(v25, v8);
+            v15 = os_signpost_id_make_with_pointer(v25, occurredCopy);
 
-            if (v6)
+            if (preparationCopy)
             {
-              if (v5)
+              if (beginCopy)
               {
                 if (v15 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v13))
                 {
@@ -960,7 +960,7 @@
 
             else
             {
-              if (v5)
+              if (beginCopy)
               {
                 if (v15 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v13))
                 {
@@ -990,11 +990,11 @@
           {
             v13 = PLAnimationTelemetryGetLog();
             v14 = PLAnimationTelemetryGetLog();
-            v15 = os_signpost_id_make_with_pointer(v14, v8);
+            v15 = os_signpost_id_make_with_pointer(v14, occurredCopy);
 
-            if (v6)
+            if (preparationCopy)
             {
-              if (v5)
+              if (beginCopy)
               {
                 if (v15 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v13))
                 {
@@ -1023,7 +1023,7 @@ LABEL_177:
 
             else
             {
-              if (v5)
+              if (beginCopy)
               {
                 if (v15 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v13))
                 {
@@ -1051,14 +1051,14 @@ LABEL_274:
 LABEL_275:
 
 LABEL_276:
-            [v12 removeObject:{v8, *v35}];
+            [v12 removeObject:{occurredCopy, *v35}];
             goto LABEL_277;
           }
         }
       }
     }
 
-    if (v5)
+    if (beginCopy)
     {
       goto LABEL_277;
     }
@@ -1069,11 +1069,11 @@ LABEL_276:
 LABEL_277:
 }
 
-- (void)zoomLevelTransitionDidBegin:(id)a3
+- (void)zoomLevelTransitionDidBegin:(id)begin
 {
-  v4 = a3;
-  [(PXCuratedLibraryAnimationTracker *)self _zoomLevelTransitionOccurred:v4 isPreparation:1 isBegin:0];
-  [(PXCuratedLibraryAnimationTracker *)self _zoomLevelTransitionOccurred:v4 isPreparation:0 isBegin:1];
+  beginCopy = begin;
+  [(PXCuratedLibraryAnimationTracker *)self _zoomLevelTransitionOccurred:beginCopy isPreparation:1 isBegin:0];
+  [(PXCuratedLibraryAnimationTracker *)self _zoomLevelTransitionOccurred:beginCopy isPreparation:0 isBegin:1];
 }
 
 - (PXCuratedLibraryAnimationTracker)init
@@ -1091,19 +1091,19 @@ LABEL_277:
   return v2;
 }
 
-+ (void)_scrollAnimationOccurredWithContext:(id)a3 isBegin:(BOOL)a4
++ (void)_scrollAnimationOccurredWithContext:(id)context isBegin:(BOOL)begin
 {
-  v4 = a4;
-  if (a3.var0 <= 2)
+  beginCopy = begin;
+  if (context.var0 <= 2)
   {
-    if (a3.var0 == 1)
+    if (context.var0 == 1)
     {
-      switch(a3.var1)
+      switch(context.var1)
       {
         case 3:
           v5 = PLAnimationTelemetryGetLog();
           v17 = os_signpost_enabled(v5);
-          if (v4)
+          if (beginCopy)
           {
             if (v17)
             {
@@ -1126,7 +1126,7 @@ LABEL_277:
         case 2:
           v5 = PLAnimationTelemetryGetLog();
           v13 = os_signpost_enabled(v5);
-          if (v4)
+          if (beginCopy)
           {
             if (v13)
             {
@@ -1149,7 +1149,7 @@ LABEL_277:
         case 1:
           v5 = PLAnimationTelemetryGetLog();
           v9 = os_signpost_enabled(v5);
-          if (v4)
+          if (beginCopy)
           {
             if (v9)
             {
@@ -1176,17 +1176,17 @@ LABEL_277:
 
     else
     {
-      if (a3.var0 != 2)
+      if (context.var0 != 2)
       {
         return;
       }
 
-      switch(a3.var1)
+      switch(context.var1)
       {
         case 3:
           v5 = PLAnimationTelemetryGetLog();
           v15 = os_signpost_enabled(v5);
-          if (v4)
+          if (beginCopy)
           {
             if (v15)
             {
@@ -1209,7 +1209,7 @@ LABEL_277:
         case 2:
           v5 = PLAnimationTelemetryGetLog();
           v11 = os_signpost_enabled(v5);
-          if (v4)
+          if (beginCopy)
           {
             if (v11)
             {
@@ -1232,7 +1232,7 @@ LABEL_277:
         case 1:
           v5 = PLAnimationTelemetryGetLog();
           v6 = os_signpost_enabled(v5);
-          if (v4)
+          if (beginCopy)
           {
             if (v6)
             {
@@ -1268,14 +1268,14 @@ LABEL_79:
     goto LABEL_80;
   }
 
-  if (a3.var0 == 3)
+  if (context.var0 == 3)
   {
-    switch(a3.var1)
+    switch(context.var1)
     {
       case 3:
         v5 = PLAnimationTelemetryGetLog();
         v18 = os_signpost_enabled(v5);
-        if (v4)
+        if (beginCopy)
         {
           if (v18)
           {
@@ -1298,7 +1298,7 @@ LABEL_79:
       case 2:
         v5 = PLAnimationTelemetryGetLog();
         v14 = os_signpost_enabled(v5);
-        if (v4)
+        if (beginCopy)
         {
           if (v14)
           {
@@ -1321,7 +1321,7 @@ LABEL_79:
       case 1:
         v5 = PLAnimationTelemetryGetLog();
         v10 = os_signpost_enabled(v5);
-        if (v4)
+        if (beginCopy)
         {
           if (v10)
           {
@@ -1348,16 +1348,16 @@ LABEL_79:
     goto LABEL_79;
   }
 
-  if (a3.var0 != 4)
+  if (context.var0 != 4)
   {
     return;
   }
 
-  if (a3.var1 == 3)
+  if (context.var1 == 3)
   {
     v5 = PLAnimationTelemetryGetLog();
     v16 = os_signpost_enabled(v5);
-    if (v4)
+    if (beginCopy)
     {
       if (v16)
       {
@@ -1379,11 +1379,11 @@ LABEL_79:
     goto LABEL_79;
   }
 
-  if (a3.var1 == 2)
+  if (context.var1 == 2)
   {
     v5 = PLAnimationTelemetryGetLog();
     v12 = os_signpost_enabled(v5);
-    if (v4)
+    if (beginCopy)
     {
       if (v12)
       {
@@ -1405,14 +1405,14 @@ LABEL_79:
     goto LABEL_79;
   }
 
-  if (a3.var1 != 1)
+  if (context.var1 != 1)
   {
     return;
   }
 
   v5 = PLAnimationTelemetryGetLog();
   v8 = os_signpost_enabled(v5);
-  if (!v4)
+  if (!beginCopy)
   {
     if (!v8)
     {

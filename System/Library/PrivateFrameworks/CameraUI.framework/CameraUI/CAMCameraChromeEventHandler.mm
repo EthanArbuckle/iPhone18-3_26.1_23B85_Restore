@@ -1,11 +1,11 @@
 @interface CAMCameraChromeEventHandler
 - (CAMCameraChromeEventHandler)init;
-- (CAMCameraChromeEventHandler)initWithViewfinderViewController:(id)a3;
+- (CAMCameraChromeEventHandler)initWithViewfinderViewController:(id)controller;
 @end
 
 @implementation CAMCameraChromeEventHandler
 
-- (CAMCameraChromeEventHandler)initWithViewfinderViewController:(id)a3
+- (CAMCameraChromeEventHandler)initWithViewfinderViewController:(id)controller
 {
   swift_unknownObjectWeakInit();
   swift_unknownObjectWeakAssign();

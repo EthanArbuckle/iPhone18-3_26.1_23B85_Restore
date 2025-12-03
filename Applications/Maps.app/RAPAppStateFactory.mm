@@ -1,41 +1,41 @@
 @interface RAPAppStateFactory
-+ (void)createAppStateWithMapView:(id)a3 lookAroundContext:(id)a4 traits:(id)a5 completion:(id)a6;
-+ (void)createAppStateWithMapView:(id)a3 traits:(id)a4 place:(id)a5 searchDataSource:(id)a6 directionsDataSource:(id)a7 shouldLoadHomeWorkShortcuts:(BOOL)a8 completion:(id)a9;
-+ (void)createAppStateWithTraits:(id)a3 curatedCollectionContext:(id)a4 completion:(id)a5;
++ (void)createAppStateWithMapView:(id)view lookAroundContext:(id)context traits:(id)traits completion:(id)completion;
++ (void)createAppStateWithMapView:(id)view traits:(id)traits place:(id)place searchDataSource:(id)source directionsDataSource:(id)dataSource shouldLoadHomeWorkShortcuts:(BOOL)shortcuts completion:(id)completion;
++ (void)createAppStateWithTraits:(id)traits curatedCollectionContext:(id)context completion:(id)completion;
 @end
 
 @implementation RAPAppStateFactory
 
-+ (void)createAppStateWithTraits:(id)a3 curatedCollectionContext:(id)a4 completion:(id)a5
++ (void)createAppStateWithTraits:(id)traits curatedCollectionContext:(id)context completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[RAPAppState alloc] initWithTraits:v9 curatedCollectionContext:v8];
+  completionCopy = completion;
+  contextCopy = context;
+  traitsCopy = traits;
+  v10 = [[RAPAppState alloc] initWithTraits:traitsCopy curatedCollectionContext:contextCopy];
 
-  v7[2](v7, v10);
+  completionCopy[2](completionCopy, v10);
 }
 
-+ (void)createAppStateWithMapView:(id)a3 lookAroundContext:(id)a4 traits:(id)a5 completion:(id)a6
++ (void)createAppStateWithMapView:(id)view lookAroundContext:(id)context traits:(id)traits completion:(id)completion
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[RAPAppState alloc] initWithMapView:v12 lookAroundContext:v11 traits:v10];
+  completionCopy = completion;
+  traitsCopy = traits;
+  contextCopy = context;
+  viewCopy = view;
+  v13 = [[RAPAppState alloc] initWithMapView:viewCopy lookAroundContext:contextCopy traits:traitsCopy];
 
-  v9[2](v9, v13);
+  completionCopy[2](completionCopy, v13);
 }
 
-+ (void)createAppStateWithMapView:(id)a3 traits:(id)a4 place:(id)a5 searchDataSource:(id)a6 directionsDataSource:(id)a7 shouldLoadHomeWorkShortcuts:(BOOL)a8 completion:(id)a9
++ (void)createAppStateWithMapView:(id)view traits:(id)traits place:(id)place searchDataSource:(id)source directionsDataSource:(id)dataSource shouldLoadHomeWorkShortcuts:(BOOL)shortcuts completion:(id)completion
 {
-  v9 = a8;
-  v33 = a3;
-  v32 = a4;
-  v31 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = a9;
+  shortcutsCopy = shortcuts;
+  viewCopy = view;
+  traitsCopy = traits;
+  placeCopy = place;
+  sourceCopy = source;
+  dataSourceCopy = dataSource;
+  completionCopy = completion;
   v72[0] = 0;
   v72[1] = v72;
   v72[2] = 0x3032000000;
@@ -104,11 +104,11 @@
   v22 = v21;
   v54 = v22;
   [RAPAuxiliaryControlsRecorder fetchCurrentlyConnectedControlsWithCompletion:v53];
-  if (v9)
+  if (shortcutsCopy)
   {
     dispatch_group_enter(v22);
     v23 = MapsSuggestionsResourceDepotForMapsProcess();
-    v24 = [v23 oneFavorites];
+    oneFavorites = [v23 oneFavorites];
 
     v48[0] = _NSConcreteStackBlock;
     v48[1] = 3221225472;
@@ -118,32 +118,32 @@
     v51 = v64;
     v52 = v62;
     v49 = v22;
-    [v24 loadAllShortcutsWithHandler:v48];
+    [oneFavorites loadAllShortcutsWithHandler:v48];
   }
 
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100E632D0;
   block[3] = &unk_101656648;
-  v47 = v9;
-  v35 = v33;
-  v36 = v32;
+  v47 = shortcutsCopy;
+  v35 = viewCopy;
+  v36 = traitsCopy;
   v41 = v72;
   v42 = v70;
-  v37 = v31;
-  v38 = v14;
+  v37 = placeCopy;
+  v38 = sourceCopy;
   v43 = v68;
   v44 = v66;
   v45 = v64;
   v46 = v62;
-  v39 = v15;
-  v40 = v16;
-  v25 = v16;
-  v26 = v15;
-  v27 = v14;
-  v28 = v31;
-  v29 = v32;
-  v30 = v33;
+  v39 = dataSourceCopy;
+  v40 = completionCopy;
+  v25 = completionCopy;
+  v26 = dataSourceCopy;
+  v27 = sourceCopy;
+  v28 = placeCopy;
+  v29 = traitsCopy;
+  v30 = viewCopy;
   dispatch_group_notify(v22, &_dispatch_main_q, block);
 
   _Block_object_dispose(v62, 8);

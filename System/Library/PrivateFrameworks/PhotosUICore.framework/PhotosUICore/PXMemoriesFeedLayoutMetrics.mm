@@ -1,6 +1,6 @@
 @interface PXMemoriesFeedLayoutMetrics
 - (UIEdgeInsets)contentInsets;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PXMemoriesFeedLayoutMetrics
@@ -18,11 +18,11 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = PXMemoriesFeedLayoutMetrics;
-  v4 = [(PXLayoutMetrics *)&v7 copyWithZone:a3];
+  v4 = [(PXLayoutMetrics *)&v7 copyWithZone:zone];
   objc_storeStrong(v4 + 3, self->_spec);
   v5 = *&self->_contentInsets.bottom;
   *(v4 + 2) = *&self->_contentInsets.top;

@@ -1,5 +1,5 @@
 @interface NWConcrete_nw_endpoint_handler
-- (id)initWithEndpoint:(void *)a3 parameters:(void *)a4 reportCallback:(void *)a5 context:(void *)a6 parent:(unsigned int)a7 identifier:(unsigned __int8 *)a8 connection_uuid:;
+- (id)initWithEndpoint:(void *)endpoint parameters:(void *)parameters reportCallback:(void *)callback context:(void *)context parent:(unsigned int)parent identifier:(unsigned __int8 *)identifier connection_uuid:;
 - (void)dealloc;
 @end
 
@@ -24,8 +24,8 @@
     goto LABEL_99;
   }
 
-  v5 = self;
-  v6 = *(v5 + 284);
+  selfCopy = self;
+  v6 = *(selfCopy + 284);
 
   if ((v6 & 0x40) != 0)
   {
@@ -38,10 +38,10 @@
   }
 
   v7 = gconnectionLogObj;
-  v8 = v5;
+  v8 = selfCopy;
 
   v9 = v8;
-  v10 = *(v5 + 284);
+  v10 = *(selfCopy + 284);
 
   if (v10)
   {
@@ -229,7 +229,7 @@ LABEL_126:
       v38 = v23;
 
       v39 = v38;
-      v40 = (*(v5 + 284) & 1) == 0;
+      v40 = (*(selfCopy + 284) & 1) == 0;
 
       if (v40)
       {
@@ -348,7 +348,7 @@ LABEL_125:
     v45 = v23;
 
     v46 = v45;
-    v47 = (*(v5 + 284) & 1) == 0;
+    v47 = (*(selfCopy + 284) & 1) == 0;
 
     if (v47)
     {
@@ -463,7 +463,7 @@ LABEL_118:
   v28 = v23;
 
   v29 = v28;
-  v30 = (*(v5 + 284) & 1) == 0;
+  v30 = (*(selfCopy + 284) & 1) == 0;
 
   if (v30)
   {
@@ -579,39 +579,39 @@ LABEL_99:
   [(NWConcrete_nw_endpoint_handler *)&v100 dealloc:v88];
 }
 
-- (id)initWithEndpoint:(void *)a3 parameters:(void *)a4 reportCallback:(void *)a5 context:(void *)a6 parent:(unsigned int)a7 identifier:(unsigned __int8 *)a8 connection_uuid:
+- (id)initWithEndpoint:(void *)endpoint parameters:(void *)parameters reportCallback:(void *)callback context:(void *)context parent:(unsigned int)parent identifier:(unsigned __int8 *)identifier connection_uuid:
 {
   v42 = *MEMORY[0x1E69E9840];
   v16 = a2;
-  v17 = a3;
-  v18 = a5;
-  v19 = a6;
-  if (!a1)
+  endpointCopy = endpoint;
+  callbackCopy = callback;
+  contextCopy = context;
+  if (!self)
   {
     goto LABEL_7;
   }
 
-  v37.receiver = a1;
+  v37.receiver = self;
   v37.super_class = NWConcrete_nw_endpoint_handler;
   v20 = objc_msgSendSuper2(&v37, sel_init);
-  a1 = v20;
+  self = v20;
   if (v20)
   {
     objc_storeStrong(v20 + 3, a2);
-    v21 = _nw_parameters_copy_immutable(v17);
-    v22 = a1[4];
-    a1[4] = v21;
+    v21 = _nw_parameters_copy_immutable(endpointCopy);
+    v22 = self[4];
+    self[4] = v21;
 
-    a1[1] = a4;
-    objc_storeWeak(a1 + 2, v18);
-    *(a1 + 30) = 0;
-    *(a1 + 28) = 0;
-    v23 = nw_parameters_copy_context(v17);
-    v24 = a1[5];
-    a1[5] = v23;
+    self[1] = parameters;
+    objc_storeWeak(self + 2, callbackCopy);
+    *(self + 30) = 0;
+    *(self + 28) = 0;
+    v23 = nw_parameters_copy_context(endpointCopy);
+    v24 = self[5];
+    self[5] = v23;
 
-    *(a1 + 70) = 0;
-    if (nw_parameters_get_logging_disabled(v17))
+    *(self + 70) = 0;
+    if (nw_parameters_get_logging_disabled(endpointCopy))
     {
       v25 = 64;
     }
@@ -621,8 +621,8 @@ LABEL_99:
       v25 = 0;
     }
 
-    *(a1 + 284) = *(a1 + 284) & 0xBF | v25;
-    nw_endpoint_handler_inherit_from_parent(a1, v19, a7, a8);
+    *(self + 284) = *(self + 284) & 0xBF | v25;
+    nw_endpoint_handler_inherit_from_parent(self, contextCopy, parent, identifier);
     goto LABEL_7;
   }
 
@@ -695,10 +695,10 @@ LABEL_24:
     free(v28);
   }
 
-  a1 = 0;
+  self = 0;
 LABEL_7:
 
-  return a1;
+  return self;
 }
 
 @end

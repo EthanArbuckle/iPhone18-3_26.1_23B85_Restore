@@ -2,7 +2,7 @@
 + (NWHostEndpoint)endpointWithHostname:(NSString *)hostname port:(NSString *)port;
 - (NSString)hostname;
 - (NSString)port;
-- (id)descriptionWithIndent:(int)a3 showFullContent:(BOOL)a4;
+- (id)descriptionWithIndent:(int)indent showFullContent:(BOOL)content;
 @end
 
 @implementation NWHostEndpoint
@@ -125,8 +125,8 @@ LABEL_15:
 - (NSString)port
 {
   v22 = *MEMORY[0x1E69E9840];
-  v2 = [(NWEndpoint *)self internalEndpoint];
-  v3 = nw_endpoint_copy_port_string(v2);
+  internalEndpoint = [(NWEndpoint *)self internalEndpoint];
+  v3 = nw_endpoint_copy_port_string(internalEndpoint);
 
   if (v3)
   {
@@ -241,14 +241,14 @@ LABEL_15:
 - (NSString)hostname
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = [(NWEndpoint *)self internalEndpoint];
-  v4 = nw_endpoint_get_type(v3);
+  internalEndpoint = [(NWEndpoint *)self internalEndpoint];
+  v4 = nw_endpoint_get_type(internalEndpoint);
 
-  v5 = [(NWEndpoint *)self internalEndpoint];
-  v6 = v5;
+  internalEndpoint2 = [(NWEndpoint *)self internalEndpoint];
+  v6 = internalEndpoint2;
   if (v4 == nw_endpoint_type_address)
   {
-    address = nw_endpoint_get_address(v5);
+    address = nw_endpoint_get_address(internalEndpoint2);
     if (address)
     {
       v8 = getnameinfo(address, address->sa_len, buf, 0x46u, 0, 0, 10);
@@ -270,7 +270,7 @@ LABEL_15:
     goto LABEL_27;
   }
 
-  hostname = nw_endpoint_get_hostname(v5);
+  hostname = nw_endpoint_get_hostname(internalEndpoint2);
 
   if (hostname)
   {
@@ -374,46 +374,46 @@ LABEL_27:
   return v12;
 }
 
-- (id)descriptionWithIndent:(int)a3 showFullContent:(BOOL)a4
+- (id)descriptionWithIndent:(int)indent showFullContent:(BOOL)content
 {
-  v4 = a4;
-  v5 = *&a3;
-  v7 = [(NWEndpoint *)self txtRecord];
-  if (v7)
+  contentCopy = content;
+  v5 = *&indent;
+  txtRecord = [(NWEndpoint *)self txtRecord];
+  if (txtRecord)
   {
 
 LABEL_4:
     v9 = objc_alloc_init(MEMORY[0x1E696AD60]);
-    v10 = [(NWHostEndpoint *)self hostname];
-    [v9 appendPrettyObject:v10 withName:@"hostname" indent:v5 showFullContent:1];
+    hostname = [(NWHostEndpoint *)self hostname];
+    [v9 appendPrettyObject:hostname withName:@"hostname" indent:v5 showFullContent:1];
 
-    v11 = [(NWHostEndpoint *)self port];
-    [v9 appendPrettyObject:v11 withName:@"port" indent:v5 showFullContent:1];
+    port = [(NWHostEndpoint *)self port];
+    [v9 appendPrettyObject:port withName:@"port" indent:v5 showFullContent:1];
 
-    v12 = [(NWEndpoint *)self interface];
-    [v9 appendPrettyObject:v12 withName:@"interface" indent:v5 showFullContent:v4];
+    interface = [(NWEndpoint *)self interface];
+    [v9 appendPrettyObject:interface withName:@"interface" indent:v5 showFullContent:contentCopy];
 
-    v13 = [(NWEndpoint *)self txtRecord];
-    [v9 appendPrettyObject:v13 withName:@"txtRecord" indent:v5 showFullContent:v4];
+    txtRecord2 = [(NWEndpoint *)self txtRecord];
+    [v9 appendPrettyObject:txtRecord2 withName:@"txtRecord" indent:v5 showFullContent:contentCopy];
 
-    v14 = [(NWEndpoint *)self parentEndpointDomain];
-    [v9 appendPrettyObject:v14 withName:@"parentEndpointDomain" indent:v5 showFullContent:1];
+    parentEndpointDomain = [(NWEndpoint *)self parentEndpointDomain];
+    [v9 appendPrettyObject:parentEndpointDomain withName:@"parentEndpointDomain" indent:v5 showFullContent:1];
     goto LABEL_5;
   }
 
-  v8 = [(NWEndpoint *)self parentEndpointDomain];
+  parentEndpointDomain2 = [(NWEndpoint *)self parentEndpointDomain];
 
-  if (v8)
+  if (parentEndpointDomain2)
   {
     goto LABEL_4;
   }
 
   v16 = MEMORY[0x1E696AEC0];
-  v17 = [(NWEndpoint *)self internalEndpoint];
-  v14 = v17;
-  if (v17)
+  internalEndpoint = [(NWEndpoint *)self internalEndpoint];
+  parentEndpointDomain = internalEndpoint;
+  if (internalEndpoint)
   {
-    description = _nw_endpoint_get_description(v17);
+    description = _nw_endpoint_get_description(internalEndpoint);
   }
 
   else

@@ -1,18 +1,18 @@
 @interface SCMLPeopleDetector
-- (SCMLPeopleDetector)initWithConfiguration:(id)a3 error:(id *)a4;
-- (id)detectPeople:(id)a3 error:(id *)a4;
+- (SCMLPeopleDetector)initWithConfiguration:(id)configuration error:(id *)error;
+- (id)detectPeople:(id)people error:(id *)error;
 - (uint64_t)initWithConfiguration:error:;
-- (void)_detectPeopleAsynchronously:(id)a3 completionHandler:(id)a4;
-- (void)detectPeopleAsynchronously:(id)a3 completionHandler:(id)a4;
+- (void)_detectPeopleAsynchronously:(id)asynchronously completionHandler:(id)handler;
+- (void)detectPeopleAsynchronously:(id)asynchronously completionHandler:(id)handler;
 - (void)initWithConfiguration:error:;
 @end
 
 @implementation SCMLPeopleDetector
 
-- (SCMLPeopleDetector)initWithConfiguration:(id)a3 error:(id *)a4
+- (SCMLPeopleDetector)initWithConfiguration:(id)configuration error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  configurationCopy = configuration;
   scml::SignpostInterval::SignpostInterval(&v27);
   v6 = v27;
   v7 = v6;
@@ -31,12 +31,12 @@
   v9 = +[SCMLLog textAnalyzer];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v5 locale];
-    v11 = [v10 localeIdentifier];
+    locale = [configurationCopy locale];
+    localeIdentifier = [locale localeIdentifier];
     *buf = 134218242;
     *&buf[4] = self;
     *&buf[12] = 2114;
-    *&buf[14] = v11;
+    *&buf[14] = localeIdentifier;
     _os_log_impl(&dword_1B8A3C000, v9, OS_LOG_TYPE_DEFAULT, "Begin SCMLPeopleDetector init inst=%p loc=%{public}@", buf, 0x16u);
   }
 
@@ -45,9 +45,9 @@
   v12 = [(SCMLPeopleDetector *)&v25 init];
   if (v12)
   {
-    v13 = [v5 locale];
+    locale2 = [configurationCopy locale];
     locale = v12->_locale;
-    v12->_locale = v13;
+    v12->_locale = locale2;
 
     v15 = MEMORY[0x1E696AEC0];
     v16 = scml::strToNSString("person_overrides", 16);
@@ -55,8 +55,8 @@
 
     v18 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v19 = MEMORY[0x1E696AEC0];
-    v20 = [v18 resourcePath];
-    *buf = v20;
+    resourcePath = [v18 resourcePath];
+    *buf = resourcePath;
     *&buf[8] = @"gaze";
     *&buf[16] = v17;
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:buf count:3];
@@ -73,11 +73,11 @@
   return v22;
 }
 
-- (void)detectPeopleAsynchronously:(id)a3 completionHandler:(id)a4
+- (void)detectPeopleAsynchronously:(id)asynchronously completionHandler:(id)handler
 {
   v6 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  scml::SignpostInterval::createAsync(a4);
+  asynchronouslyCopy = asynchronously;
+  scml::SignpostInterval::createAsync(handler);
 }
 
 void __67__SCMLPeopleDetector_detectPeopleAsynchronously_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -137,23 +137,23 @@ void __67__SCMLPeopleDetector_detectPeopleAsynchronously_completionHandler___blo
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_detectPeopleAsynchronously:(id)a3 completionHandler:(id)a4
+- (void)_detectPeopleAsynchronously:(id)asynchronously completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  asynchronouslyCopy = asynchronously;
+  handlerCopy = handler;
   handler = self->_handler;
   ptr = self->_personOverrides.__ptr_;
-  v10 = [v6 string];
+  string = [asynchronouslyCopy string];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __68__SCMLPeopleDetector__detectPeopleAsynchronously_completionHandler___block_invoke;
   v13[3] = &unk_1E7EB3C50;
   v16 = ptr;
-  v11 = v6;
+  v11 = asynchronouslyCopy;
   v14 = v11;
-  v12 = v7;
+  v12 = handlerCopy;
   v15 = v12;
-  [(SCMLPeopleDetectorImpl *)handler predictWithText:v10 completionHandler:v13];
+  [(SCMLPeopleDetectorImpl *)handler predictWithText:string completionHandler:v13];
 }
 
 void __68__SCMLPeopleDetector__detectPeopleAsynchronously_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -378,7 +378,7 @@ LABEL_44:
 - (uint64_t)initWithConfiguration:error:
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else
@@ -389,9 +389,9 @@ LABEL_44:
 
 - (void)initWithConfiguration:error:
 {
-  v2 = **(a1 + 8);
+  v2 = **(self + 8);
   v3 = v2;
-  v4 = *(*(a1 + 8) + 8);
+  v4 = *(*(self + 8) + 8);
   if (v4 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v2))
   {
     *v5 = 0;
@@ -399,7 +399,7 @@ LABEL_44:
   }
 }
 
-- (id)detectPeople:(id)a3 error:(id *)a4
+- (id)detectPeople:(id)people error:(id *)error
 {
   v21 = 0;
   v22 = &v21;
@@ -413,7 +413,7 @@ LABEL_44:
   v18 = __Block_byref_object_copy__0;
   v19 = __Block_byref_object_dispose__0;
   v20 = 0;
-  v6 = a3;
+  peopleCopy = people;
   v7 = dispatch_semaphore_create(0);
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -423,12 +423,12 @@ LABEL_44:
   v14 = &v15;
   v12 = v7;
   v8 = v7;
-  [(SCMLPeopleDetector *)self detectPeopleAsynchronously:v6 completionHandler:v11];
+  [(SCMLPeopleDetector *)self detectPeopleAsynchronously:peopleCopy completionHandler:v11];
 
   dispatch_semaphore_wait(v8, 0xFFFFFFFFFFFFFFFFLL);
-  if (a4)
+  if (error)
   {
-    *a4 = v16[5];
+    *error = v16[5];
   }
 
   v9 = v22[5];

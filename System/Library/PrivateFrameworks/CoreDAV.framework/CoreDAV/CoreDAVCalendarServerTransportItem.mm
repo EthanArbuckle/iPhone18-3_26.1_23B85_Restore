@@ -13,39 +13,39 @@
   v4 = [(CoreDAVItem *)&v24 description];
   [v3 appendFormat:@"[%@]", v4];
 
-  v5 = [(CoreDAVCalendarServerTransportItem *)self subscriptionURL];
-  v6 = [v5 href];
-  v7 = [v6 payloadAsString];
-  [v3 appendFormat:@"\n  Subscription URL: [%@]", v7];
+  subscriptionURL = [(CoreDAVCalendarServerTransportItem *)self subscriptionURL];
+  href = [subscriptionURL href];
+  payloadAsString = [href payloadAsString];
+  [v3 appendFormat:@"\n  Subscription URL: [%@]", payloadAsString];
 
-  v8 = [(CoreDAVCalendarServerTransportItem *)self tokenURL];
-  v9 = [v8 href];
-  v10 = [v9 payloadAsString];
-  [v3 appendFormat:@"\n  Token URL: [%@]", v10];
+  tokenURL = [(CoreDAVCalendarServerTransportItem *)self tokenURL];
+  href2 = [tokenURL href];
+  payloadAsString2 = [href2 payloadAsString];
+  [v3 appendFormat:@"\n  Token URL: [%@]", payloadAsString2];
 
-  v11 = [(CoreDAVCalendarServerTransportItem *)self apsBundleID];
-  v12 = [v11 payloadAsString];
-  [v3 appendFormat:@"\n  APS bundle ID: [%@]", v12];
+  apsBundleID = [(CoreDAVCalendarServerTransportItem *)self apsBundleID];
+  payloadAsString3 = [apsBundleID payloadAsString];
+  [v3 appendFormat:@"\n  APS bundle ID: [%@]", payloadAsString3];
 
-  v13 = [(CoreDAVCalendarServerTransportItem *)self courierServer];
-  v14 = [v13 payloadAsString];
-  [v3 appendFormat:@"\n  Courier server: [%@]", v14];
+  courierServer = [(CoreDAVCalendarServerTransportItem *)self courierServer];
+  payloadAsString4 = [courierServer payloadAsString];
+  [v3 appendFormat:@"\n  Courier server: [%@]", payloadAsString4];
 
-  v15 = [(CoreDAVCalendarServerTransportItem *)self apsEnv];
-  v16 = [v15 payloadAsString];
-  [v3 appendFormat:@"\n  APS Environment: [%@]", v16];
+  apsEnv = [(CoreDAVCalendarServerTransportItem *)self apsEnv];
+  payloadAsString5 = [apsEnv payloadAsString];
+  [v3 appendFormat:@"\n  APS Environment: [%@]", payloadAsString5];
 
-  v17 = [(CoreDAVCalendarServerTransportItem *)self refreshInterval];
-  v18 = [v17 payloadAsString];
-  [v3 appendFormat:@"\n  Refresh Interval: [%@]", v18];
+  refreshInterval = [(CoreDAVCalendarServerTransportItem *)self refreshInterval];
+  payloadAsString6 = [refreshInterval payloadAsString];
+  [v3 appendFormat:@"\n  Refresh Interval: [%@]", payloadAsString6];
 
-  v19 = [(CoreDAVCalendarServerTransportItem *)self xmppServer];
-  v20 = [v19 payloadAsString];
-  [v3 appendFormat:@"\n  XMPP server: [%@]", v20];
+  xmppServer = [(CoreDAVCalendarServerTransportItem *)self xmppServer];
+  payloadAsString7 = [xmppServer payloadAsString];
+  [v3 appendFormat:@"\n  XMPP server: [%@]", payloadAsString7];
 
-  v21 = [(CoreDAVCalendarServerTransportItem *)self xmppURI];
-  v22 = [v21 payloadAsString];
-  [v3 appendFormat:@"\n  XMPP URI: [%@]", v22];
+  xmppURI = [(CoreDAVCalendarServerTransportItem *)self xmppURI];
+  payloadAsString8 = [xmppURI payloadAsString];
+  [v3 appendFormat:@"\n  XMPP URI: [%@]", payloadAsString8];
 
   return v3;
 }
@@ -53,13 +53,13 @@
 + (id)copyParseRules
 {
   v3 = +[CoreDAVItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
   {
     v21 = objc_alloc(MEMORY[0x277CBEAC0]);
-    v22 = a1;
+    selfCopy = self;
     v28 = [CoreDAVParseRule ruleWithMinimumNumber:0 maximumNumber:1 nameSpace:@"http://calendarserver.org/ns/" elementName:@"subscription-url" objectClass:objc_opt_class() setterMethod:sel_setSubscriptionURL_];
     v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@", @"http://calendarserver.org/ns/", @"subscription-url"];
     v26 = [CoreDAVParseRule ruleWithMinimumNumber:0 maximumNumber:1 nameSpace:@"http://calendarserver.org/ns/" elementName:@"token-url" objectClass:objc_opt_class() setterMethod:sel_setTokenURL_];
@@ -81,7 +81,7 @@
     v5 = [v21 initWithObjectsAndKeys:{v28, v27, v26, v25, v23, v24, v20, v19, v18, v17, v16, v15, v14, v6, v13, v7, v8, v9, 0}];
 
     v10 = +[CoreDAVItem parseRuleCache];
-    v11 = NSStringFromClass(v22);
+    v11 = NSStringFromClass(selfCopy);
     [v10 setObject:v5 forKey:v11];
   }
 

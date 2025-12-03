@@ -1,15 +1,15 @@
 @interface PPSSignpostTimeSeriesTask
-+ (id)_signpostAnimiationIntervalData:(id)a3;
-+ (id)_signpostIntervalData:(id)a3;
-+ (id)_workflowEventData:(id)a3;
-+ (id)_workflowEventTrackerData:(id)a3;
-+ (id)_workflowIncompleteIntervalData:(id)a3;
-+ (id)_workflowIntervalData:(id)a3;
-+ (id)_workflowSignpostTrackerData:(id)a3;
-- (BOOL)perform:(BOOL *)a3 withStopDate:(id *)a4;
-- (PPSSignpostTimeSeriesTask)initWithRequest:(id)a3;
-- (id)_compositeAllowlist:(id)a3;
-- (id)_compressData:(id)a3;
++ (id)_signpostAnimiationIntervalData:(id)data;
++ (id)_signpostIntervalData:(id)data;
++ (id)_workflowEventData:(id)data;
++ (id)_workflowEventTrackerData:(id)data;
++ (id)_workflowIncompleteIntervalData:(id)data;
++ (id)_workflowIntervalData:(id)data;
++ (id)_workflowSignpostTrackerData:(id)data;
+- (BOOL)perform:(BOOL *)perform withStopDate:(id *)date;
+- (PPSSignpostTimeSeriesTask)initWithRequest:(id)request;
+- (id)_compositeAllowlist:(id)allowlist;
+- (id)_compressData:(id)data;
 - (id)_defaultAllowlist;
 - (id)_instrumentationAllowlist;
 - (id)_workflowAllowlist;
@@ -18,10 +18,10 @@
 
 @implementation PPSSignpostTimeSeriesTask
 
-- (PPSSignpostTimeSeriesTask)initWithRequest:(id)a3
+- (PPSSignpostTimeSeriesTask)initWithRequest:(id)request
 {
-  v5 = a3;
-  if (v5)
+  requestCopy = request;
+  if (requestCopy)
   {
     v26.receiver = self;
     v26.super_class = PPSSignpostTimeSeriesTask;
@@ -30,10 +30,10 @@
     if (v6)
     {
       v6->_allowGlitches = 1;
-      v8 = [(PPSSignpostTimeSeriesTask *)v6 _defaultAllowlist];
-      v28[0] = v8;
-      v9 = [(PPSSignpostTimeSeriesTask *)v7 _workflowAllowlist];
-      v28[1] = v9;
+      _defaultAllowlist = [(PPSSignpostTimeSeriesTask *)v6 _defaultAllowlist];
+      v28[0] = _defaultAllowlist;
+      _workflowAllowlist = [(PPSSignpostTimeSeriesTask *)v7 _workflowAllowlist];
+      v28[1] = _workflowAllowlist;
       v10 = [NSArray arrayWithObjects:v28 count:2];
       v11 = [(PPSSignpostTimeSeriesTask *)v7 _compositeAllowlist:v10];
       allowlistForPersistence = v7->_allowlistForPersistence;
@@ -42,8 +42,8 @@
       if (v7->_allowGlitches)
       {
         v27[0] = v7->_allowlistForPersistence;
-        v13 = [(PPSSignpostTimeSeriesTask *)v7 _instrumentationAllowlist];
-        v27[1] = v13;
+        _instrumentationAllowlist = [(PPSSignpostTimeSeriesTask *)v7 _instrumentationAllowlist];
+        v27[1] = _instrumentationAllowlist;
         v14 = [NSArray arrayWithObjects:v27 count:2];
         v15 = [(PPSSignpostTimeSeriesTask *)v7 _compositeAllowlist:v14];
         allowlistForParsing = v7->_allowlistForParsing;
@@ -53,7 +53,7 @@
       else
       {
         v18 = v7->_allowlistForPersistence;
-        v13 = v7->_allowlistForParsing;
+        _instrumentationAllowlist = v7->_allowlistForParsing;
         v7->_allowlistForParsing = v18;
       }
 
@@ -63,25 +63,25 @@
       targetDirectory = v7->_targetDirectory;
       v7->_targetDirectory = v21;
 
-      objc_storeStrong(&v7->_request, a3);
+      objc_storeStrong(&v7->_request, request);
       v23 = objc_opt_new();
       timeSeries = v7->_timeSeries;
       v7->_timeSeries = v23;
     }
 
     self = v7;
-    v17 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v17 = 0;
+    selfCopy = 0;
   }
 
-  return v17;
+  return selfCopy;
 }
 
-- (BOOL)perform:(BOOL *)a3 withStopDate:(id *)a4
+- (BOOL)perform:(BOOL *)perform withStopDate:(id *)date
 {
   v36 = objc_alloc_init(SignpostSupportObjectExtractor);
   [v36 setShouldComposeMetadataString:0];
@@ -91,8 +91,8 @@
   v56[3] = &unk_100010A10;
   val = self;
   v56[4] = self;
-  v56[5] = a3;
-  v33 = a3;
+  v56[5] = perform;
+  performCopy = perform;
   v34 = objc_retainBlock(v56);
   [v36 setIntervalCompletionProcessingBlock:v34];
   v55[0] = _NSConcreteStackBlock;
@@ -124,16 +124,16 @@
           }
 
           v11 = *(*(&v51 + 1) + 8 * i);
-          v12 = [v11 contextualTelemetryEnabled];
+          contextualTelemetryEnabled = [v11 contextualTelemetryEnabled];
           v13 = PPSLogSignpostTimeSeriesTask();
           v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
-          if (v12)
+          if (contextualTelemetryEnabled)
           {
             if (v14)
             {
-              v15 = [v11 name];
+              name = [v11 name];
               *buf = 138412290;
-              v58 = v15;
+              v58 = name;
               _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Setting up tracker for workflow '%@'...", buf, 0xCu);
             }
 
@@ -152,12 +152,12 @@
           {
             if (v14)
             {
-              v18 = [v11 name];
-              v19 = [v11 contextualTelemetryEnabled];
+              name2 = [v11 name];
+              contextualTelemetryEnabled2 = [v11 contextualTelemetryEnabled];
               *buf = 138412546;
-              v58 = v18;
+              v58 = name2;
               v59 = 1024;
-              v60 = v19;
+              v60 = contextualTelemetryEnabled2;
               _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Skipping workflow '%@' (contextualTelemetryEnabled=%d)...", buf, 0x12u);
             }
           }
@@ -175,7 +175,7 @@
     v47[3] = &unk_100010A88;
     v20 = v6;
     v48 = v20;
-    v49 = v33;
+    v49 = performCopy;
     v21 = objc_retainBlock(v47);
     [v36 setEmitEventProcessingBlock:v21];
     [v36 setBeginEventProcessingBlock:v21];
@@ -186,7 +186,7 @@
     v43[4] = val;
     v44 = v21;
     v45 = v34;
-    v46 = v33;
+    v46 = performCopy;
     v22 = v21;
     [v36 setIntervalCompletionProcessingBlock:v43];
     v40[0] = _NSConcreteStackBlock;
@@ -194,25 +194,25 @@
     v40[2] = sub_100005398;
     v40[3] = &unk_100010AD8;
     v41 = v20;
-    v42 = v33;
+    v42 = performCopy;
     v23 = v20;
     [v36 setDeviceRebootProcessingBlock:v40];
   }
 
   [v36 setSubsystemCategoryFilter:val->_allowlistForParsing];
-  v24 = [(PPSSignpostServiceRequest *)val->_request sourceURL];
-  v25 = [v24 path];
-  v26 = [(PPSSignpostServiceRequest *)val->_request startDate];
-  v27 = [(PPSSignpostServiceRequest *)val->_request endDate];
+  sourceURL = [(PPSSignpostServiceRequest *)val->_request sourceURL];
+  path = [sourceURL path];
+  startDate = [(PPSSignpostServiceRequest *)val->_request startDate];
+  endDate = [(PPSSignpostServiceRequest *)val->_request endDate];
   v39 = 0;
-  v28 = [v36 processLogArchiveWithPath:v25 startDate:v26 endDate:v27 errorOut:&v39];
+  v28 = [v36 processLogArchiveWithPath:path startDate:startDate endDate:endDate errorOut:&v39];
   v29 = v39;
 
   if (v28)
   {
-    if (a4)
+    if (date)
     {
-      *a4 = [(PPSSignpostTimeSeriesTask *)val lastSignpostDate];
+      *date = [(PPSSignpostTimeSeriesTask *)val lastSignpostDate];
     }
 
     objc_initWeak(buf, val);
@@ -234,16 +234,16 @@
   return v28;
 }
 
-- (id)_compositeAllowlist:(id)a3
+- (id)_compositeAllowlist:(id)allowlist
 {
-  v3 = a3;
+  allowlistCopy = allowlist;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100005804;
   v6[3] = &unk_100010B28;
   v4 = objc_alloc_init(SignpostSupportSubsystemCategoryAllowlist);
   v7 = v4;
-  [v3 enumerateObjectsUsingBlock:v6];
+  [allowlistCopy enumerateObjectsUsingBlock:v6];
 
   return v4;
 }
@@ -287,22 +287,22 @@
   return v3;
 }
 
-+ (id)_signpostAnimiationIntervalData:(id)a3
++ (id)_signpostAnimiationIntervalData:(id)data
 {
-  v4 = a3;
-  v5 = [a1 _signpostIntervalData:v4];
+  dataCopy = data;
+  v5 = [self _signpostIntervalData:dataCopy];
   v6 = [v5 mutableCopy];
 
-  v7 = [v4 beginEvent];
-  v8 = +[SignpostAnimationOverrunQuery nonFirstFrameContributedGlitches:](SignpostAnimationOverrunQuery, "nonFirstFrameContributedGlitches:", [v7 processID]);
+  beginEvent = [dataCopy beginEvent];
+  v8 = +[SignpostAnimationOverrunQuery nonFirstFrameContributedGlitches:](SignpostAnimationOverrunQuery, "nonFirstFrameContributedGlitches:", [beginEvent processID]);
 
-  v9 = [v4 overrunIntervals:v8];
+  v9 = [dataCopy overrunIntervals:v8];
   v10 = [v9 count];
 
   v11 = [NSNumber numberWithUnsignedInteger:v10];
   [v6 setObject:v11 forKeyedSubscript:@"perceivedGlitchCount"];
 
-  [v4 nonFirstFrameContributedGlitchTimeRatioAdjustedMsPerS];
+  [dataCopy nonFirstFrameContributedGlitchTimeRatioAdjustedMsPerS];
   v12 = [NSNumber numberWithDouble:?];
   [v6 setObject:v12 forKeyedSubscript:@"perceivedGlitchRatio"];
 
@@ -324,7 +324,7 @@
     v17 = [v6 objectForKeyedSubscript:@"Subsystem"];
     v18 = [v6 objectForKeyedSubscript:@"Category"];
     v19 = [v6 objectForKeyedSubscript:@"Name"];
-    v20 = [v4 beginDate];
+    beginDate = [dataCopy beginDate];
     v22 = 138413314;
     v23 = v16;
     v24 = 2112;
@@ -334,174 +334,174 @@
     v28 = 2112;
     v29 = v19;
     v30 = 2112;
-    v31 = v20;
+    v31 = beginDate;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Generated animation interval data for process '%@': '%@::%@::%@' (%@)", &v22, 0x34u);
   }
 
   return v6;
 }
 
-+ (id)_signpostIntervalData:(id)a3
++ (id)_signpostIntervalData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = objc_opt_new();
   [v4 setObject:@"Powerlog" forKeyedSubscript:@"CollectionType"];
-  v5 = [v3 category];
-  [v4 setObject:v5 forKeyedSubscript:@"Category"];
+  category = [dataCopy category];
+  [v4 setObject:category forKeyedSubscript:@"Category"];
 
-  v6 = [v3 name];
-  [v4 setObject:v6 forKeyedSubscript:@"Name"];
+  name = [dataCopy name];
+  [v4 setObject:name forKeyedSubscript:@"Name"];
 
-  v7 = [v3 subsystem];
-  [v4 setObject:v7 forKeyedSubscript:@"Subsystem"];
+  subsystem = [dataCopy subsystem];
+  [v4 setObject:subsystem forKeyedSubscript:@"Subsystem"];
 
-  [v3 timebaseRatio];
+  [dataCopy timebaseRatio];
   v8 = [NSNumber numberWithDouble:?];
   [v4 setObject:v8 forKeyedSubscript:@"TimebaseRatio"];
 
-  v9 = [v3 string1Name];
-  [v4 setObject:v9 forKeyedSubscript:@"String1Name"];
+  string1Name = [dataCopy string1Name];
+  [v4 setObject:string1Name forKeyedSubscript:@"String1Name"];
 
-  v10 = [v3 string1Value];
-  [v4 setObject:v10 forKeyedSubscript:@"String1Value"];
+  string1Value = [dataCopy string1Value];
+  [v4 setObject:string1Value forKeyedSubscript:@"String1Value"];
 
-  v11 = [v3 string2Name];
-  [v4 setObject:v11 forKeyedSubscript:@"String2Name"];
+  string2Name = [dataCopy string2Name];
+  [v4 setObject:string2Name forKeyedSubscript:@"String2Name"];
 
-  v12 = [v3 string2Value];
-  [v4 setObject:v12 forKeyedSubscript:@"String2Value"];
+  string2Value = [dataCopy string2Value];
+  [v4 setObject:string2Value forKeyedSubscript:@"String2Value"];
 
-  v13 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v3 startMachContinuousTime]);
+  v13 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [dataCopy startMachContinuousTime]);
   [v4 setObject:v13 forKeyedSubscript:@"startMachContinuousTime"];
 
-  v14 = [v3 beginWallTimeStringWithTimeZoneName:0];
+  v14 = [dataCopy beginWallTimeStringWithTimeZoneName:0];
   [v4 setObject:v14 forKeyedSubscript:@"beginWallTime"];
 
-  v15 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v3 endMachContinuousTime]);
+  v15 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [dataCopy endMachContinuousTime]);
   [v4 setObject:v15 forKeyedSubscript:@"endMachContinuousTime"];
 
-  v16 = [v3 endWallTimeStringWithTimeZoneName:0];
+  v16 = [dataCopy endWallTimeStringWithTimeZoneName:0];
   [v4 setObject:v16 forKeyedSubscript:@"endWallTime"];
 
-  v17 = [v3 beginEvent];
+  beginEvent = [dataCopy beginEvent];
 
-  if (v17)
+  if (beginEvent)
   {
-    v18 = [v3 beginEvent];
-    v19 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v18 processID]);
+    beginEvent2 = [dataCopy beginEvent];
+    v19 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [beginEvent2 processID]);
     [v4 setObject:v19 forKeyedSubscript:@"BeginPid"];
 
-    v20 = [v3 beginEvent];
-    v21 = [v20 processName];
-    [v4 setObject:v21 forKeyedSubscript:@"BeginProcessName"];
+    beginEvent3 = [dataCopy beginEvent];
+    processName = [beginEvent3 processName];
+    [v4 setObject:processName forKeyedSubscript:@"BeginProcessName"];
   }
 
-  v22 = [v3 endEvent];
+  endEvent = [dataCopy endEvent];
 
-  if (v22)
+  if (endEvent)
   {
-    v23 = [v3 endEvent];
-    v24 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v23 processID]);
+    endEvent2 = [dataCopy endEvent];
+    v24 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [endEvent2 processID]);
     [v4 setObject:v24 forKeyedSubscript:@"EndPid"];
 
-    v25 = [v3 endEvent];
-    v26 = [v25 processName];
-    [v4 setObject:v26 forKeyedSubscript:@"EndProcessName"];
+    endEvent3 = [dataCopy endEvent];
+    processName2 = [endEvent3 processName];
+    [v4 setObject:processName2 forKeyedSubscript:@"EndProcessName"];
   }
 
-  v27 = [v3 number1Name];
-  if (v27)
+  number1Name = [dataCopy number1Name];
+  if (number1Name)
   {
-    v28 = v27;
-    v29 = [v3 number1Value];
+    v28 = number1Name;
+    number1Value = [dataCopy number1Value];
 
-    if (v29)
+    if (number1Value)
     {
-      v30 = [v3 number1Name];
-      [v4 setObject:v30 forKeyedSubscript:@"Number1Name"];
+      number1Name2 = [dataCopy number1Name];
+      [v4 setObject:number1Name2 forKeyedSubscript:@"Number1Name"];
 
-      v31 = [v3 number1Value];
-      [v4 setObject:v31 forKeyedSubscript:@"Number1Value"];
+      number1Value2 = [dataCopy number1Value];
+      [v4 setObject:number1Value2 forKeyedSubscript:@"Number1Value"];
     }
   }
 
-  v32 = [v3 number2Name];
-  if (v32)
+  number2Name = [dataCopy number2Name];
+  if (number2Name)
   {
-    v33 = v32;
-    v34 = [v3 number2Value];
+    v33 = number2Name;
+    number2Value = [dataCopy number2Value];
 
-    if (v34)
+    if (number2Value)
     {
-      v35 = [v3 number2Name];
-      [v4 setObject:v35 forKeyedSubscript:@"Number2Name"];
+      number2Name2 = [dataCopy number2Name];
+      [v4 setObject:number2Name2 forKeyedSubscript:@"Number2Name"];
 
-      v36 = [v3 number2Value];
-      [v4 setObject:v36 forKeyedSubscript:@"Number2Value"];
+      number2Value2 = [dataCopy number2Value];
+      [v4 setObject:number2Value2 forKeyedSubscript:@"Number2Value"];
     }
   }
 
   if (IsInternalBuild())
   {
-    v37 = [v3 subsystem];
-    v38 = [v37 isEqualToString:@"com.apple.metrickit.log"];
+    subsystem2 = [dataCopy subsystem];
+    v38 = [subsystem2 isEqualToString:@"com.apple.metrickit.log"];
 
     if (v38)
     {
-      v39 = [v3 beginEvent];
-      v40 = [v39 metrics];
+      beginEvent4 = [dataCopy beginEvent];
+      metrics = [beginEvent4 metrics];
 
-      if (v40)
+      if (metrics)
       {
-        v41 = [v3 beginEvent];
-        v42 = [v41 metrics];
-        v43 = [v42 cpuTimeNsec];
-        [v43 doubleValue];
+        beginEvent5 = [dataCopy beginEvent];
+        metrics2 = [beginEvent5 metrics];
+        cpuTimeNsec = [metrics2 cpuTimeNsec];
+        [cpuTimeNsec doubleValue];
         v45 = [NSNumber numberWithDouble:v44 / 1000000000.0];
         [v4 setObject:v45 forKeyedSubscript:@"BeginCPUTime"];
 
-        v46 = [v3 beginEvent];
-        v47 = [v46 metrics];
-        v48 = [v47 dirtyMemoryLifetimePeakKB];
-        [v4 setObject:v48 forKeyedSubscript:@"BeginPeakMemory"];
+        beginEvent6 = [dataCopy beginEvent];
+        metrics3 = [beginEvent6 metrics];
+        dirtyMemoryLifetimePeakKB = [metrics3 dirtyMemoryLifetimePeakKB];
+        [v4 setObject:dirtyMemoryLifetimePeakKB forKeyedSubscript:@"BeginPeakMemory"];
 
-        v49 = [v3 beginEvent];
-        v50 = [v49 metrics];
-        v51 = [v50 dirtyMemoryKB];
-        [v4 setObject:v51 forKeyedSubscript:@"BeginDirtyMemory"];
+        beginEvent7 = [dataCopy beginEvent];
+        metrics4 = [beginEvent7 metrics];
+        dirtyMemoryKB = [metrics4 dirtyMemoryKB];
+        [v4 setObject:dirtyMemoryKB forKeyedSubscript:@"BeginDirtyMemory"];
 
-        v52 = [v3 beginEvent];
-        v53 = [v52 metrics];
-        v54 = [v53 storageDirtiedKB];
-        [v4 setObject:v54 forKeyedSubscript:@"BeginDiskLogicalWrites"];
+        beginEvent8 = [dataCopy beginEvent];
+        metrics5 = [beginEvent8 metrics];
+        storageDirtiedKB = [metrics5 storageDirtiedKB];
+        [v4 setObject:storageDirtiedKB forKeyedSubscript:@"BeginDiskLogicalWrites"];
       }
 
-      v55 = [v3 endEvent];
-      v56 = [v55 metrics];
+      endEvent4 = [dataCopy endEvent];
+      metrics6 = [endEvent4 metrics];
 
-      if (v56)
+      if (metrics6)
       {
-        v57 = [v3 endEvent];
-        v58 = [v57 metrics];
-        v59 = [v58 cpuTimeNsec];
-        [v59 doubleValue];
+        endEvent5 = [dataCopy endEvent];
+        metrics7 = [endEvent5 metrics];
+        cpuTimeNsec2 = [metrics7 cpuTimeNsec];
+        [cpuTimeNsec2 doubleValue];
         v61 = [NSNumber numberWithDouble:v60 / 1000000000.0];
         [v4 setObject:v61 forKeyedSubscript:@"EndCPUTime"];
 
-        v62 = [v3 endEvent];
-        v63 = [v62 metrics];
-        v64 = [v63 dirtyMemoryLifetimePeakKB];
-        [v4 setObject:v64 forKeyedSubscript:@"EndPeakMemory"];
+        endEvent6 = [dataCopy endEvent];
+        metrics8 = [endEvent6 metrics];
+        dirtyMemoryLifetimePeakKB2 = [metrics8 dirtyMemoryLifetimePeakKB];
+        [v4 setObject:dirtyMemoryLifetimePeakKB2 forKeyedSubscript:@"EndPeakMemory"];
 
-        v65 = [v3 endEvent];
-        v66 = [v65 metrics];
-        v67 = [v66 dirtyMemoryKB];
-        [v4 setObject:v67 forKeyedSubscript:@"EndDirtyMemory"];
+        endEvent7 = [dataCopy endEvent];
+        metrics9 = [endEvent7 metrics];
+        dirtyMemoryKB2 = [metrics9 dirtyMemoryKB];
+        [v4 setObject:dirtyMemoryKB2 forKeyedSubscript:@"EndDirtyMemory"];
 
-        v68 = [v3 endEvent];
-        v69 = [v68 metrics];
-        v70 = [v69 storageDirtiedKB];
-        [v4 setObject:v70 forKeyedSubscript:@"EndDiskLogicalWrites"];
+        endEvent8 = [dataCopy endEvent];
+        metrics10 = [endEvent8 metrics];
+        storageDirtiedKB2 = [metrics10 storageDirtiedKB];
+        [v4 setObject:storageDirtiedKB2 forKeyedSubscript:@"EndDiskLogicalWrites"];
       }
     }
   }
@@ -524,7 +524,7 @@
     v75 = [v4 objectForKeyedSubscript:@"Subsystem"];
     v76 = [v4 objectForKeyedSubscript:@"Category"];
     v77 = [v4 objectForKeyedSubscript:@"Name"];
-    v78 = [v3 beginDate];
+    beginDate = [dataCopy beginDate];
     v80 = 138413314;
     v81 = v74;
     v82 = 2112;
@@ -534,55 +534,55 @@
     v86 = 2112;
     v87 = v77;
     v88 = 2112;
-    v89 = v78;
+    v89 = beginDate;
     _os_log_impl(&_mh_execute_header, v71, OS_LOG_TYPE_DEFAULT, "Generated signpost interval data for process '%@': '%@::%@::%@' (%@)", &v80, 0x34u);
   }
 
   return v4;
 }
 
-+ (id)_workflowEventData:(id)a3
++ (id)_workflowEventData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = objc_opt_new();
-  v5 = [v3 machContTimeNs];
+  machContTimeNs = [dataCopy machContTimeNs];
 
-  v6 = [NSNumber numberWithUnsignedLongLong:v5];
+  v6 = [NSNumber numberWithUnsignedLongLong:machContTimeNs];
   [v4 setObject:v6 forKeyedSubscript:@"startMachContinuousTime"];
 
   return v4;
 }
 
-+ (id)_workflowEventTrackerData:(id)a3
++ (id)_workflowEventTrackerData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = objc_opt_new();
   [v4 setObject:@"WorkflowResponsiveness" forKeyedSubscript:@"CollectionType"];
-  v5 = [v3 workflow];
-  v6 = [v5 name];
-  [v4 setObject:v6 forKeyedSubscript:@"WorkflowName"];
+  workflow = [dataCopy workflow];
+  name = [workflow name];
+  [v4 setObject:name forKeyedSubscript:@"WorkflowName"];
 
-  v7 = [v3 eventStart];
-  v8 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v7 machContTimeNs]);
+  eventStart = [dataCopy eventStart];
+  v8 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [eventStart machContTimeNs]);
   [v4 setObject:v8 forKeyedSubscript:@"OverallStartTime"];
 
-  v9 = [v3 eventEnd];
-  v10 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v9 machContTimeNs]);
+  eventEnd = [dataCopy eventEnd];
+  v10 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [eventEnd machContTimeNs]);
   [v4 setObject:v10 forKeyedSubscript:@"OverallEndTime"];
 
-  v11 = [v3 error];
+  error = [dataCopy error];
 
-  if (v11)
+  if (error)
   {
-    v12 = [v3 error];
-    if (v12)
+    error2 = [dataCopy error];
+    if (error2)
     {
-      v13 = [v3 error];
-      v14 = [v13 domain];
-      if ([v14 isEqualToString:WRErrorDomain])
+      error3 = [dataCopy error];
+      domain = [error3 domain];
+      if ([domain isEqualToString:WRErrorDomain])
       {
-        v15 = [v3 error];
-        v16 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v15 code]);
+        error4 = [dataCopy error];
+        v16 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [error4 code]);
         [v4 setObject:v16 forKeyedSubscript:@"ErrorCode"];
       }
 
@@ -601,13 +601,13 @@
   return v4;
 }
 
-+ (id)_workflowIncompleteIntervalData:(id)a3
++ (id)_workflowIncompleteIntervalData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = objc_opt_new();
-  v5 = [v3 machContTimeNs];
+  machContTimeNs = [dataCopy machContTimeNs];
 
-  v6 = [NSNumber numberWithUnsignedLongLong:v5];
+  v6 = [NSNumber numberWithUnsignedLongLong:machContTimeNs];
   [v4 setObject:v6 forKeyedSubscript:@"startMachContinuousTime"];
 
   [v4 setObject:&off_100011B38 forKeyedSubscript:@"endMachContinuousTime"];
@@ -615,15 +615,15 @@
   return v4;
 }
 
-+ (id)_workflowIntervalData:(id)a3
++ (id)_workflowIntervalData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = objc_opt_new();
-  v5 = [v3 start];
-  v6 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v5 machContTimeNs]);
+  start = [dataCopy start];
+  v6 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [start machContTimeNs]);
   [v4 setObject:v6 forKeyedSubscript:@"startMachContinuousTime"];
 
-  v7 = [v3 end];
+  v7 = [dataCopy end];
 
   v8 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v7 machContTimeNs]);
   [v4 setObject:v8 forKeyedSubscript:@"endMachContinuousTime"];
@@ -631,41 +631,41 @@
   return v4;
 }
 
-+ (id)_workflowSignpostTrackerData:(id)a3
++ (id)_workflowSignpostTrackerData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = objc_opt_new();
-  v5 = [v3 signpost];
-  v6 = [v5 name];
-  [v4 setObject:v6 forKeyedSubscript:@"Name"];
+  signpost = [dataCopy signpost];
+  name = [signpost name];
+  [v4 setObject:name forKeyedSubscript:@"Name"];
 
-  v7 = [v3 signpost];
-  v8 = [v7 subsystem];
-  [v4 setObject:v8 forKeyedSubscript:@"Subsystem"];
+  signpost2 = [dataCopy signpost];
+  subsystem = [signpost2 subsystem];
+  [v4 setObject:subsystem forKeyedSubscript:@"Subsystem"];
 
-  v9 = [v3 signpost];
-  v10 = [v9 category];
-  [v4 setObject:v10 forKeyedSubscript:@"Category"];
+  signpost3 = [dataCopy signpost];
+  category = [signpost3 category];
+  [v4 setObject:category forKeyedSubscript:@"Category"];
 
-  v11 = [v3 individuationIdentifier];
-  v12 = [v11 length];
+  individuationIdentifier = [dataCopy individuationIdentifier];
+  v12 = [individuationIdentifier length];
 
   if (v12)
   {
-    v13 = [v3 individuationIdentifier];
-    [v4 setObject:v13 forKeyedSubscript:@"IndividuationIdentifier"];
+    individuationIdentifier2 = [dataCopy individuationIdentifier];
+    [v4 setObject:individuationIdentifier2 forKeyedSubscript:@"IndividuationIdentifier"];
   }
 
-  v24 = v3;
-  v14 = [v3 environment];
-  v15 = v14;
-  if (v14)
+  v24 = dataCopy;
+  environment = [dataCopy environment];
+  v15 = environment;
+  if (environment)
   {
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v16 = [v14 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    v16 = [environment countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v16)
     {
       v17 = v16;
@@ -699,13 +699,13 @@
   return v4;
 }
 
-- (id)_compressData:(id)a3
+- (id)_compressData:(id)data
 {
-  v3 = a3;
-  if ([v3 length])
+  dataCopy = data;
+  if ([dataCopy length])
   {
     memset(&v10.total_out, 0, 72);
-    v10.avail_in = [v3 length];
+    v10.avail_in = [dataCopy length];
     v4 = 0;
     if (!deflateInit2_(&v10, -1, 8, 31, 8, 0, "1.2.12", 112))
     {
@@ -718,8 +718,8 @@
           [v5 increaseLengthBy:0x4000];
         }
 
-        v7 = [v5 mutableBytes];
-        v10.next_out = &v7[v10.total_out];
+        mutableBytes = [v5 mutableBytes];
+        v10.next_out = &mutableBytes[v10.total_out];
         v8 = [v5 length];
         v10.avail_out = v8 - LODWORD(v10.total_out);
         deflate(&v10, 4);
@@ -742,52 +742,52 @@
 
 - (void)_flushTimeSeries
 {
-  v3 = [(PPSSignpostTimeSeriesTask *)self targetDirectory];
+  targetDirectory = [(PPSSignpostTimeSeriesTask *)self targetDirectory];
 
-  if (v3)
+  if (targetDirectory)
   {
     v4 = +[NSFileManager defaultManager];
-    v5 = [(PPSSignpostTimeSeriesTask *)self targetDirectory];
-    [v4 createDirectoryAtURL:v5 withIntermediateDirectories:1 attributes:0 error:0];
+    targetDirectory2 = [(PPSSignpostTimeSeriesTask *)self targetDirectory];
+    [v4 createDirectoryAtURL:targetDirectory2 withIntermediateDirectories:1 attributes:0 error:0];
 
-    v6 = [(PPSSignpostTimeSeriesTask *)self timeSeries];
-    v7 = [NSJSONSerialization dataWithJSONObject:v6 options:0 error:0];
+    timeSeries = [(PPSSignpostTimeSeriesTask *)self timeSeries];
+    v7 = [NSJSONSerialization dataWithJSONObject:timeSeries options:0 error:0];
 
     v8 = [(PPSSignpostTimeSeriesTask *)self _compressData:v7];
     if (v8)
     {
-      v9 = [(PPSSignpostTimeSeriesTask *)self targetDirectory];
-      v10 = [(PPSSignpostTimeSeriesTask *)self firstSignpostDate];
-      [v10 timeIntervalSince1970];
+      targetDirectory3 = [(PPSSignpostTimeSeriesTask *)self targetDirectory];
+      firstSignpostDate = [(PPSSignpostTimeSeriesTask *)self firstSignpostDate];
+      [firstSignpostDate timeIntervalSince1970];
       v12 = [NSString stringWithFormat:@"signpost.%f.json.gz", v11];
-      v13 = [v9 URLByAppendingPathComponent:v12];
+      v13 = [targetDirectory3 URLByAppendingPathComponent:v12];
 
       v50 = 0;
-      LOBYTE(v10) = [v8 writeToURL:v13 options:1 error:&v50];
+      LOBYTE(firstSignpostDate) = [v8 writeToURL:v13 options:1 error:&v50];
       v14 = v50;
       v15 = PPSLogSignpostTimeSeriesTask();
-      v16 = v15;
-      if (v10)
+      timeSeries4 = v15;
+      if (firstSignpostDate)
       {
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
-          v17 = [(PPSSignpostTimeSeriesTask *)self timeSeries];
-          v18 = [v17 count];
-          v19 = [v13 lastPathComponent];
+          timeSeries2 = [(PPSSignpostTimeSeriesTask *)self timeSeries];
+          v18 = [timeSeries2 count];
+          lastPathComponent = [v13 lastPathComponent];
           *buf = 134218242;
           v52 = v18;
           v53 = 2112;
-          v54 = v19;
-          _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Flushed %lu signposts to '%@'", buf, 0x16u);
+          v54 = lastPathComponent;
+          _os_log_impl(&_mh_execute_header, timeSeries4, OS_LOG_TYPE_DEFAULT, "Flushed %lu signposts to '%@'", buf, 0x16u);
         }
 
-        v20 = [(PPSSignpostTimeSeriesTask *)self firstSignpostDate];
-        if (v20)
+        firstSignpostDate2 = [(PPSSignpostTimeSeriesTask *)self firstSignpostDate];
+        if (firstSignpostDate2)
         {
-          v21 = v20;
-          v22 = [(PPSSignpostTimeSeriesTask *)self firstSignpostDate];
+          v21 = firstSignpostDate2;
+          firstSignpostDate3 = [(PPSSignpostTimeSeriesTask *)self firstSignpostDate];
           v49 = v14;
-          v23 = [v13 setResourceValue:v22 forKey:NSURLCreationDateKey error:&v49];
+          v23 = [v13 setResourceValue:firstSignpostDate3 forKey:NSURLCreationDateKey error:&v49];
           v24 = v49;
 
           if ((v23 & 1) == 0)
@@ -808,18 +808,18 @@
         v47 = [NSDate dateWithTimeIntervalSinceNow:129600.0];
         [PPSFileUtilities markAsPurgeable:v13 urgency:512 startDate:v47];
 
-        v48 = [(PPSSignpostTimeSeriesTask *)self timeSeries];
-        -[PPSSignpostTimeSeriesTask setTimeSeriesSize:](self, "setTimeSeriesSize:", [v48 count] + -[PPSSignpostTimeSeriesTask timeSeriesSize](self, "timeSeriesSize"));
+        timeSeries3 = [(PPSSignpostTimeSeriesTask *)self timeSeries];
+        -[PPSSignpostTimeSeriesTask setTimeSeriesSize:](self, "setTimeSeriesSize:", [timeSeries3 count] + -[PPSSignpostTimeSeriesTask timeSeriesSize](self, "timeSeriesSize"));
 
         [(PPSSignpostTimeSeriesTask *)self setOutputFileCount:[(PPSSignpostTimeSeriesTask *)self outputFileCount]+ 1];
-        v16 = [(PPSSignpostTimeSeriesTask *)self timeSeries];
-        [v16 removeAllObjects];
+        timeSeries4 = [(PPSSignpostTimeSeriesTask *)self timeSeries];
+        [timeSeries4 removeAllObjects];
         v14 = v24;
       }
 
       else if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        sub_100007CC4(v16, v40, v41, v42, v43, v44, v45, v46);
+        sub_100007CC4(timeSeries4, v40, v41, v42, v43, v44, v45, v46);
       }
     }
 

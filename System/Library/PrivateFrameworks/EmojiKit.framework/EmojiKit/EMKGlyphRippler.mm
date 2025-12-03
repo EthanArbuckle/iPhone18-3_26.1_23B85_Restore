@@ -1,16 +1,16 @@
 @interface EMKGlyphRippler
-- (BOOL)finishedForGlyphIndex:(unint64_t)a3 numberOfGlyphs:(unint64_t)a4 timeIndex:(unint64_t)a5;
-- (CGSize)currentOffsetForGlyphIndex:(unint64_t)a3 numberOfGlyphs:(unint64_t)a4 timeIndex:(unint64_t)a5;
+- (BOOL)finishedForGlyphIndex:(unint64_t)index numberOfGlyphs:(unint64_t)glyphs timeIndex:(unint64_t)timeIndex;
+- (CGSize)currentOffsetForGlyphIndex:(unint64_t)index numberOfGlyphs:(unint64_t)glyphs timeIndex:(unint64_t)timeIndex;
 - (EMKGlyphRippler)init;
-- (double)currentScaleForGlyphIndex:(unint64_t)a3 numberOfGlyphs:(unint64_t)a4 timeIndex:(unint64_t)a5;
-- (id)currentColorForGlyphIndex:(unint64_t)a3 numberOfGlyphs:(unint64_t)a4 timeIndex:(unint64_t)a5;
-- (id)currentShadowColorForGlyphIndex:(unint64_t)a3 numberOfGlyphs:(unint64_t)a4 timeIndex:(unint64_t)a5;
-- (unint64_t)currentIndexForGlyphIndex:(unint64_t)a3 numberOfGlyphs:(unint64_t)a4 timeIndex:(unint64_t)a5 isFinished:(BOOL *)a6;
+- (double)currentScaleForGlyphIndex:(unint64_t)index numberOfGlyphs:(unint64_t)glyphs timeIndex:(unint64_t)timeIndex;
+- (id)currentColorForGlyphIndex:(unint64_t)index numberOfGlyphs:(unint64_t)glyphs timeIndex:(unint64_t)timeIndex;
+- (id)currentShadowColorForGlyphIndex:(unint64_t)index numberOfGlyphs:(unint64_t)glyphs timeIndex:(unint64_t)timeIndex;
+- (unint64_t)currentIndexForGlyphIndex:(unint64_t)index numberOfGlyphs:(unint64_t)glyphs timeIndex:(unint64_t)timeIndex isFinished:(BOOL *)finished;
 - (void)generateValues;
-- (void)setDelayFrames:(unint64_t)a3;
-- (void)setPostFrames:(unint64_t)a3;
-- (void)setPreFrames:(unint64_t)a3;
-- (void)startWithDarkMode:(BOOL)a3;
+- (void)setDelayFrames:(unint64_t)frames;
+- (void)setPostFrames:(unint64_t)frames;
+- (void)setPreFrames:(unint64_t)frames;
+- (void)startWithDarkMode:(BOOL)mode;
 @end
 
 @implementation EMKGlyphRippler
@@ -35,12 +35,12 @@
 - (void)generateValues
 {
   v64 = *MEMORY[0x277D85DE8];
-  v56 = [MEMORY[0x277CBEB18] array];
-  v57 = [MEMORY[0x277CBEB18] array];
-  v60 = [MEMORY[0x277CBEB18] array];
-  v61 = [MEMORY[0x277CBEB18] array];
-  v62 = [MEMORY[0x277CBEB18] array];
-  v63 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
+  array4 = [MEMORY[0x277CBEB18] array];
+  array5 = [MEMORY[0x277CBEB18] array];
+  array6 = [MEMORY[0x277CBEB18] array];
   preFrames = self->_preFrames;
   v4 = self->_animateFrames + preFrames + self->_postFrames;
   v5 = (8 * v4 + 15) & 0xFFFFFFFFFFFFFFF0;
@@ -57,7 +57,7 @@
   }
 
   animateFrames = self->_animateFrames;
-  v58 = self;
+  selfCopy = self;
   *&v59 = animateFrames + preFrames;
   if (preFrames < animateFrames + preFrames)
   {
@@ -81,7 +81,7 @@
   }
 
   v19 = v59;
-  postFrames = v58->_postFrames;
+  postFrames = selfCopy->_postFrames;
   if (*&v19 < postFrames + *&v19)
   {
     v21 = 8 * postFrames;
@@ -91,8 +91,8 @@
     memset_pattern16(&v7[*&v19], &unk_2155F5420, v21);
   }
 
-  v22 = v56;
-  v23 = v57;
+  v22 = array;
+  v23 = array2;
   if (v4)
   {
     v59 = 127.0;
@@ -113,18 +113,18 @@
 
       v33 = *v9++;
       v34 = [MEMORY[0x277D75348] colorWithRed:v25 green:v26 blue:v27 alpha:v33];
-      [(NSArray *)v60 addObject:v34];
+      [(NSArray *)array3 addObject:v34];
 
       v35 = [MEMORY[0x277D75348] colorWithRed:v28 green:v29 blue:v30 alpha:v33];
-      [(NSArray *)v61 addObject:v35];
+      [(NSArray *)array4 addObject:v35];
 
       v36 = *v7++;
       v37 = [MEMORY[0x277CCABB0] numberWithDouble:v36];
-      [(NSArray *)v62 addObject:v37];
+      [(NSArray *)array5 addObject:v37];
 
       v38 = *v8++;
       v39 = [MEMORY[0x277CCABB0] numberWithDouble:v38];
-      [(NSArray *)v63 addObject:v39];
+      [(NSArray *)array6 addObject:v39];
 
       --v4;
     }
@@ -132,9 +132,9 @@
     while (v4);
   }
 
-  v40 = v58;
-  colors = v58->_colors;
-  v58->_colors = v22;
+  v40 = selfCopy;
+  colors = selfCopy->_colors;
+  selfCopy->_colors = v22;
   v59 = COERCE_DOUBLE(v22);
 
   darkModeColors = v40->_darkModeColors;
@@ -142,53 +142,53 @@
   v43 = v23;
 
   shadowColors = v40->_shadowColors;
-  v45 = v60;
-  v40->_shadowColors = v60;
+  v45 = array3;
+  v40->_shadowColors = array3;
   v46 = v45;
 
   darkModeShadowColors = v40->_darkModeShadowColors;
-  v48 = v61;
-  v40->_darkModeShadowColors = v61;
+  v48 = array4;
+  v40->_darkModeShadowColors = array4;
   v49 = v48;
 
   scales = v40->_scales;
-  v51 = v62;
-  v40->_scales = v62;
+  v51 = array5;
+  v40->_scales = array5;
   v52 = v51;
 
   offsets = v40->_offsets;
-  v40->_offsets = v63;
+  v40->_offsets = array6;
 
   v54 = v59;
 }
 
-- (void)startWithDarkMode:(BOOL)a3
+- (void)startWithDarkMode:(BOOL)mode
 {
   self->_startTime = CFAbsoluteTimeGetCurrent();
   self->_reduceMotion = UIAccessibilityIsReduceMotionEnabled();
-  self->_darkMode = a3;
+  self->_darkMode = mode;
 }
 
-- (unint64_t)currentIndexForGlyphIndex:(unint64_t)a3 numberOfGlyphs:(unint64_t)a4 timeIndex:(unint64_t)a5 isFinished:(BOOL *)a6
+- (unint64_t)currentIndexForGlyphIndex:(unint64_t)index numberOfGlyphs:(unint64_t)glyphs timeIndex:(unint64_t)timeIndex isFinished:(BOOL *)finished
 {
   v6 = self->_animateFrames + self->_preFrames + self->_postFrames;
-  v7 = self->_delayFrames + self->_delayFrames * a3;
+  v7 = self->_delayFrames + self->_delayFrames * index;
   v8 = v7 + v6;
-  if (a6)
+  if (finished)
   {
-    v10 = a5 >= v7 && v8 <= a5;
-    *a6 = v10;
+    v10 = timeIndex >= v7 && v8 <= timeIndex;
+    *finished = v10;
   }
 
   v11 = v6 - 1;
-  if (a5 < v7)
+  if (timeIndex < v7)
   {
     v11 = 0;
   }
 
-  if (v8 > a5 && a5 >= v7)
+  if (v8 > timeIndex && timeIndex >= v7)
   {
-    return a5 - v7;
+    return timeIndex - v7;
   }
 
   else
@@ -197,7 +197,7 @@
   }
 }
 
-- (id)currentColorForGlyphIndex:(unint64_t)a3 numberOfGlyphs:(unint64_t)a4 timeIndex:(unint64_t)a5
+- (id)currentColorForGlyphIndex:(unint64_t)index numberOfGlyphs:(unint64_t)glyphs timeIndex:(unint64_t)timeIndex
 {
   v9 = 8;
   if (self->_darkMode)
@@ -206,12 +206,12 @@
   }
 
   v10 = *(&self->super.isa + v9);
-  v11 = [v10 objectAtIndex:{-[EMKGlyphRippler currentIndexForGlyphIndex:numberOfGlyphs:timeIndex:isFinished:](self, "currentIndexForGlyphIndex:numberOfGlyphs:timeIndex:isFinished:", a3, a4, a5, 0)}];
+  v11 = [v10 objectAtIndex:{-[EMKGlyphRippler currentIndexForGlyphIndex:numberOfGlyphs:timeIndex:isFinished:](self, "currentIndexForGlyphIndex:numberOfGlyphs:timeIndex:isFinished:", index, glyphs, timeIndex, 0)}];
 
   return v11;
 }
 
-- (id)currentShadowColorForGlyphIndex:(unint64_t)a3 numberOfGlyphs:(unint64_t)a4 timeIndex:(unint64_t)a5
+- (id)currentShadowColorForGlyphIndex:(unint64_t)index numberOfGlyphs:(unint64_t)glyphs timeIndex:(unint64_t)timeIndex
 {
   v9 = 24;
   if (self->_darkMode)
@@ -220,26 +220,26 @@
   }
 
   v10 = *(&self->super.isa + v9);
-  v11 = [v10 objectAtIndex:{-[EMKGlyphRippler currentIndexForGlyphIndex:numberOfGlyphs:timeIndex:isFinished:](self, "currentIndexForGlyphIndex:numberOfGlyphs:timeIndex:isFinished:", a3, a4, a5, 0)}];
+  v11 = [v10 objectAtIndex:{-[EMKGlyphRippler currentIndexForGlyphIndex:numberOfGlyphs:timeIndex:isFinished:](self, "currentIndexForGlyphIndex:numberOfGlyphs:timeIndex:isFinished:", index, glyphs, timeIndex, 0)}];
 
   return v11;
 }
 
-- (double)currentScaleForGlyphIndex:(unint64_t)a3 numberOfGlyphs:(unint64_t)a4 timeIndex:(unint64_t)a5
+- (double)currentScaleForGlyphIndex:(unint64_t)index numberOfGlyphs:(unint64_t)glyphs timeIndex:(unint64_t)timeIndex
 {
   if (self->_reduceMotion)
   {
     return 1.0;
   }
 
-  v6 = [(NSArray *)self->_scales objectAtIndex:[(EMKGlyphRippler *)self currentIndexForGlyphIndex:a3 numberOfGlyphs:a4 timeIndex:a5 isFinished:0]];
+  v6 = [(NSArray *)self->_scales objectAtIndex:[(EMKGlyphRippler *)self currentIndexForGlyphIndex:index numberOfGlyphs:glyphs timeIndex:timeIndex isFinished:0]];
   [v6 doubleValue];
   v8 = v7;
 
   return v8;
 }
 
-- (CGSize)currentOffsetForGlyphIndex:(unint64_t)a3 numberOfGlyphs:(unint64_t)a4 timeIndex:(unint64_t)a5
+- (CGSize)currentOffsetForGlyphIndex:(unint64_t)index numberOfGlyphs:(unint64_t)glyphs timeIndex:(unint64_t)timeIndex
 {
   if (self->_reduceMotion)
   {
@@ -248,7 +248,7 @@
 
   else
   {
-    v6 = [(NSArray *)self->_offsets objectAtIndex:[(EMKGlyphRippler *)self currentIndexForGlyphIndex:a3 numberOfGlyphs:a4 timeIndex:a5 isFinished:0]];
+    v6 = [(NSArray *)self->_offsets objectAtIndex:[(EMKGlyphRippler *)self currentIndexForGlyphIndex:index numberOfGlyphs:glyphs timeIndex:timeIndex isFinished:0]];
     [v6 doubleValue];
     v5 = v7;
   }
@@ -260,58 +260,58 @@
   return result;
 }
 
-- (BOOL)finishedForGlyphIndex:(unint64_t)a3 numberOfGlyphs:(unint64_t)a4 timeIndex:(unint64_t)a5
+- (BOOL)finishedForGlyphIndex:(unint64_t)index numberOfGlyphs:(unint64_t)glyphs timeIndex:(unint64_t)timeIndex
 {
   v6 = 0;
-  [(EMKGlyphRippler *)self currentIndexForGlyphIndex:a3 numberOfGlyphs:a4 timeIndex:a5 isFinished:&v6];
+  [(EMKGlyphRippler *)self currentIndexForGlyphIndex:index numberOfGlyphs:glyphs timeIndex:timeIndex isFinished:&v6];
   return v6;
 }
 
-- (void)setPreFrames:(unint64_t)a3
+- (void)setPreFrames:(unint64_t)frames
 {
-  if (a3 <= 1)
+  if (frames <= 1)
   {
-    v3 = 1;
+    framesCopy = 1;
   }
 
   else
   {
-    v3 = a3;
+    framesCopy = frames;
   }
 
-  self->_preFrames = v3;
+  self->_preFrames = framesCopy;
   [(EMKGlyphRippler *)self generateValues];
 }
 
-- (void)setPostFrames:(unint64_t)a3
+- (void)setPostFrames:(unint64_t)frames
 {
-  if (a3 <= 1)
+  if (frames <= 1)
   {
-    v3 = 1;
+    framesCopy = 1;
   }
 
   else
   {
-    v3 = a3;
+    framesCopy = frames;
   }
 
-  self->_postFrames = v3;
+  self->_postFrames = framesCopy;
   [(EMKGlyphRippler *)self generateValues];
 }
 
-- (void)setDelayFrames:(unint64_t)a3
+- (void)setDelayFrames:(unint64_t)frames
 {
-  if (a3 <= 1)
+  if (frames <= 1)
   {
-    v3 = 1;
+    framesCopy = 1;
   }
 
   else
   {
-    v3 = a3;
+    framesCopy = frames;
   }
 
-  self->_delayFrames = v3;
+  self->_delayFrames = framesCopy;
   [(EMKGlyphRippler *)self generateValues];
 }
 

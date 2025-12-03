@@ -1,20 +1,20 @@
 @interface CDSharingGetAuthInfoResponse
-- (CDSharingGetAuthInfoResponse)initWithRapportDictionary:(id)a3;
+- (CDSharingGetAuthInfoResponse)initWithRapportDictionary:(id)dictionary;
 - (NSString)description;
 - (id)makeRapportDictionary;
 @end
 
 @implementation CDSharingGetAuthInfoResponse
 
-- (CDSharingGetAuthInfoResponse)initWithRapportDictionary:(id)a3
+- (CDSharingGetAuthInfoResponse)initWithRapportDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = CDSharingGetAuthInfoResponse;
   v5 = [(CDSharingGetAuthInfoResponse *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"sharingData"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"sharingData"];
     requestData = v5->_requestData;
     v5->_requestData = v6;
 
@@ -49,9 +49,9 @@
   v4 = [v3 appendObject:self->_requestData withName:@"requestData" skipIfNil:1];
   v5 = [v3 appendObject:self->_deviceClass withName:@"deviceClass" skipIfNil:1];
   v6 = [v3 appendObject:self->_deviceName withName:@"deviceName" skipIfNil:1];
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
 @end

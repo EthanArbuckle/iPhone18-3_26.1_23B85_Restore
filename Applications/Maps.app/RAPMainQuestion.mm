@@ -1,61 +1,61 @@
 @interface RAPMainQuestion
 + (id)localizedHeaderText;
-- (BOOL)canDisplayMenuItemForQuestionCategory:(int64_t)a3;
+- (BOOL)canDisplayMenuItemForQuestionCategory:(int64_t)category;
 - (NSArray)homeWorkMenuItems;
 - (RAPMenuItem)otherIssueMenuItem;
 - (id)_alternateMapViewContext;
-- (id)_incidentQuestionsFromLayoutItems:(id)a3;
-- (id)_questionsFromLayoutItems:(id)a3;
-- (id)followUpQuestionForCategory:(int64_t)a3;
+- (id)_incidentQuestionsFromLayoutItems:(id)items;
+- (id)_questionsFromLayoutItems:(id)items;
+- (id)followUpQuestionForCategory:(int64_t)category;
 - (id)mainMenuQuestionCategories;
 - (id)menuItems;
-- (void)_fillSubmissionParameters:(id)a3;
+- (void)_fillSubmissionParameters:(id)parameters;
 - (void)resetMenu;
-- (void)updateCategoriesFromLayoutManager:(id)a3;
+- (void)updateCategoriesFromLayoutManager:(id)manager;
 @end
 
 @implementation RAPMainQuestion
 
 - (id)_alternateMapViewContext
 {
-  v2 = [(RAPMenuQuestion *)self selectedMenuItem];
-  v3 = [v2 _alternateMapViewContext];
+  selectedMenuItem = [(RAPMenuQuestion *)self selectedMenuItem];
+  _alternateMapViewContext = [selectedMenuItem _alternateMapViewContext];
 
-  return v3;
+  return _alternateMapViewContext;
 }
 
-- (void)_fillSubmissionParameters:(id)a3
+- (void)_fillSubmissionParameters:(id)parameters
 {
-  v15 = a3;
-  v4 = [(RAPQuestion *)self parentQuestion];
-  [v4 _fillSubmissionParameters:v15];
+  parametersCopy = parameters;
+  parentQuestion = [(RAPQuestion *)self parentQuestion];
+  [parentQuestion _fillSubmissionParameters:parametersCopy];
 
-  v5 = [v15 commonContext];
+  commonContext = [parametersCopy commonContext];
 
-  if (!v5)
+  if (!commonContext)
   {
     v6 = objc_alloc_init(GEORPFeedbackCommonContext);
-    [v15 setCommonContext:v6];
+    [parametersCopy setCommonContext:v6];
   }
 
-  v7 = [(RAPQuestion *)self _context];
-  v8 = [v7 displayedDirectionsPlan];
+  _context = [(RAPQuestion *)self _context];
+  displayedDirectionsPlan = [_context displayedDirectionsPlan];
 
-  if (v8)
+  if (displayedDirectionsPlan)
   {
-    v9 = [v15 commonContext];
-    v10 = v9;
+    commonContext2 = [parametersCopy commonContext];
+    v10 = commonContext2;
     v11 = 17;
   }
 
   else
   {
-    v12 = [(RAPQuestion *)self _context];
-    v13 = [v12 currentDirections];
+    _context2 = [(RAPQuestion *)self _context];
+    currentDirections = [_context2 currentDirections];
 
-    v9 = [v15 commonContext];
-    v10 = v9;
-    if (v13)
+    commonContext2 = [parametersCopy commonContext];
+    v10 = commonContext2;
+    if (currentDirections)
     {
       v11 = 16;
     }
@@ -66,18 +66,18 @@
     }
   }
 
-  [v9 addUserPath:v11];
+  [commonContext2 addUserPath:v11];
 
-  v14 = [(RAPMenuQuestion *)self selectedMenuItem];
-  [v14 _fillSubmissionParameters:v15];
+  selectedMenuItem = [(RAPMenuQuestion *)self selectedMenuItem];
+  [selectedMenuItem _fillSubmissionParameters:parametersCopy];
 }
 
-- (id)followUpQuestionForCategory:(int64_t)a3
+- (id)followUpQuestionForCategory:(int64_t)category
 {
   v4 = 0;
-  if (a3 <= 11)
+  if (category <= 11)
   {
-    switch(a3)
+    switch(category)
     {
       case 1:
         v11 = RAPProblemNotListedQuestion;
@@ -94,42 +94,42 @@
 
 LABEL_18:
     v15 = [v11 alloc];
-    v6 = [(RAPQuestion *)self report];
-    v14 = [v15 initWithReport:v6 parentQuestion:self];
+    report = [(RAPQuestion *)self report];
+    v14 = [v15 initWithReport:report parentQuestion:self];
     goto LABEL_19;
   }
 
-  if (a3 > 0x12)
+  if (category > 0x12)
   {
     goto LABEL_14;
   }
 
-  if (((1 << a3) & 0x12000) != 0)
+  if (((1 << category) & 0x12000) != 0)
   {
     v12 = [RAPPersonalPlaceCorrectionsWhichOneQuestion alloc];
-    v6 = [(RAPQuestion *)self report];
+    report = [(RAPQuestion *)self report];
     v7 = v12;
-    v8 = v6;
-    v9 = self;
+    v8 = report;
+    selfCopy3 = self;
     v10 = 2;
     goto LABEL_13;
   }
 
-  if (((1 << a3) & 0x24000) != 0)
+  if (((1 << category) & 0x24000) != 0)
   {
     v13 = [RAPPersonalPlaceCorrectionsWhichOneQuestion alloc];
-    v6 = [(RAPQuestion *)self report];
+    report = [(RAPQuestion *)self report];
     v7 = v13;
-    v8 = v6;
-    v9 = self;
+    v8 = report;
+    selfCopy3 = self;
     v10 = 3;
     goto LABEL_13;
   }
 
-  if (((1 << a3) & 0x48000) == 0)
+  if (((1 << category) & 0x48000) == 0)
   {
 LABEL_14:
-    if (a3 != 12)
+    if (category != 12)
     {
       goto LABEL_20;
     }
@@ -139,13 +139,13 @@ LABEL_14:
   }
 
   v5 = [RAPPersonalPlaceCorrectionsWhichOneQuestion alloc];
-  v6 = [(RAPQuestion *)self report];
+  report = [(RAPQuestion *)self report];
   v7 = v5;
-  v8 = v6;
-  v9 = self;
+  v8 = report;
+  selfCopy3 = self;
   v10 = 5;
 LABEL_13:
-  v14 = [(RAPPersonalPlaceCorrectionsWhichOneQuestion *)v7 initWithReport:v8 parentQuestion:v9 shortcutType:v10];
+  v14 = [(RAPPersonalPlaceCorrectionsWhichOneQuestion *)v7 initWithReport:v8 parentQuestion:selfCopy3 shortcutType:v10];
 LABEL_19:
   v4 = v14;
 
@@ -154,25 +154,25 @@ LABEL_20:
   return v4;
 }
 
-- (BOOL)canDisplayMenuItemForQuestionCategory:(int64_t)a3
+- (BOOL)canDisplayMenuItemForQuestionCategory:(int64_t)category
 {
-  v5 = [(RAPQuestion *)self report];
-  v6 = [v5 _context];
+  report = [(RAPQuestion *)self report];
+  _context = [report _context];
 
-  if (a3 == 7)
+  if (category == 7)
   {
-    v7 = [(RAPQuestion *)self _context];
-    LOBYTE(a3) = [RAPDirectionsWhichOneQuestion _canDisplayForContext:v7 transportMode:0xFFFFFFFLL];
+    _context2 = [(RAPQuestion *)self _context];
+    LOBYTE(category) = [RAPDirectionsWhichOneQuestion _canDisplayForContext:_context2 transportMode:0xFFFFFFFLL];
 LABEL_8:
 
     goto LABEL_9;
   }
 
-  if (a3 != 12)
+  if (category != 12)
   {
-    v7 = [(RAPMainQuestion *)self mainMenuQuestionCategories];
-    v8 = [NSNumber numberWithInteger:a3];
-    LOBYTE(a3) = [v7 containsObject:v8];
+    _context2 = [(RAPMainQuestion *)self mainMenuQuestionCategories];
+    v8 = [NSNumber numberWithInteger:category];
+    LOBYTE(category) = [_context2 containsObject:v8];
 
     goto LABEL_8;
   }
@@ -228,14 +228,14 @@ LABEL_8:
     v19 = [v17 objectForKeyedSubscript:v18];
 
     v20 = +[GEOCountryConfiguration sharedConfiguration];
-    v21 = [v20 countryCode];
-    v22 = [v19 objectForKey:v21];
+    countryCode = [v20 countryCode];
+    v22 = [v19 objectForKey:countryCode];
 
     if (!v22)
     {
-      LODWORD(a3) = GEOConfigGetBOOL();
+      LODWORD(category) = GEOConfigGetBOOL();
 
-      if (!a3)
+      if (!category)
       {
         goto LABEL_9;
       }
@@ -243,22 +243,22 @@ LABEL_8:
       goto LABEL_17;
     }
 
-    v23 = [v22 BOOLValue];
+    bOOLValue = [v22 BOOLValue];
 
-    if (v23)
+    if (bOOLValue)
     {
 LABEL_17:
-      v7 = [v6 searchesHistory];
-      LOBYTE(a3) = [v7 count] != 0;
+      _context2 = [_context searchesHistory];
+      LOBYTE(category) = [_context2 count] != 0;
       goto LABEL_8;
     }
   }
 
 LABEL_5:
-  LOBYTE(a3) = 0;
+  LOBYTE(category) = 0;
 LABEL_9:
 
-  return a3;
+  return category;
 }
 
 - (void)resetMenu
@@ -296,9 +296,9 @@ LABEL_9:
   if (!homeWorkMenuItems)
   {
     v4 = objc_alloc_init(NSMutableArray);
-    v5 = [(RAPQuestion *)self _context];
-    v6 = [v5 homeShortcuts];
-    v7 = [v6 count];
+    _context = [(RAPQuestion *)self _context];
+    homeShortcuts = [_context homeShortcuts];
+    v7 = [homeShortcuts count];
 
     if (v7)
     {
@@ -306,9 +306,9 @@ LABEL_9:
       [v4 addObjectIfNotNil:v8];
     }
 
-    v9 = [(RAPQuestion *)self _context];
-    v10 = [v9 workShortcuts];
-    v11 = [v10 count];
+    _context2 = [(RAPQuestion *)self _context];
+    workShortcuts = [_context2 workShortcuts];
+    v11 = [workShortcuts count];
 
     if (v11)
     {
@@ -316,9 +316,9 @@ LABEL_9:
       [v4 addObjectIfNotNil:v12];
     }
 
-    v13 = [(RAPQuestion *)self _context];
-    v14 = [v13 schoolShortcuts];
-    v15 = [v14 count];
+    _context3 = [(RAPQuestion *)self _context];
+    schoolShortcuts = [_context3 schoolShortcuts];
+    v15 = [schoolShortcuts count];
 
     if (v15)
     {
@@ -342,23 +342,23 @@ LABEL_9:
   if (!menuItems)
   {
     v4 = [NSMutableArray arrayWithCapacity:3];
-    v5 = [(RAPMenuQuestion *)self mainMenuItems];
-    [v4 addObject:v5];
+    mainMenuItems = [(RAPMenuQuestion *)self mainMenuItems];
+    [v4 addObject:mainMenuItems];
 
-    v6 = [(RAPMainQuestion *)self homeWorkMenuItems];
-    if ([v6 count])
+    homeWorkMenuItems = [(RAPMainQuestion *)self homeWorkMenuItems];
+    if ([homeWorkMenuItems count])
     {
-      [v4 addObject:v6];
+      [v4 addObject:homeWorkMenuItems];
     }
 
-    v7 = [(RAPMainQuestion *)self incidentMenuItems];
-    if ([v7 count])
+    incidentMenuItems = [(RAPMainQuestion *)self incidentMenuItems];
+    if ([incidentMenuItems count])
     {
-      [v4 addObject:v7];
+      [v4 addObject:incidentMenuItems];
     }
 
-    v8 = [(RAPMainQuestion *)self otherIssueMenuItem];
-    v14 = v8;
+    otherIssueMenuItem = [(RAPMainQuestion *)self otherIssueMenuItem];
+    v14 = otherIssueMenuItem;
     v9 = [NSArray arrayWithObjects:&v14 count:1];
     [v4 addObject:v9];
 
@@ -387,15 +387,15 @@ LABEL_9:
   return mainMenuQuestionCategories;
 }
 
-- (id)_questionsFromLayoutItems:(id)a3
+- (id)_questionsFromLayoutItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v5 = objc_alloc_init(NSMutableArray);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v4;
+  v6 = itemsCopy;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -411,11 +411,11 @@ LABEL_9:
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [v11 fieldType];
-        v13 = -[RAPMenuQuestion menuItemWithFollowUpQuestionCategory:](self, "menuItemWithFollowUpQuestionCategory:", [v12 integerValue]);
+        fieldType = [v11 fieldType];
+        v13 = -[RAPMenuQuestion menuItemWithFollowUpQuestionCategory:](self, "menuItemWithFollowUpQuestionCategory:", [fieldType integerValue]);
 
-        v14 = [v11 displayText];
-        [v13 setLocalizedServerControlledDescription:v14];
+        displayText = [v11 displayText];
+        [v13 setLocalizedServerControlledDescription:displayText];
 
         [v5 addObjectIfNotNil:v13];
       }
@@ -431,15 +431,15 @@ LABEL_9:
   return v15;
 }
 
-- (id)_incidentQuestionsFromLayoutItems:(id)a3
+- (id)_incidentQuestionsFromLayoutItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v5 = objc_alloc_init(NSMutableArray);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v4;
+  v6 = itemsCopy;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -456,8 +456,8 @@ LABEL_9:
 
         v11 = *(*(&v17 + 1) + 8 * i);
         v12 = [RAPIncidentsQuestion alloc];
-        v13 = [(RAPQuestion *)self report];
-        v14 = [(RAPIncidentsQuestion *)v12 initWithReport:v13 parentQuestion:self incidentLayoutItem:v11];
+        report = [(RAPQuestion *)self report];
+        v14 = [(RAPIncidentsQuestion *)v12 initWithReport:report parentQuestion:self incidentLayoutItem:v11];
 
         [v5 addObjectIfNotNil:v14];
       }
@@ -473,30 +473,30 @@ LABEL_9:
   return v15;
 }
 
-- (void)updateCategoriesFromLayoutManager:(id)a3
+- (void)updateCategoriesFromLayoutManager:(id)manager
 {
-  v4 = a3;
-  v5 = [v4 correctionLayoutItems];
-  v6 = [(RAPMainQuestion *)self _questionsFromLayoutItems:v5];
+  managerCopy = manager;
+  correctionLayoutItems = [managerCopy correctionLayoutItems];
+  v6 = [(RAPMainQuestion *)self _questionsFromLayoutItems:correctionLayoutItems];
   mainMenuItems = self->super._mainMenuItems;
   self->super._mainMenuItems = v6;
 
-  v8 = [v4 addPlaceLayoutItems];
-  v9 = [(RAPMainQuestion *)self _questionsFromLayoutItems:v8];
+  addPlaceLayoutItems = [managerCopy addPlaceLayoutItems];
+  v9 = [(RAPMainQuestion *)self _questionsFromLayoutItems:addPlaceLayoutItems];
   homeWorkMenuItems = self->_homeWorkMenuItems;
   self->_homeWorkMenuItems = v9;
 
-  v11 = [v4 incidentLayoutItems];
-  v12 = [(RAPMainQuestion *)self _incidentQuestionsFromLayoutItems:v11];
+  incidentLayoutItems = [managerCopy incidentLayoutItems];
+  v12 = [(RAPMainQuestion *)self _incidentQuestionsFromLayoutItems:incidentLayoutItems];
   incidentMenuItems = self->_incidentMenuItems;
   self->_incidentMenuItems = v12;
 
-  v14 = [v4 otherLayoutItems];
+  otherLayoutItems = [managerCopy otherLayoutItems];
 
-  v15 = [(RAPMainQuestion *)self _questionsFromLayoutItems:v14];
-  v16 = [v15 firstObject];
+  v15 = [(RAPMainQuestion *)self _questionsFromLayoutItems:otherLayoutItems];
+  firstObject = [v15 firstObject];
   otherIssueMenuItem = self->_otherIssueMenuItem;
-  self->_otherIssueMenuItem = v16;
+  self->_otherIssueMenuItem = firstObject;
 
   v18 = objc_alloc_init(NSMutableArray);
   if ([(NSArray *)self->super._mainMenuItems count])
@@ -528,7 +528,7 @@ LABEL_9:
 
 + (id)localizedHeaderText
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___RAPMainQuestion;
   v2 = objc_msgSendSuper2(&v4, "localizedHeaderText");
 

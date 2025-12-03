@@ -1,17 +1,17 @@
 @interface SBSASequencedBehaviorProvider
-- (BOOL)_isTimerExpired:(id)a3 duration:(double *)a4;
-- (SBSASequencedBehaviorProvider)initWithParticipantIdentifier:(id)a3;
-- (id)nameForPhase:(int64_t)a3;
-- (id)preferencesFromContext:(id)a3;
-- (void)_setActivePhase:(int64_t)a3 context:(id)a4 reason:(id)a5;
-- (void)_startTimerIfNecessary:(id)a3 withInterval:(double)a4;
+- (BOOL)_isTimerExpired:(id)expired duration:(double *)duration;
+- (SBSASequencedBehaviorProvider)initWithParticipantIdentifier:(id)identifier;
+- (id)nameForPhase:(int64_t)phase;
+- (id)preferencesFromContext:(id)context;
+- (void)_setActivePhase:(int64_t)phase context:(id)context reason:(id)reason;
+- (void)_startTimerIfNecessary:(id)necessary withInterval:(double)interval;
 @end
 
 @implementation SBSASequencedBehaviorProvider
 
-- (SBSASequencedBehaviorProvider)initWithParticipantIdentifier:(id)a3
+- (SBSASequencedBehaviorProvider)initWithParticipantIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = SBSASequencedBehaviorProvider;
   v5 = [(SBSABasePreferencesProvider *)&v13 initWithParentProvider:0];
@@ -20,9 +20,9 @@
     if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
     {
       v6 = [SBSAElementIdentification alloc];
-      participatingInterfaceElementIdentifier = [v4 clientIdentifier];
-      v8 = [v4 elementIdentifier];
-      v9 = [(SBSAElementIdentification *)v6 initWithClientIdentifier:participatingInterfaceElementIdentifier elementIdentifier:v8];
+      participatingInterfaceElementIdentifier = [identifierCopy clientIdentifier];
+      elementIdentifier = [identifierCopy elementIdentifier];
+      v9 = [(SBSAElementIdentification *)v6 initWithClientIdentifier:participatingInterfaceElementIdentifier elementIdentifier:elementIdentifier];
       participatingElementIdentification = v5->_participatingElementIdentification;
       v5->_participatingElementIdentification = v9;
 
@@ -33,7 +33,7 @@ LABEL_7:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [v4 copy];
+      v11 = [identifierCopy copy];
       participatingInterfaceElementIdentifier = v5->_participatingInterfaceElementIdentifier;
       v5->_participatingInterfaceElementIdentifier = v11;
       goto LABEL_7;
@@ -45,14 +45,14 @@ LABEL_8:
   return v5;
 }
 
-- (id)preferencesFromContext:(id)a3
+- (id)preferencesFromContext:(id)context
 {
   v119 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  contextCopy = context;
+  if (contextCopy)
   {
     v5 = objc_opt_self();
-    v6 = v4;
+    v6 = contextCopy;
     if (v5)
     {
       if (objc_opt_isKindOfClass())
@@ -84,11 +84,11 @@ LABEL_8:
     v8 = 0;
   }
 
-  v9 = [v8 preferences];
-  if (v9)
+  preferences = [v8 preferences];
+  if (preferences)
   {
     v10 = objc_opt_self();
-    v11 = v9;
+    v11 = preferences;
     if (v10)
     {
       if (objc_opt_isKindOfClass())
@@ -120,9 +120,9 @@ LABEL_8:
     v13 = 0;
   }
 
-  v14 = [v8 elementContexts];
+  elementContexts = [v8 elementContexts];
   v103 = 0;
-  v83 = v14;
+  v83 = elementContexts;
   if (!self->_activePhase && ![(SBSASequencedBehaviorProvider *)self canProceedWithContext:v8 shouldRetry:&v103])
   {
 LABEL_45:
@@ -137,8 +137,8 @@ LABEL_46:
   v99 = 0u;
   v100 = 0u;
   v82 = v13;
-  v15 = [v13 gestureDescriptions];
-  v16 = [v15 countByEnumeratingWithState:&v99 objects:v118 count:16];
+  gestureDescriptions = [v13 gestureDescriptions];
+  v16 = [gestureDescriptions countByEnumeratingWithState:&v99 objects:v118 count:16];
   if (v16)
   {
     v17 = *v100;
@@ -148,7 +148,7 @@ LABEL_46:
       {
         if (*v100 != v17)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(gestureDescriptions);
         }
 
         if ([*(*(&v99 + 1) + 8 * i) gestureRecognizerState] < 0)
@@ -158,7 +158,7 @@ LABEL_46:
         }
       }
 
-      v16 = [v15 countByEnumeratingWithState:&v99 objects:v118 count:16];
+      v16 = [gestureDescriptions countByEnumeratingWithState:&v99 objects:v118 count:16];
       if (v16)
       {
         continue;
@@ -173,8 +173,8 @@ LABEL_31:
   elementContexts = self->_elementContexts;
   if (elementContexts)
   {
-    v20 = v4;
-    v21 = SBSAAreElementLayoutsEqualToLayouts(elementContexts, v14);
+    v20 = contextCopy;
+    v21 = SBSAAreElementLayoutsEqualToLayouts(elementContexts, elementContexts);
     activePhase = self->_activePhase;
     v23 = activePhase == [(SBSASequencedBehaviorProvider *)self finalPhase];
     if (v21)
@@ -184,14 +184,14 @@ LABEL_31:
 
     else
     {
-      v26 = [v14 copy];
+      v26 = [elementContexts copy];
       v24 = ![(SBSASequencedBehaviorProvider *)self canPersistAcrossLayoutStateChangesToNewElementContexts:v26];
     }
   }
 
   else
   {
-    v20 = v4;
+    v20 = contextCopy;
     v25 = self->_activePhase;
     v24 = 0;
     v23 = v25 == [(SBSASequencedBehaviorProvider *)self finalPhase];
@@ -217,8 +217,8 @@ LABEL_31:
       _os_log_debug_impl(&dword_21ED4E000, v28, OS_LOG_TYPE_DEBUG, "Will remove behavior provider %@ (gestureActive:%@, layoutStateChange:%@, finalPhase:%@)", buf, 0x2Au);
     }
 
-    v4 = v20;
-    v14 = v83;
+    contextCopy = v20;
+    elementContexts = v83;
     if (v23)
     {
       goto LABEL_46;
@@ -230,7 +230,7 @@ LABEL_31:
   if (self->_elementContexts)
   {
     v27 = self->_activePhase;
-    v4 = v20;
+    contextCopy = v20;
     if ([(SBSASequencedBehaviorProvider *)self phaseIsTimeDelayBased:v27 + 1])
     {
       *buf = 0;
@@ -262,8 +262,8 @@ LABEL_31:
         v98 = 0u;
         v95 = 0u;
         v96 = 0u;
-        v36 = [v8 animatedTransitionResults];
-        v37 = [v36 countByEnumeratingWithState:&v95 objects:v110 count:16];
+        animatedTransitionResults = [v8 animatedTransitionResults];
+        v37 = [animatedTransitionResults countByEnumeratingWithState:&v95 objects:v110 count:16];
         if (!v37)
         {
           goto LABEL_74;
@@ -277,11 +277,11 @@ LABEL_31:
           {
             if (*v96 != v39)
             {
-              objc_enumerationMutation(v36);
+              objc_enumerationMutation(animatedTransitionResults);
             }
 
             v41 = *(*(&v95 + 1) + 8 * j);
-            v42 = [v41 associatedInterfaceElementPropertyIdentity];
+            associatedInterfaceElementPropertyIdentity = [v41 associatedInterfaceElementPropertyIdentity];
             if (!BSEqualObjects())
             {
               goto LABEL_71;
@@ -302,8 +302,8 @@ LABEL_70:
               v94[2] = __56__SBSASequencedBehaviorProvider_preferencesFromContext___block_invoke_2;
               v94[3] = &unk_2783B1D60;
               v94[4] = v41;
-              v42 = MEMORY[0x223D6F7F0](v94);
-              [(SBSASequencedBehaviorProvider *)self _setActivePhase:v84 + 1 context:v85 reason:v42];
+              associatedInterfaceElementPropertyIdentity = MEMORY[0x223D6F7F0](v94);
+              [(SBSASequencedBehaviorProvider *)self _setActivePhase:v84 + 1 context:v85 reason:associatedInterfaceElementPropertyIdentity];
               pendingPhaseTransitionPropertyIdentity = self->_pendingPhaseTransitionPropertyIdentity;
               self->_pendingPhaseTransitionPropertyIdentity = 0;
 
@@ -311,23 +311,23 @@ LABEL_71:
               continue;
             }
 
-            v43 = [v41 finished];
+            finished = [v41 finished];
 
-            if (v43)
+            if (finished)
             {
               goto LABEL_70;
             }
           }
 
-          v38 = [v36 countByEnumeratingWithState:&v95 objects:v110 count:16];
+          v38 = [animatedTransitionResults countByEnumeratingWithState:&v95 objects:v110 count:16];
           if (!v38)
           {
 LABEL_74:
 
-            v4 = v80;
+            contextCopy = v80;
             v8 = v85;
             v13 = v82;
-            v14 = v83;
+            elementContexts = v83;
             break;
           }
         }
@@ -337,9 +337,9 @@ LABEL_74:
 
   else
   {
-    if (v14)
+    if (elementContexts)
     {
-      v30 = v14;
+      v30 = elementContexts;
     }
 
     else
@@ -348,19 +348,19 @@ LABEL_74:
     }
 
     objc_storeStrong(&self->_elementContexts, v30);
-    v31 = [(SBSASequencedBehaviorProvider *)self finalPhase];
-    if (v31 >= 1)
+    finalPhase = [(SBSASequencedBehaviorProvider *)self finalPhase];
+    if (finalPhase >= 1)
     {
       v32 = 1;
     }
 
     else
     {
-      v32 = v31;
+      v32 = finalPhase;
     }
 
     [(SBSASequencedBehaviorProvider *)self _setActivePhase:v32 context:v8 reason:&__block_literal_global_282];
-    v4 = v20;
+    contextCopy = v20;
   }
 
 LABEL_75:
@@ -396,7 +396,7 @@ LABEL_76:
 
     v50 = v49;
 
-    v14 = v83;
+    elementContexts = v83;
     if (!v50)
     {
       [SBSASequencedBehaviorProvider preferencesFromContext:];
@@ -502,7 +502,7 @@ LABEL_76:
           v75 = [MEMORY[0x277CBEA60] arrayWithObjects:&v109 count:1];
           v52 = [v71 copyByAddingActions:v75];
 
-          v14 = v83;
+          elementContexts = v83;
         }
       }
     }
@@ -639,12 +639,12 @@ void __56__SBSASequencedBehaviorProvider_preferencesFromContext___block_invoke_6
   [*(a1 + 32) _startTimerIfNecessary:v6 withInterval:*(a1 + 48)];
 }
 
-- (void)_setActivePhase:(int64_t)a3 context:(id)a4 reason:(id)a5
+- (void)_setActivePhase:(int64_t)phase context:(id)context reason:(id)reason
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  if (self->_activePhase != a3)
+  contextCopy = context;
+  reasonCopy = reason;
+  if (self->_activePhase != phase)
   {
     v10 = SBLogSystemAperturePreferencesStackSequencedBehaviors();
     v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG);
@@ -652,11 +652,11 @@ void __56__SBSASequencedBehaviorProvider_preferencesFromContext___block_invoke_6
     if (v11)
     {
       v12 = [(SBSASequencedBehaviorProvider *)self nameForPhase:self->_activePhase];
-      v13 = [(SBSASequencedBehaviorProvider *)self nameForPhase:a3];
-      if (v9)
+      v13 = [(SBSASequencedBehaviorProvider *)self nameForPhase:phase];
+      if (reasonCopy)
       {
         v14 = MEMORY[0x277CCACA8];
-        v15 = v9[2](v9);
+        v15 = reasonCopy[2](reasonCopy);
         v16 = [v14 stringWithFormat:@" - %@", v15];
       }
 
@@ -669,9 +669,9 @@ void __56__SBSASequencedBehaviorProvider_preferencesFromContext___block_invoke_6
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
       {
         *buf = 134350082;
-        v19 = [v8 queryIteration];
+        queryIteration = [contextCopy queryIteration];
         v20 = 2112;
-        v21 = self;
+        selfCopy = self;
         v22 = 2112;
         v23 = v12;
         v24 = 2112;
@@ -682,21 +682,21 @@ void __56__SBSASequencedBehaviorProvider_preferencesFromContext___block_invoke_6
       }
     }
 
-    self->_activePhase = a3;
+    self->_activePhase = phase;
   }
 }
 
-- (BOOL)_isTimerExpired:(id)a3 duration:(double *)a4
+- (BOOL)_isTimerExpired:(id)expired duration:(double *)duration
 {
-  v6 = [a3 elapsedTimerDescriptions];
-  if ([v6 count])
+  elapsedTimerDescriptions = [expired elapsedTimerDescriptions];
+  if ([elapsedTimerDescriptions count])
   {
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __58__SBSASequencedBehaviorProvider__isTimerExpired_duration___block_invoke;
     v14[3] = &unk_2783BD9C0;
     v14[4] = self;
-    v7 = [v6 indexOfObjectPassingTest:v14];
+    v7 = [elapsedTimerDescriptions indexOfObjectPassingTest:v14];
     v8 = v7 != 0x7FFFFFFFFFFFFFFFLL;
     if (v7 != 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -704,11 +704,11 @@ void __56__SBSASequencedBehaviorProvider_preferencesFromContext___block_invoke_6
       pendingTimerIdentifier = self->_pendingTimerIdentifier;
       self->_pendingTimerIdentifier = 0;
 
-      if (a4)
+      if (duration)
       {
-        v11 = [v6 objectAtIndex:v9];
+        v11 = [elapsedTimerDescriptions objectAtIndex:v9];
         [v11 timeInterval];
-        *a4 = v12;
+        *duration = v12;
       }
     }
   }
@@ -729,22 +729,22 @@ uint64_t __58__SBSASequencedBehaviorProvider__isTimerExpired_duration___block_in
   return v3;
 }
 
-- (void)_startTimerIfNecessary:(id)a3 withInterval:(double)a4
+- (void)_startTimerIfNecessary:(id)necessary withInterval:(double)interval
 {
-  v6 = a3;
+  necessaryCopy = necessary;
   if (!self->_pendingTimerIdentifier)
   {
-    v13 = v6;
-    v7 = [[SBSATimerDescription alloc] initWithTimeInterval:a4];
-    v8 = [(SBSATimerDescription *)v7 timerDescriptionIdentifier];
+    v13 = necessaryCopy;
+    v7 = [[SBSATimerDescription alloc] initWithTimeInterval:interval];
+    timerDescriptionIdentifier = [(SBSATimerDescription *)v7 timerDescriptionIdentifier];
     pendingTimerIdentifier = self->_pendingTimerIdentifier;
-    self->_pendingTimerIdentifier = v8;
+    self->_pendingTimerIdentifier = timerDescriptionIdentifier;
 
-    v10 = [v13 timerDescriptions];
-    if (v10)
+    timerDescriptions = [v13 timerDescriptions];
+    if (timerDescriptions)
     {
-      v11 = [v13 timerDescriptions];
-      v12 = [v11 mutableCopy];
+      timerDescriptions2 = [v13 timerDescriptions];
+      v12 = [timerDescriptions2 mutableCopy];
     }
 
     else
@@ -755,23 +755,23 @@ uint64_t __58__SBSASequencedBehaviorProvider__isTimerExpired_duration___block_in
     [v12 addObject:v7];
     [v13 setTimerDescriptions:v12];
 
-    v6 = v13;
+    necessaryCopy = v13;
   }
 }
 
-- (id)nameForPhase:(int64_t)a3
+- (id)nameForPhase:(int64_t)phase
 {
-  if (a3)
+  if (phase)
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", a3];
+    phase = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", phase];
   }
 
   else
   {
-    v4 = @"Idle";
+    phase = @"Idle";
   }
 
-  return v4;
+  return phase;
 }
 
 - (void)preferencesFromContext:.cold.1()

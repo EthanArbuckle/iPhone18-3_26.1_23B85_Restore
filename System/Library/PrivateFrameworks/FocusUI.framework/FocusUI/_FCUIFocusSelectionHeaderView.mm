@@ -1,20 +1,20 @@
 @interface _FCUIFocusSelectionHeaderView
-- (void)_layoutLabel:(id)a3 inBounds:(CGRect)a4 measuringOnly:(CGSize *)a5;
+- (void)_layoutLabel:(id)label inBounds:(CGRect)bounds measuringOnly:(CGSize *)only;
 @end
 
 @implementation _FCUIFocusSelectionHeaderView
 
-- (void)_layoutLabel:(id)a3 inBounds:(CGRect)a4 measuringOnly:(CGSize *)a5
+- (void)_layoutLabel:(id)label inBounds:(CGRect)bounds measuringOnly:(CGSize *)only
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v24 = a3;
-  [v24 sizeThatFits:{width, height}];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  labelCopy = label;
+  [labelCopy sizeThatFits:{width, height}];
   BSRectWithSize();
-  v11 = [(_FCUIFocusSelectionHeaderView *)self traitCollection];
-  [v11 displayScale];
+  traitCollection = [(_FCUIFocusSelectionHeaderView *)self traitCollection];
+  [traitCollection displayScale];
   v23 = v12;
   UIRectCenteredXInRectScale();
   v14 = v13;
@@ -22,7 +22,7 @@
   v18 = v17;
   v20 = v19;
 
-  if (a5)
+  if (only)
   {
     v26.origin.x = x;
     v26.origin.y = y;
@@ -34,13 +34,13 @@
     v27.size.width = v18;
     v27.size.height = v20;
     MaxY = CGRectGetMaxY(v27);
-    a5->width = v21;
-    a5->height = MaxY;
+    only->width = v21;
+    only->height = MaxY;
   }
 
   else
   {
-    [v24 setFrame:{v14, v16, v18, v20, v23}];
+    [labelCopy setFrame:{v14, v16, v18, v20, v23}];
   }
 }
 

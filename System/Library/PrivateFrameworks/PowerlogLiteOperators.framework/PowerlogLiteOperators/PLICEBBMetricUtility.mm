@@ -1,30 +1,30 @@
 @interface PLICEBBMetricUtility
-+ (BOOL)isInvalidMetricIdTag:(id)a3 forClass:(Class)a4;
-+ (id)convertToStringData:(id)a3;
++ (BOOL)isInvalidMetricIdTag:(id)tag forClass:(Class)class;
++ (id)convertToStringData:(id)data;
 @end
 
 @implementation PLICEBBMetricUtility
 
-+ (BOOL)isInvalidMetricIdTag:(id)a3 forClass:(Class)a4
++ (BOOL)isInvalidMetricIdTag:(id)tag forClass:(Class)class
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  tagCopy = tag;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__PLICEBBMetricUtility_isInvalidMetricIdTag_forClass___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_2811F7F18 != -1)
   {
     dispatch_once(&qword_2811F7F18, block);
   }
 
-  v7 = [qword_2811F7F10 objectForKey:v6];
+  v7 = [qword_2811F7F10 objectForKey:tagCopy];
   if (v7)
   {
     v8 = v7;
-    v9 = NSStringFromClass(a4);
-    v10 = [qword_2811F7F10 objectForKey:v6];
+    v9 = NSStringFromClass(class);
+    v10 = [qword_2811F7F10 objectForKey:tagCopy];
     v11 = [v9 compare:v10];
 
     if (!v11)
@@ -55,9 +55,9 @@ LABEL_21:
       v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"*** invalid metricId tag ***"];
       v23 = MEMORY[0x277D3F178];
       v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/KICE/PLICEBBMetricUtility.m"];
-      v25 = [v24 lastPathComponent];
+      lastPathComponent = [v24 lastPathComponent];
       v26 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[PLICEBBMetricUtility isInvalidMetricIdTag:forClass:]"];
-      [v23 logMessage:v15 fromFile:v25 fromFunction:v26 fromLineNumber:74];
+      [v23 logMessage:v15 fromFile:lastPathComponent fromFunction:v26 fromLineNumber:74];
 
       v20 = PLLogCommon();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -88,14 +88,14 @@ LABEL_21:
     if (byte_2811F7F0A == 1)
     {
       v13 = MEMORY[0x277CCACA8];
-      v14 = NSStringFromClass(a4);
-      v15 = [v13 stringWithFormat:@"supported metricId tag: %@ for class: %@", v6, v14];
+      v14 = NSStringFromClass(class);
+      v15 = [v13 stringWithFormat:@"supported metricId tag: %@ for class: %@", tagCopy, v14];
 
       v16 = MEMORY[0x277D3F178];
       v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/KICE/PLICEBBMetricUtility.m"];
-      v18 = [v17 lastPathComponent];
+      lastPathComponent2 = [v17 lastPathComponent];
       v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[PLICEBBMetricUtility isInvalidMetricIdTag:forClass:]"];
-      [v16 logMessage:v15 fromFile:v18 fromFunction:v19 fromLineNumber:78];
+      [v16 logMessage:v15 fromFile:lastPathComponent2 fromFunction:v19 fromLineNumber:78];
 
       v20 = PLLogCommon();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -261,15 +261,15 @@ uint64_t __54__PLICEBBMetricUtility_isInvalidMetricIdTag_forClass___block_invoke
   return result;
 }
 
-+ (id)convertToStringData:(id)a3
++ (id)convertToStringData:(id)data
 {
-  v3 = a3;
-  v4 = [v3 length];
+  dataCopy = data;
+  v4 = [dataCopy length];
   v5 = [objc_alloc(MEMORY[0x277CCAB68]) initWithCapacity:2 * v4];
-  v6 = [v3 bytes];
+  bytes = [dataCopy bytes];
   if (v4)
   {
-    v7 = v6;
+    v7 = bytes;
     do
     {
       v8 = *v7++;

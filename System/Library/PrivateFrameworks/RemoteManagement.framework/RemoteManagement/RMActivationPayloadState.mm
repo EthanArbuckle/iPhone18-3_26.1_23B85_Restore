@@ -1,7 +1,7 @@
 @interface RMActivationPayloadState
 - (NSArray)inactiveReasons;
 - (id)reportDetails;
-- (void)setInactiveReasons:(id)a3;
+- (void)setInactiveReasons:(id)reasons;
 @end
 
 @implementation RMActivationPayloadState
@@ -13,13 +13,13 @@
   [(RMActivationPayloadState *)self didAccessValueForKey:@"inactiveReasons"];
   if (!v3)
   {
-    v4 = [(RMActivationPayloadState *)self inactiveReasons];
-    if (v4)
+    inactiveReasons = [(RMActivationPayloadState *)self inactiveReasons];
+    if (inactiveReasons)
     {
       v5 = objc_opt_class();
       v6 = [NSSet setWithObjects:v5, objc_opt_class(), 0];
       v9 = 0;
-      v3 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v6 fromData:v4 error:&v9];
+      v3 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v6 fromData:inactiveReasons error:&v9];
       v7 = v9;
 
       if (v3)
@@ -42,15 +42,15 @@
   return v3;
 }
 
-- (void)setInactiveReasons:(id)a3
+- (void)setInactiveReasons:(id)reasons
 {
-  v4 = a3;
+  reasonsCopy = reasons;
   [(RMActivationPayloadState *)self willChangeValueForKey:@"inactiveReasons"];
-  [(RMActivationPayloadState *)self setPrimitiveValue:v4 forKey:@"inactiveReasons"];
-  if ([v4 count])
+  [(RMActivationPayloadState *)self setPrimitiveValue:reasonsCopy forKey:@"inactiveReasons"];
+  if ([reasonsCopy count])
   {
     v14 = 0;
-    v5 = [NSKeyedArchiver archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v14];
+    v5 = [NSKeyedArchiver archivedDataWithRootObject:reasonsCopy requiringSecureCoding:1 error:&v14];
     v6 = v14;
     v7 = v5 == 0;
     if (!v5 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
@@ -75,16 +75,16 @@ LABEL_6:
     }
   }
 
-  v8 = [(RMActivationPayloadState *)self inactiveReasons];
+  inactiveReasons = [(RMActivationPayloadState *)self inactiveReasons];
   v9 = v5;
   v10 = v9;
-  if (v8 == v9)
+  if (inactiveReasons == v9)
   {
   }
 
   else
   {
-    if (v8)
+    if (inactiveReasons)
     {
       v11 = v7;
     }
@@ -94,7 +94,7 @@ LABEL_6:
       v11 = 0;
     }
 
-    if (v8)
+    if (inactiveReasons)
     {
       v12 = 1;
     }
@@ -110,7 +110,7 @@ LABEL_6:
 
     else
     {
-      v13 = [v8 isEqual:v9];
+      v13 = [inactiveReasons isEqual:v9];
 
       if (v13)
       {
@@ -136,8 +136,8 @@ LABEL_24:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(RMActivationPayloadState *)self inactiveReasons];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  inactiveReasons = [(RMActivationPayloadState *)self inactiveReasons];
+  v7 = [inactiveReasons countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -148,14 +148,14 @@ LABEL_24:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(inactiveReasons);
         }
 
         v11 = [*(*(&v14 + 1) + 8 * i) serializeWithType:1];
         [v5 addObject:v11];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [inactiveReasons countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);

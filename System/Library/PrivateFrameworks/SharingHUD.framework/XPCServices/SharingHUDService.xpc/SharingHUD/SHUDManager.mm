@@ -2,10 +2,10 @@
 - (SHUDManager)init;
 - (SUIHUDHostProtocol)remoteObject;
 - (id)currentBannerRequest;
-- (void)bannerButtonTappedWithType:(int64_t)a3;
-- (void)bannerDismissedWithType:(int64_t)a3;
+- (void)bannerButtonTappedWithType:(int64_t)type;
+- (void)bannerDismissedWithType:(int64_t)type;
 - (void)dismissBanner;
-- (void)showBanner:(id)a3;
+- (void)showBanner:(id)banner;
 - (void)updatePairedUnlockBannerToUnlocked;
 @end
 
@@ -56,13 +56,13 @@
   v9 = sub_100008ECC;
   v10 = sub_100008EDC;
   v11 = 0;
-  v2 = [(SHUDManager *)self remoteObject];
+  remoteObject = [(SHUDManager *)self remoteObject];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100008EE4;
   v5[3] = &unk_1000146E0;
   v5[4] = &v6;
-  [v2 currentBannerRequestWithCompletion:v5];
+  [remoteObject currentBannerRequestWithCompletion:v5];
 
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
@@ -70,22 +70,22 @@
   return v3;
 }
 
-- (void)bannerDismissedWithType:(int64_t)a3
+- (void)bannerDismissedWithType:(int64_t)type
 {
-  v4 = [(SHUDManager *)self remoteObject];
-  [v4 bannerDidDismissWithType:a3];
+  remoteObject = [(SHUDManager *)self remoteObject];
+  [remoteObject bannerDidDismissWithType:type];
 }
 
-- (void)bannerButtonTappedWithType:(int64_t)a3
+- (void)bannerButtonTappedWithType:(int64_t)type
 {
-  v4 = [(SHUDManager *)self remoteObject];
-  [v4 bannerButtonTappedWithType:a3];
+  remoteObject = [(SHUDManager *)self remoteObject];
+  [remoteObject bannerButtonTappedWithType:type];
 }
 
-- (void)showBanner:(id)a3
+- (void)showBanner:(id)banner
 {
-  v4 = a3;
-  if (![v4 type])
+  bannerCopy = banner;
+  if (![bannerCopy type])
   {
     v5 = paired_unlock_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -95,34 +95,34 @@
     }
   }
 
-  v6 = [(SHUDManager *)self bannerRequestHandler];
+  bannerRequestHandler = [(SHUDManager *)self bannerRequestHandler];
 
-  if (v6)
+  if (bannerRequestHandler)
   {
-    v7 = [(SHUDManager *)self bannerRequestHandler];
-    (v7)[2](v7, v4);
+    bannerRequestHandler2 = [(SHUDManager *)self bannerRequestHandler];
+    (bannerRequestHandler2)[2](bannerRequestHandler2, bannerCopy);
   }
 }
 
 - (void)updatePairedUnlockBannerToUnlocked
 {
-  v3 = [(SHUDManager *)self updatePairedUnlockHandler];
+  updatePairedUnlockHandler = [(SHUDManager *)self updatePairedUnlockHandler];
 
-  if (v3)
+  if (updatePairedUnlockHandler)
   {
-    v4 = [(SHUDManager *)self updatePairedUnlockHandler];
-    v4[2]();
+    updatePairedUnlockHandler2 = [(SHUDManager *)self updatePairedUnlockHandler];
+    updatePairedUnlockHandler2[2]();
   }
 }
 
 - (void)dismissBanner
 {
-  v3 = [(SHUDManager *)self dismissBannerHandler];
+  dismissBannerHandler = [(SHUDManager *)self dismissBannerHandler];
 
-  if (v3)
+  if (dismissBannerHandler)
   {
-    v4 = [(SHUDManager *)self dismissBannerHandler];
-    v4[2]();
+    dismissBannerHandler2 = [(SHUDManager *)self dismissBannerHandler];
+    dismissBannerHandler2[2]();
   }
 }
 

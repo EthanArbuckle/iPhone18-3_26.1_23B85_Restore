@@ -1,25 +1,25 @@
 @interface ASUSQLiteKeychainHelper
-+ (BOOL)storeKey:(id)a3 withIdentifier:(id)a4 error:(id *)a5;
-+ (id)fetchKeyWithIdentifier:(id)a3 error:(id *)a4;
++ (BOOL)storeKey:(id)key withIdentifier:(id)identifier error:(id *)error;
++ (id)fetchKeyWithIdentifier:(id)identifier error:(id *)error;
 @end
 
 @implementation ASUSQLiteKeychainHelper
 
-+ (id)fetchKeyWithIdentifier:(id)a3 error:(id *)a4
++ (id)fetchKeyWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = [NSString stringWithFormat:@"%@.%@", @"com.apple.app-store-utilities.encryption", a3];
-  v7 = sub_1001E3820(a1, v6, a4);
+  identifier = [NSString stringWithFormat:@"%@.%@", @"com.apple.app-store-utilities.encryption", identifier];
+  v7 = sub_1001E3820(self, identifier, error);
 
   return v7;
 }
 
-+ (BOOL)storeKey:(id)a3 withIdentifier:(id)a4 error:(id *)a5
++ (BOOL)storeKey:(id)key withIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = [NSString stringWithFormat:@"%@.%@", @"com.apple.app-store-utilities.encryption", a4];
-  LOBYTE(a5) = sub_1001E3AD0(a1, v8, v9, a5);
+  keyCopy = key;
+  identifier = [NSString stringWithFormat:@"%@.%@", @"com.apple.app-store-utilities.encryption", identifier];
+  LOBYTE(error) = sub_1001E3AD0(self, keyCopy, identifier, error);
 
-  return a5;
+  return error;
 }
 
 @end

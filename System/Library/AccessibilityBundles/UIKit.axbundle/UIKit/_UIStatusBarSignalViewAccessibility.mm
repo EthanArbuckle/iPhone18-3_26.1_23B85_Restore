@@ -1,19 +1,19 @@
 @interface _UIStatusBarSignalViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation _UIStatusBarSignalViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v6 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = @"_UIStatusBarSignalView";
   v4 = "q";
   [location[0] validateClass:0 hasInstanceMethod:? withFullSignature:?];
@@ -24,7 +24,7 @@
 
 - (id)accessibilityValue
 {
-  v20 = self;
+  selfCopy = self;
   v19[1] = a2;
   v19[0] = 0;
   v18 = [(_UIStatusBarSignalViewAccessibility *)self safeIntegerForKey:@"signalMode"];
@@ -40,9 +40,9 @@
 
     else if (v18 == 2)
     {
-      v17 = [(_UIStatusBarSignalViewAccessibility *)v20 safeIntegerForKey:@"numberOfBars"];
-      v16 = [(_UIStatusBarSignalViewAccessibility *)v20 safeIntegerForKey:@"numberOfActiveBars"];
-      location = [(_UIStatusBarSignalViewAccessibility *)v20 _accessibilityValueForKey:@"AccessibilityStatusBarSignalViewLabelKey"];
+      v17 = [(_UIStatusBarSignalViewAccessibility *)selfCopy safeIntegerForKey:@"numberOfBars"];
+      v16 = [(_UIStatusBarSignalViewAccessibility *)selfCopy safeIntegerForKey:@"numberOfActiveBars"];
+      location = [(_UIStatusBarSignalViewAccessibility *)selfCopy _accessibilityValueForKey:@"AccessibilityStatusBarSignalViewLabelKey"];
       if (location)
       {
         v12 = MEMORY[0x29EDBA0F8];
@@ -59,11 +59,11 @@
 
     else
     {
-      v14.receiver = v20;
+      v14.receiver = selfCopy;
       v14.super_class = _UIStatusBarSignalViewAccessibility;
-      v8 = [(_UIStatusBarSignalViewAccessibility *)&v14 accessibilityLabel];
+      accessibilityLabel = [(_UIStatusBarSignalViewAccessibility *)&v14 accessibilityLabel];
       v9 = v19[0];
-      v19[0] = v8;
+      v19[0] = accessibilityLabel;
       MEMORY[0x29EDC9740](v9);
     }
   }
@@ -84,7 +84,7 @@
 
 - (unint64_t)accessibilityTraits
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v3.receiver = self;
   v3.super_class = _UIStatusBarSignalViewAccessibility;

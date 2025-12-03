@@ -1,24 +1,24 @@
 @interface INAddTasksTemporalEventTriggerResolutionResult
 + (INAddTasksTemporalEventTriggerResolutionResult)unsupportedForReason:(INAddTasksTemporalEventTriggerUnsupportedReason)reason;
-- (id)_buildIntentSlotResolutionResultWithIntentSlotDescription:(id)a3;
-- (id)_initWithIntentSlotResolutionResult:(id)a3 slotDescription:(id)a4;
+- (id)_buildIntentSlotResolutionResultWithIntentSlotDescription:(id)description;
+- (id)_initWithIntentSlotResolutionResult:(id)result slotDescription:(id)description;
 @end
 
 @implementation INAddTasksTemporalEventTriggerResolutionResult
 
-- (id)_buildIntentSlotResolutionResultWithIntentSlotDescription:(id)a3
+- (id)_buildIntentSlotResolutionResultWithIntentSlotDescription:(id)description
 {
   v11.receiver = self;
   v11.super_class = INAddTasksTemporalEventTriggerResolutionResult;
-  v4 = [(INIntentResolutionResult *)&v11 _buildIntentSlotResolutionResultWithIntentSlotDescription:a3];
+  v4 = [(INIntentResolutionResult *)&v11 _buildIntentSlotResolutionResultWithIntentSlotDescription:description];
   if ([(INIntentResolutionResult *)self resolutionResultCode]== 1 && [(INIntentResolutionResult *)self unsupportedReason])
   {
-    v5 = [v4 payloadUnsupported];
-    [v5 setReason:1000];
+    payloadUnsupported = [v4 payloadUnsupported];
+    [payloadUnsupported setReason:1000];
 
-    v6 = [v4 payloadUnsupported];
-    v7 = [(INIntentResolutionResult *)self unsupportedReason];
-    if (v7 == 2)
+    payloadUnsupported2 = [v4 payloadUnsupported];
+    unsupportedReason = [(INIntentResolutionResult *)self unsupportedReason];
+    if (unsupportedReason == 2)
     {
       v8 = 2;
     }
@@ -28,7 +28,7 @@
       v8 = 0x7FFFFFFF;
     }
 
-    if (v7 == 1)
+    if (unsupportedReason == 1)
     {
       v9 = 1;
     }
@@ -38,35 +38,35 @@
       v9 = v8;
     }
 
-    [v6 setAddTasksIntentTemporalEventTriggerUnsupportedReason:v9];
+    [payloadUnsupported2 setAddTasksIntentTemporalEventTriggerUnsupportedReason:v9];
   }
 
   return v4;
 }
 
-- (id)_initWithIntentSlotResolutionResult:(id)a3 slotDescription:(id)a4
+- (id)_initWithIntentSlotResolutionResult:(id)result slotDescription:(id)description
 {
-  v6 = a3;
+  resultCopy = result;
   v14.receiver = self;
   v14.super_class = INAddTasksTemporalEventTriggerResolutionResult;
-  v7 = [(INIntentResolutionResult *)&v14 _initWithIntentSlotResolutionResult:v6 slotDescription:a4];
+  v7 = [(INIntentResolutionResult *)&v14 _initWithIntentSlotResolutionResult:resultCopy slotDescription:description];
   if (v7)
   {
-    v8 = [v6 payloadUnsupported];
-    v9 = [v8 hasAddTasksIntentTemporalEventTriggerUnsupportedReason];
+    payloadUnsupported = [resultCopy payloadUnsupported];
+    hasAddTasksIntentTemporalEventTriggerUnsupportedReason = [payloadUnsupported hasAddTasksIntentTemporalEventTriggerUnsupportedReason];
 
-    if (v9)
+    if (hasAddTasksIntentTemporalEventTriggerUnsupportedReason)
     {
-      v10 = [v6 payloadUnsupported];
-      v11 = [v10 addTasksIntentTemporalEventTriggerUnsupportedReason];
-      if (v11 == 1)
+      payloadUnsupported2 = [resultCopy payloadUnsupported];
+      addTasksIntentTemporalEventTriggerUnsupportedReason = [payloadUnsupported2 addTasksIntentTemporalEventTriggerUnsupportedReason];
+      if (addTasksIntentTemporalEventTriggerUnsupportedReason == 1)
       {
         v12 = 1;
       }
 
       else
       {
-        v12 = 2 * (v11 == 2);
+        v12 = 2 * (addTasksIntentTemporalEventTriggerUnsupportedReason == 2);
       }
 
       [v7 setUnsupportedReason:v12];
@@ -78,10 +78,10 @@
 
 + (INAddTasksTemporalEventTriggerResolutionResult)unsupportedForReason:(INAddTasksTemporalEventTriggerUnsupportedReason)reason
 {
-  v4 = [a1 unsupported];
-  [v4 setUnsupportedReason:reason];
+  unsupported = [self unsupported];
+  [unsupported setUnsupportedReason:reason];
 
-  return v4;
+  return unsupported;
 }
 
 @end

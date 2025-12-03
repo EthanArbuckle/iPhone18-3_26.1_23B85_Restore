@@ -1,27 +1,27 @@
 @interface BRCApplyScheduler
-- (BRCApplyScheduler)initWithAccountSession:(id)a3;
-- (id)descriptionForRejectedItem:(id)a3 context:(id)a4;
-- (id)descriptionForServerItem:(id)a3 context:(id)a4;
-- (unint64_t)_addRanksUpToRank:(int64_t)a3 inZone:(id)a4;
+- (BRCApplyScheduler)initWithAccountSession:(id)session;
+- (id)descriptionForRejectedItem:(id)item context:(id)context;
+- (id)descriptionForServerItem:(id)item context:(id)context;
+- (unint64_t)_addRanksUpToRank:(int64_t)rank inZone:(id)zone;
 - (void)_close;
 - (void)_handleWatchingFaults;
-- (void)_recoverAndCreateApplyJobsForServerItemsWithNoMatchingClientItems:(id)a3 batchSize:(unint64_t)a4 recoveryTask:(id)a5 completion:(id)a6;
-- (void)_recoverAndReportMissingJobsWithCompletion:(id)a3 report:(BOOL)a4 recoveryTask:(id)a5;
-- (void)_scheduleApplyJobWithID:(id)a3 zone:(id)a4 applyKind:(unsigned int)a5;
+- (void)_recoverAndCreateApplyJobsForServerItemsWithNoMatchingClientItems:(id)items batchSize:(unint64_t)size recoveryTask:(id)task completion:(id)completion;
+- (void)_recoverAndReportMissingJobsWithCompletion:(id)completion report:(BOOL)report recoveryTask:(id)task;
+- (void)_scheduleApplyJobWithID:(id)d zone:(id)zone applyKind:(unsigned int)kind;
 - (void)deleteExpiredJobs;
-- (void)deleteNonRejectionJobsForZone:(id)a3;
-- (void)describeInBuffer:(id)a3 aggregateOfJobsMatching:(id)a4 context:(id)a5;
-- (void)didCompleteCrossZoneMigrationForAppLibrary:(id)a3;
-- (void)didCreateMissingParentID:(id)a3 zone:(id)a4;
-- (void)didReparentOrKillItemID:(id)a3 parentItemID:(id)a4 zone:(id)a5;
-- (void)generatedRanksForZone:(id)a3 upToRank:(int64_t)a4;
-- (void)monitorFaultingForZone:(id)a3;
-- (void)repopulateJobsForZone:(id)a3;
-- (void)rescheduleItemsRecursivelyUnderFolder:(id)a3;
-- (void)rescheduleMissingTargetAliasesWithTarget:(id)a3;
-- (void)resetBackoffForServerItem:(id)a3;
+- (void)deleteNonRejectionJobsForZone:(id)zone;
+- (void)describeInBuffer:(id)buffer aggregateOfJobsMatching:(id)matching context:(id)context;
+- (void)didCompleteCrossZoneMigrationForAppLibrary:(id)library;
+- (void)didCreateMissingParentID:(id)d zone:(id)zone;
+- (void)didReparentOrKillItemID:(id)d parentItemID:(id)iD zone:(id)zone;
+- (void)generatedRanksForZone:(id)zone upToRank:(int64_t)rank;
+- (void)monitorFaultingForZone:(id)zone;
+- (void)repopulateJobsForZone:(id)zone;
+- (void)rescheduleItemsRecursivelyUnderFolder:(id)folder;
+- (void)rescheduleMissingTargetAliasesWithTarget:(id)target;
+- (void)resetBackoffForServerItem:(id)item;
 - (void)schedule;
-- (void)stopMonitoringFaultingForZone:(id)a3;
+- (void)stopMonitoringFaultingForZone:(id)zone;
 @end
 
 @implementation BRCApplyScheduler
@@ -29,17 +29,17 @@
 - (void)schedule
 {
   v3 = [BRCUserDefaults defaultsForMangledID:0];
-  v4 = [v3 writerApplyBatchSize];
-  v5 = [v3 applySchedulerJobMaxRetriesBeforeAssert];
-  v6 = [(BRCAccountSession *)self->super._session clientDB];
+  writerApplyBatchSize = [v3 writerApplyBatchSize];
+  applySchedulerJobMaxRetriesBeforeAssert = [v3 applySchedulerJobMaxRetriesBeforeAssert];
+  clientDB = [(BRCAccountSession *)self->super._session clientDB];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __29__BRCApplyScheduler_schedule__block_invoke;
   v7[3] = &unk_278501DE8;
   v7[4] = self;
-  v8 = v4;
-  v9 = v5;
-  [v6 groupInTransaction:v7];
+  v8 = writerApplyBatchSize;
+  v9 = applySchedulerJobMaxRetriesBeforeAssert;
+  [clientDB groupInTransaction:v7];
 }
 
 uint64_t __29__BRCApplyScheduler_schedule__block_invoke(uint64_t a1)
@@ -106,15 +106,15 @@ void __29__BRCApplyScheduler_schedule__block_invoke_2(uint64_t a1, void *a2, uin
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)monitorFaultingForZone:(id)a3
+- (void)monitorFaultingForZone:(id)zone
 {
-  v4 = a3;
-  v5 = [(BRCAccountSession *)self->super._session clientDB];
-  [v5 assertOnQueue];
+  zoneCopy = zone;
+  clientDB = [(BRCAccountSession *)self->super._session clientDB];
+  [clientDB assertOnQueue];
 
-  if (([(NSMutableSet *)self->_clientZonesWatchingFaults containsObject:v4]& 1) == 0)
+  if (([(NSMutableSet *)self->_clientZonesWatchingFaults containsObject:zoneCopy]& 1) == 0)
   {
-    [(NSMutableSet *)self->_clientZonesWatchingFaults addObject:v4];
+    [(NSMutableSet *)self->_clientZonesWatchingFaults addObject:zoneCopy];
     [(BRCFSSchedulerBase *)self signal];
     v6 = brc_bread_crumbs();
     v7 = brc_default_log();
@@ -125,13 +125,13 @@ void __29__BRCApplyScheduler_schedule__block_invoke_2(uint64_t a1, void *a2, uin
   }
 }
 
-- (void)stopMonitoringFaultingForZone:(id)a3
+- (void)stopMonitoringFaultingForZone:(id)zone
 {
-  v4 = a3;
-  v5 = [(BRCAccountSession *)self->super._session clientDB];
-  [v5 assertOnQueue];
+  zoneCopy = zone;
+  clientDB = [(BRCAccountSession *)self->super._session clientDB];
+  [clientDB assertOnQueue];
 
-  [(NSMutableSet *)self->_clientZonesWatchingFaults removeObject:v4];
+  [(NSMutableSet *)self->_clientZonesWatchingFaults removeObject:zoneCopy];
   v6 = brc_bread_crumbs();
   v7 = brc_default_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -140,11 +140,11 @@ void __29__BRCApplyScheduler_schedule__block_invoke_2(uint64_t a1, void *a2, uin
   }
 }
 
-- (BRCApplyScheduler)initWithAccountSession:(id)a3
+- (BRCApplyScheduler)initWithAccountSession:(id)session
 {
   v7.receiver = self;
   v7.super_class = BRCApplyScheduler;
-  v3 = [(BRCFSSchedulerBase *)&v7 initWithSession:a3 name:@"Apply Changes" tableName:@"client_unapplied_table"];
+  v3 = [(BRCFSSchedulerBase *)&v7 initWithSession:session name:@"Apply Changes" tableName:@"client_unapplied_table"];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -155,45 +155,45 @@ void __29__BRCApplyScheduler_schedule__block_invoke_2(uint64_t a1, void *a2, uin
   return v3;
 }
 
-- (id)descriptionForServerItem:(id)a3 context:(id)a4
+- (id)descriptionForServerItem:(id)item context:(id)context
 {
-  v6 = a4;
-  v7 = -[BRCApplyJobIdentifier initWithItemDBRowID:]([BRCApplyJobIdentifier alloc], "initWithItemDBRowID:", [a3 rank]);
-  v8 = [(BRCFSSchedulerBase *)self descriptionForJobsMatching:v7 context:v6];
+  contextCopy = context;
+  v7 = -[BRCApplyJobIdentifier initWithItemDBRowID:]([BRCApplyJobIdentifier alloc], "initWithItemDBRowID:", [item rank]);
+  v8 = [(BRCFSSchedulerBase *)self descriptionForJobsMatching:v7 context:contextCopy];
 
   return v8;
 }
 
-- (id)descriptionForRejectedItem:(id)a3 context:(id)a4
+- (id)descriptionForRejectedItem:(id)item context:(id)context
 {
-  v6 = a4;
-  v7 = -[BRCApplyJobIdentifier initWithItemDBRowID:]([BRCApplyJobIdentifier alloc], "initWithItemDBRowID:", -[a3 dbRowID]);
-  v8 = [(BRCFSSchedulerBase *)self descriptionForJobsMatching:v7 context:v6];
+  contextCopy = context;
+  v7 = -[BRCApplyJobIdentifier initWithItemDBRowID:]([BRCApplyJobIdentifier alloc], "initWithItemDBRowID:", -[item dbRowID]);
+  v8 = [(BRCFSSchedulerBase *)self descriptionForJobsMatching:v7 context:contextCopy];
 
   return v8;
 }
 
-- (void)describeInBuffer:(id)a3 aggregateOfJobsMatching:(id)a4 context:(id)a5
+- (void)describeInBuffer:(id)buffer aggregateOfJobsMatching:(id)matching context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 db];
+  bufferCopy = buffer;
+  matchingCopy = matching;
+  contextCopy = context;
+  v11 = [contextCopy db];
   v12 = v11;
   if (v11)
   {
-    v13 = v11;
+    clientDB = v11;
   }
 
   else
   {
-    v13 = [(BRCAccountSession *)self->super._session clientDB];
+    clientDB = [(BRCAccountSession *)self->super._session clientDB];
   }
 
-  v14 = v13;
+  v14 = clientDB;
 
-  v15 = [v9 matchingJobsWhereSQLClause];
-  v16 = [v14 fetch:{@"SELECT throttle_state, COUNT(*) FROM client_unapplied_table WHERE %@ AND throttle_id > 0   AND throttle_id IN (SELECT item_rank FROM server_items) GROUP BY throttle_state", v15}];
+  matchingJobsWhereSQLClause = [matchingCopy matchingJobsWhereSQLClause];
+  v16 = [v14 fetch:{@"SELECT throttle_state, COUNT(*) FROM client_unapplied_table WHERE %@ AND throttle_id > 0   AND throttle_id IN (SELECT item_rank FROM server_items) GROUP BY throttle_state", matchingJobsWhereSQLClause}];
 
   if ([v16 next])
   {
@@ -201,19 +201,19 @@ void __29__BRCApplyScheduler_schedule__block_invoke_2(uint64_t a1, void *a2, uin
     {
       v17 = [v16 unsignedIntAtIndex:0];
       v18 = [v16 unsignedLongAtIndex:1];
-      v19 = [BRCDumpContext stringFromThrottleState:v17 context:v10];
-      [v8 appendFormat:@" %@:%lld", v19, v18];
+      v19 = [BRCDumpContext stringFromThrottleState:v17 context:contextCopy];
+      [bufferCopy appendFormat:@" %@:%lld", v19, v18];
     }
 
     while (([v16 next] & 1) != 0);
   }
 
-  v20 = [v9 matchingJobsWhereSQLClause];
-  v21 = [v14 numberWithSQL:{@"SELECT COUNT(*) FROM client_unapplied_table WHERE %@ AND throttle_id > 0   AND throttle_id NOT IN (SELECT item_rank FROM server_items)", v20}];
+  matchingJobsWhereSQLClause2 = [matchingCopy matchingJobsWhereSQLClause];
+  v21 = [v14 numberWithSQL:{@"SELECT COUNT(*) FROM client_unapplied_table WHERE %@ AND throttle_id > 0   AND throttle_id NOT IN (SELECT item_rank FROM server_items)", matchingJobsWhereSQLClause2}];
 
   if (v21)
   {
-    [v8 appendFormat:@" expired:%@", v21];
+    [bufferCopy appendFormat:@" expired:%@", v21];
   }
 
   objc_opt_class();
@@ -225,7 +225,7 @@ void __29__BRCApplyScheduler_schedule__block_invoke_2(uint64_t a1, void *a2, uin
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v22 = v9;
+    v22 = matchingCopy;
   }
 
   else
@@ -234,13 +234,13 @@ void __29__BRCApplyScheduler_schedule__block_invoke_2(uint64_t a1, void *a2, uin
   }
 
   clientZonesWatchingFaults = self->_clientZonesWatchingFaults;
-  v24 = [v22 clientZone];
-  LODWORD(clientZonesWatchingFaults) = [(NSMutableSet *)clientZonesWatchingFaults containsObject:v24];
+  clientZone = [v22 clientZone];
+  LODWORD(clientZonesWatchingFaults) = [(NSMutableSet *)clientZonesWatchingFaults containsObject:clientZone];
 
   if (clientZonesWatchingFaults)
   {
-    v25 = [v10 highlightedString:@" has-faulting-barriers" type:3];
-    [v8 appendString:v25];
+    v25 = [contextCopy highlightedString:@" has-faulting-barriers" type:3];
+    [bufferCopy appendString:v25];
   }
 }
 
@@ -272,21 +272,21 @@ void __53__BRCApplyScheduler__setState_andApplyKind_forJobID___block_invoke(uint
   sqlite3_result_int(a2, v9);
 }
 
-- (void)resetBackoffForServerItem:(id)a3
+- (void)resetBackoffForServerItem:(id)item
 {
-  v4 = -[BRCApplyJobIdentifier initWithItemDBRowID:]([BRCApplyJobIdentifier alloc], "initWithItemDBRowID:", [a3 rank]);
+  v4 = -[BRCApplyJobIdentifier initWithItemDBRowID:]([BRCApplyJobIdentifier alloc], "initWithItemDBRowID:", [item rank]);
   v5.receiver = self;
   v5.super_class = BRCApplyScheduler;
   [(BRCFSSchedulerBase *)&v5 resetBackoffForJobWithID:v4];
 }
 
-- (void)didCreateMissingParentID:(id)a3 zone:(id)a4
+- (void)didCreateMissingParentID:(id)d zone:(id)zone
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dCopy = d;
   session = self->super._session;
-  v8 = a4;
-  v9 = [(BRCAccountSession *)session clientDB];
+  zoneCopy = zone;
+  clientDB = [(BRCAccountSession *)session clientDB];
   v10 = brc_bread_crumbs();
   v11 = brc_default_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -294,27 +294,27 @@ void __53__BRCApplyScheduler__setState_andApplyKind_forJobID___block_invoke(uint
     [BRCApplyScheduler didCreateMissingParentID:zone:];
   }
 
-  v12 = [v8 dbRowID];
-  v13 = [v8 dbRowID];
+  dbRowID = [zoneCopy dbRowID];
+  dbRowID2 = [zoneCopy dbRowID];
 
-  [v9 execute:{@"UPDATE client_unapplied_table    SET throttle_state = 1  WHERE zone_rowid = %@     AND throttle_state IN (21, 16)    AND throttle_id IN (SELECT item_rank FROM server_items                        WHERE zone_rowid = %@ AND item_parent_id = %@)", v12, v13, v6}];
-  v14 = [v9 changes];
-  if ([v6 isDocumentsFolder])
+  [clientDB execute:{@"UPDATE client_unapplied_table    SET throttle_state = 1  WHERE zone_rowid = %@     AND throttle_state IN (21, 16)    AND throttle_id IN (SELECT item_rank FROM server_items                        WHERE zone_rowid = %@ AND item_parent_id = %@)", dbRowID, dbRowID2, dCopy}];
+  changes = [clientDB changes];
+  if ([dCopy isDocumentsFolder])
   {
-    [v9 execute:{@"UPDATE client_unapplied_table    SET throttle_state = 1  WHERE throttle_state IN (21, 16)    AND throttle_id IN (SELECT item_rank FROM server_items WHERE (item_sharing_options & 4) != 0 AND item_id_is_shared_root(item_parent_id))"}];
-    v14 += [v9 changes];
+    [clientDB execute:{@"UPDATE client_unapplied_table    SET throttle_state = 1  WHERE throttle_state IN (21, 16)    AND throttle_id IN (SELECT item_rank FROM server_items WHERE (item_sharing_options & 4) != 0 AND item_id_is_shared_root(item_parent_id))"}];
+    changes += [clientDB changes];
   }
 
-  if (v14)
+  if (changes)
   {
     v15 = brc_bread_crumbs();
     v16 = brc_default_log();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134218498;
-      v19 = v14;
+      v19 = changes;
       v20 = 2112;
-      v21 = v6;
+      v21 = dCopy;
       v22 = 2112;
       v23 = v15;
       _os_log_debug_impl(&dword_223E7A000, v16, OS_LOG_TYPE_DEBUG, "[DEBUG] Apply Changes: retrying %lld suspended throttles (missing parent found: %@)%@", buf, 0x20u);
@@ -326,22 +326,22 @@ void __53__BRCApplyScheduler__setState_andApplyKind_forJobID___block_invoke(uint
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didReparentOrKillItemID:(id)a3 parentItemID:(id)a4 zone:(id)a5
+- (void)didReparentOrKillItemID:(id)d parentItemID:(id)iD zone:(id)zone
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(BRCAccountSession *)self->super._session clientDB];
-  v12 = [v10 dbRowID];
-  v13 = [v10 dbRowID];
-  v14 = [v10 dbRowID];
-  [v11 execute:{@"WITH RECURSIVE  reschedulable_items (item_rank, item_id) AS(   SELECT si.item_rank, si.item_id      FROM server_items AS si     WHERE si.zone_rowid = %@       AND si.item_type IN (0, 9, 10, 4) AND NOT EXISTS (SELECT 1 FROM client_items AS ci         WHERE ci.item_parent_zone_rowid = %@ AND ci.item_parent_id = si.item_id           AND ci.item_state IN (0)   ) ) UPDATE client_unapplied_table    SET throttle_state = 1  WHERE zone_rowid = %@     AND throttle_state = 25    AND throttle_id IN (SELECT item_rank FROM reschedulable_items WHERE item_id = %@)", v12, v13, v14, v9}];
+  dCopy = d;
+  iDCopy = iD;
+  zoneCopy = zone;
+  clientDB = [(BRCAccountSession *)self->super._session clientDB];
+  dbRowID = [zoneCopy dbRowID];
+  dbRowID2 = [zoneCopy dbRowID];
+  dbRowID3 = [zoneCopy dbRowID];
+  [clientDB execute:{@"WITH RECURSIVE  reschedulable_items (item_rank, item_id) AS(   SELECT si.item_rank, si.item_id      FROM server_items AS si     WHERE si.zone_rowid = %@       AND si.item_type IN (0, 9, 10, 4) AND NOT EXISTS (SELECT 1 FROM client_items AS ci         WHERE ci.item_parent_zone_rowid = %@ AND ci.item_parent_id = si.item_id           AND ci.item_state IN (0)   ) ) UPDATE client_unapplied_table    SET throttle_state = 1  WHERE zone_rowid = %@     AND throttle_state = 25    AND throttle_id IN (SELECT item_rank FROM reschedulable_items WHERE item_id = %@)", dbRowID, dbRowID2, dbRowID3, iDCopy}];
 
-  v15 = [v11 changes];
-  if (v15)
+  changes = [clientDB changes];
+  if (changes)
   {
-    v16 = v15;
+    v16 = changes;
     v17 = brc_bread_crumbs();
     v18 = brc_default_log();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -349,9 +349,9 @@ void __53__BRCApplyScheduler__setState_andApplyKind_forJobID___block_invoke(uint
       *buf = 134218754;
       v27 = v16;
       v28 = 2112;
-      v29 = v8;
+      v29 = dCopy;
       v30 = 2112;
-      v31 = v9;
+      v31 = iDCopy;
       v32 = 2112;
       v33 = v17;
       v19 = "[DEBUG] Apply Changes: retrying %lld suspended throttles (child %@ of %@ killed or reparented)%@";
@@ -363,15 +363,15 @@ LABEL_9:
     goto LABEL_6;
   }
 
-  v20 = [v10 dbRowID];
-  v21 = [v10 dbRowID];
-  v22 = [v10 dbRowID];
-  [v11 execute:{@"WITH RECURSIVE  reschedulable_items (throttle_id, item_id) AS(   SELECT -pi.rowid, pi.item_id      FROM client_items AS pi     WHERE pi.zone_rowid = %@       AND pi.item_type IN (0, 9, 10, 4) AND NOT EXISTS (SELECT 1 FROM client_items AS ci         WHERE ci.item_parent_zone_rowid = %@ AND ci.item_parent_id = pi.item_id           AND ci.item_state IN (0)   ) ) UPDATE client_unapplied_table    SET throttle_state = 1  WHERE zone_rowid = %@     AND throttle_state = 25    AND throttle_id IN (SELECT throttle_id FROM reschedulable_items WHERE item_id = %@)", v20, v21, v22, v9}];
+  dbRowID4 = [zoneCopy dbRowID];
+  dbRowID5 = [zoneCopy dbRowID];
+  dbRowID6 = [zoneCopy dbRowID];
+  [clientDB execute:{@"WITH RECURSIVE  reschedulable_items (throttle_id, item_id) AS(   SELECT -pi.rowid, pi.item_id      FROM client_items AS pi     WHERE pi.zone_rowid = %@       AND pi.item_type IN (0, 9, 10, 4) AND NOT EXISTS (SELECT 1 FROM client_items AS ci         WHERE ci.item_parent_zone_rowid = %@ AND ci.item_parent_id = pi.item_id           AND ci.item_state IN (0)   ) ) UPDATE client_unapplied_table    SET throttle_state = 1  WHERE zone_rowid = %@     AND throttle_state = 25    AND throttle_id IN (SELECT throttle_id FROM reschedulable_items WHERE item_id = %@)", dbRowID4, dbRowID5, dbRowID6, iDCopy}];
 
-  v23 = [v11 changes];
-  if (v23)
+  changes2 = [clientDB changes];
+  if (changes2)
   {
-    v24 = v23;
+    v24 = changes2;
     v17 = brc_bread_crumbs();
     v18 = brc_default_log();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -379,9 +379,9 @@ LABEL_9:
       *buf = 134218754;
       v27 = v24;
       v28 = 2112;
-      v29 = v8;
+      v29 = dCopy;
       v30 = 2112;
-      v31 = v9;
+      v31 = iDCopy;
       v32 = 2112;
       v33 = v17;
       v19 = "[DEBUG] Apply Changes: retrying %lld suspended rejected throttles (child %@ of %@ killed or reparented)%@";
@@ -396,29 +396,29 @@ LABEL_6:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didCompleteCrossZoneMigrationForAppLibrary:(id)a3
+- (void)didCompleteCrossZoneMigrationForAppLibrary:(id)library
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(BRCAccountSession *)self->super._session clientDB];
-  v6 = [(BRCAccountSession *)self->super._session cloudDocsClientZone];
-  v7 = [v6 dbRowID];
+  libraryCopy = library;
+  clientDB = [(BRCAccountSession *)self->super._session clientDB];
+  cloudDocsClientZone = [(BRCAccountSession *)self->super._session cloudDocsClientZone];
+  dbRowID = [cloudDocsClientZone dbRowID];
 
-  v8 = [v4 rootItemID];
-  [v5 execute:{@"UPDATE client_unapplied_table    SET throttle_state = 1  WHERE zone_rowid = %@     AND throttle_state = %u    AND throttle_id IN (SELECT item_rank FROM server_items                        WHERE zone_rowid = %@ AND item_parent_id = %@)", v7, 27, v7, v8}];
-  v9 = [v5 changes];
-  if (v9)
+  rootItemID = [libraryCopy rootItemID];
+  [clientDB execute:{@"UPDATE client_unapplied_table    SET throttle_state = 1  WHERE zone_rowid = %@     AND throttle_state = %u    AND throttle_id IN (SELECT item_rank FROM server_items                        WHERE zone_rowid = %@ AND item_parent_id = %@)", dbRowID, 27, dbRowID, rootItemID}];
+  changes = [clientDB changes];
+  if (changes)
   {
-    v10 = v9;
+    v10 = changes;
     v11 = brc_bread_crumbs();
     v12 = brc_default_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      v14 = [v4 logName];
+      logName = [libraryCopy logName];
       *buf = 134218498;
       v16 = v10;
       v17 = 2112;
-      v18 = v14;
+      v18 = logName;
       v19 = 2112;
       v20 = v11;
       _os_log_debug_impl(&dword_223E7A000, v12, OS_LOG_TYPE_DEBUG, "[DEBUG] Apply Changes: retrying %lld suspended throttles (appLibrary completed migration: %@)%@", buf, 0x20u);
@@ -430,31 +430,31 @@ LABEL_6:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)rescheduleMissingTargetAliasesWithTarget:(id)a3
+- (void)rescheduleMissingTargetAliasesWithTarget:(id)target
 {
-  v4 = a3;
-  if (([v4 isSharedToMeTopLevelItem] & 1) == 0)
+  targetCopy = target;
+  if (([targetCopy isSharedToMeTopLevelItem] & 1) == 0)
   {
-    v5 = [v4 serverZone];
-    v6 = [v4 unsaltedBookmarkData];
-    v7 = [v4 appLibrary];
-    v8 = [v7 mangledID];
-    v9 = [BRCUserDefaults defaultsForMangledID:v8];
-    v10 = [v9 shouldFixupTargetCZMAliases];
+    serverZone = [targetCopy serverZone];
+    unsaltedBookmarkData = [targetCopy unsaltedBookmarkData];
+    appLibrary = [targetCopy appLibrary];
+    mangledID = [appLibrary mangledID];
+    v9 = [BRCUserDefaults defaultsForMangledID:mangledID];
+    shouldFixupTargetCZMAliases = [v9 shouldFixupTargetCZMAliases];
 
-    if (v10)
+    if (shouldFixupTargetCZMAliases)
     {
-      if ([v5 isSharedZone])
+      if ([serverZone isSharedZone])
       {
-        v11 = [v5 zoneName];
+        zoneName = [serverZone zoneName];
         v12 = *MEMORY[0x277CFAD68];
-        if ([v11 isEqualToString:*MEMORY[0x277CFAD68]])
+        if ([zoneName isEqualToString:*MEMORY[0x277CFAD68]])
         {
-          v13 = [v6 hasPrefix:v12];
+          v13 = [unsaltedBookmarkData hasPrefix:v12];
 
           if (v13)
           {
-            v14 = [v6 substringFromIndex:{objc_msgSend(v12, "length")}];
+            v14 = [unsaltedBookmarkData substringFromIndex:{objc_msgSend(v12, "length")}];
             v15 = [v14 br_stringByBackslashEscapingCharactersInString:@"\\_%"];
             [@"%" stringByAppendingString:v15];
 
@@ -468,10 +468,10 @@ LABEL_16:
         }
       }
 
-      if ([v5 isSharedZone])
+      if ([serverZone isSharedZone])
       {
-        v16 = [v5 zoneName];
-        v17 = [v16 isEqualToString:*MEMORY[0x277CFAD68]];
+        zoneName2 = [serverZone zoneName];
+        v17 = [zoneName2 isEqualToString:*MEMORY[0x277CFAD68]];
 
         if (v17)
         {
@@ -485,8 +485,8 @@ LABEL_16:
       }
     }
 
-    v21 = [(BRCAccountSession *)self->super._session clientDB];
-    v22 = [v21 fetch:{@"SELECT item_rank, zone_rowid FROM server_items WHERE item_alias_target = %@ AND item_type = 3", v6}];
+    clientDB = [(BRCAccountSession *)self->super._session clientDB];
+    v22 = [clientDB fetch:{@"SELECT item_rank, zone_rowid FROM server_items WHERE item_alias_target = %@ AND item_type = 3", unsaltedBookmarkData}];
 
     if ([v22 next])
     {
@@ -577,21 +577,21 @@ LABEL_15:
   return 1;
 }
 
-- (void)rescheduleItemsRecursivelyUnderFolder:(id)a3
+- (void)rescheduleItemsRecursivelyUnderFolder:(id)folder
 {
-  v4 = a3;
-  v5 = [(BRCAccountSession *)self->super._session clientDB];
-  v6 = [(BRCAccountSession *)self->super._session clientTruthWorkloop];
+  folderCopy = folder;
+  clientDB = [(BRCAccountSession *)self->super._session clientDB];
+  clientTruthWorkloop = [(BRCAccountSession *)self->super._session clientTruthWorkloop];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__BRCApplyScheduler_rescheduleItemsRecursivelyUnderFolder___block_invoke;
   block[3] = &unk_2784FF4A0;
-  v10 = v5;
-  v11 = v4;
-  v12 = self;
-  v7 = v4;
-  v8 = v5;
-  dispatch_async(v6, block);
+  v10 = clientDB;
+  v11 = folderCopy;
+  selfCopy = self;
+  v7 = folderCopy;
+  v8 = clientDB;
+  dispatch_async(clientTruthWorkloop, block);
 }
 
 void __59__BRCApplyScheduler_rescheduleItemsRecursivelyUnderFolder___block_invoke(uint64_t a1)
@@ -688,10 +688,10 @@ LABEL_7:
   return 1;
 }
 
-- (void)repopulateJobsForZone:(id)a3
+- (void)repopulateJobsForZone:(id)zone
 {
-  v4 = a3;
-  v5 = [(BRCAccountSession *)self->super._session clientDB];
+  zoneCopy = zone;
+  clientDB = [(BRCAccountSession *)self->super._session clientDB];
   v6 = brc_bread_crumbs();
   v7 = brc_default_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -699,24 +699,24 @@ LABEL_7:
     [BRCApplyScheduler repopulateJobsForZone:];
   }
 
-  v8 = [v4 dbRowID];
-  v9 = [v4 dbRowID];
-  [v5 execute:{@"INSERT OR REPLACE INTO client_unapplied_table(zone_rowid, throttle_id, throttle_state, apply_kind) SELECT %@, -rowid, 1, %u FROM client_items WHERE zone_rowid = %@ AND item_localsyncupstate = 1", v8, 0, v9}];
+  dbRowID = [zoneCopy dbRowID];
+  dbRowID2 = [zoneCopy dbRowID];
+  [clientDB execute:{@"INSERT OR REPLACE INTO client_unapplied_table(zone_rowid, throttle_id, throttle_state, apply_kind) SELECT %@, -rowid, 1, %u FROM client_items WHERE zone_rowid = %@ AND item_localsyncupstate = 1", dbRowID, 0, dbRowID2}];
 
-  v10 = [v4 dbRowID];
-  v11 = [v4 dbRowID];
-  [v5 execute:{@"INSERT OR REPLACE INTO client_unapplied_table(zone_rowid, throttle_id, throttle_state, apply_kind) SELECT %@, item_rank, 1, %u FROM server_items WHERE zone_rowid = %@", v10, 1, v11}];
+  dbRowID3 = [zoneCopy dbRowID];
+  dbRowID4 = [zoneCopy dbRowID];
+  [clientDB execute:{@"INSERT OR REPLACE INTO client_unapplied_table(zone_rowid, throttle_id, throttle_state, apply_kind) SELECT %@, item_rank, 1, %u FROM server_items WHERE zone_rowid = %@", dbRowID3, 1, dbRowID4}];
 }
 
-- (void)_scheduleApplyJobWithID:(id)a3 zone:(id)a4 applyKind:(unsigned int)a5
+- (void)_scheduleApplyJobWithID:(id)d zone:(id)zone applyKind:(unsigned int)kind
 {
   v66 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 clientZone];
-  if ([v8 serverItemRank])
+  dCopy = d;
+  zoneCopy = zone;
+  clientZone = [zoneCopy clientZone];
+  if ([dCopy serverItemRank])
   {
-    v11 = [v10 serverItemByRank:{objc_msgSend(v8, "serverItemRank")}];
+    v11 = [clientZone serverItemByRank:{objc_msgSend(dCopy, "serverItemRank")}];
   }
 
   else
@@ -724,23 +724,23 @@ LABEL_7:
     v11 = 0;
   }
 
-  if ([v8 rejectedRowID])
+  if ([dCopy rejectedRowID])
   {
-    v12 = [v10 itemByRowID:{objc_msgSend(v8, "rejectedRowID")}];
+    v12 = [clientZone itemByRowID:{objc_msgSend(dCopy, "rejectedRowID")}];
   }
 
   else
   {
-    v13 = [v11 itemID];
-    v12 = [v10 itemByItemID:v13];
+    itemID = [v11 itemID];
+    v12 = [clientZone itemByItemID:itemID];
   }
 
-  v42 = [v8 rank];
+  rank = [dCopy rank];
   v14 = _os_activity_create(&dword_223E7A000, "apply-changes", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v14, &state);
-  if (!v9)
+  if (!zoneCopy)
   {
     v35 = brc_bread_crumbs();
     v36 = brc_default_log();
@@ -756,16 +756,16 @@ LABEL_7:
   v16 = brc_default_log();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
-    v41 = v9;
-    v17 = self;
-    v18 = v10;
+    v41 = zoneCopy;
+    selfCopy = self;
+    v18 = clientZone;
     v19 = v14;
     v20 = v52[0];
     v21 = BRCPrettyPrintEnum();
     *buf = 134219266;
     v55 = v20;
     v56 = 2112;
-    v57 = v8;
+    v57 = dCopy;
     v58 = 2080;
     v59 = v21;
     v60 = 2112;
@@ -776,12 +776,12 @@ LABEL_7:
     v65 = v15;
     _os_log_impl(&dword_223E7A000, v16, OS_LOG_TYPE_INFO, "[INFO] ┏%llx Apply Changes[%@]: attempting to apply %s\n  server item: %@\n  local item:  %@%@", buf, 0x3Eu);
     v14 = v19;
-    v10 = v18;
-    self = v17;
-    v9 = v41;
+    clientZone = v18;
+    self = selfCopy;
+    zoneCopy = v41;
   }
 
-  if (!a5)
+  if (!kind)
   {
     if (v11)
     {
@@ -799,19 +799,19 @@ LABEL_7:
       {
         v11 = 0;
 LABEL_21:
-        v24 = [(BRCAccountSession *)self->super._session clientDB];
+        clientDB = [(BRCAccountSession *)self->super._session clientDB];
         v43[0] = MEMORY[0x277D85DD0];
         v43[1] = 3221225472;
         v43[2] = __60__BRCApplyScheduler__scheduleApplyJobWithID_zone_applyKind___block_invoke;
         v43[3] = &unk_278501E10;
         v43[4] = self;
-        v44 = v8;
-        v45 = v9;
+        v44 = dCopy;
+        v45 = zoneCopy;
         v11 = v11;
         v46 = v11;
         v47 = v12;
-        v48 = v42;
-        [v24 groupInBatch:v43];
+        v48 = rank;
+        [clientDB groupInBatch:v43];
 
         goto LABEL_28;
       }
@@ -827,7 +827,7 @@ LABEL_21:
         *buf = 134218498;
         v55 = v49;
         v56 = 2112;
-        v57 = v8;
+        v57 = dCopy;
         v58 = 2112;
         v59 = v25;
         _os_log_debug_impl(&dword_223E7A000, v26, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx Apply Changes[%@]: deleting rejected action with a non-rejected local item%@", buf, 0x20u);
@@ -835,7 +835,7 @@ LABEL_21:
 
 LABEL_27:
 
-      [(BRCFSSchedulerBase *)self deleteJobsMatching:v8];
+      [(BRCFSSchedulerBase *)self deleteJobsMatching:dCopy];
       __brc_leave_section(&v49);
       v11 = 0;
       goto LABEL_28;
@@ -853,7 +853,7 @@ LABEL_22:
       *buf = 134218498;
       v55 = v49;
       v56 = 2112;
-      v57 = v8;
+      v57 = dCopy;
       v58 = 2112;
       v59 = v25;
       _os_log_debug_impl(&dword_223E7A000, v26, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx Apply Changes[%@]: deleting action without local and server item%@", buf, 0x20u);
@@ -867,7 +867,7 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  if (!v11 || [v11 rank] == v42)
+  if (!v11 || [v11 rank] == rank)
   {
     goto LABEL_21;
   }
@@ -881,31 +881,31 @@ LABEL_22:
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
   {
     v28 = v12;
-    v29 = v9;
-    v30 = self;
-    v31 = v10;
+    v29 = zoneCopy;
+    selfCopy2 = self;
+    v31 = clientZone;
     v32 = v14;
     v33 = v49;
-    v34 = [v11 rank];
+    rank2 = [v11 rank];
     *buf = 134219010;
     v55 = v33;
     v56 = 2112;
-    v57 = v8;
+    v57 = dCopy;
     v58 = 2048;
-    v59 = v34;
+    v59 = rank2;
     v60 = 2048;
-    v61 = v42;
+    v61 = rank;
     v62 = 2112;
     v63 = v22;
     _os_log_debug_impl(&dword_223E7A000, v23, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx Apply Changes[%@]: deleting useless action %lld vs %lld%@", buf, 0x34u);
     v14 = v32;
-    v10 = v31;
-    self = v30;
-    v9 = v29;
+    clientZone = v31;
+    self = selfCopy2;
+    zoneCopy = v29;
     v12 = v28;
   }
 
-  [(BRCFSSchedulerBase *)self deleteJobsMatching:v8];
+  [(BRCFSSchedulerBase *)self deleteJobsMatching:dCopy];
   __brc_leave_section(&v49);
 LABEL_28:
   __brc_leave_section(v52);
@@ -929,7 +929,7 @@ void __60__BRCApplyScheduler__scheduleApplyJobWithID_zone_applyKind___block_invo
 - (void)_handleWatchingFaults
 {
   v67 = *MEMORY[0x277D85DE8];
-  v47 = [(BRCAccountSession *)self->super._session clientDB];
+  clientDB = [(BRCAccountSession *)self->super._session clientDB];
   v3 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v56 = 0u;
   v57 = 0u;
@@ -968,7 +968,7 @@ void __60__BRCApplyScheduler__scheduleApplyJobWithID_zone_applyKind___block_invo
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v43 = self;
+  selfCopy = self;
   v10 = self->_clientZonesWatchingFaults;
   v11 = [(NSMutableSet *)v10 countByEnumeratingWithState:&v52 objects:v65 count:16];
   if (v11)
@@ -990,17 +990,17 @@ void __60__BRCApplyScheduler__scheduleApplyJobWithID_zone_applyKind___block_invo
 
         v16 = *(*(&v52 + 1) + 8 * v15);
         v17 = *(v14 + 3640);
-        v18 = [v16 mangledID];
-        v19 = [v17 defaultsForMangledID:v18];
-        v20 = [v19 applyCountToSignalFaultsLive];
+        mangledID = [v16 mangledID];
+        v19 = [v17 defaultsForMangledID:mangledID];
+        applyCountToSignalFaultsLive = [v19 applyCountToSignalFaultsLive];
 
-        v21 = [v16 dbRowID];
-        v22 = [v47 numberWithSQL:{@"SELECT 1 FROM client_unapplied_table WHERE zone_rowid = %@ AND throttle_state = 1 AND apply_kind = %d AND retry_count < %lld LIMIT 1", v21, 1, v20}];
+        dbRowID = [v16 dbRowID];
+        v22 = [clientDB numberWithSQL:{@"SELECT 1 FROM client_unapplied_table WHERE zone_rowid = %@ AND throttle_state = 1 AND apply_kind = %d AND retry_count < %lld LIMIT 1", dbRowID, 1, applyCountToSignalFaultsLive}];
 
         if (([v22 BOOLValue] & 1) == 0)
         {
-          v23 = [v16 dbRowID];
-          v24 = [v47 numberWithSQL:{@"SELECT 1 FROM client_unapplied_table WHERE zone_rowid = %@ AND throttle_state = 1 AND apply_kind = %d LIMIT 1", v23, 1}];
+          dbRowID2 = [v16 dbRowID];
+          v24 = [clientDB numberWithSQL:{@"SELECT 1 FROM client_unapplied_table WHERE zone_rowid = %@ AND throttle_state = 1 AND apply_kind = %d LIMIT 1", dbRowID2, 1}];
 
           if ([v24 BOOLValue])
           {
@@ -1032,7 +1032,7 @@ void __60__BRCApplyScheduler__scheduleApplyJobWithID_zone_applyKind___block_invo
     while (v12);
   }
 
-  [(NSMutableSet *)v43->_clientZonesWatchingFaults minusSet:v3];
+  [(NSMutableSet *)selfCopy->_clientZonesWatchingFaults minusSet:v3];
   v50 = 0u;
   v51 = 0u;
   v48 = 0u;
@@ -1056,14 +1056,14 @@ void __60__BRCApplyScheduler__scheduleApplyJobWithID_zone_applyKind___block_invo
         v37 = *(*(&v48 + 1) + 8 * j);
         if ([v37 isSyncBlocked])
         {
-          v38 = [MEMORY[0x277CCA9B8] br_errorWithDomain:v35 code:12 description:{@"sync is blocked for client zone: %@", v37}];
-          [v37 signalFaultingWatchersWithError:v38];
+          mangledID2 = [MEMORY[0x277CCA9B8] br_errorWithDomain:v35 code:12 description:{@"sync is blocked for client zone: %@", v37}];
+          [v37 signalFaultingWatchersWithError:mangledID2];
         }
 
         else
         {
-          v38 = [v37 mangledID];
-          v39 = [v46 objectForKeyedSubscript:v38];
+          mangledID2 = [v37 mangledID];
+          v39 = [v46 objectForKeyedSubscript:mangledID2];
           [v37 signalFaultingWatchersWithError:v39];
         }
 
@@ -1097,13 +1097,13 @@ void __60__BRCApplyScheduler__scheduleApplyJobWithID_zone_applyKind___block_invo
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)_addRanksUpToRank:(int64_t)a3 inZone:(id)a4
+- (unint64_t)_addRanksUpToRank:(int64_t)rank inZone:(id)zone
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(BRCAccountSession *)self->super._session clientDB];
-  v8 = [v6 lastInsertedRank];
-  if (v8 >= a3)
+  zoneCopy = zone;
+  clientDB = [(BRCAccountSession *)self->super._session clientDB];
+  lastInsertedRank = [zoneCopy lastInsertedRank];
+  if (lastInsertedRank >= rank)
   {
     v14 = brc_bread_crumbs();
     v15 = brc_default_log();
@@ -1112,19 +1112,19 @@ void __60__BRCApplyScheduler__scheduleApplyJobWithID_zone_applyKind___block_invo
       [BRCApplyScheduler _addRanksUpToRank:inZone:];
     }
 
-    v13 = 0;
+    changes = 0;
   }
 
   else
   {
-    v9 = v8;
-    v10 = [v6 dbRowID];
-    v11 = [v6 dbRowID];
-    v12 = [v7 executeWithSlowStatementRadar:@"<rdar://problem/23822933>" sql:{@"INSERT OR IGNORE INTO client_unapplied_table (zone_rowid, throttle_id, throttle_state, retry_count, last_try_stamp, next_retry_stamp, expire_stamp, apply_kind) SELECT %@, item_rank, 1, 0, 0, 0, 0, %u  FROM server_items WHERE zone_rowid = %@ AND item_rank >= %lld AND item_rank < %lld", v10, 1, v11, v9, a3}];
+    v9 = lastInsertedRank;
+    dbRowID = [zoneCopy dbRowID];
+    dbRowID2 = [zoneCopy dbRowID];
+    v12 = [clientDB executeWithSlowStatementRadar:@"<rdar://problem/23822933>" sql:{@"INSERT OR IGNORE INTO client_unapplied_table (zone_rowid, throttle_id, throttle_state, retry_count, last_try_stamp, next_retry_stamp, expire_stamp, apply_kind) SELECT %@, item_rank, 1, 0, 0, 0, 0, %u  FROM server_items WHERE zone_rowid = %@ AND item_rank >= %lld AND item_rank < %lld", dbRowID, 1, dbRowID2, v9, rank}];
 
     if (v12)
     {
-      v13 = [v7 changes];
+      changes = [clientDB changes];
     }
 
     else
@@ -1136,23 +1136,23 @@ void __60__BRCApplyScheduler__scheduleApplyJobWithID_zone_applyKind___block_invo
         [BRCApplyScheduler _addRanksUpToRank:inZone:];
       }
 
-      v13 = 0;
+      changes = 0;
     }
 
     v14 = brc_bread_crumbs();
     v15 = brc_default_log();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
-      v20 = a3 - 1;
-      v21 = [v6 zoneName];
+      v20 = rank - 1;
+      zoneName = [zoneCopy zoneName];
       *buf = 134219010;
       v23 = v9;
       v24 = 2048;
       v25 = v20;
       v26 = 2112;
-      v27 = v21;
+      v27 = zoneName;
       v28 = 2048;
-      v29 = v13;
+      v29 = changes;
       v30 = 2112;
       v31 = v14;
       _os_log_debug_impl(&dword_223E7A000, v15, OS_LOG_TYPE_DEBUG, "[DEBUG] Apply Changes [%lld .. %lld]: in %@, %llu ranks inserted%@", buf, 0x34u);
@@ -1160,14 +1160,14 @@ void __60__BRCApplyScheduler__scheduleApplyJobWithID_zone_applyKind___block_invo
   }
 
   v18 = *MEMORY[0x277D85DE8];
-  return v13;
+  return changes;
 }
 
-- (void)generatedRanksForZone:(id)a3 upToRank:(int64_t)a4
+- (void)generatedRanksForZone:(id)zone upToRank:(int64_t)rank
 {
-  v7 = [a3 clientZone];
-  v6 = [(BRCApplyScheduler *)self _addRanksUpToRank:a4 inZone:v7];
-  [v7 listedUpToRank:a4];
+  clientZone = [zone clientZone];
+  v6 = [(BRCApplyScheduler *)self _addRanksUpToRank:rank inZone:clientZone];
+  [clientZone listedUpToRank:rank];
   if (v6)
   {
     [(BRCFSSchedulerBase *)self signal];
@@ -1202,8 +1202,8 @@ void __60__BRCApplyScheduler__scheduleApplyJobWithID_zone_applyKind___block_invo
         }
 
         v10 = *(*(&v14 + 1) + 8 * v9);
-        v11 = [MEMORY[0x277CCA9B8] brc_errorLoggedOut];
-        [v10 signalFaultingWatchersWithError:v11];
+        brc_errorLoggedOut = [MEMORY[0x277CCA9B8] brc_errorLoggedOut];
+        [v10 signalFaultingWatchersWithError:brc_errorLoggedOut];
 
         ++v9;
       }
@@ -1222,15 +1222,15 @@ void __60__BRCApplyScheduler__scheduleApplyJobWithID_zone_applyKind___block_invo
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_recoverAndCreateApplyJobsForServerItemsWithNoMatchingClientItems:(id)a3 batchSize:(unint64_t)a4 recoveryTask:(id)a5 completion:(id)a6
+- (void)_recoverAndCreateApplyJobsForServerItemsWithNoMatchingClientItems:(id)items batchSize:(unint64_t)size recoveryTask:(id)task completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = v12;
-  if (!a4 || !v12)
+  itemsCopy = items;
+  taskCopy = task;
+  completionCopy = completion;
+  v13 = completionCopy;
+  if (!size || !completionCopy)
   {
-    if (!v12)
+    if (!completionCopy)
     {
       goto LABEL_8;
     }
@@ -1240,7 +1240,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (v11 && ([v11 isTaskExpired] & 1) != 0)
+  if (taskCopy && ([taskCopy isTaskExpired] & 1) != 0)
   {
     goto LABEL_7;
   }
@@ -1265,13 +1265,13 @@ LABEL_7:
   v16[2] = __121__BRCApplyScheduler__recoverAndCreateApplyJobsForServerItemsWithNoMatchingClientItems_batchSize_recoveryTask_completion___block_invoke;
   v16[3] = &unk_278501E60;
   v21 = v25;
-  v17 = v11;
+  v17 = taskCopy;
   v20 = v13;
-  v18 = self;
+  selfCopy = self;
   v22 = v27;
   v23 = v29;
-  v19 = v10;
-  v24 = a4;
+  v19 = itemsCopy;
+  sizeCopy = size;
   dispatch_async(v15, v16);
 
   _Block_object_dispose(v25, 8);
@@ -1394,18 +1394,18 @@ void __121__BRCApplyScheduler__recoverAndCreateApplyJobsForServerItemsWithNoMatc
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_recoverAndReportMissingJobsWithCompletion:(id)a3 report:(BOOL)a4 recoveryTask:(id)a5
+- (void)_recoverAndReportMissingJobsWithCompletion:(id)completion report:(BOOL)report recoveryTask:(id)task
 {
   v65 = *MEMORY[0x277D85DE8];
-  v36 = a3;
-  v38 = a5;
+  completionCopy = completion;
+  taskCopy = task;
   v54 = 0;
   v55 = &v54;
   v56 = 0x2020000000;
   v57 = 0;
-  v39 = self;
-  v7 = [(BRCAccountSession *)self->super._session clientDB];
-  v37 = [v7 fetch:{@"SELECT ci.rowid, ci.zone_rowid, ci.item_id, ci.item_creator_id, ci.item_sharing_options, ci.item_side_car_ckinfo, ci.item_parent_zone_rowid, ci.item_localsyncupstate, ci.item_local_diffs, ci.item_notifs_rank, ci.app_library_rowid, ci.item_min_supported_os_rowid, ci.item_user_visible, ci.item_stat_ckinfo, ci.item_state, ci.item_type, ci.item_mode, ci.item_birthtime, ci.item_lastusedtime, ci.item_favoriterank, ci.item_parent_id, ci.item_filename, ci.item_hidden_ext, ci.item_finder_tags, ci.item_xattr_signature, ci.item_trash_put_back_path, ci.item_trash_put_back_parent_id, ci.item_alias_target, ci.item_creator, ci.item_processing_stamp, ci.item_bouncedname, ci.item_scope, ci.item_local_change_count, ci.item_old_version_identifier, ci.fp_creation_item_identifier, ci.version_name, ci.version_ckinfo, ci.version_mtime, ci.version_size, ci.version_thumb_size, ci.version_thumb_signature, ci.version_content_signature, ci.version_xattr_signature, ci.version_edited_since_shared, ci.version_device, ci.version_conflict_loser_etags, ci.version_quarantine_info, ci.version_uploaded_assets, ci.version_upload_error, ci.version_old_zone_item_id, ci.version_old_zone_rowid, ci.version_local_change_count, ci.version_old_version_identifier, ci.item_live_conflict_loser_etags, ci.item_file_id, ci.item_generation FROM client_items AS ci WHERE ci.item_localsyncupstate = 1 AND ci.item_localsyncupstate != 0 AND NOT EXISTS (SELECT 1 FROM client_unapplied_table AS cu WHERE cu.throttle_id = ci.rowid AND cu.throttle_state != 0)"}];
+  selfCopy = self;
+  clientDB = [(BRCAccountSession *)self->super._session clientDB];
+  v37 = [clientDB fetch:{@"SELECT ci.rowid, ci.zone_rowid, ci.item_id, ci.item_creator_id, ci.item_sharing_options, ci.item_side_car_ckinfo, ci.item_parent_zone_rowid, ci.item_localsyncupstate, ci.item_local_diffs, ci.item_notifs_rank, ci.app_library_rowid, ci.item_min_supported_os_rowid, ci.item_user_visible, ci.item_stat_ckinfo, ci.item_state, ci.item_type, ci.item_mode, ci.item_birthtime, ci.item_lastusedtime, ci.item_favoriterank, ci.item_parent_id, ci.item_filename, ci.item_hidden_ext, ci.item_finder_tags, ci.item_xattr_signature, ci.item_trash_put_back_path, ci.item_trash_put_back_parent_id, ci.item_alias_target, ci.item_creator, ci.item_processing_stamp, ci.item_bouncedname, ci.item_scope, ci.item_local_change_count, ci.item_old_version_identifier, ci.fp_creation_item_identifier, ci.version_name, ci.version_ckinfo, ci.version_mtime, ci.version_size, ci.version_thumb_size, ci.version_thumb_signature, ci.version_content_signature, ci.version_xattr_signature, ci.version_edited_since_shared, ci.version_device, ci.version_conflict_loser_etags, ci.version_quarantine_info, ci.version_uploaded_assets, ci.version_upload_error, ci.version_old_zone_item_id, ci.version_old_zone_rowid, ci.version_local_change_count, ci.version_old_version_identifier, ci.item_live_conflict_loser_etags, ci.item_file_id, ci.item_generation FROM client_items AS ci WHERE ci.item_localsyncupstate = 1 AND ci.item_localsyncupstate != 0 AND NOT EXISTS (SELECT 1 FROM client_unapplied_table AS cu WHERE cu.throttle_id = ci.rowid AND cu.throttle_state != 0)"}];
 
   v52 = 0u;
   v53 = 0u;
@@ -1447,9 +1447,9 @@ void __121__BRCApplyScheduler__recoverAndCreateApplyJobsForServerItemsWithNoMatc
           }
         }
 
-        v15 = [v13 clientZone];
-        v16 = [v13 itemID];
-        v17 = [v15 serverItemByItemID:v16];
+        clientZone = [v13 clientZone];
+        itemID = [v13 itemID];
+        v17 = [clientZone serverItemByItemID:itemID];
 
         if ([v17 isLive])
         {
@@ -1483,7 +1483,7 @@ void __121__BRCApplyScheduler__recoverAndCreateApplyJobsForServerItemsWithNoMatc
             _os_log_impl(&dword_223E7A000, v21, OS_LOG_TYPE_DEFAULT, "[WARNING] Rejected item %@ doesn't have an apply job.  Re-creating the apply job%@", buf, 0x16u);
           }
 
-          [(BRCApplyScheduler *)v39 createApplyJobFromServerItem:v17 localItem:v13 state:1 kind:0];
+          [(BRCApplyScheduler *)selfCopy createApplyJobFromServerItem:v17 localItem:v13 state:1 kind:0];
         }
 
         ++*(v55 + 6);
@@ -1500,15 +1500,15 @@ void __121__BRCApplyScheduler__recoverAndCreateApplyJobsForServerItemsWithNoMatc
     while (v24);
   }
 
-  if ([v38 isTaskExpired])
+  if ([taskCopy isTaskExpired])
   {
-    v36[2](v36, *(v55 + 6));
+    completionCopy[2](completionCopy, *(v55 + 6));
   }
 
   else
   {
     v25 = objc_opt_new();
-    session = v39->super._session;
+    session = selfCopy->super._session;
     v47[0] = MEMORY[0x277D85DD0];
     v47[1] = 3221225472;
     v47[2] = __84__BRCApplyScheduler__recoverAndReportMissingJobsWithCompletion_report_recoveryTask___block_invoke_146;
@@ -1517,7 +1517,7 @@ void __121__BRCApplyScheduler__recoverAndCreateApplyJobsForServerItemsWithNoMatc
     v48 = v27;
     [(BRCAccountSession *)session enumeratePrivateClientZones:v47];
     v28 = [BRCUserDefaults defaultsForMangledID:0];
-    v29 = [v28 applySchedulerRecoveryJobBatchSize];
+    applySchedulerRecoveryJobBatchSize = [v28 applySchedulerRecoveryJobBatchSize];
 
     v30 = dispatch_group_create();
     dispatch_group_enter(v30);
@@ -1528,17 +1528,17 @@ void __121__BRCApplyScheduler__recoverAndCreateApplyJobsForServerItemsWithNoMatc
     v46 = &v54;
     v31 = v30;
     v45 = v31;
-    [(BRCApplyScheduler *)v39 _recoverAndCreateApplyJobsForServerItemsWithNoMatchingClientItems:v27 batchSize:v29 recoveryTask:v38 completion:v44];
-    v32 = [(BRCAccountSession *)v39->super._session clientTruthWorkloop];
+    [(BRCApplyScheduler *)selfCopy _recoverAndCreateApplyJobsForServerItemsWithNoMatchingClientItems:v27 batchSize:applySchedulerRecoveryJobBatchSize recoveryTask:taskCopy completion:v44];
+    clientTruthWorkloop = [(BRCAccountSession *)selfCopy->super._session clientTruthWorkloop];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __84__BRCApplyScheduler__recoverAndReportMissingJobsWithCompletion_report_recoveryTask___block_invoke_3;
     block[3] = &unk_2784FFDD0;
     v42 = &v54;
-    block[4] = v39;
-    v43 = a4;
-    v41 = v36;
-    dispatch_group_notify(v31, v32, block);
+    block[4] = selfCopy;
+    reportCopy = report;
+    v41 = completionCopy;
+    dispatch_group_notify(v31, clientTruthWorkloop, block);
   }
 
   _Block_object_dispose(&v54, 8);
@@ -1598,18 +1598,18 @@ uint64_t __84__BRCApplyScheduler__recoverAndReportMissingJobsWithCompletion_repo
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)deleteNonRejectionJobsForZone:(id)a3
+- (void)deleteNonRejectionJobsForZone:(id)zone
 {
   session = self->super._session;
-  v5 = a3;
-  v6 = [(BRCAccountSession *)session clientDB];
-  v7 = [v5 matchingJobsWhereSQLClause];
+  zoneCopy = zone;
+  clientDB = [(BRCAccountSession *)session clientDB];
+  matchingJobsWhereSQLClause = [zoneCopy matchingJobsWhereSQLClause];
 
-  [v6 execute:{@"DELETE FROM client_unapplied_table WHERE %@ AND throttle_id > 0", v7}];
-  v8 = [(BRCAccountSession *)self->super._session clientDB];
-  v9 = [v8 changes];
+  [clientDB execute:{@"DELETE FROM client_unapplied_table WHERE %@ AND throttle_id > 0", matchingJobsWhereSQLClause}];
+  clientDB2 = [(BRCAccountSession *)self->super._session clientDB];
+  changes = [clientDB2 changes];
 
-  if (v9 >= 1)
+  if (changes >= 1)
   {
     v10 = brc_bread_crumbs();
     v11 = brc_default_log();

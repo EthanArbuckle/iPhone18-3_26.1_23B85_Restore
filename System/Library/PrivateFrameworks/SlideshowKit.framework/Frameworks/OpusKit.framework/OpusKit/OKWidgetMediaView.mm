@@ -1,7 +1,7 @@
 @interface OKWidgetMediaView
 - (id)videoActivityIndicator;
 - (void)dealloc;
-- (void)showVideoActivityIndicator:(BOOL)a3;
+- (void)showVideoActivityIndicator:(BOOL)indicator;
 @end
 
 @implementation OKWidgetMediaView
@@ -47,13 +47,13 @@
   return result;
 }
 
-- (void)showVideoActivityIndicator:(BOOL)a3
+- (void)showVideoActivityIndicator:(BOOL)indicator
 {
-  v3 = a3;
-  if (a3)
+  indicatorCopy = indicator;
+  if (indicator)
   {
-    v4 = [(OKWidgetMediaView *)self videoActivityIndicator];
-    [v4 startAnimating];
+    videoActivityIndicator = [(OKWidgetMediaView *)self videoActivityIndicator];
+    [videoActivityIndicator startAnimating];
   }
 
   else
@@ -63,11 +63,11 @@
       return;
     }
 
-    v4 = [(OKWidgetMediaView *)self videoActivityIndicator];
-    [v4 stopAnimating];
+    videoActivityIndicator = [(OKWidgetMediaView *)self videoActivityIndicator];
+    [videoActivityIndicator stopAnimating];
   }
 
-  [v4 setHidden:!v3];
+  [videoActivityIndicator setHidden:!indicatorCopy];
 }
 
 @end

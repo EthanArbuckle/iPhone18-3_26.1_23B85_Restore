@@ -1,25 +1,25 @@
 @interface PHASERoomSimulationDataSet
 - (PHASERoomSimulationDataSet)init;
-- (PHASERoomSimulationDataSet)initWithRoomSimulationDebugView:(const void *)a3;
-- (__n128)getImageSourceIntersectionAt:(unint64_t)a3 intersectionIndex:(unint64_t)a4;
-- (__n128)getImageSourceLocationAtIndex:(unint64_t)a3;
-- (__n128)getIntersectionAtIndex:(unint64_t)a3;
-- (__n128)getOriginAtIndex:(unint64_t)a3;
-- (double)getEarlyMetadataDirectionAt:(unint64_t)a3;
-- (double)getLateMetadataDirectionAt:(unint64_t)a3;
-- (float)getCenterFrequencyAtSubband:(int64_t)a3;
-- (float)getEarlyMetadataDelayAt:(int64_t)a3;
-- (float)getEarlyMetadataPolarityAt:(int64_t)a3;
-- (float)getEarlyMetadataSubbandGainAt:(int64_t)a3 subbandIndex:(int64_t)a4;
-- (float)getEquivalentAbsorptionAreaAtSubband:(int64_t)a3;
-- (float)getLateMetadataDelayAt:(int64_t)a3;
-- (float)getLateMetadataPolarityAt:(int64_t)a3;
-- (float)getLateMetadataSubbandGainAt:(int64_t)a3 subbandIndex:(int64_t)a4;
-- (float)getMeanAbsorptionAtSubband:(int64_t)a3;
-- (float)getRt60AtSubband:(int64_t)a3;
-- (float)getTimeHistogramBin:(int64_t)a3 timeIndex:(int64_t)a4;
+- (PHASERoomSimulationDataSet)initWithRoomSimulationDebugView:(const void *)view;
+- (__n128)getImageSourceIntersectionAt:(unint64_t)at intersectionIndex:(unint64_t)index;
+- (__n128)getImageSourceLocationAtIndex:(unint64_t)index;
+- (__n128)getIntersectionAtIndex:(unint64_t)index;
+- (__n128)getOriginAtIndex:(unint64_t)index;
+- (double)getEarlyMetadataDirectionAt:(unint64_t)at;
+- (double)getLateMetadataDirectionAt:(unint64_t)at;
+- (float)getCenterFrequencyAtSubband:(int64_t)subband;
+- (float)getEarlyMetadataDelayAt:(int64_t)at;
+- (float)getEarlyMetadataPolarityAt:(int64_t)at;
+- (float)getEarlyMetadataSubbandGainAt:(int64_t)at subbandIndex:(int64_t)index;
+- (float)getEquivalentAbsorptionAreaAtSubband:(int64_t)subband;
+- (float)getLateMetadataDelayAt:(int64_t)at;
+- (float)getLateMetadataPolarityAt:(int64_t)at;
+- (float)getLateMetadataSubbandGainAt:(int64_t)at subbandIndex:(int64_t)index;
+- (float)getMeanAbsorptionAtSubband:(int64_t)subband;
+- (float)getRt60AtSubband:(int64_t)subband;
+- (float)getTimeHistogramBin:(int64_t)bin timeIndex:(int64_t)index;
 - (id).cxx_construct;
-- (int64_t)getImageSourceIntersectionContainerSize:(int64_t)a3;
+- (int64_t)getImageSourceIntersectionContainerSize:(int64_t)size;
 - (unint64_t)getRoomDataSubbandCount;
 @end
 
@@ -32,10 +32,10 @@
   return [(PHASERoomSimulationDataSet *)&v3 init];
 }
 
-- (int64_t)getImageSourceIntersectionContainerSize:(int64_t)a3
+- (int64_t)getImageSourceIntersectionContainerSize:(int64_t)size
 {
   v11 = *MEMORY[0x277D85DE8];
-  if (a3 < 0 || (begin = self->_imageSourceIntersectionPoints.__begin_, 0xAAAAAAAAAAAAAAABLL * ((self->_imageSourceIntersectionPoints.__end_ - begin) >> 3) <= a3))
+  if (size < 0 || (begin = self->_imageSourceIntersectionPoints.__begin_, 0xAAAAAAAAAAAAAAABLL * ((self->_imageSourceIntersectionPoints.__end_ - begin) >> 3) <= size))
   {
     v5 = **(Phase::Logger::GetInstance(self) + 224);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -51,7 +51,7 @@
     std::runtime_error::runtime_error(exception, "PRECONDITION: index >= 0 && index < _imageSourceIntersectionPoints.size() is false.");
   }
 
-  return (begin[3 * a3 + 1] - begin[3 * a3]) >> 4;
+  return (begin[3 * size + 1] - begin[3 * size]) >> 4;
 }
 
 - (unint64_t)getRoomDataSubbandCount
@@ -93,10 +93,10 @@
   return v2 >> 2;
 }
 
-- (float)getMeanAbsorptionAtSubband:(int64_t)a3
+- (float)getMeanAbsorptionAtSubband:(int64_t)subband
 {
   v11 = *MEMORY[0x277D85DE8];
-  if (a3 < 0 || (begin = self->_roomData.mMeanAbsorption.__begin_, a3 >= (self->_roomData.mMeanAbsorption.__end_ - begin)))
+  if (subband < 0 || (begin = self->_roomData.mMeanAbsorption.__begin_, subband >= (self->_roomData.mMeanAbsorption.__end_ - begin)))
   {
     v5 = **(Phase::Logger::GetInstance(self) + 224);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -112,13 +112,13 @@
     std::runtime_error::runtime_error(exception, "PRECONDITION: subbandIndex >= 0 && subbandIndex < _roomData.mMeanAbsorption.size() is false.");
   }
 
-  return begin[a3];
+  return begin[subband];
 }
 
-- (float)getEquivalentAbsorptionAreaAtSubband:(int64_t)a3
+- (float)getEquivalentAbsorptionAreaAtSubband:(int64_t)subband
 {
   v11 = *MEMORY[0x277D85DE8];
-  if (a3 < 0 || (begin = self->_roomData.mEquivalentAbsorptionArea.__begin_, a3 >= (self->_roomData.mEquivalentAbsorptionArea.__end_ - begin)))
+  if (subband < 0 || (begin = self->_roomData.mEquivalentAbsorptionArea.__begin_, subband >= (self->_roomData.mEquivalentAbsorptionArea.__end_ - begin)))
   {
     v5 = **(Phase::Logger::GetInstance(self) + 224);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -134,13 +134,13 @@
     std::runtime_error::runtime_error(exception, "PRECONDITION: subbandIndex >= 0 && subbandIndex < _roomData.mEquivalentAbsorptionArea.size() is false.");
   }
 
-  return begin[a3];
+  return begin[subband];
 }
 
-- (float)getRt60AtSubband:(int64_t)a3
+- (float)getRt60AtSubband:(int64_t)subband
 {
   v11 = *MEMORY[0x277D85DE8];
-  if (a3 < 0 || (begin = self->_roomData.mRt60.__begin_, a3 >= (self->_roomData.mRt60.__end_ - begin)))
+  if (subband < 0 || (begin = self->_roomData.mRt60.__begin_, subband >= (self->_roomData.mRt60.__end_ - begin)))
   {
     v5 = **(Phase::Logger::GetInstance(self) + 224);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -156,13 +156,13 @@
     std::runtime_error::runtime_error(exception, "PRECONDITION: subbandIndex >= 0 && subbandIndex < _roomData.mRt60.size() is false.");
   }
 
-  return begin[a3];
+  return begin[subband];
 }
 
-- (float)getCenterFrequencyAtSubband:(int64_t)a3
+- (float)getCenterFrequencyAtSubband:(int64_t)subband
 {
   v11 = *MEMORY[0x277D85DE8];
-  if (a3 < 0 || (begin = self->_roomData.mCenterFrequencies.__begin_, a3 >= (self->_roomData.mCenterFrequencies.__end_ - begin)))
+  if (subband < 0 || (begin = self->_roomData.mCenterFrequencies.__begin_, subband >= (self->_roomData.mCenterFrequencies.__end_ - begin)))
   {
     v5 = **(Phase::Logger::GetInstance(self) + 224);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -178,15 +178,15 @@
     std::runtime_error::runtime_error(exception, "PRECONDITION: subbandIndex >= 0 && subbandIndex < _roomData.mCenterFrequencies.size() is false.");
   }
 
-  return begin[a3];
+  return begin[subband];
 }
 
-- (double)getEarlyMetadataDirectionAt:(unint64_t)a3
+- (double)getEarlyMetadataDirectionAt:(unint64_t)at
 {
   v11 = *MEMORY[0x277D85DE8];
-  if ((a3 & 0x8000000000000000) != 0 || (v3 = *(a1 + 22), 0xAAAAAAAAAAAAAAABLL * ((*(a1 + 23) - v3) >> 2) <= a3))
+  if ((at & 0x8000000000000000) != 0 || (v3 = *(self + 22), 0xAAAAAAAAAAAAAAABLL * ((*(self + 23) - v3) >> 2) <= at))
   {
-    v5 = **(Phase::Logger::GetInstance(a1) + 224);
+    v5 = **(Phase::Logger::GetInstance(self) + 224);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       v7 = 136315394;
@@ -200,13 +200,13 @@
     std::runtime_error::runtime_error(exception, "PRECONDITION: index >= 0 && index < _earlyResponseMetadata.mDirections.size() is false.");
   }
 
-  return *(v3 + 12 * a3);
+  return *(v3 + 12 * at);
 }
 
-- (float)getEarlyMetadataDelayAt:(int64_t)a3
+- (float)getEarlyMetadataDelayAt:(int64_t)at
 {
   v11 = *MEMORY[0x277D85DE8];
-  if (a3 < 0 || (begin = self->_earlyResponseMetadata.mDelaysInSeconds.__begin_, a3 >= (self->_earlyResponseMetadata.mDelaysInSeconds.__end_ - begin)))
+  if (at < 0 || (begin = self->_earlyResponseMetadata.mDelaysInSeconds.__begin_, at >= (self->_earlyResponseMetadata.mDelaysInSeconds.__end_ - begin)))
   {
     v5 = **(Phase::Logger::GetInstance(self) + 224);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -222,13 +222,13 @@
     std::runtime_error::runtime_error(exception, "PRECONDITION: index >= 0 && index < _earlyResponseMetadata.mDelaysInSeconds.size() is false.");
   }
 
-  return begin[a3];
+  return begin[at];
 }
 
-- (float)getEarlyMetadataPolarityAt:(int64_t)a3
+- (float)getEarlyMetadataPolarityAt:(int64_t)at
 {
   v11 = *MEMORY[0x277D85DE8];
-  if (a3 < 0 || (begin = self->_earlyResponseMetadata.mInvertPolarity.__begin_, (self->_earlyResponseMetadata.mInvertPolarity.__end_ - begin) <= a3))
+  if (at < 0 || (begin = self->_earlyResponseMetadata.mInvertPolarity.__begin_, (self->_earlyResponseMetadata.mInvertPolarity.__end_ - begin) <= at))
   {
     v5 = **(Phase::Logger::GetInstance(self) + 224);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -245,7 +245,7 @@
   }
 
   result = -1.0;
-  if (!begin[a3])
+  if (!begin[at])
   {
     return 1.0;
   }
@@ -253,10 +253,10 @@
   return result;
 }
 
-- (float)getEarlyMetadataSubbandGainAt:(int64_t)a3 subbandIndex:(int64_t)a4
+- (float)getEarlyMetadataSubbandGainAt:(int64_t)at subbandIndex:(int64_t)index
 {
   v16 = *MEMORY[0x277D85DE8];
-  if (a3 < 0 || (begin = self->_earlyResponseMetadata.mSubbandGains.__begin_, 0xAAAAAAAAAAAAAAABLL * ((self->_earlyResponseMetadata.mSubbandGains.__end_ - begin) >> 3) <= a3))
+  if (at < 0 || (begin = self->_earlyResponseMetadata.mSubbandGains.__begin_, 0xAAAAAAAAAAAAAAABLL * ((self->_earlyResponseMetadata.mSubbandGains.__end_ - begin) >> 3) <= at))
   {
     v8 = **(Phase::Logger::GetInstance(self) + 224);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -272,7 +272,7 @@
     std::runtime_error::runtime_error(exception, "PRECONDITION: index >= 0 && index < _earlyResponseMetadata.mSubbandGains.size() is false.");
   }
 
-  if (a4 < 0 || (v6 = &begin[24 * a3], v5 = *v6, a4 >= ((*(v6 + 1) - *v6) >> 2)))
+  if (index < 0 || (v6 = &begin[24 * at], v5 = *v6, index >= ((*(v6 + 1) - *v6) >> 2)))
   {
     v10 = **(Phase::Logger::GetInstance(self) + 224);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -288,15 +288,15 @@
     std::runtime_error::runtime_error(v11, "PRECONDITION: subbandIndex >= 0 && subbandIndex < _earlyResponseMetadata.mSubbandGains[index].size() is false.");
   }
 
-  return *(v5 + 4 * a4);
+  return *(v5 + 4 * index);
 }
 
-- (double)getLateMetadataDirectionAt:(unint64_t)a3
+- (double)getLateMetadataDirectionAt:(unint64_t)at
 {
   v11 = *MEMORY[0x277D85DE8];
-  if ((a3 & 0x8000000000000000) != 0 || (v3 = *(a1 + 35), 0xAAAAAAAAAAAAAAABLL * ((*(a1 + 36) - v3) >> 2) <= a3))
+  if ((at & 0x8000000000000000) != 0 || (v3 = *(self + 35), 0xAAAAAAAAAAAAAAABLL * ((*(self + 36) - v3) >> 2) <= at))
   {
-    v5 = **(Phase::Logger::GetInstance(a1) + 224);
+    v5 = **(Phase::Logger::GetInstance(self) + 224);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       v7 = 136315394;
@@ -310,13 +310,13 @@
     std::runtime_error::runtime_error(exception, "PRECONDITION: index >= 0 && index < _lateReverberationMetadata.mDirections.size() is false.");
   }
 
-  return *(v3 + 12 * a3);
+  return *(v3 + 12 * at);
 }
 
-- (float)getLateMetadataDelayAt:(int64_t)a3
+- (float)getLateMetadataDelayAt:(int64_t)at
 {
   v11 = *MEMORY[0x277D85DE8];
-  if (a3 < 0 || (begin = self->_lateReverberationMetadata.mDelaysInSeconds.__begin_, a3 >= (self->_lateReverberationMetadata.mDelaysInSeconds.__end_ - begin)))
+  if (at < 0 || (begin = self->_lateReverberationMetadata.mDelaysInSeconds.__begin_, at >= (self->_lateReverberationMetadata.mDelaysInSeconds.__end_ - begin)))
   {
     v5 = **(Phase::Logger::GetInstance(self) + 224);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -332,13 +332,13 @@
     std::runtime_error::runtime_error(exception, "PRECONDITION: index >= 0 && index < _lateReverberationMetadata.mDelaysInSeconds.size() is false.");
   }
 
-  return begin[a3];
+  return begin[at];
 }
 
-- (float)getLateMetadataPolarityAt:(int64_t)a3
+- (float)getLateMetadataPolarityAt:(int64_t)at
 {
   v11 = *MEMORY[0x277D85DE8];
-  if (a3 < 0 || (begin = self->_lateReverberationMetadata.mInvertPolarity.__begin_, (self->_lateReverberationMetadata.mInvertPolarity.__end_ - begin) <= a3))
+  if (at < 0 || (begin = self->_lateReverberationMetadata.mInvertPolarity.__begin_, (self->_lateReverberationMetadata.mInvertPolarity.__end_ - begin) <= at))
   {
     v5 = **(Phase::Logger::GetInstance(self) + 224);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -355,7 +355,7 @@
   }
 
   result = -1.0;
-  if (!begin[a3])
+  if (!begin[at])
   {
     return 1.0;
   }
@@ -363,10 +363,10 @@
   return result;
 }
 
-- (float)getLateMetadataSubbandGainAt:(int64_t)a3 subbandIndex:(int64_t)a4
+- (float)getLateMetadataSubbandGainAt:(int64_t)at subbandIndex:(int64_t)index
 {
   v16 = *MEMORY[0x277D85DE8];
-  if (a3 < 0 || (begin = self->_lateReverberationMetadata.mSubbandGains.__begin_, 0xAAAAAAAAAAAAAAABLL * ((self->_lateReverberationMetadata.mSubbandGains.__end_ - begin) >> 3) <= a3))
+  if (at < 0 || (begin = self->_lateReverberationMetadata.mSubbandGains.__begin_, 0xAAAAAAAAAAAAAAABLL * ((self->_lateReverberationMetadata.mSubbandGains.__end_ - begin) >> 3) <= at))
   {
     v8 = **(Phase::Logger::GetInstance(self) + 224);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -382,7 +382,7 @@
     std::runtime_error::runtime_error(exception, "PRECONDITION: index >= 0 && index < _lateReverberationMetadata.mSubbandGains.size() is false.");
   }
 
-  if (a4 < 0 || (v6 = &begin[24 * a3], v5 = *v6, a4 >= ((*(v6 + 1) - *v6) >> 2)))
+  if (index < 0 || (v6 = &begin[24 * at], v5 = *v6, index >= ((*(v6 + 1) - *v6) >> 2)))
   {
     v10 = **(Phase::Logger::GetInstance(self) + 224);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -398,18 +398,18 @@
     std::runtime_error::runtime_error(v11, "PRECONDITION: subbandIndex >= 0 && subbandIndex < _lateReverberationMetadata.mSubbandGains[index].size() is false.");
   }
 
-  return *(v5 + 4 * a4);
+  return *(v5 + 4 * index);
 }
 
-- (PHASERoomSimulationDataSet)initWithRoomSimulationDebugView:(const void *)a3
+- (PHASERoomSimulationDataSet)initWithRoomSimulationDebugView:(const void *)view
 {
   v52.receiver = self;
   v52.super_class = PHASERoomSimulationDataSet;
   v4 = [(PHASERoomSimulationDataSet *)&v52 init];
-  *(v4 + 1) = *(a3 + 2);
-  *(v4 + 2) = *(a3 + 1);
-  _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE6resizeEm(v4 + 3, 0x6DB6DB6DB6DB6DB7 * ((*(a3 + 5) - *(a3 + 4)) >> 2));
-  _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE6resizeEm(v4 + 6, 0x6DB6DB6DB6DB6DB7 * ((*(a3 + 5) - *(a3 + 4)) >> 2));
+  *(v4 + 1) = *(view + 2);
+  *(v4 + 2) = *(view + 1);
+  _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE6resizeEm(v4 + 3, 0x6DB6DB6DB6DB6DB7 * ((*(view + 5) - *(view + 4)) >> 2));
+  _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE6resizeEm(v4 + 6, 0x6DB6DB6DB6DB6DB7 * ((*(view + 5) - *(view + 4)) >> 2));
   v6 = *(v4 + 3);
   if (*(v4 + 4) != v6)
   {
@@ -417,11 +417,11 @@
     v8 = 0;
     do
     {
-      v9 = *(a3 + 4) + v7;
+      v9 = *(view + 4) + v7;
       *&v5 = *v9;
       DWORD2(v5) = *(v9 + 8);
       *(v6 + 16 * v8) = v5;
-      v10 = *(a3 + 4) + v7;
+      v10 = *(view + 4) + v7;
       *&v5 = *(v10 + 12);
       DWORD2(v5) = *(v10 + 20);
       *(*(v4 + 6) + 16 * v8++) = v5;
@@ -433,10 +433,10 @@
   }
 
   v11 = *(v4 + 15);
-  *(v4 + 61) = *(a3 + 7);
-  v12 = *(a3 + 9);
-  *(v4 + 62) = *(a3 + 8);
-  v13 = *(a3 + 10);
+  *(v4 + 61) = *(view + 7);
+  v12 = *(view + 9);
+  *(v4 + 62) = *(view + 8);
+  v13 = *(view + 10);
   v14 = v13 - v12;
   v15 = *(v4 + 17);
   if (v15 - v11 < (v13 - v12))
@@ -518,7 +518,7 @@
   }
 
   *(v4 + 16) = v25;
-  v26 = 0xCCCCCCCCCCCCCCCDLL * ((*(a3 + 14) - *(a3 + 13)) >> 3);
+  v26 = 0xCCCCCCCCCCCCCCCDLL * ((*(view + 14) - *(view + 13)) >> 3);
   *(v4 + 63) = v26;
   _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE6resizeEm(v4 + 9, v26);
   v28 = *(v4 + 63);
@@ -599,11 +599,11 @@
     v41 = 0;
     do
     {
-      v42 = *(a3 + 13) + 40 * v41;
+      v42 = *(view + 13) + 40 * v41;
       *&v27 = *v42;
       DWORD2(v27) = *(v42 + 8);
       *(v40 + 16 * v41) = v27;
-      v43 = *(a3 + 13) + 40 * v41;
+      v43 = *(view + 13) + 40 * v41;
       v45 = *(v43 + 16);
       v44 = *(v43 + 24);
       _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE6resizeEm((*(v4 + 12) + 24 * v41), 0xAAAAAAAAAAAAAAABLL * ((v44 - v45) >> 2));
@@ -623,7 +623,7 @@
 
         do
         {
-          v49 = *(*(a3 + 13) + 40 * v41 + 16) + v46;
+          v49 = *(*(view + 13) + 40 * v41 + 16) + v46;
           *&v27 = *v49;
           DWORD2(v27) = *(v49 + 8);
           *(*(*(v4 + 12) + 24 * v41) + 16 * v47++) = v27;
@@ -640,44 +640,44 @@
     while (v41 < (*(v4 + 10) - v40) >> 4);
   }
 
-  *(v4 + 21) = *(a3 + 16);
-  if (v4 + 168 != a3 + 128)
+  *(v4 + 21) = *(view + 16);
+  if (v4 + 168 != view + 128)
   {
-    std::vector<Phase::Vector<float,3ul>>::__assign_with_size[abi:ne200100]<Phase::Vector<float,3ul>*,Phase::Vector<float,3ul>*>(v4 + 22, *(a3 + 17), *(a3 + 18), 0xAAAAAAAAAAAAAAABLL * ((*(a3 + 18) - *(a3 + 17)) >> 2));
-    std::vector<float>::__assign_with_size[abi:ne200100]<float *,float *>(v4 + 25, *(a3 + 20), *(a3 + 21), (*(a3 + 21) - *(a3 + 20)) >> 2);
-    std::vector<std::vector<float>>::__assign_with_size[abi:ne200100]<std::vector<float>*,std::vector<float>*>(v4 + 28, *(a3 + 23), *(a3 + 24), 0xAAAAAAAAAAAAAAABLL * ((*(a3 + 24) - *(a3 + 23)) >> 3));
-    std::vector<unsigned char>::__assign_with_size[abi:ne200100]<unsigned char *,unsigned char *>(v4 + 31, *(a3 + 26), *(a3 + 27), *(a3 + 27) - *(a3 + 26));
+    std::vector<Phase::Vector<float,3ul>>::__assign_with_size[abi:ne200100]<Phase::Vector<float,3ul>*,Phase::Vector<float,3ul>*>(v4 + 22, *(view + 17), *(view + 18), 0xAAAAAAAAAAAAAAABLL * ((*(view + 18) - *(view + 17)) >> 2));
+    std::vector<float>::__assign_with_size[abi:ne200100]<float *,float *>(v4 + 25, *(view + 20), *(view + 21), (*(view + 21) - *(view + 20)) >> 2);
+    std::vector<std::vector<float>>::__assign_with_size[abi:ne200100]<std::vector<float>*,std::vector<float>*>(v4 + 28, *(view + 23), *(view + 24), 0xAAAAAAAAAAAAAAABLL * ((*(view + 24) - *(view + 23)) >> 3));
+    std::vector<unsigned char>::__assign_with_size[abi:ne200100]<unsigned char *,unsigned char *>(v4 + 31, *(view + 26), *(view + 27), *(view + 27) - *(view + 26));
   }
 
-  *(v4 + 34) = *(a3 + 29);
-  if (v4 + 272 != a3 + 232)
+  *(v4 + 34) = *(view + 29);
+  if (v4 + 272 != view + 232)
   {
-    std::vector<Phase::Vector<float,3ul>>::__assign_with_size[abi:ne200100]<Phase::Vector<float,3ul>*,Phase::Vector<float,3ul>*>(v4 + 35, *(a3 + 30), *(a3 + 31), 0xAAAAAAAAAAAAAAABLL * ((*(a3 + 31) - *(a3 + 30)) >> 2));
-    std::vector<float>::__assign_with_size[abi:ne200100]<float *,float *>(v4 + 38, *(a3 + 33), *(a3 + 34), (*(a3 + 34) - *(a3 + 33)) >> 2);
-    std::vector<std::vector<float>>::__assign_with_size[abi:ne200100]<std::vector<float>*,std::vector<float>*>(v4 + 41, *(a3 + 36), *(a3 + 37), 0xAAAAAAAAAAAAAAABLL * ((*(a3 + 37) - *(a3 + 36)) >> 3));
-    std::vector<unsigned char>::__assign_with_size[abi:ne200100]<unsigned char *,unsigned char *>(v4 + 44, *(a3 + 39), *(a3 + 40), *(a3 + 40) - *(a3 + 39));
+    std::vector<Phase::Vector<float,3ul>>::__assign_with_size[abi:ne200100]<Phase::Vector<float,3ul>*,Phase::Vector<float,3ul>*>(v4 + 35, *(view + 30), *(view + 31), 0xAAAAAAAAAAAAAAABLL * ((*(view + 31) - *(view + 30)) >> 2));
+    std::vector<float>::__assign_with_size[abi:ne200100]<float *,float *>(v4 + 38, *(view + 33), *(view + 34), (*(view + 34) - *(view + 33)) >> 2);
+    std::vector<std::vector<float>>::__assign_with_size[abi:ne200100]<std::vector<float>*,std::vector<float>*>(v4 + 41, *(view + 36), *(view + 37), 0xAAAAAAAAAAAAAAABLL * ((*(view + 37) - *(view + 36)) >> 3));
+    std::vector<unsigned char>::__assign_with_size[abi:ne200100]<unsigned char *,unsigned char *>(v4 + 44, *(view + 39), *(view + 40), *(view + 40) - *(view + 39));
   }
 
-  v50 = *(a3 + 42);
-  *(v4 + 96) = *(a3 + 86);
+  v50 = *(view + 42);
+  *(v4 + 96) = *(view + 86);
   *(v4 + 47) = v50;
-  if (v4 + 376 != a3 + 336)
+  if (v4 + 376 != view + 336)
   {
-    std::vector<float>::__assign_with_size[abi:ne200100]<float *,float *>(v4 + 49, *(a3 + 44), *(a3 + 45), (*(a3 + 45) - *(a3 + 44)) >> 2);
-    std::vector<float>::__assign_with_size[abi:ne200100]<float *,float *>(v4 + 52, *(a3 + 47), *(a3 + 48), (*(a3 + 48) - *(a3 + 47)) >> 2);
-    std::vector<float>::__assign_with_size[abi:ne200100]<float *,float *>(v4 + 55, *(a3 + 50), *(a3 + 51), (*(a3 + 51) - *(a3 + 50)) >> 2);
-    std::vector<float>::__assign_with_size[abi:ne200100]<float *,float *>(v4 + 58, *(a3 + 53), *(a3 + 54), (*(a3 + 54) - *(a3 + 53)) >> 2);
+    std::vector<float>::__assign_with_size[abi:ne200100]<float *,float *>(v4 + 49, *(view + 44), *(view + 45), (*(view + 45) - *(view + 44)) >> 2);
+    std::vector<float>::__assign_with_size[abi:ne200100]<float *,float *>(v4 + 52, *(view + 47), *(view + 48), (*(view + 48) - *(view + 47)) >> 2);
+    std::vector<float>::__assign_with_size[abi:ne200100]<float *,float *>(v4 + 55, *(view + 50), *(view + 51), (*(view + 51) - *(view + 50)) >> 2);
+    std::vector<float>::__assign_with_size[abi:ne200100]<float *,float *>(v4 + 58, *(view + 53), *(view + 54), (*(view + 54) - *(view + 53)) >> 2);
   }
 
   return v4;
 }
 
-- (__n128)getOriginAtIndex:(unint64_t)a3
+- (__n128)getOriginAtIndex:(unint64_t)index
 {
   v11 = *MEMORY[0x277D85DE8];
-  if ((a3 & 0x8000000000000000) != 0 || (v3 = *(a1 + 3), a3 >= (*(a1 + 4) - v3) >> 4))
+  if ((index & 0x8000000000000000) != 0 || (v3 = *(self + 3), index >= (*(self + 4) - v3) >> 4))
   {
-    v5 = **(Phase::Logger::GetInstance(a1) + 224);
+    v5 = **(Phase::Logger::GetInstance(self) + 224);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       v7 = 136315394;
@@ -691,15 +691,15 @@
     std::runtime_error::runtime_error(exception, "PRECONDITION: index >= 0 && index < _rayOriginPoints.size() is false.");
   }
 
-  return *(v3 + 16 * a3);
+  return *(v3 + 16 * index);
 }
 
-- (__n128)getIntersectionAtIndex:(unint64_t)a3
+- (__n128)getIntersectionAtIndex:(unint64_t)index
 {
   v11 = *MEMORY[0x277D85DE8];
-  if ((a3 & 0x8000000000000000) != 0 || (v3 = *(a1 + 6), a3 >= (*(a1 + 7) - v3) >> 4))
+  if ((index & 0x8000000000000000) != 0 || (v3 = *(self + 6), index >= (*(self + 7) - v3) >> 4))
   {
-    v5 = **(Phase::Logger::GetInstance(a1) + 224);
+    v5 = **(Phase::Logger::GetInstance(self) + 224);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       v7 = 136315394;
@@ -713,15 +713,15 @@
     std::runtime_error::runtime_error(exception, "PRECONDITION: index >= 0 && index < _rayIntersectPoints.size() is false.");
   }
 
-  return *(v3 + 16 * a3);
+  return *(v3 + 16 * index);
 }
 
-- (__n128)getImageSourceLocationAtIndex:(unint64_t)a3
+- (__n128)getImageSourceLocationAtIndex:(unint64_t)index
 {
   v11 = *MEMORY[0x277D85DE8];
-  if ((a3 & 0x8000000000000000) != 0 || (v3 = *(a1 + 9), a3 >= (*(a1 + 10) - v3) >> 4))
+  if ((index & 0x8000000000000000) != 0 || (v3 = *(self + 9), index >= (*(self + 10) - v3) >> 4))
   {
-    v5 = **(Phase::Logger::GetInstance(a1) + 224);
+    v5 = **(Phase::Logger::GetInstance(self) + 224);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       v7 = 136315394;
@@ -735,15 +735,15 @@
     std::runtime_error::runtime_error(exception, "PRECONDITION: index >= 0 && index < _imageSourcePoints.size() is false.");
   }
 
-  return *(v3 + 16 * a3);
+  return *(v3 + 16 * index);
 }
 
-- (__n128)getImageSourceIntersectionAt:(unint64_t)a3 intersectionIndex:(unint64_t)a4
+- (__n128)getImageSourceIntersectionAt:(unint64_t)at intersectionIndex:(unint64_t)index
 {
   v14 = *MEMORY[0x277D85DE8];
-  if ((a3 & 0x8000000000000000) != 0 || a3 >= (*(a1 + 10) - *(a1 + 9)) >> 4)
+  if ((at & 0x8000000000000000) != 0 || at >= (*(self + 10) - *(self + 9)) >> 4)
   {
-    v6 = **(Phase::Logger::GetInstance(a1) + 224);
+    v6 = **(Phase::Logger::GetInstance(self) + 224);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v10 = 136315394;
@@ -757,9 +757,9 @@
     std::runtime_error::runtime_error(exception, "PRECONDITION: ISindex >= 0 && ISindex < _imageSourcePoints.size() is false.");
   }
 
-  if ((a4 & 0x8000000000000000) != 0 || (v4 = *(*(a1 + 12) + 24 * a3), a4 >= (*(*(a1 + 12) + 24 * a3 + 8) - v4) >> 4))
+  if ((index & 0x8000000000000000) != 0 || (v4 = *(*(self + 12) + 24 * at), index >= (*(*(self + 12) + 24 * at + 8) - v4) >> 4))
   {
-    v8 = **(Phase::Logger::GetInstance(a1) + 224);
+    v8 = **(Phase::Logger::GetInstance(self) + 224);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v10 = 136315394;
@@ -773,13 +773,13 @@
     std::runtime_error::runtime_error(v9, "PRECONDITION: intersectionIndex >= 0 && intersectionIndex < _imageSourceIntersectionPoints[ISindex].size() is false.");
   }
 
-  return *(v4 + 16 * a4);
+  return *(v4 + 16 * index);
 }
 
-- (float)getTimeHistogramBin:(int64_t)a3 timeIndex:(int64_t)a4
+- (float)getTimeHistogramBin:(int64_t)bin timeIndex:(int64_t)index
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (a3 < 0 || self->_numHistogramFrequencies <= a3)
+  if (bin < 0 || self->_numHistogramFrequencies <= bin)
   {
     v6 = **(Phase::Logger::GetInstance(self) + 224);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -795,7 +795,7 @@
     std::runtime_error::runtime_error(exception, "PRECONDITION: fIndex >= 0 && fIndex < _numHistogramFrequencies is false.");
   }
 
-  if (a4 < 0 || (numHistogramTimeSteps = self->_numHistogramTimeSteps, numHistogramTimeSteps <= a4))
+  if (index < 0 || (numHistogramTimeSteps = self->_numHistogramTimeSteps, numHistogramTimeSteps <= index))
   {
     v8 = **(Phase::Logger::GetInstance(self) + 224);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -811,7 +811,7 @@
     std::runtime_error::runtime_error(v9, "PRECONDITION: tIndex >= 0 && tIndex < _numHistogramTimeSteps is false.");
   }
 
-  return self->_timeFrequencyHistogramData.__begin_[numHistogramTimeSteps * a3 + a4];
+  return self->_timeFrequencyHistogramData.__begin_[numHistogramTimeSteps * bin + index];
 }
 
 - (id).cxx_construct

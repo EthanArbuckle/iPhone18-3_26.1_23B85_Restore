@@ -1,39 +1,39 @@
 @interface _INPBSetTimerAttributeIntent
-- (BOOL)isEqual:(id)a3;
-- (_INPBSetTimerAttributeIntent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBSetTimerAttributeIntent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBSetTimerAttributeIntent
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBSetTimerAttributeIntent *)self intentMetadata];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"intentMetadata"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  intentMetadata = [(_INPBSetTimerAttributeIntent *)self intentMetadata];
+  dictionaryRepresentation = [intentMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"intentMetadata"];
 
-  v6 = [(_INPBSetTimerAttributeIntent *)self targetTimer];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"targetTimer"];
+  targetTimer = [(_INPBSetTimerAttributeIntent *)self targetTimer];
+  dictionaryRepresentation2 = [targetTimer dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"targetTimer"];
 
   if ([(_INPBSetTimerAttributeIntent *)self hasToDuration])
   {
     v8 = MEMORY[0x1E696AD98];
     [(_INPBSetTimerAttributeIntent *)self toDuration];
     v9 = [v8 numberWithDouble:?];
-    [v3 setObject:v9 forKeyedSubscript:@"toDuration"];
+    [dictionary setObject:v9 forKeyedSubscript:@"toDuration"];
   }
 
-  v10 = [(_INPBSetTimerAttributeIntent *)self toLabel];
-  v11 = [v10 dictionaryRepresentation];
-  [v3 setObject:v11 forKeyedSubscript:@"toLabel"];
+  toLabel = [(_INPBSetTimerAttributeIntent *)self toLabel];
+  dictionaryRepresentation3 = [toLabel dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"toLabel"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -76,28 +76,28 @@
   return v4 ^ v3 ^ v10 ^ [(_INPBDataString *)self->_toLabel hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
-  v5 = [(_INPBSetTimerAttributeIntent *)self intentMetadata];
-  v6 = [v4 intentMetadata];
-  if ((v5 != 0) == (v6 == 0))
+  intentMetadata = [(_INPBSetTimerAttributeIntent *)self intentMetadata];
+  intentMetadata2 = [equalCopy intentMetadata];
+  if ((intentMetadata != 0) == (intentMetadata2 == 0))
   {
     goto LABEL_20;
   }
 
-  v7 = [(_INPBSetTimerAttributeIntent *)self intentMetadata];
-  if (v7)
+  intentMetadata3 = [(_INPBSetTimerAttributeIntent *)self intentMetadata];
+  if (intentMetadata3)
   {
-    v8 = v7;
-    v9 = [(_INPBSetTimerAttributeIntent *)self intentMetadata];
-    v10 = [v4 intentMetadata];
-    v11 = [v9 isEqual:v10];
+    v8 = intentMetadata3;
+    intentMetadata4 = [(_INPBSetTimerAttributeIntent *)self intentMetadata];
+    intentMetadata5 = [equalCopy intentMetadata];
+    v11 = [intentMetadata4 isEqual:intentMetadata5];
 
     if (!v11)
     {
@@ -109,20 +109,20 @@
   {
   }
 
-  v5 = [(_INPBSetTimerAttributeIntent *)self targetTimer];
-  v6 = [v4 targetTimer];
-  if ((v5 != 0) == (v6 == 0))
+  intentMetadata = [(_INPBSetTimerAttributeIntent *)self targetTimer];
+  intentMetadata2 = [equalCopy targetTimer];
+  if ((intentMetadata != 0) == (intentMetadata2 == 0))
   {
     goto LABEL_20;
   }
 
-  v12 = [(_INPBSetTimerAttributeIntent *)self targetTimer];
-  if (v12)
+  targetTimer = [(_INPBSetTimerAttributeIntent *)self targetTimer];
+  if (targetTimer)
   {
-    v13 = v12;
-    v14 = [(_INPBSetTimerAttributeIntent *)self targetTimer];
-    v15 = [v4 targetTimer];
-    v16 = [v14 isEqual:v15];
+    v13 = targetTimer;
+    targetTimer2 = [(_INPBSetTimerAttributeIntent *)self targetTimer];
+    targetTimer3 = [equalCopy targetTimer];
+    v16 = [targetTimer2 isEqual:targetTimer3];
 
     if (!v16)
     {
@@ -134,18 +134,18 @@
   {
   }
 
-  v17 = [(_INPBSetTimerAttributeIntent *)self hasToDuration];
-  if (v17 != [v4 hasToDuration])
+  hasToDuration = [(_INPBSetTimerAttributeIntent *)self hasToDuration];
+  if (hasToDuration != [equalCopy hasToDuration])
   {
     goto LABEL_21;
   }
 
   if ([(_INPBSetTimerAttributeIntent *)self hasToDuration])
   {
-    if ([v4 hasToDuration])
+    if ([equalCopy hasToDuration])
     {
       toDuration = self->_toDuration;
-      [v4 toDuration];
+      [equalCopy toDuration];
       if (toDuration != v19)
       {
         goto LABEL_21;
@@ -153,12 +153,12 @@
     }
   }
 
-  v5 = [(_INPBSetTimerAttributeIntent *)self toLabel];
-  v6 = [v4 toLabel];
-  if ((v5 != 0) != (v6 == 0))
+  intentMetadata = [(_INPBSetTimerAttributeIntent *)self toLabel];
+  intentMetadata2 = [equalCopy toLabel];
+  if ((intentMetadata != 0) != (intentMetadata2 == 0))
   {
-    v20 = [(_INPBSetTimerAttributeIntent *)self toLabel];
-    if (!v20)
+    toLabel = [(_INPBSetTimerAttributeIntent *)self toLabel];
+    if (!toLabel)
     {
 
 LABEL_24:
@@ -166,10 +166,10 @@ LABEL_24:
       goto LABEL_22;
     }
 
-    v21 = v20;
-    v22 = [(_INPBSetTimerAttributeIntent *)self toLabel];
-    v23 = [v4 toLabel];
-    v24 = [v22 isEqual:v23];
+    v21 = toLabel;
+    toLabel2 = [(_INPBSetTimerAttributeIntent *)self toLabel];
+    toLabel3 = [equalCopy toLabel];
+    v24 = [toLabel2 isEqual:toLabel3];
 
     if (v24)
     {
@@ -189,13 +189,13 @@ LABEL_22:
   return v25;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBSetTimerAttributeIntent allocWithZone:](_INPBSetTimerAttributeIntent init];
-  v6 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:a3];
+  v6 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:zone];
   [(_INPBSetTimerAttributeIntent *)v5 setIntentMetadata:v6];
 
-  v7 = [(_INPBTimer *)self->_targetTimer copyWithZone:a3];
+  v7 = [(_INPBTimer *)self->_targetTimer copyWithZone:zone];
   [(_INPBSetTimerAttributeIntent *)v5 setTargetTimer:v7];
 
   if ([(_INPBSetTimerAttributeIntent *)self hasToDuration])
@@ -204,52 +204,52 @@ LABEL_22:
     [(_INPBSetTimerAttributeIntent *)v5 setToDuration:?];
   }
 
-  v8 = [(_INPBDataString *)self->_toLabel copyWithZone:a3];
+  v8 = [(_INPBDataString *)self->_toLabel copyWithZone:zone];
   [(_INPBSetTimerAttributeIntent *)v5 setToLabel:v8];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBSetTimerAttributeIntent *)self data];
+  coderCopy = coder;
+  data = [(_INPBSetTimerAttributeIntent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBSetTimerAttributeIntent)initWithCoder:(id)a3
+- (_INPBSetTimerAttributeIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBSetTimerAttributeIntent *)self initWithData:v6];
+    self = [(_INPBSetTimerAttributeIntent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v12 = a3;
-  v4 = [(_INPBSetTimerAttributeIntent *)self intentMetadata];
+  toCopy = to;
+  intentMetadata = [(_INPBSetTimerAttributeIntent *)self intentMetadata];
 
-  if (v4)
+  if (intentMetadata)
   {
-    v5 = [(_INPBSetTimerAttributeIntent *)self intentMetadata];
+    intentMetadata2 = [(_INPBSetTimerAttributeIntent *)self intentMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_INPBSetTimerAttributeIntent *)self targetTimer];
+  targetTimer = [(_INPBSetTimerAttributeIntent *)self targetTimer];
 
-  if (v6)
+  if (targetTimer)
   {
-    v7 = [(_INPBSetTimerAttributeIntent *)self targetTimer];
+    targetTimer2 = [(_INPBSetTimerAttributeIntent *)self targetTimer];
     PBDataWriterWriteSubmessage();
   }
 
@@ -259,15 +259,15 @@ LABEL_22:
     PBDataWriterWriteDoubleField();
   }
 
-  v9 = [(_INPBSetTimerAttributeIntent *)self toLabel];
+  toLabel = [(_INPBSetTimerAttributeIntent *)self toLabel];
 
-  v10 = v12;
-  if (v9)
+  v10 = toCopy;
+  if (toLabel)
   {
-    v11 = [(_INPBSetTimerAttributeIntent *)self toLabel];
+    toLabel2 = [(_INPBSetTimerAttributeIntent *)self toLabel];
     PBDataWriterWriteSubmessage();
 
-    v10 = v12;
+    v10 = toCopy;
   }
 }
 

@@ -1,22 +1,22 @@
 @interface CRLConnectionLineMagnet
 - (CGPoint)magnetNormalizedPosition;
-- (CRLConnectionLineMagnet)initWithType:(unint64_t)a3 normalizedPosition:(CGPoint)a4;
-- (void)setMagnetNormalizedPosition:(CGPoint)a3;
+- (CRLConnectionLineMagnet)initWithType:(unint64_t)type normalizedPosition:(CGPoint)position;
+- (void)setMagnetNormalizedPosition:(CGPoint)position;
 @end
 
 @implementation CRLConnectionLineMagnet
 
-- (CRLConnectionLineMagnet)initWithType:(unint64_t)a3 normalizedPosition:(CGPoint)a4
+- (CRLConnectionLineMagnet)initWithType:(unint64_t)type normalizedPosition:(CGPoint)position
 {
-  y = a4.y;
-  x = a4.x;
+  y = position.y;
+  x = position.x;
   v13.receiver = self;
   v13.super_class = CRLConnectionLineMagnet;
   v7 = [(CRLConnectionLineMagnet *)&v13 init];
   v8 = v7;
   if (v7)
   {
-    v7->mMagnetType = a3;
+    v7->mMagnetType = type;
     if (!sub_100120888(x, y))
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -56,11 +56,11 @@
   return v8;
 }
 
-- (void)setMagnetNormalizedPosition:(CGPoint)a3
+- (void)setMagnetNormalizedPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
-  if (!sub_100120888(a3.x, a3.y))
+  y = position.y;
+  x = position.x;
+  if (!sub_100120888(position.x, position.y))
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)

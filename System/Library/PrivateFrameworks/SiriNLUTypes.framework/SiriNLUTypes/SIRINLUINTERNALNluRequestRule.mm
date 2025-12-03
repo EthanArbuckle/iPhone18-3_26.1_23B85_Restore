@@ -1,37 +1,37 @@
 @interface SIRINLUINTERNALNluRequestRule
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addTurnInputRules:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addTurnInputRules:(id)rules;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUINTERNALNluRequestRule
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 2))
+  fromCopy = from;
+  if (*(fromCopy + 2))
   {
     [(SIRINLUINTERNALNluRequestRule *)self setIdA:?];
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(SIRINLUINTERNALNluRequestRule *)self setLocaleId:?];
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(SIRINLUINTERNALNluRequestRule *)self setDeviceType:?];
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(SIRINLUINTERNALNluRequestRule *)self setUserInterfaceIdiom:?];
   }
@@ -40,7 +40,7 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 4);
+  v5 = *(fromCopy + 4);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -76,13 +76,13 @@
   return v6 ^ [(NSMutableArray *)self->_turnInputRules hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((idA = self->_idA, !(idA | v4[2])) || -[NSString isEqual:](idA, "isEqual:")) && ((localeId = self->_localeId, !(localeId | v4[3])) || -[NSString isEqual:](localeId, "isEqual:")) && ((deviceType = self->_deviceType, !(deviceType | v4[1])) || -[NSString isEqual:](deviceType, "isEqual:")) && ((userInterfaceIdiom = self->_userInterfaceIdiom, !(userInterfaceIdiom | v4[5])) || -[NSString isEqual:](userInterfaceIdiom, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((idA = self->_idA, !(idA | equalCopy[2])) || -[NSString isEqual:](idA, "isEqual:")) && ((localeId = self->_localeId, !(localeId | equalCopy[3])) || -[NSString isEqual:](localeId, "isEqual:")) && ((deviceType = self->_deviceType, !(deviceType | equalCopy[1])) || -[NSString isEqual:](deviceType, "isEqual:")) && ((userInterfaceIdiom = self->_userInterfaceIdiom, !(userInterfaceIdiom | equalCopy[5])) || -[NSString isEqual:](userInterfaceIdiom, "isEqual:")))
   {
     turnInputRules = self->_turnInputRules;
-    if (turnInputRules | v4[4])
+    if (turnInputRules | equalCopy[4])
     {
       v10 = [(NSMutableArray *)turnInputRules isEqual:?];
     }
@@ -101,23 +101,23 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_idA copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_idA copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(NSString *)self->_localeId copyWithZone:a3];
+  v8 = [(NSString *)self->_localeId copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
-  v10 = [(NSString *)self->_deviceType copyWithZone:a3];
+  v10 = [(NSString *)self->_deviceType copyWithZone:zone];
   v11 = v5[1];
   v5[1] = v10;
 
-  v12 = [(NSString *)self->_userInterfaceIdiom copyWithZone:a3];
+  v12 = [(NSString *)self->_userInterfaceIdiom copyWithZone:zone];
   v13 = v5[5];
   v5[5] = v12;
 
@@ -141,7 +141,7 @@
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v22 + 1) + 8 * v18) copyWithZone:{a3, v22}];
+        v19 = [*(*(&v22 + 1) + 8 * v18) copyWithZone:{zone, v22}];
         [v5 addTurnInputRules:v19];
 
         ++v18;
@@ -158,49 +158,49 @@
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_idA)
   {
-    [v8 setIdA:?];
+    [toCopy setIdA:?];
   }
 
   if (self->_localeId)
   {
-    [v8 setLocaleId:?];
+    [toCopy setLocaleId:?];
   }
 
   if (self->_deviceType)
   {
-    [v8 setDeviceType:?];
+    [toCopy setDeviceType:?];
   }
 
   if (self->_userInterfaceIdiom)
   {
-    [v8 setUserInterfaceIdiom:?];
+    [toCopy setUserInterfaceIdiom:?];
   }
 
   if ([(SIRINLUINTERNALNluRequestRule *)self turnInputRulesCount])
   {
-    [v8 clearTurnInputRules];
-    v4 = [(SIRINLUINTERNALNluRequestRule *)self turnInputRulesCount];
-    if (v4)
+    [toCopy clearTurnInputRules];
+    turnInputRulesCount = [(SIRINLUINTERNALNluRequestRule *)self turnInputRulesCount];
+    if (turnInputRulesCount)
     {
-      v5 = v4;
+      v5 = turnInputRulesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(SIRINLUINTERNALNluRequestRule *)self turnInputRulesAtIndex:i];
-        [v8 addTurnInputRules:v7];
+        [toCopy addTurnInputRules:v7];
       }
     }
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_idA)
   {
     PBDataWriterWriteStringField();
@@ -259,12 +259,12 @@
 - (id)dictionaryRepresentation
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   idA = self->_idA;
   if (idA)
   {
-    [v3 setObject:idA forKey:@"id_a"];
+    [dictionary setObject:idA forKey:@"id_a"];
   }
 
   localeId = self->_localeId;
@@ -307,8 +307,8 @@
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
-          [v9 addObject:v15];
+          dictionaryRepresentation = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
+          [v9 addObject:dictionaryRepresentation];
         }
 
         v12 = [(NSMutableArray *)v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -331,28 +331,28 @@
   v8.receiver = self;
   v8.super_class = SIRINLUINTERNALNluRequestRule;
   v4 = [(SIRINLUINTERNALNluRequestRule *)&v8 description];
-  v5 = [(SIRINLUINTERNALNluRequestRule *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUINTERNALNluRequestRule *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addTurnInputRules:(id)a3
+- (void)addTurnInputRules:(id)rules
 {
-  v4 = a3;
+  rulesCopy = rules;
   turnInputRules = self->_turnInputRules;
-  v8 = v4;
+  v8 = rulesCopy;
   if (!turnInputRules)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_turnInputRules;
     self->_turnInputRules = v6;
 
-    v4 = v8;
+    rulesCopy = v8;
     turnInputRules = self->_turnInputRules;
   }
 
-  [(NSMutableArray *)turnInputRules addObject:v4];
+  [(NSMutableArray *)turnInputRules addObject:rulesCopy];
 }
 
 @end

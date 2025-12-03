@@ -1,23 +1,23 @@
 @interface _TVStackMediaQueryEvaluator
-- (BOOL)evaluteForMediaType:(id)a3 featureType:(id)a4 value:(id)a5 result:(BOOL *)a6;
+- (BOOL)evaluteForMediaType:(id)type featureType:(id)featureType value:(id)value result:(BOOL *)result;
 @end
 
 @implementation _TVStackMediaQueryEvaluator
 
-- (BOOL)evaluteForMediaType:(id)a3 featureType:(id)a4 value:(id)a5 result:(BOOL *)a6
+- (BOOL)evaluteForMediaType:(id)type featureType:(id)featureType value:(id)value result:(BOOL *)result
 {
   v24 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  if (IsTemplateMediaType(a3) && [v9 isEqualToString:@"-tv-banner"])
+  featureTypeCopy = featureType;
+  if (IsTemplateMediaType(type) && [featureTypeCopy isEqualToString:@"-tv-banner"])
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v10 = [(TVMediaQueryEvaluator *)self templateElement];
-    v11 = [v10 unfilteredChildren];
+    templateElement = [(TVMediaQueryEvaluator *)self templateElement];
+    unfilteredChildren = [templateElement unfilteredChildren];
 
-    v12 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    v12 = [unfilteredChildren countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v12)
     {
       v13 = v12;
@@ -28,22 +28,22 @@
         {
           if (*v20 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(unfilteredChildren);
           }
 
-          v16 = [*(*(&v19 + 1) + 8 * i) tv_elementType];
-          if (v16 != 4)
+          tv_elementType = [*(*(&v19 + 1) + 8 * i) tv_elementType];
+          if (tv_elementType != 4)
           {
-            if (v16 != 10)
+            if (tv_elementType != 10)
             {
-              *a6 = 1;
+              *result = 1;
             }
 
             goto LABEL_15;
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v13 = [unfilteredChildren countByEnumeratingWithState:&v19 objects:v23 count:16];
         if (v13)
         {
           continue;

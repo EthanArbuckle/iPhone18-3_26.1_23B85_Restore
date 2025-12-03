@@ -1,5 +1,5 @@
 @interface JavaIoFileOutputStream
-- (JavaIoFileOutputStream)initWithNSString:(id)a3 withBoolean:(BOOL)a4;
+- (JavaIoFileOutputStream)initWithNSString:(id)string withBoolean:(BOOL)boolean;
 - (id)getChannel;
 - (void)close;
 - (void)dealloc;
@@ -7,11 +7,11 @@
 
 @implementation JavaIoFileOutputStream
 
-- (JavaIoFileOutputStream)initWithNSString:(id)a3 withBoolean:(BOOL)a4
+- (JavaIoFileOutputStream)initWithNSString:(id)string withBoolean:(BOOL)boolean
 {
-  v4 = a4;
-  v6 = new_JavaIoFile_initWithNSString_(a3);
-  JavaIoFileOutputStream_initWithJavaIoFile_withBoolean_(self, v6, v4);
+  booleanCopy = boolean;
+  v6 = new_JavaIoFile_initWithNSString_(string);
+  JavaIoFileOutputStream_initWithJavaIoFile_withBoolean_(self, v6, booleanCopy);
   return self;
 }
 

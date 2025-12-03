@@ -1,19 +1,19 @@
 @interface PhotosCloudRecommendations
 - (PhotosCloudRecommendations)init;
-- (void)recommendationsForThresholds:(id)a3 afterTimestamp:(id)a4 completion:(id)a5;
+- (void)recommendationsForThresholds:(id)thresholds afterTimestamp:(id)timestamp completion:(id)completion;
 @end
 
 @implementation PhotosCloudRecommendations
 
-- (void)recommendationsForThresholds:(id)a3 afterTimestamp:(id)a4 completion:(id)a5
+- (void)recommendationsForThresholds:(id)thresholds afterTimestamp:(id)timestamp completion:(id)completion
 {
-  v6 = a5;
-  v7 = [(PhotosCloudRecommendations *)self storageManagementUtility];
-  if ([v7 shouldShowCloudStorageTip])
+  completionCopy = completion;
+  storageManagementUtility = [(PhotosCloudRecommendations *)self storageManagementUtility];
+  if ([storageManagementUtility shouldShowCloudStorageTip])
   {
-    v8 = [v7 cloudStorageTotalBytesSize];
+    cloudStorageTotalBytesSize = [storageManagementUtility cloudStorageTotalBytesSize];
     v9 = PXLocalizedString();
-    v21 = [NSByteCountFormatter stringFromByteCount:v8 countStyle:0];
+    v21 = [NSByteCountFormatter stringFromByteCount:cloudStorageTotalBytesSize countStyle:0];
     v22 = PXStringWithValidatedFormat();
 
     v10 = [CENativeModalRecommendationAction alloc];
@@ -22,21 +22,21 @@
 
     v13 = [CERecommendation alloc];
     v14 = PXLocalizedString();
-    v15 = [(PhotosCloudRecommendations *)self bundleID];
-    v16 = [NSNumber numberWithUnsignedLong:v8];
+    bundleID = [(PhotosCloudRecommendations *)self bundleID];
+    v16 = [NSNumber numberWithUnsignedLong:cloudStorageTotalBytesSize];
     v17 = CERecommendationTypeDeclutter;
     v24 = v12;
     v18 = [NSArray arrayWithObjects:&v24 count:1];
-    v19 = [v13 initWithIdentifier:@"com.apple.mobileslideshow-reviewPhotosAndVideos" title:v14 message:v22 bundleID:v15 storageRecoverable:v16 category:v17 actions:v18];
+    v19 = [v13 initWithIdentifier:@"com.apple.mobileslideshow-reviewPhotosAndVideos" title:v14 message:v22 bundleID:bundleID storageRecoverable:v16 category:v17 actions:v18];
 
     v23 = v19;
     v20 = [NSArray arrayWithObjects:&v23 count:1];
-    v6[2](v6, v20, 0);
+    completionCopy[2](completionCopy, v20, 0);
   }
 
   else
   {
-    v6[2](v6, &__NSArray0__struct, 0);
+    completionCopy[2](completionCopy, &__NSArray0__struct, 0);
   }
 }
 

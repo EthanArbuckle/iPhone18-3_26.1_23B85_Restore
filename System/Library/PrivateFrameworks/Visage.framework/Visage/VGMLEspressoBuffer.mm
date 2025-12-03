@@ -1,20 +1,20 @@
 @interface VGMLEspressoBuffer
-- (BOOL)bindImage:(__CVBuffer *)a3;
+- (BOOL)bindImage:(__CVBuffer *)image;
 - (BOOL)bindManagedBuffer;
-- (BOOL)bindTensor:(id)a3;
-- (BOOL)checkBufferAndIOSurfaceConsistency:(id)a3;
-- (BOOL)copyBufferIntoIOSurface:(id)a3;
-- (VGMLEspressoBuffer)initWithNetwork:(id *)a3 withLayerName:(id)a4 withMode:(int)a5;
+- (BOOL)bindTensor:(id)tensor;
+- (BOOL)checkBufferAndIOSurfaceConsistency:(id)consistency;
+- (BOOL)copyBufferIntoIOSurface:(id)surface;
+- (VGMLEspressoBuffer)initWithNetwork:(id *)network withLayerName:(id)name withMode:(int)mode;
 @end
 
 @implementation VGMLEspressoBuffer
 
-- (VGMLEspressoBuffer)initWithNetwork:(id *)a3 withLayerName:(id)a4 withMode:(int)a5
+- (VGMLEspressoBuffer)initWithNetwork:(id *)network withLayerName:(id)name withMode:(int)mode
 {
-  v9 = a4;
-  self->_network = a3;
-  objc_storeStrong(&self->_layerName, a4);
-  self->_mode = a5;
+  nameCopy = name;
+  self->_network = network;
+  objc_storeStrong(&self->_layerName, name);
+  self->_mode = mode;
   network = self->_network;
   var0 = network->var0;
   v12 = *&network->var1;
@@ -34,11 +34,11 @@
   return 1;
 }
 
-- (BOOL)bindTensor:(id)a3
+- (BOOL)bindTensor:(id)tensor
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  self->_buffer.data = [v4 getData];
+  tensorCopy = tensor;
+  self->_buffer.data = [tensorCopy getData];
   v11 = vextq_s8(*&self->_dimensions[2], *&self->_dimensions[2], 8uLL);
   v12 = vextq_s8(*self->_dimensions, *self->_dimensions, 8uLL);
   espresso_buffer_pack_tensor_shape();
@@ -53,10 +53,10 @@
   return 1;
 }
 
-- (BOOL)bindImage:(__CVBuffer *)a3
+- (BOOL)bindImage:(__CVBuffer *)image
 {
-  CVPixelBufferGetWidth(a3);
-  CVPixelBufferGetHeight(a3);
+  CVPixelBufferGetWidth(image);
+  CVPixelBufferGetHeight(image);
   network = self->_network;
   layerName = self->_layerName;
   var0 = network->var0;
@@ -66,17 +66,17 @@
   return 1;
 }
 
-- (BOOL)checkBufferAndIOSurfaceConsistency:(id)a3
+- (BOOL)checkBufferAndIOSurfaceConsistency:(id)consistency
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 pixelFormat];
-  v6 = [v4 width];
-  v7 = [v4 height];
-  v8 = VGGetChannelsFromPixelFormat(v5);
-  v9 = [v4 baseAddress];
-  v10 = v9 != 0;
-  if (!v9)
+  consistencyCopy = consistency;
+  pixelFormat = [consistencyCopy pixelFormat];
+  width = [consistencyCopy width];
+  height = [consistencyCopy height];
+  v8 = VGGetChannelsFromPixelFormat(pixelFormat);
+  baseAddress = [consistencyCopy baseAddress];
+  v10 = baseAddress != 0;
+  if (!baseAddress)
   {
     v11 = __VGLogSharedInstance();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -102,14 +102,14 @@
     v10 = 0;
   }
 
-  if (v7 != self->_dimensions[1])
+  if (height != self->_dimensions[1])
   {
     v14 = __VGLogSharedInstance();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       v15 = self->_dimensions[1];
       v20 = 134218240;
-      v21 = v7;
+      v21 = height;
       v22 = 2048;
       v23 = v15;
       _os_log_impl(&dword_270F06000, v14, OS_LOG_TYPE_ERROR, " IOSurface height %zu != %zu ", &v20, 0x16u);
@@ -118,14 +118,14 @@
     v10 = 0;
   }
 
-  if (v6 != self->_dimensions[2])
+  if (width != self->_dimensions[2])
   {
     v16 = __VGLogSharedInstance();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       v17 = self->_dimensions[2];
       v20 = 134218240;
-      v21 = v6;
+      v21 = width;
       v22 = 2048;
       v23 = v17;
       _os_log_impl(&dword_270F06000, v16, OS_LOG_TYPE_ERROR, " IOSurface width %zu != %zu ", &v20, 0x16u);
@@ -138,12 +138,12 @@
   return v10;
 }
 
-- (BOOL)copyBufferIntoIOSurface:(id)a3
+- (BOOL)copyBufferIntoIOSurface:(id)surface
 {
-  v4 = a3;
+  surfaceCopy = surface;
   data = self->_buffer.data;
-  v47 = v4;
-  v6 = [v4 count];
+  v47 = surfaceCopy;
+  v6 = [surfaceCopy count];
   if (v6)
   {
     v7 = 0;
@@ -180,24 +180,24 @@
   }
 
   v10 = [v47 objectAtIndexedSubscript:0];
-  v11 = [v10 pixelFormat];
+  pixelFormat = [v10 pixelFormat];
 
   v12 = [v47 objectAtIndexedSubscript:0];
-  v13 = [v12 width];
+  width = [v12 width];
 
   v14 = [v47 objectAtIndexedSubscript:0];
-  v46 = [v14 height];
+  height = [v14 height];
 
-  v15 = VGGetChannelsFromPixelFormat(v11);
-  v16 = v15 * v13;
+  v15 = VGGetChannelsFromPixelFormat(pixelFormat);
+  v16 = v15 * width;
   v17 = 1;
-  if (v11 <= 1278226535)
+  if (pixelFormat <= 1278226535)
   {
-    if (v11 != 843264102)
+    if (pixelFormat != 843264102)
     {
       v18 = 843264104;
 LABEL_17:
-      if (v11 != v18)
+      if (pixelFormat != v18)
       {
         goto LABEL_32;
       }
@@ -208,7 +208,7 @@ LABEL_17:
 
   else
   {
-    if (v11 == 1278226536)
+    if (pixelFormat == 1278226536)
     {
 LABEL_18:
       if (v6)
@@ -216,23 +216,23 @@ LABEL_18:
         v44 = v6;
         v45 = data;
         v20 = 0;
-        v43 = 4 * v13 * v15 * v46;
-        v21 = 4 * v13 * v15;
+        v43 = 4 * width * v15 * height;
+        v21 = 4 * width * v15;
         do
         {
           v22 = [v47 objectAtIndexedSubscript:{v20, v43, v44}];
           [v22 lockWithOptions:0 seed:0];
 
-          if (v46)
+          if (height)
           {
             v23 = 0;
             v24 = v45;
             do
             {
               v25 = [v47 objectAtIndexedSubscript:v20];
-              v26 = [v25 baseAddress];
+              baseAddress = [v25 baseAddress];
               v27 = [v47 objectAtIndexedSubscript:v20];
-              v28 = (v26 + [v27 bytesPerRow] * v23);
+              v28 = (baseAddress + [v27 bytesPerRow] * v23);
 
               buf.data = v28;
               buf.height = 1;
@@ -247,7 +247,7 @@ LABEL_18:
               v24 += v21;
             }
 
-            while (v46 != v23);
+            while (height != v23);
           }
 
           v29 = [v47 objectAtIndexedSubscript:v20];
@@ -266,7 +266,7 @@ LABEL_31:
       goto LABEL_32;
     }
 
-    if (v11 != 1380410945)
+    if (pixelFormat != 1380410945)
     {
       v18 = 1380411457;
       goto LABEL_17;
@@ -278,29 +278,29 @@ LABEL_31:
     v30 = v6;
     v31 = 0;
     v32 = 4 * v16;
-    v33 = 4 * v13 * v46 * v15;
+    v33 = 4 * width * height * v15;
     do
     {
       v34 = [v47 objectAtIndexedSubscript:v31];
       [v34 lockWithOptions:0 seed:0];
 
-      if (v46)
+      if (height)
       {
         v35 = 0;
         v36 = data;
         do
         {
           v37 = [v47 objectAtIndexedSubscript:v31];
-          v38 = [v37 baseAddress];
+          baseAddress2 = [v37 baseAddress];
           v39 = [v47 objectAtIndexedSubscript:v31];
-          v40 = (v38 + [v39 bytesPerRow] * v35);
+          v40 = (baseAddress2 + [v39 bytesPerRow] * v35);
 
           memcpy(v40, v36, v32);
           ++v35;
           v36 += v32;
         }
 
-        while (v46 != v35);
+        while (height != v35);
       }
 
       v41 = [v47 objectAtIndexedSubscript:v31];

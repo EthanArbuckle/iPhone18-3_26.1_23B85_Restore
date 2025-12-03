@@ -1,6 +1,6 @@
 @interface CDMNluRequestID
 - (SIRINLUEXTERNALRequestID)objcProto;
-- (void)setObjcProto:(id)a3;
+- (void)setObjcProto:(id)proto;
 @end
 
 @implementation CDMNluRequestID
@@ -12,11 +12,11 @@
   return v2;
 }
 
-- (void)setObjcProto:(id)a3
+- (void)setObjcProto:(id)proto
 {
-  v5 = a3;
-  v6 = self;
-  sub_1DC3EFD28(a3);
+  protoCopy = proto;
+  selfCopy = self;
+  sub_1DC3EFD28(proto);
 }
 
 @end

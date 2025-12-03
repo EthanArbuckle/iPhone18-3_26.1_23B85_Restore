@@ -1,23 +1,23 @@
 @interface PFPAssetRequest
-+ (void)_exportThumbnailForAsset:(id)a3 thumbnailSize:(int64_t)a4 fileProviderURL:(id)a5 progress:(id)a6 completion:(id)a7;
-+ (void)_markURLAsPurgable:(id)a3 completionHandler:(id)a4;
-+ (void)_replaceAssetAtURL:(id)a3 withItemAtURL:(id)a4 completionHandler:(id)a5;
-+ (void)_saveImageRef:(CGImage *)a3 toURL:(id)a4 completionHandler:(id)a5;
-+ (void)requestFileForPhotosFileProviderURL:(id)a3 progressCreation:(id)a4 completion:(id)a5;
++ (void)_exportThumbnailForAsset:(id)asset thumbnailSize:(int64_t)size fileProviderURL:(id)l progress:(id)progress completion:(id)completion;
++ (void)_markURLAsPurgable:(id)purgable completionHandler:(id)handler;
++ (void)_replaceAssetAtURL:(id)l withItemAtURL:(id)rL completionHandler:(id)handler;
++ (void)_saveImageRef:(CGImage *)ref toURL:(id)l completionHandler:(id)handler;
++ (void)requestFileForPhotosFileProviderURL:(id)l progressCreation:(id)creation completion:(id)completion;
 @end
 
 @implementation PFPAssetRequest
 
-+ (void)_markURLAsPurgable:(id)a3 completionHandler:(id)a4
++ (void)_markURLAsPurgable:(id)purgable completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  if ([PLCacheDeleteSupport markPurgeableForFileAtURL:v5 withUrgency:0 outInode:0])
+  purgableCopy = purgable;
+  handlerCopy = handler;
+  if ([PLCacheDeleteSupport markPurgeableForFileAtURL:purgableCopy withUrgency:0 outInode:0])
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138412290;
-      v8 = v5;
+      v8 = purgableCopy;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Marked file provider URL (%@) as purgeable.", &v7, 0xCu);
     }
   }
@@ -25,28 +25,28 @@
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     v7 = 138412290;
-    v8 = v5;
+    v8 = purgableCopy;
     _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Unable to mark file provider URL (%@) as purgeable.", &v7, 0xCu);
   }
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v5;
+    v8 = purgableCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Successfully provided file at URL: %@", &v7, 0xCu);
   }
 
-  v6[2](v6, v5, 0);
+  handlerCopy[2](handlerCopy, purgableCopy, 0);
 }
 
-+ (void)_replaceAssetAtURL:(id)a3 withItemAtURL:(id)a4 completionHandler:(id)a5
++ (void)_replaceAssetAtURL:(id)l withItemAtURL:(id)rL completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  rLCopy = rL;
+  handlerCopy = handler;
   v11 = +[NSFileManager defaultManager];
   v14 = 0;
-  v12 = [v11 replaceItemAtURL:v8 withItemAtURL:v9 backupItemName:0 options:0 resultingItemURL:0 error:&v14];
+  v12 = [v11 replaceItemAtURL:lCopy withItemAtURL:rLCopy backupItemName:0 options:0 resultingItemURL:0 error:&v14];
   v13 = v14;
 
   if (v12)
@@ -54,13 +54,13 @@
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v16 = v8;
+      v16 = lCopy;
       v17 = 2112;
-      v18 = v9;
+      v18 = rLCopy;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Replaced existing file at URL (%@) with URL (%@).", buf, 0x16u);
     }
 
-    [a1 _markURLAsPurgable:v8 completionHandler:v10];
+    [self _markURLAsPurgable:lCopy completionHandler:handlerCopy];
   }
 
   else
@@ -68,38 +68,38 @@
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v16 = v8;
+      v16 = lCopy;
       v17 = 2112;
-      v18 = v9;
+      v18 = rLCopy;
       v19 = 2112;
       v20 = v13;
       _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Failed to replace file at URL (%@) with URL (%@) with error: %@", buf, 0x20u);
     }
 
-    v10[2](v10, 0, v13);
+    handlerCopy[2](handlerCopy, 0, v13);
   }
 }
 
-+ (void)_saveImageRef:(CGImage *)a3 toURL:(id)a4 completionHandler:(id)a5
++ (void)_saveImageRef:(CGImage *)ref toURL:(id)l completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [UTTypeJPEG identifier];
-  v11 = CGImageDestinationCreateWithURL(v8, v10, 1uLL, 0);
+  lCopy = l;
+  handlerCopy = handler;
+  identifier = [UTTypeJPEG identifier];
+  v11 = CGImageDestinationCreateWithURL(lCopy, identifier, 1uLL, 0);
 
   if (v11)
   {
-    CGImageDestinationAddImage(v11, a3, 0);
+    CGImageDestinationAddImage(v11, ref, 0);
     if (CGImageDestinationFinalize(v11))
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v19 = v8;
+        v19 = lCopy;
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Saved image ref at URL (%@).", buf, 0xCu);
       }
 
-      [a1 _markURLAsPurgable:v8 completionHandler:v9];
+      [self _markURLAsPurgable:lCopy completionHandler:handlerCopy];
     }
 
     else
@@ -112,13 +112,13 @@
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v19 = v8;
+        v19 = lCopy;
         v20 = 2112;
         v21 = v15;
         _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Failed to saved image ref to URL (%@) with error: %@", buf, 0x16u);
       }
 
-      v9[2](v9, 0, v15);
+      handlerCopy[2](handlerCopy, 0, v15);
     }
 
     CFRelease(v11);
@@ -134,23 +134,23 @@
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v19 = v8;
+      v19 = lCopy;
       v20 = 2112;
       v21 = v13;
       _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Failed to saved image ref to URL (%@) with error: %@", buf, 0x16u);
     }
 
-    v9[2](v9, 0, v13);
+    handlerCopy[2](handlerCopy, 0, v13);
   }
 }
 
-+ (void)_exportThumbnailForAsset:(id)a3 thumbnailSize:(int64_t)a4 fileProviderURL:(id)a5 progress:(id)a6 completion:(id)a7
++ (void)_exportThumbnailForAsset:(id)asset thumbnailSize:(int64_t)size fileProviderURL:(id)l progress:(id)progress completion:(id)completion
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (a4 == 1)
+  assetCopy = asset;
+  lCopy = l;
+  progressCopy = progress;
+  completionCopy = completion;
+  if (size == 1)
   {
     v17 = 120.0;
   }
@@ -158,10 +158,10 @@
   else
   {
     v17 = 360.0;
-    if (!a4)
+    if (!size)
     {
       v18 = +[NSAssertionHandler currentHandler];
-      [v18 handleFailureInMethod:a2 object:a1 file:@"PFPAssetRequest.m" lineNumber:195 description:{@"Invalid parameter not satisfying: %@", @"thumbnailSize != PXPhotosFileProviderThumbnailSizeUndefined"}];
+      [v18 handleFailureInMethod:a2 object:self file:@"PFPAssetRequest.m" lineNumber:195 description:{@"Invalid parameter not satisfying: %@", @"thumbnailSize != PXPhotosFileProviderThumbnailSizeUndefined"}];
 
       v17 = 360.0;
     }
@@ -175,33 +175,33 @@
   v24[1] = 3221225472;
   v24[2] = sub_100001F60;
   v24[3] = &unk_1000082A0;
-  v25 = v14;
-  v26 = v15;
-  v27 = v16;
-  v28 = a1;
-  v21 = v16;
-  v22 = v15;
-  v23 = v14;
-  [v20 requestNewCGImageForAsset:v13 targetSize:0 contentMode:v19 options:v24 resultHandler:{v17, v17}];
+  v25 = lCopy;
+  v26 = progressCopy;
+  v27 = completionCopy;
+  selfCopy = self;
+  v21 = completionCopy;
+  v22 = progressCopy;
+  v23 = lCopy;
+  [v20 requestNewCGImageForAsset:assetCopy targetSize:0 contentMode:v19 options:v24 resultHandler:{v17, v17}];
 }
 
-+ (void)requestFileForPhotosFileProviderURL:(id)a3 progressCreation:(id)a4 completion:(id)a5
++ (void)requestFileForPhotosFileProviderURL:(id)l progressCreation:(id)creation completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  lCopy = l;
+  creationCopy = creation;
+  completionCopy = completion;
+  if (lCopy)
   {
-    if (v10)
+    if (creationCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_33:
     v28 = +[NSAssertionHandler currentHandler];
-    [v28 handleFailureInMethod:a2 object:a1 file:@"PFPAssetRequest.m" lineNumber:126 description:{@"Invalid parameter not satisfying: %@", @"progressCreation"}];
+    [v28 handleFailureInMethod:a2 object:self file:@"PFPAssetRequest.m" lineNumber:126 description:{@"Invalid parameter not satisfying: %@", @"progressCreation"}];
 
-    if (v11)
+    if (completionCopy)
     {
       goto LABEL_4;
     }
@@ -210,100 +210,100 @@ LABEL_33:
   }
 
   v27 = +[NSAssertionHandler currentHandler];
-  [v27 handleFailureInMethod:a2 object:a1 file:@"PFPAssetRequest.m" lineNumber:125 description:{@"Invalid parameter not satisfying: %@", @"fileProviderURL"}];
+  [v27 handleFailureInMethod:a2 object:self file:@"PFPAssetRequest.m" lineNumber:125 description:{@"Invalid parameter not satisfying: %@", @"fileProviderURL"}];
 
-  if (!v10)
+  if (!creationCopy)
   {
     goto LABEL_33;
   }
 
 LABEL_3:
-  if (v11)
+  if (completionCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_34:
   v29 = +[NSAssertionHandler currentHandler];
-  [v29 handleFailureInMethod:a2 object:a1 file:@"PFPAssetRequest.m" lineNumber:127 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+  [v29 handleFailureInMethod:a2 object:self file:@"PFPAssetRequest.m" lineNumber:127 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
 
 LABEL_4:
   v12 = [NSProgress progressWithTotalUnitCount:100];
-  v10[2](v10, v12);
-  v13 = [[PFPAssetRequestConfiguration alloc] initWithFileProviderURL:v9];
+  creationCopy[2](creationCopy, v12);
+  v13 = [[PFPAssetRequestConfiguration alloc] initWithFileProviderURL:lCopy];
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v14 = [(PFPAssetRequestConfiguration *)v13 debugDescription];
     *buf = 138412546;
     v43 = v14;
     v44 = 2112;
-    v45 = v9;
+    v45 = lCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Created configuration (%@) from file provider URL: %@", buf, 0x16u);
   }
 
-  v15 = [(PFPAssetRequestConfiguration *)v13 photoLibrary];
-  if (v15)
+  photoLibrary = [(PFPAssetRequestConfiguration *)v13 photoLibrary];
+  if (photoLibrary)
   {
 LABEL_11:
-    v18 = [(PFPAssetRequestConfiguration *)v13 localIdentifier];
-    if (!v18)
+    localIdentifier = [(PFPAssetRequestConfiguration *)v13 localIdentifier];
+    if (!localIdentifier)
     {
-      v19 = [(PFPAssetRequestConfiguration *)v13 UUID];
-      v20 = [v19 length];
+      uUID = [(PFPAssetRequestConfiguration *)v13 UUID];
+      v20 = [uUID length];
 
       if (v20)
       {
-        v21 = [(PFPAssetRequestConfiguration *)v13 UUID];
-        v18 = [PHAsset localIdentifierWithUUID:v21];
+        uUID2 = [(PFPAssetRequestConfiguration *)v13 UUID];
+        localIdentifier = [PHAsset localIdentifierWithUUID:uUID2];
       }
 
       else
       {
-        v18 = 0;
+        localIdentifier = 0;
       }
     }
 
-    v22 = [v15 px_fetchObjectWithLocalIdentifier:v18];
+    v22 = [photoLibrary px_fetchObjectWithLocalIdentifier:localIdentifier];
     if (!v22)
     {
-      v30 = v11;
+      v30 = completionCopy;
       v40[0] = NSDebugDescriptionErrorKey;
       v40[1] = NSURLErrorKey;
       v41[0] = @"Failed to fetch PHObject";
-      v41[1] = v9;
+      v41[1] = lCopy;
       v25 = [NSDictionary dictionaryWithObjects:v41 forKeys:v40 count:2];
-      v24 = [NSError errorWithDomain:@"PFPAssetRequestErrorDomain" code:0 userInfo:v25];
+      exportConfiguration = [NSError errorWithDomain:@"PFPAssetRequestErrorDomain" code:0 userInfo:v25];
 
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v43 = v18;
+        v43 = localIdentifier;
         _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Failed to fetch PHObject with localIdentifier: %@", buf, 0xCu);
       }
 
-      v11 = v30;
-      (*(v30 + 2))(v30, 0, v24);
+      completionCopy = v30;
+      (*(v30 + 2))(v30, 0, exportConfiguration);
       goto LABEL_30;
     }
 
     [v12 setCompletedUnitCount:1];
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [v12 localizedDescription];
+      localizedDescription = [v12 localizedDescription];
       *buf = 138412546;
       v43 = v22;
       v44 = 2112;
-      v45 = v23;
+      v45 = localizedDescription;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Finished fetching object: %@ (progress: %@)", buf, 0x16u);
     }
 
-    v24 = [(PFPAssetRequestConfiguration *)v13 exportConfiguration];
+    exportConfiguration = [(PFPAssetRequestConfiguration *)v13 exportConfiguration];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       if ([(PFPAssetRequestConfiguration *)v13 thumbnailSize])
       {
-        [a1 _exportThumbnailForAsset:v22 thumbnailSize:-[PFPAssetRequestConfiguration thumbnailSize](v13 fileProviderURL:"thumbnailSize") progress:v9 completion:{v12, v11}];
+        [self _exportThumbnailForAsset:v22 thumbnailSize:-[PFPAssetRequestConfiguration thumbnailSize](v13 fileProviderURL:"thumbnailSize") progress:lCopy completion:{v12, completionCopy}];
 LABEL_30:
 
         goto LABEL_31;
@@ -313,10 +313,10 @@ LABEL_30:
       v35[1] = 3221225472;
       v35[2] = sub_10000284C;
       v35[3] = &unk_100008278;
-      v38 = a1;
-      v36 = v9;
-      v37 = v11;
-      [PXPhotosExportUtilities exportAsset:v22 configuration:v24 progress:v12 completion:v35];
+      selfCopy = self;
+      v36 = lCopy;
+      v37 = completionCopy;
+      [PXPhotosExportUtilities exportAsset:v22 configuration:exportConfiguration progress:v12 completion:v35];
 
       v26 = v36;
     }
@@ -327,10 +327,10 @@ LABEL_30:
       v31[1] = 3221225472;
       v31[2] = sub_100002874;
       v31[3] = &unk_100008278;
-      v34 = a1;
-      v32 = v9;
-      v33 = v11;
-      [PXPhotosExportUtilities exportAssetsInContainer:v22 configuration:v24 progress:v12 completion:v31];
+      selfCopy2 = self;
+      v32 = lCopy;
+      v33 = completionCopy;
+      [PXPhotosExportUtilities exportAssetsInContainer:v22 configuration:exportConfiguration progress:v12 completion:v31];
 
       v26 = v32;
     }
@@ -347,22 +347,22 @@ LABEL_30:
   v39 = 0;
   v16 = [PHPhotoLibrary openPhotoLibraryWithWellKnownIdentifier:1 error:&v39];
   v17 = v39;
-  v15 = v17;
+  photoLibrary = v17;
   if (v16)
   {
 
-    v15 = v16;
+    photoLibrary = v16;
     goto LABEL_11;
   }
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v43 = v15;
+    v43 = photoLibrary;
     _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Can't open system photo library: %@", buf, 0xCu);
   }
 
-  (*(v11 + 2))(v11, 0, v15);
+  (*(completionCopy + 2))(completionCopy, 0, photoLibrary);
 LABEL_31:
 }
 

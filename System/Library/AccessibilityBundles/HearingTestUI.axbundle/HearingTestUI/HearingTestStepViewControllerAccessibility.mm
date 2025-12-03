@@ -1,14 +1,14 @@
 @interface HearingTestStepViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation HearingTestStepViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HearingTestUI.HearingTestStepViewController" isKindOfClass:@"OBWelcomeController"];
-  [v3 validateClass:@"OBWelcomeController" hasInstanceMethod:@"headerView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HearingTestUI.HearingTestStepViewController" isKindOfClass:@"OBWelcomeController"];
+  [validationsCopy validateClass:@"OBWelcomeController" hasInstanceMethod:@"headerView" withFullSignature:{"@", 0}];
 }
 
 void __60__HearingTestStepViewControllerAccessibility_viewDidAppear___block_invoke(uint64_t a1)

@@ -1,39 +1,39 @@
 @interface RTVehicleLocationHistoryController
-- (BOOL)_deleteVehicleEventsBeforeDate:(id)a3;
-- (BOOL)_evaluateUsualLocationWithVehicleEvent:(id)a3;
-- (BOOL)_persistVehicleEventToHistory:(id)a3;
-- (RTVehicleLocationHistoryController)initWithQueue:(id)a3 managedObjectContext:(id)a4;
+- (BOOL)_deleteVehicleEventsBeforeDate:(id)date;
+- (BOOL)_evaluateUsualLocationWithVehicleEvent:(id)event;
+- (BOOL)_persistVehicleEventToHistory:(id)history;
+- (RTVehicleLocationHistoryController)initWithQueue:(id)queue managedObjectContext:(id)context;
 - (id)_getAllVehicleEventsFromHistory;
-- (void)performPurgeOfType:(int64_t)a3 referenceDate:(id)a4 completion:(id)a5;
+- (void)performPurgeOfType:(int64_t)type referenceDate:(id)date completion:(id)completion;
 @end
 
 @implementation RTVehicleLocationHistoryController
 
-- (RTVehicleLocationHistoryController)initWithQueue:(id)a3 managedObjectContext:(id)a4
+- (RTVehicleLocationHistoryController)initWithQueue:(id)queue managedObjectContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = RTVehicleLocationHistoryController;
   v9 = [(RTVehicleLocationHistoryController *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_queue, a3);
-    objc_storeStrong(&v10->_managedObjectContext, a4);
+    objc_storeStrong(&v9->_queue, queue);
+    objc_storeStrong(&v10->_managedObjectContext, context);
   }
 
   return v10;
 }
 
-- (BOOL)_evaluateUsualLocationWithVehicleEvent:(id)a3
+- (BOOL)_evaluateUsualLocationWithVehicleEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 nearbyLocationOfInterest];
+  eventCopy = event;
+  nearbyLocationOfInterest = [eventCopy nearbyLocationOfInterest];
 
-  if (v5)
+  if (nearbyLocationOfInterest)
   {
-    v6 = [(RTVehicleLocationHistoryController *)self _getAllVehicleEventsFromHistory];
+    _getAllVehicleEventsFromHistory = [(RTVehicleLocationHistoryController *)self _getAllVehicleEventsFromHistory];
     v28 = 0;
     v29 = &v28;
     v30 = 0x3032000000;
@@ -44,28 +44,28 @@
     v23 = 3221225472;
     v24 = __77__RTVehicleLocationHistoryController__evaluateUsualLocationWithVehicleEvent___block_invoke;
     v25 = &unk_2788C70F8;
-    v7 = v4;
+    v7 = eventCopy;
     v26 = v7;
     v27 = &v28;
-    [v6 enumerateObjectsUsingBlock:&v22];
+    [_getAllVehicleEventsFromHistory enumerateObjectsUsingBlock:&v22];
     if (v29[5])
     {
-      v8 = [v7 location];
-      [v8 latitude];
-      v9 = [v7 location];
-      [v9 longitude];
-      v10 = [v29[5] location];
-      [v10 latitude];
-      v11 = [v29[5] location];
-      [v11 longitude];
+      location = [v7 location];
+      [location latitude];
+      location2 = [v7 location];
+      [location2 longitude];
+      location3 = [v29[5] location];
+      [location3 latitude];
+      location4 = [v29[5] location];
+      [location4 longitude];
       RTCommonCalculateDistance();
       v13 = v12;
 
-      v14 = [v7 location];
-      [v14 horizontalUncertainty];
+      location5 = [v7 location];
+      [location5 horizontalUncertainty];
       v16 = v15;
-      v17 = [v29[5] location];
-      [v17 horizontalUncertainty];
+      location6 = [v29[5] location];
+      [location6 horizontalUncertainty];
       v19 = v16 + 20.0 + v18;
 
       v20 = 130.0;
@@ -74,18 +74,18 @@
         v20 = v19;
       }
 
-      LOBYTE(v5) = v13 < v20;
+      LOBYTE(nearbyLocationOfInterest) = v13 < v20;
     }
 
     else
     {
-      LOBYTE(v5) = 0;
+      LOBYTE(nearbyLocationOfInterest) = 0;
     }
 
     _Block_object_dispose(&v28, 8);
   }
 
-  return v5;
+  return nearbyLocationOfInterest;
 }
 
 void __77__RTVehicleLocationHistoryController__evaluateUsualLocationWithVehicleEvent___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -111,17 +111,17 @@ void __77__RTVehicleLocationHistoryController__evaluateUsualLocationWithVehicleE
   }
 }
 
-- (BOOL)_persistVehicleEventToHistory:(id)a3
+- (BOOL)_persistVehicleEventToHistory:(id)history
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 nearbyLocationOfInterest];
+  historyCopy = history;
+  nearbyLocationOfInterest = [historyCopy nearbyLocationOfInterest];
 
-  if (v5)
+  if (nearbyLocationOfInterest)
   {
-    v6 = [(RTVehicleLocationHistoryController *)self managedObjectContext];
+    managedObjectContext = [(RTVehicleLocationHistoryController *)self managedObjectContext];
 
-    if (v6)
+    if (managedObjectContext)
     {
       *v19 = 0;
       v20 = v19;
@@ -129,15 +129,15 @@ void __77__RTVehicleLocationHistoryController__evaluateUsualLocationWithVehicleE
       v22 = __Block_byref_object_copy__25;
       v23 = __Block_byref_object_dispose__25;
       v24 = 0;
-      v7 = [(RTVehicleLocationHistoryController *)self managedObjectContext];
+      managedObjectContext2 = [(RTVehicleLocationHistoryController *)self managedObjectContext];
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __68__RTVehicleLocationHistoryController__persistVehicleEventToHistory___block_invoke;
       v15[3] = &unk_2788C51F0;
-      v16 = v4;
-      v17 = self;
+      v16 = historyCopy;
+      selfCopy = self;
       v18 = v19;
-      [v7 performBlockAndWait:v15];
+      [managedObjectContext2 performBlockAndWait:v15];
 
       v8 = *(v20 + 5);
       v9 = v8 == 0;
@@ -221,9 +221,9 @@ void __68__RTVehicleLocationHistoryController__persistVehicleEventToHistory___bl
 
 - (id)_getAllVehicleEventsFromHistory
 {
-  v3 = [(RTVehicleLocationHistoryController *)self managedObjectContext];
+  managedObjectContext = [(RTVehicleLocationHistoryController *)self managedObjectContext];
 
-  if (v3)
+  if (managedObjectContext)
   {
     *buf = 0;
     v16 = buf;
@@ -237,7 +237,7 @@ void __68__RTVehicleLocationHistoryController__persistVehicleEventToHistory___bl
     v12 = __Block_byref_object_copy__25;
     v13 = __Block_byref_object_dispose__25;
     v14 = 0;
-    v4 = [(RTVehicleLocationHistoryController *)self managedObjectContext];
+    managedObjectContext2 = [(RTVehicleLocationHistoryController *)self managedObjectContext];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __69__RTVehicleLocationHistoryController__getAllVehicleEventsFromHistory__block_invoke;
@@ -245,7 +245,7 @@ void __68__RTVehicleLocationHistoryController__persistVehicleEventToHistory___bl
     v8[4] = self;
     v8[5] = buf;
     v8[6] = &v9;
-    [v4 performBlockAndWait:v8];
+    [managedObjectContext2 performBlockAndWait:v8];
 
     v5 = v10[5];
     _Block_object_dispose(&v9, 8);
@@ -345,13 +345,13 @@ void __69__RTVehicleLocationHistoryController__getAllVehicleEventsFromHistory__b
   [*(*(*(a1 + 32) + 8) + 40) addObject:v21];
 }
 
-- (BOOL)_deleteVehicleEventsBeforeDate:(id)a3
+- (BOOL)_deleteVehicleEventsBeforeDate:(id)date
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(RTVehicleLocationHistoryController *)self managedObjectContext];
+  dateCopy = date;
+  managedObjectContext = [(RTVehicleLocationHistoryController *)self managedObjectContext];
 
-  if (v5)
+  if (managedObjectContext)
   {
     *v17 = 0;
     v18 = v17;
@@ -359,15 +359,15 @@ void __69__RTVehicleLocationHistoryController__getAllVehicleEventsFromHistory__b
     v20 = __Block_byref_object_copy__25;
     v21 = __Block_byref_object_dispose__25;
     v22 = 0;
-    v6 = [(RTVehicleLocationHistoryController *)self managedObjectContext];
+    managedObjectContext2 = [(RTVehicleLocationHistoryController *)self managedObjectContext];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __69__RTVehicleLocationHistoryController__deleteVehicleEventsBeforeDate___block_invoke;
     v13[3] = &unk_2788C51F0;
-    v14 = v4;
-    v15 = self;
+    v14 = dateCopy;
+    selfCopy = self;
     v16 = v17;
-    [v6 performBlockAndWait:v13];
+    [managedObjectContext2 performBlockAndWait:v13];
 
     v7 = *(v18 + 5);
     v8 = v7 == 0;
@@ -424,22 +424,22 @@ void __69__RTVehicleLocationHistoryController__deleteVehicleEventsBeforeDate___b
   }
 }
 
-- (void)performPurgeOfType:(int64_t)a3 referenceDate:(id)a4 completion:(id)a5
+- (void)performPurgeOfType:(int64_t)type referenceDate:(id)date completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(RTVehicleLocationHistoryController *)self queue];
+  dateCopy = date;
+  completionCopy = completion;
+  queue = [(RTVehicleLocationHistoryController *)self queue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __82__RTVehicleLocationHistoryController_performPurgeOfType_referenceDate_completion___block_invoke;
   v13[3] = &unk_2788C4C20;
-  v14 = v8;
-  v15 = self;
-  v16 = v9;
-  v17 = a3;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = dateCopy;
+  selfCopy = self;
+  v16 = completionCopy;
+  typeCopy = type;
+  v11 = completionCopy;
+  v12 = dateCopy;
+  dispatch_async(queue, v13);
 }
 
 void __82__RTVehicleLocationHistoryController_performPurgeOfType_referenceDate_completion___block_invoke(uint64_t a1)

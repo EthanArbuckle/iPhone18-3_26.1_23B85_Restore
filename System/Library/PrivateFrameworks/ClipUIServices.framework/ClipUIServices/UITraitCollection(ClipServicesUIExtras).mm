@@ -7,15 +7,15 @@
 - (NSString)cps_invocationCardPreferredContentSizeCategory
 {
   v2 = *MEMORY[0x277D76800];
-  v3 = [a1 preferredContentSizeCategory];
-  if (UIContentSizeCategoryCompareToCategory(v2, v3) == NSOrderedAscending)
+  preferredContentSizeCategory = [self preferredContentSizeCategory];
+  if (UIContentSizeCategoryCompareToCategory(v2, preferredContentSizeCategory) == NSOrderedAscending)
   {
     v4 = v2;
   }
 
   else
   {
-    v4 = v3;
+    v4 = preferredContentSizeCategory;
   }
 
   v5 = v4;

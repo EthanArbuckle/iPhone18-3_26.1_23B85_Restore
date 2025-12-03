@@ -12,26 +12,26 @@
   [(PTSettings *)&v10 setDefaultValues];
   [(SBEntityRemovalDosidoSlideOutAnimationSettings *)self setFromViewSlideOutHeightOffsetMultiplier:1.20000005];
   [(SBEntityRemovalDosidoSlideOutAnimationSettings *)self setFromViewSlideOutAnimationDelay:0.275000006];
-  v3 = [(SBEntityRemovalDosidoSlideOutAnimationSettings *)self defaultAnimationSettings];
-  [v3 setFromViewFinalScale:0.930000007];
+  defaultAnimationSettings = [(SBEntityRemovalDosidoSlideOutAnimationSettings *)self defaultAnimationSettings];
+  [defaultAnimationSettings setFromViewFinalScale:0.930000007];
 
-  v4 = [(SBEntityRemovalDosidoSlideOutAnimationSettings *)self defaultAnimationSettings];
-  [v4 setFromViewFinalAlpha:1.0];
+  defaultAnimationSettings2 = [(SBEntityRemovalDosidoSlideOutAnimationSettings *)self defaultAnimationSettings];
+  [defaultAnimationSettings2 setFromViewFinalAlpha:1.0];
 
-  v5 = [(SBEntityRemovalDosidoSlideOutAnimationSettings *)self defaultAnimationSettings];
-  [v5 setFromViewFinalBlurRadius:0.0];
+  defaultAnimationSettings3 = [(SBEntityRemovalDosidoSlideOutAnimationSettings *)self defaultAnimationSettings];
+  [defaultAnimationSettings3 setFromViewFinalBlurRadius:0.0];
 
-  v6 = [(SBEntityRemovalDosidoSlideOutAnimationSettings *)self defaultAnimationSettings];
-  [v6 setToViewScaleAndAlphaResetAnimationDelay:0.400000006];
+  defaultAnimationSettings4 = [(SBEntityRemovalDosidoSlideOutAnimationSettings *)self defaultAnimationSettings];
+  [defaultAnimationSettings4 setToViewScaleAndAlphaResetAnimationDelay:0.400000006];
 
-  v7 = [(SBEntityRemovalDosidoSlideOutAnimationSettings *)self defaultAnimationSettings];
-  [v7 setToViewDimmingViewFadeOutDelay:0.419999987];
+  defaultAnimationSettings5 = [(SBEntityRemovalDosidoSlideOutAnimationSettings *)self defaultAnimationSettings];
+  [defaultAnimationSettings5 setToViewDimmingViewFadeOutDelay:0.419999987];
 
   v8 = SBEntityRemovalDefaultFluidAnimationSettings();
   [(SBEntityRemovalDosidoSlideOutAnimationSettings *)self setFromViewSlideOutAnimationSettings:v8];
 
-  v9 = [(SBEntityRemovalDosidoSlideOutAnimationSettings *)self fromViewSlideOutAnimationSettings];
-  [v9 setResponse:0.699999988];
+  fromViewSlideOutAnimationSettings = [(SBEntityRemovalDosidoSlideOutAnimationSettings *)self fromViewSlideOutAnimationSettings];
+  [fromViewSlideOutAnimationSettings setResponse:0.699999988];
 }
 
 + (id)settingsControllerModule
@@ -57,8 +57,8 @@
 
   v15 = MEMORY[0x277D43210];
   v16 = MEMORY[0x277D431B0];
-  v17 = [MEMORY[0x277D43240] action];
-  v18 = [v16 rowWithTitle:@"Restore Dosido SlideOut Animation Settings" action:v17];
+  action = [MEMORY[0x277D43240] action];
+  v18 = [v16 rowWithTitle:@"Restore Dosido SlideOut Animation Settings" action:action];
   v26 = v18;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v26 count:1];
   v20 = [v15 sectionWithRows:v19];

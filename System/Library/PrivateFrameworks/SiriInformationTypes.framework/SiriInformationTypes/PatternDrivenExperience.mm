@@ -1,14 +1,14 @@
 @interface PatternDrivenExperience
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PatternDrivenExperience
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  PatternDrivenExperience.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  PatternDrivenExperience.encode(with:)(coderCopy);
 }
 
 @end

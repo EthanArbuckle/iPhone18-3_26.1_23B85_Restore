@@ -3,9 +3,9 @@
 + (void)createKeepAliveFile;
 + (void)deleteKeepAliveFile;
 - (NROSTransactionLogger)init;
-- (id)addTransaction:(id)a3;
-- (void)dumpTransactions:(id)a3 isAdded:(BOOL)a4;
-- (void)removeTransaction:(id)a3;
+- (id)addTransaction:(id)transaction;
+- (void)dumpTransactions:(id)transactions isAdded:(BOOL)added;
+- (void)removeTransaction:(id)transaction;
 @end
 
 @implementation NROSTransactionLogger
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000103EC;
   block[3] = &unk_1001756A8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1001B3730 != -1)
   {
     dispatch_once(&qword_1001B3730, block);
@@ -47,10 +47,10 @@
   return v2;
 }
 
-- (void)dumpTransactions:(id)a3 isAdded:(BOOL)a4
+- (void)dumpTransactions:(id)transactions isAdded:(BOOL)added
 {
-  v4 = a4;
-  v6 = a3;
+  addedCopy = added;
+  transactionsCopy = transactions;
   v7 = [@"NROSTransaction transactions: " mutableCopy];
   v21 = 0u;
   v22 = 0u;
@@ -62,7 +62,7 @@
   {
     v10 = v9;
     v11 = *v22;
-    if (v4)
+    if (addedCopy)
     {
       v12 = @"+";
     }
@@ -90,7 +90,7 @@
           [v7 appendString:{@", "}];
         }
 
-        if (v6 && [v15 isEqual:v6])
+        if (transactionsCopy && [v15 isEqual:transactionsCopy])
         {
           [v7 appendString:v20];
         }
@@ -125,11 +125,11 @@
   }
 }
 
-- (id)addTransaction:(id)a3
+- (id)addTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = [NSValue valueWithNonretainedObject:v4];
-  v6 = [v4 name];
+  transactionCopy = transaction;
+  v5 = [NSValue valueWithNonretainedObject:transactionCopy];
+  name = [transactionCopy name];
 
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -138,19 +138,19 @@
   block[3] = &unk_1001758F8;
   block[4] = self;
   v12 = v5;
-  v13 = v6;
-  v8 = v6;
+  v13 = name;
+  v8 = name;
   v9 = v5;
   dispatch_sync(queue, block);
 
   return 0;
 }
 
-- (void)removeTransaction:(id)a3
+- (void)removeTransaction:(id)transaction
 {
   v5 = [NSValue valueWithNonretainedObject:?];
   v6 = v5;
-  if (a3)
+  if (transaction)
   {
     queue = self->_queue;
     v8[0] = _NSConcreteStackBlock;
@@ -188,12 +188,12 @@
         goto LABEL_16;
       }
 
-      v11 = [v10 domain];
-      if ([v11 isEqualToString:NSCocoaErrorDomain])
+      domain = [v10 domain];
+      if ([domain isEqualToString:NSCocoaErrorDomain])
       {
-        v12 = [v10 code];
+        code = [v10 code];
 
-        if (v12 == 516)
+        if (code == 516)
         {
           goto LABEL_16;
         }
@@ -262,12 +262,12 @@ LABEL_18:
 
     if ((v6 & 1) == 0)
     {
-      v8 = [v7 domain];
-      if ([v8 isEqualToString:NSCocoaErrorDomain])
+      domain = [v7 domain];
+      if ([domain isEqualToString:NSCocoaErrorDomain])
       {
-        v9 = [v7 code];
+        code = [v7 code];
 
-        if (v9 == 4)
+        if (code == 4)
         {
           goto LABEL_11;
         }

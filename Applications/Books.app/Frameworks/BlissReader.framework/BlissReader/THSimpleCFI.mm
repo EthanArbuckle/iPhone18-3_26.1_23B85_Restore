@@ -1,19 +1,19 @@
 @interface THSimpleCFI
-+ (id)fragmentFromPathString:(id)a3;
-+ (id)p_transcribeWithoutAssertions:(id)a3;
-+ (id)pathStringFromFragment:(id)a3;
-+ (id)simpleCFIWithString:(id)a3;
++ (id)fragmentFromPathString:(id)string;
++ (id)p_transcribeWithoutAssertions:(id)assertions;
++ (id)pathStringFromFragment:(id)fragment;
++ (id)simpleCFIWithString:(id)string;
 - (BOOL)hasParent;
-- (THSimpleCFI)initWithComponents:(id)a3;
-- (THSimpleCFI)initWithString:(id)a3;
-- (id)p_parseFromString:(id)a3;
+- (THSimpleCFI)initWithComponents:(id)components;
+- (THSimpleCFI)initWithString:(id)string;
+- (id)p_parseFromString:(id)string;
 - (id)parent;
 - (void)dealloc;
 @end
 
 @implementation THSimpleCFI
 
-- (THSimpleCFI)initWithString:(id)a3
+- (THSimpleCFI)initWithString:(id)string
 {
   v7.receiver = self;
   v7.super_class = THSimpleCFI;
@@ -22,15 +22,15 @@
   if (v4)
   {
     [(THSimpleCFI *)v4 setValid:0];
-    [(THSimpleCFI *)v5 setOriginalCFIString:a3];
-    [(THSimpleCFI *)v5 setComponents:[NSArray arrayWithArray:[(THSimpleCFI *)v5 p_parseFromString:a3]]];
+    [(THSimpleCFI *)v5 setOriginalCFIString:string];
+    [(THSimpleCFI *)v5 setComponents:[NSArray arrayWithArray:[(THSimpleCFI *)v5 p_parseFromString:string]]];
     [(THSimpleCFI *)v5 setCfiString:[(NSArray *)[(THSimpleCFI *)v5 components] componentsJoinedByString:&stru_471858]];
   }
 
   return v5;
 }
 
-- (THSimpleCFI)initWithComponents:(id)a3
+- (THSimpleCFI)initWithComponents:(id)components
 {
   v7.receiver = self;
   v7.super_class = THSimpleCFI;
@@ -39,7 +39,7 @@
   if (v4)
   {
     [(THSimpleCFI *)v4 setValid:1];
-    [(THSimpleCFI *)v5 setComponents:[NSArray arrayWithArray:a3]];
+    [(THSimpleCFI *)v5 setComponents:[NSArray arrayWithArray:components]];
     [(THSimpleCFI *)v5 setCfiString:[(NSArray *)[(THSimpleCFI *)v5 components] componentsJoinedByString:&stru_471858]];
     [(THSimpleCFI *)v5 setOriginalCFIString:[(THSimpleCFI *)v5 description]];
   }
@@ -60,8 +60,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(NSArray *)[(THSimpleCFI *)self components] reverseObjectEnumerator];
-  v3 = [(NSEnumerator *)v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  reverseObjectEnumerator = [(NSArray *)[(THSimpleCFI *)self components] reverseObjectEnumerator];
+  v3 = [(NSEnumerator *)reverseObjectEnumerator countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -73,7 +73,7 @@
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         if ([*(*(&v8 + 1) + 8 * v6) isAcceptableLeaf])
@@ -86,7 +86,7 @@
       }
 
       while (v4 != v6);
-      v3 = [(NSEnumerator *)v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [(NSEnumerator *)reverseObjectEnumerator countByEnumeratingWithState:&v8 objects:v12 count:16];
       v4 = v3;
       if (v3)
       {
@@ -127,9 +127,9 @@
   return v7;
 }
 
-- (id)p_parseFromString:(id)a3
+- (id)p_parseFromString:(id)string
 {
-  v4 = [objc_opt_class() p_transcribeWithoutAssertions:a3];
+  v4 = [objc_opt_class() p_transcribeWithoutAssertions:string];
   v5 = +[NSMutableArray array];
   v6 = [NSScanner scannerWithString:v4];
   v7 = [NSCharacterSet characterSetWithCharactersInString:@"/:^~@[], "];
@@ -222,35 +222,35 @@ LABEL_26:
   return v5;
 }
 
-+ (id)pathStringFromFragment:(id)a3
++ (id)pathStringFromFragment:(id)fragment
 {
-  if (![a3 hasPrefix:{@"#epubcfi(", "hasSuffix:", @")"}])
+  if (![fragment hasPrefix:{@"#epubcfi(", "hasSuffix:", @")"}])
   {
     return 0;
   }
 
-  v4 = [a3 length] - 10;
+  v4 = [fragment length] - 10;
 
-  return [a3 substringWithRange:{9, v4}];
+  return [fragment substringWithRange:{9, v4}];
 }
 
-+ (id)fragmentFromPathString:(id)a3
++ (id)fragmentFromPathString:(id)string
 {
-  v3 = objc_msgSend(@"#epubcfi("), "stringByAppendingString:", a3;
+  v3 = objc_msgSend(@"#epubcfi("), "stringByAppendingString:", string;
 
   return [v3 stringByAppendingString:@""]);
 }
 
-+ (id)simpleCFIWithString:(id)a3
++ (id)simpleCFIWithString:(id)string
 {
-  v3 = [[THSimpleCFI alloc] initWithString:a3];
+  v3 = [[THSimpleCFI alloc] initWithString:string];
 
   return v3;
 }
 
-+ (id)p_transcribeWithoutAssertions:(id)a3
++ (id)p_transcribeWithoutAssertions:(id)assertions
 {
-  v3 = [NSScanner scannerWithString:a3];
+  v3 = [NSScanner scannerWithString:assertions];
   v4 = +[NSMutableArray array];
   v8 = 0;
   if (![(NSScanner *)v3 isAtEnd:+[NSString] string]

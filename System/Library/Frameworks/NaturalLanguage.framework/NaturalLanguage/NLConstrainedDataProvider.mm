@@ -1,33 +1,33 @@
 @interface NLConstrainedDataProvider
-- (NLConstrainedDataProvider)initWithDataProvider:(id)a3 parameters:(_NLConstraintParameters *)a4 modelTrainer:(id)a5;
-- (id)instanceAtIndex:(unint64_t)a3;
+- (NLConstrainedDataProvider)initWithDataProvider:(id)provider parameters:(_NLConstraintParameters *)parameters modelTrainer:(id)trainer;
+- (id)instanceAtIndex:(unint64_t)index;
 @end
 
 @implementation NLConstrainedDataProvider
 
-- (NLConstrainedDataProvider)initWithDataProvider:(id)a3 parameters:(_NLConstraintParameters *)a4 modelTrainer:(id)a5
+- (NLConstrainedDataProvider)initWithDataProvider:(id)provider parameters:(_NLConstraintParameters *)parameters modelTrainer:(id)trainer
 {
   v118[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
+  providerCopy = provider;
+  trainerCopy = trainer;
   v112.receiver = self;
   v112.super_class = NLConstrainedDataProvider;
   v11 = [(NLConstrainedDataProvider *)&v112 init];
   v12 = v11;
   if (v11)
   {
-    v85 = a3;
+    providerCopy2 = provider;
     v86 = v11;
-    v95 = v10;
-    v91 = [MEMORY[0x1E695DF70] array];
-    v82 = [v9 labelMap];
-    v83 = [v9 vocabularyMap];
-    v84 = [v9 documentFrequencyMap];
-    v97 = [MEMORY[0x1E695DF90] dictionary];
-    v98 = [MEMORY[0x1E695DF90] dictionary];
-    v96 = [MEMORY[0x1E695DF90] dictionary];
-    v99 = [MEMORY[0x1E695DF90] dictionary];
-    v89 = [v9 numberOfInstances];
+    v95 = trainerCopy;
+    array = [MEMORY[0x1E695DF70] array];
+    labelMap = [providerCopy labelMap];
+    vocabularyMap = [providerCopy vocabularyMap];
+    documentFrequencyMap = [providerCopy documentFrequencyMap];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary4 = [MEMORY[0x1E695DF90] dictionary];
+    numberOfInstances = [providerCopy numberOfInstances];
     v13 = [NLTagger alloc];
     v118[0] = @"TokenType";
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v118 count:1];
@@ -35,13 +35,13 @@
 
     v15 = objc_autoreleasePoolPush();
     v16 = NLGetLogCategory(0);
-    v17 = [v16 internal];
+    internal = [v16 internal];
 
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(internal, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
       *&buf[4] = 0;
-      _os_log_impl(&dword_19D48F000, v17, OS_LOG_TYPE_INFO, "event: %lu", buf, 0xCu);
+      _os_log_impl(&dword_19D48F000, internal, OS_LOG_TYPE_INFO, "event: %lu", buf, 0xCu);
     }
 
     objc_autoreleasePoolPop(v15);
@@ -52,19 +52,19 @@
       {
         v19 = objc_autoreleasePoolPush();
         v20 = NLGetLogCategory(0);
-        v21 = [v20 internal];
+        internal2 = [v20 internal];
 
-        if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
+        if (os_log_type_enabled(internal2, OS_LOG_TYPE_INFO))
         {
           v22 = [&unk_1F10D1460 objectAtIndexedSubscript:v18];
-          v23 = [v22 UTF8String];
+          uTF8String = [v22 UTF8String];
           *buf = 134218498;
           *&buf[4] = 1;
           *&buf[12] = 2048;
           *&buf[14] = v18;
           *&buf[22] = 2082;
-          *&buf[24] = v23;
-          _os_log_impl(&dword_19D48F000, v21, OS_LOG_TYPE_INFO, "event: %lu, column: %lu, value: %{public}s", buf, 0x20u);
+          *&buf[24] = uTF8String;
+          _os_log_impl(&dword_19D48F000, internal2, OS_LOG_TYPE_INFO, "event: %lu, column: %lu, value: %{public}s", buf, 0x20u);
         }
 
         objc_autoreleasePoolPop(v19);
@@ -74,9 +74,9 @@
       while (v18 < [&unk_1F10D1460 count]);
     }
 
-    v25 = v89;
-    v24 = v91;
-    v26 = ((v89 / 0x64) * 10.0);
+    v25 = numberOfInstances;
+    v24 = array;
+    v26 = ((numberOfInstances / 0x64) * 10.0);
     if (v26 <= 1)
     {
       v26 = 1;
@@ -92,27 +92,27 @@
       v27 = v26;
     }
 
-    if (v89)
+    if (numberOfInstances)
     {
       v28 = 0;
       v29 = -1;
       do
       {
-        v30 = [v9 instanceAtIndex:v28];
-        v31 = [v9 tokenizer];
-        v32 = *&a4->maxSplitTokens;
-        *buf = *&a4->splitSentences;
+        v30 = [providerCopy instanceAtIndex:v28];
+        tokenizer = [providerCopy tokenizer];
+        v32 = *&parameters->maxSplitTokens;
+        *buf = *&parameters->splitSentences;
         *&buf[16] = v32;
-        v117 = *&a4->maxLabels;
-        v33 = [v30 locatorsWithIndex:v28 parameters:buf tagger:v87 tokenizer:v31];
+        v117 = *&parameters->maxLabels;
+        v33 = [v30 locatorsWithIndex:v28 parameters:buf tagger:v87 tokenizer:tokenizer];
         [(NSArray *)v24 addObjectsFromArray:v33];
         if (!((v25 + v29) % v27))
         {
           context = objc_autoreleasePoolPush();
           v34 = NLGetLogCategory(0);
-          v35 = [v34 internal];
+          internal3 = [v34 internal];
 
-          if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
+          if (os_log_type_enabled(internal3, OS_LOG_TYPE_INFO))
           {
             *buf = 134218496;
             *&buf[4] = 2;
@@ -120,28 +120,28 @@
             *&buf[14] = 0;
             *&buf[22] = 2048;
             *&buf[24] = v28 + 1;
-            _os_log_impl(&dword_19D48F000, v35, OS_LOG_TYPE_INFO, "event: %lu, column: %lu, value: %lu", buf, 0x20u);
+            _os_log_impl(&dword_19D48F000, internal3, OS_LOG_TYPE_INFO, "event: %lu, column: %lu, value: %lu", buf, 0x20u);
           }
 
           objc_autoreleasePoolPop(context);
           contexta = objc_autoreleasePoolPush();
           v36 = NLGetLogCategory(0);
-          v37 = [v36 internal];
+          internal4 = [v36 internal];
 
-          v25 = v89;
-          if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
+          v25 = numberOfInstances;
+          if (os_log_type_enabled(internal4, OS_LOG_TYPE_INFO))
           {
             *buf = 134218496;
             *&buf[4] = 2;
             *&buf[12] = 2048;
             *&buf[14] = 1;
             *&buf[22] = 2048;
-            *&buf[24] = v89;
-            _os_log_impl(&dword_19D48F000, v37, OS_LOG_TYPE_INFO, "event: %lu, column: %lu, value: %lu", buf, 0x20u);
+            *&buf[24] = numberOfInstances;
+            _os_log_impl(&dword_19D48F000, internal4, OS_LOG_TYPE_INFO, "event: %lu, column: %lu, value: %lu", buf, 0x20u);
           }
 
           objc_autoreleasePoolPop(contexta);
-          v24 = v91;
+          v24 = array;
         }
 
         reportInstanceCompletionToTrainer(v95, v28, v25, 1);
@@ -155,25 +155,25 @@
 
     v38 = objc_autoreleasePoolPush();
     v39 = NLGetLogCategory(0);
-    v40 = [v39 internal];
+    internal5 = [v39 internal];
 
-    if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(internal5, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
       *&buf[4] = 3;
-      _os_log_impl(&dword_19D48F000, v40, OS_LOG_TYPE_INFO, "event: %lu", buf, 0xCu);
+      _os_log_impl(&dword_19D48F000, internal5, OS_LOG_TYPE_INFO, "event: %lu", buf, 0xCu);
     }
 
-    contextb = v9;
+    contextb = providerCopy;
 
     objc_autoreleasePoolPop(v38);
     v110 = 0u;
     v111 = 0u;
     v108 = 0u;
     v109 = 0u;
-    v41 = v82;
+    v41 = labelMap;
     v42 = [v41 countByEnumeratingWithState:&v108 objects:v115 count:16];
-    v10 = v95;
+    trainerCopy = v95;
     if (v42)
     {
       v43 = v42;
@@ -190,12 +190,12 @@
 
           v47 = *(*(&v108 + 1) + 8 * i);
           v48 = [v41 objectForKey:v47];
-          v49 = [v48 unsignedIntegerValue];
-          if (a4->maxLabels - 1 >= v49)
+          unsignedIntegerValue = [v48 unsignedIntegerValue];
+          if (parameters->maxLabels - 1 >= unsignedIntegerValue)
           {
-            v50 = v49;
-            [(NSDictionary *)v97 setObject:v48 forKey:v47];
-            [(NSDictionary *)v98 setObject:v47 forKey:v48];
+            v50 = unsignedIntegerValue;
+            [(NSDictionary *)dictionary setObject:v48 forKey:v47];
+            [(NSDictionary *)dictionary2 setObject:v47 forKey:v48];
             if (v50 > v44)
             {
               v44 = v50;
@@ -221,7 +221,7 @@
     v107 = 0u;
     v104 = 0u;
     v105 = 0u;
-    v52 = v83;
+    v52 = vocabularyMap;
     v53 = [v52 countByEnumeratingWithState:&v104 objects:v114 count:16];
     if (v53)
     {
@@ -242,10 +242,10 @@
           if (v59 >= 0x10)
           {
             v60 = v59;
-            if (a4->maxVocabularySize - 1 >= v59)
+            if (parameters->maxVocabularySize - 1 >= v59)
             {
               v61 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v59];
-              [(NSDictionary *)v96 setObject:v61 forKey:v58];
+              [(NSDictionary *)dictionary3 setObject:v61 forKey:v58];
 
               if (v60 > v55)
               {
@@ -260,7 +260,7 @@
 
       while (v54);
       v88 = v55 + 1;
-      v10 = v95;
+      trainerCopy = v95;
     }
 
     else
@@ -272,7 +272,7 @@
     v103 = 0u;
     v100 = 0u;
     v101 = 0u;
-    v62 = v84;
+    v62 = documentFrequencyMap;
     v63 = [v62 countByEnumeratingWithState:&v100 objects:v113 count:16];
     if (v63)
     {
@@ -289,9 +289,9 @@
 
           v67 = *(*(&v100 + 1) + 8 * k);
           v68 = [v62 objectForKey:v67];
-          if (a4->maxVocabularySize - 1 >= [v67 unsignedIntegerValue])
+          if (parameters->maxVocabularySize - 1 >= [v67 unsignedIntegerValue])
           {
-            [(NSDictionary *)v99 setObject:v68 forKey:v67];
+            [(NSDictionary *)dictionary4 setObject:v68 forKey:v67];
           }
         }
 
@@ -301,45 +301,45 @@
       while (v64);
     }
 
-    objc_storeStrong(&v86->_dataProvider, v85);
-    v70 = *&a4->maxSplitTokens;
-    v69 = *&a4->maxLabels;
-    *&v86->_parameters.splitSentences = *&a4->splitSentences;
+    objc_storeStrong(&v86->_dataProvider, providerCopy2);
+    v70 = *&parameters->maxSplitTokens;
+    v69 = *&parameters->maxLabels;
+    *&v86->_parameters.splitSentences = *&parameters->splitSentences;
     *&v86->_parameters.maxSplitTokens = v70;
     *&v86->_parameters.maxLabels = v69;
     locators = v86->_locators;
-    v86->_locators = v91;
-    v72 = v91;
+    v86->_locators = array;
+    v72 = array;
 
     labelMap = v86->_labelMap;
-    v86->_labelMap = v97;
-    v74 = v97;
+    v86->_labelMap = dictionary;
+    v74 = dictionary;
 
     inverseLabelMap = v86->_inverseLabelMap;
-    v86->_inverseLabelMap = v98;
-    v76 = v98;
+    v86->_inverseLabelMap = dictionary2;
+    v76 = dictionary2;
 
     vocabularyMap = v86->_vocabularyMap;
-    v86->_vocabularyMap = v96;
-    v78 = v96;
+    v86->_vocabularyMap = dictionary3;
+    v78 = dictionary3;
 
     documentFrequencyMap = v86->_documentFrequencyMap;
-    v86->_documentFrequencyMap = v99;
+    v86->_documentFrequencyMap = dictionary4;
 
     v12 = v86;
     v86->_numberOfLabels = v90;
     v86->_numberOfVocabularyEntries = v88;
 
-    v9 = contextb;
+    providerCopy = contextb;
   }
 
   v80 = *MEMORY[0x1E69E9840];
   return v12;
 }
 
-- (id)instanceAtIndex:(unint64_t)a3
+- (id)instanceAtIndex:(unint64_t)index
 {
-  v4 = [(NSArray *)self->_locators objectAtIndex:a3];
+  v4 = [(NSArray *)self->_locators objectAtIndex:index];
   v5 = -[NLDataProvider instanceAtIndex:](self->_dataProvider, "instanceAtIndex:", [v4 instanceIndex]);
   v6 = [v5 subInstanceWithLocator:v4 tokenizer:{-[NLConstrainedDataProvider tokenizer](self, "tokenizer")}];
 

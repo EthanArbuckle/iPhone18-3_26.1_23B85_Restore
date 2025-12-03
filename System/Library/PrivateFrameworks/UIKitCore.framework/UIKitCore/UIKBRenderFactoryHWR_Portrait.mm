@@ -1,12 +1,12 @@
 @interface UIKBRenderFactoryHWR_Portrait
-- (BOOL)shouldUseRoundCornerForKey:(id)a3;
+- (BOOL)shouldUseRoundCornerForKey:(id)key;
 - (CGPoint)deleteGlyphOffset;
 - (CGPoint)globeKeyTextOffset;
 - (CGPoint)moreKeyTextOffset;
 - (CGPoint)spaceKeyTextOffset;
 - (UIEdgeInsets)handwritingAreaInsets;
 - (UIEdgeInsets)symbolFrameInsets;
-- (id)_traitsForKey:(id)a3 onKeyplane:(id)a4;
+- (id)_traitsForKey:(id)key onKeyplane:(id)keyplane;
 - (void)setupLayoutSegments;
 @end
 
@@ -74,10 +74,10 @@
   return result;
 }
 
-- (BOOL)shouldUseRoundCornerForKey:(id)a3
+- (BOOL)shouldUseRoundCornerForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 displayType] == 3)
+  keyCopy = key;
+  if ([keyCopy displayType] == 3)
   {
     v5 = 0;
   }
@@ -86,102 +86,102 @@
   {
     v7.receiver = self;
     v7.super_class = UIKBRenderFactoryHWR_Portrait;
-    v5 = [(UIKBRenderFactory10Key_Round *)&v7 shouldUseRoundCornerForKey:v4];
+    v5 = [(UIKBRenderFactory10Key_Round *)&v7 shouldUseRoundCornerForKey:keyCopy];
   }
 
   return v5;
 }
 
-- (id)_traitsForKey:(id)a3 onKeyplane:(id)a4
+- (id)_traitsForKey:(id)key onKeyplane:(id)keyplane
 {
   v107[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  keyCopy = key;
   v102.receiver = self;
   v102.super_class = UIKBRenderFactoryHWR_Portrait;
-  v7 = [(UIKBRenderFactory10Key_Round *)&v102 _traitsForKey:v6 onKeyplane:a4];
-  v8 = [v6 displayType];
-  if (v8 > 17)
+  v7 = [(UIKBRenderFactory10Key_Round *)&v102 _traitsForKey:keyCopy onKeyplane:keyplane];
+  displayType = [keyCopy displayType];
+  if (displayType > 17)
   {
-    if (v8 == 18)
+    if (displayType == 18)
     {
-      v41 = [(UIKBRenderFactory10Key *)self lightTextFontName];
-      v42 = [v7 symbolStyle];
-      [v42 setFontName:v41];
+      lightTextFontName = [(UIKBRenderFactory10Key *)self lightTextFontName];
+      symbolStyle = [v7 symbolStyle];
+      [symbolStyle setFontName:lightTextFontName];
 
-      v43 = [(UIKBRenderFactory10Key *)self lightTextFontFallbackName];
-      v44 = [v7 symbolStyle];
-      [v44 setKeycapsFallback:v43];
+      lightTextFontFallbackName = [(UIKBRenderFactory10Key *)self lightTextFontFallbackName];
+      symbolStyle2 = [v7 symbolStyle];
+      [symbolStyle2 setKeycapsFallback:lightTextFontFallbackName];
 
-      v45 = [v7 symbolStyle];
-      [v45 setFontSize:16.0];
+      symbolStyle3 = [v7 symbolStyle];
+      [symbolStyle3 setFontSize:16.0];
 
       [(UIKBRenderFactoryHWR_Portrait *)self moreKeyTextOffset];
       v47 = v46;
       v49 = v48;
-      v50 = [v7 symbolStyle];
-      [v50 setTextOffset:{v47, v49}];
+      symbolStyle4 = [v7 symbolStyle];
+      [symbolStyle4 setTextOffset:{v47, v49}];
 
-      v14 = [v7 symbolStyle];
-      [v14 setKerning:0.0];
+      symbolStyle5 = [v7 symbolStyle];
+      [symbolStyle5 setKerning:0.0];
     }
 
     else
     {
-      if (v8 != 25 && v8 != 21)
+      if (displayType != 25 && displayType != 21)
       {
         goto LABEL_36;
       }
 
       [(UIKBRenderFactoryHWR_Portrait *)self spaceKeyFontSize];
       v16 = v15;
-      v17 = [v7 symbolStyle];
-      [v17 setFontSize:v16];
+      symbolStyle6 = [v7 symbolStyle];
+      [symbolStyle6 setFontSize:v16];
 
       [(UIKBRenderFactoryHWR_Portrait *)self spaceKeyTextOffset];
       v19 = v18;
       v21 = v20;
-      v22 = [v7 symbolStyle];
-      [v22 setTextOffset:{v19, v21}];
+      symbolStyle7 = [v7 symbolStyle];
+      [symbolStyle7 setTextOffset:{v19, v21}];
 
       if ([(UIKBRenderFactory10Key_Round *)self useRoundCorner])
       {
-        v23 = [v7 symbolStyle];
-        [v23 setKerning:0.0];
+        symbolStyle8 = [v7 symbolStyle];
+        [symbolStyle8 setKerning:0.0];
       }
 
-      v24 = [v6 displayString];
-      v25 = [v24 containsString:@"Emoji"];
+      displayString = [keyCopy displayString];
+      v25 = [displayString containsString:@"Emoji"];
 
       if (!v25)
       {
         goto LABEL_36;
       }
 
-      v26 = [v7 symbolStyle];
-      [v26 setUsesSymbolImage:1];
+      symbolStyle9 = [v7 symbolStyle];
+      [symbolStyle9 setUsesSymbolImage:1];
 
-      v27 = [(UIKBRenderFactory10Key *)self lightKeycapsFontName];
-      v28 = [v7 symbolStyle];
-      [v28 setFontName:v27];
+      lightKeycapsFontName = [(UIKBRenderFactory10Key *)self lightKeycapsFontName];
+      symbolStyle10 = [v7 symbolStyle];
+      [symbolStyle10 setFontName:lightKeycapsFontName];
 
-      v29 = [(UIKBRenderFactory10Key *)self lightKeycapsFontFallbackName];
-      v30 = [v7 symbolStyle];
-      [v30 setKeycapsFallback:v29];
+      lightKeycapsFontFallbackName = [(UIKBRenderFactory10Key *)self lightKeycapsFontFallbackName];
+      symbolStyle11 = [v7 symbolStyle];
+      [symbolStyle11 setKeycapsFallback:lightKeycapsFontFallbackName];
 
       [(UIKBRenderFactoryHWR_Portrait *)self symbolImageControlKeyFontSize];
       v32 = v31;
-      v33 = [v7 symbolStyle];
-      [v33 setFontSize:v32];
+      symbolStyle12 = [v7 symbolStyle];
+      [symbolStyle12 setFontSize:v32];
 
       v34 = *off_1E70ECD18;
-      v35 = [v7 symbolStyle];
-      [v35 setFontWeight:v34];
+      symbolStyle13 = [v7 symbolStyle];
+      [symbolStyle13 setFontWeight:v34];
 
       [(UIKBRenderFactory10Key *)self symbolImageControlKeyOffset];
       v37 = v36;
       v39 = v38;
-      v14 = [v7 symbolStyle];
-      [v14 setTextOffset:{v37, v39}];
+      symbolStyle5 = [v7 symbolStyle];
+      [symbolStyle5 setTextOffset:{v37, v39}];
     }
 
 LABEL_16:
@@ -189,24 +189,24 @@ LABEL_16:
     goto LABEL_36;
   }
 
-  if (v8 == 3)
+  if (displayType == 3)
   {
-    if (([v6 state] & 4) != 0)
+    if (([keyCopy state] & 4) != 0)
     {
-      v69 = [(UIKBRenderFactory *)self renderConfig];
-      v70 = [v69 lightKeyboard];
+      renderConfig = [(UIKBRenderFactory *)self renderConfig];
+      lightKeyboard = [renderConfig lightKeyboard];
       v71 = UIKBColorHWRCellLightBackground;
-      if (!v70)
+      if (!lightKeyboard)
       {
         v71 = UIKBColorHWRCellDarkBackground;
       }
 
       v72 = *v71;
 
-      v73 = [(UIKBRenderFactory *)self renderConfig];
-      v74 = [v73 lightKeyboard];
+      renderConfig2 = [(UIKBRenderFactory *)self renderConfig];
+      lightKeyboard2 = [renderConfig2 lightKeyboard];
       v75 = UIKBColorHWRCellLightBackgroundClear;
-      if (!v74)
+      if (!lightKeyboard2)
       {
         v75 = UIKBColorHWRCellDarkBackgroundClear;
       }
@@ -229,20 +229,20 @@ LABEL_16:
     }
 
     [v7 removeAllRenderEffects];
-    v79 = [(UIKBRenderFactory *)self renderConfig];
-    v80 = [v79 whiteText];
+    renderConfig3 = [(UIKBRenderFactory *)self renderConfig];
+    whiteText = [renderConfig3 whiteText];
     v81 = UIKBColorWhite_Alpha10;
-    if (!v80)
+    if (!whiteText)
     {
       v81 = UIKBColorBlack_Alpha10;
     }
 
     v61 = *v81;
 
-    v82 = [(UIKBRenderFactory *)self renderConfig];
-    v83 = [v82 whiteText];
+    renderConfig4 = [(UIKBRenderFactory *)self renderConfig];
+    whiteText2 = [renderConfig4 whiteText];
     v84 = @"UIKBColorWhite_Alpha0";
-    if (!v83)
+    if (!whiteText2)
     {
       v84 = @"UIKBColorClear";
     }
@@ -259,50 +259,50 @@ LABEL_16:
 
     [v88 setGradient:v87];
     [v7 addRenderEffect:v88];
-    v89 = [v7 symbolStyle];
-    [v89 setTextOffset:{0.5, 2.0}];
+    symbolStyle14 = [v7 symbolStyle];
+    [symbolStyle14 setTextOffset:{0.5, 2.0}];
 
     goto LABEL_33;
   }
 
-  if (v8 != 12)
+  if (displayType != 12)
   {
-    if (v8 != 13)
+    if (displayType != 13)
     {
       goto LABEL_36;
     }
 
-    v9 = [v7 symbolStyle];
-    [v9 setUsesSymbolImage:1];
+    symbolStyle15 = [v7 symbolStyle];
+    [symbolStyle15 setUsesSymbolImage:1];
 
     [(UIKBRenderFactoryHWR_Portrait *)self symbolImageControlKeyFontSize];
     v11 = v10;
-    v12 = [v7 symbolStyle];
-    [v12 setFontSizeForSymbolImage:v11];
+    symbolStyle16 = [v7 symbolStyle];
+    [symbolStyle16 setFontSizeForSymbolImage:v11];
 
     v13 = *off_1E70ECD28;
-    v14 = [v7 symbolStyle];
-    [v14 setFontWeightForSymbolImage:v13];
+    symbolStyle5 = [v7 symbolStyle];
+    [symbolStyle5 setFontWeightForSymbolImage:v13];
     goto LABEL_16;
   }
 
-  v51 = [v7 geometry];
+  geometry = [v7 geometry];
   [(UIKBRenderFactoryHWR_Portrait *)self handwritingAreaInsets];
-  [v51 applyInsets:?];
+  [geometry applyInsets:?];
 
-  v52 = [(UIKBRenderFactory *)self renderConfig];
-  v53 = [v52 lightKeyboard];
+  renderConfig5 = [(UIKBRenderFactory *)self renderConfig];
+  lightKeyboard3 = [renderConfig5 lightKeyboard];
 
-  if (v53)
+  if (lightKeyboard3)
   {
-    [v6 originalFrame];
+    [keyCopy originalFrame];
     v55 = v54;
-    [v6 frame];
+    [keyCopy frame];
     v57 = v56;
-    v58 = [(UIKBRenderFactory *)self renderConfig];
-    v59 = [v58 colorAdaptiveBackground];
+    renderConfig6 = [(UIKBRenderFactory *)self renderConfig];
+    colorAdaptiveBackground = [renderConfig6 colorAdaptiveBackground];
     v60 = UIKBColorWhite_Alpha0;
-    if (!v59)
+    if (!colorAdaptiveBackground)
     {
       v60 = UIKBColorWhite_Alpha87_60;
     }
@@ -338,19 +338,19 @@ LABEL_16:
       [v7 setBackgroundGradient:v68];
     }
 
-    v91 = [v7 geometry];
-    [v91 paddedFrame];
+    geometry2 = [v7 geometry];
+    [geometry2 paddedFrame];
     v93 = v92;
     v95 = v94 + 0.0;
     v97 = v96 + 0.5;
     v99 = v98 + -0.5;
-    v100 = [v7 geometry];
-    [v100 setPaddedFrame:{v95, v97, v93, v99}];
+    geometry3 = [v7 geometry];
+    [geometry3 setPaddedFrame:{v95, v97, v93, v99}];
 
-    v101 = [(UIKBRenderFactory *)self renderConfig];
-    LOBYTE(v91) = [v101 colorAdaptiveBackground];
+    renderConfig7 = [(UIKBRenderFactory *)self renderConfig];
+    LOBYTE(geometry2) = [renderConfig7 colorAdaptiveBackground];
 
-    if (v91)
+    if (geometry2)
     {
       goto LABEL_34;
     }
@@ -371,15 +371,15 @@ LABEL_36:
 
 - (void)setupLayoutSegments
 {
-  v3 = [(UIKBRenderFactory10Key_Round *)self controlKeyTraits];
-  v6 = [UIKBRenderFactoryLayoutSegment segmentWithTraits:v3];
+  controlKeyTraits = [(UIKBRenderFactory10Key_Round *)self controlKeyTraits];
+  v6 = [UIKBRenderFactoryLayoutSegment segmentWithTraits:controlKeyTraits];
 
   [v6 setKeyStates:3];
   [v6 addLayoutRect:0 asTriangle:{0.0, 0.75, 0.26, 0.25}];
   [v6 addLayoutRect:0 asTriangle:{0.66, 0.75, 0.33, 0.25}];
   [(UIKBRenderFactory *)self addLayoutSegment:v6];
-  v4 = [(UIKBRenderFactory10Key_Round *)self activeControlKeyTraits];
-  v5 = [UIKBRenderFactoryLayoutSegment segmentWithTraits:v4];
+  activeControlKeyTraits = [(UIKBRenderFactory10Key_Round *)self activeControlKeyTraits];
+  v5 = [UIKBRenderFactoryLayoutSegment segmentWithTraits:activeControlKeyTraits];
 
   [v5 setKeyStates:4];
   [v5 addLayoutRect:0 asTriangle:{0.0, 0.75, 0.26, 0.25}];

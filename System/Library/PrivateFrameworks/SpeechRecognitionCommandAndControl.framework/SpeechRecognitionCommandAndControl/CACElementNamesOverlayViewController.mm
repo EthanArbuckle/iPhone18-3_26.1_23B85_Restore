@@ -1,7 +1,7 @@
 @interface CACElementNamesOverlayViewController
 - (NSArray)items;
 - (void)loadView;
-- (void)setItems:(id)a3;
+- (void)setItems:(id)items;
 @end
 
 @implementation CACElementNamesOverlayViewController
@@ -35,19 +35,19 @@ id __48__CACElementNamesOverlayViewController_loadView__block_invoke()
   return v0;
 }
 
-- (void)setItems:(id)a3
+- (void)setItems:(id)items
 {
-  v4 = a3;
-  v5 = [(CACElementNamesOverlayViewController *)self view];
-  [v5 setItems:v4];
+  itemsCopy = items;
+  view = [(CACElementNamesOverlayViewController *)self view];
+  [view setItems:itemsCopy];
 }
 
 - (NSArray)items
 {
-  v2 = [(CACElementNamesOverlayViewController *)self view];
-  v3 = [v2 items];
+  view = [(CACElementNamesOverlayViewController *)self view];
+  items = [view items];
 
-  return v3;
+  return items;
 }
 
 @end

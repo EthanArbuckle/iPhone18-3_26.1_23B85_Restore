@@ -1,15 +1,15 @@
 @interface CRLWPStorageStyleProvider
-- (id)characterStyleAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)dropCapStyleAtParIndex:(unint64_t)a3;
-- (id)listStyleAtParIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)paragraphStyleAtParIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
+- (id)characterStyleAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)dropCapStyleAtParIndex:(unint64_t)index;
+- (id)listStyleAtParIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)paragraphStyleAtParIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
 @end
 
 @implementation CRLWPStorageStyleProvider
 
-- (id)paragraphStyleAtParIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)paragraphStyleAtParIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
-  [CRLAssertionHandler _atomicIncrementAssertCount:a3];
+  [CRLAssertionHandler _atomicIncrementAssertCount:index];
   if (qword_101AD5A10 != -1)
   {
     sub_10139CA80();
@@ -38,9 +38,9 @@
   return 0;
 }
 
-- (id)characterStyleAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)characterStyleAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
-  [CRLAssertionHandler _atomicIncrementAssertCount:a3];
+  [CRLAssertionHandler _atomicIncrementAssertCount:index];
   if (qword_101AD5A10 != -1)
   {
     sub_10139CB44();
@@ -69,9 +69,9 @@
   return 0;
 }
 
-- (id)listStyleAtParIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)listStyleAtParIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
-  [CRLAssertionHandler _atomicIncrementAssertCount:a3];
+  [CRLAssertionHandler _atomicIncrementAssertCount:index];
   if (qword_101AD5A10 != -1)
   {
     sub_10139CC08();
@@ -100,7 +100,7 @@
   return 0;
 }
 
-- (id)dropCapStyleAtParIndex:(unint64_t)a3
+- (id)dropCapStyleAtParIndex:(unint64_t)index
 {
   +[CRLAssertionHandler _atomicIncrementAssertCount];
   if (qword_101AD5A10 != -1)

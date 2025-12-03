@@ -1,36 +1,36 @@
 @interface IDSSockAddrWrapperPair
-+ (id)shortDescriptionForLocalAddress:(id)a3 remoteAddress:(id)a4;
-+ (id)wrapperPairWithLocalAddress:(id)a3 remoteAddress:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSockAddrWrapperPair:(id)a3;
-- (IDSSockAddrWrapperPair)initWithLocalAddress:(id)a3 remoteAddress:(id)a4;
++ (id)shortDescriptionForLocalAddress:(id)address remoteAddress:(id)remoteAddress;
++ (id)wrapperPairWithLocalAddress:(id)address remoteAddress:(id)remoteAddress;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSockAddrWrapperPair:(id)pair;
+- (IDSSockAddrWrapperPair)initWithLocalAddress:(id)address remoteAddress:(id)remoteAddress;
 @end
 
 @implementation IDSSockAddrWrapperPair
 
-+ (id)wrapperPairWithLocalAddress:(id)a3 remoteAddress:(id)a4
++ (id)wrapperPairWithLocalAddress:(id)address remoteAddress:(id)remoteAddress
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[IDSSockAddrWrapperPair alloc] initWithLocalAddress:v6 remoteAddress:v5];
+  remoteAddressCopy = remoteAddress;
+  addressCopy = address;
+  v7 = [[IDSSockAddrWrapperPair alloc] initWithLocalAddress:addressCopy remoteAddress:remoteAddressCopy];
 
   return v7;
 }
 
-- (IDSSockAddrWrapperPair)initWithLocalAddress:(id)a3 remoteAddress:(id)a4
+- (IDSSockAddrWrapperPair)initWithLocalAddress:(id)address remoteAddress:(id)remoteAddress
 {
-  v6 = a3;
-  v7 = a4;
+  addressCopy = address;
+  remoteAddressCopy = remoteAddress;
   v14.receiver = self;
   v14.super_class = IDSSockAddrWrapperPair;
   v8 = [(IDSSockAddrWrapperPair *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [addressCopy copy];
     localAddress = v8->_localAddress;
     v8->_localAddress = v9;
 
-    v11 = [v7 copy];
+    v11 = [remoteAddressCopy copy];
     remoteAddress = v8->_remoteAddress;
     v8->_remoteAddress = v11;
   }
@@ -38,25 +38,25 @@
   return v8;
 }
 
-+ (id)shortDescriptionForLocalAddress:(id)a3 remoteAddress:(id)a4
++ (id)shortDescriptionForLocalAddress:(id)address remoteAddress:(id)remoteAddress
 {
-  v5 = a4;
-  v6 = [a3 saPortHostOrder];
-  v7 = [v5 saPortHostOrder];
+  remoteAddressCopy = remoteAddress;
+  saPortHostOrder = [address saPortHostOrder];
+  saPortHostOrder2 = [remoteAddressCopy saPortHostOrder];
 
-  return [NSString stringWithFormat:@"%u:::%u", v6, v7];
+  return [NSString stringWithFormat:@"%u:::%u", saPortHostOrder, saPortHostOrder2];
 }
 
-- (BOOL)isEqualToSockAddrWrapperPair:(id)a3
+- (BOOL)isEqualToSockAddrWrapperPair:(id)pair
 {
-  v4 = a3;
+  pairCopy = pair;
   localAddress = self->_localAddress;
-  v6 = [v4 localAddress];
-  if ([(IDSSockAddrWrapper *)localAddress isEqualToWrapper:v6])
+  localAddress = [pairCopy localAddress];
+  if ([(IDSSockAddrWrapper *)localAddress isEqualToWrapper:localAddress])
   {
     remoteAddress = self->_remoteAddress;
-    v8 = [v4 remoteAddress];
-    v9 = [(IDSSockAddrWrapper *)remoteAddress isEqualToWrapper:v8];
+    remoteAddress = [pairCopy remoteAddress];
+    v9 = [(IDSSockAddrWrapper *)remoteAddress isEqualToWrapper:remoteAddress];
   }
 
   else
@@ -67,13 +67,13 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v6 = [(IDSSockAddrWrapperPair *)self isEqualToSockAddrWrapperPair:v4];
+    v6 = [(IDSSockAddrWrapperPair *)self isEqualToSockAddrWrapperPair:equalCopy];
   }
 
   else

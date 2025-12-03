@@ -1,14 +1,14 @@
 @interface ADExecutor
 - (ADExecutor)init;
-- (__CVBuffer)allocateIOBufferForEspressoDescriptor:(id)a3;
-- (__CVBuffer)inferencePixelBufferForDescriptor:(id)a3 inputUserBuffer:(__CVBuffer *)a4;
-- (__CVBuffer)inferencePixelBufferForDescriptor:(id)a3 outputUserBuffer:(__CVBuffer *)a4;
-- (id)getIntermediateWithName:(id)a3;
-- (int64_t)convertIntrinsicsFrom:(__CVBuffer *)a3 cropBy:(CGRect)a4 to:(__CVBuffer *)a5;
-- (int64_t)preAllocateInferencePixelBufferForDescriptor:(id)a3;
-- (int64_t)prepareForEngineType:(unint64_t)a3 roi:(CGRect)a4 descriptorForROI:(id)a5 exifOrientation:(unsigned int)a6 rotationPreference:(unint64_t)a7 inferenceDescriptor:(id)a8;
-- (int64_t)setInferencePixelBuffer:(__CVBuffer *)a3 forEspressoDescriptor:(id)a4;
-- (int64_t)solveRotationPreference:(unint64_t)a3;
+- (__CVBuffer)allocateIOBufferForEspressoDescriptor:(id)descriptor;
+- (__CVBuffer)inferencePixelBufferForDescriptor:(id)descriptor inputUserBuffer:(__CVBuffer *)buffer;
+- (__CVBuffer)inferencePixelBufferForDescriptor:(id)descriptor outputUserBuffer:(__CVBuffer *)buffer;
+- (id)getIntermediateWithName:(id)name;
+- (int64_t)convertIntrinsicsFrom:(__CVBuffer *)from cropBy:(CGRect)by to:(__CVBuffer *)to;
+- (int64_t)preAllocateInferencePixelBufferForDescriptor:(id)descriptor;
+- (int64_t)prepareForEngineType:(unint64_t)type roi:(CGRect)roi descriptorForROI:(id)i exifOrientation:(unsigned int)orientation rotationPreference:(unint64_t)preference inferenceDescriptor:(id)descriptor;
+- (int64_t)setInferencePixelBuffer:(__CVBuffer *)buffer forEspressoDescriptor:(id)descriptor;
+- (int64_t)solveRotationPreference:(unint64_t)preference;
 - (void)dealloc;
 - (void)frameExecutionEnd;
 - (void)frameExecutionStart;
@@ -16,26 +16,26 @@
 
 @implementation ADExecutor
 
-- (int64_t)setInferencePixelBuffer:(__CVBuffer *)a3 forEspressoDescriptor:(id)a4
+- (int64_t)setInferencePixelBuffer:(__CVBuffer *)buffer forEspressoDescriptor:(id)descriptor
 {
-  v6 = a4;
-  v7 = [(ADEspressoRunnerProtocol *)self->_espressoRunner registerPixelBuffer:a3 forDescriptor:v6];
+  descriptorCopy = descriptor;
+  v7 = [(ADEspressoRunnerProtocol *)self->_espressoRunner registerPixelBuffer:buffer forDescriptor:descriptorCopy];
   if (!v7)
   {
     ownedInferenceBuffers = self->_ownedInferenceBuffers;
-    v9 = [v6 name];
-    [(NSMutableDictionary *)ownedInferenceBuffers setObject:a3 forKey:v9];
+    name = [descriptorCopy name];
+    [(NSMutableDictionary *)ownedInferenceBuffers setObject:buffer forKey:name];
   }
 
   return v7;
 }
 
-- (__CVBuffer)inferencePixelBufferForDescriptor:(id)a3 outputUserBuffer:(__CVBuffer *)a4
+- (__CVBuffer)inferencePixelBufferForDescriptor:(id)descriptor outputUserBuffer:(__CVBuffer *)buffer
 {
-  v6 = a3;
-  if (a4)
+  descriptorCopy = descriptor;
+  if (buffer)
   {
-    v7 = *a4;
+    v7 = *buffer;
   }
 
   else
@@ -43,35 +43,35 @@
     v7 = 0;
   }
 
-  v8 = [(ADExecutor *)self inferencePixelBufferForDescriptor:v6 inputUserBuffer:v7];
+  v8 = [(ADExecutor *)self inferencePixelBufferForDescriptor:descriptorCopy inputUserBuffer:v7];
   v9 = v8;
-  if (a4 && !*a4)
+  if (buffer && !*buffer)
   {
-    *a4 = CVPixelBufferRetain(v8);
+    *buffer = CVPixelBufferRetain(v8);
   }
 
   return v9;
 }
 
-- (__CVBuffer)inferencePixelBufferForDescriptor:(id)a3 inputUserBuffer:(__CVBuffer *)a4
+- (__CVBuffer)inferencePixelBufferForDescriptor:(id)descriptor inputUserBuffer:(__CVBuffer *)buffer
 {
-  v6 = a3;
+  descriptorCopy = descriptor;
   ownedInferenceBuffers = self->_ownedInferenceBuffers;
-  v8 = [v6 name];
-  v9 = [(NSMutableDictionary *)ownedInferenceBuffers objectForKeyedSubscript:v8];
+  name = [descriptorCopy name];
+  bufferCopy = [(NSMutableDictionary *)ownedInferenceBuffers objectForKeyedSubscript:name];
 
   if ([(ADExecutorParameters *)self->_executorParameters bufferCopyPolicy])
   {
-    if ([v6 conformedByPixelBuffer:a4 forLayout:self->_layout] && !self->_rotationConstant)
+    if ([descriptorCopy conformedByPixelBuffer:buffer forLayout:self->_layout] && !self->_rotationConstant)
     {
-      if ([(ADEspressoRunnerProtocol *)self->_espressoRunner registerPixelBuffer:a4 forDescriptor:v6])
+      if ([(ADEspressoRunnerProtocol *)self->_espressoRunner registerPixelBuffer:buffer forDescriptor:descriptorCopy])
       {
-        v9 = 0;
+        bufferCopy = 0;
       }
 
       else
       {
-        v9 = a4;
+        bufferCopy = buffer;
       }
     }
 
@@ -83,27 +83,27 @@
         _os_log_error_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Buffer copy policy is ForceNoCopy, but user buffer does not match the descriptor", v11, 2u);
       }
 
-      v9 = 0;
+      bufferCopy = 0;
     }
 
-    else if (([v6 conformedByPixelBuffer:v9 forLayout:self->_layout] & 1) == 0)
+    else if (([descriptorCopy conformedByPixelBuffer:bufferCopy forLayout:self->_layout] & 1) == 0)
     {
-      v9 = [(ADExecutor *)self allocateIOBufferForEspressoDescriptor:v6];
+      bufferCopy = [(ADExecutor *)self allocateIOBufferForEspressoDescriptor:descriptorCopy];
     }
   }
 
-  return v9;
+  return bufferCopy;
 }
 
-- (int64_t)preAllocateInferencePixelBufferForDescriptor:(id)a3
+- (int64_t)preAllocateInferencePixelBufferForDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   if ([(ADExecutorParameters *)self->_executorParameters bufferCopyPolicy])
   {
     v5 = 0;
   }
 
-  else if ([(ADExecutor *)self allocateIOBufferForEspressoDescriptor:v4])
+  else if ([(ADExecutor *)self allocateIOBufferForEspressoDescriptor:descriptorCopy])
   {
     v5 = 0;
   }
@@ -116,34 +116,34 @@
   return v5;
 }
 
-- (__CVBuffer)allocateIOBufferForEspressoDescriptor:(id)a3
+- (__CVBuffer)allocateIOBufferForEspressoDescriptor:(id)descriptor
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ADEspressoRunnerProtocol *)self->_espressoRunner createAndRegisterPixelBufferForDescriptor:v4];
+  descriptorCopy = descriptor;
+  v5 = [(ADEspressoRunnerProtocol *)self->_espressoRunner createAndRegisterPixelBufferForDescriptor:descriptorCopy];
   if (v5)
   {
     ownedInferenceBuffers = self->_ownedInferenceBuffers;
-    v7 = [v4 name];
-    [(NSMutableDictionary *)ownedInferenceBuffers setObject:v5 forKey:v7];
+    name = [descriptorCopy name];
+    [(NSMutableDictionary *)ownedInferenceBuffers setObject:v5 forKey:name];
   }
 
   else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    v9 = [v4 name];
+    name2 = [descriptorCopy name];
     v10 = 138412290;
-    v11 = v9;
+    v11 = name2;
     _os_log_error_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Failed allocating a pixel buffer for channel %@", &v10, 0xCu);
   }
 
   return v5;
 }
 
-- (id)getIntermediateWithName:(id)a3
+- (id)getIntermediateWithName:(id)name
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v20 = v4;
+  nameCopy = name;
+  v20 = nameCopy;
   [(ADExecutor *)self getIntermediates];
   v28 = 0u;
   v29 = 0u;
@@ -167,15 +167,15 @@
 
         v9 = *(*(&v26 + 1) + 8 * v8);
         v10 = [v9 objectForKeyedSubscript:@"name"];
-        if ([v10 isEqualToString:v4])
+        if ([v10 isEqualToString:nameCopy])
         {
           v24 = 0u;
           v25 = 0u;
           v22 = 0u;
           v23 = 0u;
-          v11 = [v9 allKeys];
+          allKeys = [v9 allKeys];
           v12 = v7;
-          v13 = [v11 countByEnumeratingWithState:&v22 objects:v30 count:16];
+          v13 = [allKeys countByEnumeratingWithState:&v22 objects:v30 count:16];
           if (v13)
           {
             v14 = *v23;
@@ -185,7 +185,7 @@
               {
                 if (*v23 != v14)
                 {
-                  objc_enumerationMutation(v11);
+                  objc_enumerationMutation(allKeys);
                 }
 
                 v16 = *(*(&v22 + 1) + 8 * i);
@@ -193,14 +193,14 @@
                 {
                   v17 = [v9 objectForKeyedSubscript:v16];
 
-                  v4 = v20;
+                  nameCopy = v20;
                   v5 = v21;
 
                   goto LABEL_21;
                 }
               }
 
-              v13 = [v11 countByEnumeratingWithState:&v22 objects:v30 count:16];
+              v13 = [allKeys countByEnumeratingWithState:&v22 objects:v30 count:16];
               if (v13)
               {
                 continue;
@@ -210,7 +210,7 @@
             }
           }
 
-          v4 = v20;
+          nameCopy = v20;
           v5 = v21;
           v7 = v12;
           v6 = v19;
@@ -237,17 +237,17 @@ LABEL_21:
   return v17;
 }
 
-- (int64_t)convertIntrinsicsFrom:(__CVBuffer *)a3 cropBy:(CGRect)a4 to:(__CVBuffer *)a5
+- (int64_t)convertIntrinsicsFrom:(__CVBuffer *)from cropBy:(CGRect)by to:(__CVBuffer *)to
 {
   v59[2] = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!from)
   {
     return -22953;
   }
 
-  x = a4.origin.x;
-  y = a4.origin.y;
-  Attachment = CVBufferGetAttachment(a3, @"Calibration Data", 0);
+  x = by.origin.x;
+  y = by.origin.y;
+  Attachment = CVBufferGetAttachment(from, @"Calibration Data", 0);
   if (!Attachment)
   {
     return -22953;
@@ -264,12 +264,12 @@ LABEL_21:
 
   v12 = [v10 objectForKeyedSubscript:@"Sensors"];
   v13 = [v12 objectForKeyedSubscript:@"Intrinsics"];
-  v14 = [v13 allKeys];
-  v15 = [v14 firstObject];
+  allKeys = [v13 allKeys];
+  firstObject = [allKeys firstObject];
 
   v16 = [v10 objectForKeyedSubscript:@"Sensors"];
   v17 = [v16 objectForKeyedSubscript:@"Intrinsics"];
-  v18 = [v17 objectForKeyedSubscript:v15];
+  v18 = [v17 objectForKeyedSubscript:firstObject];
 
   if (v18)
   {
@@ -295,10 +295,10 @@ LABEL_21:
       [v32 doubleValue];
       v34 = v33;
 
-      Width = CVPixelBufferGetWidth(a3);
-      Height = CVPixelBufferGetHeight(a3);
-      v37 = CVPixelBufferGetWidth(a5);
-      v38 = CVPixelBufferGetHeight(a5);
+      Width = CVPixelBufferGetWidth(from);
+      Height = CVPixelBufferGetHeight(from);
+      v37 = CVPixelBufferGetWidth(to);
+      v38 = CVPixelBufferGetHeight(to);
       v39 = Width;
       v40 = v37;
       if (Width / Height == v37 / v38)
@@ -323,7 +323,7 @@ LABEL_21:
         v54 = v45;
         v46 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v54 forKeys:&v53 count:1];
         v59[1] = v46;
-        CVBufferSetAttachment(a5, @"Calibration Data", [MEMORY[0x277CBEAC0] dictionaryWithObjects:v59 forKeys:v58 count:2], kCVAttachmentMode_ShouldPropagate);
+        CVBufferSetAttachment(to, @"Calibration Data", [MEMORY[0x277CBEAC0] dictionaryWithObjects:v59 forKeys:v58 count:2], kCVAttachmentMode_ShouldPropagate);
 
         v25 = 0;
       }
@@ -349,11 +349,11 @@ LABEL_21:
   return v25;
 }
 
-- (int64_t)solveRotationPreference:(unint64_t)a3
+- (int64_t)solveRotationPreference:(unint64_t)preference
 {
   v5 = [MEMORY[0x277CED0C0] isLandscapeSize:{self->_inputRoi.size.width, self->_inputRoi.size.height}];
   v6 = (self->_layout != 255) & (v5 ^ [MEMORY[0x277CED0C0] isLandscape:self->_layout]);
-  if (a3 == 2)
+  if (preference == 2)
   {
     if (v6)
     {
@@ -368,9 +368,9 @@ LABEL_21:
 
   else
   {
-    if (a3 != 1)
+    if (preference != 1)
     {
-      if (!a3)
+      if (!preference)
       {
         v7 = self->_inputOrientation - 2;
         if (v7 < 7)
@@ -400,22 +400,22 @@ LABEL_21:
   }
 }
 
-- (int64_t)prepareForEngineType:(unint64_t)a3 roi:(CGRect)a4 descriptorForROI:(id)a5 exifOrientation:(unsigned int)a6 rotationPreference:(unint64_t)a7 inferenceDescriptor:(id)a8
+- (int64_t)prepareForEngineType:(unint64_t)type roi:(CGRect)roi descriptorForROI:(id)i exifOrientation:(unsigned int)orientation rotationPreference:(unint64_t)preference inferenceDescriptor:(id)descriptor
 {
-  v10 = *&a6;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  v10 = *&orientation;
+  height = roi.size.height;
+  width = roi.size.width;
+  y = roi.origin.y;
+  x = roi.origin.x;
   v48 = *MEMORY[0x277D85DE8];
-  v17 = a5;
-  v18 = a8;
+  iCopy = i;
+  descriptorCopy = descriptor;
   if (ADDebugUtilsADVerboseLogsEnabled == 1)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       v34 = 134219520;
-      v35 = a3;
+      typeCopy2 = type;
       v36 = 2048;
       v37 = x;
       v38 = 2048;
@@ -427,7 +427,7 @@ LABEL_21:
       v44 = 1024;
       v45 = v10;
       v46 = 2048;
-      v47 = a7;
+      preferenceCopy2 = preference;
       _os_log_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "preparing executor with engine %lu, roi: (%f,%f,%f,%f) orientation %d, rotation preference %lu", &v34, 0x44u);
     }
   }
@@ -435,7 +435,7 @@ LABEL_21:
   else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v34 = 134219520;
-    v35 = a3;
+    typeCopy2 = type;
     v36 = 2048;
     v37 = x;
     v38 = 2048;
@@ -447,7 +447,7 @@ LABEL_21:
     v44 = 1024;
     v45 = v10;
     v46 = 2048;
-    v47 = a7;
+    preferenceCopy2 = preference;
     _os_log_debug_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "preparing executor with engine %lu, roi: (%f,%f,%f,%f) orientation %d, rotation preference %lu", &v34, 0x44u);
   }
 
@@ -464,13 +464,13 @@ LABEL_21:
 
     else
     {
-      v21 = [v17 layoutForSize:{width, height}];
-      v19 = [MEMORY[0x277CED0C0] adjustLayout:v21 sourceOrientation:v10 toRotationPreference:a7];
+      v21 = [iCopy layoutForSize:{width, height}];
+      v19 = [MEMORY[0x277CED0C0] adjustLayout:v21 sourceOrientation:v10 toRotationPreference:preference];
     }
 
     if ([(ADExecutorParameters *)self->_executorParameters bufferCopyPolicy]== 2)
     {
-      [v17 sizeForLayout:v19];
+      [iCopy sizeForLayout:v19];
       if (x != 0.0 || y != 0.0 || width != v22 || height != v23)
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -492,7 +492,7 @@ LABEL_29:
     self->_inputRoi.size.width = width;
     self->_inputRoi.size.height = height;
     self->_inputOrientation = v10;
-    self->_rotationPreference = a7;
+    self->_rotationPreference = preference;
     if (v19 == 254)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -508,21 +508,21 @@ LABEL_32:
       goto LABEL_29;
     }
 
-    if (self->_layout == v19 && self->_engineType == a3 && self->_espressoRunner)
+    if (self->_layout == v19 && self->_engineType == type && self->_espressoRunner)
     {
       v20 = 0;
     }
 
     else
     {
-      self->_engineType = a3;
+      self->_engineType = type;
       self->_layout = v19;
       v26 = MEMORY[0x277CED060];
-      v27 = [v18 networkURL];
-      v28 = [v27 absoluteString];
+      networkURL = [descriptorCopy networkURL];
+      absoluteString = [networkURL absoluteString];
       engineType = self->_engineType;
-      v30 = [v18 configurationNameForLayout:self->_layout];
-      v31 = [v26 espressoRunnerForPath:v28 forEngine:engineType configurationName:v30];
+      v30 = [descriptorCopy configurationNameForLayout:self->_layout];
+      v31 = [v26 espressoRunnerForPath:absoluteString forEngine:engineType configurationName:v30];
       espressoRunner = self->_espressoRunner;
       self->_espressoRunner = v31;
 
@@ -601,9 +601,9 @@ LABEL_30:
   v9 = [MEMORY[0x277CCABB0] numberWithDouble:v8];
   v23[3] = v9;
   v22[4] = @"Process";
-  v10 = [MEMORY[0x277CCAC38] processInfo];
-  v11 = [v10 processName];
-  v23[4] = v11;
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  processName = [processInfo processName];
+  v23[4] = processName;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:5];
 
   v15 = MEMORY[0x277D85DD0];
@@ -637,9 +637,9 @@ LABEL_30:
     *(v2 + 8) = v4;
     *(v2 + 16) = 255;
     *(v2 + 10) = 1;
-    v5 = [MEMORY[0x277CEE958] hasANE];
+    hasANE = [MEMORY[0x277CEE958] hasANE];
     v6 = 2;
-    if (v5)
+    if (hasANE)
     {
       v6 = 4;
     }

@@ -1,17 +1,17 @@
 @interface BDSReadingHistoryUpdateInfo
 - (BDSReadingHistoryUpdateInfo)init;
-- (BDSReadingHistoryUpdateInfo)initWithCoder:(id)a3;
-- (BDSReadingHistoryUpdateInfo)initWithUpdate:(id)a3;
+- (BDSReadingHistoryUpdateInfo)initWithCoder:(id)coder;
+- (BDSReadingHistoryUpdateInfo)initWithUpdate:(id)update;
 - (NSString)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BDSReadingHistoryUpdateInfo
 
-- (BDSReadingHistoryUpdateInfo)initWithCoder:(id)a3
+- (BDSReadingHistoryUpdateInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  result = sub_10011C4B8(v4);
+  coderCopy = coder;
+  result = sub_10011C4B8(coderCopy);
   if (result)
   {
     *(&self->super.isa + OBJC_IVAR___BDSReadingHistoryUpdateInfo_update) = result;
@@ -30,27 +30,27 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = self;
-  v5 = [(BDSReadingHistoryUpdateInfo *)v6 update];
-  sub_10011C7B0(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  update = [(BDSReadingHistoryUpdateInfo *)selfCopy update];
+  sub_10011C7B0(coderCopy);
 }
 
-- (BDSReadingHistoryUpdateInfo)initWithUpdate:(id)a3
+- (BDSReadingHistoryUpdateInfo)initWithUpdate:(id)update
 {
-  *(&self->super.isa + OBJC_IVAR___BDSReadingHistoryUpdateInfo_update) = a3;
+  *(&self->super.isa + OBJC_IVAR___BDSReadingHistoryUpdateInfo_update) = update;
   v5.receiver = self;
   v5.super_class = BDSReadingHistoryUpdateInfo;
-  v3 = a3;
+  updateCopy = update;
   return [(BDSReadingHistoryUpdateInfo *)&v5 init];
 }
 
 - (NSString)description
 {
-  v2 = self;
-  v3 = [(BDSReadingHistoryUpdateInfo *)v2 update];
+  selfCopy = self;
+  update = [(BDSReadingHistoryUpdateInfo *)selfCopy update];
   ReadingHistoryUpdate.description.getter();
 
   v4 = sub_1001C5FE8();

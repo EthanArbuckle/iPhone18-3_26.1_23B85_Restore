@@ -1,63 +1,63 @@
 @interface CDPDRecoveryKeyController
-- (BOOL)anyRecoveryKeysAreOctagonDistrustedWithError:(id *)a3;
-- (BOOL)isRecoveryKeyAvailableWithError:(id *)a3;
-- (CDPDRecoveryKeyController)initWithContext:(id)a3 uiProvider:(id)a4 authProvider:(id)a5;
-- (CDPDRecoveryKeyController)initWithContext:(id)a3 uiProvider:(id)a4 authProvider:(id)a5 circleProxy:(id)a6 secureBackupProxy:(id)a7 octagonTrustProxy:(id)a8 pcsProxy:(id)a9;
-- (void)_authenticateAndPerformRecoveryKeyOperation:(id)a3 completion:(id)a4;
-- (void)authenticateAndDeleteRecoveryKeyWithCompletion:(id)a3;
-- (void)authenticateAndGenerateNewRecoveryKeyWithCompletion:(id)a3;
+- (BOOL)anyRecoveryKeysAreOctagonDistrustedWithError:(id *)error;
+- (BOOL)isRecoveryKeyAvailableWithError:(id *)error;
+- (CDPDRecoveryKeyController)initWithContext:(id)context uiProvider:(id)provider authProvider:(id)authProvider;
+- (CDPDRecoveryKeyController)initWithContext:(id)context uiProvider:(id)provider authProvider:(id)authProvider circleProxy:(id)proxy secureBackupProxy:(id)backupProxy octagonTrustProxy:(id)trustProxy pcsProxy:(id)pcsProxy;
+- (void)_authenticateAndPerformRecoveryKeyOperation:(id)operation completion:(id)completion;
+- (void)authenticateAndDeleteRecoveryKeyWithCompletion:(id)completion;
+- (void)authenticateAndGenerateNewRecoveryKeyWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)deleteRecoveryKeyWithCompletion:(id)a3;
-- (void)generateNewRecoveryKey:(id)a3;
-- (void)generateRandomRecoveryKey:(id)a3;
-- (void)recoverDataUsingMasterKeyWithCompletion:(id)a3;
-- (void)secretValidator:(id)a3 validateRecoveryKeyWithContext:(id)a4 completion:(id)a5;
-- (void)verifyRecoveryKey:(id)a3;
+- (void)deleteRecoveryKeyWithCompletion:(id)completion;
+- (void)generateNewRecoveryKey:(id)key;
+- (void)generateRandomRecoveryKey:(id)key;
+- (void)recoverDataUsingMasterKeyWithCompletion:(id)completion;
+- (void)secretValidator:(id)validator validateRecoveryKeyWithContext:(id)context completion:(id)completion;
+- (void)verifyRecoveryKey:(id)key;
 @end
 
 @implementation CDPDRecoveryKeyController
 
-- (CDPDRecoveryKeyController)initWithContext:(id)a3 uiProvider:(id)a4 authProvider:(id)a5
+- (CDPDRecoveryKeyController)initWithContext:(id)context uiProvider:(id)provider authProvider:(id)authProvider
 {
   v8 = MEMORY[0x277CFD498];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [[v8 alloc] initWithContext:v11];
-  v13 = [[CDPDSecureBackupProxyImpl alloc] initWithContext:v11];
-  v14 = [[CDPDOctagonTrustProxyImpl alloc] initWithContext:v11];
+  authProviderCopy = authProvider;
+  providerCopy = provider;
+  contextCopy = context;
+  v12 = [[v8 alloc] initWithContext:contextCopy];
+  v13 = [[CDPDSecureBackupProxyImpl alloc] initWithContext:contextCopy];
+  v14 = [[CDPDOctagonTrustProxyImpl alloc] initWithContext:contextCopy];
   v15 = objc_alloc_init(MEMORY[0x277CFD520]);
-  v16 = [(CDPDRecoveryKeyController *)self initWithContext:v11 uiProvider:v10 authProvider:v9 circleProxy:v12 secureBackupProxy:v13 octagonTrustProxy:v14 pcsProxy:v15];
+  v16 = [(CDPDRecoveryKeyController *)self initWithContext:contextCopy uiProvider:providerCopy authProvider:authProviderCopy circleProxy:v12 secureBackupProxy:v13 octagonTrustProxy:v14 pcsProxy:v15];
 
   return v16;
 }
 
-- (CDPDRecoveryKeyController)initWithContext:(id)a3 uiProvider:(id)a4 authProvider:(id)a5 circleProxy:(id)a6 secureBackupProxy:(id)a7 octagonTrustProxy:(id)a8 pcsProxy:(id)a9
+- (CDPDRecoveryKeyController)initWithContext:(id)context uiProvider:(id)provider authProvider:(id)authProvider circleProxy:(id)proxy secureBackupProxy:(id)backupProxy octagonTrustProxy:(id)trustProxy pcsProxy:(id)pcsProxy
 {
-  v31 = a3;
-  v30 = a4;
-  v29 = a5;
-  v28 = a6;
-  v16 = a7;
-  v17 = a8;
-  v18 = a9;
+  contextCopy = context;
+  providerCopy = provider;
+  authProviderCopy = authProvider;
+  proxyCopy = proxy;
+  backupProxyCopy = backupProxy;
+  trustProxyCopy = trustProxy;
+  pcsProxyCopy = pcsProxy;
   v19 = [(CDPDRecoveryKeyController *)self init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_context, a3);
-    objc_storeStrong(&v20->_uiProvider, a4);
-    objc_storeStrong(&v20->_recoveryAuthProvider, a5);
+    objc_storeStrong(&v19->_context, context);
+    objc_storeStrong(&v20->_uiProvider, provider);
+    objc_storeStrong(&v20->_recoveryAuthProvider, authProvider);
     v21 = objc_alloc_init(CDPDAuthProxyImpl);
     internalAuthProvider = v20->_internalAuthProvider;
     v20->_internalAuthProvider = v21;
 
-    objc_storeStrong(&v20->_circleProxy, a6);
-    objc_storeStrong(&v20->_sbProxy, a7);
-    objc_storeStrong(&v20->_otProxy, a8);
-    v23 = [[CDPDPCSController alloc] initWithContext:v20->_context pcsProxy:v18, v28, v29, v30, v31];
+    objc_storeStrong(&v20->_circleProxy, proxy);
+    objc_storeStrong(&v20->_sbProxy, backupProxy);
+    objc_storeStrong(&v20->_otProxy, trustProxy);
+    contextCopy = [[CDPDPCSController alloc] initWithContext:v20->_context pcsProxy:pcsProxyCopy, proxyCopy, authProviderCopy, providerCopy, contextCopy];
     pcsController = v20->_pcsController;
-    v20->_pcsController = v23;
+    v20->_pcsController = contextCopy;
 
     v25 = [[CDPDSecureBackupController alloc] initWithContext:v20->_context secureBackupProxy:v20->_sbProxy octagonTrustProxy:v20->_otProxy];
     secureBackupController = v20->_secureBackupController;
@@ -67,7 +67,7 @@
   return v20;
 }
 
-- (BOOL)isRecoveryKeyAvailableWithError:(id *)a3
+- (BOOL)isRecoveryKeyAvailableWithError:(id *)error
 {
   v5 = _CDPLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -75,15 +75,15 @@
     [CDPDRecoveryKeyController isRecoveryKeyAvailableWithError:];
   }
 
-  return [(CDPDSecureBackupController *)self->_secureBackupController supportsRecoveryKeyWithError:a3];
+  return [(CDPDSecureBackupController *)self->_secureBackupController supportsRecoveryKeyWithError:error];
 }
 
-- (void)verifyRecoveryKey:(id)a3
+- (void)verifyRecoveryKey:(id)key
 {
-  v4 = a3;
-  v5 = [(CDPContext *)self->_context dsid];
+  keyCopy = key;
+  dsid = [(CDPContext *)self->_context dsid];
 
-  if (v5)
+  if (dsid)
   {
     v6 = [(CDPDDeviceSecretValidator *)[CDPDRecoveryKeyValidator alloc] initWithContext:self->_context delegate:self];
     v13[0] = 0;
@@ -91,14 +91,14 @@
     v13[2] = 0x3032000000;
     v13[3] = __Block_byref_object_copy__4;
     v13[4] = __Block_byref_object_dispose__4;
-    v14 = self;
-    uiProvider = v14->_uiProvider;
+    selfCopy = self;
+    uiProvider = selfCopy->_uiProvider;
     context = self->_context;
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __47__CDPDRecoveryKeyController_verifyRecoveryKey___block_invoke;
     v10[3] = &unk_278E254B0;
-    v11 = v4;
+    v11 = keyCopy;
     v12 = v13;
     [(CDPStateUIProviderInternal *)uiProvider cdpContext:context promptForRecoveryKeyWithSecretValidator:v6 completion:v10];
 
@@ -114,10 +114,10 @@ LABEL_7:
     [CDPDRecoveryKeyController verifyRecoveryKey:];
   }
 
-  if (v4)
+  if (keyCopy)
   {
     v6 = _CDPStateError();
-    (*(v4 + 2))(v4, 0, v6);
+    (*(keyCopy + 2))(keyCopy, 0, v6);
     goto LABEL_7;
   }
 
@@ -151,26 +151,26 @@ void __47__CDPDRecoveryKeyController_verifyRecoveryKey___block_invoke(uint64_t a
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)generateNewRecoveryKey:(id)a3
+- (void)generateNewRecoveryKey:(id)key
 {
-  v4 = a3;
-  v5 = [(CDPContext *)self->_context dsid];
+  keyCopy = key;
+  dsid = [(CDPContext *)self->_context dsid];
 
-  if (v5)
+  if (dsid)
   {
     v6 = [CDPDRecoveryKeyValidatorImpl alloc];
     context = self->_context;
-    v8 = [(CDPDRecoveryKeyController *)self otProxy];
-    v9 = [(CDPDRecoveryKeyValidatorImpl *)v6 initWithContext:context delegate:self octagonTrustProxy:v8];
+    otProxy = [(CDPDRecoveryKeyController *)self otProxy];
+    v9 = [(CDPDRecoveryKeyValidatorImpl *)v6 initWithContext:context delegate:self octagonTrustProxy:otProxy];
 
     v20[0] = 0;
     v20[1] = v20;
     v20[2] = 0x3032000000;
     v20[3] = __Block_byref_object_copy__4;
     v20[4] = __Block_byref_object_dispose__4;
-    v10 = self;
-    v21 = v10;
-    uiProvider = v10->_uiProvider;
+    selfCopy = self;
+    v21 = selfCopy;
+    uiProvider = selfCopy->_uiProvider;
     v12 = self->_context;
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
@@ -178,8 +178,8 @@ void __47__CDPDRecoveryKeyController_verifyRecoveryKey___block_invoke(uint64_t a
     v15[3] = &unk_278E25500;
     v13 = v9;
     v16 = v13;
-    v17 = v10;
-    v18 = v4;
+    v17 = selfCopy;
+    v18 = keyCopy;
     v19 = v20;
     [(CDPStateUIProviderInternal *)uiProvider cdpContext:v12 presentRecoveryKeyWithValidator:v13 completion:v15];
 
@@ -195,10 +195,10 @@ LABEL_7:
     [CDPDRecoveryKeyController verifyRecoveryKey:];
   }
 
-  if (v4)
+  if (keyCopy)
   {
     v13 = _CDPStateError();
-    (*(v4 + 2))(v4, 0, v13);
+    (*(keyCopy + 2))(keyCopy, 0, v13);
     goto LABEL_7;
   }
 
@@ -294,9 +294,9 @@ void __52__CDPDRecoveryKeyController_generateNewRecoveryKey___block_invoke_25(ui
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)authenticateAndGenerateNewRecoveryKeyWithCompletion:(id)a3
+- (void)authenticateAndGenerateNewRecoveryKeyWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = _CDPLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -308,8 +308,8 @@ void __52__CDPDRecoveryKeyController_generateNewRecoveryKey___block_invoke_25(ui
   v7[2] = __81__CDPDRecoveryKeyController_authenticateAndGenerateNewRecoveryKeyWithCompletion___block_invoke;
   v7[3] = &unk_278E25528;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(CDPDRecoveryKeyController *)self _authenticateAndPerformRecoveryKeyOperation:v7 completion:v6];
 }
 
@@ -324,9 +324,9 @@ uint64_t __81__CDPDRecoveryKeyController_authenticateAndGenerateNewRecoveryKeyWi
   return [*(a1 + 32) generateNewRecoveryKey:*(a1 + 40)];
 }
 
-- (void)authenticateAndDeleteRecoveryKeyWithCompletion:(id)a3
+- (void)authenticateAndDeleteRecoveryKeyWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = _CDPLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -338,8 +338,8 @@ uint64_t __81__CDPDRecoveryKeyController_authenticateAndGenerateNewRecoveryKeyWi
   v7[2] = __76__CDPDRecoveryKeyController_authenticateAndDeleteRecoveryKeyWithCompletion___block_invoke;
   v7[3] = &unk_278E25528;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(CDPDRecoveryKeyController *)self _authenticateAndPerformRecoveryKeyOperation:v7 completion:v6];
 }
 
@@ -354,30 +354,30 @@ uint64_t __76__CDPDRecoveryKeyController_authenticateAndDeleteRecoveryKeyWithCom
   return [*(a1 + 32) deleteRecoveryKeyWithCompletion:*(a1 + 40)];
 }
 
-- (void)_authenticateAndPerformRecoveryKeyOperation:(id)a3 completion:(id)a4
+- (void)_authenticateAndPerformRecoveryKeyOperation:(id)operation completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CDPDRecoveryKeyController *)self uiProvider];
+  operationCopy = operation;
+  completionCopy = completion;
+  uiProvider = [(CDPDRecoveryKeyController *)self uiProvider];
 
   v9 = _CDPLogSystem();
   v10 = v9;
-  if (v8)
+  if (uiProvider)
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
       [CDPDRecoveryKeyController _authenticateAndPerformRecoveryKeyOperation:completion:];
     }
 
-    v11 = [(CDPDRecoveryKeyController *)self uiProvider];
+    uiProvider2 = [(CDPDRecoveryKeyController *)self uiProvider];
     context = self->_context;
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __84__CDPDRecoveryKeyController__authenticateAndPerformRecoveryKeyOperation_completion___block_invoke;
     v21[3] = &unk_278E25550;
-    v22 = v6;
-    v23 = v7;
-    [v11 cdpContext:context promptForLocalSecretWithCompletion:v21];
+    v22 = operationCopy;
+    v23 = completionCopy;
+    [uiProvider2 cdpContext:context promptForLocalSecretWithCompletion:v21];
 
     v13 = v22;
     goto LABEL_9;
@@ -388,10 +388,10 @@ uint64_t __76__CDPDRecoveryKeyController_authenticateAndDeleteRecoveryKeyWithCom
     [(CDPDRecoveryKeyController *)v10 _authenticateAndPerformRecoveryKeyOperation:v14 completion:v15, v16, v17, v18, v19, v20];
   }
 
-  if (v7)
+  if (completionCopy)
   {
     v13 = [MEMORY[0x277CCA9B8] cdp_errorWithCode:-5306];
-    (*(v7 + 2))(v7, 0, v13);
+    (*(completionCopy + 2))(completionCopy, 0, v13);
 LABEL_9:
   }
 }
@@ -427,17 +427,17 @@ void __84__CDPDRecoveryKeyController__authenticateAndPerformRecoveryKeyOperation
   }
 }
 
-- (void)deleteRecoveryKeyWithCompletion:(id)a3
+- (void)deleteRecoveryKeyWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   secureBackupController = self->_secureBackupController;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __61__CDPDRecoveryKeyController_deleteRecoveryKeyWithCompletion___block_invoke;
   v7[3] = &unk_278E25578;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(CDPDSecureBackupController *)secureBackupController disableRecoveryKeyFromAllSystemsWithCompletion:v7];
 }
 
@@ -481,22 +481,22 @@ void __61__CDPDRecoveryKeyController_deleteRecoveryKeyWithCompletion___block_inv
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)generateRandomRecoveryKey:(id)a3
+- (void)generateRandomRecoveryKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [CDPDRecoveryKeyValidatorImpl alloc];
   context = self->_context;
-  v7 = [(CDPDRecoveryKeyController *)self otProxy];
-  v8 = [(CDPDRecoveryKeyValidatorImpl *)v5 initWithContext:context delegate:self octagonTrustProxy:v7];
+  otProxy = [(CDPDRecoveryKeyController *)self otProxy];
+  v8 = [(CDPDRecoveryKeyValidatorImpl *)v5 initWithContext:context delegate:self octagonTrustProxy:otProxy];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __55__CDPDRecoveryKeyController_generateRandomRecoveryKey___block_invoke;
   v11[3] = &unk_278E255F0;
-  v13 = self;
-  v14 = v4;
+  selfCopy = self;
+  v14 = keyCopy;
   v12 = v8;
-  v9 = v4;
+  v9 = keyCopy;
   v10 = v8;
   [(CDPDRecoveryKeyValidatorImpl *)v10 generateRecoveryKey:v11];
 }
@@ -577,14 +577,14 @@ void __55__CDPDRecoveryKeyController_generateRandomRecoveryKey___block_invoke_3(
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)recoverDataUsingMasterKeyWithCompletion:(id)a3
+- (void)recoverDataUsingMasterKeyWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [CDPDAccountRecoveryValidator alloc];
   context = self->_context;
   recoveryAuthProvider = self->_recoveryAuthProvider;
-  v8 = [(CDPDRecoveryKeyController *)self otProxy];
-  v9 = [(CDPDAccountRecoveryValidator *)v5 initWithContext:context authProvider:recoveryAuthProvider octagonTrustProxy:v8];
+  otProxy = [(CDPDRecoveryKeyController *)self otProxy];
+  v9 = [(CDPDAccountRecoveryValidator *)v5 initWithContext:context authProvider:recoveryAuthProvider octagonTrustProxy:otProxy];
 
   uiProvider = self->_uiProvider;
   v11 = self->_context;
@@ -593,9 +593,9 @@ void __55__CDPDRecoveryKeyController_generateRandomRecoveryKey___block_invoke_3(
   v14[2] = __69__CDPDRecoveryKeyController_recoverDataUsingMasterKeyWithCompletion___block_invoke;
   v14[3] = &unk_278E25438;
   v15 = v9;
-  v16 = self;
-  v17 = v4;
-  v12 = v4;
+  selfCopy = self;
+  v17 = completionCopy;
+  v12 = completionCopy;
   v13 = v9;
   [(CDPStateUIProviderInternal *)uiProvider cdpContext:v11 promptForRecoveryKeyWithValidator:v13 completion:v14];
 }
@@ -657,7 +657,7 @@ void __69__CDPDRecoveryKeyController_recoverDataUsingMasterKeyWithCompletion___b
   (*(v1 + 16))(v1, v2, 0);
 }
 
-- (BOOL)anyRecoveryKeysAreOctagonDistrustedWithError:(id *)a3
+- (BOOL)anyRecoveryKeysAreOctagonDistrustedWithError:(id *)error
 {
   v37 = *MEMORY[0x277D85DE8];
   context = self->_context;
@@ -672,9 +672,9 @@ void __69__CDPDRecoveryKeyController_recoverDataUsingMasterKeyWithCompletion___b
     [CDPDRecoveryKeyController anyRecoveryKeysAreOctagonDistrustedWithError:];
   }
 
-  v7 = [MEMORY[0x277CFD4A8] contextForPrimaryAccount];
+  contextForPrimaryAccount = [MEMORY[0x277CFD4A8] contextForPrimaryAccount];
   v8 = self->_context;
-  self->_context = v7;
+  self->_context = contextForPrimaryAccount;
 
   v9 = [MEMORY[0x277CFD4A8] preflightContext:self->_context];
   v10 = self->_context;
@@ -684,7 +684,7 @@ void __69__CDPDRecoveryKeyController_recoverDataUsingMasterKeyWithCompletion___b
   if (context)
   {
 LABEL_5:
-    v11 = [(CDPContext *)context cliqueConfiguration];
+    cliqueConfiguration = [(CDPContext *)context cliqueConfiguration];
     v12 = _CDPSignpostLogSystem();
     v13 = _CDPSignpostCreate();
 
@@ -705,29 +705,29 @@ LABEL_5:
     }
 
     v30 = 0;
-    v17 = [MEMORY[0x277CDBD48] areRecoveryKeysDistrusted:v11 error:&v30];
+    v17 = [MEMORY[0x277CDBD48] areRecoveryKeysDistrusted:cliqueConfiguration error:&v30];
     v18 = v30;
     Nanoseconds = _CDPSignpostGetNanoseconds();
     v20 = _CDPSignpostLogSystem();
     v21 = v20;
     if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v20))
     {
-      v22 = [v18 code];
+      code = [v18 code];
       *buf = 67240192;
-      LODWORD(v32) = v22;
+      LODWORD(v32) = code;
       _os_signpost_emit_with_name_impl(&dword_24510B000, v21, OS_SIGNPOST_INTERVAL_END, v13, "AnyRKAreOctagonDistrusted", " Error=%{public,signpost.telemetry:number1,name=Error}d ", buf, 8u);
     }
 
     v23 = _CDPSignpostLogSystem();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
-      v24 = [v18 code];
+      code2 = [v18 code];
       *buf = 134218496;
       v32 = v13;
       v33 = 2048;
       v34 = Nanoseconds / 1000000000.0;
       v35 = 1026;
-      v36 = v24;
+      v36 = code2;
       _os_log_impl(&dword_24510B000, v23, OS_LOG_TYPE_DEFAULT, "END [%lld] %fs: AnyRKAreOctagonDistrusted  Error=%{public,signpost.telemetry:number1,name=Error}d ", buf, 0x1Cu);
     }
 
@@ -737,10 +737,10 @@ LABEL_5:
       [(CDPDRecoveryKeyController *)v17 anyRecoveryKeysAreOctagonDistrustedWithError:v18, v25];
     }
 
-    if (a3)
+    if (error)
     {
       v26 = v18;
-      *a3 = v18;
+      *error = v18;
     }
   }
 
@@ -752,10 +752,10 @@ LABEL_5:
       [CDPDRecoveryKeyController anyRecoveryKeysAreOctagonDistrustedWithError:];
     }
 
-    if (a3)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] cdp_errorWithCode:-5003];
-      *a3 = v17 = 0;
+      *error = v17 = 0;
     }
 
     else
@@ -768,21 +768,21 @@ LABEL_5:
   return v17;
 }
 
-- (void)secretValidator:(id)a3 validateRecoveryKeyWithContext:(id)a4 completion:(id)a5
+- (void)secretValidator:(id)validator validateRecoveryKeyWithContext:(id)context completion:(id)completion
 {
   context = self->_context;
-  v8 = a5;
-  v11 = a4;
-  v9 = [(CDPContext *)context type];
+  completionCopy = completion;
+  contextCopy = context;
+  type = [(CDPContext *)context type];
   secureBackupController = self->_secureBackupController;
-  if (v9 == 9)
+  if (type == 9)
   {
-    [(CDPDSecureBackupController *)secureBackupController validateAndRepairRecoveryKeyMismatchWithContext:v11 authProvider:self->_internalAuthProvider circleProxy:self->_circleProxy completion:v8];
+    [(CDPDSecureBackupController *)secureBackupController validateAndRepairRecoveryKeyMismatchWithContext:contextCopy authProvider:self->_internalAuthProvider circleProxy:self->_circleProxy completion:completionCopy];
   }
 
   else
   {
-    [(CDPDSecureBackupController *)secureBackupController validateRecoveryKeyWithContext:v11 completion:v8];
+    [(CDPDSecureBackupController *)secureBackupController validateRecoveryKeyWithContext:contextCopy completion:completionCopy];
   }
 }
 

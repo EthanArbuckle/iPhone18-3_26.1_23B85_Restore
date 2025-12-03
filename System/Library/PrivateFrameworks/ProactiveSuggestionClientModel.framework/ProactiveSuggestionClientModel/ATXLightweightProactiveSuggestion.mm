@@ -1,14 +1,14 @@
 @interface ATXLightweightProactiveSuggestion
-+ (id)lightWeightSuggestionDescriptionsFromLightWeightSuggestions:(id)a3;
-+ (id)lightWeightSuggestionsFromProtoLightWeightSuggestions:(id)a3;
-+ (id)lightWeightSuggestionsFromSuggestions:(id)a3;
-+ (id)protoLightWeightSuggestionsFromLightWeightSuggestions:(id)a3;
-- (ATXLightweightProactiveSuggestion)initWithExecutableIdentifier:(id)a3 executableType:(int64_t)a4 scoreSpecification:(id)a5 predictionReasons:(unint64_t)a6;
-- (ATXLightweightProactiveSuggestion)initWithProactiveSuggestion:(id)a3;
-- (ATXLightweightProactiveSuggestion)initWithProto:(id)a3;
-- (ATXLightweightProactiveSuggestion)initWithProtoData:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXLightweightProactiveSuggestion:(id)a3;
++ (id)lightWeightSuggestionDescriptionsFromLightWeightSuggestions:(id)suggestions;
++ (id)lightWeightSuggestionsFromProtoLightWeightSuggestions:(id)suggestions;
++ (id)lightWeightSuggestionsFromSuggestions:(id)suggestions;
++ (id)protoLightWeightSuggestionsFromLightWeightSuggestions:(id)suggestions;
+- (ATXLightweightProactiveSuggestion)initWithExecutableIdentifier:(id)identifier executableType:(int64_t)type scoreSpecification:(id)specification predictionReasons:(unint64_t)reasons;
+- (ATXLightweightProactiveSuggestion)initWithProactiveSuggestion:(id)suggestion;
+- (ATXLightweightProactiveSuggestion)initWithProto:(id)proto;
+- (ATXLightweightProactiveSuggestion)initWithProtoData:(id)data;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXLightweightProactiveSuggestion:(id)suggestion;
 - (id)description;
 - (id)encodeAsProto;
 - (id)proto;
@@ -33,42 +33,42 @@
 
   [v3 setExecutableType:v5];
 
-  v6 = [(ATXProactiveSuggestionScoreSpecification *)self->_scoreSpecification proto];
-  [v3 setScoreSpecification:v6];
+  proto = [(ATXProactiveSuggestionScoreSpecification *)self->_scoreSpecification proto];
+  [v3 setScoreSpecification:proto];
 
   [v3 setPredictionReasons:self->_predictionReasons];
 
   return v3;
 }
 
-- (ATXLightweightProactiveSuggestion)initWithProactiveSuggestion:(id)a3
+- (ATXLightweightProactiveSuggestion)initWithProactiveSuggestion:(id)suggestion
 {
-  v4 = a3;
-  v5 = [v4 executableSpecification];
-  v6 = [v5 executableIdentifier];
-  v7 = [v4 executableSpecification];
-  v8 = [v7 executableType];
-  v9 = [v4 scoreSpecification];
-  v10 = [v4 uiSpecification];
+  suggestionCopy = suggestion;
+  executableSpecification = [suggestionCopy executableSpecification];
+  executableIdentifier = [executableSpecification executableIdentifier];
+  executableSpecification2 = [suggestionCopy executableSpecification];
+  executableType = [executableSpecification2 executableType];
+  scoreSpecification = [suggestionCopy scoreSpecification];
+  uiSpecification = [suggestionCopy uiSpecification];
 
-  v11 = -[ATXLightweightProactiveSuggestion initWithExecutableIdentifier:executableType:scoreSpecification:predictionReasons:](self, "initWithExecutableIdentifier:executableType:scoreSpecification:predictionReasons:", v6, v8, v9, [v10 predictionReasons]);
+  v11 = -[ATXLightweightProactiveSuggestion initWithExecutableIdentifier:executableType:scoreSpecification:predictionReasons:](self, "initWithExecutableIdentifier:executableType:scoreSpecification:predictionReasons:", executableIdentifier, executableType, scoreSpecification, [uiSpecification predictionReasons]);
   return v11;
 }
 
-- (ATXLightweightProactiveSuggestion)initWithExecutableIdentifier:(id)a3 executableType:(int64_t)a4 scoreSpecification:(id)a5 predictionReasons:(unint64_t)a6
+- (ATXLightweightProactiveSuggestion)initWithExecutableIdentifier:(id)identifier executableType:(int64_t)type scoreSpecification:(id)specification predictionReasons:(unint64_t)reasons
 {
-  v11 = a3;
-  v12 = a5;
+  identifierCopy = identifier;
+  specificationCopy = specification;
   v16.receiver = self;
   v16.super_class = ATXLightweightProactiveSuggestion;
   v13 = [(ATXLightweightProactiveSuggestion *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_executableIdentifier, a3);
-    v14->_executableType = a4;
-    objc_storeStrong(&v14->_scoreSpecification, a5);
-    v14->_predictionReasons = a6;
+    objc_storeStrong(&v13->_executableIdentifier, identifier);
+    v14->_executableType = type;
+    objc_storeStrong(&v14->_scoreSpecification, specification);
+    v14->_predictionReasons = reasons;
   }
 
   return v14;
@@ -94,28 +94,28 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXLightweightProactiveSuggestion *)self isEqualToATXLightweightProactiveSuggestion:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXLightweightProactiveSuggestion *)self isEqualToATXLightweightProactiveSuggestion:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXLightweightProactiveSuggestion:(id)a3
+- (BOOL)isEqualToATXLightweightProactiveSuggestion:(id)suggestion
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_executableType != v4[3] || self->_predictionReasons != v4[5])
+  suggestionCopy = suggestion;
+  v5 = suggestionCopy;
+  if (self->_executableType != suggestionCopy[3] || self->_predictionReasons != suggestionCopy[5])
   {
     goto LABEL_5;
   }
@@ -154,37 +154,37 @@ LABEL_6:
   return v9;
 }
 
-- (ATXLightweightProactiveSuggestion)initWithProtoData:(id)a3
+- (ATXLightweightProactiveSuggestion)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBLightweightProactiveSuggestion alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBLightweightProactiveSuggestion alloc] initWithData:dataCopy];
 
     self = [(ATXLightweightProactiveSuggestion *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXLightweightProactiveSuggestion *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXLightweightProactiveSuggestion *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (ATXLightweightProactiveSuggestion)initWithProto:(id)a3
+- (ATXLightweightProactiveSuggestion)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -195,26 +195,26 @@ LABEL_6:
         [(ATXLightweightClientModelCacheUpdate *)self initWithProto:v5];
       }
 
-      v14 = 0;
+      selfCopy = 0;
       goto LABEL_44;
     }
 
-    v5 = v4;
-    v6 = [v5 executableIdentifier];
-    if (v6)
+    v5 = protoCopy;
+    executableIdentifier = [v5 executableIdentifier];
+    if (executableIdentifier)
     {
-      v7 = v6;
-      v8 = [v5 executableType];
+      v7 = executableIdentifier;
+      executableType = [v5 executableType];
 
-      if (v8)
+      if (executableType)
       {
-        v9 = [v5 hasScoreSpecification];
+        hasScoreSpecification = [v5 hasScoreSpecification];
         v10 = [ATXProactiveSuggestionScoreSpecification alloc];
         v11 = v10;
-        if (v9)
+        if (hasScoreSpecification)
         {
-          v12 = [v5 scoreSpecification];
-          v13 = [(ATXProactiveSuggestionScoreSpecification *)v11 initWithProto:v12];
+          scoreSpecification = [v5 scoreSpecification];
+          v13 = [(ATXProactiveSuggestionScoreSpecification *)v11 initWithProto:scoreSpecification];
 
           if (!v13)
           {
@@ -225,7 +225,7 @@ LABEL_6:
             }
 
 LABEL_15:
-            v14 = 0;
+            selfCopy = 0;
 LABEL_43:
 
 LABEL_44:
@@ -238,64 +238,64 @@ LABEL_44:
           v13 = [(ATXProactiveSuggestionScoreSpecification *)v10 initWithRawScore:0 suggestedConfidenceCategory:0.0];
         }
 
-        v15 = [v5 executableIdentifier];
-        v16 = [v5 executableType];
-        if ([v16 isEqualToString:@"Unknown"])
+        executableIdentifier2 = [v5 executableIdentifier];
+        executableType2 = [v5 executableType];
+        if ([executableType2 isEqualToString:@"Unknown"])
         {
           v17 = 0;
         }
 
-        else if ([v16 isEqualToString:@"App"])
+        else if ([executableType2 isEqualToString:@"App"])
         {
           v17 = 1;
         }
 
-        else if ([v16 isEqualToString:@"Action"])
+        else if ([executableType2 isEqualToString:@"Action"])
         {
           v17 = 2;
         }
 
-        else if ([v16 isEqualToString:@"Widget"])
+        else if ([executableType2 isEqualToString:@"Widget"])
         {
           v17 = 3;
         }
 
-        else if ([v16 isEqualToString:@"Tip"])
+        else if ([executableType2 isEqualToString:@"Tip"])
         {
           v17 = 4;
         }
 
-        else if ([v16 isEqualToString:@"AppClip"])
+        else if ([executableType2 isEqualToString:@"AppClip"])
         {
           v17 = 5;
         }
 
-        else if ([v16 isEqualToString:@"Interaction"])
+        else if ([executableType2 isEqualToString:@"Interaction"])
         {
           v17 = 6;
         }
 
-        else if ([v16 isEqualToString:@"ContextualAction"])
+        else if ([executableType2 isEqualToString:@"ContextualAction"])
         {
           v17 = 7;
         }
 
-        else if ([v16 isEqualToString:@"SpotlightAction"])
+        else if ([executableType2 isEqualToString:@"SpotlightAction"])
         {
           v17 = 8;
         }
 
-        else if ([v16 isEqualToString:@"ShortcutsAction"])
+        else if ([executableType2 isEqualToString:@"ShortcutsAction"])
         {
           v17 = 9;
         }
 
-        else if ([v16 isEqualToString:@"LinkAction"])
+        else if ([executableType2 isEqualToString:@"LinkAction"])
         {
           v17 = 10;
         }
 
-        else if ([v16 isEqualToString:@"Max"])
+        else if ([executableType2 isEqualToString:@"Max"])
         {
           v17 = 11;
         }
@@ -305,8 +305,8 @@ LABEL_44:
           v17 = 0;
         }
 
-        self = [(ATXLightweightProactiveSuggestion *)self initWithExecutableIdentifier:v15 executableType:v17 scoreSpecification:v13 predictionReasons:[v5 predictionReasons]];
-        v14 = self;
+        self = [(ATXLightweightProactiveSuggestion *)self initWithExecutableIdentifier:executableIdentifier2 executableType:v17 scoreSpecification:v13 predictionReasons:[v5 predictionReasons]];
+        selfCopy = self;
         goto LABEL_43;
       }
     }
@@ -320,22 +320,22 @@ LABEL_44:
     goto LABEL_15;
   }
 
-  v14 = 0;
+  selfCopy = 0;
 LABEL_45:
 
-  return v14;
+  return selfCopy;
 }
 
-+ (id)lightWeightSuggestionDescriptionsFromLightWeightSuggestions:(id)a3
++ (id)lightWeightSuggestionDescriptionsFromLightWeightSuggestions:(id)suggestions
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  suggestionsCopy = suggestions;
   v4 = objc_opt_new();
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = suggestionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -365,16 +365,16 @@ LABEL_45:
   return v4;
 }
 
-+ (id)lightWeightSuggestionsFromProtoLightWeightSuggestions:(id)a3
++ (id)lightWeightSuggestionsFromProtoLightWeightSuggestions:(id)suggestions
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  suggestionsCopy = suggestions;
   v4 = objc_opt_new();
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = suggestionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -420,16 +420,16 @@ LABEL_45:
   return v4;
 }
 
-+ (id)protoLightWeightSuggestionsFromLightWeightSuggestions:(id)a3
++ (id)protoLightWeightSuggestionsFromLightWeightSuggestions:(id)suggestions
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  suggestionsCopy = suggestions;
   v4 = objc_opt_new();
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = v3;
+  v5 = suggestionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v17 objects:v23 count:16];
   if (v6)
   {
@@ -447,10 +447,10 @@ LABEL_45:
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [v11 proto];
-        if (v12)
+        proto = [v11 proto];
+        if (proto)
         {
-          [v4 addObject:v12];
+          [v4 addObject:proto];
         }
 
         else
@@ -476,16 +476,16 @@ LABEL_45:
   return v4;
 }
 
-+ (id)lightWeightSuggestionsFromSuggestions:(id)a3
++ (id)lightWeightSuggestionsFromSuggestions:(id)suggestions
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  suggestionsCopy = suggestions;
   v4 = objc_opt_new();
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = suggestionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {

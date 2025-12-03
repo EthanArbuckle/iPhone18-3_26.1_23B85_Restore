@@ -1,15 +1,15 @@
 @interface NEPvDConfiguration
-- (id)initWithDictionary:(NSObject *)a1;
+- (id)initWithDictionary:(NSObject *)dictionary;
 @end
 
 @implementation NEPvDConfiguration
 
-- (id)initWithDictionary:(NSObject *)a1
+- (id)initWithDictionary:(NSObject *)dictionary
 {
   v14 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (!a1)
+  if (!dictionary)
   {
     v6 = 0;
     goto LABEL_6;
@@ -28,16 +28,16 @@
     goto LABEL_12;
   }
 
-  v11.receiver = a1;
+  v11.receiver = dictionary;
   v11.super_class = NEPvDConfiguration;
   v5 = [&v11 init];
   if (!v5)
   {
-    a1 = ne_log_obj();
-    if (os_log_type_enabled(a1, OS_LOG_TYPE_FAULT))
+    dictionary = ne_log_obj();
+    if (os_log_type_enabled(dictionary, OS_LOG_TYPE_FAULT))
     {
       *buf = 0;
-      _os_log_fault_impl(&dword_1BA83C000, a1, OS_LOG_TYPE_FAULT, "[super init] failed", buf, 2u);
+      _os_log_fault_impl(&dword_1BA83C000, dictionary, OS_LOG_TYPE_FAULT, "[super init] failed", buf, 2u);
     }
 
 LABEL_12:
@@ -47,7 +47,7 @@ LABEL_12:
 
   v6 = v5;
   v7 = v4;
-  a1 = *(v6 + 1);
+  dictionary = *(v6 + 1);
   *(v6 + 1) = v7;
 LABEL_5:
 

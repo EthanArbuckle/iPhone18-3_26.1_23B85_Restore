@@ -1,34 +1,34 @@
 @interface _RWIApplicationInfo
-- (BOOL)updateFromListing:(id)a3;
-- (_RWIApplicationInfo)initWithPID:(int)a3 bundleId:(id)a4 name:(id)a5 isProxy:(BOOL)a6 connection:(id)a7 debuggerAvailability:(unint64_t)a8;
+- (BOOL)updateFromListing:(id)listing;
+- (_RWIApplicationInfo)initWithPID:(int)d bundleId:(id)id name:(id)name isProxy:(BOOL)proxy connection:(id)connection debuggerAvailability:(unint64_t)availability;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation _RWIApplicationInfo
 
-- (_RWIApplicationInfo)initWithPID:(int)a3 bundleId:(id)a4 name:(id)a5 isProxy:(BOOL)a6 connection:(id)a7 debuggerAvailability:(unint64_t)a8
+- (_RWIApplicationInfo)initWithPID:(int)d bundleId:(id)id name:(id)name isProxy:(BOOL)proxy connection:(id)connection debuggerAvailability:(unint64_t)availability
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
+  idCopy = id;
+  nameCopy = name;
+  connectionCopy = connection;
   v25.receiver = self;
   v25.super_class = _RWIApplicationInfo;
   v17 = [(_RWIApplicationInfo *)&v25 init];
   v18 = v17;
   if (v17)
   {
-    v17->_pid = a3;
-    v19 = [v14 copy];
+    v17->_pid = d;
+    v19 = [idCopy copy];
     bundleId = v18->_bundleId;
     v18->_bundleId = v19;
 
-    v21 = [v15 copy];
+    v21 = [nameCopy copy];
     name = v18->_name;
     v18->_name = v21;
 
-    v18->_proxy = a6;
-    v18->_connection = v16;
-    v18->_debuggerAvailability = a8;
+    v18->_proxy = proxy;
+    v18->_connection = connectionCopy;
+    v18->_debuggerAvailability = availability;
     v18->_automationAvailability = 2;
     *&v18->_hasRemoteDebugSession = 0;
     v18->_hostApplicationPID = 0;
@@ -40,21 +40,21 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(_RWIApplicationInfo *)self identifier];
-  [v3 setObject:v4 forKeyedSubscript:@"WIRApplicationIdentifierKey"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  identifier = [(_RWIApplicationInfo *)self identifier];
+  [dictionary setObject:identifier forKeyedSubscript:@"WIRApplicationIdentifierKey"];
 
-  v5 = [(_RWIApplicationInfo *)self name];
-  [v3 setObject:v5 forKeyedSubscript:@"WIRApplicationNameKey"];
+  name = [(_RWIApplicationInfo *)self name];
+  [dictionary setObject:name forKeyedSubscript:@"WIRApplicationNameKey"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_debuggerAvailability];
-  [v3 setObject:v6 forKeyedSubscript:@"WIRIsApplicationActiveKey"];
+  [dictionary setObject:v6 forKeyedSubscript:@"WIRIsApplicationActiveKey"];
 
-  v7 = [(_RWIApplicationInfo *)self bundleId];
-  v8 = v7;
-  if (v7)
+  bundleId = [(_RWIApplicationInfo *)self bundleId];
+  v8 = bundleId;
+  if (bundleId)
   {
-    v9 = v7;
+    v9 = bundleId;
   }
 
   else
@@ -62,39 +62,39 @@
     v9 = &stru_2882B1C88;
   }
 
-  [v3 setObject:v9 forKeyedSubscript:@"WIRApplicationBundleIdentifierKey"];
+  [dictionary setObject:v9 forKeyedSubscript:@"WIRApplicationBundleIdentifierKey"];
 
   v10 = [MEMORY[0x277CCABB0] numberWithBool:{-[_RWIApplicationInfo isProxy](self, "isProxy")}];
-  [v3 setObject:v10 forKeyedSubscript:@"WIRIsApplicationProxyKey"];
+  [dictionary setObject:v10 forKeyedSubscript:@"WIRIsApplicationProxyKey"];
 
   v11 = RWINSStringFromAutomationAvailability([(_RWIApplicationInfo *)self automationAvailability]);
-  [v3 setObject:v11 forKeyedSubscript:@"WIRAutomationAvailabilityKey"];
+  [dictionary setObject:v11 forKeyedSubscript:@"WIRAutomationAvailabilityKey"];
 
   v12 = [MEMORY[0x277CCABB0] numberWithBool:{-[_RWIApplicationInfo hasUpdatedFromListing](self, "hasUpdatedFromListing")}];
-  [v3 setObject:v12 forKeyedSubscript:@"WIRIsApplicationReadyKey"];
+  [dictionary setObject:v12 forKeyedSubscript:@"WIRIsApplicationReadyKey"];
 
   if (self->_hostApplicationPID)
   {
     v13 = [_RWIApplicationInfo identifierForPID:?];
-    [v3 setObject:v13 forKeyedSubscript:@"WIRHostApplicationIdentifierKey"];
+    [dictionary setObject:v13 forKeyedSubscript:@"WIRHostApplicationIdentifierKey"];
   }
 
-  v14 = [(_RWIApplicationInfo *)self bundleId];
-  v15 = protocolIconDataForBundleIdentifier(v14);
+  bundleId2 = [(_RWIApplicationInfo *)self bundleId];
+  v15 = protocolIconDataForBundleIdentifier(bundleId2);
 
   if (v15)
   {
-    [v3 setObject:v15 forKeyedSubscript:@"WIRApplicationIconKey"];
+    [dictionary setObject:v15 forKeyedSubscript:@"WIRApplicationIconKey"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)updateFromListing:(id)a3
+- (BOOL)updateFromListing:(id)listing
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"WIRListingKey"];
+  listingCopy = listing;
+  v5 = [listingCopy objectForKeyedSubscript:@"WIRListingKey"];
   v6 = objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -105,7 +105,7 @@
     goto LABEL_44;
   }
 
-  v7 = [v4 objectForKeyedSubscript:@"WIRAutomationAvailabilityKey"];
+  v7 = [listingCopy objectForKeyedSubscript:@"WIRAutomationAvailabilityKey"];
   v8 = objc_opt_class();
   if (v7 && (objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -116,7 +116,7 @@
     goto LABEL_43;
   }
 
-  v42 = self;
+  selfCopy = self;
 
   v45 = 0u;
   v46 = 0u;
@@ -132,7 +132,7 @@
   v11 = v10;
   v12 = *v44;
   v40 = v5;
-  v41 = v4;
+  v41 = listingCopy;
   while (2)
   {
     for (i = 0; i != v11; ++i)
@@ -172,9 +172,9 @@ LABEL_20:
         if (objc_opt_isKindOfClass())
         {
 
-          v20 = v42;
-          p_hasRemoteDebugSession = &v42->_hasRemoteDebugSession;
-          hasRemoteDebugSession = v42->_hasRemoteDebugSession;
+          v20 = selfCopy;
+          p_hasRemoteDebugSession = &selfCopy->_hasRemoteDebugSession;
+          hasRemoteDebugSession = selfCopy->_hasRemoteDebugSession;
           if (!hasRemoteDebugSession)
           {
             *p_hasRemoteDebugSession = 1;
@@ -182,7 +182,7 @@ LABEL_20:
 
           v9 = v17;
           v5 = v40;
-          v4 = v41;
+          listingCopy = v41;
           goto LABEL_26;
         }
 
@@ -192,14 +192,14 @@ LABEL_20:
 LABEL_21:
         v24 = 0;
         v5 = v40;
-        v4 = v41;
+        listingCopy = v41;
         goto LABEL_42;
       }
     }
 
     v11 = [v9 countByEnumeratingWithState:&v43 objects:v47 count:16];
     v5 = v40;
-    v4 = v41;
+    listingCopy = v41;
     if (v11)
     {
       continue;
@@ -210,9 +210,9 @@ LABEL_21:
 
 LABEL_14:
 
-  v20 = v42;
-  p_hasRemoteDebugSession = &v42->_hasRemoteDebugSession;
-  hasRemoteDebugSession = v42->_hasRemoteDebugSession;
+  v20 = selfCopy;
+  p_hasRemoteDebugSession = &selfCopy->_hasRemoteDebugSession;
+  hasRemoteDebugSession = selfCopy->_hasRemoteDebugSession;
   v9 = 0;
   if (hasRemoteDebugSession)
   {

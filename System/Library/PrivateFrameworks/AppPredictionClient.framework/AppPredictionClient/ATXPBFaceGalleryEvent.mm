@@ -1,14 +1,14 @@
 @interface ATXPBFaceGalleryEvent
 + (uint64_t)itemsType;
 - (BOOL)hasConfiguration;
-- (BOOL)isEqual:(id)a3;
-- (__CFString)eventTypeAsString:(__CFString *)a1;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (__CFString)eventTypeAsString:(__CFString *)string;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)itemsAtIndex:(id *)a1;
-- (uint64_t)StringAsEventType:(uint64_t)a1;
-- (uint64_t)addItems:(uint64_t)a1;
+- (id)itemsAtIndex:(id *)index;
+- (uint64_t)StringAsEventType:(uint64_t)type;
+- (uint64_t)addItems:(uint64_t)items;
 - (uint64_t)clearItems;
 - (uint64_t)configuration;
 - (uint64_t)eventType;
@@ -18,11 +18,11 @@
 - (uint64_t)setEventType:(uint64_t)result;
 - (uint64_t)setHasEventType:(uint64_t)result;
 - (unint64_t)hash;
-- (void)copyTo:(uint64_t)a1;
-- (void)mergeFrom:(uint64_t)a1;
-- (void)setConfiguration:(uint64_t)a1;
-- (void)setItems:(uint64_t)a1;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(uint64_t)to;
+- (void)mergeFrom:(uint64_t)from;
+- (void)setConfiguration:(uint64_t)configuration;
+- (void)setItems:(uint64_t)items;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBFaceGalleryEvent
@@ -40,8 +40,8 @@
   v8.receiver = self;
   v8.super_class = ATXPBFaceGalleryEvent;
   v4 = [(ATXPBFaceGalleryEvent *)&v8 description];
-  v5 = [(ATXPBFaceGalleryEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBFaceGalleryEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -49,7 +49,7 @@
 - (id)dictionaryRepresentation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     eventType = self->_eventType;
@@ -63,14 +63,14 @@
       v5 = off_1E80C3A48[eventType];
     }
 
-    [v3 setObject:v5 forKey:@"eventType"];
+    [dictionary setObject:v5 forKey:@"eventType"];
   }
 
   configuration = self->_configuration;
   if (configuration)
   {
-    v7 = [(ATXPBFaceGalleryConfiguration *)configuration dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"configuration"];
+    dictionaryRepresentation = [(ATXPBFaceGalleryConfiguration *)configuration dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"configuration"];
   }
 
   if ([(NSMutableArray *)self->_items count])
@@ -95,8 +95,8 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          [v8 addObject:v14];
+          dictionaryRepresentation2 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          [v8 addObject:dictionaryRepresentation2];
         }
 
         v11 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -105,16 +105,16 @@
       while (v11);
     }
 
-    [v3 setObject:v8 forKey:@"items"];
+    [dictionary setObject:v8 forKey:@"items"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
@@ -157,10 +157,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -168,7 +168,7 @@
     *(v5 + 32) |= 1u;
   }
 
-  v7 = [(ATXPBFaceGalleryConfiguration *)self->_configuration copyWithZone:a3];
+  v7 = [(ATXPBFaceGalleryConfiguration *)self->_configuration copyWithZone:zone];
   v8 = v6[1];
   v6[1] = v7;
 
@@ -192,7 +192,7 @@
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v16 + 1) + 8 * v13) copyWithZone:{a3, v16}];
+        v14 = [*(*(&v16 + 1) + 8 * v13) copyWithZone:{zone, v16}];
         [(ATXPBFaceGalleryEvent *)v6 addItems:v14];
 
         ++v13;
@@ -208,23 +208,23 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_eventType != *(v4 + 4))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_eventType != *(equalCopy + 4))
     {
       goto LABEL_11;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
 LABEL_11:
     v7 = 0;
@@ -232,13 +232,13 @@ LABEL_11:
   }
 
   configuration = self->_configuration;
-  if (configuration | *(v4 + 1) && ![(ATXPBFaceGalleryConfiguration *)configuration isEqual:?])
+  if (configuration | *(equalCopy + 1) && ![(ATXPBFaceGalleryConfiguration *)configuration isEqual:?])
   {
     goto LABEL_11;
   }
 
   items = self->_items;
-  if (items | *(v4 + 3))
+  if (items | *(equalCopy + 3))
   {
     v7 = [(NSMutableArray *)items isEqual:?];
   }
@@ -318,31 +318,31 @@ LABEL_12:
   return result;
 }
 
-- (__CFString)eventTypeAsString:(__CFString *)a1
+- (__CFString)eventTypeAsString:(__CFString *)string
 {
-  if (!a1)
+  if (!string)
   {
 LABEL_4:
 
-    return a1;
+    return string;
   }
 
   if (a2 < 4)
   {
-    a1 = off_1E80C3A48[a2];
+    string = off_1E80C3A48[a2];
     goto LABEL_4;
   }
 
-  a1 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", a2];
+  string = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", a2];
 
-  return a1;
+  return string;
 }
 
-- (uint64_t)StringAsEventType:(uint64_t)a1
+- (uint64_t)StringAsEventType:(uint64_t)type
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (type)
   {
     v5 = v3;
     if ([v5 isEqualToString:@"Unknown"])
@@ -399,21 +399,21 @@ LABEL_4:
   return result;
 }
 
-- (uint64_t)addItems:(uint64_t)a1
+- (uint64_t)addItems:(uint64_t)items
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (items)
   {
-    v5 = *(a1 + 24);
+    v5 = *(items + 24);
     v9 = v4;
     if (!v5)
     {
       v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v7 = *(a1 + 24);
-      *(a1 + 24) = v6;
+      v7 = *(items + 24);
+      *(items + 24) = v6;
 
-      v5 = *(a1 + 24);
+      v5 = *(items + 24);
     }
 
     v3 = [v5 addObject:v9];
@@ -433,48 +433,48 @@ LABEL_4:
   return result;
 }
 
-- (id)itemsAtIndex:(id *)a1
+- (id)itemsAtIndex:(id *)index
 {
-  if (a1)
+  if (index)
   {
-    a1 = [a1[3] objectAtIndex:a2];
+    index = [index[3] objectAtIndex:a2];
     v2 = vars8;
   }
 
-  return a1;
+  return index;
 }
 
-- (void)copyTo:(uint64_t)a1
+- (void)copyTo:(uint64_t)to
 {
   v8 = a2;
-  if (a1)
+  if (to)
   {
-    if (*(a1 + 32))
+    if (*(to + 32))
     {
-      *(v8 + 4) = *(a1 + 16);
+      *(v8 + 4) = *(to + 16);
       *(v8 + 32) |= 1u;
     }
 
-    v3 = *(a1 + 8);
+    v3 = *(to + 8);
     if (v3)
     {
       [(ATXPBFaceGalleryEvent *)v8 setConfiguration:v3];
     }
 
-    if ([*(a1 + 24) count])
+    if ([*(to + 24) count])
     {
       if (v8)
       {
         [*(v8 + 3) removeAllObjects];
       }
 
-      v4 = [*(a1 + 24) count];
+      v4 = [*(to + 24) count];
       if (v4)
       {
         v5 = v4;
         for (i = 0; i != v5; ++i)
         {
-          v7 = [*(a1 + 24) objectAtIndex:i];
+          v7 = [*(to + 24) objectAtIndex:i];
           [(ATXPBFaceGalleryEvent *)v8 addItems:v7];
         }
       }
@@ -482,28 +482,28 @@ LABEL_4:
   }
 }
 
-- (void)setConfiguration:(uint64_t)a1
+- (void)setConfiguration:(uint64_t)configuration
 {
-  if (a1)
+  if (configuration)
   {
-    OUTLINED_FUNCTION_2(a1, a2, 8);
+    OUTLINED_FUNCTION_2(configuration, a2, 8);
   }
 }
 
-- (void)mergeFrom:(uint64_t)a1
+- (void)mergeFrom:(uint64_t)from
 {
   v17 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (from)
   {
     if (v3[8])
     {
-      *(a1 + 16) = v3[4];
-      *(a1 + 32) |= 1u;
+      *(from + 16) = v3[4];
+      *(from + 32) |= 1u;
     }
 
-    v5 = *(a1 + 8);
+    v5 = *(from + 8);
     v6 = *(v4 + 1);
     if (v5)
     {
@@ -515,7 +515,7 @@ LABEL_4:
 
     else if (v6)
     {
-      objc_storeStrong((a1 + 8), v6);
+      objc_storeStrong((from + 8), v6);
     }
 
     v14 = 0u;
@@ -538,7 +538,7 @@ LABEL_4:
             objc_enumerationMutation(v7);
           }
 
-          [(ATXPBFaceGalleryEvent *)a1 addItems:?];
+          [(ATXPBFaceGalleryEvent *)from addItems:?];
         }
 
         while (v9 != v11);
@@ -570,11 +570,11 @@ LABEL_4:
   return result;
 }
 
-- (void)setItems:(uint64_t)a1
+- (void)setItems:(uint64_t)items
 {
-  if (a1)
+  if (items)
   {
-    OUTLINED_FUNCTION_2(a1, a2, 24);
+    OUTLINED_FUNCTION_2(items, a2, 24);
   }
 }
 

@@ -1,41 +1,41 @@
 @interface AMSUIWebPageViewController
 - (AMSUIWebClientContext)context;
-- (AMSUIWebPageViewController)initWithContext:(id)a3 dataProvider:(id)a4;
+- (AMSUIWebPageViewController)initWithContext:(id)context dataProvider:(id)provider;
 - (AMSUIWebPageViewControllerDelegate)delegate;
 - (CGSize)contentSize;
 - (id)_appOverlayTransitioning;
-- (id)contentScrollViewForEdge:(unint64_t)a3;
+- (id)contentScrollViewForEdge:(unint64_t)edge;
 - (id)dismissAppOverlay;
-- (id)loadRequest:(id)a3;
-- (id)presentAppOverlayWithAdamID:(id)a3;
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5;
+- (id)loadRequest:(id)request;
+- (id)presentAppOverlayWithAdamID:(id)d;
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController;
 - (void)_applyAppearance;
-- (void)_didEncodeRequest:(id)a3;
-- (void)_downloadHTMLForRequest:(id)a3 completion:(id)a4;
+- (void)_didEncodeRequest:(id)request;
+- (void)_downloadHTMLForRequest:(id)request completion:(id)completion;
 - (void)_updateLayout;
 - (void)_updateToolbarButtonItems;
-- (void)_willEncodeRequest:(id)a3;
+- (void)_willEncodeRequest:(id)request;
 - (void)loadView;
 - (void)viewWillLayoutSubviews;
-- (void)willPresentPageModel:(id)a3 appearance:(id)a4;
+- (void)willPresentPageModel:(id)model appearance:(id)appearance;
 @end
 
 @implementation AMSUIWebPageViewController
 
-- (AMSUIWebPageViewController)initWithContext:(id)a3 dataProvider:(id)a4
+- (AMSUIWebPageViewController)initWithContext:(id)context dataProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  providerCopy = provider;
   v13.receiver = self;
   v13.super_class = AMSUIWebPageViewController;
   v8 = [(AMSUIWebPageViewController *)&v13 initWithNibName:0 bundle:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_context, v6);
-    v10 = [v7 createWebView];
+    objc_storeWeak(&v8->_context, contextCopy);
+    createWebView = [providerCopy createWebView];
     webView = v9->_webView;
-    v9->_webView = v10;
+    v9->_webView = createWebView;
   }
 
   return v9;
@@ -49,9 +49,9 @@
   v3 = +[AMSUIWebAppearance defaultPlatformBackgroundColor];
   [(UIViewController *)self ams_setBackgroundColor:v3];
 
-  v4 = [(AMSUICommonViewController *)self view];
-  v5 = [(AMSUIWebPageViewController *)self webView];
-  [v4 addSubview:v5];
+  view = [(AMSUICommonViewController *)self view];
+  webView = [(AMSUIWebPageViewController *)self webView];
+  [view addSubview:webView];
 }
 
 - (void)viewWillLayoutSubviews
@@ -62,20 +62,20 @@
   [(AMSUIWebPageViewController *)self _updateLayout];
 }
 
-- (id)loadRequest:(id)a3
+- (id)loadRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   objc_initWeak(&location, self);
-  v5 = [(AMSUIWebPageViewController *)self context];
-  v6 = [v5 loadUsingWebKit];
+  context = [(AMSUIWebPageViewController *)self context];
+  loadUsingWebKit = [context loadUsingWebKit];
 
-  if (v6)
+  if (loadUsingWebKit)
   {
-    v7 = [v4 mutableCopy];
+    v7 = [requestCopy mutableCopy];
     [(AMSUIWebPageViewController *)self _willEncodeRequest:v7];
     [(AMSUIWebPageViewController *)self _didEncodeRequest:v7];
-    v8 = [(AMSUIWebPageViewController *)self webView];
-    v9 = [v8 loadRequest:v7];
+    webView = [(AMSUIWebPageViewController *)self webView];
+    v9 = [webView loadRequest:v7];
   }
 
   else
@@ -88,7 +88,7 @@
     objc_copyWeak(&v15, &location);
     v9 = v10;
     v13 = v9;
-    v14 = v4;
+    v14 = requestCopy;
     [(AMSUIWebPageViewController *)self _downloadHTMLForRequest:v14 completion:v12];
 
     objc_destroyWeak(&v15);
@@ -154,20 +154,20 @@ uint64_t __47__AMSUIWebPageViewController_dismissAppOverlay__block_invoke(uint64
   return [v2 finishWithSuccess];
 }
 
-- (id)presentAppOverlayWithAdamID:(id)a3
+- (id)presentAppOverlayWithAdamID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [AMSUIWebAppOverlayViewController alloc];
-  v6 = [(AMSUIWebPageViewController *)self context];
-  v7 = [v6 clientInfo];
-  v8 = [v7 bundleIdentifier];
-  v9 = [(AMSUIWebAppOverlayViewController *)v5 initWithAppAdamID:v4 hostBundleIdentifier:v8];
+  context = [(AMSUIWebPageViewController *)self context];
+  clientInfo = [context clientInfo];
+  bundleIdentifier = [clientInfo bundleIdentifier];
+  v9 = [(AMSUIWebAppOverlayViewController *)v5 initWithAppAdamID:dCopy hostBundleIdentifier:bundleIdentifier];
 
   [(AMSUIWebAppOverlayViewController *)v9 setModalPresentationStyle:4];
   [(AMSUIWebAppOverlayViewController *)v9 setTransitioningDelegate:self];
   [(AMSUIWebAppOverlayViewController *)v9 setViewRespectsSystemMinimumLayoutMargins:0];
   [(AMSUIWebPageViewController *)self setAppOverlayViewController:v9];
-  v10 = [(AMSUIWebAppOverlayViewController *)v9 preload];
+  preload = [(AMSUIWebAppOverlayViewController *)v9 preload];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __58__AMSUIWebPageViewController_presentAppOverlayWithAdamID___block_invoke;
@@ -175,7 +175,7 @@ uint64_t __47__AMSUIWebPageViewController_dismissAppOverlay__block_invoke(uint64
   v14[4] = self;
   v15 = v9;
   v11 = v9;
-  v12 = [v10 thenWithBlock:v14];
+  v12 = [preload thenWithBlock:v14];
 
   return v12;
 }
@@ -196,32 +196,32 @@ id __58__AMSUIWebPageViewController_presentAppOverlayWithAdamID___block_invoke(u
   return v5;
 }
 
-- (id)contentScrollViewForEdge:(unint64_t)a3
+- (id)contentScrollViewForEdge:(unint64_t)edge
 {
-  v3 = [(AMSUIWebPageViewController *)self webView];
-  v4 = [v3 underlyingWebView];
-  v5 = [v4 scrollView];
+  webView = [(AMSUIWebPageViewController *)self webView];
+  underlyingWebView = [webView underlyingWebView];
+  scrollView = [underlyingWebView scrollView];
 
-  return v5;
+  return scrollView;
 }
 
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[AMSUIToastPresentationController alloc] initWithPresentedViewController:v7 presentingViewController:v6];
+  viewControllerCopy = viewController;
+  controllerCopy = controller;
+  v8 = [[AMSUIToastPresentationController alloc] initWithPresentedViewController:controllerCopy presentingViewController:viewControllerCopy];
 
   [(AMSUIToastPresentationController *)v8 setDismissDelayTimeInterval:0.0];
 
   return v8;
 }
 
-- (void)willPresentPageModel:(id)a3 appearance:(id)a4
+- (void)willPresentPageModel:(id)model appearance:(id)appearance
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  modelCopy = model;
+  appearanceCopy = appearance;
+  v8 = modelCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -236,7 +236,7 @@ id __58__AMSUIWebPageViewController_presentAppOverlayWithAdamID___block_invoke(u
   if (v9)
   {
     objc_storeStrong(&self->_model, v9);
-    objc_storeStrong(&self->_appearance, a4);
+    objc_storeStrong(&self->_appearance, appearance);
     [(AMSUIWebPageViewController *)self _applyAppearance];
     [(AMSUIWebPageViewController *)self _updateLayout];
     [(AMSUIWebPageViewController *)self _updateToolbarButtonItems];
@@ -244,25 +244,25 @@ id __58__AMSUIWebPageViewController_presentAppOverlayWithAdamID___block_invoke(u
 
   else
   {
-    v10 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-    if (!v10)
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+    if (!mEMORY[0x1E698C968])
     {
-      v10 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v11 = [v10 OSLogObject];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v12 = objc_opt_class();
-      v13 = [(AMSUIWebPageViewController *)self context];
-      v14 = [v13 logKey];
+      context = [(AMSUIWebPageViewController *)self context];
+      logKey = [context logKey];
       v16 = 138543874;
       v17 = v12;
       v18 = 2114;
-      v19 = v14;
+      v19 = logKey;
       v20 = 2114;
       v21 = v8;
-      _os_log_impl(&dword_1BB036000, v11, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Invalid browser page model: %{public}@", &v16, 0x20u);
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Invalid browser page model: %{public}@", &v16, 0x20u);
     }
   }
 
@@ -271,13 +271,13 @@ id __58__AMSUIWebPageViewController_presentAppOverlayWithAdamID___block_invoke(u
 
 - (void)_applyAppearance
 {
-  v16 = [(AMSUIWebPageViewController *)self appearance];
+  appearance = [(AMSUIWebPageViewController *)self appearance];
   v3 = +[AMSUIWebAppearance defaultPlatformBackgroundColor];
-  v4 = [v16 backgroundColor];
-  v5 = v4;
-  if (v4)
+  backgroundColor = [appearance backgroundColor];
+  v5 = backgroundColor;
+  if (backgroundColor)
   {
-    v6 = v4;
+    v6 = backgroundColor;
   }
 
   else
@@ -287,11 +287,11 @@ id __58__AMSUIWebPageViewController_presentAppOverlayWithAdamID___block_invoke(u
 
   [(UIViewController *)self ams_setBackgroundColor:v6];
 
-  v7 = [v16 backgroundColor];
-  v8 = v7;
-  if (v7)
+  backgroundColor2 = [appearance backgroundColor];
+  v8 = backgroundColor2;
+  if (backgroundColor2)
   {
-    v9 = v7;
+    v9 = backgroundColor2;
   }
 
   else
@@ -299,14 +299,14 @@ id __58__AMSUIWebPageViewController_presentAppOverlayWithAdamID___block_invoke(u
     v9 = v3;
   }
 
-  v10 = [(AMSUIWebPageViewController *)self webView];
-  [v10 ams_setBackgroundColor:v9];
+  webView = [(AMSUIWebPageViewController *)self webView];
+  [webView ams_setBackgroundColor:v9];
 
-  v11 = [v16 backgroundColor];
-  v12 = v11;
-  if (v11)
+  backgroundColor3 = [appearance backgroundColor];
+  v12 = backgroundColor3;
+  if (backgroundColor3)
   {
-    v13 = v11;
+    v13 = backgroundColor3;
   }
 
   else
@@ -314,9 +314,9 @@ id __58__AMSUIWebPageViewController_presentAppOverlayWithAdamID___block_invoke(u
     v13 = v3;
   }
 
-  v14 = [(AMSUIWebPageViewController *)self webView];
-  v15 = [v14 underlyingWebView];
-  [v15 ams_setBackgroundColor:v13];
+  webView2 = [(AMSUIWebPageViewController *)self webView];
+  underlyingWebView = [webView2 underlyingWebView];
+  [underlyingWebView ams_setBackgroundColor:v13];
 }
 
 - (id)_appOverlayTransitioning
@@ -333,68 +333,68 @@ id __58__AMSUIWebPageViewController_presentAppOverlayWithAdamID___block_invoke(u
   return v4;
 }
 
-- (void)_didEncodeRequest:(id)a3
+- (void)_didEncodeRequest:(id)request
 {
-  v7 = a3;
-  v4 = [(AMSUIWebPageViewController *)self delegate];
+  requestCopy = request;
+  delegate = [(AMSUIWebPageViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(AMSUIWebPageViewController *)self delegate];
-    [v6 webPageViewController:self didEncodeNetworkRequest:v7];
+    delegate2 = [(AMSUIWebPageViewController *)self delegate];
+    [delegate2 webPageViewController:self didEncodeNetworkRequest:requestCopy];
   }
 }
 
-- (void)_downloadHTMLForRequest:(id)a3 completion:(id)a4
+- (void)_downloadHTMLForRequest:(id)request completion:(id)completion
 {
-  v29 = a4;
-  v6 = [a3 mutableCopy];
+  completionCopy = completion;
+  v6 = [request mutableCopy];
   [(AMSUIWebPageViewController *)self _willEncodeRequest:v6];
-  v7 = [(AMSUIWebPageViewController *)self context];
-  v8 = [v7 URLSession];
+  context = [(AMSUIWebPageViewController *)self context];
+  uRLSession = [context URLSession];
 
   v9 = objc_alloc(MEMORY[0x1E698CB88]);
-  v10 = [(AMSUIWebPageViewController *)self context];
-  v11 = [v10 bag];
+  context2 = [(AMSUIWebPageViewController *)self context];
+  v11 = [context2 bag];
   v12 = [v9 initWithBag:v11];
 
-  v13 = [(AMSUIWebPageViewController *)self context];
-  v14 = [v13 account];
-  [v12 setAccount:v14];
+  context3 = [(AMSUIWebPageViewController *)self context];
+  account = [context3 account];
+  [v12 setAccount:account];
 
-  v15 = [(AMSUIWebPageViewController *)self context];
-  v16 = [v15 clientInfo];
-  [v12 setClientInfo:v16];
+  context4 = [(AMSUIWebPageViewController *)self context];
+  clientInfo = [context4 clientInfo];
+  [v12 setClientInfo:clientInfo];
 
-  v17 = [(AMSUIWebPageViewController *)self context];
-  v18 = [v17 logKey];
-  [v12 setLogUUID:v18];
+  context5 = [(AMSUIWebPageViewController *)self context];
+  logKey = [context5 logKey];
+  [v12 setLogUUID:logKey];
 
-  v19 = [(AMSUIWebPageViewController *)self context];
-  v20 = [v19 mescalSession];
+  context6 = [(AMSUIWebPageViewController *)self context];
+  mescalSession = [context6 mescalSession];
 
-  if (!v20)
+  if (!mescalSession)
   {
     [v12 setMescalType:1];
   }
 
-  v21 = [(AMSUIWebPageViewController *)self context];
-  [v12 setUrlKnownToBeTrusted:{objc_msgSend(v21, "disableTrustedDomains")}];
+  context7 = [(AMSUIWebPageViewController *)self context];
+  [v12 setUrlKnownToBeTrusted:{objc_msgSend(context7, "disableTrustedDomains")}];
 
   v22 = objc_alloc_init(MEMORY[0x1E698C948]);
   [v22 setPurpose:1];
   [v22 setStyle:{objc_msgSend(MEMORY[0x1E698C948], "preferredAttestationStyle")}];
   [v12 setKeychainOptions:v22];
   v23 = [v12 requestByEncodingRequest:v6 parameters:0];
-  if (v20)
+  if (mescalSession)
   {
     v35[0] = MEMORY[0x1E69E9820];
     v35[1] = 3221225472;
     v35[2] = __65__AMSUIWebPageViewController__downloadHTMLForRequest_completion___block_invoke;
     v35[3] = &unk_1E7F25780;
-    v36 = v20;
-    v37 = self;
+    v36 = mescalSession;
+    selfCopy = self;
     v24 = [v23 thenWithBlock:v35];
 
     v23 = v24;
@@ -405,18 +405,18 @@ id __58__AMSUIWebPageViewController_presentAppOverlayWithAdamID___block_invoke(u
   v33[2] = __65__AMSUIWebPageViewController__downloadHTMLForRequest_completion___block_invoke_2_28;
   v33[3] = &unk_1E7F25780;
   v33[4] = self;
-  v34 = v8;
-  v25 = v8;
+  v34 = uRLSession;
+  v25 = uRLSession;
   v26 = [v23 thenWithBlock:v33];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __65__AMSUIWebPageViewController__downloadHTMLForRequest_completion___block_invoke_3_29;
   v30[3] = &unk_1E7F26A20;
   v30[4] = self;
-  v31 = v20;
-  v32 = v29;
-  v27 = v29;
-  v28 = v20;
+  v31 = mescalSession;
+  v32 = completionCopy;
+  v27 = completionCopy;
+  v28 = mescalSession;
   [v26 addFinishBlock:v30];
 }
 
@@ -624,16 +624,16 @@ LABEL_17:
 - (void)_updateToolbarButtonItems
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(AMSUIWebPageViewController *)self model];
-  v5 = [v4 toolbar];
+  model = [(AMSUIWebPageViewController *)self model];
+  toolbar = [model toolbar];
 
-  v6 = [v5 leftButton];
+  leftButton = [toolbar leftButton];
   v7 = MEMORY[0x1E69DC708];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __55__AMSUIWebPageViewController__updateToolbarButtonItems__block_invoke;
   v22[3] = &unk_1E7F242D0;
-  v8 = v6;
+  v8 = leftButton;
   v23 = v8;
   v9 = [v7 barButtonItemWithWebButtonModel:v8 navigationBarModel:0 actionBlock:v22];
   v10 = v9;
@@ -643,13 +643,13 @@ LABEL_17:
     [v3 addObject:v10];
   }
 
-  v11 = [v5 rightButton];
+  rightButton = [toolbar rightButton];
   v12 = MEMORY[0x1E69DC708];
   v17 = MEMORY[0x1E69E9820];
   v18 = 3221225472;
   v19 = __55__AMSUIWebPageViewController__updateToolbarButtonItems__block_invoke_2;
   v20 = &unk_1E7F242D0;
-  v13 = v11;
+  v13 = rightButton;
   v21 = v13;
   v14 = [v12 barButtonItemWithWebButtonModel:v13 navigationBarModel:0 actionBlock:&v17];
   v15 = v14;
@@ -679,28 +679,28 @@ void __55__AMSUIWebPageViewController__updateToolbarButtonItems__block_invoke_2(
 
 - (void)_updateLayout
 {
-  v12 = [(AMSUICommonViewController *)self view];
-  [v12 bounds];
+  view = [(AMSUICommonViewController *)self view];
+  [view bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(AMSUIWebPageViewController *)self webView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  webView = [(AMSUIWebPageViewController *)self webView];
+  [webView setFrame:{v4, v6, v8, v10}];
 }
 
-- (void)_willEncodeRequest:(id)a3
+- (void)_willEncodeRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(AMSUIWebPageViewController *)self context];
-  v6 = [v5 additionalHeaders];
+  requestCopy = request;
+  context = [(AMSUIWebPageViewController *)self context];
+  additionalHeaders = [context additionalHeaders];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __49__AMSUIWebPageViewController__willEncodeRequest___block_invoke;
   v8[3] = &unk_1E7F25A18;
-  v9 = v4;
-  v7 = v4;
-  [v6 enumerateKeysAndObjectsUsingBlock:v8];
+  v9 = requestCopy;
+  v7 = requestCopy;
+  [additionalHeaders enumerateKeysAndObjectsUsingBlock:v8];
 }
 
 - (AMSUIWebPageViewControllerDelegate)delegate

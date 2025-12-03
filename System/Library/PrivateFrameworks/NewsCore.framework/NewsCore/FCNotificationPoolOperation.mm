@@ -1,7 +1,7 @@
 @interface FCNotificationPoolOperation
 - (FCNotificationPoolOperation)init;
-- (FCNotificationPoolOperation)initWithContext:(id)a3 contentVariantProvider:(id)a4;
-- (void)operationWillFinishWithError:(id)a3;
+- (FCNotificationPoolOperation)initWithContext:(id)context contentVariantProvider:(id)provider;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 @end
 
@@ -33,18 +33,18 @@
   objc_exception_throw(v6);
 }
 
-- (FCNotificationPoolOperation)initWithContext:(id)a3 contentVariantProvider:(id)a4
+- (FCNotificationPoolOperation)initWithContext:(id)context contentVariantProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  providerCopy = provider;
   v12.receiver = self;
   v12.super_class = FCNotificationPoolOperation;
   v9 = [(FCOperation *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_context, a3);
-    objc_storeStrong(&v10->_contentVariantProvider, a4);
+    objc_storeStrong(&v9->_context, context);
+    objc_storeStrong(&v10->_contentVariantProvider, provider);
   }
 
   return v10;
@@ -179,13 +179,13 @@ uint64_t __47__FCNotificationPoolOperation_performOperation__block_invoke_3(uint
   return 0;
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(FCNotificationPoolOperation *)self itemHandler];
+  errorCopy = error;
+  itemHandler = [(FCNotificationPoolOperation *)self itemHandler];
 
-  if (v5)
+  if (itemHandler)
   {
     v19 = 0u;
     v20 = 0u;
@@ -218,8 +218,8 @@ uint64_t __47__FCNotificationPoolOperation_performOperation__block_invoke_3(uint
           }
 
           v12 = *(*(&v17 + 1) + 8 * v11);
-          v13 = [(FCNotificationPoolOperation *)self itemHandler];
-          v13[2](v13, v12);
+          itemHandler2 = [(FCNotificationPoolOperation *)self itemHandler];
+          itemHandler2[2](itemHandler2, v12);
 
           ++v11;
         }
@@ -232,12 +232,12 @@ uint64_t __47__FCNotificationPoolOperation_performOperation__block_invoke_3(uint
     }
   }
 
-  v14 = [(FCNotificationPoolOperation *)self completionHandler];
+  completionHandler = [(FCNotificationPoolOperation *)self completionHandler];
 
-  if (v14)
+  if (completionHandler)
   {
-    v15 = [(FCNotificationPoolOperation *)self completionHandler];
-    (v15)[2](v15, v4);
+    completionHandler2 = [(FCNotificationPoolOperation *)self completionHandler];
+    (completionHandler2)[2](completionHandler2, errorCopy);
   }
 
   v16 = *MEMORY[0x1E69E9840];

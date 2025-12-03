@@ -1,15 +1,15 @@
 @interface PUVFXStopWatch
-- (PUVFXStopWatch)initWithLog:(id)a3;
+- (PUVFXStopWatch)initWithLog:(id)log;
 @end
 
 @implementation PUVFXStopWatch
 
-- (PUVFXStopWatch)initWithLog:(id)a3
+- (PUVFXStopWatch)initWithLog:(id)log
 {
   v5.receiver = self;
   v5.super_class = PUVFXStopWatch;
   result = [(PUVFXStopWatch *)&v5 init];
-  result->_log = a3;
+  result->_log = log;
   return result;
 }
 

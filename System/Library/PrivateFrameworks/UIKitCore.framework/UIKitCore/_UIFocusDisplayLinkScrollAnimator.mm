@@ -1,25 +1,25 @@
 @interface _UIFocusDisplayLinkScrollAnimator
-- (BOOL)isAnimatingScrollableContainer:(id)a3;
-- (CGPoint)_applyAccelerationLimitToAcceleration:(CGPoint)a3 currentOffset:(CGPoint)a4 targetOffset:(CGPoint)a5;
-- (CGPoint)_hyperJumpContentOffsetIfNecessaryForEntry:(id)a3 currentOffset:(CGPoint)a4;
-- (CGPoint)currentVelocityForScrollableContainer:(id)a3;
-- (CGPoint)targetContentOffsetForScrollableContainer:(id)a3;
-- (CGPoint)velocityToScrollFromOffset:(CGPoint)a3 toOffset:(CGPoint)a4;
-- (_UIFocusDisplayLinkScrollAnimator)initWithScreen:(id)a3;
-- (id)_createEntryForEnvironmentScrollableContainer:(id)a3;
-- (id)_entryForEnvironmentScrollableContainer:(id)a3 createIfNeeded:(BOOL)a4;
-- (id)_entryForScrollableContainer:(id)a3;
+- (BOOL)isAnimatingScrollableContainer:(id)container;
+- (CGPoint)_applyAccelerationLimitToAcceleration:(CGPoint)acceleration currentOffset:(CGPoint)offset targetOffset:(CGPoint)targetOffset;
+- (CGPoint)_hyperJumpContentOffsetIfNecessaryForEntry:(id)entry currentOffset:(CGPoint)offset;
+- (CGPoint)currentVelocityForScrollableContainer:(id)container;
+- (CGPoint)targetContentOffsetForScrollableContainer:(id)container;
+- (CGPoint)velocityToScrollFromOffset:(CGPoint)offset toOffset:(CGPoint)toOffset;
+- (_UIFocusDisplayLinkScrollAnimator)initWithScreen:(id)screen;
+- (id)_createEntryForEnvironmentScrollableContainer:(id)container;
+- (id)_entryForEnvironmentScrollableContainer:(id)container createIfNeeded:(BOOL)needed;
+- (id)_entryForScrollableContainer:(id)container;
 - (void)_commonHeartbeat;
-- (void)_commonHeartbeat:(double)a3;
-- (void)_displayLinkHeartbeat:(id)a3;
-- (void)_processEntry:(id)a3 timeDelta:(int64_t)a4 completed:(id)a5 cancelled:(id)a6;
-- (void)_removeEntry:(id)a3;
+- (void)_commonHeartbeat:(double)heartbeat;
+- (void)_displayLinkHeartbeat:(id)heartbeat;
+- (void)_processEntry:(id)entry timeDelta:(int64_t)delta completed:(id)completed cancelled:(id)cancelled;
+- (void)_removeEntry:(id)entry;
 - (void)_switchToTimerScrolling;
 - (void)_updateHeartbeatConfiguration;
-- (void)adjustTargetContentOffsetForScrollableContainer:(id)a3 byDelta:(CGPoint)a4;
-- (void)cancelScrollingForScrollableContainer:(id)a3;
+- (void)adjustTargetContentOffsetForScrollableContainer:(id)container byDelta:(CGPoint)delta;
+- (void)cancelScrollingForScrollableContainer:(id)container;
 - (void)dealloc;
-- (void)setTargetContentOffset:(CGPoint)a3 forEnvironmentScrollableContainer:(id)a4 convergenceRate:(double)a5 completion:(id)a6;
+- (void)setTargetContentOffset:(CGPoint)offset forEnvironmentScrollableContainer:(id)container convergenceRate:(double)rate completion:(id)completion;
 @end
 
 @implementation _UIFocusDisplayLinkScrollAnimator
@@ -32,31 +32,31 @@
   [(_UIFocusDisplayLinkScrollAnimator *)&v3 dealloc];
 }
 
-- (_UIFocusDisplayLinkScrollAnimator)initWithScreen:(id)a3
+- (_UIFocusDisplayLinkScrollAnimator)initWithScreen:(id)screen
 {
-  v5 = a3;
+  screenCopy = screen;
   v9.receiver = self;
   v9.super_class = _UIFocusDisplayLinkScrollAnimator;
   v6 = [(_UIFocusDisplayLinkScrollAnimator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_screen, a3);
+    objc_storeStrong(&v6->_screen, screen);
   }
 
   return v7;
 }
 
-- (void)setTargetContentOffset:(CGPoint)a3 forEnvironmentScrollableContainer:(id)a4 convergenceRate:(double)a5 completion:(id)a6
+- (void)setTargetContentOffset:(CGPoint)offset forEnvironmentScrollableContainer:(id)container convergenceRate:(double)rate completion:(id)completion
 {
-  y = a3.y;
-  x = a3.x;
-  v11 = a3.y;
-  v12 = a3.x;
+  y = offset.y;
+  x = offset.x;
+  v11 = offset.y;
+  v12 = offset.x;
   v26 = *MEMORY[0x1E69E9840];
-  v13 = a4;
-  v14 = a6;
-  v15 = [(_UIFocusDisplayLinkScrollAnimator *)self _entryForEnvironmentScrollableContainer:v13 createIfNeeded:1];
+  containerCopy = container;
+  completionCopy = completion;
+  v15 = [(_UIFocusDisplayLinkScrollAnimator *)self _entryForEnvironmentScrollableContainer:containerCopy createIfNeeded:1];
   v16 = v15;
   if ((*&v12 & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL || (*&v11 & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL)
   {
@@ -64,13 +64,13 @@
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       v18 = v17;
-      v19 = [v13 scrollableContainer];
+      scrollableContainer = [containerCopy scrollableContainer];
       v20 = 134218498;
       v21 = x;
       v22 = 2048;
       v23 = y;
       v24 = 2112;
-      v25 = v19;
+      v25 = scrollableContainer;
       _os_log_impl(&dword_188A29000, v18, OS_LOG_TYPE_ERROR, "Ignoring request to scroll container to non-finite location: (%g, %g) in %@", &v20, 0x20u);
     }
   }
@@ -80,24 +80,24 @@
     [v15 setTargetContentOffset:{x, y}];
   }
 
-  [v16 setConvergenceRate:a5];
-  [v16 setCompletion:v14];
+  [v16 setConvergenceRate:rate];
+  [v16 setCompletion:completionCopy];
 
   [(_UIFocusDisplayLinkScrollAnimator *)self _updateHeartbeatConfiguration];
 }
 
-- (void)cancelScrollingForScrollableContainer:(id)a3
+- (void)cancelScrollingForScrollableContainer:(id)container
 {
-  v4 = [(_UIFocusDisplayLinkScrollAnimator *)self _entryForScrollableContainer:a3];
+  v4 = [(_UIFocusDisplayLinkScrollAnimator *)self _entryForScrollableContainer:container];
   if (v4)
   {
     v7 = v4;
-    v5 = [v4 completion];
+    completion = [v4 completion];
 
-    if (v5)
+    if (completion)
     {
-      v6 = [v7 completion];
-      v6[2](v6, 0);
+      completion2 = [v7 completion];
+      completion2[2](completion2, 0);
     }
 
     [(_UIFocusDisplayLinkScrollAnimator *)self _removeEntry:v7];
@@ -106,11 +106,11 @@
   }
 }
 
-- (void)adjustTargetContentOffsetForScrollableContainer:(id)a3 byDelta:(CGPoint)a4
+- (void)adjustTargetContentOffsetForScrollableContainer:(id)container byDelta:(CGPoint)delta
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = [(_UIFocusDisplayLinkScrollAnimator *)self _entryForScrollableContainer:a3];
+  y = delta.y;
+  x = delta.x;
+  v6 = [(_UIFocusDisplayLinkScrollAnimator *)self _entryForScrollableContainer:container];
   if (v6)
   {
     v11 = v6;
@@ -122,17 +122,17 @@
   }
 }
 
-- (BOOL)isAnimatingScrollableContainer:(id)a3
+- (BOOL)isAnimatingScrollableContainer:(id)container
 {
-  v3 = [(_UIFocusDisplayLinkScrollAnimator *)self _entryForScrollableContainer:a3];
+  v3 = [(_UIFocusDisplayLinkScrollAnimator *)self _entryForScrollableContainer:container];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (CGPoint)targetContentOffsetForScrollableContainer:(id)a3
+- (CGPoint)targetContentOffsetForScrollableContainer:(id)container
 {
-  v3 = [(_UIFocusDisplayLinkScrollAnimator *)self _entryForScrollableContainer:a3];
+  v3 = [(_UIFocusDisplayLinkScrollAnimator *)self _entryForScrollableContainer:container];
   v4 = v3;
   if (v3)
   {
@@ -154,9 +154,9 @@
   return result;
 }
 
-- (CGPoint)currentVelocityForScrollableContainer:(id)a3
+- (CGPoint)currentVelocityForScrollableContainer:(id)container
 {
-  v3 = [(_UIFocusDisplayLinkScrollAnimator *)self _entryForScrollableContainer:a3];
+  v3 = [(_UIFocusDisplayLinkScrollAnimator *)self _entryForScrollableContainer:container];
   v4 = v3;
   if (v3)
   {
@@ -189,12 +189,12 @@
   return result;
 }
 
-- (CGPoint)velocityToScrollFromOffset:(CGPoint)a3 toOffset:(CGPoint)a4
+- (CGPoint)velocityToScrollFromOffset:(CGPoint)offset toOffset:(CGPoint)toOffset
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
+  y = toOffset.y;
+  x = toOffset.x;
+  v6 = offset.y;
+  v7 = offset.x;
   v8 = pow(self->_defaultConvergenceRate, 16.0);
   v9 = v6 * v8 + y * (1.0 - v8) - v6;
   v10 = (v7 * v8 + x * (1.0 - v8) - v7) * 0.0625;
@@ -204,11 +204,11 @@
   return result;
 }
 
-- (id)_entryForScrollableContainer:(id)a3
+- (id)_entryForScrollableContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   singleScrollableContainerEntry = self->_singleScrollableContainerEntry;
-  if (singleScrollableContainerEntry && (-[_UIFocusEngineScrollableContainerOffsets environmentScrollableContainer](singleScrollableContainerEntry, "environmentScrollableContainer"), v6 = objc_claimAutoreleasedReturnValue(), [v6 scrollableContainer], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7 == v4))
+  if (singleScrollableContainerEntry && (-[_UIFocusEngineScrollableContainerOffsets environmentScrollableContainer](singleScrollableContainerEntry, "environmentScrollableContainer"), v6 = objc_claimAutoreleasedReturnValue(), [v6 scrollableContainer], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7 == containerCopy))
   {
     v9 = self->_singleScrollableContainerEntry;
   }
@@ -222,7 +222,7 @@
       goto LABEL_8;
     }
 
-    v9 = [(NSMapTable *)scrollableContainers objectForKey:v4];
+    v9 = [(NSMapTable *)scrollableContainers objectForKey:containerCopy];
   }
 
   v10 = v9;
@@ -231,11 +231,11 @@ LABEL_8:
   return v10;
 }
 
-- (id)_entryForEnvironmentScrollableContainer:(id)a3 createIfNeeded:(BOOL)a4
+- (id)_entryForEnvironmentScrollableContainer:(id)container createIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 scrollableContainer];
+  neededCopy = needed;
+  containerCopy = container;
+  scrollableContainer = [containerCopy scrollableContainer];
   singleScrollableContainerEntry = self->_singleScrollableContainerEntry;
   if (self->_scrollableContainers)
   {
@@ -247,13 +247,13 @@ LABEL_8:
     v9 = singleScrollableContainerEntry == 0;
   }
 
-  if (!v9 || !v4)
+  if (!v9 || !neededCopy)
   {
-    v11 = [(_UIFocusEngineScrollableContainerOffsets *)singleScrollableContainerEntry environmentScrollableContainer];
-    v12 = [v11 scrollableContainer];
+    environmentScrollableContainer = [(_UIFocusEngineScrollableContainerOffsets *)singleScrollableContainerEntry environmentScrollableContainer];
+    scrollableContainer2 = [environmentScrollableContainer scrollableContainer];
 
     v13 = self->_singleScrollableContainerEntry;
-    if (v12 == v7)
+    if (scrollableContainer2 == scrollableContainer)
     {
       v22 = v13;
     }
@@ -261,22 +261,22 @@ LABEL_8:
     else
     {
       scrollableContainers = self->_scrollableContainers;
-      if (v13 && v4)
+      if (v13 && neededCopy)
       {
         if (!scrollableContainers)
         {
-          v15 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+          weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
           v16 = self->_scrollableContainers;
-          self->_scrollableContainers = v15;
+          self->_scrollableContainers = weakToStrongObjectsMapTable;
         }
 
-        v22 = [(_UIFocusDisplayLinkScrollAnimator *)self _createEntryForEnvironmentScrollableContainer:v6];
-        [(NSMapTable *)self->_scrollableContainers setObject:v22 forKey:v7];
+        v22 = [(_UIFocusDisplayLinkScrollAnimator *)self _createEntryForEnvironmentScrollableContainer:containerCopy];
+        [(NSMapTable *)self->_scrollableContainers setObject:v22 forKey:scrollableContainer];
         v18 = self->_singleScrollableContainerEntry;
         v17 = self->_scrollableContainers;
-        v19 = [(_UIFocusEngineScrollableContainerOffsets *)v18 environmentScrollableContainer];
-        v20 = [v19 scrollableContainer];
-        [(NSMapTable *)v17 setObject:v18 forKey:v20];
+        environmentScrollableContainer2 = [(_UIFocusEngineScrollableContainerOffsets *)v18 environmentScrollableContainer];
+        scrollableContainer3 = [environmentScrollableContainer2 scrollableContainer];
+        [(NSMapTable *)v17 setObject:v18 forKey:scrollableContainer3];
 
         v21 = self->_singleScrollableContainerEntry;
         self->_singleScrollableContainerEntry = 0;
@@ -284,11 +284,11 @@ LABEL_8:
 
       else if (scrollableContainers)
       {
-        v22 = [(NSMapTable *)scrollableContainers objectForKey:v7];
-        if (!v22 && v4)
+        v22 = [(NSMapTable *)scrollableContainers objectForKey:scrollableContainer];
+        if (!v22 && neededCopy)
         {
-          v22 = [(_UIFocusDisplayLinkScrollAnimator *)self _createEntryForEnvironmentScrollableContainer:v6];
-          [(NSMapTable *)self->_scrollableContainers setObject:v22 forKey:v7];
+          v22 = [(_UIFocusDisplayLinkScrollAnimator *)self _createEntryForEnvironmentScrollableContainer:containerCopy];
+          [(NSMapTable *)self->_scrollableContainers setObject:v22 forKey:scrollableContainer];
         }
       }
 
@@ -301,22 +301,22 @@ LABEL_8:
 
   else
   {
-    v22 = [(_UIFocusDisplayLinkScrollAnimator *)self _createEntryForEnvironmentScrollableContainer:v6];
+    v22 = [(_UIFocusDisplayLinkScrollAnimator *)self _createEntryForEnvironmentScrollableContainer:containerCopy];
     objc_storeStrong(&self->_singleScrollableContainerEntry, v22);
   }
 
   return v22;
 }
 
-- (id)_createEntryForEnvironmentScrollableContainer:(id)a3
+- (id)_createEntryForEnvironmentScrollableContainer:(id)container
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 scrollableContainer];
-  if ([v5 __isKindOfUIScrollView])
+  containerCopy = container;
+  scrollableContainer = [containerCopy scrollableContainer];
+  if ([scrollableContainer __isKindOfUIScrollView])
   {
-    v6 = v5;
-    v7 = [v6 delegate];
+    v6 = scrollableContainer;
+    delegate = [v6 delegate];
     if ([v6 _adjustsTargetsOnContentOffsetChanges])
     {
       v8 = [v6 isScrollAnimating] ^ 1;
@@ -330,16 +330,16 @@ LABEL_8:
 
   else
   {
-    v7 = 0;
+    delegate = 0;
     v8 = 1;
   }
 
   v9 = objc_alloc_init(_UIFocusEngineScrollableContainerOffsets);
   [(_UIFocusEngineScrollableContainerOffsets *)v9 setAdjustsTargetsOnContentOffsetChanges:v8];
-  [(_UIFocusEngineScrollableContainerOffsets *)v9 setEnvironmentScrollableContainer:v4];
-  [(_UIFocusEngineScrollableContainerOffsets *)v9 setScrollDelegate:v7];
+  [(_UIFocusEngineScrollableContainerOffsets *)v9 setEnvironmentScrollableContainer:containerCopy];
+  [(_UIFocusEngineScrollableContainerOffsets *)v9 setScrollDelegate:delegate];
   [(_UIFocusEngineScrollableContainerOffsets *)v9 setConvergenceRate:self->_defaultConvergenceRate];
-  [v5 contentOffset];
+  [scrollableContainer contentOffset];
   v11 = v10;
   v13 = v12;
   [(_UIFocusEngineScrollableContainerOffsets *)v9 setStartContentOffset:?];
@@ -351,13 +351,13 @@ LABEL_8:
     v14 = *(__UILogGetCategoryCachedImpl("UIFocus", &qword_1ED49DF80) + 8);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v4 owningEnvironment];
-      if (v15)
+      owningEnvironment = [containerCopy owningEnvironment];
+      if (owningEnvironment)
       {
         v16 = MEMORY[0x1E696AEC0];
         v17 = objc_opt_class();
         v18 = NSStringFromClass(v17);
-        v19 = [v16 stringWithFormat:@"<%@: %p>", v18, v15];
+        v19 = [v16 stringWithFormat:@"<%@: %p>", v18, owningEnvironment];
       }
 
       else
@@ -381,13 +381,13 @@ LABEL_13:
     v14 = *(CategoryCachedImpl + 8);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v22 = [v4 owningEnvironment];
-      if (v22)
+      owningEnvironment2 = [containerCopy owningEnvironment];
+      if (owningEnvironment2)
       {
         v23 = MEMORY[0x1E696AEC0];
         v24 = objc_opt_class();
         v25 = NSStringFromClass(v24);
-        v26 = [v23 stringWithFormat:@"<%@: %p>", v25, v22];
+        v26 = [v23 stringWithFormat:@"<%@: %p>", v25, owningEnvironment2];
       }
 
       else
@@ -397,11 +397,11 @@ LABEL_13:
 
       v27 = MEMORY[0x1E696AF00];
       v28 = v26;
-      v29 = [v27 callStackSymbols];
+      callStackSymbols = [v27 callStackSymbols];
       *buf = 138412546;
       v31 = v26;
       v32 = 2114;
-      v33 = v29;
+      v33 = callStackSymbols;
       _os_log_impl(&dword_188A29000, v14, OS_LOG_TYPE_ERROR, "Creating focus scroll animator entry for environment %@\n%{public}@", buf, 0x16u);
     }
 
@@ -477,8 +477,8 @@ LABEL_14:
       self->_displayLink = v7;
 
       v9 = self->_displayLink;
-      v10 = [MEMORY[0x1E695DFD0] mainRunLoop];
-      [(CADisplayLink *)v9 addToRunLoop:v10 forMode:*MEMORY[0x1E695DA28]];
+      mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+      [(CADisplayLink *)v9 addToRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
 
       _UIQOSManagedCommitsBegin(self, @"FocusScrollAnimation");
       v11 = @"Focus scroll animator, display link";
@@ -490,8 +490,8 @@ LABEL_14:
       v18 = self->_timer;
       self->_timer = v17;
 
-      v19 = [MEMORY[0x1E695DFD0] mainRunLoop];
-      [v19 addTimer:self->_timer forMode:*MEMORY[0x1E695DA28]];
+      mainRunLoop2 = [MEMORY[0x1E695DFD0] mainRunLoop];
+      [mainRunLoop2 addTimer:self->_timer forMode:*MEMORY[0x1E695DA28]];
 
       v11 = @"Focus scroll animator, timer";
     }
@@ -556,12 +556,12 @@ LABEL_22:
   }
 }
 
-- (void)_displayLinkHeartbeat:(id)a3
+- (void)_displayLinkHeartbeat:(id)heartbeat
 {
-  v8 = a3;
-  [v8 timestamp];
+  heartbeatCopy = heartbeat;
+  [heartbeatCopy timestamp];
   v5 = _UIMachTimeForMediaTime(v4);
-  [v8 targetTimestamp];
+  [heartbeatCopy targetTimestamp];
   v7 = _UIMachTimeForMediaTime(v6);
   _UIQOSProcessingBegin("UIFocusScrollAnimator", 0, v5, v7);
   [(_UIFocusDisplayLinkScrollAnimator *)self _commonHeartbeat];
@@ -575,26 +575,26 @@ LABEL_22:
   self->_lastHeartbeatTime = Current;
 }
 
-- (void)_commonHeartbeat:(double)a3
+- (void)_commonHeartbeat:(double)heartbeat
 {
   v51 = *MEMORY[0x1E69E9840];
-  v3 = (a3 * 1000.0);
+  v3 = (heartbeat * 1000.0);
   if (v3 >= 1)
   {
-    v5 = [MEMORY[0x1E695DF70] array];
-    v6 = [MEMORY[0x1E695DF70] array];
-    v7 = [(NSMapTable *)self->_scrollableContainers objectEnumerator];
+    array = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
+    objectEnumerator = [(NSMapTable *)self->_scrollableContainers objectEnumerator];
     singleScrollableContainerEntry = self->_singleScrollableContainerEntry;
     if (singleScrollableContainerEntry)
     {
-      [(_UIFocusDisplayLinkScrollAnimator *)self _processEntry:singleScrollableContainerEntry timeDelta:v3 completed:v5 cancelled:v6];
+      [(_UIFocusDisplayLinkScrollAnimator *)self _processEntry:singleScrollableContainerEntry timeDelta:v3 completed:array cancelled:array2];
     }
 
     v46 = 0u;
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v9 = v7;
+    v9 = objectEnumerator;
     v10 = [v9 countByEnumeratingWithState:&v44 objects:v50 count:16];
     if (v10)
     {
@@ -609,7 +609,7 @@ LABEL_22:
             objc_enumerationMutation(v9);
           }
 
-          [(_UIFocusDisplayLinkScrollAnimator *)self _processEntry:*(*(&v44 + 1) + 8 * i) timeDelta:v3 completed:v5 cancelled:v6];
+          [(_UIFocusDisplayLinkScrollAnimator *)self _processEntry:*(*(&v44 + 1) + 8 * i) timeDelta:v3 completed:array cancelled:array2];
         }
 
         v11 = [v9 countByEnumeratingWithState:&v44 objects:v50 count:16];
@@ -622,7 +622,7 @@ LABEL_22:
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v14 = v6;
+    v14 = array2;
     v15 = [v14 countByEnumeratingWithState:&v40 objects:v49 count:16];
     if (v15)
     {
@@ -638,12 +638,12 @@ LABEL_22:
           }
 
           v19 = *(*(&v40 + 1) + 8 * j);
-          v20 = [v19 completion];
+          completion = [v19 completion];
 
-          if (v20)
+          if (completion)
           {
-            v21 = [v19 completion];
-            v21[2](v21, 0);
+            completion2 = [v19 completion];
+            completion2[2](completion2, 0);
           }
 
           [(_UIFocusDisplayLinkScrollAnimator *)self _removeEntry:v19];
@@ -659,7 +659,7 @@ LABEL_22:
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v22 = v5;
+    v22 = array;
     v23 = [v22 countByEnumeratingWithState:&v36 objects:v48 count:16];
     if (v23)
     {
@@ -678,16 +678,16 @@ LABEL_22:
           [v27 targetContentOffset];
           v29 = v28;
           v31 = v30;
-          v32 = [v27 environmentScrollableContainer];
-          v33 = [v32 scrollableContainer];
-          [v33 setContentOffset:{v29, v31}];
+          environmentScrollableContainer = [v27 environmentScrollableContainer];
+          scrollableContainer = [environmentScrollableContainer scrollableContainer];
+          [scrollableContainer setContentOffset:{v29, v31}];
 
-          v34 = [v27 completion];
+          completion3 = [v27 completion];
 
-          if (v34)
+          if (completion3)
           {
-            v35 = [v27 completion];
-            v35[2](v35, 1);
+            completion4 = [v27 completion];
+            completion4[2](completion4, 1);
           }
 
           [(_UIFocusDisplayLinkScrollAnimator *)self _removeEntry:v27];
@@ -703,23 +703,23 @@ LABEL_22:
   }
 }
 
-- (void)_removeEntry:(id)a3
+- (void)_removeEntry:(id)entry
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  entryCopy = entry;
   if ((*__UILogGetCategoryCachedImpl("", &qword_1ED49DF88) & 1) == 0)
   {
     v5 = *(__UILogGetCategoryCachedImpl("UIFocus", &qword_1ED49DF98) + 8);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(_UIFocusEngineScrollableContainerOffsets *)v4 environmentScrollableContainer];
-      v7 = [v6 owningEnvironment];
-      if (v7)
+      environmentScrollableContainer = [(_UIFocusEngineScrollableContainerOffsets *)entryCopy environmentScrollableContainer];
+      owningEnvironment = [environmentScrollableContainer owningEnvironment];
+      if (owningEnvironment)
       {
         v8 = MEMORY[0x1E696AEC0];
         v9 = objc_opt_class();
         v10 = NSStringFromClass(v9);
-        v11 = [v8 stringWithFormat:@"<%@: %p>", v10, v7];
+        v11 = [v8 stringWithFormat:@"<%@: %p>", v10, owningEnvironment];
       }
 
       else
@@ -743,14 +743,14 @@ LABEL_7:
     v5 = *(CategoryCachedImpl + 8);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      v17 = [(_UIFocusEngineScrollableContainerOffsets *)v4 environmentScrollableContainer];
-      v18 = [v17 owningEnvironment];
-      if (v18)
+      environmentScrollableContainer2 = [(_UIFocusEngineScrollableContainerOffsets *)entryCopy environmentScrollableContainer];
+      owningEnvironment2 = [environmentScrollableContainer2 owningEnvironment];
+      if (owningEnvironment2)
       {
         v19 = MEMORY[0x1E696AEC0];
         v20 = objc_opt_class();
         v21 = NSStringFromClass(v20);
-        v22 = [v19 stringWithFormat:@"<%@: %p>", v21, v18];
+        v22 = [v19 stringWithFormat:@"<%@: %p>", v21, owningEnvironment2];
       }
 
       else
@@ -760,11 +760,11 @@ LABEL_7:
 
       v23 = MEMORY[0x1E696AF00];
       v24 = v22;
-      v25 = [v23 callStackSymbols];
+      callStackSymbols = [v23 callStackSymbols];
       *buf = 138412546;
       v27 = v22;
       v28 = 2114;
-      v29 = v25;
+      v29 = callStackSymbols;
       _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_ERROR, "Removing focus scroll animator entry for environment %@\n%{public}@", buf, 0x16u);
     }
 
@@ -773,7 +773,7 @@ LABEL_7:
 
 LABEL_8:
   singleScrollableContainerEntry = self->_singleScrollableContainerEntry;
-  if (singleScrollableContainerEntry == v4)
+  if (singleScrollableContainerEntry == entryCopy)
   {
     self->_singleScrollableContainerEntry = 0;
   }
@@ -781,68 +781,68 @@ LABEL_8:
   scrollableContainers = self->_scrollableContainers;
   if (scrollableContainers)
   {
-    v14 = [(_UIFocusEngineScrollableContainerOffsets *)v4 environmentScrollableContainer];
-    v15 = [v14 scrollableContainer];
-    [(NSMapTable *)scrollableContainers removeObjectForKey:v15];
+    environmentScrollableContainer3 = [(_UIFocusEngineScrollableContainerOffsets *)entryCopy environmentScrollableContainer];
+    scrollableContainer = [environmentScrollableContainer3 scrollableContainer];
+    [(NSMapTable *)scrollableContainers removeObjectForKey:scrollableContainer];
   }
 }
 
-- (void)_processEntry:(id)a3 timeDelta:(int64_t)a4 completed:(id)a5 cancelled:(id)a6
+- (void)_processEntry:(id)entry timeDelta:(int64_t)delta completed:(id)completed cancelled:(id)cancelled
 {
   v70 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v12 = [v10 environmentScrollableContainer];
-  v13 = [v12 owningEnvironment];
+  entryCopy = entry;
+  completedCopy = completed;
+  environmentScrollableContainer = [entryCopy environmentScrollableContainer];
+  owningEnvironment = [environmentScrollableContainer owningEnvironment];
 
-  if (!v13)
+  if (!owningEnvironment)
   {
-    v59 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v59 handleFailureInMethod:a2 object:self file:@"_UIFocusScrollAnimator.m" lineNumber:463 description:{@"Invalid parameter not satisfying: %@", @"owningEnvironment != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusScrollAnimator.m" lineNumber:463 description:{@"Invalid parameter not satisfying: %@", @"owningEnvironment != nil"}];
   }
 
-  [v10 lastContentOffset];
+  [entryCopy lastContentOffset];
   v15 = v14;
   v17 = v16;
-  [v10 targetContentOffset];
+  [entryCopy targetContentOffset];
   v19 = v18;
   v21 = v20;
   v22 = vabdd_f64(v17, v20);
   if (vabdd_f64(v15, v18) < 0.5 && v22 < 0.5)
   {
-    [v11 addObject:v10];
+    [completedCopy addObject:entryCopy];
   }
 
   else
   {
-    [v10 convergenceRate];
-    v25 = pow(v24, a4);
+    [entryCopy convergenceRate];
+    v25 = pow(v24, delta);
     v26 = v15 * v25 + v19 * (1.0 - v25);
     v27 = v17 * v25 + v21 * (1.0 - v25);
-    [v10 lastVelocity];
+    [entryCopy lastVelocity];
     v29 = v28;
     v31 = v30;
     [(_UIFocusDisplayLinkScrollAnimator *)self _applyAccelerationLimitToAcceleration:(v26 - v15 - v28) currentOffset:(v27 - v17 - v30) targetOffset:v15, v17, v19, v21];
     v33 = v29 + v32;
     v35 = v31 + v34;
-    [(_UIFocusDisplayLinkScrollAnimator *)self _hyperJumpContentOffsetIfNecessaryForEntry:v10 currentOffset:v15, v17];
+    [(_UIFocusDisplayLinkScrollAnimator *)self _hyperJumpContentOffsetIfNecessaryForEntry:entryCopy currentOffset:v15, v17];
     v37 = v36 + v33;
     v39 = v38 + v35;
-    v40 = [v10 environmentScrollableContainer];
-    v41 = [v40 scrollableContainer];
+    environmentScrollableContainer2 = [entryCopy environmentScrollableContainer];
+    scrollableContainer = [environmentScrollableContainer2 scrollableContainer];
 
-    [v41 contentOffset];
+    [scrollableContainer contentOffset];
     v43 = v42;
     v45 = v44;
-    [v10 lastRoundedOffset];
+    [entryCopy lastRoundedOffset];
     v47 = v43 - v46;
     v49 = v45 - v48;
-    if ((v47 != *MEMORY[0x1E695EFF8] || v49 != *(MEMORY[0x1E695EFF8] + 8)) && [v10 adjustsTargetsOnContentOffsetChanges])
+    if ((v47 != *MEMORY[0x1E695EFF8] || v49 != *(MEMORY[0x1E695EFF8] + 8)) && [entryCopy adjustsTargetsOnContentOffsetChanges])
     {
       v37 = v37 + v47;
       v39 = v39 + v49;
-      [v10 targetContentOffset];
-      [v10 setTargetContentOffset:{v47 + v50, v49 + v51}];
+      [entryCopy targetContentOffset];
+      [entryCopy setTargetContentOffset:{v47 + v50, v49 + v51}];
     }
 
     v52 = +[UIWindow _applicationKeyWindow];
@@ -865,32 +865,32 @@ LABEL_8:
         v66 = 2048;
         v67 = v56;
         v68 = 2112;
-        v69 = v41;
+        v69 = scrollableContainer;
         _os_log_impl(&dword_188A29000, v58, OS_LOG_TYPE_ERROR, "Focus entry attempted to scroll container to non-finite location: (%g, %g) rounded to (%g, %g) in container %@", buf, 0x34u);
       }
 
-      [v11 addObject:v10];
+      [completedCopy addObject:entryCopy];
     }
 
     else
     {
-      [v10 setLastContentOffset:{v37, v39}];
-      [v10 setLastRoundedOffset:{v54, v56}];
-      [v41 setContentOffset:{v54, v56}];
-      [v10 setLastVelocity:{v33, v35}];
+      [entryCopy setLastContentOffset:{v37, v39}];
+      [entryCopy setLastRoundedOffset:{v54, v56}];
+      [scrollableContainer setContentOffset:{v54, v56}];
+      [entryCopy setLastVelocity:{v33, v35}];
     }
   }
 }
 
-- (CGPoint)_applyAccelerationLimitToAcceleration:(CGPoint)a3 currentOffset:(CGPoint)a4 targetOffset:(CGPoint)a5
+- (CGPoint)_applyAccelerationLimitToAcceleration:(CGPoint)acceleration currentOffset:(CGPoint)offset targetOffset:(CGPoint)targetOffset
 {
-  y = a5.y;
-  x = a5.x;
-  v7 = a4.y;
-  v8 = a4.x;
-  v22 = *&a3.y;
+  y = targetOffset.y;
+  x = targetOffset.x;
+  v7 = offset.y;
+  v8 = offset.x;
+  v22 = *&acceleration.y;
   v9 = _UIInternalPreferenceUsesDefault_1(&_UIInternalPreference_FocusScrollAccelerationLimit, @"FocusScrollAccelerationLimit");
-  v13 = a3.x;
+  v13 = acceleration.x;
   if (v9)
   {
     v14 = 10.0;
@@ -906,18 +906,18 @@ LABEL_8:
   v15.f64[0] = NAN;
   v15.f64[1] = NAN;
   v16 = vnegq_f64(v15);
-  v17 = *vbslq_s8(v16, v10, a3).i64 == *vbslq_s8(v16, v10, v11).i64;
+  v17 = *vbslq_s8(v16, v10, acceleration).i64 == *vbslq_s8(v16, v10, v11).i64;
   v18 = -v14;
   if (v17)
   {
-    if (a3.x <= v18)
+    if (acceleration.x <= v18)
     {
       v19 = -v14;
     }
 
     else
     {
-      v19 = a3.x;
+      v19 = acceleration.x;
     }
 
     if (v14 <= v19)
@@ -951,11 +951,11 @@ LABEL_8:
   return result;
 }
 
-- (CGPoint)_hyperJumpContentOffsetIfNecessaryForEntry:(id)a3 currentOffset:(CGPoint)a4
+- (CGPoint)_hyperJumpContentOffsetIfNecessaryForEntry:(id)entry currentOffset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3;
+  y = offset.y;
+  x = offset.x;
+  entryCopy = entry;
   if (_UIInternalPreferenceUsesDefault_1(&_UIInternalPreference_FocusScrollPageLimit, @"FocusScrollPageLimit"))
   {
     v7 = 2.0;
@@ -966,16 +966,16 @@ LABEL_8:
     v7 = *&qword_1EA95E470;
   }
 
-  [v6 startContentOffset];
+  [entryCopy startContentOffset];
   v31 = v8;
   v10 = v9;
-  [v6 targetContentOffset];
+  [entryCopy targetContentOffset];
   v12 = v11;
   v14 = v13;
-  v15 = [v6 environmentScrollableContainer];
+  environmentScrollableContainer = [entryCopy environmentScrollableContainer];
 
-  v16 = [v15 scrollableContainer];
-  [v16 visibleSize];
+  scrollableContainer = [environmentScrollableContainer scrollableContainer];
+  [scrollableContainer visibleSize];
   v18 = v17;
   v20 = v19;
 

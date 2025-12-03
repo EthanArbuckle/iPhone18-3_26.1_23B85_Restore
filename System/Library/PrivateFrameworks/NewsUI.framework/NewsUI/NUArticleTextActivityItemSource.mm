@@ -1,56 +1,56 @@
 @interface NUArticleTextActivityItemSource
-- (NUArticleTextActivityItemSource)initWithHeadline:(id)a3;
-- (id)activityViewController:(id)a3 dataTypeIdentifierForActivityType:(id)a4;
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4;
-- (id)activityViewController:(id)a3 subjectForActivityType:(id)a4;
+- (NUArticleTextActivityItemSource)initWithHeadline:(id)headline;
+- (id)activityViewController:(id)controller dataTypeIdentifierForActivityType:(id)type;
+- (id)activityViewController:(id)controller itemForActivityType:(id)type;
+- (id)activityViewController:(id)controller subjectForActivityType:(id)type;
 @end
 
 @implementation NUArticleTextActivityItemSource
 
-- (NUArticleTextActivityItemSource)initWithHeadline:(id)a3
+- (NUArticleTextActivityItemSource)initWithHeadline:(id)headline
 {
-  v4 = a3;
+  headlineCopy = headline;
   v18.receiver = self;
   v18.super_class = NUArticleTextActivityItemSource;
-  v5 = [(NUArticleActivityItemSource *)&v18 initWithHeadline:v4];
+  v5 = [(NUArticleActivityItemSource *)&v18 initWithHeadline:headlineCopy];
   if (v5)
   {
-    v6 = [v4 title];
-    if (v6 && (v7 = v6, [v4 sourceName], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v8))
+    title = [headlineCopy title];
+    if (title && (v7 = title, [headlineCopy sourceName], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v8))
     {
       v9 = MEMORY[0x277CCACA8];
-      v10 = [v4 title];
-      v11 = [v4 sourceName];
-      v12 = [v9 stringWithFormat:@"%@ - %@", v10, v11];
+      title2 = [headlineCopy title];
+      sourceName = [headlineCopy sourceName];
+      v12 = [v9 stringWithFormat:@"%@ - %@", title2, sourceName];
       itemTitle = v5->_itemTitle;
       v5->_itemTitle = v12;
     }
 
     else
     {
-      v14 = [v4 title];
+      title3 = [headlineCopy title];
 
-      if (v14)
+      if (title3)
       {
-        v15 = [v4 title];
+        title4 = [headlineCopy title];
       }
 
       else
       {
-        v16 = [v4 sourceName];
+        sourceName2 = [headlineCopy sourceName];
 
-        if (!v16)
+        if (!sourceName2)
         {
-          v10 = v5->_itemTitle;
+          title2 = v5->_itemTitle;
           v5->_itemTitle = &stru_286E03B58;
           goto LABEL_10;
         }
 
-        v15 = [v4 sourceName];
+        title4 = [headlineCopy sourceName];
       }
 
-      v10 = v5->_itemTitle;
-      v5->_itemTitle = v15;
+      title2 = v5->_itemTitle;
+      v5->_itemTitle = title4;
     }
 
 LABEL_10:
@@ -59,54 +59,54 @@ LABEL_10:
   return v5;
 }
 
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4
+- (id)activityViewController:(id)controller itemForActivityType:(id)type
 {
-  v5 = a4;
-  if ([v5 isEqualToString:*MEMORY[0x277D54738]] & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", *MEMORY[0x277D54720]))
+  typeCopy = type;
+  if ([typeCopy isEqualToString:*MEMORY[0x277D54738]] & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", *MEMORY[0x277D54720]))
   {
-    v6 = 0;
+    itemTitle3 = 0;
   }
 
-  else if ([v5 isEqualToString:*MEMORY[0x277D54748]] & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", *MEMORY[0x277D54728]))
+  else if ([typeCopy isEqualToString:*MEMORY[0x277D54748]] & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", *MEMORY[0x277D54728]))
   {
-    v6 = &stru_286E03B58;
+    itemTitle3 = &stru_286E03B58;
   }
 
-  else if ([v5 isEqualToString:@"com.apple.mobilenotes.SharingExtension"])
+  else if ([typeCopy isEqualToString:@"com.apple.mobilenotes.SharingExtension"])
   {
     v8 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:2];
-    v9 = [(NUArticleTextActivityItemSource *)self itemTitle];
+    itemTitle = [(NUArticleTextActivityItemSource *)self itemTitle];
 
-    if (v9)
+    if (itemTitle)
     {
-      v10 = [(NUArticleTextActivityItemSource *)self itemTitle];
-      [v8 setObject:v10 forKeyedSubscript:@"article-title"];
+      itemTitle2 = [(NUArticleTextActivityItemSource *)self itemTitle];
+      [v8 setObject:itemTitle2 forKeyedSubscript:@"article-title"];
     }
 
-    v11 = [(NUArticleActivityItemSource *)self headline];
-    v12 = [v11 shortExcerpt];
+    headline = [(NUArticleActivityItemSource *)self headline];
+    shortExcerpt = [headline shortExcerpt];
 
-    if (v12)
+    if (shortExcerpt)
     {
-      v13 = [(NUArticleActivityItemSource *)self headline];
-      v14 = [v13 shortExcerpt];
-      [v8 setObject:v14 forKeyedSubscript:@"article-summary"];
+      headline2 = [(NUArticleActivityItemSource *)self headline];
+      shortExcerpt2 = [headline2 shortExcerpt];
+      [v8 setObject:shortExcerpt2 forKeyedSubscript:@"article-summary"];
     }
 
-    v6 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v8 requiringSecureCoding:1 error:0];
+    itemTitle3 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v8 requiringSecureCoding:1 error:0];
   }
 
   else
   {
-    v6 = [(NUArticleTextActivityItemSource *)self itemTitle];
+    itemTitle3 = [(NUArticleTextActivityItemSource *)self itemTitle];
   }
 
-  return v6;
+  return itemTitle3;
 }
 
-- (id)activityViewController:(id)a3 dataTypeIdentifierForActivityType:(id)a4
+- (id)activityViewController:(id)controller dataTypeIdentifierForActivityType:(id)type
 {
-  if ([a4 isEqualToString:@"com.apple.mobilenotes.SharingExtension"])
+  if ([type isEqualToString:@"com.apple.mobilenotes.SharingExtension"])
   {
     return @"com.apple.news.notes-metadata";
   }
@@ -119,41 +119,41 @@ LABEL_10:
   return &stru_286E03B58;
 }
 
-- (id)activityViewController:(id)a3 subjectForActivityType:(id)a4
+- (id)activityViewController:(id)controller subjectForActivityType:(id)type
 {
-  v5 = a4;
-  v6 = [(NUArticleTextActivityItemSource *)self itemTitle];
-  v7 = [v5 isEqualToString:*MEMORY[0x277D54728]];
+  typeCopy = type;
+  itemTitle = [(NUArticleTextActivityItemSource *)self itemTitle];
+  v7 = [typeCopy isEqualToString:*MEMORY[0x277D54728]];
 
   if (v7)
   {
-    v8 = [(NUArticleActivityItemSource *)self headline];
-    v9 = [v8 title];
-    if (v9)
+    headline = [(NUArticleActivityItemSource *)self headline];
+    title = [headline title];
+    if (title)
     {
-      v10 = v9;
-      v11 = [(NUArticleActivityItemSource *)self headline];
-      v12 = [v11 sourceName];
+      v10 = title;
+      headline2 = [(NUArticleActivityItemSource *)self headline];
+      sourceName = [headline2 sourceName];
 
-      if (!v12)
+      if (!sourceName)
       {
         goto LABEL_6;
       }
 
       v13 = MEMORY[0x277CCACA8];
-      v8 = [(NUArticleActivityItemSource *)self headline];
-      v14 = [v8 sourceName];
-      v15 = [(NUArticleActivityItemSource *)self headline];
-      v16 = [v15 title];
-      v17 = [v13 stringWithFormat:@"%@: %@", v14, v16];
+      headline = [(NUArticleActivityItemSource *)self headline];
+      sourceName2 = [headline sourceName];
+      headline3 = [(NUArticleActivityItemSource *)self headline];
+      title2 = [headline3 title];
+      v17 = [v13 stringWithFormat:@"%@: %@", sourceName2, title2];
 
-      v6 = v17;
+      itemTitle = v17;
     }
   }
 
 LABEL_6:
 
-  return v6;
+  return itemTitle;
 }
 
 - (void)activityViewController:dataTypeIdentifierForActivityType:.cold.1()

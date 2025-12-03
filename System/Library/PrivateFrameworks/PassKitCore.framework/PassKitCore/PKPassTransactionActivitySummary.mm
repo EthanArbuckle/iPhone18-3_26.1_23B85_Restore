@@ -1,12 +1,12 @@
 @interface PKPassTransactionActivitySummary
-- (PKPassTransactionActivitySummary)initWithCoder:(id)a3;
-- (PKPassTransactionActivitySummary)initWithPassUniqueIdentifier:(id)a3 paymentApplicationIdentifier:(id)a4 subcredentialIdentifier:(id)a5 lastUsed:(id)a6 presentmentType:(unint64_t)a7;
-- (PKPassTransactionActivitySummary)initWithPassUniqueIdentifier:(id)a3 paymentApplicationIdentifier:(id)a4 subcredentialIdentifier:(id)a5 pass:(id)a6 state:(id)a7;
+- (PKPassTransactionActivitySummary)initWithCoder:(id)coder;
+- (PKPassTransactionActivitySummary)initWithPassUniqueIdentifier:(id)identifier paymentApplicationIdentifier:(id)applicationIdentifier subcredentialIdentifier:(id)subcredentialIdentifier lastUsed:(id)used presentmentType:(unint64_t)type;
+- (PKPassTransactionActivitySummary)initWithPassUniqueIdentifier:(id)identifier paymentApplicationIdentifier:(id)applicationIdentifier subcredentialIdentifier:(id)subcredentialIdentifier pass:(id)pass state:(id)state;
 - (id)_databaseInit;
 - (id)description;
 - (id)redactedDescription;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateWithPassTransactionActivitySummary:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateWithPassTransactionActivitySummary:(id)summary;
 @end
 
 @implementation PKPassTransactionActivitySummary
@@ -20,18 +20,18 @@
   return v2;
 }
 
-- (PKPassTransactionActivitySummary)initWithPassUniqueIdentifier:(id)a3 paymentApplicationIdentifier:(id)a4 subcredentialIdentifier:(id)a5 pass:(id)a6 state:(id)a7
+- (PKPassTransactionActivitySummary)initWithPassUniqueIdentifier:(id)identifier paymentApplicationIdentifier:(id)applicationIdentifier subcredentialIdentifier:(id)subcredentialIdentifier pass:(id)pass state:(id)state
 {
-  v12 = a6;
-  v13 = a7;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  if ([v12 cardType] == 3)
+  passCopy = pass;
+  stateCopy = state;
+  subcredentialIdentifierCopy = subcredentialIdentifier;
+  applicationIdentifierCopy = applicationIdentifier;
+  identifierCopy = identifier;
+  if ([passCopy cardType] == 3)
   {
-    if ([v12 accessType] == 3 || objc_msgSend(v12, "accessType") == 4)
+    if ([passCopy accessType] == 3 || objc_msgSend(passCopy, "accessType") == 4)
     {
-      if (([v13 standaloneTransactionType] - 1) >= 2)
+      if (([stateCopy standaloneTransactionType] - 1) >= 2)
       {
         v17 = 2;
       }
@@ -54,91 +54,91 @@
   }
 
   v18 = [MEMORY[0x1E695DF00] now];
-  v19 = [(PKPassTransactionActivitySummary *)self initWithPassUniqueIdentifier:v16 paymentApplicationIdentifier:v15 subcredentialIdentifier:v14 lastUsed:v18 presentmentType:v17];
+  v19 = [(PKPassTransactionActivitySummary *)self initWithPassUniqueIdentifier:identifierCopy paymentApplicationIdentifier:applicationIdentifierCopy subcredentialIdentifier:subcredentialIdentifierCopy lastUsed:v18 presentmentType:v17];
 
   return v19;
 }
 
-- (PKPassTransactionActivitySummary)initWithPassUniqueIdentifier:(id)a3 paymentApplicationIdentifier:(id)a4 subcredentialIdentifier:(id)a5 lastUsed:(id)a6 presentmentType:(unint64_t)a7
+- (PKPassTransactionActivitySummary)initWithPassUniqueIdentifier:(id)identifier paymentApplicationIdentifier:(id)applicationIdentifier subcredentialIdentifier:(id)subcredentialIdentifier lastUsed:(id)used presentmentType:(unint64_t)type
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  identifierCopy = identifier;
+  applicationIdentifierCopy = applicationIdentifier;
+  subcredentialIdentifierCopy = subcredentialIdentifier;
+  usedCopy = used;
   v20.receiver = self;
   v20.super_class = PKPassTransactionActivitySummary;
   v17 = [(PKPassTransactionActivitySummary *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_passUniqueIdentifier, a3);
-    objc_storeStrong(&v18->_paymentApplicationIdentifier, a4);
-    objc_storeStrong(&v18->_subcredentialIdentifier, a5);
-    objc_storeStrong(&v18->_lastUsed, a6);
-    v18->_presentmentType = a7;
+    objc_storeStrong(&v17->_passUniqueIdentifier, identifier);
+    objc_storeStrong(&v18->_paymentApplicationIdentifier, applicationIdentifier);
+    objc_storeStrong(&v18->_subcredentialIdentifier, subcredentialIdentifier);
+    objc_storeStrong(&v18->_lastUsed, used);
+    v18->_presentmentType = type;
   }
 
   return v18;
 }
 
-- (void)updateWithPassTransactionActivitySummary:(id)a3
+- (void)updateWithPassTransactionActivitySummary:(id)summary
 {
-  v4 = [a3 lastUsed];
-  if (v4)
+  lastUsed = [summary lastUsed];
+  if (lastUsed)
   {
     lastUsed = self->_lastUsed;
-    v7 = v4;
+    v7 = lastUsed;
     if (lastUsed)
     {
-      v6 = [(NSDate *)lastUsed laterDate:v4];
+      v6 = [(NSDate *)lastUsed laterDate:lastUsed];
       [(PKPassTransactionActivitySummary *)self setLastUsed:v6];
     }
 
     else
     {
-      [(PKPassTransactionActivitySummary *)self setLastUsed:v4];
+      [(PKPassTransactionActivitySummary *)self setLastUsed:lastUsed];
     }
 
-    v4 = v7;
+    lastUsed = v7;
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   passUniqueIdentifier = self->_passUniqueIdentifier;
-  v5 = a3;
-  [v5 encodeObject:passUniqueIdentifier forKey:@"passUniqueIdentifier"];
-  [v5 encodeObject:self->_paymentApplicationIdentifier forKey:@"paymentApplicationIdentifier"];
-  [v5 encodeObject:self->_subcredentialIdentifier forKey:@"subcredentialIdentifier"];
-  [v5 encodeObject:self->_lastUsed forKey:@"lastUsed"];
-  [v5 encodeInteger:self->_presentmentType forKey:@"presentmentType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:passUniqueIdentifier forKey:@"passUniqueIdentifier"];
+  [coderCopy encodeObject:self->_paymentApplicationIdentifier forKey:@"paymentApplicationIdentifier"];
+  [coderCopy encodeObject:self->_subcredentialIdentifier forKey:@"subcredentialIdentifier"];
+  [coderCopy encodeObject:self->_lastUsed forKey:@"lastUsed"];
+  [coderCopy encodeInteger:self->_presentmentType forKey:@"presentmentType"];
 }
 
-- (PKPassTransactionActivitySummary)initWithCoder:(id)a3
+- (PKPassTransactionActivitySummary)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = PKPassTransactionActivitySummary;
   v5 = [(PKPassTransactionActivitySummary *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passUniqueIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passUniqueIdentifier"];
     passUniqueIdentifier = v5->_passUniqueIdentifier;
     v5->_passUniqueIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paymentApplicationIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"paymentApplicationIdentifier"];
     paymentApplicationIdentifier = v5->_paymentApplicationIdentifier;
     v5->_paymentApplicationIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subcredentialIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subcredentialIdentifier"];
     subcredentialIdentifier = v5->_subcredentialIdentifier;
     v5->_subcredentialIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastUsed"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastUsed"];
     lastUsed = v5->_lastUsed;
     v5->_lastUsed = v12;
 
-    v5->_presentmentType = [v4 decodeIntegerForKey:@"presentmentType"];
+    v5->_presentmentType = [coderCopy decodeIntegerForKey:@"presentmentType"];
   }
 
   return v5;

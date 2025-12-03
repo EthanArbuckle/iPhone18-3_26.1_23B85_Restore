@@ -1,22 +1,22 @@
 @interface PKTransactionDebugDetailsTabBarController
-- (PKTransactionDebugDetailsTabBarController)initWithTransaction:(id)a3 transactionSourceCollection:(id)a4;
-- (void)_handleShareButton:(id)a3;
+- (PKTransactionDebugDetailsTabBarController)initWithTransaction:(id)transaction transactionSourceCollection:(id)collection;
+- (void)_handleShareButton:(id)button;
 @end
 
 @implementation PKTransactionDebugDetailsTabBarController
 
-- (PKTransactionDebugDetailsTabBarController)initWithTransaction:(id)a3 transactionSourceCollection:(id)a4
+- (PKTransactionDebugDetailsTabBarController)initWithTransaction:(id)transaction transactionSourceCollection:(id)collection
 {
-  v7 = a3;
-  v8 = a4;
+  transactionCopy = transaction;
+  collectionCopy = collection;
   v34.receiver = self;
   v34.super_class = PKTransactionDebugDetailsTabBarController;
   v9 = [(PKTransactionDebugDetailsTabBarController *)&v34 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_transaction, a3);
-    objc_storeStrong(&v10->_transactionSourceCollection, a4);
+    objc_storeStrong(&v9->_transaction, transaction);
+    objc_storeStrong(&v10->_transactionSourceCollection, collection);
     v11 = [[PKTransactionDebugDetailsViewController alloc] initWithTransaction:v10->_transaction];
     v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v13 = objc_alloc_init(MEMORY[0x1E69DD008]);
@@ -51,11 +51,11 @@
 
     [(PKTransactionSpotlightDebugDetailsViewController *)v10->_spotlightViewController setTabBarItem:v22];
     [v12 addObject:v10->_spotlightViewController];
-    v24 = [v7 associatedReceiptUniqueID];
+    associatedReceiptUniqueID = [transactionCopy associatedReceiptUniqueID];
 
-    if (v24)
+    if (associatedReceiptUniqueID)
     {
-      v25 = [[PKTransactionReceiptDebugViewController alloc] initWithPaymentTransaction:v7];
+      v25 = [[PKTransactionReceiptDebugViewController alloc] initWithPaymentTransaction:transactionCopy];
       v26 = objc_alloc(MEMORY[0x1E69DD008]);
       v27 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"list.bullet"];
       v28 = [v26 initWithTitle:@"Receipt" image:v27 selectedImage:0];
@@ -73,30 +73,30 @@
     shareButton = v10->_shareButton;
     v10->_shareButton = v30;
 
-    v32 = [(PKTransactionDebugDetailsTabBarController *)v10 navigationItem];
-    [v32 setRightBarButtonItem:v10->_shareButton];
+    navigationItem = [(PKTransactionDebugDetailsTabBarController *)v10 navigationItem];
+    [navigationItem setRightBarButtonItem:v10->_shareButton];
   }
 
   return v10;
 }
 
-- (void)_handleShareButton:(id)a3
+- (void)_handleShareButton:(id)button
 {
   [(UIBarButtonItem *)self->_shareButton setEnabled:0];
   v4 = objc_alloc_init(MEMORY[0x1E69B8658]);
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  v6 = [(PKPaymentTransaction *)self->_transaction identifier];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  identifier = [(PKPaymentTransaction *)self->_transaction identifier];
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v35 = [MEMORY[0x1E696AEC0] stringWithFormat:@"transaction_%@.txt", v6];
-  v8 = [v5 temporaryDirectory];
-  v9 = [v8 URLByAppendingPathComponent:v35];
+  v35 = [MEMORY[0x1E696AEC0] stringWithFormat:@"transaction_%@.txt", identifier];
+  temporaryDirectory = [defaultManager temporaryDirectory];
+  v9 = [temporaryDirectory URLByAppendingPathComponent:v35];
 
   v50[0] = MEMORY[0x1E69E9820];
   v50[1] = 3221225472;
   v50[2] = __64__PKTransactionDebugDetailsTabBarController__handleShareButton___block_invoke;
   v50[3] = &unk_1E8015210;
   v50[4] = self;
-  v10 = v5;
+  v10 = defaultManager;
   v51 = v10;
   v32 = v9;
   v52 = v32;
@@ -104,10 +104,10 @@
   v53 = v11;
   v12 = v4;
   [v4 addOperation:v50];
-  v33 = v6;
-  v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"cloudRecordObject_%@.txt", v6];
-  v13 = [v10 temporaryDirectory];
-  v14 = [v13 URLByAppendingPathComponent:v34];
+  v33 = identifier;
+  v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"cloudRecordObject_%@.txt", identifier];
+  temporaryDirectory2 = [v10 temporaryDirectory];
+  v14 = [temporaryDirectory2 URLByAppendingPathComponent:v34];
 
   v46[0] = MEMORY[0x1E69E9820];
   v46[1] = 3221225472;
@@ -121,9 +121,9 @@
   v17 = v11;
   v49 = v17;
   [v12 addOperation:v46];
-  v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"spotlight_%@.txt", v6];
-  v19 = [v15 temporaryDirectory];
-  v20 = [v19 URLByAppendingPathComponent:v18];
+  v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"spotlight_%@.txt", identifier];
+  temporaryDirectory3 = [v15 temporaryDirectory];
+  v20 = [temporaryDirectory3 URLByAppendingPathComponent:v18];
 
   v42[0] = MEMORY[0x1E69E9820];
   v42[1] = 3221225472;
@@ -138,7 +138,7 @@
   v45 = v23;
   v24 = v12;
   [v12 addOperation:v42];
-  v25 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
   v36[0] = MEMORY[0x1E69E9820];
   v36[1] = 3221225472;
   v36[2] = __64__PKTransactionDebugDetailsTabBarController__handleShareButton___block_invoke_6;
@@ -154,7 +154,7 @@
   v28 = v32;
   v29 = v21;
   v30 = v23;
-  v31 = [v24 evaluateWithInput:v25 completion:v36];
+  v31 = [v24 evaluateWithInput:null completion:v36];
 }
 
 void __64__PKTransactionDebugDetailsTabBarController__handleShareButton___block_invoke(uint64_t a1, uint64_t a2, void *a3, void *a4)

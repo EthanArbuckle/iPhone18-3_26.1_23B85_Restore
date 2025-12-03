@@ -1,9 +1,9 @@
 @interface NIConfiguration
-- (NIConfiguration)initWithCoder:(id)a3;
-- (NIConfiguration)initWithConfiguration:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NIConfiguration)initWithCoder:(id)coder;
+- (NIConfiguration)initWithConfiguration:(id)configuration;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)initInternal;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NIConfiguration
@@ -22,13 +22,13 @@
   return result;
 }
 
-- (NIConfiguration)initWithConfiguration:(id)a3
+- (NIConfiguration)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
-  if (!v5)
+  configurationCopy = configuration;
+  if (!configurationCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"NIConfiguration.mm" lineNumber:371 description:{@"Invalid parameter not satisfying: %@", @"configuration"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NIConfiguration.mm" lineNumber:371 description:{@"Invalid parameter not satisfying: %@", @"configuration"}];
   }
 
   v9.receiver = self;
@@ -36,36 +36,36 @@
   v6 = [(NIConfiguration *)&v9 init];
   if (v6)
   {
-    v6->_suspensionPolicy = [v5 suspensionPolicy];
-    v6->_enabledGestures = [v5 enabledGestures];
-    v6->_supportsCameraAssistance = [v5 supportsCameraAssistance];
+    v6->_suspensionPolicy = [configurationCopy suspensionPolicy];
+    v6->_enabledGestures = [configurationCopy enabledGestures];
+    v6->_supportsCameraAssistance = [configurationCopy supportsCameraAssistance];
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
 
   return [v4 initWithConfiguration:self];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:self->_suspensionPolicy forKey:@"suspensionPolicy"];
-  [v4 encodeInteger:self->_enabledGestures forKey:@"enabledGestures"];
-  [v4 encodeBool:self->_supportsCameraAssistance forKey:@"supportsCameraAssistance"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:self->_suspensionPolicy forKey:@"suspensionPolicy"];
+  [coderCopy encodeInteger:self->_enabledGestures forKey:@"enabledGestures"];
+  [coderCopy encodeBool:self->_supportsCameraAssistance forKey:@"supportsCameraAssistance"];
 }
 
-- (NIConfiguration)initWithCoder:(id)a3
+- (NIConfiguration)initWithCoder:(id)coder
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initInternal];
+  coderCopy = coder;
+  initInternal = [objc_alloc(objc_opt_class()) initInternal];
 
-  if (v5)
+  if (initInternal)
   {
     *__p = xmmword_1BAC848E0;
     v23 = 1;
@@ -78,12 +78,12 @@
     v23 = 0;
     __p[0] = 0;
     std::vector<unsigned long>::__init_with_size[abi:ne200100]<unsigned long const*,unsigned long const*>(__p, &v21, __p, 2uLL);
-    v6 = [v4 decodeIntegerForKey:@"suspensionPolicy"];
-    v7 = [v4 decodeIntegerForKey:@"enabledGestures"];
-    v8 = [v4 decodeBoolForKey:@"supportsCameraAssistance"];
-    v5->_suspensionPolicy = 0;
-    v5->_enabledGestures = 0;
-    v5->_supportsCameraAssistance = v8;
+    v6 = [coderCopy decodeIntegerForKey:@"suspensionPolicy"];
+    v7 = [coderCopy decodeIntegerForKey:@"enabledGestures"];
+    v8 = [coderCopy decodeBoolForKey:@"supportsCameraAssistance"];
+    initInternal->_suspensionPolicy = 0;
+    initInternal->_enabledGestures = 0;
+    initInternal->_supportsCameraAssistance = v8;
     v9 = v18;
     v10 = v19;
     if (v18 != v19)
@@ -94,7 +94,7 @@
         if ((*v9 & v6) != 0)
         {
           v11 |= *v9;
-          v5->_suspensionPolicy = v11;
+          initInternal->_suspensionPolicy = v11;
         }
 
         ++v9;
@@ -113,7 +113,7 @@
         if ((*v12 & v7) != 0)
         {
           v14 |= *v12;
-          v5->_enabledGestures = v14;
+          initInternal->_enabledGestures = v14;
         }
 
         ++v12;
@@ -122,7 +122,7 @@
       while (v12 != v13);
     }
 
-    v15 = v5;
+    v15 = initInternal;
     if (__p[0])
     {
       __p[1] = __p[0];
@@ -137,7 +137,7 @@
   }
 
   v16 = *MEMORY[0x1E69E9840];
-  return v5;
+  return initInternal;
 }
 
 @end

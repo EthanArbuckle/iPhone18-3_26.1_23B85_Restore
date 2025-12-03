@@ -1,27 +1,27 @@
 @interface SBSwitcherAppSuggestionViewController
 - (CGRect)_idleOnscreenRectForBottomBanner;
 - (CGRect)_offscreenRectForBottomBanner;
-- (SBSwitcherAppSuggestionViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (SBSwitcherAppSuggestionViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (SBSwitcherAppSuggestionViewControllerDelegate)delegate;
 - (unint64_t)_bannerStyle;
 - (void)_activateBestAppSuggestion;
 - (void)_activateCurrentSuggestion;
-- (void)_animateOutAndRemoveCurrentBottomBannerWithCompletion:(id)a3;
+- (void)_animateOutAndRemoveCurrentBottomBannerWithCompletion:(id)completion;
 - (void)_evaluateSuggestionQueueSuspension;
-- (void)_handleBannerTap:(id)a3;
-- (void)_handleLongPress:(id)a3;
-- (void)_insertAndAnimateInBottomBannerForSuggestion:(id)a3 completion:(id)a4;
-- (void)_setBestAppSuggestion:(id)a3 animationCompletion:(id)a4;
-- (void)_setSuggestionQueueSuspended:(BOOL)a3;
-- (void)_updateBottomBannerWithCompletion:(id)a3;
-- (void)beginPausingSuggestionUpdatesForReason:(id)a3;
+- (void)_handleBannerTap:(id)tap;
+- (void)_handleLongPress:(id)press;
+- (void)_insertAndAnimateInBottomBannerForSuggestion:(id)suggestion completion:(id)completion;
+- (void)_setBestAppSuggestion:(id)suggestion animationCompletion:(id)completion;
+- (void)_setSuggestionQueueSuspended:(BOOL)suspended;
+- (void)_updateBottomBannerWithCompletion:(id)completion;
+- (void)beginPausingSuggestionUpdatesForReason:(id)reason;
 - (void)dealloc;
-- (void)endPausingSuggestionUpdatesForReason:(id)a3;
+- (void)endPausingSuggestionUpdatesForReason:(id)reason;
 - (void)loadView;
-- (void)setShowSuggestions:(BOOL)a3;
+- (void)setShowSuggestions:(BOOL)suggestions;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation SBSwitcherAppSuggestionViewController
@@ -45,17 +45,17 @@
 
   else
   {
-    v3 = [MEMORY[0x277D75418] currentDevice];
-    v4 = [v3 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v4 == 1)
+    if (userInterfaceIdiom == 1)
     {
       return 1;
     }
   }
 
-  v5 = [(SBSwitcherAppSuggestionViewController *)self delegate];
-  v6 = [v5 orientationForSuggestionViewController:self];
+  delegate = [(SBSwitcherAppSuggestionViewController *)self delegate];
+  v6 = [delegate orientationForSuggestionViewController:self];
 
   return (v6 - 5) <= 0xFFFFFFFFFFFFFFFDLL;
 }
@@ -82,9 +82,9 @@
 
     else
     {
-      v4 = [MEMORY[0x277D75418] currentDevice];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
       v3 = 14.0;
-      if (![v4 userInterfaceIdiom])
+      if (![currentDevice userInterfaceIdiom])
       {
         if (SBFEffectiveHomeButtonType() == 2)
         {
@@ -104,9 +104,9 @@
     v3 = 7.0;
   }
 
-  v5 = [(SBSwitcherAppSuggestionViewController *)self _bannerStyle];
+  _bannerStyle = [(SBSwitcherAppSuggestionViewController *)self _bannerStyle];
   v6 = __sb__runningInSpringBoard();
-  if (v5)
+  if (_bannerStyle)
   {
     if (v6)
     {
@@ -126,9 +126,9 @@
       goto LABEL_36;
     }
 
-    v8 = [MEMORY[0x277D75418] currentDevice];
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
     v7 = 14.0;
-    if (![v8 userInterfaceIdiom])
+    if (![currentDevice2 userInterfaceIdiom])
     {
       if (SBFEffectiveHomeButtonType() == 2)
       {
@@ -148,9 +148,9 @@ LABEL_35:
 
   if (!v6)
   {
-    v8 = [MEMORY[0x277D75418] currentDevice];
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
     v7 = 14.0;
-    if (![v8 userInterfaceIdiom])
+    if (![currentDevice2 userInterfaceIdiom])
     {
       if (SBFEffectiveHomeButtonType() == 2)
       {
@@ -180,11 +180,11 @@ LABEL_35:
   }
 
 LABEL_36:
-  v9 = [(SBSwitcherAppSuggestionViewController *)self view];
-  [v9 bounds];
+  view = [(SBSwitcherAppSuggestionViewController *)self view];
+  [view bounds];
   v10 = CGRectGetMaxY(v17) + -40.0 - v3;
-  v11 = [(SBSwitcherAppSuggestionViewController *)self view];
-  [v11 bounds];
+  view2 = [(SBSwitcherAppSuggestionViewController *)self view];
+  [view2 bounds];
   v12 = CGRectGetWidth(v18) + v7 * -2.0;
 
   v13 = 40.0;
@@ -204,8 +204,8 @@ LABEL_36:
   v4 = v3;
   v6 = v5;
   v8 = v7;
-  v9 = [(SBSwitcherAppSuggestionViewController *)self view];
-  [v9 bounds];
+  view = [(SBSwitcherAppSuggestionViewController *)self view];
+  [view bounds];
   MaxY = CGRectGetMaxY(v15);
 
   v11 = v4;
@@ -256,28 +256,28 @@ LABEL_36:
   [(SBSwitcherAppSuggestionViewController *)&v3 dealloc];
 }
 
-- (void)beginPausingSuggestionUpdatesForReason:(id)a3
+- (void)beginPausingSuggestionUpdatesForReason:(id)reason
 {
-  [(NSMutableSet *)self->_pauseSuggestionUpdateReasons addObject:a3];
+  [(NSMutableSet *)self->_pauseSuggestionUpdateReasons addObject:reason];
 
   [(SBSwitcherAppSuggestionViewController *)self _evaluateSuggestionQueueSuspension];
 }
 
-- (void)endPausingSuggestionUpdatesForReason:(id)a3
+- (void)endPausingSuggestionUpdatesForReason:(id)reason
 {
-  [(NSMutableSet *)self->_pauseSuggestionUpdateReasons removeObject:a3];
+  [(NSMutableSet *)self->_pauseSuggestionUpdateReasons removeObject:reason];
 
   [(SBSwitcherAppSuggestionViewController *)self _evaluateSuggestionQueueSuspension];
 }
 
-- (void)_setSuggestionQueueSuspended:(BOOL)a3
+- (void)_setSuggestionQueueSuspended:(BOOL)suspended
 {
   v12 = *MEMORY[0x277D85DE8];
-  if (self->_suggestionQueueSuspended != a3)
+  if (self->_suggestionQueueSuspended != suspended)
   {
-    self->_suggestionQueueSuspended = a3;
+    self->_suggestionQueueSuspended = suspended;
     setSuggestionQueue = self->_setSuggestionQueue;
-    if (a3)
+    if (suspended)
     {
       dispatch_suspend(setSuggestionQueue);
       v5 = SBLogCommon();
@@ -310,10 +310,10 @@ LABEL_7:
   }
 }
 
-- (void)_setBestAppSuggestion:(id)a3 animationCompletion:(id)a4
+- (void)_setBestAppSuggestion:(id)suggestion animationCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  suggestionCopy = suggestion;
+  completionCopy = completion;
   if ((BSEqualObjects() & 1) == 0)
   {
     objc_initWeak(&location, self);
@@ -323,8 +323,8 @@ LABEL_7:
     v9[2] = __83__SBSwitcherAppSuggestionViewController__setBestAppSuggestion_animationCompletion___block_invoke;
     v9[3] = &unk_2783AACB8;
     objc_copyWeak(&v12, &location);
-    v10 = v6;
-    v11 = v7;
+    v10 = suggestionCopy;
+    v11 = completionCopy;
     dispatch_async(setSuggestionQueue, v9);
 
     objc_destroyWeak(&v12);
@@ -358,20 +358,20 @@ void __83__SBSwitcherAppSuggestionViewController__setBestAppSuggestion_animation
   }
 }
 
-- (void)setShowSuggestions:(BOOL)a3
+- (void)setShowSuggestions:(BOOL)suggestions
 {
-  if (self->_showSuggestions != a3)
+  if (self->_showSuggestions != suggestions)
   {
-    self->_showSuggestions = a3;
+    self->_showSuggestions = suggestions;
     [(SBSwitcherAppSuggestionViewController *)self _updateBottomBannerWithCompletion:0];
   }
 }
 
-- (SBSwitcherAppSuggestionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SBSwitcherAppSuggestionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v10.receiver = self;
   v10.super_class = SBSwitcherAppSuggestionViewController;
-  v4 = [(SBSwitcherAppSuggestionViewController *)&v10 initWithNibName:a3 bundle:a4];
+  v4 = [(SBSwitcherAppSuggestionViewController *)&v10 initWithNibName:name bundle:bundle];
   if (v4)
   {
     Serial = BSDispatchQueueCreateSerial();
@@ -409,22 +409,22 @@ void __83__SBSwitcherAppSuggestionViewController__setBestAppSuggestion_animation
   [(UILongPressGestureRecognizer *)self->_longPressGestureRecognizer setMinimumPressDuration:0.12];
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = SBSwitcherAppSuggestionViewController;
   [(SBSwitcherAppSuggestionViewController *)&v5 willMoveToParentViewController:?];
-  if (!a3)
+  if (!controller)
   {
     self->_presentingOrDismissingBanner = 0;
   }
 }
 
-- (void)_updateBottomBannerWithCompletion:(id)a3
+- (void)_updateBottomBannerWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   bannerView = self->_bannerView;
-  v11 = v4;
+  v11 = completionCopy;
   if (self->_showSuggestions)
   {
     if (!bannerView)
@@ -438,8 +438,8 @@ LABEL_15:
       }
     }
 
-    v6 = [(SBSwitcherAppSuggestionBannerView *)bannerView representedAppSuggestion];
-    v7 = [v6 isEqual:self->_bestAppSuggestion];
+    representedAppSuggestion = [(SBSwitcherAppSuggestionBannerView *)bannerView representedAppSuggestion];
+    v7 = [representedAppSuggestion isEqual:self->_bestAppSuggestion];
 
     if ((v7 & 1) == 0)
     {
@@ -464,7 +464,7 @@ LABEL_15:
       goto LABEL_15;
     }
 
-    v4 = v11;
+    completionCopy = v11;
   }
 
   else if (bannerView)
@@ -473,9 +473,9 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    v4[2](v4, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
 LABEL_16:
@@ -483,10 +483,10 @@ LABEL_16:
   MEMORY[0x2821F9730]();
 }
 
-- (void)_insertAndAnimateInBottomBannerForSuggestion:(id)a3 completion:(id)a4
+- (void)_insertAndAnimateInBottomBannerForSuggestion:(id)suggestion completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  suggestionCopy = suggestion;
+  completionCopy = completion;
   if (self->_bannerView)
   {
     [SBSwitcherAppSuggestionViewController _insertAndAnimateInBottomBannerForSuggestion:a2 completion:self];
@@ -503,14 +503,14 @@ LABEL_16:
     [(SBSwitcherAppSuggestionViewController *)self _offscreenRectForBottomBanner];
   }
 
-  v13 = [[SBSwitcherAppSuggestionBannerView alloc] initWithFrame:v7 appSuggestion:[(SBSwitcherAppSuggestionViewController *)self _bannerStyle] style:v9, v10, v11, v12];
+  v13 = [[SBSwitcherAppSuggestionBannerView alloc] initWithFrame:suggestionCopy appSuggestion:[(SBSwitcherAppSuggestionViewController *)self _bannerStyle] style:v9, v10, v11, v12];
   bannerView = self->_bannerView;
   self->_bannerView = v13;
 
   [(SBSwitcherAppSuggestionBannerView *)self->_bannerView addGestureRecognizer:self->_tapGestureRecognizer];
   [(SBSwitcherAppSuggestionBannerView *)self->_bannerView addGestureRecognizer:self->_longPressGestureRecognizer];
-  v15 = [(SBSwitcherAppSuggestionViewController *)self view];
-  [v15 addSubview:self->_bannerView];
+  view = [(SBSwitcherAppSuggestionViewController *)self view];
+  [view addSubview:self->_bannerView];
 
   [(SBSwitcherAppSuggestionBannerView *)self->_bannerView layoutIfNeeded];
   if (SBReduceMotion())
@@ -529,8 +529,8 @@ LABEL_16:
   v18[2] = __97__SBSwitcherAppSuggestionViewController__insertAndAnimateInBottomBannerForSuggestion_completion___block_invoke_3;
   v18[3] = &unk_2783A9C98;
   v18[4] = self;
-  v19 = v8;
-  v17 = v8;
+  v19 = completionCopy;
+  v17 = completionCopy;
   [v16 _animateUsingDefaultTimingWithOptions:0 animations:v20 completion:v18];
 }
 
@@ -569,9 +569,9 @@ uint64_t __97__SBSwitcherAppSuggestionViewController__insertAndAnimateInBottomBa
   return result;
 }
 
-- (void)_animateOutAndRemoveCurrentBottomBannerWithCompletion:(id)a3
+- (void)_animateOutAndRemoveCurrentBottomBannerWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = self->_bannerView;
   [(SBSwitcherAppSuggestionBannerView *)v5 removeGestureRecognizer:self->_tapGestureRecognizer];
   [(SBSwitcherAppSuggestionBannerView *)v5 removeGestureRecognizer:self->_longPressGestureRecognizer];
@@ -588,9 +588,9 @@ uint64_t __97__SBSwitcherAppSuggestionViewController__insertAndAnimateInBottomBa
   v10[2] = __95__SBSwitcherAppSuggestionViewController__animateOutAndRemoveCurrentBottomBannerWithCompletion___block_invoke_3;
   v10[3] = &unk_2783AE5A0;
   v11 = v15;
-  v12 = self;
-  v13 = v4;
-  v7 = v4;
+  selfCopy = self;
+  v13 = completionCopy;
+  v7 = completionCopy;
   v8 = v15;
   [v6 _animateUsingDefaultTimingWithOptions:4 animations:v14 completion:v10];
   bannerView = self->_bannerView;
@@ -658,24 +658,24 @@ uint64_t __95__SBSwitcherAppSuggestionViewController__animateOutAndRemoveCurrent
   return result;
 }
 
-- (void)_handleBannerTap:(id)a3
+- (void)_handleBannerTap:(id)tap
 {
-  if ([a3 state] == 3)
+  if ([tap state] == 3)
   {
 
     [(SBSwitcherAppSuggestionViewController *)self _activateBestAppSuggestion];
   }
 }
 
-- (void)_handleLongPress:(id)a3
+- (void)_handleLongPress:(id)press
 {
-  v15 = a3;
+  pressCopy = press;
   [(SBSwitcherAppSuggestionBannerView *)self->_bannerView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [v15 locationInView:self->_bannerView];
+  [pressCopy locationInView:self->_bannerView];
   v17.x = v12;
   v17.y = v13;
   v18.origin.x = v5;
@@ -683,7 +683,7 @@ uint64_t __95__SBSwitcherAppSuggestionViewController__animateOutAndRemoveCurrent
   v18.size.width = v9;
   v18.size.height = v11;
   v14 = CGRectContainsPoint(v18, v17);
-  if ([v15 state] == 1)
+  if ([pressCopy state] == 1)
   {
     [(UITapGestureRecognizer *)self->_tapGestureRecognizer setEnabled:0];
     v14 = 1;
@@ -691,7 +691,7 @@ uint64_t __95__SBSwitcherAppSuggestionViewController__animateOutAndRemoveCurrent
     goto LABEL_10;
   }
 
-  if ([v15 state] == 3)
+  if ([pressCopy state] == 3)
   {
     if (!v14)
     {
@@ -701,14 +701,14 @@ uint64_t __95__SBSwitcherAppSuggestionViewController__animateOutAndRemoveCurrent
     [(SBSwitcherAppSuggestionViewController *)self _activateBestAppSuggestion];
   }
 
-  else if ([v15 state] != 4)
+  else if ([pressCopy state] != 4)
   {
-    if ([v15 state] == 2)
+    if ([pressCopy state] == 2)
     {
       goto LABEL_10;
     }
 
-    [v15 state];
+    [pressCopy state];
   }
 
   v14 = 0;

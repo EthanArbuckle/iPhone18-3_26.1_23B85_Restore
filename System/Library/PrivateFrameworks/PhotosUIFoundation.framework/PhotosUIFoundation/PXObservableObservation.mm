@@ -1,14 +1,14 @@
 @interface PXObservableObservation
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 @end
 
 @implementation PXObservableObservation
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v7 = a3;
-  v8 = self;
-  sub_1B3F7FBAC(v7, a4);
+  observableCopy = observable;
+  selfCopy = self;
+  sub_1B3F7FBAC(observableCopy, change);
 }
 
 @end

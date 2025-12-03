@@ -1,47 +1,47 @@
 @interface SBSecureIndicatorBacklightCoordinator
 - (BOOL)isSuppressingFlipbookRendering;
-- (SBSecureIndicatorBacklightCoordinator)initWithBacklightController:(id)a3 sensorModeController:(id)a4 proximitySensorManager:(id)a5 minimumOnTimeCoordinator:(id)a6 windowScene:(id)a7;
+- (SBSecureIndicatorBacklightCoordinator)initWithBacklightController:(id)controller sensorModeController:(id)modeController proximitySensorManager:(id)manager minimumOnTimeCoordinator:(id)coordinator windowScene:(id)scene;
 - (void)_cancelPowerAssertionCancellation;
 - (void)_handleObjectWithinCrudeProximityChanged;
 - (void)_schedulePowerAssertionCancellation;
-- (void)_setObjectWithinCrudeProximity:(BOOL)a3;
+- (void)_setObjectWithinCrudeProximity:(BOOL)proximity;
 - (void)_updateAssertions;
 - (void)_updateDisplayPowerAssertionIfNeeded;
 - (void)_updateHIDSensorMode;
-- (void)_updateHIDSensorModeForBacklightState:(int64_t)a3 source:(int64_t)a4;
+- (void)_updateHIDSensorModeForBacklightState:(int64_t)state source:(int64_t)source;
 - (void)_updateLiveRenderingAssertionIfNeeded;
 - (void)_updateState;
-- (void)backlightController:(id)a3 didTransitionToBacklightState:(int64_t)a4 source:(int64_t)a5;
+- (void)backlightController:(id)controller didTransitionToBacklightState:(int64_t)state source:(int64_t)source;
 - (void)dealloc;
 - (void)invalidate;
-- (void)proximitySensorManager:(id)a3 crudeProximityDidChange:(BOOL)a4;
+- (void)proximitySensorManager:(id)manager crudeProximityDidChange:(BOOL)change;
 @end
 
 @implementation SBSecureIndicatorBacklightCoordinator
 
-- (SBSecureIndicatorBacklightCoordinator)initWithBacklightController:(id)a3 sensorModeController:(id)a4 proximitySensorManager:(id)a5 minimumOnTimeCoordinator:(id)a6 windowScene:(id)a7
+- (SBSecureIndicatorBacklightCoordinator)initWithBacklightController:(id)controller sensorModeController:(id)modeController proximitySensorManager:(id)manager minimumOnTimeCoordinator:(id)coordinator windowScene:(id)scene
 {
-  v29 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  controllerCopy = controller;
+  modeControllerCopy = modeController;
+  managerCopy = manager;
+  coordinatorCopy = coordinator;
+  sceneCopy = scene;
   v33.receiver = self;
   v33.super_class = SBSecureIndicatorBacklightCoordinator;
   v17 = [(SBSecureIndicatorBacklightCoordinator *)&v33 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_backlightController, a3);
-    objc_storeStrong(&v18->_windowScene, a7);
-    objc_storeStrong(&v18->_sensorModeController, a4);
-    objc_storeStrong(&v18->_proximitySensorManager, a5);
-    objc_storeStrong(&v18->_minimumOnTimeCoordinator, a6);
+    objc_storeStrong(&v17->_backlightController, controller);
+    objc_storeStrong(&v18->_windowScene, scene);
+    objc_storeStrong(&v18->_sensorModeController, modeController);
+    objc_storeStrong(&v18->_proximitySensorManager, manager);
+    objc_storeStrong(&v18->_minimumOnTimeCoordinator, coordinator);
     [(SBProximitySensorManager *)v18->_proximitySensorManager addObserver:v18];
     [(SBBacklightController *)v18->_backlightController addObserver:v18];
-    v19 = [MEMORY[0x277CD9E40] mainDisplay];
-    v20 = [v19 stateControl];
-    [(SBSecureIndicatorBacklightCoordinator *)v18 _setDisplayStateControl:v20];
+    mainDisplay = [MEMORY[0x277CD9E40] mainDisplay];
+    stateControl = [mainDisplay stateControl];
+    [(SBSecureIndicatorBacklightCoordinator *)v18 _setDisplayStateControl:stateControl];
 
     objc_initWeak(&location, v18);
     v21 = MEMORY[0x277CF0BD0];
@@ -86,8 +86,8 @@ void __150__SBSecureIndicatorBacklightCoordinator_initWithBacklightController_se
 - (BOOL)isSuppressingFlipbookRendering
 {
   v3 = objc_opt_class();
-  v4 = [(BLSAssertion *)self->_liveRenderingAssertion attributes];
-  v5 = [v4 bs_firstObjectOfClass:v3];
+  attributes = [(BLSAssertion *)self->_liveRenderingAssertion attributes];
+  v5 = [attributes bs_firstObjectOfClass:v3];
   LOBYTE(v3) = v5 != 0;
 
   return v3;
@@ -173,10 +173,10 @@ void __150__SBSecureIndicatorBacklightCoordinator_initWithBacklightController_se
   {
     if (!displayPowerAssertion)
     {
-      v8 = [(SBSecureIndicatorBacklightCoordinator *)self _displayStateControl];
+      _displayStateControl = [(SBSecureIndicatorBacklightCoordinator *)self _displayStateControl];
       v9 = objc_opt_class();
       v10 = NSStringFromClass(v9);
-      v11 = [v8 createPowerAssertionWithReason:3 identifier:v10];
+      v11 = [_displayStateControl createPowerAssertionWithReason:3 identifier:v10];
       v12 = self->_displayPowerAssertion;
       self->_displayPowerAssertion = v11;
     }
@@ -196,11 +196,11 @@ void __150__SBSecureIndicatorBacklightCoordinator_initWithBacklightController_se
   }
 }
 
-- (void)_setObjectWithinCrudeProximity:(BOOL)a3
+- (void)_setObjectWithinCrudeProximity:(BOOL)proximity
 {
-  if (self->_objectWithinCrudeProximity != a3)
+  if (self->_objectWithinCrudeProximity != proximity)
   {
-    self->_objectWithinCrudeProximity = a3;
+    self->_objectWithinCrudeProximity = proximity;
     [(SBSecureIndicatorBacklightCoordinator *)self _handleObjectWithinCrudeProximityChanged];
   }
 }
@@ -298,39 +298,39 @@ void __76__SBSecureIndicatorBacklightCoordinator__schedulePowerAssertionCancella
 
 - (void)_updateHIDSensorMode
 {
-  v3 = [(SBBacklightController *)self->_backlightController backlightState];
+  backlightState = [(SBBacklightController *)self->_backlightController backlightState];
 
-  [(SBSecureIndicatorBacklightCoordinator *)self _updateHIDSensorModeForBacklightState:v3 source:0];
+  [(SBSecureIndicatorBacklightCoordinator *)self _updateHIDSensorModeForBacklightState:backlightState source:0];
 }
 
-- (void)_updateHIDSensorModeForBacklightState:(int64_t)a3 source:(int64_t)a4
+- (void)_updateHIDSensorModeForBacklightState:(int64_t)state source:(int64_t)source
 {
   v31 = *MEMORY[0x277D85DE8];
   if (self->_isActive)
   {
     v7 = +[SBDefaults localDefaults];
-    v8 = [v7 idleTimerDefaults];
-    v9 = [v8 supportTapToWake];
+    idleTimerDefaults = [v7 idleTimerDefaults];
+    supportTapToWake = [idleTimerDefaults supportTapToWake];
 
     v10 = 0;
-    if (a4 != 13 && v9)
+    if (source != 13 && supportTapToWake)
     {
       v10 = ![(SBSecureIndicatorBacklightCoordinator *)self _isObjectWithinCrudeProximity];
     }
 
     v11 = self->_disabledDigitizerModeAssertion;
     v12 = self->_proximityModeAssertion;
-    if (a3 == 4)
+    if (state == 4)
     {
       v13 = SBLogStatusBarish();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         v26[0] = 67109632;
-        v26[1] = v9;
+        v26[1] = supportTapToWake;
         v27 = 1024;
-        v28 = a4 != 13;
+        v28 = source != 13;
         v29 = 1024;
-        v30 = [(SBSecureIndicatorBacklightCoordinator *)self _isObjectWithinCrudeProximity];
+        _isObjectWithinCrudeProximity = [(SBSecureIndicatorBacklightCoordinator *)self _isObjectWithinCrudeProximity];
         _os_log_impl(&dword_21ED4E000, v13, OS_LOG_TYPE_DEFAULT, "[Recording Indicator] Attempting to acquire sensor mode assertions... supportsTapToWake: %{BOOL}u sourceIsNotProximitySensor: %{BOOL}u isObjectInCrudeProximity: %{BOOL}u", v26, 0x14u);
       }
 
@@ -358,7 +358,7 @@ void __76__SBSecureIndicatorBacklightCoordinator__schedulePowerAssertionCancella
 
   else
   {
-    [(BSInvalidatable *)self->_disabledDigitizerModeAssertion invalidate:a3];
+    [(BSInvalidatable *)self->_disabledDigitizerModeAssertion invalidate:state];
     v24 = self->_disabledDigitizerModeAssertion;
     self->_disabledDigitizerModeAssertion = 0;
 
@@ -368,22 +368,22 @@ void __76__SBSecureIndicatorBacklightCoordinator__schedulePowerAssertionCancella
   }
 }
 
-- (void)proximitySensorManager:(id)a3 crudeProximityDidChange:(BOOL)a4
+- (void)proximitySensorManager:(id)manager crudeProximityDidChange:(BOOL)change
 {
-  v4 = a4;
+  changeCopy = change;
   if ([(SBSecureIndicatorBacklightCoordinator *)self allowsBacklightChanges])
   {
 
-    [(SBSecureIndicatorBacklightCoordinator *)self _setObjectWithinCrudeProximity:v4];
+    [(SBSecureIndicatorBacklightCoordinator *)self _setObjectWithinCrudeProximity:changeCopy];
   }
 }
 
-- (void)backlightController:(id)a3 didTransitionToBacklightState:(int64_t)a4 source:(int64_t)a5
+- (void)backlightController:(id)controller didTransitionToBacklightState:(int64_t)state source:(int64_t)source
 {
   if ([(SBSecureIndicatorBacklightCoordinator *)self allowsBacklightChanges])
   {
 
-    [(SBSecureIndicatorBacklightCoordinator *)self _updateHIDSensorModeForBacklightState:a4 source:a5];
+    [(SBSecureIndicatorBacklightCoordinator *)self _updateHIDSensorModeForBacklightState:state source:source];
   }
 }
 

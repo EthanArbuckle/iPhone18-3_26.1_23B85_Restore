@@ -1,8 +1,8 @@
 @interface WLContext
 - (BOOL)isEnabled;
 - (WLContext)init;
-- (WLContext)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (WLContext)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WLContext
@@ -71,92 +71,92 @@
   return v3;
 }
 
-- (WLContext)initWithCoder:(id)a3
+- (WLContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = WLContext;
   v5 = [(WLContext *)&v24 init];
   if (v5)
   {
-    -[WLContext setIsEnabled:](v5, "setIsEnabled:", [v4 decodeBoolForKey:@"is_enabled"]);
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"application"];
+    -[WLContext setIsEnabled:](v5, "setIsEnabled:", [coderCopy decodeBoolForKey:@"is_enabled"]);
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"application"];
     [(WLContext *)v5 setApplication:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"account"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"account"];
     [(WLContext *)v5 setAccount:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"message"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"message"];
     [(WLContext *)v5 setMessage:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contact"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contact"];
     [(WLContext *)v5 setContact:v9];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"call_history"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"call_history"];
     [(WLContext *)v5 setCallHistory:v10];
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"calendar"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"calendar"];
     [(WLContext *)v5 setCalendar:v11];
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bookmark"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bookmark"];
     [(WLContext *)v5 setBookmark:v12];
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"file"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"file"];
     [(WLContext *)v5 setFile:v13];
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"image"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"image"];
     [(WLContext *)v5 setImage:v14];
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"video"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"video"];
     [(WLContext *)v5 setVideo:v15];
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"album"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"album"];
     [(WLContext *)v5 setAlbum:v16];
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"voice_memo"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"voice_memo"];
     [(WLContext *)v5 setVoiceMemo:v17];
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"container"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"container"];
     [(WLContext *)v5 setContainer:v18];
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accessibility_setting"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accessibility_setting"];
     [(WLContext *)v5 setAccessibilitySetting:v19];
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"display_setting"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"display_setting"];
     [(WLContext *)v5 setDisplaySetting:v20];
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"placeholder"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"placeholder"];
     [(WLContext *)v5 setPlaceholder:v21];
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sim"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sim"];
     [(WLContext *)v5 setSim:v22];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   isEnabled = self->_isEnabled;
-  v5 = a3;
-  [v5 encodeBool:isEnabled forKey:@"is_enabled"];
-  [v5 encodeObject:self->_application forKey:@"application"];
-  [v5 encodeObject:self->_account forKey:@"account"];
-  [v5 encodeObject:self->_message forKey:@"message"];
-  [v5 encodeObject:self->_contact forKey:@"contact"];
-  [v5 encodeObject:self->_callHistory forKey:@"call_history"];
-  [v5 encodeObject:self->_calendar forKey:@"calendar"];
-  [v5 encodeObject:self->_bookmark forKey:@"bookmark"];
-  [v5 encodeObject:self->_file forKey:@"file"];
-  [v5 encodeObject:self->_image forKey:@"image"];
-  [v5 encodeObject:self->_video forKey:@"video"];
-  [v5 encodeObject:self->_album forKey:@"album"];
-  [v5 encodeObject:self->_voiceMemo forKey:@"voice_memo"];
-  [v5 encodeObject:self->_container forKey:@"container"];
-  [v5 encodeObject:self->_accessibilitySetting forKey:@"accessibility_setting"];
-  [v5 encodeObject:self->_displaySetting forKey:@"display_setting"];
-  [v5 encodeObject:self->_placeholder forKey:@"placeholder"];
-  [v5 encodeObject:self->_sim forKey:@"sim"];
+  coderCopy = coder;
+  [coderCopy encodeBool:isEnabled forKey:@"is_enabled"];
+  [coderCopy encodeObject:self->_application forKey:@"application"];
+  [coderCopy encodeObject:self->_account forKey:@"account"];
+  [coderCopy encodeObject:self->_message forKey:@"message"];
+  [coderCopy encodeObject:self->_contact forKey:@"contact"];
+  [coderCopy encodeObject:self->_callHistory forKey:@"call_history"];
+  [coderCopy encodeObject:self->_calendar forKey:@"calendar"];
+  [coderCopy encodeObject:self->_bookmark forKey:@"bookmark"];
+  [coderCopy encodeObject:self->_file forKey:@"file"];
+  [coderCopy encodeObject:self->_image forKey:@"image"];
+  [coderCopy encodeObject:self->_video forKey:@"video"];
+  [coderCopy encodeObject:self->_album forKey:@"album"];
+  [coderCopy encodeObject:self->_voiceMemo forKey:@"voice_memo"];
+  [coderCopy encodeObject:self->_container forKey:@"container"];
+  [coderCopy encodeObject:self->_accessibilitySetting forKey:@"accessibility_setting"];
+  [coderCopy encodeObject:self->_displaySetting forKey:@"display_setting"];
+  [coderCopy encodeObject:self->_placeholder forKey:@"placeholder"];
+  [coderCopy encodeObject:self->_sim forKey:@"sim"];
 }
 
 - (BOOL)isEnabled

@@ -1,5 +1,5 @@
 @interface TUIPredictionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axHideCell;
 - (BOOL)_axIsAutoFillKey;
 - (BOOL)_axIsSmartReply;
@@ -11,37 +11,37 @@
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 - (unsigned)_accessibilitySlotID;
-- (void)_axActivateSpeaking:(id)a3;
+- (void)_axActivateSpeaking:(id)speaking;
 @end
 
 @implementation TUIPredictionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"UITextSuggestionWithAction"];
-  [v3 validateClass:@"TUIPredictionViewCell" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"UIView" hasInstanceMethod:@"_childFocusViews" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TUIPredictionViewCell" hasInstanceMethod:@"currentTextSuggestion" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UITextSuggestionWithAction" hasInstanceMethod:@"action" withFullSignature:{":", 0}];
-  [v3 validateClass:@"UIResponder" hasInstanceMethod:@"showWritingTools:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"TUIPredictionViewCell" hasInstanceMethod:@"_isSmartReplyCandidate:" withFullSignature:{"B", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"UITextSuggestionWithAction"];
+  [validationsCopy validateClass:@"TUIPredictionViewCell" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"UIView" hasInstanceMethod:@"_childFocusViews" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TUIPredictionViewCell" hasInstanceMethod:@"currentTextSuggestion" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UITextSuggestionWithAction" hasInstanceMethod:@"action" withFullSignature:{":", 0}];
+  [validationsCopy validateClass:@"UIResponder" hasInstanceMethod:@"showWritingTools:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"TUIPredictionViewCell" hasInstanceMethod:@"_isSmartReplyCandidate:" withFullSignature:{"B", "@", 0}];
 }
 
 - (unsigned)_accessibilitySlotID
 {
-  v2 = [(TUIPredictionViewCellAccessibility *)self _axCandidate];
-  v3 = [v2 slotID];
+  _axCandidate = [(TUIPredictionViewCellAccessibility *)self _axCandidate];
+  slotID = [_axCandidate slotID];
 
-  return v3;
+  return slotID;
 }
 
 - (BOOL)_axHideCell
 {
   if (UIAccessibilityIsVoiceOverRunning())
   {
-    v3 = [(TUIPredictionViewCellAccessibility *)self accessibilityLabel];
-    if ([v3 length] || -[TUIPredictionViewCellAccessibility _accessibilitySlotID](self, "_accessibilitySlotID"))
+    accessibilityLabel = [(TUIPredictionViewCellAccessibility *)self accessibilityLabel];
+    if ([accessibilityLabel length] || -[TUIPredictionViewCellAccessibility _accessibilitySlotID](self, "_accessibilitySlotID"))
     {
       LOBYTE(v4) = 0;
     }
@@ -99,7 +99,7 @@
 
     if (![v8 length])
     {
-      v11 = [(TUIPredictionViewCellAccessibility *)self _axTextSuggestionWithAction];
+      _axTextSuggestionWithAction = [(TUIPredictionViewCellAccessibility *)self _axTextSuggestionWithAction];
       v20 = 0;
       v21 = &v20;
       v22 = 0x3032000000;
@@ -110,7 +110,7 @@
       v16 = 3221225472;
       v17 = __56__TUIPredictionViewCellAccessibility_accessibilityLabel__block_invoke;
       v18 = &unk_29F30A0F8;
-      v19 = v11;
+      v19 = _axTextSuggestionWithAction;
       AXPerformSafeBlock();
       v12 = v21[5];
 
@@ -118,8 +118,8 @@
       v8 = v12;
     }
 
-    v13 = [MEMORY[0x29EDB9F50] whitespaceAndNewlineCharacterSet];
-    v5 = [v8 stringByTrimmingCharactersInSet:v13];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x29EDB9F50] whitespaceAndNewlineCharacterSet];
+    v5 = [v8 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
   }
 
 LABEL_16:
@@ -150,8 +150,8 @@ char *__56__TUIPredictionViewCellAccessibility_accessibilityLabel__block_invoke(
     return *MEMORY[0x29EDC7F70];
   }
 
-  v3 = [(TUIPredictionViewCellAccessibility *)self _axTextSuggestionWithAction];
-  if (v3)
+  _axTextSuggestionWithAction = [(TUIPredictionViewCellAccessibility *)self _axTextSuggestionWithAction];
+  if (_axTextSuggestionWithAction)
   {
 
     return *MEMORY[0x29EDC7F70];
@@ -163,9 +163,9 @@ char *__56__TUIPredictionViewCellAccessibility_accessibilityLabel__block_invoke(
   }
 
   v5 = *MEMORY[0x29EDC7388];
-  v6 = [(TUIPredictionViewCellAccessibility *)self _axIsAutocorrection];
+  _axIsAutocorrection = [(TUIPredictionViewCellAccessibility *)self _axIsAutocorrection];
   v7 = *MEMORY[0x29EDC7FC0];
-  if (!v6)
+  if (!_axIsAutocorrection)
   {
     v7 = 0;
   }
@@ -190,16 +190,16 @@ char *__56__TUIPredictionViewCellAccessibility_accessibilityLabel__block_invoke(
 
 - (BOOL)_axIsTextEffectButton
 {
-  v2 = [(TUIPredictionViewCellAccessibility *)self _axCandidate];
-  v3 = [v2 customInfoType] == 0x8000;
+  _axCandidate = [(TUIPredictionViewCellAccessibility *)self _axCandidate];
+  v3 = [_axCandidate customInfoType] == 0x8000;
 
   return v3;
 }
 
 - (BOOL)_axIsAutoFillKey
 {
-  v2 = [(TUIPredictionViewCellAccessibility *)self _axCandidate];
-  v3 = [v2 customInfoType] == 32;
+  _axCandidate = [(TUIPredictionViewCellAccessibility *)self _axCandidate];
+  v3 = [_axCandidate customInfoType] == 32;
 
   return v3;
 }
@@ -240,12 +240,12 @@ void __53__TUIPredictionViewCellAccessibility__axIsSmartReply__block_invoke(uint
   return v3;
 }
 
-- (void)_axActivateSpeaking:(id)a3
+- (void)_axActivateSpeaking:(id)speaking
 {
-  v4 = a3;
-  v5 = [MEMORY[0x29EDC7B18] sharedInputModeController];
-  v6 = [v5 currentInputMode];
-  v7 = [v6 primaryLanguage];
+  speakingCopy = speaking;
+  mEMORY[0x29EDC7B18] = [MEMORY[0x29EDC7B18] sharedInputModeController];
+  currentInputMode = [mEMORY[0x29EDC7B18] currentInputMode];
+  primaryLanguage = [currentInputMode primaryLanguage];
 
   v13 = 0;
   v14 = &v13;
@@ -265,9 +265,9 @@ void __53__TUIPredictionViewCellAccessibility__axIsSmartReply__block_invoke(uint
 
   v9 = v8;
   _Block_object_dispose(&v13, 8);
-  v10 = [v8 sharedInstance];
-  v11 = [(TUIPredictionViewCellAccessibility *)self accessibilityLabel];
-  [v10 notifySpeakServicesToFeedbackQuickTypePrediction:v11 forCurrentInputMode:v7];
+  sharedInstance = [v8 sharedInstance];
+  accessibilityLabel = [(TUIPredictionViewCellAccessibility *)self accessibilityLabel];
+  [sharedInstance notifySpeakServicesToFeedbackQuickTypePrediction:accessibilityLabel forCurrentInputMode:primaryLanguage];
 }
 
 - (id)accessibilityCustomActions
@@ -280,27 +280,27 @@ void __53__TUIPredictionViewCellAccessibility__axIsSmartReply__block_invoke(uint
     v5 = [v3 initWithName:v4 target:self selector:sel__axActivateSpeaking_];
 
     v10[0] = v5;
-    v6 = [MEMORY[0x29EDB8D80] arrayWithObjects:v10 count:1];
+    accessibilityCustomActions = [MEMORY[0x29EDB8D80] arrayWithObjects:v10 count:1];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = TUIPredictionViewCellAccessibility;
-    v6 = [(TUIPredictionViewCellAccessibility *)&v9 accessibilityCustomActions];
+    accessibilityCustomActions = [(TUIPredictionViewCellAccessibility *)&v9 accessibilityCustomActions];
   }
 
   v7 = *MEMORY[0x29EDCA608];
 
-  return v6;
+  return accessibilityCustomActions;
 }
 
 - (id)_childFocusViews
 {
   v7.receiver = self;
   v7.super_class = TUIPredictionViewCellAccessibility;
-  v3 = [(TUIPredictionViewCellAccessibility *)&v7 _childFocusViews];
-  v4 = [v3 mutableCopy];
+  _childFocusViews = [(TUIPredictionViewCellAccessibility *)&v7 _childFocusViews];
+  v4 = [_childFocusViews mutableCopy];
 
   if (([(TUIPredictionViewCellAccessibility *)self _accessibilityIsFKARunningForFocusItem]& 1) != 0)
   {

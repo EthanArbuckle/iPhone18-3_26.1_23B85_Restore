@@ -1,14 +1,14 @@
 @interface FAHTTPResponse
-- (FAHTTPResponse)initWithHTTPResponse:(id)a3 body:(id)a4 familyRefreshTriggered:(BOOL)a5;
+- (FAHTTPResponse)initWithHTTPResponse:(id)response body:(id)body familyRefreshTriggered:(BOOL)triggered;
 @end
 
 @implementation FAHTTPResponse
 
-- (FAHTTPResponse)initWithHTTPResponse:(id)a3 body:(id)a4 familyRefreshTriggered:(BOOL)a5
+- (FAHTTPResponse)initWithHTTPResponse:(id)response body:(id)body familyRefreshTriggered:(BOOL)triggered
 {
-  v9 = a3;
-  v10 = a4;
-  if (v9)
+  responseCopy = response;
+  bodyCopy = body;
+  if (responseCopy)
   {
     v15.receiver = self;
     v15.super_class = FAHTTPResponse;
@@ -16,21 +16,21 @@
     v12 = v11;
     if (v11)
     {
-      objc_storeStrong(&v11->_HTTPResponse, a3);
-      objc_storeStrong(&v12->_body, a4);
-      v12->_familyRefreshTriggered = a5;
+      objc_storeStrong(&v11->_HTTPResponse, response);
+      objc_storeStrong(&v12->_body, body);
+      v12->_familyRefreshTriggered = triggered;
     }
 
     self = v12;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 @end

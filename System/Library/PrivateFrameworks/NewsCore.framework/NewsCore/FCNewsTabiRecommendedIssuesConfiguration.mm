@@ -1,5 +1,5 @@
 @interface FCNewsTabiRecommendedIssuesConfiguration
-- (FCNewsTabiRecommendedIssuesConfiguration)initWithDictionary:(id)a3;
+- (FCNewsTabiRecommendedIssuesConfiguration)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
@@ -8,35 +8,35 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];;
-  v4 = [(FCNewsTabiRecommendedIssuesConfiguration *)self bundleInputOutputConfiguration];
-  v5 = [v4 indentedDescription];
-  [v3 appendFormat:@"\n\tbundleInputOutputConfiguration: %@;", v5];
+  bundleInputOutputConfiguration = [(FCNewsTabiRecommendedIssuesConfiguration *)self bundleInputOutputConfiguration];
+  indentedDescription = [bundleInputOutputConfiguration indentedDescription];
+  [v3 appendFormat:@"\n\tbundleInputOutputConfiguration: %@;", indentedDescription];
 
-  v6 = [(FCNewsTabiRecommendedIssuesConfiguration *)self nonBundleInputOutputConfiguration];
-  v7 = [v6 indentedDescription];
-  [v3 appendFormat:@"\n\tnonBundleInputOutputConfiguration: %@;", v7];
+  nonBundleInputOutputConfiguration = [(FCNewsTabiRecommendedIssuesConfiguration *)self nonBundleInputOutputConfiguration];
+  indentedDescription2 = [nonBundleInputOutputConfiguration indentedDescription];
+  [v3 appendFormat:@"\n\tnonBundleInputOutputConfiguration: %@;", indentedDescription2];
 
-  v8 = [(FCNewsTabiRecommendedIssuesConfiguration *)self userContextConfiguration];
-  v9 = [v8 indentedDescription];
-  [v3 appendFormat:@"\n\tuserContextConfiguration: %@;", v9];
+  userContextConfiguration = [(FCNewsTabiRecommendedIssuesConfiguration *)self userContextConfiguration];
+  indentedDescription3 = [userContextConfiguration indentedDescription];
+  [v3 appendFormat:@"\n\tuserContextConfiguration: %@;", indentedDescription3];
 
   [v3 appendString:@"\n>"];
 
   return v3;
 }
 
-- (FCNewsTabiRecommendedIssuesConfiguration)initWithDictionary:(id)a3
+- (FCNewsTabiRecommendedIssuesConfiguration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [FCNewsTabiRecommendedIssuesInputOutputConfiguration alloc];
-  v6 = FCAppConfigurationDictionaryValueWithDefaultValue(v4, @"bundleInputOutputConfiguration", 0);
+  v6 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"bundleInputOutputConfiguration", 0);
   v7 = [(FCNewsTabiRecommendedIssuesInputOutputConfiguration *)v5 initWithDictionary:v6];
 
   if (v7)
   {
     v8 = v7;
     v9 = [FCNewsTabiRecommendedIssuesInputOutputConfiguration alloc];
-    v10 = FCAppConfigurationDictionaryValueWithDefaultValue(v4, @"nonBundleInputOutputConfiguration", 0);
+    v10 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"nonBundleInputOutputConfiguration", 0);
     v11 = [(FCNewsTabiRecommendedIssuesInputOutputConfiguration *)v9 initWithDictionary:v10];
 
     if (v11)
@@ -50,14 +50,14 @@
       {
         objc_storeStrong(&v13->_bundleInputOutputConfiguration, v7);
         objc_storeStrong(&v14->_nonBundleInputOutputConfiguration, v11);
-        v15 = FCAppConfigurationDictionaryValueWithDefaultValue(v4, @"userContextConfiguration", 0);
+        v15 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"userContextConfiguration", 0);
         v16 = [[FCNewsTabiRecommendedIssuesUserContextConfiguration alloc] initWithDictionary:v15];
         userContextConfiguration = v14->_userContextConfiguration;
         v14->_userContextConfiguration = v16;
       }
 
       self = v14;
-      v18 = self;
+      selfCopy = self;
     }
 
     else
@@ -66,8 +66,8 @@
       v21[1] = 3221225472;
       v21[2] = __63__FCNewsTabiRecommendedIssuesConfiguration_initWithDictionary___block_invoke_58;
       v21[3] = &unk_1E7C36F98;
-      v22 = v4;
-      v18 = __63__FCNewsTabiRecommendedIssuesConfiguration_initWithDictionary___block_invoke_58(v21);
+      v22 = dictionaryCopy;
+      selfCopy = __63__FCNewsTabiRecommendedIssuesConfiguration_initWithDictionary___block_invoke_58(v21);
       v12 = v22;
     }
   }
@@ -78,12 +78,12 @@
     v23[1] = 3221225472;
     v23[2] = __63__FCNewsTabiRecommendedIssuesConfiguration_initWithDictionary___block_invoke;
     v23[3] = &unk_1E7C36F98;
-    v24 = v4;
-    v18 = __63__FCNewsTabiRecommendedIssuesConfiguration_initWithDictionary___block_invoke(v23);
+    v24 = dictionaryCopy;
+    selfCopy = __63__FCNewsTabiRecommendedIssuesConfiguration_initWithDictionary___block_invoke(v23);
     v8 = v24;
   }
 
-  return v18;
+  return selfCopy;
 }
 
 uint64_t __63__FCNewsTabiRecommendedIssuesConfiguration_initWithDictionary___block_invoke(uint64_t a1)

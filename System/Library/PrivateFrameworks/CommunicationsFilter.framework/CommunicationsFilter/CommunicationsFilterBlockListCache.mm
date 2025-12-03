@@ -1,8 +1,8 @@
 @interface CommunicationsFilterBlockListCache
 - (CommunicationsFilterBlockListCache)init;
-- (int64_t)cachedResponseForItem:(id)a3;
-- (void)removeItemFromCache:(id)a3;
-- (void)setResponse:(BOOL)a3 forItem:(id)a4;
+- (int64_t)cachedResponseForItem:(id)item;
+- (void)removeItemFromCache:(id)cache;
+- (void)setResponse:(BOOL)response forItem:(id)item;
 - (void)syncListEmptyState;
 @end
 
@@ -74,13 +74,13 @@ void __42__CommunicationsFilterBlockListCache_init__block_invoke_2(uint64_t a1)
   objc_sync_exit(v2);
 }
 
-- (int64_t)cachedResponseForItem:(id)a3
+- (int64_t)cachedResponseForItem:(id)item
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_listIsEmpty)
+  itemCopy = item;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_listIsEmpty)
   {
     v6 = CMFDefaultLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -89,7 +89,7 @@ void __42__CommunicationsFilterBlockListCache_init__block_invoke_2(uint64_t a1)
       _os_log_impl(&dword_243BDE000, v6, OS_LOG_TYPE_DEFAULT, "Since _listIsEmpty return NO", buf, 2u);
     }
 
-    v7 = 0;
+    isInList = 0;
   }
 
   else
@@ -98,7 +98,7 @@ void __42__CommunicationsFilterBlockListCache_init__block_invoke_2(uint64_t a1)
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v8 = v5->_recentItems;
+    v8 = selfCopy->_recentItems;
     v9 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v15 objects:v20 count:16];
     if (v9)
     {
@@ -113,7 +113,7 @@ LABEL_7:
         }
 
         v12 = *(*(&v15 + 1) + 8 * v11);
-        if ([v12 matchesItem:{v4, v15}])
+        if ([v12 matchesItem:{itemCopy, v15}])
         {
           break;
         }
@@ -137,7 +137,7 @@ LABEL_7:
         goto LABEL_16;
       }
 
-      v7 = [v6 isInList];
+      isInList = [v6 isInList];
     }
 
     else
@@ -146,26 +146,26 @@ LABEL_13:
 
       v6 = 0;
 LABEL_16:
-      v7 = -1;
+      isInList = -1;
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   v13 = *MEMORY[0x277D85DE8];
-  return v7;
+  return isInList;
 }
 
-- (void)removeItemFromCache:(id)a3
+- (void)removeItemFromCache:(id)cache
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  cacheCopy = cache;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v5->_recentItems;
+  v6 = selfCopy->_recentItems;
   v7 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -180,13 +180,13 @@ LABEL_16:
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        if ([v10 matchesItem:v4])
+        if ([v10 matchesItem:cacheCopy])
         {
           v11 = v10;
 
           if (v11)
           {
-            [(NSMutableArray *)v5->_recentItems removeObject:v11];
+            [(NSMutableArray *)selfCopy->_recentItems removeObject:v11];
           }
 
           goto LABEL_12;
@@ -212,24 +212,24 @@ LABEL_12:
     _os_log_impl(&dword_243BDE000, v12, OS_LOG_TYPE_DEFAULT, "", v14, 2u);
   }
 
-  [(CommunicationsFilterBlockListCache *)v5 syncListEmptyState];
-  objc_sync_exit(v5);
+  [(CommunicationsFilterBlockListCache *)selfCopy syncListEmptyState];
+  objc_sync_exit(selfCopy);
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setResponse:(BOOL)a3 forItem:(id)a4
+- (void)setResponse:(BOOL)response forItem:(id)item
 {
-  v4 = a3;
+  responseCopy = response;
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
+  itemCopy = item;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = v7->_recentItems;
+  v8 = selfCopy->_recentItems;
   v9 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v17 objects:v23 count:16];
   if (v9)
   {
@@ -244,7 +244,7 @@ LABEL_3:
       }
 
       v12 = *(*(&v17 + 1) + 8 * v11);
-      if ([v12 matchesItem:{v6, v17}])
+      if ([v12 matchesItem:{itemCopy, v17}])
       {
         break;
       }
@@ -268,9 +268,9 @@ LABEL_3:
       goto LABEL_12;
     }
 
-    [(NSMutableArray *)v7->_recentItems removeObject:v13];
-    [(NSMutableArray *)v7->_recentItems insertObject:v13 atIndex:0];
-    [v13 setIsInList:v4];
+    [(NSMutableArray *)selfCopy->_recentItems removeObject:v13];
+    [(NSMutableArray *)selfCopy->_recentItems insertObject:v13 atIndex:0];
+    [v13 setIsInList:responseCopy];
   }
 
   else
@@ -278,13 +278,13 @@ LABEL_3:
 LABEL_9:
 
 LABEL_12:
-    if ([(NSMutableArray *)v7->_recentItems count]>= 0xA)
+    if ([(NSMutableArray *)selfCopy->_recentItems count]>= 0xA)
     {
-      [(NSMutableArray *)v7->_recentItems removeLastObject];
+      [(NSMutableArray *)selfCopy->_recentItems removeLastObject];
     }
 
-    v14 = [[CommunicationFilterItemCache alloc] initWithFilterItem:v6 isInList:-1];
-    [(NSMutableArray *)v7->_recentItems insertObject:v14 atIndex:0];
+    v14 = [[CommunicationFilterItemCache alloc] initWithFilterItem:itemCopy isInList:-1];
+    [(NSMutableArray *)selfCopy->_recentItems insertObject:v14 atIndex:0];
 
     v13 = 0;
   }
@@ -293,11 +293,11 @@ LABEL_12:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v22 = v4;
+    v22 = responseCopy;
     _os_log_impl(&dword_243BDE000, v15, OS_LOG_TYPE_DEFAULT, "cache setResponse = %d", buf, 8u);
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
   v16 = *MEMORY[0x277D85DE8];
 }
 

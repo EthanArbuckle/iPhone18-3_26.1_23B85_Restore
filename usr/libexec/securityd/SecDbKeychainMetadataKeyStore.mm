@@ -1,9 +1,9 @@
 @interface SecDbKeychainMetadataKeyStore
 + (id)sharedStore;
 + (void)resetSharedStore;
-- (BOOL)readKeyDataForClass:(int)a3 fromDb:(__OpaqueSecDbConnection *)a4 actualKeyclass:(int *)a5 wrappedKey:(id *)a6 error:(id *)a7;
+- (BOOL)readKeyDataForClass:(int)class fromDb:(__OpaqueSecDbConnection *)db actualKeyclass:(int *)keyclass wrappedKey:(id *)key error:(id *)error;
 - (id)_init;
-- (id)keyForKeyclass:(int)a3 keybag:(int)a4 keySpecifier:(id)a5 allowWrites:(BOOL)a6 error:(id *)a7;
+- (id)keyForKeyclass:(int)keyclass keybag:(int)keybag keySpecifier:(id)specifier allowWrites:(BOOL)writes error:(id *)error;
 - (void)_onQueueDropAllKeys;
 - (void)_onQueueDropClassAKeys;
 - (void)dealloc;
@@ -31,7 +31,7 @@
   v5[2] = sub_10000FFEC;
   v5[3] = &unk_1003449E0;
   v5[4] = &v6;
-  v5[5] = a1;
+  v5[5] = self;
   dispatch_sync(qword_10039E2F0, v5);
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
@@ -39,10 +39,10 @@
   return v3;
 }
 
-- (id)keyForKeyclass:(int)a3 keybag:(int)a4 keySpecifier:(id)a5 allowWrites:(BOOL)a6 error:(id *)a7
+- (id)keyForKeyclass:(int)keyclass keybag:(int)keybag keySpecifier:(id)specifier allowWrites:(BOOL)writes error:(id *)error
 {
-  v13 = a5;
-  if (a7)
+  specifierCopy = specifier;
+  if (error)
   {
     off_10039D5F8();
     v15 = v14;
@@ -56,21 +56,21 @@
     }
 
     *v15 = 1;
-    if (a3 < 32)
+    if (keyclass < 32)
     {
-      v16 = a3;
+      keyclassCopy = keyclass;
     }
 
     else
     {
-      v16 = a3 & 0x1F;
+      keyclassCopy = keyclass & 0x1F;
       v17 = sub_100006274("SanitizeKeyclass");
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
       {
         *buf = 67109376;
-        *&buf[4] = a3;
+        *&buf[4] = keyclass;
         LOWORD(v54) = 1024;
-        *(&v54 + 2) = a3 & 0x1F;
+        *(&v54 + 2) = keyclass & 0x1F;
         _os_log_debug_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "sanitizing request for keyclass %d to keyclass %d", buf, 0xEu);
       }
     }
@@ -104,10 +104,10 @@
     v33 = &v39;
     block[4] = self;
     v34 = &v43;
-    v36 = v16;
-    v37 = a4;
-    v38 = a6;
-    v31 = v13;
+    v36 = keyclassCopy;
+    keybagCopy = keybag;
+    writesCopy = writes;
+    v31 = specifierCopy;
     v35 = &v47;
     dispatch_sync(queue, block);
     if (*(v40 + 24) == 1)
@@ -122,7 +122,7 @@
     v22 = v48[5];
     if (v22)
     {
-      *a7 = v22;
+      *error = v22;
       v23 = v44[3];
       if (!v23)
       {
@@ -149,11 +149,11 @@ LABEL_20:
 
     else
     {
-      *a7 = v44[3];
+      *error = v44[3];
       v44[3] = 0;
     }
 
-    if (!*a7)
+    if (!*error)
     {
       sub_100089FEC(@"Execution has encountered an unexpected state", 1405091854);
     }
@@ -174,7 +174,7 @@ LABEL_21:
   return v19;
 }
 
-- (BOOL)readKeyDataForClass:(int)a3 fromDb:(__OpaqueSecDbConnection *)a4 actualKeyclass:(int *)a5 wrappedKey:(id *)a6 error:(id *)a7
+- (BOOL)readKeyDataForClass:(int)class fromDb:(__OpaqueSecDbConnection *)db actualKeyclass:(int *)keyclass wrappedKey:(id *)key error:(id *)error
 {
   dispatch_assert_queue_V2(self->_queue);
   v31 = 0;
@@ -199,28 +199,28 @@ LABEL_21:
   v17[1] = 3221225472;
   v17[2] = sub_1001F93D0;
   v17[3] = &unk_100344A80;
-  v18 = a3;
+  classCopy = class;
   v17[4] = &v27;
   v17[5] = &v19;
-  v17[8] = a4;
-  v17[9] = a5;
+  v17[8] = db;
+  v17[9] = keyclass;
   v17[6] = &v31;
   v17[7] = &v23;
-  v12 = sub_10001489C(a4, @"SELECT data, actualKeyclass FROM metadatakeys WHERE keyclass = ?", &v22, v17);
+  v12 = sub_10001489C(db, @"SELECT data, actualKeyclass FROM metadatakeys WHERE keyclass = ?", &v22, v17);
   v13 = (v12 & v28[3]);
   *(v28 + 24) &= v12;
   if (v13 == 1 && (v24[3] & 1) != 0)
   {
-    *a6 = v32[5];
+    *key = v32[5];
     v14 = 1;
   }
 
   else
   {
     v15 = v20[3];
-    if (a7)
+    if (error)
     {
-      *a7 = v15;
+      *error = v15;
       v20[3] = 0;
     }
 
@@ -231,7 +231,7 @@ LABEL_21:
     }
 
     v14 = 0;
-    *a5 = 0;
+    *keyclass = 0;
   }
 
   _Block_object_dispose(&v19, 8);

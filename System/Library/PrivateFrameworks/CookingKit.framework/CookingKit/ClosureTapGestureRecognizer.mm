@@ -1,5 +1,5 @@
 @interface ClosureTapGestureRecognizer
-- (_TtC10CookingKitP33_371E4750EAD71236DF383F3B5E5C07E127ClosureTapGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (_TtC10CookingKitP33_371E4750EAD71236DF383F3B5E5C07E127ClosureTapGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (void)handleTap;
 @end
 
@@ -8,13 +8,13 @@
 - (void)handleTap
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC10CookingKitP33_371E4750EAD71236DF383F3B5E5C07E127ClosureTapGestureRecognizer_action);
-  v3 = self;
+  selfCopy = self;
   v2();
 }
 
-- (_TtC10CookingKitP33_371E4750EAD71236DF383F3B5E5C07E127ClosureTapGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_TtC10CookingKitP33_371E4750EAD71236DF383F3B5E5C07E127ClosureTapGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
-  if (a3)
+  if (target)
   {
     swift_unknownObjectRetain();
     sub_21A2F7F14();

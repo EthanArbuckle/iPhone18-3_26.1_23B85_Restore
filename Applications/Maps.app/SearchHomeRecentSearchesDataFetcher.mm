@@ -1,6 +1,6 @@
 @interface SearchHomeRecentSearchesDataFetcher
 - (SearchHomeDataFetcherDelegate)delegate;
-- (SearchHomeRecentSearchesDataFetcher)initWithDelegate:(id)a3 isSearchAlongRoute:(BOOL)a4;
+- (SearchHomeRecentSearchesDataFetcher)initWithDelegate:(id)delegate isSearchAlongRoute:(BOOL)route;
 - (void)fetchContent;
 - (void)updateContent;
 @end
@@ -30,9 +30,9 @@
   }
 
   v6 = +[Recents sharedRecents];
-  v7 = [v6 recents];
-  v8 = [v7 reverseObjectEnumerator];
-  v9 = [v8 allObjects];
+  recents = [v6 recents];
+  reverseObjectEnumerator = [recents reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
   v51 = objc_alloc_init(NSMutableArray);
   v50 = objc_alloc_init(NSMutableDictionary);
@@ -40,7 +40,7 @@
   v79 = 0u;
   v76 = 0u;
   v77 = 0u;
-  obj = v9;
+  obj = allObjects;
   v10 = [obj countByEnumeratingWithState:&v76 objects:v83 count:16];
   if (v10)
   {
@@ -56,7 +56,7 @@
 
         v13 = *(*(&v76 + 1) + 8 * i);
         objc_initWeak(buf, v13);
-        v14 = [v13 historyEntry];
+        historyEntry = [v13 historyEntry];
         v73[0] = _NSConcreteStackBlock;
         v73[1] = 3221225472;
         v73[2] = sub_100750780;
@@ -71,7 +71,7 @@
         objc_copyWeak(&v72, buf);
         v70 = v50;
         v71 = v15;
-        [v14 ifSearch:v73 ifRoute:0 ifPlaceDisplay:v69 ifTransitLineItem:0];
+        [historyEntry ifSearch:v73 ifRoute:0 ifPlaceDisplay:v69 ifTransitLineItem:0];
 
         objc_destroyWeak(&v72);
         objc_destroyWeak(&v75);
@@ -88,8 +88,8 @@
   v68 = 0u;
   v65 = 0u;
   v66 = 0u;
-  v45 = [v50 allKeys];
-  v47 = [v45 countByEnumeratingWithState:&v65 objects:v82 count:16];
+  allKeys = [v50 allKeys];
+  v47 = [allKeys countByEnumeratingWithState:&v65 objects:v82 count:16];
   if (v47)
   {
     v46 = *v66;
@@ -101,7 +101,7 @@
         if (*v66 != v46)
         {
           v17 = v16;
-          objc_enumerationMutation(v45);
+          objc_enumerationMutation(allKeys);
           v16 = v17;
         }
 
@@ -127,9 +127,9 @@
               }
 
               v24 = *(*(&v61 + 1) + 8 * j);
-              v25 = [v24 historyEntry];
-              v26 = [v25 storageIdentifier];
-              v27 = [v26 isEqual:v18];
+              historyEntry2 = [v24 historyEntry];
+              storageIdentifier = [historyEntry2 storageIdentifier];
+              v27 = [storageIdentifier isEqual:v18];
 
               if (v27)
               {
@@ -156,15 +156,15 @@
       }
 
       while ((v48 + 1) != v47);
-      v47 = [v45 countByEnumeratingWithState:&v65 objects:v82 count:16];
+      v47 = [allKeys countByEnumeratingWithState:&v65 objects:v82 count:16];
     }
 
     while (v47);
   }
 
   self->_isFetchingDataComplete = 1;
-  v28 = [(SearchHomeRecentSearchesDataFetcher *)self recentSearches];
-  v29 = [v51 isEqualToArray:v28];
+  recentSearches = [(SearchHomeRecentSearchesDataFetcher *)self recentSearches];
+  v29 = [v51 isEqualToArray:recentSearches];
 
   if ((v29 & 1) == 0)
   {
@@ -188,16 +188,16 @@
     v33 = [v32 localizedStringForKey:@"[Search Home] Recents" value:@"localized string not found" table:0];
 
     v34 = [SearchHomeRecentSearchesDataProvider alloc];
-    v35 = [(SearchHomeRecentSearchesDataFetcher *)self recentSearches];
-    v36 = [(SearchHomeRecentSearchesDataProvider *)v34 initWithObjects:v35 type:1 identifier:@"SearchHomeRecents" title:v33];
+    recentSearches2 = [(SearchHomeRecentSearchesDataFetcher *)self recentSearches];
+    v36 = [(SearchHomeRecentSearchesDataProvider *)v34 initWithObjects:recentSearches2 type:1 identifier:@"SearchHomeRecents" title:v33];
 
     v80 = v36;
     v37 = [NSArray arrayWithObjects:&v80 count:1];
     dataProviders = self->_dataProviders;
     self->_dataProviders = v37;
 
-    v39 = [(SearchHomeRecentSearchesDataFetcher *)self delegate];
-    [v39 didUpdateDataFetcher:self];
+    delegate = [(SearchHomeRecentSearchesDataFetcher *)self delegate];
+    [delegate didUpdateDataFetcher:self];
 
     _Block_object_dispose(buf, 8);
   }
@@ -213,20 +213,20 @@
 
 - (void)fetchContent
 {
-  v3 = [(SearchHomeRecentSearchesDataFetcher *)self delegate];
-  [v3 didUpdateDataFetcher:self];
+  delegate = [(SearchHomeRecentSearchesDataFetcher *)self delegate];
+  [delegate didUpdateDataFetcher:self];
 }
 
-- (SearchHomeRecentSearchesDataFetcher)initWithDelegate:(id)a3 isSearchAlongRoute:(BOOL)a4
+- (SearchHomeRecentSearchesDataFetcher)initWithDelegate:(id)delegate isSearchAlongRoute:(BOOL)route
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = SearchHomeRecentSearchesDataFetcher;
   v6 = [(SearchHomeRecentSearchesDataFetcher *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeWeak(&v6->_delegate, v5);
+    objc_storeWeak(&v6->_delegate, delegateCopy);
     v7->_isFetchingDataComplete = 0;
     v8 = +[Recents sharedRecents];
     [v8 addObserver:v7];

@@ -1,8 +1,8 @@
 @interface JournalMapPassthroughSelectionHandler
 - (PXPlacesMapPipelineComponentProvider)pipelineComponentProvider;
 - (_TtC7Journal37JournalMapPassthroughSelectionHandler)init;
-- (id)selectedGeotaggablesForRenderable:(id)a3 mapView:(id)a4;
-- (void)setPipelineComponentProvider:(id)a3;
+- (id)selectedGeotaggablesForRenderable:(id)renderable mapView:(id)view;
+- (void)setPipelineComponentProvider:(id)provider;
 @end
 
 @implementation JournalMapPassthroughSelectionHandler
@@ -14,19 +14,19 @@
   return v2;
 }
 
-- (void)setPipelineComponentProvider:(id)a3
+- (void)setPipelineComponentProvider:(id)provider
 {
-  *(&self->super.isa + OBJC_IVAR____TtC7Journal37JournalMapPassthroughSelectionHandler_pipelineComponentProvider) = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC7Journal37JournalMapPassthroughSelectionHandler_pipelineComponentProvider) = provider;
   swift_unknownObjectRetain();
 
   swift_unknownObjectRelease();
 }
 
-- (id)selectedGeotaggablesForRenderable:(id)a3 mapView:(id)a4
+- (id)selectedGeotaggablesForRenderable:(id)renderable mapView:(id)view
 {
-  v4 = [a3 geotaggables];
+  geotaggables = [renderable geotaggables];
 
-  return v4;
+  return geotaggables;
 }
 
 - (_TtC7Journal37JournalMapPassthroughSelectionHandler)init

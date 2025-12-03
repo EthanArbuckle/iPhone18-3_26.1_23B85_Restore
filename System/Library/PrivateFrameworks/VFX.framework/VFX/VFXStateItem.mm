@@ -1,42 +1,42 @@
 @interface VFXStateItem
-+ (id)addAnimation:(id)a3 to:(id)a4 keyPath:(id)a5;
-+ (id)insertChildNode:(id)a3 parent:(id)a4 atIndex:(unint64_t)a5;
-+ (id)removeAnimationFrom:(id)a3 keyPath:(id)a4;
-+ (id)removeNode:(id)a3;
-+ (id)setValue:(id)a3 to:(id)a4 keyPath:(id)a5;
-- (BOOL)replaces:(id)a3;
++ (id)addAnimation:(id)animation to:(id)to keyPath:(id)path;
++ (id)insertChildNode:(id)node parent:(id)parent atIndex:(unint64_t)index;
++ (id)removeAnimationFrom:(id)from keyPath:(id)path;
++ (id)removeNode:(id)node;
++ (id)setValue:(id)value to:(id)to keyPath:(id)path;
+- (BOOL)replaces:(id)replaces;
 - (NSString)description;
 - (VFXStateItem)init;
-- (VFXStateItem)initWithAction:(int64_t)a3 target:(id)a4 keyPath:(id)a5 value:(id)a6 parent:(id)a7 index:(unint64_t)a8;
-- (VFXStateItem)initWithCoder:(id)a3;
+- (VFXStateItem)initWithAction:(int64_t)action target:(id)target keyPath:(id)path value:(id)value parent:(id)parent index:(unint64_t)index;
+- (VFXStateItem)initWithCoder:(id)coder;
 - (id)_makeReverseItem;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)effectiveTarget;
 - (id)makeReverseItem;
 - (void)apply;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateReferencesForOperation:(int64_t)a3 usingBlock:(id)a4;
-- (void)setTarget:(id)a3;
-- (void)setValue:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateReferencesForOperation:(int64_t)operation usingBlock:(id)block;
+- (void)setTarget:(id)target;
+- (void)setValue:(id)value;
 @end
 
 @implementation VFXStateItem
 
-- (BOOL)replaces:(id)a3
+- (BOOL)replaces:(id)replaces
 {
-  if (*(a3 + 1) != self->_action)
+  if (*(replaces + 1) != self->_action)
   {
     return 0;
   }
 
-  v6 = objc_msgSend_target(a3, a2, a3, v3);
+  v6 = objc_msgSend_target(replaces, a2, replaces, v3);
   if (v6 != objc_msgSend_target(self, v7, v8, v9))
   {
     return 0;
   }
 
-  v13 = *(a3 + 3);
+  v13 = *(replaces + 3);
   keyPath = self->_keyPath;
 
   return objc_msgSend_isEqualToString_(v13, v10, keyPath, v11);
@@ -56,7 +56,7 @@
   return v5;
 }
 
-- (VFXStateItem)initWithAction:(int64_t)a3 target:(id)a4 keyPath:(id)a5 value:(id)a6 parent:(id)a7 index:(unint64_t)a8
+- (VFXStateItem)initWithAction:(int64_t)action target:(id)target keyPath:(id)path value:(id)value parent:(id)parent index:(unint64_t)index
 {
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
@@ -68,15 +68,15 @@
   {
     if (isKindOfClass)
     {
-      a6 = 0;
+      value = 0;
     }
 
-    v16->_action = a3;
-    objc_msgSend_setTarget_(v16, v17, a4, v18);
-    v19->_keyPath = a5;
-    v19->_value = a6;
-    v19->_parent = a7;
-    v19->_index = a8;
+    v16->_action = action;
+    objc_msgSend_setTarget_(v16, v17, target, v18);
+    v19->_keyPath = path;
+    v19->_value = value;
+    v19->_parent = parent;
+    v19->_index = index;
     v23 = objc_msgSend_UUID(MEMORY[0x1E696AFB0], v20, v21, v22);
     v19->_identifier = objc_msgSend_UUIDString(v23, v24, v25, v26);
   }
@@ -84,42 +84,42 @@
   return v19;
 }
 
-+ (id)setValue:(id)a3 to:(id)a4 keyPath:(id)a5
++ (id)setValue:(id)value to:(id)to keyPath:(id)path
 {
   v8 = [VFXStateItem alloc];
-  v10 = objc_msgSend_initWithAction_target_keyPath_value_parent_index_(v8, v9, 0, a4, a5, a3, 0, 0);
+  v10 = objc_msgSend_initWithAction_target_keyPath_value_parent_index_(v8, v9, 0, to, path, value, 0, 0);
 
   return v10;
 }
 
-+ (id)removeNode:(id)a3
++ (id)removeNode:(id)node
 {
   v4 = [VFXStateItem alloc];
-  v6 = objc_msgSend_initWithAction_target_keyPath_value_parent_index_(v4, v5, 3, a3, 0, 0, 0, 0);
+  v6 = objc_msgSend_initWithAction_target_keyPath_value_parent_index_(v4, v5, 3, node, 0, 0, 0, 0);
 
   return v6;
 }
 
-+ (id)insertChildNode:(id)a3 parent:(id)a4 atIndex:(unint64_t)a5
++ (id)insertChildNode:(id)node parent:(id)parent atIndex:(unint64_t)index
 {
   v8 = [VFXStateItem alloc];
-  v10 = objc_msgSend_initWithAction_target_keyPath_value_parent_index_(v8, v9, 4, a3, 0, 0, a4, a5);
+  v10 = objc_msgSend_initWithAction_target_keyPath_value_parent_index_(v8, v9, 4, node, 0, 0, parent, index);
 
   return v10;
 }
 
-+ (id)addAnimation:(id)a3 to:(id)a4 keyPath:(id)a5
++ (id)addAnimation:(id)animation to:(id)to keyPath:(id)path
 {
   v8 = [VFXStateItem alloc];
-  v10 = objc_msgSend_initWithAction_target_keyPath_value_parent_index_(v8, v9, 1, a4, a5, a3, 0, 0);
+  v10 = objc_msgSend_initWithAction_target_keyPath_value_parent_index_(v8, v9, 1, to, path, animation, 0, 0);
 
   return v10;
 }
 
-+ (id)removeAnimationFrom:(id)a3 keyPath:(id)a4
++ (id)removeAnimationFrom:(id)from keyPath:(id)path
 {
   v6 = [VFXStateItem alloc];
-  v8 = objc_msgSend_initWithAction_target_keyPath_value_parent_index_(v6, v7, 2, a3, a4, 0, 0, 0);
+  v8 = objc_msgSend_initWithAction_target_keyPath_value_parent_index_(v6, v7, 2, from, path, 0, 0, 0);
 
   return v8;
 }
@@ -132,13 +132,13 @@
   [(VFXStateItem *)&v3 dealloc];
 }
 
-- (void)enumerateReferencesForOperation:(int64_t)a3 usingBlock:(id)a4
+- (void)enumerateReferencesForOperation:(int64_t)operation usingBlock:(id)block
 {
-  if (a3 != 1)
+  if (operation != 1)
   {
     v11[9] = v4;
     v11[10] = v5;
-    v8 = objc_msgSend_target(self, a2, a3, a4);
+    v8 = objc_msgSend_target(self, a2, operation, block);
     if (v8)
     {
       v11[0] = MEMORY[0x1E69E9820];
@@ -146,7 +146,7 @@
       v11[2] = sub_1AF330F7C;
       v11[3] = &unk_1E7A7C0C8;
       v11[4] = self;
-      (*(a4 + 2))(a4, v8, 1, v11);
+      (*(block + 2))(block, v8, 1, v11);
     }
 
     value = self->_value;
@@ -157,12 +157,12 @@
       v10[2] = sub_1AF330F88;
       v10[3] = &unk_1E7A7C0C8;
       v10[4] = self;
-      (*(a4 + 2))(a4, value, 1, v10);
+      (*(block + 2))(block, value, 1, v10);
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v8 = objc_msgSend_target(self, v5, v6, v7);
@@ -193,32 +193,32 @@
   }
 }
 
-- (void)setTarget:(id)a3
+- (void)setTarget:(id)target
 {
-  if (objc_msgSend_target(self, a2, a3, v3) != a3)
+  if (objc_msgSend_target(self, a2, target, v3) != target)
   {
     v9 = objc_msgSend_stateManager(self->_state, v6, v7, v8);
-    if (objc_msgSend_owner(v9, v10, v11, v12) == a3)
+    if (objc_msgSend_owner(v9, v10, v11, v12) == target)
     {
-      v13 = 0;
+      targetCopy = 0;
     }
 
     else
     {
-      v13 = a3;
+      targetCopy = target;
     }
 
-    objc_storeWeak(&self->_target, v13);
+    objc_storeWeak(&self->_target, targetCopy);
   }
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
   value = self->_value;
-  if (value != a3)
+  if (value != value)
   {
 
-    self->_value = a3;
+    self->_value = value;
   }
 }
 
@@ -384,7 +384,7 @@
   return ReverseItem;
 }
 
-- (VFXStateItem)initWithCoder:(id)a3
+- (VFXStateItem)initWithCoder:(id)coder
 {
   v51[13] = *MEMORY[0x1E69E9840];
   v49.receiver = self;
@@ -392,10 +392,10 @@
   v6 = [(VFXStateItem *)&v49 init];
   if (v6)
   {
-    v6->_action = objc_msgSend_decodeIntegerForKey_(a3, v4, @"action", v5);
-    v6->_index = objc_msgSend_decodeIntegerForKey_(a3, v7, @"index", v8);
+    v6->_action = objc_msgSend_decodeIntegerForKey_(coder, v4, @"action", v5);
+    v6->_index = objc_msgSend_decodeIntegerForKey_(coder, v7, @"index", v8);
     v9 = objc_opt_class();
-    v6->_keyPath = objc_msgSend_decodeObjectOfClass_forKey_(a3, v10, v9, @"keyPath");
+    v6->_keyPath = objc_msgSend_decodeObjectOfClass_forKey_(coder, v10, v9, @"keyPath");
     v11 = MEMORY[0x1E695DFD8];
     v51[0] = objc_opt_class();
     v51[1] = objc_opt_class();
@@ -412,7 +412,7 @@
     v51[12] = objc_opt_class();
     v13 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v12, v51, 13);
     v16 = objc_msgSend_setWithArray_(v11, v14, v13, v15);
-    v18 = objc_msgSend_decodeObjectOfClasses_forKey_(a3, v17, v16, @"target");
+    v18 = objc_msgSend_decodeObjectOfClasses_forKey_(coder, v17, v16, @"target");
     objc_msgSend_setTarget_(v6, v19, v18, v20);
     v21 = MEMORY[0x1E695DFD8];
     v50[0] = objc_opt_class();
@@ -426,7 +426,7 @@
     v50[8] = objc_opt_class();
     v23 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v22, v50, 9);
     v26 = objc_msgSend_setWithArray_(v21, v24, v23, v25);
-    v28 = objc_msgSend_decodeObjectOfClasses_forKey_(a3, v27, v26, @"value");
+    v28 = objc_msgSend_decodeObjectOfClasses_forKey_(coder, v27, v26, @"value");
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -435,11 +435,11 @@
 
     v6->_value = v28;
     v32 = objc_opt_class();
-    v6->_parent = objc_msgSend_decodeObjectOfClass_forKey_(a3, v33, v32, @"parent");
-    if (objc_msgSend_containsValueForKey_(a3, v34, @"identifier", v35))
+    v6->_parent = objc_msgSend_decodeObjectOfClass_forKey_(coder, v33, v32, @"parent");
+    if (objc_msgSend_containsValueForKey_(coder, v34, @"identifier", v35))
     {
       v39 = objc_opt_class();
-      v41 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v40, v39, @"identifier");
+      v41 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v40, v39, @"identifier");
     }
 
     else
@@ -454,19 +454,19 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  objc_msgSend_encodeInteger_forKey_(a3, a2, self->_action, @"action");
+  objc_msgSend_encodeInteger_forKey_(coder, a2, self->_action, @"action");
   if (objc_msgSend_target(self, v5, v6, v7))
   {
     v11 = objc_msgSend_target(self, v8, v9, v10);
-    objc_msgSend_encodeObject_forKey_(a3, v12, v11, @"target");
+    objc_msgSend_encodeObject_forKey_(coder, v12, v11, @"target");
   }
 
   keyPath = self->_keyPath;
   if (keyPath)
   {
-    objc_msgSend_encodeObject_forKey_(a3, v8, keyPath, @"keyPath");
+    objc_msgSend_encodeObject_forKey_(coder, v8, keyPath, @"keyPath");
   }
 
   value = self->_value;
@@ -480,7 +480,7 @@
   {
     if (objc_msgSend_conformsToProtocol_(value, v15, &unk_1F25D6D40, v17))
     {
-      objc_msgSend_encodeObject_forKey_(a3, v18, value, @"value");
+      objc_msgSend_encodeObject_forKey_(coder, v18, value, @"value");
     }
 
     else
@@ -492,18 +492,18 @@
   parent = self->_parent;
   if (parent)
   {
-    objc_msgSend_encodeObject_forKey_(a3, v15, parent, @"parent");
+    objc_msgSend_encodeObject_forKey_(coder, v15, parent, @"parent");
   }
 
   index = self->_index;
   if (index)
   {
-    objc_msgSend_encodeInteger_forKey_(a3, v15, index, @"index");
+    objc_msgSend_encodeInteger_forKey_(coder, v15, index, @"index");
   }
 
   identifier = self->_identifier;
 
-  objc_msgSend_encodeObject_forKey_(a3, v15, identifier, @"identifier");
+  objc_msgSend_encodeObject_forKey_(coder, v15, identifier, @"identifier");
 }
 
 @end

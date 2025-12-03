@@ -1,37 +1,37 @@
 @interface CPRouteLeg
-- (CPRouteLeg)initWithCoder:(id)a3;
-- (CPRouteLeg)initWithOrigin:(id)a3 destination:(id)a4 coordinates3D:(id *)a5 coordinates3DCount:(unint64_t)a6;
-- (CPRouteLeg)initWithOriginLocation:(id)a3 destinationLocation:(id)a4 coordinates3D:(id *)a5 coordinates3DCount:(unint64_t)a6;
+- (CPRouteLeg)initWithCoder:(id)coder;
+- (CPRouteLeg)initWithOrigin:(id)origin destination:(id)destination coordinates3D:(id *)d coordinates3DCount:(unint64_t)count;
+- (CPRouteLeg)initWithOriginLocation:(id)location destinationLocation:(id)destinationLocation coordinates3D:(id *)d coordinates3DCount:(unint64_t)count;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CPRouteLeg
 
-- (CPRouteLeg)initWithOriginLocation:(id)a3 destinationLocation:(id)a4 coordinates3D:(id *)a5 coordinates3DCount:(unint64_t)a6
+- (CPRouteLeg)initWithOriginLocation:(id)location destinationLocation:(id)destinationLocation coordinates3D:(id *)d coordinates3DCount:(unint64_t)count
 {
-  v11 = a3;
-  v12 = a4;
+  locationCopy = location;
+  destinationLocationCopy = destinationLocation;
   v17.receiver = self;
   v17.super_class = CPRouteLeg;
   v13 = [(CPRouteLeg *)&v17 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_originLocation, a3);
-    objc_storeStrong(&v14->_destinationLocation, a4);
+    objc_storeStrong(&v13->_originLocation, location);
+    objc_storeStrong(&v14->_destinationLocation, destinationLocation);
     v14->_coordinates3D = 0;
     v14->_coordinates3DCount = 0;
-    if (a5)
+    if (d)
     {
-      if (a6 - 0xAAAAAAAAAAAAAABLL >= 0xF555555555555556)
+      if (count - 0xAAAAAAAAAAAAAABLL >= 0xF555555555555556)
       {
-        v15 = malloc_type_malloc(24 * a6, 0x760FBADEuLL);
+        v15 = malloc_type_malloc(24 * count, 0x760FBADEuLL);
         v14->_coordinates3D = v15;
         if (v15)
         {
-          memcpy(v15, a5, 24 * a6);
-          v14->_coordinates3DCount = a6;
+          memcpy(v15, d, 24 * count);
+          v14->_coordinates3DCount = count;
         }
       }
     }
@@ -40,18 +40,18 @@
   return v14;
 }
 
-- (CPRouteLeg)initWithOrigin:(id)a3 destination:(id)a4 coordinates3D:(id *)a5 coordinates3DCount:(unint64_t)a6
+- (CPRouteLeg)initWithOrigin:(id)origin destination:(id)destination coordinates3D:(id *)d coordinates3DCount:(unint64_t)count
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = [[CPNavigationWaypoint alloc] initWithMapItem:v11 locationThreshold:0 entryPoints:0 entryPointsCount:0];
-  v14 = [[CPNavigationWaypoint alloc] initWithMapItem:v12 locationThreshold:0 entryPoints:0 entryPointsCount:0];
-  v15 = [(CPRouteLeg *)self initWithOriginLocation:v13 destinationLocation:v14 coordinates3D:a5 coordinates3DCount:a6];
+  originCopy = origin;
+  destinationCopy = destination;
+  v13 = [[CPNavigationWaypoint alloc] initWithMapItem:originCopy locationThreshold:0 entryPoints:0 entryPointsCount:0];
+  v14 = [[CPNavigationWaypoint alloc] initWithMapItem:destinationCopy locationThreshold:0 entryPoints:0 entryPointsCount:0];
+  v15 = [(CPRouteLeg *)self initWithOriginLocation:v13 destinationLocation:v14 coordinates3D:d coordinates3DCount:count];
 
   if (v15)
   {
-    objc_storeStrong(&v15->_origin, a3);
-    objc_storeStrong(&v15->_destination, a4);
+    objc_storeStrong(&v15->_origin, origin);
+    objc_storeStrong(&v15->_destination, destination);
   }
 
   return v15;
@@ -71,23 +71,23 @@
   [(CPRouteLeg *)&v4 dealloc];
 }
 
-- (CPRouteLeg)initWithCoder:(id)a3
+- (CPRouteLeg)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = CPRouteLeg;
   v5 = [(CPRouteLeg *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPRouteLegOriginKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPRouteLegOriginKey"];
     origin = v5->_origin;
     v5->_origin = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPRouteLegDestinationKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPRouteLegDestinationKey"];
     destination = v5->_destination;
     v5->_destination = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPRouteLegCoordinates3DKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPRouteLegCoordinates3DKey"];
     v11 = v10;
     v5->_coordinates3D = 0;
     v5->_coordinates3DCount = 0;
@@ -113,15 +113,15 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeObject:self->_origin forKey:@"kCPRouteLegOriginKey"];
-  [v5 encodeObject:self->_destination forKey:@"kCPRouteLegDestinationKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_origin forKey:@"kCPRouteLegOriginKey"];
+  [coderCopy encodeObject:self->_destination forKey:@"kCPRouteLegDestinationKey"];
   if (self->_coordinates3D && self->_coordinates3DCount)
   {
     v4 = [MEMORY[0x277CBEA90] dataWithBytes:? length:?];
-    [v5 encodeObject:v4 forKey:@"kCPRouteLegCoordinates3DKey"];
+    [coderCopy encodeObject:v4 forKey:@"kCPRouteLegCoordinates3DKey"];
   }
 }
 

@@ -1,26 +1,26 @@
 @interface SBHWidgetAddSheetTransitionContext
-- (SBHWidgetAddSheetTransitionContext)initWithSourceCell:(id)a3;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
+- (SBHWidgetAddSheetTransitionContext)initWithSourceCell:(id)cell;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
 @end
 
 @implementation SBHWidgetAddSheetTransitionContext
 
-- (SBHWidgetAddSheetTransitionContext)initWithSourceCell:(id)a3
+- (SBHWidgetAddSheetTransitionContext)initWithSourceCell:(id)cell
 {
-  v5 = a3;
+  cellCopy = cell;
   v9.receiver = self;
   v9.super_class = SBHWidgetAddSheetTransitionContext;
   v6 = [(SBHWidgetAddSheetTransitionContext *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sourceCell, a3);
+    objc_storeStrong(&v6->_sourceCell, cell);
   }
 
   return v7;
 }
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
   animationController = self->_animationController;
   if (!animationController)

@@ -1,19 +1,19 @@
 @interface DAEASOpenIDMetadataRequest
-+ (id)openIDrequestURLFor:(id)a3;
++ (id)openIDrequestURLFor:(id)for;
 @end
 
 @implementation DAEASOpenIDMetadataRequest
 
-+ (id)openIDrequestURLFor:(id)a3
++ (id)openIDrequestURLFor:(id)for
 {
   v3 = MEMORY[0x277CCACE0];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithString:v4];
+  forCopy = for;
+  v5 = [[v3 alloc] initWithString:forCopy];
 
   v6 = objc_alloc_init(MEMORY[0x277CCACE0]);
   [v6 setScheme:@"https"];
-  v7 = [v5 host];
-  [v6 setHost:v7];
+  host = [v5 host];
+  [v6 setHost:host];
 
   [v6 setPath:@"/common/v2.0/.well-known/openid-configuration"];
   v8 = MEMORY[0x277CCAD20];

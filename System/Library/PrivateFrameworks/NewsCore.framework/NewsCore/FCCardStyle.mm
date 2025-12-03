@@ -1,55 +1,55 @@
 @interface FCCardStyle
-+ (id)styleWithConfigDict:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (FCCardStyle)initWithTitleForegroundColor:(id)a3 eyebrowForegroundColor:(id)a4 cardBackgroundColor:(id)a5 cardForegroundColor:(id)a6 sauceGradient:(id)a7 ctaBackgroundColor:(id)a8 ctaForegroundColor:(id)a9;
++ (id)styleWithConfigDict:(id)dict;
+- (BOOL)isEqual:(id)equal;
+- (FCCardStyle)initWithTitleForegroundColor:(id)color eyebrowForegroundColor:(id)foregroundColor cardBackgroundColor:(id)backgroundColor cardForegroundColor:(id)cardForegroundColor sauceGradient:(id)gradient ctaBackgroundColor:(id)ctaBackgroundColor ctaForegroundColor:(id)ctaForegroundColor;
 - (unint64_t)hash;
 @end
 
 @implementation FCCardStyle
 
-- (FCCardStyle)initWithTitleForegroundColor:(id)a3 eyebrowForegroundColor:(id)a4 cardBackgroundColor:(id)a5 cardForegroundColor:(id)a6 sauceGradient:(id)a7 ctaBackgroundColor:(id)a8 ctaForegroundColor:(id)a9
+- (FCCardStyle)initWithTitleForegroundColor:(id)color eyebrowForegroundColor:(id)foregroundColor cardBackgroundColor:(id)backgroundColor cardForegroundColor:(id)cardForegroundColor sauceGradient:(id)gradient ctaBackgroundColor:(id)ctaBackgroundColor ctaForegroundColor:(id)ctaForegroundColor
 {
-  v25 = a3;
-  v24 = a4;
-  v23 = a5;
-  v22 = a6;
-  v21 = a7;
-  v16 = a8;
-  v17 = a9;
+  colorCopy = color;
+  foregroundColorCopy = foregroundColor;
+  backgroundColorCopy = backgroundColor;
+  cardForegroundColorCopy = cardForegroundColor;
+  gradientCopy = gradient;
+  ctaBackgroundColorCopy = ctaBackgroundColor;
+  ctaForegroundColorCopy = ctaForegroundColor;
   v26.receiver = self;
   v26.super_class = FCCardStyle;
   v18 = [(FCCardStyle *)&v26 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_titleForegroundColor, a3);
-    objc_storeStrong(&v19->_eyebrowForegroundColor, a4);
-    objc_storeStrong(&v19->_cardBackgroundColor, a5);
-    objc_storeStrong(&v19->_cardForegroundColor, a6);
-    objc_storeStrong(&v19->_sauceGradient, a7);
-    objc_storeStrong(&v19->_ctaBackgroundColor, a8);
-    objc_storeStrong(&v19->_ctaForegroundColor, a9);
+    objc_storeStrong(&v18->_titleForegroundColor, color);
+    objc_storeStrong(&v19->_eyebrowForegroundColor, foregroundColor);
+    objc_storeStrong(&v19->_cardBackgroundColor, backgroundColor);
+    objc_storeStrong(&v19->_cardForegroundColor, cardForegroundColor);
+    objc_storeStrong(&v19->_sauceGradient, gradient);
+    objc_storeStrong(&v19->_ctaBackgroundColor, ctaBackgroundColor);
+    objc_storeStrong(&v19->_ctaForegroundColor, ctaForegroundColor);
   }
 
   return v19;
 }
 
-+ (id)styleWithConfigDict:(id)a3
++ (id)styleWithConfigDict:(id)dict
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"titleForegroundColor"];
+  dictCopy = dict;
+  v4 = [dictCopy objectForKeyedSubscript:@"titleForegroundColor"];
   v5 = [FCColor nullableColorWithHexString:v4];
 
-  v6 = [v3 objectForKeyedSubscript:@"eyebrowForegroundColor"];
+  v6 = [dictCopy objectForKeyedSubscript:@"eyebrowForegroundColor"];
   v7 = [FCColor nullableColorWithHexString:v6];
 
-  v8 = [v3 objectForKeyedSubscript:@"cardBackgroundColor"];
+  v8 = [dictCopy objectForKeyedSubscript:@"cardBackgroundColor"];
   v9 = [FCColor nullableColorWithHexString:v8];
 
-  v10 = [v3 objectForKeyedSubscript:@"cardForegroundColor"];
+  v10 = [dictCopy objectForKeyedSubscript:@"cardForegroundColor"];
   v11 = [FCColor nullableColorWithHexString:v10];
 
-  v12 = [v3 objectForKeyedSubscript:@"sauceColorGradient"];
+  v12 = [dictCopy objectForKeyedSubscript:@"sauceColorGradient"];
   if (v12)
   {
     v13 = [FCColorGradient colorGradientWithConfigDict:v12];
@@ -60,10 +60,10 @@
     v13 = 0;
   }
 
-  v14 = [v3 objectForKeyedSubscript:@"ctaBackgroundColor"];
+  v14 = [dictCopy objectForKeyedSubscript:@"ctaBackgroundColor"];
   v15 = [FCColor nullableColorWithHexString:v14];
 
-  v16 = [v3 objectForKeyedSubscript:@"ctaForegroundColor"];
+  v16 = [dictCopy objectForKeyedSubscript:@"ctaForegroundColor"];
   v17 = [FCColor nullableColorWithHexString:v16];
 
   v18 = [[FCCardStyle alloc] initWithTitleForegroundColor:v5 eyebrowForegroundColor:v7 cardBackgroundColor:v9 cardForegroundColor:v11 sauceGradient:v13 ctaBackgroundColor:v15 ctaForegroundColor:v17];
@@ -71,10 +71,10 @@
   return v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v26 = 1;
   }
@@ -84,49 +84,49 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = MEMORY[0x1E69E58C0];
-      v7 = [(FCCardStyle *)self titleForegroundColor];
-      v8 = [(FCCardStyle *)v5 titleForegroundColor];
-      if ([v6 nf_object:v7 isEqualToObject:v8])
+      titleForegroundColor = [(FCCardStyle *)self titleForegroundColor];
+      titleForegroundColor2 = [(FCCardStyle *)v5 titleForegroundColor];
+      if ([v6 nf_object:titleForegroundColor isEqualToObject:titleForegroundColor2])
       {
         v9 = MEMORY[0x1E69E58C0];
-        v10 = [(FCCardStyle *)self eyebrowForegroundColor];
-        v11 = [(FCCardStyle *)v5 eyebrowForegroundColor];
-        if ([v9 nf_object:v10 isEqualToObject:v11])
+        eyebrowForegroundColor = [(FCCardStyle *)self eyebrowForegroundColor];
+        eyebrowForegroundColor2 = [(FCCardStyle *)v5 eyebrowForegroundColor];
+        if ([v9 nf_object:eyebrowForegroundColor isEqualToObject:eyebrowForegroundColor2])
         {
           v12 = MEMORY[0x1E69E58C0];
-          v13 = [(FCCardStyle *)self cardBackgroundColor];
-          v35 = [(FCCardStyle *)v5 cardBackgroundColor];
-          v36 = v13;
-          if ([v12 nf_object:v13 isEqualToObject:v35])
+          cardBackgroundColor = [(FCCardStyle *)self cardBackgroundColor];
+          cardBackgroundColor2 = [(FCCardStyle *)v5 cardBackgroundColor];
+          v36 = cardBackgroundColor;
+          if ([v12 nf_object:cardBackgroundColor isEqualToObject:cardBackgroundColor2])
           {
             v14 = MEMORY[0x1E69E58C0];
-            v15 = [(FCCardStyle *)self cardForegroundColor];
-            v33 = [(FCCardStyle *)v5 cardForegroundColor];
-            v34 = v15;
-            if ([v14 nf_object:v15 isEqualToObject:v33])
+            cardForegroundColor = [(FCCardStyle *)self cardForegroundColor];
+            cardForegroundColor2 = [(FCCardStyle *)v5 cardForegroundColor];
+            v34 = cardForegroundColor;
+            if ([v14 nf_object:cardForegroundColor isEqualToObject:cardForegroundColor2])
             {
               v16 = MEMORY[0x1E69E58C0];
-              v17 = [(FCCardStyle *)self sauceGradient];
-              v18 = [(FCCardStyle *)v5 sauceGradient];
-              v32 = v17;
-              v19 = v17;
-              v20 = v18;
-              if ([v16 nf_object:v19 isEqualToObject:v18])
+              sauceGradient = [(FCCardStyle *)self sauceGradient];
+              sauceGradient2 = [(FCCardStyle *)v5 sauceGradient];
+              v32 = sauceGradient;
+              v19 = sauceGradient;
+              v20 = sauceGradient2;
+              if ([v16 nf_object:v19 isEqualToObject:sauceGradient2])
               {
                 v30 = MEMORY[0x1E69E58C0];
-                v21 = [(FCCardStyle *)self ctaBackgroundColor];
-                v22 = [(FCCardStyle *)v5 ctaBackgroundColor];
+                ctaBackgroundColor = [(FCCardStyle *)self ctaBackgroundColor];
+                ctaBackgroundColor2 = [(FCCardStyle *)v5 ctaBackgroundColor];
                 v23 = v30;
-                v29 = v22;
-                v31 = v21;
-                if ([v23 nf_object:v21 isEqualToObject:?])
+                v29 = ctaBackgroundColor2;
+                v31 = ctaBackgroundColor;
+                if ([v23 nf_object:ctaBackgroundColor isEqualToObject:?])
                 {
                   v28 = MEMORY[0x1E69E58C0];
-                  v24 = [(FCCardStyle *)self ctaForegroundColor];
-                  v25 = [(FCCardStyle *)v5 ctaForegroundColor];
-                  v26 = [v28 nf_object:v24 isEqualToObject:v25];
+                  ctaForegroundColor = [(FCCardStyle *)self ctaForegroundColor];
+                  ctaForegroundColor2 = [(FCCardStyle *)v5 ctaForegroundColor];
+                  v26 = [v28 nf_object:ctaForegroundColor isEqualToObject:ctaForegroundColor2];
                 }
 
                 else
@@ -176,20 +176,20 @@
 
 - (unint64_t)hash
 {
-  v3 = [(FCCardStyle *)self titleForegroundColor];
-  v4 = [v3 hash];
-  v5 = [(FCCardStyle *)self ctaForegroundColor];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(FCCardStyle *)self cardBackgroundColor];
-  v8 = [v7 hash];
-  v9 = [(FCCardStyle *)self cardForegroundColor];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(FCCardStyle *)self eyebrowForegroundColor];
-  v12 = [v11 hash];
-  v13 = [(FCCardStyle *)self sauceGradient];
-  v14 = v12 ^ [v13 hash];
-  v15 = [(FCCardStyle *)self ctaBackgroundColor];
-  v16 = v14 ^ [v15 hash];
+  titleForegroundColor = [(FCCardStyle *)self titleForegroundColor];
+  v4 = [titleForegroundColor hash];
+  ctaForegroundColor = [(FCCardStyle *)self ctaForegroundColor];
+  v6 = [ctaForegroundColor hash] ^ v4;
+  cardBackgroundColor = [(FCCardStyle *)self cardBackgroundColor];
+  v8 = [cardBackgroundColor hash];
+  cardForegroundColor = [(FCCardStyle *)self cardForegroundColor];
+  v10 = v6 ^ v8 ^ [cardForegroundColor hash];
+  eyebrowForegroundColor = [(FCCardStyle *)self eyebrowForegroundColor];
+  v12 = [eyebrowForegroundColor hash];
+  sauceGradient = [(FCCardStyle *)self sauceGradient];
+  v14 = v12 ^ [sauceGradient hash];
+  ctaBackgroundColor = [(FCCardStyle *)self ctaBackgroundColor];
+  v16 = v14 ^ [ctaBackgroundColor hash];
 
   return v10 ^ v16;
 }

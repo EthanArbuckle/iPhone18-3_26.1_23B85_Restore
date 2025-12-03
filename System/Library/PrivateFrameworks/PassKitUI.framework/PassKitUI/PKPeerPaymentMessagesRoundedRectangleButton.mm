@@ -1,8 +1,8 @@
 @interface PKPeerPaymentMessagesRoundedRectangleButton
 + (CGSize)referenceSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (PKPeerPaymentMessagesRoundedRectangleButton)init;
-- (PKPeerPaymentMessagesRoundedRectangleButton)initWithFrame:(CGRect)a3;
+- (PKPeerPaymentMessagesRoundedRectangleButton)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -32,11 +32,11 @@
   return [(PKPeerPaymentMessagesRoundedRectangleButton *)self initWithFrame:v3, v4, v5, v6];
 }
 
-- (PKPeerPaymentMessagesRoundedRectangleButton)initWithFrame:(CGRect)a3
+- (PKPeerPaymentMessagesRoundedRectangleButton)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = PKPeerPaymentMessagesRoundedRectangleButton;
-  v3 = [(PKPeerPaymentMessagesButton *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKPeerPaymentMessagesButton *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[PKPeerPaymentTheme primaryTextColor];
@@ -48,9 +48,9 @@
     v6 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:*MEMORY[0x1E69DDCF8]];
     v7 = [v6 fontDescriptorWithSymbolicTraits:2];
 
-    v8 = [(PKPeerPaymentMessagesRoundedRectangleButton *)v3 titleLabel];
+    titleLabel = [(PKPeerPaymentMessagesRoundedRectangleButton *)v3 titleLabel];
     v9 = [MEMORY[0x1E69DB878] fontWithDescriptor:v7 size:0.0];
-    [v8 setFont:v9];
+    [titleLabel setFont:v9];
 
     [(PKPeerPaymentMessagesButton *)v3 setHighlighted:0];
   }
@@ -58,11 +58,11 @@
   return v3;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v8.receiver = self;
   v8.super_class = PKPeerPaymentMessagesRoundedRectangleButton;
-  [(PKPeerPaymentMessagesRoundedRectangleButton *)&v8 sizeThatFits:a3.width, 50.0];
+  [(PKPeerPaymentMessagesRoundedRectangleButton *)&v8 sizeThatFits:fits.width, 50.0];
   v4 = v3;
   if (PKIsPad())
   {

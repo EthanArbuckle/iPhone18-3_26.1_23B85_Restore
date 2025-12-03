@@ -1,6 +1,6 @@
 @interface BRCAccountFacade
 - (BOOL)isInCarry;
-- (BRCAccountFacade)initWithAccountDSID:(id)a3;
+- (BRCAccountFacade)initWithAccountDSID:(id)d;
 - (int)rampNumber;
 @end
 
@@ -8,16 +8,16 @@
 
 - (int)rampNumber
 {
-  v2 = [(BRDSIDString *)self->_accountDSID brc_SHA256];
-  if ([v2 length] < 9)
+  brc_SHA256 = [(BRDSIDString *)self->_accountDSID brc_SHA256];
+  if ([brc_SHA256 length] < 9)
   {
     v4 = -1;
   }
 
   else
   {
-    v3 = [v2 bytes];
-    v4 = *v3 - 100 * ((*v3 / 0x64uLL) & 0x3FFFFFFF);
+    bytes = [brc_SHA256 bytes];
+    v4 = *bytes - 100 * ((*bytes / 0x64uLL) & 0x3FFFFFFF);
   }
 
   return v4;
@@ -37,9 +37,9 @@
     v5 = +[BRCAccountHandler currentiCloudAccount];
     if ([v5 br_isEnabledForCloudDocs])
     {
-      v6 = [(BRCAccountFacade *)self accountDSID];
-      v7 = [v5 br_dsid];
-      v8 = [v6 isEqualToString:v7];
+      accountDSID = [(BRCAccountFacade *)self accountDSID];
+      br_dsid = [v5 br_dsid];
+      v8 = [accountDSID isEqualToString:br_dsid];
 
       if (v8)
       {
@@ -49,14 +49,14 @@
         if (objc_opt_isKindOfClass())
         {
           v11 = [MEMORY[0x277CBEBC0] URLWithString:v10];
-          v12 = [v11 host];
-          v13 = [v12 componentsSeparatedByString:@"-"];
-          v14 = [v13 firstObject];
+          host = [v11 host];
+          v13 = [host componentsSeparatedByString:@"-"];
+          firstObject = [v13 firstObject];
 
           v15 = [BRCUserDefaults defaultsForMangledID:0];
-          v16 = [v15 carryPartitions];
+          carryPartitions = [v15 carryPartitions];
 
-          if (v14 && ([v16 containsObject:v14] & 1) != 0)
+          if (firstObject && ([carryPartitions containsObject:firstObject] & 1) != 0)
           {
             v17 = MEMORY[0x277CBEC38];
           }
@@ -72,22 +72,22 @@
       }
     }
 
-    v19 = [(NSNumber *)self->_isInCarry BOOLValue];
+    bOOLValue = [(NSNumber *)self->_isInCarry BOOLValue];
 
-    return v19;
+    return bOOLValue;
   }
 }
 
-- (BRCAccountFacade)initWithAccountDSID:(id)a3
+- (BRCAccountFacade)initWithAccountDSID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = BRCAccountFacade;
   v6 = [(BRCAccountFacade *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accountDSID, a3);
+    objc_storeStrong(&v6->_accountDSID, d);
   }
 
   return v7;

@@ -1,347 +1,347 @@
 @interface TPDocumentSettings
-- (TPDocumentSettings)initWithContext:(id)a3;
+- (TPDocumentSettings)initWithContext:(id)context;
 - (id)stringWithCurrentDate;
 - (int64_t)basicFootnoteFormat;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)resetForNewDocumentFromTemplate:(id)a3 locale:(id)a4;
-- (void)saveToArchiver:(id)a3;
-- (void)setAnnotationsVisible:(BOOL)a3;
-- (void)setAutoHyphenation:(BOOL)a3;
-- (void)setBibliographyFormat:(id)a3;
-- (void)setCTBubblesVisibility:(int)a3;
-- (void)setChangeBarsVisible:(BOOL)a3;
-- (void)setCopyMovies:(BOOL)a3;
-- (void)setCopyTemplateAssets:(BOOL)a3;
-- (void)setCreationDate:(id)a3;
-- (void)setCreationLocale:(id)a3;
-- (void)setDecimalTab:(id)a3;
-- (void)setDocumentIsRTL:(BOOL)a3;
-- (void)setFootnoteFormat:(int64_t)a3;
-- (void)setFootnoteGap:(int64_t)a3;
-- (void)setFootnoteKind:(int64_t)a3;
-- (void)setFootnoteNumbering:(int64_t)a3;
-- (void)setFormatChangesVisible:(BOOL)a3;
-- (void)setHasBody:(BOOL)a3;
-- (void)setHasFacingPages:(BOOL)a3;
-- (void)setHasFooters:(BOOL)a3;
-- (void)setHasHeaders:(BOOL)a3;
-- (void)setHyperlinksEnabled:(BOOL)a3;
-- (void)setHyphenationLanguage:(id)a3;
-- (void)setLanguage:(id)a3;
-- (void)setOriginalTemplate:(id)a3;
-- (void)setPlaceholderAuthoring:(BOOL)a3;
-- (void)setQuickLookPreview:(BOOL)a3;
-- (void)setSectionAuthoring:(BOOL)a3;
-- (void)setShowCTDeletions:(BOOL)a3;
-- (void)setShowCTMarkup:(BOOL)a3;
-- (void)setTocLinksEnabled:(BOOL)a3;
-- (void)setUseLigatures:(BOOL)a3;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)resetForNewDocumentFromTemplate:(id)template locale:(id)locale;
+- (void)saveToArchiver:(id)archiver;
+- (void)setAnnotationsVisible:(BOOL)visible;
+- (void)setAutoHyphenation:(BOOL)hyphenation;
+- (void)setBibliographyFormat:(id)format;
+- (void)setCTBubblesVisibility:(int)visibility;
+- (void)setChangeBarsVisible:(BOOL)visible;
+- (void)setCopyMovies:(BOOL)movies;
+- (void)setCopyTemplateAssets:(BOOL)assets;
+- (void)setCreationDate:(id)date;
+- (void)setCreationLocale:(id)locale;
+- (void)setDecimalTab:(id)tab;
+- (void)setDocumentIsRTL:(BOOL)l;
+- (void)setFootnoteFormat:(int64_t)format;
+- (void)setFootnoteGap:(int64_t)gap;
+- (void)setFootnoteKind:(int64_t)kind;
+- (void)setFootnoteNumbering:(int64_t)numbering;
+- (void)setFormatChangesVisible:(BOOL)visible;
+- (void)setHasBody:(BOOL)body;
+- (void)setHasFacingPages:(BOOL)pages;
+- (void)setHasFooters:(BOOL)footers;
+- (void)setHasHeaders:(BOOL)headers;
+- (void)setHyperlinksEnabled:(BOOL)enabled;
+- (void)setHyphenationLanguage:(id)language;
+- (void)setLanguage:(id)language;
+- (void)setOriginalTemplate:(id)template;
+- (void)setPlaceholderAuthoring:(BOOL)authoring;
+- (void)setQuickLookPreview:(BOOL)preview;
+- (void)setSectionAuthoring:(BOOL)authoring;
+- (void)setShowCTDeletions:(BOOL)deletions;
+- (void)setShowCTMarkup:(BOOL)markup;
+- (void)setTocLinksEnabled:(BOOL)enabled;
+- (void)setUseLigatures:(BOOL)ligatures;
 @end
 
 @implementation TPDocumentSettings
 
-- (void)setHasHeaders:(BOOL)a3
+- (void)setHasHeaders:(BOOL)headers
 {
-  if (self->_hasHeaders != a3)
+  if (self->_hasHeaders != headers)
   {
     objc_msgSend_willModify(self, a2, v3, v4, v5, v6);
-    self->_hasHeaders = a3;
+    self->_hasHeaders = headers;
   }
 }
 
-- (void)setHasFooters:(BOOL)a3
+- (void)setHasFooters:(BOOL)footers
 {
-  if (self->_hasFooters != a3)
+  if (self->_hasFooters != footers)
   {
     objc_msgSend_willModify(self, a2, v3, v4, v5, v6);
-    self->_hasFooters = a3;
+    self->_hasFooters = footers;
   }
 }
 
-- (void)setHasFacingPages:(BOOL)a3
+- (void)setHasFacingPages:(BOOL)pages
 {
-  if (self->_hasFacingPages != a3)
+  if (self->_hasFacingPages != pages)
   {
     objc_msgSend_willModify(self, a2, v3, v4, v5, v6);
-    self->_hasFacingPages = a3;
+    self->_hasFacingPages = pages;
   }
 }
 
-- (void)setQuickLookPreview:(BOOL)a3
+- (void)setQuickLookPreview:(BOOL)preview
 {
-  if (self->_qlPreview != a3)
+  if (self->_qlPreview != preview)
   {
     objc_msgSend_willModify(self, a2, v3, v4, v5, v6);
-    self->_qlPreview = a3;
+    self->_qlPreview = preview;
   }
 }
 
-- (void)setCopyMovies:(BOOL)a3
+- (void)setCopyMovies:(BOOL)movies
 {
-  if (self->_copyMovies != a3)
+  if (self->_copyMovies != movies)
   {
     objc_msgSend_willModify(self, a2, v3, v4, v5, v6);
-    self->_copyMovies = a3;
+    self->_copyMovies = movies;
   }
 }
 
-- (void)setCopyTemplateAssets:(BOOL)a3
+- (void)setCopyTemplateAssets:(BOOL)assets
 {
-  if (self->_copyAssets != a3)
+  if (self->_copyAssets != assets)
   {
     objc_msgSend_willModify(self, a2, v3, v4, v5, v6);
-    self->_copyAssets = a3;
+    self->_copyAssets = assets;
   }
 }
 
-- (void)setPlaceholderAuthoring:(BOOL)a3
+- (void)setPlaceholderAuthoring:(BOOL)authoring
 {
-  if (self->_placeholderAuthoring != a3)
+  if (self->_placeholderAuthoring != authoring)
   {
     objc_msgSend_willModify(self, a2, v3, v4, v5, v6);
-    self->_placeholderAuthoring = a3;
+    self->_placeholderAuthoring = authoring;
   }
 }
 
-- (void)setHyperlinksEnabled:(BOOL)a3
+- (void)setHyperlinksEnabled:(BOOL)enabled
 {
-  if (self->_linksEnabled != a3)
+  if (self->_linksEnabled != enabled)
   {
     objc_msgSend_willModify(self, a2, v3, v4, v5, v6);
-    self->_linksEnabled = a3;
+    self->_linksEnabled = enabled;
   }
 }
 
-- (void)setAutoHyphenation:(BOOL)a3
+- (void)setAutoHyphenation:(BOOL)hyphenation
 {
-  if (self->_hyphenation != a3)
+  if (self->_hyphenation != hyphenation)
   {
     objc_msgSend_willModify(self, a2, v3, v4, v5, v6);
-    self->_hyphenation = a3;
+    self->_hyphenation = hyphenation;
   }
 }
 
-- (void)setUseLigatures:(BOOL)a3
+- (void)setUseLigatures:(BOOL)ligatures
 {
-  if (self->_ligatures != a3)
+  if (self->_ligatures != ligatures)
   {
     objc_msgSend_willModify(self, a2, v3, v4, v5, v6);
-    self->_ligatures = a3;
+    self->_ligatures = ligatures;
   }
 }
 
-- (void)setTocLinksEnabled:(BOOL)a3
+- (void)setTocLinksEnabled:(BOOL)enabled
 {
-  if (self->_tocLinksEnabled != a3)
+  if (self->_tocLinksEnabled != enabled)
   {
     objc_msgSend_willModify(self, a2, v3, v4, v5, v6);
-    self->_tocLinksEnabled = a3;
+    self->_tocLinksEnabled = enabled;
   }
 }
 
-- (void)setShowCTMarkup:(BOOL)a3
+- (void)setShowCTMarkup:(BOOL)markup
 {
-  if (self->_showCTMarkup != a3)
+  if (self->_showCTMarkup != markup)
   {
     objc_msgSend_willModify(self, a2, v3, v4, v5, v6);
-    self->_showCTMarkup = a3;
+    self->_showCTMarkup = markup;
   }
 }
 
-- (void)setShowCTDeletions:(BOOL)a3
+- (void)setShowCTDeletions:(BOOL)deletions
 {
-  if (self->_showCTDeletions != a3)
+  if (self->_showCTDeletions != deletions)
   {
     objc_msgSend_willModify(self, a2, v3, v4, v5, v6);
-    self->_showCTDeletions = a3;
+    self->_showCTDeletions = deletions;
   }
 }
 
-- (void)setCTBubblesVisibility:(int)a3
+- (void)setCTBubblesVisibility:(int)visibility
 {
-  if (self->_ctBubblesVisibility != a3)
+  if (self->_ctBubblesVisibility != visibility)
   {
     objc_msgSend_willModify(self, a2, v3, v4, v5, v6);
-    self->_ctBubblesVisibility = a3;
+    self->_ctBubblesVisibility = visibility;
   }
 }
 
-- (void)setChangeBarsVisible:(BOOL)a3
+- (void)setChangeBarsVisible:(BOOL)visible
 {
-  if (self->_changeBarsVisible != a3)
+  if (self->_changeBarsVisible != visible)
   {
     objc_msgSend_willModify(self, a2, v3, v4, v5, v6);
-    self->_changeBarsVisible = a3;
+    self->_changeBarsVisible = visible;
   }
 }
 
-- (void)setFormatChangesVisible:(BOOL)a3
+- (void)setFormatChangesVisible:(BOOL)visible
 {
-  if (self->_formatChangesVisible != a3)
+  if (self->_formatChangesVisible != visible)
   {
     objc_msgSend_willModify(self, a2, v3, v4, v5, v6);
-    self->_formatChangesVisible = a3;
+    self->_formatChangesVisible = visible;
   }
 }
 
-- (void)setAnnotationsVisible:(BOOL)a3
+- (void)setAnnotationsVisible:(BOOL)visible
 {
-  if (self->_annotationsVisible != a3)
+  if (self->_annotationsVisible != visible)
   {
     objc_msgSend_willModify(self, a2, v3, v4, v5, v6);
-    self->_annotationsVisible = a3;
+    self->_annotationsVisible = visible;
   }
 }
 
-- (void)setDocumentIsRTL:(BOOL)a3
+- (void)setDocumentIsRTL:(BOOL)l
 {
-  if (self->_documentIsRTL != a3)
+  if (self->_documentIsRTL != l)
   {
     objc_msgSend_willModify(self, a2, v3, v4, v5, v6);
-    self->_documentIsRTL = a3;
+    self->_documentIsRTL = l;
   }
 }
 
-- (void)setSectionAuthoring:(BOOL)a3
+- (void)setSectionAuthoring:(BOOL)authoring
 {
-  if (self->_sectionAuthoring != a3)
+  if (self->_sectionAuthoring != authoring)
   {
     objc_msgSend_willModify(self, a2, v3, v4, v5, v6);
-    self->_sectionAuthoring = a3;
+    self->_sectionAuthoring = authoring;
   }
 }
 
-- (void)setFootnoteKind:(int64_t)a3
+- (void)setFootnoteKind:(int64_t)kind
 {
-  if (self->_footnoteKind != a3)
+  if (self->_footnoteKind != kind)
   {
     objc_msgSend_willModify(self, a2, v3, v4, v5, v6);
-    self->_footnoteKind = a3;
+    self->_footnoteKind = kind;
   }
 }
 
-- (void)setFootnoteFormat:(int64_t)a3
+- (void)setFootnoteFormat:(int64_t)format
 {
-  if (self->_footnoteFormat != a3)
+  if (self->_footnoteFormat != format)
   {
     objc_msgSend_willModify(self, a2, v3, v4, v5, v6);
-    self->_footnoteFormat = a3;
+    self->_footnoteFormat = format;
   }
 }
 
-- (void)setFootnoteNumbering:(int64_t)a3
+- (void)setFootnoteNumbering:(int64_t)numbering
 {
-  if (self->_footnoteNumbering != a3)
+  if (self->_footnoteNumbering != numbering)
   {
     objc_msgSend_willModify(self, a2, v3, v4, v5, v6);
-    self->_footnoteNumbering = a3;
+    self->_footnoteNumbering = numbering;
   }
 }
 
-- (void)setFootnoteGap:(int64_t)a3
+- (void)setFootnoteGap:(int64_t)gap
 {
-  if (self->_footnoteGap != a3)
+  if (self->_footnoteGap != gap)
   {
     objc_msgSend_willModify(self, a2, v3, v4, v5, v6);
-    self->_footnoteGap = a3;
+    self->_footnoteGap = gap;
   }
 }
 
-- (void)setDecimalTab:(id)a3
+- (void)setDecimalTab:(id)tab
 {
-  v4 = a3;
-  if (self->_decimalTab != v4)
+  tabCopy = tab;
+  if (self->_decimalTab != tabCopy)
   {
-    v15 = v4;
-    objc_msgSend_willModify(self, v4, v5, v6, v7, v8);
+    v15 = tabCopy;
+    objc_msgSend_willModify(self, tabCopy, v5, v6, v7, v8);
     v14 = objc_msgSend_copy(v15, v9, v10, v11, v12, v13);
 
     objc_storeStrong(&self->_decimalTab, v14);
-    v4 = v14;
+    tabCopy = v14;
   }
 }
 
-- (void)setLanguage:(id)a3
+- (void)setLanguage:(id)language
 {
-  v4 = a3;
-  if (self->_language != v4)
+  languageCopy = language;
+  if (self->_language != languageCopy)
   {
-    v15 = v4;
-    objc_msgSend_willModify(self, v4, v5, v6, v7, v8);
+    v15 = languageCopy;
+    objc_msgSend_willModify(self, languageCopy, v5, v6, v7, v8);
     v14 = objc_msgSend_copy(v15, v9, v10, v11, v12, v13);
 
     objc_storeStrong(&self->_language, v14);
-    v4 = v14;
+    languageCopy = v14;
   }
 }
 
-- (void)setHyphenationLanguage:(id)a3
+- (void)setHyphenationLanguage:(id)language
 {
-  v4 = a3;
-  if (self->_hyphenationLanguage != v4)
+  languageCopy = language;
+  if (self->_hyphenationLanguage != languageCopy)
   {
-    v15 = v4;
-    objc_msgSend_willModify(self, v4, v5, v6, v7, v8);
+    v15 = languageCopy;
+    objc_msgSend_willModify(self, languageCopy, v5, v6, v7, v8);
     v14 = objc_msgSend_copy(v15, v9, v10, v11, v12, v13);
 
     objc_storeStrong(&self->_hyphenationLanguage, v14);
-    v4 = v14;
+    languageCopy = v14;
   }
 }
 
-- (void)setCreationLocale:(id)a3
+- (void)setCreationLocale:(id)locale
 {
-  v4 = a3;
-  if (self->_creationLocale != v4)
+  localeCopy = locale;
+  if (self->_creationLocale != localeCopy)
   {
-    v15 = v4;
-    objc_msgSend_willModify(self, v4, v5, v6, v7, v8);
+    v15 = localeCopy;
+    objc_msgSend_willModify(self, localeCopy, v5, v6, v7, v8);
     v14 = objc_msgSend_copy(v15, v9, v10, v11, v12, v13);
 
     objc_storeStrong(&self->_creationLocale, v14);
-    v4 = v14;
+    localeCopy = v14;
   }
 }
 
-- (void)setOriginalTemplate:(id)a3
+- (void)setOriginalTemplate:(id)template
 {
-  v4 = a3;
-  if (self->_originalTemplate != v4)
+  templateCopy = template;
+  if (self->_originalTemplate != templateCopy)
   {
-    v15 = v4;
-    objc_msgSend_willModify(self, v4, v5, v6, v7, v8);
+    v15 = templateCopy;
+    objc_msgSend_willModify(self, templateCopy, v5, v6, v7, v8);
     v14 = objc_msgSend_copy(v15, v9, v10, v11, v12, v13);
 
     objc_storeStrong(&self->_originalTemplate, v14);
-    v4 = v14;
+    templateCopy = v14;
   }
 }
 
-- (void)setCreationDate:(id)a3
+- (void)setCreationDate:(id)date
 {
-  v4 = a3;
-  if (self->_creationDate != v4)
+  dateCopy = date;
+  if (self->_creationDate != dateCopy)
   {
-    v15 = v4;
-    objc_msgSend_willModify(self, v4, v5, v6, v7, v8);
+    v15 = dateCopy;
+    objc_msgSend_willModify(self, dateCopy, v5, v6, v7, v8);
     v14 = objc_msgSend_copy(v15, v9, v10, v11, v12, v13);
 
     objc_storeStrong(&self->_creationDate, v14);
-    v4 = v14;
+    dateCopy = v14;
   }
 }
 
-- (void)setBibliographyFormat:(id)a3
+- (void)setBibliographyFormat:(id)format
 {
-  v4 = a3;
-  if (self->_bibliographyFormat != v4)
+  formatCopy = format;
+  if (self->_bibliographyFormat != formatCopy)
   {
-    v15 = v4;
-    objc_msgSend_willModify(self, v4, v5, v6, v7, v8);
+    v15 = formatCopy;
+    objc_msgSend_willModify(self, formatCopy, v5, v6, v7, v8);
     v14 = objc_msgSend_copy(v15, v9, v10, v11, v12, v13);
 
     objc_storeStrong(&self->_bibliographyFormat, v14);
-    v4 = v14;
+    formatCopy = v14;
   }
 }
 
@@ -358,21 +358,21 @@
   }
 }
 
-- (void)setHasBody:(BOOL)a3
+- (void)setHasBody:(BOOL)body
 {
   objc_msgSend_willModify(self, a2, v3, v4, v5, v6);
-  self->_hasBody = a3;
+  self->_hasBody = body;
   v25 = objc_msgSend_defaultCenter(MEMORY[0x277CCAB98], v9, v10, v11, v12, v13);
   v19 = objc_msgSend_documentRoot(self, v14, v15, v16, v17, v18);
   objc_msgSend_postNotificationName_object_(v25, v20, v21, v22, v23, v24, @"TPHasBodyChanged", v19);
 }
 
-- (TPDocumentSettings)initWithContext:(id)a3
+- (TPDocumentSettings)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v64.receiver = self;
   v64.super_class = TPDocumentSettings;
-  v5 = [(TPDocumentSettings *)&v64 initWithContext:v4];
+  v5 = [(TPDocumentSettings *)&v64 initWithContext:contextCopy];
   v11 = v5;
   if (v5)
   {
@@ -420,13 +420,13 @@
   return v11;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v105 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v9 = objc_msgSend_messageWithDescriptor_(v105, v4, v5, v6, v7, v8, off_2812F85B8[4]);
+  v9 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, v5, v6, v7, v8, off_2812F85B8[4]);
 
-  if (objc_msgSend_hasPreUFFVersion(v105, v10, v11, v12, v13, v14))
+  if (objc_msgSend_hasPreUFFVersion(unarchiverCopy, v10, v11, v12, v13, v14))
   {
     objc_msgSend_willModifyForUpgrade(self, v15, v16, v17, v18, v19);
     v20 = 1;
@@ -641,11 +641,11 @@ LABEL_38:
   }
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v4 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v10 = objc_msgSend_messageWithNewFunction_descriptor_(v4, v5, v6, v7, v8, v9, sub_276002C30, off_2812F85B8[4]);
+  v10 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v5, v6, v7, v8, v9, sub_276002C30, off_2812F85B8[4]);
 
   v11 = *(v10 + 16);
   *(v10 + 120) = self->_hasBody;
@@ -653,7 +653,7 @@ LABEL_38:
   hasFooters = self->_hasFooters;
   *(v10 + 16) = v11 | 0x7000000;
   *(v10 + 122) = hasFooters;
-  objc_msgSend_setIgnoreAndPreserveRuleForField_message_(v4, v13, v14, v15, v16, v17, 34, v10);
+  objc_msgSend_setIgnoreAndPreserveRuleForField_message_(archiverCopy, v13, v14, v15, v16, v17, 34, v10);
   *(v10 + 101) = self->_hasFacingPages;
   *(v10 + 123) = self->_qlPreview;
   *(v10 + 124) = self->_copyMovies;
@@ -797,11 +797,11 @@ LABEL_38:
   }
 }
 
-- (void)resetForNewDocumentFromTemplate:(id)a3 locale:(id)a4
+- (void)resetForNewDocumentFromTemplate:(id)template locale:(id)locale
 {
-  v123 = a3;
-  v6 = a4;
-  objc_msgSend_setOriginalTemplate_(self, v7, v8, v9, v10, v11, v123);
+  templateCopy = template;
+  localeCopy = locale;
+  objc_msgSend_setOriginalTemplate_(self, v7, v8, v9, v10, v11, templateCopy);
   v17 = objc_msgSend_stringWithCurrentDate(self, v12, v13, v14, v15, v16);
   objc_msgSend_setCreationDate_(self, v18, v19, v20, v21, v22, v17);
 
@@ -811,10 +811,10 @@ LABEL_38:
   objc_msgSend_setCopyMovies_(self, v38, v39, v40, v41, v42, 1);
   objc_msgSend_setCopyTemplateAssets_(self, v43, v44, v45, v46, v47, 1);
   objc_msgSend_setFootnoteFormat_(self, v48, v49, v50, v51, v52, 0);
-  if (v6)
+  if (localeCopy)
   {
     v58 = objc_alloc(MEMORY[0x277D81228]);
-    v64 = objc_msgSend_initWithLocale_(v58, v59, v60, v61, v62, v63, v6);
+    v64 = objc_msgSend_initWithLocale_(v58, v59, v60, v61, v62, v63, localeCopy);
   }
 
   else

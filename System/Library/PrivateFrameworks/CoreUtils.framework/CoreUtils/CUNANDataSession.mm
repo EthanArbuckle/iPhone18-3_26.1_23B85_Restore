@@ -1,29 +1,29 @@
 @interface CUNANDataSession
 - ($4FF8D77539A8BD95DCE0A545902499A9)peerAddress;
-- (BOOL)_dataSession:(id)a3 confirmedForPeerDataAddress:(id)a4 serviceSpecificInfo:(id)a5 error:(id *)a6;
+- (BOOL)_dataSession:(id)session confirmedForPeerDataAddress:(id)address serviceSpecificInfo:(id)info error:(id *)error;
 - (CUNANDataSession)init;
 - (NSString)peerAddressString;
 - (NSString)peerEndpointString;
 - (WiFiAwareDataSessionPairingDelegate)wfaPairingDelegate;
-- (id)descriptionWithLevel:(int)a3;
-- (void)_activateWithCompletion:(id)a3;
+- (id)descriptionWithLevel:(int)level;
+- (void)_activateWithCompletion:(id)completion;
 - (void)_invalidate;
 - (void)_invalidated;
-- (void)_pairingRequestStartedForDataSession:(id)a3 pinCodeInputCompletionHandler:(id)a4;
+- (void)_pairingRequestStartedForDataSession:(id)session pinCodeInputCompletionHandler:(id)handler;
 - (void)_terminateServerDataSession;
-- (void)activateWithCompletion:(id)a3;
-- (void)dataSession:(id)a3 confirmedForPeerDataAddress:(id)a4 serviceSpecificInfo:(id)a5;
-- (void)dataSession:(id)a3 failedToStartWithError:(int64_t)a4;
-- (void)dataSession:(id)a3 terminatedWithReason:(int64_t)a4;
-- (void)dataSessionRequestStarted:(id)a3;
-- (void)generateStatisticsReportWithCompletionHandler:(id)a3;
+- (void)activateWithCompletion:(id)completion;
+- (void)dataSession:(id)session confirmedForPeerDataAddress:(id)address serviceSpecificInfo:(id)info;
+- (void)dataSession:(id)session failedToStartWithError:(int64_t)error;
+- (void)dataSession:(id)session terminatedWithReason:(int64_t)reason;
+- (void)dataSessionRequestStarted:(id)started;
+- (void)generateStatisticsReportWithCompletionHandler:(id)handler;
 - (void)invalidate;
-- (void)pairingRequestStartedForDataSession:(id)a3 pinCodeInputCompletionHandler:(id)a4;
-- (void)reportIssue:(id)a3;
-- (void)setPeerAddress:(id *)a3;
-- (void)setPeerEndpoint:(id)a3;
-- (void)tryPairingPassword:(id)a3;
-- (void)updateLinkStatus:(int)a3;
+- (void)pairingRequestStartedForDataSession:(id)session pinCodeInputCompletionHandler:(id)handler;
+- (void)reportIssue:(id)issue;
+- (void)setPeerAddress:(id *)address;
+- (void)setPeerEndpoint:(id)endpoint;
+- (void)tryPairingPassword:(id)password;
+- (void)updateLinkStatus:(int)status;
 @end
 
 @implementation CUNANDataSession
@@ -35,10 +35,10 @@
   return WeakRetained;
 }
 
-- (void)setPeerAddress:(id *)a3
+- (void)setPeerAddress:(id *)address
 {
-  var0 = a3->var0;
-  *(&self->_peerAddress.v6.sin6_addr + 4) = *(&a3->var2.sin6_addr + 4);
+  var0 = address->var0;
+  *(&self->_peerAddress.v6.sin6_addr + 4) = *(&address->var2.sin6_addr + 4);
   self->_peerAddress.sa = var0;
 }
 
@@ -49,12 +49,12 @@
   return self;
 }
 
-- (void)_pairingRequestStartedForDataSession:(id)a3 pinCodeInputCompletionHandler:(id)a4
+- (void)_pairingRequestStartedForDataSession:(id)session pinCodeInputCompletionHandler:(id)handler
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[CUNANPairingPromptInfo alloc] initWithDataSession:v7];
+  handlerCopy = handler;
+  sessionCopy = session;
+  v8 = [[CUNANPairingPromptInfo alloc] initWithDataSession:sessionCopy];
 
   v9 = logger();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -74,7 +74,7 @@
 
   if (self->_pairingPromptHandler)
   {
-    v11 = _Block_copy(v6);
+    v11 = _Block_copy(handlerCopy);
     pinCodeInputCompletionHandler = self->_pinCodeInputCompletionHandler;
     self->_pinCodeInputCompletionHandler = v11;
 
@@ -82,20 +82,20 @@
   }
 }
 
-- (void)pairingRequestStartedForDataSession:(id)a3 pinCodeInputCompletionHandler:(id)a4
+- (void)pairingRequestStartedForDataSession:(id)session pinCodeInputCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __86__CUNANDataSession_pairingRequestStartedForDataSession_pinCodeInputCompletionHandler___block_invoke;
   block[3] = &unk_1E73A4BD8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = sessionCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = sessionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -110,7 +110,7 @@ void *__86__CUNANDataSession_pairingRequestStartedForDataSession_pinCodeInputCom
   return result;
 }
 
-- (void)dataSession:(id)a3 terminatedWithReason:(int64_t)a4
+- (void)dataSession:(id)session terminatedWithReason:(int64_t)reason
 {
   dispatchQueue = self->_dispatchQueue;
   v5[0] = MEMORY[0x1E69E9820];
@@ -118,7 +118,7 @@ void *__86__CUNANDataSession_pairingRequestStartedForDataSession_pinCodeInputCom
   v5[2] = __53__CUNANDataSession_dataSession_terminatedWithReason___block_invoke;
   v5[3] = &unk_1E73A4340;
   v5[4] = self;
-  v5[5] = a4;
+  v5[5] = reason;
   dispatch_async(dispatchQueue, v5);
 }
 
@@ -166,12 +166,12 @@ void __53__CUNANDataSession_dataSession_terminatedWithReason___block_invoke(uint
   }
 }
 
-- (BOOL)_dataSession:(id)a3 confirmedForPeerDataAddress:(id)a4 serviceSpecificInfo:(id)a5 error:(id *)a6
+- (BOOL)_dataSession:(id)session confirmedForPeerDataAddress:(id)address serviceSpecificInfo:(id)info error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = [a4 ipv6LinkLocalAddress];
-  v13 = [v12 length];
+  sessionCopy = session;
+  infoCopy = info;
+  ipv6LinkLocalAddress = [address ipv6LinkLocalAddress];
+  v13 = [ipv6LinkLocalAddress length];
   if (v13 == 16)
   {
     *&self->_peerAddress.v6.sin6_addr.__u6_addr16[1] = 0;
@@ -179,38 +179,38 @@ void __53__CUNANDataSession_dataSession_terminatedWithReason___block_invoke(uint
     HIWORD(self->_peerAddress.v6.sin6_scope_id) = 0;
     *(&self->_peerAddress.v6.sin6_addr.__u6_addr32[2] + 2) = 0;
     *&self->_peerAddress.sa.sa_len = 7708;
-    self->_peerAddress.v6.sin6_addr = *[v12 bytes];
-    self->_peerAddress.v6.sin6_scope_id = [v10 localInterfaceIndex];
-    self->_peerAddress.v4.sin_port = __rev16([v11 servicePort]);
-    self->_localInterfaceIndex = [v10 localInterfaceIndex];
+    self->_peerAddress.v6.sin6_addr = *[ipv6LinkLocalAddress bytes];
+    self->_peerAddress.v6.sin6_scope_id = [sessionCopy localInterfaceIndex];
+    self->_peerAddress.v4.sin_port = __rev16([infoCopy servicePort]);
+    self->_localInterfaceIndex = [sessionCopy localInterfaceIndex];
   }
 
-  else if (a6)
+  else if (error)
   {
-    v14 = [v12 length];
-    *a6 = NSErrorWithOSStatusF(4294960553, "Bad IPv6 length (%d bytes)", v15, v16, v17, v18, v19, v20, v14);
+    v14 = [ipv6LinkLocalAddress length];
+    *error = NSErrorWithOSStatusF(4294960553, "Bad IPv6 length (%d bytes)", v15, v16, v17, v18, v19, v20, v14);
   }
 
   return v13 == 16;
 }
 
-- (void)dataSession:(id)a3 confirmedForPeerDataAddress:(id)a4 serviceSpecificInfo:(id)a5
+- (void)dataSession:(id)session confirmedForPeerDataAddress:(id)address serviceSpecificInfo:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  addressCopy = address;
+  infoCopy = info;
   dispatchQueue = self->_dispatchQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __80__CUNANDataSession_dataSession_confirmedForPeerDataAddress_serviceSpecificInfo___block_invoke;
   v15[3] = &unk_1E73A40E0;
   v15[4] = self;
-  v16 = v9;
-  v17 = v10;
-  v18 = v8;
-  v12 = v8;
-  v13 = v10;
-  v14 = v9;
+  v16 = addressCopy;
+  v17 = infoCopy;
+  v18 = sessionCopy;
+  v12 = sessionCopy;
+  v13 = infoCopy;
+  v14 = addressCopy;
   dispatch_async(dispatchQueue, v15);
 }
 
@@ -256,7 +256,7 @@ void __80__CUNANDataSession_dataSession_confirmedForPeerDataAddress_serviceSpeci
   }
 }
 
-- (void)dataSession:(id)a3 failedToStartWithError:(int64_t)a4
+- (void)dataSession:(id)session failedToStartWithError:(int64_t)error
 {
   dispatchQueue = self->_dispatchQueue;
   v5[0] = MEMORY[0x1E69E9820];
@@ -264,7 +264,7 @@ void __80__CUNANDataSession_dataSession_confirmedForPeerDataAddress_serviceSpeci
   v5[2] = __55__CUNANDataSession_dataSession_failedToStartWithError___block_invoke;
   v5[3] = &unk_1E73A4340;
   v5[4] = self;
-  v5[5] = a4;
+  v5[5] = error;
   dispatch_async(dispatchQueue, v5);
 }
 
@@ -299,7 +299,7 @@ void __55__CUNANDataSession_dataSession_failedToStartWithError___block_invoke(ui
   }
 }
 
-- (void)dataSessionRequestStarted:(id)a3
+- (void)dataSessionRequestStarted:(id)started
 {
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -395,7 +395,7 @@ void __47__CUNANDataSession__terminateServerDataSession__block_invoke_2(uint64_t
   }
 }
 
-- (void)updateLinkStatus:(int)a3
+- (void)updateLinkStatus:(int)status
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -403,7 +403,7 @@ void __47__CUNANDataSession__terminateServerDataSession__block_invoke_2(uint64_t
   v4[2] = __37__CUNANDataSession_updateLinkStatus___block_invoke;
   v4[3] = &unk_1E73A42A0;
   v4[4] = self;
-  v5 = a3;
+  statusCopy = status;
   dispatch_async(dispatchQueue, v4);
 }
 
@@ -449,17 +449,17 @@ void __37__CUNANDataSession_updateLinkStatus___block_invoke(uint64_t a1)
   }
 }
 
-- (void)tryPairingPassword:(id)a3
+- (void)tryPairingPassword:(id)password
 {
-  v4 = a3;
+  passwordCopy = password;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __39__CUNANDataSession_tryPairingPassword___block_invoke;
   v7[3] = &unk_1E73A49F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = passwordCopy;
+  v6 = passwordCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -492,17 +492,17 @@ void __39__CUNANDataSession_tryPairingPassword___block_invoke(uint64_t a1)
   }
 }
 
-- (void)reportIssue:(id)a3
+- (void)reportIssue:(id)issue
 {
-  v4 = a3;
+  issueCopy = issue;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __32__CUNANDataSession_reportIssue___block_invoke;
   v7[3] = &unk_1E73A49F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = issueCopy;
+  v6 = issueCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -548,17 +548,17 @@ void __32__CUNANDataSession_reportIssue___block_invoke(uint64_t a1)
   }
 }
 
-- (void)generateStatisticsReportWithCompletionHandler:(id)a3
+- (void)generateStatisticsReportWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__CUNANDataSession_generateStatisticsReportWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E73A49A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -752,10 +752,10 @@ void __66__CUNANDataSession_generateStatisticsReportWithCompletionHandler___bloc
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_activateWithCompletion:(id)a3
+- (void)_activateWithCompletion:(id)completion
 {
   v65 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = logger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -785,12 +785,12 @@ void __66__CUNANDataSession_generateStatisticsReportWithCompletionHandler___bloc
     _os_log_impl(&dword_191EAF000, v5, OS_LOG_TYPE_DEFAULT, "Activate: endpoint=%@, controlFlags=%@, trafficFlags=%@, pair=%s", buf, 0x2Au);
   }
 
-  v12 = [(CUNANEndpoint *)self->_peerEndpoint mockPeerEndpointString];
-  v13 = v12;
-  if (!v12)
+  mockPeerEndpointString = [(CUNANEndpoint *)self->_peerEndpoint mockPeerEndpointString];
+  v13 = mockPeerEndpointString;
+  if (!mockPeerEndpointString)
   {
-    v20 = [(CUNANEndpoint *)self->_peerEndpoint discoveryResult];
-    if (v20)
+    discoveryResult = [(CUNANEndpoint *)self->_peerEndpoint discoveryResult];
+    if (discoveryResult)
     {
       trafficFlags = self->_trafficFlags;
       if ((trafficFlags & 0x800) != 0)
@@ -803,7 +803,7 @@ void __66__CUNANDataSession_generateStatisticsReportWithCompletionHandler___bloc
         v28 = (trafficFlags & 0x63300) != 0;
       }
 
-      v29 = [objc_alloc(getWiFiAwareDataSessionClass[0]()) initWithDiscoveryResult:v20 serviceType:v28 serviceSpecificInfo:self->_wfaServiceSpecificInfo];
+      v29 = [objc_alloc(getWiFiAwareDataSessionClass[0]()) initWithDiscoveryResult:discoveryResult serviceType:v28 serviceSpecificInfo:self->_wfaServiceSpecificInfo];
       wfaDataSessionClient = self->_wfaDataSessionClient;
       self->_wfaDataSessionClient = v29;
 
@@ -873,17 +873,17 @@ void __66__CUNANDataSession_generateStatisticsReportWithCompletionHandler___bloc
 
         if ((self->_controlFlags & 2) != 0)
         {
-          v50 = [getWiFiAwareInternetSharingConfigurationClass[0]() automaticallyProvideInternetToResponders];
-          if (v50)
+          automaticallyProvideInternetToResponders = [getWiFiAwareInternetSharingConfigurationClass[0]() automaticallyProvideInternetToResponders];
+          if (automaticallyProvideInternetToResponders)
           {
-            [(WiFiAwareDataSession *)self->_wfaDataSessionClient setInternetSharingConfiguration:v50];
+            [(WiFiAwareDataSession *)self->_wfaDataSessionClient setInternetSharingConfiguration:automaticallyProvideInternetToResponders];
           }
 
           v51 = logger();
           if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
           {
             v52 = "success";
-            if (!v50)
+            if (!automaticallyProvideInternetToResponders)
             {
               v52 = "failed";
             }
@@ -894,7 +894,7 @@ void __66__CUNANDataSession_generateStatisticsReportWithCompletionHandler___bloc
           }
         }
 
-        v53 = _Block_copy(v4);
+        v53 = _Block_copy(completionCopy);
         activateCompletion = self->_activateCompletion;
         self->_activateCompletion = v53;
 
@@ -908,9 +908,9 @@ void __66__CUNANDataSession_generateStatisticsReportWithCompletionHandler___bloc
       {
 LABEL_28:
 
-        if (v4)
+        if (completionCopy)
         {
-          (*(v4 + 2))(v4, v41);
+          (*(completionCopy + 2))(completionCopy, v41);
         }
 
         goto LABEL_50;
@@ -935,45 +935,45 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  v14 = StringToSockAddr([v12 UTF8String], &self->_peerAddress, 0x1CuLL, 0);
-  if (v4)
+  v14 = StringToSockAddr([mockPeerEndpointString UTF8String], &self->_peerAddress, 0x1CuLL, 0);
+  if (completionCopy)
   {
     if (v14)
     {
-      v20 = NSErrorF_safe(*MEMORY[0x1E696A768], v14, "Bad mock peer endpoint string", v15, v16, v17, v18, v19, v56);
-      (*(v4 + 2))(v4, v20);
+      discoveryResult = NSErrorF_safe(*MEMORY[0x1E696A768], v14, "Bad mock peer endpoint string", v15, v16, v17, v18, v19, v56);
+      (*(completionCopy + 2))(completionCopy, discoveryResult);
 LABEL_50:
 
       goto LABEL_51;
     }
 
-    (*(v4 + 2))(v4, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
 LABEL_51:
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__CUNANDataSession_activateWithCompletion___block_invoke;
   v7[3] = &unk_1E73A49A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)setPeerEndpoint:(id)a3
+- (void)setPeerEndpoint:(id)endpoint
 {
-  objc_storeStrong(&self->_peerEndpoint, a3);
-  v7 = a3;
-  v5 = [v7 identifier];
+  objc_storeStrong(&self->_peerEndpoint, endpoint);
+  endpointCopy = endpoint;
+  identifier = [endpointCopy identifier];
   identifier = self->_identifier;
-  self->_identifier = v5;
+  self->_identifier = identifier;
 }
 
 - (NSString)peerEndpointString
@@ -996,10 +996,10 @@ LABEL_51:
   return v2;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   v32 = 0;
-  NSAppendPrintF_safe(&v32, "CUNANDataSession %@", *&a3, v3, v4, v5, v6, v7, self->_identifier);
+  NSAppendPrintF_safe(&v32, "CUNANDataSession %@", *&level, v3, v4, v5, v6, v7, self->_identifier);
   v10 = v32;
   v18 = v10;
   if (self->_peerAddress.sa.sa_family)
@@ -1012,7 +1012,7 @@ LABEL_51:
     v18 = v26;
   }
 
-  if (a3 <= 20)
+  if (level <= 20)
   {
     v30 = v18;
     NSAppendPrintF_safe(&v30, "\n", v12, v13, v14, v15, v16, v17, v29);

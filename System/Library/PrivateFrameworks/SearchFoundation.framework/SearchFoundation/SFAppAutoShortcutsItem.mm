@@ -1,50 +1,50 @@
 @interface SFAppAutoShortcutsItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFAppAutoShortcutsItem)initWithCoder:(id)a3;
-- (SFAppAutoShortcutsItem)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFAppAutoShortcutsItem)initWithCoder:(id)coder;
+- (SFAppAutoShortcutsItem)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFAppAutoShortcutsItem
 
 - (unint64_t)hash
 {
-  v2 = [(SFAppAutoShortcutsItem *)self bundleIdentifier];
-  v3 = [v2 hash];
+  bundleIdentifier = [(SFAppAutoShortcutsItem *)self bundleIdentifier];
+  v3 = [bundleIdentifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
-  else if ([(SFAppAutoShortcutsItem *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(SFAppAutoShortcutsItem *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(SFAppAutoShortcutsItem *)self bundleIdentifier];
-    v7 = [(SFAppAutoShortcutsItem *)v5 bundleIdentifier];
-    if ((v6 != 0) == (v7 == 0))
+    v5 = equalCopy;
+    bundleIdentifier = [(SFAppAutoShortcutsItem *)self bundleIdentifier];
+    bundleIdentifier2 = [(SFAppAutoShortcutsItem *)v5 bundleIdentifier];
+    if ((bundleIdentifier != 0) == (bundleIdentifier2 == 0))
     {
       v11 = 0;
     }
 
     else
     {
-      v8 = [(SFAppAutoShortcutsItem *)self bundleIdentifier];
-      if (v8)
+      bundleIdentifier3 = [(SFAppAutoShortcutsItem *)self bundleIdentifier];
+      if (bundleIdentifier3)
       {
-        v9 = [(SFAppAutoShortcutsItem *)self bundleIdentifier];
-        v10 = [(SFAppAutoShortcutsItem *)v5 bundleIdentifier];
-        v11 = [v9 isEqual:v10];
+        bundleIdentifier4 = [(SFAppAutoShortcutsItem *)self bundleIdentifier];
+        bundleIdentifier5 = [(SFAppAutoShortcutsItem *)v5 bundleIdentifier];
+        v11 = [bundleIdentifier4 isEqual:bundleIdentifier5];
       }
 
       else
@@ -62,11 +62,11 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(SFAppAutoShortcutsItem *)self bundleIdentifier];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  bundleIdentifier = [(SFAppAutoShortcutsItem *)self bundleIdentifier];
+  v6 = [bundleIdentifier copy];
   [v4 setBundleIdentifier:v6];
 
   return v4;
@@ -75,31 +75,31 @@
 - (NSData)jsonData
 {
   v2 = [[_SFPBAppAutoShortcutsItem alloc] initWithFacade:self];
-  v3 = [(_SFPBAppAutoShortcutsItem *)v2 jsonData];
+  jsonData = [(_SFPBAppAutoShortcutsItem *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBAppAutoShortcutsItem alloc] initWithFacade:self];
-  v3 = [(_SFPBAppAutoShortcutsItem *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBAppAutoShortcutsItem *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBAppAutoShortcutsItem alloc] initWithFacade:self];
-  v5 = [(_SFPBAppAutoShortcutsItem *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBAppAutoShortcutsItem *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFAppAutoShortcutsItem)initWithCoder:(id)a3
+- (SFAppAutoShortcutsItem)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBAppAutoShortcutsItem alloc] initWithData:v5];
   v7 = [(SFAppAutoShortcutsItem *)self initWithProtobuf:v6];
@@ -107,20 +107,20 @@
   return v7;
 }
 
-- (SFAppAutoShortcutsItem)initWithProtobuf:(id)a3
+- (SFAppAutoShortcutsItem)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v10.receiver = self;
   v10.super_class = SFAppAutoShortcutsItem;
   v5 = [(SFAppAutoShortcutsItem *)&v10 init];
   if (v5)
   {
-    v6 = [v4 bundleIdentifier];
+    bundleIdentifier = [protobufCopy bundleIdentifier];
 
-    if (v6)
+    if (bundleIdentifier)
     {
-      v7 = [v4 bundleIdentifier];
-      [(SFAppAutoShortcutsItem *)v5 setBundleIdentifier:v7];
+      bundleIdentifier2 = [protobufCopy bundleIdentifier];
+      [(SFAppAutoShortcutsItem *)v5 setBundleIdentifier:bundleIdentifier2];
     }
 
     v8 = v5;

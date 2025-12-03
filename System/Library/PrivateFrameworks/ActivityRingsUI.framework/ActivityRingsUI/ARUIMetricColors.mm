@@ -1,5 +1,5 @@
 @interface ARUIMetricColors
-+ (CGGradient)newGradientForStartColor:(id)a3 endColor:(id)a4;
++ (CGGradient)newGradientForStartColor:(id)color endColor:(id)endColor;
 + (id)clockColors;
 + (id)distanceColors;
 + (id)diveColors;
@@ -17,7 +17,7 @@
 
 + (id)keyColors
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   v3 = [MEMORY[0x1E69DC888] colorWithRed:0.717647059 green:1.0 blue:0.0 alpha:1.0];
   [v2 setGradientLightColor:v3];
 
@@ -30,26 +30,26 @@
   v6 = [MEMORY[0x1E69DC888] colorWithRed:0.650980392 green:1.0 blue:0.0 alpha:1.0];
   [v2 setNonGradientTextColor:v6];
 
-  v7 = [v2 nonGradientTextColor];
-  v8 = [v7 colorWithAlphaComponent:0.300000012];
+  nonGradientTextColor = [v2 nonGradientTextColor];
+  v8 = [nonGradientTextColor colorWithAlphaComponent:0.300000012];
   [v2 setAdjustmentButtonBackgroundColor:v8];
 
-  v9 = [MEMORY[0x1E69DC888] blackColor];
-  [v2 setButtonTextColor:v9];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  [v2 setButtonTextColor:blackColor];
 
-  v10 = [MEMORY[0x1E69DC888] blackColor];
-  [v2 setButtonDisabledTextColor:v10];
+  blackColor2 = [MEMORY[0x1E69DC888] blackColor];
+  [v2 setButtonDisabledTextColor:blackColor2];
 
-  v11 = [MEMORY[0x1E69DC888] whiteColor];
-  [v2 setValueDisplayColor:v11];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [v2 setValueDisplayColor:whiteColor];
 
   v12 = [MEMORY[0x1E69DC888] colorWithRed:0.792156863 green:1.0 blue:0.403921569 alpha:1.0];
   [v2 setHighContrastTextColor:v12];
 
-  v13 = [v2 nonGradientTextColor];
-  v14 = [v2 highContrastTextColor];
-  v15 = v13;
-  v16 = v14;
+  nonGradientTextColor2 = [v2 nonGradientTextColor];
+  highContrastTextColor = [v2 highContrastTextColor];
+  v15 = nonGradientTextColor2;
+  v16 = highContrastTextColor;
   v17 = objc_alloc(MEMORY[0x1E69DC888]);
   v22 = MEMORY[0x1E69E9820];
   v23 = 3221225472;
@@ -68,7 +68,7 @@
 
 + (id)energyColors
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   v3 = [MEMORY[0x1E69DC888] colorWithRed:1.0 green:0.196078431 blue:0.529411765 alpha:1.0];
   [v2 setGradientLightColor:v3];
 
@@ -81,27 +81,27 @@
   v6 = [MEMORY[0x1E69DC888] colorWithRed:0.980392157 green:0.0666666667 blue:0.309803922 alpha:1.0];
   [v2 setNonGradientTextColor:v6];
 
-  v7 = [v2 nonGradientTextColor];
-  v8 = [v7 colorWithAlphaComponent:0.300000012];
+  nonGradientTextColor = [v2 nonGradientTextColor];
+  v8 = [nonGradientTextColor colorWithAlphaComponent:0.300000012];
   [v2 setAdjustmentButtonBackgroundColor:v8];
 
-  v9 = [MEMORY[0x1E69DC888] whiteColor];
-  [v2 setButtonTextColor:v9];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [v2 setButtonTextColor:whiteColor];
 
   v10 = [MEMORY[0x1E69DC888] colorWithWhite:0.2 alpha:1.0];
   [v2 setButtonDisabledTextColor:v10];
 
-  v11 = [MEMORY[0x1E69DC888] whiteColor];
-  [v2 setValueDisplayColor:v11];
+  whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+  [v2 setValueDisplayColor:whiteColor2];
 
   [v2 setWorkoutRingColorIdentifier:@"calorieWorkout"];
   v12 = [MEMORY[0x1E69DC888] colorWithRed:1.0 green:0.392156863 blue:0.509803922 alpha:1.0];
   [v2 setHighContrastTextColor:v12];
 
-  v13 = [v2 nonGradientTextColor];
-  v14 = [v2 highContrastTextColor];
-  v15 = v13;
-  v16 = v14;
+  nonGradientTextColor2 = [v2 nonGradientTextColor];
+  highContrastTextColor = [v2 highContrastTextColor];
+  v15 = nonGradientTextColor2;
+  v16 = highContrastTextColor;
   v17 = objc_alloc(MEMORY[0x1E69DC888]);
   v22 = MEMORY[0x1E69E9820];
   v23 = 3221225472;
@@ -120,7 +120,7 @@
 
 + (id)distanceColors
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   v3 = [MEMORY[0x1E69DC888] colorWithRed:0.0 green:0.815686275 blue:1.0 alpha:1.0];
   [v2 setGradientLightColor:v3];
 
@@ -130,27 +130,27 @@
   v5 = [MEMORY[0x1E69DC888] colorWithRed:0.0 green:0.717647059 blue:1.0 alpha:1.0];
   [v2 setNonGradientTextColor:v5];
 
-  v6 = [v2 nonGradientTextColor];
-  v7 = [v6 colorWithAlphaComponent:0.300000012];
+  nonGradientTextColor = [v2 nonGradientTextColor];
+  v7 = [nonGradientTextColor colorWithAlphaComponent:0.300000012];
   [v2 setAdjustmentButtonBackgroundColor:v7];
 
-  v8 = [MEMORY[0x1E69DC888] whiteColor];
-  [v2 setButtonTextColor:v8];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [v2 setButtonTextColor:whiteColor];
 
   v9 = [MEMORY[0x1E69DC888] colorWithWhite:0.2 alpha:1.0];
   [v2 setButtonDisabledTextColor:v9];
 
-  v10 = [MEMORY[0x1E69DC888] whiteColor];
-  [v2 setValueDisplayColor:v10];
+  whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+  [v2 setValueDisplayColor:whiteColor2];
 
   [v2 setWorkoutRingColorIdentifier:@"distanceWorkout"];
   v11 = [MEMORY[0x1E69DC888] colorWithRed:0.329411765 green:0.82745098 blue:1.0 alpha:1.0];
   [v2 setHighContrastTextColor:v11];
 
-  v12 = [v2 nonGradientTextColor];
-  v13 = [v2 highContrastTextColor];
-  v14 = v12;
-  v15 = v13;
+  nonGradientTextColor2 = [v2 nonGradientTextColor];
+  highContrastTextColor = [v2 highContrastTextColor];
+  v14 = nonGradientTextColor2;
+  v15 = highContrastTextColor;
   v16 = objc_alloc(MEMORY[0x1E69DC888]);
   v21 = MEMORY[0x1E69E9820];
   v22 = 3221225472;
@@ -188,15 +188,15 @@ uint64_t __39__ARUIMetricColors_systemGrayTextColor__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (CGGradient)newGradientForStartColor:(id)a3 endColor:(id)a4
++ (CGGradient)newGradientForStartColor:(id)color endColor:(id)endColor
 {
   v13[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v13[0] = [a3 CGColor];
-  v8 = [v7 CGColor];
+  colorCopy = color;
+  endColorCopy = endColor;
+  v13[0] = [color CGColor];
+  cGColor = [endColorCopy CGColor];
 
-  v13[1] = v8;
+  v13[1] = cGColor;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:2];
   DeviceRGB = CGColorSpaceCreateDeviceRGB();
   v11 = CGGradientCreateWithColors(DeviceRGB, v9, 0);
@@ -207,15 +207,15 @@ uint64_t __39__ARUIMetricColors_systemGrayTextColor__block_invoke()
 
 + (id)noMetricColors
 {
-  v2 = [a1 keyColors];
-  [v2 setWorkoutRingColorIdentifier:@"openWorkout"];
+  keyColors = [self keyColors];
+  [keyColors setWorkoutRingColorIdentifier:@"openWorkout"];
 
-  return v2;
+  return keyColors;
 }
 
 + (id)elapsedTimeColors
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   v3 = [MEMORY[0x1E69DC888] colorWithRed:1.0 green:0.917647059 blue:0.0 alpha:1.0];
   [v2 setGradientLightColor:v3];
 
@@ -225,32 +225,32 @@ uint64_t __39__ARUIMetricColors_systemGrayTextColor__block_invoke()
   v5 = [MEMORY[0x1E69DC888] colorWithRed:1.0 green:0.901960784 blue:0.125490196 alpha:1.0];
   [v2 setNonGradientTextColor:v5];
 
-  v6 = [v2 nonGradientTextColor];
-  v7 = [v6 colorWithAlphaComponent:0.300000012];
+  nonGradientTextColor = [v2 nonGradientTextColor];
+  v7 = [nonGradientTextColor colorWithAlphaComponent:0.300000012];
   [v2 setAdjustmentButtonBackgroundColor:v7];
 
-  v8 = [v2 adjustmentButtonBackgroundColor];
+  adjustmentButtonBackgroundColor = [v2 adjustmentButtonBackgroundColor];
   v9 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.3];
-  v10 = [v9 _colorBlendedWithColor:v8];
+  v10 = [v9 _colorBlendedWithColor:adjustmentButtonBackgroundColor];
 
   [v2 setLightenedNonGradientColor:v10];
-  v11 = [MEMORY[0x1E69DC888] blackColor];
-  [v2 setButtonTextColor:v11];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  [v2 setButtonTextColor:blackColor];
 
-  v12 = [MEMORY[0x1E69DC888] blackColor];
-  [v2 setButtonDisabledTextColor:v12];
+  blackColor2 = [MEMORY[0x1E69DC888] blackColor];
+  [v2 setButtonDisabledTextColor:blackColor2];
 
-  v13 = [MEMORY[0x1E69DC888] whiteColor];
-  [v2 setValueDisplayColor:v13];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [v2 setValueDisplayColor:whiteColor];
 
   [v2 setWorkoutRingColorIdentifier:@"timedWorkout"];
   v14 = [MEMORY[0x1E69DC888] colorWithRed:1.0 green:0.941176471 blue:0.478431373 alpha:1.0];
   [v2 setHighContrastTextColor:v14];
 
-  v15 = [v2 nonGradientTextColor];
-  v16 = [v2 highContrastTextColor];
-  v17 = v15;
-  v18 = v16;
+  nonGradientTextColor2 = [v2 nonGradientTextColor];
+  highContrastTextColor = [v2 highContrastTextColor];
+  v17 = nonGradientTextColor2;
+  v18 = highContrastTextColor;
   v19 = objc_alloc(MEMORY[0x1E69DC888]);
   v24 = MEMORY[0x1E69E9820];
   v25 = 3221225472;
@@ -269,7 +269,7 @@ uint64_t __39__ARUIMetricColors_systemGrayTextColor__block_invoke()
 
 + (id)paceColors
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   v3 = [MEMORY[0x1E69DC888] colorWithRed:0.0 green:0.980392157 blue:0.815686275 alpha:1.0];
   [v2 setGradientLightColor:v3];
 
@@ -282,28 +282,28 @@ uint64_t __39__ARUIMetricColors_systemGrayTextColor__block_invoke()
   v6 = [MEMORY[0x1E69DC888] colorWithRed:0.22745098 green:0.91372549 blue:0.901960784 alpha:1.0];
   [v2 setNonGradientTextColor:v6];
 
-  v7 = [v2 nonGradientTextColor];
-  v8 = [v7 colorWithAlphaComponent:0.300000012];
+  nonGradientTextColor = [v2 nonGradientTextColor];
+  v8 = [nonGradientTextColor colorWithAlphaComponent:0.300000012];
   [v2 setAdjustmentButtonBackgroundColor:v8];
 
-  v9 = [v2 nonGradientTextColor];
-  v10 = [v9 colorWithAlphaComponent:0.300000012];
+  nonGradientTextColor2 = [v2 nonGradientTextColor];
+  v10 = [nonGradientTextColor2 colorWithAlphaComponent:0.300000012];
   [v2 setPlatterBackgroundColor:v10];
 
-  v11 = [v2 nonGradientTextColor];
-  v12 = [v11 colorWithAlphaComponent:0.219999999];
+  nonGradientTextColor3 = [v2 nonGradientTextColor];
+  v12 = [nonGradientTextColor3 colorWithAlphaComponent:0.219999999];
   [v2 setPlatterInactiveBackgroundColor:v12];
 
-  v13 = [MEMORY[0x1E69DC888] whiteColor];
-  [v2 setValueDisplayColor:v13];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [v2 setValueDisplayColor:whiteColor];
 
   v14 = [MEMORY[0x1E69DC888] colorWithRed:0.541176471 green:1.0 blue:0.984313725 alpha:1.0];
   [v2 setHighContrastTextColor:v14];
 
-  v15 = [v2 nonGradientTextColor];
-  v16 = [v2 highContrastTextColor];
-  v17 = v15;
-  v18 = v16;
+  nonGradientTextColor4 = [v2 nonGradientTextColor];
+  highContrastTextColor = [v2 highContrastTextColor];
+  v17 = nonGradientTextColor4;
+  v18 = highContrastTextColor;
   v19 = objc_alloc(MEMORY[0x1E69DC888]);
   v24 = MEMORY[0x1E69E9820];
   v25 = 3221225472;
@@ -322,7 +322,7 @@ uint64_t __39__ARUIMetricColors_systemGrayTextColor__block_invoke()
 
 + (id)heartRateColors
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   v3 = [MEMORY[0x1E69DC888] colorWithRed:1.0 green:0.262745098 blue:0.196078431 alpha:1.0];
   [v2 setGradientLightColor:v3];
 
@@ -335,20 +335,20 @@ uint64_t __39__ARUIMetricColors_systemGrayTextColor__block_invoke()
   v6 = [MEMORY[0x1E69DC888] colorWithRed:0.941176471 green:0.556862745 blue:0.482352941 alpha:1.0];
   [v2 setLightenedNonGradientColor:v6];
 
-  v7 = [v2 nonGradientTextColor];
-  v8 = [v7 colorWithAlphaComponent:0.300000012];
+  nonGradientTextColor = [v2 nonGradientTextColor];
+  v8 = [nonGradientTextColor colorWithAlphaComponent:0.300000012];
   [v2 setAdjustmentButtonBackgroundColor:v8];
 
-  v9 = [MEMORY[0x1E69DC888] whiteColor];
-  [v2 setValueDisplayColor:v9];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [v2 setValueDisplayColor:whiteColor];
 
   v10 = [MEMORY[0x1E69DC888] colorWithRed:1.0 green:0.431372549 blue:0.298039216 alpha:1.0];
   [v2 setHighContrastTextColor:v10];
 
-  v11 = [v2 nonGradientTextColor];
-  v12 = [v2 highContrastTextColor];
-  v13 = v11;
-  v14 = v12;
+  nonGradientTextColor2 = [v2 nonGradientTextColor];
+  highContrastTextColor = [v2 highContrastTextColor];
+  v13 = nonGradientTextColor2;
+  v14 = highContrastTextColor;
   v15 = objc_alloc(MEMORY[0x1E69DC888]);
   v20 = MEMORY[0x1E69E9820];
   v21 = 3221225472;
@@ -367,28 +367,28 @@ uint64_t __39__ARUIMetricColors_systemGrayTextColor__block_invoke()
 
 + (id)clockColors
 {
-  v2 = objc_alloc_init(a1);
-  v3 = [MEMORY[0x1E69DC888] whiteColor];
-  [v2 setGradientLightColor:v3];
+  v2 = objc_alloc_init(self);
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [v2 setGradientLightColor:whiteColor];
 
-  v4 = [MEMORY[0x1E69DC888] whiteColor];
-  [v2 setGradientDarkColor:v4];
+  whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+  [v2 setGradientDarkColor:whiteColor2];
 
-  v5 = [MEMORY[0x1E69DC888] whiteColor];
-  [v2 setNonGradientTextColor:v5];
+  whiteColor3 = [MEMORY[0x1E69DC888] whiteColor];
+  [v2 setNonGradientTextColor:whiteColor3];
 
-  v6 = [MEMORY[0x1E69DC888] whiteColor];
-  [v2 setAdjustmentButtonBackgroundColor:v6];
+  whiteColor4 = [MEMORY[0x1E69DC888] whiteColor];
+  [v2 setAdjustmentButtonBackgroundColor:whiteColor4];
 
-  v7 = [MEMORY[0x1E69DC888] whiteColor];
-  [v2 setValueDisplayColor:v7];
+  whiteColor5 = [MEMORY[0x1E69DC888] whiteColor];
+  [v2 setValueDisplayColor:whiteColor5];
 
   return v2;
 }
 
 + (id)diveColors
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   v3 = [MEMORY[0x1E69DC888] colorWithRed:0.0 green:0.211764706 blue:0.28627451 alpha:1.0];
   [v2 setGradientLightColor:v3];
 
@@ -398,19 +398,19 @@ uint64_t __39__ARUIMetricColors_systemGrayTextColor__block_invoke()
   v5 = [MEMORY[0x1E69DC888] colorWithRed:0.0 green:0.717647059 blue:1.0 alpha:1.0];
   [v2 setNonGradientTextColor:v5];
 
-  v6 = [v2 nonGradientTextColor];
-  v7 = [v6 colorWithAlphaComponent:0.300000012];
+  nonGradientTextColor = [v2 nonGradientTextColor];
+  v7 = [nonGradientTextColor colorWithAlphaComponent:0.300000012];
   [v2 setAdjustmentButtonBackgroundColor:v7];
 
-  v8 = [MEMORY[0x1E69DC888] whiteColor];
-  [v2 setValueDisplayColor:v8];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [v2 setValueDisplayColor:whiteColor];
 
   return v2;
 }
 
 + (id)pausedRingsColors
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   v3 = [MEMORY[0x1E69DC888] colorWithRed:0.470588235 green:0.470588235 blue:0.501960784 alpha:1.0];
   [v2 setGradientLightColor:v3];
 
@@ -420,12 +420,12 @@ uint64_t __39__ARUIMetricColors_systemGrayTextColor__block_invoke()
   v5 = [MEMORY[0x1E69DC888] colorWithRed:0.470588235 green:0.470588235 blue:0.501960784 alpha:1.0];
   [v2 setNonGradientTextColor:v5];
 
-  v6 = [v2 nonGradientTextColor];
-  v7 = [v6 colorWithAlphaComponent:1.0];
+  nonGradientTextColor = [v2 nonGradientTextColor];
+  v7 = [nonGradientTextColor colorWithAlphaComponent:1.0];
   [v2 setAdjustmentButtonBackgroundColor:v7];
 
-  v8 = [MEMORY[0x1E69DC888] whiteColor];
-  [v2 setValueDisplayColor:v8];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [v2 setValueDisplayColor:whiteColor];
 
   return v2;
 }

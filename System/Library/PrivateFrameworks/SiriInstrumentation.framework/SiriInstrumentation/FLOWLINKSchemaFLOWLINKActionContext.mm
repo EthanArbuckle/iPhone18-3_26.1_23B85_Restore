@@ -1,13 +1,13 @@
 @interface FLOWLINKSchemaFLOWLINKActionContext
-- (BOOL)isEqual:(id)a3;
-- (FLOWLINKSchemaFLOWLINKActionContext)initWithDictionary:(id)a3;
-- (FLOWLINKSchemaFLOWLINKActionContext)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FLOWLINKSchemaFLOWLINKActionContext)initWithDictionary:(id)dictionary;
+- (FLOWLINKSchemaFLOWLINKActionContext)initWithJSON:(id)n;
 - (FLOWLINKSchemaFLOWLinkActionCancelled)cancelled;
 - (FLOWLINKSchemaFLOWLinkActionEnded)ended;
 - (FLOWLINKSchemaFLOWLinkActionFailed)failed;
 - (FLOWLINKSchemaFLOWLinkActionStarted)startedOrChanged;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
@@ -15,24 +15,24 @@
 - (void)deleteEnded;
 - (void)deleteFailed;
 - (void)deleteStartedOrChanged;
-- (void)setCancelled:(id)a3;
-- (void)setEnded:(id)a3;
-- (void)setFailed:(id)a3;
-- (void)setStartedOrChanged:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setCancelled:(id)cancelled;
+- (void)setEnded:(id)ended;
+- (void)setFailed:(id)failed;
+- (void)setStartedOrChanged:(id)changed;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FLOWLINKSchemaFLOWLINKActionContext
 
-- (FLOWLINKSchemaFLOWLINKActionContext)initWithDictionary:(id)a3
+- (FLOWLINKSchemaFLOWLINKActionContext)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = FLOWLINKSchemaFLOWLINKActionContext;
   v5 = [(FLOWLINKSchemaFLOWLINKActionContext *)&v16 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"startedOrChanged"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"startedOrChanged"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,7 +40,7 @@
       [(FLOWLINKSchemaFLOWLINKActionContext *)v5 setStartedOrChanged:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"ended"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"ended"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,7 +48,7 @@
       [(FLOWLINKSchemaFLOWLINKActionContext *)v5 setEnded:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"failed"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"failed"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,7 +56,7 @@
       [(FLOWLINKSchemaFLOWLINKActionContext *)v5 setFailed:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"cancelled"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"cancelled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -70,30 +70,30 @@
   return v5;
 }
 
-- (FLOWLINKSchemaFLOWLINKActionContext)initWithJSON:(id)a3
+- (FLOWLINKSchemaFLOWLINKActionContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(FLOWLINKSchemaFLOWLINKActionContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(FLOWLINKSchemaFLOWLINKActionContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(FLOWLINKSchemaFLOWLINKActionContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -106,74 +106,74 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_cancelled)
   {
-    v4 = [(FLOWLINKSchemaFLOWLINKActionContext *)self cancelled];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    cancelled = [(FLOWLINKSchemaFLOWLINKActionContext *)self cancelled];
+    dictionaryRepresentation = [cancelled dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"cancelled"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"cancelled"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"cancelled"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"cancelled"];
     }
   }
 
   if (self->_ended)
   {
-    v7 = [(FLOWLINKSchemaFLOWLINKActionContext *)self ended];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    ended = [(FLOWLINKSchemaFLOWLINKActionContext *)self ended];
+    dictionaryRepresentation2 = [ended dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"ended"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"ended"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"ended"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"ended"];
     }
   }
 
   if (self->_failed)
   {
-    v10 = [(FLOWLINKSchemaFLOWLINKActionContext *)self failed];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    failed = [(FLOWLINKSchemaFLOWLINKActionContext *)self failed];
+    dictionaryRepresentation3 = [failed dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"failed"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"failed"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"failed"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"failed"];
     }
   }
 
   if (self->_startedOrChanged)
   {
-    v13 = [(FLOWLINKSchemaFLOWLINKActionContext *)self startedOrChanged];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    startedOrChanged = [(FLOWLINKSchemaFLOWLINKActionContext *)self startedOrChanged];
+    dictionaryRepresentation4 = [startedOrChanged dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"startedOrChanged"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"startedOrChanged"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"startedOrChanged"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"startedOrChanged"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -184,34 +184,34 @@
   return v4 ^ v5 ^ [(FLOWLINKSchemaFLOWLinkActionCancelled *)self->_cancelled hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
   whichContextevent = self->_whichContextevent;
-  if (whichContextevent != [v4 whichContextevent])
+  if (whichContextevent != [equalCopy whichContextevent])
   {
     goto LABEL_23;
   }
 
-  v6 = [(FLOWLINKSchemaFLOWLINKActionContext *)self startedOrChanged];
-  v7 = [v4 startedOrChanged];
-  if ((v6 != 0) == (v7 == 0))
+  startedOrChanged = [(FLOWLINKSchemaFLOWLINKActionContext *)self startedOrChanged];
+  startedOrChanged2 = [equalCopy startedOrChanged];
+  if ((startedOrChanged != 0) == (startedOrChanged2 == 0))
   {
     goto LABEL_22;
   }
 
-  v8 = [(FLOWLINKSchemaFLOWLINKActionContext *)self startedOrChanged];
-  if (v8)
+  startedOrChanged3 = [(FLOWLINKSchemaFLOWLINKActionContext *)self startedOrChanged];
+  if (startedOrChanged3)
   {
-    v9 = v8;
-    v10 = [(FLOWLINKSchemaFLOWLINKActionContext *)self startedOrChanged];
-    v11 = [v4 startedOrChanged];
-    v12 = [v10 isEqual:v11];
+    v9 = startedOrChanged3;
+    startedOrChanged4 = [(FLOWLINKSchemaFLOWLINKActionContext *)self startedOrChanged];
+    startedOrChanged5 = [equalCopy startedOrChanged];
+    v12 = [startedOrChanged4 isEqual:startedOrChanged5];
 
     if (!v12)
     {
@@ -223,20 +223,20 @@
   {
   }
 
-  v6 = [(FLOWLINKSchemaFLOWLINKActionContext *)self ended];
-  v7 = [v4 ended];
-  if ((v6 != 0) == (v7 == 0))
+  startedOrChanged = [(FLOWLINKSchemaFLOWLINKActionContext *)self ended];
+  startedOrChanged2 = [equalCopy ended];
+  if ((startedOrChanged != 0) == (startedOrChanged2 == 0))
   {
     goto LABEL_22;
   }
 
-  v13 = [(FLOWLINKSchemaFLOWLINKActionContext *)self ended];
-  if (v13)
+  ended = [(FLOWLINKSchemaFLOWLINKActionContext *)self ended];
+  if (ended)
   {
-    v14 = v13;
-    v15 = [(FLOWLINKSchemaFLOWLINKActionContext *)self ended];
-    v16 = [v4 ended];
-    v17 = [v15 isEqual:v16];
+    v14 = ended;
+    ended2 = [(FLOWLINKSchemaFLOWLINKActionContext *)self ended];
+    ended3 = [equalCopy ended];
+    v17 = [ended2 isEqual:ended3];
 
     if (!v17)
     {
@@ -248,20 +248,20 @@
   {
   }
 
-  v6 = [(FLOWLINKSchemaFLOWLINKActionContext *)self failed];
-  v7 = [v4 failed];
-  if ((v6 != 0) == (v7 == 0))
+  startedOrChanged = [(FLOWLINKSchemaFLOWLINKActionContext *)self failed];
+  startedOrChanged2 = [equalCopy failed];
+  if ((startedOrChanged != 0) == (startedOrChanged2 == 0))
   {
     goto LABEL_22;
   }
 
-  v18 = [(FLOWLINKSchemaFLOWLINKActionContext *)self failed];
-  if (v18)
+  failed = [(FLOWLINKSchemaFLOWLINKActionContext *)self failed];
+  if (failed)
   {
-    v19 = v18;
-    v20 = [(FLOWLINKSchemaFLOWLINKActionContext *)self failed];
-    v21 = [v4 failed];
-    v22 = [v20 isEqual:v21];
+    v19 = failed;
+    failed2 = [(FLOWLINKSchemaFLOWLINKActionContext *)self failed];
+    failed3 = [equalCopy failed];
+    v22 = [failed2 isEqual:failed3];
 
     if (!v22)
     {
@@ -273,12 +273,12 @@
   {
   }
 
-  v6 = [(FLOWLINKSchemaFLOWLINKActionContext *)self cancelled];
-  v7 = [v4 cancelled];
-  if ((v6 != 0) != (v7 == 0))
+  startedOrChanged = [(FLOWLINKSchemaFLOWLINKActionContext *)self cancelled];
+  startedOrChanged2 = [equalCopy cancelled];
+  if ((startedOrChanged != 0) != (startedOrChanged2 == 0))
   {
-    v23 = [(FLOWLINKSchemaFLOWLINKActionContext *)self cancelled];
-    if (!v23)
+    cancelled = [(FLOWLINKSchemaFLOWLINKActionContext *)self cancelled];
+    if (!cancelled)
     {
 
 LABEL_26:
@@ -286,10 +286,10 @@ LABEL_26:
       goto LABEL_24;
     }
 
-    v24 = v23;
-    v25 = [(FLOWLINKSchemaFLOWLINKActionContext *)self cancelled];
-    v26 = [v4 cancelled];
-    v27 = [v25 isEqual:v26];
+    v24 = cancelled;
+    cancelled2 = [(FLOWLINKSchemaFLOWLINKActionContext *)self cancelled];
+    cancelled3 = [equalCopy cancelled];
+    v27 = [cancelled2 isEqual:cancelled3];
 
     if (v27)
     {
@@ -309,42 +309,42 @@ LABEL_24:
   return v28;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v13 = a3;
-  v4 = [(FLOWLINKSchemaFLOWLINKActionContext *)self startedOrChanged];
+  toCopy = to;
+  startedOrChanged = [(FLOWLINKSchemaFLOWLINKActionContext *)self startedOrChanged];
 
-  if (v4)
+  if (startedOrChanged)
   {
-    v5 = [(FLOWLINKSchemaFLOWLINKActionContext *)self startedOrChanged];
+    startedOrChanged2 = [(FLOWLINKSchemaFLOWLINKActionContext *)self startedOrChanged];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(FLOWLINKSchemaFLOWLINKActionContext *)self ended];
+  ended = [(FLOWLINKSchemaFLOWLINKActionContext *)self ended];
 
-  if (v6)
+  if (ended)
   {
-    v7 = [(FLOWLINKSchemaFLOWLINKActionContext *)self ended];
+    ended2 = [(FLOWLINKSchemaFLOWLINKActionContext *)self ended];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(FLOWLINKSchemaFLOWLINKActionContext *)self failed];
+  failed = [(FLOWLINKSchemaFLOWLINKActionContext *)self failed];
 
-  if (v8)
+  if (failed)
   {
-    v9 = [(FLOWLINKSchemaFLOWLINKActionContext *)self failed];
+    failed2 = [(FLOWLINKSchemaFLOWLINKActionContext *)self failed];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(FLOWLINKSchemaFLOWLINKActionContext *)self cancelled];
+  cancelled = [(FLOWLINKSchemaFLOWLINKActionContext *)self cancelled];
 
-  v11 = v13;
-  if (v10)
+  v11 = toCopy;
+  if (cancelled)
   {
-    v12 = [(FLOWLINKSchemaFLOWLINKActionContext *)self cancelled];
+    cancelled2 = [(FLOWLINKSchemaFLOWLINKActionContext *)self cancelled];
     PBDataWriterWriteSubmessage();
 
-    v11 = v13;
+    v11 = toCopy;
   }
 }
 
@@ -373,9 +373,9 @@ LABEL_24:
   return v3;
 }
 
-- (void)setCancelled:(id)a3
+- (void)setCancelled:(id)cancelled
 {
-  v4 = a3;
+  cancelledCopy = cancelled;
   startedOrChanged = self->_startedOrChanged;
   self->_startedOrChanged = 0;
 
@@ -385,9 +385,9 @@ LABEL_24:
   failed = self->_failed;
   self->_failed = 0;
 
-  self->_whichContextevent = 4 * (v4 != 0);
+  self->_whichContextevent = 4 * (cancelledCopy != 0);
   cancelled = self->_cancelled;
-  self->_cancelled = v4;
+  self->_cancelled = cancelledCopy;
 }
 
 - (void)deleteFailed
@@ -415,9 +415,9 @@ LABEL_24:
   return v3;
 }
 
-- (void)setFailed:(id)a3
+- (void)setFailed:(id)failed
 {
-  v4 = a3;
+  failedCopy = failed;
   startedOrChanged = self->_startedOrChanged;
   self->_startedOrChanged = 0;
 
@@ -428,14 +428,14 @@ LABEL_24:
   self->_cancelled = 0;
 
   v8 = 3;
-  if (!v4)
+  if (!failedCopy)
   {
     v8 = 0;
   }
 
   self->_whichContextevent = v8;
   failed = self->_failed;
-  self->_failed = v4;
+  self->_failed = failedCopy;
 }
 
 - (void)deleteEnded
@@ -463,9 +463,9 @@ LABEL_24:
   return v3;
 }
 
-- (void)setEnded:(id)a3
+- (void)setEnded:(id)ended
 {
-  v4 = a3;
+  endedCopy = ended;
   startedOrChanged = self->_startedOrChanged;
   self->_startedOrChanged = 0;
 
@@ -475,9 +475,9 @@ LABEL_24:
   cancelled = self->_cancelled;
   self->_cancelled = 0;
 
-  self->_whichContextevent = 2 * (v4 != 0);
+  self->_whichContextevent = 2 * (endedCopy != 0);
   ended = self->_ended;
-  self->_ended = v4;
+  self->_ended = endedCopy;
 }
 
 - (void)deleteStartedOrChanged
@@ -505,9 +505,9 @@ LABEL_24:
   return v3;
 }
 
-- (void)setStartedOrChanged:(id)a3
+- (void)setStartedOrChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   ended = self->_ended;
   self->_ended = 0;
 
@@ -517,49 +517,49 @@ LABEL_24:
   cancelled = self->_cancelled;
   self->_cancelled = 0;
 
-  self->_whichContextevent = v4 != 0;
+  self->_whichContextevent = changedCopy != 0;
   startedOrChanged = self->_startedOrChanged;
-  self->_startedOrChanged = v4;
+  self->_startedOrChanged = changedCopy;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v19.receiver = self;
   v19.super_class = FLOWLINKSchemaFLOWLINKActionContext;
-  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:v4];
-  v6 = [(FLOWLINKSchemaFLOWLINKActionContext *)self startedOrChanged];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:policyCopy];
+  startedOrChanged = [(FLOWLINKSchemaFLOWLINKActionContext *)self startedOrChanged];
+  v7 = [startedOrChanged applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(FLOWLINKSchemaFLOWLINKActionContext *)self deleteStartedOrChanged];
   }
 
-  v9 = [(FLOWLINKSchemaFLOWLINKActionContext *)self ended];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  ended = [(FLOWLINKSchemaFLOWLINKActionContext *)self ended];
+  v10 = [ended applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(FLOWLINKSchemaFLOWLINKActionContext *)self deleteEnded];
   }
 
-  v12 = [(FLOWLINKSchemaFLOWLINKActionContext *)self failed];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  failed = [(FLOWLINKSchemaFLOWLINKActionContext *)self failed];
+  v13 = [failed applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(FLOWLINKSchemaFLOWLINKActionContext *)self deleteFailed];
   }
 
-  v15 = [(FLOWLINKSchemaFLOWLINKActionContext *)self cancelled];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  cancelled = [(FLOWLINKSchemaFLOWLINKActionContext *)self cancelled];
+  v16 = [cancelled applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(FLOWLINKSchemaFLOWLINKActionContext *)self deleteCancelled];
   }

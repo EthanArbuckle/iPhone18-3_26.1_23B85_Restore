@@ -1,15 +1,15 @@
 @interface TSBonjourIPv6Address
-+ (BOOL)getLinkLayerAddress:(char *)a3 forIPv6Address:(const char *)a4 error:(id *)a5;
-- (BOOL)getLinkLayerAddressError:(id *)a3;
++ (BOOL)getLinkLayerAddress:(char *)address forIPv6Address:(const char *)pv6Address error:(id *)error;
+- (BOOL)getLinkLayerAddressError:(id *)error;
 - (TSBonjourIPv6Address)init;
-- (TSBonjourIPv6Address)initWithIPv6Address:(const char *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)pokeDestinationAtPort:(unsigned __int16)a3 onInterfaceIndex:(unsigned int)a4;
+- (TSBonjourIPv6Address)initWithIPv6Address:(const char *)address;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)pokeDestinationAtPort:(unsigned __int16)port onInterfaceIndex:(unsigned int)index;
 @end
 
 @implementation TSBonjourIPv6Address
 
-+ (BOOL)getLinkLayerAddress:(char *)a3 forIPv6Address:(const char *)a4 error:(id *)a5
++ (BOOL)getLinkLayerAddress:(char *)address forIPv6Address:(const char *)pv6Address error:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
   v7 = 101;
@@ -84,7 +84,7 @@ LABEL_13:
     if (*(v19 + 93) == 30)
     {
       v21 = v19 + v20 + 92;
-      if (v21[1] == 18 && v21[6] == 6 && *(v21 + 1) && *(v19 + 50) == *a4 && *(v19 + 54) == *(a4 + 1))
+      if (v21[1] == 18 && v21[6] == 6 && *(v21 + 1) && *(v19 + 50) == *pv6Address && *(v19 + 54) == *(pv6Address + 1))
       {
         break;
       }
@@ -101,8 +101,8 @@ LABEL_13:
 
   v24 = &v21[v21[5]];
   v25 = *(v24 + 2);
-  *(a3 + 2) = *(v24 + 6);
-  *a3 = v25;
+  *(address + 2) = *(v24 + 6);
+  *address = v25;
   v15 = 1;
 LABEL_14:
   free(v10);
@@ -120,14 +120,14 @@ LABEL_14:
   return 0;
 }
 
-- (TSBonjourIPv6Address)initWithIPv6Address:(const char *)a3
+- (TSBonjourIPv6Address)initWithIPv6Address:(const char *)address
 {
   v5.receiver = self;
   v5.super_class = TSBonjourIPv6Address;
   result = [(TSBonjourIPv6Address *)&v5 init];
   if (result)
   {
-    *result->_ipv6Address = *a3;
+    *result->_ipv6Address = *address;
     result->_hasLinkLayerAddress = 0;
     *result->_linkLayerAddress = -1;
     *&result->_linkLayerAddress[4] = -1;
@@ -136,9 +136,9 @@ LABEL_14:
   return result;
 }
 
-- (BOOL)getLinkLayerAddressError:(id *)a3
+- (BOOL)getLinkLayerAddressError:(id *)error
 {
-  v4 = [objc_opt_class() getLinkLayerAddress:self->_linkLayerAddress forIPv6Address:self->_ipv6Address error:a3];
+  v4 = [objc_opt_class() getLinkLayerAddress:self->_linkLayerAddress forIPv6Address:self->_ipv6Address error:error];
   if (v4)
   {
     self->_hasLinkLayerAddress = 1;
@@ -147,15 +147,15 @@ LABEL_14:
   return v4;
 }
 
-- (void)pokeDestinationAtPort:(unsigned __int16)a3 onInterfaceIndex:(unsigned int)a4
+- (void)pokeDestinationAtPort:(unsigned __int16)port onInterfaceIndex:(unsigned int)index
 {
   memset(&v6[1], 0, 24);
-  HIWORD(v6[0]) = __rev16(a3);
+  HIWORD(v6[0]) = __rev16(port);
   LOWORD(v6[0]) = 7708;
   *&v6[2] = *[(TSBonjourIPv6Address *)self ipv6Address];
   if (LOBYTE(v6[2]) == 254 && (BYTE1(v6[2]) & 0xC0) == 0x80)
   {
-    v6[6] = a4;
+    v6[6] = index;
   }
 
   v5 = socket(30, 1, 0);
@@ -164,17 +164,17 @@ LABEL_14:
   close(v5);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithIPv6Address:", -[TSBonjourIPv6Address ipv6Address](self, "ipv6Address")}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithIPv6Address:", -[TSBonjourIPv6Address ipv6Address](self, "ipv6Address")}];
   if ([(TSBonjourIPv6Address *)self hasLinkLayerAddress])
   {
     [v4 setHasLinkLayerAddress:1];
-    v5 = [v4 linkLayerAddress];
-    v6 = [(TSBonjourIPv6Address *)self linkLayerAddress];
-    v7 = *(v6 + 2);
-    *v5 = *v6;
-    *(v5 + 4) = v7;
+    linkLayerAddress = [v4 linkLayerAddress];
+    linkLayerAddress2 = [(TSBonjourIPv6Address *)self linkLayerAddress];
+    v7 = *(linkLayerAddress2 + 2);
+    *linkLayerAddress = *linkLayerAddress2;
+    *(linkLayerAddress + 4) = v7;
   }
 
   return v4;

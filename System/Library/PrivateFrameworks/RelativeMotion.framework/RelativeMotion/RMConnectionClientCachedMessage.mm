@@ -1,53 +1,53 @@
 @interface RMConnectionClientCachedMessage
-- (id)initWithName:(void *)a3 data:;
-- (id)initWithName:(void *)a3 data:(void *)a4 streamingCallback:;
+- (id)initWithName:(void *)name data:;
+- (id)initWithName:(void *)name data:(void *)data streamingCallback:;
 - (uint64_t)data;
 @end
 
 @implementation RMConnectionClientCachedMessage
 
-- (id)initWithName:(void *)a3 data:
+- (id)initWithName:(void *)name data:
 {
   v6 = a2;
-  v7 = a3;
-  if (a1)
+  nameCopy = name;
+  if (self)
   {
-    v10.receiver = a1;
+    v10.receiver = self;
     v10.super_class = RMConnectionClientCachedMessage;
     v8 = objc_msgSendSuper2(&v10, sel_init);
-    a1 = v8;
+    self = v8;
     if (v8)
     {
       objc_storeStrong(v8 + 1, a2);
-      objc_storeStrong(a1 + 2, a3);
+      objc_storeStrong(self + 2, name);
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (id)initWithName:(void *)a3 data:(void *)a4 streamingCallback:
+- (id)initWithName:(void *)name data:(void *)data streamingCallback:
 {
   v8 = a2;
-  v9 = a3;
-  v10 = a4;
-  if (a1)
+  nameCopy = name;
+  dataCopy = data;
+  if (self)
   {
-    v15.receiver = a1;
+    v15.receiver = self;
     v15.super_class = RMConnectionClientCachedMessage;
     v11 = objc_msgSendSuper2(&v15, sel_init);
-    a1 = v11;
+    self = v11;
     if (v11)
     {
       objc_storeStrong(v11 + 1, a2);
-      objc_storeStrong(a1 + 2, a3);
-      v12 = MEMORY[0x266717B20](v10);
-      v13 = a1[3];
-      a1[3] = v12;
+      objc_storeStrong(self + 2, name);
+      v12 = MEMORY[0x266717B20](dataCopy);
+      v13 = self[3];
+      self[3] = v12;
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)data

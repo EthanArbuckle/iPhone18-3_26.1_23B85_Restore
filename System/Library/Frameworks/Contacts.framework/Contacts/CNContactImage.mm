@@ -1,42 +1,42 @@
 @interface CNContactImage
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)cropRect;
-- (CNContactImage)initWithCoder:(id)a3;
-- (CNContactImage)initWithIdentifier:(id)a3 imageData:(id)a4 lastUsedDate:(id)a5 cropRect:(CGRect)a6 source:(int64_t)a7 sourceIdentifier:(id)a8 encodingType:(int64_t)a9 variant:(id)a10 poseConfigurationData:(id)a11 displayString:(id)a12 ignoredForRevert:(BOOL)a13 itemDetails:(unint64_t)a14;
-- (CNContactImage)initWithImageData:(id)a3 cropRect:(CGRect)a4 lastUsedDate:(id)a5;
-- (CNContactImage)initWithImageData:(id)a3 cropRect:(CGRect)a4 lastUsedDate:(id)a5 source:(int64_t)a6;
-- (CNContactImage)initWithManagedObject:(id)a3;
-- (CNContactImage)initWithManagedObject:(id)a3 poster:(id)a4;
+- (CNContactImage)initWithCoder:(id)coder;
+- (CNContactImage)initWithIdentifier:(id)identifier imageData:(id)data lastUsedDate:(id)date cropRect:(CGRect)rect source:(int64_t)source sourceIdentifier:(id)sourceIdentifier encodingType:(int64_t)type variant:(id)self0 poseConfigurationData:(id)self1 displayString:(id)self2 ignoredForRevert:(BOOL)self3 itemDetails:(unint64_t)self4;
+- (CNContactImage)initWithImageData:(id)data cropRect:(CGRect)rect lastUsedDate:(id)date;
+- (CNContactImage)initWithImageData:(id)data cropRect:(CGRect)rect lastUsedDate:(id)date source:(int64_t)source;
+- (CNContactImage)initWithManagedObject:(id)object;
+- (CNContactImage)initWithManagedObject:(id)object poster:(id)poster;
 - (CNContactPoster)pairedPoster;
-- (id)copyWithNewImageData:(id)a3;
-- (id)copyWithNewImageData:(id)a3 cropRect:(CGRect)a4;
-- (id)resizedContactImageToMaxEdgeWidth:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setPairedPoster:(id)a3;
+- (id)copyWithNewImageData:(id)data;
+- (id)copyWithNewImageData:(id)data cropRect:(CGRect)rect;
+- (id)resizedContactImageToMaxEdgeWidth:(unint64_t)width;
+- (void)encodeWithCoder:(id)coder;
+- (void)setPairedPoster:(id)poster;
 @end
 
 @implementation CNContactImage
 
-- (id)resizedContactImageToMaxEdgeWidth:(unint64_t)a3
+- (id)resizedContactImageToMaxEdgeWidth:(unint64_t)width
 {
-  v5 = [(CNContactImage *)self imageData];
+  imageData = [(CNContactImage *)self imageData];
   v6 = *MEMORY[0x1E6996540];
-  if ((*(*MEMORY[0x1E6996540] + 16))(*MEMORY[0x1E6996540], v5))
+  if ((*(*MEMORY[0x1E6996540] + 16))(*MEMORY[0x1E6996540], imageData))
   {
-    v7 = self;
+    selfCopy3 = self;
     goto LABEL_24;
   }
 
   [(CNContactImage *)self cropRect];
   if (v9 == *MEMORY[0x1E695F060] && v8 == *(MEMORY[0x1E695F060] + 8))
   {
-    v15 = v5;
+    v15 = imageData;
   }
 
   else
   {
     [(CNContactImage *)self cropRect];
-    v15 = CNImageUtilsCroppedImageDataFromFullSizeImageData(v5, 0, v11, v12, v13, v14);
+    v15 = CNImageUtilsCroppedImageDataFromFullSizeImageData(imageData, 0, v11, v12, v13, v14);
   }
 
   v16 = v15;
@@ -66,11 +66,11 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  if (v46 > a3 || v45 > a3)
+  if (v46 > width || v45 > width)
   {
     v44 = 0x3FF0000000000000;
     v25 = [(CNContactImage *)self source]!= 2;
-    v26 = CNImageUtilsImageDataByScalingImageData(v16, v25, a3, &v44, v46, v45, 1.0);
+    v26 = CNImageUtilsImageDataByScalingImageData(v16, v25, width, &v44, v46, v45, 1.0);
     if ((*(v6 + 16))(v6, v26))
     {
       v27 = meCardSharingLogger();
@@ -79,194 +79,194 @@ LABEL_21:
         [(CNContactImage(MeCardSharing) *)v27 resizedContactImageToMaxEdgeWidth:v28, v29, v30, v31, v32, v33, v34];
       }
 
-      v35 = self;
+      selfCopy2 = self;
     }
 
     else
     {
-      v35 = [(CNContactImage *)self copyWithNewImageData:v26 cropRect:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
+      selfCopy2 = [(CNContactImage *)self copyWithNewImageData:v26 cropRect:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
     }
 
-    v7 = v35;
+    selfCopy3 = selfCopy2;
 
     goto LABEL_23;
   }
 
 LABEL_22:
-  v7 = self;
+  selfCopy3 = self;
 LABEL_23:
 
 LABEL_24:
 
-  return v7;
+  return selfCopy3;
 }
 
-- (CNContactImage)initWithImageData:(id)a3 cropRect:(CGRect)a4 lastUsedDate:(id)a5
+- (CNContactImage)initWithImageData:(id)data cropRect:(CGRect)rect lastUsedDate:(id)date
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v11 = MEMORY[0x1E696AFB0];
-  v12 = a5;
-  v13 = a3;
-  v14 = [v11 UUID];
-  v15 = [v14 UUIDString];
+  dateCopy = date;
+  dataCopy = data;
+  uUID = [v11 UUID];
+  uUIDString = [uUID UUIDString];
 
-  v16 = [(CNContactImage *)self initWithIdentifier:v15 imageData:v13 cropRect:v12 lastUsedDate:x, y, width, height];
-  return v16;
+  height = [(CNContactImage *)self initWithIdentifier:uUIDString imageData:dataCopy cropRect:dateCopy lastUsedDate:x, y, width, height];
+  return height;
 }
 
-- (CNContactImage)initWithImageData:(id)a3 cropRect:(CGRect)a4 lastUsedDate:(id)a5 source:(int64_t)a6
+- (CNContactImage)initWithImageData:(id)data cropRect:(CGRect)rect lastUsedDate:(id)date source:(int64_t)source
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v13 = MEMORY[0x1E696AFB0];
-  v14 = a5;
-  v15 = a3;
-  v16 = [v13 UUID];
-  v17 = [v16 UUIDString];
+  dateCopy = date;
+  dataCopy = data;
+  uUID = [v13 UUID];
+  uUIDString = [uUID UUIDString];
 
   LOBYTE(v20) = 0;
-  v18 = [(CNContactImage *)self initWithIdentifier:v17 imageData:v15 lastUsedDate:v14 cropRect:a6 source:0 sourceIdentifier:0 encodingType:x variant:y poseConfigurationData:width displayString:height ignoredForRevert:0 itemDetails:0, 0, v20, 0];
+  v18 = [(CNContactImage *)self initWithIdentifier:uUIDString imageData:dataCopy lastUsedDate:dateCopy cropRect:source source:0 sourceIdentifier:0 encodingType:x variant:y poseConfigurationData:width displayString:height ignoredForRevert:0 itemDetails:0, 0, v20, 0];
 
   return v18;
 }
 
-- (CNContactImage)initWithIdentifier:(id)a3 imageData:(id)a4 lastUsedDate:(id)a5 cropRect:(CGRect)a6 source:(int64_t)a7 sourceIdentifier:(id)a8 encodingType:(int64_t)a9 variant:(id)a10 poseConfigurationData:(id)a11 displayString:(id)a12 ignoredForRevert:(BOOL)a13 itemDetails:(unint64_t)a14
+- (CNContactImage)initWithIdentifier:(id)identifier imageData:(id)data lastUsedDate:(id)date cropRect:(CGRect)rect source:(int64_t)source sourceIdentifier:(id)sourceIdentifier encodingType:(int64_t)type variant:(id)self0 poseConfigurationData:(id)self1 displayString:(id)self2 ignoredForRevert:(BOOL)self3 itemDetails:(unint64_t)self4
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v22 = a3;
-  v23 = a4;
-  v24 = a5;
-  v25 = a8;
-  v38 = a10;
-  v37 = a11;
-  v36 = a12;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  identifierCopy = identifier;
+  dataCopy = data;
+  dateCopy = date;
+  sourceIdentifierCopy = sourceIdentifier;
+  variantCopy = variant;
+  configurationDataCopy = configurationData;
+  stringCopy = string;
   v39.receiver = self;
   v39.super_class = CNContactImage;
   v26 = [(CNContactImage *)&v39 init];
   if (v26)
   {
-    v32 = v25;
-    v33 = v23;
-    v27 = [v22 length];
-    v28 = v22;
+    v32 = sourceIdentifierCopy;
+    v33 = dataCopy;
+    v27 = [identifierCopy length];
+    uUIDString = identifierCopy;
     if (!v27)
     {
-      v31 = [MEMORY[0x1E696AFB0] UUID];
-      v28 = [v31 UUIDString];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
     }
 
-    objc_storeStrong(&v26->_identifier, v28);
+    objc_storeStrong(&v26->_identifier, uUIDString);
     if (!v27)
     {
     }
 
-    objc_storeStrong(&v26->_imageData, a4);
-    [(CNContactPosterDataItem *)v26 setLastUsedDate:v24];
+    objc_storeStrong(&v26->_imageData, data);
+    [(CNContactPosterDataItem *)v26 setLastUsedDate:dateCopy];
     v26->_cropRect.origin.x = x;
     v26->_cropRect.origin.y = y;
     v26->_cropRect.size.width = width;
     v26->_cropRect.size.height = height;
-    v26->_source = a7;
-    objc_storeStrong(&v26->_sourceIdentifier, a8);
-    v26->_encodingType = a9;
-    objc_storeStrong(&v26->_variant, a10);
-    objc_storeStrong(&v26->_poseConfigurationData, a11);
-    objc_storeStrong(&v26->_displayString, a12);
-    [(CNContactPosterDataItem *)v26 setIgnoredForRevert:a13];
-    [(CNContactPosterDataItem *)v26 setItemDetails:a14];
+    v26->_source = source;
+    objc_storeStrong(&v26->_sourceIdentifier, sourceIdentifier);
+    v26->_encodingType = type;
+    objc_storeStrong(&v26->_variant, variant);
+    objc_storeStrong(&v26->_poseConfigurationData, configurationData);
+    objc_storeStrong(&v26->_displayString, string);
+    [(CNContactPosterDataItem *)v26 setIgnoredForRevert:revert];
+    [(CNContactPosterDataItem *)v26 setItemDetails:details];
     v29 = v26;
-    v25 = v32;
-    v23 = v33;
+    sourceIdentifierCopy = v32;
+    dataCopy = v33;
   }
 
   return v26;
 }
 
-- (id)copyWithNewImageData:(id)a3
+- (id)copyWithNewImageData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = [CNContactImage alloc];
   [(CNContactImage *)self cropRect];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(CNContactPosterDataItem *)self lastUsedDate];
-  v15 = [(CNContactImage *)v5 initWithImageData:v4 cropRect:v14 lastUsedDate:v7, v9, v11, v13];
+  lastUsedDate = [(CNContactPosterDataItem *)self lastUsedDate];
+  v15 = [(CNContactImage *)v5 initWithImageData:dataCopy cropRect:lastUsedDate lastUsedDate:v7, v9, v11, v13];
 
   [(CNContactImage *)v15 setSource:[(CNContactImage *)self source]];
-  v16 = [(CNContactImage *)self sourceIdentifier];
-  [(CNContactImage *)v15 setSourceIdentifier:v16];
+  sourceIdentifier = [(CNContactImage *)self sourceIdentifier];
+  [(CNContactImage *)v15 setSourceIdentifier:sourceIdentifier];
 
   [(CNContactImage *)v15 setEncodingType:[(CNContactImage *)self encodingType]];
-  v17 = [(CNContactImage *)self variant];
-  [(CNContactImage *)v15 setVariant:v17];
+  variant = [(CNContactImage *)self variant];
+  [(CNContactImage *)v15 setVariant:variant];
 
-  v18 = [(CNContactImage *)self displayString];
-  [(CNContactImage *)v15 setDisplayString:v18];
+  displayString = [(CNContactImage *)self displayString];
+  [(CNContactImage *)v15 setDisplayString:displayString];
 
-  v19 = [(CNContactImage *)self poseConfigurationData];
-  [(CNContactImage *)v15 setPoseConfigurationData:v19];
+  poseConfigurationData = [(CNContactImage *)self poseConfigurationData];
+  [(CNContactImage *)v15 setPoseConfigurationData:poseConfigurationData];
 
   [(CNContactPosterDataItem *)v15 setIgnoredForRevert:[(CNContactPosterDataItem *)self ignoredForRevert]];
-  v20 = [(CNContactImage *)self pairedPoster];
-  [(CNContactImage *)v15 setPairedPoster:v20];
+  pairedPoster = [(CNContactImage *)self pairedPoster];
+  [(CNContactImage *)v15 setPairedPoster:pairedPoster];
 
-  v21 = [(CNContactPosterDataItem *)self contactIdentifier];
-  [(CNContactPosterDataItem *)v15 setContactIdentifier:v21];
+  contactIdentifier = [(CNContactPosterDataItem *)self contactIdentifier];
+  [(CNContactPosterDataItem *)v15 setContactIdentifier:contactIdentifier];
 
   [(CNContactPosterDataItem *)v15 setItemDetails:[(CNContactPosterDataItem *)self itemDetails]];
   return v15;
 }
 
-- (id)copyWithNewImageData:(id)a3 cropRect:(CGRect)a4
+- (id)copyWithNewImageData:(id)data cropRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  dataCopy = data;
   v10 = [CNContactImage alloc];
-  v11 = [(CNContactPosterDataItem *)self lastUsedDate];
-  v12 = [(CNContactImage *)v10 initWithImageData:v9 cropRect:v11 lastUsedDate:x, y, width, height];
+  lastUsedDate = [(CNContactPosterDataItem *)self lastUsedDate];
+  height = [(CNContactImage *)v10 initWithImageData:dataCopy cropRect:lastUsedDate lastUsedDate:x, y, width, height];
 
-  [(CNContactImage *)v12 setSource:[(CNContactImage *)self source]];
-  v13 = [(CNContactImage *)self sourceIdentifier];
-  [(CNContactImage *)v12 setSourceIdentifier:v13];
+  [(CNContactImage *)height setSource:[(CNContactImage *)self source]];
+  sourceIdentifier = [(CNContactImage *)self sourceIdentifier];
+  [(CNContactImage *)height setSourceIdentifier:sourceIdentifier];
 
-  [(CNContactImage *)v12 setEncodingType:[(CNContactImage *)self encodingType]];
-  v14 = [(CNContactImage *)self variant];
-  [(CNContactImage *)v12 setVariant:v14];
+  [(CNContactImage *)height setEncodingType:[(CNContactImage *)self encodingType]];
+  variant = [(CNContactImage *)self variant];
+  [(CNContactImage *)height setVariant:variant];
 
-  v15 = [(CNContactImage *)self displayString];
-  [(CNContactImage *)v12 setDisplayString:v15];
+  displayString = [(CNContactImage *)self displayString];
+  [(CNContactImage *)height setDisplayString:displayString];
 
-  v16 = [(CNContactImage *)self poseConfigurationData];
-  [(CNContactImage *)v12 setPoseConfigurationData:v16];
+  poseConfigurationData = [(CNContactImage *)self poseConfigurationData];
+  [(CNContactImage *)height setPoseConfigurationData:poseConfigurationData];
 
-  [(CNContactPosterDataItem *)v12 setIgnoredForRevert:[(CNContactPosterDataItem *)self ignoredForRevert]];
-  v17 = [(CNContactImage *)self pairedPoster];
-  [(CNContactImage *)v12 setPairedPoster:v17];
+  [(CNContactPosterDataItem *)height setIgnoredForRevert:[(CNContactPosterDataItem *)self ignoredForRevert]];
+  pairedPoster = [(CNContactImage *)self pairedPoster];
+  [(CNContactImage *)height setPairedPoster:pairedPoster];
 
-  v18 = [(CNContactPosterDataItem *)self contactIdentifier];
-  [(CNContactPosterDataItem *)v12 setContactIdentifier:v18];
+  contactIdentifier = [(CNContactPosterDataItem *)self contactIdentifier];
+  [(CNContactPosterDataItem *)height setContactIdentifier:contactIdentifier];
 
-  [(CNContactPosterDataItem *)v12 setItemDetails:[(CNContactPosterDataItem *)self itemDetails]];
-  return v12;
+  [(CNContactPosterDataItem *)height setItemDetails:[(CNContactPosterDataItem *)self itemDetails]];
+  return height;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -274,10 +274,10 @@ LABEL_24:
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && ((identifier = self->_identifier, !(identifier | v4->_identifier)) || -[NSString isEqual:](identifier, "isEqual:")) && ((imageData = self->_imageData, !(imageData | v4->_imageData)) || -[NSData isEqual:](imageData, "isEqual:")) && ((v7 = -[CNContactPosterDataItem lastUsedDate](self, "lastUsedDate"), v8 = -[CNContactPosterDataItem lastUsedDate](v4, "lastUsedDate"), !(v7 | v8)) || [v7 isEqual:v8]) && NSEqualRects(self->_cropRect, v4->_cropRect) && self->_source == v4->_source && ((sourceIdentifier = self->_sourceIdentifier, !(sourceIdentifier | v4->_sourceIdentifier)) || -[NSString isEqual:](sourceIdentifier, "isEqual:")) && self->_encodingType == v4->_encodingType && ((variant = self->_variant, !(variant | v4->_variant)) || -[NSString isEqual:](variant, "isEqual:")) && ((poseConfigurationData = self->_poseConfigurationData, !(poseConfigurationData | v4->_poseConfigurationData)) || -[NSData isEqual:](poseConfigurationData, "isEqual:")) && ((displayString = self->_displayString, !(displayString | v4->_displayString)) || -[NSString isEqual:](displayString, "isEqual:")) && (v13 = -[CNContactPosterDataItem ignoredForRevert](self, "ignoredForRevert"), v13 == -[CNContactPosterDataItem ignoredForRevert](v4, "ignoredForRevert")))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && ((identifier = self->_identifier, !(identifier | equalCopy->_identifier)) || -[NSString isEqual:](identifier, "isEqual:")) && ((imageData = self->_imageData, !(imageData | equalCopy->_imageData)) || -[NSData isEqual:](imageData, "isEqual:")) && ((v7 = -[CNContactPosterDataItem lastUsedDate](self, "lastUsedDate"), v8 = -[CNContactPosterDataItem lastUsedDate](equalCopy, "lastUsedDate"), !(v7 | v8)) || [v7 isEqual:v8]) && NSEqualRects(self->_cropRect, equalCopy->_cropRect) && self->_source == equalCopy->_source && ((sourceIdentifier = self->_sourceIdentifier, !(sourceIdentifier | equalCopy->_sourceIdentifier)) || -[NSString isEqual:](sourceIdentifier, "isEqual:")) && self->_encodingType == equalCopy->_encodingType && ((variant = self->_variant, !(variant | equalCopy->_variant)) || -[NSString isEqual:](variant, "isEqual:")) && ((poseConfigurationData = self->_poseConfigurationData, !(poseConfigurationData | equalCopy->_poseConfigurationData)) || -[NSData isEqual:](poseConfigurationData, "isEqual:")) && ((displayString = self->_displayString, !(displayString | equalCopy->_displayString)) || -[NSString isEqual:](displayString, "isEqual:")) && (v13 = -[CNContactPosterDataItem ignoredForRevert](self, "ignoredForRevert"), v13 == -[CNContactPosterDataItem ignoredForRevert](equalCopy, "ignoredForRevert")))
     {
-      v16 = [(CNContactPosterDataItem *)self itemDetails];
-      v14 = v16 == [(CNContactPosterDataItem *)v4 itemDetails];
+      itemDetails = [(CNContactPosterDataItem *)self itemDetails];
+      v14 = itemDetails == [(CNContactPosterDataItem *)equalCopy itemDetails];
     }
 
     else
@@ -289,67 +289,67 @@ LABEL_24:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  [v8 encodeObject:self->_identifier forKey:@"identifier"];
-  [v8 encodeObject:self->_imageData forKey:@"imageData"];
-  v4 = [(CNContactPosterDataItem *)self lastUsedDate];
-  [v8 encodeObject:v4 forKey:@"lastUsedDate"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_imageData forKey:@"imageData"];
+  lastUsedDate = [(CNContactPosterDataItem *)self lastUsedDate];
+  [coderCopy encodeObject:lastUsedDate forKey:@"lastUsedDate"];
 
-  [v8 encodeRect:@"cropRect" forKey:{self->_cropRect.origin.x, self->_cropRect.origin.y, self->_cropRect.size.width, self->_cropRect.size.height}];
-  [v8 encodeInteger:self->_source forKey:@"source"];
-  [v8 encodeObject:self->_sourceIdentifier forKey:@"sourceIdentifier"];
-  [v8 encodeInteger:self->_encodingType forKey:@"encodingType"];
-  [v8 encodeObject:self->_variant forKey:@"variant"];
-  [v8 encodeObject:self->_poseConfigurationData forKey:@"poseConfigurationData"];
-  [v8 encodeObject:self->_displayString forKey:@"displayString"];
-  [v8 encodeBool:-[CNContactPosterDataItem ignoredForRevert](self forKey:{"ignoredForRevert"), @"ignoredForRevert"}];
-  v5 = [(CNContactPosterDataItem *)self contactIdentifier];
-  [v8 encodeObject:v5 forKey:@"contactIdentifier"];
+  [coderCopy encodeRect:@"cropRect" forKey:{self->_cropRect.origin.x, self->_cropRect.origin.y, self->_cropRect.size.width, self->_cropRect.size.height}];
+  [coderCopy encodeInteger:self->_source forKey:@"source"];
+  [coderCopy encodeObject:self->_sourceIdentifier forKey:@"sourceIdentifier"];
+  [coderCopy encodeInteger:self->_encodingType forKey:@"encodingType"];
+  [coderCopy encodeObject:self->_variant forKey:@"variant"];
+  [coderCopy encodeObject:self->_poseConfigurationData forKey:@"poseConfigurationData"];
+  [coderCopy encodeObject:self->_displayString forKey:@"displayString"];
+  [coderCopy encodeBool:-[CNContactPosterDataItem ignoredForRevert](self forKey:{"ignoredForRevert"), @"ignoredForRevert"}];
+  contactIdentifier = [(CNContactPosterDataItem *)self contactIdentifier];
+  [coderCopy encodeObject:contactIdentifier forKey:@"contactIdentifier"];
 
-  [v8 encodeInteger:-[CNContactPosterDataItem itemDetails](self forKey:{"itemDetails"), @"itemDetails"}];
+  [coderCopy encodeInteger:-[CNContactPosterDataItem itemDetails](self forKey:{"itemDetails"), @"itemDetails"}];
   if (![(CNContactPosterDataItem *)self avoidCircularEncoding])
   {
-    v6 = [(CNContactImage *)self pairedPoster];
-    [v6 setAvoidCircularEncoding:1];
+    pairedPoster = [(CNContactImage *)self pairedPoster];
+    [pairedPoster setAvoidCircularEncoding:1];
 
-    v7 = [(CNContactImage *)self pairedPoster];
-    [v8 encodeObject:v7 forKey:@"pairedPoster"];
+    pairedPoster2 = [(CNContactImage *)self pairedPoster];
+    [coderCopy encodeObject:pairedPoster2 forKey:@"pairedPoster"];
   }
 }
 
-- (CNContactImage)initWithCoder:(id)a3
+- (CNContactImage)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"imageData"];
-  v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastUsedDate"];
-  [v4 decodeRectForKey:@"cropRect"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageData"];
+  v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastUsedDate"];
+  [coderCopy decodeRectForKey:@"cropRect"];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v24 = [v4 decodeIntegerForKey:@"source"];
-  v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sourceIdentifier"];
-  v15 = [v4 decodeIntegerForKey:@"encodingType"];
-  v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"variant"];
-  v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"poseConfigurationData"];
-  v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayString"];
-  LOBYTE(v23) = [v4 decodeBoolForKey:@"ignoredForRevert"];
-  v19 = -[CNContactImage initWithIdentifier:imageData:lastUsedDate:cropRect:source:sourceIdentifier:encodingType:variant:poseConfigurationData:displayString:ignoredForRevert:itemDetails:](self, "initWithIdentifier:imageData:lastUsedDate:cropRect:source:sourceIdentifier:encodingType:variant:poseConfigurationData:displayString:ignoredForRevert:itemDetails:", v5, v26, v25, v24, v14, v15, v7, v9, v11, v13, v16, v17, v18, v23, [v4 decodeIntegerForKey:@"itemDetails"]);
-  v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contactIdentifier"];
+  v24 = [coderCopy decodeIntegerForKey:@"source"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sourceIdentifier"];
+  v15 = [coderCopy decodeIntegerForKey:@"encodingType"];
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"variant"];
+  v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"poseConfigurationData"];
+  v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayString"];
+  LOBYTE(v23) = [coderCopy decodeBoolForKey:@"ignoredForRevert"];
+  v19 = -[CNContactImage initWithIdentifier:imageData:lastUsedDate:cropRect:source:sourceIdentifier:encodingType:variant:poseConfigurationData:displayString:ignoredForRevert:itemDetails:](self, "initWithIdentifier:imageData:lastUsedDate:cropRect:source:sourceIdentifier:encodingType:variant:poseConfigurationData:displayString:ignoredForRevert:itemDetails:", v5, v26, v25, v24, v14, v15, v7, v9, v11, v13, v16, v17, v18, v23, [coderCopy decodeIntegerForKey:@"itemDetails"]);
+  v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contactIdentifier"];
   [(CNContactPosterDataItem *)v19 setContactIdentifier:v20];
 
-  v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pairedPoster"];
+  v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pairedPoster"];
 
   [(CNContactImage *)v19 setPairedPoster:v21];
   return v19;
 }
 
-- (void)setPairedPoster:(id)a3
+- (void)setPairedPoster:(id)poster
 {
-  obj = a3;
+  obj = poster;
   [(CNContactPosterDataItem *)self _updateStrongForImpendingPairedItem:obj];
   objc_storeWeak(&self->_pairedPoster, obj);
 }
@@ -374,73 +374,73 @@ LABEL_24:
   return WeakRetained;
 }
 
-- (CNContactImage)initWithManagedObject:(id)a3
+- (CNContactImage)initWithManagedObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v5 = [CNContactPoster alloc];
-  v6 = [v4 pairedPoster];
-  v7 = [(CNContactPoster *)v5 initWithManagedObject:v6 image:self];
+  pairedPoster = [objectCopy pairedPoster];
+  v7 = [(CNContactPoster *)v5 initWithManagedObject:pairedPoster image:self];
 
-  v8 = [(CNContactImage *)self initWithManagedObject:v4 poster:v7];
+  v8 = [(CNContactImage *)self initWithManagedObject:objectCopy poster:v7];
   return v8;
 }
 
-- (CNContactImage)initWithManagedObject:(id)a3 poster:(id)a4
+- (CNContactImage)initWithManagedObject:(id)object poster:(id)poster
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3)
+  posterCopy = poster;
+  v7 = posterCopy;
+  if (object)
   {
-    v40 = v6;
-    v8 = a3;
-    v9 = [v8 identifier];
-    v41 = [v9 UUIDString];
+    v40 = posterCopy;
+    objectCopy = object;
+    identifier = [objectCopy identifier];
+    uUIDString = [identifier UUIDString];
 
-    v10 = [v8 imageData];
-    v39 = [v8 lastUsedDate];
-    v11 = [v8 cropRectString];
-    v42 = NSRectFromString(v11);
+    imageData = [objectCopy imageData];
+    lastUsedDate = [objectCopy lastUsedDate];
+    cropRectString = [objectCopy cropRectString];
+    v42 = NSRectFromString(cropRectString);
     x = v42.origin.x;
     y = v42.origin.y;
     width = v42.size.width;
     height = v42.size.height;
 
-    v16 = [v8 source];
-    v37 = [v16 integerValue];
+    source = [objectCopy source];
+    integerValue = [source integerValue];
 
-    v38 = [v8 sourceIdentifier];
-    v17 = [v8 imageDataEncodingType];
-    v36 = [v17 integerValue];
+    sourceIdentifier = [objectCopy sourceIdentifier];
+    imageDataEncodingType = [objectCopy imageDataEncodingType];
+    integerValue2 = [imageDataEncodingType integerValue];
 
-    v18 = [v8 variant];
-    v19 = [v8 poseConfigurationData];
-    v20 = [v8 displayString];
-    v21 = [v8 ignoredForRevert];
-    v22 = [v8 contactIdentifier];
-    v23 = [v8 itemDetailsNumber];
+    variant = [objectCopy variant];
+    poseConfigurationData = [objectCopy poseConfigurationData];
+    displayString = [objectCopy displayString];
+    ignoredForRevert = [objectCopy ignoredForRevert];
+    contactIdentifier = [objectCopy contactIdentifier];
+    itemDetailsNumber = [objectCopy itemDetailsNumber];
 
-    v24 = [v23 integerValue];
-    v25 = 0;
-    if (v41 && v10)
+    integerValue3 = [itemDetailsNumber integerValue];
+    selfCopy = 0;
+    if (uUIDString && imageData)
     {
-      if (v39)
+      if (lastUsedDate)
       {
-        v26 = v22;
-        if (v22)
+        v26 = contactIdentifier;
+        if (contactIdentifier)
         {
-          LOBYTE(v35) = v21;
-          v34 = v18;
-          v27 = v10;
-          v28 = v10;
-          v29 = v39;
-          v30 = v18;
-          v31 = v38;
-          v32 = [(CNContactImage *)self initWithIdentifier:v41 imageData:v28 lastUsedDate:v39 cropRect:v37 source:v38 sourceIdentifier:v36 encodingType:x variant:y poseConfigurationData:width displayString:height ignoredForRevert:v34 itemDetails:v19, v20, v35, v24];
+          LOBYTE(v35) = ignoredForRevert;
+          v34 = variant;
+          v27 = imageData;
+          v28 = imageData;
+          v29 = lastUsedDate;
+          v30 = variant;
+          v31 = sourceIdentifier;
+          v32 = [(CNContactImage *)self initWithIdentifier:uUIDString imageData:v28 lastUsedDate:lastUsedDate cropRect:integerValue source:sourceIdentifier sourceIdentifier:integerValue2 encodingType:x variant:y poseConfigurationData:width displayString:height ignoredForRevert:v34 itemDetails:poseConfigurationData, displayString, v35, integerValue3];
           [(CNContactPosterDataItem *)v32 setContactIdentifier:v26];
           v7 = v40;
           [(CNContactImage *)v32 setPairedPoster:v40];
           self = v32;
-          v25 = self;
+          selfCopy = self;
 LABEL_13:
 
           goto LABEL_14;
@@ -452,30 +452,30 @@ LABEL_13:
       else
       {
         v7 = v40;
-        v26 = v22;
+        v26 = contactIdentifier;
       }
 
-      v27 = v10;
-      v29 = v39;
+      v27 = imageData;
+      v29 = lastUsedDate;
     }
 
     else
     {
-      v29 = v39;
+      v29 = lastUsedDate;
       v7 = v40;
-      v26 = v22;
-      v27 = v10;
+      v26 = contactIdentifier;
+      v27 = imageData;
     }
 
-    v30 = v18;
-    v31 = v38;
+    v30 = variant;
+    v31 = sourceIdentifier;
     goto LABEL_13;
   }
 
-  v25 = 0;
+  selfCopy = 0;
 LABEL_14:
 
-  return v25;
+  return selfCopy;
 }
 
 @end

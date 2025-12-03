@@ -1,18 +1,18 @@
 @interface APPExperimentationReportDelivery
 - (APPExperimentationReportDelivery)init;
-- (APPExperimentationReportDelivery)initWithTriggerTable:(id)a3 telemetryDelivery:(id)a4 metricReceiving:(id)a5;
+- (APPExperimentationReportDelivery)initWithTriggerTable:(id)table telemetryDelivery:(id)delivery metricReceiving:(id)receiving;
 @end
 
 @implementation APPExperimentationReportDelivery
 
-- (APPExperimentationReportDelivery)initWithTriggerTable:(id)a3 telemetryDelivery:(id)a4 metricReceiving:(id)a5
+- (APPExperimentationReportDelivery)initWithTriggerTable:(id)table telemetryDelivery:(id)delivery metricReceiving:(id)receiving
 {
-  *(&self->super.isa + OBJC_IVAR___APPExperimentationReportDelivery_triggerTable) = a3;
+  *(&self->super.isa + OBJC_IVAR___APPExperimentationReportDelivery_triggerTable) = table;
   swift_unknownObjectUnownedInit();
-  *(&self->super.isa + OBJC_IVAR___APPExperimentationReportDelivery_metricReceiving) = a5;
+  *(&self->super.isa + OBJC_IVAR___APPExperimentationReportDelivery_metricReceiving) = receiving;
   v10.receiver = self;
   v10.super_class = type metadata accessor for ExperimentationReportDelivery();
-  v8 = a3;
+  tableCopy = table;
   swift_unknownObjectRetain();
   return [(APPExperimentationReportDelivery *)&v10 init];
 }

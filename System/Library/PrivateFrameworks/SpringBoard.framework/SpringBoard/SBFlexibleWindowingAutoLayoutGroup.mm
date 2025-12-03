@@ -1,42 +1,42 @@
 @interface SBFlexibleWindowingAutoLayoutGroup
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)resizeGrabberPosition;
 - (NSArray)displayItemsInGroup;
-- (SBFlexibleWindowingAutoLayoutGroup)initWithItems:(id)a3;
-- (id)_copyWithClass:(Class)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (SBFlexibleWindowingAutoLayoutGroup)initWithItems:(id)items;
+- (id)_copyWithClass:(Class)class;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 @end
 
 @implementation SBFlexibleWindowingAutoLayoutGroup
 
-- (SBFlexibleWindowingAutoLayoutGroup)initWithItems:(id)a3
+- (SBFlexibleWindowingAutoLayoutGroup)initWithItems:(id)items
 {
-  v5 = a3;
+  itemsCopy = items;
   v36.receiver = self;
   v36.super_class = SBFlexibleWindowingAutoLayoutGroup;
   v6 = [(SBFlexibleWindowingAutoLayoutGroup *)&v36 init];
   if (v6)
   {
-    if (!v5)
+    if (!itemsCopy)
     {
       [(SBFlexibleWindowingAutoLayoutGroup *)a2 initWithItems:v6];
     }
 
-    v7 = [v5 copy];
+    v7 = [itemsCopy copy];
     itemsInGroup = v6->_itemsInGroup;
     v6->_itemsInGroup = v7;
 
-    v9 = [v5 firstObject];
-    v10 = [v5 lastObject];
-    [v9 frame];
+    firstObject = [itemsCopy firstObject];
+    lastObject = [itemsCopy lastObject];
+    [firstObject frame];
     v12 = v11;
     v14 = v13;
     v16 = v15;
     v18 = v17;
-    [v10 frame];
+    [lastObject frame];
     v21 = v14 + v18;
     v22 = v19 + v20;
     v24 = v12 + v16 + (v23 - (v12 + v16)) * 0.5;
@@ -110,10 +110,10 @@
   return cached_displayItemsInGroup;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -122,10 +122,10 @@
   {
     v12.receiver = self;
     v12.super_class = SBFlexibleWindowingAutoLayoutGroup;
-    if ([(SBFlexibleWindowingAutoLayoutGroup *)&v12 isEqual:v4])
+    if ([(SBFlexibleWindowingAutoLayoutGroup *)&v12 isEqual:equalCopy])
     {
       v5 = objc_opt_class();
-      v6 = v4;
+      v6 = equalCopy;
       if (v5)
       {
         if (objc_opt_isKindOfClass())
@@ -148,7 +148,7 @@
 
       if (v9)
       {
-        v10 = [(SBFlexibleWindowingAutoLayoutGroup *)v9 itemsInGroup];
+        itemsInGroup = [(SBFlexibleWindowingAutoLayoutGroup *)v9 itemsInGroup];
         v8 = BSEqualArrays();
       }
 
@@ -167,16 +167,16 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_class();
 
   return [(SBFlexibleWindowingAutoLayoutGroup *)self _copyWithClass:v4];
 }
 
-- (id)_copyWithClass:(Class)a3
+- (id)_copyWithClass:(Class)class
 {
-  v4 = [a3 alloc];
+  v4 = [class alloc];
   v5 = [(NSArray *)self->_itemsInGroup copy];
   v6 = [v4 initWithItems:v5];
 
@@ -187,28 +187,28 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBFlexibleWindowingAutoLayoutGroup *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBFlexibleWindowingAutoLayoutGroup *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBFlexibleWindowingAutoLayoutGroup *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBFlexibleWindowingAutoLayoutGroup *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBFlexibleWindowingAutoLayoutGroup *)self succinctDescriptionBuilder];
-  v5 = [v4 appendObject:self->_itemsInGroup withName:@"itemsInGroup"];
-  v6 = [v4 appendPoint:@"resizeGrabberPosition" withName:{self->_resizeGrabberPosition.x, self->_resizeGrabberPosition.y}];
-  v7 = [v4 appendFloat:@"intersectionHeight" withName:self->_intersectionHeight];
+  succinctDescriptionBuilder = [(SBFlexibleWindowingAutoLayoutGroup *)self succinctDescriptionBuilder];
+  v5 = [succinctDescriptionBuilder appendObject:self->_itemsInGroup withName:@"itemsInGroup"];
+  v6 = [succinctDescriptionBuilder appendPoint:@"resizeGrabberPosition" withName:{self->_resizeGrabberPosition.x, self->_resizeGrabberPosition.y}];
+  v7 = [succinctDescriptionBuilder appendFloat:@"intersectionHeight" withName:self->_intersectionHeight];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 - (CGPoint)resizeGrabberPosition

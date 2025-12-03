@@ -1,41 +1,41 @@
 @interface ICDocCamImageCache
 - (BOOL)deleteAllImages;
-- (BOOL)deleteImage:(id)a3;
-- (BOOL)makeSureScanDirectoryExists:(id *)a3;
-- (BOOL)replaceImage:(id)a3 metaData:(id)a4 uuid:(id)a5;
-- (BOOL)writeImage:(id)a3 metaData:(id)a4 toURL:(id)a5 error:(id *)a6;
-- (CGSize)getImageSize:(id)a3;
-- (ICDocCamImageCache)initWithDataCryptorDelegate:(id)a3 cachesDirectoryURL:(id)a4;
-- (id)createNSDataFrom:(id)a3 metaData:(id)a4;
-- (id)getImage:(id)a3;
-- (id)getImageURL:(id)a3 async:(BOOL)a4;
-- (id)imagePropertiesFromMetadata:(id)a3 orientation:(int64_t)a4;
-- (id)setImage:(id)a3 metaData:(id)a4 addToMemoryCache:(BOOL)a5 completion:(id)a6;
+- (BOOL)deleteImage:(id)image;
+- (BOOL)makeSureScanDirectoryExists:(id *)exists;
+- (BOOL)replaceImage:(id)image metaData:(id)data uuid:(id)uuid;
+- (BOOL)writeImage:(id)image metaData:(id)data toURL:(id)l error:(id *)error;
+- (CGSize)getImageSize:(id)size;
+- (ICDocCamImageCache)initWithDataCryptorDelegate:(id)delegate cachesDirectoryURL:(id)l;
+- (id)createNSDataFrom:(id)from metaData:(id)data;
+- (id)getImage:(id)image;
+- (id)getImageURL:(id)l async:(BOOL)async;
+- (id)imagePropertiesFromMetadata:(id)metadata orientation:(int64_t)orientation;
+- (id)setImage:(id)image metaData:(id)data addToMemoryCache:(BOOL)cache completion:(id)completion;
 - (void)clearInMemoryCache;
 - (void)dealloc;
 @end
 
 @implementation ICDocCamImageCache
 
-- (ICDocCamImageCache)initWithDataCryptorDelegate:(id)a3 cachesDirectoryURL:(id)a4
+- (ICDocCamImageCache)initWithDataCryptorDelegate:(id)delegate cachesDirectoryURL:(id)l
 {
-  v7 = a3;
-  v8 = a4;
+  delegateCopy = delegate;
+  lCopy = l;
   v28.receiver = self;
   v28.super_class = ICDocCamImageCache;
   v9 = [(ICDocCamImageCache *)&v28 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_dataCryptorDelegate, a3);
-    if (!v8)
+    objc_storeStrong(&v9->_dataCryptorDelegate, delegate);
+    if (!lCopy)
     {
       v11 = +[DCCachesDirectory sharedCachesDirectory];
-      v8 = [v11 cachesDirectoryURL];
+      lCopy = [v11 cachesDirectoryURL];
     }
 
-    objc_storeStrong(&v10->_cachesDirectoryURL, v8);
-    v12 = [v8 URLByAppendingPathComponent:@"Scans"];
+    objc_storeStrong(&v10->_cachesDirectoryURL, lCopy);
+    v12 = [lCopy URLByAppendingPathComponent:@"Scans"];
     docCamImageDirectoryURL = v10->_docCamImageDirectoryURL;
     v10->_docCamImageDirectoryURL = v12;
 
@@ -53,15 +53,15 @@
     v10->_imageCacheQueue = v19;
 
     [(ICDocCamImageCache *)v10 deleteAllImages];
-    v21 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v22 = *MEMORY[0x277D76770];
-    v23 = [MEMORY[0x277D75128] sharedApplication];
-    [v21 addObserver:v10 selector:sel_applicationWillTerminate_ name:v22 object:v23];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    [defaultCenter addObserver:v10 selector:sel_applicationWillTerminate_ name:v22 object:mEMORY[0x277D75128]];
 
-    v24 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
     v25 = *MEMORY[0x277D76670];
-    v26 = [MEMORY[0x277D75128] sharedApplication];
-    [v24 addObserver:v10 selector:sel_didReceiveMemoryWarning_ name:v25 object:v26];
+    mEMORY[0x277D75128]2 = [MEMORY[0x277D75128] sharedApplication];
+    [defaultCenter2 addObserver:v10 selector:sel_didReceiveMemoryWarning_ name:v25 object:mEMORY[0x277D75128]2];
   }
 
   return v10;
@@ -74,30 +74,30 @@
   [(ICDocCamImageCache *)&v2 dealloc];
 }
 
-- (BOOL)makeSureScanDirectoryExists:(id *)a3
+- (BOOL)makeSureScanDirectoryExists:(id *)exists
 {
-  v4 = [(ICDocCamImageCache *)self docCamImageDirectoryURL];
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v6 = [v5 createDirectoryAtURL:v4 withIntermediateDirectories:1 attributes:0 error:a3];
+  docCamImageDirectoryURL = [(ICDocCamImageCache *)self docCamImageDirectoryURL];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v6 = [defaultManager createDirectoryAtURL:docCamImageDirectoryURL withIntermediateDirectories:1 attributes:0 error:exists];
 
   if ((v6 & 1) == 0)
   {
     v7 = os_log_create("com.apple.documentcamera", "");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [(DCScannedDocument *)a3 makeSureScanDirectoryExists:v7, v8, v9, v10, v11, v12, v13];
+      [(DCScannedDocument *)exists makeSureScanDirectoryExists:v7, v8, v9, v10, v11, v12, v13];
     }
   }
 
   return v6;
 }
 
-- (id)setImage:(id)a3 metaData:(id)a4 addToMemoryCache:(BOOL)a5 completion:(id)a6
+- (id)setImage:(id)image metaData:(id)data addToMemoryCache:(BOOL)cache completion:(id)completion
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  cacheCopy = cache;
+  imageCopy = image;
+  dataCopy = data;
+  completionCopy = completion;
   v13 = os_log_create("com.apple.documentcamera", "");
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
@@ -110,33 +110,33 @@
   v16 = 0;
   if (v14)
   {
-    v17 = [MEMORY[0x277CCAD78] UUID];
-    v18 = [v17 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
 
     v19 = MEMORY[0x277CCAE60];
-    [v10 size];
+    [imageCopy size];
     v20 = [v19 valueWithCGSize:?];
-    v21 = [(ICDocCamImageCache *)self imageSizeCache];
-    [v21 setObject:v20 forKeyedSubscript:v18];
+    imageSizeCache = [(ICDocCamImageCache *)self imageSizeCache];
+    [imageSizeCache setObject:v20 forKeyedSubscript:uUIDString];
 
-    if (v7)
+    if (cacheCopy)
     {
-      v22 = [(ICDocCamImageCache *)self inMemoryImageCache];
-      [v22 setObject:v10 forKey:v18];
+      inMemoryImageCache = [(ICDocCamImageCache *)self inMemoryImageCache];
+      [inMemoryImageCache setObject:imageCopy forKey:uUIDString];
     }
 
-    v23 = [(ICDocCamImageCache *)self imageCacheQueue];
+    imageCacheQueue = [(ICDocCamImageCache *)self imageCacheQueue];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __68__ICDocCamImageCache_setImage_metaData_addToMemoryCache_completion___block_invoke;
     v27[3] = &unk_278F93A10;
     v27[4] = self;
-    v24 = v18;
+    v24 = uUIDString;
     v28 = v24;
-    v29 = v10;
-    v30 = v11;
-    v31 = v12;
-    dispatch_async(v23, v27);
+    v29 = imageCopy;
+    v30 = dataCopy;
+    v31 = completionCopy;
+    dispatch_async(imageCacheQueue, v27);
 
     v25 = v31;
     v16 = v24;
@@ -211,11 +211,11 @@ void __68__ICDocCamImageCache_setImage_metaData_addToMemoryCache_completion___bl
   }
 }
 
-- (BOOL)replaceImage:(id)a3 metaData:(id)a4 uuid:(id)a5
+- (BOOL)replaceImage:(id)image metaData:(id)data uuid:(id)uuid
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  imageCopy = image;
+  dataCopy = data;
+  uuidCopy = uuid;
   v11 = os_log_create("com.apple.documentcamera", "");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -228,35 +228,35 @@ void __68__ICDocCamImageCache_setImage_metaData_addToMemoryCache_completion___bl
   if (v12)
   {
     v14 = MEMORY[0x277CCAE60];
-    [v8 size];
+    [imageCopy size];
     v15 = [v14 valueWithCGSize:?];
-    v16 = [(ICDocCamImageCache *)self imageSizeCache];
-    [v16 setObject:v15 forKeyedSubscript:v10];
+    imageSizeCache = [(ICDocCamImageCache *)self imageSizeCache];
+    [imageSizeCache setObject:v15 forKeyedSubscript:uuidCopy];
 
-    v17 = [(ICDocCamImageCache *)self inMemoryImageCache];
-    v18 = [v17 objectForKey:v10];
+    inMemoryImageCache = [(ICDocCamImageCache *)self inMemoryImageCache];
+    v18 = [inMemoryImageCache objectForKey:uuidCopy];
 
     if (v18)
     {
-      v19 = [(ICDocCamImageCache *)self inMemoryImageCache];
-      [v19 setObject:v8 forKey:v10];
+      inMemoryImageCache2 = [(ICDocCamImageCache *)self inMemoryImageCache];
+      [inMemoryImageCache2 setObject:imageCopy forKey:uuidCopy];
     }
 
     v29 = 0;
     v30 = &v29;
     v31 = 0x2020000000;
     v32 = 0;
-    v20 = [(ICDocCamImageCache *)self imageCacheQueue];
+    imageCacheQueue = [(ICDocCamImageCache *)self imageCacheQueue];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __49__ICDocCamImageCache_replaceImage_metaData_uuid___block_invoke;
     v24[3] = &unk_278F93A38;
     v24[4] = self;
-    v25 = v10;
-    v26 = v8;
-    v27 = v9;
+    v25 = uuidCopy;
+    v26 = imageCopy;
+    v27 = dataCopy;
     v28 = &v29;
-    dispatch_sync(v20, v24);
+    dispatch_sync(imageCacheQueue, v24);
 
     v21 = os_log_create("com.apple.documentcamera", "");
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -315,11 +315,11 @@ void __49__ICDocCamImageCache_replaceImage_metaData_uuid___block_invoke(uint64_t
   }
 }
 
-- (CGSize)getImageSize:(id)a3
+- (CGSize)getImageSize:(id)size
 {
-  v4 = a3;
-  v5 = [(ICDocCamImageCache *)self imageSizeCache];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  sizeCopy = size;
+  imageSizeCache = [(ICDocCamImageCache *)self imageSizeCache];
+  v6 = [imageSizeCache objectForKeyedSubscript:sizeCopy];
 
   if (v6)
   {
@@ -337,14 +337,14 @@ void __49__ICDocCamImageCache_replaceImage_metaData_uuid___block_invoke(uint64_t
       _os_log_impl(&dword_249253000, v11, OS_LOG_TYPE_DEFAULT, "Failed to find image size in image size cache. Falling back to asking the image", v19, 2u);
     }
 
-    v12 = [(ICDocCamImageCache *)self getImage:v4];
+    v12 = [(ICDocCamImageCache *)self getImage:sizeCopy];
     [v12 size];
     v8 = v13;
     v10 = v14;
 
     v15 = [MEMORY[0x277CCAE60] valueWithCGSize:{v8, v10}];
-    v16 = [(ICDocCamImageCache *)self imageSizeCache];
-    [v16 setObject:v15 forKeyedSubscript:v4];
+    imageSizeCache2 = [(ICDocCamImageCache *)self imageSizeCache];
+    [imageSizeCache2 setObject:v15 forKeyedSubscript:sizeCopy];
   }
 
   v17 = v8;
@@ -354,34 +354,34 @@ void __49__ICDocCamImageCache_replaceImage_metaData_uuid___block_invoke(uint64_t
   return result;
 }
 
-- (id)getImageURL:(id)a3 async:(BOOL)a4
+- (id)getImageURL:(id)l async:(BOOL)async
 {
-  v6 = a3;
+  lCopy = l;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
   v21 = __Block_byref_object_copy__3;
   v22 = __Block_byref_object_dispose__3;
   v23 = 0;
-  if (a4)
+  if (async)
   {
-    v7 = [(ICDocCamImageCache *)self docCamImageDirectoryURL];
-    v8 = [v7 URLByAppendingPathComponent:v6];
+    docCamImageDirectoryURL = [(ICDocCamImageCache *)self docCamImageDirectoryURL];
+    v8 = [docCamImageDirectoryURL URLByAppendingPathComponent:lCopy];
     v9 = v19[5];
     v19[5] = v8;
   }
 
   else
   {
-    v10 = [(ICDocCamImageCache *)self imageCacheQueue];
+    imageCacheQueue = [(ICDocCamImageCache *)self imageCacheQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __40__ICDocCamImageCache_getImageURL_async___block_invoke;
     block[3] = &unk_278F93A60;
     v17 = &v18;
     block[4] = self;
-    v16 = v6;
-    dispatch_sync(v10, block);
+    v16 = lCopy;
+    dispatch_sync(imageCacheQueue, block);
   }
 
   v11 = [v19[5] URLByAppendingPathExtension:@"jpg"];
@@ -403,10 +403,10 @@ void __40__ICDocCamImageCache_getImageURL_async___block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (id)getImage:(id)a3
+- (id)getImage:(id)image
 {
-  v4 = a3;
-  if (!v4)
+  imageCopy = image;
+  if (!imageCopy)
   {
     v6 = os_log_create("com.apple.documentcamera", "");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -432,8 +432,8 @@ LABEL_7:
   v24 = 0x3032000000;
   v25 = __Block_byref_object_copy__3;
   v26 = __Block_byref_object_dispose__3;
-  v7 = [(ICDocCamImageCache *)self inMemoryImageCache];
-  v27 = [v7 objectForKey:v4];
+  inMemoryImageCache = [(ICDocCamImageCache *)self inMemoryImageCache];
+  v27 = [inMemoryImageCache objectForKey:imageCopy];
 
   v8 = v23[5];
   if (v8)
@@ -443,16 +443,16 @@ LABEL_7:
 
   else
   {
-    v10 = [(ICDocCamImageCache *)self imageCacheQueue];
+    imageCacheQueue = [(ICDocCamImageCache *)self imageCacheQueue];
     v15 = MEMORY[0x277D85DD0];
     v16 = 3221225472;
     v17 = __31__ICDocCamImageCache_getImage___block_invoke;
     v18 = &unk_278F93A88;
-    v19 = self;
-    v11 = v4;
+    selfCopy = self;
+    v11 = imageCopy;
     v20 = v11;
     v21 = &v22;
-    dispatch_sync(v10, &v15);
+    dispatch_sync(imageCacheQueue, &v15);
 
     v12 = v23[5];
     if (v12)
@@ -524,9 +524,9 @@ void __31__ICDocCamImageCache_getImage___block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)deleteImage:(id)a3
+- (BOOL)deleteImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v5 = os_log_create("com.apple.documentcamera", "");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -538,29 +538,29 @@ void __31__ICDocCamImageCache_getImage___block_invoke(uint64_t a1)
   v7 = v25;
   if (v6)
   {
-    v8 = [(ICDocCamImageCache *)self imageSizeCache];
-    [v8 removeObjectForKey:v4];
+    imageSizeCache = [(ICDocCamImageCache *)self imageSizeCache];
+    [imageSizeCache removeObjectForKey:imageCopy];
 
-    v9 = [(ICDocCamImageCache *)self inMemoryImageCache];
-    [v9 removeObjectForKey:v4];
+    inMemoryImageCache = [(ICDocCamImageCache *)self inMemoryImageCache];
+    [inMemoryImageCache removeObjectForKey:imageCopy];
 
-    v10 = [(ICDocCamImageCache *)self getImageURL:v4];
-    v11 = [MEMORY[0x277CCAA00] defaultManager];
+    v10 = [(ICDocCamImageCache *)self getImageURL:imageCopy];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v21 = 0;
     v22 = &v21;
     v23 = 0x2020000000;
     v24 = 0;
-    v12 = [(ICDocCamImageCache *)self imageCacheQueue];
+    imageCacheQueue = [(ICDocCamImageCache *)self imageCacheQueue];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __34__ICDocCamImageCache_deleteImage___block_invoke;
     v17[3] = &unk_278F93A88;
-    v18 = v11;
+    v18 = defaultManager;
     v19 = v10;
     v20 = &v21;
     v13 = v10;
-    v14 = v11;
-    dispatch_sync(v12, v17);
+    v14 = defaultManager;
+    dispatch_sync(imageCacheQueue, v17);
 
     v15 = *(v22 + 24);
     _Block_object_dispose(&v21, 8);
@@ -620,29 +620,29 @@ void __34__ICDocCamImageCache_deleteImage___block_invoke(uint64_t a1)
   v4 = v22;
   if (v3)
   {
-    v5 = [(ICDocCamImageCache *)self imageSizeCache];
-    [v5 removeAllObjects];
+    imageSizeCache = [(ICDocCamImageCache *)self imageSizeCache];
+    [imageSizeCache removeAllObjects];
 
-    v6 = [(ICDocCamImageCache *)self inMemoryImageCache];
-    [v6 removeAllObjects];
+    inMemoryImageCache = [(ICDocCamImageCache *)self inMemoryImageCache];
+    [inMemoryImageCache removeAllObjects];
 
-    v7 = [MEMORY[0x277CCAA00] defaultManager];
-    v8 = [(ICDocCamImageCache *)self docCamImageDirectoryURL];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    docCamImageDirectoryURL = [(ICDocCamImageCache *)self docCamImageDirectoryURL];
     v18 = 0;
     v19 = &v18;
     v20 = 0x2020000000;
     v21 = 1;
-    v9 = [(ICDocCamImageCache *)self imageCacheQueue];
+    imageCacheQueue = [(ICDocCamImageCache *)self imageCacheQueue];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __37__ICDocCamImageCache_deleteAllImages__block_invoke;
     v14[3] = &unk_278F93A88;
-    v15 = v7;
-    v16 = v8;
+    v15 = defaultManager;
+    v16 = docCamImageDirectoryURL;
     v17 = &v18;
-    v10 = v8;
-    v11 = v7;
-    dispatch_sync(v9, v14);
+    v10 = docCamImageDirectoryURL;
+    v11 = defaultManager;
+    dispatch_sync(imageCacheQueue, v14);
 
     v12 = *(v19 + 24);
     _Block_object_dispose(&v18, 8);
@@ -727,16 +727,16 @@ LABEL_17:
 
 - (void)clearInMemoryCache
 {
-  v2 = [(ICDocCamImageCache *)self inMemoryImageCache];
-  [v2 removeAllObjects];
+  inMemoryImageCache = [(ICDocCamImageCache *)self inMemoryImageCache];
+  [inMemoryImageCache removeAllObjects];
 }
 
-- (BOOL)writeImage:(id)a3 metaData:(id)a4 toURL:(id)a5 error:(id *)a6
+- (BOOL)writeImage:(id)image metaData:(id)data toURL:(id)l error:(id *)error
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a4;
-  v12 = -[ICDocCamImageCache imagePropertiesFromMetadata:orientation:](self, "imagePropertiesFromMetadata:orientation:", v11, [v9 imageOrientation]);
+  imageCopy = image;
+  lCopy = l;
+  dataCopy = data;
+  v12 = -[ICDocCamImageCache imagePropertiesFromMetadata:orientation:](self, "imagePropertiesFromMetadata:orientation:", dataCopy, [imageCopy imageOrientation]);
 
   v13 = [v12 mutableCopy];
   v14 = MEMORY[0x277CCABB0];
@@ -745,14 +745,14 @@ LABEL_17:
   v16 = [v14 numberWithDouble:?];
   [v13 setObject:v16 forKeyedSubscript:*MEMORY[0x277CD2D48]];
 
-  v17 = [*MEMORY[0x277CE1DC0] identifier];
-  v18 = CGImageDestinationCreateWithURL(v10, v17, 1uLL, 0);
+  identifier = [*MEMORY[0x277CE1DC0] identifier];
+  v18 = CGImageDestinationCreateWithURL(lCopy, identifier, 1uLL, 0);
 
   if (v18)
   {
-    v19 = [v9 dc_CGImage];
+    dc_CGImage = [imageCopy dc_CGImage];
     v20 = [v13 copy];
-    CGImageDestinationAddImage(v18, v19, v20);
+    CGImageDestinationAddImage(v18, dc_CGImage, v20);
 
     v21 = CGImageDestinationFinalize(v18);
     if (!v21)
@@ -775,18 +775,18 @@ LABEL_17:
   return v21;
 }
 
-- (id)createNSDataFrom:(id)a3 metaData:(id)a4
+- (id)createNSDataFrom:(id)from metaData:(id)data
 {
   v6 = MEMORY[0x277CBEA90];
-  v7 = a4;
-  v8 = a3;
-  v9 = UIImageJPEGRepresentation(v8, 1.0);
+  dataCopy = data;
+  fromCopy = from;
+  v9 = UIImageJPEGRepresentation(fromCopy, 1.0);
   v10 = [v6 dataWithData:v9];
 
   v11 = CGImageSourceCreateWithData(v10, 0);
-  v12 = [(UIImage *)v8 imageOrientation];
+  imageOrientation = [(UIImage *)fromCopy imageOrientation];
 
-  v13 = [(ICDocCamImageCache *)self imagePropertiesFromMetadata:v7 orientation:v12];
+  v13 = [(ICDocCamImageCache *)self imagePropertiesFromMetadata:dataCopy orientation:imageOrientation];
 
   v14 = [v13 mutableCopy];
   v15 = MEMORY[0x277CCABB0];
@@ -796,8 +796,8 @@ LABEL_17:
   [v14 setObject:v17 forKeyedSubscript:*MEMORY[0x277CD2D48]];
 
   Type = CGImageSourceGetType(v11);
-  v19 = [MEMORY[0x277CBEB28] data];
-  v20 = CGImageDestinationCreateWithData(v19, Type, 1uLL, 0);
+  data = [MEMORY[0x277CBEB28] data];
+  v20 = CGImageDestinationCreateWithData(data, Type, 1uLL, 0);
   v21 = [v14 copy];
   CGImageDestinationAddImageFromSource(v20, v11, 0, v21);
 
@@ -813,46 +813,46 @@ LABEL_17:
   CFRelease(v20);
   CFRelease(v11);
 
-  return v19;
+  return data;
 }
 
-- (id)imagePropertiesFromMetadata:(id)a3 orientation:(int64_t)a4
+- (id)imagePropertiesFromMetadata:(id)metadata orientation:(int64_t)orientation
 {
-  v4 = a3;
-  v25 = v4;
-  if (v4)
+  metadataCopy = metadata;
+  v25 = metadataCopy;
+  if (metadataCopy)
   {
-    v5 = [v4 mutableCopy];
+    dictionary = [metadataCopy mutableCopy];
   }
 
   else
   {
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
   }
 
-  v6 = v5;
+  v6 = dictionary;
   v23 = *MEMORY[0x277CD3038];
-  v7 = [v5 objectForKey:?];
+  v7 = [dictionary objectForKey:?];
   v22 = *MEMORY[0x277CD3258];
   v8 = [v6 objectForKey:?];
   v21 = *MEMORY[0x277CD3490];
-  v9 = [v6 objectForKey:?];
+  dictionary4 = [v6 objectForKey:?];
   v10 = *MEMORY[0x277CD3468];
-  v11 = [v6 objectForKey:*MEMORY[0x277CD3468]];
+  dictionary6 = [v6 objectForKey:*MEMORY[0x277CD3468]];
   v12 = *MEMORY[0x277CD33A8];
-  v13 = [v6 objectForKey:*MEMORY[0x277CD33A8]];
+  dictionary5 = [v6 objectForKey:*MEMORY[0x277CD33A8]];
   v14 = *MEMORY[0x277CD31C8];
-  v15 = [v6 objectForKey:*MEMORY[0x277CD31C8]];
-  v26 = v7;
+  dictionary7 = [v6 objectForKey:*MEMORY[0x277CD31C8]];
+  dictionary2 = v7;
   if (!v7)
   {
-    v26 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   }
 
-  v16 = v8;
+  dictionary3 = v8;
   if (v8)
   {
-    if (v9)
+    if (dictionary4)
     {
       goto LABEL_8;
     }
@@ -860,11 +860,11 @@ LABEL_17:
 
   else
   {
-    v16 = [MEMORY[0x277CBEB38] dictionary];
-    if (v9)
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
+    if (dictionary4)
     {
 LABEL_8:
-      if (v11)
+      if (dictionary6)
       {
         goto LABEL_9;
       }
@@ -873,18 +873,18 @@ LABEL_8:
     }
   }
 
-  v9 = [MEMORY[0x277CBEB38] dictionary];
-  if (v11)
+  dictionary4 = [MEMORY[0x277CBEB38] dictionary];
+  if (dictionary6)
   {
 LABEL_9:
-    if (v13)
+    if (dictionary5)
     {
       goto LABEL_10;
     }
 
 LABEL_20:
-    v13 = [MEMORY[0x277CBEB38] dictionary];
-    if (v15)
+    dictionary5 = [MEMORY[0x277CBEB38] dictionary];
+    if (dictionary7)
     {
       goto LABEL_11;
     }
@@ -893,35 +893,35 @@ LABEL_20:
   }
 
 LABEL_19:
-  v11 = [MEMORY[0x277CBEB38] dictionary];
-  if (!v13)
+  dictionary6 = [MEMORY[0x277CBEB38] dictionary];
+  if (!dictionary5)
   {
     goto LABEL_20;
   }
 
 LABEL_10:
-  if (v15)
+  if (dictionary7)
   {
     goto LABEL_11;
   }
 
 LABEL_21:
-  v15 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary7 = [MEMORY[0x277CBEB38] dictionary];
 LABEL_11:
-  [v6 setObject:v26 forKey:v23];
-  [v6 setObject:v16 forKey:v22];
-  [v6 setObject:v9 forKey:v21];
-  [v6 setObject:v11 forKey:v10];
-  [v6 setObject:v13 forKey:v12];
-  [v6 setObject:v15 forKey:v14];
-  if ((a4 - 1) > 2)
+  [v6 setObject:dictionary2 forKey:v23];
+  [v6 setObject:dictionary3 forKey:v22];
+  [v6 setObject:dictionary4 forKey:v21];
+  [v6 setObject:dictionary6 forKey:v10];
+  [v6 setObject:dictionary5 forKey:v12];
+  [v6 setObject:dictionary7 forKey:v14];
+  if ((orientation - 1) > 2)
   {
     v17 = 1;
   }
 
   else
   {
-    v17 = dword_2492F7A70[a4 - 1];
+    v17 = dword_2492F7A70[orientation - 1];
   }
 
   v18 = [MEMORY[0x277CCABB0] numberWithInt:v17];

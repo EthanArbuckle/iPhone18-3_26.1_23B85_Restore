@@ -13,7 +13,7 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [a1 copy];
+  v3 = [self copy];
   v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
@@ -33,8 +33,8 @@
         v9 = objc_opt_class();
         if ([v9 isSubclassOfClass:{objc_opt_class(), v15}])
         {
-          v10 = [v8 flatten];
-          [v2 addObjectsFromArray:v10];
+          flatten = [v8 flatten];
+          [v2 addObjectsFromArray:flatten];
 LABEL_13:
 
           goto LABEL_14;
@@ -42,18 +42,18 @@ LABEL_13:
 
         if (objc_opt_respondsToSelector())
         {
-          v11 = [v8 allObjects];
+          allObjects = [v8 allObjects];
 LABEL_12:
-          v10 = v11;
-          v12 = [v11 flatten];
-          [v2 addObjectsFromArray:v12];
+          flatten = allObjects;
+          flatten2 = [allObjects flatten];
+          [v2 addObjectsFromArray:flatten2];
 
           goto LABEL_13;
         }
 
         if (objc_opt_respondsToSelector())
         {
-          v11 = [v8 allValues];
+          allObjects = [v8 allValues];
           goto LABEL_12;
         }
 
@@ -75,7 +75,7 @@ LABEL_14:
 
 - (id)shuffle
 {
-  v1 = [MEMORY[0x277CBEB18] arrayWithArray:a1];
+  v1 = [MEMORY[0x277CBEB18] arrayWithArray:self];
   v2 = [v1 count];
   if (v2 >= 2)
   {

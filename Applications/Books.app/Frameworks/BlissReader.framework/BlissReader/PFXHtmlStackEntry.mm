@@ -1,16 +1,16 @@
 @interface PFXHtmlStackEntry
-- (void)setStyleSelector:(id)a3;
+- (void)setStyleSelector:(id)selector;
 @end
 
 @implementation PFXHtmlStackEntry
 
-- (void)setStyleSelector:(id)a3
+- (void)setStyleSelector:(id)selector
 {
   mSelector = self->mSelector;
-  if (mSelector != a3)
+  if (mSelector != selector)
   {
 
-    self->mSelector = a3;
+    self->mSelector = selector;
   }
 }
 

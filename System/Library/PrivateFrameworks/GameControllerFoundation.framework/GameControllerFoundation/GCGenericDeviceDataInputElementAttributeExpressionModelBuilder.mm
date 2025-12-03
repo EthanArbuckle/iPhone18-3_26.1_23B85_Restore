@@ -1,25 +1,25 @@
 @interface GCGenericDeviceDataInputElementAttributeExpressionModelBuilder
-- (GCGenericDeviceDataInputElementAttributeExpressionModelBuilder)initWithDictionaryRepresentation:(id)a3 error:(id *)a4;
+- (GCGenericDeviceDataInputElementAttributeExpressionModelBuilder)initWithDictionaryRepresentation:(id)representation error:(id *)error;
 - (id)build;
 - (void)build;
-- (void)initializeWithModel:(id)a3;
+- (void)initializeWithModel:(id)model;
 - (void)reset;
 @end
 
 @implementation GCGenericDeviceDataInputElementAttributeExpressionModelBuilder
 
-- (void)initializeWithModel:(id)a3
+- (void)initializeWithModel:(id)model
 {
   v7.receiver = self;
   v7.super_class = GCGenericDeviceDataInputElementAttributeExpressionModelBuilder;
-  v4 = a3;
-  [(GCGenericDeviceDataProcessorExpressionModelBuilder *)&v7 initializeWithModel:v4];
-  v5 = [v4 elementIdentifier];
-  [(GCGenericDeviceDataInputElementAttributeExpressionModelBuilder *)self setElementIdentifier:v5];
+  modelCopy = model;
+  [(GCGenericDeviceDataProcessorExpressionModelBuilder *)&v7 initializeWithModel:modelCopy];
+  elementIdentifier = [modelCopy elementIdentifier];
+  [(GCGenericDeviceDataInputElementAttributeExpressionModelBuilder *)self setElementIdentifier:elementIdentifier];
 
-  v6 = [v4 attribute];
+  attribute = [modelCopy attribute];
 
-  [(GCGenericDeviceDataInputElementAttributeExpressionModelBuilder *)self setAttribute:v6];
+  [(GCGenericDeviceDataInputElementAttributeExpressionModelBuilder *)self setAttribute:attribute];
 }
 
 - (void)reset
@@ -35,62 +35,62 @@
 {
   v12.receiver = self;
   v12.super_class = GCGenericDeviceDataInputElementAttributeExpressionModelBuilder;
-  v4 = [(GCGenericDeviceDataProcessorExpressionModelBuilder *)&v12 build];
-  v5 = [(GCGenericDeviceDataInputElementAttributeExpressionModelBuilder *)self elementIdentifier];
-  if (!v5)
+  build = [(GCGenericDeviceDataProcessorExpressionModelBuilder *)&v12 build];
+  elementIdentifier = [(GCGenericDeviceDataInputElementAttributeExpressionModelBuilder *)self elementIdentifier];
+  if (!elementIdentifier)
   {
     [(GCGenericDeviceDataInputElementAttributeExpressionModelBuilder *)a2 build];
   }
 
-  v6 = [v5 copy];
-  v7 = v4[1];
-  v4[1] = v6;
+  v6 = [elementIdentifier copy];
+  v7 = build[1];
+  build[1] = v6;
 
-  v8 = [(GCGenericDeviceDataInputElementAttributeExpressionModelBuilder *)self attribute];
-  if (!v8)
+  attribute = [(GCGenericDeviceDataInputElementAttributeExpressionModelBuilder *)self attribute];
+  if (!attribute)
   {
     [(GCGenericDeviceDataInputElementAttributeExpressionModelBuilder *)a2 build];
   }
 
-  v9 = [v8 copy];
-  v10 = v4[2];
-  v4[2] = v9;
+  v9 = [attribute copy];
+  v10 = build[2];
+  build[2] = v9;
 
-  return v4;
+  return build;
 }
 
-- (GCGenericDeviceDataInputElementAttributeExpressionModelBuilder)initWithDictionaryRepresentation:(id)a3 error:(id *)a4
+- (GCGenericDeviceDataInputElementAttributeExpressionModelBuilder)initWithDictionaryRepresentation:(id)representation error:(id *)error
 {
   v27[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  representationCopy = representation;
   v23.receiver = self;
   v23.super_class = GCGenericDeviceDataInputElementAttributeExpressionModelBuilder;
-  v7 = [(GCGenericDeviceDataProcessorExpressionModelBuilder *)&v23 initWithDictionaryRepresentation:v6 error:a4];
+  v7 = [(GCGenericDeviceDataProcessorExpressionModelBuilder *)&v23 initWithDictionaryRepresentation:representationCopy error:error];
   if (!v7)
   {
     goto LABEL_12;
   }
 
   v22 = 0;
-  v8 = [v6 gc_requiredObjectForKey:@"ElementIdentifier" ofClass:objc_opt_class() error:&v22];
+  v8 = [representationCopy gc_requiredObjectForKey:@"ElementIdentifier" ofClass:objc_opt_class() error:&v22];
   v9 = v22;
   if (!v8)
   {
-    if (a4)
+    if (error)
     {
       v14 = MEMORY[0x1E696ABC0];
       v26[0] = *MEMORY[0x1E696A578];
       v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid '%@' definition.", objc_msgSend(objc_opt_class(), "modelClass")];
       v27[0] = v15;
       v26[1] = *MEMORY[0x1E696A588];
-      v16 = [v9 localizedFailureReason];
-      v27[1] = v16;
+      localizedFailureReason = [v9 localizedFailureReason];
+      v27[1] = localizedFailureReason;
       v17 = MEMORY[0x1E695DF20];
       v18 = v27;
       v19 = v26;
 LABEL_10:
       v20 = [v17 dictionaryWithObjects:v18 forKeys:v19 count:2];
-      *a4 = [(NSError *)v14 gc_modelError:v20 userInfo:?];
+      *error = [(NSError *)v14 gc_modelError:v20 userInfo:?];
     }
 
 LABEL_11:
@@ -103,19 +103,19 @@ LABEL_12:
   [(GCGenericDeviceDataInputElementAttributeExpressionModelBuilder *)v7 setElementIdentifier:v8];
 
   v21 = 0;
-  v10 = [v6 gc_requiredObjectForKey:@"Attribute" ofClass:objc_opt_class() error:&v21];
+  v10 = [representationCopy gc_requiredObjectForKey:@"Attribute" ofClass:objc_opt_class() error:&v21];
   v9 = v21;
   if (!v10)
   {
-    if (a4)
+    if (error)
     {
       v14 = MEMORY[0x1E696ABC0];
       v24[0] = *MEMORY[0x1E696A578];
       v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid '%@' definition.", objc_msgSend(objc_opt_class(), "modelClass")];
       v25[0] = v15;
       v24[1] = *MEMORY[0x1E696A588];
-      v16 = [v9 localizedFailureReason];
-      v25[1] = v16;
+      localizedFailureReason = [v9 localizedFailureReason];
+      v25[1] = localizedFailureReason;
       v17 = MEMORY[0x1E695DF20];
       v18 = v25;
       v19 = v24;
@@ -136,8 +136,8 @@ LABEL_5:
 
 - (void)build
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"GCGenericDeviceDataInputElementAttributeExpressionModel.m" lineNumber:105 description:@"'attribute' can not be nil"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"GCGenericDeviceDataInputElementAttributeExpressionModel.m" lineNumber:105 description:@"'attribute' can not be nil"];
 }
 
 @end

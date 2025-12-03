@@ -1,55 +1,55 @@
 @interface BRCSharingUtil
-+ (BOOL)_openSharedSideFaultFileWithAppID:(id)a3 url:(id)a4 recordName:(id)a5 scheduleOpenOperationBlock:(id)a6 options:(id)a7 delegate:(id)a8 error:(id *)a9;
-+ (BOOL)openDocumentInDocumentsAppIfInstalled:(id)a3 options:(id)a4 error:(id *)a5;
-+ (BOOL)openSharedSideFaultFileWithURL:(id)a3 recordName:(id)a4 scheduleOpenOperationBlock:(id)a5 options:(id)a6 skipOpenIfNeeded:(BOOL)a7 delegate:(id)a8 error:(id *)a9;
-+ (id)localizationKey:(id)a3 forOSAndTypeOfShare:(id)a4;
-+ (id)localizationKey:(id)a3 forTypeOfShare:(id)a4;
-+ (id)typeForShare:(id)a3;
-+ (unint64_t)optionsWithParticipant:(id)a3 isRequester:(BOOL)a4;
-+ (void)learnParticipantIdentitiesForShare:(id)a3 forceUpdate:(BOOL)a4 dbFacade:(id)a5;
++ (BOOL)_openSharedSideFaultFileWithAppID:(id)d url:(id)url recordName:(id)name scheduleOpenOperationBlock:(id)block options:(id)options delegate:(id)delegate error:(id *)error;
++ (BOOL)openDocumentInDocumentsAppIfInstalled:(id)installed options:(id)options error:(id *)error;
++ (BOOL)openSharedSideFaultFileWithURL:(id)l recordName:(id)name scheduleOpenOperationBlock:(id)block options:(id)options skipOpenIfNeeded:(BOOL)needed delegate:(id)delegate error:(id *)error;
++ (id)localizationKey:(id)key forOSAndTypeOfShare:(id)share;
++ (id)localizationKey:(id)key forTypeOfShare:(id)share;
++ (id)typeForShare:(id)share;
++ (unint64_t)optionsWithParticipant:(id)participant isRequester:(BOOL)requester;
++ (void)learnParticipantIdentitiesForShare:(id)share forceUpdate:(BOOL)update dbFacade:(id)facade;
 @end
 
 @implementation BRCSharingUtil
 
-+ (void)learnParticipantIdentitiesForShare:(id)a3 forceUpdate:(BOOL)a4 dbFacade:(id)a5
++ (void)learnParticipantIdentitiesForShare:(id)share forceUpdate:(BOOL)update dbFacade:(id)facade
 {
-  v6 = a4;
+  updateCopy = update;
   v59 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v42 = a5;
-  [v42 assertOnQueue];
+  shareCopy = share;
+  facadeCopy = facade;
+  [facadeCopy assertOnQueue];
   v48 = 0u;
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v37 = v7;
-  v8 = [v7 participants];
-  v9 = [v8 countByEnumeratingWithState:&v46 objects:v58 count:16];
+  v37 = shareCopy;
+  participants = [shareCopy participants];
+  v9 = [participants countByEnumeratingWithState:&v46 objects:v58 count:16];
   if (v9)
   {
     v10 = v9;
-    v40 = !v6;
+    v40 = !updateCopy;
     v11 = *v47;
     v45 = *MEMORY[0x277CBBF28];
-    v41 = v8;
+    v41 = participants;
     do
     {
       for (i = 0; i != v10; ++i)
       {
         if (*v47 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(participants);
         }
 
         v13 = *(*(&v46 + 1) + 8 * i);
         if (([v13 isCurrentUser] & 1) == 0 && objc_msgSend(v13, "acceptanceStatus") == 2)
         {
-          v14 = [v13 userIdentity];
-          v15 = v14;
-          if (v14)
+          userIdentity = [v13 userIdentity];
+          v15 = userIdentity;
+          if (userIdentity)
           {
-            v16 = [v14 userRecordID];
-            if (v16)
+            userRecordID = [userIdentity userRecordID];
+            if (userRecordID)
             {
               v17 = brc_bread_crumbs();
               v18 = brc_default_log();
@@ -64,17 +64,17 @@
                 _os_log_debug_impl(&dword_223E7A000, v18, OS_LOG_TYPE_DEBUG, "[DEBUG] user %@ has identity %@%@", buf, 0x20u);
               }
 
-              v19 = [v15 userRecordID];
-              v20 = [v19 recordName];
+              userRecordID2 = [v15 userRecordID];
+              recordName = [userRecordID2 recordName];
 
-              if (([v20 isEqualToString:v45]& 1) == 0)
+              if (([recordName isEqualToString:v45]& 1) == 0)
               {
-                v21 = [v15 nameComponents];
+                nameComponents = [v15 nameComponents];
 
-                if (v21)
+                if (nameComponents)
                 {
                   v22 = [[BRFieldUserIdentity alloc] initWithCKUserIdentity:v15];
-                  v23 = [v42 userIdentityForName:v20];
+                  v23 = [facadeCopy userIdentityForName:recordName];
                   if (v23)
                   {
                     v24 = v40;
@@ -90,11 +90,11 @@
                     goto LABEL_19;
                   }
 
-                  v25 = [(BRFieldUserIdentity *)v22 nameComponents];
+                  nameComponents2 = [(BRFieldUserIdentity *)v22 nameComponents];
                   [v23 nameComponents];
                   v43 = v23;
                   v27 = v26 = v22;
-                  v28 = [v25 isEqual:v27];
+                  v28 = [nameComponents2 isEqual:v27];
 
                   v22 = v26;
                   v23 = v43;
@@ -103,12 +103,12 @@
                   {
 LABEL_19:
                     v44 = v22;
-                    v29 = [(BRFieldUserIdentity *)v22 nameComponents];
-                    v30 = [v29 br_formattedName];
+                    nameComponents3 = [(BRFieldUserIdentity *)v22 nameComponents];
+                    br_formattedName = [nameComponents3 br_formattedName];
 
-                    if ([v30 length] || !v23)
+                    if ([br_formattedName length] || !v23)
                     {
-                      if (!v30)
+                      if (!br_formattedName)
                       {
                         [BRCSharingUtil learnParticipantIdentitiesForShare:v50 forceUpdate:&v51 dbFacade:?];
                       }
@@ -117,18 +117,18 @@ LABEL_19:
                       v35 = brc_default_log();
                       if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
                       {
-                        v39 = [v30 fp_obfuscatedFilename];
+                        fp_obfuscatedFilename = [br_formattedName fp_obfuscatedFilename];
                         *buf = 138412802;
-                        v53 = v39;
+                        v53 = fp_obfuscatedFilename;
                         v54 = 2112;
-                        v55 = v20;
+                        v55 = recordName;
                         v56 = 2112;
                         v57 = v34;
                         _os_log_debug_impl(&dword_223E7A000, v35, OS_LOG_TYPE_DEBUG, "[DEBUG] learning name '%@' for user %@%@", buf, 0x20u);
                       }
 
                       v22 = v44;
-                      [v42 setUserIdentityForUserName:v20 userIdentity:v44];
+                      [facadeCopy setUserIdentityForUserName:recordName userIdentity:v44];
                     }
 
                     else
@@ -137,11 +137,11 @@ LABEL_19:
                       v32 = brc_default_log();
                       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
                       {
-                        v38 = [v30 fp_obfuscatedFilename];
+                        fp_obfuscatedFilename2 = [br_formattedName fp_obfuscatedFilename];
                         *buf = 138412802;
-                        v53 = v38;
+                        v53 = fp_obfuscatedFilename2;
                         v54 = 2112;
-                        v55 = v20;
+                        v55 = recordName;
                         v56 = 2112;
                         v57 = v31;
                         _os_log_impl(&dword_223E7A000, v32, OS_LOG_TYPE_DEFAULT, "[WARNING] Ignoring empty name '%@' for user %@%@", buf, 0x20u);
@@ -151,7 +151,7 @@ LABEL_19:
                     }
                   }
 
-                  v8 = v41;
+                  participants = v41;
                 }
 
                 else
@@ -164,7 +164,7 @@ LABEL_19:
                     *buf = 138412802;
                     v53 = v33;
                     v54 = 2112;
-                    v55 = v20;
+                    v55 = recordName;
                     v56 = 2112;
                     v57 = v22;
                     _os_log_fault_impl(&dword_223E7A000, v23, OS_LOG_TYPE_FAULT, "[CRIT] UNREACHABLE: nameless identity: %@ (user %@)%@", buf, 0x20u);
@@ -180,29 +180,29 @@ LABEL_19:
           {
             if ([v13 role] == 1)
             {
-              v16 = brc_bread_crumbs();
-              v20 = brc_default_log();
-              if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
+              userRecordID = brc_bread_crumbs();
+              recordName = brc_default_log();
+              if (os_log_type_enabled(recordName, OS_LOG_TYPE_FAULT))
               {
                 *buf = 138412546;
                 v53 = v13;
                 v54 = 2112;
-                v55 = v16;
-                _os_log_fault_impl(&dword_223E7A000, v20, OS_LOG_TYPE_FAULT, "[CRIT] UNREACHABLE: owner %@ with no user identity%@", buf, 0x16u);
+                v55 = userRecordID;
+                _os_log_fault_impl(&dword_223E7A000, recordName, OS_LOG_TYPE_FAULT, "[CRIT] UNREACHABLE: owner %@ with no user identity%@", buf, 0x16u);
               }
             }
 
             else
             {
-              v16 = brc_bread_crumbs();
-              v20 = brc_default_log();
-              if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
+              userRecordID = brc_bread_crumbs();
+              recordName = brc_default_log();
+              if (os_log_type_enabled(recordName, OS_LOG_TYPE_DEBUG))
               {
                 *buf = 138412546;
                 v53 = v13;
                 v54 = 2112;
-                v55 = v16;
-                _os_log_debug_impl(&dword_223E7A000, v20, OS_LOG_TYPE_DEBUG, "[DEBUG] Participant %@ has no user identity%@", buf, 0x16u);
+                v55 = userRecordID;
+                _os_log_debug_impl(&dword_223E7A000, recordName, OS_LOG_TYPE_DEBUG, "[DEBUG] Participant %@ has no user identity%@", buf, 0x16u);
               }
             }
 
@@ -213,7 +213,7 @@ LABEL_39:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v46 objects:v58 count:16];
+      v10 = [participants countByEnumeratingWithState:&v46 objects:v58 count:16];
     }
 
     while (v10);
@@ -222,11 +222,11 @@ LABEL_39:
   v36 = *MEMORY[0x277D85DE8];
 }
 
-+ (unint64_t)optionsWithParticipant:(id)a3 isRequester:(BOOL)a4
++ (unint64_t)optionsWithParticipant:(id)participant isRequester:(BOOL)requester
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  participantCopy = participant;
+  v6 = participantCopy;
+  if (participantCopy)
   {
     v7 = 1;
   }
@@ -236,9 +236,9 @@ LABEL_39:
     v7 = 0x8000000000000000;
   }
 
-  if (v5 && !a4)
+  if (participantCopy && !requester)
   {
-    v8 = [v5 role] - 1;
+    v8 = [participantCopy role] - 1;
     if (v8 > 3)
     {
       v7 = 0;
@@ -249,8 +249,8 @@ LABEL_39:
       v7 = qword_2241ABF68[v8];
     }
 
-    v9 = [v6 permission];
-    switch(v9)
+    permission = [v6 permission];
+    switch(permission)
     {
       case 3:
         v7 |= 0x40uLL;
@@ -263,8 +263,8 @@ LABEL_39:
         break;
     }
 
-    v10 = [v6 acceptanceStatus];
-    switch(v10)
+    acceptanceStatus = [v6 acceptanceStatus];
+    switch(acceptanceStatus)
     {
       case 3:
         v7 |= 0x200uLL;
@@ -281,15 +281,15 @@ LABEL_39:
   return v7;
 }
 
-+ (BOOL)_openSharedSideFaultFileWithAppID:(id)a3 url:(id)a4 recordName:(id)a5 scheduleOpenOperationBlock:(id)a6 options:(id)a7 delegate:(id)a8 error:(id *)a9
++ (BOOL)_openSharedSideFaultFileWithAppID:(id)d url:(id)url recordName:(id)name scheduleOpenOperationBlock:(id)block options:(id)options delegate:(id)delegate error:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = v15;
+  dCopy = d;
+  urlCopy = url;
+  nameCopy = name;
+  blockCopy = block;
+  optionsCopy = options;
+  delegateCopy = delegate;
+  v20 = urlCopy;
   [v20 startAccessingSecurityScopedResource];
   v30 = 0;
   v31 = &v30;
@@ -298,17 +298,17 @@ LABEL_39:
   v34 = __Block_byref_object_dispose__23;
   v35 = 0;
   v21 = v20;
-  v22 = v14;
-  v23 = v16;
-  v24 = v18;
-  v25 = v19;
-  v26 = v17;
+  v22 = dCopy;
+  v23 = nameCopy;
+  v24 = optionsCopy;
+  v25 = delegateCopy;
+  v26 = blockCopy;
   FPExtendBookmarkForDocumentURL();
   v27 = v31[5];
-  if (a9 && v27)
+  if (error && v27)
   {
     v27 = v27;
-    *a9 = v27;
+    *error = v27;
   }
 
   v28 = v27 == 0;
@@ -396,36 +396,36 @@ void __117__BRCSharingUtil__openSharedSideFaultFileWithAppID_url_recordName_sche
   v25 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)openDocumentInDocumentsAppIfInstalled:(id)a3 options:(id)a4 error:(id *)a5
++ (BOOL)openDocumentInDocumentsAppIfInstalled:(id)installed options:(id)options error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  installedCopy = installed;
+  optionsCopy = options;
   v9 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:@"com.apple.DocumentsApp"];
-  v10 = [v9 appState];
-  v11 = [v10 isInstalled];
+  appState = [v9 appState];
+  isInstalled = [appState isInstalled];
 
-  if (v11)
+  if (isInstalled)
   {
-    v12 = [MEMORY[0x277CC1E80] defaultWorkspace];
-    v13 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:v7 resolvingAgainstBaseURL:0];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+    v13 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:installedCopy resolvingAgainstBaseURL:0];
     [v13 setScheme:@"shareddocuments"];
     v14 = [v13 URL];
     v19 = 0;
-    [v12 openSensitiveURL:v14 withOptions:v8 error:&v19];
+    [defaultWorkspace openSensitiveURL:v14 withOptions:optionsCopy error:&v19];
     v15 = v19;
 
     v16 = v15 == 0;
-    if (a5 && v15)
+    if (error && v15)
     {
       v17 = v15;
-      *a5 = v15;
+      *error = v15;
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     [MEMORY[0x277CCA9B8] brc_unkownErrorWithDescription:@"app is not installed"];
-    *a5 = v16 = 0;
+    *error = v16 = 0;
   }
 
   else
@@ -436,52 +436,52 @@ void __117__BRCSharingUtil__openSharedSideFaultFileWithAppID_url_recordName_sche
   return v16;
 }
 
-+ (BOOL)openSharedSideFaultFileWithURL:(id)a3 recordName:(id)a4 scheduleOpenOperationBlock:(id)a5 options:(id)a6 skipOpenIfNeeded:(BOOL)a7 delegate:(id)a8 error:(id *)a9
++ (BOOL)openSharedSideFaultFileWithURL:(id)l recordName:(id)name scheduleOpenOperationBlock:(id)block options:(id)options skipOpenIfNeeded:(BOOL)needed delegate:(id)delegate error:(id *)error
 {
-  v10 = a7;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
-  if (v10)
+  neededCopy = needed;
+  lCopy = l;
+  nameCopy = name;
+  blockCopy = block;
+  optionsCopy = options;
+  delegateCopy = delegate;
+  if (neededCopy)
   {
-    v19 = brc_bread_crumbs();
+    brc_appContainerID = brc_bread_crumbs();
     v20 = 1;
     v21 = brc_default_log();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
     {
-      [BRCSharingUtil openSharedSideFaultFileWithURL:v19 recordName:v21 scheduleOpenOperationBlock:? options:? skipOpenIfNeeded:? delegate:? error:?];
+      [BRCSharingUtil openSharedSideFaultFileWithURL:brc_appContainerID recordName:v21 scheduleOpenOperationBlock:? options:? skipOpenIfNeeded:? delegate:? error:?];
     }
 
     goto LABEL_11;
   }
 
-  if (!v14)
+  if (!lCopy)
   {
     +[BRCSharingUtil openSharedSideFaultFileWithURL:recordName:scheduleOpenOperationBlock:options:skipOpenIfNeeded:delegate:error:];
   }
 
-  v19 = [v14 brc_appContainerID];
-  v21 = v14;
-  if (v19)
+  brc_appContainerID = [lCopy brc_appContainerID];
+  v21 = lCopy;
+  if (brc_appContainerID)
   {
-    v22 = [BRCSharingUtil _openSharedSideFaultFileWithAppID:v19 url:v21 recordName:v15 scheduleOpenOperationBlock:v16 options:v17 delegate:v18 error:a9];
+    v22 = [BRCSharingUtil _openSharedSideFaultFileWithAppID:brc_appContainerID url:v21 recordName:nameCopy scheduleOpenOperationBlock:blockCopy options:optionsCopy delegate:delegateCopy error:error];
 LABEL_10:
     v20 = v22;
     goto LABEL_11;
   }
 
-  if (v14)
+  if (lCopy)
   {
-    v22 = [BRCSharingUtil openDocumentInDocumentsAppIfInstalled:v21 options:v17 error:a9];
+    v22 = [BRCSharingUtil openDocumentInDocumentsAppIfInstalled:v21 options:optionsCopy error:error];
     goto LABEL_10;
   }
 
   v29 = MEMORY[0x277CCA9B8];
   v24 = *MEMORY[0x277CFABD0];
-  v25 = [0 path];
-  v30 = [v29 br_errorWithDomain:v24 code:10 description:{@"Don't know how to open shared item at %@", v25}];
+  path = [0 path];
+  v30 = [v29 br_errorWithDomain:v24 code:10 description:{@"Don't know how to open shared item at %@", path}];
 
   v26 = brc_bread_crumbs();
   v27 = brc_default_log();
@@ -491,10 +491,10 @@ LABEL_10:
   }
 
   v28 = v30;
-  if (a9)
+  if (error)
   {
     v28 = v30;
-    *a9 = v28;
+    *error = v28;
   }
 
   v20 = 0;
@@ -503,12 +503,12 @@ LABEL_11:
   return v20;
 }
 
-+ (id)localizationKey:(id)a3 forTypeOfShare:(id)a4
++ (id)localizationKey:(id)key forTypeOfShare:(id)share
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 lowercaseString];
-  v8 = [v7 isEqualToString:@"keynote"];
+  keyCopy = key;
+  shareCopy = share;
+  lowercaseString = [shareCopy lowercaseString];
+  v8 = [lowercaseString isEqualToString:@"keynote"];
 
   if (v8)
   {
@@ -517,8 +517,8 @@ LABEL_11:
 
   else
   {
-    v10 = [v6 lowercaseString];
-    v11 = [v10 isEqualToString:@"numbers"];
+    lowercaseString2 = [shareCopy lowercaseString];
+    v11 = [lowercaseString2 isEqualToString:@"numbers"];
 
     if (v11)
     {
@@ -527,15 +527,15 @@ LABEL_11:
 
     else
     {
-      v12 = [v6 lowercaseString];
-      v13 = [v12 isEqualToString:@"pages"];
+      lowercaseString3 = [shareCopy lowercaseString];
+      v13 = [lowercaseString3 isEqualToString:@"pages"];
 
       if (v13)
       {
         v9 = @"_PAGES";
       }
 
-      else if ([v6 isEqualToString:*MEMORY[0x277CFB000]])
+      else if ([shareCopy isEqualToString:*MEMORY[0x277CFB000]])
       {
         v9 = @"_FOLDER";
       }
@@ -547,35 +547,35 @@ LABEL_11:
     }
   }
 
-  v14 = [v5 stringByAppendingString:v9];
+  v14 = [keyCopy stringByAppendingString:v9];
 
   return v14;
 }
 
-+ (id)localizationKey:(id)a3 forOSAndTypeOfShare:(id)a4
++ (id)localizationKey:(id)key forOSAndTypeOfShare:(id)share
 {
-  v5 = a4;
-  v6 = [a3 stringByAppendingString:@"_IOS"];
-  v7 = [BRCSharingUtil localizationKey:v6 forTypeOfShare:v5];
+  shareCopy = share;
+  v6 = [key stringByAppendingString:@"_IOS"];
+  v7 = [BRCSharingUtil localizationKey:v6 forTypeOfShare:shareCopy];
 
   return v7;
 }
 
-+ (id)typeForShare:(id)a3
++ (id)typeForShare:(id)share
 {
-  v3 = a3;
-  if ([v3 isFolderShare])
+  shareCopy = share;
+  if ([shareCopy isFolderShare])
   {
-    v4 = *MEMORY[0x277CFB000];
+    brc_applicationName = *MEMORY[0x277CFB000];
   }
 
   else
   {
-    v5 = [v3 URL];
-    v4 = [v5 brc_applicationName];
+    v5 = [shareCopy URL];
+    brc_applicationName = [v5 brc_applicationName];
   }
 
-  return v4;
+  return brc_applicationName;
 }
 
 + (void)learnParticipantIdentitiesForShare:(uint8_t *)a1 forceUpdate:(void *)a2 dbFacade:.cold.1(uint8_t *a1, void *a2)

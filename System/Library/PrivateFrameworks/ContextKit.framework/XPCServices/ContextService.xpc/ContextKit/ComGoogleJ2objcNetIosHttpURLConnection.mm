@@ -1,33 +1,33 @@
 @interface ComGoogleJ2objcNetIosHttpURLConnection
 + (void)initialize;
-- (ComGoogleJ2objcNetIosHttpURLConnection)initWithJavaNetURL:(id)a3;
+- (ComGoogleJ2objcNetIosHttpURLConnection)initWithJavaNetURL:(id)l;
 - (JavaUtilHashMap)getHeaderFieldsDoNotForceResponse;
-- (id)getHeaderFieldWithNSString:(id)a3;
+- (id)getHeaderFieldWithNSString:(id)string;
 - (id)getHeaderFields;
 - (id)getInputStream;
 - (id)getOutputStream;
 - (id)getRequestProperties;
-- (id)getRequestPropertyWithNSString:(id)a3;
+- (id)getRequestPropertyWithNSString:(id)string;
 - (id)getResponseHeaders;
 - (int)getResponseCode;
-- (int64_t)getHeaderFieldDateWithNSString:(id)a3 withLong:(int64_t)a4;
-- (int64_t)getHeaderFieldLongDoNotForceResponseWithNSString:(id)a3 withLong:(int64_t)a4;
-- (int64_t)getHeaderFieldLongWithNSString:(id)a3 withLong:(int64_t)a4;
+- (int64_t)getHeaderFieldDateWithNSString:(id)string withLong:(int64_t)long;
+- (int64_t)getHeaderFieldLongDoNotForceResponseWithNSString:(id)string withLong:(int64_t)long;
+- (int64_t)getHeaderFieldLongWithNSString:(id)string withLong:(int64_t)long;
 - (int64_t)getIfModifiedSince;
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7;
-- (void)addRequestPropertyWithNSString:(id)a3 withNSString:(id)a4;
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler;
+- (void)addRequestPropertyWithNSString:(id)string withNSString:(id)sString;
 - (void)dealloc;
 - (void)disconnect;
 - (void)getResponse;
-- (void)setIfModifiedSinceWithLong:(int64_t)a3;
-- (void)setRequestPropertyWithNSString:(id)a3 withNSString:(id)a4;
+- (void)setIfModifiedSinceWithLong:(int64_t)long;
+- (void)setRequestPropertyWithNSString:(id)string withNSString:(id)sString;
 @end
 
 @implementation ComGoogleJ2objcNetIosHttpURLConnection
 
-- (ComGoogleJ2objcNetIosHttpURLConnection)initWithJavaNetURL:(id)a3
+- (ComGoogleJ2objcNetIosHttpURLConnection)initWithJavaNetURL:(id)l
 {
-  JavaNetHttpURLConnection_initWithJavaNetURL_(self, a3);
+  JavaNetHttpURLConnection_initWithJavaNetURL_(self, l);
   v4 = new_JavaUtilArrayList_init();
   JreStrongAssignAndConsume(&self->headers_, v4);
   return self;
@@ -91,7 +91,7 @@ LABEL_9:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = *(a1 + 136);
+  v3 = *(self + 136);
   if (!v3)
   {
 LABEL_14:
@@ -119,9 +119,9 @@ LABEL_14:
           goto LABEL_14;
         }
 
-        v10 = [*(*(&v15 + 1) + 8 * i) getKey];
-        v11 = [v9 getValue];
-        v12 = [(JavaUtilHashMap *)v4 getWithId:v10];
+        getKey = [*(*(&v15 + 1) + 8 * i) getKey];
+        getValue = [v9 getValue];
+        v12 = [(JavaUtilHashMap *)v4 getWithId:getKey];
         if (v12)
         {
           v13 = v12;
@@ -130,14 +130,14 @@ LABEL_14:
         else
         {
           v13 = new_JavaUtilArrayList_init();
-          [(JavaUtilHashMap *)v4 putWithId:v10 withId:v13];
+          [(JavaUtilHashMap *)v4 putWithId:getKey withId:v13];
           if (!v13)
           {
             goto LABEL_14;
           }
         }
 
-        [(JavaUtilArrayList *)v13 addWithId:v11];
+        [(JavaUtilArrayList *)v13 addWithId:getValue];
       }
 
       v6 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -159,19 +159,19 @@ LABEL_14:
   return self->headers_;
 }
 
-- (id)getHeaderFieldWithNSString:(id)a3
+- (id)getHeaderFieldWithNSString:(id)string
 {
   if (self->super.responseCode_ == -1)
   {
     sub_10026D5AC(self);
   }
 
-  return sub_10026CD7C(self, a3);
+  return sub_10026CD7C(self, string);
 }
 
-- (int64_t)getHeaderFieldDateWithNSString:(id)a3 withLong:(int64_t)a4
+- (int64_t)getHeaderFieldDateWithNSString:(id)string withLong:(int64_t)long
 {
-  v4 = [(ComGoogleJ2objcNetIosHttpURLConnection *)self getHeaderFieldWithNSString:a3];
+  v4 = [(ComGoogleJ2objcNetIosHttpURLConnection *)self getHeaderFieldWithNSString:string];
   v5 = [(JavaTextDateFormat *)new_JavaTextSimpleDateFormat_initWithNSString_(off_1005537B8) parseWithNSString:v4];
   if (!v5)
   {
@@ -181,18 +181,18 @@ LABEL_14:
   return [v5 getTime];
 }
 
-- (int64_t)getHeaderFieldLongWithNSString:(id)a3 withLong:(int64_t)a4
+- (int64_t)getHeaderFieldLongWithNSString:(id)string withLong:(int64_t)long
 {
-  v5 = [(ComGoogleJ2objcNetIosHttpURLConnection *)self getHeaderFieldWithNSString:a3];
+  v5 = [(ComGoogleJ2objcNetIosHttpURLConnection *)self getHeaderFieldWithNSString:string];
 
-  return sub_10026CFEC(v5, a4, v6, v7, v8, v9, v10, v11);
+  return sub_10026CFEC(v5, long, v6, v7, v8, v9, v10, v11);
 }
 
-- (int64_t)getHeaderFieldLongDoNotForceResponseWithNSString:(id)a3 withLong:(int64_t)a4
+- (int64_t)getHeaderFieldLongDoNotForceResponseWithNSString:(id)string withLong:(int64_t)long
 {
-  v5 = sub_10026CD7C(self, a3);
+  v5 = sub_10026CD7C(self, string);
 
-  return sub_10026CFEC(v5, a4, v6, v7, v8, v9, v10, v11);
+  return sub_10026CFEC(v5, long, v6, v7, v8, v9, v10, v11);
 }
 
 - (id)getRequestProperties
@@ -206,7 +206,7 @@ LABEL_14:
   return [ComGoogleJ2objcNetIosHttpURLConnection getHeaderFieldsDoNotForceResponse]_0(self);
 }
 
-- (void)setRequestPropertyWithNSString:(id)a3 withNSString:(id)a4
+- (void)setRequestPropertyWithNSString:(id)string withNSString:(id)sString
 {
   if (self->super.super.connected_)
   {
@@ -214,17 +214,17 @@ LABEL_14:
     goto LABEL_8;
   }
 
-  if (!a3)
+  if (!string)
   {
     v4 = new_JavaLangNullPointerException_initWithNSString_(@"field == null");
 LABEL_8:
     objc_exception_throw(v4);
   }
 
-  sub_10026D120(self, a3, a4);
+  sub_10026D120(self, string, sString);
 }
 
-- (void)addRequestPropertyWithNSString:(id)a3 withNSString:(id)a4
+- (void)addRequestPropertyWithNSString:(id)string withNSString:(id)sString
 {
   if (self->super.super.connected_)
   {
@@ -232,21 +232,21 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  if (!a3)
+  if (!string)
   {
     v4 = new_JavaLangNullPointerException_initWithNSString_(@"field == null");
 LABEL_8:
     objc_exception_throw(v4);
   }
 
-  sub_10026D2DC(self, a3, a4);
+  sub_10026D2DC(self, string, sString);
 }
 
-- (id)getRequestPropertyWithNSString:(id)a3
+- (id)getRequestPropertyWithNSString:(id)string
 {
-  if (a3)
+  if (string)
   {
-    return sub_10026CD7C(self, a3);
+    return sub_10026CD7C(self, string);
   }
 
   else
@@ -262,11 +262,11 @@ LABEL_8:
   return sub_10026CFEC(v2, 0, v3, v4, v5, v6, v7, v8);
 }
 
-- (void)setIfModifiedSinceWithLong:(int64_t)a3
+- (void)setIfModifiedSinceWithLong:(int64_t)long
 {
   v6.receiver = self;
   v6.super_class = ComGoogleJ2objcNetIosHttpURLConnection;
-  [(JavaNetURLConnection *)&v6 setIfModifiedSinceWithLong:a3];
+  [(JavaNetURLConnection *)&v6 setIfModifiedSinceWithLong:long];
   if (self->super.super.ifModifiedSince_)
   {
     v4 = new_JavaTextSimpleDateFormat_initWithNSString_(off_1005537B8);
@@ -317,16 +317,16 @@ LABEL_8:
   return result;
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler
 {
-  if (!self->super.instanceFollowRedirects_ || (v8 = a6, ([objc_msgSend(objc_msgSend(a5 URL] & 1) == 0))
+  if (!self->super.instanceFollowRedirects_ || (v8 = request, ([objc_msgSend(objc_msgSend(redirection URL] & 1) == 0))
   {
     v8 = 0;
   }
 
-  v9 = *(a7 + 2);
+  v9 = *(handler + 2);
 
-  v9(a7, v8);
+  v9(handler, v8);
 }
 
 - (void)dealloc
@@ -338,7 +338,7 @@ LABEL_8:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = new_JavaUtilHashMap_init();
     JreStrongAssignAndConsume(&qword_1005568E0, v2);

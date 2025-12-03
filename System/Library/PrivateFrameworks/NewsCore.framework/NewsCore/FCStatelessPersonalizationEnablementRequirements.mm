@@ -1,33 +1,33 @@
 @interface FCStatelessPersonalizationEnablementRequirements
-- (FCStatelessPersonalizationEnablementRequirements)initWithDictionary:(id)a3;
+- (FCStatelessPersonalizationEnablementRequirements)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
 @implementation FCStatelessPersonalizationEnablementRequirements
 
-- (FCStatelessPersonalizationEnablementRequirements)initWithDictionary:(id)a3
+- (FCStatelessPersonalizationEnablementRequirements)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = FCStatelessPersonalizationEnablementRequirements;
   v5 = [(FCStatelessPersonalizationEnablementRequirements *)&v15 init];
   if (v5)
   {
-    v6 = FCAppConfigurationNumberValue(v4, @"minimumAggregateCount", 0);
-    v7 = FCAppConfigurationNumberValue(v4, @"minumumEventCount", 0);
+    v6 = FCAppConfigurationNumberValue(dictionaryCopy, @"minimumAggregateCount", 0);
+    v7 = FCAppConfigurationNumberValue(dictionaryCopy, @"minumumEventCount", 0);
     if (v6 | v7)
     {
       if (v6)
       {
-        v8 = [v6 longLongValue];
+        longLongValue = [v6 longLongValue];
       }
 
       else
       {
-        v8 = -1;
+        longLongValue = -1;
       }
 
-      v5->_minimumAggregateCount = v8;
+      v5->_minimumAggregateCount = longLongValue;
       if (NFInternalBuild() && (NewsCoreUserDefaults(), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 integerForKey:@"news.features.statelessPersonalization"], v9, v10 == 1))
       {
         v11 = FCStatelessPersonalizationLog;
@@ -44,15 +44,15 @@
       {
         if (v7)
         {
-          v12 = [v7 longLongValue];
+          longLongValue2 = [v7 longLongValue];
         }
 
         else
         {
-          v12 = -1;
+          longLongValue2 = -1;
         }
 
-        v5->_minimumEventCount = v12;
+        v5->_minimumEventCount = longLongValue2;
       }
     }
 

@@ -1,7 +1,7 @@
 @interface NearbyPeerPaymentStateLabelsView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (_TtC9PassKitUI32NearbyPeerPaymentStateLabelsView)init;
-- (_TtC9PassKitUI32NearbyPeerPaymentStateLabelsView)initWithFrame:(CGRect)a3;
+- (_TtC9PassKitUI32NearbyPeerPaymentStateLabelsView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -23,19 +23,19 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD9AEEF0();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v5 = *(&self->super.super.super.isa + OBJC_IVAR____TtC9PassKitUI32NearbyPeerPaymentStateLabelsView_titleLabel);
-  v6 = self;
+  selfCopy = self;
   [v5 sizeThatFits_];
   v8 = v7;
-  [*(&v6->super.super.super.isa + OBJC_IVAR____TtC9PassKitUI32NearbyPeerPaymentStateLabelsView_subtitleLabel) sizeThatFits_];
+  [*(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC9PassKitUI32NearbyPeerPaymentStateLabelsView_subtitleLabel) sizeThatFits_];
   v10 = v9;
 
   v11 = v8 + v10 + 4.0;
@@ -45,7 +45,7 @@
   return result;
 }
 
-- (_TtC9PassKitUI32NearbyPeerPaymentStateLabelsView)initWithFrame:(CGRect)a3
+- (_TtC9PassKitUI32NearbyPeerPaymentStateLabelsView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

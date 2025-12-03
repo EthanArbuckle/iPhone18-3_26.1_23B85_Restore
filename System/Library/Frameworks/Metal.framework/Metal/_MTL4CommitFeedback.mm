@@ -2,10 +2,10 @@
 + (void)initialize;
 - (MTLLogContainer)logs;
 - (NSError)error;
-- (_MTL4CommitFeedback)initWithQueue:(id)a3 commitOptions:(id)a4 internalCompletionHandler:(id)a5;
-- (void)commandBufferComplete:(unint64_t)a3 completionTime:(unint64_t)a4 error:(id)a5 executeHandlers:(BOOL)a6;
+- (_MTL4CommitFeedback)initWithQueue:(id)queue commitOptions:(id)options internalCompletionHandler:(id)handler;
+- (void)commandBufferComplete:(unint64_t)complete completionTime:(unint64_t)time error:(id)error executeHandlers:(BOOL)handlers;
 - (void)dealloc;
-- (void)setLogs:(id)a3;
+- (void)setLogs:(id)logs;
 @end
 
 @implementation _MTL4CommitFeedback
@@ -20,17 +20,17 @@
   }
 }
 
-- (_MTL4CommitFeedback)initWithQueue:(id)a3 commitOptions:(id)a4 internalCompletionHandler:(id)a5
+- (_MTL4CommitFeedback)initWithQueue:(id)queue commitOptions:(id)options internalCompletionHandler:(id)handler
 {
   v11.receiver = self;
   v11.super_class = _MTL4CommitFeedback;
   v8 = [(_MTL4CommitFeedback *)&v11 init];
   if (v8)
   {
-    v8->_queue = a3;
-    v8->_commitFeedbackDispatch = [a4 commitFeedbackDispatch];
-    [a4 setCommitFeedbackDispatch:0];
-    v8->_internalCompletionHandler = _Block_copy(a5);
+    v8->_queue = queue;
+    v8->_commitFeedbackDispatch = [options commitFeedbackDispatch];
+    [options setCommitFeedbackDispatch:0];
+    v8->_internalCompletionHandler = _Block_copy(handler);
     v8->_gpuStartTime = -1;
     v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v8->_errors = v9;
@@ -86,36 +86,36 @@
   }
 }
 
-- (void)setLogs:(id)a3
+- (void)setLogs:(id)logs
 {
-  v5 = a3;
+  logsCopy = logs;
 
-  self->_logs = a3;
+  self->_logs = logs;
 }
 
-- (void)commandBufferComplete:(unint64_t)a3 completionTime:(unint64_t)a4 error:(id)a5 executeHandlers:(BOOL)a6
+- (void)commandBufferComplete:(unint64_t)complete completionTime:(unint64_t)time error:(id)error executeHandlers:(BOOL)handlers
 {
-  v6 = a6;
+  handlersCopy = handlers;
   gpuStartTime = self->_gpuStartTime;
   gpuEndTime = self->_gpuEndTime;
-  if (gpuStartTime >= a3)
+  if (gpuStartTime >= complete)
   {
-    gpuStartTime = a3;
+    gpuStartTime = complete;
   }
 
-  if (gpuEndTime <= a4)
+  if (gpuEndTime <= time)
   {
-    gpuEndTime = a4;
+    gpuEndTime = time;
   }
 
   self->_gpuStartTime = gpuStartTime;
   self->_gpuEndTime = gpuEndTime;
-  if (a5)
+  if (error)
   {
-    [(NSMutableArray *)self->_errors addObject:a5];
+    [(NSMutableArray *)self->_errors addObject:error];
   }
 
-  if (v6)
+  if (handlersCopy)
   {
     if ([(NSMutableArray *)self->_errors count])
     {

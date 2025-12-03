@@ -1,10 +1,10 @@
 @interface FMDMessageAudioController
-- (id)_fillVibrationPattern:(id)a3 toDuration:(double)a4;
+- (id)_fillVibrationPattern:(id)pattern toDuration:(double)duration;
 - (void)_stopSound;
-- (void)playSoundWithMessage:(id)a3 completion:(id)a4;
+- (void)playSoundWithMessage:(id)message completion:(id)completion;
 - (void)startObserving;
 - (void)stopObserving;
-- (void)stopSoundWithCompletion:(id)a3;
+- (void)stopSoundWithCompletion:(id)completion;
 @end
 
 @implementation FMDMessageAudioController
@@ -35,13 +35,13 @@
   CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, kStopLostModeAlarmNotification, 0);
 }
 
-- (void)playSoundWithMessage:(id)a3 completion:(id)a4
+- (void)playSoundWithMessage:(id)message completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  completionCopy = completion;
   v8 = [NSBundle bundleWithPath:@"/System/Library/PrivateFrameworks/FindMyDevice.framework"];
-  v9 = [v6 soundName];
-  v10 = [v8 URLForResource:v9 withExtension:@"caf"];
+  soundName = [messageCopy soundName];
+  v10 = [v8 URLForResource:soundName withExtension:@"caf"];
 
   if (v10)
   {
@@ -73,10 +73,10 @@
     }
 
     [(FMDMessageAudioController *)self startObserving];
-    if ([v6 vibrate])
+    if ([messageCopy vibrate])
     {
-      v18 = [(FMDMessageAudioController *)self _vibrationPattern];
-      v19 = -[FMDMessageAudioController _fillVibrationPattern:toDuration:](self, "_fillVibrationPattern:toDuration:", v18, [v6 soundDuration]);
+      _vibrationPattern = [(FMDMessageAudioController *)self _vibrationPattern];
+      v19 = -[FMDMessageAudioController _fillVibrationPattern:toDuration:](self, "_fillVibrationPattern:toDuration:", _vibrationPattern, [messageCopy soundDuration]);
 
       v36[0] = @"Intensity";
       v36[1] = @"VibePattern";
@@ -86,19 +86,19 @@
       [v12 setVibrationPattern:v20];
     }
 
-    v21 = [(FMDMessageAudioController *)self stopSoundTimer];
-    [v21 cancel];
+    stopSoundTimer = [(FMDMessageAudioController *)self stopSoundTimer];
+    [stopSoundTimer cancel];
 
     objc_initWeak(buf, self);
     v22 = [FMDispatchTimer alloc];
     v23 = &_dispatch_main_q;
-    v24 = [v6 soundDuration];
+    soundDuration = [messageCopy soundDuration];
     v31[0] = _NSConcreteStackBlock;
     v31[1] = 3221225472;
     v31[2] = sub_100002DF0;
     v31[3] = &unk_100014EC8;
     objc_copyWeak(&v32, buf);
-    v25 = [v22 initWithQueue:&_dispatch_main_q timeout:v31 completion:v24];
+    v25 = [v22 initWithQueue:&_dispatch_main_q timeout:v31 completion:soundDuration];
     [(FMDMessageAudioController *)self setStopSoundTimer:v25];
 
     v26 = sub_1000070C0();
@@ -111,15 +111,15 @@
     v27 = [[FMDLoopPlayer alloc] initWithPlayer:v12];
     [(FMDMessageAudioController *)self setLoopPlayer:v27];
 
-    v28 = [(FMDMessageAudioController *)self loopPlayer];
-    [v28 playURL:v10];
+    loopPlayer = [(FMDMessageAudioController *)self loopPlayer];
+    [loopPlayer playURL:v10];
 
-    v29 = [(FMDMessageAudioController *)self stopSoundTimer];
-    [v29 start];
+    stopSoundTimer2 = [(FMDMessageAudioController *)self stopSoundTimer];
+    [stopSoundTimer2 start];
 
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7, 0);
+      completionCopy[2](completionCopy, 0);
     }
 
     objc_destroyWeak(&v32);
@@ -134,35 +134,35 @@
     sub_10000A94C(v16);
   }
 
-  if (v7)
+  if (completionCopy)
   {
     v34 = NSLocalizedFailureReasonErrorKey;
     v35 = @"Error getting sound URL";
     v17 = [NSDictionary dictionaryWithObjects:&v35 forKeys:&v34 count:1];
     v12 = [NSError errorWithDomain:@"FMDMessageAudioControllerErrorDomain" code:-1 userInfo:v17];
 
-    (v7)[2](v7, v12);
+    (completionCopy)[2](completionCopy, v12);
 LABEL_18:
   }
 }
 
-- (void)stopSoundWithCompletion:(id)a3
+- (void)stopSoundWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   [(FMDMessageAudioController *)self _stopSound];
-  v4 = v5;
-  if (v5)
+  v4 = completionCopy;
+  if (completionCopy)
   {
-    (*(v5 + 2))(v5, 0);
-    v4 = v5;
+    (*(completionCopy + 2))(completionCopy, 0);
+    v4 = completionCopy;
   }
 }
 
 - (void)_stopSound
 {
-  v3 = [(FMDMessageAudioController *)self loopPlayer];
+  loopPlayer = [(FMDMessageAudioController *)self loopPlayer];
 
-  if (v3)
+  if (loopPlayer)
   {
     [(FMDMessageAudioController *)self stopObserving];
     v4 = sub_1000070C0();
@@ -172,44 +172,44 @@ LABEL_18:
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Stopping any sound that may be playing", v8, 2u);
     }
 
-    v5 = [(FMDMessageAudioController *)self loopPlayer];
-    [v5 stop];
+    loopPlayer2 = [(FMDMessageAudioController *)self loopPlayer];
+    [loopPlayer2 stop];
 
     [(FMDMessageAudioController *)self setLoopPlayer:0];
     v6 = +[FMXPCTransactionManager sharedInstance];
     [v6 endTransaction:@"PlayingSound"];
 
-    v7 = [(FMDMessageAudioController *)self stopSoundTimer];
-    [v7 cancel];
+    stopSoundTimer = [(FMDMessageAudioController *)self stopSoundTimer];
+    [stopSoundTimer cancel];
 
     [(FMDMessageAudioController *)self setStopSoundTimer:0];
   }
 }
 
-- (id)_fillVibrationPattern:(id)a3 toDuration:(double)a4
+- (id)_fillVibrationPattern:(id)pattern toDuration:(double)duration
 {
-  v5 = a3;
+  patternCopy = pattern;
   v6 = objc_alloc_init(NSMutableArray);
-  if (a4 >= 1)
+  if (duration >= 1)
   {
     v7 = 0;
     v8 = 0;
     do
     {
-      v9 = [v5 objectAtIndexedSubscript:v7];
+      v9 = [patternCopy objectAtIndexedSubscript:v7];
       [v6 addObject:v9];
 
-      v10 = [v5 objectAtIndexedSubscript:v7 + 1];
+      v10 = [patternCopy objectAtIndexedSubscript:v7 + 1];
       [v6 addObject:v10];
       v8 += [v10 integerValue];
       v7 += 2;
-      if (v7 >= [v5 count])
+      if (v7 >= [patternCopy count])
       {
         v7 = 0;
       }
     }
 
-    while (v8 < 1000 * a4);
+    while (v8 < 1000 * duration);
   }
 
   v11 = [v6 copy];

@@ -1,12 +1,12 @@
 @interface RedeemCodesProtocolDataProvider
-- (BOOL)_runServerAuthenticationOperation:(id)a3 error:(id *)a4;
+- (BOOL)_runServerAuthenticationOperation:(id)operation error:(id *)error;
 @end
 
 @implementation RedeemCodesProtocolDataProvider
 
-- (BOOL)_runServerAuthenticationOperation:(id)a3 error:(id *)a4
+- (BOOL)_runServerAuthenticationOperation:(id)operation error:(id *)error
 {
-  v5 = a3;
+  operationCopy = operation;
   v83 = 0;
   v84 = &v83;
   v85 = 0x3032000000;
@@ -17,7 +17,7 @@
   v80 = &v79;
   v81 = 0x2020000000;
   v82 = 0;
-  [v5 setPerformsButtonAction:0];
+  [operationCopy setPerformsButtonAction:0];
   v75 = 0;
   v76 = &v75;
   v77 = 0x2020000000;
@@ -29,24 +29,24 @@
   v73 = sub_100179600;
   v74 = 0;
   v60 = [NSString stringWithFormat:@"%@", objc_opt_class()];
-  v6 = [v5 dialog];
-  v7 = [v6 paymentSheet];
+  dialog = [operationCopy dialog];
+  paymentSheet = [dialog paymentSheet];
 
-  if (!v7)
+  if (!paymentSheet)
   {
     goto LABEL_59;
   }
 
-  v58 = [v5 authenticationContext];
-  v8 = [[DisplayPaymentSheetOperation alloc] initWithPaymentSheet:v7];
-  v9 = [v58 requiredUniqueIdentifier];
-  [(DisplayPaymentSheetOperation *)v8 setAccountIdentifier:v9];
+  authenticationContext = [operationCopy authenticationContext];
+  v8 = [[DisplayPaymentSheetOperation alloc] initWithPaymentSheet:paymentSheet];
+  requiredUniqueIdentifier = [authenticationContext requiredUniqueIdentifier];
+  [(DisplayPaymentSheetOperation *)v8 setAccountIdentifier:requiredUniqueIdentifier];
 
-  v10 = [v7 defaultAuthKitAuthenticationContext];
-  [(DisplayPaymentSheetOperation *)v8 setAuthenticationContext:v10];
+  defaultAuthKitAuthenticationContext = [paymentSheet defaultAuthKitAuthenticationContext];
+  [(DisplayPaymentSheetOperation *)v8 setAuthenticationContext:defaultAuthKitAuthenticationContext];
 
-  v11 = [v7 dialogId];
-  [(DisplayPaymentSheetOperation *)v8 setDialogId:v11];
+  dialogId = [paymentSheet dialogId];
+  [(DisplayPaymentSheetOperation *)v8 setDialogId:dialogId];
 
   v63[0] = _NSConcreteStackBlock;
   v63[1] = 3221225472;
@@ -68,23 +68,23 @@
       v25 = +[SSLogConfig sharedConfig];
     }
 
-    v26 = [v25 shouldLog];
-    v27 = [v25 shouldLogToDisk];
-    v28 = [v25 OSLogObject];
-    v29 = v28;
-    if (v27)
+    shouldLog = [v25 shouldLog];
+    shouldLogToDisk = [v25 shouldLogToDisk];
+    oSLogObject = [v25 OSLogObject];
+    v29 = oSLogObject;
+    if (shouldLogToDisk)
     {
-      v26 |= 2u;
+      shouldLog |= 2u;
     }
 
-    if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
-      v30 = v26;
+      v30 = shouldLog;
     }
 
     else
     {
-      v30 = v26 & 2;
+      v30 = shouldLog & 2;
     }
 
     if (v30)
@@ -117,23 +117,23 @@
     v14 = +[SSLogConfig sharedConfig];
   }
 
-  v15 = [v14 shouldLog];
-  v16 = [v14 shouldLogToDisk];
-  v17 = [v14 OSLogObject];
-  v18 = v17;
-  if (v16)
+  shouldLog2 = [v14 shouldLog];
+  shouldLogToDisk2 = [v14 shouldLogToDisk];
+  oSLogObject2 = [v14 OSLogObject];
+  v18 = oSLogObject2;
+  if (shouldLogToDisk2)
   {
-    v15 |= 2u;
+    shouldLog2 |= 2u;
   }
 
-  if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = v15;
+    v19 = shouldLog2;
   }
 
   else
   {
-    v19 = v15 & 2;
+    v19 = shouldLog2 & 2;
   }
 
   if (v19)
@@ -165,8 +165,8 @@ LABEL_14:
     goto LABEL_41;
   }
 
-  v23 = [v21 domain];
-  if ([v23 isEqualToString:SSErrorDomain])
+  domain = [v21 domain];
+  if ([domain isEqualToString:SSErrorDomain])
   {
     v24 = [v22 code] == 140;
 
@@ -186,21 +186,21 @@ LABEL_14:
     v25 = +[SSLogConfig sharedConfig];
   }
 
-  v32 = [v25 shouldLog];
-  v33 = [v25 shouldLogToDisk];
-  v34 = [v25 OSLogObject];
-  v29 = v34;
-  if (v33)
+  shouldLog3 = [v25 shouldLog];
+  shouldLogToDisk3 = [v25 shouldLogToDisk];
+  oSLogObject3 = [v25 OSLogObject];
+  v29 = oSLogObject3;
+  if (shouldLogToDisk3)
   {
-    v32 |= 2u;
+    shouldLog3 |= 2u;
   }
 
-  if (!os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
+  if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
   {
-    v32 &= 2u;
+    shouldLog3 &= 2u;
   }
 
-  if (!v32)
+  if (!shouldLog3)
   {
     goto LABEL_39;
   }
@@ -229,13 +229,13 @@ LABEL_40:
 LABEL_41:
   if (*(v80 + 24) == 1)
   {
-    v38 = [v5 authenticationContext];
-    v39 = [v38 mutableCopy];
+    authenticationContext2 = [operationCopy authenticationContext];
+    v39 = [authenticationContext2 mutableCopy];
 
     if (v70[5])
     {
       [v39 setPasswordEquivalentToken:?];
-      [v5 setAuthenticationContext:v39];
+      [operationCopy setAuthenticationContext:v39];
     }
   }
 
@@ -247,19 +247,19 @@ LABEL_41:
     }
 
 LABEL_60:
-    -[RedeemCodesProtocolDataProvider setAuthenticatedAccountCredentialSource:](self, "setAuthenticatedAccountCredentialSource:", [v5 authenticatedAccountCredentialSource]);
-    v52 = [v5 authenticatedAccountDSID];
-    [(RedeemCodesProtocolDataProvider *)self setAuthenticatedAccountDSID:v52];
+    -[RedeemCodesProtocolDataProvider setAuthenticatedAccountCredentialSource:](self, "setAuthenticatedAccountCredentialSource:", [operationCopy authenticatedAccountCredentialSource]);
+    authenticatedAccountDSID = [operationCopy authenticatedAccountDSID];
+    [(RedeemCodesProtocolDataProvider *)self setAuthenticatedAccountDSID:authenticatedAccountDSID];
 
-    v40 = [v5 redirectURL];
-    [(RedeemCodesProtocolDataProvider *)self setRedirectURL:v40];
+    redirectURL = [operationCopy redirectURL];
+    [(RedeemCodesProtocolDataProvider *)self setRedirectURL:redirectURL];
     goto LABEL_61;
   }
 
 LABEL_59:
   v50 = v84;
   obj = v84[5];
-  v51 = [(RedeemCodesProtocolDataProvider *)self runSubOperation:v5 error:&obj, v56];
+  v51 = [(RedeemCodesProtocolDataProvider *)self runSubOperation:operationCopy error:&obj, v56];
   objc_storeStrong(v50 + 5, obj);
   *(v80 + 24) = v51;
   if (v51)
@@ -268,29 +268,29 @@ LABEL_59:
   }
 
 LABEL_48:
-  v40 = +[SSLogConfig sharedDaemonConfig];
-  if (!v40)
+  redirectURL = +[SSLogConfig sharedDaemonConfig];
+  if (!redirectURL)
   {
-    v40 = +[SSLogConfig sharedConfig];
+    redirectURL = +[SSLogConfig sharedConfig];
   }
 
-  v41 = [v40 shouldLog];
-  v42 = [v40 shouldLogToDisk];
-  v43 = [v40 OSLogObject];
-  v44 = v43;
-  if (v42)
+  shouldLog4 = [redirectURL shouldLog];
+  shouldLogToDisk4 = [redirectURL shouldLogToDisk];
+  oSLogObject4 = [redirectURL OSLogObject];
+  v44 = oSLogObject4;
+  if (shouldLogToDisk4)
   {
-    v41 |= 2u;
+    shouldLog4 |= 2u;
   }
 
-  if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_DEFAULT))
   {
-    v45 = v41;
+    v45 = shouldLog4;
   }
 
   else
   {
-    v45 = v41 & 2;
+    v45 = shouldLog4 & 2;
   }
 
   if (!v45)
@@ -318,12 +318,12 @@ LABEL_58:
 
 LABEL_61:
 
-  v53 = [v5 performedButton];
-  [(RedeemCodesProtocolDataProvider *)self setDialogButton:v53];
+  performedButton = [operationCopy performedButton];
+  [(RedeemCodesProtocolDataProvider *)self setDialogButton:performedButton];
   v54 = *(v80 + 24);
-  if (a4 && (v80[3] & 1) == 0)
+  if (error && (v80[3] & 1) == 0)
   {
-    *a4 = v84[5];
+    *error = v84[5];
     v54 = *(v80 + 24);
   }
 

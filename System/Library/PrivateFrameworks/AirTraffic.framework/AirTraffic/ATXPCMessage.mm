@@ -1,23 +1,23 @@
 @interface ATXPCMessage
-- (ATXPCMessage)initWithName:(id)a3;
+- (ATXPCMessage)initWithName:(id)name;
 - (id)_createXPCMessage;
-- (id)_initWithXPCMessage:(id)a3 onConnection:(id)a4;
+- (id)_initWithXPCMessage:(id)message onConnection:(id)connection;
 - (void)dealloc;
-- (void)sendReply:(id)a3;
+- (void)sendReply:(id)reply;
 @end
 
 @implementation ATXPCMessage
 
-- (void)sendReply:(id)a3
+- (void)sendReply:(id)reply
 {
-  v5 = a3;
+  replyCopy = reply;
   x_reply = self->_x_reply;
-  v10 = v5;
+  v10 = replyCopy;
   if (x_reply && self->_x_reply_connection)
   {
-    if (v5)
+    if (replyCopy)
     {
-      v7 = [MEMORY[0x277CCAC58] dataWithPropertyList:v5 format:200 options:0 error:0];
+      v7 = [MEMORY[0x277CCAC58] dataWithPropertyList:replyCopy format:200 options:0 error:0];
       x_reply = self->_x_reply;
       if (v7)
       {
@@ -34,8 +34,8 @@
 
   else
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"ATXPCConnection.m" lineNumber:471 description:@"Trying to send reply where one isn't expected"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ATXPCConnection.m" lineNumber:471 description:@"Trying to send reply where one isn't expected"];
   }
 }
 
@@ -80,19 +80,19 @@
   return v10;
 }
 
-- (id)_initWithXPCMessage:(id)a3 onConnection:(id)a4
+- (id)_initWithXPCMessage:(id)message onConnection:(id)connection
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  connectionCopy = connection;
   v25.receiver = self;
   v25.super_class = ATXPCMessage;
   v8 = [(ATXPCMessage *)&v25 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_receivingConnection, a4);
-    string = xpc_dictionary_get_string(v6, "kDKMessageNameKey");
+    objc_storeStrong(&v8->_receivingConnection, connection);
+    string = xpc_dictionary_get_string(messageCopy, "kDKMessageNameKey");
     if (string)
     {
       string = [objc_alloc(MEMORY[0x277CCACA8]) initWithUTF8String:string];
@@ -102,7 +102,7 @@
     v9->_name = string;
 
     v24 = 0;
-    data = xpc_dictionary_get_data(v6, "kDKMessageInfoKey", &v24);
+    data = xpc_dictionary_get_data(messageCopy, "kDKMessageInfoKey", &v24);
     v13 = 0;
     if (data && v24)
     {
@@ -137,14 +137,14 @@
       objc_storeStrong(&v9->_info, v13);
     }
 
-    reply = xpc_dictionary_create_reply(v6);
+    reply = xpc_dictionary_create_reply(messageCopy);
     x_reply = v9->_x_reply;
     v9->_x_reply = reply;
 
     if (v9->_x_reply)
     {
       [(ATXPCConnection *)v9->_receivingConnection _registerMessage:v9];
-      v20 = xpc_dictionary_get_remote_connection(v6);
+      v20 = xpc_dictionary_get_remote_connection(messageCopy);
       x_reply_connection = v9->_x_reply_connection;
       v9->_x_reply_connection = v20;
     }
@@ -161,15 +161,15 @@
   [(ATXPCMessage *)&v2 dealloc];
 }
 
-- (ATXPCMessage)initWithName:(id)a3
+- (ATXPCMessage)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = ATXPCMessage;
   v5 = [(ATXPCMessage *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     name = v5->_name;
     v5->_name = v6;
   }

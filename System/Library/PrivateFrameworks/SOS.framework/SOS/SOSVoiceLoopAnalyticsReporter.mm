@@ -1,38 +1,38 @@
 @interface SOSVoiceLoopAnalyticsReporter
-- (SOSVoiceLoopAnalyticsReporter)initWithReason:(int64_t)a3 language:(id)a4 dtmfAvailable:(BOOL)a5;
+- (SOSVoiceLoopAnalyticsReporter)initWithReason:(int64_t)reason language:(id)language dtmfAvailable:(BOOL)available;
 - (VLAR_DTMFStateRecord)state;
 - (double)_elapsedSeconds;
-- (id)_newEventReportWithTrigger:(id)a3;
+- (id)_newEventReportWithTrigger:(id)trigger;
 - (void)_noteLoopInternalResumed;
-- (void)_noteLoopStoppedBy:(unint64_t)a3 eventReport:(id)a4;
-- (void)_submitReport:(id)a3;
-- (void)reportVoiceLoopDidFinishHandlingDTMFDigitReceived:(char)a3;
-- (void)reportVoiceLoopDidReceiveCommand:(unint64_t)a3;
-- (void)reportVoiceLoopIndexChanged:(unint64_t)a3;
-- (void)reportVoiceLoopLoopPhaseChanged:(unint64_t)a3;
-- (void)reportVoiceLoopPlaybackStateChanged:(unint64_t)a3;
-- (void)reportVoiceLoopSupportsDTMF:(BOOL)a3;
-- (void)reportVoiceLoopWillPerformAction:(unint64_t)a3;
+- (void)_noteLoopStoppedBy:(unint64_t)by eventReport:(id)report;
+- (void)_submitReport:(id)report;
+- (void)reportVoiceLoopDidFinishHandlingDTMFDigitReceived:(char)received;
+- (void)reportVoiceLoopDidReceiveCommand:(unint64_t)command;
+- (void)reportVoiceLoopIndexChanged:(unint64_t)changed;
+- (void)reportVoiceLoopLoopPhaseChanged:(unint64_t)changed;
+- (void)reportVoiceLoopPlaybackStateChanged:(unint64_t)changed;
+- (void)reportVoiceLoopSupportsDTMF:(BOOL)f;
+- (void)reportVoiceLoopWillPerformAction:(unint64_t)action;
 - (void)reportVoiceLoopWillStopLocally;
 - (void)reportVoiceLoopWillTerminate;
-- (void)setState:(VLAR_DTMFStateRecord *)a3;
+- (void)setState:(VLAR_DTMFStateRecord *)state;
 @end
 
 @implementation SOSVoiceLoopAnalyticsReporter
 
-- (SOSVoiceLoopAnalyticsReporter)initWithReason:(int64_t)a3 language:(id)a4 dtmfAvailable:(BOOL)a5
+- (SOSVoiceLoopAnalyticsReporter)initWithReason:(int64_t)reason language:(id)language dtmfAvailable:(BOOL)available
 {
-  v8 = a4;
+  languageCopy = language;
   v22.receiver = self;
   v22.super_class = SOSVoiceLoopAnalyticsReporter;
   v9 = [(SOSVoiceLoopAnalyticsReporter *)&v22 init];
   v10 = v9;
   if (v9)
   {
-    v9->_voiceLoopReason = a3;
-    if (v8)
+    v9->_voiceLoopReason = reason;
+    if (languageCopy)
     {
-      v11 = v8;
+      v11 = languageCopy;
     }
 
     else
@@ -45,7 +45,7 @@
     loopStartDate = v10->_loopStartDate;
     v10->_loopStartDate = v12;
 
-    v10->_state.dtmfAvailable = a5;
+    v10->_state.dtmfAvailable = available;
     v14 = objc_alloc_init(VLAR_DTMFEventsAccumulator);
     dtmfEventAccumulator = v10->_dtmfEventAccumulator;
     v10->_dtmfEventAccumulator = v14;
@@ -103,15 +103,15 @@
   [(SOSVoiceLoopAnalyticsReporter *)self _submitReport:v4];
 }
 
-- (void)_noteLoopStoppedBy:(unint64_t)a3 eventReport:(id)a4
+- (void)_noteLoopStoppedBy:(unint64_t)by eventReport:(id)report
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  reportCopy = report;
   v7 = sos_vlar_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v27 = a3;
+    byCopy2 = by;
     _os_log_impl(&dword_264323000, v7, OS_LOG_TYPE_INFO, "_noteLoopStoppedBy:%tu", buf, 0xCu);
   }
 
@@ -129,14 +129,14 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (!v6 || ([v6 state], v25 != 100))
+  if (!reportCopy || ([reportCopy state], v25 != 100))
   {
     v9 = sos_vlar_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      if (v6)
+      if (reportCopy)
       {
-        [v6 state];
+        [reportCopy state];
         v21 = v22;
       }
 
@@ -146,7 +146,7 @@ LABEL_14:
       }
 
       *buf = 134217984;
-      v27 = v21;
+      byCopy2 = v21;
       _os_log_error_impl(&dword_264323000, v9, OS_LOG_TYPE_ERROR, "_noteLoopStoppedBy but unexpected playbackState:%tu", buf, 0xCu);
     }
 
@@ -157,16 +157,16 @@ LABEL_14:
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v27 = a3;
+    byCopy2 = by;
     _os_log_impl(&dword_264323000, v16, OS_LOG_TYPE_DEFAULT, "_noteLoopStoppedBy:%tu, capturing", buf, 0xCu);
   }
 
-  self->_capture_Loop_StoppedBy = a3;
-  [v6 state];
+  self->_capture_Loop_StoppedBy = by;
+  [reportCopy state];
   self->_capture_Loop_StoppedAt_Iteration = v24;
-  [v6 state];
+  [reportCopy state];
   self->_capture_Loop_StoppedAt_Phase = v23;
-  [v6 elapsedSeconds];
+  [reportCopy elapsedSeconds];
   self->_capture_Loop_StoppedAt_Seconds = v17;
   self->_capture_Loop_CompletedIterations = self->_capture_Loop_StoppedAt_Iteration - 1;
   v18 = sos_vlar_log();
@@ -174,7 +174,7 @@ LABEL_14:
   {
     capture_Loop_CompletedIterations = self->_capture_Loop_CompletedIterations;
     *buf = 134217984;
-    v27 = capture_Loop_CompletedIterations;
+    byCopy2 = capture_Loop_CompletedIterations;
     _os_log_impl(&dword_264323000, v18, OS_LOG_TYPE_DEFAULT, "Reporting SOS loop played %lu times", buf, 0xCu);
   }
 
@@ -196,50 +196,50 @@ LABEL_15:
   self->_capture_Loop_StoppedBy = 0;
 }
 
-- (void)reportVoiceLoopPlaybackStateChanged:(unint64_t)a3
+- (void)reportVoiceLoopPlaybackStateChanged:(unint64_t)changed
 {
   v9 = *MEMORY[0x277D85DE8];
   v5 = sos_vlar_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 134217984;
-    v8 = a3;
+    changedCopy = changed;
     _os_log_impl(&dword_264323000, v5, OS_LOG_TYPE_DEFAULT, "reportVoiceLoopPlaybackStateChanged:%zd", &v7, 0xCu);
   }
 
-  self->_state.playbackState = a3;
+  self->_state.playbackState = changed;
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reportVoiceLoopIndexChanged:(unint64_t)a3
+- (void)reportVoiceLoopIndexChanged:(unint64_t)changed
 {
   v9 = *MEMORY[0x277D85DE8];
   v5 = sos_vlar_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 134217984;
-    v8 = a3;
+    changedCopy = changed;
     _os_log_impl(&dword_264323000, v5, OS_LOG_TYPE_DEFAULT, "reportVoiceLoopIndexChanged:%tu", &v7, 0xCu);
   }
 
-  self->_state.loopIteration = a3;
+  self->_state.loopIteration = changed;
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reportVoiceLoopLoopPhaseChanged:(unint64_t)a3
+- (void)reportVoiceLoopLoopPhaseChanged:(unint64_t)changed
 {
   v13 = *MEMORY[0x277D85DE8];
   v5 = sos_vlar_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 134217984;
-    v12 = a3;
+    changedCopy = changed;
     _os_log_impl(&dword_264323000, v5, OS_LOG_TYPE_DEFAULT, "reportVoiceLoopLoopPhaseChanged:%zd", &v11, 0xCu);
   }
 
-  self->_state.loopPhase = a3;
+  self->_state.loopPhase = changed;
   [(SOSVoiceLoopAnalyticsReporter *)self capture_FirstLoopSilence_Seconds];
-  if (a3 == 10000 && v6 <= 0.0 && self->_state.playbackState == 100)
+  if (changed == 10000 && v6 <= 0.0 && self->_state.playbackState == 100)
   {
     [(SOSVoiceLoopAnalyticsReporter *)self _elapsedSeconds];
     self->_capture_FirstLoopSilence_Seconds = v7;
@@ -248,7 +248,7 @@ LABEL_15:
     {
       capture_FirstLoopSilence_Seconds = self->_capture_FirstLoopSilence_Seconds;
       v11 = 134217984;
-      v12 = *&capture_FirstLoopSilence_Seconds;
+      changedCopy = *&capture_FirstLoopSilence_Seconds;
       _os_log_impl(&dword_264323000, v8, OS_LOG_TYPE_DEFAULT, "_capture_FirstLoopSilence_Seconds:%0.3f", &v11, 0xCu);
     }
   }
@@ -256,34 +256,34 @@ LABEL_15:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reportVoiceLoopDidReceiveCommand:(unint64_t)a3
+- (void)reportVoiceLoopDidReceiveCommand:(unint64_t)command
 {
   v43 = *MEMORY[0x277D85DE8];
   v5 = sos_vlar_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v40 = a3;
+    commandCopy3 = command;
     _os_log_impl(&dword_264323000, v5, OS_LOG_TYPE_DEFAULT, "reportVoiceLoopDidReceiveCommand:%zd", buf, 0xCu);
   }
 
   dtmfCommandsAccumulator = self->_dtmfCommandsAccumulator;
   [(SOSVoiceLoopAnalyticsReporter *)self state];
-  [(VLAR_DTMFCommandsAccumulator *)dtmfCommandsAccumulator noteDidReceiveDTMFCommand:a3 withPlaybackState:v38];
-  v7 = [(SOSVoiceLoopAnalyticsReporter *)self activeDTMFEventReport];
-  v8 = v7;
-  if (!v7)
+  [(VLAR_DTMFCommandsAccumulator *)dtmfCommandsAccumulator noteDidReceiveDTMFCommand:command withPlaybackState:v38];
+  activeDTMFEventReport = [(SOSVoiceLoopAnalyticsReporter *)self activeDTMFEventReport];
+  v8 = activeDTMFEventReport;
+  if (!activeDTMFEventReport)
   {
     v10 = sos_vlar_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [(SOSVoiceLoopAnalyticsReporter *)a3 reportVoiceLoopDidReceiveCommand:v10, v11, v12, v13, v14, v15, v16];
+      [(SOSVoiceLoopAnalyticsReporter *)command reportVoiceLoopDidReceiveCommand:v10, v11, v12, v13, v14, v15, v16];
     }
 
     goto LABEL_28;
   }
 
-  if ([v7 command])
+  if ([activeDTMFEventReport command])
   {
     v9 = sos_vlar_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -294,12 +294,12 @@ LABEL_15:
 
   else
   {
-    [v8 setCommand:a3];
+    [v8 setCommand:command];
   }
 
-  v17 = [(VLAR_DTMFCommandsAccumulator *)self->_dtmfCommandsAccumulator reportedCommands];
-  v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  v19 = [v17 indexOfObject:v18];
+  reportedCommands = [(VLAR_DTMFCommandsAccumulator *)self->_dtmfCommandsAccumulator reportedCommands];
+  v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:command];
+  v19 = [reportedCommands indexOfObject:v18];
 
   if (v19 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -310,7 +310,7 @@ LABEL_15:
     }
 
     *buf = 134217984;
-    v40 = a3;
+    commandCopy3 = command;
     v21 = "reportVoiceLoopDidReceiveCommand:%tu command not reportable, ignoring for capture";
     v22 = v20;
     v23 = OS_LOG_TYPE_INFO;
@@ -329,7 +329,7 @@ LABEL_15:
 
       [(SOSVoiceLoopAnalyticsReporter *)self capture_FirstDTMFCommand_Seconds];
       *buf = 134218240;
-      v40 = a3;
+      commandCopy3 = command;
       v41 = 2048;
       v42 = v25;
       v21 = "reportVoiceLoopDidReceiveCommand:%tu but already have capture_FirstDTMFCommand_Seconds:%0.3f, ignoring";
@@ -349,7 +349,7 @@ LABEL_15:
 
     capture_FirstDTMFCommand_Seconds = self->_capture_FirstDTMFCommand_Seconds;
     *buf = 134217984;
-    v40 = *&capture_FirstDTMFCommand_Seconds;
+    commandCopy3 = *&capture_FirstDTMFCommand_Seconds;
     v21 = "_capture_FirstDTMFCommand_Seconds:%0.3f";
     v22 = v20;
     v23 = OS_LOG_TYPE_DEFAULT;
@@ -360,7 +360,7 @@ LABEL_20:
   _os_log_impl(&dword_264323000, v22, v23, v21, buf, v26);
 LABEL_21:
 
-  if (a3 == 200)
+  if (command == 200)
   {
     [(SOSVoiceLoopAnalyticsReporter *)self capture_FirstRepeatCommand_Seconds];
     if (v29 <= 0.0)
@@ -372,7 +372,7 @@ LABEL_21:
       {
         capture_FirstRepeatCommand_Seconds = self->_capture_FirstRepeatCommand_Seconds;
         *buf = 134217984;
-        v40 = *&capture_FirstRepeatCommand_Seconds;
+        commandCopy3 = *&capture_FirstRepeatCommand_Seconds;
         v31 = "_capture_FirstRepeatCommand_Seconds:%0.3f";
         v32 = v10;
         v33 = OS_LOG_TYPE_DEFAULT;
@@ -388,7 +388,7 @@ LABEL_21:
       {
         [(SOSVoiceLoopAnalyticsReporter *)self capture_FirstRepeatCommand_Seconds];
         *buf = 134218240;
-        v40 = 200;
+        commandCopy3 = 200;
         v41 = 2048;
         v42 = v30;
         v31 = "reportVoiceLoopDidReceiveCommand:%tu but already have capture_FirstRepeatCommand_Seconds:%0.3f, ignoring";
@@ -406,32 +406,32 @@ LABEL_28:
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reportVoiceLoopWillPerformAction:(unint64_t)a3
+- (void)reportVoiceLoopWillPerformAction:(unint64_t)action
 {
   v19 = *MEMORY[0x277D85DE8];
   v5 = sos_vlar_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 134217984;
-    v18 = a3;
+    actionCopy = action;
     _os_log_impl(&dword_264323000, v5, OS_LOG_TYPE_DEFAULT, "reportVoiceLoopWillPerformAction:%zd", &v17, 0xCu);
   }
 
-  [(VLAR_DTMFActionsAccumulator *)self->_dtmfActionsAccumulator noteDTMFAction:a3];
-  v6 = [(SOSVoiceLoopAnalyticsReporter *)self activeDTMFEventReport];
-  v7 = v6;
-  if (!v6)
+  [(VLAR_DTMFActionsAccumulator *)self->_dtmfActionsAccumulator noteDTMFAction:action];
+  activeDTMFEventReport = [(SOSVoiceLoopAnalyticsReporter *)self activeDTMFEventReport];
+  v7 = activeDTMFEventReport;
+  if (!activeDTMFEventReport)
   {
     v8 = sos_vlar_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(SOSVoiceLoopAnalyticsReporter *)a3 reportVoiceLoopWillPerformAction:v8, v9, v10, v11, v12, v13, v14];
+      [(SOSVoiceLoopAnalyticsReporter *)action reportVoiceLoopWillPerformAction:v8, v9, v10, v11, v12, v13, v14];
     }
 
     goto LABEL_9;
   }
 
-  if ([v6 action])
+  if ([activeDTMFEventReport action])
   {
     v8 = sos_vlar_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -444,54 +444,54 @@ LABEL_9:
     goto LABEL_11;
   }
 
-  [v7 setAction:a3];
+  [v7 setAction:action];
 LABEL_11:
-  if (a3 == 5000)
+  if (action == 5000)
   {
     [(SOSVoiceLoopAnalyticsReporter *)self _noteLoopInternalResumed];
   }
 
-  else if (a3 == 100)
+  else if (action == 100)
   {
-    v15 = [(SOSVoiceLoopAnalyticsReporter *)self activeDTMFEventReport];
-    [(SOSVoiceLoopAnalyticsReporter *)self _noteLoopStoppedBy:2 eventReport:v15];
+    activeDTMFEventReport2 = [(SOSVoiceLoopAnalyticsReporter *)self activeDTMFEventReport];
+    [(SOSVoiceLoopAnalyticsReporter *)self _noteLoopStoppedBy:2 eventReport:activeDTMFEventReport2];
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reportVoiceLoopDidFinishHandlingDTMFDigitReceived:(char)a3
+- (void)reportVoiceLoopDidFinishHandlingDTMFDigitReceived:(char)received
 {
-  v3 = a3;
+  receivedCopy = received;
   v9 = *MEMORY[0x277D85DE8];
   v5 = sos_vlar_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8[0] = 67240192;
-    v8[1] = v3;
+    v8[1] = receivedCopy;
     _os_log_impl(&dword_264323000, v5, OS_LOG_TYPE_DEFAULT, "reportVoiceLoopDidFinishHandlingDTMFDigitReceived:%{public}c", v8, 8u);
   }
 
-  v6 = [(SOSVoiceLoopAnalyticsReporter *)self activeDTMFEventReport];
-  [(SOSVoiceLoopAnalyticsReporter *)self _submitReport:v6];
+  activeDTMFEventReport = [(SOSVoiceLoopAnalyticsReporter *)self activeDTMFEventReport];
+  [(SOSVoiceLoopAnalyticsReporter *)self _submitReport:activeDTMFEventReport];
 
   [(SOSVoiceLoopAnalyticsReporter *)self setActiveDTMFEventReport:0];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reportVoiceLoopSupportsDTMF:(BOOL)a3
+- (void)reportVoiceLoopSupportsDTMF:(BOOL)f
 {
-  v3 = a3;
+  fCopy = f;
   v17 = *MEMORY[0x277D85DE8];
   v5 = sos_vlar_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 67109120;
-    LODWORD(v16) = v3;
+    LODWORD(v16) = fCopy;
     _os_log_impl(&dword_264323000, v5, OS_LOG_TYPE_INFO, "reportVoiceLoopSupportsDTMF:%{BOOL}d", buf, 8u);
   }
 
-  if (v3)
+  if (fCopy)
   {
     if ([(SOSVoiceLoopAnalyticsReporter *)self capture_DTMFAvail_FirstTrue_LoopIteration])
     {
@@ -534,11 +534,11 @@ LABEL_10:
 LABEL_11:
 
 LABEL_12:
-  if (self->_state.dtmfAvailable != v3)
+  if (self->_state.dtmfAvailable != fCopy)
   {
-    self->_state.dtmfAvailable = v3;
+    self->_state.dtmfAvailable = fCopy;
     v10 = 168;
-    if (v3)
+    if (fCopy)
     {
       v10 = 160;
     }
@@ -551,62 +551,62 @@ LABEL_12:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_newEventReportWithTrigger:(id)a3
+- (id)_newEventReportWithTrigger:(id)trigger
 {
-  v4 = a3;
+  triggerCopy = trigger;
   v5 = [VLAR_DTMFEventReport alloc];
   [(SOSVoiceLoopAnalyticsReporter *)self state];
-  v6 = [(VLAR_DTMFEventReport *)v5 initWithTrigger:v4 state:&v9 loopStartDate:self->_loopStartDate];
+  v6 = [(VLAR_DTMFEventReport *)v5 initWithTrigger:triggerCopy state:&v9 loopStartDate:self->_loopStartDate];
 
-  v7 = [(SOSVoiceLoopAnalyticsReporter *)self language];
-  [(VLAR_DTMFEventReport *)v6 setLanguage:v7];
+  language = [(SOSVoiceLoopAnalyticsReporter *)self language];
+  [(VLAR_DTMFEventReport *)v6 setLanguage:language];
 
   [(VLAR_DTMFEventReport *)v6 setVoiceLoopReason:[(SOSVoiceLoopAnalyticsReporter *)self voiceLoopReason]];
   return v6;
 }
 
-- (void)_submitReport:(id)a3
+- (void)_submitReport:(id)report
 {
   v64 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reportCopy = report;
   v5 = sos_vlar_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v63 = v4;
+    v63 = reportCopy;
     _os_log_impl(&dword_264323000, v5, OS_LOG_TYPE_DEFAULT, "_submitReport:%{public}@", buf, 0xCu);
   }
 
-  v53 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v60[0] = @"event_Trigger";
-  v50 = [v4 trigger];
-  v61[0] = v50;
+  trigger = [reportCopy trigger];
+  v61[0] = trigger;
   v60[1] = @"event_ElapsedSeconds";
   v6 = MEMORY[0x277CCABB0];
-  [v4 elapsedSeconds];
+  [reportCopy elapsedSeconds];
   v48 = [v6 numberWithDouble:?];
   v61[1] = v48;
   v60[2] = @"event_SOSVoiceLanguage";
-  v7 = [v4 language];
-  v61[2] = v7;
+  language = [reportCopy language];
+  v61[2] = language;
   v60[3] = @"event_SOSVoiceEventVariant";
-  v8 = [v4 voiceLoopReason];
-  if (v8 > 2)
+  voiceLoopReason = [reportCopy voiceLoopReason];
+  if (voiceLoopReason > 2)
   {
     v9 = @"Unknown";
   }
 
   else
   {
-    v9 = off_279B53CE8[v8];
+    v9 = off_279B53CE8[voiceLoopReason];
   }
 
   v61[3] = v9;
   v60[4] = @"event_PlaybackState";
   v10 = MEMORY[0x277CCABB0];
-  if (v4)
+  if (reportCopy)
   {
-    [v4 state];
+    [reportCopy state];
     v11 = v57;
   }
 
@@ -619,9 +619,9 @@ LABEL_12:
   v61[4] = v12;
   v60[5] = @"event_LoopIteration";
   v13 = MEMORY[0x277CCABB0];
-  if (v4)
+  if (reportCopy)
   {
-    [v4 state];
+    [reportCopy state];
     v14 = v56;
   }
 
@@ -634,9 +634,9 @@ LABEL_12:
   v61[5] = v15;
   v60[6] = @"event_LoopPhase";
   v16 = MEMORY[0x277CCABB0];
-  if (v4)
+  if (reportCopy)
   {
-    [v4 state];
+    [reportCopy state];
     v17 = v55;
   }
 
@@ -649,9 +649,9 @@ LABEL_12:
   v61[6] = v18;
   v60[7] = @"event_DTMFAvailable";
   v19 = MEMORY[0x277CCABB0];
-  if (v4)
+  if (reportCopy)
   {
-    [v4 state];
+    [reportCopy state];
     v20 = v54;
   }
 
@@ -663,16 +663,16 @@ LABEL_12:
   v21 = [v19 numberWithBool:v20 & 1];
   v61[7] = v21;
   v60[8] = @"event_DTMFCommand";
-  v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "command")}];
+  v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(reportCopy, "command")}];
   v61[8] = v22;
   v60[9] = @"event_DTMFAction";
-  v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "action")}];
+  v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(reportCopy, "action")}];
   v61[9] = v23;
   v52 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v61 forKeys:v60 count:10];
 
   v58[0] = @"capture_FirstDTMFDigit";
-  v51 = [(SOSVoiceLoopAnalyticsReporter *)self capture_FirstDTMFDigit];
-  v59[0] = v51;
+  capture_FirstDTMFDigit = [(SOSVoiceLoopAnalyticsReporter *)self capture_FirstDTMFDigit];
+  v59[0] = capture_FirstDTMFDigit;
   v58[1] = @"capture_FirstDTMFDigit_Seconds";
   v24 = MEMORY[0x277CCABB0];
   [(SOSVoiceLoopAnalyticsReporter *)self capture_FirstDTMFDigit_Seconds];
@@ -724,26 +724,26 @@ LABEL_12:
   v59[13] = v35;
   v36 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v59 forKeys:v58 count:14];
 
-  [v53 addEntriesFromDictionary:v52];
-  [v53 addEntriesFromDictionary:v36];
-  v37 = [(VLAR_DTMFEventsAccumulator *)self->_dtmfEventAccumulator analyticsDataDict];
-  [v53 addEntriesFromDictionary:v37];
+  [dictionary addEntriesFromDictionary:v52];
+  [dictionary addEntriesFromDictionary:v36];
+  analyticsDataDict = [(VLAR_DTMFEventsAccumulator *)self->_dtmfEventAccumulator analyticsDataDict];
+  [dictionary addEntriesFromDictionary:analyticsDataDict];
 
-  v38 = [(VLAR_DTMFCommandsAccumulator *)self->_dtmfCommandsAccumulator analyticsDataDict];
-  [v53 addEntriesFromDictionary:v38];
+  analyticsDataDict2 = [(VLAR_DTMFCommandsAccumulator *)self->_dtmfCommandsAccumulator analyticsDataDict];
+  [dictionary addEntriesFromDictionary:analyticsDataDict2];
 
-  v39 = [(VLAR_DTMFActionsAccumulator *)self->_dtmfActionsAccumulator analyticsDataDict];
-  [v53 addEntriesFromDictionary:v39];
+  analyticsDataDict3 = [(VLAR_DTMFActionsAccumulator *)self->_dtmfActionsAccumulator analyticsDataDict];
+  [dictionary addEntriesFromDictionary:analyticsDataDict3];
 
   v40 = sos_vlar_log();
   if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v63 = v53;
+    v63 = dictionary;
     _os_log_impl(&dword_264323000, v40, OS_LOG_TYPE_DEFAULT, "_submitReport => data:%{public}@", buf, 0xCu);
   }
 
-  v41 = v53;
+  v41 = dictionary;
   AnalyticsSendEventLazy();
 
   v42 = *MEMORY[0x277D85DE8];
@@ -757,10 +757,10 @@ LABEL_12:
   return self;
 }
 
-- (void)setState:(VLAR_DTMFStateRecord *)a3
+- (void)setState:(VLAR_DTMFStateRecord *)state
 {
-  v3 = *&a3->loopPhase;
-  *&self->_state.playbackState = *&a3->playbackState;
+  v3 = *&state->loopPhase;
+  *&self->_state.playbackState = *&state->playbackState;
   *&self->_state.loopPhase = v3;
 }
 

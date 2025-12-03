@@ -1,24 +1,24 @@
 @interface MRDConnectToRelaySecondaryOperation
-- (MRDConnectToRelaySecondaryOperation)initWithOutputDevice:(id)a3;
+- (MRDConnectToRelaySecondaryOperation)initWithOutputDevice:(id)device;
 - (NSString)debugDescription;
 - (void)execute;
-- (void)finishWithError:(id)a3;
-- (void)setHandle:(id)a3;
-- (void)transport:(id)a3 didReceiveData:(id)a4;
+- (void)finishWithError:(id)error;
+- (void)setHandle:(id)handle;
+- (void)transport:(id)transport didReceiveData:(id)data;
 @end
 
 @implementation MRDConnectToRelaySecondaryOperation
 
-- (MRDConnectToRelaySecondaryOperation)initWithOutputDevice:(id)a3
+- (MRDConnectToRelaySecondaryOperation)initWithOutputDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = MRDConnectToRelaySecondaryOperation;
   v6 = [(MRDConnectToRelaySecondaryOperation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_outputDevice, a3);
+    objc_storeStrong(&v6->_outputDevice, device);
   }
 
   return v7;
@@ -28,8 +28,8 @@
 {
   v3 = [NSString alloc];
   v4 = objc_opt_class();
-  v5 = [(MRDConnectToRelaySecondaryOperation *)self handle];
-  v6 = [v3 initWithFormat:@"<%@:%p\n handle=%@\n pendingReplies=%@\n>", v4, self, v5, self->_pendingConfigureConnectionReplies];
+  handle = [(MRDConnectToRelaySecondaryOperation *)self handle];
+  v6 = [v3 initWithFormat:@"<%@:%p\n handle=%@\n pendingReplies=%@\n>", v4, self, handle, self->_pendingConfigureConnectionReplies];
 
   return v6;
 }
@@ -41,16 +41,16 @@
   self->_details = v3;
 
   v5 = [NSMutableString alloc];
-  v6 = [(MRRequestDetails *)self->_details name];
-  v7 = [(MRRequestDetails *)self->_details requestID];
-  v8 = [v5 initWithFormat:@"%@<%@>", v6, v7];
+  name = [(MRRequestDetails *)self->_details name];
+  requestID = [(MRRequestDetails *)self->_details requestID];
+  v8 = [v5 initWithFormat:@"%@<%@>", name, requestID];
 
-  v9 = [(MRAVOutputDevice *)self->_outputDevice debugName];
+  debugName = [(MRAVOutputDevice *)self->_outputDevice debugName];
 
-  if (v9)
+  if (debugName)
   {
-    v10 = [(MRAVOutputDevice *)self->_outputDevice debugName];
-    [(__CFString *)v8 appendFormat:@" for %@", v10];
+    debugName2 = [(MRAVOutputDevice *)self->_outputDevice debugName];
+    [(__CFString *)v8 appendFormat:@" for %@", debugName2];
   }
 
   v11 = _MRLogForCategory();
@@ -62,11 +62,11 @@
   }
 
   v12 = objc_alloc_init(NSMutableDictionary);
-  v13 = [(MRRequestDetails *)self->_details reason];
-  [v12 setObject:v13 forKeyedSubscript:MRExternalDeviceConnectionReasonUserInfoKey];
+  reason = [(MRRequestDetails *)self->_details reason];
+  [v12 setObject:reason forKeyedSubscript:MRExternalDeviceConnectionReasonUserInfoKey];
 
-  v14 = [(MRRequestDetails *)self->_details requestID];
-  [v12 setObject:v14 forKeyedSubscript:MRExternalDeviceConnectionCorrelationIDUserInfoKey];
+  requestID2 = [(MRRequestDetails *)self->_details requestID];
+  [v12 setObject:requestID2 forKeyedSubscript:MRExternalDeviceConnectionCorrelationIDUserInfoKey];
 
   if ([(MRDConnectToRelaySecondaryOperation *)self isCancelled])
   {
@@ -82,15 +82,15 @@
 
     v114 = +[NSDate now];
     v18 = [NSMutableString alloc];
-    v19 = [(MRRequestDetails *)self->_details requestID];
-    v20 = [v18 initWithFormat:@"%@<%@>", @"ConnectToMRRelay.createConnection", v19];
+    requestID3 = [(MRRequestDetails *)self->_details requestID];
+    v20 = [v18 initWithFormat:@"%@<%@>", @"ConnectToMRRelay.createConnection", requestID3];
 
-    v21 = [(MRAVOutputDevice *)self->_outputDevice debugName];
+    debugName3 = [(MRAVOutputDevice *)self->_outputDevice debugName];
 
-    if (v21)
+    if (debugName3)
     {
-      v22 = [(MRAVOutputDevice *)self->_outputDevice debugName];
-      [(__CFString *)v20 appendFormat:@" for %@", v22];
+      debugName4 = [(MRAVOutputDevice *)self->_outputDevice debugName];
+      [(__CFString *)v20 appendFormat:@" for %@", debugName4];
     }
 
     v23 = _MRLogForCategory();
@@ -102,10 +102,10 @@
     }
 
     v24 = [v15 createConnectionWithUserInfo:v12];
-    v25 = [v24 error];
+    error = [v24 error];
     if (v24)
     {
-      v26 = v25 == 0;
+      v26 = error == 0;
     }
 
     else
@@ -117,26 +117,26 @@
 
     if (v27)
     {
-      v28 = [(MRAVOutputDevice *)self->_outputDevice debugName];
+      debugName5 = [(MRAVOutputDevice *)self->_outputDevice debugName];
 
       v29 = _MRLogForCategory();
       v30 = os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT);
-      if (v28)
+      if (debugName5)
       {
         if (v30)
         {
-          v31 = [(MRRequestDetails *)self->_details requestID];
-          v32 = [(MRAVOutputDevice *)self->_outputDevice debugName];
+          requestID4 = [(MRRequestDetails *)self->_details requestID];
+          debugName6 = [(MRAVOutputDevice *)self->_outputDevice debugName];
           v33 = +[NSDate date];
           [v33 timeIntervalSinceDate:v114];
           *buf = 138544386;
           v127 = @"ConnectToMRRelay.createConnection";
           v128 = 2114;
-          v129 = v31;
+          v129 = requestID4;
           v130 = 2112;
           v131 = v24;
           v132 = 2114;
-          v133 = v32;
+          v133 = debugName6;
           v134 = 2048;
           v135 = v34;
           _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "Response: %{public}@<%{public}@> returned <%@> for %{public}@ in %.4lf seconds", buf, 0x34u);
@@ -145,13 +145,13 @@
 
       else if (v30)
       {
-        v44 = [(MRRequestDetails *)self->_details requestID];
+        requestID5 = [(MRRequestDetails *)self->_details requestID];
         v45 = +[NSDate date];
         [v45 timeIntervalSinceDate:v114];
         *buf = 138544130;
         v127 = @"ConnectToMRRelay.createConnection";
         v128 = 2114;
-        v129 = v44;
+        v129 = requestID5;
         v130 = 2112;
         v131 = v24;
         v132 = 2048;
@@ -162,32 +162,32 @@
 
     else
     {
-      v35 = [v24 error];
+      error2 = [v24 error];
 
-      v36 = [(MRAVOutputDevice *)self->_outputDevice debugName];
+      debugName7 = [(MRAVOutputDevice *)self->_outputDevice debugName];
 
       v37 = _MRLogForCategory();
       v29 = v37;
-      if (v35)
+      if (error2)
       {
         v38 = os_log_type_enabled(v37, OS_LOG_TYPE_ERROR);
-        if (v36)
+        if (debugName7)
         {
           if (v38)
           {
-            v39 = [(MRRequestDetails *)self->_details requestID];
-            v40 = [v24 error];
-            v41 = [(MRAVOutputDevice *)self->_outputDevice debugName];
+            requestID6 = [(MRRequestDetails *)self->_details requestID];
+            error3 = [v24 error];
+            debugName8 = [(MRAVOutputDevice *)self->_outputDevice debugName];
             v42 = +[NSDate date];
             [v42 timeIntervalSinceDate:v114];
             *buf = 138544386;
             v127 = @"ConnectToMRRelay.createConnection";
             v128 = 2114;
-            v129 = v39;
+            v129 = requestID6;
             v130 = 2114;
-            v131 = v40;
+            v131 = error3;
             v132 = 2114;
-            v133 = v41;
+            v133 = debugName8;
             v134 = 2048;
             v135 = v43;
             _os_log_error_impl(&_mh_execute_header, v29, OS_LOG_TYPE_ERROR, "Response: %{public}@<%{public}@> returned with error <%{public}@> for %{public}@ in %.4lf seconds", buf, 0x34u);
@@ -196,16 +196,16 @@
 
         else if (v38)
         {
-          v52 = [(MRRequestDetails *)self->_details requestID];
-          v53 = [v24 error];
+          requestID7 = [(MRRequestDetails *)self->_details requestID];
+          error4 = [v24 error];
           v54 = +[NSDate date];
           [v54 timeIntervalSinceDate:v114];
           *buf = 138544130;
           v127 = @"ConnectToMRRelay.createConnection";
           v128 = 2114;
-          v129 = v52;
+          v129 = requestID7;
           v130 = 2114;
-          v131 = v53;
+          v131 = error4;
           v132 = 2048;
           v133 = v55;
           _os_log_error_impl(&_mh_execute_header, v29, OS_LOG_TYPE_ERROR, "Response: %{public}@<%{public}@> returned with error <%{public}@> in %.4lf seconds", buf, 0x2Au);
@@ -215,20 +215,20 @@
       else
       {
         v47 = os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT);
-        if (v36)
+        if (debugName7)
         {
           if (v47)
           {
-            v48 = [(MRRequestDetails *)self->_details requestID];
-            v49 = [(MRAVOutputDevice *)self->_outputDevice debugName];
+            requestID8 = [(MRRequestDetails *)self->_details requestID];
+            debugName9 = [(MRAVOutputDevice *)self->_outputDevice debugName];
             v50 = +[NSDate date];
             [v50 timeIntervalSinceDate:v114];
             *buf = 138544130;
             v127 = @"ConnectToMRRelay.createConnection";
             v128 = 2114;
-            v129 = v48;
+            v129 = requestID8;
             v130 = 2114;
-            v131 = v49;
+            v131 = debugName9;
             v132 = 2048;
             v133 = v51;
             _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "Response: %{public}@<%{public}@> returned for %{public}@ in %.4lf seconds", buf, 0x2Au);
@@ -237,13 +237,13 @@
 
         else if (v47)
         {
-          v56 = [(MRRequestDetails *)self->_details requestID];
+          requestID9 = [(MRRequestDetails *)self->_details requestID];
           v57 = +[NSDate date];
           [v57 timeIntervalSinceDate:v114];
           *buf = 138543874;
           v127 = @"ConnectToMRRelay.createConnection";
           v128 = 2114;
-          v129 = v56;
+          v129 = requestID9;
           v130 = 2048;
           v131 = v58;
           _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "Response: %{public}@<%{public}@> returned in %.4lf seconds", buf, 0x20u);
@@ -255,8 +255,8 @@
     v60 = [(MRAVOutputDevice *)self->_outputDevice uid];
     [v59 setDeviceUID:v60];
 
-    v61 = [(MRAVOutputDevice *)self->_outputDevice name];
-    [v59 setName:v61];
+    name2 = [(MRAVOutputDevice *)self->_outputDevice name];
+    [v59 setName:name2];
 
     v62 = [[MRExternalDeviceTransportConnectionHandle alloc] initWithConnection:v24 deviceInfo:v59];
     [(MRDConnectToRelaySecondaryOperation *)self setHandle:v62];
@@ -267,13 +267,13 @@
     v123 = sub_1000352AC;
     v124 = sub_100035B0C;
     v125 = 0;
-    v63 = [v24 error];
+    error5 = [v24 error];
 
-    if (v63)
+    if (error5)
     {
-      v64 = [v24 error];
+      error6 = [v24 error];
       v65 = v121[5];
-      v121[5] = v64;
+      v121[5] = error6;
 
       [(MRDConnectToRelaySecondaryOperation *)self finishWithError:v121[5]];
     }
@@ -290,16 +290,16 @@
       {
         [v24 addObserver:self];
         v67 = +[MRDMediaRemoteServer server];
-        v112 = [v67 deviceInfo];
+        deviceInfo = [v67 deviceInfo];
 
         v68 = [MRConfigureConnectionServiceMessage alloc];
-        v69 = [v112 WHAIdentifier];
-        v70 = [v112 name];
-        v113 = [v68 initWithServiceType:@"MRRelay" sourceOutputDeviceUID:v69 sourceOutputDeviceName:v70];
+        wHAIdentifier = [deviceInfo WHAIdentifier];
+        name3 = [deviceInfo name];
+        v113 = [v68 initWithServiceType:@"MRRelay" sourceOutputDeviceUID:wHAIdentifier sourceOutputDeviceName:name3];
 
         v71 = +[NSUUID UUID];
-        v72 = [v71 UUIDString];
-        [v113 setReplyIdentifier:v72];
+        uUIDString = [v71 UUIDString];
+        [v113 setReplyIdentifier:uUIDString];
 
         v73 = objc_alloc_init(NSMutableDictionary);
         pendingConfigureConnectionReplies = self->_pendingConfigureConnectionReplies;
@@ -317,20 +317,20 @@
         v118 = dsema;
         v77 = objc_retainBlock(v116);
         v78 = self->_pendingConfigureConnectionReplies;
-        v79 = [v113 replyIdentifier];
-        [(NSMutableDictionary *)v78 setObject:v77 forKeyedSubscript:v79];
+        replyIdentifier = [v113 replyIdentifier];
+        [(NSMutableDictionary *)v78 setObject:v77 forKeyedSubscript:replyIdentifier];
 
         v110 = +[NSDate now];
         v80 = [NSMutableString alloc];
-        v81 = [(MRRequestDetails *)self->_details requestID];
-        v82 = [v80 initWithFormat:@"%@<%@>", @"ConnectToMRRelay.configureConnection", v81];
+        requestID10 = [(MRRequestDetails *)self->_details requestID];
+        v82 = [v80 initWithFormat:@"%@<%@>", @"ConnectToMRRelay.configureConnection", requestID10];
 
-        v83 = [(MRAVOutputDevice *)self->_outputDevice debugName];
+        debugName10 = [(MRAVOutputDevice *)self->_outputDevice debugName];
 
-        if (v83)
+        if (debugName10)
         {
-          v84 = [(MRAVOutputDevice *)self->_outputDevice debugName];
-          [(__CFString *)v82 appendFormat:@" for %@", v84];
+          debugName11 = [(MRAVOutputDevice *)self->_outputDevice debugName];
+          [(__CFString *)v82 appendFormat:@" for %@", debugName11];
         }
 
         v85 = _MRLogForCategory();
@@ -341,8 +341,8 @@
           _os_log_impl(&_mh_execute_header, v85, OS_LOG_TYPE_DEFAULT, "Request: %{public}@", buf, 0xCu);
         }
 
-        v86 = [v113 protobufData];
-        [v24 sendTransportData:v86 options:0];
+        protobufData = [v113 protobufData];
+        [v24 sendTransportData:protobufData options:0];
 
         v87 = +[MRProtocolMessageLogger sharedLogger];
         [v87 logMessage:@"Message Sent:" label:@"MRRelay" deviceInfo:v76 protocolMessage:v113];
@@ -358,26 +358,26 @@
         outputDevice = self->_outputDevice;
         if (v121[5])
         {
-          v92 = [(MRAVOutputDevice *)outputDevice debugName];
+          debugName12 = [(MRAVOutputDevice *)outputDevice debugName];
 
-          if (v92)
+          if (debugName12)
           {
             v93 = _MRLogForCategory();
             if (os_log_type_enabled(v93, OS_LOG_TYPE_ERROR))
             {
-              v94 = [(MRRequestDetails *)self->_details requestID];
+              requestID11 = [(MRRequestDetails *)self->_details requestID];
               v95 = v121[5];
-              v115 = [(MRAVOutputDevice *)self->_outputDevice debugName];
+              debugName13 = [(MRAVOutputDevice *)self->_outputDevice debugName];
               v96 = +[NSDate date];
               [v96 timeIntervalSinceDate:v110];
               *buf = 138544386;
               v127 = @"ConnectToMRRelay.configureConnection";
               v128 = 2114;
-              v129 = v94;
+              v129 = requestID11;
               v130 = 2114;
               v131 = v95;
               v132 = 2114;
-              v133 = v115;
+              v133 = debugName13;
               v134 = 2048;
               v135 = v97;
               _os_log_error_impl(&_mh_execute_header, v93, OS_LOG_TYPE_ERROR, "Response: %{public}@<%{public}@> returned with error <%{public}@> for %{public}@ in %.4lf seconds", buf, 0x34u);
@@ -389,14 +389,14 @@
             v93 = _MRLogForCategory();
             if (os_log_type_enabled(v93, OS_LOG_TYPE_ERROR))
             {
-              v103 = [(MRRequestDetails *)self->_details requestID];
+              requestID12 = [(MRRequestDetails *)self->_details requestID];
               v104 = v121[5];
               v105 = +[NSDate date];
               [v105 timeIntervalSinceDate:v110];
               *buf = 138544130;
               v127 = @"ConnectToMRRelay.configureConnection";
               v128 = 2114;
-              v129 = v103;
+              v129 = requestID12;
               v130 = 2114;
               v131 = v104;
               v132 = 2048;
@@ -408,23 +408,23 @@
 
         else
         {
-          v98 = [(MRAVOutputDevice *)outputDevice debugName];
+          debugName14 = [(MRAVOutputDevice *)outputDevice debugName];
 
-          if (v98)
+          if (debugName14)
           {
             v93 = _MRLogForCategory();
             if (os_log_type_enabled(v93, OS_LOG_TYPE_DEFAULT))
             {
-              v99 = [(MRRequestDetails *)self->_details requestID];
-              v100 = [(MRAVOutputDevice *)self->_outputDevice debugName];
+              requestID13 = [(MRRequestDetails *)self->_details requestID];
+              debugName15 = [(MRAVOutputDevice *)self->_outputDevice debugName];
               v101 = +[NSDate date];
               [v101 timeIntervalSinceDate:v110];
               *buf = 138544130;
               v127 = @"ConnectToMRRelay.configureConnection";
               v128 = 2114;
-              v129 = v99;
+              v129 = requestID13;
               v130 = 2114;
-              v131 = v100;
+              v131 = debugName15;
               v132 = 2048;
               v133 = v102;
               _os_log_impl(&_mh_execute_header, v93, OS_LOG_TYPE_DEFAULT, "Response: %{public}@<%{public}@> returned for %{public}@ in %.4lf seconds", buf, 0x2Au);
@@ -436,13 +436,13 @@
             v93 = _MRLogForCategory();
             if (os_log_type_enabled(v93, OS_LOG_TYPE_DEFAULT))
             {
-              v107 = [(MRRequestDetails *)self->_details requestID];
+              requestID14 = [(MRRequestDetails *)self->_details requestID];
               v108 = +[NSDate date];
               [v108 timeIntervalSinceDate:v110];
               *buf = 138543874;
               v127 = @"ConnectToMRRelay.configureConnection";
               v128 = 2114;
-              v129 = v107;
+              v129 = requestID14;
               v130 = 2048;
               v131 = v109;
               _os_log_impl(&_mh_execute_header, v93, OS_LOG_TYPE_DEFAULT, "Response: %{public}@<%{public}@> returned in %.4lf seconds", buf, 0x20u);
@@ -453,7 +453,7 @@
         [v24 removeObserver:self];
         [(MRDConnectToRelaySecondaryOperation *)self finishWithError:v121[5]];
 
-        v66 = v112;
+        v66 = deviceInfo;
       }
     }
 
@@ -461,41 +461,41 @@
   }
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v4 = a3;
-  if (!v4)
+  errorCopy = error;
+  if (!errorCopy)
   {
-    v14 = [(MRDConnectToRelaySecondaryOperation *)self handle];
+    handle = [(MRDConnectToRelaySecondaryOperation *)self handle];
 
-    v15 = [(MRAVOutputDevice *)self->_outputDevice debugName];
+    debugName = [(MRAVOutputDevice *)self->_outputDevice debugName];
 
     v6 = _MRLogForCategory();
     v16 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-    if (v14)
+    if (handle)
     {
-      if (v15)
+      if (debugName)
       {
         if (!v16)
         {
           goto LABEL_19;
         }
 
-        v8 = [(MRRequestDetails *)self->_details name];
-        v9 = [(MRRequestDetails *)self->_details requestID];
-        v10 = [(MRDConnectToRelaySecondaryOperation *)self handle];
-        v11 = [(MRAVOutputDevice *)self->_outputDevice debugName];
-        v12 = +[NSDate date];
-        v17 = [(MRRequestDetails *)self->_details startDate];
-        [v12 timeIntervalSinceDate:v17];
+        name = [(MRRequestDetails *)self->_details name];
+        requestID = [(MRRequestDetails *)self->_details requestID];
+        handle2 = [(MRDConnectToRelaySecondaryOperation *)self handle];
+        debugName2 = [(MRAVOutputDevice *)self->_outputDevice debugName];
+        startDate2 = +[NSDate date];
+        startDate = [(MRRequestDetails *)self->_details startDate];
+        [startDate2 timeIntervalSinceDate:startDate];
         *buf = 138544386;
-        v27 = v8;
+        v27 = name;
         v28 = 2114;
-        v29 = v9;
+        v29 = requestID;
         v30 = 2112;
-        v31 = v10;
+        v31 = handle2;
         v32 = 2114;
-        v33 = v11;
+        v33 = debugName2;
         v34 = 2048;
         v35 = v18;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Response: %{public}@<%{public}@> returned <%@> for %{public}@ in %.4lf seconds", buf, 0x34u);
@@ -508,18 +508,18 @@
         goto LABEL_19;
       }
 
-      v8 = [(MRRequestDetails *)self->_details name];
-      v9 = [(MRRequestDetails *)self->_details requestID];
-      v10 = [(MRDConnectToRelaySecondaryOperation *)self handle];
-      v11 = +[NSDate date];
-      v12 = [(MRRequestDetails *)self->_details startDate];
-      [v11 timeIntervalSinceDate:v12];
+      name = [(MRRequestDetails *)self->_details name];
+      requestID = [(MRRequestDetails *)self->_details requestID];
+      handle2 = [(MRDConnectToRelaySecondaryOperation *)self handle];
+      debugName2 = +[NSDate date];
+      startDate2 = [(MRRequestDetails *)self->_details startDate];
+      [debugName2 timeIntervalSinceDate:startDate2];
       *buf = 138544130;
-      v27 = v8;
+      v27 = name;
       v28 = 2114;
-      v29 = v9;
+      v29 = requestID;
       v30 = 2112;
-      v31 = v10;
+      v31 = handle2;
       v32 = 2048;
       v33 = v21;
       v20 = "Response: %{public}@<%{public}@> returned <%@> in %.4lf seconds";
@@ -527,19 +527,19 @@
 
     else
     {
-      if (!v15)
+      if (!debugName)
       {
         if (v16)
         {
-          v8 = [(MRRequestDetails *)self->_details name];
-          v9 = [(MRRequestDetails *)self->_details requestID];
-          v10 = +[NSDate date];
-          v11 = [(MRRequestDetails *)self->_details startDate];
-          [v10 timeIntervalSinceDate:v11];
+          name = [(MRRequestDetails *)self->_details name];
+          requestID = [(MRRequestDetails *)self->_details requestID];
+          handle2 = +[NSDate date];
+          debugName2 = [(MRRequestDetails *)self->_details startDate];
+          [handle2 timeIntervalSinceDate:debugName2];
           *buf = 138543874;
-          v27 = v8;
+          v27 = name;
           v28 = 2114;
-          v29 = v9;
+          v29 = requestID;
           v30 = 2048;
           v31 = v24;
           _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Response: %{public}@<%{public}@> returned in %.4lf seconds", buf, 0x20u);
@@ -554,18 +554,18 @@
         goto LABEL_19;
       }
 
-      v8 = [(MRRequestDetails *)self->_details name];
-      v9 = [(MRRequestDetails *)self->_details requestID];
-      v10 = [(MRAVOutputDevice *)self->_outputDevice debugName];
-      v11 = +[NSDate date];
-      v12 = [(MRRequestDetails *)self->_details startDate];
-      [v11 timeIntervalSinceDate:v12];
+      name = [(MRRequestDetails *)self->_details name];
+      requestID = [(MRRequestDetails *)self->_details requestID];
+      handle2 = [(MRAVOutputDevice *)self->_outputDevice debugName];
+      debugName2 = +[NSDate date];
+      startDate2 = [(MRRequestDetails *)self->_details startDate];
+      [debugName2 timeIntervalSinceDate:startDate2];
       *buf = 138544130;
-      v27 = v8;
+      v27 = name;
       v28 = 2114;
-      v29 = v9;
+      v29 = requestID;
       v30 = 2114;
-      v31 = v10;
+      v31 = handle2;
       v32 = 2048;
       v33 = v19;
       v20 = "Response: %{public}@<%{public}@> returned for %{public}@ in %.4lf seconds";
@@ -578,31 +578,31 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v5 = [(MRAVOutputDevice *)self->_outputDevice debugName];
+  debugName3 = [(MRAVOutputDevice *)self->_outputDevice debugName];
 
   v6 = _MRLogForCategory();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_ERROR);
-  if (v5)
+  if (debugName3)
   {
     if (!v7)
     {
       goto LABEL_19;
     }
 
-    v8 = [(MRRequestDetails *)self->_details name];
-    v9 = [(MRRequestDetails *)self->_details requestID];
-    v10 = [(MRAVOutputDevice *)self->_outputDevice debugName];
-    v11 = +[NSDate date];
-    v12 = [(MRRequestDetails *)self->_details startDate];
-    [v11 timeIntervalSinceDate:v12];
+    name = [(MRRequestDetails *)self->_details name];
+    requestID = [(MRRequestDetails *)self->_details requestID];
+    handle2 = [(MRAVOutputDevice *)self->_outputDevice debugName];
+    debugName2 = +[NSDate date];
+    startDate2 = [(MRRequestDetails *)self->_details startDate];
+    [debugName2 timeIntervalSinceDate:startDate2];
     *buf = 138544386;
-    v27 = v8;
+    v27 = name;
     v28 = 2114;
-    v29 = v9;
+    v29 = requestID;
     v30 = 2114;
-    v31 = v4;
+    v31 = errorCopy;
     v32 = 2114;
-    v33 = v10;
+    v33 = handle2;
     v34 = 2048;
     v35 = v13;
     _os_log_error_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "Response: %{public}@<%{public}@> returned with error <%{public}@> for %{public}@ in %.4lf seconds", buf, 0x34u);
@@ -611,26 +611,26 @@ LABEL_18:
 
   if (v7)
   {
-    sub_1003B0A5C(self, v4, v6);
+    sub_1003B0A5C(self, errorCopy, v6);
   }
 
 LABEL_19:
 
   v25.receiver = self;
   v25.super_class = MRDConnectToRelaySecondaryOperation;
-  [(MRDConnectToRelaySecondaryOperation *)&v25 finishWithError:v4];
-  v22 = [(MRDConnectToRelaySecondaryOperation *)self completionBlock];
+  [(MRDConnectToRelaySecondaryOperation *)&v25 finishWithError:errorCopy];
+  completionBlock = [(MRDConnectToRelaySecondaryOperation *)self completionBlock];
 
-  if (v22)
+  if (completionBlock)
   {
-    v23 = [(MRDConnectToRelaySecondaryOperation *)self completionBlock];
-    v23[2]();
+    completionBlock2 = [(MRDConnectToRelaySecondaryOperation *)self completionBlock];
+    completionBlock2[2]();
   }
 }
 
-- (void)setHandle:(id)a3
+- (void)setHandle:(id)handle
 {
-  v4 = a3;
+  handleCopy = handle;
   handle = self->_handle;
   v6 = _MRLogForCategory();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
@@ -638,16 +638,16 @@ LABEL_19:
   {
     if (v7)
     {
-      v8 = [(MRRequestDetails *)self->_details requestReasonID];
+      requestReasonID = [(MRRequestDetails *)self->_details requestReasonID];
       v9 = self->_handle;
       v14 = 138544130;
-      v15 = v8;
+      v15 = requestReasonID;
       v16 = 2114;
       v17 = @"connection";
       v18 = 2112;
       v19 = v9;
       v20 = 2112;
-      v21 = v4;
+      v21 = handleCopy;
       v10 = "Set: %{public}@ setting %{public}@ from <%@> to <%@>";
       v11 = v6;
       v12 = 42;
@@ -658,13 +658,13 @@ LABEL_6:
 
   else if (v7)
   {
-    v8 = [(MRRequestDetails *)self->_details requestReasonID];
+    requestReasonID = [(MRRequestDetails *)self->_details requestReasonID];
     v14 = 138543874;
-    v15 = v8;
+    v15 = requestReasonID;
     v16 = 2114;
     v17 = @"connection";
     v18 = 2112;
-    v19 = v4;
+    v19 = handleCopy;
     v10 = "Set: %{public}@ setting %{public}@ to <%@>";
     v11 = v6;
     v12 = 32;
@@ -672,23 +672,23 @@ LABEL_6:
   }
 
   v13 = self->_handle;
-  self->_handle = v4;
+  self->_handle = handleCopy;
 }
 
-- (void)transport:(id)a3 didReceiveData:(id)a4
+- (void)transport:(id)transport didReceiveData:(id)data
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [MRProtocolMessage protocolMessageWithProtobufData:v6 error:0];
+  transportCopy = transport;
+  dataCopy = data;
+  v7 = [MRProtocolMessage protocolMessageWithProtobufData:dataCopy error:0];
   if (v7)
   {
-    v8 = self;
-    objc_sync_enter(v8);
-    v9 = v8;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v9 = selfCopy;
     objc_sync_enter(v9);
     pendingConfigureConnectionReplies = v9->_pendingConfigureConnectionReplies;
-    v11 = [v7 replyIdentifier];
-    v12 = [(NSMutableDictionary *)pendingConfigureConnectionReplies objectForKeyedSubscript:v11];
+    replyIdentifier = [v7 replyIdentifier];
+    v12 = [(NSMutableDictionary *)pendingConfigureConnectionReplies objectForKeyedSubscript:replyIdentifier];
 
     objc_sync_exit(v9);
     if (v12)

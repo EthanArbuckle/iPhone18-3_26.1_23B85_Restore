@@ -1,16 +1,16 @@
 @interface WFRemoteImageDrawingContext
 - (BOOL)allocateSharedBuffer;
-- (CGImage)imageAtIndex:(unint64_t)a3;
+- (CGImage)imageAtIndex:(unint64_t)index;
 - (CGSize)singleImageSize;
-- (WFRemoteImageDrawingContext)initWithCoder:(id)a3;
-- (WFRemoteImageDrawingContext)initWithImageCount:(unint64_t)a3 singleImageSize:(CGSize)a4 scale:(double)a5 colorSpace:(CGColorSpace *)a6 buffer:(void *)a7 bufferSize:(unint64_t)a8 drawAlphaOnly:(BOOL)a9;
+- (WFRemoteImageDrawingContext)initWithCoder:(id)coder;
+- (WFRemoteImageDrawingContext)initWithImageCount:(unint64_t)count singleImageSize:(CGSize)size scale:(double)scale colorSpace:(CGColorSpace *)space buffer:(void *)buffer bufferSize:(unint64_t)bufferSize drawAlphaOnly:(BOOL)only;
 - (double)screenScale;
 - (unint64_t)numberOfComponents;
 - (unint64_t)sizePerImage;
 - (unsigned)bitmapInfo;
-- (void)accessBitmapContextForImageAtIndex:(unint64_t)a3 accessBlock:(id)a4;
+- (void)accessBitmapContextForImageAtIndex:(unint64_t)index accessBlock:(id)block;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFRemoteImageDrawingContext
@@ -24,20 +24,20 @@
   return result;
 }
 
-- (WFRemoteImageDrawingContext)initWithCoder:(id)a3
+- (WFRemoteImageDrawingContext)initWithCoder:(id)coder
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v25 = objc_opt_class();
     v26 = NSStringFromClass(v25);
-    [v24 handleFailureInMethod:a2 object:self file:@"WFRemoteImageDrawingContext.m" lineNumber:252 description:{@"Attempting to decode %@ with a non-XPC coder--this is not allowed", v26}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFRemoteImageDrawingContext.m" lineNumber:252 description:{@"Attempting to decode %@ with a non-XPC coder--this is not allowed", v26}];
   }
 
-  v6 = v5;
+  v6 = coderCopy;
   if (v6)
   {
     objc_opt_class();
@@ -84,7 +84,7 @@ LABEL_16:
 
 LABEL_17:
 
-    v21 = 0;
+    selfCopy = 0;
     goto LABEL_20;
   }
 
@@ -119,23 +119,23 @@ LABEL_17:
   *buf = *MEMORY[0x1E695F060];
   [v12 getValue:buf size:16];
   self = [(WFRemoteImageDrawingContext *)self initWithImageCount:v11 singleImageSize:v18 scale:region colorSpace:v17 buffer:v14 bufferSize:*buf drawAlphaOnly:*&buf[8], v10];
-  v21 = self;
+  selfCopy = self;
 LABEL_20:
 
   v22 = *MEMORY[0x1E69E9840];
-  return v21;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v14 = objc_opt_class();
     v15 = NSStringFromClass(v14);
-    [v13 handleFailureInMethod:a2 object:self file:@"WFRemoteImageDrawingContext.m" lineNumber:234 description:{@"Attempting to encode %@ with a non-XPC coder--this is not allowed", v15}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFRemoteImageDrawingContext.m" lineNumber:234 description:{@"Attempting to encode %@ with a non-XPC coder--this is not allowed", v15}];
   }
 
   v6 = xpc_shmem_create([(WFRemoteImageDrawingContext *)self buffer], [(WFRemoteImageDrawingContext *)self imageCount]* [(WFRemoteImageDrawingContext *)self sizePerImage]);
@@ -148,7 +148,7 @@ LABEL_20:
   v8 = MEMORY[0x1E696B098];
   v9 = Name;
   v10 = [v8 valueWithBytes:&self->_singleImageSize objCType:"{CGSize=dd}"];
-  v16 = v5;
+  v16 = coderCopy;
   if (v16)
   {
     objc_opt_class();
@@ -180,18 +180,18 @@ LABEL_20:
   [v12 encodeXPCObject:v6 forKey:@"sharedMemory"];
 }
 
-- (void)accessBitmapContextForImageAtIndex:(unint64_t)a3 accessBlock:(id)a4
+- (void)accessBitmapContextForImageAtIndex:(unint64_t)index accessBlock:(id)block
 {
   v31 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  if ([(WFRemoteImageDrawingContext *)self imageCount]<= a3)
+  blockCopy = block;
+  if ([(WFRemoteImageDrawingContext *)self imageCount]<= index)
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"WFRemoteImageDrawingContext.m" lineNumber:199 description:{@"Index %lu must be in bounds (0..%lu)", a3, -[WFRemoteImageDrawingContext imageCount](self, "imageCount")}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFRemoteImageDrawingContext.m" lineNumber:199 description:{@"Index %lu must be in bounds (0..%lu)", index, -[WFRemoteImageDrawingContext imageCount](self, "imageCount")}];
   }
 
-  v8 = [(WFRemoteImageDrawingContext *)self sizePerImage];
-  v9 = [(WFRemoteImageDrawingContext *)self buffer]+ v8 * a3;
+  sizePerImage = [(WFRemoteImageDrawingContext *)self sizePerImage];
+  v9 = [(WFRemoteImageDrawingContext *)self buffer]+ sizePerImage * index;
   [(WFRemoteImageDrawingContext *)self singleImageSize];
   v11 = v10;
   [(WFRemoteImageDrawingContext *)self scale];
@@ -215,7 +215,7 @@ LABEL_20:
     CGContextScaleCTM(v18, v21, -v22);
     [(WFRemoteImageDrawingContext *)self singleImageSize];
     CGContextTranslateCTM(v18, 0.0, -v23);
-    v7[2](v7, v18);
+    blockCopy[2](blockCopy, v18);
     (*(v19 + 16))(v19);
   }
 
@@ -227,7 +227,7 @@ LABEL_20:
       *buf = 136315394;
       v28 = "[WFRemoteImageDrawingContext accessBitmapContextForImageAtIndex:accessBlock:]";
       v29 = 2048;
-      v30 = a3;
+      indexCopy = index;
       _os_log_impl(&dword_1B1DE3000, v19, OS_LOG_TYPE_FAULT, "%s Shared bitmap context is nil at index %lu", buf, 0x16u);
     }
   }
@@ -235,12 +235,12 @@ LABEL_20:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (CGImage)imageAtIndex:(unint64_t)a3
+- (CGImage)imageAtIndex:(unint64_t)index
 {
-  if ([(WFRemoteImageDrawingContext *)self imageCount]<= a3)
+  if ([(WFRemoteImageDrawingContext *)self imageCount]<= index)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"WFRemoteImageDrawingContext.m" lineNumber:183 description:{@"Index %lu must be in bounds (0..%lu)", a3, -[WFRemoteImageDrawingContext imageCount](self, "imageCount")}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFRemoteImageDrawingContext.m" lineNumber:183 description:{@"Index %lu must be in bounds (0..%lu)", index, -[WFRemoteImageDrawingContext imageCount](self, "imageCount")}];
   }
 
   v11 = 0;
@@ -252,7 +252,7 @@ LABEL_20:
   v10[2] = __44__WFRemoteImageDrawingContext_imageAtIndex___block_invoke;
   v10[3] = &unk_1E7B022A0;
   v10[4] = &v11;
-  [(WFRemoteImageDrawingContext *)self accessBitmapContextForImageAtIndex:a3 accessBlock:v10];
+  [(WFRemoteImageDrawingContext *)self accessBitmapContextForImageAtIndex:index accessBlock:v10];
   v6 = v12[3];
   if (v6)
   {
@@ -280,8 +280,8 @@ CGImageRef __44__WFRemoteImageDrawingContext_imageAtIndex___block_invoke(uint64_
   v31 = *MEMORY[0x1E69E9840];
   if (![(WFRemoteImageDrawingContext *)self buffer])
   {
-    v4 = [(WFRemoteImageDrawingContext *)self sizePerImage];
-    v5 = [(WFRemoteImageDrawingContext *)self imageCount]* v4;
+    sizePerImage = [(WFRemoteImageDrawingContext *)self sizePerImage];
+    v5 = [(WFRemoteImageDrawingContext *)self imageCount]* sizePerImage;
     object_handle = 0;
     address = 0;
     size = v5;
@@ -347,8 +347,8 @@ CGImageRef __44__WFRemoteImageDrawingContext_imageAtIndex___block_invoke(uint64_
         v18 = size;
         self->_buffer = address;
         self->_bufferSize = v18;
-        v19 = [(WFRemoteImageDrawingContext *)self buffer];
-        bzero(v19, size);
+        buffer = [(WFRemoteImageDrawingContext *)self buffer];
+        bzero(buffer, size);
         v3 = 1;
         goto LABEL_16;
       }
@@ -458,20 +458,20 @@ uint64_t __51__WFRemoteImageDrawingContext_allocateSharedBuffer__block_invoke(ui
   [(WFRemoteImageDrawingContext *)&v3 dealloc];
 }
 
-- (WFRemoteImageDrawingContext)initWithImageCount:(unint64_t)a3 singleImageSize:(CGSize)a4 scale:(double)a5 colorSpace:(CGColorSpace *)a6 buffer:(void *)a7 bufferSize:(unint64_t)a8 drawAlphaOnly:(BOOL)a9
+- (WFRemoteImageDrawingContext)initWithImageCount:(unint64_t)count singleImageSize:(CGSize)size scale:(double)scale colorSpace:(CGColorSpace *)space buffer:(void *)buffer bufferSize:(unint64_t)bufferSize drawAlphaOnly:(BOOL)only
 {
-  height = a4.height;
-  width = a4.width;
-  if (a4.width <= 0.0)
+  height = size.height;
+  width = size.width;
+  if (size.width <= 0.0)
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"WFRemoteImageDrawingContext.m" lineNumber:67 description:@"Image width should be greater than 0"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFRemoteImageDrawingContext.m" lineNumber:67 description:@"Image width should be greater than 0"];
   }
 
   if (height <= 0.0)
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"WFRemoteImageDrawingContext.m" lineNumber:68 description:@"Image height should be greater than 0"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFRemoteImageDrawingContext.m" lineNumber:68 description:@"Image height should be greater than 0"];
   }
 
   v27.receiver = self;
@@ -483,19 +483,19 @@ uint64_t __51__WFRemoteImageDrawingContext_allocateSharedBuffer__block_invoke(ui
     goto LABEL_15;
   }
 
-  v19->_imageCount = a3;
+  v19->_imageCount = count;
   v19->_singleImageSize.width = width;
   v19->_singleImageSize.height = height;
-  if (a5 <= 0.0)
+  if (scale <= 0.0)
   {
     [(WFRemoteImageDrawingContext *)v19 screenScale];
-    a5 = v21;
+    scale = v21;
   }
 
-  v20[3] = a5;
-  if (a6)
+  v20[3] = scale;
+  if (space)
   {
-    v22 = CGColorSpaceRetain(a6);
+    v22 = CGColorSpaceRetain(space);
   }
 
   else
@@ -504,8 +504,8 @@ uint64_t __51__WFRemoteImageDrawingContext_allocateSharedBuffer__block_invoke(ui
   }
 
   *(v20 + 4) = v22;
-  *(v20 + 8) = a9;
-  if (!a7)
+  *(v20 + 8) = only;
+  if (!buffer)
   {
     if ([v20 allocateSharedBuffer])
     {
@@ -517,8 +517,8 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  *(v20 + 6) = a7;
-  *(v20 + 7) = a8;
+  *(v20 + 6) = buffer;
+  *(v20 + 7) = bufferSize;
 LABEL_14:
   v23 = v20;
 LABEL_16:

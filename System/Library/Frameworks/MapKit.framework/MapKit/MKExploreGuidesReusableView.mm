@@ -1,6 +1,6 @@
 @interface MKExploreGuidesReusableView
 + (id)reuseIdentifier;
-- (void)_configureWithExploreGuides:(id)a3 exploreGuidesResponse:(id)a4 tapHandler:(id)a5;
+- (void)_configureWithExploreGuides:(id)guides exploreGuidesResponse:(id)response tapHandler:(id)handler;
 @end
 
 @implementation MKExploreGuidesReusableView
@@ -12,86 +12,86 @@
   return NSStringFromClass(v2);
 }
 
-- (void)_configureWithExploreGuides:(id)a3 exploreGuidesResponse:(id)a4 tapHandler:(id)a5
+- (void)_configureWithExploreGuides:(id)guides exploreGuidesResponse:(id)response tapHandler:(id)handler
 {
   v45[5] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MKExploreGuidesReusableView *)self exploreGuidesView];
+  guidesCopy = guides;
+  responseCopy = response;
+  handlerCopy = handler;
+  exploreGuidesView = [(MKExploreGuidesReusableView *)self exploreGuidesView];
 
-  if (v11)
+  if (exploreGuidesView)
   {
-    v12 = [(MKExploreGuidesReusableView *)self exploreGuidesView];
-    v13 = [v12 exploreGuide];
-    v14 = [v13 isEqual:v8];
+    exploreGuidesView2 = [(MKExploreGuidesReusableView *)self exploreGuidesView];
+    exploreGuide = [exploreGuidesView2 exploreGuide];
+    v14 = [exploreGuide isEqual:guidesCopy];
 
     if ((v14 & 1) == 0)
     {
-      v15 = [(MKExploreGuidesReusableView *)self exploreGuidesView];
-      [v15 updateExploreGuide:v8];
+      exploreGuidesView3 = [(MKExploreGuidesReusableView *)self exploreGuidesView];
+      [exploreGuidesView3 updateExploreGuide:guidesCopy];
     }
   }
 
   else
   {
-    v16 = [MEMORY[0x1E69DC888] clearColor];
-    [(MKExploreGuidesReusableView *)self setBackgroundColor:v16];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(MKExploreGuidesReusableView *)self setBackgroundColor:clearColor];
 
     v17 = [MKExploreGuidesView alloc];
-    v43 = v9;
-    v44 = v8;
-    v42 = v10;
-    if (v9)
+    v43 = responseCopy;
+    v44 = guidesCopy;
+    v42 = handlerCopy;
+    if (responseCopy)
     {
-      v18 = [(MKExploreGuidesView *)v17 initWithExploreGuidesResponse:v9];
+      v18 = [(MKExploreGuidesView *)v17 initWithExploreGuidesResponse:responseCopy];
     }
 
     else
     {
-      v18 = [(MKExploreGuidesView *)v17 initWithExploreGuides:v8 tapHandler:v10];
+      v18 = [(MKExploreGuidesView *)v17 initWithExploreGuides:guidesCopy tapHandler:handlerCopy];
     }
 
     v19 = v18;
     [(MKExploreGuidesReusableView *)self setExploreGuidesView:v18];
 
-    v20 = [(MKExploreGuidesReusableView *)self exploreGuidesView];
-    [v20 setTranslatesAutoresizingMaskIntoConstraints:0];
+    exploreGuidesView4 = [(MKExploreGuidesReusableView *)self exploreGuidesView];
+    [exploreGuidesView4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v21 = [(MKExploreGuidesReusableView *)self exploreGuidesView];
-    [(MKExploreGuidesReusableView *)self addSubview:v21];
+    exploreGuidesView5 = [(MKExploreGuidesReusableView *)self exploreGuidesView];
+    [(MKExploreGuidesReusableView *)self addSubview:exploreGuidesView5];
 
     v33 = MEMORY[0x1E696ACD8];
-    v41 = [(MKExploreGuidesReusableView *)self exploreGuidesView];
-    v40 = [v41 leadingAnchor];
-    v39 = [(MKExploreGuidesReusableView *)self leadingAnchor];
-    v38 = [v40 constraintEqualToAnchor:v39];
+    exploreGuidesView6 = [(MKExploreGuidesReusableView *)self exploreGuidesView];
+    leadingAnchor = [exploreGuidesView6 leadingAnchor];
+    leadingAnchor2 = [(MKExploreGuidesReusableView *)self leadingAnchor];
+    v38 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v45[0] = v38;
-    v37 = [(MKExploreGuidesReusableView *)self exploreGuidesView];
-    v36 = [v37 topAnchor];
-    v35 = [(MKExploreGuidesReusableView *)self topAnchor];
-    v34 = [v36 constraintEqualToAnchor:v35];
+    exploreGuidesView7 = [(MKExploreGuidesReusableView *)self exploreGuidesView];
+    topAnchor = [exploreGuidesView7 topAnchor];
+    topAnchor2 = [(MKExploreGuidesReusableView *)self topAnchor];
+    v34 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v45[1] = v34;
-    v32 = [(MKExploreGuidesReusableView *)self exploreGuidesView];
-    v22 = [v32 bottomAnchor];
-    v23 = [(MKExploreGuidesReusableView *)self bottomAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23];
+    exploreGuidesView8 = [(MKExploreGuidesReusableView *)self exploreGuidesView];
+    bottomAnchor = [exploreGuidesView8 bottomAnchor];
+    bottomAnchor2 = [(MKExploreGuidesReusableView *)self bottomAnchor];
+    v24 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v45[2] = v24;
-    v25 = [(MKExploreGuidesReusableView *)self exploreGuidesView];
-    v26 = [v25 trailingAnchor];
-    v27 = [(MKExploreGuidesReusableView *)self trailingAnchor];
-    v28 = [v26 constraintEqualToAnchor:v27];
+    exploreGuidesView9 = [(MKExploreGuidesReusableView *)self exploreGuidesView];
+    trailingAnchor = [exploreGuidesView9 trailingAnchor];
+    trailingAnchor2 = [(MKExploreGuidesReusableView *)self trailingAnchor];
+    v28 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v45[3] = v28;
-    v29 = [(MKExploreGuidesReusableView *)self heightAnchor];
+    heightAnchor = [(MKExploreGuidesReusableView *)self heightAnchor];
     +[MKExploreGuidesView defaultHeight];
-    v30 = [v29 constraintGreaterThanOrEqualToConstant:?];
+    v30 = [heightAnchor constraintGreaterThanOrEqualToConstant:?];
     v45[4] = v30;
     v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:v45 count:5];
     [v33 activateConstraints:v31];
 
-    v9 = v43;
-    v8 = v44;
-    v10 = v42;
+    responseCopy = v43;
+    guidesCopy = v44;
+    handlerCopy = v42;
   }
 }
 

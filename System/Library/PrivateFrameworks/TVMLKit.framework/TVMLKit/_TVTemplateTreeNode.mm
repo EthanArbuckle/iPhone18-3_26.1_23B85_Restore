@@ -1,7 +1,7 @@
 @interface _TVTemplateTreeNode
 - (NSArray)derivedTemplateNodes;
-- (_TVTemplateTreeNode)initWithTemplateName:(id)a3 styleSheetURLs:(id)a4 abstract:(BOOL)a5;
-- (void)addDerivedTemplateNode:(id)a3;
+- (_TVTemplateTreeNode)initWithTemplateName:(id)name styleSheetURLs:(id)ls abstract:(BOOL)abstract;
+- (void)addDerivedTemplateNode:(id)node;
 @end
 
 @implementation _TVTemplateTreeNode
@@ -13,45 +13,45 @@
   return v2;
 }
 
-- (_TVTemplateTreeNode)initWithTemplateName:(id)a3 styleSheetURLs:(id)a4 abstract:(BOOL)a5
+- (_TVTemplateTreeNode)initWithTemplateName:(id)name styleSheetURLs:(id)ls abstract:(BOOL)abstract
 {
-  v8 = a3;
-  v9 = a4;
+  nameCopy = name;
+  lsCopy = ls;
   v16.receiver = self;
   v16.super_class = _TVTemplateTreeNode;
   v10 = [(_TVTemplateTreeNode *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [nameCopy copy];
     templateName = v10->_templateName;
     v10->_templateName = v11;
 
-    v13 = [v9 copy];
+    v13 = [lsCopy copy];
     styleSheetURLs = v10->_styleSheetURLs;
     v10->_styleSheetURLs = v13;
 
-    v10->_isAbstract = a5;
+    v10->_isAbstract = abstract;
   }
 
   return v10;
 }
 
-- (void)addDerivedTemplateNode:(id)a3
+- (void)addDerivedTemplateNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   derivedTemplateNodes = self->_derivedTemplateNodes;
-  v8 = v4;
+  v8 = nodeCopy;
   if (!derivedTemplateNodes)
   {
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v7 = self->_derivedTemplateNodes;
-    self->_derivedTemplateNodes = v6;
+    self->_derivedTemplateNodes = array;
 
-    v4 = v8;
+    nodeCopy = v8;
     derivedTemplateNodes = self->_derivedTemplateNodes;
   }
 
-  [(NSMutableArray *)derivedTemplateNodes addObject:v4];
+  [(NSMutableArray *)derivedTemplateNodes addObject:nodeCopy];
 }
 
 @end

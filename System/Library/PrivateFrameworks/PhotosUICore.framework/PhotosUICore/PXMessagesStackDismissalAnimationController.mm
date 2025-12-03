@@ -1,18 +1,18 @@
 @interface PXMessagesStackDismissalAnimationController
-- (PXMessagesStackDismissalAnimationController)initWithStackView:(id)a3 dismissingViewController:(id)a4;
+- (PXMessagesStackDismissalAnimationController)initWithStackView:(id)view dismissingViewController:(id)controller;
 - (UIViewControllerInteractiveTransitioning)interactionController;
-- (void)_animateCrossfadeFallback:(uint64_t)a1;
-- (void)runTransitionAnimation:(id)a3;
+- (void)_animateCrossfadeFallback:(uint64_t)fallback;
+- (void)runTransitionAnimation:(id)animation;
 @end
 
 @implementation PXMessagesStackDismissalAnimationController
 
-- (void)runTransitionAnimation:(id)a3
+- (void)runTransitionAnimation:(id)animation
 {
-  v4 = a3;
-  v5 = [v4 viewControllerForKey:*MEMORY[0x1E69DE778]];
-  v6 = [v4 viewControllerForKey:*MEMORY[0x1E69DE768]];
-  v7 = [v4 containerView];
+  animationCopy = animation;
+  v5 = [animationCopy viewControllerForKey:*MEMORY[0x1E69DE778]];
+  v6 = [animationCopy viewControllerForKey:*MEMORY[0x1E69DE768]];
+  containerView = [animationCopy containerView];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -20,7 +20,7 @@ LABEL_7:
     PXAssertGetLog();
   }
 
-  v8 = [v6 topViewController];
+  topViewController = [v6 topViewController];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -28,51 +28,51 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  if (!v8)
+  if (!topViewController)
   {
     goto LABEL_7;
   }
 
-  v9 = [(PXMessagesStackDismissalAnimationController *)self stackView];
-  v10 = v8;
-  v11 = v9;
+  stackView = [(PXMessagesStackDismissalAnimationController *)self stackView];
+  v10 = topViewController;
+  v11 = stackView;
   v12 = v11;
   if (self)
   {
     [v11 currentAssetReference];
     v13 = [v10 regionOfInterestForAssetReference:objc_claimAutoreleasedReturnValue()];
-    v14 = [v10 view];
-    [v13 rectInCoordinateSpace:v14];
-    [v14 bounds];
-    [v14 safeAreaInsets];
+    view = [v10 view];
+    [v13 rectInCoordinateSpace:view];
+    [view bounds];
+    [view safeAreaInsets];
     PXEdgeInsetsInsetRect();
   }
 
-  [(PXMessagesStackDismissalAnimationController *)0 _animateCrossfadeFallback:v4];
+  [(PXMessagesStackDismissalAnimationController *)0 _animateCrossfadeFallback:animationCopy];
 }
 
-- (void)_animateCrossfadeFallback:(uint64_t)a1
+- (void)_animateCrossfadeFallback:(uint64_t)fallback
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (fallback)
   {
     v5 = [v3 viewControllerForKey:*MEMORY[0x1E69DE778]];
     v6 = [v4 viewControllerForKey:*MEMORY[0x1E69DE768]];
-    v7 = [v4 containerView];
+    containerView = [v4 containerView];
     [v4 finalFrameForViewController:v5];
     v9 = v8;
     v11 = v10;
     v13 = v12;
     v15 = v14;
-    v16 = [v5 view];
-    v17 = [v6 view];
-    [v7 insertSubview:v16 belowSubview:v17];
+    view = [v5 view];
+    view2 = [v6 view];
+    [containerView insertSubview:view belowSubview:view2];
 
-    v18 = [v5 view];
-    [v18 setFrame:{v9, v11, v13, v15}];
+    view3 = [v5 view];
+    [view3 setFrame:{v9, v11, v13, v15}];
 
-    v19 = *(a1 + 24);
+    v19 = *(fallback + 24);
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __73__PXMessagesStackDismissalAnimationController__animateCrossfadeFallback___block_invoke;
@@ -80,7 +80,7 @@ LABEL_7:
     v20 = v6;
     v29 = v20;
     [v19 addAnimations:v28];
-    v21 = *(a1 + 24);
+    v21 = *(fallback + 24);
     v23 = MEMORY[0x1E69E9820];
     v24 = 3221225472;
     v25 = __73__PXMessagesStackDismissalAnimationController__animateCrossfadeFallback___block_invoke_2;
@@ -90,7 +90,7 @@ LABEL_7:
     [v21 addCompletion:&v23];
     if (([v22 isInteractive] & 1) == 0)
     {
-      [*(a1 + 24) startAnimation];
+      [*(fallback + 24) startAnimation];
     }
   }
 }
@@ -128,15 +128,15 @@ uint64_t __73__PXMessagesStackDismissalAnimationController__animateCrossfadeFall
 
 - (UIViewControllerInteractiveTransitioning)interactionController
 {
-  v3 = [(PXMessagesStackDismissalAnimationController *)self dismissingViewController];
+  dismissingViewController = [(PXMessagesStackDismissalAnimationController *)self dismissingViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 topViewController];
+    topViewController = [dismissingViewController topViewController];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = topViewController;
     }
 
     else
@@ -150,24 +150,24 @@ uint64_t __73__PXMessagesStackDismissalAnimationController__animateCrossfadeFall
     v5 = 0;
   }
 
-  v6 = [v5 edgeSwipeDismissalInteraction];
-  [v6 setDelegate:self];
+  edgeSwipeDismissalInteraction = [v5 edgeSwipeDismissalInteraction];
+  [edgeSwipeDismissalInteraction setDelegate:self];
 
-  return v6;
+  return edgeSwipeDismissalInteraction;
 }
 
-- (PXMessagesStackDismissalAnimationController)initWithStackView:(id)a3 dismissingViewController:(id)a4
+- (PXMessagesStackDismissalAnimationController)initWithStackView:(id)view dismissingViewController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  controllerCopy = controller;
   v22.receiver = self;
   v22.super_class = PXMessagesStackDismissalAnimationController;
   v9 = [(PXMessagesStackDismissalAnimationController *)&v22 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_stackView, a3);
-    objc_storeStrong(&v10->_dismissingViewController, a4);
+    objc_storeStrong(&v9->_stackView, view);
+    objc_storeStrong(&v10->_dismissingViewController, controller);
     v11 = +[PXMessagesUISettings sharedInstance];
     [v11 transitionDuration];
     v10->_transitionDuration = v12;

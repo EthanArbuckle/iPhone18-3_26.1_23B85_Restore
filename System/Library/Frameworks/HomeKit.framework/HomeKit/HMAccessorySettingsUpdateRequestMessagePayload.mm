@@ -1,9 +1,9 @@
 @interface HMAccessorySettingsUpdateRequestMessagePayload
 + (id)logCategory;
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
-- (HMAccessorySettingsUpdateRequestMessagePayload)initWithAccessoryUUID:(id)a3 keyPath:(id)a4 settingValue:(id)a5;
-- (HMAccessorySettingsUpdateRequestMessagePayload)initWithPayload:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HMAccessorySettingsUpdateRequestMessagePayload)initWithAccessoryUUID:(id)d keyPath:(id)path settingValue:(id)value;
+- (HMAccessorySettingsUpdateRequestMessagePayload)initWithPayload:(id)payload;
 - (NSArray)attributeDescriptions;
 - (NSString)shortDescription;
 - (id)payloadCopy;
@@ -14,16 +14,16 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HMAccessorySettingsUpdateRequestMessagePayload *)self accessoryUUID];
-  v3 = [v2 hash];
+  accessoryUUID = [(HMAccessorySettingsUpdateRequestMessagePayload *)self accessoryUUID];
+  v3 = [accessoryUUID hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v13 = 1;
   }
@@ -33,7 +33,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -44,17 +44,17 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMAccessorySettingsUpdateRequestMessagePayload *)self accessoryUUID];
-      v8 = [(HMAccessorySettingsUpdateRequestMessagePayload *)v6 accessoryUUID];
-      if ([v7 hmf_isEqualToUUID:v8])
+      accessoryUUID = [(HMAccessorySettingsUpdateRequestMessagePayload *)self accessoryUUID];
+      accessoryUUID2 = [(HMAccessorySettingsUpdateRequestMessagePayload *)v6 accessoryUUID];
+      if ([accessoryUUID hmf_isEqualToUUID:accessoryUUID2])
       {
-        v9 = [(HMAccessorySettingsUpdateRequestMessagePayload *)self keyPath];
-        v10 = [(HMAccessorySettingsUpdateRequestMessagePayload *)v6 keyPath];
-        if ([v9 isEqual:v10])
+        keyPath = [(HMAccessorySettingsUpdateRequestMessagePayload *)self keyPath];
+        keyPath2 = [(HMAccessorySettingsUpdateRequestMessagePayload *)v6 keyPath];
+        if ([keyPath isEqual:keyPath2])
         {
-          v11 = [(HMAccessorySettingsUpdateRequestMessagePayload *)self settingValue];
-          v12 = [(HMAccessorySettingsUpdateRequestMessagePayload *)v6 settingValue];
-          v13 = [v11 isEqual:v12];
+          settingValue = [(HMAccessorySettingsUpdateRequestMessagePayload *)self settingValue];
+          settingValue2 = [(HMAccessorySettingsUpdateRequestMessagePayload *)v6 settingValue];
+          v13 = [settingValue isEqual:settingValue2];
         }
 
         else
@@ -82,15 +82,15 @@
 {
   v15[3] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v4 = [(HMAccessorySettingsUpdateRequestMessagePayload *)self keyPath];
-  v5 = [v3 initWithName:@"keyPath" value:v4];
+  keyPath = [(HMAccessorySettingsUpdateRequestMessagePayload *)self keyPath];
+  v5 = [v3 initWithName:@"keyPath" value:keyPath];
   v6 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v7 = [(HMAccessorySettingsUpdateRequestMessagePayload *)self accessoryUUID];
-  v8 = [v6 initWithName:@"accessoryUUID" value:v7];
+  accessoryUUID = [(HMAccessorySettingsUpdateRequestMessagePayload *)self accessoryUUID];
+  v8 = [v6 initWithName:@"accessoryUUID" value:accessoryUUID];
   v15[1] = v8;
   v9 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v10 = [(HMAccessorySettingsUpdateRequestMessagePayload *)self settingValue];
-  v11 = [v9 initWithName:@"settingValue" value:v10];
+  settingValue = [(HMAccessorySettingsUpdateRequestMessagePayload *)self settingValue];
+  v11 = [v9 initWithName:@"settingValue" value:settingValue];
   v15[2] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:3];
 
@@ -110,16 +110,16 @@
 {
   v12[3] = *MEMORY[0x1E69E9840];
   v11[0] = @"HMAccessoryUUIDPayloadKey";
-  v3 = [(HMAccessorySettingsUpdateRequestMessagePayload *)self accessoryUUID];
-  v4 = [v3 UUIDString];
-  v12[0] = v4;
+  accessoryUUID = [(HMAccessorySettingsUpdateRequestMessagePayload *)self accessoryUUID];
+  uUIDString = [accessoryUUID UUIDString];
+  v12[0] = uUIDString;
   v11[1] = @"HMImmutableSettingKeyPathPayloadKey";
-  v5 = [(HMAccessorySettingsUpdateRequestMessagePayload *)self keyPath];
-  v12[1] = v5;
+  keyPath = [(HMAccessorySettingsUpdateRequestMessagePayload *)self keyPath];
+  v12[1] = keyPath;
   v11[2] = @"HMImmutableSettingValuePayloadKey";
-  v6 = [(HMAccessorySettingsUpdateRequestMessagePayload *)self settingValue];
-  v7 = [v6 payloadCopy];
-  v12[2] = v7;
+  settingValue = [(HMAccessorySettingsUpdateRequestMessagePayload *)self settingValue];
+  payloadCopy = [settingValue payloadCopy];
+  v12[2] = payloadCopy;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:3];
 
   v9 = *MEMORY[0x1E69E9840];
@@ -127,27 +127,27 @@
   return v8;
 }
 
-- (HMAccessorySettingsUpdateRequestMessagePayload)initWithPayload:(id)a3
+- (HMAccessorySettingsUpdateRequestMessagePayload)initWithPayload:(id)payload
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 hmf_UUIDForKey:@"HMAccessoryUUIDPayloadKey"];
-  v6 = [v4 hmf_stringForKey:@"HMImmutableSettingKeyPathPayloadKey"];
-  v7 = [v4 hmf_dictionaryForKey:@"HMImmutableSettingValuePayloadKey"];
+  payloadCopy = payload;
+  v5 = [payloadCopy hmf_UUIDForKey:@"HMAccessoryUUIDPayloadKey"];
+  v6 = [payloadCopy hmf_stringForKey:@"HMImmutableSettingKeyPathPayloadKey"];
+  v7 = [payloadCopy hmf_dictionaryForKey:@"HMImmutableSettingValuePayloadKey"];
   v8 = v7;
   if (v5 && v6 && v7)
   {
     v9 = [[HMImmutableSettingValue alloc] initWithPayload:v7];
     if (v9)
     {
-      v10 = [(HMAccessorySettingsUpdateRequestMessagePayload *)self initWithAccessoryUUID:v5 keyPath:v6 settingValue:v9];
-      v11 = v10;
+      selfCopy2 = [(HMAccessorySettingsUpdateRequestMessagePayload *)self initWithAccessoryUUID:v5 keyPath:v6 settingValue:v9];
+      v11 = selfCopy2;
     }
 
     else
     {
       v15 = objc_autoreleasePoolPush();
-      v10 = self;
+      selfCopy2 = self;
       v16 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
@@ -167,7 +167,7 @@
   else
   {
     v12 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy2 = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -175,7 +175,7 @@
       v20 = 138543618;
       v21 = v14;
       v22 = 2112;
-      v23 = v4;
+      v23 = payloadCopy;
       _os_log_impl(&dword_19BB39000, v13, OS_LOG_TYPE_ERROR, "%{public}@Failed to decode accessory settings update request message payload: %@", &v20, 0x16u);
     }
 
@@ -187,26 +187,26 @@
   return v11;
 }
 
-- (HMAccessorySettingsUpdateRequestMessagePayload)initWithAccessoryUUID:(id)a3 keyPath:(id)a4 settingValue:(id)a5
+- (HMAccessorySettingsUpdateRequestMessagePayload)initWithAccessoryUUID:(id)d keyPath:(id)path settingValue:(id)value
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  dCopy = d;
+  pathCopy = path;
+  valueCopy = value;
+  if (!dCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_8;
   }
 
-  if (!v10)
+  if (!pathCopy)
   {
 LABEL_8:
     _HMFPreconditionFailure();
     goto LABEL_9;
   }
 
-  v12 = v11;
-  if (!v11)
+  v12 = valueCopy;
+  if (!valueCopy)
   {
 LABEL_9:
     v16 = _HMFPreconditionFailure();
@@ -219,9 +219,9 @@ LABEL_9:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_accessoryUUID, a3);
-    objc_storeStrong(&v14->_keyPath, a4);
-    objc_storeStrong(&v14->_settingValue, a5);
+    objc_storeStrong(&v13->_accessoryUUID, d);
+    objc_storeStrong(&v14->_keyPath, path);
+    objc_storeStrong(&v14->_settingValue, value);
   }
 
   return v14;

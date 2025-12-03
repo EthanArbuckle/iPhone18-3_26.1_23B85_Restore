@@ -1,26 +1,26 @@
 @interface BKNavigationInfo
-+ (id)newEmptyNavigationInfo:(id)a3;
++ (id)newEmptyNavigationInfo:(id)info;
 - (BOOL)isExcludedFromSample;
 @end
 
 @implementation BKNavigationInfo
 
-+ (id)newEmptyNavigationInfo:(id)a3
++ (id)newEmptyNavigationInfo:(id)info
 {
-  v3 = a3;
-  v4 = [v3 newByClass:objc_opt_class()];
+  infoCopy = info;
+  v4 = [infoCopy newByClass:objc_opt_class()];
 
   return v4;
 }
 
 - (BOOL)isExcludedFromSample
 {
-  v2 = [(BKNavigationInfo *)self href];
-  v3 = [v2 URLFragmentString];
+  href = [(BKNavigationInfo *)self href];
+  uRLFragmentString = [href URLFragmentString];
 
-  if (v3)
+  if (uRLFragmentString)
   {
-    v4 = [BKNavigationInfo isExcludedFromSampleHash:v3];
+    v4 = [BKNavigationInfo isExcludedFromSampleHash:uRLFragmentString];
   }
 
   else

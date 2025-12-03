@@ -22,25 +22,25 @@
 - (NSString)vehicleLayoutKey;
 - (id)name;
 - (int)heatingCoolingLevel;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CAFSeatHeatingCooling
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFSeatHeatingCooling;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_28468B230])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_28468B230])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -53,12 +53,12 @@
   [(CAFService *)&v6 registerObserver:v5];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_28468B230])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_28468B230])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -73,30 +73,30 @@
 
 - (id)name
 {
-  v3 = [(CAFService *)self typeName];
-  v4 = [(CAFSeatHeatingCooling *)self vehicleLayoutKeyCharacteristic];
-  v5 = [v4 formattedValue];
+  typeName = [(CAFService *)self typeName];
+  vehicleLayoutKeyCharacteristic = [(CAFSeatHeatingCooling *)self vehicleLayoutKeyCharacteristic];
+  formattedValue = [vehicleLayoutKeyCharacteristic formattedValue];
 
-  if ([v5 length])
+  if ([formattedValue length])
   {
-    v6 = [v3 stringByAppendingFormat:@"-%@", v5];
+    v6 = [typeName stringByAppendingFormat:@"-%@", formattedValue];
 
-    v3 = v6;
+    typeName = v6;
   }
 
-  return v3;
+  return typeName;
 }
 
 - (CAFBoolCharacteristic)onCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000030000002"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000030000002"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000030000002"];
@@ -115,54 +115,54 @@
 
 - (BOOL)on
 {
-  v2 = [(CAFSeatHeatingCooling *)self onCharacteristic];
-  v3 = [v2 BOOLValue];
+  onCharacteristic = [(CAFSeatHeatingCooling *)self onCharacteristic];
+  bOOLValue = [onCharacteristic BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)hasOn
 {
-  v2 = [(CAFSeatHeatingCooling *)self onCharacteristic];
-  v3 = v2 != 0;
+  onCharacteristic = [(CAFSeatHeatingCooling *)self onCharacteristic];
+  v3 = onCharacteristic != 0;
 
   return v3;
 }
 
 - (BOOL)onDisabled
 {
-  v2 = [(CAFSeatHeatingCooling *)self onCharacteristic];
-  v3 = [v2 isDisabled];
+  onCharacteristic = [(CAFSeatHeatingCooling *)self onCharacteristic];
+  isDisabled = [onCharacteristic isDisabled];
 
-  return v3;
+  return isDisabled;
 }
 
 - (BOOL)onInvalid
 {
-  v2 = [(CAFSeatHeatingCooling *)self onCharacteristic];
-  v3 = [v2 isInvalid];
+  onCharacteristic = [(CAFSeatHeatingCooling *)self onCharacteristic];
+  isInvalid = [onCharacteristic isInvalid];
 
-  return v3;
+  return isInvalid;
 }
 
 - (BOOL)onRestricted
 {
-  v2 = [(CAFSeatHeatingCooling *)self onCharacteristic];
-  v3 = [v2 isRestricted];
+  onCharacteristic = [(CAFSeatHeatingCooling *)self onCharacteristic];
+  isRestricted = [onCharacteristic isRestricted];
 
-  return v3;
+  return isRestricted;
 }
 
 - (CAFInt32Characteristic)heatingCoolingLevelCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000031000021"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000031000021"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000031000021"];
@@ -181,54 +181,54 @@
 
 - (int)heatingCoolingLevel
 {
-  v2 = [(CAFSeatHeatingCooling *)self heatingCoolingLevelCharacteristic];
-  v3 = [v2 int32Value];
+  heatingCoolingLevelCharacteristic = [(CAFSeatHeatingCooling *)self heatingCoolingLevelCharacteristic];
+  int32Value = [heatingCoolingLevelCharacteristic int32Value];
 
-  return v3;
+  return int32Value;
 }
 
 - (CAFInt32Range)heatingCoolingLevelRange
 {
-  v2 = [(CAFSeatHeatingCooling *)self heatingCoolingLevelCharacteristic];
-  v3 = [v2 range];
+  heatingCoolingLevelCharacteristic = [(CAFSeatHeatingCooling *)self heatingCoolingLevelCharacteristic];
+  range = [heatingCoolingLevelCharacteristic range];
 
-  return v3;
+  return range;
 }
 
 - (BOOL)heatingCoolingLevelDisabled
 {
-  v2 = [(CAFSeatHeatingCooling *)self heatingCoolingLevelCharacteristic];
-  v3 = [v2 isDisabled];
+  heatingCoolingLevelCharacteristic = [(CAFSeatHeatingCooling *)self heatingCoolingLevelCharacteristic];
+  isDisabled = [heatingCoolingLevelCharacteristic isDisabled];
 
-  return v3;
+  return isDisabled;
 }
 
 - (BOOL)heatingCoolingLevelInvalid
 {
-  v2 = [(CAFSeatHeatingCooling *)self heatingCoolingLevelCharacteristic];
-  v3 = [v2 isInvalid];
+  heatingCoolingLevelCharacteristic = [(CAFSeatHeatingCooling *)self heatingCoolingLevelCharacteristic];
+  isInvalid = [heatingCoolingLevelCharacteristic isInvalid];
 
-  return v3;
+  return isInvalid;
 }
 
 - (BOOL)heatingCoolingLevelRestricted
 {
-  v2 = [(CAFSeatHeatingCooling *)self heatingCoolingLevelCharacteristic];
-  v3 = [v2 isRestricted];
+  heatingCoolingLevelCharacteristic = [(CAFSeatHeatingCooling *)self heatingCoolingLevelCharacteristic];
+  isRestricted = [heatingCoolingLevelCharacteristic isRestricted];
 
-  return v3;
+  return isRestricted;
 }
 
 - (CAFBoolCharacteristic)autoModeCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x000000003000005F"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x000000003000005F"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x000000003000005F"];
@@ -247,16 +247,16 @@
 
 - (BOOL)autoMode
 {
-  v2 = [(CAFSeatHeatingCooling *)self autoModeCharacteristic];
-  v3 = [v2 BOOLValue];
+  autoModeCharacteristic = [(CAFSeatHeatingCooling *)self autoModeCharacteristic];
+  bOOLValue = [autoModeCharacteristic BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)hasAutoMode
 {
-  v2 = [(CAFSeatHeatingCooling *)self autoModeCharacteristic];
-  v3 = v2 != 0;
+  autoModeCharacteristic = [(CAFSeatHeatingCooling *)self autoModeCharacteristic];
+  v3 = autoModeCharacteristic != 0;
 
   return v3;
 }
@@ -264,13 +264,13 @@
 - (CAFStringCharacteristic)vehicleLayoutKeyCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000036000065"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000036000065"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000036000065"];
@@ -289,22 +289,22 @@
 
 - (NSString)vehicleLayoutKey
 {
-  v2 = [(CAFSeatHeatingCooling *)self vehicleLayoutKeyCharacteristic];
-  v3 = [v2 stringValue];
+  vehicleLayoutKeyCharacteristic = [(CAFSeatHeatingCooling *)self vehicleLayoutKeyCharacteristic];
+  stringValue = [vehicleLayoutKeyCharacteristic stringValue];
 
-  return v3;
+  return stringValue;
 }
 
 - (BOOL)registeredForOn
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000030000002"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000030000002"];
 
   return v10;
 }
@@ -312,13 +312,13 @@
 - (BOOL)registeredForHeatingCoolingLevel
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000031000021"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000031000021"];
 
   return v10;
 }
@@ -326,13 +326,13 @@
 - (BOOL)registeredForAutoMode
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x000000003000005F"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x000000003000005F"];
 
   return v10;
 }
@@ -340,13 +340,13 @@
 - (BOOL)registeredForVehicleLayoutKey
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000036000065"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000036000065"];
 
   return v10;
 }

@@ -1,13 +1,13 @@
 @interface ICQUsageStorageCache
 - (ICQUsageStorageCache)init;
-- (float)sizeForMediaQuery:(id)a3 withGroupingType:(int64_t)a4 storingInCache:(id)a5 withKey:(id)a6;
-- (float)specialStorageUsageForBundleID:(id)a3;
-- (id)checkAndFixUpVersion:(id)a3;
+- (float)sizeForMediaQuery:(id)query withGroupingType:(int64_t)type storingInCache:(id)cache withKey:(id)key;
+- (float)specialStorageUsageForBundleID:(id)d;
+- (id)checkAndFixUpVersion:(id)version;
 - (void)cancelUsageDataPopulation;
 - (void)populateMediaCache;
-- (void)populateUsageAppsCacheWithHandler:(id)a3;
-- (void)populateUsageBundlesCacheWithHandler:(id)a3;
-- (void)populateUsageDataWithProgressBlock:(id)a3;
+- (void)populateUsageAppsCacheWithHandler:(id)handler;
+- (void)populateUsageBundlesCacheWithHandler:(id)handler;
+- (void)populateUsageDataWithProgressBlock:(id)block;
 @end
 
 @implementation ICQUsageStorageCache
@@ -27,15 +27,15 @@
   return v2;
 }
 
-- (void)populateUsageDataWithProgressBlock:(id)a3
+- (void)populateUsageDataWithProgressBlock:(id)block
 {
-  v4 = a3;
-  if (!v4)
+  blockCopy = block;
+  if (!blockCopy)
   {
     [ICQUsageStorageCache populateUsageDataWithProgressBlock:];
   }
 
-  v5 = v4;
+  v5 = blockCopy;
   v14[0] = 0;
   v14[1] = v14;
   v14[2] = 0x3032000000;
@@ -228,10 +228,10 @@ void __59__ICQUsageStorageCache_populateUsageDataWithProgressBlock___block_invok
   dispatch_async(cache_operation_queue, block);
 }
 
-- (void)populateUsageBundlesCacheWithHandler:(id)a3
+- (void)populateUsageBundlesCacheWithHandler:(id)handler
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   if (!self->_usageBundlesCache)
   {
     usageBundlesManager = self->_usageBundlesManager;
@@ -244,12 +244,12 @@ void __59__ICQUsageStorageCache_populateUsageDataWithProgressBlock___block_invok
       usageBundlesManager = self->_usageBundlesManager;
     }
 
-    [(PSUsageBundleManager *)usageBundlesManager vendUsageBundleAppsWithHandler:v4];
+    [(PSUsageBundleManager *)usageBundlesManager vendUsageBundleAppsWithHandler:handlerCopy];
     if (!self->_cacheUpdateCancelled)
     {
-      v8 = [(PSUsageBundleManager *)self->_usageBundlesManager allUsageBundleApps];
+      allUsageBundleApps = [(PSUsageBundleManager *)self->_usageBundlesManager allUsageBundleApps];
       usageBundlesCache = self->_usageBundlesCache;
-      self->_usageBundlesCache = v8;
+      self->_usageBundlesCache = allUsageBundleApps;
 
       v10 = ICQUSLogForCategory(0);
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -263,32 +263,32 @@ void __59__ICQUsageStorageCache_populateUsageDataWithProgressBlock___block_invok
   }
 }
 
-- (float)sizeForMediaQuery:(id)a3 withGroupingType:(int64_t)a4 storingInCache:(id)a5 withKey:(id)a6
+- (float)sizeForMediaQuery:(id)query withGroupingType:(int64_t)type storingInCache:(id)cache withKey:(id)key
 {
   v63 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  queryCopy = query;
+  cacheCopy = cache;
+  keyCopy = key;
   v12 = [MEMORY[0x277CD5E30] predicateWithValue:MEMORY[0x277CBEC38] forProperty:*MEMORY[0x277CD5790]];
-  [v9 addFilterPredicate:v12];
+  [queryCopy addFilterPredicate:v12];
 
   v13 = objc_opt_new();
-  if (a4)
+  if (type)
   {
-    [v9 setGroupingType:a4];
-    v14 = [v9 collections];
-    if ([v14 count])
+    [queryCopy setGroupingType:type];
+    collections = [queryCopy collections];
+    if ([collections count])
     {
       v43 = v13;
-      v44 = v11;
-      v45 = v10;
-      v46 = v9;
-      v15 = [MEMORY[0x277CBEB18] array];
+      v44 = keyCopy;
+      v45 = cacheCopy;
+      v46 = queryCopy;
+      array = [MEMORY[0x277CBEB18] array];
       v56 = 0u;
       v57 = 0u;
       v58 = 0u;
       v59 = 0u;
-      obj = v14;
+      obj = collections;
       v16 = [obj countByEnumeratingWithState:&v56 objects:v62 count:16];
       if (v16)
       {
@@ -310,8 +310,8 @@ void __59__ICQUsageStorageCache_populateUsageDataWithProgressBlock___block_invok
             v53 = 0u;
             v54 = 0u;
             v55 = 0u;
-            v23 = [v22 items];
-            v24 = [v23 countByEnumeratingWithState:&v52 objects:v61 count:16];
+            items = [v22 items];
+            v24 = [items countByEnumeratingWithState:&v52 objects:v61 count:16];
             if (v24)
             {
               v25 = v24;
@@ -323,7 +323,7 @@ void __59__ICQUsageStorageCache_populateUsageDataWithProgressBlock___block_invok
                 {
                   if (*v53 != v26)
                   {
-                    objc_enumerationMutation(v23);
+                    objc_enumerationMutation(items);
                   }
 
                   v29 = [*(*(&v52 + 1) + 8 * j) valueForProperty:v19];
@@ -331,7 +331,7 @@ void __59__ICQUsageStorageCache_populateUsageDataWithProgressBlock___block_invok
                   v27 = v27 + v30;
                 }
 
-                v25 = [v23 countByEnumeratingWithState:&v52 objects:v61 count:16];
+                v25 = [items countByEnumeratingWithState:&v52 objects:v61 count:16];
               }
 
               while (v25);
@@ -345,7 +345,7 @@ void __59__ICQUsageStorageCache_populateUsageDataWithProgressBlock___block_invok
             v20 = v20 + v27;
             *&v31 = v27;
             v32 = [MEMORY[0x277CCABB0] numberWithFloat:v31];
-            [v15 addObject:v32];
+            [array addObject:v32];
           }
 
           v17 = [obj countByEnumeratingWithState:&v56 objects:v62 count:16];
@@ -359,18 +359,18 @@ void __59__ICQUsageStorageCache_populateUsageDataWithProgressBlock___block_invok
         v20 = 0.0;
       }
 
-      v14 = obj;
+      collections = obj;
 
       v13 = v43;
       [v43 setGrouped:1];
       [v43 setItems:obj];
       *&v40 = v20;
       [v43 setTotalSize:v40];
-      [v43 setItemSizes:v15];
+      [v43 setItemSizes:array];
 
-      v10 = v45;
-      v9 = v46;
-      v11 = v44;
+      cacheCopy = v45;
+      queryCopy = v46;
+      keyCopy = v44;
       goto LABEL_34;
     }
 
@@ -379,8 +379,8 @@ LABEL_29:
     goto LABEL_34;
   }
 
-  v14 = [v9 items];
-  if (![v14 count])
+  collections = [queryCopy items];
+  if (![collections count])
   {
     goto LABEL_29;
   }
@@ -389,8 +389,8 @@ LABEL_29:
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v14 = v14;
-  v33 = [v14 countByEnumeratingWithState:&v48 objects:v60 count:16];
+  collections = collections;
+  v33 = [collections countByEnumeratingWithState:&v48 objects:v60 count:16];
   if (v33)
   {
     v34 = v33;
@@ -403,7 +403,7 @@ LABEL_29:
       {
         if (*v49 != v35)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(collections);
         }
 
         v38 = [*(*(&v48 + 1) + 8 * k) valueForProperty:v36];
@@ -411,7 +411,7 @@ LABEL_29:
         v20 = v20 + v39;
       }
 
-      v34 = [v14 countByEnumeratingWithState:&v48 objects:v60 count:16];
+      v34 = [collections countByEnumeratingWithState:&v48 objects:v60 count:16];
     }
 
     while (v34);
@@ -422,12 +422,12 @@ LABEL_29:
     v20 = 0.0;
   }
 
-  [v13 setItems:v14];
+  [v13 setItems:collections];
   *&v41 = v20;
   [v13 setTotalSize:v41];
 LABEL_34:
 
-  [v10 setObject:v13 forKey:v11];
+  [cacheCopy setObject:v13 forKey:keyCopy];
   return v20;
 }
 
@@ -441,12 +441,12 @@ LABEL_34:
 
     [MEMORY[0x277CD5E38] setFilteringDisabled:1];
     v5 = MEMORY[0x277CD5E10];
-    v6 = [MEMORY[0x277CD5E10] deviceMediaLibrary];
-    v7 = [v6 libraryDataProvider];
-    [v5 reloadDynamicPropertiesForLibraryDataProvider:v7];
+    deviceMediaLibrary = [MEMORY[0x277CD5E10] deviceMediaLibrary];
+    libraryDataProvider = [deviceMediaLibrary libraryDataProvider];
+    [v5 reloadDynamicPropertiesForLibraryDataProvider:libraryDataProvider];
 
-    v8 = [MEMORY[0x277CD5E38] ITunesUAudioQuery];
-    [(ICQUsageStorageCache *)self sizeForMediaQuery:v8 withGroupingType:1 storingInCache:self->_mediaCache withKey:@"audiocourses"];
+    iTunesUAudioQuery = [MEMORY[0x277CD5E38] ITunesUAudioQuery];
+    [(ICQUsageStorageCache *)self sizeForMediaQuery:iTunesUAudioQuery withGroupingType:1 storingInCache:self->_mediaCache withKey:@"audiocourses"];
 
     if (self->_cacheUpdateCancelled)
     {
@@ -536,51 +536,51 @@ void __42__ICQUsageStorageCache_populateMediaCache__block_invoke(void *a1, uint6
   }
 }
 
-- (id)checkAndFixUpVersion:(id)a3
+- (id)checkAndFixUpVersion:(id)version
 {
-  v3 = a3;
+  versionCopy = version;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(__CFString *)v3 stringValue];
+    stringValue = [(__CFString *)versionCopy stringValue];
 LABEL_6:
 
-    v3 = v4;
+    versionCopy = stringValue;
     goto LABEL_7;
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || ![(__CFString *)v3 length])
+  if ((objc_opt_isKindOfClass() & 1) == 0 || ![(__CFString *)versionCopy length])
   {
-    v4 = &stru_28844FC60;
+    stringValue = &stru_28844FC60;
     goto LABEL_6;
   }
 
 LABEL_7:
 
-  return v3;
+  return versionCopy;
 }
 
-- (float)specialStorageUsageForBundleID:(id)a3
+- (float)specialStorageUsageForBundleID:(id)d
 {
   v56 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dCopy = d;
   v4 = 0.0;
-  if (![v3 isEqualToString:*MEMORY[0x277D3FDE8]])
+  if (![dCopy isEqualToString:*MEMORY[0x277D3FDE8]])
   {
     goto LABEL_43;
   }
 
   v43 = objc_alloc_init(MEMORY[0x277CCAA00]);
   v5 = [v43 URLForDirectory:13 inDomain:1 appropriateForURL:0 create:1 error:0];
-  v6 = [v5 path];
+  path = [v5 path];
 
-  v7 = [MEMORY[0x277CCA8D8] mainBundle];
-  v8 = [v7 bundleIdentifier];
-  v9 = v8;
-  if (v8)
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v9 = bundleIdentifier;
+  if (bundleIdentifier)
   {
-    v10 = v8;
+    v10 = bundleIdentifier;
   }
 
   else
@@ -588,7 +588,7 @@ LABEL_7:
     v10 = &stru_28844FC60;
   }
 
-  v11 = [v6 stringByAppendingPathComponent:v10];
+  v11 = [path stringByAppendingPathComponent:v10];
 
   v41 = [v11 stringByAppendingPathComponent:@"iBooksSizingCache.plist"];
   v12 = [MEMORY[0x277CBEB38] dictionaryWithContentsOfFile:?];
@@ -596,15 +596,15 @@ LABEL_7:
   v42 = v11;
   if (v12)
   {
-    v14 = v12;
+    dictionary = v12;
   }
 
   else
   {
-    v14 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
   }
 
-  v45 = v14;
+  v45 = dictionary;
 
   v15 = [MEMORY[0x277CBEB58] set];
   [v43 enumeratorAtPath:@"/var/mobile/Media/Books"];
@@ -623,7 +623,7 @@ LABEL_31:
   }
 
   v18 = v17;
-  v40 = v3;
+  v40 = dCopy;
   v19 = 0;
   v16 = 0;
   v20 = *v51;
@@ -647,15 +647,15 @@ LABEL_31:
         v16 = 0;
       }
 
-      v25 = [v22 pathExtension];
-      if (([v25 isEqualToString:@"epub"] & 1) != 0 || objc_msgSend(v25, "isEqualToString:", @"ibooks"))
+      pathExtension = [v22 pathExtension];
+      if (([pathExtension isEqualToString:@"epub"] & 1) != 0 || objc_msgSend(pathExtension, "isEqualToString:", @"ibooks"))
       {
         [v15 addObject:v22];
         v26 = [v45 objectForKey:v22];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v27 = [v26 unsignedLongLongValue];
+          unsignedLongLongValue = [v26 unsignedLongLongValue];
           [obj skipDescendants];
 
           goto LABEL_27;
@@ -675,11 +675,11 @@ LABEL_31:
       }
 
       v28 = [v43 attributesOfItemAtPath:v23 error:0];
-      v27 = [v28 fileSize];
+      unsignedLongLongValue = [v28 fileSize];
 
       if (v16)
       {
-        v29 = v27;
+        v29 = unsignedLongLongValue;
       }
 
       else
@@ -689,7 +689,7 @@ LABEL_31:
 
       v19 += v29;
 LABEL_27:
-      v4 = v4 + v27;
+      v4 = v4 + unsignedLongLongValue;
     }
 
     v18 = [obj countByEnumeratingWithState:&v50 objects:v55 count:16];
@@ -702,14 +702,14 @@ LABEL_27:
     v30 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v19];
     [v45 setObject:v30 forKey:v16];
 
-    v3 = v40;
+    dCopy = v40;
     goto LABEL_31;
   }
 
-  v3 = v40;
+  dCopy = v40;
   v31 = v42;
 LABEL_33:
-  v32 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
@@ -732,7 +732,7 @@ LABEL_33:
         v38 = *(*(&v46 + 1) + 8 * j);
         if (([v15 containsObject:v38] & 1) == 0)
         {
-          [v32 addObject:v38];
+          [array addObject:v38];
         }
       }
 
@@ -742,16 +742,16 @@ LABEL_33:
     while (v35);
   }
 
-  [v33 removeObjectsForKeys:v32];
+  [v33 removeObjectsForKeys:array];
   [v33 writeToFile:v41 atomically:1];
 
 LABEL_43:
   return v4;
 }
 
-- (void)populateUsageAppsCacheWithHandler:(id)a3
+- (void)populateUsageAppsCacheWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (!self->_appsCache)
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -760,14 +760,14 @@ LABEL_43:
 
     v7 = [MEMORY[0x277CBEB98] setWithObjects:{*MEMORY[0x277D3FDE8], *MEMORY[0x277D3FDE0], 0}];
     v8 = objc_opt_new();
-    v9 = [MEMORY[0x277CC1E80] defaultWorkspace];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __58__ICQUsageStorageCache_populateUsageAppsCacheWithHandler___block_invoke;
     v26[3] = &unk_27A65BF38;
     v10 = v8;
     v27 = v10;
-    [v9 enumerateBundlesOfType:1 block:v26];
+    [defaultWorkspace enumerateBundlesOfType:1 block:v26];
 
     v22 = 0;
     v23 = &v22;
@@ -784,8 +784,8 @@ LABEL_43:
     v17 = v13;
     v14 = v7;
     v18 = v14;
-    v19 = self;
-    v20 = v4;
+    selfCopy = self;
+    v20 = handlerCopy;
     dispatch_apply(v11, v12, block);
 
     if (*(v23 + 24) == 1)

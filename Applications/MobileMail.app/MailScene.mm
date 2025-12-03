@@ -2,7 +2,7 @@
 + (NSArray)menuCommands;
 + (OS_os_log)log;
 - (BOOL)allowsBackgroundMonitoring;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)isInExpandedEnvironment;
 - (EMDaemonInterface)daemonInterface;
 - (MFAlertOverlayController)alertOverlayController;
@@ -15,30 +15,30 @@
 - (NSString)ef_publicDescription;
 - (id)_createURLRoutes;
 - (id)undoManager;
-- (id)undoManagerForWindow:(id)a3;
-- (unint64_t)urlRouter:(id)a3 decidePolicyForRoutingRequest:(id)a4;
-- (void)_escapeShortcutInvoked:(id)a3;
-- (void)_freeDiskSpaceStatusDidChange:(id)a3;
-- (void)_messageViewerWindowShortcutInvoked:(id)a3;
-- (void)_newWindowShortcutInvoked:(id)a3;
-- (void)_switchToComposeSceneWithContext:(id)a3 modifiedContentsURL:(id)a4 isReply:(BOOL)a5 composeType:(int64_t)a6;
-- (void)addBackgroundMonitor:(id)a3;
-- (void)assetViewerManager:(id)a3 editCompletedForHandler:(id)a4 URL:(id)a5;
-- (void)assetViewerManager:(id)a3 sceneClosedForHandler:(id)a4;
+- (id)undoManagerForWindow:(id)window;
+- (unint64_t)urlRouter:(id)router decidePolicyForRoutingRequest:(id)request;
+- (void)_escapeShortcutInvoked:(id)invoked;
+- (void)_freeDiskSpaceStatusDidChange:(id)change;
+- (void)_messageViewerWindowShortcutInvoked:(id)invoked;
+- (void)_newWindowShortcutInvoked:(id)invoked;
+- (void)_switchToComposeSceneWithContext:(id)context modifiedContentsURL:(id)l isReply:(BOOL)reply composeType:(int64_t)type;
+- (void)addBackgroundMonitor:(id)monitor;
+- (void)assetViewerManager:(id)manager editCompletedForHandler:(id)handler URL:(id)l;
+- (void)assetViewerManager:(id)manager sceneClosedForHandler:(id)handler;
 - (void)beginBackgroundMonitoring;
-- (void)closeSceneWithAnimation:(int64_t)a3 errorHandler:(id)a4;
-- (void)displayError:(id)a3 forAccount:(id)a4 mode:(int64_t)a5;
+- (void)closeSceneWithAnimation:(int64_t)animation errorHandler:(id)handler;
+- (void)displayError:(id)error forAccount:(id)account mode:(int64_t)mode;
 - (void)endBackgroundMonitoring;
 - (void)mailSceneDebugGesturePerformed;
-- (void)mailSceneDidConnectWithOptions:(id)a3;
+- (void)mailSceneDidConnectWithOptions:(id)options;
 - (void)mailSceneDidEnterBackground;
-- (void)mailSceneOpenURLContexts:(id)a3;
+- (void)mailSceneOpenURLContexts:(id)contexts;
 - (void)mailSceneWillEnterForeground;
 - (void)mailSceneWillResignActive;
 - (void)mf_resetPreferredTitle;
-- (void)monitor:(id)a3 requestsAction:(int64_t)a4;
-- (void)redo:(id)a3;
-- (void)undo:(id)a3;
+- (void)monitor:(id)monitor requestsAction:(int64_t)action;
+- (void)redo:(id)redo;
+- (void)undo:(id)undo;
 @end
 
 @implementation MailScene
@@ -46,17 +46,17 @@
 - (EMDaemonInterface)daemonInterface
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 daemonInterface];
+  daemonInterface = [v2 daemonInterface];
 
-  return v3;
+  return daemonInterface;
 }
 
 - (NSString)ef_publicDescription
 {
   v3 = objc_opt_class();
-  v4 = [(MailScene *)self session];
-  v5 = [v4 persistentIdentifier];
-  v6 = [NSString stringWithFormat:@"%@:%@", v3, v5];
+  session = [(MailScene *)self session];
+  persistentIdentifier = [session persistentIdentifier];
+  v6 = [NSString stringWithFormat:@"%@:%@", v3, persistentIdentifier];
 
   return v6;
 }
@@ -64,14 +64,14 @@
 - (void)mailSceneWillEnterForeground
 {
   [(MailScene *)self endBackgroundMonitoring];
-  v3 = [(MailScene *)self daemonBooster];
+  daemonBooster = [(MailScene *)self daemonBooster];
 
-  if (!v3)
+  if (!daemonBooster)
   {
-    v4 = [(MailScene *)self daemonInterface];
-    v5 = [v4 clientState];
-    v6 = [(MailScene *)self ef_publicDescription];
-    v7 = [v5 daemonBoosterWithDescription:v6];
+    daemonInterface = [(MailScene *)self daemonInterface];
+    clientState = [daemonInterface clientState];
+    ef_publicDescription = [(MailScene *)self ef_publicDescription];
+    v7 = [clientState daemonBoosterWithDescription:ef_publicDescription];
     [(MailScene *)self setDaemonBooster:v7];
   }
 
@@ -80,13 +80,13 @@
 
 - (void)endBackgroundMonitoring
 {
-  v3 = [(MailScene *)self backgroundMonitors];
-  v4 = [v3 allObjects];
+  backgroundMonitors = [(MailScene *)self backgroundMonitors];
+  allObjects = [backgroundMonitors allObjects];
 
-  v5 = [(MailScene *)self backgroundMonitors];
-  [v5 removeAllObjects];
+  backgroundMonitors2 = [(MailScene *)self backgroundMonitors];
+  [backgroundMonitors2 removeAllObjects];
 
-  if ([v4 count])
+  if ([allObjects count])
   {
     v6 = +[MailScene log];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -99,7 +99,7 @@
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v7 = v4;
+    v7 = allObjects;
     v8 = [v7 countByEnumeratingWithState:&v15 objects:v21 count:16];
     if (v8)
     {
@@ -155,35 +155,35 @@
 
 - (void)mf_resetPreferredTitle
 {
-  v5 = [(MailScene *)self mf_window];
-  v3 = [v5 rootViewController];
-  v4 = [v3 mf_preferredTitle];
-  [(MailScene *)self setTitle:v4];
+  mf_window = [(MailScene *)self mf_window];
+  rootViewController = [mf_window rootViewController];
+  mf_preferredTitle = [rootViewController mf_preferredTitle];
+  [(MailScene *)self setTitle:mf_preferredTitle];
 }
 
 - (MFWindow)mf_window
 {
-  v2 = [(MailScene *)self delegate];
+  delegate = [(MailScene *)self delegate];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 window];
+    window = [delegate window];
   }
 
   else
   {
-    v3 = 0;
+    window = 0;
   }
 
-  return v3;
+  return window;
 }
 
 - (BOOL)isInExpandedEnvironment
 {
   if ([(MailScene *)self conformsToProtocol:&OBJC_PROTOCOL___SplitLayoutCapable])
   {
-    v3 = [(MailScene *)self splitViewController];
-    v4 = [v3 isCollapsed] ^ 1;
+    splitViewController = [(MailScene *)self splitViewController];
+    v4 = [splitViewController isCollapsed] ^ 1;
   }
 
   else
@@ -200,7 +200,7 @@
   block[1] = 3221225472;
   block[2] = sub_10001C3F8;
   block[3] = &unk_10064C4F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006DD130 != -1)
   {
     dispatch_once(&qword_1006DD130, block);
@@ -245,18 +245,18 @@
   return v8;
 }
 
-- (void)mailSceneDidConnectWithOptions:(id)a3
+- (void)mailSceneDidConnectWithOptions:(id)options
 {
-  v4 = [(MailScene *)self daemonInterface];
-  v5 = [v4 clientState];
-  v6 = [(MailScene *)self ef_publicDescription];
-  v7 = [v5 daemonBoosterWithDescription:v6];
+  daemonInterface = [(MailScene *)self daemonInterface];
+  clientState = [daemonInterface clientState];
+  ef_publicDescription = [(MailScene *)self ef_publicDescription];
+  v7 = [clientState daemonBoosterWithDescription:ef_publicDescription];
   [(MailScene *)self setDaemonBooster:v7];
 
   v8 = +[EFDevice currentDevice];
-  LODWORD(v5) = [v8 isInternal];
+  LODWORD(clientState) = [v8 isInternal];
 
-  if (v5)
+  if (clientState)
   {
     objc_initWeak(&location, self);
     v11 = _NSConcreteStackBlock;
@@ -294,17 +294,17 @@
 - (MFMailboxProvider)mailboxProvider
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 mailboxProvider];
+  mailboxProvider = [v2 mailboxProvider];
 
-  return v3;
+  return mailboxProvider;
 }
 
 - (MUIBrandIndicatorProvider)brandIndicatorProvider
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 brandIndicatorProvider];
+  brandIndicatorProvider = [v2 brandIndicatorProvider];
 
-  return v3;
+  return brandIndicatorProvider;
 }
 
 - (MFMailAssetViewerManager)assetViewerManager
@@ -332,46 +332,46 @@
   return alertOverlayController;
 }
 
-- (void)_switchToComposeSceneWithContext:(id)a3 modifiedContentsURL:(id)a4 isReply:(BOOL)a5 composeType:(int64_t)a6
+- (void)_switchToComposeSceneWithContext:(id)context modifiedContentsURL:(id)l isReply:(BOOL)reply composeType:(int64_t)type
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
+  replyCopy = reply;
+  contextCopy = context;
+  lCopy = l;
   v12 = [NSMutableDictionary alloc];
   v36 = MSMailActivityHandoffTypeKey;
   v37 = MSMailActivityHandoffTypeComposeSansStreams;
   v13 = [NSDictionary dictionaryWithObjects:&v37 forKeys:&v36 count:1];
   v14 = [v12 initWithDictionary:v13];
 
-  v15 = [v10 subject];
-  if (v15 && ([v10 messageObjectID], v16 = objc_claimAutoreleasedReturnValue(), v17 = v16 != 0, v16, v15, v7 && v17))
+  subject = [contextCopy subject];
+  if (subject && ([contextCopy messageObjectID], v16 = objc_claimAutoreleasedReturnValue(), v17 = v16 != 0, v16, subject, replyCopy && v17))
   {
-    v18 = [NSNumber numberWithInteger:a6];
+    v18 = [NSNumber numberWithInteger:type];
     [v14 setObject:v18 forKeyedSubscript:MSMailActivityHandoffComposeKeyComposeType];
 
-    v19 = [v10 messageObjectID];
-    v20 = [v19 serializedRepresentation];
-    [v14 setObject:v20 forKeyedSubscript:MSMailActivityHandoffComposeKeyMessageObjectIDRepresentation];
+    messageObjectID = [contextCopy messageObjectID];
+    serializedRepresentation = [messageObjectID serializedRepresentation];
+    [v14 setObject:serializedRepresentation forKeyedSubscript:MSMailActivityHandoffComposeKeyMessageObjectIDRepresentation];
 
-    v21 = [v10 subject];
-    [v14 setObject:v21 forKeyedSubscript:MSMailActivityHandoffComposeKeySubject];
+    subject2 = [contextCopy subject];
+    [v14 setObject:subject2 forKeyedSubscript:MSMailActivityHandoffComposeKeySubject];
 
-    v22 = [v10 senderDisplayName];
-    [v14 setObject:v22 forKeyedSubscript:MSMailQuickLookActivityKeySenderDisplayName];
+    senderDisplayName = [contextCopy senderDisplayName];
+    [v14 setObject:senderDisplayName forKeyedSubscript:MSMailQuickLookActivityKeySenderDisplayName];
 
-    v23 = [v10 mailboxObjectID];
+    mailboxObjectID = [contextCopy mailboxObjectID];
 
-    if (v23)
+    if (mailboxObjectID)
     {
-      v24 = [v10 mailboxObjectID];
-      v25 = [v24 serializedRepresentation];
-      [v14 setObject:v25 forKeyedSubscript:MSMailActivityHandoffComposeKeyMailboxObjectIDRepresentation];
+      mailboxObjectID2 = [contextCopy mailboxObjectID];
+      serializedRepresentation2 = [mailboxObjectID2 serializedRepresentation];
+      [v14 setObject:serializedRepresentation2 forKeyedSubscript:MSMailActivityHandoffComposeKeyMailboxObjectIDRepresentation];
     }
   }
 
   else
   {
-    if (v7)
+    if (replyCopy)
     {
       v26 = +[MailScene log];
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -383,23 +383,23 @@
     [v14 setObject:&off_1006741B0 forKeyedSubscript:MSMailActivityHandoffComposeKeyComposeType];
   }
 
-  if (v11)
+  if (lCopy)
   {
     v27 = +[NSFileManager defaultManager];
     v35 = 0;
-    v28 = [v27 mf_copyFileAtURLToContainer:v11 securityScoped:1 preferredFileName:0 error:&v35];
+    v28 = [v27 mf_copyFileAtURLToContainer:lCopy securityScoped:1 preferredFileName:0 error:&v35];
     v29 = v35;
 
     if (v28)
     {
-      v30 = [v28 absoluteString];
-      [v14 setObject:v30 forKeyedSubscript:MSMailQuickLookActivityKeyContentURL];
+      absoluteString = [v28 absoluteString];
+      [v14 setObject:absoluteString forKeyedSubscript:MSMailQuickLookActivityKeyContentURL];
     }
 
     else
     {
-      v30 = +[MailScene log];
-      if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
+      absoluteString = +[MailScene log];
+      if (os_log_type_enabled(absoluteString, OS_LOG_TYPE_ERROR))
       {
         [v29 ef_publicDescription];
         objc_claimAutoreleasedReturnValue();
@@ -427,14 +427,14 @@
   [v34 requestSceneSessionActivation:0 userActivity:v33 options:v31 errorHandler:0];
 }
 
-- (void)mailSceneOpenURLContexts:(id)a3
+- (void)mailSceneOpenURLContexts:(id)contexts
 {
-  v6 = [a3 anyObject];
-  if (v6)
+  anyObject = [contexts anyObject];
+  if (anyObject)
   {
-    v4 = [(MailScene *)self urlRouter];
-    v5 = [MFURLRoutingRequest externalRequestWithOpenURLContext:v6];
-    [v4 routeRequest:v5];
+    urlRouter = [(MailScene *)self urlRouter];
+    v5 = [MFURLRoutingRequest externalRequestWithOpenURLContext:anyObject];
+    [urlRouter routeRequest:v5];
   }
 }
 
@@ -444,8 +444,8 @@
   if (!urlRouter)
   {
     v4 = [MFURLRouter alloc];
-    v5 = [(MailScene *)self _createURLRoutes];
-    v6 = [(MFURLRouter *)v4 initWithRoutes:v5];
+    _createURLRoutes = [(MailScene *)self _createURLRoutes];
+    v6 = [(MFURLRouter *)v4 initWithRoutes:_createURLRoutes];
     v7 = self->_urlRouter;
     self->_urlRouter = v6;
 
@@ -474,13 +474,13 @@
   return v6;
 }
 
-- (unint64_t)urlRouter:(id)a3 decidePolicyForRoutingRequest:(id)a4
+- (unint64_t)urlRouter:(id)router decidePolicyForRoutingRequest:(id)request
 {
-  v4 = a4;
-  v5 = [v4 URL];
-  v6 = [v5 mf_isOAuthRedirectURL];
+  requestCopy = request;
+  v5 = [requestCopy URL];
+  mf_isOAuthRedirectURL = [v5 mf_isOAuthRedirectURL];
 
-  if ((v6 & 1) != 0 || (+[MFDiskFreeSpaceMonitor defaultMonitor](MFDiskFreeSpaceMonitor, "defaultMonitor"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isFreeSpaceCritical], v7, !v8))
+  if ((mf_isOAuthRedirectURL & 1) != 0 || (+[MFDiskFreeSpaceMonitor defaultMonitor](MFDiskFreeSpaceMonitor, "defaultMonitor"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isFreeSpaceCritical], v7, !v8))
   {
     v10 = 0;
   }
@@ -490,7 +490,7 @@
     v9 = +[MailScene log];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [v4 ef_publicDescription];
+      [requestCopy ef_publicDescription];
       objc_claimAutoreleasedReturnValue();
       sub_100489328();
     }
@@ -501,10 +501,10 @@
   return v10;
 }
 
-- (void)displayError:(id)a3 forAccount:(id)a4 mode:(int64_t)a5
+- (void)displayError:(id)error forAccount:(id)account mode:(int64_t)mode
 {
-  v8 = a3;
-  v9 = a4;
+  errorCopy = error;
+  accountCopy = account;
   [(MailScene *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[MailScene displayError:forAccount:mode:]", "MailScene.m", 263, "0");
 }
@@ -512,64 +512,64 @@
 - (void)mailSceneDebugGesturePerformed
 {
   v4 = [[MFMailDebugMenuController alloc] initWithScene:self];
-  v3 = [(MailScene *)self mf_rootViewController];
-  [v3 presentViewController:v4 animated:1 completion:0];
+  mf_rootViewController = [(MailScene *)self mf_rootViewController];
+  [mf_rootViewController presentViewController:v4 animated:1 completion:0];
 }
 
-- (void)closeSceneWithAnimation:(int64_t)a3 errorHandler:(id)a4
+- (void)closeSceneWithAnimation:(int64_t)animation errorHandler:(id)handler
 {
-  v9 = a4;
+  handlerCopy = handler;
   v6 = objc_alloc_init(UIWindowSceneDestructionRequestOptions);
-  [v6 setWindowDismissalAnimation:a3];
+  [v6 setWindowDismissalAnimation:animation];
   v7 = +[UIApplication sharedApplication];
-  v8 = [(MailScene *)self session];
-  [v7 requestSceneSessionDestruction:v8 options:v6 errorHandler:v9];
+  session = [(MailScene *)self session];
+  [v7 requestSceneSessionDestruction:session options:v6 errorHandler:handlerCopy];
 }
 
-- (id)undoManagerForWindow:(id)a3
+- (id)undoManagerForWindow:(id)window
 {
-  v3 = [(MailScene *)self undoManager];
+  undoManager = [(MailScene *)self undoManager];
 
-  return v3;
+  return undoManager;
 }
 
-- (void)_escapeShortcutInvoked:(id)a3
+- (void)_escapeShortcutInvoked:(id)invoked
 {
   if ([(MailScene *)self conformsToProtocol:&OBJC_PROTOCOL___SplitLayoutCapable])
   {
-    v4 = [(MailScene *)self splitViewController];
+    splitViewController = [(MailScene *)self splitViewController];
   }
 
   else
   {
-    v4 = 0;
+    splitViewController = 0;
   }
 
-  v6 = v4;
-  v5 = [v4 presentedViewController];
+  v6 = splitViewController;
+  presentedViewController = [splitViewController presentedViewController];
 
-  if (v5)
+  if (presentedViewController)
   {
     [v6 dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (void)_newWindowShortcutInvoked:(id)a3
+- (void)_newWindowShortcutInvoked:(id)invoked
 {
   v3 = +[UIApplication sharedApplication];
   [v3 requestSceneSessionActivation:0 userActivity:0 options:0 errorHandler:&stru_100650F88];
 }
 
-- (void)_messageViewerWindowShortcutInvoked:(id)a3
+- (void)_messageViewerWindowShortcutInvoked:(id)invoked
 {
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 openSessions];
+  openSessions = [v3 openSessions];
 
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [openSessions countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = *v14;
@@ -579,7 +579,7 @@ LABEL_3:
     {
       if (*v14 != v6)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(openSessions);
       }
 
       v8 = *(*(&v13 + 1) + 8 * v7);
@@ -590,7 +590,7 @@ LABEL_3:
 
       if (v5 == ++v7)
       {
-        v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v5 = [openSessions countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v5)
         {
           goto LABEL_3;
@@ -626,10 +626,10 @@ LABEL_12:
   [v11 activateSceneSessionForRequest:v9 errorHandler:&stru_100650FA8];
 }
 
-- (void)addBackgroundMonitor:(id)a3
+- (void)addBackgroundMonitor:(id)monitor
 {
-  v4 = a3;
-  if (v4)
+  monitorCopy = monitor;
+  if (monitorCopy)
   {
     if ([(MailScene *)self allowsBackgroundMonitoring])
     {
@@ -637,12 +637,12 @@ LABEL_12:
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
         v9 = 138543362;
-        v10 = v4;
+        v10 = monitorCopy;
         _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Added background monitor: %{public}@", &v9, 0xCu);
       }
 
-      v6 = [(MailScene *)self backgroundMonitors];
-      [v6 addObject:v4];
+      backgroundMonitors = [(MailScene *)self backgroundMonitors];
+      [backgroundMonitors addObject:monitorCopy];
 
       if ([(MailScene *)self activationState]== 2)
       {
@@ -650,11 +650,11 @@ LABEL_12:
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
         {
           v9 = 138543362;
-          v10 = v4;
+          v10 = monitorCopy;
           _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Scene is in the background. Starting monitor immediately: %{public}@", &v9, 0xCu);
         }
 
-        [v4 beginMonitoringWithHandler:self];
+        [monitorCopy beginMonitoringWithHandler:self];
       }
     }
   }
@@ -674,8 +674,8 @@ LABEL_12:
 {
   if ([(MailScene *)self allowsBackgroundMonitoring])
   {
-    v3 = [(MailScene *)self backgroundMonitors];
-    v4 = [v3 count];
+    backgroundMonitors = [(MailScene *)self backgroundMonitors];
+    v4 = [backgroundMonitors count];
 
     if (v4)
     {
@@ -690,8 +690,8 @@ LABEL_12:
       v17 = 0u;
       v14 = 0u;
       v15 = 0u;
-      v6 = [(MailScene *)self backgroundMonitors];
-      v7 = [v6 countByEnumeratingWithState:&v14 objects:v20 count:16];
+      backgroundMonitors2 = [(MailScene *)self backgroundMonitors];
+      v7 = [backgroundMonitors2 countByEnumeratingWithState:&v14 objects:v20 count:16];
       if (v7)
       {
         v9 = *v15;
@@ -704,7 +704,7 @@ LABEL_12:
           {
             if (*v15 != v9)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(backgroundMonitors2);
             }
 
             v11 = *(*(&v14 + 1) + 8 * v10);
@@ -721,7 +721,7 @@ LABEL_12:
           }
 
           while (v7 != v10);
-          v7 = [v6 countByEnumeratingWithState:&v14 objects:v20 count:16];
+          v7 = [backgroundMonitors2 countByEnumeratingWithState:&v14 objects:v20 count:16];
         }
 
         while (v7);
@@ -730,34 +730,34 @@ LABEL_12:
   }
 }
 
-- (void)monitor:(id)a3 requestsAction:(int64_t)a4
+- (void)monitor:(id)monitor requestsAction:(int64_t)action
 {
-  v6 = a3;
+  monitorCopy = monitor;
   [(MailScene *)self endBackgroundMonitoring];
   if ([(MailScene *)self allowsBackgroundMonitoring])
   {
     if ([(MailScene *)self activationState]== 2)
     {
-      if (a4 == 1)
+      if (action == 1)
       {
         v9 = +[MailScene log];
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v12 = v6;
+          v12 = monitorCopy;
           _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Monitor requested scene session close: %{public}@. Requesting from system now...", buf, 0xCu);
         }
 
         [(MailScene *)self closeSceneWithAnimation:1];
       }
 
-      else if (!a4)
+      else if (!action)
       {
         v7 = +[MailScene log];
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v12 = v6;
+          v12 = monitorCopy;
           _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Monitor requested scene session refresh: %{public}@. Requesting from system now...", buf, 0xCu);
         }
 
@@ -809,53 +809,53 @@ LABEL_12:
   return (v5 & 1) == 0;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  if ("_escapeShortcutInvoked:" == a3)
+  senderCopy = sender;
+  if ("_escapeShortcutInvoked:" == action)
   {
     v7 = 1;
     goto LABEL_9;
   }
 
-  if ("undo:" == a3)
+  if ("undo:" == action)
   {
-    v8 = [(MailScene *)self undoManager];
-    v9 = [v8 canUndo];
+    undoManager = [(MailScene *)self undoManager];
+    canUndo = [undoManager canUndo];
 LABEL_8:
-    v7 = v9;
+    v7 = canUndo;
 
     goto LABEL_9;
   }
 
-  if ("redo:" == a3)
+  if ("redo:" == action)
   {
-    v8 = [(MailScene *)self undoManager];
-    v9 = [v8 canRedo];
+    undoManager = [(MailScene *)self undoManager];
+    canUndo = [undoManager canRedo];
     goto LABEL_8;
   }
 
   v11.receiver = self;
   v11.super_class = MailScene;
-  v7 = [(MailScene *)&v11 canPerformAction:a3 withSender:v6];
+  v7 = [(MailScene *)&v11 canPerformAction:action withSender:senderCopy];
 LABEL_9:
 
   return v7;
 }
 
-- (void)undo:(id)a3
+- (void)undo:(id)undo
 {
-  v3 = [(MailScene *)self undoManager];
-  [v3 undo];
+  undoManager = [(MailScene *)self undoManager];
+  [undoManager undo];
 }
 
-- (void)redo:(id)a3
+- (void)redo:(id)redo
 {
-  v3 = [(MailScene *)self undoManager];
-  [v3 redo];
+  undoManager = [(MailScene *)self undoManager];
+  [undoManager redo];
 }
 
-- (void)_freeDiskSpaceStatusDidChange:(id)a3
+- (void)_freeDiskSpaceStatusDidChange:(id)change
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
@@ -866,25 +866,25 @@ LABEL_9:
   [v3 performBlock:v4];
 }
 
-- (void)assetViewerManager:(id)a3 editCompletedForHandler:(id)a4 URL:(id)a5
+- (void)assetViewerManager:(id)manager editCompletedForHandler:(id)handler URL:(id)l
 {
-  v6 = a4;
-  v7 = a5;
+  handlerCopy = handler;
+  lCopy = l;
   v8 = +[MailScene log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
-    sub_10048953C(v6, v7, v8);
+    sub_10048953C(handlerCopy, lCopy, v8);
   }
 }
 
-- (void)assetViewerManager:(id)a3 sceneClosedForHandler:(id)a4
+- (void)assetViewerManager:(id)manager sceneClosedForHandler:(id)handler
 {
-  v4 = a4;
+  handlerCopy = handler;
   v5 = +[MailScene log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = handlerCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Asset Viewer sceneClosedForHandler %@", &v6, 0xCu);
   }
 }

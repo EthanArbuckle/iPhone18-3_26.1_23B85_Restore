@@ -6,16 +6,16 @@
 - (BOOL)isUnitedKingdomStorefront;
 - (BOOL)isUnitedStatesStorefront;
 - (SUStocksSettingsController)init;
-- (id)localizedStringResourceWithKey:(id)a3;
+- (id)localizedStringResourceWithKey:(id)key;
 - (id)makeBilingualFeedSpecifier;
 - (id)makeLanguageGroup;
-- (id)makePreferenceSpecifierWithID:(id)a3 name:(id)a4 setter:(SEL)a5 type:(int64_t)a6 keyName:(id)a7 defaultValue:(id)a8;
+- (id)makePreferenceSpecifierWithID:(id)d name:(id)name setter:(SEL)setter type:(int64_t)type keyName:(id)keyName defaultValue:(id)value;
 - (id)makePrivacySpecifier;
 - (id)makeResetPrivacyIdentifierSpecifier;
 - (id)makeSettingsGroup;
 - (id)specifiers;
 - (void)dealloc;
-- (void)setPreferenceValue:(id)a3 specifier:(id)a4 undoActionName:(id)a5 associatedDeepLinkFragment:(id)a6;
+- (void)setPreferenceValue:(id)value specifier:(id)specifier undoActionName:(id)name associatedDeepLinkFragment:(id)fragment;
 - (void)showPrivacyPane;
 @end
 
@@ -45,15 +45,15 @@
   [(SUStocksSettingsController *)&v4 dealloc];
 }
 
-- (id)localizedStringResourceWithKey:(id)a3
+- (id)localizedStringResourceWithKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = [NSBundle bundleForClass:objc_opt_class()];
-  v5 = [v4 bundleURL];
+  bundleURL = [v4 bundleURL];
 
   v6 = [_NSLocalizedStringResource alloc];
   v7 = +[NSLocale currentLocale];
-  v8 = [v6 initWithKey:v3 table:@"Localizable" locale:v7 bundleURL:v5];
+  v8 = [v6 initWithKey:keyCopy table:@"Localizable" locale:v7 bundleURL:bundleURL];
 
   return v8;
 }
@@ -71,26 +71,26 @@
     v7 = [[PSSystemPolicyForApp alloc] initWithBundleIdentifier:@"com.apple.stocks"];
     [(SUStocksSettingsController *)self setAppPolicy:v7];
 
-    v8 = [(SUStocksSettingsController *)self appPolicy];
-    v9 = [v8 specifiers];
-    v10 = [v9 mutableCopy];
+    appPolicy = [(SUStocksSettingsController *)self appPolicy];
+    specifiers = [appPolicy specifiers];
+    v10 = [specifiers mutableCopy];
 
-    v11 = [(SUStocksSettingsController *)self makeSettingsGroup];
-    [v10 addObject:v11];
+    makeSettingsGroup = [(SUStocksSettingsController *)self makeSettingsGroup];
+    [v10 addObject:makeSettingsGroup];
 
-    v12 = [(SUStocksSettingsController *)self makeResetPrivacyIdentifierSpecifier];
-    [v10 addObject:v12];
+    makeResetPrivacyIdentifierSpecifier = [(SUStocksSettingsController *)self makeResetPrivacyIdentifierSpecifier];
+    [v10 addObject:makeResetPrivacyIdentifierSpecifier];
 
-    v13 = [(SUStocksSettingsController *)self makePrivacySpecifier];
-    [v10 addObject:v13];
+    makePrivacySpecifier = [(SUStocksSettingsController *)self makePrivacySpecifier];
+    [v10 addObject:makePrivacySpecifier];
 
     if ([(SUStocksSettingsController *)self isCanadaStorefront]&& [(SUStocksSettingsController *)self isFrenchLanguage])
     {
-      v14 = [(SUStocksSettingsController *)self makeLanguageGroup];
-      [v10 addObject:v14];
+      makeLanguageGroup = [(SUStocksSettingsController *)self makeLanguageGroup];
+      [v10 addObject:makeLanguageGroup];
 
-      v15 = [(SUStocksSettingsController *)self makeBilingualFeedSpecifier];
-      [v10 addObject:v15];
+      makeBilingualFeedSpecifier = [(SUStocksSettingsController *)self makeBilingualFeedSpecifier];
+      [v10 addObject:makeBilingualFeedSpecifier];
     }
 
     v16 = *&self->PSListController_opaque[v3];
@@ -102,22 +102,22 @@
   return v4;
 }
 
-- (void)setPreferenceValue:(id)a3 specifier:(id)a4 undoActionName:(id)a5 associatedDeepLinkFragment:(id)a6
+- (void)setPreferenceValue:(id)value specifier:(id)specifier undoActionName:(id)name associatedDeepLinkFragment:(id)fragment
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a3;
-  v13 = [@"settings-navigation://com.apple.Settings.Apps/com.apple.stocks" stringByAppendingString:a6];
+  specifierCopy = specifier;
+  nameCopy = name;
+  valueCopy = value;
+  v13 = [@"settings-navigation://com.apple.Settings.Apps/com.apple.stocks" stringByAppendingString:fragment];
   v14 = [NSURL URLWithString:v13];
 
   v23.receiver = self;
   v23.super_class = SUStocksSettingsController;
-  v15 = [(SUStocksSettingsController *)&v23 readPreferenceValue:v10];
+  v15 = [(SUStocksSettingsController *)&v23 readPreferenceValue:specifierCopy];
   v22.receiver = self;
   v22.super_class = SUStocksSettingsController;
-  [(SUStocksSettingsController *)&v22 setPreferenceValue:v12 specifier:v10];
+  [(SUStocksSettingsController *)&v22 setPreferenceValue:valueCopy specifier:specifierCopy];
 
-  v16 = [(SUStocksSettingsController *)self localizedStringResourceWithKey:v11];
+  v16 = [(SUStocksSettingsController *)self localizedStringResourceWithKey:nameCopy];
 
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
@@ -125,8 +125,8 @@
   v19[3] = &unk_8338;
   v19[4] = self;
   v20 = v15;
-  v21 = v10;
-  v17 = v10;
+  v21 = specifierCopy;
+  v17 = specifierCopy;
   v18 = v15;
   [(SUStocksSettingsController *)self pe_registerUndoActionName:v16 associatedDeepLink:v14 undoAction:v19];
 }
@@ -141,8 +141,8 @@
 - (BOOL)isCanadaStorefront
 {
   v2 = +[FCAppleAccount sharedAccount];
-  v3 = [v2 contentStoreFrontID];
-  v4 = [v3 isEqualToString:@"143455"];
+  contentStoreFrontID = [v2 contentStoreFrontID];
+  v4 = [contentStoreFrontID isEqualToString:@"143455"];
 
   return v4;
 }
@@ -150,8 +150,8 @@
 - (BOOL)isFrenchLanguage
 {
   v2 = +[NSLocale currentLocale];
-  v3 = [v2 languageCode];
-  v4 = [v3 isEqualToString:@"fr"];
+  languageCode = [v2 languageCode];
+  v4 = [languageCode isEqualToString:@"fr"];
 
   return v4;
 }
@@ -159,8 +159,8 @@
 - (BOOL)isUnitedKingdomStorefront
 {
   v2 = +[FCAppleAccount sharedAccount];
-  v3 = [v2 contentStoreFrontID];
-  v4 = [v3 isEqualToString:@"143444"];
+  contentStoreFrontID = [v2 contentStoreFrontID];
+  v4 = [contentStoreFrontID isEqualToString:@"143444"];
 
   return v4;
 }
@@ -168,8 +168,8 @@
 - (BOOL)isAustraliaStorefront
 {
   v2 = +[FCAppleAccount sharedAccount];
-  v3 = [v2 contentStoreFrontID];
-  v4 = [v3 isEqualToString:@"143460"];
+  contentStoreFrontID = [v2 contentStoreFrontID];
+  v4 = [contentStoreFrontID isEqualToString:@"143460"];
 
   return v4;
 }
@@ -177,8 +177,8 @@
 - (BOOL)isUnitedStatesStorefront
 {
   v2 = +[FCAppleAccount sharedAccount];
-  v3 = [v2 contentStoreFrontID];
-  v4 = [v3 isEqualToString:@"143441"];
+  contentStoreFrontID = [v2 contentStoreFrontID];
+  v4 = [contentStoreFrontID isEqualToString:@"143441"];
 
   return v4;
 }
@@ -193,16 +193,16 @@
   return [(SUStocksSettingsController *)self isCanadaStorefront];
 }
 
-- (id)makePreferenceSpecifierWithID:(id)a3 name:(id)a4 setter:(SEL)a5 type:(int64_t)a6 keyName:(id)a7 defaultValue:(id)a8
+- (id)makePreferenceSpecifierWithID:(id)d name:(id)name setter:(SEL)setter type:(int64_t)type keyName:(id)keyName defaultValue:(id)value
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a3;
-  v17 = [PSSpecifier preferenceSpecifierNamed:a4 target:self set:a5 get:"readPreferenceValue:" detail:0 cell:a6 edit:0];
-  [v17 setObject:v16 forKeyedSubscript:PSIDKey];
+  valueCopy = value;
+  keyNameCopy = keyName;
+  dCopy = d;
+  v17 = [PSSpecifier preferenceSpecifierNamed:name target:self set:setter get:"readPreferenceValue:" detail:0 cell:type edit:0];
+  [v17 setObject:dCopy forKeyedSubscript:PSIDKey];
 
-  [v17 setObject:v15 forKeyedSubscript:PSKeyNameKey];
-  [v17 setObject:v14 forKeyedSubscript:PSDefaultValueKey];
+  [v17 setObject:keyNameCopy forKeyedSubscript:PSKeyNameKey];
+  [v17 setObject:valueCopy forKeyedSubscript:PSDefaultValueKey];
 
   [v17 setObject:@"com.apple.stocks" forKeyedSubscript:PSDefaultsKey];
   [v17 setObject:@"group.com.apple.stocks" forKeyedSubscript:PSContainerBundleIDKey];

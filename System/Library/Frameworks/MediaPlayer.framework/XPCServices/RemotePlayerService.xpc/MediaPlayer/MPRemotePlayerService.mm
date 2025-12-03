@@ -1,17 +1,17 @@
 @interface MPRemotePlayerService
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation MPRemotePlayerService
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v8 = connectionCopy;
+  if (connectionCopy)
   {
-    [v7 auditToken];
+    [connectionCopy auditToken];
   }
 
   else
@@ -20,7 +20,7 @@
   }
 
   v9 = MSVBundleIDForAuditToken();
-  v10 = [v8 processIdentifier];
+  processIdentifier = [v8 processIdentifier];
   v11 = [v9 length];
   if (v11)
   {
@@ -43,8 +43,8 @@
     block[3] = &unk_100008348;
     v17 = v8;
     v18 = v9;
-    v19 = self;
-    v21 = v10;
+    selfCopy = self;
+    v21 = processIdentifier;
     v20 = v13;
     dispatch_async(&_dispatch_main_q, block);
   }

@@ -1,28 +1,28 @@
 @interface TSTCheckboxRenderer
-+ (CGRect)frameWithViewScale:(double)a3 contentFrame:(CGRect)a4;
-+ (CGRect)frameWithViewScale:(double)a3 contentFrame:(CGRect)a4 checked:(BOOL)a5 outCheckboxImage:(id *)a6 outCheckboxSize:(CGSize *)a7;
-+ (id)imageForScale:(double)a3 checked:(BOOL)a4 outDrawingScale:(double *)a5;
-+ (void)renderCheckbox:(BOOL)a3 viewScale:(double)a4 intoContext:(CGContext *)a5 rect:(CGRect)a6 color:(id)a7;
++ (CGRect)frameWithViewScale:(double)scale contentFrame:(CGRect)frame;
++ (CGRect)frameWithViewScale:(double)scale contentFrame:(CGRect)frame checked:(BOOL)checked outCheckboxImage:(id *)image outCheckboxSize:(CGSize *)size;
++ (id)imageForScale:(double)scale checked:(BOOL)checked outDrawingScale:(double *)drawingScale;
++ (void)renderCheckbox:(BOOL)checkbox viewScale:(double)scale intoContext:(CGContext *)context rect:(CGRect)rect color:(id)color;
 @end
 
 @implementation TSTCheckboxRenderer
 
-+ (id)imageForScale:(double)a3 checked:(BOOL)a4 outDrawingScale:(double *)a5
++ (id)imageForScale:(double)scale checked:(BOOL)checked outDrawingScale:(double *)drawingScale
 {
   v7 = @"TSTiOSCheckboxUnchecked6";
   v8 = @"TSTiOSCheckboxUnchecked12";
   v9 = @"TSTiOSCheckboxUnchecked18";
-  if (a3 > 1.5)
+  if (scale > 1.5)
   {
     v9 = @"TSTiOSCheckboxUnchecked24";
   }
 
-  if (a3 > 1.0)
+  if (scale > 1.0)
   {
     v8 = v9;
   }
 
-  if (a3 > 0.5)
+  if (scale > 0.5)
   {
     v7 = v8;
   }
@@ -30,22 +30,22 @@
   v10 = @"TSTiOSCheckboxChecked6";
   v11 = @"TSTiOSCheckboxChecked12";
   v12 = @"TSTiOSCheckboxChecked18";
-  if (a3 > 1.5)
+  if (scale > 1.5)
   {
     v12 = @"TSTiOSCheckboxChecked24";
   }
 
-  if (a3 > 1.0)
+  if (scale > 1.0)
   {
     v11 = v12;
   }
 
-  if (a3 > 0.5)
+  if (scale > 0.5)
   {
     v10 = v11;
   }
 
-  if (a4)
+  if (checked)
   {
     v13 = v10;
   }
@@ -56,31 +56,31 @@
   }
 
   v14 = sub_2214453B4(v13);
-  if (a5)
+  if (drawingScale)
   {
     v15 = 2.0;
-    if (a3 > 0.5)
+    if (scale > 0.5)
     {
       v15 = 1.0;
-      if (a3 > 1.0)
+      if (scale > 1.0)
       {
         v15 = 0.666666687;
-        if (a3 > 1.5)
+        if (scale > 1.5)
         {
           v15 = 0.5;
         }
       }
     }
 
-    *a5 = v15;
+    *drawingScale = v15;
   }
 
   return v14;
 }
 
-+ (CGRect)frameWithViewScale:(double)a3 contentFrame:(CGRect)a4
++ (CGRect)frameWithViewScale:(double)scale contentFrame:(CGRect)frame
 {
-  objc_msgSend_frameWithViewScale_contentFrame_checked_outCheckboxImage_outCheckboxSize_(a1, a2, 0, 0, 0, a3, a4.origin.x, a4.origin.y, a4.size.width, a4.size.height);
+  objc_msgSend_frameWithViewScale_contentFrame_checked_outCheckboxImage_outCheckboxSize_(self, a2, 0, 0, 0, scale, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -88,14 +88,14 @@
   return result;
 }
 
-+ (CGRect)frameWithViewScale:(double)a3 contentFrame:(CGRect)a4 checked:(BOOL)a5 outCheckboxImage:(id *)a6 outCheckboxSize:(CGSize *)a7
++ (CGRect)frameWithViewScale:(double)scale contentFrame:(CGRect)frame checked:(BOOL)checked outCheckboxImage:(id *)image outCheckboxSize:(CGSize *)size
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v40 = 0;
-  v17 = objc_msgSend_imageForScale_checked_outDrawingScale_(a1, a2, a5, &v40, a7, a3);
+  v17 = objc_msgSend_imageForScale_checked_outDrawingScale_(self, a2, checked, &v40, size, scale);
   if (!v17)
   {
     v18 = MEMORY[0x277D81150];
@@ -120,16 +120,16 @@
   v42.size.width = width;
   v42.size.height = height;
   MidY = CGRectGetMidY(v42);
-  if (a6)
+  if (image)
   {
     v35 = v17;
-    *a6 = v17;
+    *image = v17;
   }
 
-  if (a7)
+  if (size)
   {
-    a7->width = v30;
-    a7->height = v32;
+    size->width = v30;
+    size->height = v32;
   }
 
   v36 = MidX - v30 * 0.5;
@@ -143,18 +143,18 @@
   return result;
 }
 
-+ (void)renderCheckbox:(BOOL)a3 viewScale:(double)a4 intoContext:(CGContext *)a5 rect:(CGRect)a6 color:(id)a7
++ (void)renderCheckbox:(BOOL)checkbox viewScale:(double)scale intoContext:(CGContext *)context rect:(CGRect)rect color:(id)color
 {
   v34 = *MEMORY[0x277CBF3A8];
   v33 = 0;
-  objc_msgSend_frameWithViewScale_contentFrame_checked_outCheckboxImage_outCheckboxSize_(a1, a2, a3, &v33, &v34, a4, a6.origin.x);
+  objc_msgSend_frameWithViewScale_contentFrame_checked_outCheckboxImage_outCheckboxSize_(self, a2, checkbox, &v33, &v34, scale, rect.origin.x);
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
   memset(&v32, 0, sizeof(v32));
   v16 = v33;
-  CGContextGetUserSpaceToDeviceSpaceTransform(&v32, a5);
+  CGContextGetUserSpaceToDeviceSpaceTransform(&v32, context);
   v31 = v32;
   v35.origin.x = v9;
   v35.origin.y = v11;
@@ -177,7 +177,7 @@
   v22 = v39.origin.y;
   v23 = v39.size.width;
   v24 = v39.size.height;
-  CGContextSaveGState(a5);
+  CGContextSaveGState(context);
   CGContextClipToRectSafe();
   v40.origin.x = v21;
   v40.origin.y = v22;
@@ -189,13 +189,13 @@
   v41.size.width = v23;
   v41.size.height = v24;
   MaxY = CGRectGetMaxY(v41);
-  CGContextTranslateCTM(a5, MinX, MaxY);
-  CGContextScaleCTM(a5, 1.0, -1.0);
-  v29 = objc_msgSend_CGImageForSize_inContext_orContentsScaleProvider_(v16, v27, a5, 0, v28, v34);
+  CGContextTranslateCTM(context, MinX, MaxY);
+  CGContextScaleCTM(context, 1.0, -1.0);
+  v29 = objc_msgSend_CGImageForSize_inContext_orContentsScaleProvider_(v16, v27, context, 0, v28, v34);
 
   TSURectWithSize();
-  CGContextDrawImage(a5, v42, v29);
-  CGContextRestoreGState(a5);
+  CGContextDrawImage(context, v42, v29);
+  CGContextRestoreGState(context);
 }
 
 @end

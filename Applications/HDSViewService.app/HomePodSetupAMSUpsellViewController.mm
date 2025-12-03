@@ -1,6 +1,6 @@
 @interface HomePodSetupAMSUpsellViewController
-- (_TtC14HDSViewService35HomePodSetupAMSUpsellViewController)initWithContentView:(id)a3;
-- (void)dynamicViewController:(id)a3 didResolveWithResult:(id)a4 error:(id)a5;
+- (_TtC14HDSViewService35HomePodSetupAMSUpsellViewController)initWithContentView:(id)view;
+- (void)dynamicViewController:(id)controller didResolveWithResult:(id)result error:(id)error;
 - (void)viewDidLoad;
 @end
 
@@ -8,20 +8,20 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10005DCC4();
 }
 
-- (_TtC14HDSViewService35HomePodSetupAMSUpsellViewController)initWithContentView:(id)a3
+- (_TtC14HDSViewService35HomePodSetupAMSUpsellViewController)initWithContentView:(id)view
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)dynamicViewController:(id)a3 didResolveWithResult:(id)a4 error:(id)a5
+- (void)dynamicViewController:(id)controller didResolveWithResult:(id)result error:(id)error
 {
-  if (a4)
+  if (result)
   {
     v8 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -31,10 +31,10 @@
     v8 = 0;
   }
 
-  v9 = a3;
-  v10 = a5;
-  v11 = self;
-  sub_10005EE2C(v9, v8, a5);
+  controllerCopy = controller;
+  errorCopy = error;
+  selfCopy = self;
+  sub_10005EE2C(controllerCopy, v8, error);
 }
 
 @end

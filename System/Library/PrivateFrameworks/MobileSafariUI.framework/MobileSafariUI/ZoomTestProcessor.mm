@@ -1,19 +1,19 @@
 @interface ZoomTestProcessor
-- (BOOL)performActionForPage:(id)a3;
-- (BOOL)startPageAction:(id)a3;
+- (BOOL)performActionForPage:(id)page;
+- (BOOL)startPageAction:(id)action;
 - (BOOL)updateWithNewScale;
-- (ZoomTestProcessor)initWithTestName:(id)a3 browserController:(id)a4;
+- (ZoomTestProcessor)initWithTestName:(id)name browserController:(id)controller;
 - (void)startZoomingTest;
 - (void)zoomTestStep;
 @end
 
 @implementation ZoomTestProcessor
 
-- (ZoomTestProcessor)initWithTestName:(id)a3 browserController:(id)a4
+- (ZoomTestProcessor)initWithTestName:(id)name browserController:(id)controller
 {
   v8.receiver = self;
   v8.super_class = ZoomTestProcessor;
-  v4 = [(ContentInteractionTestRunner *)&v8 initWithTestName:a3 browserController:a4];
+  v4 = [(ContentInteractionTestRunner *)&v8 initWithTestName:name browserController:controller];
   v5 = v4;
   if (v4)
   {
@@ -24,9 +24,9 @@
   return v5;
 }
 
-- (BOOL)startPageAction:(id)a3
+- (BOOL)startPageAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   if (![(ZoomTestProcessor *)self stepsPerZoom])
   {
     [(ZoomTestProcessor *)self setStepsPerZoom:50];
@@ -35,21 +35,21 @@
   [(ZoomTestProcessor *)self setTestState:1];
   v7.receiver = self;
   v7.super_class = ZoomTestProcessor;
-  v5 = [(ContentInteractionTestRunner *)&v7 startPageAction:v4];
+  v5 = [(ContentInteractionTestRunner *)&v7 startPageAction:actionCopy];
 
   return v5;
 }
 
 - (BOOL)updateWithNewScale
 {
-  v3 = [(ContentInteractionTestRunner *)self pageWebView];
-  v4 = [v3 scrollView];
+  pageWebView = [(ContentInteractionTestRunner *)self pageWebView];
+  scrollView = [pageWebView scrollView];
 
-  [v4 minimumZoomScale];
+  [scrollView minimumZoomScale];
   v6 = v5;
-  [v4 maximumZoomScale];
+  [scrollView maximumZoomScale];
   v8 = v7;
-  [v4 zoomScale];
+  [scrollView zoomScale];
   v10 = v9;
   v11 = (v8 - v6) / [(ZoomTestProcessor *)self stepsPerZoom];
   if ([(ZoomTestProcessor *)self zoomingIn])
@@ -75,7 +75,7 @@ LABEL_7:
     }
   }
 
-  [v4 setZoomScale:v12];
+  [scrollView setZoomScale:v12];
   v13 = 1;
 LABEL_8:
 
@@ -93,10 +93,10 @@ LABEL_8:
     ;
   }
 
-  v3 = [(ZoomTestProcessor *)self iterationsRemaining];
-  v4 = [(ZoomTestProcessor *)self displayLink];
-  v5 = v4;
-  if (v3)
+  iterationsRemaining = [(ZoomTestProcessor *)self iterationsRemaining];
+  displayLink = [(ZoomTestProcessor *)self displayLink];
+  v5 = displayLink;
+  if (iterationsRemaining)
   {
 
     if (!v5)
@@ -108,7 +108,7 @@ LABEL_8:
 
   else
   {
-    [v4 invalidate];
+    [displayLink invalidate];
 
     [(ZoomTestProcessor *)self setTestState:3];
 
@@ -126,21 +126,21 @@ LABEL_8:
     v4 = [MEMORY[0x277CD9E48] displayLinkWithTarget:self selector:sel_zoomTestStep];
     [(ZoomTestProcessor *)self setDisplayLink:v4];
 
-    v5 = [(ZoomTestProcessor *)self displayLink];
-    v6 = [MEMORY[0x277CBEB88] mainRunLoop];
-    [v5 addToRunLoop:v6 forMode:*MEMORY[0x277CBE738]];
+    displayLink = [(ZoomTestProcessor *)self displayLink];
+    mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+    [displayLink addToRunLoop:mainRunLoop forMode:*MEMORY[0x277CBE738]];
   }
 
-  v7 = [(ZoomTestProcessor *)self displayLink];
+  displayLink2 = [(ZoomTestProcessor *)self displayLink];
 
-  if (!v7)
+  if (!displayLink2)
   {
 
     [(ZoomTestProcessor *)self performSelector:sel_zoomTestStep withObject:0 afterDelay:0.0];
   }
 }
 
-- (BOOL)performActionForPage:(id)a3
+- (BOOL)performActionForPage:(id)page
 {
   if ([(ZoomTestProcessor *)self testState]== 1)
   {

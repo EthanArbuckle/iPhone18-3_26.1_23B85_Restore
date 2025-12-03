@@ -1,18 +1,18 @@
 @interface DMCManagedAccountsSpecifierProvider
-- (DMCManagedAccountsSpecifierProvider)initWithAccountManager:(id)a3;
+- (DMCManagedAccountsSpecifierProvider)initWithAccountManager:(id)manager;
 - (id)specifiers;
-- (void)_accountCellWasTappedWithSpecifier:(id)a3;
+- (void)_accountCellWasTappedWithSpecifier:(id)specifier;
 - (void)_reloadManagedAccounts;
 @end
 
 @implementation DMCManagedAccountsSpecifierProvider
 
-- (DMCManagedAccountsSpecifierProvider)initWithAccountManager:(id)a3
+- (DMCManagedAccountsSpecifierProvider)initWithAccountManager:(id)manager
 {
   v3 = *MEMORY[0x277CB8DB8];
   v5.receiver = self;
   v5.super_class = DMCManagedAccountsSpecifierProvider;
-  return [(DMCSpecifierProvider *)&v5 initWithAccountManager:a3 reloadNotification:v3 isLocalNotification:1 reloadIfMissingRMAccount:0];
+  return [(DMCSpecifierProvider *)&v5 initWithAccountManager:manager reloadNotification:v3 isLocalNotification:1 reloadIfMissingRMAccount:0];
 }
 
 - (id)specifiers
@@ -20,36 +20,36 @@
   v30 = *MEMORY[0x277D85DE8];
   v28.receiver = self;
   v28.super_class = DMCManagedAccountsSpecifierProvider;
-  v3 = [(DMCSpecifierProvider *)&v28 specifiers];
+  specifiers = [(DMCSpecifierProvider *)&v28 specifiers];
 
-  if (v3)
+  if (specifiers)
   {
     v27.receiver = self;
     v27.super_class = DMCManagedAccountsSpecifierProvider;
-    v4 = [(DMCSpecifierProvider *)&v27 specifiers];
+    specifiers2 = [(DMCSpecifierProvider *)&v27 specifiers];
 LABEL_3:
-    v5 = v4;
+    v5 = specifiers2;
     goto LABEL_4;
   }
 
-  v7 = [(DMCSpecifierProvider *)self rmAccount];
+  rmAccount = [(DMCSpecifierProvider *)self rmAccount];
 
-  if (!v7)
+  if (!rmAccount)
   {
-    v4 = [(DMCSpecifierProvider *)self cachedSpecifiers:MEMORY[0x277CBEBF8]];
+    specifiers2 = [(DMCSpecifierProvider *)self cachedSpecifiers:MEMORY[0x277CBEBF8]];
     goto LABEL_3;
   }
 
-  v8 = [(DMCManagedAccountsSpecifierProvider *)self managedAccounts];
+  managedAccounts = [(DMCManagedAccountsSpecifierProvider *)self managedAccounts];
 
-  if (v8)
+  if (managedAccounts)
   {
     v9 = objc_alloc(MEMORY[0x277CBEB18]);
-    v10 = [(DMCManagedAccountsSpecifierProvider *)self managedAccounts];
-    v11 = [v9 initWithCapacity:{objc_msgSend(v10, "count") + 1}];
+    managedAccounts2 = [(DMCManagedAccountsSpecifierProvider *)self managedAccounts];
+    v11 = [v9 initWithCapacity:{objc_msgSend(managedAccounts2, "count") + 1}];
 
-    v12 = [(DMCManagedAccountsSpecifierProvider *)self managedAccounts];
-    v13 = [v12 count];
+    managedAccounts3 = [(DMCManagedAccountsSpecifierProvider *)self managedAccounts];
+    v13 = [managedAccounts3 count];
 
     if (v13)
     {
@@ -57,8 +57,8 @@ LABEL_3:
       v26 = 0u;
       v23 = 0u;
       v24 = 0u;
-      v14 = [(DMCManagedAccountsSpecifierProvider *)self managedAccounts];
-      v15 = [v14 countByEnumeratingWithState:&v23 objects:v29 count:16];
+      managedAccounts4 = [(DMCManagedAccountsSpecifierProvider *)self managedAccounts];
+      v15 = [managedAccounts4 countByEnumeratingWithState:&v23 objects:v29 count:16];
       if (v15)
       {
         v16 = v15;
@@ -69,7 +69,7 @@ LABEL_3:
           {
             if (*v24 != v17)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(managedAccounts4);
             }
 
             v19 = MEMORY[0x277CE8568];
@@ -83,7 +83,7 @@ LABEL_3:
             }
           }
 
-          v16 = [v14 countByEnumeratingWithState:&v23 objects:v29 count:16];
+          v16 = [managedAccounts4 countByEnumeratingWithState:&v23 objects:v29 count:16];
         }
 
         while (v16);
@@ -92,8 +92,8 @@ LABEL_3:
 
     if ([v11 count])
     {
-      v22 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-      [v11 insertObject:v22 atIndex:0];
+      emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+      [v11 insertObject:emptyGroupSpecifier atIndex:0];
     }
 
     v5 = [(DMCSpecifierProvider *)self cachedSpecifiers:v11];
@@ -123,9 +123,9 @@ LABEL_4:
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [(DMCManagedAccountsSpecifierProvider *)self managedAccounts];
+  managedAccounts = [(DMCManagedAccountsSpecifierProvider *)self managedAccounts];
   v5 = 0;
-  v6 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v6 = [managedAccounts countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
     v7 = *v19;
@@ -137,7 +137,7 @@ LABEL_4:
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(managedAccounts);
         }
 
         v10 = [*(*(&v18 + 1) + 8 * v9) objectForKeyedSubscript:v8];
@@ -148,14 +148,14 @@ LABEL_4:
 
       while (v6 != v9);
       v5 += v6;
-      v6 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v6 = [managedAccounts countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v6);
   }
 
   objc_initWeak(&location, self);
-  v11 = [MEMORY[0x277CB8F48] defaultStore];
+  defaultStore = [MEMORY[0x277CB8F48] defaultStore];
   v12 = ACUIVisibleAccountTypes();
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -165,7 +165,7 @@ LABEL_4:
   v13 = v3;
   v15 = v13;
   v16[1] = v5;
-  [v11 visibleTopLevelAccountsWithAccountTypeIdentifiers:v12 completion:v14];
+  [defaultStore visibleTopLevelAccountsWithAccountTypeIdentifiers:v12 completion:v14];
 
   objc_destroyWeak(v16);
   objc_destroyWeak(&location);
@@ -283,11 +283,11 @@ void __61__DMCManagedAccountsSpecifierProvider__reloadManagedAccounts__block_inv
   }
 }
 
-- (void)_accountCellWasTappedWithSpecifier:(id)a3
+- (void)_accountCellWasTappedWithSpecifier:(id)specifier
 {
-  v5 = [DMCEnrollmentInterface accountControllerFromSpecifier:a3 baseViewController:0 preferiCloudAccount:0];
-  v4 = [(DMCSpecifierProvider *)self delegate];
-  [v4 specifierProvider:self showViewController:v5];
+  v5 = [DMCEnrollmentInterface accountControllerFromSpecifier:specifier baseViewController:0 preferiCloudAccount:0];
+  delegate = [(DMCSpecifierProvider *)self delegate];
+  [delegate specifierProvider:self showViewController:v5];
 }
 
 @end

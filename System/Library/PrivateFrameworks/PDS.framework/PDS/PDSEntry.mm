@@ -1,32 +1,32 @@
 @interface PDSEntry
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToEntry:(id)a3;
-- (PDSEntry)initWithCoder:(id)a3;
-- (PDSEntry)initWithUser:(id)a3 registration:(id)a4 clientID:(id)a5 state:(unsigned __int8)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToEntry:(id)entry;
+- (PDSEntry)initWithCoder:(id)coder;
+- (PDSEntry)initWithUser:(id)user registration:(id)registration clientID:(id)d state:(unsigned __int8)state;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PDSEntry
 
-- (PDSEntry)initWithUser:(id)a3 registration:(id)a4 clientID:(id)a5 state:(unsigned __int8)a6
+- (PDSEntry)initWithUser:(id)user registration:(id)registration clientID:(id)d state:(unsigned __int8)state
 {
-  v6 = a6;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (v11)
+  stateCopy = state;
+  userCopy = user;
+  registrationCopy = registration;
+  dCopy = d;
+  if (userCopy)
   {
-    if (v12)
+    if (registrationCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_10:
     [PDSEntry initWithUser:registration:clientID:state:];
-    if (v13)
+    if (dCopy)
     {
       goto LABEL_4;
     }
@@ -35,13 +35,13 @@ LABEL_10:
   }
 
   [PDSEntry initWithUser:registration:clientID:state:];
-  if (!v12)
+  if (!registrationCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_3:
-  if (v13)
+  if (dCopy)
   {
     goto LABEL_4;
   }
@@ -49,7 +49,7 @@ LABEL_3:
 LABEL_11:
   [PDSEntry initWithUser:registration:clientID:state:];
 LABEL_4:
-  if (v6 >= 4)
+  if (stateCopy >= 4)
   {
     [PDSEntry initWithUser:registration:clientID:state:];
   }
@@ -60,16 +60,16 @@ LABEL_4:
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_user, a3);
-    objc_storeStrong(&v15->_registration, a4);
-    objc_storeStrong(&v15->_clientID, a5);
-    v15->_state = v6;
+    objc_storeStrong(&v14->_user, user);
+    objc_storeStrong(&v15->_registration, registration);
+    objc_storeStrong(&v15->_clientID, d);
+    v15->_state = stateCopy;
   }
 
   return v15;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   user = self->_user;
@@ -80,52 +80,52 @@ LABEL_4:
   return [v4 initWithUser:user registration:registration clientID:clientID state:state];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PDSEntry *)self isEqualToEntry:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PDSEntry *)self isEqualToEntry:equalCopy];
 
   return v5;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(PDSEntry *)self user];
-  v4 = [v3 hash];
-  v5 = [(PDSEntry *)self registration];
-  v6 = [v5 hash] ^ v4;
+  user = [(PDSEntry *)self user];
+  v4 = [user hash];
+  registration = [(PDSEntry *)self registration];
+  v6 = [registration hash] ^ v4;
   v7 = v6 ^ [(PDSEntry *)self state];
-  v8 = [(PDSEntry *)self clientID];
-  v9 = [v8 hash];
+  clientID = [(PDSEntry *)self clientID];
+  v9 = [clientID hash];
 
   return v7 ^ v9;
 }
 
-- (BOOL)isEqualToEntry:(id)a3
+- (BOOL)isEqualToEntry:(id)entry
 {
-  v4 = a3;
-  if (v4 == self)
+  entryCopy = entry;
+  if (entryCopy == self)
   {
     v12 = 1;
   }
 
   else
   {
-    v5 = [(PDSEntry *)self state];
-    if (v5 == [(PDSEntry *)v4 state])
+    state = [(PDSEntry *)self state];
+    if (state == [(PDSEntry *)entryCopy state])
     {
-      v6 = [(PDSEntry *)self user];
-      v7 = [(PDSEntry *)v4 user];
-      if ([v6 isEqualToUser:v7])
+      user = [(PDSEntry *)self user];
+      user2 = [(PDSEntry *)entryCopy user];
+      if ([user isEqualToUser:user2])
       {
-        v8 = [(PDSEntry *)self registration];
-        v9 = [(PDSEntry *)v4 registration];
-        if ([v8 isEqualToRegistration:v9])
+        registration = [(PDSEntry *)self registration];
+        registration2 = [(PDSEntry *)entryCopy registration];
+        if ([registration isEqualToRegistration:registration2])
         {
-          v10 = [(PDSEntry *)self clientID];
-          v11 = [(PDSEntry *)v4 clientID];
-          v12 = [v10 isEqualToString:v11];
+          clientID = [(PDSEntry *)self clientID];
+          clientID2 = [(PDSEntry *)entryCopy clientID];
+          v12 = [clientID isEqualToString:clientID2];
         }
 
         else
@@ -149,28 +149,28 @@ LABEL_4:
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(PDSEntry *)self user];
-  [v7 encodeObject:v4 forKey:@"user"];
+  coderCopy = coder;
+  user = [(PDSEntry *)self user];
+  [coderCopy encodeObject:user forKey:@"user"];
 
-  v5 = [(PDSEntry *)self clientID];
-  [v7 encodeObject:v5 forKey:@"clientID"];
+  clientID = [(PDSEntry *)self clientID];
+  [coderCopy encodeObject:clientID forKey:@"clientID"];
 
-  v6 = [(PDSEntry *)self registration];
-  [v7 encodeObject:v6 forKey:@"registration"];
+  registration = [(PDSEntry *)self registration];
+  [coderCopy encodeObject:registration forKey:@"registration"];
 
-  [v7 encodeInt32:-[PDSEntry state](self forKey:{"state"), @"state"}];
+  [coderCopy encodeInt32:-[PDSEntry state](self forKey:{"state"), @"state"}];
 }
 
-- (PDSEntry)initWithCoder:(id)a3
+- (PDSEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"user"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientID"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"registration"];
-  v8 = [v4 decodeInt32ForKey:@"state"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"user"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientID"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"registration"];
+  v8 = [coderCopy decodeInt32ForKey:@"state"];
 
   v9 = [(PDSEntry *)self initWithUser:v5 registration:v7 clientID:v6];
   v10 = v9;
@@ -187,10 +187,10 @@ LABEL_4:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = PDSStringForEntryState([(PDSEntry *)self state]);
-  v6 = [(PDSEntry *)self user];
-  v7 = [(PDSEntry *)self registration];
-  v8 = [(PDSEntry *)self clientID];
-  v9 = [v3 stringWithFormat:@"<%@: %p state = %@; user = %@; registration = %@; clientID = %@>", v4, self, v5, v6, v7, v8];;
+  user = [(PDSEntry *)self user];
+  registration = [(PDSEntry *)self registration];
+  clientID = [(PDSEntry *)self clientID];
+  v9 = [v3 stringWithFormat:@"<%@: %p state = %@; user = %@; registration = %@; clientID = %@>", v4, self, v5, user, registration, clientID];;
 
   return v9;
 }

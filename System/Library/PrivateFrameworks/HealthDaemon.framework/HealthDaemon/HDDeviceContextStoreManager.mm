@@ -1,16 +1,16 @@
 @interface HDDeviceContextStoreManager
 + (HDDeviceContextStoreManager)new;
-- (BOOL)deleteDeviceContext:(id)a3 transaction:(id)a4 error:(id *)a5;
-- (BOOL)enumerateAllEntriesWithError:(id *)a3 handler:(id)a4;
-- (BOOL)ingestRemoteDeviceContexts:(id)a3 transaction:(id)a4 error:(id *)a5;
-- (BOOL)insertOrUpdateDeviceContext:(id)a3 transaction:(id)a4 error:(id *)a5;
-- (BOOL)updateSoftwareVersionForCurrentSyncIdentityWithError:(id *)a3;
+- (BOOL)deleteDeviceContext:(id)context transaction:(id)transaction error:(id *)error;
+- (BOOL)enumerateAllEntriesWithError:(id *)error handler:(id)handler;
+- (BOOL)ingestRemoteDeviceContexts:(id)contexts transaction:(id)transaction error:(id *)error;
+- (BOOL)insertOrUpdateDeviceContext:(id)context transaction:(id)transaction error:(id *)error;
+- (BOOL)updateSoftwareVersionForCurrentSyncIdentityWithError:(id *)error;
 - (HDDeviceContextStoreManager)init;
-- (HDDeviceContextStoreManager)initWithProfile:(id)a3;
+- (HDDeviceContextStoreManager)initWithProfile:(id)profile;
 - (HDProfile)profile;
-- (id)fetchAllEntriesWithError:(id *)a3;
-- (id)lookupOrCreateLocalDeviceContextWithError:(id *)a3;
-- (id)numberOfDeviceContextsPerDeviceType:(id *)a3;
+- (id)fetchAllEntriesWithError:(id *)error;
+- (id)lookupOrCreateLocalDeviceContextWithError:(id *)error;
+- (id)numberOfDeviceContextsPerDeviceType:(id *)type;
 @end
 
 @implementation HDDeviceContextStoreManager
@@ -35,26 +35,26 @@
   return 0;
 }
 
-- (HDDeviceContextStoreManager)initWithProfile:(id)a3
+- (HDDeviceContextStoreManager)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v8.receiver = self;
   v8.super_class = HDDeviceContextStoreManager;
   v5 = [(HDDeviceContextStoreManager *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
   }
 
   return v6;
 }
 
-- (id)numberOfDeviceContextsPerDeviceType:(id *)a3
+- (id)numberOfDeviceContextsPerDeviceType:(id *)type
 {
   v27 = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v6 = [(HDDeviceContextStoreManager *)self fetchAllEntriesWithError:a3];
+  v6 = [(HDDeviceContextStoreManager *)self fetchAllEntriesWithError:type];
   v7 = v6;
   if (v6)
   {
@@ -106,20 +106,20 @@
   return v18;
 }
 
-- (BOOL)enumerateAllEntriesWithError:(id *)a3 handler:(id)a4
+- (BOOL)enumerateAllEntriesWithError:(id *)error handler:(id)handler
 {
-  v6 = a4;
-  v7 = [(HDDeviceContextStoreManager *)self profile];
-  v8 = [v7 database];
+  handlerCopy = handler;
+  profile = [(HDDeviceContextStoreManager *)self profile];
+  database = [profile database];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __68__HDDeviceContextStoreManager_enumerateAllEntriesWithError_handler___block_invoke;
   v11[3] = &unk_27861A528;
-  v12 = v6;
-  v9 = v6;
-  LOBYTE(a3) = [(HDHealthEntity *)HDDeviceContextEntity performReadTransactionWithHealthDatabase:v8 error:a3 block:v11];
+  v12 = handlerCopy;
+  v9 = handlerCopy;
+  LOBYTE(error) = [(HDHealthEntity *)HDDeviceContextEntity performReadTransactionWithHealthDatabase:database error:error block:v11];
 
-  return a3;
+  return error;
 }
 
 BOOL __68__HDDeviceContextStoreManager_enumerateAllEntriesWithError_handler___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -134,7 +134,7 @@ BOOL __68__HDDeviceContextStoreManager_enumerateAllEntriesWithError_handler___bl
   return v5;
 }
 
-- (id)fetchAllEntriesWithError:(id *)a3
+- (id)fetchAllEntriesWithError:(id *)error
 {
   v8 = 0;
   v9 = &v8;
@@ -147,7 +147,7 @@ BOOL __68__HDDeviceContextStoreManager_enumerateAllEntriesWithError_handler___bl
   v7[2] = __56__HDDeviceContextStoreManager_fetchAllEntriesWithError___block_invoke;
   v7[3] = &unk_27861D3E0;
   v7[4] = &v8;
-  if ([(HDDeviceContextStoreManager *)self enumerateAllEntriesWithError:a3 handler:v7])
+  if ([(HDDeviceContextStoreManager *)self enumerateAllEntriesWithError:error handler:v7])
   {
     v5 = v9[5];
   }
@@ -162,7 +162,7 @@ BOOL __68__HDDeviceContextStoreManager_enumerateAllEntriesWithError_handler___bl
   return v5;
 }
 
-- (id)lookupOrCreateLocalDeviceContextWithError:(id *)a3
+- (id)lookupOrCreateLocalDeviceContextWithError:(id *)error
 {
   v10 = 0;
   v11 = &v10;
@@ -170,17 +170,17 @@ BOOL __68__HDDeviceContextStoreManager_enumerateAllEntriesWithError_handler___bl
   v13 = __Block_byref_object_copy__67;
   v14 = __Block_byref_object_dispose__67;
   v15 = 0;
-  v5 = [(HDDeviceContextStoreManager *)self profile];
-  v6 = [v5 database];
+  profile = [(HDDeviceContextStoreManager *)self profile];
+  database = [profile database];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __73__HDDeviceContextStoreManager_lookupOrCreateLocalDeviceContextWithError___block_invoke;
   v9[3] = &unk_278619398;
   v9[4] = self;
   v9[5] = &v10;
-  LOBYTE(a3) = [(HDHealthEntity *)HDDeviceContextEntity performWriteTransactionWithHealthDatabase:v6 error:a3 block:v9];
+  LOBYTE(error) = [(HDHealthEntity *)HDDeviceContextEntity performWriteTransactionWithHealthDatabase:database error:error block:v9];
 
-  if (a3)
+  if (error)
   {
     v7 = v11[5];
   }
@@ -209,18 +209,18 @@ BOOL __73__HDDeviceContextStoreManager_lookupOrCreateLocalDeviceContextWithError
   return *(*(*(a1 + 40) + 8) + 40) != 0;
 }
 
-- (BOOL)updateSoftwareVersionForCurrentSyncIdentityWithError:(id *)a3
+- (BOOL)updateSoftwareVersionForCurrentSyncIdentityWithError:(id *)error
 {
-  v5 = [(HDDeviceContextStoreManager *)self profile];
-  v6 = [v5 database];
+  profile = [(HDDeviceContextStoreManager *)self profile];
+  database = [profile database];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __84__HDDeviceContextStoreManager_updateSoftwareVersionForCurrentSyncIdentityWithError___block_invoke;
   v8[3] = &unk_278616048;
   v8[4] = self;
-  LOBYTE(a3) = [(HDHealthEntity *)HDDeviceContextEntity performWriteTransactionWithHealthDatabase:v6 error:a3 block:v8];
+  LOBYTE(error) = [(HDHealthEntity *)HDDeviceContextEntity performWriteTransactionWithHealthDatabase:database error:error block:v8];
 
-  return a3;
+  return error;
 }
 
 BOOL __84__HDDeviceContextStoreManager_updateSoftwareVersionForCurrentSyncIdentityWithError___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -242,12 +242,12 @@ BOOL __84__HDDeviceContextStoreManager_updateSoftwareVersionForCurrentSyncIdenti
   return v8;
 }
 
-- (BOOL)insertOrUpdateDeviceContext:(id)a3 transaction:(id)a4 error:(id *)a5
+- (BOOL)insertOrUpdateDeviceContext:(id)context transaction:(id)transaction error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  transactionCopy = transaction;
   v17 = 0;
-  v9 = [HDDeviceContextEntity lookupDeviceContext:v7 transaction:v8 error:&v17];
+  v9 = [HDDeviceContextEntity lookupDeviceContext:contextCopy transaction:transactionCopy error:&v17];
   v10 = v17;
   v11 = v10;
   if (v9)
@@ -264,21 +264,21 @@ BOOL __84__HDDeviceContextStoreManager_updateSoftwareVersionForCurrentSyncIdenti
   {
     if (v9)
     {
-      v13 = [HDDeviceContextEntity updateDeviceContext:v7 transaction:v8 error:a5];
+      v13 = [HDDeviceContextEntity updateDeviceContext:contextCopy transaction:transactionCopy error:error];
     }
 
     else
     {
-      v15 = [HDDeviceContextEntity insertDeviceContext:v7 transaction:v8 error:a5];
+      v15 = [HDDeviceContextEntity insertDeviceContext:contextCopy transaction:transactionCopy error:error];
       v13 = v15 != 0;
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     v14 = v10;
     v13 = 0;
-    *a5 = v11;
+    *error = v11;
   }
 
   else
@@ -290,22 +290,22 @@ BOOL __84__HDDeviceContextStoreManager_updateSoftwareVersionForCurrentSyncIdenti
   return v13;
 }
 
-- (BOOL)deleteDeviceContext:(id)a3 transaction:(id)a4 error:(id *)a5
+- (BOOL)deleteDeviceContext:(id)context transaction:(id)transaction error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(HDDeviceContextStoreManager *)self profile];
-  v11 = [v10 syncIdentityManager];
-  v12 = [v9 syncIdentity];
+  transactionCopy = transaction;
+  contextCopy = context;
+  profile = [(HDDeviceContextStoreManager *)self profile];
+  syncIdentityManager = [profile syncIdentityManager];
+  syncIdentity = [contextCopy syncIdentity];
 
-  v13 = [v11 concreteIdentityForIdentity:v12 shouldCreate:0 transaction:v8 error:a5];
+  v13 = [syncIdentityManager concreteIdentityForIdentity:syncIdentity shouldCreate:0 transaction:transactionCopy error:error];
 
   if (v13)
   {
-    v14 = [v13 entity];
-    v15 = [v14 persistentID];
-    v16 = [(HDDeviceContextStoreManager *)self profile];
-    v17 = [HDDeviceContextEntity deleteDeviceContextWithSyncIdentity:v15 profile:v16 error:a5];
+    entity = [v13 entity];
+    persistentID = [entity persistentID];
+    profile2 = [(HDDeviceContextStoreManager *)self profile];
+    v17 = [HDDeviceContextEntity deleteDeviceContextWithSyncIdentity:persistentID profile:profile2 error:error];
   }
 
   else
@@ -316,29 +316,29 @@ BOOL __84__HDDeviceContextStoreManager_updateSoftwareVersionForCurrentSyncIdenti
   return v17;
 }
 
-- (BOOL)ingestRemoteDeviceContexts:(id)a3 transaction:(id)a4 error:(id *)a5
+- (BOOL)ingestRemoteDeviceContexts:(id)contexts transaction:(id)transaction error:(id *)error
 {
   v69 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a3;
-  v54 = self;
-  v9 = [(HDDeviceContextStoreManager *)self profile];
-  v10 = [v9 syncIdentityManager];
-  v11 = [v10 currentSyncIdentity];
-  v12 = [v11 identity];
+  transactionCopy = transaction;
+  contextsCopy = contexts;
+  selfCopy = self;
+  profile = [(HDDeviceContextStoreManager *)self profile];
+  syncIdentityManager = [profile syncIdentityManager];
+  currentSyncIdentity = [syncIdentityManager currentSyncIdentity];
+  identity = [currentSyncIdentity identity];
 
   v56[0] = MEMORY[0x277D85DD0];
   v56[1] = 3221225472;
   v56[2] = __76__HDDeviceContextStoreManager_ingestRemoteDeviceContexts_transaction_error___block_invoke;
   v56[3] = &unk_27861D408;
-  v57 = v12;
-  v49 = v12;
-  v13 = [v8 hk_filter:v56];
+  v57 = identity;
+  v49 = identity;
+  v13 = [contextsCopy hk_filter:v56];
 
   v14 = v13;
-  v15 = v7;
+  v15 = transactionCopy;
   v48 = v15;
-  if (!v54)
+  if (!selfCopy)
   {
 
     v51 = 0;
@@ -360,7 +360,7 @@ BOOL __84__HDDeviceContextStoreManager_updateSoftwareVersionForCurrentSyncIdenti
   v65[2] = __79__HDDeviceContextStoreManager__insertOrUpdateDeviceContexts_transaction_error___block_invoke;
   v65[3] = &unk_27861D430;
   v67 = buf;
-  v65[4] = v54;
+  v65[4] = selfCopy;
   v16 = v15;
   v66 = v16;
   v68 = &v59;
@@ -373,10 +373,10 @@ BOOL __84__HDDeviceContextStoreManager_updateSoftwareVersionForCurrentSyncIdenti
     v19 = v18;
     if (v18)
     {
-      if (a5)
+      if (error)
       {
         v20 = v18;
-        *a5 = v19;
+        *error = v19;
       }
 
       else
@@ -399,9 +399,9 @@ BOOL __84__HDDeviceContextStoreManager_updateSoftwareVersionForCurrentSyncIdenti
 
   v55 = v14;
   v52 = v16;
-  v21 = [(HDDeviceContextStoreManager *)v54 profile];
-  v22 = [v21 deviceContextManager];
-  v47 = [v22 fetchAllEntriesWithError:a5];
+  profile2 = [(HDDeviceContextStoreManager *)selfCopy profile];
+  deviceContextManager = [profile2 deviceContextManager];
+  v47 = [deviceContextManager fetchAllEntriesWithError:error];
 
   if (!v47)
   {
@@ -409,10 +409,10 @@ BOOL __84__HDDeviceContextStoreManager_updateSoftwareVersionForCurrentSyncIdenti
     goto LABEL_41;
   }
 
-  v23 = [(HDDeviceContextStoreManager *)v54 profile];
-  v24 = [v23 syncIdentityManager];
-  v25 = [v24 currentSyncIdentity];
-  v26 = [v25 identity];
+  profile3 = [(HDDeviceContextStoreManager *)selfCopy profile];
+  syncIdentityManager2 = [profile3 syncIdentityManager];
+  currentSyncIdentity2 = [syncIdentityManager2 currentSyncIdentity];
+  identity2 = [currentSyncIdentity2 identity];
 
   v61 = 0u;
   v62 = 0u;
@@ -438,13 +438,13 @@ BOOL __84__HDDeviceContextStoreManager_updateSoftwareVersionForCurrentSyncIdenti
       }
 
       v31 = *(*(&v59 + 1) + 8 * i);
-      v32 = [v31 syncIdentity];
-      v33 = [v32 isEqual:v26];
+      syncIdentity = [v31 syncIdentity];
+      v33 = [syncIdentity isEqual:identity2];
 
       if ((v33 & 1) == 0 && ([v55 containsObject:v31] & 1) == 0)
       {
         v58 = 0;
-        v34 = [(HDDeviceContextStoreManager *)v54 deleteDeviceContext:v31 transaction:v52 error:&v58];
+        v34 = [(HDDeviceContextStoreManager *)selfCopy deleteDeviceContext:v31 transaction:v52 error:&v58];
         v35 = v58;
         _HKInitializeLogging();
         v36 = *MEMORY[0x277CCC328];
@@ -460,9 +460,9 @@ BOOL __84__HDDeviceContextStoreManager_updateSoftwareVersionForCurrentSyncIdenti
             _os_log_impl(&dword_228986000, v38, OS_LOG_TYPE_DEFAULT, "Successfully deleted local context record %@", buf, 0xCu);
           }
 
-          v40 = [(HDDeviceContextStoreManager *)v54 profile];
-          v41 = [v40 deviceKeyValueStoreManager];
-          v42 = [v41 deleteProtectedKVEntriesForDeviceContext:v31 error:a5];
+          profile4 = [(HDDeviceContextStoreManager *)selfCopy profile];
+          deviceKeyValueStoreManager = [profile4 deviceKeyValueStoreManager];
+          v42 = [deviceKeyValueStoreManager deleteProtectedKVEntriesForDeviceContext:v31 error:error];
 
           if ((v42 & 1) == 0)
           {
@@ -471,7 +471,7 @@ BOOL __84__HDDeviceContextStoreManager_updateSoftwareVersionForCurrentSyncIdenti
             if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
             {
               *buf = 138543618;
-              *&buf[4] = v54;
+              *&buf[4] = selfCopy;
               *&buf[12] = 2114;
               *&buf[14] = v35;
               _os_log_error_impl(&dword_228986000, v43, OS_LOG_TYPE_ERROR, "%{public}@: Failed to delete protected device key value pairs for record: %{public}@", buf, 0x16u);
@@ -480,10 +480,10 @@ BOOL __84__HDDeviceContextStoreManager_updateSoftwareVersionForCurrentSyncIdenti
             v44 = v35;
             if (v44)
             {
-              if (a5)
+              if (error)
               {
 LABEL_30:
-                *a5 = v44;
+                *error = v44;
                 goto LABEL_32;
               }
 
@@ -500,7 +500,7 @@ LABEL_31:
           if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
           {
             *buf = 138543618;
-            *&buf[4] = v54;
+            *&buf[4] = selfCopy;
             *&buf[12] = 2114;
             *&buf[14] = v35;
             _os_log_error_impl(&dword_228986000, v36, OS_LOG_TYPE_ERROR, "%{public}@: Failed to delete local context record: %{public}@", buf, 0x16u);
@@ -509,7 +509,7 @@ LABEL_31:
           v44 = v35;
           if (v44)
           {
-            if (a5)
+            if (error)
             {
               goto LABEL_30;
             }

@@ -1,32 +1,32 @@
 @interface TKVibrationRecorderProgressView
-- (CGRect)_frameForDotAtTimeInterval:(double)a3 duration:(double)a4;
+- (CGRect)_frameForDotAtTimeInterval:(double)interval duration:(double)duration;
 - (CGRect)accessibilityFrame;
 - (CGSize)_dotSize;
 - (CGSize)intrinsicContentSize;
-- (TKVibrationRecorderProgressView)initWithMaximumTimeInterval:(double)a3 styleProvider:(id)a4;
+- (TKVibrationRecorderProgressView)initWithMaximumTimeInterval:(double)interval styleProvider:(id)provider;
 - (UIOffset)_dotInsets;
 - (double)_cappedValueForTimeInterval:(double)result;
 - (id)accessibilityValue;
-- (void)_updateHorizontalConstraintsOfDotForCurrentVibrationComponent:(id)a3 withFrame:(CGRect)a4;
+- (void)_updateHorizontalConstraintsOfDotForCurrentVibrationComponent:(id)component withFrame:(CGRect)frame;
 - (void)_updateProgressViewBackgroundColor;
 - (void)clearAllVibrationComponents;
 - (void)didMoveToSuperview;
 - (void)didMoveToWindow;
-- (void)setCurrentTimeInterval:(double)a3;
+- (void)setCurrentTimeInterval:(double)interval;
 - (void)vibrationComponentDidEnd;
 - (void)vibrationComponentDidStart;
 @end
 
 @implementation TKVibrationRecorderProgressView
 
-- (TKVibrationRecorderProgressView)initWithMaximumTimeInterval:(double)a3 styleProvider:(id)a4
+- (TKVibrationRecorderProgressView)initWithMaximumTimeInterval:(double)interval styleProvider:(id)provider
 {
-  v7 = a4;
+  providerCopy = provider;
   v21.receiver = self;
   v21.super_class = TKVibrationRecorderProgressView;
   v8 = [(TKVibrationRecorderProgressView *)&v21 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v9 = v8;
-  if (a3 <= 0.0)
+  if (interval <= 0.0)
   {
     v10 = v8;
     v9 = 0;
@@ -35,14 +35,14 @@
 
   if (v8)
   {
-    objc_storeStrong(&v8->_styleProvider, a4);
+    objc_storeStrong(&v8->_styleProvider, provider);
     v9->_currentTimeInterval = 0.0;
-    v9->_maximumTimeInterval = a3;
+    v9->_maximumTimeInterval = interval;
     v9->_currentVibrationComponentDidBeginTimeInterval = -1.0;
     v9->_previousPauseDidBeginTimeInterval = -1.0;
     v10 = objc_alloc_init(MEMORY[0x277D75D18]);
-    v11 = [v7 vibrationRecorderProgressViewTrackColor];
-    [(TKVibrationRecorderProgressView *)v10 setBackgroundColor:v11];
+    vibrationRecorderProgressViewTrackColor = [providerCopy vibrationRecorderProgressViewTrackColor];
+    [(TKVibrationRecorderProgressView *)v10 setBackgroundColor:vibrationRecorderProgressViewTrackColor];
 
     [(TKVibrationRecorderProgressView *)v10 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(TKVibrationRecorderProgressView *)v9 addSubview:v10];
@@ -55,8 +55,8 @@
     v9->_progressView = v12;
 
     v14 = v9->_progressView;
-    v15 = [(TKVibrationRecorderProgressView *)v9 tintColor];
-    [(UIView *)v14 setBackgroundColor:v15];
+    tintColor = [(TKVibrationRecorderProgressView *)v9 tintColor];
+    [(UIView *)v14 setBackgroundColor:tintColor];
 
     [(UIView *)v9->_progressView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(TKVibrationRecorderProgressView *)v9 addSubview:v9->_progressView];
@@ -77,14 +77,14 @@ LABEL_5:
   return v9;
 }
 
-- (void)setCurrentTimeInterval:(double)a3
+- (void)setCurrentTimeInterval:(double)interval
 {
-  self->_currentTimeInterval = a3;
+  self->_currentTimeInterval = interval;
   [(TKVibrationRecorderProgressView *)self _cappedValueForTimeInterval:?];
   v5 = v4;
   v6 = v4 / self->_maximumTimeInterval;
-  v7 = [(TKVibrationRecorderProgressView *)self roundedCornersCompensationDelayMode];
-  if (v7 == 2)
+  roundedCornersCompensationDelayMode = [(TKVibrationRecorderProgressView *)self roundedCornersCompensationDelayMode];
+  if (roundedCornersCompensationDelayMode == 2)
   {
     [(TKVibrationRecorderProgressView *)self _dotInsets];
     v11 = v10;
@@ -94,7 +94,7 @@ LABEL_5:
 
   else
   {
-    if (v7 != 1)
+    if (roundedCornersCompensationDelayMode != 1)
     {
       goto LABEL_12;
     }
@@ -145,14 +145,14 @@ LABEL_12:
 - (void)_updateProgressViewBackgroundColor
 {
   progressView = self->_progressView;
-  v3 = [(TKVibrationRecorderProgressView *)self tintColor];
-  [(UIView *)progressView setBackgroundColor:v3];
+  tintColor = [(TKVibrationRecorderProgressView *)self tintColor];
+  [(UIView *)progressView setBackgroundColor:tintColor];
 }
 
 - (CGSize)_dotSize
 {
-  v2 = [(TKVibrationRecorderProgressView *)self _resizableDotImage];
-  [v2 size];
+  _resizableDotImage = [(TKVibrationRecorderProgressView *)self _resizableDotImage];
+  [_resizableDotImage size];
   v4 = v3;
   v6 = v5;
 
@@ -178,11 +178,11 @@ LABEL_12:
   v4 = v3;
   self->_currentVibrationComponentDidBeginTimeInterval = v3;
   v5 = [TKVibrationRecorderProgressDotImageView alloc];
-  v6 = [(TKVibrationRecorderProgressView *)self _resizableDotImage];
-  v7 = [(TKVibrationRecorderProgressDotImageView *)v5 initWithImage:v6];
+  _resizableDotImage = [(TKVibrationRecorderProgressView *)self _resizableDotImage];
+  v7 = [(TKVibrationRecorderProgressDotImageView *)v5 initWithImage:_resizableDotImage];
 
-  v8 = [(TKVibrationRecorderProgressView *)self _dotTintColor];
-  [(TKVibrationRecorderProgressDotImageView *)v7 setTintColor:v8];
+  _dotTintColor = [(TKVibrationRecorderProgressView *)self _dotTintColor];
+  [(TKVibrationRecorderProgressDotImageView *)v7 setTintColor:_dotTintColor];
 
   [(TKVibrationRecorderProgressDotImageView *)v7 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(TKVibrationRecorderProgressView *)self addSubview:v7];
@@ -274,23 +274,23 @@ LABEL_12:
   return result;
 }
 
-- (void)_updateHorizontalConstraintsOfDotForCurrentVibrationComponent:(id)a3 withFrame:(CGRect)a4
+- (void)_updateHorizontalConstraintsOfDotForCurrentVibrationComponent:(id)component withFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  componentCopy = component;
   [(TKVibrationRecorderProgressView *)self bounds];
   v10 = CGRectGetWidth(v23);
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __107__TKVibrationRecorderProgressView__updateHorizontalConstraintsOfDotForCurrentVibrationComponent_withFrame___block_invoke;
   v19[3] = &unk_2783169A0;
-  v20 = v9;
-  v21 = self;
+  v20 = componentCopy;
+  selfCopy = self;
   v22 = v10;
-  v11 = v9;
+  v11 = componentCopy;
   v12 = MEMORY[0x21CF0DA20](v19);
   [(NSLayoutConstraint *)self->_dotForCurrentVibrationComponentLeftConstraint tk_removeFromContainer];
   v24.origin.x = x;
@@ -313,7 +313,7 @@ LABEL_12:
   self->_dotForCurrentVibrationComponentRightConstraint = v17;
 }
 
-- (CGRect)_frameForDotAtTimeInterval:(double)a3 duration:(double)a4
+- (CGRect)_frameForDotAtTimeInterval:(double)interval duration:(double)duration
 {
   [(TKVibrationRecorderProgressView *)self _dotSize];
   v8 = v7;
@@ -326,8 +326,8 @@ LABEL_12:
   [(TKVibrationRecorderProgressView *)self bounds];
   v17 = CGRectGetWidth(v35) - v13 - v11 - v16;
   maximumTimeInterval = self->_maximumTimeInterval;
-  v19 = a3 / maximumTimeInterval * v17;
-  v20 = a4 / maximumTimeInterval * v17;
+  v19 = interval / maximumTimeInterval * v17;
+  v20 = duration / maximumTimeInterval * v17;
   v21 = v19 + v20 - (v17 - (v11 + v11));
   v22 = 0.0;
   if (v21 < 0.0)
@@ -418,17 +418,17 @@ LABEL_12:
   {
     v8.receiver = self;
     v8.super_class = TKVibrationRecorderProgressView;
-    v4 = [(TKVibrationRecorderProgressView *)&v8 accessibilityValue];
+    accessibilityValue = [(TKVibrationRecorderProgressView *)&v8 accessibilityValue];
   }
 
   else
   {
     v5 = [TKVibrationInterfaceUtilities descriptionForDuration:self->_currentTimeInterval];
     v6 = [TKVibrationInterfaceUtilities descriptionForDuration:self->_maximumTimeInterval];
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:v3, v5, v6];
+    accessibilityValue = [MEMORY[0x277CCACA8] stringWithFormat:v3, v5, v6];
   }
 
-  return v4;
+  return accessibilityValue;
 }
 
 - (CGRect)accessibilityFrame

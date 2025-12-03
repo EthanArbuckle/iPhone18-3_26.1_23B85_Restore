@@ -4,15 +4,15 @@
 - (UIImage)headerImage;
 - (_TtC23ProximityAppleIDSetupUI20PASUISignInViewModel)init;
 - (id)authenticationContext;
-- (void)signInViewController:(id)a3 didCompleteWithAuthenticationResults:(id)a4;
-- (void)willAuthenticateWithContext:(id)a3;
+- (void)signInViewController:(id)controller didCompleteWithAuthenticationResults:(id)results;
+- (void)willAuthenticateWithContext:(id)context;
 @end
 
 @implementation PASUISignInViewModel
 
 - (NSAttributedString)attributedTitle
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2611412D8();
 
   return v3;
@@ -20,7 +20,7 @@
 
 - (NSAttributedString)attributedMessage
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_261141630();
 
   return v3;
@@ -40,24 +40,24 @@
   return result;
 }
 
-- (void)signInViewController:(id)a3 didCompleteWithAuthenticationResults:(id)a4
+- (void)signInViewController:(id)controller didCompleteWithAuthenticationResults:(id)results
 {
   v6 = sub_26115B614();
-  v7 = a3;
-  v8 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_2611433A0(v6);
 }
 
-- (void)willAuthenticateWithContext:(id)a3
+- (void)willAuthenticateWithContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  _s23ProximityAppleIDSetupUI20PASUISignInViewModelC27willAuthenticateWithContextyySo023AKAppleIDAuthenticationL0CF_0(v4);
+  contextCopy = context;
+  selfCopy = self;
+  _s23ProximityAppleIDSetupUI20PASUISignInViewModelC27willAuthenticateWithContextyySo023AKAppleIDAuthenticationL0CF_0(contextCopy);
 }
 
 - (id)authenticationContext
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PASUISignInViewModel.authenticationContext()();
 
   return v3;

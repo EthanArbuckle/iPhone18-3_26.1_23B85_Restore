@@ -10,11 +10,11 @@
   v8 = a4;
   if (!v8)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"LNImage.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNImage.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
   }
 
-  v9 = [a1 copy];
+  v9 = [self copy];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __69__INImage_INImageProxyInjecting___injectProxiesForImages_completion___block_invoke;

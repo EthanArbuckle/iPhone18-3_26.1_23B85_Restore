@@ -1,8 +1,8 @@
 @interface FCTagSubscriptionOrderAssigner
 - (FCTagSubscriptionOrderAssigner)init;
-- (id)_assignOrderToSubscriptions:(void *)a1 withInitialOrder:(uint64_t)a2 orderSpacing:(uint64_t)a3;
-- (id)assignOrderToTagSubscriptions:(id)a1;
-- (void)initWithInitialOrder:(uint64_t)a3 orderSpacing:;
+- (id)_assignOrderToSubscriptions:(void *)subscriptions withInitialOrder:(uint64_t)order orderSpacing:(uint64_t)spacing;
+- (id)assignOrderToTagSubscriptions:(id)subscriptions;
+- (void)initWithInitialOrder:(uint64_t)order orderSpacing:;
 @end
 
 @implementation FCTagSubscriptionOrderAssigner
@@ -33,7 +33,7 @@
   objc_exception_throw(v6);
 }
 
-- (void)initWithInitialOrder:(uint64_t)a3 orderSpacing:
+- (void)initWithInitialOrder:(uint64_t)order orderSpacing:
 {
   if (result)
   {
@@ -43,19 +43,19 @@
     if (result)
     {
       result[1] = a2;
-      result[2] = a3;
+      result[2] = order;
     }
   }
 
   return result;
 }
 
-- (id)assignOrderToTagSubscriptions:(id)a1
+- (id)assignOrderToTagSubscriptions:(id)subscriptions
 {
   v23 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (subscriptions)
   {
     if (!v3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -77,17 +77,17 @@
     v11[2] = __64__FCTagSubscriptionOrderAssigner_assignOrderToTagSubscriptions___block_invoke_2;
     v11[3] = &unk_1E7C43930;
     v12 = v4;
-    v13 = a1;
+    subscriptionsCopy = subscriptions;
     v6 = v5;
     v14 = v6;
     [v12 fc_enumerateIslandsOfCommonValuesForKeyBlock:&__block_literal_global_124 withBlock:v11];
     v7 = v14;
-    a1 = v6;
+    subscriptions = v6;
   }
 
   v8 = *MEMORY[0x1E69E9840];
 
-  return a1;
+  return subscriptions;
 }
 
 id __64__FCTagSubscriptionOrderAssigner_assignOrderToTagSubscriptions___block_invoke(uint64_t a1, void *a2)
@@ -242,11 +242,11 @@ LABEL_31:
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_assignOrderToSubscriptions:(void *)a1 withInitialOrder:(uint64_t)a2 orderSpacing:(uint64_t)a3
+- (id)_assignOrderToSubscriptions:(void *)subscriptions withInitialOrder:(uint64_t)order orderSpacing:(uint64_t)spacing
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a1;
-  if (!v5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  subscriptionsCopy = subscriptions;
+  if (!subscriptionsCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "subscriptions != nil"];
     *buf = 136315906;
@@ -264,9 +264,9 @@ LABEL_31:
   v10[1] = 3221225472;
   v10[2] = __92__FCTagSubscriptionOrderAssigner__assignOrderToSubscriptions_withInitialOrder_orderSpacing___block_invoke;
   v10[3] = &__block_descriptor_48_e75____FCReorderableTagSubscription__24__0Q8___FCReorderableTagSubscription__16l;
-  v10[4] = a2;
-  v10[5] = a3;
-  v6 = [v5 fc_arrayByTransformingWithBlockWithIndex:v10];
+  v10[4] = order;
+  v10[5] = spacing;
+  v6 = [subscriptionsCopy fc_arrayByTransformingWithBlockWithIndex:v10];
 
   v7 = *MEMORY[0x1E69E9840];
 

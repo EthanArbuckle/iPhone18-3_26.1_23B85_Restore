@@ -1,10 +1,10 @@
 @interface ServiceTouchIDAlertViewController
 - (id)_remoteViewControllerProxy;
 - (void)_dismissAlertController;
-- (void)_finishWithButtonIndex:(int64_t)a3;
-- (void)_showAlertForAlertProxy:(id)a3;
-- (void)_willAppearInRemoteViewController:(id)a3;
-- (void)alertProxy:(id)a3 didReceiveMessage:(id)a4;
+- (void)_finishWithButtonIndex:(int64_t)index;
+- (void)_showAlertForAlertProxy:(id)proxy;
+- (void)_willAppearInRemoteViewController:(id)controller;
+- (void)alertProxy:(id)proxy didReceiveMessage:(id)message;
 - (void)dealloc;
 @end
 
@@ -18,20 +18,20 @@
   [(ServiceTouchIDAlertViewController *)&v3 dealloc];
 }
 
-- (void)_willAppearInRemoteViewController:(id)a3
+- (void)_willAppearInRemoteViewController:(id)controller
 {
-  v4 = a3;
-  [v4 setAllowsAlertStacking:1];
-  [v4 setAllowsMenuButtonDismissal:1];
-  [v4 setShouldDismissOnUILock:1];
+  controllerCopy = controller;
+  [controllerCopy setAllowsAlertStacking:1];
+  [controllerCopy setAllowsMenuButtonDismissal:1];
+  [controllerCopy setShouldDismissOnUILock:1];
   v5.receiver = self;
   v5.super_class = ServiceTouchIDAlertViewController;
-  [(ServiceTouchIDAlertViewController *)&v5 _willAppearInRemoteViewController:v4];
+  [(ServiceTouchIDAlertViewController *)&v5 _willAppearInRemoteViewController:controllerCopy];
 }
 
-- (void)alertProxy:(id)a3 didReceiveMessage:(id)a4
+- (void)alertProxy:(id)proxy didReceiveMessage:(id)message
 {
-  xdict = a4;
+  xdict = message;
   int64 = xpc_dictionary_get_int64(xdict, "0");
   if (int64 == 3002)
   {
@@ -39,12 +39,12 @@
     v6 = SSXPCDictionaryCopyCFObjectWithClass();
     v7 = [[SSDialog alloc] initWithDialogDictionary:v6];
     headerView = self->_headerView;
-    v9 = [v7 message];
-    [(ServiceTouchIDAlertHeaderView *)headerView setMessage:v9];
+    message = [v7 message];
+    [(ServiceTouchIDAlertHeaderView *)headerView setMessage:message];
 
     v10 = self->_headerView;
-    v11 = [v7 title];
-    [(ServiceTouchIDAlertHeaderView *)v10 setTitle:v11];
+    title = [v7 title];
+    [(ServiceTouchIDAlertHeaderView *)v10 setTitle:title];
 
     if (xpc_dictionary_get_BOOL(xdict, "2"))
     {
@@ -65,18 +65,18 @@
   remoteAlertProxy = self->_remoteAlertProxy;
   self->_remoteAlertProxy = 0;
 
-  v6 = [(ServiceTouchIDAlertViewController *)self _remoteViewControllerProxy];
+  _remoteViewControllerProxy = [(ServiceTouchIDAlertViewController *)self _remoteViewControllerProxy];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v6 setIdleTimerDisabled:0 forReason:v5];
+  [_remoteViewControllerProxy setIdleTimerDisabled:0 forReason:v5];
 
-  [v6 dismiss];
+  [_remoteViewControllerProxy dismiss];
 }
 
-- (void)_finishWithButtonIndex:(int64_t)a3
+- (void)_finishWithButtonIndex:(int64_t)index
 {
   v5 = xpc_dictionary_create(0, 0, 0);
-  xpc_dictionary_set_int64(v5, "1", a3);
+  xpc_dictionary_set_int64(v5, "1", index);
   [(ServiceAlertProxy *)self->_remoteAlertProxy finishWithResponse:v5];
   [(ServiceTouchIDAlertViewController *)self _dismissAlertController];
 }
@@ -85,17 +85,17 @@
 {
   v4.receiver = self;
   v4.super_class = ServiceTouchIDAlertViewController;
-  v2 = [(ServiceTouchIDAlertViewController *)&v4 _remoteViewControllerProxy];
+  _remoteViewControllerProxy = [(ServiceTouchIDAlertViewController *)&v4 _remoteViewControllerProxy];
 
-  return v2;
+  return _remoteViewControllerProxy;
 }
 
-- (void)_showAlertForAlertProxy:(id)a3
+- (void)_showAlertForAlertProxy:(id)proxy
 {
-  v5 = a3;
-  objc_storeStrong(&self->_remoteAlertProxy, a3);
+  proxyCopy = proxy;
+  objc_storeStrong(&self->_remoteAlertProxy, proxy);
   [(ServiceAlertProxy *)self->_remoteAlertProxy setDelegate:self];
-  v6 = [v5 options];
+  options = [proxyCopy options];
   v7 = SSXPCCreateCFObjectFromXPCObject();
 
   objc_opt_class();
@@ -113,12 +113,12 @@
       [(ServiceTouchIDAlertHeaderView *)v11 setBackgroundColor:v12];
 
       v13 = self->_headerView;
-      v14 = [v8 message];
-      [(ServiceTouchIDAlertHeaderView *)v13 setMessage:v14];
+      message = [v8 message];
+      [(ServiceTouchIDAlertHeaderView *)v13 setMessage:message];
 
       v15 = self->_headerView;
-      v16 = [v8 title];
-      [(ServiceTouchIDAlertHeaderView *)v15 setTitle:v16];
+      title = [v8 title];
+      [(ServiceTouchIDAlertHeaderView *)v15 setTitle:title];
 
       v17 = [NSBundle bundleForClass:objc_opt_class()];
       v18 = [UIImage imageNamed:@"MesaGlyph" inBundle:v17];
@@ -142,15 +142,15 @@
       [v23 setView:self->_headerView];
       [(UIAlertController *)self->_alertController setContentViewController:v23];
       objc_initWeak(&location, self);
-      v24 = [v8 buttons];
+      buttons = [v8 buttons];
       v26[0] = _NSConcreteStackBlock;
       v26[1] = 3221225472;
       v26[2] = sub_1000106D8;
       v26[3] = &unk_100051748;
       v27 = v8;
-      v28 = self;
+      selfCopy = self;
       objc_copyWeak(&v29, &location);
-      [v24 enumerateObjectsUsingBlock:v26];
+      [buttons enumerateObjectsUsingBlock:v26];
 
       [(ServiceTouchIDAlertViewController *)self presentViewController:self->_alertController animated:1 completion:0];
       objc_destroyWeak(&v29);

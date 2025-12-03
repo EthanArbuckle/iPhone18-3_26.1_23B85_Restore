@@ -1,5 +1,5 @@
 @interface SGFlight
-- (SGFlight)initWithCarrier:(id)a3 flightNo:(id)a4 depDesc:(id)a5 arrDesc:(id)a6;
+- (SGFlight)initWithCarrier:(id)carrier flightNo:(id)no depDesc:(id)desc arrDesc:(id)arrDesc;
 - (id)description;
 @end
 
@@ -8,24 +8,24 @@
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
-  v4 = [(SGFlight *)self airline];
-  v5 = [(SGFlight *)self flightno];
-  v6 = [(SGFlight *)self departureAirportDescription];
-  v7 = [(SGFlight *)self arrivalAirportDescription];
-  v8 = [v3 initWithFormat:@"%@ %@ from %@ to %@", v4, v5, v6, v7];
+  airline = [(SGFlight *)self airline];
+  flightno = [(SGFlight *)self flightno];
+  departureAirportDescription = [(SGFlight *)self departureAirportDescription];
+  arrivalAirportDescription = [(SGFlight *)self arrivalAirportDescription];
+  v8 = [v3 initWithFormat:@"%@ %@ from %@ to %@", airline, flightno, departureAirportDescription, arrivalAirportDescription];
 
   return v8;
 }
 
-- (SGFlight)initWithCarrier:(id)a3 flightNo:(id)a4 depDesc:(id)a5 arrDesc:(id)a6
+- (SGFlight)initWithCarrier:(id)carrier flightNo:(id)no depDesc:(id)desc arrDesc:(id)arrDesc
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (v12)
+  carrierCopy = carrier;
+  noCopy = no;
+  descCopy = desc;
+  arrDescCopy = arrDesc;
+  if (carrierCopy)
   {
-    if (v13)
+    if (noCopy)
     {
       goto LABEL_3;
     }
@@ -33,17 +33,17 @@
 
   else
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"SGFlightData.m" lineNumber:723 description:{@"Invalid parameter not satisfying: %@", @"airline"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGFlightData.m" lineNumber:723 description:{@"Invalid parameter not satisfying: %@", @"airline"}];
 
-    if (v13)
+    if (noCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v20 = [MEMORY[0x277CCA890] currentHandler];
-  [v20 handleFailureInMethod:a2 object:self file:@"SGFlightData.m" lineNumber:724 description:{@"Invalid parameter not satisfying: %@", @"flightno"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGFlightData.m" lineNumber:724 description:{@"Invalid parameter not satisfying: %@", @"flightno"}];
 
 LABEL_3:
   v21.receiver = self;
@@ -52,10 +52,10 @@ LABEL_3:
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_airline, a3);
-    objc_storeStrong(&v17->_flightno, a4);
-    objc_storeStrong(&v17->_departureAirportDescription, a5);
-    objc_storeStrong(&v17->_arrivalAirportDescription, a6);
+    objc_storeStrong(&v16->_airline, carrier);
+    objc_storeStrong(&v17->_flightno, no);
+    objc_storeStrong(&v17->_departureAirportDescription, desc);
+    objc_storeStrong(&v17->_arrivalAirportDescription, arrDesc);
   }
 
   return v17;

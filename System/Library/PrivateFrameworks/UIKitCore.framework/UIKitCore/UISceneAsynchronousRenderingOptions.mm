@@ -1,10 +1,10 @@
 @interface UISceneAsynchronousRenderingOptions
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (UISceneAsynchronousRenderingOptions)init;
-- (UISceneAsynchronousRenderingOptions)initWithOptions:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (UISceneAsynchronousRenderingOptions)initWithOptions:(id)options;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (unint64_t)hash;
@@ -31,30 +31,30 @@
   return v3;
 }
 
-- (UISceneAsynchronousRenderingOptions)initWithOptions:(id)a3
+- (UISceneAsynchronousRenderingOptions)initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v12.receiver = self;
   v12.super_class = UISceneAsynchronousRenderingOptions;
   v5 = [(UISceneAsynchronousRenderingOptions *)&v12 init];
   if (v5)
   {
-    v6 = [v4 renderTimes];
-    v7 = [v6 copy];
+    renderTimes = [optionsCopy renderTimes];
+    v7 = [renderTimes copy];
     renderTimes = v5->_renderTimes;
     v5->_renderTimes = v7;
 
-    [v4 renderPeriod];
+    [optionsCopy renderPeriod];
     v5->_renderPeriod = v9;
-    [v4 renderMaxAPL];
+    [optionsCopy renderMaxAPL];
     v5->_renderMaxAPL = v10;
-    v5->_opaque = [v4 opaque];
+    v5->_opaque = [optionsCopy opaque];
   }
 
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [UIMutableSceneAsynchronousRenderingOptions alloc];
 
@@ -63,32 +63,32 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [(UISceneAsynchronousRenderingOptions *)self renderTimes];
-  v5 = [v3 appendObject:v4];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  renderTimes = [(UISceneAsynchronousRenderingOptions *)self renderTimes];
+  v5 = [builder appendObject:renderTimes];
 
   [(UISceneAsynchronousRenderingOptions *)self renderPeriod];
-  v6 = [v3 appendDouble:?];
+  v6 = [builder appendDouble:?];
   [(UISceneAsynchronousRenderingOptions *)self renderMaxAPL];
-  v7 = [v3 appendFloat:?];
-  v8 = [v3 appendBool:{-[UISceneAsynchronousRenderingOptions opaque](self, "opaque")}];
-  v9 = [v3 hash];
+  v7 = [builder appendFloat:?];
+  v8 = [builder appendBool:{-[UISceneAsynchronousRenderingOptions opaque](self, "opaque")}];
+  v9 = [builder hash];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v18 = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     v7 = [MEMORY[0x1E698E6A0] builderWithObject:v6 ofExpectedClass:objc_opt_class()];
     [(UISceneAsynchronousRenderingOptions *)self renderPeriod];
     v9 = v8;
@@ -125,23 +125,23 @@
       v17 = [v7 appendFloat:v31 counterpart:v16];
     }
 
-    v20 = [(UISceneAsynchronousRenderingOptions *)self renderTimes];
+    renderTimes = [(UISceneAsynchronousRenderingOptions *)self renderTimes];
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __47__UISceneAsynchronousRenderingOptions_isEqual___block_invoke_4;
     v29[3] = &unk_1E70F66F0;
     v21 = v10;
     v30 = v21;
-    v22 = [v7 appendObject:v20 counterpart:v29];
+    v22 = [v7 appendObject:renderTimes counterpart:v29];
 
-    v23 = [(UISceneAsynchronousRenderingOptions *)self opaque];
+    opaque = [(UISceneAsynchronousRenderingOptions *)self opaque];
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __47__UISceneAsynchronousRenderingOptions_isEqual___block_invoke_5;
     v27[3] = &unk_1E70F3CB0;
     v28 = v21;
     v24 = v21;
-    v25 = [v7 appendBool:v23 counterpart:v27];
+    v25 = [v7 appendBool:opaque counterpart:v27];
     v18 = [v7 isEqual];
   }
 
@@ -155,13 +155,13 @@
   v4 = [v3 appendDouble:@"renderPeriod" withName:3 decimalPrecision:?];
   [(UISceneAsynchronousRenderingOptions *)self renderMaxAPL];
   v6 = [v3 appendFloat:@"renderMaxAPL" withName:3 decimalPrecision:v5];
-  v7 = [(UISceneAsynchronousRenderingOptions *)self renderTimes];
-  v8 = [v7 count];
+  renderTimes = [(UISceneAsynchronousRenderingOptions *)self renderTimes];
+  v8 = [renderTimes count];
 
   if (v8)
   {
-    v9 = [(UISceneAsynchronousRenderingOptions *)self renderTimes];
-    v10 = [v3 appendUnsignedInteger:objc_msgSend(v9 withName:{"count"), @"renderTimes.count"}];
+    renderTimes2 = [(UISceneAsynchronousRenderingOptions *)self renderTimes];
+    v10 = [v3 appendUnsignedInteger:objc_msgSend(renderTimes2 withName:{"count"), @"renderTimes.count"}];
   }
 
   v11 = [v3 appendBool:-[UISceneAsynchronousRenderingOptions opaque](self withName:"opaque") ifEqualTo:{@"opaque", 1}];
@@ -171,31 +171,31 @@
 
 - (id)succinctDescription
 {
-  v2 = [(UISceneAsynchronousRenderingOptions *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(UISceneAsynchronousRenderingOptions *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
+  prefixCopy = prefix;
   v5 = [MEMORY[0x1E698E680] builderWithObject:self];
   [(UISceneAsynchronousRenderingOptions *)self renderPeriod];
   v6 = [v5 appendDouble:@"renderPeriod" withName:3 decimalPrecision:?];
   [(UISceneAsynchronousRenderingOptions *)self renderMaxAPL];
   v8 = [v5 appendFloat:@"renderMaxAPL" withName:3 decimalPrecision:v7];
-  v9 = [(UISceneAsynchronousRenderingOptions *)self renderTimes];
+  renderTimes = [(UISceneAsynchronousRenderingOptions *)self renderTimes];
 
-  if (v9)
+  if (renderTimes)
   {
     v12 = MEMORY[0x1E69E9820];
     v13 = 3221225472;
     v14 = __77__UISceneAsynchronousRenderingOptions_descriptionBuilderWithMultilinePrefix___block_invoke;
     v15 = &unk_1E70F35B8;
     v16 = v5;
-    v17 = self;
-    [v16 appendBodySectionWithName:0 multilinePrefix:v4 block:&v12];
+    selfCopy = self;
+    [v16 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:&v12];
   }
 
   v10 = [v5 appendBool:-[UISceneAsynchronousRenderingOptions opaque](self withName:{"opaque", v12, v13, v14, v15), @"opaque"}];
@@ -211,12 +211,12 @@ void __77__UISceneAsynchronousRenderingOptions_descriptionBuilderWithMultilinePr
   [v2 appendArraySection:v4 withName:@"renderTimes" multilinePrefix:v3 skipIfEmpty:0];
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(UISceneAsynchronousRenderingOptions *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(UISceneAsynchronousRenderingOptions *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 @end

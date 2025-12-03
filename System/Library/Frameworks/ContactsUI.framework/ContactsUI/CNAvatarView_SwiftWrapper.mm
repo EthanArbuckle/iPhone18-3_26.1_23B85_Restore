@@ -1,26 +1,26 @@
 @interface CNAvatarView_SwiftWrapper
 - (NSArray)contacts;
 - (UIColor)borderColor;
-- (_TtC10ContactsUI25CNAvatarView_SwiftWrapper)initWithContacts:(id)a3 listener:(id)a4;
-- (_TtC10ContactsUI25CNAvatarView_SwiftWrapper)initWithFrame:(CGRect)a3;
+- (_TtC10ContactsUI25CNAvatarView_SwiftWrapper)initWithContacts:(id)contacts listener:(id)listener;
+- (_TtC10ContactsUI25CNAvatarView_SwiftWrapper)initWithFrame:(CGRect)frame;
 - (double)borderWidth;
 - (unint64_t)backgroundStyle;
 - (void)layoutSubviews;
-- (void)setBackgroundStyle:(unint64_t)a3;
-- (void)setBorderColor:(id)a3;
-- (void)setBorderWidth:(double)a3;
-- (void)setContacts:(id)a3;
+- (void)setBackgroundStyle:(unint64_t)style;
+- (void)setBorderColor:(id)color;
+- (void)setBorderWidth:(double)width;
+- (void)setContacts:(id)contacts;
 @end
 
 @implementation CNAvatarView_SwiftWrapper
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_199AD070C();
 }
 
-- (_TtC10ContactsUI25CNAvatarView_SwiftWrapper)initWithContacts:(id)a3 listener:(id)a4
+- (_TtC10ContactsUI25CNAvatarView_SwiftWrapper)initWithContacts:(id)contacts listener:(id)listener
 {
   sub_199A7A02C(0, &qword_1ED615BF0);
   v4 = sub_199DFA0CC();
@@ -30,22 +30,22 @@
   return v5;
 }
 
-- (void)setBackgroundStyle:(unint64_t)a3
+- (void)setBackgroundStyle:(unint64_t)style
 {
   v5 = OBJC_IVAR____TtC10ContactsUI25CNAvatarView_SwiftWrapper_backgroundStyle;
   swift_beginAccess();
   v6 = *(&self->super.super.super.isa + v5);
-  *(&self->super.super.super.isa + v5) = a3;
-  if (v6 != a3)
+  *(&self->super.super.super.isa + v5) = style;
+  if (v6 != style)
   {
-    v7 = self;
+    selfCopy = self;
     sub_199A7C70C();
   }
 }
 
 - (NSArray)contacts
 {
-  v2 = self;
+  selfCopy = self;
 
   sub_199DF780C();
 
@@ -55,11 +55,11 @@
   return v3;
 }
 
-- (void)setContacts:(id)a3
+- (void)setContacts:(id)contacts
 {
   sub_199A7A02C(0, &qword_1ED615BF0);
   v4 = sub_199DFA0CC();
-  v5 = self;
+  selfCopy = self;
   sub_199ACEEFC(v4);
 }
 
@@ -77,11 +77,11 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setBorderColor:(id)a3
+- (void)setBorderColor:(id)color
 {
-  v4 = a3;
-  v5 = self;
-  sub_199ACFEF8(v4);
+  colorCopy = color;
+  selfCopy = self;
+  sub_199ACFEF8(colorCopy);
 }
 
 - (double)borderWidth
@@ -91,13 +91,13 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setBorderWidth:(double)a3
+- (void)setBorderWidth:(double)width
 {
-  v4 = self;
-  sub_199AD039C(a3);
+  selfCopy = self;
+  sub_199AD039C(width);
 }
 
-- (_TtC10ContactsUI25CNAvatarView_SwiftWrapper)initWithFrame:(CGRect)a3
+- (_TtC10ContactsUI25CNAvatarView_SwiftWrapper)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

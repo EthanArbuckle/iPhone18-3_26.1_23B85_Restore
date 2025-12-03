@@ -1,22 +1,22 @@
 @interface MobileDocumentProviderRegistrationSessionProxy
 - (_TtC8coreidvd46MobileDocumentProviderRegistrationSessionProxy)init;
-- (void)allApplicationsWithCompletionHandler:(id)a3;
-- (void)authorizationStatusWithCompletionHandler:(id)a3;
-- (void)notifyEnablementUpdateTo:(BOOL)a3 for:(NSString *)a4 completionHandler:(id)a5;
-- (void)registerWithRequest:(_TtC7CoreIDV44XPCMobileDocumentProviderRegistrationRequest *)a3 applicationIdentifierOverride:(NSString *)a4 completionHandler:(id)a5;
-- (void)registrationsWithApplicationIdentifierOverride:(NSString *)a3 completionHandler:(id)a4;
-- (void)unregisterWithRequest:(_TtC7CoreIDV42XPCMobileDocumentProviderUnregisterRequest *)a3 applicationIdentifierOverride:(NSString *)a4 completionHandler:(id)a5;
+- (void)allApplicationsWithCompletionHandler:(id)handler;
+- (void)authorizationStatusWithCompletionHandler:(id)handler;
+- (void)notifyEnablementUpdateTo:(BOOL)to for:(NSString *)for completionHandler:(id)handler;
+- (void)registerWithRequest:(_TtC7CoreIDV44XPCMobileDocumentProviderRegistrationRequest *)request applicationIdentifierOverride:(NSString *)override completionHandler:(id)handler;
+- (void)registrationsWithApplicationIdentifierOverride:(NSString *)override completionHandler:(id)handler;
+- (void)unregisterWithRequest:(_TtC7CoreIDV42XPCMobileDocumentProviderUnregisterRequest *)request applicationIdentifierOverride:(NSString *)override completionHandler:(id)handler;
 @end
 
 @implementation MobileDocumentProviderRegistrationSessionProxy
 
-- (void)authorizationStatusWithCompletionHandler:(id)a3
+- (void)authorizationStatusWithCompletionHandler:(id)handler
 {
   v5 = sub_100007224(&unk_100845860, &unk_1006BF9D0);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -36,16 +36,16 @@
   sub_100500D54(0, 0, v8, &unk_1006E66B8, v13);
 }
 
-- (void)registerWithRequest:(_TtC7CoreIDV44XPCMobileDocumentProviderRegistrationRequest *)a3 applicationIdentifierOverride:(NSString *)a4 completionHandler:(id)a5
+- (void)registerWithRequest:(_TtC7CoreIDV44XPCMobileDocumentProviderRegistrationRequest *)request applicationIdentifierOverride:(NSString *)override completionHandler:(id)handler
 {
   v9 = sub_100007224(&unk_100845860, &unk_1006BF9D0);
   v10 = *(*(v9 - 8) + 64);
   __chkstk_darwin(v9 - 8);
   v12 = &v20 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = request;
+  v14[3] = override;
   v14[4] = v13;
   v14[5] = self;
   v15 = type metadata accessor for TaskPriority();
@@ -60,22 +60,22 @@
   v17[3] = 0;
   v17[4] = &unk_1006E6690;
   v17[5] = v16;
-  v18 = a3;
-  v19 = a4;
+  requestCopy = request;
+  overrideCopy = override;
 
   sub_100500D54(0, 0, v12, &unk_1006E6698, v17);
 }
 
-- (void)unregisterWithRequest:(_TtC7CoreIDV42XPCMobileDocumentProviderUnregisterRequest *)a3 applicationIdentifierOverride:(NSString *)a4 completionHandler:(id)a5
+- (void)unregisterWithRequest:(_TtC7CoreIDV42XPCMobileDocumentProviderUnregisterRequest *)request applicationIdentifierOverride:(NSString *)override completionHandler:(id)handler
 {
   v9 = sub_100007224(&unk_100845860, &unk_1006BF9D0);
   v10 = *(*(v9 - 8) + 64);
   __chkstk_darwin(v9 - 8);
   v12 = &v20 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = request;
+  v14[3] = override;
   v14[4] = v13;
   v14[5] = self;
   v15 = type metadata accessor for TaskPriority();
@@ -90,21 +90,21 @@
   v17[3] = 0;
   v17[4] = &unk_1006E6670;
   v17[5] = v16;
-  v18 = a3;
-  v19 = a4;
+  requestCopy = request;
+  overrideCopy = override;
 
   sub_100500D54(0, 0, v12, &unk_1006E6678, v17);
 }
 
-- (void)registrationsWithApplicationIdentifierOverride:(NSString *)a3 completionHandler:(id)a4
+- (void)registrationsWithApplicationIdentifierOverride:(NSString *)override completionHandler:(id)handler
 {
   v7 = sub_100007224(&unk_100845860, &unk_1006BF9D0);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = override;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -119,18 +119,18 @@
   v15[3] = 0;
   v15[4] = &unk_1006E6650;
   v15[5] = v14;
-  v16 = a3;
+  overrideCopy = override;
 
   sub_100500D54(0, 0, v10, &unk_1006E6658, v15);
 }
 
-- (void)allApplicationsWithCompletionHandler:(id)a3
+- (void)allApplicationsWithCompletionHandler:(id)handler
 {
   v5 = sub_100007224(&unk_100845860, &unk_1006BF9D0);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -150,16 +150,16 @@
   sub_100500D54(0, 0, v8, &unk_1006E6638, v13);
 }
 
-- (void)notifyEnablementUpdateTo:(BOOL)a3 for:(NSString *)a4 completionHandler:(id)a5
+- (void)notifyEnablementUpdateTo:(BOOL)to for:(NSString *)for completionHandler:(id)handler
 {
   v9 = sub_100007224(&unk_100845860, &unk_1006BF9D0);
   v10 = *(*(v9 - 8) + 64);
   __chkstk_darwin(v9 - 8);
   v12 = &v19 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  *(v14 + 16) = a3;
-  *(v14 + 24) = a4;
+  *(v14 + 16) = to;
+  *(v14 + 24) = for;
   *(v14 + 32) = v13;
   *(v14 + 40) = self;
   v15 = type metadata accessor for TaskPriority();
@@ -174,7 +174,7 @@
   v17[3] = 0;
   v17[4] = &unk_1006D9180;
   v17[5] = v16;
-  v18 = a4;
+  forCopy = for;
 
   sub_100500D54(0, 0, v12, &unk_1006E13D0, v17);
 }

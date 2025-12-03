@@ -1,10 +1,10 @@
 @interface BKAuthenticationAlertRequest
 + (id)sharedRequester;
 - (BKAuthenticationAlertRequest)init;
-- (void)_handleAuthResult:(id)a3 error:(id)a4;
-- (void)_notifyHandlers:(BOOL)a3;
+- (void)_handleAuthResult:(id)result error:(id)error;
+- (void)_notifyHandlers:(BOOL)handlers;
 - (void)dealloc;
-- (void)requestAuthenticationPolitely:(BOOL)a3 completion:(id)a4;
+- (void)requestAuthenticationPolitely:(BOOL)politely completion:(id)completion;
 @end
 
 @implementation BKAuthenticationAlertRequest
@@ -44,7 +44,7 @@
   [(BKAuthenticationAlertRequest *)&v3 dealloc];
 }
 
-- (void)_notifyHandlers:(BOOL)a3
+- (void)_notifyHandlers:(BOOL)handlers
 {
   authQueue = self->_authQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -52,17 +52,17 @@
   v4[2] = sub_1001C4BFC;
   v4[3] = &unk_100A044C8;
   v4[4] = self;
-  v5 = a3;
+  handlersCopy = handlers;
   dispatch_async(authQueue, v4);
 }
 
-- (void)requestAuthenticationPolitely:(BOOL)a3 completion:(id)a4
+- (void)requestAuthenticationPolitely:(BOOL)politely completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = +[BKReachability sharedReachabilityForInternetConnection];
-  v8 = [v7 currentReachabilityStatus];
+  currentReachabilityStatus = [v7 currentReachabilityStatus];
 
-  if (v8)
+  if (currentReachabilityStatus)
   {
     v9 = +[UIApplication sharedApplication];
     if ([v9 launchedToTest])
@@ -72,19 +72,19 @@
     else
     {
       v10 = +[AETestDriver shared];
-      v11 = [v10 reading];
+      reading = [v10 reading];
 
-      if (!v11)
+      if (!reading)
       {
         authQueue = self->_authQueue;
         v17[0] = _NSConcreteStackBlock;
         v17[1] = 3221225472;
         v17[2] = sub_1001C4EA4;
         v17[3] = &unk_100A03490;
-        v19 = a3;
+        politelyCopy = politely;
         v17[4] = self;
-        v18 = v6;
-        v16 = v6;
+        v18 = completionCopy;
+        v16 = completionCopy;
         dispatch_async(authQueue, v17);
         v14 = v18;
         goto LABEL_6;
@@ -97,24 +97,24 @@
   block[1] = 3221225472;
   block[2] = sub_1001C4E90;
   block[3] = &unk_100A03920;
-  v21 = v6;
-  v13 = v6;
+  v21 = completionCopy;
+  v13 = completionCopy;
   dispatch_async(v12, block);
   v14 = v21;
 LABEL_6:
 }
 
-- (void)_handleAuthResult:(id)a3 error:(id)a4
+- (void)_handleAuthResult:(id)result error:(id)error
 {
-  v5 = a3;
+  resultCopy = result;
   authQueue = self->_authQueue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1001C55F4;
   v8[3] = &unk_100A03440;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = resultCopy;
+  selfCopy = self;
+  v7 = resultCopy;
   dispatch_async(authQueue, v8);
 }
 

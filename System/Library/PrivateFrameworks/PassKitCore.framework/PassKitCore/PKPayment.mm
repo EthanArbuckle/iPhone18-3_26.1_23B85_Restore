@@ -1,53 +1,53 @@
 @interface PKPayment
-+ (PKPayment)paymentWithProtobuf:(id)a3;
++ (PKPayment)paymentWithProtobuf:(id)protobuf;
 - (ABRecordRef)billingAddress;
 - (ABRecordRef)shippingAddress;
-- (PKPayment)initWithCoder:(id)a3;
-- (PKPayment)initWithToken:(id)a3;
+- (PKPayment)initWithCoder:(id)coder;
+- (PKPayment)initWithToken:(id)token;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)protobuf;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPayment
 
-+ (PKPayment)paymentWithProtobuf:(id)a3
++ (PKPayment)paymentWithProtobuf:(id)protobuf
 {
-  v3 = a3;
+  protobufCopy = protobuf;
   v4 = objc_alloc_init(PKPayment);
-  v5 = [v3 token];
-  v6 = [PKPaymentToken paymentTokenWithProtobuf:v5];
+  token = [protobufCopy token];
+  v6 = [PKPaymentToken paymentTokenWithProtobuf:token];
   [(PKPayment *)v4 setToken:v6];
 
-  v7 = [v3 billingContact];
+  billingContact = [protobufCopy billingContact];
 
-  if (v7)
+  if (billingContact)
   {
     v8 = MEMORY[0x1E696ACD0];
     v9 = objc_opt_class();
-    v10 = [v3 billingContact];
-    v11 = [v8 unarchivedObjectOfClass:v9 fromData:v10 error:0];
+    billingContact2 = [protobufCopy billingContact];
+    v11 = [v8 unarchivedObjectOfClass:v9 fromData:billingContact2 error:0];
     [(PKPayment *)v4 setBillingContact:v11];
   }
 
-  v12 = [v3 shippingContact];
+  shippingContact = [protobufCopy shippingContact];
 
-  if (v12)
+  if (shippingContact)
   {
     v13 = MEMORY[0x1E696ACD0];
     v14 = objc_opt_class();
-    v15 = [v3 shippingContact];
-    v16 = [v13 unarchivedObjectOfClass:v14 fromData:v15 error:0];
+    shippingContact2 = [protobufCopy shippingContact];
+    v16 = [v13 unarchivedObjectOfClass:v14 fromData:shippingContact2 error:0];
     [(PKPayment *)v4 setShippingContact:v16];
   }
 
-  v17 = [v3 shippingMethod];
+  shippingMethod = [protobufCopy shippingMethod];
 
-  if (v17)
+  if (shippingMethod)
   {
-    v18 = [v3 shippingMethod];
-    v19 = [PKShippingMethod shippingMethodWithProtobuf:v18];
+    shippingMethod2 = [protobufCopy shippingMethod];
+    v19 = [PKShippingMethod shippingMethodWithProtobuf:shippingMethod2];
     [(PKPayment *)v4 setShippingMethod:v19];
   }
 
@@ -57,52 +57,52 @@
 - (id)protobuf
 {
   v3 = objc_alloc_init(PKProtobufPayment);
-  v4 = [(PKPayment *)self token];
-  v5 = [v4 protobuf];
-  [(PKProtobufPayment *)v3 setToken:v5];
+  token = [(PKPayment *)self token];
+  protobuf = [token protobuf];
+  [(PKProtobufPayment *)v3 setToken:protobuf];
 
-  v6 = [(PKPayment *)self billingContact];
+  billingContact = [(PKPayment *)self billingContact];
 
-  if (v6)
+  if (billingContact)
   {
     v7 = MEMORY[0x1E696ACC8];
-    v8 = [(PKPayment *)self billingContact];
-    v9 = [v7 archivedDataWithRootObject:v8 requiringSecureCoding:1 error:0];
+    billingContact2 = [(PKPayment *)self billingContact];
+    v9 = [v7 archivedDataWithRootObject:billingContact2 requiringSecureCoding:1 error:0];
     [(PKProtobufPayment *)v3 setBillingContact:v9];
   }
 
-  v10 = [(PKPayment *)self shippingContact];
+  shippingContact = [(PKPayment *)self shippingContact];
 
-  if (v10)
+  if (shippingContact)
   {
     v11 = MEMORY[0x1E696ACC8];
-    v12 = [(PKPayment *)self shippingContact];
-    v13 = [v11 archivedDataWithRootObject:v12 requiringSecureCoding:1 error:0];
+    shippingContact2 = [(PKPayment *)self shippingContact];
+    v13 = [v11 archivedDataWithRootObject:shippingContact2 requiringSecureCoding:1 error:0];
     [(PKProtobufPayment *)v3 setShippingContact:v13];
   }
 
-  v14 = [(PKPayment *)self shippingMethod];
+  shippingMethod = [(PKPayment *)self shippingMethod];
 
-  if (v14)
+  if (shippingMethod)
   {
-    v15 = [(PKPayment *)self shippingMethod];
-    v16 = [v15 shippingMethodProtobuf];
-    [(PKProtobufPayment *)v3 setShippingMethod:v16];
+    shippingMethod2 = [(PKPayment *)self shippingMethod];
+    shippingMethodProtobuf = [shippingMethod2 shippingMethodProtobuf];
+    [(PKProtobufPayment *)v3 setShippingMethod:shippingMethodProtobuf];
   }
 
   return v3;
 }
 
-- (PKPayment)initWithToken:(id)a3
+- (PKPayment)initWithToken:(id)token
 {
-  v5 = a3;
+  tokenCopy = token;
   v9.receiver = self;
   v9.super_class = PKPayment;
   v6 = [(PKPayment *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_token, a3);
+    objc_storeStrong(&v6->_token, token);
   }
 
   return v7;
@@ -110,80 +110,80 @@
 
 - (ABRecordRef)shippingAddress
 {
-  v2 = [(PKContact *)self->_shippingContact cnMutableContact];
-  v3 = [v2 ABPerson];
+  cnMutableContact = [(PKContact *)self->_shippingContact cnMutableContact];
+  aBPerson = [cnMutableContact ABPerson];
 
-  return v3;
+  return aBPerson;
 }
 
 - (ABRecordRef)billingAddress
 {
-  v2 = [(PKContact *)self->_billingContact cnMutableContact];
-  v3 = [v2 ABPerson];
+  cnMutableContact = [(PKContact *)self->_billingContact cnMutableContact];
+  aBPerson = [cnMutableContact ABPerson];
 
-  return v3;
+  return aBPerson;
 }
 
-- (PKPayment)initWithCoder:(id)a3
+- (PKPayment)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = PKPayment;
   v5 = [(PKPayment *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"token"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"token"];
     [(PKPayment *)v5 setToken:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shippingContact"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shippingContact"];
     [(PKPayment *)v5 setShippingContact:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"billingContact"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"billingContact"];
     [(PKPayment *)v5 setBillingContact:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shippingMethod"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shippingMethod"];
     [(PKPayment *)v5 setShippingMethod:v9];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"credential"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"credential"];
     [(PKPayment *)v5 setCredential:v10];
 
-    v11 = [v4 decodePropertyListForKey:@"authKitAuthenticationResults"];
+    v11 = [coderCopy decodePropertyListForKey:@"authKitAuthenticationResults"];
     v12 = [v11 mutableCopy];
     [(PKPayment *)v5 setAuthKitAuthenticationResults:v12];
 
-    -[PKPayment setBiometricAuthorizationAttempts:](v5, "setBiometricAuthorizationAttempts:", [v4 decodeIntegerForKey:@"biometryAttempts"]);
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"installmentAuthorizationToken"];
+    -[PKPayment setBiometricAuthorizationAttempts:](v5, "setBiometricAuthorizationAttempts:", [coderCopy decodeIntegerForKey:@"biometryAttempts"]);
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"installmentAuthorizationToken"];
     [(PKPayment *)v5 setInstallmentAuthorizationToken:v13];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PKPayment *)self token];
-  [v4 encodeObject:v5 forKey:@"token"];
+  coderCopy = coder;
+  token = [(PKPayment *)self token];
+  [coderCopy encodeObject:token forKey:@"token"];
 
-  v6 = [(PKPayment *)self shippingContact];
-  [v4 encodeObject:v6 forKey:@"shippingContact"];
+  shippingContact = [(PKPayment *)self shippingContact];
+  [coderCopy encodeObject:shippingContact forKey:@"shippingContact"];
 
-  v7 = [(PKPayment *)self billingContact];
-  [v4 encodeObject:v7 forKey:@"billingContact"];
+  billingContact = [(PKPayment *)self billingContact];
+  [coderCopy encodeObject:billingContact forKey:@"billingContact"];
 
-  v8 = [(PKPayment *)self shippingMethod];
-  [v4 encodeObject:v8 forKey:@"shippingMethod"];
+  shippingMethod = [(PKPayment *)self shippingMethod];
+  [coderCopy encodeObject:shippingMethod forKey:@"shippingMethod"];
 
-  v9 = [(PKPayment *)self credential];
-  [v4 encodeObject:v9 forKey:@"credential"];
+  credential = [(PKPayment *)self credential];
+  [coderCopy encodeObject:credential forKey:@"credential"];
 
-  v10 = [(PKPayment *)self authKitAuthenticationResults];
-  v11 = [v10 copy];
-  [v4 encodeObject:v11 forKey:@"authKitAuthenticationResults"];
+  authKitAuthenticationResults = [(PKPayment *)self authKitAuthenticationResults];
+  v11 = [authKitAuthenticationResults copy];
+  [coderCopy encodeObject:v11 forKey:@"authKitAuthenticationResults"];
 
-  [v4 encodeInteger:-[PKPayment biometricAuthorizationAttempts](self forKey:{"biometricAuthorizationAttempts"), @"biometryAttempts"}];
-  v12 = [(PKPayment *)self installmentAuthorizationToken];
-  [v4 encodeObject:v12 forKey:@"installmentAuthorizationToken"];
+  [coderCopy encodeInteger:-[PKPayment biometricAuthorizationAttempts](self forKey:{"biometricAuthorizationAttempts"), @"biometryAttempts"}];
+  installmentAuthorizationToken = [(PKPayment *)self installmentAuthorizationToken];
+  [coderCopy encodeObject:installmentAuthorizationToken forKey:@"installmentAuthorizationToken"];
 }
 
 - (id)description
@@ -207,29 +207,29 @@
   shippingContact = self->_shippingContact;
   if (shippingContact)
   {
-    v5 = [(PKContact *)shippingContact dictionaryRepresentation];
-    [v3 setObject:v5 forKeyedSubscript:@"shippingContact"];
+    dictionaryRepresentation = [(PKContact *)shippingContact dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKeyedSubscript:@"shippingContact"];
   }
 
   billingContact = self->_billingContact;
   if (billingContact)
   {
-    v7 = [(PKContact *)billingContact dictionaryRepresentation];
-    [v3 setObject:v7 forKeyedSubscript:@"billingContact"];
+    dictionaryRepresentation2 = [(PKContact *)billingContact dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation2 forKeyedSubscript:@"billingContact"];
   }
 
   shippingMethod = self->_shippingMethod;
   if (shippingMethod)
   {
-    v9 = [(PKShippingMethod *)shippingMethod dictionaryRepresentation];
-    [v3 setObject:v9 forKeyedSubscript:@"shippingMethod"];
+    dictionaryRepresentation3 = [(PKShippingMethod *)shippingMethod dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation3 forKeyedSubscript:@"shippingMethod"];
   }
 
   token = self->_token;
   if (token)
   {
-    v11 = [(PKPaymentToken *)token dictionaryRepresentation];
-    [v3 setObject:v11 forKeyedSubscript:@"paymentToken"];
+    dictionaryRepresentation4 = [(PKPaymentToken *)token dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation4 forKeyedSubscript:@"paymentToken"];
   }
 
   v12 = [v3 copy];

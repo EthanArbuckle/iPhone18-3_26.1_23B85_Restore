@@ -1,20 +1,20 @@
 @interface HKQuantitySeriesDataProvider
-- (HKQuantitySeriesDataProvider)initWithSample:(id)a3 healthStore:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)textForQuantity:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (HKQuantitySeriesDataProvider)initWithSample:(id)sample healthStore:(id)store;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)textForQuantity:(id)quantity;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)commitDeletionsIfNeeded;
-- (void)deleteQuantity:(id)a3;
-- (void)queryForSubsamples:(id)a3;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
+- (void)deleteQuantity:(id)quantity;
+- (void)queryForSubsamples:(id)subsamples;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
 @end
 
 @implementation HKQuantitySeriesDataProvider
 
-- (HKQuantitySeriesDataProvider)initWithSample:(id)a3 healthStore:(id)a4
+- (HKQuantitySeriesDataProvider)initWithSample:(id)sample healthStore:(id)store
 {
-  v6 = a3;
-  v7 = a4;
+  sampleCopy = sample;
+  storeCopy = store;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -27,8 +27,8 @@
   v9 = v8;
   if (v8)
   {
-    [(HKQuantitySeriesDataProvider *)v8 setParentSample:v6];
-    [(HKQuantitySeriesDataProvider *)v9 setHealthStore:v7];
+    [(HKQuantitySeriesDataProvider *)v8 setParentSample:sampleCopy];
+    [(HKQuantitySeriesDataProvider *)v9 setHealthStore:storeCopy];
     v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
     [(HKQuantitySeriesDataProvider *)v9 setQuantities:v10];
 
@@ -41,31 +41,31 @@
   return v9;
 }
 
-- (id)textForQuantity:(id)a3
+- (id)textForQuantity:(id)quantity
 {
-  v4 = a3;
-  v5 = [(HKQuantitySeriesDataProvider *)self displayTypeController];
-  v6 = [(HKQuantitySeriesDataProvider *)self parentSample];
-  v7 = [v6 sampleType];
-  v8 = [v5 displayTypeForObjectType:v7];
+  quantityCopy = quantity;
+  displayTypeController = [(HKQuantitySeriesDataProvider *)self displayTypeController];
+  parentSample = [(HKQuantitySeriesDataProvider *)self parentSample];
+  sampleType = [parentSample sampleType];
+  v8 = [displayTypeController displayTypeForObjectType:sampleType];
 
-  v9 = [(HKQuantitySeriesDataProvider *)self unitController];
-  v10 = [v9 unitForDisplayType:v8];
+  unitController = [(HKQuantitySeriesDataProvider *)self unitController];
+  v10 = [unitController unitForDisplayType:v8];
 
-  v11 = [v4 quantity];
+  quantity = [quantityCopy quantity];
 
-  [v11 doubleValueForUnit:v10];
+  [quantity doubleValueForUnit:v10];
   v13 = v12;
 
-  v14 = [v8 presentation];
+  presentation = [v8 presentation];
   v15 = [MEMORY[0x1E696AD98] numberWithDouble:v13];
-  v16 = [v14 adjustedValueForDaemonValue:v15];
+  v16 = [presentation adjustedValueForDaemonValue:v15];
 
-  v17 = [(HKQuantitySeriesDataProvider *)self unitController];
-  v18 = HKFormattedStringFromValueForContext(v16, v8, v17, 0, 0, 1);
+  unitController2 = [(HKQuantitySeriesDataProvider *)self unitController];
+  v18 = HKFormattedStringFromValueForContext(v16, v8, unitController2, 0, 0, 1);
 
-  v19 = [(HKQuantitySeriesDataProvider *)self unitController];
-  v20 = HKFormatterIncludesUnitForDisplayTypeInContext(v8, 1, v19);
+  unitController3 = [(HKQuantitySeriesDataProvider *)self unitController];
+  v20 = HKFormatterIncludesUnitForDisplayTypeInContext(v8, 1, unitController3);
 
   if (v20)
   {
@@ -74,13 +74,13 @@
 
   else
   {
-    v22 = [(HKQuantitySeriesDataProvider *)self unitController];
-    v23 = [v22 localizedDisplayNameForDisplayType:v8 value:v16];
+    unitController4 = [(HKQuantitySeriesDataProvider *)self unitController];
+    v23 = [unitController4 localizedDisplayNameForDisplayType:v8 value:v16];
 
     if ([v8 displayTypeIdentifier] == 2)
     {
-      v24 = [MEMORY[0x1E696C510] footUnit];
-      v25 = [v10 isEqual:v24];
+      footUnit = [MEMORY[0x1E696C510] footUnit];
+      v25 = [v10 isEqual:footUnit];
 
       if (v25)
       {
@@ -95,63 +95,63 @@
   return v21;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = +[HKQuantitySeriesTableViewCell reuseIdentifier];
-  v9 = [v7 dequeueReusableCellWithIdentifier:v8 forIndexPath:v6];
+  v9 = [viewCopy dequeueReusableCellWithIdentifier:v8 forIndexPath:pathCopy];
 
-  v10 = [(HKQuantitySeriesDataProvider *)self quantities];
-  v11 = [v6 row];
+  quantities = [(HKQuantitySeriesDataProvider *)self quantities];
+  v11 = [pathCopy row];
 
-  v12 = [v10 objectAtIndex:v11];
+  v12 = [quantities objectAtIndex:v11];
 
   v13 = [(HKQuantitySeriesDataProvider *)self textForQuantity:v12];
-  v14 = [v9 textLabel];
-  [v14 setText:v13];
+  textLabel = [v9 textLabel];
+  [textLabel setText:v13];
 
   v15 = HKDateFormatterFromTemplate(32);
-  v16 = [v12 dateInterval];
-  v17 = [v16 startDate];
-  v18 = [v15 stringFromDate:v17];
-  v19 = [v9 detailTextLabel];
-  [v19 setText:v18];
+  dateInterval = [v12 dateInterval];
+  startDate = [dateInterval startDate];
+  v18 = [v15 stringFromDate:startDate];
+  detailTextLabel = [v9 detailTextLabel];
+  [detailTextLabel setText:v18];
 
   return v9;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(HKQuantitySeriesDataProvider *)self quantities:a3];
+  v4 = [(HKQuantitySeriesDataProvider *)self quantities:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  if (a4 == 1)
+  if (style == 1)
   {
-    v8 = a5;
-    v9 = a3;
-    v10 = [(HKQuantitySeriesDataProvider *)self quantities];
-    v13 = [v10 objectAtIndex:{objc_msgSend(v8, "row")}];
+    pathCopy = path;
+    viewCopy = view;
+    quantities = [(HKQuantitySeriesDataProvider *)self quantities];
+    v13 = [quantities objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
     [(HKQuantitySeriesDataProvider *)self deleteQuantity:v13];
-    v11 = [(HKQuantitySeriesDataProvider *)self quantities];
-    v12 = [v8 row];
+    quantities2 = [(HKQuantitySeriesDataProvider *)self quantities];
+    v12 = [pathCopy row];
 
-    [v11 removeObjectAtIndex:v12];
-    [v9 reloadData];
+    [quantities2 removeObjectAtIndex:v12];
+    [viewCopy reloadData];
   }
 }
 
-- (void)queryForSubsamples:(id)a3
+- (void)queryForSubsamples:(id)subsamples
 {
-  v4 = a3;
-  v5 = [(HKQuantitySeriesDataProvider *)self parentSample];
-  v6 = [v5 sampleType];
+  subsamplesCopy = subsamples;
+  parentSample = [(HKQuantitySeriesDataProvider *)self parentSample];
+  sampleType = [parentSample sampleType];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -160,14 +160,14 @@
     [MEMORY[0x1E695DF30] raise:@"Sample type is not an HKQuantitySample" format:@"Must be an HKQuantitySample to use the quantity series data provider"];
   }
 
-  v8 = [(HKQuantitySeriesDataProvider *)self parentSample];
-  v9 = [v8 sampleType];
+  parentSample2 = [(HKQuantitySeriesDataProvider *)self parentSample];
+  sampleType2 = [parentSample2 sampleType];
 
   v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v11 = MEMORY[0x1E696C378];
-  v12 = [(HKQuantitySeriesDataProvider *)self parentSample];
-  v13 = [v12 UUID];
-  v14 = [v11 predicateForObjectWithUUID:v13];
+  parentSample3 = [(HKQuantitySeriesDataProvider *)self parentSample];
+  uUID = [parentSample3 UUID];
+  v14 = [v11 predicateForObjectWithUUID:uUID];
 
   objc_initWeak(&location, self);
   v15 = objc_alloc(MEMORY[0x1E696C368]);
@@ -178,13 +178,13 @@
   v16 = v10;
   v24 = v16;
   objc_copyWeak(&v26, &location);
-  v17 = v4;
+  v17 = subsamplesCopy;
   v25 = v17;
-  v18 = [v15 initWithQuantityType:v9 predicate:v14 quantityHandler:&v20];
+  v18 = [v15 initWithQuantityType:sampleType2 predicate:v14 quantityHandler:&v20];
   [v18 setIncludeSample:{0, v20, v21, v22, v23}];
   [v18 setOrderByQuantitySampleStartDate:1];
-  v19 = [(HKQuantitySeriesDataProvider *)self healthStore];
-  [v19 executeQuery:v18];
+  healthStore = [(HKQuantitySeriesDataProvider *)self healthStore];
+  [healthStore executeQuery:v18];
 
   objc_destroyWeak(&v26);
   objc_destroyWeak(&location);
@@ -213,21 +213,21 @@ void __51__HKQuantitySeriesDataProvider_queryForSubsamples___block_invoke(uint64
   }
 }
 
-- (void)deleteQuantity:(id)a3
+- (void)deleteQuantity:(id)quantity
 {
-  v4 = a3;
-  v5 = [(HKQuantitySeriesDataProvider *)self editor];
-  v6 = [v4 dateInterval];
+  quantityCopy = quantity;
+  editor = [(HKQuantitySeriesDataProvider *)self editor];
+  dateInterval = [quantityCopy dateInterval];
 
   v9 = 0;
-  [v5 removeQuantityForDateInterval:v6 error:&v9];
+  [editor removeQuantityForDateInterval:dateInterval error:&v9];
   v7 = v9;
 
   [(HKQuantitySeriesDataProvider *)self setHasSubsamplesToRemove:1];
   if (v7)
   {
-    v8 = [(HKQuantitySeriesDataProvider *)self editor];
-    [v8 discard];
+    editor2 = [(HKQuantitySeriesDataProvider *)self editor];
+    [editor2 discard];
 
     [(HKQuantitySeriesDataProvider *)self setHasSubsamplesToRemove:0];
   }
@@ -237,13 +237,13 @@ void __51__HKQuantitySeriesDataProvider_queryForSubsamples___block_invoke(uint64
 {
   if ([(HKQuantitySeriesDataProvider *)self hasSubsamplesToRemove])
   {
-    v3 = [(HKQuantitySeriesDataProvider *)self editor];
+    editor = [(HKQuantitySeriesDataProvider *)self editor];
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __55__HKQuantitySeriesDataProvider_commitDeletionsIfNeeded__block_invoke;
     v4[3] = &unk_1E81B7700;
     v4[4] = self;
-    [v3 commitWithCompletion:v4];
+    [editor commitWithCompletion:v4];
   }
 }
 

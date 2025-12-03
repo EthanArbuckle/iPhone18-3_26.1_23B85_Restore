@@ -1,10 +1,10 @@
 @interface MUEVChargingSectionController
 - (BOOL)hasContent;
 - (BOOL)isActive;
-- (MUEVChargingSectionController)initWithMapItem:(id)a3;
+- (MUEVChargingSectionController)initWithMapItem:(id)item;
 - (MUPlaceSectionControllerDelegate)delegate;
 - (NSArray)sectionViews;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation MUEVChargingSectionController
@@ -46,19 +46,19 @@
 {
   v4.receiver = self;
   v4.super_class = swift_getObjectType();
-  v2 = [(MUPlaceSectionController *)&v4 delegate];
+  delegate = [(MUPlaceSectionController *)&v4 delegate];
 
-  return v2;
+  return delegate;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  EVChargingSectionController.delegate.setter(a3);
+  selfCopy = self;
+  EVChargingSectionController.delegate.setter(delegate);
 }
 
-- (MUEVChargingSectionController)initWithMapItem:(id)a3
+- (MUEVChargingSectionController)initWithMapItem:(id)item
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

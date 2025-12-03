@@ -1,31 +1,31 @@
 @interface VCRemoteVideoManager
 + (id)allowablePublicAPINames;
-- (BOOL)doesQueueExistForStreamToken:(id)a3;
-- (BOOL)setLayerBoundsForStreamTokenWithArguments:(id)a3 error:(id *)a4;
-- (BOOL)setTransformForRemoteVideoOrientationEnabledWithArguments:(id)a3 error:(id *)a4;
+- (BOOL)doesQueueExistForStreamToken:(id)token;
+- (BOOL)setLayerBoundsForStreamTokenWithArguments:(id)arguments error:(id *)error;
+- (BOOL)setTransformForRemoteVideoOrientationEnabledWithArguments:(id)arguments error:(id *)error;
 - (VCRemoteVideoManager)init;
-- (id)contextIdForStreamTokenWithArguments:(id)a3 error:(id *)a4;
-- (id)newQueueForStreamToken:(int64_t)a3 videoMode:(int)a4 imageQueueProtected:(BOOL)a5;
-- (unsigned)slotForStreamToken:(int64_t)a3 videoMode:(int)a4;
+- (id)contextIdForStreamTokenWithArguments:(id)arguments error:(id *)error;
+- (id)newQueueForStreamToken:(int64_t)token videoMode:(int)mode imageQueueProtected:(BOOL)protected;
+- (unsigned)slotForStreamToken:(int64_t)token videoMode:(int)mode;
 - (void)cleanupDictionaries;
-- (void)connectionDidChangeWithLocalInterfaceType:(id)a3 remoteInterfaceType:(id)a4 streamToken:(int64_t)a5;
+- (void)connectionDidChangeWithLocalInterfaceType:(id)type remoteInterfaceType:(id)interfaceType streamToken:(int64_t)token;
 - (void)dealloc;
-- (void)dispatchNetworkQualityDidDegrade:(BOOL)a3 isLocalNetworkQualityDegraded:(BOOL)a4 streamToken:(int64_t)a5;
-- (void)dispatchedConnectionDidChangeWithLocalInterfaceType:(id)a3 remoteInterfaceType:(id)a4 streamToken:(int64_t)a5;
-- (void)dispatchedNotifyCachedStateForStreamToken:(id)a3;
-- (void)dispatchedRemoteMediaDidStall:(BOOL)a3 streamToken:(int64_t)a4;
-- (void)dispatchedRemoteVideoDidDegrade:(BOOL)a3 streamToken:(int64_t)a4;
-- (void)dispatchedRemoteVideoDidPause:(BOOL)a3 streamToken:(int64_t)a4;
-- (void)dispatchedRemoteVideoDidSuspend:(BOOL)a3 streamToken:(int64_t)a4;
-- (void)networkQualityDidDegrade:(BOOL)a3 isLocalNetworkQualityDegraded:(BOOL)a4 streamToken:(int64_t)a5;
-- (void)notifyCachedStateForStreamToken:(id)a3;
+- (void)dispatchNetworkQualityDidDegrade:(BOOL)degrade isLocalNetworkQualityDegraded:(BOOL)degraded streamToken:(int64_t)token;
+- (void)dispatchedConnectionDidChangeWithLocalInterfaceType:(id)type remoteInterfaceType:(id)interfaceType streamToken:(int64_t)token;
+- (void)dispatchedNotifyCachedStateForStreamToken:(id)token;
+- (void)dispatchedRemoteMediaDidStall:(BOOL)stall streamToken:(int64_t)token;
+- (void)dispatchedRemoteVideoDidDegrade:(BOOL)degrade streamToken:(int64_t)token;
+- (void)dispatchedRemoteVideoDidPause:(BOOL)pause streamToken:(int64_t)token;
+- (void)dispatchedRemoteVideoDidSuspend:(BOOL)suspend streamToken:(int64_t)token;
+- (void)networkQualityDidDegrade:(BOOL)degrade isLocalNetworkQualityDegraded:(BOOL)degraded streamToken:(int64_t)token;
+- (void)notifyCachedStateForStreamToken:(id)token;
 - (void)registerBlocksForService;
-- (void)releaseQueueForStreamToken:(int64_t)a3;
-- (void)remoteMediaDidStall:(BOOL)a3 streamToken:(int64_t)a4;
-- (void)remoteVideoDidDegrade:(BOOL)a3 streamToken:(int64_t)a4;
-- (void)remoteVideoDidPause:(BOOL)a3 streamToken:(int64_t)a4;
-- (void)remoteVideoDidSuspend:(BOOL)a3 streamToken:(int64_t)a4;
-- (void)resetDidReceiveFirstFrameForStreamToken:(int64_t)a3;
+- (void)releaseQueueForStreamToken:(int64_t)token;
+- (void)remoteMediaDidStall:(BOOL)stall streamToken:(int64_t)token;
+- (void)remoteVideoDidDegrade:(BOOL)degrade streamToken:(int64_t)token;
+- (void)remoteVideoDidPause:(BOOL)pause streamToken:(int64_t)token;
+- (void)remoteVideoDidSuspend:(BOOL)suspend streamToken:(int64_t)token;
+- (void)resetDidReceiveFirstFrameForStreamToken:(int64_t)token;
 @end
 
 @implementation VCRemoteVideoManager
@@ -96,9 +96,9 @@ void __47__VCRemoteVideoManager_allowablePublicAPINames__block_invoke()
   }
 }
 
-- (id)newQueueForStreamToken:(int64_t)a3 videoMode:(int)a4 imageQueueProtected:(BOOL)a5
+- (id)newQueueForStreamToken:(int64_t)token videoMode:(int)mode imageQueueProtected:(BOOL)protected
 {
-  v5 = a5;
+  protectedCopy = protected;
   v35 = *MEMORY[0x1E69E9840];
   v17 = 0;
   v18 = &v17;
@@ -120,11 +120,11 @@ void __47__VCRemoteVideoManager_allowablePublicAPINames__block_invoke()
       v27 = 1024;
       v28 = 172;
       v29 = 2048;
-      v30 = a3;
+      tokenCopy = token;
       v31 = 1024;
-      v32 = a4;
+      modeCopy = mode;
       v33 = 1024;
-      v34 = v5;
+      v34 = protectedCopy;
       _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ VCRemoteVideoManager-newQueueForStreamToken streamToken=%ld mode=%d imageQueueProtected=%d", buf, 0x32u);
     }
   }
@@ -136,9 +136,9 @@ void __47__VCRemoteVideoManager_allowablePublicAPINames__block_invoke()
   v14[3] = &unk_1E85F81E8;
   v14[4] = self;
   v14[5] = &v17;
-  v14[6] = a3;
-  v15 = a4;
-  v16 = v5;
+  v14[6] = token;
+  modeCopy2 = mode;
+  v16 = protectedCopy;
   dispatch_sync(dispatchQueue, v14);
   v12 = v18[5];
   _Block_object_dispose(&v17, 8);
@@ -332,7 +332,7 @@ void __77__VCRemoteVideoManager_newQueueForStreamToken_videoMode_imageQueueProte
   }
 }
 
-- (void)resetDidReceiveFirstFrameForStreamToken:(int64_t)a3
+- (void)resetDidReceiveFirstFrameForStreamToken:(int64_t)token
 {
   v17 = *MEMORY[0x1E69E9840];
   MEMORY[0x1E128B580](&dword_1DB56E000, "@:@ VCRemoteVideoManager-resetDidReceiveFirstFrame");
@@ -349,7 +349,7 @@ void __77__VCRemoteVideoManager_newQueueForStreamToken_videoMode_imageQueueProte
       v13 = 1024;
       v14 = 206;
       v15 = 2048;
-      v16 = a3;
+      tokenCopy = token;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ VCRemoteVideoManager-resetDidReceiveFirstFrame streamToken=%ld", buf, 0x26u);
     }
   }
@@ -360,7 +360,7 @@ void __77__VCRemoteVideoManager_newQueueForStreamToken_videoMode_imageQueueProte
   v8[2] = __64__VCRemoteVideoManager_resetDidReceiveFirstFrameForStreamToken___block_invoke;
   v8[3] = &unk_1E85F40E0;
   v8[4] = self;
-  v8[5] = a3;
+  v8[5] = token;
   dispatch_async(dispatchQueue, v8);
 }
 
@@ -371,7 +371,7 @@ uint64_t __64__VCRemoteVideoManager_resetDidReceiveFirstFrameForStreamToken___bl
   return [v1 setHasReceivedFirstFrame:0];
 }
 
-- (BOOL)doesQueueExistForStreamToken:(id)a3
+- (BOOL)doesQueueExistForStreamToken:(id)token
 {
   v11 = *MEMORY[0x1E69E9840];
   v7 = 0;
@@ -383,7 +383,7 @@ uint64_t __64__VCRemoteVideoManager_resetDidReceiveFirstFrameForStreamToken___bl
   v6[1] = 3221225472;
   v6[2] = __53__VCRemoteVideoManager_doesQueueExistForStreamToken___block_invoke;
   v6[3] = &unk_1E85F3E08;
-  v6[5] = a3;
+  v6[5] = token;
   v6[6] = &v7;
   v6[4] = self;
   dispatch_sync(dispatchQueue, v6);
@@ -399,7 +399,7 @@ uint64_t __53__VCRemoteVideoManager_doesQueueExistForStreamToken___block_invoke(
   return result;
 }
 
-- (void)releaseQueueForStreamToken:(int64_t)a3
+- (void)releaseQueueForStreamToken:(int64_t)token
 {
   block[6] = *MEMORY[0x1E69E9840];
   dispatchQueue = self->_dispatchQueue;
@@ -408,7 +408,7 @@ uint64_t __53__VCRemoteVideoManager_doesQueueExistForStreamToken___block_invoke(
   block[2] = __51__VCRemoteVideoManager_releaseQueueForStreamToken___block_invoke;
   block[3] = &unk_1E85F40E0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = token;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -505,9 +505,9 @@ uint64_t __51__VCRemoteVideoManager_releaseQueueForStreamToken___block_invoke_98
   return [v2 sendMessageAsync:"vcRemoteVideoDidReleaseRemoteVideoQueue" arguments:0 toAllClientsWithContext:v3];
 }
 
-- (void)dispatchedRemoteVideoDidPause:(BOOL)a3 streamToken:(int64_t)a4
+- (void)dispatchedRemoteVideoDidPause:(BOOL)pause streamToken:(int64_t)token
 {
-  v5 = a3;
+  pauseCopy = pause;
   v24 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -522,17 +522,17 @@ uint64_t __51__VCRemoteVideoManager_releaseQueueForStreamToken___block_invoke_98
       v18 = 1024;
       v19 = 378;
       v20 = 1024;
-      v21 = a4;
+      tokenCopy = token;
       v22 = 1024;
-      v23 = v5;
+      v23 = pauseCopy;
       _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d streamToken[%u] didPause[%d]", buf, 0x28u);
     }
   }
 
-  v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:a4];
-  [-[NSMutableDictionary objectForKeyedSubscript:](self->_stateCacheForStreamTokenDict objectForKeyedSubscript:{v9), "setIsVideoPaused:", v5}];
-  [+[VCStreamOutputManager sharedInstance](VCStreamOutputManager remoteVideoDidPause:"remoteVideoDidPause:streamToken:" streamToken:v5, a4];
-  v10 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:v5];
+  v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:token];
+  [-[NSMutableDictionary objectForKeyedSubscript:](self->_stateCacheForStreamTokenDict objectForKeyedSubscript:{v9), "setIsVideoPaused:", pauseCopy}];
+  [+[VCStreamOutputManager sharedInstance](VCStreamOutputManager remoteVideoDidPause:"remoteVideoDidPause:streamToken:" streamToken:pauseCopy, token];
+  v10 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:pauseCopy];
   v11 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v10, @"conferenceVideoPause", 0}];
   xpcCallbackQueue = self->_xpcCallbackQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -553,7 +553,7 @@ uint64_t __66__VCRemoteVideoManager_dispatchedRemoteVideoDidPause_streamToken___
   return [v2 sendMessageAsync:"vcRemoteVideoDidRemoteVideoPause" arguments:v3 toAllClientsWithContext:v4];
 }
 
-- (void)remoteVideoDidPause:(BOOL)a3 streamToken:(int64_t)a4
+- (void)remoteVideoDidPause:(BOOL)pause streamToken:(int64_t)token
 {
   v7 = *MEMORY[0x1E69E9840];
   dispatchQueue = self->_dispatchQueue;
@@ -561,15 +561,15 @@ uint64_t __66__VCRemoteVideoManager_dispatchedRemoteVideoDidPause_streamToken___
   v5[1] = 3221225472;
   v5[2] = __56__VCRemoteVideoManager_remoteVideoDidPause_streamToken___block_invoke;
   v5[3] = &unk_1E85F4180;
-  v6 = a3;
+  pauseCopy = pause;
   v5[4] = self;
-  v5[5] = a4;
+  v5[5] = token;
   dispatch_async(dispatchQueue, v5);
 }
 
-- (void)dispatchedRemoteMediaDidStall:(BOOL)a3 streamToken:(int64_t)a4
+- (void)dispatchedRemoteMediaDidStall:(BOOL)stall streamToken:(int64_t)token
 {
-  v5 = a3;
+  stallCopy = stall;
   v24 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -584,17 +584,17 @@ uint64_t __66__VCRemoteVideoManager_dispatchedRemoteVideoDidPause_streamToken___
       v18 = 1024;
       v19 = 411;
       v20 = 1024;
-      v21 = a4;
+      tokenCopy = token;
       v22 = 1024;
-      v23 = v5;
+      v23 = stallCopy;
       _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d streamToken[%u] didStall[%d]", buf, 0x28u);
     }
   }
 
-  v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:a4];
-  [-[NSMutableDictionary objectForKeyedSubscript:](self->_stateCacheForStreamTokenDict objectForKeyedSubscript:{v9), "setIsMediaStalled:", v5}];
-  [+[VCStreamOutputManager sharedInstance](VCStreamOutputManager remoteMediaDidStall:"remoteMediaDidStall:streamToken:" streamToken:v5, a4];
-  v10 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:v5];
+  v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:token];
+  [-[NSMutableDictionary objectForKeyedSubscript:](self->_stateCacheForStreamTokenDict objectForKeyedSubscript:{v9), "setIsMediaStalled:", stallCopy}];
+  [+[VCStreamOutputManager sharedInstance](VCStreamOutputManager remoteMediaDidStall:"remoteMediaDidStall:streamToken:" streamToken:stallCopy, token];
+  v10 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:stallCopy];
   v11 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v10, @"conferenceIsRemoteMediaStalled", 0}];
   xpcCallbackQueue = self->_xpcCallbackQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -615,7 +615,7 @@ uint64_t __66__VCRemoteVideoManager_dispatchedRemoteMediaDidStall_streamToken___
   return [v2 sendMessageAsync:"vcRemoteVideoDidRemoteMediaStall" arguments:v3 toAllClientsWithContext:v4];
 }
 
-- (void)remoteMediaDidStall:(BOOL)a3 streamToken:(int64_t)a4
+- (void)remoteMediaDidStall:(BOOL)stall streamToken:(int64_t)token
 {
   v7 = *MEMORY[0x1E69E9840];
   dispatchQueue = self->_dispatchQueue;
@@ -623,15 +623,15 @@ uint64_t __66__VCRemoteVideoManager_dispatchedRemoteMediaDidStall_streamToken___
   v5[1] = 3221225472;
   v5[2] = __56__VCRemoteVideoManager_remoteMediaDidStall_streamToken___block_invoke;
   v5[3] = &unk_1E85F4180;
-  v6 = a3;
+  stallCopy = stall;
   v5[4] = self;
-  v5[5] = a4;
+  v5[5] = token;
   dispatch_async(dispatchQueue, v5);
 }
 
-- (void)dispatchedRemoteVideoDidDegrade:(BOOL)a3 streamToken:(int64_t)a4
+- (void)dispatchedRemoteVideoDidDegrade:(BOOL)degrade streamToken:(int64_t)token
 {
-  v5 = a3;
+  degradeCopy = degrade;
   v24 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -646,17 +646,17 @@ uint64_t __66__VCRemoteVideoManager_dispatchedRemoteMediaDidStall_streamToken___
       v18 = 1024;
       v19 = 445;
       v20 = 1024;
-      v21 = a4;
+      tokenCopy = token;
       v22 = 1024;
-      v23 = v5;
+      v23 = degradeCopy;
       _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d streamToken[%u] isDegraded[%d]", buf, 0x28u);
     }
   }
 
-  v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:a4];
-  [-[NSMutableDictionary objectForKeyedSubscript:](self->_stateCacheForStreamTokenDict objectForKeyedSubscript:{v9), "setIsVideoDegraded:", v5}];
-  [+[VCStreamOutputManager sharedInstance](VCStreamOutputManager remoteVideoDidDegrade:"remoteVideoDidDegrade:streamToken:" streamToken:v5, a4];
-  v10 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:v5];
+  v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:token];
+  [-[NSMutableDictionary objectForKeyedSubscript:](self->_stateCacheForStreamTokenDict objectForKeyedSubscript:{v9), "setIsVideoDegraded:", degradeCopy}];
+  [+[VCStreamOutputManager sharedInstance](VCStreamOutputManager remoteVideoDidDegrade:"remoteVideoDidDegrade:streamToken:" streamToken:degradeCopy, token];
+  v10 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:degradeCopy];
   v11 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v10, @"conferenceIsVideoDegraded", 0}];
   xpcCallbackQueue = self->_xpcCallbackQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -677,7 +677,7 @@ uint64_t __68__VCRemoteVideoManager_dispatchedRemoteVideoDidDegrade_streamToken_
   return [v2 sendMessageAsync:"vcRemoteVideoDidVideoDegrade" arguments:v3 toAllClientsWithContext:v4];
 }
 
-- (void)remoteVideoDidDegrade:(BOOL)a3 streamToken:(int64_t)a4
+- (void)remoteVideoDidDegrade:(BOOL)degrade streamToken:(int64_t)token
 {
   v7 = *MEMORY[0x1E69E9840];
   dispatchQueue = self->_dispatchQueue;
@@ -685,16 +685,16 @@ uint64_t __68__VCRemoteVideoManager_dispatchedRemoteVideoDidDegrade_streamToken_
   v5[1] = 3221225472;
   v5[2] = __58__VCRemoteVideoManager_remoteVideoDidDegrade_streamToken___block_invoke;
   v5[3] = &unk_1E85F4180;
-  v6 = a3;
+  degradeCopy = degrade;
   v5[4] = self;
-  v5[5] = a4;
+  v5[5] = token;
   dispatch_async(dispatchQueue, v5);
 }
 
-- (void)dispatchNetworkQualityDidDegrade:(BOOL)a3 isLocalNetworkQualityDegraded:(BOOL)a4 streamToken:(int64_t)a5
+- (void)dispatchNetworkQualityDidDegrade:(BOOL)degrade isLocalNetworkQualityDegraded:(BOOL)degraded streamToken:(int64_t)token
 {
-  v6 = a4;
-  v7 = a3;
+  degradedCopy = degraded;
+  degradeCopy = degrade;
   v28 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -709,19 +709,19 @@ uint64_t __68__VCRemoteVideoManager_dispatchedRemoteVideoDidDegrade_streamToken_
       v22 = 1024;
       v23 = 480;
       v24 = 1024;
-      v25 = a5;
+      tokenCopy = token;
       v26 = 1024;
-      v27 = v7;
+      v27 = degradeCopy;
       _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d streamToken=%u isDegraded=%d", buf, 0x28u);
     }
   }
 
-  v11 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:a5];
+  v11 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:token];
   v12 = [(NSMutableDictionary *)self->_stateCacheForStreamTokenDict objectForKeyedSubscript:v11];
-  [v12 setIsNetworkDegraded:v7];
-  [v12 setIsLocalNetworkDegraded:v6];
-  v13 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:v7];
-  v14 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:v6];
+  [v12 setIsNetworkDegraded:degradeCopy];
+  [v12 setIsLocalNetworkDegraded:degradedCopy];
+  v13 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:degradeCopy];
+  v14 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:degradedCopy];
   v15 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v13, @"conferenceIsNetworkDegraded", v14, @"conferenceIsNetworkDegradedLocal", 0}];
   xpcCallbackQueue = self->_xpcCallbackQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -742,7 +742,7 @@ uint64_t __99__VCRemoteVideoManager_dispatchNetworkQualityDidDegrade_isLocalNetw
   return [v2 sendMessageAsync:"vcRemoteVideoDidNetworkDegrade" arguments:v3 toAllClientsWithContext:v4];
 }
 
-- (void)networkQualityDidDegrade:(BOOL)a3 isLocalNetworkQualityDegraded:(BOOL)a4 streamToken:(int64_t)a5
+- (void)networkQualityDidDegrade:(BOOL)degrade isLocalNetworkQualityDegraded:(BOOL)degraded streamToken:(int64_t)token
 {
   v9 = *MEMORY[0x1E69E9840];
   dispatchQueue = self->_dispatchQueue;
@@ -750,16 +750,16 @@ uint64_t __99__VCRemoteVideoManager_dispatchNetworkQualityDidDegrade_isLocalNetw
   v6[1] = 3221225472;
   v6[2] = __91__VCRemoteVideoManager_networkQualityDidDegrade_isLocalNetworkQualityDegraded_streamToken___block_invoke;
   v6[3] = &unk_1E85F6C48;
-  v7 = a3;
-  v8 = a4;
+  degradeCopy = degrade;
+  degradedCopy = degraded;
   v6[4] = self;
-  v6[5] = a5;
+  v6[5] = token;
   dispatch_async(dispatchQueue, v6);
 }
 
-- (void)dispatchedRemoteVideoDidSuspend:(BOOL)a3 streamToken:(int64_t)a4
+- (void)dispatchedRemoteVideoDidSuspend:(BOOL)suspend streamToken:(int64_t)token
 {
-  v5 = a3;
+  suspendCopy = suspend;
   v24 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -774,17 +774,17 @@ uint64_t __99__VCRemoteVideoManager_dispatchNetworkQualityDidDegrade_isLocalNetw
       v18 = 1024;
       v19 = 510;
       v20 = 1024;
-      v21 = a4;
+      tokenCopy = token;
       v22 = 1024;
-      v23 = v5;
+      v23 = suspendCopy;
       _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d streamToken[%u] isSuspended[%d]", buf, 0x28u);
     }
   }
 
-  v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:a4];
-  [-[NSMutableDictionary objectForKeyedSubscript:](self->_stateCacheForStreamTokenDict objectForKeyedSubscript:{v9), "setIsVideoSuspended:", v5}];
-  [+[VCStreamOutputManager sharedInstance](VCStreamOutputManager remoteVideoDidSuspend:"remoteVideoDidSuspend:streamToken:" streamToken:v5, a4];
-  v10 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:v5];
+  v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:token];
+  [-[NSMutableDictionary objectForKeyedSubscript:](self->_stateCacheForStreamTokenDict objectForKeyedSubscript:{v9), "setIsVideoSuspended:", suspendCopy}];
+  [+[VCStreamOutputManager sharedInstance](VCStreamOutputManager remoteVideoDidSuspend:"remoteVideoDidSuspend:streamToken:" streamToken:suspendCopy, token];
+  v10 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:suspendCopy];
   v11 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v10, @"conferenceIsVideoSuspended", 0}];
   xpcCallbackQueue = self->_xpcCallbackQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -805,7 +805,7 @@ uint64_t __68__VCRemoteVideoManager_dispatchedRemoteVideoDidSuspend_streamToken_
   return [v2 sendMessageAsync:"vcRemoteVideoDidVideoSuspend" arguments:v3 toAllClientsWithContext:v4];
 }
 
-- (void)remoteVideoDidSuspend:(BOOL)a3 streamToken:(int64_t)a4
+- (void)remoteVideoDidSuspend:(BOOL)suspend streamToken:(int64_t)token
 {
   v7 = *MEMORY[0x1E69E9840];
   dispatchQueue = self->_dispatchQueue;
@@ -813,20 +813,20 @@ uint64_t __68__VCRemoteVideoManager_dispatchedRemoteVideoDidSuspend_streamToken_
   v5[1] = 3221225472;
   v5[2] = __58__VCRemoteVideoManager_remoteVideoDidSuspend_streamToken___block_invoke;
   v5[3] = &unk_1E85F4180;
-  v6 = a3;
+  suspendCopy = suspend;
   v5[4] = self;
-  v5[5] = a4;
+  v5[5] = token;
   dispatch_async(dispatchQueue, v5);
 }
 
-- (void)dispatchedConnectionDidChangeWithLocalInterfaceType:(id)a3 remoteInterfaceType:(id)a4 streamToken:(int64_t)a5
+- (void)dispatchedConnectionDidChangeWithLocalInterfaceType:(id)type remoteInterfaceType:(id)interfaceType streamToken:(int64_t)token
 {
   block[6] = *MEMORY[0x1E69E9840];
-  v8 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:a5];
+  v8 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:token];
   v9 = [(NSMutableDictionary *)self->_stateCacheForStreamTokenDict objectForKeyedSubscript:v8];
-  [v9 setLocalInterfaceType:a3];
-  [v9 setRemoteInterfaceType:a4];
-  v10 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{a3, @"conferenceConnectionTypeLocal", a4, @"conferenceConnectionTypeRemote", 0}];
+  [v9 setLocalInterfaceType:type];
+  [v9 setRemoteInterfaceType:interfaceType];
+  v10 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{type, @"conferenceConnectionTypeLocal", interfaceType, @"conferenceConnectionTypeRemote", 0}];
   xpcCallbackQueue = self->_xpcCallbackQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -846,7 +846,7 @@ uint64_t __108__VCRemoteVideoManager_dispatchedConnectionDidChangeWithLocalInter
   return [v2 sendMessageAsync:"vcRemoteVideoDidConnectionChange" arguments:v3 toAllClientsWithContext:v4];
 }
 
-- (void)connectionDidChangeWithLocalInterfaceType:(id)a3 remoteInterfaceType:(id)a4 streamToken:(int64_t)a5
+- (void)connectionDidChangeWithLocalInterfaceType:(id)type remoteInterfaceType:(id)interfaceType streamToken:(int64_t)token
 {
   block[8] = *MEMORY[0x1E69E9840];
   dispatchQueue = self->_dispatchQueue;
@@ -855,9 +855,9 @@ uint64_t __108__VCRemoteVideoManager_dispatchedConnectionDidChangeWithLocalInter
   block[2] = __98__VCRemoteVideoManager_connectionDidChangeWithLocalInterfaceType_remoteInterfaceType_streamToken___block_invoke;
   block[3] = &unk_1E85F4AB8;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
-  block[7] = a5;
+  block[5] = type;
+  block[6] = interfaceType;
+  block[7] = token;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -867,16 +867,16 @@ void ___VCRemoteVideoManager_DispatchedDidDetectSensitiveContentWithAnalysis_blo
   [+[AVConferenceXPCServer AVConferenceXPCServerSingleton](AVConferenceXPCServer "AVConferenceXPCServerSingleton")];
 }
 
-- (unsigned)slotForStreamToken:(int64_t)a3 videoMode:(int)a4
+- (unsigned)slotForStreamToken:(int64_t)token videoMode:(int)mode
 {
-  v4 = *&a4;
+  v4 = *&mode;
   v26 = *MEMORY[0x1E69E9840];
   if (VCRemoteVideoManager_DefaultManager_onceToken != -1)
   {
     VCRemoteVideoManager_DefaultManager_cold_1();
   }
 
-  QueueForStreamToken = _VCRemoteVideoManager_GetQueueForStreamToken(_vcRemoteVideoManager, a3, v4);
+  QueueForStreamToken = _VCRemoteVideoManager_GetQueueForStreamToken(_vcRemoteVideoManager, token, v4);
   v7 = [QueueForStreamToken setVideoDestination:0];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -905,7 +905,7 @@ void ___VCRemoteVideoManager_DispatchedDidDetectSensitiveContentWithAnalysis_blo
       v20 = 2048;
       v21 = v7;
       v22 = 1024;
-      v23 = a3;
+      tokenCopy = token;
       v24 = 1024;
       v25 = v4;
       _os_log_impl(&dword_1DB56E000, v9, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d VCRemoteVideoManager: queue %s --> get slot# %lu for streamToken %u(%d)", &v12, 0x3Cu);
@@ -923,11 +923,11 @@ void ___VCRemoteVideoManager_DispatchedDidDetectSensitiveContentWithAnalysis_blo
   [(NSMutableDictionary *)stateCacheForStreamTokenDict removeAllObjects];
 }
 
-- (id)contextIdForStreamTokenWithArguments:(id)a3 error:(id *)a4
+- (id)contextIdForStreamTokenWithArguments:(id)arguments error:(id *)error
 {
   v37 = *MEMORY[0x1E69E9840];
-  v7 = [a3 objectForKeyedSubscript:@"conferenceCallID"];
-  v8 = [a3 objectForKeyedSubscript:@"conferenceVisualRectangle"];
+  v7 = [arguments objectForKeyedSubscript:@"conferenceCallID"];
+  v8 = [arguments objectForKeyedSubscript:@"conferenceVisualRectangle"];
   if (v7)
   {
     v9 = v8 == 0;
@@ -949,11 +949,11 @@ void ___VCRemoteVideoManager_DispatchedDidDetectSensitiveContentWithAnalysis_blo
   {
     [VCRemoteVideoManager contextIdForStreamTokenWithArguments:v7 error:?];
 LABEL_16:
-    if (a4)
+    if (error)
     {
       v21 = [MEMORY[0x1E696ABC0] errorWithDomain:@"VCRemoteVideoManager" code:*buf userInfo:0];
       v19 = 0;
-      *a4 = v21;
+      *error = v21;
     }
 
     else
@@ -964,9 +964,9 @@ LABEL_16:
     return v19;
   }
 
-  v11 = [v7 unsignedIntValue];
-  v12 = v11;
-  QueueForStreamToken = _VCRemoteVideoManager_GetQueueForStreamToken(self, v11, 0);
+  unsignedIntValue = [v7 unsignedIntValue];
+  v12 = unsignedIntValue;
+  QueueForStreamToken = _VCRemoteVideoManager_GetQueueForStreamToken(self, unsignedIntValue, 0);
   v38 = NSRectFromString(v10);
   v14 = [QueueForStreamToken createCAContextWithSize:{v38.origin.x, v38.origin.y, v38.size.width, v38.size.height}];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -1014,11 +1014,11 @@ LABEL_16:
   return v19;
 }
 
-- (BOOL)setLayerBoundsForStreamTokenWithArguments:(id)a3 error:(id *)a4
+- (BOOL)setLayerBoundsForStreamTokenWithArguments:(id)arguments error:(id *)error
 {
   v46 = *MEMORY[0x1E69E9840];
-  v7 = [a3 objectForKeyedSubscript:@"conferenceCallID"];
-  v8 = [a3 objectForKeyedSubscript:@"conferenceVisualRectangle"];
+  v7 = [arguments objectForKeyedSubscript:@"conferenceCallID"];
+  v8 = [arguments objectForKeyedSubscript:@"conferenceVisualRectangle"];
   if (v7)
   {
     v9 = v8 == 0;
@@ -1036,15 +1036,15 @@ LABEL_16:
   }
 
   v10 = v8;
-  v11 = [v7 unsignedIntValue];
-  v12 = v11;
+  unsignedIntValue = [v7 unsignedIntValue];
+  v12 = unsignedIntValue;
   if ([(NSMutableDictionary *)self->_queuesForStreamTokenDict objectForKeyedSubscript:v7])
   {
-    QueueForStreamToken = _VCRemoteVideoManager_GetQueueForStreamToken(self, v11, 0);
+    QueueForStreamToken = _VCRemoteVideoManager_GetQueueForStreamToken(self, unsignedIntValue, 0);
     v47 = NSRectFromString(v10);
     if (VideoUtil_LayerBoundsAreValid(v47.origin.x, v47.origin.y, v47.size.width, v47.size.height))
     {
-      v14 = [a3 objectForKeyedSubscript:@"USERXPCARGUMENTS"];
+      v14 = [arguments objectForKeyedSubscript:@"USERXPCARGUMENTS"];
       v15 = [MEMORY[0x1E6979370] handleFromXPCRepresentation:v14];
       if (v15)
       {
@@ -1080,11 +1080,11 @@ LABEL_16:
                 v36 = 2080;
                 v37 = v21;
                 v38 = 2112;
-                v39 = v10;
+                selfCopy = v10;
                 v40 = 2048;
                 v41 = v16;
                 v42 = 1024;
-                v43 = v11;
+                v43 = unsignedIntValue;
                 v44 = 1024;
                 v45 = 0;
                 _os_log_impl(&dword_1DB56E000, v19, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d VCRemoteVideoManager: queue=%s --> set layer bounds=%@ caFenceHandle=%p for streamToken=%u(mode=%d)", buf, 0x46u);
@@ -1112,11 +1112,11 @@ LABEL_16:
               v36 = 2080;
               v37 = v22;
               v38 = 2112;
-              v39 = v10;
+              selfCopy = v10;
               v40 = 2048;
               v41 = v16;
               v42 = 1024;
-              v43 = v11;
+              v43 = unsignedIntValue;
               v44 = 1024;
               v45 = 0;
               _os_log_debug_impl(&dword_1DB56E000, v19, OS_LOG_TYPE_DEBUG, " [%s] %s:%d VCRemoteVideoManager: queue=%s --> set layer bounds=%@ caFenceHandle=%p for streamToken=%u(mode=%d)", buf, 0x46u);
@@ -1167,7 +1167,7 @@ LABEL_16:
                 v36 = 2112;
                 v37 = v26;
                 v38 = 2048;
-                v39 = self;
+                selfCopy = self;
                 v40 = 2048;
                 v41 = v12;
                 _os_log_error_impl(&dword_1DB56E000, v28, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Invalid CALayer for queue wiht streamToken=%ld", buf, 0x3Au);
@@ -1211,19 +1211,19 @@ LABEL_34:
   v24 = 1;
   v23 = -2;
 LABEL_21:
-  if (a4 && v24)
+  if (error && v24)
   {
-    *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"VCRemoteVideoManager" code:v23 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"VCRemoteVideoManager" code:v23 userInfo:0];
   }
 
   return v17;
 }
 
-- (BOOL)setTransformForRemoteVideoOrientationEnabledWithArguments:(id)a3 error:(id *)a4
+- (BOOL)setTransformForRemoteVideoOrientationEnabledWithArguments:(id)arguments error:(id *)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = [a3 objectForKeyedSubscript:@"conferenceCallID"];
-  v8 = [a3 objectForKeyedSubscript:@"conferenceTransformForRemoteVideoOrientationEnabled"];
+  v7 = [arguments objectForKeyedSubscript:@"conferenceCallID"];
+  v8 = [arguments objectForKeyedSubscript:@"conferenceTransformForRemoteVideoOrientationEnabled"];
   if (v7)
   {
     v9 = v8 == 0;
@@ -1241,23 +1241,23 @@ LABEL_21:
   }
 
   v10 = v8;
-  v11 = [v7 unsignedIntValue];
+  unsignedIntValue = [v7 unsignedIntValue];
   if (![(NSMutableDictionary *)self->_queuesForStreamTokenDict objectForKeyedSubscript:v7])
   {
-    [VCRemoteVideoManager setTransformForRemoteVideoOrientationEnabledWithArguments:v11 error:?];
+    [VCRemoteVideoManager setTransformForRemoteVideoOrientationEnabledWithArguments:unsignedIntValue error:?];
 LABEL_13:
-    if (!a4)
+    if (!error)
     {
       return 0;
     }
 
     v16 = [MEMORY[0x1E696ABC0] errorWithDomain:@"VCRemoteVideoManager" code:*v17 userInfo:0];
     result = 0;
-    *a4 = v16;
+    *error = v16;
     return result;
   }
 
-  QueueForStreamToken = _VCRemoteVideoManager_GetQueueForStreamToken(self, v11, 0);
+  QueueForStreamToken = _VCRemoteVideoManager_GetQueueForStreamToken(self, unsignedIntValue, 0);
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
     v13 = VRTraceErrorLogLevelToCSTR();
@@ -1273,7 +1273,7 @@ LABEL_13:
       v22 = 2112;
       v23 = v10;
       v24 = 2048;
-      v25 = v11;
+      v25 = unsignedIntValue;
       _os_log_impl(&dword_1DB56E000, v14, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Setting transformForRemoteVideoOrientationEnabled=%@ for streamToken=%ld", v17, 0x30u);
     }
   }
@@ -1282,7 +1282,7 @@ LABEL_13:
   return 1;
 }
 
-- (void)notifyCachedStateForStreamToken:(id)a3
+- (void)notifyCachedStateForStreamToken:(id)token
 {
   block[6] = *MEMORY[0x1E69E9840];
   dispatchQueue = self->_dispatchQueue;
@@ -1291,22 +1291,22 @@ LABEL_13:
   block[2] = __56__VCRemoteVideoManager_notifyCachedStateForStreamToken___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = token;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)dispatchedNotifyCachedStateForStreamToken:(id)a3
+- (void)dispatchedNotifyCachedStateForStreamToken:(id)token
 {
   v23 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v5 = [(NSMutableDictionary *)self->_stateCacheForStreamTokenDict objectForKeyedSubscript:a3];
+  v5 = [(NSMutableDictionary *)self->_stateCacheForStreamTokenDict objectForKeyedSubscript:token];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
     v6 = VRTraceErrorLogLevelToCSTR();
     v7 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [a3 unsignedIntegerValue];
+      unsignedIntegerValue = [token unsignedIntegerValue];
       if (v5)
       {
         v9 = [objc_msgSend(v5 "description")];
@@ -1326,7 +1326,7 @@ LABEL_13:
       v17 = 1024;
       v18 = 713;
       v19 = 2048;
-      v20 = v8;
+      v20 = unsignedIntegerValue;
       v21 = 2080;
       v22 = v9;
       _os_log_impl(&dword_1DB56E000, v7, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d /Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCRemoteVideoManager.m:%d: token[%ld] state[%s]", &v11, 0x36u);
@@ -1335,55 +1335,55 @@ LABEL_13:
 
   if (v5)
   {
-    v10 = [a3 unsignedIntegerValue];
+    unsignedIntegerValue2 = [token unsignedIntegerValue];
     if ([v5 isMediaStalled])
     {
-      -[VCRemoteVideoManager dispatchedRemoteMediaDidStall:streamToken:](self, "dispatchedRemoteMediaDidStall:streamToken:", [v5 isMediaStalled], v10);
+      -[VCRemoteVideoManager dispatchedRemoteMediaDidStall:streamToken:](self, "dispatchedRemoteMediaDidStall:streamToken:", [v5 isMediaStalled], unsignedIntegerValue2);
     }
 
     if ([v5 isVideoPaused])
     {
-      -[VCRemoteVideoManager dispatchedRemoteVideoDidPause:streamToken:](self, "dispatchedRemoteVideoDidPause:streamToken:", [v5 isVideoPaused], v10);
+      -[VCRemoteVideoManager dispatchedRemoteVideoDidPause:streamToken:](self, "dispatchedRemoteVideoDidPause:streamToken:", [v5 isVideoPaused], unsignedIntegerValue2);
     }
 
     if ([v5 isVideoDegraded])
     {
-      -[VCRemoteVideoManager dispatchedRemoteVideoDidDegrade:streamToken:](self, "dispatchedRemoteVideoDidDegrade:streamToken:", [v5 isVideoDegraded], v10);
+      -[VCRemoteVideoManager dispatchedRemoteVideoDidDegrade:streamToken:](self, "dispatchedRemoteVideoDidDegrade:streamToken:", [v5 isVideoDegraded], unsignedIntegerValue2);
     }
 
     if ([v5 isVideoSuspended])
     {
-      -[VCRemoteVideoManager dispatchedRemoteVideoDidSuspend:streamToken:](self, "dispatchedRemoteVideoDidSuspend:streamToken:", [v5 isVideoSuspended], v10);
+      -[VCRemoteVideoManager dispatchedRemoteVideoDidSuspend:streamToken:](self, "dispatchedRemoteVideoDidSuspend:streamToken:", [v5 isVideoSuspended], unsignedIntegerValue2);
     }
 
     if ([v5 isNetworkDegraded] && objc_msgSend(v5, "isLocalNetworkDegraded"))
     {
-      -[VCRemoteVideoManager dispatchNetworkQualityDidDegrade:isLocalNetworkQualityDegraded:streamToken:](self, "dispatchNetworkQualityDidDegrade:isLocalNetworkQualityDegraded:streamToken:", [v5 isNetworkDegraded], objc_msgSend(v5, "isLocalNetworkDegraded"), v10);
+      -[VCRemoteVideoManager dispatchNetworkQualityDidDegrade:isLocalNetworkQualityDegraded:streamToken:](self, "dispatchNetworkQualityDidDegrade:isLocalNetworkQualityDegraded:streamToken:", [v5 isNetworkDegraded], objc_msgSend(v5, "isLocalNetworkDegraded"), unsignedIntegerValue2);
     }
 
     if ([v5 remoteVideoAttributes])
     {
-      _VCRemoteVideoManager_DispatchedRemoteVideoAttributesDidChange(self, [v5 remoteVideoAttributes], v10);
+      _VCRemoteVideoManager_DispatchedRemoteVideoAttributesDidChange(self, [v5 remoteVideoAttributes], unsignedIntegerValue2);
     }
 
     if ([v5 remoteScreenAttributes])
     {
-      _VCRemoteVideoManager_DispatchedRemoteScreenAttributesDidChange(self, [v5 remoteScreenAttributes], v10);
+      _VCRemoteVideoManager_DispatchedRemoteScreenAttributesDidChange(self, [v5 remoteScreenAttributes], unsignedIntegerValue2);
     }
 
     if ([v5 hasReceivedFirstFrame])
     {
-      _VCRemoteVideoManager_DispatchedDidReceiveFirstRemoteFrameForStreamToken(self, v10);
+      _VCRemoteVideoManager_DispatchedDidReceiveFirstRemoteFrameForStreamToken(self, unsignedIntegerValue2);
     }
 
     if ([v5 localInterfaceType] && objc_msgSend(v5, "remoteInterfaceType"))
     {
-      -[VCRemoteVideoManager dispatchedConnectionDidChangeWithLocalInterfaceType:remoteInterfaceType:streamToken:](self, "dispatchedConnectionDidChangeWithLocalInterfaceType:remoteInterfaceType:streamToken:", [v5 localInterfaceType], objc_msgSend(v5, "remoteInterfaceType"), v10);
+      -[VCRemoteVideoManager dispatchedConnectionDidChangeWithLocalInterfaceType:remoteInterfaceType:streamToken:](self, "dispatchedConnectionDidChangeWithLocalInterfaceType:remoteInterfaceType:streamToken:", [v5 localInterfaceType], objc_msgSend(v5, "remoteInterfaceType"), unsignedIntegerValue2);
     }
 
     if ([v5 sensitivityAnalysisData])
     {
-      _VCRemoteVideoManager_DispatchedDidDetectSensitiveContentWithAnalysis(self, v10, [v5 sensitivityAnalysisData]);
+      _VCRemoteVideoManager_DispatchedDidDetectSensitiveContentWithAnalysis(self, unsignedIntegerValue2, [v5 sensitivityAnalysisData]);
     }
   }
 

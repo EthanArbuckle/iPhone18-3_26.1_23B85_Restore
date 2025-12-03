@@ -1,6 +1,6 @@
 @interface BSCompoundAssertion
-+ (BSCompoundAssertion)assertionWithIdentifier:(id)a3;
-+ (BSCompoundAssertion)assertionWithIdentifier:(id)a3 stateDidChangeHandler:(id)a4;
++ (BSCompoundAssertion)assertionWithIdentifier:(id)identifier;
++ (BSCompoundAssertion)assertionWithIdentifier:(id)identifier stateDidChangeHandler:(id)handler;
 + (BSCompoundAssertion)new;
 - (BOOL)isActive;
 - (BSCompoundAssertion)init;
@@ -13,12 +13,12 @@
 - (_BSCompoundAssertionState)_dataLock_copyState;
 - (id)_dataLock_context;
 - (id)_identifier;
-- (id)_initWithIdentifier:(id)a1;
-- (id)acquireForReason:(id)a3;
-- (id)acquireForReason:(id)a3 withContext:(id)a4;
+- (id)_initWithIdentifier:(id)identifier;
+- (id)acquireForReason:(id)reason;
+- (id)acquireForReason:(id)reason withContext:(id)context;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setLog:(id)a3;
+- (void)setLog:(id)log;
 @end
 
 @implementation BSCompoundAssertion
@@ -26,14 +26,14 @@
 - (id)_dataLock_context
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_assert_owner((a1 + 32));
+    os_unfair_lock_assert_owner((self + 32));
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v2 = *(a1 + 40);
+    v2 = *(self + 40);
     v3 = 0;
     v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v4)
@@ -91,19 +91,19 @@
 
 - (_BSCompoundAssertionState)_dataLock_copyState
 {
-  os_unfair_lock_assert_owner((a1 + 32));
+  os_unfair_lock_assert_owner((self + 32));
   v2 = objc_alloc_init(_BSCompoundAssertionState);
-  v3 = [*(a1 + 40) count];
+  v3 = [*(self + 40) count];
   if (v2)
   {
     v2->_active = v3 != 0;
   }
 
-  v4 = [(BSCompoundAssertion *)a1 _dataLock_context];
-  v5 = v4;
+  _dataLock_context = [(BSCompoundAssertion *)self _dataLock_context];
+  v5 = _dataLock_context;
   if (v2)
   {
-    v6 = [v4 copy];
+    v6 = [_dataLock_context copy];
     context = v2->_context;
     v2->_context = v6;
   }
@@ -113,8 +113,8 @@
 
 - (NSSet)context
 {
-  v2 = [(BSCompoundAssertion *)self orderedContext];
-  v3 = [v2 set];
+  orderedContext = [(BSCompoundAssertion *)self orderedContext];
+  v3 = [orderedContext set];
 
   return v3;
 }
@@ -123,16 +123,16 @@
 {
   os_unfair_lock_assert_not_owner(&self->_dataLock);
   os_unfair_lock_lock(&self->_dataLock);
-  v3 = [(BSCompoundAssertion *)self _dataLock_context];
+  _dataLock_context = [(BSCompoundAssertion *)self _dataLock_context];
   os_unfair_lock_unlock(&self->_dataLock);
 
-  return v3;
+  return _dataLock_context;
 }
 
 - (NSSet)reasons
 {
-  v2 = [(BSCompoundAssertion *)self orderedReasons];
-  v3 = [v2 set];
+  orderedReasons = [(BSCompoundAssertion *)self orderedReasons];
+  v3 = [orderedReasons set];
 
   return v3;
 }
@@ -207,7 +207,7 @@ id __37__BSCompoundAssertion_orderedReasons__block_invoke(uint64_t a1, uint64_t 
       v12 = 2114;
       v13 = v7;
       v14 = 2048;
-      v15 = self;
+      selfCopy = self;
       v16 = 2114;
       v17 = @"BSCompoundAssertion.m";
       v18 = 1024;
@@ -231,13 +231,13 @@ id __37__BSCompoundAssertion_orderedReasons__block_invoke(uint64_t a1, uint64_t 
 
 - (id)_identifier
 {
-  if (a1)
+  if (self)
   {
-    a1 = a1[1];
+    self = self[1];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 + (BSCompoundAssertion)new
@@ -254,7 +254,7 @@ id __37__BSCompoundAssertion_orderedReasons__block_invoke(uint64_t a1, uint64_t 
     v12 = 2114;
     v13 = v7;
     v14 = 2048;
-    v15 = a1;
+    selfCopy = self;
     v16 = 2114;
     v17 = @"BSCompoundAssertion.m";
     v18 = 1024;
@@ -285,7 +285,7 @@ id __37__BSCompoundAssertion_orderedReasons__block_invoke(uint64_t a1, uint64_t 
     v12 = 2114;
     v13 = v7;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
     v17 = @"BSCompoundAssertion.m";
     v18 = 1024;
@@ -302,16 +302,16 @@ id __37__BSCompoundAssertion_orderedReasons__block_invoke(uint64_t a1, uint64_t 
   return result;
 }
 
-- (id)_initWithIdentifier:(id)a1
+- (id)_initWithIdentifier:(id)identifier
 {
   v26 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (identifier)
   {
-    v13.receiver = a1;
+    v13.receiver = identifier;
     v13.super_class = BSCompoundAssertion;
-    a1 = objc_msgSendSuper2(&v13, sel_init);
-    if (a1)
+    identifier = objc_msgSendSuper2(&v13, sel_init);
+    if (identifier)
     {
       v4 = objc_opt_class();
       if (v4 != objc_opt_class())
@@ -327,7 +327,7 @@ id __37__BSCompoundAssertion_orderedReasons__block_invoke(uint64_t a1, uint64_t 
           v16 = 2114;
           v17 = v11;
           v18 = 2048;
-          v19 = a1;
+          identifierCopy = identifier;
           v20 = 2114;
           v21 = @"BSCompoundAssertion.m";
           v22 = 1024;
@@ -343,31 +343,31 @@ id __37__BSCompoundAssertion_orderedReasons__block_invoke(uint64_t a1, uint64_t 
         JUMPOUT(0x18FF37094);
       }
 
-      *(a1 + 4) = 0;
-      *(a1 + 8) = 0;
+      *(identifier + 4) = 0;
+      *(identifier + 8) = 0;
       v5 = [v3 copy];
-      v6 = *(a1 + 1);
-      *(a1 + 1) = v5;
+      v6 = *(identifier + 1);
+      *(identifier + 1) = v5;
     }
   }
 
-  return a1;
+  return identifier;
 }
 
-+ (BSCompoundAssertion)assertionWithIdentifier:(id)a3
++ (BSCompoundAssertion)assertionWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(BSCompoundAssertion *)[a1 alloc] _initWithIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [(BSCompoundAssertion *)[self alloc] _initWithIdentifier:identifierCopy];
 
   return v5;
 }
 
-+ (BSCompoundAssertion)assertionWithIdentifier:(id)a3 stateDidChangeHandler:(id)a4
++ (BSCompoundAssertion)assertionWithIdentifier:(id)identifier stateDidChangeHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[BSCompoundAssertion alloc] _initWithIdentifier:v5];
-  v8 = [v6 copy];
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  v7 = [[BSCompoundAssertion alloc] _initWithIdentifier:identifierCopy];
+  v8 = [handlerCopy copy];
   v9 = v7[3];
   v7[3] = v8;
 
@@ -418,22 +418,22 @@ LABEL_6:
   return v6;
 }
 
-- (id)acquireForReason:(id)a3
+- (id)acquireForReason:(id)reason
 {
-  v3 = [(BSCompoundAssertion *)self acquireForReason:a3 withContext:0];
+  v3 = [(BSCompoundAssertion *)self acquireForReason:reason withContext:0];
 
   return v3;
 }
 
-- (id)acquireForReason:(id)a3 withContext:(id)a4
+- (id)acquireForReason:(id)reason withContext:(id)context
 {
   v46 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  reasonCopy = reason;
+  contextCopy = context;
+  if (!reasonCopy)
   {
-    v29 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v29 handleFailureInMethod:a2 object:self file:@"BSCompoundAssertion.m" lineNumber:299 description:{@"Invalid parameter not satisfying: %@", @"reason != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BSCompoundAssertion.m" lineNumber:299 description:{@"Invalid parameter not satisfying: %@", @"reason != nil"}];
   }
 
   os_unfair_lock_assert_not_owner(&self->_syncLock);
@@ -444,8 +444,8 @@ LABEL_6:
     goto LABEL_27;
   }
 
-  v10 = v7;
-  v11 = v8;
+  v10 = reasonCopy;
+  v11 = contextCopy;
   os_unfair_lock_assert_owner(&self->_syncLock);
   os_unfair_lock_lock(&self->_dataLock);
   v33 = v11;
@@ -477,7 +477,7 @@ LABEL_6:
     objc_storeWeak(p_isa + 3, v9);
   }
 
-  v32 = [(BSCompoundAssertion *)self _dataLock_context];
+  _dataLock_context = [(BSCompoundAssertion *)self _dataLock_context];
   [(NSMutableOrderedSet *)self->_dataLock_acquisitionRecords addObject:p_isa];
   v18 = [(NSMutableOrderedSet *)self->_dataLock_acquisitionRecords count];
   syncLock_block = self->_syncLock_block;
@@ -495,7 +495,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (v11 && ([v32 containsObject:?] & 1) == 0)
+  if (v11 && ([_dataLock_context containsObject:?] & 1) == 0)
   {
     syncLock_block = self->_syncLock_block;
     goto LABEL_19;
@@ -513,14 +513,14 @@ LABEL_20:
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
       v30 = v10;
-      v31 = v8;
+      v31 = contextCopy;
       v25 = objc_opt_class();
       identifierPrefix = self->_identifierPrefix;
       v27 = [(NSMutableOrderedSet *)self->_dataLock_acquisitionRecords count];
       *buf = 138544642;
       v35 = v25;
       v36 = 2048;
-      v37 = self;
+      selfCopy = self;
       v38 = 2114;
       v39 = identifierPrefix;
       v40 = 2114;
@@ -532,7 +532,7 @@ LABEL_20:
       _os_log_impl(&dword_18FEF6000, v24, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> (%{public}@) acquire for reason:%{public}@ acq:%p count:%d", buf, 0x3Au);
 
       v10 = v30;
-      v8 = v31;
+      contextCopy = v31;
     }
   }
 
@@ -557,12 +557,12 @@ LABEL_27:
   return v3;
 }
 
-- (void)setLog:(id)a3
+- (void)setLog:(id)log
 {
-  v4 = a3;
+  logCopy = log;
   os_unfair_lock_lock(&self->_dataLock);
   dataLock_log = self->_dataLock_log;
-  self->_dataLock_log = v4;
+  self->_dataLock_log = logCopy;
 
   os_unfair_lock_unlock(&self->_dataLock);
 }

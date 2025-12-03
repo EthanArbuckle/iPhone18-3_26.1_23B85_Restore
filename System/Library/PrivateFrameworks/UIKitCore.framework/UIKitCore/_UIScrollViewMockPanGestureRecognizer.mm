@@ -1,14 +1,14 @@
 @interface _UIScrollViewMockPanGestureRecognizer
-- (CGPoint)locationInView:(id)a3;
-- (CGPoint)translationInView:(id)a3;
-- (CGPoint)velocityInView:(id)a3;
-- (id)forwardingTargetForSelector:(SEL)a3;
-- (void)setTranslation:(CGPoint)a3 inView:(id)a4;
+- (CGPoint)locationInView:(id)view;
+- (CGPoint)translationInView:(id)view;
+- (CGPoint)velocityInView:(id)view;
+- (id)forwardingTargetForSelector:(SEL)selector;
+- (void)setTranslation:(CGPoint)translation inView:(id)view;
 @end
 
 @implementation _UIScrollViewMockPanGestureRecognizer
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
@@ -18,9 +18,9 @@
       goto LABEL_6;
     }
 
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    v8 = NSStringFromSelector(a3);
-    [v7 handleFailureInMethod:a2 object:self file:@"UIScrollView_UIApplicationTesting.m" lineNumber:81 description:{@"UIScrollView is calling %@ not implemented on _UIScrollViewMockPanGestureRecognizer or UIScrollViewPanGestureRecognizer", v8}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    v8 = NSStringFromSelector(selector);
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIScrollView_UIApplicationTesting.m" lineNumber:81 description:{@"UIScrollView is calling %@ not implemented on _UIScrollViewMockPanGestureRecognizer or UIScrollViewPanGestureRecognizer", v8}];
   }
 
   v6 = 0;
@@ -29,17 +29,17 @@ LABEL_6:
   return v6;
 }
 
-- (CGPoint)translationInView:(id)a3
+- (CGPoint)translationInView:(id)view
 {
-  v5 = a3;
-  if (v5)
+  viewCopy = view;
+  if (viewCopy)
   {
-    v6 = [(UIGestureRecognizer *)self->_gestureRecognizer view];
+    view = [(UIGestureRecognizer *)self->_gestureRecognizer view];
 
-    if (v6 != v5)
+    if (view != viewCopy)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v7 handleFailureInMethod:a2 object:self file:@"UIScrollView_UIApplicationTesting.m" lineNumber:98 description:@"expected different view"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UIScrollView_UIApplicationTesting.m" lineNumber:98 description:@"expected different view"];
     }
   }
 
@@ -53,23 +53,23 @@ LABEL_6:
   return result;
 }
 
-- (void)setTranslation:(CGPoint)a3 inView:(id)a4
+- (void)setTranslation:(CGPoint)translation inView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  if (v8)
+  y = translation.y;
+  x = translation.x;
+  viewCopy = view;
+  if (viewCopy)
   {
-    v11 = v8;
-    v9 = [(UIGestureRecognizer *)self->_gestureRecognizer view];
+    v11 = viewCopy;
+    view = [(UIGestureRecognizer *)self->_gestureRecognizer view];
 
-    v8 = v11;
-    if (v9 != v11)
+    viewCopy = v11;
+    if (view != v11)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"UIScrollView_UIApplicationTesting.m" lineNumber:104 description:@"expected different view"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UIScrollView_UIApplicationTesting.m" lineNumber:104 description:@"expected different view"];
 
-      v8 = v11;
+      viewCopy = v11;
     }
   }
 
@@ -77,17 +77,17 @@ LABEL_6:
   self->_translation.y = y;
 }
 
-- (CGPoint)velocityInView:(id)a3
+- (CGPoint)velocityInView:(id)view
 {
-  v5 = a3;
-  if (v5)
+  viewCopy = view;
+  if (viewCopy)
   {
-    v6 = [(UIGestureRecognizer *)self->_gestureRecognizer view];
+    view = [(UIGestureRecognizer *)self->_gestureRecognizer view];
 
-    if (v6 != v5)
+    if (view != viewCopy)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v7 handleFailureInMethod:a2 object:self file:@"UIScrollView_UIApplicationTesting.m" lineNumber:110 description:@"expected different view"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UIScrollView_UIApplicationTesting.m" lineNumber:110 description:@"expected different view"];
     }
   }
 
@@ -101,21 +101,21 @@ LABEL_6:
   return result;
 }
 
-- (CGPoint)locationInView:(id)a3
+- (CGPoint)locationInView:(id)view
 {
-  v5 = a3;
-  if (v5)
+  viewCopy = view;
+  if (viewCopy)
   {
-    v6 = [(UIGestureRecognizer *)self->_gestureRecognizer view];
+    view = [(UIGestureRecognizer *)self->_gestureRecognizer view];
 
-    if (v6 != v5)
+    if (view != viewCopy)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v7 handleFailureInMethod:a2 object:self file:@"UIScrollView_UIApplicationTesting.m" lineNumber:116 description:@"expected different view"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UIScrollView_UIApplicationTesting.m" lineNumber:116 description:@"expected different view"];
     }
   }
 
-  [v5 frame];
+  [viewCopy frame];
   x = v22.origin.x;
   y = v22.origin.y;
   width = v22.size.width;
@@ -126,8 +126,8 @@ LABEL_6:
   v23.size.width = width;
   v23.size.height = height;
   MidY = CGRectGetMidY(v23);
-  v14 = [v5 superview];
-  [v5 convertPoint:v14 fromView:{MidX, MidY}];
+  superview = [viewCopy superview];
+  [viewCopy convertPoint:superview fromView:{MidX, MidY}];
   v16 = v15;
   v18 = v17;
 

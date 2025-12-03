@@ -1,19 +1,19 @@
 @interface NDSpringBoardApplication
 - (BOOL)isForeground;
-- (NDSpringBoardApplication)initWithOperationID:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)applicationEnteredForeground:(id)a3;
-- (void)applicationNoLongerInForeground:(id)a3;
-- (void)removeObserver:(id)a3;
+- (NDSpringBoardApplication)initWithOperationID:(id)d;
+- (void)addObserver:(id)observer;
+- (void)applicationEnteredForeground:(id)foreground;
+- (void)applicationNoLongerInForeground:(id)foreground;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation NDSpringBoardApplication
 
-- (NDSpringBoardApplication)initWithOperationID:(id)a3
+- (NDSpringBoardApplication)initWithOperationID:(id)d
 {
   v16.receiver = self;
   v16.super_class = NDSpringBoardApplication;
-  v3 = [(NDApplication *)&v16 initWithOperationID:a3];
+  v3 = [(NDApplication *)&v16 initWithOperationID:d];
   if (v3)
   {
     v4 = [LSApplicationExtensionRecord alloc];
@@ -42,12 +42,12 @@
 
     else if (v6)
     {
-      v10 = [v6 containingBundleRecord];
-      v11 = [v10 bundleIdentifier];
+      containingBundleRecord = [v6 containingBundleRecord];
+      bundleIdentifier = [containingBundleRecord bundleIdentifier];
 
-      if (v11)
+      if (bundleIdentifier)
       {
-        v12 = [NDApplication springboardApplicationWithBundleIdentifier:v11];
+        v12 = [NDApplication springboardApplicationWithBundleIdentifier:bundleIdentifier];
         containingApplication = v3->_containingApplication;
         v3->_containingApplication = v12;
       }
@@ -65,54 +65,54 @@
   return self;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (![(NSMutableArray *)v5->super._observers count])
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (![(NSMutableArray *)selfCopy->super._observers count])
   {
     v6 = +[NDSpringBoard sharedSpringBoard];
-    [v6 startMonitoringBundleID:v5->super._bundleIdentifier];
+    [v6 startMonitoringBundleID:selfCopy->super._bundleIdentifier];
 
     v7 = +[NDSpringBoard sharedSpringBoard];
-    [v7 addObserver:v5 forApplication:v5->super._bundleIdentifier];
+    [v7 addObserver:selfCopy forApplication:selfCopy->super._bundleIdentifier];
   }
 
-  v8.receiver = v5;
+  v8.receiver = selfCopy;
   v8.super_class = NDSpringBoardApplication;
-  [(NDApplication *)&v8 addObserver:v4];
-  objc_sync_exit(v5);
+  [(NDApplication *)&v8 addObserver:observerCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v8.receiver = v5;
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8.receiver = selfCopy;
   v8.super_class = NDSpringBoardApplication;
-  [(NDApplication *)&v8 removeObserver:v4];
-  if (![(NSMutableArray *)v5->super._observers count])
+  [(NDApplication *)&v8 removeObserver:observerCopy];
+  if (![(NSMutableArray *)selfCopy->super._observers count])
   {
     v6 = +[NDSpringBoard sharedSpringBoard];
-    [v6 removeObserver:v5 forApplication:v5->super._bundleIdentifier];
+    [v6 removeObserver:selfCopy forApplication:selfCopy->super._bundleIdentifier];
 
     v7 = +[NDSpringBoard sharedSpringBoard];
-    [v7 stopMonitoringBundleID:v5->super._bundleIdentifier];
+    [v7 stopMonitoringBundleID:selfCopy->super._bundleIdentifier];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)applicationEnteredForeground:(id)a3
+- (void)applicationEnteredForeground:(id)foreground
 {
   v3.receiver = self;
   v3.super_class = NDSpringBoardApplication;
   [(NDApplication *)&v3 invokeSelectorForAllObservers:"applicationEnteredForeground:"];
 }
 
-- (void)applicationNoLongerInForeground:(id)a3
+- (void)applicationNoLongerInForeground:(id)foreground
 {
   v3.receiver = self;
   v3.super_class = NDSpringBoardApplication;

@@ -1,9 +1,9 @@
 @interface PKContinuousButton
-+ (id)_filterInputColorForEffect:(int64_t)a3;
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
-- (PKContinuousButton)initWithConfiguration:(id *)a3;
-- (PKContinuousButton)initWithCornerRadius:(double)a3 effect:(int64_t)a4;
-- (PKContinuousButton)initWithFrame:(CGRect)a3;
++ (id)_filterInputColorForEffect:(int64_t)effect;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
+- (PKContinuousButton)initWithConfiguration:(id *)configuration;
+- (PKContinuousButton)initWithCornerRadius:(double)radius effect:(int64_t)effect;
+- (PKContinuousButton)initWithFrame:(CGRect)frame;
 - (void)_createHighlightFilterIfNecessary;
 - (void)_dynamicUserInterfaceTraitDidChange;
 - (void)_updateBackdropSettings;
@@ -12,25 +12,25 @@
 - (void)_updateTitleColor;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setBlurDisabled:(BOOL)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setImageEnabled:(BOOL)a3 forState:(unint64_t)a4;
-- (void)setSelected:(BOOL)a3;
-- (void)setShowSpinner:(BOOL)a3;
+- (void)setBlurDisabled:(BOOL)disabled;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setImageEnabled:(BOOL)enabled forState:(unint64_t)state;
+- (void)setSelected:(BOOL)selected;
+- (void)setShowSpinner:(BOOL)spinner;
 - (void)tintColorDidChange;
-- (void)updateActivityIndicatorColorWithColor:(id)a3;
-- (void)updateBackgroundColorWithColor:(id)a3;
+- (void)updateActivityIndicatorColorWithColor:(id)color;
+- (void)updateBackgroundColorWithColor:(id)color;
 - (void)updateImageView;
-- (void)updateTitleColorWithColor:(id)a3;
-- (void)updateWithImage:(id)a3;
+- (void)updateTitleColorWithColor:(id)color;
+- (void)updateWithImage:(id)image;
 @end
 
 @implementation PKContinuousButton
 
-+ (id)_filterInputColorForEffect:(int64_t)a3
++ (id)_filterInputColorForEffect:(int64_t)effect
 {
-  switch(a3)
+  switch(effect)
   {
     case 2:
       v3 = MEMORY[0x1E69DC888];
@@ -62,12 +62,12 @@ LABEL_10:
   return v6;
 }
 
-- (PKContinuousButton)initWithFrame:(CGRect)a3
+- (PKContinuousButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = [(PKContinuousButton *)self initWithCornerRadius:1 effect:0.0];
   v8 = v7;
   if (v7)
@@ -78,16 +78,16 @@ LABEL_10:
   return v8;
 }
 
-- (PKContinuousButton)initWithCornerRadius:(double)a3 effect:(int64_t)a4
+- (PKContinuousButton)initWithCornerRadius:(double)radius effect:(int64_t)effect
 {
-  v5 = a3;
+  radiusCopy = radius;
   v6 = xmmword_1BE0B69E0;
-  v7 = a4;
-  v8 = a4;
-  return [(PKContinuousButton *)self initWithConfiguration:&v5];
+  effectCopy = effect;
+  effectCopy2 = effect;
+  return [(PKContinuousButton *)self initWithConfiguration:&radiusCopy];
 }
 
-- (PKContinuousButton)initWithConfiguration:(id *)a3
+- (PKContinuousButton)initWithConfiguration:(id *)configuration
 {
   v27[1] = *MEMORY[0x1E69E9840];
   v26.receiver = self;
@@ -100,9 +100,9 @@ LABEL_10:
     [(PKContinuousButton *)v5 setExclusiveTouch:1];
     [(PKContinuousButton *)v5 setTintAdjustmentMode:1];
     [(PKContinuousButton *)v5 _setWantsAccessibilityUnderline:0];
-    var4 = a3->var4;
-    v7 = *&a3->var2;
-    *&v5->_configuration.cornerRadius = *&a3->var0;
+    var4 = configuration->var4;
+    v7 = *&configuration->var2;
+    *&v5->_configuration.cornerRadius = *&configuration->var0;
     *&v5->_configuration.style = v7;
     v5->_configuration.disabledEffect = var4;
     v5->_configuration.cornerRadius = fmax(v5->_configuration.cornerRadius, 0.0);
@@ -118,11 +118,11 @@ LABEL_10:
       [(PKContinuousButton *)v5 setBackgroundImage:v10 forState:0];
 
       [(PKContinuousButton *)v5 layoutIfNeeded];
-      v11 = [(PKContinuousButton *)v5 _backgroundView];
-      [v11 addSubview:v5->_backdropView];
+      _backgroundView = [(PKContinuousButton *)v5 _backgroundView];
+      [_backgroundView addSubview:v5->_backdropView];
 
-      v12 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v12 addObserver:v5 selector:sel__accessibilitySettingsDidChange_ name:*MEMORY[0x1E69DD920] object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:v5 selector:sel__accessibilitySettingsDidChange_ name:*MEMORY[0x1E69DD920] object:0];
     }
 
     if (!v5->_configuration.disabledEffect)
@@ -142,13 +142,13 @@ LABEL_10:
     disabledInputColor = v5->_disabledInputColor;
     v5->_disabledInputColor = v17;
 
-    v19 = [MEMORY[0x1E69DC888] systemWhiteColor];
+    systemWhiteColor = [MEMORY[0x1E69DC888] systemWhiteColor];
     activityIndicatorColor = v5->_activityIndicatorColor;
-    v5->_activityIndicatorColor = v19;
+    v5->_activityIndicatorColor = systemWhiteColor;
 
-    v21 = [(PKContinuousButton *)v5 layer];
+    layer = [(PKContinuousButton *)v5 layer];
     layer = v5->_layer;
-    v5->_layer = v21;
+    v5->_layer = layer;
 
     [(CAShapeLayer *)v5->_layer setLineWidth:1.0];
     [(CAShapeLayer *)v5->_layer setMasksToBounds:1];
@@ -177,18 +177,18 @@ uint64_t __44__PKContinuousButton_initWithConfiguration___block_invoke(uint64_t 
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PKContinuousButton;
   [(PKContinuousButton *)&v4 dealloc];
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"path"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"path"])
   {
     v5 = 1;
   }
@@ -197,7 +197,7 @@ uint64_t __44__PKContinuousButton_initWithConfiguration___block_invoke(uint64_t 
   {
     v7.receiver = self;
     v7.super_class = PKContinuousButton;
-    v5 = [(PKContinuousButton *)&v7 _shouldAnimatePropertyWithKey:v4];
+    v5 = [(PKContinuousButton *)&v7 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v5;
@@ -269,12 +269,12 @@ LABEL_14:
   backdropView = self->_backdropView;
   if (backdropView)
   {
-    v20 = [(_UIBackdropView *)backdropView superview];
+    superview = [(_UIBackdropView *)backdropView superview];
 
-    if (!v20)
+    if (!superview)
     {
-      v21 = [(PKContinuousButton *)self _backgroundView];
-      [v21 addSubview:self->_backdropView];
+      _backgroundView = [(PKContinuousButton *)self _backgroundView];
+      [_backgroundView addSubview:self->_backdropView];
     }
   }
 
@@ -284,46 +284,46 @@ LABEL_18:
   v22 = self->_backdropView;
   if (v22)
   {
-    v23 = [(PKContinuousButton *)self _backgroundView];
-    [v23 bounds];
+    _backgroundView2 = [(PKContinuousButton *)self _backgroundView];
+    [_backgroundView2 bounds];
     [(_UIBackdropView *)v22 setFrame:?];
   }
 
-  v24 = [(UIActivityIndicatorView *)self->_activityIndicatorView superview];
+  superview2 = [(UIActivityIndicatorView *)self->_activityIndicatorView superview];
 
-  if (v24)
+  if (superview2)
   {
     activityIndicatorView = self->_activityIndicatorView;
-    v26 = [(PKContinuousButton *)self titleLabel];
-    [v26 center];
+    titleLabel = [(PKContinuousButton *)self titleLabel];
+    [titleLabel center];
     [(UIActivityIndicatorView *)activityIndicatorView setCenter:?];
   }
 }
 
-- (void)updateBackgroundColorWithColor:(id)a3
+- (void)updateBackgroundColorWithColor:(id)color
 {
-  v4 = [a3 copy];
+  v4 = [color copy];
   overrideBackgroundColor = self->_overrideBackgroundColor;
   self->_overrideBackgroundColor = v4;
 
   [(PKContinuousButton *)self _updateColor];
 }
 
-- (void)updateTitleColorWithColor:(id)a3
+- (void)updateTitleColorWithColor:(id)color
 {
-  v4 = [a3 copy];
+  v4 = [color copy];
   overrideTitleColor = self->_overrideTitleColor;
   self->_overrideTitleColor = v4;
 
   [(PKContinuousButton *)self _updateTitleColor];
 }
 
-- (void)updateActivityIndicatorColorWithColor:(id)a3
+- (void)updateActivityIndicatorColorWithColor:(id)color
 {
-  v6 = a3;
-  if (self->_activityIndicatorColor != v6)
+  colorCopy = color;
+  if (self->_activityIndicatorColor != colorCopy)
   {
-    objc_storeStrong(&self->_activityIndicatorColor, a3);
+    objc_storeStrong(&self->_activityIndicatorColor, color);
     activityIndicatorView = self->_activityIndicatorView;
     if (activityIndicatorView)
     {
@@ -332,19 +332,19 @@ LABEL_18:
   }
 }
 
-- (void)updateWithImage:(id)a3
+- (void)updateWithImage:(id)image
 {
-  objc_storeStrong(&self->_image, a3);
+  objc_storeStrong(&self->_image, image);
 
   [(PKContinuousButton *)self updateImageView];
 }
 
-- (void)setImageEnabled:(BOOL)a3 forState:(unint64_t)a4
+- (void)setImageEnabled:(BOOL)enabled forState:(unint64_t)state
 {
   disabledImageStates = self->_disabledImageStates;
-  if (a3)
+  if (enabled)
   {
-    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:state];
     [(NSMutableSet *)disabledImageStates removeObject:v7];
   }
 
@@ -359,7 +359,7 @@ LABEL_18:
       disabledImageStates = self->_disabledImageStates;
     }
 
-    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:state];
     [(NSMutableSet *)disabledImageStates addObject:v7];
   }
 
@@ -374,7 +374,7 @@ LABEL_18:
 {
   [(PKContinuousButton *)self setAdjustsImageWhenHighlighted:0];
   [(PKContinuousButton *)self setAdjustsImageWhenDisabled:0];
-  v3 = [(PKContinuousButton *)self traitCollection];
+  traitCollection = [(PKContinuousButton *)self traitCollection];
   v4 = objc_alloc_init(MEMORY[0x1E69DCAB8]);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -407,7 +407,7 @@ LABEL_18:
       v24[3] = &unk_1E8014BD0;
       v26 = &v27;
       v25 = v8;
-      PKUIPerformWithEffectiveTraitCollection(v3, v24);
+      PKUIPerformWithEffectiveTraitCollection(traitCollection, v24);
 
       v11 = v28[5];
     }
@@ -437,7 +437,7 @@ LABEL_18:
       v15[3] = &unk_1E8014BD0;
       v17 = &v18;
       v16 = v14;
-      PKUIPerformWithEffectiveTraitCollection(v3, v15);
+      PKUIPerformWithEffectiveTraitCollection(traitCollection, v15);
     }
   }
 
@@ -489,11 +489,11 @@ void __37__PKContinuousButton_updateImageView__block_invoke_2(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (void)setBlurDisabled:(BOOL)a3
+- (void)setBlurDisabled:(BOOL)disabled
 {
-  if (self->_configuration.style == 3 && self->_blurDisabled != a3)
+  if (self->_configuration.style == 3 && self->_blurDisabled != disabled)
   {
-    self->_blurDisabled = a3;
+    self->_blurDisabled = disabled;
     [(PKContinuousButton *)self _updateBackdropSettings];
   }
 }
@@ -517,29 +517,29 @@ void __37__PKContinuousButton_updateImageView__block_invoke_2(uint64_t a1)
 
 - (void)_updateColor
 {
-  v3 = [(PKContinuousButton *)self tintColor];
-  v4 = v3;
-  if (v3)
+  tintColor = [(PKContinuousButton *)self tintColor];
+  v4 = tintColor;
+  if (tintColor)
   {
-    v5 = v3;
+    systemBlueColor = tintColor;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E69DC888] systemBlueColor];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
   }
 
-  v6 = v5;
+  v6 = systemBlueColor;
 
-  v7 = [(PKContinuousButton *)self traitCollection];
+  traitCollection = [(PKContinuousButton *)self traitCollection];
   v9 = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __34__PKContinuousButton__updateColor__block_invoke;
   v12 = &unk_1E8010A10;
-  v13 = self;
+  selfCopy = self;
   v14 = v6;
   v8 = v6;
-  PKUIPerformWithEffectiveTraitCollection(v7, &v9);
+  PKUIPerformWithEffectiveTraitCollection(traitCollection, &v9);
 
   [(PKContinuousButton *)self _updateTitleColor:v9];
 }
@@ -613,10 +613,10 @@ LABEL_15:
   {
     if (style == 3)
     {
-      v6 = [MEMORY[0x1E69DC888] labelColor];
+      labelColor = [MEMORY[0x1E69DC888] labelColor];
 LABEL_11:
-      v4 = v6;
-      if (v6)
+      v4 = labelColor;
+      if (labelColor)
       {
         goto LABEL_16;
       }
@@ -630,7 +630,7 @@ LABEL_11:
     }
 
 LABEL_9:
-    v6 = [(PKContinuousButton *)self tintColor];
+    labelColor = [(PKContinuousButton *)self tintColor];
     goto LABEL_11;
   }
 
@@ -641,24 +641,24 @@ LABEL_9:
 
   if (style == 2)
   {
-    v6 = [MEMORY[0x1E69DC888] whiteColor];
+    labelColor = [MEMORY[0x1E69DC888] whiteColor];
     goto LABEL_11;
   }
 
 LABEL_12:
-  v7 = [(PKContinuousButton *)self tintColor];
-  v8 = v7;
-  if (v7)
+  tintColor = [(PKContinuousButton *)self tintColor];
+  v8 = tintColor;
+  if (tintColor)
   {
-    v9 = v7;
+    systemBlueColor = tintColor;
   }
 
   else
   {
-    v9 = [MEMORY[0x1E69DC888] systemBlueColor];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
   }
 
-  v4 = v9;
+  v4 = systemBlueColor;
 
 LABEL_16:
   v12 = v4;
@@ -715,41 +715,41 @@ LABEL_16:
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5.receiver = self;
   v5.super_class = PKContinuousButton;
   [(PKContinuousButton *)&v5 setEnabled:?];
-  if (self->_enabled != v3)
+  if (self->_enabled != enabledCopy)
   {
-    self->_enabled = v3;
+    self->_enabled = enabledCopy;
     [(PKContinuousButton *)self _updateFilter];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v5.receiver = self;
   v5.super_class = PKContinuousButton;
   [(PKContinuousButton *)&v5 setHighlighted:?];
-  if (self->_highlighted != v3)
+  if (self->_highlighted != highlightedCopy)
   {
-    self->_highlighted = v3;
+    self->_highlighted = highlightedCopy;
     [(PKContinuousButton *)self _updateFilter];
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v5.receiver = self;
   v5.super_class = PKContinuousButton;
   [(PKContinuousButton *)&v5 setSelected:?];
-  if (self->_selected != v3)
+  if (self->_selected != selectedCopy)
   {
-    self->_selected = v3;
+    self->_selected = selectedCopy;
     [(PKContinuousButton *)self _updateFilter];
   }
 }
@@ -778,14 +778,14 @@ LABEL_16:
   if (([(UIColor *)self->_appliedInputColor isEqual:?]& 1) == 0)
   {
     v6 = MEMORY[0x1E69DC888];
-    v7 = [(CAShapeLayer *)self->_layer presentationLayer];
-    v8 = [v7 valueForKeyPath:@"filters.highlightFilter.inputColor"];
-    if (!v8)
+    presentationLayer = [(CAShapeLayer *)self->_layer presentationLayer];
+    cGColor = [presentationLayer valueForKeyPath:@"filters.highlightFilter.inputColor"];
+    if (!cGColor)
     {
-      v8 = [(UIColor *)self->_appliedInputColor CGColor];
+      cGColor = [(UIColor *)self->_appliedInputColor CGColor];
     }
 
-    v9 = [v6 colorWithCGColor:v8];
+    v9 = [v6 colorWithCGColor:cGColor];
 
     layer = self->_layer;
     v11 = v14;
@@ -802,14 +802,14 @@ LABEL_16:
   }
 }
 
-- (void)setShowSpinner:(BOOL)a3
+- (void)setShowSpinner:(BOOL)spinner
 {
-  if (self->_showSpinner == a3)
+  if (self->_showSpinner == spinner)
   {
     return;
   }
 
-  self->_showSpinner = a3;
+  self->_showSpinner = spinner;
   activityIndicatorView = self->_activityIndicatorView;
   if (!activityIndicatorView)
   {
@@ -830,9 +830,9 @@ LABEL_16:
     goto LABEL_10;
   }
 
-  v7 = [(UIActivityIndicatorView *)activityIndicatorView superview];
+  superview = [(UIActivityIndicatorView *)activityIndicatorView superview];
 
-  if (v7)
+  if (superview)
   {
     if (self->_showSpinner)
     {
@@ -841,9 +841,9 @@ LABEL_16:
 
     activityIndicatorView = self->_activityIndicatorView;
 LABEL_10:
-    v8 = [(UIActivityIndicatorView *)activityIndicatorView superview];
+    superview2 = [(UIActivityIndicatorView *)activityIndicatorView superview];
 
-    if (!v8)
+    if (!superview2)
     {
       return;
     }
@@ -858,11 +858,11 @@ LABEL_10:
   [(UIActivityIndicatorView *)self->_activityIndicatorView startAnimating];
   v9 = 0.0;
 LABEL_13:
-  v10 = [(PKContinuousButton *)self titleLabel];
-  [v10 setAlpha:v9];
+  titleLabel = [(PKContinuousButton *)self titleLabel];
+  [titleLabel setAlpha:v9];
 
-  v11 = [(PKContinuousButton *)self _imageView];
-  [v11 setAlpha:v9];
+  _imageView = [(PKContinuousButton *)self _imageView];
+  [_imageView setAlpha:v9];
 
   [(PKContinuousButton *)self setNeedsLayout];
 }

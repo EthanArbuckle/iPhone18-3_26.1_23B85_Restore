@@ -1,16 +1,16 @@
 @interface WFSleepWorkflowRunnerClient
-- (WFSleepWorkflowRunnerClient)initWithTrigger:(id)a3;
+- (WFSleepWorkflowRunnerClient)initWithTrigger:(id)trigger;
 @end
 
 @implementation WFSleepWorkflowRunnerClient
 
-- (WFSleepWorkflowRunnerClient)initWithTrigger:(id)a3
+- (WFSleepWorkflowRunnerClient)initWithTrigger:(id)trigger
 {
-  v4 = a3;
+  triggerCopy = trigger;
   v5 = [WFWorkflowDatabaseRunDescriptor alloc];
-  v6 = [v4 identifier];
+  identifier = [triggerCopy identifier];
 
-  v7 = [(WFWorkflowDatabaseRunDescriptor *)v5 initWithIdentifier:v6];
+  v7 = [(WFWorkflowDatabaseRunDescriptor *)v5 initWithIdentifier:identifier];
   v8 = [[WFWorkflowRunRequest alloc] initWithInput:0 presentationMode:0];
   [(WFWorkflowRunRequest *)v8 setRunSource:@"sleep"];
   v11.receiver = self;

@@ -3,12 +3,12 @@
 - (CGSize)minimumDrawingSize;
 - (CHSketchRecognizer)init;
 - (NSCharacterSet)activeCharacterSet;
-- (id)sketchRecognitionResultsForDrawing:(id)a3 options:(id)a4;
-- (id)sketchRecognitionResultsForDrawing:(id)a3 options:(id)a4 shouldCancel:(id)a5;
+- (id)sketchRecognitionResultsForDrawing:(id)drawing options:(id)options;
+- (id)sketchRecognitionResultsForDrawing:(id)drawing options:(id)options shouldCancel:(id)cancel;
 - (unint64_t)maxRecognitionResultCount;
-- (void)setActiveCharacterSet:(id)a3;
-- (void)setMaxRecognitionResultCount:(unint64_t)a3;
-- (void)setMinimumDrawingSize:(CGSize)a3;
+- (void)setActiveCharacterSet:(id)set;
+- (void)setMaxRecognitionResultCount:(unint64_t)count;
+- (void)setMinimumDrawingSize:(CGSize)size;
 @end
 
 @implementation CHSketchRecognizer
@@ -29,37 +29,37 @@
   return v2;
 }
 
-- (id)sketchRecognitionResultsForDrawing:(id)a3 options:(id)a4
+- (id)sketchRecognitionResultsForDrawing:(id)drawing options:(id)options
 {
-  v6 = a3;
-  v10 = a4;
+  drawingCopy = drawing;
+  optionsCopy = options;
   if (self)
   {
-    objc_msgSend_recognitionResultsForDrawing_options_(self->_recognizer, v7, v6, v10, v8, v9);
+    objc_msgSend_recognitionResultsForDrawing_options_(self->_recognizer, v7, drawingCopy, optionsCopy, v8, v9);
   }
 
   else
   {
-    objc_msgSend_recognitionResultsForDrawing_options_(0, v7, v6, v10, v8, v9);
+    objc_msgSend_recognitionResultsForDrawing_options_(0, v7, drawingCopy, optionsCopy, v8, v9);
   }
   v11 = ;
 
   return v11;
 }
 
-- (id)sketchRecognitionResultsForDrawing:(id)a3 options:(id)a4 shouldCancel:(id)a5
+- (id)sketchRecognitionResultsForDrawing:(id)drawing options:(id)options shouldCancel:(id)cancel
 {
-  v8 = a3;
-  v9 = a4;
-  v12 = a5;
+  drawingCopy = drawing;
+  optionsCopy = options;
+  cancelCopy = cancel;
   if (self)
   {
-    objc_msgSend_recognitionResultsForDrawing_options_shouldCancel_(self->_recognizer, v10, v8, v9, v12, v11);
+    objc_msgSend_recognitionResultsForDrawing_options_shouldCancel_(self->_recognizer, v10, drawingCopy, optionsCopy, cancelCopy, v11);
   }
 
   else
   {
-    objc_msgSend_recognitionResultsForDrawing_options_shouldCancel_(0, v10, v8, v9, v12, v11);
+    objc_msgSend_recognitionResultsForDrawing_options_shouldCancel_(0, v10, drawingCopy, optionsCopy, cancelCopy, v11);
   }
   v13 = ;
 
@@ -76,14 +76,14 @@
   return objc_msgSend_maxRecognitionResultCount(self, a2, v2, v3, v4, v5);
 }
 
-- (void)setMaxRecognitionResultCount:(unint64_t)a3
+- (void)setMaxRecognitionResultCount:(unint64_t)count
 {
   if (self)
   {
     self = self->_recognizer;
   }
 
-  objc_msgSend_setMaxRecognitionResultCount_(self, a2, a3, v3, v4, v5);
+  objc_msgSend_setMaxRecognitionResultCount_(self, a2, count, v3, v4, v5);
 }
 
 - (CGSize)minimumDrawingSize
@@ -99,14 +99,14 @@
   return result;
 }
 
-- (void)setMinimumDrawingSize:(CGSize)a3
+- (void)setMinimumDrawingSize:(CGSize)size
 {
   if (self)
   {
     self = self->_recognizer;
   }
 
-  objc_msgSend_setMinimumDrawingSize_(self, a2, v3, v4, v5, v6, a3.width, a3.height);
+  objc_msgSend_setMinimumDrawingSize_(self, a2, v3, v4, v5, v6, size.width, size.height);
 }
 
 - (BOOL)enableCachingIfAvailable
@@ -131,9 +131,9 @@
   return v6;
 }
 
-- (void)setActiveCharacterSet:(id)a3
+- (void)setActiveCharacterSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   if (self)
   {
     recognizer = self->_recognizer;
@@ -144,8 +144,8 @@
     recognizer = 0;
   }
 
-  v9 = v4;
-  objc_msgSend_setActiveCharacterSet_(recognizer, v4, v4, v5, v6, v7);
+  v9 = setCopy;
+  objc_msgSend_setActiveCharacterSet_(recognizer, setCopy, setCopy, v5, v6, v7);
 }
 
 @end

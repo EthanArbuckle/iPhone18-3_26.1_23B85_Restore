@@ -1,18 +1,18 @@
 @interface PFSQLiteResultRow
-+ (void)resultRowWithStatement:(uint64_t)a1;
++ (void)resultRowWithStatement:(uint64_t)statement;
 - (PFSQLiteResultRow)init;
-- (double)doubleAtIndex:(unint64_t)a3;
-- (double)doubleForKey:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)dataAtIndex:(unint64_t)a3;
-- (id)dataForKey:(id)a3;
-- (id)keyAtIndex:(unint64_t)a3;
-- (id)objectAtIndex:(unint64_t)a3;
-- (id)objectForKey:(id)a3;
-- (id)stringAtIndex:(unint64_t)a3;
-- (id)stringForKey:(id)a3;
-- (int64_t)integerAtIndex:(unint64_t)a3;
-- (int64_t)integerForKey:(id)a3;
+- (double)doubleAtIndex:(unint64_t)index;
+- (double)doubleForKey:(id)key;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)dataAtIndex:(unint64_t)index;
+- (id)dataForKey:(id)key;
+- (id)keyAtIndex:(unint64_t)index;
+- (id)objectAtIndex:(unint64_t)index;
+- (id)objectForKey:(id)key;
+- (id)stringAtIndex:(unint64_t)index;
+- (id)stringForKey:(id)key;
+- (int64_t)integerAtIndex:(unint64_t)index;
+- (int64_t)integerForKey:(id)key;
 - (void)_columnNames;
 - (void)_indexForKey:(void *)result;
 - (void)_initWithStatement:(void *)result;
@@ -20,44 +20,44 @@
 
 @implementation PFSQLiteResultRow
 
-- (id)keyAtIndex:(unint64_t)a3
+- (id)keyAtIndex:(unint64_t)index
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = sqlite3_column_name(self->_statement, a3);
+  v4 = sqlite3_column_name(self->_statement, index);
 
   return [v3 stringWithUTF8String:v4];
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = [(PFSQLiteResultRow *)self _indexForKey:a3];
+  v4 = [(PFSQLiteResultRow *)self _indexForKey:key];
 
   return [(PFSQLiteResultRow *)self objectAtIndex:v4];
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = 0;
+    null = 0;
   }
 
   else
   {
-    v8 = sqlite3_column_type(self->_statement, a3);
-    v4 = 0;
+    v8 = sqlite3_column_type(self->_statement, index);
+    null = 0;
     if (v8 <= 2)
     {
       if (v8 == 1)
       {
-        v4 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[PFSQLiteResultRow integerAtIndex:](self, "integerAtIndex:", a3)}];
+        null = [MEMORY[0x1E696AD98] numberWithLongLong:{-[PFSQLiteResultRow integerAtIndex:](self, "integerAtIndex:", index)}];
       }
 
       else if (v8 == 2)
       {
         v9 = MEMORY[0x1E696AD98];
-        [(PFSQLiteResultRow *)self doubleAtIndex:a3];
-        v4 = [v9 numberWithDouble:?];
+        [(PFSQLiteResultRow *)self doubleAtIndex:index];
+        null = [v9 numberWithDouble:?];
       }
     }
 
@@ -66,84 +66,84 @@
       switch(v8)
       {
         case 3:
-          v4 = [(PFSQLiteResultRow *)self stringAtIndex:a3];
+          null = [(PFSQLiteResultRow *)self stringAtIndex:index];
           break;
         case 4:
-          v4 = [(PFSQLiteResultRow *)self dataAtIndex:a3];
+          null = [(PFSQLiteResultRow *)self dataAtIndex:index];
           break;
         case 5:
-          v4 = [MEMORY[0x1E695DFB0] null];
+          null = [MEMORY[0x1E695DFB0] null];
           break;
       }
     }
   }
 
-  return v4;
+  return null;
 }
 
-- (int64_t)integerAtIndex:(unint64_t)a3
+- (int64_t)integerAtIndex:(unint64_t)index
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
   else
   {
-    return sqlite3_column_int64(self->_statement, a3);
+    return sqlite3_column_int64(self->_statement, index);
   }
 }
 
-- (double)doubleAtIndex:(unint64_t)a3
+- (double)doubleAtIndex:(unint64_t)index
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0.0;
   }
 
   else
   {
-    return sqlite3_column_double(self->_statement, a3);
+    return sqlite3_column_double(self->_statement, index);
   }
 }
 
-- (id)stringAtIndex:(unint64_t)a3
+- (id)stringAtIndex:(unint64_t)index
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     v4 = 0;
   }
 
   else
   {
-    v6 = a3;
-    v8 = sqlite3_column_bytes(self->_statement, a3);
-    v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:sqlite3_column_text(self->_statement length:v6) encoding:{v8, 4}];
+    indexCopy = index;
+    v8 = sqlite3_column_bytes(self->_statement, index);
+    v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:sqlite3_column_text(self->_statement length:indexCopy) encoding:{v8, 4}];
   }
 
   return v4;
 }
 
-- (id)dataAtIndex:(unint64_t)a3
+- (id)dataAtIndex:(unint64_t)index
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     v4 = 0;
   }
 
   else
   {
-    v6 = a3;
-    v8 = sqlite3_column_bytes(self->_statement, a3);
-    v4 = [MEMORY[0x1E695DEF0] dataWithBytes:sqlite3_column_blob(self->_statement length:{v6), v8}];
+    indexCopy = index;
+    v8 = sqlite3_column_bytes(self->_statement, index);
+    v4 = [MEMORY[0x1E695DEF0] dataWithBytes:sqlite3_column_blob(self->_statement length:{indexCopy), v8}];
   }
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [_PBFSQLiteFrozenResultRow allocWithZone:a3];
+  v4 = [_PBFSQLiteFrozenResultRow allocWithZone:zone];
 
   return [(_PBFSQLiteFrozenResultRow *)v4 _initWithResultRow:?];
 }
@@ -180,7 +180,7 @@
   return result;
 }
 
-+ (void)resultRowWithStatement:(uint64_t)a1
++ (void)resultRowWithStatement:(uint64_t)statement
 {
   v3 = objc_alloc(objc_opt_self());
   if (v3)
@@ -203,8 +203,8 @@
   {
     v2 = result;
     v3 = a2;
-    v4 = [(PFSQLiteResultRow *)v2 _columnNames];
-    v5 = [v4 indexOfObject:v3];
+    _columnNames = [(PFSQLiteResultRow *)v2 _columnNames];
+    v5 = [_columnNames indexOfObject:v3];
 
     return v5;
   }
@@ -212,34 +212,34 @@
   return result;
 }
 
-- (int64_t)integerForKey:(id)a3
+- (int64_t)integerForKey:(id)key
 {
-  OUTLINED_FUNCTION_4_2(self, a2, a3);
+  OUTLINED_FUNCTION_4_2(self, a2, key);
   v3 = OUTLINED_FUNCTION_3_4();
 
   return [v3 integerAtIndex:?];
 }
 
-- (double)doubleForKey:(id)a3
+- (double)doubleForKey:(id)key
 {
-  OUTLINED_FUNCTION_4_2(self, a2, a3);
+  OUTLINED_FUNCTION_4_2(self, a2, key);
   v3 = OUTLINED_FUNCTION_3_4();
 
   [v3 doubleAtIndex:?];
   return result;
 }
 
-- (id)stringForKey:(id)a3
+- (id)stringForKey:(id)key
 {
-  OUTLINED_FUNCTION_4_2(self, a2, a3);
+  OUTLINED_FUNCTION_4_2(self, a2, key);
   v3 = OUTLINED_FUNCTION_3_4();
 
   return [v3 stringAtIndex:?];
 }
 
-- (id)dataForKey:(id)a3
+- (id)dataForKey:(id)key
 {
-  OUTLINED_FUNCTION_4_2(self, a2, a3);
+  OUTLINED_FUNCTION_4_2(self, a2, key);
   v3 = OUTLINED_FUNCTION_3_4();
 
   return [v3 dataAtIndex:?];
@@ -247,35 +247,35 @@
 
 - (void)_columnNames
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[2];
+    selfCopy = self;
+    v3 = self[2];
     if (!v3)
     {
-      v4 = [a1 count];
+      v4 = [self count];
       v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v4];
       if (v4)
       {
         for (i = 0; i != v4; ++i)
         {
-          v7 = [v2 keyAtIndex:i];
+          v7 = [selfCopy keyAtIndex:i];
           [v5 addObject:v7];
         }
       }
 
       v8 = [v5 copy];
-      v9 = v2[2];
-      v2[2] = v8;
+      v9 = selfCopy[2];
+      selfCopy[2] = v8;
 
-      v3 = v2[2];
+      v3 = selfCopy[2];
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 @end

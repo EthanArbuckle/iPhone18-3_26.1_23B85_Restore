@@ -1,16 +1,16 @@
 @interface ATStoreMusicRestorePrepareOperation
 - (void)cancel;
 - (void)execute;
-- (void)finishWithError:(id)a3 operationResult:(id)a4;
+- (void)finishWithError:(id)error operationResult:(id)result;
 @end
 
 @implementation ATStoreMusicRestorePrepareOperation
 
-- (void)finishWithError:(id)a3 operationResult:(id)a4
+- (void)finishWithError:(id)error operationResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  errorCopy = error;
+  resultCopy = result;
+  v8 = errorCopy;
   v9 = v8;
   if (!v8)
   {
@@ -27,7 +27,7 @@
 
   v11.receiver = self;
   v11.super_class = ATStoreMusicRestorePrepareOperation;
-  [(ATStoreDownloadOperation *)&v11 finishWithError:v9 operationResult:v7];
+  [(ATStoreDownloadOperation *)&v11 finishWithError:v9 operationResult:resultCopy];
   restoreRequest = self->_restoreRequest;
   self->_restoreRequest = 0;
 }
@@ -50,13 +50,13 @@
   v47[3] = &unk_2784E5638;
   v47[4] = self;
   v4 = [v3 initWithBlock:v47];
-  v5 = [MEMORY[0x277D7FCA8] defaultIdentityStore];
-  v6 = [MEMORY[0x277D7FCA0] activeAccount];
+  defaultIdentityStore = [MEMORY[0x277D7FCA8] defaultIdentityStore];
+  activeAccount = [MEMORY[0x277D7FCA0] activeAccount];
   v46 = 0;
-  v7 = [v5 getPropertiesForUserIdentity:v6 error:&v46];
-  v8 = v46;
+  v7 = [defaultIdentityStore getPropertiesForUserIdentity:activeAccount error:&v46];
+  storefrontIdentifier = v46;
 
-  if (v8 | v7)
+  if (storefrontIdentifier | v7)
   {
     if ([(ATStoreMusicRestorePrepareOperation *)self isCancelled])
     {
@@ -69,82 +69,82 @@
 
   else
   {
-    v8 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D7F900] code:-7400 userInfo:0];
+    storefrontIdentifier = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D7F900] code:-7400 userInfo:0];
   }
 
-  if (v8)
+  if (storefrontIdentifier)
   {
     v10 = _ATLogCategoryStoreDownloads();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v49 = self;
+      selfCopy = self;
       v50 = 2114;
-      v51 = v8;
+      v51 = storefrontIdentifier;
       _os_log_impl(&dword_223819000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ Could not get properties for active account - error %{public}@.", buf, 0x16u);
     }
 
-    [(ATStoreMusicRestorePrepareOperation *)self finishWithError:v8 operationResult:0];
+    [(ATStoreMusicRestorePrepareOperation *)self finishWithError:storefrontIdentifier operationResult:0];
   }
 
   else
   {
     v43 = v4;
-    v8 = [v7 storefrontIdentifier];
-    v11 = [(ATStoreDownloadOperation *)self asset];
-    v12 = [v11 storeInfo];
-    v13 = [v12 flavor];
-    v14 = v13;
+    storefrontIdentifier = [v7 storefrontIdentifier];
+    asset = [(ATStoreDownloadOperation *)self asset];
+    storeInfo = [asset storeInfo];
+    flavor = [storeInfo flavor];
+    v14 = flavor;
     v15 = @"HQ";
-    if (v13)
+    if (flavor)
     {
-      v15 = v13;
+      v15 = flavor;
     }
 
     v41 = v15;
 
-    v16 = [(ATStoreDownloadOperation *)self asset];
-    v17 = [v16 storePID];
+    asset2 = [(ATStoreDownloadOperation *)self asset];
+    storePID = [asset2 storePID];
 
     v42 = v7;
-    if (!v17)
+    if (!storePID)
     {
-      v18 = [(ATStoreDownloadOperation *)self asset];
-      v19 = [v18 storeInfo];
-      v20 = [v19 adamID];
-      v17 = [v20 longLongValue];
+      asset3 = [(ATStoreDownloadOperation *)self asset];
+      storeInfo2 = [asset3 storeInfo];
+      adamID = [storeInfo2 adamID];
+      storePID = [adamID longLongValue];
 
-      if (v17 <= 0)
+      if (storePID <= 0)
       {
-        v21 = [(ATStoreDownloadOperation *)self asset];
-        v22 = [v21 storeInfo];
-        v23 = [v22 sagaID];
-        v24 = [v23 longLongValue];
+        asset4 = [(ATStoreDownloadOperation *)self asset];
+        storeInfo3 = [asset4 storeInfo];
+        sagaID = [storeInfo3 sagaID];
+        longLongValue = [sagaID longLongValue];
 
-        v17 = v24 & ~(v24 >> 63);
+        storePID = longLongValue & ~(longLongValue >> 63);
       }
     }
 
     v37 = objc_alloc(MEMORY[0x277D7FB50]);
-    v25 = [MEMORY[0x277CCABB0] numberWithLongLong:v17];
-    v40 = [(ATStoreDownloadOperation *)self asset];
-    v26 = [v40 prettyName];
-    v39 = [(ATStoreDownloadOperation *)self asset];
-    v27 = [v39 storeInfo];
-    v28 = [v27 DSID];
-    v29 = [(ATStoreDownloadOperation *)self asset];
-    v30 = [v29 storeInfo];
-    v31 = [v30 matchStatus];
-    v38 = [v37 initWithItemID:v25 title:v26 storeFrontID:v8 mediaKind:@"song" accountID:v28 matchStatus:v31 flavor:v41];
+    v25 = [MEMORY[0x277CCABB0] numberWithLongLong:storePID];
+    asset5 = [(ATStoreDownloadOperation *)self asset];
+    prettyName = [asset5 prettyName];
+    asset6 = [(ATStoreDownloadOperation *)self asset];
+    storeInfo4 = [asset6 storeInfo];
+    dSID = [storeInfo4 DSID];
+    asset7 = [(ATStoreDownloadOperation *)self asset];
+    storeInfo5 = [asset7 storeInfo];
+    matchStatus = [storeInfo5 matchStatus];
+    v38 = [v37 initWithItemID:v25 title:prettyName storeFrontID:storefrontIdentifier mediaKind:@"song" accountID:dSID matchStatus:matchStatus flavor:v41];
 
     v4 = v43;
     v32 = [objc_alloc(MEMORY[0x277D7FB48]) initWithRequestContext:v43 parameters:v38];
     restoreRequest = self->_restoreRequest;
     self->_restoreRequest = v32;
 
-    v34 = [(ICRequestOperation *)self progress];
-    v35 = [(ICMusicRestoreRequest *)self->_restoreRequest progress];
-    [v34 addChild:v35 withPendingUnitCount:100];
+    progress = [(ICRequestOperation *)self progress];
+    progress2 = [(ICMusicRestoreRequest *)self->_restoreRequest progress];
+    [progress addChild:progress2 withPendingUnitCount:100];
 
     v36 = self->_restoreRequest;
     v44[0] = MEMORY[0x277D85DD0];

@@ -1,17 +1,17 @@
 @interface CNVCardActivityAlertSerializer
-+ (id)serializeDictionary:(id)a3;
-+ (id)serializeString:(id)a3;
++ (id)serializeDictionary:(id)dictionary;
++ (id)serializeString:(id)string;
 @end
 
 @implementation CNVCardActivityAlertSerializer
 
-+ (id)serializeDictionary:(id)a3
++ (id)serializeDictionary:(id)dictionary
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v20 = [MEMORY[0x277CCAB68] string];
-  v4 = [v3 allKeys];
-  v5 = [v4 sortedArrayUsingComparator:&__block_literal_global_3];
+  dictionaryCopy = dictionary;
+  string = [MEMORY[0x277CCAB68] string];
+  allKeys = [dictionaryCopy allKeys];
+  v5 = [allKeys sortedArrayUsingComparator:&__block_literal_global_3];
 
   v23 = 0u;
   v24 = 0u;
@@ -35,20 +35,20 @@
         }
 
         v12 = *(*(&v21 + 1) + 8 * i);
-        v13 = [v3 objectForKey:v12];
+        v13 = [dictionaryCopy objectForKey:v12];
         if (((*(v10 + 16))(v10, v12) & 1) == 0 && ((*(v10 + 16))(v10, v13) & 1) == 0)
         {
-          if ([v20 length])
+          if ([string length])
           {
-            [v20 appendString:{@", "}];
+            [string appendString:{@", "}];
           }
 
-          v14 = [a1 serializeString:v12];
-          [v20 appendString:v14];
+          v14 = [self serializeString:v12];
+          [string appendString:v14];
 
-          [v20 appendString:@"="];
-          v15 = [a1 serializeString:v13];
-          [v20 appendString:v15];
+          [string appendString:@"="];
+          v15 = [self serializeString:v13];
+          [string appendString:v15];
 
           v9 = v18;
         }
@@ -62,27 +62,27 @@
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v20;
+  return string;
 }
 
-+ (id)serializeString:(id)a3
++ (id)serializeString:(id)string
 {
-  v3 = a3;
-  if ([CNVCardActivityAlertQuotingSerializationStrategy strategyWouldAlterString:v3])
+  stringCopy = string;
+  if ([CNVCardActivityAlertQuotingSerializationStrategy strategyWouldAlterString:stringCopy])
   {
     v4 = CNVCardActivityAlertQuotingSerializationStrategy;
 LABEL_5:
-    v5 = [(__objc2_class *)v4 serializeString:v3];
+    v5 = [(__objc2_class *)v4 serializeString:stringCopy];
     goto LABEL_7;
   }
 
-  if ([CNVCardActivityAlertEscapingSerializationStrategy strategyWouldAlterString:v3])
+  if ([CNVCardActivityAlertEscapingSerializationStrategy strategyWouldAlterString:stringCopy])
   {
     v4 = CNVCardActivityAlertEscapingSerializationStrategy;
     goto LABEL_5;
   }
 
-  v5 = v3;
+  v5 = stringCopy;
 LABEL_7:
   v6 = v5;
 

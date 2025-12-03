@@ -1,55 +1,55 @@
 @interface SMReplayManager
-- (SMReplayManager)initWithQueue:(id)a3;
+- (SMReplayManager)initWithQueue:(id)queue;
 - (id)_createDefaultsDict;
 - (id)_createEvaluatorDict;
-- (id)_timerStackToString:(id)a3;
-- (id)objectForKey:(id)a3 value:(id)a4;
-- (void)_addLocation:(id)a3 eta:(double)a4;
-- (void)_cacheTimer:(id)a3;
-- (void)_fetchCurrentLocationWithOptions:(id)a3 handler:(id)a4;
-- (void)_fetchEstimatedLocationAtDate:(id)a3 options:(id)a4 handler:(id)a5;
-- (void)_fetchMotionActivitiesFromStartDate:(id)a3 endDate:(id)a4 handler:(id)a5;
-- (void)_fetchPredominantMotionActivityTypeFromStartDate:(id)a3 toEndDate:(id)a4 withHandler:(id)a5;
-- (void)_fetchStoredLocationsWithOptions:(id)a3 handler:(id)a4;
-- (void)_invalidateTimerWithIdentifier:(id)a3;
+- (id)_timerStackToString:(id)string;
+- (id)objectForKey:(id)key value:(id)value;
+- (void)_addLocation:(id)location eta:(double)eta;
+- (void)_cacheTimer:(id)timer;
+- (void)_fetchCurrentLocationWithOptions:(id)options handler:(id)handler;
+- (void)_fetchEstimatedLocationAtDate:(id)date options:(id)options handler:(id)handler;
+- (void)_fetchMotionActivitiesFromStartDate:(id)date endDate:(id)endDate handler:(id)handler;
+- (void)_fetchPredominantMotionActivityTypeFromStartDate:(id)date toEndDate:(id)endDate withHandler:(id)handler;
+- (void)_fetchStoredLocationsWithOptions:(id)options handler:(id)handler;
+- (void)_invalidateTimerWithIdentifier:(id)identifier;
 - (void)_setup;
-- (void)_updateTimerStackForDate:(id)a3;
-- (void)addMotionActivity:(id)a3;
-- (void)cacheTimer:(id)a3;
+- (void)_updateTimerStackForDate:(id)date;
+- (void)addMotionActivity:(id)activity;
+- (void)cacheTimer:(id)timer;
 - (void)evaluateResults;
-- (void)fetchCurrentLocationWithOptions:(id)a3 handler:(id)a4;
-- (void)fetchEstimatedLocationAtDate:(id)a3 options:(id)a4 handler:(id)a5;
-- (void)fetchMotionActivitiesFromStartDate:(id)a3 endDate:(id)a4 handler:(id)a5;
-- (void)fetchPredominantMotionActivityTypeFromStartDate:(id)a3 toEndDate:(id)a4 withHandler:(id)a5;
-- (void)fetchStoredLocationsWithOptions:(id)a3 handler:(id)a4;
-- (void)invalidateTimerWithIdentifier:(id)a3;
-- (void)onTriggerNotification:(id)a3;
-- (void)setCrowFliesWalkingSpeed:(double)a3;
-- (void)setCurrentDate:(id)a3;
-- (void)setCurrentPredominantMotionActivityType:(unint64_t)a3;
-- (void)setDestinationLocation:(id)a3;
-- (void)setEtaScaleFactor:(double)a3;
-- (void)setMinDistanceETAUpdateThreshold:(double)a3;
-- (void)setMuteMapsExpectedETA:(double)a3;
-- (void)setMuteRouteDeviationTriggerWithinThreshold:(double)a3;
-- (void)setNoProgressTriggered:(BOOL)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
-- (void)setResultsPath:(id)a3;
-- (void)setRouteDeviationTriggered:(BOOL)a3;
+- (void)fetchCurrentLocationWithOptions:(id)options handler:(id)handler;
+- (void)fetchEstimatedLocationAtDate:(id)date options:(id)options handler:(id)handler;
+- (void)fetchMotionActivitiesFromStartDate:(id)date endDate:(id)endDate handler:(id)handler;
+- (void)fetchPredominantMotionActivityTypeFromStartDate:(id)date toEndDate:(id)endDate withHandler:(id)handler;
+- (void)fetchStoredLocationsWithOptions:(id)options handler:(id)handler;
+- (void)invalidateTimerWithIdentifier:(id)identifier;
+- (void)onTriggerNotification:(id)notification;
+- (void)setCrowFliesWalkingSpeed:(double)speed;
+- (void)setCurrentDate:(id)date;
+- (void)setCurrentPredominantMotionActivityType:(unint64_t)type;
+- (void)setDestinationLocation:(id)location;
+- (void)setEtaScaleFactor:(double)factor;
+- (void)setMinDistanceETAUpdateThreshold:(double)threshold;
+- (void)setMuteMapsExpectedETA:(double)a;
+- (void)setMuteRouteDeviationTriggerWithinThreshold:(double)threshold;
+- (void)setNoProgressTriggered:(BOOL)triggered;
+- (void)setObject:(id)object forKey:(id)key;
+- (void)setResultsPath:(id)path;
+- (void)setRouteDeviationTriggered:(BOOL)triggered;
 @end
 
 @implementation SMReplayManager
 
-- (SMReplayManager)initWithQueue:(id)a3
+- (SMReplayManager)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v19.receiver = self;
   v19.super_class = SMReplayManager;
   v6 = [(SMReplayManager *)&v19 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     v8 = objc_opt_new();
     mockLocations = v7->_mockLocations;
     v7->_mockLocations = v8;
@@ -90,13 +90,13 @@
     }
   }
 
-  v4 = [(SMReplayManager *)self _createEvaluatorDict];
+  _createEvaluatorDict = [(SMReplayManager *)self _createEvaluatorDict];
   results = self->_results;
-  self->_results = v4;
+  self->_results = _createEvaluatorDict;
 
-  v6 = [(SMReplayManager *)self _createDefaultsDict];
+  _createDefaultsDict = [(SMReplayManager *)self _createDefaultsDict];
   defaults = self->_defaults;
-  self->_defaults = v6;
+  self->_defaults = _createDefaultsDict;
 
   *&self->_predominantMotionActivitySet = 0;
 }
@@ -165,12 +165,12 @@
   return v2;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  objectCopy = object;
+  keyCopy = key;
+  if (!keyCopy)
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -183,11 +183,11 @@
     }
   }
 
-  v9 = [(SMReplayManager *)self defaults];
-  v10 = v9;
-  if (v6)
+  defaults = [(SMReplayManager *)self defaults];
+  v10 = defaults;
+  if (objectCopy)
   {
-    v11 = v6;
+    v11 = objectCopy;
   }
 
   else
@@ -195,15 +195,15 @@
     v11 = 0;
   }
 
-  [v9 setObject:v11 forKeyedSubscript:v7];
+  [defaults setObject:v11 forKeyedSubscript:keyCopy];
 }
 
-- (id)objectForKey:(id)a3 value:(id)a4
+- (id)objectForKey:(id)key value:(id)value
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  keyCopy = key;
+  valueCopy = value;
+  if (!keyCopy)
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -216,25 +216,25 @@
     }
   }
 
-  v9 = [(SMReplayManager *)self defaults];
-  v10 = [v9 objectForKeyedSubscript:v6];
+  defaults = [(SMReplayManager *)self defaults];
+  v10 = [defaults objectForKeyedSubscript:keyCopy];
 
   if (v10)
   {
-    v11 = [(SMReplayManager *)self defaults];
-    v12 = [v11 objectForKeyedSubscript:v6];
+    defaults2 = [(SMReplayManager *)self defaults];
+    v12 = [defaults2 objectForKeyedSubscript:keyCopy];
   }
 
   else
   {
-    [(SMReplayManager *)self setObject:v7 forKey:v6];
-    v12 = v7;
+    [(SMReplayManager *)self setObject:valueCopy forKey:keyCopy];
+    v12 = valueCopy;
   }
 
   return v12;
 }
 
-- (void)setCurrentPredominantMotionActivityType:(unint64_t)a3
+- (void)setCurrentPredominantMotionActivityType:(unint64_t)type
 {
   v19 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -254,7 +254,7 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v7 = @"YES";
-      if (!a3)
+      if (!type)
       {
         v7 = @"NO";
       }
@@ -267,15 +267,15 @@
     }
   }
 
-  self->_currentPredominantMotionActivityType = a3;
+  self->_currentPredominantMotionActivityType = type;
   self->_predominantMotionActivitySet = 1;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [(SMReplayManager *)self results];
-      v10 = v9;
+      results = [(SMReplayManager *)self results];
+      v10 = results;
       v11 = @"YES";
       currentPredominantMotionActivityType = self->_currentPredominantMotionActivityType;
       v14 = "[SMReplayManager setCurrentPredominantMotionActivityType:]";
@@ -286,7 +286,7 @@
         v11 = @"NO";
       }
 
-      v16 = v9;
+      v16 = results;
       v17 = 2112;
       v18 = v11;
       _os_log_impl(&dword_2304B3000, v8, OS_LOG_TYPE_INFO, "%s, results, %@, noProgressTriggered, %@", &v13, 0x20u);
@@ -294,13 +294,13 @@
   }
 }
 
-- (void)setNoProgressTriggered:(BOOL)a3
+- (void)setNoProgressTriggered:(BOOL)triggered
 {
-  v3 = a3;
+  triggeredCopy = triggered;
   v37[2] = *MEMORY[0x277D85DE8];
-  v5 = [(SMReplayManager *)self muteTriggers];
+  muteTriggers = [(SMReplayManager *)self muteTriggers];
   v6 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO);
-  if (v5)
+  if (muteTriggers)
   {
     if (!v6)
     {
@@ -324,7 +324,7 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v9 = @"NO";
-      if (v3)
+      if (triggeredCopy)
       {
         v9 = @"YES";
       }
@@ -337,15 +337,15 @@
     }
   }
 
-  if (v3)
+  if (triggeredCopy)
   {
-    v10 = [(SMReplayManager *)self results];
-    v11 = [v10 objectForKey:@"_triggered"];
+    results = [(SMReplayManager *)self results];
+    v11 = [results objectForKey:@"_triggered"];
     v12 = [v11 objectForKey:@"date"];
 
     v13 = MEMORY[0x277CCABB0];
-    v14 = [(SMReplayManager *)self mockedCurrentDate];
-    [v14 timeIntervalSince1970];
+    mockedCurrentDate = [(SMReplayManager *)self mockedCurrentDate];
+    [mockedCurrentDate timeIntervalSince1970];
     v15 = [v13 numberWithDouble:?];
     [v12 addObject:v15];
 
@@ -355,32 +355,32 @@
     v37[0] = MEMORY[0x277CBEC38];
     v37[1] = v12;
     v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v37 forKeys:v36 count:2];
-    v18 = [(SMReplayManager *)self results];
-    [v18 setObject:v17 forKeyedSubscript:@"_triggered"];
+    results2 = [(SMReplayManager *)self results];
+    [results2 setObject:v17 forKeyedSubscript:@"_triggered"];
 
     v34[1] = @"date";
     v35[0] = v16;
     v34[0] = @"value";
     v19 = MEMORY[0x277CCABB0];
-    v20 = [(SMReplayManager *)self mockedCurrentDate];
-    [v20 timeIntervalSince1970];
+    mockedCurrentDate2 = [(SMReplayManager *)self mockedCurrentDate];
+    [mockedCurrentDate2 timeIntervalSince1970];
     v21 = [v19 numberWithDouble:?];
     v35[1] = v21;
     v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v35 forKeys:v34 count:2];
-    v23 = [(SMReplayManager *)self results];
-    [v23 setObject:v22 forKeyedSubscript:@"_noProgress"];
+    results3 = [(SMReplayManager *)self results];
+    [results3 setObject:v22 forKeyedSubscript:@"_noProgress"];
 
     [(SMReplayManager *)self evaluateResults];
   }
 
-  self->_noProgressTriggered = v3;
+  self->_noProgressTriggered = triggeredCopy;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v7 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v24 = [(SMReplayManager *)self results];
-      v25 = v24;
+      results4 = [(SMReplayManager *)self results];
+      v25 = results4;
       v26 = @"NO";
       noProgressTriggered = self->_noProgressTriggered;
       v29 = "[SMReplayManager setNoProgressTriggered:]";
@@ -391,7 +391,7 @@
         v26 = @"YES";
       }
 
-      v31 = v24;
+      v31 = results4;
       v32 = 2112;
       v33 = v26;
       _os_log_impl(&dword_2304B3000, v7, OS_LOG_TYPE_INFO, "%s, results, %@, noProgressTriggered, %@", &v28, 0x20u);
@@ -401,13 +401,13 @@ LABEL_18:
   }
 }
 
-- (void)setRouteDeviationTriggered:(BOOL)a3
+- (void)setRouteDeviationTriggered:(BOOL)triggered
 {
-  v3 = a3;
+  triggeredCopy = triggered;
   v37[2] = *MEMORY[0x277D85DE8];
-  v5 = [(SMReplayManager *)self muteTriggers];
+  muteTriggers = [(SMReplayManager *)self muteTriggers];
   v6 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO);
-  if (v5)
+  if (muteTriggers)
   {
     if (!v6)
     {
@@ -431,7 +431,7 @@ LABEL_18:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v9 = @"NO";
-      if (v3)
+      if (triggeredCopy)
       {
         v9 = @"YES";
       }
@@ -444,15 +444,15 @@ LABEL_18:
     }
   }
 
-  if (v3)
+  if (triggeredCopy)
   {
-    v10 = [(SMReplayManager *)self results];
-    v11 = [v10 objectForKey:@"_triggered"];
+    results = [(SMReplayManager *)self results];
+    v11 = [results objectForKey:@"_triggered"];
     v12 = [v11 objectForKey:@"date"];
 
     v13 = MEMORY[0x277CCABB0];
-    v14 = [(SMReplayManager *)self mockedCurrentDate];
-    [v14 timeIntervalSince1970];
+    mockedCurrentDate = [(SMReplayManager *)self mockedCurrentDate];
+    [mockedCurrentDate timeIntervalSince1970];
     v15 = [v13 numberWithDouble:?];
     [v12 addObject:v15];
 
@@ -462,32 +462,32 @@ LABEL_18:
     v37[0] = MEMORY[0x277CBEC38];
     v37[1] = v12;
     v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v37 forKeys:v36 count:2];
-    v18 = [(SMReplayManager *)self results];
-    [v18 setObject:v17 forKeyedSubscript:@"_triggered"];
+    results2 = [(SMReplayManager *)self results];
+    [results2 setObject:v17 forKeyedSubscript:@"_triggered"];
 
     v34[1] = @"date";
     v35[0] = v16;
     v34[0] = @"value";
     v19 = MEMORY[0x277CCABB0];
-    v20 = [(SMReplayManager *)self mockedCurrentDate];
-    [v20 timeIntervalSince1970];
+    mockedCurrentDate2 = [(SMReplayManager *)self mockedCurrentDate];
+    [mockedCurrentDate2 timeIntervalSince1970];
     v21 = [v19 numberWithDouble:?];
     v35[1] = v21;
     v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v35 forKeys:v34 count:2];
-    v23 = [(SMReplayManager *)self results];
-    [v23 setObject:v22 forKeyedSubscript:@"_routeDeviationTriggered"];
+    results3 = [(SMReplayManager *)self results];
+    [results3 setObject:v22 forKeyedSubscript:@"_routeDeviationTriggered"];
 
     [(SMReplayManager *)self evaluateResults];
   }
 
-  self->_routeDeviationTriggered = v3;
+  self->_routeDeviationTriggered = triggeredCopy;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v7 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v24 = [(SMReplayManager *)self results];
-      v25 = v24;
+      results4 = [(SMReplayManager *)self results];
+      v25 = results4;
       v26 = @"NO";
       routeDeviationTriggered = self->_routeDeviationTriggered;
       v29 = "[SMReplayManager setRouteDeviationTriggered:]";
@@ -498,7 +498,7 @@ LABEL_18:
         v26 = @"YES";
       }
 
-      v31 = v24;
+      v31 = results4;
       v32 = 2112;
       v33 = v26;
       _os_log_impl(&dword_2304B3000, v7, OS_LOG_TYPE_INFO, "%s, results, %@, routeDeviationTriggered, %@", &v28, 0x20u);
@@ -508,31 +508,31 @@ LABEL_18:
   }
 }
 
-- (void)setCurrentDate:(id)a3
+- (void)setCurrentDate:(id)date
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [v4 stringFromDate];
+      stringFromDate = [dateCopy stringFromDate];
       v9 = 136315394;
       v10 = "[SMReplayManager setCurrentDate:]";
       v11 = 2112;
-      v12 = v6;
+      v12 = stringFromDate;
       _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "%s currentDate, %@", &v9, 0x16u);
     }
   }
 
-  [(SMReplayManager *)self _updateTimerStackForDate:v4];
-  v7 = [v4 copy];
+  [(SMReplayManager *)self _updateTimerStackForDate:dateCopy];
+  v7 = [dateCopy copy];
   currentDate = self->_currentDate;
   self->_currentDate = v7;
 }
 
-- (void)setCrowFliesWalkingSpeed:(double)a3
+- (void)setCrowFliesWalkingSpeed:(double)speed
 {
   v11 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -543,15 +543,15 @@ LABEL_18:
       v7 = 136315394;
       v8 = "[SMReplayManager setCrowFliesWalkingSpeed:]";
       v9 = 2048;
-      v10 = a3;
+      speedCopy2 = speed;
       _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "%s crowFliesWalkingSpeed, %.2f", &v7, 0x16u);
     }
   }
 
-  if (a3 > 0.0)
+  if (speed > 0.0)
   {
-    self->_crowFliesWalkingSpeed = a3;
-    v6 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+    self->_crowFliesWalkingSpeed = speed;
+    v6 = [MEMORY[0x277CCABB0] numberWithDouble:speed];
     [(NSMutableDictionary *)self->_defaults setObject:v6 forKeyedSubscript:@"RTDefaultsSMTriggerDestinationAverageWalkingSpeedKey"];
 LABEL_7:
 
@@ -566,7 +566,7 @@ LABEL_7:
       v7 = 136315394;
       v8 = "[SMReplayManager setCrowFliesWalkingSpeed:]";
       v9 = 2048;
-      v10 = a3;
+      speedCopy2 = speed;
       _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "%s invalid crowFliesWalkingSpeed, %.2f", &v7, 0x16u);
     }
 
@@ -574,10 +574,10 @@ LABEL_7:
   }
 }
 
-- (void)setDestinationLocation:(id)a3
+- (void)setDestinationLocation:(id)location
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  locationCopy = location;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -586,19 +586,19 @@ LABEL_7:
       v7 = 136315395;
       v8 = "[SMReplayManager setDestinationLocation:]";
       v9 = 2117;
-      v10 = v4;
+      v10 = locationCopy;
       _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "%s destinationLocation, %{sensitive}@", &v7, 0x16u);
     }
   }
 
   destinationLocation = self->_destinationLocation;
-  self->_destinationLocation = v4;
+  self->_destinationLocation = locationCopy;
 }
 
-- (void)setResultsPath:(id)a3
+- (void)setResultsPath:(id)path
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pathCopy = path;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -607,17 +607,17 @@ LABEL_7:
       v8 = 136315394;
       v9 = "[SMReplayManager setResultsPath:]";
       v10 = 2112;
-      v11 = v4;
+      v11 = pathCopy;
       _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "%s resultsPath, %@", &v8, 0x16u);
     }
   }
 
-  v6 = [v4 copy];
+  v6 = [pathCopy copy];
   resultsPath = self->_resultsPath;
   self->_resultsPath = v6;
 }
 
-- (void)setEtaScaleFactor:(double)a3
+- (void)setEtaScaleFactor:(double)factor
 {
   v11 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -628,17 +628,17 @@ LABEL_7:
       v7 = 136315394;
       v8 = "[SMReplayManager setEtaScaleFactor:]";
       v9 = 2048;
-      v10 = a3;
+      factorCopy = factor;
       _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "%s etaScaleFactor, %.2f", &v7, 0x16u);
     }
   }
 
-  self->_etaScaleFactor = a3;
-  v6 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  self->_etaScaleFactor = factor;
+  v6 = [MEMORY[0x277CCABB0] numberWithDouble:factor];
   [(NSMutableDictionary *)self->_defaults setObject:v6 forKeyedSubscript:@"RTDefaultsSMTriggerDestinationScaleFactorInternalKey"];
 }
 
-- (void)setMuteMapsExpectedETA:(double)a3
+- (void)setMuteMapsExpectedETA:(double)a
 {
   v12 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -647,7 +647,7 @@ LABEL_7:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = @"NO";
-      if (a3 > 0.0)
+      if (a > 0.0)
       {
         v6 = @"YES";
       }
@@ -660,15 +660,15 @@ LABEL_7:
     }
   }
 
-  if (a3 > 0.0)
+  if (a > 0.0)
   {
-    self->_muteMapsExpectedETA = a3;
-    v7 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+    self->_muteMapsExpectedETA = a;
+    v7 = [MEMORY[0x277CCABB0] numberWithDouble:a];
     [(NSMutableDictionary *)self->_defaults setObject:v7 forKeyedSubscript:@"RTDefaultsSMTriggerDestinationMuteMapsExpectedEtaKey"];
   }
 }
 
-- (void)setMuteRouteDeviationTriggerWithinThreshold:(double)a3
+- (void)setMuteRouteDeviationTriggerWithinThreshold:(double)threshold
 {
   v12 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -677,7 +677,7 @@ LABEL_7:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = @"NO";
-      if (a3 > 0.0)
+      if (threshold > 0.0)
       {
         v6 = @"YES";
       }
@@ -690,15 +690,15 @@ LABEL_7:
     }
   }
 
-  if (a3 > 0.0)
+  if (threshold > 0.0)
   {
-    self->_muteRouteDeviationTriggerWithinThreshold = a3;
-    v7 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+    self->_muteRouteDeviationTriggerWithinThreshold = threshold;
+    v7 = [MEMORY[0x277CCABB0] numberWithDouble:threshold];
     [(NSMutableDictionary *)self->_defaults setObject:v7 forKeyedSubscript:@"RTDefaultsSMTriggerDestinationMuteRouteDeviationTriggerWithinThresholdKey"];
   }
 }
 
-- (void)setMinDistanceETAUpdateThreshold:(double)a3
+- (void)setMinDistanceETAUpdateThreshold:(double)threshold
 {
   v12 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -707,7 +707,7 @@ LABEL_7:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = @"NO";
-      if (a3 != 0.0)
+      if (threshold != 0.0)
       {
         v6 = @"YES";
       }
@@ -720,15 +720,15 @@ LABEL_7:
     }
   }
 
-  self->_minDistanceETAUpdateThreshold = a3;
-  v7 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  self->_minDistanceETAUpdateThreshold = threshold;
+  v7 = [MEMORY[0x277CCABB0] numberWithDouble:threshold];
   [(NSMutableDictionary *)self->_defaults setObject:v7 forKeyedSubscript:@"RTDefaultsSMTriggerDestinationMinDistanceThresholdToUpdateEtaKey"];
 }
 
-- (void)addMotionActivity:(id)a3
+- (void)addMotionActivity:(id)activity
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  activityCopy = activity;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -740,17 +740,17 @@ LABEL_7:
     }
   }
 
-  v6 = [(SMReplayManager *)self mockMotionActivities];
-  [v6 addObject:v4];
+  mockMotionActivities = [(SMReplayManager *)self mockMotionActivities];
+  [mockMotionActivities addObject:activityCopy];
 }
 
-- (void)fetchMotionActivitiesFromStartDate:(id)a3 endDate:(id)a4 handler:(id)a5
+- (void)fetchMotionActivitiesFromStartDate:(id)date endDate:(id)endDate handler:(id)handler
 {
   v14 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -763,17 +763,17 @@ LABEL_7:
       }
     }
 
-    [(SMReplayManager *)self _fetchMotionActivitiesFromStartDate:v8 endDate:v9 handler:v10];
+    [(SMReplayManager *)self _fetchMotionActivitiesFromStartDate:dateCopy endDate:endDateCopy handler:handlerCopy];
   }
 }
 
-- (void)_fetchMotionActivitiesFromStartDate:(id)a3 endDate:(id)a4 handler:(id)a5
+- (void)_fetchMotionActivitiesFromStartDate:(id)date endDate:(id)endDate handler:(id)handler
 {
   v16 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -786,18 +786,18 @@ LABEL_7:
       }
     }
 
-    v12 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K >= %@ AND %K <= %@", @"startDate", v8, @"startDate", v9];
-    v13 = [(NSMutableArray *)self->_mockMotionActivities filteredArrayUsingPredicate:v12];
-    v10[2](v10, v13, 0);
+    endDateCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K >= %@ AND %K <= %@", @"startDate", dateCopy, @"startDate", endDateCopy];
+    v13 = [(NSMutableArray *)self->_mockMotionActivities filteredArrayUsingPredicate:endDateCopy];
+    handlerCopy[2](handlerCopy, v13, 0);
   }
 }
 
-- (void)fetchPredominantMotionActivityTypeFromStartDate:(id)a3 toEndDate:(id)a4 withHandler:(id)a5
+- (void)fetchPredominantMotionActivityTypeFromStartDate:(id)date toEndDate:(id)endDate withHandler:(id)handler
 {
   v14 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -809,15 +809,15 @@ LABEL_7:
     }
   }
 
-  [(SMReplayManager *)self _fetchPredominantMotionActivityTypeFromStartDate:v8 toEndDate:v9 withHandler:v10];
+  [(SMReplayManager *)self _fetchPredominantMotionActivityTypeFromStartDate:dateCopy toEndDate:endDateCopy withHandler:handlerCopy];
 }
 
-- (void)_fetchPredominantMotionActivityTypeFromStartDate:(id)a3 toEndDate:(id)a4 withHandler:(id)a5
+- (void)_fetchPredominantMotionActivityTypeFromStartDate:(id)date toEndDate:(id)endDate withHandler:(id)handler
 {
   v54 = *MEMORY[0x277D85DE8];
-  v36 = a3;
-  v8 = a4;
-  v9 = a5;
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v10 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -829,7 +829,7 @@ LABEL_7:
     }
   }
 
-  if (!v9)
+  if (!handlerCopy)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -844,7 +844,7 @@ LABEL_7:
 
   if ([(SMReplayManager *)self predominantMotionActivitySet])
   {
-    v9[2](v9, [(SMReplayManager *)self currentPredominantMotionActivityType], 0);
+    handlerCopy[2](handlerCopy, [(SMReplayManager *)self currentPredominantMotionActivityType], 0);
   }
 
   v12 = dispatch_semaphore_create(0);
@@ -868,7 +868,7 @@ LABEL_7:
   v41 = &v42;
   v13 = v12;
   v39 = v13;
-  [(SMReplayManager *)self _fetchMotionActivitiesFromStartDate:v37 endDate:v8 handler:v38];
+  [(SMReplayManager *)self _fetchMotionActivitiesFromStartDate:v37 endDate:endDateCopy handler:v38];
   v14 = v13;
   v15 = [MEMORY[0x277CBEAA8] now];
   v16 = dispatch_time(0, 3600000000000);
@@ -879,11 +879,11 @@ LABEL_7:
     v19 = v18;
     v20 = objc_opt_new();
     v21 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_356];
-    v22 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v23 = [v22 filteredArrayUsingPredicate:v21];
-    v24 = [v23 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v23 = [callStackSymbols filteredArrayUsingPredicate:v21];
+    firstObject = [v23 firstObject];
 
-    [v20 submitToCoreAnalytics:v24 type:1 duration:v19];
+    [v20 submitToCoreAnalytics:firstObject type:1 duration:v19];
     v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v25, OS_LOG_TYPE_FAULT))
     {
@@ -922,16 +922,16 @@ LABEL_18:
 
   if (v43[5])
   {
-    v9[2](v9, 0, 0);
+    handlerCopy[2](handlerCopy, 0, 0);
   }
 
   else
   {
     v32 = [RTMotionActivityHistogram alloc];
-    v33 = [(RTMotionActivityHistogram *)v32 initWithActivites:*(*&buf[8] + 40) betweenDate:v37 andDate:v8];
-    v34 = [(RTMotionActivityHistogram *)v33 binsSortedByInterval];
-    v35 = [v34 firstObject];
-    v9[2](v9, [v35 type], 0);
+    v33 = [(RTMotionActivityHistogram *)v32 initWithActivites:*(*&buf[8] + 40) betweenDate:v37 andDate:endDateCopy];
+    binsSortedByInterval = [(RTMotionActivityHistogram *)v33 binsSortedByInterval];
+    firstObject2 = [binsSortedByInterval firstObject];
+    handlerCopy[2](handlerCopy, [firstObject2 type], 0);
   }
 
   _Block_object_dispose(&v42, 8);
@@ -955,12 +955,12 @@ void __90__SMReplayManager__fetchPredominantMotionActivityTypeFromStartDate_toEn
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)_addLocation:(id)a3 eta:(double)a4
+- (void)_addLocation:(id)location eta:(double)eta
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(SMReplayManager *)self destinationLocation];
-  [v6 distanceFromLocation:v7];
+  locationCopy = location;
+  destinationLocation = [(SMReplayManager *)self destinationLocation];
+  [locationCopy distanceFromLocation:destinationLocation];
   v9 = v8;
 
   v10 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -969,15 +969,15 @@ void __90__SMReplayManager__fetchPredominantMotionActivityTypeFromStartDate_toEn
   {
     if (v11)
     {
-      v12 = [(SMReplayManager *)self destinationLocation];
+      destinationLocation2 = [(SMReplayManager *)self destinationLocation];
       v17 = 136315907;
       v18 = "[SMReplayManager _addLocation:eta:]";
       v19 = 2048;
       v20 = v9;
       v21 = 2117;
-      v22 = v6;
+      v22 = locationCopy;
       v23 = 2117;
-      v24 = v12;
+      v24 = destinationLocation2;
       v13 = "%s, triggers unmuted with distance, %.2f, location, %{sensitive}@, destination, %{sensitive}@";
       goto LABEL_6;
     }
@@ -985,35 +985,35 @@ void __90__SMReplayManager__fetchPredominantMotionActivityTypeFromStartDate_toEn
 
   else if (v11)
   {
-    v12 = [(SMReplayManager *)self destinationLocation];
+    destinationLocation2 = [(SMReplayManager *)self destinationLocation];
     v17 = 136315907;
     v18 = "[SMReplayManager _addLocation:eta:]";
     v19 = 2048;
     v20 = v9;
     v21 = 2117;
-    v22 = v6;
+    v22 = locationCopy;
     v23 = 2117;
-    v24 = v12;
+    v24 = destinationLocation2;
     v13 = "%s, triggers muted with distance, %.2f, location, %{sensitive}@, destination, %{sensitive}@";
 LABEL_6:
     _os_log_impl(&dword_2304B3000, v10, OS_LOG_TYPE_DEFAULT, v13, &v17, 0x2Au);
   }
 
   [(SMReplayManager *)self setMuteTriggers:v9 < 100.0];
-  v14 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
-  v15 = [(SMReplayManager *)self locationToEtaDictionary];
-  [v15 setObject:v14 forKeyedSubscript:v6];
+  v14 = [MEMORY[0x277CCABB0] numberWithDouble:eta];
+  locationToEtaDictionary = [(SMReplayManager *)self locationToEtaDictionary];
+  [locationToEtaDictionary setObject:v14 forKeyedSubscript:locationCopy];
 
-  [(SMReplayManager *)self setCurrentMapsExpectedETA:a4];
-  v16 = [(SMReplayManager *)self mockLocations];
-  [v16 addObject:v6];
+  [(SMReplayManager *)self setCurrentMapsExpectedETA:eta];
+  mockLocations = [(SMReplayManager *)self mockLocations];
+  [mockLocations addObject:locationCopy];
 }
 
-- (void)fetchStoredLocationsWithOptions:(id)a3 handler:(id)a4
+- (void)fetchStoredLocationsWithOptions:(id)options handler:(id)handler
 {
   v11 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -1025,15 +1025,15 @@ LABEL_6:
     }
   }
 
-  [(SMReplayManager *)self _fetchStoredLocationsWithOptions:v6 handler:v7];
+  [(SMReplayManager *)self _fetchStoredLocationsWithOptions:optionsCopy handler:handlerCopy];
 }
 
-- (void)_fetchStoredLocationsWithOptions:(id)a3 handler:(id)a4
+- (void)_fetchStoredLocationsWithOptions:(id)options handler:(id)handler
 {
   v65 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v59 = a4;
-  if (!v5)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (!optionsCopy)
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -1046,7 +1046,7 @@ LABEL_6:
     }
   }
 
-  if (!v59)
+  if (!handlerCopy)
   {
     v7 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -1070,37 +1070,37 @@ LABEL_6:
     }
   }
 
-  v9 = [v5 dateInterval];
-  v10 = [v9 startDate];
-  v11 = v10;
-  if (v10)
+  dateInterval = [optionsCopy dateInterval];
+  startDate = [dateInterval startDate];
+  v11 = startDate;
+  if (startDate)
   {
-    v12 = v10;
+    distantPast = startDate;
   }
 
   else
   {
-    v12 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
   }
 
-  v13 = v12;
+  v13 = distantPast;
 
-  v14 = [v5 dateInterval];
-  v15 = [v14 endDate];
-  v16 = v15;
-  if (v15)
+  dateInterval2 = [optionsCopy dateInterval];
+  endDate = [dateInterval2 endDate];
+  v16 = endDate;
+  if (endDate)
   {
-    v17 = v15;
+    distantFuture = endDate;
   }
 
   else
   {
-    v17 = [MEMORY[0x277CBEAA8] distantFuture];
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
   }
 
-  v18 = v17;
+  v18 = distantFuture;
 
-  [v5 horizontalAccuracy];
+  [optionsCopy horizontalAccuracy];
   if (v19 == 0.0)
   {
     v21 = 1.79769313e308;
@@ -1108,11 +1108,11 @@ LABEL_6:
 
   else
   {
-    [v5 horizontalAccuracy];
+    [optionsCopy horizontalAccuracy];
     v21 = v20;
   }
 
-  v22 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v23 = MEMORY[0x277CCA920];
   v57 = v13;
   v24 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%@ <= %K", v13, @"timestamp"];
@@ -1127,19 +1127,19 @@ LABEL_6:
   v29 = [MEMORY[0x277CBEA60] arrayWithObjects:v61 count:3];
   v30 = [v23 andPredicateWithSubpredicates:v29];
 
-  v31 = v22;
-  [v22 addObject:v30];
-  v32 = [v5 boundingBoxLocation];
+  v31 = array;
+  [array addObject:v30];
+  boundingBoxLocation = [optionsCopy boundingBoxLocation];
 
-  if (v32)
+  if (boundingBoxLocation)
   {
     *buf = 0;
-    v33 = [v5 boundingBoxLocation];
-    [v33 coordinate];
-    v34 = [v5 boundingBoxLocation];
-    [v34 coordinate];
-    v35 = [v5 boundingBoxLocation];
-    [v35 horizontalAccuracy];
+    boundingBoxLocation2 = [optionsCopy boundingBoxLocation];
+    [boundingBoxLocation2 coordinate];
+    boundingBoxLocation3 = [optionsCopy boundingBoxLocation];
+    [boundingBoxLocation3 coordinate];
+    boundingBoxLocation4 = [optionsCopy boundingBoxLocation];
+    [boundingBoxLocation4 horizontalAccuracy];
     RTCommonCalculateBoundingBox();
 
     v51 = MEMORY[0x277CCA920];
@@ -1171,17 +1171,17 @@ LABEL_6:
   }
 
   v48 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:v31];
-  v49 = [(SMReplayManager *)self mockLocations];
-  v50 = [v49 filteredArrayUsingPredicate:v48];
+  mockLocations = [(SMReplayManager *)self mockLocations];
+  v50 = [mockLocations filteredArrayUsingPredicate:v48];
 
-  v59[2](v59, v50, 0);
+  handlerCopy[2](handlerCopy, v50, 0);
 }
 
-- (void)fetchCurrentLocationWithOptions:(id)a3 handler:(id)a4
+- (void)fetchCurrentLocationWithOptions:(id)options handler:(id)handler
 {
   v11 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -1193,14 +1193,14 @@ LABEL_6:
     }
   }
 
-  [(SMReplayManager *)self _fetchCurrentLocationWithOptions:v6 handler:v7];
+  [(SMReplayManager *)self _fetchCurrentLocationWithOptions:optionsCopy handler:handlerCopy];
 }
 
-- (void)_fetchCurrentLocationWithOptions:(id)a3 handler:(id)a4
+- (void)_fetchCurrentLocationWithOptions:(id)options handler:(id)handler
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -1212,28 +1212,28 @@ LABEL_6:
     }
   }
 
-  v9 = [(SMReplayManager *)self mockLocations];
-  v10 = [v9 count];
+  mockLocations = [(SMReplayManager *)self mockLocations];
+  v10 = [mockLocations count];
 
   if (v10)
   {
-    v11 = [(SMReplayManager *)self mockLocations];
-    v12 = [v11 lastObject];
-    v7[2](v7, v12, 0);
+    mockLocations2 = [(SMReplayManager *)self mockLocations];
+    lastObject = [mockLocations2 lastObject];
+    handlerCopy[2](handlerCopy, lastObject, 0);
   }
 
   else
   {
-    v7[2](v7, 0, 0);
+    handlerCopy[2](handlerCopy, 0, 0);
   }
 }
 
-- (void)fetchEstimatedLocationAtDate:(id)a3 options:(id)a4 handler:(id)a5
+- (void)fetchEstimatedLocationAtDate:(id)date options:(id)options handler:(id)handler
 {
   v16 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dateCopy = date;
+  optionsCopy = options;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -1245,26 +1245,26 @@ LABEL_6:
     }
   }
 
-  v12 = v9;
+  v12 = optionsCopy;
   v13 = v12;
   if (!v12)
   {
     v13 = objc_alloc_init(MEMORY[0x277D010F0]);
   }
 
-  [(SMReplayManager *)self _fetchEstimatedLocationAtDate:v8 options:v12 handler:v10];
+  [(SMReplayManager *)self _fetchEstimatedLocationAtDate:dateCopy options:v12 handler:handlerCopy];
 }
 
-- (void)_fetchEstimatedLocationAtDate:(id)a3 options:(id)a4 handler:(id)a5
+- (void)_fetchEstimatedLocationAtDate:(id)date options:(id)options handler:(id)handler
 {
   v91[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v63 = v7;
-  if (!v7)
+  dateCopy = date;
+  optionsCopy = options;
+  handlerCopy = handler;
+  v63 = dateCopy;
+  if (!dateCopy)
   {
-    v10 = v8;
+    v10 = optionsCopy;
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -1275,11 +1275,11 @@ LABEL_6:
       _os_log_error_impl(&dword_2304B3000, v11, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: date (in %s:%d)", buf, 0x12u);
     }
 
-    v8 = v10;
+    optionsCopy = v10;
   }
 
-  v62 = v8;
-  if (!v8)
+  v62 = optionsCopy;
+  if (!optionsCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -1292,7 +1292,7 @@ LABEL_6:
     }
   }
 
-  if (!v9)
+  if (!handlerCopy)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -1316,7 +1316,7 @@ LABEL_6:
     }
   }
 
-  if (v9)
+  if (handlerCopy)
   {
     [v62 timeInterval];
     if (v15 >= 0.0)
@@ -1373,11 +1373,11 @@ LABEL_6:
     v29 = v28;
     v30 = objc_opt_new();
     v31 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_356];
-    v32 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v33 = [v32 filteredArrayUsingPredicate:v31];
-    v34 = [v33 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v33 = [callStackSymbols filteredArrayUsingPredicate:v31];
+    firstObject = [v33 firstObject];
 
-    [v30 submitToCoreAnalytics:v34 type:1 duration:v29];
+    [v30 submitToCoreAnalytics:firstObject type:1 duration:v29];
     v35 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v35, OS_LOG_TYPE_FAULT))
     {
@@ -1425,44 +1425,44 @@ LABEL_28:
         v65 = v43;
         v66 = a2;
         [v42 enumerateObjectsUsingBlock:v64];
-        v44 = [MEMORY[0x277CBEB38] dictionary];
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
         [v62 averageSpeed];
         if (v45 >= 0.0)
         {
           v46 = MEMORY[0x277CCABB0];
           [v62 averageSpeed];
           v47 = [v46 numberWithDouble:?];
-          [v44 setObject:v47 forKey:@"kRTLocationSmootherAverageMovingSpeed"];
+          [dictionary setObject:v47 forKey:@"kRTLocationSmootherAverageMovingSpeed"];
         }
 
         if ([v62 enableFallbackModel])
         {
-          [v44 setObject:MEMORY[0x277CBEC38] forKey:@"kRTLocationSmootherEnableFallbackModel"];
+          [dictionary setObject:MEMORY[0x277CBEC38] forKey:@"kRTLocationSmootherEnableFallbackModel"];
         }
 
-        v48 = [(SMReplayManager *)self locationSmoother];
+        locationSmoother = [(SMReplayManager *)self locationSmoother];
         [v63 timeIntervalSinceReferenceDate];
-        v49 = [v48 estimateLocationWithLocations:v43 timestamp:v44 parameters:0 meta:?];
+        v49 = [locationSmoother estimateLocationWithLocations:v43 timestamp:dictionary parameters:0 meta:?];
 
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
           v50 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
           if (os_log_type_enabled(v50, OS_LOG_TYPE_INFO))
           {
-            v51 = [v63 stringFromDate];
+            stringFromDate = [v63 stringFromDate];
             *v80 = 136315651;
             *&v80[4] = "[SMReplayManager _fetchEstimatedLocationAtDate:options:handler:]";
             v81 = 2117;
             v82 = v49;
             v83 = 2112;
-            v84 = v51;
+            v84 = stringFromDate;
             _os_log_impl(&dword_2304B3000, v50, OS_LOG_TYPE_INFO, "%s, estimated location, %{sensitive}@, on date, %@", v80, 0x20u);
           }
         }
 
         if (v49 && ([v49 horizontalAccuracy], v52 > 0.0))
         {
-          v9[2](v9, v49, 0);
+          handlerCopy[2](handlerCopy, v49, 0);
         }
 
         else
@@ -1471,14 +1471,14 @@ LABEL_28:
           v79 = @"Failed to estimate a location.";
           v54 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v79 forKeys:&v78 count:1];
           v55 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D01448] code:6 userInfo:v54];
-          (v9)[2](v9, 0, v55);
+          (handlerCopy)[2](handlerCopy, 0, v55);
         }
 
         goto LABEL_46;
       }
     }
 
-    v9[2](v9, 0, *(*&buf[8] + 40));
+    handlerCopy[2](handlerCopy, 0, *(*&buf[8] + 40));
 LABEL_46:
 
     _Block_object_dispose(&v71, 8);
@@ -1580,10 +1580,10 @@ void __65__SMReplayManager__fetchEstimatedLocationAtDate_options_handler___block
   }
 }
 
-- (void)cacheTimer:(id)a3
+- (void)cacheTimer:(id)timer
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  timerCopy = timer;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -1595,13 +1595,13 @@ void __65__SMReplayManager__fetchEstimatedLocationAtDate_options_handler___block
     }
   }
 
-  [(SMReplayManager *)self _cacheTimer:v4];
+  [(SMReplayManager *)self _cacheTimer:timerCopy];
 }
 
-- (void)_cacheTimer:(id)a3
+- (void)_cacheTimer:(id)timer
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  timerCopy = timer;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -1613,33 +1613,33 @@ void __65__SMReplayManager__fetchEstimatedLocationAtDate_options_handler___block
     }
   }
 
-  v6 = [(SMReplayManager *)self timerStack];
-  v7 = [(SMReplayManager *)self timerStack];
-  v8 = [v6 indexOfObject:v4 inSortedRange:0 options:objc_msgSend(v7 usingComparator:{"count"), 1024, &__block_literal_global_36}];
+  timerStack = [(SMReplayManager *)self timerStack];
+  timerStack2 = [(SMReplayManager *)self timerStack];
+  v8 = [timerStack indexOfObject:timerCopy inSortedRange:0 options:objc_msgSend(timerStack2 usingComparator:{"count"), 1024, &__block_literal_global_36}];
 
-  v9 = [(SMReplayManager *)self timerStack];
-  [v9 insertObject:v4 atIndex:v8];
+  timerStack3 = [(SMReplayManager *)self timerStack];
+  [timerStack3 insertObject:timerCopy atIndex:v8];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v10 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v11 = [v4 identifier];
-      v12 = [v4 endDate];
-      v13 = [v12 stringFromDate];
-      v14 = [(SMReplayManager *)self mockedCurrentDate];
-      v15 = [v14 stringFromDate];
-      v16 = [(SMReplayManager *)self timerStack];
-      v17 = [(SMReplayManager *)self _timerStackToString:v16];
+      identifier = [timerCopy identifier];
+      endDate = [timerCopy endDate];
+      stringFromDate = [endDate stringFromDate];
+      mockedCurrentDate = [(SMReplayManager *)self mockedCurrentDate];
+      stringFromDate2 = [mockedCurrentDate stringFromDate];
+      timerStack4 = [(SMReplayManager *)self timerStack];
+      v17 = [(SMReplayManager *)self _timerStackToString:timerStack4];
       v18 = 136316162;
       v19 = "[SMReplayManager _cacheTimer:]";
       v20 = 2112;
-      v21 = v11;
+      v21 = identifier;
       v22 = 2112;
-      v23 = v13;
+      v23 = stringFromDate;
       v24 = 2112;
-      v25 = v15;
+      v25 = stringFromDate2;
       v26 = 2112;
       v27 = v17;
       _os_log_impl(&dword_2304B3000, v10, OS_LOG_TYPE_INFO, "%s, cached timer with identifier, %@, endDate, %@, currentDate, %@, timerStack, %@", &v18, 0x34u);
@@ -1657,10 +1657,10 @@ uint64_t __31__SMReplayManager__cacheTimer___block_invoke(uint64_t a1, void *a2,
   return v7;
 }
 
-- (void)invalidateTimerWithIdentifier:(id)a3
+- (void)invalidateTimerWithIdentifier:(id)identifier
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -1672,14 +1672,14 @@ uint64_t __31__SMReplayManager__cacheTimer___block_invoke(uint64_t a1, void *a2,
     }
   }
 
-  [(SMReplayManager *)self _invalidateTimerWithIdentifier:v4];
+  [(SMReplayManager *)self _invalidateTimerWithIdentifier:identifierCopy];
 }
 
-- (void)_invalidateTimerWithIdentifier:(id)a3
+- (void)_invalidateTimerWithIdentifier:(id)identifier
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -1708,14 +1708,14 @@ uint64_t __31__SMReplayManager__cacheTimer___block_invoke(uint64_t a1, void *a2,
     v7 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v8 = [(SMReplayManager *)self timerStack];
-      v9 = [v8 count];
-      v10 = [(SMReplayManager *)self timerStack];
-      v11 = [(SMReplayManager *)self _timerStackToString:v10];
+      timerStack = [(SMReplayManager *)self timerStack];
+      v9 = [timerStack count];
+      timerStack2 = [(SMReplayManager *)self timerStack];
+      v11 = [(SMReplayManager *)self _timerStackToString:timerStack2];
       *buf = 136315906;
       v29 = "[SMReplayManager _invalidateTimerWithIdentifier:]";
       v30 = 2112;
-      v31 = v4;
+      v31 = identifierCopy;
       v32 = 2048;
       v33 = v9;
       v34 = 2112;
@@ -1724,16 +1724,16 @@ uint64_t __31__SMReplayManager__cacheTimer___block_invoke(uint64_t a1, void *a2,
     }
   }
 
-  v12 = [(SMReplayManager *)self timerStack];
+  timerStack3 = [(SMReplayManager *)self timerStack];
   v13 = MEMORY[0x277CCAC30];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __50__SMReplayManager__invalidateTimerWithIdentifier___block_invoke;
   v26[3] = &unk_2788C9270;
-  v14 = v4;
+  v14 = identifierCopy;
   v27 = v14;
   v15 = [v13 predicateWithBlock:v26];
-  v16 = [v12 filteredArrayUsingPredicate:v15];
+  v16 = [timerStack3 filteredArrayUsingPredicate:v15];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
@@ -1748,18 +1748,18 @@ uint64_t __31__SMReplayManager__cacheTimer___block_invoke(uint64_t a1, void *a2,
     }
   }
 
-  v18 = [(SMReplayManager *)self timerStack];
-  [v18 removeObjectsInArray:v16];
+  timerStack4 = [(SMReplayManager *)self timerStack];
+  [timerStack4 removeObjectsInArray:v16];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v19 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
-      v20 = [(SMReplayManager *)self timerStack];
-      v21 = [v20 count];
-      v22 = [(SMReplayManager *)self timerStack];
-      v23 = [(SMReplayManager *)self _timerStackToString:v22];
+      timerStack5 = [(SMReplayManager *)self timerStack];
+      v21 = [timerStack5 count];
+      timerStack6 = [(SMReplayManager *)self timerStack];
+      v23 = [(SMReplayManager *)self _timerStackToString:timerStack6];
       v24 = [(SMReplayManager *)self _timerStackToString:v16];
       v25 = [v16 count];
       *buf = 136316418;
@@ -1787,30 +1787,30 @@ uint64_t __50__SMReplayManager__invalidateTimerWithIdentifier___block_invoke(uin
   return v4;
 }
 
-- (void)_updateTimerStackForDate:(id)a3
+- (void)_updateTimerStackForDate:(id)date
 {
   v61 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [v4 stringFromDate];
-      v7 = [(SMReplayManager *)self timerStack];
-      v8 = [(SMReplayManager *)self _timerStackToString:v7];
+      stringFromDate = [dateCopy stringFromDate];
+      timerStack = [(SMReplayManager *)self timerStack];
+      v8 = [(SMReplayManager *)self _timerStackToString:timerStack];
       *buf = 136315650;
       v52 = "[SMReplayManager _updateTimerStackForDate:]";
       v53 = 2112;
-      v54 = v6;
+      v54 = stringFromDate;
       v55 = 2112;
       v56 = v8;
       _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "%s, ENTERING WITH DATE, %@, TIMER STACK, %@ ", buf, 0x20u);
     }
   }
 
-  v9 = [(SMReplayManager *)self timerStack];
-  v10 = [v9 count];
+  timerStack2 = [(SMReplayManager *)self timerStack];
+  v10 = [timerStack2 count];
 
   if (v10)
   {
@@ -1819,11 +1819,11 @@ uint64_t __50__SMReplayManager__invalidateTimerWithIdentifier___block_invoke(uin
     v48 = v11;
     while (1)
     {
-      v13 = [(SMReplayManager *)self timerStack];
-      v14 = [v13 firstObject];
+      timerStack3 = [(SMReplayManager *)self timerStack];
+      firstObject = [timerStack3 firstObject];
 
-      v15 = [v14 endDate];
-      v16 = [v15 isAfterDate:v4];
+      endDate = [firstObject endDate];
+      v16 = [endDate isAfterDate:dateCopy];
 
       v17 = os_log_type_enabled(v12, OS_LOG_TYPE_INFO);
       if (v16)
@@ -1836,69 +1836,69 @@ uint64_t __50__SMReplayManager__invalidateTimerWithIdentifier___block_invoke(uin
         v18 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
         if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
         {
-          v19 = [v14 identifier];
-          v20 = [v14 endDate];
-          [v20 stringFromDate];
-          v22 = v21 = v4;
-          v23 = [v21 stringFromDate];
-          v24 = [v14 endDate];
-          v25 = [v24 stringFromDate];
+          identifier = [firstObject identifier];
+          endDate2 = [firstObject endDate];
+          [endDate2 stringFromDate];
+          v22 = v21 = dateCopy;
+          stringFromDate2 = [v21 stringFromDate];
+          endDate3 = [firstObject endDate];
+          stringFromDate3 = [endDate3 stringFromDate];
           *buf = 136316162;
           v52 = "[SMReplayManager _updateTimerStackForDate:]";
           v53 = 2112;
-          v54 = v19;
+          v54 = identifier;
           v55 = 2112;
           v56 = v22;
           v57 = 2112;
-          v58 = v23;
+          v58 = stringFromDate2;
           v59 = 2112;
-          v60 = v25;
+          v60 = stringFromDate3;
           _os_log_impl(&dword_2304B3000, v18, OS_LOG_TYPE_INFO, "%s, firing timer with identifier, %@, endDate, %@, old currentDate, %@, newCurrentDate, %@", buf, 0x34u);
 
-          v4 = v21;
+          dateCopy = v21;
         }
 
         v12 = MEMORY[0x277D86220];
       }
 
-      v26 = [v14 endDate];
-      v27 = [v26 copy];
+      endDate4 = [firstObject endDate];
+      v27 = [endDate4 copy];
       currentDate = self->_currentDate;
       self->_currentDate = v27;
 
-      v29 = [v14 queue];
+      queue = [firstObject queue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __44__SMReplayManager__updateTimerStackForDate___block_invoke;
       block[3] = &unk_2788C4EA0;
-      v30 = v14;
+      v30 = firstObject;
       v50 = v30;
-      dispatch_async(v29, block);
+      dispatch_async(queue, block);
 
-      v31 = [(SMReplayManager *)self timerStack];
-      v32 = [v31 count];
+      timerStack4 = [(SMReplayManager *)self timerStack];
+      v32 = [timerStack4 count];
 
       if (v32)
       {
-        v33 = [(SMReplayManager *)self timerStack];
-        [v33 removeObjectAtIndex:0];
+        timerStack5 = [(SMReplayManager *)self timerStack];
+        [timerStack5 removeObjectAtIndex:0];
 
         if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
         {
           v34 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
           if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
           {
-            v35 = [v30 identifier];
-            v36 = [v30 endDate];
-            v37 = [v36 stringFromDate];
-            v38 = [(SMReplayManager *)self timerStack];
-            v39 = [v38 count];
+            identifier2 = [v30 identifier];
+            endDate5 = [v30 endDate];
+            stringFromDate4 = [endDate5 stringFromDate];
+            timerStack6 = [(SMReplayManager *)self timerStack];
+            v39 = [timerStack6 count];
             *buf = v48;
             v52 = "[SMReplayManager _updateTimerStackForDate:]";
             v53 = 2112;
-            v54 = v35;
+            v54 = identifier2;
             v55 = 2112;
-            v56 = v37;
+            v56 = stringFromDate4;
             v57 = 2048;
             v58 = v39;
             _os_log_impl(&dword_2304B3000, v34, OS_LOG_TYPE_INFO, "%s, removing timer with identifier, %@, endDate, %@, remaining timer count after removal, %lu", buf, 0x2Au);
@@ -1908,8 +1908,8 @@ uint64_t __50__SMReplayManager__invalidateTimerWithIdentifier___block_invoke(uin
         }
       }
 
-      v40 = [(SMReplayManager *)self timerStack];
-      v41 = [v40 count];
+      timerStack7 = [(SMReplayManager *)self timerStack];
+      v41 = [timerStack7 count];
 
       if (!v41)
       {
@@ -1922,18 +1922,18 @@ uint64_t __50__SMReplayManager__invalidateTimerWithIdentifier___block_invoke(uin
       v42 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
       {
-        v43 = [v14 identifier];
-        v44 = [v14 endDate];
-        v45 = [v44 stringFromDate];
-        v46 = [v4 stringFromDate];
+        identifier3 = [firstObject identifier];
+        endDate6 = [firstObject endDate];
+        stringFromDate5 = [endDate6 stringFromDate];
+        stringFromDate6 = [dateCopy stringFromDate];
         *buf = v48;
         v52 = "[SMReplayManager _updateTimerStackForDate:]";
         v53 = 2112;
-        v54 = v43;
+        v54 = identifier3;
         v55 = 2112;
-        v56 = v45;
+        v56 = stringFromDate5;
         v57 = 2112;
-        v58 = v46;
+        v58 = stringFromDate6;
         _os_log_impl(&dword_2304B3000, v42, OS_LOG_TYPE_INFO, "%s, timer with identifier, %@, endDate, %@, has later fire date than new current date, %@", buf, 0x2Au);
       }
     }
@@ -1958,10 +1958,10 @@ void __44__SMReplayManager__updateTimerStackForDate___block_invoke(uint64_t a1)
   v1[2]();
 }
 
-- (void)onTriggerNotification:(id)a3
+- (void)onTriggerNotification:(id)notification
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -1970,18 +1970,18 @@ void __44__SMReplayManager__updateTimerStackForDate___block_invoke(uint64_t a1)
       v10 = 136315394;
       v11 = "[SMReplayManager onTriggerNotification:]";
       v12 = 2112;
-      v13 = v4;
+      v13 = notificationCopy;
       _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "%s, notification, %@", &v10, 0x16u);
     }
   }
 
-  v6 = [v4 name];
+  name = [notificationCopy name];
   v7 = +[(RTNotification *)SMTriggerNotification];
-  v8 = [v6 isEqualToString:v7];
+  v8 = [name isEqualToString:v7];
 
   if (v8)
   {
-    v9 = v4;
+    v9 = notificationCopy;
     if ([v9 triggerCategory] == 3)
     {
       [(SMReplayManager *)self setNoProgressTriggered:1];
@@ -2002,26 +2002,26 @@ void __44__SMReplayManager__updateTimerStackForDate___block_invoke(uint64_t a1)
     v3 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
-      v4 = [(SMReplayManager *)self results];
+      results = [(SMReplayManager *)self results];
       v12 = 136315394;
       v13 = "[SMReplayManager evaluateResults]";
       v14 = 2112;
-      v15 = v4;
+      v15 = results;
       _os_log_impl(&dword_2304B3000, v3, OS_LOG_TYPE_INFO, "%s, evaluating results, %@", &v12, 0x16u);
     }
   }
 
   v5 = MEMORY[0x277CCAAA0];
-  v6 = [(SMReplayManager *)self results];
-  v7 = [v5 dataWithJSONObject:v6 options:1 error:0];
+  results2 = [(SMReplayManager *)self results];
+  v7 = [v5 dataWithJSONObject:results2 options:1 error:0];
 
-  v8 = [(SMReplayManager *)self resultsPath];
+  resultsPath = [(SMReplayManager *)self resultsPath];
 
   v9 = MEMORY[0x277CBEBC0];
-  if (v8)
+  if (resultsPath)
   {
-    v10 = [(SMReplayManager *)self resultsPath];
-    v11 = [v9 fileURLWithPath:v10];
+    resultsPath2 = [(SMReplayManager *)self resultsPath];
+    v11 = [v9 fileURLWithPath:resultsPath2];
   }
 
   else
@@ -2032,14 +2032,14 @@ void __44__SMReplayManager__updateTimerStackForDate___block_invoke(uint64_t a1)
   [v7 writeToURL:v11 atomically:1];
 }
 
-- (id)_timerStackToString:(id)a3
+- (id)_timerStackToString:(id)string
 {
   v22 = *MEMORY[0x277D85DE8];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = [a3 copy];
+  obj = [string copy];
   v3 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v3)
   {
@@ -2059,10 +2059,10 @@ void __44__SMReplayManager__updateTimerStackForDate___block_invoke(uint64_t a1)
 
         v9 = *(*(&v17 + 1) + 8 * v7);
         v10 = MEMORY[0x277CCACA8];
-        v11 = [v9 identifier];
-        v12 = [v9 endDate];
-        v13 = [v12 stringFromDate];
-        v14 = [v10 stringWithFormat:@" [timerIdentifier, %@, timer fire date, %@] ", v11, v13];
+        identifier = [v9 identifier];
+        endDate = [v9 endDate];
+        stringFromDate = [endDate stringFromDate];
+        v14 = [v10 stringWithFormat:@" [timerIdentifier, %@, timer fire date, %@] ", identifier, stringFromDate];
         v6 = [(__CFString *)v8 stringByAppendingString:v14];
 
         ++v7;

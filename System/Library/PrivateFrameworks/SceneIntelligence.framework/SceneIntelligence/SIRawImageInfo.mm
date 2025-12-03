@@ -1,6 +1,6 @@
 @interface SIRawImageInfo
 - (SIRawImageInfo)init;
-- (SIRawImageInfo)initWithInfo:(id)a3;
+- (SIRawImageInfo)initWithInfo:(id)info;
 @end
 
 @implementation SIRawImageInfo
@@ -30,41 +30,41 @@
   return v3;
 }
 
-- (SIRawImageInfo)initWithInfo:(id)a3
+- (SIRawImageInfo)initWithInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = [(SIRawImageInfo *)self init];
   v6 = v5;
   if (v5)
   {
-    v7 = [(SIRawImageInfo *)v5 width];
-    v8 = [v4 width];
-    v9 = *v8;
-    *(v7 + 16) = *(v8 + 16);
-    *v7 = v9;
-    v10 = [(SIRawImageInfo *)v6 height];
-    v11 = [v4 height];
-    v12 = *v11;
-    *(v10 + 16) = *(v11 + 16);
-    *v10 = v12;
-    v13 = [(SIRawImageInfo *)v6 bytesPerRow];
-    v14 = [v4 bytesPerRow];
-    v15 = *v14;
-    *(v13 + 16) = *(v14 + 16);
-    *v13 = v15;
-    v16 = [(SIRawImageInfo *)v6 bytesPerPixel];
-    v17 = [v4 bytesPerPixel];
-    v18 = *v17;
-    *(v16 + 16) = *(v17 + 16);
-    *v16 = v18;
+    width = [(SIRawImageInfo *)v5 width];
+    width2 = [infoCopy width];
+    v9 = *width2;
+    *(width + 16) = *(width2 + 16);
+    *width = v9;
+    height = [(SIRawImageInfo *)v6 height];
+    height2 = [infoCopy height];
+    v12 = *height2;
+    *(height + 16) = *(height2 + 16);
+    *height = v12;
+    bytesPerRow = [(SIRawImageInfo *)v6 bytesPerRow];
+    bytesPerRow2 = [infoCopy bytesPerRow];
+    v15 = *bytesPerRow2;
+    *(bytesPerRow + 16) = *(bytesPerRow2 + 16);
+    *bytesPerRow = v15;
+    bytesPerPixel = [(SIRawImageInfo *)v6 bytesPerPixel];
+    bytesPerPixel2 = [infoCopy bytesPerPixel];
+    v18 = *bytesPerPixel2;
+    *(bytesPerPixel + 16) = *(bytesPerPixel2 + 16);
+    *bytesPerPixel = v18;
     v19 = [(SIRawImageInfo *)v6 size];
-    v20 = [v4 size];
+    v20 = [infoCopy size];
     v21 = *v20;
     *(v19 + 16) = *(v20 + 16);
     *v19 = v21;
-    -[SIRawImageInfo setPlanes:](v6, "setPlanes:", [v4 planes]);
-    -[SIRawImageInfo setChannels:](v6, "setChannels:", [v4 channels]);
-    -[SIRawImageInfo setPixelFormat:](v6, "setPixelFormat:", [v4 pixelFormat]);
+    -[SIRawImageInfo setPlanes:](v6, "setPlanes:", [infoCopy planes]);
+    -[SIRawImageInfo setChannels:](v6, "setChannels:", [infoCopy channels]);
+    -[SIRawImageInfo setPixelFormat:](v6, "setPixelFormat:", [infoCopy pixelFormat]);
     v22 = v6;
   }
 

@@ -1,53 +1,53 @@
 @interface HDSampleAggregateCacheStore
-- (BOOL)_indexInRangeOfQueryStartIndex:(void *)a3 endIndex:(uint64_t)a4 bucketIndex:;
-- (BOOL)deleteCachesForIndexes:(id)a3 generationNumber:(int64_t)a4 error:(id *)a5;
-- (BOOL)enumerateForInterval:(id)a3 cachedClass:(Class)a4 anchorAfterDatabaseScan:(int64_t *)a5 error:(id *)a6 cacheHandler:(id)a7;
-- (BOOL)enumerateForInterval:(id)a3 cachedClass:(Class)a4 anchorAfterDatabaseScan:(int64_t *)a5 nowDate:(id)a6 calendar:(id)a7 error:(id *)a8 cacheHandler:(id)a9;
-- (BOOL)saveCaches:(id)a3 generationNumber:(int64_t)a4 error:(id *)a5;
-- (HDSampleAggregateCacheStore)initWithProfile:(id)a3 queryDescriptor:(id)a4 cachingIdentifier:(id)a5 sourceEntity:(id)a6 anchorDate:(id)a7 intervalComponents:(id)a8 timeIntervalToBucketIndex:(id)a9;
-- (id)persistentAnchorDateWithError:(id *)a3;
-- (int64_t)cachesExistWithError:(id *)a3;
+- (BOOL)_indexInRangeOfQueryStartIndex:(void *)index endIndex:(uint64_t)endIndex bucketIndex:;
+- (BOOL)deleteCachesForIndexes:(id)indexes generationNumber:(int64_t)number error:(id *)error;
+- (BOOL)enumerateForInterval:(id)interval cachedClass:(Class)class anchorAfterDatabaseScan:(int64_t *)scan error:(id *)error cacheHandler:(id)handler;
+- (BOOL)enumerateForInterval:(id)interval cachedClass:(Class)class anchorAfterDatabaseScan:(int64_t *)scan nowDate:(id)date calendar:(id)calendar error:(id *)error cacheHandler:(id)handler;
+- (BOOL)saveCaches:(id)caches generationNumber:(int64_t)number error:(id *)error;
+- (HDSampleAggregateCacheStore)initWithProfile:(id)profile queryDescriptor:(id)descriptor cachingIdentifier:(id)identifier sourceEntity:(id)entity anchorDate:(id)date intervalComponents:(id)components timeIntervalToBucketIndex:(id)index;
+- (id)persistentAnchorDateWithError:(id *)error;
+- (int64_t)cachesExistWithError:(id *)error;
 @end
 
 @implementation HDSampleAggregateCacheStore
 
-- (HDSampleAggregateCacheStore)initWithProfile:(id)a3 queryDescriptor:(id)a4 cachingIdentifier:(id)a5 sourceEntity:(id)a6 anchorDate:(id)a7 intervalComponents:(id)a8 timeIntervalToBucketIndex:(id)a9
+- (HDSampleAggregateCacheStore)initWithProfile:(id)profile queryDescriptor:(id)descriptor cachingIdentifier:(id)identifier sourceEntity:(id)entity anchorDate:(id)date intervalComponents:(id)components timeIntervalToBucketIndex:(id)index
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
+  profileCopy = profile;
+  descriptorCopy = descriptor;
+  identifierCopy = identifier;
+  entityCopy = entity;
+  dateCopy = date;
+  componentsCopy = components;
+  indexCopy = index;
   v37.receiver = self;
   v37.super_class = HDSampleAggregateCacheStore;
   v22 = [(HDSampleAggregateCacheStore *)&v37 init];
   v23 = v22;
   if (v22)
   {
-    objc_storeWeak(&v22->_profile, v15);
-    v24 = [v16 copy];
+    objc_storeWeak(&v22->_profile, profileCopy);
+    v24 = [descriptorCopy copy];
     queryDescriptor = v23->_queryDescriptor;
     v23->_queryDescriptor = v24;
 
-    v26 = [v17 copy];
+    v26 = [identifierCopy copy];
     cachingIdentifier = v23->_cachingIdentifier;
     v23->_cachingIdentifier = v26;
 
-    v28 = [v18 copy];
+    v28 = [entityCopy copy];
     sourceEntity = v23->_sourceEntity;
     v23->_sourceEntity = v28;
 
-    v30 = [v21 copy];
+    v30 = [indexCopy copy];
     timeIntervalToBucketIndex = v23->_timeIntervalToBucketIndex;
     v23->_timeIntervalToBucketIndex = v30;
 
-    v32 = [v19 copy];
+    v32 = [dateCopy copy];
     anchorDate = v23->_anchorDate;
     v23->_anchorDate = v32;
 
-    v34 = [v20 copy];
+    v34 = [componentsCopy copy];
     intervalComponents = v23->_intervalComponents;
     v23->_intervalComponents = v34;
   }
@@ -55,17 +55,17 @@
   return v23;
 }
 
-- (int64_t)cachesExistWithError:(id *)a3
+- (int64_t)cachesExistWithError:(id *)error
 {
   cachingIdentifier = self->_cachingIdentifier;
   sourceEntity = self->_sourceEntity;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v7 = [HDSampleAggregateCacheEntity cachesExistForQueryIdentifier:cachingIdentifier sourceEntity:sourceEntity profile:WeakRetained error:a3];
+  v7 = [HDSampleAggregateCacheEntity cachesExistForQueryIdentifier:cachingIdentifier sourceEntity:sourceEntity profile:WeakRetained error:error];
 
   return v7;
 }
 
-- (id)persistentAnchorDateWithError:(id *)a3
+- (id)persistentAnchorDateWithError:(id *)error
 {
   persistentAnchorDate = self->_persistentAnchorDate;
   if (persistentAnchorDate)
@@ -96,16 +96,16 @@
     {
       if (v10)
       {
-        v13 = [v10 anchorDate];
+        anchorDate = [v10 anchorDate];
       }
 
       else
       {
-        v13 = self->_anchorDate;
+        anchorDate = self->_anchorDate;
       }
 
       v17 = self->_persistentAnchorDate;
-      self->_persistentAnchorDate = v13;
+      self->_persistentAnchorDate = anchorDate;
 
       v4 = self->_persistentAnchorDate;
     }
@@ -114,10 +114,10 @@
     {
       v14 = v11;
       v15 = v14;
-      if (a3)
+      if (error)
       {
         v16 = v14;
-        *a3 = v15;
+        *error = v15;
       }
 
       else
@@ -132,9 +132,9 @@
   return v4;
 }
 
-- (BOOL)saveCaches:(id)a3 generationNumber:(int64_t)a4 error:(id *)a5
+- (BOOL)saveCaches:(id)caches generationNumber:(int64_t)number error:(id *)error
 {
-  v8 = a3;
+  cachesCopy = caches;
   v20 = 0;
   v9 = [(HDSampleAggregateCacheStore *)self persistentAnchorDateWithError:&v20];
   v10 = v20;
@@ -145,7 +145,7 @@
     sourceEntity = self->_sourceEntity;
     intervalComponents = self->_intervalComponents;
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v16 = [HDSampleAggregateCacheEntity insertCachedData:v8 forQueryIdentifier:cachingIdentifier sourceEntity:sourceEntity generationNumber:a4 persistentAnchorDate:v9 intervalComponents:intervalComponents profile:WeakRetained error:a5];
+    v16 = [HDSampleAggregateCacheEntity insertCachedData:cachesCopy forQueryIdentifier:cachingIdentifier sourceEntity:sourceEntity generationNumber:number persistentAnchorDate:v9 intervalComponents:intervalComponents profile:WeakRetained error:error];
   }
 
   else
@@ -154,11 +154,11 @@
     WeakRetained = v18;
     if (v18)
     {
-      if (a5)
+      if (error)
       {
         v19 = v18;
         v16 = 0;
-        *a5 = WeakRetained;
+        *error = WeakRetained;
       }
 
       else
@@ -177,9 +177,9 @@
   return v16;
 }
 
-- (BOOL)deleteCachesForIndexes:(id)a3 generationNumber:(int64_t)a4 error:(id *)a5
+- (BOOL)deleteCachesForIndexes:(id)indexes generationNumber:(int64_t)number error:(id *)error
 {
-  v8 = a3;
+  indexesCopy = indexes;
   v20 = 0;
   v9 = [(HDSampleAggregateCacheStore *)self persistentAnchorDateWithError:&v20];
   v10 = v20;
@@ -190,11 +190,11 @@
     WeakRetained = v17;
     if (v17)
     {
-      if (a5)
+      if (error)
       {
         v18 = v17;
         v16 = 0;
-        *a5 = WeakRetained;
+        *error = WeakRetained;
         goto LABEL_8;
       }
 
@@ -209,57 +209,57 @@
   sourceEntity = self->_sourceEntity;
   intervalComponents = self->_intervalComponents;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v16 = [HDSampleAggregateCacheEntity deleteCacheForBucketIndexes:v8 forQueryIdentifier:cachingIdentifier sourceEntity:sourceEntity generationNumber:a4 persistentAnchorDate:v9 intervalComponents:intervalComponents profile:WeakRetained error:a5];
+  v16 = [HDSampleAggregateCacheEntity deleteCacheForBucketIndexes:indexesCopy forQueryIdentifier:cachingIdentifier sourceEntity:sourceEntity generationNumber:number persistentAnchorDate:v9 intervalComponents:intervalComponents profile:WeakRetained error:error];
 LABEL_8:
 
   return v16;
 }
 
-- (BOOL)enumerateForInterval:(id)a3 cachedClass:(Class)a4 anchorAfterDatabaseScan:(int64_t *)a5 error:(id *)a6 cacheHandler:(id)a7
+- (BOOL)enumerateForInterval:(id)interval cachedClass:(Class)class anchorAfterDatabaseScan:(int64_t *)scan error:(id *)error cacheHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a7;
+  intervalCopy = interval;
+  handlerCopy = handler;
   v14 = [MEMORY[0x277CBEAA8] now];
-  v15 = [MEMORY[0x277CBEA80] currentCalendar];
-  LOBYTE(a6) = [(HDSampleAggregateCacheStore *)self enumerateForInterval:v12 cachedClass:a4 anchorAfterDatabaseScan:a5 nowDate:v14 calendar:v15 error:a6 cacheHandler:v13];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  LOBYTE(error) = [(HDSampleAggregateCacheStore *)self enumerateForInterval:intervalCopy cachedClass:class anchorAfterDatabaseScan:scan nowDate:v14 calendar:currentCalendar error:error cacheHandler:handlerCopy];
 
-  return a6;
+  return error;
 }
 
-- (BOOL)enumerateForInterval:(id)a3 cachedClass:(Class)a4 anchorAfterDatabaseScan:(int64_t *)a5 nowDate:(id)a6 calendar:(id)a7 error:(id *)a8 cacheHandler:(id)a9
+- (BOOL)enumerateForInterval:(id)interval cachedClass:(Class)class anchorAfterDatabaseScan:(int64_t *)scan nowDate:(id)date calendar:(id)calendar error:(id *)error cacheHandler:(id)handler
 {
-  v16 = a3;
-  v17 = a6;
-  v18 = a7;
-  v30 = a9;
-  if (!v16)
+  intervalCopy = interval;
+  dateCopy = date;
+  calendarCopy = calendar;
+  handlerCopy = handler;
+  if (!intervalCopy)
   {
-    v28 = v18;
-    v27 = [MEMORY[0x277CCA890] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"HDSampleAggregateCacheStore.mm" lineNumber:147 description:{@"Invalid parameter not satisfying: %@", @"interval != nil"}];
+    v28 = calendarCopy;
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDSampleAggregateCacheStore.mm" lineNumber:147 description:{@"Invalid parameter not satisfying: %@", @"interval != nil"}];
 
-    v18 = v28;
+    calendarCopy = v28;
   }
 
-  v19 = a5;
+  scanCopy = scan;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v20 = [WeakRetained database];
+  database = [WeakRetained database];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __124__HDSampleAggregateCacheStore_enumerateForInterval_cachedClass_anchorAfterDatabaseScan_nowDate_calendar_error_cacheHandler___block_invoke;
   v31[3] = &unk_278616698;
   v31[4] = self;
-  v21 = v16;
+  v21 = intervalCopy;
   v32 = v21;
-  v36 = a4;
-  v22 = v17;
+  classCopy = class;
+  v22 = dateCopy;
   v33 = v22;
-  v23 = v18;
+  v23 = calendarCopy;
   v34 = v23;
-  v24 = v30;
+  v24 = handlerCopy;
   v35 = v24;
-  v37 = v19;
-  v25 = [(HDHealthEntity *)HDSampleAggregateCacheEntity performReadTransactionWithHealthDatabase:v20 error:a8 block:v31];
+  v37 = scanCopy;
+  v25 = [(HDHealthEntity *)HDSampleAggregateCacheEntity performReadTransactionWithHealthDatabase:database error:error block:v31];
 
   return v25;
 }
@@ -976,26 +976,26 @@ LABEL_8:
   return v16 & 1;
 }
 
-- (BOOL)_indexInRangeOfQueryStartIndex:(void *)a3 endIndex:(uint64_t)a4 bucketIndex:
+- (BOOL)_indexInRangeOfQueryStartIndex:(void *)index endIndex:(uint64_t)endIndex bucketIndex:
 {
   v7 = a2;
-  v8 = a3;
-  v9 = v8;
-  if (a1)
+  indexCopy = index;
+  v9 = indexCopy;
+  if (self)
   {
-    a1 = 0;
+    self = 0;
     if (v7)
     {
-      if (v8)
+      if (indexCopy)
       {
-        v10 = [v7 integerValue];
-        v11 = [v9 integerValue];
-        a1 = v10 <= a4 && v11 >= a4;
+        integerValue = [v7 integerValue];
+        integerValue2 = [v9 integerValue];
+        self = integerValue <= endIndex && integerValue2 >= endIndex;
       }
     }
   }
 
-  return a1;
+  return self;
 }
 
 uint64_t __101__HDSampleAggregateCacheStore__enumerateForInterval_cachedClass_nowDate_calendar_error_cacheHandler___block_invoke_2(uint64_t a1, uint64_t a2)

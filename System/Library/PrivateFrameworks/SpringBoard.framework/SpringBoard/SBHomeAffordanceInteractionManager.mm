@@ -1,28 +1,28 @@
 @interface SBHomeAffordanceInteractionManager
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (CGRect)_homeAffordanceHitTestRectOfSize:(int64_t)a3 forHomeAffordanceInteraction:(id)a4;
-- (SBHomeAffordanceInteractionManager)initWithWindowScene:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (CGRect)_homeAffordanceHitTestRectOfSize:(int64_t)size forHomeAffordanceInteraction:(id)interaction;
+- (SBHomeAffordanceInteractionManager)initWithWindowScene:(id)scene;
 - (SBWindowScene)windowScene;
 - (id)_assistantController;
-- (id)_firstHomeAffordanceInteractionForGestureRecognizer:(id)a3;
-- (id)_firstHomeAffordanceInteractionForGestureRecognizer:(id)a3 touch:(id)a4;
+- (id)_firstHomeAffordanceInteractionForGestureRecognizer:(id)recognizer;
+- (id)_firstHomeAffordanceInteractionForGestureRecognizer:(id)recognizer touch:(id)touch;
 - (id)_systemGestureManager;
-- (id)acquireDisableHomeAffordanceDoubleTapGestureAssertionWithReason:(id)a3;
+- (id)acquireDisableHomeAffordanceDoubleTapGestureAssertionWithReason:(id)reason;
 - (id)newHomeAffordanceInteraction;
-- (void)_bounceDoubleTapFailureRecognized:(id)a3;
-- (void)_bounceDoubleTapRecognized:(id)a3;
-- (void)_bounceTapRecognized:(id)a3;
-- (void)_gestureRecognizer:(id)a3 didFailToRecognizeDoubleTapWithHomeAffordanceInteraction:(id)a4;
-- (void)_gestureRecognizer:(id)a3 didRecognizeDoubleTapWithHomeAffordanceInteraction:(id)a4;
-- (void)_gestureRecognizer:(id)a3 didRecognizeSingleTapWithHomeAffordanceInteraction:(id)a4;
-- (void)_logShouldReceiveTouchIfNeeded:(BOOL)a3 forGestureRecognizer:(id)a4 touch:(id)a5;
-- (void)_revealEdgePanRecognized:(id)a3;
-- (void)_revealTapRecognized:(id)a3;
+- (void)_bounceDoubleTapFailureRecognized:(id)recognized;
+- (void)_bounceDoubleTapRecognized:(id)recognized;
+- (void)_bounceTapRecognized:(id)recognized;
+- (void)_gestureRecognizer:(id)recognizer didFailToRecognizeDoubleTapWithHomeAffordanceInteraction:(id)interaction;
+- (void)_gestureRecognizer:(id)recognizer didRecognizeDoubleTapWithHomeAffordanceInteraction:(id)interaction;
+- (void)_gestureRecognizer:(id)recognizer didRecognizeSingleTapWithHomeAffordanceInteraction:(id)interaction;
+- (void)_logShouldReceiveTouchIfNeeded:(BOOL)needed forGestureRecognizer:(id)recognizer touch:(id)touch;
+- (void)_revealEdgePanRecognized:(id)recognized;
+- (void)_revealTapRecognized:(id)recognized;
 - (void)_updateBounceTapGestureRecognizers;
 - (void)dealloc;
-- (void)registerHomeAffordanceInteraction:(id)a3;
-- (void)unregisterHomeAffordanceInteraction:(id)a3;
-- (void)updateHomeAffordanceHitTestRectForHomeAffordanceInteraction:(id)a3;
+- (void)registerHomeAffordanceInteraction:(id)interaction;
+- (void)unregisterHomeAffordanceInteraction:(id)interaction;
+- (void)updateHomeAffordanceHitTestRectForHomeAffordanceInteraction:(id)interaction;
 @end
 
 @implementation SBHomeAffordanceInteractionManager
@@ -30,9 +30,9 @@
 - (id)_systemGestureManager
 {
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v3 = [WeakRetained systemGestureManager];
+  systemGestureManager = [WeakRetained systemGestureManager];
 
-  return v3;
+  return systemGestureManager;
 }
 
 - (id)newHomeAffordanceInteraction
@@ -42,16 +42,16 @@
   return [(SBHomeAffordanceInteraction *)v3 initWithHomeAffordanceInteractionManager:self];
 }
 
-- (SBHomeAffordanceInteractionManager)initWithWindowScene:(id)a3
+- (SBHomeAffordanceInteractionManager)initWithWindowScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v24.receiver = self;
   v24.super_class = SBHomeAffordanceInteractionManager;
   v5 = [(SBHomeAffordanceInteractionManager *)&v24 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_windowScene, v4);
+    objc_storeWeak(&v5->_windowScene, sceneCopy);
     v7 = _os_feature_enabled_impl();
     v8 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:v6 action:sel__bounceTapRecognized_];
     bounceTapRecognizer = v6->_bounceTapRecognizer;
@@ -111,16 +111,16 @@
     [(UIScreenEdgePanGestureRecognizer *)v6->_revealEdgePanRecognizer setAllowedTouchTypes:&unk_28336E568];
     [(UIScreenEdgePanGestureRecognizer *)v6->_revealEdgePanRecognizer sbf_setPencilTouchesAllowed:v7];
     [(UIScreenEdgePanGestureRecognizer *)v6->_revealEdgePanRecognizer setDelegate:v6];
-    v18 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     registeredHomeAffordanceInteractions = v6->_registeredHomeAffordanceInteractions;
-    v6->_registeredHomeAffordanceInteractions = v18;
+    v6->_registeredHomeAffordanceInteractions = weakObjectsHashTable;
 
     v20 = objc_alloc_init(MEMORY[0x277D55218]);
     quickTypeGestureSource = v6->_quickTypeGestureSource;
     v6->_quickTypeGestureSource = v20;
 
-    v22 = [(SBHomeAffordanceInteractionManager *)v6 _assistantController];
-    [v22 addObserver:v6];
+    _assistantController = [(SBHomeAffordanceInteractionManager *)v6 _assistantController];
+    [_assistantController addObserver:v6];
 
     [(SBHomeAffordanceInteractionManager *)v6 _updateBounceTapGestureRecognizers];
   }
@@ -130,8 +130,8 @@
 
 - (void)dealloc
 {
-  v3 = [(SBHomeAffordanceInteractionManager *)self _assistantController];
-  [v3 removeObserver:self];
+  _assistantController = [(SBHomeAffordanceInteractionManager *)self _assistantController];
+  [_assistantController removeObserver:self];
 
   [(SiriQuickTypeGestureSource *)self->_quickTypeGestureSource invalidate];
   v4.receiver = self;
@@ -139,10 +139,10 @@
   [(SBHomeAffordanceInteractionManager *)&v4 dealloc];
 }
 
-- (void)registerHomeAffordanceInteraction:(id)a3
+- (void)registerHomeAffordanceInteraction:(id)interaction
 {
   v15 = *MEMORY[0x277D85DE8];
-  [(NSHashTable *)self->_registeredHomeAffordanceInteractions addObject:a3];
+  [(NSHashTable *)self->_registeredHomeAffordanceInteractions addObject:interaction];
   if (!self->_gesturesEnabled && [(NSHashTable *)self->_registeredHomeAffordanceInteractions count])
   {
     v4 = SBLogHomeAffordance();
@@ -155,21 +155,21 @@
     }
 
     self->_gesturesEnabled = 1;
-    v6 = [(SBHomeAffordanceInteractionManager *)self _systemGestureManager];
-    [v6 addGestureRecognizer:self->_bounceTapRecognizer withType:99];
-    [v6 addGestureRecognizer:self->_revealTapRecognizer withType:102];
-    [v6 addGestureRecognizer:self->_revealDoubleTapRecognizer withType:103];
-    [v6 addGestureRecognizer:self->_revealEdgePanRecognizer withType:104];
+    _systemGestureManager = [(SBHomeAffordanceInteractionManager *)self _systemGestureManager];
+    [_systemGestureManager addGestureRecognizer:self->_bounceTapRecognizer withType:99];
+    [_systemGestureManager addGestureRecognizer:self->_revealTapRecognizer withType:102];
+    [_systemGestureManager addGestureRecognizer:self->_revealDoubleTapRecognizer withType:103];
+    [_systemGestureManager addGestureRecognizer:self->_revealEdgePanRecognizer withType:104];
     bounceDoubleTapRecognizer = self->_bounceDoubleTapRecognizer;
     if (bounceDoubleTapRecognizer)
     {
-      [v6 addGestureRecognizer:bounceDoubleTapRecognizer withType:100];
+      [_systemGestureManager addGestureRecognizer:bounceDoubleTapRecognizer withType:100];
       v8 = SBLogHomeAffordance();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [(UITapGestureRecognizer *)self->_bounceDoubleTapRecognizer name];
+        name = [(UITapGestureRecognizer *)self->_bounceDoubleTapRecognizer name];
         v13 = 138543362;
-        v14 = v9;
+        v14 = name;
         _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "Added gesture recognizer: %{public}@", &v13, 0xCu);
       }
     }
@@ -177,28 +177,28 @@
     bounceDoubleTapFailureRecognizer = self->_bounceDoubleTapFailureRecognizer;
     if (bounceDoubleTapFailureRecognizer)
     {
-      [v6 addGestureRecognizer:bounceDoubleTapFailureRecognizer withType:101];
+      [_systemGestureManager addGestureRecognizer:bounceDoubleTapFailureRecognizer withType:101];
       v11 = SBLogHomeAffordance();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [(UITapGestureRecognizer *)self->_bounceDoubleTapFailureRecognizer name];
+        name2 = [(UITapGestureRecognizer *)self->_bounceDoubleTapFailureRecognizer name];
         v13 = 138543362;
-        v14 = v12;
+        v14 = name2;
         _os_log_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_DEFAULT, "Added gesture recognizer: %{public}@", &v13, 0xCu);
       }
     }
 
-    [v6 gestureRecognizerOfType:122 shouldBeRequiredToFailByGestureRecognizer:self->_revealEdgePanRecognizer];
-    [v6 gestureRecognizerOfType:123 shouldBeRequiredToFailByGestureRecognizer:self->_revealEdgePanRecognizer];
-    [v6 gestureRecognizerOfType:107 shouldBeRequiredToFailByGestureRecognizer:self->_revealEdgePanRecognizer];
-    [v6 gestureRecognizerOfType:108 shouldBeRequiredToFailByGestureRecognizer:self->_revealEdgePanRecognizer];
+    [_systemGestureManager gestureRecognizerOfType:122 shouldBeRequiredToFailByGestureRecognizer:self->_revealEdgePanRecognizer];
+    [_systemGestureManager gestureRecognizerOfType:123 shouldBeRequiredToFailByGestureRecognizer:self->_revealEdgePanRecognizer];
+    [_systemGestureManager gestureRecognizerOfType:107 shouldBeRequiredToFailByGestureRecognizer:self->_revealEdgePanRecognizer];
+    [_systemGestureManager gestureRecognizerOfType:108 shouldBeRequiredToFailByGestureRecognizer:self->_revealEdgePanRecognizer];
   }
 }
 
-- (void)unregisterHomeAffordanceInteraction:(id)a3
+- (void)unregisterHomeAffordanceInteraction:(id)interaction
 {
   v13 = *MEMORY[0x277D85DE8];
-  [(NSHashTable *)self->_registeredHomeAffordanceInteractions removeObject:a3];
+  [(NSHashTable *)self->_registeredHomeAffordanceInteractions removeObject:interaction];
   if (self->_gesturesEnabled && ![(NSHashTable *)self->_registeredHomeAffordanceInteractions count])
   {
     v4 = SBLogHomeAffordance();
@@ -211,79 +211,79 @@
     }
 
     self->_gesturesEnabled = 0;
-    v6 = [(SBHomeAffordanceInteractionManager *)self _systemGestureManager];
-    [v6 removeGestureRecognizer:self->_bounceTapRecognizer];
-    [v6 removeGestureRecognizer:self->_revealTapRecognizer];
-    [v6 removeGestureRecognizer:self->_revealDoubleTapRecognizer];
-    [v6 removeGestureRecognizer:self->_revealEdgePanRecognizer];
+    _systemGestureManager = [(SBHomeAffordanceInteractionManager *)self _systemGestureManager];
+    [_systemGestureManager removeGestureRecognizer:self->_bounceTapRecognizer];
+    [_systemGestureManager removeGestureRecognizer:self->_revealTapRecognizer];
+    [_systemGestureManager removeGestureRecognizer:self->_revealDoubleTapRecognizer];
+    [_systemGestureManager removeGestureRecognizer:self->_revealEdgePanRecognizer];
     if (self->_bounceDoubleTapRecognizer)
     {
-      [v6 removeGestureRecognizer:?];
+      [_systemGestureManager removeGestureRecognizer:?];
       v7 = SBLogHomeAffordance();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [(UITapGestureRecognizer *)self->_bounceDoubleTapRecognizer name];
+        name = [(UITapGestureRecognizer *)self->_bounceDoubleTapRecognizer name];
         v11 = 138543362;
-        v12 = v8;
+        v12 = name;
         _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "Removed gesture recognizer: %{public}@", &v11, 0xCu);
       }
     }
 
     if (self->_bounceDoubleTapFailureRecognizer)
     {
-      [v6 removeGestureRecognizer:?];
+      [_systemGestureManager removeGestureRecognizer:?];
       v9 = SBLogHomeAffordance();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [(UITapGestureRecognizer *)self->_bounceDoubleTapFailureRecognizer name];
+        name2 = [(UITapGestureRecognizer *)self->_bounceDoubleTapFailureRecognizer name];
         v11 = 138543362;
-        v12 = v10;
+        v12 = name2;
         _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "Removed gesture recognizer: %{public}@", &v11, 0xCu);
       }
     }
   }
 }
 
-- (id)acquireDisableHomeAffordanceDoubleTapGestureAssertionWithReason:(id)a3
+- (id)acquireDisableHomeAffordanceDoubleTapGestureAssertionWithReason:(id)reason
 {
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
+  reasonCopy = reason;
   v6 = [v4 setWithArray:&unk_28336E580];
-  v7 = [(SBHomeAffordanceInteractionManager *)self _systemGestureManager];
-  v8 = [v7 acquireSystemGestureDisableAssertionForReason:v5 forSystemGestureTypes:v6];
+  _systemGestureManager = [(SBHomeAffordanceInteractionManager *)self _systemGestureManager];
+  v8 = [_systemGestureManager acquireSystemGestureDisableAssertionForReason:reasonCopy forSystemGestureTypes:v6];
 
   return v8;
 }
 
-- (void)updateHomeAffordanceHitTestRectForHomeAffordanceInteraction:(id)a3
+- (void)updateHomeAffordanceHitTestRectForHomeAffordanceInteraction:(id)interaction
 {
-  v4 = self->_currentHomeAffordanceInteraction == a3;
-  v5 = a3;
-  [(SBHomeAffordanceInteractionManager *)self _homeAffordanceHitTestRectOfSize:v4 forHomeAffordanceInteraction:v5];
-  [v5 setHomeAffordanceHitTestRect:?];
+  v4 = self->_currentHomeAffordanceInteraction == interaction;
+  interactionCopy = interaction;
+  [(SBHomeAffordanceInteractionManager *)self _homeAffordanceHitTestRectOfSize:v4 forHomeAffordanceInteraction:interactionCopy];
+  [interactionCopy setHomeAffordanceHitTestRect:?];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
+  recognizerCopy = recognizer;
+  touchCopy = touch;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBHomeAffordanceInteractionManager gestureRecognizer:shouldReceiveTouch:];
   }
 
-  if (self->_bounceTapRecognizer == v6)
+  if (self->_bounceTapRecognizer == recognizerCopy)
   {
-    v11 = [(SBHomeAffordanceInteractionManager *)self _firstHomeAffordanceInteractionForGestureRecognizer:v6 touch:v7];
+    v11 = [(SBHomeAffordanceInteractionManager *)self _firstHomeAffordanceInteractionForGestureRecognizer:recognizerCopy touch:touchCopy];
     v9 = v11;
     if (v11)
     {
-      LOBYTE(v10) = [v11 allowsUserInteraction];
+      LOBYTE(allowsUserInteraction) = [v11 allowsUserInteraction];
     }
 
     else
     {
-      LOBYTE(v10) = 0;
+      LOBYTE(allowsUserInteraction) = 0;
     }
 
 LABEL_19:
@@ -291,38 +291,38 @@ LABEL_19:
     goto LABEL_23;
   }
 
-  if (self->_bounceDoubleTapRecognizer == v6 || self->_bounceDoubleTapFailureRecognizer == v6)
+  if (self->_bounceDoubleTapRecognizer == recognizerCopy || self->_bounceDoubleTapFailureRecognizer == recognizerCopy)
   {
-    if ([v7 _isPointerTouch])
+    if ([touchCopy _isPointerTouch])
     {
-      v10 = 0;
+      allowsUserInteraction = 0;
     }
 
     else
     {
-      v12 = [(SBHomeAffordanceInteractionManager *)self _firstHomeAffordanceInteractionForGestureRecognizer:v6 touch:v7];
+      v12 = [(SBHomeAffordanceInteractionManager *)self _firstHomeAffordanceInteractionForGestureRecognizer:recognizerCopy touch:touchCopy];
       v13 = v12;
       if (v12)
       {
-        v10 = [v12 allowsUserInteraction];
+        allowsUserInteraction = [v12 allowsUserInteraction];
       }
 
       else
       {
-        v10 = 0;
+        allowsUserInteraction = 0;
       }
     }
 
-    [(SBHomeAffordanceInteractionManager *)self _logShouldReceiveTouchIfNeeded:v10 forGestureRecognizer:v6 touch:v7];
+    [(SBHomeAffordanceInteractionManager *)self _logShouldReceiveTouchIfNeeded:allowsUserInteraction forGestureRecognizer:recognizerCopy touch:touchCopy];
   }
 
   else
   {
-    if ((self->_revealTapRecognizer == v6 || self->_revealDoubleTapRecognizer == v6) && [objc_opt_class() _wantsModernRevealGestureRecognizerBehaviors])
+    if ((self->_revealTapRecognizer == recognizerCopy || self->_revealDoubleTapRecognizer == recognizerCopy) && [objc_opt_class() _wantsModernRevealGestureRecognizerBehaviors])
     {
-      v8 = [(SBHomeAffordanceInteractionManager *)self _firstHomeAffordanceInteractionForGestureRecognizer:v6 touch:v7];
+      v8 = [(SBHomeAffordanceInteractionManager *)self _firstHomeAffordanceInteractionForGestureRecognizer:recognizerCopy touch:touchCopy];
       v9 = v8;
-      LOBYTE(v10) = v8 != 0;
+      LOBYTE(allowsUserInteraction) = v8 != 0;
       if (v8)
       {
         [v8 notifyDidRecognizeTouchThatShouldUnhideViewImmediately:1];
@@ -331,73 +331,73 @@ LABEL_19:
       goto LABEL_19;
     }
 
-    LOBYTE(v10) = 1;
+    LOBYTE(allowsUserInteraction) = 1;
   }
 
 LABEL_23:
 
-  return v10;
+  return allowsUserInteraction;
 }
 
 - (id)_assistantController
 {
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v3 = [WeakRetained assistantController];
+  assistantController = [WeakRetained assistantController];
 
-  return v3;
+  return assistantController;
 }
 
-- (void)_bounceTapRecognized:(id)a3
+- (void)_bounceTapRecognized:(id)recognized
 {
-  v8 = a3;
+  recognizedCopy = recognized;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBHomeAffordanceInteractionManager _bounceTapRecognized:];
   }
 
-  v4 = [v8 sbf_hasPointerTouch];
-  v5 = [(SBHomeAffordanceInteractionManager *)self _systemGestureManager];
-  v6 = [v5 areSystemGesturesDisabledForAccessibility];
+  sbf_hasPointerTouch = [recognizedCopy sbf_hasPointerTouch];
+  _systemGestureManager = [(SBHomeAffordanceInteractionManager *)self _systemGestureManager];
+  areSystemGesturesDisabledForAccessibility = [_systemGestureManager areSystemGesturesDisabledForAccessibility];
 
-  v7 = [(SBHomeAffordanceInteractionManager *)self _firstHomeAffordanceInteractionForGestureRecognizer:v8];
-  if (!v4 || (v6 & 1) != 0)
+  v7 = [(SBHomeAffordanceInteractionManager *)self _firstHomeAffordanceInteractionForGestureRecognizer:recognizedCopy];
+  if (!sbf_hasPointerTouch || (areSystemGesturesDisabledForAccessibility & 1) != 0)
   {
-    [(SBHomeAffordanceInteractionManager *)self _gestureRecognizer:v8 didRecognizeSingleTapWithHomeAffordanceInteraction:v7];
+    [(SBHomeAffordanceInteractionManager *)self _gestureRecognizer:recognizedCopy didRecognizeSingleTapWithHomeAffordanceInteraction:v7];
   }
 
   else
   {
-    [(SBHomeAffordanceInteractionManager *)self _gestureRecognizer:v8 didRecognizeSingleClickWithHomeAffordanceInteraction:v7];
+    [(SBHomeAffordanceInteractionManager *)self _gestureRecognizer:recognizedCopy didRecognizeSingleClickWithHomeAffordanceInteraction:v7];
   }
 }
 
-- (void)_bounceDoubleTapRecognized:(id)a3
+- (void)_bounceDoubleTapRecognized:(id)recognized
 {
   v4 = MEMORY[0x277CCACC8];
-  v5 = a3;
+  recognizedCopy = recognized;
   if (([v4 isMainThread] & 1) == 0)
   {
     [SBHomeAffordanceInteractionManager _bounceDoubleTapRecognized:];
   }
 
-  v6 = [(SBHomeAffordanceInteractionManager *)self _firstHomeAffordanceInteractionForGestureRecognizer:v5];
-  [(SBHomeAffordanceInteractionManager *)self _gestureRecognizer:v5 didRecognizeDoubleTapWithHomeAffordanceInteraction:v6];
+  v6 = [(SBHomeAffordanceInteractionManager *)self _firstHomeAffordanceInteractionForGestureRecognizer:recognizedCopy];
+  [(SBHomeAffordanceInteractionManager *)self _gestureRecognizer:recognizedCopy didRecognizeDoubleTapWithHomeAffordanceInteraction:v6];
 }
 
-- (void)_bounceDoubleTapFailureRecognized:(id)a3
+- (void)_bounceDoubleTapFailureRecognized:(id)recognized
 {
   v4 = MEMORY[0x277CCACC8];
-  v5 = a3;
+  recognizedCopy = recognized;
   if (([v4 isMainThread] & 1) == 0)
   {
     [SBHomeAffordanceInteractionManager _bounceDoubleTapFailureRecognized:];
   }
 
-  v6 = [(SBHomeAffordanceInteractionManager *)self _firstHomeAffordanceInteractionForGestureRecognizer:v5];
-  [(SBHomeAffordanceInteractionManager *)self _gestureRecognizer:v5 didFailToRecognizeDoubleTapWithHomeAffordanceInteraction:v6];
+  v6 = [(SBHomeAffordanceInteractionManager *)self _firstHomeAffordanceInteractionForGestureRecognizer:recognizedCopy];
+  [(SBHomeAffordanceInteractionManager *)self _gestureRecognizer:recognizedCopy didFailToRecognizeDoubleTapWithHomeAffordanceInteraction:v6];
 }
 
-- (void)_revealTapRecognized:(id)a3
+- (void)_revealTapRecognized:(id)recognized
 {
   v16 = *MEMORY[0x277D85DE8];
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
@@ -425,8 +425,8 @@ LABEL_23:
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
-        v10 = [v9 view];
-        [v9 notifyDidRecognizeTouchThatShouldUnhideViewImmediately:{objc_msgSend(v10, "isHidden")}];
+        view = [v9 view];
+        [v9 notifyDidRecognizeTouchThatShouldUnhideViewImmediately:{objc_msgSend(view, "isHidden")}];
       }
 
       v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -436,16 +436,16 @@ LABEL_23:
   }
 }
 
-- (void)_revealEdgePanRecognized:(id)a3
+- (void)_revealEdgePanRecognized:(id)recognized
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recognizedCopy = recognized;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBHomeAffordanceInteractionManager _revealEdgePanRecognized:];
   }
 
-  if ([v4 state] == 1)
+  if ([recognizedCopy state] == 1)
   {
     v12 = 0u;
     v13 = 0u;
@@ -479,17 +479,17 @@ LABEL_23:
   }
 }
 
-- (CGRect)_homeAffordanceHitTestRectOfSize:(int64_t)a3 forHomeAffordanceInteraction:(id)a4
+- (CGRect)_homeAffordanceHitTestRectOfSize:(int64_t)size forHomeAffordanceInteraction:(id)interaction
 {
-  v5 = a4;
-  [v5 homeAffordanceFrame];
+  interactionCopy = interaction;
+  [interactionCopy homeAffordanceFrame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  if (a3 == 1)
+  if (size == 1)
   {
-    [v5 expandedHomeAffordanceHitTestRectOutsets];
+    [interactionCopy expandedHomeAffordanceHitTestRectOutsets];
   }
 
   else
@@ -498,9 +498,9 @@ LABEL_23:
     v15 = 0.0;
     v16 = 0.0;
     v17 = 0.0;
-    if (!a3)
+    if (!size)
     {
-      [v5 standardHomeAffordanceHitTestRectOutsets];
+      [interactionCopy standardHomeAffordanceHitTestRectOutsets];
     }
   }
 
@@ -520,22 +520,22 @@ LABEL_23:
   return result;
 }
 
-- (void)_logShouldReceiveTouchIfNeeded:(BOOL)a3 forGestureRecognizer:(id)a4 touch:(id)a5
+- (void)_logShouldReceiveTouchIfNeeded:(BOOL)needed forGestureRecognizer:(id)recognizer touch:(id)touch
 {
-  v6 = a3;
+  neededCopy = needed;
   v46 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  recognizerCopy = recognizer;
+  touchCopy = touch;
   v10 = SBLogHomeAffordance();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG);
 
   if (v11)
   {
-    v12 = [(SBHomeAffordanceInteractionManager *)self _firstHomeAffordanceInteractionForGestureRecognizer:v8 touch:v9];
+    v12 = [(SBHomeAffordanceInteractionManager *)self _firstHomeAffordanceInteractionForGestureRecognizer:recognizerCopy touch:touchCopy];
     v13 = v12;
     if (v12)
     {
-      v14 = [v12 view];
+      view = [v12 view];
       _UISystemGestureLocationForTouchInView();
       v16 = v15;
       v18 = v17;
@@ -548,7 +548,7 @@ LABEL_23:
 
     else
     {
-      v14 = 0;
+      view = 0;
       v20 = *MEMORY[0x277CBF398];
       v22 = *(MEMORY[0x277CBF398] + 8);
       v24 = *(MEMORY[0x277CBF398] + 16);
@@ -560,8 +560,8 @@ LABEL_23:
     v27 = SBLogHomeAffordance();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
     {
-      v28 = [v8 name];
-      v33 = [v9 _isPointerTouch];
+      name = [recognizerCopy name];
+      _isPointerTouch = [touchCopy _isPointerTouch];
       v29 = objc_opt_class();
       v30 = NSStringFromClass(v29);
       v47.x = v16;
@@ -573,11 +573,11 @@ LABEL_23:
       v48.size.height = v26;
       v32 = NSStringFromCGRect(v48);
       *buf = 138544642;
-      v35 = v28;
+      v35 = name;
       v36 = 1026;
-      v37 = v6;
+      v37 = neededCopy;
       v38 = 1026;
-      v39 = v33;
+      v39 = _isPointerTouch;
       v40 = 2114;
       v41 = v30;
       v42 = 2114;
@@ -588,16 +588,16 @@ LABEL_23:
   }
 }
 
-- (id)_firstHomeAffordanceInteractionForGestureRecognizer:(id)a3
+- (id)_firstHomeAffordanceInteractionForGestureRecognizer:(id)recognizer
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recognizerCopy = recognizer;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 sbf_activeTouches];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  sbf_activeTouches = [recognizerCopy sbf_activeTouches];
+  v6 = [sbf_activeTouches countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -608,10 +608,10 @@ LABEL_23:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(sbf_activeTouches);
         }
 
-        v10 = [(SBHomeAffordanceInteractionManager *)self _firstHomeAffordanceInteractionForGestureRecognizer:v4 touch:*(*(&v13 + 1) + 8 * i)];
+        v10 = [(SBHomeAffordanceInteractionManager *)self _firstHomeAffordanceInteractionForGestureRecognizer:recognizerCopy touch:*(*(&v13 + 1) + 8 * i)];
         if (v10)
         {
           v11 = v10;
@@ -619,7 +619,7 @@ LABEL_23:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [sbf_activeTouches countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v7)
       {
         continue;
@@ -635,11 +635,11 @@ LABEL_11:
   return v11;
 }
 
-- (id)_firstHomeAffordanceInteractionForGestureRecognizer:(id)a3 touch:(id)a4
+- (id)_firstHomeAffordanceInteractionForGestureRecognizer:(id)recognizer touch:(id)touch
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  recognizerCopy = recognizer;
+  touchCopy = touch;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -659,7 +659,7 @@ LABEL_11:
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        v13 = [v12 view];
+        view = [v12 view];
         _UISystemGestureLocationForTouchInView();
         v15 = v14;
         v17 = v16;
@@ -692,20 +692,20 @@ LABEL_11:
 - (void)_updateBounceTapGestureRecognizers
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [(SBHomeAffordanceInteractionManager *)self _assistantController];
-  v4 = [v3 isHomeAffordanceDoubleTapGestureEnabled];
+  _assistantController = [(SBHomeAffordanceInteractionManager *)self _assistantController];
+  isHomeAffordanceDoubleTapGestureEnabled = [_assistantController isHomeAffordanceDoubleTapGestureEnabled];
 
   v5 = SBLogHomeAffordance();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v24 = 67109120;
-    LODWORD(v25) = v4;
+    LODWORD(v25) = isHomeAffordanceDoubleTapGestureEnabled;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Updating gesture recognizers with isHomeAffordanceDoubleTapGestureEnabled: %{BOOL}u", &v24, 8u);
   }
 
-  [(UITapGestureRecognizer *)self->_bounceTapRecognizer _wantsGESEvents:v4];
+  [(UITapGestureRecognizer *)self->_bounceTapRecognizer _wantsGESEvents:isHomeAffordanceDoubleTapGestureEnabled];
   bounceDoubleTapRecognizer = self->_bounceDoubleTapRecognizer;
-  if (v4)
+  if (isHomeAffordanceDoubleTapGestureEnabled)
   {
     if (!bounceDoubleTapRecognizer)
     {
@@ -724,15 +724,15 @@ LABEL_11:
       [(UITapGestureRecognizer *)self->_bounceDoubleTapRecognizer _wantsGESEvents:1];
       if (self->_gesturesEnabled)
       {
-        v9 = [(SBHomeAffordanceInteractionManager *)self _systemGestureManager];
-        [v9 addGestureRecognizer:self->_bounceDoubleTapRecognizer withType:100];
+        _systemGestureManager = [(SBHomeAffordanceInteractionManager *)self _systemGestureManager];
+        [_systemGestureManager addGestureRecognizer:self->_bounceDoubleTapRecognizer withType:100];
 
         v10 = SBLogHomeAffordance();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
-          v11 = [(UITapGestureRecognizer *)self->_bounceDoubleTapRecognizer name];
+          name = [(UITapGestureRecognizer *)self->_bounceDoubleTapRecognizer name];
           v24 = 138543362;
-          v25 = v11;
+          v25 = name;
           _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_DEFAULT, "Added gesture recognizer: %{public}@", &v24, 0xCu);
         }
       }
@@ -754,15 +754,15 @@ LABEL_11:
       [(UITapGestureRecognizer *)self->_bounceDoubleTapFailureRecognizer _wantsGESEvents:1];
       if (self->_gesturesEnabled)
       {
-        v14 = [(SBHomeAffordanceInteractionManager *)self _systemGestureManager];
-        [v14 addGestureRecognizer:self->_bounceDoubleTapFailureRecognizer withType:101];
+        _systemGestureManager2 = [(SBHomeAffordanceInteractionManager *)self _systemGestureManager];
+        [_systemGestureManager2 addGestureRecognizer:self->_bounceDoubleTapFailureRecognizer withType:101];
 
         v15 = SBLogHomeAffordance();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
-          v16 = [(UITapGestureRecognizer *)self->_bounceDoubleTapFailureRecognizer name];
+          name2 = [(UITapGestureRecognizer *)self->_bounceDoubleTapFailureRecognizer name];
           v24 = 138543362;
-          v25 = v16;
+          v25 = name2;
           _os_log_impl(&dword_21ED4E000, v15, OS_LOG_TYPE_DEFAULT, "Added gesture recognizer: %{public}@", &v24, 0xCu);
         }
       }
@@ -777,15 +777,15 @@ LABEL_11:
     {
       if (self->_gesturesEnabled)
       {
-        v17 = [(SBHomeAffordanceInteractionManager *)self _systemGestureManager];
-        [v17 removeGestureRecognizer:self->_bounceDoubleTapRecognizer];
+        _systemGestureManager3 = [(SBHomeAffordanceInteractionManager *)self _systemGestureManager];
+        [_systemGestureManager3 removeGestureRecognizer:self->_bounceDoubleTapRecognizer];
 
         v18 = SBLogHomeAffordance();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
-          v19 = [(UITapGestureRecognizer *)self->_bounceDoubleTapRecognizer name];
+          name3 = [(UITapGestureRecognizer *)self->_bounceDoubleTapRecognizer name];
           v24 = 138543362;
-          v25 = v19;
+          v25 = name3;
           _os_log_impl(&dword_21ED4E000, v18, OS_LOG_TYPE_DEFAULT, "Removed gesture recognizer: %{public}@", &v24, 0xCu);
         }
 
@@ -800,15 +800,15 @@ LABEL_11:
     {
       if (self->_gesturesEnabled)
       {
-        v21 = [(SBHomeAffordanceInteractionManager *)self _systemGestureManager];
-        [v21 removeGestureRecognizer:self->_bounceDoubleTapFailureRecognizer];
+        _systemGestureManager4 = [(SBHomeAffordanceInteractionManager *)self _systemGestureManager];
+        [_systemGestureManager4 removeGestureRecognizer:self->_bounceDoubleTapFailureRecognizer];
 
         v22 = SBLogHomeAffordance();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
         {
-          v23 = [(UITapGestureRecognizer *)self->_bounceDoubleTapFailureRecognizer name];
+          name4 = [(UITapGestureRecognizer *)self->_bounceDoubleTapFailureRecognizer name];
           v24 = 138543362;
-          v25 = v23;
+          v25 = name4;
           _os_log_impl(&dword_21ED4E000, v22, OS_LOG_TYPE_DEFAULT, "Removed gesture recognizer: %{public}@", &v24, 0xCu);
         }
 
@@ -820,24 +820,24 @@ LABEL_11:
   }
 }
 
-- (void)_gestureRecognizer:(id)a3 didRecognizeSingleTapWithHomeAffordanceInteraction:(id)a4
+- (void)_gestureRecognizer:(id)recognizer didRecognizeSingleTapWithHomeAffordanceInteraction:(id)interaction
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBHomeAffordanceInteractionManager *)self _assistantController];
-  v9 = [v8 isHomeAffordanceDoubleTapGestureEnabled];
+  recognizerCopy = recognizer;
+  interactionCopy = interaction;
+  _assistantController = [(SBHomeAffordanceInteractionManager *)self _assistantController];
+  isHomeAffordanceDoubleTapGestureEnabled = [_assistantController isHomeAffordanceDoubleTapGestureEnabled];
 
-  if (v9)
+  if (isHomeAffordanceDoubleTapGestureEnabled)
   {
     v10 = self->_currentHomeAffordanceInteraction;
-    objc_storeStrong(&self->_currentHomeAffordanceInteraction, a4);
+    objc_storeStrong(&self->_currentHomeAffordanceInteraction, interaction);
     [(SBHomeAffordanceInteraction *)v10 setNeedsUpdate];
     [(SBHomeAffordanceInteraction *)self->_currentHomeAffordanceInteraction notifyDidRecognizeSingleTap];
     [(SBHomeAffordanceInteraction *)self->_currentHomeAffordanceInteraction setNeedsUpdate];
-    v11 = [v6 sbf_activeTouches];
-    v12 = [v11 anyObject];
-    v13 = [v7 view];
+    sbf_activeTouches = [recognizerCopy sbf_activeTouches];
+    anyObject = [sbf_activeTouches anyObject];
+    view = [interactionCopy view];
     _UISystemGestureLocationForTouchInView();
     v15 = v14;
     v17 = v16;
@@ -856,28 +856,28 @@ LABEL_11:
     self->_isTrackingPossibleDoubleTap = 1;
     if (!self->_quickTypePrewarmAssertion)
     {
-      v20 = [(SiriQuickTypeGestureSource *)self->_quickTypeGestureSource prewarm];
+      prewarm = [(SiriQuickTypeGestureSource *)self->_quickTypeGestureSource prewarm];
       quickTypePrewarmAssertion = self->_quickTypePrewarmAssertion;
-      self->_quickTypePrewarmAssertion = v20;
+      self->_quickTypePrewarmAssertion = prewarm;
     }
   }
 
   else
   {
-    [v7 notifyDidRecognizeSingleTap];
-    [v7 setNeedsUpdate];
+    [interactionCopy notifyDidRecognizeSingleTap];
+    [interactionCopy setNeedsUpdate];
   }
 }
 
-- (void)_gestureRecognizer:(id)a3 didRecognizeDoubleTapWithHomeAffordanceInteraction:(id)a4
+- (void)_gestureRecognizer:(id)recognizer didRecognizeDoubleTapWithHomeAffordanceInteraction:(id)interaction
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBHomeAffordanceInteractionManager *)self _assistantController];
-  v9 = [v8 isHomeAffordanceDoubleTapGestureEnabled];
+  recognizerCopy = recognizer;
+  interactionCopy = interaction;
+  _assistantController = [(SBHomeAffordanceInteractionManager *)self _assistantController];
+  isHomeAffordanceDoubleTapGestureEnabled = [_assistantController isHomeAffordanceDoubleTapGestureEnabled];
 
-  if (v9)
+  if (isHomeAffordanceDoubleTapGestureEnabled)
   {
     v10 = self->_currentHomeAffordanceInteraction;
     currentHomeAffordanceInteraction = self->_currentHomeAffordanceInteraction;
@@ -885,13 +885,13 @@ LABEL_11:
 
     [(SBHomeAffordanceInteraction *)v10 notifyDidRecognizeDoubleTap];
     [(SBHomeAffordanceInteraction *)v10 setNeedsUpdate];
-    if (v7)
+    if (interactionCopy)
     {
       WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-      v13 = [WeakRetained sceneManager];
-      v14 = [v13 policyAggregator];
+      sceneManager = [WeakRetained sceneManager];
+      policyAggregator = [sceneManager policyAggregator];
 
-      if ([v14 allowsCapability:5])
+      if ([policyAggregator allowsCapability:5])
       {
         [(SiriQuickTypeGestureSource *)self->_quickTypeGestureSource activate];
       }
@@ -899,9 +899,9 @@ LABEL_11:
 
     if (self->_isTrackingPossibleDoubleTap)
     {
-      v15 = [v6 sbf_activeTouches];
-      v16 = [v15 anyObject];
-      v17 = [v7 view];
+      sbf_activeTouches = [recognizerCopy sbf_activeTouches];
+      anyObject = [sbf_activeTouches anyObject];
+      view = [interactionCopy view];
       _UISystemGestureLocationForTouchInView();
       v19 = v18;
       v21 = v20;
@@ -928,12 +928,12 @@ LABEL_11:
   }
 }
 
-- (void)_gestureRecognizer:(id)a3 didFailToRecognizeDoubleTapWithHomeAffordanceInteraction:(id)a4
+- (void)_gestureRecognizer:(id)recognizer didFailToRecognizeDoubleTapWithHomeAffordanceInteraction:(id)interaction
 {
-  v5 = [(SBHomeAffordanceInteractionManager *)self _assistantController:a3];
-  v6 = [v5 isHomeAffordanceDoubleTapGestureEnabled];
+  v5 = [(SBHomeAffordanceInteractionManager *)self _assistantController:recognizer];
+  isHomeAffordanceDoubleTapGestureEnabled = [v5 isHomeAffordanceDoubleTapGestureEnabled];
 
-  if (v6)
+  if (isHomeAffordanceDoubleTapGestureEnabled)
   {
     v7 = self->_currentHomeAffordanceInteraction;
     currentHomeAffordanceInteraction = self->_currentHomeAffordanceInteraction;

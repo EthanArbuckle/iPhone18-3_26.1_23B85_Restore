@@ -1,52 +1,52 @@
 @interface AVTCoalescingInvertingTaskScheduler
-- (AVTCoalescingInvertingTaskScheduler)initWithBackingScheduler:(id)a3 coalescingQueue:(id)a4 delay:(double)a5 environment:(id)a6;
+- (AVTCoalescingInvertingTaskScheduler)initWithBackingScheduler:(id)scheduler coalescingQueue:(id)queue delay:(double)delay environment:(id)environment;
 - (void)cancelAllTasks;
-- (void)performStateWork:(id)a3;
-- (void)scheduleTask:(id)a3;
-- (void)startTasksFrom:(id)a3;
+- (void)performStateWork:(id)work;
+- (void)scheduleTask:(id)task;
+- (void)startTasksFrom:(id)from;
 @end
 
 @implementation AVTCoalescingInvertingTaskScheduler
 
-- (AVTCoalescingInvertingTaskScheduler)initWithBackingScheduler:(id)a3 coalescingQueue:(id)a4 delay:(double)a5 environment:(id)a6
+- (AVTCoalescingInvertingTaskScheduler)initWithBackingScheduler:(id)scheduler coalescingQueue:(id)queue delay:(double)delay environment:(id)environment
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  schedulerCopy = scheduler;
+  queueCopy = queue;
+  environmentCopy = environment;
   v21.receiver = self;
   v21.super_class = AVTCoalescingInvertingTaskScheduler;
   v14 = [(AVTCoalescingInvertingTaskScheduler *)&v21 init];
   if (v14)
   {
-    v15 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     tasks = v14->_tasks;
-    v14->_tasks = v15;
+    v14->_tasks = array;
 
-    objc_storeStrong(&v14->_coalescingQueue, a4);
-    v14->_coalesingDelay = a5;
-    v17 = [v13 lockProvider];
-    v18 = (v17)[2](v17, "com.apple.AvatarUI.AVTCoalescingInvertingScheduler.stateLock");
+    objc_storeStrong(&v14->_coalescingQueue, queue);
+    v14->_coalesingDelay = delay;
+    lockProvider = [environmentCopy lockProvider];
+    v18 = (lockProvider)[2](lockProvider, "com.apple.AvatarUI.AVTCoalescingInvertingScheduler.stateLock");
     stateLock = v14->_stateLock;
     v14->_stateLock = v18;
 
-    objc_storeStrong(&v14->_backingScheduler, a3);
+    objc_storeStrong(&v14->_backingScheduler, scheduler);
   }
 
   return v14;
 }
 
-- (void)performStateWork:(id)a3
+- (void)performStateWork:(id)work
 {
-  v4 = a3;
-  v5 = [(AVTCoalescingInvertingTaskScheduler *)self stateLock];
+  workCopy = work;
+  stateLock = [(AVTCoalescingInvertingTaskScheduler *)self stateLock];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __56__AVTCoalescingInvertingTaskScheduler_performStateWork___block_invoke;
   v7[3] = &unk_1E7F3A8A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = workCopy;
+  v6 = workCopy;
+  dispatch_sync(stateLock, v7);
 }
 
 void __56__AVTCoalescingInvertingTaskScheduler_performStateWork___block_invoke(uint64_t a1)
@@ -56,9 +56,9 @@ void __56__AVTCoalescingInvertingTaskScheduler_performStateWork___block_invoke(u
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)scheduleTask:(id)a3
+- (void)scheduleTask:(id)task
 {
-  v4 = MEMORY[0x1BFB0DE80](a3, a2);
+  v4 = MEMORY[0x1BFB0DE80](task, a2);
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __52__AVTCoalescingInvertingTaskScheduler_scheduleTask___block_invoke;
@@ -68,7 +68,7 @@ void __56__AVTCoalescingInvertingTaskScheduler_performStateWork___block_invoke(u
   [(AVTCoalescingInvertingTaskScheduler *)self performStateWork:v12];
   [(AVTCoalescingInvertingTaskScheduler *)self coalesingDelay];
   v7 = dispatch_time(0, (v6 * 1000000000.0));
-  v8 = [(AVTCoalescingInvertingTaskScheduler *)self coalescingQueue];
+  coalescingQueue = [(AVTCoalescingInvertingTaskScheduler *)self coalescingQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __52__AVTCoalescingInvertingTaskScheduler_scheduleTask___block_invoke_2;
@@ -76,7 +76,7 @@ void __56__AVTCoalescingInvertingTaskScheduler_performStateWork___block_invoke(u
   block[4] = self;
   v11 = v5;
   v9 = v5;
-  dispatch_after(v7, v8, block);
+  dispatch_after(v7, coalescingQueue, block);
 }
 
 void __52__AVTCoalescingInvertingTaskScheduler_scheduleTask___block_invoke(uint64_t a1, void *a2)
@@ -87,10 +87,10 @@ void __52__AVTCoalescingInvertingTaskScheduler_scheduleTask___block_invoke(uint6
   [v3 insertObject:v4 atIndex:0];
 }
 
-- (void)startTasksFrom:(id)a3
+- (void)startTasksFrom:(id)from
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -101,7 +101,7 @@ void __52__AVTCoalescingInvertingTaskScheduler_scheduleTask___block_invoke(uint6
   v16[1] = 3221225472;
   v16[2] = __54__AVTCoalescingInvertingTaskScheduler_startTasksFrom___block_invoke;
   v16[3] = &unk_1E7F3ACC8;
-  v5 = v4;
+  v5 = fromCopy;
   v17 = v5;
   v18 = &v19;
   [(AVTCoalescingInvertingTaskScheduler *)self performStateWork:v16];
@@ -125,8 +125,8 @@ void __52__AVTCoalescingInvertingTaskScheduler_scheduleTask___block_invoke(uint6
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
-        v11 = [(AVTCoalescingInvertingTaskScheduler *)self backingScheduler];
-        [v11 scheduleTask:v10];
+        backingScheduler = [(AVTCoalescingInvertingTaskScheduler *)self backingScheduler];
+        [backingScheduler scheduleTask:v10];
 
         ++v9;
       }
@@ -161,8 +161,8 @@ void __54__AVTCoalescingInvertingTaskScheduler_startTasksFrom___block_invoke(uin
 - (void)cancelAllTasks
 {
   [(AVTCoalescingInvertingTaskScheduler *)self performStateWork:&__block_literal_global_2];
-  v3 = [(AVTCoalescingInvertingTaskScheduler *)self backingScheduler];
-  [v3 cancelAllTasks];
+  backingScheduler = [(AVTCoalescingInvertingTaskScheduler *)self backingScheduler];
+  [backingScheduler cancelAllTasks];
 }
 
 @end

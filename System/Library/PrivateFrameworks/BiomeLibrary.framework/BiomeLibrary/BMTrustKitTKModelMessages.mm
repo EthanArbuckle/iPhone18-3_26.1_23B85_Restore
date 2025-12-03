@@ -1,42 +1,42 @@
 @interface BMTrustKitTKModelMessages
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMTrustKitTKModelMessages)initWithJSONDictionary:(id)a3 error:(id *)p_isa;
-- (BMTrustKitTKModelMessages)initWithSignatureId:(id)a3 uafVersion:(id)a4 recordZone:(id)a5 triggeredRules:(id)a6 nemesisErrors:(id)a7 filteringTriggeredRules:(id)a8 filteringNemesisErrors:(id)a9 locale:(id)a10;
-- (BOOL)isEqual:(id)a3;
+- (BMTrustKitTKModelMessages)initWithJSONDictionary:(id)dictionary error:(id *)p_isa;
+- (BMTrustKitTKModelMessages)initWithSignatureId:(id)id uafVersion:(id)version recordZone:(id)zone triggeredRules:(id)rules nemesisErrors:(id)errors filteringTriggeredRules:(id)triggeredRules filteringNemesisErrors:(id)nemesisErrors locale:(id)self0;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_filteringNemesisErrorsJSONArray;
 - (id)_filteringTriggeredRulesJSONArray;
 - (id)_nemesisErrorsJSONArray;
 - (id)_triggeredRulesJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMTrustKitTKModelMessages
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMTrustKitTKModelMessages *)self signatureId];
-    v7 = [v5 signatureId];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    signatureId = [(BMTrustKitTKModelMessages *)self signatureId];
+    signatureId2 = [v5 signatureId];
+    v8 = signatureId2;
+    if (signatureId == signatureId2)
     {
     }
 
     else
     {
-      v9 = [(BMTrustKitTKModelMessages *)self signatureId];
-      v10 = [v5 signatureId];
-      v11 = [v9 isEqual:v10];
+      signatureId3 = [(BMTrustKitTKModelMessages *)self signatureId];
+      signatureId4 = [v5 signatureId];
+      v11 = [signatureId3 isEqual:signatureId4];
 
       if (!v11)
       {
@@ -44,18 +44,18 @@
       }
     }
 
-    v13 = [(BMTrustKitTKModelMessages *)self uafVersion];
-    v14 = [v5 uafVersion];
-    v15 = v14;
-    if (v13 == v14)
+    uafVersion = [(BMTrustKitTKModelMessages *)self uafVersion];
+    uafVersion2 = [v5 uafVersion];
+    v15 = uafVersion2;
+    if (uafVersion == uafVersion2)
     {
     }
 
     else
     {
-      v16 = [(BMTrustKitTKModelMessages *)self uafVersion];
-      v17 = [v5 uafVersion];
-      v18 = [v16 isEqual:v17];
+      uafVersion3 = [(BMTrustKitTKModelMessages *)self uafVersion];
+      uafVersion4 = [v5 uafVersion];
+      v18 = [uafVersion3 isEqual:uafVersion4];
 
       if (!v18)
       {
@@ -63,18 +63,18 @@
       }
     }
 
-    v19 = [(BMTrustKitTKModelMessages *)self recordZone];
-    v20 = [v5 recordZone];
-    v21 = v20;
-    if (v19 == v20)
+    recordZone = [(BMTrustKitTKModelMessages *)self recordZone];
+    recordZone2 = [v5 recordZone];
+    v21 = recordZone2;
+    if (recordZone == recordZone2)
     {
     }
 
     else
     {
-      v22 = [(BMTrustKitTKModelMessages *)self recordZone];
-      v23 = [v5 recordZone];
-      v24 = [v22 isEqual:v23];
+      recordZone3 = [(BMTrustKitTKModelMessages *)self recordZone];
+      recordZone4 = [v5 recordZone];
+      v24 = [recordZone3 isEqual:recordZone4];
 
       if (!v24)
       {
@@ -82,18 +82,18 @@
       }
     }
 
-    v25 = [(BMTrustKitTKModelMessages *)self triggeredRules];
-    v26 = [v5 triggeredRules];
-    v27 = v26;
-    if (v25 == v26)
+    triggeredRules = [(BMTrustKitTKModelMessages *)self triggeredRules];
+    triggeredRules2 = [v5 triggeredRules];
+    v27 = triggeredRules2;
+    if (triggeredRules == triggeredRules2)
     {
     }
 
     else
     {
-      v28 = [(BMTrustKitTKModelMessages *)self triggeredRules];
-      v29 = [v5 triggeredRules];
-      v30 = [v28 isEqual:v29];
+      triggeredRules3 = [(BMTrustKitTKModelMessages *)self triggeredRules];
+      triggeredRules4 = [v5 triggeredRules];
+      v30 = [triggeredRules3 isEqual:triggeredRules4];
 
       if (!v30)
       {
@@ -101,18 +101,18 @@
       }
     }
 
-    v31 = [(BMTrustKitTKModelMessages *)self nemesisErrors];
-    v32 = [v5 nemesisErrors];
-    v33 = v32;
-    if (v31 == v32)
+    nemesisErrors = [(BMTrustKitTKModelMessages *)self nemesisErrors];
+    nemesisErrors2 = [v5 nemesisErrors];
+    v33 = nemesisErrors2;
+    if (nemesisErrors == nemesisErrors2)
     {
     }
 
     else
     {
-      v34 = [(BMTrustKitTKModelMessages *)self nemesisErrors];
-      v35 = [v5 nemesisErrors];
-      v36 = [v34 isEqual:v35];
+      nemesisErrors3 = [(BMTrustKitTKModelMessages *)self nemesisErrors];
+      nemesisErrors4 = [v5 nemesisErrors];
+      v36 = [nemesisErrors3 isEqual:nemesisErrors4];
 
       if (!v36)
       {
@@ -120,18 +120,18 @@
       }
     }
 
-    v37 = [(BMTrustKitTKModelMessages *)self filteringTriggeredRules];
-    v38 = [v5 filteringTriggeredRules];
-    v39 = v38;
-    if (v37 == v38)
+    filteringTriggeredRules = [(BMTrustKitTKModelMessages *)self filteringTriggeredRules];
+    filteringTriggeredRules2 = [v5 filteringTriggeredRules];
+    v39 = filteringTriggeredRules2;
+    if (filteringTriggeredRules == filteringTriggeredRules2)
     {
     }
 
     else
     {
-      v40 = [(BMTrustKitTKModelMessages *)self filteringTriggeredRules];
-      v41 = [v5 filteringTriggeredRules];
-      v42 = [v40 isEqual:v41];
+      filteringTriggeredRules3 = [(BMTrustKitTKModelMessages *)self filteringTriggeredRules];
+      filteringTriggeredRules4 = [v5 filteringTriggeredRules];
+      v42 = [filteringTriggeredRules3 isEqual:filteringTriggeredRules4];
 
       if (!v42)
       {
@@ -139,18 +139,18 @@
       }
     }
 
-    v43 = [(BMTrustKitTKModelMessages *)self filteringNemesisErrors];
-    v44 = [v5 filteringNemesisErrors];
-    v45 = v44;
-    if (v43 == v44)
+    filteringNemesisErrors = [(BMTrustKitTKModelMessages *)self filteringNemesisErrors];
+    filteringNemesisErrors2 = [v5 filteringNemesisErrors];
+    v45 = filteringNemesisErrors2;
+    if (filteringNemesisErrors == filteringNemesisErrors2)
     {
     }
 
     else
     {
-      v46 = [(BMTrustKitTKModelMessages *)self filteringNemesisErrors];
-      v47 = [v5 filteringNemesisErrors];
-      v48 = [v46 isEqual:v47];
+      filteringNemesisErrors3 = [(BMTrustKitTKModelMessages *)self filteringNemesisErrors];
+      filteringNemesisErrors4 = [v5 filteringNemesisErrors];
+      v48 = [filteringNemesisErrors3 isEqual:filteringNemesisErrors4];
 
       if (!v48)
       {
@@ -162,18 +162,18 @@ LABEL_30:
       }
     }
 
-    v50 = [(BMTrustKitTKModelMessages *)self locale];
-    v51 = [v5 locale];
-    if (v50 == v51)
+    locale = [(BMTrustKitTKModelMessages *)self locale];
+    locale2 = [v5 locale];
+    if (locale == locale2)
     {
       v12 = 1;
     }
 
     else
     {
-      v52 = [(BMTrustKitTKModelMessages *)self locale];
-      v53 = [v5 locale];
-      v12 = [v52 isEqual:v53];
+      locale3 = [(BMTrustKitTKModelMessages *)self locale];
+      locale4 = [v5 locale];
+      v12 = [locale3 isEqual:locale4];
     }
 
     goto LABEL_30;
@@ -188,95 +188,95 @@ LABEL_31:
 - (id)jsonDictionary
 {
   v29[8] = *MEMORY[0x1E69E9840];
-  v3 = [(BMTrustKitTKModelMessages *)self signatureId];
-  v4 = [(BMTrustKitTKModelMessages *)self uafVersion];
-  v5 = [(BMTrustKitTKModelMessages *)self recordZone];
-  v6 = [(BMTrustKitTKModelMessages *)self _triggeredRulesJSONArray];
-  v7 = [(BMTrustKitTKModelMessages *)self _nemesisErrorsJSONArray];
-  v8 = [(BMTrustKitTKModelMessages *)self _filteringTriggeredRulesJSONArray];
-  v9 = [(BMTrustKitTKModelMessages *)self _filteringNemesisErrorsJSONArray];
-  v10 = [(BMTrustKitTKModelMessages *)self locale];
+  signatureId = [(BMTrustKitTKModelMessages *)self signatureId];
+  uafVersion = [(BMTrustKitTKModelMessages *)self uafVersion];
+  recordZone = [(BMTrustKitTKModelMessages *)self recordZone];
+  _triggeredRulesJSONArray = [(BMTrustKitTKModelMessages *)self _triggeredRulesJSONArray];
+  _nemesisErrorsJSONArray = [(BMTrustKitTKModelMessages *)self _nemesisErrorsJSONArray];
+  _filteringTriggeredRulesJSONArray = [(BMTrustKitTKModelMessages *)self _filteringTriggeredRulesJSONArray];
+  _filteringNemesisErrorsJSONArray = [(BMTrustKitTKModelMessages *)self _filteringNemesisErrorsJSONArray];
+  locale = [(BMTrustKitTKModelMessages *)self locale];
   v28[0] = @"signatureId";
-  v11 = v3;
-  if (!v3)
+  null = signatureId;
+  if (!signatureId)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23 = v11;
-  v29[0] = v11;
+  v23 = null;
+  v29[0] = null;
   v28[1] = @"uafVersion";
-  v12 = v4;
-  if (!v4)
+  null2 = uafVersion;
+  if (!uafVersion)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v22 = v12;
-  v29[1] = v12;
+  v22 = null2;
+  v29[1] = null2;
   v28[2] = @"recordZone";
-  v13 = v5;
-  if (!v5)
+  null3 = recordZone;
+  if (!recordZone)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27 = v3;
-  v21 = v13;
-  v29[2] = v13;
+  v27 = signatureId;
+  v21 = null3;
+  v29[2] = null3;
   v28[3] = @"triggeredRules";
-  v14 = v6;
-  if (!v6)
+  null4 = _triggeredRulesJSONArray;
+  if (!_triggeredRulesJSONArray)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26 = v4;
-  v29[3] = v14;
+  v26 = uafVersion;
+  v29[3] = null4;
   v28[4] = @"nemesisErrors";
-  v15 = v7;
-  if (!v7)
+  null5 = _nemesisErrorsJSONArray;
+  if (!_nemesisErrorsJSONArray)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25 = v5;
-  v29[4] = v15;
+  v25 = recordZone;
+  v29[4] = null5;
   v28[5] = @"filteringTriggeredRules";
-  v16 = v8;
-  if (!v8)
+  null6 = _filteringTriggeredRulesJSONArray;
+  if (!_filteringTriggeredRulesJSONArray)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29[5] = v16;
+  v29[5] = null6;
   v28[6] = @"filteringNemesisErrors";
-  v17 = v9;
-  if (!v9)
+  null7 = _filteringNemesisErrorsJSONArray;
+  if (!_filteringNemesisErrorsJSONArray)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29[6] = v17;
+  v29[6] = null7;
   v28[7] = @"locale";
-  v18 = v10;
-  if (!v10)
+  null8 = locale;
+  if (!locale)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29[7] = v18;
+  v29[7] = null8;
   v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:v28 count:8];
-  if (v10)
+  if (locale)
   {
-    if (v9)
+    if (_filteringNemesisErrorsJSONArray)
     {
       goto LABEL_19;
     }
 
 LABEL_31:
 
-    if (v8)
+    if (_filteringTriggeredRulesJSONArray)
     {
       goto LABEL_20;
     }
@@ -284,13 +284,13 @@ LABEL_31:
     goto LABEL_32;
   }
 
-  if (!v9)
+  if (!_filteringNemesisErrorsJSONArray)
   {
     goto LABEL_31;
   }
 
 LABEL_19:
-  if (v8)
+  if (_filteringTriggeredRulesJSONArray)
   {
     goto LABEL_20;
   }
@@ -298,11 +298,11 @@ LABEL_19:
 LABEL_32:
 
 LABEL_20:
-  if (!v7)
+  if (!_nemesisErrorsJSONArray)
   {
   }
 
-  if (!v6)
+  if (!_triggeredRulesJSONArray)
   {
   }
 
@@ -350,8 +350,8 @@ LABEL_27:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(BMTrustKitTKModelMessages *)self filteringNemesisErrors];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  filteringNemesisErrors = [(BMTrustKitTKModelMessages *)self filteringNemesisErrors];
+  v5 = [filteringNemesisErrors countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -362,13 +362,13 @@ LABEL_27:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(filteringNemesisErrors);
         }
 
         [v3 addObject:*(*(&v11 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [filteringNemesisErrors countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -387,8 +387,8 @@ LABEL_27:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(BMTrustKitTKModelMessages *)self filteringTriggeredRules];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  filteringTriggeredRules = [(BMTrustKitTKModelMessages *)self filteringTriggeredRules];
+  v5 = [filteringTriggeredRules countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -399,13 +399,13 @@ LABEL_27:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(filteringTriggeredRules);
         }
 
         [v3 addObject:*(*(&v11 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [filteringTriggeredRules countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -424,8 +424,8 @@ LABEL_27:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(BMTrustKitTKModelMessages *)self nemesisErrors];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  nemesisErrors = [(BMTrustKitTKModelMessages *)self nemesisErrors];
+  v5 = [nemesisErrors countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -436,13 +436,13 @@ LABEL_27:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(nemesisErrors);
         }
 
         [v3 addObject:*(*(&v11 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [nemesisErrors countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -461,8 +461,8 @@ LABEL_27:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(BMTrustKitTKModelMessages *)self triggeredRules];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  triggeredRules = [(BMTrustKitTKModelMessages *)self triggeredRules];
+  v5 = [triggeredRules countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -473,13 +473,13 @@ LABEL_27:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(triggeredRules);
         }
 
         [v3 addObject:*(*(&v11 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [triggeredRules countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -490,11 +490,11 @@ LABEL_27:
   return v3;
 }
 
-- (BMTrustKitTKModelMessages)initWithJSONDictionary:(id)a3 error:(id *)p_isa
+- (BMTrustKitTKModelMessages)initWithJSONDictionary:(id)dictionary error:(id *)p_isa
 {
   v187[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"signatureId"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"signatureId"];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
@@ -530,7 +530,7 @@ LABEL_27:
     v8 = 0;
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"uafVersion"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"uafVersion"];
   if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
@@ -542,11 +542,11 @@ LABEL_27:
         v40 = v9;
         v41 = *MEMORY[0x1E698F240];
         v184 = *MEMORY[0x1E696A578];
-        v42 = self;
+        selfCopy = self;
         v43 = objc_alloc(MEMORY[0x1E696AEC0]);
         v118 = objc_opt_class();
         v44 = v43;
-        self = v42;
+        self = selfCopy;
         v12 = [v44 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", v118, @"uafVersion"];
         v185 = v12;
         v45 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v185 forKeys:&v184 count:1];
@@ -574,7 +574,7 @@ LABEL_27:
     v132 = 0;
   }
 
-  v10 = [v6 objectForKeyedSubscript:@"recordZone"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"recordZone"];
   v129 = v7;
   v130 = v10;
   v131 = v8;
@@ -620,13 +620,13 @@ LABEL_27:
     v12 = 0;
   }
 
-  v13 = [v6 objectForKeyedSubscript:@"triggeredRules"];
-  v14 = [MEMORY[0x1E695DFB0] null];
-  v15 = [v13 isEqual:v14];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"triggeredRules"];
+  null = [MEMORY[0x1E695DFB0] null];
+  v15 = [v13 isEqual:null];
 
   if (v15)
   {
-    v125 = self;
+    selfCopy3 = self;
     v126 = v12;
 
     v13 = 0;
@@ -661,7 +661,7 @@ LABEL_27:
       }
     }
 
-    v125 = self;
+    selfCopy3 = self;
     v126 = v12;
   }
 
@@ -705,7 +705,7 @@ LABEL_27:
           v29 = v26;
 LABEL_38:
           obj = v27;
-          self = v125;
+          self = selfCopy3;
           v32 = v132;
           v11 = v130;
           p_isa = 0;
@@ -719,7 +719,7 @@ LABEL_41:
         p_isa = 0;
         v22 = v13;
 LABEL_42:
-        self = v125;
+        self = selfCopy3;
         v12 = v126;
 LABEL_60:
         v9 = v128;
@@ -757,9 +757,9 @@ LABEL_60:
   while (v18);
 LABEL_26:
 
-  v22 = [v6 objectForKeyedSubscript:@"nemesisErrors"];
-  v23 = [MEMORY[0x1E695DFB0] null];
-  v24 = [v22 isEqual:v23];
+  v22 = [dictionaryCopy objectForKeyedSubscript:@"nemesisErrors"];
+  null2 = [MEMORY[0x1E695DFB0] null];
+  v24 = [v22 isEqual:null2];
 
   if (!v24)
   {
@@ -838,7 +838,7 @@ LABEL_66:
           p_isa = 0;
           *v133 = [v71 initWithDomain:v72 code:2 userInfo:?];
           obj = v22;
-          self = v125;
+          self = selfCopy3;
           v9 = v128;
           goto LABEL_67;
         }
@@ -847,7 +847,7 @@ LABEL_70:
         p_isa = 0;
         obj = v22;
 LABEL_87:
-        self = v125;
+        self = selfCopy3;
         v9 = v128;
         v32 = v132;
         v11 = v130;
@@ -884,9 +884,9 @@ LABEL_88:
   while (v57);
 LABEL_56:
 
-  v61 = [v6 objectForKeyedSubscript:@"filteringTriggeredRules"];
-  v62 = [MEMORY[0x1E695DFB0] null];
-  v63 = [v61 isEqual:v62];
+  v61 = [dictionaryCopy objectForKeyedSubscript:@"filteringTriggeredRules"];
+  null3 = [MEMORY[0x1E695DFB0] null];
+  v63 = [v61 isEqual:null3];
 
   if (!v63)
   {
@@ -907,7 +907,7 @@ LABEL_56:
     if (!v133)
     {
       p_isa = 0;
-      self = v125;
+      self = selfCopy3;
       v9 = v128;
       v32 = v132;
       goto LABEL_129;
@@ -922,7 +922,7 @@ LABEL_56:
     p_isa = 0;
     *v133 = [v101 initWithDomain:v102 code:2 userInfo:?];
 LABEL_111:
-    self = v125;
+    self = selfCopy3;
     v9 = v128;
     v32 = v132;
     goto LABEL_128;
@@ -976,7 +976,7 @@ LABEL_93:
           *v133 = [v90 initWithDomain:v91 code:2 userInfo:?];
           v9 = v128;
           v123 = obj;
-          self = v125;
+          self = selfCopy3;
           v12 = v126;
           goto LABEL_126;
         }
@@ -985,7 +985,7 @@ LABEL_94:
         p_isa = 0;
         v9 = v128;
         v123 = obj;
-        self = v125;
+        self = selfCopy3;
         v32 = v132;
         v11 = v130;
 LABEL_67:
@@ -1022,9 +1022,9 @@ LABEL_67:
   while (v76);
 LABEL_83:
 
-  v80 = [v6 objectForKeyedSubscript:@"filteringNemesisErrors"];
-  v81 = [MEMORY[0x1E695DFB0] null];
-  v82 = [v80 isEqual:v81];
+  v80 = [dictionaryCopy objectForKeyedSubscript:@"filteringNemesisErrors"];
+  null4 = [MEMORY[0x1E695DFB0] null];
+  v82 = [v80 isEqual:null4];
 
   if (v82)
   {
@@ -1052,7 +1052,7 @@ LABEL_83:
         p_isa = 0;
         *v133 = [v109 initWithDomain:v110 code:2 userInfo:v111];
         v108 = v111;
-        self = v125;
+        self = selfCopy3;
         v9 = v128;
         v32 = v132;
         goto LABEL_127;
@@ -1107,7 +1107,7 @@ LABEL_116:
 
           p_isa = 0;
           v120 = v123;
-          self = v125;
+          self = selfCopy3;
           v9 = v128;
           goto LABEL_117;
         }
@@ -1115,7 +1115,7 @@ LABEL_116:
 LABEL_118:
         p_isa = 0;
         v108 = v123;
-        self = v125;
+        self = selfCopy3;
         v12 = v126;
         v9 = v128;
         v32 = v132;
@@ -1162,13 +1162,13 @@ LABEL_118:
 
 LABEL_106:
 
-  v99 = [v6 objectForKeyedSubscript:@"locale"];
+  v99 = [dictionaryCopy objectForKeyedSubscript:@"locale"];
   v119 = v99;
   if (v99)
   {
     v100 = v99;
     objc_opt_class();
-    self = v125;
+    self = selfCopy3;
     v9 = v128;
     if (objc_opt_isKindOfClass())
     {
@@ -1193,7 +1193,7 @@ LABEL_106:
       v153 = v115;
       v116 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v153 forKeys:&v152 count:1];
       v117 = v114;
-      self = v125;
+      self = selfCopy3;
       v11 = v130;
       *v133 = [v121 initWithDomain:v117 code:2 userInfo:v116];
 
@@ -1208,7 +1208,7 @@ LABEL_117:
 
   else
   {
-    self = v125;
+    self = selfCopy3;
     v9 = v128;
 LABEL_123:
     v32 = v132;
@@ -1246,15 +1246,15 @@ LABEL_135:
 {
   v3 = objc_opt_new();
   [(BMTrustKitTKModelMessages *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v50 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_signatureId)
   {
     PBDataWriterWriteStringField();
@@ -1406,9 +1406,9 @@ LABEL_135:
   v29 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v39.receiver = self;
   v39.super_class = BMTrustKitTKModelMessages;
   v5 = [(BMEventBase *)&v39 init];
@@ -1425,8 +1425,8 @@ LABEL_49:
   v9 = objc_opt_new();
   while (1)
   {
-    v10 = [v4 position];
-    if (v10 >= [v4 length] || (objc_msgSend(v4, "hasError") & 1) != 0)
+    position = [fromCopy position];
+    if (position >= [fromCopy length] || (objc_msgSend(fromCopy, "hasError") & 1) != 0)
     {
       break;
     }
@@ -1437,18 +1437,18 @@ LABEL_49:
     while (1)
     {
       v40 = 0;
-      v14 = [v4 position] + 1;
-      if (v14 >= [v4 position] && (v15 = objc_msgSend(v4, "position") + 1, v15 <= objc_msgSend(v4, "length")))
+      v14 = [fromCopy position] + 1;
+      if (v14 >= [fromCopy position] && (v15 = objc_msgSend(fromCopy, "position") + 1, v15 <= objc_msgSend(fromCopy, "length")))
       {
-        v16 = [v4 data];
-        [v16 getBytes:&v40 range:{objc_msgSend(v4, "position"), 1}];
+        data = [fromCopy data];
+        [data getBytes:&v40 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-        [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+        [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
       }
 
       else
       {
-        [v4 _setError];
+        [fromCopy _setError];
       }
 
       v13 |= (v40 & 0x7F) << v11;
@@ -1465,9 +1465,9 @@ LABEL_49:
       }
     }
 
-    v18 = [v4 hasError] ? 0 : v13;
+    v18 = [fromCopy hasError] ? 0 : v13;
 LABEL_17:
-    if (([v4 hasError] & 1) != 0 || (v18 & 7) == 4)
+    if (([fromCopy hasError] & 1) != 0 || (v18 & 7) == 4)
     {
       break;
     }
@@ -1604,8 +1604,8 @@ LABEL_44:
   filteringNemesisErrors = v5->_filteringNemesisErrors;
   v5->_filteringNemesisErrors = v34;
 
-  v36 = [v4 hasError];
-  if ((v36 & 1) == 0)
+  hasError = [fromCopy hasError];
+  if ((hasError & 1) == 0)
   {
     goto LABEL_49;
   }
@@ -1620,43 +1620,43 @@ LABEL_50:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMTrustKitTKModelMessages *)self signatureId];
-  v5 = [(BMTrustKitTKModelMessages *)self uafVersion];
-  v6 = [(BMTrustKitTKModelMessages *)self recordZone];
-  v7 = [(BMTrustKitTKModelMessages *)self triggeredRules];
-  v8 = [(BMTrustKitTKModelMessages *)self nemesisErrors];
-  v9 = [(BMTrustKitTKModelMessages *)self filteringTriggeredRules];
-  v10 = [(BMTrustKitTKModelMessages *)self filteringNemesisErrors];
-  v11 = [(BMTrustKitTKModelMessages *)self locale];
-  v12 = [v3 initWithFormat:@"BMTrustKitTKModelMessages with signatureId: %@, uafVersion: %@, recordZone: %@, triggeredRules: %@, nemesisErrors: %@, filteringTriggeredRules: %@, filteringNemesisErrors: %@, locale: %@", v4, v5, v6, v7, v8, v9, v10, v11];
+  signatureId = [(BMTrustKitTKModelMessages *)self signatureId];
+  uafVersion = [(BMTrustKitTKModelMessages *)self uafVersion];
+  recordZone = [(BMTrustKitTKModelMessages *)self recordZone];
+  triggeredRules = [(BMTrustKitTKModelMessages *)self triggeredRules];
+  nemesisErrors = [(BMTrustKitTKModelMessages *)self nemesisErrors];
+  filteringTriggeredRules = [(BMTrustKitTKModelMessages *)self filteringTriggeredRules];
+  filteringNemesisErrors = [(BMTrustKitTKModelMessages *)self filteringNemesisErrors];
+  locale = [(BMTrustKitTKModelMessages *)self locale];
+  v12 = [v3 initWithFormat:@"BMTrustKitTKModelMessages with signatureId: %@, uafVersion: %@, recordZone: %@, triggeredRules: %@, nemesisErrors: %@, filteringTriggeredRules: %@, filteringNemesisErrors: %@, locale: %@", signatureId, uafVersion, recordZone, triggeredRules, nemesisErrors, filteringTriggeredRules, filteringNemesisErrors, locale];
 
   return v12;
 }
 
-- (BMTrustKitTKModelMessages)initWithSignatureId:(id)a3 uafVersion:(id)a4 recordZone:(id)a5 triggeredRules:(id)a6 nemesisErrors:(id)a7 filteringTriggeredRules:(id)a8 filteringNemesisErrors:(id)a9 locale:(id)a10
+- (BMTrustKitTKModelMessages)initWithSignatureId:(id)id uafVersion:(id)version recordZone:(id)zone triggeredRules:(id)rules nemesisErrors:(id)errors filteringTriggeredRules:(id)triggeredRules filteringNemesisErrors:(id)nemesisErrors locale:(id)self0
 {
-  v26 = a3;
-  v25 = a4;
-  v24 = a5;
-  v23 = a6;
-  v22 = a7;
-  v21 = a8;
-  v20 = a9;
-  v17 = a10;
+  idCopy = id;
+  versionCopy = version;
+  zoneCopy = zone;
+  rulesCopy = rules;
+  errorsCopy = errors;
+  triggeredRulesCopy = triggeredRules;
+  nemesisErrorsCopy = nemesisErrors;
+  localeCopy = locale;
   v27.receiver = self;
   v27.super_class = BMTrustKitTKModelMessages;
   v18 = [(BMEventBase *)&v27 init];
   if (v18)
   {
     v18->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v18->_signatureId, a3);
-    objc_storeStrong(&v18->_uafVersion, a4);
-    objc_storeStrong(&v18->_recordZone, a5);
-    objc_storeStrong(&v18->_triggeredRules, a6);
-    objc_storeStrong(&v18->_nemesisErrors, a7);
-    objc_storeStrong(&v18->_filteringTriggeredRules, a8);
-    objc_storeStrong(&v18->_filteringNemesisErrors, a9);
-    objc_storeStrong(&v18->_locale, a10);
+    objc_storeStrong(&v18->_signatureId, id);
+    objc_storeStrong(&v18->_uafVersion, version);
+    objc_storeStrong(&v18->_recordZone, zone);
+    objc_storeStrong(&v18->_triggeredRules, rules);
+    objc_storeStrong(&v18->_nemesisErrors, errors);
+    objc_storeStrong(&v18->_filteringTriggeredRules, triggeredRules);
+    objc_storeStrong(&v18->_filteringNemesisErrors, nemesisErrors);
+    objc_storeStrong(&v18->_locale, locale);
   }
 
   return v18;
@@ -1750,9 +1750,9 @@ id __36__BMTrustKitTKModelMessages_columns__block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1760,8 +1760,8 @@ id __36__BMTrustKitTKModelMessages_columns__block_invoke(uint64_t a1, void *a2)
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMTrustKitTKModelMessages alloc] initByReadFrom:v7];
     v4 = v8;

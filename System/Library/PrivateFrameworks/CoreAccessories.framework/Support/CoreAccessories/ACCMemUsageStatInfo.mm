@@ -1,12 +1,12 @@
 @interface ACCMemUsageStatInfo
 - (ACCMemUsageStatInfo)init;
-- (ACCMemUsageStatInfo)initWithName:(id)a3;
-- (ACCMemUsageStatInfo)initWithName:(id)a3 andInfo:(id)a4;
+- (ACCMemUsageStatInfo)initWithName:(id)name;
+- (ACCMemUsageStatInfo)initWithName:(id)name andInfo:(id)info;
 - (double)timeIntervalSinceLastUpdate;
 - (double)timeIntervalSinceStart;
 - (id)description;
-- (void)setInfo:(id)a3;
-- (void)updateResident:(unint64_t)a3 virtualValue:(unint64_t)a4 physFootprintValue:(unint64_t)a5;
+- (void)setInfo:(id)info;
+- (void)updateResident:(unint64_t)resident virtualValue:(unint64_t)value physFootprintValue:(unint64_t)footprintValue;
 @end
 
 @implementation ACCMemUsageStatInfo
@@ -45,31 +45,31 @@
   return v3;
 }
 
-- (ACCMemUsageStatInfo)initWithName:(id)a3
+- (ACCMemUsageStatInfo)initWithName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v24.receiver = self;
   v24.super_class = ACCMemUsageStatInfo;
   v6 = [(ACCMemUsageStatInfo *)&v24 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_name, a3);
+    objc_storeStrong(&v6->_name, name);
     v8 = [ACCStatInfoAccumulator alloc];
-    v9 = [NSString stringWithFormat:@"%@-resident", v5];
-    v10 = [(ACCStatInfoAccumulator *)v8 initWithName:v9];
+    nameCopy = [NSString stringWithFormat:@"%@-resident", nameCopy];
+    v10 = [(ACCStatInfoAccumulator *)v8 initWithName:nameCopy];
     residentMem = v7->_residentMem;
     v7->_residentMem = v10;
 
     v12 = [ACCStatInfoAccumulator alloc];
-    v13 = [NSString stringWithFormat:@"%@-virtual", v5];
-    v14 = [(ACCStatInfoAccumulator *)v12 initWithName:v13];
+    nameCopy2 = [NSString stringWithFormat:@"%@-virtual", nameCopy];
+    v14 = [(ACCStatInfoAccumulator *)v12 initWithName:nameCopy2];
     virtualMem = v7->_virtualMem;
     v7->_virtualMem = v14;
 
     v16 = [ACCStatInfoAccumulator alloc];
-    v17 = [NSString stringWithFormat:@"%@-physFootprint", v5];
-    v18 = [(ACCStatInfoAccumulator *)v16 initWithName:v17];
+    nameCopy3 = [NSString stringWithFormat:@"%@-physFootprint", nameCopy];
+    v18 = [(ACCStatInfoAccumulator *)v16 initWithName:nameCopy3];
     physFootprintMem = v7->_physFootprintMem;
     v7->_physFootprintMem = v18;
 
@@ -84,32 +84,32 @@
   return v7;
 }
 
-- (ACCMemUsageStatInfo)initWithName:(id)a3 andInfo:(id)a4
+- (ACCMemUsageStatInfo)initWithName:(id)name andInfo:(id)info
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  infoCopy = info;
   v27.receiver = self;
   v27.super_class = ACCMemUsageStatInfo;
   v9 = [(ACCMemUsageStatInfo *)&v27 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_name, a3);
+    objc_storeStrong(&v9->_name, name);
     v11 = [ACCStatInfoAccumulator alloc];
-    v12 = [NSString stringWithFormat:@"%@-resident", v7];
-    v13 = [(ACCStatInfoAccumulator *)v11 initWithName:v12];
+    nameCopy = [NSString stringWithFormat:@"%@-resident", nameCopy];
+    v13 = [(ACCStatInfoAccumulator *)v11 initWithName:nameCopy];
     residentMem = v10->_residentMem;
     v10->_residentMem = v13;
 
     v15 = [ACCStatInfoAccumulator alloc];
-    v16 = [NSString stringWithFormat:@"%@-virtual", v7];
-    v17 = [(ACCStatInfoAccumulator *)v15 initWithName:v16];
+    nameCopy2 = [NSString stringWithFormat:@"%@-virtual", nameCopy];
+    v17 = [(ACCStatInfoAccumulator *)v15 initWithName:nameCopy2];
     virtualMem = v10->_virtualMem;
     v10->_virtualMem = v17;
 
     v19 = [ACCStatInfoAccumulator alloc];
-    v20 = [NSString stringWithFormat:@"%@-physFootprint", v7];
-    v21 = [(ACCStatInfoAccumulator *)v19 initWithName:v20];
+    nameCopy3 = [NSString stringWithFormat:@"%@-physFootprint", nameCopy];
+    v21 = [(ACCStatInfoAccumulator *)v19 initWithName:nameCopy3];
     physFootprintMem = v10->_physFootprintMem;
     v10->_physFootprintMem = v21;
 
@@ -120,7 +120,7 @@
     lastUpdateTime = v10->_lastUpdateTime;
     v10->_lastUpdateTime = 0;
 
-    [(ACCMemUsageStatInfo *)v10 setInfo:v8];
+    [(ACCMemUsageStatInfo *)v10 setInfo:infoCopy];
   }
 
   return v10;
@@ -146,51 +146,51 @@
   v18 = v8;
   [v3 timeIntervalSinceDate:self->_lastUpdateTime];
   v17 = v9;
-  v16 = [(ACCStatInfoAccumulator *)self->_residentMem start];
+  start = [(ACCStatInfoAccumulator *)self->_residentMem start];
   v15 = [(ACCStatInfoAccumulator *)self->_residentMem start]/ 1000000.0;
-  v14 = [(ACCStatInfoAccumulator *)self->_residentMem last];
+  last = [(ACCStatInfoAccumulator *)self->_residentMem last];
   v13 = [(ACCStatInfoAccumulator *)self->_residentMem last]/ 1000000.0;
   v12 = [(ACCStatInfoAccumulator *)self->_residentMem max];
-  v10 = [NSString stringWithFormat:@"  ACCMemUsageStatInfo:%@ startTime=%f, lastUpdateTime=%f, curTime=%f, sinceStart=%f, sinceLast=%f \n         resident: (start:%10llu / %8.3fM, last:%10llu / %8.3fM, max:%10llu / %8.3fM, diff:%10llu / %8.3fM, avg:%10llu / %8.3fM) \n          virtual: (start:%10llu / %8.3fM, last:%10llu / %8.3fM, max:%10llu / %8.3fM, diff:%10llu / %8.3fM, avg:%10llu / %8.3fM) \n    physFootprint: (start:%10llu / %8.3fM, last:%10llu / %8.3fM, max:%10llu / %8.3fM, diff:%10llu / %8.3fM, avg:%10llu / %8.3fM) \n", v22, v21, v20, v19, v18, v17, v16, *&v15, v14, *&v13, v12, [(ACCStatInfoAccumulator *)self->_residentMem max]/ 1000000.0, [(ACCStatInfoAccumulator *)self->_residentMem max]- [(ACCStatInfoAccumulator *)self->_residentMem start], ([(ACCStatInfoAccumulator *)self->_residentMem max]- [(ACCStatInfoAccumulator *)self->_residentMem start]) / 1000000.0, [(ACCStatInfoAccumulator *)self->_residentMem average], [(ACCStatInfoAccumulator *)self->_residentMem average]/ 1000000.0, [(ACCStatInfoAccumulator *)self->_virtualMem start], [(ACCStatInfoAccumulator *)self->_virtualMem start]/ 1000000.0, [(ACCStatInfoAccumulator *)self->_virtualMem last], [(ACCStatInfoAccumulator *)self->_virtualMem last]/ 1000000.0, [(ACCStatInfoAccumulator *)self->_virtualMem max], [(ACCStatInfoAccumulator *)self->_virtualMem max]/ 1000000.0, [(ACCStatInfoAccumulator *)self->_virtualMem max]- [(ACCStatInfoAccumulator *)self->_virtualMem start], ([(ACCStatInfoAccumulator *)self->_virtualMem max]- [(ACCStatInfoAccumulator *)self->_virtualMem start]) / 1000000.0, [(ACCStatInfoAccumulator *)self->_virtualMem average], [(ACCStatInfoAccumulator *)self->_virtualMem average]/ 1000000.0, [(ACCStatInfoAccumulator *)self->_physFootprintMem start], [(ACCStatInfoAccumulator *)self->_physFootprintMem start]/ 1000000.0, [(ACCStatInfoAccumulator *)self->_physFootprintMem last], [(ACCStatInfoAccumulator *)self->_physFootprintMem last]/ 1000000.0, [(ACCStatInfoAccumulator *)self->_physFootprintMem max], [(ACCStatInfoAccumulator *)self->_physFootprintMem max]/ 1000000.0, [(ACCStatInfoAccumulator *)self->_physFootprintMem max]- [(ACCStatInfoAccumulator *)self->_physFootprintMem start], ([(ACCStatInfoAccumulator *)self->_physFootprintMem max]- [(ACCStatInfoAccumulator *)self->_physFootprintMem start]) / 1000000.0, [(ACCStatInfoAccumulator *)self->_physFootprintMem average], [(ACCStatInfoAccumulator *)self->_physFootprintMem average]/ 1000000.0];
+  v10 = [NSString stringWithFormat:@"  ACCMemUsageStatInfo:%@ startTime=%f, lastUpdateTime=%f, curTime=%f, sinceStart=%f, sinceLast=%f \n         resident: (start:%10llu / %8.3fM, last:%10llu / %8.3fM, max:%10llu / %8.3fM, diff:%10llu / %8.3fM, avg:%10llu / %8.3fM) \n          virtual: (start:%10llu / %8.3fM, last:%10llu / %8.3fM, max:%10llu / %8.3fM, diff:%10llu / %8.3fM, avg:%10llu / %8.3fM) \n    physFootprint: (start:%10llu / %8.3fM, last:%10llu / %8.3fM, max:%10llu / %8.3fM, diff:%10llu / %8.3fM, avg:%10llu / %8.3fM) \n", v22, v21, v20, v19, v18, v17, start, *&v15, last, *&v13, v12, [(ACCStatInfoAccumulator *)self->_residentMem max]/ 1000000.0, [(ACCStatInfoAccumulator *)self->_residentMem max]- [(ACCStatInfoAccumulator *)self->_residentMem start], ([(ACCStatInfoAccumulator *)self->_residentMem max]- [(ACCStatInfoAccumulator *)self->_residentMem start]) / 1000000.0, [(ACCStatInfoAccumulator *)self->_residentMem average], [(ACCStatInfoAccumulator *)self->_residentMem average]/ 1000000.0, [(ACCStatInfoAccumulator *)self->_virtualMem start], [(ACCStatInfoAccumulator *)self->_virtualMem start]/ 1000000.0, [(ACCStatInfoAccumulator *)self->_virtualMem last], [(ACCStatInfoAccumulator *)self->_virtualMem last]/ 1000000.0, [(ACCStatInfoAccumulator *)self->_virtualMem max], [(ACCStatInfoAccumulator *)self->_virtualMem max]/ 1000000.0, [(ACCStatInfoAccumulator *)self->_virtualMem max]- [(ACCStatInfoAccumulator *)self->_virtualMem start], ([(ACCStatInfoAccumulator *)self->_virtualMem max]- [(ACCStatInfoAccumulator *)self->_virtualMem start]) / 1000000.0, [(ACCStatInfoAccumulator *)self->_virtualMem average], [(ACCStatInfoAccumulator *)self->_virtualMem average]/ 1000000.0, [(ACCStatInfoAccumulator *)self->_physFootprintMem start], [(ACCStatInfoAccumulator *)self->_physFootprintMem start]/ 1000000.0, [(ACCStatInfoAccumulator *)self->_physFootprintMem last], [(ACCStatInfoAccumulator *)self->_physFootprintMem last]/ 1000000.0, [(ACCStatInfoAccumulator *)self->_physFootprintMem max], [(ACCStatInfoAccumulator *)self->_physFootprintMem max]/ 1000000.0, [(ACCStatInfoAccumulator *)self->_physFootprintMem max]- [(ACCStatInfoAccumulator *)self->_physFootprintMem start], ([(ACCStatInfoAccumulator *)self->_physFootprintMem max]- [(ACCStatInfoAccumulator *)self->_physFootprintMem start]) / 1000000.0, [(ACCStatInfoAccumulator *)self->_physFootprintMem average], [(ACCStatInfoAccumulator *)self->_physFootprintMem average]/ 1000000.0];
 
   return v10;
 }
 
-- (void)setInfo:(id)a3
+- (void)setInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = +[NSDate date];
   lastUpdateTime = self->_lastUpdateTime;
   self->_lastUpdateTime = v5;
 
   [(ACCStatInfoAccumulator *)self->_residentMem reset];
   residentMem = self->_residentMem;
-  v8 = [v4 residentMem];
-  [(ACCStatInfoAccumulator *)residentMem set:v8];
+  residentMem = [infoCopy residentMem];
+  [(ACCStatInfoAccumulator *)residentMem set:residentMem];
 
   [(ACCStatInfoAccumulator *)self->_virtualMem reset];
   virtualMem = self->_virtualMem;
-  v10 = [v4 virtualMem];
-  [(ACCStatInfoAccumulator *)virtualMem set:v10];
+  virtualMem = [infoCopy virtualMem];
+  [(ACCStatInfoAccumulator *)virtualMem set:virtualMem];
 
   [(ACCStatInfoAccumulator *)self->_physFootprintMem reset];
   physFootprintMem = self->_physFootprintMem;
-  v12 = [v4 physFootprintMem];
+  physFootprintMem = [infoCopy physFootprintMem];
 
-  [(ACCStatInfoAccumulator *)physFootprintMem set:v12];
+  [(ACCStatInfoAccumulator *)physFootprintMem set:physFootprintMem];
 }
 
-- (void)updateResident:(unint64_t)a3 virtualValue:(unint64_t)a4 physFootprintValue:(unint64_t)a5
+- (void)updateResident:(unint64_t)resident virtualValue:(unint64_t)value physFootprintValue:(unint64_t)footprintValue
 {
   v9 = +[NSDate date];
   lastUpdateTime = self->_lastUpdateTime;
   self->_lastUpdateTime = v9;
 
-  [(ACCStatInfoAccumulator *)self->_residentMem add:a3];
-  [(ACCStatInfoAccumulator *)self->_virtualMem add:a4];
+  [(ACCStatInfoAccumulator *)self->_residentMem add:resident];
+  [(ACCStatInfoAccumulator *)self->_virtualMem add:value];
   physFootprintMem = self->_physFootprintMem;
 
-  [(ACCStatInfoAccumulator *)physFootprintMem add:a5];
+  [(ACCStatInfoAccumulator *)physFootprintMem add:footprintValue];
 }
 
 - (double)timeIntervalSinceStart

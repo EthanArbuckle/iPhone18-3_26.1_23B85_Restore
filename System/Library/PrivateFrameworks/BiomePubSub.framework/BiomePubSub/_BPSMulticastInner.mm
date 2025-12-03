@@ -1,26 +1,26 @@
 @interface _BPSMulticastInner
-- (_BPSMulticastInner)initWithDownstream:(id)a3;
+- (_BPSMulticastInner)initWithDownstream:(id)downstream;
 - (id)upstreamSubscriptions;
-- (int64_t)receiveInput:(id)a3;
+- (int64_t)receiveInput:(id)input;
 - (void)cancel;
 - (void)dealloc;
-- (void)receiveCompletion:(id)a3;
-- (void)receiveSubscription:(id)a3;
-- (void)requestDemand:(int64_t)a3;
+- (void)receiveCompletion:(id)completion;
+- (void)receiveSubscription:(id)subscription;
+- (void)requestDemand:(int64_t)demand;
 @end
 
 @implementation _BPSMulticastInner
 
-- (_BPSMulticastInner)initWithDownstream:(id)a3
+- (_BPSMulticastInner)initWithDownstream:(id)downstream
 {
-  v5 = a3;
+  downstreamCopy = downstream;
   v11.receiver = self;
   v11.super_class = _BPSMulticastInner;
   v6 = [(_BPSMulticastInner *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_downstream, a3);
+    objc_storeStrong(&v6->_downstream, downstream);
     v7->_lock._os_unfair_lock_opaque = 0;
     v8 = [[BPSSubscriptionStatus alloc] initWithState:0 subscription:0];
     status = v7->_status;
@@ -37,84 +37,84 @@
   [(_BPSMulticastInner *)&v2 dealloc];
 }
 
-- (void)receiveSubscription:(id)a3
+- (void)receiveSubscription:(id)subscription
 {
-  v6 = a3;
+  subscriptionCopy = subscription;
   os_unfair_lock_lock(&self->_lock);
   if ([(BPSSubscriptionStatus *)self->_status state])
   {
     os_unfair_lock_unlock(&self->_lock);
-    [(BPSSubscriber *)v6 cancel];
+    [(BPSSubscriber *)subscriptionCopy cancel];
   }
 
   else
   {
     [(BPSSubscriptionStatus *)self->_status setState:1];
-    [(BPSSubscriptionStatus *)self->_status setSubscription:v6];
+    [(BPSSubscriptionStatus *)self->_status setSubscription:subscriptionCopy];
 
     downstream = self->_downstream;
-    v5 = self;
-    v6 = downstream;
+    selfCopy = self;
+    subscriptionCopy = downstream;
     os_unfair_lock_unlock(&self->_lock);
-    [(BPSSubscriber *)v6 receiveSubscription:v5];
+    [(BPSSubscriber *)subscriptionCopy receiveSubscription:selfCopy];
   }
 }
 
-- (int64_t)receiveInput:(id)a3
+- (int64_t)receiveInput:(id)input
 {
-  v4 = a3;
-  v5 = self;
+  inputCopy = input;
+  selfCopy = self;
   v6 = __biome_log_for_category();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    [(_BPSMulticastInner *)v4 receiveInput:v6];
+    [(_BPSMulticastInner *)inputCopy receiveInput:v6];
   }
 
-  os_unfair_lock_lock(&v5->_lock);
-  v7 = [(BPSSubscriptionStatus *)v5->_status state];
-  os_unfair_lock_unlock(&v5->_lock);
-  if (v7 == 1)
+  os_unfair_lock_lock(&selfCopy->_lock);
+  state = [(BPSSubscriptionStatus *)selfCopy->_status state];
+  os_unfair_lock_unlock(&selfCopy->_lock);
+  if (state == 1)
   {
-    v8 = [(_BPSMulticastInner *)v5 downstream];
-    v9 = [v8 receiveInput:v4];
+    downstream = [(_BPSMulticastInner *)selfCopy downstream];
+    v9 = [downstream receiveInput:inputCopy];
 
     if (v9 > 0)
     {
-      v10 = [(BPSSubscriptionStatus *)v5->_status subscription];
-      [v10 requestDemand:v9];
+      subscription = [(BPSSubscriptionStatus *)selfCopy->_status subscription];
+      [subscription requestDemand:v9];
     }
   }
 
   return 0;
 }
 
-- (void)requestDemand:(int64_t)a3
+- (void)requestDemand:(int64_t)demand
 {
-  v6 = self;
-  if (a3 <= 0)
+  selfCopy = self;
+  if (demand <= 0)
   {
-    [(_BPSMulticastInner *)a2 requestDemand:v6];
+    [(_BPSMulticastInner *)a2 requestDemand:selfCopy];
   }
 
-  os_unfair_lock_lock(&v6->_lock);
-  if ([(BPSSubscriptionStatus *)v6->_status state]== 1)
+  os_unfair_lock_lock(&selfCopy->_lock);
+  if ([(BPSSubscriptionStatus *)selfCopy->_status state]== 1)
   {
-    v5 = [(BPSSubscriptionStatus *)v6->_status subscription];
-    os_unfair_lock_unlock(&v6->_lock);
-    [v5 requestDemand:a3];
+    subscription = [(BPSSubscriptionStatus *)selfCopy->_status subscription];
+    os_unfair_lock_unlock(&selfCopy->_lock);
+    [subscription requestDemand:demand];
   }
 
   else
   {
-    os_unfair_lock_unlock(&v6->_lock);
+    os_unfair_lock_unlock(&selfCopy->_lock);
   }
 }
 
-- (void)receiveCompletion:(id)a3
+- (void)receiveCompletion:(id)completion
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
+  completionCopy = completion;
+  selfCopy = self;
   v6 = __biome_log_for_category();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -124,17 +124,17 @@
     _os_log_impl(&dword_1C871B000, v6, OS_LOG_TYPE_INFO, "%@ - completion", &v11, 0xCu);
   }
 
-  os_unfair_lock_lock(&v5->_lock);
-  v8 = [(BPSSubscriptionStatus *)v5->_status state];
-  os_unfair_lock_unlock(&v5->_lock);
-  if (v8 == 1)
+  os_unfair_lock_lock(&selfCopy->_lock);
+  state = [(BPSSubscriptionStatus *)selfCopy->_status state];
+  os_unfair_lock_unlock(&selfCopy->_lock);
+  if (state == 1)
   {
-    v9 = [(_BPSMulticastInner *)v5 downstream];
-    [v9 receiveCompletion:v4];
+    downstream = [(_BPSMulticastInner *)selfCopy downstream];
+    [downstream receiveCompletion:completionCopy];
 
-    os_unfair_lock_lock(&v5->_lock);
-    [(BPSSubscriptionStatus *)v5->_status setState:2];
-    os_unfair_lock_unlock(&v5->_lock);
+    os_unfair_lock_lock(&selfCopy->_lock);
+    [(BPSSubscriptionStatus *)selfCopy->_status setState:2];
+    os_unfair_lock_unlock(&selfCopy->_lock);
   }
 
   v10 = *MEMORY[0x1E69E9840];
@@ -142,19 +142,19 @@
 
 - (void)cancel
 {
-  v3 = self;
-  os_unfair_lock_lock(&v3->_lock);
-  if ([(BPSSubscriptionStatus *)v3->_status state]== 1)
+  selfCopy = self;
+  os_unfair_lock_lock(&selfCopy->_lock);
+  if ([(BPSSubscriptionStatus *)selfCopy->_status state]== 1)
   {
-    [(BPSSubscriptionStatus *)v3->_status setState:2];
-    os_unfair_lock_unlock(&v3->_lock);
-    v2 = [(BPSSubscriptionStatus *)v3->_status subscription];
-    [v2 cancel];
+    [(BPSSubscriptionStatus *)selfCopy->_status setState:2];
+    os_unfair_lock_unlock(&selfCopy->_lock);
+    subscription = [(BPSSubscriptionStatus *)selfCopy->_status subscription];
+    [subscription cancel];
   }
 
   else
   {
-    os_unfair_lock_unlock(&v3->_lock);
+    os_unfair_lock_unlock(&selfCopy->_lock);
   }
 }
 
@@ -164,9 +164,9 @@
   os_unfair_lock_lock(&self->_lock);
   if ([(BPSSubscriptionStatus *)self->_status state]== 1)
   {
-    v3 = [(BPSSubscriptionStatus *)self->_status subscription];
+    subscription = [(BPSSubscriptionStatus *)self->_status subscription];
     os_unfair_lock_unlock(&self->_lock);
-    v7[0] = v3;
+    v7[0] = subscription;
     v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
   }
 

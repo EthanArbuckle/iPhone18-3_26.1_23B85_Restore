@@ -1,28 +1,28 @@
 @interface PDPendingSyncUpdate
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5;
-- (PDPendingSyncUpdate)initWithDatabaseRow:(id)a3;
-- (void)bindTo:(id)a3;
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database;
+- (PDPendingSyncUpdate)initWithDatabaseRow:(id)row;
+- (void)bindTo:(id)to;
 @end
 
 @implementation PDPendingSyncUpdate
 
-- (PDPendingSyncUpdate)initWithDatabaseRow:(id)a3
+- (PDPendingSyncUpdate)initWithDatabaseRow:(id)row
 {
-  v4 = a3;
+  rowCopy = row;
   v14.receiver = self;
   v14.super_class = PDPendingSyncUpdate;
   v5 = [(PDPendingSyncUpdate *)&v14 init];
   if (v5)
   {
-    v6 = sub_10016D778(v4, @"recordID");
+    v6 = sub_10016D778(rowCopy, @"recordID");
     recordID = v5->_recordID;
     v5->_recordID = v6;
 
-    v8 = sub_10016D778(v4, @"parentRecordID");
+    v8 = sub_10016D778(rowCopy, @"parentRecordID");
     parentRecordID = v5->_parentRecordID;
     v5->_parentRecordID = v8;
 
-    v10 = sub_10016D778(v4, @"record");
+    v10 = sub_10016D778(rowCopy, @"record");
     if (v10)
     {
       v11 = [NSKeyedUnarchiver cls_secureUnarchiveObjectOfClass:objc_opt_class() withData:v10];
@@ -34,11 +34,11 @@
   return v5;
 }
 
-- (void)bindTo:(id)a3
+- (void)bindTo:(id)to
 {
-  v4 = a3;
-  sub_1000982FC(v4, self->_recordID, @"recordID");
-  sub_1000982FC(v4, self->_parentRecordID, @"parentRecordID");
+  toCopy = to;
+  sub_1000982FC(toCopy, self->_recordID, @"recordID");
+  sub_1000982FC(toCopy, self->_parentRecordID, @"parentRecordID");
   record = self->_record;
   if (record)
   {
@@ -57,22 +57,22 @@
     v6 = 0;
   }
 
-  sub_1000982FC(v4, v6, @"record");
+  sub_1000982FC(toCopy, v6, @"record");
 }
 
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database
 {
-  v7 = a5;
-  v8 = v7;
-  if (a3)
+  databaseCopy = database;
+  v8 = databaseCopy;
+  if (version)
   {
     v9 = 1;
   }
 
-  else if (sub_1000B9298(v7, @"create table PDPendingSyncUpdate(   recordID text not null,    parentRecordID text not null,    record blob)", 0, 0, 0) && sub_1000B9298(v8, @"create unique index PDPendingSyncUpdate_recordID on PDPendingSyncUpdate (recordID)", 0, 0, 0) && sub_1000B9298(v8, @"create index PDPendingSyncUpdate_parentRecordID on PDPendingSyncUpdate (parentRecordID)", 0, 0, 0))
+  else if (sub_1000B9298(databaseCopy, @"create table PDPendingSyncUpdate(   recordID text not null,    parentRecordID text not null,    record blob)", 0, 0, 0) && sub_1000B9298(v8, @"create unique index PDPendingSyncUpdate_recordID on PDPendingSyncUpdate (recordID)", 0, 0, 0) && sub_1000B9298(v8, @"create index PDPendingSyncUpdate_parentRecordID on PDPendingSyncUpdate (parentRecordID)", 0, 0, 0))
   {
     v9 = 1;
-    *a4 = 1;
+    *finalVersion = 1;
   }
 
   else

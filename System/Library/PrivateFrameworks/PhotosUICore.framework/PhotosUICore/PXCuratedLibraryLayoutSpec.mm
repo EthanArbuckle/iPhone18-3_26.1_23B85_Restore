@@ -1,10 +1,10 @@
 @interface PXCuratedLibraryLayoutSpec
-- (BOOL)shouldExcludeNonLibraryRelatedActionsFromTopLevelEllipsisMenuForZoomLevel:(int64_t)a3;
-- (PXCuratedLibraryLayoutSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4 variant:(int64_t)a5;
+- (BOOL)shouldExcludeNonLibraryRelatedActionsFromTopLevelEllipsisMenuForZoomLevel:(int64_t)level;
+- (PXCuratedLibraryLayoutSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options variant:(int64_t)variant;
 - (UIEdgeInsets)blurredBackgroundEdgeInsets;
-- (double)blurredBackgroundInitialOpacityForZoomLevel:(int64_t)a3;
-- (double)blurredBackgroundOpacityForZoomLevel:(int64_t)a3;
-- (double)defaultInterlayoutSpacingForZoomLevel:(int64_t)a3;
+- (double)blurredBackgroundInitialOpacityForZoomLevel:(int64_t)level;
+- (double)blurredBackgroundOpacityForZoomLevel:(int64_t)level;
+- (double)defaultInterlayoutSpacingForZoomLevel:(int64_t)level;
 @end
 
 @implementation PXCuratedLibraryLayoutSpec
@@ -22,14 +22,14 @@
   return result;
 }
 
-- (BOOL)shouldExcludeNonLibraryRelatedActionsFromTopLevelEllipsisMenuForZoomLevel:(int64_t)a3
+- (BOOL)shouldExcludeNonLibraryRelatedActionsFromTopLevelEllipsisMenuForZoomLevel:(int64_t)level
 {
-  if (a3 == 1)
+  if (level == 1)
   {
     return 1;
   }
 
-  if (a3 != 2)
+  if (level != 2)
   {
     return 0;
   }
@@ -42,13 +42,13 @@
   return 0;
 }
 
-- (double)blurredBackgroundOpacityForZoomLevel:(int64_t)a3
+- (double)blurredBackgroundOpacityForZoomLevel:(int64_t)level
 {
-  v6 = [(PXCuratedLibraryLayoutSpec *)self wantsBlurredBackground];
+  wantsBlurredBackground = [(PXCuratedLibraryLayoutSpec *)self wantsBlurredBackground];
   result = 0.0;
-  if (v6)
+  if (wantsBlurredBackground)
   {
-    if ((a3 - 1) < 2)
+    if ((level - 1) < 2)
     {
       v13 = +[PXCuratedLibrarySettings sharedInstance];
       [v13 blurredBackgroundFinalOpacity];
@@ -61,26 +61,26 @@
       }
     }
 
-    else if ((a3 - 3) >= 2)
+    else if ((level - 3) >= 2)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      if (a3)
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      if (level)
       {
-        v9 = v8;
+        v9 = currentHandler;
         v10 = a2;
-        v11 = self;
+        selfCopy2 = self;
         v12 = 252;
       }
 
       else
       {
-        v9 = v8;
+        v9 = currentHandler;
         v10 = a2;
-        v11 = self;
+        selfCopy2 = self;
         v12 = 243;
       }
 
-      [v8 handleFailureInMethod:v10 object:v11 file:@"PXCuratedLibraryLayoutSpec.m" lineNumber:v12 description:@"Code which should be unreachable has been reached"];
+      [currentHandler handleFailureInMethod:v10 object:selfCopy2 file:@"PXCuratedLibraryLayoutSpec.m" lineNumber:v12 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
@@ -89,12 +89,12 @@
   return result;
 }
 
-- (double)blurredBackgroundInitialOpacityForZoomLevel:(int64_t)a3
+- (double)blurredBackgroundInitialOpacityForZoomLevel:(int64_t)level
 {
   v6 = 0.0;
   if ([(PXCuratedLibraryLayoutSpec *)self wantsBlurredBackground])
   {
-    if ((a3 - 1) < 2)
+    if ((level - 1) < 2)
     {
       v12 = +[PXCuratedLibrarySettings sharedInstance];
       if ([(PXCuratedLibraryLayoutSpec *)self userInterfaceIdiom]== 4)
@@ -110,26 +110,26 @@
       v6 = v13;
     }
 
-    else if ((a3 - 3) >= 2)
+    else if ((level - 3) >= 2)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      if (a3)
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      if (level)
       {
-        v8 = v7;
+        v8 = currentHandler;
         v9 = a2;
-        v10 = self;
+        selfCopy2 = self;
         v11 = 233;
       }
 
       else
       {
-        v8 = v7;
+        v8 = currentHandler;
         v9 = a2;
-        v10 = self;
+        selfCopy2 = self;
         v11 = 221;
       }
 
-      [v7 handleFailureInMethod:v9 object:v10 file:@"PXCuratedLibraryLayoutSpec.m" lineNumber:v11 description:@"Code which should be unreachable has been reached"];
+      [currentHandler handleFailureInMethod:v9 object:selfCopy2 file:@"PXCuratedLibraryLayoutSpec.m" lineNumber:v11 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
@@ -138,19 +138,19 @@
   return v6;
 }
 
-- (double)defaultInterlayoutSpacingForZoomLevel:(int64_t)a3
+- (double)defaultInterlayoutSpacingForZoomLevel:(int64_t)level
 {
   result = 0.0;
-  if (a3 > 1)
+  if (level > 1)
   {
-    if (a3 == 2)
+    if (level == 2)
     {
       v10 = &OBJC_IVAR___PXCuratedLibraryLayoutSpec__spacingBetweenMonths;
     }
 
     else
     {
-      if (a3 != 3)
+      if (level != 3)
       {
         return result;
       }
@@ -161,18 +161,18 @@
     return *(&self->super.super.isa + *v10);
   }
 
-  if (a3 == 1)
+  if (level == 1)
   {
     v10 = &OBJC_IVAR___PXCuratedLibraryLayoutSpec__spacingBetweenYears;
     return *(&self->super.super.isa + *v10);
   }
 
-  if (!a3)
+  if (!level)
   {
     v14 = v4;
     v15 = v3;
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryLayoutSpec.m" lineNumber:196 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryLayoutSpec.m" lineNumber:196 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
@@ -180,26 +180,26 @@
   return result;
 }
 
-- (PXCuratedLibraryLayoutSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4 variant:(int64_t)a5
+- (PXCuratedLibraryLayoutSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options variant:(int64_t)variant
 {
-  v8 = a3;
+  collectionCopy = collection;
   v54.receiver = self;
   v54.super_class = PXCuratedLibraryLayoutSpec;
-  v9 = [(PXCuratedLibraryLayoutSpec *)&v54 initWithExtendedTraitCollection:v8 options:a4];
+  v9 = [(PXCuratedLibraryLayoutSpec *)&v54 initWithExtendedTraitCollection:collectionCopy options:options];
   v10 = v9;
   if (v9)
   {
-    v9->_variant = a5;
+    v9->_variant = variant;
     v9->_axis = 1;
-    v11 = [(PXCuratedLibraryLayoutSpec *)v9 sizeClass];
+    sizeClass = [(PXCuratedLibraryLayoutSpec *)v9 sizeClass];
     v12 = 36.0;
-    if (v11 != 2)
+    if (sizeClass != 2)
     {
       v12 = 8.0;
     }
 
     v13 = 34.0;
-    if (v11 != 2)
+    if (sizeClass != 2)
     {
       v13 = 20.0;
     }
@@ -207,9 +207,9 @@
     v10->_spacingBetweenSafeAreaTopAndFirstYearCard = v12;
     v10->_spacingBetweenSafeAreaTopAndFirstMonthTitle = v13;
     v10->_spacingBetweenHeaderLastBaselineAndAllPhotosTop = v13;
-    v14 = [v8 layoutSizeClass];
+    layoutSizeClass = [collectionCopy layoutSizeClass];
     v15 = 12.0;
-    if (v14 == 1)
+    if (layoutSizeClass == 1)
     {
       v15 = 8.0;
     }
@@ -225,51 +225,51 @@
     [v18 spacingBetweenDays];
     v10->_spacingBetweenDays = v19;
 
-    v20 = [v8 curatedLibraryLayoutStyle];
-    v10->_layoutStyle = v20;
-    v53 = [v8 curatedLibraryLayoutStyle];
-    v21 = v53 == 1;
-    v22 = [(PXCuratedLibraryLayoutSpec *)v10 userInterfaceIdiom];
-    v23 = [(PXCuratedLibraryLayoutSpec *)v10 userInterfaceIdiom];
+    curatedLibraryLayoutStyle = [collectionCopy curatedLibraryLayoutStyle];
+    v10->_layoutStyle = curatedLibraryLayoutStyle;
+    curatedLibraryLayoutStyle2 = [collectionCopy curatedLibraryLayoutStyle];
+    v21 = curatedLibraryLayoutStyle2 == 1;
+    userInterfaceIdiom = [(PXCuratedLibraryLayoutSpec *)v10 userInterfaceIdiom];
+    userInterfaceIdiom2 = [(PXCuratedLibraryLayoutSpec *)v10 userInterfaceIdiom];
     if ([(PXCuratedLibraryLayoutSpec *)v10 userInterfaceIdiom]== 5)
     {
-      v24 = [MEMORY[0x1E69DC888] clearColor];
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
       backgroundColor = v10->_backgroundColor;
-      v10->_backgroundColor = v24;
+      v10->_backgroundColor = clearColor;
 
       contentBackgroundColor = v10->_contentBackgroundColor;
       v10->_contentBackgroundColor = 0;
 
-      v27 = [MEMORY[0x1E69DC888] clearColor];
+      clearColor2 = [MEMORY[0x1E69DC888] clearColor];
       contentUnavailableBackgroundColor = v10->_contentUnavailableBackgroundColor;
-      v10->_contentUnavailableBackgroundColor = v27;
+      v10->_contentUnavailableBackgroundColor = clearColor2;
 LABEL_26:
 
 LABEL_27:
       v10->_wantsBlurredBackground = v21;
       v10->_wantsBlurredSecondaryToolbarTransition = v21;
-      v34 = [v8 userInterfaceIdiom] != 4 && objc_msgSend(v8, "userInterfaceIdiom") != 5;
+      v34 = [collectionCopy userInterfaceIdiom] != 4 && objc_msgSend(collectionCopy, "userInterfaceIdiom") != 5;
       v10->_wantsStatusBarGradient = v34;
       v35 = *(off_1E7721FA8 + 1);
       *&v10->_blurredBackgroundEdgeInsets.top = *off_1E7721FA8;
       *&v10->_blurredBackgroundEdgeInsets.bottom = v35;
-      v36 = [[PXCuratedLibraryYearsTopHeaderSpec alloc] initWithExtendedTraitCollection:v8 options:a4 variant:a5];
+      v36 = [[PXCuratedLibraryYearsTopHeaderSpec alloc] initWithExtendedTraitCollection:collectionCopy options:options variant:variant];
       yearsTopHeaderSpec = v10->_yearsTopHeaderSpec;
       v10->_yearsTopHeaderSpec = &v36->super;
 
-      v38 = [[PXCuratedLibraryMonthsTopHeaderSpec alloc] initWithExtendedTraitCollection:v8 options:a4 variant:a5];
+      v38 = [[PXCuratedLibraryMonthsTopHeaderSpec alloc] initWithExtendedTraitCollection:collectionCopy options:options variant:variant];
       monthsTopHeaderSpec = v10->_monthsTopHeaderSpec;
       v10->_monthsTopHeaderSpec = &v38->super;
 
-      v40 = [[PXCuratedLibraryDaysTopHeaderSpec alloc] initWithExtendedTraitCollection:v8 options:a4 variant:a5];
+      v40 = [[PXCuratedLibraryDaysTopHeaderSpec alloc] initWithExtendedTraitCollection:collectionCopy options:options variant:variant];
       daysTopHeaderSpec = v10->_daysTopHeaderSpec;
       v10->_daysTopHeaderSpec = &v40->super;
 
-      v42 = [[PXAllPhotosFloatingHeaderSpec alloc] initWithExtendedTraitCollection:v8 options:a4 variant:a5];
+      v42 = [[PXAllPhotosFloatingHeaderSpec alloc] initWithExtendedTraitCollection:collectionCopy options:options variant:variant];
       allPhotosFloatingHeaderSpec = v10->_allPhotosFloatingHeaderSpec;
       v10->_allPhotosFloatingHeaderSpec = &v42->super;
 
-      v44 = [[off_1E77214C8 alloc] initWithExtendedTraitCollection:v8 options:a4 variant:a5 itemCornerRadius:0 zoomableSpec:0.0];
+      v44 = [[off_1E77214C8 alloc] initWithExtendedTraitCollection:collectionCopy options:options variant:variant itemCornerRadius:0 zoomableSpec:0.0];
       sectionLayoutSpec = v10->_sectionLayoutSpec;
       v10->_sectionLayoutSpec = v44;
 
@@ -279,19 +279,19 @@ LABEL_27:
         [(PXCuratedLibraryLayoutSpec *)v10 layoutOrientation];
       }
 
-      v46 = [[PXYearCardSectionBodyLayoutSpec alloc] initWithExtendedTraitCollection:v8 options:a4];
-      v47 = [[PXMonthCardSectionBodyLayoutSpec alloc] initWithExtendedTraitCollection:v8 options:a4];
-      if (v23 == 2)
+      v46 = [[PXYearCardSectionBodyLayoutSpec alloc] initWithExtendedTraitCollection:collectionCopy options:options];
+      v47 = [[PXMonthCardSectionBodyLayoutSpec alloc] initWithExtendedTraitCollection:collectionCopy options:options];
+      if (userInterfaceIdiom2 == 2)
       {
-        v48 = [v8 windowOrientation];
+        windowOrientation = [collectionCopy windowOrientation];
       }
 
       else
       {
-        v48 = [(PXCuratedLibraryLayoutSpec *)v10 layoutOrientation];
+        windowOrientation = [(PXCuratedLibraryLayoutSpec *)v10 layoutOrientation];
       }
 
-      v49 = v48;
+      v49 = windowOrientation;
       v50 = objc_alloc_init(PXYearsLayoutMetrics);
       yearsLayoutMetrics = v10->_yearsLayoutMetrics;
       v10->_yearsLayoutMetrics = v50;
@@ -302,17 +302,17 @@ LABEL_27:
       [(PXYearsLayoutMetrics *)v10->_yearsLayoutMetrics setInteritemSpacing:?];
       [(PXCuratedLibraryCardSectionBodyLayoutSpec *)v46 aspectRatio];
       [(PXYearsLayoutMetrics *)v10->_yearsLayoutMetrics setDefaultItemAspectRatio:?];
-      [(PXYearsLayoutMetrics *)v10->_yearsLayoutMetrics setLayoutStyle:v20];
+      [(PXYearsLayoutMetrics *)v10->_yearsLayoutMetrics setLayoutStyle:curatedLibraryLayoutStyle];
       [(PXCuratedLibraryCardSectionBodyLayoutSpec *)v46 horizontalInsets];
       [(PXCuratedLibraryCardSectionBodyLayoutSpec *)v47 horizontalInsets];
       PXEdgeInsetsMake();
     }
 
-    if (v22 != 4)
+    if (userInterfaceIdiom != 4)
     {
       if (!MEMORY[0x1A590D320]())
       {
-        if (v53 == 1)
+        if (curatedLibraryLayoutStyle2 == 1)
         {
           [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
         }
@@ -324,18 +324,18 @@ LABEL_27:
         v32 = ;
         objc_storeStrong(&v10->_backgroundColor, v32);
 
-        if (v53 == 1)
+        if (curatedLibraryLayoutStyle2 == 1)
         {
-          v33 = [MEMORY[0x1E69DC888] systemBackgroundColor];
+          systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
         }
 
         else
         {
-          v33 = 0;
+          systemBackgroundColor = 0;
         }
 
-        objc_storeStrong(&v10->_contentBackgroundColor, v33);
-        if (v53 != 1)
+        objc_storeStrong(&v10->_contentBackgroundColor, systemBackgroundColor);
+        if (curatedLibraryLayoutStyle2 != 1)
         {
           goto LABEL_24;
         }
@@ -343,21 +343,21 @@ LABEL_27:
         goto LABEL_23;
       }
 
-      v29 = [MEMORY[0x1E69DC888] systemBackgroundColor];
+      systemBackgroundColor2 = [MEMORY[0x1E69DC888] systemBackgroundColor];
       v30 = v10->_backgroundColor;
-      v10->_backgroundColor = v29;
+      v10->_backgroundColor = systemBackgroundColor2;
 
       v31 = v10->_contentBackgroundColor;
       v10->_contentBackgroundColor = 0;
     }
 
-    if (v53 != 1)
+    if (curatedLibraryLayoutStyle2 != 1)
     {
 LABEL_24:
       contentUnavailableBackgroundColor = v10->_backgroundColor;
 LABEL_25:
       objc_storeStrong(&v10->_contentUnavailableBackgroundColor, contentUnavailableBackgroundColor);
-      if (v53 != 1)
+      if (curatedLibraryLayoutStyle2 != 1)
       {
         goto LABEL_27;
       }

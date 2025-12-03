@@ -1,49 +1,49 @@
 @interface AVTShadowView
-- (AVTShadowView)initWithFrame:(CGRect)a3;
+- (AVTShadowView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation AVTShadowView
 
-- (AVTShadowView)initWithFrame:(CGRect)a3
+- (AVTShadowView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = AVTShadowView;
-  v3 = [(AVTShadowView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AVTShadowView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] clearColor];
-    [(AVTShadowView *)v3 setBackgroundColor:v4];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(AVTShadowView *)v3 setBackgroundColor:clearColor];
 
-    v5 = [MEMORY[0x1E6979398] layer];
+    layer = [MEMORY[0x1E6979398] layer];
     separator = v3->_separator;
-    v3->_separator = v5;
+    v3->_separator = layer;
 
     v7 = +[AVTUIColorRepository separatorColor];
     -[CALayer setBackgroundColor:](v3->_separator, "setBackgroundColor:", [v7 CGColor]);
 
     [(AVTShadowView *)v3 bounds];
     [(CALayer *)v3->_separator setFrame:?];
-    v8 = [(AVTShadowView *)v3 layer];
-    [v8 addSublayer:v3->_separator];
+    layer2 = [(AVTShadowView *)v3 layer];
+    [layer2 addSublayer:v3->_separator];
   }
 
   return v3;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v9.receiver = self;
   v9.super_class = AVTShadowView;
-  v4 = a3;
-  [(AVTShadowView *)&v9 traitCollectionDidChange:v4];
-  v5 = [v4 userInterfaceStyle];
+  changeCopy = change;
+  [(AVTShadowView *)&v9 traitCollectionDidChange:changeCopy];
+  userInterfaceStyle = [changeCopy userInterfaceStyle];
 
-  v6 = [(AVTShadowView *)self traitCollection];
-  v7 = [v6 userInterfaceStyle];
+  traitCollection = [(AVTShadowView *)self traitCollection];
+  userInterfaceStyle2 = [traitCollection userInterfaceStyle];
 
-  if (v5 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
     v8 = +[AVTUIColorRepository separatorColor];
     -[CALayer setBackgroundColor:](self->_separator, "setBackgroundColor:", [v8 CGColor]);

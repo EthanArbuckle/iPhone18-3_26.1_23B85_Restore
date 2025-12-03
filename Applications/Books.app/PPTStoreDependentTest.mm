@@ -1,15 +1,15 @@
 @interface PPTStoreDependentTest
 - (BOOL)hasHandler;
-- (PPTStoreDependentTest)initWithName:(id)a3 options:(id)a4 testDefinition:(id)a5 isMainTest:(BOOL)a6;
+- (PPTStoreDependentTest)initWithName:(id)name options:(id)options testDefinition:(id)definition isMainTest:(BOOL)test;
 @end
 
 @implementation PPTStoreDependentTest
 
-- (PPTStoreDependentTest)initWithName:(id)a3 options:(id)a4 testDefinition:(id)a5 isMainTest:(BOOL)a6
+- (PPTStoreDependentTest)initWithName:(id)name options:(id)options testDefinition:(id)definition isMainTest:(BOOL)test
 {
   v7.receiver = self;
   v7.super_class = PPTStoreDependentTest;
-  return [(PPTBasicTest *)&v7 initWithName:a3 options:a4 testDefinition:a5 isMainTest:a6];
+  return [(PPTBasicTest *)&v7 initWithName:name options:options testDefinition:definition isMainTest:test];
 }
 
 - (BOOL)hasHandler

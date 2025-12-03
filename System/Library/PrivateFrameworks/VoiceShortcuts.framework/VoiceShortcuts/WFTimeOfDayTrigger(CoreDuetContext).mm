@@ -7,17 +7,17 @@
 - (id)contextStorePredicate
 {
   v17 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CFE318] userContext];
-  v3 = [MEMORY[0x277CFE338] keyPathForSunriseSunsetDataDictionary];
-  v4 = [v2 objectForKeyedSubscript:v3];
+  userContext = [MEMORY[0x277CFE318] userContext];
+  keyPathForSunriseSunsetDataDictionary = [MEMORY[0x277CFE338] keyPathForSunriseSunsetDataDictionary];
+  v4 = [userContext objectForKeyedSubscript:keyPathForSunriseSunsetDataDictionary];
 
-  v5 = [MEMORY[0x277CFE338] currentSunriseKey];
-  v6 = [v4 objectForKey:v5];
+  currentSunriseKey = [MEMORY[0x277CFE338] currentSunriseKey];
+  v6 = [v4 objectForKey:currentSunriseKey];
 
-  v7 = [MEMORY[0x277CFE338] currentSunsetKey];
-  v8 = [v4 objectForKey:v7];
+  currentSunsetKey = [MEMORY[0x277CFE338] currentSunsetKey];
+  v8 = [v4 objectForKey:currentSunsetKey];
 
-  v9 = [MEMORY[0x277D7C960] nextFireDateFromNowWithTrigger:a1 currentSunriseTime:v6 currentSunsetTime:v8];
+  v9 = [MEMORY[0x277D7C960] nextFireDateFromNowWithTrigger:self currentSunriseTime:v6 currentSunsetTime:v8];
   if (v9)
   {
     v10 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v9 duration:300.0];

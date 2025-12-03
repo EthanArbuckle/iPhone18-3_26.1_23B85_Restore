@@ -8,7 +8,7 @@
 - (id)debugHierarchyValueForObjCType_NSDirectionalEdgeInsets;
 - (id)debugHierarchyValueForObjCType_UIEdgeInsets;
 - (id)debugHierarchyValueForObjCType_UIOffset;
-- (id)fallback_debugHierarchyValueWithOutOptions:(id *)a3 outError:(id *)a4;
+- (id)fallback_debugHierarchyValueWithOutOptions:(id *)options outError:(id *)error;
 @end
 
 @implementation NSValue
@@ -100,12 +100,12 @@
   return v6;
 }
 
-- (id)fallback_debugHierarchyValueWithOutOptions:(id *)a3 outError:(id *)a4
+- (id)fallback_debugHierarchyValueWithOutOptions:(id *)options outError:(id *)error
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    a4 = self;
+    error = self;
   }
 
   else
@@ -133,10 +133,10 @@
     v11 = NSSelectorFromString(v10);
     if (objc_opt_respondsToSelector())
     {
-      a4 = [(NSValue *)self performSelector:v11];
+      error = [(NSValue *)self performSelector:v11];
     }
 
-    else if (a4)
+    else if (error)
     {
       v12 = [NSString stringWithFormat:@"Unable to provide DebugHierarchy value for NSValue (%@). Dynamic method look up failed for: -%@.", v6, v10];
       if (self)
@@ -170,13 +170,13 @@
       v17 = [NSError errorWithDomain:@"DebugHierarchyErrorDomain" code:101 userInfo:v16];
 
       v18 = v17;
-      *a4 = v17;
+      *error = v17;
 
-      a4 = 0;
+      error = 0;
     }
   }
 
-  return a4;
+  return error;
 }
 
 - (id)debugHierarchyValueForObjCType_CGPoint

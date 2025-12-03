@@ -1,6 +1,6 @@
 @interface _UIORequestKeyShortcutHUDDismissalAction
 + (id)dismissalAction;
-- (void)performActionFromConnection:(id)a3;
+- (void)performActionFromConnection:(id)connection;
 @end
 
 @implementation _UIORequestKeyShortcutHUDDismissalAction
@@ -12,11 +12,11 @@
   return v2;
 }
 
-- (void)performActionFromConnection:(id)a3
+- (void)performActionFromConnection:(id)connection
 {
-  v3 = a3;
+  connectionCopy = connection;
   v4 = +[_UIKeyShortcutHUDServer sharedHUDServer];
-  [v4 dismissHUDForConnection:v3];
+  [v4 dismissHUDForConnection:connectionCopy];
 }
 
 @end

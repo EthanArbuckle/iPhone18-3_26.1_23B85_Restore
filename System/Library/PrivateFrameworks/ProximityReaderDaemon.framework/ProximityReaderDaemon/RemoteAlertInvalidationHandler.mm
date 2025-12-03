@@ -1,24 +1,24 @@
 @interface RemoteAlertInvalidationHandler
 - (_TtC21ProximityReaderDaemon30RemoteAlertInvalidationHandler)init;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
 @end
 
 @implementation RemoteAlertInvalidationHandler
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
-  v4 = a3;
-  v5 = self;
-  sub_2612F60DC(v4);
+  deactivateCopy = deactivate;
+  selfCopy = self;
+  sub_2612F60DC(deactivateCopy);
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  sub_2612F6360(v6, a4);
+  handleCopy = handle;
+  selfCopy = self;
+  errorCopy = error;
+  sub_2612F6360(handleCopy, error);
 }
 
 - (_TtC21ProximityReaderDaemon30RemoteAlertInvalidationHandler)init

@@ -1,32 +1,32 @@
 @interface MKMarkerDotView
-- (MKMarkerDotView)initWithMarkerStyle:(id)a3;
-- (void)updateWithMarkerStyle:(id)a3;
+- (MKMarkerDotView)initWithMarkerStyle:(id)style;
+- (void)updateWithMarkerStyle:(id)style;
 @end
 
 @implementation MKMarkerDotView
 
-- (void)updateWithMarkerStyle:(id)a3
+- (void)updateWithMarkerStyle:(id)style
 {
   v6.receiver = self;
   v6.super_class = MKMarkerDotView;
-  v4 = a3;
-  [(MKMarkerView *)&v6 updateWithMarkerStyle:v4];
-  v5 = [v4 dotImage];
+  styleCopy = style;
+  [(MKMarkerView *)&v6 updateWithMarkerStyle:styleCopy];
+  dotImage = [styleCopy dotImage];
 
-  [(MKMarkerView *)self _updateWithImage:v5];
+  [(MKMarkerView *)self _updateWithImage:dotImage];
 }
 
-- (MKMarkerDotView)initWithMarkerStyle:(id)a3
+- (MKMarkerDotView)initWithMarkerStyle:(id)style
 {
-  v4 = a3;
-  v5 = [v4 dotImage];
+  styleCopy = style;
+  dotImage = [styleCopy dotImage];
   v8.receiver = self;
   v8.super_class = MKMarkerDotView;
-  v6 = [(MKMarkerView *)&v8 initWithImage:v5];
+  v6 = [(MKMarkerView *)&v8 initWithImage:dotImage];
 
   if (v6)
   {
-    [(MKMarkerDotView *)v6 updateWithMarkerStyle:v4];
+    [(MKMarkerDotView *)v6 updateWithMarkerStyle:styleCopy];
   }
 
   return v6;

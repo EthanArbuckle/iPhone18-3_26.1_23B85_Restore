@@ -1,99 +1,99 @@
 @interface LPGameActivityMetadata
-- (BOOL)isEqual:(id)a3;
-- (LPGameActivityMetadata)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)presentationPropertiesForTransformer:(id)a3;
-- (id)previewImageForTransformer:(id)a3;
-- (id)previewSummaryForTransformer:(id)a3;
-- (void)_enumerateAsynchronousFields:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LPGameActivityMetadata)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)presentationPropertiesForTransformer:(id)transformer;
+- (id)previewImageForTransformer:(id)transformer;
+- (id)previewSummaryForTransformer:(id)transformer;
+- (void)_enumerateAsynchronousFields:(id)fields;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LPGameActivityMetadata
 
-- (id)presentationPropertiesForTransformer:(id)a3
+- (id)presentationPropertiesForTransformer:(id)transformer
 {
   v45[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 unspecializedPresentationPropertiesForStyle:61];
-  v6 = 0x1E7A34000;
+  transformerCopy = transformer;
+  v5 = [transformerCopy unspecializedPresentationPropertiesForStyle:61];
+  metadata = 0x1E7A34000;
   v7 = objc_alloc_init(LPCaptionBarPresentationProperties);
   [v5 setCaptionBar:v7];
 
   v8 = objc_alloc_init(LPCaptionBarPresentationProperties);
   [v5 setMediaBottomCaptionBar:v8];
 
-  v9 = [v5 mediaBottomCaptionBar];
-  [v9 setUsesBlurredBackgroundWithFadeOut:1];
+  mediaBottomCaptionBar = [v5 mediaBottomCaptionBar];
+  [mediaBottomCaptionBar setUsesBlurredBackgroundWithFadeOut:1];
 
-  v10 = [(LPGameActivityMetadata *)self artwork];
-  v11 = v10;
-  if (!v10)
+  artwork = [(LPGameActivityMetadata *)self artwork];
+  image = artwork;
+  if (!artwork)
   {
-    v6 = [v4 metadata];
-    v11 = [v6 image];
+    metadata = [transformerCopy metadata];
+    image = [metadata image];
   }
 
-  [v4 _populateProperties:v5 withPrimaryImage:v11];
-  if (!v10)
-  {
-  }
-
-  v12 = [(LPGameActivityMetadata *)self icon];
-  v13 = v12;
-  if (!v12)
-  {
-    v6 = [v4 metadata];
-    v13 = [v6 icon];
-  }
-
-  [v4 _populateProperties:v5 withPrimaryIcon:v13];
-  if (!v12)
+  [transformerCopy _populateProperties:v5 withPrimaryImage:image];
+  if (!artwork)
   {
   }
 
-  v14 = [(LPGameActivityMetadata *)self title];
-  v15 = v14;
-  if (v14)
+  icon = [(LPGameActivityMetadata *)self icon];
+  icon2 = icon;
+  if (!icon)
   {
-    v16 = v14;
+    metadata = [transformerCopy metadata];
+    icon2 = [metadata icon];
   }
 
-  else
+  [transformerCopy _populateProperties:v5 withPrimaryIcon:icon2];
+  if (!icon)
   {
-    v17 = [v4 metadata];
-    v16 = [v17 title];
   }
 
-  v18 = [(LPGameActivityMetadata *)self subtitle];
-  v19 = v18;
-  if (v18)
+  title = [(LPGameActivityMetadata *)self title];
+  v15 = title;
+  if (title)
   {
-    v20 = v18;
+    title2 = title;
   }
 
   else
   {
-    v21 = [v4 metadata];
-    v22 = [v21 appleSummary];
-    v23 = v22;
-    if (v22)
+    metadata2 = [transformerCopy metadata];
+    title2 = [metadata2 title];
+  }
+
+  subtitle = [(LPGameActivityMetadata *)self subtitle];
+  v19 = subtitle;
+  if (subtitle)
+  {
+    summary = subtitle;
+  }
+
+  else
+  {
+    metadata3 = [transformerCopy metadata];
+    appleSummary = [metadata3 appleSummary];
+    v23 = appleSummary;
+    if (appleSummary)
     {
-      v20 = v22;
+      summary = appleSummary;
     }
 
     else
     {
-      v24 = [v4 metadata];
-      v20 = [v24 summary];
+      metadata4 = [transformerCopy metadata];
+      summary = [metadata4 summary];
     }
   }
 
   v25 = LPLocalizedString(@"Multiplayer Invite");
-  v26 = [v4 _rowConfigurationForStyle:{objc_msgSend(v5, "style")}];
+  v26 = [transformerCopy _rowConfigurationForStyle:{objc_msgSend(v5, "style")}];
   if ((v26 - 2) < 2)
   {
-    if (sizeClassAllowsMedia([v4 effectiveSizeClass]))
+    if (sizeClassAllowsMedia([transformerCopy effectiveSizeClass]))
     {
       [v5 mediaBottomCaptionBar];
     }
@@ -104,27 +104,27 @@
     }
     v30 = ;
     v31 = [v30 top];
-    v32 = [v31 leading];
-    [v32 setText:v16];
+    leading = [v31 leading];
+    [leading setText:title2];
 
-    v36 = [v5 captionBar];
-    v37 = [v36 bottom];
-    v38 = [v37 leading];
-    [v38 setText:v20];
+    captionBar = [v5 captionBar];
+    bottom = [captionBar bottom];
+    leading2 = [bottom leading];
+    [leading2 setText:summary];
 
-    v33 = [v5 captionBar];
-    v34 = [v33 belowBottom];
-    v35 = [v34 leading];
-    [v35 setText:v25];
+    captionBar2 = [v5 captionBar];
+    belowBottom = [captionBar2 belowBottom];
+    leading3 = [belowBottom leading];
+    [leading3 setText:v25];
     goto LABEL_30;
   }
 
   if (!v26)
   {
-    v33 = [v5 captionBar];
-    v34 = [v33 top];
-    v35 = [v34 leading];
-    [v35 setText:v16];
+    captionBar2 = [v5 captionBar];
+    belowBottom = [captionBar2 top];
+    leading3 = [belowBottom leading];
+    [leading3 setText:title2];
 LABEL_30:
 
     goto LABEL_31;
@@ -132,7 +132,7 @@ LABEL_30:
 
   if (v26 == 1)
   {
-    if (sizeClassAllowsMedia([v4 effectiveSizeClass]))
+    if (sizeClassAllowsMedia([transformerCopy effectiveSizeClass]))
     {
       [v5 mediaBottomCaptionBar];
     }
@@ -143,18 +143,18 @@ LABEL_30:
     }
     v27 = ;
     v28 = [v27 top];
-    v29 = [v28 leading];
-    [v29 setText:v16];
+    leading4 = [v28 leading];
+    [leading4 setText:title2];
 
-    v33 = [v5 captionBar];
-    v34 = [v33 bottom];
-    v35 = [v34 leading];
-    [v35 setText:v20];
+    captionBar2 = [v5 captionBar];
+    belowBottom = [captionBar2 bottom];
+    leading3 = [belowBottom leading];
+    [leading3 setText:summary];
     goto LABEL_30;
   }
 
 LABEL_31:
-  if (!sizeClassIsCardHeading([v4 effectiveSizeClass]) && (objc_msgSend(v4, "isInComposeContext") & 1) == 0 && !sizeClassRequiresTrailingIcon(objc_msgSend(v4, "effectiveSizeClass")))
+  if (!sizeClassIsCardHeading([transformerCopy effectiveSizeClass]) && (objc_msgSend(transformerCopy, "isInComposeContext") & 1) == 0 && !sizeClassRequiresTrailingIcon(objc_msgSend(transformerCopy, "effectiveSizeClass")))
   {
     v39 = objc_alloc_init(LPCaptionButtonPresentationProperties);
     v40 = LPLocalizedString(@"Join");
@@ -164,72 +164,72 @@ LABEL_31:
     [(LPCaptionButtonPresentationProperties *)v39 setActions:v42];
 
     [(LPCaptionButtonPresentationProperties *)v39 setShape:2];
-    v43 = [v5 captionBar];
-    [v43 setButton:v39];
+    captionBar3 = [v5 captionBar];
+    [captionBar3 setButton:v39];
   }
 
   return v5;
 }
 
-- (id)previewSummaryForTransformer:(id)a3
+- (id)previewSummaryForTransformer:(id)transformer
 {
-  v4 = a3;
-  v5 = [(LPGameActivityMetadata *)self title];
-  v6 = v5;
-  if (v5)
+  transformerCopy = transformer;
+  title = [(LPGameActivityMetadata *)self title];
+  v6 = title;
+  if (title)
   {
-    v7 = v5;
+    title2 = title;
   }
 
   else
   {
-    v8 = [v4 metadata];
-    v7 = [v8 title];
+    metadata = [transformerCopy metadata];
+    title2 = [metadata title];
   }
 
-  return v7;
+  return title2;
 }
 
-- (id)previewImageForTransformer:(id)a3
+- (id)previewImageForTransformer:(id)transformer
 {
-  v4 = a3;
-  v5 = [(LPGameActivityMetadata *)self artwork];
-  v6 = v5;
-  if (v5)
+  transformerCopy = transformer;
+  artwork = [(LPGameActivityMetadata *)self artwork];
+  v6 = artwork;
+  if (artwork)
   {
-    v7 = v5;
+    image = artwork;
   }
 
   else
   {
-    v8 = [v4 metadata];
-    v7 = [v8 image];
+    metadata = [transformerCopy metadata];
+    image = [metadata image];
   }
 
-  return v7;
+  return image;
 }
 
-- (LPGameActivityMetadata)initWithCoder:(id)a3
+- (LPGameActivityMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = LPGameActivityMetadata;
   v5 = [(LPGameActivityMetadata *)&v16 init];
   if (v5)
   {
-    v6 = decodeStringForKey(v4, @"title");
+    v6 = decodeStringForKey(coderCopy, @"title");
     title = v5->_title;
     v5->_title = v6;
 
-    v8 = decodeStringForKey(v4, @"subtitle");
+    v8 = decodeStringForKey(coderCopy, @"subtitle");
     subtitle = v5->_subtitle;
     v5->_subtitle = v8;
 
-    v10 = [v4 _lp_strictlyDecodeLPImageForKey:@"artwork"];
+    v10 = [coderCopy _lp_strictlyDecodeLPImageForKey:@"artwork"];
     artwork = v5->_artwork;
     v5->_artwork = v10;
 
-    v12 = [v4 _lp_strictlyDecodeLPImageForKey:@"icon"];
+    v12 = [coderCopy _lp_strictlyDecodeLPImageForKey:@"icon"];
     icon = v5->_icon;
     v5->_icon = v12;
 
@@ -239,31 +239,31 @@ LABEL_31:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 _lp_encodeStringIfNotNil:self->_title forKey:@"title"];
-  [v4 _lp_encodeStringIfNotNil:self->_subtitle forKey:@"subtitle"];
-  [v4 _lp_encodeObjectIfNotNil:self->_artwork forKey:@"artwork"];
-  [v4 _lp_encodeObjectIfNotNil:self->_icon forKey:@"icon"];
+  coderCopy = coder;
+  [coderCopy _lp_encodeStringIfNotNil:self->_title forKey:@"title"];
+  [coderCopy _lp_encodeStringIfNotNil:self->_subtitle forKey:@"subtitle"];
+  [coderCopy _lp_encodeObjectIfNotNil:self->_artwork forKey:@"artwork"];
+  [coderCopy _lp_encodeObjectIfNotNil:self->_icon forKey:@"icon"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [LPGameActivityMetadata allocWithZone:a3];
+  v4 = [LPGameActivityMetadata allocWithZone:zone];
   if (v4)
   {
-    v5 = [(LPGameActivityMetadata *)self title];
-    [(LPGameActivityMetadata *)v4 setTitle:v5];
+    title = [(LPGameActivityMetadata *)self title];
+    [(LPGameActivityMetadata *)v4 setTitle:title];
 
-    v6 = [(LPGameActivityMetadata *)self subtitle];
-    [(LPGameActivityMetadata *)v4 setSubtitle:v6];
+    subtitle = [(LPGameActivityMetadata *)self subtitle];
+    [(LPGameActivityMetadata *)v4 setSubtitle:subtitle];
 
-    v7 = [(LPGameActivityMetadata *)self artwork];
-    [(LPGameActivityMetadata *)v4 setArtwork:v7];
+    artwork = [(LPGameActivityMetadata *)self artwork];
+    [(LPGameActivityMetadata *)v4 setArtwork:artwork];
 
-    v8 = [(LPGameActivityMetadata *)self icon];
-    [(LPGameActivityMetadata *)v4 setIcon:v8];
+    icon = [(LPGameActivityMetadata *)self icon];
+    [(LPGameActivityMetadata *)v4 setIcon:icon];
 
     v9 = v4;
   }
@@ -271,12 +271,12 @@ LABEL_31:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = LPGameActivityMetadata;
-  if ([(LPGameActivityMetadata *)&v8 isEqual:v4])
+  if ([(LPGameActivityMetadata *)&v8 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -286,7 +286,7 @@ LABEL_31:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = equalCopy;
       if ((objectsAreEqual_0(v6[2], self->_title) & 1) != 0 && objectsAreEqual_0(v6[3], self->_subtitle) && objectsAreEqual_0(v6[4], self->_artwork))
       {
         v5 = objectsAreEqual_0(v6[5], self->_icon);
@@ -307,11 +307,11 @@ LABEL_31:
   return v5;
 }
 
-- (void)_enumerateAsynchronousFields:(id)a3
+- (void)_enumerateAsynchronousFields:(id)fields
 {
-  v3 = a3;
-  v3[2](v3, @"artwork");
-  v3[2](v3, @"icon");
+  fieldsCopy = fields;
+  fieldsCopy[2](fieldsCopy, @"artwork");
+  fieldsCopy[2](fieldsCopy, @"icon");
 }
 
 @end

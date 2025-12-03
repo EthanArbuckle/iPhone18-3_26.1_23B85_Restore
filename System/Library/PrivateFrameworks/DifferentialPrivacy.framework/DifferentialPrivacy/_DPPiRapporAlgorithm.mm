@@ -1,16 +1,16 @@
 @interface _DPPiRapporAlgorithm
-- (BOOL)encodeClassIndex:(unint64_t)a3 coeffs:(unsigned int *)a4 phi0Buf:(unsigned int *)a5 otherPhiBuf:(unsigned int *)a6;
-- (id)decode:(id)a3;
-- (id)encodeClassIndex:(unint64_t)a3;
-- (id)encodeClassIndices:(id)a3;
+- (BOOL)encodeClassIndex:(unint64_t)index coeffs:(unsigned int *)coeffs phi0Buf:(unsigned int *)buf otherPhiBuf:(unsigned int *)phiBuf;
+- (id)decode:(id)decode;
+- (id)encodeClassIndex:(unint64_t)index;
+- (id)encodeClassIndices:(id)indices;
 @end
 
 @implementation _DPPiRapporAlgorithm
 
-- (id)encodeClassIndex:(unint64_t)a3
+- (id)encodeClassIndex:(unint64_t)index
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:index];
   v9[0] = v4;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
   v6 = [(_DPPiRapporAlgorithm *)self encodeClassIndices:v5];
@@ -20,32 +20,32 @@
   return v6;
 }
 
-- (id)encodeClassIndices:(id)a3
+- (id)encodeClassIndices:(id)indices
 {
-  v4 = a3;
-  v5 = 4 * [v4 count];
+  indicesCopy = indices;
+  v5 = 4 * [indicesCopy count];
   v6 = [MEMORY[0x277CBEB28] dataWithLength:v5];
   v7 = [MEMORY[0x277CBEB28] dataWithLength:{v5 * -[_DPPiRapporAlgorithm numberOfOtherPhi](self, "numberOfOtherPhi")}];
   v20 = v6;
-  v8 = [v6 bytes];
-  v9 = [v7 bytes];
+  bytes = [v6 bytes];
+  bytes2 = [v7 bytes];
   context = objc_autoreleasePoolPush();
   v10 = [MEMORY[0x277CBEB28] dataWithLength:{4 * -[_DPPiRapporAlgorithm numberOfOtherPhi](self, "numberOfOtherPhi")}];
-  v11 = [v10 bytes];
-  if ([v4 count])
+  bytes3 = [v10 bytes];
+  if ([indicesCopy count])
   {
     v12 = 0;
     while (1)
     {
-      v13 = [v4 objectAtIndexedSubscript:v12];
-      v14 = [v13 unsignedIntegerValue];
+      v13 = [indicesCopy objectAtIndexedSubscript:v12];
+      unsignedIntegerValue = [v13 unsignedIntegerValue];
 
-      if (v14 >= [(_DPPiRapporAlgorithm *)self numberOfClasses])
+      if (unsignedIntegerValue >= [(_DPPiRapporAlgorithm *)self numberOfClasses])
       {
         break;
       }
 
-      if (![(_DPPiRapporAlgorithm *)self encodeClassIndex:v14 coeffs:v11 phi0Buf:v8 otherPhiBuf:v9 + 4 * [(_DPPiRapporAlgorithm *)self numberOfOtherPhi]* v12])
+      if (![(_DPPiRapporAlgorithm *)self encodeClassIndex:unsignedIntegerValue coeffs:bytes3 phi0Buf:bytes otherPhiBuf:bytes2 + 4 * [(_DPPiRapporAlgorithm *)self numberOfOtherPhi]* v12])
       {
         v17 = +[_DPLog framework];
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -57,8 +57,8 @@
       }
 
       ++v12;
-      v8 += 4;
-      if (v12 >= [v4 count])
+      bytes += 4;
+      if (v12 >= [indicesCopy count])
       {
         goto LABEL_6;
       }
@@ -89,49 +89,49 @@ LABEL_6:
   return v16;
 }
 
-- (id)decode:(id)a3
+- (id)decode:(id)decode
 {
-  v4 = a3;
-  v5 = [v4 numberOfEncodedIndices];
-  v6 = [v4 phi0];
-  v25 = [v6 bytes];
+  decodeCopy = decode;
+  numberOfEncodedIndices = [decodeCopy numberOfEncodedIndices];
+  phi0 = [decodeCopy phi0];
+  bytes = [phi0 bytes];
 
-  v7 = [v4 otherPhi];
-  v24 = [v7 bytes];
+  otherPhi = [decodeCopy otherPhi];
+  bytes2 = [otherPhi bytes];
 
-  v8 = [v4 numberOfOtherPhi];
-  if (v8 == [(_DPPiRapporAlgorithm *)self numberOfOtherPhi])
+  numberOfOtherPhi = [decodeCopy numberOfOtherPhi];
+  if (numberOfOtherPhi == [(_DPPiRapporAlgorithm *)self numberOfOtherPhi])
   {
-    v23 = v4;
+    v23 = decodeCopy;
     v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:{-[_DPPiRapporAlgorithm numberOfClasses](self, "numberOfClasses")}];
     context = objc_autoreleasePoolPush();
-    v21 = [MEMORY[0x277CBEB28] dataWithLength:4 * v8];
-    v10 = [v21 bytes];
+    v21 = [MEMORY[0x277CBEB28] dataWithLength:4 * numberOfOtherPhi];
+    bytes3 = [v21 bytes];
     if ([(_DPPiRapporAlgorithm *)self numberOfClasses])
     {
       v11 = 0;
       v26 = v9;
-      v27 = v5;
+      v27 = numberOfEncodedIndices;
       do
       {
         v28 = v11;
-        pi_rappor_get_coefficients(v10, v8, v11, [(_DPPiRapporAlgorithm *)self prime]);
+        pi_rappor_get_coefficients(bytes3, numberOfOtherPhi, v11, [(_DPPiRapporAlgorithm *)self prime]);
         v12 = 0;
-        if (v5)
+        if (numberOfEncodedIndices)
         {
-          v14 = v24;
-          v13 = v25;
+          v14 = bytes2;
+          v13 = bytes;
           do
           {
             v15 = *v13++;
-            v16 = dotprod_mod32(v10, v14, v8, [(_DPPiRapporAlgorithm *)self prime]);
+            v16 = dotprod_mod32(bytes3, v14, numberOfOtherPhi, [(_DPPiRapporAlgorithm *)self prime]);
             v17 = addmod32(v16, v15, [(_DPPiRapporAlgorithm *)self prime]);
             v12 += pi_rappor_BOOL_func(v17, [(_DPPiRapporAlgorithm *)self threshold]);
-            v14 += v8;
-            --v5;
+            v14 += numberOfOtherPhi;
+            --numberOfEncodedIndices;
           }
 
-          while (v5);
+          while (numberOfEncodedIndices);
         }
 
         v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v12];
@@ -139,14 +139,14 @@ LABEL_6:
         [v26 setObject:v18 atIndexedSubscript:v28];
 
         v11 = v28 + 1;
-        v5 = v27;
+        numberOfEncodedIndices = v27;
       }
 
       while (v28 + 1 < [(_DPPiRapporAlgorithm *)self numberOfClasses]);
     }
 
     objc_autoreleasePoolPop(context);
-    v4 = v23;
+    decodeCopy = v23;
   }
 
   else
@@ -154,7 +154,7 @@ LABEL_6:
     v19 = +[_DPLog framework];
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      [(_DPPiRapporAlgorithm *)self decode:v8, v19];
+      [(_DPPiRapporAlgorithm *)self decode:numberOfOtherPhi, v19];
     }
 
     v9 = 0;
@@ -163,43 +163,43 @@ LABEL_6:
   return v9;
 }
 
-- (BOOL)encodeClassIndex:(unint64_t)a3 coeffs:(unsigned int *)a4 phi0Buf:(unsigned int *)a5 otherPhiBuf:(unsigned int *)a6
+- (BOOL)encodeClassIndex:(unint64_t)index coeffs:(unsigned int *)coeffs phi0Buf:(unsigned int *)buf otherPhiBuf:(unsigned int *)phiBuf
 {
   if ([(_DPPiRapporAlgorithm *)self numberOfOtherPhi])
   {
     v11 = 0;
     do
     {
-      a6[v11++] = arc4random_uniform([(_DPPiRapporAlgorithm *)self prime]);
+      phiBuf[v11++] = arc4random_uniform([(_DPPiRapporAlgorithm *)self prime]);
     }
 
     while (v11 < [(_DPPiRapporAlgorithm *)self numberOfOtherPhi]);
   }
 
-  v12 = [(_DPPiRapporAlgorithm *)self coin];
-  v13 = [v12 flip];
+  coin = [(_DPPiRapporAlgorithm *)self coin];
+  flip = [coin flip];
 
-  pi_rappor_get_coefficients(a4, [(_DPPiRapporAlgorithm *)self numberOfOtherPhi], a3, [(_DPPiRapporAlgorithm *)self prime]);
-  v14 = dotprod_mod32(a4, a6, [(_DPPiRapporAlgorithm *)self numberOfOtherPhi], [(_DPPiRapporAlgorithm *)self prime]);
+  pi_rappor_get_coefficients(coeffs, [(_DPPiRapporAlgorithm *)self numberOfOtherPhi], index, [(_DPPiRapporAlgorithm *)self prime]);
+  v14 = dotprod_mod32(coeffs, phiBuf, [(_DPPiRapporAlgorithm *)self numberOfOtherPhi], [(_DPPiRapporAlgorithm *)self prime]);
   v15 = submod32(0, v14, [(_DPPiRapporAlgorithm *)self prime]);
   v22 = 0;
-  v21 = [(_DPPiRapporAlgorithm *)self prime];
-  pi_rappor_inverse_BOOL_func(v13, [(_DPPiRapporAlgorithm *)self threshold], [(_DPPiRapporAlgorithm *)self prime], &v22, &v21);
-  v17 = v21;
+  prime = [(_DPPiRapporAlgorithm *)self prime];
+  pi_rappor_inverse_BOOL_func(flip, [(_DPPiRapporAlgorithm *)self threshold], [(_DPPiRapporAlgorithm *)self prime], &v22, &prime);
+  v17 = prime;
   v16 = v22;
-  if (v21 <= v22)
+  if (prime <= v22)
   {
     v19 = +[_DPLog framework];
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      [_DPPiRapporAlgorithm encodeClassIndex:&v21 coeffs:v19 phi0Buf:? otherPhiBuf:?];
+      [_DPPiRapporAlgorithm encodeClassIndex:&prime coeffs:v19 phi0Buf:? otherPhiBuf:?];
     }
   }
 
   else
   {
-    v18 = arc4random_uniform(v21 - v22);
-    *a5 = addmod32(v18 + v16, v15, [(_DPPiRapporAlgorithm *)self prime]);
+    v18 = arc4random_uniform(prime - v22);
+    *buf = addmod32(v18 + v16, v15, [(_DPPiRapporAlgorithm *)self prime]);
   }
 
   return v17 > v16;

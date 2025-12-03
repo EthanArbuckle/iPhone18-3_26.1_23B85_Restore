@@ -1,17 +1,17 @@
 @interface CKAvatarNavigationBar
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 @end
 
 @implementation CKAvatarNavigationBar
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [MEMORY[0x1E69DC938] currentDevice];
-  v7 = [v6 userInterfaceIdiom];
+  height = fits.height;
+  width = fits.width;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v7 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v18.receiver = self;
     v18.super_class = CKAvatarNavigationBar;

@@ -1,13 +1,13 @@
 @interface AXThreadTimerTask
 - (void)run;
-- (void)setBlock:(id)a3;
+- (void)setBlock:(id)block;
 @end
 
 @implementation AXThreadTimerTask
 
-- (void)setBlock:(id)a3
+- (void)setBlock:(id)block
 {
-  v4 = [a3 copy];
+  v4 = [block copy];
   block = self->_block;
   self->_block = v4;
 

@@ -1,37 +1,37 @@
 @interface PKPaymentRemoteContentPassActionRequest
-- (id)_urlRequestWithServiceURL:(id)a3 deviceIdentifier:(id)a4 passTypeIdentifier:(id)a5 passSerialNumber:(id)a6 appleAccountInformation:(id)a7;
+- (id)_urlRequestWithServiceURL:(id)l deviceIdentifier:(id)identifier passTypeIdentifier:(id)typeIdentifier passSerialNumber:(id)number appleAccountInformation:(id)information;
 @end
 
 @implementation PKPaymentRemoteContentPassActionRequest
 
-- (id)_urlRequestWithServiceURL:(id)a3 deviceIdentifier:(id)a4 passTypeIdentifier:(id)a5 passSerialNumber:(id)a6 appleAccountInformation:(id)a7
+- (id)_urlRequestWithServiceURL:(id)l deviceIdentifier:(id)identifier passTypeIdentifier:(id)typeIdentifier passSerialNumber:(id)number appleAccountInformation:(id)information
 {
   v28[7] = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  identifierCopy = identifier;
+  typeIdentifierCopy = typeIdentifier;
+  numberCopy = number;
   action = self->_action;
-  v16 = a7;
-  v17 = a3;
-  v18 = [(PKPaymentPassAction *)action appletData];
+  informationCopy = information;
+  lCopy = l;
+  appletData = [(PKPaymentPassAction *)action appletData];
   v19 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v20 = v19;
-  if (v18)
+  if (appletData)
   {
-    [v19 setObject:v18 forKey:@"appletData"];
+    [v19 setObject:appletData forKey:@"appletData"];
   }
 
   v28[0] = @"devices";
-  v28[1] = v12;
+  v28[1] = identifierCopy;
   v28[2] = @"passes";
-  v28[3] = v13;
-  v28[4] = v14;
+  v28[3] = typeIdentifierCopy;
+  v28[4] = numberCopy;
   v28[5] = @"actions";
-  v21 = [(PKPaymentPassAction *)self->_action identifier];
-  v28[6] = v21;
+  identifier = [(PKPaymentPassAction *)self->_action identifier];
+  v28[6] = identifier;
   [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:7];
-  v22 = v27 = v12;
-  v23 = [(PKPaymentWebServiceRequest *)self _murlRequestWithServiceURL:v17 endpointComponents:v22 queryParameters:0 appleAccountInformation:v16];
+  v22 = v27 = identifierCopy;
+  v23 = [(PKPaymentWebServiceRequest *)self _murlRequestWithServiceURL:lCopy endpointComponents:v22 queryParameters:0 appleAccountInformation:informationCopy];
 
   v24 = [objc_opt_class() _HTTPBodyWithDictionary:v20];
   [v23 setHTTPBody:v24];

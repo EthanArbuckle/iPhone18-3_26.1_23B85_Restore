@@ -1,65 +1,65 @@
 @interface WRM_FT_HandoverManager
 + (id)WRM_FT_HandoverManagerSingleton;
-+ (id)allocWithZone:(_NSZone *)a3;
-- (BOOL)canWiFiTransportMeetActiveApplicationRequirements:(unint64_t)a3 :(unint64_t)a4 :(int)a5;
-- (BOOL)canWiFiTransportMeetIdleApplicationRequirements:(unint64_t)a3 :(unint64_t)a4 :(int)a5;
++ (id)allocWithZone:(_NSZone *)zone;
+- (BOOL)canWiFiTransportMeetActiveApplicationRequirements:(unint64_t)requirements :(unint64_t)a4 :(int)a5;
+- (BOOL)canWiFiTransportMeetIdleApplicationRequirements:(unint64_t)requirements :(unint64_t)a4 :(int)a5;
 - (BOOL)doesIRATClientSubscriptionContextExist;
 - (BOOL)handoverEvaluationRequired;
 - (BOOL)isCellularEntryCriteriaMetForFaceTimeCallCurrentLinkWiFi;
 - (BOOL)isCellularExitCriteriaMetForFaceTimeCallCurrentLinkCellular;
-- (BOOL)isMovingAverageDownlinkAudioQualityOfCurrentCallGood:(int)a3;
-- (BOOL)isMovingAverageUplinkAudioQualityOfCurrentCallGood:(int)a3;
-- (BOOL)isWiFiArqQualityIndicatorGood:(unint64_t)a3 :(unint64_t)a4 :(int)a5 :(BOOL)a6;
-- (BOOL)isWiFiBeaconLossQualityIndicatorGood:(unint64_t)a3 :(unint64_t)a4 :(int)a5;
-- (BOOL)isWiFiDataRateIndicatorGoodForFaceTime:(unint64_t)a3 :(int)a4;
+- (BOOL)isMovingAverageDownlinkAudioQualityOfCurrentCallGood:(int)good;
+- (BOOL)isMovingAverageUplinkAudioQualityOfCurrentCallGood:(int)good;
+- (BOOL)isWiFiArqQualityIndicatorGood:(unint64_t)good :(unint64_t)a4 :(int)a5 :(BOOL)a6;
+- (BOOL)isWiFiBeaconLossQualityIndicatorGood:(unint64_t)good :(unint64_t)a4 :(int)a5;
+- (BOOL)isWiFiDataRateIndicatorGoodForFaceTime:(unint64_t)time :(int)a4;
 - (BOOL)isWiFiLinkEvaluationDesired;
-- (BOOL)isWiFiLoadQualityIndicatorGood:(unint64_t)a3 :(unint64_t)a4 :(BOOL)a5 :(int)a6;
+- (BOOL)isWiFiLoadQualityIndicatorGood:(unint64_t)good :(unint64_t)a4 :(BOOL)a5 :(int)a6;
 - (BOOL)isWiFiVoIPQualityGoodEnough;
 - (BOOL)needWiFiLQM;
 - (WRM_FT_HandoverManager)init;
-- (id)getiRATClientFromList:(int)a3;
+- (id)getiRATClientFromList:(int)list;
 - (int64_t)getRSSIHysteresis;
 - (int64_t)getSNRHysteresis;
 - (unsigned)faceTimeCallType;
-- (void)addiRatClient:(id)a3;
-- (void)callObserver:(id)a3 callChanged:(id)a4;
+- (void)addiRatClient:(id)client;
+- (void)callObserver:(id)observer callChanged:(id)changed;
 - (void)configureIDSMetricsReporting;
 - (void)configureRTPMetricsReporting;
 - (void)dealloc;
 - (void)evaluateActiveCallQuality;
-- (void)evaluateCellAleratedState:(unint64_t)a3;
+- (void)evaluateCellAleratedState:(unint64_t)state;
 - (void)evaluateHandover;
-- (void)evaluateWiFiAleratedState:(unint64_t)a3;
+- (void)evaluateWiFiAleratedState:(unint64_t)state;
 - (void)feedAWDMetricsCellularStats;
-- (void)feedAWDMetricsCellularStatsWithUUID:(id)a3;
+- (void)feedAWDMetricsCellularStatsWithUUID:(id)d;
 - (void)feedAWDMetricsWiFiStats;
-- (void)handlaIDSMetrics:(id)a3;
-- (void)handleCallNotification:(id)a3;
-- (void)handleCellularLinkQualityUpdate:(id)a3;
-- (void)handleControllerAvailability:(unint64_t)a3;
+- (void)handlaIDSMetrics:(id)metrics;
+- (void)handleCallNotification:(id)notification;
+- (void)handleCellularLinkQualityUpdate:(id)update;
+- (void)handleControllerAvailability:(unint64_t)availability;
 - (void)handleFTConfig;
-- (void)handleGetMetrcisMessage:(id)a3;
+- (void)handleGetMetrcisMessage:(id)message;
 - (void)handleIDSRegisterd;
-- (void)handleInternalMessage:(id)a3;
-- (void)handleLinkPrefSubscribe:(id)a3;
-- (void)handleLinkPrefSubscribeIDS:(id)a3;
-- (void)handleMotionUpdate:(id)a3;
-- (void)handlePeriodicRTPMetrics:(id)a3;
-- (void)handleRTPEvent:(id)a3;
-- (void)handleSessionNotification:(id)a3;
-- (void)handleSubscribeStatusUpdateIDS:(id)a3 :(BOOL)a4;
+- (void)handleInternalMessage:(id)message;
+- (void)handleLinkPrefSubscribe:(id)subscribe;
+- (void)handleLinkPrefSubscribeIDS:(id)s;
+- (void)handleMotionUpdate:(id)update;
+- (void)handlePeriodicRTPMetrics:(id)metrics;
+- (void)handleRTPEvent:(id)event;
+- (void)handleSessionNotification:(id)notification;
+- (void)handleSubscribeStatusUpdateIDS:(id)s :(BOOL)a4;
 - (void)handleWiFiConfig;
-- (void)handleWiFiLinkQualityUpdate:(id)a3;
-- (void)handleWiFiStateChaneEvents:(id)a3;
+- (void)handleWiFiLinkQualityUpdate:(id)update;
+- (void)handleWiFiStateChaneEvents:(id)events;
 - (void)initCallNotifications;
 - (void)registerForCTNotifications;
 - (void)registerForSCNotifications;
-- (void)removeiRatClient:(id)a3;
+- (void)removeiRatClient:(id)client;
 - (void)resetActiveCallEvaluationMetrics;
-- (void)toggleFastLQMReport:(BOOL)a3;
-- (void)updateControllerSession:(id)a3 ofId:(unint64_t)a4;
-- (void)updateControllerState:(id)a3;
-- (void)updateRSSITh:(int64_t)a3;
+- (void)toggleFastLQMReport:(BOOL)report;
+- (void)updateControllerSession:(id)session ofId:(unint64_t)id;
+- (void)updateControllerState:(id)state;
+- (void)updateRSSITh:(int64_t)th;
 - (void)updateSlotInfoCTServie;
 @end
 
@@ -71,7 +71,7 @@
   block[1] = 3221225472;
   block[2] = sub_10006288C;
   block[3] = &unk_10023DB28;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1002B7DC8 != -1)
   {
     dispatch_once(&qword_1002B7DC8, block);
@@ -82,15 +82,15 @@
 
 - (BOOL)needWiFiLQM
 {
-  v2 = [(WRM_FT_HandoverManager *)self doesIRATClientSubscriptionContextExist];
+  doesIRATClientSubscriptionContextExist = [(WRM_FT_HandoverManager *)self doesIRATClientSubscriptionContextExist];
   v3 = "NO";
-  if (v2)
+  if (doesIRATClientSubscriptionContextExist)
   {
     v3 = "YES";
   }
 
   [WCM_Logging logLevel:29 message:@"%s: needWiFiLQM? %s ", "[WRM_FT_HandoverManager needWiFiLQM]", v3];
-  return v2;
+  return doesIRATClientSubscriptionContextExist;
 }
 
 - (BOOL)doesIRATClientSubscriptionContextExist
@@ -129,9 +129,9 @@ LABEL_11:
         objc_enumerationMutation(miRATClientContexts);
       }
 
-      v9 = [*(*(&v12 + 1) + 8 * i) getHandoverContexts];
-      +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 29, @"%s: iRAT client Context count:%d.", "-[WRM_FT_HandoverManager doesIRATClientSubscriptionContextExist]", [v9 count]);
-      v6 |= [v9 count] != 0;
+      getHandoverContexts = [*(*(&v12 + 1) + 8 * i) getHandoverContexts];
+      +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 29, @"%s: iRAT client Context count:%d.", "-[WRM_FT_HandoverManager doesIRATClientSubscriptionContextExist]", [getHandoverContexts count]);
+      v6 |= [getHandoverContexts count] != 0;
     }
 
     v5 = [(NSMutableArray *)miRATClientContexts countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -145,23 +145,23 @@ LABEL_12:
 
 - (BOOL)handoverEvaluationRequired
 {
-  v3 = [(WRM_FT_HandoverManager *)self getiRATConfigController];
+  getiRATConfigController = [(WRM_FT_HandoverManager *)self getiRATConfigController];
   [(NSDate *)self->mStartTime timeIntervalSinceNow];
   v5 = v4;
   v6 = self->mPrevTimeSinceStart - v4;
   [WCM_Logging logLevel:29 message:@"HO Evaluation time duration is: %lf", *&v6];
-  v7 = [v3 pingPongAvoidanceThresholdStationary];
-  if (v6 * 1000.0 >= v7)
+  pingPongAvoidanceThresholdStationary = [getiRATConfigController pingPongAvoidanceThresholdStationary];
+  if (v6 * 1000.0 >= pingPongAvoidanceThresholdStationary)
   {
     self->mPrevTimeSinceStart = v5;
   }
 
-  return v6 * 1000.0 >= v7;
+  return v6 * 1000.0 >= pingPongAvoidanceThresholdStationary;
 }
 
 - (void)evaluateHandover
 {
-  v2 = self;
+  selfCopy = self;
   v3 = [(NSMutableArray *)self->miRATClientContexts count];
   if (!v3)
   {
@@ -171,13 +171,13 @@ LABEL_12:
   }
 
   [WCM_Logging logLevel:29 message:@"Evaluate Handover: Total number of iRAT clients %zu.", v3];
-  [(WRM_FT_HandoverManager *)v2 updateSlotInfoCTServie];
-  v47 = [(WRM_FT_HandoverManager *)v2 getiRATConfigController];
+  [(WRM_FT_HandoverManager *)selfCopy updateSlotInfoCTServie];
+  getiRATConfigController = [(WRM_FT_HandoverManager *)selfCopy getiRATConfigController];
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  obj = v2->miRATClientContexts;
+  obj = selfCopy->miRATClientContexts;
   v44 = [(NSMutableArray *)obj countByEnumeratingWithState:&v57 objects:v62 count:16];
   if (!v44)
   {
@@ -187,7 +187,7 @@ LABEL_101:
   }
 
   v43 = *v58;
-  v48 = v2;
+  v48 = selfCopy;
   do
   {
     v4 = 0;
@@ -199,14 +199,14 @@ LABEL_101:
       }
 
       v5 = *(*(&v57 + 1) + 8 * v4);
-      v6 = [v5 getMyClientType];
+      getMyClientType = [v5 getMyClientType];
       v7 = "ClientCommCenter";
-      if (v6 != 1)
+      if (getMyClientType != 1)
       {
-        if ((v6 - 2) >= 0x14)
+        if ((getMyClientType - 2) >= 0x14)
         {
           v7 = "UNKNOWN_WRM_CLIENT_TYPE!!!";
-          if (v6 == 22)
+          if (getMyClientType == 22)
           {
             v7 = "ClientCoreMediaStreaming";
           }
@@ -214,22 +214,22 @@ LABEL_101:
 
         else
         {
-          v7 = off_10023F038[v6 - 2];
+          v7 = off_10023F038[getMyClientType - 2];
         }
       }
 
-      v42 = v6 - 1;
+      v42 = getMyClientType - 1;
       v46 = v4;
-      v52 = v6;
+      v52 = getMyClientType;
       [WCM_Logging logLevel:29 message:@"<%s>Evaluate Handover: BEGIN.", v7];
       v45 = v5;
-      v8 = [v5 getHandoverContexts];
+      getHandoverContexts = [v5 getHandoverContexts];
       v53 = 0u;
       v54 = 0u;
       v55 = 0u;
       v56 = 0u;
-      v49 = v8;
-      v9 = [v8 countByEnumeratingWithState:&v53 objects:v61 count:16];
+      v49 = getHandoverContexts;
+      v9 = [getHandoverContexts countByEnumeratingWithState:&v53 objects:v61 count:16];
       if (v9)
       {
         v10 = v9;
@@ -253,10 +253,10 @@ LABEL_101:
             }
 
             v14 = *(*(&v53 + 1) + 8 * v13);
-            v15 = [v14 getBandwidth];
-            v16 = [v14 getApplicationType];
-            v17 = [v14 getCallState];
-            v18 = [v14 getConnectedLinkType];
+            getBandwidth = [v14 getBandwidth];
+            getApplicationType = [v14 getApplicationType];
+            getCallState = [v14 getCallState];
+            getConnectedLinkType = [v14 getConnectedLinkType];
             if ([v14 getSubscriptionType] != 1)
             {
               [WCM_Logging logLevel:29 message:@"Evaluate Handover: SubscriptionType != WIFI_CELL, HO Eval Required: %d", 0, v40];
@@ -273,13 +273,13 @@ LABEL_101:
               }
             }
 
-            if (v16)
+            if (getApplicationType)
             {
               v20 = "VOICE";
-              if (v16 != 1)
+              if (getApplicationType != 1)
               {
                 v20 = "UNKNOWN_APP!!!";
-                if (v16 == 2)
+                if (getApplicationType == 2)
                 {
                   v20 = "VIDEO";
                 }
@@ -292,7 +292,7 @@ LABEL_101:
             }
 
             [WCM_Logging logLevel:29 message:@"<%s>{%s}Evaluate Handover: BEGIN.", v19, v20];
-            if (v18 || (byte_1002B7DDE & 1) != 0)
+            if (getConnectedLinkType || (byte_1002B7DDE & 1) != 0)
             {
               goto LABEL_32;
             }
@@ -302,10 +302,10 @@ LABEL_101:
               [WCM_Logging logLevel:29 message:@"evaluate_handover: connectedLinkType == WRM_CELLULAR"];
               [v14 getDeltaTimeSinceLastCellularRecommendation];
               v30 = v29 * 1000.0;
-              if (v17)
+              if (getCallState)
               {
                 [WCM_Logging logLevel:29 message:@"state: active, getDeltaTimeSinceLastCellularRecommendation: delta time:%lf", v29 * 1000.0];
-                if (v30 < [v47 faceTimeCellularStickinessThreaholdActive])
+                if (v30 < [getiRATConfigController faceTimeCellularStickinessThreaholdActive])
                 {
                   goto LABEL_85;
                 }
@@ -316,21 +316,21 @@ LABEL_32:
                 goto LABEL_33;
               }
 
-              v34 = [v14 getPingPongAvoidanceTimerMultiplier];
-              v35 = [v47 faceTimeCellularStickinessThreaholdActive] * v34;
+              getPingPongAvoidanceTimerMultiplier = [v14 getPingPongAvoidanceTimerMultiplier];
+              v35 = [getiRATConfigController faceTimeCellularStickinessThreaholdActive] * getPingPongAvoidanceTimerMultiplier;
               [WCM_Logging logLevel:29 message:@"state: idle, getDeltaTimeSinceLastCellularRecommendation: delta time:%lf, effective blockout:%lld", *&v30, v35];
               v36 = v35;
-              v2 = v48;
+              selfCopy = v48;
               if (v30 < v36)
               {
 LABEL_85:
-                if (v16)
+                if (getApplicationType)
                 {
                   v37 = "VOICE";
-                  if (v16 != 1)
+                  if (getApplicationType != 1)
                   {
                     v37 = "UNKNOWN_APP!!!";
-                    if (v16 == 2)
+                    if (getApplicationType == 2)
                     {
                       v37 = "VIDEO";
                     }
@@ -353,14 +353,14 @@ LABEL_85:
             }
 
 LABEL_33:
-            [(WRM_FT_HandoverManager *)v2 initHandoverReasonCode];
-            if (v16)
+            [(WRM_FT_HandoverManager *)selfCopy initHandoverReasonCode];
+            if (getApplicationType)
             {
               v21 = "VOICE";
-              if (v16 != 1)
+              if (getApplicationType != 1)
               {
                 v21 = "UNKNOWN_APP!!!";
-                if (v16 == 2)
+                if (getApplicationType == 2)
                 {
                   v21 = "VIDEO";
                 }
@@ -373,19 +373,19 @@ LABEL_33:
             }
 
             [WCM_Logging logLevel:29 message:@"{%s}invoking evaluate link", v21];
-            v22 = [(WRM_FT_HandoverManager *)v2 evaluateLink:v15];
+            v22 = [(WRM_FT_HandoverManager *)selfCopy evaluateLink:getBandwidth];
             v23 = v22 == 1;
             if ([v14 getConnectedLinkType] == v23)
             {
               [v14 setLinkPreferenceNotificationRequired:0];
-              if (v16)
+              if (getApplicationType)
               {
                 v24 = "VOICE";
                 v25 = v52;
-                if (v16 != 1)
+                if (getApplicationType != 1)
                 {
                   v24 = "UNKNOWN_APP!!!";
-                  if (v16 == 2)
+                  if (getApplicationType == 2)
                   {
                     v24 = "VIDEO";
                   }
@@ -399,11 +399,11 @@ LABEL_33:
               }
 
               v31 = v25;
-              [WCM_Logging logLevel:29 message:@"{%s}Link preference did not change for application type =%lld for client =%d current link type =%d ", v24, v16, v25, v23];
+              [WCM_Logging logLevel:29 message:@"{%s}Link preference did not change for application type =%lld for client =%d current link type =%d ", v24, getApplicationType, v25, v23];
               goto LABEL_72;
             }
 
-            if (v18)
+            if (getConnectedLinkType)
             {
               v26 = 0;
             }
@@ -416,32 +416,32 @@ LABEL_33:
             v27 = v26;
             if (v26)
             {
-              [(WRM_MetricsService *)v48->mMetrics updateiRATMetricCellToWifi:v17];
+              [(WRM_MetricsService *)v48->mMetrics updateiRATMetricCellToWifi:getCallState];
             }
 
             else
             {
-              if (v18 != 1 || v22 == 1)
+              if (getConnectedLinkType != 1 || v22 == 1)
               {
                 goto LABEL_58;
               }
 
-              [(WRM_MetricsService *)v48->mMetrics updateiRATMetricWifiToCell:v17];
+              [(WRM_MetricsService *)v48->mMetrics updateiRATMetricWifiToCell:getCallState];
             }
 
             byte_1002B7DDF = v27 ^ 1;
 LABEL_58:
             [v14 setLinkPreferenceNotificationRequired:1];
             [v14 setConnectedLinkType:v23];
-            v2 = v48;
+            selfCopy = v48;
             [v14 setHandoverReasonType:v48->mReasons];
-            if (v16)
+            if (getApplicationType)
             {
               v28 = "VOICE";
-              if (v16 != 1)
+              if (getApplicationType != 1)
               {
                 v28 = "UNKNOWN_APP!!!";
-                if (v16 == 2)
+                if (getApplicationType == 2)
                 {
                   v28 = "VIDEO";
                 }
@@ -453,7 +453,7 @@ LABEL_58:
               v28 = "DATA";
             }
 
-            [WCM_Logging logLevel:29 message:@"{%s}Link preference changed for application type =%lld for client =%d", v28, v16, v52];
+            [WCM_Logging logLevel:29 message:@"{%s}Link preference changed for application type =%lld for client =%d", v28, getApplicationType, v52];
 LABEL_71:
             v31 = v52;
 LABEL_72:
@@ -467,13 +467,13 @@ LABEL_72:
               }
             }
 
-            if (v16)
+            if (getApplicationType)
             {
               v33 = "VOICE";
-              if (v16 != 1)
+              if (getApplicationType != 1)
               {
                 v33 = "UNKNOWN_APP!!!";
-                if (v16 == 2)
+                if (getApplicationType == 2)
                 {
                   v33 = "VIDEO";
                 }
@@ -498,7 +498,7 @@ LABEL_82:
         while (v38);
       }
 
-      [v45 handleLinkPreferenceNotificationInternetDataVoiceVideo:0 :v2->mCTService :{-[WCM_WiFiController wifiService](v2->mWiFi, "wifiService")}];
+      [v45 handleLinkPreferenceNotificationInternetDataVoiceVideo:0 :selfCopy->mCTService :{-[WCM_WiFiController wifiService](selfCopy->mWiFi, "wifiService")}];
       v4 = v46 + 1;
     }
 
@@ -588,41 +588,41 @@ LABEL_102:
 - (void)updateSlotInfoCTServie
 {
   mCTService = self->mCTService;
-  v3 = [(WRM_CTService *)mCTService getUserDataPreferredSlot];
+  getUserDataPreferredSlot = [(WRM_CTService *)mCTService getUserDataPreferredSlot];
 
-  [(WRM_CTService *)mCTService setActiveSlot:v3];
+  [(WRM_CTService *)mCTService setActiveSlot:getUserDataPreferredSlot];
 }
 
 - (void)feedAWDMetricsWiFiStats
 {
-  v3 = [(WCM_WiFiController *)self->mWiFi wifiService];
-  self->mWrmiRATFaceTimeMetrics->wifiRssi = [(WCM_WiFiService *)v3 getRSSI];
-  self->mWrmiRATFaceTimeMetrics->wifiSNR = [(WCM_WiFiService *)v3 getSNR];
-  [(WCM_WiFiService *)v3 getRxPhyRate];
+  wifiService = [(WCM_WiFiController *)self->mWiFi wifiService];
+  self->mWrmiRATFaceTimeMetrics->wifiRssi = [(WCM_WiFiService *)wifiService getRSSI];
+  self->mWrmiRATFaceTimeMetrics->wifiSNR = [(WCM_WiFiService *)wifiService getSNR];
+  [(WCM_WiFiService *)wifiService getRxPhyRate];
   self->mWrmiRATFaceTimeMetrics->wifiRxPhyRate = v4;
-  [(WCM_WiFiService *)v3 getTxPhyRate];
+  [(WCM_WiFiService *)wifiService getTxPhyRate];
   self->mWrmiRATFaceTimeMetrics->wifiTxPhyRate = v5;
-  self->mWrmiRATFaceTimeMetrics->cca = [(WCM_WiFiService *)v3 getCCA];
-  self->mWrmiRATFaceTimeMetrics->qbssLoad = [(WCM_WiFiService *)v3 getChannelUtlization];
-  [(WCM_WiFiService *)v3 getRxRatio];
+  self->mWrmiRATFaceTimeMetrics->cca = [(WCM_WiFiService *)wifiService getCCA];
+  self->mWrmiRATFaceTimeMetrics->qbssLoad = [(WCM_WiFiService *)wifiService getChannelUtlization];
+  [(WCM_WiFiService *)wifiService getRxRatio];
   self->mWrmiRATFaceTimeMetrics->wifiRxRetry = (v6 * 100.0);
-  [(WCM_WiFiService *)v3 getTxPer];
+  [(WCM_WiFiService *)wifiService getTxPer];
   self->mWrmiRATFaceTimeMetrics->wifiTxPER = (v7 * 100.0);
-  self->mWrmiRATFaceTimeMetrics->captiveNetworks = [(WCM_WiFiService *)v3 isWiFiNetworkCaptive];
-  self->mWrmiRATFaceTimeMetrics->stationCount = [(WCM_WiFiService *)v3 getConnectedStationCount];
+  self->mWrmiRATFaceTimeMetrics->captiveNetworks = [(WCM_WiFiService *)wifiService isWiFiNetworkCaptive];
+  self->mWrmiRATFaceTimeMetrics->stationCount = [(WCM_WiFiService *)wifiService getConnectedStationCount];
 }
 
-- (void)handleMotionUpdate:(id)a3
+- (void)handleMotionUpdate:(id)update
 {
-  int64 = xpc_dictionary_get_int64(a3, "kWRMM_MOTION_STATE");
+  int64 = xpc_dictionary_get_int64(update, "kWRMM_MOTION_STATE");
   [(WRM_FT_HandoverManager *)self evaluateHandover];
   [WCM_Logging logLevel:29 message:@"handleMotionUpdate received: %s: motion state: %d", "[WRM_FT_HandoverManager(privateFunctions) handleMotionUpdate:]", int64];
 }
 
-- (void)handleInternalMessage:(id)a3
+- (void)handleInternalMessage:(id)message
 {
-  uint64 = xpc_dictionary_get_uint64(a3, "kInternalMessageId");
-  value = xpc_dictionary_get_value(a3, "kInternalMessageArgs");
+  uint64 = xpc_dictionary_get_uint64(message, "kInternalMessageId");
+  value = xpc_dictionary_get_value(message, "kInternalMessageArgs");
   if (uint64 == 1040 || uint64 == 1003)
   {
     [WCM_Logging logLevel:29 message:@"handleInternalMessage:handleWiFiLinkQualityUpdate"];
@@ -639,29 +639,29 @@ LABEL_102:
 
 - (BOOL)isCellularEntryCriteriaMetForFaceTimeCallCurrentLinkWiFi
 {
-  v3 = [(WRM_FT_HandoverManager *)self getSCService];
-  v4 = [(WRM_FT_HandoverManager *)self getCTService];
-  v5 = [v4 getServingCellType];
-  v6 = [v4 getCurrentSignalBars];
-  if (v5 == 1)
+  getSCService = [(WRM_FT_HandoverManager *)self getSCService];
+  getCTService = [(WRM_FT_HandoverManager *)self getCTService];
+  getServingCellType = [getCTService getServingCellType];
+  getCurrentSignalBars = [getCTService getCurrentSignalBars];
+  if (getServingCellType == 1)
   {
-    [v4 getServingCellRSRP];
+    [getCTService getServingCellRSRP];
   }
 
   else
   {
-    [v4 getNrRSRP];
+    [getCTService getNrRSRP];
   }
 
   v8 = v7;
-  v9 = [(WRM_FT_HandoverManager *)self getiRATConfigController];
-  v10 = [v3 getCellularDataLQM];
-  [WCM_Logging logLevel:29 message:@"isCellularEntryCriteriaMetForFaceTimeCallCurrentLinkWiFi, LQM: %d, Signal Bars: %d", v10, v6];
-  if (v5 > 2)
+  getiRATConfigController = [(WRM_FT_HandoverManager *)self getiRATConfigController];
+  getCellularDataLQM = [getSCService getCellularDataLQM];
+  [WCM_Logging logLevel:29 message:@"isCellularEntryCriteriaMetForFaceTimeCallCurrentLinkWiFi, LQM: %d, Signal Bars: %d", getCellularDataLQM, getCurrentSignalBars];
+  if (getServingCellType > 2)
   {
-    if (v5 != 3 && v5 != 8)
+    if (getServingCellType != 3 && getServingCellType != 8)
     {
-      if (v5 == 9)
+      if (getServingCellType == 9)
       {
         v11 = v8 >= -110.0;
         [WCM_Logging logLevel:29 message:@"FaceTime entry criteria met on 5G radio:%f, status:%d", *&v8, v8 >= -110.0];
@@ -673,8 +673,8 @@ LABEL_102:
 
     if (byte_1002B7B7B == 1)
     {
-      v13 = [v9 minSigBarTh2];
-      if (v10 > 49 || v6 >= (v13 - 1))
+      minSigBarTh2 = [getiRATConfigController minSigBarTh2];
+      if (getCellularDataLQM > 49 || getCurrentSignalBars >= (minSigBarTh2 - 1))
       {
         byte_1002B7B7B = 0;
         v11 = 1;
@@ -686,69 +686,69 @@ LABEL_25:
 
     else
     {
-      [WCM_Logging logLevel:29 message:@"FaceTime not supported on 2G radio:%ld", v6];
+      [WCM_Logging logLevel:29 message:@"FaceTime not supported on 2G radio:%ld", getCurrentSignalBars];
     }
 
     v11 = 0;
     goto LABEL_25;
   }
 
-  if (v5 != 2)
+  if (getServingCellType != 2)
   {
 LABEL_17:
-    v14 = [v9 minSigBarTh2] - 1;
-    return v10 > 49 || v6 >= v14;
+    v14 = [getiRATConfigController minSigBarTh2] - 1;
+    return getCellularDataLQM > 49 || getCurrentSignalBars >= v14;
   }
 
-  v12 = [v9 minSigBarTh2];
-  if (v10 > 49 || v6 >= (v12 - 1))
+  minSigBarTh22 = [getiRATConfigController minSigBarTh2];
+  if (getCellularDataLQM > 49 || getCurrentSignalBars >= (minSigBarTh22 - 1))
   {
-    [WCM_Logging logLevel:29 message:@"UMTS entry conditions are met bars:%ld", v6];
+    [WCM_Logging logLevel:29 message:@"UMTS entry conditions are met bars:%ld", getCurrentSignalBars];
     return 1;
   }
 
   else
   {
-    [WCM_Logging logLevel:29 message:@"UMTS entry conditions are not met bars:%ld", v6];
+    [WCM_Logging logLevel:29 message:@"UMTS entry conditions are not met bars:%ld", getCurrentSignalBars];
     return 0;
   }
 }
 
 - (BOOL)isCellularExitCriteriaMetForFaceTimeCallCurrentLinkCellular
 {
-  v3 = [(WRM_FT_HandoverManager *)self getCTService];
-  v4 = [v3 getServingCellType];
-  v5 = [v3 getCurrentSignalBars];
-  if (v4 == 1)
+  getCTService = [(WRM_FT_HandoverManager *)self getCTService];
+  getServingCellType = [getCTService getServingCellType];
+  getCurrentSignalBars = [getCTService getCurrentSignalBars];
+  if (getServingCellType == 1)
   {
-    [v3 getServingCellRSRP];
+    [getCTService getServingCellRSRP];
   }
 
   else
   {
-    [v3 getNrRSRP];
+    [getCTService getNrRSRP];
   }
 
   v7 = v6;
   v8 = [-[WRM_FT_HandoverManager getSCService](self "getSCService")];
-  v9 = [(WRM_FT_HandoverManager *)self getiRATConfigController];
-  [WCM_Logging logLevel:29 message:@"isCellularExitCriteriaMetForFaceTimeCallCurrentLinkCellular, LQM: %d, Signal Bars: %d", v8, v5];
-  if (v4 <= 2)
+  getiRATConfigController = [(WRM_FT_HandoverManager *)self getiRATConfigController];
+  [WCM_Logging logLevel:29 message:@"isCellularExitCriteriaMetForFaceTimeCallCurrentLinkCellular, LQM: %d, Signal Bars: %d", v8, getCurrentSignalBars];
+  if (getServingCellType <= 2)
   {
     goto LABEL_13;
   }
 
-  if (v4 == 3 || v4 == 8)
+  if (getServingCellType == 3 || getServingCellType == 8)
   {
     [(WRM_FT_HandoverManager *)self updateHandoverReasonCode:0x400000];
-    [WCM_Logging logLevel:29 message:@"isCellularExitCriteriaMetForFaceTimeCallCurrentLinkCellular:%ld", v5];
+    [WCM_Logging logLevel:29 message:@"isCellularExitCriteriaMetForFaceTimeCallCurrentLinkCellular:%ld", getCurrentSignalBars];
     return 1;
   }
 
-  if (v4 != 9)
+  if (getServingCellType != 9)
   {
 LABEL_13:
-    if ((v5 > ([v9 minSigBarTh1] + 1) || v8 >= 11) && v5 > objc_msgSend(v9, "minSigBarTh1"))
+    if ((getCurrentSignalBars > ([getiRATConfigController minSigBarTh1] + 1) || v8 >= 11) && getCurrentSignalBars > objc_msgSend(getiRATConfigController, "minSigBarTh1"))
     {
       return 0;
     }
@@ -768,96 +768,96 @@ LABEL_13:
   return v10;
 }
 
-- (BOOL)isWiFiDataRateIndicatorGoodForFaceTime:(unint64_t)a3 :(int)a4
+- (BOOL)isWiFiDataRateIndicatorGoodForFaceTime:(unint64_t)time :(int)a4
 {
   v21 = 0;
   memset(v20, 0, sizeof(v20));
-  v6 = [+[WRM_HandoverManager WRM_HandoverManagerSingleton](WRM_HandoverManager WRM_HandoverManagerSingleton];
-  v7 = [(WCM_WiFiController *)self->mWiFi wifiService];
+  wRM_HandoverManagerSingleton = [+[WRM_HandoverManager WRM_HandoverManagerSingleton](WRM_HandoverManager WRM_HandoverManagerSingleton];
+  wifiService = [(WCM_WiFiController *)self->mWiFi wifiService];
   [+[WRM_BWEvalManager WRM_BWEvalManagerSingleton](WRM_BWEvalManager "WRM_BWEvalManagerSingleton")];
   v8 = *&v20[0];
   v9 = *&v20[0];
-  [(WCM_WiFiService *)v7 getRxRetryPercent];
+  [(WCM_WiFiService *)wifiService getRxRetryPercent];
   v11 = v10;
-  [(WCM_WiFiService *)v7 getTxRetryPercent];
+  [(WCM_WiFiService *)wifiService getTxRetryPercent];
   v13 = v12;
-  [(WCM_WiFiService *)v7 getRxPhyRate];
+  [(WCM_WiFiService *)wifiService getRxPhyRate];
   v15 = (1.0 - v11) * v14;
-  [(WCM_WiFiService *)v7 getTxPhyRate];
+  [(WCM_WiFiService *)wifiService getTxPhyRate];
   v17 = (1.0 - v13) * v16;
   [WCM_Logging logLevel:29 message:@"Estimated BW: %.2f, Calculated Available Rx PHY Rate: %.2f, Calculated Available TX Rate: %.2f", v9, v15, v17];
   if (a4 == 1)
   {
-    return v9 >= [v6 idsMinWiFiThroughputTh1] && v15 >= objc_msgSend(v6, "idsMinWiFiEffectivePhyRateTh1") && v17 >= objc_msgSend(v6, "idsMinWiFiEffectivePhyRateTh1");
+    return v9 >= [wRM_HandoverManagerSingleton idsMinWiFiThroughputTh1] && v15 >= objc_msgSend(wRM_HandoverManagerSingleton, "idsMinWiFiEffectivePhyRateTh1") && v17 >= objc_msgSend(wRM_HandoverManagerSingleton, "idsMinWiFiEffectivePhyRateTh1");
   }
 
   return !a4 && v8 > 0x8FB;
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
-  v3 = [a1 WRM:a3 FT:?HandoverManagerSingleton];
+  v3 = [self WRM:zone FT:?HandoverManagerSingleton];
 
   return v3;
 }
 
-- (void)addiRatClient:(id)a3
+- (void)addiRatClient:(id)client
 {
   miRATClientContexts = self->miRATClientContexts;
   objc_sync_enter(miRATClientContexts);
-  [(NSMutableArray *)self->miRATClientContexts addObject:a3];
+  [(NSMutableArray *)self->miRATClientContexts addObject:client];
   [(WRM_FT_HandoverManager *)self existingContexts];
 
   objc_sync_exit(miRATClientContexts);
 }
 
-- (void)removeiRatClient:(id)a3
+- (void)removeiRatClient:(id)client
 {
   miRATClientContexts = self->miRATClientContexts;
   objc_sync_enter(miRATClientContexts);
   [(WRM_FT_HandoverManager *)self existingContexts];
-  [(NSMutableArray *)self->miRATClientContexts removeObject:a3];
+  [(NSMutableArray *)self->miRATClientContexts removeObject:client];
   [(WRM_FT_HandoverManager *)self existingContexts];
 
   objc_sync_exit(miRATClientContexts);
 }
 
-- (void)evaluateCellAleratedState:(unint64_t)a3
+- (void)evaluateCellAleratedState:(unint64_t)state
 {
-  v4 = [objc_msgSend(+[WCM_PolicyManager singleton](WCM_PolicyManager singleton];
-  if (([+[WRM_HandoverManager WRM_HandoverManagerSingleton](WRM_HandoverManager "WRM_HandoverManagerSingleton")] & 1) == 0 && v4 > 6)
+  singleton = [objc_msgSend(+[WCM_PolicyManager singleton](WCM_PolicyManager singleton];
+  if (([+[WRM_HandoverManager WRM_HandoverManagerSingleton](WRM_HandoverManager "WRM_HandoverManagerSingleton")] & 1) == 0 && singleton > 6)
   {
     return;
   }
 
   mInAleratedState = self->mInAleratedState;
-  v6 = [(WRM_FT_HandoverManager *)self getCTService];
-  v7 = [v6 getServingCellType];
-  v8 = v7;
-  if (v7 == 1)
+  getCTService = [(WRM_FT_HandoverManager *)self getCTService];
+  getServingCellType = [getCTService getServingCellType];
+  v8 = getServingCellType;
+  if (getServingCellType == 1)
   {
-    [v6 getServingCellRSRP];
+    [getCTService getServingCellRSRP];
     v10 = v9;
-    [v6 getServingCellSNR];
+    [getCTService getServingCellSNR];
     v12 = v11;
-    [v6 getServingCellRSRQ];
+    [getCTService getServingCellRSRQ];
     goto LABEL_8;
   }
 
-  if (v7 != 2)
+  if (getServingCellType != 2)
   {
-    if (v7 != 9)
+    if (getServingCellType != 9)
     {
-      [WCM_Logging logLevel:29 message:@" RAT type: %d", v7];
+      [WCM_Logging logLevel:29 message:@" RAT type: %d", getServingCellType];
       v10 = 0.0;
       goto LABEL_9;
     }
 
-    [v6 getNrRSRP];
+    [getCTService getNrRSRP];
     v10 = v14;
-    [v6 getNrSNR];
+    [getCTService getNrSNR];
     v12 = v15;
-    [v6 getNrRSRQ];
+    [getCTService getNrRSRQ];
 LABEL_8:
     [WCM_Logging logLevel:29 message:@"RSRP: %lf, SNR: %lf, RSRQ: %lf", *&v10, v12, v13];
 LABEL_9:
@@ -865,9 +865,9 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  [v6 getServingCellECIO];
+  [getCTService getServingCellECIO];
   v23 = v22;
-  [v6 getServingCellRSCP];
+  [getCTService getServingCellRSCP];
   v16 = v24;
   [WCM_Logging logLevel:29 message:@"RSCP :%lf, ECIO: %lf", *&v24, v23];
   v10 = 0.0;
@@ -929,42 +929,42 @@ LABEL_34:
   self->mInAleratedState = mInAleratedState;
 }
 
-- (void)evaluateWiFiAleratedState:(unint64_t)a3
+- (void)evaluateWiFiAleratedState:(unint64_t)state
 {
-  v4 = [(WRM_FT_HandoverManager *)self getiRATConfigController];
+  getiRATConfigController = [(WRM_FT_HandoverManager *)self getiRATConfigController];
   mInAleratedState = self->mInAleratedState;
   [WCM_Logging logLevel:29 message:@"evaluateWiFiAleratedState, state:%d", mInAleratedState];
-  v6 = [(WCM_WiFiController *)self->mWiFi wifiService];
-  v7 = [(WCM_WiFiService *)v6 getRSSI];
-  v8 = [(WCM_WiFiService *)v6 getCCA];
-  v9 = [(WCM_WiFiService *)v6 getConnectedStationCount];
-  [(WCM_WiFiService *)v6 getTxPer];
+  wifiService = [(WCM_WiFiController *)self->mWiFi wifiService];
+  getRSSI = [(WCM_WiFiService *)wifiService getRSSI];
+  getCCA = [(WCM_WiFiService *)wifiService getCCA];
+  getConnectedStationCount = [(WCM_WiFiService *)wifiService getConnectedStationCount];
+  [(WCM_WiFiService *)wifiService getTxPer];
   v11 = v10;
-  [(WCM_WiFiService *)v6 getMovingAverageTxPer];
+  [(WCM_WiFiService *)wifiService getMovingAverageTxPer];
   v13 = v12;
-  v14 = [(WCM_WiFiService *)v6 isMovingAverageTxPerValid];
-  [(WCM_WiFiService *)v6 getRxRatio];
+  isMovingAverageTxPerValid = [(WCM_WiFiService *)wifiService isMovingAverageTxPerValid];
+  [(WCM_WiFiService *)wifiService getRxRatio];
   v16 = v15;
-  v17 = [(WCM_WiFiService *)v6 isRxRatioValid];
-  v18 = [(WRM_FT_HandoverManager *)self getAVConferenceController];
-  [v18 deltaVideoErasure];
+  isRxRatioValid = [(WCM_WiFiService *)wifiService isRxRatioValid];
+  getAVConferenceController = [(WRM_FT_HandoverManager *)self getAVConferenceController];
+  [getAVConferenceController deltaVideoErasure];
   v20 = v19;
-  if (v7 >= [v4 faceTimeAleratedModeRssiTh0])
+  if (getRSSI >= [getiRATConfigController faceTimeAleratedModeRssiTh0])
   {
     v23 = 0;
   }
 
-  else if (v14 && [v4 faceTimeAleratedModeTxPer1] <= (v13 * 100.0))
+  else if (isMovingAverageTxPerValid && [getiRATConfigController faceTimeAleratedModeTxPer1] <= (v13 * 100.0))
   {
     v23 = 1;
   }
 
   else
   {
-    v21 = [v4 faceTimeAleratedModeCCATh0];
+    faceTimeAleratedModeCCATh0 = [getiRATConfigController faceTimeAleratedModeCCATh0];
     if (v16 >= 0.3)
     {
-      v22 = v17;
+      v22 = isRxRatioValid;
     }
 
     else
@@ -973,24 +973,24 @@ LABEL_34:
     }
 
     v23 = 1;
-    if (v8 <= v21 && (v22 & 1) == 0)
+    if (getCCA <= faceTimeAleratedModeCCATh0 && (v22 & 1) == 0)
     {
-      [v18 movAvgRxPktLoss];
+      [getAVConferenceController movAvgRxPktLoss];
       v23 = v24 >= 3.0;
     }
   }
 
   if (self->mInAleratedState)
   {
-    if (v7 >= [v4 faceTimeAleratedModeRssiTh0] && objc_msgSend(v4, "faceTimeAleratedModeTxPer0") >= (v11 * 100.0))
+    if (getRSSI >= [getiRATConfigController faceTimeAleratedModeRssiTh0] && objc_msgSend(getiRATConfigController, "faceTimeAleratedModeTxPer0") >= (v11 * 100.0))
     {
-      mInAleratedState &= v8 > [v4 faceTimeAleratedModeCCATh0];
+      mInAleratedState &= getCCA > [getiRATConfigController faceTimeAleratedModeCCATh0];
     }
   }
 
   else
   {
-    v25 = v7 <= [v4 faceTimeAleratedModeRssiTh1] || v23 || v8 >= objc_msgSend(v4, "faceTimeAleratedModeCCATh1") && objc_msgSend(v4, "faceTimeAleratedModeVideoErasures") < v20 || v8 >= objc_msgSend(v4, "faceTimeAleratedModeCCATh1") && objc_msgSend(v4, "faceTimeAleratedModeStationCount") <= v9;
+    v25 = getRSSI <= [getiRATConfigController faceTimeAleratedModeRssiTh1] || v23 || getCCA >= objc_msgSend(getiRATConfigController, "faceTimeAleratedModeCCATh1") && objc_msgSend(getiRATConfigController, "faceTimeAleratedModeVideoErasures") < v20 || getCCA >= objc_msgSend(getiRATConfigController, "faceTimeAleratedModeCCATh1") && objc_msgSend(getiRATConfigController, "faceTimeAleratedModeStationCount") <= getConnectedStationCount;
     mInAleratedState |= v25;
   }
 
@@ -1005,16 +1005,16 @@ LABEL_34:
 
   if ((byte_1002B7DD8 & 1) == 0)
   {
-    if ((v7 + 60) <= 0xFFFFFFFFFFFFFFF6)
+    if ((getRSSI + 60) <= 0xFFFFFFFFFFFFFFF6)
     {
-      [(WRM_FT_HandoverManager *)self toggleFastLQMReport:v7 < -69];
+      [(WRM_FT_HandoverManager *)self toggleFastLQMReport:getRSSI < -69];
     }
 
     self->mInAleratedState = v26;
   }
 }
 
-- (id)getiRATClientFromList:(int)a3
+- (id)getiRATClientFromList:(int)list
 {
   miRATClientContexts = self->miRATClientContexts;
   objc_sync_enter(miRATClientContexts);
@@ -1037,7 +1037,7 @@ LABEL_3:
       }
 
       v10 = *(*(&v12 + 1) + 8 * v9);
-      if ([v10 getMyClientType] == a3)
+      if ([v10 getMyClientType] == list)
       {
         break;
       }
@@ -1182,7 +1182,7 @@ LABEL_9:
   [(WRM_FT_HandoverManager *)&v9 dealloc];
 }
 
-- (void)updateControllerSession:(id)a3 ofId:(unint64_t)a4
+- (void)updateControllerSession:(id)session ofId:(unint64_t)id
 {
   mQueue = self->mQueue;
   block[0] = _NSConcreteStackBlock;
@@ -1190,12 +1190,12 @@ LABEL_9:
   block[2] = sub_100063530;
   block[3] = &unk_10023DFB8;
   block[5] = self;
-  block[6] = a4;
-  block[4] = a3;
+  block[6] = id;
+  block[4] = session;
   dispatch_async(mQueue, block);
 }
 
-- (void)updateControllerState:(id)a3
+- (void)updateControllerState:(id)state
 {
   mQueue = self->mQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -1203,13 +1203,13 @@ LABEL_9:
   v4[2] = sub_10006391C;
   v4[3] = &unk_10023DC80;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = state;
   dispatch_async(mQueue, v4);
 }
 
-- (void)handleSessionNotification:(id)a3
+- (void)handleSessionNotification:(id)notification
 {
-  uint64 = xpc_dictionary_get_uint64(a3, "kMessageId");
+  uint64 = xpc_dictionary_get_uint64(notification, "kMessageId");
   if (uint64 > 405)
   {
     if (uint64 > 414)
@@ -1218,14 +1218,14 @@ LABEL_9:
       {
         case 415:
 
-          [(WRM_FT_HandoverManager *)self handleGetMetrcisMessage:a3];
+          [(WRM_FT_HandoverManager *)self handleGetMetrcisMessage:notification];
           break;
         case 600:
 
-          [(WRM_FT_HandoverManager *)self handlaIDSMetrics:a3];
+          [(WRM_FT_HandoverManager *)self handlaIDSMetrics:notification];
           break;
         case 1000:
-          value = xpc_dictionary_get_value(a3, "kMessageArgs");
+          value = xpc_dictionary_get_value(notification, "kMessageArgs");
 
           [(WRM_FT_HandoverManager *)self handleInternalMessage:value];
           break;
@@ -1237,7 +1237,7 @@ LABEL_9:
       switch(uint64)
       {
         case 406:
-          [(WRM_FT_HandoverManager *)self handleLinkPrefSubscribe:a3];
+          [(WRM_FT_HandoverManager *)self handleLinkPrefSubscribe:notification];
 LABEL_45:
           [(WCM_WiFiController *)self->mWiFi toggleWiFiLQMIfNeeded:[(WRM_FT_HandoverManager *)self needWiFiLQM]];
           [(WRM_FT_HandoverManager *)self registerForCTNotifications];
@@ -1246,11 +1246,11 @@ LABEL_45:
           return;
         case 407:
 
-          [(WRM_FT_HandoverManager *)self handleSubscribeStatusUpdate:a3];
+          [(WRM_FT_HandoverManager *)self handleSubscribeStatusUpdate:notification];
           break;
         case 408:
 
-          [(WRM_FT_HandoverManager *)self handleCellularLinkQualityUpdate:a3];
+          [(WRM_FT_HandoverManager *)self handleCellularLinkQualityUpdate:notification];
           break;
       }
     }
@@ -1268,11 +1268,11 @@ LABEL_45:
           break;
         case 103:
 
-          [(WRM_FT_HandoverManager *)self handleWiFiStateChaneEvents:a3];
+          [(WRM_FT_HandoverManager *)self handleWiFiStateChaneEvents:notification];
           break;
         case 201:
 
-          [(WRM_FT_HandoverManager *)self handleRTPEvent:a3];
+          [(WRM_FT_HandoverManager *)self handleRTPEvent:notification];
           break;
       }
 
@@ -1286,46 +1286,46 @@ LABEL_45:
         if (uint64 == 403)
         {
 
-          [(WRM_FT_HandoverManager *)self handleSubscribeStatusUpdateIDS:a3];
+          [(WRM_FT_HandoverManager *)self handleSubscribeStatusUpdateIDS:notification];
         }
 
         return;
       }
 
-      [(WRM_FT_HandoverManager *)self handleLinkPrefSubscribeIDS:a3];
+      [(WRM_FT_HandoverManager *)self handleLinkPrefSubscribeIDS:notification];
       goto LABEL_45;
     }
 
-    [(WRM_FT_HandoverManager *)self handlePeriodicRTPMetrics:a3];
+    [(WRM_FT_HandoverManager *)self handlePeriodicRTPMetrics:notification];
   }
 }
 
-- (void)handleControllerAvailability:(unint64_t)a3
+- (void)handleControllerAvailability:(unint64_t)availability
 {
   if ([(WRM_FT_HandoverManager *)self enableiRATManager])
   {
-    if (a3 > 11)
+    if (availability > 11)
     {
-      if (a3 == 12)
+      if (availability == 12)
       {
 
         [(WRM_FT_HandoverManager *)self handleIDSToolRegisterd];
       }
 
-      else if (a3 == 14)
+      else if (availability == 14)
       {
 
         [(WRM_FT_HandoverManager *)self handleFTConfig];
       }
     }
 
-    else if (a3 == 1)
+    else if (availability == 1)
     {
 
       [(WRM_FT_HandoverManager *)self handleWiFiConfig];
     }
 
-    else if (a3 == 11)
+    else if (availability == 11)
     {
 
       [(WRM_FT_HandoverManager *)self handleIDSRegisterd];
@@ -1353,7 +1353,7 @@ LABEL_45:
   [(WRM_IdsMetricsController *)mIDSMetricsController configureIDSMetricsReporting];
 }
 
-- (void)handlaIDSMetrics:(id)a3
+- (void)handlaIDSMetrics:(id)metrics
 {
   mWiFi = self->mWiFi;
   if (mWiFi)
@@ -1362,7 +1362,7 @@ LABEL_45:
     {
       mIDSMetricsController = self->mIDSMetricsController;
 
-      [(WRM_IdsMetricsController *)mIDSMetricsController handlePeriodicIDSMetrics:a3];
+      [(WRM_IdsMetricsController *)mIDSMetricsController handlePeriodicIDSMetrics:metrics];
       return;
     }
 
@@ -1403,29 +1403,29 @@ LABEL_45:
     v8 = @"isWiFiLinkEvaluationDesired: WiFi not initialized.";
 LABEL_7:
     [WCM_Logging logLevel:26 message:v8];
-    LOBYTE(v6) = 0;
-    return v6;
+    LOBYTE(isWiFiPrimaryInterface) = 0;
+    return isWiFiPrimaryInterface;
   }
 
-  v4 = [(WCM_WiFiController *)mWiFi wifiService];
-  if (!v4)
+  wifiService = [(WCM_WiFiController *)mWiFi wifiService];
+  if (!wifiService)
   {
     v8 = @"isWiFiLinkEvaluationDesired: WiFi service not initialized.";
     goto LABEL_7;
   }
 
-  v5 = v4;
-  v6 = [(WCM_WiFiService *)v4 isWiFiPrimaryInterface];
-  if (v6)
+  v5 = wifiService;
+  isWiFiPrimaryInterface = [(WCM_WiFiService *)wifiService isWiFiPrimaryInterface];
+  if (isWiFiPrimaryInterface)
   {
-    v7 = [(WCM_WiFiService *)v5 getRSSI];
-    LOBYTE(v6) = v7 >= [-[WRM_FT_HandoverManager getiRATConfigController](self "getiRATConfigController")];
+    getRSSI = [(WCM_WiFiService *)v5 getRSSI];
+    LOBYTE(isWiFiPrimaryInterface) = getRSSI >= [-[WRM_FT_HandoverManager getiRATConfigController](self "getiRATConfigController")];
   }
 
-  return v6;
+  return isWiFiPrimaryInterface;
 }
 
-- (void)handleWiFiLinkQualityUpdate:(id)a3
+- (void)handleWiFiLinkQualityUpdate:(id)update
 {
   [WCM_Logging logLevel:29 message:@"FT Handover Manager received WiFi link metrics"];
   byte_1002B7DDA = 0;
@@ -1443,9 +1443,9 @@ LABEL_7:
   }
 }
 
-- (void)handleWiFiStateChaneEvents:(id)a3
+- (void)handleWiFiStateChaneEvents:(id)events
 {
-  value = xpc_dictionary_get_value(a3, "kMessageArgs");
+  value = xpc_dictionary_get_value(events, "kMessageArgs");
   [WCM_Logging logLevel:29 message:@"FT Handover Manager received WiFi link state change event"];
   if (value)
   {
@@ -1464,17 +1464,17 @@ LABEL_7:
       v6 = xpc_dictionary_get_int64(value, "kWRMM_WiFi_RSSI");
       v7 = xpc_dictionary_get_int64(value, "kWRMM_WiFi_SNR");
       [WCM_Logging logLevel:29 message:@"FT Handover Manager:Linkup event received"];
-      v8 = [(WCM_WiFiController *)self->mWiFi wifiService];
-      [(WCM_WiFiService *)v8 updateTxStats:0];
-      [(WCM_WiFiService *)v8 updateTxPer];
-      [(WCM_WiFiService *)v8 updateFwTxStats:0];
-      [(WCM_WiFiService *)v8 updateFwTxPer];
-      [(WCM_WiFiService *)v8 updateRxStats:0];
-      [(WCM_WiFiService *)v8 updateRxRatio];
-      [(WCM_WiFiService *)v8 updateRxBeacons:0];
-      [(WCM_WiFiService *)v8 updateRxBeaconPer];
-      [(WCM_WiFiService *)v8 setRSSI:v6];
-      [(WCM_WiFiService *)v8 setSNR:v7];
+      wifiService = [(WCM_WiFiController *)self->mWiFi wifiService];
+      [(WCM_WiFiService *)wifiService updateTxStats:0];
+      [(WCM_WiFiService *)wifiService updateTxPer];
+      [(WCM_WiFiService *)wifiService updateFwTxStats:0];
+      [(WCM_WiFiService *)wifiService updateFwTxPer];
+      [(WCM_WiFiService *)wifiService updateRxStats:0];
+      [(WCM_WiFiService *)wifiService updateRxRatio];
+      [(WCM_WiFiService *)wifiService updateRxBeacons:0];
+      [(WCM_WiFiService *)wifiService updateRxBeaconPer];
+      [(WCM_WiFiService *)wifiService setRSSI:v6];
+      [(WCM_WiFiService *)wifiService setSNR:v7];
     }
 
     [(WRM_FT_HandoverManager *)self evaluateHandover];
@@ -1487,7 +1487,7 @@ LABEL_7:
   }
 }
 
-- (void)handleCellularLinkQualityUpdate:(id)a3
+- (void)handleCellularLinkQualityUpdate:(id)update
 {
   [WCM_Logging logLevel:29 message:@"FT Handover Manager received Cellular link metrics"];
   if ([(WRM_FT_HandoverManager *)self handoverEvaluationRequired])
@@ -1497,23 +1497,23 @@ LABEL_7:
   }
 }
 
-- (void)updateRSSITh:(int64_t)a3
+- (void)updateRSSITh:(int64_t)th
 {
-  if ((a3 + 79) >= 0xFFFFFFFFFFFFFFF7)
+  if ((th + 79) >= 0xFFFFFFFFFFFFFFF7)
   {
     [(WRM_iRATConfig *)self->miRATConfig updateFaceTimeRSSITh:?];
   }
 }
 
-- (void)handleLinkPrefSubscribe:(id)a3
+- (void)handleLinkPrefSubscribe:(id)subscribe
 {
   byte_1002B7DDD = 1;
   dword_1002B7DE0 = 0;
   byte_1002B7DDF = 0;
   byte_1002B7DD8 = 0;
   [WCM_Logging logLevel:29 message:@"HandoverManager: handleIWLANRadioLinkPreferenceRequest."];
-  value = xpc_dictionary_get_value(a3, "kMessageArgs");
-  uint64 = xpc_dictionary_get_uint64(a3, "kClientType");
+  value = xpc_dictionary_get_value(subscribe, "kMessageArgs");
+  uint64 = xpc_dictionary_get_uint64(subscribe, "kClientType");
   v19 = [(WRM_FT_HandoverManager *)self getiRATClientFromList:uint64];
   if ((uint64 - 1) >= 0x15)
   {
@@ -1586,11 +1586,11 @@ LABEL_7:
   }
 }
 
-- (void)handleLinkPrefSubscribeIDS:(id)a3
+- (void)handleLinkPrefSubscribeIDS:(id)s
 {
   [WCM_Logging logLevel:29 message:@"IDS WiFi-Cell Link Eval Manager: handleLinkPrefSubscribe."];
-  value = xpc_dictionary_get_value(a3, "kMessageArgs");
-  uint64 = xpc_dictionary_get_uint64(a3, "kClientType");
+  value = xpc_dictionary_get_value(s, "kMessageArgs");
+  uint64 = xpc_dictionary_get_uint64(s, "kClientType");
   v7 = [(WRM_FT_HandoverManager *)self getiRATClientFromList:uint64];
   if ((uint64 - 1) >= 0x15)
   {
@@ -1612,7 +1612,7 @@ LABEL_7:
   if (count)
   {
     v11 = count;
-    v17 = self;
+    selfCopy2 = self;
     [v7 removeAllMobilityContextsFromList];
     [WCM_Logging logLevel:29 message:@"Removing all contexts from iRAT client."];
     v12 = 0;
@@ -1643,21 +1643,21 @@ LABEL_7:
 
   if ([(WRM_FT_HandoverManager *)self doesIRATClientSubscriptionContextExist])
   {
-    v17 = self;
+    selfCopy2 = self;
     [v7 removeAllMobilityContextsFromList];
     [WCM_Logging logLevel:29 message:@"Removing all contexts from iRAT client."];
 LABEL_13:
 
-    [(WRM_FT_HandoverManager *)v17 evaluateHandover];
+    [(WRM_FT_HandoverManager *)selfCopy2 evaluateHandover];
     return;
   }
 
   [WCM_Logging logLevel:29 message:@"Ignoring un-subscribe message from a client for which subscription does not exist"];
 }
 
-- (void)handleGetMetrcisMessage:(id)a3
+- (void)handleGetMetrcisMessage:(id)message
 {
-  uint64 = xpc_dictionary_get_uint64(a3, "kClientType");
+  uint64 = xpc_dictionary_get_uint64(message, "kClientType");
   if ((uint64 - 1) >= 0x15)
   {
     v5 = "UNKNOWN_WRM_CLIENT_TYPE!!!";
@@ -1682,9 +1682,9 @@ LABEL_13:
   dispatch_async(mQueue, block);
 }
 
-- (void)handleSubscribeStatusUpdateIDS:(id)a3 :(BOOL)a4
+- (void)handleSubscribeStatusUpdateIDS:(id)s :(BOOL)a4
 {
-  uint64 = xpc_dictionary_get_uint64(a3, "kClientType");
+  uint64 = xpc_dictionary_get_uint64(s, "kClientType");
   if ((uint64 - 1) >= 0x15)
   {
     v7 = "UNKNOWN_WRM_CLIENT_TYPE!!!";
@@ -1700,7 +1700,7 @@ LABEL_13:
   }
 
   [WCM_Logging logLevel:29 message:@"IDS WiFi versus Cell Link Eval Mgr: Message received from client %d(%s)", uint64, v7];
-  value = xpc_dictionary_get_value(a3, "kMessageArgs");
+  value = xpc_dictionary_get_value(s, "kMessageArgs");
   v9 = xpc_dictionary_get_value(value, "kWRMApplicationTypeList");
   count = xpc_array_get_count(v9);
   if (count)
@@ -1744,36 +1744,36 @@ LABEL_13:
   }
 }
 
-- (void)handleRTPEvent:(id)a3
+- (void)handleRTPEvent:(id)event
 {
-  v5 = [(WRM_FT_HandoverManager *)self getAVConferenceController];
-  [v5 handleRTPEvent:a3];
-  +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 29, @"handleRTPEvent, poor connection =%lld, mediaStall = %lld", [v5 poorConnectionDetected], objc_msgSend(v5, "mediaStallDetected"));
+  getAVConferenceController = [(WRM_FT_HandoverManager *)self getAVConferenceController];
+  [getAVConferenceController handleRTPEvent:event];
+  +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 29, @"handleRTPEvent, poor connection =%lld, mediaStall = %lld", [getAVConferenceController poorConnectionDetected], objc_msgSend(getAVConferenceController, "mediaStallDetected"));
   [(WRM_FT_HandoverManager *)self evaluateHandover];
-  [v5 setPoorConnectionDetected:0];
+  [getAVConferenceController setPoorConnectionDetected:0];
 
-  [v5 setMediaStallDetected:0];
+  [getAVConferenceController setMediaStallDetected:0];
 }
 
-- (void)handlePeriodicRTPMetrics:(id)a3
+- (void)handlePeriodicRTPMetrics:(id)metrics
 {
-  v5 = [(WRM_FT_HandoverManager *)self getAVConferenceController];
-  [v5 handlePeriodicRTPMetrics:a3];
-  +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 29, @"Rx periodic Average RTP packet loss=%lld", [v5 avgRxPktLoss]);
+  getAVConferenceController = [(WRM_FT_HandoverManager *)self getAVConferenceController];
+  [getAVConferenceController handlePeriodicRTPMetrics:metrics];
+  +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 29, @"Rx periodic Average RTP packet loss=%lld", [getAVConferenceController avgRxPktLoss]);
   [(WRM_FT_HandoverManager *)self evaluateHandover];
 
-  [v5 resetRTPMetrics];
+  [getAVConferenceController resetRTPMetrics];
 }
 
 - (int64_t)getSNRHysteresis
 {
   v3 = [+[WRM_HandoverManager WRM_HandoverManagerSingleton](WRM_HandoverManager "WRM_HandoverManagerSingleton")];
-  v4 = [(WRM_MotionController *)self->mMotionController getMobilityState];
-  if (v4 <= 1)
+  getMobilityState = [(WRM_MotionController *)self->mMotionController getMobilityState];
+  if (getMobilityState <= 1)
   {
-    if (v4)
+    if (getMobilityState)
     {
-      if (v4 == 1)
+      if (getMobilityState == 1)
       {
         v5 = @"Device motion: WALKING";
         goto LABEL_9;
@@ -1788,11 +1788,11 @@ LABEL_18:
     return 0;
   }
 
-  if (v4 != 2)
+  if (getMobilityState != 2)
   {
-    if (v4 != 3)
+    if (getMobilityState != 3)
     {
-      if (v4 == 4)
+      if (getMobilityState == 4)
       {
         v5 = @"Device motion: PEDESTRIAN";
 LABEL_9:
@@ -1818,12 +1818,12 @@ LABEL_17:
 - (int64_t)getRSSIHysteresis
 {
   v3 = [+[WRM_HandoverManager WRM_HandoverManagerSingleton](WRM_HandoverManager "WRM_HandoverManagerSingleton")];
-  v4 = [(WRM_MotionController *)self->mMotionController getMobilityState];
-  if (v4 <= 1)
+  getMobilityState = [(WRM_MotionController *)self->mMotionController getMobilityState];
+  if (getMobilityState <= 1)
   {
-    if (v4)
+    if (getMobilityState)
     {
-      if (v4 == 1)
+      if (getMobilityState == 1)
       {
         v5 = @"Device motion: WALKING";
         goto LABEL_9;
@@ -1838,11 +1838,11 @@ LABEL_18:
     return 0;
   }
 
-  if (v4 != 2)
+  if (getMobilityState != 2)
   {
-    if (v4 != 3)
+    if (getMobilityState != 3)
     {
-      if (v4 == 4)
+      if (getMobilityState == 4)
       {
         v5 = @"Device motion: PEDESTRIAN";
 LABEL_9:
@@ -1865,22 +1865,22 @@ LABEL_17:
   return [v3 rssiHysterisisRunning];
 }
 
-- (BOOL)isWiFiBeaconLossQualityIndicatorGood:(unint64_t)a3 :(unint64_t)a4 :(int)a5
+- (BOOL)isWiFiBeaconLossQualityIndicatorGood:(unint64_t)good :(unint64_t)a4 :(int)a5
 {
-  v7 = [(WCM_WiFiController *)self->mWiFi wifiService:a3];
+  v7 = [(WCM_WiFiController *)self->mWiFi wifiService:good];
   if (![(WCM_WiFiService *)v7 isBeaconPerValid])
   {
     return 1;
   }
 
-  v8 = [(WRM_FT_HandoverManager *)self getiRATConfigController];
+  getiRATConfigController = [(WRM_FT_HandoverManager *)self getiRATConfigController];
   [(WCM_WiFiService *)v7 getBeaconPer];
   v10 = (v9 * 100.0);
   [WCM_Logging logLevel:29 message:@" Beacon PER %lld", v10];
   if (!a5)
   {
-    v11 = [v8 minWiFiBeaconPerTh0];
-    return v11 >= v10;
+    minWiFiBeaconPerTh0 = [getiRATConfigController minWiFiBeaconPerTh0];
+    return minWiFiBeaconPerTh0 >= v10;
   }
 
   if (a5 != 1)
@@ -1888,21 +1888,21 @@ LABEL_17:
     return 1;
   }
 
-  v11 = [v8 minWiFiBeaconPerTh1];
-  return v11 >= v10;
+  minWiFiBeaconPerTh0 = [getiRATConfigController minWiFiBeaconPerTh1];
+  return minWiFiBeaconPerTh0 >= v10;
 }
 
-- (BOOL)isWiFiLoadQualityIndicatorGood:(unint64_t)a3 :(unint64_t)a4 :(BOOL)a5 :(int)a6
+- (BOOL)isWiFiLoadQualityIndicatorGood:(unint64_t)good :(unint64_t)a4 :(BOOL)a5 :(int)a6
 {
   v7 = a5;
-  v9 = [(WCM_WiFiController *)self->mWiFi wifiService:a3];
-  v10 = [(WRM_FT_HandoverManager *)self getiRATConfigController];
-  v11 = [(WCM_WiFiService *)v9 getCCA];
+  v9 = [(WCM_WiFiController *)self->mWiFi wifiService:good];
+  getiRATConfigController = [(WRM_FT_HandoverManager *)self getiRATConfigController];
+  getCCA = [(WCM_WiFiService *)v9 getCCA];
   if (a6 == 1)
   {
     if (!v7)
     {
-      v12 = [v10 minIdleWiFiCcaTh1];
+      minIdleWiFiCcaTh1 = [getiRATConfigController minIdleWiFiCcaTh1];
       goto LABEL_8;
     }
 
@@ -1916,16 +1916,16 @@ LABEL_17:
 
   if (v7)
   {
-    v12 = [v10 minActiveWiFiCcaTh0];
+    minIdleWiFiCcaTh1 = [getiRATConfigController minActiveWiFiCcaTh0];
   }
 
   else
   {
-    v12 = [v10 minIdleWiFiCcaTh0];
+    minIdleWiFiCcaTh1 = [getiRATConfigController minIdleWiFiCcaTh0];
   }
 
 LABEL_8:
-  if (v11 < v12)
+  if (getCCA < minIdleWiFiCcaTh1)
   {
     return 1;
   }
@@ -1934,30 +1934,30 @@ LABEL_8:
   return 0;
 }
 
-- (BOOL)isWiFiArqQualityIndicatorGood:(unint64_t)a3 :(unint64_t)a4 :(int)a5 :(BOOL)a6
+- (BOOL)isWiFiArqQualityIndicatorGood:(unint64_t)good :(unint64_t)a4 :(int)a5 :(BOOL)a6
 {
   v38 = a6;
-  v7 = [(WCM_WiFiController *)self->mWiFi wifiService];
-  v34 = self;
-  v37 = [(WRM_FT_HandoverManager *)self getiRATConfigController];
-  [(WCM_WiFiService *)v7 getTxPer];
+  wifiService = [(WCM_WiFiController *)self->mWiFi wifiService];
+  selfCopy = self;
+  getiRATConfigController = [(WRM_FT_HandoverManager *)self getiRATConfigController];
+  [(WCM_WiFiService *)wifiService getTxPer];
   v9 = (v8 * 100.0);
-  v10 = [(WCM_WiFiService *)v7 isTxPerValid];
-  [(WCM_WiFiService *)v7 getTxFail];
+  isTxPerValid = [(WCM_WiFiService *)wifiService isTxPerValid];
+  [(WCM_WiFiService *)wifiService getTxFail];
   v12 = v11;
-  [(WCM_WiFiService *)v7 getFwTxPer];
+  [(WCM_WiFiService *)wifiService getFwTxPer];
   v14 = (v13 * 100.0);
-  v15 = [(WCM_WiFiService *)v7 isFwTxPerValid];
-  [(WCM_WiFiService *)v7 getRxRatio];
+  isFwTxPerValid = [(WCM_WiFiService *)wifiService isFwTxPerValid];
+  [(WCM_WiFiService *)wifiService getRxRatio];
   v17 = v16 * 100.0;
-  [(WCM_WiFiService *)v7 getCumulativeTxPer];
+  [(WCM_WiFiService *)wifiService getCumulativeTxPer];
   v19 = (v18 * 100.0);
-  v20 = [(WCM_WiFiService *)v7 isCumulativeTxPerValid];
-  [(WCM_WiFiService *)v7 getCumulativeFwTxPer];
+  isCumulativeTxPerValid = [(WCM_WiFiService *)wifiService isCumulativeTxPerValid];
+  [(WCM_WiFiService *)wifiService getCumulativeFwTxPer];
   v22 = (v21 * 100.0);
-  v23 = [(WCM_WiFiService *)v7 isCumulativeFwTxPerValid];
+  isCumulativeFwTxPerValid = [(WCM_WiFiService *)wifiService isCumulativeFwTxPerValid];
   [WCM_Logging logLevel:29 message:@"Actual Tx PER %lld, FW Tx PER %lld TX Fail %lld, RX Ratio=%lf CumTxPER %lld CumFwTxPer %lld", v9, v14, v12, *&v17, v19, v22];
-  if (v10)
+  if (isTxPerValid)
   {
     v24 = v9;
   }
@@ -1967,7 +1967,7 @@ LABEL_8:
     v24 = 0;
   }
 
-  if (v15)
+  if (isFwTxPerValid)
   {
     v25 = v14;
   }
@@ -1977,7 +1977,7 @@ LABEL_8:
     v25 = 0;
   }
 
-  if (v20)
+  if (isCumulativeTxPerValid)
   {
     v26 = v19;
   }
@@ -1987,7 +1987,7 @@ LABEL_8:
     v26 = 0;
   }
 
-  if (v23)
+  if (isCumulativeFwTxPerValid)
   {
     v27 = v22;
   }
@@ -2000,26 +2000,26 @@ LABEL_8:
   [WCM_Logging logLevel:29 message:@"Effective Tx PER %lld, FW Tx PER %lld TX Fail %lld, RX Ratio=%lf CumTxPER %lld CumFwTxPer %lld", v24, v25, v12, *&v17, v26, v27];
   if (!v38)
   {
-    if ((v10 | v15))
+    if ((isTxPerValid | isFwTxPerValid))
     {
       if (a5)
       {
-        v31 = v37;
+        v31 = getiRATConfigController;
         if (a5 != 1)
         {
           return 1;
         }
 
-        v32 = [v37 minIdleWiFiTxPktLossRateTh1];
+        minIdleWiFiTxPktLossRateTh1 = [getiRATConfigController minIdleWiFiTxPktLossRateTh1];
       }
 
       else
       {
-        v31 = v37;
-        v32 = [v37 minIdleWiFiTxPktLossRateTh0];
+        v31 = getiRATConfigController;
+        minIdleWiFiTxPktLossRateTh1 = [getiRATConfigController minIdleWiFiTxPktLossRateTh0];
       }
 
-      if (((v32 >= v9) & v10) == 0 && (([v31 minIdleWiFiFwTxPktLossRateTh1] >= v14) & v15) == 0)
+      if (((minIdleWiFiTxPktLossRateTh1 >= v9) & isTxPerValid) == 0 && (([v31 minIdleWiFiFwTxPktLossRateTh1] >= v14) & isFwTxPerValid) == 0)
       {
         goto LABEL_32;
       }
@@ -2028,21 +2028,21 @@ LABEL_8:
     return 1;
   }
 
-  if ((v10 & 1) == 0)
+  if ((isTxPerValid & 1) == 0)
   {
     return 1;
   }
 
   if (a4 == 2)
   {
-    v28 = v37;
+    v28 = getiRATConfigController;
     v29 = a5;
     if (a5)
     {
 LABEL_18:
       if (v29 == 1)
       {
-        v30 = [v28 minActiveWiFiTxPktLossRateTh1];
+        minActiveWiFiTxPktLossRateTh1 = [v28 minActiveWiFiTxPktLossRateTh1];
         goto LABEL_26;
       }
 
@@ -2052,7 +2052,7 @@ LABEL_18:
 
   else
   {
-    v28 = v37;
+    v28 = getiRATConfigController;
     v29 = a5;
     if (a4 != 1)
     {
@@ -2065,19 +2065,19 @@ LABEL_18:
     }
   }
 
-  v30 = [v28 minActiveWiFiTxPktLossRateTh0];
+  minActiveWiFiTxPktLossRateTh1 = [v28 minActiveWiFiTxPktLossRateTh0];
 LABEL_26:
-  if (v30 >= v9)
+  if (minActiveWiFiTxPktLossRateTh1 >= v9)
   {
     return 1;
   }
 
 LABEL_32:
-  [(WRM_FT_HandoverManager *)v34 updateHandoverReasonCode:16];
+  [(WRM_FT_HandoverManager *)selfCopy updateHandoverReasonCode:16];
   return 0;
 }
 
-- (BOOL)canWiFiTransportMeetIdleApplicationRequirements:(unint64_t)a3 :(unint64_t)a4 :(int)a5
+- (BOOL)canWiFiTransportMeetIdleApplicationRequirements:(unint64_t)requirements :(unint64_t)a4 :(int)a5
 {
   if (a5 == 1)
   {
@@ -2099,22 +2099,22 @@ LABEL_32:
   mWiFi = self->mWiFi;
   if (mWiFi)
   {
-    v4 = [(WCM_WiFiController *)mWiFi wifiService];
-    v5 = [(WCM_WiFiService *)v4 getRSSI];
-    [(WCM_WiFiService *)v4 getRxRatio];
+    wifiService = [(WCM_WiFiController *)mWiFi wifiService];
+    getRSSI = [(WCM_WiFiService *)wifiService getRSSI];
+    [(WCM_WiFiService *)wifiService getRxRatio];
     v7 = v6;
-    v8 = [(WCM_WiFiService *)v4 isRxRatioValid];
-    [(WCM_WiFiService *)v4 getTxPer];
+    isRxRatioValid = [(WCM_WiFiService *)wifiService isRxRatioValid];
+    [(WCM_WiFiService *)wifiService getTxPer];
     v10 = (v9 * 100.0);
-    v11 = [(WCM_WiFiService *)v4 isTxPerValid];
-    v12 = [(WCM_WiFiService *)v4 getCCA]> 87 || v5 < -75;
-    v13 = (v10 > 5) & v11;
+    isTxPerValid = [(WCM_WiFiService *)wifiService isTxPerValid];
+    v12 = [(WCM_WiFiService *)wifiService getCCA]> 87 || getRSSI < -75;
+    v13 = (v10 > 5) & isTxPerValid;
     if (v12)
     {
       v13 = 1;
     }
 
-    v14 = v13 | v8 & (v7 >= 0.3);
+    v14 = v13 | isRxRatioValid & (v7 >= 0.3);
   }
 
   else
@@ -2122,8 +2122,8 @@ LABEL_32:
     v14 = 0;
   }
 
-  v15 = [(WRM_FT_HandoverManager *)self getAVConferenceController];
-  if (!v15)
+  getAVConferenceController = [(WRM_FT_HandoverManager *)self getAVConferenceController];
+  if (!getAVConferenceController)
   {
     [WCM_Logging logLevel:29 message:@"isWiFiVoIPQualityGoodEnough: ptrAVConferenceController == NULL"];
     [0 resetRTPMetrics];
@@ -2134,7 +2134,7 @@ LABEL_17:
     return 1;
   }
 
-  v16 = v15;
+  v16 = getAVConferenceController;
   if ((byte_1002B7DDB & 1) == 0)
   {
     v17 = @"isWiFiVoIPQualityGoodEnough: Call not on WiFI";
@@ -2159,10 +2159,10 @@ LABEL_16:
     return 1;
   }
 
-  v21 = [(WRM_FT_HandoverManager *)self getiRATConfigController];
+  getiRATConfigController = [(WRM_FT_HandoverManager *)self getiRATConfigController];
   +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 29, @"Rx Pkt loss: %lld, nominal buffer delay %lld", [v16 rxPktLoss], objc_msgSend(v16, "nominalJitterBufferDelay"));
-  v22 = [v16 rxPktLoss];
-  if (((v22 >= [v21 faceTimeHandoverRxPktLossThreshold]) & v14) == 0)
+  rxPktLoss = [v16 rxPktLoss];
+  if (((rxPktLoss >= [getiRATConfigController faceTimeHandoverRxPktLossThreshold]) & v14) == 0)
   {
     [WCM_Logging logLevel:29 message:@"isWiFiVoIPQualityGoodEnough: true"];
     byte_1002B7B7B = 0;
@@ -2175,9 +2175,9 @@ LABEL_16:
   return 0;
 }
 
-- (BOOL)canWiFiTransportMeetActiveApplicationRequirements:(unint64_t)a3 :(unint64_t)a4 :(int)a5
+- (BOOL)canWiFiTransportMeetActiveApplicationRequirements:(unint64_t)requirements :(unint64_t)a4 :(int)a5
 {
-  v8 = [(WRM_FT_HandoverManager *)self getiRATConfigController];
+  getiRATConfigController = [(WRM_FT_HandoverManager *)self getiRATConfigController];
   if (a4 - 1 >= 2)
   {
     if (a4)
@@ -2188,7 +2188,7 @@ LABEL_16:
     return 1;
   }
 
-  if (a5 != 1 || ![v8 rtpMetricsEnabled])
+  if (a5 != 1 || ![getiRATConfigController rtpMetricsEnabled])
   {
     return 1;
   }
@@ -2229,47 +2229,47 @@ LABEL_16:
   }
 }
 
-- (void)feedAWDMetricsCellularStatsWithUUID:(id)a3
+- (void)feedAWDMetricsCellularStatsWithUUID:(id)d
 {
   v4 = +[WRM_EnhancedCTService wrm_EnhancedCTServiceSingleton];
 
-  [v4 feedCellularMetricsWithUUID:a3];
+  [v4 feedCellularMetricsWithUUID:d];
 }
 
 - (void)feedAWDMetricsCellularStats
 {
-  v3 = [(WRM_FT_HandoverManager *)self getCTService];
-  v4 = [(WRM_FT_HandoverManager *)self getSCService];
-  v5 = [v3 getCTDataIndictor];
-  v6 = [v3 isVoiceLQMValid];
-  if (v6)
+  getCTService = [(WRM_FT_HandoverManager *)self getCTService];
+  getSCService = [(WRM_FT_HandoverManager *)self getSCService];
+  getCTDataIndictor = [getCTService getCTDataIndictor];
+  isVoiceLQMValid = [getCTService isVoiceLQMValid];
+  if (isVoiceLQMValid)
   {
-    v6 = [v3 getLteVoiceLQM];
+    isVoiceLQMValid = [getCTService getLteVoiceLQM];
   }
 
-  self->mWrmiRATFaceTimeMetrics->voiceLQM = v6;
-  v7 = [v4 isDataLQMValid];
-  if (v7)
+  self->mWrmiRATFaceTimeMetrics->voiceLQM = isVoiceLQMValid;
+  isDataLQMValid = [getSCService isDataLQMValid];
+  if (isDataLQMValid)
   {
-    v7 = [v4 getCellularDataLQM];
+    isDataLQMValid = [getSCService getCellularDataLQM];
   }
 
-  self->mWrmiRATFaceTimeMetrics->dataLQM = v7;
-  v8 = [v3 dataAttachedWithCellularNetwork];
-  self->mDeviceAttachedWithCellularNetwork = v8;
-  if (v8)
+  self->mWrmiRATFaceTimeMetrics->dataLQM = isDataLQMValid;
+  dataAttachedWithCellularNetwork = [getCTService dataAttachedWithCellularNetwork];
+  self->mDeviceAttachedWithCellularNetwork = dataAttachedWithCellularNetwork;
+  if (dataAttachedWithCellularNetwork)
   {
-    v8 = [v3 getCurrentSignalBars];
+    dataAttachedWithCellularNetwork = [getCTService getCurrentSignalBars];
   }
 
-  self->mWrmiRATFaceTimeMetrics->signalBar = v8;
-  v9 = [v3 getServingCellType];
+  self->mWrmiRATFaceTimeMetrics->signalBar = dataAttachedWithCellularNetwork;
+  getServingCellType = [getCTService getServingCellType];
   mWrmiRATFaceTimeMetrics = self->mWrmiRATFaceTimeMetrics;
-  if (v9 > 4)
+  if (getServingCellType > 4)
   {
-    if (v9 <= 6)
+    if (getServingCellType <= 6)
     {
-      if (v9 == 5)
+      if (getServingCellType == 5)
       {
         v15 = @"CDMAHybrid";
       }
@@ -2282,7 +2282,7 @@ LABEL_16:
       goto LABEL_30;
     }
 
-    switch(v9)
+    switch(getServingCellType)
     {
       case 7:
         v15 = @"TDSCDMA";
@@ -2292,11 +2292,11 @@ LABEL_16:
         break;
       case 9:
         mWrmiRATFaceTimeMetrics->ratType = @"N_RADIO";
-        [v3 getNrRSRP];
+        [getCTService getNrRSRP];
         self->mWrmiRATFaceTimeMetrics->cellRsrp = v11;
-        [v3 getNrRSRQ];
+        [getCTService getNrRSRQ];
         self->mWrmiRATFaceTimeMetrics->cellRsrq = v12;
-        [v3 getNrSNR];
+        [getCTService getNrSNR];
 LABEL_17:
         self->mWrmiRATFaceTimeMetrics->cellSnr = v13;
         return;
@@ -2311,9 +2311,9 @@ LABEL_30:
     return;
   }
 
-  if (v9 > 2)
+  if (getServingCellType > 2)
   {
-    if (v9 == 3)
+    if (getServingCellType == 3)
     {
       v15 = @"CDMA1X";
     }
@@ -2326,14 +2326,14 @@ LABEL_30:
     goto LABEL_30;
   }
 
-  if (v9 != 1)
+  if (getServingCellType != 1)
   {
-    if (v9 == 2)
+    if (getServingCellType == 2)
     {
       mWrmiRATFaceTimeMetrics->ratType = @"UMTS";
-      [v3 getServingCellRSCP];
+      [getCTService getServingCellRSCP];
       self->mWrmiRATFaceTimeMetrics->cellRsrp = v14;
-      [v3 getServingCellECIO];
+      [getCTService getServingCellECIO];
       goto LABEL_17;
     }
 
@@ -2341,14 +2341,14 @@ LABEL_30:
   }
 
   mWrmiRATFaceTimeMetrics->ratType = @"LTE";
-  [v3 getServingCellRSRP];
+  [getCTService getServingCellRSRP];
   self->mWrmiRATFaceTimeMetrics->cellRsrp = v16;
-  [v3 getServingCellRSRQ];
+  [getCTService getServingCellRSRQ];
   self->mWrmiRATFaceTimeMetrics->cellRsrq = v17;
-  [v3 getServingCellSNR];
+  [getCTService getServingCellSNR];
   v19 = self->mWrmiRATFaceTimeMetrics;
   v19->cellSnr = v18;
-  v19->isNSAMode = v5 - 16 < 4 || v5 == 8;
+  v19->isNSAMode = getCTDataIndictor - 16 < 4 || getCTDataIndictor == 8;
 }
 
 - (void)resetActiveCallEvaluationMetrics
@@ -2356,7 +2356,7 @@ LABEL_30:
   [WCM_Logging logLevel:29 message:@"resetActiveCallEvaluationMetrics"];
   [(NSDate *)self->mAudioEvaluationTimer timeIntervalSinceNow];
   self->mTimeSinceAudioEvaluationStarted = v3;
-  v4 = [(WRM_FT_HandoverManager *)self getAVConferenceController];
+  getAVConferenceController = [(WRM_FT_HandoverManager *)self getAVConferenceController];
   mWiFi = self->mWiFi;
   if (mWiFi && (mWiFi = [(WCM_WiFiController *)mWiFi wifiService]) == 0)
   {
@@ -2366,7 +2366,7 @@ LABEL_30:
   else
   {
     [(WCM_WiFiController *)mWiFi resetCumulativeCounters];
-    [v4 resetCumulativeRTPMetrics];
+    [getAVConferenceController resetCumulativeRTPMetrics];
   }
 
   [WCM_Logging logLevel:29 message:@"resetActiveCallEvaluationMetrics: exit"];
@@ -2388,25 +2388,25 @@ LABEL_30:
   mWiFi = self->mWiFi;
   if (!mWiFi)
   {
-    v7 = 0;
+    wifiService = 0;
     goto LABEL_7;
   }
 
-  v7 = [(WCM_WiFiController *)mWiFi wifiService];
-  if (v7)
+  wifiService = [(WCM_WiFiController *)mWiFi wifiService];
+  if (wifiService)
   {
 LABEL_7:
-    [(WCM_WiFiService *)v7 getCumulativeTxPer];
+    [(WCM_WiFiService *)wifiService getCumulativeTxPer];
     v9 = (v8 * 100.0);
-    v10 = [(WCM_WiFiService *)v7 getRSSI];
-    v11 = [(WRM_FT_HandoverManager *)self getAVConferenceController];
-    v12 = [v11 averagedNominalJitterBufferDelay];
-    [v11 movAvgRxPktLoss];
+    getRSSI = [(WCM_WiFiService *)wifiService getRSSI];
+    getAVConferenceController = [(WRM_FT_HandoverManager *)self getAVConferenceController];
+    averagedNominalJitterBufferDelay = [getAVConferenceController averagedNominalJitterBufferDelay];
+    [getAVConferenceController movAvgRxPktLoss];
     v14 = v13;
-    [WCM_Logging logLevel:29 message:@"evaluateActiveCallQuality: Avg RSSI: %lld CumTX PER: %lld, AVG Nominal Jitter Buffer:%lld, RTP pkt loss:%lld ", v10, v9, v12, v13];
+    [WCM_Logging logLevel:29 message:@"evaluateActiveCallQuality: Avg RSSI: %lld CumTX PER: %lld, AVG Nominal Jitter Buffer:%lld, RTP pkt loss:%lld ", getRSSI, v9, averagedNominalJitterBufferDelay, v13];
     [WCM_Logging logLevel:29 message:@"Handover Manager: Checking active call Quality evaluation criteria"];
-    v16 = v12 <= 1000 && v14 <= 20 && v9 <= 20;
-    if (!v16 && v10 >= -65)
+    v16 = averagedNominalJitterBufferDelay <= 1000 && v14 <= 20 && v9 <= 20;
+    if (!v16 && getRSSI >= -65)
     {
       [WCM_Logging logLevel:29 message:@"Handover Manager: Audio Quality was good"];
     }
@@ -2421,17 +2421,17 @@ LABEL_17:
   [WCM_Logging logLevel:29 message:@"evaluateActiveCallQuality: exit"];
 }
 
-- (BOOL)isMovingAverageUplinkAudioQualityOfCurrentCallGood:(int)a3
+- (BOOL)isMovingAverageUplinkAudioQualityOfCurrentCallGood:(int)good
 {
-  v5 = [(WRM_FT_HandoverManager *)self getiRATConfigController];
-  if (a3 == 1)
+  getiRATConfigController = [(WRM_FT_HandoverManager *)self getiRATConfigController];
+  if (good == 1)
   {
-    v6 = v5;
+    v6 = getiRATConfigController;
     mWiFi = self->mWiFi;
     if (mWiFi)
     {
-      v8 = [(WCM_WiFiController *)mWiFi wifiService];
-      if (!v8)
+      wifiService = [(WCM_WiFiController *)mWiFi wifiService];
+      if (!wifiService)
       {
         [WCM_Logging logLevel:29 message:@"isMovingAverageUplinkAudioQualityOfCurrentCallGood: ptrWiFiService==NULL"];
         v9 = 1;
@@ -2443,17 +2443,17 @@ LABEL_10:
 
     else
     {
-      v8 = 0;
+      wifiService = 0;
     }
 
-    [(WCM_WiFiService *)v8 getMovingAverageTxPer];
+    [(WCM_WiFiService *)wifiService getMovingAverageTxPer];
     v12 = (v11 * 100.0);
-    v13 = [(WCM_WiFiService *)v8 isMovingAverageTxPerValid];
-    [WCM_Logging logLevel:29 message:@"isMovingAverageUplinkAudioQualityOfCurrentCallGood: TX PER (Mov Avg): %lld, Moving Avg Valid:%d", v12, v13];
-    v14 = [v6 faceTimeMinActiveWiFiAvgTxPktLossRateTh];
+    isMovingAverageTxPerValid = [(WCM_WiFiService *)wifiService isMovingAverageTxPerValid];
+    [WCM_Logging logLevel:29 message:@"isMovingAverageUplinkAudioQualityOfCurrentCallGood: TX PER (Mov Avg): %lld, Moving Avg Valid:%d", v12, isMovingAverageTxPerValid];
+    faceTimeMinActiveWiFiAvgTxPktLossRateTh = [v6 faceTimeMinActiveWiFiAvgTxPktLossRateTh];
     v9 = 1;
     v10 = @"isMovingAverageUplinklinkAudioQualityOfCurrentCallGood exit";
-    if (v13 && v14 < v12)
+    if (isMovingAverageTxPerValid && faceTimeMinActiveWiFiAvgTxPktLossRateTh < v12)
     {
       [WCM_Logging logLevel:29 message:@"Handover Manager: Moving average uplink audio quality was bad"];
       [(WRM_FT_HandoverManager *)self updateHandoverReasonCode:16];
@@ -2474,10 +2474,10 @@ LABEL_11:
   return v9;
 }
 
-- (BOOL)isMovingAverageDownlinkAudioQualityOfCurrentCallGood:(int)a3
+- (BOOL)isMovingAverageDownlinkAudioQualityOfCurrentCallGood:(int)good
 {
-  v5 = [(WRM_FT_HandoverManager *)self getAVConferenceController];
-  v6 = [(WRM_FT_HandoverManager *)self getiRATConfigController];
+  getAVConferenceController = [(WRM_FT_HandoverManager *)self getAVConferenceController];
+  getiRATConfigController = [(WRM_FT_HandoverManager *)self getiRATConfigController];
   if ((byte_1002B7DDB & 1) == 0)
   {
     v7 = @"isMovingAverageDownlinkAudioQualityOfCurrentCallGood: Call not on WiFI";
@@ -2486,39 +2486,39 @@ LABEL_11:
 
   if (!self->mDiscardRTPMetrics)
   {
-    v10 = v6;
+    v10 = getiRATConfigController;
     if (self->mWiFi)
     {
       v11 = 0;
-      if (a3)
+      if (good)
       {
 LABEL_10:
-        if (a3 != 1)
+        if (good != 1)
         {
           [WCM_Logging logLevel:29 message:@"isMovingAverageDownlinkAudioQualityOfCurrentCallGood: returned"];
           goto LABEL_6;
         }
 
-        v12 = [v5 movAvgNominalJitterBufferDelay];
-        [v5 movAvgRxPktLoss];
+        movAvgNominalJitterBufferDelay = [getAVConferenceController movAvgNominalJitterBufferDelay];
+        [getAVConferenceController movAvgRxPktLoss];
         v14 = v13;
         v15 = [(WRM_FT_HandoverManager *)self isVideoQualityGood:1];
-        v16 = [v5 poorConnectionDetected];
-        self->mWrmiRATFaceTimeMetrics->isPCDetected = [v5 poorConnectionDetected];
-        self->mWrmiRATFaceTimeMetrics->isStallDetected = [v5 mediaStallDetected];
-        [v5 primaryAudioPacketLossRate];
+        poorConnectionDetected = [getAVConferenceController poorConnectionDetected];
+        self->mWrmiRATFaceTimeMetrics->isPCDetected = [getAVConferenceController poorConnectionDetected];
+        self->mWrmiRATFaceTimeMetrics->isStallDetected = [getAVConferenceController mediaStallDetected];
+        [getAVConferenceController primaryAudioPacketLossRate];
         self->mWrmiRATFaceTimeMetrics->audioErasure = (v17 * 100.0);
-        [v5 deltaVideoErasure];
+        [getAVConferenceController deltaVideoErasure];
         self->mWrmiRATFaceTimeMetrics->videoErasure = v18;
-        [v5 totalVideoPacketLossRate];
+        [getAVConferenceController totalVideoPacketLossRate];
         self->mWrmiRATFaceTimeMetrics->facetimePacketLoss = (v19 * 100.0);
-        [WCM_Logging logLevel:29 message:@"isMovingAverageDownlinkAudioQualityOfCurrentCallGood: Moving Avg RTP packet loss:%lld, Mov Jitter Buffer Delay: %lld, video good : %lld, Bad connection deteted: %lld", v14, v12, v15, v16];
-        v20 = ([v10 faceTimeHandoverAvgRxPktLossThreshold] < v14) | v16 & v11;
+        [WCM_Logging logLevel:29 message:@"isMovingAverageDownlinkAudioQualityOfCurrentCallGood: Moving Avg RTP packet loss:%lld, Mov Jitter Buffer Delay: %lld, video good : %lld, Bad connection deteted: %lld", v14, movAvgNominalJitterBufferDelay, v15, poorConnectionDetected];
+        v20 = ([v10 faceTimeHandoverAvgRxPktLossThreshold] < v14) | poorConnectionDetected & v11;
         if (v20)
         {
           [WCM_Logging logLevel:29 message:@"Handover Manager: Moving average audio quality was bad or poor connection detected"];
-          v21 = [v5 mediaStallDetected];
-          if (v21)
+          mediaStallDetected = [getAVConferenceController mediaStallDetected];
+          if (mediaStallDetected)
           {
             v22 = 64;
           }
@@ -2528,9 +2528,9 @@ LABEL_10:
             v22 = 1;
           }
 
-          if ((v21 & 1) == 0 && v15)
+          if ((mediaStallDetected & 1) == 0 && v15)
           {
-            if ([v5 poorConnectionDetected])
+            if ([getAVConferenceController poorConnectionDetected])
             {
               v23 = 128;
             }
@@ -2557,28 +2557,28 @@ LABEL_35:
 
     else
     {
-      v25 = [0 wifiService];
-      v26 = [v25 getRSSI];
-      [v25 getRxRatio];
+      wifiService = [0 wifiService];
+      getRSSI = [wifiService getRSSI];
+      [wifiService getRxRatio];
       v28 = v27;
-      v29 = [v25 isRxRatioValid];
-      [v25 getTxPer];
-      v31 = ((v30 * 100.0) > 5) & [v25 isTxPerValid];
-      if (v26 < -75)
+      isRxRatioValid = [wifiService isRxRatioValid];
+      [wifiService getTxPer];
+      v31 = ((v30 * 100.0) > 5) & [wifiService isTxPerValid];
+      if (getRSSI < -75)
       {
         v31 = 1;
       }
 
-      v11 = v31 | v29 & (v28 >= 0.3);
-      if (a3)
+      v11 = v31 | isRxRatioValid & (v28 >= 0.3);
+      if (good)
       {
         goto LABEL_10;
       }
     }
 
-    [v5 primaryAudioPacketLossRate];
+    [getAVConferenceController primaryAudioPacketLossRate];
     v33 = v32;
-    [v5 primaryVideoPacketLossRate];
+    [getAVConferenceController primaryVideoPacketLossRate];
     v35 = v34;
     v8 = v33 < 1 && v35 < 1;
     if (v8 == 1)
@@ -2596,57 +2596,57 @@ LABEL_35:
   v7 = @"isMovingAverageDownlinkAudioQualityOfCurrentCallGood: discard RTP metrics";
 LABEL_5:
   [WCM_Logging logLevel:29 message:v7];
-  [v5 resetRTPMetrics];
-  [v5 resetCumulativeRTPMetrics];
-  [v5 resetPeriodicRTPStats];
+  [getAVConferenceController resetRTPMetrics];
+  [getAVConferenceController resetCumulativeRTPMetrics];
+  [getAVConferenceController resetPeriodicRTPStats];
 LABEL_6:
   LOBYTE(v8) = 1;
   return v8 & 1;
 }
 
-- (void)toggleFastLQMReport:(BOOL)a3
+- (void)toggleFastLQMReport:(BOOL)report
 {
-  v3 = a3;
-  v4 = [(WCM_WiFiController *)self->mWiFi wifiService];
-  if (byte_1002B7DDC != v3)
+  reportCopy = report;
+  wifiService = [(WCM_WiFiController *)self->mWiFi wifiService];
+  if (byte_1002B7DDC != reportCopy)
   {
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
     v5[2] = sub_100067584;
     v5[3] = &unk_10023E008;
-    v6 = v3;
-    v5[4] = v4;
+    v6 = reportCopy;
+    v5[4] = wifiService;
     dispatch_sync(&_dispatch_main_q, v5);
   }
 }
 
 - (unsigned)faceTimeCallType
 {
-  v2 = [(WRM_FT_HandoverManager *)self getAVConferenceController];
-  v3 = [v2 callType];
-  if (v3 != 2)
+  getAVConferenceController = [(WRM_FT_HandoverManager *)self getAVConferenceController];
+  callType = [getAVConferenceController callType];
+  if (callType != 2)
   {
-    if ([v2 callType] == 4)
+    if ([getAVConferenceController callType] == 4)
     {
-      LOBYTE(v3) = 2;
+      LOBYTE(callType) = 2;
     }
 
     else
     {
-      v3 = [v2 callType];
-      if (v3 != 1)
+      callType = [getAVConferenceController callType];
+      if (callType != 1)
       {
-        LOBYTE(v3) = [v2 callType] == 3;
+        LOBYTE(callType) = [getAVConferenceController callType] == 3;
       }
     }
   }
 
-  return v3;
+  return callType;
 }
 
-- (void)callObserver:(id)a3 callChanged:(id)a4
+- (void)callObserver:(id)observer callChanged:(id)changed
 {
-  v6 = [objc_msgSend(a3 "calls")];
+  v6 = [objc_msgSend(observer "calls")];
   if (v6 > 1)
   {
     v7 = 1;
@@ -2661,12 +2661,12 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  v8 = [a3 calls];
+  calls = [observer calls];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v9 = [calls countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (!v9)
   {
     goto LABEL_27;
@@ -2681,7 +2681,7 @@ LABEL_26:
     {
       if (*v17 != v11)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(calls);
       }
 
       v13 = *(*(&v16 + 1) + 8 * v12);
@@ -2704,7 +2704,7 @@ LABEL_18:
     }
 
     while (v10 != v12);
-    v15 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    v15 = [calls countByEnumeratingWithState:&v16 objects:v20 count:16];
     v10 = v15;
   }
 
@@ -2725,61 +2725,61 @@ LABEL_27:
   [(NSNotificationCenter *)v4 addObserver:self selector:"handleCallNotification:" name:v5 object:0];
 }
 
-- (void)handleCallNotification:(id)a3
+- (void)handleCallNotification:(id)notification
 {
-  [WCM_Logging logLevel:29 message:@"handleCallNotification notification=%@", a3];
-  v5 = [a3 name];
+  [WCM_Logging logLevel:29 message:@"handleCallNotification notification=%@", notification];
+  name = [notification name];
   v6 = TUCallCenterCallStatusChangedNotification;
-  if (([v5 isEqualToString:TUCallCenterCallStatusChangedNotification] & 1) != 0 || (v7 = objc_msgSend(a3, "name"), objc_msgSend(v7, "isEqualToString:", TUCallCenterVideoCallStatusChangedNotification)))
+  if (([name isEqualToString:TUCallCenterCallStatusChangedNotification] & 1) != 0 || (v7 = objc_msgSend(notification, "name"), objc_msgSend(v7, "isEqualToString:", TUCallCenterVideoCallStatusChangedNotification)))
   {
-    v8 = [a3 object];
-    [WCM_Logging logLevel:29 message:@"handleCallNotification call=%@", v8];
-    +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 29, @"handleCallNotification provider=%@", [v8 provider]);
-    +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 29, @"handleCallNotification bundleIdentifier=%@", [objc_msgSend(v8 "provider")]);
-    +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 29, @"handleCallNotification inCallUIBundleIdentifier=%@", [objc_msgSend(v8 "provider")]);
-    +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 29, @"handleCallNotification displayAppBundleIdentifier=%@", [objc_msgSend(v8 "provider")]);
+    object = [notification object];
+    [WCM_Logging logLevel:29 message:@"handleCallNotification call=%@", object];
+    +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 29, @"handleCallNotification provider=%@", [object provider]);
+    +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 29, @"handleCallNotification bundleIdentifier=%@", [objc_msgSend(object "provider")]);
+    +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 29, @"handleCallNotification inCallUIBundleIdentifier=%@", [objc_msgSend(object "provider")]);
+    +[WCM_Logging logLevel:message:](WCM_Logging, "logLevel:message:", 29, @"handleCallNotification displayAppBundleIdentifier=%@", [objc_msgSend(object "provider")]);
     v9 = [(WRM_FT_HandoverManager *)self getiRATClientFromList:1];
     [WCM_Logging logLevel:29 message:@"handleCallNotification controller=%@", v9];
-    if ([objc_msgSend(objc_msgSend(v8 "provider")] || objc_msgSend(objc_msgSend(objc_msgSend(v8, "provider"), "displayAppBundleIdentifier"), "length"))
+    if ([objc_msgSend(objc_msgSend(object "provider")] || objc_msgSend(objc_msgSend(objc_msgSend(object, "provider"), "displayAppBundleIdentifier"), "length"))
     {
       v10 = xpc_dictionary_create(0, 0, 0);
-      v11 = [objc_msgSend(objc_msgSend(v8 "provider")];
-      v12 = [v8 provider];
+      v11 = [objc_msgSend(objc_msgSend(object "provider")];
+      provider = [object provider];
       if (v11)
       {
-        v13 = [v12 bundleIdentifier];
+        bundleIdentifier = [provider bundleIdentifier];
       }
 
       else
       {
-        v13 = [v12 displayAppBundleIdentifier];
+        bundleIdentifier = [provider displayAppBundleIdentifier];
       }
 
-      xpc_dictionary_set_string(v10, "kWRMVoIPBundleId", [v13 UTF8String]);
-      v14 = [v8 status] == 3 || objc_msgSend(v8, "status") == 4;
+      xpc_dictionary_set_string(v10, "kWRMVoIPBundleId", [bundleIdentifier UTF8String]);
+      v14 = [object status] == 3 || objc_msgSend(object, "status") == 4;
       xpc_dictionary_set_BOOL(v10, "kWRMVoIPCallStartingFlag", v14);
-      xpc_dictionary_set_BOOL(v10, "kWRMVoIPCallEndedFlag", [v8 status] == 6);
-      xpc_dictionary_set_BOOL(v10, "kWRMVoIPCallActiveFlag", [v8 status] == 1);
-      xpc_dictionary_set_BOOL(v10, "kWRMVoIPCallVideoFlag", [v8 isVideo]);
+      xpc_dictionary_set_BOOL(v10, "kWRMVoIPCallEndedFlag", [object status] == 6);
+      xpc_dictionary_set_BOOL(v10, "kWRMVoIPCallActiveFlag", [object status] == 1);
+      xpc_dictionary_set_BOOL(v10, "kWRMVoIPCallVideoFlag", [object isVideo]);
       [v9 sendMessage:2500 withArgs:v10];
       xpc_release(v10);
     }
   }
 
-  if ([objc_msgSend(a3 "name")])
+  if ([objc_msgSend(notification "name")])
   {
-    v15 = [a3 object];
-    if ([v15 status] == 6 && ((objc_msgSend(objc_msgSend(v15, "provider"), "isTelephonyProvider") & 1) != 0 || objc_msgSend(objc_msgSend(v15, "provider"), "isFaceTimeProvider")))
+    object2 = [notification object];
+    if ([object2 status] == 6 && ((objc_msgSend(objc_msgSend(object2, "provider"), "isTelephonyProvider") & 1) != 0 || objc_msgSend(objc_msgSend(object2, "provider"), "isFaceTimeProvider")))
     {
       mWrmiRATFaceTimeMetrics = self->mWrmiRATFaceTimeMetrics;
       if (mWrmiRATFaceTimeMetrics)
       {
         mWrmiRATFaceTimeMetrics->callType = 0;
-        if ([objc_msgSend(v15 "provider")])
+        if ([objc_msgSend(object2 "provider")])
         {
-          v17 = [v15 isVideo];
+          isVideo = [object2 isVideo];
           v18 = self->mWrmiRATFaceTimeMetrics;
-          if (v17)
+          if (isVideo)
           {
             v19 = 2;
           }
@@ -2792,14 +2792,14 @@ LABEL_27:
           goto LABEL_30;
         }
 
-        if ([objc_msgSend(v15 "provider")])
+        if ([objc_msgSend(object2 "provider")])
         {
-          if ([v15 providerContext] && objc_msgSend(objc_msgSend(objc_msgSend(v15, "providerContext"), "objectForKeyedSubscript:", @"kCallSubType"), "isEqualToString:", @"kCallSubTypeVoLTE"))
+          if ([object2 providerContext] && objc_msgSend(objc_msgSend(objc_msgSend(object2, "providerContext"), "objectForKeyedSubscript:", @"kCallSubType"), "isEqualToString:", @"kCallSubTypeVoLTE"))
           {
             goto LABEL_29;
           }
 
-          if ([v15 providerContext] && objc_msgSend(objc_msgSend(objc_msgSend(v15, "providerContext"), "objectForKeyedSubscript:", @"kCallSubType"), "isEqualToString:", @"kCallSubTypeWifi"))
+          if ([object2 providerContext] && objc_msgSend(objc_msgSend(objc_msgSend(object2, "providerContext"), "objectForKeyedSubscript:", @"kCallSubType"), "isEqualToString:", @"kCallSubTypeWifi"))
           {
             v18 = self->mWrmiRATFaceTimeMetrics;
             v19 = 5;
@@ -2808,7 +2808,7 @@ LABEL_30:
             goto LABEL_31;
           }
 
-          if ([v15 providerContext] && objc_msgSend(objc_msgSend(objc_msgSend(v15, "providerContext"), "objectForKeyedSubscript:", @"kCallSubType"), "isEqualToString:", @"kCallSubTypeVoNR"))
+          if ([object2 providerContext] && objc_msgSend(objc_msgSend(objc_msgSend(object2, "providerContext"), "objectForKeyedSubscript:", @"kCallSubType"), "isEqualToString:", @"kCallSubTypeVoNR"))
           {
 LABEL_29:
             v18 = self->mWrmiRATFaceTimeMetrics;
@@ -2816,7 +2816,7 @@ LABEL_29:
             goto LABEL_30;
           }
 
-          if ([v15 providerContext] && objc_msgSend(objc_msgSend(objc_msgSend(v15, "providerContext"), "objectForKeyedSubscript:", @"kCallSubType"), "isEqualToString:", @"kCallSubTypeTelephony"))
+          if ([object2 providerContext] && objc_msgSend(objc_msgSend(objc_msgSend(object2, "providerContext"), "objectForKeyedSubscript:", @"kCallSubType"), "isEqualToString:", @"kCallSubTypeTelephony"))
           {
             v18 = self->mWrmiRATFaceTimeMetrics;
             v19 = 1;
@@ -2825,9 +2825,9 @@ LABEL_29:
         }
 
 LABEL_31:
-        if ([v15 localSenderIdentityUUID])
+        if ([object2 localSenderIdentityUUID])
         {
-          v20 = [[NSUUID alloc] initWithUUIDString:{objc_msgSend(objc_msgSend(v15, "localSenderIdentityUUID"), "UUIDString")}];
+          v20 = [[NSUUID alloc] initWithUUIDString:{objc_msgSend(objc_msgSend(object2, "localSenderIdentityUUID"), "UUIDString")}];
         }
 
         else
@@ -2835,7 +2835,7 @@ LABEL_31:
           v20 = 0;
         }
 
-        v21 = [v15 disconnectedReason];
+        disconnectedReason = [object2 disconnectedReason];
         objc_initWeak(&location, self);
         mQueue = self->mQueue;
         block[0] = _NSConcreteStackBlock;
@@ -2845,7 +2845,7 @@ LABEL_31:
         objc_copyWeak(&v24, &location);
         block[4] = v20;
         block[5] = self;
-        v25 = v21;
+        v25 = disconnectedReason;
         dispatch_async(mQueue, block);
         objc_destroyWeak(&v24);
         objc_destroyWeak(&location);

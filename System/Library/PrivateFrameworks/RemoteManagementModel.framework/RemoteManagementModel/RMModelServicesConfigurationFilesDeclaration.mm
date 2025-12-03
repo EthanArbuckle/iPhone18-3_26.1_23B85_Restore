@@ -1,12 +1,12 @@
 @interface RMModelServicesConfigurationFilesDeclaration
 + (NSSet)allowedPayloadKeys;
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3 serviceType:(id)a4 dataAssetReference:(id)a5;
-+ (id)buildWithIdentifier:(id)a3 serviceType:(id)a4 dataAssetReference:(id)a5;
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier serviceType:(id)type dataAssetReference:(id)reference;
++ (id)buildWithIdentifier:(id)identifier serviceType:(id)type dataAssetReference:(id)reference;
 + (id)supportedOS;
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
 - (id)assetReferences;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializePayloadWithType:(signed __int16)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializePayloadWithType:(signed __int16)type;
 @end
 
 @implementation RMModelServicesConfigurationFilesDeclaration
@@ -49,55 +49,55 @@ void __63__RMModelServicesConfigurationFilesDeclaration_assetReferences__block_i
   v3 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)buildWithIdentifier:(id)a3 serviceType:(id)a4 dataAssetReference:(id)a5
++ (id)buildWithIdentifier:(id)identifier serviceType:(id)type dataAssetReference:(id)reference
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
+  identifierCopy = identifier;
+  referenceCopy = reference;
+  typeCopy = type;
   v10 = objc_opt_new();
   [v10 setDeclarationType:@"com.apple.configuration.services.configuration-files"];
-  if (v7)
+  if (identifierCopy)
   {
-    [v10 setDeclarationIdentifier:v7];
+    [v10 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v11 = [MEMORY[0x277CCAD78] UUID];
-    v12 = [v11 UUIDString];
-    [v10 setDeclarationIdentifier:v12];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v10 setDeclarationIdentifier:uUIDString];
   }
 
-  [v10 setPayloadServiceType:v9];
+  [v10 setPayloadServiceType:typeCopy];
 
-  [v10 setPayloadDataAssetReference:v8];
+  [v10 setPayloadDataAssetReference:referenceCopy];
   [v10 updateServerToken];
 
   return v10;
 }
 
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3 serviceType:(id)a4 dataAssetReference:(id)a5
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier serviceType:(id)type dataAssetReference:(id)reference
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
+  identifierCopy = identifier;
+  referenceCopy = reference;
+  typeCopy = type;
   v10 = objc_opt_new();
   [v10 setDeclarationType:@"com.apple.configuration.services.configuration-files"];
-  if (v7)
+  if (identifierCopy)
   {
-    [v10 setDeclarationIdentifier:v7];
+    [v10 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v11 = [MEMORY[0x277CCAD78] UUID];
-    v12 = [v11 UUIDString];
-    [v10 setDeclarationIdentifier:v12];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v10 setDeclarationIdentifier:uUIDString];
   }
 
-  [v10 setPayloadServiceType:v9];
+  [v10 setPayloadServiceType:typeCopy];
 
-  [v10 setPayloadDataAssetReference:v8];
+  [v10 setPayloadDataAssetReference:referenceCopy];
   [v10 updateServerToken];
 
   return v10;
@@ -120,12 +120,12 @@ void __63__RMModelServicesConfigurationFilesDeclaration_assetReferences__block_i
   return v5;
 }
 
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v7 = a3;
+  dictionaryCopy = dictionary;
   v8 = MEMORY[0x277CBEB58];
-  v9 = [v7 allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [dictionaryCopy allKeys];
+  v10 = [v8 setWithArray:allKeys];
 
   v11 = +[RMModelServicesConfigurationFilesDeclaration allowedPayloadKeys];
   [v10 minusSet:v11];
@@ -133,9 +133,9 @@ void __63__RMModelServicesConfigurationFilesDeclaration_assetReferences__block_i
   v12 = [v10 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v12];
 
-  if ([(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"ServiceType" forKeyPath:@"payloadServiceType" isRequired:1 defaultValue:0 error:a5])
+  if ([(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"ServiceType" forKeyPath:@"payloadServiceType" isRequired:1 defaultValue:0 error:error])
   {
-    v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"DataAssetReference" forKeyPath:@"payloadDataAssetReference" isRequired:1 defaultValue:0 error:a5];
+    v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"DataAssetReference" forKeyPath:@"payloadDataAssetReference" isRequired:1 defaultValue:0 error:error];
   }
 
   else
@@ -146,25 +146,25 @@ void __63__RMModelServicesConfigurationFilesDeclaration_assetReferences__block_i
   return v13;
 }
 
-- (id)serializePayloadWithType:(signed __int16)a3
+- (id)serializePayloadWithType:(signed __int16)type
 {
   v4 = objc_opt_new();
-  v5 = [(RMModelServicesConfigurationFilesDeclaration *)self payloadServiceType];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"ServiceType" value:v5 isRequired:1 defaultValue:0];
+  payloadServiceType = [(RMModelServicesConfigurationFilesDeclaration *)self payloadServiceType];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"ServiceType" value:payloadServiceType isRequired:1 defaultValue:0];
 
-  v6 = [(RMModelServicesConfigurationFilesDeclaration *)self payloadDataAssetReference];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"DataAssetReference" value:v6 isRequired:1 defaultValue:0];
+  payloadDataAssetReference = [(RMModelServicesConfigurationFilesDeclaration *)self payloadDataAssetReference];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"DataAssetReference" value:payloadDataAssetReference isRequired:1 defaultValue:0];
 
   v7 = [v4 copy];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = RMModelServicesConfigurationFilesDeclaration;
-  v4 = [(RMModelDeclarationBase *)&v10 copyWithZone:a3];
+  v4 = [(RMModelDeclarationBase *)&v10 copyWithZone:zone];
   v5 = [(NSString *)self->_payloadServiceType copy];
   v6 = v4[6];
   v4[6] = v5;

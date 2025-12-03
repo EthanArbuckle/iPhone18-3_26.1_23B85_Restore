@@ -1,19 +1,19 @@
 @interface GQDSParentResolutionEntry
-- (GQDSParentResolutionEntry)initWithStyle:(id)a3 parentIdentifier:(const char *)a4;
+- (GQDSParentResolutionEntry)initWithStyle:(id)style parentIdentifier:(const char *)identifier;
 - (void)dealloc;
 @end
 
 @implementation GQDSParentResolutionEntry
 
-- (GQDSParentResolutionEntry)initWithStyle:(id)a3 parentIdentifier:(const char *)a4
+- (GQDSParentResolutionEntry)initWithStyle:(id)style parentIdentifier:(const char *)identifier
 {
   v8.receiver = self;
   v8.super_class = GQDSParentResolutionEntry;
   v6 = [(GQDSParentResolutionEntry *)&v8 init];
   if (v6)
   {
-    v6->mStyle = a3;
-    v6->mParentIdentifier = xmlStrdup(a4);
+    v6->mStyle = style;
+    v6->mParentIdentifier = xmlStrdup(identifier);
   }
 
   return v6;

@@ -1,22 +1,22 @@
 @interface APNetworkClient
 + (void)createSharedNetworkClientForUnitTest;
-+ (void)createSharedNetworkClientWithConfig:(id)a3;
-- (APNetworkClient)initWithConfig:(id)a3;
-- (BOOL)cancelTasksForService:(id)a3 withCompletionHandler:(id)a4;
-- (id)GET:(id)a3 client:(id)a4 headers:(id)a5 withCompletionHandler:(id)a6;
-- (id)GET:(id)a3 headers:(id)a4 withService:(id)a5 andCompletionHandler:(id)a6;
-- (id)HEAD:(id)a3 client:(id)a4 headers:(id)a5 withCompletionHandler:(id)a6;
-- (id)HEAD:(id)a3 headers:(id)a4 withService:(id)a5 andCompletionHandler:(id)a6;
-- (id)POST:(id)a3 client:(id)a4 headers:(id)a5 body:(id)a6 completionHandler:(id)a7;
-- (id)POST:(id)a3 headers:(id)a4 body:(id)a5 withService:(id)a6 andCompletionHandler:(id)a7;
-- (id)_billedSessionForRequester:(id)a3;
-- (id)_createSessionForRequester:(id)a3 httpMaximumConnectionsPerHost:(int64_t)a4;
++ (void)createSharedNetworkClientWithConfig:(id)config;
+- (APNetworkClient)initWithConfig:(id)config;
+- (BOOL)cancelTasksForService:(id)service withCompletionHandler:(id)handler;
+- (id)GET:(id)t client:(id)client headers:(id)headers withCompletionHandler:(id)handler;
+- (id)GET:(id)t headers:(id)headers withService:(id)service andCompletionHandler:(id)handler;
+- (id)HEAD:(id)d client:(id)client headers:(id)headers withCompletionHandler:(id)handler;
+- (id)HEAD:(id)d headers:(id)headers withService:(id)service andCompletionHandler:(id)handler;
+- (id)POST:(id)t client:(id)client headers:(id)headers body:(id)body completionHandler:(id)handler;
+- (id)POST:(id)t headers:(id)headers body:(id)body withService:(id)service andCompletionHandler:(id)handler;
+- (id)_billedSessionForRequester:(id)requester;
+- (id)_createSessionForRequester:(id)requester httpMaximumConnectionsPerHost:(int64_t)host;
 - (id)_defaultSessionConfig;
-- (id)sendRequest:(id)a3;
-- (id)sessionForClient:(id)a3;
-- (id)temporarySessionForClient:(id)a3;
+- (id)sendRequest:(id)request;
+- (id)sessionForClient:(id)client;
+- (id)temporarySessionForClient:(id)client;
 - (id)temporarySessionForDaemon;
-- (id)urlSessionForService:(id)a3;
+- (id)urlSessionForService:(id)service;
 @end
 
 @implementation APNetworkClient
@@ -28,30 +28,30 @@
   objc_msgSend_setLookBackWindow_(v14, v5, v6, v7, 5.0);
   objc_msgSend_setHttpMaximumConnectionsPerHost_(v14, v8, 4, v9);
   objc_msgSend_setHttpMaximumConnectionsPerHostTempSession_(v14, v10, 1, v11);
-  objc_msgSend_createSharedNetworkClientWithConfig_(a1, v12, v14, v13);
+  objc_msgSend_createSharedNetworkClientWithConfig_(self, v12, v14, v13);
 }
 
-+ (void)createSharedNetworkClientWithConfig:(id)a3
++ (void)createSharedNetworkClientWithConfig:(id)config
 {
   if (!qword_1EDBA4108)
   {
-    v5 = a3;
+    configCopy = config;
     v6 = [APNetworkClient alloc];
-    v11 = objc_msgSend_initWithConfig_(v6, v7, v5, v8);
+    v11 = objc_msgSend_initWithConfig_(v6, v7, configCopy, v8);
 
-    objc_msgSend_setSharedAPNetworkClient_(a1, v9, v11, v10);
+    objc_msgSend_setSharedAPNetworkClient_(self, v9, v11, v10);
   }
 }
 
-- (APNetworkClient)initWithConfig:(id)a3
+- (APNetworkClient)initWithConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v36.receiver = self;
   v36.super_class = APNetworkClient;
   v8 = [(APNetworkClient *)&v36 init];
   if (v8)
   {
-    if (objc_msgSend_useFixedHttpSessionManager(v4, v5, v6, v7))
+    if (objc_msgSend_useFixedHttpSessionManager(configCopy, v5, v6, v7))
     {
       v9 = objc_alloc_init(APFixedHTTPSessionManager);
       serviceManager = v8->_serviceManager;
@@ -70,10 +70,10 @@ LABEL_7:
     else
     {
       v13 = [APFlexibleHTTPSessionManager alloc];
-      objc_msgSend_lookBackWindow(v4, v14, v15, v16);
+      objc_msgSend_lookBackWindow(configCopy, v14, v15, v16);
       v18 = v17;
-      v22 = objc_msgSend_httpMaximumConnectionsPerHost(v4, v19, v20, v21);
-      v26 = objc_msgSend_httpMaximumConnectionsPerHostTempSession(v4, v23, v24, v25);
+      v22 = objc_msgSend_httpMaximumConnectionsPerHost(configCopy, v19, v20, v21);
+      v26 = objc_msgSend_httpMaximumConnectionsPerHostTempSession(configCopy, v23, v24, v25);
       v28 = objc_msgSend_initWithLookBackWindow_httpMaximumConnectionsPerHost_httpMaximumConnectionsPerHostTempSession_(v13, v27, v22, v26, v18);
       v29 = v8->_serviceManager;
       v8->_serviceManager = v28;
@@ -101,38 +101,38 @@ LABEL_7:
   return v8;
 }
 
-- (id)urlSessionForService:(id)a3
+- (id)urlSessionForService:(id)service
 {
-  v4 = objc_msgSend__billedSessionForRequester_(self, a2, a3, v3);
+  v4 = objc_msgSend__billedSessionForRequester_(self, a2, service, v3);
   v8 = objc_msgSend_session(v4, v5, v6, v7);
 
   return v8;
 }
 
-- (BOOL)cancelTasksForService:(id)a3 withCompletionHandler:(id)a4
+- (BOOL)cancelTasksForService:(id)service withCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  serviceCopy = service;
   v11 = objc_msgSend_serviceManager(self, v8, v9, v10);
-  v13 = objc_msgSend_cancelTasksForService_withCompletionHandler_(v11, v12, v7, v6);
+  v13 = objc_msgSend_cancelTasksForService_withCompletionHandler_(v11, v12, serviceCopy, handlerCopy);
 
   return v13;
 }
 
-- (id)sessionForClient:(id)a3
+- (id)sessionForClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   v8 = objc_msgSend_serviceManager(self, v5, v6, v7);
-  v11 = objc_msgSend_sessionForService_(v8, v9, v4, v10);
+  v11 = objc_msgSend_sessionForService_(v8, v9, clientCopy, v10);
 
   return v11;
 }
 
-- (id)temporarySessionForClient:(id)a3
+- (id)temporarySessionForClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   v8 = objc_msgSend_serviceManager(self, v5, v6, v7);
-  v11 = objc_msgSend_temporarySessionForService_(v8, v9, v4, v10);
+  v11 = objc_msgSend_temporarySessionForService_(v8, v9, clientCopy, v10);
 
   return v11;
 }
@@ -145,103 +145,103 @@ LABEL_7:
   return v7;
 }
 
-- (id)sendRequest:(id)a3
+- (id)sendRequest:(id)request
 {
-  v4 = a3;
-  v8 = objc_msgSend_serviceName(v4, v5, v6, v7);
+  requestCopy = request;
+  v8 = objc_msgSend_serviceName(requestCopy, v5, v6, v7);
   v11 = objc_msgSend__billedSessionForRequester_(self, v9, v8, v10);
 
-  v14 = objc_msgSend_sendRequest_(v11, v12, v4, v13);
+  v14 = objc_msgSend_sendRequest_(v11, v12, requestCopy, v13);
 
   return v14;
 }
 
-- (id)GET:(id)a3 client:(id)a4 headers:(id)a5 withCompletionHandler:(id)a6
+- (id)GET:(id)t client:(id)client headers:(id)headers withCompletionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v15 = objc_msgSend__billedSessionForRequester_(self, v13, a4, v14);
-  v17 = objc_msgSend_GET_headers_withCompletionHandler_(v15, v16, v12, v11, v10);
+  handlerCopy = handler;
+  headersCopy = headers;
+  tCopy = t;
+  v15 = objc_msgSend__billedSessionForRequester_(self, v13, client, v14);
+  v17 = objc_msgSend_GET_headers_withCompletionHandler_(v15, v16, tCopy, headersCopy, handlerCopy);
 
   return v17;
 }
 
-- (id)POST:(id)a3 client:(id)a4 headers:(id)a5 body:(id)a6 completionHandler:(id)a7
+- (id)POST:(id)t client:(id)client headers:(id)headers body:(id)body completionHandler:(id)handler
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a3;
-  v18 = objc_msgSend__billedSessionForRequester_(self, v16, a4, v17);
-  v20 = objc_msgSend_POST_headers_body_withCompletionHandler_(v18, v19, v15, v14, v13, v12);
+  handlerCopy = handler;
+  bodyCopy = body;
+  headersCopy = headers;
+  tCopy = t;
+  v18 = objc_msgSend__billedSessionForRequester_(self, v16, client, v17);
+  v20 = objc_msgSend_POST_headers_body_withCompletionHandler_(v18, v19, tCopy, headersCopy, bodyCopy, handlerCopy);
 
   return v20;
 }
 
-- (id)HEAD:(id)a3 client:(id)a4 headers:(id)a5 withCompletionHandler:(id)a6
+- (id)HEAD:(id)d client:(id)client headers:(id)headers withCompletionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v15 = objc_msgSend__billedSessionForRequester_(self, v13, a4, v14);
-  v17 = objc_msgSend_HEAD_headers_withCompletionHandler_(v15, v16, v12, v11, v10);
+  handlerCopy = handler;
+  headersCopy = headers;
+  dCopy = d;
+  v15 = objc_msgSend__billedSessionForRequester_(self, v13, client, v14);
+  v17 = objc_msgSend_HEAD_headers_withCompletionHandler_(v15, v16, dCopy, headersCopy, handlerCopy);
 
   return v17;
 }
 
-- (id)GET:(id)a3 headers:(id)a4 withService:(id)a5 andCompletionHandler:(id)a6
+- (id)GET:(id)t headers:(id)headers withService:(id)service andCompletionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v15 = objc_msgSend__billedSessionForRequester_(self, v13, a5, v14);
-  v17 = objc_msgSend_GET_headers_withCompletionHandler_(v15, v16, v12, v11, v10);
+  handlerCopy = handler;
+  headersCopy = headers;
+  tCopy = t;
+  v15 = objc_msgSend__billedSessionForRequester_(self, v13, service, v14);
+  v17 = objc_msgSend_GET_headers_withCompletionHandler_(v15, v16, tCopy, headersCopy, handlerCopy);
 
   return v17;
 }
 
-- (id)POST:(id)a3 headers:(id)a4 body:(id)a5 withService:(id)a6 andCompletionHandler:(id)a7
+- (id)POST:(id)t headers:(id)headers body:(id)body withService:(id)service andCompletionHandler:(id)handler
 {
-  v12 = a7;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v18 = objc_msgSend__billedSessionForRequester_(self, v16, a6, v17);
-  v20 = objc_msgSend_POST_headers_body_withCompletionHandler_(v18, v19, v15, v14, v13, v12);
+  handlerCopy = handler;
+  bodyCopy = body;
+  headersCopy = headers;
+  tCopy = t;
+  v18 = objc_msgSend__billedSessionForRequester_(self, v16, service, v17);
+  v20 = objc_msgSend_POST_headers_body_withCompletionHandler_(v18, v19, tCopy, headersCopy, bodyCopy, handlerCopy);
 
   return v20;
 }
 
-- (id)HEAD:(id)a3 headers:(id)a4 withService:(id)a5 andCompletionHandler:(id)a6
+- (id)HEAD:(id)d headers:(id)headers withService:(id)service andCompletionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v15 = objc_msgSend__billedSessionForRequester_(self, v13, a5, v14);
-  v17 = objc_msgSend_HEAD_headers_withCompletionHandler_(v15, v16, v12, v11, v10);
+  handlerCopy = handler;
+  headersCopy = headers;
+  dCopy = d;
+  v15 = objc_msgSend__billedSessionForRequester_(self, v13, service, v14);
+  v17 = objc_msgSend_HEAD_headers_withCompletionHandler_(v15, v16, dCopy, headersCopy, handlerCopy);
 
   return v17;
 }
 
-- (id)_billedSessionForRequester:(id)a3
+- (id)_billedSessionForRequester:(id)requester
 {
-  v4 = a3;
+  requesterCopy = requester;
   v8 = objc_msgSend_serviceManager(self, v5, v6, v7);
-  v11 = objc_msgSend_sessionForService_(v8, v9, v4, v10);
+  v11 = objc_msgSend_sessionForService_(v8, v9, requesterCopy, v10);
 
   return v11;
 }
 
-- (id)_createSessionForRequester:(id)a3 httpMaximumConnectionsPerHost:(int64_t)a4
+- (id)_createSessionForRequester:(id)requester httpMaximumConnectionsPerHost:(int64_t)host
 {
-  v6 = a3;
+  requesterCopy = requester;
   v10 = objc_msgSend__defaultSessionConfig(self, v7, v8, v9);
-  objc_msgSend_set_sourceApplicationBundleIdentifier_(v10, v11, v6, v12);
+  objc_msgSend_set_sourceApplicationBundleIdentifier_(v10, v11, requesterCopy, v12);
 
-  if (a4 >= 1)
+  if (host >= 1)
   {
-    objc_msgSend_setHTTPMaximumConnectionsPerHost_(v10, v13, a4, v14);
+    objc_msgSend_setHTTPMaximumConnectionsPerHost_(v10, v13, host, v14);
   }
 
   v15 = [APHTTPSession alloc];

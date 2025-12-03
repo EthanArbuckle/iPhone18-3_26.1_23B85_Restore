@@ -54,9 +54,9 @@
   while (v5 < [v4 count])
   {
     v6 = [v4 objectAtIndexedSubscript:v5];
-    v7 = [v6 readClientPtr];
+    readClientPtr = [v6 readClientPtr];
 
-    if (v7)
+    if (readClientPtr)
     {
       ++v5;
     }

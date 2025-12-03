@@ -1,20 +1,20 @@
 @interface ARQuickLookOverlayView
-- (_TtC11AssetViewer22ARQuickLookOverlayView)initWithCoder:(id)a3;
-- (_TtC11AssetViewer22ARQuickLookOverlayView)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (_TtC11AssetViewer22ARQuickLookOverlayView)initWithCoder:(id)coder;
+- (_TtC11AssetViewer22ARQuickLookOverlayView)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation ARQuickLookOverlayView
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v14.receiver = self;
   v14.super_class = type metadata accessor for ARQuickLookOverlayView();
   v7 = v14.receiver;
-  v8 = a4;
-  v9 = [(ARQuickLookOverlayView *)&v14 hitTest:v8 withEvent:x, y];
+  eventCopy = event;
+  v9 = [(ARQuickLookOverlayView *)&v14 hitTest:eventCopy withEvent:x, y];
   if (v9)
   {
     v10 = v9;
@@ -38,25 +38,25 @@
   return v12;
 }
 
-- (_TtC11AssetViewer22ARQuickLookOverlayView)initWithFrame:(CGRect)a3
+- (_TtC11AssetViewer22ARQuickLookOverlayView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC11AssetViewer22ARQuickLookOverlayView_overrideView) = 0;
   v8.receiver = self;
   v8.super_class = type metadata accessor for ARQuickLookOverlayView();
   return [(ARQuickLookOverlayView *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtC11AssetViewer22ARQuickLookOverlayView)initWithCoder:(id)a3
+- (_TtC11AssetViewer22ARQuickLookOverlayView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC11AssetViewer22ARQuickLookOverlayView_overrideView) = 0;
   v7.receiver = self;
   v7.super_class = type metadata accessor for ARQuickLookOverlayView();
-  v4 = a3;
-  v5 = [(ARQuickLookOverlayView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(ARQuickLookOverlayView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

@@ -1,12 +1,12 @@
 @interface TUNicknamesMetadataCacheDataProvider
 + (TUNicknamesMetadataCacheDataProvider)sharedInstance;
-+ (id)tuMetadataDestinationIDForHandleValue:(id)a3;
++ (id)tuMetadataDestinationIDForHandleValue:(id)value;
 - (TUNicknamesMetadataCacheDataProvider)init;
-- (id)fetchNicknameForHandleValue:(id)a3;
-- (id)formattedNicknameStringForHandleValue:(id)a3;
-- (id)formattedNicknameStringForNickname:(id)a3;
-- (void)nicknameStoreDidChange:(id)a3;
-- (void)updateCacheWithDestinationIDs:(id)a3 withGroup:(id)a4;
+- (id)fetchNicknameForHandleValue:(id)value;
+- (id)formattedNicknameStringForHandleValue:(id)value;
+- (id)formattedNicknameStringForNickname:(id)nickname;
+- (void)nicknameStoreDidChange:(id)change;
+- (void)updateCacheWithDestinationIDs:(id)ds withGroup:(id)group;
 @end
 
 @implementation TUNicknamesMetadataCacheDataProvider
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = __54__TUNicknamesMetadataCacheDataProvider_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_3 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_3, block);
@@ -70,16 +70,16 @@ uint64_t __54__TUNicknamesMetadataCacheDataProvider_sharedInstance__block_invoke
   return v2;
 }
 
-- (id)fetchNicknameForHandleValue:(id)a3
+- (id)fetchNicknameForHandleValue:(id)value
 {
-  v4 = a3;
-  v5 = [objc_opt_class() tuMetadataDestinationIDForHandleValue:v4];
+  valueCopy = value;
+  v5 = [objc_opt_class() tuMetadataDestinationIDForHandleValue:valueCopy];
   if (v5)
   {
     v6 = [(TUMetadataCacheDataProvider *)self metadataForDestinationID:v5];
     if (!v6)
     {
-      v6 = [(TUNicknamesMetadataCacheDataProvider *)self formattedNicknameStringForHandleValue:v4];
+      v6 = [(TUNicknamesMetadataCacheDataProvider *)self formattedNicknameStringForHandleValue:valueCopy];
       [(TUMetadataCacheDataProvider *)self setObject:v6 forDestinationID:v5];
       v7 = [[TUMetadataDict alloc] initWithSource:@"Apple" identificationLabel:v6];
       [(TUMetadataCacheDataProvider *)self setMetadataDict:v7 forDestinationID:v5];
@@ -88,23 +88,23 @@ uint64_t __54__TUNicknamesMetadataCacheDataProvider_sharedInstance__block_invoke
 
   else
   {
-    v6 = [(TUNicknamesMetadataCacheDataProvider *)self formattedNicknameStringForHandleValue:v4];
+    v6 = [(TUNicknamesMetadataCacheDataProvider *)self formattedNicknameStringForHandleValue:valueCopy];
   }
 
   return v6;
 }
 
-- (void)updateCacheWithDestinationIDs:(id)a3 withGroup:(id)a4
+- (void)updateCacheWithDestinationIDs:(id)ds withGroup:(id)group
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  dispatch_group_enter(v7);
+  dsCopy = ds;
+  groupCopy = group;
+  dispatch_group_enter(groupCopy);
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = v6;
+  v8 = dsCopy;
   v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
@@ -120,9 +120,9 @@ uint64_t __54__TUNicknamesMetadataCacheDataProvider_sharedInstance__block_invoke
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v17 + 1) + 8 * v12) handle];
-        v14 = [v13 normalizedValue];
-        v15 = [(TUNicknamesMetadataCacheDataProvider *)self fetchNicknameForHandleValue:v14];
+        handle = [*(*(&v17 + 1) + 8 * v12) handle];
+        normalizedValue = [handle normalizedValue];
+        v15 = [(TUNicknamesMetadataCacheDataProvider *)self fetchNicknameForHandleValue:normalizedValue];
 
         ++v12;
       }
@@ -134,20 +134,20 @@ uint64_t __54__TUNicknamesMetadataCacheDataProvider_sharedInstance__block_invoke
     while (v10);
   }
 
-  dispatch_group_leave(v7);
+  dispatch_group_leave(groupCopy);
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)nicknameStoreDidChange:(id)a3
+- (void)nicknameStoreDidChange:(id)change
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   [(TUMetadataCacheDataProvider *)self invalidateCache];
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  obj = [v4 allKeys];
+  obj = [changeCopy allKeys];
   v5 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
@@ -165,7 +165,7 @@ uint64_t __54__TUNicknamesMetadataCacheDataProvider_sharedInstance__block_invoke
 
         v9 = *(*(&v17 + 1) + 8 * v8);
         v10 = [objc_opt_class() tuMetadataDestinationIDForHandleValue:v9];
-        v11 = [v4 objectForKeyedSubscript:@"pendingNicknames"];
+        v11 = [changeCopy objectForKeyedSubscript:@"pendingNicknames"];
         v12 = [v11 objectForKeyedSubscript:v9];
         if (v10)
         {
@@ -188,12 +188,12 @@ uint64_t __54__TUNicknamesMetadataCacheDataProvider_sharedInstance__block_invoke
   v15 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)tuMetadataDestinationIDForHandleValue:(id)a3
++ (id)tuMetadataDestinationIDForHandleValue:(id)value
 {
-  v3 = a3;
-  if ([v3 length])
+  valueCopy = value;
+  if ([valueCopy length])
   {
-    v4 = [TUHandle normalizedHandleWithDestinationID:v3];
+    v4 = [TUHandle normalizedHandleWithDestinationID:valueCopy];
     if (v4)
     {
       v5 = [[TUMetadataDestinationID alloc] initWithHandle:v4];
@@ -213,14 +213,14 @@ uint64_t __54__TUNicknamesMetadataCacheDataProvider_sharedInstance__block_invoke
   return v5;
 }
 
-- (id)formattedNicknameStringForHandleValue:(id)a3
+- (id)formattedNicknameStringForHandleValue:(id)value
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 length])
+  valueCopy = value;
+  if ([valueCopy length])
   {
-    v5 = [(TUNicknamesMetadataCacheDataProvider *)self nicknameProvider];
-    v6 = [v5 nicknameForHandleID:v4];
+    nicknameProvider = [(TUNicknamesMetadataCacheDataProvider *)self nicknameProvider];
+    v6 = [nicknameProvider nicknameForHandleID:valueCopy];
 
     v7 = TUDefaultLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -228,7 +228,7 @@ uint64_t __54__TUNicknamesMetadataCacheDataProvider_sharedInstance__block_invoke
       v11 = 138412546;
       v12 = v6;
       v13 = 2112;
-      v14 = v4;
+      v14 = valueCopy;
       _os_log_impl(&dword_1956FD000, v7, OS_LOG_TYPE_DEFAULT, "Fetched nickname %@ for handle: %@", &v11, 0x16u);
     }
 
@@ -245,21 +245,21 @@ uint64_t __54__TUNicknamesMetadataCacheDataProvider_sharedInstance__block_invoke
   return v8;
 }
 
-- (id)formattedNicknameStringForNickname:(id)a3
+- (id)formattedNicknameStringForNickname:(id)nickname
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  nicknameCopy = nickname;
+  v4 = nicknameCopy;
+  if (nicknameCopy)
   {
-    v5 = [v3 firstName];
-    if ([v5 length])
+    firstName = [nicknameCopy firstName];
+    if ([firstName length])
     {
 
 LABEL_5:
       v8 = MEMORY[0x1E696AEC0];
-      v9 = [v4 firstName];
-      v10 = [v4 lastName];
-      v11 = [v8 stringWithFormat:@"%@ %@", v9, v10];
+      firstName2 = [v4 firstName];
+      lastName = [v4 lastName];
+      v11 = [v8 stringWithFormat:@"%@ %@", firstName2, lastName];
 
       v12 = MEMORY[0x1E696AEC0];
       v13 = TUBundle();
@@ -269,8 +269,8 @@ LABEL_5:
       goto LABEL_7;
     }
 
-    v6 = [v4 lastName];
-    v7 = [v6 length];
+    lastName2 = [v4 lastName];
+    v7 = [lastName2 length];
 
     if (v7)
     {

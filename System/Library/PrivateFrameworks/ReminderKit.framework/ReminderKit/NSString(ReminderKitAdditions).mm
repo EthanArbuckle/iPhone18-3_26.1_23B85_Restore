@@ -10,58 +10,58 @@
 
 - (id)rem_addingMailto
 {
-  if ([a1 rem_hasMailto])
+  if ([self rem_hasMailto])
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v2 = [@"mailto:" stringByAppendingString:a1];
+    selfCopy = [@"mailto:" stringByAppendingString:self];
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)rem_removingMailto
 {
-  v1 = a1;
-  if ([v1 rem_hasMailto])
+  selfCopy = self;
+  if ([selfCopy rem_hasMailto])
   {
-    v2 = [v1 substringFromIndex:7];
+    v2 = [selfCopy substringFromIndex:7];
 
-    v1 = v2;
+    selfCopy = v2;
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (id)rem_addingTel
 {
-  if ([a1 rem_hasTel])
+  if ([self rem_hasTel])
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v2 = [@"tel:" stringByAppendingString:a1];
+    selfCopy = [@"tel:" stringByAppendingString:self];
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)rem_removingTel
 {
-  v1 = a1;
-  if ([v1 rem_hasTel])
+  selfCopy = self;
+  if ([selfCopy rem_hasTel])
   {
-    v2 = [v1 substringFromIndex:4];
+    v2 = [selfCopy substringFromIndex:4];
 
-    v1 = v2;
+    selfCopy = v2;
   }
 
-  return v1;
+  return selfCopy;
 }
 
 + (uint64_t)rem_isFirstString:()ReminderKitAdditions equalToSecondString:

@@ -1,7 +1,7 @@
 @interface SASSignalConnectionListener
 + (id)listener;
 - (id)_init;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
 @end
 
 @implementation SASSignalConnectionListener
@@ -43,8 +43,8 @@ uint64_t __39__SASSignalConnectionListener_listener__block_invoke()
     v6 = [v4 listenerWithConfigurator:v9];
     [(SASSignalConnectionListener *)v5 setListener:v6];
 
-    v7 = [(SASSignalConnectionListener *)v5 listener];
-    [v7 activate];
+    listener = [(SASSignalConnectionListener *)v5 listener];
+    [listener activate];
   }
 
   return v3;
@@ -64,14 +64,14 @@ void __36__SASSignalConnectionListener__init__block_invoke(uint64_t a1, void *a2
   [v7 setDelegate:*(a1 + 32)];
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
   v14 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [v5 remoteProcess];
-  if (v6)
+  connectionCopy = connection;
+  remoteProcess = [connectionCopy remoteProcess];
+  if (remoteProcess)
   {
-    v7 = [SASSignalServer serverForConnection:v5];
+    v7 = [SASSignalServer serverForConnection:connectionCopy];
   }
 
   else
@@ -82,11 +82,11 @@ void __36__SASSignalConnectionListener__init__block_invoke(uint64_t a1, void *a2
       v10 = 136315394;
       v11 = "[SASSignalConnectionListener listener:didReceiveConnection:withContext:]";
       v12 = 2112;
-      v13 = v5;
+      v13 = connectionCopy;
       _os_log_impl(&dword_1C8137000, v8, OS_LOG_TYPE_DEFAULT, "%s SASSignalConnectionListener: Unable to assign new incoming connection to a process because the remote was unknown : connection=%@", &v10, 0x16u);
     }
 
-    [v5 invalidate];
+    [connectionCopy invalidate];
   }
 
   v9 = *MEMORY[0x1E69E9840];

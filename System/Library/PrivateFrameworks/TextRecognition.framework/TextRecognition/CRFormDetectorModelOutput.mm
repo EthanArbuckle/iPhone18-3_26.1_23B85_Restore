@@ -1,25 +1,25 @@
 @interface CRFormDetectorModelOutput
-- (CRFormDetectorModelOutput)initWithBoundingBoxes:(id)a3 classLogits:(id)a4 anchors:(id)a5;
+- (CRFormDetectorModelOutput)initWithBoundingBoxes:(id)boxes classLogits:(id)logits anchors:(id)anchors;
 - (NSSet)featureNames;
-- (id)featureValueForName:(id)a3;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation CRFormDetectorModelOutput
 
-- (CRFormDetectorModelOutput)initWithBoundingBoxes:(id)a3 classLogits:(id)a4 anchors:(id)a5
+- (CRFormDetectorModelOutput)initWithBoundingBoxes:(id)boxes classLogits:(id)logits anchors:(id)anchors
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  boxesCopy = boxes;
+  logitsCopy = logits;
+  anchorsCopy = anchors;
   v15.receiver = self;
   v15.super_class = CRFormDetectorModelOutput;
   v12 = [(CRFormDetectorModelOutput *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_boundingBoxes, a3);
-    objc_storeStrong(&v13->_classLogits, a4);
-    objc_storeStrong(&v13->_anchors, a5);
+    objc_storeStrong(&v12->_boundingBoxes, boxes);
+    objc_storeStrong(&v13->_classLogits, logits);
+    objc_storeStrong(&v13->_anchors, anchors);
   }
 
   return v13;
@@ -38,31 +38,31 @@
   return v4;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"bbox_regression"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"bbox_regression"])
   {
     v5 = MEMORY[0x1E695FE60];
-    v6 = [(CRFormDetectorModelOutput *)self boundingBoxes];
+    boundingBoxes = [(CRFormDetectorModelOutput *)self boundingBoxes];
 LABEL_7:
-    v7 = v6;
-    v8 = [v5 featureValueWithMultiArray:v6];
+    v7 = boundingBoxes;
+    v8 = [v5 featureValueWithMultiArray:boundingBoxes];
 
     goto LABEL_8;
   }
 
-  if ([v4 isEqualToString:@"cls_logits"])
+  if ([nameCopy isEqualToString:@"cls_logits"])
   {
     v5 = MEMORY[0x1E695FE60];
-    v6 = [(CRFormDetectorModelOutput *)self classLogits];
+    boundingBoxes = [(CRFormDetectorModelOutput *)self classLogits];
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"anchors"])
+  if ([nameCopy isEqualToString:@"anchors"])
   {
     v5 = MEMORY[0x1E695FE60];
-    v6 = [(CRFormDetectorModelOutput *)self anchors];
+    boundingBoxes = [(CRFormDetectorModelOutput *)self anchors];
     goto LABEL_7;
   }
 

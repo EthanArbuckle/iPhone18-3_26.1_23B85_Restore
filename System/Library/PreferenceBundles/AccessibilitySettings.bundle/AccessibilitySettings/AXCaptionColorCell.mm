@@ -1,18 +1,18 @@
 @interface AXCaptionColorCell
 - (void)prepareForReuse;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation AXCaptionColorCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v27.receiver = self;
   v27.super_class = AXCaptionColorCell;
-  [(AXCaptionColorCell *)&v27 refreshCellContentsWithSpecifier:v4];
-  v5 = [(AXCaptionColorCell *)self defaultContentConfiguration];
-  v6 = [v4 propertyForKey:@"rgb"];
+  [(AXCaptionColorCell *)&v27 refreshCellContentsWithSpecifier:specifierCopy];
+  defaultContentConfiguration = [(AXCaptionColorCell *)self defaultContentConfiguration];
+  v6 = [specifierCopy propertyForKey:@"rgb"];
   if (v6)
   {
     objc_opt_class();
@@ -40,30 +40,30 @@
     }
 
     v20 = [UIImage systemImageNamed:@"circle.fill"];
-    [v5 setImage:v20];
+    [defaultContentConfiguration setImage:v20];
 
-    v21 = [v5 imageProperties];
-    [v21 setTintColor:v7];
+    imageProperties = [defaultContentConfiguration imageProperties];
+    [imageProperties setTintColor:v7];
   }
 
-  v22 = [v4 propertyForKey:@"isDefault"];
-  v23 = [v22 BOOLValue];
+  v22 = [specifierCopy propertyForKey:@"isDefault"];
+  bOOLValue = [v22 BOOLValue];
 
-  if (v23)
+  if (bOOLValue)
   {
-    v24 = settingsLocString(@"default.choice", @"CaptioningStyle");
-    v25 = [v4 name];
-    v26 = [NSString stringWithFormat:v24, v25];
-    [v5 setText:v26];
+    name2 = settingsLocString(@"default.choice", @"CaptioningStyle");
+    name = [specifierCopy name];
+    v26 = [NSString stringWithFormat:name2, name];
+    [defaultContentConfiguration setText:v26];
   }
 
   else
   {
-    v24 = [v4 name];
-    [v5 setText:v24];
+    name2 = [specifierCopy name];
+    [defaultContentConfiguration setText:name2];
   }
 
-  [(AXCaptionColorCell *)self setContentConfiguration:v5];
+  [(AXCaptionColorCell *)self setContentConfiguration:defaultContentConfiguration];
 }
 
 - (void)prepareForReuse

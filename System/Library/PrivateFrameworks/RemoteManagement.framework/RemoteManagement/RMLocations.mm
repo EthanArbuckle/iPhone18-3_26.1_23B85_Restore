@@ -1,16 +1,16 @@
 @interface RMLocations
-+ (BOOL)fixFilePermissionsForURL:(id)a3;
++ (BOOL)fixFilePermissionsForURL:(id)l;
 + (NSURL)managedObjectModelURL;
 + (NSURL)xpcServiceDirectoryURL;
-+ (id)URLWithResolvedSymlinksFromURL:(id)a3 error:(id *)a4;
-+ (id)_rootDirectoryURLInDomain:(int64_t)a3 error:(id *)a4;
-+ (id)baseDirectoryURLInDomain:(int64_t)a3 createIfNeeded:(BOOL)a4;
++ (id)URLWithResolvedSymlinksFromURL:(id)l error:(id *)error;
++ (id)_rootDirectoryURLInDomain:(int64_t)domain error:(id *)error;
++ (id)baseDirectoryURLInDomain:(int64_t)domain createIfNeeded:(BOOL)needed;
 + (id)darwinCacheDirectoryURL;
 + (id)darwinTemporaryDirectoryURL;
 + (id)darwinUserDirectoryURL;
-+ (id)dataVaultDirectoryURLInDomain:(int64_t)a3 createIfNeeded:(BOOL)a4;
++ (id)dataVaultDirectoryURLInDomain:(int64_t)domain createIfNeeded:(BOOL)needed;
 + (id)homeDirectoryURL;
-+ (void)_oneTimeDataVaultConversionInDomain:(int64_t)a3 dataVaultDirectoryURL:(id)a4;
++ (void)_oneTimeDataVaultConversionInDomain:(int64_t)domain dataVaultDirectoryURL:(id)l;
 + (void)darwinCacheDirectoryURL;
 + (void)darwinTemporaryDirectoryURL;
 + (void)darwinUserDirectoryURL;
@@ -19,13 +19,13 @@
 
 @implementation RMLocations
 
-+ (id)_rootDirectoryURLInDomain:(int64_t)a3 error:(id *)a4
++ (id)_rootDirectoryURLInDomain:(int64_t)domain error:(id *)error
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __47__RMLocations__rootDirectoryURLInDomain_error___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a3;
+  block[4] = domain;
   if (_rootDirectoryURLInDomain_error__onceToken != -1)
   {
     dispatch_once(&_rootDirectoryURLInDomain_error__onceToken, block);
@@ -70,11 +70,11 @@ LABEL_5:
 LABEL_6:
 }
 
-+ (id)baseDirectoryURLInDomain:(int64_t)a3 createIfNeeded:(BOOL)a4
++ (id)baseDirectoryURLInDomain:(int64_t)domain createIfNeeded:(BOOL)needed
 {
-  v4 = a4;
+  neededCopy = needed;
   v21 = 0;
-  v6 = [a1 _rootDirectoryURLInDomain:a3 error:&v21];
+  v6 = [self _rootDirectoryURLInDomain:domain error:&v21];
   v7 = v21;
   if (!v6)
   {
@@ -85,7 +85,7 @@ LABEL_6:
     }
   }
 
-  if (a3)
+  if (domain)
   {
     v9 = @"com.apple.remotemanagementd";
   }
@@ -97,10 +97,10 @@ LABEL_6:
 
   v10 = [v6 URLByAppendingPathComponent:v9 isDirectory:1];
   v11 = v10;
-  if (v4)
+  if (neededCopy)
   {
     v20 = v7;
-    DirectoryAtURL = createDirectoryAtURL(v10, a3, &v20);
+    DirectoryAtURL = createDirectoryAtURL(v10, domain, &v20);
     v13 = v20;
 
     if ((DirectoryAtURL & 1) == 0)
@@ -112,7 +112,7 @@ LABEL_6:
       }
     }
 
-    v15 = [v11 path];
+    path = [v11 path];
     DMCSetSkipBackupAttributeToItemAtPath();
   }
 
@@ -150,10 +150,10 @@ void __55__RMLocations_baseDirectoryURLInDomain_createIfNeeded___block_invoke(ui
   v4 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)dataVaultDirectoryURLInDomain:(int64_t)a3 createIfNeeded:(BOOL)a4
++ (id)dataVaultDirectoryURLInDomain:(int64_t)domain createIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v7 = [a1 baseDirectoryURLInDomain:? createIfNeeded:?];
+  neededCopy = needed;
+  v7 = [self baseDirectoryURLInDomain:? createIfNeeded:?];
   if (!v7)
   {
     v11 = +[RMLog locations];
@@ -162,7 +162,7 @@ void __55__RMLocations_baseDirectoryURLInDomain_createIfNeeded___block_invoke(ui
       +[RMLocations dataVaultDirectoryURLInDomain:createIfNeeded:];
     }
 
-    if (v4)
+    if (neededCopy)
     {
       goto LABEL_3;
     }
@@ -172,14 +172,14 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (!v4)
+  if (!neededCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_3:
   v16 = 0;
-  DirectoryAtURL = createDirectoryAtURL(v7, a3, &v16);
+  DirectoryAtURL = createDirectoryAtURL(v7, domain, &v16);
   v9 = v16;
   if ((DirectoryAtURL & 1) == 0)
   {
@@ -191,28 +191,28 @@ LABEL_3:
   }
 
 LABEL_11:
-  v12 = [MEMORY[0x1E696AC08] defaultManager];
-  v13 = [v7 path];
-  v14 = [v12 fileExistsAtPath:v13 isDirectory:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [v7 path];
+  v14 = [defaultManager fileExistsAtPath:path isDirectory:0];
 
   if (v14)
   {
-    [a1 _oneTimeDataVaultConversionInDomain:a3 dataVaultDirectoryURL:v7];
+    [self _oneTimeDataVaultConversionInDomain:domain dataVaultDirectoryURL:v7];
   }
 
   return v7;
 }
 
-+ (void)_oneTimeDataVaultConversionInDomain:(int64_t)a3 dataVaultDirectoryURL:(id)a4
++ (void)_oneTimeDataVaultConversionInDomain:(int64_t)domain dataVaultDirectoryURL:(id)l
 {
-  v4 = a4;
+  lCopy = l;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __73__RMLocations__oneTimeDataVaultConversionInDomain_dataVaultDirectoryURL___block_invoke;
   block[3] = &unk_1E8706038;
-  v8 = v4;
+  v8 = lCopy;
   v5 = _oneTimeDataVaultConversionInDomain_dataVaultDirectoryURL__onceToken;
-  v6 = v4;
+  v6 = lCopy;
   if (v5 != -1)
   {
     dispatch_once(&_oneTimeDataVaultConversionInDomain_dataVaultDirectoryURL__onceToken, block);
@@ -436,22 +436,22 @@ void __42__RMLocations_darwinTemporaryDirectoryURL__block_invoke(uint64_t a1)
   v3 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)fixFilePermissionsForURL:(id)a3
++ (BOOL)fixFilePermissionsForURL:(id)l
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  lCopy = l;
   v4 = +[RMLog locations];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v25 = v3;
+    v25 = lCopy;
     _os_log_impl(&dword_1E1168000, v4, OS_LOG_TYPE_INFO, "Trying to fix permissions: %{public}@", buf, 0xCu);
   }
 
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  v6 = [v3 path];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [lCopy path];
   v21 = 0;
-  v7 = [v5 attributesOfItemAtPath:v6 error:&v21];
+  v7 = [defaultManager attributesOfItemAtPath:path error:&v21];
   v8 = v21;
 
   if (v7)
@@ -476,9 +476,9 @@ void __42__RMLocations_darwinTemporaryDirectoryURL__block_invoke(uint64_t a1)
       v23 = &unk_1F5C0CEC0;
       v14 = 1;
       v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v23 forKeys:&v22 count:1];
-      v16 = [v3 path];
+      path2 = [lCopy path];
       v20 = v8;
-      v17 = [v5 setAttributes:v15 ofItemAtPath:v16 error:&v20];
+      v17 = [defaultManager setAttributes:v15 ofItemAtPath:path2 error:&v20];
       v13 = v20;
 
       if (v17)
@@ -548,12 +548,12 @@ void __87__RMLocations__dataVaultChildDirectoryURLInDomain_createIfNeeded_childN
   v5 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)URLWithResolvedSymlinksFromURL:(id)a3 error:(id *)a4
++ (id)URLWithResolvedSymlinksFromURL:(id)l error:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 path];
-  v7 = open([v6 fileSystemRepresentation], 0x8000, 0);
+  lCopy = l;
+  path = [lCopy path];
+  v7 = open([path fileSystemRepresentation], 0x8000, 0);
 
   if (v7 >= 1)
   {
@@ -563,7 +563,7 @@ void __87__RMLocations__dataVaultChildDirectoryURLInDomain_createIfNeeded_childN
       close(v7);
       if (v8)
       {
-        a4 = [MEMORY[0x1E695DFF8] fileURLWithPath:v8];
+        error = [MEMORY[0x1E695DFF8] fileURLWithPath:v8];
 
         goto LABEL_17;
       }
@@ -575,39 +575,39 @@ void __87__RMLocations__dataVaultChildDirectoryURLInDomain_createIfNeeded_childN
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       +[RMLocations URLWithResolvedSymlinksFromURL:error:];
-      if (a4)
+      if (error)
       {
         goto LABEL_12;
       }
     }
 
-    else if (a4)
+    else if (error)
     {
 LABEL_12:
       v16 = MEMORY[0x1E696ABC0];
       v17 = *MEMORY[0x1E696A798];
       v25 = *MEMORY[0x1E696A998];
-      v26 = v5;
+      v26 = lCopy;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
       v19 = [v16 errorWithDomain:v17 code:v15 userInfo:v18];
 
       if (v19)
       {
         v20 = v19;
-        *a4 = v19;
+        *error = v19;
       }
     }
 
     close(v7);
 LABEL_16:
-    a4 = 0;
+    error = 0;
     goto LABEL_17;
   }
 
   v9 = *__error();
   if (!os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_17;
     }
@@ -616,20 +616,20 @@ LABEL_16:
   }
 
   +[RMLocations URLWithResolvedSymlinksFromURL:error:];
-  if (a4)
+  if (error)
   {
 LABEL_7:
     v10 = MEMORY[0x1E696ABC0];
     v11 = *MEMORY[0x1E696A798];
     v23 = *MEMORY[0x1E696A998];
-    v24 = v5;
+    v24 = lCopy;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
     v13 = [v10 errorWithDomain:v11 code:v9 userInfo:v12];
 
     if (v13)
     {
       v14 = v13;
-      *a4 = v13;
+      *error = v13;
     }
 
     goto LABEL_16;
@@ -639,7 +639,7 @@ LABEL_17:
 
   v21 = *MEMORY[0x1E69E9840];
 
-  return a4;
+  return error;
 }
 
 + (void)baseDirectoryURLInDomain:createIfNeeded:.cold.1()
@@ -688,7 +688,7 @@ LABEL_17:
 + (void)darwinUserDirectoryURL
 {
   v8 = *MEMORY[0x1E69E9840];
-  v7 = *a1;
+  v7 = *self;
   OUTLINED_FUNCTION_2_0();
   _os_log_error_impl(v1, v2, v3, v4, v5, 8u);
   v6 = *MEMORY[0x1E69E9840];
@@ -697,7 +697,7 @@ LABEL_17:
 + (void)darwinCacheDirectoryURL
 {
   v8 = *MEMORY[0x1E69E9840];
-  v7 = *a1;
+  v7 = *self;
   OUTLINED_FUNCTION_2_0();
   _os_log_error_impl(v1, v2, v3, v4, v5, 8u);
   v6 = *MEMORY[0x1E69E9840];
@@ -706,7 +706,7 @@ LABEL_17:
 + (void)darwinTemporaryDirectoryURL
 {
   v8 = *MEMORY[0x1E69E9840];
-  v7 = *a1;
+  v7 = *self;
   OUTLINED_FUNCTION_2_0();
   _os_log_error_impl(v1, v2, v3, v4, v5, 8u);
   v6 = *MEMORY[0x1E69E9840];

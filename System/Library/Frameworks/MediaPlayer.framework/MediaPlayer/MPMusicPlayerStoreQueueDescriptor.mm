@@ -1,10 +1,10 @@
 @interface MPMusicPlayerStoreQueueDescriptor
-- (BOOL)isEqual:(id)a3;
-- (MPMusicPlayerStoreQueueDescriptor)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MPMusicPlayerStoreQueueDescriptor)initWithCoder:(id)coder;
 - (MPMusicPlayerStoreQueueDescriptor)initWithStoreIDs:(NSArray *)storeIDs;
 - (NSArray)storeIDs;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 - (void)setEndTime:(NSTimeInterval)endTime forItemWithStoreID:(NSString *)storeID;
 - (void)setStartTime:(NSTimeInterval)startTime forItemWithStoreID:(NSString *)storeID;
 @end
@@ -20,10 +20,10 @@
 
 - (void)setEndTime:(NSTimeInterval)endTime forItemWithStoreID:(NSString *)storeID
 {
-  v6 = [(NSString *)storeID longLongValue];
-  if (v6)
+  longLongValue = [(NSString *)storeID longLongValue];
+  if (longLongValue)
   {
-    v7 = v6;
+    v7 = longLongValue;
     v8 = [MPIdentifierSet alloc];
     v9 = +[MPModelSongKind identityKind];
     v12[0] = MEMORY[0x1E69E9820];
@@ -58,10 +58,10 @@ void __67__MPMusicPlayerStoreQueueDescriptor_setEndTime_forItemWithStoreID___blo
 
 - (void)setStartTime:(NSTimeInterval)startTime forItemWithStoreID:(NSString *)storeID
 {
-  v6 = [(NSString *)storeID longLongValue];
-  if (v6)
+  longLongValue = [(NSString *)storeID longLongValue];
+  if (longLongValue)
   {
-    v7 = v6;
+    v7 = longLongValue;
     v8 = [MPIdentifierSet alloc];
     v9 = +[MPModelSongKind identityKind];
     v12[0] = MEMORY[0x1E69E9820];
@@ -94,11 +94,11 @@ void __69__MPMusicPlayerStoreQueueDescriptor_setStartTime_forItemWithStoreID___b
   [v4 setSubscriptionAdamID:*(a1 + 32)];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = MPMusicPlayerStoreQueueDescriptor;
-  v4 = [(MPMusicPlayerQueueDescriptor *)&v12 copyWithZone:a3];
+  v4 = [(MPMusicPlayerQueueDescriptor *)&v12 copyWithZone:zone];
   v5 = [(NSMutableDictionary *)self->_storeFronts mutableCopy];
   v6 = v4[12];
   v4[12] = v5;
@@ -114,40 +114,40 @@ void __69__MPMusicPlayerStoreQueueDescriptor_setStartTime_forItemWithStoreID___b
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = MPMusicPlayerStoreQueueDescriptor;
-  v4 = a3;
-  [(MPMusicPlayerQueueDescriptor *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_storeIDs forKey:{@"MPMusicPlayerStoreQueueDescriptorStoreIDs", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_startItemID forKey:@"MPMusicPlayerStoreQueueDescriptorStartItemID"];
-  [v4 encodeObject:self->_storeFronts forKey:@"MPMusicPlayerStoreQueueDescriptorStoreFronts"];
+  coderCopy = coder;
+  [(MPMusicPlayerQueueDescriptor *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_storeIDs forKey:{@"MPMusicPlayerStoreQueueDescriptorStoreIDs", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_startItemID forKey:@"MPMusicPlayerStoreQueueDescriptorStartItemID"];
+  [coderCopy encodeObject:self->_storeFronts forKey:@"MPMusicPlayerStoreQueueDescriptorStoreFronts"];
 }
 
-- (MPMusicPlayerStoreQueueDescriptor)initWithCoder:(id)a3
+- (MPMusicPlayerStoreQueueDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = MPMusicPlayerStoreQueueDescriptor;
-  v5 = [(MPMusicPlayerQueueDescriptor *)&v19 initWithCoder:v4];
+  v5 = [(MPMusicPlayerQueueDescriptor *)&v19 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"MPMusicPlayerStoreQueueDescriptorStoreIDs"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"MPMusicPlayerStoreQueueDescriptorStoreIDs"];
     storeIDs = v5->_storeIDs;
     v5->_storeIDs = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MPMusicPlayerStoreQueueDescriptorStartItemID"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MPMusicPlayerStoreQueueDescriptorStartItemID"];
     startItemID = v5->_startItemID;
     v5->_startItemID = v11;
 
     v13 = MEMORY[0x1E695DFD8];
     v14 = objc_opt_class();
     v15 = [v13 setWithObjects:{v14, objc_opt_class(), 0}];
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"MPMusicPlayerStoreQueueDescriptorStoreFronts"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"MPMusicPlayerStoreQueueDescriptorStoreFronts"];
     storeFronts = v5->_storeFronts;
     v5->_storeFronts = v16;
   }
@@ -155,14 +155,14 @@ void __69__MPMusicPlayerStoreQueueDescriptor_setStartTime_forItemWithStoreID___b
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v20.receiver = self;
   v20.super_class = MPMusicPlayerStoreQueueDescriptor;
-  if ([(MPMusicPlayerQueueDescriptor *)&v20 isEqual:v4])
+  if ([(MPMusicPlayerQueueDescriptor *)&v20 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5[11];
     v7 = self->_storeIDs;
     v8 = v7;
@@ -218,15 +218,15 @@ void __69__MPMusicPlayerStoreQueueDescriptor_setStartTime_forItemWithStoreID___b
   v4 = storeIDs;
   v9.receiver = self;
   v9.super_class = MPMusicPlayerStoreQueueDescriptor;
-  v5 = [(MPMusicPlayerQueueDescriptor *)&v9 _init];
-  if (v5)
+  _init = [(MPMusicPlayerQueueDescriptor *)&v9 _init];
+  if (_init)
   {
     v6 = [(NSArray *)v4 copy];
-    v7 = v5->_storeIDs;
-    v5->_storeIDs = v6;
+    v7 = _init->_storeIDs;
+    _init->_storeIDs = v6;
   }
 
-  return v5;
+  return _init;
 }
 
 @end

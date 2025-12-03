@@ -7,10 +7,10 @@
 
 - (BOOL)mf_isMissingAccountCredentialError
 {
-  v2 = [a1 domain];
-  if ([v2 isEqualToString:*MEMORY[0x1E6959978]])
+  domain = [self domain];
+  if ([domain isEqualToString:*MEMORY[0x1E6959978]])
   {
-    v3 = [a1 code] == 11;
+    v3 = [self code] == 11;
   }
 
   else
@@ -23,10 +23,10 @@
 
 - (BOOL)mf_isInaccessibleAccountCredentialError
 {
-  v2 = [a1 domain];
-  if ([v2 isEqualToString:*MEMORY[0x1E6959978]])
+  domain = [self domain];
+  if ([domain isEqualToString:*MEMORY[0x1E6959978]])
   {
-    v3 = [a1 code] == 10;
+    v3 = [self code] == 10;
   }
 
   else

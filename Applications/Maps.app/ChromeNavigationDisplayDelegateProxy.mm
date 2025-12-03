@@ -1,6 +1,6 @@
 @interface ChromeNavigationDisplayDelegateProxy
 + (id)protocols;
-- (id)delegatesForSelector:(SEL)a3 protocol:(id)a4;
+- (id)delegatesForSelector:(SEL)selector protocol:(id)protocol;
 @end
 
 @implementation ChromeNavigationDisplayDelegateProxy
@@ -17,14 +17,14 @@
   return v3;
 }
 
-- (id)delegatesForSelector:(SEL)a3 protocol:(id)a4
+- (id)delegatesForSelector:(SEL)selector protocol:(id)protocol
 {
-  v4 = [(ChromeDelegateProxy *)self chromeViewController];
-  v5 = [v4 topContext];
+  chromeViewController = [(ChromeDelegateProxy *)self chromeViewController];
+  topContext = [chromeViewController topContext];
 
   if (objc_opt_respondsToSelector())
   {
-    v8 = v5;
+    v8 = topContext;
     v6 = [NSArray arrayWithObjects:&v8 count:1];
   }
 

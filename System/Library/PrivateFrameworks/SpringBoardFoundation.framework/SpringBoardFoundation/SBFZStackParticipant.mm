@@ -1,15 +1,15 @@
 @interface SBFZStackParticipant
 - (NSString)debugDescription;
-- (SBFZStackParticipant)initWithIdentifier:(int64_t)a3 delegate:(id)a4;
+- (SBFZStackParticipant)initWithIdentifier:(int64_t)identifier delegate:(id)delegate;
 - (SBFZStackParticipantDelegate)delegate;
 - (SBFZStackResolver)resolver;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)succinctDescription;
 - (void)_updatePreferences;
-- (void)appendDescriptionToStream:(id)a3;
+- (void)appendDescriptionToStream:(id)stream;
 - (void)invalidate;
-- (void)setNeedsUpdatePreferencesWithReason:(id)a3;
-- (void)setResolver:(id)a3;
+- (void)setNeedsUpdatePreferencesWithReason:(id)reason;
+- (void)setResolver:(id)resolver;
 @end
 
 @implementation SBFZStackParticipant
@@ -17,14 +17,14 @@
 - (void)_updatePreferences
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [(SBFZStackParticipant *)self preferences];
-  v4 = [v3 copy];
+  preferences = [(SBFZStackParticipant *)self preferences];
+  v4 = [preferences copy];
 
-  v5 = [[SBFZStackParticipantPreferences alloc] initInternal];
-  v6 = [(SBFZStackParticipant *)self delegate];
-  [v6 zStackParticipant:self updatePreferences:v5];
+  initInternal = [[SBFZStackParticipantPreferences alloc] initInternal];
+  delegate = [(SBFZStackParticipant *)self delegate];
+  [delegate zStackParticipant:self updatePreferences:initInternal];
 
-  [(SBFZStackParticipant *)self setPreferences:v5];
+  [(SBFZStackParticipant *)self setPreferences:initInternal];
   if (BSEqualObjects())
   {
     v7 = SBLogZStack();
@@ -44,7 +44,7 @@
     v14[1] = 3221225472;
     v14[2] = __42__SBFZStackParticipant__updatePreferences__block_invoke;
     v14[3] = &unk_1E807F2E0;
-    v15 = v5;
+    v15 = initInternal;
     v16 = v4;
     v7 = v9;
     v17 = v7;
@@ -61,8 +61,8 @@
       _os_log_impl(&dword_1BEA11000, v10, OS_LOG_TYPE_DEFAULT, "_updatePreferences <%{public}@>: %{public}@", buf, 0x16u);
     }
 
-    v13 = [(SBFZStackParticipant *)self resolver];
-    [(SBFZStackResolver *)v13 _setNeedsUpdateFromParticipant:?];
+    resolver = [(SBFZStackParticipant *)self resolver];
+    [(SBFZStackResolver *)resolver _setNeedsUpdateFromParticipant:?];
   }
 }
 
@@ -80,26 +80,26 @@
   return WeakRetained;
 }
 
-- (SBFZStackParticipant)initWithIdentifier:(int64_t)a3 delegate:(id)a4
+- (SBFZStackParticipant)initWithIdentifier:(int64_t)identifier delegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = SBFZStackParticipant;
   v7 = [(SBFZStackParticipant *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    v7->_identifier = a3;
-    objc_storeWeak(&v7->_delegate, v6);
+    v7->_identifier = identifier;
+    objc_storeWeak(&v7->_delegate, delegateCopy);
   }
 
   return v8;
 }
 
-- (void)setNeedsUpdatePreferencesWithReason:(id)a3
+- (void)setNeedsUpdatePreferencesWithReason:(id)reason
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   v5 = SBLogZStack();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -107,16 +107,16 @@
     v7 = 138543618;
     v8 = v6;
     v9 = 2114;
-    v10 = v4;
+    v10 = reasonCopy;
     _os_log_impl(&dword_1BEA11000, v5, OS_LOG_TYPE_DEFAULT, "Requested update preferences for <%{public}@> with reason: %{public}@", &v7, 0x16u);
   }
 
   [(SBFZStackParticipant *)self _updatePreferences];
 }
 
-- (void)setResolver:(id)a3
+- (void)setResolver:(id)resolver
 {
-  obj = a3;
+  obj = resolver;
   WeakRetained = objc_loadWeakRetained(&self->_resolver);
   if (obj && WeakRetained)
   {
@@ -129,8 +129,8 @@
 - (NSString)debugDescription
 {
   v3 = MEMORY[0x1E698E688];
-  v4 = [MEMORY[0x1E698E690] debugStyle];
-  v5 = [v3 descriptionForRootObject:self withStyle:v4];
+  debugStyle = [MEMORY[0x1E698E690] debugStyle];
+  v5 = [v3 descriptionForRootObject:self withStyle:debugStyle];
 
   return v5;
 }
@@ -138,29 +138,29 @@
 - (id)succinctDescription
 {
   v3 = MEMORY[0x1E698E688];
-  v4 = [MEMORY[0x1E698E690] succinctStyle];
-  v5 = [v3 descriptionForRootObject:self withStyle:v4];
+  succinctStyle = [MEMORY[0x1E698E690] succinctStyle];
+  v5 = [v3 descriptionForRootObject:self withStyle:succinctStyle];
 
   return v5;
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __50__SBFZStackParticipant_appendDescriptionToStream___block_invoke;
   v10[3] = &unk_1E807F290;
-  v5 = v4;
+  v5 = streamCopy;
   v11 = v5;
-  v12 = self;
+  selfCopy = self;
   [v5 appendProem:self block:v10];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__SBFZStackParticipant_appendDescriptionToStream___block_invoke_2;
   v7[3] = &unk_1E807F290;
   v8 = v5;
-  v9 = self;
+  selfCopy2 = self;
   v6 = v5;
   [v6 appendBodySectionWithName:0 block:v7];
 }
@@ -263,7 +263,7 @@ void __50__SBFZStackParticipant_appendDescriptionToStream___block_invoke_2(uint6
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SBFZStackParticipant alloc];
   identifier = self->_identifier;
@@ -299,8 +299,8 @@ void __50__SBFZStackParticipant_appendDescriptionToStream___block_invoke_2(uint6
 
 - (void)invalidate
 {
-  v3 = [(SBFZStackParticipant *)self resolver];
-  [(SBFZStackResolver *)v3 _unregisterParticipant:?];
+  resolver = [(SBFZStackParticipant *)self resolver];
+  [(SBFZStackResolver *)resolver _unregisterParticipant:?];
 }
 
 - (void)setResolver:(uint64_t)a3 .cold.1(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4)

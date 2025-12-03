@@ -1,12 +1,12 @@
 @interface RemoteSearchOperation
 - (BOOL)isExecuting;
 - (BOOL)isFinished;
-- (BOOL)shouldStartSearchContext:(id)a3;
-- (id)followUpContextForSearchContext:(id)a3 searchResult:(id)a4;
-- (unint64_t)emitFoundMessagesForResult:(id)a3;
-- (void)didFailToGetResultWithError:(id)a3 searchContext:(id)a4;
-- (void)didGetResult:(id)a3 searchContext:(id)a4;
-- (void)runForSearchContext:(id)a3;
+- (BOOL)shouldStartSearchContext:(id)context;
+- (id)followUpContextForSearchContext:(id)context searchResult:(id)result;
+- (unint64_t)emitFoundMessagesForResult:(id)result;
+- (void)didFailToGetResultWithError:(id)error searchContext:(id)context;
+- (void)didGetResult:(id)result searchContext:(id)context;
+- (void)runForSearchContext:(id)context;
 - (void)start;
 @end
 
@@ -34,11 +34,11 @@
       }
 
       v7 = mailbox;
-      v8 = [(MFMailboxUid *)v7 ef_publicDescription];
+      ef_publicDescription = [(MFMailboxUid *)v7 ef_publicDescription];
       v15 = 138543618;
       v16 = v4;
       v17 = 2114;
-      v18 = v8;
+      v18 = ef_publicDescription;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "#search-manager [%{public}@] Search on mailbox %{public}@ was cancelled.", &v15, 0x16u);
     }
 
@@ -66,11 +66,11 @@
       }
 
       v13 = v11;
-      v14 = [(MFMailboxUid *)v13 ef_publicDescription];
+      ef_publicDescription2 = [(MFMailboxUid *)v13 ef_publicDescription];
       v15 = 138543618;
       v16 = v10;
       v17 = 2114;
-      v18 = v14;
+      v18 = ef_publicDescription2;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "#search-manager [%{public}@] Begin search on mailbox %{public}@", &v15, 0x16u);
     }
 
@@ -78,16 +78,16 @@
   }
 }
 
-- (void)runForSearchContext:(id)a3
+- (void)runForSearchContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   sub_1000D5BD4(self, 0);
   if (self)
   {
     ++self->_contextCount;
   }
 
-  if ([(RemoteSearchOperation *)self shouldStartSearchContext:v4])
+  if ([(RemoteSearchOperation *)self shouldStartSearchContext:contextCopy])
   {
     if (self)
     {
@@ -100,10 +100,10 @@
     }
 
     v7 = mailbox;
-    v8 = [(MFMailboxUid *)v7 store];
-    v9 = [v4 query];
-    v10 = [v4 criterion];
-    v11 = [v4 offset];
+    store = [(MFMailboxUid *)v7 store];
+    query = [contextCopy query];
+    criterion = [contextCopy criterion];
+    offset = [contextCopy offset];
     if (self)
     {
       useLocalIndex = self->_useLocalIndex;
@@ -114,7 +114,7 @@
       useLocalIndex = 0;
     }
 
-    v13 = [v8 storeSearchResultMatchingQuery:v9 criterion:v10 limit:500 offset:v11 useLocalIndex:useLocalIndex];
+    v13 = [store storeSearchResultMatchingQuery:query criterion:criterion limit:500 offset:offset useLocalIndex:useLocalIndex];
     sub_1000D5BD4(self, v13);
 
     if (self && self->_currentFuture)
@@ -141,7 +141,7 @@
       v23[2] = sub_1000B49D8;
       v23[3] = &unk_10015A6F8;
       objc_copyWeak(&v25, buf);
-      v18 = v4;
+      v18 = contextCopy;
       v24 = v18;
       [v17 addSuccessBlock:v23];
 
@@ -161,7 +161,7 @@
 
     else
     {
-      [(RemoteSearchOperation *)self didFailToGetResultWithError:0 searchContext:v4];
+      [(RemoteSearchOperation *)self didFailToGetResultWithError:0 searchContext:contextCopy];
     }
   }
 
@@ -177,11 +177,11 @@
   }
 }
 
-- (BOOL)shouldStartSearchContext:(id)a3
+- (BOOL)shouldStartSearchContext:(id)context
 {
   if (([(RemoteSearchOperation *)self isCancelled]& 1) == 0)
   {
-    if (a3)
+    if (context)
     {
       return 1;
     }
@@ -204,7 +204,7 @@
       }
 
       v10 = mailbox;
-      v11 = [(MFMailboxUid *)v10 ef_publicDescription];
+      ef_publicDescription = [(MFMailboxUid *)v10 ef_publicDescription];
       if (self)
       {
         totalSearchResultCount = self->_totalSearchResultCount;
@@ -218,11 +218,11 @@
       v13 = 138544130;
       v14 = v7;
       v15 = 2114;
-      v16 = v11;
+      v16 = ef_publicDescription;
       v17 = 1024;
       v18 = totalSearchResultCount;
       v19 = 1024;
-      v20 = [(RemoteSearchOperation *)self isCancelled];
+      isCancelled = [(RemoteSearchOperation *)self isCancelled];
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "#search-manager [%{public}@] finished search on mailbox %{public}@: Found %u messages, is cancelled: %{BOOL}d", &v13, 0x22u);
     }
 
@@ -232,40 +232,40 @@
   return 0;
 }
 
-- (void)didGetResult:(id)a3 searchContext:(id)a4
+- (void)didGetResult:(id)result searchContext:(id)context
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(RemoteSearchOperation *)self emitFoundMessagesForResult:v9];
+  resultCopy = result;
+  contextCopy = context;
+  v7 = [(RemoteSearchOperation *)self emitFoundMessagesForResult:resultCopy];
   if (self)
   {
     self->_totalSearchResultCount += v7;
   }
 
-  v8 = [(RemoteSearchOperation *)self followUpContextForSearchContext:v6 searchResult:v9];
+  v8 = [(RemoteSearchOperation *)self followUpContextForSearchContext:contextCopy searchResult:resultCopy];
   [(RemoteSearchOperation *)self runForSearchContext:v8];
 }
 
-- (void)didFailToGetResultWithError:(id)a3 searchContext:(id)a4
+- (void)didFailToGetResultWithError:(id)error searchContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  errorCopy = error;
+  contextCopy = context;
+  if (errorCopy)
   {
     v8 = MFLogGeneral();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      sub_1000D5D68(self, v6, v8);
+      sub_1000D5D68(self, errorCopy, v8);
     }
   }
 
   [(RemoteSearchOperation *)self runForSearchContext:0];
 }
 
-- (unint64_t)emitFoundMessagesForResult:(id)a3
+- (unint64_t)emitFoundMessagesForResult:(id)result
 {
-  v4 = a3;
-  v5 = [v4 count];
+  resultCopy = result;
+  v5 = [resultCopy count];
   v6 = sub_1000D5BEC(&self->super.super.isa);
   [v6 remoteSearchOperation:self didFindResults:v5 != 0];
 
@@ -286,17 +286,17 @@
     }
 
     v8 = searchContext;
-    v9 = [(SourceSearchContext *)v8 criterion];
-    v10 = [v9 requiresBody];
+    criterion = [(SourceSearchContext *)v8 criterion];
+    requiresBody = [criterion requiresBody];
 
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_1000B4F68;
     v13[3] = &unk_10015A720;
-    v14 = v10;
+    v14 = requiresBody;
     v13[4] = self;
     v13[5] = &v15;
-    [v4 enumerateMailboxesAndRemoteIDsUsingBlock:v13];
+    [resultCopy enumerateMailboxesAndRemoteIDsUsingBlock:v13];
     v11 = v16[3];
     _Block_object_dispose(&v15, 8);
   }
@@ -309,15 +309,15 @@
   return v11;
 }
 
-- (id)followUpContextForSearchContext:(id)a3 searchResult:(id)a4
+- (id)followUpContextForSearchContext:(id)context searchResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 continueOffset];
-  v9 = [(RemoteSearchOperation *)self isCancelled];
-  if (v8)
+  contextCopy = context;
+  resultCopy = result;
+  continueOffset = [resultCopy continueOffset];
+  isCancelled = [(RemoteSearchOperation *)self isCancelled];
+  if (continueOffset)
   {
-    v10 = v9;
+    v10 = isCancelled;
   }
 
   else
@@ -327,8 +327,8 @@
 
   if ((v10 & 1) != 0 || self && self->_totalSearchResultCount >= 0x1F4)
   {
-    v11 = MFLogGeneral();
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    query = MFLogGeneral();
+    if (os_log_type_enabled(query, OS_LOG_TYPE_DEFAULT))
     {
       if (self)
       {
@@ -345,8 +345,8 @@
       }
 
       v15 = mailbox;
-      v16 = [(MFMailboxUid *)v15 ef_publicDescription];
-      v17 = v16;
+      ef_publicDescription = [(MFMailboxUid *)v15 ef_publicDescription];
+      v17 = ef_publicDescription;
       if (self)
       {
         totalSearchResultCount = self->_totalSearchResultCount;
@@ -360,10 +360,10 @@
       v32 = 138543874;
       v33 = v12;
       v34 = 2114;
-      v35 = v16;
+      v35 = ef_publicDescription;
       v36 = 1024;
       v37 = totalSearchResultCount;
-      _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "#search-manager [%{public}@] mailbox %{public}@: Found %u messages, will stop", &v32, 0x1Cu);
+      _os_log_impl(&_mh_execute_header, query, OS_LOG_TYPE_DEFAULT, "#search-manager [%{public}@] mailbox %{public}@: Found %u messages, will stop", &v32, 0x1Cu);
     }
 
     v19 = 0;
@@ -389,8 +389,8 @@
       }
 
       v24 = v22;
-      v25 = [(MFMailboxUid *)v24 ef_publicDescription];
-      v26 = v25;
+      ef_publicDescription2 = [(MFMailboxUid *)v24 ef_publicDescription];
+      v26 = ef_publicDescription2;
       if (self)
       {
         v27 = self->_totalSearchResultCount;
@@ -404,19 +404,19 @@
       v32 = 138544130;
       v33 = v21;
       v34 = 2114;
-      v35 = v25;
+      v35 = ef_publicDescription2;
       v36 = 1024;
       v37 = v27;
       v38 = 2114;
-      v39 = v8;
+      v39 = continueOffset;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "#search-manager [%{public}@] mailbox %{public}@: Found %u messages, will continue searching with offset %{public}@", &v32, 0x26u);
     }
 
     v28 = [SourceSearchContext alloc];
-    v11 = [v6 query];
-    v29 = [v6 criterion];
-    v30 = [v6 delegate];
-    v19 = -[SourceSearchContext initWithQuery:criterion:delegate:offset:sessionID:](v28, "initWithQuery:criterion:delegate:offset:sessionID:", v11, v29, v30, v8, [v6 sessionID]);
+    query = [contextCopy query];
+    criterion = [contextCopy criterion];
+    delegate = [contextCopy delegate];
+    v19 = -[SourceSearchContext initWithQuery:criterion:delegate:offset:sessionID:](v28, "initWithQuery:criterion:delegate:offset:sessionID:", query, criterion, delegate, continueOffset, [contextCopy sessionID]);
   }
 
   return v19;

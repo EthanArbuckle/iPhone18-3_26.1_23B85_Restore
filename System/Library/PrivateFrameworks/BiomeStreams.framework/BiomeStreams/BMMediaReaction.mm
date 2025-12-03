@@ -1,18 +1,18 @@
 @interface BMMediaReaction
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMMediaReaction)initWithAbsoluteTimestamp:(double)a3 mediaUUID:(id)a4 type:(int)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMMediaReaction)initWithAbsoluteTimestamp:(double)timestamp mediaUUID:(id)d type:(int)type;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMMediaReaction
 
-- (BMMediaReaction)initWithAbsoluteTimestamp:(double)a3 mediaUUID:(id)a4 type:(int)a5
+- (BMMediaReaction)initWithAbsoluteTimestamp:(double)timestamp mediaUUID:(id)d type:(int)type
 {
-  v9 = a4;
+  dCopy = d;
   v13.receiver = self;
   v13.super_class = BMMediaReaction;
   v10 = [(BMEventBase *)&v13 init];
@@ -20,10 +20,10 @@
   if (v10)
   {
     v10->_hasAbsoluteTimestamp = 1;
-    v10->_absoluteTimestamp = a3;
-    objc_storeStrong(&v10->_mediaUUID, a4);
+    v10->_absoluteTimestamp = timestamp;
+    objc_storeStrong(&v10->_mediaUUID, d);
     v11->_hasType = 1;
-    v11->_type = a5;
+    v11->_type = type;
   }
 
   return v11;
@@ -35,26 +35,26 @@
   v4 = MEMORY[0x1E696AD98];
   [(BMMediaReaction *)self absoluteTimestamp];
   v5 = [v4 numberWithDouble:?];
-  v6 = [(BMMediaReaction *)self mediaUUID];
-  v7 = [(BMMediaReaction *)self type];
-  if (v7 >= 7)
+  mediaUUID = [(BMMediaReaction *)self mediaUUID];
+  type = [(BMMediaReaction *)self type];
+  if (type >= 7)
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v7];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", type];
   }
 
   else
   {
-    v8 = off_1E6E53B38[v7];
+    v8 = off_1E6E53B38[type];
   }
 
-  v9 = [v3 initWithFormat:@"BMMediaReaction with absoluteTimestamp: %@, mediaUUID: %@, type: %@", v5, v6, v8];
+  v9 = [v3 initWithFormat:@"BMMediaReaction with absoluteTimestamp: %@, mediaUUID: %@, type: %@", v5, mediaUUID, v8];
 
   return v9;
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v31.receiver = self;
   v31.super_class = BMMediaReaction;
   v5 = [(BMEventBase *)&v31 init];
@@ -63,12 +63,12 @@
     goto LABEL_45;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -79,18 +79,18 @@
       while (1)
       {
         LOBYTE(v32) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v32 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v32 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (LOBYTE(v32) & 0x7F) << v7;
@@ -108,9 +108,9 @@
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -125,18 +125,18 @@ LABEL_16:
         while (1)
         {
           LOBYTE(v32) = 0;
-          v23 = [v4 position] + 1;
-          if (v23 >= [v4 position] && (v24 = objc_msgSend(v4, "position") + 1, v24 <= objc_msgSend(v4, "length")))
+          v23 = [fromCopy position] + 1;
+          if (v23 >= [fromCopy position] && (v24 = objc_msgSend(fromCopy, "position") + 1, v24 <= objc_msgSend(fromCopy, "length")))
           {
-            v25 = [v4 data];
-            [v25 getBytes:&v32 range:{objc_msgSend(v4, "position"), 1}];
+            data2 = [fromCopy data];
+            [data2 getBytes:&v32 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v22 |= (LOBYTE(v32) & 0x7F) << v20;
@@ -154,7 +154,7 @@ LABEL_16:
           }
         }
 
-        v26 = [v4 hasError] ? 0 : v22;
+        v26 = [fromCopy hasError] ? 0 : v22;
 LABEL_39:
         v5->_type = v26;
       }
@@ -170,18 +170,18 @@ LABEL_39:
       {
         v5->_hasAbsoluteTimestamp = 1;
         v32 = 0.0;
-        v16 = [v4 position] + 8;
-        if (v16 >= [v4 position] && (v17 = objc_msgSend(v4, "position") + 8, v17 <= objc_msgSend(v4, "length")))
+        v16 = [fromCopy position] + 8;
+        if (v16 >= [fromCopy position] && (v17 = objc_msgSend(fromCopy, "position") + 8, v17 <= objc_msgSend(fromCopy, "length")))
         {
-          v27 = [v4 data];
-          [v27 getBytes:&v32 range:{objc_msgSend(v4, "position"), 8}];
+          data3 = [fromCopy data];
+          [data3 getBytes:&v32 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v5->_absoluteTimestamp = v32;
@@ -192,13 +192,13 @@ LABEL_39:
         goto LABEL_44;
       }
 
-      v28 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v28 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_44:
     v29 = 0;
@@ -213,34 +213,34 @@ LABEL_45:
   return v29;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_hasAbsoluteTimestamp)
   {
     absoluteTimestamp = self->_absoluteTimestamp;
     PBDataWriterWriteDoubleField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_mediaUUID)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_hasType)
   {
     type = self->_type;
     PBDataWriterWriteUint32Field();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -248,8 +248,8 @@ LABEL_45:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v4 = [[BMMediaReaction alloc] initByReadFrom:v7];
   }
@@ -261,18 +261,18 @@ LABEL_45:
 {
   v3 = objc_opt_new();
   [(BMMediaReaction *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (-[BMMediaReaction hasAbsoluteTimestamp](self, "hasAbsoluteTimestamp") || [v5 hasAbsoluteTimestamp])
     {
       if (-[BMMediaReaction hasAbsoluteTimestamp](self, "hasAbsoluteTimestamp") && [v5 hasAbsoluteTimestamp])
@@ -294,26 +294,26 @@ LABEL_45:
       v9 = 1;
     }
 
-    v11 = [(BMMediaReaction *)self mediaUUID];
-    v12 = [v5 mediaUUID];
-    if (v11 == v12)
+    mediaUUID = [(BMMediaReaction *)self mediaUUID];
+    mediaUUID2 = [v5 mediaUUID];
+    if (mediaUUID == mediaUUID2)
     {
       v15 = 1;
     }
 
     else
     {
-      v13 = [(BMMediaReaction *)self mediaUUID];
-      v14 = [v5 mediaUUID];
-      v15 = [v13 isEqual:v14];
+      mediaUUID3 = [(BMMediaReaction *)self mediaUUID];
+      mediaUUID4 = [v5 mediaUUID];
+      v15 = [mediaUUID3 isEqual:mediaUUID4];
     }
 
     if (-[BMMediaReaction hasType](self, "hasType") || [v5 hasType])
     {
       if (-[BMMediaReaction hasType](self, "hasType") && [v5 hasType])
       {
-        v16 = [(BMMediaReaction *)self type];
-        v17 = v16 == [v5 type];
+        type = [(BMMediaReaction *)self type];
+        v17 = type == [v5 type];
       }
 
       else

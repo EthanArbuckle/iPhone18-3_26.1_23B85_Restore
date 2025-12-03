@@ -1,10 +1,10 @@
 @interface PDFAppearanceCharacteristics
 - (NSDictionary)appearanceCharacteristicsKeyValues;
 - (PDFAppearanceCharacteristics)init;
-- (PDFAppearanceCharacteristics)initWithAnnotationDictionary:(CGPDFDictionary *)a3 forControlType:(int64_t)a4;
+- (PDFAppearanceCharacteristics)initWithAnnotationDictionary:(CGPDFDictionary *)dictionary forControlType:(int64_t)type;
 - (__CFDictionary)createDictionaryRef;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)addColor:(id)a3 forKey:(__CFString *)a4 toDictionaryRef:(__CFDictionary *)a5;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)addColor:(id)color forKey:(__CFString *)key toDictionaryRef:(__CFDictionary *)ref;
 - (void)dealloc;
 - (void)setBackgroundColor:(UIColor *)backgroundColor;
 - (void)setBorderColor:(UIColor *)borderColor;
@@ -57,38 +57,38 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v5)
   {
     v6 = objc_alloc_init(PDFAppearanceCharacteristicsPrivate);
     v7 = v5[1];
     v5[1] = v6;
 
-    v8 = [(UIColor *)self->_private->backgroundColor copyWithZone:a3];
+    v8 = [(UIColor *)self->_private->backgroundColor copyWithZone:zone];
     v9 = v5[1];
     v10 = *(v9 + 8);
     *(v9 + 8) = v8;
 
-    v11 = [(UIColor *)self->_private->borderColor copyWithZone:a3];
+    v11 = [(UIColor *)self->_private->borderColor copyWithZone:zone];
     v12 = v5[1];
     v13 = *(v12 + 16);
     *(v12 + 16) = v11;
 
     *(v5[1] + 24) = self->_private->rotation;
     *(v5[1] + 32) = self->_private->controlType;
-    v14 = [(NSString *)self->_private->caption copyWithZone:a3];
+    v14 = [(NSString *)self->_private->caption copyWithZone:zone];
     v15 = v5[1];
     v16 = *(v15 + 40);
     *(v15 + 40) = v14;
 
-    v17 = [(NSString *)self->_private->rolloverCaption copyWithZone:a3];
+    v17 = [(NSString *)self->_private->rolloverCaption copyWithZone:zone];
     v18 = v5[1];
     v19 = *(v18 + 48);
     *(v18 + 48) = v17;
 
-    v20 = [(NSString *)self->_private->downCaption copyWithZone:a3];
+    v20 = [(NSString *)self->_private->downCaption copyWithZone:zone];
     v21 = v5[1];
     v22 = *(v21 + 56);
     *(v21 + 56) = v20;
@@ -140,7 +140,7 @@
   MEMORY[0x1EEE66BB8](v4, v6);
 }
 
-- (PDFAppearanceCharacteristics)initWithAnnotationDictionary:(CGPDFDictionary *)a3 forControlType:(int64_t)a4
+- (PDFAppearanceCharacteristics)initWithAnnotationDictionary:(CGPDFDictionary *)dictionary forControlType:(int64_t)type
 {
   value = 0;
   v31 = 0;
@@ -151,7 +151,7 @@
   v6 = [(PDFAppearanceCharacteristics *)self init];
   if (v6)
   {
-    if (CGPDFDictionaryGetArray(a3, "BG", &value))
+    if (CGPDFDictionaryGetArray(dictionary, "BG", &value))
     {
       v7 = PDFColorCreateFromCGPDFArray(value);
       v8 = v6->_private;
@@ -159,7 +159,7 @@
       v8->backgroundColor = v7;
     }
 
-    if (CGPDFDictionaryGetArray(a3, "BC", &value))
+    if (CGPDFDictionaryGetArray(dictionary, "BC", &value))
     {
       v10 = PDFColorCreateFromCGPDFArray(value);
       v11 = v6->_private;
@@ -167,13 +167,13 @@
       v11->borderColor = v10;
     }
 
-    if (CGPDFDictionaryGetInteger(a3, "R", &v31))
+    if (CGPDFDictionaryGetInteger(dictionary, "R", &v31))
     {
       v6->_private->rotation = v31;
     }
 
-    v6->_private->controlType = a4;
-    if (v6->_private->controlType <= 2uLL && CGPDFDictionaryGetString(a3, "CA", &string))
+    v6->_private->controlType = type;
+    if (v6->_private->controlType <= 2uLL && CGPDFDictionaryGetString(dictionary, "CA", &string))
     {
       v13 = CGPDFStringCopyTextString(string);
       v14 = v6->_private;
@@ -181,7 +181,7 @@
       v14->caption = &v13->isa;
     }
 
-    if (!v6->_private->controlType && CGPDFDictionaryGetString(a3, "RC", &string))
+    if (!v6->_private->controlType && CGPDFDictionaryGetString(dictionary, "RC", &string))
     {
       v16 = CGPDFStringCopyTextString(string);
       v17 = v6->_private;
@@ -189,7 +189,7 @@
       v17->rolloverCaption = &v16->isa;
     }
 
-    if (!v6->_private->controlType && CGPDFDictionaryGetString(a3, "AC", &string))
+    if (!v6->_private->controlType && CGPDFDictionaryGetString(dictionary, "AC", &string))
     {
       v19 = CGPDFStringCopyTextString(string);
       v20 = v6->_private;
@@ -197,17 +197,17 @@
       v20->downCaption = &v19->isa;
     }
 
-    if (!v6->_private->controlType && CGPDFDictionaryGetStream(a3, "I", &v28))
+    if (!v6->_private->controlType && CGPDFDictionaryGetStream(dictionary, "I", &v28))
     {
       v6->_private->icon = CGPDFFormCreate();
     }
 
-    if (v6->_private->controlType || !CGPDFDictionaryGetDictionary(a3, "IF", &v27))
+    if (v6->_private->controlType || !CGPDFDictionaryGetDictionary(dictionary, "IF", &v27))
     {
       goto LABEL_37;
     }
 
-    if (CGPDFDictionaryGetName(a3, "SW", &v26))
+    if (CGPDFDictionaryGetName(dictionary, "SW", &v26))
     {
       v22 = *v26;
       if (v22 == 83)
@@ -236,7 +236,7 @@ LABEL_32:
       }
     }
 
-    if (CGPDFDictionaryGetName(a3, "S", &v26) && *v26 == 65 && !v26[1])
+    if (CGPDFDictionaryGetName(dictionary, "S", &v26) && *v26 == 65 && !v26[1])
     {
       v6->_private->scaleProportional = 0;
     }
@@ -266,8 +266,8 @@ LABEL_37:
       }
     }
 
-    v7 = [(PDFAppearanceCharacteristics *)self borderColor];
-    [(PDFAppearanceCharacteristics *)self addColor:v7 forKey:@"/BC" toDictionaryRef:Mutable];
+    borderColor = [(PDFAppearanceCharacteristics *)self borderColor];
+    [(PDFAppearanceCharacteristics *)self addColor:borderColor forKey:@"/BC" toDictionaryRef:Mutable];
 
     [(PDFAppearanceCharacteristics *)self addColor:self->_private->backgroundColor forKey:@"/BG" toDictionaryRef:Mutable];
     v8 = self->_private;
@@ -307,16 +307,16 @@ LABEL_37:
   return Mutable;
 }
 
-- (void)addColor:(id)a3 forKey:(__CFString *)a4 toDictionaryRef:(__CFDictionary *)a5
+- (void)addColor:(id)color forKey:(__CFString *)key toDictionaryRef:(__CFDictionary *)ref
 {
-  if (!a3)
+  if (!color)
   {
     return;
   }
 
-  v7 = [a3 CGColor];
-  NumberOfComponents = CGColorGetNumberOfComponents(v7);
-  Components = CGColorGetComponents(v7);
+  cGColor = [color CGColor];
+  NumberOfComponents = CGColorGetNumberOfComponents(cGColor);
+  Components = CGColorGetComponents(cGColor);
   v10 = Components;
   if (NumberOfComponents == 5)
   {
@@ -340,14 +340,14 @@ LABEL_37:
 
 LABEL_10:
 LABEL_13:
-    CFDictionarySetValue(a5, a4, value);
+    CFDictionarySetValue(ref, key, value);
     goto LABEL_14;
   }
 
   if (NumberOfComponents != 2)
   {
     value = 0;
-    CFDictionarySetValue(a5, a4, 0);
+    CFDictionarySetValue(ref, key, 0);
     goto LABEL_14;
   }
 
@@ -361,7 +361,7 @@ LABEL_13:
   }
 
   value = objc_alloc_init(MEMORY[0x1E695DEC8]);
-  CFDictionarySetValue(a5, a4, value);
+  CFDictionarySetValue(ref, key, value);
 LABEL_14:
 }
 

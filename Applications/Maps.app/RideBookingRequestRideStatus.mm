@@ -1,6 +1,6 @@
 @interface RideBookingRequestRideStatus
-+ (RideBookingRequestRideStatus)statusWithApplication:(id)a3 error:(unint64_t)a4;
-+ (RideBookingRequestRideStatus)statusWithApplication:(id)a3 rideOption:(id)a4 startingWaypointCoordinate:(CLLocationCoordinate2D)a5 origin:(id)a6 destination:(id)a7 loadingRequestRideStatus:(BOOL)a8 etaMinutesAtStartWaypoint:(id)a9;
++ (RideBookingRequestRideStatus)statusWithApplication:(id)application error:(unint64_t)error;
++ (RideBookingRequestRideStatus)statusWithApplication:(id)application rideOption:(id)option startingWaypointCoordinate:(CLLocationCoordinate2D)coordinate origin:(id)origin destination:(id)destination loadingRequestRideStatus:(BOOL)status etaMinutesAtStartWaypoint:(id)waypoint;
 - (CLLocationCoordinate2D)startWaypointCoordinate;
 - (NSArray)cardFareLineItems;
 - (NSString)appleDisclaimer;
@@ -26,9 +26,9 @@
   v4 = [v3 localizedStringForKey:@"SavedPaymentMethod" value:@"localized string not found" table:0];
 
   v5 = [NSString alloc];
-  v6 = [(RideBookingRequestRideStatus *)self application];
-  v7 = [v6 name];
-  v8 = [v5 initWithFormat:v4, v7];
+  application = [(RideBookingRequestRideStatus *)self application];
+  name = [application name];
+  v8 = [v5 initWithFormat:v4, name];
 
   return v8;
 }
@@ -45,9 +45,9 @@
 {
   v3 = +[NSBundle mainBundle];
   v4 = [v3 localizedStringForKey:@"[ridesharing] expiration alert title" value:@"localized string not found" table:0];
-  v5 = [(RideBookingRequestRideStatus *)self rideOption];
-  v6 = [v5 name];
-  v7 = [NSString localizedStringWithFormat:v4, v6];
+  rideOption = [(RideBookingRequestRideStatus *)self rideOption];
+  name = [rideOption name];
+  v7 = [NSString localizedStringWithFormat:v4, name];
 
   return v7;
 }
@@ -56,9 +56,9 @@
 {
   v3 = +[NSBundle mainBundle];
   v4 = [v3 localizedStringForKey:@"Request %@ [Ridesharing]" value:@"localized string not found" table:0];
-  v5 = [(RideBookingRequestRideStatus *)self rideOption];
-  v6 = [v5 name];
-  v7 = [NSString stringWithFormat:v4, v6];
+  rideOption = [(RideBookingRequestRideStatus *)self rideOption];
+  name = [rideOption name];
+  v7 = [NSString stringWithFormat:v4, name];
 
   return v7;
 }
@@ -73,18 +73,18 @@
 
 - (NSString)disclaimerMessage
 {
-  v2 = [(RideBookingRequestRideStatus *)self rideOption];
-  v3 = [v2 intentsRideOption];
-  v4 = [v3 disclaimerMessage];
+  rideOption = [(RideBookingRequestRideStatus *)self rideOption];
+  intentsRideOption = [rideOption intentsRideOption];
+  disclaimerMessage = [intentsRideOption disclaimerMessage];
 
-  return v4;
+  return disclaimerMessage;
 }
 
 - (NSArray)cardFareLineItems
 {
-  v2 = [(RideBookingRequestRideStatus *)self rideOption];
-  v3 = [v2 intentsRideOption];
-  v4 = [RidesharingFareLineItem _fareItemsFromRideOption:v3];
+  rideOption = [(RideBookingRequestRideStatus *)self rideOption];
+  intentsRideOption = [rideOption intentsRideOption];
+  v4 = [RidesharingFareLineItem _fareItemsFromRideOption:intentsRideOption];
 
   return v4;
 }
@@ -93,35 +93,35 @@
 {
   v3 = +[NSBundle mainBundle];
   v4 = [v3 localizedStringForKey:@"Open in %@ [Ridesharing]" value:@"localized string not found" table:0];
-  v5 = [(RideBookingRequestRideStatus *)self application];
-  v6 = [v5 name];
-  v7 = [NSString stringWithFormat:v4, v6];
+  application = [(RideBookingRequestRideStatus *)self application];
+  name = [application name];
+  v7 = [NSString stringWithFormat:v4, name];
 
   return v7;
 }
 
 - (RidesharingSpecialPricingBadge)cardFormattedPriceRangeBadge
 {
-  v2 = [(RideBookingRequestRideStatus *)self rideOption];
-  v3 = [v2 specialPricingBadge];
+  rideOption = [(RideBookingRequestRideStatus *)self rideOption];
+  specialPricingBadge = [rideOption specialPricingBadge];
 
-  return v3;
+  return specialPricingBadge;
 }
 
 - (NSString)cardFormattedPriceRange
 {
-  v2 = [(RideBookingRequestRideStatus *)self rideOption];
-  v3 = [v2 priceRange];
+  rideOption = [(RideBookingRequestRideStatus *)self rideOption];
+  priceRange = [rideOption priceRange];
 
-  return v3;
+  return priceRange;
 }
 
 - (NSString)cardSubtitle
 {
   if ([(RideBookingRequestRideStatus *)self loadingRequest])
   {
-    v3 = [(RideBookingRequestRideStatus *)self rideOption];
-    v4 = [v3 detailedDescription];
+    rideOption = [(RideBookingRequestRideStatus *)self rideOption];
+    detailedDescription = [rideOption detailedDescription];
   }
 
   else
@@ -130,10 +130,10 @@
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v5 = [(RideBookingRequestRideStatus *)self rideOption];
-    v6 = [v5 passengerChoices];
+    rideOption2 = [(RideBookingRequestRideStatus *)self rideOption];
+    passengerChoices = [rideOption2 passengerChoices];
 
-    v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    v7 = [passengerChoices countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v7)
     {
       v8 = v7;
@@ -147,29 +147,29 @@
         {
           if (*v19 != v10)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(passengerChoices);
           }
 
           v13 = *(*(&v18 + 1) + 8 * v11);
-          v14 = [v12 unsignedIntegerValue];
-          if (v14 <= [v13 numberOfPassengers])
+          unsignedIntegerValue = [v12 unsignedIntegerValue];
+          if (unsignedIntegerValue <= [v13 numberOfPassengers])
           {
-            v15 = [v13 numberOfPassengers];
+            numberOfPassengers = [v13 numberOfPassengers];
           }
 
           else
           {
-            v15 = [v12 unsignedIntegerValue];
+            numberOfPassengers = [v12 unsignedIntegerValue];
           }
 
-          v9 = [NSNumber numberWithUnsignedInteger:v15];
+          v9 = [NSNumber numberWithUnsignedInteger:numberOfPassengers];
 
           v11 = v11 + 1;
           v12 = v9;
         }
 
         while (v8 != v11);
-        v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v8 = [passengerChoices countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v8);
@@ -180,27 +180,27 @@
       v9 = 0;
     }
 
-    v16 = [(RideBookingRequestRideStatus *)self etaMinutesAtStartWaypoint];
-    v4 = [NSString _maps_ridesharingETA:v16 partySize:v9];
+    etaMinutesAtStartWaypoint = [(RideBookingRequestRideStatus *)self etaMinutesAtStartWaypoint];
+    detailedDescription = [NSString _maps_ridesharingETA:etaMinutesAtStartWaypoint partySize:v9];
   }
 
-  return v4;
+  return detailedDescription;
 }
 
 - (NSString)cardTitle
 {
-  v2 = [(RideBookingRequestRideStatus *)self rideOption];
-  v3 = [v2 name];
+  rideOption = [(RideBookingRequestRideStatus *)self rideOption];
+  name = [rideOption name];
 
-  return v3;
+  return name;
 }
 
 - (UIImage)cardIcon
 {
-  v2 = [(RideBookingRequestRideStatus *)self rideOption];
-  v3 = [v2 iconImage];
+  rideOption = [(RideBookingRequestRideStatus *)self rideOption];
+  iconImage = [rideOption iconImage];
 
-  return v3;
+  return iconImage;
 }
 
 - (RideBookingApplication)application
@@ -219,54 +219,54 @@
   return result;
 }
 
-+ (RideBookingRequestRideStatus)statusWithApplication:(id)a3 rideOption:(id)a4 startingWaypointCoordinate:(CLLocationCoordinate2D)a5 origin:(id)a6 destination:(id)a7 loadingRequestRideStatus:(BOOL)a8 etaMinutesAtStartWaypoint:(id)a9
++ (RideBookingRequestRideStatus)statusWithApplication:(id)application rideOption:(id)option startingWaypointCoordinate:(CLLocationCoordinate2D)coordinate origin:(id)origin destination:(id)destination loadingRequestRideStatus:(BOOL)status etaMinutesAtStartWaypoint:(id)waypoint
 {
-  v9 = a8;
-  longitude = a5.longitude;
-  latitude = a5.latitude;
-  v16 = a9;
-  v17 = a7;
-  v18 = a6;
-  v19 = a4;
-  v20 = a3;
+  statusCopy = status;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  waypointCopy = waypoint;
+  destinationCopy = destination;
+  originCopy = origin;
+  optionCopy = option;
+  applicationCopy = application;
   v21 = objc_opt_new();
-  [v21 setApplication:v20];
+  [v21 setApplication:applicationCopy];
 
   [v21 setStartWaypointCoordinate:{latitude, longitude}];
-  [v21 setOrigin:v18];
+  [v21 setOrigin:originCopy];
 
-  [v21 setDestination:v17];
-  [v21 setRideOption:v19];
-  v22 = [v19 passengerChoices];
+  [v21 setDestination:destinationCopy];
+  [v21 setRideOption:optionCopy];
+  passengerChoices = [optionCopy passengerChoices];
 
-  [v21 setRequiresPassengerSelection:{objc_msgSend(v22, "count") > 1}];
-  v23 = [v21 rideOption];
-  v24 = [v23 paymentMethods];
-  v25 = [v24 count];
+  [v21 setRequiresPassengerSelection:{objc_msgSend(passengerChoices, "count") > 1}];
+  rideOption = [v21 rideOption];
+  paymentMethods = [rideOption paymentMethods];
+  v25 = [paymentMethods count];
 
   if (v25)
   {
-    v26 = [v21 rideOption];
-    v27 = [v26 paymentMethods];
-    v28 = [v27 firstObject];
-    [v21 setPaymentMethod:v28];
+    rideOption2 = [v21 rideOption];
+    paymentMethods2 = [rideOption2 paymentMethods];
+    firstObject = [paymentMethods2 firstObject];
+    [v21 setPaymentMethod:firstObject];
   }
 
-  [v21 setLoadingRequest:v9];
-  v29 = [v16 copy];
+  [v21 setLoadingRequest:statusCopy];
+  v29 = [waypointCopy copy];
 
   [v21 setEtaMinutesAtStartWaypoint:v29];
 
   return v21;
 }
 
-+ (RideBookingRequestRideStatus)statusWithApplication:(id)a3 error:(unint64_t)a4
++ (RideBookingRequestRideStatus)statusWithApplication:(id)application error:(unint64_t)error
 {
-  v5 = a3;
+  applicationCopy = application;
   v6 = objc_opt_new();
-  [v6 setApplication:v5];
+  [v6 setApplication:applicationCopy];
 
-  [v6 setRequestRideStatusError:a4];
+  [v6 setRequestRideStatusError:error];
 
   return v6;
 }

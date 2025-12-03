@@ -1,9 +1,9 @@
 @interface PXStoryScrubberScrollLayout
-- (CGPoint)_offsetFromFirstPageForScrollingToPosition:(id *)a3 visibleRect:(CGRect)a4;
+- (CGPoint)_offsetFromFirstPageForScrollingToPosition:(id *)position visibleRect:(CGRect)rect;
 - (PXStoryScrubberScrollLayout)init;
-- (PXStoryScrubberScrollLayout)initWithViewModel:(id)a3 model:(id)a4;
-- (id)colorAtIndex:(unsigned int)a3 inLayout:(id)a4;
-- (id)createAnchorForScrollingToPosition:(id *)a3;
+- (PXStoryScrubberScrollLayout)initWithViewModel:(id)model model:(id)a4;
+- (id)colorAtIndex:(unsigned int)index inLayout:(id)layout;
+- (id)createAnchorForScrollingToPosition:(id *)position;
 - (void)_invalidateContent;
 - (void)_invalidateCurrentScrollPosition;
 - (void)_invalidateDisplayedTimeline;
@@ -16,15 +16,15 @@
 - (void)_updateModelScrubberPosition;
 - (void)_updatePages;
 - (void)_updatePresentedScrubberPosition;
-- (void)adjustScrollTargetContentOffset:(CGPoint *)a3 withVelocity:(CGPoint)a4;
+- (void)adjustScrollTargetContentOffset:(CGPoint *)offset withVelocity:(CGPoint)velocity;
 - (void)didUpdate;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)referenceSizeDidChange;
-- (void)scrollLayoutDidEndScrolling:(id)a3;
-- (void)scrollLayoutWillBeginScrolling:(id)a3;
-- (void)setDisplayedTimeline:(id)a3;
-- (void)setNumberOfPages:(int64_t)a3;
-- (void)setPresentedScrubberPosition:(id *)a3;
+- (void)scrollLayoutDidEndScrolling:(id)scrolling;
+- (void)scrollLayoutWillBeginScrolling:(id)scrolling;
+- (void)setDisplayedTimeline:(id)timeline;
+- (void)setNumberOfPages:(int64_t)pages;
+- (void)setPresentedScrubberPosition:(id *)position;
 - (void)update;
 - (void)visibleRectDidChange;
 - (void)willUpdate;
@@ -32,27 +32,27 @@
 
 @implementation PXStoryScrubberScrollLayout
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v14 = a3;
-  if (ModelObservationContext_132899 != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (ModelObservationContext_132899 != context)
   {
-    if (ViewModelObservationContext_132900 != a5)
+    if (ViewModelObservationContext_132900 != context)
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v13 handleFailureInMethod:a2 object:self file:@"PXStoryScrubberScrollLayout.m" lineNumber:330 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryScrubberScrollLayout.m" lineNumber:330 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
 
-    if ((v6 & 0x20) != 0)
+    if ((changeCopy & 0x20) != 0)
     {
       [(PXStoryScrubberScrollLayout *)self _invalidateContent];
       [(PXStoryScrubberScrollLayout *)self _invalidateCurrentScrollPosition];
     }
 
-    if ((v6 & 0x40) != 0)
+    if ((changeCopy & 0x40) != 0)
     {
       goto LABEL_6;
     }
@@ -60,13 +60,13 @@
     goto LABEL_7;
   }
 
-  if ((v6 & 0x10) != 0)
+  if ((changeCopy & 0x10) != 0)
   {
     [(PXStoryScrubberScrollLayout *)self _invalidateDisplayedTimeline];
-    if ((v6 & 0x2000) == 0)
+    if ((changeCopy & 0x2000) == 0)
     {
 LABEL_12:
-      if ((v6 & 4) == 0)
+      if ((changeCopy & 4) == 0)
       {
         goto LABEL_18;
       }
@@ -75,22 +75,22 @@ LABEL_12:
     }
   }
 
-  else if ((v6 & 0x2000) == 0)
+  else if ((changeCopy & 0x2000) == 0)
   {
     goto LABEL_12;
   }
 
   [(PXStoryScrubberScrollLayout *)self _invalidatePages];
-  if ((v6 & 4) == 0)
+  if ((changeCopy & 4) == 0)
   {
     goto LABEL_18;
   }
 
 LABEL_16:
-  v9 = [(PXStoryScrubberScrollLayout *)self model];
-  v10 = [v9 changesOrigins];
-  v11 = [(PXStoryScrubberScrollLayout *)self modelChangeOrigin];
-  v12 = [v10 containsObject:v11];
+  model = [(PXStoryScrubberScrollLayout *)self model];
+  changesOrigins = [model changesOrigins];
+  modelChangeOrigin = [(PXStoryScrubberScrollLayout *)self modelChangeOrigin];
+  v12 = [changesOrigins containsObject:modelChangeOrigin];
 
   if ((v12 & 1) == 0)
   {
@@ -98,7 +98,7 @@ LABEL_16:
   }
 
 LABEL_18:
-  if ((v6 & 0x2000) != 0)
+  if ((changeCopy & 0x2000) != 0)
   {
 LABEL_6:
     [(PXStoryScrubberScrollLayout *)self _invalidateContent];
@@ -107,35 +107,35 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)scrollLayoutDidEndScrolling:(id)a3
+- (void)scrollLayoutDidEndScrolling:(id)scrolling
 {
-  v3 = [(PXStoryScrubberScrollLayout *)self viewModel];
-  [v3 performChanges:&__block_literal_global_42];
+  viewModel = [(PXStoryScrubberScrollLayout *)self viewModel];
+  [viewModel performChanges:&__block_literal_global_42];
 }
 
-- (void)scrollLayoutWillBeginScrolling:(id)a3
+- (void)scrollLayoutWillBeginScrolling:(id)scrolling
 {
-  v3 = [(PXStoryScrubberScrollLayout *)self viewModel];
-  [v3 performChanges:&__block_literal_global_132908];
+  viewModel = [(PXStoryScrubberScrollLayout *)self viewModel];
+  [viewModel performChanges:&__block_literal_global_132908];
 }
 
-- (id)colorAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)colorAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v4 = modf(a3 / 10.0, &__y);
+  v4 = modf(index / 10.0, &__y);
   v5 = MEMORY[0x1E69DC888];
 
   return [v5 colorWithHue:v4 saturation:1.0 brightness:1.0 alpha:0.3];
 }
 
-- (void)adjustScrollTargetContentOffset:(CGPoint *)a3 withVelocity:(CGPoint)a4
+- (void)adjustScrollTargetContentOffset:(CGPoint *)offset withVelocity:(CGPoint)velocity
 {
-  v5 = [(PXStoryScrubberScrollLayout *)self viewModel:a4.x];
-  v9 = [v5 viewLayoutSpec];
+  v5 = [(PXStoryScrubberScrollLayout *)self viewModel:velocity.x];
+  viewLayoutSpec = [v5 viewLayoutSpec];
 
-  [v9 scrubberRegularAssetSize];
+  [viewLayoutSpec scrubberRegularAssetSize];
   v7 = v6;
-  [v9 scrubberRegularAssetPadding];
-  a3->x = (v7 + v8) * round(a3->x / (v7 + v8));
+  [viewLayoutSpec scrubberRegularAssetPadding];
+  offset->x = (v7 + v8) * round(offset->x / (v7 + v8));
 }
 
 - (void)_updateModelScrubberPosition
@@ -143,18 +143,18 @@ LABEL_7:
   v10 = 0uLL;
   v11 = 0;
   [(PXStoryScrubberScrollLayout *)self presentedScrubberPosition];
-  v3 = [(PXStoryScrubberScrollLayout *)self viewModel];
+  viewModel = [(PXStoryScrubberScrollLayout *)self viewModel];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __59__PXStoryScrubberScrollLayout__updateModelScrubberPosition__block_invoke;
   v7[3] = &__block_descriptor_56_e35_v16__0___PXStoryMutableViewModel__8l;
   v8 = v10;
   v9 = v11;
-  [v3 performChanges:v7];
+  [viewModel performChanges:v7];
 
-  v4 = [(PXStoryScrubberScrollLayout *)self model];
+  model = [(PXStoryScrubberScrollLayout *)self model];
   v5 = [(PXStoryScrubberScrollLayout *)self modelChangeOrigin:MEMORY[0x1E69E9820]];
-  [v4 performChanges:&v6 origin:v5];
+  [model performChanges:&v6 origin:v5];
 }
 
 uint64_t __59__PXStoryScrubberScrollLayout__updateModelScrubberPosition__block_invoke(uint64_t a1, void *a2)
@@ -198,9 +198,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 0x20) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrubberScrollLayout _invalidateModelScrubberPosition]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryScrubberScrollLayout.m" lineNumber:241 description:{@"invalidating %lu after it already has been updated", 32}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryScrubberScrollLayout.m" lineNumber:241 description:{@"invalidating %lu after it already has been updated", 32}];
 
       abort();
     }
@@ -224,20 +224,20 @@ LABEL_5:
 
 - (void)_updatePresentedScrubberPosition
 {
-  v3 = [(PXStoryScrubberScrollLayout *)self viewModel];
-  v4 = [v3 viewLayoutSpec];
+  viewModel = [(PXStoryScrubberScrollLayout *)self viewModel];
+  viewLayoutSpec = [viewModel viewLayoutSpec];
 
-  [v4 scrubberRegularAssetSize];
-  [v4 scrubberRegularAssetPadding];
+  [viewLayoutSpec scrubberRegularAssetSize];
+  [viewLayoutSpec scrubberRegularAssetPadding];
   [(PXStoryScrubberScrollLayout *)self visibleRect];
   CGRectGetMinX(v7);
-  v5 = [(PXStoryScrubberScrollLayout *)self displayedTimeline];
-  if ([v5 numberOfSegments] > 1)
+  displayedTimeline = [(PXStoryScrubberScrollLayout *)self displayedTimeline];
+  if ([displayedTimeline numberOfSegments] > 1)
   {
     PXClamp();
   }
 
-  v6[0] = [v5 firstSegmentIdentifier];
+  v6[0] = [displayedTimeline firstSegmentIdentifier];
   v6[1] = 0;
   v6[2] = 0;
   [(PXStoryScrubberScrollLayout *)self setPresentedScrubberPosition:v6];
@@ -259,9 +259,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 8) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrubberScrollLayout _invalidatePresentedScrubberPosition]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryScrubberScrollLayout.m" lineNumber:217 description:{@"invalidating %lu after it already has been updated", 8}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryScrubberScrollLayout.m" lineNumber:217 description:{@"invalidating %lu after it already has been updated", 8}];
 
       abort();
     }
@@ -283,12 +283,12 @@ LABEL_5:
   }
 }
 
-- (CGPoint)_offsetFromFirstPageForScrollingToPosition:(id *)a3 visibleRect:(CGRect)a4
+- (CGPoint)_offsetFromFirstPageForScrollingToPosition:(id *)position visibleRect:(CGRect)rect
 {
-  v6 = [(PXStoryScrubberScrollLayout *)self displayedTimeline:a4.origin.x];
+  v6 = [(PXStoryScrubberScrollLayout *)self displayedTimeline:rect.origin.x];
   v7 = MEMORY[0x1E695EFF8];
   v8 = *(MEMORY[0x1E695EFF8] + 8);
-  v9 = [v6 indexOfSegmentWithIdentifier:a3->var0];
+  v9 = [v6 indexOfSegmentWithIdentifier:position->var0];
   if (v9 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v10 = *v7;
@@ -297,13 +297,13 @@ LABEL_5:
   else
   {
     v11 = v9;
-    v12 = [(PXStoryScrubberScrollLayout *)self viewModel];
-    v13 = [v12 viewLayoutSpec];
+    viewModel = [(PXStoryScrubberScrollLayout *)self viewModel];
+    viewLayoutSpec = [viewModel viewLayoutSpec];
 
-    [v13 scrubberRegularAssetSize];
+    [viewLayoutSpec scrubberRegularAssetSize];
     v15 = v14;
-    [v13 scrubberRegularAssetPadding];
-    v16 = a3->var1 + v11;
+    [viewLayoutSpec scrubberRegularAssetPadding];
+    v16 = position->var1 + v11;
     v18 = v15 + v17;
     [(PXStoryScrubberScrollLayout *)self safeAreaInsets];
     v10 = v19 + v16 * v18;
@@ -316,7 +316,7 @@ LABEL_5:
   return result;
 }
 
-- (id)createAnchorForScrollingToPosition:(id *)a3
+- (id)createAnchorForScrollingToPosition:(id *)position
 {
   objc_initWeak(&location, self);
   v5 = [(PXStoryScrubberScrollLayout *)self spriteReferenceForSpriteIndex:self->_firstPageSpriteIndex];
@@ -325,7 +325,7 @@ LABEL_5:
   v8[2] = __66__PXStoryScrubberScrollLayout_createAnchorForScrollingToPosition___block_invoke;
   v8[3] = &unk_1E7742130;
   objc_copyWeak(&v9, &location);
-  v10 = *a3;
+  v10 = *position;
   v6 = [(PXStoryScrubberScrollLayout *)self createAnchorForScrollingSpriteForSpriteReference:v5 toScrollPosition:9 padding:v8 customOffset:*off_1E7721FA8, *(off_1E7721FA8 + 1), *(off_1E7721FA8 + 2), *(off_1E7721FA8 + 3)];
   objc_destroyWeak(&v9);
 
@@ -349,11 +349,11 @@ double __66__PXStoryScrubberScrollLayout_createAnchorForScrollingToPosition___bl
 {
   v9 = 0uLL;
   v10 = 0;
-  v3 = [(PXStoryScrubberScrollLayout *)self model];
-  v4 = v3;
-  if (v3)
+  model = [(PXStoryScrubberScrollLayout *)self model];
+  v4 = model;
+  if (model)
   {
-    [v3 currentScrollPosition];
+    [model currentScrollPosition];
   }
 
   else
@@ -362,8 +362,8 @@ double __66__PXStoryScrubberScrollLayout_createAnchorForScrollingToPosition___bl
     v10 = 0;
   }
 
-  v5 = [(PXStoryScrubberScrollLayout *)self viewModel];
-  if ([v5 isScrubbing])
+  viewModel = [(PXStoryScrubberScrollLayout *)self viewModel];
+  if ([viewModel isScrubbing])
   {
     goto LABEL_11;
   }
@@ -380,8 +380,8 @@ double __66__PXStoryScrubberScrollLayout_createAnchorForScrollingToPosition___bl
 LABEL_10:
     v7 = v9;
     v8 = v10;
-    v5 = [(PXStoryScrubberScrollLayout *)self createAnchorForScrollingToPosition:&v7];
-    v6 = [v5 autoInvalidate];
+    viewModel = [(PXStoryScrubberScrollLayout *)self createAnchorForScrollingToPosition:&v7];
+    autoInvalidate = [viewModel autoInvalidate];
 LABEL_11:
   }
 }
@@ -402,9 +402,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 0x10) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrubberScrollLayout _invalidateCurrentScrollPosition]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryScrubberScrollLayout.m" lineNumber:184 description:{@"invalidating %lu after it already has been updated", 16}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryScrubberScrollLayout.m" lineNumber:184 description:{@"invalidating %lu after it already has been updated", 16}];
 
       abort();
     }
@@ -428,23 +428,23 @@ LABEL_5:
 
 - (void)_updateContent
 {
-  v3 = [(PXStoryScrubberScrollLayout *)self viewModel];
-  v4 = [v3 viewLayoutSpec];
+  viewModel = [(PXStoryScrubberScrollLayout *)self viewModel];
+  viewLayoutSpec = [viewModel viewLayoutSpec];
 
-  v5 = [(PXStoryScrubberScrollLayout *)self viewModel];
-  v6 = [v5 mainModel];
-  v7 = [v6 layoutSpec];
+  viewModel2 = [(PXStoryScrubberScrollLayout *)self viewModel];
+  mainModel = [viewModel2 mainModel];
+  layoutSpec = [mainModel layoutSpec];
 
-  [v4 scrubberRegularAssetSize];
+  [viewLayoutSpec scrubberRegularAssetSize];
   v9 = v8;
   v11 = v10;
-  [v7 scrubberCurrentAssetSize];
+  [layoutSpec scrubberCurrentAssetSize];
   v13 = v12;
-  [v4 scrubberRegularAssetPadding];
+  [viewLayoutSpec scrubberRegularAssetPadding];
   v15 = v14;
-  [v4 scrubberCurrentAssetPadding];
+  [viewLayoutSpec scrubberCurrentAssetPadding];
   v17 = v16;
-  v18 = [(PXStoryScrubberScrollLayout *)self localNumberOfSprites];
+  localNumberOfSprites = [(PXStoryScrubberScrollLayout *)self localNumberOfSprites];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __45__PXStoryScrubberScrollLayout__updateContent__block_invoke;
@@ -452,7 +452,7 @@ LABEL_5:
   *&v20[5] = v9;
   v20[6] = v11;
   v20[4] = self;
-  [(PXStoryScrubberScrollLayout *)self modifySpritesInRange:v18 << 32 state:v20];
+  [(PXStoryScrubberScrollLayout *)self modifySpritesInRange:localNumberOfSprites << 32 state:v20];
   v19 = v17 + v15 * -2.0 + ([(PXStoryScrubberScrollLayout *)self numberOfPages]- 1) * (v9 + v15);
   [(PXStoryScrubberScrollLayout *)self visibleRect];
   [(PXStoryScrubberScrollLayout *)self setContentSize:CGRectGetWidth(v21) + v19, v13];
@@ -474,9 +474,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 4) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrubberScrollLayout _invalidateContent]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryScrubberScrollLayout.m" lineNumber:157 description:{@"invalidating %lu after it already has been updated", 4}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryScrubberScrollLayout.m" lineNumber:157 description:{@"invalidating %lu after it already has been updated", 4}];
 
       abort();
     }
@@ -500,8 +500,8 @@ LABEL_5:
 
 - (void)_updatePages
 {
-  v3 = [(PXStoryScrubberScrollLayout *)self displayedTimeline];
-  -[PXStoryScrubberScrollLayout setNumberOfPages:](self, "setNumberOfPages:", [v3 numberOfSegments]);
+  displayedTimeline = [(PXStoryScrubberScrollLayout *)self displayedTimeline];
+  -[PXStoryScrubberScrollLayout setNumberOfPages:](self, "setNumberOfPages:", [displayedTimeline numberOfSegments]);
 }
 
 - (void)_invalidatePages
@@ -520,9 +520,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 2) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrubberScrollLayout _invalidatePages]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryScrubberScrollLayout.m" lineNumber:149 description:{@"invalidating %lu after it already has been updated", 2}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryScrubberScrollLayout.m" lineNumber:149 description:{@"invalidating %lu after it already has been updated", 2}];
 
       abort();
     }
@@ -546,9 +546,9 @@ LABEL_5:
 
 - (void)_updateDisplayedTimeline
 {
-  v4 = [(PXStoryScrubberScrollLayout *)self model];
-  v3 = [v4 timeline];
-  [(PXStoryScrubberScrollLayout *)self setDisplayedTimeline:v3];
+  model = [(PXStoryScrubberScrollLayout *)self model];
+  timeline = [model timeline];
+  [(PXStoryScrubberScrollLayout *)self setDisplayedTimeline:timeline];
 }
 
 - (void)_invalidateDisplayedTimeline
@@ -567,9 +567,9 @@ LABEL_6:
 LABEL_5:
     if (self->_updateFlags.updated)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrubberScrollLayout _invalidateDisplayedTimeline]"];
-      [v6 handleFailureInFunction:v7 file:@"PXStoryScrubberScrollLayout.m" lineNumber:141 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXStoryScrubberScrollLayout.m" lineNumber:141 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -598,9 +598,9 @@ LABEL_5:
   [(PXStoryScrubberScrollLayout *)&v5 didUpdate];
   if (self->_updateFlags.willPerformUpdate)
   {
-    v3 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrubberScrollLayout didUpdate]"];
-    [v3 handleFailureInFunction:v4 file:@"PXStoryScrubberScrollLayout.m" lineNumber:137 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.willPerformUpdate"}];
+    [currentHandler handleFailureInFunction:v4 file:@"PXStoryScrubberScrollLayout.m" lineNumber:137 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.willPerformUpdate"}];
   }
 }
 
@@ -613,9 +613,9 @@ LABEL_5:
   {
     if (self->_updateFlags.isPerformingUpdate)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrubberScrollLayout update]"];
-      [v10 handleFailureInFunction:v11 file:@"PXStoryScrubberScrollLayout.m" lineNumber:112 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+      [currentHandler handleFailureInFunction:v11 file:@"PXStoryScrubberScrollLayout.m" lineNumber:112 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
 
       needsUpdate = p_updateFlags->needsUpdate;
     }
@@ -628,9 +628,9 @@ LABEL_5:
       [(PXStoryScrubberScrollLayout *)self _updateDisplayedTimeline];
       if (!p_updateFlags->isPerformingUpdate)
       {
-        v12 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
         v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrubberScrollLayout update]"];
-        [v12 handleFailureInFunction:v13 file:@"PXStoryScrubberScrollLayout.m" lineNumber:116 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+        [currentHandler2 handleFailureInFunction:v13 file:@"PXStoryScrubberScrollLayout.m" lineNumber:116 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
       }
     }
 
@@ -644,9 +644,9 @@ LABEL_5:
 
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
       v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrubberScrollLayout update]"];
-      [v14 handleFailureInFunction:v15 file:@"PXStoryScrubberScrollLayout.m" lineNumber:119 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler3 handleFailureInFunction:v15 file:@"PXStoryScrubberScrollLayout.m" lineNumber:119 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v6 = p_updateFlags->needsUpdate;
@@ -659,9 +659,9 @@ LABEL_5:
 
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v16 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
       v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrubberScrollLayout update]"];
-      [v16 handleFailureInFunction:v17 file:@"PXStoryScrubberScrollLayout.m" lineNumber:122 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler4 handleFailureInFunction:v17 file:@"PXStoryScrubberScrollLayout.m" lineNumber:122 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v7 = p_updateFlags->needsUpdate;
@@ -674,9 +674,9 @@ LABEL_5:
 
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v18 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
       v19 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrubberScrollLayout update]"];
-      [v18 handleFailureInFunction:v19 file:@"PXStoryScrubberScrollLayout.m" lineNumber:125 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler5 handleFailureInFunction:v19 file:@"PXStoryScrubberScrollLayout.m" lineNumber:125 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v8 = p_updateFlags->needsUpdate;
@@ -689,9 +689,9 @@ LABEL_5:
 
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v20 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
       v21 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrubberScrollLayout update]"];
-      [v20 handleFailureInFunction:v21 file:@"PXStoryScrubberScrollLayout.m" lineNumber:128 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler6 handleFailureInFunction:v21 file:@"PXStoryScrubberScrollLayout.m" lineNumber:128 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v9 = p_updateFlags->needsUpdate;
@@ -706,9 +706,9 @@ LABEL_5:
     p_updateFlags->isPerformingUpdate = 0;
     if (v9)
     {
-      v22 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler7 = [MEMORY[0x1E696AAA8] currentHandler];
       v23 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrubberScrollLayout update]"];
-      [v22 handleFailureInFunction:v23 file:@"PXStoryScrubberScrollLayout.m" lineNumber:131 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
+      [currentHandler7 handleFailureInFunction:v23 file:@"PXStoryScrubberScrollLayout.m" lineNumber:131 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
     }
   }
 
@@ -725,18 +725,18 @@ LABEL_5:
   self->_updateFlags.willPerformUpdate = 1;
   if (self->_updateFlags.isPerformingUpdate)
   {
-    v3 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXStoryScrubberScrollLayout willUpdate]"];
-    [v3 handleFailureInFunction:v4 file:@"PXStoryScrubberScrollLayout.m" lineNumber:108 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+    [currentHandler handleFailureInFunction:v4 file:@"PXStoryScrubberScrollLayout.m" lineNumber:108 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
   }
 }
 
-- (void)setPresentedScrubberPosition:(id *)a3
+- (void)setPresentedScrubberPosition:(id *)position
 {
-  if (self->_presentedScrubberPosition.firstSegmentIdentifier != a3->var0 || (self->_presentedScrubberPosition.secondSegmentMixFactor == a3->var1 ? (v3 = self->_presentedScrubberPosition.secondSegmentIdentifier == a3->var2) : (v3 = 0), !v3))
+  if (self->_presentedScrubberPosition.firstSegmentIdentifier != position->var0 || (self->_presentedScrubberPosition.secondSegmentMixFactor == position->var1 ? (v3 = self->_presentedScrubberPosition.secondSegmentIdentifier == position->var2) : (v3 = 0), !v3))
   {
-    v4 = *&a3->var0;
-    self->_presentedScrubberPosition.secondSegmentIdentifier = a3->var2;
+    v4 = *&position->var0;
+    self->_presentedScrubberPosition.secondSegmentIdentifier = position->var2;
     *&self->_presentedScrubberPosition.firstSegmentIdentifier = v4;
     [(PXStoryScrubberScrollLayout *)self _invalidateModelScrubberPosition];
   }
@@ -758,27 +758,27 @@ LABEL_5:
   [(PXStoryScrubberScrollLayout *)self _invalidateContent];
 }
 
-- (void)setNumberOfPages:(int64_t)a3
+- (void)setNumberOfPages:(int64_t)pages
 {
-  if (self->_numberOfPages != a3)
+  if (self->_numberOfPages != pages)
   {
-    self->_numberOfPages = a3;
+    self->_numberOfPages = pages;
     [(PXStoryScrubberScrollLayout *)self _invalidateContent];
   }
 }
 
-- (void)setDisplayedTimeline:(id)a3
+- (void)setDisplayedTimeline:(id)timeline
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_displayedTimeline != v5)
+  timelineCopy = timeline;
+  v6 = timelineCopy;
+  if (self->_displayedTimeline != timelineCopy)
   {
-    v8 = v5;
-    v7 = [(PXStoryTimeline *)v5 isEqual:?];
+    v8 = timelineCopy;
+    v7 = [(PXStoryTimeline *)timelineCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_displayedTimeline, a3);
+      objc_storeStrong(&self->_displayedTimeline, timeline);
       [(PXStoryScrubberScrollLayout *)self _invalidatePages];
       [(PXStoryScrubberScrollLayout *)self _invalidateCurrentScrollPosition];
       v6 = v8;
@@ -786,9 +786,9 @@ LABEL_5:
   }
 }
 
-- (PXStoryScrubberScrollLayout)initWithViewModel:(id)a3 model:(id)a4
+- (PXStoryScrubberScrollLayout)initWithViewModel:(id)model model:(id)a4
 {
-  v7 = a3;
+  modelCopy = model;
   v8 = a4;
   v17.receiver = self;
   v17.super_class = PXStoryScrubberScrollLayout;
@@ -797,8 +797,8 @@ LABEL_5:
   if (v9)
   {
     objc_storeStrong(&v9->_model, a4);
-    objc_storeStrong(&v10->_viewModel, a3);
-    [v7 registerChangeObserver:v10 context:ViewModelObservationContext_132900];
+    objc_storeStrong(&v10->_viewModel, model);
+    [modelCopy registerChangeObserver:v10 context:ViewModelObservationContext_132900];
     [v8 registerChangeObserver:v10 context:ModelObservationContext_132899];
     v11 = objc_alloc(MEMORY[0x1E696AEC0]);
     v12 = objc_opt_class();
@@ -818,8 +818,8 @@ LABEL_5:
 
 - (PXStoryScrubberScrollLayout)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryScrubberScrollLayout.m" lineNumber:46 description:{@"%s is not available as initializer", "-[PXStoryScrubberScrollLayout init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryScrubberScrollLayout.m" lineNumber:46 description:{@"%s is not available as initializer", "-[PXStoryScrubberScrollLayout init]"}];
 
   abort();
 }

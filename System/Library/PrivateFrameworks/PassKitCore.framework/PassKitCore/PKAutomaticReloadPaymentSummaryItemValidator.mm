@@ -1,27 +1,27 @@
 @interface PKAutomaticReloadPaymentSummaryItemValidator
-+ (id)validatorWithObject:(id)a3;
-- (BOOL)isValidWithAPIType:(int64_t)a3 withError:(id *)a4;
-- (PKAutomaticReloadPaymentSummaryItemValidator)initWithAutomaticReloadPaymentSummaryItem:(id)a3;
++ (id)validatorWithObject:(id)object;
+- (BOOL)isValidWithAPIType:(int64_t)type withError:(id *)error;
+- (PKAutomaticReloadPaymentSummaryItemValidator)initWithAutomaticReloadPaymentSummaryItem:(id)item;
 @end
 
 @implementation PKAutomaticReloadPaymentSummaryItemValidator
 
-+ (id)validatorWithObject:(id)a3
++ (id)validatorWithObject:(id)object
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithAutomaticReloadPaymentSummaryItem:v3];
+  objectCopy = object;
+  v4 = [objc_alloc(objc_opt_class()) initWithAutomaticReloadPaymentSummaryItem:objectCopy];
 
   return v4;
 }
 
-- (PKAutomaticReloadPaymentSummaryItemValidator)initWithAutomaticReloadPaymentSummaryItem:(id)a3
+- (PKAutomaticReloadPaymentSummaryItemValidator)initWithAutomaticReloadPaymentSummaryItem:(id)item
 {
   v4.receiver = self;
   v4.super_class = PKAutomaticReloadPaymentSummaryItemValidator;
-  return [(PKPaymentSummaryItemValidator *)&v4 initWithPaymentSummaryItem:a3];
+  return [(PKPaymentSummaryItemValidator *)&v4 initWithPaymentSummaryItem:item];
 }
 
-- (BOOL)isValidWithAPIType:(int64_t)a3 withError:(id *)a4
+- (BOOL)isValidWithAPIType:(int64_t)type withError:(id *)error
 {
   v30[1] = *MEMORY[0x1E69E9840];
   v28.receiver = self;
@@ -31,7 +31,7 @@
     LOBYTE(v9) = 0;
     v10 = 0;
 LABEL_8:
-    if (!a4)
+    if (!error)
     {
       goto LABEL_14;
     }
@@ -39,10 +39,10 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v7 = [(PKPaymentSummaryItemValidator *)self item];
+  item = [(PKPaymentSummaryItemValidator *)self item];
   v8 = objc_opt_class();
   v27 = 0;
-  v9 = _PKPaymentValidateProperty(v7, @"thresholdAmount", v8, 1, a3, &v27);
+  v9 = _PKPaymentValidateProperty(item, @"thresholdAmount", v8, 1, type, &v27);
   v10 = v27;
 
   if (!v9)
@@ -50,26 +50,26 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v11 = [(PKPaymentSummaryItemValidator *)self currencyCode];
+  currencyCode = [(PKPaymentSummaryItemValidator *)self currencyCode];
 
-  if (!v11)
+  if (!currencyCode)
   {
     LOBYTE(v9) = 1;
     goto LABEL_14;
   }
 
-  v12 = [(PKPaymentSummaryItemValidator *)self item];
-  v13 = [v12 thresholdAmount];
-  v14 = [(PKPaymentSummaryItemValidator *)self currencyCode];
+  item2 = [(PKPaymentSummaryItemValidator *)self item];
+  thresholdAmount = [item2 thresholdAmount];
+  currencyCode2 = [(PKPaymentSummaryItemValidator *)self currencyCode];
   v26 = v10;
-  IsValidCurrencyAmount = _PKPaymentIsValidCurrencyAmount(v13, v14, &v26);
+  IsValidCurrencyAmount = _PKPaymentIsValidCurrencyAmount(thresholdAmount, currencyCode2, &v26);
   v16 = v26;
 
   if (IsValidCurrencyAmount)
   {
-    v17 = [v12 thresholdAmount];
-    v18 = [MEMORY[0x1E696AB90] notANumber];
-    v19 = [v17 isEqualToNumber:v18];
+    thresholdAmount2 = [item2 thresholdAmount];
+    notANumber = [MEMORY[0x1E696AB90] notANumber];
+    v19 = [thresholdAmount2 isEqualToNumber:notANumber];
 
     if (v19)
     {
@@ -95,12 +95,12 @@ LABEL_8:
   }
 
   v10 = v16;
-  if (a4)
+  if (error)
   {
 LABEL_9:
     if ((v9 & 1) == 0)
     {
-      if ((a3 - 1) >= 2)
+      if ((type - 1) >= 2)
       {
         v23 = @"PKAutomaticReloadPaymentSummaryItem has an invalid amount";
       }
@@ -113,7 +113,7 @@ LABEL_9:
       v24 = objc_alloc_init(MEMORY[0x1E695DF90]);
       [v24 setObject:v23 forKeyedSubscript:*MEMORY[0x1E696A578]];
       [v24 setObject:v10 forKeyedSubscript:*MEMORY[0x1E696AA08]];
-      *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:1 userInfo:v24];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:1 userInfo:v24];
 
       LOBYTE(v9) = 0;
     }

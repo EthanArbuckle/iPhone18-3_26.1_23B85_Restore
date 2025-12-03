@@ -1,15 +1,15 @@
 @interface MAXpcManager
-- (MAXpcManager)initWithServiceName:(id)a3 callbackQueue:(id)a4;
-- (id)progressCallbacksForAssetType:(id)a3 assetId:(id)a4 withPurpose:(id)a5;
-- (id)sendSync:(id)a3 gettingResponseCode:(int64_t *)a4 codeForXpcError:(int64_t)int64 loggingName:(id)a6;
-- (void)attachProgressHandler:(id)a3 assetId:(id)a4 callBack:(id)a5 withPurpose:(id)a6;
-- (void)clearConnection:(id)a3;
+- (MAXpcManager)initWithServiceName:(id)name callbackQueue:(id)queue;
+- (id)progressCallbacksForAssetType:(id)type assetId:(id)id withPurpose:(id)purpose;
+- (id)sendSync:(id)sync gettingResponseCode:(int64_t *)code codeForXpcError:(int64_t)int64 loggingName:(id)name;
+- (void)attachProgressHandler:(id)handler assetId:(id)id callBack:(id)back withPurpose:(id)purpose;
+- (void)clearConnection:(id)connection;
 - (void)ensureConnection;
-- (void)notifyClientsOfProgress:(id)a3;
-- (void)restoreProgressCallbacks:(id)a3 assetType:(id)a4 assetId:(id)a5 withPurpose:(id)a6;
-- (void)sendAsync:(id)a3 clientHandler:(id)a4 taskDescriptor:(id)a5 withRetry:(BOOL)a6 retryInitialReconnectionCount:(unint64_t)a7;
+- (void)notifyClientsOfProgress:(id)progress;
+- (void)restoreProgressCallbacks:(id)callbacks assetType:(id)type assetId:(id)id withPurpose:(id)purpose;
+- (void)sendAsync:(id)async clientHandler:(id)handler taskDescriptor:(id)descriptor withRetry:(BOOL)retry retryInitialReconnectionCount:(unint64_t)count;
 - (void)setClientConnectionHandler;
-- (void)setClientName:(id)a3;
+- (void)setClientName:(id)name;
 @end
 
 @implementation MAXpcManager
@@ -27,15 +27,15 @@
     if (self->_maConnection)
     {
       [(MAXpcManager *)self setClientConnectionHandler];
-      v5 = [(MAXpcConnection *)self->_maConnection connection];
-      xpc_connection_activate(v5);
+      connection = [(MAXpcConnection *)self->_maConnection connection];
+      xpc_connection_activate(connection);
 
       v6 = _MAClientLog(@"V2");
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        v7 = [(MAXpcConnection *)self->_maConnection connectionId];
+        connectionId = [(MAXpcConnection *)self->_maConnection connectionId];
         v9 = 138543362;
-        v10 = v7;
+        v10 = connectionId;
         _os_log_impl(&dword_197AD5000, v6, OS_LOG_TYPE_DEFAULT, "Creating client/daemon connection: %{public}@", &v9, 0xCu);
       }
     }
@@ -56,19 +56,19 @@
 
 - (void)setClientConnectionHandler
 {
-  v3 = [(MAXpcConnection *)self->_maConnection connection];
+  connection = [(MAXpcConnection *)self->_maConnection connection];
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
   handler[2] = __42__MAXpcManager_setClientConnectionHandler__block_invoke;
   handler[3] = &unk_1E74CA918;
   handler[4] = self;
-  xpc_connection_set_event_handler(v3, handler);
+  xpc_connection_set_event_handler(connection, handler);
 }
 
-- (void)clearConnection:(id)a3
+- (void)clearConnection:(id)connection
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  connectionCopy = connection;
   dispatch_assert_queue_V2(self->_stateQueue);
   maConnection = self->_maConnection;
   v6 = _MAClientLog(@"V2");
@@ -90,20 +90,20 @@
     _os_log_impl(&dword_197AD5000, p_super, OS_LOG_TYPE_ERROR, "Connection invalid, checking connection", &v15, 2u);
   }
 
-  if (!v4 || [(MAXpcConnection *)self->_maConnection notValid])
+  if (!connectionCopy || [(MAXpcConnection *)self->_maConnection notValid])
   {
     goto LABEL_6;
   }
 
-  string = xpc_dictionary_get_string(v4, "connectionIdentifier");
+  string = xpc_dictionary_get_string(connectionCopy, "connectionIdentifier");
   if (string)
   {
     p_super = [MEMORY[0x1E696AEC0] stringWithUTF8String:string];
     v11 = self->_maConnection;
     if (v11 && p_super)
     {
-      v12 = [(MAXpcConnection *)v11 connectionId];
-      v13 = [v12 isEqualToString:p_super];
+      connectionId = [(MAXpcConnection *)v11 connectionId];
+      v13 = [connectionId isEqualToString:p_super];
 
       if (!v13)
       {
@@ -114,9 +114,9 @@ LABEL_6:
       v8 = _MAClientLog(@"V2");
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [(MAXpcConnection *)self->_maConnection connectionId];
+        connectionId2 = [(MAXpcConnection *)self->_maConnection connectionId];
         v15 = 138543362;
-        v16 = v9;
+        v16 = connectionId2;
         _os_log_impl(&dword_197AD5000, v8, OS_LOG_TYPE_DEFAULT, "connection cleared: %{public}@", &v15, 0xCu);
       }
 
@@ -136,21 +136,21 @@ LABEL_18:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setClientName:(id)a3
+- (void)setClientName:(id)name
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = a3;
+  nameCopy = name;
   v6 = [v3 stringWithFormat:@"%s", getprogname()];
   v5 = v6;
-  xpc_dictionary_set_string(v4, "clientName", [v6 UTF8String]);
+  xpc_dictionary_set_string(nameCopy, "clientName", [v6 UTF8String]);
 }
 
-- (id)sendSync:(id)a3 gettingResponseCode:(int64_t *)a4 codeForXpcError:(int64_t)int64 loggingName:(id)a6
+- (id)sendSync:(id)sync gettingResponseCode:(int64_t *)code codeForXpcError:(int64_t)int64 loggingName:(id)name
 {
   v39 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a6;
-  [(MAXpcManager *)self setClientName:v10];
+  syncCopy = sync;
+  nameCopy = name;
+  [(MAXpcManager *)self setClientName:syncCopy];
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
@@ -163,10 +163,10 @@ LABEL_18:
   v27[2] = __73__MAXpcManager_sendSync_gettingResponseCode_codeForXpcError_loggingName___block_invoke;
   v27[3] = &unk_1E74CA828;
   v27[4] = self;
-  v13 = v10;
+  v13 = syncCopy;
   v28 = v13;
   v30 = &v31;
-  v14 = v11;
+  v14 = nameCopy;
   v29 = v14;
   dispatch_sync(stateQueue, v27);
   v20 = v32[5];
@@ -206,9 +206,9 @@ LABEL_9:
   }
 
 LABEL_11:
-  if (a4)
+  if (code)
   {
-    *a4 = int64;
+    *code = int64;
   }
 
   v24 = v32[5];
@@ -298,31 +298,31 @@ LABEL_10:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendAsync:(id)a3 clientHandler:(id)a4 taskDescriptor:(id)a5 withRetry:(BOOL)a6 retryInitialReconnectionCount:(unint64_t)a7
+- (void)sendAsync:(id)async clientHandler:(id)handler taskDescriptor:(id)descriptor withRetry:(BOOL)retry retryInitialReconnectionCount:(unint64_t)count
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  asyncCopy = async;
+  handlerCopy = handler;
+  descriptorCopy = descriptor;
   v38[0] = 0;
   v38[1] = v38;
   v38[2] = 0x2020000000;
   v38[3] = 0;
-  [(MAXpcManager *)self setClientName:v12];
+  [(MAXpcManager *)self setClientName:asyncCopy];
   objc_initWeak(&location, self);
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __95__MAXpcManager_sendAsync_clientHandler_taskDescriptor_withRetry_retryInitialReconnectionCount___block_invoke;
   v29[3] = &unk_1E74CA878;
-  v36 = a6;
+  retryCopy = retry;
   v34 = v38;
   objc_copyWeak(&v35, &location);
-  v15 = v12;
+  v15 = asyncCopy;
   v30 = v15;
-  v16 = v13;
-  v32 = self;
+  v16 = handlerCopy;
+  selfCopy = self;
   v33 = v16;
-  v31 = v14;
-  v17 = v14;
+  v31 = descriptorCopy;
+  v17 = descriptorCopy;
   v18 = MEMORY[0x19A8EC5D0](v29);
   stateQueue = self->_stateQueue;
   v23[0] = MEMORY[0x1E69E9820];
@@ -332,7 +332,7 @@ LABEL_10:
   v23[4] = self;
   v24 = v15;
   v27 = v38;
-  v28 = a7;
+  countCopy = count;
   v25 = v18;
   v26 = v16;
   v20 = v16;
@@ -703,17 +703,17 @@ uint64_t __42__MAXpcManager_setClientConnectionHandler__block_invoke_1128(uint64
   return result;
 }
 
-- (void)notifyClientsOfProgress:(id)a3
+- (void)notifyClientsOfProgress:(id)progress
 {
-  v4 = a3;
+  progressCopy = progress;
   progressQueue = self->_progressQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __40__MAXpcManager_notifyClientsOfProgress___block_invoke;
   v7[3] = &unk_1E74CA850;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = progressCopy;
+  selfCopy = self;
+  v6 = progressCopy;
   dispatch_async(progressQueue, v7);
 }
 
@@ -864,26 +864,26 @@ LABEL_16:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)attachProgressHandler:(id)a3 assetId:(id)a4 callBack:(id)a5 withPurpose:(id)a6
+- (void)attachProgressHandler:(id)handler assetId:(id)id callBack:(id)back withPurpose:(id)purpose
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  handlerCopy = handler;
+  idCopy = id;
+  backCopy = back;
+  purposeCopy = purpose;
   progressQueue = self->_progressQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __67__MAXpcManager_attachProgressHandler_assetId_callBack_withPurpose___block_invoke;
   block[3] = &unk_1E74CA940;
-  v20 = v10;
-  v21 = v11;
-  v22 = v13;
-  v23 = self;
-  v24 = v12;
-  v15 = v12;
-  v16 = v13;
-  v17 = v11;
-  v18 = v10;
+  v20 = handlerCopy;
+  v21 = idCopy;
+  v22 = purposeCopy;
+  selfCopy = self;
+  v24 = backCopy;
+  v15 = backCopy;
+  v16 = purposeCopy;
+  v17 = idCopy;
+  v18 = handlerCopy;
   dispatch_async(progressQueue, block);
 }
 
@@ -906,24 +906,24 @@ void __67__MAXpcManager_attachProgressHandler_assetId_callBack_withPurpose___blo
   }
 }
 
-- (void)restoreProgressCallbacks:(id)a3 assetType:(id)a4 assetId:(id)a5 withPurpose:(id)a6
+- (void)restoreProgressCallbacks:(id)callbacks assetType:(id)type assetId:(id)id withPurpose:(id)purpose
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v10 && [v10 count])
+  callbacksCopy = callbacks;
+  typeCopy = type;
+  idCopy = id;
+  purposeCopy = purpose;
+  if (callbacksCopy && [callbacksCopy count])
   {
     progressQueue = self->_progressQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __71__MAXpcManager_restoreProgressCallbacks_assetType_assetId_withPurpose___block_invoke;
     block[3] = &unk_1E74CA968;
-    v16 = v11;
-    v17 = v12;
-    v18 = v13;
-    v19 = self;
-    v20 = v10;
+    v16 = typeCopy;
+    v17 = idCopy;
+    v18 = purposeCopy;
+    selfCopy = self;
+    v20 = callbacksCopy;
     dispatch_sync(progressQueue, block);
   }
 }
@@ -989,19 +989,19 @@ void __71__MAXpcManager_restoreProgressCallbacks_assetType_assetId_withPurpose__
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (id)progressCallbacksForAssetType:(id)a3 assetId:(id)a4 withPurpose:(id)a5
+- (id)progressCallbacksForAssetType:(id)type assetId:(id)id withPurpose:(id)purpose
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  typeCopy = type;
+  idCopy = id;
+  purposeCopy = purpose;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
   v24 = __Block_byref_object_copy__3;
   v25 = __Block_byref_object_dispose__3;
   v26 = 0;
-  v11 = normalizedAssetType(v8);
-  v12 = assembleTaskDescriptorWithPurpose(v11, v9, v10);
+  v11 = normalizedAssetType(typeCopy);
+  v12 = assembleTaskDescriptorWithPurpose(v11, idCopy, purposeCopy);
 
   progressQueue = self->_progressQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -1016,17 +1016,17 @@ void __71__MAXpcManager_restoreProgressCallbacks_assetType_assetId_withPurpose__
   v15 = v22[5];
   if (v15)
   {
-    v16 = [v15 callBackArray];
+    callBackArray = [v15 callBackArray];
   }
 
   else
   {
-    v16 = 0;
+    callBackArray = 0;
   }
 
   _Block_object_dispose(&v21, 8);
 
-  return v16;
+  return callBackArray;
 }
 
 uint64_t __66__MAXpcManager_progressCallbacksForAssetType_assetId_withPurpose___block_invoke(void *a1)
@@ -1039,35 +1039,35 @@ uint64_t __66__MAXpcManager_progressCallbacksForAssetType_assetId_withPurpose___
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (MAXpcManager)initWithServiceName:(id)a3 callbackQueue:(id)a4
+- (MAXpcManager)initWithServiceName:(id)name callbackQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  v10 = 0;
-  if (v7 && v8)
+  nameCopy = name;
+  queueCopy = queue;
+  v9 = queueCopy;
+  selfCopy = 0;
+  if (nameCopy && queueCopy)
   {
     v27.receiver = self;
     v27.super_class = MAXpcManager;
     v11 = [(MAXpcManager *)&v27 init];
     if (v11)
     {
-      v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", v7, @".maxpcmanager.state"];
-      v13 = [v12 UTF8String];
+      v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", nameCopy, @".maxpcmanager.state"];
+      uTF8String = [v12 UTF8String];
       v14 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-      v15 = dispatch_queue_create(v13, v14);
+      v15 = dispatch_queue_create(uTF8String, v14);
       stateQueue = v11->_stateQueue;
       v11->_stateQueue = v15;
 
-      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", v7, @".maxpcmanager.progress"];
-      v18 = [v17 UTF8String];
+      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", nameCopy, @".maxpcmanager.progress"];
+      uTF8String2 = [v17 UTF8String];
       v19 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-      v20 = dispatch_queue_create(v18, v19);
+      v20 = dispatch_queue_create(uTF8String2, v19);
       progressQueue = v11->_progressQueue;
       v11->_progressQueue = v20;
 
-      objc_storeStrong(&v11->_callbackQueue, a4);
-      objc_storeStrong(&v11->_serviceName, a3);
+      objc_storeStrong(&v11->_callbackQueue, queue);
+      objc_storeStrong(&v11->_serviceName, name);
       v22 = objc_opt_new();
       progressHandlers = v11->_progressHandlers;
       v11->_progressHandlers = v22;
@@ -1083,10 +1083,10 @@ uint64_t __66__MAXpcManager_progressCallbacksForAssetType_assetId_withPurpose___
     }
 
     self = v11;
-    v10 = self;
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 @end

@@ -1,22 +1,22 @@
 @interface AADevicePowerSources
-- (BOOL)_updateCaseLedInfoInDetails:(id)a3;
-- (BOOL)_updateCombinedPartsInDetails:(id)a3;
+- (BOOL)_updateCaseLedInfoInDetails:(id)details;
+- (BOOL)_updateCombinedPartsInDetails:(id)details;
 - (OpaqueIOPSPowerSourceID)_createPowerSource;
-- (OpaqueIOPSPowerSourceID)_powerSourceIDForType:(int64_t)a3;
-- (id)_batteryTypeToIOPSPartIdentifier:(int64_t)a3;
-- (id)_powerSourceDetailsForType:(int64_t)a3;
-- (id)_updatedPowerSourceDetailsForBattery:(id)a3;
+- (OpaqueIOPSPowerSourceID)_powerSourceIDForType:(int64_t)type;
+- (id)_batteryTypeToIOPSPartIdentifier:(int64_t)identifier;
+- (id)_powerSourceDetailsForType:(int64_t)type;
+- (id)_updatedPowerSourceDetailsForBattery:(id)battery;
 - (id)description;
-- (void)_publishBatteryWithType:(int64_t)a3;
-- (void)_publishPowerSourceForBatteryWithType:(int64_t)a3 details:(id)a4;
+- (void)_publishBatteryWithType:(int64_t)type;
+- (void)_publishPowerSourceForBatteryWithType:(int64_t)type details:(id)details;
 - (void)_publishToIOKit;
-- (void)_releasePowerSource:(OpaqueIOPSPowerSourceID *)a3;
-- (void)_setPowerSource:(OpaqueIOPSPowerSourceID *)a3 details:(id)a4;
-- (void)_setPowerSourceDetails:(id)a3 forType:(int64_t)a4;
-- (void)_setPowerSourceID:(OpaqueIOPSPowerSourceID *)a3 forType:(int64_t)a4;
+- (void)_releasePowerSource:(OpaqueIOPSPowerSourceID *)source;
+- (void)_setPowerSource:(OpaqueIOPSPowerSourceID *)source details:(id)details;
+- (void)_setPowerSourceDetails:(id)details forType:(int64_t)type;
+- (void)_setPowerSourceID:(OpaqueIOPSPowerSourceID *)d forType:(int64_t)type;
 - (void)_unpublishFromIOKit;
-- (void)_unpublishPowerSourceForBatteryWithType:(int64_t)a3;
-- (void)publishWithUpdatedBatteryInfo:(id)a3;
+- (void)_unpublishPowerSourceForBatteryWithType:(int64_t)type;
+- (void)publishWithUpdatedBatteryInfo:(id)info;
 - (void)unpublish;
 @end
 
@@ -69,8 +69,8 @@
   NSAppendPrintF();
   v9 = v3;
 
-  v10 = [(AADevicePowerSources *)self powerSourceCaseDetails];
-  if (v10)
+  powerSourceCaseDetails = [(AADevicePowerSources *)self powerSourceCaseDetails];
+  if (powerSourceCaseDetails)
   {
     NSAppendPrintF();
     v11 = v9;
@@ -78,8 +78,8 @@
     v9 = v11;
   }
 
-  v12 = [(AADevicePowerSources *)self powerSourceCombinedLeftRightDetails];
-  if (v12)
+  powerSourceCombinedLeftRightDetails = [(AADevicePowerSources *)self powerSourceCombinedLeftRightDetails];
+  if (powerSourceCombinedLeftRightDetails)
   {
     NSAppendPrintF();
     v13 = v9;
@@ -87,8 +87,8 @@
     v9 = v13;
   }
 
-  v14 = [(AADevicePowerSources *)self powerSourceLeftDetails];
-  if (v14)
+  powerSourceLeftDetails = [(AADevicePowerSources *)self powerSourceLeftDetails];
+  if (powerSourceLeftDetails)
   {
     NSAppendPrintF();
     v15 = v9;
@@ -96,8 +96,8 @@
     v9 = v15;
   }
 
-  v16 = [(AADevicePowerSources *)self powerSourceRightDetails];
-  if (v16)
+  powerSourceRightDetails = [(AADevicePowerSources *)self powerSourceRightDetails];
+  if (powerSourceRightDetails)
   {
     NSAppendPrintF();
     v17 = v9;
@@ -105,8 +105,8 @@
     v9 = v17;
   }
 
-  v18 = [(AADevicePowerSources *)self powerSourceMainDetails];
-  if (v18)
+  powerSourceMainDetails = [(AADevicePowerSources *)self powerSourceMainDetails];
+  if (powerSourceMainDetails)
   {
     NSAppendPrintF();
     v19 = v9;
@@ -117,9 +117,9 @@
   return v9;
 }
 
-- (void)publishWithUpdatedBatteryInfo:(id)a3
+- (void)publishWithUpdatedBatteryInfo:(id)info
 {
-  [(AADevicePowerSources *)self setBatteryInfo:a3];
+  [(AADevicePowerSources *)self setBatteryInfo:info];
   [(AADevicePowerSources *)self _publishToIOKit];
   if (dword_1002F6C58 <= 30 && (dword_1002F6C58 != -1 || _LogCategory_Initialize()))
   {
@@ -138,10 +138,10 @@
 {
   [(AADevicePowerSources *)self _publishBatteryWithType:1];
   [(AADevicePowerSources *)self _publishBatteryWithType:4];
-  v3 = [(AADevicePowerSources *)self batteryInfo];
-  v4 = [v3 batteryCombinedLeftRight];
+  batteryInfo = [(AADevicePowerSources *)self batteryInfo];
+  batteryCombinedLeftRight = [batteryInfo batteryCombinedLeftRight];
 
-  if (v4)
+  if (batteryCombinedLeftRight)
   {
     [(AADevicePowerSources *)self _unpublishPowerSourceForBatteryWithType:2];
     [(AADevicePowerSources *)self _unpublishPowerSourceForBatteryWithType:3];
@@ -168,32 +168,32 @@
   [(AADevicePowerSources *)self _unpublishPowerSourceForBatteryWithType:5];
 }
 
-- (void)_publishBatteryWithType:(int64_t)a3
+- (void)_publishBatteryWithType:(int64_t)type
 {
-  v5 = [(AADevicePowerSources *)self batteryInfo];
-  v7 = [v5 batteryForType:a3];
+  batteryInfo = [(AADevicePowerSources *)self batteryInfo];
+  v7 = [batteryInfo batteryForType:type];
 
   if (v7)
   {
     v6 = [(AADevicePowerSources *)self _updatedPowerSourceDetailsForBattery:?];
     if (v6)
     {
-      [(AADevicePowerSources *)self _publishPowerSourceForBatteryWithType:a3 details:v6];
+      [(AADevicePowerSources *)self _publishPowerSourceForBatteryWithType:type details:v6];
     }
   }
 
   else
   {
-    [(AADevicePowerSources *)self _unpublishPowerSourceForBatteryWithType:a3];
+    [(AADevicePowerSources *)self _unpublishPowerSourceForBatteryWithType:type];
   }
 }
 
-- (id)_updatedPowerSourceDetailsForBattery:(id)a3
+- (id)_updatedPowerSourceDetailsForBattery:(id)battery
 {
-  v5 = a3;
-  v6 = -[AADevicePowerSources _powerSourceDetailsForType:](self, "_powerSourceDetailsForType:", [v5 type]);
-  v106 = v5;
-  v105 = [v5 isCaseBattery];
+  batteryCopy = battery;
+  v6 = -[AADevicePowerSources _powerSourceDetailsForType:](self, "_powerSourceDetailsForType:", [batteryCopy type]);
+  v106 = batteryCopy;
+  isCaseBattery = [batteryCopy isCaseBattery];
   v7 = v6 == 0;
   if (v6)
   {
@@ -201,32 +201,32 @@
   }
 
   v6 = objc_alloc_init(NSMutableDictionary);
-  -[AADevicePowerSources _setPowerSourceDetails:forType:](self, "_setPowerSourceDetails:forType:", v6, [v5 type]);
-  if (v105)
+  -[AADevicePowerSources _setPowerSourceDetails:forType:](self, "_setPowerSourceDetails:forType:", v6, [batteryCopy type]);
+  if (isCaseBattery)
   {
-    v3 = [(AADevicePowerSources *)self batteryInfo];
-    v8 = [v3 caseIdentifier];
-    if (v8)
+    batteryInfo = [(AADevicePowerSources *)self batteryInfo];
+    caseIdentifier = [batteryInfo caseIdentifier];
+    if (caseIdentifier)
     {
-      v9 = v8;
-      v10 = [(AADevicePowerSources *)self batteryInfo];
-      v11 = [v10 caseIdentifier];
+      v9 = caseIdentifier;
+      batteryInfo2 = [(AADevicePowerSources *)self batteryInfo];
+      caseIdentifier2 = [batteryInfo2 caseIdentifier];
 
 LABEL_6:
       goto LABEL_7;
     }
   }
 
-  v12 = [(AADevicePowerSources *)self batteryInfo];
-  v11 = [v12 identifier];
+  batteryInfo3 = [(AADevicePowerSources *)self batteryInfo];
+  caseIdentifier2 = [batteryInfo3 identifier];
 
-  if (v105)
+  if (isCaseBattery)
   {
     goto LABEL_6;
   }
 
 LABEL_7:
-  if (v105)
+  if (isCaseBattery)
   {
     v13 = @"Audio Battery Case";
   }
@@ -237,17 +237,17 @@ LABEL_7:
   }
 
   [v6 setObject:v13 forKeyedSubscript:@"Accessory Category"];
-  [v6 setObject:v11 forKeyedSubscript:@"Accessory Identifier"];
+  [v6 setObject:caseIdentifier2 forKeyedSubscript:@"Accessory Identifier"];
   [v6 setObject:&__kCFBooleanTrue forKeyedSubscript:@"Is Present"];
   [v6 setObject:&off_1002CB840 forKeyedSubscript:@"Max Capacity"];
-  [v5 lowLevel];
+  [batteryCopy lowLevel];
   v15 = [NSNumber numberWithInt:(v14 * 100.0)];
   [v6 setObject:v15 forKeyedSubscript:@"Low Warn Level"];
 
-  v16 = -[AADevicePowerSources _batteryTypeToIOPSPartIdentifier:](self, "_batteryTypeToIOPSPartIdentifier:", [v5 type]);
+  v16 = -[AADevicePowerSources _batteryTypeToIOPSPartIdentifier:](self, "_batteryTypeToIOPSPartIdentifier:", [batteryCopy type]);
   [v6 setObject:v16 forKeyedSubscript:@"Part Identifier"];
 
-  if ([v5 inAACP])
+  if ([batteryCopy inAACP])
   {
     v17 = @"Bluetooth";
   }
@@ -267,13 +267,13 @@ LABEL_14:
   v104 = v18;
   if (!v18 || ![v18 unsignedIntValue])
   {
-    v19 = [(AADevicePowerSources *)self batteryInfo];
-    v20 = [v19 productID];
+    batteryInfo4 = [(AADevicePowerSources *)self batteryInfo];
+    productID = [batteryInfo4 productID];
 
-    if (v20)
+    if (productID)
     {
-      v21 = [(AADevicePowerSources *)self batteryInfo];
-      v22 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v21 productID]);
+      batteryInfo5 = [(AADevicePowerSources *)self batteryInfo];
+      v22 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [batteryInfo5 productID]);
       [v6 setObject:v22 forKeyedSubscript:@"Product ID"];
 
       v7 = 1;
@@ -281,10 +281,10 @@ LABEL_14:
   }
 
   v23 = [v6 objectForKeyedSubscript:@"Name"];
-  v24 = self;
-  v25 = [(AADevicePowerSources *)self batteryInfo];
-  [v25 name];
-  if (v105)
+  selfCopy = self;
+  batteryInfo6 = [(AADevicePowerSources *)self batteryInfo];
+  [batteryInfo6 name];
+  if (isCaseBattery)
     v26 = {;
     v27 = [AADeviceLocalization caseNameWithDeviceName:v26];
   }
@@ -295,14 +295,14 @@ LABEL_14:
 
   if (v27)
   {
-    v28 = v23;
+    batteryInfo7 = v23;
     v29 = v27;
-    v30 = v29;
-    if (v28 != v29)
+    name = v29;
+    if (batteryInfo7 != v29)
     {
-      if (v28)
+      if (batteryInfo7)
       {
-        v31 = [v28 isEqual:v29];
+        v31 = [batteryInfo7 isEqual:v29];
 
         if (v31)
         {
@@ -314,7 +314,7 @@ LABEL_14:
       {
       }
 
-      [v6 setObject:v30 forKeyedSubscript:@"Name"];
+      [v6 setObject:name forKeyedSubscript:@"Name"];
       if ([v106 type] == 2)
       {
         v32 = @" 🅛";
@@ -331,9 +331,9 @@ LABEL_14:
         v32 = @" 🅡";
       }
 
-      v28 = [(AADevicePowerSources *)v24 batteryInfo];
-      v30 = [v28 name];
-      v33 = [v30 stringByAppendingString:v32];
+      batteryInfo7 = [(AADevicePowerSources *)selfCopy batteryInfo];
+      name = [batteryInfo7 name];
+      v33 = [name stringByAppendingString:v32];
       [v6 setObject:v33 forKeyedSubscript:@"Part Name"];
 
       v7 = 1;
@@ -343,28 +343,28 @@ LABEL_14:
 LABEL_33:
   v103 = v23;
   v34 = [v6 objectForKeyedSubscript:@"Group Identifier"];
-  v35 = [(AADevicePowerSources *)v24 batteryInfo];
-  v36 = [v35 findMyGroupIdentifier];
-  v37 = v36;
+  batteryInfo8 = [(AADevicePowerSources *)selfCopy batteryInfo];
+  findMyGroupIdentifier = [batteryInfo8 findMyGroupIdentifier];
+  v37 = findMyGroupIdentifier;
   v102 = v27;
-  if (v36)
+  if (findMyGroupIdentifier)
   {
-    v38 = v36;
+    identifier = findMyGroupIdentifier;
   }
 
   else
   {
-    [(AADevicePowerSources *)v24 batteryInfo];
+    [(AADevicePowerSources *)selfCopy batteryInfo];
     v40 = v39 = v7;
-    v38 = [v40 identifier];
+    identifier = [v40 identifier];
 
     v7 = v39;
   }
 
-  v41 = v38;
+  v41 = identifier;
   v42 = v34;
   v43 = v42;
-  v44 = v24;
+  v44 = selfCopy;
   v100 = v42;
   if (v41 == v42)
   {
@@ -416,9 +416,9 @@ LABEL_49:
   }
 
 LABEL_50:
-  v53 = [v106 charging];
+  charging = [v106 charging];
   v54 = @"Battery Power";
-  if (v53)
+  if (charging)
   {
     v54 = @"AC Power";
   }
@@ -597,12 +597,12 @@ LABEL_88:
   }
 
 LABEL_95:
-  if (v105)
+  if (isCaseBattery)
   {
-    v94 = [(AADevicePowerSources *)v44 batteryInfo];
-    v95 = [v94 caseVersion];
+    batteryInfo9 = [(AADevicePowerSources *)v44 batteryInfo];
+    caseVersion = [batteryInfo9 caseVersion];
 
-    if (v95 == 1)
+    if (caseVersion == 1)
     {
       v75 |= [(AADevicePowerSources *)v44 _updateCaseLedInfoInDetails:v6];
     }
@@ -628,10 +628,10 @@ LABEL_95:
   return v96;
 }
 
-- (BOOL)_updateCaseLedInfoInDetails:(id)a3
+- (BOOL)_updateCaseLedInfoInDetails:(id)details
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"LEDs"];
+  detailsCopy = details;
+  v5 = [detailsCopy objectForKeyedSubscript:@"LEDs"];
   v6 = v5;
   if (v5 && [v5 count])
   {
@@ -644,15 +644,15 @@ LABEL_95:
   }
 
   v28[0] = @"State";
-  v8 = [(AADevicePowerSources *)self batteryInfo];
-  v9 = [v8 caseLedStatus];
+  batteryInfo = [(AADevicePowerSources *)self batteryInfo];
+  caseLedStatus = [batteryInfo caseLedStatus];
   v10 = "Off";
-  if (v9 == 1)
+  if (caseLedStatus == 1)
   {
     v10 = "Blinking";
   }
 
-  if (v9)
+  if (caseLedStatus)
   {
     v11 = v10;
   }
@@ -665,16 +665,16 @@ LABEL_95:
   v12 = [NSString stringWithUTF8String:v11];
   v28[1] = @"Color";
   v29[0] = v12;
-  v13 = [(AADevicePowerSources *)self batteryInfo];
-  v14 = [v13 caseLedColor];
-  if (v14 > 3)
+  batteryInfo2 = [(AADevicePowerSources *)self batteryInfo];
+  caseLedColor = [batteryInfo2 caseLedColor];
+  if (caseLedColor > 3)
   {
     v15 = "?";
   }
 
   else
   {
-    v15 = off_1002B9B00[v14];
+    v15 = off_1002B9B00[caseLedColor];
   }
 
   v16 = [NSString stringWithUTF8String:v15];
@@ -704,7 +704,7 @@ LABEL_95:
       v26 = v17;
       v22 = 1;
       v24 = [NSArray arrayWithObjects:&v26 count:1];
-      [v4 setObject:v24 forKeyedSubscript:@"LEDs"];
+      [detailsCopy setObject:v24 forKeyedSubscript:@"LEDs"];
     }
   }
 
@@ -712,7 +712,7 @@ LABEL_95:
   {
     v27 = v17;
     v23 = [NSArray arrayWithObjects:&v27 count:1];
-    [v4 setObject:v23 forKeyedSubscript:@"LEDs"];
+    [detailsCopy setObject:v23 forKeyedSubscript:@"LEDs"];
 
     v22 = 1;
     if (dword_1002F6C58 <= 10)
@@ -729,16 +729,16 @@ LABEL_95:
   return v22;
 }
 
-- (BOOL)_updateCombinedPartsInDetails:(id)a3
+- (BOOL)_updateCombinedPartsInDetails:(id)details
 {
-  v4 = a3;
-  v5 = [(AADevicePowerSources *)self batteryInfo];
-  v6 = [v5 batteryLeft];
-  v7 = [(AADevicePowerSources *)self _updatedPowerSourceDetailsForBattery:v6];
+  detailsCopy = details;
+  batteryInfo = [(AADevicePowerSources *)self batteryInfo];
+  batteryLeft = [batteryInfo batteryLeft];
+  v7 = [(AADevicePowerSources *)self _updatedPowerSourceDetailsForBattery:batteryLeft];
 
-  v8 = [(AADevicePowerSources *)self batteryInfo];
-  v9 = [v8 batteryRight];
-  v10 = [(AADevicePowerSources *)self _updatedPowerSourceDetailsForBattery:v9];
+  batteryInfo2 = [(AADevicePowerSources *)self batteryInfo];
+  batteryRight = [batteryInfo2 batteryRight];
+  v10 = [(AADevicePowerSources *)self _updatedPowerSourceDetailsForBattery:batteryRight];
 
   if (dword_1002F6C58 <= 10 && (dword_1002F6C58 != -1 || _LogCategory_Initialize()))
   {
@@ -770,35 +770,35 @@ LABEL_95:
     sub_1001F1420(self);
   }
 
-  [v4 setObject:v11 forKeyedSubscript:@"Combined Parts"];
+  [detailsCopy setObject:v11 forKeyedSubscript:@"Combined Parts"];
 
   return (v7 | v10) != 0;
 }
 
-- (void)_publishPowerSourceForBatteryWithType:(int64_t)a3 details:(id)a4
+- (void)_publishPowerSourceForBatteryWithType:(int64_t)type details:(id)details
 {
-  v7 = a4;
-  v6 = [(AADevicePowerSources *)self _powerSourceIDForType:a3];
-  if (!v6)
+  detailsCopy = details;
+  _createPowerSource = [(AADevicePowerSources *)self _powerSourceIDForType:type];
+  if (!_createPowerSource)
   {
     if (dword_1002F6C58 <= 30 && (dword_1002F6C58 != -1 || _LogCategory_Initialize()))
     {
-      sub_1001F147C(a3);
+      sub_1001F147C(type);
     }
 
-    v6 = [(AADevicePowerSources *)self _createPowerSource];
-    [(AADevicePowerSources *)self _setPowerSourceID:v6 forType:a3];
+    _createPowerSource = [(AADevicePowerSources *)self _createPowerSource];
+    [(AADevicePowerSources *)self _setPowerSourceID:_createPowerSource forType:type];
   }
 
   if (dword_1002F6C58 <= 30 && (dword_1002F6C58 != -1 || _LogCategory_Initialize()))
   {
-    sub_1001F14DC(a3);
+    sub_1001F14DC(type);
   }
 
-  [(AADevicePowerSources *)self _setPowerSource:v6 details:v7];
+  [(AADevicePowerSources *)self _setPowerSource:_createPowerSource details:detailsCopy];
 }
 
-- (void)_unpublishPowerSourceForBatteryWithType:(int64_t)a3
+- (void)_unpublishPowerSourceForBatteryWithType:(int64_t)type
 {
   v5 = [(AADevicePowerSources *)self _powerSourceIDForType:?];
   if (v5)
@@ -806,25 +806,25 @@ LABEL_95:
     v6 = v5;
     if (dword_1002F6C58 <= 30 && (dword_1002F6C58 != -1 || _LogCategory_Initialize()))
     {
-      sub_1001F153C(a3);
+      sub_1001F153C(type);
     }
 
     [(AADevicePowerSources *)self _releasePowerSource:v6];
-    [(AADevicePowerSources *)self _setPowerSourceID:0 forType:a3];
+    [(AADevicePowerSources *)self _setPowerSourceID:0 forType:type];
   }
 
-  v7 = [(AADevicePowerSources *)self _powerSourceDetailsForType:a3];
+  v7 = [(AADevicePowerSources *)self _powerSourceDetailsForType:type];
   if (v7)
   {
     v8 = v7;
     if (dword_1002F6C58 <= 30 && (dword_1002F6C58 != -1 || _LogCategory_Initialize()))
     {
-      sub_1001F159C(a3);
+      sub_1001F159C(type);
     }
 
-    [(AADevicePowerSources *)self _setPowerSourceDetails:0 forType:a3];
+    [(AADevicePowerSources *)self _setPowerSourceDetails:0 forType:type];
     v7 = v8;
-    if (a3 == 5)
+    if (type == 5)
     {
       [(AADevicePowerSources *)self _setPowerSourceDetails:0 forType:2];
       [(AADevicePowerSources *)self _setPowerSourceDetails:0 forType:3];
@@ -833,85 +833,85 @@ LABEL_95:
   }
 }
 
-- (id)_powerSourceDetailsForType:(int64_t)a3
+- (id)_powerSourceDetailsForType:(int64_t)type
 {
-  v4 = 0;
-  if (a3 <= 2)
+  powerSourceCaseDetails = 0;
+  if (type <= 2)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
-      v4 = [(AADevicePowerSources *)self powerSourceCaseDetails];
+      powerSourceCaseDetails = [(AADevicePowerSources *)self powerSourceCaseDetails];
     }
 
-    else if (a3 == 2)
+    else if (type == 2)
     {
-      v4 = [(AADevicePowerSources *)self powerSourceLeftDetails];
+      powerSourceCaseDetails = [(AADevicePowerSources *)self powerSourceLeftDetails];
     }
   }
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case 3:
-        v4 = [(AADevicePowerSources *)self powerSourceRightDetails];
+        powerSourceCaseDetails = [(AADevicePowerSources *)self powerSourceRightDetails];
         break;
       case 4:
-        v4 = [(AADevicePowerSources *)self powerSourceMainDetails];
+        powerSourceCaseDetails = [(AADevicePowerSources *)self powerSourceMainDetails];
         break;
       case 5:
-        v4 = [(AADevicePowerSources *)self powerSourceCombinedLeftRightDetails];
+        powerSourceCaseDetails = [(AADevicePowerSources *)self powerSourceCombinedLeftRightDetails];
         break;
     }
   }
 
-  return v4;
+  return powerSourceCaseDetails;
 }
 
-- (void)_setPowerSourceDetails:(id)a3 forType:(int64_t)a4
+- (void)_setPowerSourceDetails:(id)details forType:(int64_t)type
 {
-  v6 = a3;
-  v7 = v6;
-  v8 = v6;
+  detailsCopy = details;
+  v7 = detailsCopy;
+  v8 = detailsCopy;
   if (dword_1002F6C58 <= 10)
   {
-    if (dword_1002F6C58 != -1 || (v6 = _LogCategory_Initialize(), v7 = v8, v6))
+    if (dword_1002F6C58 != -1 || (detailsCopy = _LogCategory_Initialize(), v7 = v8, detailsCopy))
     {
-      v6 = sub_1001F15FC(a4);
+      detailsCopy = sub_1001F15FC(type);
       v7 = v8;
     }
   }
 
-  if (a4 <= 2)
+  if (type <= 2)
   {
-    if (a4 == 1)
+    if (type == 1)
     {
-      v6 = [(AADevicePowerSources *)self setPowerSourceCaseDetails:v8];
+      detailsCopy = [(AADevicePowerSources *)self setPowerSourceCaseDetails:v8];
     }
 
     else
     {
-      if (a4 != 2)
+      if (type != 2)
       {
         goto LABEL_16;
       }
 
-      v6 = [(AADevicePowerSources *)self setPowerSourceLeftDetails:v8];
+      detailsCopy = [(AADevicePowerSources *)self setPowerSourceLeftDetails:v8];
     }
   }
 
   else
   {
-    switch(a4)
+    switch(type)
     {
       case 3:
-        v6 = [(AADevicePowerSources *)self setPowerSourceRightDetails:v8];
+        detailsCopy = [(AADevicePowerSources *)self setPowerSourceRightDetails:v8];
         break;
       case 4:
-        v6 = [(AADevicePowerSources *)self setPowerSourceMainDetails:v8];
+        detailsCopy = [(AADevicePowerSources *)self setPowerSourceMainDetails:v8];
         break;
       case 5:
-        v6 = [(AADevicePowerSources *)self setPowerSourceCombinedLeftRightDetails:v8];
+        detailsCopy = [(AADevicePowerSources *)self setPowerSourceCombinedLeftRightDetails:v8];
         break;
       default:
         goto LABEL_16;
@@ -921,19 +921,19 @@ LABEL_95:
   v7 = v8;
 LABEL_16:
 
-  _objc_release_x1(v6, v7);
+  _objc_release_x1(detailsCopy, v7);
 }
 
-- (OpaqueIOPSPowerSourceID)_powerSourceIDForType:(int64_t)a3
+- (OpaqueIOPSPowerSourceID)_powerSourceIDForType:(int64_t)type
 {
-  if (a3 <= 2)
+  if (type <= 2)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       return [(AADevicePowerSources *)self powerSourceCaseID];
     }
 
-    if (a3 == 2)
+    if (type == 2)
     {
       return [(AADevicePowerSources *)self powerSourceLeftID];
     }
@@ -941,7 +941,7 @@ LABEL_16:
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case 3:
         return [(AADevicePowerSources *)self powerSourceRightID];
@@ -955,66 +955,66 @@ LABEL_16:
   return 0;
 }
 
-- (void)_setPowerSourceID:(OpaqueIOPSPowerSourceID *)a3 forType:(int64_t)a4
+- (void)_setPowerSourceID:(OpaqueIOPSPowerSourceID *)d forType:(int64_t)type
 {
-  if (a3)
+  if (d)
   {
     if (dword_1002F6C58 <= 10 && (dword_1002F6C58 != -1 || _LogCategory_Initialize()))
     {
-      sub_1001F165C(a4);
+      sub_1001F165C(type);
     }
   }
 
   else if (dword_1002F6C58 <= 10 && (dword_1002F6C58 != -1 || _LogCategory_Initialize()))
   {
-    sub_1001F16BC(a4);
+    sub_1001F16BC(type);
   }
 
-  if (a4 <= 2)
+  if (type <= 2)
   {
-    if (a4 == 1)
+    if (type == 1)
     {
 
-      [(AADevicePowerSources *)self setPowerSourceCaseID:a3];
+      [(AADevicePowerSources *)self setPowerSourceCaseID:d];
     }
 
-    else if (a4 == 2)
+    else if (type == 2)
     {
 
-      [(AADevicePowerSources *)self setPowerSourceLeftID:a3];
+      [(AADevicePowerSources *)self setPowerSourceLeftID:d];
     }
   }
 
   else
   {
-    switch(a4)
+    switch(type)
     {
       case 3:
 
-        [(AADevicePowerSources *)self setPowerSourceRightID:a3];
+        [(AADevicePowerSources *)self setPowerSourceRightID:d];
         break;
       case 4:
 
-        [(AADevicePowerSources *)self setPowerSourceMainID:a3];
+        [(AADevicePowerSources *)self setPowerSourceMainID:d];
         break;
       case 5:
 
-        [(AADevicePowerSources *)self setPowerSourceCombinedLeftRightID:a3];
+        [(AADevicePowerSources *)self setPowerSourceCombinedLeftRightID:d];
         break;
     }
   }
 }
 
-- (id)_batteryTypeToIOPSPartIdentifier:(int64_t)a3
+- (id)_batteryTypeToIOPSPartIdentifier:(int64_t)identifier
 {
-  if ((a3 - 1) > 4)
+  if ((identifier - 1) > 4)
   {
     return @"Other";
   }
 
   else
   {
-    return *(&off_1002B9B50 + a3 - 1);
+    return *(&off_1002B9B50 + identifier - 1);
   }
 }
 
@@ -1036,9 +1036,9 @@ LABEL_16:
   return 0;
 }
 
-- (void)_releasePowerSource:(OpaqueIOPSPowerSourceID *)a3
+- (void)_releasePowerSource:(OpaqueIOPSPowerSourceID *)source
 {
-  if (a3)
+  if (source)
   {
     if (IOPSReleasePowerSource())
     {
@@ -1055,20 +1055,20 @@ LABEL_16:
   }
 }
 
-- (void)_setPowerSource:(OpaqueIOPSPowerSourceID *)a3 details:(id)a4
+- (void)_setPowerSource:(OpaqueIOPSPowerSourceID *)source details:(id)details
 {
-  v5 = a4;
-  v6 = v5;
-  if (a3)
+  detailsCopy = details;
+  v6 = detailsCopy;
+  if (source)
   {
-    v7 = v5;
-    v5 = IOPSSetPowerSourceDetails();
-    if (v5)
+    v7 = detailsCopy;
+    detailsCopy = IOPSSetPowerSourceDetails();
+    if (detailsCopy)
     {
       v6 = v7;
       if (dword_1002F6C58 <= 90)
       {
-        if (dword_1002F6C58 != -1 || (v5 = _LogCategory_Initialize(), v6 = v7, v5))
+        if (dword_1002F6C58 != -1 || (detailsCopy = _LogCategory_Initialize(), v6 = v7, detailsCopy))
         {
           sub_1001F1824();
 LABEL_14:
@@ -1082,16 +1082,16 @@ LABEL_14:
       v6 = v7;
       if (dword_1002F6C58 <= 10)
       {
-        if (dword_1002F6C58 != -1 || (v5 = _LogCategory_Initialize(), v6 = v7, v5))
+        if (dword_1002F6C58 != -1 || (detailsCopy = _LogCategory_Initialize(), v6 = v7, detailsCopy))
         {
-          v5 = sub_1001F1880();
+          detailsCopy = sub_1001F1880();
           goto LABEL_14;
         }
       }
     }
   }
 
-  _objc_release_x1(v5, v6);
+  _objc_release_x1(detailsCopy, v6);
 }
 
 @end

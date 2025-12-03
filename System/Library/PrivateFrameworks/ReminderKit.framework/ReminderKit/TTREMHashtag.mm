@@ -1,27 +1,27 @@
 @interface TTREMHashtag
-+ (BOOL)isHashtag:(id)a3 equalToModelComparable:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (BOOL)isHashtag:(id)hashtag equalToModelComparable:(id)comparable;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (TTREMHashtag)initWithCoder:(id)a3;
+- (TTREMHashtag)initWithCoder:(id)coder;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TTREMHashtag
 
-+ (BOOL)isHashtag:(id)a3 equalToModelComparable:(id)a4
++ (BOOL)isHashtag:(id)hashtag equalToModelComparable:(id)comparable
 {
-  v5 = a4;
-  v6 = [a3 objectIdentifier];
+  comparableCopy = comparable;
+  objectIdentifier = [hashtag objectIdentifier];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v5 objectIdentifier];
-    v8 = v7;
+    objectIdentifier2 = [comparableCopy objectIdentifier];
+    v8 = objectIdentifier2;
     v9 = 0;
-    if (v6 && v7)
+    if (objectIdentifier && objectIdentifier2)
     {
-      v9 = [v6 isEqualToString:v7];
+      v9 = [objectIdentifier isEqualToString:objectIdentifier2];
     }
   }
 
@@ -36,16 +36,16 @@
 
 - (unint64_t)hash
 {
-  v2 = [(TTREMHashtag *)self objectIdentifier];
-  v3 = [v2 hash];
+  objectIdentifier = [(TTREMHashtag *)self objectIdentifier];
+  v3 = [objectIdentifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -53,7 +53,7 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [TTREMHashtag isHashtag:self equalToModelComparable:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [TTREMHashtag isHashtag:self equalToModelComparable:equalCopy];
   }
 
   return v5;
@@ -63,21 +63,21 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(TTREMHashtag *)self objectIdentifier];
-  v6 = [v3 stringWithFormat:@"<%@: %p objectIdentifier: %@>", v4, self, v5];
+  objectIdentifier = [(TTREMHashtag *)self objectIdentifier];
+  v6 = [v3 stringWithFormat:@"<%@: %p objectIdentifier: %@>", v4, self, objectIdentifier];
 
   return v6;
 }
 
-- (TTREMHashtag)initWithCoder:(id)a3
+- (TTREMHashtag)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = TTREMHashtag;
   v5 = [(TTREMHashtag *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"objectIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"objectIdentifier"];
     objectIdentifier = v5->_objectIdentifier;
     v5->_objectIdentifier = v6;
   }
@@ -85,11 +85,11 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(TTREMHashtag *)self objectIdentifier];
-  [v4 encodeObject:v5 forKey:@"objectIdentifier"];
+  coderCopy = coder;
+  objectIdentifier = [(TTREMHashtag *)self objectIdentifier];
+  [coderCopy encodeObject:objectIdentifier forKey:@"objectIdentifier"];
 }
 
 @end

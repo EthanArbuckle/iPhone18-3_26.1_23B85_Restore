@@ -13,19 +13,19 @@
   v14.super_class = TUIShelfLayout;
   [(TUILayout *)&v14 onChildrenUpdated];
   v3 = [(TUILayout *)self box];
-  v4 = [(TUILayout *)self controller];
-  v5 = [v3 content];
-  v6 = [v4 layoutForModel:v5];
+  controller = [(TUILayout *)self controller];
+  content = [v3 content];
+  v6 = [controller layoutForModel:content];
   content = self->_content;
   self->_content = v6;
 
-  v8 = [v3 contentBackground];
-  v9 = [v4 layoutForModel:v8];
+  contentBackground = [v3 contentBackground];
+  v9 = [controller layoutForModel:contentBackground];
   contentBackground = self->_contentBackground;
   self->_contentBackground = v9;
 
-  v11 = [v3 background];
-  v12 = [v4 layoutForModel:v11];
+  background = [v3 background];
+  v12 = [controller layoutForModel:background];
   background = self->_background;
   self->_background = v12;
 }
@@ -54,28 +54,28 @@
   [(TUILayout *)self computeWidth];
   v4 = v3;
   v5 = [(TUILayout *)self box];
-  v6 = [v5 contentWidth];
+  contentWidth = [v5 contentWidth];
   v8 = v7;
 
-  v9 = [(TUILayout *)self controller];
-  v10 = [v9 instantiateContext];
-  v11 = [v10 environment];
-  [v11 viewSize];
+  controller = [(TUILayout *)self controller];
+  instantiateContext = [controller instantiateContext];
+  environment = [instantiateContext environment];
+  [environment viewSize];
   v13 = v12;
 
-  v14 = [(TUILayout *)self controller];
-  v15 = [v14 instantiateContext];
-  v16 = [v15 environment];
-  [v16 viewSafeAreaInsets];
+  controller2 = [(TUILayout *)self controller];
+  instantiateContext2 = [controller2 instantiateContext];
+  environment2 = [instantiateContext2 environment];
+  [environment2 viewSafeAreaInsets];
   v18 = v17;
   v20 = v19;
 
   v21 = [(TUILayout *)self box];
-  v22 = [v21 respectsSafeArea];
+  respectsSafeArea = [v21 respectsSafeArea];
   v23 = 0;
   left = UIEdgeInsetsZero.left;
   right = UIEdgeInsetsZero.right;
-  if (v22 && v4 == v13)
+  if (respectsSafeArea && v4 == v13)
   {
     v23 = v18 != left;
     if (UIEdgeInsetsZero.top != 0.0)
@@ -114,12 +114,12 @@
   v27 = v4 - v18 - v26;
   if ((v8 & 0x8000000000000) != 0)
   {
-    v28 = fmin(*&v8, fmax(*(&v6 + 1), v27));
+    v28 = fmin(*&v8, fmax(*(&contentWidth + 1), v27));
   }
 
   else
   {
-    v28 = *&v6;
+    v28 = *&contentWidth;
   }
 
   [(TUILayout *)self->_content setContainingWidth:v28];

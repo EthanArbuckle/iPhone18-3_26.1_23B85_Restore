@@ -1,33 +1,33 @@
 @interface CDSDockSettingsViewController
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
 - (CDSDockSettingsViewController)init;
-- (id)_activeStateForSpecifier:(id)a3;
-- (id)_tableIndexPathForAppWhenDeactivated:(id)a3;
+- (id)_activeStateForSpecifier:(id)specifier;
+- (id)_tableIndexPathForAppWhenDeactivated:(id)deactivated;
 - (id)specifiers;
-- (id)tableView:(id)a3 targetIndexPathForMoveFromRowAtIndexPath:(id)a4 toProposedIndexPath:(id)a5;
-- (id)tableView:(id)a3 titleForDeleteConfirmationButtonForRowAtIndexPath:(id)a4;
-- (int64_t)_indexForNthApp:(int64_t)a3 withActiveState:(BOOL)a4;
-- (int64_t)_indexOfAppWithBundleID:(id)a3;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
-- (unint64_t)_indexForAppWhenDeactivated:(id)a3;
+- (id)tableView:(id)view targetIndexPathForMoveFromRowAtIndexPath:(id)path toProposedIndexPath:(id)indexPath;
+- (id)tableView:(id)view titleForDeleteConfirmationButtonForRowAtIndexPath:(id)path;
+- (int64_t)_indexForNthApp:(int64_t)app withActiveState:(BOOL)state;
+- (int64_t)_indexOfAppWithBundleID:(id)d;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
+- (unint64_t)_indexForAppWhenDeactivated:(id)deactivated;
 - (unint64_t)activeGroupSectionIndex;
 - (unint64_t)inactiveGroupSectionIndex;
-- (void)_loadDataWithCompletion:(id)a3;
+- (void)_loadDataWithCompletion:(id)completion;
 - (void)_prepareSpecifiers;
 - (void)_saveSettings;
-- (void)_setActiveState:(BOOL)a3 forSpecifier:(id)a4 updateTable:(BOOL)a5;
-- (void)_setActiveState:(id)a3 forSpecifier:(id)a4;
+- (void)_setActiveState:(BOOL)state forSpecifier:(id)specifier updateTable:(BOOL)table;
+- (void)_setActiveState:(id)state forSpecifier:(id)specifier;
 - (void)_settingsDidChange;
-- (void)_showAlertWithTitle:(id)a3 message:(id)a4 specifier:(id)a5;
-- (void)_showLimitReached:(id)a3;
+- (void)_showAlertWithTitle:(id)title message:(id)message specifier:(id)specifier;
+- (void)_showLimitReached:(id)reached;
 - (void)_updateOrderingFooterForSelectedSpecifier;
-- (void)dataProviderDidChange:(id)a3;
+- (void)dataProviderDidChange:(id)change;
 - (void)dealloc;
-- (void)didSelectOrderingSpecifier:(id)a3;
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5;
+- (void)didSelectOrderingSpecifier:(id)specifier;
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath;
 - (void)viewDidLoad;
 @end
 
@@ -102,29 +102,29 @@
 {
   v3 = [(CDSDockSettingsViewController *)self getGroupSpecifierForSpecifierID:@"ActiveGroup"];
   v4 = [(CDSDockSettingsViewController *)self indexPathForSpecifier:v3];
-  v5 = [v4 section];
+  section = [v4 section];
 
-  return v5;
+  return section;
 }
 
 - (unint64_t)inactiveGroupSectionIndex
 {
   v3 = [(CDSDockSettingsViewController *)self getGroupSpecifierForSpecifierID:@"InactiveGroup"];
   v4 = [(CDSDockSettingsViewController *)self indexPathForSpecifier:v3];
-  v5 = [v4 section];
+  section = [v4 section];
 
-  return v5;
+  return section;
 }
 
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
-  v22 = a4;
-  v7 = a5;
-  v8 = [(CDSDockSettingsViewController *)self specifierAtIndexPath:v22];
-  v9 = [(CDSDockSettingsViewController *)self activeGroupSectionIndex];
-  v10 = [v7 section];
-  v11 = [v22 section];
-  if (v11 != [v7 section] && v10 == v9 && -[CDSDockSettingsViewController _hasMaximumNumberOfActiveApps](self, "_hasMaximumNumberOfActiveApps"))
+  pathCopy = path;
+  indexPathCopy = indexPath;
+  v8 = [(CDSDockSettingsViewController *)self specifierAtIndexPath:pathCopy];
+  activeGroupSectionIndex = [(CDSDockSettingsViewController *)self activeGroupSectionIndex];
+  section = [indexPathCopy section];
+  section2 = [pathCopy section];
+  if (section2 != [indexPathCopy section] && section == activeGroupSectionIndex && -[CDSDockSettingsViewController _hasMaximumNumberOfActiveApps](self, "_hasMaximumNumberOfActiveApps"))
   {
     [(CDSDockSettingsViewController *)self _showLimitReached:0];
     goto LABEL_14;
@@ -132,22 +132,22 @@
 
   v12 = [v8 app];
   v13 = v12;
-  if (v10 == v9)
+  if (section == activeGroupSectionIndex)
   {
     inactiveBundleIDs = self->_inactiveBundleIDs;
-    v17 = [v12 bundleIdentifier];
-    [(NSMutableArray *)inactiveBundleIDs removeObject:v17];
+    bundleIdentifier = [v12 bundleIdentifier];
+    [(NSMutableArray *)inactiveBundleIDs removeObject:bundleIdentifier];
 
     activeBundleIDs = self->_activeBundleIDs;
-    v19 = [v13 bundleIdentifier];
-    [(NSMutableArray *)activeBundleIDs removeObject:v19];
+    bundleIdentifier2 = [v13 bundleIdentifier];
+    [(NSMutableArray *)activeBundleIDs removeObject:bundleIdentifier2];
 
     v20 = self->_activeBundleIDs;
-    v21 = [v13 bundleIdentifier];
-    -[NSMutableArray insertObject:atIndex:](v20, "insertObject:atIndex:", v21, [v7 row]);
+    bundleIdentifier3 = [v13 bundleIdentifier];
+    -[NSMutableArray insertObject:atIndex:](v20, "insertObject:atIndex:", bundleIdentifier3, [indexPathCopy row]);
 
     [(CDSDockSettingsViewController *)self _saveSettings];
-    if ([v22 section] == v9 && objc_msgSend(v7, "section") == v9)
+    if ([pathCopy section] == activeGroupSectionIndex && objc_msgSend(indexPathCopy, "section") == activeGroupSectionIndex)
     {
       v15 = 2;
     }
@@ -161,8 +161,8 @@
   }
 
   [(CDSDockSettingsViewController *)self _setActiveState:0 forSpecifier:v8 updateTable:0];
-  v14 = [v22 section];
-  if (v14 != [v7 section])
+  section3 = [pathCopy section];
+  if (section3 != [indexPathCopy section])
   {
     v15 = 0;
 LABEL_12:
@@ -174,33 +174,33 @@ LABEL_12:
 LABEL_14:
 }
 
-- (id)tableView:(id)a3 targetIndexPathForMoveFromRowAtIndexPath:(id)a4 toProposedIndexPath:(id)a5
+- (id)tableView:(id)view targetIndexPathForMoveFromRowAtIndexPath:(id)path toProposedIndexPath:(id)indexPath
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CDSDockSettingsViewController *)self activeGroupSectionIndex];
-  if ([v10 section] == v11)
+  viewCopy = view;
+  pathCopy = path;
+  indexPathCopy = indexPath;
+  activeGroupSectionIndex = [(CDSDockSettingsViewController *)self activeGroupSectionIndex];
+  if ([indexPathCopy section] == activeGroupSectionIndex)
   {
-    v12 = v10;
+    v12 = indexPathCopy;
   }
 
   else
   {
-    v13 = [(CDSDockSettingsViewController *)self inactiveGroupSectionIndex];
-    if (([v10 section] != v13 || objc_msgSend(v9, "section") != v13) && (objc_msgSend(v10, "section") == v13 || objc_msgSend(v10, "section") == v11))
+    inactiveGroupSectionIndex = [(CDSDockSettingsViewController *)self inactiveGroupSectionIndex];
+    if (([indexPathCopy section] != inactiveGroupSectionIndex || objc_msgSend(pathCopy, "section") != inactiveGroupSectionIndex) && (objc_msgSend(indexPathCopy, "section") == inactiveGroupSectionIndex || objc_msgSend(indexPathCopy, "section") == activeGroupSectionIndex))
     {
       v19.receiver = self;
       v19.super_class = CDSDockSettingsViewController;
-      v14 = [(CDSDockSettingsViewController *)&v19 tableView:v8 cellForRowAtIndexPath:v9];
-      v15 = [v14 specifier];
-      v16 = [v15 app];
+      v14 = [(CDSDockSettingsViewController *)&v19 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
+      specifier = [v14 specifier];
+      v16 = [specifier app];
       v17 = [(CDSDockSettingsViewController *)self _tableIndexPathForAppWhenDeactivated:v16];
 
       goto LABEL_10;
     }
 
-    v12 = v9;
+    v12 = pathCopy;
   }
 
   v17 = v12;
@@ -209,17 +209,17 @@ LABEL_10:
   return v17;
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  v5 = [(CDSDockSettingsViewController *)self specifierAtIndexPath:a4];
+  v5 = [(CDSDockSettingsViewController *)self specifierAtIndexPath:path];
   v6 = [v5 app];
-  v7 = [(CDSDockSettingsViewController *)self table];
-  v8 = [v7 isEditing];
+  table = [(CDSDockSettingsViewController *)self table];
+  isEditing = [table isEditing];
 
-  if (v8)
+  if (isEditing)
   {
-    v9 = [v6 bundleIdentifier];
-    if ([(CDSDockSettingsViewController *)self _isAppActiveWithBundleID:v9])
+    bundleIdentifier = [v6 bundleIdentifier];
+    if ([(CDSDockSettingsViewController *)self _isAppActiveWithBundleID:bundleIdentifier])
     {
       v10 = 1;
     }
@@ -238,7 +238,7 @@ LABEL_10:
   return v10;
 }
 
-- (id)tableView:(id)a3 titleForDeleteConfirmationButtonForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view titleForDeleteConfirmationButtonForRowAtIndexPath:(id)path
 {
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"DOCK_REMOVE" value:&stru_8320 table:@"CompanionDockSettings"];
@@ -246,25 +246,25 @@ LABEL_10:
   return v5;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(CDSDockSettingsViewController *)self specifierAtIndexPath:v9];
-  if (a4 != 2 || ![(CDSDockSettingsViewController *)self _hasMaximumNumberOfActiveApps])
+  viewCopy = view;
+  pathCopy = path;
+  v10 = [(CDSDockSettingsViewController *)self specifierAtIndexPath:pathCopy];
+  if (style != 2 || ![(CDSDockSettingsViewController *)self _hasMaximumNumberOfActiveApps])
   {
     v15.receiver = self;
     v15.super_class = CDSDockSettingsViewController;
-    [(CDSDockSettingsViewController *)&v15 tableView:v8 commitEditingStyle:a4 forRowAtIndexPath:v9];
+    [(CDSDockSettingsViewController *)&v15 tableView:viewCopy commitEditingStyle:style forRowAtIndexPath:pathCopy];
     v11 = [v10 app];
-    v12 = [v11 bundleIdentifier];
-    v13 = [(CDSDockSettingsViewController *)self _isAppActiveWithBundleID:v12];
+    bundleIdentifier = [v11 bundleIdentifier];
+    v13 = [(CDSDockSettingsViewController *)self _isAppActiveWithBundleID:bundleIdentifier];
 
     v14 = 1;
     [(CDSDockSettingsViewController *)self _setActiveState:v13 ^ 1 forSpecifier:v10 updateTable:1];
-    if (a4 != 2)
+    if (style != 2)
     {
-      if (a4 != 1)
+      if (style != 1)
       {
 LABEL_8:
 
@@ -282,7 +282,7 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)dataProviderDidChange:(id)a3
+- (void)dataProviderDidChange:(id)change
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
@@ -292,9 +292,9 @@ LABEL_9:
   [(CDSDockSettingsViewController *)self _loadDataWithCompletion:v3];
 }
 
-- (void)_showLimitReached:(id)a3
+- (void)_showLimitReached:(id)reached
 {
-  v4 = a3;
+  reachedCopy = reached;
   v5 = [NSBundle bundleForClass:objc_opt_class()];
   v9 = [v5 localizedStringForKey:@"DOCK_LIMIT_TITLE" value:&stru_8320 table:@"CompanionDockSettings"];
 
@@ -302,22 +302,22 @@ LABEL_9:
   v7 = [v6 localizedStringForKey:@"DOCK_LIMIT_MESSAGE" value:&stru_8320 table:@"CompanionDockSettings"];
   v8 = [NSString localizedStringWithFormat:v7, self->_maximumActiveBundleIDs];
 
-  [(CDSDockSettingsViewController *)self _showAlertWithTitle:v9 message:v8 specifier:v4];
+  [(CDSDockSettingsViewController *)self _showAlertWithTitle:v9 message:v8 specifier:reachedCopy];
 }
 
-- (void)_showAlertWithTitle:(id)a3 message:(id)a4 specifier:(id)a5
+- (void)_showAlertWithTitle:(id)title message:(id)message specifier:(id)specifier
 {
-  v8 = a5;
-  v9 = [UIAlertController alertControllerWithTitle:a3 message:a4 preferredStyle:1];
+  specifierCopy = specifier;
+  v9 = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:1];
   v10 = [NSBundle bundleForClass:objc_opt_class()];
   v11 = [v10 localizedStringForKey:@"DOCK_OK" value:&stru_8320 table:@"CompanionDockSettings"];
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_1D3C;
   v17 = &unk_8210;
-  v18 = v8;
-  v19 = self;
-  v12 = v8;
+  v18 = specifierCopy;
+  selfCopy = self;
+  v12 = specifierCopy;
   v13 = [UIAlertAction actionWithTitle:v11 style:1 handler:&v14];
   [v9 addAction:{v13, v14, v15, v16, v17}];
 
@@ -332,10 +332,10 @@ LABEL_9:
   }
 }
 
-- (void)_loadDataWithCompletion:(id)a3
+- (void)_loadDataWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CSLAppSwitcherFavoritesSetting *)self->_favoritesSetting favorites];
+  completionCopy = completion;
+  favorites = [(CSLAppSwitcherFavoritesSetting *)self->_favoritesSetting favorites];
   self->_maximumActiveBundleIDs = [(CSLAppSwitcherFavoritesSetting *)self->_favoritesSetting maximumFavorites];
   appLibrary = self->_appLibrary;
   v9[0] = _NSConcreteStackBlock;
@@ -343,21 +343,21 @@ LABEL_9:
   v9[2] = sub_1E74;
   v9[3] = &unk_8278;
   v9[4] = self;
-  v10 = v5;
-  v11 = v4;
-  v7 = v4;
-  v8 = v5;
+  v10 = favorites;
+  v11 = completionCopy;
+  v7 = completionCopy;
+  v8 = favorites;
   [(CSLPRFDefaultAppDataProvider *)appLibrary loadAppsWithCompletion:v9];
 }
 
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_224C;
   v4[3] = &unk_81E8;
   v4[4] = self;
-  [(CDSDockSettingsViewController *)self _loadDataWithCompletion:v4, a4];
+  [(CDSDockSettingsViewController *)self _loadDataWithCompletion:v4, info];
 }
 
 - (void)_settingsDidChange
@@ -491,57 +491,57 @@ LABEL_9:
   v32 = v33;
 }
 
-- (void)_setActiveState:(id)a3 forSpecifier:(id)a4
+- (void)_setActiveState:(id)state forSpecifier:(id)specifier
 {
-  v6 = a4;
-  -[CDSDockSettingsViewController _setActiveState:forSpecifier:updateTable:](self, "_setActiveState:forSpecifier:updateTable:", [a3 BOOLValue], v6, 1);
+  specifierCopy = specifier;
+  -[CDSDockSettingsViewController _setActiveState:forSpecifier:updateTable:](self, "_setActiveState:forSpecifier:updateTable:", [state BOOLValue], specifierCopy, 1);
 
   [(CDSDockSettingsViewController *)self reloadSpecifiers];
 }
 
-- (id)_activeStateForSpecifier:(id)a3
+- (id)_activeStateForSpecifier:(id)specifier
 {
-  v4 = [a3 app];
+  v4 = [specifier app];
   activeBundleIDs = self->_activeBundleIDs;
-  v6 = [v4 bundleIdentifier];
-  v7 = [(NSMutableArray *)activeBundleIDs containsObject:v6];
+  bundleIdentifier = [v4 bundleIdentifier];
+  v7 = [(NSMutableArray *)activeBundleIDs containsObject:bundleIdentifier];
 
   v8 = [NSNumber numberWithBool:v7];
 
   return v8;
 }
 
-- (void)_setActiveState:(BOOL)a3 forSpecifier:(id)a4 updateTable:(BOOL)a5
+- (void)_setActiveState:(BOOL)state forSpecifier:(id)specifier updateTable:(BOOL)table
 {
-  v5 = a5;
-  v6 = a3;
-  v8 = a4;
-  if (v6 && [(CDSDockSettingsViewController *)self _hasMaximumNumberOfActiveApps])
+  tableCopy = table;
+  stateCopy = state;
+  specifierCopy = specifier;
+  if (stateCopy && [(CDSDockSettingsViewController *)self _hasMaximumNumberOfActiveApps])
   {
-    [(CDSDockSettingsViewController *)self _showLimitReached:v8];
+    [(CDSDockSettingsViewController *)self _showLimitReached:specifierCopy];
     goto LABEL_17;
   }
 
-  v9 = [v8 app];
-  v10 = [v9 bundleIdentifier];
+  v9 = [specifierCopy app];
+  bundleIdentifier = [v9 bundleIdentifier];
 
-  if (v10)
+  if (bundleIdentifier)
   {
-    if (v6)
+    if (stateCopy)
     {
       inactiveBundleIDs = self->_inactiveBundleIDs;
-      v12 = [v9 bundleIdentifier];
-      [(NSMutableArray *)inactiveBundleIDs removeObject:v12];
+      bundleIdentifier2 = [v9 bundleIdentifier];
+      [(NSMutableArray *)inactiveBundleIDs removeObject:bundleIdentifier2];
 
       activeBundleIDs = self->_activeBundleIDs;
-      v14 = [v9 bundleIdentifier];
-      LOBYTE(activeBundleIDs) = [(NSMutableArray *)activeBundleIDs containsObject:v14];
+      bundleIdentifier3 = [v9 bundleIdentifier];
+      LOBYTE(activeBundleIDs) = [(NSMutableArray *)activeBundleIDs containsObject:bundleIdentifier3];
 
       if ((activeBundleIDs & 1) == 0)
       {
         v15 = self->_activeBundleIDs;
-        v16 = [v9 bundleIdentifier];
-        [(NSMutableArray *)v15 addObject:v16];
+        bundleIdentifier4 = [v9 bundleIdentifier];
+        [(NSMutableArray *)v15 addObject:bundleIdentifier4];
 LABEL_10:
       }
     }
@@ -549,41 +549,41 @@ LABEL_10:
     else
     {
       v17 = self->_activeBundleIDs;
-      v18 = [v9 bundleIdentifier];
-      [(NSMutableArray *)v17 removeObject:v18];
+      bundleIdentifier5 = [v9 bundleIdentifier];
+      [(NSMutableArray *)v17 removeObject:bundleIdentifier5];
 
       v19 = self->_inactiveBundleIDs;
-      v20 = [v9 bundleIdentifier];
-      LOBYTE(v19) = [(NSMutableArray *)v19 containsObject:v20];
+      bundleIdentifier6 = [v9 bundleIdentifier];
+      LOBYTE(v19) = [(NSMutableArray *)v19 containsObject:bundleIdentifier6];
 
       if ((v19 & 1) == 0)
       {
         v21 = [(CDSDockSettingsViewController *)self _indexForAppWhenDeactivated:v9];
         v22 = self->_inactiveBundleIDs;
-        v16 = [v9 bundleIdentifier];
-        [(NSMutableArray *)v22 insertObject:v16 atIndex:v21];
+        bundleIdentifier4 = [v9 bundleIdentifier];
+        [(NSMutableArray *)v22 insertObject:bundleIdentifier4 atIndex:v21];
         goto LABEL_10;
       }
     }
   }
 
-  if (v5)
+  if (tableCopy)
   {
-    [(CDSDockSettingsViewController *)self removeSpecifier:v8];
-    v23 = [v8 identifier];
-    v24 = [(CDSDockSettingsViewController *)self _indexOfAppWithBundleID:v23];
+    [(CDSDockSettingsViewController *)self removeSpecifier:specifierCopy];
+    identifier = [specifierCopy identifier];
+    v24 = [(CDSDockSettingsViewController *)self _indexOfAppWithBundleID:identifier];
 
     if (v24 == 0x7FFFFFFFFFFFFFFFLL)
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
-        sub_364C(v8, v6);
+        sub_364C(specifierCopy, stateCopy);
       }
     }
 
     else
     {
-      [(CDSDockSettingsViewController *)self insertSpecifier:v8 atIndex:v24 animated:1];
+      [(CDSDockSettingsViewController *)self insertSpecifier:specifierCopy atIndex:v24 animated:1];
     }
   }
 
@@ -592,13 +592,13 @@ LABEL_10:
 LABEL_17:
 }
 
-- (int64_t)_indexOfAppWithBundleID:(id)a3
+- (int64_t)_indexOfAppWithBundleID:(id)d
 {
-  v4 = a3;
-  v5 = [(NSMutableArray *)self->_activeBundleIDs indexOfObject:v4];
+  dCopy = d;
+  v5 = [(NSMutableArray *)self->_activeBundleIDs indexOfObject:dCopy];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = [(NSMutableArray *)self->_inactiveBundleIDs indexOfObject:v4];
+    v6 = [(NSMutableArray *)self->_inactiveBundleIDs indexOfObject:dCopy];
     if (v6 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v7 = 0;
@@ -630,20 +630,20 @@ LABEL_17:
   return v9;
 }
 
-- (int64_t)_indexForNthApp:(int64_t)a3 withActiveState:(BOOL)a4
+- (int64_t)_indexForNthApp:(int64_t)app withActiveState:(BOOL)state
 {
-  v4 = a3;
-  if (!a4)
+  appCopy = app;
+  if (!state)
   {
-    return [(NSMutableArray *)self->_activeBundleIDs count]+ a3;
+    return [(NSMutableArray *)self->_activeBundleIDs count]+ app;
   }
 
-  return v4;
+  return appCopy;
 }
 
-- (unint64_t)_indexForAppWhenDeactivated:(id)a3
+- (unint64_t)_indexForAppWhenDeactivated:(id)deactivated
 {
-  v4 = a3;
+  deactivatedCopy = deactivated;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -666,7 +666,7 @@ LABEL_3:
       }
 
       v11 = [(NSDictionary *)self->_apps objectForKeyedSubscript:*(*(&v15 + 1) + 8 * v10)];
-      v12 = [v4 compare:v11];
+      v12 = [deactivatedCopy compare:v11];
 
       if (v12 == -1)
       {
@@ -696,51 +696,51 @@ LABEL_3:
   return v8;
 }
 
-- (id)_tableIndexPathForAppWhenDeactivated:(id)a3
+- (id)_tableIndexPathForAppWhenDeactivated:(id)deactivated
 {
-  v4 = a3;
-  v5 = [(CDSDockSettingsViewController *)self inactiveGroupSectionIndex];
-  v6 = [(CDSDockSettingsViewController *)self _indexForAppWhenDeactivated:v4];
+  deactivatedCopy = deactivated;
+  inactiveGroupSectionIndex = [(CDSDockSettingsViewController *)self inactiveGroupSectionIndex];
+  v6 = [(CDSDockSettingsViewController *)self _indexForAppWhenDeactivated:deactivatedCopy];
 
-  return [NSIndexPath indexPathForRow:v6 inSection:v5];
+  return [NSIndexPath indexPathForRow:v6 inSection:inactiveGroupSectionIndex];
 }
 
-- (void)didSelectOrderingSpecifier:(id)a3
+- (void)didSelectOrderingSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [(CDSDockSettingsViewController *)self MRUOrderingSpecifier];
+  specifierCopy = specifier;
+  mRUOrderingSpecifier = [(CDSDockSettingsViewController *)self MRUOrderingSpecifier];
 
-  if ((v5 == v4) != [(CDSDockSettingsViewController *)self useMRUOrdering])
+  if ((mRUOrderingSpecifier == specifierCopy) != [(CDSDockSettingsViewController *)self useMRUOrdering])
   {
-    [(CSLAppSwitcherModeSetting *)self->_modeSetting setMode:v5 == v4];
+    [(CSLAppSwitcherModeSetting *)self->_modeSetting setMode:mRUOrderingSpecifier == specifierCopy];
 
     [(CDSDockSettingsViewController *)self reloadSpecifiers];
   }
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CDSDockSettingsViewController *)self specifierAtIndexPath:v7];
-  v9 = [(CDSDockSettingsViewController *)self favoritesOrderingSpecifier];
-  if (v8 == v9)
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(CDSDockSettingsViewController *)self specifierAtIndexPath:pathCopy];
+  favoritesOrderingSpecifier = [(CDSDockSettingsViewController *)self favoritesOrderingSpecifier];
+  if (v8 == favoritesOrderingSpecifier)
   {
     goto LABEL_6;
   }
 
-  v10 = [(CDSDockSettingsViewController *)self MRUOrderingSpecifier];
-  v11 = v10;
-  if (v8 == v10)
+  mRUOrderingSpecifier = [(CDSDockSettingsViewController *)self MRUOrderingSpecifier];
+  v11 = mRUOrderingSpecifier;
+  if (v8 == mRUOrderingSpecifier)
   {
 
 LABEL_6:
     goto LABEL_7;
   }
 
-  v12 = [(CDSDockSettingsViewController *)self spinnerSpecifier];
+  spinnerSpecifier = [(CDSDockSettingsViewController *)self spinnerSpecifier];
 
-  if (v8 == v12)
+  if (v8 == spinnerSpecifier)
   {
 LABEL_7:
     v13 = 0;
@@ -749,24 +749,24 @@ LABEL_7:
 
   v15.receiver = self;
   v15.super_class = CDSDockSettingsViewController;
-  v13 = [(CDSDockSettingsViewController *)&v15 tableView:v6 canEditRowAtIndexPath:v7];
+  v13 = [(CDSDockSettingsViewController *)&v15 tableView:viewCopy canEditRowAtIndexPath:pathCopy];
 LABEL_8:
 
   return v13;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v10.receiver = self;
   v10.super_class = CDSDockSettingsViewController;
-  v6 = a4;
-  [(CDSDockSettingsViewController *)&v10 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(CDSDockSettingsViewController *)self specifierAtIndexPath:v6, v10.receiver, v10.super_class];
+  pathCopy = path;
+  [(CDSDockSettingsViewController *)&v10 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(CDSDockSettingsViewController *)self specifierAtIndexPath:pathCopy, v10.receiver, v10.super_class];
 
   v8 = [(CDSDockSettingsViewController *)self getGroupSpecifierForSpecifier:v7];
-  v9 = [(CDSDockSettingsViewController *)self orderingGroupSpecifier];
+  orderingGroupSpecifier = [(CDSDockSettingsViewController *)self orderingGroupSpecifier];
 
-  if (v8 == v9)
+  if (v8 == orderingGroupSpecifier)
   {
     [(CDSDockSettingsViewController *)self didSelectOrderingSpecifier:v7];
     [(CDSDockSettingsViewController *)self _updateOrderingFooterForSelectedSpecifier];

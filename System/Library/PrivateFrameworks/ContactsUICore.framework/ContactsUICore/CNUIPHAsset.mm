@@ -1,22 +1,22 @@
 @interface CNUIPHAsset
-- (CNUIPHAsset)initWithWrappedAsset:(id)a3;
+- (CNUIPHAsset)initWithWrappedAsset:(id)asset;
 - (NSString)assetID;
-- (void)exportAsWallpaperToURL:(id)a3 isMeContact:(BOOL)a4 completionHandler:(id)a5;
-- (void)requestImageWithTargetSize:(CGSize)a3 completionHandler:(id)a4;
+- (void)exportAsWallpaperToURL:(id)l isMeContact:(BOOL)contact completionHandler:(id)handler;
+- (void)requestImageWithTargetSize:(CGSize)size completionHandler:(id)handler;
 @end
 
 @implementation CNUIPHAsset
 
-- (CNUIPHAsset)initWithWrappedAsset:(id)a3
+- (CNUIPHAsset)initWithWrappedAsset:(id)asset
 {
-  v5 = a3;
+  assetCopy = asset;
   v9.receiver = self;
   v9.super_class = CNUIPHAsset;
   v6 = [(CNUIPHAsset *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_wrappedAsset, a3);
+    objc_storeStrong(&v6->_wrappedAsset, asset);
   }
 
   return v7;
@@ -25,18 +25,18 @@
 - (NSString)assetID
 {
   v3 = getPHObjectClass[0]();
-  v4 = [(PHAsset *)self->_wrappedAsset localIdentifier];
-  v5 = [(objc_class *)v3 uuidFromLocalIdentifier:v4];
+  localIdentifier = [(PHAsset *)self->_wrappedAsset localIdentifier];
+  v5 = [(objc_class *)v3 uuidFromLocalIdentifier:localIdentifier];
 
   return v5;
 }
 
-- (void)requestImageWithTargetSize:(CGSize)a3 completionHandler:(id)a4
+- (void)requestImageWithTargetSize:(CGSize)size completionHandler:(id)handler
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = [getPHCachingImageManagerClass[0]() defaultManager];
+  height = size.height;
+  width = size.width;
+  handlerCopy = handler;
+  defaultManager = [getPHCachingImageManagerClass[0]() defaultManager];
   v9 = objc_alloc_init(getPHImageRequestOptionsClass[0]());
   [v9 setNetworkAccessAllowed:1];
   [v9 setDeliveryMode:1];
@@ -45,9 +45,9 @@
   v12[1] = 3221225472;
   v12[2] = __60__CNUIPHAsset_requestImageWithTargetSize_completionHandler___block_invoke;
   v12[3] = &unk_1E76E8000;
-  v13 = v7;
-  v11 = v7;
-  [v8 requestImageForAsset:wrappedAsset targetSize:0 contentMode:v9 options:v12 resultHandler:{width, height}];
+  v13 = handlerCopy;
+  v11 = handlerCopy;
+  [defaultManager requestImageForAsset:wrappedAsset targetSize:0 contentMode:v9 options:v12 resultHandler:{width, height}];
 }
 
 void __60__CNUIPHAsset_requestImageWithTargetSize_completionHandler___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -66,29 +66,29 @@ void __60__CNUIPHAsset_requestImageWithTargetSize_completionHandler___block_invo
   }
 }
 
-- (void)exportAsWallpaperToURL:(id)a3 isMeContact:(BOOL)a4 completionHandler:(id)a5
+- (void)exportAsWallpaperToURL:(id)l isMeContact:(BOOL)contact completionHandler:(id)handler
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(CNUIPHAsset *)self assetID];
+  lCopy = l;
+  handlerCopy = handler;
+  assetID = [(CNUIPHAsset *)self assetID];
   v11 = [objc_alloc(MEMORY[0x1E69C07E8]) initWithConfigurationType:0];
   [v11 setOptions:32];
-  v12 = [objc_alloc(MEMORY[0x1E69C0808]) initWithAssetUUID:v10];
+  v12 = [objc_alloc(MEMORY[0x1E69C0808]) initWithAssetUUID:assetID];
   v31[0] = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:1];
   [v11 setMedia:v13];
 
   v14 = [objc_alloc(getPHWallpaperAssetClass[0]()) initWithPhotoAsset:self->_wrappedAsset];
   v15 = [objc_alloc(getPISegmentationLoaderClass()) initWithParallaxAsset:v14];
-  v16 = [MEMORY[0x1E69C0938] deviceConfiguration];
+  deviceConfiguration = [MEMORY[0x1E69C0938] deviceConfiguration];
   if ([MEMORY[0x1E69C0938] deviceSupportsLandscapeConfiguration])
   {
     objc_opt_class();
     if (objc_opt_respondsToSelector())
     {
       [objc_opt_class() specificConfigurationWithPortraitTitleBounds:0.147962032 portraitScreenSize:0.112227806 landscapeScreenSize:{0.704075935, 0.0824958124, 551.076923, 1194.0, 551.076923, 1194.0}];
-      v16 = v17 = v16;
+      deviceConfiguration = v17 = deviceConfiguration;
     }
 
     else
@@ -101,7 +101,7 @@ void __60__CNUIPHAsset_requestImageWithTargetSize_completionHandler___block_invo
     }
   }
 
-  [v15 setLayoutConfiguration:v16];
+  [v15 setLayoutConfiguration:deviceConfiguration];
   [v15 setDisableSettlingEffect:1];
   [v15 setDisableSpatialPhoto:1];
   [v15 setRole:1];
@@ -109,7 +109,7 @@ void __60__CNUIPHAsset_requestImageWithTargetSize_completionHandler___block_invo
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v30 = v10;
+    v30 = assetID;
     _os_log_impl(&dword_1A31E6000, v18, OS_LOG_TYPE_DEFAULT, "Generating segmentation item for asset: %@", buf, 0xCu);
   }
 
@@ -117,14 +117,14 @@ void __60__CNUIPHAsset_requestImageWithTargetSize_completionHandler___block_invo
   v23[1] = 3221225472;
   v23[2] = __68__CNUIPHAsset_exportAsWallpaperToURL_isMeContact_completionHandler___block_invoke;
   v23[3] = &unk_1E76E8050;
-  v28 = a4;
+  contactCopy = contact;
   v24 = v11;
-  v25 = v10;
-  v26 = v8;
-  v27 = v9;
-  v19 = v9;
-  v20 = v8;
-  v21 = v10;
+  v25 = assetID;
+  v26 = lCopy;
+  v27 = handlerCopy;
+  v19 = handlerCopy;
+  v20 = lCopy;
+  v21 = assetID;
   v22 = v11;
   [v15 loadSegmentationItemWithCompletion:v23];
 }

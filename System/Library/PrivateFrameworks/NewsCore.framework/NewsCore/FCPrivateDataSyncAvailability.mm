@@ -2,7 +2,7 @@
 + (id)defaultAvailability;
 + (id)notAvailable;
 - (BOOL)isPrivateDataSyncingAllowed;
-- (FCPrivateDataSyncAvailability)initWithConditions:(id)a3;
+- (FCPrivateDataSyncAvailability)initWithConditions:(id)conditions;
 @end
 
 @implementation FCPrivateDataSyncAvailability
@@ -30,8 +30,8 @@
 - (BOOL)isPrivateDataSyncingAllowed
 {
   v13 = *MEMORY[0x1E69E9840];
-  v2 = [(FCPrivateDataSyncAvailability *)self conditions];
-  v3 = [v2 fc_firstObjectPassingTest:&__block_literal_global_44];
+  conditions = [(FCPrivateDataSyncAvailability *)self conditions];
+  v3 = [conditions fc_firstObjectPassingTest:&__block_literal_global_44];
 
   v4 = FCPrivateDataLog;
   v5 = os_log_type_enabled(FCPrivateDataLog, OS_LOG_TYPE_DEFAULT);
@@ -76,15 +76,15 @@ LABEL_6:
   return v5;
 }
 
-- (FCPrivateDataSyncAvailability)initWithConditions:(id)a3
+- (FCPrivateDataSyncAvailability)initWithConditions:(id)conditions
 {
-  v4 = a3;
+  conditionsCopy = conditions;
   v9.receiver = self;
   v9.super_class = FCPrivateDataSyncAvailability;
   v5 = [(FCPrivateDataSyncAvailability *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [conditionsCopy copy];
     conditions = v5->_conditions;
     v5->_conditions = v6;
   }

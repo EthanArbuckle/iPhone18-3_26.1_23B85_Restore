@@ -1,38 +1,38 @@
 @interface ASUserNotificationResponse
-- (ASUserNotificationResponse)initWithActionIdentifier:(id)a3 userInfo:(id)a4;
-- (ASUserNotificationResponse)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ASUserNotificationResponse)initWithActionIdentifier:(id)identifier userInfo:(id)info;
+- (ASUserNotificationResponse)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASUserNotificationResponse
 
-- (ASUserNotificationResponse)initWithActionIdentifier:(id)a3 userInfo:(id)a4
+- (ASUserNotificationResponse)initWithActionIdentifier:(id)identifier userInfo:(id)info
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  infoCopy = info;
   v12.receiver = self;
   v12.super_class = ASUserNotificationResponse;
   v9 = [(ASUserNotificationResponse *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_actionIdentifier, a3);
-    objc_storeStrong(&v10->_userInfo, a4);
+    objc_storeStrong(&v9->_actionIdentifier, identifier);
+    objc_storeStrong(&v10->_userInfo, info);
   }
 
   return v10;
 }
 
-- (ASUserNotificationResponse)initWithCoder:(id)a3
+- (ASUserNotificationResponse)initWithCoder:(id)coder
 {
   v16[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = ASUserNotificationResponse;
   v5 = [(ASUserNotificationResponse *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionIdentifier"];
     actionIdentifier = v5->_actionIdentifier;
     v5->_actionIdentifier = v6;
 
@@ -44,7 +44,7 @@
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:4];
     v10 = [v8 setWithArray:v9];
 
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"userInfo"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"userInfo"];
     userInfo = v5->_userInfo;
     v5->_userInfo = v11;
   }
@@ -53,12 +53,12 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   actionIdentifier = self->_actionIdentifier;
-  v5 = a3;
-  [v5 encodeObject:actionIdentifier forKey:@"actionIdentifier"];
-  [v5 encodeObject:self->_userInfo forKey:@"userInfo"];
+  coderCopy = coder;
+  [coderCopy encodeObject:actionIdentifier forKey:@"actionIdentifier"];
+  [coderCopy encodeObject:self->_userInfo forKey:@"userInfo"];
 }
 
 @end

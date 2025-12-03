@@ -2,7 +2,7 @@
 - (PXLivePhotoTrimScrubberSpec)init;
 - (UIEdgeInsets)filmstripViewInsets;
 - (void)_updateScrubberHeight;
-- (void)setUseMiniScrubberHeight:(BOOL)a3;
+- (void)setUseMiniScrubberHeight:(BOOL)height;
 @end
 
 @implementation PXLivePhotoTrimScrubberSpec
@@ -23,7 +23,7 @@
 - (void)_updateScrubberHeight
 {
   v3 = MEMORY[0x1A590D320](self, a2);
-  v4 = [(PXLivePhotoTrimScrubberSpec *)self useMiniScrubberHeight];
+  useMiniScrubberHeight = [(PXLivePhotoTrimScrubberSpec *)self useMiniScrubberHeight];
   v5 = 34.0;
   if (v3)
   {
@@ -36,23 +36,23 @@
     v6 = 36.0;
   }
 
-  if (!v4)
+  if (!useMiniScrubberHeight)
   {
     v5 = 41.0;
   }
 
   self->_scrubberHeight = v5;
-  v7 = [(PXLivePhotoTrimScrubberSpec *)self useMiniScrubberHeight];
+  useMiniScrubberHeight2 = [(PXLivePhotoTrimScrubberSpec *)self useMiniScrubberHeight];
   v8 = 51.0;
-  if (v7)
+  if (useMiniScrubberHeight2)
   {
     v8 = v6;
   }
 
   self->_handleHeight = v8;
-  v9 = [(PXLivePhotoTrimScrubberSpec *)self useMiniScrubberHeight];
+  useMiniScrubberHeight3 = [(PXLivePhotoTrimScrubberSpec *)self useMiniScrubberHeight];
   v10 = 4.0;
-  if (v9)
+  if (useMiniScrubberHeight3)
   {
     v10 = 2.0;
   }
@@ -60,11 +60,11 @@
   self->_playheadWidth = v10;
 }
 
-- (void)setUseMiniScrubberHeight:(BOOL)a3
+- (void)setUseMiniScrubberHeight:(BOOL)height
 {
-  if (self->_useMiniScrubberHeight != a3)
+  if (self->_useMiniScrubberHeight != height)
   {
-    self->_useMiniScrubberHeight = a3;
+    self->_useMiniScrubberHeight = height;
     [(PXLivePhotoTrimScrubberSpec *)self _updateScrubberHeight];
   }
 }

@@ -1,32 +1,32 @@
 @interface CRLImageFillProvider
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5;
-+ (void)makeCompatibleImageDataFromURL:(id)a3 forAssetOwner:(id)a4 modalOperationPresenter:(id)a5 compatibilityAlertPresenter:(id)a6 completionHandler:(id)a7;
-+ (void)makeCompatibleImageFillDataFromURL:(id)a3 forAssetOwner:(id)a4 modalOperationPresenter:(id)a5 compatibilityAlertPresenter:(id)a6 completionHandler:(id)a7;
-+ (void)p_makeCompatibleImageFillDataForFill:(BOOL)a3 withFillProvider:(id)a4 forAssetOwner:(id)a5 modalOperationPresenter:(id)a6 compatibilityAlertPresenter:(id)a7 completionHandler:(id)a8;
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error;
++ (void)makeCompatibleImageDataFromURL:(id)l forAssetOwner:(id)owner modalOperationPresenter:(id)presenter compatibilityAlertPresenter:(id)alertPresenter completionHandler:(id)handler;
++ (void)makeCompatibleImageFillDataFromURL:(id)l forAssetOwner:(id)owner modalOperationPresenter:(id)presenter compatibilityAlertPresenter:(id)alertPresenter completionHandler:(id)handler;
++ (void)p_makeCompatibleImageFillDataForFill:(BOOL)fill withFillProvider:(id)provider forAssetOwner:(id)owner modalOperationPresenter:(id)presenter compatibilityAlertPresenter:(id)alertPresenter completionHandler:(id)handler;
 - (CRLImageFillProvider)init;
-- (CRLImageFillProvider)initWithData:(id)a3 type:(id)a4;
-- (CRLImageFillProvider)initWithURL:(id)a3;
-- (void)p_continueWorkOnMainThreadWithModalOperationPresenter:(id)a3 usingBlock:(id)a4;
-- (void)p_convertImageData:(id)a3 toCompatibilityLevel:(int64_t)a4 assetOwner:(id)a5 completionHandler:(id)a6;
-- (void)p_provideImageDataForAssetOwner:(id)a3 data:(id)a4 modalOperationPresenter:(id)a5 compatibilityAlertPresenter:(id)a6 completionHandler:(id)a7;
-- (void)provideImageDataForAssetOwner:(id)a3 modalOperationPresenter:(id)a4 compatibilityAlertPresenter:(id)a5 completionHandler:(id)a6;
+- (CRLImageFillProvider)initWithData:(id)data type:(id)type;
+- (CRLImageFillProvider)initWithURL:(id)l;
+- (void)p_continueWorkOnMainThreadWithModalOperationPresenter:(id)presenter usingBlock:(id)block;
+- (void)p_convertImageData:(id)data toCompatibilityLevel:(int64_t)level assetOwner:(id)owner completionHandler:(id)handler;
+- (void)p_provideImageDataForAssetOwner:(id)owner data:(id)data modalOperationPresenter:(id)presenter compatibilityAlertPresenter:(id)alertPresenter completionHandler:(id)handler;
+- (void)provideImageDataForAssetOwner:(id)owner modalOperationPresenter:(id)presenter compatibilityAlertPresenter:(id)alertPresenter completionHandler:(id)handler;
 @end
 
 @implementation CRLImageFillProvider
 
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dataCopy = data;
+  identifierCopy = identifier;
   v10 = +[CRLBoardItemImporter supportedImageFileTypes];
-  v11 = [v9 crl_conformsToAnyUTI:v10];
+  v11 = [identifierCopy crl_conformsToAnyUTI:v10];
 
   if (v11)
   {
-    a5 = [[a1 alloc] initWithData:v8 type:v9];
+    error = [[self alloc] initWithData:dataCopy type:identifierCopy];
   }
 
-  else if (a5)
+  else if (error)
   {
     v17[0] = NSLocalizedDescriptionKey;
     v12 = +[NSBundle mainBundle];
@@ -37,26 +37,26 @@
     v14 = [NSDictionary dictionaryWithObjects:v18 forKeys:v17 count:2];
 
     v15 = [NSError errorWithDomain:@"com.apple.freeform.CRLErrorDomainInfoImporter" code:103 userInfo:v14];
-    *a5 = v15;
+    *error = v15;
 
-    a5 = 0;
+    error = 0;
   }
 
-  return a5;
+  return error;
 }
 
-- (CRLImageFillProvider)initWithData:(id)a3 type:(id)a4
+- (CRLImageFillProvider)initWithData:(id)data type:(id)type
 {
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  typeCopy = type;
   v16.receiver = self;
   v16.super_class = CRLImageFillProvider;
   v9 = [(CRLImageFillProvider *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_data, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_data, data);
+    v11 = [typeCopy copy];
     type = v10->_type;
     v10->_type = v11;
 
@@ -68,15 +68,15 @@
   return v10;
 }
 
-- (CRLImageFillProvider)initWithURL:(id)a3
+- (CRLImageFillProvider)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v11.receiver = self;
   v11.super_class = CRLImageFillProvider;
   v5 = [(CRLImageFillProvider *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     url = v5->_url;
     v5->_url = v6;
 
@@ -138,28 +138,28 @@
   objc_exception_throw(v10);
 }
 
-- (void)p_continueWorkOnMainThreadWithModalOperationPresenter:(id)a3 usingBlock:(id)a4
+- (void)p_continueWorkOnMainThreadWithModalOperationPresenter:(id)presenter usingBlock:(id)block
 {
-  if (a3)
+  if (presenter)
   {
-    [a3 continueAsynchronousWorkOnMainThreadUsingBlock:a4];
+    [presenter continueAsynchronousWorkOnMainThreadUsingBlock:block];
   }
 
   else
   {
-    dispatch_async(&_dispatch_main_q, a4);
+    dispatch_async(&_dispatch_main_q, block);
   }
 }
 
-- (void)provideImageDataForAssetOwner:(id)a3 modalOperationPresenter:(id)a4 compatibilityAlertPresenter:(id)a5 completionHandler:(id)a6
+- (void)provideImageDataForAssetOwner:(id)owner modalOperationPresenter:(id)presenter compatibilityAlertPresenter:(id)alertPresenter completionHandler:(id)handler
 {
-  v10 = a3;
-  v30 = a4;
-  v11 = a5;
-  v12 = a6;
+  ownerCopy = owner;
+  presenterCopy = presenter;
+  alertPresenterCopy = alertPresenter;
+  handlerCopy = handler;
   if (+[NSThread isMainThread])
   {
-    if (v12)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
@@ -193,10 +193,10 @@
     v15 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLKit/CRLImageFillProvider.m"];
     [CRLAssertionHandler handleFailureInFunction:v14 file:v15 lineNumber:107 isFatal:0 description:"This operation must only be performed on the main thread."];
 
-    if (v12)
+    if (handlerCopy)
     {
 LABEL_3:
-      if (v11)
+      if (alertPresenterCopy)
       {
         goto LABEL_32;
       }
@@ -231,7 +231,7 @@ LABEL_3:
   v18 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLKit/CRLImageFillProvider.m"];
   [CRLAssertionHandler handleFailureInFunction:v17 file:v18 lineNumber:108 isFatal:0 description:"invalid nil value for '%{public}s'", "completionHandler"];
 
-  if (!v11)
+  if (!alertPresenterCopy)
   {
 LABEL_23:
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -266,19 +266,19 @@ LABEL_32:
   v23 = v22;
   if (v22)
   {
-    v24 = [v22 preferredFilenameExtension];
+    preferredFilenameExtension = [v22 preferredFilenameExtension];
   }
 
   else
   {
-    v24 = @"png";
+    preferredFilenameExtension = @"png";
   }
 
   v25 = +[CRLBoardItemImporter defaultPastedImageName];
-  v26 = [[NSString alloc] initWithFormat:@"%@.%@", v25, v24];
+  v26 = [[NSString alloc] initWithFormat:@"%@.%@", v25, preferredFilenameExtension];
   if (self->_data)
   {
-    v27 = [[_TtC8Freeform27CRLPreinsertionAssetWrapper alloc] initWithData:self->_data filename:v26 owner:v10 error:0];
+    v27 = [[_TtC8Freeform27CRLPreinsertionAssetWrapper alloc] initWithData:self->_data filename:v26 owner:ownerCopy error:0];
   }
 
   else
@@ -286,12 +286,12 @@ LABEL_32:
     if (!self->_url)
     {
 LABEL_41:
-      v29 = v30;
-      [(CRLImageFillProvider *)self p_provideImageDataForAssetOwner:v10 data:0 modalOperationPresenter:v30 compatibilityAlertPresenter:v11 completionHandler:v12];
+      v29 = presenterCopy;
+      [(CRLImageFillProvider *)self p_provideImageDataForAssetOwner:ownerCopy data:0 modalOperationPresenter:presenterCopy compatibilityAlertPresenter:alertPresenterCopy completionHandler:handlerCopy];
       goto LABEL_42;
     }
 
-    v27 = [[_TtC8Freeform27CRLPreinsertionAssetWrapper alloc] initWithUrl:self->_url owner:v10];
+    v27 = [[_TtC8Freeform27CRLPreinsertionAssetWrapper alloc] initWithUrl:self->_url owner:ownerCopy];
   }
 
   v28 = v27;
@@ -305,24 +305,24 @@ LABEL_41:
   v31[2] = sub_10042FA70;
   v31[3] = &unk_1018622A8;
   v31[4] = self;
-  v32 = v10;
-  v29 = v30;
-  v33 = v30;
-  v34 = v11;
-  v35 = v12;
+  v32 = ownerCopy;
+  v29 = presenterCopy;
+  v33 = presenterCopy;
+  v34 = alertPresenterCopy;
+  v35 = handlerCopy;
   [(CRLPreinsertionAssetWrapper *)v28 createAssetWithCompletionHandler:v31];
 
 LABEL_42:
 }
 
-- (void)p_provideImageDataForAssetOwner:(id)a3 data:(id)a4 modalOperationPresenter:(id)a5 compatibilityAlertPresenter:(id)a6 completionHandler:(id)a7
+- (void)p_provideImageDataForAssetOwner:(id)owner data:(id)data modalOperationPresenter:(id)presenter compatibilityAlertPresenter:(id)alertPresenter completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (!v13)
+  ownerCopy = owner;
+  dataCopy = data;
+  presenterCopy = presenter;
+  alertPresenterCopy = alertPresenter;
+  handlerCopy = handler;
+  if (!dataCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -356,10 +356,10 @@ LABEL_42:
   v36[2] = sub_10042FDF4;
   v36[3] = &unk_101862338;
   v36[4] = self;
-  v20 = v14;
+  v20 = presenterCopy;
   v37 = v20;
-  v38 = v16;
-  v21 = v16;
+  v38 = handlerCopy;
+  v21 = handlerCopy;
   v22 = objc_retainBlock(v36);
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
@@ -367,74 +367,74 @@ LABEL_42:
   v29[3] = &unk_101862388;
   v29[4] = self;
   v30 = v20;
-  v31 = [[CRLImageCompatibilityChecker alloc] initWithImageData:v13];
-  v32 = v13;
-  v34 = v15;
+  v31 = [[CRLImageCompatibilityChecker alloc] initWithImageData:dataCopy];
+  v32 = dataCopy;
+  v34 = alertPresenterCopy;
   v35 = v22;
-  v33 = v12;
-  v23 = v15;
-  v24 = v12;
+  v33 = ownerCopy;
+  v23 = alertPresenterCopy;
+  v24 = ownerCopy;
   v25 = v22;
-  v26 = v13;
+  v26 = dataCopy;
   v27 = v31;
   v28 = v20;
   [(CRLImageCompatibilityChecker *)v27 checkCompatibilityUpToLevel:4 completionHandler:v29];
 }
 
-- (void)p_convertImageData:(id)a3 toCompatibilityLevel:(int64_t)a4 assetOwner:(id)a5 completionHandler:(id)a6
+- (void)p_convertImageData:(id)data toCompatibilityLevel:(int64_t)level assetOwner:(id)owner completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v13 = [[CRLImageCompatibilityConverter alloc] initWithImageData:v12 desiredCompatibilityLevel:a4 assetOwner:v11];
+  handlerCopy = handler;
+  ownerCopy = owner;
+  dataCopy = data;
+  v13 = [[CRLImageCompatibilityConverter alloc] initWithImageData:dataCopy desiredCompatibilityLevel:level assetOwner:ownerCopy];
 
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_10043062C;
   v16[3] = &unk_1018623F0;
-  v18 = self;
-  v19 = v10;
+  selfCopy = self;
+  v19 = handlerCopy;
   v17 = v13;
-  v14 = v10;
+  v14 = handlerCopy;
   v15 = v13;
   [(CRLImageCompatibilityConverter *)v15 convertMediaWithCompletionHandler:v16];
 }
 
-+ (void)makeCompatibleImageDataFromURL:(id)a3 forAssetOwner:(id)a4 modalOperationPresenter:(id)a5 compatibilityAlertPresenter:(id)a6 completionHandler:(id)a7
++ (void)makeCompatibleImageDataFromURL:(id)l forAssetOwner:(id)owner modalOperationPresenter:(id)presenter compatibilityAlertPresenter:(id)alertPresenter completionHandler:(id)handler
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [[CRLImageFillProvider alloc] initWithURL:v16];
+  handlerCopy = handler;
+  alertPresenterCopy = alertPresenter;
+  presenterCopy = presenter;
+  ownerCopy = owner;
+  lCopy = l;
+  v17 = [[CRLImageFillProvider alloc] initWithURL:lCopy];
 
-  [a1 p_makeCompatibleImageFillDataForFill:0 withFillProvider:v17 forAssetOwner:v15 modalOperationPresenter:v14 compatibilityAlertPresenter:v13 completionHandler:v12];
+  [self p_makeCompatibleImageFillDataForFill:0 withFillProvider:v17 forAssetOwner:ownerCopy modalOperationPresenter:presenterCopy compatibilityAlertPresenter:alertPresenterCopy completionHandler:handlerCopy];
 }
 
-+ (void)makeCompatibleImageFillDataFromURL:(id)a3 forAssetOwner:(id)a4 modalOperationPresenter:(id)a5 compatibilityAlertPresenter:(id)a6 completionHandler:(id)a7
++ (void)makeCompatibleImageFillDataFromURL:(id)l forAssetOwner:(id)owner modalOperationPresenter:(id)presenter compatibilityAlertPresenter:(id)alertPresenter completionHandler:(id)handler
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [[CRLImageFillProvider alloc] initWithURL:v16];
+  handlerCopy = handler;
+  alertPresenterCopy = alertPresenter;
+  presenterCopy = presenter;
+  ownerCopy = owner;
+  lCopy = l;
+  v17 = [[CRLImageFillProvider alloc] initWithURL:lCopy];
 
-  [a1 p_makeCompatibleImageFillDataForFill:1 withFillProvider:v17 forAssetOwner:v15 modalOperationPresenter:v14 compatibilityAlertPresenter:v13 completionHandler:v12];
+  [self p_makeCompatibleImageFillDataForFill:1 withFillProvider:v17 forAssetOwner:ownerCopy modalOperationPresenter:presenterCopy compatibilityAlertPresenter:alertPresenterCopy completionHandler:handlerCopy];
 }
 
-+ (void)p_makeCompatibleImageFillDataForFill:(BOOL)a3 withFillProvider:(id)a4 forAssetOwner:(id)a5 modalOperationPresenter:(id)a6 compatibilityAlertPresenter:(id)a7 completionHandler:(id)a8
++ (void)p_makeCompatibleImageFillDataForFill:(BOOL)fill withFillProvider:(id)provider forAssetOwner:(id)owner modalOperationPresenter:(id)presenter compatibilityAlertPresenter:(id)alertPresenter completionHandler:(id)handler
 {
-  v39 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = a8;
+  fillCopy = fill;
+  providerCopy = provider;
+  ownerCopy = owner;
+  presenterCopy = presenter;
+  alertPresenterCopy = alertPresenter;
+  handlerCopy = handler;
   if (+[NSThread isMainThread])
   {
-    if (v12)
+    if (providerCopy)
     {
       goto LABEL_3;
     }
@@ -468,10 +468,10 @@ LABEL_42:
     v19 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLKit/CRLImageFillProvider.m"];
     [CRLAssertionHandler handleFailureInFunction:v18 file:v19 lineNumber:321 isFatal:0 description:"This operation must only be performed on the main thread."];
 
-    if (v12)
+    if (providerCopy)
     {
 LABEL_3:
-      if (v15)
+      if (alertPresenterCopy)
       {
         goto LABEL_4;
       }
@@ -506,10 +506,10 @@ LABEL_3:
   v22 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLKit/CRLImageFillProvider.m"];
   [CRLAssertionHandler handleFailureInFunction:v21 file:v22 lineNumber:322 isFatal:0 description:"invalid nil value for '%{public}s'", "fillProvider"];
 
-  if (v15)
+  if (alertPresenterCopy)
   {
 LABEL_4:
-    if (v14)
+    if (presenterCopy)
     {
       goto LABEL_5;
     }
@@ -544,10 +544,10 @@ LABEL_25:
   v25 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLKit/CRLImageFillProvider.m"];
   [CRLAssertionHandler handleFailureInFunction:v24 file:v25 lineNumber:323 isFatal:0 description:"invalid nil value for '%{public}s'", "alertPresenter"];
 
-  if (v14)
+  if (presenterCopy)
   {
 LABEL_5:
-    if (v16)
+    if (handlerCopy)
     {
       goto LABEL_52;
     }
@@ -582,7 +582,7 @@ LABEL_34:
   v28 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLKit/CRLImageFillProvider.m"];
   [CRLAssertionHandler handleFailureInFunction:v27 file:v28 lineNumber:324 isFatal:0 description:"invalid nil value for '%{public}s'", "modalOperationPresenter"];
 
-  if (!v16)
+  if (!handlerCopy)
   {
 LABEL_43:
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -620,7 +620,7 @@ LABEL_52:
   v48[2] = 0x2020000000;
   v49 = 0;
   v33 = +[NSBundle mainBundle];
-  if (v39)
+  if (fillCopy)
   {
     [v33 localizedStringForKey:@"Inserting image fill" value:0 table:0];
   }
@@ -636,20 +636,20 @@ LABEL_52:
   v45[2] = sub_1004315F0;
   v45[3] = &unk_101839FF8;
   v47 = v48;
-  v35 = v12;
+  v35 = providerCopy;
   v46 = v35;
-  v36 = [v14 beginModalOperationWithLocalizedMessage:v34 progress:v32 cancelHandler:v45];
+  v36 = [presenterCopy beginModalOperationWithLocalizedMessage:v34 progress:v32 cancelHandler:v45];
   v40[0] = _NSConcreteStackBlock;
   v40[1] = 3221225472;
   v40[2] = sub_100431608;
   v40[3] = &unk_101862580;
-  v37 = v14;
+  v37 = presenterCopy;
   v41 = v37;
   v42 = v36;
-  v38 = v16;
+  v38 = handlerCopy;
   v43 = v38;
   v44 = v48;
-  [v35 provideImageDataForAssetOwner:v13 modalOperationPresenter:v37 compatibilityAlertPresenter:v15 completionHandler:v40];
+  [v35 provideImageDataForAssetOwner:ownerCopy modalOperationPresenter:v37 compatibilityAlertPresenter:alertPresenterCopy completionHandler:v40];
 
   _Block_object_dispose(v48, 8);
 }

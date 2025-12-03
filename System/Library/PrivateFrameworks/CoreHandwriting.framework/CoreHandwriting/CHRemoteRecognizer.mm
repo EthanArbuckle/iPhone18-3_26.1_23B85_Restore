@@ -1,19 +1,19 @@
 @interface CHRemoteRecognizer
 + (int64_t)absoluteMaxStrokeCountPerRequest;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRemoteRecognizer:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRemoteRecognizer:(id)recognizer;
 - (CGSize)minimumDrawingSize;
-- (CHRemoteRecognizer)initWithEnableCachingIfAvailable:(BOOL)a3;
+- (CHRemoteRecognizer)initWithEnableCachingIfAvailable:(BOOL)available;
 - (id)connection;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)logDrawingsAndResultsForRequest:(id)a3 result:(id)a4 error:(id)a5;
+- (void)logDrawingsAndResultsForRequest:(id)request result:(id)result error:(id)error;
 - (void)setupXPCConnectionIfNeeded;
 @end
 
 @implementation CHRemoteRecognizer
 
-- (CHRemoteRecognizer)initWithEnableCachingIfAvailable:(BOOL)a3
+- (CHRemoteRecognizer)initWithEnableCachingIfAvailable:(BOOL)available
 {
   v14.receiver = self;
   v14.super_class = CHRemoteRecognizer;
@@ -27,7 +27,7 @@
     v5->_minimumDrawingSize.width = v12;
     v5->_minimumDrawingSize.height = v13;
     v5->_priority = 0;
-    v5->_enableCachingIfAvailable = a3;
+    v5->_enableCachingIfAvailable = available;
   }
 
   return result;
@@ -35,14 +35,14 @@
 
 - (void)setupXPCConnectionIfNeeded
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->__connection)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->__connection)
   {
     v3 = objc_alloc(MEMORY[0x1E696B0B8]);
     v7 = objc_msgSend_initWithMachServiceName_options_(v3, v4, @"com.apple.handwritingd.remoterecognition", 0, v5, v6);
-    connection = v2->__connection;
-    v2->__connection = v7;
+    connection = selfCopy->__connection;
+    selfCopy->__connection = v7;
 
     v13 = objc_msgSend_interfaceWithProtocol_(MEMORY[0x1E696B0D0], v9, &unk_1EF2155C0, v10, v11, v12);
     v14 = MEMORY[0x1E695DFD8];
@@ -57,30 +57,30 @@
     v27 = objc_opt_class();
     v32 = objc_msgSend_setWithObjects_(v25, v28, v26, v29, v30, v31, v27, 0);
     objc_msgSend_setClasses_forSelector_argumentIndex_ofReply_(v13, v33, v32, sel_handleRecognitionRequest_withReply_, 1, 1);
-    objc_msgSend_setRemoteObjectInterface_(v2->__connection, v34, v13, v35, v36, v37);
-    objc_initWeak(&location, v2);
-    v38 = v2->__connection;
+    objc_msgSend_setRemoteObjectInterface_(selfCopy->__connection, v34, v13, v35, v36, v37);
+    objc_initWeak(&location, selfCopy);
+    v38 = selfCopy->__connection;
     v52[0] = MEMORY[0x1E69E9820];
     v52[1] = 3221225472;
     v52[2] = sub_1838B3B54;
     v52[3] = &unk_1E6DDD098;
     objc_copyWeak(&v53, &location);
     objc_msgSend_setInterruptionHandler_(v38, v39, v52, v40, v41, v42);
-    objc_msgSend_setInvalidationHandler_(v2->__connection, v43, &unk_1EF1BEEB0, v44, v45, v46);
-    objc_msgSend_resume(v2->__connection, v47, v48, v49, v50, v51);
+    objc_msgSend_setInvalidationHandler_(selfCopy->__connection, v43, &unk_1EF1BEEB0, v44, v45, v46);
+    objc_msgSend_resume(selfCopy->__connection, v47, v48, v49, v50, v51);
     objc_destroyWeak(&v53);
     objc_destroyWeak(&location);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)connection
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->__connection;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->__connection;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -93,12 +93,12 @@
   [(CHRemoteRecognizer *)&v3 dealloc];
 }
 
-- (void)logDrawingsAndResultsForRequest:(id)a3 result:(id)a4 error:(id)a5
+- (void)logDrawingsAndResultsForRequest:(id)request result:(id)result error:(id)error
 {
   v136[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  requestCopy = request;
+  resultCopy = result;
+  errorCopy = error;
   if (os_variant_has_internal_diagnostics())
   {
     v15 = objc_msgSend_standardUserDefaults(MEMORY[0x1E695E000], v10, v11, v12, v13, v14);
@@ -109,7 +109,7 @@
 
     if (v31)
     {
-      v37 = objc_msgSend_topTranscription(v8, v32, v33, v34, v35, v36);
+      v37 = objc_msgSend_topTranscription(resultCopy, v32, v33, v34, v35, v36);
       v43 = &stru_1EF1C0318;
       v125 = v37;
       if (v37)
@@ -120,7 +120,7 @@
       v136[0] = v43;
       v135[0] = @"string";
       v135[1] = @"request_description";
-      v44 = objc_msgSend_debugDescription(v7, v38, v39, v40, v41, v42);
+      v44 = objc_msgSend_debugDescription(requestCopy, v38, v39, v40, v41, v42);
       v136[1] = v44;
       v126 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v45, v136, v135, 2, v46);
 
@@ -138,7 +138,7 @@
       v72 = objc_msgSend_now(MEMORY[0x1E695DF00], v67, v68, v69, v70, v71);
       v77 = objc_msgSend_stringFromDate_(v127, v73, v72, v74, v75, v76);
 
-      v83 = objc_msgSend_drawing(v7, v78, v79, v80, v81, v82);
+      v83 = objc_msgSend_drawing(requestCopy, v78, v79, v80, v81, v82);
       LOBYTE(v72) = v83 == 0;
 
       if (v72)
@@ -154,7 +154,7 @@
           *buf = 138412546;
           v130 = @"CHLogAllDrawings";
           v131 = 2112;
-          v132 = v9;
+          v132 = errorCopy;
           _os_log_impl(&dword_18366B000, v88, OS_LOG_TYPE_ERROR, "%@ skipping serialization of nil drawing. Error = %@", buf, 0x16u);
         }
       }
@@ -162,7 +162,7 @@
       else
       {
         v88 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v84, @"drawing_%@_%@.json", v85, v86, v87, v77, v128);
-        v94 = objc_msgSend_drawing(v7, v89, v90, v91, v92, v93);
+        v94 = objc_msgSend_drawing(requestCopy, v89, v90, v91, v92, v93);
         objc_msgSend_writeToFileWithContext_folder_basename_(v94, v95, v126, qword_1EA84D100, v88, v96);
 
         if (qword_1EA84DC48 != -1)
@@ -183,7 +183,7 @@
         }
 
         v102 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v98, @"request_%@_%@.hrr", v99, v100, v101, v77, v128);
-        v106 = objc_msgSend_writeToFileInFolder_basename_(v7, v103, qword_1EA84D100, v102, v104, v105);
+        v106 = objc_msgSend_writeToFileInFolder_basename_(requestCopy, v103, qword_1EA84D100, v102, v104, v105);
         if (qword_1EA84DC48 != -1)
         {
           dispatch_once(&qword_1EA84DC48, &unk_1EF1BC930);
@@ -209,7 +209,7 @@
         v108 = qword_1EA84DC70;
         if (os_log_type_enabled(v108, OS_LOG_TYPE_DEFAULT))
         {
-          v114 = objc_msgSend_debugDescription(v7, v109, v110, v111, v112, v113);
+          v114 = objc_msgSend_debugDescription(requestCopy, v109, v110, v111, v112, v113);
           *buf = 138412546;
           v130 = @"CHLogAllDrawings";
           v131 = 2112;
@@ -218,7 +218,7 @@
         }
       }
 
-      if (v8)
+      if (resultCopy)
       {
         v119 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v115, @"result_%@_%@.dat", v116, v117, v118, v77, v128);
         if (qword_1EA84DC48 != -1)
@@ -238,7 +238,7 @@
           _os_log_impl(&dword_18366B000, v120, OS_LOG_TYPE_DEFAULT, "%@ serialize recognition result to %@/%@, ", buf, 0x20u);
         }
 
-        v124 = objc_msgSend_writeToFileInFolder_basename_(v8, v121, qword_1EA84D100, v119, v122, v123);
+        v124 = objc_msgSend_writeToFileInFolder_basename_(resultCopy, v121, qword_1EA84D100, v119, v122, v123);
       }
 
       else
@@ -254,7 +254,7 @@
           *buf = 138412546;
           v130 = @"CHLogAllDrawings";
           v131 = 2112;
-          v132 = v9;
+          v132 = errorCopy;
           _os_log_impl(&dword_18366B000, v119, OS_LOG_TYPE_ERROR, "%@ skipping serialization of nil result. Error = %@", buf, 0x16u);
         }
       }
@@ -262,10 +262,10 @@
   }
 }
 
-- (BOOL)isEqualToRemoteRecognizer:(id)a3
+- (BOOL)isEqualToRemoteRecognizer:(id)recognizer
 {
-  v9 = a3;
-  if (self == v9)
+  recognizerCopy = recognizer;
+  if (self == recognizerCopy)
   {
     LOBYTE(v55) = 1;
   }
@@ -275,12 +275,12 @@
     objc_msgSend_minimumDrawingSize(self, v4, v5, v6, v7, v8);
     v11 = v10;
     v13 = v12;
-    objc_msgSend_minimumDrawingSize(v9, v14, v15, v16, v17, v18);
+    objc_msgSend_minimumDrawingSize(recognizerCopy, v14, v15, v16, v17, v18);
     v26 = v11 == v25 && v13 == v24;
-    if (v26 && (v27 = objc_msgSend_maxRecognitionResultCount(self, v19, v20, v21, v22, v23), v27 == objc_msgSend_maxRecognitionResultCount(v9, v28, v29, v30, v31, v32)) && (v38 = objc_msgSend_priority(self, v33, v34, v35, v36, v37), v38 == objc_msgSend_priority(v9, v39, v40, v41, v42, v43)))
+    if (v26 && (v27 = objc_msgSend_maxRecognitionResultCount(self, v19, v20, v21, v22, v23), v27 == objc_msgSend_maxRecognitionResultCount(recognizerCopy, v28, v29, v30, v31, v32)) && (v38 = objc_msgSend_priority(self, v33, v34, v35, v36, v37), v38 == objc_msgSend_priority(recognizerCopy, v39, v40, v41, v42, v43)))
     {
       v49 = objc_msgSend_enableCachingIfAvailable(self, v44, v45, v46, v47, v48);
-      v55 = v49 ^ objc_msgSend_enableCachingIfAvailable(v9, v50, v51, v52, v53, v54) ^ 1;
+      v55 = v49 ^ objc_msgSend_enableCachingIfAvailable(recognizerCopy, v50, v51, v52, v53, v54) ^ 1;
     }
 
     else
@@ -292,13 +292,13 @@
   return v55;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    isEqualToRemoteRecognizer = objc_msgSend_isEqualToRemoteRecognizer_(self, v5, v4, v6, v7, v8);
+    isEqualToRemoteRecognizer = objc_msgSend_isEqualToRemoteRecognizer_(self, v5, equalCopy, v6, v7, v8);
 
     return isEqualToRemoteRecognizer;
   }

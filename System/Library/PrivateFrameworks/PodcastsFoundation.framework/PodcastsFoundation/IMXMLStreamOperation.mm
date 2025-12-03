@@ -1,30 +1,30 @@
 @interface IMXMLStreamOperation
-+ (id)operationWithURL:(id)a3 parseDelegate:(id)a4;
-- (IMXMLStreamOperation)initWithURL:(id)a3 parseDelegate:(id)a4;
++ (id)operationWithURL:(id)l parseDelegate:(id)delegate;
+- (IMXMLStreamOperation)initWithURL:(id)l parseDelegate:(id)delegate;
 - (void)_startRunLoop;
-- (void)connection:(id)a3 didReceiveData:(id)a4;
+- (void)connection:(id)connection didReceiveData:(id)data;
 - (void)dealloc;
 - (void)start;
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4;
+- (void)stream:(id)stream handleEvent:(unint64_t)event;
 - (void)writeToStream;
 @end
 
 @implementation IMXMLStreamOperation
 
-+ (id)operationWithURL:(id)a3 parseDelegate:(id)a4
++ (id)operationWithURL:(id)l parseDelegate:(id)delegate
 {
-  v4 = [[a1 alloc] initWithURL:a3 parseDelegate:a4];
+  v4 = [[self alloc] initWithURL:l parseDelegate:delegate];
 
   return v4;
 }
 
-- (IMXMLStreamOperation)initWithURL:(id)a3 parseDelegate:(id)a4
+- (IMXMLStreamOperation)initWithURL:(id)l parseDelegate:(id)delegate
 {
   v6 = [(IMXMLStreamOperation *)self init];
   if (v6)
   {
-    v6->_url = [a3 copy];
-    v6->_delegate = a4;
+    v6->_url = [l copy];
+    v6->_delegate = delegate;
     v6->_dataBuffer = objc_alloc_init(MEMORY[0x1E695DF88]);
     CFStreamCreateBoundPair(0, &v6->_readStream, &v6->_writeStream, 4096);
   }
@@ -43,9 +43,9 @@
 {
   v3 = objc_opt_new();
   readStream = self->_readStream;
-  v5 = [MEMORY[0x1E695DFD0] currentRunLoop];
+  currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
   v6 = *MEMORY[0x1E695D918];
-  [(NSInputStream *)readStream scheduleInRunLoop:v5 forMode:*MEMORY[0x1E695D918]];
+  [(NSInputStream *)readStream scheduleInRunLoop:currentRunLoop forMode:*MEMORY[0x1E695D918]];
   -[NSOutputStream scheduleInRunLoop:forMode:](self->_writeStream, "scheduleInRunLoop:forMode:", [MEMORY[0x1E695DFD0] currentRunLoop], v6);
   [(NSOutputStream *)self->_writeStream setDelegate:self];
   [(NSInputStream *)self->_readStream open];
@@ -64,12 +64,12 @@
     do
     {
       v9 = objc_opt_new();
-      v10 = [MEMORY[0x1E695DFD0] currentRunLoop];
-      LODWORD(v10) = [v10 runMode:v6 beforeDate:{objc_msgSend(MEMORY[0x1E695DF00], "dateWithTimeIntervalSinceNow:", 2.0)}];
+      currentRunLoop2 = [MEMORY[0x1E695DFD0] currentRunLoop];
+      LODWORD(currentRunLoop2) = [currentRunLoop2 runMode:v6 beforeDate:{objc_msgSend(MEMORY[0x1E695DF00], "dateWithTimeIntervalSinceNow:", 2.0)}];
       [v9 drain];
     }
 
-    while (v10 && self->_isExecuting);
+    while (currentRunLoop2 && self->_isExecuting);
   }
 
   [v3 drain];
@@ -128,16 +128,16 @@ uint64_t __37__IMXMLStreamOperation__startRunLoop__block_invoke(uint64_t a1)
   }
 }
 
-- (void)connection:(id)a3 didReceiveData:(id)a4
+- (void)connection:(id)connection didReceiveData:(id)data
 {
-  [(NSMutableData *)self->_dataBuffer appendData:a4];
+  [(NSMutableData *)self->_dataBuffer appendData:data];
 
   [(IMXMLStreamOperation *)self writeToStream];
 }
 
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4
+- (void)stream:(id)stream handleEvent:(unint64_t)event
 {
-  if (a4 == 4)
+  if (event == 4)
   {
     if (self->_finishedDownloadingData && ![(NSMutableData *)self->_dataBuffer length])
     {

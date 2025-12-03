@@ -1,12 +1,12 @@
 @interface AdvertSearchResultCollectionViewCell
-- (_TtC18ASMessagesProvider36AdvertSearchResultCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC18ASMessagesProvider36AdvertSearchResultCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation AdvertSearchResultCollectionViewCell
 
-- (_TtC18ASMessagesProvider36AdvertSearchResultCollectionViewCell)initWithCoder:(id)a3
+- (_TtC18ASMessagesProvider36AdvertSearchResultCollectionViewCell)initWithCoder:(id)coder
 {
   result = sub_76A840();
   __break(1u);

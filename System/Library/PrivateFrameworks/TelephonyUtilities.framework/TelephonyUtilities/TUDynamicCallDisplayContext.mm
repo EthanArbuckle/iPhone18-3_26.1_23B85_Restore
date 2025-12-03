@@ -1,10 +1,10 @@
 @interface TUDynamicCallDisplayContext
 - (TUDynamicCallDisplayContext)init;
-- (TUDynamicCallDisplayContext)initWithCoder:(id)a3;
+- (TUDynamicCallDisplayContext)initWithCoder:(id)coder;
 - (TUDynamicCallDisplayContextDelegate)delegate;
 - (id)description;
-- (void)_initializeSynchronousStateWithCall:(id)a3 contactIdentifier:(id)a4 contactsDataProvider:(id)a5;
-- (void)updatePredictedNameFromReceptionist:(id)a3;
+- (void)_initializeSynchronousStateWithCall:(id)call contactIdentifier:(id)identifier contactsDataProvider:(id)provider;
+- (void)updatePredictedNameFromReceptionist:(id)receptionist;
 @end
 
 @implementation TUDynamicCallDisplayContext
@@ -12,47 +12,47 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(TUCallDisplayContext *)self name];
-  [v3 appendFormat:@" name=%@", v4];
+  name = [(TUCallDisplayContext *)self name];
+  [v3 appendFormat:@" name=%@", name];
 
-  v5 = [(TUCallDisplayContext *)self personNameComponents];
-  [v3 appendFormat:@" personNameComponents=%@", v5];
+  personNameComponents = [(TUCallDisplayContext *)self personNameComponents];
+  [v3 appendFormat:@" personNameComponents=%@", personNameComponents];
 
-  v6 = [(TUCallDisplayContext *)self suggestedName];
-  [v3 appendFormat:@" suggestedName=%@", v6];
+  suggestedName = [(TUCallDisplayContext *)self suggestedName];
+  [v3 appendFormat:@" suggestedName=%@", suggestedName];
 
-  v7 = [(TUCallDisplayContext *)self label];
-  [v3 appendFormat:@" label=%@", v7];
+  label = [(TUCallDisplayContext *)self label];
+  [v3 appendFormat:@" label=%@", label];
 
-  v8 = [(TUCallDisplayContext *)self companyName];
-  [v3 appendFormat:@" companyName=%@", v8];
+  companyName = [(TUCallDisplayContext *)self companyName];
+  [v3 appendFormat:@" companyName=%@", companyName];
 
-  v9 = [(TUCallDisplayContext *)self companyDepartment];
-  [v3 appendFormat:@" companyDepartment=%@", v9];
+  companyDepartment = [(TUCallDisplayContext *)self companyDepartment];
+  [v3 appendFormat:@" companyDepartment=%@", companyDepartment];
 
-  v10 = [(TUCallDisplayContext *)self companyLogoURL];
-  [v3 appendFormat:@" companyLogoURL=%@", v10];
+  companyLogoURL = [(TUCallDisplayContext *)self companyLogoURL];
+  [v3 appendFormat:@" companyLogoURL=%@", companyLogoURL];
 
-  v11 = [(TUCallDisplayContext *)self mapName];
-  [v3 appendFormat:@" mapName=%@", v11];
+  mapName = [(TUCallDisplayContext *)self mapName];
+  [v3 appendFormat:@" mapName=%@", mapName];
 
-  v12 = [(TUCallDisplayContext *)self location];
-  [v3 appendFormat:@" location=%@", v12];
+  location = [(TUCallDisplayContext *)self location];
+  [v3 appendFormat:@" location=%@", location];
 
-  v13 = [(TUCallDisplayContext *)self contactName];
-  [v3 appendFormat:@" contactName=%@", v13];
+  contactName = [(TUCallDisplayContext *)self contactName];
+  [v3 appendFormat:@" contactName=%@", contactName];
 
-  v14 = [(TUCallDisplayContext *)self contactLabel];
-  [v3 appendFormat:@" contactLabel=%@", v14];
+  contactLabel = [(TUCallDisplayContext *)self contactLabel];
+  [v3 appendFormat:@" contactLabel=%@", contactLabel];
 
-  v15 = [(TUCallDisplayContext *)self callDirectoryLabel];
-  [v3 appendFormat:@" callDirectoryLabel=%@", v15];
+  callDirectoryLabel = [(TUCallDisplayContext *)self callDirectoryLabel];
+  [v3 appendFormat:@" callDirectoryLabel=%@", callDirectoryLabel];
 
-  v16 = [(TUCallDisplayContext *)self callDirectoryLocalizedExtensionContainingAppName];
-  [v3 appendFormat:@" callDirectoryLocalizedExtensionContainingAppName=%@", v16];
+  callDirectoryLocalizedExtensionContainingAppName = [(TUCallDisplayContext *)self callDirectoryLocalizedExtensionContainingAppName];
+  [v3 appendFormat:@" callDirectoryLocalizedExtensionContainingAppName=%@", callDirectoryLocalizedExtensionContainingAppName];
 
-  v17 = [(TUCallDisplayContext *)self callDirectoryExtensionIdentifier];
-  [v3 appendFormat:@" callDirectoryExtensionIdentifier=%@", v17];
+  callDirectoryExtensionIdentifier = [(TUCallDisplayContext *)self callDirectoryExtensionIdentifier];
+  [v3 appendFormat:@" callDirectoryExtensionIdentifier=%@", callDirectoryExtensionIdentifier];
 
   [v3 appendFormat:@" callDirectoryIdentityType=%ld", -[TUCallDisplayContext callDirectoryIdentityType](self, "callDirectoryIdentityType")];
   [v3 appendString:@">"];
@@ -63,103 +63,103 @@
 
 - (TUDynamicCallDisplayContext)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"TUDynamicCallDisplayContext.m" lineNumber:141 description:{@"%s is not available. Use another initializer instead.", "-[TUDynamicCallDisplayContext init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"TUDynamicCallDisplayContext.m" lineNumber:141 description:{@"%s is not available. Use another initializer instead.", "-[TUDynamicCallDisplayContext init]"}];
 
   return 0;
 }
 
-- (TUDynamicCallDisplayContext)initWithCoder:(id)a3
+- (TUDynamicCallDisplayContext)initWithCoder:(id)coder
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"TUDynamicCallDisplayContext.m" lineNumber:146 description:{@"%s is not available. Use another initializer instead.", "-[TUDynamicCallDisplayContext initWithCoder:]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"TUDynamicCallDisplayContext.m" lineNumber:146 description:{@"%s is not available. Use another initializer instead.", "-[TUDynamicCallDisplayContext initWithCoder:]"}];
 
   return 0;
 }
 
-- (void)_initializeSynchronousStateWithCall:(id)a3 contactIdentifier:(id)a4 contactsDataProvider:(id)a5
+- (void)_initializeSynchronousStateWithCall:(id)call contactIdentifier:(id)identifier contactsDataProvider:(id)provider
 {
   v103 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 isInternational];
-  v12 = [[TUContactsDataProviderFetchRequest alloc] initWithCall:v8];
-  [(TUContactsDataProviderFetchRequest *)v12 setContactIdentifier:v9];
-  v13 = [v10 executeFetchRequest:v12];
+  callCopy = call;
+  identifierCopy = identifier;
+  providerCopy = provider;
+  isInternational = [callCopy isInternational];
+  v12 = [[TUContactsDataProviderFetchRequest alloc] initWithCall:callCopy];
+  [(TUContactsDataProviderFetchRequest *)v12 setContactIdentifier:identifierCopy];
+  v13 = [providerCopy executeFetchRequest:v12];
   v14 = v13;
   v93 = v12;
-  v94 = v10;
-  if (v11)
+  v94 = providerCopy;
+  if (isInternational)
   {
-    v15 = [v8 remoteParticipantHandles];
-    v16 = [v15 anyObject];
+    remoteParticipantHandles = [callCopy remoteParticipantHandles];
+    anyObject = [remoteParticipantHandles anyObject];
 
-    v17 = [v16 value];
-    if ([v17 length])
+    value = [anyObject value];
+    if ([value length])
     {
-      v18 = [v8 isoCountryCode];
-      v19 = TUFormattedPhoneNumber(v17, v18);
+      isoCountryCode = [callCopy isoCountryCode];
+      v19 = TUFormattedPhoneNumber(value, isoCountryCode);
       [(TUCallDisplayContext *)self setName:v19];
     }
 
-    v20 = [v14 contacts];
-    v21 = [v20 count];
+    contacts = [v14 contacts];
+    v21 = [contacts count];
 
     if (v21)
     {
-      v22 = [v14 localizedName];
-      [(TUCallDisplayContext *)self setSuggestedName:v22];
+      localizedName = [v14 localizedName];
+      [(TUCallDisplayContext *)self setSuggestedName:localizedName];
     }
   }
 
   else
   {
-    v23 = [v13 localizedName];
-    [(TUCallDisplayContext *)self setName:v23];
+    localizedName2 = [v13 localizedName];
+    [(TUCallDisplayContext *)self setName:localizedName2];
 
-    v24 = [v14 contactLabel];
-    [(TUCallDisplayContext *)self setLabel:v24];
+    contactLabel = [v14 contactLabel];
+    [(TUCallDisplayContext *)self setLabel:contactLabel];
 
-    v16 = [v14 companyName];
-    [(TUCallDisplayContext *)self setCompanyName:v16];
+    anyObject = [v14 companyName];
+    [(TUCallDisplayContext *)self setCompanyName:anyObject];
   }
 
-  v25 = [v8 handle];
-  v26 = [v25 siriDisplayName];
-  if (v26)
+  handle = [callCopy handle];
+  siriDisplayName = [handle siriDisplayName];
+  if (siriDisplayName)
   {
-    v27 = v26;
-    v28 = [v8 handle];
-    v29 = [v28 shouldHideContact];
+    v27 = siriDisplayName;
+    handle2 = [callCopy handle];
+    shouldHideContact = [handle2 shouldHideContact];
 
-    if (!v29)
+    if (!shouldHideContact)
     {
       goto LABEL_12;
     }
 
-    v25 = [v8 handle];
-    v30 = [v25 siriDisplayName];
-    [(TUCallDisplayContext *)self setName:v30];
+    handle = [callCopy handle];
+    siriDisplayName2 = [handle siriDisplayName];
+    [(TUCallDisplayContext *)self setName:siriDisplayName2];
   }
 
 LABEL_12:
-  if (v11)
+  if (isInternational)
   {
     goto LABEL_27;
   }
 
-  v31 = [v14 contacts];
-  if (![v31 count])
+  contacts2 = [v14 contacts];
+  if (![contacts2 count])
   {
 
     goto LABEL_27;
   }
 
-  if ([v8 isConversation])
+  if ([callCopy isConversation])
   {
-    v32 = [v8 remoteParticipantHandles];
-    v33 = [v32 count];
+    remoteParticipantHandles2 = [callCopy remoteParticipantHandles];
+    v33 = [remoteParticipantHandles2 count];
 
     if (v33 != 1)
     {
@@ -171,26 +171,26 @@ LABEL_12:
   {
   }
 
-  v91 = v9;
-  v34 = [v14 contacts];
-  v90 = [v34 firstObject];
+  v91 = identifierCopy;
+  contacts3 = [v14 contacts];
+  firstObject = [contacts3 firstObject];
 
-  v35 = [(TUCallDisplayContext *)self name];
-  [(TUCallDisplayContext *)self setContactName:v35];
+  name = [(TUCallDisplayContext *)self name];
+  [(TUCallDisplayContext *)self setContactName:name];
 
-  v36 = [(TUCallDisplayContext *)self label];
-  [(TUCallDisplayContext *)self setContactLabel:v36];
+  label = [(TUCallDisplayContext *)self label];
+  [(TUCallDisplayContext *)self setContactLabel:label];
 
   v37 = objc_alloc(MEMORY[0x1E695DF70]);
-  v38 = [v14 contacts];
-  v39 = [v37 initWithCapacity:{objc_msgSend(v38, "count")}];
+  contacts4 = [v14 contacts];
+  v39 = [v37 initWithCapacity:{objc_msgSend(contacts4, "count")}];
 
   v98 = 0u;
   v99 = 0u;
   v96 = 0u;
   v97 = 0u;
-  v40 = [v14 contacts];
-  v41 = [v40 countByEnumeratingWithState:&v96 objects:v102 count:16];
+  contacts5 = [v14 contacts];
+  v41 = [contacts5 countByEnumeratingWithState:&v96 objects:v102 count:16];
   if (v41)
   {
     v42 = v41;
@@ -201,32 +201,32 @@ LABEL_12:
       {
         if (*v97 != v43)
         {
-          objc_enumerationMutation(v40);
+          objc_enumerationMutation(contacts5);
         }
 
-        v45 = [*(*(&v96 + 1) + 8 * i) identifier];
-        [v39 addObject:v45];
+        identifier = [*(*(&v96 + 1) + 8 * i) identifier];
+        [v39 addObject:identifier];
       }
 
-      v42 = [v40 countByEnumeratingWithState:&v96 objects:v102 count:16];
+      v42 = [contacts5 countByEnumeratingWithState:&v96 objects:v102 count:16];
     }
 
     while (v42);
   }
 
   [(TUCallDisplayContext *)self setContactIdentifiers:v39];
-  v46 = [v90 personNameComponents];
-  [(TUCallDisplayContext *)self setPersonNameComponents:v46];
+  personNameComponents = [firstObject personNameComponents];
+  [(TUCallDisplayContext *)self setPersonNameComponents:personNameComponents];
 
   -[TUCallDisplayContext setLegacyAddressBookIdentifier:](self, "setLegacyAddressBookIdentifier:", [v14 legacyAddressBookIdentifier]);
-  v9 = v91;
+  identifierCopy = v91;
 LABEL_27:
-  v47 = [(TUCallDisplayContext *)self personNameComponents];
-  if (v47)
+  personNameComponents2 = [(TUCallDisplayContext *)self personNameComponents];
+  if (personNameComponents2)
   {
     v48 = MEMORY[0x1E696ADF8];
-    v49 = [(TUCallDisplayContext *)self personNameComponents];
-    v50 = [v48 localizedStringFromPersonNameComponents:v49 style:3 options:0];
+    personNameComponents3 = [(TUCallDisplayContext *)self personNameComponents];
+    v50 = [v48 localizedStringFromPersonNameComponents:personNameComponents3 style:3 options:0];
   }
 
   else
@@ -234,15 +234,15 @@ LABEL_27:
     v50 = 0;
   }
 
-  v51 = [(TUCallDisplayContext *)self contactIdentifiers];
-  if (![v51 count])
+  contactIdentifiers = [(TUCallDisplayContext *)self contactIdentifiers];
+  if (![contactIdentifiers count])
   {
 
     goto LABEL_35;
   }
 
-  v52 = [(TUCallDisplayContext *)self contactIdentifiers];
-  if (![v52 count])
+  contactIdentifiers2 = [(TUCallDisplayContext *)self contactIdentifiers];
+  if (![contactIdentifiers2 count])
   {
 LABEL_85:
 
@@ -255,112 +255,112 @@ LABEL_86:
   if (!v53)
   {
 LABEL_35:
-    v51 = [v8 callerNameFromNetwork];
-    if ([v51 length])
+    contactIdentifiers = [callCopy callerNameFromNetwork];
+    if ([contactIdentifiers length])
     {
-      v54 = [v8 provider];
-      v55 = [v54 isTelephonyProvider];
+      provider = [callCopy provider];
+      isTelephonyProvider = [provider isTelephonyProvider];
 
-      if (v55)
+      if (isTelephonyProvider)
       {
-        [(TUCallDisplayContext *)self setLabel:v51];
+        [(TUCallDisplayContext *)self setLabel:contactIdentifiers];
       }
 
       else
       {
-        [(TUCallDisplayContext *)self setName:v51];
+        [(TUCallDisplayContext *)self setName:contactIdentifiers];
       }
     }
 
-    if (![v51 length] && objc_msgSend(v8, "isVoicemail"))
+    if (![contactIdentifiers length] && objc_msgSend(callCopy, "isVoicemail"))
     {
       v56 = TUBundle();
       v57 = [v56 localizedStringForKey:@"VOICEMAIL" value:&stru_1F098C218 table:@"TelephonyUtilities"];
       [(TUCallDisplayContext *)self setName:v57];
     }
 
-    if ([v51 length])
+    if ([contactIdentifiers length])
     {
       goto LABEL_86;
     }
 
-    v58 = [v8 handle];
-    v59 = [v58 value];
-    v60 = [v59 length];
+    handle3 = [callCopy handle];
+    value2 = [handle3 value];
+    v60 = [value2 length];
 
     if (!v60)
     {
       goto LABEL_86;
     }
 
-    v61 = [v8 handle];
-    v52 = [v61 value];
+    handle4 = [callCopy handle];
+    contactIdentifiers2 = [handle4 value];
 
-    v62 = [v8 handle];
-    if ([v62 type] == 2)
+    handle5 = [callCopy handle];
+    if ([handle5 type] == 2)
     {
       v92 = v50;
-      v63 = [v8 handle];
-      v64 = [v63 normalizedValue];
+      handle6 = [callCopy handle];
+      normalizedValue = [handle6 normalizedValue];
 
-      if (!v64)
+      if (!normalizedValue)
       {
         v50 = v92;
-        if (v11)
+        if (isInternational)
         {
           goto LABEL_61;
         }
 
 LABEL_48:
         v95 = 0;
-        v66 = [TUSuggestionsMetadataCacheDataProvider suggestedNamesForDestinationID:v52 onlySignificant:0 error:&v95];
+        v66 = [TUSuggestionsMetadataCacheDataProvider suggestedNamesForDestinationID:contactIdentifiers2 onlySignificant:0 error:&v95];
         v67 = v95;
         if (v67)
         {
-          v68 = TUDefaultLog();
-          if (os_log_type_enabled(v68, OS_LOG_TYPE_DEFAULT))
+          firstObject3 = TUDefaultLog();
+          if (os_log_type_enabled(firstObject3, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
             *v101 = v67;
-            _os_log_impl(&dword_1956FD000, v68, OS_LOG_TYPE_DEFAULT, "Suggestions: Could not fetch suggested contact via namesForDetail: %@", buf, 0xCu);
+            _os_log_impl(&dword_1956FD000, firstObject3, OS_LOG_TYPE_DEFAULT, "Suggestions: Could not fetch suggested contact via namesForDetail: %@", buf, 0xCu);
           }
         }
 
         else
         {
           v69 = [v66 count];
-          v68 = TUDefaultLog();
-          v70 = os_log_type_enabled(v68, OS_LOG_TYPE_DEFAULT);
+          firstObject3 = TUDefaultLog();
+          v70 = os_log_type_enabled(firstObject3, OS_LOG_TYPE_DEFAULT);
           if (v69)
           {
             if (v70)
             {
-              v71 = [v66 firstObject];
+              firstObject2 = [v66 firstObject];
               *buf = 138412546;
-              *v101 = v71;
+              *v101 = firstObject2;
               *&v101[8] = 2112;
-              *&v101[10] = v52;
-              _os_log_impl(&dword_1956FD000, v68, OS_LOG_TYPE_DEFAULT, "Suggestions: Found name '%@' for '%@'", buf, 0x16u);
+              *&v101[10] = contactIdentifiers2;
+              _os_log_impl(&dword_1956FD000, firstObject3, OS_LOG_TYPE_DEFAULT, "Suggestions: Found name '%@' for '%@'", buf, 0x16u);
             }
 
-            v68 = [v66 firstObject];
-            [(TUCallDisplayContext *)self setSuggestedName:v68];
+            firstObject3 = [v66 firstObject];
+            [(TUCallDisplayContext *)self setSuggestedName:firstObject3];
           }
 
           else if (v70)
           {
             *buf = 138412290;
-            *v101 = v52;
-            _os_log_impl(&dword_1956FD000, v68, OS_LOG_TYPE_DEFAULT, "Suggestions: No suggested names found for '%@'", buf, 0xCu);
+            *v101 = contactIdentifiers2;
+            _os_log_impl(&dword_1956FD000, firstObject3, OS_LOG_TYPE_DEFAULT, "Suggestions: No suggested names found for '%@'", buf, 0xCu);
           }
 
           v67 = 0;
         }
 
 LABEL_61:
-        if ([v8 isDomestic] && (objc_msgSend(v8, "handle"), v72 = objc_claimAutoreleasedReturnValue(), v73 = objc_msgSend(v72, "type"), v72, v73 != 3))
+        if ([callCopy isDomestic] && (objc_msgSend(callCopy, "handle"), v72 = objc_claimAutoreleasedReturnValue(), v73 = objc_msgSend(v72, "type"), v72, v73 != 3))
         {
-          if ([v8 isIncoming])
+          if ([callCopy isIncoming])
           {
             goto LABEL_71;
           }
@@ -373,17 +373,17 @@ LABEL_61:
           v74 = TUDefaultLog();
           if (os_log_type_enabled(v74, OS_LOG_TYPE_DEFAULT))
           {
-            v75 = [v8 isDomestic];
-            v76 = [v8 handle];
-            v77 = [v76 type];
+            isDomestic = [callCopy isDomestic];
+            handle7 = [callCopy handle];
+            type = [handle7 type];
             *buf = 67109376;
-            *v101 = v75;
+            *v101 = isDomestic;
             *&v101[4] = 2048;
-            *&v101[6] = v77;
+            *&v101[6] = type;
             _os_log_impl(&dword_1956FD000, v74, OS_LOG_TYPE_DEFAULT, "SNAP Suggestions: Hiding suggested nickname to prevent phishing. (isDomestic = %d, handleType = %ld)", buf, 0x12u);
           }
 
-          if ([v8 isIncoming])
+          if ([callCopy isIncoming])
           {
             goto LABEL_78;
           }
@@ -391,13 +391,13 @@ LABEL_61:
           v78 = 0;
         }
 
-        v79 = [(TUFeatureFlags *)self->_featureFlags outgoingCallCallerIDEnabled];
-        if (!v78 || !v79)
+        outgoingCallCallerIDEnabled = [(TUFeatureFlags *)self->_featureFlags outgoingCallCallerIDEnabled];
+        if (!v78 || !outgoingCallCallerIDEnabled)
         {
 LABEL_78:
-          if (([v8 isIncoming] & 1) != 0 || -[TUFeatureFlags outgoingCallCallerIDEnabled](self->_featureFlags, "outgoingCallCallerIDEnabled"))
+          if (([callCopy isIncoming] & 1) != 0 || -[TUFeatureFlags outgoingCallCallerIDEnabled](self->_featureFlags, "outgoingCallCallerIDEnabled"))
           {
-            v86 = [TUMetadataDestinationID metadataDestinationIDForCall:v8];
+            v86 = [TUMetadataDestinationID metadataDestinationIDForCall:callCopy];
             if (v86)
             {
               v87 = objc_alloc_init(TUGeoLocationMetadataCacheDataProvider);
@@ -415,7 +415,7 @@ LABEL_78:
 
 LABEL_71:
         v80 = +[TUNicknamesMetadataCacheDataProvider sharedInstance];
-        v81 = [v80 fetchNicknameForHandleValue:v52];
+        v81 = [v80 fetchNicknameForHandleValue:contactIdentifiers2];
         if (v81)
         {
           [(TUCallDisplayContext *)self setSuggestedName:v81];
@@ -425,7 +425,7 @@ LABEL_71:
             *buf = 138412546;
             *v101 = v81;
             *&v101[8] = 2112;
-            *&v101[10] = v52;
+            *&v101[10] = contactIdentifiers2;
             v83 = "SNAP Suggestions: found suggestedNickname: %@ %@";
             v84 = v82;
             v85 = 22;
@@ -440,7 +440,7 @@ LABEL_76:
           if (os_log_type_enabled(v82, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            *v101 = v52;
+            *v101 = contactIdentifiers2;
             v83 = "SNAP Suggestions: No nicknames found for '%@'";
             v84 = v82;
             v85 = 12;
@@ -451,14 +451,14 @@ LABEL_76:
         goto LABEL_78;
       }
 
-      v62 = [v8 handle];
-      v65 = [v62 normalizedValue];
+      handle5 = [callCopy handle];
+      normalizedValue2 = [handle5 normalizedValue];
 
-      v52 = v65;
+      contactIdentifiers2 = normalizedValue2;
       v50 = v92;
     }
 
-    if (v11)
+    if (isInternational)
     {
       goto LABEL_61;
     }
@@ -685,13 +685,13 @@ void __78__TUDynamicCallDisplayContext__initializeAsynchronousStateWithCall_cach
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updatePredictedNameFromReceptionist:(id)a3
+- (void)updatePredictedNameFromReceptionist:(id)receptionist
 {
   v5.receiver = self;
   v5.super_class = TUDynamicCallDisplayContext;
-  [(TUCallDisplayContext *)&v5 updatePredictedNameFromReceptionist:a3];
-  v4 = [(TUDynamicCallDisplayContext *)self delegate];
-  [v4 displayContextChanged:self];
+  [(TUCallDisplayContext *)&v5 updatePredictedNameFromReceptionist:receptionist];
+  delegate = [(TUDynamicCallDisplayContext *)self delegate];
+  [delegate displayContextChanged:self];
 }
 
 - (TUDynamicCallDisplayContextDelegate)delegate

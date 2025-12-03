@@ -1,34 +1,34 @@
 @interface NDTActivity
-- (NDTActivity)initWithDelegate:(id)a3;
+- (NDTActivity)initWithDelegate:(id)delegate;
 - (NDTActivityDelegate)delegate;
 - (OS_xpc_object)activity;
 - (id)_currentCriteria;
 - (void)_activityComplete;
 - (void)_checkIn;
-- (void)_setState:(int64_t)a3;
+- (void)_setState:(int64_t)state;
 - (void)_startDeferralPolling;
 - (void)_stopDeferralPolling;
-- (void)completeAndFireIn:(int64_t)a3;
+- (void)completeAndFireIn:(int64_t)in;
 - (void)completeAndFireNever;
 - (void)completeAndFireOnConnection;
 @end
 
 @implementation NDTActivity
 
-- (NDTActivity)initWithDelegate:(id)a3
+- (NDTActivity)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = NDTActivity;
   v5 = [(NDTActivity *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    [(NDTActivity *)v5 setDelegate:v4];
+    [(NDTActivity *)v5 setDelegate:delegateCopy];
     v7 = objc_alloc_init(NSCondition);
     [(NDTActivity *)v6 setActivityCondition:v7];
 
-    v8 = os_log_create([v4 activitySubsystem:v6], "xpc_activity");
+    v8 = os_log_create([delegateCopy activitySubsystem:v6], "xpc_activity");
     [(NDTActivity *)v6 setLog:v8];
 
     [(NDTActivity *)v6 setCriteriaDelay:-1];
@@ -41,8 +41,8 @@
 
 - (OS_xpc_object)activity
 {
-  v3 = [(NDTActivity *)self activityCondition];
-  [v3 lock];
+  activityCondition = [(NDTActivity *)self activityCondition];
+  [activityCondition lock];
   while (1)
   {
 
@@ -51,12 +51,12 @@
       break;
     }
 
-    v3 = [(NDTActivity *)self activityCondition];
-    [v3 wait];
+    activityCondition = [(NDTActivity *)self activityCondition];
+    [activityCondition wait];
   }
 
-  v4 = [(NDTActivity *)self activityCondition];
-  [v4 unlock];
+  activityCondition2 = [(NDTActivity *)self activityCondition];
+  [activityCondition2 unlock];
 
   activity = self->_activity;
 
@@ -65,15 +65,15 @@
 
 - (void)_checkIn
 {
-  v3 = [(NDTActivity *)self delegate];
+  delegate = [(NDTActivity *)self delegate];
   objc_initWeak(&location, self);
-  v4 = [v3 activityIdentifier:self];
+  v4 = [delegate activityIdentifier:self];
   handler[0] = _NSConcreteStackBlock;
   handler[1] = 3221225472;
   handler[2] = sub_10000D13C;
   handler[3] = &unk_10005CEE0;
   objc_copyWeak(&v8, &location);
-  v5 = v3;
+  v5 = delegate;
   v7 = v5;
   xpc_activity_register(v4, XPC_ACTIVITY_CHECK_IN, handler);
 
@@ -90,9 +90,9 @@
 
   else
   {
-    v3 = [(NDTActivity *)self delegate];
-    v4 = [(NDTActivity *)self activity];
-    v5 = xpc_activity_copy_criteria(v4);
+    delegate = [(NDTActivity *)self delegate];
+    activity = [(NDTActivity *)self activity];
+    v5 = xpc_activity_copy_criteria(activity);
 
     if (!v5)
     {
@@ -110,51 +110,51 @@
       xpc_dictionary_set_int64(v5, XPC_ACTIVITY_DELAY, [(NDTActivity *)self criteriaDelay]);
     }
 
-    if (v3 && (objc_opt_respondsToSelector() & 1) != 0)
+    if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v3 activity:self customizeCriteria:v5];
+      [delegate activity:self customizeCriteria:v5];
     }
   }
 
   return v5;
 }
 
-- (void)completeAndFireIn:(int64_t)a3
+- (void)completeAndFireIn:(int64_t)in
 {
   v5 = [(NDTActivity *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 67109120;
-    LODWORD(v14) = a3;
+    LODWORD(v14) = in;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "completeAndFireIn: %d", &v13, 8u);
   }
 
   v6 = os_transaction_create();
   [(NDTActivity *)self setWaitingForCheckin:v6];
 
-  v7 = [NSDate dateWithTimeIntervalSinceNow:a3];
-  v8 = [(NDTActivity *)self estimatedFireDate];
+  v7 = [NSDate dateWithTimeIntervalSinceNow:in];
+  estimatedFireDate = [(NDTActivity *)self estimatedFireDate];
   [(NDTActivity *)self setEstimatedFireDate:0];
   [(NDTActivity *)self _activityComplete];
-  if (!v8 || [v7 compare:v8] == -1)
+  if (!estimatedFireDate || [v7 compare:estimatedFireDate] == -1)
   {
     v12 = [(NDTActivity *)self log];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 67109120;
-      LODWORD(v14) = a3;
+      LODWORD(v14) = in;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "fireIn: %d", &v13, 8u);
     }
 
     [(NDTActivity *)self setCriteriaOnConnection:0];
-    [(NDTActivity *)self setCriteriaDelay:a3];
+    [(NDTActivity *)self setCriteriaDelay:in];
     [(NDTActivity *)self setEstimatedFireDate:v7];
     [(NDTActivity *)self _checkIn];
   }
 
   else
   {
-    [v8 timeIntervalSinceNow];
+    [estimatedFireDate timeIntervalSinceNow];
     v10 = v9;
     v11 = [(NDTActivity *)self log];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -199,12 +199,12 @@
   [(NDTActivity *)self _activityComplete];
 }
 
-- (void)_setState:(int64_t)a3
+- (void)_setState:(int64_t)state
 {
   if (self->_activity)
   {
-    v5 = [(NDTActivity *)self activity];
-    v6 = xpc_activity_set_state(v5, a3);
+    activity = [(NDTActivity *)self activity];
+    v6 = xpc_activity_set_state(activity, state);
 
     v7 = [(NDTActivity *)self log];
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
@@ -212,9 +212,9 @@
     {
       if (v8)
       {
-        if (a3 <= 5)
+        if (state <= 5)
         {
-          v9 = (&off_10005CF00)[a3];
+          v9 = (&off_10005CF00)[state];
         }
 
         else
@@ -232,9 +232,9 @@ LABEL_13:
 
     else if (v8)
     {
-      if (a3 <= 5)
+      if (state <= 5)
       {
-        v10 = (&off_10005CF00)[a3];
+        v10 = (&off_10005CF00)[state];
       }
 
       else

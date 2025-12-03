@@ -1,26 +1,26 @@
 @interface CNVSchemaCNVLinkMetadata
-- (BOOL)isEqual:(id)a3;
-- (CNVSchemaCNVLinkMetadata)initWithDictionary:(id)a3;
-- (CNVSchemaCNVLinkMetadata)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CNVSchemaCNVLinkMetadata)initWithDictionary:(id)dictionary;
+- (CNVSchemaCNVLinkMetadata)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CNVSchemaCNVLinkMetadata
 
-- (CNVSchemaCNVLinkMetadata)initWithDictionary:(id)a3
+- (CNVSchemaCNVLinkMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = CNVSchemaCNVLinkMetadata;
   v5 = [(CNVSchemaCNVLinkMetadata *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"linkId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"linkId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(CNVSchemaCNVLinkMetadata *)v5 setLinkId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"linkActionId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"linkActionId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(CNVSchemaCNVLinkMetadata *)v5 setLinkActionId:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"systemProtocol"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"systemProtocol"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (CNVSchemaCNVLinkMetadata)initWithJSON:(id)a3
+- (CNVSchemaCNVLinkMetadata)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(CNVSchemaCNVLinkMetadata *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(CNVSchemaCNVLinkMetadata *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(CNVSchemaCNVLinkMetadata *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,27 +85,27 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_linkActionId)
   {
-    v4 = [(CNVSchemaCNVLinkMetadata *)self linkActionId];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"linkActionId"];
+    linkActionId = [(CNVSchemaCNVLinkMetadata *)self linkActionId];
+    v5 = [linkActionId copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"linkActionId"];
   }
 
   if (self->_linkId)
   {
-    v6 = [(CNVSchemaCNVLinkMetadata *)self linkId];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    linkId = [(CNVSchemaCNVLinkMetadata *)self linkId];
+    dictionaryRepresentation = [linkId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"linkId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"linkId"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"linkId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"linkId"];
     }
   }
 
@@ -122,12 +122,12 @@
       v10 = off_1E78D3320[v9];
     }
 
-    [v3 setObject:v10 forKeyedSubscript:@"systemProtocol"];
+    [dictionary setObject:v10 forKeyedSubscript:@"systemProtocol"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -147,28 +147,28 @@
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(CNVSchemaCNVLinkMetadata *)self linkId];
-  v6 = [v4 linkId];
-  if ((v5 != 0) == (v6 == 0))
+  linkId = [(CNVSchemaCNVLinkMetadata *)self linkId];
+  linkId2 = [equalCopy linkId];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(CNVSchemaCNVLinkMetadata *)self linkId];
-  if (v7)
+  linkId3 = [(CNVSchemaCNVLinkMetadata *)self linkId];
+  if (linkId3)
   {
-    v8 = v7;
-    v9 = [(CNVSchemaCNVLinkMetadata *)self linkId];
-    v10 = [v4 linkId];
-    v11 = [v9 isEqual:v10];
+    v8 = linkId3;
+    linkId4 = [(CNVSchemaCNVLinkMetadata *)self linkId];
+    linkId5 = [equalCopy linkId];
+    v11 = [linkId4 isEqual:linkId5];
 
     if (!v11)
     {
@@ -180,22 +180,22 @@
   {
   }
 
-  v5 = [(CNVSchemaCNVLinkMetadata *)self linkActionId];
-  v6 = [v4 linkActionId];
-  if ((v5 != 0) == (v6 == 0))
+  linkId = [(CNVSchemaCNVLinkMetadata *)self linkActionId];
+  linkId2 = [equalCopy linkActionId];
+  if ((linkId != 0) == (linkId2 == 0))
   {
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v12 = [(CNVSchemaCNVLinkMetadata *)self linkActionId];
-  if (v12)
+  linkActionId = [(CNVSchemaCNVLinkMetadata *)self linkActionId];
+  if (linkActionId)
   {
-    v13 = v12;
-    v14 = [(CNVSchemaCNVLinkMetadata *)self linkActionId];
-    v15 = [v4 linkActionId];
-    v16 = [v14 isEqual:v15];
+    v13 = linkActionId;
+    linkActionId2 = [(CNVSchemaCNVLinkMetadata *)self linkActionId];
+    linkActionId3 = [equalCopy linkActionId];
+    v16 = [linkActionId2 isEqual:linkActionId3];
 
     if (!v16)
     {
@@ -207,9 +207,9 @@ LABEL_11:
   {
   }
 
-  if ((*&self->_has & 1) == (v4[28] & 1))
+  if ((*&self->_has & 1) == (equalCopy[28] & 1))
   {
-    if ((*&self->_has & 1) == 0 || (systemProtocol = self->_systemProtocol, systemProtocol == [v4 systemProtocol]))
+    if ((*&self->_has & 1) == 0 || (systemProtocol = self->_systemProtocol, systemProtocol == [equalCopy systemProtocol]))
     {
       v17 = 1;
       goto LABEL_13;
@@ -223,43 +223,43 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(CNVSchemaCNVLinkMetadata *)self linkId];
+  toCopy = to;
+  linkId = [(CNVSchemaCNVLinkMetadata *)self linkId];
 
-  if (v4)
+  if (linkId)
   {
-    v5 = [(CNVSchemaCNVLinkMetadata *)self linkId];
+    linkId2 = [(CNVSchemaCNVLinkMetadata *)self linkId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(CNVSchemaCNVLinkMetadata *)self linkActionId];
+  linkActionId = [(CNVSchemaCNVLinkMetadata *)self linkActionId];
 
-  if (v6)
+  if (linkActionId)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = v8;
+  v7 = toCopy;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
-    v7 = v8;
+    v7 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = CNVSchemaCNVLinkMetadata;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(CNVSchemaCNVLinkMetadata *)self linkId:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(CNVSchemaCNVLinkMetadata *)self deleteLinkId];
   }

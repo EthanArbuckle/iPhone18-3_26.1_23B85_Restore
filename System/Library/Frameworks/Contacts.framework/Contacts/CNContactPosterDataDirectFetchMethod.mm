@@ -1,14 +1,14 @@
 @interface CNContactPosterDataDirectFetchMethod
-+ (id)convertManagedObjectsToPosterDataItems:(id)a3;
-+ (id)execute:(id)a3 storeManager:(id)a4 error:(id *)a5;
++ (id)convertManagedObjectsToPosterDataItems:(id)items;
++ (id)execute:(id)execute storeManager:(id)manager error:(id *)error;
 @end
 
 @implementation CNContactPosterDataDirectFetchMethod
 
-+ (id)execute:(id)a3 storeManager:(id)a4 error:(id *)a5
++ (id)execute:(id)execute storeManager:(id)manager error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  executeCopy = execute;
+  managerCopy = manager;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
@@ -25,22 +25,22 @@
   v18[1] = 3221225472;
   v18[2] = __67__CNContactPosterDataDirectFetchMethod_execute_storeManager_error___block_invoke;
   v18[3] = &unk_1E7412CE0;
-  v10 = v8;
+  v10 = executeCopy;
   v19 = v10;
   v20 = &v23;
   v21 = &v29;
-  v22 = a1;
+  selfCopy = self;
   v11 = (v24 + 5);
   obj = v24[5];
-  [v9 performWorkWithManagedObjectContext:v18 error:&obj];
+  [managerCopy performWorkWithManagedObjectContext:v18 error:&obj];
   objc_storeStrong(v11, obj);
   v12 = v24[5];
   v13 = v30[5];
   v14 = v13;
-  if (a5 && !v13)
+  if (error && !v13)
   {
     v15 = v12;
-    *a5 = v12;
+    *error = v12;
   }
 
   _Block_object_dispose(&v23, 8);
@@ -68,16 +68,16 @@ void __67__CNContactPosterDataDirectFetchMethod_execute_storeManager_error___blo
   }
 }
 
-+ (id)convertManagedObjectsToPosterDataItems:(id)a3
++ (id)convertManagedObjectsToPosterDataItems:(id)items
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  itemsCopy = items;
   v4 = objc_alloc_init(_FetchedItemVisitor);
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = itemsCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -101,9 +101,9 @@ void __67__CNContactPosterDataDirectFetchMethod_execute_storeManager_error___blo
     while (v7);
   }
 
-  v10 = [(_FetchedItemVisitor *)v4 visitedItems];
+  visitedItems = [(_FetchedItemVisitor *)v4 visitedItems];
 
-  return v10;
+  return visitedItems;
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface _MFDAMessageStoreFetchRequest
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)shouldSend;
 - (unint64_t)generationNumber;
 - (unint64_t)hash;
@@ -9,14 +9,14 @@
 
 - (unint64_t)generationNumber
 {
-  v4 = [(MFMessage *)self->message generationNumber];
-  if (!v4)
+  generationNumber = [(MFMessage *)self->message generationNumber];
+  if (!generationNumber)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"MFDAMessageStore.m" lineNumber:1280 description:@"fetchable messages should have non-zero generationNumer"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MFDAMessageStore.m" lineNumber:1280 description:@"fetchable messages should have non-zero generationNumer"];
   }
 
-  return v4;
+  return generationNumber;
 }
 
 - (BOOL)shouldSend
@@ -51,21 +51,21 @@ LABEL_6:
 
 - (unint64_t)hash
 {
-  v2 = [(MFMessage *)self->message remoteID];
-  v3 = [v2 hash];
+  remoteID = [(MFMessage *)self->message remoteID];
+  v3 = [remoteID hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(MFMessage *)self->message remoteID];
-    v6 = [v4[6] remoteID];
-    v7 = [v5 isEqualToString:v6];
+    remoteID = [(MFMessage *)self->message remoteID];
+    remoteID2 = [equalCopy[6] remoteID];
+    v7 = [remoteID isEqualToString:remoteID2];
   }
 
   else

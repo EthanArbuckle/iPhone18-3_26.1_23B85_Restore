@@ -2,7 +2,7 @@
 - (TPSCloudCallingDeviceController)init;
 - (TPSCloudCallingDeviceControllerDelegate)delegate;
 - (void)didChangeCloudCallingDevices;
-- (void)setDevices:(id)a3;
+- (void)setDevices:(id)devices;
 @end
 
 @implementation TPSCloudCallingDeviceController
@@ -14,8 +14,8 @@
   v2 = [(TPSCloudCallingDeviceController *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D6EDE8] cloudCallingDevices];
-    v4 = [v3 copy];
+    cloudCallingDevices = [MEMORY[0x277D6EDE8] cloudCallingDevices];
+    v4 = [cloudCallingDevices copy];
     devices = v2->_devices;
     v2->_devices = v4;
 
@@ -25,21 +25,21 @@
   return v2;
 }
 
-- (void)setDevices:(id)a3
+- (void)setDevices:(id)devices
 {
-  v5 = a3;
+  devicesCopy = devices;
   p_devices = &self->_devices;
-  if (self->_devices != v5)
+  if (self->_devices != devicesCopy)
   {
-    v10 = v5;
-    objc_storeStrong(p_devices, a3);
-    v7 = [(TPSCloudCallingDeviceController *)self delegate];
+    v10 = devicesCopy;
+    objc_storeStrong(p_devices, devices);
+    delegate = [(TPSCloudCallingDeviceController *)self delegate];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v9 = [(TPSCloudCallingDeviceController *)self delegate];
-      [v9 cloudCallingDeviceController:self didChangeDevices:v10];
+      delegate2 = [(TPSCloudCallingDeviceController *)self delegate];
+      [delegate2 cloudCallingDeviceController:self didChangeDevices:v10];
     }
   }
 
@@ -55,8 +55,8 @@
     _os_log_impl(&dword_21B8E9000, v3, OS_LOG_TYPE_DEFAULT, "Cloud calling devices have changed. Refreshing cached list of devices.", v6, 2u);
   }
 
-  v4 = [MEMORY[0x277D6EDE8] cloudCallingDevices];
-  v5 = [v4 copy];
+  cloudCallingDevices = [MEMORY[0x277D6EDE8] cloudCallingDevices];
+  v5 = [cloudCallingDevices copy];
   [(TPSCloudCallingDeviceController *)self setDevices:v5];
 }
 

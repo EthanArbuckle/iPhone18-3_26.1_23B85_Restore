@@ -1,88 +1,88 @@
 @interface GCGenericDeviceDataBitTestExpressionModel
-- (BOOL)isEqual:(id)a3;
-- (GCGenericDeviceDataBitTestExpressionModel)initWithCoder:(id)a3;
-- (id)buildExpressionWithContext:(id)a3 error:(id *)a4;
-- (id)buildReactiveExpressionWithContext:(id)a3 consumer:(id)a4 error:(id *)a5;
+- (BOOL)isEqual:(id)equal;
+- (GCGenericDeviceDataBitTestExpressionModel)initWithCoder:(id)coder;
+- (id)buildExpressionWithContext:(id)context error:(id *)error;
+- (id)buildReactiveExpressionWithContext:(id)context consumer:(id)consumer error:(id *)error;
 - (id)debugDescription;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GCGenericDeviceDataBitTestExpressionModel
 
-- (GCGenericDeviceDataBitTestExpressionModel)initWithCoder:(id)a3
+- (GCGenericDeviceDataBitTestExpressionModel)initWithCoder:(id)coder
 {
   v15.receiver = self;
   v15.super_class = GCGenericDeviceDataBitTestExpressionModel;
-  v3 = a3;
-  v4 = [(GCGenericDeviceDataProcessorExpressionModel *)&v15 initWithCoder:v3];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:{@"inputExpression", v15.receiver, v15.super_class}];
+  coderCopy = coder;
+  v4 = [(GCGenericDeviceDataProcessorExpressionModel *)&v15 initWithCoder:coderCopy];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:{@"inputExpression", v15.receiver, v15.super_class}];
   inputExpression = v4->_inputExpression;
   v4->_inputExpression = v5;
 
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"maskExpression"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"maskExpression"];
   maskExpression = v4->_maskExpression;
   v4->_maskExpression = v7;
 
-  v9 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"trueExpression"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"trueExpression"];
   trueExpression = v4->_trueExpression;
   v4->_trueExpression = v9;
 
-  v11 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"falseExpression"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"falseExpression"];
   falseExpression = v4->_falseExpression;
   v4->_falseExpression = v11;
 
-  v13 = [v3 decodeBoolForKey:@"partialMatch"];
+  v13 = [coderCopy decodeBoolForKey:@"partialMatch"];
   v4->_partialMatch = v13;
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = GCGenericDeviceDataBitTestExpressionModel;
-  v4 = a3;
-  [(GCGenericDeviceDataProcessorExpressionModel *)&v9 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(GCGenericDeviceDataProcessorExpressionModel *)&v9 encodeWithCoder:coderCopy];
   v5 = [(GCGenericDeviceDataBitTestExpressionModel *)self inputExpression:v9.receiver];
-  [v4 encodeObject:v5 forKey:@"inputExpression"];
+  [coderCopy encodeObject:v5 forKey:@"inputExpression"];
 
-  v6 = [(GCGenericDeviceDataBitTestExpressionModel *)self maskExpression];
-  [v4 encodeObject:v6 forKey:@"maskExpression"];
+  maskExpression = [(GCGenericDeviceDataBitTestExpressionModel *)self maskExpression];
+  [coderCopy encodeObject:maskExpression forKey:@"maskExpression"];
 
-  v7 = [(GCGenericDeviceDataBitTestExpressionModel *)self trueExpression];
-  [v4 encodeObject:v7 forKey:@"trueExpression"];
+  trueExpression = [(GCGenericDeviceDataBitTestExpressionModel *)self trueExpression];
+  [coderCopy encodeObject:trueExpression forKey:@"trueExpression"];
 
-  v8 = [(GCGenericDeviceDataBitTestExpressionModel *)self falseExpression];
-  [v4 encodeObject:v8 forKey:@"falseExpression"];
+  falseExpression = [(GCGenericDeviceDataBitTestExpressionModel *)self falseExpression];
+  [coderCopy encodeObject:falseExpression forKey:@"falseExpression"];
 
-  [v4 encodeBool:-[GCGenericDeviceDataBitTestExpressionModel partialMatch](self forKey:{"partialMatch"), @"partialMatch"}];
+  [coderCopy encodeBool:-[GCGenericDeviceDataBitTestExpressionModel partialMatch](self forKey:{"partialMatch"), @"partialMatch"}];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v16.receiver = self;
   v16.super_class = GCGenericDeviceDataBitTestExpressionModel;
-  if ([(GCGenericDeviceDataProcessorExpressionModel *)&v16 isEqual:v4])
+  if ([(GCGenericDeviceDataProcessorExpressionModel *)&v16 isEqual:equalCopy])
   {
-    v5 = [(GCGenericDeviceDataBitTestExpressionModel *)self inputExpression];
-    v6 = [v4 inputExpression];
-    if ([v5 isEqual:v6])
+    inputExpression = [(GCGenericDeviceDataBitTestExpressionModel *)self inputExpression];
+    inputExpression2 = [equalCopy inputExpression];
+    if ([inputExpression isEqual:inputExpression2])
     {
-      v7 = [(GCGenericDeviceDataBitTestExpressionModel *)self maskExpression];
-      v8 = [v4 maskExpression];
-      if ([v7 isEqual:v8])
+      maskExpression = [(GCGenericDeviceDataBitTestExpressionModel *)self maskExpression];
+      maskExpression2 = [equalCopy maskExpression];
+      if ([maskExpression isEqual:maskExpression2])
       {
-        v9 = [(GCGenericDeviceDataBitTestExpressionModel *)self trueExpression];
-        v10 = [v4 trueExpression];
-        if ([v9 isEqual:v10])
+        trueExpression = [(GCGenericDeviceDataBitTestExpressionModel *)self trueExpression];
+        trueExpression2 = [equalCopy trueExpression];
+        if ([trueExpression isEqual:trueExpression2])
         {
-          v11 = [(GCGenericDeviceDataBitTestExpressionModel *)self falseExpression];
-          v12 = [v4 falseExpression];
-          if ([v11 isEqual:v12])
+          falseExpression = [(GCGenericDeviceDataBitTestExpressionModel *)self falseExpression];
+          falseExpression2 = [equalCopy falseExpression];
+          if ([falseExpression isEqual:falseExpression2])
           {
-            v13 = [(GCGenericDeviceDataBitTestExpressionModel *)self partialMatch];
-            v14 = v13 ^ [v4 partialMatch] ^ 1;
+            partialMatch = [(GCGenericDeviceDataBitTestExpressionModel *)self partialMatch];
+            v14 = partialMatch ^ [equalCopy partialMatch] ^ 1;
           }
 
           else
@@ -120,20 +120,20 @@
 - (id)description
 {
   v15 = MEMORY[0x1E696AEC0];
-  v14 = [(GCGenericDeviceDataBitTestExpressionModel *)self partialMatch];
-  v18 = [(GCGenericDeviceDataBitTestExpressionModel *)self inputExpression];
-  v17 = [v18 description];
+  partialMatch = [(GCGenericDeviceDataBitTestExpressionModel *)self partialMatch];
+  inputExpression = [(GCGenericDeviceDataBitTestExpressionModel *)self inputExpression];
+  v17 = [inputExpression description];
   v3 = [v17 stringByReplacingOccurrencesOfString:@"\n" withString:@"\n\t"];
-  v16 = [(GCGenericDeviceDataBitTestExpressionModel *)self maskExpression];
-  v4 = [v16 description];
+  maskExpression = [(GCGenericDeviceDataBitTestExpressionModel *)self maskExpression];
+  v4 = [maskExpression description];
   v5 = [v4 stringByReplacingOccurrencesOfString:@"\n" withString:@"\n\t"];
-  v6 = [(GCGenericDeviceDataBitTestExpressionModel *)self trueExpression];
-  v7 = [v6 description];
+  trueExpression = [(GCGenericDeviceDataBitTestExpressionModel *)self trueExpression];
+  v7 = [trueExpression description];
   v8 = [v7 stringByReplacingOccurrencesOfString:@"\n" withString:@"\n\t"];
-  v9 = [(GCGenericDeviceDataBitTestExpressionModel *)self falseExpression];
-  v10 = [v9 description];
+  falseExpression = [(GCGenericDeviceDataBitTestExpressionModel *)self falseExpression];
+  v10 = [falseExpression description];
   v11 = [v10 stringByReplacingOccurrencesOfString:@"\n" withString:@"\n\t"];
-  v12 = [v15 stringWithFormat:@"(bit-test %i\n\t%@\n\t%@\n\t%@\n\t%@\n)", v14, v3, v5, v8, v11];
+  v12 = [v15 stringWithFormat:@"(bit-test %i\n\t%@\n\t%@\n\t%@\n\t%@\n)", partialMatch, v3, v5, v8, v11];
 
   return v12;
 }
@@ -143,42 +143,42 @@
   v16 = MEMORY[0x1E696AEC0];
   v3 = objc_opt_class();
   v14 = NSStringFromClass(v3);
-  v19 = [(GCGenericDeviceDataBitTestExpressionModel *)self inputExpression];
-  v18 = [v19 debugDescription];
+  inputExpression = [(GCGenericDeviceDataBitTestExpressionModel *)self inputExpression];
+  v18 = [inputExpression debugDescription];
   v4 = [v18 stringByReplacingOccurrencesOfString:@"\n" withString:@"\n\t"];
-  v17 = [(GCGenericDeviceDataBitTestExpressionModel *)self maskExpression];
-  v15 = [v17 debugDescription];
+  maskExpression = [(GCGenericDeviceDataBitTestExpressionModel *)self maskExpression];
+  v15 = [maskExpression debugDescription];
   v5 = [v15 stringByReplacingOccurrencesOfString:@"\n" withString:@"\n\t"];
-  v6 = [(GCGenericDeviceDataBitTestExpressionModel *)self trueExpression];
-  v7 = [v6 debugDescription];
+  trueExpression = [(GCGenericDeviceDataBitTestExpressionModel *)self trueExpression];
+  v7 = [trueExpression debugDescription];
   v8 = [v7 stringByReplacingOccurrencesOfString:@"\n" withString:@"\n\t"];
-  v9 = [(GCGenericDeviceDataBitTestExpressionModel *)self falseExpression];
-  v10 = [v9 debugDescription];
+  falseExpression = [(GCGenericDeviceDataBitTestExpressionModel *)self falseExpression];
+  v10 = [falseExpression debugDescription];
   v11 = [v10 stringByReplacingOccurrencesOfString:@"\n" withString:@"\n\t"];
   v12 = [v16 stringWithFormat:@"<%@ %p> {\n\t input = %@\n\t mask = %@\n\t trueExpression = %@\n\t falseExpression = %@\n\t partialMatch = %i\n}", v14, self, v4, v5, v8, v11, -[GCGenericDeviceDataBitTestExpressionModel partialMatch](self, "partialMatch")];
 
   return v12;
 }
 
-- (id)buildExpressionWithContext:(id)a3 error:(id *)a4
+- (id)buildExpressionWithContext:(id)context error:(id *)error
 {
   v78[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v7 = objc_opt_respondsToSelector();
-  v8 = [(GCGenericDeviceDataBitTestExpressionModel *)self inputExpression];
-  v9 = v8;
+  inputExpression = [(GCGenericDeviceDataBitTestExpressionModel *)self inputExpression];
+  v9 = inputExpression;
   if (v7)
   {
     v70 = 0;
     v10 = &v70;
-    v11 = [v6 buildExpression:v8 error:&v70];
+    v11 = [contextCopy buildExpression:inputExpression error:&v70];
   }
 
   else
   {
     v69 = 0;
     v10 = &v69;
-    v11 = [v8 buildExpressionWithContext:v6 error:&v69];
+    v11 = [inputExpression buildExpressionWithContext:contextCopy error:&v69];
   }
 
   v12 = v11;
@@ -186,7 +186,7 @@
 
   if (!v12)
   {
-    if (!a4)
+    if (!error)
     {
       v25 = 0;
       goto LABEL_31;
@@ -204,7 +204,7 @@
     v78[2] = v13;
     v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v78 forKeys:v77 count:3];
     [v20 errorWithDomain:@"GCGenericDeviceError" code:2 userInfo:v24];
-    *a4 = v25 = 0;
+    *error = v25 = 0;
     v14 = v13;
     goto LABEL_29;
   }
@@ -212,20 +212,20 @@
   v14 = _Block_copy(v12);
 
   v15 = objc_opt_respondsToSelector();
-  v16 = [(GCGenericDeviceDataBitTestExpressionModel *)self maskExpression];
-  v17 = v16;
+  maskExpression = [(GCGenericDeviceDataBitTestExpressionModel *)self maskExpression];
+  v17 = maskExpression;
   if (v15)
   {
     v68 = 0;
     v18 = &v68;
-    v19 = [v6 buildExpression:v16 error:&v68];
+    v19 = [contextCopy buildExpression:maskExpression error:&v68];
   }
 
   else
   {
     v67 = 0;
     v18 = &v67;
-    v19 = [v16 buildExpressionWithContext:v6 error:&v67];
+    v19 = [maskExpression buildExpressionWithContext:contextCopy error:&v67];
   }
 
   v26 = v19;
@@ -233,7 +233,7 @@
 
   if (!v26)
   {
-    if (!a4)
+    if (!error)
     {
       v25 = 0;
       goto LABEL_30;
@@ -251,7 +251,7 @@
     v76[2] = v27;
     v37 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v76 forKeys:v75 count:3];
     [v33 errorWithDomain:@"GCGenericDeviceError" code:2 userInfo:v37];
-    *a4 = v25 = 0;
+    *error = v25 = 0;
     v21 = v27;
     goto LABEL_28;
   }
@@ -259,20 +259,20 @@
   v21 = _Block_copy(v26);
 
   v28 = objc_opt_respondsToSelector();
-  v29 = [(GCGenericDeviceDataBitTestExpressionModel *)self trueExpression];
-  v30 = v29;
+  trueExpression = [(GCGenericDeviceDataBitTestExpressionModel *)self trueExpression];
+  v30 = trueExpression;
   if (v28)
   {
     v66 = 0;
     v31 = &v66;
-    v32 = [v6 buildExpression:v29 error:&v66];
+    v32 = [contextCopy buildExpression:trueExpression error:&v66];
   }
 
   else
   {
     v65 = 0;
     v31 = &v65;
-    v32 = [v29 buildExpressionWithContext:v6 error:&v65];
+    v32 = [trueExpression buildExpressionWithContext:contextCopy error:&v65];
   }
 
   v38 = v32;
@@ -283,20 +283,20 @@
     v34 = _Block_copy(v38);
 
     v39 = objc_opt_respondsToSelector();
-    v40 = [(GCGenericDeviceDataBitTestExpressionModel *)self falseExpression];
-    v41 = v40;
+    falseExpression = [(GCGenericDeviceDataBitTestExpressionModel *)self falseExpression];
+    v41 = falseExpression;
     if (v39)
     {
       v64 = 0;
       v42 = &v64;
-      v43 = [v6 buildExpression:v40 error:&v64];
+      v43 = [contextCopy buildExpression:falseExpression error:&v64];
     }
 
     else
     {
       v63 = 0;
       v42 = &v63;
-      v43 = [v40 buildExpressionWithContext:v6 error:&v63];
+      v43 = [falseExpression buildExpressionWithContext:contextCopy error:&v63];
     }
 
     v48 = v43;
@@ -306,14 +306,14 @@
     {
       v49 = _Block_copy(v48);
 
-      v50 = [(GCGenericDeviceDataBitTestExpressionModel *)self partialMatch];
+      partialMatch = [(GCGenericDeviceDataBitTestExpressionModel *)self partialMatch];
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __91__GCGenericDeviceDataBitTestExpressionModel_Compilation__buildExpressionWithContext_error___block_invoke;
       aBlock[3] = &unk_1E8413A30;
       v58 = v14;
       v59 = v21;
-      v62 = v50;
+      v62 = partialMatch;
       v24 = v34;
       v60 = v24;
       v61 = v49;
@@ -325,7 +325,7 @@
 
     else
     {
-      if (!a4)
+      if (!error)
       {
         v25 = 0;
         goto LABEL_28;
@@ -342,7 +342,7 @@
       v71[2] = v53;
       v72[2] = v37;
       v54 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v72 forKeys:v71 count:3];
-      *a4 = [v51 errorWithDomain:@"GCGenericDeviceError" code:2 userInfo:v54];
+      *error = [v51 errorWithDomain:@"GCGenericDeviceError" code:2 userInfo:v54];
 
       v25 = 0;
       v24 = v34;
@@ -351,7 +351,7 @@
 
   else
   {
-    if (!a4)
+    if (!error)
     {
       v25 = 0;
       goto LABEL_29;
@@ -369,7 +369,7 @@
     v74[2] = v24;
     v47 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v74 forKeys:v73 count:3];
     [v44 errorWithDomain:@"GCGenericDeviceError" code:2 userInfo:v47];
-    *a4 = v25 = 0;
+    *error = v25 = 0;
   }
 
   v34 = v24;
@@ -424,11 +424,11 @@ uint64_t __91__GCGenericDeviceDataBitTestExpressionModel_Compilation__buildExpre
   return v7();
 }
 
-- (id)buildReactiveExpressionWithContext:(id)a3 consumer:(id)a4 error:(id *)a5
+- (id)buildReactiveExpressionWithContext:(id)context consumer:(id)consumer error:(id *)error
 {
   v90[4] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v53 = a4;
+  contextCopy = context;
+  consumerCopy = consumer;
   v81[0] = 0;
   v81[1] = v81;
   v81[2] = 0x2020000000;
@@ -445,43 +445,43 @@ uint64_t __91__GCGenericDeviceDataBitTestExpressionModel_Compilation__buildExpre
   v78[1] = v78;
   v78[2] = 0x2020000000;
   v78[3] = 0;
-  v8 = [(GCGenericDeviceDataBitTestExpressionModel *)self partialMatch];
+  partialMatch = [(GCGenericDeviceDataBitTestExpressionModel *)self partialMatch];
   if (objc_opt_respondsToSelector())
   {
-    v9 = [(GCGenericDeviceDataBitTestExpressionModel *)self inputExpression];
+    inputExpression = [(GCGenericDeviceDataBitTestExpressionModel *)self inputExpression];
     v10 = v76;
     v76[0] = MEMORY[0x1E69E9820];
     v76[1] = 3221225472;
     v76[2] = __108__GCGenericDeviceDataBitTestExpressionModel_Compilation__buildReactiveExpressionWithContext_consumer_error___block_invoke;
     v76[3] = &unk_1E8413A58;
     v76[5] = v81;
-    v76[4] = v53;
+    v76[4] = consumerCopy;
     v76[6] = v80;
-    v77 = v8;
+    v77 = partialMatch;
     v76[7] = v79;
     v76[8] = v78;
     v11 = &v75;
     v75 = 0;
-    v12 = [v7 buildReactiveExpression:v9 consumer:v76 error:&v75];
+    v12 = [contextCopy buildReactiveExpression:inputExpression consumer:v76 error:&v75];
   }
 
   else
   {
-    v9 = [(GCGenericDeviceDataBitTestExpressionModel *)self inputExpression];
+    inputExpression = [(GCGenericDeviceDataBitTestExpressionModel *)self inputExpression];
     v10 = v73;
     v73[0] = MEMORY[0x1E69E9820];
     v73[1] = 3221225472;
     v73[2] = __108__GCGenericDeviceDataBitTestExpressionModel_Compilation__buildReactiveExpressionWithContext_consumer_error___block_invoke_2;
     v73[3] = &unk_1E8413A58;
     v73[5] = v81;
-    v73[4] = v53;
+    v73[4] = consumerCopy;
     v73[6] = v80;
-    v74 = v8;
+    v74 = partialMatch;
     v73[7] = v79;
     v73[8] = v78;
     v11 = &v72;
     v72 = 0;
-    v12 = [v9 buildReactiveExpressionWithContext:v7 consumer:v73 error:&v72];
+    v12 = [inputExpression buildReactiveExpressionWithContext:contextCopy consumer:v73 error:&v72];
   }
 
   v13 = v12;
@@ -489,7 +489,7 @@ uint64_t __91__GCGenericDeviceDataBitTestExpressionModel_Compilation__buildExpre
 
   if (!v13)
   {
-    if (!a5)
+    if (!error)
     {
       v24 = 0;
       goto LABEL_34;
@@ -507,47 +507,47 @@ uint64_t __91__GCGenericDeviceDataBitTestExpressionModel_Compilation__buildExpre
     v89[2] = v14;
     v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v89 forKeys:v88 count:3];
     [v19 errorWithDomain:@"GCGenericDeviceError" code:2 userInfo:v23];
-    *a5 = v24 = 0;
+    *error = v24 = 0;
     goto LABEL_32;
   }
 
   v90[0] = v13;
   if (objc_opt_respondsToSelector())
   {
-    v15 = [(GCGenericDeviceDataBitTestExpressionModel *)self maskExpression];
+    maskExpression = [(GCGenericDeviceDataBitTestExpressionModel *)self maskExpression];
     v16 = v70;
     v70[0] = MEMORY[0x1E69E9820];
     v70[1] = 3221225472;
     v70[2] = __108__GCGenericDeviceDataBitTestExpressionModel_Compilation__buildReactiveExpressionWithContext_consumer_error___block_invoke_3;
     v70[3] = &unk_1E8413A58;
     v70[5] = v80;
-    v70[4] = v53;
+    v70[4] = consumerCopy;
     v70[6] = v81;
-    v71 = v8;
+    v71 = partialMatch;
     v70[7] = v79;
     v70[8] = v78;
     v17 = &v69;
     v69 = 0;
-    v18 = [v7 buildReactiveExpression:v15 consumer:v70 error:&v69];
+    v18 = [contextCopy buildReactiveExpression:maskExpression consumer:v70 error:&v69];
   }
 
   else
   {
-    v15 = [(GCGenericDeviceDataBitTestExpressionModel *)self maskExpression];
+    maskExpression = [(GCGenericDeviceDataBitTestExpressionModel *)self maskExpression];
     v16 = v67;
     v67[0] = MEMORY[0x1E69E9820];
     v67[1] = 3221225472;
     v67[2] = __108__GCGenericDeviceDataBitTestExpressionModel_Compilation__buildReactiveExpressionWithContext_consumer_error___block_invoke_4;
     v67[3] = &unk_1E8413A58;
     v67[5] = v80;
-    v67[4] = v53;
+    v67[4] = consumerCopy;
     v67[6] = v81;
-    v68 = v8;
+    v68 = partialMatch;
     v67[7] = v79;
     v67[8] = v78;
     v17 = &v66;
     v66 = 0;
-    v18 = [v15 buildReactiveExpressionWithContext:v7 consumer:v67 error:&v66];
+    v18 = [maskExpression buildReactiveExpressionWithContext:contextCopy consumer:v67 error:&v66];
   }
 
   v20 = v18;
@@ -556,7 +556,7 @@ uint64_t __91__GCGenericDeviceDataBitTestExpressionModel_Compilation__buildExpre
 
   if (!v20)
   {
-    if (!a5)
+    if (!error)
     {
       v24 = 0;
       goto LABEL_33;
@@ -574,47 +574,47 @@ uint64_t __91__GCGenericDeviceDataBitTestExpressionModel_Compilation__buildExpre
     v87[2] = v26;
     v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v87 forKeys:v86 count:3];
     [v30 errorWithDomain:@"GCGenericDeviceError" code:2 userInfo:v33];
-    *a5 = v24 = 0;
+    *error = v24 = 0;
     goto LABEL_30;
   }
 
   v90[1] = v20;
   if (objc_opt_respondsToSelector())
   {
-    v27 = [(GCGenericDeviceDataBitTestExpressionModel *)self trueExpression];
+    trueExpression = [(GCGenericDeviceDataBitTestExpressionModel *)self trueExpression];
     v28 = v64;
     v64[0] = MEMORY[0x1E69E9820];
     v64[1] = 3221225472;
     v64[2] = __108__GCGenericDeviceDataBitTestExpressionModel_Compilation__buildReactiveExpressionWithContext_consumer_error___block_invoke_5;
     v64[3] = &unk_1E8413A58;
     v64[5] = v79;
-    v64[4] = v53;
+    v64[4] = consumerCopy;
     v64[6] = v81;
-    v65 = v8;
+    v65 = partialMatch;
     v64[7] = v80;
     v64[8] = v78;
     v29 = &v63;
     v63 = 0;
-    v51 = [v7 buildReactiveExpression:v27 consumer:v64 error:&v63];
+    v51 = [contextCopy buildReactiveExpression:trueExpression consumer:v64 error:&v63];
   }
 
   else
   {
-    v27 = [(GCGenericDeviceDataBitTestExpressionModel *)self trueExpression];
+    trueExpression = [(GCGenericDeviceDataBitTestExpressionModel *)self trueExpression];
     v28 = v61;
     v61[0] = MEMORY[0x1E69E9820];
     v61[1] = 3221225472;
     v61[2] = __108__GCGenericDeviceDataBitTestExpressionModel_Compilation__buildReactiveExpressionWithContext_consumer_error___block_invoke_6;
     v61[3] = &unk_1E8413A58;
     v61[5] = v79;
-    v61[4] = v53;
+    v61[4] = consumerCopy;
     v61[6] = v81;
-    v62 = v8;
+    v62 = partialMatch;
     v61[7] = v80;
     v61[8] = v78;
     v29 = &v60;
     v60 = 0;
-    v51 = [v27 buildReactiveExpressionWithContext:v7 consumer:v61 error:&v60];
+    v51 = [trueExpression buildReactiveExpressionWithContext:contextCopy consumer:v61 error:&v60];
   }
 
   v34 = (v28 + 4);
@@ -622,7 +622,7 @@ uint64_t __91__GCGenericDeviceDataBitTestExpressionModel_Compilation__buildExpre
 
   if (!v51)
   {
-    if (!a5)
+    if (!error)
     {
       v24 = 0;
       goto LABEL_31;
@@ -639,47 +639,47 @@ uint64_t __91__GCGenericDeviceDataBitTestExpressionModel_Compilation__buildExpre
     v84[2] = v41;
     v85[2] = v23;
     v42 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v85 forKeys:v84 count:3];
-    *a5 = [v39 errorWithDomain:@"GCGenericDeviceError" code:2 userInfo:v42];
+    *error = [v39 errorWithDomain:@"GCGenericDeviceError" code:2 userInfo:v42];
     goto LABEL_27;
   }
 
   v90[2] = v51;
   if (objc_opt_respondsToSelector())
   {
-    v35 = [(GCGenericDeviceDataBitTestExpressionModel *)self falseExpression];
+    falseExpression = [(GCGenericDeviceDataBitTestExpressionModel *)self falseExpression];
     v36 = v58;
     v58[0] = MEMORY[0x1E69E9820];
     v58[1] = 3221225472;
     v58[2] = __108__GCGenericDeviceDataBitTestExpressionModel_Compilation__buildReactiveExpressionWithContext_consumer_error___block_invoke_7;
     v58[3] = &unk_1E8413A58;
     v58[5] = v78;
-    v58[4] = v53;
+    v58[4] = consumerCopy;
     v58[6] = v81;
-    v59 = v8;
+    v59 = partialMatch;
     v58[7] = v80;
     v58[8] = v79;
     v37 = &v57;
     v57 = 0;
-    v38 = [v7 buildReactiveExpression:v35 consumer:v58 error:&v57];
+    v38 = [contextCopy buildReactiveExpression:falseExpression consumer:v58 error:&v57];
   }
 
   else
   {
-    v35 = [(GCGenericDeviceDataBitTestExpressionModel *)self falseExpression];
+    falseExpression = [(GCGenericDeviceDataBitTestExpressionModel *)self falseExpression];
     v36 = v55;
     v55[0] = MEMORY[0x1E69E9820];
     v55[1] = 3221225472;
     v55[2] = __108__GCGenericDeviceDataBitTestExpressionModel_Compilation__buildReactiveExpressionWithContext_consumer_error___block_invoke_8;
     v55[3] = &unk_1E8413A58;
     v55[5] = v78;
-    v55[4] = v53;
+    v55[4] = consumerCopy;
     v55[6] = v81;
-    v56 = v8;
+    v56 = partialMatch;
     v55[7] = v80;
     v55[8] = v79;
     v37 = &v54;
     v54 = 0;
-    v38 = [v35 buildReactiveExpressionWithContext:v7 consumer:v55 error:&v54];
+    v38 = [falseExpression buildReactiveExpressionWithContext:contextCopy consumer:v55 error:&v54];
   }
 
   v43 = v38;
@@ -689,7 +689,7 @@ uint64_t __91__GCGenericDeviceDataBitTestExpressionModel_Compilation__buildExpre
   v23 = v51;
   if (!v43)
   {
-    if (!a5)
+    if (!error)
     {
 LABEL_28:
       v24 = 0;
@@ -708,7 +708,7 @@ LABEL_28:
     v83[2] = v33;
     v48 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v83 forKeys:v82 count:3];
     [v45 errorWithDomain:@"GCGenericDeviceError" code:2 userInfo:v48];
-    *a5 = v23 = v51;
+    *error = v23 = v51;
 
 LABEL_27:
     goto LABEL_28;

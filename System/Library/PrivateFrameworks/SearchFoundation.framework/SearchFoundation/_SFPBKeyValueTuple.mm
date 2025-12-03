@@ -1,37 +1,37 @@
 @interface _SFPBKeyValueTuple
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBKeyValueTuple)initWithDictionary:(id)a3;
-- (_SFPBKeyValueTuple)initWithFacade:(id)a3;
-- (_SFPBKeyValueTuple)initWithJSON:(id)a3;
+- (_SFPBKeyValueTuple)initWithDictionary:(id)dictionary;
+- (_SFPBKeyValueTuple)initWithFacade:(id)facade;
+- (_SFPBKeyValueTuple)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)setKey:(id)a3;
-- (void)setValue:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setKey:(id)key;
+- (void)setValue:(id)value;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBKeyValueTuple
 
-- (_SFPBKeyValueTuple)initWithFacade:(id)a3
+- (_SFPBKeyValueTuple)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBKeyValueTuple *)self init];
   if (v5)
   {
-    v6 = [v4 key];
+    v6 = [facadeCopy key];
 
     if (v6)
     {
-      v7 = [v4 key];
+      v7 = [facadeCopy key];
       [(_SFPBKeyValueTuple *)v5 setKey:v7];
     }
 
-    v8 = [v4 value];
+    value = [facadeCopy value];
 
-    if (v8)
+    if (value)
     {
-      v9 = [v4 value];
-      [(_SFPBKeyValueTuple *)v5 setValue:v9];
+      value2 = [facadeCopy value];
+      [(_SFPBKeyValueTuple *)v5 setValue:value2];
     }
 
     v10 = v5;
@@ -40,15 +40,15 @@
   return v5;
 }
 
-- (_SFPBKeyValueTuple)initWithDictionary:(id)a3
+- (_SFPBKeyValueTuple)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = _SFPBKeyValueTuple;
   v5 = [(_SFPBKeyValueTuple *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"key"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"key"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,7 +56,7 @@
       [(_SFPBKeyValueTuple *)v5 setKey:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"value"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"value"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -70,30 +70,30 @@
   return v5;
 }
 
-- (_SFPBKeyValueTuple)initWithJSON:(id)a3
+- (_SFPBKeyValueTuple)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBKeyValueTuple *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBKeyValueTuple *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBKeyValueTuple *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -106,35 +106,35 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_key)
   {
     v4 = [(_SFPBKeyValueTuple *)self key];
     v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"key"];
+    [dictionary setObject:v5 forKeyedSubscript:@"key"];
   }
 
   if (self->_value)
   {
-    v6 = [(_SFPBKeyValueTuple *)self value];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"value"];
+    value = [(_SFPBKeyValueTuple *)self value];
+    v7 = [value copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"value"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_SFPBKeyValueTuple *)self key];
-  v6 = [v4 key];
-  if ((v5 != 0) == (v6 == 0))
+  value = [(_SFPBKeyValueTuple *)self key];
+  value2 = [equalCopy key];
+  if ((value != 0) == (value2 == 0))
   {
     goto LABEL_11;
   }
@@ -144,7 +144,7 @@
   {
     v8 = v7;
     v9 = [(_SFPBKeyValueTuple *)self key];
-    v10 = [v4 key];
+    v10 = [equalCopy key];
     v11 = [v9 isEqual:v10];
 
     if (!v11)
@@ -157,12 +157,12 @@
   {
   }
 
-  v5 = [(_SFPBKeyValueTuple *)self value];
-  v6 = [v4 value];
-  if ((v5 != 0) != (v6 == 0))
+  value = [(_SFPBKeyValueTuple *)self value];
+  value2 = [equalCopy value];
+  if ((value != 0) != (value2 == 0))
   {
-    v12 = [(_SFPBKeyValueTuple *)self value];
-    if (!v12)
+    value3 = [(_SFPBKeyValueTuple *)self value];
+    if (!value3)
     {
 
 LABEL_15:
@@ -170,10 +170,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(_SFPBKeyValueTuple *)self value];
-    v15 = [v4 value];
-    v16 = [v14 isEqual:v15];
+    v13 = value3;
+    value4 = [(_SFPBKeyValueTuple *)self value];
+    value5 = [equalCopy value];
+    v16 = [value4 isEqual:value5];
 
     if (v16)
     {
@@ -193,34 +193,34 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   v4 = [(_SFPBKeyValueTuple *)self key];
   if (v4)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(_SFPBKeyValueTuple *)self value];
-  if (v5)
+  value = [(_SFPBKeyValueTuple *)self value];
+  if (value)
   {
     PBDataWriterWriteStringField();
   }
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v4 = [a3 copy];
+  v4 = [value copy];
   value = self->_value;
   self->_value = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setKey:(id)a3
+- (void)setKey:(id)key
 {
-  v4 = [a3 copy];
+  v4 = [key copy];
   key = self->_key;
   self->_key = v4;
 

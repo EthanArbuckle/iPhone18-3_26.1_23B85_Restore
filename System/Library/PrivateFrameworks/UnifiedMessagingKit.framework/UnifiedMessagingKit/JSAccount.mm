@@ -9,7 +9,7 @@
 
 - (NSString)dsid
 {
-  v2 = self;
+  selfCopy = self;
   sub_27057F96C();
   v4 = v3;
 
@@ -28,7 +28,7 @@
 
 - (BOOL)hasFamilySharingEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_27057FB40(MEMORY[0x277CEE138]);
 
   return v3 & 1;
@@ -36,7 +36,7 @@
 
 - (BOOL)hasiCloudFamily
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_27057FB40(MEMORY[0x277CEE140]);
 
   return v3 & 1;
@@ -44,7 +44,7 @@
 
 - (BOOL)isHSA2
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_27057FC50();
 
   return v3 & 1;

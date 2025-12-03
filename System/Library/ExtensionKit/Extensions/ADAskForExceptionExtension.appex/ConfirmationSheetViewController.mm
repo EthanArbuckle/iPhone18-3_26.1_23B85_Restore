@@ -1,8 +1,8 @@
 @interface ConfirmationSheetViewController
-- (_TtC26ADAskForExceptionExtension31ConfirmationSheetViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC26ADAskForExceptionExtension31ConfirmationSheetViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
+- (_TtC26ADAskForExceptionExtension31ConfirmationSheetViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC26ADAskForExceptionExtension31ConfirmationSheetViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
 - (void)dealloc;
-- (void)handleScreenTimePinCompletionNotificationWithNotification:(id)a3;
+- (void)handleScreenTimePinCompletionNotificationWithNotification:(id)notification;
 - (void)miniProductPageRequestDidFinish;
 - (void)moreInformationPressed;
 - (void)primaryButtonPressed;
@@ -15,11 +15,11 @@
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 defaultCenter];
-  [v5 removeObserver:v4 name:STRestrictionsPINControllerDidFinishNotification object:0];
+  selfCopy = self;
+  defaultCenter = [v3 defaultCenter];
+  [defaultCenter removeObserver:selfCopy name:STRestrictionsPINControllerDidFinishNotification object:0];
 
-  v6.receiver = v4;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for ConfirmationSheetViewController();
   [(ConfirmationSheetViewController *)&v6 dealloc];
 }
@@ -36,7 +36,7 @@
 
 - (void)moreInformationPressed
 {
-  v2 = self;
+  selfCopy = self;
   sub_100007870();
 }
 
@@ -49,40 +49,40 @@
   v7 = sub_100017DC0();
   (*(*(v7 - 8) + 56))(v6, 1, 1, v7);
   sub_100017DA0();
-  v8 = self;
+  selfCopy = self;
   v9 = sub_100017D90();
   v10 = swift_allocObject();
   v10[2] = v9;
   v10[3] = &protocol witness table for MainActor;
-  v10[4] = v8;
+  v10[4] = selfCopy;
   sub_1000080E4(0, 0, v6, &unk_100019218, v10);
 }
 
 - (void)secondaryButtonPressed
 {
-  v2 = self;
+  selfCopy = self;
   sub_100008514();
 }
 
-- (_TtC26ADAskForExceptionExtension31ConfirmationSheetViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC26ADAskForExceptionExtension31ConfirmationSheetViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC26ADAskForExceptionExtension31ConfirmationSheetViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC26ADAskForExceptionExtension31ConfirmationSheetViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)handleScreenTimePinCompletionNotificationWithNotification:(id)a3
+- (void)handleScreenTimePinCompletionNotificationWithNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
-  sub_100009A80(v4);
+  notificationCopy = notification;
+  selfCopy = self;
+  sub_100009A80(notificationCopy);
 }
 
 - (void)miniProductPageRequestDidFinish

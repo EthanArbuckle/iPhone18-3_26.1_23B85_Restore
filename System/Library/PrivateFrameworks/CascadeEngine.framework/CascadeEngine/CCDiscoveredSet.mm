@@ -1,31 +1,31 @@
 @interface CCDiscoveredSet
-+ (id)_enumerateAndCopySets:(id)a3 setOptionsUsingBlock:(id)a4;
-+ (id)addOptions:(unsigned __int8)a3 toSets:(id)a4;
-+ (id)removeOptions:(unsigned __int8)a3 fromSets:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDiscoveredSet:(id)a3;
-- (CCDiscoveredSet)initWithSet:(id)a3 deviceSite:(id)a4 relayedDeviceSites:(id)a5 discoveryErrorCode:(unint64_t)a6 error:(id *)a7;
++ (id)_enumerateAndCopySets:(id)sets setOptionsUsingBlock:(id)block;
++ (id)addOptions:(unsigned __int8)options toSets:(id)sets;
++ (id)removeOptions:(unsigned __int8)options fromSets:(id)sets;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDiscoveredSet:(id)set;
+- (CCDiscoveredSet)initWithSet:(id)set deviceSite:(id)site relayedDeviceSites:(id)sites discoveryErrorCode:(unint64_t)code error:(id *)error;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)initFromDictionary:(id)a3;
+- (id)initFromDictionary:(id)dictionary;
 - (unint64_t)hash;
 @end
 
 @implementation CCDiscoveredSet
 
-- (CCDiscoveredSet)initWithSet:(id)a3 deviceSite:(id)a4 relayedDeviceSites:(id)a5 discoveryErrorCode:(unint64_t)a6 error:(id *)a7
+- (CCDiscoveredSet)initWithSet:(id)set deviceSite:(id)site relayedDeviceSites:(id)sites discoveryErrorCode:(unint64_t)code error:(id *)error
 {
-  v13 = a4;
-  v14 = a5;
+  siteCopy = site;
+  sitesCopy = sites;
   v18.receiver = self;
   v18.super_class = CCDiscoveredSet;
-  v15 = [(CCSet *)&v18 initWithSet:a3 error:a7];
+  v15 = [(CCSet *)&v18 initWithSet:set error:error];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_deviceSite, a4);
-    objc_storeStrong(&v16->_relayedDeviceSites, a5);
-    v16->_discoveryErrorCode = a6;
+    objc_storeStrong(&v15->_deviceSite, site);
+    objc_storeStrong(&v16->_relayedDeviceSites, sites);
+    v16->_discoveryErrorCode = code;
   }
 
   return v16;
@@ -54,51 +54,51 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CCDiscoveredSet *)self isEqualToDiscoveredSet:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CCDiscoveredSet *)self isEqualToDiscoveredSet:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToDiscoveredSet:(id)a3
+- (BOOL)isEqualToDiscoveredSet:(id)set
 {
-  v5 = a3;
+  setCopy = set;
   v17.receiver = self;
   v17.super_class = CCDiscoveredSet;
-  if (![(CCSet *)&v17 isEqual:v5])
+  if (![(CCSet *)&v17 isEqual:setCopy])
   {
     v10 = 0;
     goto LABEL_24;
   }
 
-  v6 = 48;
+  deviceSite2 = 48;
   deviceSite = self->_deviceSite;
-  v8 = deviceSite;
+  relayedDeviceSites = deviceSite;
   if (!deviceSite)
   {
-    v3 = [v5 deviceSite];
-    if (!v3)
+    deviceSite = [setCopy deviceSite];
+    if (!deviceSite)
     {
       v9 = 0;
       goto LABEL_10;
     }
 
-    v8 = self->_deviceSite;
+    relayedDeviceSites = self->_deviceSite;
   }
 
-  v6 = [v5 deviceSite];
-  if (([v8 isEqual:v6] & 1) == 0)
+  deviceSite2 = [setCopy deviceSite];
+  if (([relayedDeviceSites isEqual:deviceSite2] & 1) == 0)
   {
 
     v10 = 0;
@@ -107,18 +107,18 @@
 
   v9 = 1;
 LABEL_10:
-  v11 = 56;
+  relayedDeviceSites2 = 56;
   relayedDeviceSites = self->_relayedDeviceSites;
   v13 = relayedDeviceSites;
   if (!relayedDeviceSites)
   {
-    v8 = [v5 relayedDeviceSites];
-    if (!v8)
+    relayedDeviceSites = [setCopy relayedDeviceSites];
+    if (!relayedDeviceSites)
     {
       v14 = 0;
 LABEL_17:
       discoveryErrorCode = self->_discoveryErrorCode;
-      v10 = discoveryErrorCode == [v5 discoveryErrorCode];
+      v10 = discoveryErrorCode == [setCopy discoveryErrorCode];
       if (!v14)
       {
         goto LABEL_19;
@@ -130,8 +130,8 @@ LABEL_17:
     v13 = self->_relayedDeviceSites;
   }
 
-  v11 = [v5 relayedDeviceSites];
-  if ([(NSArray *)v13 isEqual:v11])
+  relayedDeviceSites2 = [setCopy relayedDeviceSites];
+  if ([(NSArray *)v13 isEqual:relayedDeviceSites2])
   {
     v14 = 1;
     goto LABEL_17;
@@ -179,17 +179,17 @@ LABEL_24:
   return v5 ^ v7;
 }
 
-- (id)initFromDictionary:(id)a3
+- (id)initFromDictionary:(id)dictionary
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v30.receiver = self;
   v30.super_class = CCDiscoveredSet;
-  v5 = [(CCSet *)&v30 initFromDictionary:v4];
+  v5 = [(CCSet *)&v30 initFromDictionary:dictionaryCopy];
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x1E69939E0]);
-    v7 = [v4 objectForKeyedSubscript:@"deviceSite"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"deviceSite"];
     v8 = [v6 initFromDictionary:v7];
     v9 = v5[6];
     v24 = v5;
@@ -199,8 +199,8 @@ LABEL_24:
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v25 = v4;
-    v10 = [v4 objectForKeyedSubscript:@"relayedDeviceSites"];
+    v25 = dictionaryCopy;
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"relayedDeviceSites"];
     v11 = [v10 countByEnumeratingWithState:&v26 objects:v33 count:16];
     if (v11)
     {
@@ -256,7 +256,7 @@ LABEL_24:
     v20 = v24[7];
     v24[7] = v19;
 
-    v4 = v25;
+    dictionaryCopy = v25;
     v21 = [v25 objectForKeyedSubscript:@"errorCode"];
     v24[8] = [v21 unsignedIntegerValue];
   }
@@ -272,8 +272,8 @@ LABEL_24:
   deviceSite = self->_deviceSite;
   if (deviceSite)
   {
-    v5 = [(CCDeviceSite *)deviceSite dictionaryRepresentation];
-    [v3 setObject:v5 forKeyedSubscript:@"deviceSite"];
+    dictionaryRepresentation = [(CCDeviceSite *)deviceSite dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKeyedSubscript:@"deviceSite"];
   }
 
   if (self->_relayedDeviceSites)
@@ -298,8 +298,8 @@ LABEL_24:
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation2 = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation2];
         }
 
         v9 = [(NSArray *)v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -319,49 +319,49 @@ LABEL_24:
 
   v17.receiver = self;
   v17.super_class = CCDiscoveredSet;
-  v14 = [(CCSet *)&v17 dictionaryRepresentation];
-  [v3 addEntriesFromDictionary:v14];
+  dictionaryRepresentation3 = [(CCSet *)&v17 dictionaryRepresentation];
+  [v3 addEntriesFromDictionary:dictionaryRepresentation3];
 
   v15 = *MEMORY[0x1E69E9840];
 
   return v3;
 }
 
-+ (id)addOptions:(unsigned __int8)a3 toSets:(id)a4
++ (id)addOptions:(unsigned __int8)options toSets:(id)sets
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __37__CCDiscoveredSet_addOptions_toSets___block_invoke;
   v6[3] = &__block_descriptor_33_e8_C12__0C8l;
-  v7 = a3;
-  v4 = [a1 _enumerateAndCopySets:a4 setOptionsUsingBlock:v6];
+  optionsCopy = options;
+  v4 = [self _enumerateAndCopySets:sets setOptionsUsingBlock:v6];
 
   return v4;
 }
 
-+ (id)removeOptions:(unsigned __int8)a3 fromSets:(id)a4
++ (id)removeOptions:(unsigned __int8)options fromSets:(id)sets
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __42__CCDiscoveredSet_removeOptions_fromSets___block_invoke;
   v6[3] = &__block_descriptor_33_e8_C12__0C8l;
-  v7 = a3;
-  v4 = [a1 _enumerateAndCopySets:a4 setOptionsUsingBlock:v6];
+  optionsCopy = options;
+  v4 = [self _enumerateAndCopySets:sets setOptionsUsingBlock:v6];
 
   return v4;
 }
 
-+ (id)_enumerateAndCopySets:(id)a3 setOptionsUsingBlock:(id)a4
++ (id)_enumerateAndCopySets:(id)sets setOptionsUsingBlock:(id)block
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v23 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v5, "count")}];
+  setsCopy = sets;
+  blockCopy = block;
+  v23 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(setsCopy, "count")}];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v5;
+  obj = setsCopy;
   v7 = [obj countByEnumeratingWithState:&v26 objects:v36 count:16];
   if (v7)
   {
@@ -379,7 +379,7 @@ LABEL_24:
         }
 
         v12 = *(*(&v26 + 1) + 8 * i);
-        v13 = v6[2](v6, [v12 options]);
+        v13 = blockCopy[2](blockCopy, [v12 options]);
         v25 = 0;
         v14 = [v12 copyWithOptions:v13 error:&v25];
         v15 = v25;

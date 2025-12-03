@@ -1,29 +1,29 @@
 @interface OTCreateInheritanceKeyWithClaimTokenAndWrappingKey
-- (OTCreateInheritanceKeyWithClaimTokenAndWrappingKey)initWithUUID:(id)a3 claimTokenData:(id)a4 wrappingKeyData:(id)a5 dependencies:(id)a6;
+- (OTCreateInheritanceKeyWithClaimTokenAndWrappingKey)initWithUUID:(id)d claimTokenData:(id)data wrappingKeyData:(id)keyData dependencies:(id)dependencies;
 - (void)groupStart;
-- (void)proceedWithKeys:(id)a3 salt:(id)a4;
+- (void)proceedWithKeys:(id)keys salt:(id)salt;
 @end
 
 @implementation OTCreateInheritanceKeyWithClaimTokenAndWrappingKey
 
-- (void)proceedWithKeys:(id)a3 salt:(id)a4
+- (void)proceedWithKeys:(id)keys salt:(id)salt
 {
-  v6 = a3;
-  v7 = a4;
+  keysCopy = keys;
+  saltCopy = salt;
   objc_initWeak(&location, self);
   v8 = [OTInheritanceKey alloc];
-  v9 = [(OTCreateInheritanceKeyWithClaimTokenAndWrappingKey *)self uuid];
-  v10 = [(OTCreateInheritanceKeyWithClaimTokenAndWrappingKey *)self claimTokenData];
-  v11 = [(OTCreateInheritanceKeyWithClaimTokenAndWrappingKey *)self wrappingKeyData];
+  uuid = [(OTCreateInheritanceKeyWithClaimTokenAndWrappingKey *)self uuid];
+  claimTokenData = [(OTCreateInheritanceKeyWithClaimTokenAndWrappingKey *)self claimTokenData];
+  wrappingKeyData = [(OTCreateInheritanceKeyWithClaimTokenAndWrappingKey *)self wrappingKeyData];
   v26 = 0;
-  v12 = [v8 initWithUUID:v9 claimTokenData:v10 wrappingKeyData:v11 error:&v26];
+  v12 = [v8 initWithUUID:uuid claimTokenData:claimTokenData wrappingKeyData:wrappingKeyData error:&v26];
   v13 = v26;
   [(OTCreateInheritanceKeyWithClaimTokenAndWrappingKey *)self setIk:v12];
 
   v14 = [(OTCreateInheritanceKeyWithClaimTokenAndWrappingKey *)self ik];
-  LODWORD(v9) = v14 == 0;
+  LODWORD(uuid) = v14 == 0;
 
-  if (v9)
+  if (uuid)
   {
     v23 = sub_100006274("SecError");
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -34,27 +34,27 @@
     }
 
     [(CKKSResultOperation *)self setError:v13];
-    v17 = [(OTCreateInheritanceKeyWithClaimTokenAndWrappingKey *)self finishOp];
-    [(CKKSGroupOperation *)self runBeforeGroupFinished:v17];
+    finishOp = [(OTCreateInheritanceKeyWithClaimTokenAndWrappingKey *)self finishOp];
+    [(CKKSGroupOperation *)self runBeforeGroupFinished:finishOp];
   }
 
   else
   {
     v15 = [(OTCreateInheritanceKeyWithClaimTokenAndWrappingKey *)self ik];
-    v16 = [v15 recoveryKeyData];
-    v17 = [v16 base64EncodedStringWithOptions:0];
+    recoveryKeyData = [v15 recoveryKeyData];
+    finishOp = [recoveryKeyData base64EncodedStringWithOptions:0];
 
-    v18 = [(OTCreateInheritanceKeyWithClaimTokenAndWrappingKey *)self deps];
-    v19 = [v18 cuttlefishXPCWrapper];
-    v20 = [(OTCreateInheritanceKeyWithClaimTokenAndWrappingKey *)self deps];
-    v21 = [v20 activeAccount];
-    v22 = [(OTCreateInheritanceKeyWithClaimTokenAndWrappingKey *)self uuid];
+    deps = [(OTCreateInheritanceKeyWithClaimTokenAndWrappingKey *)self deps];
+    cuttlefishXPCWrapper = [deps cuttlefishXPCWrapper];
+    deps2 = [(OTCreateInheritanceKeyWithClaimTokenAndWrappingKey *)self deps];
+    activeAccount = [deps2 activeAccount];
+    uuid2 = [(OTCreateInheritanceKeyWithClaimTokenAndWrappingKey *)self uuid];
     v24[0] = _NSConcreteStackBlock;
     v24[1] = 3221225472;
     v24[2] = sub_10010C5A8;
     v24[3] = &unk_1003371A8;
     objc_copyWeak(&v25, &location);
-    [v19 createCustodianRecoveryKeyWithSpecificUser:v21 recoveryKey:v17 salt:v7 ckksKeys:v6 uuid:v22 kind:2 reply:v24];
+    [cuttlefishXPCWrapper createCustodianRecoveryKeyWithSpecificUser:activeAccount recoveryKey:finishOp salt:saltCopy ckksKeys:keysCopy uuid:uuid2 kind:2 reply:v24];
 
     objc_destroyWeak(&v25);
   }
@@ -67,13 +67,13 @@
   v3 = objc_alloc_init(NSOperation);
   [(OTCreateInheritanceKeyWithClaimTokenAndWrappingKey *)self setFinishOp:v3];
 
-  v4 = [(OTCreateInheritanceKeyWithClaimTokenAndWrappingKey *)self finishOp];
-  [(CKKSGroupOperation *)self dependOnBeforeGroupFinished:v4];
+  finishOp = [(OTCreateInheritanceKeyWithClaimTokenAndWrappingKey *)self finishOp];
+  [(CKKSGroupOperation *)self dependOnBeforeGroupFinished:finishOp];
 
   objc_initWeak(&location, self);
   v5 = [OTFetchCKKSKeysOperation alloc];
-  v6 = [(OTCreateInheritanceKeyWithClaimTokenAndWrappingKey *)self deps];
-  v7 = [(OTFetchCKKSKeysOperation *)v5 initWithDependencies:v6 refetchNeeded:0];
+  deps = [(OTCreateInheritanceKeyWithClaimTokenAndWrappingKey *)self deps];
+  v7 = [(OTFetchCKKSKeysOperation *)v5 initWithDependencies:deps refetchNeeded:0];
 
   [(CKKSGroupOperation *)self runBeforeGroupFinished:v7];
   v10 = _NSConcreteStackBlock;
@@ -92,31 +92,31 @@
   objc_destroyWeak(&location);
 }
 
-- (OTCreateInheritanceKeyWithClaimTokenAndWrappingKey)initWithUUID:(id)a3 claimTokenData:(id)a4 wrappingKeyData:(id)a5 dependencies:(id)a6
+- (OTCreateInheritanceKeyWithClaimTokenAndWrappingKey)initWithUUID:(id)d claimTokenData:(id)data wrappingKeyData:(id)keyData dependencies:(id)dependencies
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  dataCopy = data;
+  keyDataCopy = keyData;
+  dependenciesCopy = dependencies;
   v17.receiver = self;
   v17.super_class = OTCreateInheritanceKeyWithClaimTokenAndWrappingKey;
   v14 = [(CKKSGroupOperation *)&v17 init];
   if (v14)
   {
-    v15 = v10;
-    if (!v10)
+    v15 = dCopy;
+    if (!dCopy)
     {
       v15 = objc_alloc_init(NSUUID);
     }
 
     objc_storeStrong(&v14->_uuid, v15);
-    if (!v10)
+    if (!dCopy)
     {
     }
 
-    objc_storeStrong(&v14->_claimTokenData, a4);
-    objc_storeStrong(&v14->_wrappingKeyData, a5);
-    objc_storeStrong(&v14->_deps, a6);
+    objc_storeStrong(&v14->_claimTokenData, data);
+    objc_storeStrong(&v14->_wrappingKeyData, keyData);
+    objc_storeStrong(&v14->_deps, dependencies);
   }
 
   return v14;

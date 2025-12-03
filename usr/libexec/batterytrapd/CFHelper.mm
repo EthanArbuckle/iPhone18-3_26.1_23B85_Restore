@@ -1,23 +1,23 @@
 @interface CFHelper
 - (CFHelper)init;
-- (CFHelper)initWithLog:(id)a3;
+- (CFHelper)initWithLog:(id)log;
 - (id)read24HrMode;
 - (id)readLanguageDirection;
 - (id)readNumberingSystem;
 - (id)readTimezone;
 - (id)readUTCOffset;
-- (void)readDST:(id *)a3 :(id *)a4;
-- (void)write24HrMode:(__CFBoolean *)a3;
-- (void)writeTimezone:(id)a3;
+- (void)readDST:(id *)t :(id *)a4;
+- (void)write24HrMode:(__CFBoolean *)mode;
+- (void)writeTimezone:(id)timezone;
 - (void)writeTzAuto;
 @end
 
 @implementation CFHelper
 
-- (void)writeTimezone:(id)a3
+- (void)writeTimezone:(id)timezone
 {
-  v4 = a3;
-  [v4 UTF8String];
+  timezoneCopy = timezone;
+  [timezoneCopy UTF8String];
   if (tzlink())
   {
     logs = self->logs;
@@ -31,7 +31,7 @@
   {
     TMSetAutomaticTimeZoneEnabled();
     TMSetAutomaticTimeEnabled();
-    CFPreferencesSetAppValue(@"timezone", v4, @"com.apple.preferences.datetime");
+    CFPreferencesSetAppValue(@"timezone", timezoneCopy, @"com.apple.preferences.datetime");
     CFPreferencesSetAppValue(@"timezoneset", kCFBooleanTrue, @"com.apple.preferences.datetime");
     CFPreferencesAppSynchronize(@"com.apple.preferences.datetime");
     +[NSTimeZone resetSystemTimeZone];
@@ -50,35 +50,35 @@
 - (id)readTimezone
 {
   v2 = +[NSTimeZone systemTimeZone];
-  v3 = [v2 name];
+  name = [v2 name];
 
-  return v3;
+  return name;
 }
 
 - (id)readUTCOffset
 {
   v2 = +[NSTimeZone systemTimeZone];
   v3 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v2 secondsFromGMT]);
-  v4 = [v3 stringValue];
+  stringValue = [v3 stringValue];
 
-  return v4;
+  return stringValue;
 }
 
-- (void)readDST:(id *)a3 :(id *)a4
+- (void)readDST:(id *)t :(id *)a4
 {
   v6 = +[NSTimeZone systemTimeZone];
-  v16 = [v6 nextDaylightSavingTimeTransition];
+  nextDaylightSavingTimeTransition = [v6 nextDaylightSavingTimeTransition];
 
-  if (v16)
+  if (nextDaylightSavingTimeTransition)
   {
-    [v16 timeIntervalSince1970];
+    [nextDaylightSavingTimeTransition timeIntervalSince1970];
     v8 = v7;
     v9 = +[NSTimeZone systemTimeZone];
-    v10 = [v9 isDaylightSavingTime];
+    isDaylightSavingTime = [v9 isDaylightSavingTime];
 
     v11 = +[NSTimeZone systemTimeZone];
     v12 = v11;
-    if (v10)
+    if (isDaylightSavingTime)
     {
       [v11 daylightSavingTimeOffset];
       v14 = -v13;
@@ -86,7 +86,7 @@
 
     else
     {
-      [v11 daylightSavingTimeOffsetForDate:v16];
+      [v11 daylightSavingTimeOffsetForDate:nextDaylightSavingTimeTransition];
       v14 = v15;
     }
   }
@@ -97,13 +97,13 @@
     v8 = 0;
   }
 
-  *a3 = [NSString stringWithFormat:@"%.0f", v8];
+  *t = [NSString stringWithFormat:@"%.0f", v8];
   *a4 = [NSString stringWithFormat:@"%.0f", *&v14];
 }
 
-- (void)write24HrMode:(__CFBoolean *)a3
+- (void)write24HrMode:(__CFBoolean *)mode
 {
-  CFPreferencesSetValue(@"AppleICUForce24HourTime", a3, kCFPreferencesAnyApplication, @"mobile", kCFPreferencesCurrentHost);
+  CFPreferencesSetValue(@"AppleICUForce24HourTime", mode, kCFPreferencesAnyApplication, @"mobile", kCFPreferencesCurrentHost);
   CFPreferencesSynchronize(kCFPreferencesAnyApplication, @"mobile", kCFPreferencesCurrentHost);
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
 
@@ -123,8 +123,8 @@
     sub_1000026EC(logs, v3);
   }
 
-  v6 = [v3 dateFormat];
-  v7 = [v6 containsString:@"H"];
+  dateFormat = [v3 dateFormat];
+  v7 = [dateFormat containsString:@"H"];
 
   v8 = [NSString stringWithFormat:@"%d", v7];
 
@@ -157,9 +157,9 @@
 - (id)readNumberingSystem
 {
   v3 = +[NSLocale currentLocale];
-  v4 = [v3 _numberingSystem];
+  _numberingSystem = [v3 _numberingSystem];
 
-  v5 = [v4 length];
+  v5 = [_numberingSystem length];
   if (os_log_type_enabled(self->logs, OS_LOG_TYPE_DEBUG))
   {
     sub_1000027D8();
@@ -167,7 +167,7 @@
 
   if ((v5 & 0xFFFFFFFFFFFFFFFCLL) == 4)
   {
-    v6 = v4;
+    v6 = _numberingSystem;
   }
 
   else
@@ -190,18 +190,18 @@
   return [(CFHelper *)&v3 init];
 }
 
-- (CFHelper)initWithLog:(id)a3
+- (CFHelper)initWithLog:(id)log
 {
-  v4 = a3;
+  logCopy = log;
   v9.receiver = self;
   v9.super_class = CFHelper;
   v5 = [(CFHelper *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    if (v4)
+    if (logCopy)
     {
-      v7 = v4;
+      v7 = logCopy;
     }
 
     else

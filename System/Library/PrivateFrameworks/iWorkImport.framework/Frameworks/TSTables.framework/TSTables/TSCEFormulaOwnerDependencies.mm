@@ -1,83 +1,83 @@
 @interface TSCEFormulaOwnerDependencies
 - (BOOL)duringSubOwnerUIDUpgrade;
 - (TSCEDependencyTracker)dependencyTracker;
-- (TSCEFormulaOwnerDependencies)initWithContext:(id)a3 dependencyTracker:(id)a4 ownerID:(unsigned __int16)a5 ownerUID:(const TSKUIDStruct *)a6 owner:(id)a7 ownerIndex:(unsigned __int16)a8;
+- (TSCEFormulaOwnerDependencies)initWithContext:(id)context dependencyTracker:(id)tracker ownerID:(unsigned __int16)d ownerUID:(const TSKUIDStruct *)iD owner:(id)owner ownerIndex:(unsigned __int16)index;
 - (TSKUIDStruct)formulaOwnerUid;
 - (TSUCellCoord)embiggenedCellCoord;
 - (void)dealloc;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)pushRangeAndSpanningDependents:(id)a3 fromCoord:(const TSUCellCoord *)a4 cellIsInACycle:(BOOL)a5;
-- (void)resetOwnerUIDForUpgrade:(const TSKUIDStruct *)a3 forBaseOwner:(const TSKUIDStruct *)a4 ownerKind:(unsigned __int16)a5;
-- (void)saveToArchiver:(id)a3;
-- (void)setDependencyTracker:(id)a3;
-- (void)setOwnerIndex:(unsigned __int16)a3;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)pushRangeAndSpanningDependents:(id)dependents fromCoord:(const TSUCellCoord *)coord cellIsInACycle:(BOOL)cycle;
+- (void)resetOwnerUIDForUpgrade:(const TSKUIDStruct *)upgrade forBaseOwner:(const TSKUIDStruct *)owner ownerKind:(unsigned __int16)kind;
+- (void)saveToArchiver:(id)archiver;
+- (void)setDependencyTracker:(id)tracker;
+- (void)setOwnerIndex:(unsigned __int16)index;
 - (void)unpackAfterUnarchive;
 - (void)willClose;
 @end
 
 @implementation TSCEFormulaOwnerDependencies
 
-- (TSCEFormulaOwnerDependencies)initWithContext:(id)a3 dependencyTracker:(id)a4 ownerID:(unsigned __int16)a5 ownerUID:(const TSKUIDStruct *)a6 owner:(id)a7 ownerIndex:(unsigned __int16)a8
+- (TSCEFormulaOwnerDependencies)initWithContext:(id)context dependencyTracker:(id)tracker ownerID:(unsigned __int16)d ownerUID:(const TSKUIDStruct *)iD owner:(id)owner ownerIndex:(unsigned __int16)index
 {
-  v11 = a5;
-  v14 = a3;
-  v15 = a4;
-  v16 = a7;
+  dCopy = d;
+  contextCopy = context;
+  trackerCopy = tracker;
+  ownerCopy = owner;
   v68.receiver = self;
   v68.super_class = TSCEFormulaOwnerDependencies;
-  v17 = [(TSCEFormulaOwnerDependencies *)&v68 initWithContext:v14];
+  v17 = [(TSCEFormulaOwnerDependencies *)&v68 initWithContext:contextCopy];
   v18 = v17;
   if (v17)
   {
-    v17->_formulaOwnerUid = *a6;
-    v17->_formulaOwnerId = v11;
-    v17->_ownerIndex = a8;
+    v17->_formulaOwnerUid = *iD;
+    v17->_formulaOwnerId = dCopy;
+    v17->_ownerIndex = index;
     v19 = [TSCECellDependencies alloc];
-    v21 = objc_msgSend_initWithDependTracker_ownerID_ownerUID_ownerIndex_(v19, v20, v15, v11, a6, v18->_ownerIndex);
+    v21 = objc_msgSend_initWithDependTracker_ownerID_ownerUID_ownerIndex_(v19, v20, trackerCopy, dCopy, iD, v18->_ownerIndex);
     cellDependencies = v18->_cellDependencies;
     v18->_cellDependencies = v21;
 
     v23 = [TSCERangeDependencies alloc];
-    v26 = objc_msgSend_initWithDependTracker_ownerID_(v23, v24, v15, v11, v25);
+    v26 = objc_msgSend_initWithDependTracker_ownerID_(v23, v24, trackerCopy, dCopy, v25);
     rangeDependencies = v18->_rangeDependencies;
     v18->_rangeDependencies = v26;
 
     v28 = [TSCESpanningDependencies alloc];
-    isColumns = objc_msgSend_initWithDependTracker_ownerID_ownerUID_isColumns_(v28, v29, v15, v11, a6, 0);
+    isColumns = objc_msgSend_initWithDependTracker_ownerID_ownerUID_isColumns_(v28, v29, trackerCopy, dCopy, iD, 0);
     spanningRowDependencies = v18->_spanningRowDependencies;
     v18->_spanningRowDependencies = isColumns;
 
     v32 = [TSCESpanningDependencies alloc];
-    v34 = objc_msgSend_initWithDependTracker_ownerID_ownerUID_isColumns_(v32, v33, v15, v11, a6, 1);
+    v34 = objc_msgSend_initWithDependTracker_ownerID_ownerUID_isColumns_(v32, v33, trackerCopy, dCopy, iD, 1);
     spanningColumnDependencies = v18->_spanningColumnDependencies;
     v18->_spanningColumnDependencies = v34;
 
     v36 = [TSCEVolatileDependencies alloc];
-    v38 = objc_msgSend_initWithDependTracker_ownerID_ownerUID_(v36, v37, v15, v11, a6);
+    v38 = objc_msgSend_initWithDependTracker_ownerID_ownerUID_(v36, v37, trackerCopy, dCopy, iD);
     volatileDependencies = v18->_volatileDependencies;
     v18->_volatileDependencies = v38;
 
     v40 = [TSCEWholeOwnerDependencies alloc];
-    v43 = objc_msgSend_initWithDependTracker_ownerID_(v40, v41, v15, v11, v42);
+    v43 = objc_msgSend_initWithDependTracker_ownerID_(v40, v41, trackerCopy, dCopy, v42);
     wholeOwnerDependencies = v18->_wholeOwnerDependencies;
     v18->_wholeOwnerDependencies = v43;
 
     v45 = [TSCEErrorsAndWarnings alloc];
-    v48 = objc_msgSend_initWithDependTracker_ownerID_(v45, v46, v15, v11, v47);
+    v48 = objc_msgSend_initWithDependTracker_ownerID_(v45, v46, trackerCopy, dCopy, v47);
     errors = v18->_errors;
     v18->_errors = v48;
 
     v50 = [TSCESpillSizes alloc];
-    v53 = objc_msgSend_initWithDependTracker_ownerID_(v50, v51, v15, v11, v52);
+    v53 = objc_msgSend_initWithDependTracker_ownerID_(v50, v51, trackerCopy, dCopy, v52);
     spillSizes = v18->_spillSizes;
     v18->_spillSizes = v53;
 
     v55 = [TSCEUuidReferences alloc];
-    v59 = objc_msgSend_initWithOwnerUID_(v55, v56, a6, v57, v58);
+    v59 = objc_msgSend_initWithOwnerUID_(v55, v56, iD, v57, v58);
     uuidReferences = v18->_uuidReferences;
     v18->_uuidReferences = v59;
 
-    objc_storeStrong(&v18->_formulaOwner, a7);
+    objc_storeStrong(&v18->_formulaOwner, owner);
     if (objc_opt_respondsToSelector())
     {
       v65 = objc_msgSend_objectToArchiveInDependencyTracker(v18->_formulaOwner, v61, v62, v63, v64);
@@ -139,35 +139,35 @@
   return cellDependencies;
 }
 
-- (void)setDependencyTracker:(id)a3
+- (void)setDependencyTracker:(id)tracker
 {
-  v29 = a3;
+  trackerCopy = tracker;
   cellDependencies = self->_cellDependencies;
   if (cellDependencies)
   {
-    objc_msgSend_setDependencyTracker_(cellDependencies, v4, v29, v5, v6);
-    objc_msgSend_setDependencyTracker_(self->_rangeDependencies, v8, v29, v9, v10);
-    objc_msgSend_setDependencyTracker_(self->_spanningColumnDependencies, v11, v29, v12, v13);
-    objc_msgSend_setDependencyTracker_(self->_spanningRowDependencies, v14, v29, v15, v16);
-    objc_msgSend_setDependencyTracker_(self->_volatileDependencies, v17, v29, v18, v19);
-    objc_msgSend_setDependencyTracker_(self->_wholeOwnerDependencies, v20, v29, v21, v22);
-    objc_msgSend_setDependencyTracker_(self->_errors, v23, v29, v24, v25);
-    objc_msgSend_setDependencyTracker_(self->_spillSizes, v26, v29, v27, v28);
+    objc_msgSend_setDependencyTracker_(cellDependencies, v4, trackerCopy, v5, v6);
+    objc_msgSend_setDependencyTracker_(self->_rangeDependencies, v8, trackerCopy, v9, v10);
+    objc_msgSend_setDependencyTracker_(self->_spanningColumnDependencies, v11, trackerCopy, v12, v13);
+    objc_msgSend_setDependencyTracker_(self->_spanningRowDependencies, v14, trackerCopy, v15, v16);
+    objc_msgSend_setDependencyTracker_(self->_volatileDependencies, v17, trackerCopy, v18, v19);
+    objc_msgSend_setDependencyTracker_(self->_wholeOwnerDependencies, v20, trackerCopy, v21, v22);
+    objc_msgSend_setDependencyTracker_(self->_errors, v23, trackerCopy, v24, v25);
+    objc_msgSend_setDependencyTracker_(self->_spillSizes, v26, trackerCopy, v27, v28);
   }
 }
 
-- (void)setOwnerIndex:(unsigned __int16)a3
+- (void)setOwnerIndex:(unsigned __int16)index
 {
-  if (self->_ownerIndex != a3)
+  if (self->_ownerIndex != index)
   {
-    v5 = a3;
-    objc_msgSend_willModify(self, a2, a3, v3, v4);
-    self->_ownerIndex = v5;
+    indexCopy = index;
+    objc_msgSend_willModify(self, a2, index, v3, v4);
+    self->_ownerIndex = indexCopy;
     cellDependencies = self->_cellDependencies;
     if (cellDependencies)
     {
 
-      objc_msgSend_setOwnerIndex_(cellDependencies, v7, v5, v8, v9);
+      objc_msgSend_setOwnerIndex_(cellDependencies, v7, indexCopy, v8, v9);
     }
   }
 }
@@ -186,37 +186,37 @@
   }
 }
 
-- (void)pushRangeAndSpanningDependents:(id)a3 fromCoord:(const TSUCellCoord *)a4 cellIsInACycle:(BOOL)a5
+- (void)pushRangeAndSpanningDependents:(id)dependents fromCoord:(const TSUCellCoord *)coord cellIsInACycle:(BOOL)cycle
 {
-  v5 = a5;
-  v31 = a3;
+  cycleCopy = cycle;
+  dependentsCopy = dependents;
   v12 = objc_msgSend_rangeDependencies(self, v8, v9, v10, v11);
   v17 = v12;
   if (v12 && (objc_msgSend_isEmpty(v12, v13, v14, v15, v16) & 1) == 0)
   {
-    objc_msgSend_pushDependents_outDependents_referencingCellIsInACycle_(v17, v13, a4, v31, v5);
+    objc_msgSend_pushDependents_outDependents_referencingCellIsInACycle_(v17, v13, coord, dependentsCopy, cycleCopy);
   }
 
   v18 = objc_msgSend_spanningRowDependencies(self, v13, v14, v15, v16);
   v23 = v18;
   if (v18 && (objc_msgSend_isEmpty(v18, v19, v20, v21, v22) & 1) == 0)
   {
-    objc_msgSend_pushDependents_outDependents_referencingCellIsInACycle_(v23, v19, a4, v31, v5);
+    objc_msgSend_pushDependents_outDependents_referencingCellIsInACycle_(v23, v19, coord, dependentsCopy, cycleCopy);
   }
 
   v24 = objc_msgSend_spanningColumnDependencies(self, v19, v20, v21, v22);
   v29 = v24;
   if (v24 && (objc_msgSend_isEmpty(v24, v25, v26, v27, v28) & 1) == 0)
   {
-    objc_msgSend_pushDependents_outDependents_referencingCellIsInACycle_(v29, v30, a4, v31, v5);
+    objc_msgSend_pushDependents_outDependents_referencingCellIsInACycle_(v29, v30, coord, dependentsCopy, cycleCopy);
   }
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v69 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v7 = objc_msgSend_messageWithDescriptor_(v69, v4, off_2812E2AC8[132], v5, v6);
+  v7 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812E2AC8[132], v5, v6);
 
   if (*(v7 + 24))
   {
@@ -295,7 +295,7 @@ LABEL_9:
   v52 = *(v7 + 16);
   if ((v52 & 0x400) != 0)
   {
-    objc_msgSend_readFromTiledArchive_unarchiver_ownerDepends_(self->_cellDependencies, v49, *(v7 + 104), v69, self);
+    objc_msgSend_readFromTiledArchive_unarchiver_ownerDepends_(self->_cellDependencies, v49, *(v7 + 104), unarchiverCopy, self);
   }
 
   else if ((v52 & 2) != 0)
@@ -306,7 +306,7 @@ LABEL_9:
   v53 = *(v7 + 16);
   if ((v53 & 0x1000) != 0)
   {
-    objc_msgSend_readFromTiledArchive_unarchiver_ownerDepends_(self->_rangeDependencies, v49, *(v7 + 120), v69, self);
+    objc_msgSend_readFromTiledArchive_unarchiver_ownerDepends_(self->_rangeDependencies, v49, *(v7 + 120), unarchiverCopy, self);
   }
 
   else if ((v53 & 4) != 0)
@@ -383,7 +383,7 @@ LABEL_9:
     v70[2] = sub_2213BDB5C;
     v70[3] = &unk_2784634F0;
     v70[4] = self;
-    sub_221375DAC(v69, v68, &unk_2835174A8, v70);
+    sub_221375DAC(unarchiverCopy, v68, &unk_2835174A8, v70);
   }
 }
 
@@ -417,11 +417,11 @@ LABEL_9:
   }
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v4 = a3;
-  objc_msgSend_setMessageVersion_(v4, v5, 0x300020000000ALL, v6, v7);
-  v8 = v4;
+  archiverCopy = archiver;
+  objc_msgSend_setMessageVersion_(archiverCopy, v5, 0x300020000000ALL, v6, v7);
+  v8 = archiverCopy;
   google::protobuf::internal::AssignDescriptors();
   v11 = objc_msgSend_messageWithNewFunction_descriptor_(v8, v9, sub_2213BE9D0, off_2812E2AC8[132], v10);
 
@@ -777,17 +777,17 @@ LABEL_111:
   return v10;
 }
 
-- (void)resetOwnerUIDForUpgrade:(const TSKUIDStruct *)a3 forBaseOwner:(const TSKUIDStruct *)a4 ownerKind:(unsigned __int16)a5
+- (void)resetOwnerUIDForUpgrade:(const TSKUIDStruct *)upgrade forBaseOwner:(const TSKUIDStruct *)owner ownerKind:(unsigned __int16)kind
 {
-  v5 = a5;
-  v8 = objc_msgSend_formulaOwnerUid(self, a2, a3, a4, a5);
+  kindCopy = kind;
+  v8 = objc_msgSend_formulaOwnerUid(self, a2, upgrade, owner, kind);
   v10 = v9;
-  if (objc_msgSend_ownerIndex(self, v9, v11, v12, v13) != v5)
+  if (objc_msgSend_ownerIndex(self, v9, v11, v12, v13) != kindCopy)
   {
-    objc_msgSend_setOwnerIndex_(self, v14, v5, v16, v17);
+    objc_msgSend_setOwnerIndex_(self, v14, kindCopy, v16, v17);
   }
 
-  if (v8 != a3->_lower || v10 != a3->_upper)
+  if (v8 != upgrade->_lower || v10 != upgrade->_upper)
   {
     if (!objc_msgSend_ownerIndex(self, v14, v15, v16, v17))
     {
@@ -820,20 +820,20 @@ LABEL_111:
     }
 
     objc_msgSend_willModifyForUpgrade(self, v49, v50, v51, v52);
-    self->_formulaOwnerUid = *a3;
+    self->_formulaOwnerUid = *upgrade;
     cellDependencies = self->_cellDependencies;
     if (cellDependencies)
     {
-      objc_msgSend_resetOwnerUIDForUpgrade_(cellDependencies, v64, a3, v65, v66);
+      objc_msgSend_resetOwnerUIDForUpgrade_(cellDependencies, v64, upgrade, v65, v66);
     }
 
-    objc_msgSend_resetOwnerUIDForUpgrade_(self->_spanningRowDependencies, v64, a3, v65, v66);
-    objc_msgSend_resetOwnerUIDForUpgrade_(self->_spanningColumnDependencies, v68, a3, v69, v70);
+    objc_msgSend_resetOwnerUIDForUpgrade_(self->_spanningRowDependencies, v64, upgrade, v65, v66);
+    objc_msgSend_resetOwnerUIDForUpgrade_(self->_spanningColumnDependencies, v68, upgrade, v69, v70);
     volatileDependencies = self->_volatileDependencies;
     if (volatileDependencies)
     {
 
-      objc_msgSend_resetOwnerUIDForUpgrade_(volatileDependencies, v71, a3, v72, v73);
+      objc_msgSend_resetOwnerUIDForUpgrade_(volatileDependencies, v71, upgrade, v72, v73);
     }
   }
 }

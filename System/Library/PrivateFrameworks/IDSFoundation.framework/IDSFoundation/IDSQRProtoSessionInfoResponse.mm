@@ -1,20 +1,20 @@
 @interface IDSQRProtoSessionInfoResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (unint64_t)lightweightParticipantIdListAtIndex:(unint64_t)a3;
-- (unsigned)peerSubscribedStreamIdsAtIndex:(unint64_t)a3;
-- (void)addJoinedParticipants:(id)a3;
-- (void)addLeftParticipants:(id)a3;
-- (void)addPeerPublishedStreams:(id)a3;
-- (void)addUpdatedParticipants:(id)a3;
-- (void)copyTo:(id)a3;
+- (unint64_t)lightweightParticipantIdListAtIndex:(unint64_t)index;
+- (unsigned)peerSubscribedStreamIdsAtIndex:(unint64_t)index;
+- (void)addJoinedParticipants:(id)participants;
+- (void)addLeftParticipants:(id)participants;
+- (void)addPeerPublishedStreams:(id)streams;
+- (void)addUpdatedParticipants:(id)participants;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasGenerationCounter:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasGenerationCounter:(BOOL)counter;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IDSQRProtoSessionInfoResponse
@@ -28,113 +28,113 @@
   [(IDSQRProtoSessionInfoResponse *)&v3 dealloc];
 }
 
-- (void)addPeerPublishedStreams:(id)a3
+- (void)addPeerPublishedStreams:(id)streams
 {
-  v4 = a3;
+  streamsCopy = streams;
   peerPublishedStreams = self->_peerPublishedStreams;
-  v8 = v4;
+  v8 = streamsCopy;
   if (!peerPublishedStreams)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_peerPublishedStreams;
     self->_peerPublishedStreams = v6;
 
-    v4 = v8;
+    streamsCopy = v8;
     peerPublishedStreams = self->_peerPublishedStreams;
   }
 
-  [(NSMutableArray *)peerPublishedStreams addObject:v4];
+  [(NSMutableArray *)peerPublishedStreams addObject:streamsCopy];
 }
 
-- (unsigned)peerSubscribedStreamIdsAtIndex:(unint64_t)a3
+- (unsigned)peerSubscribedStreamIdsAtIndex:(unint64_t)index
 {
   p_peerSubscribedStreamIds = &self->_peerSubscribedStreamIds;
   count = self->_peerSubscribedStreamIds.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_peerSubscribedStreamIds->list[a3];
+  return p_peerSubscribedStreamIds->list[index];
 }
 
-- (unint64_t)lightweightParticipantIdListAtIndex:(unint64_t)a3
+- (unint64_t)lightweightParticipantIdListAtIndex:(unint64_t)index
 {
   p_lightweightParticipantIdLists = &self->_lightweightParticipantIdLists;
   count = self->_lightweightParticipantIdLists.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_lightweightParticipantIdLists->list[a3];
+  return p_lightweightParticipantIdLists->list[index];
 }
 
-- (void)addJoinedParticipants:(id)a3
+- (void)addJoinedParticipants:(id)participants
 {
-  v4 = a3;
+  participantsCopy = participants;
   joinedParticipants = self->_joinedParticipants;
-  v8 = v4;
+  v8 = participantsCopy;
   if (!joinedParticipants)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_joinedParticipants;
     self->_joinedParticipants = v6;
 
-    v4 = v8;
+    participantsCopy = v8;
     joinedParticipants = self->_joinedParticipants;
   }
 
-  [(NSMutableArray *)joinedParticipants addObject:v4];
+  [(NSMutableArray *)joinedParticipants addObject:participantsCopy];
 }
 
-- (void)addLeftParticipants:(id)a3
+- (void)addLeftParticipants:(id)participants
 {
-  v4 = a3;
+  participantsCopy = participants;
   leftParticipants = self->_leftParticipants;
-  v8 = v4;
+  v8 = participantsCopy;
   if (!leftParticipants)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_leftParticipants;
     self->_leftParticipants = v6;
 
-    v4 = v8;
+    participantsCopy = v8;
     leftParticipants = self->_leftParticipants;
   }
 
-  [(NSMutableArray *)leftParticipants addObject:v4];
+  [(NSMutableArray *)leftParticipants addObject:participantsCopy];
 }
 
-- (void)addUpdatedParticipants:(id)a3
+- (void)addUpdatedParticipants:(id)participants
 {
-  v4 = a3;
+  participantsCopy = participants;
   updatedParticipants = self->_updatedParticipants;
-  v8 = v4;
+  v8 = participantsCopy;
   if (!updatedParticipants)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_updatedParticipants;
     self->_updatedParticipants = v6;
 
-    v4 = v8;
+    participantsCopy = v8;
     updatedParticipants = self->_updatedParticipants;
   }
 
-  [(NSMutableArray *)updatedParticipants addObject:v4];
+  [(NSMutableArray *)updatedParticipants addObject:participantsCopy];
 }
 
-- (void)setHasGenerationCounter:(BOOL)a3
+- (void)setHasGenerationCounter:(BOOL)counter
 {
-  if (a3)
+  if (counter)
   {
     v3 = 2;
   }
@@ -153,8 +153,8 @@
   v8.receiver = self;
   v8.super_class = IDSQRProtoSessionInfoResponse;
   v4 = [(IDSQRProtoSessionInfoResponse *)&v8 description];
-  v5 = [(IDSQRProtoSessionInfoResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(IDSQRProtoSessionInfoResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -162,7 +162,7 @@
 - (id)dictionaryRepresentation
 {
   v57 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSMutableArray *)self->_peerPublishedStreams count])
   {
     v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_peerPublishedStreams, "count")}];
@@ -185,8 +185,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v49 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v49 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v49 objects:v56 count:16];
@@ -195,19 +195,19 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"peer_published_streams"];
+    [dictionary setObject:v4 forKey:@"peer_published_streams"];
   }
 
   v11 = PBRepeatedUInt32NSArray();
-  [v3 setObject:v11 forKey:@"peer_subscribed_stream_ids"];
+  [dictionary setObject:v11 forKey:@"peer_subscribed_stream_ids"];
 
   v12 = PBRepeatedUInt64NSArray();
-  [v3 setObject:v12 forKey:@"lightweight_participant_id_list"];
+  [dictionary setObject:v12 forKey:@"lightweight_participant_id_list"];
 
   if (*&self->_has)
   {
     v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_commandFlags];
-    [v3 setObject:v13 forKey:@"command_flags"];
+    [dictionary setObject:v13 forKey:@"command_flags"];
   }
 
   if ([(NSMutableArray *)self->_joinedParticipants count])
@@ -232,8 +232,8 @@
             objc_enumerationMutation(v15);
           }
 
-          v20 = [*(*(&v45 + 1) + 8 * j) dictionaryRepresentation];
-          [v14 addObject:v20];
+          dictionaryRepresentation2 = [*(*(&v45 + 1) + 8 * j) dictionaryRepresentation];
+          [v14 addObject:dictionaryRepresentation2];
         }
 
         v17 = [(NSMutableArray *)v15 countByEnumeratingWithState:&v45 objects:v55 count:16];
@@ -242,7 +242,7 @@
       while (v17);
     }
 
-    [v3 setObject:v14 forKey:@"joined_participants"];
+    [dictionary setObject:v14 forKey:@"joined_participants"];
   }
 
   if ([(NSMutableArray *)self->_leftParticipants count])
@@ -267,8 +267,8 @@
             objc_enumerationMutation(v22);
           }
 
-          v27 = [*(*(&v41 + 1) + 8 * k) dictionaryRepresentation];
-          [v21 addObject:v27];
+          dictionaryRepresentation3 = [*(*(&v41 + 1) + 8 * k) dictionaryRepresentation];
+          [v21 addObject:dictionaryRepresentation3];
         }
 
         v24 = [(NSMutableArray *)v22 countByEnumeratingWithState:&v41 objects:v54 count:16];
@@ -277,7 +277,7 @@
       while (v24);
     }
 
-    [v3 setObject:v21 forKey:@"left_participants"];
+    [dictionary setObject:v21 forKey:@"left_participants"];
   }
 
   if ([(NSMutableArray *)self->_updatedParticipants count])
@@ -302,8 +302,8 @@
             objc_enumerationMutation(v29);
           }
 
-          v34 = [*(*(&v37 + 1) + 8 * m) dictionaryRepresentation];
-          [v28 addObject:v34];
+          dictionaryRepresentation4 = [*(*(&v37 + 1) + 8 * m) dictionaryRepresentation];
+          [v28 addObject:dictionaryRepresentation4];
         }
 
         v31 = [(NSMutableArray *)v29 countByEnumeratingWithState:&v37 objects:v53 count:16];
@@ -312,22 +312,22 @@
       while (v31);
     }
 
-    [v3 setObject:v28 forKey:@"updated_participants"];
+    [dictionary setObject:v28 forKey:@"updated_participants"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v35 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_generationCounter];
-    [v3 setObject:v35 forKey:@"generation_counter"];
+    [dictionary setObject:v35 forKey:@"generation_counter"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
@@ -487,114 +487,114 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v26 = a3;
+  toCopy = to;
   if ([(IDSQRProtoSessionInfoResponse *)self peerPublishedStreamsCount])
   {
-    [v26 clearPeerPublishedStreams];
-    v4 = [(IDSQRProtoSessionInfoResponse *)self peerPublishedStreamsCount];
-    if (v4)
+    [toCopy clearPeerPublishedStreams];
+    peerPublishedStreamsCount = [(IDSQRProtoSessionInfoResponse *)self peerPublishedStreamsCount];
+    if (peerPublishedStreamsCount)
     {
-      v5 = v4;
+      v5 = peerPublishedStreamsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(IDSQRProtoSessionInfoResponse *)self peerPublishedStreamsAtIndex:i];
-        [v26 addPeerPublishedStreams:v7];
+        [toCopy addPeerPublishedStreams:v7];
       }
     }
   }
 
   if ([(IDSQRProtoSessionInfoResponse *)self peerSubscribedStreamIdsCount])
   {
-    [v26 clearPeerSubscribedStreamIds];
-    v8 = [(IDSQRProtoSessionInfoResponse *)self peerSubscribedStreamIdsCount];
-    if (v8)
+    [toCopy clearPeerSubscribedStreamIds];
+    peerSubscribedStreamIdsCount = [(IDSQRProtoSessionInfoResponse *)self peerSubscribedStreamIdsCount];
+    if (peerSubscribedStreamIdsCount)
     {
-      v9 = v8;
+      v9 = peerSubscribedStreamIdsCount;
       for (j = 0; j != v9; ++j)
       {
-        [v26 addPeerSubscribedStreamIds:{-[IDSQRProtoSessionInfoResponse peerSubscribedStreamIdsAtIndex:](self, "peerSubscribedStreamIdsAtIndex:", j)}];
+        [toCopy addPeerSubscribedStreamIds:{-[IDSQRProtoSessionInfoResponse peerSubscribedStreamIdsAtIndex:](self, "peerSubscribedStreamIdsAtIndex:", j)}];
       }
     }
   }
 
   if ([(IDSQRProtoSessionInfoResponse *)self lightweightParticipantIdListsCount])
   {
-    [v26 clearLightweightParticipantIdLists];
-    v11 = [(IDSQRProtoSessionInfoResponse *)self lightweightParticipantIdListsCount];
-    if (v11)
+    [toCopy clearLightweightParticipantIdLists];
+    lightweightParticipantIdListsCount = [(IDSQRProtoSessionInfoResponse *)self lightweightParticipantIdListsCount];
+    if (lightweightParticipantIdListsCount)
     {
-      v12 = v11;
+      v12 = lightweightParticipantIdListsCount;
       for (k = 0; k != v12; ++k)
       {
-        [v26 addLightweightParticipantIdList:{-[IDSQRProtoSessionInfoResponse lightweightParticipantIdListAtIndex:](self, "lightweightParticipantIdListAtIndex:", k)}];
+        [toCopy addLightweightParticipantIdList:{-[IDSQRProtoSessionInfoResponse lightweightParticipantIdListAtIndex:](self, "lightweightParticipantIdListAtIndex:", k)}];
       }
     }
   }
 
   if (*&self->_has)
   {
-    *(v26 + 14) = self->_commandFlags;
-    *(v26 + 96) |= 1u;
+    *(toCopy + 14) = self->_commandFlags;
+    *(toCopy + 96) |= 1u;
   }
 
   if ([(IDSQRProtoSessionInfoResponse *)self joinedParticipantsCount])
   {
-    [v26 clearJoinedParticipants];
-    v14 = [(IDSQRProtoSessionInfoResponse *)self joinedParticipantsCount];
-    if (v14)
+    [toCopy clearJoinedParticipants];
+    joinedParticipantsCount = [(IDSQRProtoSessionInfoResponse *)self joinedParticipantsCount];
+    if (joinedParticipantsCount)
     {
-      v15 = v14;
+      v15 = joinedParticipantsCount;
       for (m = 0; m != v15; ++m)
       {
         v17 = [(IDSQRProtoSessionInfoResponse *)self joinedParticipantsAtIndex:m];
-        [v26 addJoinedParticipants:v17];
+        [toCopy addJoinedParticipants:v17];
       }
     }
   }
 
   if ([(IDSQRProtoSessionInfoResponse *)self leftParticipantsCount])
   {
-    [v26 clearLeftParticipants];
-    v18 = [(IDSQRProtoSessionInfoResponse *)self leftParticipantsCount];
-    if (v18)
+    [toCopy clearLeftParticipants];
+    leftParticipantsCount = [(IDSQRProtoSessionInfoResponse *)self leftParticipantsCount];
+    if (leftParticipantsCount)
     {
-      v19 = v18;
+      v19 = leftParticipantsCount;
       for (n = 0; n != v19; ++n)
       {
         v21 = [(IDSQRProtoSessionInfoResponse *)self leftParticipantsAtIndex:n];
-        [v26 addLeftParticipants:v21];
+        [toCopy addLeftParticipants:v21];
       }
     }
   }
 
   if ([(IDSQRProtoSessionInfoResponse *)self updatedParticipantsCount])
   {
-    [v26 clearUpdatedParticipants];
-    v22 = [(IDSQRProtoSessionInfoResponse *)self updatedParticipantsCount];
-    if (v22)
+    [toCopy clearUpdatedParticipants];
+    updatedParticipantsCount = [(IDSQRProtoSessionInfoResponse *)self updatedParticipantsCount];
+    if (updatedParticipantsCount)
     {
-      v23 = v22;
+      v23 = updatedParticipantsCount;
       for (ii = 0; ii != v23; ++ii)
       {
         v25 = [(IDSQRProtoSessionInfoResponse *)self updatedParticipantsAtIndex:ii];
-        [v26 addUpdatedParticipants:v25];
+        [toCopy addUpdatedParticipants:v25];
       }
     }
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v26 + 15) = self->_generationCounter;
-    *(v26 + 96) |= 2u;
+    *(toCopy + 15) = self->_generationCounter;
+    *(toCopy + 96) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v51 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
@@ -615,7 +615,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v43 + 1) + 8 * v10) copyWithZone:a3];
+        v11 = [*(*(&v43 + 1) + 8 * v10) copyWithZone:zone];
         [v5 addPeerPublishedStreams:v11];
 
         ++v10;
@@ -656,7 +656,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v39 + 1) + 8 * v16) copyWithZone:a3];
+        v17 = [*(*(&v39 + 1) + 8 * v16) copyWithZone:zone];
         [v5 addJoinedParticipants:v17];
 
         ++v16;
@@ -689,7 +689,7 @@
           objc_enumerationMutation(v18);
         }
 
-        v23 = [*(*(&v35 + 1) + 8 * v22) copyWithZone:a3];
+        v23 = [*(*(&v35 + 1) + 8 * v22) copyWithZone:zone];
         [v5 addLeftParticipants:v23];
 
         ++v22;
@@ -722,7 +722,7 @@
           objc_enumerationMutation(v24);
         }
 
-        v29 = [*(*(&v31 + 1) + 8 * v28) copyWithZone:{a3, v31}];
+        v29 = [*(*(&v31 + 1) + 8 * v28) copyWithZone:{zone, v31}];
         [v5 addUpdatedParticipants:v29];
 
         ++v28;
@@ -744,16 +744,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
   peerPublishedStreams = self->_peerPublishedStreams;
-  if (peerPublishedStreams | *(v4 + 10))
+  if (peerPublishedStreams | *(equalCopy + 10))
   {
     if (![(NSMutableArray *)peerPublishedStreams isEqual:?])
     {
@@ -768,13 +768,13 @@
 
   if (*&self->_has)
   {
-    if ((*(v4 + 96) & 1) == 0 || self->_commandFlags != *(v4 + 14))
+    if ((*(equalCopy + 96) & 1) == 0 || self->_commandFlags != *(equalCopy + 14))
     {
       goto LABEL_21;
     }
   }
 
-  else if (*(v4 + 96))
+  else if (*(equalCopy + 96))
   {
 LABEL_21:
     v9 = 0;
@@ -782,13 +782,13 @@ LABEL_21:
   }
 
   joinedParticipants = self->_joinedParticipants;
-  if (joinedParticipants | *(v4 + 8) && ![(NSMutableArray *)joinedParticipants isEqual:?])
+  if (joinedParticipants | *(equalCopy + 8) && ![(NSMutableArray *)joinedParticipants isEqual:?])
   {
     goto LABEL_21;
   }
 
   leftParticipants = self->_leftParticipants;
-  if (leftParticipants | *(v4 + 9))
+  if (leftParticipants | *(equalCopy + 9))
   {
     if (![(NSMutableArray *)leftParticipants isEqual:?])
     {
@@ -797,7 +797,7 @@ LABEL_21:
   }
 
   updatedParticipants = self->_updatedParticipants;
-  if (updatedParticipants | *(v4 + 11))
+  if (updatedParticipants | *(equalCopy + 11))
   {
     if (![(NSMutableArray *)updatedParticipants isEqual:?])
     {
@@ -805,10 +805,10 @@ LABEL_21:
     }
   }
 
-  v9 = (*(v4 + 96) & 2) == 0;
+  v9 = (*(equalCopy + 96) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 96) & 2) == 0 || self->_generationCounter != *(v4 + 15))
+    if ((*(equalCopy + 96) & 2) == 0 || self->_generationCounter != *(equalCopy + 15))
     {
       goto LABEL_21;
     }
@@ -852,15 +852,15 @@ LABEL_22:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v51 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v5 = *(v4 + 10);
+  v5 = *(fromCopy + 10);
   v6 = [v5 countByEnumeratingWithState:&v43 objects:v50 count:16];
   if (v6)
   {
@@ -886,29 +886,29 @@ LABEL_22:
     while (v7);
   }
 
-  v10 = [v4 peerSubscribedStreamIdsCount];
-  if (v10)
+  peerSubscribedStreamIdsCount = [fromCopy peerSubscribedStreamIdsCount];
+  if (peerSubscribedStreamIdsCount)
   {
-    v11 = v10;
+    v11 = peerSubscribedStreamIdsCount;
     for (i = 0; i != v11; ++i)
     {
-      -[IDSQRProtoSessionInfoResponse addPeerSubscribedStreamIds:](self, "addPeerSubscribedStreamIds:", [v4 peerSubscribedStreamIdsAtIndex:i]);
+      -[IDSQRProtoSessionInfoResponse addPeerSubscribedStreamIds:](self, "addPeerSubscribedStreamIds:", [fromCopy peerSubscribedStreamIdsAtIndex:i]);
     }
   }
 
-  v13 = [v4 lightweightParticipantIdListsCount];
-  if (v13)
+  lightweightParticipantIdListsCount = [fromCopy lightweightParticipantIdListsCount];
+  if (lightweightParticipantIdListsCount)
   {
-    v14 = v13;
+    v14 = lightweightParticipantIdListsCount;
     for (j = 0; j != v14; ++j)
     {
-      -[IDSQRProtoSessionInfoResponse addLightweightParticipantIdList:](self, "addLightweightParticipantIdList:", [v4 lightweightParticipantIdListAtIndex:j]);
+      -[IDSQRProtoSessionInfoResponse addLightweightParticipantIdList:](self, "addLightweightParticipantIdList:", [fromCopy lightweightParticipantIdListAtIndex:j]);
     }
   }
 
-  if (*(v4 + 96))
+  if (*(fromCopy + 96))
   {
-    self->_commandFlags = *(v4 + 14);
+    self->_commandFlags = *(fromCopy + 14);
     *&self->_has |= 1u;
   }
 
@@ -916,7 +916,7 @@ LABEL_22:
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v16 = *(v4 + 8);
+  v16 = *(fromCopy + 8);
   v17 = [v16 countByEnumeratingWithState:&v39 objects:v49 count:16];
   if (v17)
   {
@@ -946,7 +946,7 @@ LABEL_22:
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v21 = *(v4 + 9);
+  v21 = *(fromCopy + 9);
   v22 = [v21 countByEnumeratingWithState:&v35 objects:v48 count:16];
   if (v22)
   {
@@ -976,7 +976,7 @@ LABEL_22:
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v26 = *(v4 + 11);
+  v26 = *(fromCopy + 11);
   v27 = [v26 countByEnumeratingWithState:&v31 objects:v47 count:16];
   if (v27)
   {
@@ -1002,9 +1002,9 @@ LABEL_22:
     while (v28);
   }
 
-  if ((*(v4 + 96) & 2) != 0)
+  if ((*(fromCopy + 96) & 2) != 0)
   {
-    self->_generationCounter = *(v4 + 15);
+    self->_generationCounter = *(fromCopy + 15);
     *&self->_has |= 2u;
   }
 }

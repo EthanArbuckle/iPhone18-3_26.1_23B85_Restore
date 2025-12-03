@@ -1,9 +1,9 @@
 @interface CRLAnimatedGIFLayer
-+ (id)defaultActionForKey:(id)a3;
++ (id)defaultActionForKey:(id)key;
 - (CRLAnimatedGIFController)controller;
 - (void)dealloc;
 - (void)display;
-- (void)setController:(id)a3;
+- (void)setController:(id)controller;
 @end
 
 @implementation CRLAnimatedGIFLayer
@@ -47,9 +47,9 @@
   [(CRLAnimatedGIFLayer *)&v9 dealloc];
 }
 
-- (void)setController:(id)a3
+- (void)setController:(id)controller
 {
-  obj = a3;
+  obj = controller;
   WeakRetained = objc_loadWeakRetained(&self->mController);
 
   if (WeakRetained != obj)
@@ -89,19 +89,19 @@
   }
 }
 
-+ (id)defaultActionForKey:(id)a3
++ (id)defaultActionForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"contents"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"contents"])
   {
     v5 = +[NSNull null];
   }
 
   else
   {
-    v8.receiver = a1;
+    v8.receiver = self;
     v8.super_class = &OBJC_METACLASS___CRLAnimatedGIFLayer;
-    v5 = objc_msgSendSuper2(&v8, "defaultActionForKey:", v4);
+    v5 = objc_msgSendSuper2(&v8, "defaultActionForKey:", keyCopy);
   }
 
   v6 = v5;

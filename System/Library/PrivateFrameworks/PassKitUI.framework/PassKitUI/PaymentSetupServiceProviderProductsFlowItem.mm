@@ -1,6 +1,6 @@
 @interface PaymentSetupServiceProviderProductsFlowItem
 - (_TtC9PassKitUI43PaymentSetupServiceProviderProductsFlowItem)init;
-- (void)purchaseServiceProviderProductsViewController:(id)a3 didSelectServiceProviderProduct:(id)a4;
+- (void)purchaseServiceProviderProductsViewController:(id)controller didSelectServiceProviderProduct:(id)product;
 @end
 
 @implementation PaymentSetupServiceProviderProductsFlowItem
@@ -12,12 +12,12 @@
   return result;
 }
 
-- (void)purchaseServiceProviderProductsViewController:(id)a3 didSelectServiceProviderProduct:(id)a4
+- (void)purchaseServiceProviderProductsViewController:(id)controller didSelectServiceProviderProduct:(id)product
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1BD4E7F08(v7);
+  controllerCopy = controller;
+  productCopy = product;
+  selfCopy = self;
+  sub_1BD4E7F08(productCopy);
 }
 
 @end

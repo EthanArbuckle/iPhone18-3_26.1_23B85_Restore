@@ -1,15 +1,15 @@
 @interface IRDataConversion
-+ (id)convertIRDataToNSDictionary:(id)a3;
++ (id)convertIRDataToNSDictionary:(id)dictionary;
 @end
 
 @implementation IRDataConversion
 
-+ (id)convertIRDataToNSDictionary:(id)a3
++ (id)convertIRDataToNSDictionary:(id)dictionary
 {
-  v3 = a3;
-  if ([(applesauce::CF::DataRef *)v3 length])
+  dictionaryCopy = dictionary;
+  if ([(applesauce::CF::DataRef *)dictionaryCopy length])
   {
-    applesauce::CF::DataRef::from_ns_noexcept(v3, &v23);
+    applesauce::CF::DataRef::from_ns_noexcept(dictionaryCopy, &v23);
     v4 = CFURLCreateWithBytes(0, "temp", 4, 0, 0);
     v5 = v4;
     v22 = v4;

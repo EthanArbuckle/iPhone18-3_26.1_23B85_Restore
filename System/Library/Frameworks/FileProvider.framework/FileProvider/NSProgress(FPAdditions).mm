@@ -11,15 +11,15 @@
 
 - (id)fp_fileOperationKindStrict:()FPAdditions
 {
-  if (a3 && ([a1 kind], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E696A888]), v4, !v5))
+  if (a3 && ([self kind], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E696A888]), v4, !v5))
   {
     v8 = 0;
   }
 
   else
   {
-    v6 = [a1 userInfo];
-    v7 = [v6 objectForKeyedSubscript:*MEMORY[0x1E696A858]];
+    userInfo = [self userInfo];
+    v7 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696A858]];
 
     if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
@@ -45,14 +45,14 @@
 {
   v4 = *MEMORY[0x1E696A888];
   v5 = a3;
-  [a1 setKind:v4];
-  [a1 setUserInfoObject:v5 forKey:*MEMORY[0x1E696A858]];
+  [self setKind:v4];
+  [self setUserInfoObject:v5 forKey:*MEMORY[0x1E696A858]];
 }
 
 - (uint64_t)fp_isOfFileOperationKind:()FPAdditions strict:
 {
   v6 = a3;
-  v7 = [a1 fp_fileOperationKindStrict:a4];
+  v7 = [self fp_fileOperationKindStrict:a4];
   v8 = [v7 isEqualToString:v6];
 
   return v8;
@@ -62,42 +62,42 @@
 {
   v23 = *MEMORY[0x1E69E9840];
   v6 = a3;
-  v7 = [a4 longLongValue];
-  if (!v7)
+  longLongValue = [a4 longLongValue];
+  if (!longLongValue)
   {
-    v7 = [v6 totalUnitCount];
+    longLongValue = [v6 totalUnitCount];
   }
 
-  if (v7 <= 1)
+  if (longLongValue <= 1)
   {
     v8 = 1;
   }
 
   else
   {
-    v8 = v7;
+    v8 = longLongValue;
   }
 
-  if ([a1 totalUnitCount] == -1)
+  if ([self totalUnitCount] == -1)
   {
-    [a1 setTotalUnitCount:v8];
-    v14 = [v6 fileTotalCount];
-    [a1 setFileTotalCount:v14];
+    [self setTotalUnitCount:v8];
+    fileTotalCount = [v6 fileTotalCount];
+    [self setFileTotalCount:fileTotalCount];
 
-    [a1 setFileCompletedCount:&unk_1F1FC9AB8];
-    [a1 setCompletedUnitCount:0];
+    [self setFileCompletedCount:&unk_1F1FC9AB8];
+    [self setCompletedUnitCount:0];
   }
 
   else
   {
-    [a1 setTotalUnitCount:{objc_msgSend(a1, "totalUnitCount") + v8}];
-    v9 = [a1 fileTotalCount];
-    v10 = [v9 unsignedIntegerValue];
-    v11 = [v6 fileTotalCount];
-    v12 = [v11 unsignedIntegerValue];
+    [self setTotalUnitCount:{objc_msgSend(self, "totalUnitCount") + v8}];
+    fileTotalCount2 = [self fileTotalCount];
+    unsignedIntegerValue = [fileTotalCount2 unsignedIntegerValue];
+    fileTotalCount3 = [v6 fileTotalCount];
+    unsignedIntegerValue2 = [fileTotalCount3 unsignedIntegerValue];
 
-    v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v12 + v10];
-    [a1 setFileTotalCount:v13];
+    v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:unsignedIntegerValue2 + unsignedIntegerValue];
+    [self setFileTotalCount:v13];
   }
 
   v15 = fp_current_or_default_log();
@@ -106,47 +106,47 @@
     v17 = 138412802;
     v18 = v6;
     v19 = 2112;
-    v20 = a1;
+    selfCopy = self;
     v21 = 2048;
     v22 = v8;
     _os_log_debug_impl(&dword_1AAAE1000, v15, OS_LOG_TYPE_DEBUG, "[DEBUG] Adding child progress %@ to parent %@ with %lld unit counts", &v17, 0x20u);
   }
 
-  [a1 addChild:v6 withPendingUnitCount:v8];
+  [self addChild:v6 withPendingUnitCount:v8];
   v16 = *MEMORY[0x1E69E9840];
 }
 
 - (BOOL)fp_isGlobalProgressForDomainAt:()FPAdditions
 {
   v4 = a3;
-  v5 = [a1 fp_fileOperationKindStrict:1];
+  v5 = [self fp_fileOperationKindStrict:1];
   if (!v5)
   {
     goto LABEL_8;
   }
 
-  v6 = [a1 fileTotalCount];
-  if (!v6)
+  fileTotalCount = [self fileTotalCount];
+  if (!fileTotalCount)
   {
     goto LABEL_8;
   }
 
-  v7 = v6;
-  v8 = [a1 fileCompletedCount];
+  v7 = fileTotalCount;
+  fileCompletedCount = [self fileCompletedCount];
 
-  if (!v8 || ([v5 isEqualToString:*MEMORY[0x1E696A870]] & 1) == 0 && !objc_msgSend(v5, "isEqualToString:", *MEMORY[0x1E696A848]))
+  if (!fileCompletedCount || ([v5 isEqualToString:*MEMORY[0x1E696A870]] & 1) == 0 && !objc_msgSend(v5, "isEqualToString:", *MEMORY[0x1E696A848]))
   {
     goto LABEL_8;
   }
 
-  v9 = [a1 userInfo];
-  v10 = [v9 objectForKeyedSubscript:@"FPProgressIsCreatedByFileProviderKey"];
-  v11 = [v10 BOOLValue];
+  userInfo = [self userInfo];
+  v10 = [userInfo objectForKeyedSubscript:@"FPProgressIsCreatedByFileProviderKey"];
+  bOOLValue = [v10 BOOLValue];
 
-  if (v11)
+  if (bOOLValue)
   {
-    v12 = [a1 fileURL];
-    v13 = [v12 fp_relationshipToItemAtURL:v4] == 1;
+    fileURL = [self fileURL];
+    v13 = [fileURL fp_relationshipToItemAtURL:v4] == 1;
   }
 
   else
@@ -160,14 +160,14 @@ LABEL_8:
 
 - (uint64_t)fp_isAccountedAsCopyProgress
 {
-  if ([a1 fp_isOfFileOperationKind:*MEMORY[0x1E696A840]] & 1) != 0 || (objc_msgSend(a1, "fp_isOfFileOperationKind:", *MEMORY[0x1E696A850]) & 1) != 0 || (objc_msgSend(a1, "fp_isOfFileOperationKind:", *MEMORY[0x1E696A838]))
+  if ([self fp_isOfFileOperationKind:*MEMORY[0x1E696A840]] & 1) != 0 || (objc_msgSend(self, "fp_isOfFileOperationKind:", *MEMORY[0x1E696A850]) & 1) != 0 || (objc_msgSend(self, "fp_isOfFileOperationKind:", *MEMORY[0x1E696A838]))
   {
     return 1;
   }
 
   v3 = *MEMORY[0x1E696A868];
 
-  return [a1 fp_isOfFileOperationKind:v3];
+  return [self fp_isOfFileOperationKind:v3];
 }
 
 - (void)fp_fileOperationKindStrict:()FPAdditions .cold.1(uint64_t a1, NSObject *a2)

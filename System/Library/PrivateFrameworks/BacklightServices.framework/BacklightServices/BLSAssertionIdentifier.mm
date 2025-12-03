@@ -1,24 +1,24 @@
 @interface BLSAssertionIdentifier
-- (BLSAssertionIdentifier)initWithClientPid:(int)a3 hostPid:(int)a4 count:(unint64_t)a5;
-- (BLSAssertionIdentifier)initWithCoder:(id)a3;
-- (BLSAssertionIdentifier)initWithXPCDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BLSAssertionIdentifier)initWithClientPid:(int)pid hostPid:(int)hostPid count:(unint64_t)count;
+- (BLSAssertionIdentifier)initWithCoder:(id)coder;
+- (BLSAssertionIdentifier)initWithXPCDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation BLSAssertionIdentifier
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendInteger:self->_clientPid];
-  v5 = [v3 appendInteger:self->_hostPid];
-  v6 = [v3 appendUnsignedInteger:self->_count];
-  v7 = [v3 appendUnsignedInteger:HIDWORD(self->_count)];
-  v8 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendInteger:self->_clientPid];
+  v5 = [builder appendInteger:self->_hostPid];
+  v6 = [builder appendUnsignedInteger:self->_count];
+  v7 = [builder appendUnsignedInteger:HIDWORD(self->_count)];
+  v8 = [builder hash];
 
   return v8;
 }
@@ -29,20 +29,20 @@
   v4 = [v3 appendInt:self->_clientPid withName:@"clientPid"];
   v5 = [v3 appendInt:self->_hostPid withName:@"hostPid"];
   v6 = [v3 appendUInt64:self->_count withName:@"count"];
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
-- (BLSAssertionIdentifier)initWithClientPid:(int)a3 hostPid:(int)a4 count:(unint64_t)a5
+- (BLSAssertionIdentifier)initWithClientPid:(int)pid hostPid:(int)hostPid count:(unint64_t)count
 {
-  v7 = self;
-  if (a3 < 1 || a4 <= 0)
+  selfCopy = self;
+  if (pid < 1 || hostPid <= 0)
   {
     v11 = bls_assertions_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
     {
-      [BLSAssertionIdentifier initWithClientPid:a3 hostPid:a4 count:v11];
+      [BLSAssertionIdentifier initWithClientPid:pid hostPid:hostPid count:v11];
     }
 
     v10 = 0;
@@ -55,22 +55,22 @@
     v9 = [(BLSAssertionIdentifier *)&v13 init];
     if (v9)
     {
-      v9->_hostPid = a4;
-      v9->_clientPid = a3;
-      v9->_count = a5;
+      v9->_hostPid = hostPid;
+      v9->_clientPid = pid;
+      v9->_count = count;
     }
 
-    v7 = v9;
-    v10 = v7;
+    selfCopy = v9;
+    v10 = selfCopy;
   }
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -80,7 +80,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       clientPid = self->_clientPid;
       if (clientPid == [(BLSAssertionIdentifier *)v5 clientPid]&& (hostPid = self->_hostPid, hostPid == [(BLSAssertionIdentifier *)v5 hostPid]))
       {
@@ -103,47 +103,47 @@
   return v9;
 }
 
-- (BLSAssertionIdentifier)initWithXPCDictionary:(id)a3
+- (BLSAssertionIdentifier)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [@"clientPid" UTF8String];
-  v6 = [@"hostPid" UTF8String];
-  v7 = [@"count" UTF8String];
-  uint64 = xpc_dictionary_get_uint64(v4, v5);
-  v9 = xpc_dictionary_get_uint64(v4, v6);
-  v10 = xpc_dictionary_get_uint64(v4, v7);
+  dictionaryCopy = dictionary;
+  uTF8String = [@"clientPid" UTF8String];
+  uTF8String2 = [@"hostPid" UTF8String];
+  uTF8String3 = [@"count" UTF8String];
+  uint64 = xpc_dictionary_get_uint64(dictionaryCopy, uTF8String);
+  v9 = xpc_dictionary_get_uint64(dictionaryCopy, uTF8String2);
+  v10 = xpc_dictionary_get_uint64(dictionaryCopy, uTF8String3);
 
   return [(BLSAssertionIdentifier *)self initWithClientPid:uint64 hostPid:v9 count:v10];
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  xdict = a3;
-  v4 = [@"clientPid" UTF8String];
-  v5 = [@"hostPid" UTF8String];
-  v6 = [@"count" UTF8String];
-  xpc_dictionary_set_uint64(xdict, v4, self->_clientPid);
-  xpc_dictionary_set_uint64(xdict, v5, self->_hostPid);
-  xpc_dictionary_set_uint64(xdict, v6, self->_count);
+  xdict = dictionary;
+  uTF8String = [@"clientPid" UTF8String];
+  uTF8String2 = [@"hostPid" UTF8String];
+  uTF8String3 = [@"count" UTF8String];
+  xpc_dictionary_set_uint64(xdict, uTF8String, self->_clientPid);
+  xpc_dictionary_set_uint64(xdict, uTF8String2, self->_hostPid);
+  xpc_dictionary_set_uint64(xdict, uTF8String3, self->_count);
 }
 
-- (BLSAssertionIdentifier)initWithCoder:(id)a3
+- (BLSAssertionIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeInt32ForKey:@"clientPid"];
-  v6 = [v4 decodeInt32ForKey:@"hostPid"];
-  v7 = [v4 decodeInt64ForKey:@"count"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeInt32ForKey:@"clientPid"];
+  v6 = [coderCopy decodeInt32ForKey:@"hostPid"];
+  v7 = [coderCopy decodeInt64ForKey:@"count"];
 
   return [(BLSAssertionIdentifier *)self initWithClientPid:v5 hostPid:v6 count:v7];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   clientPid = self->_clientPid;
-  v5 = a3;
-  [v5 encodeInt32:clientPid forKey:@"clientPid"];
-  [v5 encodeInt32:self->_hostPid forKey:@"hostPid"];
-  [v5 encodeInt64:self->_count forKey:@"count"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:clientPid forKey:@"clientPid"];
+  [coderCopy encodeInt32:self->_hostPid forKey:@"hostPid"];
+  [coderCopy encodeInt64:self->_count forKey:@"count"];
 }
 
 - (void)initWithClientPid:(int)a1 hostPid:(int)a2 count:(os_log_t)log .cold.1(int a1, int a2, os_log_t log)

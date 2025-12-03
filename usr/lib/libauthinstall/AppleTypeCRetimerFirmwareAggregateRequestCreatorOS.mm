@@ -1,20 +1,20 @@
 @interface AppleTypeCRetimerFirmwareAggregateRequestCreatorOS
-- (AppleTypeCRetimerFirmwareAggregateRequestCreatorOS)initWithOptions:(id)a3 logFunction:(void *)a4 logContext:(void *)a5;
+- (AppleTypeCRetimerFirmwareAggregateRequestCreatorOS)initWithOptions:(id)options logFunction:(void *)function logContext:(void *)context;
 - (BOOL)generateRequestDictionary;
-- (BOOL)parseOptions:(id)a3;
-- (id)generateHashForData:(id)a3;
+- (BOOL)parseOptions:(id)options;
+- (id)generateHashForData:(id)data;
 @end
 
 @implementation AppleTypeCRetimerFirmwareAggregateRequestCreatorOS
 
-- (AppleTypeCRetimerFirmwareAggregateRequestCreatorOS)initWithOptions:(id)a3 logFunction:(void *)a4 logContext:(void *)a5
+- (AppleTypeCRetimerFirmwareAggregateRequestCreatorOS)initWithOptions:(id)options logFunction:(void *)function logContext:(void *)context
 {
-  v8 = a3;
+  optionsCopy = options;
   v13.receiver = self;
   v13.super_class = AppleTypeCRetimerFirmwareAggregateRequestCreatorOS;
-  v9 = [(AppleTypeCRetimerRestoreInfoHelperOS *)&v13 initWithOptions:v8 logFunction:a4 logContext:a5];
+  v9 = [(AppleTypeCRetimerRestoreInfoHelperOS *)&v13 initWithOptions:optionsCopy logFunction:function logContext:context];
   v10 = v9;
-  if (!v9 || [(AppleTypeCRetimerFirmwareAggregateRequestCreatorOS *)v9 parseOptions:v8]&& [(AppleTypeCRetimerFirmwareAggregateRequestCreatorOS *)v10 generateRequestDictionary])
+  if (!v9 || [(AppleTypeCRetimerFirmwareAggregateRequestCreatorOS *)v9 parseOptions:optionsCopy]&& [(AppleTypeCRetimerFirmwareAggregateRequestCreatorOS *)v10 generateRequestDictionary])
   {
     v11 = v10;
   }
@@ -27,10 +27,10 @@
   return v11;
 }
 
-- (BOOL)parseOptions:(id)a3
+- (BOOL)parseOptions:(id)options
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"FirmwareData"];
+  optionsCopy = options;
+  v5 = [optionsCopy objectForKeyedSubscript:@"FirmwareData"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -42,25 +42,25 @@
       if (v8)
       {
         v9 = v8;
-        v10 = [(UARPSuperBinaryOS *)v8 data];
+        data = [(UARPSuperBinaryOS *)v8 data];
         rrkoData = self->_rrkoData;
-        self->_rrkoData = v10;
+        self->_rrkoData = data;
 
         v12 = [(FTABFileOS *)v7 subfileWithTag:@"rkos"];
         if (v12)
         {
           v13 = v12;
-          v14 = [v12 data];
+          data2 = [v12 data];
           rkosData = self->_rkosData;
-          self->_rkosData = v14;
+          self->_rkosData = data2;
 
           v16 = [(FTABFileOS *)v7 subfileWithTag:@"cphy"];
           v17 = v16;
           if (v16)
           {
-            v18 = [v16 data];
+            data3 = [v16 data];
             cphyData = self->_cphyData;
-            self->_cphyData = v18;
+            self->_cphyData = data3;
           }
 
           else
@@ -89,9 +89,9 @@
         if (v23)
         {
           v24 = v23;
-          v25 = [v23 payloadData];
+          payloadData = [v23 payloadData];
           v26 = self->_rrkoData;
-          self->_rrkoData = v25;
+          self->_rrkoData = payloadData;
 
           v27 = [[UARPAssetTagOS alloc] initWithString:@"FIRM"];
           v28 = [(UARPSuperBinaryOS *)v9 payloadWith4ccTag:v27];
@@ -100,8 +100,8 @@
             v29 = v28;
             v51 = v27;
             v30 = [FTABFileOS alloc];
-            v31 = [v29 payloadData];
-            v32 = [(FTABFileOS *)v30 initWithData:v31];
+            payloadData2 = [v29 payloadData];
+            v32 = [(FTABFileOS *)v30 initWithData:payloadData2];
 
             if (v32)
             {
@@ -109,16 +109,16 @@
               v34 = v33;
               if (v33)
               {
-                v35 = [v33 data];
+                data4 = [v33 data];
                 v36 = self->_rkosData;
-                self->_rkosData = v35;
+                self->_rkosData = data4;
 
                 v37 = [(FTABFileOS *)v32 subfileWithTag:@"cphy"];
                 if (v37)
                 {
-                  v38 = [v37 data];
+                  data5 = [v37 data];
                   v39 = self->_cphyData;
-                  self->_cphyData = v38;
+                  self->_cphyData = data5;
                 }
 
                 else
@@ -135,7 +135,7 @@
               if (v34)
               {
 LABEL_21:
-                v41 = [v4 objectForKeyedSubscript:@"DeviceInfo"];
+                v41 = [optionsCopy objectForKeyedSubscript:@"DeviceInfo"];
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
@@ -211,17 +211,17 @@ LABEL_36:
   return v20;
 }
 
-- (id)generateHashForData:(id)a3
+- (id)generateHashForData:(id)data
 {
   v12 = *MEMORY[0x29EDCA608];
   memset(&v10, 0, sizeof(v10));
-  v3 = a3;
+  dataCopy = data;
   CC_SHA384_Init(&v10);
-  v4 = v3;
-  v5 = [v4 bytes];
-  v6 = [v3 length];
+  v4 = dataCopy;
+  bytes = [v4 bytes];
+  v6 = [dataCopy length];
 
-  CC_SHA384_Update(&v10, v5, v6);
+  CC_SHA384_Update(&v10, bytes, v6);
   CC_SHA384_Final(md, &v10);
   v7 = [MEMORY[0x29EDB8DA0] dataWithBytes:md length:48];
   v8 = *MEMORY[0x29EDCA608];
@@ -231,13 +231,13 @@ LABEL_36:
 
 - (BOOL)generateRequestDictionary
 {
-  v2 = self;
+  selfCopy = self;
   v119 = *MEMORY[0x29EDCA608];
   v3 = [(AppleTypeCRetimerFirmwareAggregateRequestCreatorOS *)self generateHashForData:self->_rkosData];
-  v4 = [(AppleTypeCRetimerFirmwareAggregateRequestCreatorOS *)v2 generateHashForData:v2->_rrkoData];
-  if (v2->_cphyData)
+  v4 = [(AppleTypeCRetimerFirmwareAggregateRequestCreatorOS *)selfCopy generateHashForData:selfCopy->_rrkoData];
+  if (selfCopy->_cphyData)
   {
-    v5 = [(AppleTypeCRetimerFirmwareAggregateRequestCreatorOS *)v2 generateHashForData:?];
+    v5 = [(AppleTypeCRetimerFirmwareAggregateRequestCreatorOS *)selfCopy generateHashForData:?];
   }
 
   else
@@ -245,12 +245,12 @@ LABEL_36:
     v5 = 0;
   }
 
-  v100 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   v102 = 0u;
   v103 = 0u;
   v104 = 0u;
   v105 = 0u;
-  obj = v2->_deviceInfoArray;
+  obj = selfCopy->_deviceInfoArray;
   v87 = [(NSArray *)obj countByEnumeratingWithState:&v102 objects:v118 count:16];
   if (v87)
   {
@@ -258,7 +258,7 @@ LABEL_36:
     v84 = v4;
     v85 = v3;
     v83 = v5;
-    v90 = v2;
+    v90 = selfCopy;
 LABEL_6:
     v6 = 0;
     while (1)
@@ -276,7 +276,7 @@ LABEL_6:
         break;
       }
 
-      v9 = [v8 unsignedCharValue];
+      unsignedCharValue = [v8 unsignedCharValue];
       v10 = [v7 objectForKeyedSubscript:@"HardwareID"];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -286,37 +286,37 @@ LABEL_6:
       }
 
       v95 = v6;
-      v11 = [MEMORY[0x29EDBA0F8] stringWithValidatedFormat:@"@Timer%u validFormatSpecifiers:Ticket" error:@"%u", 0, v9];
-      [v100 setObject:MEMORY[0x29EDB8EB0] forKeyedSubscript:v11];
+      v11 = [MEMORY[0x29EDBA0F8] stringWithValidatedFormat:@"@Timer%u validFormatSpecifiers:Ticket" error:@"%u", 0, unsignedCharValue];
+      [dictionary setObject:MEMORY[0x29EDB8EB0] forKeyedSubscript:v11];
       v12 = [v10 objectForKeyedSubscript:@"BoardID"];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        [(AppleTypeCRetimerRestoreInfoHelperOS *)v90 log:@"Unable to locate board ID for tag %u", v9];
+        [(AppleTypeCRetimerRestoreInfoHelperOS *)v90 log:@"Unable to locate board ID for tag %u", unsignedCharValue];
         v72 = v12;
         goto LABEL_89;
       }
 
       v98 = v12;
-      v99 = [MEMORY[0x29EDBA0F8] stringWithValidatedFormat:@"Timer validFormatSpecifiers:BoardID error:%u", @"%u", 0, v9];
-      [v100 setObject:v12 forKeyedSubscript:v99];
+      v99 = [MEMORY[0x29EDBA0F8] stringWithValidatedFormat:@"Timer validFormatSpecifiers:BoardID error:%u", @"%u", 0, unsignedCharValue];
+      [dictionary setObject:v12 forKeyedSubscript:v99];
       v13 = [v10 objectForKeyedSubscript:@"ChipID"];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        [(AppleTypeCRetimerRestoreInfoHelperOS *)v90 log:@"Unable to locate board ID for tag %u", v9];
+        [(AppleTypeCRetimerRestoreInfoHelperOS *)v90 log:@"Unable to locate board ID for tag %u", unsignedCharValue];
         v73 = v13;
         goto LABEL_88;
       }
 
       v96 = v13;
-      v97 = [MEMORY[0x29EDBA0F8] stringWithValidatedFormat:@"Timer validFormatSpecifiers:ChipID error:%u", @"%u", 0, v9];
-      [v100 setObject:v13 forKeyedSubscript:v97];
+      v97 = [MEMORY[0x29EDBA0F8] stringWithValidatedFormat:@"Timer validFormatSpecifiers:ChipID error:%u", @"%u", 0, unsignedCharValue];
+      [dictionary setObject:v13 forKeyedSubscript:v97];
       v14 = [v10 objectForKeyedSubscript:@"ECID"];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        [(AppleTypeCRetimerRestoreInfoHelperOS *)v90 log:@"Unable to locate ECID for tag %u", v9];
+        [(AppleTypeCRetimerRestoreInfoHelperOS *)v90 log:@"Unable to locate ECID for tag %u", unsignedCharValue];
 
         v73 = v13;
 LABEL_88:
@@ -332,32 +332,32 @@ LABEL_92:
         v4 = v84;
         v3 = v85;
         v5 = v83;
-        v68 = v100;
+        v68 = dictionary;
         goto LABEL_93;
       }
 
       v94 = v8;
-      v93 = [MEMORY[0x29EDBA0F8] stringWithValidatedFormat:@"Timer validFormatSpecifiers:ECID error:%u", @"%u", 0, v9];
-      [v100 setObject:v14 forKeyedSubscript:?];
+      v93 = [MEMORY[0x29EDBA0F8] stringWithValidatedFormat:@"Timer validFormatSpecifiers:ECID error:%u", @"%u", 0, unsignedCharValue];
+      [dictionary setObject:v14 forKeyedSubscript:?];
       v15 = [v10 objectForKeyedSubscript:@"Nonce"];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        [(AppleTypeCRetimerRestoreInfoHelperOS *)v90 log:@"Unable to locate nonce for tag %u", v9];
+        [(AppleTypeCRetimerRestoreInfoHelperOS *)v90 log:@"Unable to locate nonce for tag %u", unsignedCharValue];
 
         v8 = v94;
         goto LABEL_91;
       }
 
       v91 = v11;
-      v92 = [MEMORY[0x29EDBA0F8] stringWithValidatedFormat:@"Timer validFormatSpecifiers:Nonce error:%u", @"%u", 0, v9];
-      [v100 setObject:v15 forKeyedSubscript:?];
+      v92 = [MEMORY[0x29EDBA0F8] stringWithValidatedFormat:@"Timer validFormatSpecifiers:Nonce error:%u", @"%u", 0, unsignedCharValue];
+      [dictionary setObject:v15 forKeyedSubscript:?];
       v16 = [v10 objectForKeyedSubscript:@"ProductionStatus"];
       objc_opt_class();
       v101 = v16;
       if (objc_opt_isKindOfClass())
       {
-        v17 = [MEMORY[0x29EDBA0F8] stringWithValidatedFormat:@"Timer validFormatSpecifiers:ProductionMode error:%u", @"%u", 0, v9];
+        v17 = [MEMORY[0x29EDBA0F8] stringWithValidatedFormat:@"Timer validFormatSpecifiers:ProductionMode error:%u", @"%u", 0, unsignedCharValue];
         v18 = v16;
         v19 = v17;
         if ([v18 unsignedCharValue])
@@ -371,19 +371,19 @@ LABEL_92:
         }
 
         v86 = v19;
-        [v100 setObject:v20 forKeyedSubscript:v19];
+        [dictionary setObject:v20 forKeyedSubscript:v19];
         v21 = [v10 objectForKeyedSubscript:@"SecurityDomain"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v81 = [MEMORY[0x29EDBA0F8] stringWithValidatedFormat:@"Timer validFormatSpecifiers:SecurityDomain error:%u", @"%u", 0, v9];
+          v81 = [MEMORY[0x29EDBA0F8] stringWithValidatedFormat:@"Timer validFormatSpecifiers:SecurityDomain error:%u", @"%u", 0, unsignedCharValue];
           v82 = v21;
-          [v100 setObject:v21 forKeyedSubscript:?];
+          [dictionary setObject:v21 forKeyedSubscript:?];
           v22 = [v10 objectForKeyedSubscript:@"SecurityMode"];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v23 = [MEMORY[0x29EDBA0F8] stringWithValidatedFormat:@"Timer validFormatSpecifiers:SecurityMode error:%u", @"%u", 0, v9];
+            v23 = [MEMORY[0x29EDBA0F8] stringWithValidatedFormat:@"Timer validFormatSpecifiers:SecurityMode error:%u", @"%u", 0, unsignedCharValue];
             if ([v22 unsignedCharValue])
             {
               v24 = MEMORY[0x29EDB8EB0];
@@ -395,13 +395,13 @@ LABEL_92:
             }
 
             v77 = v23;
-            [v100 setObject:v24 forKeyedSubscript:v23];
+            [dictionary setObject:v24 forKeyedSubscript:v23];
             v25 = [v10 objectForKeyedSubscript:@"Demote"];
             if (v25 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
             {
               v60 = v25;
               v36 = v22;
-              [(AppleTypeCRetimerRestoreInfoHelperOS *)v90 log:@"Invalid demote setting for tag %u", v9];
+              [(AppleTypeCRetimerRestoreInfoHelperOS *)v90 log:@"Invalid demote setting for tag %u", unsignedCharValue];
               v33 = 0;
               v34 = v11;
               v28 = v98;
@@ -420,7 +420,7 @@ LABEL_92:
               }
 
               v76 = v26;
-              v79 = [MEMORY[0x29EDBA0F8] stringWithValidatedFormat:@"Timer validFormatSpecifiers:RTKitOS error:%u", @"%u", 0, v9];
+              v79 = [MEMORY[0x29EDBA0F8] stringWithValidatedFormat:@"Timer validFormatSpecifiers:RTKitOS error:%u", @"%u", 0, unsignedCharValue];
               if ([v25 BOOLValue] && objc_msgSend(v101, "unsignedCharValue"))
               {
                 v114[0] = @"Digest";
@@ -444,10 +444,10 @@ LABEL_92:
                 v117[0] = v85;
                 v116[0] = @"Digest";
                 v116[1] = @"EPRO";
-                v37 = [v101 unsignedCharValue];
+                unsignedCharValue2 = [v101 unsignedCharValue];
                 v38 = MEMORY[0x29EDB8EB0];
                 v39 = MEMORY[0x29EDB8EA8];
-                if (v37)
+                if (unsignedCharValue2)
                 {
                   v40 = MEMORY[0x29EDB8EB0];
                 }
@@ -489,9 +489,9 @@ LABEL_92:
               }
 
               v43 = [v29 dictionaryWithObjects:v30 forKeys:v31 count:v32];
-              [v100 setObject:v43 forKeyedSubscript:v79];
+              [dictionary setObject:v43 forKeyedSubscript:v79];
 
-              v78 = [MEMORY[0x29EDBA0F8] stringWithValidatedFormat:@"Timer validFormatSpecifiers:RestoreRTKitOS error:%u", @"%u", 0, v9];
+              v78 = [MEMORY[0x29EDBA0F8] stringWithValidatedFormat:@"Timer validFormatSpecifiers:RestoreRTKitOS error:%u", @"%u", 0, unsignedCharValue];
               if ([v25 BOOLValue] && objc_msgSend(v101, "unsignedCharValue"))
               {
                 v110[0] = @"Digest";
@@ -515,10 +515,10 @@ LABEL_92:
                 v113[0] = v84;
                 v112[0] = @"Digest";
                 v112[1] = @"EPRO";
-                v48 = [v101 unsignedCharValue];
+                unsignedCharValue3 = [v101 unsignedCharValue];
                 v49 = MEMORY[0x29EDB8EB0];
                 v50 = MEMORY[0x29EDB8EA8];
-                if (v48)
+                if (unsignedCharValue3)
                 {
                   v51 = MEMORY[0x29EDB8EB0];
                 }
@@ -560,11 +560,11 @@ LABEL_92:
               }
 
               v54 = [v44 dictionaryWithObjects:v45 forKeys:v46 count:v47];
-              [v100 setObject:v54 forKeyedSubscript:v78];
+              [dictionary setObject:v54 forKeyedSubscript:v78];
 
               if (v90->_cphyData)
               {
-                v55 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"Timer, AppleTypeCPhyFirmware, %u", v9];
+                v55 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"Timer, AppleTypeCPhyFirmware, %u", unsignedCharValue];
                 if ([v25 BOOLValue] && objc_msgSend(v101, "unsignedCharValue"))
                 {
                   v106[0] = @"Digest";
@@ -588,10 +588,10 @@ LABEL_92:
                   v109[0] = v83;
                   v108[0] = @"Digest";
                   v108[1] = @"EPRO";
-                  v61 = [v101 unsignedCharValue];
+                  unsignedCharValue4 = [v101 unsignedCharValue];
                   v62 = MEMORY[0x29EDB8EB0];
                   v63 = MEMORY[0x29EDB8EA8];
-                  if (v61)
+                  if (unsignedCharValue4)
                   {
                     v64 = MEMORY[0x29EDB8EB0];
                   }
@@ -633,7 +633,7 @@ LABEL_92:
                 }
 
                 v67 = [v56 dictionaryWithObjects:v57 forKeys:v58 count:v59];
-                [v100 setObject:v67 forKeyedSubscript:v55];
+                [dictionary setObject:v67 forKeyedSubscript:v55];
               }
 
               v60 = v25;
@@ -647,7 +647,7 @@ LABEL_92:
           else
           {
             v36 = v22;
-            [(AppleTypeCRetimerRestoreInfoHelperOS *)v90 log:@"Unable to locate security mode for tag %u", v9];
+            [(AppleTypeCRetimerRestoreInfoHelperOS *)v90 log:@"Unable to locate security mode for tag %u", unsignedCharValue];
             v33 = 0;
             v34 = v11;
             v28 = v98;
@@ -659,7 +659,7 @@ LABEL_92:
 
         else
         {
-          [(AppleTypeCRetimerRestoreInfoHelperOS *)v90 log:@"Unable to locate security domain for tag %u", v9];
+          [(AppleTypeCRetimerRestoreInfoHelperOS *)v90 log:@"Unable to locate security domain for tag %u", unsignedCharValue];
           v33 = 0;
           v34 = v11;
           v28 = v98;
@@ -669,7 +669,7 @@ LABEL_92:
 
       else
       {
-        [(AppleTypeCRetimerRestoreInfoHelperOS *)v90 log:@"Unable to locate production status for tag %u", v9];
+        [(AppleTypeCRetimerRestoreInfoHelperOS *)v90 log:@"Unable to locate production status for tag %u", unsignedCharValue];
         v33 = 0;
         v34 = v11;
         v28 = v98;
@@ -687,7 +687,7 @@ LABEL_92:
         v4 = v84;
         v3 = v85;
         v5 = v83;
-        v2 = v90;
+        selfCopy = v90;
         v87 = [(NSArray *)obj countByEnumeratingWithState:&v102 objects:v118 count:16];
         if (v87)
         {
@@ -704,17 +704,17 @@ LABEL_92:
 
 LABEL_80:
 
-  v68 = v100;
-  if (v2->_apParameters)
+  v68 = dictionary;
+  if (selfCopy->_apParameters)
   {
-    [v100 addEntriesFromDictionary:?];
+    [dictionary addEntriesFromDictionary:?];
   }
 
-  v69 = [MEMORY[0x29EDB8DC0] dictionaryWithDictionary:v100];
-  requestDictionary = v2->_requestDictionary;
-  v2->_requestDictionary = v69;
+  v69 = [MEMORY[0x29EDB8DC0] dictionaryWithDictionary:dictionary];
+  requestDictionary = selfCopy->_requestDictionary;
+  selfCopy->_requestDictionary = v69;
 
-  [(AppleTypeCRetimerRestoreInfoHelperOS *)v2 verboseLog:@"ATCRT request dictionary = %@", v2->_requestDictionary];
+  [(AppleTypeCRetimerRestoreInfoHelperOS *)selfCopy verboseLog:@"ATCRT request dictionary = %@", selfCopy->_requestDictionary];
   v71 = 1;
 LABEL_93:
 

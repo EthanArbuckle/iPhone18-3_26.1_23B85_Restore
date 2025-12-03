@@ -1,5 +1,5 @@
 @interface RouteOverviewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityActivate;
 - (id)_accessibilitySupplementaryHeaderViews;
 - (id)_axAdvisoryViews;
@@ -15,33 +15,33 @@
 
 @implementation RouteOverviewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"RouteOverviewCell" hasInstanceVariable:@"_primaryLabel" withType:"UILabel"];
-  [v3 validateClass:@"RouteOverviewCell" hasInstanceMethod:@"detailsButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"RouteOverviewCell" hasInstanceVariable:@"_secondaryLabel" withType:"MapsThemeMultiPartLabel"];
-  [v3 validateClass:@"RouteOverviewCell" hasInstanceVariable:@"_routeDescriptionLabel" withType:"MapsThemeMultiPartLabel"];
-  [v3 validateClass:@"RouteOverviewCell" hasInstanceVariable:@"_tertiaryLabel" withType:"UILabel"];
-  [v3 validateClass:@"RouteOverviewCell" hasInstanceVariable:@"_elevationGraphView" withType:"DirectionsElevationGraphView"];
-  [v3 validateClass:@"RouteOverviewCell" hasInstanceVariable:@"_advisoriesView" withType:"RouteAdvisoriesView"];
-  [v3 validateClass:@"RouteOverviewCell" hasInstanceVariable:@"_goButton" withType:"MapsProgressBarButton"];
-  [v3 validateClass:@"RouteOverviewCell" hasInstanceVariable:@"_bookButton" withType:"BackgroundColorButton"];
-  [v3 validateClass:@"RouteOverviewCell" hasInstanceVariable:@"_stepsButton" withType:"UIButton"];
-  [v3 validateClass:@"RouteOverviewCell" hasInstanceVariable:@"_artworkList" withType:"TransitArtworkListView"];
-  [v3 validateClass:@"RouteOverviewCell" hasInstanceVariable:@"_detailsButton" withType:"UIButton"];
-  [v3 validateClass:@"RouteOverviewCell" hasInstanceVariable:@"_tertiaryLabelVisible" withType:"B"];
-  [v3 validateClass:@"RouteOverviewCell" hasInstanceVariable:@"_routeDescritptionLabelVisible" withType:"B"];
-  [v3 validateClass:@"RouteOverviewCell" hasInstanceVariable:@"_artworkListVisible" withType:"B"];
-  [v3 validateClass:@"RouteOverviewCell" hasInstanceVariable:@"_elevationGraphViewVisible" withType:"B"];
-  [v3 validateClass:@"RouteOverviewCell" hasInstanceVariable:@"_advisoriesViewVisible" withType:"B"];
-  [v3 validateClass:@"RouteOverviewCell" hasInstanceVariable:@"_detailsButtonVisible" withType:"B"];
-  [v3 validateClass:@"RouteOverviewCell" hasInstanceMethod:@"artworkList" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"RouteOverviewCell" hasInstanceMethod:@"tertiaryLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TransitArtworkListView" hasInstanceMethod:@"artworkData" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"RouteOverviewCell" hasInstanceMethod:@"detailsButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"RouteAdvisoryView" hasInstanceMethod:@"advisoryDetailPressed" withFullSignature:{"v", 0}];
-  [v3 validateProtocol:@"RouteOverviewCellDelegate" hasOptionalInstanceMethod:@"didTapDetailsButtonForRouteOverviewCell:"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"RouteOverviewCell" hasInstanceVariable:@"_primaryLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"RouteOverviewCell" hasInstanceMethod:@"detailsButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"RouteOverviewCell" hasInstanceVariable:@"_secondaryLabel" withType:"MapsThemeMultiPartLabel"];
+  [validationsCopy validateClass:@"RouteOverviewCell" hasInstanceVariable:@"_routeDescriptionLabel" withType:"MapsThemeMultiPartLabel"];
+  [validationsCopy validateClass:@"RouteOverviewCell" hasInstanceVariable:@"_tertiaryLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"RouteOverviewCell" hasInstanceVariable:@"_elevationGraphView" withType:"DirectionsElevationGraphView"];
+  [validationsCopy validateClass:@"RouteOverviewCell" hasInstanceVariable:@"_advisoriesView" withType:"RouteAdvisoriesView"];
+  [validationsCopy validateClass:@"RouteOverviewCell" hasInstanceVariable:@"_goButton" withType:"MapsProgressBarButton"];
+  [validationsCopy validateClass:@"RouteOverviewCell" hasInstanceVariable:@"_bookButton" withType:"BackgroundColorButton"];
+  [validationsCopy validateClass:@"RouteOverviewCell" hasInstanceVariable:@"_stepsButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"RouteOverviewCell" hasInstanceVariable:@"_artworkList" withType:"TransitArtworkListView"];
+  [validationsCopy validateClass:@"RouteOverviewCell" hasInstanceVariable:@"_detailsButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"RouteOverviewCell" hasInstanceVariable:@"_tertiaryLabelVisible" withType:"B"];
+  [validationsCopy validateClass:@"RouteOverviewCell" hasInstanceVariable:@"_routeDescritptionLabelVisible" withType:"B"];
+  [validationsCopy validateClass:@"RouteOverviewCell" hasInstanceVariable:@"_artworkListVisible" withType:"B"];
+  [validationsCopy validateClass:@"RouteOverviewCell" hasInstanceVariable:@"_elevationGraphViewVisible" withType:"B"];
+  [validationsCopy validateClass:@"RouteOverviewCell" hasInstanceVariable:@"_advisoriesViewVisible" withType:"B"];
+  [validationsCopy validateClass:@"RouteOverviewCell" hasInstanceVariable:@"_detailsButtonVisible" withType:"B"];
+  [validationsCopy validateClass:@"RouteOverviewCell" hasInstanceMethod:@"artworkList" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"RouteOverviewCell" hasInstanceMethod:@"tertiaryLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TransitArtworkListView" hasInstanceMethod:@"artworkData" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"RouteOverviewCell" hasInstanceMethod:@"detailsButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"RouteAdvisoryView" hasInstanceMethod:@"advisoryDetailPressed" withFullSignature:{"v", 0}];
+  [validationsCopy validateProtocol:@"RouteOverviewCellDelegate" hasOptionalInstanceMethod:@"didTapDetailsButtonForRouteOverviewCell:"];
 }
 
 - (id)_accessibilitySupplementaryHeaderViews
@@ -74,17 +74,17 @@
 - (id)accessibilityCustomActions
 {
   v32 = *MEMORY[0x29EDCA608];
-  v23 = [MEMORY[0x29EDB8DE8] array];
-  v3 = [(RouteOverviewCellAccessibility *)self _axAdvisoryViews];
-  v21 = v3;
-  v4 = v3;
-  if (v3)
+  array = [MEMORY[0x29EDB8DE8] array];
+  _axAdvisoryViews = [(RouteOverviewCellAccessibility *)self _axAdvisoryViews];
+  v21 = _axAdvisoryViews;
+  v4 = _axAdvisoryViews;
+  if (_axAdvisoryViews)
   {
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    obj = v3;
+    obj = _axAdvisoryViews;
     v5 = [obj countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v5)
     {
@@ -116,8 +116,8 @@
 
             v13 = MEMORY[0x29EDBA0F8];
             v14 = AXMapsLocString(@"ROUTE_ADVISORY_BUTTON_DETAILS");
-            v15 = [v12 text];
-            v16 = [v13 localizedStringWithFormat:v14, v15];
+            text = [v12 text];
+            v16 = [v13 localizedStringWithFormat:v14, text];
 
             objc_initWeak(&location, v8);
             v17 = objc_alloc(MEMORY[0x29EDC78E0]);
@@ -127,7 +127,7 @@
             v24[3] = &unk_29F2CC4B8;
             objc_copyWeak(&v25, &location);
             v18 = [v17 initWithName:v16 actionHandler:v24];
-            [v23 addObject:v18];
+            [array addObject:v18];
 
             objc_destroyWeak(&v25);
             objc_destroyWeak(&location);
@@ -145,7 +145,7 @@
 
   v19 = *MEMORY[0x29EDCA608];
 
-  return v23;
+  return array;
 }
 
 uint64_t __60__RouteOverviewCellAccessibility_accessibilityCustomActions__block_invoke(uint64_t a1, void *a2)
@@ -194,17 +194,17 @@ uint64_t __70__RouteOverviewCellAccessibility_accessibilityElementDidBecomeFocus
 {
   v64 = *MEMORY[0x29EDCA608];
   v3 = [(RouteOverviewCellAccessibility *)self safeValueForKey:@"_primaryLabel"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
   v5 = AXMapsStringReplacingMiddleDots();
   v6 = [(RouteOverviewCellAccessibility *)self safeValueForKey:@"_secondaryLabel"];
-  v7 = [v6 accessibilityLabel];
+  accessibilityLabel2 = [v6 accessibilityLabel];
   v31 = AXMapsStringReplacingMiddleDots();
   v8 = __AXStringForVariables();
 
   if ([(RouteOverviewCellAccessibility *)self safeBoolForKey:@"_tertiaryLabelVisible", v31, @"__AXStringForVariablesSentinel"])
   {
     v9 = [(RouteOverviewCellAccessibility *)self safeValueForKey:@"_tertiaryLabel"];
-    v10 = [v9 accessibilityLabel];
+    accessibilityLabel3 = [v9 accessibilityLabel];
     v32 = AXMapsStringReplacingMiddleDots();
     v36 = @"__AXStringForVariablesSentinel";
     v11 = __AXStringForVariables();
@@ -215,7 +215,7 @@ uint64_t __70__RouteOverviewCellAccessibility_accessibilityElementDidBecomeFocus
   if ([(RouteOverviewCellAccessibility *)self safeBoolForKey:@"_routeDescritptionLabelVisible", v32, v36])
   {
     v12 = [(RouteOverviewCellAccessibility *)self safeValueForKey:@"_routeDescriptionLabel"];
-    v13 = [v12 accessibilityLabel];
+    accessibilityLabel4 = [v12 accessibilityLabel];
     v33 = AXMapsStringReplacingMiddleDots();
     v37 = @"__AXStringForVariablesSentinel";
     v14 = __AXStringForVariables();
@@ -237,7 +237,7 @@ uint64_t __70__RouteOverviewCellAccessibility_accessibilityElementDidBecomeFocus
     v51 = 3221225472;
     v52 = __51__RouteOverviewCellAccessibility__axTextForElement__block_invoke;
     v53 = &unk_29F2CC600;
-    v54 = self;
+    selfCopy = self;
     v55 = &v56;
     AXPerformSafeBlock();
     v15 = v57[5];
@@ -310,7 +310,7 @@ LABEL_21:
             goto LABEL_21;
           }
 
-          v35 = [v28 text];
+          text = [v28 text];
           v8 = __AXStringForVariables();
 
           ++v24;
@@ -318,7 +318,7 @@ LABEL_21:
         }
 
         while (v22 != v24);
-        v22 = [v21 countByEnumeratingWithState:&v40 objects:v63 count:{16, v35, @"__AXStringForVariablesSentinel"}];
+        v22 = [v21 countByEnumeratingWithState:&v40 objects:v63 count:{16, text, @"__AXStringForVariablesSentinel"}];
       }
 
       while (v22);
@@ -403,19 +403,19 @@ uint64_t __51__RouteOverviewCellAccessibility__axTextForElement__block_invoke_2(
     v5 = [v4 safeValueForKey:@"advisoryStackView"];
     v6 = __UIAccessibilityCastAsClass();
 
-    v7 = [v6 arrangedSubviews];
-    if ([v7 count])
+    arrangedSubviews = [v6 arrangedSubviews];
+    if ([arrangedSubviews count])
     {
-      v8 = [v6 arrangedSubviews];
+      arrangedSubviews2 = [v6 arrangedSubviews];
     }
 
     else
     {
       v12[0] = v4;
-      v8 = [MEMORY[0x29EDB8D80] arrayWithObjects:v12 count:1];
+      arrangedSubviews2 = [MEMORY[0x29EDB8D80] arrayWithObjects:v12 count:1];
     }
 
-    v9 = v8;
+    v9 = arrangedSubviews2;
   }
 
   else
@@ -432,20 +432,20 @@ uint64_t __51__RouteOverviewCellAccessibility__axTextForElement__block_invoke_2(
 {
   v5.receiver = self;
   v5.super_class = RouteOverviewCellAccessibility;
-  v3 = [(RouteOverviewCellAccessibility *)&v5 tertiaryLabel];
+  tertiaryLabel = [(RouteOverviewCellAccessibility *)&v5 tertiaryLabel];
   [(RouteOverviewCellAccessibility *)self _axAnnotateLabels];
 
-  return v3;
+  return tertiaryLabel;
 }
 
 - (id)artworkList
 {
   v5.receiver = self;
   v5.super_class = RouteOverviewCellAccessibility;
-  v3 = [(RouteOverviewCellAccessibility *)&v5 artworkList];
+  artworkList = [(RouteOverviewCellAccessibility *)&v5 artworkList];
   [(RouteOverviewCellAccessibility *)self _axAnnotateLabels];
 
-  return v3;
+  return artworkList;
 }
 
 - (id)automationElements

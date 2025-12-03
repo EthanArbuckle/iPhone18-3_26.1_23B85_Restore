@@ -1,5 +1,5 @@
 @interface DOCLevelOfDetailButton
-- (_TtC26DocumentManagerExecutables22DOCLevelOfDetailButton)initWithFrame:(CGRect)a3;
+- (_TtC26DocumentManagerExecutables22DOCLevelOfDetailButton)initWithFrame:(CGRect)frame;
 - (void)tintColorDidChange;
 @end
 
@@ -14,7 +14,7 @@
   [v2 setNeedsUpdateConfiguration];
 }
 
-- (_TtC26DocumentManagerExecutables22DOCLevelOfDetailButton)initWithFrame:(CGRect)a3
+- (_TtC26DocumentManagerExecutables22DOCLevelOfDetailButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

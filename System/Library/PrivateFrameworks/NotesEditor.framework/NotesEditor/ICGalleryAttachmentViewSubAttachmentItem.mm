@@ -1,25 +1,25 @@
 @interface ICGalleryAttachmentViewSubAttachmentItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)updateSize;
 - (CGSize)size;
 - (ICAttachment)attachment;
-- (ICGalleryAttachmentViewSubAttachmentItem)initWithAttachmentIdentifier:(id)a3 context:(id)a4;
+- (ICGalleryAttachmentViewSubAttachmentItem)initWithAttachmentIdentifier:(id)identifier context:(id)context;
 @end
 
 @implementation ICGalleryAttachmentViewSubAttachmentItem
 
-- (ICGalleryAttachmentViewSubAttachmentItem)initWithAttachmentIdentifier:(id)a3 context:(id)a4
+- (ICGalleryAttachmentViewSubAttachmentItem)initWithAttachmentIdentifier:(id)identifier context:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = ICGalleryAttachmentViewSubAttachmentItem;
   v9 = [(ICGalleryAttachmentViewSubAttachmentItem *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_attachmentIdentifier, a3);
-    objc_storeStrong(&v10->_context, a4);
+    objc_storeStrong(&v9->_attachmentIdentifier, identifier);
+    objc_storeStrong(&v10->_context, context);
   }
 
   return v10;
@@ -31,9 +31,9 @@
   if (!attachment)
   {
     v4 = MEMORY[0x277D35E00];
-    v5 = [(ICGalleryAttachmentViewSubAttachmentItem *)self attachmentIdentifier];
-    v6 = [(ICGalleryAttachmentViewSubAttachmentItem *)self context];
-    v7 = [v4 attachmentWithIdentifier:v5 context:v6];
+    attachmentIdentifier = [(ICGalleryAttachmentViewSubAttachmentItem *)self attachmentIdentifier];
+    context = [(ICGalleryAttachmentViewSubAttachmentItem *)self context];
+    v7 = [v4 attachmentWithIdentifier:attachmentIdentifier context:context];
     v8 = self->_attachment;
     self->_attachment = v7;
 
@@ -43,17 +43,17 @@
   return attachment;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = ICDynamicCast();
 
   if (v5)
   {
-    v6 = [(ICGalleryAttachmentViewSubAttachmentItem *)self attachmentIdentifier];
-    v7 = [v5 attachmentIdentifier];
-    v8 = [v6 isEqualToString:v7];
+    attachmentIdentifier = [(ICGalleryAttachmentViewSubAttachmentItem *)self attachmentIdentifier];
+    attachmentIdentifier2 = [v5 attachmentIdentifier];
+    v8 = [attachmentIdentifier isEqualToString:attachmentIdentifier2];
   }
 
   else
@@ -66,11 +66,11 @@
 
 - (BOOL)updateSize
 {
-  v3 = [(ICGalleryAttachmentViewSubAttachmentItem *)self attachment];
-  [v3 sizeWidth];
+  attachment = [(ICGalleryAttachmentViewSubAttachmentItem *)self attachment];
+  [attachment sizeWidth];
   v5 = v4;
-  v6 = [(ICGalleryAttachmentViewSubAttachmentItem *)self attachment];
-  [v6 sizeHeight];
+  attachment2 = [(ICGalleryAttachmentViewSubAttachmentItem *)self attachment];
+  [attachment2 sizeHeight];
   v8 = v7;
 
   v9 = v8 != self->_size.height || v5 != self->_size.width;
@@ -89,11 +89,11 @@
   height = self->_size.height;
   if (width == *MEMORY[0x277CBF3A8] && height == *(MEMORY[0x277CBF3A8] + 8))
   {
-    v6 = [(ICGalleryAttachmentViewSubAttachmentItem *)self attachment];
-    [v6 sizeWidth];
+    attachment = [(ICGalleryAttachmentViewSubAttachmentItem *)self attachment];
+    [attachment sizeWidth];
     v8 = v7;
-    v9 = [(ICGalleryAttachmentViewSubAttachmentItem *)self attachment];
-    [v9 sizeHeight];
+    attachment2 = [(ICGalleryAttachmentViewSubAttachmentItem *)self attachment];
+    [attachment2 sizeHeight];
     self->_size.width = v8;
     self->_size.height = v10;
 

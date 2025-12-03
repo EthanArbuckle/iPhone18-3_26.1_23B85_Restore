@@ -1,33 +1,33 @@
 @interface THModelBodyTextInfo
 - (THWPStorage)bodyStorage;
 - (void)dealloc;
-- (void)setColumnStyle:(id)a3;
-- (void)setLineHints:(id)a3;
+- (void)setColumnStyle:(id)style;
+- (void)setLineHints:(id)hints;
 @end
 
 @implementation THModelBodyTextInfo
 
-- (void)setColumnStyle:(id)a3
+- (void)setColumnStyle:(id)style
 {
   [(THModelBodyTextInfo *)self willModify];
-  v5 = a3;
+  styleCopy = style;
 
-  self->mColumnStyle = a3;
+  self->mColumnStyle = style;
 }
 
-- (void)setLineHints:(id)a3
+- (void)setLineHints:(id)hints
 {
   [(THModelBodyTextInfo *)self willModify];
-  v5 = a3;
+  hintsCopy = hints;
 
-  self->mLineHints = a3;
+  self->mLineHints = hints;
 }
 
 - (THWPStorage)bodyStorage
 {
-  v2 = [(THModelBodyTextInfo *)self parentInfo];
+  parentInfo = [(THModelBodyTextInfo *)self parentInfo];
 
-  return [v2 bodyStorage];
+  return [parentInfo bodyStorage];
 }
 
 - (void)dealloc

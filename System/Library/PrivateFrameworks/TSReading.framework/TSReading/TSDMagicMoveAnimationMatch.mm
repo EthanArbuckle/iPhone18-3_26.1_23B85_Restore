@@ -1,10 +1,10 @@
 @interface TSDMagicMoveAnimationMatch
 - (BOOL)isMatched;
 - (TSDMagicMoveAnimationMatch)init;
-- (TSDMagicMoveAnimationMatch)initWithMatchType:(int64_t)a3 outgoingTexture:(id)a4 incomingTexture:(id)a5;
+- (TSDMagicMoveAnimationMatch)initWithMatchType:(int64_t)type outgoingTexture:(id)texture incomingTexture:(id)incomingTexture;
 - (id)description;
 - (id)lockCurrentMorphTexture;
-- (void)addMorphTexture:(id)a3;
+- (void)addMorphTexture:(id)texture;
 - (void)clearMorphTexture;
 - (void)dealloc;
 - (void)teardown;
@@ -15,13 +15,13 @@
 
 - (TSDMagicMoveAnimationMatch)init
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMagicMoveAnimationMatch init]"];
-  [v2 handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMagicMove.m"), 392, @"Do not call method"}];
+  [currentHandler handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMagicMove.m"), 392, @"Do not call method"}];
   objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"%@: %s", @"Do not call method", "-[TSDMagicMoveAnimationMatch init]"), 0}]);
 }
 
-- (TSDMagicMoveAnimationMatch)initWithMatchType:(int64_t)a3 outgoingTexture:(id)a4 incomingTexture:(id)a5
+- (TSDMagicMoveAnimationMatch)initWithMatchType:(int64_t)type outgoingTexture:(id)texture incomingTexture:(id)incomingTexture
 {
   v10.receiver = self;
   v10.super_class = TSDMagicMoveAnimationMatch;
@@ -29,9 +29,9 @@
   if (v8)
   {
     v8->_morphTextureUpdateLock = objc_opt_new();
-    [(TSDMagicMoveAnimationMatch *)v8 setMatchType:a3];
-    [(TSDMagicMoveAnimationMatch *)v8 setOutgoingTexture:a4];
-    [(TSDMagicMoveAnimationMatch *)v8 setIncomingTexture:a5];
+    [(TSDMagicMoveAnimationMatch *)v8 setMatchType:type];
+    [(TSDMagicMoveAnimationMatch *)v8 setOutgoingTexture:texture];
+    [(TSDMagicMoveAnimationMatch *)v8 setIncomingTexture:incomingTexture];
   }
 
   return v8;
@@ -47,18 +47,18 @@
   incomingTexture = self->_incomingTexture;
   if (incomingTexture)
   {
-    v4 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMagicMoveAnimationMatch dealloc]"];
-    [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMagicMove.m"), 416, @"expected nil value for '%s'", "_incomingTexture"}];
+    [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMagicMove.m"), 416, @"expected nil value for '%s'", "_incomingTexture"}];
     incomingTexture = self->_incomingTexture;
   }
 
   outgoingTexture = self->_outgoingTexture;
   if (outgoingTexture)
   {
-    v7 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMagicMoveAnimationMatch dealloc]"];
-    [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMagicMove.m"), 418, @"expected nil value for '%s'", "_outgoingTexture"}];
+    [currentHandler2 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMagicMove.m"), 418, @"expected nil value for '%s'", "_outgoingTexture"}];
     outgoingTexture = self->_outgoingTexture;
   }
 
@@ -106,28 +106,28 @@
 
 - (id)description
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if ([(TSDMagicMoveAnimationMatch *)self isMorphMatch])
   {
-    [v3 addObject:@"isMorphMatch"];
+    [array addObject:@"isMorphMatch"];
   }
 
   if ([(TSDMagicMoveAnimationMatch *)self isMatched])
   {
-    [v3 addObject:@"isMatched"];
+    [array addObject:@"isMatched"];
   }
 
   if ([(TSDMagicMoveAnimationMatch *)self incomingTexture])
   {
-    [v3 addObject:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"incoming:%@", -[TSDMagicMoveAnimationMatch incomingTexture](self, "incomingTexture"))}];
+    [array addObject:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"incoming:%@", -[TSDMagicMoveAnimationMatch incomingTexture](self, "incomingTexture"))}];
   }
 
   if ([(TSDMagicMoveAnimationMatch *)self outgoingTexture])
   {
-    [v3 addObject:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"outgoing:%@", -[TSDMagicMoveAnimationMatch outgoingTexture](self, "outgoingTexture"))}];
+    [array addObject:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"outgoing:%@", -[TSDMagicMoveAnimationMatch outgoingTexture](self, "outgoingTexture"))}];
   }
 
-  v4 = [v3 componentsJoinedByString:{@", "}];
+  v4 = [array componentsJoinedByString:{@", "}];
   v6.receiver = self;
   v6.super_class = TSDMagicMoveAnimationMatch;
   return [MEMORY[0x277CCACA8] stringWithFormat:@"%@: {%@}", -[TSDMagicMoveAnimationMatch description](&v6, sel_description), v4];
@@ -135,16 +135,16 @@
 
 - (BOOL)isMatched
 {
-  v3 = [(TSDMagicMoveAnimationMatch *)self incomingTexture];
-  if (v3)
+  incomingTexture = [(TSDMagicMoveAnimationMatch *)self incomingTexture];
+  if (incomingTexture)
   {
-    LOBYTE(v3) = [(TSDMagicMoveAnimationMatch *)self outgoingTexture]!= 0;
+    LOBYTE(incomingTexture) = [(TSDMagicMoveAnimationMatch *)self outgoingTexture]!= 0;
   }
 
-  return v3;
+  return incomingTexture;
 }
 
-- (void)addMorphTexture:(id)a3
+- (void)addMorphTexture:(id)texture
 {
   morphTextureUpdateLock = self->_morphTextureUpdateLock;
   objc_sync_enter(morphTextureUpdateLock);
@@ -152,13 +152,13 @@
   if (self->_isUsingMorphTexture || self->_didUseMorphTexture)
   {
     morphTexture = 0;
-    self->_morphQueuedTexture = a3;
+    self->_morphQueuedTexture = texture;
   }
 
   else
   {
     morphTexture = self->_morphTexture;
-    self->_morphTexture = a3;
+    self->_morphTexture = texture;
     self->_didUseMorphTexture = 0;
   }
 
@@ -191,18 +191,18 @@
 {
   if (![(TSDMagicMoveAnimationMatch *)self isMorphMatch])
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMagicMoveAnimationMatch lockCurrentMorphTexture]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMagicMove.m"), 522, @"Not a morph animation!"}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMagicMove.m"), 522, @"Not a morph animation!"}];
   }
 
   morphTextureUpdateLock = self->_morphTextureUpdateLock;
   objc_sync_enter(morphTextureUpdateLock);
   if (self->_isUsingMorphTexture)
   {
-    v6 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMagicMoveAnimationMatch lockCurrentMorphTexture]"];
-    [v6 handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMagicMove.m"), 529, @"Morph texture is already locked!"}];
+    [currentHandler2 handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMagicMove.m"), 529, @"Morph texture is already locked!"}];
     morphTexture = 0;
   }
 
@@ -249,9 +249,9 @@
   objc_sync_enter(morphTextureUpdateLock);
   if (!self->_isUsingMorphTexture)
   {
-    v4 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMagicMoveAnimationMatch unlockCurrentMorphTexture]"];
-    [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMagicMove.m"), 554, @"Tried to unlock morph texture when not locked!"}];
+    [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMagicMove.m"), 554, @"Tried to unlock morph texture when not locked!"}];
   }
 
   self->_isUsingMorphTexture = 0;

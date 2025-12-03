@@ -1,11 +1,11 @@
 @interface OPTTSTTSPhonemeSequence
 - (NSArray)word_phonemes;
-- (OPTTSTTSPhonemeSequence)initWithFlatbuffData:(id)a3 root:(const TTSPhonemeSequence *)a4 verify:(BOOL)a5;
-- (Offset<siri::speech::schema_fb::TTSPhonemeSequence>)addObjectToBuffer:(void *)a3;
+- (OPTTSTTSPhonemeSequence)initWithFlatbuffData:(id)data root:(const TTSPhonemeSequence *)root verify:(BOOL)verify;
+- (Offset<siri::speech::schema_fb::TTSPhonemeSequence>)addObjectToBuffer:(void *)buffer;
 - (id)flatbuffData;
-- (id)word_phonemes_objectAtIndex:(unint64_t)a3;
+- (id)word_phonemes_objectAtIndex:(unint64_t)index;
 - (unint64_t)word_phonemes_count;
-- (void)word_phonemes_enumerateObjectsUsingBlock:(id)a3;
+- (void)word_phonemes_enumerateObjectsUsingBlock:(id)block;
 @end
 
 @implementation OPTTSTTSPhonemeSequence
@@ -39,11 +39,11 @@ apple::aiml::flatbuffers2::DetachedBuffer *__39__OPTTSTTSPhonemeSequence_flatbuf
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::TTSPhonemeSequence>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::TTSPhonemeSequence>)addObjectToBuffer:(void *)buffer
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = [(OPTTSTTSPhonemeSequence *)self word_phonemes];
-  v6 = [v5 count];
+  word_phonemes = [(OPTTSTTSPhonemeSequence *)self word_phonemes];
+  v6 = [word_phonemes count];
   if (v6)
   {
     if (!(v6 >> 62))
@@ -63,36 +63,36 @@ apple::aiml::flatbuffers2::DetachedBuffer *__39__OPTTSTTSPhonemeSequence_flatbuf
   {
     *v17;
     *v17;
-    [**(&v16 + 1) addObjectToBuffer:a3];
+    [**(&v16 + 1) addObjectToBuffer:buffer];
     std::__allocate_at_least[abi:ne200100]<std::allocator<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::TextToSpeechRequest_::ContextInfoEntry>>>(1uLL);
   }
 
-  apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(a3, 0, 4uLL);
-  v7 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(a3, 0);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v8 = *(a3 + 5);
-  v9 = *(a3 + 6);
-  v10 = *(a3 + 4);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::StartVector(buffer, 0, 4uLL);
+  v7 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndVector(buffer, 0);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v8 = *(buffer + 5);
+  v9 = *(buffer + 6);
+  v10 = *(buffer + 4);
   if (v7)
   {
-    v11 = apple::aiml::flatbuffers2::FlatBufferBuilder::ReferTo(a3, v7);
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(a3, 4, v11);
+    v11 = apple::aiml::flatbuffers2::FlatBufferBuilder::ReferTo(buffer, v7);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(buffer, 4, v11);
   }
 
-  v12.var0 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v10 - v9 + v8);
+  v12.var0 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v10 - v9 + v8);
   v13 = *MEMORY[0x1E69E9840];
   return v12;
 }
 
-- (void)word_phonemes_enumerateObjectsUsingBlock:(id)a3
+- (void)word_phonemes_enumerateObjectsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"word_phonemes"];
   v6 = v5;
   if (v5)
   {
-    [v5 enumerateObjectsUsingBlock:v4];
+    [v5 enumerateObjectsUsingBlock:blockCopy];
   }
 
   else
@@ -115,7 +115,7 @@ apple::aiml::flatbuffers2::DetachedBuffer *__39__OPTTSTTSPhonemeSequence_flatbuf
           do
           {
             v15 = [[OPTTSTTSWordPhonemes alloc] initWithFlatbuffData:self->_data root:&v14[*v14->var0] verify:0];
-            v4[2](v4, v15, v12, &v18);
+            blockCopy[2](blockCopy, v15, v12, &v18);
             v16 = v18;
 
             if (v16)
@@ -163,13 +163,13 @@ apple::aiml::flatbuffers2::DetachedBuffer *__39__OPTTSTTSPhonemeSequence_flatbuf
   return v5;
 }
 
-- (id)word_phonemes_objectAtIndex:(unint64_t)a3
+- (id)word_phonemes_objectAtIndex:(unint64_t)index
 {
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"word_phonemes"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 objectAtIndexedSubscript:a3];
+    v7 = [v5 objectAtIndexedSubscript:index];
 LABEL_3:
     v8 = v7;
     goto LABEL_9;
@@ -183,12 +183,12 @@ LABEL_3:
     if (v11)
     {
       v12 = &root[v11 + *root[v11].var0];
-      if (*v12->var0 <= a3)
+      if (*v12->var0 <= index)
       {
         __assert_rtn("Get", "flatbuffers.h", 275, "i < size()");
       }
 
-      v7 = [[OPTTSTTSWordPhonemes alloc] initWithFlatbuffData:self->_data root:&v12[4 * a3 + 4 + *v12[4 * a3 + 4].var0] verify:0];
+      v7 = [[OPTTSTTSWordPhonemes alloc] initWithFlatbuffData:self->_data root:&v12[4 * index + 4 + *v12[4 * index + 4].var0] verify:0];
       goto LABEL_3;
     }
   }
@@ -204,12 +204,12 @@ LABEL_9:
   v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"word_phonemes"];
   if (!v3)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __40__OPTTSTTSPhonemeSequence_word_phonemes__block_invoke;
     v6[3] = &unk_1E7AF3888;
-    v3 = v4;
+    v3 = array;
     v7 = v3;
     [(OPTTSTTSPhonemeSequence *)self word_phonemes_enumerateObjectsUsingBlock:v6];
     [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"word_phonemes"];
@@ -218,10 +218,10 @@ LABEL_9:
   return v3;
 }
 
-- (OPTTSTTSPhonemeSequence)initWithFlatbuffData:(id)a3 root:(const TTSPhonemeSequence *)a4 verify:(BOOL)a5
+- (OPTTSTTSPhonemeSequence)initWithFlatbuffData:(id)data root:(const TTSPhonemeSequence *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v25.receiver = self;
   v25.super_class = OPTTSTTSPhonemeSequence;
   v10 = [(OPTTSTTSPhonemeSequence *)&v25 init];
@@ -230,35 +230,35 @@ LABEL_9:
     goto LABEL_14;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_15;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v11 = [(NSData *)v10->_data bytes];
-    a4 = v11 + *v11;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_14;
   }
 
-  v12 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v13 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v12 || root > v12 + v13)
+  if (root < bytes2 || root > bytes2 + v13)
   {
     goto LABEL_15;
   }
 
-  v16 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v17 = [(NSData *)v10->_data length];
-  v21[0] = v16;
+  v21[0] = bytes3;
   v21[1] = v17;
   v22 = xmmword_1B1C41700;
   v23 = 0;

@@ -1,25 +1,25 @@
 @interface MADEmbeddingStoreClientHandler
-+ (id)clientHandlerWithXPCConnection:(id)a3;
-- (MADEmbeddingStoreClientHandler)initWithXPCConnection:(id)a3;
++ (id)clientHandlerWithXPCConnection:(id)connection;
+- (MADEmbeddingStoreClientHandler)initWithXPCConnection:(id)connection;
 - (void)cancelAllRequests;
-- (void)fetchEmbeddingsWithAssetUUIDs:(id)a3 photoLibraryURL:(id)a4 options:(id)a5 reply:(id)a6;
-- (void)prewarmSearchWithConcurrencyLimit:(unint64_t)a3 photoLibraryURL:(id)a4 reply:(id)a5;
-- (void)requestEmbeddingStoreSandboxExtensionWithPhotoLibraryURL:(id)a3 reply:(id)a4;
-- (void)searchWithEmbeddings:(id)a3 photoLibraryURL:(id)a4 options:(id)a5 reply:(id)a6;
+- (void)fetchEmbeddingsWithAssetUUIDs:(id)ds photoLibraryURL:(id)l options:(id)options reply:(id)reply;
+- (void)prewarmSearchWithConcurrencyLimit:(unint64_t)limit photoLibraryURL:(id)l reply:(id)reply;
+- (void)requestEmbeddingStoreSandboxExtensionWithPhotoLibraryURL:(id)l reply:(id)reply;
+- (void)searchWithEmbeddings:(id)embeddings photoLibraryURL:(id)l options:(id)options reply:(id)reply;
 @end
 
 @implementation MADEmbeddingStoreClientHandler
 
-- (MADEmbeddingStoreClientHandler)initWithXPCConnection:(id)a3
+- (MADEmbeddingStoreClientHandler)initWithXPCConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v19.receiver = self;
   v19.super_class = MADEmbeddingStoreClientHandler;
   v6 = [(MADEmbeddingStoreClientHandler *)&v19 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
     [(NSXPCConnection *)v7->_connection setExportedObject:v7];
     connection = v7->_connection;
     v9 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___MADEmbeddingStoreClientProtocol];
@@ -51,10 +51,10 @@
   return v7;
 }
 
-+ (id)clientHandlerWithXPCConnection:(id)a3
++ (id)clientHandlerWithXPCConnection:(id)connection
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithXPCConnection:v3];
+  connectionCopy = connection;
+  v4 = [objc_alloc(objc_opt_class()) initWithXPCConnection:connectionCopy];
 
   return v4;
 }
@@ -72,10 +72,10 @@
   }
 }
 
-- (void)requestEmbeddingStoreSandboxExtensionWithPhotoLibraryURL:(id)a3 reply:(id)a4
+- (void)requestEmbeddingStoreSandboxExtensionWithPhotoLibraryURL:(id)l reply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  replyCopy = reply;
   if (MediaAnalysisLogLevel() >= 6)
   {
     v7 = VCPLogToOSLogType[6];
@@ -87,7 +87,7 @@
   }
 
   v8 = +[VCPPhotoLibraryManager sharedManager];
-  v9 = [v8 photoLibraryWithURL:v5];
+  v9 = [v8 photoLibraryWithURL:lCopy];
 
   if (!v9)
   {
@@ -97,23 +97,23 @@
       if (os_log_type_enabled(&_os_log_default, v16))
       {
         *buf = 138412290;
-        v33 = v5;
+        v33 = lCopy;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v16, "[MADEmbeddingStoreClientHandler] Failed to open photo library at %@", buf, 0xCu);
       }
     }
 
     v30 = NSLocalizedDescriptionKey;
-    v11 = [NSString stringWithFormat:@"[MADEmbeddingStoreClientHandler] Failed to open photo library at %@", v5];
-    v31 = v11;
+    lCopy = [NSString stringWithFormat:@"[MADEmbeddingStoreClientHandler] Failed to open photo library at %@", lCopy];
+    v31 = lCopy;
     v17 = [NSDictionary dictionaryWithObjects:&v31 forKeys:&v30 count:1];
     v18 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-18 userInfo:v17];
-    v6[2](v6, 0, v18);
+    replyCopy[2](replyCopy, 0, v18);
 
     goto LABEL_24;
   }
 
   v10 = [MADEmbeddingStore embeddingStoreDirectoryForPhotoLibrary:v9];
-  v11 = v10;
+  lCopy = v10;
   if (!v10)
   {
     if (MediaAnalysisLogLevel() >= 3)
@@ -146,21 +146,21 @@
       if (os_log_type_enabled(&_os_log_default, v23))
       {
         *buf = 138412290;
-        v33 = v11;
+        v33 = lCopy;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v23, "[MADEmbeddingStoreClientHandler] Failed to issue sandbox extension on %@", buf, 0xCu);
       }
     }
 
     v20 = NSOSStatusErrorDomain;
     v26 = NSLocalizedDescriptionKey;
-    v17 = [NSString stringWithFormat:@"[MADEmbeddingStoreClientHandler] Failed to issue sandbox extension on %@", v11];
+    v17 = [NSString stringWithFormat:@"[MADEmbeddingStoreClientHandler] Failed to issue sandbox extension on %@", lCopy];
     v27 = v17;
     v21 = &v27;
     v22 = &v26;
 LABEL_23:
     v24 = [NSDictionary dictionaryWithObjects:v21 forKeys:v22 count:1];
     v25 = [NSError errorWithDomain:v20 code:-18 userInfo:v24];
-    v6[2](v6, 0, v25);
+    replyCopy[2](replyCopy, 0, v25);
 
 LABEL_24:
     goto LABEL_25;
@@ -172,83 +172,83 @@ LABEL_24:
     if (os_log_type_enabled(&_os_log_default, v14))
     {
       *buf = 138412290;
-      v33 = v11;
+      v33 = lCopy;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v14, "[MADEmbeddingStoreClientHandler] Issuing sandbox extension for %@", buf, 0xCu);
     }
   }
 
   v15 = [NSString stringWithUTF8String:v12];
-  (v6)[2](v6, v15, 0);
+  (replyCopy)[2](replyCopy, v15, 0);
 
   free(v12);
 LABEL_25:
 }
 
-- (void)fetchEmbeddingsWithAssetUUIDs:(id)a3 photoLibraryURL:(id)a4 options:(id)a5 reply:(id)a6
+- (void)fetchEmbeddingsWithAssetUUIDs:(id)ds photoLibraryURL:(id)l options:(id)options reply:(id)reply
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  dsCopy = ds;
+  lCopy = l;
+  optionsCopy = options;
+  replyCopy = reply;
   if (MediaAnalysisLogLevel() >= 6)
   {
     v13 = VCPLogToOSLogType[6];
     if (os_log_type_enabled(&_os_log_default, v13))
     {
       *buf = 67109120;
-      v18 = [v9 count];
+      v18 = [dsCopy count];
       _os_log_impl(&_mh_execute_header, &_os_log_default, v13, "[MADEmbeddingStoreClientHandler] Received fetch embedding request for %u assets", buf, 8u);
     }
   }
 
   v16 = 0;
-  v14 = [MADEmbeddingStore fetchEmbeddingsWithAssetUUIDs:v9 photoLibraryURL:v10 options:v11 error:&v16];
+  v14 = [MADEmbeddingStore fetchEmbeddingsWithAssetUUIDs:dsCopy photoLibraryURL:lCopy options:optionsCopy error:&v16];
   v15 = v16;
-  v12[2](v12, v14, v15);
+  replyCopy[2](replyCopy, v14, v15);
 }
 
-- (void)searchWithEmbeddings:(id)a3 photoLibraryURL:(id)a4 options:(id)a5 reply:(id)a6
+- (void)searchWithEmbeddings:(id)embeddings photoLibraryURL:(id)l options:(id)options reply:(id)reply
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  embeddingsCopy = embeddings;
+  lCopy = l;
+  optionsCopy = options;
+  replyCopy = reply;
   if (MediaAnalysisLogLevel() >= 6)
   {
     v13 = VCPLogToOSLogType[6];
     if (os_log_type_enabled(&_os_log_default, v13))
     {
       *buf = 67109120;
-      v18 = [v9 count];
+      v18 = [embeddingsCopy count];
       _os_log_impl(&_mh_execute_header, &_os_log_default, v13, "[MADEmbeddingStoreClientHandler] Received search request for %u embedding", buf, 8u);
     }
   }
 
   v16 = 0;
-  v14 = [MADEmbeddingStore searchWithEmbeddings:v9 photoLibraryURL:v10 options:v11 error:&v16];
+  v14 = [MADEmbeddingStore searchWithEmbeddings:embeddingsCopy photoLibraryURL:lCopy options:optionsCopy error:&v16];
   v15 = v16;
-  v12[2](v12, v14, v15);
+  replyCopy[2](replyCopy, v14, v15);
 }
 
-- (void)prewarmSearchWithConcurrencyLimit:(unint64_t)a3 photoLibraryURL:(id)a4 reply:(id)a5
+- (void)prewarmSearchWithConcurrencyLimit:(unint64_t)limit photoLibraryURL:(id)l reply:(id)reply
 {
-  v7 = a4;
-  v8 = a5;
+  lCopy = l;
+  replyCopy = reply;
   if (MediaAnalysisLogLevel() >= 6)
   {
     v9 = VCPLogToOSLogType[6];
     if (os_log_type_enabled(&_os_log_default, v9))
     {
       *buf = 67109120;
-      v13 = a3;
+      limitCopy = limit;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v9, "[MADEmbeddingStoreClientHandler] Received prewarm search request with concurrencyLimit %d", buf, 8u);
     }
   }
 
   v11 = 0;
-  [MADEmbeddingStore prewarmSearchWithConcurrencyLimit:a3 photoLibraryURL:v7 error:&v11];
+  [MADEmbeddingStore prewarmSearchWithConcurrencyLimit:limit photoLibraryURL:lCopy error:&v11];
   v10 = v11;
-  v8[2](v8, v10);
+  replyCopy[2](replyCopy, v10);
 }
 
 @end

@@ -1,28 +1,28 @@
 @interface RTDistanceCalculator
-+ (id)distanceMetricToString:(int64_t)a3;
-- (BOOL)checkFractionAreaOverlapBetweenLocation:(id)a3 otherLocation:(id)a4 largerThanThreshold:(double)a5 error:(id *)a6;
-- (CGRect)cgrectFromCoordinates:(CLLocationCoordinate2D *)a3 locationsCount:(unint64_t)a4 error:(id *)a5;
-- (CLLocationCoordinate2D)_reduce_by_half:(CLLocationCoordinate2D *)a3 count:(unint64_t)a4 outputCount:(unint64_t *)a5 error:(id *)a6;
-- (CLLocationCoordinate2D)computeCentroid:(CLLocationCoordinate2D *)a3 locationsCount:(unint64_t)a4 error:(id *)a5;
-- (CLLocationCoordinate2D)rectVerticesFromCoordinates:(CLLocationCoordinate2D *)a3 locationsCount:(unint64_t)a4 ignoreNFirstAndLastLocations:(unint64_t)a5 error:(id *)a6;
++ (id)distanceMetricToString:(int64_t)string;
+- (BOOL)checkFractionAreaOverlapBetweenLocation:(id)location otherLocation:(id)otherLocation largerThanThreshold:(double)threshold error:(id *)error;
+- (CGRect)cgrectFromCoordinates:(CLLocationCoordinate2D *)coordinates locationsCount:(unint64_t)count error:(id *)error;
+- (CLLocationCoordinate2D)_reduce_by_half:(CLLocationCoordinate2D *)_reduce_by_half count:(unint64_t)count outputCount:(unint64_t *)outputCount error:(id *)error;
+- (CLLocationCoordinate2D)computeCentroid:(CLLocationCoordinate2D *)centroid locationsCount:(unint64_t)count error:(id *)error;
+- (CLLocationCoordinate2D)rectVerticesFromCoordinates:(CLLocationCoordinate2D *)coordinates locationsCount:(unint64_t)count ignoreNFirstAndLastLocations:(unint64_t)locations error:(id *)error;
 - (RTLocationShifter)locationShifter;
-- (double)_centroidDistanceFromLocations:(CLLocationCoordinate2D *)a3 countOfFromLocations:(unint64_t)a4 toLocations:(CLLocationCoordinate2D *)a5 countOfToLocations:(unint64_t)a6 error:(id *)a7;
-- (double)_dtwDistanceEuclideanBetweenX:(CLLocationCoordinate2D *)a3 y:(CLLocationCoordinate2D *)a4 error:(id *)a5;
-- (double)_dtwDistanceFirstNormBetweenX:(CLLocationCoordinate2D *)a3 y:(CLLocationCoordinate2D *)a4 error:(id *)a5;
-- (double)_dtwDistanceFromLocations:(CLLocationCoordinate2D *)a3 countOfFromLocations:(unint64_t)a4 toLocations:(CLLocationCoordinate2D *)a5 countOfToLocations:(unint64_t)a6 distanceMetric:(int64_t)a7 threshold:(double)a8 error:(id *)a9;
-- (double)computeBoundingBoxArea:(CGRect)a3 locationsCount:(unint64_t)a4 error:(id *)a5;
-- (double)computeCircleIntersectionAreaWithDistance:(double)a3 firstRadius:(double)a4 secondRadius:(double)a5;
-- (double)computeCircleIntersectionPercentageOfMinRadiusCircleWithDistance:(double)a3 firstRadius:(double)a4 secondRadius:(double)a5;
-- (double)computeIntersectionOverUnionUsingBoundingBoxBetweenLocations:(CLLocationCoordinate2D *)a3 locationsCount:(unint64_t)a4 otherLocations:(CLLocationCoordinate2D *)a5 otherLocationsCount:(unint64_t)a6 error:(id *)a7;
-- (double)distanceFromLocation:(id)a3 toLocation:(id)a4 error:(id *)a5;
-- (double)distanceFromLocationCoordinate:(CLLocationCoordinate2D *)a3 toLocationCoordinate:(CLLocationCoordinate2D *)a4 error:(id *)a5;
-- (double)distanceFromLocations:(CLLocationCoordinate2D *)a3 countOfFromLocations:(unint64_t)a4 toLocations:(CLLocationCoordinate2D *)a5 countOfToLocations:(unint64_t)a6 distanceMetric:(int64_t)a7 threshold:(double)a8 error:(id *)a9;
-- (double)fractionOfUncertaintyAreaOverlapOfTheSmalestUncertaintyAreaBetweenLocation:(id)a3 otherLocation:(id)a4 error:(id *)a5;
-- (id)_convertToRTPairsFromLocations:(id)a3 error:(id *)a4;
-- (id)_dtwForX:(CLLocationCoordinate2D *)a3 xCount:(unint64_t)a4 y:(CLLocationCoordinate2D *)a5 yCount:(unint64_t)a6 window:(id)a7 distanceMetric:(int64_t)a8 threshold:(double)a9 error:(id *)a10;
-- (id)_expand_windowWithPath:(id)a3 len_x:(signed __int16)a4 len_y:(signed __int16)a5 radius:(signed __int16)a6 error:(id *)a7;
-- (id)_fastDTWForX:(CLLocationCoordinate2D *)a3 xCount:(unint64_t)a4 y:(CLLocationCoordinate2D *)a5 yCount:(unint64_t)a6 radius:(double)a7 distanceMetric:(int64_t)a8 threshold:(double)a9 error:(id *)a10;
-- (void)_shutdownWithHandler:(id)a3;
+- (double)_centroidDistanceFromLocations:(CLLocationCoordinate2D *)locations countOfFromLocations:(unint64_t)fromLocations toLocations:(CLLocationCoordinate2D *)toLocations countOfToLocations:(unint64_t)ofToLocations error:(id *)error;
+- (double)_dtwDistanceEuclideanBetweenX:(CLLocationCoordinate2D *)x y:(CLLocationCoordinate2D *)y error:(id *)error;
+- (double)_dtwDistanceFirstNormBetweenX:(CLLocationCoordinate2D *)x y:(CLLocationCoordinate2D *)y error:(id *)error;
+- (double)_dtwDistanceFromLocations:(CLLocationCoordinate2D *)locations countOfFromLocations:(unint64_t)fromLocations toLocations:(CLLocationCoordinate2D *)toLocations countOfToLocations:(unint64_t)ofToLocations distanceMetric:(int64_t)metric threshold:(double)threshold error:(id *)error;
+- (double)computeBoundingBoxArea:(CGRect)area locationsCount:(unint64_t)count error:(id *)error;
+- (double)computeCircleIntersectionAreaWithDistance:(double)distance firstRadius:(double)radius secondRadius:(double)secondRadius;
+- (double)computeCircleIntersectionPercentageOfMinRadiusCircleWithDistance:(double)distance firstRadius:(double)radius secondRadius:(double)secondRadius;
+- (double)computeIntersectionOverUnionUsingBoundingBoxBetweenLocations:(CLLocationCoordinate2D *)locations locationsCount:(unint64_t)count otherLocations:(CLLocationCoordinate2D *)otherLocations otherLocationsCount:(unint64_t)locationsCount error:(id *)error;
+- (double)distanceFromLocation:(id)location toLocation:(id)toLocation error:(id *)error;
+- (double)distanceFromLocationCoordinate:(CLLocationCoordinate2D *)coordinate toLocationCoordinate:(CLLocationCoordinate2D *)locationCoordinate error:(id *)error;
+- (double)distanceFromLocations:(CLLocationCoordinate2D *)locations countOfFromLocations:(unint64_t)fromLocations toLocations:(CLLocationCoordinate2D *)toLocations countOfToLocations:(unint64_t)ofToLocations distanceMetric:(int64_t)metric threshold:(double)threshold error:(id *)error;
+- (double)fractionOfUncertaintyAreaOverlapOfTheSmalestUncertaintyAreaBetweenLocation:(id)location otherLocation:(id)otherLocation error:(id *)error;
+- (id)_convertToRTPairsFromLocations:(id)locations error:(id *)error;
+- (id)_dtwForX:(CLLocationCoordinate2D *)x xCount:(unint64_t)count y:(CLLocationCoordinate2D *)y yCount:(unint64_t)yCount window:(id)window distanceMetric:(int64_t)metric threshold:(double)threshold error:(id *)self0;
+- (id)_expand_windowWithPath:(id)path len_x:(signed __int16)len_x len_y:(signed __int16)len_y radius:(signed __int16)radius error:(id *)error;
+- (id)_fastDTWForX:(CLLocationCoordinate2D *)x xCount:(unint64_t)count y:(CLLocationCoordinate2D *)y yCount:(unint64_t)yCount radius:(double)radius distanceMetric:(int64_t)metric threshold:(double)threshold error:(id *)self0;
+- (void)_shutdownWithHandler:(id)handler;
 @end
 
 @implementation RTDistanceCalculator
@@ -42,44 +42,44 @@
   return locationShifter;
 }
 
-+ (id)distanceMetricToString:(int64_t)a3
++ (id)distanceMetricToString:(int64_t)string
 {
-  if (a3 > 3)
+  if (string > 3)
   {
     return @"Centroid";
   }
 
   else
   {
-    return off_2788CB0D8[a3];
+    return off_2788CB0D8[string];
   }
 }
 
-- (void)_shutdownWithHandler:(id)a3
+- (void)_shutdownWithHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
-    (*(a3 + 2))(a3, 0);
+    (*(handler + 2))(handler, 0);
   }
 }
 
-- (double)distanceFromLocation:(id)a3 toLocation:(id)a4 error:(id *)a5
+- (double)distanceFromLocation:(id)location toLocation:(id)toLocation error:(id *)error
 {
   v55 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
+  locationCopy = location;
+  toLocationCopy = toLocation;
+  v10 = toLocationCopy;
   v49 = 0;
   v50 = &v49;
   v51 = 0x2020000000;
   v52 = 0x7FEFFFFFFFFFFFFFLL;
   v11 = 1.79769313e308;
-  if (!v8 || !v9)
+  if (!locationCopy || !toLocationCopy)
   {
     goto LABEL_16;
   }
 
-  v35 = a5;
+  errorCopy = error;
   v43 = 0;
   v44 = &v43;
   v45 = 0x3032000000;
@@ -87,19 +87,19 @@
   v47 = __Block_byref_object_dispose__78;
   v48 = 0;
   v12 = dispatch_semaphore_create(0);
-  v13 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__RTDistanceCalculator_distanceFromLocation_toLocation_error___block_invoke;
   block[3] = &unk_2788CB0B8;
   v37 = v10;
-  v38 = v8;
-  v39 = self;
+  v38 = locationCopy;
+  selfCopy = self;
   v41 = &v43;
   v42 = &v49;
   v14 = v12;
   v40 = v14;
-  dispatch_async(v13, block);
+  dispatch_async(queue, block);
 
   v15 = v14;
   v16 = [MEMORY[0x277CBEAA8] now];
@@ -117,11 +117,11 @@ LABEL_9:
   v20 = v19;
   v21 = objc_opt_new();
   v22 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_61];
-  v23 = [MEMORY[0x277CCACC8] callStackSymbols];
-  v24 = [v23 filteredArrayUsingPredicate:v22];
-  v25 = [v24 firstObject];
+  callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+  v24 = [callStackSymbols filteredArrayUsingPredicate:v22];
+  firstObject = [v24 firstObject];
 
-  [v21 submitToCoreAnalytics:v25 type:1 duration:v20];
+  [v21 submitToCoreAnalytics:firstObject type:1 duration:v20];
   v26 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
   if (os_log_type_enabled(v26, OS_LOG_TYPE_FAULT))
   {
@@ -151,12 +151,12 @@ LABEL_10:
     objc_storeStrong(v44 + 5, v29);
   }
 
-  if (v35)
+  if (errorCopy)
   {
     v33 = v44[5];
     if (v33)
     {
-      *v35 = v33;
+      *errorCopy = v33;
     }
   }
 
@@ -193,9 +193,9 @@ void __62__RTDistanceCalculator_distanceFromLocation_toLocation_error___block_in
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (double)distanceFromLocationCoordinate:(CLLocationCoordinate2D *)a3 toLocationCoordinate:(CLLocationCoordinate2D *)a4 error:(id *)a5
+- (double)distanceFromLocationCoordinate:(CLLocationCoordinate2D *)coordinate toLocationCoordinate:(CLLocationCoordinate2D *)locationCoordinate error:(id *)error
 {
-  if (!a3)
+  if (!coordinate)
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -213,7 +213,7 @@ LABEL_11:
     goto LABEL_9;
   }
 
-  if (!a4)
+  if (!locationCoordinate)
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -231,12 +231,12 @@ LABEL_11:
   return result;
 }
 
-- (double)fractionOfUncertaintyAreaOverlapOfTheSmalestUncertaintyAreaBetweenLocation:(id)a3 otherLocation:(id)a4 error:(id *)a5
+- (double)fractionOfUncertaintyAreaOverlapOfTheSmalestUncertaintyAreaBetweenLocation:(id)location otherLocation:(id)otherLocation error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (!v8)
+  locationCopy = location;
+  otherLocationCopy = otherLocation;
+  v10 = otherLocationCopy;
+  if (!locationCopy)
   {
     v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     v15 = 0.0;
@@ -253,7 +253,7 @@ LABEL_10:
     goto LABEL_12;
   }
 
-  if (!v9)
+  if (!otherLocationCopy)
   {
     v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     v15 = 0.0;
@@ -269,23 +269,23 @@ LABEL_10:
   }
 
   v24 = 0;
-  [(RTDistanceCalculator *)self distanceFromLocation:v8 toLocation:v9 error:&v24];
+  [(RTDistanceCalculator *)self distanceFromLocation:locationCopy toLocation:otherLocationCopy error:&v24];
   v12 = v11;
   v13 = v24;
   v14 = v13;
   if (v13)
   {
     v15 = 0.0;
-    if (a5)
+    if (error)
     {
       v16 = v13;
-      *a5 = v14;
+      *error = v14;
     }
   }
 
   else
   {
-    [v8 horizontalUncertainty];
+    [locationCopy horizontalUncertainty];
     v20 = v19;
     [v10 horizontalUncertainty];
     [(RTDistanceCalculator *)self computeCircleIntersectionPercentageOfMinRadiusCircleWithDistance:v12 firstRadius:v20 secondRadius:v21];
@@ -297,13 +297,13 @@ LABEL_12:
   return v15;
 }
 
-- (BOOL)checkFractionAreaOverlapBetweenLocation:(id)a3 otherLocation:(id)a4 largerThanThreshold:(double)a5 error:(id *)a6
+- (BOOL)checkFractionAreaOverlapBetweenLocation:(id)location otherLocation:(id)otherLocation largerThanThreshold:(double)threshold error:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
+  locationCopy = location;
+  otherLocationCopy = otherLocation;
   v20 = 0;
-  [(RTDistanceCalculator *)self fractionOfUncertaintyAreaOverlapOfTheSmalestUncertaintyAreaBetweenLocation:v10 otherLocation:v11 error:&v20];
+  [(RTDistanceCalculator *)self fractionOfUncertaintyAreaOverlapOfTheSmalestUncertaintyAreaBetweenLocation:locationCopy otherLocation:otherLocationCopy error:&v20];
   v13 = v12;
   v14 = v20;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
@@ -311,28 +311,28 @@ LABEL_12:
     v15 = _rt_log_facility_get_os_log(RTLogFacilityVisit);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
-      [(RTDistanceCalculator *)self distanceFromLocation:v10 toLocation:v11 error:0];
+      [(RTDistanceCalculator *)self distanceFromLocation:locationCopy toLocation:otherLocationCopy error:0];
       *buf = 138740995;
-      v22 = v10;
+      v22 = locationCopy;
       v23 = 2117;
-      v24 = v11;
+      v24 = otherLocationCopy;
       v25 = 2048;
       v26 = v19;
       v27 = 2048;
       v28 = v13;
       v29 = 2048;
-      v30 = a5;
+      thresholdCopy = threshold;
       _os_log_debug_impl(&dword_2304B3000, v15, OS_LOG_TYPE_DEBUG, "check uncertainty overlap for reference location, %{sensitive}@, other location, %{sensitive}@, distance between locations, %f, overlap percentage, %f, overlap treshold, %f", buf, 0x34u);
     }
   }
 
   if (v14)
   {
-    if (a6)
+    if (error)
     {
       v16 = v14;
       v17 = 0;
-      *a6 = v14;
+      *error = v14;
     }
 
     else
@@ -343,44 +343,44 @@ LABEL_12:
 
   else
   {
-    v17 = v13 > a5;
+    v17 = v13 > threshold;
   }
 
   return v17;
 }
 
-- (double)computeCircleIntersectionAreaWithDistance:(double)a3 firstRadius:(double)a4 secondRadius:(double)a5
+- (double)computeCircleIntersectionAreaWithDistance:(double)distance firstRadius:(double)radius secondRadius:(double)secondRadius
 {
-  v5 = a4;
+  radiusCopy = radius;
   result = 0.0;
-  if (a4 + a5 > a3)
+  if (radius + secondRadius > distance)
   {
-    if (a4 >= a5)
+    if (radius >= secondRadius)
     {
-      a4 = a5;
+      radius = secondRadius;
     }
 
-    if (a4 != 0.0)
+    if (radius != 0.0)
     {
-      if (v5 >= a5)
+      if (radiusCopy >= secondRadius)
       {
-        v9 = v5;
+        secondRadiusCopy = radiusCopy;
       }
 
       else
       {
-        v9 = a5;
+        secondRadiusCopy = secondRadius;
       }
 
-      if (a4 + a3 <= v9)
+      if (radius + distance <= secondRadiusCopy)
       {
-        return a4 * (a4 * 3.14159265);
+        return radius * (radius * 3.14159265);
       }
 
       else
       {
-        v10 = v5 * v5 * acos((a3 * a3 + v5 * v5 - a5 * a5) / (a3 + a3) / v5);
-        return v10 + a5 * a5 * acos((a3 * a3 - v5 * v5 + a5 * a5) / (a3 + a3) / a5) + sqrt((a3 + v5 + a5) * ((a3 + v5 - a5) * ((v5 - a3 + a5) * (a3 - v5 + a5)))) * -0.5;
+        v10 = radiusCopy * radiusCopy * acos((distance * distance + radiusCopy * radiusCopy - secondRadius * secondRadius) / (distance + distance) / radiusCopy);
+        return v10 + secondRadius * secondRadius * acos((distance * distance - radiusCopy * radiusCopy + secondRadius * secondRadius) / (distance + distance) / secondRadius) + sqrt((distance + radiusCopy + secondRadius) * ((distance + radiusCopy - secondRadius) * ((radiusCopy - distance + secondRadius) * (distance - radiusCopy + secondRadius)))) * -0.5;
       }
     }
   }
@@ -388,26 +388,26 @@ LABEL_12:
   return result;
 }
 
-- (double)computeCircleIntersectionPercentageOfMinRadiusCircleWithDistance:(double)a3 firstRadius:(double)a4 secondRadius:(double)a5
+- (double)computeCircleIntersectionPercentageOfMinRadiusCircleWithDistance:(double)distance firstRadius:(double)radius secondRadius:(double)secondRadius
 {
-  if (a4 >= a5)
+  if (radius >= secondRadius)
   {
-    v5 = a5;
+    radiusCopy = secondRadius;
   }
 
   else
   {
-    v5 = a4;
+    radiusCopy = radius;
   }
 
-  if (v5 == 0.0)
+  if (radiusCopy == 0.0)
   {
-    if (a4 < a5)
+    if (radius < secondRadius)
     {
-      a4 = a5;
+      radius = secondRadius;
     }
 
-    v6 = a4 < a3;
+    v6 = radius < distance;
     result = 1.0;
     if (v6)
     {
@@ -417,17 +417,17 @@ LABEL_12:
 
   else
   {
-    [RTDistanceCalculator computeCircleIntersectionAreaWithDistance:"computeCircleIntersectionAreaWithDistance:firstRadius:secondRadius:" firstRadius:a3 secondRadius:?];
-    return v8 / (v5 * (v5 * 3.14159265));
+    [RTDistanceCalculator computeCircleIntersectionAreaWithDistance:"computeCircleIntersectionAreaWithDistance:firstRadius:secondRadius:" firstRadius:distance secondRadius:?];
+    return v8 / (radiusCopy * (radiusCopy * 3.14159265));
   }
 
   return result;
 }
 
-- (double)distanceFromLocations:(CLLocationCoordinate2D *)a3 countOfFromLocations:(unint64_t)a4 toLocations:(CLLocationCoordinate2D *)a5 countOfToLocations:(unint64_t)a6 distanceMetric:(int64_t)a7 threshold:(double)a8 error:(id *)a9
+- (double)distanceFromLocations:(CLLocationCoordinate2D *)locations countOfFromLocations:(unint64_t)fromLocations toLocations:(CLLocationCoordinate2D *)toLocations countOfToLocations:(unint64_t)ofToLocations distanceMetric:(int64_t)metric threshold:(double)threshold error:(id *)error
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!locations)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -436,18 +436,18 @@ LABEL_12:
       _os_log_error_impl(&dword_2304B3000, v11, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: fromLocations", v22, 2u);
     }
 
-    if (!a9)
+    if (!error)
     {
       return 1.79769313e308;
     }
 
     v12 = @"fromLocations";
 LABEL_17:
-    *a9 = _RTErrorInvalidParameterCreate(v12);
+    *error = _RTErrorInvalidParameterCreate(v12);
     return 1.79769313e308;
   }
 
-  if (!a5)
+  if (!toLocations)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -456,7 +456,7 @@ LABEL_17:
       _os_log_error_impl(&dword_2304B3000, v13, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: toLocations", v22, 2u);
     }
 
-    if (!a9)
+    if (!error)
     {
       return 1.79769313e308;
     }
@@ -465,7 +465,7 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  if (!a4 || !a6)
+  if (!fromLocations || !ofToLocations)
   {
     v14 = MEMORY[0x277CCA9B8];
     v15 = *MEMORY[0x277D01448];
@@ -475,26 +475,26 @@ LABEL_17:
     v17 = v26;
     v18 = &v25;
 LABEL_19:
-    v19 = [v16 dictionaryWithObjects:v17 forKeys:v18 count:{1, a6, a7, a8}];
+    v19 = [v16 dictionaryWithObjects:v17 forKeys:v18 count:{1, ofToLocations, metric, threshold}];
     v20 = [v14 errorWithDomain:v15 code:7 userInfo:v19];
 
-    if (a9)
+    if (error)
     {
       v21 = v20;
-      *a9 = v20;
+      *error = v20;
     }
 
     return 1.79769313e308;
   }
 
-  if (a7 == 1)
+  if (metric == 1)
   {
 
-    [RTDistanceCalculator _centroidDistanceFromLocations:"_centroidDistanceFromLocations:countOfFromLocations:toLocations:countOfToLocations:error:" countOfFromLocations:a8 toLocations:? countOfToLocations:? error:?];
+    [RTDistanceCalculator _centroidDistanceFromLocations:"_centroidDistanceFromLocations:countOfFromLocations:toLocations:countOfToLocations:error:" countOfFromLocations:threshold toLocations:? countOfToLocations:? error:?];
     return result;
   }
 
-  if ((a7 & 0xFFFFFFFFFFFFFFFELL) != 2)
+  if ((metric & 0xFFFFFFFFFFFFFFFELL) != 2)
   {
     v14 = MEMORY[0x277CCA9B8];
     v15 = *MEMORY[0x277D01448];
@@ -506,14 +506,14 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  [RTDistanceCalculator _dtwDistanceFromLocations:"_dtwDistanceFromLocations:countOfFromLocations:toLocations:countOfToLocations:distanceMetric:threshold:error:" countOfFromLocations:a8 toLocations:? countOfToLocations:? distanceMetric:? threshold:? error:?];
+  [RTDistanceCalculator _dtwDistanceFromLocations:"_dtwDistanceFromLocations:countOfFromLocations:toLocations:countOfToLocations:distanceMetric:threshold:error:" countOfFromLocations:threshold toLocations:? countOfToLocations:? distanceMetric:? threshold:? error:?];
   return result;
 }
 
-- (double)_dtwDistanceFromLocations:(CLLocationCoordinate2D *)a3 countOfFromLocations:(unint64_t)a4 toLocations:(CLLocationCoordinate2D *)a5 countOfToLocations:(unint64_t)a6 distanceMetric:(int64_t)a7 threshold:(double)a8 error:(id *)a9
+- (double)_dtwDistanceFromLocations:(CLLocationCoordinate2D *)locations countOfFromLocations:(unint64_t)fromLocations toLocations:(CLLocationCoordinate2D *)toLocations countOfToLocations:(unint64_t)ofToLocations distanceMetric:(int64_t)metric threshold:(double)threshold error:(id *)error
 {
   v65[1] = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!locations)
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -522,7 +522,7 @@ LABEL_19:
       _os_log_error_impl(&dword_2304B3000, v27, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: fromLocations", buf, 2u);
     }
 
-    if (!a9)
+    if (!error)
     {
       return 1.79769313e308;
     }
@@ -531,7 +531,7 @@ LABEL_19:
     goto LABEL_21;
   }
 
-  if (!a5)
+  if (!toLocations)
   {
     v29 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -540,25 +540,25 @@ LABEL_19:
       _os_log_error_impl(&dword_2304B3000, v29, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: toLocations", buf, 2u);
     }
 
-    if (!a9)
+    if (!error)
     {
       return 1.79769313e308;
     }
 
     v28 = @"toLocations";
 LABEL_21:
-    *a9 = _RTErrorInvalidParameterCreate(v28);
+    *error = _RTErrorInvalidParameterCreate(v28);
     return 1.79769313e308;
   }
 
-  v18 = [MEMORY[0x277CBEAA8] date];
-  v19 = v18;
-  if (a4 && a6)
+  date = [MEMORY[0x277CBEAA8] date];
+  v19 = date;
+  if (fromLocations && ofToLocations)
   {
-    v46 = v18;
+    v46 = date;
     v20 = objc_autoreleasePoolPush();
     v47 = 0;
-    v21 = [(RTDistanceCalculator *)self _fastDTWForX:a3 xCount:a4 y:a5 yCount:a6 radius:a7 distanceMetric:&v47 threshold:1.0 error:a8];
+    v21 = [(RTDistanceCalculator *)self _fastDTWForX:locations xCount:fromLocations y:toLocations yCount:ofToLocations radius:metric distanceMetric:&v47 threshold:1.0 error:threshold];
     v22 = v47;
     v23 = 1.79769313e308;
     if (!v22 && v21)
@@ -570,7 +570,7 @@ LABEL_21:
     }
 
     objc_autoreleasePoolPop(v20);
-    if (a9 && v22)
+    if (error && v22)
     {
       v25 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       v19 = v46;
@@ -584,12 +584,12 @@ LABEL_21:
         v50 = 2112;
         v51 = v45;
         v52 = 2112;
-        v53 = v22;
+        fromLocationsCopy = v22;
         _os_log_error_impl(&dword_2304B3000, v25, OS_LOG_TYPE_ERROR, "%@, %@, RTOutErrorAssignConditionalReturn, error, %@", buf, 0x20u);
       }
 
       v26 = v22;
-      *a9 = v22;
+      *error = v22;
     }
 
     else
@@ -603,8 +603,8 @@ LABEL_21:
           v36 = objc_opt_class();
           v37 = NSStringFromClass(v36);
           v38 = NSStringFromSelector(a2);
-          v39 = [MEMORY[0x277CBEAA8] date];
-          [v39 timeIntervalSinceDate:v46];
+          date2 = [MEMORY[0x277CBEAA8] date];
+          [date2 timeIntervalSinceDate:v46];
           v41 = v40;
           +[RTRuntime footprint];
           *buf = 138414082;
@@ -612,11 +612,11 @@ LABEL_21:
           v50 = 2112;
           v51 = v38;
           v52 = 2048;
-          v53 = a4;
+          fromLocationsCopy = fromLocations;
           v54 = 2048;
-          v55 = a6;
+          ofToLocationsCopy = ofToLocations;
           v56 = 2048;
-          v57 = a8;
+          thresholdCopy = threshold;
           v58 = 2048;
           v59 = v23;
           v60 = 2048;
@@ -640,10 +640,10 @@ LABEL_21:
     v32 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v65 forKeys:&v64 count:1];
     v22 = [v30 errorWithDomain:v31 code:7 userInfo:v32];
 
-    if (a9)
+    if (error)
     {
       v33 = v22;
-      *a9 = v22;
+      *error = v22;
     }
 
     v23 = 1.79769313e308;
@@ -652,19 +652,19 @@ LABEL_21:
   return v23;
 }
 
-- (id)_convertToRTPairsFromLocations:(id)a3 error:(id *)a4
+- (id)_convertToRTPairsFromLocations:(id)locations error:(id *)error
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  locationsCopy = locations;
+  if (locationsCopy)
   {
-    v6 = objc_opt_new();
+    array = objc_opt_new();
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v21 = v5;
-    obj = v5;
+    v21 = locationsCopy;
+    obj = locationsCopy;
     v7 = [obj countByEnumeratingWithState:&v23 objects:v28 count:16];
     if (v7)
     {
@@ -690,7 +690,7 @@ LABEL_21:
           v17 = [v16 numberWithDouble:?];
           v18 = [v13 initWithFirstObject:v15 secondObject:v17];
 
-          [v6 addObject:v18];
+          [array addObject:v18];
           objc_autoreleasePoolPop(v12);
         }
 
@@ -700,7 +700,7 @@ LABEL_21:
       while (v8);
     }
 
-    v5 = v21;
+    locationsCopy = v21;
   }
 
   else
@@ -712,21 +712,21 @@ LABEL_21:
       _os_log_error_impl(&dword_2304B3000, v19, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: locations", buf, 2u);
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = _RTErrorInvalidParameterCreate(@"locations");
+      *error = _RTErrorInvalidParameterCreate(@"locations");
     }
 
-    v6 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
   }
 
-  return v6;
+  return array;
 }
 
-- (id)_fastDTWForX:(CLLocationCoordinate2D *)a3 xCount:(unint64_t)a4 y:(CLLocationCoordinate2D *)a5 yCount:(unint64_t)a6 radius:(double)a7 distanceMetric:(int64_t)a8 threshold:(double)a9 error:(id *)a10
+- (id)_fastDTWForX:(CLLocationCoordinate2D *)x xCount:(unint64_t)count y:(CLLocationCoordinate2D *)y yCount:(unint64_t)yCount radius:(double)radius distanceMetric:(int64_t)metric threshold:(double)threshold error:(id *)self0
 {
   v62 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!x)
   {
     v29 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -735,12 +735,12 @@ LABEL_21:
       _os_log_error_impl(&dword_2304B3000, v29, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: x", buf, 2u);
     }
 
-    if (a10)
+    if (error)
     {
       v30 = @"x";
 LABEL_19:
       _RTErrorInvalidParameterCreate(v30);
-      *a10 = v32 = 0;
+      *error = v32 = 0;
       goto LABEL_50;
     }
 
@@ -749,7 +749,7 @@ LABEL_20:
     goto LABEL_50;
   }
 
-  if (!a5)
+  if (!y)
   {
     v31 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -758,7 +758,7 @@ LABEL_20:
       _os_log_error_impl(&dword_2304B3000, v31, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: y", buf, 2u);
     }
 
-    if (a10)
+    if (error)
     {
       v30 = @"y";
       goto LABEL_19;
@@ -767,15 +767,15 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  v20 = a7 + 2.0;
-  if (v20 > a4 || v20 > a6)
+  v20 = radius + 2.0;
+  if (v20 > count || v20 > yCount)
   {
-    v22 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     v56 = 0;
-    v23 = [(RTDistanceCalculator *)self _dtwForX:a3 xCount:a4 y:a5 yCount:a6 window:v22 distanceMetric:a8 threshold:a9 error:&v56];
+    v23 = [(RTDistanceCalculator *)self _dtwForX:x xCount:count y:y yCount:yCount window:array distanceMetric:metric threshold:threshold error:&v56];
     v24 = v56;
 
-    if (a10 && v24)
+    if (error && v24)
     {
       v25 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -807,9 +807,9 @@ LABEL_48:
   v33 = objc_autoreleasePoolPush();
   *buf = 0;
   v55 = 0;
-  v34 = [(RTDistanceCalculator *)self _reduce_by_half:a3 count:a4 outputCount:buf error:&v55];
+  v34 = [(RTDistanceCalculator *)self _reduce_by_half:x count:count outputCount:buf error:&v55];
   v35 = v55;
-  if (v35 || (v47 = v34, v53 = 0, v54 = 0, v36 = [(RTDistanceCalculator *)self _reduce_by_half:a5 count:a6 outputCount:&v54 error:&v53], (v35 = v53) != 0))
+  if (v35 || (v47 = v34, v53 = 0, v54 = 0, v36 = [(RTDistanceCalculator *)self _reduce_by_half:y count:yCount outputCount:&v54 error:&v53], (v35 = v53) != 0))
   {
     v24 = v35;
     v23 = 0;
@@ -820,7 +820,7 @@ LABEL_24:
 
   context = v33;
   v52 = 0;
-  v32 = [(RTDistanceCalculator *)self _fastDTWForX:v47 xCount:*buf y:v36 yCount:v54 radius:a8 distanceMetric:&v52 threshold:a7 error:a9];
+  v32 = [(RTDistanceCalculator *)self _fastDTWForX:v47 xCount:*buf y:v36 yCount:v54 radius:metric distanceMetric:&v52 threshold:radius error:threshold];
   v39 = v52;
   if (v39)
   {
@@ -833,7 +833,7 @@ LABEL_24:
 
   v40 = v36;
   [v32 distance];
-  if (v41 > a9)
+  if (v41 > threshold)
   {
     if (v47)
     {
@@ -862,9 +862,9 @@ LABEL_24:
     free(v40);
   }
 
-  v45 = [v32 cellIndices];
+  cellIndices = [v32 cellIndices];
   v51 = 0;
-  v48 = [(RTDistanceCalculator *)self _expand_windowWithPath:v45 len_x:a4 len_y:a6 radius:a7 error:&v51];
+  v48 = [(RTDistanceCalculator *)self _expand_windowWithPath:cellIndices len_x:count len_y:yCount radius:radius error:&v51];
   v24 = v51;
 
   if (v24)
@@ -877,7 +877,7 @@ LABEL_24:
   {
 
     v50 = 0;
-    v23 = [(RTDistanceCalculator *)self _dtwForX:a3 xCount:a4 y:a5 yCount:a6 window:v48 distanceMetric:a8 threshold:a9 error:&v50];
+    v23 = [(RTDistanceCalculator *)self _dtwForX:x xCount:count y:y yCount:yCount window:v48 distanceMetric:metric threshold:threshold error:&v50];
     v24 = v50;
     v43 = v48;
     if (!v24)
@@ -893,7 +893,7 @@ LABEL_24:
   v33 = context;
 LABEL_25:
   objc_autoreleasePoolPop(v33);
-  if (!a10)
+  if (!error)
   {
     goto LABEL_48;
   }
@@ -917,7 +917,7 @@ LABEL_27:
 
   v38 = v24;
   v32 = 0;
-  *a10 = v24;
+  *error = v24;
 LABEL_49:
 
 LABEL_50:
@@ -925,14 +925,14 @@ LABEL_50:
   return v32;
 }
 
-- (id)_dtwForX:(CLLocationCoordinate2D *)a3 xCount:(unint64_t)a4 y:(CLLocationCoordinate2D *)a5 yCount:(unint64_t)a6 window:(id)a7 distanceMetric:(int64_t)a8 threshold:(double)a9 error:(id *)a10
+- (id)_dtwForX:(CLLocationCoordinate2D *)x xCount:(unint64_t)count y:(CLLocationCoordinate2D *)y yCount:(unint64_t)yCount window:(id)window distanceMetric:(int64_t)metric threshold:(double)threshold error:(id *)self0
 {
-  v15 = a10;
+  errorCopy = error;
   v181 = *MEMORY[0x277D85DE8];
-  v16 = a7;
-  v17 = v16;
-  v142 = a3;
-  if (!a3)
+  windowCopy = window;
+  v17 = windowCopy;
+  xCopy = x;
+  if (!x)
   {
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -941,7 +941,7 @@ LABEL_50:
       _os_log_error_impl(&dword_2304B3000, v20, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: x", buf, 2u);
     }
 
-    if (!a10)
+    if (!error)
     {
       goto LABEL_88;
     }
@@ -950,7 +950,7 @@ LABEL_50:
     goto LABEL_14;
   }
 
-  if (!a5)
+  if (!y)
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -959,7 +959,7 @@ LABEL_50:
       _os_log_error_impl(&dword_2304B3000, v22, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: y", buf, 2u);
     }
 
-    if (!a10)
+    if (!error)
     {
       goto LABEL_88;
     }
@@ -968,12 +968,12 @@ LABEL_50:
 LABEL_14:
     v23 = _RTErrorInvalidParameterCreate(v21);
 LABEL_15:
-    v15 = 0;
-    *a10 = v23;
+    errorCopy = 0;
+    *error = v23;
     goto LABEL_88;
   }
 
-  if (!v16)
+  if (!windowCopy)
   {
     v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -982,7 +982,7 @@ LABEL_15:
       _os_log_error_impl(&dword_2304B3000, v24, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: window", buf, 2u);
     }
 
-    if (!a10)
+    if (!error)
     {
       goto LABEL_87;
     }
@@ -992,11 +992,11 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v141 = a5;
-  v149 = a8;
+  yCopy = y;
+  metricCopy = metric;
   aSelector = a2;
   v18 = 0x2788C1000;
-  if ([v16 count])
+  if ([windowCopy count])
   {
     v19 = v17;
   }
@@ -1005,13 +1005,13 @@ LABEL_15:
   {
     context = objc_autoreleasePoolPush();
     v19 = objc_opt_new();
-    if (a4)
+    if (count)
     {
       v25 = 0;
       do
       {
         v26 = objc_autoreleasePoolPush();
-        if (a6)
+        if (yCount)
         {
           v27 = 0;
           do
@@ -1024,14 +1024,14 @@ LABEL_15:
             ++v27;
           }
 
-          while (a6 > v27);
+          while (yCount > v27);
         }
 
         objc_autoreleasePoolPop(v26);
         ++v25;
       }
 
-      while (a4 > v25);
+      while (count > v25);
     }
 
     objc_autoreleasePoolPop(context);
@@ -1118,15 +1118,15 @@ LABEL_15:
       v153 = v49;
       v154 = v47;
       v51 = [objc_alloc(*(v18 + 1200)) initWithX:v47 Y:v49];
-      if (v149 == 3)
+      if (metricCopy == 3)
       {
-        if (v47 < a4 && v49 < a6)
+        if (v47 < count && v49 < yCount)
         {
-          v66 = &v142[v47];
+          v66 = &xCopy[v47];
           v63 = v155;
           v159 = v155;
           v64 = &v159;
-          [(RTDistanceCalculator *)self _dtwDistanceEuclideanBetweenX:v66 y:&v141[v49] error:&v159];
+          [(RTDistanceCalculator *)self _dtwDistanceEuclideanBetweenX:v66 y:&yCopy[v49] error:&v159];
           goto LABEL_55;
         }
 
@@ -1146,15 +1146,15 @@ LABEL_53:
       }
 
       v52 = 0.0;
-      if (v149 == 2)
+      if (metricCopy == 2)
       {
-        if (v47 < a4 && v49 < a6)
+        if (v47 < count && v49 < yCount)
         {
-          v62 = &v142[v47];
+          v62 = &xCopy[v47];
           v63 = v155;
           v160 = v155;
           v64 = &v160;
-          [(RTDistanceCalculator *)self _dtwDistanceFirstNormBetweenX:v62 y:&v141[v49] error:&v160];
+          [(RTDistanceCalculator *)self _dtwDistanceFirstNormBetweenX:v62 y:&yCopy[v49] error:&v160];
 LABEL_55:
           v52 = v65;
           v37 = v43;
@@ -1309,7 +1309,7 @@ LABEL_71:
 
 LABEL_77:
 
-  if (a10 && v155)
+  if (error && v155)
   {
     v114 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     v115 = v155;
@@ -1328,18 +1328,18 @@ LABEL_77:
     }
 
     v116 = v155;
-    v15 = 0;
-    *a10 = v155;
+    errorCopy = 0;
+    *error = v155;
   }
 
   else
   {
     v117 = objc_opt_new();
-    v118 = a6;
-    if (a6 | a4)
+    yCountCopy = yCount;
+    if (yCount | count)
     {
-      LOWORD(v119) = a6;
-      LOWORD(v120) = a4;
+      LOWORD(v119) = yCount;
+      LOWORD(v120) = count;
       do
       {
         v121 = objc_autoreleasePoolPush();
@@ -1348,12 +1348,12 @@ LABEL_77:
 
         v123 = [objc_alloc(*(v18 + 1200)) initWithX:v120 Y:v119];
         v124 = [v37 objectForKeyedSubscript:v123];
-        v125 = [v124 cellIndex];
-        v120 = [v125 x];
+        cellIndex = [v124 cellIndex];
+        v120 = [cellIndex x];
 
         v126 = [v37 objectForKeyedSubscript:v123];
-        v127 = [v126 cellIndex];
-        v119 = [v127 y];
+        cellIndex2 = [v126 cellIndex];
+        v119 = [cellIndex2 y];
 
         v18 = 0x2788C1000uLL;
         objc_autoreleasePoolPop(v121);
@@ -1362,14 +1362,14 @@ LABEL_77:
       while (v119 | v120);
     }
 
-    v128 = [objc_alloc(*(v18 + 1200)) initWithX:a4 Y:v118];
+    v128 = [objc_alloc(*(v18 + 1200)) initWithX:count Y:yCountCopy];
     v129 = [RTDTWResult alloc];
     v130 = [v37 objectForKeyedSubscript:v128];
     [v130 distance];
     v132 = v131;
-    v133 = [v117 reverseObjectEnumerator];
-    v134 = [v133 allObjects];
-    v15 = [(RTDTWResult *)v129 initWithDistance:v134 cellIndices:v132];
+    reverseObjectEnumerator = [v117 reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
+    errorCopy = [(RTDTWResult *)v129 initWithDistance:allObjects cellIndices:v132];
 
     v37 = 0;
     v115 = v155;
@@ -1380,28 +1380,28 @@ LABEL_87:
   v17 = 0;
 LABEL_88:
 
-  return v15;
+  return errorCopy;
 }
 
-- (CLLocationCoordinate2D)_reduce_by_half:(CLLocationCoordinate2D *)a3 count:(unint64_t)a4 outputCount:(unint64_t *)a5 error:(id *)a6
+- (CLLocationCoordinate2D)_reduce_by_half:(CLLocationCoordinate2D *)_reduce_by_half count:(unint64_t)count outputCount:(unint64_t *)outputCount error:(id *)error
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (_reduce_by_half)
   {
-    v10 = malloc_type_malloc(((8 * a4) & 0xFFFFFFFFFFFFFFF0) + 16, 0x1000040451B5BE8uLL);
+    v10 = malloc_type_malloc(((8 * count) & 0xFFFFFFFFFFFFFFF0) + 16, 0x1000040451B5BE8uLL);
     v11 = v10;
-    if ((a4 & 0xFFFFFFFFFFFFFFFELL) != 0)
+    if ((count & 0xFFFFFFFFFFFFFFFELL) != 0)
     {
-      v30 = a5;
+      outputCountCopy = outputCount;
       v12 = 0;
-      v13 = ((a4 & 0xFFFFFFFFFFFFFFFELL) - 1) >> 1;
+      v13 = ((count & 0xFFFFFFFFFFFFFFFELL) - 1) >> 1;
       v14 = v10 + 8;
-      v15 = a3 + 1;
+      v15 = _reduce_by_half + 1;
       v16 = 1;
       while (1)
       {
         v17 = objc_autoreleasePoolPush();
-        if (v16 >= a4)
+        if (v16 >= count)
         {
           break;
         }
@@ -1433,7 +1433,7 @@ LABEL_88:
 
       objc_autoreleasePoolPop(v17);
 LABEL_13:
-      a5 = v30;
+      outputCount = outputCountCopy;
     }
 
     else
@@ -1443,13 +1443,13 @@ LABEL_13:
     }
 
     v24 = malloc_type_realloc(v11, 16 * v12, 0x1000040451B5BE8uLL);
-    *a5 = v12;
+    *outputCount = v12;
     if (v22)
     {
-      if (a6)
+      if (error)
       {
         v28 = v22;
-        *a6 = v22;
+        *error = v22;
       }
 
       if (v24)
@@ -1469,10 +1469,10 @@ LABEL_13:
       _os_log_error_impl(&dword_2304B3000, v23, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: x", buf, 2u);
     }
 
-    if (a6)
+    if (error)
     {
       _RTErrorInvalidParameterCreate(@"x");
-      *a6 = v24 = 0;
+      *error = v24 = 0;
     }
 
     else
@@ -1484,23 +1484,23 @@ LABEL_13:
   return v24;
 }
 
-- (id)_expand_windowWithPath:(id)a3 len_x:(signed __int16)a4 len_y:(signed __int16)a5 radius:(signed __int16)a6 error:(id *)a7
+- (id)_expand_windowWithPath:(id)path len_x:(signed __int16)len_x len_y:(signed __int16)len_y radius:(signed __int16)radius error:(id *)error
 {
-  v8 = a6;
-  v40 = a4;
-  v41 = a5;
+  radiusCopy = radius;
+  len_xCopy = len_x;
+  len_yCopy = len_y;
   v60 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  if (v9)
+  pathCopy = path;
+  if (pathCopy)
   {
     v39 = objc_opt_new();
     v38 = objc_autoreleasePoolPush();
-    v10 = [MEMORY[0x277CBEB58] setWithArray:v9];
+    v10 = [MEMORY[0x277CBEB58] setWithArray:pathCopy];
     v53 = 0u;
     v54 = 0u;
     v55 = 0u;
     v56 = 0u;
-    obj = v9;
+    obj = pathCopy;
     v44 = [obj countByEnumeratingWithState:&v53 objects:v59 count:16];
     if (v44)
     {
@@ -1518,13 +1518,13 @@ LABEL_13:
           v46 = v11;
           v12 = *(*(&v53 + 1) + 8 * v11);
           context = objc_autoreleasePoolPush();
-          if (-v8 <= v8)
+          if (-radiusCopy <= radiusCopy)
           {
-            LOWORD(v13) = -v8;
+            LOWORD(v13) = -radiusCopy;
             do
             {
               v14 = objc_autoreleasePoolPush();
-              LOWORD(v15) = -v8;
+              LOWORD(v15) = -radiusCopy;
               do
               {
                 v16 = objc_autoreleasePoolPush();
@@ -1535,12 +1535,12 @@ LABEL_13:
                 v15 = (v15 + 1);
               }
 
-              while (v15 <= v8);
+              while (v15 <= radiusCopy);
               objc_autoreleasePoolPop(v14);
               v13 = (v13 + 1);
             }
 
-            while (v13 <= v8);
+            while (v13 <= radiusCopy);
           }
 
           objc_autoreleasePoolPop(context);
@@ -1597,8 +1597,8 @@ LABEL_13:
       while (v20);
     }
 
-    v29 = v39;
-    if (v40 < 1)
+    array = v39;
+    if (len_xCopy < 1)
     {
       goto LABEL_35;
     }
@@ -1608,7 +1608,7 @@ LABEL_13:
     while (1)
     {
       v47 = objc_autoreleasePoolPush();
-      if (v41 <= v31)
+      if (len_yCopy <= v31)
       {
         v35 = 0xFFFF;
         goto LABEL_34;
@@ -1646,7 +1646,7 @@ LABEL_30:
         objc_autoreleasePoolPop(v33);
         v31 = (v31 + 1);
         v32 = v35;
-        if (v31 >= v41)
+        if (v31 >= len_yCopy)
         {
           goto LABEL_34;
         }
@@ -1658,7 +1658,7 @@ LABEL_34:
       objc_autoreleasePoolPop(v47);
       v30 = (v30 + 1);
       v31 = v35;
-      if (v30 >= v40)
+      if (v30 >= len_xCopy)
       {
 LABEL_35:
 
@@ -1675,20 +1675,20 @@ LABEL_35:
     _os_log_error_impl(&dword_2304B3000, v36, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: path", buf, 2u);
   }
 
-  if (a7)
+  if (error)
   {
-    *a7 = _RTErrorInvalidParameterCreate(@"path");
+    *error = _RTErrorInvalidParameterCreate(@"path");
   }
 
-  v29 = [MEMORY[0x277CBEA60] array];
+  array = [MEMORY[0x277CBEA60] array];
 LABEL_41:
 
-  return v29;
+  return array;
 }
 
-- (double)_dtwDistanceFirstNormBetweenX:(CLLocationCoordinate2D *)a3 y:(CLLocationCoordinate2D *)a4 error:(id *)a5
+- (double)_dtwDistanceFirstNormBetweenX:(CLLocationCoordinate2D *)x y:(CLLocationCoordinate2D *)y error:(id *)error
 {
-  if (!a3)
+  if (!x)
   {
     v7 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -1697,7 +1697,7 @@ LABEL_41:
       _os_log_error_impl(&dword_2304B3000, v7, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: x", buf, 2u);
     }
 
-    if (!a5)
+    if (!error)
     {
       return 1.79769313e308;
     }
@@ -1706,9 +1706,9 @@ LABEL_41:
     goto LABEL_12;
   }
 
-  if (a4)
+  if (y)
   {
-    return vaddvq_f64(vabdq_f64(*a3, *a4));
+    return vaddvq_f64(vabdq_f64(*x, *y));
   }
 
   v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -1718,19 +1718,19 @@ LABEL_41:
     _os_log_error_impl(&dword_2304B3000, v9, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: y", v10, 2u);
   }
 
-  if (a5)
+  if (error)
   {
     v8 = @"y";
 LABEL_12:
-    *a5 = _RTErrorInvalidParameterCreate(v8);
+    *error = _RTErrorInvalidParameterCreate(v8);
   }
 
   return 1.79769313e308;
 }
 
-- (double)_dtwDistanceEuclideanBetweenX:(CLLocationCoordinate2D *)a3 y:(CLLocationCoordinate2D *)a4 error:(id *)a5
+- (double)_dtwDistanceEuclideanBetweenX:(CLLocationCoordinate2D *)x y:(CLLocationCoordinate2D *)y error:(id *)error
 {
-  if (!a3)
+  if (!x)
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -1739,7 +1739,7 @@ LABEL_12:
       _os_log_error_impl(&dword_2304B3000, v8, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: x", buf, 2u);
     }
 
-    if (!a5)
+    if (!error)
     {
       return 1.79769313e308;
     }
@@ -1748,9 +1748,9 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  if (a4)
+  if (y)
   {
-    v6 = vsubq_f64(*a3, *a4);
+    v6 = vsubq_f64(*x, *y);
     return sqrt(vaddvq_f64(vmulq_f64(v6, v6)));
   }
 
@@ -1761,20 +1761,20 @@ LABEL_12:
     _os_log_error_impl(&dword_2304B3000, v10, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: y", v11, 2u);
   }
 
-  if (a5)
+  if (error)
   {
     v9 = @"y";
 LABEL_12:
-    *a5 = _RTErrorInvalidParameterCreate(v9);
+    *error = _RTErrorInvalidParameterCreate(v9);
   }
 
   return 1.79769313e308;
 }
 
-- (double)_centroidDistanceFromLocations:(CLLocationCoordinate2D *)a3 countOfFromLocations:(unint64_t)a4 toLocations:(CLLocationCoordinate2D *)a5 countOfToLocations:(unint64_t)a6 error:(id *)a7
+- (double)_centroidDistanceFromLocations:(CLLocationCoordinate2D *)locations countOfFromLocations:(unint64_t)fromLocations toLocations:(CLLocationCoordinate2D *)toLocations countOfToLocations:(unint64_t)ofToLocations error:(id *)error
 {
   v43 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!locations)
   {
     v28 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -1783,7 +1783,7 @@ LABEL_12:
       _os_log_error_impl(&dword_2304B3000, v28, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: fromLocations", buf, 2u);
     }
 
-    if (!a7)
+    if (!error)
     {
       return 1.79769313e308;
     }
@@ -1792,7 +1792,7 @@ LABEL_12:
     goto LABEL_21;
   }
 
-  if (!a5)
+  if (!toLocations)
   {
     v30 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -1801,29 +1801,29 @@ LABEL_12:
       _os_log_error_impl(&dword_2304B3000, v30, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: toLocations", buf, 2u);
     }
 
-    if (!a7)
+    if (!error)
     {
       return 1.79769313e308;
     }
 
     v29 = @"toLocations";
 LABEL_21:
-    *a7 = _RTErrorInvalidParameterCreate(v29);
+    *error = _RTErrorInvalidParameterCreate(v29);
     return 1.79769313e308;
   }
 
   v10 = 1.79769313e308;
-  if (a4 && a6)
+  if (fromLocations && ofToLocations)
   {
     v15 = objc_autoreleasePoolPush();
     v39 = 0;
-    [(RTDistanceCalculator *)self computeCentroid:a3 locationsCount:a4 error:&v39];
+    [(RTDistanceCalculator *)self computeCentroid:locations locationsCount:fromLocations error:&v39];
     v17 = v16;
     v19 = v18;
     v20 = v39;
     *buf = v17;
     *&buf[8] = v19;
-    if (v20 || (v37 = 0, [(RTDistanceCalculator *)self computeCentroid:a5 locationsCount:a6 error:&v37], v22 = v21, v24 = v23, v20 = v37, *v38 = v22, *&v38[1] = v24, v20))
+    if (v20 || (v37 = 0, [(RTDistanceCalculator *)self computeCentroid:toLocations locationsCount:ofToLocations error:&v37], v22 = v21, v24 = v23, v20 = v37, *v38 = v22, *&v38[1] = v24, v20))
     {
       v25 = v20;
       v10 = 1.79769313e308;
@@ -1842,7 +1842,7 @@ LABEL_21:
       {
 LABEL_8:
         objc_autoreleasePoolPop(v15);
-        if (a7)
+        if (error)
         {
           v26 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
           if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -1860,7 +1860,7 @@ LABEL_8:
           }
 
           v27 = v25;
-          *a7 = v25;
+          *error = v25;
         }
 
         goto LABEL_12;
@@ -1880,9 +1880,9 @@ LABEL_12:
   return v10;
 }
 
-- (CLLocationCoordinate2D)computeCentroid:(CLLocationCoordinate2D *)a3 locationsCount:(unint64_t)a4 error:(id *)a5
+- (CLLocationCoordinate2D)computeCentroid:(CLLocationCoordinate2D *)centroid locationsCount:(unint64_t)count error:(id *)error
 {
-  if (!a3)
+  if (!centroid)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -1891,15 +1891,15 @@ LABEL_12:
       _os_log_error_impl(&dword_2304B3000, v13, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: locations", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = _RTErrorInvalidParameterCreate(@"locations");
+      *error = _RTErrorInvalidParameterCreate(@"locations");
     }
 
     goto LABEL_10;
   }
 
-  if (!a4)
+  if (!count)
   {
 LABEL_10:
     latitude = *MEMORY[0x277CE4278];
@@ -1912,13 +1912,13 @@ LABEL_10:
   do
   {
     v8 = objc_autoreleasePoolPush();
-    v14 = vaddq_f64(v14, a3[v7]);
+    v14 = vaddq_f64(v14, centroid[v7]);
     objc_autoreleasePoolPop(v8);
     ++v7;
   }
 
-  while (a4 != v7);
-  v11 = CLLocationCoordinate2DMake(v14.f64[0] / a4, v14.f64[1] / a4);
+  while (count != v7);
+  v11 = CLLocationCoordinate2DMake(v14.f64[0] / count, v14.f64[1] / count);
   longitude = v11.longitude;
   latitude = v11.latitude;
 LABEL_11:
@@ -1927,14 +1927,14 @@ LABEL_11:
   return result;
 }
 
-- (double)computeBoundingBoxArea:(CGRect)a3 locationsCount:(unint64_t)a4 error:(id *)a5
+- (double)computeBoundingBoxArea:(CGRect)area locationsCount:(unint64_t)count error:(id *)error
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = area.size.height;
+  width = area.size.width;
+  y = area.origin.y;
+  x = area.origin.x;
   v34 = *MEMORY[0x277D85DE8];
-  [(RTDistanceCalculator *)self _computeAreaFromRect:a4, a5];
+  [(RTDistanceCalculator *)self _computeAreaFromRect:count, error];
   v12 = v11;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
@@ -1949,7 +1949,7 @@ LABEL_11:
       v20 = 2112;
       v21 = v16;
       v22 = 2048;
-      v23 = a4;
+      countCopy = count;
       v24 = 2053;
       v25 = x;
       v26 = 2053;
@@ -1967,10 +1967,10 @@ LABEL_11:
   return v12;
 }
 
-- (double)computeIntersectionOverUnionUsingBoundingBoxBetweenLocations:(CLLocationCoordinate2D *)a3 locationsCount:(unint64_t)a4 otherLocations:(CLLocationCoordinate2D *)a5 otherLocationsCount:(unint64_t)a6 error:(id *)a7
+- (double)computeIntersectionOverUnionUsingBoundingBoxBetweenLocations:(CLLocationCoordinate2D *)locations locationsCount:(unint64_t)count otherLocations:(CLLocationCoordinate2D *)otherLocations otherLocationsCount:(unint64_t)locationsCount error:(id *)error
 {
   v101[1] = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!locations)
   {
     v26 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -1986,7 +1986,7 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if (!a5)
+  if (!otherLocations)
   {
     v26 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -1999,16 +1999,16 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  if (a4 < 4 || a6 <= 3)
+  if (count < 4 || locationsCount <= 3)
   {
     v28 = MEMORY[0x277CCA9B8];
     v29 = *MEMORY[0x277D01448];
     v100 = *MEMORY[0x277CCA450];
     v101[0] = @"less number of locations than required";
-    v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v101 forKeys:&v100 count:{1, a6}];
+    v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v101 forKeys:&v100 count:{1, locationsCount}];
     v26 = [v28 errorWithDomain:v29 code:7 userInfo:v30];
 
-    if (!a7)
+    if (!error)
     {
       goto LABEL_23;
     }
@@ -2024,7 +2024,7 @@ LABEL_23:
   v20 = v19;
   v21 = 0;
   v22 = v21;
-  if (a7 && v21)
+  if (error && v21)
   {
     v23 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -2037,26 +2037,26 @@ LABEL_23:
       v70 = 2112;
       v71 = v59;
       v72 = 2112;
-      v73 = v22;
+      countCopy = v22;
       _os_log_error_impl(&dword_2304B3000, v23, OS_LOG_TYPE_ERROR, "%@, %@, RTOutErrorAssignConditionalReturn, error, %@", buf, 0x20u);
     }
 
     v24 = v22;
-    *a7 = v22;
+    *error = v22;
     v25 = 2.22507386e-308;
     v26 = v22;
     goto LABEL_24;
   }
 
   v67[0] = v21;
-  [(RTDistanceCalculator *)self cgrectFromCoordinates:a5 locationsCount:a6 error:v67];
+  [(RTDistanceCalculator *)self cgrectFromCoordinates:otherLocations locationsCount:locationsCount error:v67];
   v32 = v31;
   v34 = v33;
   v36 = v35;
   v38 = v37;
   v26 = v67[0];
 
-  if (a7 && v26)
+  if (error && v26)
   {
     v39 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
@@ -2069,13 +2069,13 @@ LABEL_23:
       v70 = 2112;
       v71 = v62;
       v72 = 2112;
-      v73 = v26;
+      countCopy = v26;
       _os_log_error_impl(&dword_2304B3000, v39, OS_LOG_TYPE_ERROR, "%@, %@, RTOutErrorAssignConditionalReturn, error, %@", buf, 0x20u);
     }
 
 LABEL_22:
     v40 = v26;
-    *a7 = v26;
+    *error = v26;
     goto LABEL_23;
   }
 
@@ -2114,9 +2114,9 @@ LABEL_22:
       v70 = 2112;
       v71 = v54;
       v72 = 2048;
-      v73 = a4;
+      countCopy = count;
       v74 = 2048;
-      v75 = a6;
+      locationsCountCopy = locationsCount;
       v76 = 2053;
       v77 = v14;
       v78 = 2053;
@@ -2160,28 +2160,28 @@ LABEL_24:
   return v25;
 }
 
-- (CGRect)cgrectFromCoordinates:(CLLocationCoordinate2D *)a3 locationsCount:(unint64_t)a4 error:(id *)a5
+- (CGRect)cgrectFromCoordinates:(CLLocationCoordinate2D *)coordinates locationsCount:(unint64_t)count error:(id *)error
 {
   v58[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (coordinates)
   {
-    v6 = a4;
-    if (a4 >= 4)
+    countCopy = count;
+    if (count >= 4)
     {
-      v15 = a3;
+      coordinatesCopy = coordinates;
       v42 = vdupq_n_s64(0xFFEFFFFFFFFFFFFFLL);
       latitudea = vdupq_n_s64(0x7FEFFFFFFFFFFFFFuLL);
       do
       {
         v18 = objc_autoreleasePoolPush();
-        v19 = *v15++;
+        v19 = *coordinatesCopy++;
         latitudea = vbslq_s8(vcgtq_f64(latitudea, v19), v19, latitudea);
         v42 = vbslq_s8(vcgtq_f64(v19, v42), v19, v42);
         objc_autoreleasePoolPop(v18);
-        --v6;
+        --countCopy;
       }
 
-      while (v6);
+      while (countCopy);
       v50 = CLLocationCoordinate2DMake(latitudea.f64[0], latitudea.f64[1]);
       v49 = CLLocationCoordinate2DMake(latitudea.f64[0], v42.f64[1]);
       v48 = CLLocationCoordinate2DMake(v42.f64[0], v42.f64[1]);
@@ -2190,7 +2190,7 @@ LABEL_24:
       v43 = v20;
       v21 = v47;
       v22 = v21;
-      if (a5 && v21)
+      if (error && v21)
       {
         v23 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
         if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -2208,7 +2208,7 @@ LABEL_24:
         }
 
         v24 = v22;
-        *a5 = v22;
+        *error = v22;
         v25 = *MEMORY[0x277CBF398];
         v26 = *(MEMORY[0x277CBF398] + 16);
         v10 = v22;
@@ -2221,7 +2221,7 @@ LABEL_24:
         v40 = v27;
         v10 = v46;
 
-        if (a5 && v10)
+        if (error && v10)
         {
           v28 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
           if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -2239,7 +2239,7 @@ LABEL_24:
           }
 
           v29 = v10;
-          *a5 = v10;
+          *error = v10;
           v25 = *MEMORY[0x277CBF398];
           v26 = *(MEMORY[0x277CBF398] + 16);
         }
@@ -2267,10 +2267,10 @@ LABEL_24:
       v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v58 forKeys:&v57 count:1];
       v10 = [v7 errorWithDomain:v8 code:7 userInfo:v9];
 
-      if (a5)
+      if (error)
       {
         v11 = v10;
-        *a5 = v10;
+        *error = v10;
       }
 
       *v41 = *(MEMORY[0x277CBF398] + 16);
@@ -2303,10 +2303,10 @@ LABEL_24:
   return result;
 }
 
-- (CLLocationCoordinate2D)rectVerticesFromCoordinates:(CLLocationCoordinate2D *)a3 locationsCount:(unint64_t)a4 ignoreNFirstAndLastLocations:(unint64_t)a5 error:(id *)a6
+- (CLLocationCoordinate2D)rectVerticesFromCoordinates:(CLLocationCoordinate2D *)coordinates locationsCount:(unint64_t)count ignoreNFirstAndLastLocations:(unint64_t)locations error:(id *)error
 {
   v57[1] = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!coordinates)
   {
     v10 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -2318,7 +2318,7 @@ LABEL_24:
     goto LABEL_7;
   }
 
-  if (2 * a5 + 4 > a4)
+  if (2 * locations + 4 > count)
   {
     v7 = MEMORY[0x277CCA9B8];
     v8 = *MEMORY[0x277D01448];
@@ -2327,11 +2327,11 @@ LABEL_24:
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v57 forKeys:&v56 count:1];
     v10 = [v7 errorWithDomain:v8 code:7 userInfo:v9];
 
-    if (a6)
+    if (error)
     {
       v11 = v10;
       v12 = 0;
-      *a6 = v10;
+      *error = v10;
       goto LABEL_26;
     }
 
@@ -2340,7 +2340,7 @@ LABEL_7:
     goto LABEL_26;
   }
 
-  if (a4 - a5 <= a5)
+  if (count - locations <= locations)
   {
     v18 = 1.79769313e308;
     v19 = -1.79769313e308;
@@ -2350,8 +2350,8 @@ LABEL_7:
 
   else
   {
-    v14 = a4 - 2 * a5;
-    p_longitude = &a3[a5].longitude;
+    v14 = count - 2 * locations;
+    p_longitude = &coordinates[locations].longitude;
     v16 = -1.79769313e308;
     v17 = 1.79769313e308;
     v18 = 1.79769313e308;

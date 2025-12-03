@@ -1,14 +1,14 @@
 @interface EditFavoritesCollectionViewController
-- (_TtC18HealthExperienceUI37EditFavoritesCollectionViewController)initWithCoder:(id)a3;
-- (_TtC18HealthExperienceUI37EditFavoritesCollectionViewController)initWithCollectionViewLayout:(id)a3;
+- (_TtC18HealthExperienceUI37EditFavoritesCollectionViewController)initWithCoder:(id)coder;
+- (_TtC18HealthExperienceUI37EditFavoritesCollectionViewController)initWithCollectionViewLayout:(id)layout;
 - (void)doneButtonTapped;
-- (void)updateSearchResultsForSearchController:(id)a3;
+- (void)updateSearchResultsForSearchController:(id)controller;
 - (void)viewDidLoad;
 @end
 
 @implementation EditFavoritesCollectionViewController
 
-- (_TtC18HealthExperienceUI37EditFavoritesCollectionViewController)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUI37EditFavoritesCollectionViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC18HealthExperienceUI37EditFavoritesCollectionViewController____lazy_storage___searchController) = 0;
   result = sub_1BA4A8018();
@@ -18,32 +18,32 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BA0D7FEC();
 }
 
 - (void)doneButtonTapped
 {
-  v4 = self;
+  selfCopy = self;
   v2 = sub_1BA0D7B3C();
-  v3 = [v2 isActive];
+  isActive = [v2 isActive];
 
-  if (v3)
+  if (isActive)
   {
-    [*(&v4->super.super.super.super.super.isa + OBJC_IVAR____TtC18HealthExperienceUI37EditFavoritesCollectionViewController____lazy_storage___searchController) dismissViewControllerAnimated:0 completion:0];
+    [*(&selfCopy->super.super.super.super.super.isa + OBJC_IVAR____TtC18HealthExperienceUI37EditFavoritesCollectionViewController____lazy_storage___searchController) dismissViewControllerAnimated:0 completion:0];
   }
 
-  [(EditFavoritesCollectionViewController *)v4 dismissViewControllerAnimated:1 completion:0];
+  [(EditFavoritesCollectionViewController *)selfCopy dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  sub_1BA0D83F4(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_1BA0D83F4(controllerCopy);
 }
 
-- (_TtC18HealthExperienceUI37EditFavoritesCollectionViewController)initWithCollectionViewLayout:(id)a3
+- (_TtC18HealthExperienceUI37EditFavoritesCollectionViewController)initWithCollectionViewLayout:(id)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

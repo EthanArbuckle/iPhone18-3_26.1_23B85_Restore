@@ -1,7 +1,7 @@
 @interface HMDHomeActivityVacationAggregatorStorage
 + (id)logCategory;
-- (id)userActivityReportWithActivityStatus:(id)a3 user:(id)a4;
-- (void)updateMKFUserActivityStatus:(id)a3 withReport:(id)a4;
+- (id)userActivityReportWithActivityStatus:(id)status user:(id)user;
+- (void)updateMKFUserActivityStatus:(id)status withReport:(id)report;
 @end
 
 @implementation HMDHomeActivityVacationAggregatorStorage
@@ -26,32 +26,32 @@ void __55__HMDHomeActivityVacationAggregatorStorage_logCategory__block_invoke()
   logCategory__hmf_once_v3_161465 = v1;
 }
 
-- (id)userActivityReportWithActivityStatus:(id)a3 user:(id)a4
+- (id)userActivityReportWithActivityStatus:(id)status user:(id)user
 {
-  v5 = a4;
-  v6 = a3;
+  userCopy = user;
+  statusCopy = status;
   v7 = [HMDUserActivityType4Report alloc];
-  v8 = [v6 state];
-  v9 = [v8 unsignedIntegerValue];
-  v10 = [v6 statusChangeReason];
-  v11 = [v10 unsignedIntegerValue];
-  v12 = [v6 statusChangedTimestamp];
-  v13 = [v6 lastReportTimestamp];
+  state = [statusCopy state];
+  unsignedIntegerValue = [state unsignedIntegerValue];
+  statusChangeReason = [statusCopy statusChangeReason];
+  unsignedIntegerValue2 = [statusChangeReason unsignedIntegerValue];
+  statusChangedTimestamp = [statusCopy statusChangedTimestamp];
+  lastReportTimestamp = [statusCopy lastReportTimestamp];
 
-  v14 = [(HMDUserActivityType4Report *)v7 initWithUser:v5 state:v9 withReason:v11 changedTimestamp:v12 lastUpdateTimestamp:v13];
+  v14 = [(HMDUserActivityType4Report *)v7 initWithUser:userCopy state:unsignedIntegerValue withReason:unsignedIntegerValue2 changedTimestamp:statusChangedTimestamp lastUpdateTimestamp:lastReportTimestamp];
 
   return v14;
 }
 
-- (void)updateMKFUserActivityStatus:(id)a3 withReport:(id)a4
+- (void)updateMKFUserActivityStatus:(id)status withReport:(id)report
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  statusCopy = status;
+  reportCopy = report;
   v8 = +[HMCContext currentContext];
   [v8 assertIsExecuting];
 
-  v9 = v7;
+  v9 = reportCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -70,25 +70,25 @@ void __55__HMDHomeActivityVacationAggregatorStorage_logCategory__block_invoke()
     _HMFPreconditionFailure();
   }
 
-  v12 = [v6 state];
+  state = [statusCopy state];
   v13 = 0x277CCA000uLL;
-  if (!v12)
+  if (!state)
   {
     goto LABEL_13;
   }
 
-  v14 = v12;
+  v14 = state;
   v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v11, "state")}];
-  v16 = [v6 state];
-  if (![v15 isEqual:v16] || (objc_msgSend(v6, "lastReportTimestamp"), (v17 = objc_claimAutoreleasedReturnValue()) == 0))
+  state2 = [statusCopy state];
+  if (![v15 isEqual:state2] || (objc_msgSend(statusCopy, "lastReportTimestamp"), (v17 = objc_claimAutoreleasedReturnValue()) == 0))
   {
 
     goto LABEL_13;
   }
 
   v18 = v17;
-  v32 = [v6 lastReportTimestamp];
-  v19 = [v32 dateByAddingTimeInterval:3600.0];
+  lastReportTimestamp = [statusCopy lastReportTimestamp];
+  v19 = [lastReportTimestamp dateByAddingTimeInterval:3600.0];
   [v9 lastUpdateTimestamp];
   v21 = v20 = self;
   v33 = [v19 compare:v21];
@@ -99,17 +99,17 @@ void __55__HMDHomeActivityVacationAggregatorStorage_logCategory__block_invoke()
   if (v33 == -1)
   {
 LABEL_13:
-    v27 = [v11 lastUpdateTimestamp];
-    [v6 setLastReportTimestamp:v27];
+    lastUpdateTimestamp = [v11 lastUpdateTimestamp];
+    [statusCopy setLastReportTimestamp:lastUpdateTimestamp];
 
-    v28 = [v11 changedTimestamp];
-    [v6 setStatusChangedTimestamp:v28];
+    changedTimestamp = [v11 changedTimestamp];
+    [statusCopy setStatusChangedTimestamp:changedTimestamp];
 
     v29 = [*(v13 + 2992) numberWithUnsignedInteger:{objc_msgSend(v11, "reason")}];
-    [v6 setStatusChangeReason:v29];
+    [statusCopy setStatusChangeReason:v29];
 
     v30 = [*(v13 + 2992) numberWithUnsignedInteger:{objc_msgSend(v11, "state")}];
-    [v6 setState:v30];
+    [statusCopy setState:v30];
 
     goto LABEL_14;
   }

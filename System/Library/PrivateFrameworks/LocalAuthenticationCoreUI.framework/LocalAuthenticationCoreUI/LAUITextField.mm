@@ -1,15 +1,15 @@
 @interface LAUITextField
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (CGRect)caretRectForPosition:(id)a3;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (CGRect)caretRectForPosition:(id)position;
 - (id)inputAssistantItem;
-- (id)selectionRectsForRange:(id)a3;
+- (id)selectionRectsForRange:(id)range;
 @end
 
 @implementation LAUITextField
 
-- (CGRect)caretRectForPosition:(id)a3
+- (CGRect)caretRectForPosition:(id)position
 {
-  v4 = a3;
+  positionCopy = position;
   if ([(LAUITextField *)self shouldHideSelectionRects])
   {
     v5 = *MEMORY[0x277CBF3A0];
@@ -22,7 +22,7 @@
   {
     v17.receiver = self;
     v17.super_class = LAUITextField;
-    [(LAUITextField *)&v17 caretRectForPosition:v4];
+    [(LAUITextField *)&v17 caretRectForPosition:positionCopy];
     v5 = v9;
     v6 = v10;
     v7 = v11;
@@ -40,9 +40,9 @@
   return result;
 }
 
-- (id)selectionRectsForRange:(id)a3
+- (id)selectionRectsForRange:(id)range
 {
-  v4 = a3;
+  rangeCopy = range;
   if ([(LAUITextField *)self shouldHideSelectionRects])
   {
     v5 = MEMORY[0x277CBEBF8];
@@ -52,15 +52,15 @@
   {
     v7.receiver = self;
     v7.super_class = LAUITextField;
-    v5 = [(LAUITextField *)&v7 selectionRectsForRange:v4];
+    v5 = [(LAUITextField *)&v7 selectionRectsForRange:rangeCopy];
   }
 
   return v5;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
+  senderCopy = sender;
   if ([(LAUITextField *)self shouldHideEditMenu])
   {
     v7 = 0;
@@ -70,7 +70,7 @@
   {
     v9.receiver = self;
     v9.super_class = LAUITextField;
-    v7 = [(LAUITextField *)&v9 canPerformAction:a3 withSender:v6];
+    v7 = [(LAUITextField *)&v9 canPerformAction:action withSender:senderCopy];
   }
 
   return v7;
@@ -80,10 +80,10 @@
 {
   v4.receiver = self;
   v4.super_class = LAUITextField;
-  v2 = [(LAUITextField *)&v4 inputAssistantItem];
-  [v2 setLeadingBarButtonGroups:MEMORY[0x277CBEBF8]];
+  inputAssistantItem = [(LAUITextField *)&v4 inputAssistantItem];
+  [inputAssistantItem setLeadingBarButtonGroups:MEMORY[0x277CBEBF8]];
 
-  return v2;
+  return inputAssistantItem;
 }
 
 @end

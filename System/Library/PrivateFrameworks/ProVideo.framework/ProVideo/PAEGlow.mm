@@ -1,24 +1,24 @@
 @interface PAEGlow
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5;
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6;
-- (BOOL)getOutputWidth:(unint64_t *)a3 height:(unint64_t *)a4 withInput:(id *)a5 withInfo:(id *)a6;
-- (HGRef<HGNode>)get360BlurNode:(HGRef<HGNode>)a3 withInputImage:(id)a4 outputImage:(id)a5 blurRadius:(double)a6 blurScale:(PCVector2<double>)a7;
-- (HGRef<HGNode>)getBlurNode:(HGRef<HGNode>)a3 withInputImage:(id)a4 outputImage:(id)a5 blurRadius:(double)a6 blurScale:(PCVector2<double>)a7 is360:(BOOL)a8;
-- (HGRef<HGNode>)getPlanarBlurNode:(HGRef<HGNode>)a3 withInputImage:(id)a4 outputImage:(id)a5 blurRadius:(double)a6 blurScale:(PCVector2<double>)a7;
-- (PAEGlow)initWithAPIManager:(id)a3;
-- (id)dynamicPropertiesAtTime:(id)a3 withError:(id *)a4;
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info;
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software;
+- (BOOL)getOutputWidth:(unint64_t *)width height:(unint64_t *)height withInput:(id *)input withInfo:(id *)info;
+- (HGRef<HGNode>)get360BlurNode:(HGRef<HGNode>)node withInputImage:(id)image outputImage:(id)outputImage blurRadius:(double)radius blurScale:(PCVector2<double>)scale;
+- (HGRef<HGNode>)getBlurNode:(HGRef<HGNode>)node withInputImage:(id)image outputImage:(id)outputImage blurRadius:(double)radius blurScale:(PCVector2<double>)scale is360:(BOOL)is360;
+- (HGRef<HGNode>)getPlanarBlurNode:(HGRef<HGNode>)node withInputImage:(id)image outputImage:(id)outputImage blurRadius:(double)radius blurScale:(PCVector2<double>)scale;
+- (PAEGlow)initWithAPIManager:(id)manager;
+- (id)dynamicPropertiesAtTime:(id)time withError:(id *)error;
 - (id)properties;
 - (void)dealloc;
 @end
 
 @implementation PAEGlow
 
-- (PAEGlow)initWithAPIManager:(id)a3
+- (PAEGlow)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAEGlow;
-  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:a3];
+  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:manager];
 }
 
 - (void)dealloc
@@ -49,14 +49,14 @@ uint64_t __21__PAEGlow_properties__block_invoke()
   return result;
 }
 
-- (id)dynamicPropertiesAtTime:(id)a3 withError:(id *)a4
+- (id)dynamicPropertiesAtTime:(id)time withError:(id *)error
 {
   v20[1] = *MEMORY[0x277D85DE8];
   v6 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
-  if (!a4 || v6)
+  if (!error || v6)
   {
     v14 = 0;
-    [v6 getBoolValue:&v14 fromParm:6 atFxTime:a3.var1];
+    [v6 getBoolValue:&v14 fromParm:6 atFxTime:time.var1];
     if (v14 == 1)
     {
       v17[0] = @"PositionIndependent";
@@ -90,7 +90,7 @@ uint64_t __21__PAEGlow_properties__block_invoke()
     v20[0] = @"Unable to retrieve parameter retrieval API (v5)";
     v7 = [MEMORY[0x277CCA9B8] errorWithDomain:FxPlugErrorDomain code:13 userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v20, &v19, 1)}];
     result = 0;
-    *a4 = v7;
+    *error = v7;
   }
 
   return result;
@@ -129,10 +129,10 @@ uint64_t __21__PAEGlow_properties__block_invoke()
   return v6;
 }
 
-- (BOOL)getOutputWidth:(unint64_t *)a3 height:(unint64_t *)a4 withInput:(id *)a5 withInfo:(id *)a6
+- (BOOL)getOutputWidth:(unint64_t *)width height:(unint64_t *)height withInput:(id *)input withInfo:(id *)info
 {
   v10 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
-  if (a3)
+  if (width)
   {
     v11 = v10 == 0;
   }
@@ -142,44 +142,44 @@ uint64_t __21__PAEGlow_properties__block_invoke()
     v11 = 1;
   }
 
-  v12 = v11 || a4 == 0;
+  v12 = v11 || height == 0;
   v13 = !v12;
   if (!v12)
   {
     v14 = v10;
     v21 = 0;
-    [v10 getBoolValue:&v21 fromParm:6 atFxTime:a6->var0.var1];
+    [v10 getBoolValue:&v21 fromParm:6 atFxTime:info->var0.var1];
     if (v21 == 1)
     {
-      *a3 = a5->var0;
-      var1 = a5->var1;
+      *width = input->var0;
+      var1 = input->var1;
     }
 
     else
     {
       v20 = 0.0;
-      [v14 getFloatValue:&v20 fromParm:1 atFxTime:a6->var0.var1];
+      [v14 getFloatValue:&v20 fromParm:1 atFxTime:info->var0.var1];
       v16 = v20 + v20;
       v17 = vcvtps_s32_f32(v16);
-      v18 = a5->var1;
-      *a3 = (LODWORD(a5->var0) + 2 * v17);
+      v18 = input->var1;
+      *width = (LODWORD(input->var0) + 2 * v17);
       var1 = (v18 + 2 * v17);
     }
 
-    *a4 = var1;
+    *height = var1;
   }
 
   return v13;
 }
 
-- (HGRef<HGNode>)get360BlurNode:(HGRef<HGNode>)a3 withInputImage:(id)a4 outputImage:(id)a5 blurRadius:(double)a6 blurScale:(PCVector2<double>)a7
+- (HGRef<HGNode>)get360BlurNode:(HGRef<HGNode>)node withInputImage:(id)image outputImage:(id)outputImage blurRadius:(double)radius blurScale:(PCVector2<double>)scale
 {
   v9 = v7;
   v13 = v8;
   if (self)
   {
-    [(PAESharedDefaultBase *)self getInversePixelTransformForImage:a5, a6, a7.var0, a7.var1];
-    [(PAESharedDefaultBase *)self getPixelTransformForImage:a5];
+    [(PAESharedDefaultBase *)self getInversePixelTransformForImage:outputImage, radius, scale.var0, scale.var1];
+    [(PAESharedDefaultBase *)self getPixelTransformForImage:outputImage];
   }
 
   else
@@ -210,42 +210,42 @@ uint64_t __21__PAEGlow_properties__block_invoke()
   *(v16 + 106) = 0;
   *(v16 + 54) = 0;
   *(v16 + 55) = 0;
-  off_2871D9FB0(v16, 0, *a3.var0);
+  off_2871D9FB0(v16, 0, *node.var0);
   v17 = *v9;
   v18 = v9[1];
-  v19 = [a4 width];
+  width = [image width];
   v20 = v38.f64[0];
-  v21 = [a4 height];
-  v22 = a6;
+  height = [image height];
+  radiusCopy = radius;
   v23 = v17;
   v24 = v18;
   v29 = vcvt_hight_f32_f64(vcvt_f32_f64(v38), v39);
   v28 = vcvt_hight_f32_f64(vcvt_f32_f64(v40), v41);
   v27 = vcvt_hight_f32_f64(vcvt_f32_f64(v30), v31);
   v26 = vcvt_hight_f32_f64(vcvt_f32_f64(v32), v33);
-  v25 = HEquirectGaussianBlur::init(v16, vcvtpd_s64_f64(fabs(v20) * v19), vcvtpd_s64_f64(fabs(v40.f64[1]) * v21), &v29, &v28, &v27, &v26, v22, v23, v24);
+  v25 = HEquirectGaussianBlur::init(v16, vcvtpd_s64_f64(fabs(v20) * width), vcvtpd_s64_f64(fabs(v40.f64[1]) * height), &v29, &v28, &v27, &v26, radiusCopy, v23, v24);
   *v13 = v16;
   return v25;
 }
 
-- (HGRef<HGNode>)getPlanarBlurNode:(HGRef<HGNode>)a3 withInputImage:(id)a4 outputImage:(id)a5 blurRadius:(double)a6 blurScale:(PCVector2<double>)a7
+- (HGRef<HGNode>)getPlanarBlurNode:(HGRef<HGNode>)node withInputImage:(id)image outputImage:(id)outputImage blurRadius:(double)radius blurScale:(PCVector2<double>)scale
 {
-  v9 = a6;
+  radiusCopy = radius;
   v12 = v8;
   v14 = *v7;
   v13 = v7[1];
-  v15 = [-[PROAPIAccessing apiForProtocol:](self->super.super._apiManager apiForProtocol:{&unk_28735F2C8, a4, a5, a6, a7.var0, a7.var1), "versionAtCreation"}];
+  v15 = [-[PROAPIAccessing apiForProtocol:](self->super.super._apiManager apiForProtocol:{&unk_28735F2C8, image, outputImage, radius, scale.var0, scale.var1), "versionAtCreation"}];
   if (!v15)
   {
-    v9 = pow(v9 / 100.0, 1.425) * 253.0;
-    [a4 pixelAspect];
+    radiusCopy = pow(radiusCopy / 100.0, 1.425) * 253.0;
+    [image pixelAspect];
     v14 = v14 * (1.0 / v16);
   }
 
   v17 = HGObject::operator new(0x210uLL);
   HGXForm::HGXForm(v17);
   v18 = 4.0;
-  if (v9 <= 10.0 && (v18 = 2.0, v9 <= 5.0))
+  if (radiusCopy <= 10.0 && (v18 = 2.0, radiusCopy <= 5.0))
   {
     v20 = 0;
     v18 = 1.0;
@@ -255,17 +255,17 @@ uint64_t __21__PAEGlow_properties__block_invoke()
   {
     HGTransform::HGTransform(v27);
     HGTransform::Scale(v27, 1.0 / v18, 1.0 / v18, 1.0);
-    (*(*v17 + 120))(v17, 0, *a3.var0);
+    (*(*v17 + 120))(v17, 0, *node.var0);
     (*(*v17 + 576))(v17, v27);
-    v19 = pow(v9 / 600.0, 0.65);
-    v9 = pow(v19 * 575.0 / v18 / 575.0, 1.53846154) * 600.0;
+    v19 = pow(radiusCopy / 600.0, 0.65);
+    radiusCopy = pow(v19 * 575.0 / v18 / 575.0, 1.53846154) * 600.0;
     HGTransform::~HGTransform(v27);
     v20 = 1;
   }
 
   v21 = HGObject::operator new(0x1B0uLL);
   HGaussianBlur::HGaussianBlur(v21);
-  v22 = v9;
+  v22 = radiusCopy;
   v23 = v14;
   v24 = v13;
   HGaussianBlur::init(v21, v22, v23, v24, v15 == 0, 0, 0);
@@ -276,7 +276,7 @@ uint64_t __21__PAEGlow_properties__block_invoke()
 
   else
   {
-    (*(*v21 + 120))(v21, 0, *a3.var0);
+    (*(*v21 + 120))(v21, 0, *node.var0);
   }
 
   *v12 = v21;
@@ -315,24 +315,24 @@ LABEL_16:
   return v26;
 }
 
-- (HGRef<HGNode>)getBlurNode:(HGRef<HGNode>)a3 withInputImage:(id)a4 outputImage:(id)a5 blurRadius:(double)a6 blurScale:(PCVector2<double>)a7 is360:(BOOL)a8
+- (HGRef<HGNode>)getBlurNode:(HGRef<HGNode>)node withInputImage:(id)image outputImage:(id)outputImage blurRadius:(double)radius blurScale:(PCVector2<double>)scale is360:(BOOL)is360
 {
-  v10 = a8;
-  v14 = self;
+  is360Copy = is360;
+  selfCopy = self;
   v15 = v9;
-  v16 = *a3.var0;
+  v16 = *node.var0;
   if (!v8)
   {
-    v17 = *a3.var0;
+    v17 = *node.var0;
     if (v16)
     {
-      self = (*(*v16 + 16))(v16, a2, a6, a7, *&a7.var1);
+      self = (*(*v16 + 16))(v16, a2, radius, scale, *&scale.var1);
     }
 
-    v18 = *v10;
-    if (v14)
+    v18 = *is360Copy;
+    if (selfCopy)
     {
-      self = [(PAEGlow *)v14 getPlanarBlurNode:&v17 withInputImage:a4 outputImage:a5 blurRadius:&v18 blurScale:a6, a7.var0, a7.var1];
+      self = [(PAEGlow *)selfCopy getPlanarBlurNode:&v17 withInputImage:image outputImage:outputImage blurRadius:&v18 blurScale:radius, scale.var0, scale.var1];
       v16 = v17;
       if (!v17)
       {
@@ -352,16 +352,16 @@ LABEL_16:
     return (*(*v16 + 24))(v16);
   }
 
-  v19 = *a3.var0;
+  v19 = *node.var0;
   if (v16)
   {
-    self = (*(*v16 + 16))(v16, a2, a6, a7, *&a7.var1);
+    self = (*(*v16 + 16))(v16, a2, radius, scale, *&scale.var1);
   }
 
-  v18 = *v10;
-  if (v14)
+  v18 = *is360Copy;
+  if (selfCopy)
   {
-    self = [(PAEGlow *)v14 get360BlurNode:&v19 withInputImage:a4 outputImage:a5 blurRadius:&v18 blurScale:a6, a7.var0, a7.var1];
+    self = [(PAEGlow *)selfCopy get360BlurNode:&v19 withInputImage:image outputImage:outputImage blurRadius:&v18 blurScale:radius, scale.var0, scale.var1];
     v16 = v19;
     if (!v19)
     {
@@ -380,7 +380,7 @@ LABEL_16:
   return self;
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info
 {
   v8 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
   v9 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_287359A98];
@@ -403,19 +403,19 @@ LABEL_16:
     v18 = 0x3FE8000000000000;
     v16 = 0x3FF8000000000000;
     v15 = 0;
-    [(PAESharedDefaultBase *)self getScaleForImage:a4];
-    [v8 getFloatValue:&v19 fromParm:1 atFxTime:a5->var0.var1];
-    [v8 getFloatValue:&v18 fromParm:3 atFxTime:a5->var0.var1];
-    [v8 getFloatValue:&v17 fromParm:4 atFxTime:a5->var0.var1];
-    [v8 getFloatValue:&v16 fromParm:2 atFxTime:a5->var0.var1];
-    [v8 getBoolValue:&v15 + 1 fromParm:5 atFxTime:a5->var0.var1];
-    [v8 getBoolValue:&v15 fromParm:6 atFxTime:a5->var0.var1];
-    if (a4)
+    [(PAESharedDefaultBase *)self getScaleForImage:input];
+    [v8 getFloatValue:&v19 fromParm:1 atFxTime:info->var0.var1];
+    [v8 getFloatValue:&v18 fromParm:3 atFxTime:info->var0.var1];
+    [v8 getFloatValue:&v17 fromParm:4 atFxTime:info->var0.var1];
+    [v8 getFloatValue:&v16 fromParm:2 atFxTime:info->var0.var1];
+    [v8 getBoolValue:&v15 + 1 fromParm:5 atFxTime:info->var0.var1];
+    [v8 getBoolValue:&v15 fromParm:6 atFxTime:info->var0.var1];
+    if (input)
     {
-      [a4 heliumRef];
+      [input heliumRef];
     }
 
-    [objc_msgSend(v12 colorMatrixFromDesiredRGBToYCbCrAtTime:{a5->var0.var1), "matrix"}];
+    [objc_msgSend(v12 colorMatrixFromDesiredRGBToYCbCrAtTime:{info->var0.var1), "matrix"}];
     v13 = HGObject::operator new(0x1A0uLL);
     HgcGlow::HgcGlow(v13);
   }
@@ -423,15 +423,15 @@ LABEL_16:
   return v11;
 }
 
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a6 = 0;
-  *a5 = 0;
-  v6 = *&a3->var2;
-  v8[0] = *&a3->var0.var0;
+  *software = 0;
+  *hardware = 0;
+  v6 = *&setup->var2;
+  v8[0] = *&setup->var0.var0;
   v8[1] = v6;
-  v8[2] = *&a3->var4;
-  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:a5 software:a6];
+  v8[2] = *&setup->var4;
+  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:hardware software:software];
   return 1;
 }
 

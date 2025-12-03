@@ -6,11 +6,11 @@
 
 - (DOCPostSearchInitializationBuffer)init
 {
-  v3 = [MEMORY[0x277CCAD78] UUID];
-  v4 = [v3 UUIDString];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
   v7.receiver = self;
   v7.super_class = DOCPostSearchInitializationBuffer;
-  v5 = [(DOCOperationBuffer *)&v7 initWithLabel:v4];
+  v5 = [(DOCOperationBuffer *)&v7 initWithLabel:uUIDString];
 
   return v5;
 }

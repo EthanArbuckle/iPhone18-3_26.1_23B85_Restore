@@ -1,9 +1,9 @@
 @interface ATXSlotSet
-- (ATXSlotSet)initWithCoder:(id)a3;
-- (ATXSlotSet)initWithOpaqueParametersUuid:(id)a3;
-- (ATXSlotSet)initWithParameters:(id)a3 uuid:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSlotSet:(id)a3;
+- (ATXSlotSet)initWithCoder:(id)coder;
+- (ATXSlotSet)initWithOpaqueParametersUuid:(id)uuid;
+- (ATXSlotSet)initWithParameters:(id)parameters uuid:(id)uuid;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSlotSet:(id)set;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -61,71 +61,71 @@
   return hash;
 }
 
-- (ATXSlotSet)initWithParameters:(id)a3 uuid:(id)a4
+- (ATXSlotSet)initWithParameters:(id)parameters uuid:(id)uuid
 {
-  v6 = a3;
-  v7 = a4;
+  parametersCopy = parameters;
+  uuidCopy = uuid;
   v12.receiver = self;
   v12.super_class = ATXSlotSet;
   v8 = [(ATXSlotSet *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [parametersCopy copy];
     parameters = v8->_parameters;
     v8->_parameters = v9;
 
-    objc_storeStrong(&v8->_uuid, a4);
+    objc_storeStrong(&v8->_uuid, uuid);
   }
 
   return v8;
 }
 
-- (ATXSlotSet)initWithOpaqueParametersUuid:(id)a3
+- (ATXSlotSet)initWithOpaqueParametersUuid:(id)uuid
 {
-  v5 = a3;
+  uuidCopy = uuid;
   v9.receiver = self;
   v9.super_class = ATXSlotSet;
   v6 = [(ATXSlotSet *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_uuid, a3);
+    objc_storeStrong(&v6->_uuid, uuid);
   }
 
   return v7;
 }
 
-- (ATXSlotSet)initWithCoder:(id)a3
+- (ATXSlotSet)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"parameters"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"parameters"];
 
   if (v8)
   {
-    v9 = [(ATXSlotSet *)self initWithParameters:v8];
+    initWithOpaqueParameters = [(ATXSlotSet *)self initWithParameters:v8];
   }
 
   else
   {
-    v9 = [(ATXSlotSet *)self initWithOpaqueParameters];
+    initWithOpaqueParameters = [(ATXSlotSet *)self initWithOpaqueParameters];
   }
 
-  v10 = v9;
+  v10 = initWithOpaqueParameters;
 
   return v10;
 }
 
-- (BOOL)isEqualToSlotSet:(id)a3
+- (BOOL)isEqualToSlotSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v5 = [(ATXSlotSet *)self hash];
-  if (v5 == [v4 hash])
+  if (v5 == [setCopy hash])
   {
     parameters = self->_parameters;
-    v7 = v4[2];
+    v7 = setCopy[2];
     if (parameters == v7)
     {
       v8 = 1;
@@ -151,18 +151,18 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXSlotSet *)self isEqualToSlotSet:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXSlotSet *)self isEqualToSlotSet:v5];
   }
 
   return v6;

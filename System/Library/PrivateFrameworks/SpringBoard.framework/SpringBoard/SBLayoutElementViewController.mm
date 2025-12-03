@@ -1,34 +1,34 @@
 @interface SBLayoutElementViewController
 - (CGRect)referenceFrame;
-- (SBLayoutElementViewController)initWithCoder:(id)a3;
-- (SBLayoutElementViewController)initWithDisplayIdentity:(id)a3;
-- (SBLayoutElementViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (SBLayoutElementViewController)initWithCoder:(id)coder;
+- (SBLayoutElementViewController)initWithDisplayIdentity:(id)identity;
+- (SBLayoutElementViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)_sbWindowScene;
 - (id)initialCornerRadiusConfiguration;
 - (void)_updateDisplayLayoutElementVisibility;
-- (void)_updateDisplayLayoutElementWithBuilder:(id)a3;
-- (void)configureWithWorkspaceEntity:(id)a3 forLayoutElement:(id)a4 layoutState:(id)a5 referenceFrame:(CGRect)a6;
+- (void)_updateDisplayLayoutElementWithBuilder:(id)builder;
+- (void)configureWithWorkspaceEntity:(id)entity forLayoutElement:(id)element layoutState:(id)state referenceFrame:(CGRect)frame;
 - (void)dealloc;
-- (void)didEndTransitionToVisible:(BOOL)a3;
+- (void)didEndTransitionToVisible:(BOOL)visible;
 - (void)invalidate;
 - (void)loadView;
 - (void)prepareForReuse;
-- (void)setContentWrapperInterfaceOrientation:(int64_t)a3;
-- (void)willBeginTransitionToVisible:(BOOL)a3;
+- (void)setContentWrapperInterfaceOrientation:(int64_t)orientation;
+- (void)willBeginTransitionToVisible:(BOOL)visible;
 @end
 
 @implementation SBLayoutElementViewController
 
-- (SBLayoutElementViewController)initWithDisplayIdentity:(id)a3
+- (SBLayoutElementViewController)initWithDisplayIdentity:(id)identity
 {
-  v5 = a3;
+  identityCopy = identity;
   v10.receiver = self;
   v10.super_class = SBLayoutElementViewController;
   v6 = [(SBLayoutElementViewController *)&v10 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_displayIdentity, a3);
+    objc_storeStrong(&v6->_displayIdentity, identity);
     v8 = *(MEMORY[0x277CBF3A0] + 16);
     v7->_referenceFrame.origin = *MEMORY[0x277CBF3A0];
     v7->_referenceFrame.size = v8;
@@ -41,7 +41,7 @@
   return v7;
 }
 
-- (SBLayoutElementViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SBLayoutElementViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE648];
@@ -60,18 +60,18 @@
   [(SBLayoutElementViewController *)&v3 dealloc];
 }
 
-- (SBLayoutElementViewController)initWithCoder:(id)a3
+- (SBLayoutElementViewController)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CBEAD8];
   v5 = *MEMORY[0x277CBE658];
-  v6 = a3;
+  coderCopy = coder;
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
   [v4 raise:v5 format:{@"%@ does not support unarchiving from a nib.", v8}];
 
   v11.receiver = self;
   v11.super_class = SBLayoutElementViewController;
-  v9 = [(SBLayoutElementViewController *)&v11 initWithCoder:v6];
+  v9 = [(SBLayoutElementViewController *)&v11 initWithCoder:coderCopy];
 
   return v9;
 }
@@ -93,24 +93,24 @@
   [(BSUIOrientationTransformWrapperView *)self->_contentWrapperView setContentOrientation:[(SBLayoutElementViewController *)self contentWrapperInterfaceOrientation]];
   [(BSUIOrientationTransformWrapperView *)self->_contentWrapperView setTranslatesAutoresizingMaskIntoConstraints:0];
   [v24 addSubview:self->_contentWrapperView];
-  v10 = [(BSUIOrientationTransformWrapperView *)self->_contentWrapperView leftAnchor];
-  v11 = [v24 leftAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  leftAnchor = [(BSUIOrientationTransformWrapperView *)self->_contentWrapperView leftAnchor];
+  leftAnchor2 = [v24 leftAnchor];
+  v12 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   [v12 setActive:1];
 
-  v13 = [(BSUIOrientationTransformWrapperView *)self->_contentWrapperView rightAnchor];
-  v14 = [v24 rightAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  rightAnchor = [(BSUIOrientationTransformWrapperView *)self->_contentWrapperView rightAnchor];
+  rightAnchor2 = [v24 rightAnchor];
+  v15 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   [v15 setActive:1];
 
-  v16 = [(BSUIOrientationTransformWrapperView *)self->_contentWrapperView topAnchor];
-  v17 = [v24 topAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17];
+  topAnchor = [(BSUIOrientationTransformWrapperView *)self->_contentWrapperView topAnchor];
+  topAnchor2 = [v24 topAnchor];
+  v18 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v18 setActive:1];
 
-  v19 = [(BSUIOrientationTransformWrapperView *)self->_contentWrapperView bottomAnchor];
-  v20 = [v24 bottomAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20];
+  bottomAnchor = [(BSUIOrientationTransformWrapperView *)self->_contentWrapperView bottomAnchor];
+  bottomAnchor2 = [v24 bottomAnchor];
+  v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v21 setActive:1];
 
   v22 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v4, v5, v6, v7}];
@@ -122,22 +122,22 @@
 
 - (id)_sbWindowScene
 {
-  v3 = [SBApp windowSceneManager];
-  v4 = [v3 windowSceneForDisplayIdentity:self->_displayIdentity];
+  windowSceneManager = [SBApp windowSceneManager];
+  v4 = [windowSceneManager windowSceneForDisplayIdentity:self->_displayIdentity];
 
   return v4;
 }
 
-- (void)setContentWrapperInterfaceOrientation:(int64_t)a3
+- (void)setContentWrapperInterfaceOrientation:(int64_t)orientation
 {
-  if (self->_contentWrapperInterfaceOrientation != a3)
+  if (self->_contentWrapperInterfaceOrientation != orientation)
   {
-    self->_contentWrapperInterfaceOrientation = a3;
+    self->_contentWrapperInterfaceOrientation = orientation;
     if ([(SBLayoutElementViewController *)self isViewLoaded])
     {
-      [(BSUIOrientationTransformWrapperView *)self->_contentWrapperView setContentOrientation:a3];
-      v5 = [(SBLayoutElementViewController *)self view];
-      [v5 setNeedsLayout];
+      [(BSUIOrientationTransformWrapperView *)self->_contentWrapperView setContentOrientation:orientation];
+      view = [(SBLayoutElementViewController *)self view];
+      [view setNeedsLayout];
     }
   }
 }
@@ -162,23 +162,23 @@
   self->_layoutState = 0;
 }
 
-- (void)configureWithWorkspaceEntity:(id)a3 forLayoutElement:(id)a4 layoutState:(id)a5 referenceFrame:(CGRect)a6
+- (void)configureWithWorkspaceEntity:(id)entity forLayoutElement:(id)element layoutState:(id)state referenceFrame:(CGRect)frame
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  if (self->_layoutElement != v14)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  entityCopy = entity;
+  elementCopy = element;
+  stateCopy = state;
+  if (self->_layoutElement != elementCopy)
   {
-    objc_storeStrong(&self->_layoutElement, a4);
+    objc_storeStrong(&self->_layoutElement, element);
   }
 
-  if (self->_layoutState != v15)
+  if (self->_layoutState != stateCopy)
   {
-    objc_storeStrong(&self->_layoutState, a5);
+    objc_storeStrong(&self->_layoutState, state);
   }
 
   v25.origin.x = x;
@@ -195,7 +195,7 @@
 
   if (!self->_displayLayoutElement)
   {
-    v16 = [(SBLayoutElementViewController *)self _newDisplayLayoutElementForEntity:v13];
+    v16 = [(SBLayoutElementViewController *)self _newDisplayLayoutElementForEntity:entityCopy];
     displayLayoutElement = self->_displayLayoutElement;
     self->_displayLayoutElement = v16;
   }
@@ -204,12 +204,12 @@
   v19[1] = 3221225472;
   v19[2] = __106__SBLayoutElementViewController_configureWithWorkspaceEntity_forLayoutElement_layoutState_referenceFrame___block_invoke;
   v19[3] = &unk_2783B7FD0;
-  v20 = v14;
+  v20 = elementCopy;
   v21 = x;
   v22 = y;
   v23 = width;
   v24 = height;
-  v18 = v14;
+  v18 = elementCopy;
   [(SBLayoutElementViewController *)self _updateDisplayLayoutElementWithBuilder:v19];
 }
 
@@ -246,7 +246,7 @@ void __106__SBLayoutElementViewController_configureWithWorkspaceEntity_forLayout
   [(SBLayoutElementViewController *)self setContentWrapperInterfaceOrientation:1];
 }
 
-- (void)willBeginTransitionToVisible:(BOOL)a3
+- (void)willBeginTransitionToVisible:(BOOL)visible
 {
   v17 = *MEMORY[0x277D85DE8];
   v5 = SBLogAppSwitcher();
@@ -254,24 +254,24 @@ void __106__SBLayoutElementViewController_configureWithWorkspaceEntity_forLayout
   {
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
-    v8 = [(SBLayoutElementViewController *)self layoutElement];
-    v9 = [v8 uniqueIdentifier];
+    layoutElement = [(SBLayoutElementViewController *)self layoutElement];
+    uniqueIdentifier = [layoutElement uniqueIdentifier];
     v10 = NSStringFromBOOL();
     v11 = 138543874;
     v12 = v7;
     v13 = 2114;
-    v14 = v9;
+    v14 = uniqueIdentifier;
     v15 = 2114;
     v16 = v10;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@-%{public}@ will begin transition to visible %{public}@", &v11, 0x20u);
   }
 
-  self->_isViewVisible = a3;
+  self->_isViewVisible = visible;
   self->_isTransitioningVisibility = 1;
   [(SBLayoutElementViewController *)self _updateDisplayLayoutElementVisibility];
 }
 
-- (void)didEndTransitionToVisible:(BOOL)a3
+- (void)didEndTransitionToVisible:(BOOL)visible
 {
   v17 = *MEMORY[0x277D85DE8];
   v5 = SBLogAppSwitcher();
@@ -279,19 +279,19 @@ void __106__SBLayoutElementViewController_configureWithWorkspaceEntity_forLayout
   {
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
-    v8 = [(SBLayoutElementViewController *)self layoutElement];
-    v9 = [v8 uniqueIdentifier];
+    layoutElement = [(SBLayoutElementViewController *)self layoutElement];
+    uniqueIdentifier = [layoutElement uniqueIdentifier];
     v10 = NSStringFromBOOL();
     v11 = 138543874;
     v12 = v7;
     v13 = 2114;
-    v14 = v9;
+    v14 = uniqueIdentifier;
     v15 = 2114;
     v16 = v10;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@-%{public}@ did end transition to visible %{public}@", &v11, 0x20u);
   }
 
-  self->_isViewVisible = a3;
+  self->_isViewVisible = visible;
   self->_isTransitioningVisibility = 0;
   [(SBLayoutElementViewController *)self _updateDisplayLayoutElementVisibility];
 }
@@ -320,34 +320,34 @@ LABEL_9:
     return;
   }
 
-  v7 = [(SBLayoutElementViewController *)self _sbWindowScene];
-  v4 = [v7 displayLayoutPublisher];
-  v5 = [v4 addElement:self->_displayLayoutElement];
+  _sbWindowScene = [(SBLayoutElementViewController *)self _sbWindowScene];
+  displayLayoutPublisher = [_sbWindowScene displayLayoutPublisher];
+  v5 = [displayLayoutPublisher addElement:self->_displayLayoutElement];
   v6 = self->_displayLayoutElementAssertion;
   self->_displayLayoutElementAssertion = v5;
 
-  displayLayoutElementAssertion = v7;
+  displayLayoutElementAssertion = _sbWindowScene;
 LABEL_10:
 }
 
-- (void)_updateDisplayLayoutElementWithBuilder:(id)a3
+- (void)_updateDisplayLayoutElementWithBuilder:(id)builder
 {
   if (self->_displayLayoutElementAssertion)
   {
-    v4 = a3;
-    v5 = [(SBLayoutElementViewController *)self _sbWindowScene];
-    v13 = [v5 displayLayoutPublisher];
+    builderCopy = builder;
+    _sbWindowScene = [(SBLayoutElementViewController *)self _sbWindowScene];
+    builderCopy2 = [_sbWindowScene displayLayoutPublisher];
 
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
-    v8 = [v13 transitionAssertionWithReason:v7];
+    v8 = [builderCopy2 transitionAssertionWithReason:v7];
 
     [(BSInvalidatable *)self->_displayLayoutElementAssertion invalidate];
     displayLayoutElementAssertion = self->_displayLayoutElementAssertion;
     self->_displayLayoutElementAssertion = 0;
 
-    v4[2](v4, self->_displayLayoutElement);
-    v10 = [v13 addElement:self->_displayLayoutElement];
+    builderCopy[2](builderCopy, self->_displayLayoutElement);
+    v10 = [builderCopy2 addElement:self->_displayLayoutElement];
     v11 = self->_displayLayoutElementAssertion;
     self->_displayLayoutElementAssertion = v10;
 
@@ -356,8 +356,8 @@ LABEL_10:
 
   else
   {
-    v12 = *(a3 + 2);
-    v13 = a3;
+    v12 = *(builder + 2);
+    builderCopy2 = builder;
     v12();
   }
 }

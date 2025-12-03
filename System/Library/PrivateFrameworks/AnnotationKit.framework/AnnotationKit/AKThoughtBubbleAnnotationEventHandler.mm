@@ -1,29 +1,29 @@
 @interface AKThoughtBubbleAnnotationEventHandler
-- (void)getInitialDraggedPoint:(CGPoint *)a3 otherPoint:(CGPoint *)a4 center:(CGPoint *)a5 forEvent:(id)a6 orRecognizer:(id)a7;
-- (void)updateModelWithCurrentPoint:(CGPoint)a3 options:(unint64_t)a4;
+- (void)getInitialDraggedPoint:(CGPoint *)point otherPoint:(CGPoint *)otherPoint center:(CGPoint *)center forEvent:(id)event orRecognizer:(id)recognizer;
+- (void)updateModelWithCurrentPoint:(CGPoint)point options:(unint64_t)options;
 @end
 
 @implementation AKThoughtBubbleAnnotationEventHandler
 
-- (void)getInitialDraggedPoint:(CGPoint *)a3 otherPoint:(CGPoint *)a4 center:(CGPoint *)a5 forEvent:(id)a6 orRecognizer:(id)a7
+- (void)getInitialDraggedPoint:(CGPoint *)point otherPoint:(CGPoint *)otherPoint center:(CGPoint *)center forEvent:(id)event orRecognizer:(id)recognizer
 {
-  v12 = a6;
-  v13 = a7;
+  eventCopy = event;
+  recognizerCopy = recognizer;
   v22 = *MEMORY[0x277CBF348];
   v23 = v22;
   v21 = v22;
-  v14 = [(AKAnnotationEventHandler *)self annotation];
-  v15 = [(AKAnnotationEventHandler *)self initiallyDraggedArea];
-  if (v15 - 1 >= 8)
+  annotation = [(AKAnnotationEventHandler *)self annotation];
+  initiallyDraggedArea = [(AKAnnotationEventHandler *)self initiallyDraggedArea];
+  if (initiallyDraggedArea - 1 >= 8)
   {
-    if (v15 == 14)
+    if (initiallyDraggedArea == 14)
     {
-      [v14 pointyBitPoint];
+      [annotation pointyBitPoint];
       v23.x = v17;
       v23.y = v18;
-      [v14 rectangle];
+      [annotation rectangle];
       MidX = CGRectGetMidX(v24);
-      [v14 rectangle];
+      [annotation rectangle];
       v21.x = MidX;
       v21.y = CGRectGetMidY(v25);
       v22 = v21;
@@ -34,44 +34,44 @@
   {
     v20.receiver = self;
     v20.super_class = AKThoughtBubbleAnnotationEventHandler;
-    [(AKRectangularAnnotationEventHandler *)&v20 getInitialDraggedPoint:&v23 otherPoint:&v22 center:&v21 forEvent:v12 orRecognizer:v13];
+    [(AKRectangularAnnotationEventHandler *)&v20 getInitialDraggedPoint:&v23 otherPoint:&v22 center:&v21 forEvent:eventCopy orRecognizer:recognizerCopy];
   }
 
   v16 = v22;
-  *a3 = v23;
-  *a4 = v16;
-  *a5 = v21;
+  *point = v23;
+  *otherPoint = v16;
+  *center = v21;
 }
 
-- (void)updateModelWithCurrentPoint:(CGPoint)a3 options:(unint64_t)a4
+- (void)updateModelWithCurrentPoint:(CGPoint)point options:(unint64_t)options
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = [(AKAnnotationEventHandler *)self annotation];
+  y = point.y;
+  x = point.x;
+  annotation = [(AKAnnotationEventHandler *)self annotation];
   v88 = 0u;
   v89 = 0u;
   v87 = 0u;
-  [v8 rectangle];
+  [annotation rectangle];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  [v8 rotationAngle];
+  [annotation rotationAngle];
   [AKGeometryHelper rotationTransformForRect:v10 withAngle:v12, v14, v16, -v17];
   v18 = y * 0.0 + 0.0 * x + 0.0;
   v19 = v18;
-  v20 = [(AKAnnotationEventHandler *)self pageController];
+  pageController = [(AKAnnotationEventHandler *)self pageController];
   if ([(AKAnnotationEventHandler *)self initiallyDraggedArea]!= 14)
   {
-    [v8 rectangle];
+    [annotation rectangle];
     v43 = v42;
     v80 = v45;
     v81 = v44;
     v79 = v46;
     v86.receiver = self;
     v86.super_class = AKThoughtBubbleAnnotationEventHandler;
-    [(AKRectangularAnnotationEventHandler *)&v86 updateModelWithCurrentPoint:a4 options:x, y];
-    if (a4)
+    [(AKRectangularAnnotationEventHandler *)&v86 updateModelWithCurrentPoint:options options:x, y];
+    if (options)
     {
       [(AKAnnotationEventHandler *)self initialCenter];
     }
@@ -109,7 +109,7 @@
       }
     }
 
-    [v8 rectangle];
+    [annotation rectangle];
     v59 = v58;
     v61 = v60;
     v73 = v62;
@@ -165,15 +165,15 @@
     t1 = v85;
     CGAffineTransformConcat(&v84, &t1, &t2);
     v85 = v84;
-    [v8 pointyBitPoint];
+    [annotation pointyBitPoint];
     v40 = vaddq_f64(*&v85.tx, vmlaq_n_f64(vmulq_n_f64(*&v85.c, v71), *&v85.a, v72));
     v41 = v40.f64[1];
-    v39 = v8;
+    v39 = annotation;
     goto LABEL_16;
   }
 
   [(AKAnnotationEventHandler *)self initialOtherPoint];
-  if ((a4 & 2) != 0)
+  if ((options & 2) != 0)
   {
     v23 = v21;
     v24 = v22;
@@ -182,18 +182,18 @@
     v19 = v24 + v26;
   }
 
-  [AKAnnotationPointOfInterestHelper validatePoint:14 ofDraggableArea:v8 forAnnotation:v20 onPageController:v18, v19];
+  [AKAnnotationPointOfInterestHelper validatePoint:14 ofDraggableArea:annotation forAnnotation:pageController onPageController:v18, v19];
   v28 = v27;
   v30 = v29;
-  v31 = [v20 geometryHelper];
-  [v31 contentAlignedPointForPoint:{v28, v30}];
+  geometryHelper = [pageController geometryHelper];
+  [geometryHelper contentAlignedPointForPoint:{v28, v30}];
   v33 = v32;
   v35 = v34;
 
-  [v8 pointyBitPoint];
+  [annotation pointyBitPoint];
   if (v37 != v33 || v36 != v35)
   {
-    v39 = v8;
+    v39 = annotation;
     v40.f64[0] = v33;
     v41 = v35;
 LABEL_16:

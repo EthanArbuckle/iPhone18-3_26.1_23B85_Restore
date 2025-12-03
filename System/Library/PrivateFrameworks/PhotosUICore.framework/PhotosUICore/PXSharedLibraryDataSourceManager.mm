@@ -1,62 +1,62 @@
 @interface PXSharedLibraryDataSourceManager
-+ (id)currentExitingDataSourceManagerForPhotoLibrary:(id)a3;
-+ (id)currentInvitationsDataSourceManagerForPhotoLibrary:(id)a3;
-+ (id)currentPreviewDataSourceManagerForPhotoLibrary:(id)a3;
-+ (id)currentSharedLibraryDataSourceManagerForPhotoLibrary:(id)a3;
-+ (id)exitingDataSourceManagerForPhotoLibrary:(id)a3 type:(int64_t)a4;
-+ (id)invitationsDataSourceManagerForPhotoLibrary:(id)a3 type:(int64_t)a4;
++ (id)currentExitingDataSourceManagerForPhotoLibrary:(id)library;
++ (id)currentInvitationsDataSourceManagerForPhotoLibrary:(id)library;
++ (id)currentPreviewDataSourceManagerForPhotoLibrary:(id)library;
++ (id)currentSharedLibraryDataSourceManagerForPhotoLibrary:(id)library;
++ (id)exitingDataSourceManagerForPhotoLibrary:(id)library type:(int64_t)type;
++ (id)invitationsDataSourceManagerForPhotoLibrary:(id)library type:(int64_t)type;
 + (id)keyPathsAffectingCurrentExitingDataSourceManager;
 + (id)keyPathsAffectingCurrentInvitationsDataSourceManager;
 + (id)keyPathsAffectingCurrentPreviewDataSourceManager;
 + (id)keyPathsAffectingCurrentSharedLibraryDataSourceManager;
-+ (id)previewDataSourceManagerForPhotoLibrary:(id)a3 type:(int64_t)a4;
-+ (id)sharedLibraryDataSourceManagerForPhotoLibrary:(id)a3 type:(int64_t)a4;
++ (id)previewDataSourceManagerForPhotoLibrary:(id)library type:(int64_t)type;
++ (id)sharedLibraryDataSourceManagerForPhotoLibrary:(id)library type:(int64_t)type;
 - (id)fetchExiting;
 - (id)fetchPreview;
 - (id)fetchSharedLibrary;
-- (void)fetchSharedLibraryForURL:(id)a3 completionHandler:(id)a4;
+- (void)fetchSharedLibraryForURL:(id)l completionHandler:(id)handler;
 @end
 
 @implementation PXSharedLibraryDataSourceManager
 
 - (id)fetchExiting
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryDataSource.m" lineNumber:206 description:{@"Method %s is a responsibility of subclass %@", "-[PXSharedLibraryDataSourceManager fetchExiting]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryDataSource.m" lineNumber:206 description:{@"Method %s is a responsibility of subclass %@", "-[PXSharedLibraryDataSourceManager fetchExiting]", v6}];
 
   abort();
 }
 
 - (id)fetchSharedLibrary
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryDataSource.m" lineNumber:202 description:{@"Method %s is a responsibility of subclass %@", "-[PXSharedLibraryDataSourceManager fetchSharedLibrary]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryDataSource.m" lineNumber:202 description:{@"Method %s is a responsibility of subclass %@", "-[PXSharedLibraryDataSourceManager fetchSharedLibrary]", v6}];
 
   abort();
 }
 
 - (id)fetchPreview
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryDataSource.m" lineNumber:198 description:{@"Method %s is a responsibility of subclass %@", "-[PXSharedLibraryDataSourceManager fetchPreview]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryDataSource.m" lineNumber:198 description:{@"Method %s is a responsibility of subclass %@", "-[PXSharedLibraryDataSourceManager fetchPreview]", v6}];
 
   abort();
 }
 
-- (void)fetchSharedLibraryForURL:(id)a3 completionHandler:(id)a4
+- (void)fetchSharedLibraryForURL:(id)l completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E696AAA8] currentHandler];
+  lCopy = l;
+  handlerCopy = handler;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
-  [v9 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryDataSource.m" lineNumber:194 description:{@"Method %s is a responsibility of subclass %@", "-[PXSharedLibraryDataSourceManager fetchSharedLibraryForURL:completionHandler:]", v11}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryDataSource.m" lineNumber:194 description:{@"Method %s is a responsibility of subclass %@", "-[PXSharedLibraryDataSourceManager fetchSharedLibraryForURL:completionHandler:]", v11}];
 
   abort();
 }
@@ -71,9 +71,9 @@
   return v3;
 }
 
-+ (id)currentExitingDataSourceManagerForPhotoLibrary:(id)a3
++ (id)currentExitingDataSourceManagerForPhotoLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   if (PLIsPhotosReliveWidget())
   {
     v5 = objc_alloc_init(PXSharedLibraryEmptyDataSourceManager);
@@ -82,9 +82,9 @@
   else
   {
     v6 = +[PXSharedLibrarySettings sharedInstance];
-    v7 = [v6 exitingDataSourceType];
+    exitingDataSourceType = [v6 exitingDataSourceType];
 
-    v5 = [a1 exitingDataSourceManagerForPhotoLibrary:v4 type:v7];
+    v5 = [self exitingDataSourceManagerForPhotoLibrary:libraryCopy type:exitingDataSourceType];
   }
 
   v8 = v5;
@@ -92,20 +92,20 @@
   return v8;
 }
 
-+ (id)exitingDataSourceManagerForPhotoLibrary:(id)a3 type:(int64_t)a4
++ (id)exitingDataSourceManagerForPhotoLibrary:(id)library type:(int64_t)type
 {
-  v5 = a3;
+  libraryCopy = library;
   v6 = 0;
-  if (a4 > 1)
+  if (type > 1)
   {
-    if (a4 == 2)
+    if (type == 2)
     {
       v7 = +[PXSharedLibraryMockDataSourceManager participantExitingDataSourceManager];
     }
 
     else
     {
-      if (a4 != 3)
+      if (type != 3)
       {
         goto LABEL_11;
       }
@@ -114,9 +114,9 @@
     }
   }
 
-  else if (a4)
+  else if (type)
   {
-    if (a4 != 1)
+    if (type != 1)
     {
       goto LABEL_11;
     }
@@ -126,7 +126,7 @@
 
   else
   {
-    v7 = [PXSharedLibraryPhotoKitDataSourceManager exitingDataSourceManagerForPhotoLibrary:v5];
+    v7 = [PXSharedLibraryPhotoKitDataSourceManager exitingDataSourceManagerForPhotoLibrary:libraryCopy];
   }
 
   v6 = v7;
@@ -145,9 +145,9 @@ LABEL_11:
   return v3;
 }
 
-+ (id)currentSharedLibraryDataSourceManagerForPhotoLibrary:(id)a3
++ (id)currentSharedLibraryDataSourceManagerForPhotoLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   if (PLIsPhotosReliveWidget())
   {
     v5 = objc_alloc_init(PXSharedLibraryEmptyDataSourceManager);
@@ -156,9 +156,9 @@ LABEL_11:
   else
   {
     v6 = +[PXSharedLibrarySettings sharedInstance];
-    v7 = [v6 sharedLibraryDataSourceType];
+    sharedLibraryDataSourceType = [v6 sharedLibraryDataSourceType];
 
-    v5 = [a1 sharedLibraryDataSourceManagerForPhotoLibrary:v4 type:v7];
+    v5 = [self sharedLibraryDataSourceManagerForPhotoLibrary:libraryCopy type:sharedLibraryDataSourceType];
   }
 
   v8 = v5;
@@ -166,20 +166,20 @@ LABEL_11:
   return v8;
 }
 
-+ (id)sharedLibraryDataSourceManagerForPhotoLibrary:(id)a3 type:(int64_t)a4
++ (id)sharedLibraryDataSourceManagerForPhotoLibrary:(id)library type:(int64_t)type
 {
-  v5 = a3;
+  libraryCopy = library;
   v6 = 0;
-  if (a4 > 1)
+  if (type > 1)
   {
-    if (a4 == 2)
+    if (type == 2)
     {
       v7 = +[PXSharedLibraryMockDataSourceManager participantSharedLibraryDataSourceManager];
     }
 
     else
     {
-      if (a4 != 3)
+      if (type != 3)
       {
         goto LABEL_11;
       }
@@ -188,9 +188,9 @@ LABEL_11:
     }
   }
 
-  else if (a4)
+  else if (type)
   {
-    if (a4 != 1)
+    if (type != 1)
     {
       goto LABEL_11;
     }
@@ -200,7 +200,7 @@ LABEL_11:
 
   else
   {
-    v7 = [PXSharedLibraryPhotoKitDataSourceManager sharedLibraryDataSourceManagerForPhotoLibrary:v5];
+    v7 = [PXSharedLibraryPhotoKitDataSourceManager sharedLibraryDataSourceManagerForPhotoLibrary:libraryCopy];
   }
 
   v6 = v7;
@@ -219,9 +219,9 @@ LABEL_11:
   return v3;
 }
 
-+ (id)currentPreviewDataSourceManagerForPhotoLibrary:(id)a3
++ (id)currentPreviewDataSourceManagerForPhotoLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   if (PLIsPhotosReliveWidget())
   {
     v5 = objc_alloc_init(PXSharedLibraryEmptyDataSourceManager);
@@ -230,9 +230,9 @@ LABEL_11:
   else
   {
     v6 = +[PXSharedLibrarySettings sharedInstance];
-    v7 = [v6 previewDataSourceType];
+    previewDataSourceType = [v6 previewDataSourceType];
 
-    v5 = [a1 previewDataSourceManagerForPhotoLibrary:v4 type:v7];
+    v5 = [self previewDataSourceManagerForPhotoLibrary:libraryCopy type:previewDataSourceType];
   }
 
   v8 = v5;
@@ -240,20 +240,20 @@ LABEL_11:
   return v8;
 }
 
-+ (id)previewDataSourceManagerForPhotoLibrary:(id)a3 type:(int64_t)a4
++ (id)previewDataSourceManagerForPhotoLibrary:(id)library type:(int64_t)type
 {
-  v5 = a3;
+  libraryCopy = library;
   v6 = 0;
-  if (a4 > 1)
+  if (type > 1)
   {
-    if (a4 == 2)
+    if (type == 2)
     {
       v7 = +[PXSharedLibraryMockDataSourceManager participantPreviewDataSourceManager];
     }
 
     else
     {
-      if (a4 != 3)
+      if (type != 3)
       {
         goto LABEL_11;
       }
@@ -262,9 +262,9 @@ LABEL_11:
     }
   }
 
-  else if (a4)
+  else if (type)
   {
-    if (a4 != 1)
+    if (type != 1)
     {
       goto LABEL_11;
     }
@@ -274,7 +274,7 @@ LABEL_11:
 
   else
   {
-    v7 = [PXSharedLibraryPhotoKitDataSourceManager previewDataSourceManagerForPhotoLibrary:v5];
+    v7 = [PXSharedLibraryPhotoKitDataSourceManager previewDataSourceManagerForPhotoLibrary:libraryCopy];
   }
 
   v6 = v7;
@@ -293,9 +293,9 @@ LABEL_11:
   return v3;
 }
 
-+ (id)currentInvitationsDataSourceManagerForPhotoLibrary:(id)a3
++ (id)currentInvitationsDataSourceManagerForPhotoLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   if (PLIsPhotosReliveWidget())
   {
     v5 = objc_alloc_init(PXSharedLibraryEmptyDataSourceManager);
@@ -304,9 +304,9 @@ LABEL_11:
   else
   {
     v6 = +[PXSharedLibrarySettings sharedInstance];
-    v7 = [v6 invitationsDataSourceType];
+    invitationsDataSourceType = [v6 invitationsDataSourceType];
 
-    v5 = [a1 invitationsDataSourceManagerForPhotoLibrary:v4 type:v7];
+    v5 = [self invitationsDataSourceManagerForPhotoLibrary:libraryCopy type:invitationsDataSourceType];
   }
 
   v8 = v5;
@@ -314,10 +314,10 @@ LABEL_11:
   return v8;
 }
 
-+ (id)invitationsDataSourceManagerForPhotoLibrary:(id)a3 type:(int64_t)a4
++ (id)invitationsDataSourceManagerForPhotoLibrary:(id)library type:(int64_t)type
 {
-  v5 = a3;
-  switch(a4)
+  libraryCopy = library;
+  switch(type)
   {
     case 2:
       v6 = objc_alloc_init(PXSharedLibraryEmptyDataSourceManager);
@@ -326,7 +326,7 @@ LABEL_11:
       v6 = +[PXSharedLibraryMockDataSourceManager invitationsDataSourceManager];
       goto LABEL_7;
     case 0:
-      v6 = [PXSharedLibraryPhotoKitDataSourceManager invitationsDataSourceManagerForPhotoLibrary:v5];
+      v6 = [PXSharedLibraryPhotoKitDataSourceManager invitationsDataSourceManagerForPhotoLibrary:libraryCopy];
 LABEL_7:
       v7 = v6;
       goto LABEL_9;

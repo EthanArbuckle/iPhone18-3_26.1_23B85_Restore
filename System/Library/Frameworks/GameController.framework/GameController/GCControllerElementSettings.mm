@@ -1,37 +1,37 @@
 @interface GCControllerElementSettings
-- (GCControllerElementSettings)initWithCoder:(id)a3;
-- (GCControllerElementSettings)initWithElementKey:(id)a3;
+- (GCControllerElementSettings)initWithCoder:(id)coder;
+- (GCControllerElementSettings)initWithElementKey:(id)key;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDictionaryRepresentation:(id)a3 fromCoder:(BOOL)a4;
-- (void)setInvertHorizontally:(BOOL)a3;
-- (void)setInvertVertically:(BOOL)a3;
-- (void)setSwapAxes:(BOOL)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDictionaryRepresentation:(id)representation fromCoder:(BOOL)coder;
+- (void)setInvertHorizontally:(BOOL)horizontally;
+- (void)setInvertVertically:(BOOL)vertically;
+- (void)setSwapAxes:(BOOL)axes;
 @end
 
 @implementation GCControllerElementSettings
 
-- (GCControllerElementSettings)initWithElementKey:(id)a3
+- (GCControllerElementSettings)initWithElementKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   v9.receiver = self;
   v9.super_class = GCControllerElementSettings;
   v6 = [(GCControllerElementSettings *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mappingKey, a3);
+    objc_storeStrong(&v6->_mappingKey, key);
     [(GCControllerElementSettings *)v7 setDefaultValues];
   }
 
   return v7;
 }
 
-- (void)setInvertVertically:(BOOL)a3
+- (void)setInvertVertically:(BOOL)vertically
 {
-  if (self->_invertVertically != a3)
+  if (self->_invertVertically != vertically)
   {
-    self->_invertVertically = a3;
+    self->_invertVertically = vertically;
     changedHandler = self->_changedHandler;
     if (changedHandler)
     {
@@ -40,11 +40,11 @@
   }
 }
 
-- (void)setInvertHorizontally:(BOOL)a3
+- (void)setInvertHorizontally:(BOOL)horizontally
 {
-  if (self->_invertHorizontally != a3)
+  if (self->_invertHorizontally != horizontally)
   {
-    self->_invertHorizontally = a3;
+    self->_invertHorizontally = horizontally;
     changedHandler = self->_changedHandler;
     if (changedHandler)
     {
@@ -53,11 +53,11 @@
   }
 }
 
-- (void)setSwapAxes:(BOOL)a3
+- (void)setSwapAxes:(BOOL)axes
 {
-  if (self->_swapAxes != a3)
+  if (self->_swapAxes != axes)
   {
-    self->_swapAxes = a3;
+    self->_swapAxes = axes;
     changedHandler = self->_changedHandler;
     if (changedHandler)
     {
@@ -66,22 +66,22 @@
   }
 }
 
-- (void)setDictionaryRepresentation:(id)a3 fromCoder:(BOOL)a4
+- (void)setDictionaryRepresentation:(id)representation fromCoder:(BOOL)coder
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (!v6)
+  representationCopy = representation;
+  v7 = representationCopy;
+  if (!representationCopy)
   {
     goto LABEL_8;
   }
 
-  if (a4)
+  if (coder)
   {
     goto LABEL_9;
   }
 
-  v8 = [v6 objectForKeyedSubscript:@"elementMappingKey"];
+  v8 = [representationCopy objectForKeyedSubscript:@"elementMappingKey"];
 
   if (!v8)
   {
@@ -112,32 +112,32 @@ LABEL_8:
 
 LABEL_9:
   v12 = [v7 objectForKeyedSubscript:@"invertHorizontally"];
-  v13 = [v12 BOOLValue];
+  bOOLValue = [v12 BOOLValue];
 
-  if (self->_invertHorizontally != v13)
+  if (self->_invertHorizontally != bOOLValue)
   {
     [(GCControllerElementSettings *)self willChangeValueForKey:@"invertHorizontally"];
-    self->_invertHorizontally = v13;
+    self->_invertHorizontally = bOOLValue;
     [(GCControllerElementSettings *)self didChangeValueForKey:@"invertHorizontally"];
   }
 
   v14 = [v7 objectForKeyedSubscript:@"invertVertically"];
-  v15 = [v14 BOOLValue];
+  bOOLValue2 = [v14 BOOLValue];
 
-  if (self->_invertVertically != v15)
+  if (self->_invertVertically != bOOLValue2)
   {
     [(GCControllerElementSettings *)self willChangeValueForKey:@"invertVertically"];
-    self->_invertVertically = v15;
+    self->_invertVertically = bOOLValue2;
     [(GCControllerElementSettings *)self didChangeValueForKey:@"invertVertically"];
   }
 
   v16 = [v7 objectForKeyedSubscript:@"swapAxes"];
-  v17 = [v16 BOOLValue];
+  bOOLValue3 = [v16 BOOLValue];
 
-  if (self->_swapAxes != v17)
+  if (self->_swapAxes != bOOLValue3)
   {
     [(GCControllerElementSettings *)self willChangeValueForKey:@"swapAxes"];
-    self->_swapAxes = v17;
+    self->_swapAxes = bOOLValue3;
     [(GCControllerElementSettings *)self didChangeValueForKey:@"swapAxes"];
   }
 
@@ -167,16 +167,16 @@ LABEL_15:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(GCControllerElementSettings *)self dictionaryRepresentation];
-  [v4 encodeObject:v5 forKey:@"dictionaryRepresentation"];
+  coderCopy = coder;
+  dictionaryRepresentation = [(GCControllerElementSettings *)self dictionaryRepresentation];
+  [coderCopy encodeObject:dictionaryRepresentation forKey:@"dictionaryRepresentation"];
 }
 
-- (GCControllerElementSettings)initWithCoder:(id)a3
+- (GCControllerElementSettings)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = GCControllerElementSettings;
   v5 = [(GCControllerElementSettings *)&v12 init];
@@ -186,7 +186,7 @@ LABEL_15:
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [v6 setWithObjects:{v7, v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"dictionaryRepresentation"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"dictionaryRepresentation"];
 
     [(GCControllerElementSettings *)v5 setDefaultValues];
     [(GCControllerElementSettings *)v5 setDictionaryRepresentation:v10 fromCoder:1];

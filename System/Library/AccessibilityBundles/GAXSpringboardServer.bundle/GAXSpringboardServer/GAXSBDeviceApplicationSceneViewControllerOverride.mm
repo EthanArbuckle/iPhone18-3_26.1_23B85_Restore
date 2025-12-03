@@ -1,24 +1,24 @@
 @interface GAXSBDeviceApplicationSceneViewControllerOverride
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)_gaxSetShouldSuppressBottomGrabber:(BOOL)a3;
-- (void)setHomeGrabberDisplayMode:(int64_t)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)_gaxSetShouldSuppressBottomGrabber:(BOOL)grabber;
+- (void)setHomeGrabberDisplayMode:(int64_t)mode;
 @end
 
 @implementation GAXSBDeviceApplicationSceneViewControllerOverride
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBDeviceApplicationSceneViewController" hasInstanceMethod:@"homeGrabberDisplayMode" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"SBDeviceApplicationSceneViewController" hasInstanceMethod:@"setHomeGrabberDisplayMode:" withFullSignature:{"v", "q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBDeviceApplicationSceneViewController" hasInstanceMethod:@"homeGrabberDisplayMode" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"SBDeviceApplicationSceneViewController" hasInstanceMethod:@"setHomeGrabberDisplayMode:" withFullSignature:{"v", "q", 0}];
 }
 
-- (void)_gaxSetShouldSuppressBottomGrabber:(BOOL)a3
+- (void)_gaxSetShouldSuppressBottomGrabber:(BOOL)grabber
 {
-  v3 = a3;
-  if ([(GAXSBDeviceApplicationSceneViewControllerOverride *)self _gaxInternalShouldSuppressBottomGrabber]!= a3)
+  grabberCopy = grabber;
+  if ([(GAXSBDeviceApplicationSceneViewControllerOverride *)self _gaxInternalShouldSuppressBottomGrabber]!= grabber)
   {
-    if (v3)
+    if (grabberCopy)
     {
       [(GAXSBDeviceApplicationSceneViewControllerOverride *)self _gaxSetDesiredHomeGrabberDisplayMode:[(GAXSBDeviceApplicationSceneViewControllerOverride *)self safeIntegerForKey:@"homeGrabberDisplayMode"]];
       AXPerformSafeBlock();
@@ -33,7 +33,7 @@
   }
 }
 
-- (void)setHomeGrabberDisplayMode:(int64_t)a3
+- (void)setHomeGrabberDisplayMode:(int64_t)mode
 {
   if ([(GAXSBDeviceApplicationSceneViewControllerOverride *)self _gaxShouldSuppressBottomGrabber])
   {
@@ -46,7 +46,7 @@
 
   v6.receiver = self;
   v6.super_class = GAXSBDeviceApplicationSceneViewControllerOverride;
-  [(GAXSBDeviceApplicationSceneViewControllerOverride *)&v6 setHomeGrabberDisplayMode:a3];
+  [(GAXSBDeviceApplicationSceneViewControllerOverride *)&v6 setHomeGrabberDisplayMode:mode];
 }
 
 @end

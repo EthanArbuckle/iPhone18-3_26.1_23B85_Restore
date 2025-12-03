@@ -1,67 +1,67 @@
 @interface ABSAddressBook
-+ (id)localizedLabelForLabel:(id)a3;
++ (id)localizedLabelForLabel:(id)label;
 + (int64_t)authorizationStatus;
-+ (void)callLocalChangeCallbacks:(BOOL)a3;
++ (void)callLocalChangeCallbacks:(BOOL)callbacks;
 + (void)initialize;
-+ (void)requestAccessWithCompletion:(id)a3;
++ (void)requestAccessWithCompletion:(id)completion;
 - (ABSAddressBook)init;
-- (ABSAddressBook)initWithOptions:(id)a3 error:(id *)a4;
-- (ABSAddressBook)initWithOptions:(id)a3 policy:(int)a4 error:(id *)a5;
-- (ABSAddressBook)initWithSettings:(id)a3 error:(id *)a4;
-- (BOOL)addMember:(id)a3 toGroup:(id)a4 error:(id *)a5;
-- (BOOL)addRecord:(id)a3 error:(id *)a4;
+- (ABSAddressBook)initWithOptions:(id)options error:(id *)error;
+- (ABSAddressBook)initWithOptions:(id)options policy:(int)policy error:(id *)error;
+- (ABSAddressBook)initWithSettings:(id)settings error:(id *)error;
+- (BOOL)addMember:(id)member toGroup:(id)group error:(id *)error;
+- (BOOL)addRecord:(id)record error:(id *)error;
 - (BOOL)hasUnsavedChanges;
-- (BOOL)linkPerson:(id)a3 toPerson:(id)a4;
-- (BOOL)recordUpdated:(id)a3;
-- (BOOL)removeMember:(id)a3 fromGroup:(id)a4 error:(id *)a5;
-- (BOOL)removeRecord:(id)a3 error:(id *)a4;
-- (BOOL)save:(id *)a3;
-- (BOOL)unlinkPerson:(id)a3;
+- (BOOL)linkPerson:(id)person toPerson:(id)toPerson;
+- (BOOL)recordUpdated:(id)updated;
+- (BOOL)removeMember:(id)member fromGroup:(id)group error:(id *)error;
+- (BOOL)removeRecord:(id)record error:(id *)error;
+- (BOOL)save:(id *)save;
+- (BOOL)unlinkPerson:(id)person;
 - (CNContactStore)store;
-- (id)_peoplePreferringExistingRecordsForFetchRequest:(id)a3;
-- (id)_resultRecordsFromFetchedCNImpls:(id)a3 mergedWithStorage:(id)a4 creationBlock:(id)a5;
-- (id)_sourcesPreferringExistingRecordsFetchedWithPredicate:(id)a3;
-- (id)_storageForRecordClass:(Class)a3;
+- (id)_peoplePreferringExistingRecordsForFetchRequest:(id)request;
+- (id)_resultRecordsFromFetchedCNImpls:(id)impls mergedWithStorage:(id)storage creationBlock:(id)block;
+- (id)_sourcesPreferringExistingRecordsFetchedWithPredicate:(id)predicate;
+- (id)_storageForRecordClass:(Class)class;
 - (id)allGroups;
 - (id)allPeople;
-- (id)contactsWithIdentifiers:(id)a3 keysToFetch:(id)a4;
+- (id)contactsWithIdentifiers:(id)identifiers keysToFetch:(id)fetch;
 - (id)defaultSource;
-- (id)findPersonMatchingEmailAddress:(id)a3;
-- (id)findPersonMatchingPhoneNumber:(id)a3 country:(id)a4;
-- (id)findPersonMatchingURL:(id)a3;
-- (id)groupWithRecordID:(int)a3;
-- (id)groupsInSource:(id)a3;
+- (id)findPersonMatchingEmailAddress:(id)address;
+- (id)findPersonMatchingPhoneNumber:(id)number country:(id)country;
+- (id)findPersonMatchingURL:(id)l;
+- (id)groupWithRecordID:(int)d;
+- (id)groupsInSource:(id)source;
 - (id)localSource;
 - (id)mePerson;
-- (id)peopleInGroup:(id)a3 sortOrder:(unsigned int)a4;
-- (id)peopleInSource:(id)a3 sortOrder:(unsigned int)a4;
-- (id)peopleLinkedToPerson:(id)a3;
-- (id)peopleMatchingNameString:(id)a3;
-- (id)peopleWithCNIdentifiers:(id)a3;
-- (id)personWithRecordID:(int)a3;
-- (id)sourceForRecord:(id)a3;
-- (id)sourceWithRecordID:(int)a3;
+- (id)peopleInGroup:(id)group sortOrder:(unsigned int)order;
+- (id)peopleInSource:(id)source sortOrder:(unsigned int)order;
+- (id)peopleLinkedToPerson:(id)person;
+- (id)peopleMatchingNameString:(id)string;
+- (id)peopleWithCNIdentifiers:(id)identifiers;
+- (id)personWithRecordID:(int)d;
+- (id)sourceForRecord:(id)record;
+- (id)sourceWithRecordID:(int)d;
 - (id)uniqueDatabaseVersionIdentifier;
 - (int)saveSequenceCount;
 - (int64_t)groupCount;
 - (int64_t)personCount;
-- (void)completePerson:(id)a3 withKeysToFetch:(id)a4;
-- (void)registerExternalChangeCallback:(void *)a3 context:(void *)a4;
+- (void)completePerson:(id)person withKeysToFetch:(id)fetch;
+- (void)registerExternalChangeCallback:(void *)callback context:(void *)context;
 - (void)revert;
-- (void)unregisterExternalChangeCallback:(void *)a3 context:(void *)a4;
-- (void)updateFetchingAllPropertiesForGroups:(id)a3;
-- (void)updateFetchingAllPropertiesForSources:(id)a3;
-- (void)updatePeople:(id)a3 refetchingProperties:(id)a4;
+- (void)unregisterExternalChangeCallback:(void *)callback context:(void *)context;
+- (void)updateFetchingAllPropertiesForGroups:(id)groups;
+- (void)updateFetchingAllPropertiesForSources:(id)sources;
+- (void)updatePeople:(id)people refetchingProperties:(id)properties;
 @end
 
 @implementation ABSAddressBook
 
 + (void)initialize
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___ABSAddressBook;
   objc_msgSendSuper2(&v3, sel_initialize);
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     ABSPersonConstantsInitialize();
   }
@@ -75,44 +75,44 @@
   return v4;
 }
 
-- (ABSAddressBook)initWithOptions:(id)a3 error:(id *)a4
+- (ABSAddressBook)initWithOptions:(id)options error:(id *)error
 {
-  v6 = a3;
-  v7 = [[ABSAddressBookSettings alloc] initWithOptions:v6];
+  optionsCopy = options;
+  v7 = [[ABSAddressBookSettings alloc] initWithOptions:optionsCopy];
 
-  v8 = [(ABSAddressBook *)self initWithSettings:v7 error:a4];
+  v8 = [(ABSAddressBook *)self initWithSettings:v7 error:error];
   return v8;
 }
 
-- (ABSAddressBook)initWithOptions:(id)a3 policy:(int)a4 error:(id *)a5
+- (ABSAddressBook)initWithOptions:(id)options policy:(int)policy error:(id *)error
 {
-  v6 = *&a4;
-  v8 = a3;
-  v9 = [[ABSAddressBookSettings alloc] initWithOptions:v8 policy:v6];
+  v6 = *&policy;
+  optionsCopy = options;
+  v9 = [[ABSAddressBookSettings alloc] initWithOptions:optionsCopy policy:v6];
 
-  v10 = [(ABSAddressBook *)self initWithSettings:v9 error:a5];
+  v10 = [(ABSAddressBook *)self initWithSettings:v9 error:error];
   return v10;
 }
 
-- (ABSAddressBook)initWithSettings:(id)a3 error:(id *)a4
+- (ABSAddressBook)initWithSettings:(id)settings error:(id *)error
 {
-  v6 = a3;
+  settingsCopy = settings;
   v29.receiver = self;
   v29.super_class = ABSAddressBook;
   v7 = [(ABSAddressBook *)&v29 init];
   if (v7)
   {
-    v8 = [MEMORY[0x277CFBDB8] sharedInstance];
-    v9 = [v8 authorizationStatus];
+    mEMORY[0x277CFBDB8] = [MEMORY[0x277CFBDB8] sharedInstance];
+    authorizationStatus = [mEMORY[0x277CFBDB8] authorizationStatus];
 
-    if (v9 == 1 && ![v6 policy])
+    if (authorizationStatus == 1 && ![settingsCopy policy])
     {
       v24 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ABAddressBookErrorDomain" code:1 userInfo:0];
       v23 = v24;
-      if (a4)
+      if (error)
       {
         v25 = v24;
-        *a4 = v23;
+        *error = v23;
       }
 
       v7 = 0;
@@ -135,24 +135,24 @@
     changeCallbacks = v7->_changeCallbacks;
     v7->_changeCallbacks = v16;
 
-    v18 = [v6 contactStoreFuture];
+    contactStoreFuture = [settingsCopy contactStoreFuture];
     storeFuture = v7->_storeFuture;
-    v7->_storeFuture = v18;
+    v7->_storeFuture = contactStoreFuture;
 
-    v20 = [v6 newFaultHandlerWithStorage:v7->_contacts];
+    v20 = [settingsCopy newFaultHandlerWithStorage:v7->_contacts];
     faultHandler = v7->_faultHandler;
     v7->_faultHandler = v20;
 
-    if (!v9 && [v6 policy] == 1)
+    if (!authorizationStatus && [settingsCopy policy] == 1)
     {
-      v22 = [MEMORY[0x277CFBDB8] sharedInstance];
+      mEMORY[0x277CFBDB8]2 = [MEMORY[0x277CFBDB8] sharedInstance];
       v27[0] = MEMORY[0x277D85DD0];
       v27[1] = 3221225472;
       v27[2] = __41__ABSAddressBook_initWithSettings_error___block_invoke;
       v27[3] = &unk_278A04B50;
       v7 = v7;
       v28 = v7;
-      [v22 requestAuthorization:1 completionHandler:v27];
+      [mEMORY[0x277CFBDB8]2 requestAuthorization:1 completionHandler:v27];
 
       v23 = v28;
 LABEL_10:
@@ -174,46 +174,46 @@ uint64_t __41__ABSAddressBook_initWithSettings_error___block_invoke()
 
 - (CNContactStore)store
 {
-  v2 = [(ABSAddressBook *)self storeFuture];
-  v3 = [v2 result:0];
+  storeFuture = [(ABSAddressBook *)self storeFuture];
+  v3 = [storeFuture result:0];
 
   return v3;
 }
 
-- (id)_storageForRecordClass:(Class)a3
+- (id)_storageForRecordClass:(Class)class
 {
-  if ([(objc_class *)a3 isSubclassOfClass:objc_opt_class()])
+  if ([(objc_class *)class isSubclassOfClass:objc_opt_class()])
   {
-    v5 = [(ABSAddressBook *)self contacts];
+    contacts = [(ABSAddressBook *)self contacts];
   }
 
-  else if ([(objc_class *)a3 isSubclassOfClass:objc_opt_class()])
+  else if ([(objc_class *)class isSubclassOfClass:objc_opt_class()])
   {
-    v5 = [(ABSAddressBook *)self groups];
+    contacts = [(ABSAddressBook *)self groups];
   }
 
-  else if ([(objc_class *)a3 isSubclassOfClass:objc_opt_class()])
+  else if ([(objc_class *)class isSubclassOfClass:objc_opt_class()])
   {
-    v5 = [(ABSAddressBook *)self sources];
+    contacts = [(ABSAddressBook *)self sources];
   }
 
   else
   {
-    v5 = 0;
+    contacts = 0;
   }
 
-  return v5;
+  return contacts;
 }
 
-- (BOOL)addRecord:(id)a3 error:(id *)a4
+- (BOOL)addRecord:(id)record error:(id *)error
 {
-  v6 = a3;
+  recordCopy = record;
   if (+[ABSAddressBook authorizationStatus]!= 3)
   {
-    if (a4)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] errorWithDomain:@"ABAddressBookErrorDomain" code:1 userInfo:0];
-      *a4 = v9 = 0;
+      *error = v9 = 0;
       goto LABEL_8;
     }
 
@@ -222,21 +222,21 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (!v6)
+  if (!recordCopy)
   {
     goto LABEL_7;
   }
 
-  v7 = [v6 addressBook];
+  addressBook = [recordCopy addressBook];
 
-  if (v7)
+  if (addressBook)
   {
     goto LABEL_7;
   }
 
   v8 = [(ABSAddressBook *)self _storageForRecordClass:objc_opt_class()];
-  [v6 setAddressBook:self];
-  [v8 addRecord:v6];
+  [recordCopy setAddressBook:self];
+  [v8 addRecord:recordCopy];
 
   v9 = 1;
 LABEL_8:
@@ -244,11 +244,11 @@ LABEL_8:
   return v9;
 }
 
-- (BOOL)recordUpdated:(id)a3
+- (BOOL)recordUpdated:(id)updated
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 addressBook], v6 = objc_claimAutoreleasedReturnValue(), v6, v6 == self))
+  updatedCopy = updated;
+  v5 = updatedCopy;
+  if (updatedCopy && ([updatedCopy addressBook], v6 = objc_claimAutoreleasedReturnValue(), v6, v6 == self))
   {
     v8 = [(ABSAddressBook *)self _storageForRecordClass:objc_opt_class()];
     v7 = [v8 recordUpdated:v5];
@@ -262,44 +262,44 @@ LABEL_8:
   return v7;
 }
 
-- (BOOL)removeRecord:(id)a3 error:(id *)a4
+- (BOOL)removeRecord:(id)record error:(id *)error
 {
-  v6 = a3;
+  recordCopy = record;
   v7 = +[ABSAddressBook authorizationStatus];
   if (v7 == 3)
   {
     v8 = [(ABSAddressBook *)self _storageForRecordClass:objc_opt_class()];
-    [v8 deleteRecord:v6];
+    [v8 deleteRecord:recordCopy];
   }
 
-  else if (a4)
+  else if (error)
   {
-    *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ABAddressBookErrorDomain" code:1 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"ABAddressBookErrorDomain" code:1 userInfo:0];
   }
 
   return v7 == 3;
 }
 
-- (BOOL)save:(id *)a3
+- (BOOL)save:(id *)save
 {
   v197 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CFBDB8] sharedInstance];
-  v6 = [v5 isAccessGranted];
+  mEMORY[0x277CFBDB8] = [MEMORY[0x277CFBDB8] sharedInstance];
+  isAccessGranted = [mEMORY[0x277CFBDB8] isAccessGranted];
 
-  if (v6)
+  if (isAccessGranted)
   {
-    v120 = a3;
+    saveCopy = save;
     v7 = objc_alloc_init(MEMORY[0x277CBDBA0]);
-    v8 = [(ABSAddressBook *)self sources];
-    v9 = [(ABSAddressBook *)self contacts];
-    v123 = self;
-    v130 = [(ABSAddressBook *)self groups];
+    sources = [(ABSAddressBook *)self sources];
+    contacts = [(ABSAddressBook *)self contacts];
+    selfCopy = self;
+    groups = [(ABSAddressBook *)self groups];
     v179 = 0u;
     v180 = 0u;
     v181 = 0u;
     v182 = 0u;
-    v10 = [v8 insertedRecords];
-    v11 = [v10 countByEnumeratingWithState:&v179 objects:v196 count:16];
+    insertedRecords = [sources insertedRecords];
+    v11 = [insertedRecords countByEnumeratingWithState:&v179 objects:v196 count:16];
     if (v11)
     {
       v12 = v11;
@@ -310,14 +310,14 @@ LABEL_8:
         {
           if (*v180 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(insertedRecords);
           }
 
-          v15 = [*(*(&v179 + 1) + 8 * i) cnImpl];
-          [v7 addContainer:v15 toAccountWithIdentifier:0];
+          cnImpl = [*(*(&v179 + 1) + 8 * i) cnImpl];
+          [v7 addContainer:cnImpl toAccountWithIdentifier:0];
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v179 objects:v196 count:16];
+        v12 = [insertedRecords countByEnumeratingWithState:&v179 objects:v196 count:16];
       }
 
       while (v12);
@@ -327,10 +327,10 @@ LABEL_8:
     v178 = 0u;
     v175 = 0u;
     v176 = 0u;
-    v16 = [v8 updatedRecords];
-    v17 = [v16 allValues];
+    updatedRecords = [sources updatedRecords];
+    allValues = [updatedRecords allValues];
 
-    v18 = [v17 countByEnumeratingWithState:&v175 objects:v195 count:16];
+    v18 = [allValues countByEnumeratingWithState:&v175 objects:v195 count:16];
     if (v18)
     {
       v19 = v18;
@@ -341,14 +341,14 @@ LABEL_8:
         {
           if (*v176 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(allValues);
           }
 
-          v22 = [*(*(&v175 + 1) + 8 * j) cnImpl];
-          [v7 updateContainer:v22];
+          cnImpl2 = [*(*(&v175 + 1) + 8 * j) cnImpl];
+          [v7 updateContainer:cnImpl2];
         }
 
-        v19 = [v17 countByEnumeratingWithState:&v175 objects:v195 count:16];
+        v19 = [allValues countByEnumeratingWithState:&v175 objects:v195 count:16];
       }
 
       while (v19);
@@ -358,10 +358,10 @@ LABEL_8:
     v174 = 0u;
     v171 = 0u;
     v172 = 0u;
-    v23 = [v8 deletedRecords];
-    v24 = [v23 allValues];
+    deletedRecords = [sources deletedRecords];
+    allValues2 = [deletedRecords allValues];
 
-    v25 = [v24 countByEnumeratingWithState:&v171 objects:v194 count:16];
+    v25 = [allValues2 countByEnumeratingWithState:&v171 objects:v194 count:16];
     if (v25)
     {
       v26 = v25;
@@ -372,14 +372,14 @@ LABEL_8:
         {
           if (*v172 != v27)
           {
-            objc_enumerationMutation(v24);
+            objc_enumerationMutation(allValues2);
           }
 
-          v29 = [*(*(&v171 + 1) + 8 * k) cnImpl];
-          [v7 deleteContainer:v29];
+          cnImpl3 = [*(*(&v171 + 1) + 8 * k) cnImpl];
+          [v7 deleteContainer:cnImpl3];
         }
 
-        v26 = [v24 countByEnumeratingWithState:&v171 objects:v194 count:16];
+        v26 = [allValues2 countByEnumeratingWithState:&v171 objects:v194 count:16];
       }
 
       while (v26);
@@ -389,8 +389,8 @@ LABEL_8:
     v170 = 0u;
     v167 = 0u;
     v168 = 0u;
-    v30 = [v9 insertedRecords];
-    v31 = [v30 countByEnumeratingWithState:&v167 objects:v193 count:16];
+    insertedRecords2 = [contacts insertedRecords];
+    v31 = [insertedRecords2 countByEnumeratingWithState:&v167 objects:v193 count:16];
     if (v31)
     {
       v32 = v31;
@@ -401,17 +401,17 @@ LABEL_8:
         {
           if (*v168 != v33)
           {
-            objc_enumerationMutation(v30);
+            objc_enumerationMutation(insertedRecords2);
           }
 
           v35 = *(*(&v167 + 1) + 8 * m);
-          v36 = [v35 source];
-          v37 = [v35 cnImpl];
-          v38 = [v36 CNIdentifierString];
-          [v7 addContact:v37 toContainerWithIdentifier:v38];
+          source = [v35 source];
+          cnImpl4 = [v35 cnImpl];
+          cNIdentifierString = [source CNIdentifierString];
+          [v7 addContact:cnImpl4 toContainerWithIdentifier:cNIdentifierString];
         }
 
-        v32 = [v30 countByEnumeratingWithState:&v167 objects:v193 count:16];
+        v32 = [insertedRecords2 countByEnumeratingWithState:&v167 objects:v193 count:16];
       }
 
       while (v32);
@@ -421,10 +421,10 @@ LABEL_8:
     v166 = 0u;
     v163 = 0u;
     v164 = 0u;
-    v39 = [v9 deletedRecords];
-    v40 = [v39 allValues];
+    deletedRecords2 = [contacts deletedRecords];
+    allValues3 = [deletedRecords2 allValues];
 
-    v41 = [v40 countByEnumeratingWithState:&v163 objects:v192 count:16];
+    v41 = [allValues3 countByEnumeratingWithState:&v163 objects:v192 count:16];
     if (v41)
     {
       v42 = v41;
@@ -435,14 +435,14 @@ LABEL_8:
         {
           if (*v164 != v43)
           {
-            objc_enumerationMutation(v40);
+            objc_enumerationMutation(allValues3);
           }
 
-          v45 = [*(*(&v163 + 1) + 8 * n) cnImpl];
-          [v7 deleteContact:v45];
+          cnImpl5 = [*(*(&v163 + 1) + 8 * n) cnImpl];
+          [v7 deleteContact:cnImpl5];
         }
 
-        v42 = [v40 countByEnumeratingWithState:&v163 objects:v192 count:16];
+        v42 = [allValues3 countByEnumeratingWithState:&v163 objects:v192 count:16];
       }
 
       while (v42);
@@ -452,10 +452,10 @@ LABEL_8:
     v162 = 0u;
     v159 = 0u;
     v160 = 0u;
-    v46 = [v9 updatedRecords];
-    v47 = [v46 allValues];
+    updatedRecords2 = [contacts updatedRecords];
+    allValues4 = [updatedRecords2 allValues];
 
-    v48 = [v47 countByEnumeratingWithState:&v159 objects:v191 count:16];
+    v48 = [allValues4 countByEnumeratingWithState:&v159 objects:v191 count:16];
     if (v48)
     {
       v49 = v48;
@@ -466,14 +466,14 @@ LABEL_8:
         {
           if (*v160 != v50)
           {
-            objc_enumerationMutation(v47);
+            objc_enumerationMutation(allValues4);
           }
 
-          v52 = [*(*(&v159 + 1) + 8 * ii) cnImpl];
-          [v7 updateContact:v52];
+          cnImpl6 = [*(*(&v159 + 1) + 8 * ii) cnImpl];
+          [v7 updateContact:cnImpl6];
         }
 
-        v49 = [v47 countByEnumeratingWithState:&v159 objects:v191 count:16];
+        v49 = [allValues4 countByEnumeratingWithState:&v159 objects:v191 count:16];
       }
 
       while (v49);
@@ -483,8 +483,8 @@ LABEL_8:
     v158 = 0u;
     v155 = 0u;
     v156 = 0u;
-    v53 = [v130 insertedRecords];
-    v54 = [v53 countByEnumeratingWithState:&v155 objects:v190 count:16];
+    insertedRecords3 = [groups insertedRecords];
+    v54 = [insertedRecords3 countByEnumeratingWithState:&v155 objects:v190 count:16];
     if (v54)
     {
       v55 = v54;
@@ -495,17 +495,17 @@ LABEL_8:
         {
           if (*v156 != v56)
           {
-            objc_enumerationMutation(v53);
+            objc_enumerationMutation(insertedRecords3);
           }
 
           v58 = *(*(&v155 + 1) + 8 * jj);
-          v59 = [v58 source];
-          v60 = [v58 cnImpl];
-          v61 = [v59 CNIdentifierString];
-          [v7 addGroup:v60 toContainerWithIdentifier:v61];
+          source2 = [v58 source];
+          cnImpl7 = [v58 cnImpl];
+          cNIdentifierString2 = [source2 CNIdentifierString];
+          [v7 addGroup:cnImpl7 toContainerWithIdentifier:cNIdentifierString2];
         }
 
-        v55 = [v53 countByEnumeratingWithState:&v155 objects:v190 count:16];
+        v55 = [insertedRecords3 countByEnumeratingWithState:&v155 objects:v190 count:16];
       }
 
       while (v55);
@@ -515,10 +515,10 @@ LABEL_8:
     v154 = 0u;
     v151 = 0u;
     v152 = 0u;
-    v62 = [v130 deletedRecords];
-    v63 = [v62 allValues];
+    deletedRecords3 = [groups deletedRecords];
+    allValues5 = [deletedRecords3 allValues];
 
-    v64 = [v63 countByEnumeratingWithState:&v151 objects:v189 count:16];
+    v64 = [allValues5 countByEnumeratingWithState:&v151 objects:v189 count:16];
     if (v64)
     {
       v65 = v64;
@@ -529,14 +529,14 @@ LABEL_8:
         {
           if (*v152 != v66)
           {
-            objc_enumerationMutation(v63);
+            objc_enumerationMutation(allValues5);
           }
 
-          v68 = [*(*(&v151 + 1) + 8 * kk) cnImpl];
-          [v7 deleteGroup:v68];
+          cnImpl8 = [*(*(&v151 + 1) + 8 * kk) cnImpl];
+          [v7 deleteGroup:cnImpl8];
         }
 
-        v65 = [v63 countByEnumeratingWithState:&v151 objects:v189 count:16];
+        v65 = [allValues5 countByEnumeratingWithState:&v151 objects:v189 count:16];
       }
 
       while (v65);
@@ -546,10 +546,10 @@ LABEL_8:
     v150 = 0u;
     v147 = 0u;
     v148 = 0u;
-    v69 = [v130 updatedRecords];
-    v70 = [v69 allValues];
+    updatedRecords3 = [groups updatedRecords];
+    allValues6 = [updatedRecords3 allValues];
 
-    v71 = [v70 countByEnumeratingWithState:&v147 objects:v188 count:16];
+    v71 = [allValues6 countByEnumeratingWithState:&v147 objects:v188 count:16];
     if (v71)
     {
       v72 = v71;
@@ -560,27 +560,27 @@ LABEL_8:
         {
           if (*v148 != v73)
           {
-            objc_enumerationMutation(v70);
+            objc_enumerationMutation(allValues6);
           }
 
-          v75 = [*(*(&v147 + 1) + 8 * mm) cnImpl];
-          [v7 updateGroup:v75];
+          cnImpl9 = [*(*(&v147 + 1) + 8 * mm) cnImpl];
+          [v7 updateGroup:cnImpl9];
         }
 
-        v72 = [v70 countByEnumeratingWithState:&v147 objects:v188 count:16];
+        v72 = [allValues6 countByEnumeratingWithState:&v147 objects:v188 count:16];
       }
 
       while (v72);
     }
 
-    v121 = v9;
-    v122 = v8;
+    v121 = contacts;
+    v122 = sources;
 
     v145 = 0u;
     v146 = 0u;
     v143 = 0u;
     v144 = 0u;
-    obj = [v130 recordsWithPendingMembershipAdditions];
+    obj = [groups recordsWithPendingMembershipAdditions];
     v128 = [obj countByEnumeratingWithState:&v143 objects:v187 count:16];
     if (v128)
     {
@@ -595,7 +595,7 @@ LABEL_8:
           }
 
           v77 = *(*(&v143 + 1) + 8 * nn);
-          v78 = [v130 addedMembersForRecord:{v77, v120}];
+          v78 = [groups addedMembersForRecord:{v77, saveCopy}];
           v139 = 0u;
           v140 = 0u;
           v141 = 0u;
@@ -618,9 +618,9 @@ LABEL_8:
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  v84 = [v83 cnImpl];
-                  v85 = [v77 cnImpl];
-                  [v7 addMember:v84 toGroup:v85];
+                  cnImpl10 = [v83 cnImpl];
+                  cnImpl11 = [v77 cnImpl];
+                  [v7 addMember:cnImpl10 toGroup:cnImpl11];
                 }
               }
 
@@ -641,7 +641,7 @@ LABEL_8:
     v138 = 0u;
     v135 = 0u;
     v136 = 0u;
-    obja = [v130 recordsWithPendingMembershipDeletions];
+    obja = [groups recordsWithPendingMembershipDeletions];
     v129 = [obja countByEnumeratingWithState:&v135 objects:v185 count:16];
     if (v129)
     {
@@ -656,7 +656,7 @@ LABEL_8:
           }
 
           v87 = *(*(&v135 + 1) + 8 * i2);
-          v88 = [v130 removedMembersForRecord:{v87, v120}];
+          v88 = [groups removedMembersForRecord:{v87, saveCopy}];
           v131 = 0u;
           v132 = 0u;
           v133 = 0u;
@@ -679,9 +679,9 @@ LABEL_8:
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  v94 = [v93 cnImpl];
-                  v95 = [v87 cnImpl];
-                  [v7 removeMember:v94 fromGroup:v95];
+                  cnImpl12 = [v93 cnImpl];
+                  cnImpl13 = [v87 cnImpl];
+                  [v7 removeMember:cnImpl12 fromGroup:cnImpl13];
                 }
               }
 
@@ -698,21 +698,21 @@ LABEL_8:
       while (v129);
     }
 
-    v96 = [(ABSAddressBook *)v123 store];
-    v97 = [v96 executeSaveRequest:v7 error:v120];
+    store = [(ABSAddressBook *)selfCopy store];
+    v97 = [store executeSaveRequest:v7 error:saveCopy];
 
-    if (v120)
+    if (saveCopy)
     {
-      if (*v120)
+      if (*saveCopy)
       {
-        v98 = [*v120 domain];
-        v99 = [v98 isEqualToString:*MEMORY[0x277CBD198]];
+        domain = [*saveCopy domain];
+        v99 = [domain isEqualToString:*MEMORY[0x277CBD198]];
 
         if (v99)
         {
-          if ([*v120 code] == 100)
+          if ([*saveCopy code] == 100)
           {
-            *v120 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ABAddressBookErrorDomain" code:1 userInfo:0];
+            *saveCopy = [MEMORY[0x277CCA9B8] errorWithDomain:@"ABAddressBookErrorDomain" code:1 userInfo:0];
           }
         }
       }
@@ -720,56 +720,56 @@ LABEL_8:
 
     if (v97)
     {
-      v100 = [(ABSAddressBook *)v123 contacts];
-      v101 = [v100 insertedRecords];
-      v102 = [v101 count];
+      contacts2 = [(ABSAddressBook *)selfCopy contacts];
+      insertedRecords4 = [contacts2 insertedRecords];
+      v102 = [insertedRecords4 count];
 
       if (v102)
       {
-        v103 = [(ABSAddressBook *)v123 contacts];
-        v104 = [v103 insertedRecords];
+        contacts3 = [(ABSAddressBook *)selfCopy contacts];
+        insertedRecords5 = [contacts3 insertedRecords];
         v183 = *MEMORY[0x277CBD010];
         v105 = [MEMORY[0x277CBEA60] arrayWithObjects:&v183 count:1];
-        [(ABSAddressBook *)v123 updatePeople:v104 refetchingProperties:v105];
+        [(ABSAddressBook *)selfCopy updatePeople:insertedRecords5 refetchingProperties:v105];
       }
 
-      v106 = [(ABSAddressBook *)v123 contacts];
-      [v106 commitPendingChanges];
+      contacts4 = [(ABSAddressBook *)selfCopy contacts];
+      [contacts4 commitPendingChanges];
 
-      v107 = [(ABSAddressBook *)v123 groups];
-      v108 = [v107 insertedRecords];
-      v109 = [v108 count];
+      groups2 = [(ABSAddressBook *)selfCopy groups];
+      insertedRecords6 = [groups2 insertedRecords];
+      v109 = [insertedRecords6 count];
 
       if (v109)
       {
-        v110 = [(ABSAddressBook *)v123 groups];
-        v111 = [v110 insertedRecords];
-        [(ABSAddressBook *)v123 updateFetchingAllPropertiesForGroups:v111];
+        groups3 = [(ABSAddressBook *)selfCopy groups];
+        insertedRecords7 = [groups3 insertedRecords];
+        [(ABSAddressBook *)selfCopy updateFetchingAllPropertiesForGroups:insertedRecords7];
       }
 
-      v112 = [(ABSAddressBook *)v123 groups];
-      [v112 commitPendingChanges];
+      groups4 = [(ABSAddressBook *)selfCopy groups];
+      [groups4 commitPendingChanges];
 
-      v113 = [(ABSAddressBook *)v123 sources];
-      v114 = [v113 insertedRecords];
-      v115 = [v114 count];
+      sources2 = [(ABSAddressBook *)selfCopy sources];
+      insertedRecords8 = [sources2 insertedRecords];
+      v115 = [insertedRecords8 count];
 
       if (v115)
       {
-        v116 = [(ABSAddressBook *)v123 sources];
-        v117 = [v116 insertedRecords];
-        [(ABSAddressBook *)v123 updateFetchingAllPropertiesForSources:v117];
+        sources3 = [(ABSAddressBook *)selfCopy sources];
+        insertedRecords9 = [sources3 insertedRecords];
+        [(ABSAddressBook *)selfCopy updateFetchingAllPropertiesForSources:insertedRecords9];
       }
 
-      v118 = [(ABSAddressBook *)v123 sources];
-      [v118 commitPendingChanges];
+      sources4 = [(ABSAddressBook *)selfCopy sources];
+      [sources4 commitPendingChanges];
     }
   }
 
-  else if (a3)
+  else if (save)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:@"ABAddressBookErrorDomain" code:1 userInfo:0];
-    *a3 = LOBYTE(v97) = 0;
+    *save = LOBYTE(v97) = 0;
   }
 
   else
@@ -782,61 +782,61 @@ LABEL_8:
 
 - (BOOL)hasUnsavedChanges
 {
-  v3 = [(ABSAddressBook *)self groups];
-  if ([v3 hasUnsavedChanges])
+  groups = [(ABSAddressBook *)self groups];
+  if ([groups hasUnsavedChanges])
   {
-    v4 = 1;
+    hasUnsavedChanges = 1;
   }
 
   else
   {
-    v5 = [(ABSAddressBook *)self contacts];
-    if ([v5 hasUnsavedChanges])
+    contacts = [(ABSAddressBook *)self contacts];
+    if ([contacts hasUnsavedChanges])
     {
-      v4 = 1;
+      hasUnsavedChanges = 1;
     }
 
     else
     {
-      v6 = [(ABSAddressBook *)self sources];
-      v4 = [v6 hasUnsavedChanges];
+      sources = [(ABSAddressBook *)self sources];
+      hasUnsavedChanges = [sources hasUnsavedChanges];
     }
   }
 
-  return v4;
+  return hasUnsavedChanges;
 }
 
 - (void)revert
 {
-  v3 = [(ABSAddressBook *)self groups];
-  [v3 revert];
+  groups = [(ABSAddressBook *)self groups];
+  [groups revert];
 
-  v4 = [(ABSAddressBook *)self contacts];
-  [v4 revert];
+  contacts = [(ABSAddressBook *)self contacts];
+  [contacts revert];
 
-  v5 = [(ABSAddressBook *)self sources];
-  [v5 revert];
+  sources = [(ABSAddressBook *)self sources];
+  [sources revert];
 }
 
-- (void)registerExternalChangeCallback:(void *)a3 context:(void *)a4
+- (void)registerExternalChangeCallback:(void *)callback context:(void *)context
 {
-  v7 = [(ABSAddressBook *)self changeCallbacks];
-  v6 = [MEMORY[0x277CCACC8] currentThread];
-  [v7 addExternalCallback:a3 onThread:v6 withContext:a4];
+  changeCallbacks = [(ABSAddressBook *)self changeCallbacks];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  [changeCallbacks addExternalCallback:callback onThread:currentThread withContext:context];
 }
 
-- (void)unregisterExternalChangeCallback:(void *)a3 context:(void *)a4
+- (void)unregisterExternalChangeCallback:(void *)callback context:(void *)context
 {
-  v6 = [(ABSAddressBook *)self changeCallbacks];
-  [v6 removeExternalCallback:a3 withContext:a4];
+  changeCallbacks = [(ABSAddressBook *)self changeCallbacks];
+  [changeCallbacks removeExternalCallback:callback withContext:context];
 }
 
-+ (id)localizedLabelForLabel:(id)a3
++ (id)localizedLabelForLabel:(id)label
 {
   v3 = MEMORY[0x277CCA8D8];
-  v4 = a3;
+  labelCopy = label;
   v5 = [v3 bundleForClass:objc_opt_class()];
-  v6 = [v5 localizedStringForKey:v4 value:v4 table:@"Localized"];
+  v6 = [v5 localizedStringForKey:labelCopy value:labelCopy table:@"Localized"];
 
   return v6;
 }
@@ -848,10 +848,10 @@ LABEL_8:
   v27 = &v26;
   v28 = 0x2020000000;
   v29 = -1;
-  v3 = [MEMORY[0x277CFBDB8] sharedInstance];
-  v4 = [v3 isAccessGranted];
+  mEMORY[0x277CFBDB8] = [MEMORY[0x277CFBDB8] sharedInstance];
+  isAccessGranted = [mEMORY[0x277CFBDB8] isAccessGranted];
 
-  if (v4)
+  if (isAccessGranted)
   {
     v5 = objc_alloc(MEMORY[0x277CBDA70]);
     v30[0] = *MEMORY[0x277CBD018];
@@ -859,15 +859,15 @@ LABEL_8:
     v7 = [v5 initWithKeysToFetch:v6];
 
     v8 = MEMORY[0x277CBEB98];
-    v9 = [(ABSAddressBook *)self contacts];
-    v10 = [v9 deletedRecords];
-    v11 = [v10 allValues];
-    v12 = [v11 _cn_map:&__block_literal_global_11];
+    contacts = [(ABSAddressBook *)self contacts];
+    deletedRecords = [contacts deletedRecords];
+    allValues = [deletedRecords allValues];
+    v12 = [allValues _cn_map:&__block_literal_global_11];
     v13 = [v8 setWithArray:v12];
 
     [v7 setUnifyResults:0];
     v27[3] = 0;
-    v14 = [(ABSAddressBook *)self store];
+    store = [(ABSAddressBook *)self store];
     v25 = 0;
     v19 = MEMORY[0x277D85DD0];
     v20 = 3221225472;
@@ -876,10 +876,10 @@ LABEL_8:
     v15 = v13;
     v23 = v15;
     v24 = &v26;
-    LOBYTE(v10) = [v14 enumerateContactsWithFetchRequest:v7 error:&v25 usingBlock:&v19];
+    LOBYTE(deletedRecords) = [store enumerateContactsWithFetchRequest:v7 error:&v25 usingBlock:&v19];
     v16 = v25;
 
-    if ((v10 & 1) == 0)
+    if ((deletedRecords & 1) == 0)
     {
       NSLog(&cfstr_ErrorFetching.isa, v16, v19, v20, v21, v22);
     }
@@ -935,29 +935,29 @@ void __29__ABSAddressBook_personCount__block_invoke_2(uint64_t a1, void *a2)
   [v5 setUnifyResults:0];
   [v5 setMutableObjects:1];
   v6 = MEMORY[0x277CBEB58];
-  v7 = [(ABSAddressBook *)self contacts];
-  v8 = [v7 records];
-  v9 = [v8 allValues];
-  v10 = [v9 _cn_map:&__block_literal_global_30];
+  contacts = [(ABSAddressBook *)self contacts];
+  records = [contacts records];
+  allValues = [records allValues];
+  v10 = [allValues _cn_map:&__block_literal_global_30];
   v11 = [v6 setWithArray:v10];
 
-  v12 = [(ABSAddressBook *)self contacts];
-  v13 = [v12 deletedRecords];
-  v14 = [v13 allValues];
-  v15 = [v14 _cn_map:&__block_literal_global_30];
+  contacts2 = [(ABSAddressBook *)self contacts];
+  deletedRecords = [contacts2 deletedRecords];
+  allValues2 = [deletedRecords allValues];
+  v15 = [allValues2 _cn_map:&__block_literal_global_30];
   [v11 addObjectsFromArray:v15];
 
-  v16 = [MEMORY[0x277CBEB18] array];
-  v17 = [(ABSAddressBook *)self store];
+  array = [MEMORY[0x277CBEB18] array];
+  store = [(ABSAddressBook *)self store];
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
   v36[2] = __27__ABSAddressBook_allPeople__block_invoke_2;
   v36[3] = &unk_278A04BC0;
   v18 = v11;
   v37 = v18;
-  v19 = v16;
+  v19 = array;
   v38 = v19;
-  [v17 enumerateContactsWithFetchRequest:v5 error:0 usingBlock:v36];
+  [store enumerateContactsWithFetchRequest:v5 error:0 usingBlock:v36];
 
   v34 = 0u;
   v35 = 0u;
@@ -979,8 +979,8 @@ void __29__ABSAddressBook_personCount__block_invoke_2(uint64_t a1, void *a2)
         }
 
         v25 = *(*(&v32 + 1) + 8 * i);
-        v26 = [(ABSAddressBook *)self contacts];
-        v27 = [v26 cnImplFetched:v25 creationBlock:&__block_literal_global_35];
+        contacts3 = [(ABSAddressBook *)self contacts];
+        v27 = [contacts3 cnImplFetched:v25 creationBlock:&__block_literal_global_35];
 
         [v27 setAddressBook:self];
       }
@@ -991,11 +991,11 @@ void __29__ABSAddressBook_personCount__block_invoke_2(uint64_t a1, void *a2)
     while (v22);
   }
 
-  v28 = [(ABSAddressBook *)self contacts];
-  v29 = [v28 records];
-  v30 = [v29 allValues];
+  contacts4 = [(ABSAddressBook *)self contacts];
+  records2 = [contacts4 records];
+  allValues3 = [records2 allValues];
 
-  return v30;
+  return allValues3;
 }
 
 id __27__ABSAddressBook_allPeople__block_invoke(uint64_t a1, void *a2)
@@ -1030,17 +1030,17 @@ ABSPerson *__27__ABSAddressBook_allPeople__block_invoke_3(uint64_t a1, void *a2)
   return v3;
 }
 
-- (id)peopleWithCNIdentifiers:(id)a3
+- (id)peopleWithCNIdentifiers:(id)identifiers
 {
   v74 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v51 = [MEMORY[0x277CBEB18] array];
-  v45 = [MEMORY[0x277CBEB18] array];
+  identifiersCopy = identifiers;
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
-  obj = v3;
+  obj = identifiersCopy;
   v48 = [obj countByEnumeratingWithState:&v66 objects:v73 count:16];
   if (v48)
   {
@@ -1061,11 +1061,11 @@ ABSPerson *__27__ABSAddressBook_allPeople__block_invoke_3(uint64_t a1, void *a2)
         v63 = 0u;
         v64 = 0u;
         v65 = 0u;
-        v6 = [(ABSAddressBook *)self contacts];
-        v7 = [v6 records];
-        v8 = [v7 allValues];
+        contacts = [(ABSAddressBook *)self contacts];
+        records = [contacts records];
+        allValues = [records allValues];
 
-        v9 = [v8 countByEnumeratingWithState:&v62 objects:v72 count:16];
+        v9 = [allValues countByEnumeratingWithState:&v62 objects:v72 count:16];
         if (v9)
         {
           v10 = v9;
@@ -1077,22 +1077,22 @@ ABSPerson *__27__ABSAddressBook_allPeople__block_invoke_3(uint64_t a1, void *a2)
             {
               if (*v63 != v12)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(allValues);
               }
 
               v14 = *(*(&v62 + 1) + 8 * i);
-              v15 = [v14 cnImpl];
-              v16 = [v15 identifier];
-              v17 = [v16 isEqual:v5];
+              cnImpl = [v14 cnImpl];
+              identifier = [cnImpl identifier];
+              v17 = [identifier isEqual:v5];
 
               if (v17)
               {
-                [v51 addObject:v14];
+                [array addObject:v14];
                 v11 = 1;
               }
             }
 
-            v10 = [v8 countByEnumeratingWithState:&v62 objects:v72 count:16];
+            v10 = [allValues countByEnumeratingWithState:&v62 objects:v72 count:16];
           }
 
           while (v10);
@@ -1111,16 +1111,16 @@ ABSPerson *__27__ABSAddressBook_allPeople__block_invoke_3(uint64_t a1, void *a2)
         v61 = 0u;
         v58 = 0u;
         v59 = 0u;
-        v18 = [(ABSAddressBook *)self contacts];
-        v19 = [v18 deletedRecords];
-        v20 = [v19 allValues];
+        contacts2 = [(ABSAddressBook *)self contacts];
+        deletedRecords = [contacts2 deletedRecords];
+        allValues2 = [deletedRecords allValues];
 
-        v21 = [v20 countByEnumeratingWithState:&v58 objects:v71 count:16];
+        v21 = [allValues2 countByEnumeratingWithState:&v58 objects:v71 count:16];
         if (!v21)
         {
 
 LABEL_28:
-          [v45 addObject:v5];
+          [array2 addObject:v5];
           goto LABEL_29;
         }
 
@@ -1133,17 +1133,17 @@ LABEL_28:
           {
             if (*v59 != v24)
             {
-              objc_enumerationMutation(v20);
+              objc_enumerationMutation(allValues2);
             }
 
-            v26 = [*(*(&v58 + 1) + 8 * j) cnImpl];
-            v27 = [v26 identifier];
-            v28 = [v27 isEqual:v5];
+            cnImpl2 = [*(*(&v58 + 1) + 8 * j) cnImpl];
+            identifier2 = [cnImpl2 identifier];
+            v28 = [identifier2 isEqual:v5];
 
             v23 |= v28;
           }
 
-          v22 = [v20 countByEnumeratingWithState:&v58 objects:v71 count:16];
+          v22 = [allValues2 countByEnumeratingWithState:&v58 objects:v71 count:16];
         }
 
         while (v22);
@@ -1168,20 +1168,20 @@ LABEL_29:
   v30 = +[ABSPerson defaultKeysToFetch];
   v31 = [v29 initWithKeysToFetch:v30];
 
-  v32 = [MEMORY[0x277CBDA58] predicateForContactsWithIdentifiers:v45];
+  v32 = [MEMORY[0x277CBDA58] predicateForContactsWithIdentifiers:array2];
   [v31 setPredicate:v32];
 
   [v31 setUnifyResults:0];
   [v31 setMutableObjects:1];
-  v33 = [MEMORY[0x277CBEB18] array];
-  v34 = [(ABSAddressBook *)self store];
+  array3 = [MEMORY[0x277CBEB18] array];
+  store = [(ABSAddressBook *)self store];
   v56[0] = MEMORY[0x277D85DD0];
   v56[1] = 3221225472;
   v56[2] = __42__ABSAddressBook_peopleWithCNIdentifiers___block_invoke;
   v56[3] = &unk_278A04C08;
-  v35 = v33;
+  v35 = array3;
   v57 = v35;
-  [v34 enumerateContactsWithFetchRequest:v31 error:0 usingBlock:v56];
+  [store enumerateContactsWithFetchRequest:v31 error:0 usingBlock:v56];
 
   v54 = 0u;
   v55 = 0u;
@@ -1203,11 +1203,11 @@ LABEL_29:
         }
 
         v41 = *(*(&v52 + 1) + 8 * k);
-        v42 = [(ABSAddressBook *)self contacts];
-        v43 = [v42 cnImplFetched:v41 creationBlock:&__block_literal_global_37];
+        contacts3 = [(ABSAddressBook *)self contacts];
+        v43 = [contacts3 cnImplFetched:v41 creationBlock:&__block_literal_global_37];
 
         [v43 setAddressBook:self];
-        [v51 addObject:v43];
+        [array addObject:v43];
       }
 
       v38 = [v36 countByEnumeratingWithState:&v52 objects:v70 count:16];
@@ -1216,7 +1216,7 @@ LABEL_29:
     while (v38);
   }
 
-  return v51;
+  return array;
 }
 
 ABSPerson *__42__ABSAddressBook_peopleWithCNIdentifiers___block_invoke_2(uint64_t a1, void *a2)
@@ -1227,19 +1227,19 @@ ABSPerson *__42__ABSAddressBook_peopleWithCNIdentifiers___block_invoke_2(uint64_
   return v3;
 }
 
-- (id)personWithRecordID:(int)a3
+- (id)personWithRecordID:(int)d
 {
-  v3 = *&a3;
+  v3 = *&d;
   v5 = [MEMORY[0x277CCABB0] numberWithInt:?];
-  v6 = [(ABSAddressBook *)self contacts];
-  v7 = [v6 records];
-  v8 = [v7 objectForKey:v5];
+  contacts = [(ABSAddressBook *)self contacts];
+  records = [contacts records];
+  v8 = [records objectForKey:v5];
 
   if (!v8)
   {
-    v9 = [(ABSAddressBook *)self contacts];
-    v10 = [v9 deletedRecords];
-    v11 = [v10 objectForKey:v5];
+    contacts2 = [(ABSAddressBook *)self contacts];
+    deletedRecords = [contacts2 deletedRecords];
+    v11 = [deletedRecords objectForKey:v5];
 
     if (v11)
     {
@@ -1257,20 +1257,20 @@ ABSPerson *__42__ABSAddressBook_peopleWithCNIdentifiers___block_invoke_2(uint64_
 
       [v14 setUnifyResults:0];
       [v14 setMutableObjects:1];
-      v16 = [MEMORY[0x277CBEB18] array];
-      v17 = [(ABSAddressBook *)self store];
+      array = [MEMORY[0x277CBEB18] array];
+      store = [(ABSAddressBook *)self store];
       v24[0] = MEMORY[0x277D85DD0];
       v24[1] = 3221225472;
       v24[2] = __37__ABSAddressBook_personWithRecordID___block_invoke;
       v24[3] = &unk_278A04C08;
-      v18 = v16;
+      v18 = array;
       v25 = v18;
-      [v17 enumerateContactsWithFetchRequest:v14 error:0 usingBlock:v24];
+      [store enumerateContactsWithFetchRequest:v14 error:0 usingBlock:v24];
 
-      v19 = [v18 lastObject];
-      if (v19)
+      lastObject = [v18 lastObject];
+      if (lastObject)
       {
-        v20 = v19;
+        v20 = lastObject;
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
@@ -1279,8 +1279,8 @@ ABSPerson *__42__ABSAddressBook_peopleWithCNIdentifiers___block_invoke_2(uint64_
           v20 = v21;
         }
 
-        v22 = [(ABSAddressBook *)self contacts];
-        v8 = [v22 cnImplFetched:v20 creationBlock:&__block_literal_global_41];
+        contacts3 = [(ABSAddressBook *)self contacts];
+        v8 = [contacts3 cnImplFetched:v20 creationBlock:&__block_literal_global_41];
 
         [v8 setAddressBook:self];
       }
@@ -1303,36 +1303,36 @@ ABSPerson *__37__ABSAddressBook_personWithRecordID___block_invoke_2(uint64_t a1,
   return v3;
 }
 
-- (id)findPersonMatchingURL:(id)a3
+- (id)findPersonMatchingURL:(id)l
 {
-  v4 = [MEMORY[0x277CBDA58] predicateForContactMatchingURLString:a3];
+  v4 = [MEMORY[0x277CBDA58] predicateForContactMatchingURLString:l];
   v5 = [ABSPersonFetchRequest alloc];
   v6 = [(ABSPersonFetchRequest *)v5 initWithPredicate:v4 additionalKeysToFetch:MEMORY[0x277CBEBF8] sortOrder:0];
   v7 = [(ABSAddressBook *)self _peoplePreferringExistingRecordsForFetchRequest:v6];
-  v8 = [v7 firstObject];
+  firstObject = [v7 firstObject];
 
-  return v8;
+  return firstObject;
 }
 
-- (id)findPersonMatchingEmailAddress:(id)a3
+- (id)findPersonMatchingEmailAddress:(id)address
 {
-  v4 = [MEMORY[0x277CBDA58] predicateForContactsMatchingEmailAddress:a3];
+  v4 = [MEMORY[0x277CBDA58] predicateForContactsMatchingEmailAddress:address];
   v5 = [ABSPersonFetchRequest alloc];
   v6 = [(ABSPersonFetchRequest *)v5 initWithPredicate:v4 additionalKeysToFetch:MEMORY[0x277CBEBF8] sortOrder:0];
   v7 = [(ABSAddressBook *)self _peoplePreferringExistingRecordsForFetchRequest:v6];
-  v8 = [v7 firstObject];
+  firstObject = [v7 firstObject];
 
-  return v8;
+  return firstObject;
 }
 
-- (id)findPersonMatchingPhoneNumber:(id)a3 country:(id)a4
+- (id)findPersonMatchingPhoneNumber:(id)number country:(id)country
 {
   v18[1] = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277CBDA58];
   v7 = MEMORY[0x277CBDB70];
-  v8 = a4;
-  v9 = a3;
-  v10 = [[v7 alloc] initWithStringValue:v9 countryCode:v8];
+  countryCopy = country;
+  numberCopy = number;
+  v10 = [[v7 alloc] initWithStringValue:numberCopy countryCode:countryCopy];
 
   v11 = [v6 predicateForContactsMatchingPhoneNumber:v10];
 
@@ -1342,45 +1342,45 @@ ABSPerson *__37__ABSAddressBook_personWithRecordID___block_invoke_2(uint64_t a1,
   v14 = [(ABSPersonFetchRequest *)v12 initWithPredicate:v11 additionalKeysToFetch:v13 sortOrder:0];
 
   v15 = [(ABSAddressBook *)self _peoplePreferringExistingRecordsForFetchRequest:v14];
-  v16 = [v15 firstObject];
+  firstObject = [v15 firstObject];
 
-  return v16;
+  return firstObject;
 }
 
-- (id)contactsWithIdentifiers:(id)a3 keysToFetch:(id)a4
+- (id)contactsWithIdentifiers:(id)identifiers keysToFetch:(id)fetch
 {
   v6 = MEMORY[0x277CBDA70];
-  v7 = a4;
-  v8 = a3;
-  v9 = [[v6 alloc] initWithKeysToFetch:v7];
+  fetchCopy = fetch;
+  identifiersCopy = identifiers;
+  v9 = [[v6 alloc] initWithKeysToFetch:fetchCopy];
 
-  v10 = [MEMORY[0x277CBDA58] predicateForContactsWithIdentifiers:v8];
+  v10 = [MEMORY[0x277CBDA58] predicateForContactsWithIdentifiers:identifiersCopy];
 
   [v9 setPredicate:v10];
   [v9 setUnifyResults:0];
   [v9 setMutableObjects:0];
-  v11 = [MEMORY[0x277CBEB18] array];
-  v12 = [(ABSAddressBook *)self store];
+  array = [MEMORY[0x277CBEB18] array];
+  store = [(ABSAddressBook *)self store];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __54__ABSAddressBook_contactsWithIdentifiers_keysToFetch___block_invoke;
   v16[3] = &unk_278A04C08;
-  v17 = v11;
-  v13 = v11;
-  [v12 enumerateContactsWithFetchRequest:v9 error:0 usingBlock:v16];
+  v17 = array;
+  v13 = array;
+  [store enumerateContactsWithFetchRequest:v9 error:0 usingBlock:v16];
 
   v14 = [v13 copy];
 
   return v14;
 }
 
-- (void)updatePeople:(id)a3 refetchingProperties:(id)a4
+- (void)updatePeople:(id)people refetchingProperties:(id)properties
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v28 = [v6 _cn_map:&__block_literal_global_45];
-  v29 = v7;
+  peopleCopy = people;
+  propertiesCopy = properties;
+  v28 = [peopleCopy _cn_map:&__block_literal_global_45];
+  v29 = propertiesCopy;
   v8 = [ABSAddressBook contactsWithIdentifiers:"contactsWithIdentifiers:keysToFetch:" keysToFetch:?];
   v9 = objc_opt_new();
   v37 = 0u;
@@ -1403,8 +1403,8 @@ ABSPerson *__37__ABSAddressBook_personWithRecordID___block_invoke_2(uint64_t a1,
         }
 
         v15 = *(*(&v37 + 1) + 8 * i);
-        v16 = [v15 identifier];
-        [v9 setObject:v15 forKey:v16];
+        identifier = [v15 identifier];
+        [v9 setObject:v15 forKey:identifier];
       }
 
       v12 = [v10 countByEnumeratingWithState:&v37 objects:v42 count:16];
@@ -1419,7 +1419,7 @@ ABSPerson *__37__ABSAddressBook_personWithRecordID___block_invoke_2(uint64_t a1,
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v17 = v6;
+  v17 = peopleCopy;
   v18 = [v17 countByEnumeratingWithState:&v33 objects:v41 count:16];
   if (v18)
   {
@@ -1435,9 +1435,9 @@ ABSPerson *__37__ABSAddressBook_personWithRecordID___block_invoke_2(uint64_t a1,
         }
 
         v22 = *(*(&v33 + 1) + 8 * j);
-        v23 = [v22 cnImpl];
-        v24 = [v23 identifier];
-        v25 = [v9 objectForKey:v24];
+        cnImpl = [v22 cnImpl];
+        identifier2 = [cnImpl identifier];
+        v25 = [v9 objectForKey:identifier2];
 
         if (v25)
         {
@@ -1494,26 +1494,26 @@ void __52__ABSAddressBook_updatePeople_refetchingProperties___block_invoke_53(ui
   [v4 setCNValue:v6 onContact:v5];
 }
 
-- (void)completePerson:(id)a3 withKeysToFetch:(id)a4
+- (void)completePerson:(id)person withKeysToFetch:(id)fetch
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ABSAddressBook *)self faultHandler];
-  [v8 completePerson:v7 withKeysToFetch:v6];
+  fetchCopy = fetch;
+  personCopy = person;
+  faultHandler = [(ABSAddressBook *)self faultHandler];
+  [faultHandler completePerson:personCopy withKeysToFetch:fetchCopy];
 }
 
-- (id)_resultRecordsFromFetchedCNImpls:(id)a3 mergedWithStorage:(id)a4 creationBlock:(id)a5
+- (id)_resultRecordsFromFetchedCNImpls:(id)impls mergedWithStorage:(id)storage creationBlock:(id)block
 {
   v35 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v26 = a5;
+  implsCopy = impls;
+  storageCopy = storage;
+  blockCopy = block;
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v7;
+  obj = implsCopy;
   v10 = [obj countByEnumeratingWithState:&v28 objects:v34 count:16];
   if (v10)
   {
@@ -1532,8 +1532,8 @@ void __52__ABSAddressBook_updatePeople_refetchingProperties___block_invoke_53(ui
 
         v15 = *(*(&v28 + 1) + 8 * i);
         v16 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v15, "iOSLegacyIdentifier", v24)}];
-        v17 = [v8 records];
-        v18 = [v17 objectForKey:v16];
+        records = [storageCopy records];
+        v18 = [records objectForKey:v16];
 
         if (v18)
         {
@@ -1542,12 +1542,12 @@ void __52__ABSAddressBook_updatePeople_refetchingProperties___block_invoke_53(ui
 
         else
         {
-          v19 = [v8 deletedRecords];
-          v20 = [v19 objectForKey:v16];
+          deletedRecords = [storageCopy deletedRecords];
+          v20 = [deletedRecords objectForKey:v16];
 
           if (!v20)
           {
-            v21 = [v8 cnImplFetched:v15 creationBlock:v26];
+            v21 = [storageCopy cnImplFetched:v15 creationBlock:blockCopy];
             if (v21)
             {
               [v9 addObject:v21];
@@ -1577,31 +1577,31 @@ void __52__ABSAddressBook_updatePeople_refetchingProperties___block_invoke_53(ui
   return v9;
 }
 
-- (id)_peoplePreferringExistingRecordsForFetchRequest:(id)a3
+- (id)_peoplePreferringExistingRecordsForFetchRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = +[ABSPerson defaultKeysToFetch];
   v6 = *MEMORY[0x277CFBCF8];
-  v7 = [v4 additionalKeysToFetch];
-  LOBYTE(v6) = (*(v6 + 16))(v6, v7);
+  additionalKeysToFetch = [requestCopy additionalKeysToFetch];
+  LOBYTE(v6) = (*(v6 + 16))(v6, additionalKeysToFetch);
 
   if ((v6 & 1) == 0)
   {
-    v8 = [v4 additionalKeysToFetch];
-    v9 = [v5 arrayByAddingObjectsFromArray:v8];
+    additionalKeysToFetch2 = [requestCopy additionalKeysToFetch];
+    v9 = [v5 arrayByAddingObjectsFromArray:additionalKeysToFetch2];
 
     v5 = v9;
   }
 
   v10 = [objc_alloc(MEMORY[0x277CBDA70]) initWithKeysToFetch:v5];
-  v11 = [v4 predicate];
-  [v10 setPredicate:v11];
+  predicate = [requestCopy predicate];
+  [v10 setPredicate:predicate];
 
   [v10 setUnifyResults:0];
   [v10 setMutableObjects:1];
-  if ([v4 sortOrder])
+  if ([requestCopy sortOrder])
   {
-    if ([v4 sortOrder] == 1)
+    if ([requestCopy sortOrder] == 1)
     {
       v12 = 3;
     }
@@ -1618,18 +1618,18 @@ void __52__ABSAddressBook_updatePeople_refetchingProperties___block_invoke_53(ui
   }
 
   [v10 setSortOrder:v12];
-  v13 = [MEMORY[0x277CBEB18] array];
-  v14 = [(ABSAddressBook *)self store];
+  array = [MEMORY[0x277CBEB18] array];
+  store = [(ABSAddressBook *)self store];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __66__ABSAddressBook__peoplePreferringExistingRecordsForFetchRequest___block_invoke;
   v19[3] = &unk_278A04C08;
-  v20 = v13;
-  v15 = v13;
-  [v14 enumerateContactsWithFetchRequest:v10 error:0 usingBlock:v19];
+  v20 = array;
+  v15 = array;
+  [store enumerateContactsWithFetchRequest:v10 error:0 usingBlock:v19];
 
-  v16 = [(ABSAddressBook *)self contacts];
-  v17 = [(ABSAddressBook *)self _resultRecordsFromFetchedCNImpls:v15 mergedWithStorage:v16 creationBlock:&__block_literal_global_56];
+  contacts = [(ABSAddressBook *)self contacts];
+  v17 = [(ABSAddressBook *)self _resultRecordsFromFetchedCNImpls:v15 mergedWithStorage:contacts creationBlock:&__block_literal_global_56];
 
   return v17;
 }
@@ -1645,15 +1645,15 @@ ABSPerson *__66__ABSAddressBook__peoplePreferringExistingRecordsForFetchRequest_
   return v5;
 }
 
-- (id)peopleInSource:(id)a3 sortOrder:(unsigned int)a4
+- (id)peopleInSource:(id)source sortOrder:(unsigned int)order
 {
-  v4 = *&a4;
-  if (a3)
+  v4 = *&order;
+  if (source)
   {
     v6 = MEMORY[0x277CBDA58];
-    v7 = [a3 cnImpl];
-    v8 = [v7 identifier];
-    v9 = [v6 predicateForContactsInContainerWithIdentifier:v8];
+    cnImpl = [source cnImpl];
+    identifier = [cnImpl identifier];
+    v9 = [v6 predicateForContactsInContainerWithIdentifier:identifier];
   }
 
   else
@@ -1668,34 +1668,34 @@ ABSPerson *__66__ABSAddressBook__peoplePreferringExistingRecordsForFetchRequest_
   return v12;
 }
 
-- (id)peopleInGroup:(id)a3 sortOrder:(unsigned int)a4
+- (id)peopleInGroup:(id)group sortOrder:(unsigned int)order
 {
-  v4 = *&a4;
+  v4 = *&order;
   v25[1] = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277CBDA70];
-  v7 = a3;
+  groupCopy = group;
   v8 = [v6 alloc];
   v25[0] = *MEMORY[0x277CBD018];
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:1];
   v10 = [v8 initWithKeysToFetch:v9];
 
   v11 = MEMORY[0x277CBDA58];
-  v12 = [v7 cnImpl];
+  cnImpl = [groupCopy cnImpl];
 
-  v13 = [v12 identifier];
-  v14 = [v11 predicateForContactsInGroupWithIdentifier:v13];
+  identifier = [cnImpl identifier];
+  v14 = [v11 predicateForContactsInGroupWithIdentifier:identifier];
   [v10 setPredicate:v14];
 
   [v10 setUnifyResults:0];
-  v15 = [MEMORY[0x277CBEB18] array];
-  v16 = [(ABSAddressBook *)self store];
+  array = [MEMORY[0x277CBEB18] array];
+  store = [(ABSAddressBook *)self store];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __42__ABSAddressBook_peopleInGroup_sortOrder___block_invoke;
   v23[3] = &unk_278A04C08;
-  v17 = v15;
+  v17 = array;
   v24 = v17;
-  [v16 enumerateContactsWithFetchRequest:v10 error:0 usingBlock:v23];
+  [store enumerateContactsWithFetchRequest:v10 error:0 usingBlock:v23];
 
   v18 = [MEMORY[0x277CBDA58] predicateForContactsWithIdentifiers:v17];
   v19 = [ABSPersonFetchRequest alloc];
@@ -1717,31 +1717,31 @@ void __42__ABSAddressBook_peopleInGroup_sortOrder___block_invoke(uint64_t a1, vo
   [v2 addObject:v3];
 }
 
-- (id)peopleMatchingNameString:(id)a3
+- (id)peopleMatchingNameString:(id)string
 {
   v4 = MEMORY[0x277CBDA70];
-  v5 = a3;
+  stringCopy = string;
   v6 = [v4 alloc];
   v7 = +[ABSPerson defaultKeysToFetch];
   v8 = [v6 initWithKeysToFetch:v7];
 
-  v9 = [MEMORY[0x277CBDA58] predicateForContactsMatchingName:v5];
+  v9 = [MEMORY[0x277CBDA58] predicateForContactsMatchingName:stringCopy];
 
   [v8 setPredicate:v9];
   [v8 setUnifyResults:0];
   [v8 setMutableObjects:1];
-  v10 = [MEMORY[0x277CBEB18] array];
-  v11 = [(ABSAddressBook *)self store];
+  array = [MEMORY[0x277CBEB18] array];
+  store = [(ABSAddressBook *)self store];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __43__ABSAddressBook_peopleMatchingNameString___block_invoke;
   v16[3] = &unk_278A04C08;
-  v17 = v10;
-  v12 = v10;
-  [v11 enumerateContactsWithFetchRequest:v8 error:0 usingBlock:v16];
+  v17 = array;
+  v12 = array;
+  [store enumerateContactsWithFetchRequest:v8 error:0 usingBlock:v16];
 
-  v13 = [(ABSAddressBook *)self contacts];
-  v14 = [(ABSAddressBook *)self _resultRecordsFromFetchedCNImpls:v12 mergedWithStorage:v13 creationBlock:&__block_literal_global_58_0];
+  contacts = [(ABSAddressBook *)self contacts];
+  v14 = [(ABSAddressBook *)self _resultRecordsFromFetchedCNImpls:v12 mergedWithStorage:contacts creationBlock:&__block_literal_global_58_0];
 
   return v14;
 }
@@ -1756,21 +1756,21 @@ ABSPerson *__43__ABSAddressBook_peopleMatchingNameString___block_invoke_2(uint64
 
 - (id)mePerson
 {
-  v3 = [MEMORY[0x277CBDA58] predicateForMeContact];
+  predicateForMeContact = [MEMORY[0x277CBDA58] predicateForMeContact];
   v4 = [ABSPersonFetchRequest alloc];
-  v5 = [(ABSPersonFetchRequest *)v4 initWithPredicate:v3 additionalKeysToFetch:MEMORY[0x277CBEBF8] sortOrder:0];
+  v5 = [(ABSPersonFetchRequest *)v4 initWithPredicate:predicateForMeContact additionalKeysToFetch:MEMORY[0x277CBEBF8] sortOrder:0];
   v6 = [(ABSAddressBook *)self _peoplePreferringExistingRecordsForFetchRequest:v5];
-  v7 = [v6 firstObject];
+  firstObject = [v6 firstObject];
 
-  return v7;
+  return firstObject;
 }
 
-- (id)peopleLinkedToPerson:(id)a3
+- (id)peopleLinkedToPerson:(id)person
 {
   v12[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBDA58];
-  v5 = [a3 cnImpl];
-  v6 = [v4 predicateForContactsLinkedToContact:v5];
+  cnImpl = [person cnImpl];
+  v6 = [v4 predicateForContactsLinkedToContact:cnImpl];
 
   v7 = [ABSPersonFetchRequest alloc];
   v12[0] = *MEMORY[0x277CBD048];
@@ -1782,20 +1782,20 @@ ABSPerson *__43__ABSAddressBook_peopleMatchingNameString___block_invoke_2(uint64
   return v10;
 }
 
-- (BOOL)linkPerson:(id)a3 toPerson:(id)a4
+- (BOOL)linkPerson:(id)person toPerson:(id)toPerson
 {
   v6 = MEMORY[0x277CBDBA0];
-  v7 = a4;
-  v8 = a3;
+  toPersonCopy = toPerson;
+  personCopy = person;
   v9 = objc_alloc_init(v6);
-  v10 = [v8 cnImpl];
+  cnImpl = [personCopy cnImpl];
 
-  v11 = [v7 cnImpl];
+  cnImpl2 = [toPersonCopy cnImpl];
 
-  [v9 linkContact:v10 toContact:v11];
-  v12 = [(ABSAddressBook *)self store];
+  [v9 linkContact:cnImpl toContact:cnImpl2];
+  store = [(ABSAddressBook *)self store];
   v17 = 0;
-  v13 = [v12 executeSaveRequest:v9 error:&v17];
+  v13 = [store executeSaveRequest:v9 error:&v17];
   v14 = v17;
 
   if ((v13 & 1) == 0)
@@ -1810,17 +1810,17 @@ ABSPerson *__43__ABSAddressBook_peopleMatchingNameString___block_invoke_2(uint64
   return v13;
 }
 
-- (BOOL)unlinkPerson:(id)a3
+- (BOOL)unlinkPerson:(id)person
 {
   v4 = MEMORY[0x277CBDBA0];
-  v5 = a3;
+  personCopy = person;
   v6 = objc_alloc_init(v4);
-  v7 = [v5 cnImpl];
+  cnImpl = [personCopy cnImpl];
 
-  [v6 unlinkContact:v7];
-  v8 = [(ABSAddressBook *)self store];
+  [v6 unlinkContact:cnImpl];
+  store = [(ABSAddressBook *)self store];
   v13 = 0;
-  v9 = [v8 executeSaveRequest:v6 error:&v13];
+  v9 = [store executeSaveRequest:v6 error:&v13];
   v10 = v13;
 
   if ((v9 & 1) == 0)
@@ -1835,14 +1835,14 @@ ABSPerson *__43__ABSAddressBook_peopleMatchingNameString___block_invoke_2(uint64
   return v9;
 }
 
-- (id)_sourcesPreferringExistingRecordsFetchedWithPredicate:(id)a3
+- (id)_sourcesPreferringExistingRecordsFetchedWithPredicate:(id)predicate
 {
-  v4 = a3;
-  v5 = [(ABSAddressBook *)self store];
-  v6 = [v5 containersMatchingPredicate:v4 error:0];
+  predicateCopy = predicate;
+  store = [(ABSAddressBook *)self store];
+  v6 = [store containersMatchingPredicate:predicateCopy error:0];
 
-  v7 = [(ABSAddressBook *)self sources];
-  v8 = [(ABSAddressBook *)self _resultRecordsFromFetchedCNImpls:v6 mergedWithStorage:v7 creationBlock:&__block_literal_global_61_0];
+  sources = [(ABSAddressBook *)self sources];
+  v8 = [(ABSAddressBook *)self _resultRecordsFromFetchedCNImpls:v6 mergedWithStorage:sources creationBlock:&__block_literal_global_61_0];
 
   return v8;
 }
@@ -1858,64 +1858,64 @@ ABSSource *__72__ABSAddressBook__sourcesPreferringExistingRecordsFetchedWithPred
   return v5;
 }
 
-- (id)sourceWithRecordID:(int)a3
+- (id)sourceWithRecordID:(int)d
 {
-  v4 = [MEMORY[0x277CBDAD8] predicateForiOSLegacyIdentifier:*&a3];
+  v4 = [MEMORY[0x277CBDAD8] predicateForiOSLegacyIdentifier:*&d];
   v5 = [(ABSAddressBook *)self _sourcesPreferringExistingRecordsFetchedWithPredicate:v4];
-  v6 = [v5 firstObject];
+  firstObject = [v5 firstObject];
 
-  return v6;
+  return firstObject;
 }
 
 - (id)defaultSource
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v3 = [(ABSAddressBook *)self store];
-  v4 = [v3 defaultContainerIdentifier];
+  store = [(ABSAddressBook *)self store];
+  defaultContainerIdentifier = [store defaultContainerIdentifier];
 
-  if (v4)
+  if (defaultContainerIdentifier)
   {
     v5 = MEMORY[0x277CBDAD8];
-    v11[0] = v4;
+    v11[0] = defaultContainerIdentifier;
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
     v7 = [v5 predicateForContainersWithIdentifiers:v6];
     v8 = [(ABSAddressBook *)self _sourcesPreferringExistingRecordsFetchedWithPredicate:v7];
-    v9 = [v8 firstObject];
+    firstObject = [v8 firstObject];
   }
 
   else
   {
-    v9 = 0;
+    firstObject = 0;
   }
 
-  return v9;
+  return firstObject;
 }
 
 - (id)localSource
 {
   v3 = [MEMORY[0x277CBDAD8] predicateForLocalContainerIncludingDisabled:0];
   v4 = [(ABSAddressBook *)self _sourcesPreferringExistingRecordsFetchedWithPredicate:v3];
-  v5 = [v4 firstObject];
+  firstObject = [v4 firstObject];
 
-  return v5;
+  return firstObject;
 }
 
-- (id)sourceForRecord:(id)a3
+- (id)sourceForRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v5 = MEMORY[0x277CBDAD8];
-    v6 = [v4 cnImpl];
-    v7 = [v6 identifier];
-    v8 = [v5 predicateForContainerOfContactWithIdentifier:v7];
+    cnImpl = [recordCopy cnImpl];
+    identifier = [cnImpl identifier];
+    v8 = [v5 predicateForContainerOfContactWithIdentifier:identifier];
 LABEL_5:
     v10 = v8;
 
 LABEL_6:
     v11 = [(ABSAddressBook *)self _sourcesPreferringExistingRecordsFetchedWithPredicate:v10];
-    v12 = [v11 firstObject];
+    firstObject = [v11 firstObject];
 
     goto LABEL_7;
   }
@@ -1924,15 +1924,15 @@ LABEL_6:
   if (objc_opt_isKindOfClass())
   {
     v9 = MEMORY[0x277CBDAD8];
-    v6 = [v4 cnImpl];
-    v7 = [v6 identifier];
-    v8 = [v9 predicateForContainerOfGroupWithIdentifier:v7];
+    cnImpl = [recordCopy cnImpl];
+    identifier = [cnImpl identifier];
+    v8 = [v9 predicateForContainerOfGroupWithIdentifier:identifier];
     goto LABEL_5;
   }
 
   objc_opt_class();
   v10 = 0;
-  v12 = 0;
+  firstObject = 0;
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_6;
@@ -1940,25 +1940,25 @@ LABEL_6:
 
 LABEL_7:
 
-  return v12;
+  return firstObject;
 }
 
-- (void)updateFetchingAllPropertiesForSources:(id)a3
+- (void)updateFetchingAllPropertiesForSources:(id)sources
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v18 = [v4 _cn_map:&__block_literal_global_65];
+  sourcesCopy = sources;
+  v18 = [sourcesCopy _cn_map:&__block_literal_global_65];
   v17 = [v18 _cn_map:&__block_literal_global_68];
   v5 = [MEMORY[0x277CBDAD8] predicateForContainersWithIdentifiers:?];
-  v6 = [(ABSAddressBook *)self store];
-  v7 = [v6 containersMatchingPredicate:v5 error:0];
+  store = [(ABSAddressBook *)self store];
+  v7 = [store containersMatchingPredicate:v5 error:0];
 
   v8 = [v7 _cn_indexBy:&__block_literal_global_71];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = v4;
+  v9 = sourcesCopy;
   v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v10)
   {
@@ -1974,8 +1974,8 @@ LABEL_7:
         }
 
         v14 = *(*(&v19 + 1) + 8 * i);
-        v15 = [v14 CNIdentifierString];
-        v16 = [v8 objectForKey:v15];
+        cNIdentifierString = [v14 CNIdentifierString];
+        v16 = [v8 objectForKey:cNIdentifierString];
 
         [v14 updateAllValuesWithValuesFromContainer:v16];
       }
@@ -1987,21 +1987,21 @@ LABEL_7:
   }
 }
 
-- (BOOL)addMember:(id)a3 toGroup:(id)a4 error:(id *)a5
+- (BOOL)addMember:(id)member toGroup:(id)group error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  memberCopy = member;
+  groupCopy = group;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   objc_opt_class();
   v11 = objc_opt_isKindOfClass();
-  v12 = [v8 addressBook];
-  v13 = v12;
-  if (v12 == self)
+  addressBook = [memberCopy addressBook];
+  v13 = addressBook;
+  if (addressBook == self)
   {
-    v14 = [v9 addressBook];
+    addressBook2 = [groupCopy addressBook];
 
-    if (v14 == self)
+    if (addressBook2 == self)
     {
       v15 = v11 & isKindOfClass;
       goto LABEL_5;
@@ -2014,20 +2014,20 @@ LABEL_7:
 
   v15 = 0;
 LABEL_5:
-  v16 = [v9 id];
-  v17 = [v8 source];
-  v18 = [v9 source];
+  v16 = [groupCopy id];
+  source = [memberCopy source];
+  source2 = [groupCopy source];
 
-  if (v17 == v18 && v16 != -1 && (v15 & 1) != 0)
+  if (source == source2 && v16 != -1 && (v15 & 1) != 0)
   {
-    v19 = [(ABSAddressBook *)self groups];
-    v20 = [v19 addMemberRecord:v8 toRecord:v9];
+    groups = [(ABSAddressBook *)self groups];
+    v20 = [groups addMemberRecord:memberCopy toRecord:groupCopy];
   }
 
-  else if (a5)
+  else if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:@"ABAddressBookErrorDomain" code:0 userInfo:0];
-    *a5 = v20 = 0;
+    *error = v20 = 0;
   }
 
   else
@@ -2038,35 +2038,35 @@ LABEL_5:
   return v20;
 }
 
-- (BOOL)removeMember:(id)a3 fromGroup:(id)a4 error:(id *)a5
+- (BOOL)removeMember:(id)member fromGroup:(id)group error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  memberCopy = member;
+  groupCopy = group;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   objc_opt_class();
   v10 = objc_opt_isKindOfClass();
-  v11 = [v7 addressBook];
-  v12 = v11;
-  if (v11 != self)
+  addressBook = [memberCopy addressBook];
+  v12 = addressBook;
+  if (addressBook != self)
   {
 
 LABEL_4:
-    [v8 id];
+    [groupCopy id];
     goto LABEL_5;
   }
 
-  v13 = [v8 addressBook];
+  addressBook2 = [groupCopy addressBook];
 
-  if (v13 != self)
+  if (addressBook2 != self)
   {
     goto LABEL_4;
   }
 
-  if ((([v8 id] != -1) & v10 & isKindOfClass) == 1)
+  if ((([groupCopy id] != -1) & v10 & isKindOfClass) == 1)
   {
-    v16 = [(ABSAddressBook *)self groups];
-    v14 = [v16 removeMemberRecord:v7 fromRecord:v8];
+    groups = [(ABSAddressBook *)self groups];
+    v14 = [groups removeMemberRecord:memberCopy fromRecord:groupCopy];
 
     goto LABEL_6;
   }
@@ -2082,20 +2082,20 @@ LABEL_6:
 {
   v36 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEB58];
-  v4 = [(ABSAddressBook *)self groups];
-  v5 = [v4 records];
-  v6 = [v5 allValues];
-  v7 = [v6 _cn_map:&__block_literal_global_74];
+  groups = [(ABSAddressBook *)self groups];
+  records = [groups records];
+  allValues = [records allValues];
+  v7 = [allValues _cn_map:&__block_literal_global_74];
   v8 = [v3 setWithArray:v7];
 
-  v9 = [(ABSAddressBook *)self groups];
-  v10 = [v9 deletedRecords];
-  v11 = [v10 allValues];
-  v12 = [v11 _cn_map:&__block_literal_global_74];
+  groups2 = [(ABSAddressBook *)self groups];
+  deletedRecords = [groups2 deletedRecords];
+  allValues2 = [deletedRecords allValues];
+  v12 = [allValues2 _cn_map:&__block_literal_global_74];
   [v8 addObjectsFromArray:v12];
 
-  v13 = [(ABSAddressBook *)self store];
-  v14 = [v13 groupsMatchingPredicate:0 error:0];
+  store = [(ABSAddressBook *)self store];
+  v14 = [store groupsMatchingPredicate:0 error:0];
 
   v33 = 0u;
   v34 = 0u;
@@ -2117,13 +2117,13 @@ LABEL_6:
         }
 
         v20 = *(*(&v31 + 1) + 8 * i);
-        v21 = [v20 identifier];
-        v22 = [v8 containsObject:v21];
+        identifier = [v20 identifier];
+        v22 = [v8 containsObject:identifier];
 
         if ((v22 & 1) == 0)
         {
-          v23 = [(ABSAddressBook *)self groups];
-          v24 = [v23 cnImplFetched:v20 creationBlock:&__block_literal_global_77];
+          groups3 = [(ABSAddressBook *)self groups];
+          v24 = [groups3 cnImplFetched:v20 creationBlock:&__block_literal_global_77];
 
           [v24 setAddressBook:self];
         }
@@ -2135,13 +2135,13 @@ LABEL_6:
     while (v17);
   }
 
-  v25 = [(ABSAddressBook *)self groups];
-  v26 = [v25 records];
-  v27 = [v26 allValues];
+  groups4 = [(ABSAddressBook *)self groups];
+  records2 = [groups4 records];
+  allValues3 = [records2 allValues];
 
-  if ([v27 count])
+  if ([allValues3 count])
   {
-    v28 = v27;
+    v28 = allValues3;
   }
 
   else
@@ -2175,33 +2175,33 @@ ABSGroup *__27__ABSAddressBook_allGroups__block_invoke_2(uint64_t a1, void *a2)
 
 - (int64_t)groupCount
 {
-  v3 = [MEMORY[0x277CFBDB8] sharedInstance];
-  v4 = [v3 isAccessGranted];
+  mEMORY[0x277CFBDB8] = [MEMORY[0x277CFBDB8] sharedInstance];
+  isAccessGranted = [mEMORY[0x277CFBDB8] isAccessGranted];
 
-  if (!v4)
+  if (!isAccessGranted)
   {
     return -1;
   }
 
-  v5 = [(ABSAddressBook *)self allGroups];
-  v6 = [v5 count];
+  allGroups = [(ABSAddressBook *)self allGroups];
+  v6 = [allGroups count];
 
   return v6;
 }
 
-- (id)groupWithRecordID:(int)a3
+- (id)groupWithRecordID:(int)d
 {
-  v3 = *&a3;
+  v3 = *&d;
   v5 = [MEMORY[0x277CCABB0] numberWithInt:?];
-  v6 = [(ABSAddressBook *)self groups];
-  v7 = [v6 records];
-  v8 = [v7 objectForKey:v5];
+  groups = [(ABSAddressBook *)self groups];
+  records = [groups records];
+  v8 = [records objectForKey:v5];
 
   if (!v8)
   {
-    v9 = [(ABSAddressBook *)self groups];
-    v10 = [v9 deletedRecords];
-    v11 = [v10 objectForKey:v5];
+    groups2 = [(ABSAddressBook *)self groups];
+    deletedRecords = [groups2 deletedRecords];
+    v11 = [deletedRecords objectForKey:v5];
 
     if (v11)
     {
@@ -2211,14 +2211,14 @@ ABSGroup *__27__ABSAddressBook_allGroups__block_invoke_2(uint64_t a1, void *a2)
     else
     {
       v12 = [MEMORY[0x277CBDB10] predicateForiOSLegacyIdentifier:v3];
-      v13 = [(ABSAddressBook *)self store];
-      v14 = [v13 groupsMatchingPredicate:v12 error:0];
+      store = [(ABSAddressBook *)self store];
+      v14 = [store groupsMatchingPredicate:v12 error:0];
 
-      v15 = [v14 firstObject];
-      if (v15)
+      firstObject = [v14 firstObject];
+      if (firstObject)
       {
-        v16 = [(ABSAddressBook *)self groups];
-        v8 = [v16 cnImplFetched:v15 creationBlock:&__block_literal_global_80];
+        groups3 = [(ABSAddressBook *)self groups];
+        v8 = [groups3 cnImplFetched:firstObject creationBlock:&__block_literal_global_80];
 
         [v8 setAddressBook:self];
       }
@@ -2244,16 +2244,16 @@ ABSGroup *__36__ABSAddressBook_groupWithRecordID___block_invoke(uint64_t a1, voi
   return v5;
 }
 
-- (void)updateFetchingAllPropertiesForGroups:(id)a3
+- (void)updateFetchingAllPropertiesForGroups:(id)groups
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v27 = [v4 _cn_map:&__block_literal_global_83];
+  groupsCopy = groups;
+  v27 = [groupsCopy _cn_map:&__block_literal_global_83];
   v26 = [v27 _cn_map:&__block_literal_global_86];
   v5 = [MEMORY[0x277CBDB10] predicateForGroupsWithIdentifiers:?];
-  v6 = [(ABSAddressBook *)self store];
+  store = [(ABSAddressBook *)self store];
   v25 = v5;
-  v7 = [v6 groupsMatchingPredicate:v5 error:0];
+  v7 = [store groupsMatchingPredicate:v5 error:0];
 
   v8 = objc_opt_new();
   v32 = 0u;
@@ -2276,8 +2276,8 @@ ABSGroup *__36__ABSAddressBook_groupWithRecordID___block_invoke(uint64_t a1, voi
         }
 
         v14 = *(*(&v32 + 1) + 8 * i);
-        v15 = [v14 identifier];
-        [v8 setObject:v14 forKey:v15];
+        identifier = [v14 identifier];
+        [v8 setObject:v14 forKey:identifier];
       }
 
       v11 = [v9 countByEnumeratingWithState:&v32 objects:v37 count:16];
@@ -2290,7 +2290,7 @@ ABSGroup *__36__ABSAddressBook_groupWithRecordID___block_invoke(uint64_t a1, voi
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v16 = v4;
+  v16 = groupsCopy;
   v17 = [v16 countByEnumeratingWithState:&v28 objects:v36 count:16];
   if (v17)
   {
@@ -2306,9 +2306,9 @@ ABSGroup *__36__ABSAddressBook_groupWithRecordID___block_invoke(uint64_t a1, voi
         }
 
         v21 = *(*(&v28 + 1) + 8 * j);
-        v22 = [v21 cnImpl];
-        v23 = [v22 identifier];
-        v24 = [v8 objectForKey:v23];
+        cnImpl = [v21 cnImpl];
+        identifier2 = [cnImpl identifier];
+        v24 = [v8 objectForKey:identifier2];
 
         if (v24)
         {
@@ -2323,14 +2323,14 @@ ABSGroup *__36__ABSAddressBook_groupWithRecordID___block_invoke(uint64_t a1, voi
   }
 }
 
-- (id)groupsInSource:(id)a3
+- (id)groupsInSource:(id)source
 {
-  if (a3)
+  if (source)
   {
     v4 = MEMORY[0x277CBDB10];
-    v5 = [a3 cnImpl];
-    v6 = [v5 identifier];
-    v7 = [v4 predicateForGroupsInContainerWithIdentifier:v6];
+    cnImpl = [source cnImpl];
+    identifier = [cnImpl identifier];
+    v7 = [v4 predicateForGroupsInContainerWithIdentifier:identifier];
   }
 
   else
@@ -2338,11 +2338,11 @@ ABSGroup *__36__ABSAddressBook_groupWithRecordID___block_invoke(uint64_t a1, voi
     v7 = 0;
   }
 
-  v8 = [(ABSAddressBook *)self store];
-  v9 = [v8 groupsMatchingPredicate:v7 error:0];
+  store = [(ABSAddressBook *)self store];
+  v9 = [store groupsMatchingPredicate:v7 error:0];
 
-  v10 = [(ABSAddressBook *)self groups];
-  v11 = [(ABSAddressBook *)self _resultRecordsFromFetchedCNImpls:v9 mergedWithStorage:v10 creationBlock:&__block_literal_global_88];
+  groups = [(ABSAddressBook *)self groups];
+  v11 = [(ABSAddressBook *)self _resultRecordsFromFetchedCNImpls:v9 mergedWithStorage:groups creationBlock:&__block_literal_global_88];
 
   return v11;
 }
@@ -2369,18 +2369,18 @@ ABSGroup *__33__ABSAddressBook_groupsInSource___block_invoke(uint64_t a1, void *
   return result;
 }
 
-+ (void)requestAccessWithCompletion:(id)a3
++ (void)requestAccessWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CFBDB8] sharedInstance];
+  completionCopy = completion;
+  mEMORY[0x277CFBDB8] = [MEMORY[0x277CFBDB8] sharedInstance];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__ABSAddressBook_requestAccessWithCompletion___block_invoke;
   v7[3] = &unk_278A04D78;
-  v8 = v4;
-  v9 = a1;
-  v6 = v4;
-  [v5 requestAuthorization:1 completionHandler:v7];
+  v8 = completionCopy;
+  selfCopy = self;
+  v6 = completionCopy;
+  [mEMORY[0x277CFBDB8] requestAuthorization:1 completionHandler:v7];
 }
 
 uint64_t __46__ABSAddressBook_requestAccessWithCompletion___block_invoke(uint64_t a1)
@@ -2399,16 +2399,16 @@ uint64_t __46__ABSAddressBook_requestAccessWithCompletion___block_invoke(uint64_
   return [v5 callLocalChangeCallbacks:v3];
 }
 
-+ (void)callLocalChangeCallbacks:(BOOL)a3
++ (void)callLocalChangeCallbacks:(BOOL)callbacks
 {
-  v3 = a3;
-  obj = a1;
+  callbacksCopy = callbacks;
+  obj = self;
   objc_sync_enter(obj);
-  if (!CNLinkedOnOrAfter() && v3 && (_calledLocalChangeCallbacks & 1) == 0)
+  if (!CNLinkedOnOrAfter() && callbacksCopy && (_calledLocalChangeCallbacks & 1) == 0)
   {
     _calledLocalChangeCallbacks = 1;
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 postNotificationName:@"ABSInvokeAllLocalCallbacksNotification" object:obj];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"ABSInvokeAllLocalCallbacksNotification" object:obj];
   }
 
   objc_sync_exit(obj);
@@ -2416,9 +2416,9 @@ uint64_t __46__ABSAddressBook_requestAccessWithCompletion___block_invoke(uint64_
 
 - (id)uniqueDatabaseVersionIdentifier
 {
-  v2 = [(ABSAddressBook *)self store];
+  store = [(ABSAddressBook *)self store];
   v7 = 0;
-  v3 = [v2 identifierWithError:&v7];
+  v3 = [store identifierWithError:&v7];
   v4 = v7;
 
   if (!v3)
@@ -2435,10 +2435,10 @@ uint64_t __46__ABSAddressBook_requestAccessWithCompletion___block_invoke(uint64_
 
 - (int)saveSequenceCount
 {
-  v2 = [(ABSAddressBook *)self store];
-  v3 = [v2 saveSequenceCount];
+  store = [(ABSAddressBook *)self store];
+  saveSequenceCount = [store saveSequenceCount];
 
-  return v3;
+  return saveSequenceCount;
 }
 
 @end

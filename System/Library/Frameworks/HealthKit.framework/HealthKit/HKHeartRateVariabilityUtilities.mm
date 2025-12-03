@@ -1,44 +1,44 @@
 @interface HKHeartRateVariabilityUtilities
-+ (id)instantaneousBPMsForHeartbeatSeriesSample:(id)a3;
-+ (void)deleteHRVSample:(id)a3 healthStore:(id)a4 predicate:(id)a5 options:(unint64_t)a6 completion:(id)a7;
-+ (void)deleteHRVSamplesFromStartDate:(id)a3 endDate:(id)a4 predicate:(id)a5 options:(unint64_t)a6 healthStore:(id)a7 completion:(id)a8;
-+ (void)queryForParentSequenceOfHRV:(id)a3 healthStore:(id)a4 completion:(id)a5;
++ (id)instantaneousBPMsForHeartbeatSeriesSample:(id)sample;
++ (void)deleteHRVSample:(id)sample healthStore:(id)store predicate:(id)predicate options:(unint64_t)options completion:(id)completion;
++ (void)deleteHRVSamplesFromStartDate:(id)date endDate:(id)endDate predicate:(id)predicate options:(unint64_t)options healthStore:(id)store completion:(id)completion;
++ (void)queryForParentSequenceOfHRV:(id)v healthStore:(id)store completion:(id)completion;
 @end
 
 @implementation HKHeartRateVariabilityUtilities
 
-+ (void)queryForParentSequenceOfHRV:(id)a3 healthStore:(id)a4 completion:(id)a5
++ (void)queryForParentSequenceOfHRV:(id)v healthStore:(id)store completion:(id)completion
 {
   v36[3] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v9 quantityType];
-  v13 = [a1 _hrvType];
-  v14 = [v12 isEqual:v13];
+  vCopy = v;
+  storeCopy = store;
+  completionCopy = completion;
+  quantityType = [vCopy quantityType];
+  _hrvType = [self _hrvType];
+  v14 = [quantityType isEqual:_hrvType];
 
   if ((v14 & 1) == 0)
   {
-    [HKHeartRateVariabilityUtilities queryForParentSequenceOfHRV:a2 healthStore:a1 completion:?];
+    [HKHeartRateVariabilityUtilities queryForParentSequenceOfHRV:a2 healthStore:self completion:?];
   }
 
-  v15 = [v9 sourceRevision];
-  v16 = [v15 source];
-  v17 = [v16 _isAppleWatch];
+  sourceRevision = [vCopy sourceRevision];
+  source = [sourceRevision source];
+  _isAppleWatch = [source _isAppleWatch];
 
-  if (v17)
+  if (_isAppleWatch)
   {
     v18 = MEMORY[0x1E696AE18];
-    v19 = [v9 startDate];
-    v20 = [v18 predicateWithFormat:@"startDate >= %@", v19];
+    startDate = [vCopy startDate];
+    v20 = [v18 predicateWithFormat:@"startDate >= %@", startDate];
 
     v21 = MEMORY[0x1E696AE18];
-    v22 = [v9 endDate];
-    v23 = [v21 predicateWithFormat:@"endDate <= %@", v22];
+    endDate = [vCopy endDate];
+    v23 = [v21 predicateWithFormat:@"endDate <= %@", endDate];
 
-    v24 = [v9 sourceRevision];
-    v25 = [v24 source];
-    v26 = [HKQuery predicateForObjectsFromSource:v25];
+    sourceRevision2 = [vCopy sourceRevision];
+    source2 = [sourceRevision2 source];
+    v26 = [HKQuery predicateForObjectsFromSource:source2];
 
     v27 = MEMORY[0x1E696AB28];
     v36[0] = v20;
@@ -53,14 +53,14 @@
     v34[1] = 3221225472;
     v34[2] = __86__HKHeartRateVariabilityUtilities_queryForParentSequenceOfHRV_healthStore_completion___block_invoke;
     v34[3] = &unk_1E7385510;
-    v35 = v11;
+    v35 = completionCopy;
     v32 = [(HKSampleQuery *)v31 initWithSampleType:v30 predicate:v29 limit:1 sortDescriptors:0 resultsHandler:v34];
-    [v10 executeQuery:v32];
+    [storeCopy executeQuery:v32];
   }
 
   else
   {
-    (*(v11 + 2))(v11, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
   v33 = *MEMORY[0x1E69E9840];
@@ -73,23 +73,23 @@ void __86__HKHeartRateVariabilityUtilities_queryForParentSequenceOfHRV_healthSto
   (*(*(a1 + 32) + 16))();
 }
 
-+ (void)deleteHRVSample:(id)a3 healthStore:(id)a4 predicate:(id)a5 options:(unint64_t)a6 completion:(id)a7
++ (void)deleteHRVSample:(id)sample healthStore:(id)store predicate:(id)predicate options:(unint64_t)options completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a7;
+  sampleCopy = sample;
+  storeCopy = store;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __92__HKHeartRateVariabilityUtilities_deleteHRVSample_healthStore_predicate_options_completion___block_invoke;
   aBlock[3] = &unk_1E7385560;
-  v14 = v12;
+  v14 = storeCopy;
   v28 = v14;
-  v29 = v11;
-  v31 = a6;
-  v32 = a1;
-  v15 = v13;
+  v29 = sampleCopy;
+  optionsCopy = options;
+  selfCopy = self;
+  v15 = completionCopy;
   v30 = v15;
-  v16 = v11;
+  v16 = sampleCopy;
   v17 = _Block_copy(aBlock);
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
@@ -97,13 +97,13 @@ void __86__HKHeartRateVariabilityUtilities_queryForParentSequenceOfHRV_healthSto
   v21[3] = &unk_1E73855B0;
   v22 = v14;
   v23 = v17;
-  v25 = a6;
-  v26 = a1;
+  optionsCopy2 = options;
+  selfCopy2 = self;
   v24 = v15;
   v18 = v15;
   v19 = v17;
   v20 = v14;
-  [a1 queryForParentSequenceOfHRV:v16 healthStore:v20 completion:v21];
+  [self queryForParentSequenceOfHRV:v16 healthStore:v20 completion:v21];
 }
 
 void __92__HKHeartRateVariabilityUtilities_deleteHRVSample_healthStore_predicate_options_completion___block_invoke(uint64_t a1)
@@ -190,18 +190,18 @@ void __92__HKHeartRateVariabilityUtilities_deleteHRVSample_healthStore_predicate
   }
 }
 
-+ (void)deleteHRVSamplesFromStartDate:(id)a3 endDate:(id)a4 predicate:(id)a5 options:(unint64_t)a6 healthStore:(id)a7 completion:(id)a8
++ (void)deleteHRVSamplesFromStartDate:(id)date endDate:(id)endDate predicate:(id)predicate options:(unint64_t)options healthStore:(id)store completion:(id)completion
 {
   v35[2] = *MEMORY[0x1E69E9840];
-  v14 = a5;
-  v15 = a7;
-  v16 = a8;
-  v17 = [HKQuery predicateForSamplesWithStartDate:a3 endDate:a4 options:0];
+  predicateCopy = predicate;
+  storeCopy = store;
+  completionCopy = completion;
+  v17 = [HKQuery predicateForSamplesWithStartDate:date endDate:endDate options:0];
   v18 = v17;
-  if (v14)
+  if (predicateCopy)
   {
     v19 = MEMORY[0x1E696AB28];
-    v35[0] = v14;
+    v35[0] = predicateCopy;
     v35[1] = v17;
     v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:2];
     v21 = [v19 andPredicateWithSubpredicates:v20];
@@ -209,22 +209,22 @@ void __92__HKHeartRateVariabilityUtilities_deleteHRVSample_healthStore_predicate
     v18 = v21;
   }
 
-  v22 = [a1 _sequenceType];
+  _sequenceType = [self _sequenceType];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __114__HKHeartRateVariabilityUtilities_deleteHRVSamplesFromStartDate_endDate_predicate_options_healthStore_completion___block_invoke;
   v28[3] = &unk_1E7385600;
-  v29 = v15;
+  v29 = storeCopy;
   v30 = v18;
-  v33 = a1;
-  v34 = a6;
-  v31 = v14;
-  v32 = v16;
-  v23 = v14;
+  selfCopy = self;
+  optionsCopy = options;
+  v31 = predicateCopy;
+  v32 = completionCopy;
+  v23 = predicateCopy;
   v24 = v18;
-  v25 = v15;
-  v26 = v16;
-  [v25 deleteObjectsOfType:v22 predicate:v24 options:a6 withCompletion:v28];
+  v25 = storeCopy;
+  v26 = completionCopy;
+  [v25 deleteObjectsOfType:_sequenceType predicate:v24 options:options withCompletion:v28];
 
   v27 = *MEMORY[0x1E69E9840];
 }
@@ -283,12 +283,12 @@ void __114__HKHeartRateVariabilityUtilities_deleteHRVSamplesFromStartDate_endDat
   }
 }
 
-+ (id)instantaneousBPMsForHeartbeatSeriesSample:(id)a3
++ (id)instantaneousBPMsForHeartbeatSeriesSample:(id)sample
 {
-  v3 = a3;
+  sampleCopy = sample;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v5 = [v3 startDate];
-  [v5 timeIntervalSinceReferenceDate];
+  startDate = [sampleCopy startDate];
+  [startDate timeIntervalSinceReferenceDate];
   v7 = v6;
 
   v17[0] = 0;
@@ -308,7 +308,7 @@ void __114__HKHeartRateVariabilityUtilities_deleteHRVSamplesFromStartDate_endDat
   v14 = v7;
   v8 = v4;
   v11 = v8;
-  [v3 _enumerateHeartbeatDataWithBlock:v10];
+  [sampleCopy _enumerateHeartbeatDataWithBlock:v10];
 
   _Block_object_dispose(v15, 8);
   _Block_object_dispose(v17, 8);

@@ -4,11 +4,11 @@
 + (CNScheduler)inlineScheduler;
 + (CNScheduler)mainThreadScheduler;
 + (CNScheduler)offMainThreadScheduler;
-+ (id)offMainThreadSchedulerWithBackgroundScheduler:(id)a3;
-+ (id)operationQueueSchedulerWithMaxConcurrentOperationCount:(int64_t)a3;
-+ (id)serialDispatchQueueSchedulerWithName:(id)a3;
-+ (id)serialWorkloopSchedulerWithName:(id)a3;
-+ (id)synchronousSerialDispatchQueueWithName:(id)a3;
++ (id)offMainThreadSchedulerWithBackgroundScheduler:(id)scheduler;
++ (id)operationQueueSchedulerWithMaxConcurrentOperationCount:(int64_t)count;
++ (id)serialDispatchQueueSchedulerWithName:(id)name;
++ (id)serialWorkloopSchedulerWithName:(id)name;
++ (id)synchronousSerialDispatchQueueWithName:(id)name;
 @end
 
 @implementation CNScheduler
@@ -108,47 +108,47 @@ uint64_t __37__CNScheduler_offMainThreadScheduler__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)offMainThreadSchedulerWithBackgroundScheduler:(id)a3
++ (id)offMainThreadSchedulerWithBackgroundScheduler:(id)scheduler
 {
-  v3 = a3;
-  v4 = [[_CNOffMainThreadScheduler alloc] initWithBackgroundScheduler:v3];
+  schedulerCopy = scheduler;
+  v4 = [[_CNOffMainThreadScheduler alloc] initWithBackgroundScheduler:schedulerCopy];
 
   return v4;
 }
 
-+ (id)serialDispatchQueueSchedulerWithName:(id)a3
++ (id)serialDispatchQueueSchedulerWithName:(id)name
 {
-  v3 = [a3 UTF8String];
+  uTF8String = [name UTF8String];
   v4 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v5 = dispatch_queue_attr_make_with_qos_class(v4, QOS_CLASS_DEFAULT, 0);
-  v6 = dispatch_queue_create(v3, v5);
+  v6 = dispatch_queue_create(uTF8String, v5);
 
   v7 = [[_CNQueueScheduler alloc] initWithQueue:v6];
 
   return v7;
 }
 
-+ (id)serialWorkloopSchedulerWithName:(id)a3
++ (id)serialWorkloopSchedulerWithName:(id)name
 {
-  v3 = dispatch_workloop_create([a3 UTF8String]);
+  v3 = dispatch_workloop_create([name UTF8String]);
   v4 = [[_CNQueueScheduler alloc] initWithQueue:v3];
 
   return v4;
 }
 
-+ (id)operationQueueSchedulerWithMaxConcurrentOperationCount:(int64_t)a3
++ (id)operationQueueSchedulerWithMaxConcurrentOperationCount:(int64_t)count
 {
-  v3 = [[_CNOperationQueueScheduler alloc] initWithMaxConcurrentOperationCount:a3];
+  v3 = [[_CNOperationQueueScheduler alloc] initWithMaxConcurrentOperationCount:count];
 
   return v3;
 }
 
-+ (id)synchronousSerialDispatchQueueWithName:(id)a3
++ (id)synchronousSerialDispatchQueueWithName:(id)name
 {
-  v3 = [a3 UTF8String];
+  uTF8String = [name UTF8String];
   v4 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v5 = dispatch_queue_attr_make_with_qos_class(v4, QOS_CLASS_DEFAULT, 0);
-  v6 = dispatch_queue_create(v3, v5);
+  v6 = dispatch_queue_create(uTF8String, v5);
 
   v7 = [[_CNSynchronousQueueScheduler alloc] initWithQueue:v6];
 

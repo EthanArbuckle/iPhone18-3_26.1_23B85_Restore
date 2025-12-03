@@ -1,5 +1,5 @@
 @interface NSOrderedSet
-- (id)safari_indexesNotInSet:(void *)a1;
+- (id)safari_indexesNotInSet:(void *)set;
 @end
 
 @implementation NSOrderedSet
@@ -34,21 +34,21 @@ void __73__NSOrderedSet_SafariExtras__safari_changeFromSet_withModificationCheck
   }
 }
 
-- (id)safari_indexesNotInSet:(void *)a1
+- (id)safari_indexesNotInSet:(void *)set
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (set)
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __53__NSOrderedSet_SafariExtras__safari_indexesNotInSet___block_invoke;
     v6[3] = &unk_2781D95A8;
     v7 = v3;
-    a1 = [a1 indexesOfObjectsPassingTest:v6];
+    set = [set indexesOfObjectsPassingTest:v6];
   }
 
-  return a1;
+  return set;
 }
 
 @end

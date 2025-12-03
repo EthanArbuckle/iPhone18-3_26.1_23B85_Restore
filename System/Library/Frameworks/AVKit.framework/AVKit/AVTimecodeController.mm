@@ -1,18 +1,18 @@
 @interface AVTimecodeController
-- (AVTimecodeController)initWithTimecodeTrack:(id)a3 videoTrack:(id)a4;
+- (AVTimecodeController)initWithTimecodeTrack:(id)track videoTrack:(id)videoTrack;
 - (BOOL)readTimecodes;
-- (BOOL)validateCMTime:(id *)a3;
-- (CVSMPTETime)timecodeForFrameNumber64UsingCachedDescription:(SEL)a3;
-- (CVSMPTETime)timecodeForOffset:(SEL)a3 from:(int64_t)a4 timecode:(int64_t)a5;
-- (double)timeIntervalForFrameNumber:(int64_t)a3;
-- (id)calculateTimecodeAtFrame:(int64_t)a3;
+- (BOOL)validateCMTime:(id *)time;
+- (CVSMPTETime)timecodeForFrameNumber64UsingCachedDescription:(SEL)description;
+- (CVSMPTETime)timecodeForOffset:(SEL)offset from:(int64_t)from timecode:(int64_t)timecode;
+- (double)timeIntervalForFrameNumber:(int64_t)number;
+- (id)calculateTimecodeAtFrame:(int64_t)frame;
 - (id)maxTimecodeString;
-- (id)timecodeForFrameNumber32UsingFormatDescription:(opaqueCMFormatDescription *)a3 timecodeStartFrame:(int64_t)a4;
-- (int64_t)calculateFrameNumberAtCMTime:(id *)a3;
-- (int64_t)calculateFrameNumberAtTimeInterval:(double)a3;
-- (int64_t)calculateFrameNumberAtTimecode:(id)a3;
-- (int64_t)offsetFor:(id)a3 fromTimecode:(id)a4;
-- (void)cacheTimecodeDescriptionForSampleBuffer:(opaqueCMSampleBuffer *)a3;
+- (id)timecodeForFrameNumber32UsingFormatDescription:(opaqueCMFormatDescription *)description timecodeStartFrame:(int64_t)frame;
+- (int64_t)calculateFrameNumberAtCMTime:(id *)time;
+- (int64_t)calculateFrameNumberAtTimeInterval:(double)interval;
+- (int64_t)calculateFrameNumberAtTimecode:(id)timecode;
+- (int64_t)offsetFor:(id)for fromTimecode:(id)timecode;
+- (void)cacheTimecodeDescriptionForSampleBuffer:(opaqueCMSampleBuffer *)buffer;
 - (void)calculateMaxFrameAndTimecode;
 @end
 
@@ -20,21 +20,21 @@
 
 - (BOOL)readTimecodes
 {
-  v3 = [(AVTimecodeController *)self timecodeTrack];
-  v4 = [v3 asset];
+  timecodeTrack = [(AVTimecodeController *)self timecodeTrack];
+  asset = [timecodeTrack asset];
 
-  if (v4)
+  if (asset)
   {
     v5 = objc_alloc(MEMORY[0x1E6987E78]);
-    v6 = [(AVTimecodeController *)self timecodeTrack];
-    v7 = [v6 asset];
-    v8 = [v5 initWithAsset:v7 error:0];
+    timecodeTrack2 = [(AVTimecodeController *)self timecodeTrack];
+    asset2 = [timecodeTrack2 asset];
+    v8 = [v5 initWithAsset:asset2 error:0];
 
     if (v8)
     {
-      v9 = [(AVTimecodeController *)self timecodeTrack];
-      v10 = [v9 asset];
-      v11 = [v10 avkit_tracksWithMediaType:*MEMORY[0x1E69875F8]];
+      timecodeTrack3 = [(AVTimecodeController *)self timecodeTrack];
+      asset3 = [timecodeTrack3 asset];
+      v11 = [asset3 avkit_tracksWithMediaType:*MEMORY[0x1E69875F8]];
 
       if ([v11 count] && (objc_msgSend(v11, "firstObject"), (v12 = objc_claimAutoreleasedReturnValue()) != 0))
       {
@@ -54,8 +54,8 @@
       v14 = 0;
     }
 
-    v15 = [v8 startReading];
-    if (v15)
+    startReading = [v8 startReading];
+    if (startReading)
     {
       while ([v8 status] == 1)
       {
@@ -64,14 +64,14 @@
           break;
         }
 
-        v16 = [v14 copyNextSampleBuffer];
-        if (!v16)
+        copyNextSampleBuffer = [v14 copyNextSampleBuffer];
+        if (!copyNextSampleBuffer)
         {
           break;
         }
 
-        v17 = v16;
-        [(AVTimecodeController *)self cacheTimecodeDescriptionForSampleBuffer:v16];
+        v17 = copyNextSampleBuffer;
+        [(AVTimecodeController *)self cacheTimecodeDescriptionForSampleBuffer:copyNextSampleBuffer];
         CFRelease(v17);
         if ([(NSMutableArray *)self->_timecodes count])
         {
@@ -80,11 +80,11 @@
       }
     }
 
-    v18 = [(NSMutableArray *)self->_timecodes firstObject];
-    v19 = v18;
-    if (v18)
+    firstObject = [(NSMutableArray *)self->_timecodes firstObject];
+    v19 = firstObject;
+    if (firstObject)
     {
-      [v18 frameDuration];
+      [firstObject frameDuration];
     }
 
     else
@@ -105,36 +105,36 @@
 
     else
     {
-      LOBYTE(v15) = 0;
+      LOBYTE(startReading) = 0;
     }
   }
 
   else
   {
-    LOBYTE(v15) = 0;
+    LOBYTE(startReading) = 0;
   }
 
-  return v15;
+  return startReading;
 }
 
-- (BOOL)validateCMTime:(id *)a3
+- (BOOL)validateCMTime:(id *)time
 {
-  if ((a3->var2 & 0x15) != 1)
+  if ((time->var2 & 0x15) != 1)
   {
     return 0;
   }
 
   v8 = v3;
   v9 = v4;
-  time1 = *a3;
+  time1 = *time;
   v6 = **&MEMORY[0x1E6960CC0];
   return CMTimeCompare(&time1, &v6) > 0;
 }
 
-- (void)cacheTimecodeDescriptionForSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (void)cacheTimecodeDescriptionForSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
-  DataBuffer = CMSampleBufferGetDataBuffer(a3);
-  FormatDescription = CMSampleBufferGetFormatDescription(a3);
+  DataBuffer = CMSampleBufferGetDataBuffer(buffer);
+  FormatDescription = CMSampleBufferGetFormatDescription(buffer);
   if (DataBuffer)
   {
     v7 = FormatDescription;
@@ -152,19 +152,19 @@
   }
 }
 
-- (double)timeIntervalForFrameNumber:(int64_t)a3
+- (double)timeIntervalForFrameNumber:(int64_t)number
 {
-  v5 = [(NSMutableArray *)self->_timecodes firstObject];
+  firstObject = [(NSMutableArray *)self->_timecodes firstObject];
 
   result = 0.0;
-  if (a3 >= 1 && v5)
+  if (number >= 1 && firstObject)
   {
     memset(&v13, 0, sizeof(v13));
-    v7 = [(NSMutableArray *)self->_timecodes firstObject];
-    v8 = v7;
-    if (v7)
+    firstObject2 = [(NSMutableArray *)self->_timecodes firstObject];
+    v8 = firstObject2;
+    if (firstObject2)
     {
-      [v7 frameDuration];
+      [firstObject2 frameDuration];
     }
 
     else
@@ -173,12 +173,12 @@
     }
 
     memset(&v12, 0, sizeof(v12));
-    v9 = [(AVAssetTrack *)self->_videoTrack naturalTimeScale];
+    naturalTimeScale = [(AVAssetTrack *)self->_videoTrack naturalTimeScale];
     time = v13;
-    CMTimeConvertScale(&v12, &time, v9, kCMTimeRoundingMethod_QuickTime);
+    CMTimeConvertScale(&v12, &time, naturalTimeScale, kCMTimeRoundingMethod_QuickTime);
     memset(&time, 0, sizeof(time));
     v10 = v12;
-    CMTimeMultiply(&time, &v10, a3);
+    CMTimeMultiply(&time, &v10, number);
     v10 = time;
     return CMTimeGetSeconds(&v10);
   }
@@ -186,15 +186,15 @@
   return result;
 }
 
-- (int64_t)calculateFrameNumberAtTimeInterval:(double)a3
+- (int64_t)calculateFrameNumberAtTimeInterval:(double)interval
 {
   memset(&v6, 0, sizeof(v6));
-  CMTimeMakeWithSeconds(&v6, a3, [(AVAssetTrack *)self->_videoTrack naturalTimeScale]);
+  CMTimeMakeWithSeconds(&v6, interval, [(AVAssetTrack *)self->_videoTrack naturalTimeScale]);
   v5 = v6;
   return [(AVTimecodeController *)self calculateFrameNumberAtCMTime:&v5];
 }
 
-- (CVSMPTETime)timecodeForOffset:(SEL)a3 from:(int64_t)a4 timecode:(int64_t)a5
+- (CVSMPTETime)timecodeForOffset:(SEL)offset from:(int64_t)from timecode:(int64_t)timecode
 {
   v10 = a6;
   v11 = v10;
@@ -224,7 +224,7 @@
     }
 
     *&v31[32] = *v31;
-    a5 *= 2;
+    timecode *= 2;
     v14 = 4;
   }
 
@@ -253,13 +253,13 @@
     *&retstr->subframes = 0;
     if (v18 == 1953325924)
     {
-      v19 = a5 + a4;
+      v19 = timecode + from;
       v20 = *&v31[12];
       retstr->type = 1953325924;
       retstr->flags = v20;
-      if (a5 + a4 >= 0)
+      if (timecode + from >= 0)
       {
-        v21 = a5 + a4;
+        v21 = timecode + from;
       }
 
       else
@@ -314,18 +314,18 @@
   return result;
 }
 
-- (int64_t)offsetFor:(id)a3 fromTimecode:(id)a4
+- (int64_t)offsetFor:(id)for fromTimecode:(id)timecode
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  forCopy = for;
+  timecodeCopy = timecode;
+  v8 = timecodeCopy;
   memset(&v66, 0, sizeof(v66));
-  if (v7)
+  if (timecodeCopy)
   {
-    [v7 frameDuration];
+    [timecodeCopy frameDuration];
     value = v66.value;
     v10 = v66.timescale - 1;
-    if (v6)
+    if (forCopy)
     {
       goto LABEL_3;
     }
@@ -345,13 +345,13 @@ LABEL_6:
 
   value = 0;
   v10 = -1;
-  if (!v6)
+  if (!forCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  [v6 timecodeStruct];
+  [forCopy timecodeStruct];
   v11 = SHIWORD(v65);
   if (v8)
   {
@@ -369,9 +369,9 @@ LABEL_7:
 LABEL_8:
   v13 = v10 + value;
   v14 = v11 - v12;
-  if (v6)
+  if (forCopy)
   {
-    [v6 timecodeStruct];
+    [forCopy timecodeStruct];
     v15 = SWORD2(v59);
   }
 
@@ -412,9 +412,9 @@ LABEL_8:
     v22 = v21;
   }
 
-  if (v6)
+  if (forCopy)
   {
-    [v6 timecodeStruct];
+    [forCopy timecodeStruct];
     v23 = SWORD1(v53);
   }
 
@@ -456,9 +456,9 @@ LABEL_8:
     v30 = v28;
   }
 
-  if (v6)
+  if (forCopy)
   {
-    [v6 timecodeStruct];
+    [forCopy timecodeStruct];
     v31 = v47;
   }
 
@@ -524,55 +524,55 @@ LABEL_8:
   return v35;
 }
 
-- (CVSMPTETime)timecodeForFrameNumber64UsingCachedDescription:(SEL)a3
+- (CVSMPTETime)timecodeForFrameNumber64UsingCachedDescription:(SEL)description
 {
-  v9 = [(NSMutableArray *)self->_timecodes firstObject];
-  v6 = [v9 frameNumber];
-  v7 = [(NSMutableArray *)self->_timecodes firstObject];
-  [(AVTimecodeController *)self timecodeForOffset:a4 from:v6 timecode:v7];
+  firstObject = [(NSMutableArray *)self->_timecodes firstObject];
+  frameNumber = [firstObject frameNumber];
+  firstObject2 = [(NSMutableArray *)self->_timecodes firstObject];
+  [(AVTimecodeController *)self timecodeForOffset:a4 from:frameNumber timecode:firstObject2];
 
   return result;
 }
 
-- (id)timecodeForFrameNumber32UsingFormatDescription:(opaqueCMFormatDescription *)a3 timecodeStartFrame:(int64_t)a4
+- (id)timecodeForFrameNumber32UsingFormatDescription:(opaqueCMFormatDescription *)description timecodeStartFrame:(int64_t)frame
 {
-  MediaSubType = CMFormatDescriptionGetMediaSubType(a3);
-  TimeCodeFlags = CMTimeCodeFormatDescriptionGetTimeCodeFlags(a3);
+  MediaSubType = CMFormatDescriptionGetMediaSubType(description);
+  TimeCodeFlags = CMTimeCodeFormatDescriptionGetTimeCodeFlags(description);
   memset(&v13, 0, sizeof(v13));
-  CMTimeCodeFormatDescriptionGetFrameDuration(&v13, a3);
+  CMTimeCodeFormatDescriptionGetFrameDuration(&v13, description);
   v9 = objc_opt_new();
-  [v9 setFrameNumber:a4];
+  [v9 setFrameNumber:frame];
   v12 = v13;
   [v9 setFrameDuration:&v12];
   v12.value = 0;
   *&v12.timescale = __PAIR64__(TimeCodeFlags, MediaSubType);
   v12.epoch = 0;
   [v9 setTimecodeStruct:&v12];
-  [v9 setTc_flags:CMTimeCodeFormatDescriptionGetTimeCodeFlags(a3)];
-  [(AVTimecodeController *)self timecodeForOffset:0 from:a4 timecode:v9];
+  [v9 setTc_flags:CMTimeCodeFormatDescriptionGetTimeCodeFlags(description)];
+  [(AVTimecodeController *)self timecodeForOffset:0 from:frame timecode:v9];
   v12 = v11;
   [v9 setTimecodeStruct:&v12];
 
   return v9;
 }
 
-- (int64_t)calculateFrameNumberAtTimecode:(id)a3
+- (int64_t)calculateFrameNumberAtTimecode:(id)timecode
 {
   timecodes = self->_timecodes;
-  v5 = a3;
-  v6 = [(NSMutableArray *)timecodes firstObject];
-  v7 = [(AVTimecodeController *)self offsetFor:v5 fromTimecode:v6];
+  timecodeCopy = timecode;
+  firstObject = [(NSMutableArray *)timecodes firstObject];
+  v7 = [(AVTimecodeController *)self offsetFor:timecodeCopy fromTimecode:firstObject];
 
   return v7;
 }
 
-- (id)calculateTimecodeAtFrame:(int64_t)a3
+- (id)calculateTimecodeAtFrame:(int64_t)frame
 {
-  [(AVTimecodeController *)self timecodeForFrameNumber64UsingCachedDescription:a3];
-  v4 = [(NSMutableArray *)self->_timecodes firstObject];
-  v5 = [v4 tc_flags];
+  [(AVTimecodeController *)self timecodeForFrameNumber64UsingCachedDescription:frame];
+  firstObject = [(NSMutableArray *)self->_timecodes firstObject];
+  tc_flags = [firstObject tc_flags];
   v6 = @";";
-  if ((v5 & 1) == 0)
+  if ((tc_flags & 1) == 0)
   {
     v6 = @":";
   }
@@ -584,26 +584,26 @@ LABEL_8:
   return v8;
 }
 
-- (int64_t)calculateFrameNumberAtCMTime:(id *)a3
+- (int64_t)calculateFrameNumberAtCMTime:(id *)time
 {
-  v5 = [(NSMutableArray *)self->_timecodes firstObject];
+  firstObject = [(NSMutableArray *)self->_timecodes firstObject];
 
-  if (!v5)
+  if (!firstObject)
   {
     return 0;
   }
 
   [(AVAssetTrack *)self->_videoTrack nominalFrameRate];
-  v8 = *a3;
+  v8 = *time;
   return vcvtmd_s64_f64(CMTimeGetSeconds(&v8) * v6);
 }
 
 - (id)maxTimecodeString
 {
-  v3 = [(NSMutableArray *)self->_timecodes firstObject];
-  v4 = [v3 tc_flags];
+  firstObject = [(NSMutableArray *)self->_timecodes firstObject];
+  tc_flags = [firstObject tc_flags];
   v5 = @";";
-  if ((v4 & 1) == 0)
+  if ((tc_flags & 1) == 0)
   {
     v5 = @":";
   }
@@ -638,18 +638,18 @@ LABEL_8:
   *&self->_maxTimecode.hours = v8;
 }
 
-- (AVTimecodeController)initWithTimecodeTrack:(id)a3 videoTrack:(id)a4
+- (AVTimecodeController)initWithTimecodeTrack:(id)track videoTrack:(id)videoTrack
 {
-  v7 = a3;
-  v8 = a4;
+  trackCopy = track;
+  videoTrackCopy = videoTrack;
   v17.receiver = self;
   v17.super_class = AVTimecodeController;
   v9 = [(AVTimecodeController *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_timecodeTrack, a3);
-    objc_storeStrong(&v10->_videoTrack, a4);
+    objc_storeStrong(&v9->_timecodeTrack, track);
+    objc_storeStrong(&v10->_videoTrack, videoTrack);
     v11 = objc_opt_new();
     timecodes = v10->_timecodes;
     v10->_timecodes = v11;

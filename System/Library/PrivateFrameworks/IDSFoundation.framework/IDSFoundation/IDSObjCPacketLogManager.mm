@@ -1,6 +1,6 @@
 @interface IDSObjCPacketLogManager
 + (void)clean;
-+ (void)copyPacketLogsToTmpDirectoryWithCompletionHandler:(id)a3;
++ (void)copyPacketLogsToTmpDirectoryWithCompletionHandler:(id)handler;
 - (IDSObjCPacketLogManager)init;
 @end
 
@@ -19,15 +19,15 @@
   sub_1A7D94654(0, 0, v5, &unk_1A7E45710, v7);
 }
 
-+ (void)copyPacketLogsToTmpDirectoryWithCompletionHandler:(id)a3
++ (void)copyPacketLogsToTmpDirectoryWithCompletionHandler:(id)handler
 {
   v5 = sub_1A7CC7FFC(&unk_1EB2B61C0);
   MEMORY[0x1EEE9AC00](v5 - 8, v6);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
-  *(v10 + 24) = a1;
+  *(v10 + 24) = self;
   v11 = sub_1A7E226D0();
   (*(*(v11 - 8) + 56))(v8, 1, 1, v11);
   v12 = swift_allocObject();

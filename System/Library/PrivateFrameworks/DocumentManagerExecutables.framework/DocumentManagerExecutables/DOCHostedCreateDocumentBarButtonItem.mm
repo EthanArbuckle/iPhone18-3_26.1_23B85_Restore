@@ -1,13 +1,13 @@
 @interface DOCHostedCreateDocumentBarButtonItem
 - (_TtC26DocumentManagerExecutablesP33_0484E8696B047BC5EA2960C493D906C736DOCHostedCreateDocumentBarButtonItem)init;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 @end
 
 @implementation DOCHostedCreateDocumentBarButtonItem
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   DOCHostedCreateDocumentBarButtonItem.copy(with:)(v6);
 
   __swift_project_boxed_opaque_existential_1(v6, v6[3]);

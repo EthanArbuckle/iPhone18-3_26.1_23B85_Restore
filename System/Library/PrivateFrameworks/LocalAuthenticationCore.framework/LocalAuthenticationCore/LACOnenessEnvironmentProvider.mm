@@ -7,8 +7,8 @@
 
 - (LACCompanionAuthenticationEnvironment)environment
 {
-  v2 = self;
-  v3 = [objc_allocWithZone(LACCompanionAuthenticationEnvironment) initWithFeatureAvailable:-[LACOnenessEnvironmentProvider isFeatureAvailable](v2 featureSupported:{sel_isFeatureAvailable), -[LACOnenessEnvironmentProvider isFeatureSupported](v2, sel_isFeatureSupported)}];
+  selfCopy = self;
+  v3 = [objc_allocWithZone(LACCompanionAuthenticationEnvironment) initWithFeatureAvailable:-[LACOnenessEnvironmentProvider isFeatureAvailable](selfCopy featureSupported:{sel_isFeatureAvailable), -[LACOnenessEnvironmentProvider isFeatureSupported](selfCopy, sel_isFeatureSupported)}];
 
   return v3;
 }

@@ -1,45 +1,45 @@
 @interface TRIExperimentUpdateProcessor
-- (TRIExperimentUpdateProcessor)initWithExperimentDatabase:(id)a3;
-- (id)_updateExperimentEndDateWithDeployment:(id)a3 withNewEndDate:(id)a4 scheduleDeactivationTask:(BOOL)a5 scheduleDeactivationNow:(BOOL)a6;
-- (id)processUpdateOperationForExistingExperimentWithEndDate:(id)a3 withExperimentDeployment:(id)a4;
+- (TRIExperimentUpdateProcessor)initWithExperimentDatabase:(id)database;
+- (id)_updateExperimentEndDateWithDeployment:(id)deployment withNewEndDate:(id)date scheduleDeactivationTask:(BOOL)task scheduleDeactivationNow:(BOOL)now;
+- (id)processUpdateOperationForExistingExperimentWithEndDate:(id)date withExperimentDeployment:(id)deployment;
 @end
 
 @implementation TRIExperimentUpdateProcessor
 
-- (TRIExperimentUpdateProcessor)initWithExperimentDatabase:(id)a3
+- (TRIExperimentUpdateProcessor)initWithExperimentDatabase:(id)database
 {
-  v5 = a3;
+  databaseCopy = database;
   v9.receiver = self;
   v9.super_class = TRIExperimentUpdateProcessor;
   v6 = [(TRIExperimentUpdateProcessor *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_experimentDatabase, a3);
+    objc_storeStrong(&v6->_experimentDatabase, database);
   }
 
   return v7;
 }
 
-- (id)processUpdateOperationForExistingExperimentWithEndDate:(id)a3 withExperimentDeployment:(id)a4
+- (id)processUpdateOperationForExistingExperimentWithEndDate:(id)date withExperimentDeployment:(id)deployment
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TRIExperimentDatabase *)self->_experimentDatabase experimentRecordWithExperimentDeployment:v7];
+  dateCopy = date;
+  deploymentCopy = deployment;
+  v8 = [(TRIExperimentDatabase *)self->_experimentDatabase experimentRecordWithExperimentDeployment:deploymentCopy];
   if (v8)
   {
-    v9 = v6;
-    v10 = [MEMORY[0x277CBEAA8] date];
-    v11 = v10;
-    if (v9 && [v10 compare:v9] == 1)
+    v9 = dateCopy;
+    date = [MEMORY[0x277CBEAA8] date];
+    v11 = date;
+    if (v9 && [date compare:v9] == 1)
     {
       v12 = TRILogCategory_Server();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
-        v13 = [v7 experimentId];
+        experimentId = [deploymentCopy experimentId];
         v24 = 138543362;
-        v25 = v13;
+        v25 = experimentId;
         _os_log_impl(&dword_26F567000, v12, OS_LOG_TYPE_INFO, "Experiment update end date occurs in the past, will schedule task for now if relevant. ID: %{public}@", &v24, 0xCu);
       }
 
@@ -51,14 +51,14 @@
       v14 = 0;
     }
 
-    v15 = [v8 status];
-    if (v15 <= 1)
+    status = [v8 status];
+    if (status <= 1)
     {
-      if (v15)
+      if (status)
       {
-        if (v15 == 1)
+        if (status == 1)
         {
-          v16 = [(TRIExperimentUpdateProcessor *)self _updateExperimentEndDateWithDeployment:v7 withNewEndDate:v9 scheduleDeactivationTask:1 scheduleDeactivationNow:v14];
+          v16 = [(TRIExperimentUpdateProcessor *)self _updateExperimentEndDateWithDeployment:deploymentCopy withNewEndDate:v9 scheduleDeactivationTask:1 scheduleDeactivationNow:v14];
 LABEL_26:
 
           goto LABEL_27;
@@ -68,9 +68,9 @@ LABEL_26:
       }
     }
 
-    else if (v15 != 4)
+    else if (status != 4)
     {
-      if (v15 == 3)
+      if (status == 3)
       {
         v18 = TRILogCategory_Server();
         if (!os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
@@ -80,19 +80,19 @@ LABEL_24:
           goto LABEL_25;
         }
 
-        v19 = [v7 experimentId];
-        v20 = [v8 status];
+        experimentId2 = [deploymentCopy experimentId];
+        status2 = [v8 status];
         v24 = 138543618;
-        v25 = v19;
+        v25 = experimentId2;
         v26 = 2048;
-        v27 = v20;
+        v27 = status2;
         _os_log_impl(&dword_26F567000, v18, OS_LOG_TYPE_INFO, "Experiment update for an experiment in finished state, ignoring. ID: %{public}@, state:%ld", &v24, 0x16u);
 LABEL_22:
 
         goto LABEL_24;
       }
 
-      if (v15 != 2)
+      if (status != 2)
       {
 LABEL_23:
         v18 = TRILogCategory_Server();
@@ -101,18 +101,18 @@ LABEL_23:
           goto LABEL_24;
         }
 
-        v19 = [v7 experimentId];
-        v23 = [v8 status];
+        experimentId2 = [deploymentCopy experimentId];
+        status3 = [v8 status];
         v24 = 138543618;
-        v25 = v19;
+        v25 = experimentId2;
         v26 = 2048;
-        v27 = v23;
+        v27 = status3;
         _os_log_error_impl(&dword_26F567000, v18, OS_LOG_TYPE_ERROR, "Experiment update for an experiment in unknown experiment state, ignoring. ID: %{public}@, state:%ld", &v24, 0x16u);
         goto LABEL_22;
       }
     }
 
-    v17 = [(TRIExperimentUpdateProcessor *)self _updateExperimentEndDateWithDeployment:v7 withNewEndDate:v9 scheduleDeactivationTask:0 scheduleDeactivationNow:0];
+    v17 = [(TRIExperimentUpdateProcessor *)self _updateExperimentEndDateWithDeployment:deploymentCopy withNewEndDate:v9 scheduleDeactivationTask:0 scheduleDeactivationNow:0];
 LABEL_25:
     v16 = 0;
     goto LABEL_26;
@@ -133,28 +133,28 @@ LABEL_27:
   return v16;
 }
 
-- (id)_updateExperimentEndDateWithDeployment:(id)a3 withNewEndDate:(id)a4 scheduleDeactivationTask:(BOOL)a5 scheduleDeactivationNow:(BOOL)a6
+- (id)_updateExperimentEndDateWithDeployment:(id)deployment withNewEndDate:(id)date scheduleDeactivationTask:(BOOL)task scheduleDeactivationNow:(BOOL)now
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
+  nowCopy = now;
+  taskCopy = task;
+  deploymentCopy = deployment;
+  dateCopy = date;
   experimentDatabase = self->_experimentDatabase;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __135__TRIExperimentUpdateProcessor__updateExperimentEndDateWithDeployment_withNewEndDate_scheduleDeactivationTask_scheduleDeactivationNow___block_invoke;
   v20[3] = &unk_279DE54F0;
   v20[4] = self;
-  v13 = v11;
+  v13 = dateCopy;
   v21 = v13;
-  v14 = v10;
+  v14 = deploymentCopy;
   v22 = v14;
   v15 = 0;
-  if (([(TRIExperimentDatabase *)experimentDatabase writeTransactionWithFailableBlock:v20]& 1) == 0 && v7)
+  if (([(TRIExperimentDatabase *)experimentDatabase writeTransactionWithFailableBlock:v20]& 1) == 0 && taskCopy)
   {
-    v16 = [v14 experimentId];
-    v17 = [v14 deploymentId];
-    if (v6)
+    experimentId = [v14 experimentId];
+    deploymentId = [v14 deploymentId];
+    if (nowCopy)
     {
       v18 = 0;
     }
@@ -164,7 +164,7 @@ LABEL_27:
       v18 = v13;
     }
 
-    v15 = [TRIDeactivateTreatmentTask taskWithExperimentId:v16 deploymentId:v17 startTime:v18 failOnUnrecognizedExperiment:0 triggerEvent:25 taskAttribution:0];
+    v15 = [TRIDeactivateTreatmentTask taskWithExperimentId:experimentId deploymentId:deploymentId startTime:v18 failOnUnrecognizedExperiment:0 triggerEvent:25 taskAttribution:0];
   }
 
   return v15;

@@ -1,36 +1,36 @@
 @interface CMIColourConstancyClippingRecoveryV1
-- (CMIColourConstancyClippingRecoveryV1)initWithMetalContext:(id)a3;
-- (id)_encodeColourAccuracyClippedRegionRecovery:(double)a3 inputAmbientLumaTexture:(double)a4 inputAmbientChromaTexture:(uint64_t)a5 inoutFlashLumaTexture:(void *)a6 inoutFlashChromaTexture:(void *)a7 ambientToFlashRegistrationHomography:(void *)a8;
-- (id)_encodeImagePyramidGeneration:(double)a3 inputAmbientLumaTexture:(double)a4 inputAmbientChromaTexture:(uint64_t)a5 inoutFlashLumaTexture:(void *)a6 inoutFlashChromaTexture:(void *)a7 ambientToFlashRegistrationHomography:(void *)a8;
-- (id)_encodeImageReconstruction:(double)a3 inputAmbientLumaTexture:(double)a4 inputAmbientChromaTexture:(uint64_t)a5 inoutFlashLumaTexture:(void *)a6 inoutFlashChromaTexture:(void *)a7 ambientToFlashRegistrationHomography:(void *)a8;
-- (id)applyClippedRegionRecovery:(void *)a1 inputAmbientLumaTexture:inputAmbientChromaTexture:inoutFlashLumaTexture:inoutFlashChromaTexture:ambientToFlashRegistrationHomography:;
-- (int)_encodeGradientExtraction:(id)a3 frame:(int)a4 channel:(int)a5;
-- (int)_encodeGradientImageFusion:(id)a3;
-- (int)_encodeGradientImageFusion:(id)a3 channel:(int)a4;
-- (int)_encodeImageAccumulationOfFusedThumbnail:(id)a3 inoutFlashLumaTexture:(id)a4 inoutFlashChromaTexture:(id)a5 gamma:(float)a6;
-- (int)_encodeImageAccumulationOfSecondToLastPyramidLevels:(id)a3 inoutFlashLumaTexture:(id)a4 inoutFlashChromaTexture:(id)a5 gamma:(float)a6;
-- (int)_encodeSecondToLastLevelsPyramidGeneration:(id)a3 kernelRadius:(int)a4 sigma:(float)a5;
-- (int)_fusionMapExtraction:(id)a3;
-- (int)prepareToProcessWithConfig:(id)a3;
+- (CMIColourConstancyClippingRecoveryV1)initWithMetalContext:(id)context;
+- (id)_encodeColourAccuracyClippedRegionRecovery:(double)recovery inputAmbientLumaTexture:(double)texture inputAmbientChromaTexture:(uint64_t)chromaTexture inoutFlashLumaTexture:(void *)lumaTexture inoutFlashChromaTexture:(void *)flashChromaTexture ambientToFlashRegistrationHomography:(void *)homography;
+- (id)_encodeImagePyramidGeneration:(double)generation inputAmbientLumaTexture:(double)texture inputAmbientChromaTexture:(uint64_t)chromaTexture inoutFlashLumaTexture:(void *)lumaTexture inoutFlashChromaTexture:(void *)flashChromaTexture ambientToFlashRegistrationHomography:(void *)homography;
+- (id)_encodeImageReconstruction:(double)reconstruction inputAmbientLumaTexture:(double)texture inputAmbientChromaTexture:(uint64_t)chromaTexture inoutFlashLumaTexture:(void *)lumaTexture inoutFlashChromaTexture:(void *)flashChromaTexture ambientToFlashRegistrationHomography:(void *)homography;
+- (id)applyClippedRegionRecovery:(void *)recovery inputAmbientLumaTexture:inputAmbientChromaTexture:inoutFlashLumaTexture:inoutFlashChromaTexture:ambientToFlashRegistrationHomography:;
+- (int)_encodeGradientExtraction:(id)extraction frame:(int)frame channel:(int)channel;
+- (int)_encodeGradientImageFusion:(id)fusion;
+- (int)_encodeGradientImageFusion:(id)fusion channel:(int)channel;
+- (int)_encodeImageAccumulationOfFusedThumbnail:(id)thumbnail inoutFlashLumaTexture:(id)texture inoutFlashChromaTexture:(id)chromaTexture gamma:(float)gamma;
+- (int)_encodeImageAccumulationOfSecondToLastPyramidLevels:(id)levels inoutFlashLumaTexture:(id)texture inoutFlashChromaTexture:(id)chromaTexture gamma:(float)gamma;
+- (int)_encodeSecondToLastLevelsPyramidGeneration:(id)generation kernelRadius:(int)radius sigma:(float)sigma;
+- (int)_fusionMapExtraction:(id)extraction;
+- (int)prepareToProcessWithConfig:(id)config;
 - (int)purgeResources;
-- (uint64_t)_encodeFirstLevelPyramidGeneration:(__n128)a3 inputAmbientLumaTexture:(__n128)a4 inputAmbientChromaTexture:(float)a5 inoutFlashLumaTexture:(float)a6 inoutFlashChromaTexture:(float)a7 ambientToFlashRegistrationHomography:(uint64_t)a8 scalar:(void *)a9 exponent:(void *)a10 gamma:(void *)a11;
-- (uint64_t)_encodeImageAccumulationOfFirstPyramidLevel:(__n128)a3 inputAmbientLumaTexture:(__n128)a4 inputAmbientChromaTexture:(float)a5 inoutFlashLumaTexture:(uint64_t)a6 inoutFlashChromaTexture:(void *)a7 ambientToFlashRegistrationHomography:(void *)a8 gamma:(void *)a9;
+- (uint64_t)_encodeFirstLevelPyramidGeneration:(__n128)generation inputAmbientLumaTexture:(__n128)texture inputAmbientChromaTexture:(float)chromaTexture inoutFlashLumaTexture:(float)lumaTexture inoutFlashChromaTexture:(float)flashChromaTexture ambientToFlashRegistrationHomography:(uint64_t)homography scalar:(void *)scalar exponent:(void *)self0 gamma:(void *)self1;
+- (uint64_t)_encodeImageAccumulationOfFirstPyramidLevel:(__n128)level inputAmbientLumaTexture:(__n128)texture inputAmbientChromaTexture:(float)chromaTexture inoutFlashLumaTexture:(uint64_t)lumaTexture inoutFlashChromaTexture:(void *)flashChromaTexture ambientToFlashRegistrationHomography:(void *)homography gamma:(void *)gamma;
 @end
 
 @implementation CMIColourConstancyClippingRecoveryV1
 
-- (CMIColourConstancyClippingRecoveryV1)initWithMetalContext:(id)a3
+- (CMIColourConstancyClippingRecoveryV1)initWithMetalContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v34.receiver = self;
   v34.super_class = CMIColourConstancyClippingRecoveryV1;
   v6 = [(CMIColourConstancyClippingRecoveryV1 *)&v34 init];
   v7 = v6;
   if (v6)
   {
-    if (v5)
+    if (contextCopy)
     {
-      objc_storeStrong(&v6->_metalContext, a3);
+      objc_storeStrong(&v6->_metalContext, context);
       v8 = 0;
       imagePyramidGenerationPipelineStates = v7->_imagePyramidGenerationPipelineStates;
       v10 = 1;
@@ -166,56 +166,56 @@ LABEL_17:
   return 0;
 }
 
-- (int)prepareToProcessWithConfig:(id)a3
+- (int)prepareToProcessWithConfig:(id)config
 {
-  v5 = a3;
-  if (!v5)
+  configCopy = config;
+  if (!configCopy)
   {
     sub_1AC00();
-    v7 = 0;
+    newTextureDescriptor = 0;
     v93 = 8;
     goto LABEL_35;
   }
 
-  objc_storeStrong(&self->_config, a3);
-  v6 = [(FigMetalContext *)self->_metalContext allocator];
-  v7 = [v6 newTextureDescriptor];
+  objc_storeStrong(&self->_config, config);
+  allocator = [(FigMetalContext *)self->_metalContext allocator];
+  newTextureDescriptor = [allocator newTextureDescriptor];
 
-  if (!v7)
+  if (!newTextureDescriptor)
   {
     sub_1AB8C();
     v93 = 7;
     goto LABEL_35;
   }
 
-  v96 = v5;
-  v8 = [v7 desc];
-  [v8 setTextureType:2];
+  v96 = configCopy;
+  desc = [newTextureDescriptor desc];
+  [desc setTextureType:2];
 
-  v9 = [v7 desc];
-  [v9 setPixelFormat:115];
+  desc2 = [newTextureDescriptor desc];
+  [desc2 setPixelFormat:115];
 
-  v10 = [(CMIColourConstancyClippingRecoveryConfigurationV1 *)self->_config pyramidLastLevelWidth];
-  v11 = [v7 desc];
-  [v11 setWidth:v10];
+  pyramidLastLevelWidth = [(CMIColourConstancyClippingRecoveryConfigurationV1 *)self->_config pyramidLastLevelWidth];
+  desc3 = [newTextureDescriptor desc];
+  [desc3 setWidth:pyramidLastLevelWidth];
 
-  v12 = [(CMIColourConstancyClippingRecoveryConfigurationV1 *)self->_config pyramidLastLevelHeight];
-  v13 = [v7 desc];
-  [v13 setHeight:v12];
+  pyramidLastLevelHeight = [(CMIColourConstancyClippingRecoveryConfigurationV1 *)self->_config pyramidLastLevelHeight];
+  desc4 = [newTextureDescriptor desc];
+  [desc4 setHeight:pyramidLastLevelHeight];
 
-  v14 = [(CMIColourConstancyClippingRecoveryConfigurationV1 *)self->_config pyramidNumLevels];
-  v15 = (v14 - 1);
-  if (v14 >= 1)
+  pyramidNumLevels = [(CMIColourConstancyClippingRecoveryConfigurationV1 *)self->_config pyramidNumLevels];
+  v15 = (pyramidNumLevels - 1);
+  if (pyramidNumLevels >= 1)
   {
-    v16 = v14 + 1;
-    v17 = &self->_rgbPyramidTextures[0][v14 + 2];
+    v16 = pyramidNumLevels + 1;
+    v17 = &self->_rgbPyramidTextures[0][pyramidNumLevels + 2];
     while (1)
     {
       v18 = [NSString stringWithFormat:@"ColourConstancyV1->Core->ClippingRecovery->ambientRGBPyramidTexture%d", v15];
-      [v7 setLabel:v18];
+      [newTextureDescriptor setLabel:v18];
 
-      v19 = [(FigMetalContext *)self->_metalContext allocator];
-      v20 = [v19 newTextureWithDescriptor:v7];
+      allocator2 = [(FigMetalContext *)self->_metalContext allocator];
+      v20 = [allocator2 newTextureWithDescriptor:newTextureDescriptor];
       v21 = *(v17 - 3);
       *(v17 - 3) = v20;
 
@@ -225,10 +225,10 @@ LABEL_17:
       }
 
       v22 = [NSString stringWithFormat:@"ColourConstancyV1->Core->ClippingRecovery->flashRGBPyramidTexture%d", v15];
-      [v7 setLabel:v22];
+      [newTextureDescriptor setLabel:v22];
 
-      v23 = [(FigMetalContext *)self->_metalContext allocator];
-      v24 = [v23 newTextureWithDescriptor:v7];
+      allocator3 = [(FigMetalContext *)self->_metalContext allocator];
+      v24 = [allocator3 newTextureWithDescriptor:newTextureDescriptor];
       v25 = *v17;
       *v17 = v24;
 
@@ -238,10 +238,10 @@ LABEL_17:
         goto LABEL_48;
       }
 
-      v26 = [v7 desc];
-      [v26 setWidth:{2 * objc_msgSend(v26, "width")}];
-      v27 = [v7 desc];
-      [v27 setHeight:{2 * objc_msgSend(v27, "height")}];
+      desc5 = [newTextureDescriptor desc];
+      [desc5 setWidth:{2 * objc_msgSend(desc5, "width")}];
+      desc6 = [newTextureDescriptor desc];
+      [desc6 setHeight:{2 * objc_msgSend(desc6, "height")}];
 
       --v16;
       --v17;
@@ -255,31 +255,31 @@ LABEL_17:
     sub_1AB18();
 LABEL_48:
     v93 = 6;
-    v5 = v96;
+    configCopy = v96;
     goto LABEL_35;
   }
 
 LABEL_8:
-  v28 = [(CMIColourConstancyClippingRecoveryConfigurationV1 *)self->_config pyramidLastLevelWidth];
-  v29 = [v7 desc];
-  [v29 setWidth:v28];
+  pyramidLastLevelWidth2 = [(CMIColourConstancyClippingRecoveryConfigurationV1 *)self->_config pyramidLastLevelWidth];
+  desc7 = [newTextureDescriptor desc];
+  [desc7 setWidth:pyramidLastLevelWidth2];
 
-  v30 = [(CMIColourConstancyClippingRecoveryConfigurationV1 *)self->_config pyramidLastLevelHeight];
-  v31 = [v7 desc];
-  [v31 setHeight:v30];
+  pyramidLastLevelHeight2 = [(CMIColourConstancyClippingRecoveryConfigurationV1 *)self->_config pyramidLastLevelHeight];
+  desc8 = [newTextureDescriptor desc];
+  [desc8 setHeight:pyramidLastLevelHeight2];
 
-  v32 = [v7 desc];
-  [v32 setPixelFormat:65];
+  desc9 = [newTextureDescriptor desc];
+  [desc9 setPixelFormat:65];
 
   v33 = self->_imageGradientTextures[1];
   v34 = -3;
   do
   {
     v35 = [NSString stringWithFormat:@"ColourConstancyV1->Core->ClippingRecovery->ambientGradientsTexture%d", v34 + 3];
-    [v7 setLabel:v35];
+    [newTextureDescriptor setLabel:v35];
 
-    v36 = [(FigMetalContext *)self->_metalContext allocator];
-    v37 = [v36 newTextureWithDescriptor:v7];
+    allocator4 = [(FigMetalContext *)self->_metalContext allocator];
+    v37 = [allocator4 newTextureWithDescriptor:newTextureDescriptor];
     v38 = *(v33 - 3);
     *(v33 - 3) = v37;
 
@@ -290,10 +290,10 @@ LABEL_8:
     }
 
     v39 = [NSString stringWithFormat:@"ColourConstancyV1->Core->ClippingRecovery->flashGradientsTexture%d", v34 + 3];
-    [v7 setLabel:v39];
+    [newTextureDescriptor setLabel:v39];
 
-    v40 = [(FigMetalContext *)self->_metalContext allocator];
-    v41 = [v40 newTextureWithDescriptor:v7];
+    allocator5 = [(FigMetalContext *)self->_metalContext allocator];
+    v41 = [allocator5 newTextureWithDescriptor:newTextureDescriptor];
     v42 = *v33;
     *v33 = v41;
 
@@ -307,18 +307,18 @@ LABEL_8:
   }
 
   while (!__CFADD__(v34++, 1));
-  v44 = [v7 desc];
-  [v44 setPixelFormat:25];
+  desc10 = [newTextureDescriptor desc];
+  [desc10 setPixelFormat:25];
 
   v45 = 0;
   flashFusedThumbnailImageTextures = self->_flashFusedThumbnailImageTextures;
   do
   {
     v47 = [NSString stringWithFormat:@"ColourConstancyV1->Core->ClippingRecovery->flashFusedThumbnailImageTextures%d", v45];
-    [v7 setLabel:v47];
+    [newTextureDescriptor setLabel:v47];
 
-    v48 = [(FigMetalContext *)self->_metalContext allocator];
-    v49 = [v48 newTextureWithDescriptor:v7];
+    allocator6 = [(FigMetalContext *)self->_metalContext allocator];
+    v49 = [allocator6 newTextureWithDescriptor:newTextureDescriptor];
     v50 = flashFusedThumbnailImageTextures[v45];
     flashFusedThumbnailImageTextures[v45] = v49;
 
@@ -332,12 +332,12 @@ LABEL_8:
   }
 
   while (v45 != 3);
-  v51 = [v7 desc];
-  [v51 setPixelFormat:25];
+  desc11 = [newTextureDescriptor desc];
+  [desc11 setPixelFormat:25];
 
-  [v7 setLabel:@"ColourConstancyV1->Core->ClippingRecovery->fusionMapTexture"];
-  v52 = [(FigMetalContext *)self->_metalContext allocator];
-  v53 = [v52 newTextureWithDescriptor:v7];
+  [newTextureDescriptor setLabel:@"ColourConstancyV1->Core->ClippingRecovery->fusionMapTexture"];
+  allocator7 = [(FigMetalContext *)self->_metalContext allocator];
+  v53 = [allocator7 newTextureWithDescriptor:newTextureDescriptor];
   fusionMapTexture = self->_fusionMapTexture;
   self->_fusionMapTexture = v53;
 
@@ -347,18 +347,18 @@ LABEL_8:
     goto LABEL_48;
   }
 
-  v55 = [(CMIColourConstancyClippingRecoveryConfigurationV1 *)self->_config pyramidLastLevelWidth];
-  v95 = 2 * v55;
-  v56 = [(CMIColourConstancyClippingRecoveryConfigurationV1 *)self->_config pyramidLastLevelHeight];
-  v57 = 4 * (2 * v56 * 4 * v55);
+  pyramidLastLevelWidth3 = [(CMIColourConstancyClippingRecoveryConfigurationV1 *)self->_config pyramidLastLevelWidth];
+  v95 = 2 * pyramidLastLevelWidth3;
+  pyramidLastLevelHeight3 = [(CMIColourConstancyClippingRecoveryConfigurationV1 *)self->_config pyramidLastLevelHeight];
+  v57 = 4 * (2 * pyramidLastLevelHeight3 * 4 * pyramidLastLevelWidth3);
   scrapMemoryBuffers = self->_scrapMemoryBuffers;
-  v59 = (4 * v55);
-  v97 = (2 * v56);
+  v59 = (4 * pyramidLastLevelWidth3);
+  v97 = (2 * pyramidLastLevelHeight3);
   v60 = 3;
   while (2)
   {
-    v61 = [(FigMetalContext *)self->_metalContext device];
-    v62 = [v61 newBufferWithLength:v57 options:0];
+    device = [(FigMetalContext *)self->_metalContext device];
+    v62 = [device newBufferWithLength:v57 options:0];
     v63 = *scrapMemoryBuffers;
     *scrapMemoryBuffers = v62;
 
@@ -403,19 +403,19 @@ LABEL_42:
   v69 = 3;
   while (2)
   {
-    v70 = [(CMIColourConstancyClippingRecoveryConfigurationV1 *)self->_config pyramidLastLevelWidth];
-    v71 = v70 + 15;
-    if (v70 >= 0)
+    pyramidLastLevelWidth4 = [(CMIColourConstancyClippingRecoveryConfigurationV1 *)self->_config pyramidLastLevelWidth];
+    v71 = pyramidLastLevelWidth4 + 15;
+    if (pyramidLastLevelWidth4 >= 0)
     {
-      v71 = v70;
+      v71 = pyramidLastLevelWidth4;
     }
 
     v72 = v71 >> 4;
-    v73 = [(CMIColourConstancyClippingRecoveryConfigurationV1 *)self->_config pyramidLastLevelHeight];
-    v74 = v73 + 15;
-    if (v73 >= 0)
+    pyramidLastLevelHeight4 = [(CMIColourConstancyClippingRecoveryConfigurationV1 *)self->_config pyramidLastLevelHeight];
+    v74 = pyramidLastLevelHeight4 + 15;
+    if (pyramidLastLevelHeight4 >= 0)
     {
-      v74 = v73;
+      v74 = pyramidLastLevelHeight4;
     }
 
     v75 = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:125 width:v72 height:v74 >> 4 mipmapped:0];
@@ -449,18 +449,18 @@ LABEL_45:
     break;
   }
 
-  v79 = [v7 desc];
-  [v79 setPixelFormat:125];
+  desc12 = [newTextureDescriptor desc];
+  [desc12 setPixelFormat:125];
 
-  v80 = [v7 desc];
-  [v80 setWidth:1];
+  desc13 = [newTextureDescriptor desc];
+  [desc13 setWidth:1];
 
-  v81 = [v7 desc];
-  [v81 setHeight:1];
+  desc14 = [newTextureDescriptor desc];
+  [desc14 setHeight:1];
 
-  [v7 setLabel:@"ColourConstancyV1->Core->ClippingRecovery->offsetTextures0"];
-  v82 = [(FigMetalContext *)self->_metalContext allocator];
-  v83 = [v82 newTextureWithDescriptor:v7];
+  [newTextureDescriptor setLabel:@"ColourConstancyV1->Core->ClippingRecovery->offsetTextures0"];
+  allocator8 = [(FigMetalContext *)self->_metalContext allocator];
+  v83 = [allocator8 newTextureWithDescriptor:newTextureDescriptor];
   v84 = self->_offsetTextures[0];
   self->_offsetTextures[0] = v83;
 
@@ -470,9 +470,9 @@ LABEL_45:
     goto LABEL_48;
   }
 
-  [v7 setLabel:@"ColourConstancyV1->Core->ClippingRecovery->offsetTextures1"];
-  v85 = [(FigMetalContext *)self->_metalContext allocator];
-  v86 = [v85 newTextureWithDescriptor:v7];
+  [newTextureDescriptor setLabel:@"ColourConstancyV1->Core->ClippingRecovery->offsetTextures1"];
+  allocator9 = [(FigMetalContext *)self->_metalContext allocator];
+  v86 = [allocator9 newTextureWithDescriptor:newTextureDescriptor];
   v87 = self->_offsetTextures[1];
   self->_offsetTextures[1] = v86;
 
@@ -482,8 +482,8 @@ LABEL_45:
     goto LABEL_48;
   }
 
-  v88 = [(FigMetalContext *)self->_metalContext device];
-  v89 = [CMIFFT CMIFFT2DTransform:v88 figMetalContext:0 width:v95 height:v97 layout:0 precision:0];
+  device2 = [(FigMetalContext *)self->_metalContext device];
+  v89 = [CMIFFT CMIFFT2DTransform:device2 figMetalContext:0 width:v95 height:v97 layout:0 precision:0];
   fftTransform = self->_fftTransform;
   self->_fftTransform = v89;
 
@@ -494,10 +494,10 @@ LABEL_45:
   }
 
   microHazeDetection = self->_microHazeDetection;
-  v92 = [(CMIColourConstancyClippingRecoveryConfigurationV1 *)self->_config microHazeDetectionConfig];
-  [(CMIColourConstancyMicroHazeDetectionV1 *)microHazeDetection prepareToProcessWithConfig:v92];
+  microHazeDetectionConfig = [(CMIColourConstancyClippingRecoveryConfigurationV1 *)self->_config microHazeDetectionConfig];
+  [(CMIColourConstancyMicroHazeDetectionV1 *)microHazeDetection prepareToProcessWithConfig:microHazeDetectionConfig];
 
-  v5 = v96;
+  configCopy = v96;
   if (self->_microHazeDetection)
   {
     v93 = 0;
@@ -514,23 +514,23 @@ LABEL_35:
   return v93;
 }
 
-- (id)_encodeImagePyramidGeneration:(double)a3 inputAmbientLumaTexture:(double)a4 inputAmbientChromaTexture:(uint64_t)a5 inoutFlashLumaTexture:(void *)a6 inoutFlashChromaTexture:(void *)a7 ambientToFlashRegistrationHomography:(void *)a8
+- (id)_encodeImagePyramidGeneration:(double)generation inputAmbientLumaTexture:(double)texture inputAmbientChromaTexture:(uint64_t)chromaTexture inoutFlashLumaTexture:(void *)lumaTexture inoutFlashChromaTexture:(void *)flashChromaTexture ambientToFlashRegistrationHomography:(void *)homography
 {
-  v15 = a6;
-  v16 = a1[2];
+  lumaTextureCopy = lumaTexture;
+  v16 = self[2];
   v17 = a10;
   v18 = a9;
-  v19 = a8;
-  v20 = a7;
+  homographyCopy = homography;
+  flashChromaTextureCopy = flashChromaTexture;
   [v16 clippedLikelihoodScalar];
   v22 = v21;
-  [a1[2] clippedLikelihoodExponent];
+  [self[2] clippedLikelihoodExponent];
   v24 = v23;
-  [a1[2] gamma];
+  [self[2] gamma];
   LODWORD(v26) = v25;
   LODWORD(v27) = v22;
   LODWORD(v28) = v24;
-  v29 = [a1 _encodeFirstLevelPyramidGeneration:v15 inputAmbientLumaTexture:v20 inputAmbientChromaTexture:v19 inoutFlashLumaTexture:v18 inoutFlashChromaTexture:v17 ambientToFlashRegistrationHomography:a2 scalar:a3 exponent:a4 gamma:{v27, v28, v26}];
+  v29 = [self _encodeFirstLevelPyramidGeneration:lumaTextureCopy inputAmbientLumaTexture:flashChromaTextureCopy inputAmbientChromaTexture:homographyCopy inoutFlashLumaTexture:v18 inoutFlashChromaTexture:v17 ambientToFlashRegistrationHomography:a2 scalar:generation exponent:texture gamma:{v27, v28, v26}];
 
   if (v29)
   {
@@ -539,9 +539,9 @@ LABEL_35:
 
   else
   {
-    v30 = [a1[2] pyramidGaussianKernelRadius];
-    [a1[2] pyramidGaussianSigma];
-    v29 = [a1 _encodeSecondToLastLevelsPyramidGeneration:v15 kernelRadius:v30 sigma:?];
+    pyramidGaussianKernelRadius = [self[2] pyramidGaussianKernelRadius];
+    [self[2] pyramidGaussianSigma];
+    v29 = [self _encodeSecondToLastLevelsPyramidGeneration:lumaTextureCopy kernelRadius:pyramidGaussianKernelRadius sigma:?];
     if (v29)
     {
       sub_1ACF0();
@@ -551,41 +551,41 @@ LABEL_35:
   return v29;
 }
 
-- (uint64_t)_encodeFirstLevelPyramidGeneration:(__n128)a3 inputAmbientLumaTexture:(__n128)a4 inputAmbientChromaTexture:(float)a5 inoutFlashLumaTexture:(float)a6 inoutFlashChromaTexture:(float)a7 ambientToFlashRegistrationHomography:(uint64_t)a8 scalar:(void *)a9 exponent:(void *)a10 gamma:(void *)a11
+- (uint64_t)_encodeFirstLevelPyramidGeneration:(__n128)generation inputAmbientLumaTexture:(__n128)texture inputAmbientChromaTexture:(float)chromaTexture inoutFlashLumaTexture:(float)lumaTexture inoutFlashChromaTexture:(float)flashChromaTexture ambientToFlashRegistrationHomography:(uint64_t)homography scalar:(void *)scalar exponent:(void *)self0 gamma:(void *)self1
 {
   v38[0] = a2;
-  v38[1] = a3;
-  v38[2] = a4;
-  v21 = a10;
-  v22 = a11;
+  v38[1] = generation;
+  v38[2] = texture;
+  exponentCopy = exponent;
+  gammaCopy = gamma;
   v23 = a12;
   v24 = a13;
-  v36 = a6;
-  v37 = a5;
-  v35 = a7;
-  v25 = [a9 computeCommandEncoder];
-  v26 = v25;
-  if (v25)
+  lumaTextureCopy = lumaTexture;
+  chromaTextureCopy = chromaTexture;
+  flashChromaTextureCopy = flashChromaTexture;
+  computeCommandEncoder = [scalar computeCommandEncoder];
+  v26 = computeCommandEncoder;
+  if (computeCommandEncoder)
   {
-    [v25 setComputePipelineState:*(a1 + 160)];
-    [v26 setTexture:v21 atIndex:0];
-    [v26 setTexture:v22 atIndex:1];
+    [computeCommandEncoder setComputePipelineState:*(self + 160)];
+    [v26 setTexture:exponentCopy atIndex:0];
+    [v26 setTexture:gammaCopy atIndex:1];
     [v26 setTexture:v23 atIndex:2];
     [v26 setTexture:v24 atIndex:3];
-    [v26 setTexture:*(a1 + 24) atIndex:4];
-    [v26 setTexture:*(a1 + 48) atIndex:5];
-    [v26 setBytes:&v37 length:4 atIndex:0];
-    [v26 setBytes:&v36 length:4 atIndex:1];
-    [v26 setBytes:&v35 length:4 atIndex:2];
+    [v26 setTexture:*(self + 24) atIndex:4];
+    [v26 setTexture:*(self + 48) atIndex:5];
+    [v26 setBytes:&chromaTextureCopy length:4 atIndex:0];
+    [v26 setBytes:&lumaTextureCopy length:4 atIndex:1];
+    [v26 setBytes:&flashChromaTextureCopy length:4 atIndex:2];
     [v26 setBytes:v38 length:48 atIndex:3];
-    v27 = [*(a1 + 160) threadExecutionWidth];
-    v28 = [*(a1 + 160) maxTotalThreadsPerThreadgroup] / v27;
-    v29 = [*(a1 + 24) width];
-    v30 = [*(a1 + 24) height];
-    v34[0] = v29;
-    v34[1] = v30;
+    threadExecutionWidth = [*(self + 160) threadExecutionWidth];
+    v28 = [*(self + 160) maxTotalThreadsPerThreadgroup] / threadExecutionWidth;
+    width = [*(self + 24) width];
+    height = [*(self + 24) height];
+    v34[0] = width;
+    v34[1] = height;
     v34[2] = 1;
-    v33[0] = v27;
+    v33[0] = threadExecutionWidth;
     v33[1] = v28;
     v33[2] = 1;
     [v26 dispatchThreads:v34 threadsPerThreadgroup:v33];
@@ -602,12 +602,12 @@ LABEL_35:
   return v31;
 }
 
-- (int)_encodeSecondToLastLevelsPyramidGeneration:(id)a3 kernelRadius:(int)a4 sigma:(float)a5
+- (int)_encodeSecondToLastLevelsPyramidGeneration:(id)generation kernelRadius:(int)radius sigma:(float)sigma
 {
-  v22 = a4;
-  v21 = a5;
-  v6 = [a3 computeCommandEncoder];
-  if (v6)
+  radiusCopy = radius;
+  sigmaCopy = sigma;
+  computeCommandEncoder = [generation computeCommandEncoder];
+  if (computeCommandEncoder)
   {
     v7 = 0;
     rgbPyramidTextures = self->_rgbPyramidTextures;
@@ -616,31 +616,31 @@ LABEL_35:
     do
     {
       v11 = v10;
-      [v6 setComputePipelineState:self->_imagePyramidGenerationPipelineStates[1]];
-      [v6 setTexture:(*rgbPyramidTextures)[v7] atIndex:0];
-      [v6 setTexture:v9[v7] atIndex:1];
+      [computeCommandEncoder setComputePipelineState:self->_imagePyramidGenerationPipelineStates[1]];
+      [computeCommandEncoder setTexture:(*rgbPyramidTextures)[v7] atIndex:0];
+      [computeCommandEncoder setTexture:v9[v7] atIndex:1];
       v12 = 8 * v7 + 8;
-      [v6 setTexture:*(rgbPyramidTextures + v12) atIndex:2];
-      [v6 setTexture:*(v9 + v12) atIndex:3];
-      [v6 setBytes:&v22 length:4 atIndex:0];
-      [v6 setBytes:&v21 length:4 atIndex:1];
-      v13 = [(MTLComputePipelineState *)self->_imagePyramidGenerationPipelineStates[1] threadExecutionWidth];
-      v14 = [(MTLComputePipelineState *)self->_imagePyramidGenerationPipelineStates[1] maxTotalThreadsPerThreadgroup]/ v13;
-      v15 = [*(rgbPyramidTextures + v12) width];
-      v16 = [*(rgbPyramidTextures + v12) height];
-      v20[0] = v15;
-      v20[1] = v16;
+      [computeCommandEncoder setTexture:*(rgbPyramidTextures + v12) atIndex:2];
+      [computeCommandEncoder setTexture:*(v9 + v12) atIndex:3];
+      [computeCommandEncoder setBytes:&radiusCopy length:4 atIndex:0];
+      [computeCommandEncoder setBytes:&sigmaCopy length:4 atIndex:1];
+      threadExecutionWidth = [(MTLComputePipelineState *)self->_imagePyramidGenerationPipelineStates[1] threadExecutionWidth];
+      v14 = [(MTLComputePipelineState *)self->_imagePyramidGenerationPipelineStates[1] maxTotalThreadsPerThreadgroup]/ threadExecutionWidth;
+      width = [*(rgbPyramidTextures + v12) width];
+      height = [*(rgbPyramidTextures + v12) height];
+      v20[0] = width;
+      v20[1] = height;
       v20[2] = 1;
-      v19[0] = v13;
+      v19[0] = threadExecutionWidth;
       v19[1] = v14;
       v19[2] = 1;
-      [v6 dispatchThreads:v20 threadsPerThreadgroup:v19];
+      [computeCommandEncoder dispatchThreads:v20 threadsPerThreadgroup:v19];
       v10 = 0;
       v7 = 1;
     }
 
     while ((v11 & 1) != 0);
-    [v6 endEncoding];
+    [computeCommandEncoder endEncoding];
     v17 = 0;
   }
 
@@ -653,12 +653,12 @@ LABEL_35:
   return v17;
 }
 
-- (int)_encodeGradientExtraction:(id)a3 frame:(int)a4 channel:(int)a5
+- (int)_encodeGradientExtraction:(id)extraction frame:(int)frame channel:(int)channel
 {
-  v8 = a3;
-  v48 = a5;
-  v9 = [v8 computeCommandEncoder];
-  if (!v9)
+  extractionCopy = extraction;
+  channelCopy = channel;
+  computeCommandEncoder = [extractionCopy computeCommandEncoder];
+  if (!computeCommandEncoder)
   {
     sub_1B24C();
 LABEL_16:
@@ -666,26 +666,26 @@ LABEL_16:
     goto LABEL_8;
   }
 
-  v10 = v9;
-  [v9 setComputePipelineState:self->_gradientExtractionPipelineStates[0]];
-  [v10 setTexture:self->_rgbPyramidTextures[a4][2] atIndex:0];
+  v10 = computeCommandEncoder;
+  [computeCommandEncoder setComputePipelineState:self->_gradientExtractionPipelineStates[0]];
+  [v10 setTexture:self->_rgbPyramidTextures[frame][2] atIndex:0];
   [v10 setTexture:self->_scrapMemoryR32Textures[0] atIndex:1];
-  [v10 setBytes:&v48 length:4 atIndex:0];
-  v11 = [(MTLComputePipelineState *)self->_gradientExtractionPipelineStates[0] threadExecutionWidth];
-  v12 = [(MTLComputePipelineState *)self->_gradientExtractionPipelineStates[0] maxTotalThreadsPerThreadgroup]/ v11;
+  [v10 setBytes:&channelCopy length:4 atIndex:0];
+  threadExecutionWidth = [(MTLComputePipelineState *)self->_gradientExtractionPipelineStates[0] threadExecutionWidth];
+  v12 = [(MTLComputePipelineState *)self->_gradientExtractionPipelineStates[0] maxTotalThreadsPerThreadgroup]/ threadExecutionWidth;
   v13 = [(MTLTexture *)self->_scrapMemoryR32Textures[0] width]>> 1;
-  v14 = [(MTLTexture *)self->_scrapMemoryR32Textures[0] height];
+  height = [(MTLTexture *)self->_scrapMemoryR32Textures[0] height];
   v45 = v13;
-  v46 = v14;
+  v46 = height;
   v47 = 1;
-  v42 = v11;
+  v42 = threadExecutionWidth;
   v43 = v12;
   v44 = 1;
   [v10 dispatchThreads:&v45 threadsPerThreadgroup:&v42];
   [v10 endEncoding];
   fftTransform = self->_fftTransform;
-  v16 = [(MTLTexture *)self->_scrapMemoryR32Textures[0] buffer];
-  v17 = [(CMIFFTTransform *)fftTransform encodeToCommandBuffer:v8 inputBuffer:v16 direction:1];
+  buffer = [(MTLTexture *)self->_scrapMemoryR32Textures[0] buffer];
+  v17 = [(CMIFFTTransform *)fftTransform encodeToCommandBuffer:extractionCopy inputBuffer:buffer direction:1];
 
   if (v17)
   {
@@ -695,9 +695,9 @@ LABEL_13:
     goto LABEL_8;
   }
 
-  v18 = [v8 computeCommandEncoder];
+  computeCommandEncoder2 = [extractionCopy computeCommandEncoder];
 
-  if (!v18)
+  if (!computeCommandEncoder2)
   {
     sub_1B1D8();
     goto LABEL_16;
@@ -709,78 +709,78 @@ LABEL_13:
   v20 = ceilf(vcvts_n_f32_u64([(MTLTexture *)self->_scrapMemoryR32Textures[0] width], 2uLL));
   *&v39 = v20 + v20;
   v40 = vcvt_s32_f32(__PAIR64__(COERCE_UNSIGNED_INT(ceilf(vcvts_n_f32_u64([(MTLTexture *)self->_scrapMemoryR32Textures[0] height], 1uLL))), v39));
-  [v18 setComputePipelineState:self->_gradientExtractionPipelineStates[1]];
-  [v18 setTexture:self->_scrapMemoryR32Textures[0] atIndex:0];
-  [v18 setTexture:self->_scrapMemoryR32Textures[1] atIndex:1];
-  [v18 setTexture:self->_scrapMemoryR32Textures[2] atIndex:2];
-  [v18 setBytes:&v41 length:8 atIndex:0];
-  [v18 setBytes:&v40 length:8 atIndex:1];
-  v21 = [(MTLComputePipelineState *)self->_gradientExtractionPipelineStates[1] threadExecutionWidth];
-  v22 = [(MTLComputePipelineState *)self->_gradientExtractionPipelineStates[1] maxTotalThreadsPerThreadgroup]/ v21;
+  [computeCommandEncoder2 setComputePipelineState:self->_gradientExtractionPipelineStates[1]];
+  [computeCommandEncoder2 setTexture:self->_scrapMemoryR32Textures[0] atIndex:0];
+  [computeCommandEncoder2 setTexture:self->_scrapMemoryR32Textures[1] atIndex:1];
+  [computeCommandEncoder2 setTexture:self->_scrapMemoryR32Textures[2] atIndex:2];
+  [computeCommandEncoder2 setBytes:&v41 length:8 atIndex:0];
+  [computeCommandEncoder2 setBytes:&v40 length:8 atIndex:1];
+  threadExecutionWidth2 = [(MTLComputePipelineState *)self->_gradientExtractionPipelineStates[1] threadExecutionWidth];
+  v22 = [(MTLComputePipelineState *)self->_gradientExtractionPipelineStates[1] maxTotalThreadsPerThreadgroup]/ threadExecutionWidth2;
   v23 = [(MTLTexture *)self->_scrapMemoryR32Textures[0] width]>> 1;
-  v24 = [(MTLTexture *)self->_scrapMemoryR32Textures[0] height];
+  height2 = [(MTLTexture *)self->_scrapMemoryR32Textures[0] height];
   v45 = v23;
-  v46 = v24;
+  v46 = height2;
   v47 = 1;
-  v42 = v21;
+  v42 = threadExecutionWidth2;
   v43 = v22;
   v44 = 1;
-  [v18 dispatchThreads:&v45 threadsPerThreadgroup:&v42];
-  [v18 endEncoding];
+  [computeCommandEncoder2 dispatchThreads:&v45 threadsPerThreadgroup:&v42];
+  [computeCommandEncoder2 endEncoding];
   v25 = self->_fftTransform;
-  v26 = [(MTLTexture *)self->_scrapMemoryR32Textures[1] buffer];
-  v27 = [(CMIFFTTransform *)v25 encodeToCommandBuffer:v8 inputBuffer:v26 direction:-1];
+  buffer2 = [(MTLTexture *)self->_scrapMemoryR32Textures[1] buffer];
+  v27 = [(CMIFFTTransform *)v25 encodeToCommandBuffer:extractionCopy inputBuffer:buffer2 direction:-1];
 
   if (v27)
   {
-    sub_1B050(v27, v18, &v45);
+    sub_1B050(v27, computeCommandEncoder2, &v45);
     goto LABEL_13;
   }
 
   v28 = self->_fftTransform;
-  v29 = [(MTLTexture *)self->_scrapMemoryR32Textures[2] buffer];
-  v30 = [(CMIFFTTransform *)v28 encodeToCommandBuffer:v8 inputBuffer:v29 direction:-1];
+  buffer3 = [(MTLTexture *)self->_scrapMemoryR32Textures[2] buffer];
+  v30 = [(CMIFFTTransform *)v28 encodeToCommandBuffer:extractionCopy inputBuffer:buffer3 direction:-1];
 
   if (v30)
   {
-    sub_1B0D8(v30, v18);
+    sub_1B0D8(v30, computeCommandEncoder2);
     goto LABEL_8;
   }
 
-  v31 = [v8 computeCommandEncoder];
+  computeCommandEncoder3 = [extractionCopy computeCommandEncoder];
 
-  if (!v31)
+  if (!computeCommandEncoder3)
   {
     sub_1B164();
     goto LABEL_16;
   }
 
-  [v31 setComputePipelineState:self->_gradientExtractionPipelineStates[2]];
-  [v31 setTexture:self->_scrapMemoryR32Textures[1] atIndex:0];
-  [v31 setTexture:self->_scrapMemoryR32Textures[2] atIndex:1];
-  v32 = self->_imageGradientTextures[a4];
-  [v31 setTexture:v32[v48] atIndex:2];
-  v33 = [(MTLComputePipelineState *)self->_gradientExtractionPipelineStates[2] threadExecutionWidth];
-  v34 = [(MTLComputePipelineState *)self->_gradientExtractionPipelineStates[2] maxTotalThreadsPerThreadgroup]/ v33;
-  v35 = [(MTLTexture *)v32[v48] width];
-  v36 = [(MTLTexture *)v32[v48] height];
-  v45 = v35;
-  v46 = v36;
+  [computeCommandEncoder3 setComputePipelineState:self->_gradientExtractionPipelineStates[2]];
+  [computeCommandEncoder3 setTexture:self->_scrapMemoryR32Textures[1] atIndex:0];
+  [computeCommandEncoder3 setTexture:self->_scrapMemoryR32Textures[2] atIndex:1];
+  v32 = self->_imageGradientTextures[frame];
+  [computeCommandEncoder3 setTexture:v32[channelCopy] atIndex:2];
+  threadExecutionWidth3 = [(MTLComputePipelineState *)self->_gradientExtractionPipelineStates[2] threadExecutionWidth];
+  v34 = [(MTLComputePipelineState *)self->_gradientExtractionPipelineStates[2] maxTotalThreadsPerThreadgroup]/ threadExecutionWidth3;
+  width = [(MTLTexture *)v32[channelCopy] width];
+  height3 = [(MTLTexture *)v32[channelCopy] height];
+  v45 = width;
+  v46 = height3;
   v47 = 1;
-  v42 = v33;
+  v42 = threadExecutionWidth3;
   v43 = v34;
   v44 = 1;
-  [v31 dispatchThreads:&v45 threadsPerThreadgroup:&v42];
-  [v31 endEncoding];
+  [computeCommandEncoder3 dispatchThreads:&v45 threadsPerThreadgroup:&v42];
+  [computeCommandEncoder3 endEncoding];
 
 LABEL_8:
   return v30;
 }
 
-- (int)_encodeGradientImageFusion:(id)a3
+- (int)_encodeGradientImageFusion:(id)fusion
 {
-  v4 = a3;
-  v5 = [(CMIColourConstancyClippingRecoveryV1 *)self _encodeGradientImageFusion:v4 channel:0];
+  fusionCopy = fusion;
+  v5 = [(CMIColourConstancyClippingRecoveryV1 *)self _encodeGradientImageFusion:fusionCopy channel:0];
   if (v5)
   {
     v7 = v5;
@@ -789,7 +789,7 @@ LABEL_8:
 
   else
   {
-    v6 = [(CMIColourConstancyClippingRecoveryV1 *)self _encodeGradientImageFusion:v4 channel:1];
+    v6 = [(CMIColourConstancyClippingRecoveryV1 *)self _encodeGradientImageFusion:fusionCopy channel:1];
     if (v6)
     {
       v7 = v6;
@@ -798,7 +798,7 @@ LABEL_8:
 
     else
     {
-      v7 = [(CMIColourConstancyClippingRecoveryV1 *)self _encodeGradientImageFusion:v4 channel:2];
+      v7 = [(CMIColourConstancyClippingRecoveryV1 *)self _encodeGradientImageFusion:fusionCopy channel:2];
       if (v7)
       {
         sub_1B3B8();
@@ -809,11 +809,11 @@ LABEL_8:
   return v7;
 }
 
-- (int)_encodeGradientImageFusion:(id)a3 channel:(int)a4
+- (int)_encodeGradientImageFusion:(id)fusion channel:(int)channel
 {
-  v6 = a3;
-  v7 = [v6 computeCommandEncoder];
-  if (!v7)
+  fusionCopy = fusion;
+  computeCommandEncoder = [fusionCopy computeCommandEncoder];
+  if (!computeCommandEncoder)
   {
     sub_1B6B8();
 LABEL_16:
@@ -821,29 +821,29 @@ LABEL_16:
     goto LABEL_8;
   }
 
-  v8 = v7;
-  [v7 setComputePipelineState:self->_gradientImageFusionPipelineStates[2]];
-  v9 = &self->super.isa + a4;
+  v8 = computeCommandEncoder;
+  [computeCommandEncoder setComputePipelineState:self->_gradientImageFusionPipelineStates[2]];
+  v9 = &self->super.isa + channel;
   [v8 setTexture:v9[9] atIndex:0];
   [v8 setTexture:v9[12] atIndex:1];
   [v8 setTexture:self->_fusionMapTexture atIndex:2];
   [v8 setTexture:self->_scrapMemoryR32Textures[0] atIndex:3];
   [v8 setTexture:self->_scrapMemoryR32Textures[1] atIndex:4];
-  v10 = [(MTLComputePipelineState *)self->_gradientImageFusionPipelineStates[2] threadExecutionWidth];
-  v11 = [(MTLComputePipelineState *)self->_gradientImageFusionPipelineStates[2] maxTotalThreadsPerThreadgroup]/ v10;
+  threadExecutionWidth = [(MTLComputePipelineState *)self->_gradientImageFusionPipelineStates[2] threadExecutionWidth];
+  v11 = [(MTLComputePipelineState *)self->_gradientImageFusionPipelineStates[2] maxTotalThreadsPerThreadgroup]/ threadExecutionWidth;
   v12 = [(MTLTexture *)self->_scrapMemoryR32Textures[0] width]>> 1;
-  v13 = [(MTLTexture *)self->_scrapMemoryR32Textures[0] height];
+  height = [(MTLTexture *)self->_scrapMemoryR32Textures[0] height];
   v44 = v12;
-  v45 = v13;
+  v45 = height;
   v46 = 1;
-  v41 = v10;
+  v41 = threadExecutionWidth;
   v42 = v11;
   v43 = 1;
   [v8 dispatchThreads:&v44 threadsPerThreadgroup:&v41];
   [v8 endEncoding];
   fftTransform = self->_fftTransform;
-  v15 = [(MTLTexture *)self->_scrapMemoryR32Textures[0] buffer];
-  v16 = [(CMIFFTTransform *)fftTransform encodeToCommandBuffer:v6 inputBuffer:v15 direction:1];
+  buffer = [(MTLTexture *)self->_scrapMemoryR32Textures[0] buffer];
+  v16 = [(CMIFFTTransform *)fftTransform encodeToCommandBuffer:fusionCopy inputBuffer:buffer direction:1];
 
   if (v16)
   {
@@ -854,8 +854,8 @@ LABEL_12:
   }
 
   v17 = self->_fftTransform;
-  v18 = [(MTLTexture *)self->_scrapMemoryR32Textures[1] buffer];
-  v19 = [(CMIFFTTransform *)v17 encodeToCommandBuffer:v6 inputBuffer:v18 direction:1];
+  buffer2 = [(MTLTexture *)self->_scrapMemoryR32Textures[1] buffer];
+  v19 = [(CMIFFTTransform *)v17 encodeToCommandBuffer:fusionCopy inputBuffer:buffer2 direction:1];
 
   if (v19)
   {
@@ -863,9 +863,9 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v20 = [v6 computeCommandEncoder];
+  computeCommandEncoder2 = [fusionCopy computeCommandEncoder];
 
-  if (!v20)
+  if (!computeCommandEncoder2)
   {
     sub_1B644();
     goto LABEL_16;
@@ -877,75 +877,75 @@ LABEL_12:
   v22 = ceilf(vcvts_n_f32_u64([(MTLTexture *)self->_scrapMemoryR32Textures[0] width], 2uLL));
   *&v38 = v22 + v22;
   v39 = vcvt_s32_f32(__PAIR64__(COERCE_UNSIGNED_INT(ceilf(vcvts_n_f32_u64([(MTLTexture *)self->_scrapMemoryR32Textures[0] height], 1uLL))), v38));
-  [v20 setComputePipelineState:self->_gradientImageFusionPipelineStates[3]];
-  [v20 setTexture:self->_scrapMemoryR32Textures[0] atIndex:0];
-  [v20 setTexture:self->_scrapMemoryR32Textures[1] atIndex:1];
-  [v20 setTexture:self->_scrapMemoryR32Textures[2] atIndex:2];
-  [v20 setBytes:&v40 length:8 atIndex:0];
-  [v20 setBytes:&v39 length:8 atIndex:1];
-  v23 = [(MTLComputePipelineState *)self->_gradientImageFusionPipelineStates[3] threadExecutionWidth];
-  v24 = [(MTLComputePipelineState *)self->_gradientImageFusionPipelineStates[3] maxTotalThreadsPerThreadgroup]/ v23;
+  [computeCommandEncoder2 setComputePipelineState:self->_gradientImageFusionPipelineStates[3]];
+  [computeCommandEncoder2 setTexture:self->_scrapMemoryR32Textures[0] atIndex:0];
+  [computeCommandEncoder2 setTexture:self->_scrapMemoryR32Textures[1] atIndex:1];
+  [computeCommandEncoder2 setTexture:self->_scrapMemoryR32Textures[2] atIndex:2];
+  [computeCommandEncoder2 setBytes:&v40 length:8 atIndex:0];
+  [computeCommandEncoder2 setBytes:&v39 length:8 atIndex:1];
+  threadExecutionWidth2 = [(MTLComputePipelineState *)self->_gradientImageFusionPipelineStates[3] threadExecutionWidth];
+  v24 = [(MTLComputePipelineState *)self->_gradientImageFusionPipelineStates[3] maxTotalThreadsPerThreadgroup]/ threadExecutionWidth2;
   v25 = [(MTLTexture *)self->_scrapMemoryR32Textures[0] width]>> 1;
-  v26 = [(MTLTexture *)self->_scrapMemoryR32Textures[0] height];
+  height2 = [(MTLTexture *)self->_scrapMemoryR32Textures[0] height];
   v44 = v25;
-  v45 = v26;
+  v45 = height2;
   v46 = 1;
-  v41 = v23;
+  v41 = threadExecutionWidth2;
   v42 = v24;
   v43 = 1;
-  [v20 dispatchThreads:&v44 threadsPerThreadgroup:&v41];
-  [v20 endEncoding];
+  [computeCommandEncoder2 dispatchThreads:&v44 threadsPerThreadgroup:&v41];
+  [computeCommandEncoder2 endEncoding];
   v27 = self->_fftTransform;
-  v28 = [(MTLTexture *)self->_scrapMemoryR32Textures[2] buffer];
-  v29 = [(CMIFFTTransform *)v27 encodeToCommandBuffer:v6 inputBuffer:v28 direction:-1];
+  buffer3 = [(MTLTexture *)self->_scrapMemoryR32Textures[2] buffer];
+  v29 = [(CMIFFTTransform *)v27 encodeToCommandBuffer:fusionCopy inputBuffer:buffer3 direction:-1];
 
   if (v29)
   {
-    sub_1B544(v29, v20);
+    sub_1B544(v29, computeCommandEncoder2);
     goto LABEL_8;
   }
 
-  v30 = [v6 computeCommandEncoder];
+  computeCommandEncoder3 = [fusionCopy computeCommandEncoder];
 
-  if (!v30)
+  if (!computeCommandEncoder3)
   {
     sub_1B5D0();
     goto LABEL_16;
   }
 
-  [v30 setComputePipelineState:self->_gradientImageFusionPipelineStates[4]];
-  [v30 setTexture:self->_scrapMemoryR32Textures[2] atIndex:0];
-  v31 = &self->super.isa + a4;
-  [v30 setTexture:v31[17] atIndex:1];
-  v32 = [(MTLComputePipelineState *)self->_gradientImageFusionPipelineStates[4] threadExecutionWidth];
-  v33 = [(MTLComputePipelineState *)self->_gradientImageFusionPipelineStates[4] maxTotalThreadsPerThreadgroup]/ v32;
-  v34 = [(objc_class *)v31[17] width];
-  v35 = [(objc_class *)v31[17] height];
-  v44 = v34;
-  v45 = v35;
+  [computeCommandEncoder3 setComputePipelineState:self->_gradientImageFusionPipelineStates[4]];
+  [computeCommandEncoder3 setTexture:self->_scrapMemoryR32Textures[2] atIndex:0];
+  v31 = &self->super.isa + channel;
+  [computeCommandEncoder3 setTexture:v31[17] atIndex:1];
+  threadExecutionWidth3 = [(MTLComputePipelineState *)self->_gradientImageFusionPipelineStates[4] threadExecutionWidth];
+  v33 = [(MTLComputePipelineState *)self->_gradientImageFusionPipelineStates[4] maxTotalThreadsPerThreadgroup]/ threadExecutionWidth3;
+  width = [(objc_class *)v31[17] width];
+  height3 = [(objc_class *)v31[17] height];
+  v44 = width;
+  v45 = height3;
   v46 = 1;
-  v41 = v32;
+  v41 = threadExecutionWidth3;
   v42 = v33;
   v43 = 1;
-  [v30 dispatchThreads:&v44 threadsPerThreadgroup:&v41];
-  [v30 endEncoding];
+  [computeCommandEncoder3 dispatchThreads:&v44 threadsPerThreadgroup:&v41];
+  [computeCommandEncoder3 endEncoding];
 
 LABEL_8:
   return v29;
 }
 
-- (id)_encodeImageReconstruction:(double)a3 inputAmbientLumaTexture:(double)a4 inputAmbientChromaTexture:(uint64_t)a5 inoutFlashLumaTexture:(void *)a6 inoutFlashChromaTexture:(void *)a7 ambientToFlashRegistrationHomography:(void *)a8
+- (id)_encodeImageReconstruction:(double)reconstruction inputAmbientLumaTexture:(double)texture inputAmbientChromaTexture:(uint64_t)chromaTexture inoutFlashLumaTexture:(void *)lumaTexture inoutFlashChromaTexture:(void *)flashChromaTexture ambientToFlashRegistrationHomography:(void *)homography
 {
-  v15 = a6;
+  lumaTextureCopy = lumaTexture;
   v16 = a9;
   v17 = a10;
-  v18 = a1[2];
-  v19 = a8;
-  v20 = a7;
+  v18 = self[2];
+  homographyCopy = homography;
+  flashChromaTextureCopy = flashChromaTexture;
   [v18 gamma];
   v22 = v21;
   LODWORD(v23) = v21;
-  v24 = [a1 _encodeImageAccumulationOfFirstPyramidLevel:v15 inputAmbientLumaTexture:v20 inputAmbientChromaTexture:v19 inoutFlashLumaTexture:v16 inoutFlashChromaTexture:v17 ambientToFlashRegistrationHomography:a2 gamma:{a3, a4, v23}];
+  v24 = [self _encodeImageAccumulationOfFirstPyramidLevel:lumaTextureCopy inputAmbientLumaTexture:flashChromaTextureCopy inputAmbientChromaTexture:homographyCopy inoutFlashLumaTexture:v16 inoutFlashChromaTexture:v17 ambientToFlashRegistrationHomography:a2 gamma:{reconstruction, texture, v23}];
 
   if (v24)
   {
@@ -955,7 +955,7 @@ LABEL_8:
   else
   {
     LODWORD(v25) = v22;
-    v26 = [a1 _encodeImageAccumulationOfSecondToLastPyramidLevels:v15 inoutFlashLumaTexture:v16 inoutFlashChromaTexture:v17 gamma:v25];
+    v26 = [self _encodeImageAccumulationOfSecondToLastPyramidLevels:lumaTextureCopy inoutFlashLumaTexture:v16 inoutFlashChromaTexture:v17 gamma:v25];
     if (v26)
     {
       v24 = v26;
@@ -965,7 +965,7 @@ LABEL_8:
     else
     {
       LODWORD(v27) = v22;
-      v24 = [a1 _encodeImageAccumulationOfFusedThumbnail:v15 inoutFlashLumaTexture:v16 inoutFlashChromaTexture:v17 gamma:v27];
+      v24 = [self _encodeImageAccumulationOfFusedThumbnail:lumaTextureCopy inoutFlashLumaTexture:v16 inoutFlashChromaTexture:v17 gamma:v27];
       if (v24)
       {
         sub_1B824();
@@ -976,36 +976,36 @@ LABEL_8:
   return v24;
 }
 
-- (uint64_t)_encodeImageAccumulationOfFirstPyramidLevel:(__n128)a3 inputAmbientLumaTexture:(__n128)a4 inputAmbientChromaTexture:(float)a5 inoutFlashLumaTexture:(uint64_t)a6 inoutFlashChromaTexture:(void *)a7 ambientToFlashRegistrationHomography:(void *)a8 gamma:(void *)a9
+- (uint64_t)_encodeImageAccumulationOfFirstPyramidLevel:(__n128)level inputAmbientLumaTexture:(__n128)texture inputAmbientChromaTexture:(float)chromaTexture inoutFlashLumaTexture:(uint64_t)lumaTexture inoutFlashChromaTexture:(void *)flashChromaTexture ambientToFlashRegistrationHomography:(void *)homography gamma:(void *)gamma
 {
   v30[0] = a2;
-  v30[1] = a3;
-  v30[2] = a4;
-  v17 = a8;
-  v18 = a9;
+  v30[1] = level;
+  v30[2] = texture;
+  homographyCopy = homography;
+  gammaCopy = gamma;
   v19 = a10;
   v20 = a11;
-  v29 = a5;
-  v21 = [a7 computeCommandEncoder];
-  v22 = v21;
-  if (v21)
+  chromaTextureCopy = chromaTexture;
+  computeCommandEncoder = [flashChromaTexture computeCommandEncoder];
+  v22 = computeCommandEncoder;
+  if (computeCommandEncoder)
   {
-    [v21 setComputePipelineState:*(a1 + 240)];
-    [v22 setTexture:*(a1 + 368) atIndex:0];
-    [v22 setTexture:v17 atIndex:1];
-    [v22 setTexture:v18 atIndex:2];
-    [v22 setTexture:*(a1 + 24) atIndex:3];
-    [v22 setTexture:*(a1 + 48) atIndex:4];
+    [computeCommandEncoder setComputePipelineState:*(self + 240)];
+    [v22 setTexture:*(self + 368) atIndex:0];
+    [v22 setTexture:homographyCopy atIndex:1];
+    [v22 setTexture:gammaCopy atIndex:2];
+    [v22 setTexture:*(self + 24) atIndex:3];
+    [v22 setTexture:*(self + 48) atIndex:4];
     [v22 setTexture:v19 atIndex:5];
     [v22 setTexture:v20 atIndex:6];
-    [v22 setBytes:&v29 length:4 atIndex:0];
+    [v22 setBytes:&chromaTextureCopy length:4 atIndex:0];
     [v22 setBytes:v30 length:48 atIndex:1];
-    v23 = [*(a1 + 240) threadExecutionWidth];
-    v24 = [*(a1 + 240) maxTotalThreadsPerThreadgroup] / v23;
+    threadExecutionWidth = [*(self + 240) threadExecutionWidth];
+    v24 = [*(self + 240) maxTotalThreadsPerThreadgroup] / threadExecutionWidth;
     v28[0] = [v19 width];
     v28[1] = [v19 height];
     v28[2] = 1;
-    v27[0] = v23;
+    v27[0] = threadExecutionWidth;
     v27[1] = v24;
     v27[2] = 1;
     [v22 dispatchThreads:v28 threadsPerThreadgroup:v27];
@@ -1022,13 +1022,13 @@ LABEL_8:
   return v25;
 }
 
-- (int)_encodeImageAccumulationOfSecondToLastPyramidLevels:(id)a3 inoutFlashLumaTexture:(id)a4 inoutFlashChromaTexture:(id)a5 gamma:(float)a6
+- (int)_encodeImageAccumulationOfSecondToLastPyramidLevels:(id)levels inoutFlashLumaTexture:(id)texture inoutFlashChromaTexture:(id)chromaTexture gamma:(float)gamma
 {
-  v10 = a4;
-  v11 = a5;
-  v23 = a6;
-  v12 = [a3 computeCommandEncoder];
-  if (v12)
+  textureCopy = texture;
+  chromaTextureCopy = chromaTexture;
+  gammaCopy = gamma;
+  computeCommandEncoder = [levels computeCommandEncoder];
+  if (computeCommandEncoder)
   {
     if ([(CMIColourConstancyClippingRecoveryConfigurationV1 *)self->_config pyramidNumLevels]>= 2)
     {
@@ -1036,26 +1036,26 @@ LABEL_8:
       v14 = -1;
       do
       {
-        [v12 setComputePipelineState:self->_imageReconstructionPipelineStates[1]];
-        [v12 setTexture:self->_fusionMapTexture atIndex:0];
-        [v12 setTexture:*(v13 - 1) atIndex:1];
-        [v12 setTexture:v13[2] atIndex:2];
-        [v12 setTexture:*v13 atIndex:3];
-        [v12 setTexture:v13[3] atIndex:4];
-        [v12 setTexture:v10 atIndex:5];
-        [v12 setTexture:v11 atIndex:6];
-        [v12 setBytes:&v23 length:4 atIndex:0];
-        v15 = [(MTLComputePipelineState *)self->_imageReconstructionPipelineStates[1] threadExecutionWidth];
-        v16 = [(MTLComputePipelineState *)self->_imageReconstructionPipelineStates[1] maxTotalThreadsPerThreadgroup]/ v15;
-        v17 = [v10 width];
-        v18 = [v10 height];
-        v22[0] = v17;
-        v22[1] = v18;
+        [computeCommandEncoder setComputePipelineState:self->_imageReconstructionPipelineStates[1]];
+        [computeCommandEncoder setTexture:self->_fusionMapTexture atIndex:0];
+        [computeCommandEncoder setTexture:*(v13 - 1) atIndex:1];
+        [computeCommandEncoder setTexture:v13[2] atIndex:2];
+        [computeCommandEncoder setTexture:*v13 atIndex:3];
+        [computeCommandEncoder setTexture:v13[3] atIndex:4];
+        [computeCommandEncoder setTexture:textureCopy atIndex:5];
+        [computeCommandEncoder setTexture:chromaTextureCopy atIndex:6];
+        [computeCommandEncoder setBytes:&gammaCopy length:4 atIndex:0];
+        threadExecutionWidth = [(MTLComputePipelineState *)self->_imageReconstructionPipelineStates[1] threadExecutionWidth];
+        v16 = [(MTLComputePipelineState *)self->_imageReconstructionPipelineStates[1] maxTotalThreadsPerThreadgroup]/ threadExecutionWidth;
+        width = [textureCopy width];
+        height = [textureCopy height];
+        v22[0] = width;
+        v22[1] = height;
         v22[2] = 1;
-        v21[0] = v15;
+        v21[0] = threadExecutionWidth;
         v21[1] = v16;
         v21[2] = 1;
-        [v12 dispatchThreads:v22 threadsPerThreadgroup:v21];
+        [computeCommandEncoder dispatchThreads:v22 threadsPerThreadgroup:v21];
         ++v14;
         ++v13;
       }
@@ -1063,7 +1063,7 @@ LABEL_8:
       while (v14 < [(CMIColourConstancyClippingRecoveryConfigurationV1 *)self->_config pyramidNumLevels]- 2);
     }
 
-    [v12 endEncoding];
+    [computeCommandEncoder endEncoding];
     v19 = 0;
   }
 
@@ -1076,16 +1076,16 @@ LABEL_8:
   return v19;
 }
 
-- (int)_encodeImageAccumulationOfFusedThumbnail:(id)a3 inoutFlashLumaTexture:(id)a4 inoutFlashChromaTexture:(id)a5 gamma:(float)a6
+- (int)_encodeImageAccumulationOfFusedThumbnail:(id)thumbnail inoutFlashLumaTexture:(id)texture inoutFlashChromaTexture:(id)chromaTexture gamma:(float)gamma
 {
-  v10 = a4;
-  v11 = a5;
-  v34 = a6;
-  v12 = [a3 computeCommandEncoder];
-  v13 = v12;
-  if (v12)
+  textureCopy = texture;
+  chromaTextureCopy = chromaTexture;
+  gammaCopy = gamma;
+  computeCommandEncoder = [thumbnail computeCommandEncoder];
+  v13 = computeCommandEncoder;
+  if (computeCommandEncoder)
   {
-    [v12 setComputePipelineState:self->_imageReconstructionPipelineStates[2]];
+    [computeCommandEncoder setComputePipelineState:self->_imageReconstructionPipelineStates[2]];
     [v13 setTexture:self->_rgbPyramidTextures[1][2] atIndex:0];
     [v13 setTexture:self->_flashFusedThumbnailImageTextures[0] atIndex:1];
     [v13 setTexture:self->_flashFusedThumbnailImageTextures[1] atIndex:2];
@@ -1094,14 +1094,14 @@ LABEL_8:
     [v13 setTexture:self->_scrapMemoryRGBA32Textures[0] atIndex:5];
     [v13 setTexture:self->_scrapMemoryRGBA32Textures[1] atIndex:6];
     [v13 setTexture:self->_scrapMemoryRGBA32Textures[2] atIndex:7];
-    v14 = [(MTLComputePipelineState *)self->_imageReconstructionPipelineStates[2] threadExecutionWidth];
-    v15 = [(MTLComputePipelineState *)self->_imageReconstructionPipelineStates[2] maxTotalThreadsPerThreadgroup]/ v14;
-    v16 = [(MTLTexture *)self->_scrapMemoryRGBA32Textures[0] width];
-    v17 = [(MTLTexture *)self->_scrapMemoryRGBA32Textures[0] height];
-    v31 = v16;
-    v32 = v17;
+    threadExecutionWidth = [(MTLComputePipelineState *)self->_imageReconstructionPipelineStates[2] threadExecutionWidth];
+    v15 = [(MTLComputePipelineState *)self->_imageReconstructionPipelineStates[2] maxTotalThreadsPerThreadgroup]/ threadExecutionWidth;
+    width = [(MTLTexture *)self->_scrapMemoryRGBA32Textures[0] width];
+    height = [(MTLTexture *)self->_scrapMemoryRGBA32Textures[0] height];
+    v31 = width;
+    v32 = height;
     v33 = 1;
-    v28 = v14;
+    v28 = threadExecutionWidth;
     v29 = v15;
     v30 = 1;
     [v13 dispatchThreads:&v31 threadsPerThreadgroup:&v28];
@@ -1111,14 +1111,14 @@ LABEL_8:
     [v13 setTexture:self->_scrapMemoryRGBA32Textures[2] atIndex:2];
     [v13 setTexture:self->_offsetTextures[0] atIndex:3];
     [v13 setTexture:self->_offsetTextures[1] atIndex:4];
-    v18 = [(MTLComputePipelineState *)self->_imageReconstructionPipelineStates[3] threadExecutionWidth];
-    v19 = [(MTLComputePipelineState *)self->_imageReconstructionPipelineStates[3] maxTotalThreadsPerThreadgroup]/ v18;
-    v20 = [(MTLTexture *)self->_offsetTextures[0] width];
-    v21 = [(MTLTexture *)self->_offsetTextures[0] height];
-    v31 = v20;
-    v32 = v21;
+    threadExecutionWidth2 = [(MTLComputePipelineState *)self->_imageReconstructionPipelineStates[3] threadExecutionWidth];
+    v19 = [(MTLComputePipelineState *)self->_imageReconstructionPipelineStates[3] maxTotalThreadsPerThreadgroup]/ threadExecutionWidth2;
+    width2 = [(MTLTexture *)self->_offsetTextures[0] width];
+    height2 = [(MTLTexture *)self->_offsetTextures[0] height];
+    v31 = width2;
+    v32 = height2;
     v33 = 1;
-    v28 = v18;
+    v28 = threadExecutionWidth2;
     v29 = v19;
     v30 = 1;
     [v13 dispatchThreads:&v31 threadsPerThreadgroup:&v28];
@@ -1130,17 +1130,17 @@ LABEL_8:
     [v13 setTexture:self->_fusionMapTexture atIndex:4];
     [v13 setTexture:self->_offsetTextures[0] atIndex:5];
     [v13 setTexture:self->_offsetTextures[1] atIndex:6];
-    [v13 setTexture:v10 atIndex:7];
-    [v13 setTexture:v11 atIndex:8];
-    [v13 setBytes:&v34 length:4 atIndex:0];
-    v22 = [(MTLComputePipelineState *)self->_imageReconstructionPipelineStates[4] threadExecutionWidth];
-    v23 = [(MTLComputePipelineState *)self->_imageReconstructionPipelineStates[4] maxTotalThreadsPerThreadgroup]/ v22;
-    v24 = [v10 width];
-    v25 = [v10 height];
-    v31 = v24;
-    v32 = v25;
+    [v13 setTexture:textureCopy atIndex:7];
+    [v13 setTexture:chromaTextureCopy atIndex:8];
+    [v13 setBytes:&gammaCopy length:4 atIndex:0];
+    threadExecutionWidth3 = [(MTLComputePipelineState *)self->_imageReconstructionPipelineStates[4] threadExecutionWidth];
+    v23 = [(MTLComputePipelineState *)self->_imageReconstructionPipelineStates[4] maxTotalThreadsPerThreadgroup]/ threadExecutionWidth3;
+    width3 = [textureCopy width];
+    height3 = [textureCopy height];
+    v31 = width3;
+    v32 = height3;
     v33 = 1;
-    v28 = v22;
+    v28 = threadExecutionWidth3;
     v29 = v23;
     v30 = 1;
     [v13 dispatchThreads:&v31 threadsPerThreadgroup:&v28];
@@ -1157,9 +1157,9 @@ LABEL_8:
   return v26;
 }
 
-- (int)_fusionMapExtraction:(id)a3
+- (int)_fusionMapExtraction:(id)extraction
 {
-  v3 = [(CMIColourConstancyMicroHazeDetectionV1 *)self->_microHazeDetection microHazeFusionMapExtraction:a3 inputAmbientTexture:self->_rgbPyramidTextures[0][0] inputFlashTexture:self->_rgbPyramidTextures[1][0] outputFusionMapTexture:self->_fusionMapTexture];
+  v3 = [(CMIColourConstancyMicroHazeDetectionV1 *)self->_microHazeDetection microHazeFusionMapExtraction:extraction inputAmbientTexture:self->_rgbPyramidTextures[0][0] inputFlashTexture:self->_rgbPyramidTextures[1][0] outputFusionMapTexture:self->_fusionMapTexture];
   if (v3)
   {
     sub_1B9FC();
@@ -1168,16 +1168,16 @@ LABEL_8:
   return v3;
 }
 
-- (id)_encodeColourAccuracyClippedRegionRecovery:(double)a3 inputAmbientLumaTexture:(double)a4 inputAmbientChromaTexture:(uint64_t)a5 inoutFlashLumaTexture:(void *)a6 inoutFlashChromaTexture:(void *)a7 ambientToFlashRegistrationHomography:(void *)a8
+- (id)_encodeColourAccuracyClippedRegionRecovery:(double)recovery inputAmbientLumaTexture:(double)texture inputAmbientChromaTexture:(uint64_t)chromaTexture inoutFlashLumaTexture:(void *)lumaTexture inoutFlashChromaTexture:(void *)flashChromaTexture ambientToFlashRegistrationHomography:(void *)homography
 {
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  lumaTextureCopy = lumaTexture;
+  flashChromaTextureCopy = flashChromaTexture;
+  homographyCopy = homography;
   v18 = a9;
   v19 = a10;
-  if (v15)
+  if (lumaTextureCopy)
   {
-    v20 = [a1 _encodeImagePyramidGeneration:v15 inputAmbientLumaTexture:v16 inputAmbientChromaTexture:v17 inoutFlashLumaTexture:v18 inoutFlashChromaTexture:v19 ambientToFlashRegistrationHomography:{a2, a3, a4}];
+    v20 = [self _encodeImagePyramidGeneration:lumaTextureCopy inputAmbientLumaTexture:flashChromaTextureCopy inputAmbientChromaTexture:homographyCopy inoutFlashLumaTexture:v18 inoutFlashChromaTexture:v19 ambientToFlashRegistrationHomography:{a2, recovery, texture}];
     if (v20)
     {
       v25 = v20;
@@ -1186,7 +1186,7 @@ LABEL_8:
 
     else
     {
-      v21 = [a1 _fusionMapExtraction:v15];
+      v21 = [self _fusionMapExtraction:lumaTextureCopy];
       if (v21)
       {
         v25 = v21;
@@ -1195,7 +1195,7 @@ LABEL_8:
 
       else
       {
-        v22 = [a1 _encodeGradientExtraction:v15 frame:0];
+        v22 = [self _encodeGradientExtraction:lumaTextureCopy frame:0];
         if (v22)
         {
           v25 = v22;
@@ -1204,7 +1204,7 @@ LABEL_8:
 
         else
         {
-          v23 = [a1 _encodeGradientExtraction:v15 frame:1];
+          v23 = [self _encodeGradientExtraction:lumaTextureCopy frame:1];
           if (v23)
           {
             v25 = v23;
@@ -1213,7 +1213,7 @@ LABEL_8:
 
           else
           {
-            v24 = [a1 _encodeGradientImageFusion:v15];
+            v24 = [self _encodeGradientImageFusion:lumaTextureCopy];
             if (v24)
             {
               v25 = v24;
@@ -1222,7 +1222,7 @@ LABEL_8:
 
             else
             {
-              v25 = [a1 _encodeImageReconstruction:v15 inputAmbientLumaTexture:v16 inputAmbientChromaTexture:v17 inoutFlashLumaTexture:v18 inoutFlashChromaTexture:v19 ambientToFlashRegistrationHomography:{a2, a3, a4}];
+              v25 = [self _encodeImageReconstruction:lumaTextureCopy inputAmbientLumaTexture:flashChromaTextureCopy inputAmbientChromaTexture:homographyCopy inoutFlashLumaTexture:v18 inoutFlashChromaTexture:v19 ambientToFlashRegistrationHomography:{a2, recovery, texture}];
               if (v25)
               {
                 sub_1BCD4();
@@ -1243,9 +1243,9 @@ LABEL_8:
   return v25;
 }
 
-- (id)applyClippedRegionRecovery:(void *)a1 inputAmbientLumaTexture:inputAmbientChromaTexture:inoutFlashLumaTexture:inoutFlashChromaTexture:ambientToFlashRegistrationHomography:
+- (id)applyClippedRegionRecovery:(void *)recovery inputAmbientLumaTexture:inputAmbientChromaTexture:inoutFlashLumaTexture:inoutFlashChromaTexture:ambientToFlashRegistrationHomography:
 {
-  v1 = [a1 _encodeColourAccuracyClippedRegionRecovery:? inputAmbientLumaTexture:? inputAmbientChromaTexture:? inoutFlashLumaTexture:? inoutFlashChromaTexture:? ambientToFlashRegistrationHomography:?];
+  v1 = [recovery _encodeColourAccuracyClippedRegionRecovery:? inputAmbientLumaTexture:? inputAmbientChromaTexture:? inoutFlashLumaTexture:? inoutFlashChromaTexture:? ambientToFlashRegistrationHomography:?];
   if (v1)
   {
     sub_1BDC0();

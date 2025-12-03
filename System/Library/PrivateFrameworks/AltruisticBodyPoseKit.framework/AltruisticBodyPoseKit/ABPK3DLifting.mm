@@ -3,9 +3,9 @@
 - (ABPK3DLifting)init;
 - (BOOL)initMLNetwork;
 - (id).cxx_construct;
-- (int)runLiftingModelWithData:(id)a3 atTimestamp:(double)a4;
+- (int)runLiftingModelWithData:(id)data atTimestamp:(double)timestamp;
 - (void)_adjustBoneLength:(ABPK3DLifting *)self;
-- (void)_transformRelativeToHip:(ABPK3DLifting *)self count:(SEL)a2;
+- (void)_transformRelativeToHip:(ABPK3DLifting *)self count:(SEL)count;
 - (void)dealloc;
 @end
 
@@ -86,23 +86,23 @@ LABEL_7:
     _os_log_impl(&dword_23EDDC000, v3, OS_LOG_TYPE_DEBUG, " ABPK3DLifting: Initializing ML Network ", &buf, 2u);
   }
 
-  v4 = [(ABPKMLModelConfiguration3DLifting *)self->_mlConfig inputTensorNames];
+  inputTensorNames = [(ABPKMLModelConfiguration3DLifting *)self->_mlConfig inputTensorNames];
   inputTensorNames = self->_inputTensorNames;
-  self->_inputTensorNames = v4;
+  self->_inputTensorNames = inputTensorNames;
 
-  v6 = [(ABPKMLModelConfiguration3DLifting *)self->_mlConfig outputTensorNames];
+  outputTensorNames = [(ABPKMLModelConfiguration3DLifting *)self->_mlConfig outputTensorNames];
   outputTensorNames = self->_outputTensorNames;
-  self->_outputTensorNames = v6;
+  self->_outputTensorNames = outputTensorNames;
 
   self->_useEspressoV2 = 0;
-  v8 = [(ABPKMLModelConfiguration3DLifting *)self->_mlConfig compiledMLModelPath];
-  v9 = v8;
-  if (!v8)
+  compiledMLModelPath = [(ABPKMLModelConfiguration3DLifting *)self->_mlConfig compiledMLModelPath];
+  v9 = compiledMLModelPath;
+  if (!compiledMLModelPath)
   {
     goto LABEL_10;
   }
 
-  if (![v8 hasSuffix:@".bundle"])
+  if (![compiledMLModelPath hasSuffix:@".bundle"])
   {
     context = espresso_create_context();
     self->_context = context;
@@ -156,13 +156,13 @@ LABEL_10:
   networkV2 = self->_networkV2;
   self->_networkV2 = v10;
 
-  v12 = [(ABPKMLNetworkV2 *)self->_networkV2 inputBuffers];
+  inputBuffers = [(ABPKMLNetworkV2 *)self->_networkV2 inputBuffers];
   inputBufferDict = self->inputBufferDict;
-  self->inputBufferDict = v12;
+  self->inputBufferDict = inputBuffers;
 
-  v14 = [(ABPKMLNetworkV2 *)self->_networkV2 outputBuffers];
+  outputBuffers = [(ABPKMLNetworkV2 *)self->_networkV2 outputBuffers];
   outputBufferDict = self->outputBufferDict;
-  self->outputBufferDict = v14;
+  self->outputBufferDict = outputBuffers;
 
 LABEL_9:
   [(ABPK3DLifting *)self _endLoading3DLiftingMLModelSignpost];
@@ -198,11 +198,11 @@ void __30__ABPK3DLifting_initMLNetwork__block_invoke_2(uint64_t a1, void *a2)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (int)runLiftingModelWithData:(id)a3 atTimestamp:(double)a4
+- (int)runLiftingModelWithData:(id)data atTimestamp:(double)timestamp
 {
   v66 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  [(ABPK3DLifting *)self _startRunLiftingModelSignpostWithTimestamp:a4];
+  dataCopy = data;
+  [(ABPK3DLifting *)self _startRunLiftingModelSignpostWithTimestamp:timestamp];
   v7 = __ABPKLogSharedInstance();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -212,21 +212,21 @@ void __30__ABPK3DLifting_initMLNetwork__block_invoke_2(uint64_t a1, void *a2)
 
   if (self->_useEspressoV2)
   {
-    v8 = [v6 liftingData];
-    v9 = [v8 liftingData3D];
+    liftingData = [dataCopy liftingData];
+    liftingData3D = [liftingData liftingData3D];
 
     inputBufferDict = self->inputBufferDict;
     v11 = [(NSArray *)self->_inputTensorNames objectAtIndexedSubscript:0];
     v12 = [(NSMutableDictionary *)inputBufferDict objectForKeyedSubscript:v11];
-    v13 = [v12 bytes];
+    bytes = [v12 bytes];
 
     for (i = 0; i != 128; i += 4)
     {
-      _S0 = *(v9 + i);
+      _S0 = *(liftingData3D + i);
       __asm { FCVT            H0, S0 }
 
-      *v13 = _S0;
-      v13 += 32;
+      *bytes = _S0;
+      bytes += 32;
     }
 
     [(ABPKMLNetworkV2 *)self->_networkV2 execute];
@@ -246,21 +246,21 @@ void __30__ABPK3DLifting_initMLNetwork__block_invoke_2(uint64_t a1, void *a2)
       goto LABEL_13;
     }
 
-    v35 = [v6 liftingData];
-    v36 = [v35 liftingData3D];
+    liftingData2 = [dataCopy liftingData];
+    liftingData3D2 = [liftingData2 liftingData3D];
 
     v37 = *buf;
-    v38 = *v36;
-    v39 = v36[1];
-    v40 = v36[3];
-    *(*buf + 32) = v36[2];
+    v38 = *liftingData3D2;
+    v39 = liftingData3D2[1];
+    v40 = liftingData3D2[3];
+    *(*buf + 32) = liftingData3D2[2];
     v37[3] = v40;
     *v37 = v38;
     v37[1] = v39;
-    v41 = v36[4];
-    v42 = v36[5];
-    v43 = v36[7];
-    v37[6] = v36[6];
+    v41 = liftingData3D2[4];
+    v42 = liftingData3D2[5];
+    v43 = liftingData3D2[7];
+    v37[6] = liftingData3D2[6];
     v37[7] = v43;
     v37[4] = v41;
     v37[5] = v42;
@@ -273,21 +273,21 @@ LABEL_13:
     }
   }
 
-  [(ABPK3DLifting *)self _endRunLiftingModelSignpostWithTimestamp:a4];
-  [(ABPK3DLifting *)self _startPostProcessDataSignpostWithTimestamp:a4];
+  [(ABPK3DLifting *)self _endRunLiftingModelSignpostWithTimestamp:timestamp];
+  [(ABPK3DLifting *)self _startPostProcessDataSignpostWithTimestamp:timestamp];
   if (self->_useEspressoV2)
   {
     outputBufferDict = self->outputBufferDict;
     v22 = [(NSArray *)self->_outputTensorNames objectAtIndexedSubscript:0];
     v23 = [(NSMutableDictionary *)outputBufferDict objectForKeyedSubscript:v22];
-    v24 = [v23 bytes];
+    bytes2 = [v23 bytes];
 
     for (j = 0; j != 48; ++j)
     {
       v26 = self->outputBufferDict;
       v27 = [(NSArray *)self->_outputTensorNames objectAtIndexedSubscript:0];
       v28 = [(NSMutableDictionary *)v26 objectForKeyedSubscript:v27];
-      _H0 = *(v24 + 2 * [v28 strideChannels] * j);
+      _H0 = *(bytes2 + 2 * [v28 strideChannels] * j);
       __asm { FCVT            S0, H0 }
 
       *(v65 + j) = _S0;
@@ -341,11 +341,11 @@ LABEL_13:
   while (v53 != 192);
   [(ABPK3DLifting *)self _adjustBoneLength:buf, COERCE_DOUBLE(COERCE_UNSIGNED_INT(10.0)), v63[0]];
   [(ABPK3DLifting *)self _transformRelativeToHip:buf count:17];
-  v59 = [[ABPK3DLiftingResult alloc] initWithJoints:buf numberOfJoints:17 rawNetworkOutputs:v63 referenceDetectionResult:v6];
+  v59 = [[ABPK3DLiftingResult alloc] initWithJoints:buf numberOfJoints:17 rawNetworkOutputs:v63 referenceDetectionResult:dataCopy];
   liftingResult = self->_liftingResult;
   self->_liftingResult = v59;
 
-  [(ABPK3DLifting *)self _endPostProcessDataSignpostWithTimestamp:a4];
+  [(ABPK3DLifting *)self _endPostProcessDataSignpostWithTimestamp:timestamp];
   v45 = 0;
 LABEL_18:
 
@@ -423,8 +423,8 @@ LABEL_18:
           objc_enumerationMutation(v7);
         }
 
-        v27 = [*(*(&v28 + 1) + 8 * v10) intValue];
-        std::deque<std::pair<int,int>>::push_back(v32, &v27);
+        intValue = [*(*(&v28 + 1) + 8 * v10) intValue];
+        std::deque<std::pair<int,int>>::push_back(v32, &intValue);
         ++v10;
       }
 
@@ -473,8 +473,8 @@ LABEL_18:
             objc_enumerationMutation(v17);
           }
 
-          v27 = v20 | [*(*(&v23 + 1) + 8 * v21) intValue];
-          std::deque<std::pair<int,int>>::push_back(v32, &v27);
+          intValue = v20 | [*(*(&v23 + 1) + 8 * v21) intValue];
+          std::deque<std::pair<int,int>>::push_back(v32, &intValue);
           ++v21;
         }
 
@@ -491,7 +491,7 @@ LABEL_18:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_transformRelativeToHip:(ABPK3DLifting *)self count:(SEL)a2
+- (void)_transformRelativeToHip:(ABPK3DLifting *)self count:(SEL)count
 {
   if (v3)
   {

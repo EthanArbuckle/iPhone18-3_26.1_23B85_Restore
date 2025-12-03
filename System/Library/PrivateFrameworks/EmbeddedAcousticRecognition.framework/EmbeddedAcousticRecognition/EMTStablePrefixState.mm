@@ -1,30 +1,30 @@
 @interface EMTStablePrefixState
 + (id)stablePrefixState;
-- (EMTStablePrefixState)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (EMTStablePrefixState)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (vector<int,)data;
 - (vector<quasar::TranslationPhrase::SegmentInfo,)sourceSideData;
 - (void)setData:()vector<int;
-- (void)setSourceSideData:()vector<quasar:(std::allocator<quasar::TranslationPhrase::SegmentInfo>> *)a3 :TranslationPhrase::SegmentInfo;
+- (void)setSourceSideData:()vector<quasar:(std::allocator<quasar::TranslationPhrase::SegmentInfo>> *)quasar :TranslationPhrase::SegmentInfo;
 @end
 
 @implementation EMTStablePrefixState
 
 + (id)stablePrefixState
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSArray *)self->_stablePrefixData copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSArray *)self->_stablePrefixData copyWithZone:zone];
   [v5 setStablePrefixData:v6];
 
-  v7 = [objc_msgSend(MEMORY[0x1E695DF70] allocWithZone:{a3), "init"}];
+  v7 = [objc_msgSend(MEMORY[0x1E695DF70] allocWithZone:{zone), "init"}];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
@@ -44,7 +44,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v12 = [*(*(&v14 + 1) + 8 * v11) copyWithZone:{a3, v14}];
+        v12 = [*(*(&v14 + 1) + 8 * v11) copyWithZone:{zone, v14}];
         [v7 addObject:v12];
 
         ++v11;
@@ -61,15 +61,15 @@
   return v5;
 }
 
-- (EMTStablePrefixState)initWithCoder:(id)a3
+- (EMTStablePrefixState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = EMTStablePrefixState;
   v5 = [(EMTStablePrefixState *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"stablePrefixData"];
+    v6 = [coderCopy decodeObjectForKey:@"stablePrefixData"];
     stablePrefixData = v5->_stablePrefixData;
     v5->_stablePrefixData = v6;
   }
@@ -113,8 +113,8 @@
   v14 = __Block_byref_object_dispose__15;
   v15 = &unk_1B5CADD23;
   memset(&__p, 0, sizeof(__p));
-  v5 = [(EMTStablePrefixState *)self stablePrefixData];
-  std::vector<int>::reserve(&__p, [v5 count]);
+  stablePrefixData = [(EMTStablePrefixState *)self stablePrefixData];
+  std::vector<int>::reserve(&__p, [stablePrefixData count]);
 
   stablePrefixData = self->_stablePrefixData;
   v9[0] = MEMORY[0x1E69E9820];
@@ -201,12 +201,12 @@ void __28__EMTStablePrefixState_data__block_invoke(uint64_t a1, void *a2)
   v4[7] = v8;
 }
 
-- (void)setSourceSideData:()vector<quasar:(std::allocator<quasar::TranslationPhrase::SegmentInfo>> *)a3 :TranslationPhrase::SegmentInfo
+- (void)setSourceSideData:()vector<quasar:(std::allocator<quasar::TranslationPhrase::SegmentInfo>> *)quasar :TranslationPhrase::SegmentInfo
 {
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  var0 = a3->var0;
-  var1 = a3->var1;
-  if (a3->var0 != var1)
+  var0 = quasar->var0;
+  var1 = quasar->var1;
+  if (quasar->var0 != var1)
   {
     do
     {
@@ -260,8 +260,8 @@ void __28__EMTStablePrefixState_data__block_invoke(uint64_t a1, void *a2)
   v14 = __Block_byref_object_dispose__12;
   v15 = &unk_1B5CADD23;
   memset(v16, 0, sizeof(v16));
-  v5 = [(EMTStablePrefixState *)self segmentInfoData];
-  std::vector<quasar::TranslationPhrase::SegmentInfo>::reserve(v16, [v5 count]);
+  segmentInfoData = [(EMTStablePrefixState *)self segmentInfoData];
+  std::vector<quasar::TranslationPhrase::SegmentInfo>::reserve(v16, [segmentInfoData count]);
 
   segmentInfoData = self->_segmentInfoData;
   v9[0] = MEMORY[0x1E69E9820];

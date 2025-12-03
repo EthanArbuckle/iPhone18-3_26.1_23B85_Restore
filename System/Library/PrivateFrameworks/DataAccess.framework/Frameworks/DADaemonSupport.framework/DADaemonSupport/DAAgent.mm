@@ -1,37 +1,37 @@
 @interface DAAgent
 - (BOOL)shouldBeMonitoringReachability;
-- (DAAgent)initWithAccount:(id)a3;
+- (DAAgent)initWithAccount:(id)account;
 - (DATrustHandler)trustHandler;
 - (NSString)publicDescription;
-- (id)hostToObserveForDAReachability:(id)a3;
+- (id)hostToObserveForDAReachability:(id)reachability;
 - (id)stateString;
 - (int)preferredEventDaysToSync;
 - (int)preferredToDoDaysToSync;
-- (void)_scheduleDelayedReachabilityCallback:(double)a3 block:(id)a4;
+- (void)_scheduleDelayedReachabilityCallback:(double)callback block:(id)block;
 - (void)networkReachable;
-- (void)requestAgentStopMonitoringWithCompletionBlock:(id)a3;
-- (void)saveXpcActivity:(id)a3;
-- (void)setDelayingReachabilityCallback:(BOOL)a3;
-- (void)setNetworkReachableBlock:(id)a3;
-- (void)setSyncWhenReachable:(BOOL)a3;
+- (void)requestAgentStopMonitoringWithCompletionBlock:(id)block;
+- (void)saveXpcActivity:(id)activity;
+- (void)setDelayingReachabilityCallback:(BOOL)callback;
+- (void)setNetworkReachableBlock:(id)block;
+- (void)setSyncWhenReachable:(BOOL)reachable;
 - (void)shutdown;
-- (void)startOrStopMonitoringReachability:(BOOL)a3;
+- (void)startOrStopMonitoringReachability:(BOOL)reachability;
 @end
 
 @implementation DAAgent
 
-- (DAAgent)initWithAccount:(id)a3
+- (DAAgent)initWithAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v8.receiver = self;
   v8.super_class = DAAgent;
   v5 = [(DAAgent *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(DAAgent *)v5 setAccount:v4];
+    [(DAAgent *)v5 setAccount:accountCopy];
     v6->reachabilityLock._os_unfair_lock_opaque = 0;
-    [v4 addToCoreDAVLoggingDelegates];
+    [accountCopy addToCoreDAVLoggingDelegates];
   }
 
   return v6;
@@ -39,34 +39,34 @@
 
 - (DATrustHandler)trustHandler
 {
-  v2 = [(DAAgent *)self account];
-  v3 = [v2 trustHandler];
+  account = [(DAAgent *)self account];
+  trustHandler = [account trustHandler];
 
-  return v3;
+  return trustHandler;
 }
 
 - (id)stateString
 {
-  v2 = [(DAAgent *)self account];
-  v3 = [v2 stateString];
+  account = [(DAAgent *)self account];
+  stateString = [account stateString];
 
-  return v3;
+  return stateString;
 }
 
-- (id)hostToObserveForDAReachability:(id)a3
+- (id)hostToObserveForDAReachability:(id)reachability
 {
-  v3 = [(DAAgent *)self account];
-  v4 = [v3 hostWithoutPath];
+  account = [(DAAgent *)self account];
+  hostWithoutPath = [account hostWithoutPath];
 
-  return v4;
+  return hostWithoutPath;
 }
 
 - (BOOL)shouldBeMonitoringReachability
 {
   if ([(DAAgent *)self syncWhenReachable])
   {
-    v3 = [(DAAgent *)self networkReachableBlock];
-    if (v3)
+    networkReachableBlock = [(DAAgent *)self networkReachableBlock];
+    if (networkReachableBlock)
     {
       v4 = !self->_delayingReachabilityCallback;
     }
@@ -85,19 +85,19 @@
   return v4;
 }
 
-- (void)startOrStopMonitoringReachability:(BOOL)a3
+- (void)startOrStopMonitoringReachability:(BOOL)reachability
 {
-  v3 = a3;
+  reachabilityCopy = reachability;
   v12 = *MEMORY[0x277D85DE8];
   v5 = DALoggingwithCategory();
   v6 = *(MEMORY[0x277D03988] + 6);
   v7 = os_log_type_enabled(v5, v6);
-  if (v3)
+  if (reachabilityCopy)
   {
     if (v7)
     {
       v10 = 138412290;
-      v11 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_248524000, v5, v6, "Agent %@ is now monitoring reachability", &v10, 0xCu);
     }
 
@@ -110,7 +110,7 @@
     if (v7)
     {
       v10 = 138412290;
-      v11 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_248524000, v5, v6, "Agent %@ is no longer monitoring reachability", &v10, 0xCu);
     }
 
@@ -131,7 +131,7 @@
     if (os_log_type_enabled(v5, v6))
     {
       *buf = 138412290;
-      v36 = self;
+      selfCopy5 = self;
       _os_log_impl(&dword_248524000, v5, v6, "%@: Notified that network is reachable, but we weren't asked to sync when reachable so ignoring.", buf, 0xCu);
     }
 
@@ -165,7 +165,7 @@
         if (os_log_type_enabled(v22, v24))
         {
           *buf = 138412802;
-          v36 = self;
+          selfCopy5 = self;
           v37 = 2048;
           v38 = v16 + v18 - v21;
           v39 = 2048;
@@ -185,7 +185,7 @@
         if (os_log_type_enabled(v29, v30))
         {
           *buf = 138412546;
-          v36 = self;
+          selfCopy5 = self;
           v37 = 2048;
           v38 = v28;
           _os_log_impl(&dword_248524000, v29, v30, "%@: Re-enabling reachability in %f seconds", buf, 0x16u);
@@ -209,7 +209,7 @@
         if (os_log_type_enabled(v10, v11))
         {
           *buf = 138412290;
-          v36 = self;
+          selfCopy5 = self;
           _os_log_impl(&dword_248524000, v10, v11, "%@: Network is reachable, but we've gotten too many reachability notifications without being able to actually sync this account. Disabling reachability and not trying again.", buf, 0xCu);
         }
 
@@ -228,14 +228,14 @@
   if (os_log_type_enabled(v13, v14))
   {
     *buf = 138412546;
-    v36 = self;
+    selfCopy5 = self;
     v37 = 1024;
     LODWORD(v38) = v12;
     _os_log_impl(&dword_248524000, v13, v14, "%@: Network is reachable, so triggering reachability block. Next reachability notification allowed in %i s", buf, 0x12u);
   }
 
-  v15 = [(DAAgent *)self networkReachableBlock];
-  v15[2]();
+  networkReachableBlock = [(DAAgent *)self networkReachableBlock];
+  networkReachableBlock[2]();
 
 LABEL_7:
   v7 = *MEMORY[0x277D85DE8];
@@ -285,46 +285,46 @@ LABEL_10:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_scheduleDelayedReachabilityCallback:(double)a3 block:(id)a4
+- (void)_scheduleDelayedReachabilityCallback:(double)callback block:(id)block
 {
-  v4 = (a3 * 1000000000.0);
-  block = a4;
+  v4 = (callback * 1000000000.0);
+  block = block;
   v5 = dispatch_time(0, v4);
   dispatch_after(v5, MEMORY[0x277D85CD0], block);
 }
 
-- (void)setNetworkReachableBlock:(id)a3
+- (void)setNetworkReachableBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->reachabilityLock);
-  v5 = [(DAAgent *)self shouldBeMonitoringReachability];
-  v6 = MEMORY[0x24C1D1770](v4);
+  shouldBeMonitoringReachability = [(DAAgent *)self shouldBeMonitoringReachability];
+  v6 = MEMORY[0x24C1D1770](blockCopy);
 
   networkReachableBlock = self->_networkReachableBlock;
   self->_networkReachableBlock = v6;
 
-  v8 = [(DAAgent *)self shouldBeMonitoringReachability];
-  if (v5 != v8)
+  shouldBeMonitoringReachability2 = [(DAAgent *)self shouldBeMonitoringReachability];
+  if (shouldBeMonitoringReachability != shouldBeMonitoringReachability2)
   {
-    [(DAAgent *)self startOrStopMonitoringReachability:v8];
+    [(DAAgent *)self startOrStopMonitoringReachability:shouldBeMonitoringReachability2];
   }
 
   os_unfair_lock_unlock(&self->reachabilityLock);
 }
 
-- (void)setSyncWhenReachable:(BOOL)a3
+- (void)setSyncWhenReachable:(BOOL)reachable
 {
   v13 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->reachabilityLock);
-  v5 = [(DAAgent *)self shouldBeMonitoringReachability];
-  if (!a3 && self->_syncWhenReachable)
+  shouldBeMonitoringReachability = [(DAAgent *)self shouldBeMonitoringReachability];
+  if (!reachable && self->_syncWhenReachable)
   {
     v6 = DALoggingwithCategory();
     v7 = *(MEMORY[0x277D03988] + 6);
     if (os_log_type_enabled(v6, v7))
     {
       v11 = 138412290;
-      v12 = self;
+      selfCopy = self;
       _os_log_impl(&dword_248524000, v6, v7, "%@: syncWhenReachable set to NO; disabling reachability and resetting delay.", &v11, 0xCu);
     }
 
@@ -335,45 +335,45 @@ LABEL_10:
     *&self->_allowNextReachabilityCallback = 0;
   }
 
-  self->_syncWhenReachable = a3;
-  v9 = [(DAAgent *)self shouldBeMonitoringReachability];
-  if (v5 != v9)
+  self->_syncWhenReachable = reachable;
+  shouldBeMonitoringReachability2 = [(DAAgent *)self shouldBeMonitoringReachability];
+  if (shouldBeMonitoringReachability != shouldBeMonitoringReachability2)
   {
-    [(DAAgent *)self startOrStopMonitoringReachability:v9];
+    [(DAAgent *)self startOrStopMonitoringReachability:shouldBeMonitoringReachability2];
   }
 
   os_unfair_lock_unlock(&self->reachabilityLock);
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDelayingReachabilityCallback:(BOOL)a3
+- (void)setDelayingReachabilityCallback:(BOOL)callback
 {
   os_unfair_lock_lock(&self->reachabilityLock);
-  v5 = [(DAAgent *)self shouldBeMonitoringReachability];
-  self->_delayingReachabilityCallback = a3;
-  v6 = [(DAAgent *)self shouldBeMonitoringReachability];
-  if (v5 != v6)
+  shouldBeMonitoringReachability = [(DAAgent *)self shouldBeMonitoringReachability];
+  self->_delayingReachabilityCallback = callback;
+  shouldBeMonitoringReachability2 = [(DAAgent *)self shouldBeMonitoringReachability];
+  if (shouldBeMonitoringReachability != shouldBeMonitoringReachability2)
   {
-    [(DAAgent *)self startOrStopMonitoringReachability:v6];
+    [(DAAgent *)self startOrStopMonitoringReachability:shouldBeMonitoringReachability2];
   }
 
   os_unfair_lock_unlock(&self->reachabilityLock);
 }
 
-- (void)requestAgentStopMonitoringWithCompletionBlock:(id)a3
+- (void)requestAgentStopMonitoringWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(DAAgent *)self setIsMonitoring:0];
-  v4[2](v4, self);
+  blockCopy[2](blockCopy, self);
 }
 
 - (void)shutdown
 {
-  v3 = [(DAAgent *)self account];
-  [v3 shutdown];
+  account = [(DAAgent *)self account];
+  [account shutdown];
 
-  v4 = [(DAAgent *)self account];
-  [v4 removeFromCoreDAVLoggingDelegates];
+  account2 = [(DAAgent *)self account];
+  [account2 removeFromCoreDAVLoggingDelegates];
 
   [(DAAgent *)self setAccount:0];
 }
@@ -382,35 +382,35 @@ LABEL_10:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(DAAgent *)self account];
-  v6 = [v5 backingAccountInfo];
-  v7 = [v6 identifier];
-  v8 = [v3 stringWithFormat:@"%@ %@", v4, v7];
+  account = [(DAAgent *)self account];
+  backingAccountInfo = [account backingAccountInfo];
+  identifier = [backingAccountInfo identifier];
+  v8 = [v3 stringWithFormat:@"%@ %@", v4, identifier];
 
   return v8;
 }
 
-- (void)saveXpcActivity:(id)a3
+- (void)saveXpcActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [(DAAgent *)self account];
-  [v5 saveXpcActivity:v4];
+  activityCopy = activity;
+  account = [(DAAgent *)self account];
+  [account saveXpcActivity:activityCopy];
 }
 
 - (int)preferredEventDaysToSync
 {
-  v2 = [MEMORY[0x277CF74E0] shared];
-  v3 = [v2 get_kCalPreferredDaysToSyncKey];
+  mEMORY[0x277CF74E0] = [MEMORY[0x277CF74E0] shared];
+  get_kCalPreferredDaysToSyncKey = [mEMORY[0x277CF74E0] get_kCalPreferredDaysToSyncKey];
 
-  return v3;
+  return get_kCalPreferredDaysToSyncKey;
 }
 
 - (int)preferredToDoDaysToSync
 {
-  v2 = [MEMORY[0x277CF74E0] shared];
-  v3 = [v2 get_kCalRemindersPreferredDaysToSyncKey];
+  mEMORY[0x277CF74E0] = [MEMORY[0x277CF74E0] shared];
+  get_kCalRemindersPreferredDaysToSyncKey = [mEMORY[0x277CF74E0] get_kCalRemindersPreferredDaysToSyncKey];
 
-  return v3;
+  return get_kCalRemindersPreferredDaysToSyncKey;
 }
 
 @end

@@ -1,13 +1,13 @@
 @interface PXUIScrollViewController
 - (BOOL)hasWindow;
 - (BOOL)isBouncing;
-- (BOOL)isFloatingSublayer:(id)a3;
-- (BOOL)isInterruptingScrollWithDirection:(CGPoint *)a3;
-- (BOOL)isScrolledAtEdge:(unsigned int)a3 tolerance:(double)a4;
-- (BOOL)isSubview:(id)a3;
-- (BOOL)scrollView:(id)a3 shouldBeginScrollingWithPanAtLocation:(CGPoint)a4 velocity:(CGPoint)a5;
-- (BOOL)scrollViewShouldScrollToTop:(id)a3;
-- (CGRect)scrollIndicatorFrameForAxis:(int64_t)a3;
+- (BOOL)isFloatingSublayer:(id)sublayer;
+- (BOOL)isInterruptingScrollWithDirection:(CGPoint *)direction;
+- (BOOL)isScrolledAtEdge:(unsigned int)edge tolerance:(double)tolerance;
+- (BOOL)isSubview:(id)subview;
+- (BOOL)scrollView:(id)view shouldBeginScrollingWithPanAtLocation:(CGPoint)location velocity:(CGPoint)velocity;
+- (BOOL)scrollViewShouldScrollToTop:(id)top;
+- (CGRect)scrollIndicatorFrameForAxis:(int64_t)axis;
 - (CGRect)scrollViewActiveRect;
 - (CGRect)scrollViewConstrainedVisibleRect;
 - (CGRect)scrollViewContentBounds;
@@ -16,33 +16,33 @@
 - (CGRect)scrollViewVisibleRectOutsideBounds;
 - (CGSize)scrollViewContentSize;
 - (CGSize)scrollViewReferenceSize;
-- (PXUIScrollViewController)initWithFrame:(CGRect)a3;
+- (PXUIScrollViewController)initWithFrame:(CGRect)frame;
 - (PXUIScrollViewControllerFocusItemProvider)focusItemProvider;
 - (UIEdgeInsets)horizontalScrollIndicatorInsets;
 - (UIEdgeInsets)verticalScrollIndicatorInsets;
-- (id)focusItemsForScrollView:(id)a3 inRect:(CGRect)a4;
+- (id)focusItemsForScrollView:(id)view inRect:(CGRect)rect;
 - (void)_checkScrollViewDeceleration;
 - (void)_scheduleScrollViewDecelerationCheck;
-- (void)addFloatingSublayer:(id)a3 forAxis:(int64_t)a4;
-- (void)applyScrollInfo:(id)a3;
+- (void)addFloatingSublayer:(id)sublayer forAxis:(int64_t)axis;
+- (void)applyScrollInfo:(id)info;
 - (void)contentInsetAdjustmentBehaviorDidChange;
 - (void)decelerationRateDidChange;
 - (void)indicatorStyleDidChange;
-- (void)scrollRectToVisible:(CGRect)a3 avoidingContentInsetEdges:(unint64_t)a4 animated:(BOOL)a5;
-- (void)scrollToEdge:(unsigned int)a3 padding:(UIEdgeInsets)a4 animated:(BOOL)a5 completionHandler:(id)a6;
-- (void)scrollView:(id)a3 willBeginScrollingAnimationTowardsContentEdges:(unint64_t)a4;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setFocusItemProvider:(id)a3;
-- (void)setHitTestContentInsets:(UIEdgeInsets)a3;
-- (void)setHorizontalInterPageSpacing:(double)a3;
-- (void)setIgnoresSafeAreaInsets:(BOOL)a3;
-- (void)setIsScrollEnabled:(BOOL)a3;
-- (void)setScrollViewContentBounds:(CGRect)a3;
-- (void)setScrollingToTop:(BOOL)a3;
-- (void)setVisibleOrigin:(CGPoint)a3;
+- (void)scrollRectToVisible:(CGRect)visible avoidingContentInsetEdges:(unint64_t)edges animated:(BOOL)animated;
+- (void)scrollToEdge:(unsigned int)edge padding:(UIEdgeInsets)padding animated:(BOOL)animated completionHandler:(id)handler;
+- (void)scrollView:(id)view willBeginScrollingAnimationTowardsContentEdges:(unint64_t)edges;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setFocusItemProvider:(id)provider;
+- (void)setHitTestContentInsets:(UIEdgeInsets)insets;
+- (void)setHorizontalInterPageSpacing:(double)spacing;
+- (void)setIgnoresSafeAreaInsets:(BOOL)insets;
+- (void)setIsScrollEnabled:(BOOL)enabled;
+- (void)setScrollViewContentBounds:(CGRect)bounds;
+- (void)setScrollingToTop:(BOOL)top;
+- (void)setVisibleOrigin:(CGPoint)origin;
 - (void)stopScrollingAndZoomingAnimations;
 - (void)transfersScrollToContainerDidChange;
 @end
@@ -51,15 +51,15 @@
 
 - (void)contentInsetAdjustmentBehaviorDidChange
 {
-  v3 = [(PXScrollViewController *)self contentInsetAdjustmentBehavior];
-  v4 = v3;
-  if (v3)
+  contentInsetAdjustmentBehavior = [(PXScrollViewController *)self contentInsetAdjustmentBehavior];
+  v4 = contentInsetAdjustmentBehavior;
+  if (contentInsetAdjustmentBehavior)
   {
-    if (v3 != 1)
+    if (contentInsetAdjustmentBehavior != 1)
     {
-      v5 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"UIScrollViewContentInsetAdjustmentBehavior UIScrollViewContentInsetAdjustmentBehaviorFromPXScrollViewContentInsetAdjustmentBehavior(PXScrollViewContentInsetAdjustmentBehavior)"];
-      [v5 handleFailureInFunction:v6 file:@"PXUIScrollViewController.m" lineNumber:105 description:@"Code which should be unreachable has been reached"];
+      [currentHandler handleFailureInFunction:v6 file:@"PXUIScrollViewController.m" lineNumber:105 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
@@ -67,8 +67,8 @@
     v4 = 2;
   }
 
-  v7 = [(PXUIScrollViewController *)self scrollView];
-  [v7 setContentInsetAdjustmentBehavior:v4];
+  scrollView = [(PXUIScrollViewController *)self scrollView];
+  [scrollView setContentInsetAdjustmentBehavior:v4];
 }
 
 - (CGSize)scrollViewReferenceSize
@@ -151,59 +151,59 @@
 
 - (void)stopScrollingAndZoomingAnimations
 {
-  v2 = [(PXUIScrollViewController *)self scrollView];
-  [v2 stopScrollingAndZooming];
+  scrollView = [(PXUIScrollViewController *)self scrollView];
+  [scrollView stopScrollingAndZooming];
 }
 
 - (BOOL)isBouncing
 {
-  v3 = [(UIScrollView *)self->_scrollView px_isBouncing];
-  if (v3)
+  px_isBouncing = [(UIScrollView *)self->_scrollView px_isBouncing];
+  if (px_isBouncing)
   {
     if ([(PXUIScrollViewController *)self isDragging]|| [(PXUIScrollViewController *)self isDecelerating])
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(px_isBouncing) = 1;
     }
 
     else
     {
 
-      LOBYTE(v3) = [(PXUIScrollViewController *)self isTracking];
+      LOBYTE(px_isBouncing) = [(PXUIScrollViewController *)self isTracking];
     }
   }
 
-  return v3;
+  return px_isBouncing;
 }
 
 - (CGRect)scrollViewVisibleRectOutsideBounds
 {
-  v3 = [(PXUIScrollViewController *)self scrollView];
-  if (([v3 clipsToBounds] & 1) == 0)
+  scrollView = [(PXUIScrollViewController *)self scrollView];
+  if (([scrollView clipsToBounds] & 1) == 0)
   {
     while (1)
     {
-      v5 = [v3 superview];
+      superview = [scrollView superview];
 
-      if (!v5)
+      if (!superview)
       {
         break;
       }
 
-      v4 = [v3 superview];
+      superview2 = [scrollView superview];
 
-      v3 = v4;
-      if ([v4 clipsToBounds])
+      scrollView = superview2;
+      if ([superview2 clipsToBounds])
       {
         goto LABEL_5;
       }
     }
   }
 
-  v4 = v3;
+  superview2 = scrollView;
 LABEL_5:
-  v6 = [(PXUIScrollViewController *)self scrollView];
-  [v4 bounds];
-  [v6 convertRect:v4 fromView:?];
+  scrollView2 = [(PXUIScrollViewController *)self scrollView];
+  [superview2 bounds];
+  [scrollView2 convertRect:superview2 fromView:?];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -227,17 +227,17 @@ LABEL_5:
   return WeakRetained;
 }
 
-- (id)focusItemsForScrollView:(id)a3 inRect:(CGRect)a4
+- (id)focusItemsForScrollView:(id)view inRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = [(PXUIScrollViewController *)self focusItemProvider];
-  v10 = v9;
-  if (v9)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  focusItemProvider = [(PXUIScrollViewController *)self focusItemProvider];
+  v10 = focusItemProvider;
+  if (focusItemProvider)
   {
-    v11 = [v9 focusItemsForScrollViewController:self inRect:{x, y, width, height}];
+    v11 = [focusItemProvider focusItemsForScrollViewController:self inRect:{x, y, width, height}];
   }
 
   else
@@ -248,9 +248,9 @@ LABEL_5:
   return v11;
 }
 
-- (void)setFocusItemProvider:(id)a3
+- (void)setFocusItemProvider:(id)provider
 {
-  obj = a3;
+  obj = provider;
   WeakRetained = objc_loadWeakRetained(&self->_focusItemProvider);
 
   if (WeakRetained != obj)
@@ -258,30 +258,30 @@ LABEL_5:
     objc_storeWeak(&self->_focusItemProvider, obj);
     if (obj)
     {
-      v5 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v5 = 0;
+      selfCopy = 0;
     }
 
-    [(_PXUIScrollView *)self->_scrollView setFocusItemProvider:v5];
+    [(_PXUIScrollView *)self->_scrollView setFocusItemProvider:selfCopy];
   }
 }
 
-- (BOOL)scrollViewShouldScrollToTop:(id)a3
+- (BOOL)scrollViewShouldScrollToTop:(id)top
 {
-  v4 = [(PXScrollViewController *)self scrollViewShouldScrollToTop];
-  if (v4)
+  scrollViewShouldScrollToTop = [(PXScrollViewController *)self scrollViewShouldScrollToTop];
+  if (scrollViewShouldScrollToTop)
   {
     [(PXUIScrollViewController *)self setScrollingToTop:1];
   }
 
-  return v4;
+  return scrollViewShouldScrollToTop;
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
   if (self->_isScrollViewDecelerating)
   {
@@ -348,9 +348,9 @@ void __64__PXUIScrollViewController__scheduleScrollViewDecelerationCheck__block_
   [WeakRetained _checkScrollViewDeceleration];
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (a4)
+  if (decelerate)
   {
     self->_isScrollViewDecelerating = 1;
     [(PXUIScrollViewController *)self _scheduleScrollViewDecelerationCheck];
@@ -364,11 +364,11 @@ void __64__PXUIScrollViewController__scheduleScrollViewDecelerationCheck__block_
   self->_isInterruptingDeceleration = 0;
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v18 = a3;
+  y = velocity.y;
+  x = velocity.x;
+  draggingCopy = dragging;
   _ZF = x == *MEMORY[0x1E695EFF8] && y == *(MEMORY[0x1E695EFF8] + 8);
   if (_ZF && self->_scrollViewWasDeceleratingWhenDragBegan)
   {
@@ -383,52 +383,52 @@ void __64__PXUIScrollViewController__scheduleScrollViewDecelerationCheck__block_
     self->_interruptedDecelerationDirection = vbslq_s8(v11, _Q2, v16);
   }
 
-  [(PXScrollViewController *)self willEndScrollingWithVelocity:a5 targetContentOffset:x, y];
+  [(PXScrollViewController *)self willEndScrollingWithVelocity:offset targetContentOffset:x, y];
   self->_lastDragVelocity.x = x;
   self->_lastDragVelocity.y = y;
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   self->_scrollViewWasDeceleratingWhenDragBegan = self->_isScrollViewDecelerating;
   self->_isScrollViewDecelerating = 0;
   [(PXScrollViewController *)self scrollViewWillBeginScrolling];
 }
 
-- (void)scrollView:(id)a3 willBeginScrollingAnimationTowardsContentEdges:(unint64_t)a4
+- (void)scrollView:(id)view willBeginScrollingAnimationTowardsContentEdges:(unint64_t)edges
 {
   [(PXUIScrollViewController *)self setScrollingToTop:0];
 
-  [(PXScrollViewController *)self scrollViewWillBeginScrollingAnimationTowardsContentEdges:a4];
+  [(PXScrollViewController *)self scrollViewWillBeginScrollingAnimationTowardsContentEdges:edges];
 }
 
-- (BOOL)scrollView:(id)a3 shouldBeginScrollingWithPanAtLocation:(CGPoint)a4 velocity:(CGPoint)a5
+- (BOOL)scrollView:(id)view shouldBeginScrollingWithPanAtLocation:(CGPoint)location velocity:(CGPoint)velocity
 {
-  y = a5.y;
-  x = a5.x;
-  v7 = a4.y;
-  v8 = a4.x;
-  v9 = self;
-  v10 = [(PXUIScrollViewController *)self scrollView];
-  LOBYTE(v9) = [(PXScrollViewController *)v9 scrollViewShouldBeginScrollingWithPanAtLocation:v10 inCoordinateSpace:v8 velocity:v7, x, y];
+  y = velocity.y;
+  x = velocity.x;
+  v7 = location.y;
+  v8 = location.x;
+  selfCopy = self;
+  scrollView = [(PXUIScrollViewController *)self scrollView];
+  LOBYTE(selfCopy) = [(PXScrollViewController *)selfCopy scrollViewShouldBeginScrollingWithPanAtLocation:scrollView inCoordinateSpace:v8 velocity:v7, x, y];
 
-  return v9;
+  return selfCopy;
 }
 
-- (BOOL)isInterruptingScrollWithDirection:(CGPoint *)a3
+- (BOOL)isInterruptingScrollWithDirection:(CGPoint *)direction
 {
   isInterruptingDeceleration = self->_isInterruptingDeceleration;
-  if (a3 && self->_isInterruptingDeceleration)
+  if (direction && self->_isInterruptingDeceleration)
   {
-    *a3 = self->_interruptedDecelerationDirection;
+    *direction = self->_interruptedDecelerationDirection;
   }
 
   return isInterruptingDeceleration;
 }
 
-- (CGRect)scrollIndicatorFrameForAxis:(int64_t)a3
+- (CGRect)scrollIndicatorFrameForAxis:(int64_t)axis
 {
-  [(_PXUIScrollView *)self->_scrollView scrollIndicatorFrameForAxis:a3];
+  [(_PXUIScrollView *)self->_scrollView scrollIndicatorFrameForAxis:axis];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -436,34 +436,34 @@ void __64__PXUIScrollViewController__scheduleScrollViewDecelerationCheck__block_
   return result;
 }
 
-- (void)applyScrollInfo:(id)a3
+- (void)applyScrollInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 axis];
-  v6 = (v5 >> 2) & 1;
-  [(_PXUIScrollView *)self->_scrollView setAlwaysBounceHorizontal:(v5 >> 1) & 1];
+  infoCopy = info;
+  axis = [infoCopy axis];
+  v6 = (axis >> 2) & 1;
+  [(_PXUIScrollView *)self->_scrollView setAlwaysBounceHorizontal:(axis >> 1) & 1];
   [(_PXUIScrollView *)self->_scrollView setAlwaysBounceVertical:v6];
-  -[_PXUIScrollView setPagingEnabled:](self->_scrollView, "setPagingEnabled:", [v4 isPagingEnabled]);
+  -[_PXUIScrollView setPagingEnabled:](self->_scrollView, "setPagingEnabled:", [infoCopy isPagingEnabled]);
   scrollView = self->_scrollView;
-  [v4 interpageSpacing];
+  [infoCopy interpageSpacing];
   [(_PXUIScrollView *)scrollView _setInterpageSpacing:?];
   v8 = self->_scrollView;
-  [v4 pagingOrigin];
+  [infoCopy pagingOrigin];
   v10 = v9;
   v12 = v11;
 
   [(_PXUIScrollView *)v8 setPagingOriginOffset:v10, v12];
 }
 
-- (void)setHorizontalInterPageSpacing:(double)a3
+- (void)setHorizontalInterPageSpacing:(double)spacing
 {
   [(_PXUIScrollView *)self->_scrollView _interpageSpacing];
-  if (v5 != a3)
+  if (v5 != spacing)
   {
     [(_PXUIScrollView *)self->_scrollView _interpageSpacing];
-    [(_PXUIScrollView *)self->_scrollView _setInterpageSpacing:a3];
-    v6 = [(_PXUIScrollView *)self->_scrollView isPagingEnabled];
-    if (a3 > 0.0 && (v6 & 1) == 0)
+    [(_PXUIScrollView *)self->_scrollView _setInterpageSpacing:spacing];
+    isPagingEnabled = [(_PXUIScrollView *)self->_scrollView isPagingEnabled];
+    if (spacing > 0.0 && (isPagingEnabled & 1) == 0)
     {
       scrollView = self->_scrollView;
 
@@ -472,12 +472,12 @@ void __64__PXUIScrollViewController__scheduleScrollViewDecelerationCheck__block_
   }
 }
 
-- (void)setHitTestContentInsets:(UIEdgeInsets)a3
+- (void)setHitTestContentInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   [(_PXUIScrollView *)self->_scrollView hitTestContentInsets];
   v13 = v11 == left && v8 == top && v10 == right;
   if (!v13 || v9 != bottom)
@@ -513,23 +513,23 @@ void __64__PXUIScrollViewController__scheduleScrollViewDecelerationCheck__block_
   return result;
 }
 
-- (void)setIsScrollEnabled:(BOOL)a3
+- (void)setIsScrollEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if ([(PXUIScrollViewController *)self isScrollEnabled]!= a3)
+  enabledCopy = enabled;
+  if ([(PXUIScrollViewController *)self isScrollEnabled]!= enabled)
   {
     scrollView = self->_scrollView;
 
-    [(_PXUIScrollView *)scrollView setScrollEnabled:v3];
+    [(_PXUIScrollView *)scrollView setScrollEnabled:enabledCopy];
   }
 }
 
-- (void)setScrollViewContentBounds:(CGRect)a3
+- (void)setScrollViewContentBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(PXUIScrollViewController *)self scrollViewContentBounds];
   v20.origin.x = v8;
   v20.origin.y = v9;
@@ -596,38 +596,38 @@ void __64__PXUIScrollViewController__scheduleScrollViewDecelerationCheck__block_
 
 - (void)transfersScrollToContainerDidChange
 {
-  v3 = [(PXScrollViewController *)self transfersScrollToContainer];
-  v4 = [(PXUIScrollViewController *)self scrollView];
-  [v4 _setTransfersScrollToContainer:v3];
+  transfersScrollToContainer = [(PXScrollViewController *)self transfersScrollToContainer];
+  scrollView = [(PXUIScrollViewController *)self scrollView];
+  [scrollView _setTransfersScrollToContainer:transfersScrollToContainer];
 }
 
 - (void)indicatorStyleDidChange
 {
-  v3 = [(PXScrollViewController *)self indicatorStyle];
-  if (v3 >= 3)
+  indicatorStyle = [(PXScrollViewController *)self indicatorStyle];
+  if (indicatorStyle >= 3)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"UIScrollViewIndicatorStyle _UIScrollViewIndicatorStyleFromPXScrollViewIndicatorStyle(PXScrollViewIndicatorStyle)"];
-    [v5 handleFailureInFunction:v6 file:@"PXUIScrollViewController.m" lineNumber:95 description:@"Code which should be unreachable has been reached"];
+    [currentHandler handleFailureInFunction:v6 file:@"PXUIScrollViewController.m" lineNumber:95 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v4 = v3;
-  v7 = [(PXUIScrollViewController *)self scrollView];
-  [v7 setIndicatorStyle:v4];
+  v4 = indicatorStyle;
+  scrollView = [(PXUIScrollViewController *)self scrollView];
+  [scrollView setIndicatorStyle:v4];
 }
 
 - (void)decelerationRateDidChange
 {
-  v3 = [(PXScrollViewController *)self decelerationRate];
-  if (v3)
+  decelerationRate = [(PXScrollViewController *)self decelerationRate];
+  if (decelerationRate)
   {
-    if (v3 != 1)
+    if (decelerationRate != 1)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"UIScrollViewDecelerationRate UIScrollViewDecelerationRateFromPXScrollViewDecelerationRate(PXScrollViewDecelerationRate)"];
-      [v6 handleFailureInFunction:v7 file:@"PXUIScrollViewController.m" lineNumber:83 description:@"Code which should be unreachable has been reached"];
+      [currentHandler handleFailureInFunction:v7 file:@"PXUIScrollViewController.m" lineNumber:83 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
@@ -641,39 +641,39 @@ void __64__PXUIScrollViewController__scheduleScrollViewDecelerationCheck__block_
   }
 
   v5 = *v4;
-  v8 = [(PXUIScrollViewController *)self scrollView];
-  [v8 setDecelerationRate:v5];
+  scrollView = [(PXUIScrollViewController *)self scrollView];
+  [scrollView setDecelerationRate:v5];
 }
 
-- (void)scrollRectToVisible:(CGRect)a3 avoidingContentInsetEdges:(unint64_t)a4 animated:(BOOL)a5
+- (void)scrollRectToVisible:(CGRect)visible avoidingContentInsetEdges:(unint64_t)edges animated:(BOOL)animated
 {
-  v5 = a5;
-  v6 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  animatedCopy = animated;
+  edgesCopy = edges;
+  height = visible.size.height;
+  width = visible.size.width;
+  y = visible.origin.y;
+  x = visible.origin.x;
   [(PXScrollViewController *)self contentInset];
   v16 = -v15;
-  if ((v6 & 1) == 0)
+  if ((edgesCopy & 1) == 0)
   {
     v16 = -0.0;
   }
 
   v17 = -v12;
-  if ((v6 & 2) == 0)
+  if ((edgesCopy & 2) == 0)
   {
     v17 = -0.0;
   }
 
   v18 = -v13;
-  if ((v6 & 4) == 0)
+  if ((edgesCopy & 4) == 0)
   {
     v18 = -0.0;
   }
 
   v19 = -v14;
-  if ((v6 & 8) == 0)
+  if ((edgesCopy & 8) == 0)
   {
     v19 = -0.0;
   }
@@ -682,8 +682,8 @@ void __64__PXUIScrollViewController__scheduleScrollViewDecelerationCheck__block_
   v21 = y + v16;
   v22 = width - (v17 + v19);
   v23 = height - (v16 + v18);
-  v46 = [(PXUIScrollViewController *)self scrollView];
-  [v46 bounds];
+  scrollView = [(PXUIScrollViewController *)self scrollView];
+  [scrollView bounds];
   v24 = v48.origin.x;
   v25 = v48.origin.y;
   v26 = v48.size.width;
@@ -766,45 +766,45 @@ void __64__PXUIScrollViewController__scheduleScrollViewDecelerationCheck__block_
       v36 = v38;
     }
 
-    [v46 contentOffset];
-    [v46 px_scrollToContentOffset:v5 animated:{v39 + rect_8, v40 + v36}];
+    [scrollView contentOffset];
+    [scrollView px_scrollToContentOffset:animatedCopy animated:{v39 + rect_8, v40 + v36}];
   }
 }
 
-- (BOOL)isScrolledAtEdge:(unsigned int)a3 tolerance:(double)a4
+- (BOOL)isScrolledAtEdge:(unsigned int)edge tolerance:(double)tolerance
 {
-  v5 = *&a3;
-  v6 = [(PXUIScrollViewController *)self scrollView];
-  LOBYTE(v5) = [v6 px_isScrolledAtEdge:v5 tolerance:a4];
+  v5 = *&edge;
+  scrollView = [(PXUIScrollViewController *)self scrollView];
+  LOBYTE(v5) = [scrollView px_isScrolledAtEdge:v5 tolerance:tolerance];
 
   return v5;
 }
 
-- (void)scrollToEdge:(unsigned int)a3 padding:(UIEdgeInsets)a4 animated:(BOOL)a5 completionHandler:(id)a6
+- (void)scrollToEdge:(unsigned int)edge padding:(UIEdgeInsets)padding animated:(BOOL)animated completionHandler:(id)handler
 {
-  v6 = a5;
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  v11 = *&a3;
-  v14 = a6;
+  animatedCopy = animated;
+  right = padding.right;
+  bottom = padding.bottom;
+  left = padding.left;
+  top = padding.top;
+  v11 = *&edge;
+  handlerCopy = handler;
   [(UIScrollView *)self->_scrollView px_contentOffsetForEdge:v11 padding:top, left, bottom, right];
-  [(UIScrollView *)self->_scrollView px_scrollToContentOffset:v6 animated:?];
-  v13 = v14;
-  if (v14)
+  [(UIScrollView *)self->_scrollView px_scrollToContentOffset:animatedCopy animated:?];
+  v13 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v14 + 2))(v14);
-    v13 = v14;
+    (*(handlerCopy + 2))(handlerCopy);
+    v13 = handlerCopy;
   }
 }
 
-- (void)setScrollingToTop:(BOOL)a3
+- (void)setScrollingToTop:(BOOL)top
 {
-  if (self->_isScrollingToTop != a3)
+  if (self->_isScrollingToTop != top)
   {
-    self->_isScrollingToTop = a3;
-    if (a3)
+    self->_isScrollingToTop = top;
+    if (top)
     {
       [(PXScrollViewController *)self scrollViewWillBeginScrollingAnimationTowardsContentEdges:1];
     }
@@ -816,14 +816,14 @@ void __64__PXUIScrollViewController__scheduleScrollViewDecelerationCheck__block_
   }
 }
 
-- (void)setVisibleOrigin:(CGPoint)a3
+- (void)setVisibleOrigin:(CGPoint)origin
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __45__PXUIScrollViewController_setVisibleOrigin___block_invoke;
   v3[3] = &unk_1E7BB6C08;
   v3[4] = self;
-  v4 = a3;
+  originCopy = origin;
   [(PXScrollViewController *)self performManualChange:v3];
 }
 
@@ -833,44 +833,44 @@ void __45__PXUIScrollViewController_setVisibleOrigin___block_invoke(uint64_t a1)
   [v2 setContentOffset:{*(a1 + 40), *(a1 + 48)}];
 }
 
-- (BOOL)isFloatingSublayer:(id)a3
+- (BOOL)isFloatingSublayer:(id)sublayer
 {
-  v4 = [a3 superlayer];
-  v5 = [(_PXUIScrollView *)self->_scrollView layer];
-  LOBYTE(self) = v4 == v5;
+  superlayer = [sublayer superlayer];
+  layer = [(_PXUIScrollView *)self->_scrollView layer];
+  LOBYTE(self) = superlayer == layer;
 
   return self;
 }
 
-- (void)addFloatingSublayer:(id)a3 forAxis:(int64_t)a4
+- (void)addFloatingSublayer:(id)sublayer forAxis:(int64_t)axis
 {
   scrollView = self->_scrollView;
-  v5 = a3;
-  v6 = [(_PXUIScrollView *)scrollView layer];
-  [v6 addSublayer:v5];
+  sublayerCopy = sublayer;
+  layer = [(_PXUIScrollView *)scrollView layer];
+  [layer addSublayer:sublayerCopy];
 }
 
-- (BOOL)isSubview:(id)a3
+- (BOOL)isSubview:(id)subview
 {
-  v4 = [a3 superview];
-  LOBYTE(self) = v4 == self->_scrollView;
+  superview = [subview superview];
+  LOBYTE(self) = superview == self->_scrollView;
 
   return self;
 }
 
 - (BOOL)hasWindow
 {
-  v2 = [(_PXUIScrollView *)self->_scrollView window];
-  v3 = v2 != 0;
+  window = [(_PXUIScrollView *)self->_scrollView window];
+  v3 = window != 0;
 
   return v3;
 }
 
-- (void)setIgnoresSafeAreaInsets:(BOOL)a3
+- (void)setIgnoresSafeAreaInsets:(BOOL)insets
 {
-  if (self->_ignoresSafeAreaInsets != a3)
+  if (self->_ignoresSafeAreaInsets != insets)
   {
-    self->_ignoresSafeAreaInsets = a3;
+    self->_ignoresSafeAreaInsets = insets;
     [(_PXUIScrollView *)self->_scrollView setIgnoresSafeAreaInsets:?];
     scrollView = self->_scrollView;
 
@@ -878,24 +878,24 @@ void __45__PXUIScrollViewController_setVisibleOrigin___block_invoke(uint64_t a1)
   }
 }
 
-- (PXUIScrollViewController)initWithFrame:(CGRect)a3
+- (PXUIScrollViewController)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v17.receiver = self;
   v17.super_class = PXUIScrollViewController;
   v7 = [(PXScrollViewController *)&v17 initWithFrame:?];
   if (v7)
   {
-    v8 = [[_PXUIScrollView alloc] initWithFrame:x, y, width, height];
+    height = [[_PXUIScrollView alloc] initWithFrame:x, y, width, height];
     scrollView = v7->_scrollView;
-    v7->_scrollView = v8;
+    v7->_scrollView = height;
 
     v10 = v7->_scrollView;
-    v11 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [(UIScrollView *)v10 px_setPocketColorForAllEdges:v11];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [(UIScrollView *)v10 px_setPocketColorForAllEdges:systemBackgroundColor];
 
     [(_PXUIScrollView *)v7->_scrollView _setIndicatorInsetAdjustmentBehavior:1];
     [(_PXUIScrollView *)v7->_scrollView px_setDelegate:v7];

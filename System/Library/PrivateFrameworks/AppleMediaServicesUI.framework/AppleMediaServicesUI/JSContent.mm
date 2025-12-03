@@ -1,31 +1,31 @@
 @interface JSContent
-- (id)batchInfo:(id)a3;
-- (id)info:(id)a3 :(id)a4;
-- (id)metadataInfo:(id)a3;
-- (id)readJSON:(id)a3 :(id)a4;
-- (void)batchDownload:(id)a3 :(id)a4 :(id)a5;
-- (void)download:(id)a3 :(id)a4 :(id)a5 :(id)a6;
-- (void)extend:(id)a3 :(id)a4;
-- (void)save:(id)a3 :(id)a4 :(id)a5 :(id)a6;
-- (void)saveFilePath:(id)a3 :(id)a4 :(id)a5;
+- (id)batchInfo:(id)info;
+- (id)info:(id)info :(id)a4;
+- (id)metadataInfo:(id)info;
+- (id)readJSON:(id)n :(id)a4;
+- (void)batchDownload:(id)download :(id)a4 :(id)a5;
+- (void)download:(id)download :(id)a4 :(id)a5 :(id)a6;
+- (void)extend:(id)extend :(id)a4;
+- (void)save:(id)save :(id)a4 :(id)a5 :(id)a6;
+- (void)saveFilePath:(id)path :(id)a4 :(id)a5;
 @end
 
 @implementation JSContent
 
-- (void)batchDownload:(id)a3 :(id)a4 :(id)a5
+- (void)batchDownload:(id)download :(id)a4 :(id)a5
 {
   v7 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = v8;
   v10 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   v11 = a4;
-  v12 = self;
+  selfCopy = self;
   sub_100107E6C(v7, v9, v11, v10);
 }
 
-- (id)batchInfo:(id)a3
+- (id)batchInfo:(id)info
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
-  v4 = self;
+  selfCopy = self;
   v5 = sub_1001085E4();
 
   if (v5)
@@ -41,7 +41,7 @@
   return v6.super.isa;
 }
 
-- (void)download:(id)a3 :(id)a4 :(id)a5 :(id)a6
+- (void)download:(id)download :(id)a4 :(id)a5 :(id)a6
 {
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
@@ -49,11 +49,11 @@
   v11 = v10;
   v12 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   v13 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  v14 = self;
+  selfCopy = self;
   sub_1001088A4(v6, v8, v9, v11, v12, v13);
 }
 
-- (void)extend:(id)a3 :(id)a4
+- (void)extend:(id)extend :(id)a4
 {
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
@@ -68,16 +68,16 @@
     v9 = 0;
   }
 
-  v11 = self;
+  selfCopy = self;
   sub_100108E64(v6, v8, v9, a4);
 }
 
-- (id)info:(id)a3 :(id)a4
+- (id)info:(id)info :(id)a4
 {
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
   v8 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = self;
+  selfCopy = self;
   v10 = sub_1001093EC(v5, v7, v8);
 
   if (v10)
@@ -93,10 +93,10 @@
   return v11.super.isa;
 }
 
-- (id)metadataInfo:(id)a3
+- (id)metadataInfo:(id)info
 {
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   v6 = sub_100109D54(v4);
 
   if (v6)
@@ -112,12 +112,12 @@
   return v7.super.isa;
 }
 
-- (id)readJSON:(id)a3 :(id)a4
+- (id)readJSON:(id)n :(id)a4
 {
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
   v8 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = self;
+  selfCopy = self;
   sub_100109E7C(v5, v7, v8, v18);
 
   v10 = v19;
@@ -142,19 +142,19 @@
   return v16;
 }
 
-- (void)save:(id)a3 :(id)a4 :(id)a5 :(id)a6
+- (void)save:(id)save :(id)a4 :(id)a5 :(id)a6
 {
   v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
   v11 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v13 = v12;
   v14 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  v15 = a3;
-  v16 = self;
-  sub_10010ACE0(v15, v8, v10, v11, v13, v14);
+  saveCopy = save;
+  selfCopy = self;
+  sub_10010ACE0(saveCopy, v8, v10, v11, v13, v14);
 }
 
-- (void)saveFilePath:(id)a3 :(id)a4 :(id)a5
+- (void)saveFilePath:(id)path :(id)a4 :(id)a5
 {
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
@@ -162,7 +162,7 @@
   v11 = v10;
   v12 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v14 = v13;
-  v15 = self;
+  selfCopy = self;
   sub_10010B34C(v6, v8, v9, v11, v12, v14);
 }
 

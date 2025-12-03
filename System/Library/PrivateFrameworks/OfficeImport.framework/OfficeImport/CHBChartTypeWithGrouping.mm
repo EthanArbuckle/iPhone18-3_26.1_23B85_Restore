@@ -1,20 +1,20 @@
 @interface CHBChartTypeWithGrouping
-+ (void)setGrouping:(id)a3 stacked:(BOOL)a4 categoryPercentage:(BOOL)a5;
++ (void)setGrouping:(id)grouping stacked:(BOOL)stacked categoryPercentage:(BOOL)percentage;
 @end
 
 @implementation CHBChartTypeWithGrouping
 
-+ (void)setGrouping:(id)a3 stacked:(BOOL)a4 categoryPercentage:(BOOL)a5
++ (void)setGrouping:(id)grouping stacked:(BOOL)stacked categoryPercentage:(BOOL)percentage
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
-  if (v6)
+  percentageCopy = percentage;
+  stackedCopy = stacked;
+  groupingCopy = grouping;
+  if (stackedCopy)
   {
-    [v7 setGrouping:2];
-    if (v5)
+    [groupingCopy setGrouping:2];
+    if (percentageCopy)
     {
-      [v7 setGrouping:1];
+      [groupingCopy setGrouping:1];
     }
   }
 }

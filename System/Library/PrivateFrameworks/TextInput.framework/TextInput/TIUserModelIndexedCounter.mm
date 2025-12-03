@@ -1,28 +1,28 @@
 @interface TIUserModelIndexedCounter
 - (NSArray)currentCounts;
-- (TIUserModelIndexedCounter)initWithName:(id)a3;
+- (TIUserModelIndexedCounter)initWithName:(id)name;
 - (id)_createEmptyCountsArray;
-- (id)aggregatedCountForNumberOfDays:(int)a3;
-- (id)countsForNumberOfDays:(int)a3;
-- (void)doPersist:(id)a3 forDate:(id)a4 forContext:(id)a5;
-- (void)extendToNumberOfDays:(int)a3;
+- (id)aggregatedCountForNumberOfDays:(int)days;
+- (id)countsForNumberOfDays:(int)days;
+- (void)doPersist:(id)persist forDate:(id)date forContext:(id)context;
+- (void)extendToNumberOfDays:(int)days;
 - (void)prepareBuckets;
-- (void)updateWithDouble:(double)a3 forIndex:(int)a4;
-- (void)updateWithInteger:(int)a3 forIndex:(int)a4;
-- (void)updateWithLoadedInteger:(int)a3 andDouble:(double)a4 forIndex:(int)a5 andDaysPrior:(int)a6;
+- (void)updateWithDouble:(double)double forIndex:(int)index;
+- (void)updateWithInteger:(int)integer forIndex:(int)index;
+- (void)updateWithLoadedInteger:(int)integer andDouble:(double)double forIndex:(int)index andDaysPrior:(int)prior;
 @end
 
 @implementation TIUserModelIndexedCounter
 
-- (void)doPersist:(id)a3 forDate:(id)a4 forContext:(id)a5
+- (void)doPersist:(id)persist forDate:(id)date forContext:(id)context
 {
-  v44 = a3;
-  v43 = a4;
-  v8 = a5;
+  persistCopy = persist;
+  dateCopy = date;
+  contextCopy = context;
   if (self->_current && self->_dataType)
   {
     v45 = 0;
-    v42 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v8 requiringSecureCoding:1 error:&v45];
+    v42 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:contextCopy requiringSecureCoding:1 error:&v45];
     v39 = v45;
     v41 = [kUserModelDatabasePrefix stringByAppendingString:self->_name];
     v9 = [(NSMutableArray *)self->_persisted objectAtIndex:0];
@@ -41,8 +41,8 @@
           v16 = [*(v11 + 3480) numberWithInt:0];
           v17 = [*(v11 + 3480) numberWithInt:v10];
           v18 = [*(v11 + 3480) numberWithDouble:v15];
-          v19 = [v8 inputLanguageAndRegion];
-          [v44 addValue:v16 andSecondaryValue:v17 andRealValue:v18 andProperties:v42 forKey:v41 forInputMode:v19 forDate:v43];
+          inputLanguageAndRegion = [contextCopy inputLanguageAndRegion];
+          [persistCopy addValue:v16 andSecondaryValue:v17 andRealValue:v18 andProperties:v42 forKey:v41 forInputMode:inputLanguageAndRegion forDate:dateCopy];
 
           v20 = [v9 objectAtIndex:v10];
           [v20 doubleValue];
@@ -62,25 +62,25 @@ LABEL_9:
 
       else
       {
-        v25 = [v12 intValue];
-        if (v25)
+        intValue = [v12 intValue];
+        if (intValue)
         {
-          v26 = v25;
-          v27 = [*(v11 + 3480) numberWithInt:v25];
+          v26 = intValue;
+          v27 = [*(v11 + 3480) numberWithInt:intValue];
           v28 = [*(v11 + 3480) numberWithInt:v10];
           v29 = [*(v11 + 3480) numberWithDouble:0.0];
-          [v8 inputLanguageAndRegion];
+          [contextCopy inputLanguageAndRegion];
           v40 = v13;
-          v30 = self;
+          selfCopy = self;
           v31 = v11;
           v32 = v9;
-          v34 = v33 = v8;
-          [v44 addValue:v27 andSecondaryValue:v28 andRealValue:v29 andProperties:v42 forKey:v41 forInputMode:v34 forDate:v43];
+          v34 = v33 = contextCopy;
+          [persistCopy addValue:v27 andSecondaryValue:v28 andRealValue:v29 andProperties:v42 forKey:v41 forInputMode:v34 forDate:dateCopy];
 
-          v8 = v33;
+          contextCopy = v33;
           v9 = v32;
           v11 = v31;
-          self = v30;
+          self = selfCopy;
           v13 = v40;
 
           v35 = [v9 objectAtIndex:v10];
@@ -113,31 +113,31 @@ LABEL_9:
   return v2;
 }
 
-- (void)updateWithLoadedInteger:(int)a3 andDouble:(double)a4 forIndex:(int)a5 andDaysPrior:(int)a6
+- (void)updateWithLoadedInteger:(int)integer andDouble:(double)double forIndex:(int)index andDaysPrior:(int)prior
 {
-  v6 = *&a6;
-  v7 = *&a5;
-  v9 = *&a3;
+  v6 = *&prior;
+  v7 = *&index;
+  v9 = *&integer;
   v27 = *MEMORY[0x1E69E9840];
   [(TIUserModelIndexedCounter *)self prepareBuckets];
-  if (v9 || a4 != 0.0)
+  if (v9 || double != 0.0)
   {
     if (v9)
     {
       self->_dataType = 1;
       v11 = [(NSMutableArray *)self->_persisted objectAtIndex:v6];
       v12 = [v11 objectAtIndex:v7];
-      v13 = [v12 intValue];
+      intValue = [v12 intValue];
 
-      v14 = [MEMORY[0x1E696AD98] numberWithInt:(v13 + v9)];
+      v14 = [MEMORY[0x1E696AD98] numberWithInt:(intValue + v9)];
       [v11 setObject:v14 atIndexedSubscript:v7];
 
       v15 = IXADefaultLogFacility();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
       {
         v16 = MEMORY[0x1E696AEC0];
-        v17 = [(TIUserModelIndexedCounter *)self name];
-        v18 = [v16 stringWithFormat:@"%s Loaded indexed counter %@: Added %d to %d at index %d for %d days prior. _persisted: %@", "-[TIUserModelIndexedCounter updateWithLoadedInteger:andDouble:forIndex:andDaysPrior:]", v17, v9, v13, v7, v6, self->_persisted];
+        name = [(TIUserModelIndexedCounter *)self name];
+        v18 = [v16 stringWithFormat:@"%s Loaded indexed counter %@: Added %d to %d at index %d for %d days prior. _persisted: %@", "-[TIUserModelIndexedCounter updateWithLoadedInteger:andDouble:forIndex:andDaysPrior:]", name, v9, intValue, v7, v6, self->_persisted];
         *buf = 138412290;
         v26 = v18;
         _os_log_debug_impl(&dword_1863F7000, v15, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
@@ -154,15 +154,15 @@ LABEL_10:
       [v19 doubleValue];
       v21 = v20;
 
-      v22 = [MEMORY[0x1E696AD98] numberWithDouble:v21 + a4];
-      [v11 setObject:v22 atIndexedSubscript:v7];
+      double = [MEMORY[0x1E696AD98] numberWithDouble:v21 + double];
+      [v11 setObject:double atIndexedSubscript:v7];
 
       v15 = IXADefaultLogFacility();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
       {
         v23 = MEMORY[0x1E696AEC0];
-        v24 = [(TIUserModelIndexedCounter *)self name];
-        v18 = [v23 stringWithFormat:@"%s Loaded indexed counter %@: Added %f to %f at index %d for %d days prior. _persisted: %@", "-[TIUserModelIndexedCounter updateWithLoadedInteger:andDouble:forIndex:andDaysPrior:]", v24, *&a4, *&v21, v7, v6, self->_persisted];
+        name2 = [(TIUserModelIndexedCounter *)self name];
+        v18 = [v23 stringWithFormat:@"%s Loaded indexed counter %@: Added %f to %f at index %d for %d days prior. _persisted: %@", "-[TIUserModelIndexedCounter updateWithLoadedInteger:andDouble:forIndex:andDaysPrior:]", name2, *&double, *&v21, v7, v6, self->_persisted];
         *buf = 138412290;
         v26 = v18;
         _os_log_debug_impl(&dword_1863F7000, v15, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
@@ -173,9 +173,9 @@ LABEL_10:
   }
 }
 
-- (void)updateWithDouble:(double)a3 forIndex:(int)a4
+- (void)updateWithDouble:(double)double forIndex:(int)index
 {
-  v4 = *&a4;
+  v4 = *&index;
   v18 = *MEMORY[0x1E69E9840];
   [(TIUserModelIndexedCounter *)self prepareBuckets];
   self->_dataType = 2;
@@ -184,50 +184,50 @@ LABEL_10:
   v9 = v8;
 
   current = self->_current;
-  v11 = [MEMORY[0x1E696AD98] numberWithDouble:v9 + a3];
-  [(NSMutableArray *)current setObject:v11 atIndexedSubscript:v4];
+  double = [MEMORY[0x1E696AD98] numberWithDouble:v9 + double];
+  [(NSMutableArray *)current setObject:double atIndexedSubscript:v4];
 
   v12 = IXADefaultLogFacility();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     v13 = MEMORY[0x1E696AEC0];
-    v14 = [(TIUserModelIndexedCounter *)self name];
-    v15 = [v13 stringWithFormat:@"%s Updated indexed counter %@: Added %f to %f at index %d. _current: %@", "-[TIUserModelIndexedCounter updateWithDouble:forIndex:]", v14, *&a3, *&v9, v4, self->_current];
+    name = [(TIUserModelIndexedCounter *)self name];
+    v15 = [v13 stringWithFormat:@"%s Updated indexed counter %@: Added %f to %f at index %d. _current: %@", "-[TIUserModelIndexedCounter updateWithDouble:forIndex:]", name, *&double, *&v9, v4, self->_current];
     *buf = 138412290;
     v17 = v15;
     _os_log_debug_impl(&dword_1863F7000, v12, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
   }
 }
 
-- (void)updateWithInteger:(int)a3 forIndex:(int)a4
+- (void)updateWithInteger:(int)integer forIndex:(int)index
 {
-  v4 = *&a4;
-  v5 = *&a3;
+  v4 = *&index;
+  v5 = *&integer;
   v17 = *MEMORY[0x1E69E9840];
   [(TIUserModelIndexedCounter *)self prepareBuckets];
   self->_dataType = 1;
   v7 = [(NSMutableArray *)self->_current objectAtIndex:v4];
-  v8 = [v7 intValue];
+  intValue = [v7 intValue];
 
   current = self->_current;
-  v10 = [MEMORY[0x1E696AD98] numberWithDouble:(v8 + v5)];
+  v10 = [MEMORY[0x1E696AD98] numberWithDouble:(intValue + v5)];
   [(NSMutableArray *)current setObject:v10 atIndexedSubscript:v4];
 
   v11 = IXADefaultLogFacility();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     v12 = MEMORY[0x1E696AEC0];
-    v13 = [(TIUserModelIndexedCounter *)self name];
-    v14 = [v12 stringWithFormat:@"%s Updated indexed counter %@: Added %d to %d at index %d. _current: %@", "-[TIUserModelIndexedCounter updateWithInteger:forIndex:]", v13, v5, v8, v4, self->_current];
+    name = [(TIUserModelIndexedCounter *)self name];
+    v14 = [v12 stringWithFormat:@"%s Updated indexed counter %@: Added %d to %d at index %d. _current: %@", "-[TIUserModelIndexedCounter updateWithInteger:forIndex:]", name, v5, intValue, v4, self->_current];
     *buf = 138412290;
     v16 = v14;
     _os_log_debug_impl(&dword_1863F7000, v11, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
   }
 }
 
-- (void)extendToNumberOfDays:(int)a3
+- (void)extendToNumberOfDays:(int)days
 {
-  v3 = *&a3;
+  v3 = *&days;
   v15 = *MEMORY[0x1E69E9840];
   [(TIUserModelIndexedCounter *)self prepareBuckets];
   v5 = [(NSMutableArray *)self->_persisted count];
@@ -237,8 +237,8 @@ LABEL_10:
     do
     {
       persisted = self->_persisted;
-      v8 = [(TIUserModelIndexedCounter *)self _createEmptyCountsArray];
-      [(NSMutableArray *)persisted addObject:v8];
+      _createEmptyCountsArray = [(TIUserModelIndexedCounter *)self _createEmptyCountsArray];
+      [(NSMutableArray *)persisted addObject:_createEmptyCountsArray];
 
       --v6;
     }
@@ -248,8 +248,8 @@ LABEL_10:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
       v10 = MEMORY[0x1E696AEC0];
-      v11 = [(TIUserModelIndexedCounter *)self name];
-      v12 = [v10 stringWithFormat:@"%s Extended indexed counter %@ from %d to %d days", "-[TIUserModelIndexedCounter extendToNumberOfDays:]", v11, v5, v3];
+      name = [(TIUserModelIndexedCounter *)self name];
+      v12 = [v10 stringWithFormat:@"%s Extended indexed counter %@ from %d to %d days", "-[TIUserModelIndexedCounter extendToNumberOfDays:]", name, v5, v3];
       *buf = 138412290;
       v14 = v12;
       _os_log_debug_impl(&dword_1863F7000, v9, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
@@ -257,7 +257,7 @@ LABEL_10:
   }
 }
 
-- (id)aggregatedCountForNumberOfDays:(int)a3
+- (id)aggregatedCountForNumberOfDays:(int)days
 {
   v29 = *MEMORY[0x1E69E9840];
   current = self->_current;
@@ -269,7 +269,7 @@ LABEL_10:
       v26 = 0u;
       v23 = 0u;
       v24 = 0u;
-      v4 = [(TIUserModelIndexedCounter *)self countsForNumberOfDays:*&a3];
+      v4 = [(TIUserModelIndexedCounter *)self countsForNumberOfDays:*&days];
       v5 = [v4 countByEnumeratingWithState:&v23 objects:v28 count:16];
       if (v5)
       {
@@ -306,7 +306,7 @@ LABEL_10:
       v8 = 0.0;
     }
 
-    v17 = [MEMORY[0x1E696AD98] numberWithDouble:{*&a3, v8}];
+    v17 = [MEMORY[0x1E696AD98] numberWithDouble:{*&days, v8}];
   }
 
   else
@@ -317,7 +317,7 @@ LABEL_10:
       v22 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v11 = [(TIUserModelIndexedCounter *)self countsForNumberOfDays:*&a3, 0];
+      v11 = [(TIUserModelIndexedCounter *)self countsForNumberOfDays:*&days, 0];
       v12 = [v11 countByEnumeratingWithState:&v19 objects:v27 count:16];
       if (v12)
       {
@@ -359,7 +359,7 @@ LABEL_10:
   return v17;
 }
 
-- (id)countsForNumberOfDays:(int)a3
+- (id)countsForNumberOfDays:(int)days
 {
   [(TIUserModelIndexedCounter *)self prepareBuckets];
   v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:11];
@@ -371,7 +371,7 @@ LABEL_10:
       [v7 doubleValue];
       v9 = v8;
 
-      if (a3 >= 1)
+      if (days >= 1)
       {
         v10 = 0;
         do
@@ -384,7 +384,7 @@ LABEL_10:
           ++v10;
         }
 
-        while (a3 != v10);
+        while (days != v10);
       }
 
       v14 = [MEMORY[0x1E696AD98] numberWithDouble:v9];
@@ -397,24 +397,24 @@ LABEL_10:
     for (j = 0; j != 11; ++j)
     {
       v16 = [(NSMutableArray *)self->_current objectAtIndex:j];
-      v17 = [v16 intValue];
+      intValue = [v16 intValue];
 
-      if (a3 >= 1)
+      if (days >= 1)
       {
         v18 = 0;
         do
         {
           v19 = [(NSMutableArray *)self->_persisted objectAtIndex:v18];
           v20 = [v19 objectAtIndex:j];
-          v17 = [v20 intValue] + v17;
+          intValue = [v20 intValue] + intValue;
 
           ++v18;
         }
 
-        while (a3 != v18);
+        while (days != v18);
       }
 
-      v21 = [MEMORY[0x1E696AD98] numberWithInt:v17];
+      v21 = [MEMORY[0x1E696AD98] numberWithInt:intValue];
       [v5 setObject:v21 atIndexedSubscript:j];
     }
   }
@@ -475,30 +475,30 @@ LABEL_10:
 {
   if (!self->_current)
   {
-    v4 = [(TIUserModelIndexedCounter *)self _createEmptyCountsArray];
+    _createEmptyCountsArray = [(TIUserModelIndexedCounter *)self _createEmptyCountsArray];
     current = self->_current;
-    self->_current = v4;
+    self->_current = _createEmptyCountsArray;
 
     v6 = objc_opt_new();
     persisted = self->_persisted;
     self->_persisted = v6;
 
     v8 = self->_persisted;
-    v9 = [(TIUserModelIndexedCounter *)self _createEmptyCountsArray];
-    [(NSMutableArray *)v8 addObject:v9];
+    _createEmptyCountsArray2 = [(TIUserModelIndexedCounter *)self _createEmptyCountsArray];
+    [(NSMutableArray *)v8 addObject:_createEmptyCountsArray2];
   }
 }
 
-- (TIUserModelIndexedCounter)initWithName:(id)a3
+- (TIUserModelIndexedCounter)initWithName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = TIUserModelIndexedCounter;
   v6 = [(TIUserModelIndexedCounter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_name, a3);
+    objc_storeStrong(&v6->_name, name);
     v7->_dataType = 0;
   }
 

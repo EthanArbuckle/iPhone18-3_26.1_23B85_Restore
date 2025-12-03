@@ -1,33 +1,33 @@
 @interface MRPromptForRouteAuthorizationMessage
 - (MRAVOutputDevice)route;
-- (MRPromptForRouteAuthorizationMessage)initWithRoute:(id)a3 inputType:(int64_t)a4;
+- (MRPromptForRouteAuthorizationMessage)initWithRoute:(id)route inputType:(int64_t)type;
 - (int64_t)inputType;
 @end
 
 @implementation MRPromptForRouteAuthorizationMessage
 
-- (MRPromptForRouteAuthorizationMessage)initWithRoute:(id)a3 inputType:(int64_t)a4
+- (MRPromptForRouteAuthorizationMessage)initWithRoute:(id)route inputType:(int64_t)type
 {
-  v7 = a3;
+  routeCopy = route;
   v14.receiver = self;
   v14.super_class = MRPromptForRouteAuthorizationMessage;
   v8 = [(MRProtocolMessage *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_route, a3);
+    objc_storeStrong(&v8->_route, route);
     v10 = objc_alloc_init(_MRPromptForRouteAuthorizationMessageProtobuf);
-    v11 = [v7 descriptor];
-    [(_MRPromptForRouteAuthorizationMessageProtobuf *)v10 setRoute:v11];
+    descriptor = [routeCopy descriptor];
+    [(_MRPromptForRouteAuthorizationMessageProtobuf *)v10 setRoute:descriptor];
 
-    if ((a4 - 1) > 2)
+    if ((type - 1) > 2)
     {
       v12 = 0;
     }
 
     else
     {
-      v12 = dword_1A2B80F20[a4 - 1];
+      v12 = dword_1A2B80F20[type - 1];
     }
 
     [(_MRPromptForRouteAuthorizationMessageProtobuf *)v10 setInputType:v12];
@@ -43,9 +43,9 @@
   if (!route)
   {
     v4 = [MRAVDistantOutputDevice alloc];
-    v5 = [(MRProtocolMessage *)self underlyingCodableMessage];
-    v6 = [v5 route];
-    v7 = [(MRAVDistantOutputDevice *)v4 initWithDescriptor:v6];
+    underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+    route = [underlyingCodableMessage route];
+    v7 = [(MRAVDistantOutputDevice *)v4 initWithDescriptor:route];
     v8 = self->_route;
     self->_route = v7;
 
@@ -57,8 +57,8 @@
 
 - (int64_t)inputType
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 inputType] - 1;
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  v3 = [underlyingCodableMessage inputType] - 1;
   if (v3 > 2)
   {
     v4 = 0;

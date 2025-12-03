@@ -1,22 +1,22 @@
 @interface PALApplicationMetadataResolver
-- (PALApplicationMetadataResolver)initWithSettings:(id)a3;
-- (id)bundleRecordForApplication:(id)a3;
-- (id)resolveApplicationMetadataForAccess:(id)a3;
-- (void)setProcessStateMonitor:(id)a3;
+- (PALApplicationMetadataResolver)initWithSettings:(id)settings;
+- (id)bundleRecordForApplication:(id)application;
+- (id)resolveApplicationMetadataForAccess:(id)access;
+- (void)setProcessStateMonitor:(id)monitor;
 @end
 
 @implementation PALApplicationMetadataResolver
 
-- (PALApplicationMetadataResolver)initWithSettings:(id)a3
+- (PALApplicationMetadataResolver)initWithSettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   v12.receiver = self;
   v12.super_class = PALApplicationMetadataResolver;
   v6 = [(PALApplicationMetadataResolver *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_settings, a3);
+    objc_storeStrong(&v6->_settings, settings);
     v8 = PADefaultBundleRecordRetriever();
     bundleRecordRetriever = v7->_bundleRecordRetriever;
     v7->_bundleRecordRetriever = v8;
@@ -28,16 +28,16 @@
   return v7;
 }
 
-- (id)resolveApplicationMetadataForAccess:(id)a3
+- (id)resolveApplicationMetadataForAccess:(id)access
 {
-  v4 = a3;
-  v5 = [v4 accessor];
-  v6 = [(PALApplicationMetadataResolver *)self bundleRecordForApplication:v5];
+  accessCopy = access;
+  accessor = [accessCopy accessor];
+  v6 = [(PALApplicationMetadataResolver *)self bundleRecordForApplication:accessor];
 
   if (-[PALSettings accessFilteringPolicy](self->_settings, "accessFilteringPolicy") == 1 && [v6 developerType] != 3)
   {
-    v7 = sub_1000030DC();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+    accessor2 = sub_1000030DC();
+    if (os_log_type_enabled(accessor2, OS_LOG_TYPE_DEBUG))
     {
       sub_1000032EC();
     }
@@ -45,17 +45,17 @@
     goto LABEL_14;
   }
 
-  v7 = [v4 accessor];
-  if ([v7 identifierType]== 2)
+  accessor2 = [accessCopy accessor];
+  if ([accessor2 identifierType]== 2)
   {
-    v8 = [v6 bundleIdentifier];
+    bundleIdentifier = [v6 bundleIdentifier];
 
-    if (v8)
+    if (bundleIdentifier)
     {
-      v9 = [v6 bundleIdentifier];
-      v10 = [PAApplication applicationWithBundleID:v9];
+      bundleIdentifier2 = [v6 bundleIdentifier];
+      v10 = [PAApplication applicationWithBundleID:bundleIdentifier2];
 
-      v7 = v10;
+      accessor2 = v10;
       goto LABEL_6;
     }
 
@@ -74,28 +74,28 @@ LABEL_6:
   v11 = sub_1000030DC();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    sub_100003364(v4, v7, v11);
+    sub_100003364(accessCopy, accessor2, v11);
   }
 
-  v12 = [v4 copyWithNewAccessor:v7];
+  v12 = [accessCopy copyWithNewAccessor:accessor2];
 LABEL_15:
 
   return v12;
 }
 
-- (id)bundleRecordForApplication:(id)a3
+- (id)bundleRecordForApplication:(id)application
 {
-  v4 = a3;
-  v5 = [(PALApplicationMetadataResolver *)self bundleRecordRetriever];
-  v6 = (v5)[2](v5, v4);
+  applicationCopy = application;
+  bundleRecordRetriever = [(PALApplicationMetadataResolver *)self bundleRecordRetriever];
+  v6 = (bundleRecordRetriever)[2](bundleRecordRetriever, applicationCopy);
 
   return v6;
 }
 
-- (void)setProcessStateMonitor:(id)a3
+- (void)setProcessStateMonitor:(id)monitor
 {
-  objc_storeStrong(&self->_processStateMonitor, a3);
-  v8 = a3;
+  objc_storeStrong(&self->_processStateMonitor, monitor);
+  monitorCopy = monitor;
   v5 = [PAAggregateVisibilityStateMonitor alloc];
   v6 = [v5 initWithRawMonitor:self->_processStateMonitor startupInterval:PADefaultAggregateStateMonitoringStartupInterval];
   aggregateVisibilityStateMonitor = self->_aggregateVisibilityStateMonitor;

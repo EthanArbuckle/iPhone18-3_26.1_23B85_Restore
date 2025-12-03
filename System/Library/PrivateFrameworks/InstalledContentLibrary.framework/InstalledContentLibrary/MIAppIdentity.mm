@@ -1,46 +1,46 @@
 @interface MIAppIdentity
-+ (BOOL)validateAppIdentity:(id)a3 withError:(id *)a4;
++ (BOOL)validateAppIdentity:(id)identity withError:(id *)error;
 + (id)_locationClassCluster;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)resolvePersonaWithError:(id *)a3;
-- (MIAppIdentity)initWithBundleID:(id)a3 personaUniqueString:(id)a4 location:(id)a5;
-- (MIAppIdentity)initWithBundleIdentifier:(id)a3 personaUniqueString:(id)a4;
-- (MIAppIdentity)initWithBundleIdentifier:(id)a3 personaUniqueString:(id)a4 location:(id)a5;
-- (MIAppIdentity)initWithCoder:(id)a3;
-- (id)_eligiblePersonaForBundle:(id)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)resolvePersonaWithError:(id *)error;
+- (MIAppIdentity)initWithBundleID:(id)d personaUniqueString:(id)string location:(id)location;
+- (MIAppIdentity)initWithBundleIdentifier:(id)identifier personaUniqueString:(id)string;
+- (MIAppIdentity)initWithBundleIdentifier:(id)identifier personaUniqueString:(id)string location:(id)location;
+- (MIAppIdentity)initWithCoder:(id)coder;
+- (id)_eligiblePersonaForBundle:(id)bundle error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)identityByChangingLocation:(id)a3;
+- (id)identityByChangingLocation:(id)location;
 - (unint64_t)hash;
-- (void)_doInitWithBundleID:(id)a3 personaUniqueString:(id)a4 location:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (void)_doInitWithBundleID:(id)d personaUniqueString:(id)string location:(id)location;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MIAppIdentity
 
 - (unint64_t)hash
 {
-  v3 = [(MIAppIdentity *)self bundleID];
-  v4 = [v3 hash];
-  v5 = [(MIAppIdentity *)self personaUniqueString];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(MIAppIdentity *)self location];
-  v8 = [v7 hash];
+  bundleID = [(MIAppIdentity *)self bundleID];
+  v4 = [bundleID hash];
+  personaUniqueString = [(MIAppIdentity *)self personaUniqueString];
+  v6 = [personaUniqueString hash] ^ v4;
+  location = [(MIAppIdentity *)self location];
+  v8 = [location hash];
 
   return v6 ^ v8;
 }
 
-- (void)_doInitWithBundleID:(id)a3 personaUniqueString:(id)a4 location:(id)a5
+- (void)_doInitWithBundleID:(id)d personaUniqueString:(id)string location:(id)location
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  objc_storeStrong(&self->_bundleID, a3);
-  if (!v10)
+  dCopy = d;
+  stringCopy = string;
+  locationCopy = location;
+  objc_storeStrong(&self->_bundleID, d);
+  if (!stringCopy)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
     {
-      [MIAppIdentity _doInitWithBundleID:v9 personaUniqueString:? location:?];
+      [MIAppIdentity _doInitWithBundleID:dCopy personaUniqueString:? location:?];
     }
 
     if (!gLogHandle || *(gLogHandle + 44) >= 3)
@@ -48,68 +48,68 @@
       MOLogWrite();
     }
 
-    v10 = @"PersonalPersonaPlaceholderString";
+    stringCopy = @"PersonalPersonaPlaceholderString";
   }
 
   personaUniqueString = self->_personaUniqueString;
-  self->_personaUniqueString = &v10->isa;
-  v13 = v10;
+  self->_personaUniqueString = &stringCopy->isa;
+  v13 = stringCopy;
 
   self->_isResolved = 0;
   location = self->_location;
-  self->_location = v11;
+  self->_location = locationCopy;
 }
 
-- (MIAppIdentity)initWithBundleIdentifier:(id)a3 personaUniqueString:(id)a4 location:(id)a5
+- (MIAppIdentity)initWithBundleIdentifier:(id)identifier personaUniqueString:(id)string location:(id)location
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  stringCopy = string;
+  locationCopy = location;
   v14.receiver = self;
   v14.super_class = MIAppIdentity;
   v11 = [(MIAppIdentity *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    [(MIAppIdentity *)v11 _doInitWithBundleID:v8 personaUniqueString:v9 location:v10];
+    [(MIAppIdentity *)v11 _doInitWithBundleID:identifierCopy personaUniqueString:stringCopy location:locationCopy];
   }
 
   return v12;
 }
 
-- (MIAppIdentity)initWithBundleID:(id)a3 personaUniqueString:(id)a4 location:(id)a5
+- (MIAppIdentity)initWithBundleID:(id)d personaUniqueString:(id)string location:(id)location
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  stringCopy = string;
+  locationCopy = location;
   v14.receiver = self;
   v14.super_class = MIAppIdentity;
   v11 = [(MIAppIdentity *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    [(MIAppIdentity *)v11 _doInitWithBundleID:v8 personaUniqueString:v9 location:v10];
+    [(MIAppIdentity *)v11 _doInitWithBundleID:dCopy personaUniqueString:stringCopy location:locationCopy];
   }
 
   return v12;
 }
 
-- (MIAppIdentity)initWithBundleIdentifier:(id)a3 personaUniqueString:(id)a4
+- (MIAppIdentity)initWithBundleIdentifier:(id)identifier personaUniqueString:(id)string
 {
-  v6 = a4;
-  v7 = a3;
+  stringCopy = string;
+  identifierCopy = identifier;
   v8 = objc_opt_new();
-  v9 = [(MIAppIdentity *)self initWithBundleIdentifier:v7 personaUniqueString:v6 location:v8];
+  v9 = [(MIAppIdentity *)self initWithBundleIdentifier:identifierCopy personaUniqueString:stringCopy location:v8];
 
   return v9;
 }
 
-- (id)identityByChangingLocation:(id)a3
+- (id)identityByChangingLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v5 = [(MIAppIdentity *)self copy];
   v6 = v5[4];
-  v5[4] = v4;
+  v5[4] = locationCopy;
 
   return v5;
 }
@@ -127,25 +127,25 @@
   return v4;
 }
 
-- (MIAppIdentity)initWithCoder:(id)a3
+- (MIAppIdentity)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = MIAppIdentity;
   v5 = [(MIAppIdentity *)&v16 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
     bundleID = v5->_bundleID;
     v5->_bundleID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"personaUniqueString"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"personaUniqueString"];
     personaUniqueString = v5->_personaUniqueString;
     v5->_personaUniqueString = v8;
 
-    v5->_isResolved = [v4 decodeBoolForKey:@"isResolved"];
-    v10 = [objc_opt_class() _locationClassCluster];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"location"];
+    v5->_isResolved = [coderCopy decodeBoolForKey:@"isResolved"];
+    _locationClassCluster = [objc_opt_class() _locationClassCluster];
+    v11 = [coderCopy decodeObjectOfClasses:_locationClassCluster forKey:@"location"];
     location = v5->_location;
     v5->_location = v11;
 
@@ -160,40 +160,40 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MIAppIdentity *)self bundleID];
-  [v4 encodeObject:v5 forKey:@"bundleID"];
+  coderCopy = coder;
+  bundleID = [(MIAppIdentity *)self bundleID];
+  [coderCopy encodeObject:bundleID forKey:@"bundleID"];
 
-  v6 = [(MIAppIdentity *)self personaUniqueString];
-  [v4 encodeObject:v6 forKey:@"personaUniqueString"];
+  personaUniqueString = [(MIAppIdentity *)self personaUniqueString];
+  [coderCopy encodeObject:personaUniqueString forKey:@"personaUniqueString"];
 
-  [v4 encodeBool:-[MIAppIdentity isResolved](self forKey:{"isResolved"), @"isResolved"}];
-  v7 = [(MIAppIdentity *)self location];
-  [v4 encodeObject:v7 forKey:@"location"];
+  [coderCopy encodeBool:-[MIAppIdentity isResolved](self forKey:{"isResolved"), @"isResolved"}];
+  location = [(MIAppIdentity *)self location];
+  [coderCopy encodeObject:location forKey:@"location"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(MIAppIdentity *)self bundleID];
-  [v4 setBundleID:v5];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  bundleID = [(MIAppIdentity *)self bundleID];
+  [v4 setBundleID:bundleID];
 
-  v6 = [(MIAppIdentity *)self personaUniqueString];
-  [v4 setPersonaUniqueString:v6];
+  personaUniqueString = [(MIAppIdentity *)self personaUniqueString];
+  [v4 setPersonaUniqueString:personaUniqueString];
 
   [v4 setIsResolved:{-[MIAppIdentity isResolved](self, "isResolved")}];
-  v7 = [(MIAppIdentity *)self location];
-  [v4 setLocation:v7];
+  location = [(MIAppIdentity *)self location];
+  [v4 setLocation:location];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v14 = 1;
   }
@@ -203,16 +203,16 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MIAppIdentity *)self bundleID];
-      v7 = [(MIAppIdentity *)v5 bundleID];
-      v8 = MICompareObjects(v6, v7);
+      v5 = equalCopy;
+      bundleID = [(MIAppIdentity *)self bundleID];
+      bundleID2 = [(MIAppIdentity *)v5 bundleID];
+      v8 = MICompareObjects(bundleID, bundleID2);
 
       if (v8 && ([(MIAppIdentity *)self personaUniqueString], v9 = objc_claimAutoreleasedReturnValue(), [(MIAppIdentity *)v5 personaUniqueString], v10 = objc_claimAutoreleasedReturnValue(), v11 = MICompareObjects(v9, v10), v10, v9, v11))
       {
-        v12 = [(MIAppIdentity *)self location];
-        v13 = [(MIAppIdentity *)v5 location];
-        v14 = MICompareObjects(v12, v13);
+        location = [(MIAppIdentity *)self location];
+        location2 = [(MIAppIdentity *)v5 location];
+        v14 = MICompareObjects(location, location2);
       }
 
       else
@@ -233,31 +233,31 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(MIAppIdentity *)self bundleID];
-  v5 = [(MIAppIdentity *)self personaUniqueString];
-  v6 = [(MIAppIdentity *)self location];
-  v7 = [v3 stringWithFormat:@"[%@/%@/%@]", v4, v5, v6];
+  bundleID = [(MIAppIdentity *)self bundleID];
+  personaUniqueString = [(MIAppIdentity *)self personaUniqueString];
+  location = [(MIAppIdentity *)self location];
+  v7 = [v3 stringWithFormat:@"[%@/%@/%@]", bundleID, personaUniqueString, location];
 
   return v7;
 }
 
-+ (BOOL)validateAppIdentity:(id)a3 withError:(id *)a4
++ (BOOL)validateAppIdentity:(id)identity withError:(id *)error
 {
-  v5 = a3;
-  v7 = v5;
-  if (v5)
+  identityCopy = identity;
+  v7 = identityCopy;
+  if (identityCopy)
   {
-    v8 = [v5 bundleID];
+    bundleID = [identityCopy bundleID];
 
-    if (v8)
+    if (bundleID)
     {
-      v9 = [v7 personaUniqueString];
+      personaUniqueString = [v7 personaUniqueString];
 
-      if (v9)
+      if (personaUniqueString)
       {
-        v10 = [v7 location];
+        location = [v7 location];
 
-        if (v10)
+        if (location)
         {
           v11 = 0;
           v12 = 1;
@@ -289,11 +289,11 @@
   }
 
   v11 = _CreateError("+[MIAppIdentity validateAppIdentity:withError:]", v14, @"MIInstallerErrorDomain", 25, 0, 0, v13, v6, v16);
-  if (a4)
+  if (error)
   {
     v11 = v11;
     v12 = 0;
-    *a4 = v11;
+    *error = v11;
   }
 
   else
@@ -306,33 +306,33 @@ LABEL_13:
   return v12;
 }
 
-- (id)_eligiblePersonaForBundle:(id)a3 error:(id *)a4
+- (id)_eligiblePersonaForBundle:(id)bundle error:(id *)error
 {
-  v6 = a3;
+  bundleCopy = bundle;
   v7 = +[MIUserManagement sharedInstance];
   v8 = +[MIGlobalConfiguration sharedInstance];
-  v9 = [v8 systemAppPlaceholderBundleIDs];
-  v10 = [v9 containsObject:v6];
+  systemAppPlaceholderBundleIDs = [v8 systemAppPlaceholderBundleIDs];
+  v10 = [systemAppPlaceholderBundleIDs containsObject:bundleCopy];
 
   if (v10)
   {
-    v11 = [v7 primaryPersonaUniqueString];
+    primaryPersonaUniqueString = [v7 primaryPersonaUniqueString];
     v12 = 0;
     goto LABEL_18;
   }
 
   v29 = 0;
-  v13 = [MIBundleContainer appBundleContainerForIdentifier:v6 inDomain:2 withError:&v29];
+  v13 = [MIBundleContainer appBundleContainerForIdentifier:bundleCopy inDomain:2 withError:&v29];
   v14 = v29;
   v12 = v14;
   if (!v13)
   {
-    v19 = [v14 domain];
-    if ([v19 isEqualToString:@"MIContainerManagerErrorDomain"])
+    domain = [v14 domain];
+    if ([domain isEqualToString:@"MIContainerManagerErrorDomain"])
     {
-      v20 = [v12 code];
+      code = [v12 code];
 
-      if (v20 == 21)
+      if (code == 21)
       {
         goto LABEL_25;
       }
@@ -342,27 +342,27 @@ LABEL_13:
     {
     }
 
-    v11 = 0;
+    primaryPersonaUniqueString = 0;
 LABEL_18:
     v13 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_28;
     }
 
 LABEL_26:
-    if (!v11)
+    if (!primaryPersonaUniqueString)
     {
       v22 = v12;
-      *a4 = v12;
+      *error = v12;
     }
 
     goto LABEL_28;
   }
 
-  v15 = [v13 bundle];
+  bundle = [v13 bundle];
 
-  if (v15)
+  if (bundle)
   {
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
@@ -370,20 +370,20 @@ LABEL_26:
     }
 
     v28 = v12;
-    v11 = [(MIAppIdentity *)self resolvePersonaUsingModuleSpecificLogicWithError:&v28];
+    primaryPersonaUniqueString = [(MIAppIdentity *)self resolvePersonaUsingModuleSpecificLogicWithError:&v28];
     v16 = v28;
 
-    if (v11)
+    if (primaryPersonaUniqueString)
     {
       goto LABEL_29;
     }
 
-    v17 = [v16 domain];
-    if ([v17 isEqualToString:@"MIInstallerErrorDomain"])
+    domain2 = [v16 domain];
+    if ([domain2 isEqualToString:@"MIInstallerErrorDomain"])
     {
-      v18 = [v16 code];
+      code2 = [v16 code];
 
-      if (v18 == 161)
+      if (code2 == 161)
       {
 LABEL_24:
 
@@ -400,7 +400,7 @@ LABEL_24:
     {
       v25 = v13;
       v26 = v16;
-      v24 = v6;
+      v24 = bundleCopy;
       MOLogWrite();
     }
 
@@ -415,11 +415,11 @@ LABEL_24:
 
 LABEL_25:
   v27 = v12;
-  v11 = [v7 personaForBundleID:v6 error:{&v27, v24, v25, v26}];
+  primaryPersonaUniqueString = [v7 personaForBundleID:bundleCopy error:{&v27, v24, v25, v26}];
   v21 = v27;
 
   v12 = v21;
-  if (a4)
+  if (error)
   {
     goto LABEL_26;
   }
@@ -428,15 +428,15 @@ LABEL_28:
   v16 = v12;
 LABEL_29:
 
-  return v11;
+  return primaryPersonaUniqueString;
 }
 
-- (BOOL)resolvePersonaWithError:(id *)a3
+- (BOOL)resolvePersonaWithError:(id *)error
 {
-  v5 = [(MIAppIdentity *)self isResolved];
-  v6 = [(MIAppIdentity *)self personaUniqueString];
-  v7 = [(MIAppIdentity *)self bundleID];
-  if (v5)
+  isResolved = [(MIAppIdentity *)self isResolved];
+  personaUniqueString = [(MIAppIdentity *)self personaUniqueString];
+  bundleID = [(MIAppIdentity *)self bundleID];
+  if (isResolved)
   {
     v8 = 0;
     v9 = 0;
@@ -445,21 +445,21 @@ LABEL_29:
   }
 
   v11 = +[MIGlobalConfiguration sharedInstance];
-  v12 = [v11 isSharediPad];
+  isSharediPad = [v11 isSharediPad];
 
-  if (v12)
+  if (isSharediPad)
   {
     v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:*MEMORY[0x1E69E9980]];
     v8 = 0;
     goto LABEL_5;
   }
 
-  if (v6)
+  if (personaUniqueString)
   {
-    if ([v6 isEqualToString:@"Invalid"])
+    if ([personaUniqueString isEqualToString:@"Invalid"])
     {
-      v8 = _CreateAndLogError("[MIAppIdentity resolvePersonaWithError:]", 291, @"MIInstallerErrorDomain", 191, 0, 0, @"Client provided invalid persona for %@", v13, v7);
-      if (!a3)
+      v8 = _CreateAndLogError("[MIAppIdentity resolvePersonaWithError:]", 291, @"MIInstallerErrorDomain", 191, 0, 0, @"Client provided invalid persona for %@", v13, bundleID);
+      if (!error)
       {
         goto LABEL_29;
       }
@@ -468,14 +468,14 @@ LABEL_26:
       v25 = v8;
       v10 = 0;
       v9 = 0;
-      *a3 = v8;
+      *error = v8;
       goto LABEL_30;
     }
 
-    if ([v6 isEqualToString:@"PersonalPersonaPlaceholderString"])
+    if ([personaUniqueString isEqualToString:@"PersonalPersonaPlaceholderString"])
     {
       v33 = 0;
-      v9 = [(MIAppIdentity *)self _eligiblePersonaForBundle:v7 error:&v33];
+      v9 = [(MIAppIdentity *)self _eligiblePersonaForBundle:bundleID error:&v33];
       v8 = v33;
       if (!v9)
       {
@@ -488,20 +488,20 @@ LABEL_26:
 
     v16 = +[MIUserManagement sharedInstance];
     v32 = 0;
-    v17 = [v16 isKnownPersonaUniqueString:v6 error:&v32];
+    v17 = [v16 isKnownPersonaUniqueString:personaUniqueString error:&v32];
     v19 = v32;
     if (v17)
     {
-      v20 = [v16 systemPersonaUniqueString];
-      v21 = [v6 isEqualToString:v20];
+      systemPersonaUniqueString = [v16 systemPersonaUniqueString];
+      v21 = [personaUniqueString isEqualToString:systemPersonaUniqueString];
 
       if (!v21)
       {
         v8 = v19;
 LABEL_32:
-        v9 = v6;
+        v9 = personaUniqueString;
 
-        v6 = v9;
+        personaUniqueString = v9;
         goto LABEL_5;
       }
 
@@ -511,11 +511,11 @@ LABEL_32:
 
       if (v22)
       {
-        if ([v22 containsObject:v7])
+        if ([v22 containsObject:bundleID])
         {
-          v23 = [v16 primaryPersonaUniqueString];
+          primaryPersonaUniqueString = [v16 primaryPersonaUniqueString];
 
-          v6 = v23;
+          personaUniqueString = primaryPersonaUniqueString;
         }
 
         goto LABEL_32;
@@ -524,10 +524,10 @@ LABEL_32:
 
     else
     {
-      v8 = _CreateAndLogError("[MIAppIdentity resolvePersonaWithError:]", 303, @"MIInstallerErrorDomain", 191, v19, 0, @"Client provided invalid persona for %@", v18, v7);
+      v8 = _CreateAndLogError("[MIAppIdentity resolvePersonaWithError:]", 303, @"MIInstallerErrorDomain", 191, v19, 0, @"Client provided invalid persona for %@", v18, bundleID);
     }
 
-    if (a3)
+    if (error)
     {
       goto LABEL_26;
     }
@@ -536,7 +536,7 @@ LABEL_32:
   }
 
   v30 = 0;
-  v9 = [(MIAppIdentity *)self _eligiblePersonaForBundle:v7 error:&v30];
+  v9 = [(MIAppIdentity *)self _eligiblePersonaForBundle:bundleID error:&v30];
   v8 = v30;
   if (!v9)
   {
@@ -544,7 +544,7 @@ LABEL_32:
     v24 = LABEL_25:;
 
     v8 = v24;
-    if (a3)
+    if (error)
     {
       goto LABEL_26;
     }
@@ -555,13 +555,13 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  v6 = 0;
+  personaUniqueString = 0;
 LABEL_5:
   if (gLogHandle && *(gLogHandle + 44) >= 7)
   {
-    v28 = v6;
+    v28 = personaUniqueString;
     v29 = v9;
-    v27 = v7;
+    v27 = bundleID;
     MOLogWrite();
   }
 

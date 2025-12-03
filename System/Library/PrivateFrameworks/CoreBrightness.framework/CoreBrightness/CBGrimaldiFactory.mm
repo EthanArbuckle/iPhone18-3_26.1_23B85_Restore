@@ -36,24 +36,24 @@
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   if (self->_queue)
   {
-    MEMORY[0x1E69E5920](v4->_queue);
+    MEMORY[0x1E69E5920](selfCopy->_queue);
   }
 
-  if (v4->_eventSource)
+  if (selfCopy->_eventSource)
   {
-    MEMORY[0x1E69E5920](v4->_eventSource);
+    MEMORY[0x1E69E5920](selfCopy->_eventSource);
   }
 
-  if (v4->_samplingStrategy)
+  if (selfCopy->_samplingStrategy)
   {
-    MEMORY[0x1E69E5920](v4->_samplingStrategy);
+    MEMORY[0x1E69E5920](selfCopy->_samplingStrategy);
   }
 
-  v2.receiver = v4;
+  v2.receiver = selfCopy;
   v2.super_class = CBGrimaldiFactory;
   [(CBGrimaldiFactory *)&v2 dealloc];
 }

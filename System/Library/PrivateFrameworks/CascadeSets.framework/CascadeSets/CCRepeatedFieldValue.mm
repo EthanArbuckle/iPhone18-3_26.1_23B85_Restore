@@ -1,7 +1,7 @@
 @interface CCRepeatedFieldValue
 + (id)_new;
-- (BOOL)isEqual:(id)a3;
-- (CCRepeatedFieldValue)initWithMutableArray:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CCRepeatedFieldValue)initWithMutableArray:(id)array;
 - (id)_init;
 @end
 
@@ -22,40 +22,40 @@
   return v4;
 }
 
-- (CCRepeatedFieldValue)initWithMutableArray:(id)a3
+- (CCRepeatedFieldValue)initWithMutableArray:(id)array
 {
-  v5 = a3;
+  arrayCopy = array;
   v9.receiver = self;
   v9.super_class = CCRepeatedFieldValue;
   v6 = [(CCRepeatedFieldValue *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_values, a3);
+    objc_storeStrong(&v6->_values, array);
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(CCRepeatedFieldValue *)self values];
-    v7 = [v5 values];
-    if (v6 == v7)
+    v5 = equalCopy;
+    values = [(CCRepeatedFieldValue *)self values];
+    values2 = [v5 values];
+    if (values == values2)
     {
       v10 = 1;
     }
 
     else
     {
-      v8 = [(CCRepeatedFieldValue *)self values];
-      v9 = [v5 values];
-      v10 = [v8 isEqualToArray:v9];
+      values3 = [(CCRepeatedFieldValue *)self values];
+      values4 = [v5 values];
+      v10 = [values3 isEqualToArray:values4];
     }
   }
 

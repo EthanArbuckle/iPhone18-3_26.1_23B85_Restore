@@ -1,7 +1,7 @@
 @interface UserPresenceUpdateSubscriptionManager
 - (NSUUID)messageTargetUUID;
 - (_TtC13HomeKitDaemon37UserPresenceUpdateSubscriptionManager)init;
-- (void)handleHomePresenceUpdateNotification:(id)a3;
+- (void)handleHomePresenceUpdateNotification:(id)notification;
 @end
 
 @implementation UserPresenceUpdateSubscriptionManager
@@ -20,7 +20,7 @@
   return v8;
 }
 
-- (void)handleHomePresenceUpdateNotification:(id)a3
+- (void)handleHomePresenceUpdateNotification:(id)notification
 {
   v3 = sub_22A4DB21C();
   v4 = *(v3 - 8);

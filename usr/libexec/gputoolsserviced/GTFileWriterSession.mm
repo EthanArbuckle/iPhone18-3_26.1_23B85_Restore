@@ -1,23 +1,23 @@
 @interface GTFileWriterSession
-+ (id)sessionWithFileEntries:(id)a3 relativeToURL:(id)a4 options:(id)a5 error:(id *)a6;
++ (id)sessionWithFileEntries:(id)entries relativeToURL:(id)l options:(id)options error:(id *)error;
 @end
 
 @implementation GTFileWriterSession
 
-+ (id)sessionWithFileEntries:(id)a3 relativeToURL:(id)a4 options:(id)a5 error:(id *)a6
++ (id)sessionWithFileEntries:(id)entries relativeToURL:(id)l options:(id)options error:(id *)error
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v9 compressionAlgorithm];
+  optionsCopy = options;
+  lCopy = l;
+  entriesCopy = entries;
+  compressionAlgorithm = [optionsCopy compressionAlgorithm];
   v13 = &off_1000406D0;
-  if (v12)
+  if (compressionAlgorithm)
   {
     v13 = off_1000406C8;
   }
 
   v14 = *v13;
-  v15 = [objc_opt_class() sessionWithFileEntries:v11 relativeToURL:v10 options:v9 error:a6];
+  v15 = [objc_opt_class() sessionWithFileEntries:entriesCopy relativeToURL:lCopy options:optionsCopy error:error];
 
   return v15;
 }

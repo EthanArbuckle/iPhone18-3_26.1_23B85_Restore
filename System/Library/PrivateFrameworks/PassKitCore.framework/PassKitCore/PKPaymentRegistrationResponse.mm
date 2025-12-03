@@ -1,50 +1,50 @@
 @interface PKPaymentRegistrationResponse
-- (PKPaymentRegistrationResponse)initWithData:(id)a3;
+- (PKPaymentRegistrationResponse)initWithData:(id)data;
 @end
 
 @implementation PKPaymentRegistrationResponse
 
-- (PKPaymentRegistrationResponse)initWithData:(id)a3
+- (PKPaymentRegistrationResponse)initWithData:(id)data
 {
   v71 = *MEMORY[0x1E69E9840];
   v64.receiver = self;
   v64.super_class = PKPaymentRegistrationResponse;
-  v3 = [(PKWebServiceResponse *)&v64 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v64 initWithData:data];
   if (!v3)
   {
     return 0;
   }
 
   v4 = v3;
-  v5 = [(PKWebServiceResponse *)v3 JSONObject];
+  jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 PKStringForKey:@"deviceIdentifier"];
+    v6 = [jSONObject PKStringForKey:@"deviceIdentifier"];
     deviceIdentifier = v4->_deviceIdentifier;
     v4->_deviceIdentifier = v6;
 
-    v8 = [v5 PKNumberForKey:@"cardsOnFile"];
+    v8 = [jSONObject PKNumberForKey:@"cardsOnFile"];
     cardsOnFile = v4->_cardsOnFile;
     v4->_cardsOnFile = v8;
 
-    v10 = [v5 PKNumberForKey:@"maxCards"];
+    v10 = [jSONObject PKNumberForKey:@"maxCards"];
     maxCards = v4->_maxCards;
     v4->_maxCards = v10;
 
-    v12 = [v5 PKStringForKey:@"primaryRegion"];
+    v12 = [jSONObject PKStringForKey:@"primaryRegion"];
     primaryRegion = v4->_primaryRegion;
     v4->_primaryRegion = v12;
 
-    v14 = [v5 PKStringForKey:@"environmentName"];
+    v14 = [jSONObject PKStringForKey:@"environmentName"];
     environmentName = v4->_environmentName;
     v55 = v4;
     v4->_environmentName = v14;
 
-    v16 = [v5 PKDictionaryForKey:@"regions"];
+    v16 = [jSONObject PKDictionaryForKey:@"regions"];
     v17 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v54 = v5;
-    v18 = [v5 PKBoolForKey:@"hasPeerPaymentAccount"];
+    v54 = jSONObject;
+    v18 = [jSONObject PKBoolForKey:@"hasPeerPaymentAccount"];
     v60 = 0u;
     v61 = 0u;
     v62 = 0u;
@@ -141,7 +141,7 @@
     certificates = v55->_certificates;
     v55->_certificates = v45;
 
-    v5 = v54;
+    jSONObject = v54;
   }
 
   else

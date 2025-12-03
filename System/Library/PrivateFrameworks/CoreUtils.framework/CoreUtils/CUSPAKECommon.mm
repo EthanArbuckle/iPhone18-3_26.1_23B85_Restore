@@ -1,31 +1,31 @@
 @interface CUSPAKECommon
-+ (BOOL)scryptWithPasswordData:(id)a3 outputPtr:(char *)a4 outputLen:(unint64_t)a5 error:(id *)a6;
++ (BOOL)scryptWithPasswordData:(id)data outputPtr:(char *)ptr outputLen:(unint64_t)len error:(id *)error;
 @end
 
 @implementation CUSPAKECommon
 
-+ (BOOL)scryptWithPasswordData:(id)a3 outputPtr:(char *)a4 outputLen:(unint64_t)a5 error:(id *)a6
++ (BOOL)scryptWithPasswordData:(id)data outputPtr:(char *)ptr outputLen:(unint64_t)len error:(id *)error
 {
-  v7 = a3;
+  dataCopy = data;
   v8 = ccscrypt_storage_size();
   v14 = v8;
   if (v8 <= 0)
   {
-    if (!a6)
+    if (!error)
     {
       goto LABEL_12;
     }
 
     NSErrorF_safe(*MEMORY[0x1E696A768], 4294960553, "bad scrypt storage size: %lld bytes", v9, v10, v11, v12, v13, v8);
 LABEL_11:
-    *a6 = v22 = 0;
+    *error = v22 = 0;
     goto LABEL_4;
   }
 
   v15 = malloc_type_malloc(v8, 0x100004077774924uLL);
   if (!v15)
   {
-    if (!a6)
+    if (!error)
     {
       goto LABEL_12;
     }
@@ -35,14 +35,14 @@ LABEL_11:
   }
 
   v21 = v15;
-  [v7 length];
-  [v7 bytes];
+  [dataCopy length];
+  [dataCopy bytes];
   v22 = 1;
   v23 = ccscrypt();
   free(v21);
   if (v23)
   {
-    if (a6)
+    if (error)
     {
       NSErrorF_safe(*MEMORY[0x1E696A768], 4294960596, "ccscrypt failed: %d", v24, v25, v26, v27, v28, v23);
       goto LABEL_11;

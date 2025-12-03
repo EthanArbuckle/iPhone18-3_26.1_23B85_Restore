@@ -1,19 +1,19 @@
 @interface SBFloatingDockViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)dismissPresentedFolderAnimated:(BOOL)a3 completion:(id)a4;
+- (void)dismissPresentedFolderAnimated:(BOOL)animated completion:(id)completion;
 - (void)dockViewDidResignVisible;
 @end
 
 @implementation SBFloatingDockViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBFloatingDockViewController" hasInstanceMethod:@"dismissPresentedFolderAnimated:completion:" withFullSignature:{"v", "B", "@?", 0}];
-  [v3 validateClass:@"SBFloatingDockViewController" hasInstanceMethod:@"dockViewDidResignVisible" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SBHIconManager" hasInstanceMethod:@"hasOpenFolder" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBHIconManager" hasInstanceMethod:@"isIconStylePickerVisible" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBFloatingDockViewController" hasInstanceMethod:@"dismissPresentedFolderAnimated:completion:" withFullSignature:{"v", "B", "@?", 0}];
+  [validationsCopy validateClass:@"SBFloatingDockViewController" hasInstanceMethod:@"dockViewDidResignVisible" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SBHIconManager" hasInstanceMethod:@"hasOpenFolder" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBHIconManager" hasInstanceMethod:@"isIconStylePickerVisible" withFullSignature:{"B", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -32,10 +32,10 @@
   [v3 setAccessibilityElementsHiddenBlock:v6];
 }
 
-- (void)dismissPresentedFolderAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissPresentedFolderAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   [(SBFloatingDockViewControllerAccessibility *)self _axSetIsClosingFolder:1];
   v7 = AXSBHIconManagerFromSharedIconController();
   v23 = MEMORY[0x29EDCA5F8];
@@ -46,7 +46,7 @@
   AXPerformSafeBlock();
   v8 = [v27 safeValueForKey:@"openedFolder"];
   v9 = [v8 safeValueForKey:@"displayName"];
-  v10 = [v6 copy];
+  v10 = [completionCopy copy];
 
   v16[0] = MEMORY[0x29EDCA5F8];
   v16[1] = 3221225472;
@@ -54,8 +54,8 @@
   v16[3] = &unk_29F3003A0;
   v21 = v8 != 0;
   v17 = v27;
-  v18 = self;
-  v22 = v4;
+  selfCopy = self;
+  v22 = animatedCopy;
   v19 = v9;
   v20 = v10;
   v11 = v9;
@@ -64,7 +64,7 @@
   v14 = MEMORY[0x29ED38BB0](v16);
   v15.receiver = self;
   v15.super_class = SBFloatingDockViewControllerAccessibility;
-  [(SBFloatingDockViewControllerAccessibility *)&v15 dismissPresentedFolderAnimated:v4 completion:v14];
+  [(SBFloatingDockViewControllerAccessibility *)&v15 dismissPresentedFolderAnimated:animatedCopy completion:v14];
 }
 
 void __87__SBFloatingDockViewControllerAccessibility_dismissPresentedFolderAnimated_completion___block_invoke_2(uint64_t a1, uint64_t a2)
@@ -108,8 +108,8 @@ void __87__SBFloatingDockViewControllerAccessibility_dismissPresentedFolderAnima
   v3.receiver = self;
   v3.super_class = SBFloatingDockViewControllerAccessibility;
   [(SBFloatingDockViewControllerAccessibility *)&v3 dockViewDidResignVisible];
-  v2 = [MEMORY[0x29EDBDFA8] server];
-  [v2 didPotentiallyDismissNonExclusiveSystemUI];
+  server = [MEMORY[0x29EDBDFA8] server];
+  [server didPotentiallyDismissNonExclusiveSystemUI];
 }
 
 @end

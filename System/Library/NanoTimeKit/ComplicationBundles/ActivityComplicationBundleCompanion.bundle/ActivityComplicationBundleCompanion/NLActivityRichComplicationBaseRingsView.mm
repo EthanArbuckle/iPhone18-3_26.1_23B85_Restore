@@ -1,31 +1,31 @@
 @interface NLActivityRichComplicationBaseRingsView
 - (BOOL)_ringsShouldAdoptAccentColor;
 - (CLKMonochromeFilterProvider)filterProvider;
-- (NLActivityRichComplicationBaseRingsView)initWithFrame:(CGRect)a3;
+- (NLActivityRichComplicationBaseRingsView)initWithFrame:(CGRect)frame;
 - (int64_t)family;
 - (void)_showEmptyViews;
-- (void)_updateRingWithTemplate:(id)a3;
-- (void)configureWithImageProvider:(id)a3 reason:(int64_t)a4;
+- (void)_updateRingWithTemplate:(id)template;
+- (void)configureWithImageProvider:(id)provider reason:(int64_t)reason;
 - (void)layoutSubviews;
-- (void)setFilterProvider:(id)a3;
+- (void)setFilterProvider:(id)provider;
 @end
 
 @implementation NLActivityRichComplicationBaseRingsView
 
-- (NLActivityRichComplicationBaseRingsView)initWithFrame:(CGRect)a3
+- (NLActivityRichComplicationBaseRingsView)initWithFrame:(CGRect)frame
 {
   v23.receiver = self;
   v23.super_class = NLActivityRichComplicationBaseRingsView;
-  v3 = [(NLActivityRichComplicationBaseRingsView *)&v23 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NLActivityRichComplicationBaseRingsView *)&v23 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (!v3)
   {
     return v3;
   }
 
   v4 = +[CLKDevice currentDevice];
-  v5 = [(NLActivityRichComplicationBaseRingsView *)v3 family];
-  sub_5964(v5, v4);
-  if (v5 == &dword_8)
+  family = [(NLActivityRichComplicationBaseRingsView *)v3 family];
+  sub_5964(family, v4);
+  if (family == &dword_8)
   {
     v6 = &qword_167A0;
     v7 = &qword_167A8;
@@ -36,9 +36,9 @@
   else
   {
     v6 = &xmmword_16760;
-    if (v5 != (&dword_8 + 2))
+    if (family != (&dword_8 + 2))
     {
-      if (v5 != &dword_C)
+      if (family != &dword_C)
       {
         _HKInitializeLogging();
         v10 = HKLogActivity;
@@ -47,7 +47,7 @@
         v9 = &qword_16778;
         if (os_log_type_enabled(HKLogActivity, OS_LOG_TYPE_ERROR))
         {
-          sub_9574(v5, v10);
+          sub_9574(family, v10);
         }
 
         goto LABEL_10;
@@ -123,10 +123,10 @@ LABEL_10:
   }
 }
 
-- (void)configureWithImageProvider:(id)a3 reason:(int64_t)a4
+- (void)configureWithImageProvider:(id)provider reason:(int64_t)reason
 {
-  v5 = [a3 metadata];
-  v6 = [v5 objectForKeyedSubscript:@"NLActivityRichComplicationActivityTemplateKey"];
+  metadata = [provider metadata];
+  v6 = [metadata objectForKeyedSubscript:@"NLActivityRichComplicationActivityTemplateKey"];
 
   if ([v6 dotsAreHidden])
   {
@@ -139,11 +139,11 @@ LABEL_10:
   }
 }
 
-- (void)setFilterProvider:(id)a3
+- (void)setFilterProvider:(id)provider
 {
-  v4 = a3;
-  objc_storeWeak(&self->_filterProvider, v4);
-  [(NTKRingsAndDotsView *)self->_ringsView setFilterProvider:v4];
+  providerCopy = provider;
+  objc_storeWeak(&self->_filterProvider, providerCopy);
+  [(NTKRingsAndDotsView *)self->_ringsView setFilterProvider:providerCopy];
 }
 
 - (void)_showEmptyViews
@@ -159,10 +159,10 @@ LABEL_10:
   [(NTKRingsAndDotsView *)ringsView setRingsFillFractions:v7];
 }
 
-- (void)_updateRingWithTemplate:(id)a3
+- (void)_updateRingWithTemplate:(id)template
 {
-  v17 = a3;
-  [v17 movePercentComplete];
+  templateCopy = template;
+  [templateCopy movePercentComplete];
   if (v4 < 0.00000011920929)
   {
     v4 = 0.00000011920929;
@@ -177,7 +177,7 @@ LABEL_10:
     [(NSMutableArray *)self->_ringsFillFractions replaceObjectAtIndex:0 withObject:v5];
   }
 
-  [v17 exercisePercentComplete];
+  [templateCopy exercisePercentComplete];
   if (v8 < 0.00000011920929)
   {
     v8 = 0.00000011920929;
@@ -198,7 +198,7 @@ LABEL_10:
     [(NSMutableArray *)self->_ringsFillFractions replaceObjectAtIndex:1 withObject:v9];
   }
 
-  [v17 standPercentComplete];
+  [templateCopy standPercentComplete];
   if (v13 < 0.00000011920929)
   {
     v13 = 0.00000011920929;

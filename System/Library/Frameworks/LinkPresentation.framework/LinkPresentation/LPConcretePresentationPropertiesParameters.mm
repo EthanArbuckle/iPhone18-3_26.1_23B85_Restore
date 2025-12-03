@@ -1,34 +1,34 @@
 @interface LPConcretePresentationPropertiesParameters
-- (LPConcretePresentationPropertiesParameters)initWithUsesComputedPresentationProperties:(BOOL)a3 inComposeContext:(BOOL)a4 inSenderContext:(BOOL)a5 allowsTapping:(BOOL)a6 effectiveSizeClass:(unint64_t)a7 overrideSubtitleButtonColor:(id)a8 overrideActionButtonColor:(id)a9 overrideSubtitle:(id)a10 captionButton:(id)a11 captionTextButton:(id)a12 secondaryCaptionButton:(id)a13;
+- (LPConcretePresentationPropertiesParameters)initWithUsesComputedPresentationProperties:(BOOL)properties inComposeContext:(BOOL)context inSenderContext:(BOOL)senderContext allowsTapping:(BOOL)tapping effectiveSizeClass:(unint64_t)class overrideSubtitleButtonColor:(id)color overrideActionButtonColor:(id)buttonColor overrideSubtitle:(id)self0 captionButton:(id)self1 captionTextButton:(id)self2 secondaryCaptionButton:(id)self3;
 @end
 
 @implementation LPConcretePresentationPropertiesParameters
 
-- (LPConcretePresentationPropertiesParameters)initWithUsesComputedPresentationProperties:(BOOL)a3 inComposeContext:(BOOL)a4 inSenderContext:(BOOL)a5 allowsTapping:(BOOL)a6 effectiveSizeClass:(unint64_t)a7 overrideSubtitleButtonColor:(id)a8 overrideActionButtonColor:(id)a9 overrideSubtitle:(id)a10 captionButton:(id)a11 captionTextButton:(id)a12 secondaryCaptionButton:(id)a13
+- (LPConcretePresentationPropertiesParameters)initWithUsesComputedPresentationProperties:(BOOL)properties inComposeContext:(BOOL)context inSenderContext:(BOOL)senderContext allowsTapping:(BOOL)tapping effectiveSizeClass:(unint64_t)class overrideSubtitleButtonColor:(id)color overrideActionButtonColor:(id)buttonColor overrideSubtitle:(id)self0 captionButton:(id)self1 captionTextButton:(id)self2 secondaryCaptionButton:(id)self3
 {
-  v29 = a8;
-  v28 = a9;
-  v27 = a10;
-  v26 = a11;
-  v16 = a12;
-  v17 = a13;
+  colorCopy = color;
+  buttonColorCopy = buttonColor;
+  subtitleCopy = subtitle;
+  buttonCopy = button;
+  textButtonCopy = textButton;
+  captionButtonCopy = captionButton;
   v30.receiver = self;
   v30.super_class = LPConcretePresentationPropertiesParameters;
   v18 = [(LPConcretePresentationPropertiesParameters *)&v30 init];
   v19 = v18;
   if (v18)
   {
-    v18->_usesComputedPresentationProperties = a3;
-    v18->_inComposeContext = a4;
-    v18->_inSenderContext = a5;
-    v18->_allowsTapping = a6;
-    v18->_effectiveSizeClass = a7;
-    objc_storeStrong(&v18->_overrideSubtitleButtonColor, a8);
-    objc_storeStrong(&v19->_overrideActionButtonColor, a9);
-    objc_storeStrong(&v19->_overrideSubtitle, a10);
-    objc_storeStrong(&v19->_captionButton, a11);
-    objc_storeStrong(&v19->_captionTextButton, a12);
-    objc_storeStrong(&v19->_secondaryCaptionButton, a13);
+    v18->_usesComputedPresentationProperties = properties;
+    v18->_inComposeContext = context;
+    v18->_inSenderContext = senderContext;
+    v18->_allowsTapping = tapping;
+    v18->_effectiveSizeClass = class;
+    objc_storeStrong(&v18->_overrideSubtitleButtonColor, color);
+    objc_storeStrong(&v19->_overrideActionButtonColor, buttonColor);
+    objc_storeStrong(&v19->_overrideSubtitle, subtitle);
+    objc_storeStrong(&v19->_captionButton, button);
+    objc_storeStrong(&v19->_captionTextButton, textButton);
+    objc_storeStrong(&v19->_secondaryCaptionButton, captionButton);
     v20 = v19;
   }
 

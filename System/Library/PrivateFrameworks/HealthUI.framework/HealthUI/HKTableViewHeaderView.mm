@@ -20,8 +20,8 @@
     v2->_label = v3;
 
     [(UILabel *)v2->_label setNumberOfLines:0];
-    v5 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v2->_label setTextColor:v5];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v2->_label setTextColor:labelColor];
 
     [(UILabel *)v2->_label setTextAlignment:4];
     [(HKTableViewHeaderView *)v2 updateFont];

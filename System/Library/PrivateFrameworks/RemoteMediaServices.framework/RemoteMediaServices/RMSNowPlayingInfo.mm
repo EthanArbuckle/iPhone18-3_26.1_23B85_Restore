@@ -1,49 +1,49 @@
 @interface RMSNowPlayingInfo
 - (NSString)artworkIdentifier;
-- (RMSNowPlayingInfo)initWithProtobuf:(id)a3;
+- (RMSNowPlayingInfo)initWithProtobuf:(id)protobuf;
 - (id)protobuf;
 @end
 
 @implementation RMSNowPlayingInfo
 
-- (RMSNowPlayingInfo)initWithProtobuf:(id)a3
+- (RMSNowPlayingInfo)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v16.receiver = self;
   v16.super_class = RMSNowPlayingInfo;
   v5 = [(RMSNowPlayingInfo *)&v16 init];
   if (v5)
   {
-    v5->_itemID = [v4 itemID];
-    v5->_databaseID = [v4 databaseID];
-    v6 = [v4 trackName];
+    v5->_itemID = [protobufCopy itemID];
+    v5->_databaseID = [protobufCopy databaseID];
+    trackName = [protobufCopy trackName];
     trackName = v5->_trackName;
-    v5->_trackName = v6;
+    v5->_trackName = trackName;
 
-    v8 = [v4 artistName];
+    artistName = [protobufCopy artistName];
     artistName = v5->_artistName;
-    v5->_artistName = v8;
+    v5->_artistName = artistName;
 
-    v10 = [v4 albumName];
+    albumName = [protobufCopy albumName];
     albumName = v5->_albumName;
-    v5->_albumName = v10;
+    v5->_albumName = albumName;
 
-    [v4 timestamp];
+    [protobufCopy timestamp];
     v5->_timestamp = v12;
-    [v4 timeRemaining];
+    [protobufCopy timeRemaining];
     v5->_timeRemaining = v13;
-    [v4 totalDuration];
+    [protobufCopy totalDuration];
     v5->_totalDuration = v14;
-    v5->_revisionNumber = [v4 revisionNumber];
-    v5->_mediaKind = [v4 mediaKind];
-    v5->_playbackState = [v4 playbackState];
-    v5->_likedState = [v4 likedState];
-    v5->_scrubbableState = [v4 scrubbableState];
-    v5->_canSkipNext = [v4 canSkipNext];
-    v5->_canSkipPrevious = [v4 canSkipPrevious];
-    v5->_likeable = [v4 likeable];
-    v5->_canWishlist = [v4 canWishlist];
-    v5->_hasChapterData = [v4 hasChapterData];
+    v5->_revisionNumber = [protobufCopy revisionNumber];
+    v5->_mediaKind = [protobufCopy mediaKind];
+    v5->_playbackState = [protobufCopy playbackState];
+    v5->_likedState = [protobufCopy likedState];
+    v5->_scrubbableState = [protobufCopy scrubbableState];
+    v5->_canSkipNext = [protobufCopy canSkipNext];
+    v5->_canSkipPrevious = [protobufCopy canSkipPrevious];
+    v5->_likeable = [protobufCopy likeable];
+    v5->_canWishlist = [protobufCopy canWishlist];
+    v5->_hasChapterData = [protobufCopy hasChapterData];
   }
 
   return v5;

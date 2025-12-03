@@ -1,23 +1,23 @@
 @interface ClusteredResultsContextConfiguration
 - (_TtC4Maps36ClusteredResultsContextConfiguration)init;
-- (_TtC4Maps36ClusteredResultsContextConfiguration)initWithLabelMarker:(id)a3 sortAlphabetically:(BOOL)a4 displayDistance:(BOOL)a5 originalSearchInfo:(id)a6 currentLocation:(id)a7;
+- (_TtC4Maps36ClusteredResultsContextConfiguration)initWithLabelMarker:(id)marker sortAlphabetically:(BOOL)alphabetically displayDistance:(BOOL)distance originalSearchInfo:(id)info currentLocation:(id)location;
 @end
 
 @implementation ClusteredResultsContextConfiguration
 
-- (_TtC4Maps36ClusteredResultsContextConfiguration)initWithLabelMarker:(id)a3 sortAlphabetically:(BOOL)a4 displayDistance:(BOOL)a5 originalSearchInfo:(id)a6 currentLocation:(id)a7
+- (_TtC4Maps36ClusteredResultsContextConfiguration)initWithLabelMarker:(id)marker sortAlphabetically:(BOOL)alphabetically displayDistance:(BOOL)distance originalSearchInfo:(id)info currentLocation:(id)location
 {
   ObjectType = swift_getObjectType();
-  *(&self->super.isa + OBJC_IVAR____TtC4Maps36ClusteredResultsContextConfiguration_labelMarker) = a3;
-  *(&self->super.isa + OBJC_IVAR____TtC4Maps36ClusteredResultsContextConfiguration_sortAlphabetically) = a4;
-  *(&self->super.isa + OBJC_IVAR____TtC4Maps36ClusteredResultsContextConfiguration_displayDistance) = a5;
-  *(&self->super.isa + OBJC_IVAR____TtC4Maps36ClusteredResultsContextConfiguration_originalSearchInfo) = a6;
-  *(&self->super.isa + OBJC_IVAR____TtC4Maps36ClusteredResultsContextConfiguration_currentLocation) = a7;
+  *(&self->super.isa + OBJC_IVAR____TtC4Maps36ClusteredResultsContextConfiguration_labelMarker) = marker;
+  *(&self->super.isa + OBJC_IVAR____TtC4Maps36ClusteredResultsContextConfiguration_sortAlphabetically) = alphabetically;
+  *(&self->super.isa + OBJC_IVAR____TtC4Maps36ClusteredResultsContextConfiguration_displayDistance) = distance;
+  *(&self->super.isa + OBJC_IVAR____TtC4Maps36ClusteredResultsContextConfiguration_originalSearchInfo) = info;
+  *(&self->super.isa + OBJC_IVAR____TtC4Maps36ClusteredResultsContextConfiguration_currentLocation) = location;
   v18.receiver = self;
   v18.super_class = ObjectType;
-  v14 = a3;
-  v15 = a6;
-  v16 = a7;
+  markerCopy = marker;
+  infoCopy = info;
+  locationCopy = location;
   return [(ClusteredResultsContextConfiguration *)&v18 init];
 }
 

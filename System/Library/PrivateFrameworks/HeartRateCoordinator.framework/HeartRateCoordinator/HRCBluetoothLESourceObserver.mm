@@ -1,9 +1,9 @@
 @interface HRCBluetoothLESourceObserver
-- (HRCBluetoothLESourceObserver)initWithDelegate:(id)a3 onQueue:(id)a4;
-- (HRCBluetoothLESourceObserver)initWithDelegate:(id)a3 onQueue:(id)a4 connectionHelper:(id)a5;
+- (HRCBluetoothLESourceObserver)initWithDelegate:(id)delegate onQueue:(id)queue;
+- (HRCBluetoothLESourceObserver)initWithDelegate:(id)delegate onQueue:(id)queue connectionHelper:(id)helper;
 - (HRCBluetoothLESourceObserverDelegate)delegate;
 - (void)dealloc;
-- (void)handleUpdatedSourceList:(id)a3;
+- (void)handleUpdatedSourceList:(id)list;
 @end
 
 @implementation HRCBluetoothLESourceObserver
@@ -15,21 +15,21 @@
   return WeakRetained;
 }
 
-- (HRCBluetoothLESourceObserver)initWithDelegate:(id)a3 onQueue:(id)a4
+- (HRCBluetoothLESourceObserver)initWithDelegate:(id)delegate onQueue:(id)queue
 {
-  v6 = a4;
-  v7 = a3;
+  queueCopy = queue;
+  delegateCopy = delegate;
   v8 = objc_opt_new();
-  v9 = [(HRCBluetoothLESourceObserver *)self initWithDelegate:v7 onQueue:v6 connectionHelper:v8];
+  v9 = [(HRCBluetoothLESourceObserver *)self initWithDelegate:delegateCopy onQueue:queueCopy connectionHelper:v8];
 
   return v9;
 }
 
-- (HRCBluetoothLESourceObserver)initWithDelegate:(id)a3 onQueue:(id)a4 connectionHelper:(id)a5
+- (HRCBluetoothLESourceObserver)initWithDelegate:(id)delegate onQueue:(id)queue connectionHelper:(id)helper
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  queueCopy = queue;
+  helperCopy = helper;
+  delegateCopy = delegate;
   v11 = hws_get_framework_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -40,15 +40,15 @@
   v25.receiver = self;
   v25.super_class = HRCBluetoothLESourceObserver;
   v12 = [(HRCBluetoothLESourceObserver *)&v25 init];
-  objc_storeWeak(&v12->_delegate, v10);
+  objc_storeWeak(&v12->_delegate, delegateCopy);
 
   delegateQueue = v12->_delegateQueue;
-  v12->_delegateQueue = v8;
-  v14 = v8;
+  v12->_delegateQueue = queueCopy;
+  v14 = queueCopy;
 
   connectionHelper = v12->_connectionHelper;
-  v12->_connectionHelper = v9;
-  v16 = v9;
+  v12->_connectionHelper = helperCopy;
+  v16 = helperCopy;
 
   v17 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v18 = dispatch_queue_create("com.apple.heartratecoordinator.btlesourceobserver", v17);
@@ -100,15 +100,15 @@ void __74__HRCBluetoothLESourceObserver_initWithDelegate_onQueue_connectionHelpe
   [(HRCBluetoothLESourceObserver *)&v5 dealloc];
 }
 
-- (void)handleUpdatedSourceList:(id)a3
+- (void)handleUpdatedSourceList:(id)list
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  listCopy = list;
   v5 = hws_get_framework_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134349056;
-    v12 = [v4 count];
+    v12 = [listCopy count];
     _os_log_impl(&dword_2521DF000, v5, OS_LOG_TYPE_DEFAULT, "received source list update in the client process with count : %{public}lu", buf, 0xCu);
   }
 
@@ -118,8 +118,8 @@ void __74__HRCBluetoothLESourceObserver_initWithDelegate_onQueue_connectionHelpe
   v9[2] = __56__HRCBluetoothLESourceObserver_handleUpdatedSourceList___block_invoke;
   v9[3] = &unk_2796FA8D8;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = listCopy;
+  v7 = listCopy;
   dispatch_async(delegateQueue, v9);
 
   v8 = *MEMORY[0x277D85DE8];

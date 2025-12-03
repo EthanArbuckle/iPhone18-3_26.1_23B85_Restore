@@ -3,7 +3,7 @@
 - (BOOL)isLECapableHardware;
 - (void)advertiseMIDIService;
 - (void)dealloc;
-- (void)peripheralManagerDidStartAdvertising:(id)a3 error:(id)a4;
+- (void)peripheralManagerDidStartAdvertising:(id)advertising error:(id)error;
 - (void)stopAdvertisingMIDIService;
 @end
 
@@ -36,34 +36,34 @@
   [(AMSBTLEAdvertisementManager *)&v4 dealloc];
 }
 
-- (void)peripheralManagerDidStartAdvertising:(id)a3 error:(id)a4
+- (void)peripheralManagerDidStartAdvertising:(id)advertising error:(id)error
 {
-  if (a4)
+  if (error)
   {
-    NSLog(&stru_284A3B0D8.isa, a2, a3, a4);
+    NSLog(&stru_284A3B0D8.isa, a2, advertising, error);
   }
 
   else
   {
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 postNotificationName:kAdvertisementNotification object:0 userInfo:&unk_284A43720];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:kAdvertisementNotification object:0 userInfo:&unk_284A43720];
     NSLog(&cfstr_AdvertisingSta.isa, v5);
   }
 }
 
 - (BOOL)isLECapableHardware
 {
-  v2 = [(CBPeripheralManager *)self->peripheralManager state];
+  state = [(CBPeripheralManager *)self->peripheralManager state];
   v3 = 0;
-  if (v2 > 3)
+  if (state > 3)
   {
-    if (v2 == 4)
+    if (state == 4)
     {
       v4 = @"Bluetooth is currently powered off.";
       goto LABEL_10;
     }
 
-    if (v2 == 5)
+    if (state == 5)
     {
       v3 = 1;
       v4 = @"Bluetooth is powered on and LE capable.";
@@ -74,13 +74,13 @@ LABEL_11:
 
   else
   {
-    if (v2 == 2)
+    if (state == 2)
     {
       v4 = @"The platform/hardware doesn't support Bluetooth Low Energy.";
       goto LABEL_10;
     }
 
-    if (v2 == 3)
+    if (state == 3)
     {
       v4 = @"The app is not authorized to use Bluetooth Low Energy.";
 LABEL_10:
@@ -103,11 +103,11 @@ LABEL_10:
   else if ([(AMSBTLEAdvertisementManager *)self isLECapableHardware])
   {
     v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v4 = [MEMORY[0x277CBFD00] nullDevice];
+    nullDevice = [MEMORY[0x277CBFD00] nullDevice];
     str = 0;
-    if (v4)
+    if (nullDevice)
     {
-      if (MIDIObjectGetStringProperty(v4, @"Bluetooth Advertising Name", &str))
+      if (MIDIObjectGetStringProperty(nullDevice, @"Bluetooth Advertising Name", &str))
       {
         v5 = *MEMORY[0x277CBDD08];
         v6 = @"Bluetooth MIDI Device";
@@ -147,10 +147,10 @@ LABEL_10:
 {
   NSLog(&cfstr_StoppedAdverti.isa, a2);
   [(CBPeripheralManager *)self->peripheralManager stopAdvertising];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v4 = kAdvertisementNotification;
 
-  [v3 postNotificationName:v4 object:0 userInfo:&unk_284A43748];
+  [defaultCenter postNotificationName:v4 object:0 userInfo:&unk_284A43748];
 }
 
 @end

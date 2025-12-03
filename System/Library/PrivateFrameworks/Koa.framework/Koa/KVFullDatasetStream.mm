@@ -1,17 +1,17 @@
 @interface KVFullDatasetStream
-- (BOOL)registerCascadeItem:(id)a3 error:(id *)a4;
-- (BOOL)registerItem:(id)a3 error:(id *)a4;
+- (BOOL)registerCascadeItem:(id)item error:(id *)error;
+- (BOOL)registerItem:(id)item error:(id *)error;
 - (unsigned)errorCode;
 @end
 
 @implementation KVFullDatasetStream
 
-- (BOOL)registerItem:(id)a3 error:(id *)a4
+- (BOOL)registerItem:(id)item error:(id *)error
 {
-  v11 = objc_msgSend__cascadeItemFromItem_error_(self, a2, a3, a4, v4, v5);
+  v11 = objc_msgSend__cascadeItemFromItem_error_(self, a2, item, error, v4, v5);
   if (v11)
   {
-    v12 = objc_msgSend_registerCascadeItem_error_(self, v8, v11, a4, v9, v10);
+    v12 = objc_msgSend_registerCascadeItem_error_(self, v8, v11, error, v9, v10);
   }
 
   else
@@ -22,21 +22,21 @@
   return v12;
 }
 
-- (BOOL)registerCascadeItem:(id)a3 error:(id *)a4
+- (BOOL)registerCascadeItem:(id)item error:(id *)error
 {
-  v6 = a3;
+  itemCopy = item;
   v12 = objc_msgSend_donation(self, v7, v8, v9, v10, v11);
   v20 = 0;
-  v16 = objc_msgSend_registerItem_error_(v12, v13, v6, &v20, v14, v15);
+  v16 = objc_msgSend_registerItem_error_(v12, v13, itemCopy, &v20, v14, v15);
 
   v17 = v20;
   if ((v16 & 1) == 0)
   {
     v18 = sub_2559CA340(v17);
-    if (a4 && v18)
+    if (error && v18)
     {
       v18 = v18;
-      *a4 = v18;
+      *error = v18;
     }
   }
 

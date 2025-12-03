@@ -1,58 +1,58 @@
 @interface MTL4ToolsBinaryFunction
 - (MTL4BinaryFunctionReflection)reflection;
-- (MTL4ToolsBinaryFunction)initWithBaseObject:(id)a3 parent:(id)a4;
+- (MTL4ToolsBinaryFunction)initWithBaseObject:(id)object parent:(id)parent;
 - (MTLDebugInstrumentationData)debugInstrumentationData;
 - (NSString)name;
 - (unint64_t)functionType;
 - (void)dealloc;
-- (void)setRelocations:(id)a3;
+- (void)setRelocations:(id)relocations;
 @end
 
 @implementation MTL4ToolsBinaryFunction
 
 - (NSString)name
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 name];
+  return [baseObject name];
 }
 
 - (MTL4BinaryFunctionReflection)reflection
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 reflection];
+  return [baseObject reflection];
 }
 
 - (unint64_t)functionType
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 functionType];
+  return [baseObject functionType];
 }
 
 - (MTLDebugInstrumentationData)debugInstrumentationData
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 debugInstrumentationData];
+  return [baseObject debugInstrumentationData];
 }
 
-- (MTL4ToolsBinaryFunction)initWithBaseObject:(id)a3 parent:(id)a4
+- (MTL4ToolsBinaryFunction)initWithBaseObject:(id)object parent:(id)parent
 {
   v5.receiver = self;
   v5.super_class = MTL4ToolsBinaryFunction;
-  return [(MTLToolsObject *)&v5 initWithBaseObject:a3 parent:a4];
+  return [(MTLToolsObject *)&v5 initWithBaseObject:object parent:parent];
 }
 
-- (void)setRelocations:(id)a3
+- (void)setRelocations:(id)relocations
 {
   relocations = self->_relocations;
-  if (relocations != a3)
+  if (relocations != relocations)
   {
 
-    self->_relocations = [a3 copy];
-    v6 = [MTLToolsDevice newUnwrappedMTLRelocations:a3];
+    self->_relocations = [relocations copy];
+    v6 = [MTLToolsDevice newUnwrappedMTLRelocations:relocations];
     [-[MTLToolsObject baseObject](self "baseObject")];
   }
 }

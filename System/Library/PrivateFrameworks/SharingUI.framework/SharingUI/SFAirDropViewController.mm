@@ -1,23 +1,23 @@
 @interface SFAirDropViewController
-- (SFAirDropViewController)initWithNoContentView:(BOOL)a3;
+- (SFAirDropViewController)initWithNoContentView:(BOOL)view;
 - (SFAirDropViewControllerDelegate)delegate;
-- (void)_presentationControllerDidDismiss:(id)a3;
-- (void)_setChildViewController:(id)a3;
-- (void)airDropViewServiceDidFinishTransferWithSuccess:(BOOL)a3;
+- (void)_presentationControllerDidDismiss:(id)dismiss;
+- (void)_setChildViewController:(id)controller;
+- (void)airDropViewServiceDidFinishTransferWithSuccess:(BOOL)success;
 - (void)airDropViewServiceDidRequestDismissal;
 - (void)airDropViewServiceDidStartTransfer;
-- (void)airDropViewServiceRequestingSendingAppBundleIdentifierWithCompletionHandler:(id)a3;
-- (void)airDropViewServiceRequestingSharedItemsWithDataRequest:(id)a3 completionHandler:(id)a4;
-- (void)airDropViewServiceWillStartTransferToRecipient:(id)a3;
+- (void)airDropViewServiceRequestingSendingAppBundleIdentifierWithCompletionHandler:(id)handler;
+- (void)airDropViewServiceRequestingSharedItemsWithDataRequest:(id)request completionHandler:(id)handler;
+- (void)airDropViewServiceWillStartTransferToRecipient:(id)recipient;
 - (void)dealloc;
 - (void)viewDidLoad;
 @end
 
 @implementation SFAirDropViewController
 
-- (SFAirDropViewController)initWithNoContentView:(BOOL)a3
+- (SFAirDropViewController)initWithNoContentView:(BOOL)view
 {
-  v3 = a3;
+  viewCopy = view;
   v21[1] = *MEMORY[0x1E69E9840];
   v20.receiver = self;
   v20.super_class = SFAirDropViewController;
@@ -43,7 +43,7 @@
     [v6 setRequestInterruptionBlock:v15];
     v7 = objc_alloc_init(MEMORY[0x1E696ABE0]);
     v8 = MEMORY[0x1E695DF20];
-    v9 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+    v9 = [MEMORY[0x1E696AD98] numberWithBool:viewCopy];
     v10 = [v8 dictionaryWithObject:v9 forKey:@"ShowNoContentView"];
     [v7 setUserInfo:v10];
 
@@ -135,57 +135,57 @@ void __49__SFAirDropViewController_initWithNoContentView___block_invoke_5(uint64
   [(SFAirDropViewController *)&v2 viewDidLoad];
 }
 
-- (void)_setChildViewController:(id)a3
+- (void)_setChildViewController:(id)controller
 {
-  v30 = a3;
-  v5 = [(_SFAirDropRemoteViewController *)self->_childViewController view];
-  [v5 removeFromSuperview];
+  controllerCopy = controller;
+  view = [(_SFAirDropRemoteViewController *)self->_childViewController view];
+  [view removeFromSuperview];
 
   [(_SFAirDropRemoteViewController *)self->_childViewController removeFromParentViewController];
-  objc_storeStrong(&self->_childViewController, a3);
+  objc_storeStrong(&self->_childViewController, controller);
   if (self->_childViewController)
   {
-    [v30 willMoveToParentViewController:self];
-    v6 = [v30 view];
-    v7 = [(SFAirDropViewController *)self view];
-    [v7 bounds];
-    [v6 setFrame:?];
+    [controllerCopy willMoveToParentViewController:self];
+    view2 = [controllerCopy view];
+    view3 = [(SFAirDropViewController *)self view];
+    [view3 bounds];
+    [view2 setFrame:?];
 
-    [(SFAirDropViewController *)self addChildViewController:v30];
-    v8 = [(SFAirDropViewController *)self view];
-    [v8 addSubview:v6];
+    [(SFAirDropViewController *)self addChildViewController:controllerCopy];
+    view4 = [(SFAirDropViewController *)self view];
+    [view4 addSubview:view2];
 
-    v9 = [MEMORY[0x1E695DF70] array];
-    v10 = [v30 view];
-    v11 = [v10 widthAnchor];
-    v12 = [(SFAirDropViewController *)self view];
-    v13 = [v12 widthAnchor];
-    v14 = [v11 constraintEqualToAnchor:v13];
-    [v9 addObject:v14];
+    array = [MEMORY[0x1E695DF70] array];
+    view5 = [controllerCopy view];
+    widthAnchor = [view5 widthAnchor];
+    view6 = [(SFAirDropViewController *)self view];
+    widthAnchor2 = [view6 widthAnchor];
+    v14 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
+    [array addObject:v14];
 
-    v15 = [v30 view];
-    v16 = [v15 heightAnchor];
-    v17 = [(SFAirDropViewController *)self view];
-    v18 = [v17 heightAnchor];
-    v19 = [v16 constraintEqualToAnchor:v18];
-    [v9 addObject:v19];
+    view7 = [controllerCopy view];
+    heightAnchor = [view7 heightAnchor];
+    view8 = [(SFAirDropViewController *)self view];
+    heightAnchor2 = [view8 heightAnchor];
+    v19 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
+    [array addObject:v19];
 
-    v20 = [v30 view];
-    v21 = [v20 centerXAnchor];
-    v22 = [(SFAirDropViewController *)self view];
-    v23 = [v22 centerXAnchor];
-    v24 = [v21 constraintEqualToAnchor:v23];
-    [v9 addObject:v24];
+    view9 = [controllerCopy view];
+    centerXAnchor = [view9 centerXAnchor];
+    view10 = [(SFAirDropViewController *)self view];
+    centerXAnchor2 = [view10 centerXAnchor];
+    v24 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
+    [array addObject:v24];
 
-    v25 = [v30 view];
-    v26 = [v25 centerYAnchor];
-    v27 = [(SFAirDropViewController *)self view];
-    v28 = [v27 centerYAnchor];
-    v29 = [v26 constraintEqualToAnchor:v28];
-    [v9 addObject:v29];
+    view11 = [controllerCopy view];
+    centerYAnchor = [view11 centerYAnchor];
+    view12 = [(SFAirDropViewController *)self view];
+    centerYAnchor2 = [view12 centerYAnchor];
+    v29 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+    [array addObject:v29];
 
-    [MEMORY[0x1E696ACD8] activateConstraints:v9];
-    [v30 didMoveToParentViewController:self];
+    [MEMORY[0x1E696ACD8] activateConstraints:array];
+    [controllerCopy didMoveToParentViewController:self];
   }
 }
 
@@ -211,50 +211,50 @@ void __64__SFAirDropViewController_airDropViewServiceDidRequestDismissal__block_
   }
 }
 
-- (void)airDropViewServiceWillStartTransferToRecipient:(id)a3
+- (void)airDropViewServiceWillStartTransferToRecipient:(id)recipient
 {
-  v4 = a3;
-  v5 = [(SFAirDropViewController *)self delegate];
-  [v5 airDropViewServiceWillStartTransfer:self toRecipient:v4];
+  recipientCopy = recipient;
+  delegate = [(SFAirDropViewController *)self delegate];
+  [delegate airDropViewServiceWillStartTransfer:self toRecipient:recipientCopy];
 }
 
 - (void)airDropViewServiceDidStartTransfer
 {
-  v3 = [(SFAirDropViewController *)self delegate];
-  [v3 airDropViewControllerDidStartTransfer:self];
+  delegate = [(SFAirDropViewController *)self delegate];
+  [delegate airDropViewControllerDidStartTransfer:self];
 }
 
-- (void)airDropViewServiceDidFinishTransferWithSuccess:(BOOL)a3
+- (void)airDropViewServiceDidFinishTransferWithSuccess:(BOOL)success
 {
-  v3 = a3;
-  v5 = [(SFAirDropViewController *)self delegate];
-  [v5 airDropViewController:self didFinishTransferWithSuccess:v3];
+  successCopy = success;
+  delegate = [(SFAirDropViewController *)self delegate];
+  [delegate airDropViewController:self didFinishTransferWithSuccess:successCopy];
 }
 
-- (void)airDropViewServiceRequestingSharedItemsWithDataRequest:(id)a3 completionHandler:(id)a4
+- (void)airDropViewServiceRequestingSharedItemsWithDataRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SFAirDropViewController *)self delegate];
-  [v8 airDropViewController:self requestSharedItemsWithDataRequest:v7 completionHandler:v6];
+  handlerCopy = handler;
+  requestCopy = request;
+  delegate = [(SFAirDropViewController *)self delegate];
+  [delegate airDropViewController:self requestSharedItemsWithDataRequest:requestCopy completionHandler:handlerCopy];
 }
 
-- (void)airDropViewServiceRequestingSendingAppBundleIdentifierWithCompletionHandler:(id)a3
+- (void)airDropViewServiceRequestingSendingAppBundleIdentifierWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SFAirDropViewController *)self delegate];
-  [v5 airDropViewController:self requestSendingAppBundleIdentifierWithCompletionHandler:v4];
+  handlerCopy = handler;
+  delegate = [(SFAirDropViewController *)self delegate];
+  [delegate airDropViewController:self requestSendingAppBundleIdentifierWithCompletionHandler:handlerCopy];
 }
 
-- (void)_presentationControllerDidDismiss:(id)a3
+- (void)_presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = [(SFAirDropViewController *)self delegate];
+  delegate = [(SFAirDropViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(SFAirDropViewController *)self delegate];
-    [v6 airDropViewControllerDidDismiss:self];
+    delegate2 = [(SFAirDropViewController *)self delegate];
+    [delegate2 airDropViewControllerDidDismiss:self];
   }
 }
 

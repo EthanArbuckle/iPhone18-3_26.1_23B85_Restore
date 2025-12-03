@@ -1,38 +1,38 @@
 @interface MFConnection
-+ (BOOL)shouldTryFallbacksAfterError:(id)a3;
++ (BOOL)shouldTryFallbacksAfterError:(id)error;
 + (id)logClasses;
 + (void)initialize;
-+ (void)logConnection:(id)a3 type:(int64_t)a4 data:(id)a5;
++ (void)logConnection:(id)connection type:(int64_t)type data:(id)data;
 + (void)readLoggingDefaults;
-+ (void)setLogActivityOnHosts:(id)a3;
-+ (void)setLogActivityOnPorts:(id)a3;
-+ (void)setLogClasses:(id)a3;
-- (BOOL)authenticateUsingAccount:(id)a3;
-- (BOOL)authenticateUsingAccount:(id)a3 authenticator:(id)a4;
-- (BOOL)connectUsingAccount:(id)a3;
-- (BOOL)connectUsingFallbacksForAccount:(id)a3;
-- (BOOL)connectUsingSettings:(id)a3;
++ (void)setLogActivityOnHosts:(id)hosts;
++ (void)setLogActivityOnPorts:(id)ports;
++ (void)setLogClasses:(id)classes;
+- (BOOL)authenticateUsingAccount:(id)account;
+- (BOOL)authenticateUsingAccount:(id)account authenticator:(id)authenticator;
+- (BOOL)connectUsingAccount:(id)account;
+- (BOOL)connectUsingFallbacksForAccount:(id)account;
+- (BOOL)connectUsingSettings:(id)settings;
 - (BOOL)isCellularConnection;
 - (BOOL)isValid;
-- (BOOL)readBytesIntoData:(id)a3 desiredLength:(unint64_t)a4;
-- (BOOL)readLineIntoData:(id)a3;
+- (BOOL)readBytesIntoData:(id)data desiredLength:(unint64_t)length;
+- (BOOL)readLineIntoData:(id)data;
 - (BOOL)startCompression;
-- (BOOL)startTLSForAccount:(id)a3;
-- (BOOL)writeBytes:(const char *)a3 length:(unint64_t)a4 dontLogBytesInRange:(_NSRange)a5;
-- (BOOL)writeData:(id)a3 dontLogBytesInRange:(_NSRange)a4;
+- (BOOL)startTLSForAccount:(id)account;
+- (BOOL)writeBytes:(const char *)bytes length:(unint64_t)length dontLogBytesInRange:(_NSRange)range;
+- (BOOL)writeData:(id)data dontLogBytesInRange:(_NSRange)range;
 - (MFConnection)init;
 - (NSArray)authenticationMechanisms;
 - (NSString)description;
 - (NSString)securityProtocol;
 - (id)copyDiagnosticInformation;
-- (void)_setupSocketWithSettings:(id)a3;
+- (void)_setupSocketWithSettings:(id)settings;
 - (void)dealloc;
 - (void)disconnect;
 - (void)endCompression;
-- (void)logReadChars:(const char *)a3 length:(unint64_t)a4;
-- (void)setAllowsFallbacks:(BOOL)a3;
-- (void)setConnectionSettings:(id)a3;
-- (void)setIsFetching:(BOOL)a3;
+- (void)logReadChars:(const char *)chars length:(unint64_t)length;
+- (void)setAllowsFallbacks:(BOOL)fallbacks;
+- (void)setConnectionSettings:(id)settings;
+- (void)setIsFetching:(BOOL)fetching;
 - (void)startCompression;
 @end
 
@@ -66,15 +66,15 @@
     goto LABEL_14;
   }
 
-  v8 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v9 = [v8 stringArrayForKey:@"LogActivityOnPort"];
-  v10 = [v8 stringArrayForKey:@"LogActivityOnHost"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v9 = [standardUserDefaults stringArrayForKey:@"LogActivityOnPort"];
+  v10 = [standardUserDefaults stringArrayForKey:@"LogActivityOnHost"];
   if (v9)
   {
     goto LABEL_7;
   }
 
-  v11 = [objc_msgSend(v8 stringForKey:{@"LogActivityOnPort", "componentsSeparatedByString:", @", "}];
+  v11 = [objc_msgSend(standardUserDefaults stringForKey:{@"LogActivityOnPort", "componentsSeparatedByString:", @", "}];
   if (v11)
   {
     v9 = v11;
@@ -85,7 +85,7 @@ LABEL_7:
     }
   }
 
-  if (v10 || (v10 = [objc_msgSend(v8 stringForKey:{@"LogActivityOnHost", "componentsSeparatedByString:", @", "}]) != 0)
+  if (v10 || (v10 = [objc_msgSend(standardUserDefaults stringForKey:{@"LogActivityOnHost", "componentsSeparatedByString:", @", "}]) != 0)
   {
     if ([v10 count])
     {
@@ -96,7 +96,7 @@ LABEL_7:
 LABEL_14:
   if ((_LogAllConnectionActivity & 1) != 0 || [_LoggedPorts count] || objc_msgSend(_LoggedHosts, "count"))
   {
-    _LogClasses = [objc_alloc(MEMORY[0x277CBEA60]) initWithObjects:{a1, 0}];
+    _LogClasses = [objc_alloc(MEMORY[0x277CBEA60]) initWithObjects:{self, 0}];
   }
 
   [objc_msgSend(MEMORY[0x277CCAB98] "defaultCenter")];
@@ -105,7 +105,7 @@ LABEL_14:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (!_LogLock)
     {
@@ -118,7 +118,7 @@ LABEL_14:
       _MFUnlockGlobalLock();
     }
 
-    [a1 readLoggingDefaults];
+    [self readLoggingDefaults];
     if (initialize_once != -1)
     {
       +[MFConnection initialize];
@@ -135,11 +135,11 @@ uint64_t __26__MFConnection_initialize__block_invoke()
   return notify_register_dispatch(v1, &initialize_token, v0, &__block_literal_global_25);
 }
 
-+ (void)logConnection:(id)a3 type:(int64_t)a4 data:(id)a5
++ (void)logConnection:(id)connection type:(int64_t)type data:(id)data
 {
   v39 = *MEMORY[0x277D85DE8];
-  v8 = [a5 bytes];
-  v9 = [a5 length];
+  bytes = [data bytes];
+  v9 = [data length];
   v10 = v9;
   if (v9 >= 0x400)
   {
@@ -151,23 +151,23 @@ uint64_t __26__MFConnection_initialize__block_invoke()
     v11 = v9;
   }
 
-  if ((a4 - 1) > 3)
+  if ((type - 1) > 3)
   {
     v12 = "CONNECTED";
   }
 
   else
   {
-    v12 = off_2798B65E0[a4 - 1];
+    v12 = off_2798B65E0[type - 1];
   }
 
   v22 = v12;
-  v13 = *(a3 + 2);
-  v14 = [*(a3 + 3) securityProtocol];
-  if (v14)
+  v13 = *(connection + 2);
+  securityProtocol = [*(connection + 3) securityProtocol];
+  if (securityProtocol)
   {
-    v21 = [MEMORY[0x277CCACA8] stringWithFormat:@":%@", v14];
-    if (a4)
+    v21 = [MEMORY[0x277CCACA8] stringWithFormat:@":%@", securityProtocol];
+    if (type)
     {
       goto LABEL_13;
     }
@@ -176,7 +176,7 @@ uint64_t __26__MFConnection_initialize__block_invoke()
   else
   {
     v21 = &stru_2869ED3E0;
-    if (a4)
+    if (type)
     {
       goto LABEL_13;
     }
@@ -190,11 +190,11 @@ uint64_t __26__MFConnection_initialize__block_invoke()
     v25 = 2114;
     v26 = objc_opt_class();
     v27 = 2048;
-    v28 = a3;
+    connectionCopy2 = connection;
     v29 = 2112;
-    v30 = [v13 hostname];
+    hostname = [v13 hostname];
     v31 = 1024;
-    v32 = [v13 portNumber];
+    portNumber = [v13 portNumber];
     v33 = 2114;
     v34 = v21;
     _os_log_impl(&dword_258BDA000, v15, OS_LOG_TYPE_INFO, "%{public}s <%{public}@:%p> [%@:%u%{public}@]", buf, 0x3Au);
@@ -207,28 +207,28 @@ LABEL_13:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       v17 = objc_opt_class();
-      v18 = [v13 hostname];
-      v19 = [v13 portNumber];
+      hostname2 = [v13 hostname];
+      portNumber2 = [v13 portNumber];
       *buf = 136448002;
       v24 = v22;
       v25 = 2114;
       v26 = v17;
       v27 = 2048;
-      v28 = a3;
+      connectionCopy2 = connection;
       v29 = 2112;
-      v30 = v18;
+      hostname = hostname2;
       v31 = 1024;
-      v32 = v19;
+      portNumber = portNumber2;
       v33 = 2114;
       v34 = v21;
       v35 = 1040;
       v36 = v11;
       v37 = 2096;
-      v38 = v8;
+      v38 = bytes;
       _os_log_impl(&dword_258BDA000, v16, OS_LOG_TYPE_INFO, "%{public}s <%{public}@:%p> [%@:%u%{public}@] %{mobilemail:networkData}.*P", buf, 0x4Au);
     }
 
-    v8 += v11;
+    bytes += v11;
     v10 -= v11;
     if (v10 >= 0x400)
     {
@@ -253,28 +253,28 @@ LABEL_13:
   return v2;
 }
 
-+ (void)setLogClasses:(id)a3
++ (void)setLogClasses:(id)classes
 {
   [_LogLock lock];
 
-  _LogClasses = a3;
+  _LogClasses = classes;
   v4 = _LogLock;
 
   [v4 unlock];
 }
 
-+ (void)setLogActivityOnPorts:(id)a3
++ (void)setLogActivityOnPorts:(id)ports
 {
-  v4 = a3;
+  portsCopy = ports;
 
-  _LoggedPorts = a3;
+  _LoggedPorts = ports;
 }
 
-+ (void)setLogActivityOnHosts:(id)a3
++ (void)setLogActivityOnHosts:(id)hosts
 {
-  v4 = a3;
+  hostsCopy = hosts;
 
-  _LoggedHosts = a3;
+  _LoggedHosts = hosts;
 }
 
 - (MFConnection)init
@@ -344,32 +344,32 @@ LABEL_13:
 - (BOOL)isCellularConnection
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = [(_MFSocket *)self->_socket isCellularConnection];
+  isCellularConnection = [(_MFSocket *)self->_socket isCellularConnection];
   v4 = MFLogGeneral();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v7[0] = 67109378;
-    v7[1] = v3;
+    v7[1] = isCellularConnection;
     v8 = 2112;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_258BDA000, v4, OS_LOG_TYPE_INFO, "#Network %d for %@", v7, 0x12u);
   }
 
   v5 = *MEMORY[0x277D85DE8];
-  return v3;
+  return isCellularConnection;
 }
 
-- (void)setIsFetching:(BOOL)a3
+- (void)setIsFetching:(BOOL)fetching
 {
   v3 = *(self + 108);
-  if ((v3 & 1) != a3)
+  if ((v3 & 1) != fetching)
   {
-    *(self + 108) = v3 & 0xFE | a3;
+    *(self + 108) = v3 & 0xFE | fetching;
     [(MFConnection *)self enableThroughputMonitoring:?];
   }
 }
 
-- (void)_setupSocketWithSettings:(id)a3
+- (void)_setupSocketWithSettings:(id)settings
 {
   socket = self->_socket;
   if (!socket)
@@ -377,18 +377,18 @@ LABEL_13:
     [MFConnection _setupSocketWithSettings:];
   }
 
-  -[_MFSocket setConnectionServiceType:](socket, "setConnectionServiceType:", [a3 connectionServiceType]);
-  -[_MFSocket setAllowsTrustPrompt:](self->_socket, "setAllowsTrustPrompt:", [a3 allowsTrustPrompt]);
-  -[_MFSocket setUsesOpportunisticSockets:](self->_socket, "setUsesOpportunisticSockets:", [a3 usesOpportunisticSockets]);
-  -[_MFSocket setSourceApplicationBundleIdentifier:](self->_socket, "setSourceApplicationBundleIdentifier:", [a3 sourceApplicationBundleIdentifier]);
-  -[_MFSocket setAccountIdentifier:](self->_socket, "setAccountIdentifier:", [a3 accountIdentifier]);
-  -[_MFSocket setNetworkAccountIdentifier:](self->_socket, "setNetworkAccountIdentifier:", [a3 networkAccountIdentifier]);
-  if ([a3 clientCertificates])
+  -[_MFSocket setConnectionServiceType:](socket, "setConnectionServiceType:", [settings connectionServiceType]);
+  -[_MFSocket setAllowsTrustPrompt:](self->_socket, "setAllowsTrustPrompt:", [settings allowsTrustPrompt]);
+  -[_MFSocket setUsesOpportunisticSockets:](self->_socket, "setUsesOpportunisticSockets:", [settings usesOpportunisticSockets]);
+  -[_MFSocket setSourceApplicationBundleIdentifier:](self->_socket, "setSourceApplicationBundleIdentifier:", [settings sourceApplicationBundleIdentifier]);
+  -[_MFSocket setAccountIdentifier:](self->_socket, "setAccountIdentifier:", [settings accountIdentifier]);
+  -[_MFSocket setNetworkAccountIdentifier:](self->_socket, "setNetworkAccountIdentifier:", [settings networkAccountIdentifier]);
+  if ([settings clientCertificates])
   {
-    -[_MFSocket setClientCertificates:](self->_socket, "setClientCertificates:", [a3 clientCertificates]);
+    -[_MFSocket setClientCertificates:](self->_socket, "setClientCertificates:", [settings clientCertificates]);
   }
 
-  if ([a3 tryDirectSSL])
+  if ([settings tryDirectSSL])
   {
     v6 = self->_socket;
     v7 = *MEMORY[0x277CBF098];
@@ -397,11 +397,11 @@ LABEL_13:
   }
 }
 
-- (BOOL)connectUsingSettings:(id)a3
+- (BOOL)connectUsingSettings:(id)settings
 {
-  v5 = a3;
-  self->_connectionSettings = v5;
-  v6 = [(MFConnectionSettings *)v5 portNumber];
+  settingsCopy = settings;
+  self->_connectionSettings = settingsCopy;
+  portNumber = [(MFConnectionSettings *)settingsCopy portNumber];
   if (!self->_socket)
   {
     self->_socket = objc_alloc_init(_MFSocket);
@@ -409,21 +409,21 @@ LABEL_13:
 
   [+[MFActivityMonitor currentMonitor](MFActivityMonitor "currentMonitor")];
   [(MFConnection *)self _setupSocketWithSettings:self->_connectionSettings];
-  if (!v6)
+  if (!portNumber)
   {
     v8 = getservbyname([(NSString *)[(MFConnectionSettings *)self->_connectionSettings serviceName] UTF8String], "tcp");
     if (!v8 || !LOWORD(v8->s_port))
     {
       v9 = +[MFActivityMonitor currentMonitor];
       [v9 setError:{+[MFError errorWithDomain:code:localizedDescription:](MFError, "errorWithDomain:code:localizedDescription:", @"MFMessageErrorDomain", 1031, objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", MFLookupLocalizedString(@"DONT_KNOW_SERVICE_PORT", @"Can’t determine port to use for the TCP/IP service “%@”.", @"Delayed", -[MFConnectionSettings serviceName](self->_connectionSettings, "serviceName")))}];
-      v6 = 0;
+      portNumber = 0;
       goto LABEL_10;
     }
 
-    v6 = __rev16(LOWORD(v8->s_port));
+    portNumber = __rev16(LOWORD(v8->s_port));
   }
 
-  if (-[_MFSocket connectToHost:withPort:service:](self->_socket, "connectToHost:withPort:service:", -[MFConnectionSettings hostname](self->_connectionSettings, "hostname"), v6, [a3 certUIService]))
+  if (-[_MFSocket connectToHost:withPort:service:](self->_socket, "connectToHost:withPort:service:", -[MFConnectionSettings hostname](self->_connectionSettings, "hostname"), portNumber, [settings certUIService]))
   {
 LABEL_5:
     _logEvent(self, 0, 0, 0, 0x7FFFFFFFFFFFFFFFuLL, 0);
@@ -435,8 +435,8 @@ LABEL_10:
   if (v10)
   {
     v11 = v10;
-    v12 = [v10 domain];
-    if ([v12 isEqualToString:*MEMORY[0x277CCA590]])
+    domain = [v10 domain];
+    if ([domain isEqualToString:*MEMORY[0x277CCA590]])
     {
       if ([v11 code] == -9850)
       {
@@ -453,7 +453,7 @@ LABEL_10:
         [(MFConnection *)self _setupSocketWithSettings:self->_connectionSettings];
         [(_MFSocket *)self->_socket setDisableEphemeralDiffieHellmanCiphers:1];
         [+[MFActivityMonitor currentMonitor](MFActivityMonitor "currentMonitor")];
-        if ([(_MFSocket *)self->_socket connectToHost:[(MFConnectionSettings *)self->_connectionSettings hostname] withPort:v6 service:[(MFConnectionSettings *)self->_connectionSettings certUIService]])
+        if ([(_MFSocket *)self->_socket connectToHost:[(MFConnectionSettings *)self->_connectionSettings hostname] withPort:portNumber service:[(MFConnectionSettings *)self->_connectionSettings certUIService]])
         {
           goto LABEL_5;
         }
@@ -462,10 +462,10 @@ LABEL_10:
   }
 
   v14 = +[MFActivityMonitor currentMonitor];
-  v15 = [(MFConnectionSettings *)self->_connectionSettings hostname];
-  v16 = [(MFConnectionSettings *)self->_connectionSettings tryDirectSSL];
-  v17 = [v14 error];
-  if (!v17)
+  hostname = [(MFConnectionSettings *)self->_connectionSettings hostname];
+  tryDirectSSL = [(MFConnectionSettings *)self->_connectionSettings tryDirectSSL];
+  error = [v14 error];
+  if (!error)
   {
     v18 = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1030 localizedDescription:0];
     [v14 setError:v18];
@@ -477,19 +477,19 @@ LABEL_10:
     goto LABEL_28;
   }
 
-  v18 = v17;
-  if ([*MEMORY[0x277CCA5B8] isEqualToString:{-[MFError domain](v17, "domain")}])
+  v18 = error;
+  if ([*MEMORY[0x277CCA5B8] isEqualToString:{-[MFError domain](error, "domain")}])
   {
-    v19 = [(MFError *)v18 code];
+    code = [(MFError *)v18 code];
     v20 = MEMORY[0x277CCACA8];
-    switch(v19)
+    switch(code)
     {
       case 'A':
         v21 = @"HOST_UNREACHABLE";
         v22 = @"The server “%@” cannot be contacted on port %d.";
         goto LABEL_35;
       case '=':
-        if (!v16)
+        if (!tryDirectSSL)
         {
           v21 = @"CONNECTION_REFUSED";
           v22 = @"The server “%@” refused to allow a connection on port %d.";
@@ -504,7 +504,7 @@ LABEL_35:
         v25 = MFLookupLocalizedString(v21, v22, @"Delayed");
         goto LABEL_36;
       default:
-        if (!v16)
+        if (!tryDirectSSL)
         {
           v25 = MFLookupLocalizedString(@"CONNECTION_FAILED", @"The mail server “%@” is not responding. Verify that you have entered the correct account info in Mail settings.", @"Delayed");
           goto LABEL_37;
@@ -529,16 +529,16 @@ LABEL_28:
     goto LABEL_40;
   }
 
-  _setupSSLDomainError(v18, v15, [(_MFSocket *)self->_socket serverCertificates]);
-  v23 = [(MFError *)v18 localizedDescription];
-  if (!v23 || (v24 = v23, [&stru_2869ED3E0 isEqualToString:v23]))
+  _setupSSLDomainError(v18, hostname, [(_MFSocket *)self->_socket serverCertificates]);
+  localizedDescription = [(MFError *)v18 localizedDescription];
+  if (!localizedDescription || (v24 = localizedDescription, [&stru_2869ED3E0 isEqualToString:localizedDescription]))
   {
     v20 = MEMORY[0x277CCACA8];
     v25 = MFLookupLocalizedString(@"MF_SSL_CONNECTION_FAILURE", @"Mail was unable to connect to server “%@” using SSL on port %d. Verify that this server supports SSL and that your account settings are correct.", @"Delayed");
 LABEL_36:
-    v26 = v6;
+    v26 = portNumber;
 LABEL_37:
-    v24 = [v20 stringWithFormat:v25, v15, v26];
+    v24 = [v20 stringWithFormat:v25, hostname, v26];
   }
 
   if (![(NSError *)v18 mf_isUserCancelledError])
@@ -551,7 +551,7 @@ LABEL_41:
     }
 
 LABEL_40:
-    v24 = [MEMORY[0x277CCACA8] stringWithFormat:MFLookupLocalizedString(@"CONNECTION_FAILED", @"The mail server “%@” is not responding. Verify that you have entered the correct account info in Mail settings.", @"Delayed", v15];
+    v24 = [MEMORY[0x277CCACA8] stringWithFormat:MFLookupLocalizedString(@"CONNECTION_FAILED", @"The mail server “%@” is not responding. Verify that you have entered the correct account info in Mail settings.", @"Delayed", hostname];
     goto LABEL_41;
   }
 
@@ -563,19 +563,19 @@ LABEL_42:
   return result;
 }
 
-- (BOOL)connectUsingAccount:(id)a3
+- (BOOL)connectUsingAccount:(id)account
 {
-  v4 = [a3 defaultConnectionSettings];
+  defaultConnectionSettings = [account defaultConnectionSettings];
 
-  return [(MFConnection *)self connectUsingSettings:v4];
+  return [(MFConnection *)self connectUsingSettings:defaultConnectionSettings];
 }
 
-+ (BOOL)shouldTryFallbacksAfterError:(id)a3
++ (BOOL)shouldTryFallbacksAfterError:(id)error
 {
-  v4 = [a3 domain];
-  if ([v4 isEqual:*MEMORY[0x277CBACE8]])
+  domain = [error domain];
+  if ([domain isEqual:*MEMORY[0x277CBACE8]])
   {
-    if ([a3 code] == 2 || objc_msgSend(a3, "code") == 1)
+    if ([error code] == 2 || objc_msgSend(error, "code") == 1)
     {
       return 0;
     }
@@ -583,20 +583,20 @@ LABEL_42:
 
   else
   {
-    v6 = [a3 domain];
-    if ([v6 isEqual:*MEMORY[0x277CCA670]])
+    domain2 = [error domain];
+    if ([domain2 isEqual:*MEMORY[0x277CCA670]])
     {
-      return [a3 code] != -9829;
+      return [error code] != -9829;
     }
   }
 
   return 1;
 }
 
-- (BOOL)connectUsingFallbacksForAccount:(id)a3
+- (BOOL)connectUsingFallbacksForAccount:(id)account
 {
-  v5 = [a3 defaultConnectionSettings];
-  if ([(MFConnection *)self connectUsingAccount:a3])
+  defaultConnectionSettings = [account defaultConnectionSettings];
+  if ([(MFConnection *)self connectUsingAccount:account])
   {
 LABEL_2:
     LOBYTE(v6) = 1;
@@ -605,11 +605,11 @@ LABEL_2:
   else
   {
     v7 = +[MFActivityMonitor currentMonitor];
-    v8 = [v7 error];
-    if (!v8 || (v6 = [objc_opt_class() shouldTryFallbacksAfterError:v8]) != 0)
+    error = [v7 error];
+    if (!error || (v6 = [objc_opt_class() shouldTryFallbacksAfterError:error]) != 0)
     {
-      v9 = [a3 alternateConnectionSettings];
-      v10 = [v9 count];
+      alternateConnectionSettings = [account alternateConnectionSettings];
+      v10 = [alternateConnectionSettings count];
       if (v10)
       {
         v11 = v10;
@@ -617,12 +617,12 @@ LABEL_2:
         v13 = 1;
         while (!v12 || [objc_opt_class() shouldTryFallbacksAfterError:v12])
         {
-          [a3 applySettingsAsDefault:{objc_msgSend(v9, "objectAtIndex:", v13 - 1)}];
-          v14 = [(MFConnection *)self connectUsingAccount:a3];
-          v15 = [v7 error];
+          [account applySettingsAsDefault:{objc_msgSend(alternateConnectionSettings, "objectAtIndex:", v13 - 1)}];
+          v14 = [(MFConnection *)self connectUsingAccount:account];
+          error2 = [v7 error];
           if (!v14)
           {
-            v12 = v15;
+            v12 = error2;
             if (v13++ < v11)
             {
               continue;
@@ -638,7 +638,7 @@ LABEL_2:
         }
       }
 
-      [a3 applySettingsAsDefault:v5];
+      [account applySettingsAsDefault:defaultConnectionSettings];
       LOBYTE(v6) = 0;
     }
   }
@@ -646,9 +646,9 @@ LABEL_2:
   return v6;
 }
 
-- (void)setAllowsFallbacks:(BOOL)a3
+- (void)setAllowsFallbacks:(BOOL)fallbacks
 {
-  if (a3)
+  if (fallbacks)
   {
     v3 = 2;
   }
@@ -661,10 +661,10 @@ LABEL_2:
   *(self + 108) = *(self + 108) & 0xFD | v3;
 }
 
-- (BOOL)authenticateUsingAccount:(id)a3
+- (BOOL)authenticateUsingAccount:(id)account
 {
-  v5 = [a3 preferredAuthScheme];
-  v6 = [v5 authenticatorForAccount:a3 connection:self];
+  preferredAuthScheme = [account preferredAuthScheme];
+  v6 = [preferredAuthScheme authenticatorForAccount:account connection:self];
 
   self->_securityLayer = 0;
   if (!v6)
@@ -672,8 +672,8 @@ LABEL_2:
     goto LABEL_5;
   }
 
-  v7 = [(MFConnection *)self authenticationMechanisms];
-  if (!v7 || -[NSArray indexOfObject:](v7, "indexOfObject:", [v6 saslName]) == 0x7FFFFFFFFFFFFFFFLL)
+  authenticationMechanisms = [(MFConnection *)self authenticationMechanisms];
+  if (!authenticationMechanisms || -[NSArray indexOfObject:](authenticationMechanisms, "indexOfObject:", [v6 saslName]) == 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = MEMORY[0x277CCACA8];
     v9 = MFLookupLocalizedString(@"AUTH_NOT_SUPPORTED_FORMAT", @"The %@ server “%@” doesn’t support %@ authentication. Please check your account settings and try again.", @"Delayed");
@@ -683,7 +683,7 @@ LABEL_5:
     return v10;
   }
 
-  v10 = [(MFConnection *)self authenticateUsingAccount:a3 authenticator:v6];
+  v10 = [(MFConnection *)self authenticateUsingAccount:account authenticator:v6];
   if (v10)
   {
     if (!self->_securityLayer)
@@ -700,16 +700,16 @@ LABEL_5:
 - (NSArray)authenticationMechanisms
 {
   v20 = *MEMORY[0x277D85DE8];
-  v2 = [(MFConnection *)self capabilities];
+  capabilities = [(MFConnection *)self capabilities];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(NSArray *)v2 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v3 = [(NSArray *)capabilities countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v3)
   {
     v4 = v3;
-    v5 = 0;
+    array = 0;
     v6 = *v16;
     do
     {
@@ -717,7 +717,7 @@ LABEL_5:
       {
         if (*v16 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(capabilities);
         }
 
         v8 = *(*(&v15 + 1) + 8 * i);
@@ -726,16 +726,16 @@ LABEL_5:
         {
           v11 = v9;
           v12 = v10;
-          if (!v5)
+          if (!array)
           {
-            v5 = [MEMORY[0x277CBEB18] array];
+            array = [MEMORY[0x277CBEB18] array];
           }
 
-          -[NSArray addObject:](v5, "addObject:", [objc_msgSend(v8 substringFromIndex:{v11 + v12), "uppercaseString"}]);
+          -[NSArray addObject:](array, "addObject:", [objc_msgSend(v8 substringFromIndex:{v11 + v12), "uppercaseString"}]);
         }
       }
 
-      v4 = [(NSArray *)v2 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v4 = [(NSArray *)capabilities countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v4);
@@ -743,25 +743,25 @@ LABEL_5:
 
   else
   {
-    v5 = 0;
+    array = 0;
   }
 
   v13 = *MEMORY[0x277D85DE8];
-  return v5;
+  return array;
 }
 
-- (BOOL)writeBytes:(const char *)a3 length:(unint64_t)a4 dontLogBytesInRange:(_NSRange)a5
+- (BOOL)writeBytes:(const char *)bytes length:(unint64_t)length dontLogBytesInRange:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
-  v10 = [(MFSASLSecurityLayer *)self->_securityLayer encryptionBufferSize];
-  v42 = a4;
+  length = range.length;
+  location = range.location;
+  encryptionBufferSize = [(MFSASLSecurityLayer *)self->_securityLayer encryptionBufferSize];
+  lengthCopy = length;
   if ((*(self + 108) & 4) != 0)
   {
     v11 = objc_alloc_init(MEMORY[0x277D24F70]);
     deflater = self->_deflater;
-    deflater->avail_in = a4;
-    deflater->next_in = a3;
+    deflater->avail_in = length;
+    deflater->next_in = bytes;
     v14 = self->_deflater;
     do
     {
@@ -779,60 +779,60 @@ LABEL_5:
     }
 
     while (!v14->avail_out);
-    a4 = [v11 length];
-    v12 = [v11 bytes];
+    length = [v11 length];
+    bytesCopy = [v11 bytes];
   }
 
   else
   {
     v11 = 0;
-    v12 = a3;
+    bytesCopy = bytes;
   }
 
   v41 = location;
-  if (v10)
+  if (encryptionBufferSize)
   {
-    if (v10 >= a4)
+    if (encryptionBufferSize >= length)
     {
-      v17 = a4;
+      lengthCopy6 = length;
     }
 
     else
     {
-      v17 = v10;
+      lengthCopy6 = encryptionBufferSize;
     }
 
-    v43 = [objc_allocWithZone(MEMORY[0x277D24F70]) initWithCapacity:v17 + 4];
-    v12 = 0;
-    if (!a4)
+    v43 = [objc_allocWithZone(MEMORY[0x277D24F70]) initWithCapacity:lengthCopy6 + 4];
+    bytesCopy = 0;
+    if (!length)
     {
       goto LABEL_32;
     }
 
 LABEL_14:
-    v18 = &a3[a4];
+    v18 = &bytes[length];
     v39 = *MEMORY[0x277CCA5B8];
     v38 = *MEMORY[0x277CCA670];
-    v40 = a3;
+    bytesCopy2 = bytes;
     while (1)
     {
-      v19 = a4;
+      lengthCopy3 = length;
       if (!v43)
       {
         break;
       }
 
-      if (v17 >= a4)
+      if (lengthCopy6 >= length)
       {
-        v20 = a4;
+        lengthCopy4 = length;
       }
 
       else
       {
-        v20 = v17;
+        lengthCopy4 = lengthCopy6;
       }
 
-      v21 = [(MFSASLSecurityLayer *)self->_securityLayer createEncryptedDataForBytes:&v18[-a4] length:v20];
+      v21 = [(MFSASLSecurityLayer *)self->_securityLayer createEncryptedDataForBytes:&v18[-length] length:lengthCopy4];
       [v43 setLength:0];
       if (v21)
       {
@@ -841,7 +841,7 @@ LABEL_14:
         [v43 appendData:v21];
       }
 
-      v12 = [v43 bytes];
+      bytesCopy = [v43 bytes];
       v22 = [v43 length];
       if (!v21)
       {
@@ -850,25 +850,25 @@ LABEL_14:
         goto LABEL_52;
       }
 
-      v19 = v22;
+      lengthCopy3 = v22;
       if (v22)
       {
         break;
       }
 
 LABEL_28:
-      v27 = a4 > v17;
-      if (a4 >= v17)
+      v27 = length > lengthCopy6;
+      if (length >= lengthCopy6)
       {
-        a4 -= v17;
+        length -= lengthCopy6;
       }
 
       else
       {
-        a4 = 0;
+        length = 0;
       }
 
-      a3 = v40;
+      bytes = bytesCopy2;
       if (!v27)
       {
         goto LABEL_32;
@@ -876,11 +876,11 @@ LABEL_28:
     }
 
     v23 = v18;
-    v24 = length;
-    v25 = v12;
+    lengthCopy5 = length;
+    v25 = bytesCopy;
     while (1)
     {
-      v26 = [(_MFSocket *)self->_socket writeBytes:v25 length:v19];
+      v26 = [(_MFSocket *)self->_socket writeBytes:v25 length:lengthCopy3];
       if (v26 < 0)
       {
         break;
@@ -894,10 +894,10 @@ LABEL_28:
 
       [+[MFActivityMonitor currentMonitor](MFActivityMonitor "currentMonitor")];
       v25 += v26;
-      v19 -= v26;
-      if (!v19)
+      lengthCopy3 -= v26;
+      if (!lengthCopy3)
       {
-        length = v24;
+        length = lengthCopy5;
         v18 = v23;
         goto LABEL_28;
       }
@@ -905,13 +905,13 @@ LABEL_28:
 
     v30 = +[MFActivityMonitor currentMonitor];
     socket = self->_socket;
-    v32 = [v30 error];
-    v33 = [(_MFSocket *)socket remoteHostname];
-    if (!v32)
+    error = [v30 error];
+    remoteHostname = [(_MFSocket *)socket remoteHostname];
+    if (!error)
     {
-      v32 = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1030 localizedDescription:0];
-      [v30 setError:v32];
-      if (!v32 || [(NSError *)v32 mf_isUserCancelledError])
+      error = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1030 localizedDescription:0];
+      [v30 setError:error];
+      if (!error || [(NSError *)error mf_isUserCancelledError])
       {
 LABEL_51:
         [(_MFSocket *)self->_socket abort];
@@ -927,40 +927,40 @@ LABEL_51:
       }
 
 LABEL_49:
-      v35 = [MEMORY[0x277CCACA8] stringWithFormat:MFLookupLocalizedString(@"CONNECTION_FAILED", @"The mail server “%@” is not responding. Verify that you have entered the correct account info in Mail settings.", @"Delayed", v33];
+      localizedDescription = [MEMORY[0x277CCACA8] stringWithFormat:MFLookupLocalizedString(@"CONNECTION_FAILED", @"The mail server “%@” is not responding. Verify that you have entered the correct account info in Mail settings.", @"Delayed", remoteHostname];
 LABEL_50:
-      [(MFError *)v32 setLocalizedDescription:v35];
+      [(MFError *)error setLocalizedDescription:localizedDescription];
       goto LABEL_51;
     }
 
-    if ([v39 isEqualToString:{-[MFError domain](v32, "domain")}])
+    if ([v39 isEqualToString:{-[MFError domain](error, "domain")}])
     {
-      if ([(MFError *)v32 code]== 60)
+      if ([(MFError *)error code]== 60)
       {
-        v34 = [MEMORY[0x277CCACA8] stringWithFormat:MFLookupLocalizedString(@"CONNECTION_TIMED_OUT", @"The connection to the server “%@” on port %d timed out.", @"Delayed", v33, -[_MFSocket remotePortNumber](socket, "remotePortNumber")];
+        v34 = [MEMORY[0x277CCACA8] stringWithFormat:MFLookupLocalizedString(@"CONNECTION_TIMED_OUT", @"The connection to the server “%@” on port %d timed out.", @"Delayed", remoteHostname, -[_MFSocket remotePortNumber](socket, "remotePortNumber")];
 LABEL_45:
-        v35 = v34;
+        localizedDescription = v34;
         goto LABEL_47;
       }
     }
 
-    else if ([v38 isEqualToString:{-[MFError domain](v32, "domain")}])
+    else if ([v38 isEqualToString:{-[MFError domain](error, "domain")}])
     {
-      _setupSSLDomainError(v32, v33, [(_MFSocket *)self->_socket serverCertificates]);
-      v35 = [(MFError *)v32 localizedDescription];
-      if (!v35 || [&stru_2869ED3E0 isEqualToString:v35])
+      _setupSSLDomainError(error, remoteHostname, [(_MFSocket *)self->_socket serverCertificates]);
+      localizedDescription = [(MFError *)error localizedDescription];
+      if (!localizedDescription || [&stru_2869ED3E0 isEqualToString:localizedDescription])
       {
-        v34 = [MEMORY[0x277CCACA8] stringWithFormat:MFLookupLocalizedString(@"SSL_GENERIC_WRITE_ERROR", @"An SSL error occurred while trying to provide data to the server “%@”. Verify that this server supports SSL and that your account settings are correct.", @"Delayed", v33];
+        v34 = [MEMORY[0x277CCACA8] stringWithFormat:MFLookupLocalizedString(@"SSL_GENERIC_WRITE_ERROR", @"An SSL error occurred while trying to provide data to the server “%@”. Verify that this server supports SSL and that your account settings are correct.", @"Delayed", remoteHostname];
         goto LABEL_45;
       }
 
 LABEL_47:
-      if ([(NSError *)v32 mf_isUserCancelledError])
+      if ([(NSError *)error mf_isUserCancelledError])
       {
         goto LABEL_51;
       }
 
-      if (v35)
+      if (localizedDescription)
       {
         goto LABEL_50;
       }
@@ -968,13 +968,13 @@ LABEL_47:
       goto LABEL_49;
     }
 
-    v35 = 0;
+    localizedDescription = 0;
     goto LABEL_47;
   }
 
   v43 = 0;
-  v17 = a4;
-  if (a4)
+  lengthCopy6 = length;
+  if (length)
   {
     goto LABEL_14;
   }
@@ -983,7 +983,7 @@ LABEL_32:
   v28 = v43;
   if (!v43)
   {
-    _logEvent(self, 3, a3, v42, v41, length);
+    _logEvent(self, 3, bytes, lengthCopy, v41, length);
     v36 = 1;
     if (!v11)
     {
@@ -993,7 +993,7 @@ LABEL_32:
     goto LABEL_54;
   }
 
-  _logEvent(self, 4, a3, v42, v41, length);
+  _logEvent(self, 4, bytes, lengthCopy, v41, length);
   v29 = 1;
 LABEL_52:
 
@@ -1007,27 +1007,27 @@ LABEL_54:
   return v36;
 }
 
-- (BOOL)writeData:(id)a3 dontLogBytesInRange:(_NSRange)a4
+- (BOOL)writeData:(id)data dontLogBytesInRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = [a3 bytes];
-  v9 = [a3 length];
+  length = range.length;
+  location = range.location;
+  bytes = [data bytes];
+  v9 = [data length];
 
-  return [(MFConnection *)self writeBytes:v8 length:v9 dontLogBytesInRange:location, length];
+  return [(MFConnection *)self writeBytes:bytes length:v9 dontLogBytesInRange:location, length];
 }
 
-- (void)logReadChars:(const char *)a3 length:(unint64_t)a4
+- (void)logReadChars:(const char *)chars length:(unint64_t)length
 {
-  if (a4)
+  if (length)
   {
-    v4 = a4;
+    lengthCopy = length;
 
-    self->_readBytesNotLogged -= v4;
+    self->_readBytesNotLogged -= lengthCopy;
   }
 }
 
-- (BOOL)readLineIntoData:(id)a3
+- (BOOL)readLineIntoData:(id)data
 {
   v5 = 0;
   while (1)
@@ -1087,7 +1087,7 @@ LABEL_11:
       v13 = v9 + v10;
     }
 
-    [a3 appendBytes:&buffer[bufferStart] length:v13];
+    [data appendBytes:&buffer[bufferStart] length:v13];
     v14 = self->_bufferStart + v13;
     self->_bufferRemainingBytes -= v13;
     self->_bufferStart = v14;
@@ -1099,11 +1099,11 @@ LABEL_11:
   }
 }
 
-- (BOOL)readBytesIntoData:(id)a3 desiredLength:(unint64_t)a4
+- (BOOL)readBytesIntoData:(id)data desiredLength:(unint64_t)length
 {
-  if (a4)
+  if (length)
   {
-    v4 = a4;
+    lengthCopy = length;
     do
     {
       bufferRemainingBytes = self->_bufferRemainingBytes;
@@ -1120,9 +1120,9 @@ LABEL_11:
 
       if (bufferRemainingBytes >= 1)
       {
-        if (bufferRemainingBytes >= v4)
+        if (bufferRemainingBytes >= lengthCopy)
         {
-          v9 = v4;
+          v9 = lengthCopy;
         }
 
         else
@@ -1130,15 +1130,15 @@ LABEL_11:
           v9 = bufferRemainingBytes;
         }
 
-        [a3 appendBytes:&self->_buffer[self->_bufferStart] length:v9];
+        [data appendBytes:&self->_buffer[self->_bufferStart] length:v9];
         v10 = self->_bufferStart + v9;
         self->_bufferRemainingBytes -= v9;
         self->_bufferStart = v10;
-        v4 -= v9;
+        lengthCopy -= v9;
       }
     }
 
-    while (v4);
+    while (lengthCopy);
     LOBYTE(v8) = 1;
   }
 
@@ -1150,7 +1150,7 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)authenticateUsingAccount:(id)a3 authenticator:(id)a4
+- (BOOL)authenticateUsingAccount:(id)account authenticator:(id)authenticator
 {
   v5 = MEMORY[0x277CCACA8];
   v6 = objc_opt_class();
@@ -1159,7 +1159,7 @@ LABEL_11:
   return 0;
 }
 
-- (BOOL)startTLSForAccount:(id)a3
+- (BOOL)startTLSForAccount:(id)account
 {
   v4 = MEMORY[0x277CCACA8];
   v5 = objc_opt_class();
@@ -1290,11 +1290,11 @@ LABEL_9:
   [(MFConnection *)self endCompression];
 }
 
-- (void)setConnectionSettings:(id)a3
+- (void)setConnectionSettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
 
-  self->_connectionSettings = a3;
+  self->_connectionSettings = settings;
 }
 
 - (id)copyDiagnosticInformation
@@ -1315,7 +1315,7 @@ LABEL_9:
 {
   v4 = *MEMORY[0x277D85DE8];
   v3[0] = 67109120;
-  v3[1] = a1;
+  v3[1] = self;
   _os_log_error_impl(&dword_258BDA000, a2, OS_LOG_TYPE_ERROR, "inflateInit2 failed with error %d", v3, 8u);
   v2 = *MEMORY[0x277D85DE8];
 }

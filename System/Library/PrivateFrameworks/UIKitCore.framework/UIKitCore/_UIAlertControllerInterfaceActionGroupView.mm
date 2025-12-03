@@ -1,23 +1,23 @@
 @interface _UIAlertControllerInterfaceActionGroupView
 - (BOOL)_shouldShowSeparatorAboveActionsSequenceView;
 - (UIAlertController)alertController;
-- (_UIAlertControllerInterfaceActionGroupView)initWithAlertController:(id)a3 actionGroup:(id)a4 actionHandlerInvocationDelegate:(id)a5;
+- (_UIAlertControllerInterfaceActionGroupView)initWithAlertController:(id)controller actionGroup:(id)group actionHandlerInvocationDelegate:(id)delegate;
 - (id)_alertController;
-- (id)defaultVisualStyleForTraitCollection:(id)a3 presentationStyle:(int64_t)a4;
+- (id)defaultVisualStyleForTraitCollection:(id)collection presentationStyle:(int64_t)style;
 @end
 
 @implementation _UIAlertControllerInterfaceActionGroupView
 
-- (_UIAlertControllerInterfaceActionGroupView)initWithAlertController:(id)a3 actionGroup:(id)a4 actionHandlerInvocationDelegate:(id)a5
+- (_UIAlertControllerInterfaceActionGroupView)initWithAlertController:(id)controller actionGroup:(id)group actionHandlerInvocationDelegate:(id)delegate
 {
-  v8 = a3;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = _UIAlertControllerInterfaceActionGroupView;
-  v9 = [(UIInterfaceActionGroupView *)&v12 initWithActionGroup:a4 actionHandlerInvocationDelegate:a5];
+  v9 = [(UIInterfaceActionGroupView *)&v12 initWithActionGroup:group actionHandlerInvocationDelegate:delegate];
   v10 = v9;
   if (v9)
   {
-    [(_UIAlertControllerInterfaceActionGroupView *)v9 setAlertController:v8];
+    [(_UIAlertControllerInterfaceActionGroupView *)v9 setAlertController:controllerCopy];
   }
 
   return v10;
@@ -30,25 +30,25 @@
   return WeakRetained;
 }
 
-- (id)defaultVisualStyleForTraitCollection:(id)a3 presentationStyle:(int64_t)a4
+- (id)defaultVisualStyleForTraitCollection:(id)collection presentationStyle:(int64_t)style
 {
-  v6 = a3;
-  v7 = [(_UIAlertControllerInterfaceActionGroupView *)self _alertController];
-  v8 = [v7 _visualStyle];
+  collectionCopy = collection;
+  _alertController = [(_UIAlertControllerInterfaceActionGroupView *)self _alertController];
+  _visualStyle = [_alertController _visualStyle];
 
-  if (v8)
+  if (_visualStyle)
   {
-    v9 = [v8 interfaceActionVisualStyle];
+    interfaceActionVisualStyle = [_visualStyle interfaceActionVisualStyle];
   }
 
   else
   {
     v12.receiver = self;
     v12.super_class = _UIAlertControllerInterfaceActionGroupView;
-    v9 = [(UIInterfaceActionGroupView *)&v12 defaultVisualStyleForTraitCollection:v6 presentationStyle:a4];
+    interfaceActionVisualStyle = [(UIInterfaceActionGroupView *)&v12 defaultVisualStyleForTraitCollection:collectionCopy presentationStyle:style];
   }
 
-  v10 = v9;
+  v10 = interfaceActionVisualStyle;
 
   return v10;
 }
@@ -57,13 +57,13 @@
 {
   v5.receiver = self;
   v5.super_class = _UIAlertControllerInterfaceActionGroupView;
-  v3 = [(UIInterfaceActionGroupView *)&v5 _shouldShowSeparatorAboveActionsSequenceView];
-  if (v3)
+  _shouldShowSeparatorAboveActionsSequenceView = [(UIInterfaceActionGroupView *)&v5 _shouldShowSeparatorAboveActionsSequenceView];
+  if (_shouldShowSeparatorAboveActionsSequenceView)
   {
-    LOBYTE(v3) = [(_UIAlertControllerInterfaceActionGroupView *)self scrollableHeaderViewHasRealContent];
+    LOBYTE(_shouldShowSeparatorAboveActionsSequenceView) = [(_UIAlertControllerInterfaceActionGroupView *)self scrollableHeaderViewHasRealContent];
   }
 
-  return v3;
+  return _shouldShowSeparatorAboveActionsSequenceView;
 }
 
 - (UIAlertController)alertController

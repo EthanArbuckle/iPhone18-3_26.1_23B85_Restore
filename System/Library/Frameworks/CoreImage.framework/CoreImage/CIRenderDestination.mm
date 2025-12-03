@@ -1,5 +1,5 @@
 @interface CIRenderDestination
-+ (int)_crashed_because_nonaddressable_memory_was_passed_to_initWithBitmapData:(void *)a3 width:(unint64_t)a4 height:(unint64_t)a5 bytesPerRow:(unint64_t)a6 format:(int)a7;
++ (int)_crashed_because_nonaddressable_memory_was_passed_to_initWithBitmapData:(void *)data width:(unint64_t)width height:(unint64_t)height bytesPerRow:(unint64_t)row format:(int)format;
 - (BOOL)blendsInDestinationColorSpace;
 - (BOOL)isClamped;
 - (BOOL)isCompressed;
@@ -14,12 +14,12 @@
 - (CIRenderDestination)initWithMTLTexture:(id)texture commandBuffer:(id)commandBuffer;
 - (CIRenderDestination)initWithPixelBuffer:(CVPixelBufferRef)pixelBuffer;
 - (CIRenderDestination)initWithWidth:(NSUInteger)width height:(NSUInteger)height pixelFormat:(MTLPixelFormat)pixelFormat commandBuffer:(id)commandBuffer mtlTextureProvider:(void *)block;
-- (CIRenderDestination)initWithWidth:(unint64_t)a3 height:(unint64_t)a4 pixelFormat:(unsigned int)a5 colorSpace:(CGColorSpace *)a6 pixelBufferProvider:(id)a7;
-- (CIRenderDestination)initWithWidth:(unint64_t)a3 height:(unint64_t)a4 pixelFormat:(unsigned int)a5 colorSpace:(CGColorSpace *)a6 surfaceProvider:(id)a7;
+- (CIRenderDestination)initWithWidth:(unint64_t)width height:(unint64_t)height pixelFormat:(unsigned int)format colorSpace:(CGColorSpace *)space pixelBufferProvider:(id)provider;
+- (CIRenderDestination)initWithWidth:(unint64_t)width height:(unint64_t)height pixelFormat:(unsigned int)format colorSpace:(CGColorSpace *)space surfaceProvider:(id)provider;
 - (CIRenderDestinationAlphaMode)alphaMode;
 - (NSUInteger)height;
 - (NSUInteger)width;
-- (id)_initWithInternalRenderDestination:(void *)a3 width:(unint64_t)a4 height:(unint64_t)a5 format:(int)a6 colorspace:(CGColorSpace *)a7;
+- (id)_initWithInternalRenderDestination:(void *)destination width:(unint64_t)width height:(unint64_t)height format:(int)format colorspace:(CGColorSpace *)colorspace;
 - (id)debugDescription;
 - (id)description;
 - (id)imageRepresentation;
@@ -28,18 +28,18 @@
 - (int)ditherDepth;
 - (int)format;
 - (void)_internalRenderDestination;
-- (void)_render:(id)a3 withContext:(id)a4;
-- (void)_set_YCC_matrix:(int)a3 fullRange:(BOOL)a4 depth:(int)a5 isFloat:(float)a6;
+- (void)_render:(id)_render withContext:(id)context;
+- (void)_set_YCC_matrix:(int)c_matrix fullRange:(BOOL)range depth:(int)depth isFloat:(float)float;
 - (void)dealloc;
 - (void)setAlphaMode:(CIRenderDestinationAlphaMode)alphaMode;
 - (void)setBlendKernel:(CIBlendKernel *)blendKernel;
 - (void)setBlendsInDestinationColorSpace:(BOOL)blendsInDestinationColorSpace;
 - (void)setClamped:(BOOL)clamped;
 - (void)setColorSpace:(CGColorSpaceRef)colorSpace;
-- (void)setCompressed:(BOOL)a3;
+- (void)setCompressed:(BOOL)compressed;
 - (void)setDithered:(BOOL)dithered;
 - (void)setFlipped:(BOOL)flipped;
-- (void)setLabel:(id)a3;
+- (void)setLabel:(id)label;
 @end
 
 @implementation CIRenderDestination
@@ -69,23 +69,23 @@
   }
 }
 
-- (id)_initWithInternalRenderDestination:(void *)a3 width:(unint64_t)a4 height:(unint64_t)a5 format:(int)a6 colorspace:(CGColorSpace *)a7
+- (id)_initWithInternalRenderDestination:(void *)destination width:(unint64_t)width height:(unint64_t)height format:(int)format colorspace:(CGColorSpace *)colorspace
 {
-  if (a3)
+  if (destination)
   {
-    v8 = *&a6;
+    v8 = *&format;
     v20.receiver = self;
     v20.super_class = CIRenderDestination;
     v12 = [(CIRenderDestination *)&v20 init];
     if (v12)
     {
       v13 = malloc_type_calloc(1uLL, 0x98uLL, 0x10A0040E62546F1uLL);
-      v14 = CI::Object::ref(a3);
+      v14 = CI::Object::ref(destination);
       *v13 = v14;
-      v13[1] = a4;
-      v13[2] = a5;
+      v13[1] = width;
+      v13[2] = height;
       *(v13 + 6) = v8;
-      CI::RenderDestination::setColorspace(v14, a7);
+      CI::RenderDestination::setColorspace(v14, colorspace);
       v16 = CI::format_modernize(v8, "[CIRenderDestination _initWithInternalRenderDestination:width:height:format:colorspace:]", v15);
       v17 = v16;
       if (v16 <= 2568)
@@ -180,28 +180,28 @@ LABEL_14:
   [(CIRenderDestination *)&v5 dealloc];
 }
 
-- (void)_render:(id)a3 withContext:(id)a4
+- (void)_render:(id)_render withContext:(id)context
 {
-  v4 = (MEMORY[0x1EEE9AC00])(self, a2, a3, a4);
+  v4 = (MEMORY[0x1EEE9AC00])(self, a2, _render, context);
   v6 = v5;
   v8 = v7;
   v9 = v4;
   v68 = *MEMORY[0x1E69E9840];
-  v10 = [v5 _internalContext];
-  v11 = [v9 _internalRenderDestination];
-  v12 = [v8 _internalRepresentation];
-  if (!v11)
+  _internalContext = [v5 _internalContext];
+  _internalRenderDestination = [v9 _internalRenderDestination];
+  _internalRepresentation = [v8 _internalRepresentation];
+  if (!_internalRenderDestination)
   {
     operator new();
   }
 
-  v13 = v12;
-  if (!v12)
+  v13 = _internalRepresentation;
+  if (!_internalRepresentation)
   {
     operator new();
   }
 
-  if (!v10)
+  if (!_internalContext)
   {
     operator new();
   }
@@ -211,7 +211,7 @@ LABEL_14:
   v17 = v16;
   v19 = v18;
   v21 = v20;
-  if ((*(*v10 + 16))(v10) == 83)
+  if ((*(*_internalContext + 16))(_internalContext) == 83)
   {
     v69.origin.x = v15;
     v69.origin.y = v17;
@@ -223,17 +223,17 @@ LABEL_14:
     v25 = (v24 * v24);
     if (v23 != 1 || v22 > v25)
     {
-      v26 = *(v10 + 86);
+      v26 = *(_internalContext + 86);
       if (+[CIContext isOpenCLAvailable])
       {
-        v10 = [v6 _internalFallbackCL];
+        _internalContext = [v6 _internalFallbackCL];
         v27 = 0;
         v28 = "OpenCL";
       }
 
       else if (+[CIContext isMetalAvailable])
       {
-        v10 = (*(*v10 + 120))(v10);
+        _internalContext = (*(*_internalContext + 120))(_internalContext);
         v27 = 0;
         v28 = "Metal";
       }
@@ -316,38 +316,38 @@ LABEL_14:
           _os_log_impl(&dword_19CC36000, v40, OS_LOG_TYPE_INFO, "%{public}s\n%{public}s", buf, 0x16u);
         }
 
-        *(v10 + 86) = v26;
+        *(_internalContext + 86) = v26;
       }
     }
   }
 
   [v8 extent];
-  ++v10[19];
-  v10[24] = 0;
-  v10[20] = v41;
-  v10[21] = v42;
-  v10[22] = v43;
-  v10[23] = v44;
-  (*(*v10 + 248))(v10, 0);
-  return (*(*v11 + 72))(v11, v13, v10);
+  ++_internalContext[19];
+  _internalContext[24] = 0;
+  _internalContext[20] = v41;
+  _internalContext[21] = v42;
+  _internalContext[22] = v43;
+  _internalContext[23] = v44;
+  (*(*_internalContext + 248))(_internalContext, 0);
+  return (*(*_internalRenderDestination + 72))(_internalRenderDestination, v13, _internalContext);
 }
 
-- (void)_set_YCC_matrix:(int)a3 fullRange:(BOOL)a4 depth:(int)a5 isFloat:(float)a6
+- (void)_set_YCC_matrix:(int)c_matrix fullRange:(BOOL)range depth:(int)depth isFloat:(float)float
 {
   v24 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (c_matrix)
   {
-    if (a6 == 0.0)
+    if (float == 0.0)
     {
-      v8 = a5;
+      depthCopy = depth;
     }
 
     else
     {
-      v8 = 0;
+      depthCopy = 0;
     }
 
-    if (get_rgb_to_ycc_matrix(a3, a4, v8, v23, &v21, &v19, &v17))
+    if (get_rgb_to_ycc_matrix(c_matrix, range, depthCopy, v23, &v21, &v19, &v17))
     {
       v9 = v21;
       v10 = v22;
@@ -370,7 +370,7 @@ LABEL_14:
     }
 
     priv = self->_priv;
-    *(priv + 7) = a3;
+    *(priv + 7) = c_matrix;
     *(priv + 2) = v9;
     *(priv + 6) = v10;
     *(priv + 56) = v11;
@@ -444,9 +444,9 @@ LABEL_14:
   return 0;
 }
 
-- (CIRenderDestination)initWithWidth:(unint64_t)a3 height:(unint64_t)a4 pixelFormat:(unsigned int)a5 colorSpace:(CGColorSpace *)a6 pixelBufferProvider:(id)a7
+- (CIRenderDestination)initWithWidth:(unint64_t)width height:(unint64_t)height pixelFormat:(unsigned int)format colorSpace:(CGColorSpace *)space pixelBufferProvider:(id)provider
 {
-  if (!a7)
+  if (!provider)
   {
     v21 = ci_logger_api();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -457,7 +457,7 @@ LABEL_14:
     goto LABEL_18;
   }
 
-  if (a3 - 1 >= 0xF4240 || a4 - 1 >= 0xF4240)
+  if (width - 1 >= 0xF4240 || height - 1 >= 0xF4240)
   {
     v29 = ci_logger_api();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -468,7 +468,7 @@ LABEL_14:
     goto LABEL_18;
   }
 
-  v9 = CI::format_from_PixelFormatType(*&a5);
+  v9 = CI::format_from_PixelFormatType(*&format);
   if (!checkFormat(v9))
   {
     v37 = ci_logger_api();
@@ -480,13 +480,13 @@ LABEL_14:
     goto LABEL_18;
   }
 
-  if (!a6)
+  if (!space)
   {
     goto LABEL_21;
   }
 
   TypeID = CGColorSpaceGetTypeID();
-  if (TypeID != CFGetTypeID(a6) || !CGColorSpaceSupportsOutput(a6))
+  if (TypeID != CFGetTypeID(space) || !CGColorSpaceSupportsOutput(space))
   {
 LABEL_10:
     v13 = ci_logger_api();
@@ -501,7 +501,7 @@ LABEL_18:
   }
 
   is_luminance = CI::format_is_luminance(v9);
-  Model = CGColorSpaceGetModel(a6);
+  Model = CGColorSpaceGetModel(space);
   if (!is_luminance)
   {
     if (Model == kCGColorSpaceModelRGB)
@@ -585,9 +585,9 @@ LABEL_21:
   return 0;
 }
 
-- (CIRenderDestination)initWithWidth:(unint64_t)a3 height:(unint64_t)a4 pixelFormat:(unsigned int)a5 colorSpace:(CGColorSpace *)a6 surfaceProvider:(id)a7
+- (CIRenderDestination)initWithWidth:(unint64_t)width height:(unint64_t)height pixelFormat:(unsigned int)format colorSpace:(CGColorSpace *)space surfaceProvider:(id)provider
 {
-  if (!a7)
+  if (!provider)
   {
     v21 = ci_logger_api();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -598,7 +598,7 @@ LABEL_21:
     goto LABEL_18;
   }
 
-  if (a3 - 1 >= 0xF4240 || a4 - 1 >= 0xF4240)
+  if (width - 1 >= 0xF4240 || height - 1 >= 0xF4240)
   {
     v29 = ci_logger_api();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -609,7 +609,7 @@ LABEL_21:
     goto LABEL_18;
   }
 
-  v9 = CI::format_from_PixelFormatType(*&a5);
+  v9 = CI::format_from_PixelFormatType(*&format);
   if (!checkFormat(v9))
   {
     v37 = ci_logger_api();
@@ -621,13 +621,13 @@ LABEL_21:
     goto LABEL_18;
   }
 
-  if (!a6)
+  if (!space)
   {
     goto LABEL_21;
   }
 
   TypeID = CGColorSpaceGetTypeID();
-  if (TypeID != CFGetTypeID(a6) || !CGColorSpaceSupportsOutput(a6))
+  if (TypeID != CFGetTypeID(space) || !CGColorSpaceSupportsOutput(space))
   {
 LABEL_10:
     v13 = ci_logger_api();
@@ -642,7 +642,7 @@ LABEL_18:
   }
 
   is_luminance = CI::format_is_luminance(v9);
-  Model = CGColorSpaceGetModel(a6);
+  Model = CGColorSpaceGetModel(space);
   if (!is_luminance)
   {
     if (Model == kCGColorSpaceModelRGB)
@@ -672,9 +672,9 @@ LABEL_21:
 {
   if (texture)
   {
-    v6 = [texture width];
-    v7 = [texture height];
-    if ((v6 - 1) >= 0xF4240 || (v7 - 1) >= 0xF4240)
+    width = [texture width];
+    height = [texture height];
+    if ((width - 1) >= 0xF4240 || (height - 1) >= 0xF4240)
     {
       v24 = ci_logger_api();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -819,21 +819,21 @@ LABEL_21:
   return 0;
 }
 
-+ (int)_crashed_because_nonaddressable_memory_was_passed_to_initWithBitmapData:(void *)a3 width:(unint64_t)a4 height:(unint64_t)a5 bytesPerRow:(unint64_t)a6 format:(int)a7
++ (int)_crashed_because_nonaddressable_memory_was_passed_to_initWithBitmapData:(void *)data width:(unint64_t)width height:(unint64_t)height bytesPerRow:(unint64_t)row format:(int)format
 {
-  v11 = CI::format_bits_per_pixel(a7);
-  v12 = (v11 * a4) >> 3;
+  v11 = CI::format_bits_per_pixel(format);
+  rowCopy2 = (v11 * width) >> 3;
   if (v11 == 12)
   {
-    v12 = a6;
+    rowCopy2 = row;
   }
 
   if (!v11)
   {
-    v12 = a6;
+    rowCopy2 = row;
   }
 
-  return *(a3 + (a5 - 1) * a6 + v12 - 1) + *a3;
+  return *(data + (height - 1) * row + rowCopy2 - 1) + *data;
 }
 
 - (CIRenderDestination)initWithBitmapData:(void *)data width:(NSUInteger)width height:(NSUInteger)height bytesPerRow:(NSUInteger)bytesPerRow format:(CIFormat)format
@@ -1061,12 +1061,12 @@ LABEL_21:
   return priv & 1;
 }
 
-- (void)setCompressed:(BOOL)a3
+- (void)setCompressed:(BOOL)compressed
 {
   priv = self->_priv;
   if (priv)
   {
-    priv[138] = a3;
+    priv[138] = compressed;
   }
 }
 
@@ -1234,14 +1234,14 @@ LABEL_9:
   }
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
   priv = self->_priv;
   if (priv)
   {
     if (*priv)
     {
-      CI::RenderDestination::setLabel(*priv, a3);
+      CI::RenderDestination::setLabel(*priv, label);
     }
   }
 }
@@ -1273,14 +1273,14 @@ LABEL_9:
   v3 = *priv;
   v4 = *(priv + 1);
   v5 = *(priv + 2);
-  v6 = *(*priv + 24);
-  if (!v6)
+  null = *(*priv + 24);
+  if (!null)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v7 = MEMORY[0x1E695DF90];
-  v30[0] = v6;
+  v30[0] = null;
   v29[0] = @"CIImageColorSpace";
   v29[1] = @"CIImageFlipped";
   v30[1] = [MEMORY[0x1E696AD98] numberWithBool:priv[128]];
@@ -1410,11 +1410,11 @@ LABEL_35:
   priv = self->_priv;
   if (priv)
   {
-    v4 = [(CIRenderDestination *)self _internalRenderDestination];
-    v5 = v4;
-    if (v4 && v4[2])
+    _internalRenderDestination = [(CIRenderDestination *)self _internalRenderDestination];
+    v5 = _internalRenderDestination;
+    if (_internalRenderDestination && _internalRenderDestination[2])
     {
-      v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@" (%@)", v4[2]];
+      v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@" (%@)", _internalRenderDestination[2]];
     }
 
     else

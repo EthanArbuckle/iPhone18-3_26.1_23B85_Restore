@@ -1,17 +1,17 @@
 @interface SXPasteboardActionActivity
-- (SXPasteboardActionActivity)initWithLabel:(id)a3 image:(id)a4 type:(unint64_t)a5 pasteboard:(id)a6 string:(id)a7;
-- (SXPasteboardActionActivity)initWithLabel:(id)a3 type:(unint64_t)a4 pasteboard:(id)a5 string:(id)a6;
-- (void)invokeWithAction:(id)a3 invocationMethod:(unint64_t)a4;
+- (SXPasteboardActionActivity)initWithLabel:(id)label image:(id)image type:(unint64_t)type pasteboard:(id)pasteboard string:(id)string;
+- (SXPasteboardActionActivity)initWithLabel:(id)label type:(unint64_t)type pasteboard:(id)pasteboard string:(id)string;
+- (void)invokeWithAction:(id)action invocationMethod:(unint64_t)method;
 @end
 
 @implementation SXPasteboardActionActivity
 
-- (SXPasteboardActionActivity)initWithLabel:(id)a3 type:(unint64_t)a4 pasteboard:(id)a5 string:(id)a6
+- (SXPasteboardActionActivity)initWithLabel:(id)label type:(unint64_t)type pasteboard:(id)pasteboard string:(id)string
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  if (v13)
+  labelCopy = label;
+  pasteboardCopy = pasteboard;
+  stringCopy = string;
+  if (stringCopy)
   {
     v20.receiver = self;
     v20.super_class = SXPasteboardActionActivity;
@@ -19,44 +19,44 @@
     v15 = v14;
     if (v14)
     {
-      objc_storeStrong(&v14->_label, a3);
-      v15->_type = a4;
-      objc_storeStrong(&v15->_pasteboard, a5);
-      v16 = [v13 copy];
+      objc_storeStrong(&v14->_label, label);
+      v15->_type = type;
+      objc_storeStrong(&v15->_pasteboard, pasteboard);
+      v16 = [stringCopy copy];
       string = v15->_string;
       v15->_string = v16;
     }
 
     self = v15;
-    v18 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v18 = 0;
+    selfCopy = 0;
   }
 
-  return v18;
+  return selfCopy;
 }
 
-- (SXPasteboardActionActivity)initWithLabel:(id)a3 image:(id)a4 type:(unint64_t)a5 pasteboard:(id)a6 string:(id)a7
+- (SXPasteboardActionActivity)initWithLabel:(id)label image:(id)image type:(unint64_t)type pasteboard:(id)pasteboard string:(id)string
 {
-  v13 = a4;
-  v14 = [(SXPasteboardActionActivity *)self initWithLabel:a3 type:a5 pasteboard:a6 string:a7];
+  imageCopy = image;
+  v14 = [(SXPasteboardActionActivity *)self initWithLabel:label type:type pasteboard:pasteboard string:string];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_image, a4);
+    objc_storeStrong(&v14->_image, image);
   }
 
   return v15;
 }
 
-- (void)invokeWithAction:(id)a3 invocationMethod:(unint64_t)a4
+- (void)invokeWithAction:(id)action invocationMethod:(unint64_t)method
 {
-  v6 = [(SXPasteboardActionActivity *)self pasteboard:a3];
-  v5 = [(SXPasteboardActionActivity *)self string];
-  [v6 setString:v5];
+  v6 = [(SXPasteboardActionActivity *)self pasteboard:action];
+  string = [(SXPasteboardActionActivity *)self string];
+  [v6 setString:string];
 }
 
 @end

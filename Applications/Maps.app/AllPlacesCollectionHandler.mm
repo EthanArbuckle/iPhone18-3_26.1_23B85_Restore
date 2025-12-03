@@ -2,8 +2,8 @@
 - (AllPlacesCollectionHandler)init;
 - (id)title;
 - (void)rebuildContent;
-- (void)removeObjects:(id)a3 completion:(id)a4;
-- (void)storeDidChange:(id)a3;
+- (void)removeObjects:(id)objects completion:(id)completion;
+- (void)storeDidChange:(id)change;
 @end
 
 @implementation AllPlacesCollectionHandler
@@ -42,9 +42,9 @@
   [(CollectionHandler *)self rebuildContent:v2];
 }
 
-- (void)storeDidChange:(id)a3
+- (void)storeDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   objc_initWeak(&location, self);
   v5 = objc_alloc_init(MSCollectionPlaceItemRequest);
   v6[0] = _NSConcreteStackBlock;
@@ -58,14 +58,14 @@
   objc_destroyWeak(&location);
 }
 
-- (void)removeObjects:(id)a3 completion:(id)a4
+- (void)removeObjects:(id)objects completion:(id)completion
 {
-  v5 = a3;
+  objectsCopy = objects;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v19 objects:v24 count:16];
+  v6 = [objectsCopy countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v6)
   {
     v7 = v6;
@@ -76,7 +76,7 @@
       {
         if (*v20 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(objectsCopy);
         }
 
         v10 = *(*(&v19 + 1) + 8 * i);
@@ -130,7 +130,7 @@ LABEL_16:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v19 objects:v24 count:16];
+      v7 = [objectsCopy countByEnumeratingWithState:&v19 objects:v24 count:16];
     }
 
     while (v7);

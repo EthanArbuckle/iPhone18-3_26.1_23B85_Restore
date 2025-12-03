@@ -1,7 +1,7 @@
 @interface BannerLayer
 - (_TtC19ExtragalacticPoster11BannerLayer)init;
-- (_TtC19ExtragalacticPoster11BannerLayer)initWithCoder:(id)a3;
-- (_TtC19ExtragalacticPoster11BannerLayer)initWithLayer:(id)a3;
+- (_TtC19ExtragalacticPoster11BannerLayer)initWithCoder:(id)coder;
+- (_TtC19ExtragalacticPoster11BannerLayer)initWithLayer:(id)layer;
 @end
 
 @implementation BannerLayer
@@ -15,7 +15,7 @@
   return [(BannerLayer *)&v3 init];
 }
 
-- (_TtC19ExtragalacticPoster11BannerLayer)initWithLayer:(id)a3
+- (_TtC19ExtragalacticPoster11BannerLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_100013AA8();
@@ -32,14 +32,14 @@
   return v5;
 }
 
-- (_TtC19ExtragalacticPoster11BannerLayer)initWithCoder:(id)a3
+- (_TtC19ExtragalacticPoster11BannerLayer)initWithCoder:(id)coder
 {
   *(&self->super.super.isa + OBJC_IVAR____TtC19ExtragalacticPoster11BannerLayer_descriptor) = 0;
   *(&self->super.super.isa + OBJC_IVAR____TtC19ExtragalacticPoster11BannerLayer_shapeLayers) = &_swiftEmptyArrayStorage;
   v7.receiver = self;
   v7.super_class = type metadata accessor for BannerLayer();
-  v4 = a3;
-  v5 = [(BannerLayer *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(BannerLayer *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

@@ -1,20 +1,20 @@
 @interface VCPPhotosCollectionThemeAnalysisTask
-+ (id)taskWithAssets:(id)a3 photoLibraryURL:(id)a4 options:(id)a5 andCompletionHandler:(id)a6;
-- (BOOL)run:(id *)a3;
-- (VCPPhotosCollectionThemeAnalysisTask)initWithAssets:(id)a3 photoLibraryURL:(id)a4 options:(id)a5 andCompletionHandler:(id)a6;
++ (id)taskWithAssets:(id)assets photoLibraryURL:(id)l options:(id)options andCompletionHandler:(id)handler;
+- (BOOL)run:(id *)run;
+- (VCPPhotosCollectionThemeAnalysisTask)initWithAssets:(id)assets photoLibraryURL:(id)l options:(id)options andCompletionHandler:(id)handler;
 - (int)run;
 - (void)dealloc;
 @end
 
 @implementation VCPPhotosCollectionThemeAnalysisTask
 
-- (VCPPhotosCollectionThemeAnalysisTask)initWithAssets:(id)a3 photoLibraryURL:(id)a4 options:(id)a5 andCompletionHandler:(id)a6
+- (VCPPhotosCollectionThemeAnalysisTask)initWithAssets:(id)assets photoLibraryURL:(id)l options:(id)options andCompletionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if ([v11 count])
+  assetsCopy = assets;
+  lCopy = l;
+  optionsCopy = options;
+  handlerCopy = handler;
+  if ([assetsCopy count])
   {
     v28.receiver = self;
     v28.super_class = VCPPhotosCollectionThemeAnalysisTask;
@@ -22,26 +22,26 @@
     v16 = v15;
     if (v15)
     {
-      v17 = objc_retainBlock(v14);
+      v17 = objc_retainBlock(handlerCopy);
       completionHandler = v15->_completionHandler;
       v15->_completionHandler = v17;
 
-      objc_storeStrong(&v15->_assets, a3);
+      objc_storeStrong(&v15->_assets, assets);
       v19 = +[NSMutableArray array];
       bridgeEmbeddings = v15->_bridgeEmbeddings;
       v15->_bridgeEmbeddings = v19;
 
-      v21 = [v13 objectForKeyedSubscript:VCPMediaAnalysisService_AllowOnDemandOption];
+      v21 = [optionsCopy objectForKeyedSubscript:VCPMediaAnalysisService_AllowOnDemandOption];
       v15->_allowOnDemand = [v21 BOOLValue];
 
-      v22 = [v13 objectForKeyedSubscript:VCPMediaAnalysisService_SetGMSBackgroundTaskPriorityOption];
+      v22 = [optionsCopy objectForKeyedSubscript:VCPMediaAnalysisService_SetGMSBackgroundTaskPriorityOption];
       v15->_setGMSBackgroundTaskPriority = [v22 BOOLValue];
 
-      objc_storeStrong(&v15->_photoLibrary, a4);
-      v23 = [v13 objectForKeyedSubscript:VCPPhotosCollectionUnderstanding_MinCollectionPortion];
+      objc_storeStrong(&v15->_photoLibrary, l);
+      v23 = [optionsCopy objectForKeyedSubscript:VCPPhotosCollectionUnderstanding_MinCollectionPortion];
       if (v23)
       {
-        v24 = [v13 objectForKeyedSubscript:VCPPhotosCollectionUnderstanding_MinCollectionPortion];
+        v24 = [optionsCopy objectForKeyedSubscript:VCPPhotosCollectionUnderstanding_MinCollectionPortion];
         [v24 floatValue];
         v16->_minCollectionPortion = v25;
       }
@@ -55,15 +55,15 @@
     }
 
     self = v16;
-    v26 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v26 = 0;
+    selfCopy = 0;
   }
 
-  return v26;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -85,18 +85,18 @@
   [(VCPPhotosCollectionThemeAnalysisTask *)&v8 dealloc];
 }
 
-+ (id)taskWithAssets:(id)a3 photoLibraryURL:(id)a4 options:(id)a5 andCompletionHandler:(id)a6
++ (id)taskWithAssets:(id)assets photoLibraryURL:(id)l options:(id)options andCompletionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [objc_alloc(objc_opt_class()) initWithAssets:v9 photoLibraryURL:v10 options:v11 andCompletionHandler:v12];
+  assetsCopy = assets;
+  lCopy = l;
+  optionsCopy = options;
+  handlerCopy = handler;
+  v13 = [objc_alloc(objc_opt_class()) initWithAssets:assetsCopy photoLibraryURL:lCopy options:optionsCopy andCompletionHandler:handlerCopy];
 
   return v13;
 }
 
-- (BOOL)run:(id *)a3
+- (BOOL)run:(id *)run
 {
   v5 = VCPSignPostLog();
   spid = os_signpost_id_generate(v5);
@@ -126,7 +126,7 @@
   v8 = atomic_load(&self->_cancel);
   if (v8)
   {
-    if (a3)
+    if (run)
     {
       v222 = NSLocalizedDescriptionKey;
       v165 = [NSString stringWithFormat:@"[VCPPhotosCollectionThemeAnalysisTask] Task cancelled"];
@@ -134,8 +134,8 @@
       v166 = [NSDictionary dictionaryWithObjects:&v223 forKeys:&v222 count:1];
       v9 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-18 userInfo:?];
       v10 = 0;
-      v11 = *a3;
-      *a3 = v9;
+      v11 = *run;
+      *run = v9;
       goto LABEL_198;
     }
 
@@ -146,7 +146,7 @@ LABEL_13:
 
   if (([objc_opt_class() isLibraryUnderstandingAdapterAvailable] & 1) == 0)
   {
-    if (a3)
+    if (run)
     {
       v220 = NSLocalizedDescriptionKey;
       v165 = [NSString stringWithFormat:@"[VCPPhotosCollectionThemeAnalysisTask] Library understanding adaptor not available through ModelCatalog"];
@@ -154,8 +154,8 @@ LABEL_13:
       v166 = [NSDictionary dictionaryWithObjects:&v221 forKeys:&v220 count:1];
       v14 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-18 userInfo:?];
       v10 = 0;
-      v11 = *a3;
-      *a3 = v14;
+      v11 = *run;
+      *run = v14;
       goto LABEL_198;
     }
 
@@ -171,17 +171,17 @@ LABEL_13:
       v15 = VCPLogToOSLogType[3];
       if (os_log_type_enabled(&_os_log_default, v15))
       {
-        v16 = [(_MADObjCModelCatalogModel *)v165 getBridgeEmbeddingVersion];
+        getBridgeEmbeddingVersion = [(_MADObjCModelCatalogModel *)v165 getBridgeEmbeddingVersion];
         backboneRevision = self->_backboneRevision;
         *v211 = 134218240;
-        *&v211[4] = v16;
+        *&v211[4] = getBridgeEmbeddingVersion;
         *&v211[12] = 2048;
         *&v211[14] = backboneRevision;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v15, "[VCPPhotosCollectionThemeAnalysisTask] Bridge embedding revision %lu not compatible with VCPMUBackboneRevision %lu", v211, 0x16u);
       }
     }
 
-    if (a3)
+    if (run)
     {
       v218 = NSLocalizedDescriptionKey;
       v219 = [NSString stringWithFormat:@"[VCPPhotosCollectionThemeAnalysisTask] Bridge embedding version not compatible"];
@@ -189,8 +189,8 @@ LABEL_13:
       v155 = [NSDictionary dictionaryWithObjects:&v219 forKeys:&v218 count:1];
       v18 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-18 userInfo:?];
       v10 = 0;
-      v19 = *a3;
-      *a3 = v18;
+      v19 = *run;
+      *run = v18;
       goto LABEL_196;
     }
 
@@ -213,8 +213,8 @@ LABEL_13:
   v166 = v13;
   v155 = [v20 activateResource:v13];
 
-  v21 = [v13 imageBackbone];
-  LODWORD(v20) = v21 == 0;
+  imageBackbone = [v13 imageBackbone];
+  LODWORD(v20) = imageBackbone == 0;
 
   if (v20)
   {
@@ -228,7 +228,7 @@ LABEL_13:
       }
     }
 
-    if (a3)
+    if (run)
     {
       v216 = NSLocalizedDescriptionKey;
       v19 = [NSString stringWithFormat:@"[VCPPhotosCollectionThemeAnalysisTask] Failed to create image backbone"];
@@ -236,8 +236,8 @@ LABEL_13:
       v162 = [NSDictionary dictionaryWithObjects:&v217 forKeys:&v216 count:1];
       v88 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-18 userInfo:?];
       v10 = 0;
-      v152 = *a3;
-      *a3 = v88;
+      v152 = *run;
+      *run = v88;
 
       goto LABEL_195;
     }
@@ -246,11 +246,11 @@ LABEL_13:
     goto LABEL_197;
   }
 
-  v22 = [v13 imageBackbone];
-  [v22 setBypassNormalizaton:0];
+  imageBackbone2 = [v13 imageBackbone];
+  [imageBackbone2 setBypassNormalizaton:0];
 
-  v23 = [v13 imageBackbone];
-  [v23 setBridgeEmbeddingType:1];
+  imageBackbone3 = [v13 imageBackbone];
+  [imageBackbone3 setBridgeEmbeddingType:1];
 
   v24 = VCPSignPostLog();
   v25 = os_signpost_id_generate(v24);
@@ -283,8 +283,8 @@ LABEL_13:
           objc_enumerationMutation(v28);
         }
 
-        v3 = [*(*(&v186 + 1) + 8 * i) uuid];
-        [v19 addObject:v3];
+        uuid = [*(*(&v186 + 1) + 8 * i) uuid];
+        [v19 addObject:uuid];
       }
 
       v29 = [(NSArray *)v28 countByEnumeratingWithState:&v186 objects:v215 count:16];
@@ -366,15 +366,15 @@ LABEL_13:
         v95 = atomic_load(&self->_cancel);
         if (v95)
         {
-          if (a3)
+          if (run)
           {
             v212 = NSLocalizedDescriptionKey;
             v213 = [NSString stringWithFormat:@"[VCPPhotosCollectionThemeAnalysisTask] Task cancelled"];
             v159 = v213;
             v116 = [NSDictionary dictionaryWithObjects:&v213 forKeys:&v212 count:1];
             v120 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-18 userInfo:v116];
-            v121 = *a3;
-            *a3 = v120;
+            v121 = *run;
+            *run = v120;
 
             goto LABEL_164;
           }
@@ -383,8 +383,8 @@ LABEL_13:
           goto LABEL_193;
         }
 
-        v3 = [v161 objectForKeyedSubscript:*(*(&v181 + 1) + 8 * v93)];
-        if ((+[VCPImageBackboneAnalyzer isBridgeVersion:compatibleWithEmbeddingVersion:](VCPImageBackboneAnalyzer, "isBridgeVersion:compatibleWithEmbeddingVersion:", v163, [v3 version]) & 1) == 0)
+        uuid = [v161 objectForKeyedSubscript:*(*(&v181 + 1) + 8 * v93)];
+        if ((+[VCPImageBackboneAnalyzer isBridgeVersion:compatibleWithEmbeddingVersion:](VCPImageBackboneAnalyzer, "isBridgeVersion:compatibleWithEmbeddingVersion:", v163, [uuid version]) & 1) == 0)
         {
           if (MediaAnalysisLogLevel() < 7)
           {
@@ -398,11 +398,11 @@ LABEL_13:
             goto LABEL_147;
           }
 
-          v105 = [v3 version];
+          version = [uuid version];
           *v211 = 138412802;
           *&v211[4] = v94;
           *&v211[12] = 2048;
-          *&v211[14] = v105;
+          *&v211[14] = version;
           *&v211[22] = 2048;
           *&v211[24] = v163;
           v106 = v154;
@@ -411,29 +411,29 @@ LABEL_13:
           goto LABEL_141;
         }
 
-        if (v3)
+        if (uuid)
         {
-          v96 = [v3 vectors];
-          v97 = [v96 count] == 0;
+          vectors = [uuid vectors];
+          v97 = [vectors count] == 0;
 
           if (!v97)
           {
-            v98 = [v3 vectors];
-            v99 = [v98 objectAtIndexedSubscript:0];
+            vectors2 = [uuid vectors];
+            v99 = [vectors2 objectAtIndexedSubscript:0];
 
             if (v99)
             {
               v100 = MediaAnalysisConvertFloat16ToFloat32();
-              v101 = [v166 imageBackbone];
-              [v101 computeBridgeEmbedding:v100 forType:1];
+              imageBackbone4 = [v166 imageBackbone];
+              [imageBackbone4 computeBridgeEmbedding:v100 forType:1];
 
-              v102 = [v166 imageBackbone];
-              v103 = [v102 bridgeEmbedding];
+              imageBackbone5 = [v166 imageBackbone];
+              bridgeEmbedding = [imageBackbone5 bridgeEmbedding];
 
-              if (v103)
+              if (bridgeEmbedding)
               {
                 [v162 addObject:v94];
-                [(NSMutableArray *)self->_bridgeEmbeddings addObject:v103];
+                [(NSMutableArray *)self->_bridgeEmbeddings addObject:bridgeEmbedding];
               }
 
               else if (MediaAnalysisLogLevel() >= 3)
@@ -552,8 +552,8 @@ LABEL_98:
       }
     }
 
-    LODWORD(v3) = vcvtms_s32_f32(fmaxf(fminf(minCollectionPortion, 1.0), 0.0) * v80);
-    if ([(NSMutableArray *)self->_bridgeEmbeddings count]>= v3 && [(NSMutableArray *)self->_bridgeEmbeddings count])
+    LODWORD(uuid) = vcvtms_s32_f32(fmaxf(fminf(minCollectionPortion, 1.0), 0.0) * v80);
+    if ([(NSMutableArray *)self->_bridgeEmbeddings count]>= uuid && [(NSMutableArray *)self->_bridgeEmbeddings count])
     {
       v85 = atomic_load(&self->_cancel);
       if ((v85 & 1) == 0)
@@ -562,8 +562,8 @@ LABEL_98:
         v122 = +[VCPMADResourceManager sharedManager];
         v159 = [v122 activateResource:v156];
 
-        v123 = [v156 themeGenerator];
-        LODWORD(v122) = v123 == 0;
+        themeGenerator = [v156 themeGenerator];
+        LODWORD(v122) = themeGenerator == 0;
 
         if (v122)
         {
@@ -578,7 +578,7 @@ LABEL_98:
             }
           }
 
-          if (!a3)
+          if (!run)
           {
 LABEL_181:
             v10 = 0;
@@ -590,8 +590,8 @@ LABEL_181:
           v203 = v116;
           v135 = [NSDictionary dictionaryWithObjects:&v203 forKeys:&v202 count:1];
           v136 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-18 userInfo:v135];
-          v137 = *a3;
-          *a3 = v136;
+          v137 = *run;
+          *run = v136;
 
           v10 = 0;
         }
@@ -610,7 +610,7 @@ LABEL_181:
           }
 
           v128 = dispatch_semaphore_create(0);
-          v129 = [v156 themeGenerator];
+          themeGenerator2 = [v156 themeGenerator];
           bridgeEmbeddings = self->_bridgeEmbeddings;
           setGMSBackgroundTaskPriority = self->_setGMSBackgroundTaskPriority;
           v170[0] = _NSConcreteStackBlock;
@@ -621,16 +621,16 @@ LABEL_181:
           v173 = buf;
           v116 = v128;
           v171 = v116;
-          [v129 generateThemesMM:bridgeEmbeddings setGMSBackgroundTaskPriority:setGMSBackgroundTaskPriority completion:v170];
+          [themeGenerator2 generateThemesMM:bridgeEmbeddings setGMSBackgroundTaskPriority:setGMSBackgroundTaskPriority completion:v170];
 
           dispatch_semaphore_wait(v116, 0xFFFFFFFFFFFFFFFFLL);
           v132 = v191[5];
           v10 = v132 == 0;
           if (v132)
           {
-            if (a3)
+            if (run)
             {
-              objc_storeStrong(a3, v132);
+              objc_storeStrong(run, v132);
             }
           }
 
@@ -662,7 +662,7 @@ LABEL_181:
         goto LABEL_191;
       }
 
-      if (a3)
+      if (run)
       {
         v204 = NSLocalizedDescriptionKey;
         v205 = [NSString stringWithFormat:@"[VCPPhotosCollectionThemeAnalysisTask] Task canceled"];
@@ -671,8 +671,8 @@ LABEL_181:
         v86 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-18 userInfo:?];
 LABEL_159:
         v10 = 0;
-        v116 = *a3;
-        *a3 = v86;
+        v116 = *run;
+        *run = v86;
         goto LABEL_191;
       }
     }
@@ -690,17 +690,17 @@ LABEL_159:
           *v211 = 134218496;
           *&v211[4] = v114;
           *&v211[12] = 1024;
-          *&v211[14] = v3;
+          *&v211[14] = uuid;
           *&v211[18] = 2048;
           *&v211[20] = v115;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v113, "[VCPPhotosCollectionThemeAnalysisTask] %lu valid asset embeddings less than minimum number of embeddings: %d with total number of assets: %lu", v211, 0x1Cu);
         }
       }
 
-      if (a3)
+      if (run)
       {
         v206 = NSLocalizedDescriptionKey;
-        v207 = [NSString stringWithFormat:@"[VCPPhotosCollectionThemeAnalysisTask] %lu valid asset embeddings less than minimum number of embeddings: %d with total number of assets: %lu", [(NSMutableArray *)self->_bridgeEmbeddings count], v3, [(NSArray *)self->_assets count]];
+        v207 = [NSString stringWithFormat:@"[VCPPhotosCollectionThemeAnalysisTask] %lu valid asset embeddings less than minimum number of embeddings: %d with total number of assets: %lu", [(NSMutableArray *)self->_bridgeEmbeddings count], uuid, [(NSArray *)self->_assets count]];
         v156 = v207;
         v159 = [NSDictionary dictionaryWithObjects:&v207 forKeys:&v206 count:1];
         v86 = [NSError errorWithDomain:NSOSStatusErrorDomain code:VCPPhotosCollectionUnderstanding_InsufficientEmbeddingsErrorCode userInfo:?];
@@ -718,8 +718,8 @@ LABEL_159:
   v177 = 0u;
   v178 = 0u;
   v159 = self->_assets;
-  v3 = [(NSArray *)v159 countByEnumeratingWithState:&v177 objects:v210 count:16];
-  if (!v3)
+  uuid = [(NSArray *)v159 countByEnumeratingWithState:&v177 objects:v210 count:16];
+  if (!uuid)
   {
 LABEL_97:
 
@@ -750,8 +750,8 @@ LABEL_45:
       break;
     }
 
-    v46 = [*(*(&v177 + 1) + 8 * v43) uuid];
-    v47 = [v162 containsObject:v46];
+    uuid2 = [*(*(&v177 + 1) + 8 * v43) uuid];
+    v47 = [v162 containsObject:uuid2];
 
     if ((v47 & 1) == 0)
     {
@@ -763,15 +763,15 @@ LABEL_45:
           v48 = &_os_log_default;
           if (os_log_type_enabled(&_os_log_default, type))
           {
-            v49 = [v44 localIdentifier];
+            localIdentifier = [v44 localIdentifier];
             *v211 = 138412290;
-            *&v211[4] = v49;
+            *&v211[4] = localIdentifier;
             _os_log_impl(&_mh_execute_header, &_os_log_default, type, "[VCPPhotosCollectionThemeAnalysisTask][%@] Compute image embedding on-demand", v211, 0xCu);
           }
         }
 
-        v50 = [VCPMADServiceImageAsset assetWithPhotosAsset:v44 clientBundleID:0 clientTeamID:0];
-        if (v50)
+        vcp_thumbnailResource = [VCPMADServiceImageAsset assetWithPhotosAsset:v44 clientBundleID:0 clientTeamID:0];
+        if (vcp_thumbnailResource)
         {
           v175 = 0;
           if (cf)
@@ -780,16 +780,16 @@ LABEL_45:
             cf = 0;
           }
 
-          if ([v50 loadPixelBuffer:&cf orientation:&v175])
+          if ([vcp_thumbnailResource loadPixelBuffer:&cf orientation:&v175])
           {
             if (MediaAnalysisLogLevel() >= 3)
             {
               v51 = &_os_log_default;
               if (os_log_type_enabled(&_os_log_default, v153))
               {
-                v52 = [v44 localIdentifier];
+                localIdentifier2 = [v44 localIdentifier];
                 *v211 = 138412290;
-                *&v211[4] = v52;
+                *&v211[4] = localIdentifier2;
                 _os_log_impl(&_mh_execute_header, &_os_log_default, v153, "[VCPPhotosCollectionThemeAnalysisTask][%@] Image loading failed", v211, 0xCu);
               }
 
@@ -802,22 +802,22 @@ LABEL_45:
 LABEL_72:
 
 LABEL_73:
-          v58 = [v166 imageBackbone];
+          imageBackbone6 = [v166 imageBackbone];
           v174 = 0;
-          v59 = [v58 analyzePixelBuffer:cf flags:0 results:&v174 cancel:&stru_100287E50];
+          v59 = [imageBackbone6 analyzePixelBuffer:cf flags:0 results:&v174 cancel:&stru_100287E50];
           v60 = v174;
 
           if (v59)
           {
             if (MediaAnalysisLogLevel() >= 3)
             {
-              v50 = &_os_log_default;
+              vcp_thumbnailResource = &_os_log_default;
               v61 = &_os_log_default;
               if (os_log_type_enabled(&_os_log_default, v153))
               {
-                v62 = [v44 localIdentifier];
+                localIdentifier3 = [v44 localIdentifier];
                 *v211 = 138412290;
-                *&v211[4] = v62;
+                *&v211[4] = localIdentifier3;
                 _os_log_impl(&_mh_execute_header, &_os_log_default, v153, "[VCPPhotosCollectionThemeAnalysisTask][%@] Failed to generate embedding", v211, 0xCu);
               }
 
@@ -830,14 +830,14 @@ LABEL_94:
             goto LABEL_95;
           }
 
-          v50 = [v60 objectForKeyedSubscript:v146];
-          if ([v50 count])
+          vcp_thumbnailResource = [v60 objectForKeyedSubscript:v146];
+          if ([vcp_thumbnailResource count])
           {
-            v65 = [v50 objectAtIndexedSubscript:0];
+            v65 = [vcp_thumbnailResource objectAtIndexedSubscript:0];
             v66 = [v65 objectForKeyedSubscript:v147];
             v67 = [v66 objectForKeyedSubscript:v145];
 
-            v68 = [v50 objectAtIndexedSubscript:0];
+            v68 = [vcp_thumbnailResource objectAtIndexedSubscript:0];
             v69 = [v68 objectForKeyedSubscript:v147];
             v70 = [v69 objectForKeyedSubscript:v144];
 
@@ -864,14 +864,14 @@ LABEL_94:
           v63 = &_os_log_default;
           if (os_log_type_enabled(&_os_log_default, v153))
           {
-            v64 = [v44 localIdentifier];
+            localIdentifier4 = [v44 localIdentifier];
             *v211 = 138412290;
-            *&v211[4] = v64;
+            *&v211[4] = localIdentifier4;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v153, "[VCPPhotosCollectionThemeAnalysisTask][%@] Failed to create imageAsset", v211, 0xCu);
           }
 
           v60 = 0;
-          v50 = &_os_log_default;
+          vcp_thumbnailResource = &_os_log_default;
         }
       }
 
@@ -887,20 +887,20 @@ LABEL_94:
           v53 = &_os_log_default;
           if (os_log_type_enabled(&_os_log_default, type))
           {
-            v54 = [v44 localIdentifier];
+            localIdentifier5 = [v44 localIdentifier];
             *v211 = 138412290;
-            *&v211[4] = v54;
+            *&v211[4] = localIdentifier5;
             _os_log_impl(&_mh_execute_header, &_os_log_default, type, "[VCPPhotosCollectionThemeAnalysisTask][%@] Compute video thumbnail embedding on-demand", v211, 0xCu);
           }
         }
 
         v55 = [PHAssetResource vcp_allAcceptableResourcesForAsset:v44];
-        v50 = [v55 vcp_thumbnailResource];
+        vcp_thumbnailResource = [v55 vcp_thumbnailResource];
 
-        if ([v50 vcp_isLocallyAvailable])
+        if ([vcp_thumbnailResource vcp_isLocallyAvailable])
         {
-          v56 = [v50 privateFileURL];
-          v57 = [v156 pixelBufferWithFormat:875704438 fromImageURL:v56 flushCache:0];
+          privateFileURL = [vcp_thumbnailResource privateFileURL];
+          v57 = [v156 pixelBufferWithFormat:875704438 fromImageURL:privateFileURL flushCache:0];
           *v211 = v57;
           if (cf)
           {
@@ -920,9 +920,9 @@ LABEL_94:
           v71 = &_os_log_default;
           if (os_log_type_enabled(&_os_log_default, v143))
           {
-            v72 = [v44 localIdentifier];
+            localIdentifier6 = [v44 localIdentifier];
             *v211 = 138412290;
-            *&v211[4] = v72;
+            *&v211[4] = localIdentifier6;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v143, "[VCPPhotosCollectionThemeAnalysisTask][%@] Movie thumbnail resource not locally available; skipping resource", v211, 0xCu);
           }
 
@@ -939,10 +939,10 @@ LABEL_93:
     }
 
 LABEL_95:
-    if (v3 == ++v43)
+    if (uuid == ++v43)
     {
-      v3 = [(NSArray *)v159 countByEnumeratingWithState:&v177 objects:v210 count:16];
-      if (v3)
+      uuid = [(NSArray *)v159 countByEnumeratingWithState:&v177 objects:v210 count:16];
+      if (uuid)
       {
         goto LABEL_45;
       }
@@ -951,7 +951,7 @@ LABEL_95:
     }
   }
 
-  if (!a3)
+  if (!run)
   {
     goto LABEL_181;
   }
@@ -961,8 +961,8 @@ LABEL_95:
   v209 = v116;
   v117 = [NSDictionary dictionaryWithObjects:&v209 forKeys:&v208 count:1];
   v118 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-18 userInfo:v117];
-  v119 = *a3;
-  *a3 = v118;
+  v119 = *run;
+  *run = v118;
 
 LABEL_164:
   v10 = 0;
@@ -993,7 +993,7 @@ LABEL_200:
   v7 = 0;
   if ([(VCPPhotosCollectionThemeAnalysisTask *)self run:&v7])
   {
-    v3 = 0;
+    code = 0;
   }
 
   else
@@ -1011,10 +1011,10 @@ LABEL_200:
     }
 
     (*(self->_completionHandler + 2))();
-    v3 = [v7 code];
+    code = [v7 code];
   }
 
-  return v3;
+  return code;
 }
 
 @end

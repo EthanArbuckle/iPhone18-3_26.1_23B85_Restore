@@ -1,12 +1,12 @@
 @interface IMDChatVocabularyUpdater
 + (id)sharedInstance;
 + (void)performInitialUpdateIfNeeded;
-- (IMDChatVocabularyUpdater)initWithChatRegistry:(id)a3 vocabulary:(id)a4;
-- (void)_updateVocabularyExcludingChat:(id)a3 completionHandler:(id)a4;
-- (void)updateVocabularyForAddedChat:(id)a3 completionHandler:(id)a4;
-- (void)updateVocabularyForDeferredUpdateRequestIfNecessaryWithCompletionHandler:(id)a3;
-- (void)updateVocabularyForDeletedChat:(id)a3 completionHandler:(id)a4;
-- (void)updateVocabularyForRenamedChat:(id)a3 completionHandler:(id)a4;
+- (IMDChatVocabularyUpdater)initWithChatRegistry:(id)registry vocabulary:(id)vocabulary;
+- (void)_updateVocabularyExcludingChat:(id)chat completionHandler:(id)handler;
+- (void)updateVocabularyForAddedChat:(id)chat completionHandler:(id)handler;
+- (void)updateVocabularyForDeferredUpdateRequestIfNecessaryWithCompletionHandler:(id)handler;
+- (void)updateVocabularyForDeletedChat:(id)chat completionHandler:(id)handler;
+- (void)updateVocabularyForRenamedChat:(id)chat completionHandler:(id)handler;
 @end
 
 @implementation IMDChatVocabularyUpdater
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = sub_22B533C5C;
   block[3] = &unk_278702AF8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_2814210A8 != -1)
   {
     dispatch_once(&qword_2814210A8, block);
@@ -28,18 +28,18 @@
   return v2;
 }
 
-- (IMDChatVocabularyUpdater)initWithChatRegistry:(id)a3 vocabulary:(id)a4
+- (IMDChatVocabularyUpdater)initWithChatRegistry:(id)registry vocabulary:(id)vocabulary
 {
-  v6 = a3;
-  v7 = a4;
+  registryCopy = registry;
+  vocabularyCopy = vocabulary;
   v14.receiver = self;
   v14.super_class = IMDChatVocabularyUpdater;
   v8 = [(IMDChatVocabularyUpdater *)&v14 init];
   if (v8)
   {
-    if (v6)
+    if (registryCopy)
     {
-      v9 = v6;
+      v9 = registryCopy;
     }
 
     else
@@ -50,9 +50,9 @@
     chatRegistry = v8->_chatRegistry;
     v8->_chatRegistry = v9;
 
-    if (v7)
+    if (vocabularyCopy)
     {
-      v11 = v7;
+      v11 = vocabularyCopy;
     }
 
     else
@@ -67,14 +67,14 @@
   return v8;
 }
 
-- (void)updateVocabularyForAddedChat:(id)a3 completionHandler:(id)a4
+- (void)updateVocabularyForAddedChat:(id)chat completionHandler:(id)handler
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IMDChatRegistry *)self->_chatRegistry doneLoadingAfterMerge];
+  chatCopy = chat;
+  handlerCopy = handler;
+  doneLoadingAfterMerge = [(IMDChatRegistry *)self->_chatRegistry doneLoadingAfterMerge];
   v9 = IMOSLoggingEnabled();
-  if (v8)
+  if (doneLoadingAfterMerge)
   {
     if (v9)
     {
@@ -82,12 +82,12 @@
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         v13 = 138412290;
-        v14 = v6;
+        v14 = chatCopy;
         _os_log_impl(&dword_22B4CC000, v10, OS_LOG_TYPE_INFO, "Updating SiriKit group name vocabulary for added chat: %@", &v13, 0xCu);
       }
     }
 
-    [(IMDChatVocabularyUpdater *)self _updateVocabularyExcludingChat:0 completionHandler:v7];
+    [(IMDChatVocabularyUpdater *)self _updateVocabularyExcludingChat:0 completionHandler:handlerCopy];
   }
 
   else
@@ -98,29 +98,29 @@
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
         v13 = 138412290;
-        v14 = v6;
+        v14 = chatCopy;
         _os_log_impl(&dword_22B4CC000, v11, OS_LOG_TYPE_INFO, "Received request to update vocabulary for added chat, but chat registry is not yet loaded. Deferring update. Added Chat: %@", &v13, 0xCu);
       }
     }
 
     self->_haveDeferredUpdateRequest = 1;
-    if (v7)
+    if (handlerCopy)
     {
-      v7[2](v7);
+      handlerCopy[2](handlerCopy);
     }
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateVocabularyForDeletedChat:(id)a3 completionHandler:(id)a4
+- (void)updateVocabularyForDeletedChat:(id)chat completionHandler:(id)handler
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IMDChatRegistry *)self->_chatRegistry doneLoadingAfterMerge];
+  chatCopy = chat;
+  handlerCopy = handler;
+  doneLoadingAfterMerge = [(IMDChatRegistry *)self->_chatRegistry doneLoadingAfterMerge];
   v9 = IMOSLoggingEnabled();
-  if (v8)
+  if (doneLoadingAfterMerge)
   {
     if (v9)
     {
@@ -128,12 +128,12 @@
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         v13 = 138412290;
-        v14 = v6;
+        v14 = chatCopy;
         _os_log_impl(&dword_22B4CC000, v10, OS_LOG_TYPE_INFO, "Updating group name vocabulary for deleted chat: %@", &v13, 0xCu);
       }
     }
 
-    [(IMDChatVocabularyUpdater *)self _updateVocabularyExcludingChat:v6 completionHandler:v7];
+    [(IMDChatVocabularyUpdater *)self _updateVocabularyExcludingChat:chatCopy completionHandler:handlerCopy];
   }
 
   else
@@ -144,29 +144,29 @@
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
         v13 = 138412290;
-        v14 = v6;
+        v14 = chatCopy;
         _os_log_impl(&dword_22B4CC000, v11, OS_LOG_TYPE_INFO, "Received request to update vocabulary for deleted chat, but chat registry is not yet loaded. Deferring update. Deleted Chat: %@", &v13, 0xCu);
       }
     }
 
     self->_haveDeferredUpdateRequest = 1;
-    if (v7)
+    if (handlerCopy)
     {
-      v7[2](v7);
+      handlerCopy[2](handlerCopy);
     }
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateVocabularyForRenamedChat:(id)a3 completionHandler:(id)a4
+- (void)updateVocabularyForRenamedChat:(id)chat completionHandler:(id)handler
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IMDChatRegistry *)self->_chatRegistry doneLoadingAfterMerge];
+  chatCopy = chat;
+  handlerCopy = handler;
+  doneLoadingAfterMerge = [(IMDChatRegistry *)self->_chatRegistry doneLoadingAfterMerge];
   v9 = IMOSLoggingEnabled();
-  if (v8)
+  if (doneLoadingAfterMerge)
   {
     if (v9)
     {
@@ -174,12 +174,12 @@
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         v13 = 138412290;
-        v14 = v6;
+        v14 = chatCopy;
         _os_log_impl(&dword_22B4CC000, v10, OS_LOG_TYPE_INFO, "Updating group name vocabulary for renamed chat: %@", &v13, 0xCu);
       }
     }
 
-    [(IMDChatVocabularyUpdater *)self _updateVocabularyExcludingChat:0 completionHandler:v7];
+    [(IMDChatVocabularyUpdater *)self _updateVocabularyExcludingChat:0 completionHandler:handlerCopy];
   }
 
   else
@@ -190,24 +190,24 @@
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
         v13 = 138412290;
-        v14 = v6;
+        v14 = chatCopy;
         _os_log_impl(&dword_22B4CC000, v11, OS_LOG_TYPE_INFO, "Received request to update vocabulary for renamed chat, but chat registry is not yet loaded. Deferring update. Renamed Chat: %@", &v13, 0xCu);
       }
     }
 
     self->_haveDeferredUpdateRequest = 1;
-    if (v7)
+    if (handlerCopy)
     {
-      v7[2](v7);
+      handlerCopy[2](handlerCopy);
     }
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateVocabularyForDeferredUpdateRequestIfNecessaryWithCompletionHandler:(id)a3
+- (void)updateVocabularyForDeferredUpdateRequestIfNecessaryWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (![(IMDChatRegistry *)self->_chatRegistry doneLoadingAfterMerge])
   {
     if (!IMOSLoggingEnabled())
@@ -240,7 +240,7 @@
       }
     }
 
-    [(IMDChatVocabularyUpdater *)self _updateVocabularyExcludingChat:0 completionHandler:v4];
+    [(IMDChatVocabularyUpdater *)self _updateVocabularyExcludingChat:0 completionHandler:handlerCopy];
     goto LABEL_18;
   }
 
@@ -263,30 +263,30 @@ LABEL_14:
   }
 
 LABEL_16:
-  if (v4)
+  if (handlerCopy)
   {
-    v4[2](v4);
+    handlerCopy[2](handlerCopy);
   }
 
 LABEL_18:
 }
 
-- (void)_updateVocabularyExcludingChat:(id)a3 completionHandler:(id)a4
+- (void)_updateVocabularyExcludingChat:(id)chat completionHandler:(id)handler
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  chatCopy = chat;
+  handlerCopy = handler;
   if ([MEMORY[0x277D1A9A0] isMessagesInstalled])
   {
-    v24 = self;
-    v25 = v7;
-    v8 = [(IMDChatRegistry *)self->_chatRegistry cachedChats];
+    selfCopy = self;
+    v25 = handlerCopy;
+    cachedChats = [(IMDChatRegistry *)self->_chatRegistry cachedChats];
     v9 = objc_alloc_init(MEMORY[0x277CBEB40]);
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v10 = v8;
+    v10 = cachedChats;
     v11 = [v10 countByEnumeratingWithState:&v29 objects:v34 count:16];
     if (v11)
     {
@@ -303,12 +303,12 @@ LABEL_18:
           v14 = *(*(&v29 + 1) + 8 * i);
           if (([v14 isBlackholed] & 1) == 0 && objc_msgSend(v14, "style") != 45)
           {
-            v15 = [v14 displayName];
-            v16 = v15 == 0;
+            displayName = [v14 displayName];
+            v16 = displayName == 0;
 
             if (!v16 && ([v14 state] & 0xFFFFFFFFFFFFFFFELL) == 2)
             {
-              if (!v6 || ([v14 guid], v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "guid"), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v17, "isEqual:", v18), v18, v17, (v19 & 1) == 0))
+              if (!chatCopy || ([v14 guid], v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(chatCopy, "guid"), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v17, "isEqual:", v18), v18, v17, (v19 & 1) == 0))
               {
                 [v9 addObject:v14];
               }
@@ -328,13 +328,13 @@ LABEL_18:
     block[1] = 3221225472;
     block[2] = sub_22B534718;
     block[3] = &unk_2787037B8;
-    block[4] = v24;
+    block[4] = selfCopy;
     v27 = v9;
     v28 = v25;
     v21 = v9;
     dispatch_async(v20, block);
 
-    v7 = v25;
+    handlerCopy = v25;
   }
 
   else
@@ -349,9 +349,9 @@ LABEL_18:
       }
     }
 
-    if (v7)
+    if (handlerCopy)
     {
-      v7[2](v7);
+      handlerCopy[2](handlerCopy);
     }
   }
 

@@ -1,5 +1,5 @@
 @interface NTKDateComplicationControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axAnnotateDisplay;
 - (void)_updateDisplay;
@@ -7,13 +7,13 @@
 
 @implementation NTKDateComplicationControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NTKDateComplicationController" isKindOfClass:@"NTKComplicationController"];
-  [v3 validateClass:@"NTKDateComplicationController" hasInstanceMethod:@"_updateDisplay" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"NTKComplicationController" hasInstanceMethod:@"legacyDisplay" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NTKDateComplicationController" hasInstanceVariable:@"_displayDateStyle" withType:"Q"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NTKDateComplicationController" isKindOfClass:@"NTKComplicationController"];
+  [validationsCopy validateClass:@"NTKDateComplicationController" hasInstanceMethod:@"_updateDisplay" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"NTKComplicationController" hasInstanceMethod:@"legacyDisplay" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NTKDateComplicationController" hasInstanceVariable:@"_displayDateStyle" withType:"Q"];
 }
 
 - (void)_axAnnotateDisplay

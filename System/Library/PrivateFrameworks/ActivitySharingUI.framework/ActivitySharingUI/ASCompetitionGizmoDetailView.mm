@@ -1,14 +1,14 @@
 @interface ASCompetitionGizmoDetailView
-- (ASCompetitionGizmoDetailView)initWithDetailViewType:(int64_t)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (void)layoutForWidth:(double)a3;
+- (ASCompetitionGizmoDetailView)initWithDetailViewType:(int64_t)type;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (void)layoutForWidth:(double)width;
 - (void)layoutSubviews;
-- (void)setFriend:(id)a3 competition:(id)a4;
+- (void)setFriend:(id)friend competition:(id)competition;
 @end
 
 @implementation ASCompetitionGizmoDetailView
 
-- (ASCompetitionGizmoDetailView)initWithDetailViewType:(int64_t)a3
+- (ASCompetitionGizmoDetailView)initWithDetailViewType:(int64_t)type
 {
   v31.receiver = self;
   v31.super_class = ASCompetitionGizmoDetailView;
@@ -22,14 +22,14 @@
     return v8;
   }
 
-  v9 = _BackgroundColorForDetailViewType(a3);
+  v9 = _BackgroundColorForDetailViewType(type);
   [(ASCompetitionGizmoDetailView *)v8 setBackgroundColor:v9];
 
-  v10 = [(ASCompetitionGizmoDetailView *)v8 layer];
-  [v10 setCornerRadius:6.0];
+  layer = [(ASCompetitionGizmoDetailView *)v8 layer];
+  [layer setCornerRadius:6.0];
 
-  v8->_type = a3;
-  modules = _ViewModulesForDetailViewType(a3);
+  v8->_type = type;
+  modules = _ViewModulesForDetailViewType(type);
   v8->_modules = modules;
   if (modules)
   {
@@ -62,8 +62,8 @@ LABEL_4:
   v8->_graphView = v18;
 
   v20 = v8->_graphView;
-  v21 = [MEMORY[0x277D75348] clearColor];
-  [(ASCompetitionGraphView *)v20 setBackgroundColor:v21];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(ASCompetitionGraphView *)v20 setBackgroundColor:clearColor];
 
   [(ASCompetitionGizmoDetailView *)v8 addSubview:v8->_graphView];
   modules = v8->_modules;
@@ -139,11 +139,11 @@ LABEL_7:
   [(ASCompetitionGizmoDetailView *)self layoutForWidth:v3];
 }
 
-- (void)layoutForWidth:(double)a3
+- (void)layoutForWidth:(double)width
 {
   v45 = *MEMORY[0x277D85DE8];
   previousLayoutWidth = self->_previousLayoutWidth;
-  if (!previousLayoutWidth || ([(NSNumber *)previousLayoutWidth floatValue], vabdd_f64(v6, a3) >= 0.00000011920929))
+  if (!previousLayoutWidth || ([(NSNumber *)previousLayoutWidth floatValue], vabdd_f64(v6, width) >= 0.00000011920929))
   {
     [(ASCompetitionScoreView *)self->_totalScoreView sizeToFit];
     [(ASCompetitionScoreView *)self->_totalWinsScoreView sizeToFit];
@@ -151,14 +151,14 @@ LABEL_7:
     [(ASCompetitionMessageBubbleView *)self->_messageBubbleView sizeToFit];
     [(ASCompetitionScoreView *)self->_totalWinsScoreView sizeToFit];
     [(ASCompetitionScoreView *)self->_totalScoreView bounds];
-    [(ASCompetitionScoreView *)self->_totalScoreView setFrame:0.0, 0.0, a3, CGRectGetHeight(v46)];
+    [(ASCompetitionScoreView *)self->_totalScoreView setFrame:0.0, 0.0, width, CGRectGetHeight(v46)];
     [(ASCompetitionScoreView *)self->_totalScoreView lastBaselineY];
     graphView = self->_graphView;
     if (graphView)
     {
       v9 = v7 + 10.0;
       [(ASCompetitionGraphView *)graphView preferredHeight];
-      [(ASCompetitionGraphView *)self->_graphView setFrame:0.0, v9, a3, v10];
+      [(ASCompetitionGraphView *)self->_graphView setFrame:0.0, v9, width, v10];
       [(ASCompetitionGraphView *)self->_graphView frame];
       MinY = CGRectGetMinY(v47);
       [(ASCompetitionGraphView *)self->_graphView lastBaselineY];
@@ -173,11 +173,11 @@ LABEL_7:
         v13 = 10.0;
       }
 
-      [(UIView *)self->_totalWinsSeparator setFrame:2.0, v7 + v13, a3 + -4.0, 1.5];
+      [(UIView *)self->_totalWinsSeparator setFrame:2.0, v7 + v13, width + -4.0, 1.5];
       [(UIView *)self->_totalWinsSeparator frame];
       MaxY = CGRectGetMaxY(v48);
       [(ASCompetitionScoreView *)self->_totalWinsScoreView bounds];
-      [(ASCompetitionScoreView *)self->_totalWinsScoreView setFrame:0.0, MaxY, a3, CGRectGetHeight(v49)];
+      [(ASCompetitionScoreView *)self->_totalWinsScoreView setFrame:0.0, MaxY, width, CGRectGetHeight(v49)];
       [(ASCompetitionScoreView *)self->_totalWinsScoreView frame];
       v15 = CGRectGetMinY(v50);
       [(ASCompetitionScoreView *)self->_totalWinsScoreView lastBaselineY];
@@ -193,7 +193,7 @@ LABEL_7:
         v18 = 6.5;
       }
 
-      [(UIView *)timeRemainingSeparator setFrame:2.0, v7 + v18, a3 + -4.0, 1.5];
+      [(UIView *)timeRemainingSeparator setFrame:2.0, v7 + v18, width + -4.0, 1.5];
       [(UIView *)self->_timeRemainingSeparator frame];
       v7 = CGRectGetMaxY(v51);
     }
@@ -209,7 +209,7 @@ LABEL_7:
           v20 = 13.0;
         }
 
-        [(ASCompetitionMessageBubbleView *)messageBubbleView setFrame:a3 + -5.0 + -30.0, v7 + v20, 30.0, 30.0];
+        [(ASCompetitionMessageBubbleView *)messageBubbleView setFrame:width + -5.0 + -30.0, v7 + v20, 30.0, 30.0];
         [(ASCompetitionTimeRemainingLabel *)self->_timeRemainingLabel bounds];
         Height = CGRectGetHeight(v52);
         [(ASCompetitionMessageBubbleView *)self->_messageBubbleView frame];
@@ -244,7 +244,7 @@ LABEL_7:
 
                 v30 = *(*(&v39 + 1) + 8 * i);
                 [v30 frame];
-                v31 = a3 - CGRectGetWidth(v56);
+                v31 = width - CGRectGetWidth(v56);
                 [v30 frame];
                 v32 = v31 - CGRectGetMinX(v57);
                 [v30 frame];
@@ -273,21 +273,21 @@ LABEL_7:
 
         v36 = v7 + v35;
         [(ASCompetitionTimeRemainingLabel *)self->_timeRemainingLabel bounds];
-        [(ASCompetitionTimeRemainingLabel *)self->_timeRemainingLabel setFrame:5.0, 0.0, a3 + -10.0, CGRectGetHeight(v61)];
+        [(ASCompetitionTimeRemainingLabel *)self->_timeRemainingLabel setFrame:5.0, 0.0, width + -10.0, CGRectGetHeight(v61)];
         [(ASCompetitionTimeRemainingLabel *)self->_timeRemainingLabel _setLastLineBaselineFrameOriginY:v36];
       }
     }
 
-    v37 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+    v37 = [MEMORY[0x277CCABB0] numberWithDouble:width];
     v38 = self->_previousLayoutWidth;
     self->_previousLayoutWidth = v37;
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(ASCompetitionGizmoDetailView *)self layoutForWidth:a3.width, a3.height];
+  width = fits.width;
+  [(ASCompetitionGizmoDetailView *)self layoutForWidth:fits.width, fits.height];
   timeRemainingLabel = self->_timeRemainingLabel;
   if (timeRemainingLabel)
   {
@@ -338,20 +338,20 @@ LABEL_8:
   return result;
 }
 
-- (void)setFriend:(id)a3 competition:(id)a4
+- (void)setFriend:(id)friend competition:(id)competition
 {
-  v10 = a3;
+  friendCopy = friend;
   totalScoreView = self->_totalScoreView;
-  v7 = a4;
-  [(ASCompetitionScoreView *)totalScoreView setFriend:v10 competition:v7];
-  [(ASCompetitionScoreView *)self->_totalWinsScoreView setFriend:v10 competition:v7];
-  [(ASCompetitionGraphView *)self->_graphView setCompetition:v7];
+  competitionCopy = competition;
+  [(ASCompetitionScoreView *)totalScoreView setFriend:friendCopy competition:competitionCopy];
+  [(ASCompetitionScoreView *)self->_totalWinsScoreView setFriend:friendCopy competition:competitionCopy];
+  [(ASCompetitionGraphView *)self->_graphView setCompetition:competitionCopy];
 
   if (self->_timeRemainingLabel)
   {
-    v8 = [v10 as_competitionStageString];
-    v9 = [v8 localizedUppercaseString];
-    [(ASCompetitionTimeRemainingLabel *)self->_timeRemainingLabel setText:v9];
+    as_competitionStageString = [friendCopy as_competitionStageString];
+    localizedUppercaseString = [as_competitionStageString localizedUppercaseString];
+    [(ASCompetitionTimeRemainingLabel *)self->_timeRemainingLabel setText:localizedUppercaseString];
   }
 
   [(ASCompetitionGizmoDetailView *)self setNeedsLayout];

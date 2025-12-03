@@ -1,17 +1,17 @@
 @interface SKVolumeDescriptor
-- (id)toVolumeWithDisk:(id)a3;
+- (id)toVolumeWithDisk:(id)disk;
 @end
 
 @implementation SKVolumeDescriptor
 
-- (id)toVolumeWithDisk:(id)a3
+- (id)toVolumeWithDisk:(id)disk
 {
-  v4 = a3;
+  diskCopy = disk;
   v5 = [SKVolume alloc];
-  v6 = [(SKVolumeDescriptor *)self filesystem];
-  v7 = [(SKVolumeDescriptor *)self name];
-  v8 = [(SKVolumeDescriptor *)self password];
-  v9 = [(SKVolume *)v5 initWithDisk:v4 filesystem:v6 name:v7 password:v8];
+  filesystem = [(SKVolumeDescriptor *)self filesystem];
+  name = [(SKVolumeDescriptor *)self name];
+  password = [(SKVolumeDescriptor *)self password];
+  v9 = [(SKVolume *)v5 initWithDisk:diskCopy filesystem:filesystem name:name password:password];
 
   return v9;
 }

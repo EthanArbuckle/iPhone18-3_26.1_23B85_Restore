@@ -225,7 +225,7 @@ LABEL_62:
           v83 = *p_var3;
           v84 = *p_var1;
           v85 = *p_var2;
-          v86 = [(CIStretchCrop *)self _kernel];
+          _kernel = [(CIStretchCrop *)self _kernel];
           v101[0] = MEMORY[0x1E69E9820];
           v101[1] = 3221225472;
           v101[2] = __28__CIStretchCrop_outputImage__block_invoke;
@@ -236,7 +236,7 @@ LABEL_62:
           v108[0] = [CIVector vectorWithX:v91 Y:v92];
           v108[1] = [CIVector vectorWithX:v90 Y:v89];
           v108[2] = [CIVector vectorWithX:v96 Y:v99 Z:v98 W:v97];
-          v39 = [v86 applyWithExtent:v101 roiCallback:v32 inputImage:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v108, 3), x, v84, v85, v83}];
+          v39 = [_kernel applyWithExtent:v101 roiCallback:v32 inputImage:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v108, 3), x, v84, v85, v83}];
 LABEL_63:
           v32 = v39;
           return [v32 imageByCroppingToRect:{0.0, 0.0, v19, v100}];

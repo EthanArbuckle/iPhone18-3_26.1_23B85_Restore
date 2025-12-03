@@ -1,9 +1,9 @@
 @interface ATXActionResult
-- (ATXActionResult)initWithScoredAction:(id)a3 predictionItem:(const ATXPredictionItem *)a4 actionKey:(id)a5;
+- (ATXActionResult)initWithScoredAction:(id)action predictionItem:(const ATXPredictionItem *)item actionKey:(id)key;
 - (const)predictionItem;
 - (id).cxx_construct;
 - (id)description;
-- (void)setPredictionItem:(const ATXPredictionItem *)a3;
+- (void)setPredictionItem:(const ATXPredictionItem *)item;
 @end
 
 @implementation ATXActionResult
@@ -30,10 +30,10 @@
   return v5;
 }
 
-- (ATXActionResult)initWithScoredAction:(id)a3 predictionItem:(const ATXPredictionItem *)a4 actionKey:(id)a5
+- (ATXActionResult)initWithScoredAction:(id)action predictionItem:(const ATXPredictionItem *)item actionKey:(id)key
 {
-  v9 = a3;
-  v10 = a5;
+  actionCopy = action;
+  keyCopy = key;
   v26.receiver = self;
   v26.super_class = ATXActionResult;
   v11 = [(ATXActionResult *)&v26 init];
@@ -41,12 +41,12 @@
   v13 = v11;
   if (v11)
   {
-    if (a4)
+    if (item)
     {
       v11->_hasPredictionItem = 1;
-      objc_storeStrong(&v11->_predictionItem.key, a4->key);
+      objc_storeStrong(&v11->_predictionItem.key, item->key);
       p_actionHash = &v12->_predictionItem.actionHash;
-      v15 = &a4->actionHash;
+      v15 = &item->actionHash;
     }
 
     else
@@ -70,23 +70,23 @@
     }
 
     memcpy(p_actionHash, v15, 0xCFEuLL);
-    v20 = [v10 copy];
+    v20 = [keyCopy copy];
     actionKey = v13->_actionKey;
     v13->_actionKey = v20;
 
-    objc_storeStrong(&v12->_scoredAction, a3);
+    objc_storeStrong(&v12->_scoredAction, action);
   }
 
   return v13;
 }
 
-- (void)setPredictionItem:(const ATXPredictionItem *)a3
+- (void)setPredictionItem:(const ATXPredictionItem *)item
 {
-  if (a3)
+  if (item)
   {
     self->_hasPredictionItem = 1;
-    p_actionHash = &a3->actionHash;
-    objc_storeStrong(&self->_predictionItem.key, a3->key);
+    p_actionHash = &item->actionHash;
+    objc_storeStrong(&self->_predictionItem.key, item->key);
 
     memcpy(&self->_predictionItem.actionHash, p_actionHash, 0xCFEuLL);
   }

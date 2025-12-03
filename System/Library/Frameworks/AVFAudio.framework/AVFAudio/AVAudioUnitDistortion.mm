@@ -1,5 +1,5 @@
 @interface AVAudioUnitDistortion
-- (AUPreset)FillOutAUPreset:(int64_t)a3;
+- (AUPreset)FillOutAUPreset:(int64_t)preset;
 - (AVAudioUnitDistortion)init;
 - (float)preGain;
 - (float)wetDryMix;
@@ -99,22 +99,22 @@
   }
 }
 
-- (AUPreset)FillOutAUPreset:(int64_t)a3
+- (AUPreset)FillOutAUPreset:(int64_t)preset
 {
-  if (a3 > 0x15)
+  if (preset > 0x15)
   {
     v4 = 0;
-    v3 = 0xFFFFFFFFLL;
+    presetCopy = 0xFFFFFFFFLL;
   }
 
   else
   {
-    v3 = a3;
-    v4 = *(&off_1E7EF5610 + a3);
+    presetCopy = preset;
+    v4 = *(&off_1E7EF5610 + preset);
   }
 
   result.presetName = v4;
-  result.presetNumber = v3;
+  result.presetNumber = presetCopy;
   return result;
 }
 

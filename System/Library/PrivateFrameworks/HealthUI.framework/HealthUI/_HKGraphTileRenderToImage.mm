@@ -1,16 +1,16 @@
 @interface _HKGraphTileRenderToImage
-- (CGImage)drawToImage:(id)a3;
+- (CGImage)drawToImage:(id)image;
 - (CGSize)sizeInPoints;
-- (_HKGraphTileRenderToImage)initWithSize:(CGSize)a3 scale:(double)a4 invertedYAxis:(BOOL)a5;
+- (_HKGraphTileRenderToImage)initWithSize:(CGSize)size scale:(double)scale invertedYAxis:(BOOL)axis;
 - (void)dealloc;
 @end
 
 @implementation _HKGraphTileRenderToImage
 
-- (_HKGraphTileRenderToImage)initWithSize:(CGSize)a3 scale:(double)a4 invertedYAxis:(BOOL)a5
+- (_HKGraphTileRenderToImage)initWithSize:(CGSize)size scale:(double)scale invertedYAxis:(BOOL)axis
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v18.receiver = self;
   v18.super_class = _HKGraphTileRenderToImage;
   v6 = [(_HKGraphTileRenderToImage *)&v18 init];
@@ -18,13 +18,13 @@
   if (v6)
   {
     v9.f64[0] = width;
-    v8.f64[0] = a4;
-    *(v6 + 2) = a4;
+    v8.f64[0] = scale;
+    *(v6 + 2) = scale;
     *(v6 + 11) = width;
     *(v6 + 12) = height;
-    v6[8] = a5;
+    v6[8] = axis;
     v9.f64[1] = height;
-    v8.f64[1] = ceil(a4);
+    v8.f64[1] = ceil(scale);
     v10 = vcvtq_u64_f64(vrndpq_f64(vmulq_f64(v9, v8)));
     *(v6 + 24) = v10;
     *(v6 + 5) = 4 * v10.i64[0];
@@ -61,9 +61,9 @@
   [(_HKGraphTileRenderToImage *)&v4 dealloc];
 }
 
-- (CGImage)drawToImage:(id)a3
+- (CGImage)drawToImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   UIGraphicsPushContext([(_HKGraphTileRenderToImage *)self drawingContext]);
   CGContextSaveGState([(_HKGraphTileRenderToImage *)self drawingContext]);
   if (self->_invertedYAxis)
@@ -72,14 +72,14 @@
     CGContextScaleCTM([(_HKGraphTileRenderToImage *)self drawingContext], 1.0, -1.0);
   }
 
-  v5 = [(_HKGraphTileRenderToImage *)self drawingContext];
+  drawingContext = [(_HKGraphTileRenderToImage *)self drawingContext];
   [(_HKGraphTileRenderToImage *)self scale];
   v7 = v6;
   [(_HKGraphTileRenderToImage *)self scale];
-  CGContextScaleCTM(v5, v7, v8);
-  v9 = [(_HKGraphTileRenderToImage *)self drawingContext];
+  CGContextScaleCTM(drawingContext, v7, v8);
+  drawingContext2 = [(_HKGraphTileRenderToImage *)self drawingContext];
   [(_HKGraphTileRenderToImage *)self sizeInPoints];
-  v4[2](v4, v9);
+  imageCopy[2](imageCopy, drawingContext2);
 
   CGContextRestoreGState([(_HKGraphTileRenderToImage *)self drawingContext]);
   UIGraphicsPopContext();

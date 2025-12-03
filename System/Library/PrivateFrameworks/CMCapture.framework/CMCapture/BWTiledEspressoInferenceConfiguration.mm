@@ -1,18 +1,18 @@
 @interface BWTiledEspressoInferenceConfiguration
-- (BWTiledEspressoInferenceConfiguration)initWithInferenceType:(int)a3 metalCommandQueue:(id)a4;
+- (BWTiledEspressoInferenceConfiguration)initWithInferenceType:(int)type metalCommandQueue:(id)queue;
 - (void)dealloc;
 @end
 
 @implementation BWTiledEspressoInferenceConfiguration
 
-- (BWTiledEspressoInferenceConfiguration)initWithInferenceType:(int)a3 metalCommandQueue:(id)a4
+- (BWTiledEspressoInferenceConfiguration)initWithInferenceType:(int)type metalCommandQueue:(id)queue
 {
   v7.receiver = self;
   v7.super_class = BWTiledEspressoInferenceConfiguration;
-  v5 = [(BWInferenceConfiguration *)&v7 initWithInferenceType:*&a3];
+  v5 = [(BWInferenceConfiguration *)&v7 initWithInferenceType:*&type];
   if (v5)
   {
-    v5->_metalCommandQueue = a4;
+    v5->_metalCommandQueue = queue;
   }
 
   return v5;

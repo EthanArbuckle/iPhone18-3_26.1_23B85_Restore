@@ -8,7 +8,7 @@
 - (void)encodeWithBSXPCCoder:()BSXPCSecureCoding
 {
   v4 = a3;
-  v5 = xpc_fd_create([a1 fileDescriptor]);
+  v5 = xpc_fd_create([self fileDescriptor]);
   [v4 encodeXPCObject:v5 forKey:@"fileDescriptor"];
 }
 
@@ -18,16 +18,16 @@
   v5 = v4;
   if (v4)
   {
-    a1 = [a1 initWithFileDescriptor:xpc_fd_dup(v4) closeOnDealloc:1];
-    v6 = a1;
+    self = [self initWithFileDescriptor:xpc_fd_dup(v4) closeOnDealloc:1];
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 @end

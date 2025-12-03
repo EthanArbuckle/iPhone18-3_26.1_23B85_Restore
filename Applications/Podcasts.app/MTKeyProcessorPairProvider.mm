@@ -1,7 +1,7 @@
 @interface MTKeyProcessorPairProvider
-- (MTKeyProcessorPairProvider)initWithCloudSyncBugReporter:(id)a3;
-- (id)bookmarkKeyForSyncType:(int64_t)a3;
-- (id)bookmarkKeysForSyncType:(int64_t)a3;
+- (MTKeyProcessorPairProvider)initWithCloudSyncBugReporter:(id)reporter;
+- (id)bookmarkKeyForSyncType:(int64_t)type;
+- (id)bookmarkKeysForSyncType:(int64_t)type;
 - (id)keysAndProcessorsForAllBookkeeperKeys;
 - (id)keysAndProcessorsForBookmarksSync;
 - (id)keysAndProcessorsForCriticalBookkeeperKeys;
@@ -9,22 +9,22 @@
 - (id)keysAndProcessorsForNonFollowedShowsSync;
 - (id)keysAndProcessorsForSubscriptionsAndStationsSync;
 - (id)keysAndProcessorsForTermsVersionSync;
-- (id)subscriptionKeyForSyncType:(int64_t)a3;
-- (id)subscriptionKeysForSyncType:(int64_t)a3;
+- (id)subscriptionKeyForSyncType:(int64_t)type;
+- (id)subscriptionKeysForSyncType:(int64_t)type;
 @end
 
 @implementation MTKeyProcessorPairProvider
 
-- (MTKeyProcessorPairProvider)initWithCloudSyncBugReporter:(id)a3
+- (MTKeyProcessorPairProvider)initWithCloudSyncBugReporter:(id)reporter
 {
-  v5 = a3;
+  reporterCopy = reporter;
   v9.receiver = self;
   v9.super_class = MTKeyProcessorPairProvider;
   v6 = [(MTKeyProcessorPairProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_cloudSyncBugReporter, a3);
+    objc_storeStrong(&v6->_cloudSyncBugReporter, reporter);
   }
 
   return v7;
@@ -32,9 +32,9 @@
 
 - (id)keysAndProcessorsForAllBookkeeperKeys
 {
-  v3 = [(MTKeyProcessorPairProvider *)self keysAndProcessorsForCriticalBookkeeperKeys];
-  v4 = [(MTKeyProcessorPairProvider *)self keysAndProcessorsForTermsVersionSync];
-  v5 = [v3 arrayByAddingObjectsFromArray:v4];
+  keysAndProcessorsForCriticalBookkeeperKeys = [(MTKeyProcessorPairProvider *)self keysAndProcessorsForCriticalBookkeeperKeys];
+  keysAndProcessorsForTermsVersionSync = [(MTKeyProcessorPairProvider *)self keysAndProcessorsForTermsVersionSync];
+  v5 = [keysAndProcessorsForCriticalBookkeeperKeys arrayByAddingObjectsFromArray:keysAndProcessorsForTermsVersionSync];
 
   return v5;
 }
@@ -42,20 +42,20 @@
 - (id)keysAndProcessorsForCriticalBookkeeperKeys
 {
   v3 = +[_TtC18PodcastsFoundation18SyncKeysRepository shared];
-  v4 = [v3 isLibrarySyncEnabled];
+  isLibrarySyncEnabled = [v3 isLibrarySyncEnabled];
 
-  if (v4)
+  if (isLibrarySyncEnabled)
   {
-    v5 = [(MTKeyProcessorPairProvider *)self keysAndProcessorsForSubscriptionsAndStationsSync];
-    v6 = [(MTKeyProcessorPairProvider *)self keysAndProcessorsForBookmarksSync];
-    v7 = [(MTKeyProcessorPairProvider *)self keysAndProcessorsForNonFollowedShowsSync];
-    v8 = [v5 arrayByAddingObjectsFromArray:v6];
-    v9 = [v8 arrayByAddingObjectsFromArray:v7];
+    keysAndProcessorsForSubscriptionsAndStationsSync = [(MTKeyProcessorPairProvider *)self keysAndProcessorsForSubscriptionsAndStationsSync];
+    keysAndProcessorsForBookmarksSync = [(MTKeyProcessorPairProvider *)self keysAndProcessorsForBookmarksSync];
+    keysAndProcessorsForNonFollowedShowsSync = [(MTKeyProcessorPairProvider *)self keysAndProcessorsForNonFollowedShowsSync];
+    v8 = [keysAndProcessorsForSubscriptionsAndStationsSync arrayByAddingObjectsFromArray:keysAndProcessorsForBookmarksSync];
+    v9 = [v8 arrayByAddingObjectsFromArray:keysAndProcessorsForNonFollowedShowsSync];
 
     if (+[_TtC8Podcasts21InterestSyncProcessor canSyncInterests])
     {
-      v10 = [(MTKeyProcessorPairProvider *)self keysAndProcessorsForInterestSync];
-      v11 = [v9 arrayByAddingObjectsFromArray:v10];
+      keysAndProcessorsForInterestSync = [(MTKeyProcessorPairProvider *)self keysAndProcessorsForInterestSync];
+      v11 = [v9 arrayByAddingObjectsFromArray:keysAndProcessorsForInterestSync];
 
       v9 = v11;
     }
@@ -72,9 +72,9 @@
 - (id)keysAndProcessorsForNonFollowedShowsSync
 {
   v2 = +[_TtC18PodcastsFoundation18SyncKeysRepository shared];
-  v3 = [v2 isLibrarySyncEnabled];
+  isLibrarySyncEnabled = [v2 isLibrarySyncEnabled];
 
-  if (v3)
+  if (isLibrarySyncEnabled)
   {
     v4 = objc_alloc_init(_TtC8Podcasts29NonFollowedShowsSyncProcessor);
     v5 = [MTKeyProcessorPair alloc];
@@ -113,9 +113,9 @@
 - (id)keysAndProcessorsForBookmarksSync
 {
   v3 = +[_TtC18PodcastsFoundation18SyncKeysRepository shared];
-  v4 = [v3 isLibrarySyncEnabled];
+  isLibrarySyncEnabled = [v3 isLibrarySyncEnabled];
 
-  if (v4)
+  if (isLibrarySyncEnabled)
   {
     v5 = +[NSMutableArray array];
     v6 = 0;
@@ -126,8 +126,8 @@
       v9 = [(MTKeyProcessorPairProvider *)self bookmarkKeyForSyncType:v6];
       v10 = [[MTBookmarksSyncStorage alloc] initWithSyncType:v6];
       v11 = [MTBookmarksSyncProcessor alloc];
-      v12 = [(MTKeyProcessorPairProvider *)self cloudSyncBugReporter];
-      v13 = [(MTBookmarksSyncProcessor *)v11 initWithStorageProvider:v10 cloudSyncBugReporter:v12];
+      cloudSyncBugReporter = [(MTKeyProcessorPairProvider *)self cloudSyncBugReporter];
+      v13 = [(MTBookmarksSyncProcessor *)v11 initWithStorageProvider:v10 cloudSyncBugReporter:cloudSyncBugReporter];
 
       v14 = [[MTKeyProcessorPair alloc] initWithKey:v9 processor:v13];
       [v5 addObject:v14];
@@ -164,9 +164,9 @@
 - (id)keysAndProcessorsForSubscriptionsAndStationsSync
 {
   v3 = +[_TtC18PodcastsFoundation18SyncKeysRepository shared];
-  v4 = [v3 isLibrarySyncEnabled];
+  isLibrarySyncEnabled = [v3 isLibrarySyncEnabled];
 
-  if (v4)
+  if (isLibrarySyncEnabled)
   {
     v5 = +[NSMutableArray array];
     v6 = 0;
@@ -179,8 +179,8 @@
       v11 = objc_opt_new();
       [v11 setSyncType:v6];
       v12 = [MTSubscriptionSyncProcessor alloc];
-      v13 = [(MTKeyProcessorPairProvider *)self cloudSyncBugReporter];
-      v14 = [(MTSubscriptionSyncProcessor *)v12 initWithStorage:v11 config:v10 cloudSyncBugReporter:v13];
+      cloudSyncBugReporter = [(MTKeyProcessorPairProvider *)self cloudSyncBugReporter];
+      v14 = [(MTSubscriptionSyncProcessor *)v12 initWithStorage:v11 config:v10 cloudSyncBugReporter:cloudSyncBugReporter];
 
       v15 = [[MTKeyProcessorPair alloc] initWithKey:v9 processor:v14];
       [v5 addObject:v15];
@@ -207,19 +207,19 @@
   return v5;
 }
 
-- (id)bookmarkKeysForSyncType:(int64_t)a3
+- (id)bookmarkKeysForSyncType:(int64_t)type
 {
-  v3 = [(MTKeyProcessorPairProvider *)self bookmarkKeyForSyncType:a3];
+  v3 = [(MTKeyProcessorPairProvider *)self bookmarkKeyForSyncType:type];
   v6 = v3;
   v4 = [NSArray arrayWithObjects:&v6 count:1];
 
   return v4;
 }
 
-- (id)bookmarkKeyForSyncType:(int64_t)a3
+- (id)bookmarkKeyForSyncType:(int64_t)type
 {
   v3 = &kMTBookmarksDRMKey;
-  if (a3 != 1)
+  if (type != 1)
   {
     v3 = &kMTBookmarksKey;
   }
@@ -227,19 +227,19 @@
   return *v3;
 }
 
-- (id)subscriptionKeysForSyncType:(int64_t)a3
+- (id)subscriptionKeysForSyncType:(int64_t)type
 {
-  v3 = [(MTKeyProcessorPairProvider *)self subscriptionKeyForSyncType:a3];
+  v3 = [(MTKeyProcessorPairProvider *)self subscriptionKeyForSyncType:type];
   v6 = v3;
   v4 = [NSArray arrayWithObjects:&v6 count:1];
 
   return v4;
 }
 
-- (id)subscriptionKeyForSyncType:(int64_t)a3
+- (id)subscriptionKeyForSyncType:(int64_t)type
 {
   v3 = &kMTSubscriptionsV3Key;
-  if (a3 != 1)
+  if (type != 1)
   {
     v3 = &kMTSubscriptionsKey;
   }

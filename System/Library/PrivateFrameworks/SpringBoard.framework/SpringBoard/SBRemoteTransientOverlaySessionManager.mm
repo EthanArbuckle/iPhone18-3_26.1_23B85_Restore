@@ -1,27 +1,27 @@
 @interface SBRemoteTransientOverlaySessionManager
-- (BOOL)hasActiveSessionMatchingPredicate:(id)a3 options:(int64_t)a4;
-- (BOOL)hasActiveSessionWithSceneIdentityTokenString:(id)a3 options:(int64_t)a4;
-- (BOOL)hasSessionWithPendingButtonEvents:(unint64_t)a3 options:(int64_t)a4;
-- (BOOL)hasSessionWithServiceProcessIdentifier:(int)a3 options:(int64_t)a4;
-- (BOOL)remoteTransientOverlaySession:(id)a3 performDismissalRequest:(id)a4;
-- (BOOL)remoteTransientOverlaySession:(id)a3 performPresentationRequest:(id)a4;
-- (BOOL)remoteTransientOverlaySession:(id)a3 prefersStatusBarActivityItemVisibleForServiceBundleIdentifier:(id)a4;
-- (BOOL)remoteTransientOverlaySession:(id)a3 shouldActivateWithContext:(id)a4;
+- (BOOL)hasActiveSessionMatchingPredicate:(id)predicate options:(int64_t)options;
+- (BOOL)hasActiveSessionWithSceneIdentityTokenString:(id)string options:(int64_t)options;
+- (BOOL)hasSessionWithPendingButtonEvents:(unint64_t)events options:(int64_t)options;
+- (BOOL)hasSessionWithServiceProcessIdentifier:(int)identifier options:(int64_t)options;
+- (BOOL)remoteTransientOverlaySession:(id)session performDismissalRequest:(id)request;
+- (BOOL)remoteTransientOverlaySession:(id)session performPresentationRequest:(id)request;
+- (BOOL)remoteTransientOverlaySession:(id)session prefersStatusBarActivityItemVisibleForServiceBundleIdentifier:(id)identifier;
+- (BOOL)remoteTransientOverlaySession:(id)session shouldActivateWithContext:(id)context;
 - (SBRemoteTransientOverlaySessionManager)init;
 - (SBRemoteTransientOverlaySessionManagerDelegate)delegate;
-- (id)_createSessionWithDefinition:(id)a3;
-- (id)_existingSessionsWithDefinition:(id)a3 options:(int64_t)a4;
-- (id)createSessionWithDefinition:(id)a3;
-- (id)embeddedDisplayWindowSceneForRemoteTransientOverlaySession:(id)a3;
-- (id)existingSessionWithSessionID:(id)a3 options:(int64_t)a4;
-- (id)existingSessionsWithDefinition:(id)a3 options:(int64_t)a4;
-- (id)sessionWithDefinition:(id)a3 options:(int64_t)a4;
-- (id)sessionsWithDefinition:(id)a3 options:(int64_t)a4;
-- (int64_t)activeWallpaperVariantForRemoteTransientOverlaySession:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)remoteTransientOverlaySession:(id)a3 didInvalidateWithReason:(int64_t)a4 error:(id)a5;
-- (void)remoteTransientOverlaySession:(id)a3 requestsHandlingForButtonEvents:(unint64_t)a4 viewController:(id)a5;
-- (void)removeObserver:(id)a3;
+- (id)_createSessionWithDefinition:(id)definition;
+- (id)_existingSessionsWithDefinition:(id)definition options:(int64_t)options;
+- (id)createSessionWithDefinition:(id)definition;
+- (id)embeddedDisplayWindowSceneForRemoteTransientOverlaySession:(id)session;
+- (id)existingSessionWithSessionID:(id)d options:(int64_t)options;
+- (id)existingSessionsWithDefinition:(id)definition options:(int64_t)options;
+- (id)sessionWithDefinition:(id)definition options:(int64_t)options;
+- (id)sessionsWithDefinition:(id)definition options:(int64_t)options;
+- (int64_t)activeWallpaperVariantForRemoteTransientOverlaySession:(id)session;
+- (void)addObserver:(id)observer;
+- (void)remoteTransientOverlaySession:(id)session didInvalidateWithReason:(int64_t)reason error:(id)error;
+- (void)remoteTransientOverlaySession:(id)session requestsHandlingForButtonEvents:(unint64_t)events viewController:(id)controller;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation SBRemoteTransientOverlaySessionManager
@@ -46,51 +46,51 @@
   return v2;
 }
 
-- (id)embeddedDisplayWindowSceneForRemoteTransientOverlaySession:(id)a3
+- (id)embeddedDisplayWindowSceneForRemoteTransientOverlaySession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v6 = [WeakRetained remoteTransientOverlaySessionManager:self embeddedDisplayWindowSceneForRemoteTransientOverlaySession:v4];
+  v6 = [WeakRetained remoteTransientOverlaySessionManager:self embeddedDisplayWindowSceneForRemoteTransientOverlaySession:sessionCopy];
 
   return v6;
 }
 
-- (int64_t)activeWallpaperVariantForRemoteTransientOverlaySession:(id)a3
+- (int64_t)activeWallpaperVariantForRemoteTransientOverlaySession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v6 = [WeakRetained remoteTransientOverlaySessionManager:self activeWallpaperVariantForSession:v4];
+  v6 = [WeakRetained remoteTransientOverlaySessionManager:self activeWallpaperVariantForSession:sessionCopy];
 
   return v6;
 }
 
-- (BOOL)remoteTransientOverlaySession:(id)a3 shouldActivateWithContext:(id)a4
+- (BOOL)remoteTransientOverlaySession:(id)session shouldActivateWithContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
+  contextCopy = context;
+  sessionCopy = session;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  LOBYTE(self) = [WeakRetained remoteTransientOverlaySessionManager:self shouldActivateOverlayWithContext:v6 forSession:v7];
+  LOBYTE(self) = [WeakRetained remoteTransientOverlaySessionManager:self shouldActivateOverlayWithContext:contextCopy forSession:sessionCopy];
 
   return self;
 }
 
-- (BOOL)remoteTransientOverlaySession:(id)a3 performDismissalRequest:(id)a4
+- (BOOL)remoteTransientOverlaySession:(id)session performDismissalRequest:(id)request
 {
-  v6 = a4;
-  v7 = a3;
+  requestCopy = request;
+  sessionCopy = session;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  LOBYTE(self) = [WeakRetained remoteTransientOverlaySessionManager:self performDismissalRequest:v6 forSession:v7];
+  LOBYTE(self) = [WeakRetained remoteTransientOverlaySessionManager:self performDismissalRequest:requestCopy forSession:sessionCopy];
 
   return self;
 }
 
-- (BOOL)remoteTransientOverlaySession:(id)a3 performPresentationRequest:(id)a4
+- (BOOL)remoteTransientOverlaySession:(id)session performPresentationRequest:(id)request
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  requestCopy = request;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v9 = [WeakRetained remoteTransientOverlaySessionManager:self performPresentationRequest:v7 forSession:v6];
+  v9 = [WeakRetained remoteTransientOverlaySessionManager:self performPresentationRequest:requestCopy forSession:sessionCopy];
 
   if (v9)
   {
@@ -114,7 +114,7 @@
             objc_enumerationMutation(v10);
           }
 
-          [*(*(&v16 + 1) + 8 * v14++) remoteTransientOverlaySessionManager:self didActivateSession:v6];
+          [*(*(&v16 + 1) + 8 * v14++) remoteTransientOverlaySessionManager:self didActivateSession:sessionCopy];
         }
 
         while (v12 != v14);
@@ -128,41 +128,41 @@
   return v9;
 }
 
-- (BOOL)remoteTransientOverlaySession:(id)a3 prefersStatusBarActivityItemVisibleForServiceBundleIdentifier:(id)a4
+- (BOOL)remoteTransientOverlaySession:(id)session prefersStatusBarActivityItemVisibleForServiceBundleIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
+  identifierCopy = identifier;
+  sessionCopy = session;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  LOBYTE(self) = [WeakRetained remoteTransientOverlaySessionManager:self prefersStatusBarActivityItemVisibleForServiceBundleIdentifier:v6 forSession:v7];
+  LOBYTE(self) = [WeakRetained remoteTransientOverlaySessionManager:self prefersStatusBarActivityItemVisibleForServiceBundleIdentifier:identifierCopy forSession:sessionCopy];
 
   return self;
 }
 
-- (void)remoteTransientOverlaySession:(id)a3 didInvalidateWithReason:(int64_t)a4 error:(id)a5
+- (void)remoteTransientOverlaySession:(id)session didInvalidateWithReason:(int64_t)reason error:(id)error
 {
-  v6 = [a3 sessionID];
+  sessionID = [session sessionID];
   accessSerialQueue = self->_accessSerialQueue;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __102__SBRemoteTransientOverlaySessionManager_remoteTransientOverlaySession_didInvalidateWithReason_error___block_invoke;
   v9[3] = &unk_2783A92D8;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = sessionID;
+  v8 = sessionID;
   dispatch_async(accessSerialQueue, v9);
 }
 
-- (void)remoteTransientOverlaySession:(id)a3 requestsHandlingForButtonEvents:(unint64_t)a4 viewController:(id)a5
+- (void)remoteTransientOverlaySession:(id)session requestsHandlingForButtonEvents:(unint64_t)events viewController:(id)controller
 {
-  v8 = a5;
-  v9 = a3;
+  controllerCopy = controller;
+  sessionCopy = session;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained remoteTransientOverlaySessionManager:self requestsHandlingForButtonEvents:a4 forSession:v9 viewController:v8];
+  [WeakRetained remoteTransientOverlaySessionManager:self requestsHandlingForButtonEvents:events forSession:sessionCopy viewController:controllerCopy];
 }
 
-- (id)createSessionWithDefinition:(id)a3
+- (id)createSessionWithDefinition:(id)definition
 {
-  v4 = a3;
+  definitionCopy = definition;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -174,10 +174,10 @@
   block[1] = 3221225472;
   block[2] = __70__SBRemoteTransientOverlaySessionManager_createSessionWithDefinition___block_invoke;
   block[3] = &unk_2783AB258;
-  v10 = v4;
+  v10 = definitionCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = definitionCopy;
   dispatch_sync(accessSerialQueue, block);
   v7 = v13[5];
 
@@ -194,9 +194,9 @@ void __70__SBRemoteTransientOverlaySessionManager_createSessionWithDefinition___
   *(v3 + 40) = v2;
 }
 
-- (id)existingSessionsWithDefinition:(id)a3 options:(int64_t)a4
+- (id)existingSessionsWithDefinition:(id)definition options:(int64_t)options
 {
-  v6 = a3;
+  definitionCopy = definition;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -209,10 +209,10 @@ void __70__SBRemoteTransientOverlaySessionManager_createSessionWithDefinition___
   v11[2] = __81__SBRemoteTransientOverlaySessionManager_existingSessionsWithDefinition_options___block_invoke;
   v11[3] = &unk_2783AA668;
   v11[4] = self;
-  v12 = v6;
+  v12 = definitionCopy;
   v13 = &v15;
-  v14 = a4;
-  v8 = v6;
+  optionsCopy = options;
+  v8 = definitionCopy;
   dispatch_sync(accessSerialQueue, v11);
   v9 = v16[5];
 
@@ -229,10 +229,10 @@ void __81__SBRemoteTransientOverlaySessionManager_existingSessionsWithDefinition
   *(v3 + 40) = v2;
 }
 
-- (id)existingSessionWithSessionID:(id)a3 options:(int64_t)a4
+- (id)existingSessionWithSessionID:(id)d options:(int64_t)options
 {
-  v4 = a4;
-  v6 = a3;
+  optionsCopy = options;
+  dCopy = d;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -246,10 +246,10 @@ void __81__SBRemoteTransientOverlaySessionManager_existingSessionsWithDefinition
   block[3] = &unk_2783AB258;
   v13 = &v14;
   block[4] = self;
-  v8 = v6;
+  v8 = dCopy;
   v12 = v8;
   dispatch_sync(accessSerialQueue, block);
-  if (_SBRemoteTransientOverlaySessionManagerIsValidSessionForLookupOptions(v15[5], v4))
+  if (_SBRemoteTransientOverlaySessionManagerIsValidSessionForLookupOptions(v15[5], optionsCopy))
   {
     v9 = v15[5];
   }
@@ -272,9 +272,9 @@ void __79__SBRemoteTransientOverlaySessionManager_existingSessionWithSessionID_o
   *(v3 + 40) = v2;
 }
 
-- (BOOL)hasSessionWithPendingButtonEvents:(unint64_t)a3 options:(int64_t)a4
+- (BOOL)hasSessionWithPendingButtonEvents:(unint64_t)events options:(int64_t)options
 {
-  v4 = a4;
+  optionsCopy = options;
   v26 = *MEMORY[0x277D85DE8];
   v19 = 0;
   v20 = &v19;
@@ -309,7 +309,7 @@ void __79__SBRemoteTransientOverlaySessionManager_existingSessionWithSessionID_o
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        if (_SBRemoteTransientOverlaySessionManagerIsValidSessionForLookupOptions(v11, v4) & 1) != 0 && ([v11 hasPendingButtonEvents:{a3, v14}])
+        if (_SBRemoteTransientOverlaySessionManagerIsValidSessionForLookupOptions(v11, optionsCopy) & 1) != 0 && ([v11 hasPendingButtonEvents:{events, v14}])
         {
           v12 = 1;
           goto LABEL_12;
@@ -341,10 +341,10 @@ void __84__SBRemoteTransientOverlaySessionManager_hasSessionWithPendingButtonEve
   *(v3 + 40) = v2;
 }
 
-- (BOOL)hasSessionWithServiceProcessIdentifier:(int)a3 options:(int64_t)a4
+- (BOOL)hasSessionWithServiceProcessIdentifier:(int)identifier options:(int64_t)options
 {
-  v4 = a4;
-  v5 = *&a3;
+  optionsCopy = options;
+  v5 = *&identifier;
   v26 = *MEMORY[0x277D85DE8];
   v19 = 0;
   v20 = &v19;
@@ -379,7 +379,7 @@ void __84__SBRemoteTransientOverlaySessionManager_hasSessionWithPendingButtonEve
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        if (_SBRemoteTransientOverlaySessionManagerIsValidSessionForLookupOptions(v11, v4) & 1) != 0 && ([v11 hasServiceProcessIdentifier:{v5, v14}])
+        if (_SBRemoteTransientOverlaySessionManagerIsValidSessionForLookupOptions(v11, optionsCopy) & 1) != 0 && ([v11 hasServiceProcessIdentifier:{v5, v14}])
         {
           v12 = 1;
           goto LABEL_12;
@@ -411,11 +411,11 @@ void __89__SBRemoteTransientOverlaySessionManager_hasSessionWithServiceProcessId
   *(v3 + 40) = v2;
 }
 
-- (BOOL)hasActiveSessionWithSceneIdentityTokenString:(id)a3 options:(int64_t)a4
+- (BOOL)hasActiveSessionWithSceneIdentityTokenString:(id)string options:(int64_t)options
 {
-  v4 = a4;
+  optionsCopy = options;
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  stringCopy = string;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -449,7 +449,7 @@ void __89__SBRemoteTransientOverlaySessionManager_hasSessionWithServiceProcessId
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
-        if (_SBRemoteTransientOverlaySessionManagerIsValidSessionForLookupOptions(v12, v4) & 1) != 0 && [v12 isActivated] && (objc_msgSend(v12, "isPresentedFromSceneWithIdentityTokenString:", v6))
+        if (_SBRemoteTransientOverlaySessionManagerIsValidSessionForLookupOptions(v12, optionsCopy) & 1) != 0 && [v12 isActivated] && (objc_msgSend(v12, "isPresentedFromSceneWithIdentityTokenString:", stringCopy))
         {
           v13 = 1;
           goto LABEL_13;
@@ -481,11 +481,11 @@ void __95__SBRemoteTransientOverlaySessionManager_hasActiveSessionWithSceneIdent
   *(v3 + 40) = v2;
 }
 
-- (BOOL)hasActiveSessionMatchingPredicate:(id)a3 options:(int64_t)a4
+- (BOOL)hasActiveSessionMatchingPredicate:(id)predicate options:(int64_t)options
 {
-  v4 = a4;
+  optionsCopy = options;
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  predicateCopy = predicate;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -519,7 +519,7 @@ void __95__SBRemoteTransientOverlaySessionManager_hasActiveSessionWithSceneIdent
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
-        if (_SBRemoteTransientOverlaySessionManagerIsValidSessionForLookupOptions(v12, v4) & 1) != 0 && [v12 isActivated] && (v6[2](v6, v12))
+        if (_SBRemoteTransientOverlaySessionManagerIsValidSessionForLookupOptions(v12, optionsCopy) & 1) != 0 && [v12 isActivated] && (predicateCopy[2](predicateCopy, v12))
         {
           v13 = 1;
           goto LABEL_13;
@@ -551,9 +551,9 @@ void __84__SBRemoteTransientOverlaySessionManager_hasActiveSessionMatchingPredic
   *(v3 + 40) = v2;
 }
 
-- (id)sessionWithDefinition:(id)a3 options:(int64_t)a4
+- (id)sessionWithDefinition:(id)definition options:(int64_t)options
 {
-  v6 = a3;
+  definitionCopy = definition;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -566,10 +566,10 @@ void __84__SBRemoteTransientOverlaySessionManager_hasActiveSessionMatchingPredic
   v11[2] = __72__SBRemoteTransientOverlaySessionManager_sessionWithDefinition_options___block_invoke;
   v11[3] = &unk_2783AA668;
   v11[4] = self;
-  v12 = v6;
+  v12 = definitionCopy;
   v13 = &v15;
-  v14 = a4;
-  v8 = v6;
+  optionsCopy = options;
+  v8 = definitionCopy;
   dispatch_sync(accessSerialQueue, v11);
   v9 = v16[5];
 
@@ -595,9 +595,9 @@ void __72__SBRemoteTransientOverlaySessionManager_sessionWithDefinition_options_
   }
 }
 
-- (id)sessionsWithDefinition:(id)a3 options:(int64_t)a4
+- (id)sessionsWithDefinition:(id)definition options:(int64_t)options
 {
-  v6 = a3;
+  definitionCopy = definition;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -610,10 +610,10 @@ void __72__SBRemoteTransientOverlaySessionManager_sessionWithDefinition_options_
   v11[2] = __73__SBRemoteTransientOverlaySessionManager_sessionsWithDefinition_options___block_invoke;
   v11[3] = &unk_2783AA668;
   v11[4] = self;
-  v12 = v6;
+  v12 = definitionCopy;
   v13 = &v15;
-  v14 = a4;
-  v8 = v6;
+  optionsCopy = options;
+  v8 = definitionCopy;
   dispatch_sync(accessSerialQueue, v11);
   v9 = v16[5];
 
@@ -641,55 +641,55 @@ void __73__SBRemoteTransientOverlaySessionManager_sessionsWithDefinition_options
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
     observers = self->_observers;
-    v8 = v4;
+    v8 = observerCopy;
     if (!observers)
     {
-      v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+      weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
       v7 = self->_observers;
-      self->_observers = v6;
+      self->_observers = weakObjectsHashTable;
 
       observers = self->_observers;
     }
 
     [(NSHashTable *)observers addObject:v8];
-    v4 = v8;
+    observerCopy = v8;
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v7 = v4;
-    [(NSHashTable *)self->_observers removeObject:v4];
+    v7 = observerCopy;
+    [(NSHashTable *)self->_observers removeObject:observerCopy];
     v5 = [(NSHashTable *)self->_observers count];
-    v4 = v7;
+    observerCopy = v7;
     if (!v5)
     {
       observers = self->_observers;
       self->_observers = 0;
 
-      v4 = v7;
+      observerCopy = v7;
     }
   }
 }
 
-- (id)_createSessionWithDefinition:(id)a3
+- (id)_createSessionWithDefinition:(id)definition
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  definitionCopy = definition;
   dispatch_assert_queue_V2(self->_accessSerialQueue);
-  v5 = [MEMORY[0x277CCAD78] UUID];
-  v6 = [v5 UUIDString];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
 
-  v7 = [[SBRemoteTransientOverlaySession alloc] _initWithSessionID:v6 definition:v4 sceneWorkspaceController:self->_sceneWorkspaceController];
+  v7 = [[SBRemoteTransientOverlaySession alloc] _initWithSessionID:uUIDString definition:definitionCopy sceneWorkspaceController:self->_sceneWorkspaceController];
   [v7 setHostDelegate:self];
   sessionIDToSession = self->_sessionIDToSession;
   if (!sessionIDToSession)
@@ -701,25 +701,25 @@ void __73__SBRemoteTransientOverlaySessionManager_sessionsWithDefinition_options
     sessionIDToSession = self->_sessionIDToSession;
   }
 
-  [(NSMutableDictionary *)sessionIDToSession setObject:v7 forKey:v6];
+  [(NSMutableDictionary *)sessionIDToSession setObject:v7 forKey:uUIDString];
   v11 = SBLogTransientOverlay();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138543618;
     v14 = v7;
     v15 = 2114;
-    v16 = v4;
+    v16 = definitionCopy;
     _os_log_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_DEFAULT, "Created %{public}@ for definition: %{public}@", &v13, 0x16u);
   }
 
   return v7;
 }
 
-- (id)_existingSessionsWithDefinition:(id)a3 options:(int64_t)a4
+- (id)_existingSessionsWithDefinition:(id)definition options:(int64_t)options
 {
-  v36 = a4;
+  optionsCopy = options;
   v44 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  definitionCopy = definition;
   dispatch_assert_queue_V2(self->_accessSerialQueue);
   v41 = 0u;
   v42 = 0u;
@@ -746,13 +746,13 @@ void __73__SBRemoteTransientOverlaySessionManager_sessionsWithDefinition_options
       }
 
       v10 = *(*(&v39 + 1) + 8 * i);
-      v11 = [v10 definition];
-      v12 = v5;
-      v13 = [v11 sceneProvidingProcess];
+      definition = [v10 definition];
+      v12 = definitionCopy;
+      sceneProvidingProcess = [definition sceneProvidingProcess];
 
-      v14 = [v12 sceneProvidingProcess];
+      sceneProvidingProcess2 = [v12 sceneProvidingProcess];
 
-      if ((v13 != 0) == (v14 == 0))
+      if ((sceneProvidingProcess != 0) == (sceneProvidingProcess2 == 0))
       {
 LABEL_20:
 
@@ -760,19 +760,19 @@ LABEL_21:
         continue;
       }
 
-      if (v13)
+      if (sceneProvidingProcess)
       {
-        v15 = [v11 sceneProvidingProcess];
-        v16 = [v12 sceneProvidingProcess];
-        v17 = [v15 isEqual:v16];
+        sceneProvidingProcess3 = [definition sceneProvidingProcess];
+        sceneProvidingProcess4 = [v12 sceneProvidingProcess];
+        v17 = [sceneProvidingProcess3 isEqual:sceneProvidingProcess4];
 
         if (!v17)
         {
           goto LABEL_20;
         }
 
-        v18 = [v11 configurationIdentifier];
-        v19 = [v12 configurationIdentifier];
+        configurationIdentifier = [definition configurationIdentifier];
+        configurationIdentifier2 = [v12 configurationIdentifier];
         v20 = BSEqualStrings();
 
         if (!v20)
@@ -780,35 +780,35 @@ LABEL_21:
           goto LABEL_20;
         }
 
-        v21 = [v11 secondaryConfigurationIdentifier];
-        v22 = [v12 secondaryConfigurationIdentifier];
+        secondaryConfigurationIdentifier = [definition secondaryConfigurationIdentifier];
+        secondaryConfigurationIdentifier2 = [v12 secondaryConfigurationIdentifier];
       }
 
       else
       {
-        v23 = [v11 serviceName];
-        v24 = [v12 serviceName];
-        v25 = [v23 isEqualToString:v24];
+        serviceName = [definition serviceName];
+        serviceName2 = [v12 serviceName];
+        v25 = [serviceName isEqualToString:serviceName2];
 
         if (!v25)
         {
           goto LABEL_20;
         }
 
-        v26 = [v11 viewControllerClassName];
-        v27 = [v12 viewControllerClassName];
-        v28 = [v26 isEqualToString:v27];
+        viewControllerClassName = [definition viewControllerClassName];
+        viewControllerClassName2 = [v12 viewControllerClassName];
+        v28 = [viewControllerClassName isEqualToString:viewControllerClassName2];
 
         if (!v28)
         {
           goto LABEL_20;
         }
 
-        v21 = [v11 secondaryViewControllerClassName];
-        v22 = [v12 secondaryViewControllerClassName];
+        secondaryConfigurationIdentifier = [definition secondaryViewControllerClassName];
+        secondaryConfigurationIdentifier2 = [v12 secondaryViewControllerClassName];
       }
 
-      v29 = v22;
+      v29 = secondaryConfigurationIdentifier2;
       v30 = BSEqualStrings();
 
       if ((v30 & 1) == 0)
@@ -816,15 +816,15 @@ LABEL_21:
         goto LABEL_20;
       }
 
-      v31 = [v11 isForCarPlay];
-      v32 = [v12 isForCarPlay];
+      isForCarPlay = [definition isForCarPlay];
+      isForCarPlay2 = [v12 isForCarPlay];
 
-      if (v31 != v32)
+      if (isForCarPlay != isForCarPlay2)
       {
         goto LABEL_21;
       }
 
-      IsValidSessionForLookupOptions = _SBRemoteTransientOverlaySessionManagerIsValidSessionForLookupOptions(v10, v36);
+      IsValidSessionForLookupOptions = _SBRemoteTransientOverlaySessionManagerIsValidSessionForLookupOptions(v10, optionsCopy);
 
       if (IsValidSessionForLookupOptions)
       {

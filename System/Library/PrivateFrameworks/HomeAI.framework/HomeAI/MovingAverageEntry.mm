@@ -1,22 +1,22 @@
 @interface MovingAverageEntry
-- (MovingAverageEntry)initWithValue:(id)a3;
+- (MovingAverageEntry)initWithValue:(id)value;
 @end
 
 @implementation MovingAverageEntry
 
-- (MovingAverageEntry)initWithValue:(id)a3
+- (MovingAverageEntry)initWithValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   v10.receiver = self;
   v10.super_class = MovingAverageEntry;
   v6 = [(MovingAverageEntry *)&v10 init];
   if (v6)
   {
-    v7 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     date = v6->_date;
-    v6->_date = v7;
+    v6->_date = date;
 
-    objc_storeStrong(&v6->_value, a3);
+    objc_storeStrong(&v6->_value, value);
   }
 
   return v6;

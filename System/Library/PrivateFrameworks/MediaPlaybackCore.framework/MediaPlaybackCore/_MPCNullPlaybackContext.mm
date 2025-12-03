@@ -1,19 +1,19 @@
 @interface _MPCNullPlaybackContext
-- (_MPCNullPlaybackContext)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_MPCNullPlaybackContext)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)descriptionComponents;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _MPCNullPlaybackContext
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = _MPCNullPlaybackContext;
-  v4 = [(_MPCNullPlaybackContext *)&v7 copyWithZone:a3];
-  v5 = [(_MPCNullPlaybackContext *)self label];
-  [v4 setLabel:v5];
+  v4 = [(_MPCNullPlaybackContext *)&v7 copyWithZone:zone];
+  label = [(_MPCNullPlaybackContext *)self label];
+  [v4 setLabel:label];
 
   return v4;
 }
@@ -22,8 +22,8 @@
 {
   v6.receiver = self;
   v6.super_class = _MPCNullPlaybackContext;
-  v3 = [(_MPCNullPlaybackContext *)&v6 descriptionComponents];
-  v4 = [v3 mutableCopy];
+  descriptionComponents = [(_MPCNullPlaybackContext *)&v6 descriptionComponents];
+  v4 = [descriptionComponents mutableCopy];
 
   [v4 setObject:0 forKeyedSubscript:@"actionAfterQueueLoad"];
   [v4 setObject:0 forKeyedSubscript:@"queueEndAction"];
@@ -34,24 +34,24 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = _MPCNullPlaybackContext;
-  v4 = a3;
-  [(_MPCNullPlaybackContext *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_label forKey:{@"MPCNullPlaybackContextCodingKeyLabel", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(_MPCNullPlaybackContext *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_label forKey:{@"MPCNullPlaybackContextCodingKeyLabel", v5.receiver, v5.super_class}];
 }
 
-- (_MPCNullPlaybackContext)initWithCoder:(id)a3
+- (_MPCNullPlaybackContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = _MPCNullPlaybackContext;
-  v5 = [(_MPCNullPlaybackContext *)&v9 initWithCoder:v4];
+  v5 = [(_MPCNullPlaybackContext *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MPCNullPlaybackContextCodingKeyLabel"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MPCNullPlaybackContextCodingKeyLabel"];
     label = v5->_label;
     v5->_label = v6;
   }

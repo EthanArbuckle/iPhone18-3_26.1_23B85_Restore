@@ -1,15 +1,15 @@
 @interface SKUICollectionListViewElement
-- (SKUICollectionListViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
+- (SKUICollectionListViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
 @end
 
 @implementation SKUICollectionListViewElement
 
-- (SKUICollectionListViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SKUICollectionListViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  factoryCopy = factory;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUICollectionListViewElement initWithDOMElement:parent:elementFactory:];
@@ -17,17 +17,17 @@
 
   v24.receiver = self;
   v24.super_class = SKUICollectionListViewElement;
-  v11 = [(SKUIViewElement *)&v24 initWithDOMElement:v8 parent:v9 elementFactory:v10];
+  v11 = [(SKUIViewElement *)&v24 initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
   v12 = v11;
   if (v11)
   {
-    v19 = v8;
+    v19 = elementCopy;
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v13 = [(SKUICollectionListViewElement *)v11 children];
-    v14 = [v13 countByEnumeratingWithState:&v20 objects:v25 count:16];
+    children = [(SKUICollectionListViewElement *)v11 children];
+    v14 = [children countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v14)
     {
       v15 = v14;
@@ -39,7 +39,7 @@
         {
           if (*v21 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(children);
           }
 
           objc_opt_class();
@@ -52,13 +52,13 @@
         }
 
         while (v15 != v17);
-        v15 = [v13 countByEnumeratingWithState:&v20 objects:v25 count:16];
+        v15 = [children countByEnumeratingWithState:&v20 objects:v25 count:16];
       }
 
       while (v15);
     }
 
-    v8 = v19;
+    elementCopy = v19;
   }
 
   return v12;

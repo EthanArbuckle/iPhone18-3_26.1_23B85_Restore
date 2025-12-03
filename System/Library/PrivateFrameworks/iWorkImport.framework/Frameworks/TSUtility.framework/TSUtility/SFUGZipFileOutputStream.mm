@@ -1,29 +1,29 @@
 @interface SFUGZipFileOutputStream
-- (SFUGZipFileOutputStream)initWithPath:(id)a3;
+- (SFUGZipFileOutputStream)initWithPath:(id)path;
 - (int64_t)offset;
 - (void)close;
 - (void)dealloc;
-- (void)writeBuffer:(const char *)a3 size:(unint64_t)a4;
+- (void)writeBuffer:(const char *)buffer size:(unint64_t)size;
 @end
 
 @implementation SFUGZipFileOutputStream
 
-- (SFUGZipFileOutputStream)initWithPath:(id)a3
+- (SFUGZipFileOutputStream)initWithPath:(id)path
 {
   v4 = [(SFUGZipFileOutputStream *)self init];
   if (v4)
   {
-    unlink([a3 fileSystemRepresentation]);
-    v5 = sub_27709E424(a3, 1537, 438);
+    unlink([path fileSystemRepresentation]);
+    v5 = sub_27709E424(path, 1537, 438);
     v6 = gzdopen(v5, "w");
     v4->_file = v6;
     if (!v6)
     {
       close(v5);
-      [MEMORY[0x277CBEAD8] sfu_errnoRaise:@"SFUFileOpenError" format:{@"Could not gzdopen %@", a3}];
+      [MEMORY[0x277CBEAD8] sfu_errnoRaise:@"SFUFileOpenError" format:{@"Could not gzdopen %@", path}];
     }
 
-    v4->_path = [a3 copy];
+    v4->_path = [path copy];
   }
 
   return v4;
@@ -42,13 +42,13 @@
   [(SFUGZipFileOutputStream *)&v4 dealloc];
 }
 
-- (void)writeBuffer:(const char *)a3 size:(unint64_t)a4
+- (void)writeBuffer:(const char *)buffer size:(unint64_t)size
 {
-  v4 = a4;
+  sizeCopy = size;
   if (self->_file)
   {
     v7 = 1;
-    if (!a4)
+    if (!size)
     {
       return;
     }
@@ -60,7 +60,7 @@
     +[TSUAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](TSUAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v8, [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/sf/SFUGZipFileOutputStream.m"], 64, 0, "Using a closed stream");
     +[TSUAssertionHandler logBacktraceThrottled];
     v7 = self->_file != 0;
-    if (!v4)
+    if (!sizeCopy)
     {
       return;
     }
@@ -70,28 +70,28 @@
   {
     do
     {
-      if (v4 >= 0xFFFFFFFF)
+      if (sizeCopy >= 0xFFFFFFFF)
       {
         v9 = 0xFFFFFFFFLL;
       }
 
       else
       {
-        v9 = v4;
+        v9 = sizeCopy;
       }
 
-      v10 = gzwrite(self->_file, a3, v9);
+      v10 = gzwrite(self->_file, buffer, v9);
       if (v9 != v10)
       {
         [MEMORY[0x277CBEAD8] sfu_errnoRaise:@"SFUFileWriteError" format:@"Could not gzwrite"];
       }
 
       self->_offset += v10;
-      a3 += v10;
-      v4 -= v10;
+      buffer += v10;
+      sizeCopy -= v10;
     }
 
-    while (v4);
+    while (sizeCopy);
   }
 }
 

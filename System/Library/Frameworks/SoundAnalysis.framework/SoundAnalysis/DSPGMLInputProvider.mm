@@ -1,14 +1,14 @@
 @interface DSPGMLInputProvider
-- (id)featureValueForName:(id)a3;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation DSPGMLInputProvider
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  v4 = a3;
-  v5 = [(MLFeatureDescription *)self->_featureDescription name];
-  v6 = [v4 isEqualToString:v5];
+  nameCopy = name;
+  name = [(MLFeatureDescription *)self->_featureDescription name];
+  v6 = [nameCopy isEqualToString:name];
 
   if (v6)
   {
@@ -17,7 +17,7 @@
 
   else
   {
-    [(NSMutableDictionary *)self->_featureCache objectForKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_featureCache objectForKeyedSubscript:nameCopy];
   }
   v7 = ;
 

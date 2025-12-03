@@ -1,22 +1,22 @@
 @interface GTTelemetryLayerObject
-- (GTTelemetryLayerObject)initWithCoder:(id)a3;
+- (GTTelemetryLayerObject)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GTTelemetryLayerObject
 
-- (GTTelemetryLayerObject)initWithCoder:(id)a3
+- (GTTelemetryLayerObject)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = GTTelemetryLayerObject;
   v5 = [(GTTelemetryLayerObject *)&v9 init];
   if (v5)
   {
-    v5->_streamRef = [v4 decodeInt64ForKey:@"streamRef"];
-    v5->_frames = [v4 decodeInt64ForKey:@"frames"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fps"];
+    v5->_streamRef = [coderCopy decodeInt64ForKey:@"streamRef"];
+    v5->_frames = [coderCopy decodeInt64ForKey:@"frames"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fps"];
     fps = v5->_fps;
     v5->_fps = v6;
   }
@@ -24,13 +24,13 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   streamRef = self->_streamRef;
-  v5 = a3;
-  [v5 encodeInt64:streamRef forKey:@"streamRef"];
-  [v5 encodeInt64:self->_frames forKey:@"frames"];
-  [v5 encodeObject:self->_fps forKey:@"fps"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:streamRef forKey:@"streamRef"];
+  [coderCopy encodeInt64:self->_frames forKey:@"frames"];
+  [coderCopy encodeObject:self->_fps forKey:@"fps"];
 }
 
 - (id)description

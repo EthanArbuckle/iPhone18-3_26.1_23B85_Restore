@@ -7,7 +7,7 @@
 - (void)main
 {
   v8 = *MEMORY[0x1E69E9840];
-  v1 = *(a1 + 296);
+  v1 = *(self + 296);
   OUTLINED_FUNCTION_3();
   OUTLINED_FUNCTION_3_0();
   _os_log_debug_impl(v2, v3, v4, v5, v6, 0x16u);

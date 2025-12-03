@@ -1,21 +1,21 @@
 @interface THModelContentLoadOperation
-- (THModelContentLoadOperation)initWithDelegate:(id)a3 contentNode:(id)a4 documentRoot:(id)a5 applePubURL:(id)a6 documentEntryURI:(id)a7;
-- (id)newNodeBodyWithContext:(id)a3 isFlow:(BOOL)a4;
-- (void)appendMainThreadCompletionBlock:(id)a3;
+- (THModelContentLoadOperation)initWithDelegate:(id)delegate contentNode:(id)node documentRoot:(id)root applePubURL:(id)l documentEntryURI:(id)i;
+- (id)newNodeBodyWithContext:(id)context isFlow:(BOOL)flow;
+- (void)appendMainThreadCompletionBlock:(id)block;
 - (void)dealloc;
 - (void)loadContentNode;
 - (void)loadEpubContentNode;
 - (void)loadNavigationPageContentNode;
 - (void)main;
-- (void)p_fixPageCharacterRangeAfterStorageTruncationWithContentState:(id)a3;
-- (void)p_populateParagraphStyle:(id)a3;
-- (void)p_processHintsWithContentState:(id)a3;
-- (void)processHintsInOrientation:(id)a3 contentState:(id)a4;
+- (void)p_fixPageCharacterRangeAfterStorageTruncationWithContentState:(id)state;
+- (void)p_populateParagraphStyle:(id)style;
+- (void)p_processHintsWithContentState:(id)state;
+- (void)processHintsInOrientation:(id)orientation contentState:(id)state;
 @end
 
 @implementation THModelContentLoadOperation
 
-- (THModelContentLoadOperation)initWithDelegate:(id)a3 contentNode:(id)a4 documentRoot:(id)a5 applePubURL:(id)a6 documentEntryURI:(id)a7
+- (THModelContentLoadOperation)initWithDelegate:(id)delegate contentNode:(id)node documentRoot:(id)root applePubURL:(id)l documentEntryURI:(id)i
 {
   v18.receiver = self;
   v18.super_class = THModelContentLoadOperation;
@@ -25,16 +25,16 @@
     return v12;
   }
 
-  if (a5)
+  if (root)
   {
-    if (a6)
+    if (l)
     {
       goto LABEL_4;
     }
 
 LABEL_13:
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
-    if (a7)
+    if (i)
     {
       goto LABEL_5;
     }
@@ -45,24 +45,24 @@ LABEL_14:
   }
 
   [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
-  if (!a6)
+  if (!l)
   {
     goto LABEL_13;
   }
 
 LABEL_4:
-  if (!a7)
+  if (!i)
   {
     goto LABEL_14;
   }
 
 LABEL_5:
-  v12->_epub = [@"epub" isEqualToString:{objc_msgSend(objc_msgSend(a6, "pathExtension"), "lowercaseString")}];
-  v12->_contentNode = a4;
-  v12->mDelegate = a3;
-  v12->mDocumentRoot = a5;
-  v12->mApplePubURL = [a6 copy];
-  v13 = [a7 copy];
+  v12->_epub = [@"epub" isEqualToString:{objc_msgSend(objc_msgSend(l, "pathExtension"), "lowercaseString")}];
+  v12->_contentNode = node;
+  v12->mDelegate = delegate;
+  v12->mDocumentRoot = root;
+  v12->mApplePubURL = [l copy];
+  v13 = [i copy];
   v12->mDocumentEntryURI = v13;
   if (v12->mApplePubURL)
   {
@@ -90,14 +90,14 @@ LABEL_5:
   [(THModelContentLoadOperation *)&v3 dealloc];
 }
 
-- (void)appendMainThreadCompletionBlock:(id)a3
+- (void)appendMainThreadCompletionBlock:(id)block
 {
   if (!+[NSThread isMainThread])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  if (a3)
+  if (block)
   {
     mMainThreadCompletionBlocks = self->mMainThreadCompletionBlocks;
     if (!mMainThreadCompletionBlocks)
@@ -119,7 +119,7 @@ LABEL_5:
       mMainThreadCompletionBlocks = self->mMainThreadCompletionBlocks;
     }
 
-    -[NSMutableArray addObject:](mMainThreadCompletionBlocks, "addObject:", [a3 copy]);
+    -[NSMutableArray addObject:](mMainThreadCompletionBlocks, "addObject:", [block copy]);
   }
 
   else
@@ -167,26 +167,26 @@ LABEL_5:
     if (v8)
     {
       v9 = objc_alloc_init(TSUNoCopyDictionary);
-      v10 = [(PFAIContentState *)v7 paginatedState];
-      if ([(PFAIDocOrientationState *)v10 contentNodeBody]&& [(PFAIDocOrientationState *)v10 presentationType])
+      paginatedState = [(PFAIContentState *)v7 paginatedState];
+      if ([(PFAIDocOrientationState *)paginatedState contentNodeBody]&& [(PFAIDocOrientationState *)paginatedState presentationType])
       {
-        [v9 setObject:-[PFAIDocOrientationState contentNodeBody](v10 forUncopiedKey:{"contentNodeBody"), -[PFAIDocOrientationState presentationType](v10, "presentationType")}];
+        [v9 setObject:-[PFAIDocOrientationState contentNodeBody](paginatedState forUncopiedKey:{"contentNodeBody"), -[PFAIDocOrientationState presentationType](paginatedState, "presentationType")}];
       }
 
-      v11 = [(PFAIContentState *)v7 flowState];
-      if ([(PFAIDocOrientationState *)v11 contentNodeBody]&& [(PFAIDocOrientationState *)v11 presentationType])
+      flowState = [(PFAIContentState *)v7 flowState];
+      if ([(PFAIDocOrientationState *)flowState contentNodeBody]&& [(PFAIDocOrientationState *)flowState presentationType])
       {
-        [v9 setObject:-[PFAIDocOrientationState contentNodeBody](v11 forUncopiedKey:{"contentNodeBody"), -[PFAIDocOrientationState presentationType](v11, "presentationType")}];
+        [v9 setObject:-[PFAIDocOrientationState contentNodeBody](flowState forUncopiedKey:{"contentNodeBody"), -[PFAIDocOrientationState presentationType](flowState, "presentationType")}];
       }
 
-      v12 = [(PFXHtmlReaderState *)v7 storageAnchorsForAnchorID];
-      [v9 setObject:v12 forKey:kTHModelStorageAnchorsForAnchorID];
-      v13 = [(PFXHtmlReaderState *)v7 storageAnchorsForCfiFrag];
-      [v9 setObject:v13 forKey:kTHModelStorageAnchorsForCfiFrag];
-      v14 = [(PFXHtmlReaderState *)v7 textChildOffsetStorageAnchorsForCfiFrag];
-      [v9 setObject:v14 forKey:kTHModelTextChildOffsetStorageAnchorsForCfiFrag];
-      v15 = [(PFXHtmlReaderState *)v7 anchorForCfiFrag];
-      [v9 setObject:v15 forKey:kTHModelAnchorForCfiFrag];
+      storageAnchorsForAnchorID = [(PFXHtmlReaderState *)v7 storageAnchorsForAnchorID];
+      [v9 setObject:storageAnchorsForAnchorID forKey:kTHModelStorageAnchorsForAnchorID];
+      storageAnchorsForCfiFrag = [(PFXHtmlReaderState *)v7 storageAnchorsForCfiFrag];
+      [v9 setObject:storageAnchorsForCfiFrag forKey:kTHModelStorageAnchorsForCfiFrag];
+      textChildOffsetStorageAnchorsForCfiFrag = [(PFXHtmlReaderState *)v7 textChildOffsetStorageAnchorsForCfiFrag];
+      [v9 setObject:textChildOffsetStorageAnchorsForCfiFrag forKey:kTHModelTextChildOffsetStorageAnchorsForCfiFrag];
+      anchorForCfiFrag = [(PFXHtmlReaderState *)v7 anchorForCfiFrag];
+      [v9 setObject:anchorForCfiFrag forKey:kTHModelAnchorForCfiFrag];
       [(THModelContentLoadOperationDelegate *)self->mDelegate contentLoadOperation:self loadedContentBodies:v9];
 
       goto LABEL_20;
@@ -229,8 +229,8 @@ LABEL_23:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(THTOCModel *)[(THDocumentRoot *)self->mDocumentRoot tocModel] tiles];
-  v7 = [(NSArray *)v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  tiles = [(THTOCModel *)[(THDocumentRoot *)self->mDocumentRoot tocModel] tiles];
+  v7 = [(NSArray *)tiles countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v16 = v3;
@@ -241,19 +241,19 @@ LABEL_6:
     {
       if (*v18 != v8)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(tiles);
       }
 
       v10 = *(*(&v17 + 1) + 8 * v9);
-      v11 = [v10 browserPageNode];
-      if (v11 == [(THModelContentLoadOperation *)self contentNode])
+      browserPageNode = [v10 browserPageNode];
+      if (browserPageNode == [(THModelContentLoadOperation *)self contentNode])
       {
         break;
       }
 
       if (v7 == ++v9)
       {
-        v7 = [(NSArray *)v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v7 = [(NSArray *)tiles countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v7)
         {
           goto LABEL_6;
@@ -294,10 +294,10 @@ LABEL_6:
   }
 
   v14 = objc_alloc_init(TSUNoCopyDictionary);
-  v15 = [(PFAITocConfigState *)v12 thNodeBody];
-  if (v15)
+  thNodeBody = [(PFAITocConfigState *)v12 thNodeBody];
+  if (thNodeBody)
   {
-    [v14 setObject:v15 forUncopiedKey:{+[THPresentationType paginatedPresentationTypeInContext:](THPresentationType, "paginatedPresentationTypeInContext:", -[THDocumentRoot context](self->mDocumentRoot, "context"))}];
+    [v14 setObject:thNodeBody forUncopiedKey:{+[THPresentationType paginatedPresentationTypeInContext:](THPresentationType, "paginatedPresentationTypeInContext:", -[THDocumentRoot context](self->mDocumentRoot, "context"))}];
   }
 
   [(THModelContentLoadOperationDelegate *)self->mDelegate contentLoadOperation:self loadedContentBodies:v14];
@@ -350,20 +350,20 @@ LABEL_12:
   }
 
   v7 = objc_alloc_init(TSUNoCopyDictionary);
-  v8 = [(PFEIReaderState *)v5 orientationState];
-  if ([(PFAIDocOrientationState *)v8 contentNodeBody]&& [(PFAIDocOrientationState *)v8 presentationType])
+  orientationState = [(PFEIReaderState *)v5 orientationState];
+  if ([(PFAIDocOrientationState *)orientationState contentNodeBody]&& [(PFAIDocOrientationState *)orientationState presentationType])
   {
-    [v7 setObject:-[PFAIDocOrientationState contentNodeBody](v8 forUncopiedKey:{"contentNodeBody"), -[PFAIDocOrientationState presentationType](v8, "presentationType")}];
+    [v7 setObject:-[PFAIDocOrientationState contentNodeBody](orientationState forUncopiedKey:{"contentNodeBody"), -[PFAIDocOrientationState presentationType](orientationState, "presentationType")}];
   }
 
-  v9 = [(PFXHtmlReaderState *)v5 storageAnchorsForAnchorID];
-  [v7 setObject:v9 forKey:kTHModelStorageAnchorsForAnchorID];
-  v10 = [(PFXHtmlReaderState *)v5 storageAnchorsForCfiFrag];
-  [v7 setObject:v10 forKey:kTHModelStorageAnchorsForCfiFrag];
-  v11 = [(PFXHtmlReaderState *)v5 textChildOffsetStorageAnchorsForCfiFrag];
-  [v7 setObject:v11 forKey:kTHModelTextChildOffsetStorageAnchorsForCfiFrag];
-  v12 = [(PFXHtmlReaderState *)v5 anchorForCfiFrag];
-  [v7 setObject:v12 forKey:kTHModelAnchorForCfiFrag];
+  storageAnchorsForAnchorID = [(PFXHtmlReaderState *)v5 storageAnchorsForAnchorID];
+  [v7 setObject:storageAnchorsForAnchorID forKey:kTHModelStorageAnchorsForAnchorID];
+  storageAnchorsForCfiFrag = [(PFXHtmlReaderState *)v5 storageAnchorsForCfiFrag];
+  [v7 setObject:storageAnchorsForCfiFrag forKey:kTHModelStorageAnchorsForCfiFrag];
+  textChildOffsetStorageAnchorsForCfiFrag = [(PFXHtmlReaderState *)v5 textChildOffsetStorageAnchorsForCfiFrag];
+  [v7 setObject:textChildOffsetStorageAnchorsForCfiFrag forKey:kTHModelTextChildOffsetStorageAnchorsForCfiFrag];
+  anchorForCfiFrag = [(PFXHtmlReaderState *)v5 anchorForCfiFrag];
+  [v7 setObject:anchorForCfiFrag forKey:kTHModelAnchorForCfiFrag];
   [(THModelContentLoadOperationDelegate *)self->mDelegate contentLoadOperation:self loadedContentBodies:v7];
 
 LABEL_13:
@@ -396,17 +396,17 @@ LABEL_13:
   objc_autoreleasePoolPop(v3);
 }
 
-- (void)processHintsInOrientation:(id)a3 contentState:(id)a4
+- (void)processHintsInOrientation:(id)orientation contentState:(id)state
 {
-  if ([a3 hasHints])
+  if ([orientation hasHints])
   {
-    v6 = [a3 contentNodeBody];
-    v7 = [(THDocumentRoot *)self->mDocumentRoot context];
+    contentNodeBody = [orientation contentNodeBody];
+    context = [(THDocumentRoot *)self->mDocumentRoot context];
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    obj = [v6 pages];
+    obj = [contentNodeBody pages];
     v25 = [obj countByEnumeratingWithState:&v31 objects:v36 count:16];
     if (v25)
     {
@@ -429,8 +429,8 @@ LABEL_13:
           v28 = 0u;
           v29 = 0u;
           v30 = 0u;
-          v12 = [v11 modelBodyInfos];
-          v13 = [v12 countByEnumeratingWithState:&v27 objects:v35 count:16];
+          modelBodyInfos = [v11 modelBodyInfos];
+          v13 = [modelBodyInfos countByEnumeratingWithState:&v27 objects:v35 count:16];
           if (v13)
           {
             v14 = v13;
@@ -441,31 +441,31 @@ LABEL_13:
               {
                 if (*v28 != v15)
                 {
-                  objc_enumerationMutation(v12);
+                  objc_enumerationMutation(modelBodyInfos);
                 }
 
                 v17 = *(*(&v27 + 1) + 8 * i);
                 if (![v17 lineHints])
                 {
-                  v18 = [[TSWPLineHintCollection alloc] initForEmptyShapeWithPreviousRange:v9 context:{v8, v7}];
+                  v18 = [[TSWPLineHintCollection alloc] initForEmptyShapeWithPreviousRange:v9 context:{v8, context}];
                   [v17 setLineHints:v18];
                 }
 
-                v19 = [v17 lineHints];
-                v20 = [v19 hints];
-                if (v20)
+                lineHints = [v17 lineHints];
+                hints = [lineHints hints];
+                if (hints)
                 {
-                  v21 = v20;
-                  if ([v19 hintsCount])
+                  v21 = hints;
+                  if ([lineHints hintsCount])
                   {
-                    v22 = &v21[56 * [v19 hintsCount]];
+                    v22 = &v21[56 * [lineHints hintsCount]];
                     v9 = *(v22 - 3);
                     v8 = *(v22 - 2);
                   }
                 }
               }
 
-              v14 = [v12 countByEnumeratingWithState:&v27 objects:v35 count:16];
+              v14 = [modelBodyInfos countByEnumeratingWithState:&v27 objects:v35 count:16];
             }
 
             while (v14);
@@ -483,13 +483,13 @@ LABEL_13:
   }
 }
 
-- (void)p_processHintsWithContentState:(id)a3
+- (void)p_processHintsWithContentState:(id)state
 {
-  v5 = [objc_msgSend(objc_msgSend(a3 "paginatedState")];
+  v5 = [objc_msgSend(objc_msgSend(state "paginatedState")];
   v6 = [v5 length];
-  [a3 processHints];
-  -[THModelContentLoadOperation processHintsInOrientation:contentState:](self, "processHintsInOrientation:contentState:", [a3 paginatedState], a3);
-  -[THModelContentLoadOperation processHintsInOrientation:contentState:](self, "processHintsInOrientation:contentState:", [a3 flowState], a3);
+  [state processHints];
+  -[THModelContentLoadOperation processHintsInOrientation:contentState:](self, "processHintsInOrientation:contentState:", [state paginatedState], state);
+  -[THModelContentLoadOperation processHintsInOrientation:contentState:](self, "processHintsInOrientation:contentState:", [state flowState], state);
   if (v6 != [v5 length])
   {
     if (v6 != [v5 length] + 1)
@@ -500,58 +500,58 @@ LABEL_13:
     if (v6 == [v5 length] + 1)
     {
 
-      [(THModelContentLoadOperation *)self p_fixPageCharacterRangeAfterStorageTruncationWithContentState:a3];
+      [(THModelContentLoadOperation *)self p_fixPageCharacterRangeAfterStorageTruncationWithContentState:state];
     }
   }
 }
 
-- (void)p_fixPageCharacterRangeAfterStorageTruncationWithContentState:(id)a3
+- (void)p_fixPageCharacterRangeAfterStorageTruncationWithContentState:(id)state
 {
-  v3 = [objc_msgSend(a3 "paginatedState")];
-  v4 = [v3 pages];
-  if ([v4 count])
+  v3 = [objc_msgSend(state "paginatedState")];
+  pages = [v3 pages];
+  if ([pages count])
   {
-    v5 = [v4 lastObject];
+    lastObject = [pages lastObject];
     v6 = [objc_msgSend(v3 "bodyStorage")];
 
-    [v5 setPageEndCharIndex:v6];
+    [lastObject setPageEndCharIndex:v6];
   }
 }
 
-- (id)newNodeBodyWithContext:(id)a3 isFlow:(BOOL)a4
+- (id)newNodeBodyWithContext:(id)context isFlow:(BOOL)flow
 {
-  v4 = a4;
-  v7 = [[THModelContentNodeBody alloc] initWithContext:a3];
-  v8 = [[TSSStylesheet alloc] initWithContext:a3 canCullStyles:0];
+  flowCopy = flow;
+  v7 = [[THModelContentNodeBody alloc] initWithContext:context];
+  v8 = [[TSSStylesheet alloc] initWithContext:context canCullStyles:0];
   [(THModelContentNodeBody *)v7 setStylesheet:v8];
   [v8 setParent:{-[THDocumentRoot stylesheet](self->mDocumentRoot, "stylesheet")}];
 
-  v9 = [TSWPParagraphStyle defaultStyleWithContext:a3];
+  v9 = [TSWPParagraphStyle defaultStyleWithContext:context];
   [(THModelContentLoadOperation *)self p_populateParagraphStyle:v9];
   [v8 addStyle:v9 withIdentifier:kTSWPDefaultContentParagraphStyleIdentifier];
-  v10 = [TSWPListStyle defaultStyleWithContext:a3];
+  v10 = [TSWPListStyle defaultStyleWithContext:context];
   [v8 addStyle:v10 withIdentifier:TSWPDefaultListStyleIdentifier];
-  v11 = [TSWPColumnStyle defaultStyleWithContext:a3];
+  v11 = [TSWPColumnStyle defaultStyleWithContext:context];
   [v8 addStyle:v11];
-  v12 = [[THWPStorage alloc] initWithContext:a3 string:0 kind:0 stylesheet:v8 paragraphStyle:v9 listStyle:v10 section:0 columnStyle:v11];
-  [(THWPStorage *)v12 setUsesApplicationFontScaling:v4];
+  v12 = [[THWPStorage alloc] initWithContext:context string:0 kind:0 stylesheet:v8 paragraphStyle:v9 listStyle:v10 section:0 columnStyle:v11];
+  [(THWPStorage *)v12 setUsesApplicationFontScaling:flowCopy];
   [(THModelContentNodeBody *)v7 setBodyStorage:v12];
 
   return v7;
 }
 
-- (void)p_populateParagraphStyle:(id)a3
+- (void)p_populateParagraphStyle:(id)style
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1DDDFC;
   v7[3] = &unk_45B500;
-  v7[4] = a3;
+  v7[4] = style;
   [+[TSWPParagraphStyle paragraphProperties](TSWPParagraphStyle "paragraphProperties")];
-  v5 = [(THBookDescription *)[(THDocumentRoot *)self->mDocumentRoot bookDescription] language];
-  if (v5)
+  language = [(THBookDescription *)[(THDocumentRoot *)self->mDocumentRoot bookDescription] language];
+  if (language)
   {
-    v6 = v5;
+    v6 = language;
   }
 
   else
@@ -559,7 +559,7 @@ LABEL_13:
     v6 = @"en";
   }
 
-  [a3 setBoxedValue:v6 forProperty:39];
+  [style setBoxedValue:v6 forProperty:39];
 }
 
 @end

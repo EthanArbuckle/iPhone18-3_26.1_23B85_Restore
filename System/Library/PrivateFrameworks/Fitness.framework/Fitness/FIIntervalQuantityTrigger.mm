@@ -1,97 +1,97 @@
 @interface FIIntervalQuantityTrigger
 - (BOOL)triggered;
-- (FIIntervalQuantityTrigger)initWithQuantityTimeslice:(id)a3 threshold:(id)a4 triggeredDate:(id)a5;
-- (FIIntervalQuantityTrigger)initWithQuantityType:(id)a3 startDate:(id)a4 threshold:(id)a5;
-- (id)_finalizedTriggerByAddingSample:(id)a3 toSlice:(id)a4 withPreviousTotal:(id)a5 threshold:(id)a6;
-- (id)addingSample:(id)a3 error:(id *)a4;
+- (FIIntervalQuantityTrigger)initWithQuantityTimeslice:(id)timeslice threshold:(id)threshold triggeredDate:(id)date;
+- (FIIntervalQuantityTrigger)initWithQuantityType:(id)type startDate:(id)date threshold:(id)threshold;
+- (id)_finalizedTriggerByAddingSample:(id)sample toSlice:(id)slice withPreviousTotal:(id)total threshold:(id)threshold;
+- (id)addingSample:(id)sample error:(id *)error;
 - (id)description;
-- (id)settingTimeSlice:(id)a3;
+- (id)settingTimeSlice:(id)slice;
 @end
 
 @implementation FIIntervalQuantityTrigger
 
-- (FIIntervalQuantityTrigger)initWithQuantityType:(id)a3 startDate:(id)a4 threshold:(id)a5
+- (FIIntervalQuantityTrigger)initWithQuantityType:(id)type startDate:(id)date threshold:(id)threshold
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[FIQuantityTimeSlice alloc] initWithQuantityType:v10 startDate:v9];
+  thresholdCopy = threshold;
+  dateCopy = date;
+  typeCopy = type;
+  v11 = [[FIQuantityTimeSlice alloc] initWithQuantityType:typeCopy startDate:dateCopy];
 
-  v12 = [(FIIntervalQuantityTrigger *)self initWithQuantityTimeslice:v11 threshold:v8 triggeredDate:0];
+  v12 = [(FIIntervalQuantityTrigger *)self initWithQuantityTimeslice:v11 threshold:thresholdCopy triggeredDate:0];
   return v12;
 }
 
-- (FIIntervalQuantityTrigger)initWithQuantityTimeslice:(id)a3 threshold:(id)a4 triggeredDate:(id)a5
+- (FIIntervalQuantityTrigger)initWithQuantityTimeslice:(id)timeslice threshold:(id)threshold triggeredDate:(id)date
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  timesliceCopy = timeslice;
+  thresholdCopy = threshold;
+  dateCopy = date;
   v15.receiver = self;
   v15.super_class = FIIntervalQuantityTrigger;
   v12 = [(FIIntervalQuantityTrigger *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_threshold, a4);
-    objc_storeStrong(&v13->_slice, a3);
-    objc_storeStrong(&v13->_triggeredDate, a5);
+    objc_storeStrong(&v12->_threshold, threshold);
+    objc_storeStrong(&v13->_slice, timeslice);
+    objc_storeStrong(&v13->_triggeredDate, date);
   }
 
   return v13;
 }
 
-- (id)addingSample:(id)a3 error:(id *)a4
+- (id)addingSample:(id)sample error:(id *)error
 {
-  v6 = a3;
-  v7 = [(FIQuantityTimeSlice *)self->_slice addingSample:v6 error:a4];
-  v8 = [v6 endDate];
-  v9 = [v7 committingUntilDate:v8];
+  sampleCopy = sample;
+  v7 = [(FIQuantityTimeSlice *)self->_slice addingSample:sampleCopy error:error];
+  endDate = [sampleCopy endDate];
+  v9 = [v7 committingUntilDate:endDate];
 
-  v10 = [v9 committedTotal];
-  LODWORD(v8) = [v10 hk_isLessThanQuantity:self->_threshold];
+  committedTotal = [v9 committedTotal];
+  LODWORD(endDate) = [committedTotal hk_isLessThanQuantity:self->_threshold];
 
-  if (v8)
+  if (endDate)
   {
     v11 = [(FIIntervalQuantityTrigger *)self settingTimeSlice:v9];
   }
 
   else
   {
-    v12 = [(FIQuantityTimeSlice *)self->_slice committedTotal];
-    v11 = [(FIIntervalQuantityTrigger *)self _finalizedTriggerByAddingSample:v6 toSlice:v9 withPreviousTotal:v12 threshold:self->_threshold];
+    committedTotal2 = [(FIQuantityTimeSlice *)self->_slice committedTotal];
+    v11 = [(FIIntervalQuantityTrigger *)self _finalizedTriggerByAddingSample:sampleCopy toSlice:v9 withPreviousTotal:committedTotal2 threshold:self->_threshold];
   }
 
   return v11;
 }
 
-- (id)_finalizedTriggerByAddingSample:(id)a3 toSlice:(id)a4 withPreviousTotal:(id)a5 threshold:(id)a6
+- (id)_finalizedTriggerByAddingSample:(id)sample toSlice:(id)slice withPreviousTotal:(id)total threshold:(id)threshold
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [v12 quantity];
-  v14 = [v10 _quantityByAddingQuantity:v13];
+  thresholdCopy = threshold;
+  totalCopy = total;
+  sliceCopy = slice;
+  sampleCopy = sample;
+  quantity = [sampleCopy quantity];
+  v14 = [totalCopy _quantityByAddingQuantity:quantity];
 
-  v15 = FIThresholdDateInsideSample(v12, v14, v9, 0);
+  v15 = FIThresholdDateInsideSample(sampleCopy, v14, thresholdCopy, 0);
 
-  v16 = [[FIIntervalQuantityTrigger alloc] initWithQuantityTimeslice:v11 threshold:v9 triggeredDate:v15];
+  v16 = [[FIIntervalQuantityTrigger alloc] initWithQuantityTimeslice:sliceCopy threshold:thresholdCopy triggeredDate:v15];
 
   return v16;
 }
 
-- (id)settingTimeSlice:(id)a3
+- (id)settingTimeSlice:(id)slice
 {
-  v4 = a3;
-  v5 = [[FIIntervalQuantityTrigger alloc] initWithQuantityTimeslice:v4 threshold:self->_threshold triggeredDate:self->_triggeredDate];
+  sliceCopy = slice;
+  v5 = [[FIIntervalQuantityTrigger alloc] initWithQuantityTimeslice:sliceCopy threshold:self->_threshold triggeredDate:self->_triggeredDate];
 
   return v5;
 }
 
 - (BOOL)triggered
 {
-  v2 = [(FIIntervalQuantityTrigger *)self triggeredDate];
-  v3 = v2 != 0;
+  triggeredDate = [(FIIntervalQuantityTrigger *)self triggeredDate];
+  v3 = triggeredDate != 0;
 
   return v3;
 }
@@ -110,8 +110,8 @@
     v5 = @"NO";
   }
 
-  v6 = [(FIIntervalQuantityTrigger *)self triggeredDate];
-  v7 = [v3 stringWithFormat:@"<%@:%p, triggered:%@, triggeredDate:%@, _threshold:%@, _slice:%@", v4, self, v5, v6, self->_threshold, self->_slice];
+  triggeredDate = [(FIIntervalQuantityTrigger *)self triggeredDate];
+  v7 = [v3 stringWithFormat:@"<%@:%p, triggered:%@, triggeredDate:%@, _threshold:%@, _slice:%@", v4, self, v5, triggeredDate, self->_threshold, self->_slice];
 
   return v7;
 }

@@ -1,5 +1,5 @@
 @interface RevealingVideoMirrorView
-- (_TtC8AppStore24RevealingVideoMirrorView)initWithFrame:(CGRect)a3;
+- (_TtC8AppStore24RevealingVideoMirrorView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -14,7 +14,7 @@
   sub_100667AC8();
 }
 
-- (_TtC8AppStore24RevealingVideoMirrorView)initWithFrame:(CGRect)a3
+- (_TtC8AppStore24RevealingVideoMirrorView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

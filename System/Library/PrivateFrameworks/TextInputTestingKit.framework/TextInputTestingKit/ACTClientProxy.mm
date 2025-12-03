@@ -1,9 +1,9 @@
 @interface ACTClientProxy
 - (ACTClientProtocol)client;
-- (ACTClientProxy)initWithClient:(id)a3;
-- (void)closeRequestToken:(id)a3;
-- (void)pushCandidateResultSet:(id)a3 requestToken:(id)a4;
-- (void)pushCandidates:(id)a3 requestToken:(id)a4;
+- (ACTClientProxy)initWithClient:(id)client;
+- (void)closeRequestToken:(id)token;
+- (void)pushCandidateResultSet:(id)set requestToken:(id)token;
+- (void)pushCandidates:(id)candidates requestToken:(id)token;
 @end
 
 @implementation ACTClientProxy
@@ -15,50 +15,50 @@
   return WeakRetained;
 }
 
-- (void)closeRequestToken:(id)a3
+- (void)closeRequestToken:(id)token
 {
-  v5 = a3;
-  v4 = [(ACTClientProxy *)self client];
-  if (v4 && (objc_opt_respondsToSelector() & 1) != 0)
+  tokenCopy = token;
+  client = [(ACTClientProxy *)self client];
+  if (client && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v4 closeRequestToken:v5];
+    [client closeRequestToken:tokenCopy];
   }
 }
 
-- (void)pushCandidateResultSet:(id)a3 requestToken:(id)a4
+- (void)pushCandidateResultSet:(id)set requestToken:(id)token
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(ACTClientProxy *)self client];
-  v8 = v7;
-  if (v7)
+  setCopy = set;
+  tokenCopy = token;
+  client = [(ACTClientProxy *)self client];
+  v8 = client;
+  if (client)
   {
-    [v7 pushCandidateResultSet:v9 requestToken:v6];
+    [client pushCandidateResultSet:setCopy requestToken:tokenCopy];
   }
 }
 
-- (void)pushCandidates:(id)a3 requestToken:(id)a4
+- (void)pushCandidates:(id)candidates requestToken:(id)token
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(ACTClientProxy *)self client];
-  v8 = v7;
-  if (v7)
+  candidatesCopy = candidates;
+  tokenCopy = token;
+  client = [(ACTClientProxy *)self client];
+  v8 = client;
+  if (client)
   {
-    [v7 pushAutocorrections:v9 requestToken:v6];
+    [client pushAutocorrections:candidatesCopy requestToken:tokenCopy];
   }
 }
 
-- (ACTClientProxy)initWithClient:(id)a3
+- (ACTClientProxy)initWithClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   v8.receiver = self;
   v8.super_class = ACTClientProxy;
   v5 = [(ACTClientProxy *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_client, v4);
+    objc_storeWeak(&v5->_client, clientCopy);
   }
 
   return v6;

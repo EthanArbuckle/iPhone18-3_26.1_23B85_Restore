@@ -1,8 +1,8 @@
 @interface CTPhoneNumberInfo
-- (CTPhoneNumberInfo)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CTPhoneNumberInfo)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTPhoneNumberInfo
@@ -10,14 +10,14 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CTPhoneNumberInfo *)self label];
-  [v3 appendFormat:@", label=%@", v4];
+  label = [(CTPhoneNumberInfo *)self label];
+  [v3 appendFormat:@", label=%@", label];
 
-  v5 = [(CTPhoneNumberInfo *)self number];
-  [v3 appendFormat:@", number=%@", v5];
+  number = [(CTPhoneNumberInfo *)self number];
+  [v3 appendFormat:@", number=%@", number];
 
-  v6 = [(CTPhoneNumberInfo *)self displayPhoneNumber];
-  [v3 appendFormat:@", displayPhoneNumber=%@", v6];
+  displayPhoneNumber = [(CTPhoneNumberInfo *)self displayPhoneNumber];
+  [v3 appendFormat:@", displayPhoneNumber=%@", displayPhoneNumber];
 
   [v3 appendFormat:@", isPresent=%d", -[CTPhoneNumberInfo isPresent](self, "isPresent")];
   [v3 appendFormat:@", isEditable=%d", -[CTPhoneNumberInfo isEditable](self, "isEditable")];
@@ -27,17 +27,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(CTPhoneNumberInfo *)self label];
-  [v4 setLabel:v5];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  label = [(CTPhoneNumberInfo *)self label];
+  [v4 setLabel:label];
 
-  v6 = [(CTPhoneNumberInfo *)self number];
-  [v4 setNumber:v6];
+  number = [(CTPhoneNumberInfo *)self number];
+  [v4 setNumber:number];
 
-  v7 = [(CTPhoneNumberInfo *)self displayPhoneNumber];
-  [v4 setDisplayPhoneNumber:v7];
+  displayPhoneNumber = [(CTPhoneNumberInfo *)self displayPhoneNumber];
+  [v4 setDisplayPhoneNumber:displayPhoneNumber];
 
   [v4 setIsPresent:{-[CTPhoneNumberInfo isPresent](self, "isPresent")}];
   [v4 setIsEditable:{-[CTPhoneNumberInfo isEditable](self, "isEditable")}];
@@ -45,46 +45,46 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(CTPhoneNumberInfo *)self label];
-  [v7 encodeObject:v4 forKey:@"label"];
+  coderCopy = coder;
+  label = [(CTPhoneNumberInfo *)self label];
+  [coderCopy encodeObject:label forKey:@"label"];
 
-  v5 = [(CTPhoneNumberInfo *)self number];
-  [v7 encodeObject:v5 forKey:@"number"];
+  number = [(CTPhoneNumberInfo *)self number];
+  [coderCopy encodeObject:number forKey:@"number"];
 
-  v6 = [(CTPhoneNumberInfo *)self displayPhoneNumber];
-  [v7 encodeObject:v6 forKey:@"displayPhoneNumber"];
+  displayPhoneNumber = [(CTPhoneNumberInfo *)self displayPhoneNumber];
+  [coderCopy encodeObject:displayPhoneNumber forKey:@"displayPhoneNumber"];
 
-  [v7 encodeBool:-[CTPhoneNumberInfo isPresent](self forKey:{"isPresent"), @"isPresent"}];
-  [v7 encodeBool:-[CTPhoneNumberInfo isEditable](self forKey:{"isEditable"), @"isEditable"}];
-  [v7 encodeBool:-[CTPhoneNumberInfo isRead](self forKey:{"isRead"), @"isRead"}];
+  [coderCopy encodeBool:-[CTPhoneNumberInfo isPresent](self forKey:{"isPresent"), @"isPresent"}];
+  [coderCopy encodeBool:-[CTPhoneNumberInfo isEditable](self forKey:{"isEditable"), @"isEditable"}];
+  [coderCopy encodeBool:-[CTPhoneNumberInfo isRead](self forKey:{"isRead"), @"isRead"}];
 }
 
-- (CTPhoneNumberInfo)initWithCoder:(id)a3
+- (CTPhoneNumberInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = CTPhoneNumberInfo;
   v5 = [(CTPhoneNumberInfo *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"label"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"label"];
     label = v5->_label;
     v5->_label = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"number"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"number"];
     number = v5->_number;
     v5->_number = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayPhoneNumber"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayPhoneNumber"];
     displayPhoneNumber = v5->_displayPhoneNumber;
     v5->_displayPhoneNumber = v10;
 
-    v5->_isPresent = [v4 decodeBoolForKey:@"isPresent"];
-    v5->_isEditable = [v4 decodeBoolForKey:@"isEditable"];
-    v5->_isRead = [v4 decodeBoolForKey:@"isRead"];
+    v5->_isPresent = [coderCopy decodeBoolForKey:@"isPresent"];
+    v5->_isEditable = [coderCopy decodeBoolForKey:@"isEditable"];
+    v5->_isRead = [coderCopy decodeBoolForKey:@"isRead"];
   }
 
   return v5;

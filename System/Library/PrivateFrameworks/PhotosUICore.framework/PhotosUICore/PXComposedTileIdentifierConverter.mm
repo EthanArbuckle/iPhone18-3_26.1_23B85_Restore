@@ -1,22 +1,22 @@
 @interface PXComposedTileIdentifierConverter
-- (BOOL)reverseTransformTileIdentifier:(PXTileIdentifier *)a3;
-- (BOOL)transformTileIdentifier:(PXTileIdentifier *)a3 group:(unint64_t *)a4;
-- (PXComposedTileIdentifierConverter)initWithTileIdentifierConverters:(id)a3;
+- (BOOL)reverseTransformTileIdentifier:(PXTileIdentifier *)identifier;
+- (BOOL)transformTileIdentifier:(PXTileIdentifier *)identifier group:(unint64_t *)group;
+- (PXComposedTileIdentifierConverter)initWithTileIdentifierConverters:(id)converters;
 @end
 
 @implementation PXComposedTileIdentifierConverter
 
-- (BOOL)reverseTransformTileIdentifier:(PXTileIdentifier *)a3
+- (BOOL)reverseTransformTileIdentifier:(PXTileIdentifier *)identifier
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(PXComposedTileIdentifierConverter *)self converters];
-  v5 = [v4 reverseObjectEnumerator];
+  converters = [(PXComposedTileIdentifierConverter *)self converters];
+  reverseObjectEnumerator = [converters reverseObjectEnumerator];
 
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [reverseObjectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -27,17 +27,17 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
-        if ([*(*(&v12 + 1) + 8 * i) reverseTransformTileIdentifier:a3])
+        if ([*(*(&v12 + 1) + 8 * i) reverseTransformTileIdentifier:identifier])
         {
           v10 = 1;
           goto LABEL_11;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [reverseObjectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v7)
       {
         continue;
@@ -53,15 +53,15 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)transformTileIdentifier:(PXTileIdentifier *)a3 group:(unint64_t *)a4
+- (BOOL)transformTileIdentifier:(PXTileIdentifier *)identifier group:(unint64_t *)group
 {
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(PXComposedTileIdentifierConverter *)self converters];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  converters = [(PXComposedTileIdentifierConverter *)self converters];
+  v7 = [converters countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -72,17 +72,17 @@ LABEL_11:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(converters);
         }
 
-        if ([*(*(&v13 + 1) + 8 * i) transformTileIdentifier:a3 group:a4])
+        if ([*(*(&v13 + 1) + 8 * i) transformTileIdentifier:identifier group:group])
         {
           v11 = 1;
           goto LABEL_11;
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [converters countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v8)
       {
         continue;
@@ -98,15 +98,15 @@ LABEL_11:
   return v11;
 }
 
-- (PXComposedTileIdentifierConverter)initWithTileIdentifierConverters:(id)a3
+- (PXComposedTileIdentifierConverter)initWithTileIdentifierConverters:(id)converters
 {
-  v4 = a3;
+  convertersCopy = converters;
   v9.receiver = self;
   v9.super_class = PXComposedTileIdentifierConverter;
   v5 = [(PXComposedTileIdentifierConverter *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [convertersCopy copy];
     converters = v5->_converters;
     v5->_converters = v6;
   }

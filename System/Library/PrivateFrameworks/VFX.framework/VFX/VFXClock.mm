@@ -4,18 +4,18 @@
 - (id)_scene;
 - (void)_updateVFXCorePause;
 - (void)_updateVFXCoreSpeedFactor;
-- (void)_updateVFXCoreTime:(double)a3;
-- (void)_updateVFXCoreTimeStep:(double)a3;
-- (void)_updateVFXCoreUseFixedTimeStep:(BOOL)a3;
-- (void)_updateWithAbsoluteTime:(double)a3 usingLoopRange:(VFXClockTimeRange)a4;
+- (void)_updateVFXCoreTime:(double)time;
+- (void)_updateVFXCoreTimeStep:(double)step;
+- (void)_updateVFXCoreUseFixedTimeStep:(BOOL)step;
+- (void)_updateWithAbsoluteTime:(double)time usingLoopRange:(VFXClockTimeRange)range;
 - (void)dealloc;
-- (void)setPaused:(BOOL)a3;
-- (void)setSpeed:(float)a3;
-- (void)setTime:(double)a3;
-- (void)setTimeStep:(double)a3;
-- (void)setUseFixedTimeStep:(BOOL)a3;
-- (void)setWorld:(__CFXWorld *)a3;
-- (void)updateWithAbsoluteTime:(double)a3;
+- (void)setPaused:(BOOL)paused;
+- (void)setSpeed:(float)speed;
+- (void)setTime:(double)time;
+- (void)setTimeStep:(double)step;
+- (void)setUseFixedTimeStep:(BOOL)step;
+- (void)setWorld:(__CFXWorld *)world;
+- (void)updateWithAbsoluteTime:(double)time;
 @end
 
 @implementation VFXClock
@@ -75,63 +75,63 @@
   objc_msgSend_setPaused_(v5, v6, paused, v7);
 }
 
-- (void)_updateVFXCoreTime:(double)a3
+- (void)_updateVFXCoreTime:(double)time
 {
-  v5 = a3;
+  timeCopy = time;
   v6 = objc_msgSend__scene(self, a2, v3, v4);
-  *&v10 = v5;
+  *&v10 = timeCopy;
 
   objc_msgSend_setTime_(v6, v7, v8, v9, v10);
 }
 
-- (void)_updateVFXCoreUseFixedTimeStep:(BOOL)a3
+- (void)_updateVFXCoreUseFixedTimeStep:(BOOL)step
 {
-  v4 = a3;
-  v5 = objc_msgSend__scene(self, a2, a3, v3);
+  stepCopy = step;
+  v5 = objc_msgSend__scene(self, a2, step, v3);
 
-  objc_msgSend_setUseFixedTimeStep_(v5, v6, v4, v7);
+  objc_msgSend_setUseFixedTimeStep_(v5, v6, stepCopy, v7);
 }
 
-- (void)_updateVFXCoreTimeStep:(double)a3
+- (void)_updateVFXCoreTimeStep:(double)step
 {
   v6 = objc_msgSend__scene(self, a2, v3, v4);
 
-  objc_msgSend_setTimeStep_(v6, v7, v8, v9, a3);
+  objc_msgSend_setTimeStep_(v6, v7, v8, v9, step);
 }
 
-- (void)setSpeed:(float)a3
+- (void)setSpeed:(float)speed
 {
-  if (self->_speed != a3)
+  if (self->_speed != speed)
   {
-    self->_speed = a3;
+    self->_speed = speed;
     (MEMORY[0x1EEE66B58])(self, sel__updateVFXCoreSpeedFactor);
   }
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  if (self->_paused != a3)
+  if (self->_paused != paused)
   {
-    self->_paused = a3;
-    if (a3)
+    self->_paused = paused;
+    if (paused)
     {
       self->_wasPaused = 1;
     }
 
-    (MEMORY[0x1EEE66B58])(self, sel__updateVFXCorePause, a3);
+    (MEMORY[0x1EEE66B58])(self, sel__updateVFXCorePause, paused);
   }
 }
 
-- (void)updateWithAbsoluteTime:(double)a3
+- (void)updateWithAbsoluteTime:(double)time
 {
   if (self->_replayLoopRange.end == self->_replayLoopRange.begin)
   {
     lastUpdateTime = self->_lastUpdateTime;
-    if (lastUpdateTime < a3)
+    if (lastUpdateTime < time)
     {
       if (lastUpdateTime == 0.0)
       {
-        lastUpdateTime = a3;
+        lastUpdateTime = time;
       }
 
       if (self->_paused)
@@ -146,10 +146,10 @@
 
       else
       {
-        self->_time = self->_time + (a3 - lastUpdateTime) * self->_speed;
+        self->_time = self->_time + (time - lastUpdateTime) * self->_speed;
       }
 
-      self->_lastUpdateTime = a3;
+      self->_lastUpdateTime = time;
     }
   }
 
@@ -159,11 +159,11 @@
   }
 }
 
-- (void)_updateWithAbsoluteTime:(double)a3 usingLoopRange:(VFXClockTimeRange)a4
+- (void)_updateWithAbsoluteTime:(double)time usingLoopRange:(VFXClockTimeRange)range
 {
-  begin = a4.begin;
+  begin = range.begin;
   time = self->_time;
-  if (time <= a4.end)
+  if (time <= range.end)
   {
     if (self->_paused)
     {
@@ -179,9 +179,9 @@
     {
       v10 = self->_replayLoopRange.begin;
       end = self->_replayLoopRange.end;
-      v11 = time + (a3 - self->_lastUpdateTime) * self->_speed;
+      v11 = time + (time - self->_lastUpdateTime) * self->_speed;
       self->_time = v11;
-      if (v11 <= a4.end)
+      if (v11 <= range.end)
       {
         if (v11 < begin)
         {
@@ -195,7 +195,7 @@
       }
     }
 
-    self->_lastUpdateTime = a3;
+    self->_lastUpdateTime = time;
   }
 
   else
@@ -203,18 +203,18 @@
     paused = self->_paused;
     if (!paused)
     {
-      self->_time = a4.begin;
-      self->_lastUpdateTime = a3;
+      self->_time = range.begin;
+      self->_lastUpdateTime = time;
     }
 
     self->_wasPaused = paused;
   }
 }
 
-- (void)setWorld:(__CFXWorld *)a3
+- (void)setWorld:(__CFXWorld *)world
 {
   world = self->_world;
-  if (world != a3)
+  if (world != world)
   {
     if (world)
     {
@@ -222,9 +222,9 @@
       self->_world = 0;
     }
 
-    if (a3)
+    if (world)
     {
-      v6 = CFRetain(a3);
+      v6 = CFRetain(world);
     }
 
     else
@@ -236,39 +236,39 @@
   }
 }
 
-- (void)setTime:(double)a3
+- (void)setTime:(double)time
 {
-  self->_time = a3;
+  self->_time = time;
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = sub_1AF2B7328;
   v3[3] = &unk_1E7A7E248;
   v3[4] = self;
-  *&v3[5] = a3;
+  *&v3[5] = time;
   objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, self, v3);
 }
 
-- (void)setUseFixedTimeStep:(BOOL)a3
+- (void)setUseFixedTimeStep:(BOOL)step
 {
-  self->_useFixedTimeStep = a3;
+  self->_useFixedTimeStep = step;
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = sub_1AF2B73C4;
   v3[3] = &unk_1E7A7E298;
   v3[4] = self;
-  v4 = a3;
+  stepCopy = step;
   objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, self, v3);
 }
 
-- (void)setTimeStep:(double)a3
+- (void)setTimeStep:(double)step
 {
-  self->_timeStep = a3;
+  self->_timeStep = step;
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = sub_1AF2B745C;
   v3[3] = &unk_1E7A7E248;
   v3[4] = self;
-  *&v3[5] = a3;
+  *&v3[5] = step;
   objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, a2, self, v3);
 }
 

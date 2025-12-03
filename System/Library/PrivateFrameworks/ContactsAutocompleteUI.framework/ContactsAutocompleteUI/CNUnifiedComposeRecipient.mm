@@ -1,78 +1,78 @@
 @interface CNUnifiedComposeRecipient
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)showsChevronButton;
-- (CNUnifiedComposeRecipient)initWithChildren:(id)a3 defaultChild:(id)a4;
+- (CNUnifiedComposeRecipient)initWithChildren:(id)children defaultChild:(id)child;
 @end
 
 @implementation CNUnifiedComposeRecipient
 
-- (CNUnifiedComposeRecipient)initWithChildren:(id)a3 defaultChild:(id)a4
+- (CNUnifiedComposeRecipient)initWithChildren:(id)children defaultChild:(id)child
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v8)
+  childrenCopy = children;
+  childCopy = child;
+  v9 = childCopy;
+  if (childCopy)
   {
-    v10 = v8;
+    firstObject = childCopy;
   }
 
   else
   {
-    v10 = [v7 firstObject];
+    firstObject = [childrenCopy firstObject];
   }
 
-  v11 = v10;
-  v12 = [v9 inputAddress];
+  v11 = firstObject;
+  inputAddress = [v9 inputAddress];
   v25.receiver = self;
   v25.super_class = CNUnifiedComposeRecipient;
-  v13 = -[CNComposeRecipient initWithContact:address:kind:](&v25, sel_initWithContact_address_kind_, 0, v12, [v9 kind]);
+  v13 = -[CNComposeRecipient initWithContact:address:kind:](&v25, sel_initWithContact_address_kind_, 0, inputAddress, [v9 kind]);
 
   if (v13)
   {
-    v14 = [v11 autocompleteResult];
-    [(CNComposeRecipient *)v13 setAutocompleteResult:v14];
-    v15 = [v11 displayString];
-    [(CNComposeRecipient *)v13 setDisplayString:v15];
+    autocompleteResult = [v11 autocompleteResult];
+    [(CNComposeRecipient *)v13 setAutocompleteResult:autocompleteResult];
+    displayString = [v11 displayString];
+    [(CNComposeRecipient *)v13 setDisplayString:displayString];
 
-    v16 = [v11 nameComponents];
-    [(CNComposeRecipient *)v13 setNameComponents:v16];
+    nameComponents = [v11 nameComponents];
+    [(CNComposeRecipient *)v13 setNameComponents:nameComponents];
 
-    v17 = [v14 value];
-    v18 = [v17 identifier];
-    [(CNComposeRecipient *)v13 setValueIdentifier:v18];
+    value = [autocompleteResult value];
+    identifier = [value identifier];
+    [(CNComposeRecipient *)v13 setValueIdentifier:identifier];
 
-    v19 = [v14 value];
-    v20 = [v19 label];
-    [(CNComposeRecipient *)v13 setUnlocalizedLabel:v20];
+    value2 = [autocompleteResult value];
+    label = [value2 label];
+    [(CNComposeRecipient *)v13 setUnlocalizedLabel:label];
 
-    v21 = [v14 identifier];
+    identifier2 = [autocompleteResult identifier];
 
-    if (v21)
+    if (identifier2)
     {
-      v22 = [v14 identifier];
-      [(CNComposeRecipient *)v13 setContactIdentifier:v22];
+      identifier3 = [autocompleteResult identifier];
+      [(CNComposeRecipient *)v13 setContactIdentifier:identifier3];
     }
 
-    v23 = [v11 originContext];
-    [(CNComposeRecipient *)v13 setOriginContext:v23];
+    originContext = [v11 originContext];
+    [(CNComposeRecipient *)v13 setOriginContext:originContext];
 
-    objc_storeStrong(&v13->_children, a3);
+    objc_storeStrong(&v13->_children, children);
     -[CNComposeRecipient setIsMemberOfGroup:](v13, "setIsMemberOfGroup:", [v11 isMemberOfGroup]);
   }
 
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 children];
-    v7 = [(CNUnifiedComposeRecipient *)self children];
-    if ([v6 isEqualToArray:v7])
+    v5 = equalCopy;
+    children = [v5 children];
+    children2 = [(CNUnifiedComposeRecipient *)self children];
+    if ([children isEqualToArray:children2])
     {
       v10.receiver = self;
       v10.super_class = CNUnifiedComposeRecipient;
@@ -95,8 +95,8 @@
 
 - (BOOL)showsChevronButton
 {
-  v2 = [(CNUnifiedComposeRecipient *)self children];
-  v3 = [v2 count] > 1;
+  children = [(CNUnifiedComposeRecipient *)self children];
+  v3 = [children count] > 1;
 
   return v3;
 }

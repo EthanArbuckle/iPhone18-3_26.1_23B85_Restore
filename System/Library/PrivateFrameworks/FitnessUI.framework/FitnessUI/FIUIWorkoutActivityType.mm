@@ -1,30 +1,30 @@
 @interface FIUIWorkoutActivityType
-+ (FIUIWorkoutActivityType)activityTypeWithHKWorkoutActivityTypeIdentifier:(unint64_t)a3 isIndoor:(BOOL)a4;
-+ (FIUIWorkoutActivityType)activityTypeWithHKWorkoutActivityTypeIdentifier:(unint64_t)a3 isIndoor:(BOOL)a4 metadata:(id)a5;
-+ (FIUIWorkoutActivityType)activityTypeWithWorkout:(id)a3;
-+ (id)defaultActivityTypesWithIsWheelchairUser:(BOOL)a3 isSwimmingSupported:(BOOL)a4 activityMoveMode:(int64_t)a5;
++ (FIUIWorkoutActivityType)activityTypeWithHKWorkoutActivityTypeIdentifier:(unint64_t)identifier isIndoor:(BOOL)indoor;
++ (FIUIWorkoutActivityType)activityTypeWithHKWorkoutActivityTypeIdentifier:(unint64_t)identifier isIndoor:(BOOL)indoor metadata:(id)metadata;
++ (FIUIWorkoutActivityType)activityTypeWithWorkout:(id)workout;
++ (id)defaultActivityTypesWithIsWheelchairUser:(BOOL)user isSwimmingSupported:(BOOL)supported activityMoveMode:(int64_t)mode;
 + (id)deprecatedActivityTypes;
-+ (id)effectiveActivityTypeWithWorkout:(id)a3;
++ (id)effectiveActivityTypeWithWorkout:(id)workout;
 + (id)gymKitCapableActivityTypes;
 + (id)nonOptimizedActivityTypes;
-+ (id)optimizedActivityTypesWithIsWheelchairUser:(BOOL)a3 isSwimmingSupported:(BOOL)a4;
-+ (id)possibleActivityTypesForIdentifier:(unint64_t)a3 locationType:(int64_t)a4 swimmingLocationType:(int64_t)a5 wheelchairUser:(BOOL)a6;
++ (id)optimizedActivityTypesWithIsWheelchairUser:(BOOL)user isSwimmingSupported:(BOOL)supported;
++ (id)possibleActivityTypesForIdentifier:(unint64_t)identifier locationType:(int64_t)type swimmingLocationType:(int64_t)locationType wheelchairUser:(BOOL)user;
 + (id)swimmingOptimizedActivityTypes;
 + (id)swimmingOtherActivityTypes;
-+ (id)unsupportedActivityTypesWithIsWheelchairUser:(BOOL)a3 isSwimmingSupported:(BOOL)a4;
-+ (id)unsupportedActivityTypesWithIsWheelchairUser:(BOOL)a3 isSwimmingSupported:(BOOL)a4 supportsPairedWatchFeatures:(BOOL)a5 supportsExternalHeartRateSensorFeatures:(BOOL)a6;
++ (id)unsupportedActivityTypesWithIsWheelchairUser:(BOOL)user isSwimmingSupported:(BOOL)supported;
++ (id)unsupportedActivityTypesWithIsWheelchairUser:(BOOL)user isSwimmingSupported:(BOOL)supported supportsPairedWatchFeatures:(BOOL)features supportsExternalHeartRateSensorFeatures:(BOOL)sensorFeatures;
 + (id)wheelchairActivityTypes;
-- (BOOL)isEqual:(id)a3;
-- (FIUIWorkoutActivityType)initWithActivityTypeIdentifier:(unint64_t)a3 isIndoor:(BOOL)a4;
-- (FIUIWorkoutActivityType)initWithActivityTypeIdentifier:(unint64_t)a3 isIndoor:(BOOL)a4 isPartOfMultiSport:(BOOL)a5 metadata:(id)a6;
-- (FIUIWorkoutActivityType)initWithActivityTypeIdentifier:(unint64_t)a3 isIndoor:(BOOL)a4 isPartOfMultiSport:(BOOL)a5 metadata:(id)a6 auxiliaryTypeIdentifier:(unint64_t)a7;
-- (FIUIWorkoutActivityType)initWithActivityTypeIdentifier:(unint64_t)a3 isIndoor:(BOOL)a4 metadata:(id)a5;
-- (FIUIWorkoutActivityType)initWithActivityTypeIdentifier:(unint64_t)a3 isIndoor:(BOOL)a4 metadata:(id)a5 auxiliaryTypeIdentifier:(unint64_t)a6;
-- (FIUIWorkoutActivityType)initWithActivityTypeIdentifier:(unint64_t)a3 location:(int64_t)a4 isPartOfMultiSport:(BOOL)a5 metadata:(id)a6;
-- (FIUIWorkoutActivityType)initWithActivityTypeIdentifier:(unint64_t)a3 location:(int64_t)a4 isPartOfMultiSport:(BOOL)a5 metadata:(id)a6 auxiliaryTypeIdentifier:(unint64_t)a7;
-- (FIUIWorkoutActivityType)initWithCoder:(id)a3;
-- (FIUIWorkoutActivityType)initWithWorkoutActivityType:(id)a3;
-- (id)activityTypeByAddingLapLength:(double)a3;
+- (BOOL)isEqual:(id)equal;
+- (FIUIWorkoutActivityType)initWithActivityTypeIdentifier:(unint64_t)identifier isIndoor:(BOOL)indoor;
+- (FIUIWorkoutActivityType)initWithActivityTypeIdentifier:(unint64_t)identifier isIndoor:(BOOL)indoor isPartOfMultiSport:(BOOL)sport metadata:(id)metadata;
+- (FIUIWorkoutActivityType)initWithActivityTypeIdentifier:(unint64_t)identifier isIndoor:(BOOL)indoor isPartOfMultiSport:(BOOL)sport metadata:(id)metadata auxiliaryTypeIdentifier:(unint64_t)typeIdentifier;
+- (FIUIWorkoutActivityType)initWithActivityTypeIdentifier:(unint64_t)identifier isIndoor:(BOOL)indoor metadata:(id)metadata;
+- (FIUIWorkoutActivityType)initWithActivityTypeIdentifier:(unint64_t)identifier isIndoor:(BOOL)indoor metadata:(id)metadata auxiliaryTypeIdentifier:(unint64_t)typeIdentifier;
+- (FIUIWorkoutActivityType)initWithActivityTypeIdentifier:(unint64_t)identifier location:(int64_t)location isPartOfMultiSport:(BOOL)sport metadata:(id)metadata;
+- (FIUIWorkoutActivityType)initWithActivityTypeIdentifier:(unint64_t)identifier location:(int64_t)location isPartOfMultiSport:(BOOL)sport metadata:(id)metadata auxiliaryTypeIdentifier:(unint64_t)typeIdentifier;
+- (FIUIWorkoutActivityType)initWithCoder:(id)coder;
+- (FIUIWorkoutActivityType)initWithWorkoutActivityType:(id)type;
+- (id)activityTypeByAddingLapLength:(double)length;
 - (id)description;
 @end
 
@@ -32,8 +32,8 @@
 
 + (id)wheelchairActivityTypes
 {
-  v2 = [MEMORY[0x1E699C9F0] wheelchairActivityTypes];
-  v3 = [v2 hk_map:&__block_literal_global_318];
+  wheelchairActivityTypes = [MEMORY[0x1E699C9F0] wheelchairActivityTypes];
+  v3 = [wheelchairActivityTypes hk_map:&__block_literal_global_318];
 
   return v3;
 }
@@ -47,140 +47,140 @@
   return v4;
 }
 
-+ (FIUIWorkoutActivityType)activityTypeWithHKWorkoutActivityTypeIdentifier:(unint64_t)a3 isIndoor:(BOOL)a4
++ (FIUIWorkoutActivityType)activityTypeWithHKWorkoutActivityTypeIdentifier:(unint64_t)identifier isIndoor:(BOOL)indoor
 {
-  v4 = a4;
+  indoorCopy = indoor;
   v6 = [FIUIWorkoutActivityType alloc];
-  v7 = [(FIUIWorkoutActivityType *)v6 initWithActivityTypeIdentifier:a3 isIndoor:v4 metadata:MEMORY[0x1E695E0F8]];
+  v7 = [(FIUIWorkoutActivityType *)v6 initWithActivityTypeIdentifier:identifier isIndoor:indoorCopy metadata:MEMORY[0x1E695E0F8]];
 
   return v7;
 }
 
-+ (FIUIWorkoutActivityType)activityTypeWithHKWorkoutActivityTypeIdentifier:(unint64_t)a3 isIndoor:(BOOL)a4 metadata:(id)a5
++ (FIUIWorkoutActivityType)activityTypeWithHKWorkoutActivityTypeIdentifier:(unint64_t)identifier isIndoor:(BOOL)indoor metadata:(id)metadata
 {
-  v5 = a4;
-  v7 = a5;
-  v8 = [[FIUIWorkoutActivityType alloc] initWithActivityTypeIdentifier:a3 isIndoor:v5 metadata:v7];
+  indoorCopy = indoor;
+  metadataCopy = metadata;
+  v8 = [[FIUIWorkoutActivityType alloc] initWithActivityTypeIdentifier:identifier isIndoor:indoorCopy metadata:metadataCopy];
 
   return v8;
 }
 
-+ (FIUIWorkoutActivityType)activityTypeWithWorkout:(id)a3
++ (FIUIWorkoutActivityType)activityTypeWithWorkout:(id)workout
 {
-  v3 = [MEMORY[0x1E699C9F0] activityTypeWithWorkout:a3];
+  v3 = [MEMORY[0x1E699C9F0] activityTypeWithWorkout:workout];
   v4 = [[FIUIWorkoutActivityType alloc] initWithWorkoutActivityType:v3];
 
   return v4;
 }
 
-+ (id)effectiveActivityTypeWithWorkout:(id)a3
++ (id)effectiveActivityTypeWithWorkout:(id)workout
 {
-  v3 = [MEMORY[0x1E699C9F0] effectiveActivityTypeWithWorkout:a3];
+  v3 = [MEMORY[0x1E699C9F0] effectiveActivityTypeWithWorkout:workout];
   v4 = [[FIUIWorkoutActivityType alloc] initWithWorkoutActivityType:v3];
 
   return v4;
 }
 
-- (FIUIWorkoutActivityType)initWithActivityTypeIdentifier:(unint64_t)a3 isIndoor:(BOOL)a4
+- (FIUIWorkoutActivityType)initWithActivityTypeIdentifier:(unint64_t)identifier isIndoor:(BOOL)indoor
 {
-  v5 = [objc_alloc(MEMORY[0x1E699C9F0]) initWithActivityTypeIdentifier:a3 isIndoor:a4];
+  v5 = [objc_alloc(MEMORY[0x1E699C9F0]) initWithActivityTypeIdentifier:identifier isIndoor:indoor];
   v6 = [(FIUIWorkoutActivityType *)self initWithWorkoutActivityType:v5];
 
   return v6;
 }
 
-- (FIUIWorkoutActivityType)initWithActivityTypeIdentifier:(unint64_t)a3 isIndoor:(BOOL)a4 metadata:(id)a5
+- (FIUIWorkoutActivityType)initWithActivityTypeIdentifier:(unint64_t)identifier isIndoor:(BOOL)indoor metadata:(id)metadata
 {
-  v5 = a4;
+  indoorCopy = indoor;
   v8 = MEMORY[0x1E699C9F0];
-  v9 = a5;
-  v10 = [[v8 alloc] initWithActivityTypeIdentifier:a3 isIndoor:v5 metadata:v9];
+  metadataCopy = metadata;
+  v10 = [[v8 alloc] initWithActivityTypeIdentifier:identifier isIndoor:indoorCopy metadata:metadataCopy];
 
   v11 = [(FIUIWorkoutActivityType *)self initWithWorkoutActivityType:v10];
   return v11;
 }
 
-- (FIUIWorkoutActivityType)initWithActivityTypeIdentifier:(unint64_t)a3 isIndoor:(BOOL)a4 metadata:(id)a5 auxiliaryTypeIdentifier:(unint64_t)a6
+- (FIUIWorkoutActivityType)initWithActivityTypeIdentifier:(unint64_t)identifier isIndoor:(BOOL)indoor metadata:(id)metadata auxiliaryTypeIdentifier:(unint64_t)typeIdentifier
 {
-  v7 = a4;
+  indoorCopy = indoor;
   v10 = MEMORY[0x1E699C9F0];
-  v11 = a5;
-  v12 = [[v10 alloc] initWithActivityTypeIdentifier:a3 isIndoor:v7 metadata:v11 auxiliaryTypeIdentifier:a6];
+  metadataCopy = metadata;
+  v12 = [[v10 alloc] initWithActivityTypeIdentifier:identifier isIndoor:indoorCopy metadata:metadataCopy auxiliaryTypeIdentifier:typeIdentifier];
 
   v13 = [(FIUIWorkoutActivityType *)self initWithWorkoutActivityType:v12];
   return v13;
 }
 
-- (FIUIWorkoutActivityType)initWithActivityTypeIdentifier:(unint64_t)a3 isIndoor:(BOOL)a4 isPartOfMultiSport:(BOOL)a5 metadata:(id)a6
+- (FIUIWorkoutActivityType)initWithActivityTypeIdentifier:(unint64_t)identifier isIndoor:(BOOL)indoor isPartOfMultiSport:(BOOL)sport metadata:(id)metadata
 {
-  v6 = a5;
-  v7 = a4;
+  sportCopy = sport;
+  indoorCopy = indoor;
   v10 = MEMORY[0x1E699C9F0];
-  v11 = a6;
-  v12 = [[v10 alloc] initWithActivityTypeIdentifier:a3 isIndoor:v7 isPartOfMultiSport:v6 metadata:v11];
+  metadataCopy = metadata;
+  v12 = [[v10 alloc] initWithActivityTypeIdentifier:identifier isIndoor:indoorCopy isPartOfMultiSport:sportCopy metadata:metadataCopy];
 
   v13 = [(FIUIWorkoutActivityType *)self initWithWorkoutActivityType:v12];
   return v13;
 }
 
-- (FIUIWorkoutActivityType)initWithActivityTypeIdentifier:(unint64_t)a3 isIndoor:(BOOL)a4 isPartOfMultiSport:(BOOL)a5 metadata:(id)a6 auxiliaryTypeIdentifier:(unint64_t)a7
+- (FIUIWorkoutActivityType)initWithActivityTypeIdentifier:(unint64_t)identifier isIndoor:(BOOL)indoor isPartOfMultiSport:(BOOL)sport metadata:(id)metadata auxiliaryTypeIdentifier:(unint64_t)typeIdentifier
 {
-  v8 = a5;
-  v9 = a4;
+  sportCopy = sport;
+  indoorCopy = indoor;
   v12 = MEMORY[0x1E699C9F0];
-  v13 = a6;
-  v14 = [[v12 alloc] initWithActivityTypeIdentifier:a3 isIndoor:v9 isPartOfMultiSport:v8 metadata:v13 auxiliaryTypeIdentifier:a7];
+  metadataCopy = metadata;
+  v14 = [[v12 alloc] initWithActivityTypeIdentifier:identifier isIndoor:indoorCopy isPartOfMultiSport:sportCopy metadata:metadataCopy auxiliaryTypeIdentifier:typeIdentifier];
 
   v15 = [(FIUIWorkoutActivityType *)self initWithWorkoutActivityType:v14];
   return v15;
 }
 
-- (FIUIWorkoutActivityType)initWithActivityTypeIdentifier:(unint64_t)a3 location:(int64_t)a4 isPartOfMultiSport:(BOOL)a5 metadata:(id)a6
+- (FIUIWorkoutActivityType)initWithActivityTypeIdentifier:(unint64_t)identifier location:(int64_t)location isPartOfMultiSport:(BOOL)sport metadata:(id)metadata
 {
-  v6 = a5;
+  sportCopy = sport;
   v10 = MEMORY[0x1E699C9F0];
-  v11 = a6;
-  v12 = [[v10 alloc] initWithActivityTypeIdentifier:a3 location:a4 isPartOfMultiSport:v6 metadata:v11];
+  metadataCopy = metadata;
+  v12 = [[v10 alloc] initWithActivityTypeIdentifier:identifier location:location isPartOfMultiSport:sportCopy metadata:metadataCopy];
 
   v13 = [(FIUIWorkoutActivityType *)self initWithWorkoutActivityType:v12];
   return v13;
 }
 
-- (FIUIWorkoutActivityType)initWithActivityTypeIdentifier:(unint64_t)a3 location:(int64_t)a4 isPartOfMultiSport:(BOOL)a5 metadata:(id)a6 auxiliaryTypeIdentifier:(unint64_t)a7
+- (FIUIWorkoutActivityType)initWithActivityTypeIdentifier:(unint64_t)identifier location:(int64_t)location isPartOfMultiSport:(BOOL)sport metadata:(id)metadata auxiliaryTypeIdentifier:(unint64_t)typeIdentifier
 {
-  v8 = a5;
+  sportCopy = sport;
   v12 = MEMORY[0x1E699C9F0];
-  v13 = a6;
-  v14 = [[v12 alloc] initWithActivityTypeIdentifier:a3 location:a4 isPartOfMultiSport:v8 metadata:v13 auxiliaryTypeIdentifier:a7];
+  metadataCopy = metadata;
+  v14 = [[v12 alloc] initWithActivityTypeIdentifier:identifier location:location isPartOfMultiSport:sportCopy metadata:metadataCopy auxiliaryTypeIdentifier:typeIdentifier];
 
   v15 = [(FIUIWorkoutActivityType *)self initWithWorkoutActivityType:v14];
   return v15;
 }
 
-- (FIUIWorkoutActivityType)initWithWorkoutActivityType:(id)a3
+- (FIUIWorkoutActivityType)initWithWorkoutActivityType:(id)type
 {
-  v5 = a3;
+  typeCopy = type;
   v9.receiver = self;
   v9.super_class = FIUIWorkoutActivityType;
   v6 = [(FIUIWorkoutActivityType *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_workoutActivityType, a3);
+    objc_storeStrong(&v6->_workoutActivityType, type);
   }
 
   return v7;
 }
 
-- (FIUIWorkoutActivityType)initWithCoder:(id)a3
+- (FIUIWorkoutActivityType)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = FIUIWorkoutActivityType;
   v5 = [(FIUIWorkoutActivityType *)&v9 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x1E699C9F0]) initWithCoder:v4];
+    v6 = [objc_alloc(MEMORY[0x1E699C9F0]) initWithCoder:coderCopy];
     workoutActivityType = v5->_workoutActivityType;
     v5->_workoutActivityType = v6;
   }
@@ -188,17 +188,17 @@
   return v5;
 }
 
-- (id)activityTypeByAddingLapLength:(double)a3
+- (id)activityTypeByAddingLapLength:(double)length
 {
-  v4 = [(FIWorkoutActivityType *)self->_workoutActivityType activityTypeByAddingLapLength:a3];
+  v4 = [(FIWorkoutActivityType *)self->_workoutActivityType activityTypeByAddingLapLength:length];
   v5 = [(FIUIWorkoutActivityType *)self initWithWorkoutActivityType:v4];
 
   return v5;
 }
 
-+ (id)defaultActivityTypesWithIsWheelchairUser:(BOOL)a3 isSwimmingSupported:(BOOL)a4 activityMoveMode:(int64_t)a5
++ (id)defaultActivityTypesWithIsWheelchairUser:(BOOL)user isSwimmingSupported:(BOOL)supported activityMoveMode:(int64_t)mode
 {
-  v5 = [MEMORY[0x1E699C9F0] defaultActivityTypesWithIsWheelchairUser:a3 isSwimmingSupported:a4 activityMoveMode:a5];
+  v5 = [MEMORY[0x1E699C9F0] defaultActivityTypesWithIsWheelchairUser:user isSwimmingSupported:supported activityMoveMode:mode];
   v6 = [v5 hk_map:&__block_literal_global_2];
 
   return v6;
@@ -214,8 +214,8 @@ FIUIWorkoutActivityType *__105__FIUIWorkoutActivityType_defaultActivityTypesWith
 
 + (id)gymKitCapableActivityTypes
 {
-  v2 = [MEMORY[0x1E699C9F0] gymKitCapableActivityTypes];
-  v3 = [v2 hk_map:&__block_literal_global_308];
+  gymKitCapableActivityTypes = [MEMORY[0x1E699C9F0] gymKitCapableActivityTypes];
+  v3 = [gymKitCapableActivityTypes hk_map:&__block_literal_global_308];
 
   return v3;
 }
@@ -228,9 +228,9 @@ FIUIWorkoutActivityType *__53__FIUIWorkoutActivityType_gymKitCapableActivityType
   return v3;
 }
 
-+ (id)optimizedActivityTypesWithIsWheelchairUser:(BOOL)a3 isSwimmingSupported:(BOOL)a4
++ (id)optimizedActivityTypesWithIsWheelchairUser:(BOOL)user isSwimmingSupported:(BOOL)supported
 {
-  v4 = [MEMORY[0x1E699C9F0] optimizedActivityTypesWithIsWheelchairUser:a3 isSwimmingSupported:a4];
+  v4 = [MEMORY[0x1E699C9F0] optimizedActivityTypesWithIsWheelchairUser:user isSwimmingSupported:supported];
   v5 = [v4 hk_map:&__block_literal_global_310];
 
   return v5;
@@ -246,8 +246,8 @@ FIUIWorkoutActivityType *__90__FIUIWorkoutActivityType_optimizedActivityTypesWit
 
 + (id)nonOptimizedActivityTypes
 {
-  v2 = [MEMORY[0x1E699C9F0] nonOptimizedActivityTypes];
-  v3 = [v2 hk_map:&__block_literal_global_312];
+  nonOptimizedActivityTypes = [MEMORY[0x1E699C9F0] nonOptimizedActivityTypes];
+  v3 = [nonOptimizedActivityTypes hk_map:&__block_literal_global_312];
 
   return v3;
 }
@@ -260,9 +260,9 @@ FIUIWorkoutActivityType *__52__FIUIWorkoutActivityType_nonOptimizedActivityTypes
   return v3;
 }
 
-+ (id)unsupportedActivityTypesWithIsWheelchairUser:(BOOL)a3 isSwimmingSupported:(BOOL)a4
++ (id)unsupportedActivityTypesWithIsWheelchairUser:(BOOL)user isSwimmingSupported:(BOOL)supported
 {
-  v4 = [MEMORY[0x1E699C9F0] unsupportedActivityTypesWithIsWheelchairUser:a3 isSwimmingSupported:a4];
+  v4 = [MEMORY[0x1E699C9F0] unsupportedActivityTypesWithIsWheelchairUser:user isSwimmingSupported:supported];
   v5 = [v4 hk_map:&__block_literal_global_314];
 
   return v5;
@@ -276,23 +276,23 @@ FIUIWorkoutActivityType *__92__FIUIWorkoutActivityType_unsupportedActivityTypesW
   return v3;
 }
 
-+ (id)unsupportedActivityTypesWithIsWheelchairUser:(BOOL)a3 isSwimmingSupported:(BOOL)a4 supportsPairedWatchFeatures:(BOOL)a5 supportsExternalHeartRateSensorFeatures:(BOOL)a6
++ (id)unsupportedActivityTypesWithIsWheelchairUser:(BOOL)user isSwimmingSupported:(BOOL)supported supportsPairedWatchFeatures:(BOOL)features supportsExternalHeartRateSensorFeatures:(BOOL)sensorFeatures
 {
-  if (a5)
+  if (features)
   {
-    v7 = [FIUIWorkoutActivityType unsupportedActivityTypesWithIsWheelchairUser:a3 isSwimmingSupported:a4, a5, a6];
+    sensorFeatures = [FIUIWorkoutActivityType unsupportedActivityTypesWithIsWheelchairUser:user isSwimmingSupported:supported, features, sensorFeatures];
   }
 
   else
   {
-    v8 = a6;
-    v9 = [MEMORY[0x1E699C9F0] optimizedActivityTypesWithIsWheelchairUser:a3 isSwimmingSupported:a4];
+    sensorFeaturesCopy = sensorFeatures;
+    v9 = [MEMORY[0x1E699C9F0] optimizedActivityTypesWithIsWheelchairUser:user isSwimmingSupported:supported];
     v10 = [v9 mutableCopy];
 
-    v11 = [MEMORY[0x1E699C9F0] nonOptimizedActivityTypes];
-    [v10 addObjectsFromArray:v11];
+    nonOptimizedActivityTypes = [MEMORY[0x1E699C9F0] nonOptimizedActivityTypes];
+    [v10 addObjectsFromArray:nonOptimizedActivityTypes];
 
-    if (v8)
+    if (sensorFeaturesCopy)
     {
       [MEMORY[0x1E699C9F0] phoneAndHeartRateMonitorSupportedActivityTypes];
     }
@@ -304,16 +304,16 @@ FIUIWorkoutActivityType *__92__FIUIWorkoutActivityType_unsupportedActivityTypesW
     v12 = ;
     [v10 removeObjectsInArray:v12];
 
-    if (!a3)
+    if (!user)
     {
-      v13 = [MEMORY[0x1E699C9F0] wheelchairActivityTypes];
-      [v10 addObjectsFromArray:v13];
+      wheelchairActivityTypes = [MEMORY[0x1E699C9F0] wheelchairActivityTypes];
+      [v10 addObjectsFromArray:wheelchairActivityTypes];
     }
 
-    v7 = [v10 hk_map:&__block_literal_global_316];
+    sensorFeatures = [v10 hk_map:&__block_literal_global_316];
   }
 
-  return v7;
+  return sensorFeatures;
 }
 
 FIUIWorkoutActivityType *__160__FIUIWorkoutActivityType_unsupportedActivityTypesWithIsWheelchairUser_isSwimmingSupported_supportsPairedWatchFeatures_supportsExternalHeartRateSensorFeatures___block_invoke(uint64_t a1, void *a2)
@@ -334,8 +334,8 @@ FIUIWorkoutActivityType *__50__FIUIWorkoutActivityType_wheelchairActivityTypes__
 
 + (id)swimmingOptimizedActivityTypes
 {
-  v2 = [MEMORY[0x1E699C9F0] swimmingOptimizedActivityTypes];
-  v3 = [v2 hk_map:&__block_literal_global_320];
+  swimmingOptimizedActivityTypes = [MEMORY[0x1E699C9F0] swimmingOptimizedActivityTypes];
+  v3 = [swimmingOptimizedActivityTypes hk_map:&__block_literal_global_320];
 
   return v3;
 }
@@ -350,8 +350,8 @@ FIUIWorkoutActivityType *__57__FIUIWorkoutActivityType_swimmingOptimizedActivity
 
 + (id)swimmingOtherActivityTypes
 {
-  v2 = [MEMORY[0x1E699C9F0] swimmingOtherActivityTypes];
-  v3 = [v2 hk_map:&__block_literal_global_322];
+  swimmingOtherActivityTypes = [MEMORY[0x1E699C9F0] swimmingOtherActivityTypes];
+  v3 = [swimmingOtherActivityTypes hk_map:&__block_literal_global_322];
 
   return v3;
 }
@@ -366,8 +366,8 @@ FIUIWorkoutActivityType *__53__FIUIWorkoutActivityType_swimmingOtherActivityType
 
 + (id)deprecatedActivityTypes
 {
-  v2 = [MEMORY[0x1E699C9F0] deprecatedActivityTypes];
-  v3 = [v2 hk_map:&__block_literal_global_324];
+  deprecatedActivityTypes = [MEMORY[0x1E699C9F0] deprecatedActivityTypes];
+  v3 = [deprecatedActivityTypes hk_map:&__block_literal_global_324];
 
   return v3;
 }
@@ -380,18 +380,18 @@ FIUIWorkoutActivityType *__50__FIUIWorkoutActivityType_deprecatedActivityTypes__
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   workoutActivityType = self->_workoutActivityType;
-  v4 = [a3 workoutActivityType];
-  LOBYTE(workoutActivityType) = [(FIWorkoutActivityType *)workoutActivityType isEqual:v4];
+  workoutActivityType = [equal workoutActivityType];
+  LOBYTE(workoutActivityType) = [(FIWorkoutActivityType *)workoutActivityType isEqual:workoutActivityType];
 
   return workoutActivityType;
 }
 
-+ (id)possibleActivityTypesForIdentifier:(unint64_t)a3 locationType:(int64_t)a4 swimmingLocationType:(int64_t)a5 wheelchairUser:(BOOL)a6
++ (id)possibleActivityTypesForIdentifier:(unint64_t)identifier locationType:(int64_t)type swimmingLocationType:(int64_t)locationType wheelchairUser:(BOOL)user
 {
-  v6 = [MEMORY[0x1E699C9F0] possibleActivityTypesForIdentifier:a3 locationType:a4 swimmingLocationType:a5 wheelchairUser:a6];
+  v6 = [MEMORY[0x1E699C9F0] possibleActivityTypesForIdentifier:identifier locationType:type swimmingLocationType:locationType wheelchairUser:user];
   v7 = [v6 hk_map:&__block_literal_global_330];
 
   return v7;

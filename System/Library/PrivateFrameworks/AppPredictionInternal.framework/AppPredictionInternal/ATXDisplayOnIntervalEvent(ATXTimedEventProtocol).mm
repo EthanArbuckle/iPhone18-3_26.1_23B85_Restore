@@ -6,10 +6,10 @@
 
 - (id)eventTime
 {
-  v1 = [a1 onInterval];
-  v2 = [v1 startDate];
+  onInterval = [self onInterval];
+  startDate = [onInterval startDate];
 
-  return v2;
+  return startDate;
 }
 
 @end

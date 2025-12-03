@@ -8,8 +8,8 @@
 
 - (uint64_t)sessionLocation
 {
-  v1 = [a1 metadata];
-  v2 = [v1 valueForKey:*MEMORY[0x277CCC4C0]];
+  metadata = [self metadata];
+  v2 = [metadata valueForKey:*MEMORY[0x277CCC4C0]];
 
   if (v2)
   {
@@ -34,28 +34,28 @@
 
 - (uint64_t)swimmingLocation
 {
-  v1 = [a1 metadata];
-  v2 = [v1 objectForKeyedSubscript:*MEMORY[0x277CCC510]];
-  v3 = [v2 integerValue];
+  metadata = [self metadata];
+  v2 = [metadata objectForKeyedSubscript:*MEMORY[0x277CCC510]];
+  integerValue = [v2 integerValue];
 
-  if (v3 == 2)
+  if (integerValue == 2)
   {
     return 2;
   }
 
   else
   {
-    return v3 == 1;
+    return integerValue == 1;
   }
 }
 
 - (id)startingLocation
 {
-  v2 = [a1 metadata];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277CCE1A8]];
+  metadata = [self metadata];
+  v3 = [metadata objectForKeyedSubscript:*MEMORY[0x277CCE1A8]];
 
-  v4 = [a1 metadata];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277CCE1B0]];
+  metadata2 = [self metadata];
+  v5 = [metadata2 objectForKeyedSubscript:*MEMORY[0x277CCE1B0]];
 
   if (v3)
   {

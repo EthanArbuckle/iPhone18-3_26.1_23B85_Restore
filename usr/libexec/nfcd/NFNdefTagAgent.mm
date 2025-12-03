@@ -1,7 +1,7 @@
 @interface NFNdefTagAgent
 - (NFNdefTagAgent)init;
-- (id)handleAPDU:(id)a3;
-- (id)handleSelect:(id)a3;
+- (id)handleAPDU:(id)u;
+- (id)handleSelect:(id)select;
 @end
 
 @implementation NFNdefTagAgent
@@ -24,14 +24,14 @@
   return v2;
 }
 
-- (id)handleSelect:(id)a3
+- (id)handleSelect:(id)select
 {
-  v5 = a3;
+  selectCopy = select;
   v6 = [NSData NF_dataWithHexString:@"D2760000850101"];
-  v7 = [v5 payload];
+  payload = [selectCopy payload];
 
-  LODWORD(v5) = [v6 isEqualToData:v7];
-  if (v5)
+  LODWORD(selectCopy) = [v6 isEqualToData:payload];
+  if (selectCopy)
   {
     *&self->_isSelected = 1;
     self->_tagWritten = 0;
@@ -93,20 +93,20 @@
   return v9;
 }
 
-- (id)handleAPDU:(id)a3
+- (id)handleAPDU:(id)u
 {
-  v5 = a3;
+  uCopy = u;
   self->_lastStatus = -28672;
-  v6 = v5;
+  v6 = uCopy;
   if (![v6 clss] && objc_msgSend(v6, "instruction") == 164 && !objc_msgSend(v6, "p1") && objc_msgSend(v6, "p2") == 12)
   {
 
-    v7 = [v6 payload];
-    v8 = [v7 NF_asHexString];
+    payload = [v6 payload];
+    nF_asHexString = [payload NF_asHexString];
 
-    if (([v8 isEqualToString:@"E103"] & 1) != 0 || objc_msgSend(v8, "isEqualToString:", @"E104"))
+    if (([nF_asHexString isEqualToString:@"E103"] & 1) != 0 || objc_msgSend(nF_asHexString, "isEqualToString:", @"E104"))
     {
-      objc_storeStrong(&self->_selectedFile, v8);
+      objc_storeStrong(&self->_selectedFile, nF_asHexString);
       v9 = 36864;
     }
 
@@ -171,14 +171,14 @@
   if (![v10 clss] && objc_msgSend(v10, "instruction") == 176)
   {
 
-    v8 = v10;
+    nF_asHexString = v10;
     v103 = -28672;
-    v11 = [v8 p1];
-    v12 = [v8 p2];
-    v13 = [v8 lengthExpected];
+    v11 = [nF_asHexString p1];
+    v12 = [nF_asHexString p2];
+    lengthExpected = [nF_asHexString lengthExpected];
     if (self->_selectedFile)
     {
-      v14 = v13;
+      v14 = lengthExpected;
       v15 = [(NSMutableDictionary *)self->_files objectForKeyedSubscript:?];
       v16 = objc_opt_new();
       if (v15)
@@ -273,10 +273,10 @@ LABEL_46:
   if (![v20 clss] && objc_msgSend(v20, "instruction") == 214)
   {
 
-    v8 = v20;
+    nF_asHexString = v20;
     v103 = -28672;
-    v21 = [v8 p1];
-    v22 = [v8 p2];
+    v21 = [nF_asHexString p1];
+    v22 = [nF_asHexString p2];
     selectedFile = self->_selectedFile;
     if (selectedFile)
     {
@@ -308,7 +308,7 @@ LABEL_46:
     }
 
     v46 = v22 | (v21 << 8);
-    if ([v8 payloadLength] + v46 > self->_maxTagSize)
+    if ([nF_asHexString payloadLength] + v46 > self->_maxTagSize)
     {
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
       v47 = NFLogGetLogger();
@@ -372,11 +372,11 @@ LABEL_78:
     }
 
     v60 = [v45 length];
-    v61 = [v8 payloadLength];
+    payloadLength = [nF_asHexString payloadLength];
     v102 = v45;
     if (v60 >= v46)
     {
-      v62 = v61 + v46;
+      v62 = payloadLength + v46;
       v63 = [v45 length];
       v64 = [NSMutableData alloc];
       v65 = v64;
@@ -385,8 +385,8 @@ LABEL_78:
         v70 = [v45 subdataWithRange:{0, v46}];
         v54 = [v65 initWithData:v70];
 
-        v67 = [v8 payload];
-        [v54 appendData:v67];
+        payload2 = [nF_asHexString payload];
+        [v54 appendData:payload2];
         goto LABEL_66;
       }
 
@@ -395,16 +395,16 @@ LABEL_78:
 
     else
     {
-      v54 = [[NSMutableData alloc] initWithLength:(v46 + v61)];
+      v54 = [[NSMutableData alloc] initWithLength:(v46 + payloadLength)];
       -[NSObject replaceBytesInRange:withBytes:](v54, "replaceBytesInRange:withBytes:", 0, [v45 length], objc_msgSend(v45, "bytes"));
     }
 
-    v66 = [v8 payloadLength];
-    v67 = [v8 payload];
-    v68 = [v67 bytes];
-    v69 = v66;
+    payloadLength2 = [nF_asHexString payloadLength];
+    payload2 = [nF_asHexString payload];
+    bytes = [payload2 bytes];
+    v69 = payloadLength2;
     v45 = v102;
-    [v54 replaceBytesInRange:v46 withBytes:v69, v68];
+    [v54 replaceBytesInRange:v46 withBytes:v69, bytes];
 LABEL_66:
 
     [(NSMutableDictionary *)self->_files setObject:v54 forKey:@"E104"];
@@ -527,8 +527,8 @@ LABEL_66:
   }
 
   *buf = -32406;
-  v8 = [[NSData alloc] initWithBytes:buf length:2];
-  v34 = [NFResponseAPDU responseWithData:v8];
+  nF_asHexString = [[NSData alloc] initWithBytes:buf length:2];
+  v34 = [NFResponseAPDU responseWithData:nF_asHexString];
 LABEL_79:
 
   return v34;

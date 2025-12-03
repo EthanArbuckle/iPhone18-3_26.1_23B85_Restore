@@ -1,10 +1,10 @@
 @interface HVNotifications
-+ (void)_postNotificationWithName:(uint64_t)a1;
++ (void)_postNotificationWithName:(uint64_t)name;
 @end
 
 @implementation HVNotifications
 
-+ (void)_postNotificationWithName:(uint64_t)a1
++ (void)_postNotificationWithName:(uint64_t)name
 {
   v9 = *MEMORY[0x277D85DE8];
   objc_opt_self();

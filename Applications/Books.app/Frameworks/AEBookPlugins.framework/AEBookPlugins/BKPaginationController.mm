@@ -1,55 +1,55 @@
 @interface BKPaginationController
-+ (id)newPaginationControllerForBook:(id)a3 delegate:(id)a4;
++ (id)newPaginationControllerForBook:(id)book delegate:(id)delegate;
 - (BKPaginationController)init;
-- (BKPaginationController)initWithBook:(id)a3 delegate:(id)a4;
+- (BKPaginationController)initWithBook:(id)book delegate:(id)delegate;
 - (BKPaginationControllerDelegate)delegate;
 - (BOOL)workIsStillPending;
-- (_NSRange)pageRangeForAnnotation:(id)a3;
-- (_NSRange)pageRangeForChapter:(id)a3;
-- (_NSRange)pageRangeForChapterAtIndex:(unint64_t)a3;
-- (_NSRange)pageRangeForChapterAtPageNumber:(int64_t)a3;
+- (_NSRange)pageRangeForAnnotation:(id)annotation;
+- (_NSRange)pageRangeForChapter:(id)chapter;
+- (_NSRange)pageRangeForChapterAtIndex:(unint64_t)index;
+- (_NSRange)pageRangeForChapterAtPageNumber:(int64_t)number;
 - (float)progress;
 - (id)_lookupKey;
-- (id)chapterArrayWithLookupKey:(id)a3;
-- (id)chapterForPageNumber:(int64_t)a3;
-- (id)documentPageCountForDocumentOrdinal:(int64_t)a3;
+- (id)chapterArrayWithLookupKey:(id)key;
+- (id)chapterForPageNumber:(int64_t)number;
+- (id)documentPageCountForDocumentOrdinal:(int64_t)ordinal;
 - (id)fetchBookmarkPageCounts;
-- (id)hrefForChapterAtPageNumber:(int64_t)a3;
-- (id)hrefForPageNumber:(int64_t)a3;
+- (id)hrefForChapterAtPageNumber:(int64_t)number;
+- (id)hrefForPageNumber:(int64_t)number;
 - (id)layoutQueue;
-- (id)pageLocationForPageNumber:(int64_t)a3;
-- (id)pageTitleForAnnotation:(id)a3;
-- (id)pageTitleForChapter:(id)a3;
-- (id)pageTitleForPageNumber:(int64_t)a3;
-- (id)paginationArrayWithLookupKey:(id)a3;
-- (id)paginationInfoForPageNumber:(int64_t)a3;
+- (id)pageLocationForPageNumber:(int64_t)number;
+- (id)pageTitleForAnnotation:(id)annotation;
+- (id)pageTitleForChapter:(id)chapter;
+- (id)pageTitleForPageNumber:(int64_t)number;
+- (id)paginationArrayWithLookupKey:(id)key;
+- (id)paginationInfoForPageNumber:(int64_t)number;
 - (id)paginationRevision;
-- (id)physicalPageTitlesForPageNumber:(int64_t)a3;
-- (id)physicalPagesArrayWithLookupKey:(id)a3;
+- (id)physicalPageTitlesForPageNumber:(int64_t)number;
+- (id)physicalPagesArrayWithLookupKey:(id)key;
 - (id)resultsQueue;
-- (id)titleForChapterAtPageNumber:(int64_t)a3;
+- (id)titleForChapterAtPageNumber:(int64_t)number;
 - (int64_t)incrementBatchProgress;
-- (int64_t)pageNumberForDocumentOrdinal:(int64_t)a3;
-- (int64_t)pageNumberForLocation:(id)a3;
+- (int64_t)pageNumberForDocumentOrdinal:(int64_t)ordinal;
+- (int64_t)pageNumberForLocation:(id)location;
 - (int64_t)pageTotal;
-- (int64_t)pagesInDocumentOrdinal:(int64_t)a3;
-- (unint64_t)chapterIndexForHref:(id)a3;
-- (unint64_t)chapterIndexForPageNumber:(int64_t)a3 getFirstChapter:(BOOL)a4;
-- (unint64_t)physicalPageIndexForPageNumber:(int64_t)a3;
-- (void)_releaseData:(BOOL)a3;
+- (int64_t)pagesInDocumentOrdinal:(int64_t)ordinal;
+- (unint64_t)chapterIndexForHref:(id)href;
+- (unint64_t)chapterIndexForPageNumber:(int64_t)number getFirstChapter:(BOOL)chapter;
+- (unint64_t)physicalPageIndexForPageNumber:(int64_t)number;
+- (void)_releaseData:(BOOL)data;
 - (void)abortCurrentBatch;
-- (void)batchEnded:(BOOL)a3;
+- (void)batchEnded:(BOOL)ended;
 - (void)cancelAllOperations;
 - (void)dealloc;
 - (void)destroyIvars;
-- (void)managedObjectContextDidSave:(id)a3;
+- (void)managedObjectContextDidSave:(id)save;
 - (void)pause;
 - (void)postPaginationLoadedNotification;
 - (void)quit;
-- (void)repaginateWithStyle:(id)a3 geometry:(id)a4 force:(BOOL)a5;
+- (void)repaginateWithStyle:(id)style geometry:(id)geometry force:(BOOL)force;
 - (void)resume;
-- (void)setOperationFactory:(id)a3;
-- (void)updatePaginationCache:(BOOL)a3;
+- (void)setOperationFactory:(id)factory;
+- (void)updatePaginationCache:(BOOL)cache;
 - (void)updateProgress;
 - (void)waitUntilAllOperationsAreFinished;
 @end
@@ -75,39 +75,39 @@
   return v2;
 }
 
-- (BKPaginationController)initWithBook:(id)a3 delegate:(id)a4
+- (BKPaginationController)initWithBook:(id)book delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  bookCopy = book;
+  delegateCopy = delegate;
   v9 = [(BKPaginationController *)self init];
   if (v9)
   {
-    v10 = [v7 objectID];
+    objectID = [bookCopy objectID];
     bookObjectID = v9->_bookObjectID;
-    v9->_bookObjectID = v10;
+    v9->_bookObjectID = objectID;
 
-    objc_storeStrong(&v9->_bookObject, a3);
-    v12 = [v7 databaseKey];
+    objc_storeStrong(&v9->_bookObject, book);
+    databaseKey = [bookCopy databaseKey];
     bookDatabaseKey = v9->_bookDatabaseKey;
-    v9->_bookDatabaseKey = v12;
+    v9->_bookDatabaseKey = databaseKey;
 
-    v14 = [v7 bookLanguage];
+    bookLanguage = [bookCopy bookLanguage];
     bookLanguage = v9->_bookLanguage;
-    v9->_bookLanguage = v14;
+    v9->_bookLanguage = bookLanguage;
 
-    v9->_bookDirection = [v7 bkPageProgressionDirection];
-    v16 = [v7 sampleContent];
-    v9->_bookSample = [v16 BOOLValue];
+    v9->_bookDirection = [bookCopy bkPageProgressionDirection];
+    sampleContent = [bookCopy sampleContent];
+    v9->_bookSample = [sampleContent BOOLValue];
 
-    v17 = [v7 managedObjectContext];
+    managedObjectContext = [bookCopy managedObjectContext];
     primaryMOC = v9->_primaryMOC;
-    v9->_primaryMOC = v17;
+    v9->_primaryMOC = managedObjectContext;
 
-    v9->_bookShouldDisableOptimizeSpeed = [v7 shouldDisableOptimizeSpeed];
-    v19 = [v7 spineIndexInPackage];
-    v9->_spineIndexInPackage = [v19 unsignedIntegerValue];
+    v9->_bookShouldDisableOptimizeSpeed = [bookCopy shouldDisableOptimizeSpeed];
+    spineIndexInPackage = [bookCopy spineIndexInPackage];
+    v9->_spineIndexInPackage = [spineIndexInPackage unsignedIntegerValue];
 
-    objc_storeWeak(&v9->_delegate, v8);
+    objc_storeWeak(&v9->_delegate, delegateCopy);
   }
 
   return v9;
@@ -188,16 +188,16 @@
   self->_configuration = 0;
 }
 
-- (void)setOperationFactory:(id)a3
+- (void)setOperationFactory:(id)factory
 {
-  v5 = a3;
+  factoryCopy = factory;
   operationFactory = self->_operationFactory;
   p_operationFactory = &self->_operationFactory;
-  if (operationFactory != v5)
+  if (operationFactory != factoryCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_operationFactory, a3);
-    v5 = v8;
+    v8 = factoryCopy;
+    objc_storeStrong(p_operationFactory, factory);
+    factoryCopy = v8;
   }
 }
 
@@ -214,9 +214,9 @@
   }
 }
 
-- (void)batchEnded:(BOOL)a3
+- (void)batchEnded:(BOOL)ended
 {
-  if (a3)
+  if (ended)
   {
     objc_initWeak(&location, self);
     v3[0] = _NSConcreteStackBlock;
@@ -230,21 +230,21 @@
   }
 }
 
-+ (id)newPaginationControllerForBook:(id)a3 delegate:(id)a4
++ (id)newPaginationControllerForBook:(id)book delegate:(id)delegate
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[BKPaginationController alloc] initWithBook:v6 delegate:v5];
+  delegateCopy = delegate;
+  bookCopy = book;
+  v7 = [[BKPaginationController alloc] initWithBook:bookCopy delegate:delegateCopy];
 
-  v8 = [v6 contentType];
-  if (v8 == 2)
+  contentType = [bookCopy contentType];
+  if (contentType == 2)
   {
     v9 = v7;
     v7 = 0;
     goto LABEL_5;
   }
 
-  if (!v8)
+  if (!contentType)
   {
     v9 = [[EpubPaginationFactory alloc] initWithPaginationController:v7];
     [(BKPaginationController *)v7 setOperationFactory:v9];
@@ -276,8 +276,8 @@ LABEL_5:
 
 - (void)waitUntilAllOperationsAreFinished
 {
-  v3 = [(NSOperationQueue *)self->_layoutQueue operations];
-  if ([v3 count])
+  operations = [(NSOperationQueue *)self->_layoutQueue operations];
+  if ([operations count])
   {
 
 LABEL_4:
@@ -286,8 +286,8 @@ LABEL_4:
     return;
   }
 
-  v4 = [(NSOperationQueue *)self->_resultsQueue operations];
-  v5 = [v4 count];
+  operations2 = [(NSOperationQueue *)self->_resultsQueue operations];
+  v5 = [operations2 count];
 
   if (v5)
   {
@@ -310,16 +310,16 @@ LABEL_4:
   [(BKPaginationController *)self performSelectorOnMainThread:"waitUntilAllOperationsAreFinished" withObject:0 waitUntilDone:0];
 }
 
-- (id)documentPageCountForDocumentOrdinal:(int64_t)a3
+- (id)documentPageCountForDocumentOrdinal:(int64_t)ordinal
 {
-  if (a3 < 0)
+  if (ordinal < 0)
   {
     v6 = 0;
   }
 
   else
   {
-    v4 = [[NSNumber alloc] initWithInteger:a3];
+    v4 = [[NSNumber alloc] initWithInteger:ordinal];
     v5 = [(NSArray *)self->_paginationInfo bu_indexOfObjectWithValue:v4 forKeyPath:@"documentOrdinal"];
     if (v5 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -335,34 +335,34 @@ LABEL_4:
   return v6;
 }
 
-- (int64_t)pageNumberForDocumentOrdinal:(int64_t)a3
+- (int64_t)pageNumberForDocumentOrdinal:(int64_t)ordinal
 {
-  v3 = [(BKPaginationController *)self documentPageCountForDocumentOrdinal:a3];
+  v3 = [(BKPaginationController *)self documentPageCountForDocumentOrdinal:ordinal];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 pageNumber];
-    v6 = [v5 integerValue];
+    pageNumber = [v3 pageNumber];
+    integerValue = [pageNumber integerValue];
   }
 
   else
   {
-    v6 = 0x7FFFFFFFFFFFFFFFLL;
+    integerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v6;
+  return integerValue;
 }
 
-- (int64_t)pagesInDocumentOrdinal:(int64_t)a3
+- (int64_t)pagesInDocumentOrdinal:(int64_t)ordinal
 {
-  v3 = [(BKPaginationController *)self documentPageCountForDocumentOrdinal:a3];
+  v3 = [(BKPaginationController *)self documentPageCountForDocumentOrdinal:ordinal];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 pageCount];
-    v6 = [v5 intValue];
+    pageCount = [v3 pageCount];
+    intValue = [pageCount intValue];
 
-    v7 = v6;
+    v7 = intValue;
   }
 
   else
@@ -378,40 +378,40 @@ LABEL_4:
   if (self->_pageTotal == 0x7FFFFFFFFFFFFFFFLL)
   {
     v3 = [(NSArray *)self->_paginationInfo count];
-    v4 = [(BKPaginationController *)self book];
-    v5 = [v4 linearDocumentCount];
+    book = [(BKPaginationController *)self book];
+    linearDocumentCount = [book linearDocumentCount];
 
-    if (v3 == v5)
+    if (v3 == linearDocumentCount)
     {
-      v6 = [(NSArray *)self->_paginationInfo lastObject];
-      v7 = [v6 pageNumber];
-      v8 = [v7 integerValue];
+      lastObject = [(NSArray *)self->_paginationInfo lastObject];
+      pageNumber = [lastObject pageNumber];
+      integerValue = [pageNumber integerValue];
 
-      v9 = [v6 pageCount];
-      v10 = [v9 integerValue];
+      pageCount = [lastObject pageCount];
+      integerValue2 = [pageCount integerValue];
 
-      self->_pageTotal = v10 + v8 - 1;
+      self->_pageTotal = integerValue2 + integerValue - 1;
     }
   }
 
   return self->_pageTotal;
 }
 
-- (void)repaginateWithStyle:(id)a3 geometry:(id)a4 force:(BOOL)a5
+- (void)repaginateWithStyle:(id)style geometry:(id)geometry force:(BOOL)force
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [(BKPaginationController *)self _lookupKey];
-  [(BKPaginationController *)self setStyle:v8];
-  [(BKPaginationController *)self setConfiguration:v9];
+  forceCopy = force;
+  styleCopy = style;
+  geometryCopy = geometry;
+  _lookupKey = [(BKPaginationController *)self _lookupKey];
+  [(BKPaginationController *)self setStyle:styleCopy];
+  [(BKPaginationController *)self setConfiguration:geometryCopy];
 
-  v11 = [(BKPaginationController *)self configuration];
-  v12 = [v11 environment];
-  [v12 unfreeze];
+  configuration = [(BKPaginationController *)self configuration];
+  environment = [configuration environment];
+  [environment unfreeze];
 
-  v13 = [(BKPaginationController *)self delegate];
-  v14 = [v13 environmentOverrideViewForPaginationController:self];
+  delegate = [(BKPaginationController *)self delegate];
+  v14 = [delegate environmentOverrideViewForPaginationController:self];
 
   if (v14)
   {
@@ -423,90 +423,90 @@ LABEL_4:
       _os_log_impl(&dword_0, v15, OS_LOG_TYPE_DEFAULT, "Set an override view: %@", &v31, 0xCu);
     }
 
-    v16 = [(BKPaginationController *)self configuration];
-    v17 = [v16 environment];
-    [v17 setView:v14];
+    configuration2 = [(BKPaginationController *)self configuration];
+    environment2 = [configuration2 environment];
+    [environment2 setView:v14];
   }
 
-  v18 = [(BKPaginationController *)self configuration];
-  v19 = [v18 environment];
-  [v19 freeze];
+  configuration3 = [(BKPaginationController *)self configuration];
+  environment3 = [configuration3 environment];
+  [environment3 freeze];
 
   v20 = _AEPaginationLog();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
-    v21 = [(BKPaginationController *)self configuration];
+    configuration4 = [(BKPaginationController *)self configuration];
     v31 = 138543618;
-    v32 = v21;
+    v32 = configuration4;
     v33 = 2114;
-    v34 = v8;
+    v34 = styleCopy;
     _os_log_impl(&dword_0, v20, OS_LOG_TYPE_DEFAULT, "\nCaptured configuration: %{public}@\nStyle:%{public}@\n", &v31, 0x16u);
   }
 
   [(BKPaginationController *)self releasePaginationInfo];
-  if (v8 || ![(BKPaginationFactory *)self->_operationFactory isStyleRequiredForPagination])
+  if (styleCopy || ![(BKPaginationFactory *)self->_operationFactory isStyleRequiredForPagination])
   {
-    v22 = [(BKPaginationController *)self _lookupKey];
+    _lookupKey2 = [(BKPaginationController *)self _lookupKey];
     v23 = _AEPaginationLog();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       v31 = 138543362;
-      v32 = v22;
+      v32 = _lookupKey2;
       _os_log_impl(&dword_0, v23, OS_LOG_TYPE_DEFAULT, "Repagination request made for:%{public}@.", &v31, 0xCu);
     }
 
-    if (([v10 isEqualToString:v22] & 1) == 0)
+    if (([_lookupKey isEqualToString:_lookupKey2] & 1) == 0)
     {
       v24 = _AEPaginationLog();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
       {
         v31 = 138543618;
-        v32 = v22;
+        v32 = _lookupKey2;
         v33 = 2114;
-        v34 = v10;
+        v34 = _lookupKey;
         _os_log_impl(&dword_0, v24, OS_LOG_TYPE_INFO, "CurrentKey:%{public}@ != PreviousKey:%{public}@ Resetting count. #retryPagination", &v31, 0x16u);
       }
 
       [(BKPaginationController *)self setPaginationRetryCount:0];
     }
 
-    [(BKPaginationController *)self updatePaginationCache:v5];
+    [(BKPaginationController *)self updatePaginationCache:forceCopy];
     [(BKPaginationController *)self setJobGeneration:[(BKPaginationController *)self jobGeneration]+ 1];
     v25 = [(BKPaginationJob *)[BKPaginationBatchJob alloc] init:[(BKPaginationController *)self jobGeneration]];
-    [v25 setStyle:v8];
-    [v25 setLookupKey:v22];
-    v26 = [(BKPaginationController *)self bookDatabaseKey];
-    [v25 setBookDatabaseKey:v26];
+    [v25 setStyle:styleCopy];
+    [v25 setLookupKey:_lookupKey2];
+    bookDatabaseKey = [(BKPaginationController *)self bookDatabaseKey];
+    [v25 setBookDatabaseKey:bookDatabaseKey];
 
-    v27 = [(BKPaginationController *)self configuration];
-    [v27 contentLayoutSize];
+    configuration5 = [(BKPaginationController *)self configuration];
+    [configuration5 contentLayoutSize];
     [v25 setPageSize:?];
 
-    v28 = [(BKPaginationController *)self navigationHistory];
-    v29 = [v28 allObjects];
-    [v25 setHistoryEntities:v29];
+    navigationHistory = [(BKPaginationController *)self navigationHistory];
+    allObjects = [navigationHistory allObjects];
+    [v25 setHistoryEntities:allObjects];
 
-    v30 = [(BKPaginationController *)self configuration];
-    [v25 setConfiguration:v30];
+    configuration6 = [(BKPaginationController *)self configuration];
+    [v25 setConfiguration:configuration6];
 
-    [v25 setForce:v5];
+    [v25 setForce:forceCopy];
     [(BKPaginationController *)self addPrepareJob:v25];
   }
 
   else
   {
-    v22 = _AEPaginationLog();
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+    _lookupKey2 = _AEPaginationLog();
+    if (os_log_type_enabled(_lookupKey2, OS_LOG_TYPE_ERROR))
     {
       LOWORD(v31) = 0;
-      _os_log_impl(&dword_0, v22, OS_LOG_TYPE_ERROR, "Aborting pagination because no style was provided.", &v31, 2u);
+      _os_log_impl(&dword_0, _lookupKey2, OS_LOG_TYPE_ERROR, "Aborting pagination because no style was provided.", &v31, 2u);
     }
   }
 }
 
-- (void)_releaseData:(BOOL)a3
+- (void)_releaseData:(BOOL)data
 {
-  v3 = a3;
+  dataCopy = data;
   paginationInfo = self->_paginationInfo;
   self->_paginationInfo = 0;
 
@@ -523,7 +523,7 @@ LABEL_4:
 
   self->_paginationBatchSize = 0;
   self->_paginationBatchProgress = 0;
-  if (v3)
+  if (dataCopy)
   {
 
     [(BKPaginationController *)self abortCurrentBatch];
@@ -546,21 +546,21 @@ LABEL_4:
   }
 }
 
-- (id)paginationInfoForPageNumber:(int64_t)a3
+- (id)paginationInfoForPageNumber:(int64_t)number
 {
-  if (a3 >= 1 && (v5 = [(NSArray *)self->_paginationInfo count]) != 0)
+  if (number >= 1 && (v5 = [(NSArray *)self->_paginationInfo count]) != 0)
   {
     v6 = 0;
     while (1)
     {
       v7 = [(NSArray *)self->_paginationInfo objectAtIndex:v6];
-      v8 = [v7 pageNumber];
-      v9 = [v8 integerValue];
+      pageNumber = [v7 pageNumber];
+      integerValue = [pageNumber integerValue];
 
-      v10 = [v7 pageCount];
-      v11 = [v10 integerValue];
+      pageCount = [v7 pageCount];
+      integerValue2 = [pageCount integerValue];
 
-      if (v9 <= a3 && v9 + v11 > a3)
+      if (integerValue <= number && integerValue + integerValue2 > number)
       {
         break;
       }
@@ -581,9 +581,9 @@ LABEL_10:
   return v7;
 }
 
-- (id)pageLocationForPageNumber:(int64_t)a3
+- (id)pageLocationForPageNumber:(int64_t)number
 {
-  if ((a3 - 1) > 0x7FFFFFFFFFFFFFFDLL)
+  if ((number - 1) > 0x7FFFFFFFFFFFFFFDLL)
   {
     v9 = 0;
   }
@@ -594,10 +594,10 @@ LABEL_10:
     if (v4)
     {
       v5 = [BKPageLocation alloc];
-      v6 = [v4 documentOrdinal];
-      v7 = [v6 integerValue];
-      v8 = [v4 pageNumber];
-      v9 = -[BKPageLocation initWithOrdinal:andOffset:](v5, "initWithOrdinal:andOffset:", v7, a3 - [v8 integerValue]);
+      documentOrdinal = [v4 documentOrdinal];
+      integerValue = [documentOrdinal integerValue];
+      pageNumber = [v4 pageNumber];
+      v9 = -[BKPageLocation initWithOrdinal:andOffset:](v5, "initWithOrdinal:andOffset:", integerValue, number - [pageNumber integerValue]);
     }
 
     else
@@ -609,13 +609,13 @@ LABEL_10:
   return v9;
 }
 
-- (int64_t)pageNumberForLocation:(id)a3
+- (int64_t)pageNumberForLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = locationCopy;
     v6 = -[BKPaginationController pagesInDocumentOrdinal:](self, "pagesInDocumentOrdinal:", [v5 ordinal]);
     if (v6 <= [v5 pageOffset] || (v7 = -[BKPaginationController pageNumberForDocumentOrdinal:](self, "pageNumberForDocumentOrdinal:", objc_msgSend(v5, "ordinal")), (v7 - 1) > 0x7FFFFFFFFFFFFFFDLL))
     {
@@ -632,15 +632,15 @@ LABEL_10:
   {
     objc_opt_class();
     objc_opt_isKindOfClass();
-    v8 = -[BKPaginationController pageNumberForDocumentOrdinal:](self, "pageNumberForDocumentOrdinal:", [v4 ordinal]);
+    v8 = -[BKPaginationController pageNumberForDocumentOrdinal:](self, "pageNumberForDocumentOrdinal:", [locationCopy ordinal]);
   }
 
   return v8;
 }
 
-- (unint64_t)chapterIndexForPageNumber:(int64_t)a3 getFirstChapter:(BOOL)a4
+- (unint64_t)chapterIndexForPageNumber:(int64_t)number getFirstChapter:(BOOL)chapter
 {
-  if ((a3 - 1) > 0x7FFFFFFFFFFFFFFDLL)
+  if ((number - 1) > 0x7FFFFFFFFFFFFFFDLL)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -655,11 +655,11 @@ LABEL_10:
     }
 
     v9 = [(NSArray *)self->_chapterInfo objectAtIndex:v7];
-    v10 = [v9 pageNumber];
-    v11 = [v10 intValue];
+    pageNumber = [v9 pageNumber];
+    intValue = [pageNumber intValue];
 
-    v12 = v11 == a3 && a4;
-    if (v11 > a3)
+    v12 = intValue == number && chapter;
+    if (intValue > number)
     {
       break;
     }
@@ -671,9 +671,9 @@ LABEL_10:
   return v8;
 }
 
-- (unint64_t)physicalPageIndexForPageNumber:(int64_t)a3
+- (unint64_t)physicalPageIndexForPageNumber:(int64_t)number
 {
-  if ((a3 - 1) > 0x7FFFFFFFFFFFFFFDLL)
+  if ((number - 1) > 0x7FFFFFFFFFFFFFFDLL)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -689,21 +689,21 @@ LABEL_10:
     }
 
     v8 = [(NSArray *)self->_physicalPagesInfo objectAtIndex:v5];
-    v9 = [v8 pageNumber];
-    v10 = [v9 integerValue];
+    pageNumber = [v8 pageNumber];
+    integerValue = [pageNumber integerValue];
 
     v6 = v5++;
   }
 
-  while (v10 <= a3);
+  while (integerValue <= number);
   return v7;
 }
 
-- (unint64_t)chapterIndexForHref:(id)a3
+- (unint64_t)chapterIndexForHref:(id)href
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 length])
+  hrefCopy = href;
+  v5 = hrefCopy;
+  if (hrefCopy && [hrefCopy length])
   {
     v17 = 0u;
     v18 = 0u;
@@ -727,8 +727,8 @@ LABEL_10:
             objc_enumerationMutation(v6);
           }
 
-          v12 = [*(*(&v15 + 1) + 8 * v10) href];
-          v13 = [v12 isEqualToString:v5];
+          href = [*(*(&v15 + 1) + 8 * v10) href];
+          v13 = [href isEqualToString:v5];
 
           if (v13)
           {
@@ -758,14 +758,14 @@ LABEL_14:
   return v11;
 }
 
-- (id)physicalPageTitlesForPageNumber:(int64_t)a3
+- (id)physicalPageTitlesForPageNumber:(int64_t)number
 {
   physicalPagesInfo = self->_physicalPagesInfo;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_81884;
   v14[3] = &unk_1E4A28;
-  v14[4] = a3;
+  v14[4] = number;
   v6 = [(NSArray *)physicalPagesInfo indexesOfObjectsWithOptions:3 passingTest:v14];
   if ([v6 count])
   {
@@ -777,7 +777,7 @@ LABEL_14:
 
   else
   {
-    v7 = [(BKPaginationController *)self physicalPageIndexForPageNumber:a3];
+    v7 = [(BKPaginationController *)self physicalPageIndexForPageNumber:number];
     if (v7 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v8 = 0;
@@ -797,8 +797,8 @@ LABEL_14:
     }
   }
 
-  v10 = [v6 lastIndex];
-  if (v10 < [(NSArray *)self->_physicalPagesInfo count])
+  lastIndex = [v6 lastIndex];
+  if (lastIndex < [(NSArray *)self->_physicalPagesInfo count])
   {
     v11 = [(NSArray *)self->_physicalPagesInfo objectsAtIndexes:v6];
     v12 = [v11 valueForKey:@"name"];
@@ -813,9 +813,9 @@ LABEL_11:
   return v12;
 }
 
-- (id)chapterForPageNumber:(int64_t)a3
+- (id)chapterForPageNumber:(int64_t)number
 {
-  v4 = [(BKPaginationController *)self chapterIndexForPageNumber:a3];
+  v4 = [(BKPaginationController *)self chapterIndexForPageNumber:number];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0;
@@ -829,76 +829,76 @@ LABEL_11:
   return v5;
 }
 
-- (id)titleForChapterAtPageNumber:(int64_t)a3
+- (id)titleForChapterAtPageNumber:(int64_t)number
 {
-  v3 = [(BKPaginationController *)self chapterForPageNumber:a3];
-  v4 = [v3 name];
+  v3 = [(BKPaginationController *)self chapterForPageNumber:number];
+  name = [v3 name];
 
-  return v4;
+  return name;
 }
 
-- (id)hrefForChapterAtPageNumber:(int64_t)a3
+- (id)hrefForChapterAtPageNumber:(int64_t)number
 {
-  v3 = [(BKPaginationController *)self chapterForPageNumber:a3];
-  v4 = [v3 href];
+  v3 = [(BKPaginationController *)self chapterForPageNumber:number];
+  href = [v3 href];
 
-  return v4;
+  return href;
 }
 
-- (id)hrefForPageNumber:(int64_t)a3
+- (id)hrefForPageNumber:(int64_t)number
 {
-  v3 = [(BKPaginationController *)self paginationInfoForPageNumber:a3];
-  v4 = [v3 href];
+  v3 = [(BKPaginationController *)self paginationInfoForPageNumber:number];
+  href = [v3 href];
 
-  return v4;
+  return href;
 }
 
-- (_NSRange)pageRangeForChapterAtIndex:(unint64_t)a3
+- (_NSRange)pageRangeForChapterAtIndex:(unint64_t)index
 {
-  if ([(NSArray *)self->_chapterInfo count]<= a3)
+  if ([(NSArray *)self->_chapterInfo count]<= index)
   {
-    v8 = 0x7FFFFFFFFFFFFFFFLL;
+    integerValue = 0x7FFFFFFFFFFFFFFFLL;
     v10 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    v5 = [(NSArray *)self->_chapterInfo objectAtIndex:a3];
-    if (a3 + 1 >= [(NSArray *)self->_chapterInfo count])
+    v5 = [(NSArray *)self->_chapterInfo objectAtIndex:index];
+    if (index + 1 >= [(NSArray *)self->_chapterInfo count])
     {
-      v8 = 0x7FFFFFFFFFFFFFFFLL;
+      integerValue = 0x7FFFFFFFFFFFFFFFLL;
       v10 = 0x7FFFFFFFFFFFFFFFLL;
       if ([(BKPaginationController *)self pageTotal]!= 0x7FFFFFFFFFFFFFFFLL)
       {
-        v11 = [v5 pageNumber];
-        v8 = [v11 integerValue];
+        pageNumber = [v5 pageNumber];
+        integerValue = [pageNumber integerValue];
 
-        v10 = [(BKPaginationController *)self pageTotal]- v8 + 1;
+        v10 = [(BKPaginationController *)self pageTotal]- integerValue + 1;
       }
     }
 
     else
     {
       v6 = [(NSArray *)self->_chapterInfo objectAtIndex:?];
-      v7 = [v5 pageNumber];
-      v8 = [v7 integerValue];
+      pageNumber2 = [v5 pageNumber];
+      integerValue = [pageNumber2 integerValue];
 
-      v9 = [v6 pageNumber];
-      v10 = [v9 integerValue] - v8;
+      pageNumber3 = [v6 pageNumber];
+      v10 = [pageNumber3 integerValue] - integerValue;
     }
   }
 
-  v12 = v8;
+  v12 = integerValue;
   v13 = v10;
   result.length = v13;
   result.location = v12;
   return result;
 }
 
-- (_NSRange)pageRangeForChapter:(id)a3
+- (_NSRange)pageRangeForChapter:(id)chapter
 {
-  v4 = [a3 href];
-  v5 = [(BKPaginationController *)self chapterIndexForHref:v4];
+  href = [chapter href];
+  v5 = [(BKPaginationController *)self chapterIndexForHref:href];
 
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -917,9 +917,9 @@ LABEL_11:
   return result;
 }
 
-- (_NSRange)pageRangeForChapterAtPageNumber:(int64_t)a3
+- (_NSRange)pageRangeForChapterAtPageNumber:(int64_t)number
 {
-  v4 = [(BKPaginationController *)self chapterIndexForPageNumber:a3];
+  v4 = [(BKPaginationController *)self chapterIndexForPageNumber:number];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0x7FFFFFFFFFFFFFFFLL;
@@ -937,35 +937,35 @@ LABEL_11:
   return result;
 }
 
-- (_NSRange)pageRangeForAnnotation:(id)a3
+- (_NSRange)pageRangeForAnnotation:(id)annotation
 {
-  v4 = [a3 annotationUuid];
-  v5 = [NSPredicate predicateWithFormat:@"annotationUuid == %@", v4];
+  annotationUuid = [annotation annotationUuid];
+  v5 = [NSPredicate predicateWithFormat:@"annotationUuid == %@", annotationUuid];
 
-  v6 = [(BKPaginationController *)self fetchBookmarkPageCounts];
-  v7 = [v6 filteredArrayUsingPredicate:v5];
+  fetchBookmarkPageCounts = [(BKPaginationController *)self fetchBookmarkPageCounts];
+  v7 = [fetchBookmarkPageCounts filteredArrayUsingPredicate:v5];
   if ([v7 count])
   {
     v8 = [v7 objectAtIndex:0];
-    v9 = [v8 pageNumber];
-    v10 = [v9 unsignedIntegerValue];
+    pageNumber = [v8 pageNumber];
+    unsignedIntegerValue = [pageNumber unsignedIntegerValue];
     v11 = 1;
   }
 
   else
   {
-    v10 = 0x7FFFFFFFFFFFFFFFLL;
+    unsignedIntegerValue = 0x7FFFFFFFFFFFFFFFLL;
     v11 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v12 = v10;
+  v12 = unsignedIntegerValue;
   v13 = v11;
   result.length = v13;
   result.location = v12;
   return result;
 }
 
-- (id)pageTitleForPageNumber:(int64_t)a3
+- (id)pageTitleForPageNumber:(int64_t)number
 {
   if ([(NSArray *)self->_physicalPagesInfo count])
   {
@@ -974,31 +974,31 @@ LABEL_11:
     v10[1] = 3221225472;
     v10[2] = sub_81EE4;
     v10[3] = &unk_1E4A28;
-    v10[4] = a3;
+    v10[4] = number;
     v6 = [(NSArray *)physicalPagesInfo indexOfObjectWithOptions:3 passingTest:v10];
     if (v6 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v7 = 0;
+      name = 0;
     }
 
     else
     {
       v8 = [(NSArray *)self->_physicalPagesInfo objectAtIndex:v6];
-      v7 = [v8 name];
+      name = [v8 name];
     }
   }
 
   else
   {
-    v7 = [NSString stringWithFormat:@"%ld", a3];
+    name = [NSString stringWithFormat:@"%ld", number];
   }
 
-  return v7;
+  return name;
 }
 
-- (id)pageTitleForAnnotation:(id)a3
+- (id)pageTitleForAnnotation:(id)annotation
 {
-  v4 = [(BKPaginationController *)self pageRangeForAnnotation:a3];
+  v4 = [(BKPaginationController *)self pageRangeForAnnotation:annotation];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0;
@@ -1012,19 +1012,19 @@ LABEL_11:
   return v5;
 }
 
-- (id)pageTitleForChapter:(id)a3
+- (id)pageTitleForChapter:(id)chapter
 {
-  v4 = [a3 href];
-  v5 = [(BKPaginationController *)self chapterIndexForHref:v4];
+  href = [chapter href];
+  v5 = [(BKPaginationController *)self chapterIndexForHref:href];
 
   chapterInfo = self->_chapterInfo;
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = [(NSArray *)chapterInfo count];
-    v8 = [(BKPaginationController *)self book];
-    v9 = [v8 chapters];
-    v10 = [v9 allObjects];
-    v11 = [v10 count];
+    book = [(BKPaginationController *)self book];
+    chapters = [book chapters];
+    allObjects = [chapters allObjects];
+    v11 = [allObjects count];
 
     [(BKPaginationController *)self progress];
     v12 = 0;
@@ -1048,8 +1048,8 @@ LABEL_11:
   else
   {
     v17 = [(NSArray *)chapterInfo objectAtIndex:v5];
-    v18 = [v17 pageNumber];
-    v12 = -[BKPaginationController pageTitleForPageNumber:](self, "pageTitleForPageNumber:", [v18 integerValue]);
+    pageNumber = [v17 pageNumber];
+    v12 = -[BKPaginationController pageTitleForPageNumber:](self, "pageTitleForPageNumber:", [pageNumber integerValue]);
   }
 
   return v12;
@@ -1058,32 +1058,32 @@ LABEL_11:
 - (id)_lookupKey
 {
   operationFactory = self->_operationFactory;
-  v4 = [(BKPaginationController *)self style];
-  v5 = [(BKPaginationController *)self configuration];
-  v6 = [(BKPaginationFactory *)operationFactory lookupKeyForStyle:v4 geometry:v5];
+  style = [(BKPaginationController *)self style];
+  configuration = [(BKPaginationController *)self configuration];
+  v6 = [(BKPaginationFactory *)operationFactory lookupKeyForStyle:style geometry:configuration];
 
   return v6;
 }
 
 - (int64_t)incrementBatchProgress
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_paginationBatchProgress + 1;
-  v2->_paginationBatchProgress = v3;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_paginationBatchProgress + 1;
+  selfCopy->_paginationBatchProgress = v3;
+  objc_sync_exit(selfCopy);
 
-  [(BKPaginationController *)v2 performSelectorOnMainThread:"updateProgress" withObject:0 waitUntilDone:0];
+  [(BKPaginationController *)selfCopy performSelectorOnMainThread:"updateProgress" withObject:0 waitUntilDone:0];
   return v3;
 }
 
 - (float)progress
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  paginationBatchSize = v2->_paginationBatchSize;
-  paginationBatchProgress = v2->_paginationBatchProgress;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  paginationBatchSize = selfCopy->_paginationBatchSize;
+  paginationBatchProgress = selfCopy->_paginationBatchProgress;
+  objc_sync_exit(selfCopy);
 
   if (paginationBatchSize < 1)
   {
@@ -1101,24 +1101,24 @@ LABEL_11:
 
 - (BOOL)workIsStillPending
 {
-  v3 = [(BKPaginationController *)self prepareQueue];
-  if ([v3 operationCount])
+  prepareQueue = [(BKPaginationController *)self prepareQueue];
+  if ([prepareQueue operationCount])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(BKPaginationController *)self layoutQueue];
-    if ([v5 operationCount])
+    layoutQueue = [(BKPaginationController *)self layoutQueue];
+    if ([layoutQueue operationCount])
     {
       v4 = 1;
     }
 
     else
     {
-      v6 = [(BKPaginationController *)self resultsQueue];
-      v4 = [v6 operationCount] != 0;
+      resultsQueue = [(BKPaginationController *)self resultsQueue];
+      v4 = [resultsQueue operationCount] != 0;
     }
   }
 
@@ -1132,27 +1132,27 @@ LABEL_11:
   [(BKPaginationController *)self didChangeValueForKey:@"progress"];
 }
 
-- (void)updatePaginationCache:(BOOL)a3
+- (void)updatePaginationCache:(BOOL)cache
 {
-  v5 = [(BKPaginationController *)self book];
-  if (v5 && (v6 = v5, -[BKPaginationController book](self, "book"), v7 = objc_claimAutoreleasedReturnValue(), [v7 managedObjectContext], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v6, v8))
+  book = [(BKPaginationController *)self book];
+  if (book && (v6 = book, -[BKPaginationController book](self, "book"), v7 = objc_claimAutoreleasedReturnValue(), [v7 managedObjectContext], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v6, v8))
   {
-    v9 = [(BKPaginationController *)self _lookupKey];
-    v10 = [(BKPaginationController *)self paginationArrayWithLookupKey:v9];
+    _lookupKey = [(BKPaginationController *)self _lookupKey];
+    v10 = [(BKPaginationController *)self paginationArrayWithLookupKey:_lookupKey];
     if (![v10 count])
     {
       v11 = _AEPaginationLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         v25 = 138543362;
-        v26 = v9;
+        v26 = _lookupKey;
         _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "Did not find existing pagination results for LookupKey:%{public}@", &v25, 0xCu);
       }
     }
 
     if (!-[NSArray isEqualToArray:](self->_paginationInfo, "isEqualToArray:", v10) && [v10 count])
     {
-      objc_storeStrong(&self->_lookupKey, v9);
+      objc_storeStrong(&self->_lookupKey, _lookupKey);
       paginationInfo = self->_paginationInfo;
       self->_paginationInfo = 0;
 
@@ -1163,13 +1163,13 @@ LABEL_11:
       self->_physicalPagesInfo = 0;
 
       self->_pageTotal = 0x7FFFFFFFFFFFFFFFLL;
-      v15 = [(BKPaginationController *)self book];
-      v16 = [v15 linearDocumentCount];
+      book2 = [(BKPaginationController *)self book];
+      linearDocumentCount = [book2 linearDocumentCount];
 
-      if (v16 >= 1)
+      if (linearDocumentCount >= 1)
       {
-        self->_paginationBatchSize = v16;
-        if (a3)
+        self->_paginationBatchSize = linearDocumentCount;
+        if (cache)
         {
           v17 = 0;
         }
@@ -1183,13 +1183,13 @@ LABEL_11:
         [(BKPaginationController *)self updateProgress];
       }
 
-      v20 = [(BKPaginationController *)self chapterArrayWithLookupKey:v9];
+      v20 = [(BKPaginationController *)self chapterArrayWithLookupKey:_lookupKey];
       v21 = self->_chapterInfo;
       self->_chapterInfo = v20;
       v22 = v20;
 
       objc_storeStrong(&self->_paginationInfo, v10);
-      v23 = [(BKPaginationController *)self physicalPagesArrayWithLookupKey:v9];
+      v23 = [(BKPaginationController *)self physicalPagesArrayWithLookupKey:_lookupKey];
       v24 = self->_physicalPagesInfo;
       self->_physicalPagesInfo = v23;
 
@@ -1199,29 +1199,29 @@ LABEL_11:
 
   else
   {
-    v18 = [(BKPaginationController *)self bookObjectID];
+    bookObjectID = [(BKPaginationController *)self bookObjectID];
 
-    if (!v18)
+    if (!bookObjectID)
     {
       return;
     }
 
-    v9 = _AEPaginationLog();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    _lookupKey = _AEPaginationLog();
+    if (os_log_type_enabled(_lookupKey, OS_LOG_TYPE_ERROR))
     {
-      v19 = [(BKPaginationController *)self bookObjectID];
+      bookObjectID2 = [(BKPaginationController *)self bookObjectID];
       v25 = 138412290;
-      v26 = v19;
-      _os_log_impl(&dword_0, v9, OS_LOG_TYPE_ERROR, "We have no book. Was it deleted? %@", &v25, 0xCu);
+      v26 = bookObjectID2;
+      _os_log_impl(&dword_0, _lookupKey, OS_LOG_TYPE_ERROR, "We have no book. Was it deleted? %@", &v25, 0xCu);
     }
   }
 }
 
-- (void)managedObjectContextDidSave:(id)a3
+- (void)managedObjectContextDidSave:(id)save
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:NSDeletedObjectsKey];
+  saveCopy = save;
+  userInfo = [saveCopy userInfo];
+  v6 = [userInfo objectForKey:NSDeletedObjectsKey];
 
   if ([v6 count])
   {
@@ -1244,9 +1244,9 @@ LABEL_11:
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v29 + 1) + 8 * i) objectID];
-          v13 = [(BKPaginationController *)self bookObjectID];
-          v14 = [v12 isEqual:v13];
+          objectID = [*(*(&v29 + 1) + 8 * i) objectID];
+          bookObjectID = [(BKPaginationController *)self bookObjectID];
+          v14 = [objectID isEqual:bookObjectID];
 
           if (v14)
           {
@@ -1274,8 +1274,8 @@ LABEL_12:
     v15 = 0;
   }
 
-  v16 = [v4 userInfo];
-  v17 = [v16 objectForKey:NSInsertedObjectsKey];
+  userInfo2 = [saveCopy userInfo];
+  v17 = [userInfo2 objectForKey:NSInsertedObjectsKey];
 
   v18 = [v17 count];
   if ((v15 & 1) == 0 && v18)
@@ -1328,62 +1328,62 @@ LABEL_26:
   }
 }
 
-- (id)chapterArrayWithLookupKey:(id)a3
+- (id)chapterArrayWithLookupKey:(id)key
 {
-  v4 = a3;
-  v5 = [(BKPaginationController *)self book];
-  v6 = [v5 managedObjectContext];
+  keyCopy = key;
+  book = [(BKPaginationController *)self book];
+  managedObjectContext = [book managedObjectContext];
 
-  v7 = [NSPredicate predicateWithFormat:@"lookupKey ==[n] %@", v4];
+  keyCopy = [NSPredicate predicateWithFormat:@"lookupKey ==[n] %@", keyCopy];
 
-  v8 = [v6 entity:@"BKChapterPageCount" withPredicate:v7 sortBy:@"pageNumber" ascending:1 fetchLimit:0];
+  v8 = [managedObjectContext entity:@"BKChapterPageCount" withPredicate:keyCopy sortBy:@"pageNumber" ascending:1 fetchLimit:0];
 
   return v8;
 }
 
-- (id)paginationArrayWithLookupKey:(id)a3
+- (id)paginationArrayWithLookupKey:(id)key
 {
-  v4 = a3;
-  v5 = [(BKPaginationController *)self book];
-  v6 = [v5 managedObjectContext];
+  keyCopy = key;
+  book = [(BKPaginationController *)self book];
+  managedObjectContext = [book managedObjectContext];
 
-  v7 = [NSPredicate predicateWithFormat:@"lookupKey ==[n] %@", v4];
+  keyCopy = [NSPredicate predicateWithFormat:@"lookupKey ==[n] %@", keyCopy];
 
-  v8 = [v6 entity:@"BKDocumentPageCount" withPredicate:v7 sortBy:@"documentOrdinal" ascending:1 fetchLimit:0];
+  v8 = [managedObjectContext entity:@"BKDocumentPageCount" withPredicate:keyCopy sortBy:@"documentOrdinal" ascending:1 fetchLimit:0];
 
   return v8;
 }
 
-- (id)physicalPagesArrayWithLookupKey:(id)a3
+- (id)physicalPagesArrayWithLookupKey:(id)key
 {
-  v4 = a3;
-  v5 = [(BKPaginationController *)self book];
-  v6 = [v5 managedObjectContext];
+  keyCopy = key;
+  book = [(BKPaginationController *)self book];
+  managedObjectContext = [book managedObjectContext];
 
-  v7 = [NSPredicate predicateWithFormat:@"lookupKey ==[n] %@", v4];
+  keyCopy = [NSPredicate predicateWithFormat:@"lookupKey ==[n] %@", keyCopy];
 
   v8 = [[NSSortDescriptor alloc] initWithKey:@"pageNumber" ascending:1];
   v9 = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:1];
   v10 = [[NSArray alloc] initWithObjects:{v8, v9, 0}];
-  v11 = [v6 entity:@"BKPhysicalPageCount" withPredicate:v7 sortDescriptors:v10 fetchLimit:0 prefetchRelationships:0];
+  v11 = [managedObjectContext entity:@"BKPhysicalPageCount" withPredicate:keyCopy sortDescriptors:v10 fetchLimit:0 prefetchRelationships:0];
 
   return v11;
 }
 
 - (id)fetchBookmarkPageCounts
 {
-  v3 = [(BKPaginationController *)self bookmarkPageCounts];
+  bookmarkPageCounts = [(BKPaginationController *)self bookmarkPageCounts];
 
-  if (!v3)
+  if (!bookmarkPageCounts)
   {
-    v4 = [(BKPaginationController *)self _lookupKey];
-    v5 = [(BKPaginationController *)self book];
-    v6 = [v5 managedObjectContext];
+    _lookupKey = [(BKPaginationController *)self _lookupKey];
+    book = [(BKPaginationController *)self book];
+    managedObjectContext = [book managedObjectContext];
 
-    v7 = [NSPredicate predicateWithFormat:@"lookupKey ==[n] %@", v4];
+    v7 = [NSPredicate predicateWithFormat:@"lookupKey ==[n] %@", _lookupKey];
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    v10 = [v6 entity:v9 withPredicate:v7 sortBy:@"pageNumber" ascending:1 fetchLimit:0];
+    v10 = [managedObjectContext entity:v9 withPredicate:v7 sortBy:@"pageNumber" ascending:1 fetchLimit:0];
     [(BKPaginationController *)self setBookmarkPageCounts:v10];
   }
 
@@ -1429,8 +1429,8 @@ LABEL_26:
   {
     v3 = [NSString alloc];
     v4 = +[AEAssetEngine appInfoMgr];
-    v5 = [v4 osBuildVersion];
-    v6 = [v3 initWithFormat:@"%@-%d", v5, 14];
+    osBuildVersion = [v4 osBuildVersion];
+    v6 = [v3 initWithFormat:@"%@-%d", osBuildVersion, 14];
     v7 = qword_22D050;
     qword_22D050 = v6;
 

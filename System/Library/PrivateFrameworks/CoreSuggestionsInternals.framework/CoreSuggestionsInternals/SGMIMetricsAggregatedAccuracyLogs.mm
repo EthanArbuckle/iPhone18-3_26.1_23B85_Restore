@@ -1,23 +1,23 @@
 @interface SGMIMetricsAggregatedAccuracyLogs
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SGMIMetricsAggregatedAccuracyLogs
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 60))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 60))
   {
-    self->_hoursSinceReference = *(v4 + 14);
+    self->_hoursSinceReference = *(fromCopy + 14);
     *&self->_has |= 1u;
   }
 
@@ -180,24 +180,24 @@ LABEL_33:
   return v6 ^ v8 ^ [(SGMIMetricsAggregatedAccuracyLog *)self->_backgroundAggregatedAccuracyLogSinceModelInitialization hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
-  v5 = *(v4 + 60);
+  v5 = *(equalCopy + 60);
   if (*&self->_has)
   {
-    if ((*(v4 + 60) & 1) == 0 || self->_hoursSinceReference != *(v4 + 14))
+    if ((*(equalCopy + 60) & 1) == 0 || self->_hoursSinceReference != *(equalCopy + 14))
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 60))
+  else if (*(equalCopy + 60))
   {
 LABEL_19:
     v12 = 0;
@@ -205,13 +205,13 @@ LABEL_19:
   }
 
   activeTrialMetadata = self->_activeTrialMetadata;
-  if (activeTrialMetadata | *(v4 + 3) && ![(SGMIMetricsTrialMetadata *)activeTrialMetadata isEqual:?])
+  if (activeTrialMetadata | *(equalCopy + 3) && ![(SGMIMetricsTrialMetadata *)activeTrialMetadata isEqual:?])
   {
     goto LABEL_19;
   }
 
   activeAggregatedAccuracyLogForThePastFourWeeks = self->_activeAggregatedAccuracyLogForThePastFourWeeks;
-  if (activeAggregatedAccuracyLogForThePastFourWeeks | *(v4 + 1))
+  if (activeAggregatedAccuracyLogForThePastFourWeeks | *(equalCopy + 1))
   {
     if (![(SGMIMetricsAggregatedAccuracyLog *)activeAggregatedAccuracyLogForThePastFourWeeks isEqual:?])
     {
@@ -220,7 +220,7 @@ LABEL_19:
   }
 
   activeAggregatedAccuracyLogSinceModelInitialization = self->_activeAggregatedAccuracyLogSinceModelInitialization;
-  if (activeAggregatedAccuracyLogSinceModelInitialization | *(v4 + 2))
+  if (activeAggregatedAccuracyLogSinceModelInitialization | *(equalCopy + 2))
   {
     if (![(SGMIMetricsAggregatedAccuracyLog *)activeAggregatedAccuracyLogSinceModelInitialization isEqual:?])
     {
@@ -229,7 +229,7 @@ LABEL_19:
   }
 
   backgroundTrialMetadata = self->_backgroundTrialMetadata;
-  if (backgroundTrialMetadata | *(v4 + 6))
+  if (backgroundTrialMetadata | *(equalCopy + 6))
   {
     if (![(SGMIMetricsTrialMetadata *)backgroundTrialMetadata isEqual:?])
     {
@@ -238,7 +238,7 @@ LABEL_19:
   }
 
   backgroundAggregatedAccuracyLogForThePastFourWeeks = self->_backgroundAggregatedAccuracyLogForThePastFourWeeks;
-  if (backgroundAggregatedAccuracyLogForThePastFourWeeks | *(v4 + 4))
+  if (backgroundAggregatedAccuracyLogForThePastFourWeeks | *(equalCopy + 4))
   {
     if (![(SGMIMetricsAggregatedAccuracyLog *)backgroundAggregatedAccuracyLogForThePastFourWeeks isEqual:?])
     {
@@ -247,7 +247,7 @@ LABEL_19:
   }
 
   backgroundAggregatedAccuracyLogSinceModelInitialization = self->_backgroundAggregatedAccuracyLogSinceModelInitialization;
-  if (backgroundAggregatedAccuracyLogSinceModelInitialization | *(v4 + 5))
+  if (backgroundAggregatedAccuracyLogSinceModelInitialization | *(equalCopy + 5))
   {
     v12 = [(SGMIMetricsAggregatedAccuracyLog *)backgroundAggregatedAccuracyLogSinceModelInitialization isEqual:?];
   }
@@ -262,9 +262,9 @@ LABEL_20:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -272,180 +272,180 @@ LABEL_20:
     *(v5 + 60) |= 1u;
   }
 
-  v7 = [(SGMIMetricsTrialMetadata *)self->_activeTrialMetadata copyWithZone:a3];
+  v7 = [(SGMIMetricsTrialMetadata *)self->_activeTrialMetadata copyWithZone:zone];
   v8 = v6[3];
   v6[3] = v7;
 
-  v9 = [(SGMIMetricsAggregatedAccuracyLog *)self->_activeAggregatedAccuracyLogForThePastFourWeeks copyWithZone:a3];
+  v9 = [(SGMIMetricsAggregatedAccuracyLog *)self->_activeAggregatedAccuracyLogForThePastFourWeeks copyWithZone:zone];
   v10 = v6[1];
   v6[1] = v9;
 
-  v11 = [(SGMIMetricsAggregatedAccuracyLog *)self->_activeAggregatedAccuracyLogSinceModelInitialization copyWithZone:a3];
+  v11 = [(SGMIMetricsAggregatedAccuracyLog *)self->_activeAggregatedAccuracyLogSinceModelInitialization copyWithZone:zone];
   v12 = v6[2];
   v6[2] = v11;
 
-  v13 = [(SGMIMetricsTrialMetadata *)self->_backgroundTrialMetadata copyWithZone:a3];
+  v13 = [(SGMIMetricsTrialMetadata *)self->_backgroundTrialMetadata copyWithZone:zone];
   v14 = v6[6];
   v6[6] = v13;
 
-  v15 = [(SGMIMetricsAggregatedAccuracyLog *)self->_backgroundAggregatedAccuracyLogForThePastFourWeeks copyWithZone:a3];
+  v15 = [(SGMIMetricsAggregatedAccuracyLog *)self->_backgroundAggregatedAccuracyLogForThePastFourWeeks copyWithZone:zone];
   v16 = v6[4];
   v6[4] = v15;
 
-  v17 = [(SGMIMetricsAggregatedAccuracyLog *)self->_backgroundAggregatedAccuracyLogSinceModelInitialization copyWithZone:a3];
+  v17 = [(SGMIMetricsAggregatedAccuracyLog *)self->_backgroundAggregatedAccuracyLogSinceModelInitialization copyWithZone:zone];
   v18 = v6[5];
   v6[5] = v17;
 
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[14] = self->_hoursSinceReference;
-    *(v4 + 60) |= 1u;
+    toCopy[14] = self->_hoursSinceReference;
+    *(toCopy + 60) |= 1u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_activeTrialMetadata)
   {
-    [v4 setActiveTrialMetadata:?];
-    v4 = v5;
+    [toCopy setActiveTrialMetadata:?];
+    toCopy = v5;
   }
 
   if (self->_activeAggregatedAccuracyLogForThePastFourWeeks)
   {
     [v5 setActiveAggregatedAccuracyLogForThePastFourWeeks:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_activeAggregatedAccuracyLogSinceModelInitialization)
   {
     [v5 setActiveAggregatedAccuracyLogSinceModelInitialization:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_backgroundTrialMetadata)
   {
     [v5 setBackgroundTrialMetadata:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_backgroundAggregatedAccuracyLogForThePastFourWeeks)
   {
     [v5 setBackgroundAggregatedAccuracyLogForThePastFourWeeks:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_backgroundAggregatedAccuracyLogSinceModelInitialization)
   {
     [v5 setBackgroundAggregatedAccuracyLogSinceModelInitialization:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (*&self->_has)
   {
     hoursSinceReference = self->_hoursSinceReference;
     PBDataWriterWriteUint32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_activeTrialMetadata)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_activeAggregatedAccuracyLogForThePastFourWeeks)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_activeAggregatedAccuracyLogSinceModelInitialization)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_backgroundTrialMetadata)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_backgroundAggregatedAccuracyLogForThePastFourWeeks)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_backgroundAggregatedAccuracyLogSinceModelInitialization)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_hoursSinceReference];
-    [v3 setObject:v4 forKey:@"hoursSinceReference"];
+    [dictionary setObject:v4 forKey:@"hoursSinceReference"];
   }
 
   activeTrialMetadata = self->_activeTrialMetadata;
   if (activeTrialMetadata)
   {
-    v6 = [(SGMIMetricsTrialMetadata *)activeTrialMetadata dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"activeTrialMetadata"];
+    dictionaryRepresentation = [(SGMIMetricsTrialMetadata *)activeTrialMetadata dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"activeTrialMetadata"];
   }
 
   activeAggregatedAccuracyLogForThePastFourWeeks = self->_activeAggregatedAccuracyLogForThePastFourWeeks;
   if (activeAggregatedAccuracyLogForThePastFourWeeks)
   {
-    v8 = [(SGMIMetricsAggregatedAccuracyLog *)activeAggregatedAccuracyLogForThePastFourWeeks dictionaryRepresentation];
-    [v3 setObject:v8 forKey:@"activeAggregatedAccuracyLogForThePastFourWeeks"];
+    dictionaryRepresentation2 = [(SGMIMetricsAggregatedAccuracyLog *)activeAggregatedAccuracyLogForThePastFourWeeks dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"activeAggregatedAccuracyLogForThePastFourWeeks"];
   }
 
   activeAggregatedAccuracyLogSinceModelInitialization = self->_activeAggregatedAccuracyLogSinceModelInitialization;
   if (activeAggregatedAccuracyLogSinceModelInitialization)
   {
-    v10 = [(SGMIMetricsAggregatedAccuracyLog *)activeAggregatedAccuracyLogSinceModelInitialization dictionaryRepresentation];
-    [v3 setObject:v10 forKey:@"activeAggregatedAccuracyLogSinceModelInitialization"];
+    dictionaryRepresentation3 = [(SGMIMetricsAggregatedAccuracyLog *)activeAggregatedAccuracyLogSinceModelInitialization dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"activeAggregatedAccuracyLogSinceModelInitialization"];
   }
 
   backgroundTrialMetadata = self->_backgroundTrialMetadata;
   if (backgroundTrialMetadata)
   {
-    v12 = [(SGMIMetricsTrialMetadata *)backgroundTrialMetadata dictionaryRepresentation];
-    [v3 setObject:v12 forKey:@"backgroundTrialMetadata"];
+    dictionaryRepresentation4 = [(SGMIMetricsTrialMetadata *)backgroundTrialMetadata dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"backgroundTrialMetadata"];
   }
 
   backgroundAggregatedAccuracyLogForThePastFourWeeks = self->_backgroundAggregatedAccuracyLogForThePastFourWeeks;
   if (backgroundAggregatedAccuracyLogForThePastFourWeeks)
   {
-    v14 = [(SGMIMetricsAggregatedAccuracyLog *)backgroundAggregatedAccuracyLogForThePastFourWeeks dictionaryRepresentation];
-    [v3 setObject:v14 forKey:@"backgroundAggregatedAccuracyLogForThePastFourWeeks"];
+    dictionaryRepresentation5 = [(SGMIMetricsAggregatedAccuracyLog *)backgroundAggregatedAccuracyLogForThePastFourWeeks dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation5 forKey:@"backgroundAggregatedAccuracyLogForThePastFourWeeks"];
   }
 
   backgroundAggregatedAccuracyLogSinceModelInitialization = self->_backgroundAggregatedAccuracyLogSinceModelInitialization;
   if (backgroundAggregatedAccuracyLogSinceModelInitialization)
   {
-    v16 = [(SGMIMetricsAggregatedAccuracyLog *)backgroundAggregatedAccuracyLogSinceModelInitialization dictionaryRepresentation];
-    [v3 setObject:v16 forKey:@"backgroundAggregatedAccuracyLogSinceModelInitialization"];
+    dictionaryRepresentation6 = [(SGMIMetricsAggregatedAccuracyLog *)backgroundAggregatedAccuracyLogSinceModelInitialization dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation6 forKey:@"backgroundAggregatedAccuracyLogSinceModelInitialization"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -454,8 +454,8 @@ LABEL_20:
   v8.receiver = self;
   v8.super_class = SGMIMetricsAggregatedAccuracyLogs;
   v4 = [(SGMIMetricsAggregatedAccuracyLogs *)&v8 description];
-  v5 = [(SGMIMetricsAggregatedAccuracyLogs *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SGMIMetricsAggregatedAccuracyLogs *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

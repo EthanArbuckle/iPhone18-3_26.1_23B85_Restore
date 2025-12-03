@@ -1,7 +1,7 @@
 @interface TPVisibleColumnProxy
 - (BOOL)lastLineIsEmptyAndHasListLabel;
 - (BOOL)terminatedByBreak;
-- (TPVisibleColumnProxy)initWithPageIndex:(unint64_t)a3 pageController:(id)a4 flowInfo:(id)a5;
+- (TPVisibleColumnProxy)initWithPageIndex:(unint64_t)index pageController:(id)controller flowInfo:(id)info;
 - (_NSRange)anchoredRange;
 - (_NSRange)range;
 - (id)p_targetFirstHint;
@@ -9,24 +9,24 @@
 - (unint64_t)nextWidowPullsDownFromCharIndex;
 - (unint64_t)startAnchoredCharIndex;
 - (unint64_t)startCharIndex;
-- (void)trimToCharIndex:(unint64_t)a3 inTarget:(id)a4 removeFootnoteReferenceCount:(unint64_t)a5 removeAutoNumberFootnoteCount:(unint64_t)a6;
+- (void)trimToCharIndex:(unint64_t)index inTarget:(id)target removeFootnoteReferenceCount:(unint64_t)count removeAutoNumberFootnoteCount:(unint64_t)footnoteCount;
 @end
 
 @implementation TPVisibleColumnProxy
 
-- (TPVisibleColumnProxy)initWithPageIndex:(unint64_t)a3 pageController:(id)a4 flowInfo:(id)a5
+- (TPVisibleColumnProxy)initWithPageIndex:(unint64_t)index pageController:(id)controller flowInfo:(id)info
 {
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  infoCopy = info;
   v14.receiver = self;
   v14.super_class = TPVisibleColumnProxy;
   v11 = [(TPVisibleColumnProxy *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_pageIndex = a3;
-    objc_storeStrong(&v11->_pageController, a4);
-    objc_storeStrong(&v12->_flowInfo, a5);
+    v11->_pageIndex = index;
+    objc_storeStrong(&v11->_pageController, controller);
+    objc_storeStrong(&v12->_flowInfo, info);
   }
 
   return v12;
@@ -110,14 +110,14 @@
   return v12;
 }
 
-- (void)trimToCharIndex:(unint64_t)a3 inTarget:(id)a4 removeFootnoteReferenceCount:(unint64_t)a5 removeAutoNumberFootnoteCount:(unint64_t)a6
+- (void)trimToCharIndex:(unint64_t)index inTarget:(id)target removeFootnoteReferenceCount:(unint64_t)count removeAutoNumberFootnoteCount:(unint64_t)footnoteCount
 {
   flowInfo = self->_flowInfo;
   pageController = self->_pageController;
   if (flowInfo)
   {
-    v19 = objc_msgSend_i_flowLayoutController(pageController, a2, v6, v7, v8, v9, a3, a4, a5, a6);
-    objc_msgSend_i_trimFlow_pageIndex_toCharIndex_(v19, v14, v15, v16, v17, v18, self->_flowInfo, self->_pageIndex, a3);
+    v19 = objc_msgSend_i_flowLayoutController(pageController, a2, v6, v7, v8, v9, index, target, count, footnoteCount);
+    objc_msgSend_i_trimFlow_pageIndex_toCharIndex_(v19, v14, v15, v16, v17, v18, self->_flowInfo, self->_pageIndex, index);
   }
 
   else

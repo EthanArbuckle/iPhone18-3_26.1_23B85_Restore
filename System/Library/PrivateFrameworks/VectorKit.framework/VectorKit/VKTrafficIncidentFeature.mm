@@ -1,17 +1,17 @@
 @interface VKTrafficIncidentFeature
-+ (id)stringForIncidentSignificance:(int64_t)a3;
-+ (id)stringForIncidentType:(int64_t)a3;
-+ (id)stringForRouteRelevance:(int64_t)a3;
-+ (int64_t)incidentTypeForGeoRouteIncident:(id)a3;
-- (VKTrafficIncidentFeature)initWithIncidentData:(const void *)a3;
-- (VKTrafficIncidentFeature)initWithRouteIncident:(id)a3 routeOffsetInMeters:(unsigned int)a4 routeRelevance:(int64_t)a5 onRoute:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)populateDebugNode:(void *)a3;
++ (id)stringForIncidentSignificance:(int64_t)significance;
++ (id)stringForIncidentType:(int64_t)type;
++ (id)stringForRouteRelevance:(int64_t)relevance;
++ (int64_t)incidentTypeForGeoRouteIncident:(id)incident;
+- (VKTrafficIncidentFeature)initWithIncidentData:(const void *)data;
+- (VKTrafficIncidentFeature)initWithRouteIncident:(id)incident routeOffsetInMeters:(unsigned int)meters routeRelevance:(int64_t)relevance onRoute:(id)route;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)populateDebugNode:(void *)node;
 @end
 
 @implementation VKTrafficIncidentFeature
 
-- (void)populateDebugNode:(void *)a3
+- (void)populateDebugNode:(void *)node
 {
   v19.receiver = self;
   v19.super_class = VKTrafficIncidentFeature;
@@ -19,7 +19,7 @@
   std::string::basic_string[abi:nn200100]<0>(&v17, "TrafficIncidentType");
   v5 = [VKTrafficIncidentFeature stringForIncidentType:self->_type];
   gdc::DebugTreeValue::DebugTreeValue(v14, [v5 UTF8String]);
-  gdc::DebugTreeNode::addProperty(a3, &v17, v14);
+  gdc::DebugTreeNode::addProperty(node, &v17, v14);
   if (v16 < 0)
   {
     operator delete(__p);
@@ -33,7 +33,7 @@
   std::string::basic_string[abi:nn200100]<0>(&v17, "RouteRelevance");
   v6 = [VKTrafficIncidentFeature stringForRouteRelevance:self->_routeRelevance];
   gdc::DebugTreeValue::DebugTreeValue(v11, [v6 UTF8String]);
-  gdc::DebugTreeNode::addProperty(a3, &v17, v11);
+  gdc::DebugTreeNode::addProperty(node, &v17, v11);
   if (v13 < 0)
   {
     operator delete(v12);
@@ -47,7 +47,7 @@
   std::string::basic_string[abi:nn200100]<0>(&v17, "Significance");
   v7 = [VKTrafficIncidentFeature stringForIncidentSignificance:self->_significance];
   gdc::DebugTreeValue::DebugTreeValue(v8, [v7 UTF8String]);
-  gdc::DebugTreeNode::addProperty(a3, &v17, v8);
+  gdc::DebugTreeNode::addProperty(node, &v17, v8);
   if (v10 < 0)
   {
     operator delete(v9);
@@ -59,11 +59,11 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = VKTrafficIncidentFeature;
-  v4 = [(VKTrafficFeature *)&v7 copyWithZone:a3];
+  v4 = [(VKTrafficFeature *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -89,21 +89,21 @@
   return v5;
 }
 
-- (VKTrafficIncidentFeature)initWithRouteIncident:(id)a3 routeOffsetInMeters:(unsigned int)a4 routeRelevance:(int64_t)a5 onRoute:(id)a6
+- (VKTrafficIncidentFeature)initWithRouteIncident:(id)incident routeOffsetInMeters:(unsigned int)meters routeRelevance:(int64_t)relevance onRoute:(id)route
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = v11;
-  if (!v10)
+  incidentCopy = incident;
+  routeCopy = route;
+  v12 = routeCopy;
+  if (!incidentCopy)
   {
     goto LABEL_39;
   }
 
   v13 = *MEMORY[0x1E69A1918];
   v60 = *MEMORY[0x1E69A1918];
-  if (v11)
+  if (routeCopy)
   {
-    v13 = [v11 coordinateAtOffset:a4];
+    v13 = [routeCopy coordinateAtOffset:meters];
     v60 = v13;
     [v12 pointAtRouteCoordinate:v13];
     v15 = v14;
@@ -114,48 +114,48 @@
     v15 = 1.79769313e308;
   }
 
-  v16 = [v10 position];
-  [v16 lat];
+  position = [incidentCopy position];
+  [position lat];
   v18 = v17;
-  v19 = [v10 position];
-  [v19 lng];
+  position2 = [incidentCopy position];
+  [position2 lng];
   v21 = v20;
 
   v22 = v12 ? VKTrafficFeatureDirection(&v60, v12) : -1.0;
-  v23 = [v10 incidentId];
+  incidentId = [incidentCopy incidentId];
   v59.receiver = self;
   v59.super_class = VKTrafficIncidentFeature;
-  self = [(VKTrafficFeature *)&v59 initWithFeatureType:0 uniqueIdentifier:v23 position:v13 direction:v18 routeOffset:v21 routeOffsetInMeters:v15, v22, a4];
+  self = [(VKTrafficFeature *)&v59 initWithFeatureType:0 uniqueIdentifier:incidentId position:v13 direction:v18 routeOffset:v21 routeOffsetInMeters:v15, v22, meters];
 
   if (!self)
   {
     goto LABEL_39;
   }
 
-  v24 = [v10 incidentId];
+  incidentId2 = [incidentCopy incidentId];
   uniqueString = self->_uniqueString;
-  self->_uniqueString = v24;
+  self->_uniqueString = incidentId2;
 
-  v26 = [v10 type];
-  if (v26 > 0xE)
+  type = [incidentCopy type];
+  if (type > 0xE)
   {
     v27 = 0;
   }
 
   else
   {
-    v27 = qword_1B33B42B0[v26];
+    v27 = qword_1B33B42B0[type];
   }
 
   self->_type = v27;
-  if ([v10 type] == 100)
+  if ([incidentCopy type] == 100)
   {
     v28 = 1;
   }
 
-  else if ([v10 hasShouldDisplayOnMap])
+  else if ([incidentCopy hasShouldDisplayOnMap])
   {
-    v28 = [v10 shouldDisplayOnMap] ^ 1;
+    v28 = [incidentCopy shouldDisplayOnMap] ^ 1;
   }
 
   else
@@ -164,9 +164,9 @@
   }
 
   self->_isNotForDisplay = v28;
-  self->_routeRelevance = a5;
+  self->_routeRelevance = relevance;
   self->super._maxZoom = 99.0;
-  v29 = [v10 significance] - 1;
+  v29 = [incidentCopy significance] - 1;
   if (v29 >= 5)
   {
     v30 = 1;
@@ -178,7 +178,7 @@
   }
 
   self->_significance = v30;
-  v31 = [v10 laneClosureType] - 1;
+  v31 = [incidentCopy laneClosureType] - 1;
   if (v31 < 6)
   {
     v32 = v31 + 1;
@@ -193,7 +193,7 @@
   std::__shared_mutex_base::lock_shared(v33);
   if (_titleBlock)
   {
-    v34 = (*(_titleBlock + 16))(_titleBlock, self->_type, v32, [v10 laneClosureCount]);
+    v34 = (*(_titleBlock + 16))(_titleBlock, self->_type, v32, [incidentCopy laneClosureCount]);
     title = self->_title;
     self->_title = v34;
   }
@@ -209,75 +209,75 @@
   std::__shared_mutex_base::unlock_shared(v33);
   if (self->_title)
   {
-    v39 = [v10 street];
+    street = [incidentCopy street];
     street = self->_street;
-    self->_street = v39;
+    self->_street = street;
 
-    v41 = [v10 crossStreet];
+    crossStreet = [incidentCopy crossStreet];
     crossStreet = self->_crossStreet;
-    self->_crossStreet = v41;
+    self->_crossStreet = crossStreet;
 
-    v43 = [v10 info];
+    info = [incidentCopy info];
     info = self->_info;
-    self->_info = v43;
+    self->_info = info;
 
-    if ([v10 startTime] >= 1)
+    if ([incidentCopy startTime] >= 1)
     {
-      v45 = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSince1970:{objc_msgSend(v10, "startTime") * 0.001}];
+      v45 = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSince1970:{objc_msgSend(incidentCopy, "startTime") * 0.001}];
       startDate = self->_startDate;
       self->_startDate = v45;
     }
 
-    if ([v10 endTime] >= 1)
+    if ([incidentCopy endTime] >= 1)
     {
-      v47 = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSince1970:{objc_msgSend(v10, "endTime") * 0.001}];
+      v47 = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSince1970:{objc_msgSend(incidentCopy, "endTime") * 0.001}];
       endDate = self->_endDate;
       self->_endDate = v47;
     }
 
-    if ([v10 updateTime] >= 1)
+    if ([incidentCopy updateTime] >= 1)
     {
-      v49 = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSince1970:{objc_msgSend(v10, "updateTime") * 0.001}];
+      v49 = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSince1970:{objc_msgSend(incidentCopy, "updateTime") * 0.001}];
       lastUpdatedDate = self->_lastUpdatedDate;
       self->_lastUpdatedDate = v49;
     }
 
-    v51 = [v10 restrictionInfo];
+    restrictionInfo = [incidentCopy restrictionInfo];
 
-    if (v51)
+    if (restrictionInfo)
     {
-      v52 = [v10 restrictionInfo];
+      restrictionInfo2 = [incidentCopy restrictionInfo];
       restrictionInfo = self->_restrictionInfo;
-      self->_restrictionInfo = v52;
+      self->_restrictionInfo = restrictionInfo2;
     }
 
-    v54 = [v10 artwork];
+    artwork = [incidentCopy artwork];
 
-    if (v54)
+    if (artwork)
     {
-      v55 = [v10 artwork];
+      artwork2 = [incidentCopy artwork];
       artwork = self->_artwork;
-      self->_artwork = v55;
+      self->_artwork = artwork2;
     }
 
     self->_dataSource = 257;
-    v57 = self;
+    selfCopy = self;
   }
 
   else
   {
 LABEL_39:
-    v57 = 0;
+    selfCopy = 0;
   }
 
-  return v57;
+  return selfCopy;
 }
 
-- (VKTrafficIncidentFeature)initWithIncidentData:(const void *)a3
+- (VKTrafficIncidentFeature)initWithIncidentData:(const void *)data
 {
-  if (zilch::GeoCoordinates::has_elevation(a3))
+  if (zilch::GeoCoordinates::has_elevation(data))
   {
-    v5 = zilch::GeoCoordinates::z(a3) * 0.01;
+    v5 = zilch::GeoCoordinates::z(data) * 0.01;
   }
 
   else
@@ -285,20 +285,20 @@ LABEL_39:
     v5 = 1.79769313e308;
   }
 
-  v65 = zilch::GeoCoordinates::y(a3);
+  v65 = zilch::GeoCoordinates::y(data);
   zilch::Latitude::toDegrees(&v65);
   v7 = v6;
-  v64 = zilch::GeoCoordinates::x(a3);
+  v64 = zilch::GeoCoordinates::x(data);
   zilch::Longitude::toDegrees(&v64);
-  isa = (a3 + 16);
-  if (*(a3 + 39) >= 0)
+  isa = (data + 16);
+  if (*(data + 39) >= 0)
   {
-    v10 = a3 + 16;
+    v10 = data + 16;
   }
 
   else
   {
-    v10 = *(a3 + 2);
+    v10 = *(data + 2);
   }
 
   v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{v10, v8}];
@@ -322,7 +322,7 @@ LABEL_39:
   v23 = vmlaq_f64(_Q1, xmmword_1B33B0700, v16);
   *&v13->super._worldPoint.x = v23;
   v13->super._worldPoint.z = v5;
-  v24 = *(a3 + 16);
+  v24 = *(data + 16);
   if (v24 < 8)
   {
     v25 = v24 + 1;
@@ -334,14 +334,14 @@ LABEL_39:
   }
 
   v13->_type = v25;
-  LOBYTE(v17) = *(a3 + 164);
+  LOBYTE(v17) = *(data + 164);
   v26 = v17;
-  LOBYTE(v23.f64[0]) = *(a3 + 165);
+  LOBYTE(v23.f64[0]) = *(data + 165);
   v13->super._minZoom = v26;
   v13->super._maxZoom = LODWORD(v23.f64[0]);
-  LOBYTE(v26) = *(a3 + 166);
+  LOBYTE(v26) = *(data + 166);
   v13->_elevationMinZoom = LODWORD(v26);
-  v27 = (*(a3 + 40) - 1);
+  v27 = (*(data + 40) - 1);
   if (v27 >= 5)
   {
     v28 = 1;
@@ -378,10 +378,10 @@ LABEL_22:
     goto LABEL_63;
   }
 
-  v35 = *(a3 + 39);
+  v35 = *(data + 39);
   if (v35 < 0)
   {
-    v35 = *(a3 + 3);
+    v35 = *(data + 3);
     if (!v35)
     {
       goto LABEL_29;
@@ -396,12 +396,12 @@ LABEL_22:
     goto LABEL_25;
   }
 
-  if (*(a3 + 39))
+  if (*(data + 39))
   {
 LABEL_25:
     isa = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:isa length:v35 encoding:4];
-    v37 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-    v38 = [(NSString *)isa stringByTrimmingCharactersInSet:v37];
+    whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+    v38 = [(NSString *)isa stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
     if (![v38 length])
     {
@@ -415,11 +415,11 @@ LABEL_28:
   }
 
 LABEL_29:
-  v40 = (a3 + 72);
-  v41 = *(a3 + 95);
+  v40 = (data + 72);
+  v41 = *(data + 95);
   if (v41 < 0)
   {
-    v41 = *(a3 + 10);
+    v41 = *(data + 10);
     if (!v41)
     {
       goto LABEL_38;
@@ -434,12 +434,12 @@ LABEL_29:
     goto LABEL_34;
   }
 
-  if (*(a3 + 95))
+  if (*(data + 95))
   {
 LABEL_34:
     v40 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:v40 length:v41 encoding:4];
-    v42 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-    v43 = [(NSString *)v40 stringByTrimmingCharactersInSet:v42];
+    whitespaceCharacterSet2 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+    v43 = [(NSString *)v40 stringByTrimmingCharactersInSet:whitespaceCharacterSet2];
 
     if (![v43 length])
     {
@@ -453,11 +453,11 @@ LABEL_37:
   }
 
 LABEL_38:
-  v45 = (a3 + 96);
-  v46 = *(a3 + 119);
+  v45 = (data + 96);
+  v46 = *(data + 119);
   if (v46 < 0)
   {
-    v46 = *(a3 + 13);
+    v46 = *(data + 13);
     if (!v46)
     {
       goto LABEL_47;
@@ -472,12 +472,12 @@ LABEL_38:
     goto LABEL_43;
   }
 
-  if (*(a3 + 119))
+  if (*(data + 119))
   {
 LABEL_43:
     v45 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:v45 length:v46 encoding:4];
-    v47 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-    v48 = [(NSString *)v45 stringByTrimmingCharactersInSet:v47];
+    whitespaceCharacterSet3 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+    v48 = [(NSString *)v45 stringByTrimmingCharactersInSet:whitespaceCharacterSet3];
 
     if (![v48 length])
     {
@@ -491,11 +491,11 @@ LABEL_46:
   }
 
 LABEL_47:
-  v50 = (a3 + 40);
-  v51 = *(a3 + 63);
+  v50 = (data + 40);
+  v51 = *(data + 63);
   if ((v51 & 0x8000000000000000) == 0)
   {
-    if (!*(a3 + 63))
+    if (!*(data + 63))
     {
       goto LABEL_56;
     }
@@ -503,7 +503,7 @@ LABEL_47:
     goto LABEL_52;
   }
 
-  v51 = *(a3 + 6);
+  v51 = *(data + 6);
   if (v51)
   {
     v50 = v50->super.isa;
@@ -518,8 +518,8 @@ LABEL_55:
 
 LABEL_52:
     v50 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:v50 length:v51 encoding:4];
-    v52 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-    v53 = [(NSString *)v50 stringByTrimmingCharactersInSet:v52];
+    whitespaceCharacterSet4 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+    v53 = [(NSString *)v50 stringByTrimmingCharactersInSet:whitespaceCharacterSet4];
 
     if (![v53 length])
     {
@@ -531,23 +531,23 @@ LABEL_52:
   }
 
 LABEL_56:
-  if (*(a3 + 15) >= 1)
+  if (*(data + 15) >= 1)
   {
-    v55 = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSince1970:*(a3 + 15) * 0.001];
+    v55 = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSince1970:*(data + 15) * 0.001];
     startDate = v13->_startDate;
     v13->_startDate = v55;
   }
 
-  if (*(a3 + 16) >= 1)
+  if (*(data + 16) >= 1)
   {
-    v57 = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSince1970:*(a3 + 16) * 0.001];
+    v57 = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSince1970:*(data + 16) * 0.001];
     endDate = v13->_endDate;
     v13->_endDate = v57;
   }
 
-  if (*(a3 + 17) >= 1)
+  if (*(data + 17) >= 1)
   {
-    v59 = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSince1970:*(a3 + 17) * 0.001];
+    v59 = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSince1970:*(data + 17) * 0.001];
     lastUpdatedDate = v13->_lastUpdatedDate;
     v13->_lastUpdatedDate = v59;
   }
@@ -559,50 +559,50 @@ LABEL_63:
   return v36;
 }
 
-+ (id)stringForIncidentSignificance:(int64_t)a3
++ (id)stringForIncidentSignificance:(int64_t)significance
 {
-  if (a3 > 6)
+  if (significance > 6)
   {
     return 0;
   }
 
   else
   {
-    return off_1E7B36060[a3];
+    return off_1E7B36060[significance];
   }
 }
 
-+ (id)stringForRouteRelevance:(int64_t)a3
++ (id)stringForRouteRelevance:(int64_t)relevance
 {
-  if (a3 > 3)
+  if (relevance > 3)
   {
     return 0;
   }
 
   else
   {
-    return off_1E7B36040[a3];
+    return off_1E7B36040[relevance];
   }
 }
 
-+ (id)stringForIncidentType:(int64_t)a3
++ (id)stringForIncidentType:(int64_t)type
 {
-  if (a3 > 0xE)
+  if (type > 0xE)
   {
     return 0;
   }
 
   else
   {
-    return off_1E7B35FC8[a3];
+    return off_1E7B35FC8[type];
   }
 }
 
-+ (int64_t)incidentTypeForGeoRouteIncident:(id)a3
++ (int64_t)incidentTypeForGeoRouteIncident:(id)incident
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && (v5 = [v3 type], v5 < 0xF))
+  incidentCopy = incident;
+  v4 = incidentCopy;
+  if (incidentCopy && (v5 = [incidentCopy type], v5 < 0xF))
   {
     v6 = qword_1B33B42B0[v5];
   }

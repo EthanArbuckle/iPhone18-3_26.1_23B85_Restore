@@ -1,12 +1,12 @@
 @interface _INPBHomeEntityResponse
-- (BOOL)isEqual:(id)a3;
-- (_INPBHomeEntityResponse)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBHomeEntityResponse)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (void)addTaskResponses:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setTaskResponses:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addTaskResponses:(id)responses;
+- (void)encodeWithCoder:(id)coder;
+- (void)setTaskResponses:(id)responses;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBHomeEntityResponse
@@ -14,14 +14,14 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBHomeEntityResponse *)self entity];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"entity"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  entity = [(_INPBHomeEntityResponse *)self entity];
+  dictionaryRepresentation = [entity dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"entity"];
 
   if ([(NSArray *)self->_taskResponses count])
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
@@ -41,8 +41,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation2 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation2];
         }
 
         v9 = [(NSArray *)v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -51,36 +51,36 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"taskResponses"];
+    [dictionary setObject:array forKeyedSubscript:@"taskResponses"];
   }
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_INPBHomeEntityResponse *)self entity];
-  v6 = [v4 entity];
-  if ((v5 != 0) == (v6 == 0))
+  entity = [(_INPBHomeEntityResponse *)self entity];
+  entity2 = [equalCopy entity];
+  if ((entity != 0) == (entity2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(_INPBHomeEntityResponse *)self entity];
-  if (v7)
+  entity3 = [(_INPBHomeEntityResponse *)self entity];
+  if (entity3)
   {
-    v8 = v7;
-    v9 = [(_INPBHomeEntityResponse *)self entity];
-    v10 = [v4 entity];
-    v11 = [v9 isEqual:v10];
+    v8 = entity3;
+    entity4 = [(_INPBHomeEntityResponse *)self entity];
+    entity5 = [equalCopy entity];
+    v11 = [entity4 isEqual:entity5];
 
     if (!v11)
     {
@@ -92,12 +92,12 @@
   {
   }
 
-  v5 = [(_INPBHomeEntityResponse *)self taskResponses];
-  v6 = [v4 taskResponses];
-  if ((v5 != 0) != (v6 == 0))
+  entity = [(_INPBHomeEntityResponse *)self taskResponses];
+  entity2 = [equalCopy taskResponses];
+  if ((entity != 0) != (entity2 == 0))
   {
-    v12 = [(_INPBHomeEntityResponse *)self taskResponses];
-    if (!v12)
+    taskResponses = [(_INPBHomeEntityResponse *)self taskResponses];
+    if (!taskResponses)
     {
 
 LABEL_15:
@@ -105,10 +105,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(_INPBHomeEntityResponse *)self taskResponses];
-    v15 = [v4 taskResponses];
-    v16 = [v14 isEqual:v15];
+    v13 = taskResponses;
+    taskResponses2 = [(_INPBHomeEntityResponse *)self taskResponses];
+    taskResponses3 = [equalCopy taskResponses];
+    v16 = [taskResponses2 isEqual:taskResponses3];
 
     if (v16)
     {
@@ -128,51 +128,51 @@ LABEL_13:
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBHomeEntityResponse allocWithZone:](_INPBHomeEntityResponse init];
-  v6 = [(_INPBHomeEntity *)self->_entity copyWithZone:a3];
+  v6 = [(_INPBHomeEntity *)self->_entity copyWithZone:zone];
   [(_INPBHomeEntityResponse *)v5 setEntity:v6];
 
-  v7 = [(NSArray *)self->_taskResponses copyWithZone:a3];
+  v7 = [(NSArray *)self->_taskResponses copyWithZone:zone];
   [(_INPBHomeEntityResponse *)v5 setTaskResponses:v7];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBHomeEntityResponse *)self data];
+  coderCopy = coder;
+  data = [(_INPBHomeEntityResponse *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBHomeEntityResponse)initWithCoder:(id)a3
+- (_INPBHomeEntityResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBHomeEntityResponse *)self initWithData:v6];
+    self = [(_INPBHomeEntityResponse *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_INPBHomeEntityResponse *)self entity];
+  toCopy = to;
+  entity = [(_INPBHomeEntityResponse *)self entity];
 
-  if (v5)
+  if (entity)
   {
-    v6 = [(_INPBHomeEntityResponse *)self entity];
+    entity2 = [(_INPBHomeEntityResponse *)self entity];
     PBDataWriterWriteSubmessage();
   }
 
@@ -211,27 +211,27 @@ LABEL_13:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addTaskResponses:(id)a3
+- (void)addTaskResponses:(id)responses
 {
-  v4 = a3;
+  responsesCopy = responses;
   taskResponses = self->_taskResponses;
-  v8 = v4;
+  v8 = responsesCopy;
   if (!taskResponses)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_taskResponses;
-    self->_taskResponses = v6;
+    self->_taskResponses = array;
 
-    v4 = v8;
+    responsesCopy = v8;
     taskResponses = self->_taskResponses;
   }
 
-  [(NSArray *)taskResponses addObject:v4];
+  [(NSArray *)taskResponses addObject:responsesCopy];
 }
 
-- (void)setTaskResponses:(id)a3
+- (void)setTaskResponses:(id)responses
 {
-  v4 = [a3 mutableCopy];
+  v4 = [responses mutableCopy];
   taskResponses = self->_taskResponses;
   self->_taskResponses = v4;
 

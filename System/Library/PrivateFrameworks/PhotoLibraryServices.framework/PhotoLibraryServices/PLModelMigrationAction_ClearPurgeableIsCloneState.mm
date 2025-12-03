@@ -1,10 +1,10 @@
 @interface PLModelMigrationAction_ClearPurgeableIsCloneState
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_ClearPurgeableIsCloneState
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v62 = *MEMORY[0x1E69E9840];
   v6 = PLMigrationGetLog();
@@ -12,9 +12,9 @@
 
   if (v7)
   {
-    v8 = [(PLModelMigrationActionCore *)self logger];
+    logger = [(PLModelMigrationActionCore *)self logger];
 
-    if (v8)
+    if (logger)
     {
       v60 = 0u;
       v61 = 0u;
@@ -74,9 +74,9 @@
     }
   }
 
-  v13 = [(PLModelMigrationActionCore *)self pathManager];
+  pathManager = [(PLModelMigrationActionCore *)self pathManager];
   v27 = 0;
-  v14 = [PLCacheDeleteSupport setClearPurgeableIsCloneStateOnPurgeableResourcesOnceWithPathManager:v13 error:&v27];
+  v14 = [PLCacheDeleteSupport setClearPurgeableIsCloneStateOnPurgeableResourcesOnceWithPathManager:pathManager error:&v27];
   v15 = v27;
 
   if (v14)
@@ -91,9 +91,9 @@
 
     if (v18)
     {
-      v19 = [(PLModelMigrationActionCore *)self logger];
+      logger2 = [(PLModelMigrationActionCore *)self logger];
 
-      if (v19)
+      if (logger2)
       {
         v60 = 0u;
         v61 = 0u;
@@ -159,10 +159,10 @@
   }
 
   [(PLModelMigrationActionCore *)self finalizeProgress];
-  if (a4)
+  if (error)
   {
     v24 = v15;
-    *a4 = v15;
+    *error = v15;
   }
 
   return v16;

@@ -1,10 +1,10 @@
 @interface IDSTemporaryPhoneAlertManager
 + (id)_controller;
 + (id)serviceString;
-+ (void)attemptPresentationOfExpirationAlertForUser:(id)a3;
-+ (void)attemptPresentationOfNearExpirationAlertForUser:(id)a3;
++ (void)attemptPresentationOfExpirationAlertForUser:(id)user;
++ (void)attemptPresentationOfNearExpirationAlertForUser:(id)user;
 + (void)clearFollowups;
-+ (void)presentSuccessAlertForUser:(id)a3;
++ (void)presentSuccessAlertForUser:(id)user;
 @end
 
 @implementation IDSTemporaryPhoneAlertManager
@@ -16,101 +16,101 @@
   return v2;
 }
 
-+ (void)presentSuccessAlertForUser:(id)a3
++ (void)presentSuccessAlertForUser:(id)user
 {
-  v4 = a3;
+  userCopy = user;
   v5 = +[IMRGLog registration];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v17 = v4;
+    v17 = userCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Presenting Home Number success alert for user %@", buf, 0xCu);
   }
 
   v6 = [NSBundle bundleForClass:objc_opt_class()];
   v7 = IMLocalizedStringFromTableInBundle();
   v8 = IMLocalizedStringFromTableInBundle();
-  v9 = [a1 serviceString];
-  v10 = [NSString stringWithFormat:v7, v9];
-  v11 = [v4 phoneNumber];
+  serviceString = [self serviceString];
+  v10 = [NSString stringWithFormat:v7, serviceString];
+  phoneNumber = [userCopy phoneNumber];
   v12 = IMFormattedDisplayStringForID();
-  v13 = [NSString stringWithFormat:v8, v12, v9];
+  v13 = [NSString stringWithFormat:v8, v12, serviceString];
 
-  v14 = [a1 _notificationsCenter];
+  _notificationsCenter = [self _notificationsCenter];
   v15 = [NSURL URLWithString:@"prefs:root=MESSAGES&path=MADRID_ACCOUNTS_BUTTON"];
-  [v14 postNotificationWithTitle:v10 body:v13 iconIdentifier:@"com.apple.Preferences" shouldShowSubordinateIcon:0 actionURL:v15];
+  [_notificationsCenter postNotificationWithTitle:v10 body:v13 iconIdentifier:@"com.apple.Preferences" shouldShowSubordinateIcon:0 actionURL:v15];
 }
 
-+ (void)attemptPresentationOfNearExpirationAlertForUser:(id)a3
++ (void)attemptPresentationOfNearExpirationAlertForUser:(id)user
 {
-  v4 = a3;
-  v5 = [v4 finishedRegistration];
+  userCopy = user;
+  finishedRegistration = [userCopy finishedRegistration];
   v6 = +[IMRGLog registration];
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (v5)
+  if (finishedRegistration)
   {
     if (v7)
     {
       *buf = 138412290;
-      v18 = v4;
+      v18 = userCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Presenting Home Number near expiration alert for user %@", buf, 0xCu);
     }
 
     v6 = [NSBundle bundleForClass:objc_opt_class()];
     v8 = IMLocalizedStringFromTableInBundle();
     v9 = IMLocalizedStringFromTableInBundle();
-    v10 = [a1 serviceString];
-    v11 = [NSString stringWithFormat:v8, v10];
-    v12 = [v4 phoneNumber];
+    serviceString = [self serviceString];
+    v11 = [NSString stringWithFormat:v8, serviceString];
+    phoneNumber = [userCopy phoneNumber];
     v13 = IMFormattedDisplayStringForID();
-    v14 = [NSString stringWithFormat:v9, v13, v10];
+    v14 = [NSString stringWithFormat:v9, v13, serviceString];
 
-    v15 = [a1 _notificationsCenter];
+    _notificationsCenter = [self _notificationsCenter];
     v16 = [NSURL URLWithString:@"prefs:root=MESSAGES&path=MADRID_ACCOUNTS_BUTTON"];
-    [v15 postNotificationWithTitle:v11 body:v14 iconIdentifier:@"com.apple.Preferences" shouldShowSubordinateIcon:0 actionURL:v16];
+    [_notificationsCenter postNotificationWithTitle:v11 body:v14 iconIdentifier:@"com.apple.Preferences" shouldShowSubordinateIcon:0 actionURL:v16];
   }
 
   else if (v7)
   {
     *buf = 138412290;
-    v18 = v4;
+    v18 = userCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Not presenting Home Number near expiration alert for user %@", buf, 0xCu);
   }
 }
 
-+ (void)attemptPresentationOfExpirationAlertForUser:(id)a3
++ (void)attemptPresentationOfExpirationAlertForUser:(id)user
 {
-  v4 = a3;
-  v5 = [v4 finishedRegistration];
+  userCopy = user;
+  finishedRegistration = [userCopy finishedRegistration];
   v6 = +[IMRGLog registration];
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (v5)
+  if (finishedRegistration)
   {
     if (v7)
     {
       *buf = 138412290;
-      v18 = v4;
+      v18 = userCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Presenting Home Number expiration alert for user %@", buf, 0xCu);
     }
 
     v6 = [NSBundle bundleForClass:objc_opt_class()];
     v8 = IMLocalizedStringFromTableInBundle();
     v9 = IMLocalizedStringFromTableInBundle();
-    v10 = [a1 serviceString];
-    v11 = [NSString stringWithFormat:v8, v10];
-    v12 = [v4 phoneNumber];
+    serviceString = [self serviceString];
+    v11 = [NSString stringWithFormat:v8, serviceString];
+    phoneNumber = [userCopy phoneNumber];
     v13 = IMFormattedDisplayStringForID();
-    v14 = [NSString stringWithFormat:v9, v13, v10];
+    v14 = [NSString stringWithFormat:v9, v13, serviceString];
 
-    v15 = [a1 _notificationsCenter];
+    _notificationsCenter = [self _notificationsCenter];
     v16 = [NSURL URLWithString:@"prefs:root=MESSAGES&path=MADRID_ACCOUNTS_BUTTON"];
-    [v15 postNotificationWithTitle:v11 body:v14 iconIdentifier:@"com.apple.Preferences" shouldShowSubordinateIcon:0 actionURL:v16];
+    [_notificationsCenter postNotificationWithTitle:v11 body:v14 iconIdentifier:@"com.apple.Preferences" shouldShowSubordinateIcon:0 actionURL:v16];
   }
 
   else if (v7)
   {
     *buf = 138412290;
-    v18 = v4;
+    v18 = userCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Not presenting Home Number expiration alert for user %@", buf, 0xCu);
   }
 }
@@ -122,7 +122,7 @@
 
   if (!v4)
   {
-    v5 = [a1 _controller];
+    _controller = [self _controller];
     v6 = +[IMRGLog registration];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
@@ -134,7 +134,7 @@
     v10[1] = @"com.apple.identityservicesd.HomeNumberNearExpiration";
     v10[2] = @"com.apple.identityservicesd.HomeNumberExpiration";
     v7 = [NSArray arrayWithObjects:v10 count:3];
-    [v5 clearPendingFollowUpItemsWithUniqueIdentifiers:v7 error:0];
+    [_controller clearPendingFollowUpItemsWithUniqueIdentifiers:v7 error:0];
     v8 = +[IMUserDefaults sharedDefaults];
     [v8 setAppValue:&__kCFBooleanTrue forKey:@"HomeNumberFollowUpMigration"];
   }

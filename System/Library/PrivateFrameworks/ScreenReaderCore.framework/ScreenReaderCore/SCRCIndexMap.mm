@@ -1,40 +1,40 @@
 @interface SCRCIndexMap
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SCRCIndexMap)init;
-- (SCRCIndexMap)initWithCoder:(id)a3;
-- (SCRCIndexMap)initWithObjects:(const void *)a3 andIndexes:(unint64_t *)a4 count:(unint64_t)a5;
-- (id)_ensureCodableAttributedString:(id)a3;
-- (id)_initAndDeepCopyIndexMap:(id)a3;
-- (id)_initWithIndexMap:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)deepCopyWithZone:(_NSZone *)a3;
+- (SCRCIndexMap)initWithCoder:(id)coder;
+- (SCRCIndexMap)initWithObjects:(const void *)objects andIndexes:(unint64_t *)indexes count:(unint64_t)count;
+- (id)_ensureCodableAttributedString:(id)string;
+- (id)_initAndDeepCopyIndexMap:(id)map;
+- (id)_initWithIndexMap:(id)map;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)deepCopyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)indexes;
-- (unint64_t)_createIndexesWithSize:(unint64_t *)a3;
-- (void)addObjectsFromIndexMap:(id)a3;
+- (unint64_t)_createIndexesWithSize:(unint64_t *)size;
+- (void)addObjectsFromIndexMap:(id)map;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setObject:(id)a3 forIndex:(unint64_t)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)setObject:(id)object forIndex:(unint64_t)index;
 @end
 
 @implementation SCRCIndexMap
 
-- (SCRCIndexMap)initWithObjects:(const void *)a3 andIndexes:(unint64_t *)a4 count:(unint64_t)a5
+- (SCRCIndexMap)initWithObjects:(const void *)objects andIndexes:(unint64_t *)indexes count:(unint64_t)count
 {
   v12.receiver = self;
   v12.super_class = SCRCIndexMap;
   v8 = [(SCRCIndexMap *)&v12 init];
   if (v8 && (Mutable = CFDictionaryCreateMutable(*MEMORY[0x277CBECE8], 0, 0, MEMORY[0x277CBF150]), (v8->_map = Mutable) != 0))
   {
-    for (; a5; --a5)
+    for (; count; --count)
     {
-      if (*a3)
+      if (*objects)
       {
-        CFDictionarySetValue(v8->_map, *a4, *a3);
+        CFDictionarySetValue(v8->_map, *indexes, *objects);
       }
 
-      ++a4;
-      ++a3;
+      ++indexes;
+      ++objects;
     }
 
     v10 = v8;
@@ -66,13 +66,13 @@
   return v4;
 }
 
-- (id)_initWithIndexMap:(id)a3
+- (id)_initWithIndexMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   v11.receiver = self;
   v11.super_class = SCRCIndexMap;
   v5 = [(SCRCIndexMap *)&v11 init];
-  if (v5 && (v6 = v4[1], Count = CFDictionaryGetCount(v6), MutableCopy = CFDictionaryCreateMutableCopy(0, Count, v6), (v5->_map = MutableCopy) != 0))
+  if (v5 && (v6 = mapCopy[1], Count = CFDictionaryGetCount(v6), MutableCopy = CFDictionaryCreateMutableCopy(0, Count, v6), (v5->_map = MutableCopy) != 0))
   {
     v9 = v5;
   }
@@ -85,16 +85,16 @@
   return v9;
 }
 
-- (id)_initAndDeepCopyIndexMap:(id)a3
+- (id)_initAndDeepCopyIndexMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   v15.receiver = self;
   v15.super_class = SCRCIndexMap;
   v5 = [(SCRCIndexMap *)&v15 init];
   if (v5 && (Mutable = CFDictionaryCreateMutable(*MEMORY[0x277CBECE8], 0, 0, MEMORY[0x277CBF150]), (v5->_map = Mutable) != 0))
   {
     v14 = 0;
-    v7 = [v4 _createIndexesWithSize:&v14];
+    v7 = [mapCopy _createIndexesWithSize:&v14];
     if (v7)
     {
       v8 = v7;
@@ -102,7 +102,7 @@
       {
         for (i = 0; i < v14; ++i)
         {
-          v10 = [v4 objectForIndex:v8[i]];
+          v10 = [mapCopy objectForIndex:v8[i]];
           v11 = [v10 copy];
 
           CFDictionarySetValue(v5->_map, v8[i], v11);
@@ -123,24 +123,24 @@
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [SCRCIndexMap allocWithZone:a3];
+  v4 = [SCRCIndexMap allocWithZone:zone];
 
   return [(SCRCIndexMap *)v4 _initWithIndexMap:self];
 }
 
-- (id)deepCopyWithZone:(_NSZone *)a3
+- (id)deepCopyWithZone:(_NSZone *)zone
 {
-  v4 = [SCRCIndexMap allocWithZone:a3];
+  v4 = [SCRCIndexMap allocWithZone:zone];
 
   return [(SCRCIndexMap *)v4 _initAndDeepCopyIndexMap:self];
 }
 
-- (SCRCIndexMap)initWithCoder:(id)a3
+- (SCRCIndexMap)initWithCoder:(id)coder
 {
   v20[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SCRCIndexMap *)self init];
   if (v5)
   {
@@ -149,7 +149,7 @@
     v20[1] = objc_opt_class();
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:2];
     v8 = [v6 setWithArray:v7];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"indexes"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"indexes"];
 
     v10 = MEMORY[0x277CBEB98];
     v19[0] = objc_opt_class();
@@ -162,7 +162,7 @@
     v19[7] = objc_opt_class();
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:8];
     v12 = [v10 setWithArray:v11];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"values"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"values"];
 
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
@@ -188,22 +188,22 @@ void __30__SCRCIndexMap_initWithCoder___block_invoke(uint64_t a1, void *a2, uint
   [v4 setObject:v8 forIndex:v7];
 }
 
-- (id)_ensureCodableAttributedString:(id)a3
+- (id)_ensureCodableAttributedString:(id)string
 {
   v3 = MEMORY[0x277CCAB48];
-  v4 = a3;
+  stringCopy = string;
   v5 = [v3 alloc];
-  v6 = [v4 string];
-  v7 = [v5 initWithString:v6];
+  string = [stringCopy string];
+  v7 = [v5 initWithString:string];
 
-  v8 = [v4 length];
+  v8 = [stringCopy length];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __47__SCRCIndexMap__ensureCodableAttributedString___block_invoke;
   v11[3] = &unk_279B71458;
   v9 = v7;
   v12 = v9;
-  [v4 enumerateAttributesInRange:0 options:v8 usingBlock:{0, v11}];
+  [stringCopy enumerateAttributesInRange:0 options:v8 usingBlock:{0, v11}];
 
   return v9;
 }
@@ -245,9 +245,9 @@ void __47__SCRCIndexMap__ensureCodableAttributedString___block_invoke(uint64_t a
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v13 = a3;
+  coderCopy = coder;
   v4 = objc_opt_new();
   v5 = objc_opt_new();
   v14 = 0;
@@ -257,27 +257,27 @@ void __47__SCRCIndexMap__ensureCodableAttributedString___block_invoke(uint64_t a
     for (i = 0; i < v14; ++i)
     {
       v8 = v6[i];
-      v9 = [(SCRCIndexMap *)self objectForIndex:v8, v13];
+      coderCopy = [(SCRCIndexMap *)self objectForIndex:v8, coderCopy];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v10 = [(SCRCIndexMap *)self _ensureCodableAttributedString:v9];
+        v10 = [(SCRCIndexMap *)self _ensureCodableAttributedString:coderCopy];
 
-        v9 = v10;
+        coderCopy = v10;
       }
 
-      if ([v9 conformsToProtocol:&unk_28763CF90])
+      if ([coderCopy conformsToProtocol:&unk_28763CF90])
       {
         v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:v8];
         [v4 addObject:v11];
 
-        [v5 addObject:v9];
+        [v5 addObject:coderCopy];
       }
     }
   }
 
-  v12 = v13;
-  [v13 encodeObject:v4 forKey:{@"indexes", v13}];
+  v12 = coderCopy;
+  [coderCopy encodeObject:v4 forKey:{@"indexes", coderCopy}];
   [v12 encodeObject:v5 forKey:@"values"];
   free(v6);
 }
@@ -295,20 +295,20 @@ void __47__SCRCIndexMap__ensureCodableAttributedString___block_invoke(uint64_t a
   [(SCRCIndexMap *)&v4 dealloc];
 }
 
-- (void)setObject:(id)a3 forIndex:(unint64_t)a4
+- (void)setObject:(id)object forIndex:(unint64_t)index
 {
-  if (a3)
+  if (object)
   {
-    CFDictionarySetValue(self->_map, a4, a3);
+    CFDictionarySetValue(self->_map, index, object);
   }
 }
 
-- (unint64_t)_createIndexesWithSize:(unint64_t *)a3
+- (unint64_t)_createIndexesWithSize:(unint64_t *)size
 {
   Count = CFDictionaryGetCount(self->_map);
-  if (a3)
+  if (size)
   {
-    *a3 = Count;
+    *size = Count;
   }
 
   v6 = 8 * Count;
@@ -341,11 +341,11 @@ void __47__SCRCIndexMap__ensureCodableAttributedString___block_invoke(uint64_t a
   return v3;
 }
 
-- (void)addObjectsFromIndexMap:(id)a3
+- (void)addObjectsFromIndexMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   v9 = 0;
-  v5 = [v4 _createIndexesWithSize:&v9];
+  v5 = [mapCopy _createIndexesWithSize:&v9];
   if (v5)
   {
     v6 = v5;
@@ -353,7 +353,7 @@ void __47__SCRCIndexMap__ensureCodableAttributedString___block_invoke(uint64_t a
     {
       for (i = 0; i < v9; ++i)
       {
-        v8 = [v4 objectForIndex:v6[i]];
+        v8 = [mapCopy objectForIndex:v6[i]];
         [(SCRCIndexMap *)self setObject:v8 forIndex:v6[i]];
       }
     }
@@ -395,21 +395,21 @@ void __47__SCRCIndexMap__ensureCodableAttributedString___block_invoke(uint64_t a
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = [(SCRCIndexMap *)self count];
     if (v6 == [v5 count])
     {
-      v7 = [(SCRCIndexMap *)self indexes];
-      v8 = [v5 indexes];
-      v9 = [v8 mutableCopy];
+      indexes = [(SCRCIndexMap *)self indexes];
+      indexes2 = [v5 indexes];
+      v9 = [indexes2 mutableCopy];
 
-      if ([v7 isEqualToIndexSet:v9])
+      if ([indexes isEqualToIndexSet:v9])
       {
         v15 = 0;
         v16 = &v15;
@@ -422,7 +422,7 @@ void __47__SCRCIndexMap__ensureCodableAttributedString___block_invoke(uint64_t a
         v12[4] = self;
         v13 = v5;
         v14 = &v15;
-        [v7 enumerateIndexesUsingBlock:v12];
+        [indexes enumerateIndexesUsingBlock:v12];
         v10 = *(v16 + 24);
 
         _Block_object_dispose(&v15, 8);

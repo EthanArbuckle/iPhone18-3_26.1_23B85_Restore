@@ -1,16 +1,16 @@
 @interface MRPersistentTimer
-- (MRPersistentTimer)initWithInterval:(double)a3 name:(id)a4 queue:(id)a5 block:(id)a6;
+- (MRPersistentTimer)initWithInterval:(double)interval name:(id)name queue:(id)queue block:(id)block;
 - (void)invalidate;
-- (void)invalidateWithReason:(id)a3;
+- (void)invalidateWithReason:(id)reason;
 @end
 
 @implementation MRPersistentTimer
 
-- (MRPersistentTimer)initWithInterval:(double)a3 name:(id)a4 queue:(id)a5 block:(id)a6
+- (MRPersistentTimer)initWithInterval:(double)interval name:(id)name queue:(id)queue block:(id)block
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  nameCopy = name;
+  queueCopy = queue;
+  blockCopy = block;
   v18.receiver = self;
   v18.super_class = MRPersistentTimer;
   v13 = [(MRPersistentTimer *)&v18 init];
@@ -18,13 +18,13 @@
   {
     if ([objc_opt_class() usePersistentTimer])
     {
-      v14 = [objc_alloc(MEMORY[0x1E69B1478]) initWithInterval:v10 name:v11 queue:v12 block:a3];
+      v14 = [objc_alloc(MEMORY[0x1E69B1478]) initWithInterval:nameCopy name:queueCopy queue:blockCopy block:interval];
       v15 = 8;
     }
 
     else
     {
-      v14 = [objc_alloc(MEMORY[0x1E69B14D8]) initWithInterval:0 repeats:v11 queue:v12 block:a3];
+      v14 = [objc_alloc(MEMORY[0x1E69B14D8]) initWithInterval:0 repeats:queueCopy queue:blockCopy block:interval];
       v15 = 16;
     }
 
@@ -43,9 +43,9 @@
   [(MSVTimer *)timer invalidate];
 }
 
-- (void)invalidateWithReason:(id)a3
+- (void)invalidateWithReason:(id)reason
 {
-  [(MSVPersistentTimer *)self->_pTimer invalidateWithReason:a3];
+  [(MSVPersistentTimer *)self->_pTimer invalidateWithReason:reason];
   timer = self->_timer;
 
   [(MSVTimer *)timer invalidate];

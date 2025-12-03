@@ -1,31 +1,31 @@
 @interface CKDFetchRecordVersionsRequest
-- (CKDFetchRecordVersionsRequest)initWithOperation:(id)a3 recordIDs:(id)a4 desiredKeys:(id)a5 minimumVersionETag:(id)a6;
+- (CKDFetchRecordVersionsRequest)initWithOperation:(id)operation recordIDs:(id)ds desiredKeys:(id)keys minimumVersionETag:(id)tag;
 - (id)generateRequestOperations;
-- (id)recordIDsUsedInZones:(id)a3;
-- (id)requestDidParseProtobufObject:(id)a3;
+- (id)recordIDsUsedInZones:(id)zones;
+- (id)requestDidParseProtobufObject:(id)object;
 - (id)requestOperationClasses;
 - (id)zoneIDsToLock;
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3;
-- (void)fillOutRequestProperties:(id)a3;
-- (void)requestDidParseNodeFailure:(id)a3;
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder;
+- (void)fillOutRequestProperties:(id)properties;
+- (void)requestDidParseNodeFailure:(id)failure;
 @end
 
 @implementation CKDFetchRecordVersionsRequest
 
-- (CKDFetchRecordVersionsRequest)initWithOperation:(id)a3 recordIDs:(id)a4 desiredKeys:(id)a5 minimumVersionETag:(id)a6
+- (CKDFetchRecordVersionsRequest)initWithOperation:(id)operation recordIDs:(id)ds desiredKeys:(id)keys minimumVersionETag:(id)tag
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dsCopy = ds;
+  keysCopy = keys;
+  tagCopy = tag;
   v19.receiver = self;
   v19.super_class = CKDFetchRecordVersionsRequest;
-  v14 = [(CKDURLRequest *)&v19 initWithOperation:a3];
+  v14 = [(CKDURLRequest *)&v19 initWithOperation:operation];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_recordIDs, a4);
-    objc_storeStrong(&v15->_desiredKeys, a5);
-    objc_storeStrong(&v15->_minimumVersionETag, a6);
+    objc_storeStrong(&v14->_recordIDs, ds);
+    objc_storeStrong(&v15->_desiredKeys, keys);
+    objc_storeStrong(&v15->_minimumVersionETag, tag);
     v16 = objc_opt_new();
     recordIDByRequestID = v15->_recordIDByRequestID;
     v15->_recordIDByRequestID = v16;
@@ -36,38 +36,38 @@
   return v15;
 }
 
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder
 {
   v19.receiver = self;
   v19.super_class = CKDFetchRecordVersionsRequest;
-  v4 = a3;
-  [(CKDURLRequest *)&v19 fillOutEquivalencyPropertiesBuilder:v4];
+  builderCopy = builder;
+  [(CKDURLRequest *)&v19 fillOutEquivalencyPropertiesBuilder:builderCopy];
   v5 = MEMORY[0x277CBEB98];
   v8 = objc_msgSend_recordIDs(self, v6, v7, v19.receiver, v19.super_class);
   v11 = objc_msgSend_ckEquivalencyProperties(v8, v9, v10);
   v13 = objc_msgSend_setWithArray_(v5, v12, v11);
 
-  objc_msgSend_setObject_forKeyedSubscript_(v4, v14, v13, @"recordIDs");
+  objc_msgSend_setObject_forKeyedSubscript_(builderCopy, v14, v13, @"recordIDs");
   v17 = objc_msgSend_minimumVersionETag(self, v15, v16);
-  objc_msgSend_setObject_forKeyedSubscript_(v4, v18, v17, @"minimumVersionETag");
+  objc_msgSend_setObject_forKeyedSubscript_(builderCopy, v18, v17, @"minimumVersionETag");
 }
 
-- (void)fillOutRequestProperties:(id)a3
+- (void)fillOutRequestProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v7 = objc_msgSend_recordIDs(self, v5, v6);
-  objc_msgSend_setFetchRecordIDs_(v4, v8, v7);
+  objc_msgSend_setFetchRecordIDs_(propertiesCopy, v8, v7);
 
   v9.receiver = self;
   v9.super_class = CKDFetchRecordVersionsRequest;
-  [(CKDURLRequest *)&v9 fillOutRequestProperties:v4];
+  [(CKDURLRequest *)&v9 fillOutRequestProperties:propertiesCopy];
 }
 
-- (id)recordIDsUsedInZones:(id)a3
+- (id)recordIDsUsedInZones:(id)zones
 {
-  v4 = a3;
+  zonesCopy = zones;
   v7 = objc_msgSend_recordIDs(self, v5, v6);
-  v9 = objc_msgSend_recordIDs_filteredByZones_(self, v8, v7, v4);
+  v9 = objc_msgSend_recordIDs_filteredByZones_(self, v8, v7, zonesCopy);
 
   return v9;
 }
@@ -138,9 +138,9 @@
   return v6;
 }
 
-- (id)requestDidParseProtobufObject:(id)a3
+- (id)requestDidParseProtobufObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v43 = 0;
   v44 = &v43;
   v45 = 0x3032000000;
@@ -148,13 +148,13 @@
   v47 = sub_22507366C;
   v48 = 0;
   v7 = objc_msgSend_recordIDByRequestID(self, v5, v6);
-  v10 = objc_msgSend_response(v4, v8, v9);
+  v10 = objc_msgSend_response(objectCopy, v8, v9);
   v13 = objc_msgSend_operationUUID(v10, v11, v12);
   v15 = objc_msgSend_objectForKeyedSubscript_(v7, v14, v13);
 
-  if (objc_msgSend_hasRecordRetrieveVersionsResponse(v4, v16, v17))
+  if (objc_msgSend_hasRecordRetrieveVersionsResponse(objectCopy, v16, v17))
   {
-    v20 = objc_msgSend_recordRetrieveVersionsResponse(v4, v18, v19);
+    v20 = objc_msgSend_recordRetrieveVersionsResponse(objectCopy, v18, v19);
     v23 = objc_msgSend_recordVersions(v20, v21, v22);
   }
 
@@ -184,9 +184,9 @@
   if (v27)
   {
     v30 = objc_msgSend_recordVersionsFetchedBlock(self, v28, v29);
-    v33 = objc_msgSend_recordRetrieveVersionsResponse(v4, v31, v32);
+    v33 = objc_msgSend_recordRetrieveVersionsResponse(objectCopy, v31, v32);
     isDeleted = objc_msgSend_isDeleted(v33, v34, v35);
-    v39 = objc_msgSend_result(v4, v37, v38);
+    v39 = objc_msgSend_result(objectCopy, v37, v38);
     (v30)[2](v30, v15, isDeleted, v26, v39);
   }
 
@@ -197,11 +197,11 @@
   return v40;
 }
 
-- (void)requestDidParseNodeFailure:(id)a3
+- (void)requestDidParseNodeFailure:(id)failure
 {
-  v24 = a3;
+  failureCopy = failure;
   v6 = objc_msgSend_recordIDByRequestID(self, v4, v5);
-  v9 = objc_msgSend_response(v24, v7, v8);
+  v9 = objc_msgSend_response(failureCopy, v7, v8);
   v12 = objc_msgSend_operationUUID(v9, v10, v11);
   v14 = objc_msgSend_objectForKeyedSubscript_(v6, v13, v12);
 
@@ -210,7 +210,7 @@
   if (v17)
   {
     v20 = objc_msgSend_recordVersionsFetchedBlock(self, v18, v19);
-    v23 = objc_msgSend_result(v24, v21, v22);
+    v23 = objc_msgSend_result(failureCopy, v21, v22);
     (v20)[2](v20, v14, 0, 0, v23);
   }
 }

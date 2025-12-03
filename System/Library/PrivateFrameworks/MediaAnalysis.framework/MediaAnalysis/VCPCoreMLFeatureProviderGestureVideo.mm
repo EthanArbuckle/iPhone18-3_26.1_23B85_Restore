@@ -1,9 +1,9 @@
 @interface VCPCoreMLFeatureProviderGestureVideo
 - (BOOL)ready;
 - (VCPCoreMLFeatureProviderGestureVideo)init;
-- (id)featureValueForName:(id)a3;
+- (id)featureValueForName:(id)name;
 - (id)observationsForCurrentGroup;
-- (void)addLeftHand:(id)a3 andRightHand:(id)a4;
+- (void)addLeftHand:(id)hand andRightHand:(id)rightHand;
 @end
 
 @implementation VCPCoreMLFeatureProviderGestureVideo
@@ -15,9 +15,9 @@
   v2 = [(VCPCoreMLFeatureProviderGestureVideo *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v4 = *(v2 + 1);
-    *(v2 + 1) = v3;
+    *(v2 + 1) = dictionary;
 
     *(v2 + 14) = 0;
     *(v2 + 8) = 0;
@@ -39,19 +39,19 @@
   return v6;
 }
 
-- (void)addLeftHand:(id)a3 andRightHand:(id)a4
+- (void)addLeftHand:(id)hand andRightHand:(id)rightHand
 {
-  v21 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF90] dictionary];
-  if (v21)
+  handCopy = hand;
+  rightHandCopy = rightHand;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  if (handCopy)
   {
-    [v7 setObject:v21 forKeyedSubscript:@"leftHand"];
+    [dictionary setObject:handCopy forKeyedSubscript:@"leftHand"];
   }
 
-  if (v6)
+  if (rightHandCopy)
   {
-    [v7 setObject:v6 forKeyedSubscript:@"rightHand"];
+    [dictionary setObject:rightHandCopy forKeyedSubscript:@"rightHand"];
   }
 
   observationsPersons = self->_observationsPersons;
@@ -62,18 +62,18 @@
   {
     v11 = self->_observationsPersons;
     v12 = [MEMORY[0x1E696AD98] numberWithInt:self->_currentGroupID];
-    v13 = [(NSMutableDictionary *)v11 objectForKeyedSubscript:v12];
+    array = [(NSMutableDictionary *)v11 objectForKeyedSubscript:v12];
   }
 
   else
   {
-    v13 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
   }
 
-  [v13 addObject:v7];
+  [array addObject:dictionary];
   v14 = self->_observationsPersons;
   v15 = [MEMORY[0x1E696AD98] numberWithInt:self->_currentGroupID];
-  [(NSMutableDictionary *)v14 setObject:v13 forKeyedSubscript:v15];
+  [(NSMutableDictionary *)v14 setObject:array forKeyedSubscript:v15];
 
   v16 = self->_observationsPersons;
   v17 = [MEMORY[0x1E696AD98] numberWithInt:self->_currentGroupID];
@@ -83,19 +83,19 @@
 
   if (v19 > channels)
   {
-    [v13 removeObjectAtIndex:0];
+    [array removeObjectAtIndex:0];
   }
 }
 
 - (BOOL)ready
 {
-  v2 = self;
+  selfCopy = self;
   observationsPersons = self->_observationsPersons;
   v4 = [MEMORY[0x1E696AD98] numberWithInt:self->_currentGroupID];
   v5 = [(NSMutableDictionary *)observationsPersons objectForKeyedSubscript:v4];
-  LOBYTE(v2) = [v5 count] >= v2->_channels;
+  LOBYTE(selfCopy) = [v5 count] >= selfCopy->_channels;
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)observationsForCurrentGroup
@@ -107,7 +107,7 @@
   return v4;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
   v112 = v110;
   v130[3] = *MEMORY[0x1E69E9840];
@@ -189,8 +189,8 @@
     {
       if (v28)
       {
-        v41 = [v28 keypoints];
-        v42 = [v41 objectAtIndexedSubscript:v35];
+        keypoints = [v28 keypoints];
+        v42 = [keypoints objectAtIndexedSubscript:v35];
         [v42 location];
         transformLocation(v132, self->_lrFlip, self->_rotationInDegrees);
         v44 = v43;
@@ -200,8 +200,8 @@
         *(v36 - 63) = v47;
         v48 = v46;
         *(v36 - 21) = v48;
-        v49 = [v28 keypoints];
-        v50 = [v49 objectAtIndexedSubscript:v35];
+        keypoints2 = [v28 keypoints];
+        v50 = [keypoints2 objectAtIndexedSubscript:v35];
         [v50 confidence];
         *(v36 + 21) = v51;
 
@@ -246,8 +246,8 @@ LABEL_28:
         }
       }
 
-      v52 = [v23 keypoints];
-      v53 = [v52 objectAtIndexedSubscript:v35];
+      keypoints3 = [v23 keypoints];
+      v53 = [keypoints3 objectAtIndexedSubscript:v35];
       [v53 location];
       transformLocation(v133, self->_lrFlip, self->_rotationInDegrees);
       v55 = v54;
@@ -257,8 +257,8 @@ LABEL_28:
       *(v36 - 42) = v58;
       v59 = v57;
       *v36 = v59;
-      v60 = [v23 keypoints];
-      v61 = [v60 objectAtIndexedSubscript:v35];
+      keypoints4 = [v23 keypoints];
+      v61 = [keypoints4 objectAtIndexedSubscript:v35];
       [v61 confidence];
       *(v36 + 42) = v62;
 
@@ -495,11 +495,11 @@ LABEL_29:
         do
         {
           v98 = v117;
-          v99 = [v117 dataPointer];
+          dataPointer = [v117 dataPointer];
           v100 = &v115[16 * v97];
           v11 = *v100;
           v12 = v100[1];
-          v101 = (v99 + ((0x7E00000000 * v97) >> 30) + 168);
+          v101 = (dataPointer + ((0x7E00000000 * v97) >> 30) + 168);
           v102 = 21;
           do
           {

@@ -1,25 +1,25 @@
 @interface OrgApacheLuceneCodecsDocValuesFormat
 + (id)availableDocValuesFormats;
-+ (id)forNameWithNSString:(id)a3;
-+ (void)reloadDocValuesFormatsWithJavaLangClassLoader:(id)a3;
-- (OrgApacheLuceneCodecsDocValuesFormat)initWithNSString:(id)a3;
++ (id)forNameWithNSString:(id)string;
++ (void)reloadDocValuesFormatsWithJavaLangClassLoader:(id)loader;
+- (OrgApacheLuceneCodecsDocValuesFormat)initWithNSString:(id)string;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneCodecsDocValuesFormat
 
-- (OrgApacheLuceneCodecsDocValuesFormat)initWithNSString:(id)a3
+- (OrgApacheLuceneCodecsDocValuesFormat)initWithNSString:(id)string
 {
-  OrgApacheLuceneUtilNamedSPILoader_checkServiceNameWithNSString_(a3);
-  JreStrongAssign(&self->name_, a3);
+  OrgApacheLuceneUtilNamedSPILoader_checkServiceNameWithNSString_(string);
+  JreStrongAssign(&self->name_, string);
   return self;
 }
 
-+ (id)forNameWithNSString:(id)a3
++ (id)forNameWithNSString:(id)string
 {
   v4 = sub_100106F70();
 
-  return [v4 lookupWithNSString:a3];
+  return [v4 lookupWithNSString:string];
 }
 
 + (id)availableDocValuesFormats
@@ -29,11 +29,11 @@
   return [v2 availableServices];
 }
 
-+ (void)reloadDocValuesFormatsWithJavaLangClassLoader:(id)a3
++ (void)reloadDocValuesFormatsWithJavaLangClassLoader:(id)loader
 {
   v4 = sub_100106F70();
 
-  [v4 reloadWithJavaLangClassLoader:a3];
+  [v4 reloadWithJavaLangClassLoader:loader];
 }
 
 - (void)dealloc

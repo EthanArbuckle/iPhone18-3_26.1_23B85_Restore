@@ -1,15 +1,15 @@
 @interface WFIconViewImageGenerator
-+ (id)loadIcon:(id)a3 size:(CGSize)a4 style:(int64_t)a5;
++ (id)loadIcon:(id)icon size:(CGSize)size style:(int64_t)style;
 @end
 
 @implementation WFIconViewImageGenerator
 
-+ (id)loadIcon:(id)a3 size:(CGSize)a4 style:(int64_t)a5
++ (id)loadIcon:(id)icon size:(CGSize)size style:(int64_t)style
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a3;
-  v9 = sub_1C83B93A8(v8, a5, width, height);
+  height = size.height;
+  width = size.width;
+  iconCopy = icon;
+  v9 = sub_1C83B93A8(iconCopy, style, width, height);
 
   return v9;
 }

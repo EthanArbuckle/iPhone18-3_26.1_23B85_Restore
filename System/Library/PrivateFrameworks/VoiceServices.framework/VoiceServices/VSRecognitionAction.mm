@@ -3,10 +3,10 @@
 - (id)spokenFeedbackAttributedString;
 - (id)spokenFeedbackString;
 - (void)dealloc;
-- (void)setResultDisplayString:(id)a3;
-- (void)setSpokenFeedbackAttributedString:(id)a3;
-- (void)setSpokenFeedbackString:(id)a3;
-- (void)setStatusDisplayString:(id)a3;
+- (void)setResultDisplayString:(id)string;
+- (void)setSpokenFeedbackAttributedString:(id)string;
+- (void)setSpokenFeedbackString:(id)string;
+- (void)setStatusDisplayString:(id)string;
 @end
 
 @implementation VSRecognitionAction
@@ -24,13 +24,13 @@
   return v4;
 }
 
-- (void)setSpokenFeedbackAttributedString:(id)a3
+- (void)setSpokenFeedbackAttributedString:(id)string
 {
   stringValue = self->_spokenString.stringValue;
-  if ((*(self + 40) & 1) == 0 || stringValue != a3)
+  if ((*(self + 40) & 1) == 0 || stringValue != string)
   {
 
-    self->_spokenString.stringValue = a3;
+    self->_spokenString.stringValue = string;
     *(self + 40) |= 1u;
   }
 }
@@ -48,13 +48,13 @@
   }
 }
 
-- (void)setSpokenFeedbackString:(id)a3
+- (void)setSpokenFeedbackString:(id)string
 {
   stringValue = self->_spokenString.stringValue;
-  if ((*(self + 40) & 1) != 0 || stringValue != a3)
+  if ((*(self + 40) & 1) != 0 || stringValue != string)
   {
 
-    self->_spokenString.stringValue = a3;
+    self->_spokenString.stringValue = string;
     *(self + 40) &= ~1u;
   }
 }
@@ -71,23 +71,23 @@
   return result;
 }
 
-- (void)setStatusDisplayString:(id)a3
+- (void)setStatusDisplayString:(id)string
 {
   statusString = self->_statusString;
-  if (statusString != a3)
+  if (statusString != string)
   {
 
-    self->_statusString = a3;
+    self->_statusString = string;
   }
 }
 
-- (void)setResultDisplayString:(id)a3
+- (void)setResultDisplayString:(id)string
 {
   resultString = self->_resultString;
-  if (resultString != a3)
+  if (resultString != string)
   {
 
-    self->_resultString = a3;
+    self->_resultString = string;
   }
 }
 

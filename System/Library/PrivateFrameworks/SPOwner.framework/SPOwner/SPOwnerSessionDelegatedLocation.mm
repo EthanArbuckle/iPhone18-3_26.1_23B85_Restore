@@ -2,10 +2,10 @@
 + (id)exportedInterface;
 + (id)remoteInterface;
 - (SPOwnerSessionXPCProtocol)proxy;
-- (void)delegatedLocationForContext:(id)a3 completion:(id)a4;
-- (void)didPublishDelegatedLocation:(id)a3;
-- (void)subscribeDelegatedLocationUpdatesForContext:(id)a3 completion:(id)a4;
-- (void)unsubscribeDelegatedLocationUpdatesWithCompletion:(id)a3;
+- (void)delegatedLocationForContext:(id)context completion:(id)completion;
+- (void)didPublishDelegatedLocation:(id)location;
+- (void)subscribeDelegatedLocationUpdatesForContext:(id)context completion:(id)completion;
+- (void)unsubscribeDelegatedLocationUpdatesWithCompletion:(id)completion;
 @end
 
 @implementation SPOwnerSessionDelegatedLocation
@@ -13,9 +13,9 @@
 - (SPOwnerSessionXPCProtocol)proxy
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(SPOwnerSessionDelegatedLocation *)self session];
+  session = [(SPOwnerSessionDelegatedLocation *)self session];
 
-  if (!v3)
+  if (!session)
   {
     v4 = objc_alloc(MEMORY[0x277D07BA0]);
     v5 = +[SPOwnerSessionDelegatedLocation exportedInterface];
@@ -28,22 +28,22 @@
     v9 = LogCategory_SecureLocations();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v7 machService];
+      machService = [v7 machService];
       *buf = 138412290;
-      v17 = v10;
+      v17 = machService;
       _os_log_impl(&dword_2643D0000, v9, OS_LOG_TYPE_DEFAULT, "SPOwnerSessionLocationFetch: Establishing XPC connection to %@", buf, 0xCu);
     }
 
-    v11 = [(SPOwnerSessionDelegatedLocation *)self session];
-    [v11 resume];
+    session2 = [(SPOwnerSessionDelegatedLocation *)self session];
+    [session2 resume];
   }
 
-  v12 = [(SPOwnerSessionDelegatedLocation *)self session];
-  v13 = [v12 proxy];
+  session3 = [(SPOwnerSessionDelegatedLocation *)self session];
+  proxy = [session3 proxy];
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v13;
+  return proxy;
 }
 
 + (id)exportedInterface
@@ -84,16 +84,16 @@ uint64_t __50__SPOwnerSessionDelegatedLocation_remoteInterface__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)didPublishDelegatedLocation:(id)a3
+- (void)didPublishDelegatedLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __63__SPOwnerSessionDelegatedLocation_didPublishDelegatedLocation___block_invoke;
   v6[3] = &unk_279B58C78;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = locationCopy;
+  v5 = locationCopy;
   _os_activity_initiate(&dword_2643D0000, "SPOwnerSessionDelegatedLocation.didPublishDelegatedLocation", OS_ACTIVITY_FLAG_DEFAULT, v6);
 }
 
@@ -118,13 +118,13 @@ void __63__SPOwnerSessionDelegatedLocation_didPublishDelegatedLocation___block_i
   }
 }
 
-- (void)subscribeDelegatedLocationUpdatesForContext:(id)a3 completion:(id)a4
+- (void)subscribeDelegatedLocationUpdatesForContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CCA8D8] mainBundle];
-  v9 = [v8 bundleIdentifier];
-  [v6 setBundleIdentifier:v9];
+  contextCopy = context;
+  completionCopy = completion;
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  [contextCopy setBundleIdentifier:bundleIdentifier];
 
   v10 = LogCategory_LocationFetch();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -133,11 +133,11 @@ void __63__SPOwnerSessionDelegatedLocation_didPublishDelegatedLocation___block_i
     _os_log_impl(&dword_2643D0000, v10, OS_LOG_TYPE_DEFAULT, "SPOwnerSessionDelegatedLocation.subscribeDelegatedLocationUpdatesForContext:completion", buf, 2u);
   }
 
-  v11 = [(SPOwnerSessionDelegatedLocation *)self locationUpdateBlock];
+  locationUpdateBlock = [(SPOwnerSessionDelegatedLocation *)self locationUpdateBlock];
 
-  if (v11)
+  if (locationUpdateBlock)
   {
-    [v6 setSubscribe:1];
+    [contextCopy setSubscribe:1];
   }
 
   objc_initWeak(buf, self);
@@ -146,10 +146,10 @@ void __63__SPOwnerSessionDelegatedLocation_didPublishDelegatedLocation___block_i
   activity_block[2] = __90__SPOwnerSessionDelegatedLocation_subscribeDelegatedLocationUpdatesForContext_completion___block_invoke;
   activity_block[3] = &unk_279B58BA8;
   objc_copyWeak(&v17, buf);
-  v15 = v6;
-  v16 = v7;
-  v12 = v7;
-  v13 = v6;
+  v15 = contextCopy;
+  v16 = completionCopy;
+  v12 = completionCopy;
+  v13 = contextCopy;
   _os_activity_initiate(&dword_2643D0000, "SPOwnerSessionDelegatedLocation.subscribeDelegatedLocationUpdatesForContext:completion:", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 
   objc_destroyWeak(&v17);
@@ -193,9 +193,9 @@ void __90__SPOwnerSessionDelegatedLocation_subscribeDelegatedLocationUpdatesForC
   }
 }
 
-- (void)unsubscribeDelegatedLocationUpdatesWithCompletion:(id)a3
+- (void)unsubscribeDelegatedLocationUpdatesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = LogCategory_LocationFetch();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -204,24 +204,24 @@ void __90__SPOwnerSessionDelegatedLocation_subscribeDelegatedLocationUpdatesForC
   }
 
   [(SPOwnerSessionDelegatedLocation *)self setLocationUpdateBlock:0];
-  v6 = [(SPOwnerSessionDelegatedLocation *)self session];
-  [v6 invalidate];
+  session = [(SPOwnerSessionDelegatedLocation *)self session];
+  [session invalidate];
 
   [(SPOwnerSessionDelegatedLocation *)self setSession:0];
-  v4[2](v4, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)delegatedLocationForContext:(id)a3 completion:(id)a4
+- (void)delegatedLocationForContext:(id)context completion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = LogCategory_LocationFetch();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 uuids];
+    uuids = [contextCopy uuids];
     *buf = 134217984;
-    v18 = [v9 count];
+    v18 = [uuids count];
     _os_log_impl(&dword_2643D0000, v8, OS_LOG_TYPE_DEFAULT, "SPOwnerSessionDelegatedLocation.delegatedLocationForContext:completion: %lu", buf, 0xCu);
   }
 
@@ -230,11 +230,11 @@ void __90__SPOwnerSessionDelegatedLocation_subscribeDelegatedLocationUpdatesForC
   activity_block[1] = 3221225472;
   activity_block[2] = __74__SPOwnerSessionDelegatedLocation_delegatedLocationForContext_completion___block_invoke;
   activity_block[3] = &unk_279B59718;
-  v14 = v6;
-  v10 = v6;
+  v14 = contextCopy;
+  v10 = contextCopy;
   objc_copyWeak(&v16, buf);
-  v15 = v7;
-  v11 = v7;
+  v15 = completionCopy;
+  v11 = completionCopy;
   _os_activity_initiate(&dword_2643D0000, "SPOwnerSessionDelegatedLocation.delegatedLocationForContext:completion:", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 
   objc_destroyWeak(&v16);

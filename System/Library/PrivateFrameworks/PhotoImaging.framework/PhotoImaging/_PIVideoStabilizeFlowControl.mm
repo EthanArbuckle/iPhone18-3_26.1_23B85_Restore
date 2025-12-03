@@ -1,31 +1,31 @@
 @interface _PIVideoStabilizeFlowControl
 - (BOOL)ICShouldBeCanceled;
-- (void)ICReportProgress:(float)a3;
+- (void)ICReportProgress:(float)progress;
 @end
 
 @implementation _PIVideoStabilizeFlowControl
 
 - (BOOL)ICShouldBeCanceled
 {
-  v3 = [(_PIVideoStabilizeFlowControl *)self shouldCancelHandler];
+  shouldCancelHandler = [(_PIVideoStabilizeFlowControl *)self shouldCancelHandler];
 
-  if (!v3)
+  if (!shouldCancelHandler)
   {
     return 0;
   }
 
-  v4 = [(_PIVideoStabilizeFlowControl *)self shouldCancelHandler];
-  v5 = v4[2]();
+  shouldCancelHandler2 = [(_PIVideoStabilizeFlowControl *)self shouldCancelHandler];
+  v5 = shouldCancelHandler2[2]();
 
   return v5;
 }
 
-- (void)ICReportProgress:(float)a3
+- (void)ICReportProgress:(float)progress
 {
   progressHandler = self->_progressHandler;
   if (progressHandler)
   {
-    progressHandler[2](self->_rangeMin + a3 * (self->_rangeMax - self->_rangeMin));
+    progressHandler[2](self->_rangeMin + progress * (self->_rangeMax - self->_rangeMin));
   }
 }
 

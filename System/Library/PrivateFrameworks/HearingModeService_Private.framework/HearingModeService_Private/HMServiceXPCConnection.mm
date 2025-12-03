@@ -1,20 +1,20 @@
 @interface HMServiceXPCConnection
-- (BOOL)_entitledAndReturnError:(id *)a3;
-- (void)clientActivate:(id)a3 completion:(id)a4;
-- (void)clientModifyDeviceConfig:(id)a3 identifier:(id)a4 completion:(id)a5;
-- (void)clientReportDiagnosticRecord:(id)a3;
-- (void)clientReportHMDeviceRecordChanged:(id)a3;
-- (void)clientReportHMDeviceRecordLost:(id)a3;
-- (void)clientReportValidAudiograms:(id)a3 invalidAudiograms:(id)a4 error:(id)a5;
-- (void)clientSyncFetchHearingModeDeviceRecordForIdentifier:(id)a3 recordHandler:(id)a4;
-- (void)clientTriggerFetchAudiograms:(id)a3 completion:(id)a4;
-- (void)clientTriggerOnDemandDiagnosticCheckForDeviceIdentifier:(id)a3 completion:(id)a4;
+- (BOOL)_entitledAndReturnError:(id *)error;
+- (void)clientActivate:(id)activate completion:(id)completion;
+- (void)clientModifyDeviceConfig:(id)config identifier:(id)identifier completion:(id)completion;
+- (void)clientReportDiagnosticRecord:(id)record;
+- (void)clientReportHMDeviceRecordChanged:(id)changed;
+- (void)clientReportHMDeviceRecordLost:(id)lost;
+- (void)clientReportValidAudiograms:(id)audiograms invalidAudiograms:(id)invalidAudiograms error:(id)error;
+- (void)clientSyncFetchHearingModeDeviceRecordForIdentifier:(id)identifier recordHandler:(id)handler;
+- (void)clientTriggerFetchAudiograms:(id)audiograms completion:(id)completion;
+- (void)clientTriggerOnDemandDiagnosticCheckForDeviceIdentifier:(id)identifier completion:(id)completion;
 - (void)xpcConnectionInvalidated;
 @end
 
 @implementation HMServiceXPCConnection
 
-- (BOOL)_entitledAndReturnError:(id *)a3
+- (BOOL)_entitledAndReturnError:(id *)error
 {
   if (self->_entitled)
   {
@@ -67,17 +67,17 @@ LABEL_9:
       }
     }
 
-    v4 = [(HMServiceClient *)v5 invalidate];
+    invalidate = [(HMServiceClient *)v5 invalidate];
     v5 = v7;
   }
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](invalidate, v5);
 }
 
-- (void)clientActivate:(id)a3 completion:(id)a4
+- (void)clientActivate:(id)activate completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  activateCopy = activate;
+  completionCopy = completion;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -89,12 +89,12 @@ LABEL_9:
   v23[2] = __52__HMServiceXPCConnection_clientActivate_completion___block_invoke;
   v23[3] = &unk_2796F0598;
   v25 = &v26;
-  v9 = v8;
+  v9 = completionCopy;
   v24 = v9;
   v10 = MEMORY[0x253095540](v23);
   if (gLogCategory_HMServiceDaemon <= 10 && (gLogCategory_HMServiceDaemon != -1 || _LogCategory_Initialize()))
   {
-    v17 = v7;
+    v17 = activateCopy;
     LogPrintF();
   }
 
@@ -104,7 +104,7 @@ LABEL_9:
   objc_storeStrong(v11, obj);
   if (v12)
   {
-    objc_storeStrong(&self->_hearingModeClient, a3);
+    objc_storeStrong(&self->_hearingModeClient, activate);
     if (v9)
     {
       (*(v9 + 2))(v9, 0);
@@ -112,11 +112,11 @@ LABEL_9:
 
     [(HMServiceDaemon *)self->_daemon _update];
     v13 = +[HMDeviceManager sharedInstance];
-    v14 = [v13 availableRecords];
+    availableRecords = [v13 availableRecords];
 
     if (gLogCategory_HMServiceDaemon <= 30 && (gLogCategory_HMServiceDaemon != -1 || _LogCategory_Initialize()))
     {
-      v18 = [v14 count];
+      v18 = [availableRecords count];
       LogPrintF();
     }
 
@@ -125,15 +125,15 @@ LABEL_9:
     v21[2] = __52__HMServiceXPCConnection_clientActivate_completion___block_invoke_2;
     v21[3] = &unk_2796F0420;
     v21[4] = self;
-    [v14 enumerateKeysAndObjectsUsingBlock:{v21, v18}];
-    if ([v7 internalFlags])
+    [availableRecords enumerateKeysAndObjectsUsingBlock:{v21, v18}];
+    if ([activateCopy internalFlags])
     {
       v15 = +[HMDeviceManager sharedInstance];
-      v16 = [v15 availableDiagnosticRecords];
+      availableDiagnosticRecords = [v15 availableDiagnosticRecords];
 
       if (gLogCategory_HMServiceDaemon <= 30 && (gLogCategory_HMServiceDaemon != -1 || _LogCategory_Initialize()))
       {
-        v19 = [v16 count];
+        v19 = [availableDiagnosticRecords count];
         LogPrintF();
       }
 
@@ -142,7 +142,7 @@ LABEL_9:
       v20[2] = __52__HMServiceXPCConnection_clientActivate_completion___block_invoke_3;
       v20[3] = &unk_2796F05C0;
       v20[4] = self;
-      [v16 enumerateKeysAndObjectsUsingBlock:{v20, v19}];
+      [availableDiagnosticRecords enumerateKeysAndObjectsUsingBlock:{v20, v19}];
     }
   }
 
@@ -188,10 +188,10 @@ LABEL_6:
   return result;
 }
 
-- (void)clientSyncFetchHearingModeDeviceRecordForIdentifier:(id)a3 recordHandler:(id)a4
+- (void)clientSyncFetchHearingModeDeviceRecordForIdentifier:(id)identifier recordHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -209,7 +209,7 @@ LABEL_6:
   v18[2] = __92__HMServiceXPCConnection_clientSyncFetchHearingModeDeviceRecordForIdentifier_recordHandler___block_invoke;
   v18[3] = &unk_2796F05E8;
   v20 = &v22;
-  v8 = v7;
+  v8 = handlerCopy;
   v19 = v8;
   v21 = &v28;
   v9 = MEMORY[0x253095540](v18);
@@ -220,15 +220,15 @@ LABEL_6:
   if (self)
   {
     v11 = +[HMDeviceManager sharedInstance];
-    v12 = [v11 availableRecords];
+    availableRecords = [v11 availableRecords];
 
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __92__HMServiceXPCConnection_clientSyncFetchHearingModeDeviceRecordForIdentifier_recordHandler___block_invoke_2;
     v14[3] = &unk_2796F04B8;
-    v15 = v6;
+    v15 = identifierCopy;
     v16 = &v28;
-    [v12 enumerateKeysAndObjectsUsingBlock:v14];
+    [availableRecords enumerateKeysAndObjectsUsingBlock:v14];
     if (gLogCategory_HMServiceDaemon <= 30 && (gLogCategory_HMServiceDaemon != -1 || _LogCategory_Initialize()))
     {
       v13 = v29[5];
@@ -349,11 +349,11 @@ LABEL_6:
   return result;
 }
 
-- (void)clientModifyDeviceConfig:(id)a3 identifier:(id)a4 completion:(id)a5
+- (void)clientModifyDeviceConfig:(id)config identifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  configCopy = config;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -365,10 +365,10 @@ LABEL_6:
   v20[2] = __73__HMServiceXPCConnection_clientModifyDeviceConfig_identifier_completion___block_invoke;
   v20[3] = &unk_2796F0598;
   v22 = &v23;
-  v11 = v10;
+  v11 = completionCopy;
   v21 = v11;
   v12 = MEMORY[0x253095540](v20);
-  if (v9 && v8)
+  if (identifierCopy && configCopy)
   {
     v13 = (v24 + 5);
     obj = v24[5];
@@ -379,12 +379,12 @@ LABEL_6:
       if (gLogCategory_HMServiceDaemon <= 30 && (gLogCategory_HMServiceDaemon != -1 || _LogCategory_Initialize()))
       {
         LogPrintF();
-        [(HMServiceDaemon *)self->_daemon _modifyDeviceConfig:v8 identifier:v9 completion:v11, v8];
+        [(HMServiceDaemon *)self->_daemon _modifyDeviceConfig:configCopy identifier:identifierCopy completion:v11, configCopy];
       }
 
       else
       {
-        [(HMServiceDaemon *)self->_daemon _modifyDeviceConfig:v8 identifier:v9 completion:v11, v18];
+        [(HMServiceDaemon *)self->_daemon _modifyDeviceConfig:configCopy identifier:identifierCopy completion:v11, v18];
       }
     }
   }
@@ -439,16 +439,16 @@ LABEL_6:
   return result;
 }
 
-- (void)clientReportValidAudiograms:(id)a3 invalidAudiograms:(id)a4 error:(id)a5
+- (void)clientReportValidAudiograms:(id)audiograms invalidAudiograms:(id)invalidAudiograms error:(id)error
 {
   if (!self->_audiogramsReported)
   {
     xpcCnx = self->_xpcCnx;
-    v9 = a5;
-    v10 = a4;
-    v11 = a3;
-    v12 = [(NSXPCConnection *)xpcCnx remoteObjectProxy];
-    [v12 clientHMAvailableAudiograms:v11 invalidAudiograms:v10 error:v9];
+    errorCopy = error;
+    invalidAudiogramsCopy = invalidAudiograms;
+    audiogramsCopy = audiograms;
+    remoteObjectProxy = [(NSXPCConnection *)xpcCnx remoteObjectProxy];
+    [remoteObjectProxy clientHMAvailableAudiograms:audiogramsCopy invalidAudiograms:invalidAudiogramsCopy error:errorCopy];
 
     self->_audiogramsReported = 1;
   }
@@ -475,10 +475,10 @@ uint64_t __98__HMServiceXPCConnection_clientSetOcclusionIndicationShownForDevice
   return result;
 }
 
-- (void)clientTriggerFetchAudiograms:(id)a3 completion:(id)a4
+- (void)clientTriggerFetchAudiograms:(id)audiograms completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  audiogramsCopy = audiograms;
+  completionCopy = completion;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -490,7 +490,7 @@ uint64_t __98__HMServiceXPCConnection_clientSetOcclusionIndicationShownForDevice
   v15[2] = __66__HMServiceXPCConnection_clientTriggerFetchAudiograms_completion___block_invoke;
   v15[3] = &unk_2796F0598;
   v17 = &v18;
-  v9 = v8;
+  v9 = completionCopy;
   v16 = v9;
   v10 = MEMORY[0x253095540](v15);
   v11 = (v19 + 5);
@@ -499,7 +499,7 @@ uint64_t __98__HMServiceXPCConnection_clientSetOcclusionIndicationShownForDevice
   objc_storeStrong(v11, obj);
   if (v12)
   {
-    objc_storeStrong(&self->_hearingModeClient, a3);
+    objc_storeStrong(&self->_hearingModeClient, audiograms);
     if (v9)
     {
       (*(v9 + 2))(v9, 0);
@@ -552,10 +552,10 @@ LABEL_6:
   return result;
 }
 
-- (void)clientTriggerOnDemandDiagnosticCheckForDeviceIdentifier:(id)a3 completion:(id)a4
+- (void)clientTriggerOnDemandDiagnosticCheckForDeviceIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -567,10 +567,10 @@ LABEL_6:
   v17[2] = __93__HMServiceXPCConnection_clientTriggerOnDemandDiagnosticCheckForDeviceIdentifier_completion___block_invoke;
   v17[3] = &unk_2796F0598;
   v19 = &v20;
-  v8 = v7;
+  v8 = completionCopy;
   v18 = v8;
   v9 = MEMORY[0x253095540](v17);
-  if (v6)
+  if (identifierCopy)
   {
     v10 = (v21 + 5);
     obj = v21[5];
@@ -581,12 +581,12 @@ LABEL_6:
       if (gLogCategory_HMServiceDaemon <= 30 && (gLogCategory_HMServiceDaemon != -1 || _LogCategory_Initialize()))
       {
         LogPrintF();
-        [(HMServiceDaemon *)self->_daemon _triggerDiagnosticCheckForIdentifier:v6 completion:v8, v6];
+        [(HMServiceDaemon *)self->_daemon _triggerDiagnosticCheckForIdentifier:identifierCopy completion:v8, identifierCopy];
       }
 
       else
       {
-        [(HMServiceDaemon *)self->_daemon _triggerDiagnosticCheckForIdentifier:v6 completion:v8, v15];
+        [(HMServiceDaemon *)self->_daemon _triggerDiagnosticCheckForIdentifier:identifierCopy completion:v8, v15];
       }
     }
   }
@@ -641,14 +641,14 @@ LABEL_6:
   return result;
 }
 
-- (void)clientReportHMDeviceRecordChanged:(id)a3
+- (void)clientReportHMDeviceRecordChanged:(id)changed
 {
-  v10 = a3;
-  v4 = [v10 bluetoothUUID];
-  if (v4)
+  changedCopy = changed;
+  bluetoothUUID = [changedCopy bluetoothUUID];
+  if (bluetoothUUID)
   {
-    v5 = [v10 bluetoothAddress];
-    if (v5)
+    bluetoothAddress = [changedCopy bluetoothAddress];
+    if (bluetoothAddress)
     {
       records = self->_records;
       if (!records)
@@ -660,23 +660,23 @@ LABEL_6:
         records = self->_records;
       }
 
-      [(NSMutableDictionary *)records setObject:v10 forKeyedSubscript:v4];
+      [(NSMutableDictionary *)records setObject:changedCopy forKeyedSubscript:bluetoothUUID];
       if (self->_hearingModeClient)
       {
-        v9 = [(NSXPCConnection *)self->_xpcCnx remoteObjectProxy];
-        [v9 clientHMDeviceRecordChanged:v10];
+        remoteObjectProxy = [(NSXPCConnection *)self->_xpcCnx remoteObjectProxy];
+        [remoteObjectProxy clientHMDeviceRecordChanged:changedCopy];
       }
     }
   }
 }
 
-- (void)clientReportHMDeviceRecordLost:(id)a3
+- (void)clientReportHMDeviceRecordLost:(id)lost
 {
-  v10 = a3;
-  v4 = [v10 bluetoothUUID];
-  if (v4)
+  lostCopy = lost;
+  bluetoothUUID = [lostCopy bluetoothUUID];
+  if (bluetoothUUID)
   {
-    v5 = [(NSMutableDictionary *)self->_records objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_records objectForKeyedSubscript:bluetoothUUID];
 
     if (v5)
     {
@@ -685,26 +685,26 @@ LABEL_6:
       {
         records = self->_records;
         v8 = hearingModeClient;
-        [(NSMutableDictionary *)records setObject:0 forKeyedSubscript:v4];
-        v9 = [(NSXPCConnection *)self->_xpcCnx remoteObjectProxy];
+        [(NSMutableDictionary *)records setObject:0 forKeyedSubscript:bluetoothUUID];
+        remoteObjectProxy = [(NSXPCConnection *)self->_xpcCnx remoteObjectProxy];
 
-        [v9 clientHMDeviceRecordLost:v10];
+        [remoteObjectProxy clientHMDeviceRecordLost:lostCopy];
       }
     }
   }
 }
 
-- (void)clientReportDiagnosticRecord:(id)a3
+- (void)clientReportDiagnosticRecord:(id)record
 {
-  v7 = a3;
-  v4 = [v7 bluetoothUUID];
-  if (v4)
+  recordCopy = record;
+  bluetoothUUID = [recordCopy bluetoothUUID];
+  if (bluetoothUUID)
   {
-    v5 = [v7 bluetoothAddress];
-    if (v5 && self->_hearingModeClient)
+    bluetoothAddress = [recordCopy bluetoothAddress];
+    if (bluetoothAddress && self->_hearingModeClient)
     {
-      v6 = [(NSXPCConnection *)self->_xpcCnx remoteObjectProxy];
-      [v6 clientHMDeviceDiagnosticRecordFound:v7];
+      remoteObjectProxy = [(NSXPCConnection *)self->_xpcCnx remoteObjectProxy];
+      [remoteObjectProxy clientHMDeviceDiagnosticRecordFound:recordCopy];
     }
   }
 }

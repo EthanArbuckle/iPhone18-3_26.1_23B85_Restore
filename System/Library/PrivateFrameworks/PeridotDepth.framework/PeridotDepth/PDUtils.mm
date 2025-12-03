@@ -1,15 +1,15 @@
 @interface PDUtils
-+ (id)getPresetName:(int)a3;
-+ (int)getPresetFromName:(id)a3;
++ (id)getPresetName:(int)name;
++ (int)getPresetFromName:(id)name;
 @end
 
 @implementation PDUtils
 
-+ (id)getPresetName:(int)a3
++ (id)getPresetName:(int)name
 {
-  if (a3 <= 3)
+  if (name <= 3)
   {
-    v4 = (+[PDUtils getPresets]+ 16 * a3)[8];
+    v4 = (+[PDUtils getPresets]+ 16 * name)[8];
   }
 
   else
@@ -20,16 +20,16 @@
   return v4;
 }
 
-+ (int)getPresetFromName:(id)a3
++ (int)getPresetFromName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = +[PDUtils getPresets];
-  if (![v3 caseInsensitiveCompare:v4->var1])
+  if (![nameCopy caseInsensitiveCompare:v4->var1])
   {
     goto LABEL_9;
   }
 
-  if (![v3 caseInsensitiveCompare:v4[1].var1])
+  if (![nameCopy caseInsensitiveCompare:v4[1].var1])
   {
     ++v4;
 LABEL_9:
@@ -37,13 +37,13 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (![v3 caseInsensitiveCompare:v4[2].var1])
+  if (![nameCopy caseInsensitiveCompare:v4[2].var1])
   {
     v4 += 2;
     goto LABEL_9;
   }
 
-  if (![v3 caseInsensitiveCompare:v4[3].var1])
+  if (![nameCopy caseInsensitiveCompare:v4[3].var1])
   {
     v4 += 3;
     goto LABEL_9;

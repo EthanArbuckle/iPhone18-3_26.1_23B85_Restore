@@ -1,30 +1,30 @@
 @interface HUAnimationUtilities
-+ (void)schedulePopAnimation:(id)a3 scaleFactor:(double)a4 beginDuration:(double)a5 endDuration:(double)a6 completion:(id)a7;
++ (void)schedulePopAnimation:(id)animation scaleFactor:(double)factor beginDuration:(double)duration endDuration:(double)endDuration completion:(id)completion;
 @end
 
 @implementation HUAnimationUtilities
 
-+ (void)schedulePopAnimation:(id)a3 scaleFactor:(double)a4 beginDuration:(double)a5 endDuration:(double)a6 completion:(id)a7
++ (void)schedulePopAnimation:(id)animation scaleFactor:(double)factor beginDuration:(double)duration endDuration:(double)endDuration completion:(id)completion
 {
-  v11 = a3;
-  v12 = a7;
-  [v11 setUserInteractionEnabled:0];
+  animationCopy = animation;
+  completionCopy = completion;
+  [animationCopy setUserInteractionEnabled:0];
   v38 = 0u;
   v39 = 0u;
   v37 = 0u;
-  if (v11)
+  if (animationCopy)
   {
-    [v11 transform];
+    [animationCopy transform];
   }
 
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __94__HUAnimationUtilities_schedulePopAnimation_scaleFactor_beginDuration_endDuration_completion___block_invoke;
   aBlock[3] = &unk_277DB8090;
-  v13 = v11;
+  v13 = animationCopy;
   v35 = v13;
-  v36 = v12;
-  v14 = v12;
+  v36 = completionCopy;
+  v14 = completionCopy;
   v15 = _Block_copy(aBlock);
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
@@ -35,13 +35,13 @@
   v30 = v37;
   v31 = v38;
   v32 = v39;
-  v33 = a4;
+  factorCopy = factor;
   v17 = _Block_copy(v28);
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __94__HUAnimationUtilities_schedulePopAnimation_scaleFactor_beginDuration_endDuration_completion___block_invoke_3;
   v21[3] = &unk_277DB8110;
-  v24 = a6;
+  endDurationCopy = endDuration;
   v25 = v37;
   v26 = v38;
   v27 = v39;
@@ -50,7 +50,7 @@
   v18 = v15;
   v19 = v16;
   v20 = _Block_copy(v21);
-  [MEMORY[0x277D75D18] animateWithDuration:0x20000 delay:v17 options:v20 animations:a5 completion:0.0];
+  [MEMORY[0x277D75D18] animateWithDuration:0x20000 delay:v17 options:v20 animations:duration completion:0.0];
 }
 
 uint64_t __94__HUAnimationUtilities_schedulePopAnimation_scaleFactor_beginDuration_endDuration_completion___block_invoke(uint64_t a1)

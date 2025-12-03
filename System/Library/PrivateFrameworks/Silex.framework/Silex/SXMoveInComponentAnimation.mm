@@ -1,18 +1,18 @@
 @interface SXMoveInComponentAnimation
-- (int64_t)preferredStartingPositionWithValue:(id)a3 withType:(int)a4;
+- (int64_t)preferredStartingPositionWithValue:(id)value withType:(int)type;
 @end
 
 @implementation SXMoveInComponentAnimation
 
-- (int64_t)preferredStartingPositionWithValue:(id)a3 withType:(int)a4
+- (int64_t)preferredStartingPositionWithValue:(id)value withType:(int)type
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"left"])
+  valueCopy = value;
+  if ([valueCopy isEqualToString:@"left"])
   {
     v5 = 1;
   }
 
-  else if ([v4 isEqualToString:@"right"])
+  else if ([valueCopy isEqualToString:@"right"])
   {
     v5 = 2;
   }

@@ -1,19 +1,19 @@
 @interface LACCacheSync
-- (LACCacheSync)initWithTimeout:(double)a3 block:(id)a4;
-- (id)valueWithParameter:(id)a3 error:(id *)a4;
+- (LACCacheSync)initWithTimeout:(double)timeout block:(id)block;
+- (id)valueWithParameter:(id)parameter error:(id *)error;
 @end
 
 @implementation LACCacheSync
 
-- (LACCacheSync)initWithTimeout:(double)a3 block:(id)a4
+- (LACCacheSync)initWithTimeout:(double)timeout block:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v11.receiver = self;
   v11.super_class = LACCacheSync;
-  v7 = [(LACCache *)&v11 initWithTimeout:a3];
+  v7 = [(LACCache *)&v11 initWithTimeout:timeout];
   if (v7)
   {
-    v8 = _Block_copy(v6);
+    v8 = _Block_copy(blockCopy);
     block = v7->_block;
     v7->_block = v8;
   }
@@ -21,14 +21,14 @@
   return v7;
 }
 
-- (id)valueWithParameter:(id)a3 error:(id *)a4
+- (id)valueWithParameter:(id)parameter error:(id *)error
 {
-  v5 = a3;
-  v6 = [(LACCache *)self cachedValueWithParameter:v5];
+  parameterCopy = parameter;
+  v6 = [(LACCache *)self cachedValueWithParameter:parameterCopy];
   if (!v6)
   {
     v6 = (*(self->_block + 2))();
-    [(LACCache *)self setCachedValue:v6 withParameter:v5];
+    [(LACCache *)self setCachedValue:v6 withParameter:parameterCopy];
   }
 
   v7 = v6;

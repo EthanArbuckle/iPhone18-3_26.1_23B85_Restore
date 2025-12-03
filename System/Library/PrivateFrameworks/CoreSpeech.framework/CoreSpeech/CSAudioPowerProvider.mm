@@ -1,9 +1,9 @@
 @interface CSAudioPowerProvider
 + (CSAudioPowerProvider)sharedInstance;
 - (CSAudioPowerProvider)init;
-- (void)getAudioPowerUpdateWithCompletion:(id)a3;
-- (void)processAudioChunk:(id)a3;
-- (void)processAudioChunkForTV:(id)a3;
+- (void)getAudioPowerUpdateWithCompletion:(id)completion;
+- (void)processAudioChunk:(id)chunk;
+- (void)processAudioChunkForTV:(id)v;
 @end
 
 @implementation CSAudioPowerProvider
@@ -20,42 +20,42 @@
   return v3;
 }
 
-- (void)getAudioPowerUpdateWithCompletion:(id)a3
+- (void)getAudioPowerUpdateWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    (*(a3 + 2))(a3, 0, self->_cachedAvgPower, self->_cachedPeakPower);
+    (*(completion + 2))(completion, 0, self->_cachedAvgPower, self->_cachedPeakPower);
   }
 }
 
-- (void)processAudioChunkForTV:(id)a3
+- (void)processAudioChunkForTV:(id)v
 {
-  v4 = a3;
-  [v4 avgPower];
+  vCopy = v;
+  [vCopy avgPower];
   self->_cachedAvgPower = v5;
-  [v4 peakPower];
+  [vCopy peakPower];
   v7 = v6;
 
   self->_cachedPeakPower = v7;
 }
 
-- (void)processAudioChunk:(id)a3
+- (void)processAudioChunk:(id)chunk
 {
-  v4 = a3;
+  chunkCopy = chunk;
   v5 = +[CSConfig inputRecordingIsFloat];
   powerMeter = self->_powerMeter;
-  v7 = [v4 data];
-  v8 = [v7 bytes];
-  v9 = [v4 numSamples];
+  data = [chunkCopy data];
+  bytes = [data bytes];
+  numSamples = [chunkCopy numSamples];
 
   if (v5)
   {
-    [(CSAudioPowerMeter *)powerMeter processFloatBuffer:v8 stride:1 inFrameToProcess:v9];
+    [(CSAudioPowerMeter *)powerMeter processFloatBuffer:bytes stride:1 inFrameToProcess:numSamples];
   }
 
   else
   {
-    [(CSAudioPowerMeter *)powerMeter processShortBuffer:v8 stride:1 inFrameToProcess:v9];
+    [(CSAudioPowerMeter *)powerMeter processShortBuffer:bytes stride:1 inFrameToProcess:numSamples];
   }
 
   [(CSAudioPowerMeter *)self->_powerMeter getAveragePowerDB];

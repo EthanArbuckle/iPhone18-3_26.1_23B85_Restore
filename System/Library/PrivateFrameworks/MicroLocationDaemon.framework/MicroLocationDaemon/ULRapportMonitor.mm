@@ -5,20 +5,20 @@
 - (void)_startMonitoringForIdentities;
 - (void)_stopMonitoringForDevices;
 - (void)_stopMonitoringForIdentities;
-- (void)startMonitoring:(id)a3;
-- (void)stopMonitoring:(id)a3;
+- (void)startMonitoring:(id)monitoring;
+- (void)stopMonitoring:(id)monitoring;
 @end
 
 @implementation ULRapportMonitor
 
-- (void)startMonitoring:(id)a3
+- (void)startMonitoring:(id)monitoring
 {
-  v9 = a3;
-  v4 = [(ULEventMonitor *)self queue];
-  dispatch_assert_queue_V2(v4);
+  monitoringCopy = monitoring;
+  queue = [(ULEventMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v5 = +[(ULEvent *)ULRapportMonitorEventIdentities];
-  v6 = [v9 isEqual:v5];
+  v6 = [monitoringCopy isEqual:v5];
 
   if (v6)
   {
@@ -28,7 +28,7 @@
   else
   {
     v7 = +[(ULEvent *)ULRapportMonitorEventDeviceFound];
-    v8 = [v9 isEqual:v7];
+    v8 = [monitoringCopy isEqual:v7];
 
     if (v8)
     {
@@ -37,14 +37,14 @@
   }
 }
 
-- (void)stopMonitoring:(id)a3
+- (void)stopMonitoring:(id)monitoring
 {
-  v9 = a3;
-  v4 = [(ULEventMonitor *)self queue];
-  dispatch_assert_queue_V2(v4);
+  monitoringCopy = monitoring;
+  queue = [(ULEventMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v5 = +[(ULEvent *)ULRapportMonitorEventIdentities];
-  v6 = [v9 isEqual:v5];
+  v6 = [monitoringCopy isEqual:v5];
 
   if (v6)
   {
@@ -54,7 +54,7 @@
   else
   {
     v7 = +[(ULEvent *)ULRapportMonitorEventDeviceFound];
-    v8 = [v9 isEqual:v7];
+    v8 = [monitoringCopy isEqual:v7];
 
     if (v8)
     {
@@ -69,18 +69,18 @@
   v3 = objc_alloc_init(MEMORY[0x277D44150]);
   [(ULRapportMonitor *)self setClient:v3];
 
-  v4 = [(ULEventMonitor *)self queue];
-  v5 = [(ULRapportMonitor *)self client];
-  [v5 setDispatchQueue:v4];
+  queue = [(ULEventMonitor *)self queue];
+  client = [(ULRapportMonitor *)self client];
+  [client setDispatchQueue:queue];
 
   objc_initWeak(&location, self);
-  v6 = [(ULRapportMonitor *)self notificationHelper];
+  notificationHelper = [(ULRapportMonitor *)self notificationHelper];
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __49__ULRapportMonitor__startMonitoringForIdentities__block_invoke;
   v13 = &unk_2798D4348;
   objc_copyWeak(&v14, &location);
-  [v6 addObserverForNotificationName:@"com.apple.rapport.identitiesChanged" handler:&v10];
+  [notificationHelper addObserverForNotificationName:@"com.apple.rapport.identitiesChanged" handler:&v10];
 
   [(ULRapportMonitor *)self _getIdentities:v10];
   if (onceToken_MicroLocation_Default != -1)
@@ -117,13 +117,13 @@ void __49__ULRapportMonitor__startMonitoringForIdentities__block_invoke(uint64_t
   v3 = objc_alloc_init(MEMORY[0x277D44160]);
   [(ULRapportMonitor *)self setCompanionLinkClient:v3];
 
-  v4 = [(ULEventMonitor *)self queue];
-  v5 = [(ULRapportMonitor *)self companionLinkClient];
-  [v5 setDispatchQueue:v4];
+  queue = [(ULEventMonitor *)self queue];
+  companionLinkClient = [(ULRapportMonitor *)self companionLinkClient];
+  [companionLinkClient setDispatchQueue:queue];
 
-  v6 = [(ULRapportMonitor *)self controlFlags];
-  v7 = [(ULRapportMonitor *)self companionLinkClient];
-  [v7 setControlFlags:v6];
+  controlFlags = [(ULRapportMonitor *)self controlFlags];
+  companionLinkClient2 = [(ULRapportMonitor *)self companionLinkClient];
+  [companionLinkClient2 setControlFlags:controlFlags];
 
   [(ULRapportMonitor *)self _activateCompanionLinkClientAndSetHandlers];
   if (onceToken_MicroLocation_Default != -1)
@@ -160,11 +160,11 @@ void __49__ULRapportMonitor__startMonitoringForIdentities__block_invoke(uint64_t
     _os_log_impl(&dword_258FE9000, v3, OS_LOG_TYPE_DEFAULT, "Stop monitoring: %@", &v8, 0xCu);
   }
 
-  v5 = [(ULRapportMonitor *)self notificationHelper];
-  [v5 removeObserverForNotificationName:@"com.apple.rapport.identitiesChanged"];
+  notificationHelper = [(ULRapportMonitor *)self notificationHelper];
+  [notificationHelper removeObserverForNotificationName:@"com.apple.rapport.identitiesChanged"];
 
-  v6 = [(ULRapportMonitor *)self client];
-  [v6 invalidate];
+  client = [(ULRapportMonitor *)self client];
+  [client invalidate];
 
   [(ULRapportMonitor *)self setClient:0];
   [(ULRapportMonitor *)self setIdentities:0];
@@ -188,11 +188,11 @@ void __49__ULRapportMonitor__startMonitoringForIdentities__block_invoke(uint64_t
     _os_log_impl(&dword_258FE9000, v3, OS_LOG_TYPE_DEFAULT, "Stop monitoring: %@", &v8, 0xCu);
   }
 
-  v5 = [(ULRapportMonitor *)self companionLinkClient];
-  [v5 invalidate];
+  companionLinkClient = [(ULRapportMonitor *)self companionLinkClient];
+  [companionLinkClient invalidate];
 
-  v6 = [(ULRapportMonitor *)self companionLinkClient];
-  [v6 setDeviceFoundHandler:0];
+  companionLinkClient2 = [(ULRapportMonitor *)self companionLinkClient];
+  [companionLinkClient2 setDeviceFoundHandler:0];
 
   [(ULRapportMonitor *)self setCompanionLinkClient:0];
   v7 = *MEMORY[0x277D85DE8];
@@ -201,14 +201,14 @@ void __49__ULRapportMonitor__startMonitoringForIdentities__block_invoke(uint64_t
 - (void)_getIdentities
 {
   objc_initWeak(&location, self);
-  v3 = [(ULRapportMonitor *)self client];
-  v4 = [(ULRapportMonitor *)self identityTypeFlags];
+  client = [(ULRapportMonitor *)self client];
+  identityTypeFlags = [(ULRapportMonitor *)self identityTypeFlags];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __34__ULRapportMonitor__getIdentities__block_invoke;
   v5[3] = &unk_2798D4370;
   objc_copyWeak(&v6, &location);
-  [v3 getIdentitiesWithFlags:v4 completion:v5];
+  [client getIdentitiesWithFlags:identityTypeFlags completion:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -269,16 +269,16 @@ void __34__ULRapportMonitor__getIdentities__block_invoke(uint64_t a1, void *a2, 
   v7[2] = __62__ULRapportMonitor__activateCompanionLinkClientAndSetHandlers__block_invoke;
   v7[3] = &unk_2798D4398;
   objc_copyWeak(&v8, &location);
-  v3 = [(ULRapportMonitor *)self companionLinkClient];
-  [v3 setDeviceFoundHandler:v7];
+  companionLinkClient = [(ULRapportMonitor *)self companionLinkClient];
+  [companionLinkClient setDeviceFoundHandler:v7];
 
-  v4 = [(ULRapportMonitor *)self companionLinkClient];
+  companionLinkClient2 = [(ULRapportMonitor *)self companionLinkClient];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __62__ULRapportMonitor__activateCompanionLinkClientAndSetHandlers__block_invoke_2;
   v5[3] = &unk_2798D43C0;
   objc_copyWeak(&v6, &location);
-  [v4 activateWithCompletion:v5];
+  [companionLinkClient2 activateWithCompletion:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&v8);

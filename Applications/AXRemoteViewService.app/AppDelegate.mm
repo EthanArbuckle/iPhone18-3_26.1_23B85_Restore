@@ -1,10 +1,10 @@
 @interface AppDelegate
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
 @end
 
 @implementation AppDelegate
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
   v5 = [UINavigationController alloc];
   v6 = objc_opt_new();
@@ -17,14 +17,14 @@
   [(AppDelegate *)self setWindow:v10];
 
   v11 = +[UIColor blackColor];
-  v12 = [(AppDelegate *)self window];
-  [v12 setBackgroundColor:v11];
+  window = [(AppDelegate *)self window];
+  [window setBackgroundColor:v11];
 
-  v13 = [(AppDelegate *)self window];
-  [v13 setRootViewController:v7];
+  window2 = [(AppDelegate *)self window];
+  [window2 setRootViewController:v7];
 
-  v14 = [(AppDelegate *)self window];
-  [v14 makeKeyAndVisible];
+  window3 = [(AppDelegate *)self window];
+  [window3 makeKeyAndVisible];
 
   return 1;
 }

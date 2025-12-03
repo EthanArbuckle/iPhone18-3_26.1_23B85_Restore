@@ -1,16 +1,16 @@
 @interface EAGLContext
 + (BOOL)setCurrentContext:(EAGLContext *)context;
 + (EAGLContext)currentContext;
-- (BOOL)attachImage:(unint64_t)a3 toCoreSurface:(__IOSurface *)a4 invertedRender:(BOOL)a5;
+- (BOOL)attachImage:(unint64_t)image toCoreSurface:(__IOSurface *)surface invertedRender:(BOOL)render;
 - (BOOL)isMultiThreaded;
 - (BOOL)presentRenderbuffer:(NSUInteger)target;
 - (BOOL)presentRenderbuffer:(NSUInteger)target afterMinimumDuration:(CFTimeInterval)duration;
 - (BOOL)presentRenderbuffer:(NSUInteger)target atTime:(CFTimeInterval)presentationTime;
 - (BOOL)renderbufferStorage:(NSUInteger)target fromDrawable:(id)drawable;
-- (BOOL)texImageIOSurface:(__IOSurface *)a3 target:(unint64_t)a4 internalFormat:(unint64_t)a5 width:(unsigned int)a6 height:(unsigned int)a7 format:(unint64_t)a8 type:(unint64_t)a9 plane:(unsigned int)a10 invert:(BOOL)a11;
+- (BOOL)texImageIOSurface:(__IOSurface *)surface target:(unint64_t)target internalFormat:(unint64_t)format width:(unsigned int)width height:(unsigned int)height format:(unint64_t)a8 type:(unint64_t)type plane:(unsigned int)self0 invert:(BOOL)self1;
 - (EAGLContext)initWithAPI:(EAGLRenderingAPI)api sharegroup:(EAGLSharegroup *)sharegroup;
-- (EAGLContext)initWithAPI:(unint64_t)a3 properties:(id)a4;
-- (id)commonInitWithAPI:(unint64_t)a3 properties:(id)a4;
+- (EAGLContext)initWithAPI:(unint64_t)i properties:(id)properties;
+- (id)commonInitWithAPI:(unint64_t)i properties:(id)properties;
 - (void)dealloc;
 @end
 
@@ -30,22 +30,22 @@
   return v9;
 }
 
-- (EAGLContext)initWithAPI:(unint64_t)a3 properties:(id)a4
+- (EAGLContext)initWithAPI:(unint64_t)i properties:(id)properties
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  if (!a4)
+  if (!properties)
   {
     v10 = objc_autoreleasePoolPush();
     v14 = @"EAGLContextPropertySharedWithCompute";
     v15[0] = MEMORY[0x277CBEC28];
-    v11 = -[EAGLContext commonInitWithAPI:properties:](self, "commonInitWithAPI:properties:", a3, [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:1]);
+    v11 = -[EAGLContext commonInitWithAPI:properties:](self, "commonInitWithAPI:properties:", i, [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:1]);
     objc_autoreleasePoolPop(v10);
 LABEL_7:
     v12 = *MEMORY[0x277D85DE8];
     return v11;
   }
 
-  v7 = [objc_msgSend(a4 objectForKey:{@"EAGLContextPropertyClientLabel", "intValue"}];
+  v7 = [objc_msgSend(properties objectForKey:{@"EAGLContextPropertyClientLabel", "intValue"}];
   if ((v7 - 1) >= 8)
   {
     if (v7)
@@ -56,9 +56,9 @@ LABEL_7:
 
     else
     {
-      v13 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:a4 copyItems:0];
+      v13 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:properties copyItems:0];
       [v13 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithInt:", 1), @"EAGLContextPropertyClientLabel"}];
-      v11 = [(EAGLContext *)self commonInitWithAPI:a3 properties:v13];
+      v11 = [(EAGLContext *)self commonInitWithAPI:i properties:v13];
     }
 
     goto LABEL_7;
@@ -66,10 +66,10 @@ LABEL_7:
 
   v8 = *MEMORY[0x277D85DE8];
 
-  return [(EAGLContext *)self commonInitWithAPI:a3 properties:a4];
+  return [(EAGLContext *)self commonInitWithAPI:i properties:properties];
 }
 
-- (id)commonInitWithAPI:(unint64_t)a3 properties:(id)a4
+- (id)commonInitWithAPI:(unint64_t)i properties:(id)properties
 {
   v21.receiver = self;
   v21.super_class = EAGLContext;
@@ -79,8 +79,8 @@ LABEL_7:
     return v6;
   }
 
-  v7 = [a4 objectForKey:@"EAGLContextPropertySharegroup"];
-  v8 = [objc_msgSend(a4 objectForKey:{@"EAGLContextPropertySharedWithCompute", "BOOLValue"}];
+  v7 = [properties objectForKey:@"EAGLContextPropertySharegroup"];
+  v8 = [objc_msgSend(properties objectForKey:{@"EAGLContextPropertySharedWithCompute", "BOOLValue"}];
   if (v7)
   {
     objc_opt_class();
@@ -95,11 +95,11 @@ LABEL_7:
 
   else
   {
-    v9 = [[EAGLSharegroup alloc] initWithAPI:a3 sharedWithCompute:v8];
+    v9 = [[EAGLSharegroup alloc] initWithAPI:i sharedWithCompute:v8];
   }
 
   v10 = v9;
-  if (!v9 || [(EAGLSharegroup *)v9 APIs]!= a3)
+  if (!v9 || [(EAGLSharegroup *)v9 APIs]!= i)
   {
     goto LABEL_24;
   }
@@ -114,12 +114,12 @@ LABEL_7:
 
   v12 = 0;
   *(v11 + 1) = v10;
-  *(v11 + 2) = a3;
+  *(v11 + 2) = i;
   *v11 = v6;
   *(v11 + 6) = 0;
-  if (a3 - 1 <= 2)
+  if (i - 1 <= 2)
   {
-    v12 = dword_23A10F968[a3 - 1];
+    v12 = dword_23A10F968[i - 1];
   }
 
   v13 = v10->_private;
@@ -172,11 +172,11 @@ LABEL_27:
 LABEL_28:
   v19 = v12 & 0x40;
   off_280BD5BB0(*(v6->_private + 4), 927, &v19);
-  v20 = [objc_msgSend(a4 objectForKey:{@"EAGLContextPropertyClientLabel", "intValue"}];
+  v20 = [objc_msgSend(properties objectForKey:{@"EAGLContextPropertyClientLabel", "intValue"}];
   off_280BD5BB0(*(v6->_private + 4), 703, &v20);
 LABEL_29:
   LOBYTE(v20) = 0;
-  if (eagl_dict_read_BOOL(a4, @"EAGLContextPropertyClientRetainRelease", &v20) && v20 == 1)
+  if (eagl_dict_read_BOOL(properties, @"EAGLContextPropertyClientRetainRelease", &v20) && v20 == 1)
   {
     *(v6->_private + 6) |= 1u;
   }
@@ -431,21 +431,21 @@ LABEL_27:
   return v5 == 1;
 }
 
-- (BOOL)attachImage:(unint64_t)a3 toCoreSurface:(__IOSurface *)a4 invertedRender:(BOOL)a5
+- (BOOL)attachImage:(unint64_t)image toCoreSurface:(__IOSurface *)surface invertedRender:(BOOL)render
 {
   if (*(*(*(self->_private + 1) + 8) + 8) != 1)
   {
     return 0;
   }
 
-  PixelFormat = IOSurfaceGetPixelFormat(a4);
+  PixelFormat = IOSurfaceGetPixelFormat(surface);
   if (PixelFormat <= 1278555444)
   {
     if (PixelFormat <= 1093677111)
     {
       if (PixelFormat == 875836468)
       {
-        if (a3 == 36161)
+        if (image == 36161)
         {
           v11 = 32854;
         }
@@ -481,10 +481,10 @@ LABEL_27:
           v11 = 6409;
           v10 = 6409;
 LABEL_39:
-          Width = IOSurfaceGetWidth(a4);
-          BYTE4(v15) = a5;
+          Width = IOSurfaceGetWidth(surface);
+          BYTE4(v15) = render;
           LODWORD(v15) = 0;
-          return [(EAGLContext *)self texImageIOSurface:a4 target:a3 internalFormat:v11 width:Width height:IOSurfaceGetHeight(a4) format:v10 type:v12 plane:v15 invert:?];
+          return [(EAGLContext *)self texImageIOSurface:surface target:image internalFormat:v11 width:Width height:IOSurfaceGetHeight(surface) format:v10 type:v12 plane:v15 invert:?];
       }
     }
   }
@@ -498,7 +498,7 @@ LABEL_39:
         if (PixelFormat == 1278555701)
         {
           v10 = 6407;
-          if (a3 == 36161)
+          if (image == 36161)
           {
             v11 = 36194;
           }
@@ -515,7 +515,7 @@ LABEL_39:
         if (PixelFormat == 1380401729)
         {
           v10 = 6408;
-          if (a3 == 36161)
+          if (image == 36161)
           {
             v11 = 32856;
           }
@@ -534,7 +534,7 @@ LABEL_39:
 
 LABEL_25:
       v10 = 6408;
-      if (a3 == 36161)
+      if (image == 36161)
       {
         v11 = 32855;
       }
@@ -556,7 +556,7 @@ LABEL_25:
     if (PixelFormat == 1395864162)
     {
 LABEL_19:
-      if (a3 == 36161)
+      if (image == 36161)
       {
         v11 = 32856;
       }
@@ -578,20 +578,20 @@ LABEL_40:
   return 0;
 }
 
-- (BOOL)texImageIOSurface:(__IOSurface *)a3 target:(unint64_t)a4 internalFormat:(unint64_t)a5 width:(unsigned int)a6 height:(unsigned int)a7 format:(unint64_t)a8 type:(unint64_t)a9 plane:(unsigned int)a10 invert:(BOOL)a11
+- (BOOL)texImageIOSurface:(__IOSurface *)surface target:(unint64_t)target internalFormat:(unint64_t)format width:(unsigned int)width height:(unsigned int)height format:(unint64_t)a8 type:(unint64_t)type plane:(unsigned int)self0 invert:(BOOL)self1
 {
   v11 = a8;
-  v14 = a5;
-  v15 = a4;
+  formatCopy = format;
+  targetCopy = target;
   v28 = *MEMORY[0x277D85DE8];
-  ID = IOSurfaceGetID(a3);
-  v20 = v15;
-  v21 = v14;
-  v22 = a6;
-  v23 = a7;
+  ID = IOSurfaceGetID(surface);
+  invertCopy = targetCopy;
+  v21 = formatCopy;
+  widthCopy = width;
+  heightCopy = height;
   v24 = v11;
-  v25 = a9;
-  v26 = a10;
+  typeCopy = type;
+  planeCopy = plane;
   v27 = 0;
   if (off_280BD5BB0(*(self->_private + 4), 910, &ID))
   {
@@ -600,8 +600,8 @@ LABEL_40:
 
   else
   {
-    ID = v15;
-    v20 = a11;
+    ID = targetCopy;
+    invertCopy = invert;
     if (!off_280BD5BB0(*(self->_private + 4), 921, &ID))
     {
       result = 1;

@@ -14,8 +14,8 @@
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v2 = [a1 annotations];
-  v3 = [v2 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  annotations = [self annotations];
+  v3 = [annotations countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v3)
   {
     v4 = v3;
@@ -30,7 +30,7 @@
       {
         if (*v18 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(annotations);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
@@ -44,7 +44,7 @@
         v8 = fmin(v8, v15);
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v4 = [annotations countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v4);
@@ -58,17 +58,17 @@
     v9 = -180.0;
   }
 
-  return [a1 regionThatFits:{v6 - (v6 - v8) * 0.5, v7 + (v9 - v7) * 0.5, vabdd_f64(v6, v8) * 1.1, vabdd_f64(v9, v7) * 1.1}];
+  return [self regionThatFits:{v6 - (v6 - v8) * 0.5, v7 + (v9 - v7) * 0.5, vabdd_f64(v6, v8) * 1.1, vabdd_f64(v9, v7) * 1.1}];
 }
 
 - (uint64_t)zoomToFitAnnotations
 {
-  result = [objc_msgSend(a1 "annotations")];
+  result = [objc_msgSend(self "annotations")];
   if (result)
   {
-    [a1 regionToFitAnnotations];
+    [self regionToFitAnnotations];
 
-    return [a1 setRegion:1 animated:?];
+    return [self setRegion:1 animated:?];
   }
 
   return result;
@@ -124,7 +124,7 @@
     v11 = -180.0;
   }
 
-  return [a1 regionThatFits:{v8 - (v8 - v10) * 0.5, v9 + (v11 - v9) * 0.5, vabdd_f64(v8, v10) * 1.1, vabdd_f64(v11, v9) * 1.1}];
+  return [self regionThatFits:{v8 - (v8 - v10) * 0.5, v9 + (v11 - v9) * 0.5, vabdd_f64(v8, v10) * 1.1, vabdd_f64(v11, v9) * 1.1}];
 }
 
 - (uint64_t)zoomToFitLocations:()OFMKMapViewExtensions animated:
@@ -132,9 +132,9 @@
   result = [a3 count];
   if (result)
   {
-    [a1 regionToFitLocations:a3];
+    [self regionToFitLocations:a3];
 
-    return [a1 setRegion:a4 animated:?];
+    return [self setRegion:a4 animated:?];
   }
 
   return result;

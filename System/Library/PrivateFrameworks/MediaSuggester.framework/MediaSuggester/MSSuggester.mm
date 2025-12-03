@@ -1,15 +1,15 @@
 @interface MSSuggester
 + (id)availablebundleIDsForMediaSuggestions;
 + (id)defaultRequest;
-+ (void)availableBundleIDsWithCompletion:(id)a3;
++ (void)availableBundleIDsWithCompletion:(id)completion;
 - (MSLegacySuggester)legacySuggester;
 - (MSRankedSuggester)rankedSuggester;
 - (NSString)requestIdentifier;
-- (id)candidatesForRequestOptions:(id)a3;
-- (id)candidatesForRequestOptions:(id)a3 from:(id)a4 to:(id)a5;
-- (id)copyWithZone:(void *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)suggestionsWithOptions:(id)a3 completion:(id)a4;
+- (id)candidatesForRequestOptions:(id)options;
+- (id)candidatesForRequestOptions:(id)options from:(id)from to:(id)to;
+- (id)copyWithZone:(void *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)suggestionsWithOptions:(id)options completion:(id)completion;
 @end
 
 @implementation MSSuggester
@@ -30,7 +30,7 @@
 
 - (NSString)requestIdentifier
 {
-  v2 = self;
+  selfCopy = self;
   sub_22CA19380();
 
   v3 = sub_22CA20E10();
@@ -38,9 +38,9 @@
   return v3;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   MSSuggester.copy(with:)(v6);
 
   sub_22C9D05CC(v6, v6[3]);
@@ -49,11 +49,11 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  MSSuggester.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  MSSuggester.encode(with:)(coderCopy);
 }
 
 + (id)defaultRequest
@@ -64,14 +64,14 @@
   return v2;
 }
 
-- (void)suggestionsWithOptions:(id)a3 completion:(id)a4
+- (void)suggestionsWithOptions:(id)options completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v9 = self;
-  MSSuggester.suggestions(with:completion:)(v8, sub_22CA0CC30, v7);
+  optionsCopy = options;
+  selfCopy = self;
+  MSSuggester.suggestions(with:completion:)(optionsCopy, sub_22CA0CC30, v7);
 }
 
 + (id)availablebundleIDsForMediaSuggestions
@@ -82,19 +82,19 @@
   return v2;
 }
 
-+ (void)availableBundleIDsWithCompletion:(id)a3
++ (void)availableBundleIDsWithCompletion:(id)completion
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(completion);
   v4 = swift_allocObject();
   *(v4 + 16) = v3;
   static MSSuggester.availableBundleIDs(completion:)(sub_22CA0CDB8, v4);
 }
 
-- (id)candidatesForRequestOptions:(id)a3
+- (id)candidatesForRequestOptions:(id)options
 {
-  v4 = a3;
-  v5 = self;
-  MSSuggester.candidates(for:)(v4);
+  optionsCopy = options;
+  selfCopy = self;
+  MSSuggester.candidates(for:)(optionsCopy);
 
   type metadata accessor for MSSuggestion(0);
   v6 = sub_22CA20EB0();
@@ -102,7 +102,7 @@
   return v6;
 }
 
-- (id)candidatesForRequestOptions:(id)a3 from:(id)a4 to:(id)a5
+- (id)candidatesForRequestOptions:(id)options from:(id)from to:(id)to
 {
   v7 = sub_22CA209F0();
   v8 = *(v7 - 8);
@@ -113,9 +113,9 @@
   v14 = &v20 - v13;
   sub_22CA209D0();
   sub_22CA209D0();
-  v15 = a3;
-  v16 = self;
-  MSSuggester.candidates(for:from:to:)(v15);
+  optionsCopy = options;
+  selfCopy = self;
+  MSSuggester.candidates(for:from:to:)(optionsCopy);
 
   v17 = *(v8 + 8);
   v17(v12, v7);

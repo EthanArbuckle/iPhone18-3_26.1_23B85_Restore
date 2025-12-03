@@ -1,26 +1,26 @@
 @interface SDAirDropHandlerContacts
 - (BOOL)canHandleTransfer;
-- (SDAirDropHandlerContacts)initWithTransfer:(id)a3;
+- (SDAirDropHandlerContacts)initWithTransfer:(id)transfer;
 - (id)suitableContentsDescription;
 - (int64_t)transferTypes;
 @end
 
 @implementation SDAirDropHandlerContacts
 
-- (SDAirDropHandlerContacts)initWithTransfer:(id)a3
+- (SDAirDropHandlerContacts)initWithTransfer:(id)transfer
 {
   v9.receiver = self;
   v9.super_class = SDAirDropHandlerContacts;
-  v3 = [(SDAirDropHandlerGenericFiles *)&v9 initWithTransfer:a3 bundleIdentifier:@"com.apple.MobileAddressBook"];
+  v3 = [(SDAirDropHandlerGenericFiles *)&v9 initWithTransfer:transfer bundleIdentifier:@"com.apple.MobileAddressBook"];
   v4 = v3;
   if (v3)
   {
-    v5 = [(SDAirDropHandler *)v3 bundleProxy];
+    bundleProxy = [(SDAirDropHandler *)v3 bundleProxy];
 
-    if (v5)
+    if (bundleProxy)
     {
-      v6 = [(SDAirDropHandler *)v4 bundleProxy];
-      v10 = v6;
+      bundleProxy2 = [(SDAirDropHandler *)v4 bundleProxy];
+      v10 = bundleProxy2;
       v7 = [NSArray arrayWithObjects:&v10 count:1];
       [(SDAirDropHandlerGenericFiles *)v4 setAvailableApplications:v7];
     }
@@ -36,10 +36,10 @@
     return 0;
   }
 
-  v3 = [(SDAirDropHandler *)self transfer];
-  v4 = [v3 metaData];
-  v5 = [v4 rawFiles];
-  v6 = [v5 count];
+  transfer = [(SDAirDropHandler *)self transfer];
+  metaData = [transfer metaData];
+  rawFiles = [metaData rawFiles];
+  v6 = [rawFiles count];
 
   if (!v6)
   {
@@ -50,11 +50,11 @@
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = [(SDAirDropHandler *)self transfer];
-  v8 = [v7 metaData];
-  v9 = [v8 rawFiles];
+  transfer2 = [(SDAirDropHandler *)self transfer];
+  metaData2 = [transfer2 metaData];
+  rawFiles2 = [metaData2 rawFiles];
 
-  v10 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v10 = [rawFiles2 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v10)
   {
     v11 = v10;
@@ -67,13 +67,13 @@
       {
         if (*v23 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(rawFiles2);
         }
 
         v16 = *(*(&v22 + 1) + 8 * i);
         v17 = [v16 objectForKeyedSubscript:v13];
         v18 = [v16 objectForKeyedSubscript:v14];
-        v19 = [v18 pathExtension];
+        pathExtension = [v18 pathExtension];
 
         LODWORD(v18) = SFIsContact();
         if (!v18)
@@ -83,7 +83,7 @@
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v11 = [rawFiles2 countByEnumeratingWithState:&v22 objects:v26 count:16];
       if (v11)
       {
         continue;
@@ -108,10 +108,10 @@ LABEL_14:
 
 - (id)suitableContentsDescription
 {
-  v3 = [(SDAirDropHandler *)self senderName];
-  v4 = [(SDAirDropHandler *)self totalSharedItemsCount];
+  senderName = [(SDAirDropHandler *)self senderName];
+  totalSharedItemsCount = [(SDAirDropHandler *)self totalSharedItemsCount];
   v13 = @"CONTACT";
-  v5 = [NSNumber numberWithUnsignedInteger:v4];
+  v5 = [NSNumber numberWithUnsignedInteger:totalSharedItemsCount];
   v14 = v5;
   v6 = [NSDictionary dictionaryWithObjects:&v14 forKeys:&v13 count:1];
   v15 = v6;
@@ -122,12 +122,12 @@ LABEL_14:
   v9 = SFLocalizedStringForKey();
   if (v6)
   {
-    [NSString localizedStringWithFormat:v9, v4, v12];
+    [NSString localizedStringWithFormat:v9, totalSharedItemsCount, v12];
   }
 
   else
   {
-    [NSString localizedStringWithFormat:v9, v3, v4];
+    [NSString localizedStringWithFormat:v9, senderName, totalSharedItemsCount];
   }
   v10 = ;
 

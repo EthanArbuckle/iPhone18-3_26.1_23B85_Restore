@@ -1,70 +1,70 @@
 @interface SuggestedSearchController
-- (_TtC7Journal25SuggestedSearchController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC7Journal25SuggestedSearchController)initWithSearchResultsController:(id)a3;
-- (void)searchBarCancelButtonClicked:(id)a3;
-- (void)searchBarSearchButtonClicked:(id)a3;
-- (void)searchBarTextDidBeginEditing:(id)a3;
-- (void)showViewController:(id)a3 sender:(id)a4;
-- (void)updateSearchResultsForSearchController:(id)a3;
-- (void)updateSearchResultsForSearchController:(id)a3 selectingSearchSuggestion:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (_TtC7Journal25SuggestedSearchController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC7Journal25SuggestedSearchController)initWithSearchResultsController:(id)controller;
+- (void)searchBarCancelButtonClicked:(id)clicked;
+- (void)searchBarSearchButtonClicked:(id)clicked;
+- (void)searchBarTextDidBeginEditing:(id)editing;
+- (void)showViewController:(id)controller sender:(id)sender;
+- (void)updateSearchResultsForSearchController:(id)controller;
+- (void)updateSearchResultsForSearchController:(id)controller selectingSearchSuggestion:(id)suggestion;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SuggestedSearchController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100473168(a3);
+  selfCopy = self;
+  sub_100473168(appear);
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v4 = self;
-  sub_100473394(a3);
+  selfCopy = self;
+  sub_100473394(appearing);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v8.receiver = self;
   v8.super_class = type metadata accessor for SuggestedSearchController();
   v4 = v8.receiver;
-  [(SuggestedSearchController *)&v8 viewDidAppear:v3];
-  v5 = [v4 traitCollection];
-  v6 = [v5 userInterfaceIdiom];
+  [(SuggestedSearchController *)&v8 viewDidAppear:appearCopy];
+  traitCollection = [v4 traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v6 != 5)
+  if (userInterfaceIdiom != 5)
   {
-    v7 = [v4 searchBar];
-    [v7 becomeFirstResponder];
+    searchBar = [v4 searchBar];
+    [searchBar becomeFirstResponder];
   }
 
   [v4 updateSearchResultsForSearchController:v4];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_1004735D8(a3);
+  selfCopy = self;
+  sub_1004735D8(disappear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_1004736DC(a3);
+  selfCopy = self;
+  sub_1004736DC(disappear);
 }
 
-- (void)showViewController:(id)a3 sender:(id)a4
+- (void)showViewController:(id)controller sender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = a3;
-    v7 = self;
+    controllerCopy = controller;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -73,67 +73,67 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v8 = a3;
-    v9 = self;
+    controllerCopy2 = controller;
+    selfCopy2 = self;
   }
 
-  sub_1004738E8(a3, v10);
+  sub_1004738E8(controller, v10);
 
   sub_100004F84(v10, &qword_100AD13D0);
 }
 
-- (_TtC7Journal25SuggestedSearchController)initWithSearchResultsController:(id)a3
+- (_TtC7Journal25SuggestedSearchController)initWithSearchResultsController:(id)controller
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC7Journal25SuggestedSearchController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7Journal25SuggestedSearchController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  sub_100477830(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_100477830(controllerCopy);
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3 selectingSearchSuggestion:(id)a4
+- (void)updateSearchResultsForSearchController:(id)controller selectingSearchSuggestion:(id)suggestion
 {
-  v5 = a3;
+  controllerCopy = controller;
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   sub_100479530();
 
   swift_unknownObjectRelease();
 }
 
-- (void)searchBarSearchButtonClicked:(id)a3
+- (void)searchBarSearchButtonClicked:(id)clicked
 {
-  v4 = a3;
-  v5 = self;
+  clickedCopy = clicked;
+  selfCopy = self;
   sub_100479754();
 }
 
-- (void)searchBarCancelButtonClicked:(id)a3
+- (void)searchBarCancelButtonClicked:(id)clicked
 {
   if (swift_unknownObjectWeakLoadStrong())
   {
-    v4 = self;
+    selfCopy = self;
     sub_10041DCE4();
     swift_unknownObjectRelease();
   }
 }
 
-- (void)searchBarTextDidBeginEditing:(id)a3
+- (void)searchBarTextDidBeginEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
+  editingCopy = editing;
+  selfCopy = self;
   sub_1004798F0();
 }
 

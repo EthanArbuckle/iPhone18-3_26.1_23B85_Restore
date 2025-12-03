@@ -1,17 +1,17 @@
 @interface APTCCDisclosureCell
-- (APTCCDisclosureCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)configureForRecord:(id)a3;
+- (APTCCDisclosureCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)configureForRecord:(id)record;
 - (void)prepareForReuse;
-- (void)updateConfigurationWithPreparedIconImage:(id)a3;
+- (void)updateConfigurationWithPreparedIconImage:(id)image;
 @end
 
 @implementation APTCCDisclosureCell
 
-- (APTCCDisclosureCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (APTCCDisclosureCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = APTCCDisclosureCell;
-  v4 = [(APTCCDisclosureCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(APTCCDisclosureCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = [MEMORY[0x1E69DC888] colorWithDynamicProvider:&__block_literal_global_1];
@@ -37,41 +37,41 @@ id __53__APTCCDisclosureCell_initWithStyle_reuseIdentifier___block_invoke(uint64
   return v2;
 }
 
-- (void)updateConfigurationWithPreparedIconImage:(id)a3
+- (void)updateConfigurationWithPreparedIconImage:(id)image
 {
   v4 = MEMORY[0x1E69DCC28];
-  v5 = a3;
-  v10 = [v4 cellConfiguration];
-  [v10 setText:self->_appName];
+  imageCopy = image;
+  cellConfiguration = [v4 cellConfiguration];
+  [cellConfiguration setText:self->_appName];
   v6 = MEMORY[0x1E69DCAB8];
-  v7 = [v5 CGImage];
+  cGImage = [imageCopy CGImage];
 
-  v8 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v8 scale];
-  v9 = [v6 imageWithCGImage:v7 scale:0 orientation:?];
-  [v10 setImage:v9];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
+  v9 = [v6 imageWithCGImage:cGImage scale:0 orientation:?];
+  [cellConfiguration setImage:v9];
 
-  [(APTCCDisclosureCell *)self setContentConfiguration:v10];
+  [(APTCCDisclosureCell *)self setContentConfiguration:cellConfiguration];
 }
 
-- (void)configureForRecord:(id)a3
+- (void)configureForRecord:(id)record
 {
-  v4 = a3;
-  v5 = [v4 bundleIdentifier];
-  v6 = [v5 isEqualToString:self->_bundleID];
+  recordCopy = record;
+  bundleIdentifier = [recordCopy bundleIdentifier];
+  v6 = [bundleIdentifier isEqualToString:self->_bundleID];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [v4 bundleIdentifier];
+    bundleIdentifier2 = [recordCopy bundleIdentifier];
     bundleID = self->_bundleID;
-    self->_bundleID = v7;
+    self->_bundleID = bundleIdentifier2;
 
-    v9 = [v4 localizedName];
+    localizedName = [recordCopy localizedName];
     appName = self->_appName;
-    self->_appName = v9;
+    self->_appName = localizedName;
 
-    v11 = [MEMORY[0x1E69DCC28] cellConfiguration];
-    [v11 setText:self->_appName];
+    cellConfiguration = [MEMORY[0x1E69DCC28] cellConfiguration];
+    [cellConfiguration setText:self->_appName];
     v12 = [objc_alloc(MEMORY[0x1E69A8A00]) initWithBundleIdentifier:self->_bundleID];
     v13 = [MEMORY[0x1E69A8A30] imageDescriptorNamed:*MEMORY[0x1E69A8AA0]];
     v14 = [v12 imageForDescriptor:v13];
@@ -85,20 +85,20 @@ id __53__APTCCDisclosureCell_initWithStyle_reuseIdentifier___block_invoke(uint64
       v25 = &unk_1E7A41FE8;
       v26 = v12;
       v27 = v13;
-      v28 = self;
+      selfCopy = self;
       v29 = v15;
       v17 = v15;
       dispatch_async(v16, &v22);
     }
 
     v18 = MEMORY[0x1E69DCAB8];
-    v19 = [v14 CGImage];
-    v20 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v20 scale];
-    v21 = [v18 imageWithCGImage:v19 scale:0 orientation:?];
-    [v11 setImage:v21];
+    cGImage = [v14 CGImage];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
+    v21 = [v18 imageWithCGImage:cGImage scale:0 orientation:?];
+    [cellConfiguration setImage:v21];
 
-    [(APTCCDisclosureCell *)self setContentConfiguration:v11];
+    [(APTCCDisclosureCell *)self setContentConfiguration:cellConfiguration];
   }
 }
 

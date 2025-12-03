@@ -1,11 +1,11 @@
 @interface CHFriendDetailActionListView
 - (CHFriendDetailActionListViewDelegate)delegate;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (void)collectionView:(id)a3 didHighlightItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didUnhighlightItemAtIndexPath:(id)a4;
-- (void)configureWithActionTypes:(id)a3 labelTexts:(id)a4 footerText:(id)a5;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (void)collectionView:(id)view didHighlightItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didUnhighlightItemAtIndexPath:(id)path;
+- (void)configureWithActionTypes:(id)types labelTexts:(id)texts footerText:(id)text;
 @end
 
 @implementation CHFriendDetailActionListView
@@ -17,24 +17,24 @@
   return Strong;
 }
 
-- (void)configureWithActionTypes:(id)a3 labelTexts:(id)a4 footerText:(id)a5
+- (void)configureWithActionTypes:(id)types labelTexts:(id)texts footerText:(id)text
 {
   v7 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = a5;
-  v10 = self;
-  sub_10045B458(v7, v8, v9);
+  textCopy = text;
+  selfCopy = self;
+  sub_10045B458(v7, v8, textCopy);
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   v12 = sub_10045B9A8();
 
   (*(v7 + 8))(v9, v6);
@@ -42,7 +42,7 @@
   return v12;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
   v7 = sub_100140278(&qword_1008EDE68);
   v8 = *(v7 - 8);
@@ -53,8 +53,8 @@
   __chkstk_darwin(v11);
   v14 = &v19 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v15 = a3;
-  v16 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_10045AADC(v10);
   sub_1000059F8(0, &qword_1008EDED8);
   v17 = UICollectionView.dequeueConfiguredReusableSupplementary<A>(using:for:)();
@@ -65,17 +65,17 @@
   return v17;
 }
 
-- (void)collectionView:(id)a3 didHighlightItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didHighlightItemAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v18 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   isa = IndexPath._bridgeToObjectiveC()().super.isa;
-  v13 = [(CHFriendDetailActionListView *)v10 cellForItemAtIndexPath:isa];
+  v13 = [(CHFriendDetailActionListView *)viewCopy cellForItemAtIndexPath:isa];
 
   if (v13)
   {
@@ -91,45 +91,45 @@
       }
 
       v15 = qword_1008EA7D8;
-      v16 = [v14 contentView];
-      [(CHFriendDetailActionListView *)v16 setBackgroundColor:v15];
+      contentView = [v14 contentView];
+      [(CHFriendDetailActionListView *)contentView setBackgroundColor:v15];
 
-      v10 = v11;
-      v11 = v13;
-      v13 = v16;
+      viewCopy = selfCopy;
+      selfCopy = v13;
+      v13 = contentView;
     }
 
-    v10 = v11;
-    v11 = v13;
+    viewCopy = selfCopy;
+    selfCopy = v13;
   }
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_10045C5B8();
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (void)collectionView:(id)a3 didUnhighlightItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didUnhighlightItemAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  sub_10045C664(v10);
+  viewCopy = view;
+  selfCopy = self;
+  sub_10045C664(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 }

@@ -1,23 +1,23 @@
 @interface BKInfoHUD
-- (BKInfoHUD)initWithFrame:(CGRect)a3;
+- (BKInfoHUD)initWithFrame:(CGRect)frame;
 - (BKInfoHUDDelegate)delegate;
 - (BOOL)accessibilityActivate;
 - (id)_compositingFilterToUse;
 - (id)accessibilityHint;
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4;
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection;
 - (void)_updateImageAndTextConstraints;
 - (void)constructViews;
 - (void)forceReflowText;
-- (void)setIconSymbol:(id)a3;
-- (void)setInfoText:(id)a3;
-- (void)setUsesMonospacedDigitFont:(BOOL)a3;
-- (void)tapGestureHandler:(id)a3;
+- (void)setIconSymbol:(id)symbol;
+- (void)setInfoText:(id)text;
+- (void)setUsesMonospacedDigitFont:(BOOL)font;
+- (void)tapGestureHandler:(id)handler;
 - (void)updateLabelFont;
 @end
 
 @implementation BKInfoHUD
 
-- (BKInfoHUD)initWithFrame:(CGRect)a3
+- (BKInfoHUD)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = BKInfoHUD;
@@ -33,66 +33,66 @@
   return v4;
 }
 
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection
 {
-  v16 = a3;
-  v6 = a4;
+  changeCopy = change;
+  collectionCopy = collection;
   if (self->_textLabel)
   {
-    v7 = [(BKInfoHUD *)self _compositingFilterToUse];
-    v8 = [CAFilter filterWithType:v7];
-    v9 = [(UILabel *)self->_textLabel layer];
-    [v9 setCompositingFilter:v8];
+    _compositingFilterToUse = [(BKInfoHUD *)self _compositingFilterToUse];
+    v8 = [CAFilter filterWithType:_compositingFilterToUse];
+    layer = [(UILabel *)self->_textLabel layer];
+    [layer setCompositingFilter:v8];
   }
 
   if (self->_iconImageView)
   {
-    v10 = [(BKInfoHUD *)self _compositingFilterToUse];
-    v11 = [CAFilter filterWithType:v10];
-    v12 = [(UIImageView *)self->_iconImageView layer];
-    [v12 setCompositingFilter:v11];
+    _compositingFilterToUse2 = [(BKInfoHUD *)self _compositingFilterToUse];
+    v11 = [CAFilter filterWithType:_compositingFilterToUse2];
+    layer2 = [(UIImageView *)self->_iconImageView layer];
+    [layer2 setCompositingFilter:v11];
   }
 
-  v13 = [(BKInfoHUD *)self currentSymbolName];
-  v14 = [v13 length];
+  currentSymbolName = [(BKInfoHUD *)self currentSymbolName];
+  v14 = [currentSymbolName length];
 
   if (v14)
   {
-    v15 = [(BKInfoHUD *)self currentSymbolName];
-    [(BKInfoHUD *)self setIconSymbol:v15];
+    currentSymbolName2 = [(BKInfoHUD *)self currentSymbolName];
+    [(BKInfoHUD *)self setIconSymbol:currentSymbolName2];
   }
 }
 
-- (void)setInfoText:(id)a3
+- (void)setInfoText:(id)text
 {
   textLabel = self->_textLabel;
-  v5 = a3;
-  [(UILabel *)textLabel setText:v5];
-  [(UILabel *)self->_textLabel setAccessibilityValue:v5];
+  textCopy = text;
+  [(UILabel *)textLabel setText:textCopy];
+  [(UILabel *)self->_textLabel setAccessibilityValue:textCopy];
 
   [(BKInfoHUD *)self setNeedsUpdateConstraints];
 }
 
 - (void)forceReflowText
 {
-  v3 = [(UILabel *)self->_textLabel text];
+  text = [(UILabel *)self->_textLabel text];
   [(UILabel *)self->_textLabel setText:&stru_1E7188];
-  [(UILabel *)self->_textLabel setText:v3];
+  [(UILabel *)self->_textLabel setText:text];
   [(BKInfoHUD *)self setNeedsUpdateConstraints];
 }
 
-- (void)setIconSymbol:(id)a3
+- (void)setIconSymbol:(id)symbol
 {
-  v10 = a3;
-  [(BKInfoHUD *)self setCurrentSymbolName:v10];
+  symbolCopy = symbol;
+  [(BKInfoHUD *)self setCurrentSymbolName:symbolCopy];
   v4 = [UIFont systemFontOfSize:15.0 weight:UIFontWeightSemibold];
   v5 = [UIFontMetrics metricsForTextStyle:UIFontTextStyleHeadline];
   iconImageView = self->_iconImageView;
-  if (v10)
+  if (symbolCopy)
   {
     v7 = [v5 scaledFontForFont:v4];
     v8 = [UIImageSymbolConfiguration configurationWithFont:v7];
-    v9 = [UIImage systemImageNamed:v10 withConfiguration:v8];
+    v9 = [UIImage systemImageNamed:symbolCopy withConfiguration:v8];
     [(UIImageView *)iconImageView setImage:v9];
   }
 
@@ -124,10 +124,10 @@
 
 - (id)_compositingFilterToUse
 {
-  v2 = [(BKInfoHUD *)self traitCollection];
-  v3 = [v2 userInterfaceStyle];
+  traitCollection = [(BKInfoHUD *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
   v4 = &kCAFilterPlusL;
-  if (v3 != &dword_0 + 2)
+  if (userInterfaceStyle != &dword_0 + 2)
   {
     v4 = &kCAFilterPlusD;
   }
@@ -149,31 +149,31 @@
 
     [(UIVisualEffectView *)self->_backgroundView setContentMode:0];
     [(UIVisualEffectView *)self->_backgroundView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v6 = [(UIVisualEffectView *)self->_backgroundView layer];
-    [v6 setCornerRadius:8.0];
+    layer = [(UIVisualEffectView *)self->_backgroundView layer];
+    [layer setCornerRadius:8.0];
 
-    v7 = [(UIVisualEffectView *)self->_backgroundView layer];
-    [v7 setMasksToBounds:1];
+    layer2 = [(UIVisualEffectView *)self->_backgroundView layer];
+    [layer2 setMasksToBounds:1];
 
     [(BKInfoHUD *)self insertSubview:self->_backgroundView atIndex:0];
-    v8 = [(UIVisualEffectView *)self->_backgroundView centerXAnchor];
-    v9 = [(BKInfoHUD *)self centerXAnchor];
-    v10 = [v8 constraintEqualToAnchor:v9];
+    centerXAnchor = [(UIVisualEffectView *)self->_backgroundView centerXAnchor];
+    centerXAnchor2 = [(BKInfoHUD *)self centerXAnchor];
+    v10 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v10 setActive:1];
 
-    v11 = [(UIVisualEffectView *)self->_backgroundView centerYAnchor];
-    v12 = [(BKInfoHUD *)self centerYAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12];
+    centerYAnchor = [(UIVisualEffectView *)self->_backgroundView centerYAnchor];
+    centerYAnchor2 = [(BKInfoHUD *)self centerYAnchor];
+    v13 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v13 setActive:1];
 
-    v14 = [(UIVisualEffectView *)self->_backgroundView widthAnchor];
-    v15 = [(BKInfoHUD *)self widthAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    widthAnchor = [(UIVisualEffectView *)self->_backgroundView widthAnchor];
+    widthAnchor2 = [(BKInfoHUD *)self widthAnchor];
+    v16 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     [v16 setActive:1];
 
-    v17 = [(UIVisualEffectView *)self->_backgroundView heightAnchor];
-    v18 = [(BKInfoHUD *)self heightAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    heightAnchor = [(UIVisualEffectView *)self->_backgroundView heightAnchor];
+    heightAnchor2 = [(BKInfoHUD *)self heightAnchor];
+    v19 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
     [v19 setActive:1];
   }
 
@@ -192,25 +192,25 @@
     [(UIImageView *)self->_iconImageView setAccessibilityLabel:v24];
 
     v25 = self->_iconImageView;
-    v26 = [(UIImageView *)v25 accessibilityTraits];
-    [(UIImageView *)v25 setAccessibilityTraits:UIAccessibilityTraitButton | v26];
+    accessibilityTraits = [(UIImageView *)v25 accessibilityTraits];
+    [(UIImageView *)v25 setAccessibilityTraits:UIAccessibilityTraitButton | accessibilityTraits];
     [(UIImageView *)self->_iconImageView setIsAccessibilityElement:1];
     [(UIImageView *)self->_iconImageView setOpaque:0];
-    v27 = [(BKInfoHUD *)self _compositingFilterToUse];
-    v28 = [CAFilter filterWithType:v27];
-    v29 = [(UIImageView *)self->_iconImageView layer];
-    [v29 setCompositingFilter:v28];
+    _compositingFilterToUse = [(BKInfoHUD *)self _compositingFilterToUse];
+    v28 = [CAFilter filterWithType:_compositingFilterToUse];
+    layer3 = [(UIImageView *)self->_iconImageView layer];
+    [layer3 setCompositingFilter:v28];
 
     [(UIImageView *)self->_iconImageView setContentMode:1];
     [(BKInfoHUD *)self addSubview:self->_iconImageView];
-    v30 = [(UIImageView *)self->_iconImageView trailingAnchor];
-    v31 = [(UIVisualEffectView *)self->_backgroundView trailingAnchor];
-    v32 = [v30 constraintEqualToAnchor:v31 constant:-12.0];
+    trailingAnchor = [(UIImageView *)self->_iconImageView trailingAnchor];
+    trailingAnchor2 = [(UIVisualEffectView *)self->_backgroundView trailingAnchor];
+    v32 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-12.0];
     [v32 setActive:1];
 
-    v33 = [(UIImageView *)self->_iconImageView centerYAnchor];
-    v34 = [(UIVisualEffectView *)self->_backgroundView centerYAnchor];
-    v35 = [v33 constraintEqualToAnchor:v34];
+    centerYAnchor3 = [(UIImageView *)self->_iconImageView centerYAnchor];
+    centerYAnchor4 = [(UIVisualEffectView *)self->_backgroundView centerYAnchor];
+    v35 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     [v35 setActive:1];
   }
 
@@ -237,10 +237,10 @@
     [(UILabel *)self->_textLabel setTextColor:v39];
 
     [(UILabel *)self->_textLabel setOpaque:0];
-    v40 = [(BKInfoHUD *)self _compositingFilterToUse];
-    v41 = [CAFilter filterWithType:v40];
-    v42 = [(UILabel *)self->_textLabel layer];
-    [v42 setCompositingFilter:v41];
+    _compositingFilterToUse2 = [(BKInfoHUD *)self _compositingFilterToUse];
+    v41 = [CAFilter filterWithType:_compositingFilterToUse2];
+    layer4 = [(UILabel *)self->_textLabel layer];
+    [layer4 setCompositingFilter:v41];
 
     v43 = +[UIColor clearColor];
     [(UILabel *)self->_textLabel setBackgroundColor:v43];
@@ -253,14 +253,14 @@
     [(UILabel *)self->_textLabel setNumberOfLines:0];
     [(BKInfoHUD *)self addSubview:self->_textLabel];
     [(BKInfoHUD *)self _updateImageAndTextConstraints];
-    v46 = [(UILabel *)self->_textLabel topAnchor];
-    v47 = [(UIVisualEffectView *)self->_backgroundView topAnchor];
-    v48 = [v46 constraintEqualToAnchor:v47];
+    topAnchor = [(UILabel *)self->_textLabel topAnchor];
+    topAnchor2 = [(UIVisualEffectView *)self->_backgroundView topAnchor];
+    v48 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v48 setActive:1];
 
-    v49 = [(UILabel *)self->_textLabel bottomAnchor];
-    v50 = [(UIVisualEffectView *)self->_backgroundView bottomAnchor];
-    v51 = [v49 constraintEqualToAnchor:v50];
+    bottomAnchor = [(UILabel *)self->_textLabel bottomAnchor];
+    bottomAnchor2 = [(UIVisualEffectView *)self->_backgroundView bottomAnchor];
+    v51 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v51 setActive:1];
   }
 
@@ -276,31 +276,31 @@
 
 - (void)_updateImageAndTextConstraints
 {
-  v3 = [(UILabel *)self->_textLabel leadingAnchor];
-  v4 = [(UIVisualEffectView *)self->_backgroundView leadingAnchor];
-  v5 = [v3 constraintEqualToAnchor:v4 constant:12.0];
+  leadingAnchor = [(UILabel *)self->_textLabel leadingAnchor];
+  leadingAnchor2 = [(UIVisualEffectView *)self->_backgroundView leadingAnchor];
+  v5 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:12.0];
   [v5 setActive:1];
 
-  v6 = [(BKInfoHUD *)self textLabelTrailingAnchor];
+  textLabelTrailingAnchor = [(BKInfoHUD *)self textLabelTrailingAnchor];
 
-  if (!v6)
+  if (!textLabelTrailingAnchor)
   {
-    v7 = [(UILabel *)self->_textLabel trailingAnchor];
-    v8 = [(UIImageView *)self->_iconImageView leadingAnchor];
-    v9 = [v7 constraintEqualToAnchor:v8];
+    trailingAnchor = [(UILabel *)self->_textLabel trailingAnchor];
+    leadingAnchor3 = [(UIImageView *)self->_iconImageView leadingAnchor];
+    v9 = [trailingAnchor constraintEqualToAnchor:leadingAnchor3];
     [(BKInfoHUD *)self setTextLabelTrailingAnchor:v9];
   }
 
-  v10 = [(BKInfoHUD *)self iconImageViewWidthAnchor];
+  iconImageViewWidthAnchor = [(BKInfoHUD *)self iconImageViewWidthAnchor];
 
-  if (!v10)
+  if (!iconImageViewWidthAnchor)
   {
     v11 = [NSLayoutConstraint constraintWithItem:self->_iconImageView attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:0.0];
     [(BKInfoHUD *)self setIconImageViewWidthAnchor:v11];
   }
 
-  v12 = [(UIImageView *)self->_iconImageView image];
-  if (v12)
+  image = [(UIImageView *)self->_iconImageView image];
+  if (image)
   {
     v13 = -5.0;
   }
@@ -310,49 +310,49 @@
     v13 = 0.0;
   }
 
-  v14 = [(BKInfoHUD *)self textLabelTrailingAnchor];
-  [v14 setConstant:v13];
+  textLabelTrailingAnchor2 = [(BKInfoHUD *)self textLabelTrailingAnchor];
+  [textLabelTrailingAnchor2 setConstant:v13];
 
-  v15 = [(UIImageView *)self->_iconImageView image];
-  [v15 size];
+  image2 = [(UIImageView *)self->_iconImageView image];
+  [image2 size];
   v17 = v16;
-  v18 = [(BKInfoHUD *)self iconImageViewWidthAnchor];
-  [v18 setConstant:v17];
+  iconImageViewWidthAnchor2 = [(BKInfoHUD *)self iconImageViewWidthAnchor];
+  [iconImageViewWidthAnchor2 setConstant:v17];
 
-  v19 = [(BKInfoHUD *)self textLabelTrailingAnchor];
-  [v19 setActive:1];
+  textLabelTrailingAnchor3 = [(BKInfoHUD *)self textLabelTrailingAnchor];
+  [textLabelTrailingAnchor3 setActive:1];
 
-  v20 = [(BKInfoHUD *)self iconImageViewWidthAnchor];
-  [v20 setActive:1];
+  iconImageViewWidthAnchor3 = [(BKInfoHUD *)self iconImageViewWidthAnchor];
+  [iconImageViewWidthAnchor3 setActive:1];
 }
 
-- (void)tapGestureHandler:(id)a3
+- (void)tapGestureHandler:(id)handler
 {
-  v4 = [(BKInfoHUD *)self delegate];
+  delegate = [(BKInfoHUD *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(BKInfoHUD *)self delegate];
-    [v6 infoHUDTapped:self];
+    delegate2 = [(BKInfoHUD *)self delegate];
+    [delegate2 infoHUDTapped:self];
   }
 }
 
-- (void)setUsesMonospacedDigitFont:(BOOL)a3
+- (void)setUsesMonospacedDigitFont:(BOOL)font
 {
-  if (self->_usesMonospacedDigitFont != a3)
+  if (self->_usesMonospacedDigitFont != font)
   {
-    self->_usesMonospacedDigitFont = a3;
+    self->_usesMonospacedDigitFont = font;
     [(BKInfoHUD *)self updateLabelFont];
   }
 }
 
 - (id)accessibilityHint
 {
-  v2 = [(BKInfoHUD *)self isUserInteractionEnabled];
+  isUserInteractionEnabled = [(BKInfoHUD *)self isUserInteractionEnabled];
   v3 = AEBundle();
   v4 = v3;
-  if (v2)
+  if (isUserInteractionEnabled)
   {
     v5 = @"Double tap to toggle page chooser";
   }
@@ -369,20 +369,20 @@
 
 - (BOOL)accessibilityActivate
 {
-  v3 = [(BKInfoHUD *)self delegate];
+  delegate = [(BKInfoHUD *)self delegate];
   v4 = objc_opt_respondsToSelector();
   if (v4)
   {
-    v5 = [(BKInfoHUD *)self isUserInteractionEnabled];
+    isUserInteractionEnabled = [(BKInfoHUD *)self isUserInteractionEnabled];
 
-    if (!v5)
+    if (!isUserInteractionEnabled)
     {
       v4 = 0;
       return v4 & 1;
     }
 
-    v3 = [(BKInfoHUD *)self delegate];
-    [v3 infoHUDTapped:self];
+    delegate = [(BKInfoHUD *)self delegate];
+    [delegate infoHUDTapped:self];
   }
 
   return v4 & 1;

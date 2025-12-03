@@ -1,30 +1,30 @@
 @interface SemanticsTable
-- (BOOL)getARMeshClassificationID:(id)a3 ARMeshClassificationID:(int64_t *)a4;
-- (BOOL)getARMeshMaterialID:(id)a3 ARMeshMaterialID:(int64_t *)a4;
+- (BOOL)getARMeshClassificationID:(id)d ARMeshClassificationID:(int64_t *)iD;
+- (BOOL)getARMeshMaterialID:(id)d ARMeshMaterialID:(int64_t *)iD;
 - (id).cxx_construct;
-- (id)labelsForSemanticType:(id)a3 error:(id *)a4;
-- (materialsForPair)getMaterialsForPair:(const semantic_pair *)a3;
-- (void)readTable:(id *)a3;
+- (id)labelsForSemanticType:(id)type error:(id *)error;
+- (materialsForPair)getMaterialsForPair:(const semantic_pair *)pair;
+- (void)readTable:(id *)table;
 @end
 
 @implementation SemanticsTable
 
-- (void)readTable:(id *)a3
+- (void)readTable:(id *)table
 {
   v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT * FROM [semantics]"];
-  v36 = a3;
-  v5 = DBIOFetchDatabaseResultsExt(_dbPtr, v31, a3);
+  tableCopy = table;
+  v5 = DBIOFetchDatabaseResultsExt(_dbPtr, v31, table);
   v6 = v5;
   if (v5)
   {
     v7 = AbsorptionTable::get(v5);
-    obj = materialCachedTable<AMAbsorption>::getMaterial(v7, @"Default", a3);
+    obj = materialCachedTable<AMAbsorption>::getMaterial(v7, @"Default", table);
     v47 = obj;
     v8 = ScatteringTable::get(obj);
-    v34 = materialCachedTable<AMScattering>::getMaterial(v8, @"Default", a3);
+    v34 = materialCachedTable<AMScattering>::getMaterial(v8, @"Default", table);
     v48 = v34;
     v9 = SoundReductionTable::get(v34);
-    v10 = materialCachedTable<AMSoundReductionIndex>::getMaterial(v9, @"Default", a3);
+    v10 = materialCachedTable<AMSoundReductionIndex>::getMaterial(v9, @"Default", table);
     v11 = 0;
     v49 = v10;
     v32 = v10;
@@ -47,26 +47,26 @@
       }
 
       v39 = [v12 objectAtIndexedSubscript:0];
-      v16 = [v39 longValue];
+      longValue = [v39 longValue];
       v38 = [v12 objectAtIndexedSubscript:2];
-      v17 = [v38 longLongValue];
+      longLongValue = [v38 longLongValue];
       v46 = [v12 objectAtIndexedSubscript:1];
       v45 = [v12 objectAtIndexedSubscript:3];
       v44[0] = &v46;
-      std::__hash_table<std::__hash_value_type<NSString * {__strong},long long>,std::__unordered_map_hasher<NSString * {__strong},std::__hash_value_type<NSString * {__strong},long long>,std::hash<NSString * {__strong}>,std::equal_to<NSString * {__strong}>,true>,std::__unordered_map_equal<NSString * {__strong},std::__hash_value_type<NSString * {__strong},long long>,std::equal_to<NSString * {__strong}>,std::hash<NSString * {__strong}>,true>,std::allocator<std::__hash_value_type<NSString * {__strong},long long>>>::__emplace_unique_key_args<NSString * {__strong},std::piecewise_construct_t const&,std::tuple<NSString * const {__strong}&>,std::tuple<>>(&self->_MeshMaterialMap.__table_.__bucket_list_.__ptr_, &v46)[3] = v16;
+      std::__hash_table<std::__hash_value_type<NSString * {__strong},long long>,std::__unordered_map_hasher<NSString * {__strong},std::__hash_value_type<NSString * {__strong},long long>,std::hash<NSString * {__strong}>,std::equal_to<NSString * {__strong}>,true>,std::__unordered_map_equal<NSString * {__strong},std::__hash_value_type<NSString * {__strong},long long>,std::equal_to<NSString * {__strong}>,std::hash<NSString * {__strong}>,true>,std::allocator<std::__hash_value_type<NSString * {__strong},long long>>>::__emplace_unique_key_args<NSString * {__strong},std::piecewise_construct_t const&,std::tuple<NSString * const {__strong}&>,std::tuple<>>(&self->_MeshMaterialMap.__table_.__bucket_list_.__ptr_, &v46)[3] = longValue;
       v44[0] = &v45;
       v18 = std::__hash_table<std::__hash_value_type<NSString * {__strong},long long>,std::__unordered_map_hasher<NSString * {__strong},std::__hash_value_type<NSString * {__strong},long long>,std::hash<NSString * {__strong}>,std::equal_to<NSString * {__strong}>,true>,std::__unordered_map_equal<NSString * {__strong},std::__hash_value_type<NSString * {__strong},long long>,std::equal_to<NSString * {__strong}>,std::hash<NSString * {__strong}>,true>,std::allocator<std::__hash_value_type<NSString * {__strong},long long>>>::__emplace_unique_key_args<NSString * {__strong},std::piecewise_construct_t const&,std::tuple<NSString * const {__strong}&>,std::tuple<>>(&self->_MeshClassificationMap.__table_.__bucket_list_.__ptr_, &v45);
-      v18[3] = v17;
-      v44[0] = v16;
-      v44[1] = v17;
-      if (v16 >= v17)
+      v18[3] = longLongValue;
+      v44[0] = longValue;
+      v44[1] = longLongValue;
+      if (longValue >= longLongValue)
       {
-        v19 = (v17 + v16 + v16 * v16);
+        v19 = (longLongValue + longValue + longValue * longValue);
       }
 
       else
       {
-        v19 = (v16 + v17 * v17);
+        v19 = (longValue + longLongValue * longLongValue);
       }
 
       v44[2] = v19;
@@ -81,11 +81,11 @@
       else
       {
         v21 = AbsorptionTable::get(v18);
-        v41 = materialCachedTable<AMAbsorption>::getMaterial(v21, v13, v36);
+        v41 = materialCachedTable<AMAbsorption>::getMaterial(v21, v13, tableCopy);
         v22 = ScatteringTable::get(v41);
-        v42 = materialCachedTable<AMScattering>::getMaterial(v22, v14, v36);
+        v42 = materialCachedTable<AMScattering>::getMaterial(v22, v14, tableCopy);
         v23 = SoundReductionTable::get(v42);
-        v43 = materialCachedTable<AMSoundReductionIndex>::getMaterial(v23, v40, v36);
+        v43 = materialCachedTable<AMSoundReductionIndex>::getMaterial(v23, v40, tableCopy);
         v50 = v44;
         v24 = std::__hash_table<std::__hash_value_type<semantic_pair,materialsForPair>,std::__unordered_map_hasher<semantic_pair,std::__hash_value_type<semantic_pair,materialsForPair>,std::hash<semantic_pair>,std::equal_to<semantic_pair>,true>,std::__unordered_map_equal<semantic_pair,std::__hash_value_type<semantic_pair,materialsForPair>,std::equal_to<semantic_pair>,std::hash<semantic_pair>,true>,std::allocator<std::__hash_value_type<semantic_pair,materialsForPair>>>::__emplace_unique_key_args<semantic_pair,std::piecewise_construct_t const&,std::tuple<semantic_pair const&>,std::tuple<>>(&self->_SemanticsMap.__table_.__bucket_list_.__ptr_, v44);
         v25 = v24[5];
@@ -109,56 +109,56 @@
   }
 }
 
-- (id)labelsForSemanticType:(id)a3 error:(id *)a4
+- (id)labelsForSemanticType:(id)type error:(id *)error
 {
-  v5 = a3;
-  v6 = [MEMORY[0x277CBEB18] array];
-  if ([v5 isEqualToString:@"visual material"])
+  typeCopy = type;
+  array = [MEMORY[0x277CBEB18] array];
+  if ([typeCopy isEqualToString:@"visual material"])
   {
     for (i = self->_MeshMaterialMap.__table_.__first_node_.__next_; i; i = *i)
     {
       v8 = i[2];
-      [v6 addObject:v8];
+      [array addObject:v8];
     }
   }
 
-  else if ([v5 isEqualToString:@"ARMeshMaterial"])
+  else if ([typeCopy isEqualToString:@"ARMeshMaterial"])
   {
     for (j = self->_MeshMaterialMap.__table_.__first_node_.__next_; j; j = *j)
     {
       v10 = [MEMORY[0x277CCABB0] numberWithLongLong:j[3]];
-      [v6 addObject:v10];
+      [array addObject:v10];
     }
   }
 
-  else if ([v5 isEqualToString:@"object"])
+  else if ([typeCopy isEqualToString:@"object"])
   {
     for (k = self->_MeshClassificationMap.__table_.__first_node_.__next_; k; k = *k)
     {
       v12 = k[2];
-      [v6 addObject:v12];
+      [array addObject:v12];
     }
   }
 
-  else if ([v5 isEqualToString:@"ARMeshClassification"])
+  else if ([typeCopy isEqualToString:@"ARMeshClassification"])
   {
     for (m = self->_MeshClassificationMap.__table_.__first_node_.__next_; m; m = *m)
     {
       v14 = [MEMORY[0x277CCABB0] numberWithLongLong:m[3]];
-      [v6 addObject:v14];
+      [array addObject:v14];
     }
   }
 
-  return v6;
+  return array;
 }
 
-- (BOOL)getARMeshMaterialID:(id)a3 ARMeshMaterialID:(int64_t *)a4
+- (BOOL)getARMeshMaterialID:(id)d ARMeshMaterialID:(int64_t *)iD
 {
-  v9 = a3;
-  v6 = std::__hash_table<std::__hash_value_type<NSString * {__strong},long long>,std::__unordered_map_hasher<NSString * {__strong},std::__hash_value_type<NSString * {__strong},long long>,std::hash<NSString * {__strong}>,std::equal_to<NSString * {__strong}>,true>,std::__unordered_map_equal<NSString * {__strong},std::__hash_value_type<NSString * {__strong},long long>,std::equal_to<NSString * {__strong}>,std::hash<NSString * {__strong}>,true>,std::allocator<std::__hash_value_type<NSString * {__strong},long long>>>::find<NSString * {__strong}>(&self->_MeshMaterialMap.__table_.__bucket_list_.__ptr_, &v9);
+  dCopy = d;
+  v6 = std::__hash_table<std::__hash_value_type<NSString * {__strong},long long>,std::__unordered_map_hasher<NSString * {__strong},std::__hash_value_type<NSString * {__strong},long long>,std::hash<NSString * {__strong}>,std::equal_to<NSString * {__strong}>,true>,std::__unordered_map_equal<NSString * {__strong},std::__hash_value_type<NSString * {__strong},long long>,std::equal_to<NSString * {__strong}>,std::hash<NSString * {__strong}>,true>,std::allocator<std::__hash_value_type<NSString * {__strong},long long>>>::find<NSString * {__strong}>(&self->_MeshMaterialMap.__table_.__bucket_list_.__ptr_, &dCopy);
   if (v6)
   {
-    *a4 = v6[3];
+    *iD = v6[3];
   }
 
   v7 = v6 != 0;
@@ -166,13 +166,13 @@
   return v7;
 }
 
-- (BOOL)getARMeshClassificationID:(id)a3 ARMeshClassificationID:(int64_t *)a4
+- (BOOL)getARMeshClassificationID:(id)d ARMeshClassificationID:(int64_t *)iD
 {
-  v9 = a3;
-  v6 = std::__hash_table<std::__hash_value_type<NSString * {__strong},long long>,std::__unordered_map_hasher<NSString * {__strong},std::__hash_value_type<NSString * {__strong},long long>,std::hash<NSString * {__strong}>,std::equal_to<NSString * {__strong}>,true>,std::__unordered_map_equal<NSString * {__strong},std::__hash_value_type<NSString * {__strong},long long>,std::equal_to<NSString * {__strong}>,std::hash<NSString * {__strong}>,true>,std::allocator<std::__hash_value_type<NSString * {__strong},long long>>>::find<NSString * {__strong}>(&self->_MeshClassificationMap.__table_.__bucket_list_.__ptr_, &v9);
+  dCopy = d;
+  v6 = std::__hash_table<std::__hash_value_type<NSString * {__strong},long long>,std::__unordered_map_hasher<NSString * {__strong},std::__hash_value_type<NSString * {__strong},long long>,std::hash<NSString * {__strong}>,std::equal_to<NSString * {__strong}>,true>,std::__unordered_map_equal<NSString * {__strong},std::__hash_value_type<NSString * {__strong},long long>,std::equal_to<NSString * {__strong}>,std::hash<NSString * {__strong}>,true>,std::allocator<std::__hash_value_type<NSString * {__strong},long long>>>::find<NSString * {__strong}>(&self->_MeshClassificationMap.__table_.__bucket_list_.__ptr_, &dCopy);
   if (v6)
   {
-    *a4 = v6[3];
+    *iD = v6[3];
   }
 
   v7 = v6 != 0;
@@ -180,9 +180,9 @@
   return v7;
 }
 
-- (materialsForPair)getMaterialsForPair:(const semantic_pair *)a3
+- (materialsForPair)getMaterialsForPair:(const semantic_pair *)pair
 {
-  v3 = std::__hash_table<std::__hash_value_type<semantic_pair,materialsForPair>,std::__unordered_map_hasher<semantic_pair,std::__hash_value_type<semantic_pair,materialsForPair>,std::hash<semantic_pair>,std::equal_to<semantic_pair>,true>,std::__unordered_map_equal<semantic_pair,std::__hash_value_type<semantic_pair,materialsForPair>,std::equal_to<semantic_pair>,std::hash<semantic_pair>,true>,std::allocator<std::__hash_value_type<semantic_pair,materialsForPair>>>::find<semantic_pair>(&self->_SemanticsMap.__table_.__bucket_list_.__ptr_, a3);
+  v3 = std::__hash_table<std::__hash_value_type<semantic_pair,materialsForPair>,std::__unordered_map_hasher<semantic_pair,std::__hash_value_type<semantic_pair,materialsForPair>,std::hash<semantic_pair>,std::equal_to<semantic_pair>,true>,std::__unordered_map_equal<semantic_pair,std::__hash_value_type<semantic_pair,materialsForPair>,std::equal_to<semantic_pair>,std::hash<semantic_pair>,true>,std::allocator<std::__hash_value_type<semantic_pair,materialsForPair>>>::find<semantic_pair>(&self->_SemanticsMap.__table_.__bucket_list_.__ptr_, pair);
   if (v3)
   {
     return (v3 + 5);

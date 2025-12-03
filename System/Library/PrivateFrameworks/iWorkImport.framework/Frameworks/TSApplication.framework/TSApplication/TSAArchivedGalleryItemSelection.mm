@@ -1,26 +1,26 @@
 @interface TSAArchivedGalleryItemSelection
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchiver:(id)a3;
-- (void)setSelection:(id)a3;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)setSelection:(id)selection;
 @end
 
 @implementation TSAArchivedGalleryItemSelection
 
-- (void)setSelection:(id)a3
+- (void)setSelection:(id)selection
 {
-  v8 = a3;
-  if (self->_selection != v8)
+  selectionCopy = selection;
+  if (self->_selection != selectionCopy)
   {
     objc_msgSend_willModify(self, v5, v6, v7);
-    objc_storeStrong(&self->_selection, a3);
+    objc_storeStrong(&self->_selection, selection);
   }
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v7 = objc_msgSend_messageWithDescriptor_(v4, v5, off_2812F3500[48], v6);
+  v7 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v5, off_2812F3500[48], v6);
 
   v22[0] = 0;
   v22[1] = v22;
@@ -36,7 +36,7 @@
     v21[2] = sub_2760BECB8;
     v21[3] = &unk_27A6B04C8;
     v21[4] = v22;
-    v9 = v4;
+    v9 = unarchiverCopy;
     v10 = objc_opt_class();
     objc_msgSend_readWeakReferenceMessage_class_protocol_completion_(v9, v11, v8, v10, 0, v21);
   }
@@ -52,7 +52,7 @@
   v18[2] = sub_2760BEDB0;
   v18[3] = &unk_27A6B04F0;
   v18[4] = v19;
-  v12 = v4;
+  v12 = unarchiverCopy;
   v13 = objc_opt_class();
   objc_msgSend_readRepeatedWeakReferenceMessage_class_protocol_completion_(v12, v14, v7 + 24, v13, 0, v18);
 
@@ -69,11 +69,11 @@
   _Block_object_dispose(v22, 8);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v22 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v4 = objc_msgSend_messageWithNewFunction_descriptor_(v22, v3, sub_2760BF034, off_2812F3500[48]);
+  v4 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v3, sub_2760BF034, off_2812F3500[48]);
 
   objc_opt_class();
   v5 = TSUCheckedDynamicCast();
@@ -92,11 +92,11 @@
     *(v4 + 48) = v11;
   }
 
-  objc_msgSend_setWeakReference_message_(v22, v9, v10, v11);
+  objc_msgSend_setWeakReference_message_(archiverCopy, v9, v10, v11);
 
   v16 = objc_msgSend_items(v5, v13, v14, v15);
   v20 = objc_msgSend_array(v16, v17, v18, v19);
-  objc_msgSend_setWeakReferenceArray_message_(v22, v21, v20, v4 + 24);
+  objc_msgSend_setWeakReferenceArray_message_(archiverCopy, v21, v20, v4 + 24);
 }
 
 @end

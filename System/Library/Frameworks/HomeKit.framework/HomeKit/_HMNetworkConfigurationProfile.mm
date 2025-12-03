@@ -1,11 +1,11 @@
 @interface _HMNetworkConfigurationProfile
 + (id)logCategory;
 - (BOOL)isNetworkAccessRestricted;
-- (BOOL)mergeFromNewObject:(id)a3;
+- (BOOL)mergeFromNewObject:(id)object;
 - (BOOL)supportsWiFiReconfiguration;
 - (HMAccessoryNetworkAccessViolation)accessViolation;
 - (NSArray)allowedHosts;
-- (_HMNetworkConfigurationProfile)initWithAccessoryIdentifier:(id)a3 targetProtection:(int64_t)a4 currentProtection:(int64_t)a5 networkAccessRestricted:(BOOL)a6 allowedHosts:(id)a7 accessViolation:(id)a8 supportsWiFiReconfiguration:(BOOL)a9 credentialType:(int64_t)a10;
+- (_HMNetworkConfigurationProfile)initWithAccessoryIdentifier:(id)identifier targetProtection:(int64_t)protection currentProtection:(int64_t)currentProtection networkAccessRestricted:(BOOL)restricted allowedHosts:(id)hosts accessViolation:(id)violation supportsWiFiReconfiguration:(BOOL)reconfiguration credentialType:(int64_t)self0;
 - (_HMNetworkConfigurationProfileDelegate)delegate;
 - (id)logIdentifier;
 - (id)messageDestination;
@@ -13,9 +13,9 @@
 - (int64_t)credentialType;
 - (int64_t)currentProtectionMode;
 - (int64_t)targetProtectionMode;
-- (void)_handleAccessViolationUpdated:(id)a3;
-- (void)_handleHostsUpdated:(id)a3;
-- (void)_handleWiFiReconfigurationUpdated:(id)a3;
+- (void)_handleAccessViolationUpdated:(id)updated;
+- (void)_handleHostsUpdated:(id)updated;
+- (void)_handleWiFiReconfigurationUpdated:(id)updated;
 - (void)_notifyDelegateOfNetworkAccessModeChanged;
 - (void)_notifyDelegateOfUpdatedAccessViolation;
 - (void)_notifyDelegateOfUpdatedAllowedHosts;
@@ -23,15 +23,15 @@
 - (void)_notifyDelegateOfUpdatedWiFiCredentialType;
 - (void)_notifyDelegateOfUpdatedWiFiReconfigurationSupport;
 - (void)_registerNotificationHandlers;
-- (void)previewAllowedHostsForAutoProtectionModeWithCompletionHandler:(id)a3;
-- (void)reconfigureWiFiWithOptions:(id)a3 completionHandler:(id)a4;
-- (void)setAccessViolation:(id)a3;
-- (void)setAllowedHosts:(id)a3;
-- (void)setCredentialType:(int64_t)a3;
-- (void)setCurrentProtectionMode:(int64_t)a3;
-- (void)setNetworkAccessRestricted:(BOOL)a3;
-- (void)setSupportsWiFiReconfiguration:(BOOL)a3;
-- (void)setTargetProtectionMode:(int64_t)a3;
+- (void)previewAllowedHostsForAutoProtectionModeWithCompletionHandler:(id)handler;
+- (void)reconfigureWiFiWithOptions:(id)options completionHandler:(id)handler;
+- (void)setAccessViolation:(id)violation;
+- (void)setAllowedHosts:(id)hosts;
+- (void)setCredentialType:(int64_t)type;
+- (void)setCurrentProtectionMode:(int64_t)mode;
+- (void)setNetworkAccessRestricted:(BOOL)restricted;
+- (void)setSupportsWiFiReconfiguration:(BOOL)reconfiguration;
+- (void)setTargetProtectionMode:(int64_t)mode;
 @end
 
 @implementation _HMNetworkConfigurationProfile
@@ -45,22 +45,22 @@
 
 - (id)logIdentifier
 {
-  v2 = [(_HMAccessoryProfile *)self uniqueIdentifier];
-  v3 = [v2 UUIDString];
+  uniqueIdentifier = [(_HMAccessoryProfile *)self uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (void)_handleWiFiReconfigurationUpdated:(id)a3
+- (void)_handleWiFiReconfigurationUpdated:(id)updated
 {
-  v14 = a3;
-  v4 = [(_HMAccessoryProfile *)self context];
-  v5 = [v4 pendingRequests];
+  updatedCopy = updated;
+  context = [(_HMAccessoryProfile *)self context];
+  pendingRequests = [context pendingRequests];
 
-  v6 = [v14 identifier];
-  v7 = [v5 removeCompletionBlockForIdentifier:v6];
+  identifier = [updatedCopy identifier];
+  v7 = [pendingRequests removeCompletionBlockForIdentifier:identifier];
 
-  v8 = [v14 BOOLForKey:@"reconfig-support"];
+  v8 = [updatedCopy BOOLForKey:@"reconfig-support"];
   if (v8 == [(_HMNetworkConfigurationProfile *)self supportsWiFiReconfiguration])
   {
     if (!v7)
@@ -79,21 +79,21 @@
     }
   }
 
-  v9 = [(_HMAccessoryProfile *)self context];
-  v10 = [v9 delegateCaller];
-  [v10 callCompletion:v7 error:0];
+  context2 = [(_HMAccessoryProfile *)self context];
+  delegateCaller = [context2 delegateCaller];
+  [delegateCaller callCompletion:v7 error:0];
 
 LABEL_6:
-  v11 = [v14 numberForKey:@"credential-type"];
-  v12 = [v11 unsignedIntegerValue];
-  if ((v12 - 1) >= 3)
+  v11 = [updatedCopy numberForKey:@"credential-type"];
+  unsignedIntegerValue = [v11 unsignedIntegerValue];
+  if ((unsignedIntegerValue - 1) >= 3)
   {
     v13 = 0;
   }
 
   else
   {
-    v13 = v12;
+    v13 = unsignedIntegerValue;
   }
 
   if ([(_HMNetworkConfigurationProfile *)self credentialType]!= v13)
@@ -103,11 +103,11 @@ LABEL_6:
   }
 }
 
-- (void)_handleAccessViolationUpdated:(id)a3
+- (void)_handleAccessViolationUpdated:(id)updated
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 dataForKey:@"access-violation"];
+  updatedCopy = updated;
+  v5 = [updatedCopy dataForKey:@"access-violation"];
   if (v5)
   {
     v15 = 0;
@@ -116,7 +116,7 @@ LABEL_6:
     if (v7)
     {
       v8 = objc_autoreleasePoolPush();
-      v9 = self;
+      selfCopy = self;
       v10 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
@@ -133,7 +133,7 @@ LABEL_6:
 
     else
     {
-      v12 = [(_HMNetworkConfigurationProfile *)self accessViolation];
+      accessViolation = [(_HMNetworkConfigurationProfile *)self accessViolation];
       v13 = HMFEqualObjects();
 
       if ((v13 & 1) == 0)
@@ -147,11 +147,11 @@ LABEL_6:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleHostsUpdated:(id)a3
+- (void)_handleHostsUpdated:(id)updated
 {
   v25[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 dataForKey:@"allowed"];
+  updatedCopy = updated;
+  v5 = [updatedCopy dataForKey:@"allowed"];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
@@ -166,7 +166,7 @@ LABEL_6:
     if (v10)
     {
       v11 = objc_autoreleasePoolPush();
-      v12 = self;
+      selfCopy = self;
       v13 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
@@ -185,8 +185,8 @@ LABEL_6:
     {
       v15 = [MEMORY[0x1E695DFD8] setWithArray:v9];
       v16 = MEMORY[0x1E695DFD8];
-      v17 = [(_HMNetworkConfigurationProfile *)self allowedHosts];
-      v18 = [v16 setWithArray:v17];
+      allowedHosts = [(_HMNetworkConfigurationProfile *)self allowedHosts];
+      v18 = [v16 setWithArray:allowedHosts];
 
       if ((HMFEqualObjects() & 1) == 0)
       {
@@ -201,116 +201,116 @@ LABEL_6:
 
 - (void)_notifyDelegateOfUpdatedWiFiCredentialType
 {
-  v3 = [(_HMNetworkConfigurationProfile *)self delegate];
+  delegate = [(_HMNetworkConfigurationProfile *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(_HMAccessoryProfile *)self context];
-    v5 = [v4 delegateCaller];
+    context = [(_HMAccessoryProfile *)self context];
+    delegateCaller = [context delegateCaller];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __76___HMNetworkConfigurationProfile__notifyDelegateOfUpdatedWiFiCredentialType__block_invoke;
     v6[3] = &unk_1E754E5C0;
-    v7 = v3;
-    v8 = self;
-    [v5 invokeBlock:v6];
+    v7 = delegate;
+    selfCopy = self;
+    [delegateCaller invokeBlock:v6];
   }
 }
 
 - (void)_notifyDelegateOfUpdatedWiFiReconfigurationSupport
 {
-  v3 = [(_HMNetworkConfigurationProfile *)self delegate];
+  delegate = [(_HMNetworkConfigurationProfile *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(_HMAccessoryProfile *)self context];
-    v5 = [v4 delegateCaller];
+    context = [(_HMAccessoryProfile *)self context];
+    delegateCaller = [context delegateCaller];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __84___HMNetworkConfigurationProfile__notifyDelegateOfUpdatedWiFiReconfigurationSupport__block_invoke;
     v6[3] = &unk_1E754E5C0;
-    v7 = v3;
-    v8 = self;
-    [v5 invokeBlock:v6];
+    v7 = delegate;
+    selfCopy = self;
+    [delegateCaller invokeBlock:v6];
   }
 }
 
 - (void)_notifyDelegateOfUpdatedAccessViolation
 {
-  v3 = [(_HMNetworkConfigurationProfile *)self delegate];
+  delegate = [(_HMNetworkConfigurationProfile *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(_HMAccessoryProfile *)self context];
-    v5 = [v4 delegateCaller];
+    context = [(_HMAccessoryProfile *)self context];
+    delegateCaller = [context delegateCaller];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __73___HMNetworkConfigurationProfile__notifyDelegateOfUpdatedAccessViolation__block_invoke;
     v6[3] = &unk_1E754E5C0;
-    v7 = v3;
-    v8 = self;
-    [v5 invokeBlock:v6];
+    v7 = delegate;
+    selfCopy = self;
+    [delegateCaller invokeBlock:v6];
   }
 }
 
 - (void)_notifyDelegateOfUpdatedAllowedHosts
 {
-  v3 = [(_HMNetworkConfigurationProfile *)self delegate];
+  delegate = [(_HMNetworkConfigurationProfile *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(_HMAccessoryProfile *)self context];
-    v5 = [v4 delegateCaller];
+    context = [(_HMAccessoryProfile *)self context];
+    delegateCaller = [context delegateCaller];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __70___HMNetworkConfigurationProfile__notifyDelegateOfUpdatedAllowedHosts__block_invoke;
     v6[3] = &unk_1E754E5C0;
-    v7 = v3;
-    v8 = self;
-    [v5 invokeBlock:v6];
+    v7 = delegate;
+    selfCopy = self;
+    [delegateCaller invokeBlock:v6];
   }
 }
 
 - (void)_notifyDelegateOfNetworkAccessModeChanged
 {
-  v3 = [(_HMNetworkConfigurationProfile *)self delegate];
+  delegate = [(_HMNetworkConfigurationProfile *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(_HMAccessoryProfile *)self context];
-    v5 = [v4 delegateCaller];
+    context = [(_HMAccessoryProfile *)self context];
+    delegateCaller = [context delegateCaller];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __75___HMNetworkConfigurationProfile__notifyDelegateOfNetworkAccessModeChanged__block_invoke;
     v6[3] = &unk_1E754E5C0;
-    v7 = v3;
-    v8 = self;
-    [v5 invokeBlock:v6];
+    v7 = delegate;
+    selfCopy = self;
+    [delegateCaller invokeBlock:v6];
   }
 }
 
 - (void)_notifyDelegateOfUpdatedProtectionMode
 {
-  v3 = [(_HMNetworkConfigurationProfile *)self delegate];
+  delegate = [(_HMNetworkConfigurationProfile *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(_HMAccessoryProfile *)self context];
-    v5 = [v4 delegateCaller];
+    context = [(_HMAccessoryProfile *)self context];
+    delegateCaller = [context delegateCaller];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __72___HMNetworkConfigurationProfile__notifyDelegateOfUpdatedProtectionMode__block_invoke;
     v6[3] = &unk_1E754E5C0;
-    v7 = v3;
-    v8 = self;
-    [v5 invokeBlock:v6];
+    v7 = delegate;
+    selfCopy = self;
+    [delegateCaller invokeBlock:v6];
   }
 }
 
-- (void)previewAllowedHostsForAutoProtectionModeWithCompletionHandler:(id)a3
+- (void)previewAllowedHostsForAutoProtectionModeWithCompletionHandler:(id)handler
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_HMAccessoryProfile *)self context];
-  if (!v4)
+  handlerCopy = handler;
+  context = [(_HMAccessoryProfile *)self context];
+  if (!handlerCopy)
   {
     v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[_HMNetworkConfigurationProfile previewAllowedHostsForAutoProtectionModeWithCompletionHandler:]", @"completionHandler"];
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -327,12 +327,12 @@ LABEL_6:
     objc_exception_throw(v21);
   }
 
-  v6 = v5;
-  if (v5)
+  v6 = context;
+  if (context)
   {
     v7 = MEMORY[0x1E69A2A10];
-    v8 = [(_HMNetworkConfigurationProfile *)self messageDestination];
-    v9 = [v7 messageWithName:@"HMNCP.pvAllowed" destination:v8 payload:0];
+    messageDestination = [(_HMNetworkConfigurationProfile *)self messageDestination];
+    v9 = [v7 messageWithName:@"HMNCP.pvAllowed" destination:messageDestination payload:0];
 
     objc_initWeak(location, self);
     v22[0] = MEMORY[0x1E69E9820];
@@ -340,10 +340,10 @@ LABEL_6:
     v22[2] = __96___HMNetworkConfigurationProfile_previewAllowedHostsForAutoProtectionModeWithCompletionHandler___block_invoke;
     v22[3] = &unk_1E754CFF8;
     objc_copyWeak(&v24, location);
-    v23 = v4;
+    v23 = handlerCopy;
     [v9 setResponseHandler:v22];
-    v10 = [v6 messageDispatcher];
-    [v10 sendMessage:v9];
+    messageDispatcher = [v6 messageDispatcher];
+    [messageDispatcher sendMessage:v9];
 
     objc_destroyWeak(&v24);
     objc_destroyWeak(location);
@@ -352,7 +352,7 @@ LABEL_6:
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy2 = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -366,23 +366,23 @@ LABEL_6:
 
     objc_autoreleasePoolPop(v11);
     v9 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (*(v4 + 2))(v4, 0, v9);
+    (*(handlerCopy + 2))(handlerCopy, 0, v9);
   }
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reconfigureWiFiWithOptions:(id)a3 completionHandler:(id)a4
+- (void)reconfigureWiFiWithOptions:(id)options completionHandler:(id)handler
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_HMAccessoryProfile *)self context];
-  if (!v7)
+  optionsCopy = options;
+  handlerCopy = handler;
+  context = [(_HMAccessoryProfile *)self context];
+  if (!handlerCopy)
   {
     v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[_HMNetworkConfigurationProfile reconfigureWiFiWithOptions:completionHandler:]", @"completionHandler"];
     v28 = objc_autoreleasePoolPush();
-    v29 = self;
+    selfCopy = self;
     v30 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
@@ -399,22 +399,22 @@ LABEL_6:
     objc_exception_throw(v32);
   }
 
-  v9 = v8;
-  if (v8)
+  v9 = context;
+  if (context)
   {
     if ([(_HMNetworkConfigurationProfile *)self supportsWiFiReconfiguration])
     {
       v36[0] = @"credential-type";
-      v10 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v6, "credentialType")}];
+      v10 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(optionsCopy, "credentialType")}];
       v36[1] = @"rotate";
       v37[0] = v10;
-      v11 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v6, "rotate")}];
+      v11 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(optionsCopy, "rotate")}];
       v37[1] = v11;
-      v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v37 forKeys:v36 count:2];
+      context2 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v37 forKeys:v36 count:2];
 
       v13 = MEMORY[0x1E69A2A10];
-      v14 = [(_HMNetworkConfigurationProfile *)self messageDestination];
-      v15 = [v13 messageWithName:@"HMNCP.wr" destination:v14 payload:v12];
+      messageDestination = [(_HMNetworkConfigurationProfile *)self messageDestination];
+      v15 = [v13 messageWithName:@"HMNCP.wr" destination:messageDestination payload:context2];
 
       objc_initWeak(location, self);
       v33[0] = MEMORY[0x1E69E9820];
@@ -422,10 +422,10 @@ LABEL_6:
       v33[2] = __79___HMNetworkConfigurationProfile_reconfigureWiFiWithOptions_completionHandler___block_invoke;
       v33[3] = &unk_1E754CFF8;
       objc_copyWeak(&v35, location);
-      v34 = v7;
+      v34 = handlerCopy;
       [v15 setResponseHandler:v33];
-      v16 = [v9 messageDispatcher];
-      [v16 sendMessage:v15];
+      messageDispatcher = [v9 messageDispatcher];
+      [messageDispatcher sendMessage:v15];
 
       objc_destroyWeak(&v35);
       objc_destroyWeak(location);
@@ -444,17 +444,17 @@ LABEL_6:
       }
 
       objc_autoreleasePoolPop(v21);
-      v12 = [(_HMAccessoryProfile *)self context];
-      v24 = [v12 delegateCaller];
+      context2 = [(_HMAccessoryProfile *)self context];
+      delegateCaller = [context2 delegateCaller];
       v25 = [MEMORY[0x1E696ABC0] hmErrorWithCode:48];
-      [v24 callCompletion:v7 error:v25];
+      [delegateCaller callCompletion:handlerCopy error:v25];
     }
   }
 
   else
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy2 = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -467,20 +467,20 @@ LABEL_6:
     }
 
     objc_autoreleasePoolPop(v17);
-    v12 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (*(v7 + 2))(v7, v12);
+    context2 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
+    (*(handlerCopy + 2))(handlerCopy, context2);
   }
 
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)mergeFromNewObject:(id)a3
+- (BOOL)mergeFromNewObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = objectCopy;
   }
 
   else
@@ -496,13 +496,13 @@ LABEL_6:
     goto LABEL_23;
   }
 
-  v8 = [v6 currentProtectionMode];
-  v9 = [v7 isNetworkAccessRestricted];
-  v10 = [v7 targetProtectionMode];
-  if (v8 != [(_HMNetworkConfigurationProfile *)self currentProtectionMode])
+  currentProtectionMode = [v6 currentProtectionMode];
+  isNetworkAccessRestricted = [v7 isNetworkAccessRestricted];
+  targetProtectionMode = [v7 targetProtectionMode];
+  if (currentProtectionMode != [(_HMNetworkConfigurationProfile *)self currentProtectionMode])
   {
-    [(_HMNetworkConfigurationProfile *)self setCurrentProtectionMode:v8];
-    if (v10 == [(_HMNetworkConfigurationProfile *)self targetProtectionMode])
+    [(_HMNetworkConfigurationProfile *)self setCurrentProtectionMode:currentProtectionMode];
+    if (targetProtectionMode == [(_HMNetworkConfigurationProfile *)self targetProtectionMode])
     {
 LABEL_11:
       [(_HMNetworkConfigurationProfile *)self _notifyDelegateOfUpdatedProtectionMode];
@@ -511,58 +511,58 @@ LABEL_11:
     }
 
 LABEL_10:
-    [(_HMNetworkConfigurationProfile *)self setTargetProtectionMode:v10];
+    [(_HMNetworkConfigurationProfile *)self setTargetProtectionMode:targetProtectionMode];
     goto LABEL_11;
   }
 
-  if (v10 != [(_HMNetworkConfigurationProfile *)self targetProtectionMode])
+  if (targetProtectionMode != [(_HMNetworkConfigurationProfile *)self targetProtectionMode])
   {
     goto LABEL_10;
   }
 
   v11 = 0;
 LABEL_12:
-  if (v9 != [(_HMNetworkConfigurationProfile *)self isNetworkAccessRestricted])
+  if (isNetworkAccessRestricted != [(_HMNetworkConfigurationProfile *)self isNetworkAccessRestricted])
   {
-    [(_HMNetworkConfigurationProfile *)self setNetworkAccessRestricted:v9];
+    [(_HMNetworkConfigurationProfile *)self setNetworkAccessRestricted:isNetworkAccessRestricted];
     [(_HMNetworkConfigurationProfile *)self _notifyDelegateOfNetworkAccessModeChanged];
     v11 = 1;
   }
 
-  v12 = [v7 allowedHosts];
-  v13 = [MEMORY[0x1E695DFD8] setWithArray:v12];
+  allowedHosts = [v7 allowedHosts];
+  v13 = [MEMORY[0x1E695DFD8] setWithArray:allowedHosts];
   v14 = MEMORY[0x1E695DFD8];
-  v15 = [(_HMNetworkConfigurationProfile *)self allowedHosts];
-  v16 = [v14 setWithArray:v15];
+  allowedHosts2 = [(_HMNetworkConfigurationProfile *)self allowedHosts];
+  v16 = [v14 setWithArray:allowedHosts2];
 
   if ((HMFEqualObjects() & 1) == 0)
   {
-    [(_HMNetworkConfigurationProfile *)self setAllowedHosts:v12];
+    [(_HMNetworkConfigurationProfile *)self setAllowedHosts:allowedHosts];
     [(_HMNetworkConfigurationProfile *)self _notifyDelegateOfUpdatedAllowedHosts];
     v11 = 1;
   }
 
-  v17 = [v7 accessViolation];
-  v18 = [(_HMNetworkConfigurationProfile *)self accessViolation];
+  accessViolation = [v7 accessViolation];
+  accessViolation2 = [(_HMNetworkConfigurationProfile *)self accessViolation];
   v19 = HMFEqualObjects();
 
   if ((v19 & 1) == 0)
   {
-    [(_HMNetworkConfigurationProfile *)self setAccessViolation:v17];
+    [(_HMNetworkConfigurationProfile *)self setAccessViolation:accessViolation];
     [(_HMNetworkConfigurationProfile *)self _notifyDelegateOfUpdatedAccessViolation];
     v11 = 1;
   }
 
-  v20 = [(_HMNetworkConfigurationProfile *)self supportsWiFiReconfiguration];
-  if (v20 != [v7 supportsWiFiReconfiguration])
+  supportsWiFiReconfiguration = [(_HMNetworkConfigurationProfile *)self supportsWiFiReconfiguration];
+  if (supportsWiFiReconfiguration != [v7 supportsWiFiReconfiguration])
   {
     -[_HMNetworkConfigurationProfile setSupportsWiFiReconfiguration:](self, "setSupportsWiFiReconfiguration:", [v7 supportsWiFiReconfiguration]);
     [(_HMNetworkConfigurationProfile *)self _notifyDelegateOfUpdatedWiFiReconfigurationSupport];
     v11 = 1;
   }
 
-  v21 = [(_HMNetworkConfigurationProfile *)self credentialType];
-  if (v21 != [v7 credentialType])
+  credentialType = [(_HMNetworkConfigurationProfile *)self credentialType];
+  if (credentialType != [v7 credentialType])
   {
     -[_HMNetworkConfigurationProfile setCredentialType:](self, "setCredentialType:", [v7 credentialType]);
     [(_HMNetworkConfigurationProfile *)self _notifyDelegateOfUpdatedWiFiCredentialType];
@@ -576,24 +576,24 @@ LABEL_23:
 - (id)messageDestination
 {
   v3 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v4 = [(_HMNetworkConfigurationProfile *)self messageTargetUUID];
-  v5 = [v3 initWithTarget:v4];
+  messageTargetUUID = [(_HMNetworkConfigurationProfile *)self messageTargetUUID];
+  v5 = [v3 initWithTarget:messageTargetUUID];
 
   return v5;
 }
 
 - (id)messageTargetUUID
 {
-  v2 = [(_HMAccessoryProfile *)self accessory];
-  v3 = [v2 uuid];
+  accessory = [(_HMAccessoryProfile *)self accessory];
+  uuid = [accessory uuid];
 
-  return v3;
+  return uuid;
 }
 
-- (void)setCredentialType:(int64_t)a3
+- (void)setCredentialType:(int64_t)type
 {
   os_unfair_lock_lock_with_options();
-  self->_credentialType = a3;
+  self->_credentialType = type;
 
   os_unfair_lock_unlock(&self->super._lock);
 }
@@ -606,10 +606,10 @@ LABEL_23:
   return credentialType;
 }
 
-- (void)setSupportsWiFiReconfiguration:(BOOL)a3
+- (void)setSupportsWiFiReconfiguration:(BOOL)reconfiguration
 {
   os_unfair_lock_lock_with_options();
-  *(&self->_supportsWiFiReconfiguration + 4) = a3;
+  *(&self->_supportsWiFiReconfiguration + 4) = reconfiguration;
 
   os_unfair_lock_unlock(&self->super._lock);
 }
@@ -622,29 +622,29 @@ LABEL_23:
   return v3;
 }
 
-- (void)setTargetProtectionMode:(int64_t)a3
+- (void)setTargetProtectionMode:(int64_t)mode
 {
   v17 = *MEMORY[0x1E69E9840];
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = HMFGetLogIdentifier();
-    targetProtectionMode = v6->_targetProtectionMode;
+    targetProtectionMode = selfCopy->_targetProtectionMode;
     v11 = 138543874;
     v12 = v8;
     v13 = 2048;
     v14 = targetProtectionMode;
     v15 = 2048;
-    v16 = a3;
+    modeCopy = mode;
     _os_log_impl(&dword_19BB39000, v7, OS_LOG_TYPE_INFO, "%{public}@Changing target protection mode from: %ld, to: %ld", &v11, 0x20u);
   }
 
   objc_autoreleasePoolPop(v5);
   os_unfair_lock_lock_with_options();
-  v6->_targetProtectionMode = a3;
-  os_unfair_lock_unlock(&v6->super._lock);
+  selfCopy->_targetProtectionMode = mode;
+  os_unfair_lock_unlock(&selfCopy->super._lock);
   v10 = *MEMORY[0x1E69E9840];
 }
 
@@ -656,10 +656,10 @@ LABEL_23:
   return targetProtectionMode;
 }
 
-- (void)setNetworkAccessRestricted:(BOOL)a3
+- (void)setNetworkAccessRestricted:(BOOL)restricted
 {
   os_unfair_lock_lock_with_options();
-  *(&self->_supportsWiFiReconfiguration + 3) = a3;
+  *(&self->_supportsWiFiReconfiguration + 3) = restricted;
 
   os_unfair_lock_unlock(&self->super._lock);
 }
@@ -672,29 +672,29 @@ LABEL_23:
   return v3;
 }
 
-- (void)setCurrentProtectionMode:(int64_t)a3
+- (void)setCurrentProtectionMode:(int64_t)mode
 {
   v17 = *MEMORY[0x1E69E9840];
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = HMFGetLogIdentifier();
-    currentProtectionMode = v6->_currentProtectionMode;
+    currentProtectionMode = selfCopy->_currentProtectionMode;
     v11 = 138543874;
     v12 = v8;
     v13 = 2048;
     v14 = currentProtectionMode;
     v15 = 2048;
-    v16 = a3;
+    modeCopy = mode;
     _os_log_impl(&dword_19BB39000, v7, OS_LOG_TYPE_INFO, "%{public}@Changing current protection mode from: %ld, to: %ld", &v11, 0x20u);
   }
 
   objc_autoreleasePoolPop(v5);
   os_unfair_lock_lock_with_options();
-  v6->_currentProtectionMode = a3;
-  os_unfair_lock_unlock(&v6->super._lock);
+  selfCopy->_currentProtectionMode = mode;
+  os_unfair_lock_unlock(&selfCopy->super._lock);
   v10 = *MEMORY[0x1E69E9840];
 }
 
@@ -706,12 +706,12 @@ LABEL_23:
   return currentProtectionMode;
 }
 
-- (void)setAccessViolation:(id)a3
+- (void)setAccessViolation:(id)violation
 {
-  v4 = a3;
+  violationCopy = violation;
   os_unfair_lock_lock_with_options();
   accessViolation = self->_accessViolation;
-  self->_accessViolation = v4;
+  self->_accessViolation = violationCopy;
 
   os_unfair_lock_unlock(&self->super._lock);
 }
@@ -725,12 +725,12 @@ LABEL_23:
   return v3;
 }
 
-- (void)setAllowedHosts:(id)a3
+- (void)setAllowedHosts:(id)hosts
 {
-  v4 = a3;
+  hostsCopy = hosts;
   os_unfair_lock_lock_with_options();
   allowedHosts = self->_allowedHosts;
-  self->_allowedHosts = v4;
+  self->_allowedHosts = hostsCopy;
 
   os_unfair_lock_unlock(&self->super._lock);
 }
@@ -746,32 +746,32 @@ LABEL_23:
 
 - (void)_registerNotificationHandlers
 {
-  v3 = [(_HMAccessoryProfile *)self context];
-  v4 = [v3 messageDispatcher];
+  context = [(_HMAccessoryProfile *)self context];
+  messageDispatcher = [context messageDispatcher];
 
-  [v4 registerForMessage:@"HMNCP.hostsUpdated" receiver:self selector:sel__handleHostsUpdated_];
-  [v4 registerForMessage:@"HMNCP.avUpdate" receiver:self selector:sel__handleAccessViolationUpdated_];
-  [v4 registerForMessage:@"HMNCP.wrUpdated" receiver:self selector:sel__handleWiFiReconfigurationUpdated_];
+  [messageDispatcher registerForMessage:@"HMNCP.hostsUpdated" receiver:self selector:sel__handleHostsUpdated_];
+  [messageDispatcher registerForMessage:@"HMNCP.avUpdate" receiver:self selector:sel__handleAccessViolationUpdated_];
+  [messageDispatcher registerForMessage:@"HMNCP.wrUpdated" receiver:self selector:sel__handleWiFiReconfigurationUpdated_];
 }
 
-- (_HMNetworkConfigurationProfile)initWithAccessoryIdentifier:(id)a3 targetProtection:(int64_t)a4 currentProtection:(int64_t)a5 networkAccessRestricted:(BOOL)a6 allowedHosts:(id)a7 accessViolation:(id)a8 supportsWiFiReconfiguration:(BOOL)a9 credentialType:(int64_t)a10
+- (_HMNetworkConfigurationProfile)initWithAccessoryIdentifier:(id)identifier targetProtection:(int64_t)protection currentProtection:(int64_t)currentProtection networkAccessRestricted:(BOOL)restricted allowedHosts:(id)hosts accessViolation:(id)violation supportsWiFiReconfiguration:(BOOL)reconfiguration credentialType:(int64_t)self0
 {
-  v17 = a7;
-  v18 = a8;
-  v19 = [MEMORY[0x1E696AFB0] hm_deriveUUIDFromBaseUUID:a3];
+  hostsCopy = hosts;
+  violationCopy = violation;
+  v19 = [MEMORY[0x1E696AFB0] hm_deriveUUIDFromBaseUUID:identifier];
   v23.receiver = self;
   v23.super_class = _HMNetworkConfigurationProfile;
   v20 = [(_HMAccessoryProfile *)&v23 initWithUUID:v19 services:MEMORY[0x1E695E0F0]];
   v21 = v20;
   if (v20)
   {
-    v20->_targetProtectionMode = a4;
-    v20->_currentProtectionMode = a5;
-    *(&v20->_supportsWiFiReconfiguration + 3) = a6;
-    objc_storeStrong(&v20->_allowedHosts, a7);
-    objc_storeStrong(&v21->_accessViolation, a8);
-    *(&v21->_supportsWiFiReconfiguration + 4) = a9;
-    v21->_credentialType = a10;
+    v20->_targetProtectionMode = protection;
+    v20->_currentProtectionMode = currentProtection;
+    *(&v20->_supportsWiFiReconfiguration + 3) = restricted;
+    objc_storeStrong(&v20->_allowedHosts, hosts);
+    objc_storeStrong(&v21->_accessViolation, violation);
+    *(&v21->_supportsWiFiReconfiguration + 4) = reconfiguration;
+    v21->_credentialType = type;
   }
 
   return v21;

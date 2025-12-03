@@ -1,10 +1,10 @@
 @interface PKImageWandOnboardingViewController
 - (BOOL)canBecomeFirstResponder;
 - (PKImageWandOnboardingViewController)init;
-- (void)_didTouchUpInsideContinueButton:(id)a3;
+- (void)_didTouchUpInsideContinueButton:(id)button;
 - (void)_updateUI;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation PKImageWandOnboardingViewController
@@ -27,37 +27,37 @@
     v3->_contentViewController = v7;
 
     [(PKImageWandOnboardingViewController *)v3 addChildViewController:v3->_contentViewController];
-    v9 = [(PKImageWandOnboardingViewController *)v3 view];
-    v10 = [(PKImageWandOnboardingContentViewController *)v3->_contentViewController view];
-    [v9 addSubview:v10];
+    view = [(PKImageWandOnboardingViewController *)v3 view];
+    view2 = [(PKImageWandOnboardingContentViewController *)v3->_contentViewController view];
+    [view addSubview:view2];
 
-    v11 = [(PKImageWandOnboardingContentViewController *)v3->_contentViewController view];
-    [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
+    view3 = [(PKImageWandOnboardingContentViewController *)v3->_contentViewController view];
+    [view3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v25 = MEMORY[0x1E696ACD8];
-    v38 = [(PKImageWandOnboardingContentViewController *)v3->_contentViewController view];
-    v36 = [v38 leadingAnchor];
-    v37 = [(PKImageWandOnboardingViewController *)v3 view];
-    v35 = [v37 leadingAnchor];
-    v34 = [v36 constraintEqualToAnchor:v35];
+    view4 = [(PKImageWandOnboardingContentViewController *)v3->_contentViewController view];
+    leadingAnchor = [view4 leadingAnchor];
+    view5 = [(PKImageWandOnboardingViewController *)v3 view];
+    leadingAnchor2 = [view5 leadingAnchor];
+    v34 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v43[0] = v34;
-    v33 = [(PKImageWandOnboardingContentViewController *)v3->_contentViewController view];
-    v31 = [v33 trailingAnchor];
-    v32 = [(PKImageWandOnboardingViewController *)v3 view];
-    v30 = [v32 trailingAnchor];
-    v29 = [v31 constraintEqualToAnchor:v30];
+    view6 = [(PKImageWandOnboardingContentViewController *)v3->_contentViewController view];
+    trailingAnchor = [view6 trailingAnchor];
+    view7 = [(PKImageWandOnboardingViewController *)v3 view];
+    trailingAnchor2 = [view7 trailingAnchor];
+    v29 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v43[1] = v29;
-    v28 = [(PKImageWandOnboardingContentViewController *)v3->_contentViewController view];
-    v26 = [v28 topAnchor];
-    v27 = [(PKImageWandOnboardingViewController *)v3 contentView];
-    v12 = [v27 bottomAnchor];
-    v13 = [v26 constraintEqualToAnchor:v12];
+    view8 = [(PKImageWandOnboardingContentViewController *)v3->_contentViewController view];
+    topAnchor = [view8 topAnchor];
+    contentView = [(PKImageWandOnboardingViewController *)v3 contentView];
+    bottomAnchor = [contentView bottomAnchor];
+    v13 = [topAnchor constraintEqualToAnchor:bottomAnchor];
     v43[2] = v13;
-    v14 = [(PKImageWandOnboardingContentViewController *)v3->_contentViewController view];
-    v15 = [v14 bottomAnchor];
-    v16 = [(PKImageWandOnboardingViewController *)v3 view];
-    v17 = [v16 bottomAnchor];
-    v18 = [v15 constraintEqualToAnchor:v17];
+    view9 = [(PKImageWandOnboardingContentViewController *)v3->_contentViewController view];
+    bottomAnchor2 = [view9 bottomAnchor];
+    view10 = [(PKImageWandOnboardingViewController *)v3 view];
+    bottomAnchor3 = [view10 bottomAnchor];
+    v18 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
     v43[3] = v18;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v43 count:4];
     [v25 activateConstraints:v19];
@@ -73,13 +73,13 @@
 
     [(PKImageWandOnboardingContentViewController *)v3->_contentViewController didMoveToParentViewController:v3];
     objc_initWeak(&location, v3);
-    v22 = [MEMORY[0x1E69DD1B8] systemTraitsAffectingColorAppearance];
+    systemTraitsAffectingColorAppearance = [MEMORY[0x1E69DD1B8] systemTraitsAffectingColorAppearance];
     v39[0] = MEMORY[0x1E69E9820];
     v39[1] = 3221225472;
     v39[2] = __43__PKImageWandOnboardingViewController_init__block_invoke;
     v39[3] = &unk_1E82D7FB0;
     objc_copyWeak(&v40, &location);
-    v23 = [(PKImageWandOnboardingViewController *)v3 registerForTraitChanges:v22 withHandler:v39];
+    v23 = [(PKImageWandOnboardingViewController *)v3 registerForTraitChanges:systemTraitsAffectingColorAppearance withHandler:v39];
 
     [(PKImageWandOnboardingViewController *)v3 _updateUI];
     objc_destroyWeak(&v40);
@@ -97,18 +97,18 @@ void __43__PKImageWandOnboardingViewController_init__block_invoke(uint64_t a1)
 
 - (void)_updateUI
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1[155];
-    if (!v2 || ([a1 traitCollection], v3 = objc_claimAutoreleasedReturnValue(), v4 = objc_msgSend(v3, "userInterfaceStyle"), v3, v2 != v4))
+    v2 = self[155];
+    if (!v2 || ([self traitCollection], v3 = objc_claimAutoreleasedReturnValue(), v4 = objc_msgSend(v3, "userInterfaceStyle"), v3, v2 != v4))
     {
-      v5 = [a1 traitCollection];
-      a1[155] = [v5 userInterfaceStyle];
+      traitCollection = [self traitCollection];
+      self[155] = [traitCollection userInterfaceStyle];
 
-      v6 = [a1 traitCollection];
-      v7 = [v6 userInterfaceStyle];
+      traitCollection2 = [self traitCollection];
+      userInterfaceStyle = [traitCollection2 userInterfaceStyle];
 
-      v8 = v7 == 2;
+      v8 = userInterfaceStyle == 2;
       v9 = @"ImageWandOnboarding_Light";
       if (v8)
       {
@@ -121,7 +121,7 @@ void __43__PKImageWandOnboardingViewController_init__block_invoke(uint64_t a1)
       v13[1] = 3221225472;
       v13[2] = __48__PKImageWandOnboardingViewController__updateUI__block_invoke;
       v13[3] = &unk_1E82DA090;
-      v13[4] = a1;
+      v13[4] = self;
       v14 = v10;
       v15 = v8;
       v12 = v10;
@@ -130,9 +130,9 @@ void __43__PKImageWandOnboardingViewController_init__block_invoke(uint64_t a1)
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v8.receiver = self;
   v8.super_class = PKImageWandOnboardingViewController;
   [(OBBaseWelcomeController *)&v8 viewDidAppear:?];
@@ -142,15 +142,15 @@ void __43__PKImageWandOnboardingViewController_init__block_invoke(uint64_t a1)
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
-    [v7 imageWandOnboardingControllerViewDidAppear:self animated:v3];
+    [v7 imageWandOnboardingControllerViewDidAppear:self animated:appearCopy];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = PKImageWandOnboardingViewController;
-  [(OBBaseWelcomeController *)&v7 viewDidDisappear:a3];
+  [(OBBaseWelcomeController *)&v7 viewDidDisappear:disappear];
   if ([(PKImageWandOnboardingViewController *)self isBeingDismissed])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -185,7 +185,7 @@ void __43__PKImageWandOnboardingViewController_init__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_didTouchUpInsideContinueButton:(id)a3
+- (void)_didTouchUpInsideContinueButton:(id)button
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();

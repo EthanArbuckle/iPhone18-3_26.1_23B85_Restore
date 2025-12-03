@@ -9,8 +9,8 @@
   v45 = *MEMORY[0x1E69E9840];
   v29 = a3;
   v31 = a4;
-  v27 = a1;
-  v6 = [MEMORY[0x1E696AD60] stringWithString:a1];
+  selfCopy = self;
+  v6 = [MEMORY[0x1E696AD60] stringWithString:self];
   v39 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "length")}];
   if ([v6 length])
   {
@@ -50,13 +50,13 @@
         if (v12)
         {
           v34 = i;
-          v13 = [v11 range];
+          range = [v11 range];
           v15 = v14;
           v38 = v11;
           v33 = v12;
           v16 = [v29 replacementStringForResult:v11 inString:v6 offset:v9 template:v12];
           v35 = v9;
-          v17 = v13 + v9;
+          v17 = range + v9;
           if (v15 != [v16 length] && objc_msgSend(v16, "length") | v15)
           {
             v18 = 0;
@@ -126,7 +126,7 @@ LABEL_24:
     while (v32);
   }
 
-  [v27 replaceCharactersInRange:0 withString:{objc_msgSend(v27, "length"), v6}];
+  [selfCopy replaceCharactersInRange:0 withString:{objc_msgSend(selfCopy, "length"), v6}];
 
   return v39;
 }

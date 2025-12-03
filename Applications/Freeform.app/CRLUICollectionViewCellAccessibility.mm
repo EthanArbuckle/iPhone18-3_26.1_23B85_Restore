@@ -1,7 +1,7 @@
 @interface CRLUICollectionViewCellAccessibility
-+ (id)crlaxCastFrom:(id)a3;
++ (id)crlaxCastFrom:(id)from;
 - (BOOL)_accessibilityHasTextOperations;
-- (BOOL)_accessibilityTextOperationAction:(id)a3;
+- (BOOL)_accessibilityTextOperationAction:(id)action;
 - (CGRect)accessibilityFrame;
 - (id)_accessibilityTextOperations;
 - (id)_accessibilityTextViewTextOperationResponder;
@@ -11,18 +11,18 @@
 
 @implementation CRLUICollectionViewCellAccessibility
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
 
 - (CGRect)accessibilityFrame
 {
-  v3 = [(CRLUICollectionViewCellAccessibility *)self accessibilityContainer];
+  accessibilityContainer = [(CRLUICollectionViewCellAccessibility *)self accessibilityContainer];
   v21.receiver = self;
   v21.super_class = CRLUICollectionViewCellAccessibility;
   [(CRLUICollectionViewCellAccessibility *)&v21 accessibilityFrame];
@@ -33,14 +33,14 @@
   NSClassFromString(@"UICollectionViewCellAccessibilityElement");
   if (objc_opt_isKindOfClass())
   {
-    v12 = [v3 accessibilityContainer];
+    v3AccessibilityContainer = [accessibilityContainer accessibilityContainer];
 
-    v3 = v12;
+    accessibilityContainer = v3AccessibilityContainer;
   }
 
-  if (v3)
+  if (accessibilityContainer)
   {
-    [v3 accessibilityFrame];
+    [accessibilityContainer accessibilityFrame];
     v25.origin.x = v13;
     v25.origin.y = v14;
     v25.size.width = v15;
@@ -71,16 +71,16 @@
 {
   v7.receiver = self;
   v7.super_class = CRLUICollectionViewCellAccessibility;
-  v3 = [(CRLUICollectionViewCellAccessibility *)&v7 _accessibilityTextOperations];
-  if (v3)
+  _accessibilityTextOperations = [(CRLUICollectionViewCellAccessibility *)&v7 _accessibilityTextOperations];
+  if (_accessibilityTextOperations)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(CRLUICollectionViewCellAccessibility *)self _crlaxAlternateTextOperationProvider];
-    v4 = v5 != 0;
+    _crlaxAlternateTextOperationProvider = [(CRLUICollectionViewCellAccessibility *)self _crlaxAlternateTextOperationProvider];
+    v4 = _crlaxAlternateTextOperationProvider != 0;
   }
 
   return v4;
@@ -90,33 +90,33 @@
 {
   v7.receiver = self;
   v7.super_class = CRLUICollectionViewCellAccessibility;
-  v3 = [(CRLUICollectionViewCellAccessibility *)&v7 _accessibilityTextOperations];
-  if (![v3 count])
+  _accessibilityTextOperations = [(CRLUICollectionViewCellAccessibility *)&v7 _accessibilityTextOperations];
+  if (![_accessibilityTextOperations count])
   {
-    v4 = [(CRLUICollectionViewCellAccessibility *)self _crlaxAlternateTextOperationProvider];
-    v5 = [v4 _accessibilityTextOperations];
+    _crlaxAlternateTextOperationProvider = [(CRLUICollectionViewCellAccessibility *)self _crlaxAlternateTextOperationProvider];
+    _accessibilityTextOperations2 = [_crlaxAlternateTextOperationProvider _accessibilityTextOperations];
 
-    v3 = v5;
+    _accessibilityTextOperations = _accessibilityTextOperations2;
   }
 
-  return v3;
+  return _accessibilityTextOperations;
 }
 
-- (BOOL)_accessibilityTextOperationAction:(id)a3
+- (BOOL)_accessibilityTextOperationAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v9.receiver = self;
   v9.super_class = CRLUICollectionViewCellAccessibility;
-  if ([(CRLUICollectionViewCellAccessibility *)&v9 _accessibilityTextOperationAction:v4])
+  if ([(CRLUICollectionViewCellAccessibility *)&v9 _accessibilityTextOperationAction:actionCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(CRLUICollectionViewCellAccessibility *)self _crlaxAlternateTextOperationProvider];
-    v7 = [v6 _accessibilityTextViewTextOperationResponder];
-    v5 = [v7 _accessibilityTextOperationAction:v4];
+    _crlaxAlternateTextOperationProvider = [(CRLUICollectionViewCellAccessibility *)self _crlaxAlternateTextOperationProvider];
+    _accessibilityTextViewTextOperationResponder = [_crlaxAlternateTextOperationProvider _accessibilityTextViewTextOperationResponder];
+    v5 = [_accessibilityTextViewTextOperationResponder _accessibilityTextOperationAction:actionCopy];
   }
 
   return v5;
@@ -124,51 +124,51 @@
 
 - (id)_accessibilityTextViewTextOperationResponder
 {
-  v2 = [(CRLUICollectionViewCellAccessibility *)self _crlaxAlternateTextOperationProvider];
-  v3 = [v2 _accessibilityTextViewTextOperationResponder];
+  _crlaxAlternateTextOperationProvider = [(CRLUICollectionViewCellAccessibility *)self _crlaxAlternateTextOperationProvider];
+  _accessibilityTextViewTextOperationResponder = [_crlaxAlternateTextOperationProvider _accessibilityTextViewTextOperationResponder];
 
-  return v3;
+  return _accessibilityTextViewTextOperationResponder;
 }
 
 - (id)_crlaxAlternateTextOperationProvider
 {
-  v2 = [(CRLUICollectionViewCellAccessibility *)self nextResponder];
-  if (v2)
+  nextResponder = [(CRLUICollectionViewCellAccessibility *)self nextResponder];
+  if (nextResponder)
   {
     while (1)
     {
-      v3 = [v2 _accessibilityTextOperations];
-      v4 = [v3 count];
+      _accessibilityTextOperations = [nextResponder _accessibilityTextOperations];
+      v4 = [_accessibilityTextOperations count];
 
       if (v4)
       {
         break;
       }
 
-      v5 = [v2 nextResponder];
+      v2NextResponder = [nextResponder nextResponder];
 
-      v2 = v5;
-      if (!v5)
+      nextResponder = v2NextResponder;
+      if (!v2NextResponder)
       {
         goto LABEL_6;
       }
     }
 
-    v2 = v2;
+    nextResponder = nextResponder;
   }
 
 LABEL_6:
 
-  return v2;
+  return nextResponder;
 }
 
 - (id)_crlaxBaseCollectionViewCellTextOperations
 {
   v4.receiver = self;
   v4.super_class = CRLUICollectionViewCellAccessibility;
-  v2 = [(CRLUICollectionViewCellAccessibility *)&v4 _accessibilityTextOperations];
+  _accessibilityTextOperations = [(CRLUICollectionViewCellAccessibility *)&v4 _accessibilityTextOperations];
 
-  return v2;
+  return _accessibilityTextOperations;
 }
 
 @end

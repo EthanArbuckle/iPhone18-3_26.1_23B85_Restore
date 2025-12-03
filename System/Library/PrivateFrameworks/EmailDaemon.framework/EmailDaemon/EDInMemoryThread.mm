@@ -5,28 +5,28 @@
 - (BOOL)_combinedHasUnflagged;
 - (BOOL)_combinedIsBlocked;
 - (BOOL)_combinedIsVIP;
-- (BOOL)_isSortedByDate:(id)a3;
-- (EDInMemoryThread)initWithMessages:(id)a3 originatingQuery:(id)a4 threadScope:(id)a5;
+- (BOOL)_isSortedByDate:(id)date;
+- (EDInMemoryThread)initWithMessages:(id)messages originatingQuery:(id)query threadScope:(id)scope;
 - (EMMessageListItem)messageListItem;
 - (NSArray)messages;
 - (NSString)description;
 - (id)_calculateAndApplyChange;
-- (id)_calculateChangesAfterRemovingMessages:(id)a3 applyingChanges:(id)a4 threadIsEmpty:(BOOL *)a5;
+- (id)_calculateChangesAfterRemovingMessages:(id)messages applyingChanges:(id)changes threadIsEmpty:(BOOL *)empty;
 - (id)_combinedCCList;
 - (id)_combinedFlagColors;
 - (id)_combinedMailboxes;
 - (id)_combinedReadLater;
 - (id)_combinedSenderList;
 - (id)_combinedToList;
-- (id)_createThreadWithObjectID:(id)a3;
+- (id)_createThreadWithObjectID:(id)d;
 - (id)_maxSearchRelevanceScore;
 - (id)_newestDisplayDate;
-- (id)addMessages:(id)a3;
-- (id)changeMessages:(id)a3 forKeyPaths:(id)a4 threadIsEmpty:(BOOL *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)removeMessages:(id)a3 threadIsEmpty:(BOOL *)a4;
-- (id)updateMessage:(id)a3 fromOldObjectID:(id)a4;
-- (void)_addMessagesToThread:(id)a3;
+- (id)addMessages:(id)messages;
+- (id)changeMessages:(id)messages forKeyPaths:(id)paths threadIsEmpty:(BOOL *)empty;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)removeMessages:(id)messages threadIsEmpty:(BOOL *)empty;
+- (id)updateMessage:(id)message fromOldObjectID:(id)d;
+- (void)_addMessagesToThread:(id)thread;
 - (void)_recalculateDisplayMessage;
 @end
 
@@ -38,7 +38,7 @@
   block[1] = 3221225472;
   block[2] = __23__EDInMemoryThread_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_43 != -1)
   {
     dispatch_once(&log_onceToken_43, block);
@@ -57,18 +57,18 @@ void __23__EDInMemoryThread_log__block_invoke(uint64_t a1)
   log_log_43 = v1;
 }
 
-- (EDInMemoryThread)initWithMessages:(id)a3 originatingQuery:(id)a4 threadScope:(id)a5
+- (EDInMemoryThread)initWithMessages:(id)messages originatingQuery:(id)query threadScope:(id)scope
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messagesCopy = messages;
+  queryCopy = query;
+  scopeCopy = scope;
   v28.receiver = self;
   v28.super_class = EDInMemoryThread;
   v11 = [(EDInMemoryThread *)&v28 init];
   if (v11)
   {
-    v12 = [v8 ef_filter:&__block_literal_global_30];
+    v12 = [messagesCopy ef_filter:&__block_literal_global_30];
     v13 = [v12 mutableCopy];
     messages = v11->_messages;
     v11->_messages = v13;
@@ -79,28 +79,28 @@ void __23__EDInMemoryThread_log__block_invoke(uint64_t a1)
       goto LABEL_10;
     }
 
-    objc_storeStrong(&v11->_originatingQuery, a4);
-    objc_storeStrong(&v11->_threadScope, a5);
+    objc_storeStrong(&v11->_originatingQuery, query);
+    objc_storeStrong(&v11->_threadScope, scope);
     v15 = v11->_messages;
-    v16 = [objc_opt_class() _dateSortDescriptors];
-    [(NSMutableArray *)v15 sortUsingDescriptors:v16];
+    _dateSortDescriptors = [objc_opt_class() _dateSortDescriptors];
+    [(NSMutableArray *)v15 sortUsingDescriptors:_dateSortDescriptors];
 
     [(EDInMemoryThread *)v11 _recalculateDisplayMessage];
-    v17 = [(NSMutableArray *)v11->_messages firstObject];
-    v18 = [v17 conversationID];
+    firstObject = [(NSMutableArray *)v11->_messages firstObject];
+    conversationID = [firstObject conversationID];
 
-    if (!v18)
+    if (!conversationID)
     {
       v19 = +[EDInMemoryThread log];
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
-        v20 = [(NSMutableArray *)v11->_messages firstObject];
-        v21 = [v20 ef_publicDescription];
-        [(EDInMemoryThread *)v21 initWithMessages:buf originatingQuery:v19 threadScope:v20];
+        firstObject2 = [(NSMutableArray *)v11->_messages firstObject];
+        ef_publicDescription = [firstObject2 ef_publicDescription];
+        [(EDInMemoryThread *)ef_publicDescription initWithMessages:buf originatingQuery:v19 threadScope:firstObject2];
       }
     }
 
-    v22 = [objc_alloc(MEMORY[0x1E699AEF8]) initWithConversationID:v18 threadScope:v11->_threadScope];
+    v22 = [objc_alloc(MEMORY[0x1E699AEF8]) initWithConversationID:conversationID threadScope:v11->_threadScope];
     v23 = [(EDInMemoryThread *)v11 _createThreadWithObjectID:v22];
     thread = v11->_thread;
     v11->_thread = v23;
@@ -121,25 +121,25 @@ uint64_t __66__EDInMemoryThread_initWithMessages_originatingQuery_threadScope___
   return v3 ^ 1u;
 }
 
-- (id)_createThreadWithObjectID:(id)a3
+- (id)_createThreadWithObjectID:(id)d
 {
-  v4 = a3;
-  v5 = [(EDInMemoryThread *)self displayMessage];
-  v6 = [(EDInMemoryThread *)self newestMessage];
+  dCopy = d;
+  displayMessage = [(EDInMemoryThread *)self displayMessage];
+  newestMessage = [(EDInMemoryThread *)self newestMessage];
   v7 = objc_alloc(MEMORY[0x1E699AEE8]);
-  v8 = [(EDInMemoryThread *)self originatingQuery];
+  originatingQuery = [(EDInMemoryThread *)self originatingQuery];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __46__EDInMemoryThread__createThreadWithObjectID___block_invoke;
   v14[3] = &unk_1E82526C0;
-  v9 = v6;
+  v9 = newestMessage;
   v15 = v9;
-  v16 = self;
-  v10 = v5;
+  selfCopy = self;
+  v10 = displayMessage;
   v17 = v10;
-  v11 = v4;
+  v11 = dCopy;
   v18 = v11;
-  v12 = [v7 initWithObjectID:v11 originatingQuery:v8 builder:v14];
+  v12 = [v7 initWithObjectID:v11 originatingQuery:originatingQuery builder:v14];
 
   return v12;
 }
@@ -271,21 +271,21 @@ void __46__EDInMemoryThread__createThreadWithObjectID___block_invoke(id *a1, voi
   v33 = *MEMORY[0x1E69E9840];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   messages = self->_messages;
-  v6 = [(EDInMemoryThread *)self originatingQuery];
-  v7 = [v4 initWithMessages:messages originatingQuery:v6 threadScope:self->_threadScope];
+  originatingQuery = [(EDInMemoryThread *)self originatingQuery];
+  v7 = [v4 initWithMessages:messages originatingQuery:originatingQuery threadScope:self->_threadScope];
 
   return v7;
 }
 
 - (EMMessageListItem)messageListItem
 {
-  v2 = [(EDInMemoryThread *)self thread];
+  thread = [(EDInMemoryThread *)self thread];
 
-  return v2;
+  return thread;
 }
 
 - (NSArray)messages
@@ -295,16 +295,16 @@ void __46__EDInMemoryThread__createThreadWithObjectID___block_invoke(id *a1, voi
   return v2;
 }
 
-- (id)addMessages:(id)a3
+- (id)addMessages:(id)messages
 {
-  v4 = a3;
-  v5 = [v4 ef_filter:&__block_literal_global_9];
+  messagesCopy = messages;
+  v5 = [messagesCopy ef_filter:&__block_literal_global_9];
 
   [(EDInMemoryThread *)self _addMessagesToThread:v5];
   [(EDInMemoryThread *)self _recalculateDisplayMessage];
-  v6 = [(EDInMemoryThread *)self _calculateAndApplyChange];
+  _calculateAndApplyChange = [(EDInMemoryThread *)self _calculateAndApplyChange];
 
-  return v6;
+  return _calculateAndApplyChange;
 }
 
 uint64_t __32__EDInMemoryThread_addMessages___block_invoke(uint64_t a1, void *a2)
@@ -315,18 +315,18 @@ uint64_t __32__EDInMemoryThread_addMessages___block_invoke(uint64_t a1, void *a2
   return v3 ^ 1u;
 }
 
-- (void)_addMessagesToThread:(id)a3
+- (void)_addMessagesToThread:(id)thread
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_opt_class() _dateSortDescriptors];
+  threadCopy = thread;
+  _dateSortDescriptors = [objc_opt_class() _dateSortDescriptors];
   v6 = EFComparatorFromSortDescriptors();
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  obj = v4;
+  obj = threadCopy;
   v7 = [obj countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -349,11 +349,11 @@ uint64_t __32__EDInMemoryThread_addMessages___block_invoke(uint64_t a1, void *a2
 
         else
         {
-          v12 = [v10 searchResultType];
+          searchResultType = [v10 searchResultType];
           v13 = [(NSMutableArray *)self->_messages objectAtIndexedSubscript:v11];
-          LODWORD(v12) = v12 > [v13 searchResultType];
+          LODWORD(searchResultType) = searchResultType > [v13 searchResultType];
 
-          if (v12)
+          if (searchResultType)
           {
             [(NSMutableArray *)self->_messages replaceObjectAtIndex:v11 withObject:v10];
           }
@@ -369,19 +369,19 @@ uint64_t __32__EDInMemoryThread_addMessages___block_invoke(uint64_t a1, void *a2
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (id)changeMessages:(id)a3 forKeyPaths:(id)a4 threadIsEmpty:(BOOL *)a5
+- (id)changeMessages:(id)messages forKeyPaths:(id)paths threadIsEmpty:(BOOL *)empty
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v24 = a4;
+  messagesCopy = messages;
+  pathsCopy = paths;
   v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v23 = self;
+  selfCopy = self;
   v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v11 = v8;
+  v11 = messagesCopy;
   v12 = [v11 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v12)
   {
@@ -396,10 +396,10 @@ uint64_t __32__EDInMemoryThread_addMessages___block_invoke(uint64_t a1, void *a2
         }
 
         v15 = *(*(&v25 + 1) + 8 * i);
-        v16 = [v15 flags];
-        v17 = [v16 deleted];
+        flags = [v15 flags];
+        deleted = [flags deleted];
 
-        if (v17)
+        if (deleted)
         {
           v18 = v9;
         }
@@ -418,36 +418,36 @@ uint64_t __32__EDInMemoryThread_addMessages___block_invoke(uint64_t a1, void *a2
     while (v12);
   }
 
-  v19 = [MEMORY[0x1E699AD98] changesForKeyPaths:v24 ofItems:v10];
-  v20 = [(EDInMemoryThread *)v23 _calculateChangesAfterRemovingMessages:v9 applyingChanges:v19 threadIsEmpty:a5];
+  v19 = [MEMORY[0x1E699AD98] changesForKeyPaths:pathsCopy ofItems:v10];
+  v20 = [(EDInMemoryThread *)selfCopy _calculateChangesAfterRemovingMessages:v9 applyingChanges:v19 threadIsEmpty:empty];
 
   v21 = *MEMORY[0x1E69E9840];
 
   return v20;
 }
 
-- (id)removeMessages:(id)a3 threadIsEmpty:(BOOL *)a4
+- (id)removeMessages:(id)messages threadIsEmpty:(BOOL *)empty
 {
-  v4 = [(EDInMemoryThread *)self _calculateChangesAfterRemovingMessages:a3 applyingChanges:0 threadIsEmpty:a4];
+  v4 = [(EDInMemoryThread *)self _calculateChangesAfterRemovingMessages:messages applyingChanges:0 threadIsEmpty:empty];
 
   return v4;
 }
 
-- (id)updateMessage:(id)a3 fromOldObjectID:(id)a4
+- (id)updateMessage:(id)message fromOldObjectID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(EDInMemoryThread *)self thread];
-  v9 = [v8 displayMessageItemID];
-  v10 = [v6 itemID];
-  v11 = [v9 isEqual:v10];
+  messageCopy = message;
+  dCopy = d;
+  thread = [(EDInMemoryThread *)self thread];
+  displayMessageItemID = [thread displayMessageItemID];
+  itemID = [messageCopy itemID];
+  v11 = [displayMessageItemID isEqual:itemID];
 
   if (v11)
   {
     v12 = objc_alloc_init(MEMORY[0x1E699AD98]);
-    v13 = [v6 objectID];
-    v14 = [v13 collectionItemID];
-    [v12 setDisplayMessageItemID:v14];
+    objectID = [messageCopy objectID];
+    collectionItemID = [objectID collectionItemID];
+    [v12 setDisplayMessageItemID:collectionItemID];
 
     v15 = v12;
   }
@@ -457,17 +457,17 @@ uint64_t __32__EDInMemoryThread_addMessages___block_invoke(uint64_t a1, void *a2
     v15 = 0;
   }
 
-  v16 = [(EDInMemoryThread *)self messages];
+  messages = [(EDInMemoryThread *)self messages];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __50__EDInMemoryThread_updateMessage_fromOldObjectID___block_invoke;
   v20[3] = &unk_1E82526E8;
-  v17 = v7;
+  v17 = dCopy;
   v21 = v17;
-  v22 = self;
-  v18 = v6;
+  selfCopy = self;
+  v18 = messageCopy;
   v23 = v18;
-  [v16 enumerateObjectsUsingBlock:v20];
+  [messages enumerateObjectsUsingBlock:v20];
 
   return v15;
 }
@@ -496,18 +496,18 @@ void __50__EDInMemoryThread_updateMessage_fromOldObjectID___block_invoke(void *a
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_calculateChangesAfterRemovingMessages:(id)a3 applyingChanges:(id)a4 threadIsEmpty:(BOOL *)a5
+- (id)_calculateChangesAfterRemovingMessages:(id)messages applyingChanges:(id)changes threadIsEmpty:(BOOL *)empty
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v21 = v8;
-  if ([v8 count])
+  messagesCopy = messages;
+  changesCopy = changes;
+  v21 = messagesCopy;
+  if ([messagesCopy count])
   {
-    [(NSMutableArray *)self->_messages removeObjectsInArray:v8];
+    [(NSMutableArray *)self->_messages removeObjectsInArray:messagesCopy];
   }
 
-  if ([v9 count])
+  if ([changesCopy count])
   {
     v24 = 0u;
     v25 = 0u;
@@ -528,8 +528,8 @@ void __50__EDInMemoryThread_updateMessage_fromOldObjectID___block_invoke(void *a
           }
 
           v14 = *(*(&v22 + 1) + 8 * i);
-          v15 = [v14 objectID];
-          v16 = [v9 objectForKeyedSubscript:v15];
+          objectID = [v14 objectID];
+          v16 = [changesCopy objectForKeyedSubscript:objectID];
 
           if (v16)
           {
@@ -545,27 +545,27 @@ void __50__EDInMemoryThread_updateMessage_fromOldObjectID___block_invoke(void *a
   }
 
   [(EDInMemoryThread *)self _recalculateDisplayMessage];
-  v17 = [(EDInMemoryThread *)self _calculateAndApplyChange];
-  if (a5)
+  _calculateAndApplyChange = [(EDInMemoryThread *)self _calculateAndApplyChange];
+  if (empty)
   {
-    v18 = [(EDInMemoryThread *)self thread];
-    *a5 = [v18 count] == 0;
+    thread = [(EDInMemoryThread *)self thread];
+    *empty = [thread count] == 0;
   }
 
   v19 = *MEMORY[0x1E69E9840];
 
-  return v17;
+  return _calculateAndApplyChange;
 }
 
 - (id)_calculateAndApplyChange
 {
-  v3 = [(EDInMemoryThread *)self thread];
-  v4 = [v3 objectID];
-  v5 = [(EDInMemoryThread *)self _createThreadWithObjectID:v4];
+  thread = [(EDInMemoryThread *)self thread];
+  objectID = [thread objectID];
+  v5 = [(EDInMemoryThread *)self _createThreadWithObjectID:objectID];
 
   v6 = MEMORY[0x1E699AD98];
-  v7 = [(EDInMemoryThread *)self thread];
-  v8 = [v6 changeFrom:v7 to:v5];
+  thread2 = [(EDInMemoryThread *)self thread];
+  v8 = [v6 changeFrom:thread2 to:v5];
 
   if (v8)
   {
@@ -600,13 +600,13 @@ void __40__EDInMemoryThread__dateSortDescriptors__block_invoke()
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_isSortedByDate:(id)a3
+- (BOOL)_isSortedByDate:(id)date
 {
-  v3 = [a3 firstObject];
-  v4 = [v3 key];
-  v5 = [objc_opt_class() _dateSortDescriptors];
-  v6 = [v5 firstObject];
-  v7 = [v6 key];
+  firstObject = [date firstObject];
+  v4 = [firstObject key];
+  _dateSortDescriptors = [objc_opt_class() _dateSortDescriptors];
+  firstObject2 = [_dateSortDescriptors firstObject];
+  v7 = [firstObject2 key];
   v8 = [v4 isEqualToString:v7];
 
   return v8;
@@ -638,17 +638,17 @@ void __40__EDInMemoryThread__dateSortDescriptors__block_invoke()
       }
 
       v7 = *(*(&v17 + 1) + 8 * i);
-      v8 = [v7 readLater];
-      v9 = v8 == 0;
+      readLater = [v7 readLater];
+      v9 = readLater == 0;
 
       if (!v9)
       {
         if (!v4 || ([v7 readLater], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "date"), v11 = objc_claimAutoreleasedReturnValue(), v12 = -[NSMutableArray ef_isLaterThanDate:](v4, "ef_isLaterThanDate:", v11), v11, v10, v12))
         {
-          v13 = [v7 readLater];
-          v14 = [v13 date];
+          readLater2 = [v7 readLater];
+          date = [readLater2 date];
 
-          v4 = v14;
+          v4 = date;
         }
       }
     }
@@ -678,9 +678,9 @@ LABEL_16:
 {
   v20 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DFA0]);
-  v4 = [(EDInMemoryThread *)self displayMessage];
-  v5 = [v4 senderList];
-  [v3 addObjectsFromArray:v5];
+  displayMessage = [(EDInMemoryThread *)self displayMessage];
+  senderList = [displayMessage senderList];
+  [v3 addObjectsFromArray:senderList];
 
   v17 = 0u;
   v18 = 0u;
@@ -701,10 +701,10 @@ LABEL_16:
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        if (v10 != v4)
+        if (v10 != displayMessage)
         {
-          v11 = [v10 senderList];
-          [v3 addObjectsFromArray:v11];
+          senderList2 = [v10 senderList];
+          [v3 addObjectsFromArray:senderList2];
         }
       }
 
@@ -714,11 +714,11 @@ LABEL_16:
     while (v7);
   }
 
-  v12 = [v3 array];
+  array = [v3 array];
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v12;
+  return array;
 }
 
 - (id)_combinedToList
@@ -743,8 +743,8 @@ LABEL_16:
           objc_enumerationMutation(v4);
         }
 
-        v8 = [*(*(&v12 + 1) + 8 * i) toList];
-        [v3 addObjectsFromArray:v8];
+        toList = [*(*(&v12 + 1) + 8 * i) toList];
+        [v3 addObjectsFromArray:toList];
       }
 
       v5 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -753,11 +753,11 @@ LABEL_16:
     while (v5);
   }
 
-  v9 = [v3 array];
+  array = [v3 array];
 
   v10 = *MEMORY[0x1E69E9840];
 
-  return v9;
+  return array;
 }
 
 - (id)_combinedCCList
@@ -782,8 +782,8 @@ LABEL_16:
           objc_enumerationMutation(v4);
         }
 
-        v8 = [*(*(&v12 + 1) + 8 * i) ccList];
-        [v3 addObjectsFromArray:v8];
+        ccList = [*(*(&v12 + 1) + 8 * i) ccList];
+        [v3 addObjectsFromArray:ccList];
       }
 
       v5 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -792,11 +792,11 @@ LABEL_16:
     while (v5);
   }
 
-  v9 = [v3 array];
+  array = [v3 array];
 
   v10 = *MEMORY[0x1E69E9840];
 
-  return v9;
+  return array;
 }
 
 - (BOOL)_combinedHasUnflagged
@@ -870,8 +870,8 @@ LABEL_5:
         objc_enumerationMutation(v4);
       }
 
-      v8 = [*(*(&v13 + 1) + 8 * v7) flagColors];
-      [v3 addIndexes:v8];
+      flagColors = [*(*(&v13 + 1) + 8 * v7) flagColors];
+      [v3 addIndexes:flagColors];
 
       if ([v3 containsIndexes:_combinedFlagColors_sAllFlagColors])
       {
@@ -1007,15 +1007,15 @@ LABEL_11:
   v2 = [(NSMutableArray *)self->_messages ef_compactMap:&__block_literal_global_26_0];
   if ([v2 count])
   {
-    v3 = [v2 ef_max];
+    ef_max = [v2 ef_max];
   }
 
   else
   {
-    v3 = 0;
+    ef_max = 0;
   }
 
-  return v3;
+  return ef_max;
 }
 
 id __44__EDInMemoryThread__maxSearchRelevanceScore__block_invoke(uint64_t a1, void *a2)
@@ -1072,7 +1072,7 @@ LABEL_11:
 - (id)_newestDisplayDate
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF00] distantPast];
+  distantPast = [MEMORY[0x1E695DF00] distantPast];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
@@ -1092,14 +1092,14 @@ LABEL_11:
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
-        v9 = [v8 displayDate];
-        v10 = [v9 ef_isLaterThanDate:v3];
+        displayDate = [v8 displayDate];
+        v10 = [displayDate ef_isLaterThanDate:distantPast];
 
         if (v10)
         {
-          v11 = [v8 displayDate];
+          displayDate2 = [v8 displayDate];
 
-          v3 = v11;
+          distantPast = displayDate2;
         }
       }
 
@@ -1111,7 +1111,7 @@ LABEL_11:
 
   v12 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return distantPast;
 }
 
 - (id)_combinedMailboxes
@@ -1136,8 +1136,8 @@ LABEL_11:
           objc_enumerationMutation(v4);
         }
 
-        v8 = [*(*(&v12 + 1) + 8 * i) mailboxes];
-        [v3 addObjectsFromArray:v8];
+        mailboxes = [*(*(&v12 + 1) + 8 * i) mailboxes];
+        [v3 addObjectsFromArray:mailboxes];
       }
 
       v5 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -1146,11 +1146,11 @@ LABEL_11:
     while (v5);
   }
 
-  v9 = [v3 array];
+  array = [v3 array];
 
   v10 = *MEMORY[0x1E69E9840];
 
-  return v9;
+  return array;
 }
 
 - (void)_recalculateDisplayMessage
@@ -1168,13 +1168,13 @@ LABEL_11:
     {
       [(NSMutableArray *)messages objectAtIndexedSubscript:v3 - 1];
     }
-    v5 = ;
+    firstObject = ;
     [(EDInMemoryThread *)self setDisplayMessage:?];
   }
 
   else
   {
-    v5 = [(NSMutableArray *)messages firstObject];
+    firstObject = [(NSMutableArray *)messages firstObject];
     [(EDInMemoryThread *)self setDisplayMessage:?];
   }
 }
@@ -1191,8 +1191,8 @@ uint64_t __46__EDInMemoryThread__recalculateDisplayMessage__block_invoke(uint64_
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(EDInMemoryThread *)self thread];
-  v6 = [v3 stringWithFormat:@"<%@: %p> conversationID:%lld", v4, self, objc_msgSend(v5, "conversationID")];
+  thread = [(EDInMemoryThread *)self thread];
+  v6 = [v3 stringWithFormat:@"<%@: %p> conversationID:%lld", v4, self, objc_msgSend(thread, "conversationID")];
 
   return v6;
 }

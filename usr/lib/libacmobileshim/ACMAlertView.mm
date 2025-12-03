@@ -1,9 +1,9 @@
 @interface ACMAlertView
-- (void)alertView:(id)a3 didDismissWithButtonIndex:(int64_t)a4;
+- (void)alertView:(id)view didDismissWithButtonIndex:(int64_t)index;
 - (void)dealloc;
 - (void)dismissAlert;
-- (void)setAlpha:(double)a3;
-- (void)showWithCompletionBlock:(id)a3;
+- (void)setAlpha:(double)alpha;
+- (void)showWithCompletionBlock:(id)block;
 @end
 
 @implementation ACMAlertView
@@ -17,45 +17,45 @@
   [(ACMAlertView *)&v3 dealloc];
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
   [(ACMAlertView *)self alpha];
-  if (v5 != a3)
+  if (v5 != alpha)
   {
-    v6 = [(ACMAlertView *)self acmAlertViewDelegate];
-    if (a3 == 0.0)
+    acmAlertViewDelegate = [(ACMAlertView *)self acmAlertViewDelegate];
+    if (alpha == 0.0)
     {
-      [(acmAlertViewDelegateProtocol *)v6 acmAlertViewWillBecomeInvisible];
+      [(acmAlertViewDelegateProtocol *)acmAlertViewDelegate acmAlertViewWillBecomeInvisible];
     }
 
     else
     {
-      [(acmAlertViewDelegateProtocol *)v6 acmAlertViewWillBecomeVisible];
+      [(acmAlertViewDelegateProtocol *)acmAlertViewDelegate acmAlertViewWillBecomeVisible];
     }
   }
 
   v7.receiver = self;
   v7.super_class = ACMAlertView;
-  [(ACMAlertView *)&v7 setAlpha:a3];
+  [(ACMAlertView *)&v7 setAlpha:alpha];
 }
 
-- (void)showWithCompletionBlock:(id)a3
+- (void)showWithCompletionBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
     [(ACMAlertView *)self setDelegate:self];
-    [(ACMAlertView *)self setCompletionBlock:a3];
+    [(ACMAlertView *)self setCompletionBlock:block];
 
     [(ACMAlertView *)self show];
   }
 }
 
-- (void)alertView:(id)a3 didDismissWithButtonIndex:(int64_t)a4
+- (void)alertView:(id)view didDismissWithButtonIndex:(int64_t)index
 {
   if ([(ACMAlertView *)self completionBlock])
   {
-    v6 = [(ACMAlertView *)self completionBlock];
-    v6[2](v6, a4);
+    completionBlock = [(ACMAlertView *)self completionBlock];
+    completionBlock[2](completionBlock, index);
 
     [(ACMAlertView *)self setCompletionBlock:0];
   }
@@ -65,15 +65,15 @@
 {
   if ([(ACMAlertView *)self completionBlock])
   {
-    v3 = self;
-    v4 = [(ACMAlertView *)self completionBlock];
-    v4[2](v4, [(ACMAlertView *)self cancelButtonIndex]);
+    selfCopy = self;
+    completionBlock = [(ACMAlertView *)self completionBlock];
+    completionBlock[2](completionBlock, [(ACMAlertView *)self cancelButtonIndex]);
     [(ACMAlertView *)self setCompletionBlock:0];
   }
 
-  v5 = [(ACMAlertView *)self cancelButtonIndex];
+  cancelButtonIndex = [(ACMAlertView *)self cancelButtonIndex];
 
-  [(ACMAlertView *)self dismissWithClickedButtonIndex:v5 animated:0];
+  [(ACMAlertView *)self dismissWithClickedButtonIndex:cancelButtonIndex animated:0];
 }
 
 @end

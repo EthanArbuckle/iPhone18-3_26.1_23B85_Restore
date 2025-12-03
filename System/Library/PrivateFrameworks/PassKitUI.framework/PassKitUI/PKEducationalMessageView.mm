@@ -1,20 +1,20 @@
 @interface PKEducationalMessageView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKEducationalMessageView)initWithConfiguration:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKEducationalMessageView)initWithConfiguration:(id)configuration;
 - (void)layoutSubviews;
 @end
 
 @implementation PKEducationalMessageView
 
-- (PKEducationalMessageView)initWithConfiguration:(id)a3
+- (PKEducationalMessageView)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = PKEducationalMessageView;
   v5 = [(PKEducationalMessageView *)&v9 init];
   if (v5)
   {
-    v6 = [[_PKEducationalMessageView alloc] initWithConfiguration:v4];
+    v6 = [[_PKEducationalMessageView alloc] initWithConfiguration:configurationCopy];
     internalView = v5->_internalView;
     v5->_internalView = v6;
 
@@ -34,9 +34,9 @@
   [(_PKEducationalMessageView *)internalView setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(_PKEducationalMessageView *)self->_internalView sizeThatFits:a3.width, a3.height];
+  [(_PKEducationalMessageView *)self->_internalView sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;

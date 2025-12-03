@@ -1,5 +1,5 @@
 @interface BLSFrameSpecifiersRequestAction
-- (BLSFrameSpecifiersRequestAction)initWithDateInterval:(id)a3 previousPresentationDate:(id)a4 shouldReset:(BOOL)a5 completion:(id)a6;
+- (BLSFrameSpecifiersRequestAction)initWithDateInterval:(id)interval previousPresentationDate:(id)date shouldReset:(BOOL)reset completion:(id)completion;
 - (BOOL)shouldReset;
 - (NSDate)previousPresentationDate;
 - (NSDateInterval)dateInterval;
@@ -7,22 +7,22 @@
 
 @implementation BLSFrameSpecifiersRequestAction
 
-- (BLSFrameSpecifiersRequestAction)initWithDateInterval:(id)a3 previousPresentationDate:(id)a4 shouldReset:(BOOL)a5 completion:(id)a6
+- (BLSFrameSpecifiersRequestAction)initWithDateInterval:(id)interval previousPresentationDate:(id)date shouldReset:(BOOL)reset completion:(id)completion
 {
-  v9 = a4;
+  dateCopy = date;
   v10 = MEMORY[0x277CF0C80];
-  v11 = a6;
-  v12 = a3;
+  completionCopy = completion;
+  intervalCopy = interval;
   v13 = objc_alloc_init(v10);
-  [v13 setObject:v12 forSetting:1];
+  [v13 setObject:intervalCopy forSetting:1];
 
-  if (v9)
+  if (dateCopy)
   {
-    [v13 setObject:v9 forSetting:2];
+    [v13 setObject:dateCopy forSetting:2];
   }
 
   [v13 setFlag:BSSettingFlagForBool() forSetting:3];
-  v14 = [MEMORY[0x277CF0B60] responderWithHandler:v11];
+  v14 = [MEMORY[0x277CF0B60] responderWithHandler:completionCopy];
 
   [v14 setQueue:MEMORY[0x277D85CD0]];
   [v14 setTimeout:{dispatch_time(0, 10000000000)}];
@@ -35,24 +35,24 @@
 
 - (NSDateInterval)dateInterval
 {
-  v2 = [(BLSFrameSpecifiersRequestAction *)self info];
-  v3 = [v2 objectForSetting:1];
+  info = [(BLSFrameSpecifiersRequestAction *)self info];
+  v3 = [info objectForSetting:1];
 
   return v3;
 }
 
 - (NSDate)previousPresentationDate
 {
-  v2 = [(BLSFrameSpecifiersRequestAction *)self info];
-  v3 = [v2 objectForSetting:2];
+  info = [(BLSFrameSpecifiersRequestAction *)self info];
+  v3 = [info objectForSetting:2];
 
   return v3;
 }
 
 - (BOOL)shouldReset
 {
-  v2 = [(BLSFrameSpecifiersRequestAction *)self info];
-  v3 = [v2 BOOLForSetting:3];
+  info = [(BLSFrameSpecifiersRequestAction *)self info];
+  v3 = [info BOOLForSetting:3];
 
   return v3;
 }

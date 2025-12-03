@@ -14,7 +14,7 @@
 - (void)reloadDemodsPreferencesFile
 {
   v9 = *MEMORY[0x277D85DE8];
-  OUTLINED_FUNCTION_0_1(&dword_259B7D000, a1, a3, "%s - Failed to setup XPC connection.", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_0_1(&dword_259B7D000, self, a3, "%s - Failed to setup XPC connection.", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }
 

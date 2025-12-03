@@ -1,48 +1,48 @@
 @interface _UITextChoiceAccelerationBubble
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (BOOL)promptWillCollideWithKeyboard:(CGRect)a3;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (BOOL)promptWillCollideWithKeyboard:(CGRect)keyboard;
 - (BOOL)showingAutocorrectHighlight;
 - (BOOL)usingRTLInputMode;
 - (CGRect)referenceRect;
 - (UIView)parentView;
 - (_NSRange)deltaRange;
 - (_NSRange)originalSelectedRange;
-- (_UITextChoiceAccelerationBubble)initWithFrame:(CGRect)a3;
+- (_UITextChoiceAccelerationBubble)initWithFrame:(CGRect)frame;
 - (_UITextChoiceAccelerationDictationPromptDelegate)dictationPromptDelegate;
 - (id)backgroundImageView;
-- (id)dictationHighlightViewForPoint:(CGPoint)a3 withEvent:(id)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)optionForPoint:(CGPoint)a3 withEvent:(id)a4;
-- (id)squaredOffBubblePathInRect:(CGRect)a3;
-- (id)squaredPathInRect:(CGRect)a3;
-- (id)textOptionWithText:(id)a3 type:(int64_t)a4;
+- (id)dictationHighlightViewForPoint:(CGPoint)point withEvent:(id)event;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)optionForPoint:(CGPoint)point withEvent:(id)event;
+- (id)squaredOffBubblePathInRect:(CGRect)rect;
+- (id)squaredPathInRect:(CGRect)rect;
+- (id)textOptionWithText:(id)text type:(int64_t)type;
 - (int)textEffectsVisibilityLevel;
 - (void)anchorToTextIfNeeded;
 - (void)cancelLightingEffect;
 - (void)dismissWithCancel;
-- (void)dismissWithCandidate:(id)a3;
-- (void)dismissWithRevert:(id)a3;
-- (void)dismissWithText:(id)a3;
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (void)dismissWithCandidate:(id)candidate;
+- (void)dismissWithRevert:(id)revert;
+- (void)dismissWithText:(id)text;
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event;
 - (void)hideForNow;
 - (void)layoutSubviews;
-- (void)removeAnimated:(BOOL)a3 withDuration:(double)a4;
+- (void)removeAnimated:(BOOL)animated withDuration:(double)duration;
 - (void)removeFromSuperview;
 - (void)reset;
-- (void)showChoices:(BOOL)a3;
-- (void)showTextHighlightView:(BOOL)a3;
-- (void)updateBubbleShapeInRect:(CGRect)a3 withCornerRadius:(double)a4 forSquaredOffBubble:(BOOL)a5;
-- (void)updateButtonForType:(int64_t)a3;
-- (void)updateButtonName:(id)a3 placement:(int64_t)a4 originalText:(id)a5;
-- (void)updateForSingleWord:(id)a3 textAnchorRect:(id)a4 inTextView:(id)a5 parentView:(id)a6 highlightColor:(id)a7;
-- (void)updateSelfWithRect:(CGRect)a3;
-- (void)updateTextAnchorForParentView:(id)a3;
-- (void)updateTextBoxHighlightForRect:(id)a3 inTextView:(id)a4 parentView:(id)a5 highlightColor:(id)a6;
-- (void)updateTextHighlightViewWithColor:(id)a3 convertedRect:(CGRect)a4;
-- (void)updateViewForOptions:(id)a3;
-- (void)updateWithChoices:(id)a3 fromParentView:(id)a4 referenceTextView:(id)a5 presentedFromRect:(id)a6 textHighlightColor:(id)a7;
+- (void)showChoices:(BOOL)choices;
+- (void)showTextHighlightView:(BOOL)view;
+- (void)updateBubbleShapeInRect:(CGRect)rect withCornerRadius:(double)radius forSquaredOffBubble:(BOOL)bubble;
+- (void)updateButtonForType:(int64_t)type;
+- (void)updateButtonName:(id)name placement:(int64_t)placement originalText:(id)text;
+- (void)updateForSingleWord:(id)word textAnchorRect:(id)rect inTextView:(id)view parentView:(id)parentView highlightColor:(id)color;
+- (void)updateSelfWithRect:(CGRect)rect;
+- (void)updateTextAnchorForParentView:(id)view;
+- (void)updateTextBoxHighlightForRect:(id)rect inTextView:(id)view parentView:(id)parentView highlightColor:(id)color;
+- (void)updateTextHighlightViewWithColor:(id)color convertedRect:(CGRect)rect;
+- (void)updateViewForOptions:(id)options;
+- (void)updateWithChoices:(id)choices fromParentView:(id)view referenceTextView:(id)textView presentedFromRect:(id)rect textHighlightColor:(id)color;
 @end
 
 @implementation _UITextChoiceAccelerationBubble
@@ -60,10 +60,10 @@
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(_UITextChoiceAccelerationBubble *)self contentsView];
-  v5 = [v4 arrangedSubviews];
+  contentsView = [(_UITextChoiceAccelerationBubble *)self contentsView];
+  arrangedSubviews = [contentsView arrangedSubviews];
 
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v6 = [arrangedSubviews countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -74,7 +74,7 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(arrangedSubviews);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
@@ -82,14 +82,14 @@
         [v10 setState:0];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [arrangedSubviews countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
   }
 
-  v11 = [(_UITextChoiceAccelerationBubble *)self sideButton];
-  [v11 setState:0];
+  sideButton = [(_UITextChoiceAccelerationBubble *)self sideButton];
+  [sideButton setState:0];
 
   [(_UITextChoiceAccelerationBubble *)self setCandidate:0];
   selectedChoice = self->_selectedChoice;
@@ -99,11 +99,11 @@
   self->_selectedCandidateChoice = 0;
 }
 
-- (_UITextChoiceAccelerationBubble)initWithFrame:(CGRect)a3
+- (_UITextChoiceAccelerationBubble)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = _UITextChoiceAccelerationBubble;
-  v3 = [(UIControl *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIControl *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -114,138 +114,138 @@
 
     [(UIView *)v4 setClipsToBounds:0];
     [(_UITextChoiceAccelerationBubble *)v4 setNeedsRTLCheck:1];
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 addObserver:v4 selector:sel_inputModeDidChange_ name:@"UITextInputCurrentInputModeDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel_inputModeDidChange_ name:@"UITextInputCurrentInputModeDidChangeNotification" object:0];
   }
 
   return v4;
 }
 
-- (void)updateTextAnchorForParentView:(id)a3
+- (void)updateTextAnchorForParentView:(id)view
 {
   v58[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  viewCopy = view;
+  if (viewCopy)
   {
-    v5 = [(_UITextChoiceAccelerationBubble *)self parentView];
-    v6 = v5;
-    if (v5 != v4)
+    parentView = [(_UITextChoiceAccelerationBubble *)self parentView];
+    v6 = parentView;
+    if (parentView != viewCopy)
     {
 
 LABEL_4:
-      v7 = [(UIView *)self superview];
+      superview = [(UIView *)self superview];
 
-      if (v7 != v4)
+      if (superview != viewCopy)
       {
         [(_UITextChoiceAccelerationBubble *)self removeFromSuperview];
-        [v4 addSubview:self];
+        [viewCopy addSubview:self];
       }
 
-      [(_UITextChoiceAccelerationBubble *)self setParentView:v4];
+      [(_UITextChoiceAccelerationBubble *)self setParentView:viewCopy];
       [(_UITextChoiceAccelerationBubble *)self anchorToTextIfNeeded];
-      v8 = [(_UITextChoiceAccelerationBubble *)self anchorLeading];
-      v9 = [v8 isActive];
+      anchorLeading = [(_UITextChoiceAccelerationBubble *)self anchorLeading];
+      isActive = [anchorLeading isActive];
 
-      if (v9)
+      if (isActive)
       {
         v10 = MEMORY[0x1E69977A0];
-        v11 = [(_UITextChoiceAccelerationBubble *)self anchorLeading];
-        v58[0] = v11;
-        v12 = [(_UITextChoiceAccelerationBubble *)self anchorTop];
-        v58[1] = v12;
+        anchorLeading2 = [(_UITextChoiceAccelerationBubble *)self anchorLeading];
+        v58[0] = anchorLeading2;
+        anchorTop = [(_UITextChoiceAccelerationBubble *)self anchorTop];
+        v58[1] = anchorTop;
         v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v58 count:2];
         [v10 deactivateConstraints:v13];
       }
 
-      v14 = [(_UITextChoiceAccelerationBubble *)self textAnchor];
-      v15 = [v14 leftAnchor];
-      v16 = [v4 leftAnchor];
-      v17 = [v15 constraintEqualToAnchor:v16 constant:0.0];
+      textAnchor = [(_UITextChoiceAccelerationBubble *)self textAnchor];
+      leftAnchor = [textAnchor leftAnchor];
+      leftAnchor2 = [viewCopy leftAnchor];
+      v17 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:0.0];
       [(_UITextChoiceAccelerationBubble *)self setAnchorLeading:v17];
 
-      v18 = [(_UITextChoiceAccelerationBubble *)self textAnchor];
-      v19 = [v18 topAnchor];
-      v20 = [v4 topAnchor];
-      v21 = [v19 constraintEqualToAnchor:v20 constant:0.0];
+      textAnchor2 = [(_UITextChoiceAccelerationBubble *)self textAnchor];
+      topAnchor = [textAnchor2 topAnchor];
+      topAnchor2 = [viewCopy topAnchor];
+      v21 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
       [(_UITextChoiceAccelerationBubble *)self setAnchorTop:v21];
 
       v22 = MEMORY[0x1E69977A0];
-      v23 = [(_UITextChoiceAccelerationBubble *)self anchorLeading];
-      v57[0] = v23;
-      v24 = [(_UITextChoiceAccelerationBubble *)self anchorTop];
-      v57[1] = v24;
+      anchorLeading3 = [(_UITextChoiceAccelerationBubble *)self anchorLeading];
+      v57[0] = anchorLeading3;
+      anchorTop2 = [(_UITextChoiceAccelerationBubble *)self anchorTop];
+      v57[1] = anchorTop2;
       v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v57 count:2];
       [v22 activateConstraints:v25];
 
-      v26 = [(_UITextChoiceAccelerationBubble *)self boundaryConstraints];
+      boundaryConstraints = [(_UITextChoiceAccelerationBubble *)self boundaryConstraints];
 
-      if (v26)
+      if (boundaryConstraints)
       {
         v27 = MEMORY[0x1E69977A0];
-        v28 = [(_UITextChoiceAccelerationBubble *)self boundaryConstraints];
-        [v27 deactivateConstraints:v28];
+        boundaryConstraints2 = [(_UITextChoiceAccelerationBubble *)self boundaryConstraints];
+        [v27 deactivateConstraints:boundaryConstraints2];
       }
 
-      v29 = [(UIView *)self leftAnchor];
-      v30 = [v4 _window];
-      v31 = [v30 leftAnchor];
-      v32 = [v29 constraintGreaterThanOrEqualToAnchor:v31 constant:10.0];
+      leftAnchor3 = [(UIView *)self leftAnchor];
+      _window = [viewCopy _window];
+      leftAnchor4 = [_window leftAnchor];
+      v32 = [leftAnchor3 constraintGreaterThanOrEqualToAnchor:leftAnchor4 constant:10.0];
       v56[0] = v32;
-      [v4 _window];
-      v33 = v54 = v4;
-      v34 = [v33 rightAnchor];
-      v35 = [(UIView *)self rightAnchor];
-      v36 = [v34 constraintGreaterThanOrEqualToAnchor:v35 constant:10.0];
+      [viewCopy _window];
+      v33 = v54 = viewCopy;
+      rightAnchor = [v33 rightAnchor];
+      rightAnchor2 = [(UIView *)self rightAnchor];
+      v36 = [rightAnchor constraintGreaterThanOrEqualToAnchor:rightAnchor2 constant:10.0];
       v56[1] = v36;
       v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:v56 count:2];
       [(_UITextChoiceAccelerationBubble *)self setBoundaryConstraints:v37];
 
-      v4 = v54;
+      viewCopy = v54;
       v38 = MEMORY[0x1E69977A0];
-      v39 = [(_UITextChoiceAccelerationBubble *)self boundaryConstraints];
-      [v38 activateConstraints:v39];
+      boundaryConstraints3 = [(_UITextChoiceAccelerationBubble *)self boundaryConstraints];
+      [v38 activateConstraints:boundaryConstraints3];
 LABEL_11:
 
       goto LABEL_12;
     }
 
-    v40 = [(_UITextChoiceAccelerationBubble *)self anchorLeading];
+    anchorLeading4 = [(_UITextChoiceAccelerationBubble *)self anchorLeading];
 
-    if (!v40)
+    if (!anchorLeading4)
     {
       goto LABEL_4;
     }
 
-    v41 = [(_UITextChoiceAccelerationBubble *)self anchorLeading];
-    if (v41)
+    anchorLeading5 = [(_UITextChoiceAccelerationBubble *)self anchorLeading];
+    if (anchorLeading5)
     {
-      v42 = v41;
-      v43 = [(_UITextChoiceAccelerationBubble *)self anchorLeading];
-      v44 = [v43 isActive];
+      v42 = anchorLeading5;
+      anchorLeading6 = [(_UITextChoiceAccelerationBubble *)self anchorLeading];
+      isActive2 = [anchorLeading6 isActive];
 
-      if ((v44 & 1) == 0)
+      if ((isActive2 & 1) == 0)
       {
-        v45 = [(_UITextChoiceAccelerationBubble *)self parentView];
+        parentView2 = [(_UITextChoiceAccelerationBubble *)self parentView];
 
-        if (v45 == v4)
+        if (parentView2 == viewCopy)
         {
-          v46 = [(UIView *)self superview];
-          v47 = [(_UITextChoiceAccelerationBubble *)self parentView];
+          superview2 = [(UIView *)self superview];
+          parentView3 = [(_UITextChoiceAccelerationBubble *)self parentView];
 
-          if (v46 != v47)
+          if (superview2 != parentView3)
           {
-            v48 = [(_UITextChoiceAccelerationBubble *)self parentView];
-            [v48 addSubview:self];
+            parentView4 = [(_UITextChoiceAccelerationBubble *)self parentView];
+            [parentView4 addSubview:self];
           }
 
           v49 = MEMORY[0x1E69977A0];
-          v39 = [(_UITextChoiceAccelerationBubble *)self boundaryConstraints];
-          v50 = [(_UITextChoiceAccelerationBubble *)self anchorLeading];
-          v55[0] = v50;
-          v51 = [(_UITextChoiceAccelerationBubble *)self anchorTop];
-          v55[1] = v51;
+          boundaryConstraints3 = [(_UITextChoiceAccelerationBubble *)self boundaryConstraints];
+          anchorLeading7 = [(_UITextChoiceAccelerationBubble *)self anchorLeading];
+          v55[0] = anchorLeading7;
+          anchorTop3 = [(_UITextChoiceAccelerationBubble *)self anchorTop];
+          v55[1] = anchorTop3;
           v52 = [MEMORY[0x1E695DEC8] arrayWithObjects:v55 count:2];
-          v53 = [v39 arrayByAddingObjectsFromArray:v52];
+          v53 = [boundaryConstraints3 arrayByAddingObjectsFromArray:v52];
           [v49 activateConstraints:v53];
 
           goto LABEL_11;
@@ -260,66 +260,66 @@ LABEL_12:
 - (void)anchorToTextIfNeeded
 {
   v105[2] = *MEMORY[0x1E69E9840];
-  v3 = [(_UITextChoiceAccelerationBubble *)self textAnchor];
+  textAnchor = [(_UITextChoiceAccelerationBubble *)self textAnchor];
 
-  if (!v3)
+  if (!textAnchor)
   {
     v4 = objc_alloc_init(UILayoutGuide);
     [(_UITextChoiceAccelerationBubble *)self setTextAnchor:v4];
 
-    v5 = [(_UITextChoiceAccelerationBubble *)self textAnchor];
-    [(UIView *)self addLayoutGuide:v5];
+    textAnchor2 = [(_UITextChoiceAccelerationBubble *)self textAnchor];
+    [(UIView *)self addLayoutGuide:textAnchor2];
 
-    v6 = [(_UITextChoiceAccelerationBubble *)self textAnchor];
-    v7 = [v6 widthAnchor];
-    v8 = [v7 constraintEqualToConstant:0.0];
+    textAnchor3 = [(_UITextChoiceAccelerationBubble *)self textAnchor];
+    widthAnchor = [textAnchor3 widthAnchor];
+    v8 = [widthAnchor constraintEqualToConstant:0.0];
     [(_UITextChoiceAccelerationBubble *)self setAnchorWidth:v8];
 
-    v9 = [(_UITextChoiceAccelerationBubble *)self textAnchor];
-    v10 = [v9 heightAnchor];
-    v11 = [v10 constraintEqualToConstant:1.0];
+    textAnchor4 = [(_UITextChoiceAccelerationBubble *)self textAnchor];
+    heightAnchor = [textAnchor4 heightAnchor];
+    v11 = [heightAnchor constraintEqualToConstant:1.0];
     [(_UITextChoiceAccelerationBubble *)self setAnchorHeight:v11];
 
     v12 = MEMORY[0x1E69977A0];
-    v13 = [(_UITextChoiceAccelerationBubble *)self anchorHeight];
-    v105[0] = v13;
-    v14 = [(_UITextChoiceAccelerationBubble *)self anchorWidth];
-    v105[1] = v14;
+    anchorHeight = [(_UITextChoiceAccelerationBubble *)self anchorHeight];
+    v105[0] = anchorHeight;
+    anchorWidth = [(_UITextChoiceAccelerationBubble *)self anchorWidth];
+    v105[1] = anchorWidth;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v105 count:2];
     [v12 activateConstraints:v15];
   }
 
-  v16 = [(_UITextChoiceAccelerationBubble *)self backgroundView];
-  if (!v16 || (v17 = v16, [(_UITextChoiceAccelerationBubble *)self contentsView], v18 = objc_claimAutoreleasedReturnValue(), v18, v17, !v18))
+  backgroundView = [(_UITextChoiceAccelerationBubble *)self backgroundView];
+  if (!backgroundView || (v17 = backgroundView, [(_UITextChoiceAccelerationBubble *)self contentsView], v18 = objc_claimAutoreleasedReturnValue(), v18, v17, !v18))
   {
-    v19 = [(_UITextChoiceAccelerationBubble *)self backingScrollView];
-    [v19 removeFromSuperview];
+    backingScrollView = [(_UITextChoiceAccelerationBubble *)self backingScrollView];
+    [backingScrollView removeFromSuperview];
 
-    v20 = [(_UITextChoiceAccelerationBubble *)self backgroundView];
-    [v20 removeFromSuperview];
+    backgroundView2 = [(_UITextChoiceAccelerationBubble *)self backgroundView];
+    [backgroundView2 removeFromSuperview];
 
-    v21 = [(_UITextChoiceAccelerationBubble *)self contentsView];
-    [v21 removeFromSuperview];
+    contentsView = [(_UITextChoiceAccelerationBubble *)self contentsView];
+    [contentsView removeFromSuperview];
 
-    v22 = [(_UITextChoiceAccelerationBubble *)self backgroundImageView];
-    [(_UITextChoiceAccelerationBubble *)self setBackgroundView:v22];
+    backgroundImageView = [(_UITextChoiceAccelerationBubble *)self backgroundImageView];
+    [(_UITextChoiceAccelerationBubble *)self setBackgroundView:backgroundImageView];
 
-    v23 = [(_UITextChoiceAccelerationBubble *)self backgroundView];
-    [v23 setTranslatesAutoresizingMaskIntoConstraints:0];
+    backgroundView3 = [(_UITextChoiceAccelerationBubble *)self backgroundView];
+    [backgroundView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v24 = [(_UITextChoiceAccelerationBubble *)self backgroundView];
-    [(UIView *)self addSubview:v24];
+    backgroundView4 = [(_UITextChoiceAccelerationBubble *)self backgroundView];
+    [(UIView *)self addSubview:backgroundView4];
 
     v25 = objc_alloc_init(UIScrollView);
     [(_UITextChoiceAccelerationBubble *)self setBackingScrollView:v25];
 
-    v26 = [(_UITextChoiceAccelerationBubble *)self backingScrollView];
-    [v26 setTranslatesAutoresizingMaskIntoConstraints:0];
+    backingScrollView2 = [(_UITextChoiceAccelerationBubble *)self backingScrollView];
+    [backingScrollView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v27 = [(_UITextChoiceAccelerationBubble *)self backgroundView];
-    v28 = [v27 contentView];
-    v29 = [(_UITextChoiceAccelerationBubble *)self backingScrollView];
-    [v28 addSubview:v29];
+    backgroundView5 = [(_UITextChoiceAccelerationBubble *)self backgroundView];
+    contentView = [backgroundView5 contentView];
+    backingScrollView3 = [(_UITextChoiceAccelerationBubble *)self backingScrollView];
+    [contentView addSubview:backingScrollView3];
 
     v30 = [UIStackView alloc];
     v31 = [(_UITextChoiceAccelerationBubble *)self textOptionWithText:&stru_1EFB14550 type:2];
@@ -328,99 +328,99 @@ LABEL_12:
     v33 = [(UIStackView *)v30 initWithArrangedSubviews:v32];
     [(_UITextChoiceAccelerationBubble *)self setContentsView:v33];
 
-    v34 = [(_UITextChoiceAccelerationBubble *)self contentsView];
-    [v34 setTranslatesAutoresizingMaskIntoConstraints:0];
+    contentsView2 = [(_UITextChoiceAccelerationBubble *)self contentsView];
+    [contentsView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v35 = [(_UITextChoiceAccelerationBubble *)self contentsView];
-    [v35 setAxis:0];
+    contentsView3 = [(_UITextChoiceAccelerationBubble *)self contentsView];
+    [contentsView3 setAxis:0];
 
-    v36 = [(_UITextChoiceAccelerationBubble *)self contentsView];
-    [v36 setAlignment:5];
+    contentsView4 = [(_UITextChoiceAccelerationBubble *)self contentsView];
+    [contentsView4 setAlignment:5];
 
-    v37 = [(_UITextChoiceAccelerationBubble *)self contentsView];
-    [v37 setSpacing:0.0];
+    contentsView5 = [(_UITextChoiceAccelerationBubble *)self contentsView];
+    [contentsView5 setSpacing:0.0];
 
-    v38 = [(_UITextChoiceAccelerationBubble *)self backingScrollView];
-    v39 = [(_UITextChoiceAccelerationBubble *)self contentsView];
-    [v38 addSubview:v39];
+    backingScrollView4 = [(_UITextChoiceAccelerationBubble *)self backingScrollView];
+    contentsView6 = [(_UITextChoiceAccelerationBubble *)self contentsView];
+    [backingScrollView4 addSubview:contentsView6];
 
-    v40 = [(_UITextChoiceAccelerationBubble *)self textAnchor];
-    v41 = [v40 leadingAnchor];
-    v42 = [(UIView *)self leadingAnchor];
-    v43 = [v41 constraintEqualToAnchor:v42];
+    textAnchor5 = [(_UITextChoiceAccelerationBubble *)self textAnchor];
+    leadingAnchor = [textAnchor5 leadingAnchor];
+    leadingAnchor2 = [(UIView *)self leadingAnchor];
+    v43 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [(_UITextChoiceAccelerationBubble *)self setLeadingSpacing:v43];
 
-    v44 = [(_UITextChoiceAccelerationBubble *)self leadingSpacing];
+    leadingSpacing = [(_UITextChoiceAccelerationBubble *)self leadingSpacing];
     LODWORD(v45) = 1132068864;
-    [v44 setPriority:v45];
+    [leadingSpacing setPriority:v45];
 
-    v46 = [(_UITextChoiceAccelerationBubble *)self backingScrollView];
-    v47 = [v46 widthAnchor];
-    v48 = [(_UITextChoiceAccelerationBubble *)self contentsView];
-    v49 = [v48 widthAnchor];
-    v50 = [v47 constraintEqualToAnchor:v49 constant:0.0];
+    backingScrollView5 = [(_UITextChoiceAccelerationBubble *)self backingScrollView];
+    widthAnchor2 = [backingScrollView5 widthAnchor];
+    contentsView7 = [(_UITextChoiceAccelerationBubble *)self contentsView];
+    widthAnchor3 = [contentsView7 widthAnchor];
+    v50 = [widthAnchor2 constraintEqualToAnchor:widthAnchor3 constant:0.0];
 
     LODWORD(v51) = 1144750080;
     v75 = v50;
     [v50 setPriority:v51];
     v82 = MEMORY[0x1E69977A0];
-    v102 = [(_UITextChoiceAccelerationBubble *)self backgroundView];
-    v101 = [v102 leadingAnchor];
-    v100 = [(UIView *)self leadingAnchor];
-    v99 = [v101 constraintEqualToAnchor:v100];
+    backgroundView6 = [(_UITextChoiceAccelerationBubble *)self backgroundView];
+    leadingAnchor3 = [backgroundView6 leadingAnchor];
+    leadingAnchor4 = [(UIView *)self leadingAnchor];
+    v99 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v103[0] = v99;
-    v97 = [(UIView *)self trailingAnchor];
-    v98 = [(_UITextChoiceAccelerationBubble *)self backgroundView];
-    v96 = [v98 trailingAnchor];
-    v95 = [v97 constraintEqualToAnchor:v96];
+    trailingAnchor = [(UIView *)self trailingAnchor];
+    backgroundView7 = [(_UITextChoiceAccelerationBubble *)self backgroundView];
+    trailingAnchor2 = [backgroundView7 trailingAnchor];
+    v95 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v103[1] = v95;
-    v94 = [(_UITextChoiceAccelerationBubble *)self backingScrollView];
-    v92 = [v94 topAnchor];
-    v93 = [(_UITextChoiceAccelerationBubble *)self backgroundView];
-    v91 = [v93 topAnchor];
-    v90 = [v92 constraintEqualToAnchor:v91 constant:0.0];
+    backingScrollView6 = [(_UITextChoiceAccelerationBubble *)self backingScrollView];
+    topAnchor = [backingScrollView6 topAnchor];
+    backgroundView8 = [(_UITextChoiceAccelerationBubble *)self backgroundView];
+    topAnchor2 = [backgroundView8 topAnchor];
+    v90 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
     v103[2] = v90;
-    v89 = [(_UITextChoiceAccelerationBubble *)self backgroundView];
-    v87 = [v89 bottomAnchor];
-    v88 = [(_UITextChoiceAccelerationBubble *)self backingScrollView];
-    v86 = [v88 bottomAnchor];
-    v85 = [v87 constraintEqualToAnchor:v86 constant:0.0];
+    backgroundView9 = [(_UITextChoiceAccelerationBubble *)self backgroundView];
+    bottomAnchor = [backgroundView9 bottomAnchor];
+    backingScrollView7 = [(_UITextChoiceAccelerationBubble *)self backingScrollView];
+    bottomAnchor2 = [backingScrollView7 bottomAnchor];
+    v85 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:0.0];
     v103[3] = v85;
-    v84 = [(_UITextChoiceAccelerationBubble *)self leadingSpacing];
-    v103[4] = v84;
-    v83 = [(_UITextChoiceAccelerationBubble *)self contentsView];
-    v80 = [v83 topAnchor];
-    v81 = [(_UITextChoiceAccelerationBubble *)self backingScrollView];
-    v79 = [v81 contentLayoutGuide];
-    v78 = [v79 topAnchor];
-    v77 = [v80 constraintEqualToAnchor:v78];
+    leadingSpacing2 = [(_UITextChoiceAccelerationBubble *)self leadingSpacing];
+    v103[4] = leadingSpacing2;
+    contentsView8 = [(_UITextChoiceAccelerationBubble *)self contentsView];
+    topAnchor3 = [contentsView8 topAnchor];
+    backingScrollView8 = [(_UITextChoiceAccelerationBubble *)self backingScrollView];
+    contentLayoutGuide = [backingScrollView8 contentLayoutGuide];
+    topAnchor4 = [contentLayoutGuide topAnchor];
+    v77 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v103[5] = v77;
-    v76 = [(_UITextChoiceAccelerationBubble *)self contentsView];
-    v73 = [v76 leadingAnchor];
-    v74 = [(_UITextChoiceAccelerationBubble *)self backingScrollView];
-    v72 = [v74 contentLayoutGuide];
-    v71 = [v72 leadingAnchor];
-    v70 = [v73 constraintEqualToAnchor:v71];
+    contentsView9 = [(_UITextChoiceAccelerationBubble *)self contentsView];
+    leadingAnchor5 = [contentsView9 leadingAnchor];
+    backingScrollView9 = [(_UITextChoiceAccelerationBubble *)self backingScrollView];
+    contentLayoutGuide2 = [backingScrollView9 contentLayoutGuide];
+    leadingAnchor6 = [contentLayoutGuide2 leadingAnchor];
+    v70 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
     v103[6] = v70;
-    v69 = [(_UITextChoiceAccelerationBubble *)self backingScrollView];
-    v68 = [v69 contentLayoutGuide];
-    v66 = [v68 bottomAnchor];
-    v67 = [(_UITextChoiceAccelerationBubble *)self contentsView];
-    v65 = [v67 bottomAnchor];
-    v64 = [v66 constraintEqualToAnchor:v65];
+    backingScrollView10 = [(_UITextChoiceAccelerationBubble *)self backingScrollView];
+    contentLayoutGuide3 = [backingScrollView10 contentLayoutGuide];
+    bottomAnchor3 = [contentLayoutGuide3 bottomAnchor];
+    contentsView10 = [(_UITextChoiceAccelerationBubble *)self contentsView];
+    bottomAnchor4 = [contentsView10 bottomAnchor];
+    v64 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v103[7] = v64;
-    v63 = [(_UITextChoiceAccelerationBubble *)self backingScrollView];
-    v62 = [v63 contentLayoutGuide];
-    v52 = [v62 trailingAnchor];
-    v53 = [(_UITextChoiceAccelerationBubble *)self contentsView];
-    v54 = [v53 trailingAnchor];
-    v55 = [v52 constraintEqualToAnchor:v54];
+    backingScrollView11 = [(_UITextChoiceAccelerationBubble *)self backingScrollView];
+    contentLayoutGuide4 = [backingScrollView11 contentLayoutGuide];
+    trailingAnchor3 = [contentLayoutGuide4 trailingAnchor];
+    contentsView11 = [(_UITextChoiceAccelerationBubble *)self contentsView];
+    trailingAnchor4 = [contentsView11 trailingAnchor];
+    v55 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v103[8] = v55;
-    v56 = [(_UITextChoiceAccelerationBubble *)self backingScrollView];
-    v57 = [v56 heightAnchor];
-    v58 = [(_UITextChoiceAccelerationBubble *)self contentsView];
-    v59 = [v58 heightAnchor];
-    v60 = [v57 constraintEqualToAnchor:v59];
+    backingScrollView12 = [(_UITextChoiceAccelerationBubble *)self backingScrollView];
+    heightAnchor2 = [backingScrollView12 heightAnchor];
+    contentsView12 = [(_UITextChoiceAccelerationBubble *)self contentsView];
+    heightAnchor3 = [contentsView12 heightAnchor];
+    v60 = [heightAnchor2 constraintEqualToAnchor:heightAnchor3];
     v103[9] = v60;
     v103[10] = v50;
     v61 = [MEMORY[0x1E695DEC8] arrayWithObjects:v103 count:11];
@@ -428,12 +428,12 @@ LABEL_12:
   }
 }
 
-- (void)updateSelfWithRect:(CGRect)a3
+- (void)updateSelfWithRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v62[3] = *MEMORY[0x1E69E9840];
   [(_UITextChoiceAccelerationBubble *)self referenceRect];
   v65.origin.x = x;
@@ -450,114 +450,114 @@ LABEL_12:
     {
       [(_UITextChoiceAccelerationBubble *)self setReferenceRect:x, y, width, height];
       [(_UITextChoiceAccelerationBubble *)self anchorToTextIfNeeded];
-      v8 = [(_UITextChoiceAccelerationBubble *)self anchorLeading];
-      [v8 setConstant:x];
+      anchorLeading = [(_UITextChoiceAccelerationBubble *)self anchorLeading];
+      [anchorLeading setConstant:x];
 
-      v9 = [(_UITextChoiceAccelerationBubble *)self anchorTop];
-      [v9 setConstant:y];
+      anchorTop = [(_UITextChoiceAccelerationBubble *)self anchorTop];
+      [anchorTop setConstant:y];
 
-      v10 = [(_UITextChoiceAccelerationBubble *)self anchorWidth];
-      [v10 setConstant:width];
+      anchorWidth = [(_UITextChoiceAccelerationBubble *)self anchorWidth];
+      [anchorWidth setConstant:width];
 
-      v11 = [(_UITextChoiceAccelerationBubble *)self anchorHeight];
-      [v11 setConstant:height];
+      anchorHeight = [(_UITextChoiceAccelerationBubble *)self anchorHeight];
+      [anchorHeight setConstant:height];
 
       if ([(_UITextChoiceAccelerationBubble *)self promptWillCollideWithKeyboard:x, y, width, height]|| [(_UITextChoiceAccelerationBubble *)self promptStyle]== 3)
       {
-        v12 = [(_UITextChoiceAccelerationBubble *)self belowTextConstraints];
-        v13 = [v12 firstObject];
-        v14 = [v13 isActive];
+        belowTextConstraints = [(_UITextChoiceAccelerationBubble *)self belowTextConstraints];
+        firstObject = [belowTextConstraints firstObject];
+        isActive = [firstObject isActive];
 
-        if (v14)
+        if (isActive)
         {
           v15 = MEMORY[0x1E69977A0];
-          v16 = [(_UITextChoiceAccelerationBubble *)self belowTextConstraints];
-          [v15 deactivateConstraints:v16];
+          belowTextConstraints2 = [(_UITextChoiceAccelerationBubble *)self belowTextConstraints];
+          [v15 deactivateConstraints:belowTextConstraints2];
         }
 
-        v17 = [(_UITextChoiceAccelerationBubble *)self aboveTextConstraints];
+        aboveTextConstraints = [(_UITextChoiceAccelerationBubble *)self aboveTextConstraints];
 
-        if (!v17)
+        if (!aboveTextConstraints)
         {
-          v59 = [(_UITextChoiceAccelerationBubble *)self backgroundView];
-          v57 = [v59 topAnchor];
-          v55 = [(UIView *)self topAnchor];
-          v53 = [v57 constraintEqualToAnchor:v55];
+          backgroundView = [(_UITextChoiceAccelerationBubble *)self backgroundView];
+          topAnchor = [backgroundView topAnchor];
+          topAnchor2 = [(UIView *)self topAnchor];
+          v53 = [topAnchor constraintEqualToAnchor:topAnchor2];
           v62[0] = v53;
-          v51 = [(_UITextChoiceAccelerationBubble *)self textAnchor];
-          v18 = [v51 topAnchor];
-          v19 = [(_UITextChoiceAccelerationBubble *)self backgroundView];
-          v20 = [v19 bottomAnchor];
-          v21 = [v18 constraintEqualToAnchor:v20];
+          textAnchor = [(_UITextChoiceAccelerationBubble *)self textAnchor];
+          topAnchor3 = [textAnchor topAnchor];
+          backgroundView2 = [(_UITextChoiceAccelerationBubble *)self backgroundView];
+          bottomAnchor = [backgroundView2 bottomAnchor];
+          v21 = [topAnchor3 constraintEqualToAnchor:bottomAnchor];
           v62[1] = v21;
-          v22 = [(UIView *)self bottomAnchor];
-          v23 = [(_UITextChoiceAccelerationBubble *)self textAnchor];
-          v24 = [v23 bottomAnchor];
-          v25 = [v22 constraintEqualToAnchor:v24];
+          bottomAnchor2 = [(UIView *)self bottomAnchor];
+          textAnchor2 = [(_UITextChoiceAccelerationBubble *)self textAnchor];
+          bottomAnchor3 = [textAnchor2 bottomAnchor];
+          v25 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
           v62[2] = v25;
           v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v62 count:3];
           [(_UITextChoiceAccelerationBubble *)self setAboveTextConstraints:v26];
         }
 
-        v27 = [(_UITextChoiceAccelerationBubble *)self aboveTextConstraints];
-        v28 = [v27 firstObject];
-        v29 = [v28 isActive];
+        aboveTextConstraints2 = [(_UITextChoiceAccelerationBubble *)self aboveTextConstraints];
+        firstObject2 = [aboveTextConstraints2 firstObject];
+        isActive2 = [firstObject2 isActive];
 
-        if ((v29 & 1) == 0)
+        if ((isActive2 & 1) == 0)
         {
           v30 = MEMORY[0x1E69977A0];
-          v31 = [(_UITextChoiceAccelerationBubble *)self aboveTextConstraints];
+          aboveTextConstraints3 = [(_UITextChoiceAccelerationBubble *)self aboveTextConstraints];
 LABEL_17:
-          v50 = v31;
-          [v30 activateConstraints:v31];
+          v50 = aboveTextConstraints3;
+          [v30 activateConstraints:aboveTextConstraints3];
         }
       }
 
       else
       {
-        v32 = [(_UITextChoiceAccelerationBubble *)self belowTextConstraints];
+        belowTextConstraints3 = [(_UITextChoiceAccelerationBubble *)self belowTextConstraints];
 
-        if (!v32)
+        if (!belowTextConstraints3)
         {
-          v60 = [(_UITextChoiceAccelerationBubble *)self backgroundView];
-          v56 = [v60 topAnchor];
-          v58 = [(_UITextChoiceAccelerationBubble *)self textAnchor];
-          v54 = [v58 bottomAnchor];
-          v52 = [v56 constraintEqualToAnchor:v54 constant:0.0];
+          backgroundView3 = [(_UITextChoiceAccelerationBubble *)self backgroundView];
+          topAnchor4 = [backgroundView3 topAnchor];
+          textAnchor3 = [(_UITextChoiceAccelerationBubble *)self textAnchor];
+          bottomAnchor4 = [textAnchor3 bottomAnchor];
+          v52 = [topAnchor4 constraintEqualToAnchor:bottomAnchor4 constant:0.0];
           v61[0] = v52;
-          v33 = [(_UITextChoiceAccelerationBubble *)self textAnchor];
-          v34 = [v33 topAnchor];
-          v35 = [(UIView *)self topAnchor];
-          v36 = [v34 constraintEqualToAnchor:v35];
+          textAnchor4 = [(_UITextChoiceAccelerationBubble *)self textAnchor];
+          topAnchor5 = [textAnchor4 topAnchor];
+          topAnchor6 = [(UIView *)self topAnchor];
+          v36 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
           v61[1] = v36;
-          v37 = [(UIView *)self bottomAnchor];
-          v38 = [(_UITextChoiceAccelerationBubble *)self backgroundView];
-          v39 = [v38 bottomAnchor];
-          v40 = [v37 constraintEqualToAnchor:v39];
+          bottomAnchor5 = [(UIView *)self bottomAnchor];
+          backgroundView4 = [(_UITextChoiceAccelerationBubble *)self backgroundView];
+          bottomAnchor6 = [backgroundView4 bottomAnchor];
+          v40 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
           v61[2] = v40;
           v41 = [MEMORY[0x1E695DEC8] arrayWithObjects:v61 count:3];
           [(_UITextChoiceAccelerationBubble *)self setBelowTextConstraints:v41];
         }
 
-        v42 = [(_UITextChoiceAccelerationBubble *)self aboveTextConstraints];
-        v43 = [v42 firstObject];
-        v44 = [v43 isActive];
+        aboveTextConstraints4 = [(_UITextChoiceAccelerationBubble *)self aboveTextConstraints];
+        firstObject3 = [aboveTextConstraints4 firstObject];
+        isActive3 = [firstObject3 isActive];
 
-        if (v44)
+        if (isActive3)
         {
           v45 = MEMORY[0x1E69977A0];
-          v46 = [(_UITextChoiceAccelerationBubble *)self aboveTextConstraints];
-          [v45 deactivateConstraints:v46];
+          aboveTextConstraints5 = [(_UITextChoiceAccelerationBubble *)self aboveTextConstraints];
+          [v45 deactivateConstraints:aboveTextConstraints5];
         }
 
-        v47 = [(_UITextChoiceAccelerationBubble *)self belowTextConstraints];
-        v48 = [v47 firstObject];
-        v49 = [v48 isActive];
+        belowTextConstraints4 = [(_UITextChoiceAccelerationBubble *)self belowTextConstraints];
+        firstObject4 = [belowTextConstraints4 firstObject];
+        isActive4 = [firstObject4 isActive];
 
-        if ((v49 & 1) == 0)
+        if ((isActive4 & 1) == 0)
         {
           v30 = MEMORY[0x1E69977A0];
-          v31 = [(_UITextChoiceAccelerationBubble *)self belowTextConstraints];
+          aboveTextConstraints3 = [(_UITextChoiceAccelerationBubble *)self belowTextConstraints];
           goto LABEL_17;
         }
       }
@@ -565,14 +565,14 @@ LABEL_17:
   }
 }
 
-- (BOOL)promptWillCollideWithKeyboard:(CGRect)a3
+- (BOOL)promptWillCollideWithKeyboard:(CGRect)keyboard
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(_UITextChoiceAccelerationBubble *)self backgroundView];
-  [v8 bounds];
+  height = keyboard.size.height;
+  width = keyboard.size.width;
+  y = keyboard.origin.y;
+  x = keyboard.origin.x;
+  backgroundView = [(_UITextChoiceAccelerationBubble *)self backgroundView];
+  [backgroundView bounds];
   v10 = v9;
 
   if (v10 >= height)
@@ -586,9 +586,9 @@ LABEL_17:
   }
 
   v12 = height + v11;
-  v13 = [(UIView *)self _window];
-  v14 = [(UIView *)self superview];
-  [v13 convertRect:v14 fromView:{x, y, width, v12}];
+  _window = [(UIView *)self _window];
+  superview = [(UIView *)self superview];
+  [_window convertRect:superview fromView:{x, y, width, v12}];
   v54 = v16;
   v55 = v15;
   v52 = v18;
@@ -614,9 +614,9 @@ LABEL_17:
     return 1;
   }
 
-  v29 = [(UIView *)self window];
-  v30 = [v29 safeAreaLayoutGuide];
-  [v30 layoutFrame];
+  window = [(UIView *)self window];
+  safeAreaLayoutGuide = [window safeAreaLayoutGuide];
+  [safeAreaLayoutGuide layoutFrame];
   v32 = v31;
   v34 = v33;
   v36 = v35;
@@ -632,8 +632,8 @@ LABEL_17:
   v59.size.width = v36;
   v59.size.height = v38;
   MaxY = CGRectGetMaxY(v59);
-  v41 = [(UIView *)self window];
-  [v41 safeAreaInsets];
+  window2 = [(UIView *)self window];
+  [window2 safeAreaInsets];
   v43 = v42;
 
   v45 = v54;
@@ -648,87 +648,87 @@ LABEL_17:
   return CGRectIntersectsRect(*&v44, *&v48);
 }
 
-- (void)showChoices:(BOOL)a3
+- (void)showChoices:(BOOL)choices
 {
-  v3 = a3;
-  v5 = [(_UITextChoiceAccelerationBubble *)self backgroundView];
-  v6 = v5;
-  if (v3)
+  choicesCopy = choices;
+  backgroundView = [(_UITextChoiceAccelerationBubble *)self backgroundView];
+  v6 = backgroundView;
+  if (choicesCopy)
   {
-    [v5 setHidden:0];
+    [backgroundView setHidden:0];
 
-    v7 = [(_UITextChoiceAccelerationBubble *)self contentsView];
-    [v7 setHidden:0];
+    contentsView = [(_UITextChoiceAccelerationBubble *)self contentsView];
+    [contentsView setHidden:0];
 
-    v8 = [(_UITextChoiceAccelerationBubble *)self backgroundMaskLayer];
-    [v8 setHidden:0];
+    backgroundMaskLayer = [(_UITextChoiceAccelerationBubble *)self backgroundMaskLayer];
+    [backgroundMaskLayer setHidden:0];
 
-    v9 = [(UIView *)self _inheritedRenderConfig];
-    v10 = [v9 colorAdaptiveBackground];
+    _inheritedRenderConfig = [(UIView *)self _inheritedRenderConfig];
+    colorAdaptiveBackground = [_inheritedRenderConfig colorAdaptiveBackground];
 
-    if (v10)
+    if (colorAdaptiveBackground)
     {
       return;
     }
 
     v11 = +[UIColor systemBlackColor];
-    v12 = [v11 cgColor];
-    v13 = [(UIView *)self layer];
-    [v13 setShadowColor:v12];
+    cgColor = [v11 cgColor];
+    layer = [(UIView *)self layer];
+    [layer setShadowColor:cgColor];
 
-    v14 = [(UIView *)self layer];
-    [v14 setShadowRadius:9.0];
+    layer2 = [(UIView *)self layer];
+    [layer2 setShadowRadius:9.0];
 
-    v15 = [(UIView *)self layer];
-    [v15 setShadowOffset:{0.0, 3.0}];
+    layer3 = [(UIView *)self layer];
+    [layer3 setShadowOffset:{0.0, 3.0}];
 
     v16 = 0.25;
   }
 
   else
   {
-    [v5 setHidden:1];
+    [backgroundView setHidden:1];
 
-    v17 = [(_UITextChoiceAccelerationBubble *)self contentsView];
-    [v17 setHidden:1];
+    contentsView2 = [(_UITextChoiceAccelerationBubble *)self contentsView];
+    [contentsView2 setHidden:1];
 
-    v18 = [(_UITextChoiceAccelerationBubble *)self backgroundMaskLayer];
-    [v18 setHidden:1];
+    backgroundMaskLayer2 = [(_UITextChoiceAccelerationBubble *)self backgroundMaskLayer];
+    [backgroundMaskLayer2 setHidden:1];
 
-    v19 = [(UIView *)self _inheritedRenderConfig];
-    v20 = [v19 colorAdaptiveBackground];
+    _inheritedRenderConfig2 = [(UIView *)self _inheritedRenderConfig];
+    colorAdaptiveBackground2 = [_inheritedRenderConfig2 colorAdaptiveBackground];
 
     v16 = 0.0;
-    if (v20)
+    if (colorAdaptiveBackground2)
     {
       return;
     }
   }
 
-  v22 = [(UIView *)self layer];
+  layer4 = [(UIView *)self layer];
   *&v21 = v16;
-  [v22 setShadowOpacity:v21];
+  [layer4 setShadowOpacity:v21];
 }
 
-- (void)updateForSingleWord:(id)a3 textAnchorRect:(id)a4 inTextView:(id)a5 parentView:(id)a6 highlightColor:(id)a7
+- (void)updateForSingleWord:(id)word textAnchorRect:(id)rect inTextView:(id)view parentView:(id)parentView highlightColor:(id)color
 {
   v41[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = a4;
-  if (-[_UITextChoiceAccelerationBubble needsRTLCheck](self, "needsRTLCheck") || (-[_UITextChoiceAccelerationBubble parentView](self, "parentView"), v17 = objc_claimAutoreleasedReturnValue(), v18 = [v17 isEqual:v14], v17, (v18 & 1) == 0))
+  wordCopy = word;
+  viewCopy = view;
+  parentViewCopy = parentView;
+  colorCopy = color;
+  rectCopy = rect;
+  if (-[_UITextChoiceAccelerationBubble needsRTLCheck](self, "needsRTLCheck") || (-[_UITextChoiceAccelerationBubble parentView](self, "parentView"), v17 = objc_claimAutoreleasedReturnValue(), v18 = [v17 isEqual:parentViewCopy], v17, (v18 & 1) == 0))
   {
-    v19 = [(_UITextChoiceAccelerationBubble *)self usingRTLInputMode];
-    v20 = [(UIView *)self traitOverrides];
-    [v20 setLayoutDirection:v19];
+    usingRTLInputMode = [(_UITextChoiceAccelerationBubble *)self usingRTLInputMode];
+    traitOverrides = [(UIView *)self traitOverrides];
+    [traitOverrides setLayoutDirection:usingRTLInputMode];
 
     [(_UITextChoiceAccelerationBubble *)self setNeedsRTLCheck:0];
   }
 
-  [(_UITextChoiceAccelerationBubble *)self updateTextAnchorForParentView:v14];
-  [v16 rect];
+  [(_UITextChoiceAccelerationBubble *)self updateTextAnchorForParentView:parentViewCopy];
+  [rectCopy rect];
   v22 = v21;
   v24 = v23;
   v26 = v25;
@@ -736,44 +736,44 @@ LABEL_17:
 
   if (!+[UIKeyboard isKeyboardProcess])
   {
-    [v14 convertRect:v13 fromView:{v22, v24, v26, v28}];
+    [parentViewCopy convertRect:viewCopy fromView:{v22, v24, v26, v28}];
     v22 = v29;
     v24 = v30;
     v26 = v31;
     v28 = v32;
   }
 
-  [(_UITextChoiceAccelerationBubble *)self updateTextHighlightViewWithColor:v15 convertedRect:v22, v24, v26, v28];
-  v33 = [(_UITextChoiceAccelerationBubble *)self contentsView];
-  v34 = [v33 arrangedSubviews];
-  v35 = [v34 count];
+  [(_UITextChoiceAccelerationBubble *)self updateTextHighlightViewWithColor:colorCopy convertedRect:v22, v24, v26, v28];
+  contentsView = [(_UITextChoiceAccelerationBubble *)self contentsView];
+  arrangedSubviews = [contentsView arrangedSubviews];
+  v35 = [arrangedSubviews count];
 
   if (v35 == 1)
   {
-    v36 = [(_UITextChoiceAccelerationBubble *)self contentsView];
-    v37 = [v36 arrangedSubviews];
-    v38 = [v37 objectAtIndex:0];
+    contentsView2 = [(_UITextChoiceAccelerationBubble *)self contentsView];
+    arrangedSubviews2 = [contentsView2 arrangedSubviews];
+    v38 = [arrangedSubviews2 objectAtIndex:0];
 
-    [v38 updateText:v12 type:3];
+    [v38 updateText:wordCopy type:3];
   }
 
   else
   {
-    v41[0] = v12;
+    v41[0] = wordCopy;
     v39 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:1];
     v40 = _candidatesChoicesFromTextChoices(v39, 0);
     [(_UITextChoiceAccelerationBubble *)self updateViewForOptions:v40];
   }
 }
 
-- (void)updateTextBoxHighlightForRect:(id)a3 inTextView:(id)a4 parentView:(id)a5 highlightColor:(id)a6
+- (void)updateTextBoxHighlightForRect:(id)rect inTextView:(id)view parentView:(id)parentView highlightColor:(id)color
 {
-  v25 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = a3;
-  [(_UITextChoiceAccelerationBubble *)self updateTextAnchorForParentView:v10];
-  [v12 rect];
+  viewCopy = view;
+  parentViewCopy = parentView;
+  colorCopy = color;
+  rectCopy = rect;
+  [(_UITextChoiceAccelerationBubble *)self updateTextAnchorForParentView:parentViewCopy];
+  [rectCopy rect];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -781,36 +781,36 @@ LABEL_17:
 
   if (!+[UIKeyboard isKeyboardProcess])
   {
-    [v10 convertRect:v25 fromView:{v14, v16, v18, v20}];
+    [parentViewCopy convertRect:viewCopy fromView:{v14, v16, v18, v20}];
     v14 = v21;
     v16 = v22;
     v18 = v23;
     v20 = v24;
   }
 
-  [(_UITextChoiceAccelerationBubble *)self updateTextHighlightViewWithColor:v11 convertedRect:v14, v16, v18, v20];
+  [(_UITextChoiceAccelerationBubble *)self updateTextHighlightViewWithColor:colorCopy convertedRect:v14, v16, v18, v20];
 }
 
-- (void)updateTextHighlightViewWithColor:(id)a3 convertedRect:(CGRect)a4
+- (void)updateTextHighlightViewWithColor:(id)color convertedRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  colorCopy = color;
   [(_UITextChoiceAccelerationBubble *)self updateSelfWithRect:x, y, width, height];
   [(_UITextChoiceAccelerationBubble *)self showTextHighlightView:1];
   [(UIView *)self setAlpha:1.0];
-  v10 = [(_UITextChoiceAccelerationBubble *)self textHighlightView];
-  [v10 setBackgroundColor:v9];
+  textHighlightView = [(_UITextChoiceAccelerationBubble *)self textHighlightView];
+  [textHighlightView setBackgroundColor:colorCopy];
 }
 
 - (void)hideForNow
 {
-  v3 = [(_UITextChoiceAccelerationBubble *)self textHighlightView];
-  v4 = [v3 isHidden];
+  textHighlightView = [(_UITextChoiceAccelerationBubble *)self textHighlightView];
+  isHidden = [textHighlightView isHidden];
 
-  if ((v4 & 1) == 0)
+  if ((isHidden & 1) == 0)
   {
     [(_UITextChoiceAccelerationBubble *)self showTextHighlightView:0];
 
@@ -818,48 +818,48 @@ LABEL_17:
   }
 }
 
-- (void)updateWithChoices:(id)a3 fromParentView:(id)a4 referenceTextView:(id)a5 presentedFromRect:(id)a6 textHighlightColor:(id)a7
+- (void)updateWithChoices:(id)choices fromParentView:(id)view referenceTextView:(id)textView presentedFromRect:(id)rect textHighlightColor:(id)color
 {
-  v40 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = a3;
-  v16 = [v15 firstObject];
-  v17 = [v16 label];
+  viewCopy = view;
+  textViewCopy = textView;
+  rectCopy = rect;
+  colorCopy = color;
+  choicesCopy = choices;
+  firstObject = [choicesCopy firstObject];
+  label = [firstObject label];
 
-  LODWORD(v16) = [v17 _isNaturallyRTL];
-  v18 = [(_UITextChoiceAccelerationBubble *)self usingRTLInputMode];
-  v19 = [(UIView *)self traitOverrides];
-  [v19 setLayoutDirection:v16];
+  LODWORD(firstObject) = [label _isNaturallyRTL];
+  usingRTLInputMode = [(_UITextChoiceAccelerationBubble *)self usingRTLInputMode];
+  traitOverrides = [(UIView *)self traitOverrides];
+  [traitOverrides setLayoutDirection:firstObject];
 
-  [(_UITextChoiceAccelerationBubble *)self setNeedsRTLCheck:v16 ^ v18];
-  [(_UITextChoiceAccelerationBubble *)self updateTextAnchorForParentView:v40];
+  [(_UITextChoiceAccelerationBubble *)self setNeedsRTLCheck:firstObject ^ usingRTLInputMode];
+  [(_UITextChoiceAccelerationBubble *)self updateTextAnchorForParentView:viewCopy];
   [(UIView *)self setAlpha:1.0];
   [(_UITextChoiceAccelerationBubble *)self showChoices:1];
-  [(_UITextChoiceAccelerationBubble *)self showTextHighlightView:v14 != 0];
-  if (v14)
+  [(_UITextChoiceAccelerationBubble *)self showTextHighlightView:colorCopy != 0];
+  if (colorCopy)
   {
-    v20 = [v14 colorWithAlphaComponent:0.2];
-    v21 = [(_UITextChoiceAccelerationBubble *)self textHighlightView];
-    [v21 setBackgroundColor:v14];
+    v20 = [colorCopy colorWithAlphaComponent:0.2];
+    textHighlightView = [(_UITextChoiceAccelerationBubble *)self textHighlightView];
+    [textHighlightView setBackgroundColor:colorCopy];
 
-    [(_UITextChoiceAccelerationBubble *)self setOptionalTintColor:v14];
-    v22 = [(_UITextChoiceAccelerationBubble *)self dictationGlowEffect];
-    [v22 setTintColor:v20];
+    [(_UITextChoiceAccelerationBubble *)self setOptionalTintColor:colorCopy];
+    dictationGlowEffect = [(_UITextChoiceAccelerationBubble *)self dictationGlowEffect];
+    [dictationGlowEffect setTintColor:v20];
 
-    v23 = [(_UITextChoiceAccelerationBubble *)self dictationGlowEffect];
-    [v23 setPulsing:1];
+    dictationGlowEffect2 = [(_UITextChoiceAccelerationBubble *)self dictationGlowEffect];
+    [dictationGlowEffect2 setPulsing:1];
   }
 
-  [v13 rect];
+  [rectCopy rect];
   v25 = v24;
   v27 = v26;
   v29 = v28;
   v31 = v30;
   if (!+[UIKeyboard isKeyboardProcess])
   {
-    [v40 convertRect:v12 fromView:{v25, v27, v29, v31}];
+    [viewCopy convertRect:textViewCopy fromView:{v25, v27, v29, v31}];
     v25 = v32;
     v27 = v33;
     v29 = v34;
@@ -868,27 +868,27 @@ LABEL_17:
 
   [(_UITextChoiceAccelerationBubble *)self updateSelfWithRect:v25, v27, v29, v31];
   [(_UITextChoiceAccelerationBubble *)self setShouldRejectCandidate:0];
-  [(_UITextChoiceAccelerationBubble *)self updateViewForOptions:v15];
+  [(_UITextChoiceAccelerationBubble *)self updateViewForOptions:choicesCopy];
 
   [(UIView *)self layoutIfNeeded];
-  v36 = [(_UITextChoiceAccelerationBubble *)self textHighlightView];
-  [v36 bounds];
+  textHighlightView2 = [(_UITextChoiceAccelerationBubble *)self textHighlightView];
+  [textHighlightView2 bounds];
   v38 = v37 / 4.75;
-  v39 = [(_UITextChoiceAccelerationBubble *)self dictationGlowEffect];
-  [v39 setBlurRadius:v38];
+  dictationGlowEffect3 = [(_UITextChoiceAccelerationBubble *)self dictationGlowEffect];
+  [dictationGlowEffect3 setBlurRadius:v38];
 }
 
-- (void)updateViewForOptions:(id)a3
+- (void)updateViewForOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(_UITextChoiceAccelerationBubble *)self contentsView];
-  v6 = [v5 arrangedSubviews];
-  v7 = [v6 firstObject];
+  optionsCopy = options;
+  contentsView = [(_UITextChoiceAccelerationBubble *)self contentsView];
+  arrangedSubviews = [contentsView arrangedSubviews];
+  firstObject = [arrangedSubviews firstObject];
 
-  v8 = [v4 firstObject];
-  v48 = v8;
-  v49 = v7;
-  if ([v8 slotID])
+  firstObject2 = [optionsCopy firstObject];
+  v48 = firstObject2;
+  v49 = firstObject;
+  if ([firstObject2 slotID])
   {
     v9 = 6;
   }
@@ -901,12 +901,12 @@ LABEL_17:
       v9 = 8;
     }
 
-    else if (_candidateSourceIsSmartReply(v8))
+    else if (_candidateSourceIsSmartReply(firstObject2))
     {
       v9 = 7;
     }
 
-    else if ([v4 count] >= 2)
+    else if ([optionsCopy count] >= 2)
     {
       v9 = 2;
     }
@@ -923,24 +923,24 @@ LABEL_17:
   aBlock[3] = &unk_1E70FD9A0;
   aBlock[4] = self;
   v51 = _Block_copy(aBlock);
-  v10 = [v4 count];
-  v11 = [(_UITextChoiceAccelerationBubble *)self contentsView];
-  v12 = [v11 arrangedSubviews];
-  v13 = [v12 count];
+  v10 = [optionsCopy count];
+  contentsView2 = [(_UITextChoiceAccelerationBubble *)self contentsView];
+  arrangedSubviews2 = [contentsView2 arrangedSubviews];
+  v13 = [arrangedSubviews2 count];
 
   if (v10 >= v13)
   {
-    if ([v4 count])
+    if ([optionsCopy count])
     {
       v29 = 0;
       do
       {
-        v30 = [v4 objectAtIndexedSubscript:v29];
-        v31 = [v30 label];
+        v30 = [optionsCopy objectAtIndexedSubscript:v29];
+        label = [v30 label];
         v32 = v9;
         if (v9 == 2)
         {
-          if (v51[2](v51, v31))
+          if (v51[2](v51, label))
           {
             v32 = 4;
           }
@@ -951,59 +951,59 @@ LABEL_17:
           }
         }
 
-        v33 = [(_UITextChoiceAccelerationBubble *)self contentsView];
-        v34 = [v33 arrangedSubviews];
-        v35 = [v34 count];
+        contentsView3 = [(_UITextChoiceAccelerationBubble *)self contentsView];
+        arrangedSubviews3 = [contentsView3 arrangedSubviews];
+        v35 = [arrangedSubviews3 count];
 
         if (v29 >= v35)
         {
           v38 = objc_alloc_init(_UITextOption);
-          v36 = [(_UITextChoiceAccelerationBubble *)self contentsView];
-          [v36 addArrangedSubview:v38];
+          contentsView4 = [(_UITextChoiceAccelerationBubble *)self contentsView];
+          [contentsView4 addArrangedSubview:v38];
         }
 
         else
         {
-          v36 = [(_UITextChoiceAccelerationBubble *)self contentsView];
-          v37 = [v36 arrangedSubviews];
-          v38 = [v37 objectAtIndex:v29];
+          contentsView4 = [(_UITextChoiceAccelerationBubble *)self contentsView];
+          arrangedSubviews4 = [contentsView4 arrangedSubviews];
+          v38 = [arrangedSubviews4 objectAtIndex:v29];
         }
 
         [(_UITextChoiceAccelerationBubble *)self secureCandidateHeight];
         [(_UITextOption *)v38 updateSourceCandidate:v30 secureCandidateHeight:?];
-        [(_UITextOption *)v38 updateText:v31 type:v32];
-        -[_UITextOption showSeparator:](v38, "showSeparator:", v29 < [v4 count] - 1);
+        [(_UITextOption *)v38 updateText:label type:v32];
+        -[_UITextOption showSeparator:](v38, "showSeparator:", v29 < [optionsCopy count] - 1);
         [(_UITextOption *)v38 setLightingEffectEnabled:v32 == 7 atPosition:v29];
 
         ++v29;
       }
 
-      while (v29 < [v4 count]);
+      while (v29 < [optionsCopy count]);
     }
   }
 
   else
   {
-    v14 = [(_UITextChoiceAccelerationBubble *)self contentsView];
-    v15 = [v14 arrangedSubviews];
-    v16 = [v15 count];
-    v50 = v16 - [v4 count];
+    contentsView5 = [(_UITextChoiceAccelerationBubble *)self contentsView];
+    arrangedSubviews5 = [contentsView5 arrangedSubviews];
+    v16 = [arrangedSubviews5 count];
+    v50 = v16 - [optionsCopy count];
 
-    if ([v4 count])
+    if ([optionsCopy count])
     {
       v17 = 0;
       do
       {
-        v18 = [(_UITextChoiceAccelerationBubble *)self contentsView];
-        v19 = [v18 arrangedSubviews];
-        v20 = [v19 objectAtIndex:v17];
+        contentsView6 = [(_UITextChoiceAccelerationBubble *)self contentsView];
+        arrangedSubviews6 = [contentsView6 arrangedSubviews];
+        v20 = [arrangedSubviews6 objectAtIndex:v17];
 
-        v21 = [v4 objectAtIndexedSubscript:v17];
-        v22 = [v21 label];
+        v21 = [optionsCopy objectAtIndexedSubscript:v17];
+        label2 = [v21 label];
         v23 = v9;
         if (v9 == 2)
         {
-          if (v51[2](v51, v22))
+          if (v51[2](v51, label2))
           {
             v23 = 4;
           }
@@ -1017,20 +1017,20 @@ LABEL_17:
         if (!v20)
         {
           v20 = objc_alloc_init(_UITextOption);
-          v24 = [(_UITextChoiceAccelerationBubble *)self contentsView];
-          [v24 addArrangedSubview:v20];
+          contentsView7 = [(_UITextChoiceAccelerationBubble *)self contentsView];
+          [contentsView7 addArrangedSubview:v20];
         }
 
         [(_UITextChoiceAccelerationBubble *)self secureCandidateHeight];
         [(_UITextOption *)v20 updateSourceCandidate:v21 secureCandidateHeight:?];
-        [(_UITextOption *)v20 updateText:v22 type:v23];
-        -[_UITextOption showSeparator:](v20, "showSeparator:", v17 < [v4 count] - 1);
+        [(_UITextOption *)v20 updateText:label2 type:v23];
+        -[_UITextOption showSeparator:](v20, "showSeparator:", v17 < [optionsCopy count] - 1);
         [(_UITextOption *)v20 setLightingEffectEnabled:v23 == 7 atPosition:v17];
 
         ++v17;
       }
 
-      while (v17 < [v4 count]);
+      while (v17 < [optionsCopy count]);
     }
 
     if (v50 >= 1)
@@ -1038,10 +1038,10 @@ LABEL_17:
       v25 = v50 + 1;
       do
       {
-        v26 = [(_UITextChoiceAccelerationBubble *)self contentsView];
-        v27 = [v26 arrangedSubviews];
-        v28 = [v27 lastObject];
-        [v28 removeFromSuperview];
+        contentsView8 = [(_UITextChoiceAccelerationBubble *)self contentsView];
+        arrangedSubviews7 = [contentsView8 arrangedSubviews];
+        lastObject = [arrangedSubviews7 lastObject];
+        [lastObject removeFromSuperview];
 
         --v25;
       }
@@ -1050,294 +1050,294 @@ LABEL_17:
     }
   }
 
-  v39 = [(_UITextChoiceAccelerationBubble *)self backingScrollView];
-  [v39 setContentOffset:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
+  backingScrollView = [(_UITextChoiceAccelerationBubble *)self backingScrollView];
+  [backingScrollView setContentOffset:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
 
-  v40 = [(_UITextChoiceAccelerationBubble *)self contentsView];
-  v41 = [v40 arrangedSubviews];
-  v42 = [v41 firstObject];
+  contentsView9 = [(_UITextChoiceAccelerationBubble *)self contentsView];
+  arrangedSubviews8 = [contentsView9 arrangedSubviews];
+  firstObject3 = [arrangedSubviews8 firstObject];
 
-  v43 = [v42 viewForLastBaselineLayout];
+  viewForLastBaselineLayout = [firstObject3 viewForLastBaselineLayout];
 
-  if (v43)
+  if (viewForLastBaselineLayout)
   {
-    [v42 leadingSpace];
+    [firstObject3 leadingSpace];
     v45 = v44;
-    v46 = [(_UITextChoiceAccelerationBubble *)self leadingSpacing];
-    [v46 setConstant:v45];
+    leadingSpacing = [(_UITextChoiceAccelerationBubble *)self leadingSpacing];
+    [leadingSpacing setConstant:v45];
   }
 
-  v47 = [(_UITextChoiceAccelerationBubble *)self contentsView];
-  [v47 layoutIfNeeded];
+  contentsView10 = [(_UITextChoiceAccelerationBubble *)self contentsView];
+  [contentsView10 layoutIfNeeded];
 }
 
-- (void)updateButtonName:(id)a3 placement:(int64_t)a4 originalText:(id)a5
+- (void)updateButtonName:(id)name placement:(int64_t)placement originalText:(id)text
 {
   v132[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  if (a4 > 1)
+  nameCopy = name;
+  textCopy = text;
+  if (placement > 1)
   {
-    if (a4 == 2)
+    if (placement == 2)
     {
-      v29 = [(_UITextChoiceAccelerationBubble *)self sideButton];
+      sideButton = [(_UITextChoiceAccelerationBubble *)self sideButton];
 
-      if (v29)
+      if (sideButton)
       {
-        v30 = [(_UITextChoiceAccelerationBubble *)self sideButton];
-        [v30 updateText:v8 type:{-[_UITextChoiceAccelerationBubble buttonType](self, "buttonType")}];
+        sideButton2 = [(_UITextChoiceAccelerationBubble *)self sideButton];
+        [sideButton2 updateText:nameCopy type:{-[_UITextChoiceAccelerationBubble buttonType](self, "buttonType")}];
       }
 
       else
       {
-        v60 = [(_UITextChoiceAccelerationBubble *)self buttonType];
-        if (v60 == 2)
+        buttonType = [(_UITextChoiceAccelerationBubble *)self buttonType];
+        if (buttonType == 2)
         {
           v61 = 1;
         }
 
         else
         {
-          v61 = v60;
+          v61 = buttonType;
         }
 
-        v62 = [[_UITextOption alloc] initWithTitle:v8 type:v61];
+        v62 = [[_UITextOption alloc] initWithTitle:nameCopy type:v61];
         [(_UITextChoiceAccelerationBubble *)self setSideButton:v62];
 
-        v63 = [(_UITextChoiceAccelerationBubble *)self sideButton];
-        [v63 setTranslatesAutoresizingMaskIntoConstraints:0];
+        sideButton3 = [(_UITextChoiceAccelerationBubble *)self sideButton];
+        [sideButton3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-        v30 = [(_UITextChoiceAccelerationBubble *)self backgroundView];
-        v64 = [v30 contentView];
-        v65 = [(_UITextChoiceAccelerationBubble *)self sideButton];
-        [v64 addSubview:v65];
+        sideButton2 = [(_UITextChoiceAccelerationBubble *)self backgroundView];
+        contentView = [sideButton2 contentView];
+        sideButton4 = [(_UITextChoiceAccelerationBubble *)self sideButton];
+        [contentView addSubview:sideButton4];
       }
 
-      v124 = v9;
-      v125 = v8;
+      v124 = textCopy;
+      v125 = nameCopy;
 
-      v66 = [(_UITextChoiceAccelerationBubble *)self buttonConstraints];
+      buttonConstraints = [(_UITextChoiceAccelerationBubble *)self buttonConstraints];
 
-      if (v66)
+      if (buttonConstraints)
       {
         v67 = MEMORY[0x1E69977A0];
-        v68 = [(_UITextChoiceAccelerationBubble *)self buttonConstraints];
-        [v67 deactivateConstraints:v68];
+        buttonConstraints2 = [(_UITextChoiceAccelerationBubble *)self buttonConstraints];
+        [v67 deactivateConstraints:buttonConstraints2];
       }
 
-      v122 = [(_UITextChoiceAccelerationBubble *)self sideButton];
-      v110 = [v122 centerYAnchor];
-      v107 = [(_UITextChoiceAccelerationBubble *)self contentsView];
-      v116 = [v107 centerYAnchor];
-      v119 = [v110 constraintEqualToAnchor:v116];
+      sideButton5 = [(_UITextChoiceAccelerationBubble *)self sideButton];
+      centerYAnchor = [sideButton5 centerYAnchor];
+      contentsView = [(_UITextChoiceAccelerationBubble *)self contentsView];
+      centerYAnchor2 = [contentsView centerYAnchor];
+      v119 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       v130[0] = v119;
-      v113 = [(_UITextChoiceAccelerationBubble *)self sideButton];
-      v104 = [v113 leadingAnchor];
-      v128 = [(_UITextChoiceAccelerationBubble *)self backgroundView];
-      v127 = [v128 leadingAnchor];
-      v126 = [v104 constraintEqualToAnchor:4.0 constant:?];
+      sideButton6 = [(_UITextChoiceAccelerationBubble *)self sideButton];
+      leadingAnchor = [sideButton6 leadingAnchor];
+      backgroundView = [(_UITextChoiceAccelerationBubble *)self backgroundView];
+      leadingAnchor2 = [backgroundView leadingAnchor];
+      v126 = [leadingAnchor constraintEqualToAnchor:4.0 constant:?];
       v130[1] = v126;
-      v102 = [(_UITextChoiceAccelerationBubble *)self backingScrollView];
-      v69 = [v102 leadingAnchor];
-      v70 = [(_UITextChoiceAccelerationBubble *)self sideButton];
-      v71 = [v70 trailingAnchor];
-      v72 = [v69 constraintEqualToAnchor:v71 constant:0.0];
+      backingScrollView = [(_UITextChoiceAccelerationBubble *)self backingScrollView];
+      leadingAnchor3 = [backingScrollView leadingAnchor];
+      sideButton7 = [(_UITextChoiceAccelerationBubble *)self sideButton];
+      trailingAnchor = [sideButton7 trailingAnchor];
+      v72 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:0.0];
       v130[2] = v72;
-      v73 = [(UIView *)self trailingAnchor];
-      v74 = [(_UITextChoiceAccelerationBubble *)self backingScrollView];
-      v75 = [v74 trailingAnchor];
-      v76 = [v73 constraintEqualToAnchor:v75];
+      trailingAnchor2 = [(UIView *)self trailingAnchor];
+      backingScrollView2 = [(_UITextChoiceAccelerationBubble *)self backingScrollView];
+      trailingAnchor3 = [backingScrollView2 trailingAnchor];
+      v76 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
       v130[3] = v76;
       v77 = [MEMORY[0x1E695DEC8] arrayWithObjects:v130 count:4];
       [(_UITextChoiceAccelerationBubble *)self setButtonConstraints:v77];
 
-      v28 = v104;
-      v24 = v107;
+      backingScrollView4 = leadingAnchor;
+      leadingAnchor5 = contentsView;
 
-      v23 = v110;
-      v22 = v122;
+      leadingAnchor4 = centerYAnchor;
+      backingScrollView3 = sideButton5;
 
-      v27 = v113;
-      v26 = v119;
+      trailingAnchor4 = sideButton6;
+      backgroundView3 = v119;
 
-      v25 = v116;
+      v25 = centerYAnchor2;
       goto LABEL_44;
     }
 
-    if (a4 == 3)
+    if (placement == 3)
     {
-      v12 = [(_UITextChoiceAccelerationBubble *)self sideButton];
+      sideButton8 = [(_UITextChoiceAccelerationBubble *)self sideButton];
 
-      if (v12)
+      if (sideButton8)
       {
-        v13 = [(_UITextChoiceAccelerationBubble *)self sideButton];
-        [v13 updateText:v8 type:{-[_UITextChoiceAccelerationBubble buttonType](self, "buttonType")}];
+        sideButton9 = [(_UITextChoiceAccelerationBubble *)self sideButton];
+        [sideButton9 updateText:nameCopy type:{-[_UITextChoiceAccelerationBubble buttonType](self, "buttonType")}];
       }
 
       else
       {
-        v54 = [(_UITextChoiceAccelerationBubble *)self buttonType];
-        v55 = [(_UITextChoiceAccelerationBubble *)self buttonType];
+        buttonType2 = [(_UITextChoiceAccelerationBubble *)self buttonType];
+        buttonType3 = [(_UITextChoiceAccelerationBubble *)self buttonType];
         v56 = [_UITextOption alloc];
         v57 = v56;
-        if (v55 == 5)
+        if (buttonType3 == 5)
         {
-          v58 = [(_UITextChoiceAccelerationBubble *)self optionalTintColor];
-          v59 = [(_UITextOption *)v57 initWithTitle:v8 type:v54 optionalTintColor:v58];
+          optionalTintColor = [(_UITextChoiceAccelerationBubble *)self optionalTintColor];
+          v59 = [(_UITextOption *)v57 initWithTitle:nameCopy type:buttonType2 optionalTintColor:optionalTintColor];
           [(_UITextChoiceAccelerationBubble *)self setSideButton:v59];
         }
 
         else
         {
-          v58 = [(_UITextOption *)v56 initWithTitle:v8 type:v54];
-          [(_UITextChoiceAccelerationBubble *)self setSideButton:v58];
+          optionalTintColor = [(_UITextOption *)v56 initWithTitle:nameCopy type:buttonType2];
+          [(_UITextChoiceAccelerationBubble *)self setSideButton:optionalTintColor];
         }
 
-        v78 = [(_UITextChoiceAccelerationBubble *)self sideButton];
-        [v78 setTranslatesAutoresizingMaskIntoConstraints:0];
+        sideButton10 = [(_UITextChoiceAccelerationBubble *)self sideButton];
+        [sideButton10 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-        v13 = [(_UITextChoiceAccelerationBubble *)self backgroundView];
-        v79 = [v13 contentView];
-        v80 = [(_UITextChoiceAccelerationBubble *)self sideButton];
-        [v79 addSubview:v80];
+        sideButton9 = [(_UITextChoiceAccelerationBubble *)self backgroundView];
+        contentView2 = [sideButton9 contentView];
+        sideButton11 = [(_UITextChoiceAccelerationBubble *)self sideButton];
+        [contentView2 addSubview:sideButton11];
       }
 
-      v124 = v9;
-      v125 = v8;
+      v124 = textCopy;
+      v125 = nameCopy;
 
-      v81 = [(_UITextChoiceAccelerationBubble *)self buttonConstraints];
+      buttonConstraints3 = [(_UITextChoiceAccelerationBubble *)self buttonConstraints];
 
-      if (v81)
+      if (buttonConstraints3)
       {
         v82 = MEMORY[0x1E69977A0];
-        v83 = [(_UITextChoiceAccelerationBubble *)self buttonConstraints];
-        [v82 deactivateConstraints:v83];
+        buttonConstraints4 = [(_UITextChoiceAccelerationBubble *)self buttonConstraints];
+        [v82 deactivateConstraints:buttonConstraints4];
       }
 
-      v123 = [(_UITextChoiceAccelerationBubble *)self sideButton];
-      v111 = [v123 centerXAnchor];
-      v108 = [(_UITextChoiceAccelerationBubble *)self textHighlightView];
-      v117 = [v108 centerXAnchor];
-      v120 = [v111 constraintEqualToAnchor:v117];
+      sideButton12 = [(_UITextChoiceAccelerationBubble *)self sideButton];
+      centerXAnchor = [sideButton12 centerXAnchor];
+      textHighlightView = [(_UITextChoiceAccelerationBubble *)self textHighlightView];
+      centerXAnchor2 = [textHighlightView centerXAnchor];
+      v120 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
       v129[0] = v120;
-      v114 = [(_UITextChoiceAccelerationBubble *)self sideButton];
-      v105 = [v114 topAnchor];
-      v128 = [(_UITextChoiceAccelerationBubble *)self backgroundView];
-      v127 = [v128 topAnchor];
-      v126 = [v105 constraintEqualToAnchor:?];
+      sideButton13 = [(_UITextChoiceAccelerationBubble *)self sideButton];
+      topAnchor = [sideButton13 topAnchor];
+      backgroundView = [(_UITextChoiceAccelerationBubble *)self backgroundView];
+      leadingAnchor2 = [backgroundView topAnchor];
+      v126 = [topAnchor constraintEqualToAnchor:?];
       v129[1] = v126;
-      v102 = [(_UITextChoiceAccelerationBubble *)self backgroundView];
-      v101 = [v102 bottomAnchor];
-      v84 = [(_UITextChoiceAccelerationBubble *)self sideButton];
-      v85 = [v84 bottomAnchor];
-      v86 = [v101 constraintEqualToAnchor:v85];
+      backingScrollView = [(_UITextChoiceAccelerationBubble *)self backgroundView];
+      bottomAnchor = [backingScrollView bottomAnchor];
+      sideButton14 = [(_UITextChoiceAccelerationBubble *)self sideButton];
+      bottomAnchor2 = [sideButton14 bottomAnchor];
+      v86 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v129[2] = v86;
-      v87 = [(_UITextChoiceAccelerationBubble *)self backgroundView];
-      v88 = [v87 widthAnchor];
-      v89 = [(_UITextChoiceAccelerationBubble *)self sideButton];
-      v90 = [v89 widthAnchor];
-      v91 = [v88 constraintGreaterThanOrEqualToAnchor:v90];
+      backgroundView2 = [(_UITextChoiceAccelerationBubble *)self backgroundView];
+      widthAnchor = [backgroundView2 widthAnchor];
+      sideButton15 = [(_UITextChoiceAccelerationBubble *)self sideButton];
+      widthAnchor2 = [sideButton15 widthAnchor];
+      v91 = [widthAnchor constraintGreaterThanOrEqualToAnchor:widthAnchor2];
       v129[3] = v91;
       v92 = [MEMORY[0x1E695DEC8] arrayWithObjects:v129 count:4];
       [(_UITextChoiceAccelerationBubble *)self setButtonConstraints:v92];
 
-      v24 = v108;
-      v23 = v111;
+      leadingAnchor5 = textHighlightView;
+      leadingAnchor4 = centerXAnchor;
 
-      v22 = v123;
-      v28 = v105;
+      backingScrollView3 = sideButton12;
+      backingScrollView4 = topAnchor;
 
-      v27 = v114;
-      v26 = v120;
+      trailingAnchor4 = sideButton13;
+      backgroundView3 = v120;
 
-      v25 = v117;
-      v53 = v101;
+      v25 = centerXAnchor2;
+      v53 = bottomAnchor;
       goto LABEL_43;
     }
   }
 
   else
   {
-    if (!a4)
+    if (!placement)
     {
-      v14 = [(_UITextChoiceAccelerationBubble *)self sideButton];
-      v15 = [v14 superview];
+      sideButton16 = [(_UITextChoiceAccelerationBubble *)self sideButton];
+      superview = [sideButton16 superview];
 
-      if (v15)
+      if (superview)
       {
         v16 = MEMORY[0x1E69977A0];
-        v17 = [(_UITextChoiceAccelerationBubble *)self buttonConstraints];
-        [v16 deactivateConstraints:v17];
+        buttonConstraints5 = [(_UITextChoiceAccelerationBubble *)self buttonConstraints];
+        [v16 deactivateConstraints:buttonConstraints5];
 
-        v18 = [(_UITextChoiceAccelerationBubble *)self sideButton];
-        [v18 removeFromSuperview];
+        sideButton17 = [(_UITextChoiceAccelerationBubble *)self sideButton];
+        [sideButton17 removeFromSuperview];
       }
 
       [(_UITextChoiceAccelerationBubble *)self setSideButton:0];
-      v19 = [(_UITextChoiceAccelerationBubble *)self buttonConstraints];
+      buttonConstraints6 = [(_UITextChoiceAccelerationBubble *)self buttonConstraints];
 
-      if (v19)
+      if (buttonConstraints6)
       {
         v20 = MEMORY[0x1E69977A0];
-        v21 = [(_UITextChoiceAccelerationBubble *)self buttonConstraints];
-        [v20 deactivateConstraints:v21];
+        buttonConstraints7 = [(_UITextChoiceAccelerationBubble *)self buttonConstraints];
+        [v20 deactivateConstraints:buttonConstraints7];
       }
 
-      v22 = [(_UITextChoiceAccelerationBubble *)self backingScrollView];
-      v23 = [v22 leadingAnchor];
-      v24 = [(UIView *)self leadingAnchor];
-      v25 = [v23 constraintEqualToAnchor:v24];
+      backingScrollView3 = [(_UITextChoiceAccelerationBubble *)self backingScrollView];
+      leadingAnchor4 = [backingScrollView3 leadingAnchor];
+      leadingAnchor5 = [(UIView *)self leadingAnchor];
+      v25 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
       v132[0] = v25;
-      v26 = [(_UITextChoiceAccelerationBubble *)self backgroundView];
-      v27 = [v26 trailingAnchor];
-      v28 = [(_UITextChoiceAccelerationBubble *)self backingScrollView];
-      v128 = [v28 trailingAnchor];
-      v127 = [v27 constraintEqualToAnchor:?];
-      v132[1] = v127;
+      backgroundView3 = [(_UITextChoiceAccelerationBubble *)self backgroundView];
+      trailingAnchor4 = [backgroundView3 trailingAnchor];
+      backingScrollView4 = [(_UITextChoiceAccelerationBubble *)self backingScrollView];
+      backgroundView = [backingScrollView4 trailingAnchor];
+      leadingAnchor2 = [trailingAnchor4 constraintEqualToAnchor:?];
+      v132[1] = leadingAnchor2;
       v126 = [MEMORY[0x1E695DEC8] arrayWithObjects:v132 count:2];
       [(_UITextChoiceAccelerationBubble *)self setButtonConstraints:?];
       goto LABEL_45;
     }
 
-    if (a4 == 1)
+    if (placement == 1)
     {
-      v10 = [(_UITextChoiceAccelerationBubble *)self sideButton];
+      sideButton18 = [(_UITextChoiceAccelerationBubble *)self sideButton];
 
-      if (v10)
+      if (sideButton18)
       {
-        v11 = [(_UITextChoiceAccelerationBubble *)self sideButton];
-        [v11 updateText:v8 type:{-[_UITextChoiceAccelerationBubble buttonType](self, "buttonType")}];
+        sideButton19 = [(_UITextChoiceAccelerationBubble *)self sideButton];
+        [sideButton19 updateText:nameCopy type:{-[_UITextChoiceAccelerationBubble buttonType](self, "buttonType")}];
       }
 
       else
       {
-        v31 = [(_UITextChoiceAccelerationBubble *)self buttonType];
-        if (v31 == 2)
+        buttonType4 = [(_UITextChoiceAccelerationBubble *)self buttonType];
+        if (buttonType4 == 2)
         {
           v32 = 1;
         }
 
         else
         {
-          v32 = v31;
+          v32 = buttonType4;
         }
 
-        v33 = [[_UITextOption alloc] initWithTitle:v8 type:v32];
+        v33 = [[_UITextOption alloc] initWithTitle:nameCopy type:v32];
         [(_UITextChoiceAccelerationBubble *)self setSideButton:v33];
 
-        v34 = [(_UITextChoiceAccelerationBubble *)self sideButton];
-        [v34 setTranslatesAutoresizingMaskIntoConstraints:0];
+        sideButton20 = [(_UITextChoiceAccelerationBubble *)self sideButton];
+        [sideButton20 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-        v11 = [(_UITextChoiceAccelerationBubble *)self backgroundView];
-        v35 = [v11 contentView];
-        v36 = [(_UITextChoiceAccelerationBubble *)self sideButton];
-        [v35 addSubview:v36];
+        sideButton19 = [(_UITextChoiceAccelerationBubble *)self backgroundView];
+        contentView3 = [sideButton19 contentView];
+        sideButton21 = [(_UITextChoiceAccelerationBubble *)self sideButton];
+        [contentView3 addSubview:sideButton21];
       }
 
       if (![(_UITextChoiceAccelerationBubble *)self buttonType])
       {
-        v37 = [(_UITextChoiceAccelerationBubble *)self replacement];
-        if ([v37 isAutofillDoubleLineUI])
+        replacement = [(_UITextChoiceAccelerationBubble *)self replacement];
+        if ([replacement isAutofillDoubleLineUI])
         {
           v38 = -12.0;
         }
@@ -1347,92 +1347,92 @@ LABEL_17:
           v38 = 0.0;
         }
 
-        v39 = [(_UITextChoiceAccelerationBubble *)self sideButton];
-        v40 = [v39 symbolImageViewYConstraint];
-        [v40 setConstant:v38];
+        sideButton22 = [(_UITextChoiceAccelerationBubble *)self sideButton];
+        symbolImageViewYConstraint = [sideButton22 symbolImageViewYConstraint];
+        [symbolImageViewYConstraint setConstant:v38];
       }
 
-      v124 = v9;
-      v125 = v8;
-      v41 = [(_UITextChoiceAccelerationBubble *)self buttonConstraints];
+      v124 = textCopy;
+      v125 = nameCopy;
+      buttonConstraints8 = [(_UITextChoiceAccelerationBubble *)self buttonConstraints];
 
-      if (v41)
+      if (buttonConstraints8)
       {
         v42 = MEMORY[0x1E69977A0];
-        v43 = [(_UITextChoiceAccelerationBubble *)self buttonConstraints];
-        [v42 deactivateConstraints:v43];
+        buttonConstraints9 = [(_UITextChoiceAccelerationBubble *)self buttonConstraints];
+        [v42 deactivateConstraints:buttonConstraints9];
       }
 
-      v121 = [(_UITextChoiceAccelerationBubble *)self sideButton];
-      v109 = [v121 topAnchor];
-      v106 = [(_UITextChoiceAccelerationBubble *)self backgroundView];
-      v115 = [v106 topAnchor];
-      v118 = [v109 constraintEqualToAnchor:v115];
+      sideButton23 = [(_UITextChoiceAccelerationBubble *)self sideButton];
+      topAnchor2 = [sideButton23 topAnchor];
+      backgroundView4 = [(_UITextChoiceAccelerationBubble *)self backgroundView];
+      topAnchor3 = [backgroundView4 topAnchor];
+      v118 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
       v131[0] = v118;
-      v112 = [(_UITextChoiceAccelerationBubble *)self backgroundView];
-      v103 = [v112 bottomAnchor];
-      v128 = [(_UITextChoiceAccelerationBubble *)self sideButton];
-      v127 = [v128 bottomAnchor];
-      v126 = [v103 constraintEqualToAnchor:?];
+      backgroundView5 = [(_UITextChoiceAccelerationBubble *)self backgroundView];
+      bottomAnchor3 = [backgroundView5 bottomAnchor];
+      backgroundView = [(_UITextChoiceAccelerationBubble *)self sideButton];
+      leadingAnchor2 = [backgroundView bottomAnchor];
+      v126 = [bottomAnchor3 constraintEqualToAnchor:?];
       v131[1] = v126;
-      v102 = [(_UITextChoiceAccelerationBubble *)self backgroundView];
-      v99 = [v102 trailingAnchor];
-      v100 = [(_UITextChoiceAccelerationBubble *)self sideButton];
-      v98 = [v100 trailingAnchor];
-      v97 = [v99 constraintEqualToAnchor:v98 constant:4.0];
+      backingScrollView = [(_UITextChoiceAccelerationBubble *)self backgroundView];
+      trailingAnchor5 = [backingScrollView trailingAnchor];
+      sideButton24 = [(_UITextChoiceAccelerationBubble *)self sideButton];
+      trailingAnchor6 = [sideButton24 trailingAnchor];
+      v97 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:4.0];
       v131[2] = v97;
-      v96 = [(_UITextChoiceAccelerationBubble *)self backingScrollView];
-      v44 = [v96 leadingAnchor];
-      v45 = [(UIView *)self leadingAnchor];
-      v46 = [v44 constraintEqualToAnchor:v45];
+      backingScrollView5 = [(_UITextChoiceAccelerationBubble *)self backingScrollView];
+      leadingAnchor6 = [backingScrollView5 leadingAnchor];
+      leadingAnchor7 = [(UIView *)self leadingAnchor];
+      v46 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7];
       v131[3] = v46;
-      v47 = [(_UITextChoiceAccelerationBubble *)self sideButton];
-      v48 = [v47 leadingAnchor];
-      v49 = [(_UITextChoiceAccelerationBubble *)self backingScrollView];
-      v50 = [v49 trailingAnchor];
-      v51 = [v48 constraintEqualToAnchor:v50 constant:0.0];
+      sideButton25 = [(_UITextChoiceAccelerationBubble *)self sideButton];
+      leadingAnchor8 = [sideButton25 leadingAnchor];
+      backingScrollView6 = [(_UITextChoiceAccelerationBubble *)self backingScrollView];
+      trailingAnchor7 = [backingScrollView6 trailingAnchor];
+      v51 = [leadingAnchor8 constraintEqualToAnchor:trailingAnchor7 constant:0.0];
       v131[4] = v51;
       v52 = [MEMORY[0x1E695DEC8] arrayWithObjects:v131 count:5];
       [(_UITextChoiceAccelerationBubble *)self setButtonConstraints:v52];
 
-      v24 = v106;
-      v23 = v109;
+      leadingAnchor5 = backgroundView4;
+      leadingAnchor4 = topAnchor2;
 
-      v22 = v121;
-      v25 = v115;
+      backingScrollView3 = sideButton23;
+      v25 = topAnchor3;
 
-      v28 = v103;
-      v27 = v112;
+      backingScrollView4 = bottomAnchor3;
+      trailingAnchor4 = backgroundView5;
 
-      v26 = v118;
-      v53 = v99;
+      backgroundView3 = v118;
+      v53 = trailingAnchor5;
 LABEL_43:
 
 LABEL_44:
-      v9 = v124;
-      v8 = v125;
+      textCopy = v124;
+      nameCopy = v125;
 LABEL_45:
 
       v93 = MEMORY[0x1E69977A0];
-      v94 = [(_UITextChoiceAccelerationBubble *)self buttonConstraints];
-      [v93 activateConstraints:v94];
+      buttonConstraints10 = [(_UITextChoiceAccelerationBubble *)self buttonConstraints];
+      [v93 activateConstraints:buttonConstraints10];
     }
   }
 
-  v95 = [(_UITextChoiceAccelerationBubble *)self sideButton];
-  [v95 setOriginalText:v9];
+  sideButton26 = [(_UITextChoiceAccelerationBubble *)self sideButton];
+  [sideButton26 setOriginalText:textCopy];
 }
 
-- (void)updateButtonForType:(int64_t)a3
+- (void)updateButtonForType:(int64_t)type
 {
-  if ((a3 - 1) > 4)
+  if ((type - 1) > 4)
   {
     v3 = 2;
   }
 
   else
   {
-    v3 = qword_18A67B7C0[a3 - 1];
+    v3 = qword_18A67B7C0[type - 1];
   }
 
   [(_UITextChoiceAccelerationBubble *)self setButtonType:v3];
@@ -1443,12 +1443,12 @@ LABEL_45:
   v19.receiver = self;
   v19.super_class = _UITextChoiceAccelerationBubble;
   [(UIView *)&v19 layoutSubviews];
-  v3 = [(_UITextChoiceAccelerationBubble *)self contentsView];
-  v4 = [v3 arrangedSubviews];
-  if ([v4 count] == 1)
+  contentsView = [(_UITextChoiceAccelerationBubble *)self contentsView];
+  arrangedSubviews = [contentsView arrangedSubviews];
+  if ([arrangedSubviews count] == 1)
   {
-    v5 = [(_UITextChoiceAccelerationBubble *)self replacement];
-    v6 = _replacementSourceIsSmartReply(v5) ^ 1;
+    replacement = [(_UITextChoiceAccelerationBubble *)self replacement];
+    v6 = _replacementSourceIsSmartReply(replacement) ^ 1;
   }
 
   else
@@ -1456,27 +1456,27 @@ LABEL_45:
     v6 = 0;
   }
 
-  v7 = [(UIView *)self _inheritedRenderConfig];
-  v8 = [v7 colorAdaptiveBackground];
+  _inheritedRenderConfig = [(UIView *)self _inheritedRenderConfig];
+  colorAdaptiveBackground = [_inheritedRenderConfig colorAdaptiveBackground];
 
-  if (v8)
+  if (colorAdaptiveBackground)
   {
-    v9 = [(_UITextChoiceAccelerationBubble *)self backgroundView];
-    [v9 bounds];
+    backgroundView = [(_UITextChoiceAccelerationBubble *)self backgroundView];
+    [backgroundView bounds];
 
-    v10 = [(_UITextChoiceAccelerationBubble *)self backgroundView];
-    [v10 bounds];
+    backgroundView2 = [(_UITextChoiceAccelerationBubble *)self backgroundView];
+    [backgroundView2 bounds];
     [_UITextChoiceAccelerationBubble updateBubbleShapeInRect:"updateBubbleShapeInRect:withCornerRadius:forSquaredOffBubble:" withCornerRadius:0 forSquaredOffBubble:?];
   }
 
   else
   {
-    v11 = [(_UITextChoiceAccelerationBubble *)self replacement];
-    v12 = [v11 isAutofillDoubleLineUI];
+    replacement2 = [(_UITextChoiceAccelerationBubble *)self replacement];
+    isAutofillDoubleLineUI = [replacement2 isAutofillDoubleLineUI];
 
-    v13 = [(_UITextChoiceAccelerationBubble *)self backgroundView];
-    [v13 bounds];
-    if (v12)
+    backgroundView3 = [(_UITextChoiceAccelerationBubble *)self backgroundView];
+    [backgroundView3 bounds];
+    if (isAutofillDoubleLineUI)
     {
       v14 = [(_UITextChoiceAccelerationBubble *)self squaredPathInRect:?];
     }
@@ -1495,31 +1495,31 @@ LABEL_45:
       v14 = ;
     }
 
-    v10 = v14;
+    backgroundView2 = v14;
 
-    v15 = [v10 CGPath];
-    v16 = [(_UITextChoiceAccelerationBubble *)self backgroundMaskLayer];
-    [v16 setShadowPath:v15];
+    cGPath = [backgroundView2 CGPath];
+    backgroundMaskLayer = [(_UITextChoiceAccelerationBubble *)self backgroundMaskLayer];
+    [backgroundMaskLayer setShadowPath:cGPath];
 
-    v17 = [v10 CGPath];
-    v18 = [(_UITextChoiceAccelerationBubble *)self backgroundMaskLayer];
-    [v18 setPath:v17];
+    cGPath2 = [backgroundView2 CGPath];
+    backgroundMaskLayer2 = [(_UITextChoiceAccelerationBubble *)self backgroundMaskLayer];
+    [backgroundMaskLayer2 setPath:cGPath2];
   }
 }
 
 - (BOOL)usingRTLInputMode
 {
   v2 = +[UIKeyboardInputModeController sharedInputModeController];
-  v3 = [v2 currentInputMode];
-  v4 = [v3 isDefaultRightToLeft];
+  currentInputMode = [v2 currentInputMode];
+  isDefaultRightToLeft = [currentInputMode isDefaultRightToLeft];
 
-  return v4;
+  return isDefaultRightToLeft;
 }
 
-- (id)textOptionWithText:(id)a3 type:(int64_t)a4
+- (id)textOptionWithText:(id)text type:(int64_t)type
 {
-  v5 = a3;
-  v6 = [[_UITextOption alloc] initWithTitle:v5 type:a4];
+  textCopy = text;
+  v6 = [[_UITextOption alloc] initWithTitle:textCopy type:type];
 
   return v6;
 }
@@ -1533,19 +1533,19 @@ LABEL_45:
 
   else
   {
-    v4 = [(UIView *)self _inheritedRenderConfig];
-    v5 = [v4 colorAdaptiveBackground];
+    _inheritedRenderConfig = [(UIView *)self _inheritedRenderConfig];
+    colorAdaptiveBackground = [_inheritedRenderConfig colorAdaptiveBackground];
 
     v6 = [UIVisualEffectView alloc];
-    if (v5)
+    if (colorAdaptiveBackground)
     {
       [(_UITextChoiceAccelerationBubble *)self referenceRect];
       v3 = [(UIVisualEffectView *)v6 initWithFrame:?];
       v7 = [[_UIViewGlass alloc] initWithVariant:0];
       [(UIView *)v3 _setBackground:v7];
 
-      v8 = [(UIView *)v3 layer];
-      [v8 setCornerRadius:6.5];
+      layer = [(UIView *)v3 layer];
+      [layer setCornerRadius:6.5];
 
       [(UIView *)v3 setClipsToBounds:1];
     }
@@ -1564,21 +1564,21 @@ LABEL_45:
       [v10 setPath:{objc_msgSend(v12, "CGPath")}];
 
       [(_UITextChoiceAccelerationBubble *)self setBackgroundMaskLayer:v10];
-      v13 = [(_UITextChoiceAccelerationBubble *)self backgroundMaskLayer];
-      v14 = [(UIView *)v3 layer];
-      [v14 setMask:v13];
+      backgroundMaskLayer = [(_UITextChoiceAccelerationBubble *)self backgroundMaskLayer];
+      layer2 = [(UIView *)v3 layer];
+      [layer2 setMask:backgroundMaskLayer];
     }
   }
 
   return v3;
 }
 
-- (id)squaredPathInRect:(CGRect)a3
+- (id)squaredPathInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v7 = +[UIBezierPath bezierPath];
   v27.origin.x = x;
   v27.origin.y = y;
@@ -1714,22 +1714,22 @@ LABEL_45:
   return v7;
 }
 
-- (id)squaredOffBubblePathInRect:(CGRect)a3
+- (id)squaredOffBubblePathInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = a3.size.height * 0.5;
-  v32 = a3.origin.x + a3.size.height * 0.5;
-  v8 = [(UIView *)self traitCollection];
-  v9 = [v8 layoutDirection];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v7 = rect.size.height * 0.5;
+  v32 = rect.origin.x + rect.size.height * 0.5;
+  traitCollection = [(UIView *)self traitCollection];
+  layoutDirection = [traitCollection layoutDirection];
 
   v10 = x;
   v11 = y;
   v12 = width;
   v13 = height;
-  if (v9 == 1)
+  if (layoutDirection == 1)
   {
     v29 = v7 + CGRectGetMinX(*&v10);
     v34.origin.x = x;
@@ -1852,61 +1852,61 @@ LABEL_45:
   return v15;
 }
 
-- (void)updateBubbleShapeInRect:(CGRect)a3 withCornerRadius:(double)a4 forSquaredOffBubble:(BOOL)a5
+- (void)updateBubbleShapeInRect:(CGRect)rect withCornerRadius:(double)radius forSquaredOffBubble:(BOOL)bubble
 {
-  v5 = a4;
-  if (a5)
+  radiusCopy = radius;
+  if (bubble)
   {
-    v7 = a3.size.height * 0.5;
-    v8 = [(UIView *)self traitCollection];
-    v9 = [v8 layoutDirection];
+    v7 = rect.size.height * 0.5;
+    traitCollection = [(UIView *)self traitCollection];
+    layoutDirection = [traitCollection layoutDirection];
 
-    if (v9 == 1)
+    if (layoutDirection == 1)
     {
-      v10 = v5;
+      radiusCopy2 = radiusCopy;
     }
 
     else
     {
-      v10 = v7;
+      radiusCopy2 = v7;
     }
 
-    if (v9 == 1)
+    if (layoutDirection == 1)
     {
-      v5 = v7;
+      radiusCopy = v7;
     }
   }
 
   else
   {
-    v10 = a4;
+    radiusCopy2 = radius;
   }
 
-  v11 = [(_UITextChoiceAccelerationBubble *)self backgroundView];
-  v12 = [v11 layer];
-  *v13 = v5;
-  *&v13[1] = v5;
-  *&v13[2] = v10;
-  *&v13[3] = v10;
-  *&v13[4] = v10;
-  *&v13[5] = v10;
-  *&v13[6] = v5;
-  *&v13[7] = v5;
-  [v12 setCornerRadii:v13];
+  backgroundView = [(_UITextChoiceAccelerationBubble *)self backgroundView];
+  layer = [backgroundView layer];
+  *v13 = radiusCopy;
+  *&v13[1] = radiusCopy;
+  *&v13[2] = radiusCopy2;
+  *&v13[3] = radiusCopy2;
+  *&v13[4] = radiusCopy2;
+  *&v13[5] = radiusCopy2;
+  *&v13[6] = radiusCopy;
+  *&v13[7] = radiusCopy;
+  [layer setCornerRadii:v13];
 }
 
-- (void)showTextHighlightView:(BOOL)a3
+- (void)showTextHighlightView:(BOOL)view
 {
-  v3 = a3;
+  viewCopy = view;
   v41[4] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!view)
   {
     goto LABEL_10;
   }
 
-  v5 = [(_UITextChoiceAccelerationBubble *)self textHighlightView];
+  textHighlightView = [(_UITextChoiceAccelerationBubble *)self textHighlightView];
 
-  if (v5)
+  if (textHighlightView)
   {
     goto LABEL_10;
   }
@@ -1914,11 +1914,11 @@ LABEL_45:
   v6 = objc_alloc_init(UIView);
   [(_UITextChoiceAccelerationBubble *)self setTextHighlightView:v6];
 
-  v7 = [(_UITextChoiceAccelerationBubble *)self textHighlightView];
-  [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+  textHighlightView2 = [(_UITextChoiceAccelerationBubble *)self textHighlightView];
+  [textHighlightView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v8 = [(_UITextChoiceAccelerationBubble *)self textHighlightView];
-  [(UIView *)self addSubview:v8];
+  textHighlightView3 = [(_UITextChoiceAccelerationBubble *)self textHighlightView];
+  [(UIView *)self addSubview:textHighlightView3];
 
   if ([(_UITextChoiceAccelerationBubble *)self promptStyle]== 3)
   {
@@ -1931,41 +1931,41 @@ LABEL_45:
   }
 
   v31 = MEMORY[0x1E69977A0];
-  v40 = [(_UITextChoiceAccelerationBubble *)self textAnchor];
-  v38 = [v40 topAnchor];
-  v39 = [(_UITextChoiceAccelerationBubble *)self textHighlightView];
-  v37 = [v39 topAnchor];
-  v36 = [v38 constraintEqualToAnchor:v37 constant:v9];
+  textAnchor = [(_UITextChoiceAccelerationBubble *)self textAnchor];
+  topAnchor = [textAnchor topAnchor];
+  textHighlightView4 = [(_UITextChoiceAccelerationBubble *)self textHighlightView];
+  topAnchor2 = [textHighlightView4 topAnchor];
+  v36 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v9];
   v41[0] = v36;
-  v35 = [(_UITextChoiceAccelerationBubble *)self textAnchor];
-  v33 = [v35 leadingAnchor];
-  v34 = [(_UITextChoiceAccelerationBubble *)self textHighlightView];
-  v32 = [v34 leadingAnchor];
-  v30 = [v33 constraintEqualToAnchor:v32 constant:v9];
+  textAnchor2 = [(_UITextChoiceAccelerationBubble *)self textAnchor];
+  leadingAnchor = [textAnchor2 leadingAnchor];
+  textHighlightView5 = [(_UITextChoiceAccelerationBubble *)self textHighlightView];
+  leadingAnchor2 = [textHighlightView5 leadingAnchor];
+  v30 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v9];
   v41[1] = v30;
-  v29 = [(_UITextChoiceAccelerationBubble *)self textHighlightView];
-  v27 = [v29 bottomAnchor];
-  v28 = [(_UITextChoiceAccelerationBubble *)self textAnchor];
-  v10 = [v28 bottomAnchor];
-  v11 = [v27 constraintEqualToAnchor:v10];
+  textHighlightView6 = [(_UITextChoiceAccelerationBubble *)self textHighlightView];
+  bottomAnchor = [textHighlightView6 bottomAnchor];
+  textAnchor3 = [(_UITextChoiceAccelerationBubble *)self textAnchor];
+  bottomAnchor2 = [textAnchor3 bottomAnchor];
+  v11 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v41[2] = v11;
-  v12 = [(_UITextChoiceAccelerationBubble *)self textHighlightView];
-  v13 = [v12 trailingAnchor];
-  v14 = [(_UITextChoiceAccelerationBubble *)self textAnchor];
-  v15 = [v14 trailingAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15 constant:v9];
+  textHighlightView7 = [(_UITextChoiceAccelerationBubble *)self textHighlightView];
+  trailingAnchor = [textHighlightView7 trailingAnchor];
+  textAnchor4 = [(_UITextChoiceAccelerationBubble *)self textAnchor];
+  trailingAnchor2 = [textAnchor4 trailingAnchor];
+  v16 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:v9];
   v41[3] = v16;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:4];
   [v31 activateConstraints:v17];
 
-  v18 = [(_UITextChoiceAccelerationBubble *)self textHighlightView];
-  [(UIView *)self sendSubviewToBack:v18];
+  textHighlightView8 = [(_UITextChoiceAccelerationBubble *)self textHighlightView];
+  [(UIView *)self sendSubviewToBack:textHighlightView8];
 
-  v19 = [(_UITextChoiceAccelerationBubble *)self textHighlightView];
-  [v19 setHidden:0];
+  textHighlightView9 = [(_UITextChoiceAccelerationBubble *)self textHighlightView];
+  [textHighlightView9 setHidden:0];
 
-  v20 = [(_UITextChoiceAccelerationBubble *)self dictationGlowEffect];
-  if (!v20)
+  dictationGlowEffect = [(_UITextChoiceAccelerationBubble *)self dictationGlowEffect];
+  if (!dictationGlowEffect)
   {
     if ([(_UITextChoiceAccelerationBubble *)self promptStyle]!= 3)
     {
@@ -1973,22 +1973,22 @@ LABEL_45:
     }
 
     v21 = [UIDictationGlowEffect alloc];
-    v20 = [(_UITextChoiceAccelerationBubble *)self textHighlightView];
-    v22 = [(UIDictationGlowEffect *)v21 initWithView:v20];
+    dictationGlowEffect = [(_UITextChoiceAccelerationBubble *)self textHighlightView];
+    v22 = [(UIDictationGlowEffect *)v21 initWithView:dictationGlowEffect];
     [(_UITextChoiceAccelerationBubble *)self setDictationGlowEffect:v22];
   }
 
 LABEL_10:
-  v23 = [(_UITextChoiceAccelerationBubble *)self textHighlightView];
-  v24 = [v23 isHidden];
+  textHighlightView10 = [(_UITextChoiceAccelerationBubble *)self textHighlightView];
+  isHidden = [textHighlightView10 isHidden];
 
-  if (v24 == v3)
+  if (isHidden == viewCopy)
   {
-    v25 = [(_UITextChoiceAccelerationBubble *)self textHighlightView];
-    [(UIView *)self sendSubviewToBack:v25];
+    textHighlightView11 = [(_UITextChoiceAccelerationBubble *)self textHighlightView];
+    [(UIView *)self sendSubviewToBack:textHighlightView11];
 
-    v26 = [(_UITextChoiceAccelerationBubble *)self textHighlightView];
-    [v26 setHidden:v3 ^ 1u];
+    textHighlightView12 = [(_UITextChoiceAccelerationBubble *)self textHighlightView];
+    [textHighlightView12 setHidden:viewCopy ^ 1u];
   }
 }
 
@@ -1999,23 +1999,23 @@ LABEL_10:
     return 0;
   }
 
-  v4 = [(_UITextChoiceAccelerationBubble *)self textHighlightView];
-  if (v4)
+  textHighlightView = [(_UITextChoiceAccelerationBubble *)self textHighlightView];
+  if (textHighlightView)
   {
-    v5 = [(_UITextChoiceAccelerationBubble *)self textHighlightView];
-    v6 = [v5 superview];
-    if (v6)
+    textHighlightView2 = [(_UITextChoiceAccelerationBubble *)self textHighlightView];
+    superview = [textHighlightView2 superview];
+    if (superview)
     {
-      v7 = [(_UITextChoiceAccelerationBubble *)self textHighlightView];
-      if ([v7 isHidden])
+      textHighlightView3 = [(_UITextChoiceAccelerationBubble *)self textHighlightView];
+      if ([textHighlightView3 isHidden])
       {
         v3 = 0;
       }
 
       else
       {
-        v8 = [(_UITextChoiceAccelerationBubble *)self textHighlightView];
-        [v8 alpha];
+        textHighlightView4 = [(_UITextChoiceAccelerationBubble *)self textHighlightView];
+        [textHighlightView4 alpha];
         v3 = v9 > 0.0;
       }
     }
@@ -2034,11 +2034,11 @@ LABEL_10:
   return v3;
 }
 
-- (id)optionForPoint:(CGPoint)a3 withEvent:(id)a4
+- (id)optionForPoint:(CGPoint)point withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = _UITextChoiceAccelerationBubble;
-  v4 = [(UIControl *)&v7 hitTest:a4 withEvent:a3.x, a3.y];
+  v4 = [(UIControl *)&v7 hitTest:event withEvent:point.x, point.y];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2053,18 +2053,18 @@ LABEL_10:
   return v5;
 }
 
-- (id)dictationHighlightViewForPoint:(CGPoint)a3 withEvent:(id)a4
+- (id)dictationHighlightViewForPoint:(CGPoint)point withEvent:(id)event
 {
   v12.receiver = self;
   v12.super_class = _UITextChoiceAccelerationBubble;
-  v5 = [(UIControl *)&v12 hitTest:a4 withEvent:a3.x, a3.y];
-  v6 = [(_UITextChoiceAccelerationBubble *)self textHighlightView];
-  if (([v5 isEqual:v6] & 1) != 0 && (-[_UITextChoiceAccelerationBubble dictationGlowEffect](self, "dictationGlowEffect"), (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+  v5 = [(UIControl *)&v12 hitTest:event withEvent:point.x, point.y];
+  textHighlightView = [(_UITextChoiceAccelerationBubble *)self textHighlightView];
+  if (([v5 isEqual:textHighlightView] & 1) != 0 && (-[_UITextChoiceAccelerationBubble dictationGlowEffect](self, "dictationGlowEffect"), (v7 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v8 = v7;
-    v9 = [(_UITextChoiceAccelerationBubble *)self promptStyle];
+    promptStyle = [(_UITextChoiceAccelerationBubble *)self promptStyle];
 
-    if (v9 == 3)
+    if (promptStyle == 3)
     {
       v10 = v5;
       goto LABEL_7;
@@ -2081,40 +2081,40 @@ LABEL_7:
   return v10;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  if ([(_UITextChoiceAccelerationBubble *)self pointInside:v7 withEvent:x, y])
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  if ([(_UITextChoiceAccelerationBubble *)self pointInside:eventCopy withEvent:x, y])
   {
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
     v19.receiver = self;
     v19.super_class = _UITextChoiceAccelerationBubble;
-    v8 = [(UIControl *)&v19 hitTest:v7 withEvent:x, y];
-    if (v8 != self)
+    selfCopy = [(UIControl *)&v19 hitTest:eventCopy withEvent:x, y];
+    if (selfCopy != self)
     {
 LABEL_7:
-      v8 = v8;
-      v17 = v8;
+      selfCopy = selfCopy;
+      v17 = selfCopy;
       goto LABEL_8;
     }
   }
 
-  v9 = [(_UITextChoiceAccelerationBubble *)self dictationPromptDelegate];
-  if (!v9)
+  dictationPromptDelegate = [(_UITextChoiceAccelerationBubble *)self dictationPromptDelegate];
+  if (!dictationPromptDelegate)
   {
     goto LABEL_7;
   }
 
-  v10 = v9;
-  v11 = [(_UITextChoiceAccelerationBubble *)self promptStyle];
+  v10 = dictationPromptDelegate;
+  promptStyle = [(_UITextChoiceAccelerationBubble *)self promptStyle];
 
-  if (v11 != 3)
+  if (promptStyle != 3)
   {
     goto LABEL_7;
   }
@@ -2122,8 +2122,8 @@ LABEL_7:
   [(UIView *)self convertPoint:0 toView:x, y];
   v13 = v12;
   v15 = v14;
-  v16 = [(_UITextChoiceAccelerationBubble *)self dictationPromptDelegate];
-  v17 = [v16 nearestDictationPromptForPoint:v7 withEvent:{v13, v15}];
+  dictationPromptDelegate2 = [(_UITextChoiceAccelerationBubble *)self dictationPromptDelegate];
+  v17 = [dictationPromptDelegate2 nearestDictationPromptForPoint:eventCopy withEvent:{v13, v15}];
 
   if (!v17)
   {
@@ -2135,25 +2135,25 @@ LABEL_8:
   return v17;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = [(_UITextChoiceAccelerationBubble *)self backgroundView];
-  [(UIView *)self convertPoint:v7 toView:x, y];
+  y = inside.y;
+  x = inside.x;
+  backgroundView = [(_UITextChoiceAccelerationBubble *)self backgroundView];
+  [(UIView *)self convertPoint:backgroundView toView:x, y];
   v9 = v8;
   v11 = v10;
 
-  v12 = [(_UITextChoiceAccelerationBubble *)self backgroundView];
-  [v12 frame];
+  backgroundView2 = [(_UITextChoiceAccelerationBubble *)self backgroundView];
+  [backgroundView2 frame];
   v28 = CGRectInset(v27, -15.0, -30.0);
   v13 = v28.origin.x;
   v14 = v28.origin.y;
   width = v28.size.width;
   height = v28.size.height;
 
-  v17 = [(_UITextChoiceAccelerationBubble *)self textHighlightView];
-  [(UIView *)self convertPoint:v17 toView:x, y];
+  textHighlightView = [(_UITextChoiceAccelerationBubble *)self textHighlightView];
+  [(UIView *)self convertPoint:textHighlightView toView:x, y];
   v19 = v18;
   v21 = v20;
 
@@ -2168,8 +2168,8 @@ LABEL_8:
     return 1;
   }
 
-  v23 = [(_UITextChoiceAccelerationBubble *)self textHighlightView];
-  [v23 bounds];
+  textHighlightView2 = [(_UITextChoiceAccelerationBubble *)self textHighlightView];
+  [textHighlightView2 bounds];
   v26.x = v19;
   v26.y = v21;
   v24 = CGRectContainsPoint(v30, v26);
@@ -2177,12 +2177,12 @@ LABEL_8:
   return v24;
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 locationInView:self];
-  v8 = [(_UITextChoiceAccelerationBubble *)self dictationHighlightViewForPoint:v7 withEvent:?];
+  touchCopy = touch;
+  eventCopy = event;
+  [touchCopy locationInView:self];
+  v8 = [(_UITextChoiceAccelerationBubble *)self dictationHighlightViewForPoint:eventCopy withEvent:?];
   if (v8 || [(_UITextChoiceAccelerationBubble *)self promptStyle]== 3)
   {
     v9 = 1;
@@ -2190,8 +2190,8 @@ LABEL_8:
 
   else
   {
-    [v6 locationInView:self];
-    v11 = [(_UITextChoiceAccelerationBubble *)self optionForPoint:v7 withEvent:?];
+    [touchCopy locationInView:self];
+    v11 = [(_UITextChoiceAccelerationBubble *)self optionForPoint:eventCopy withEvent:?];
     v12 = v11;
     v9 = v11 != 0;
     if (v11)
@@ -2199,17 +2199,17 @@ LABEL_8:
       [v11 setState:4];
       if (![v12 type] || objc_msgSend(v12, "type") == 1)
       {
-        v13 = [(_UITextChoiceAccelerationBubble *)self contentsView];
-        v14 = [v13 arrangedSubviews];
-        v15 = [v14 firstObject];
+        contentsView = [(_UITextChoiceAccelerationBubble *)self contentsView];
+        arrangedSubviews = [contentsView arrangedSubviews];
+        firstObject = [arrangedSubviews firstObject];
 
-        [v15 setState:4];
+        [firstObject setState:4];
       }
 
       if ([v12 type] == 3)
       {
-        v16 = [(_UITextChoiceAccelerationBubble *)self sideButton];
-        [v16 setState:4];
+        sideButton = [(_UITextChoiceAccelerationBubble *)self sideButton];
+        [sideButton setState:4];
       }
     }
   }
@@ -2217,15 +2217,15 @@ LABEL_8:
   return v9;
 }
 
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  [v6 locationInView:self];
-  v8 = [(_UITextChoiceAccelerationBubble *)self optionForPoint:v7 withEvent:?];
-  [v6 locationInView:self];
-  v9 = [(_UITextChoiceAccelerationBubble *)self dictationHighlightViewForPoint:v7 withEvent:?];
+  touchCopy = touch;
+  eventCopy = event;
+  [touchCopy locationInView:self];
+  v8 = [(_UITextChoiceAccelerationBubble *)self optionForPoint:eventCopy withEvent:?];
+  [touchCopy locationInView:self];
+  v9 = [(_UITextChoiceAccelerationBubble *)self dictationHighlightViewForPoint:eventCopy withEvent:?];
   v10 = v9;
   if (v8)
   {
@@ -2235,10 +2235,10 @@ LABEL_8:
       v37 = 0u;
       v34 = 0u;
       v35 = 0u;
-      v11 = [(_UITextChoiceAccelerationBubble *)self contentsView];
-      v12 = [v11 arrangedSubviews];
+      contentsView = [(_UITextChoiceAccelerationBubble *)self contentsView];
+      arrangedSubviews = [contentsView arrangedSubviews];
 
-      v13 = [v12 countByEnumeratingWithState:&v34 objects:v39 count:16];
+      v13 = [arrangedSubviews countByEnumeratingWithState:&v34 objects:v39 count:16];
       if (v13)
       {
         v14 = v13;
@@ -2249,7 +2249,7 @@ LABEL_8:
           {
             if (*v35 != v15)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(arrangedSubviews);
             }
 
             v17 = *(*(&v34 + 1) + 8 * i);
@@ -2259,19 +2259,19 @@ LABEL_8:
             }
           }
 
-          v14 = [v12 countByEnumeratingWithState:&v34 objects:v39 count:16];
+          v14 = [arrangedSubviews countByEnumeratingWithState:&v34 objects:v39 count:16];
         }
 
         while (v14);
       }
 
-      v18 = [(_UITextChoiceAccelerationBubble *)self sideButton];
-      v19 = [v8 isEqual:v18];
+      sideButton = [(_UITextChoiceAccelerationBubble *)self sideButton];
+      v19 = [v8 isEqual:sideButton];
 
       if ((v19 & 1) == 0)
       {
-        v20 = [(_UITextChoiceAccelerationBubble *)self sideButton];
-        [v20 setState:0];
+        sideButton2 = [(_UITextChoiceAccelerationBubble *)self sideButton];
+        [sideButton2 setState:0];
       }
 
       [v8 setState:4];
@@ -2287,17 +2287,17 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v23 = [(_UITextChoiceAccelerationBubble *)self sideButton];
-  [v23 setState:0];
+  sideButton3 = [(_UITextChoiceAccelerationBubble *)self sideButton];
+  [sideButton3 setState:0];
 
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v24 = [(_UITextChoiceAccelerationBubble *)self contentsView];
-  v25 = [v24 arrangedSubviews];
+  contentsView2 = [(_UITextChoiceAccelerationBubble *)self contentsView];
+  arrangedSubviews2 = [contentsView2 arrangedSubviews];
 
-  v26 = [v25 countByEnumeratingWithState:&v30 objects:v38 count:16];
+  v26 = [arrangedSubviews2 countByEnumeratingWithState:&v30 objects:v38 count:16];
   if (v26)
   {
     v27 = v26;
@@ -2308,13 +2308,13 @@ LABEL_16:
       {
         if (*v31 != v28)
         {
-          objc_enumerationMutation(v25);
+          objc_enumerationMutation(arrangedSubviews2);
         }
 
         [*(*(&v30 + 1) + 8 * j) setState:0];
       }
 
-      v27 = [v25 countByEnumeratingWithState:&v30 objects:v38 count:16];
+      v27 = [arrangedSubviews2 countByEnumeratingWithState:&v30 objects:v38 count:16];
     }
 
     while (v27);
@@ -2326,54 +2326,54 @@ LABEL_17:
   return v21;
 }
 
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  [a3 locationInView:self];
+  eventCopy = event;
+  [touch locationInView:self];
   v8 = v7;
   v10 = v9;
-  if ([(_UITextChoiceAccelerationBubble *)self pointInside:v6 withEvent:?])
+  if ([(_UITextChoiceAccelerationBubble *)self pointInside:eventCopy withEvent:?])
   {
     v11 = [(_UITextChoiceAccelerationBubble *)self optionForPoint:0 withEvent:v8, v10];
-    v12 = v11;
+    arrangedSubviews3 = v11;
     if (v11)
     {
       [v11 setState:4];
-      if (![v12 type])
+      if (![arrangedSubviews3 type])
       {
-        v24 = [(_UITextChoiceAccelerationBubble *)self contentsView];
-        v25 = [v24 arrangedSubviews];
-        v15 = [v25 firstObject];
+        contentsView = [(_UITextChoiceAccelerationBubble *)self contentsView];
+        arrangedSubviews = [contentsView arrangedSubviews];
+        firstObject = [arrangedSubviews firstObject];
 
-        [v15 setState:4];
+        [firstObject setState:4];
         [(_UITextChoiceAccelerationBubble *)self dismissWithCancel];
         goto LABEL_16;
       }
 
-      if ([v12 type] == 1)
+      if ([arrangedSubviews3 type] == 1)
       {
-        v13 = [(_UITextChoiceAccelerationBubble *)self contentsView];
-        v14 = [v13 arrangedSubviews];
-        v15 = [v14 firstObject];
+        contentsView2 = [(_UITextChoiceAccelerationBubble *)self contentsView];
+        arrangedSubviews2 = [contentsView2 arrangedSubviews];
+        firstObject = [arrangedSubviews2 firstObject];
 
-        [v15 setState:4];
-        v16 = [(_UITextChoiceAccelerationBubble *)self sideButton];
-        v17 = [v16 originalText];
-        [(_UITextChoiceAccelerationBubble *)self dismissWithRevert:v17];
+        [firstObject setState:4];
+        sideButton = [(_UITextChoiceAccelerationBubble *)self sideButton];
+        originalText = [sideButton originalText];
+        [(_UITextChoiceAccelerationBubble *)self dismissWithRevert:originalText];
 
 LABEL_16:
         goto LABEL_29;
       }
 
-      if ([v12 type] == 6 || objc_msgSend(v12, "type") == 8)
+      if ([arrangedSubviews3 type] == 6 || objc_msgSend(arrangedSubviews3, "type") == 8)
       {
-        v26 = [v6 _authenticationMessage];
-        [(_UITextChoiceAccelerationBubble *)self setAuthenticationMessage:v26];
+        _authenticationMessage = [eventCopy _authenticationMessage];
+        [(_UITextChoiceAccelerationBubble *)self setAuthenticationMessage:_authenticationMessage];
 
-        v27 = [v12 sourceCandidate];
+        sourceCandidate = [arrangedSubviews3 sourceCandidate];
         selectedCandidateChoice = self->_selectedCandidateChoice;
-        self->_selectedCandidateChoice = v27;
+        self->_selectedCandidateChoice = sourceCandidate;
 
         [(UIControl *)self sendActionsForControlEvents:64];
         [(_UITextChoiceAccelerationBubble *)self removeAnimated:1];
@@ -2381,32 +2381,32 @@ LABEL_16:
 
       else
       {
-        if ([v12 type] == 7 && (objc_msgSend(v12, "sourceCandidate"), v29 = objc_claimAutoreleasedReturnValue(), v29, v29))
+        if ([arrangedSubviews3 type] == 7 && (objc_msgSend(arrangedSubviews3, "sourceCandidate"), v29 = objc_claimAutoreleasedReturnValue(), v29, v29))
         {
-          v30 = [(_UITextChoiceAccelerationBubble *)self sideButton];
-          [v30 setState:4];
+          sideButton2 = [(_UITextChoiceAccelerationBubble *)self sideButton];
+          [sideButton2 setState:4];
 
-          v31 = [v12 sourceCandidate];
-          [(_UITextChoiceAccelerationBubble *)self dismissWithCandidate:v31];
+          sourceCandidate2 = [arrangedSubviews3 sourceCandidate];
+          [(_UITextChoiceAccelerationBubble *)self dismissWithCandidate:sourceCandidate2];
         }
 
         else
         {
-          v31 = [v12 textToUse];
-          v32 = [(_UITextChoiceAccelerationBubble *)self candidate];
-          v33 = [v32 input];
+          sourceCandidate2 = [arrangedSubviews3 textToUse];
+          candidate = [(_UITextChoiceAccelerationBubble *)self candidate];
+          input = [candidate input];
 
-          v34 = [(_UITextChoiceAccelerationBubble *)self sideButton];
-          [v34 setState:4];
+          sideButton3 = [(_UITextChoiceAccelerationBubble *)self sideButton];
+          [sideButton3 setState:4];
 
-          if (v31 && [v31 isEqualToString:v33])
+          if (sourceCandidate2 && [sourceCandidate2 isEqualToString:input])
           {
-            [(_UITextChoiceAccelerationBubble *)self dismissWithRevert:v31];
+            [(_UITextChoiceAccelerationBubble *)self dismissWithRevert:sourceCandidate2];
           }
 
           else
           {
-            [(_UITextChoiceAccelerationBubble *)self dismissWithText:v31];
+            [(_UITextChoiceAccelerationBubble *)self dismissWithText:sourceCandidate2];
           }
         }
       }
@@ -2420,17 +2420,17 @@ LABEL_16:
 
   else
   {
-    v18 = [(_UITextChoiceAccelerationBubble *)self sideButton];
-    [v18 setState:0];
+    sideButton4 = [(_UITextChoiceAccelerationBubble *)self sideButton];
+    [sideButton4 setState:0];
 
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v19 = [(_UITextChoiceAccelerationBubble *)self contentsView];
-    v12 = [v19 arrangedSubviews];
+    contentsView3 = [(_UITextChoiceAccelerationBubble *)self contentsView];
+    arrangedSubviews3 = [contentsView3 arrangedSubviews];
 
-    v20 = [v12 countByEnumeratingWithState:&v35 objects:v39 count:16];
+    v20 = [arrangedSubviews3 countByEnumeratingWithState:&v35 objects:v39 count:16];
     if (v20)
     {
       v21 = v20;
@@ -2441,13 +2441,13 @@ LABEL_16:
         {
           if (*v36 != v22)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(arrangedSubviews3);
           }
 
           [*(*(&v35 + 1) + 8 * i) setState:0];
         }
 
-        v21 = [v12 countByEnumeratingWithState:&v35 objects:v39 count:16];
+        v21 = [arrangedSubviews3 countByEnumeratingWithState:&v35 objects:v39 count:16];
       }
 
       while (v21);
@@ -2460,28 +2460,28 @@ LABEL_29:
 - (void)removeFromSuperview
 {
   v12[2] = *MEMORY[0x1E69E9840];
-  v3 = [(_UITextChoiceAccelerationBubble *)self anchorLeading];
+  anchorLeading = [(_UITextChoiceAccelerationBubble *)self anchorLeading];
 
-  if (v3)
+  if (anchorLeading)
   {
     v4 = MEMORY[0x1E69977A0];
-    v5 = [(_UITextChoiceAccelerationBubble *)self anchorLeading];
-    v12[0] = v5;
-    v6 = [(_UITextChoiceAccelerationBubble *)self anchorTop];
-    v12[1] = v6;
+    anchorLeading2 = [(_UITextChoiceAccelerationBubble *)self anchorLeading];
+    v12[0] = anchorLeading2;
+    anchorTop = [(_UITextChoiceAccelerationBubble *)self anchorTop];
+    v12[1] = anchorTop;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:2];
     [v4 deactivateConstraints:v7];
 
     [(_UITextChoiceAccelerationBubble *)self setReferenceRect:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   }
 
-  v8 = [(_UITextChoiceAccelerationBubble *)self boundaryConstraints];
+  boundaryConstraints = [(_UITextChoiceAccelerationBubble *)self boundaryConstraints];
 
-  if (v8)
+  if (boundaryConstraints)
   {
     v9 = MEMORY[0x1E69977A0];
-    v10 = [(_UITextChoiceAccelerationBubble *)self boundaryConstraints];
-    [v9 deactivateConstraints:v10];
+    boundaryConstraints2 = [(_UITextChoiceAccelerationBubble *)self boundaryConstraints];
+    [v9 deactivateConstraints:boundaryConstraints2];
   }
 
   v11.receiver = self;
@@ -2496,10 +2496,10 @@ LABEL_29:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(_UITextChoiceAccelerationBubble *)self contentsView];
-  v3 = [v2 arrangedSubviews];
+  contentsView = [(_UITextChoiceAccelerationBubble *)self contentsView];
+  arrangedSubviews = [contentsView arrangedSubviews];
 
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  v4 = [arrangedSubviews countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2511,28 +2511,28 @@ LABEL_29:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(arrangedSubviews);
         }
 
         [*(*(&v8 + 1) + 8 * v7++) setLightingEffectEnabled:0 atPosition:&unk_1EFE30898];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [arrangedSubviews countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)removeAnimated:(BOOL)a3 withDuration:(double)a4
+- (void)removeAnimated:(BOOL)animated withDuration:(double)duration
 {
   if (!self->_isDismissing)
   {
-    v5 = a3;
+    animatedCopy = animated;
     self->_isDismissing = 1;
     [(_UITextChoiceAccelerationBubble *)self cancelLightingEffect];
-    if (v5)
+    if (animatedCopy)
     {
       v7[4] = self;
       v8[0] = MEMORY[0x1E69E9820];
@@ -2544,7 +2544,7 @@ LABEL_29:
       v7[1] = 3221225472;
       v7[2] = __63___UITextChoiceAccelerationBubble_removeAnimated_withDuration___block_invoke_2;
       v7[3] = &unk_1E70F5AC0;
-      [UIView animateWithDuration:v8 animations:v7 completion:a4];
+      [UIView animateWithDuration:v8 animations:v7 completion:duration];
     }
 
     else
@@ -2559,32 +2559,32 @@ LABEL_29:
 - (void)dismissWithCancel
 {
   [(_UITextChoiceAccelerationBubble *)self setShouldRejectCandidate:1];
-  v4 = [(_UITextChoiceAccelerationBubble *)self sideButton];
-  v3 = [v4 textToUse];
-  [(_UITextChoiceAccelerationBubble *)self dismissWithText:v3];
+  sideButton = [(_UITextChoiceAccelerationBubble *)self sideButton];
+  textToUse = [sideButton textToUse];
+  [(_UITextChoiceAccelerationBubble *)self dismissWithText:textToUse];
 }
 
-- (void)dismissWithRevert:(id)a3
+- (void)dismissWithRevert:(id)revert
 {
-  v4 = a3;
+  revertCopy = revert;
   [(_UITextChoiceAccelerationBubble *)self setShouldRejectCandidate:1];
-  [(_UITextChoiceAccelerationBubble *)self dismissWithText:v4];
+  [(_UITextChoiceAccelerationBubble *)self dismissWithText:revertCopy];
 }
 
-- (void)dismissWithCandidate:(id)a3
+- (void)dismissWithCandidate:(id)candidate
 {
-  v8 = a3;
-  v5 = [(_UITextChoiceAccelerationBubble *)self promptStyle];
-  if (v8)
+  candidateCopy = candidate;
+  promptStyle = [(_UITextChoiceAccelerationBubble *)self promptStyle];
+  if (candidateCopy)
   {
-    v6 = [v8 candidate];
+    candidate = [candidateCopy candidate];
     selectedChoice = self->_selectedChoice;
-    self->_selectedChoice = v6;
+    self->_selectedChoice = candidate;
 
-    objc_storeStrong(&self->_selectedCandidateChoice, a3);
+    objc_storeStrong(&self->_selectedCandidateChoice, candidate);
   }
 
-  else if (v5 != 3)
+  else if (promptStyle != 3)
   {
     [(UIControl *)self cancelTrackingWithEvent:0];
   }
@@ -2592,18 +2592,18 @@ LABEL_29:
   [(_UITextChoiceAccelerationBubble *)self removeAnimated:1];
 }
 
-- (void)dismissWithText:(id)a3
+- (void)dismissWithText:(id)text
 {
-  v7 = a3;
-  v5 = [(_UITextChoiceAccelerationBubble *)self promptStyle];
-  if (v7)
+  textCopy = text;
+  promptStyle = [(_UITextChoiceAccelerationBubble *)self promptStyle];
+  if (textCopy)
   {
-    objc_storeStrong(&self->_selectedChoice, a3);
+    objc_storeStrong(&self->_selectedChoice, text);
     selectedCandidateChoice = self->_selectedCandidateChoice;
     self->_selectedCandidateChoice = 0;
   }
 
-  else if (v5 != 3)
+  else if (promptStyle != 3)
   {
     [(UIControl *)self cancelTrackingWithEvent:0];
   }
@@ -2613,17 +2613,17 @@ LABEL_29:
 
 - (int)textEffectsVisibilityLevel
 {
-  v2 = [(UIView *)self superview];
-  v3 = [v2 textEffectsVisibilityLevel];
+  superview = [(UIView *)self superview];
+  textEffectsVisibilityLevel = [superview textEffectsVisibilityLevel];
 
-  if (v3 <= 8)
+  if (textEffectsVisibilityLevel <= 8)
   {
     return 8;
   }
 
   else
   {
-    return v3;
+    return textEffectsVisibilityLevel;
   }
 }
 

@@ -1,12 +1,12 @@
 @interface ATXPBNotificationGroupEvent
 - (BOOL)hasUuid;
-- (BOOL)isEqual:(id)a3;
-- (__CFString)eventTypeAsString:(__CFString *)a1;
+- (BOOL)isEqual:(id)equal;
+- (__CFString)eventTypeAsString:(__CFString *)string;
 - (double)secondsSinceReferenceDate;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (uint64_t)StringAsEventType:(uint64_t)a1;
+- (uint64_t)StringAsEventType:(uint64_t)type;
 - (uint64_t)eventType;
 - (uint64_t)hasEventType;
 - (uint64_t)hasSecondsSinceReferenceDate;
@@ -16,10 +16,10 @@
 - (uint64_t)setSecondsSinceReferenceDate:(uint64_t)result;
 - (uint64_t)uuid;
 - (unint64_t)hash;
-- (void)copyTo:(uint64_t)a1;
-- (void)mergeFrom:(uint64_t)a1;
-- (void)setUuid:(uint64_t)a1;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(uint64_t)to;
+- (void)mergeFrom:(uint64_t)from;
+- (void)setUuid:(uint64_t)uuid;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBNotificationGroupEvent
@@ -30,15 +30,15 @@
   v8.receiver = self;
   v8.super_class = ATXPBNotificationGroupEvent;
   v4 = [(ATXPBNotificationGroupEvent *)&v8 description];
-  v5 = [(ATXPBNotificationGroupEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBNotificationGroupEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*&self->_has & 2) != 0)
   {
     eventType = self->_eventType;
@@ -52,50 +52,50 @@
       v5 = off_1E80C3070[eventType];
     }
 
-    [v3 setObject:v5 forKey:@"eventType"];
+    [dictionary setObject:v5 forKey:@"eventType"];
   }
 
   uuid = self->_uuid;
   if (uuid)
   {
-    [v3 setObject:uuid forKey:@"uuid"];
+    [dictionary setObject:uuid forKey:@"uuid"];
   }
 
   if (*&self->_has)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithDouble:self->_secondsSinceReferenceDate];
-    [v3 setObject:v7 forKey:@"secondsSinceReferenceDate"];
+    [dictionary setObject:v7 forKey:@"secondsSinceReferenceDate"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if ((*&self->_has & 2) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_uuid)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
     PBDataWriterWriteDoubleField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 2) != 0)
   {
@@ -103,7 +103,7 @@
     *(v5 + 32) |= 2u;
   }
 
-  v7 = [(NSString *)self->_uuid copyWithZone:a3];
+  v7 = [(NSString *)self->_uuid copyWithZone:zone];
   v8 = *(v6 + 24);
   *(v6 + 24) = v7;
 
@@ -116,10 +116,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
@@ -127,19 +127,19 @@
   has = self->_has;
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0 || self->_eventType != *(v4 + 4))
+    if ((*(equalCopy + 32) & 2) == 0 || self->_eventType != *(equalCopy + 4))
     {
       goto LABEL_14;
     }
   }
 
-  else if ((*(v4 + 32) & 2) != 0)
+  else if ((*(equalCopy + 32) & 2) != 0)
   {
     goto LABEL_14;
   }
 
   uuid = self->_uuid;
-  if (uuid | *(v4 + 3))
+  if (uuid | *(equalCopy + 3))
   {
     if (![(NSString *)uuid isEqual:?])
     {
@@ -151,10 +151,10 @@ LABEL_14:
     has = self->_has;
   }
 
-  v7 = (*(v4 + 32) & 1) == 0;
+  v7 = (*(equalCopy + 32) & 1) == 0;
   if (has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_secondsSinceReferenceDate != *(v4 + 1))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_secondsSinceReferenceDate != *(equalCopy + 1))
     {
       goto LABEL_14;
     }
@@ -275,31 +275,31 @@ LABEL_15:
   return result;
 }
 
-- (__CFString)eventTypeAsString:(__CFString *)a1
+- (__CFString)eventTypeAsString:(__CFString *)string
 {
-  if (!a1)
+  if (!string)
   {
 LABEL_4:
 
-    return a1;
+    return string;
   }
 
   if (a2 < 0x16)
   {
-    a1 = off_1E80C3070[a2];
+    string = off_1E80C3070[a2];
     goto LABEL_4;
   }
 
-  a1 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", a2];
+  string = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", a2];
 
-  return a1;
+  return string;
 }
 
-- (uint64_t)StringAsEventType:(uint64_t)a1
+- (uint64_t)StringAsEventType:(uint64_t)type
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (type)
   {
     v5 = v3;
     if ([v5 isEqualToString:@"Unused"])
@@ -467,18 +467,18 @@ LABEL_4:
   return result;
 }
 
-- (void)copyTo:(uint64_t)a1
+- (void)copyTo:(uint64_t)to
 {
   v3 = a2;
-  if (a1)
+  if (to)
   {
-    if ((*(a1 + 32) & 2) != 0)
+    if ((*(to + 32) & 2) != 0)
     {
-      v3[4] = *(a1 + 16);
+      v3[4] = *(to + 16);
       *(v3 + 32) |= 2u;
     }
 
-    v4 = *(a1 + 24);
+    v4 = *(to + 24);
     if (v4)
     {
       v5 = v3;
@@ -486,45 +486,45 @@ LABEL_4:
       v3 = v5;
     }
 
-    if (*(a1 + 32))
+    if (*(to + 32))
     {
-      *(v3 + 1) = *(a1 + 8);
+      *(v3 + 1) = *(to + 8);
       *(v3 + 32) |= 1u;
     }
   }
 }
 
-- (void)setUuid:(uint64_t)a1
+- (void)setUuid:(uint64_t)uuid
 {
-  if (a1)
+  if (uuid)
   {
-    objc_storeStrong((a1 + 24), a2);
+    objc_storeStrong((uuid + 24), a2);
   }
 }
 
-- (void)mergeFrom:(uint64_t)a1
+- (void)mergeFrom:(uint64_t)from
 {
   v3 = a2;
-  if (a1)
+  if (from)
   {
     if ((v3[8] & 2) != 0)
     {
-      *(a1 + 16) = v3[4];
-      *(a1 + 32) |= 2u;
+      *(from + 16) = v3[4];
+      *(from + 32) |= 2u;
     }
 
     v4 = *(v3 + 3);
     if (v4)
     {
       v5 = v3;
-      objc_storeStrong((a1 + 24), v4);
+      objc_storeStrong((from + 24), v4);
       v3 = v5;
     }
 
     if (v3[8])
     {
-      *(a1 + 8) = *(v3 + 1);
-      *(a1 + 32) |= 1u;
+      *(from + 8) = *(v3 + 1);
+      *(from + 32) |= 1u;
     }
   }
 }
@@ -541,9 +541,9 @@ LABEL_4:
 
 - (double)secondsSinceReferenceDate
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 8);
+    return *(self + 8);
   }
 
   else

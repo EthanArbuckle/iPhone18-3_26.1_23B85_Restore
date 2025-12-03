@@ -1,18 +1,18 @@
 @interface PRUISPosterAttachmentConfiguration
-+ (id)attachmentConfigurationWithHostWindowScene:(id)a3 attachments:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)attachmentConfigurationWithHostWindowScene:(id)scene attachments:(id)attachments;
+- (BOOL)isEqual:(id)equal;
 - (PRUISPosterAttachmentConfiguration)init;
 - (unint64_t)hash;
-- (void)setAttachments:(id)a3;
+- (void)setAttachments:(id)attachments;
 @end
 
 @implementation PRUISPosterAttachmentConfiguration
 
-+ (id)attachmentConfigurationWithHostWindowScene:(id)a3 attachments:(id)a4
++ (id)attachmentConfigurationWithHostWindowScene:(id)scene attachments:(id)attachments
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  sceneCopy = scene;
+  attachmentsCopy = attachments;
+  v8 = sceneCopy;
   NSClassFromString(&cfstr_Uiwindowscene.isa);
   if (!v8)
   {
@@ -24,7 +24,7 @@
     [PRUISPosterAttachmentConfiguration attachmentConfigurationWithHostWindowScene:a2 attachments:?];
   }
 
-  v9 = v7;
+  v9 = attachmentsCopy;
   NSClassFromString(&cfstr_Nsarray.isa);
   if (!v9)
   {
@@ -50,22 +50,22 @@
   return [(PRUISPosterAttachmentConfiguration *)&v3 init];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = v4;
-    v8 = [v7 attachmentHostWindowScene];
-    v9 = [(PRUISPosterAttachmentConfiguration *)self attachmentHostWindowScene];
-    if ([v8 isEqual:v9])
+    v7 = equalCopy;
+    attachmentHostWindowScene = [v7 attachmentHostWindowScene];
+    attachmentHostWindowScene2 = [(PRUISPosterAttachmentConfiguration *)self attachmentHostWindowScene];
+    if ([attachmentHostWindowScene isEqual:attachmentHostWindowScene2])
     {
-      v10 = [v7 attachments];
-      v11 = [(PRUISPosterAttachmentConfiguration *)self attachments];
-      v12 = [v10 isEqualToArray:v11];
+      attachments = [v7 attachments];
+      attachments2 = [(PRUISPosterAttachmentConfiguration *)self attachments];
+      v12 = [attachments isEqualToArray:attachments2];
     }
 
     else
@@ -82,13 +82,13 @@
   return v12;
 }
 
-- (void)setAttachments:(id)a3
+- (void)setAttachments:(id)attachments
 {
-  v4 = a3;
+  attachmentsCopy = attachments;
   attachments = self->_attachments;
   p_attachments = &self->_attachments;
-  v8 = v4;
-  if (([v4 isEqualToArray:attachments] & 1) == 0)
+  v8 = attachmentsCopy;
+  if (([attachmentsCopy isEqualToArray:attachments] & 1) == 0)
   {
     if (v8)
     {
@@ -106,14 +106,14 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [(PRUISPosterAttachmentConfiguration *)self attachments];
-  v5 = [v3 appendObject:v4];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  attachments = [(PRUISPosterAttachmentConfiguration *)self attachments];
+  v5 = [builder appendObject:attachments];
 
-  v6 = [(PRUISPosterAttachmentConfiguration *)self attachmentHostWindowScene];
-  v7 = [v3 appendObject:v6];
+  attachmentHostWindowScene = [(PRUISPosterAttachmentConfiguration *)self attachmentHostWindowScene];
+  v7 = [builder appendObject:attachmentHostWindowScene];
 
-  v8 = [v3 hash];
+  v8 = [builder hash];
   return v8;
 }
 

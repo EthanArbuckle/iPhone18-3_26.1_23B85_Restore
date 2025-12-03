@@ -6,22 +6,22 @@
 + (void)removeFilesFromBackupsIfNeeded;
 - (MSPSharedTripStorageController)init;
 - (MSPSharedTripStorageDelegate)delegate;
-- (id)_identifiersOfStaleSessions:(id)a3;
-- (id)receivingRulesForIdentifier:(id)a3;
-- (id)sendingRulesForIdentifier:(id)a3;
+- (id)_identifiersOfStaleSessions:(id)sessions;
+- (id)receivingRulesForIdentifier:(id)identifier;
+- (id)sendingRulesForIdentifier:(id)identifier;
 - (void)_loadSenderSession;
 - (void)_loadStoredSessions;
 - (void)_saveReceivingRules;
 - (void)_saveSenderSession;
 - (void)_saveSendingRules;
 - (void)_saveStoredSessions;
-- (void)addNewSession:(id)a3 originator:(id)a4 receivingHandle:(id)a5 receivingAccountIdentifier:(id)a6;
+- (void)addNewSession:(id)session originator:(id)originator receivingHandle:(id)handle receivingAccountIdentifier:(id)identifier;
 - (void)dealloc;
 - (void)initialiseStoredSessionsIfNeeded;
-- (void)removeSession:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setSenderSessionStorage:(id)a3;
-- (void)updateGroupSessionStorageWithState:(id)a3;
+- (void)removeSession:(id)session;
+- (void)setDelegate:(id)delegate;
+- (void)setSenderSessionStorage:(id)storage;
+- (void)updateGroupSessionStorageWithState:(id)state;
 @end
 
 @implementation MSPSharedTripStorageController
@@ -55,17 +55,17 @@
       _os_log_impl(&dword_25813A000, v3, OS_LOG_TYPE_DEBUG, "[STORAGE] initializing new MSPSharedTripStorageController", buf, 2u);
     }
 
-    v4 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     sharedTripGroupSessionInfo = v2->_sharedTripGroupSessionInfo;
-    v2->_sharedTripGroupSessionInfo = v4;
+    v2->_sharedTripGroupSessionInfo = dictionary;
 
-    v6 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     receiverRules = v2->_receiverRules;
-    v2->_receiverRules = v6;
+    v2->_receiverRules = dictionary2;
 
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
     senderRules = v2->_senderRules;
-    v2->_senderRules = v8;
+    v2->_senderRules = dictionary3;
 
     [(MSPSharedTripStorageController *)v2 _loadSenderSession];
     v10 = MSPGetSharedTripStorageLog();
@@ -138,17 +138,17 @@ void __38__MSPSharedTripStorageController_init__block_invoke(uint64_t a1)
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSenderSessionStorage:(id)a3
+- (void)setSenderSessionStorage:(id)storage
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([(MSPGroupSessionStorage *)v4 hasGroupIdentifier]&& [(MSPGroupSessionStorage *)self->_senderSessionStorage hasGroupIdentifier])
+  storageCopy = storage;
+  if ([(MSPGroupSessionStorage *)storageCopy hasGroupIdentifier]&& [(MSPGroupSessionStorage *)self->_senderSessionStorage hasGroupIdentifier])
   {
-    v5 = [(MSPGroupSessionStorage *)v4 groupIdentifier];
-    v6 = [(MSPGroupSessionStorage *)self->_senderSessionStorage groupIdentifier];
-    v7 = [v5 isEqualToString:v6];
+    groupIdentifier = [(MSPGroupSessionStorage *)storageCopy groupIdentifier];
+    groupIdentifier2 = [(MSPGroupSessionStorage *)self->_senderSessionStorage groupIdentifier];
+    v7 = [groupIdentifier isEqualToString:groupIdentifier2];
 
-    if (v4 && (v7 & 1) != 0)
+    if (storageCopy && (v7 & 1) != 0)
     {
       goto LABEL_12;
     }
@@ -169,33 +169,33 @@ void __38__MSPSharedTripStorageController_init__block_invoke(uint64_t a1)
     }
 
     v10 = v9;
-    v11 = [(MSPGroupSessionStorage *)v4 groupIdentifier];
-    v12 = [(MSPGroupSessionStorage *)self->_senderSessionStorage groupIdentifier];
+    groupIdentifier3 = [(MSPGroupSessionStorage *)storageCopy groupIdentifier];
+    groupIdentifier4 = [(MSPGroupSessionStorage *)self->_senderSessionStorage groupIdentifier];
     v16 = 138412802;
     v17 = v10;
     v18 = 2112;
-    v19 = v11;
+    v19 = groupIdentifier3;
     v20 = 2112;
-    v21 = v12;
+    v21 = groupIdentifier4;
     _os_log_impl(&dword_25813A000, v8, OS_LOG_TYPE_DEFAULT, "[STORAGE] setSenderSessionStorage clearing storage (sameGroup: %@, incoming: %@, existing: %@)", &v16, 0x20u);
   }
 
-  v13 = [MEMORY[0x277CBEB38] dictionary];
-  [(MSPSharedTripStorageController *)self setSenderRules:v13];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [(MSPSharedTripStorageController *)self setSenderRules:dictionary];
 
 LABEL_12:
   senderSessionStorage = self->_senderSessionStorage;
-  self->_senderSessionStorage = v4;
+  self->_senderSessionStorage = storageCopy;
 
   [(MSPSharedTripStorageController *)self _saveSenderSession];
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  objc_storeWeak(&self->_delegate, v4);
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_delegate, delegateCopy);
   v5 = MSPGetSharedTripStorageLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -208,18 +208,18 @@ LABEL_12:
   if ([(NSMutableDictionary *)self->_sharedTripGroupSessionInfo count])
   {
     v7 = [(NSMutableDictionary *)self->_sharedTripGroupSessionInfo copy];
-    [v4 storageController:self updatedSharedTripGroupStorage:v7];
+    [delegateCopy storageController:self updatedSharedTripGroupStorage:v7];
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addNewSession:(id)a3 originator:(id)a4 receivingHandle:(id)a5 receivingAccountIdentifier:(id)a6
+- (void)addNewSession:(id)session originator:(id)originator receivingHandle:(id)handle receivingAccountIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = [MSPGroupSessionStorage groupStorageWithIdentifier:v10 originator:a4 receivingHandle:a5 receivingAccountIdentifier:a6];
-  [(NSMutableDictionary *)self->_sharedTripGroupSessionInfo setObject:v11 forKeyedSubscript:v10];
+  sessionCopy = session;
+  v11 = [MSPGroupSessionStorage groupStorageWithIdentifier:sessionCopy originator:originator receivingHandle:handle receivingAccountIdentifier:identifier];
+  [(NSMutableDictionary *)self->_sharedTripGroupSessionInfo setObject:v11 forKeyedSubscript:sessionCopy];
 
   [(MSPSharedTripStorageController *)self _saveStoredSessions];
   v12 = MSPGetSharedTripStorageLog();
@@ -238,14 +238,14 @@ LABEL_12:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeSession:(id)a3
+- (void)removeSession:(id)session
 {
   v14 = *MEMORY[0x277D85DE8];
   sharedTripGroupSessionInfo = self->_sharedTripGroupSessionInfo;
-  v5 = a3;
-  [(NSMutableDictionary *)sharedTripGroupSessionInfo setObject:0 forKeyedSubscript:v5];
-  v6 = [(MSPSharedTripStorageController *)self receiverRules];
-  [v6 setObject:0 forKeyedSubscript:v5];
+  sessionCopy = session;
+  [(NSMutableDictionary *)sharedTripGroupSessionInfo setObject:0 forKeyedSubscript:sessionCopy];
+  receiverRules = [(MSPSharedTripStorageController *)self receiverRules];
+  [receiverRules setObject:0 forKeyedSubscript:sessionCopy];
 
   [(MSPSharedTripStorageController *)self _saveStoredSessions];
   v7 = MSPGetSharedTripStorageLog();
@@ -264,32 +264,32 @@ LABEL_12:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateGroupSessionStorageWithState:(id)a3
+- (void)updateGroupSessionStorageWithState:(id)state
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 groupIdentifier];
+  stateCopy = state;
+  groupIdentifier = [stateCopy groupIdentifier];
   v6 = MSPGetSharedTripStorageLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v9 = 138412290;
-    v10 = v5;
+    v10 = groupIdentifier;
     _os_log_impl(&dword_25813A000, v6, OS_LOG_TYPE_INFO, "[STORAGE] updateGroupSessionStorageWithState %@", &v9, 0xCu);
   }
 
-  v7 = [(NSMutableDictionary *)self->_sharedTripGroupSessionInfo objectForKeyedSubscript:v5];
-  [v7 updateWithState:v4];
+  v7 = [(NSMutableDictionary *)self->_sharedTripGroupSessionInfo objectForKeyedSubscript:groupIdentifier];
+  [v7 updateWithState:stateCopy];
 
   [(MSPSharedTripStorageController *)self _saveStoredSessions];
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)receivingRulesForIdentifier:(id)a3
+- (id)receivingRulesForIdentifier:(id)identifier
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MSPSharedTripStorageController *)self receiverRules];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  receiverRules = [(MSPSharedTripStorageController *)self receiverRules];
+  v6 = [receiverRules objectForKeyedSubscript:identifierCopy];
 
   if (!v6)
   {
@@ -297,13 +297,13 @@ LABEL_12:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412290;
-      v12 = v4;
+      v12 = identifierCopy;
       _os_log_impl(&dword_25813A000, v7, OS_LOG_TYPE_DEFAULT, "MSPSharedTripStorageController allocated receiving MSPSharedTripNotificationRules for groupIdentifier %@", &v11, 0xCu);
     }
 
     v6 = objc_alloc_init(MSPSharedTripNotificationRules);
-    v8 = [(MSPSharedTripStorageController *)self receiverRules];
-    [v8 setObject:v6 forKeyedSubscript:v4];
+    receiverRules2 = [(MSPSharedTripStorageController *)self receiverRules];
+    [receiverRules2 setObject:v6 forKeyedSubscript:identifierCopy];
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -311,23 +311,23 @@ LABEL_12:
   return v6;
 }
 
-- (id)sendingRulesForIdentifier:(id)a3
+- (id)sendingRulesForIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCACA8];
   senderSessionStorage = self->_senderSessionStorage;
-  v6 = a3;
-  v7 = [(MSPGroupSessionStorage *)senderSessionStorage groupIdentifier];
-  v8 = [v4 stringWithFormat:@"%@+%@", v7, v6];
+  identifierCopy = identifier;
+  groupIdentifier = [(MSPGroupSessionStorage *)senderSessionStorage groupIdentifier];
+  identifierCopy = [v4 stringWithFormat:@"%@+%@", groupIdentifier, identifierCopy];
 
-  v9 = [(NSMutableDictionary *)self->_senderRules objectForKeyedSubscript:v8];
+  v9 = [(NSMutableDictionary *)self->_senderRules objectForKeyedSubscript:identifierCopy];
   if (!v9)
   {
     v10 = MSPGetSharedTripLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v16 = v8;
+      v16 = identifierCopy;
       _os_log_impl(&dword_25813A000, v10, OS_LOG_TYPE_DEFAULT, "MSPSharedTripStorageController allocated sending MSPSharedTripNotificationRules for key %@", buf, 0xCu);
     }
 
@@ -341,7 +341,7 @@ LABEL_12:
     }
 
     v9 = [[MSPSharedTripNotificationRules alloc] initWithMaximumNumberOfNotifications:GEOConfigGetUInteger()];
-    [(NSMutableDictionary *)self->_senderRules setObject:v9 forKeyedSubscript:v8];
+    [(NSMutableDictionary *)self->_senderRules setObject:v9 forKeyedSubscript:identifierCopy];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -352,20 +352,20 @@ LABEL_12:
 + (id)_receivedSessionsPath
 {
   v2 = +[MSPMapsPaths mapsApplicationContainerPaths];
-  v3 = [v2 groupDirectory];
-  v4 = v3;
-  if (v3)
+  groupDirectory = [v2 groupDirectory];
+  v4 = groupDirectory;
+  if (groupDirectory)
   {
-    v5 = v3;
+    mapsDirectory = groupDirectory;
   }
 
   else
   {
     v6 = +[MSPMapsPaths mapsApplicationContainerPaths];
-    v5 = [v6 mapsDirectory];
+    mapsDirectory = [v6 mapsDirectory];
   }
 
-  v7 = [v5 stringByAppendingPathComponent:@"receivedsessions.data"];
+  v7 = [mapsDirectory stringByAppendingPathComponent:@"receivedsessions.data"];
 
   return v7;
 }
@@ -373,20 +373,20 @@ LABEL_12:
 + (id)_receivedNotificationRulesPath
 {
   v2 = +[MSPMapsPaths mapsApplicationContainerPaths];
-  v3 = [v2 groupDirectory];
-  v4 = v3;
-  if (v3)
+  groupDirectory = [v2 groupDirectory];
+  v4 = groupDirectory;
+  if (groupDirectory)
   {
-    v5 = v3;
+    mapsDirectory = groupDirectory;
   }
 
   else
   {
     v6 = +[MSPMapsPaths mapsApplicationContainerPaths];
-    v5 = [v6 mapsDirectory];
+    mapsDirectory = [v6 mapsDirectory];
   }
 
-  v7 = [v5 stringByAppendingPathComponent:@"rules.data"];
+  v7 = [mapsDirectory stringByAppendingPathComponent:@"rules.data"];
 
   return v7;
 }
@@ -394,12 +394,12 @@ LABEL_12:
 - (void)_loadStoredSessions
 {
   v55 = *MEMORY[0x277D85DE8];
-  v3 = [objc_opt_class() _receivedSessionsPath];
+  _receivedSessionsPath = [objc_opt_class() _receivedSessionsPath];
   v4 = MSPGetSharedTripStorageLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v54 = v3;
+    v54 = _receivedSessionsPath;
     _os_log_impl(&dword_25813A000, v4, OS_LOG_TYPE_DEFAULT, "[STORAGE] _loadStoredSessions %@", buf, 0xCu);
   }
 
@@ -416,8 +416,8 @@ LABEL_12:
 
   spid = v6;
 
-  v50 = v3;
-  v10 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v3];
+  v50 = _receivedSessionsPath;
+  v10 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:_receivedSessionsPath];
   v11 = 0x277CCA000uLL;
   if (v10)
   {
@@ -471,19 +471,19 @@ LABEL_12:
   }
 
   v25 = [(MSPSharedTripStorageController *)self _identifiersOfStaleSessions:self->_sharedTripGroupSessionInfo];
-  v26 = [v25 allObjects];
+  allObjects = [v25 allObjects];
 
-  [(NSMutableDictionary *)self->_sharedTripGroupSessionInfo removeObjectsForKeys:v26];
-  v27 = [objc_opt_class() _receivedNotificationRulesPath];
+  [(NSMutableDictionary *)self->_sharedTripGroupSessionInfo removeObjectsForKeys:allObjects];
+  _receivedNotificationRulesPath = [objc_opt_class() _receivedNotificationRulesPath];
   v28 = MSPGetSharedTripStorageLog();
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v54 = v27;
+    v54 = _receivedNotificationRulesPath;
     _os_log_impl(&dword_25813A000, v28, OS_LOG_TYPE_DEFAULT, "[STORAGE] _loadStoredSessions rulesPath %@", buf, 0xCu);
   }
 
-  v29 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v27];
+  v29 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:_receivedNotificationRulesPath];
   if (v29)
   {
     v48 = v10;
@@ -520,20 +520,20 @@ LABEL_12:
       v36 = MSPGetSharedTripStorageLog();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
       {
-        v38 = [(MSPSharedTripStorageController *)self receiverRules];
+        receiverRules = [(MSPSharedTripStorageController *)self receiverRules];
         *buf = 138412290;
-        v54 = v38;
+        v54 = receiverRules;
         _os_log_impl(&dword_25813A000, v36, OS_LOG_TYPE_INFO, "[STORAGE] cached rules %@", buf, 0xCu);
       }
     }
 
-    [(NSMutableDictionary *)self->_receiverRules removeObjectsForKeys:v26];
+    [(NSMutableDictionary *)self->_receiverRules removeObjectsForKeys:allObjects];
     v10 = v48;
   }
 
   else
   {
-    [(NSMutableDictionary *)self->_receiverRules removeObjectsForKeys:v26];
+    [(NSMutableDictionary *)self->_receiverRules removeObjectsForKeys:allObjects];
     if (!v10)
     {
       goto LABEL_32;
@@ -553,12 +553,12 @@ LABEL_32:
     _os_signpost_emit_with_name_impl(&dword_25813A000, v42, OS_SIGNPOST_INTERVAL_END, spid, "_loadStoredSessions", &unk_2581CCE6D, buf, 2u);
   }
 
-  if ([v26 count])
+  if ([allObjects count])
   {
     v43 = MSPGetSharedTripStorageLog();
     if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
     {
-      v44 = [v26 count];
+      v44 = [allObjects count];
       *buf = 134217984;
       v54 = v44;
       _os_log_impl(&dword_25813A000, v43, OS_LOG_TYPE_INFO, "[STORAGE] %lu sessions are stale, re-saving remaining sessions", buf, 0xCu);
@@ -583,12 +583,12 @@ LABEL_32:
   v46 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_identifiersOfStaleSessions:(id)a3
+- (id)_identifiersOfStaleSessions:(id)sessions
 {
-  v3 = a3;
-  if ([v3 count])
+  sessionsCopy = sessions;
+  if ([sessionsCopy count])
   {
-    [v3 keysOfEntriesPassingTest:&__block_literal_global_5];
+    [sessionsCopy keysOfEntriesPassingTest:&__block_literal_global_5];
   }
 
   else
@@ -716,7 +716,7 @@ uint64_t __62__MSPSharedTripStorageController__identifiersOfStaleSessions___bloc
 - (void)_saveStoredSessions
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = [objc_opt_class() _receivedSessionsPath];
+  _receivedSessionsPath = [objc_opt_class() _receivedSessionsPath];
   v4 = MSPGetSharedTripStorageLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -724,7 +724,7 @@ uint64_t __62__MSPSharedTripStorageController__identifiersOfStaleSessions___bloc
     *buf = 138412546;
     v27 = sharedTripGroupSessionInfo;
     v28 = 2112;
-    v29 = v3;
+    v29 = _receivedSessionsPath;
     _os_log_impl(&dword_25813A000, v4, OS_LOG_TYPE_DEFAULT, "[STORAGE] _saveStoredSessions groupsData %@ at path %@", buf, 0x16u);
   }
 
@@ -743,7 +743,7 @@ uint64_t __62__MSPSharedTripStorageController__identifiersOfStaleSessions___bloc
   v25 = 0;
   v12 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v11 requiringSecureCoding:1 error:&v25];
   v13 = v25;
-  if (v13 || !v3)
+  if (v13 || !_receivedSessionsPath)
   {
     v18 = MSPGetSharedTripStorageLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -772,9 +772,9 @@ uint64_t __62__MSPSharedTripStorageController__identifiersOfStaleSessions___bloc
   else
   {
     v24 = 0;
-    [v12 writeToFile:v3 options:1 error:&v24];
+    [v12 writeToFile:_receivedSessionsPath options:1 error:&v24];
     v14 = v24;
-    MSPExcludePathFromBackup(v3);
+    MSPExcludePathFromBackup(_receivedSessionsPath);
     if (v14)
     {
       v15 = MSPGetSharedTripStorageLog();
@@ -814,15 +814,15 @@ LABEL_24:
 - (void)_saveReceivingRules
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = [objc_opt_class() _receivedNotificationRulesPath];
+  _receivedNotificationRulesPath = [objc_opt_class() _receivedNotificationRulesPath];
   v4 = MSPGetSharedTripStorageLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(MSPSharedTripStorageController *)self receiverRules];
+    receiverRules = [(MSPSharedTripStorageController *)self receiverRules];
     *buf = 138412546;
-    v28 = v5;
+    v28 = receiverRules;
     v29 = 2112;
-    v30 = v3;
+    v30 = _receivedNotificationRulesPath;
     _os_log_impl(&dword_25813A000, v4, OS_LOG_TYPE_DEFAULT, "[STORAGE] _saveRules %@ at path %@", buf, 0x16u);
   }
 
@@ -838,12 +838,12 @@ LABEL_24:
   }
 
   v11 = MEMORY[0x277CCAAB0];
-  v12 = [(MSPSharedTripStorageController *)self receiverRules];
+  receiverRules2 = [(MSPSharedTripStorageController *)self receiverRules];
   v26 = 0;
-  v13 = [v11 archivedDataWithRootObject:v12 requiringSecureCoding:1 error:&v26];
+  v13 = [v11 archivedDataWithRootObject:receiverRules2 requiringSecureCoding:1 error:&v26];
   v14 = v26;
 
-  if (v14 || !v3)
+  if (v14 || !_receivedNotificationRulesPath)
   {
     v19 = MSPGetSharedTripStorageLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -872,9 +872,9 @@ LABEL_24:
   else
   {
     v25 = 0;
-    [v13 writeToFile:v3 options:1 error:&v25];
+    [v13 writeToFile:_receivedNotificationRulesPath options:1 error:&v25];
     v15 = v25;
-    MSPExcludePathFromBackup(v3);
+    MSPExcludePathFromBackup(_receivedNotificationRulesPath);
     if (v15)
     {
       v16 = MSPGetSharedTripStorageLog();
@@ -914,9 +914,9 @@ LABEL_24:
 + (id)_senderSessionStoragePath
 {
   v2 = +[MSPMapsPaths mapsApplicationContainerPaths];
-  v3 = [v2 groupDirectory];
+  groupDirectory = [v2 groupDirectory];
 
-  v4 = [v3 stringByAppendingPathComponent:@"sender.data"];
+  v4 = [groupDirectory stringByAppendingPathComponent:@"sender.data"];
 
   return v4;
 }
@@ -924,9 +924,9 @@ LABEL_24:
 + (id)_sentNotificationRulesPath
 {
   v2 = +[MSPMapsPaths mapsApplicationContainerPaths];
-  v3 = [v2 groupDirectory];
+  groupDirectory = [v2 groupDirectory];
 
-  v4 = [v3 stringByAppendingPathComponent:@"senderRules.data"];
+  v4 = [groupDirectory stringByAppendingPathComponent:@"senderRules.data"];
 
   return v4;
 }
@@ -947,16 +947,16 @@ LABEL_24:
 
   spid = v4;
 
-  v8 = [objc_opt_class() _sentNotificationRulesPath];
+  _sentNotificationRulesPath = [objc_opt_class() _sentNotificationRulesPath];
   v9 = MSPGetSharedTripStorageLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v36 = v8;
+    v36 = _sentNotificationRulesPath;
     _os_log_impl(&dword_25813A000, v9, OS_LOG_TYPE_DEFAULT, "[STORAGE] _loadSenderSession rulesPath %@", buf, 0xCu);
   }
 
-  v10 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v8];
+  v10 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:_sentNotificationRulesPath];
   if (v10)
   {
     v11 = MEMORY[0x277CCAAC8];
@@ -992,24 +992,24 @@ LABEL_24:
       v17 = MSPGetSharedTripStorageLog();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
-        v19 = [(MSPSharedTripStorageController *)self senderRules];
+        senderRules = [(MSPSharedTripStorageController *)self senderRules];
         *buf = 138412290;
-        v36 = v19;
+        v36 = senderRules;
         _os_log_impl(&dword_25813A000, v17, OS_LOG_TYPE_INFO, "[STORAGE] cached sender rules %@", buf, 0xCu);
       }
     }
   }
 
-  v20 = [objc_opt_class() _senderSessionStoragePath];
+  _senderSessionStoragePath = [objc_opt_class() _senderSessionStoragePath];
   v21 = MSPGetSharedTripStorageLog();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v36 = v20;
+    v36 = _senderSessionStoragePath;
     _os_log_impl(&dword_25813A000, v21, OS_LOG_TYPE_DEFAULT, "[STORAGE] _loadSenderSession %@", buf, 0xCu);
   }
 
-  v22 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v20];
+  v22 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:_senderSessionStoragePath];
   if (v22)
   {
     v33 = 0;
@@ -1040,9 +1040,9 @@ LABEL_24:
       v27 = MSPGetSharedTripStorageLog();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
       {
-        v28 = [(MSPGroupSessionStorage *)self->_senderSessionStorage groupIdentifier];
+        groupIdentifier = [(MSPGroupSessionStorage *)self->_senderSessionStorage groupIdentifier];
         *buf = 138412290;
-        v36 = v28;
+        v36 = groupIdentifier;
         _os_log_impl(&dword_25813A000, v27, OS_LOG_TYPE_INFO, "[STORAGE] cached session for group id %@", buf, 0xCu);
       }
     }
@@ -1062,8 +1062,8 @@ LABEL_24:
 - (void)_saveSenderSession
 {
   v36 = *MEMORY[0x277D85DE8];
-  v3 = [objc_opt_class() _senderSessionStoragePath];
-  if (!v3)
+  _senderSessionStoragePath = [objc_opt_class() _senderSessionStoragePath];
+  if (!_senderSessionStoragePath)
   {
     goto LABEL_37;
   }
@@ -1071,11 +1071,11 @@ LABEL_24:
   v4 = MSPGetSharedTripStorageLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(MSPGroupSessionStorage *)self->_senderSessionStorage groupIdentifier];
+    groupIdentifier = [(MSPGroupSessionStorage *)self->_senderSessionStorage groupIdentifier];
     *buf = 138412546;
-    v33 = v5;
+    v33 = groupIdentifier;
     v34 = 2112;
-    v35 = v3;
+    v35 = _senderSessionStoragePath;
     _os_log_impl(&dword_25813A000, v4, OS_LOG_TYPE_DEFAULT, "[STORAGE] _saveSenderSession session for group id: %@ path: %@", buf, 0x16u);
   }
 
@@ -1118,9 +1118,9 @@ LABEL_24:
     if (v12)
     {
       v30 = 0;
-      [v12 writeToFile:v3 options:1 error:&v30];
+      [v12 writeToFile:_senderSessionStoragePath options:1 error:&v30];
       v17 = v30;
-      MSPExcludePathFromBackup(v3);
+      MSPExcludePathFromBackup(_senderSessionStoragePath);
       if (v17)
       {
         v18 = MSPGetSharedTripStorageLog();
@@ -1151,17 +1151,17 @@ LABEL_31:
     v13 = 0;
   }
 
-  v21 = [MEMORY[0x277CCAA00] defaultManager];
-  v22 = [v21 fileExistsAtPath:v3];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v22 = [defaultManager fileExistsAtPath:_senderSessionStoragePath];
 
   if (!v22)
   {
     goto LABEL_33;
   }
 
-  v23 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
   v29 = 0;
-  [v23 removeItemAtPath:v3 error:&v29];
+  [defaultManager2 removeItemAtPath:_senderSessionStoragePath error:&v29];
   v12 = v29;
 
   if (v12)
@@ -1203,8 +1203,8 @@ LABEL_37:
 - (void)_saveSendingRules
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = [objc_opt_class() _sentNotificationRulesPath];
-  if (v3)
+  _sentNotificationRulesPath = [objc_opt_class() _sentNotificationRulesPath];
+  if (_sentNotificationRulesPath)
   {
     v4 = MSPGetSharedTripStorageLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1213,7 +1213,7 @@ LABEL_37:
       *buf = 138412546;
       v27 = senderRules;
       v28 = 2112;
-      v29 = v3;
+      v29 = _sentNotificationRulesPath;
       _os_log_impl(&dword_25813A000, v4, OS_LOG_TYPE_DEFAULT, "[STORAGE] _saveSendingRules rules %@ at path %@", buf, 0x16u);
     }
 
@@ -1263,9 +1263,9 @@ LABEL_24:
     else
     {
       v24 = 0;
-      [v12 writeToFile:v3 options:1 error:&v24];
+      [v12 writeToFile:_sentNotificationRulesPath options:1 error:&v24];
       v16 = v24;
-      MSPExcludePathFromBackup(v3);
+      MSPExcludePathFromBackup(_sentNotificationRulesPath);
       if (v16)
       {
         v17 = MSPGetSharedTripStorageLog();
@@ -1307,25 +1307,25 @@ LABEL_25:
 
 + (void)removeFilesFromBackupsIfNeeded
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __64__MSPSharedTripStorageController_removeFilesFromBackupsIfNeeded__block_invoke;
   v10[3] = &unk_2798663D8;
-  v11 = v3;
-  v4 = v3;
+  v11 = defaultManager;
+  v4 = defaultManager;
   v5 = MEMORY[0x259C7AD60](v10);
-  v6 = [a1 _senderSessionStoragePath];
-  (v5)[2](v5, v6);
+  _senderSessionStoragePath = [self _senderSessionStoragePath];
+  (v5)[2](v5, _senderSessionStoragePath);
 
-  v7 = [a1 _sentNotificationRulesPath];
-  (v5)[2](v5, v7);
+  _sentNotificationRulesPath = [self _sentNotificationRulesPath];
+  (v5)[2](v5, _sentNotificationRulesPath);
 
-  v8 = [a1 _receivedSessionsPath];
-  (v5)[2](v5, v8);
+  _receivedSessionsPath = [self _receivedSessionsPath];
+  (v5)[2](v5, _receivedSessionsPath);
 
-  v9 = [a1 _receivedNotificationRulesPath];
-  (v5)[2](v5, v9);
+  _receivedNotificationRulesPath = [self _receivedNotificationRulesPath];
+  (v5)[2](v5, _receivedNotificationRulesPath);
 }
 
 void __64__MSPSharedTripStorageController_removeFilesFromBackupsIfNeeded__block_invoke(uint64_t a1, void *a2)

@@ -1,18 +1,18 @@
 @interface PLModelMigrationAction_AddMissingExtendedAttributeFocalLengthIn35mm
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_AddMissingExtendedAttributeFocalLengthIn35mm
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v29[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PLModelMigrationActionBackground *)self resumeMarker];
-  v8 = v6;
-  if (v7)
+  contextCopy = context;
+  resumeMarker = [(PLModelMigrationActionBackground *)self resumeMarker];
+  v8 = contextCopy;
+  if (resumeMarker)
   {
-    v9 = [MEMORY[0x1E695DFF8] URLWithString:v7];
+    v9 = [MEMORY[0x1E695DFF8] URLWithString:resumeMarker];
   }
 
   else
@@ -20,8 +20,8 @@
     v9 = 0;
   }
 
-  v10 = [v8 persistentStoreCoordinator];
-  v11 = [v10 managedObjectIDForURIRepresentation:v9];
+  persistentStoreCoordinator = [v8 persistentStoreCoordinator];
+  v11 = [persistentStoreCoordinator managedObjectIDForURIRepresentation:v9];
 
   v12 = MEMORY[0x1E695D5E0];
   v13 = +[PLManagedAsset entityName];
@@ -56,10 +56,10 @@
   v23 = [PLModelMigrationActionUtility updateExtendedAttributesWithAction:self managedObjectContext:v8 fetchRequest:v14 useObjectIDResumeMarker:1 error:&v27];
   v24 = v27;
   [(PLModelMigrationActionBackground *)self finalizeProgress];
-  if (a4)
+  if (error)
   {
     v25 = v24;
-    *a4 = v24;
+    *error = v24;
   }
 
   return v23;

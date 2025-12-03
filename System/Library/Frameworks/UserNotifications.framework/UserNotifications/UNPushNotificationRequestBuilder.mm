@@ -1,42 +1,42 @@
 @interface UNPushNotificationRequestBuilder
-- (UNPushNotificationRequestBuilder)initWithIdentifier:(id)a3 payload:(id)a4 bundleIdentifier:(id)a5;
-- (id)_sanitizeAPSDictionary:(id)a3;
-- (id)_sanitizeAlert:(id)a3;
-- (id)_sanitizeFlag:(id)a3;
-- (id)_sanitizeInterruptionLevelString:(id)a3;
-- (id)_sanitizeLocalizationArgumentsArray:(id)a3;
-- (id)_sanitizeRelevanceScore:(id)a3;
-- (id)_sanitizeSound:(id)a3;
-- (id)_sanitizeStringArray:(id)a3;
-- (id)_sanitizeTopicIdentifier:(id)a3;
-- (id)_sanitizeUnsignedInteger:(id)a3;
-- (id)_sanitizeVolume:(id)a3;
+- (UNPushNotificationRequestBuilder)initWithIdentifier:(id)identifier payload:(id)payload bundleIdentifier:(id)bundleIdentifier;
+- (id)_sanitizeAPSDictionary:(id)dictionary;
+- (id)_sanitizeAlert:(id)alert;
+- (id)_sanitizeFlag:(id)flag;
+- (id)_sanitizeInterruptionLevelString:(id)string;
+- (id)_sanitizeLocalizationArgumentsArray:(id)array;
+- (id)_sanitizeRelevanceScore:(id)score;
+- (id)_sanitizeSound:(id)sound;
+- (id)_sanitizeStringArray:(id)array;
+- (id)_sanitizeTopicIdentifier:(id)identifier;
+- (id)_sanitizeUnsignedInteger:(id)integer;
+- (id)_sanitizeVolume:(id)volume;
 - (id)buildNotificationRequest;
 - (id)buildSafePayload;
-- (unint64_t)_interruptionLevelForString:(id)a3;
+- (unint64_t)_interruptionLevelForString:(id)string;
 @end
 
 @implementation UNPushNotificationRequestBuilder
 
-- (UNPushNotificationRequestBuilder)initWithIdentifier:(id)a3 payload:(id)a4 bundleIdentifier:(id)a5
+- (UNPushNotificationRequestBuilder)initWithIdentifier:(id)identifier payload:(id)payload bundleIdentifier:(id)bundleIdentifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  payloadCopy = payload;
+  bundleIdentifierCopy = bundleIdentifier;
   v19.receiver = self;
   v19.super_class = UNPushNotificationRequestBuilder;
   v11 = [(UNPushNotificationRequestBuilder *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [identifierCopy copy];
     identifier = v11->_identifier;
     v11->_identifier = v12;
 
-    v14 = [v9 copy];
+    v14 = [payloadCopy copy];
     payload = v11->_payload;
     v11->_payload = v14;
 
-    v16 = [v10 copy];
+    v16 = [bundleIdentifierCopy copy];
     bundleIdentifier = v11->_bundleIdentifier;
     v11->_bundleIdentifier = v16;
   }
@@ -47,16 +47,16 @@
 - (id)buildNotificationRequest
 {
   v75[1] = *MEMORY[0x1E69E9840];
-  v3 = [(UNPushNotificationRequestBuilder *)self buildSafePayload];
-  if (!v3)
+  buildSafePayload = [(UNPushNotificationRequestBuilder *)self buildSafePayload];
+  if (!buildSafePayload)
   {
     v5 = 0;
     goto LABEL_54;
   }
 
   v73 = [MEMORY[0x1E69635E0] applicationProxyForIdentifier:self->_bundleIdentifier];
-  v72 = [v73 bundleURL];
-  if (v72)
+  bundleURL = [v73 bundleURL];
+  if (bundleURL)
   {
     Unique = _CFBundleCreateUnique();
   }
@@ -68,7 +68,7 @@
 
   v6 = objc_alloc_init(UNMutableNotificationContent);
   [(UNMutableNotificationContent *)v6 setUserInfo:self->_payload];
-  v7 = [v3 un_safeCastObjectForKey:@"aps" class:objc_opt_class()];
+  v7 = [buildSafePayload un_safeCastObjectForKey:@"aps" class:objc_opt_class()];
   v8 = [v7 objectForKey:@"alert"];
   cf = Unique;
   v71 = v8;
@@ -84,7 +84,7 @@
 
     else
     {
-      v65 = v3;
+      v65 = buildSafePayload;
       v12 = v9;
       v13 = [v12 un_safeCastObjectForKey:@"body" class:objc_opt_class()];
       v69 = [v12 un_safeCastObjectForKey:@"loc-key" class:objc_opt_class()];
@@ -131,7 +131,7 @@
       v27 = [v12 un_safeCastObjectForKey:@"launch-image" class:objc_opt_class()];
       [(UNMutableNotificationContent *)v6 setLaunchImageName:v27];
 
-      v3 = v65;
+      buildSafePayload = v65;
     }
   }
 
@@ -180,35 +180,35 @@
     if (v39)
     {
       v40 = v39;
-      v41 = 0;
+      bOOLValue = 0;
       v42 = 0;
     }
 
     else
     {
-      v66 = v3;
+      v66 = buildSafePayload;
       v43 = v37;
       v40 = [v43 un_safeCastObjectForKey:@"name" class:objc_opt_class()];
       v44 = [v43 un_safeCastObjectForKey:@"critical" class:objc_opt_class()];
-      v41 = [v44 BOOLValue];
+      bOOLValue = [v44 BOOLValue];
 
       v42 = [v43 un_safeCastObjectForKey:@"volume" class:objc_opt_class()];
 
       if (!v40)
       {
         v46 = v33 == 3;
-        v3 = v66;
+        buildSafePayload = v66;
         goto LABEL_38;
       }
 
-      v3 = v66;
+      buildSafePayload = v66;
     }
 
     v45 = [v40 isEqualToString:@"default"];
     v46 = v33 == 3;
     if (!v45)
     {
-      v47 = v41 ^ 1;
+      v47 = bOOLValue ^ 1;
       if (v33 == 3)
       {
         v47 = 0;
@@ -240,7 +240,7 @@ LABEL_59:
     }
 
 LABEL_38:
-    if (!v46 && !v41)
+    if (!v46 && !bOOLValue)
     {
       v48 = +[UNNotificationSound defaultSound];
       goto LABEL_43;
@@ -299,16 +299,16 @@ LABEL_54:
 - (id)buildSafePayload
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v15 = [(NSDictionary *)self->_payload un_safeCastObjectForKey:@"aps" class:objc_opt_class()];
   v4 = [(UNPushNotificationRequestBuilder *)self _sanitizeAPSDictionary:?];
-  [v3 un_safeSetObject:v4 forKey:@"aps"];
+  [dictionary un_safeSetObject:v4 forKey:@"aps"];
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(NSDictionary *)self->_payload allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  allKeys = [(NSDictionary *)self->_payload allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -319,49 +319,49 @@ LABEL_54:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
         if (([v10 isEqualToString:@"aps"] & 1) == 0)
         {
           v11 = [(NSDictionary *)self->_payload objectForKey:v10];
-          [v3 setObject:v11 forKey:v10];
+          [dictionary setObject:v11 forKey:v10];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v7);
   }
 
-  v12 = [v3 un_nonEmptyCopy];
+  un_nonEmptyCopy = [dictionary un_nonEmptyCopy];
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v12;
+  return un_nonEmptyCopy;
 }
 
-- (id)_sanitizeAPSDictionary:(id)a3
+- (id)_sanitizeAPSDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  v30 = [v4 objectForKey:@"alert"];
+  dictionaryCopy = dictionary;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v30 = [dictionaryCopy objectForKey:@"alert"];
   v29 = [(UNPushNotificationRequestBuilder *)self _sanitizeAlert:?];
-  [v5 un_safeSetObject:? forKey:?];
-  v28 = [v4 un_safeCastObjectForKey:@"badge" class:objc_opt_class()];
-  [v5 un_safeSetObject:v28 & ~(objc_msgSend(v28 forKey:{"integerValue") >> 63), @"badge"}];
-  v27 = [v4 objectForKey:@"sound"];
+  [dictionary un_safeSetObject:? forKey:?];
+  v28 = [dictionaryCopy un_safeCastObjectForKey:@"badge" class:objc_opt_class()];
+  [dictionary un_safeSetObject:v28 & ~(objc_msgSend(v28 forKey:{"integerValue") >> 63), @"badge"}];
+  v27 = [dictionaryCopy objectForKey:@"sound"];
   v26 = [(UNPushNotificationRequestBuilder *)self _sanitizeSound:?];
-  [v5 un_safeSetObject:? forKey:?];
-  v25 = [v4 objectForKey:@"content-available"];
+  [dictionary un_safeSetObject:? forKey:?];
+  v25 = [dictionaryCopy objectForKey:@"content-available"];
   v24 = [(UNPushNotificationRequestBuilder *)self _sanitizeFlag:?];
-  [v5 un_safeSetObject:? forKey:?];
-  v23 = [v4 objectForKey:@"mutable-content"];
+  [dictionary un_safeSetObject:? forKey:?];
+  v23 = [dictionaryCopy objectForKey:@"mutable-content"];
   v22 = [(UNPushNotificationRequestBuilder *)self _sanitizeFlag:?];
-  [v5 un_safeSetObject:? forKey:?];
-  v6 = [v4 un_safeCastObjectForKey:@"category" class:objc_opt_class()];
+  [dictionary un_safeSetObject:? forKey:?];
+  v6 = [dictionaryCopy un_safeCastObjectForKey:@"category" class:objc_opt_class()];
   v21 = v6;
   if ([v6 length])
   {
@@ -373,8 +373,8 @@ LABEL_54:
     v7 = 0;
   }
 
-  [v5 un_safeSetObject:v7 forKey:@"category"];
-  v8 = [v4 un_safeCastObjectForKey:@"thread-id" class:objc_opt_class()];
+  [dictionary un_safeSetObject:v7 forKey:@"category"];
+  v8 = [dictionaryCopy un_safeCastObjectForKey:@"thread-id" class:objc_opt_class()];
   v20 = v8;
   if ([v8 length])
   {
@@ -386,34 +386,34 @@ LABEL_54:
     v9 = 0;
   }
 
-  [v5 un_safeSetObject:v9 forKey:@"thread-id"];
-  v19 = [v4 un_safeCastObjectForKey:@"target-content-id" class:objc_opt_class()];
-  [v5 un_safeSetObject:? forKey:?];
-  v10 = [v4 objectForKey:@"topic-id"];
+  [dictionary un_safeSetObject:v9 forKey:@"thread-id"];
+  v19 = [dictionaryCopy un_safeCastObjectForKey:@"target-content-id" class:objc_opt_class()];
+  [dictionary un_safeSetObject:? forKey:?];
+  v10 = [dictionaryCopy objectForKey:@"topic-id"];
   v11 = [(UNPushNotificationRequestBuilder *)self _sanitizeTopicIdentifier:v10];
-  [v5 un_safeSetObject:v11 forKey:@"topic-id"];
-  v12 = [v4 un_safeCastObjectForKey:@"interruption-level" class:objc_opt_class()];
+  [dictionary un_safeSetObject:v11 forKey:@"topic-id"];
+  v12 = [dictionaryCopy un_safeCastObjectForKey:@"interruption-level" class:objc_opt_class()];
   v13 = [(UNPushNotificationRequestBuilder *)self _sanitizeInterruptionLevelString:v12];
   if (v13)
   {
-    [v5 un_safeSetObject:v13 forKey:@"interruption-level"];
+    [dictionary un_safeSetObject:v13 forKey:@"interruption-level"];
   }
 
-  v14 = [v4 objectForKey:@"relevance-score"];
+  v14 = [dictionaryCopy objectForKey:@"relevance-score"];
   v15 = [(UNPushNotificationRequestBuilder *)self _sanitizeRelevanceScore:v14];
-  [v5 un_safeSetObject:v15 forKey:@"relevance-score"];
-  v16 = [v4 un_safeCastObjectForKey:@"filter-criteria" class:objc_opt_class()];
-  [v5 un_safeSetObject:v16 forKey:@"filter-criteria"];
-  v17 = [v5 un_nonEmptyCopy];
+  [dictionary un_safeSetObject:v15 forKey:@"relevance-score"];
+  v16 = [dictionaryCopy un_safeCastObjectForKey:@"filter-criteria" class:objc_opt_class()];
+  [dictionary un_safeSetObject:v16 forKey:@"filter-criteria"];
+  un_nonEmptyCopy = [dictionary un_nonEmptyCopy];
 
-  return v17;
+  return un_nonEmptyCopy;
 }
 
-- (id)_sanitizeAlert:(id)a3
+- (id)_sanitizeAlert:(id)alert
 {
-  v4 = a3;
+  alertCopy = alert;
   v5 = objc_opt_class();
-  v6 = UNSafeCast(v5, v4);
+  v6 = UNSafeCast(v5, alertCopy);
   v7 = v6;
   if (v6)
   {
@@ -427,16 +427,16 @@ LABEL_54:
       v8 = 0;
     }
 
-    v9 = v8;
+    un_nonEmptyCopy = v8;
   }
 
   else
   {
     v10 = objc_opt_class();
-    v11 = UNSafeCast(v10, v4);
+    v11 = UNSafeCast(v10, alertCopy);
     if (v11)
     {
-      v12 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v13 = [v11 un_safeCastObjectForKey:@"body" class:objc_opt_class()];
       v46 = v13;
       if ([v13 length])
@@ -449,7 +449,7 @@ LABEL_54:
         v14 = 0;
       }
 
-      [v12 un_safeSetObject:v14 forKey:@"body"];
+      [dictionary un_safeSetObject:v14 forKey:@"body"];
       v15 = [v11 un_safeCastObjectForKey:@"loc-key" class:objc_opt_class()];
       v45 = v15;
       if (![v15 length])
@@ -457,12 +457,12 @@ LABEL_54:
         v15 = 0;
       }
 
-      [v12 un_safeSetObject:v15 forKey:@"loc-key"];
+      [dictionary un_safeSetObject:v15 forKey:@"loc-key"];
       if (v15)
       {
         v16 = [v11 un_safeCastObjectForKey:@"loc-args" class:objc_opt_class()];
         v17 = [(UNPushNotificationRequestBuilder *)self _sanitizeLocalizationArgumentsArray:v16];
-        [v12 un_safeSetObject:v17 forKey:@"loc-args"];
+        [dictionary un_safeSetObject:v17 forKey:@"loc-args"];
       }
 
       v18 = [v11 un_safeCastObjectForKey:@"action-loc-key" class:objc_opt_class()];
@@ -477,7 +477,7 @@ LABEL_54:
         v19 = 0;
       }
 
-      [v12 un_safeSetObject:v19 forKey:@"action-loc-key"];
+      [dictionary un_safeSetObject:v19 forKey:@"action-loc-key"];
       v20 = [v11 un_safeCastObjectForKey:@"launch-image" class:objc_opt_class()];
       v43 = v20;
       if ([v20 length])
@@ -490,7 +490,7 @@ LABEL_54:
         v21 = 0;
       }
 
-      [v12 un_safeSetObject:v21 forKey:@"launch-image"];
+      [dictionary un_safeSetObject:v21 forKey:@"launch-image"];
       v22 = [v11 un_safeCastObjectForKey:@"subtitle" class:objc_opt_class()];
       v42 = v22;
       if ([v22 length])
@@ -503,7 +503,7 @@ LABEL_54:
         v23 = 0;
       }
 
-      [v12 un_safeSetObject:v23 forKey:@"subtitle"];
+      [dictionary un_safeSetObject:v23 forKey:@"subtitle"];
       v24 = [v11 un_safeCastObjectForKey:@"subtitle-loc-key" class:objc_opt_class()];
       v41 = v24;
       if ([v24 length])
@@ -516,12 +516,12 @@ LABEL_54:
         v25 = 0;
       }
 
-      [v12 un_safeSetObject:v25 forKey:@"subtitle-loc-key"];
+      [dictionary un_safeSetObject:v25 forKey:@"subtitle-loc-key"];
       if (v25)
       {
         v26 = [v11 un_safeCastObjectForKey:@"subtitle-loc-args" class:objc_opt_class()];
         v27 = [(UNPushNotificationRequestBuilder *)self _sanitizeLocalizationArgumentsArray:v26];
-        [v12 un_safeSetObject:v27 forKey:@"subtitle-loc-args"];
+        [dictionary un_safeSetObject:v27 forKey:@"subtitle-loc-args"];
       }
 
       v28 = [v11 un_safeCastObjectForKey:@"title" class:objc_opt_class()];
@@ -536,9 +536,9 @@ LABEL_54:
         v29 = 0;
       }
 
-      [v12 un_safeSetObject:v29 forKey:@"title"];
+      [dictionary un_safeSetObject:v29 forKey:@"title"];
       v30 = [v11 un_safeCastObjectForKey:@"title-loc-key" class:objc_opt_class()];
-      v31 = self;
+      selfCopy = self;
       if ([v30 length])
       {
         v32 = v30;
@@ -549,12 +549,12 @@ LABEL_54:
         v32 = 0;
       }
 
-      [v12 un_safeSetObject:v32 forKey:@"title-loc-key"];
+      [dictionary un_safeSetObject:v32 forKey:@"title-loc-key"];
       if (v32)
       {
         v33 = [v11 un_safeCastObjectForKey:@"title-loc-args" class:objc_opt_class()];
-        v34 = [(UNPushNotificationRequestBuilder *)v31 _sanitizeLocalizationArgumentsArray:v33];
-        [v12 un_safeSetObject:v34 forKey:@"title-loc-args"];
+        v34 = [(UNPushNotificationRequestBuilder *)selfCopy _sanitizeLocalizationArgumentsArray:v33];
+        [dictionary un_safeSetObject:v34 forKey:@"title-loc-args"];
       }
 
       v35 = [v11 un_safeCastObjectForKey:@"summary-arg" class:objc_opt_class()];
@@ -568,27 +568,27 @@ LABEL_54:
         v36 = 0;
       }
 
-      [v12 un_safeSetObject:v36 forKey:@"summary-arg"];
+      [dictionary un_safeSetObject:v36 forKey:@"summary-arg"];
       v37 = [v11 un_safeCastObjectForKey:@"summary-arg-count" class:objc_opt_class()];
-      v38 = [(UNPushNotificationRequestBuilder *)v31 _sanitizeUnsignedInteger:v37];
-      [v12 un_safeSetObject:v38 forKey:@"summary-arg-count"];
-      v9 = [v12 un_nonEmptyCopy];
+      v38 = [(UNPushNotificationRequestBuilder *)selfCopy _sanitizeUnsignedInteger:v37];
+      [dictionary un_safeSetObject:v38 forKey:@"summary-arg-count"];
+      un_nonEmptyCopy = [dictionary un_nonEmptyCopy];
     }
 
     else
     {
-      v9 = 0;
+      un_nonEmptyCopy = 0;
     }
   }
 
-  return v9;
+  return un_nonEmptyCopy;
 }
 
-- (id)_sanitizeSound:(id)a3
+- (id)_sanitizeSound:(id)sound
 {
-  v4 = a3;
+  soundCopy = sound;
   v5 = objc_opt_class();
-  v6 = UNSafeCast(v5, v4);
+  v6 = UNSafeCast(v5, soundCopy);
   v7 = v6;
   if (v6)
   {
@@ -602,19 +602,19 @@ LABEL_54:
       v8 = 0;
     }
 
-    v9 = v8;
+    un_nonEmptyCopy = v8;
   }
 
   else
   {
     v10 = objc_opt_class();
-    v11 = UNSafeCast(v10, v4);
+    v11 = UNSafeCast(v10, soundCopy);
     if (v11)
     {
-      v12 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v19 = [v11 objectForKey:@"critical"];
       v13 = [(UNPushNotificationRequestBuilder *)self _sanitizeFlag:v19];
-      [v12 un_safeSetObject:v13 forKey:@"critical"];
+      [dictionary un_safeSetObject:v13 forKey:@"critical"];
       v14 = [v11 un_safeCastObjectForKey:@"name" class:objc_opt_class()];
       if ([v14 length])
       {
@@ -626,27 +626,27 @@ LABEL_54:
         v15 = 0;
       }
 
-      [v12 un_safeSetObject:v15 forKey:@"name"];
+      [dictionary un_safeSetObject:v15 forKey:@"name"];
       v16 = [v11 objectForKey:@"volume"];
       v17 = [(UNPushNotificationRequestBuilder *)self _sanitizeVolume:v16];
-      [v12 un_safeSetObject:v17 forKey:@"volume"];
-      v9 = [v12 un_nonEmptyCopy];
+      [dictionary un_safeSetObject:v17 forKey:@"volume"];
+      un_nonEmptyCopy = [dictionary un_nonEmptyCopy];
     }
 
     else
     {
-      v9 = 0;
+      un_nonEmptyCopy = 0;
     }
   }
 
-  return v9;
+  return un_nonEmptyCopy;
 }
 
-- (id)_sanitizeTopicIdentifier:(id)a3
+- (id)_sanitizeTopicIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_opt_class();
-  v6 = UNSafeCast(v5, v4);
+  v6 = UNSafeCast(v5, identifierCopy);
   v7 = v6;
   if (v6)
   {
@@ -666,7 +666,7 @@ LABEL_54:
   else
   {
     v10 = objc_opt_class();
-    v11 = UNSafeCast(v10, v4);
+    v11 = UNSafeCast(v10, identifierCopy);
     if (v11)
     {
       v9 = [(UNPushNotificationRequestBuilder *)self _sanitizeStringArray:v11];
@@ -681,21 +681,21 @@ LABEL_54:
   return v9;
 }
 
-- (id)_sanitizeStringArray:(id)a3
+- (id)_sanitizeStringArray:(id)array
 {
-  v3 = a3;
-  v4 = [v3 un_safeArrayContainingClass:objc_opt_class()];
+  arrayCopy = array;
+  v4 = [arrayCopy un_safeArrayContainingClass:objc_opt_class()];
 
   v5 = [v4 un_filter:&__block_literal_global_6];
-  v6 = [v5 un_nonEmptyCopy];
+  un_nonEmptyCopy = [v5 un_nonEmptyCopy];
 
-  return v6;
+  return un_nonEmptyCopy;
 }
 
-- (id)_sanitizeLocalizationArgumentsArray:(id)a3
+- (id)_sanitizeLocalizationArgumentsArray:(id)array
 {
   v3 = MEMORY[0x1E695DFD8];
-  v4 = a3;
+  arrayCopy = array;
   v5 = objc_opt_class();
   v6 = [v3 setWithObjects:{v5, objc_opt_class(), 0}];
   v10[0] = MEMORY[0x1E69E9820];
@@ -704,7 +704,7 @@ LABEL_54:
   v10[3] = &unk_1E7CFFB80;
   v11 = v6;
   v7 = v6;
-  v8 = [v4 un_map:v10];
+  v8 = [arrayCopy un_map:v10];
 
   return v8;
 }
@@ -728,17 +728,17 @@ __CFString *__72__UNPushNotificationRequestBuilder__sanitizeLocalizationArgument
   return v4;
 }
 
-- (id)_sanitizeFlag:(id)a3
+- (id)_sanitizeFlag:(id)flag
 {
-  v3 = a3;
+  flagCopy = flag;
   v4 = objc_opt_class();
-  v5 = UNSafeCast(v4, v3);
+  v5 = UNSafeCast(v4, flagCopy);
 
   if (v5)
   {
-    v6 = [v5 integerValue];
-    v7 = (v5 & ~(v6 >> 63));
-    if (v6 < 0)
+    integerValue = [v5 integerValue];
+    v7 = (v5 & ~(integerValue >> 63));
+    if (integerValue < 0)
     {
       v9 = 0;
     }
@@ -759,7 +759,7 @@ __CFString *__72__UNPushNotificationRequestBuilder__sanitizeLocalizationArgument
     }
   }
 
-  else if (v3)
+  else if (flagCopy)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithInteger:1];
   }
@@ -772,11 +772,11 @@ __CFString *__72__UNPushNotificationRequestBuilder__sanitizeLocalizationArgument
   return v9;
 }
 
-- (id)_sanitizeVolume:(id)a3
+- (id)_sanitizeVolume:(id)volume
 {
-  v3 = a3;
+  volumeCopy = volume;
   v4 = objc_opt_class();
-  v5 = UNSafeCast(v4, v3);
+  v5 = UNSafeCast(v4, volumeCopy);
 
   if (!v5)
   {
@@ -812,11 +812,11 @@ LABEL_10:
   return v9;
 }
 
-- (id)_sanitizeUnsignedInteger:(id)a3
+- (id)_sanitizeUnsignedInteger:(id)integer
 {
-  v3 = a3;
+  integerCopy = integer;
   v4 = objc_opt_class();
-  v5 = UNSafeCast(v4, v3);
+  v5 = UNSafeCast(v4, integerCopy);
 
   if (v5)
   {
@@ -831,11 +831,11 @@ LABEL_10:
   return v6;
 }
 
-- (id)_sanitizeInterruptionLevelString:(id)a3
+- (id)_sanitizeInterruptionLevelString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && (([v3 isEqualToString:@"passive"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"active") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"time-sensitive") & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"critical")))
+  stringCopy = string;
+  v4 = stringCopy;
+  if (stringCopy && (([stringCopy isEqualToString:@"passive"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"active") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"time-sensitive") & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"critical")))
   {
     v5 = v4;
   }
@@ -848,25 +848,25 @@ LABEL_10:
   return v5;
 }
 
-- (unint64_t)_interruptionLevelForString:(id)a3
+- (unint64_t)_interruptionLevelForString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"passive"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"passive"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"active"])
+  else if ([stringCopy isEqualToString:@"active"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"time-sensitive"])
+  else if ([stringCopy isEqualToString:@"time-sensitive"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"critical"])
+  else if ([stringCopy isEqualToString:@"critical"])
   {
     v4 = 3;
   }
@@ -879,11 +879,11 @@ LABEL_10:
   return v4;
 }
 
-- (id)_sanitizeRelevanceScore:(id)a3
+- (id)_sanitizeRelevanceScore:(id)score
 {
-  v3 = a3;
+  scoreCopy = score;
   v4 = objc_opt_class();
-  v5 = UNSafeCast(v4, v3);
+  v5 = UNSafeCast(v4, scoreCopy);
 
   if (!v5)
   {

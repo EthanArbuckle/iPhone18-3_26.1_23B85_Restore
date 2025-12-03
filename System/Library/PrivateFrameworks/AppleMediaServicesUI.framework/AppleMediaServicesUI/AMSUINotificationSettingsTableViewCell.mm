@@ -1,17 +1,17 @@
 @interface AMSUINotificationSettingsTableViewCell
 - (AMSUINotificationInAppSettingsTableViewCellDelegate)delegate;
-- (AMSUINotificationSettingsTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)setItem:(id)a3;
-- (void)switchToggled:(id)a3;
+- (AMSUINotificationSettingsTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)setItem:(id)item;
+- (void)switchToggled:(id)toggled;
 @end
 
 @implementation AMSUINotificationSettingsTableViewCell
 
-- (AMSUINotificationSettingsTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (AMSUINotificationSettingsTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v11.receiver = self;
   v11.super_class = AMSUINotificationSettingsTableViewCell;
-  v4 = [(AMSUINotificationSettingsTableViewCell *)&v11 initWithStyle:3 reuseIdentifier:a4];
+  v4 = [(AMSUINotificationSettingsTableViewCell *)&v11 initWithStyle:3 reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc(MEMORY[0x1E69DCFD0]);
@@ -21,11 +21,11 @@
 
     [(UISwitch *)v4->_itemSwitch addTarget:v4 action:sel_switchToggled_ forControlEvents:4096];
     [(AMSUINotificationSettingsTableViewCell *)v4 setAccessoryView:v4->_itemSwitch];
-    v8 = [(AMSUINotificationSettingsTableViewCell *)v4 textLabel];
-    [v8 setNumberOfLines:0];
+    textLabel = [(AMSUINotificationSettingsTableViewCell *)v4 textLabel];
+    [textLabel setNumberOfLines:0];
 
-    v9 = [(AMSUINotificationSettingsTableViewCell *)v4 textLabel];
-    [v9 setLineBreakMode:0];
+    textLabel2 = [(AMSUINotificationSettingsTableViewCell *)v4 textLabel];
+    [textLabel2 setLineBreakMode:0];
 
     [(AMSUINotificationSettingsTableViewCell *)v4 setSelectionStyle:0];
   }
@@ -33,38 +33,38 @@
   return v4;
 }
 
-- (void)setItem:(id)a3
+- (void)setItem:(id)item
 {
-  objc_storeStrong(&self->_item, a3);
-  v5 = a3;
-  v6 = [v5 title];
-  v7 = [(AMSUINotificationSettingsTableViewCell *)self textLabel];
-  [v7 setText:v6];
+  objc_storeStrong(&self->_item, item);
+  itemCopy = item;
+  title = [itemCopy title];
+  textLabel = [(AMSUINotificationSettingsTableViewCell *)self textLabel];
+  [textLabel setText:title];
 
-  v8 = [v5 desc];
-  v9 = [(AMSUINotificationSettingsTableViewCell *)self detailTextLabel];
-  [v9 setText:v8];
+  desc = [itemCopy desc];
+  detailTextLabel = [(AMSUINotificationSettingsTableViewCell *)self detailTextLabel];
+  [detailTextLabel setText:desc];
 
-  v10 = [v5 isEnabled];
-  v11 = [(AMSUINotificationSettingsTableViewCell *)self itemSwitch];
-  [v11 setOn:v10];
+  isEnabled = [itemCopy isEnabled];
+  itemSwitch = [(AMSUINotificationSettingsTableViewCell *)self itemSwitch];
+  [itemSwitch setOn:isEnabled];
 }
 
-- (void)switchToggled:(id)a3
+- (void)switchToggled:(id)toggled
 {
-  v4 = [a3 isOn];
-  v5 = [(AMSUINotificationSettingsTableViewCell *)self item];
-  [v5 setEnabled:v4];
+  isOn = [toggled isOn];
+  item = [(AMSUINotificationSettingsTableViewCell *)self item];
+  [item setEnabled:isOn];
 
-  v6 = [(AMSUINotificationSettingsTableViewCell *)self delegate];
-  LOBYTE(v5) = objc_opt_respondsToSelector();
+  delegate = [(AMSUINotificationSettingsTableViewCell *)self delegate];
+  LOBYTE(item) = objc_opt_respondsToSelector();
 
-  if (v5)
+  if (item)
   {
-    v9 = [(AMSUINotificationSettingsTableViewCell *)self delegate];
-    v7 = [(AMSUINotificationSettingsTableViewCell *)self itemSwitch];
-    v8 = [(AMSUINotificationSettingsTableViewCell *)self item];
-    [v9 notificationInAppSettingsTableViewCellDidToggleValue:v7 forItem:v8];
+    delegate2 = [(AMSUINotificationSettingsTableViewCell *)self delegate];
+    itemSwitch = [(AMSUINotificationSettingsTableViewCell *)self itemSwitch];
+    item2 = [(AMSUINotificationSettingsTableViewCell *)self item];
+    [delegate2 notificationInAppSettingsTableViewCellDidToggleValue:itemSwitch forItem:item2];
   }
 }
 

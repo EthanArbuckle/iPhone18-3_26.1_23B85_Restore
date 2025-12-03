@@ -7,15 +7,15 @@
 - (UICollectionViewTransitionLayout)init;
 - (UICollectionViewTransitionLayout)initWithCoder:(NSCoder *)coder;
 - (UICollectionViewTransitionLayout)initWithCurrentLayout:(UICollectionViewLayout *)currentLayout nextLayout:(UICollectionViewLayout *)newLayout;
-- (id)interpolatedLayoutAttributesFromLayoutAttributes:(id)a3 toLayoutAttributes:(id)a4 progress:(double)a5;
-- (id)layoutAttributesForDecorationViewOfKind:(id)a3 atIndexPath:(id)a4;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4;
+- (id)interpolatedLayoutAttributesFromLayoutAttributes:(id)attributes toLayoutAttributes:(id)layoutAttributes progress:(double)progress;
+- (id)layoutAttributesForDecorationViewOfKind:(id)kind atIndexPath:(id)path;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path;
 - (void)_finalizeLayoutTransition;
-- (void)_prepareForTransitionFromLayout:(id)a3;
-- (void)_prepareForTransitionToLayout:(id)a3;
-- (void)_setCollectionView:(id)a3;
+- (void)_prepareForTransitionFromLayout:(id)layout;
+- (void)_prepareForTransitionToLayout:(id)layout;
+- (void)_setCollectionView:(id)view;
 - (void)invalidateLayout;
 - (void)prepareLayout;
 - (void)setTransitionProgress:(CGFloat)transitionProgress;
@@ -52,30 +52,30 @@
 
 - (UICollectionViewTransitionLayout)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"UICollectionViewTransitionLayout.m" lineNumber:78 description:@"-[UICollectionViewTransitionLayout init] is not a valid initializer - use -initWithCurrentLayout:nextLayout: instead"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UICollectionViewTransitionLayout.m" lineNumber:78 description:@"-[UICollectionViewTransitionLayout init] is not a valid initializer - use -initWithCurrentLayout:nextLayout: instead"];
 
   return 0;
 }
 
-- (void)_setCollectionView:(id)a3
+- (void)_setCollectionView:(id)view
 {
   v11.receiver = self;
   v11.super_class = UICollectionViewTransitionLayout;
   [(UICollectionViewLayout *)&v11 _setCollectionView:?];
-  if (a3)
+  if (view)
   {
     fromLayout = self->_fromLayout;
-    v6 = [(UICollectionViewLayout *)self collectionView];
-    [(UICollectionViewLayout *)fromLayout _setCollectionView:v6];
+    collectionView = [(UICollectionViewLayout *)self collectionView];
+    [(UICollectionViewLayout *)fromLayout _setCollectionView:collectionView];
 
     toLayout = self->_toLayout;
-    v8 = [(UICollectionViewLayout *)self collectionView];
-    [(UICollectionViewLayout *)toLayout _setCollectionView:v8];
+    collectionView2 = [(UICollectionViewLayout *)self collectionView];
+    [(UICollectionViewLayout *)toLayout _setCollectionView:collectionView2];
   }
 
-  v9 = [objc_opt_self() mainScreen];
-  [v9 scale];
+  mainScreen = [objc_opt_self() mainScreen];
+  [mainScreen scale];
   self->_accuracy = v10;
 }
 
@@ -94,20 +94,20 @@
   [(UICollectionViewLayout *)self->_toLayout _finalizeLayoutTransition];
 }
 
-- (void)_prepareForTransitionFromLayout:(id)a3
+- (void)_prepareForTransitionFromLayout:(id)layout
 {
   v4.receiver = self;
   v4.super_class = UICollectionViewTransitionLayout;
-  [(UICollectionViewLayout *)&v4 _prepareForTransitionFromLayout:a3];
+  [(UICollectionViewLayout *)&v4 _prepareForTransitionFromLayout:layout];
   [(UICollectionViewTransitionLayout *)self _prepareForTransitionToLayout:self->_toLayout];
   [(UICollectionViewLayout *)self->_toLayout _prepareForTransitionFromLayout:self];
 }
 
-- (void)_prepareForTransitionToLayout:(id)a3
+- (void)_prepareForTransitionToLayout:(id)layout
 {
   v3.receiver = self;
   v3.super_class = UICollectionViewTransitionLayout;
-  [(UICollectionViewLayout *)&v3 _prepareForTransitionToLayout:a3];
+  [(UICollectionViewLayout *)&v3 _prepareForTransitionToLayout:layout];
 }
 
 - (void)prepareLayout
@@ -123,16 +123,16 @@
   [(UICollectionViewLayout *)self->_toLayout _prepareLayout];
   if ([(UICollectionViewLayout *)self->_fromLayout _supportsAdvancedTransitionAnimations])
   {
-    v184 = [(UICollectionViewLayout *)self->_toLayout _supportsAdvancedTransitionAnimations];
+    _supportsAdvancedTransitionAnimations = [(UICollectionViewLayout *)self->_toLayout _supportsAdvancedTransitionAnimations];
   }
 
   else
   {
-    v184 = 0;
+    _supportsAdvancedTransitionAnimations = 0;
   }
 
-  v3 = [(UICollectionViewLayout *)self collectionView];
-  [v3 bounds];
+  collectionView = [(UICollectionViewLayout *)self collectionView];
+  [collectionView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -176,7 +176,7 @@
     self->_transitionInformationsDict = v22;
   }
 
-  v194 = self;
+  selfCopy = self;
   v221 = 0u;
   v222 = 0u;
   v219 = 0u;
@@ -202,7 +202,7 @@
         [v191 addObject:v30];
         v31 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:2];
         [v31 setObject:v29 forKey:@"fromAttribute"];
-        [(NSMutableDictionary *)v194->_transitionInformationsDict setObject:v31 forKey:v30];
+        [(NSMutableDictionary *)selfCopy->_transitionInformationsDict setObject:v31 forKey:v30];
       }
 
       v24 = obj;
@@ -212,17 +212,17 @@
     while (v26);
   }
 
-  v32 = v194;
-  v33 = [(UICollectionViewLayout *)v194 collectionView];
-  v34 = [v33 _pivotForTransitionFromLayout:v32->_fromLayout toLayout:v32->_toLayout];
+  v32 = selfCopy;
+  collectionView2 = [(UICollectionViewLayout *)selfCopy collectionView];
+  v34 = [collectionView2 _pivotForTransitionFromLayout:v32->_fromLayout toLayout:v32->_toLayout];
 
   MidX = CGRectGetMidX(*p_fromVisibleBounds);
   MidY = CGRectGetMidY(*p_fromVisibleBounds);
   v181 = v34;
   if (v34)
   {
-    v37 = [(UICollectionViewLayout *)v194->_fromLayout layoutAttributesForItemAtIndexPath:v34, MidY];
-    v38 = [v37 copy];
+    midY = [(UICollectionViewLayout *)selfCopy->_fromLayout layoutAttributesForItemAtIndexPath:v34, MidY];
+    v38 = [midY copy];
   }
 
   else
@@ -232,8 +232,8 @@
     v218 = 0u;
     v215 = 0u;
     v216 = 0u;
-    v37 = v24;
-    v38 = [v37 countByEnumeratingWithState:&v215 objects:v228 count:16];
+    midY = v24;
+    v38 = [midY countByEnumeratingWithState:&v215 objects:v228 count:16];
     if (v38)
     {
       v40 = 0;
@@ -245,12 +245,12 @@
         {
           if (*v216 != v41)
           {
-            objc_enumerationMutation(v37);
+            objc_enumerationMutation(midY);
           }
 
           v44 = *(*(&v215 + 1) + 8 * j);
-          v45 = [(_UILabelConfiguration *)v44 _content];
-          v46 = [v45 isEqualToString:0x1EFB32ED0];
+          _content = [(_UILabelConfiguration *)v44 _content];
+          v46 = [_content isEqualToString:0x1EFB32ED0];
 
           if (v46)
           {
@@ -267,11 +267,11 @@
           }
         }
 
-        v38 = [v37 countByEnumeratingWithState:&v215 objects:v228 count:16];
+        v38 = [midY countByEnumeratingWithState:&v215 objects:v228 count:16];
       }
 
       while (v38);
-      v32 = v194;
+      v32 = selfCopy;
       v34 = 0;
       v38 = v40;
       v21 = 0x1E695D000;
@@ -284,8 +284,8 @@
   }
 
   toLayout = v32->_toLayout;
-  v52 = [v38 indexPath];
-  v53 = [(UICollectionViewLayout *)toLayout layoutAttributesForItemAtIndexPath:v52];
+  indexPath = [v38 indexPath];
+  v53 = [(UICollectionViewLayout *)toLayout layoutAttributesForItemAtIndexPath:indexPath];
 
   if (v38)
   {
@@ -380,11 +380,11 @@
     }
   }
 
-  v71 = [(UICollectionViewLayout *)v32 collectionView];
-  [v71 contentInset];
+  collectionView3 = [(UICollectionViewLayout *)v32 collectionView];
+  [collectionView3 contentInset];
   v73 = v67 - v72;
-  v74 = [(UICollectionViewLayout *)v32 collectionView];
-  [v74 contentInset];
+  collectionView4 = [(UICollectionViewLayout *)v32 collectionView];
+  [collectionView4 contentInset];
   v76 = v7 - v75;
 
   [(UICollectionViewLayout *)v32->_toLayout targetContentOffsetForProposedContentOffset:v73, v76];
@@ -496,7 +496,7 @@ LABEL_70:
         v105 = [(UICollectionViewLayout *)v102 layoutAttributesForSupplementaryViewOfKind:v103 atIndexPath:v104];
         v101 = [v105 copy];
 
-        v32 = v194;
+        v32 = selfCopy;
         if (v101 || ([v95 objectForKey:@"fromAttribute"], v106 = objc_claimAutoreleasedReturnValue(), v101 = objc_msgSend(v106, "copy"), v106, objc_msgSend(v101, "setAlpha:", 0.0), v101))
         {
 LABEL_74:
@@ -540,7 +540,7 @@ LABEL_75:
       }
 
       v112 = *(*(&v203 + 1) + 8 * v111);
-      v113 = [(NSMutableDictionary *)v194->_transitionInformationsDict objectForKey:v112];
+      v113 = [(NSMutableDictionary *)selfCopy->_transitionInformationsDict objectForKey:v112];
       if (!v112)
       {
         v115 = 0;
@@ -557,7 +557,7 @@ LABEL_75:
 
         v115 = *(v112 + 8);
 LABEL_88:
-        fromLayout = v194->_fromLayout;
+        fromLayout = selfCopy->_fromLayout;
         v117 = v115;
         v118 = [(UICollectionViewLayout *)fromLayout layoutAttributesForItemAtIndexPath:v117];
         v119 = [v118 copy];
@@ -570,7 +570,7 @@ LABEL_88:
         goto LABEL_93;
       }
 
-      v120 = v194->_fromLayout;
+      v120 = selfCopy->_fromLayout;
       v121 = *(v112 + 16);
       v122 = *(v112 + 8);
       v123 = [(UICollectionViewLayout *)v120 layoutAttributesForSupplementaryViewOfKind:v121 atIndexPath:v122];
@@ -595,13 +595,13 @@ LABEL_93:
   while (v125);
 LABEL_97:
 
-  v126 = v194;
-  if (!v184)
+  v126 = selfCopy;
+  if (!_supportsAdvancedTransitionAnimations)
   {
     goto LABEL_149;
   }
 
-  [(NSMutableDictionary *)v194->_transitionInformationsDict allKeys];
+  [(NSMutableDictionary *)selfCopy->_transitionInformationsDict allKeys];
   v199 = 0u;
   v200 = 0u;
   v201 = 0u;
@@ -711,7 +711,7 @@ LABEL_108:
         v142 = [v141 copy];
       }
 
-      v126 = v194;
+      v126 = selfCopy;
       if (!v137)
       {
         goto LABEL_118;
@@ -806,13 +806,13 @@ LABEL_143:
 LABEL_148:
 
 LABEL_149:
-  v192 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v195 = 0u;
   v196 = 0u;
   v197 = 0u;
   v198 = 0u;
-  v193 = [(NSMutableDictionary *)v126->_transitionInformationsDict allKeys];
-  v166 = [v193 countByEnumeratingWithState:&v195 objects:v223 count:16];
+  allKeys = [(NSMutableDictionary *)v126->_transitionInformationsDict allKeys];
+  v166 = [allKeys countByEnumeratingWithState:&v195 objects:v223 count:16];
   if (v166)
   {
     v167 = v166;
@@ -823,11 +823,11 @@ LABEL_149:
       {
         if (*v196 != v168)
         {
-          objc_enumerationMutation(v193);
+          objc_enumerationMutation(allKeys);
         }
 
         v170 = *(*(&v195 + 1) + 8 * m);
-        v171 = [(NSMutableDictionary *)v194->_transitionInformationsDict objectForKey:v170];
+        v171 = [(NSMutableDictionary *)selfCopy->_transitionInformationsDict objectForKey:v170];
         v172 = [v171 objectForKey:@"fromAttribute"];
         v173 = [v171 objectForKey:@"toAttribute"];
         if (([(UICollectionViewLayoutAttributes *)v172 _isTransitionVisibleTo:v173]& 1) == 0)
@@ -861,18 +861,18 @@ LABEL_149:
 
           else
           {
-            [v192 addObject:v170];
+            [array addObject:v170];
           }
         }
       }
 
-      v167 = [v193 countByEnumeratingWithState:&v195 objects:v223 count:16];
+      v167 = [allKeys countByEnumeratingWithState:&v195 objects:v223 count:16];
     }
 
     while (v167);
   }
 
-  [(NSMutableDictionary *)v194->_transitionInformationsDict removeObjectsForKeys:v192];
+  [(NSMutableDictionary *)selfCopy->_transitionInformationsDict removeObjectsForKeys:array];
 }
 
 - (CGRect)_oldVisibleBounds
@@ -904,15 +904,15 @@ LABEL_149:
 - (void)updateValue:(CGFloat)value forAnimatedKey:(NSString *)key
 {
   v6 = key;
-  v7 = [(UICollectionViewLayout *)self collectionView];
-  [v7 _trackLayoutValue:v6 forKey:value];
+  collectionView = [(UICollectionViewLayout *)self collectionView];
+  [collectionView _trackLayoutValue:v6 forKey:value];
 }
 
 - (CGFloat)valueForAnimatedKey:(NSString *)key
 {
   v4 = key;
-  v5 = [(UICollectionViewLayout *)self collectionView];
-  [v5 _trackedLayoutValueForKey:v4];
+  collectionView = [(UICollectionViewLayout *)self collectionView];
+  [collectionView _trackedLayoutValueForKey:v4];
   v7 = v6;
 
   return v7;
@@ -939,8 +939,8 @@ LABEL_149:
 
   *obja = vaddq_f64(self->_fromVisibleBounds.origin, vmulq_n_f64(vsubq_f64(self->_toVisibleBounds.origin, self->_fromVisibleBounds.origin), v6));
   v18 = v6;
-  v7 = [(UICollectionViewLayout *)self collectionView];
-  [v7 setContentOffset:*obja];
+  collectionView = [(UICollectionViewLayout *)self collectionView];
+  [collectionView setContentOffset:*obja];
 
   self->_transitionProgress = transitionProgress;
   v19 = 0u;
@@ -997,22 +997,22 @@ LABEL_149:
   return result;
 }
 
-- (id)interpolatedLayoutAttributesFromLayoutAttributes:(id)a3 toLayoutAttributes:(id)a4 progress:(double)a5
+- (id)interpolatedLayoutAttributesFromLayoutAttributes:(id)attributes toLayoutAttributes:(id)layoutAttributes progress:(double)progress
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v8)
+  attributesCopy = attributes;
+  layoutAttributesCopy = layoutAttributes;
+  v9 = layoutAttributesCopy;
+  if (layoutAttributesCopy)
   {
-    v10 = [v8 copy];
+    v10 = [layoutAttributesCopy copy];
     [v9 setHidden:0];
-    [v7 center];
+    [attributesCopy center];
     v12 = v11;
     v14 = v13;
     [v9 center];
     v16 = v15;
     v18 = v17;
-    [v7 size];
+    [attributesCopy size];
     v64 = v20;
     v65 = v19;
     [v9 size];
@@ -1027,9 +1027,9 @@ LABEL_149:
     v79 = 0u;
     v76 = 0u;
     v77 = 0u;
-    if (v7)
+    if (attributesCopy)
     {
-      [v7 transform3D];
+      [attributesCopy transform3D];
       v25 = 0uLL;
     }
 
@@ -1042,16 +1042,16 @@ LABEL_149:
     v68 = v25;
     v69 = v25;
     [v9 transform3D];
-    [v7 alpha];
+    [attributesCopy alpha];
     v27 = v26;
     [v9 alpha];
-    v28 = (v16 - v12) * a5;
-    v29 = (v18 - v14) * a5;
+    v28 = (v16 - v12) * progress;
+    v29 = (v18 - v14) * progress;
     v30 = v22 - v65;
     v31 = v24 - v64;
     *&v67.m31 = v80;
     *&v67.m33 = v81;
-    v33 = v27 + (v32 - v27) * a5;
+    v33 = v27 + (v32 - v27) * progress;
     *&v67.m41 = v82;
     *&v67.m43 = v83;
     *&v67.m11 = v76;
@@ -1068,24 +1068,24 @@ LABEL_149:
       v54 = *(MEMORY[0x1E69792E8] + 80);
       v48 = *(MEMORY[0x1E69792E8] + 96);
       v50 = *(MEMORY[0x1E69792E8] + 112);
-      v34 = a5;
+      progressCopy2 = progress;
     }
 
     else
     {
-      v34 = a5;
-      v60 = vaddq_f64(v76, vmulq_n_f64(vsubq_f64(v68, v76), a5));
-      v62 = vaddq_f64(v77, vmulq_n_f64(vsubq_f64(v69, v77), a5));
-      v56 = vaddq_f64(v78, vmulq_n_f64(vsubq_f64(v70, v78), a5));
-      v58 = vaddq_f64(v79, vmulq_n_f64(vsubq_f64(v71, v79), a5));
-      v52 = vaddq_f64(v80, vmulq_n_f64(vsubq_f64(v72, v80), a5));
-      v54 = vaddq_f64(v81, vmulq_n_f64(vsubq_f64(v73, v81), a5));
-      v48 = vaddq_f64(v82, vmulq_n_f64(vsubq_f64(v74, v82), a5));
-      v50 = vaddq_f64(v83, vmulq_n_f64(vsubq_f64(v75, v83), a5));
+      progressCopy2 = progress;
+      v60 = vaddq_f64(v76, vmulq_n_f64(vsubq_f64(v68, v76), progress));
+      v62 = vaddq_f64(v77, vmulq_n_f64(vsubq_f64(v69, v77), progress));
+      v56 = vaddq_f64(v78, vmulq_n_f64(vsubq_f64(v70, v78), progress));
+      v58 = vaddq_f64(v79, vmulq_n_f64(vsubq_f64(v71, v79), progress));
+      v52 = vaddq_f64(v80, vmulq_n_f64(vsubq_f64(v72, v80), progress));
+      v54 = vaddq_f64(v81, vmulq_n_f64(vsubq_f64(v73, v81), progress));
+      v48 = vaddq_f64(v82, vmulq_n_f64(vsubq_f64(v74, v82), progress));
+      v50 = vaddq_f64(v83, vmulq_n_f64(vsubq_f64(v75, v83), progress));
     }
 
-    v35 = v30 * v34;
-    v36 = v31 * v34;
+    v35 = v30 * progressCopy2;
+    v36 = v31 * progressCopy2;
     v37 = v12 + v28;
     v38 = v14 + v29;
     [v10 setAlpha:{v33, *&v48, *&v50, *&v52, *&v54, *&v56, *&v58, *&v60, *&v62}];
@@ -1132,16 +1132,16 @@ LABEL_149:
 
   else
   {
-    v10 = [v7 copy];
+    v10 = [attributesCopy copy];
   }
 
   return v10;
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [_UICollectionViewItemKey collectionItemKeyForCellWithIndexPath:v4];
+  pathCopy = path;
+  v5 = [_UICollectionViewItemKey collectionItemKeyForCellWithIndexPath:pathCopy];
   v6 = [(NSMutableDictionary *)self->_transitionInformationsDict objectForKey:v5];
   v7 = [v6 objectForKey:@"actualAttribute"];
   v8 = v7;
@@ -1153,9 +1153,9 @@ LABEL_149:
 
   if (v6)
   {
-    v10 = [v6 objectForKey:@"fromAttribute"];
-    v11 = [v6 objectForKey:@"toAttribute"];
-    if (v10)
+    collectionView2 = [v6 objectForKey:@"fromAttribute"];
+    collectionView4 = [v6 objectForKey:@"toAttribute"];
+    if (collectionView2)
     {
       goto LABEL_12;
     }
@@ -1163,50 +1163,50 @@ LABEL_149:
 
   else
   {
-    v11 = 0;
+    collectionView4 = 0;
   }
 
-  v12 = [(UICollectionViewLayout *)self->_fromLayout collectionView];
+  collectionView = [(UICollectionViewLayout *)self->_fromLayout collectionView];
 
-  if (v12)
+  if (collectionView)
   {
-    v13 = [(UICollectionViewLayout *)self->_fromLayout layoutAttributesForItemAtIndexPath:v4];
+    v13 = [(UICollectionViewLayout *)self->_fromLayout layoutAttributesForItemAtIndexPath:pathCopy];
     if (v13)
     {
       goto LABEL_11;
     }
   }
 
-  v10 = [(UICollectionViewLayout *)self->_toLayout collectionView];
+  collectionView2 = [(UICollectionViewLayout *)self->_toLayout collectionView];
 
-  if (v10)
+  if (collectionView2)
   {
-    v13 = [(UICollectionViewLayout *)self->_toLayout initialLayoutAttributesForAppearingItemAtIndexPath:v4];
+    v13 = [(UICollectionViewLayout *)self->_toLayout initialLayoutAttributesForAppearingItemAtIndexPath:pathCopy];
 LABEL_11:
-    v10 = v13;
+    collectionView2 = v13;
   }
 
 LABEL_12:
-  if (!v11)
+  if (!collectionView4)
   {
-    v19 = [(UICollectionViewLayout *)self->_toLayout collectionView];
+    collectionView3 = [(UICollectionViewLayout *)self->_toLayout collectionView];
 
-    if (!v19 || ([(UICollectionViewLayout *)self->_toLayout layoutAttributesForItemAtIndexPath:v4], (v11 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (!collectionView3 || ([(UICollectionViewLayout *)self->_toLayout layoutAttributesForItemAtIndexPath:pathCopy], (collectionView4 = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v11 = [(UICollectionViewLayout *)self->_fromLayout collectionView];
+      collectionView4 = [(UICollectionViewLayout *)self->_fromLayout collectionView];
 
-      if (!v11)
+      if (!collectionView4)
       {
         goto LABEL_18;
       }
 
-      v11 = [(UICollectionViewLayout *)self->_fromLayout finalLayoutAttributesForDisappearingItemAtIndexPath:v4];
+      collectionView4 = [(UICollectionViewLayout *)self->_fromLayout finalLayoutAttributesForDisappearingItemAtIndexPath:pathCopy];
     }
   }
 
-  if (v10)
+  if (collectionView2)
   {
-    v14 = v11 == 0;
+    v14 = collectionView4 == 0;
   }
 
   else
@@ -1233,7 +1233,7 @@ LABEL_12:
       v17 = 1.0;
     }
 
-    v9 = [(UICollectionViewTransitionLayout *)self interpolatedLayoutAttributesFromLayoutAttributes:v10 toLayoutAttributes:v11 progress:v17, 1.0, v16];
+    v9 = [(UICollectionViewTransitionLayout *)self interpolatedLayoutAttributesFromLayoutAttributes:collectionView2 toLayoutAttributes:collectionView4 progress:v17, 1.0, v16];
     goto LABEL_25;
   }
 
@@ -1246,11 +1246,11 @@ LABEL_26:
   return v9;
 }
 
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [_UICollectionViewItemKey collectionItemKeyForSupplementaryViewOfKind:v6 andIndexPath:v7];
+  kindCopy = kind;
+  pathCopy = path;
+  v8 = [_UICollectionViewItemKey collectionItemKeyForSupplementaryViewOfKind:kindCopy andIndexPath:pathCopy];
   v9 = [(NSMutableDictionary *)self->_transitionInformationsDict objectForKey:v8];
   v10 = [v9 objectForKey:@"actualAttribute"];
   v11 = v10;
@@ -1262,9 +1262,9 @@ LABEL_26:
 
   if (v9)
   {
-    v13 = [v9 objectForKey:@"fromAttribute"];
-    v14 = [v9 objectForKey:@"toAttribute"];
-    if (v13)
+    collectionView2 = [v9 objectForKey:@"fromAttribute"];
+    collectionView4 = [v9 objectForKey:@"toAttribute"];
+    if (collectionView2)
     {
       goto LABEL_12;
     }
@@ -1272,50 +1272,50 @@ LABEL_26:
 
   else
   {
-    v14 = 0;
+    collectionView4 = 0;
   }
 
-  v15 = [(UICollectionViewLayout *)self->_fromLayout collectionView];
+  collectionView = [(UICollectionViewLayout *)self->_fromLayout collectionView];
 
-  if (v15)
+  if (collectionView)
   {
-    v16 = [(UICollectionViewLayout *)self->_fromLayout layoutAttributesForSupplementaryViewOfKind:v6 atIndexPath:v7];
+    v16 = [(UICollectionViewLayout *)self->_fromLayout layoutAttributesForSupplementaryViewOfKind:kindCopy atIndexPath:pathCopy];
     if (v16)
     {
       goto LABEL_11;
     }
   }
 
-  v13 = [(UICollectionViewLayout *)self->_toLayout collectionView];
+  collectionView2 = [(UICollectionViewLayout *)self->_toLayout collectionView];
 
-  if (v13)
+  if (collectionView2)
   {
-    v16 = [(UICollectionViewLayout *)self->_toLayout initialLayoutAttributesForAppearingSupplementaryElementOfKind:v6 atIndexPath:v7];
+    v16 = [(UICollectionViewLayout *)self->_toLayout initialLayoutAttributesForAppearingSupplementaryElementOfKind:kindCopy atIndexPath:pathCopy];
 LABEL_11:
-    v13 = v16;
+    collectionView2 = v16;
   }
 
 LABEL_12:
-  if (!v14)
+  if (!collectionView4)
   {
-    v22 = [(UICollectionViewLayout *)self->_toLayout collectionView];
+    collectionView3 = [(UICollectionViewLayout *)self->_toLayout collectionView];
 
-    if (!v22 || ([(UICollectionViewLayout *)self->_toLayout layoutAttributesForSupplementaryViewOfKind:v6 atIndexPath:v7], (v14 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (!collectionView3 || ([(UICollectionViewLayout *)self->_toLayout layoutAttributesForSupplementaryViewOfKind:kindCopy atIndexPath:pathCopy], (collectionView4 = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v14 = [(UICollectionViewLayout *)self->_fromLayout collectionView];
+      collectionView4 = [(UICollectionViewLayout *)self->_fromLayout collectionView];
 
-      if (!v14)
+      if (!collectionView4)
       {
         goto LABEL_18;
       }
 
-      v14 = [(UICollectionViewLayout *)self->_fromLayout finalLayoutAttributesForDisappearingSupplementaryElementOfKind:v6 atIndexPath:v7];
+      collectionView4 = [(UICollectionViewLayout *)self->_fromLayout finalLayoutAttributesForDisappearingSupplementaryElementOfKind:kindCopy atIndexPath:pathCopy];
     }
   }
 
-  if (v13)
+  if (collectionView2)
   {
-    v17 = v14 == 0;
+    v17 = collectionView4 == 0;
   }
 
   else
@@ -1342,7 +1342,7 @@ LABEL_12:
       v20 = 1.0;
     }
 
-    v12 = [(UICollectionViewTransitionLayout *)self interpolatedLayoutAttributesFromLayoutAttributes:v13 toLayoutAttributes:v14 progress:v20, 1.0, v19];
+    v12 = [(UICollectionViewTransitionLayout *)self interpolatedLayoutAttributesFromLayoutAttributes:collectionView2 toLayoutAttributes:collectionView4 progress:v20, 1.0, v19];
     goto LABEL_25;
   }
 
@@ -1355,11 +1355,11 @@ LABEL_26:
   return v12;
 }
 
-- (id)layoutAttributesForDecorationViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForDecorationViewOfKind:(id)kind atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [_UICollectionViewItemKey collectionItemKeyForDecorationViewOfKind:v6 andIndexPath:v7];
+  kindCopy = kind;
+  pathCopy = path;
+  v8 = [_UICollectionViewItemKey collectionItemKeyForDecorationViewOfKind:kindCopy andIndexPath:pathCopy];
   v9 = [(NSMutableDictionary *)self->_transitionInformationsDict objectForKey:v8];
   v10 = [v9 objectForKey:@"actualAttribute"];
   v11 = v10;
@@ -1371,9 +1371,9 @@ LABEL_26:
 
   if (v9)
   {
-    v13 = [v9 objectForKey:@"fromAttribute"];
-    v14 = [v9 objectForKey:@"toAttribute"];
-    if (v13)
+    collectionView = [v9 objectForKey:@"fromAttribute"];
+    collectionView2 = [v9 objectForKey:@"toAttribute"];
+    if (collectionView)
     {
       goto LABEL_9;
     }
@@ -1381,32 +1381,32 @@ LABEL_26:
 
   else
   {
-    v14 = 0;
+    collectionView2 = 0;
   }
 
-  v13 = [(UICollectionViewLayout *)self->_fromLayout collectionView];
+  collectionView = [(UICollectionViewLayout *)self->_fromLayout collectionView];
 
-  if (v13)
+  if (collectionView)
   {
-    v13 = [(UICollectionViewLayout *)self->_fromLayout layoutAttributesForDecorationViewOfKind:v6 atIndexPath:v7];
+    collectionView = [(UICollectionViewLayout *)self->_fromLayout layoutAttributesForDecorationViewOfKind:kindCopy atIndexPath:pathCopy];
   }
 
 LABEL_9:
-  if (!v14)
+  if (!collectionView2)
   {
-    v14 = [(UICollectionViewLayout *)self->_toLayout collectionView];
+    collectionView2 = [(UICollectionViewLayout *)self->_toLayout collectionView];
 
-    if (!v14)
+    if (!collectionView2)
     {
       goto LABEL_17;
     }
 
-    v14 = [(UICollectionViewLayout *)self->_toLayout layoutAttributesForDecorationViewOfKind:v6 atIndexPath:v7];
+    collectionView2 = [(UICollectionViewLayout *)self->_toLayout layoutAttributesForDecorationViewOfKind:kindCopy atIndexPath:pathCopy];
   }
 
-  if (v13)
+  if (collectionView)
   {
-    v15 = v14 == 0;
+    v15 = collectionView2 == 0;
   }
 
   else
@@ -1433,7 +1433,7 @@ LABEL_9:
       v18 = 1.0;
     }
 
-    v12 = [(UICollectionViewTransitionLayout *)self interpolatedLayoutAttributesFromLayoutAttributes:v13 toLayoutAttributes:v14 progress:v18, 1.0, v17];
+    v12 = [(UICollectionViewTransitionLayout *)self interpolatedLayoutAttributesFromLayoutAttributes:collectionView toLayoutAttributes:collectionView2 progress:v18, 1.0, v17];
     goto LABEL_24;
   }
 
@@ -1446,11 +1446,11 @@ LABEL_25:
   return v12;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
   v21 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695DF70];
-  v5 = [(NSMutableDictionary *)self->_transitionInformationsDict allKeys:a3.origin.x];
+  v5 = [(NSMutableDictionary *)self->_transitionInformationsDict allKeys:rect.origin.x];
   v6 = [v4 arrayWithCapacity:{objc_msgSend(v5, "count")}];
   v7 = v6;
 
@@ -1458,8 +1458,8 @@ LABEL_25:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [(NSMutableDictionary *)self->_transitionInformationsDict allKeys];
-  v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  allKeys = [(NSMutableDictionary *)self->_transitionInformationsDict allKeys];
+  v9 = [allKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1470,7 +1470,7 @@ LABEL_25:
       {
         if (*v17 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allKeys);
         }
 
         v13 = [(NSMutableDictionary *)self->_transitionInformationsDict objectForKey:*(*(&v16 + 1) + 8 * i)];
@@ -1478,7 +1478,7 @@ LABEL_25:
         [v6 addObject:v14];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v10 = [allKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v10);

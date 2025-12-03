@@ -1,35 +1,35 @@
 @interface HMCameraClipVideoFileCombiner
 + (id)logCategory;
-- (HMCameraClipVideoFileCombiner)initWithVideoFileURLs:(id)a3 queue:(id)a4;
-- (void)combineToOutputFileURL:(id)a3 completion:(id)a4;
-- (void)writeSamplesFromOutputs:(id)a3 toInput:(id)a4 completion:(id)a5;
+- (HMCameraClipVideoFileCombiner)initWithVideoFileURLs:(id)ls queue:(id)queue;
+- (void)combineToOutputFileURL:(id)l completion:(id)completion;
+- (void)writeSamplesFromOutputs:(id)outputs toInput:(id)input completion:(id)completion;
 @end
 
 @implementation HMCameraClipVideoFileCombiner
 
-- (void)writeSamplesFromOutputs:(id)a3 toInput:(id)a4 completion:(id)a5
+- (void)writeSamplesFromOutputs:(id)outputs toInput:(id)input completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  outputsCopy = outputs;
+  inputCopy = input;
+  completionCopy = completion;
   v21[0] = 0;
   v21[1] = v21;
   v21[2] = 0x2020000000;
   v22 = 0;
-  v11 = [(HMCameraClipVideoFileCombiner *)self queue];
+  queue = [(HMCameraClipVideoFileCombiner *)self queue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __76__HMCameraClipVideoFileCombiner_writeSamplesFromOutputs_toInput_completion___block_invoke;
   v15[3] = &unk_1E7546D78;
-  v12 = v9;
+  v12 = inputCopy;
   v16 = v12;
   v20 = v21;
-  v13 = v8;
+  v13 = outputsCopy;
   v17 = v13;
-  v14 = v10;
-  v18 = self;
+  v14 = completionCopy;
+  selfCopy = self;
   v19 = v14;
-  [v12 requestMediaDataWhenReadyOnQueue:v11 usingBlock:v15];
+  [v12 requestMediaDataWhenReadyOnQueue:queue usingBlock:v15];
 
   _Block_object_dispose(v21, 8);
 }
@@ -134,13 +134,13 @@ LABEL_19:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)combineToOutputFileURL:(id)a3 completion:(id)a4
+- (void)combineToOutputFileURL:(id)l completion:(id)completion
 {
   v144 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  completionCopy = completion;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -148,18 +148,18 @@ LABEL_19:
     *buf = 138543618;
     *&buf[4] = v11;
     *&buf[12] = 2112;
-    *&buf[14] = v6;
+    *&buf[14] = lCopy;
     _os_log_impl(&dword_19BB39000, v10, OS_LOG_TYPE_INFO, "%{public}@Combining video files and outputting to file URL: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v12 = [(HMCameraClipVideoFileCombiner *)v9 videoFileURLs];
-  v13 = [v12 count];
+  videoFileURLs = [(HMCameraClipVideoFileCombiner *)selfCopy videoFileURLs];
+  v13 = [videoFileURLs count];
 
   if (!v13)
   {
     v24 = objc_autoreleasePoolPush();
-    v25 = v9;
+    v25 = selfCopy;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
     {
@@ -170,20 +170,20 @@ LABEL_19:
     }
 
     objc_autoreleasePoolPop(v24);
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
     goto LABEL_85;
   }
 
   v140 = 0;
-  v14 = [MEMORY[0x1E696AC08] defaultManager];
-  v15 = [v6 path];
-  v16 = [v14 fileExistsAtPath:v15 isDirectory:&v140];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [lCopy path];
+  v16 = [defaultManager fileExistsAtPath:path isDirectory:&v140];
 
   if (v16)
   {
     v17 = v140;
     v18 = objc_autoreleasePoolPush();
-    v19 = v9;
+    v19 = selfCopy;
     v20 = HMFGetOSLogHandle();
     v21 = v20;
     if (v17 == 1)
@@ -194,13 +194,13 @@ LABEL_19:
         *buf = 138543618;
         *&buf[4] = v22;
         *&buf[12] = 2112;
-        *&buf[14] = v6;
+        *&buf[14] = lCopy;
         _os_log_impl(&dword_19BB39000, v21, OS_LOG_TYPE_ERROR, "%{public}@Cannot combine to output file URL because it is a directory: %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v18);
       v23 = [MEMORY[0x1E696ABC0] hmErrorWithCode:-1];
-      (v7)[2](v7, v23);
+      (completionCopy)[2](completionCopy, v23);
       goto LABEL_84;
     }
 
@@ -210,14 +210,14 @@ LABEL_19:
       *buf = 138543618;
       *&buf[4] = v28;
       *&buf[12] = 2112;
-      *&buf[14] = v6;
+      *&buf[14] = lCopy;
       _os_log_impl(&dword_19BB39000, v21, OS_LOG_TYPE_INFO, "%{public}@Removing existing file at output file URL: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v18);
-    v29 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
     v139 = 0;
-    v30 = [v29 removeItemAtURL:v6 error:&v139];
+    v30 = [defaultManager2 removeItemAtURL:lCopy error:&v139];
     v23 = v139;
 
     if ((v30 & 1) == 0)
@@ -231,7 +231,7 @@ LABEL_19:
         *buf = 138543874;
         *&buf[4] = v73;
         *&buf[12] = 2112;
-        *&buf[14] = v6;
+        *&buf[14] = lCopy;
         *&buf[22] = 2112;
         v143 = v23;
         _os_log_impl(&dword_19BB39000, v72, OS_LOG_TYPE_ERROR, "%{public}@Cannot remove existing file at output file URL %@: %@", buf, 0x20u);
@@ -239,18 +239,18 @@ LABEL_19:
 
       objc_autoreleasePoolPop(v70);
       v74 = [MEMORY[0x1E696ABC0] hmErrorWithCode:-1];
-      (v7)[2](v7, v74);
+      (completionCopy)[2](completionCopy, v74);
 
       goto LABEL_84;
     }
   }
 
-  v31 = [(HMCameraClipVideoFileCombiner *)v9 videoFileURLs];
-  v32 = [v31 na_map:&__block_literal_global_4585];
+  videoFileURLs2 = [(HMCameraClipVideoFileCombiner *)selfCopy videoFileURLs];
+  v32 = [videoFileURLs2 na_map:&__block_literal_global_4585];
 
-  v113 = [MEMORY[0x1E695DF70] array];
-  v112 = [MEMORY[0x1E695DF70] array];
-  v109 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
   v135 = 0u;
   v136 = 0u;
   v137 = 0u;
@@ -261,18 +261,18 @@ LABEL_19:
   if (!v116)
   {
     v111 = 0;
-    v34 = 0;
+    firstObject3 = 0;
     goto LABEL_43;
   }
 
   v111 = 0;
-  v34 = 0;
+  firstObject3 = 0;
   v117 = *v136;
   v115 = *MEMORY[0x1E6987608];
   v114 = *MEMORY[0x1E69875A0];
-  v107 = v6;
-  v108 = v7;
-  v119 = v9;
+  v107 = lCopy;
+  v108 = completionCopy;
+  v119 = selfCopy;
   while (2)
   {
     for (i = 0; i != v116; ++i)
@@ -305,19 +305,19 @@ LABEL_19:
         }
 
         objc_autoreleasePoolPop(v66);
-        v7 = v108;
+        completionCopy = v108;
         v108[2](v108, v39);
-        v6 = v107;
+        lCopy = v107;
         goto LABEL_82;
       }
 
       v40 = [v36 tracksWithMediaType:v115];
-      v41 = [v40 firstObject];
+      firstObject = [v40 firstObject];
 
       v120 = v39;
-      if (v41)
+      if (firstObject)
       {
-        v42 = [MEMORY[0x1E6987EA8] assetReaderTrackOutputWithTrack:v41 outputSettings:0];
+        v42 = [MEMORY[0x1E6987EA8] assetReaderTrackOutputWithTrack:firstObject outputSettings:0];
         if (![v38 canAddOutput:v42])
         {
           v75 = objc_autoreleasePoolPush();
@@ -337,16 +337,16 @@ LABEL_19:
 
           objc_autoreleasePoolPop(v75);
           v79 = [MEMORY[0x1E696ABC0] hmErrorWithCode:-1];
-          v7 = v108;
+          completionCopy = v108;
           v108[2](v108, v79);
 
-          v6 = v107;
+          lCopy = v107;
           v39 = v120;
           goto LABEL_82;
         }
 
         [v38 addOutput:v42];
-        [v112 addObject:v42];
+        [array2 addObject:v42];
       }
 
       else
@@ -370,9 +370,9 @@ LABEL_19:
       }
 
       v47 = [v36 tracksWithMediaType:v114];
-      v48 = [v47 firstObject];
+      firstObject2 = [v47 firstObject];
 
-      if (!v48)
+      if (!firstObject2)
       {
         v50 = objc_autoreleasePoolPush();
         v51 = v119;
@@ -391,22 +391,22 @@ LABEL_19:
         goto LABEL_34;
       }
 
-      v49 = [MEMORY[0x1E6987EA8] assetReaderTrackOutputWithTrack:v48 outputSettings:0];
-      if ([v38 canAddOutput:v49])
+      formatDescriptions2 = [MEMORY[0x1E6987EA8] assetReaderTrackOutputWithTrack:firstObject2 outputSettings:0];
+      if ([v38 canAddOutput:formatDescriptions2])
       {
-        [v38 addOutput:v49];
-        [v109 addObject:v49];
+        [v38 addOutput:formatDescriptions2];
+        [array3 addObject:formatDescriptions2];
 
 LABEL_34:
         [v38 startReading];
-        [v113 addObject:v38];
-        v54 = [v41 formatDescriptions];
-        v34 = [v54 firstObject];
+        [array addObject:v38];
+        formatDescriptions = [firstObject formatDescriptions];
+        firstObject3 = [formatDescriptions firstObject];
 
-        v49 = [v48 formatDescriptions];
-        v55 = [v49 firstObject];
+        formatDescriptions2 = [firstObject2 formatDescriptions];
+        firstObject4 = [formatDescriptions2 firstObject];
         v56 = 1;
-        v111 = v55;
+        v111 = firstObject4;
         goto LABEL_38;
       }
 
@@ -419,30 +419,30 @@ LABEL_34:
         *buf = 138543874;
         *&buf[4] = v60;
         *&buf[12] = 2112;
-        *&buf[14] = v49;
+        *&buf[14] = formatDescriptions2;
         *&buf[22] = 2112;
         v143 = v38;
         _os_log_impl(&dword_19BB39000, v59, OS_LOG_TYPE_ERROR, "%{public}@Cannot add audio output %@ to reader %@", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v57);
-      v55 = [MEMORY[0x1E696ABC0] hmErrorWithCode:-1];
-      v108[2](v108, v55);
+      firstObject4 = [MEMORY[0x1E696ABC0] hmErrorWithCode:-1];
+      v108[2](v108, firstObject4);
       v56 = 0;
       v33 = v110;
 LABEL_38:
 
       if (!v56)
       {
-        v6 = v107;
-        v7 = v108;
+        lCopy = v107;
+        completionCopy = v108;
         goto LABEL_83;
       }
     }
 
-    v6 = v107;
-    v7 = v108;
-    v9 = v119;
+    lCopy = v107;
+    completionCopy = v108;
+    selfCopy = v119;
     v116 = [v33 countByEnumeratingWithState:&v135 objects:v141 count:16];
     if (v116)
     {
@@ -457,12 +457,12 @@ LABEL_43:
   v61 = objc_alloc(MEMORY[0x1E6987ED8]);
   v62 = *MEMORY[0x1E69874B8];
   v133 = 0;
-  v63 = [v61 initWithURL:v6 fileType:v62 error:&v133];
+  v63 = [v61 initWithURL:lCopy fileType:v62 error:&v133];
   v33 = v133;
   if (!v63)
   {
     v80 = objc_autoreleasePoolPush();
-    v81 = v9;
+    v81 = selfCopy;
     v82 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v82, OS_LOG_TYPE_ERROR))
     {
@@ -470,23 +470,23 @@ LABEL_43:
       *buf = 138543874;
       *&buf[4] = v83;
       *&buf[12] = 2112;
-      *&buf[14] = v6;
+      *&buf[14] = lCopy;
       *&buf[22] = 2112;
       v143 = v33;
       _os_log_impl(&dword_19BB39000, v82, OS_LOG_TYPE_ERROR, "%{public}@Failed to create asset writer with URL %@: %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v80);
-    (v7)[2](v7, v33);
+    (completionCopy)[2](completionCopy, v33);
     v39 = 0;
     goto LABEL_82;
   }
 
   v121 = v63;
-  if (!v34)
+  if (!firstObject3)
   {
     v84 = objc_autoreleasePoolPush();
-    v85 = v9;
+    v85 = selfCopy;
     v86 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v86, OS_LOG_TYPE_INFO))
     {
@@ -507,7 +507,7 @@ LABEL_63:
       if (![v121 canAddInput:v89])
       {
         v102 = objc_autoreleasePoolPush();
-        v103 = v9;
+        v103 = selfCopy;
         v104 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v104, OS_LOG_TYPE_ERROR))
         {
@@ -525,7 +525,7 @@ LABEL_63:
 
         objc_autoreleasePoolPop(v102);
         v100 = [MEMORY[0x1E696ABC0] hmErrorWithCode:-1];
-        (v7)[2](v7, v100);
+        (completionCopy)[2](completionCopy, v100);
         v94 = v118;
         goto LABEL_80;
       }
@@ -536,7 +536,7 @@ LABEL_63:
     else
     {
       v95 = objc_autoreleasePoolPush();
-      v96 = v9;
+      v96 = selfCopy;
       v97 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v97, OS_LOG_TYPE_INFO))
       {
@@ -565,9 +565,9 @@ LABEL_63:
       v130[1] = 3221225472;
       v130[2] = __67__HMCameraClipVideoFileCombiner_combineToOutputFileURL_completion___block_invoke_8;
       v130[3] = &unk_1E7546D50;
-      v131 = v113;
+      v131 = array;
       v132 = v100;
-      [(HMCameraClipVideoFileCombiner *)v9 writeSamplesFromOutputs:v112 toInput:v118 completion:v130];
+      [(HMCameraClipVideoFileCombiner *)selfCopy writeSamplesFromOutputs:array2 toInput:v118 completion:v130];
     }
 
     if (v89)
@@ -577,28 +577,28 @@ LABEL_63:
       v127[1] = 3221225472;
       v127[2] = __67__HMCameraClipVideoFileCombiner_combineToOutputFileURL_completion___block_invoke_2;
       v127[3] = &unk_1E7546D50;
-      v128 = v113;
+      v128 = array;
       v129 = v100;
-      [(HMCameraClipVideoFileCombiner *)v9 writeSamplesFromOutputs:v109 toInput:v89 completion:v127];
+      [(HMCameraClipVideoFileCombiner *)selfCopy writeSamplesFromOutputs:array3 toInput:v89 completion:v127];
     }
 
-    v101 = [(HMCameraClipVideoFileCombiner *)v9 queue];
+    queue = [(HMCameraClipVideoFileCombiner *)selfCopy queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __67__HMCameraClipVideoFileCombiner_combineToOutputFileURL_completion___block_invoke_3;
     block[3] = &unk_1E754D208;
     v123 = v39;
-    v124 = v9;
-    v125 = v6;
-    v126 = v7;
-    dispatch_group_notify(v100, v101, block);
+    v124 = selfCopy;
+    v125 = lCopy;
+    v126 = completionCopy;
+    dispatch_group_notify(v100, queue, block);
 
 LABEL_80:
     goto LABEL_81;
   }
 
   v64 = objc_alloc(MEMORY[0x1E6987EE0]);
-  v65 = [v64 initWithMediaType:*MEMORY[0x1E6987608] outputSettings:0 sourceFormatHint:v34];
+  v65 = [v64 initWithMediaType:*MEMORY[0x1E6987608] outputSettings:0 sourceFormatHint:firstObject3];
   v118 = v65;
   if ([v121 canAddInput:v65])
   {
@@ -607,7 +607,7 @@ LABEL_80:
   }
 
   v90 = objc_autoreleasePoolPush();
-  v91 = v9;
+  v91 = selfCopy;
   v92 = HMFGetOSLogHandle();
   v39 = v121;
   if (os_log_type_enabled(v92, OS_LOG_TYPE_ERROR))
@@ -624,7 +624,7 @@ LABEL_80:
 
   objc_autoreleasePoolPop(v90);
   v89 = [MEMORY[0x1E696ABC0] hmErrorWithCode:-1];
-  (v7)[2](v7, v89);
+  (completionCopy)[2](completionCopy, v89);
   v94 = v118;
 LABEL_81:
 
@@ -717,18 +717,18 @@ id __67__HMCameraClipVideoFileCombiner_combineToOutputFileURL_completion___block
   return v4;
 }
 
-- (HMCameraClipVideoFileCombiner)initWithVideoFileURLs:(id)a3 queue:(id)a4
+- (HMCameraClipVideoFileCombiner)initWithVideoFileURLs:(id)ls queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  lsCopy = ls;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = HMCameraClipVideoFileCombiner;
   v9 = [(HMCameraClipVideoFileCombiner *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_videoFileURLs, a3);
-    objc_storeStrong(&v10->_queue, a4);
+    objc_storeStrong(&v9->_videoFileURLs, ls);
+    objc_storeStrong(&v10->_queue, queue);
   }
 
   return v10;

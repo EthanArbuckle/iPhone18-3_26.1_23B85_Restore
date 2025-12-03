@@ -1,28 +1,28 @@
 @interface PRQuickActionControlView
-- (PRQuickActionControlView)initWithControl:(id)a3 type:(unint64_t)a4;
+- (PRQuickActionControlView)initWithControl:(id)control type:(unint64_t)type;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setSelected:(BOOL)a3;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation PRQuickActionControlView
 
-- (PRQuickActionControlView)initWithControl:(id)a3 type:(unint64_t)a4
+- (PRQuickActionControlView)initWithControl:(id)control type:(unint64_t)type
 {
-  v6 = a3;
+  controlCopy = control;
   v13.receiver = self;
   v13.super_class = PRQuickActionControlView;
   v7 = [(PRQuickActionControlView *)&v13 init];
   if (v7)
   {
-    v8 = [MEMORY[0x1E69944B8] instanceWithControl:v6 type:a4 content:1];
+    v8 = [MEMORY[0x1E69944B8] instanceWithControl:controlCopy type:type content:1];
     controlInstance = v7->_controlInstance;
     v7->_controlInstance = v8;
 
     [(CHUISControlInstance *)v7->_controlInstance activate];
-    v10 = [(CHUISControlInstance *)v7->_controlInstance iconView];
+    iconView = [(CHUISControlInstance *)v7->_controlInstance iconView];
     iconView = v7->_iconView;
-    v7->_iconView = v10;
+    v7->_iconView = iconView;
 
     [(CHUISControlIconView *)v7->_iconView setOverrideUserInterfaceStyle:1];
     [(PRQuickActionControlView *)v7 addSubview:v7->_iconView];
@@ -54,11 +54,11 @@
   [(PRQuickActionControlView *)&v3 dealloc];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  if (self->_selected != a3)
+  if (self->_selected != selected)
   {
-    self->_selected = a3;
+    self->_selected = selected;
   }
 }
 

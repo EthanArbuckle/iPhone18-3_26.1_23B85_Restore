@@ -1,23 +1,23 @@
 @interface _CPSOverlayTouchBlockingView
-- (_CPSOverlayTouchBlockingView)initWithFrame:(CGRect)a3;
+- (_CPSOverlayTouchBlockingView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation _CPSOverlayTouchBlockingView
 
-- (_CPSOverlayTouchBlockingView)initWithFrame:(CGRect)a3
+- (_CPSOverlayTouchBlockingView)initWithFrame:(CGRect)frame
 {
-  v9 = a3;
+  frameCopy = frame;
   v7 = a2;
   v8 = 0;
   v6.receiver = self;
   v6.super_class = _CPSOverlayTouchBlockingView;
-  v8 = [(_CPSOverlayTouchBlockingView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v8 = [(_CPSOverlayTouchBlockingView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   objc_storeStrong(&v8, v8);
   if (v8)
   {
-    v5 = [(_CPSOverlayTouchBlockingView *)v8 layer];
-    [v5 setHitTestsAsOpaque:1];
-    MEMORY[0x277D82BD8](v5);
+    layer = [(_CPSOverlayTouchBlockingView *)v8 layer];
+    [layer setHitTestsAsOpaque:1];
+    MEMORY[0x277D82BD8](layer);
   }
 
   v4 = MEMORY[0x277D82BE0](v8);

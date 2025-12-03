@@ -1,6 +1,6 @@
 @interface PLGenericLocationTuple
-- (BOOL)isEqual:(id)a3;
-- (PLGenericLocationTuple)initWithText:(id)a3 lookupIdentifier:(id)a4 indexCategory:(unint64_t)a5;
+- (BOOL)isEqual:(id)equal;
+- (PLGenericLocationTuple)initWithText:(id)text lookupIdentifier:(id)identifier indexCategory:(unint64_t)category;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -9,20 +9,20 @@
 
 - (unint64_t)hash
 {
-  v3 = [(PLGenericLocationTuple *)self indexCategory];
-  v4 = [(PLGenericLocationTuple *)self text];
-  v5 = [v4 localizedLowercaseString];
-  v6 = [v5 hash];
-  v7 = [(PLGenericLocationTuple *)self lookupIdentifier];
-  v8 = v3 ^ [v7 hash];
+  indexCategory = [(PLGenericLocationTuple *)self indexCategory];
+  text = [(PLGenericLocationTuple *)self text];
+  localizedLowercaseString = [text localizedLowercaseString];
+  v6 = [localizedLowercaseString hash];
+  lookupIdentifier = [(PLGenericLocationTuple *)self lookupIdentifier];
+  v8 = indexCategory ^ [lookupIdentifier hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -32,22 +32,22 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PLGenericLocationTuple *)self text];
-      if ([v6 length])
+      v5 = equalCopy;
+      text = [(PLGenericLocationTuple *)self text];
+      if ([text length])
       {
-        v7 = [(PLGenericLocationTuple *)v5 text];
-        v8 = [v7 length];
+        text2 = [(PLGenericLocationTuple *)v5 text];
+        v8 = [text2 length];
 
         if (!v8)
         {
           v10 = 0;
 LABEL_11:
-          v12 = [(PLGenericLocationTuple *)self lookupIdentifier];
-          if ([v12 length])
+          lookupIdentifier = [(PLGenericLocationTuple *)self lookupIdentifier];
+          if ([lookupIdentifier length])
           {
-            v13 = [(PLGenericLocationTuple *)v5 lookupIdentifier];
-            v14 = [v13 length];
+            lookupIdentifier2 = [(PLGenericLocationTuple *)v5 lookupIdentifier];
+            v14 = [lookupIdentifier2 length];
 
             if (v10)
             {
@@ -56,9 +56,9 @@ LABEL_11:
 
             if (v14)
             {
-              v15 = [(PLGenericLocationTuple *)self lookupIdentifier];
-              v16 = [(PLGenericLocationTuple *)v5 lookupIdentifier];
-              v17 = [v15 isEqualToString:v16];
+              lookupIdentifier3 = [(PLGenericLocationTuple *)self lookupIdentifier];
+              lookupIdentifier4 = [(PLGenericLocationTuple *)v5 lookupIdentifier];
+              v17 = [lookupIdentifier3 isEqualToString:lookupIdentifier4];
 
               if (!v17)
               {
@@ -80,14 +80,14 @@ LABEL_18:
             }
           }
 
-          v18 = [(PLGenericLocationTuple *)self indexCategory];
-          v11 = v18 == [(PLGenericLocationTuple *)v5 indexCategory];
+          indexCategory = [(PLGenericLocationTuple *)self indexCategory];
+          v11 = indexCategory == [(PLGenericLocationTuple *)v5 indexCategory];
           goto LABEL_18;
         }
 
-        v6 = [(PLGenericLocationTuple *)self text];
-        v9 = [(PLGenericLocationTuple *)v5 text];
-        v10 = [v6 localizedCaseInsensitiveCompare:v9] != 0;
+        text = [(PLGenericLocationTuple *)self text];
+        text3 = [(PLGenericLocationTuple *)v5 text];
+        v10 = [text localizedCaseInsensitiveCompare:text3] != 0;
       }
 
       else
@@ -117,14 +117,14 @@ LABEL_19:
   return v6;
 }
 
-- (PLGenericLocationTuple)initWithText:(id)a3 lookupIdentifier:(id)a4 indexCategory:(unint64_t)a5
+- (PLGenericLocationTuple)initWithText:(id)text lookupIdentifier:(id)identifier indexCategory:(unint64_t)category
 {
-  v9 = a3;
-  v10 = a4;
-  if (![v9 length])
+  textCopy = text;
+  identifierCopy = identifier;
+  if (![textCopy length])
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PLGenericLocationTuple.m" lineNumber:15 description:{@"Invalid parameter not satisfying: %@", @"text.length > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLGenericLocationTuple.m" lineNumber:15 description:{@"Invalid parameter not satisfying: %@", @"text.length > 0"}];
   }
 
   v18.receiver = self;
@@ -132,15 +132,15 @@ LABEL_19:
   v11 = [(PLGenericLocationTuple *)&v18 init];
   if (v11)
   {
-    v12 = [v9 copy];
+    v12 = [textCopy copy];
     text = v11->_text;
     v11->_text = v12;
 
-    v14 = [v10 copy];
+    v14 = [identifierCopy copy];
     lookupIdentifier = v11->_lookupIdentifier;
     v11->_lookupIdentifier = v14;
 
-    v11->_indexCategory = a5;
+    v11->_indexCategory = category;
   }
 
   return v11;

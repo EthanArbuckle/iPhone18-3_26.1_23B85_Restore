@@ -1,17 +1,17 @@
 @interface MacButton
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIEdgeInsets)alignmentRectInsets;
-- (_TtC23ShelfKitCollectionViews9MacButton)initWithCoder:(id)a3;
-- (_TtC23ShelfKitCollectionViews9MacButton)initWithFrame:(CGRect)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (_TtC23ShelfKitCollectionViews9MacButton)initWithCoder:(id)coder;
+- (_TtC23ShelfKitCollectionViews9MacButton)initWithFrame:(CGRect)frame;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHighlighted:(BOOL)highlighted;
 - (void)tintColorDidChange;
 @end
 
 @implementation MacButton
 
-- (_TtC23ShelfKitCollectionViews9MacButton)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViews9MacButton)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews9MacButton_usesBoundsForBaselineGuide) = 0;
   v3 = self + OBJC_IVAR____TtC23ShelfKitCollectionViews9MacButton_touchInsets;
@@ -34,34 +34,34 @@
   sub_272F28();
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(MacButton *)&v5 setHighlighted:v3];
+  [(MacButton *)&v5 setHighlighted:highlightedCopy];
   sub_273280();
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   ObjectType = swift_getObjectType();
   v10.receiver = self;
   v10.super_class = ObjectType;
-  v6 = self;
-  [(MacButton *)&v10 setEnabled:v3];
-  v9.receiver = v6;
+  selfCopy = self;
+  [(MacButton *)&v10 setEnabled:enabledCopy];
+  v9.receiver = selfCopy;
   v9.super_class = ObjectType;
-  v7 = [(MacButton *)&v9 isEnabled];
+  isEnabled = [(MacButton *)&v9 isEnabled];
   v8 = 0.5;
-  if (v7)
+  if (isEnabled)
   {
     v8 = 1.0;
   }
 
-  [(MacButton *)v6 setAlpha:v8];
+  [(MacButton *)selfCopy setAlpha:v8];
 }
 
 - (UIEdgeInsets)alignmentRectInsets
@@ -79,7 +79,7 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   sub_273984();
   v4 = v3;
   v6 = v5;
@@ -91,9 +91,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   sub_273984();
   v5 = v4;
   v7 = v6;
@@ -105,7 +105,7 @@
   return result;
 }
 
-- (_TtC23ShelfKitCollectionViews9MacButton)initWithFrame:(CGRect)a3
+- (_TtC23ShelfKitCollectionViews9MacButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

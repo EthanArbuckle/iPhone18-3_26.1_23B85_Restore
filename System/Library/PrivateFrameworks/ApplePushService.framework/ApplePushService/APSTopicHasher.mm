@@ -1,65 +1,65 @@
 @interface APSTopicHasher
-- (APSTopicHasher)initWithTopicSaltStore:(id)a3;
-- (id)_identifierForTopic:(id)a3 user:(id)a4;
-- (id)createTopicHashForTopic:(id)a3 user:(id)a4 shouldSalt:(BOOL)a5;
-- (id)topicHashForTopic:(id)a3 user:(id)a4;
-- (id)topicsToSaltsWithUser:(id)a3;
-- (void)clearSaltForTopic:(id)a3 user:(id)a4;
+- (APSTopicHasher)initWithTopicSaltStore:(id)store;
+- (id)_identifierForTopic:(id)topic user:(id)user;
+- (id)createTopicHashForTopic:(id)topic user:(id)user shouldSalt:(BOOL)salt;
+- (id)topicHashForTopic:(id)topic user:(id)user;
+- (id)topicsToSaltsWithUser:(id)user;
+- (void)clearSaltForTopic:(id)topic user:(id)user;
 @end
 
 @implementation APSTopicHasher
 
-- (APSTopicHasher)initWithTopicSaltStore:(id)a3
+- (APSTopicHasher)initWithTopicSaltStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = APSTopicHasher;
   v6 = [(APSTopicHasher *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_topicSaltStore, a3);
+    objc_storeStrong(&v6->_topicSaltStore, store);
   }
 
   return v7;
 }
 
-- (void)clearSaltForTopic:(id)a3 user:(id)a4
+- (void)clearSaltForTopic:(id)topic user:(id)user
 {
-  v6 = a4;
-  v8 = [(APSTopicHasher *)self _identifierForTopic:a3 user:v6];
-  v7 = [(APSTopicHasher *)self topicSaltStore];
-  [v7 saveSalt:0 forIdentifier:v8 user:v6];
+  userCopy = user;
+  v8 = [(APSTopicHasher *)self _identifierForTopic:topic user:userCopy];
+  topicSaltStore = [(APSTopicHasher *)self topicSaltStore];
+  [topicSaltStore saveSalt:0 forIdentifier:v8 user:userCopy];
 }
 
-- (id)createTopicHashForTopic:(id)a3 user:(id)a4 shouldSalt:(BOOL)a5
+- (id)createTopicHashForTopic:(id)topic user:(id)user shouldSalt:(BOOL)salt
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  if (v5)
+  saltCopy = salt;
+  topicCopy = topic;
+  userCopy = user;
+  if (saltCopy)
   {
-    v10 = [(APSTopicHasher *)self _identifierForTopic:v8 user:v9];
-    v11 = [(APSTopicHasher *)self topicSaltStore];
-    v12 = [v11 loadSaltForIdentifier:v10 user:v9];
+    v10 = [(APSTopicHasher *)self _identifierForTopic:topicCopy user:userCopy];
+    topicSaltStore = [(APSTopicHasher *)self topicSaltStore];
+    v12 = [topicSaltStore loadSaltForIdentifier:v10 user:userCopy];
 
     if (v12)
     {
       v20 = v12;
-      v13 = sub_100088454(v8, &v20);
+      v13 = sub_100088454(topicCopy, &v20);
       v14 = v20;
     }
 
     else
     {
       v19 = 0;
-      v12 = sub_100088454(v8, &v19);
+      v12 = sub_100088454(topicCopy, &v19);
       v14 = v19;
       v15 = 0;
       if (v14 && v12)
       {
-        v16 = [(APSTopicHasher *)self topicSaltStore];
-        v17 = [v16 saveSalt:v14 forIdentifier:v10 user:v9];
+        topicSaltStore2 = [(APSTopicHasher *)self topicSaltStore];
+        v17 = [topicSaltStore2 saveSalt:v14 forIdentifier:v10 user:userCopy];
 
         if (v17)
         {
@@ -78,61 +78,61 @@
 
   else
   {
-    v13 = sub_1000056C0(v8);
+    v13 = sub_1000056C0(topicCopy);
   }
 
   return v13;
 }
 
-- (id)topicHashForTopic:(id)a3 user:(id)a4
+- (id)topicHashForTopic:(id)topic user:(id)user
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(APSTopicHasher *)self _identifierForTopic:v7 user:v6];
-  v9 = [(APSTopicHasher *)self topicSaltStore];
-  v10 = [v9 loadSaltForIdentifier:v8 user:v6];
+  userCopy = user;
+  topicCopy = topic;
+  v8 = [(APSTopicHasher *)self _identifierForTopic:topicCopy user:userCopy];
+  topicSaltStore = [(APSTopicHasher *)self topicSaltStore];
+  v10 = [topicSaltStore loadSaltForIdentifier:v8 user:userCopy];
 
   if (v10)
   {
     v13 = v10;
-    v11 = sub_100088454(v7, &v13);
+    v11 = sub_100088454(topicCopy, &v13);
 
-    v7 = v13;
+    topicCopy = v13;
   }
 
   else
   {
-    v11 = sub_1000056C0(v7);
+    v11 = sub_1000056C0(topicCopy);
   }
 
   return v11;
 }
 
-- (id)topicsToSaltsWithUser:(id)a3
+- (id)topicsToSaltsWithUser:(id)user
 {
-  v4 = a3;
-  v5 = [(APSTopicHasher *)self topicSaltStore];
-  v6 = [v5 loadIdentifiersToSaltsForUser:v4];
+  userCopy = user;
+  topicSaltStore = [(APSTopicHasher *)self topicSaltStore];
+  v6 = [topicSaltStore loadIdentifiersToSaltsForUser:userCopy];
 
   return v6;
 }
 
-- (id)_identifierForTopic:(id)a3 user:(id)a4
+- (id)_identifierForTopic:(id)topic user:(id)user
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 storageName];
-  v8 = [v7 length];
+  topicCopy = topic;
+  userCopy = user;
+  storageName = [userCopy storageName];
+  v8 = [storageName length];
 
   if (v8)
   {
-    v9 = [v6 storageName];
-    v10 = [NSString stringWithFormat:@"%@, %@", v5, v9];
+    storageName2 = [userCopy storageName];
+    v10 = [NSString stringWithFormat:@"%@, %@", topicCopy, storageName2];
   }
 
   else
   {
-    v10 = v5;
+    v10 = topicCopy;
   }
 
   return v10;

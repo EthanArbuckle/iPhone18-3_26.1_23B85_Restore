@@ -1,19 +1,19 @@
 @interface IDSUserProperties
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToUserProperties:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToUserProperties:(id)properties;
 - (BOOL)isSPSCapable;
-- (IDSUserProperties)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (IDSUserProperties)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)propsByUpdatingDisableRegistration:(BOOL)a3;
-- (id)propsByUpdatingHasActiveSIM:(BOOL)a3;
+- (id)propsByUpdatingDisableRegistration:(BOOL)registration;
+- (id)propsByUpdatingHasActiveSIM:(BOOL)m;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSUserProperties
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_alloc_init(objc_opt_class());
   *(result + 8) = self->_disableRegistration;
@@ -21,18 +21,18 @@
   return result;
 }
 
-- (id)propsByUpdatingDisableRegistration:(BOOL)a3
+- (id)propsByUpdatingDisableRegistration:(BOOL)registration
 {
   v4 = [(IDSUserProperties *)self copy];
-  v4[8] = a3;
+  v4[8] = registration;
 
   return v4;
 }
 
-- (id)propsByUpdatingHasActiveSIM:(BOOL)a3
+- (id)propsByUpdatingHasActiveSIM:(BOOL)m
 {
   v4 = [(IDSUserProperties *)self copy];
-  v4[9] = a3;
+  v4[9] = m;
 
   return v4;
 }
@@ -47,13 +47,13 @@
   return [(IDSUserProperties *)self hasActiveSIM];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(IDSUserProperties *)self isEqualToUserProperties:v4];
+    v5 = [(IDSUserProperties *)self isEqualToUserProperties:equalCopy];
   }
 
   else
@@ -64,22 +64,22 @@
   return v5;
 }
 
-- (BOOL)isEqualToUserProperties:(id)a3
+- (BOOL)isEqualToUserProperties:(id)properties
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  propertiesCopy = properties;
+  v5 = propertiesCopy;
+  if (self == propertiesCopy)
   {
     LOBYTE(v7) = 1;
   }
 
   else
   {
-    v6 = [(IDSUserProperties *)v4 disableRegistration];
-    if (v6 == [(IDSUserProperties *)self disableRegistration])
+    disableRegistration = [(IDSUserProperties *)propertiesCopy disableRegistration];
+    if (disableRegistration == [(IDSUserProperties *)self disableRegistration])
     {
-      v8 = [(IDSUserProperties *)v5 hasActiveSIM];
-      v7 = v8 ^ [(IDSUserProperties *)self hasActiveSIM]^ 1;
+      hasActiveSIM = [(IDSUserProperties *)v5 hasActiveSIM];
+      v7 = hasActiveSIM ^ [(IDSUserProperties *)self hasActiveSIM]^ 1;
     }
 
     else
@@ -101,9 +101,9 @@
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [(IDSUserProperties *)self disableRegistration];
+  disableRegistration = [(IDSUserProperties *)self disableRegistration];
   v5 = @"NO";
-  if (v4)
+  if (disableRegistration)
   {
     v6 = @"YES";
   }
@@ -121,19 +121,19 @@
   return [NSString stringWithFormat:@"<%@:%p; disableRegistration: %@; hasActiveSim: %@>", v3, self, v6, v5];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   disableRegistration = self->_disableRegistration;
-  v5 = a3;
-  [v5 encodeBool:disableRegistration forKey:@"disableReg"];
-  [v5 encodeBool:self->_hasActiveSIM forKey:@"hasActiveSIM"];
+  coderCopy = coder;
+  [coderCopy encodeBool:disableRegistration forKey:@"disableReg"];
+  [coderCopy encodeBool:self->_hasActiveSIM forKey:@"hasActiveSIM"];
 }
 
-- (IDSUserProperties)initWithCoder:(id)a3
+- (IDSUserProperties)initWithCoder:(id)coder
 {
-  v4 = a3;
-  self->_disableRegistration = [v4 decodeBoolForKey:@"disableReg"];
-  v5 = [v4 decodeBoolForKey:@"hasActiveSIM"];
+  coderCopy = coder;
+  self->_disableRegistration = [coderCopy decodeBoolForKey:@"disableReg"];
+  v5 = [coderCopy decodeBoolForKey:@"hasActiveSIM"];
 
   self->_hasActiveSIM = v5;
   return self;

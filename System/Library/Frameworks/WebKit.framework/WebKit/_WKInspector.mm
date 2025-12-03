@@ -2,16 +2,16 @@
 - (WKWebView)webView;
 - (_WKInspectorDelegate)delegate;
 - (id)inspectorWebView;
-- (void)_fetchURLForTesting:(id)a3;
-- (void)_openURLExternallyForTesting:(id)a3 useFrontendAPI:(BOOL)a4;
-- (void)_setDiagnosticLoggingDelegate:(id)a3;
+- (void)_fetchURLForTesting:(id)testing;
+- (void)_openURLExternallyForTesting:(id)testing useFrontendAPI:(BOOL)i;
+- (void)_setDiagnosticLoggingDelegate:(id)delegate;
 - (void)dealloc;
 - (void)hide;
-- (void)printErrorToConsole:(id)a3;
-- (void)registerExtensionWithID:(id)a3 extensionBundleIdentifier:(id)a4 displayName:(id)a5 completionHandler:(id)a6;
-- (void)setDelegate:(id)a3;
-- (void)showMainResourceForFrame:(id)a3;
-- (void)unregisterExtension:(id)a3 completionHandler:(id)a4;
+- (void)printErrorToConsole:(id)console;
+- (void)registerExtensionWithID:(id)d extensionBundleIdentifier:(id)identifier displayName:(id)name completionHandler:(id)handler;
+- (void)setDelegate:(id)delegate;
+- (void)showMainResourceForFrame:(id)frame;
+- (void)unregisterExtension:(id)extension completionHandler:(id)handler;
 @end
 
 @implementation _WKInspector
@@ -39,9 +39,9 @@
   return v3;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  objc_storeWeak(&self->_delegate.m_weakReference, a3);
+  objc_storeWeak(&self->_delegate.m_weakReference, delegate);
   if (InspectorClient::operator new(unsigned long)::s_heapRef)
   {
     NonCompact = bmalloc::api::tzoneAllocateNonCompact(InspectorClient::operator new(unsigned long)::s_heapRef, v5);
@@ -55,7 +55,7 @@
   v7 = NonCompact;
   *NonCompact = &unk_1F10FB630;
   *(NonCompact + 8) = 0;
-  objc_initWeak((NonCompact + 8), a3);
+  objc_initWeak((NonCompact + 8), delegate);
   *(v7 + 16) = *(v7 + 16) & 0xFE | objc_opt_respondsToSelector() & 1;
   if (objc_opt_respondsToSelector())
   {
@@ -116,11 +116,11 @@
   }
 }
 
-- (void)showMainResourceForFrame:(id)a3
+- (void)showMainResourceForFrame:(id)frame
 {
-  if (a3)
+  if (frame)
   {
-    v3 = *(a3 + 3);
+    v3 = *(frame + 3);
     if (v3)
     {
       WebKit::WebInspectorUIProxy::showMainResourceForFrame(&self->_inspector, v3);
@@ -128,40 +128,40 @@
   }
 }
 
-- (void)printErrorToConsole:(id)a3
+- (void)printErrorToConsole:(id)console
 {
-  v4 = [(_WKInspector *)self webView];
-  v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"console.error(\"%@\"", a3];
-  [WKWebView evaluateJavaScript:v4 completionHandler:"evaluateJavaScript:completionHandler:"];
-  if (v5)
+  webView = [(_WKInspector *)self webView];
+  console = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"console.error(\"%@\"", console];
+  [WKWebView evaluateJavaScript:webView completionHandler:"evaluateJavaScript:completionHandler:"];
+  if (console)
   {
   }
 }
 
-- (void)_setDiagnosticLoggingDelegate:(id)a3
+- (void)_setDiagnosticLoggingDelegate:(id)delegate
 {
-  v5 = [(_WKInspector *)self inspectorWebView];
-  if (v5)
+  inspectorWebView = [(_WKInspector *)self inspectorWebView];
+  if (inspectorWebView)
   {
-    [v5 _setDiagnosticLoggingDelegate:a3];
+    [inspectorWebView _setDiagnosticLoggingDelegate:delegate];
 
-    WebKit::WebInspectorUIProxy::setDiagnosticLoggingAvailable(&self->_inspector, a3 != 0);
+    WebKit::WebInspectorUIProxy::setDiagnosticLoggingAvailable(&self->_inspector, delegate != 0);
   }
 }
 
-- (void)registerExtensionWithID:(id)a3 extensionBundleIdentifier:(id)a4 displayName:(id)a5 completionHandler:(id)a6
+- (void)registerExtensionWithID:(id)d extensionBundleIdentifier:(id)identifier displayName:(id)name completionHandler:(id)handler
 {
   v7 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"WKErrorDomain" code:1 userInfo:0];
-  (*(a6 + 2))(a6);
+  (*(handler + 2))(handler);
   if (v7)
   {
   }
 }
 
-- (void)unregisterExtension:(id)a3 completionHandler:(id)a4
+- (void)unregisterExtension:(id)extension completionHandler:(id)handler
 {
   v5 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"WKErrorDomain" code:1 userInfo:0];
-  (*(a4 + 2))(a4);
+  (*(handler + 2))(handler);
   if (v5)
   {
   }
@@ -193,9 +193,9 @@
   return v5;
 }
 
-- (void)_fetchURLForTesting:(id)a3
+- (void)_fetchURLForTesting:(id)testing
 {
-  MEMORY[0x19EB02040](&v6, [MEMORY[0x1E696AEC0] stringWithFormat:@"fetch(\"%@\", objc_msgSend(a3, "absoluteString"")]);
+  MEMORY[0x19EB02040](&v6, [MEMORY[0x1E696AEC0] stringWithFormat:@"fetch(\"%@\", objc_msgSend(testing, "absoluteString"")]);
   WebKit::WebInspectorUIProxy::evaluateInFrontendForTesting(&self->_inspector, &v6);
   v5 = v6;
   v6 = 0;
@@ -208,11 +208,11 @@
   }
 }
 
-- (void)_openURLExternallyForTesting:(id)a3 useFrontendAPI:(BOOL)a4
+- (void)_openURLExternallyForTesting:(id)testing useFrontendAPI:(BOOL)i
 {
-  if (a4)
+  if (i)
   {
-    MEMORY[0x19EB02040](&v10, [MEMORY[0x1E696AEC0] stringWithFormat:@"InspectorFrontendHost.openURLExternally(\"%@\", objc_msgSend(a3, "absoluteString"")]);
+    MEMORY[0x19EB02040](&v10, [MEMORY[0x1E696AEC0] stringWithFormat:@"InspectorFrontendHost.openURLExternally(\"%@\", objc_msgSend(testing, "absoluteString"")]);
     WebKit::WebInspectorUIProxy::evaluateInFrontendForTesting(&self->_inspector, &v10);
     v7 = v10;
     v10 = 0;
@@ -227,10 +227,10 @@
 
   else
   {
-    v8 = [(_WKInspector *)self inspectorWebView];
-    v9 = [MEMORY[0x1E695AC68] requestWithURL:a3];
+    inspectorWebView = [(_WKInspector *)self inspectorWebView];
+    v9 = [MEMORY[0x1E695AC68] requestWithURL:testing];
 
-    [v8 loadRequest:v9];
+    [inspectorWebView loadRequest:v9];
   }
 }
 

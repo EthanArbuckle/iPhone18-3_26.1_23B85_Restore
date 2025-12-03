@@ -1,11 +1,11 @@
 @interface CondensedAppEventContentView
-- (_TtC22SubscribePageExtension28CondensedAppEventContentView)initWithCoder:(id)a3;
+- (_TtC22SubscribePageExtension28CondensedAppEventContentView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation CondensedAppEventContentView
 
-- (_TtC22SubscribePageExtension28CondensedAppEventContentView)initWithCoder:(id)a3
+- (_TtC22SubscribePageExtension28CondensedAppEventContentView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC22SubscribePageExtension28CondensedAppEventContentView_lockupView;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(type metadata accessor for SmallSearchLockupView()) initWithFrame:{0.0, 0.0, 0.0, 0.0}];
@@ -19,7 +19,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1004601C8();
 }
 

@@ -1,24 +1,24 @@
 @interface PBADataRecoveryViewController
-- (PBADataRecoveryViewController)initWithContainingStackViewController:(id)a3;
-- (id)_localizedRecoveryStringForHomeButtonType:(int64_t)a3;
-- (void)_beginRecovery:(id)a3 fromViewController:(id)a4;
+- (PBADataRecoveryViewController)initWithContainingStackViewController:(id)controller;
+- (id)_localizedRecoveryStringForHomeButtonType:(int64_t)type;
+- (void)_beginRecovery:(id)recovery fromViewController:(id)controller;
 - (void)_evaluateDeviceBlockState;
 - (void)_handleBlockedDevice;
-- (void)_handleEdgeSwipe:(id)a3;
+- (void)_handleEdgeSwipe:(id)swipe;
 - (void)_handleUnblockedDevice;
 - (void)_pushPasscodeView;
 - (void)didReceiveMemoryWarning;
 - (void)loadView;
-- (void)passcodeEntryViewControllerCancelButtonPressed:(id)a3;
-- (void)passcodeEntryViewControllerEntryCompleted:(id)a3 passcode:(id)a4;
+- (void)passcodeEntryViewControllerCancelButtonPressed:(id)pressed;
+- (void)passcodeEntryViewControllerEntryCompleted:(id)completed passcode:(id)passcode;
 - (void)viewDidLoad;
 @end
 
 @implementation PBADataRecoveryViewController
 
-- (PBADataRecoveryViewController)initWithContainingStackViewController:(id)a3
+- (PBADataRecoveryViewController)initWithContainingStackViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v20.receiver = self;
   v20.super_class = PBADataRecoveryViewController;
   v6 = [(PBADataRecoveryViewController *)&v20 initWithNibName:0 bundle:0];
@@ -28,7 +28,7 @@
     firstPasscode = v6->_firstPasscode;
     v6->_firstPasscode = 0;
 
-    objc_storeStrong(&v7->_stackViewController, a3);
+    objc_storeStrong(&v7->_stackViewController, controller);
     v9 = +[PBAIdleSleepController sharedController];
     idleSleepController = v7->_idleSleepController;
     v7->_idleSleepController = v9;
@@ -65,22 +65,22 @@
   v8.super_class = PBADataRecoveryViewController;
   [(PBADataRecoveryViewController *)&v8 viewDidLoad];
   v3 = SBFEffectiveHomeButtonType();
-  v4 = [(PBADataRecoveryViewController *)self view];
-  [v4 setAutoresizingMask:18];
+  view = [(PBADataRecoveryViewController *)self view];
+  [view setAutoresizingMask:18];
   v5 = [(PBADataRecoveryViewController *)self _localizedRecoveryStringForHomeButtonType:v3];
-  [v4 setPressToOpenText:v5];
+  [view setPressToOpenText:v5];
 
   v6 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"_homeButtonPressed:"];
   [v6 setAllowedTouchTypes:&__NSArray0__struct];
   [v6 setAllowedPressTypes:&off_10001D590];
   [v6 setNumberOfTapsRequired:1];
   [v6 setCancelsTouchesInView:0];
-  [v4 addGestureRecognizer:v6];
+  [view addGestureRecognizer:v6];
   if (v3 == 2)
   {
     v7 = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:"_handleEdgeSwipe:" type:5 options:0];
     [v7 setEdges:4];
-    [v4 addGestureRecognizer:v7];
+    [view addGestureRecognizer:v7];
   }
 
   [(PBADataRecoveryViewController *)self _evaluateDeviceBlockState];
@@ -93,11 +93,11 @@
   [(PBADataRecoveryViewController *)&v2 didReceiveMemoryWarning];
 }
 
-- (id)_localizedRecoveryStringForHomeButtonType:(int64_t)a3
+- (id)_localizedRecoveryStringForHomeButtonType:(int64_t)type
 {
   v4 = +[NSBundle mainBundle];
   v5 = v4;
-  if (a3 == 2)
+  if (type == 2)
   {
     v6 = @"PREBOARD_SWIPE_FOR_RECOVERY";
   }
@@ -112,9 +112,9 @@
   return v7;
 }
 
-- (void)_handleEdgeSwipe:(id)a3
+- (void)_handleEdgeSwipe:(id)swipe
 {
-  if ([a3 state] == 3)
+  if ([swipe state] == 3)
   {
 
     [(PBADataRecoveryViewController *)self _pushPasscodeView];
@@ -132,10 +132,10 @@
   [(PBAStackViewController *)self->_stackViewController pushViewController:v5 animated:1 completion:0];
 }
 
-- (void)_beginRecovery:(id)a3 fromViewController:(id)a4
+- (void)_beginRecovery:(id)recovery fromViewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  recoveryCopy = recovery;
+  controllerCopy = controller;
   v8 = [[PBADataRecoveryProgressViewController alloc] initWithNibName:0 bundle:0];
   v9 = +[NSBundle mainBundle];
   v10 = [v9 localizedStringForKey:@"PREBOARD_RECOVERY_IN_PROGRESS" value:&stru_10001CDA8 table:@"PreBoard"];
@@ -151,13 +151,13 @@
   v15 = 3221225472;
   v16 = sub_100007148;
   v17 = &unk_10001C8A8;
-  v18 = self;
-  v19 = v6;
+  selfCopy = self;
+  v19 = recoveryCopy;
   v20 = v22;
   v12 = v22;
-  v13 = v6;
+  v13 = recoveryCopy;
   [(PBADataRecoveryEngine *)dataRecoveryEngine performDataRecoveryWithPasscode:v13 progressHandler:v21 completion:&v14];
-  [(PBAStackViewController *)self->_stackViewController replaceViewController:v7 withViewController:v12 animated:1, v14, v15, v16, v17, v18];
+  [(PBAStackViewController *)self->_stackViewController replaceViewController:controllerCopy withViewController:v12 animated:1, v14, v15, v16, v17, selfCopy];
 }
 
 - (void)_handleBlockedDevice
@@ -203,21 +203,21 @@
   }
 }
 
-- (void)passcodeEntryViewControllerEntryCompleted:(id)a3 passcode:(id)a4
+- (void)passcodeEntryViewControllerEntryCompleted:(id)completed passcode:(id)passcode
 {
-  v21 = a3;
-  v6 = a4;
-  v7 = v6;
+  completedCopy = completed;
+  passcodeCopy = passcode;
+  v7 = passcodeCopy;
   if (self->_firstPasscode)
   {
-    if ([v6 isEqualToData:?])
+    if ([passcodeCopy isEqualToData:?])
     {
-      [v21 resetPasscodeEntryFieldForFailure:0];
+      [completedCopy resetPasscodeEntryFieldForFailure:0];
       v8 = [(NSData *)self->_firstPasscode copy];
       firstPasscode = self->_firstPasscode;
       self->_firstPasscode = 0;
 
-      [(PBADataRecoveryViewController *)self _beginRecovery:v8 fromViewController:v21];
+      [(PBADataRecoveryViewController *)self _beginRecovery:v8 fromViewController:completedCopy];
       goto LABEL_7;
     }
 
@@ -228,23 +228,23 @@
     v18 = [v17 localizedStringForKey:@"PREBOARD_RECOVERY_ENTER_PASSCODE" value:&stru_10001CDA8 table:@"PreBoard"];
     v19 = +[NSBundle mainBundle];
     v20 = [v19 localizedStringForKey:@"PREBOARD_RECOVERY_SUBTITLE_MISMATCH" value:&stru_10001CDA8 table:@"PreBoard"];
-    [v21 setTitleText:v18 subtitleText:v20 animated:1];
+    [completedCopy setTitleText:v18 subtitleText:v20 animated:1];
 
-    v14 = v21;
+    v14 = completedCopy;
     v15 = 1;
   }
 
   else
   {
-    v10 = [v6 copy];
+    v10 = [passcodeCopy copy];
     v11 = self->_firstPasscode;
     self->_firstPasscode = v10;
 
     v12 = +[NSBundle mainBundle];
     v13 = [v12 localizedStringForKey:@"PREBOARD_RECOVERY_CONFIRM_PASSCODE" value:&stru_10001CDA8 table:@"PreBoard"];
-    [v21 setTitleText:v13 subtitleText:0 animated:1];
+    [completedCopy setTitleText:v13 subtitleText:0 animated:1];
 
-    v14 = v21;
+    v14 = completedCopy;
     v15 = 0;
   }
 
@@ -252,13 +252,13 @@
 LABEL_7:
 }
 
-- (void)passcodeEntryViewControllerCancelButtonPressed:(id)a3
+- (void)passcodeEntryViewControllerCancelButtonPressed:(id)pressed
 {
   firstPasscode = self->_firstPasscode;
   self->_firstPasscode = 0;
-  v5 = a3;
+  pressedCopy = pressed;
 
-  [(PBAStackViewController *)self->_stackViewController removeViewController:v5 animated:1];
+  [(PBAStackViewController *)self->_stackViewController removeViewController:pressedCopy animated:1];
 }
 
 @end

@@ -1,47 +1,47 @@
 @interface _PKIdentityButton
-+ (id)buttonWithLabel:(int64_t)a3 style:(int64_t)a4;
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
-- (BOOL)_singleLineFitsSize:(CGSize)a3;
++ (id)buttonWithLabel:(int64_t)label style:(int64_t)style;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
+- (BOOL)_singleLineFitsSize:(CGSize)size;
 - (CGSize)_baseIntrinsicMultiLineSize;
 - (CGSize)_baseIntrinsicSingleLineSize;
-- (CGSize)_intrinsicContentSizeForSingleLine:(BOOL)a3;
+- (CGSize)_intrinsicContentSizeForSingleLine:(BOOL)line;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_PKIdentityButton)initWithCoder:(id)a3;
-- (_PKIdentityButton)initWithLabel:(int64_t)a3 style:(int64_t)a4;
-- (double)_adjustedCornerRadiusForScale:(double)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_PKIdentityButton)initWithCoder:(id)coder;
+- (_PKIdentityButton)initWithLabel:(int64_t)label style:(int64_t)style;
+- (double)_adjustedCornerRadiusForScale:(double)scale;
 - (id)_singleLineTitle;
 - (id)_splitAttributedTitle;
-- (void)_adjustVisibleLabelWithBounds:(CGRect)a3;
+- (void)_adjustVisibleLabelWithBounds:(CGRect)bounds;
 - (void)_applyStyle;
 - (void)_createHighlightFilterIfNecessary;
 - (void)_sharedInit;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)layoutSubviews;
-- (void)setCornerRadius:(double)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setCornerRadius:(double)radius;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation _PKIdentityButton
 
-+ (id)buttonWithLabel:(int64_t)a3 style:(int64_t)a4
++ (id)buttonWithLabel:(int64_t)label style:(int64_t)style
 {
-  v4 = [objc_alloc(objc_opt_class()) initWithLabel:a3 style:a4];
+  v4 = [objc_alloc(objc_opt_class()) initWithLabel:label style:style];
 
   return v4;
 }
 
-- (_PKIdentityButton)initWithCoder:(id)a3
+- (_PKIdentityButton)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = _PKIdentityButton;
-  v5 = [(_PKIdentityButton *)&v8 initWithCoder:v4];
+  v5 = [(_PKIdentityButton *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_label = [v4 decodeIntegerForKey:@"PKIdentityButtonLabel"];
-    v5->_style = [v4 decodeIntegerForKey:@"PKIdentityButtonStyle"];
-    [v4 decodeFloatForKey:@"PKIdentityButtonCornerRadius"];
+    v5->_label = [coderCopy decodeIntegerForKey:@"PKIdentityButtonLabel"];
+    v5->_style = [coderCopy decodeIntegerForKey:@"PKIdentityButtonStyle"];
+    [coderCopy decodeFloatForKey:@"PKIdentityButtonCornerRadius"];
     v5->_cornerRadius = v6;
     [(_PKIdentityButton *)v5 _sharedInit];
   }
@@ -49,7 +49,7 @@
   return v5;
 }
 
-- (_PKIdentityButton)initWithLabel:(int64_t)a3 style:(int64_t)a4
+- (_PKIdentityButton)initWithLabel:(int64_t)label style:(int64_t)style
 {
   v6 = *MEMORY[0x1E695EFF8];
   v7 = *(MEMORY[0x1E695EFF8] + 8);
@@ -59,8 +59,8 @@
   v9 = v8;
   if (v8)
   {
-    v8->_style = a4;
-    v8->_label = a3;
+    v8->_style = style;
+    v8->_label = label;
     v8->_cornerRadius = 4.0;
     [(_PKIdentityButton *)v8 _sharedInit];
   }
@@ -71,17 +71,17 @@
 - (void)_sharedInit
 {
   [(_PKIdentityButton *)self setOpaque:0];
-  v3 = [(_PKIdentityButton *)self layer];
+  layer = [(_PKIdentityButton *)self layer];
   layer = self->_layer;
-  self->_layer = v3;
+  self->_layer = layer;
 
   v5 = self->_layer;
   v6 = [MEMORY[0x1E69DC888] colorWithRed:0.11373 green:0.11765 blue:0.11765 alpha:1.0];
   -[CAShapeLayer setFillColor:](v5, "setFillColor:", [v6 CGColor]);
 
   v7 = self->_layer;
-  v8 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v8 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   [(CAShapeLayer *)v7 setLineWidth:1.0 / v9];
 
   v10 = objc_alloc_init(PKShapeView);
@@ -89,8 +89,8 @@
   self->_maskView = v10;
 
   v12 = self->_layer;
-  v13 = [(PKShapeView *)self->_maskView layer];
-  [(CAShapeLayer *)v12 setMask:v13];
+  layer2 = [(PKShapeView *)self->_maskView layer];
+  [(CAShapeLayer *)v12 setMask:layer2];
 
   v14 = MEMORY[0x1E69B8948];
   v15 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
@@ -107,17 +107,17 @@
   self->_iconView = v20;
 
   [(_PKIdentityButton *)self addSubview:self->_iconView];
-  v22 = [(_PKIdentityButton *)self _singleLineTitle];
+  _singleLineTitle = [(_PKIdentityButton *)self _singleLineTitle];
   v23 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   singleLineLabel = self->_singleLineLabel;
   self->_singleLineLabel = v23;
 
   v25 = self->_singleLineLabel;
-  v26 = [MEMORY[0x1E69DC888] clearColor];
-  [(UILabel *)v25 setBackgroundColor:v26];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(UILabel *)v25 setBackgroundColor:clearColor];
 
   v27 = self->_singleLineLabel;
-  v28 = TitleFormattedString(0, v22, 1, &self->_singleLineAlignmentInset.top);
+  v28 = TitleFormattedString(0, _singleLineTitle, 1, &self->_singleLineAlignmentInset.top);
   [(UILabel *)v27 setAttributedText:v28];
 
   [(UILabel *)self->_singleLineLabel setNumberOfLines:1];
@@ -128,12 +128,12 @@
   self->_multiLineLabel = v29;
 
   v31 = self->_multiLineLabel;
-  v32 = [MEMORY[0x1E69DC888] clearColor];
-  [(UILabel *)v31 setBackgroundColor:v32];
+  clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+  [(UILabel *)v31 setBackgroundColor:clearColor2];
 
   v33 = self->_multiLineLabel;
-  v34 = [(_PKIdentityButton *)self _splitAttributedTitle];
-  [(UILabel *)v33 setAttributedText:v34];
+  _splitAttributedTitle = [(_PKIdentityButton *)self _splitAttributedTitle];
+  [(UILabel *)v33 setAttributedText:_splitAttributedTitle];
 
   [(UILabel *)self->_multiLineLabel setNumberOfLines:2];
   [(UILabel *)self->_multiLineLabel sizeToFit];
@@ -147,25 +147,25 @@
   [(_PKIdentityButton *)self _applyStyle];
   [(_PKIdentityButton *)self bounds];
   [(_PKIdentityButton *)self _adjustVisibleLabelWithBounds:?];
-  [(_PKIdentityButton *)self setAccessibilityLabel:v22];
+  [(_PKIdentityButton *)self setAccessibilityLabel:_singleLineTitle];
   [(_PKIdentityButton *)self setAccessibilityTraits:*MEMORY[0x1E69DD9B8]];
   [(_PKIdentityButton *)self sizeToFit];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = _PKIdentityButton;
-  v4 = a3;
-  [(_PKIdentityButton *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_style forKey:{@"PKIdentityButtonStyle", v5.receiver, v5.super_class}];
-  [v4 encodeInteger:self->_label forKey:@"PKIdentityButtonLabel"];
+  coderCopy = coder;
+  [(_PKIdentityButton *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_style forKey:{@"PKIdentityButtonStyle", v5.receiver, v5.super_class}];
+  [coderCopy encodeInteger:self->_label forKey:@"PKIdentityButtonLabel"];
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"path"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"path"])
   {
     v5 = 1;
   }
@@ -174,7 +174,7 @@
   {
     v7.receiver = self;
     v7.super_class = _PKIdentityButton;
-    v5 = [(_PKIdentityButton *)&v7 _shouldAnimatePropertyWithKey:v4];
+    v5 = [(_PKIdentityButton *)&v7 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v5;
@@ -188,10 +188,10 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  [(_PKIdentityButton *)self _intrinsicContentSizeForSingleLine:[(_PKIdentityButton *)self _singleLineFitsSize:a3.width]];
+  height = fits.height;
+  [(_PKIdentityButton *)self _intrinsicContentSizeForSingleLine:[(_PKIdentityButton *)self _singleLineFitsSize:fits.width]];
   v5 = fmin(height / v4, 1.0);
   v7 = v6 * v5;
   v8 = v4 * v5;
@@ -200,9 +200,9 @@
   return result;
 }
 
-- (CGSize)_intrinsicContentSizeForSingleLine:(BOOL)a3
+- (CGSize)_intrinsicContentSizeForSingleLine:(BOOL)line
 {
-  if (a3)
+  if (line)
   {
     [(_PKIdentityButton *)self _baseIntrinsicSingleLineSize];
   }
@@ -250,8 +250,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(_PKIdentityButton *)self _shouldReverseLayoutDirection];
-  if (v11)
+  _shouldReverseLayoutDirection = [(_PKIdentityButton *)self _shouldReverseLayoutDirection];
+  if (_shouldReverseLayoutDirection)
   {
     v12 = CGRectMaxXEdge;
   }
@@ -327,8 +327,8 @@
     v25 = v19 * 8.0;
     v38 = [v30 pathWithRoundedRect:v36 cornerRadius:{v37, v8, v10, v35}];
     -[CAShapeLayer setPath:](self->_layer, "setPath:", [v38 CGPath]);
-    v39 = [(PKShapeView *)self->_maskView shapeLayer];
-    [v39 setPath:{objc_msgSend(v38, "CGPath")}];
+    shapeLayer = [(PKShapeView *)self->_maskView shapeLayer];
+    [shapeLayer setPath:{objc_msgSend(v38, "CGPath")}];
 
     right = v102;
     v28 = v106;
@@ -424,7 +424,7 @@
     v72 = v59;
   }
 
-  if (v11)
+  if (_shouldReverseLayoutDirection)
   {
     MinX = CGRectGetMaxX(*&v69) - v68;
   }
@@ -454,44 +454,44 @@
     v75 = v64;
   }
 
-  v76 = [(UIImageView *)self->_iconView layer];
-  [v76 anchorPoint];
+  layer = [(UIImageView *)self->_iconView layer];
+  [layer anchorPoint];
   v78 = v77;
   v80 = v79;
   v122 = v125;
-  [v76 setTransform:&v122];
-  [v76 setPosition:{v109 + v78 * v107, v111 + v80 * v113}];
-  v81 = [(UILabel *)self->_multiLineLabel layer];
+  [layer setTransform:&v122];
+  [layer setPosition:{v109 + v78 * v107, v111 + v80 * v113}];
+  layer2 = [(UILabel *)self->_multiLineLabel layer];
 
-  [v81 anchorPoint];
+  [layer2 anchorPoint];
   v83 = v82;
   v85 = v84;
   v122 = v125;
-  [v81 setTransform:&v122];
-  [v81 setPosition:{v74 + v83 * recta, v117 + v85 * v59}];
-  v86 = [(UILabel *)self->_singleLineLabel layer];
+  [layer2 setTransform:&v122];
+  [layer2 setPosition:{v74 + v83 * recta, v117 + v85 * v59}];
+  layer3 = [(UILabel *)self->_singleLineLabel layer];
 
-  [v86 anchorPoint];
+  [layer3 anchorPoint];
   v88 = v87;
   v90 = v89;
   v122 = v125;
-  [v86 setTransform:&v122];
-  [v86 setPosition:{v75 + v88 * v66, v65 + v90 * v67}];
+  [layer3 setTransform:&v122];
+  [layer3 setPosition:{v75 + v88 * v66, v65 + v90 * v67}];
 }
 
-- (void)_adjustVisibleLabelWithBounds:(CGRect)a3
+- (void)_adjustVisibleLabelWithBounds:(CGRect)bounds
 {
-  v4 = [(_PKIdentityButton *)self _singleLineFitsSize:a3.size.width, a3.size.height];
+  v4 = [(_PKIdentityButton *)self _singleLineFitsSize:bounds.size.width, bounds.size.height];
   [(UILabel *)self->_multiLineLabel setAlpha:(v4 ^ 1)];
   singleLineLabel = self->_singleLineLabel;
 
   [(UILabel *)singleLineLabel setAlpha:v4];
 }
 
-- (BOOL)_singleLineFitsSize:(CGSize)a3
+- (BOOL)_singleLineFitsSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(_PKIdentityButton *)self _intrinsicContentSizeForSingleLine:1];
   return v6 * fmin(height / v5, 1.0) <= width;
 }
@@ -567,7 +567,7 @@
   v10[1] = *MEMORY[0x1E69E9840];
   if (!self->_highlightFilter)
   {
-    v3 = [(_PKIdentityButton *)self layer];
+    layer = [(_PKIdentityButton *)self layer];
     v4 = objc_alloc(MEMORY[0x1E6979378]);
     v5 = [v4 initWithType:*MEMORY[0x1E6979CB0]];
     highlightFilter = self->_highlightFilter;
@@ -580,30 +580,30 @@
 
     v10[0] = self->_highlightFilter;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
-    [v3 setFilters:v9];
+    [layer setFilters:v9];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v12.receiver = self;
   v12.super_class = _PKIdentityButton;
   [(_PKIdentityButton *)&v12 setHighlighted:?];
-  if (self->_highlighted != v3)
+  if (self->_highlighted != highlightedCopy)
   {
-    self->_highlighted = v3;
+    self->_highlighted = highlightedCopy;
     [(_PKIdentityButton *)self _createHighlightFilterIfNecessary];
     v5 = 0.6;
-    if (!v3)
+    if (!highlightedCopy)
     {
       v5 = 1.0;
     }
 
     v6 = [MEMORY[0x1E69DC888] colorWithWhite:v5 alpha:?];
     v7 = MEMORY[0x1E69DC888];
-    v8 = [(CAShapeLayer *)self->_layer presentationLayer];
-    v9 = [v8 valueForKeyPath:@"filters.highlightFilter.inputColor"];
+    presentationLayer = [(CAShapeLayer *)self->_layer presentationLayer];
+    v9 = [presentationLayer valueForKeyPath:@"filters.highlightFilter.inputColor"];
     if (!v9)
     {
       v9 = [(CAShapeLayer *)self->_layer valueForKeyPath:@"filters.highlightFilter.inputColor"];
@@ -634,27 +634,27 @@
 
   else
   {
-    v4 = [(CAShapeLayer *)self->_layer fillColor];
+    fillColor = [(CAShapeLayer *)self->_layer fillColor];
 
-    [(CAShapeLayer *)layer setStrokeColor:v4];
+    [(CAShapeLayer *)layer setStrokeColor:fillColor];
   }
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  if (a3 < 0.0)
+  if (radius < 0.0)
   {
-    a3 = 0.0;
+    radius = 0.0;
   }
 
-  if (self->_cornerRadius != a3)
+  if (self->_cornerRadius != radius)
   {
-    self->_cornerRadius = a3;
+    self->_cornerRadius = radius;
     [(_PKIdentityButton *)self setNeedsDisplay];
   }
 }
 
-- (double)_adjustedCornerRadiusForScale:(double)a3
+- (double)_adjustedCornerRadiusForScale:(double)scale
 {
   [(_PKIdentityButton *)self cornerRadius];
 

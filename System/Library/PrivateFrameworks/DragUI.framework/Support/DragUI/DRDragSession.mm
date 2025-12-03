@@ -3,12 +3,12 @@
 - (BOOL)_areAllTouchesEndedOrCancelled;
 - (BOOL)_canRunBlocksWaitingForLastTouchAndDestinationToEnd;
 - (BOOL)_runBlocksWaitingForLastTouchAndDestinationToEndIfPossible;
-- (BOOL)shouldIgnoreRequest:(SEL)a3 fromDestination:(id)a4;
+- (BOOL)shouldIgnoreRequest:(SEL)request fromDestination:(id)destination;
 - (BOOL)synthesizesTouch;
 - (CGSize)maximumResizableSize;
 - (CGSize)minimumResizableSize;
 - (CGSize)originalScale;
-- (DRDragSession)initWithIdentifier:(unsigned int)a3 configuration:(id)a4 mainWindow:(id)a5 sourceConnection:(id)a6 accessibilityConnection:(id)a7 clientSource:(id)a8 delegate:(id)a9;
+- (DRDragSession)initWithIdentifier:(unsigned int)identifier configuration:(id)configuration mainWindow:(id)window sourceConnection:(id)connection accessibilityConnection:(id)accessibilityConnection clientSource:(id)source delegate:(id)delegate;
 - (DRDragSessionDelegate)delegate;
 - (DRTouchTrackingWindow)interactionWindow;
 - (DRTouchTrackingWindow)sourceInteractionWindow;
@@ -17,96 +17,96 @@
 - (NSXPCConnection)dropDestinationConnection;
 - (UIDraggingSystemTouchRoutingPolicy)routingPolicy;
 - (id)currentDestination;
-- (id)dataTransferSessionForDestination:(id)a3;
-- (id)itemCollectionForDestination:(id)a3;
-- (id)newDataTransferSessionWithDestinationAuditToken:(id *)a3 filter:(id)a4;
-- (void)_acceptDragPreviews:(id)a3 fence:(id)a4 fromClient:(id)a5;
-- (void)_animateOutVisibleItemsAndEndDragWithOperation:(unint64_t)a3 destination:(id)a4;
-- (void)_applyMainWindowExclusionToRoutingPolicy:(id)a3;
+- (id)dataTransferSessionForDestination:(id)destination;
+- (id)itemCollectionForDestination:(id)destination;
+- (id)newDataTransferSessionWithDestinationAuditToken:(id *)token filter:(id)filter;
+- (void)_acceptDragPreviews:(id)previews fence:(id)fence fromClient:(id)client;
+- (void)_animateOutVisibleItemsAndEndDragWithOperation:(unint64_t)operation destination:(id)destination;
+- (void)_applyMainWindowExclusionToRoutingPolicy:(id)policy;
 - (void)_cancelDrag;
 - (void)_cancelTouchWatchdog;
 - (void)_endDragByCancelling;
-- (void)_endDragWithOperation:(unint64_t)a3 dataTransferSession:(id)a4;
-- (void)_endDragWithOperation:(unint64_t)a3 destination:(id)a4;
-- (void)_handleDirtyItems:(id)a3 fromClient:(id)a4;
-- (void)_lastTouchEndedNormally:(BOOL)a3;
+- (void)_endDragWithOperation:(unint64_t)operation dataTransferSession:(id)session;
+- (void)_endDragWithOperation:(unint64_t)operation destination:(id)destination;
+- (void)_handleDirtyItems:(id)items fromClient:(id)client;
+- (void)_lastTouchEndedNormally:(BOOL)normally;
 - (void)_liftVirtualHIDServiceIfNecessary;
-- (void)_logStatisticsForDragEnd:(unint64_t)a3 destination:(id)a4;
-- (void)_notifyDestinationsWithAddedItemsStartingAtIndex:(unint64_t)a3;
-- (void)_performAfterLastTouchAndDestinationBothEnd:(id)a3;
-- (void)_performDropOperation:(unint64_t)a3 layerContext:(id)a4 forConnection:(id)a5;
-- (void)_receivedEndFromDestinationOnConnection:(id)a3;
-- (void)_resetTouchWatchdogWithTimeout:(double)a3;
+- (void)_logStatisticsForDragEnd:(unint64_t)end destination:(id)destination;
+- (void)_notifyDestinationsWithAddedItemsStartingAtIndex:(unint64_t)index;
+- (void)_performAfterLastTouchAndDestinationBothEnd:(id)end;
+- (void)_performDropOperation:(unint64_t)operation layerContext:(id)context forConnection:(id)connection;
+- (void)_receivedEndFromDestinationOnConnection:(id)connection;
+- (void)_resetTouchWatchdogWithTimeout:(double)timeout;
 - (void)_runBlocksWaitingForLastTouchAndDestinationToEnd;
 - (void)_touchWatchdogFired;
 - (void)_transitionToDoneIfPossible;
 - (void)_updateAccessibilityDragStatus;
-- (void)_updateIsAnyProcessBeingDebuggedWithConnection:(id)a3;
-- (void)_updatePotentialDrop:(id)a3 forDestinationClient:(id)a4;
+- (void)_updateIsAnyProcessBeingDebuggedWithConnection:(id)connection;
+- (void)_updatePotentialDrop:(id)drop forDestinationClient:(id)client;
 - (void)accessibilityCancel;
 - (void)accessibilityDrop;
-- (void)accessibilityMoveToPoint:(CGPoint)a3;
-- (void)addItemCollection:(id)a3 dataProviderEndpoint:(id)a4;
-- (void)addTouchID:(id)a3;
+- (void)accessibilityMoveToPoint:(CGPoint)point;
+- (void)addItemCollection:(id)collection dataProviderEndpoint:(id)endpoint;
+- (void)addTouchID:(id)d;
 - (void)beganPointerDrag;
-- (void)beginAccessibilityDragAtLocationIfNeeded:(CAPoint3D)a3 hidService:(id)a4;
+- (void)beginAccessibilityDragAtLocationIfNeeded:(CAPoint3D)needed hidService:(id)service;
 - (void)beginDrag;
-- (void)beginPointerDragAtLocationIfNeeded:(CAPoint3D)a3 hidService:(id)a4;
+- (void)beginPointerDragAtLocationIfNeeded:(CAPoint3D)needed hidService:(id)service;
 - (void)cancelDrag;
 - (void)cancelDragSession;
 - (void)cancelPointerDrag;
 - (void)commandeerDragSession;
-- (void)dataTransferSessionFinished:(id)a3;
+- (void)dataTransferSessionFinished:(id)finished;
 - (void)dealloc;
-- (void)destinationConnectionWasInvalidated:(id)a3;
-- (void)didFinishRequestingDataForDragContinuation:(id)a3;
-- (void)dirtyDestinationItems:(id)a3;
-- (void)dirtySourceItems:(id)a3;
+- (void)destinationConnectionWasInvalidated:(id)invalidated;
+- (void)didFinishRequestingDataForDragContinuation:(id)continuation;
+- (void)dirtyDestinationItems:(id)items;
+- (void)dirtySourceItems:(id)items;
 - (void)disableDragDisplay;
 - (void)dragDidExitSourceApp;
 - (void)enableKeyboardIfNeeded;
 - (void)endPointerDrag;
 - (void)fail;
-- (void)loadURLForItemAtIndex:(unint64_t)a3 reply:(id)a4;
-- (void)loadUserActivityDataForItemAtIndex:(unint64_t)a3 reply:(id)a4;
-- (void)movePointerDragToPoint:(CAPoint3D)a3 hidService:(id)a4;
-- (void)notifyDragMonitorsWithUpdatedPresentation:(id)a3;
-- (void)overrideDragWindowToPoint:(CGPoint)a3;
-- (void)performAfterReceivingOutsideAppSourceOperationMask:(id)a3;
+- (void)loadURLForItemAtIndex:(unint64_t)index reply:(id)reply;
+- (void)loadUserActivityDataForItemAtIndex:(unint64_t)index reply:(id)reply;
+- (void)movePointerDragToPoint:(CAPoint3D)point hidService:(id)service;
+- (void)notifyDragMonitorsWithUpdatedPresentation:(id)presentation;
+- (void)overrideDragWindowToPoint:(CGPoint)point;
+- (void)performAfterReceivingOutsideAppSourceOperationMask:(id)mask;
 - (void)performOffscreenDrop;
-- (void)requestDragContinuationEndpointWithReply:(id)a3;
-- (void)requestDropWithOperation:(unint64_t)a3 layerContext:(id)a4;
-- (void)requestImagesForClient:(id)a3 itemIndexes:(id)a4;
-- (void)requestVisibleItemsWithReply:(id)a3;
+- (void)requestDragContinuationEndpointWithReply:(id)reply;
+- (void)requestDropWithOperation:(unint64_t)operation layerContext:(id)context;
+- (void)requestImagesForClient:(id)client itemIndexes:(id)indexes;
+- (void)requestVisibleItemsWithReply:(id)reply;
 - (void)sawDragEndEvent;
-- (void)sendDragEndedWithOperation:(unint64_t)a3;
-- (void)setSetDownAnimationState:(int64_t)a3;
-- (void)setState:(int64_t)a3;
+- (void)sendDragEndedWithOperation:(unint64_t)operation;
+- (void)setSetDownAnimationState:(int64_t)state;
+- (void)setState:(int64_t)state;
 - (void)sourceConnectionWasInvalidated;
 - (void)surrenderDragSession;
-- (void)takePotentialDrop:(id)a3;
-- (void)touchBeganWithID:(id)a3;
-- (void)touchCancelledWithID:(id)a3;
-- (void)touchEndedWithID:(id)a3 contextID:(id)a4 pid:(id)a5 likelyMovingOffscreen:(BOOL)a6;
-- (void)touchMovedWithID:(id)a3;
-- (void)touchUpOccuredForIdentifier:(unsigned int)a3 detached:(BOOL)a4 context:(unsigned int)a5 pid:(int)a6;
-- (void)transitionFromState:(int64_t)a3 toTerminalState:(int64_t)a4;
-- (void)updateRoutingPolicy:(id)a3;
+- (void)takePotentialDrop:(id)drop;
+- (void)touchBeganWithID:(id)d;
+- (void)touchCancelledWithID:(id)d;
+- (void)touchEndedWithID:(id)d contextID:(id)iD pid:(id)pid likelyMovingOffscreen:(BOOL)offscreen;
+- (void)touchMovedWithID:(id)d;
+- (void)touchUpOccuredForIdentifier:(unsigned int)identifier detached:(BOOL)detached context:(unsigned int)context pid:(int)pid;
+- (void)transitionFromState:(int64_t)state toTerminalState:(int64_t)terminalState;
+- (void)updateRoutingPolicy:(id)policy;
 @end
 
 @implementation DRDragSession
 
-- (DRDragSession)initWithIdentifier:(unsigned int)a3 configuration:(id)a4 mainWindow:(id)a5 sourceConnection:(id)a6 accessibilityConnection:(id)a7 clientSource:(id)a8 delegate:(id)a9
+- (DRDragSession)initWithIdentifier:(unsigned int)identifier configuration:(id)configuration mainWindow:(id)window sourceConnection:(id)connection accessibilityConnection:(id)accessibilityConnection clientSource:(id)source delegate:(id)delegate
 {
-  v15 = a4;
-  v72 = a5;
-  v75 = a6;
-  v16 = a7;
-  v74 = a8;
-  obj = a9;
-  v17 = [v15 itemCollection];
-  v73 = [v15 dataProviderEndpoint];
-  if (!a3 || !v75 || !v17 || ([v17 items], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "count"), v18, !v74) || !v19 || !v73)
+  configurationCopy = configuration;
+  windowCopy = window;
+  connectionCopy = connection;
+  accessibilityConnectionCopy = accessibilityConnection;
+  sourceCopy = source;
+  obj = delegate;
+  itemCollection = [configurationCopy itemCollection];
+  dataProviderEndpoint = [configurationCopy dataProviderEndpoint];
+  if (!identifier || !connectionCopy || !itemCollection || ([itemCollection items], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "count"), v18, !sourceCopy) || !v19 || !dataProviderEndpoint)
   {
     v44 = DRLogTarget();
     if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
@@ -117,23 +117,23 @@
     goto LABEL_16;
   }
 
-  if (v16)
+  if (accessibilityConnectionCopy)
   {
     v20 = _DUINewClientSessionAccessibilityInterface();
-    [v16 setRemoteObjectInterface:v20];
+    [accessibilityConnectionCopy setRemoteObjectInterface:v20];
 
-    [v16 resume];
+    [accessibilityConnectionCopy resume];
     *&buf = 0;
     *(&buf + 1) = &buf;
     v83 = 0x2020000000;
     v84 = 0;
-    v21 = [v16 synchronousRemoteObjectProxyWithErrorHandler:&stru_100055680];
+    v21 = [accessibilityConnectionCopy synchronousRemoteObjectProxyWithErrorHandler:&stru_100055680];
     v79[0] = _NSConcreteStackBlock;
     v79[1] = 3221225472;
     v79[2] = sub_100016D38;
     v79[3] = &unk_1000556A8;
     p_buf = &buf;
-    v22 = v16;
+    v22 = accessibilityConnectionCopy;
     v80 = v22;
     [v21 dragWillBeginWithReply:v79];
     if (*(*(&buf + 1) + 24))
@@ -152,7 +152,7 @@
     [v22 invalidate];
     _Block_object_dispose(&buf, 8);
 LABEL_16:
-    v45 = 0;
+    selfCopy = 0;
     goto LABEL_17;
   }
 
@@ -162,82 +162,82 @@ LABEL_10:
   v23 = [(DRDragSession *)&v78 init];
   if (v23)
   {
-    v24 = [v75 _queue];
+    _queue = [connectionCopy _queue];
     xpcQueue = v23->_xpcQueue;
-    v23->_xpcQueue = v24;
+    v23->_xpcQueue = _queue;
 
-    v23->_identifier = a3;
+    v23->_identifier = identifier;
     objc_storeWeak(&v23->_delegate, obj);
-    v26 = [v15 routingPolicy];
+    routingPolicy = [configurationCopy routingPolicy];
     routingPolicy = v23->_routingPolicy;
-    v23->_routingPolicy = v26;
+    v23->_routingPolicy = routingPolicy;
 
-    v23->_supportsSystemDrag = [v15 supportsSystemDrag];
-    v23->_avoidsKeyboardSuppression = [v15 avoidsKeyboardSuppression];
-    v23->_rotatable = [v15 rotatable];
-    v23->_resizable = [v15 resizable];
-    [v15 minimumResizableSize];
+    v23->_supportsSystemDrag = [configurationCopy supportsSystemDrag];
+    v23->_avoidsKeyboardSuppression = [configurationCopy avoidsKeyboardSuppression];
+    v23->_rotatable = [configurationCopy rotatable];
+    v23->_resizable = [configurationCopy resizable];
+    [configurationCopy minimumResizableSize];
     v23->_minimumResizableSize.width = v28;
     v23->_minimumResizableSize.height = v29;
-    [v15 maximumResizableSize];
+    [configurationCopy maximumResizableSize];
     v23->_maximumResizableSize.width = v30;
     v23->_maximumResizableSize.height = v31;
-    v32 = [v15 persistentSceneIdentifier];
+    persistentSceneIdentifier = [configurationCopy persistentSceneIdentifier];
     persistentSceneIdentifier = v23->_persistentSceneIdentifier;
-    v23->_persistentSceneIdentifier = v32;
+    v23->_persistentSceneIdentifier = persistentSceneIdentifier;
 
-    v23->_wantsElasticEffects = [v15 wantsElasticEffects];
-    [v15 originalRotation];
+    v23->_wantsElasticEffects = [configurationCopy wantsElasticEffects];
+    [configurationCopy originalRotation];
     v23->_originalRotation = v34;
-    [v15 originalScale];
+    [configurationCopy originalScale];
     v23->_originalScale.width = v35;
     v23->_originalScale.height = v36;
-    v23->_mainWindowContextId = [v72 _contextId];
-    objc_storeWeak(&v23->_sourceInteractionWindow, v72);
-    v37 = [v15 coordinateSpaceSourceLayerContext];
-    v23->_dragSourceContextId = [v37 contextID];
+    v23->_mainWindowContextId = [windowCopy _contextId];
+    objc_storeWeak(&v23->_sourceInteractionWindow, windowCopy);
+    coordinateSpaceSourceLayerContext = [configurationCopy coordinateSpaceSourceLayerContext];
+    v23->_dragSourceContextId = [coordinateSpaceSourceLayerContext contextID];
 
-    v23->_sourceRestrictsDragToSelf = [v15 sessionIsRestrictedToSourceApplication];
-    v23->_sourceRestrictsDragToLocalDevice = [v15 sessionIsRestrictedToLocalDevice];
-    v38 = [v72 screen];
-    v23->_originatedFromContinuityDisplay = sub_1000022FC(v38);
+    v23->_sourceRestrictsDragToSelf = [configurationCopy sessionIsRestrictedToSourceApplication];
+    v23->_sourceRestrictsDragToLocalDevice = [configurationCopy sessionIsRestrictedToLocalDevice];
+    screen = [windowCopy screen];
+    v23->_originatedFromContinuityDisplay = sub_1000022FC(screen);
 
     [(DRDragSession *)v23 _applyMainWindowExclusionToRoutingPolicy:v23->_routingPolicy];
-    objc_storeStrong(&v23->_sourceConnection, a6);
-    objc_storeStrong(&v23->_itemCollection, v17);
-    objc_storeStrong(&v23->_dataProviderEndpoint, v73);
+    objc_storeStrong(&v23->_sourceConnection, connection);
+    objc_storeStrong(&v23->_itemCollection, itemCollection);
+    objc_storeStrong(&v23->_dataProviderEndpoint, dataProviderEndpoint);
     v39 = dispatch_queue_create("com.apple.druid.loader", 0);
     loaderQueue = v23->_loaderQueue;
     v23->_loaderQueue = v39;
 
-    if (v16)
+    if (accessibilityConnectionCopy)
     {
       v23->_originatedFromAccessibility = 1;
-      objc_storeStrong(&v23->_axConnection, a7);
+      objc_storeStrong(&v23->_axConnection, accessibilityConnection);
       v41 = _DUINewServerSessionAccessibilityInterface();
-      [v16 setExportedInterface:v41];
+      [accessibilityConnectionCopy setExportedInterface:v41];
 
-      [v16 setExportedObject:v23];
-      v42 = [v16 remoteObjectProxy];
+      [accessibilityConnectionCopy setExportedObject:v23];
+      remoteObjectProxy = [accessibilityConnectionCopy remoteObjectProxy];
       accessibilityProxy = v23->_accessibilityProxy;
-      v23->_accessibilityProxy = v42;
+      v23->_accessibilityProxy = remoteObjectProxy;
     }
 
     else
     {
-      v23->_originatedFromPointer = [v15 initiatedWithPointer];
+      v23->_originatedFromPointer = [configurationCopy initiatedWithPointer];
     }
 
-    if ([v15 associatedObjectManipulationSessionIdentifier])
+    if ([configurationCopy associatedObjectManipulationSessionIdentifier])
     {
-      v23->_associatedObjectManipulationSessionID = [v15 associatedObjectManipulationSessionIdentifier];
-      [v15 associatedObjectManipulationDragItemSize];
+      v23->_associatedObjectManipulationSessionID = [configurationCopy associatedObjectManipulationSessionIdentifier];
+      [configurationCopy associatedObjectManipulationDragItemSize];
       v23->_associatedObjectManipulationDragItemSize.width = v48;
       v23->_associatedObjectManipulationDragItemSize.height = v49;
       v23->_associatedObjectManipulationDragItemSize.depth = v50;
     }
 
-    objc_storeStrong(&v23->_clientSource, a8);
+    objc_storeStrong(&v23->_clientSource, source);
     v51 = objc_alloc_init(NSMutableSet);
     touchIDs = v23->_touchIDs;
     v23->_touchIDs = v51;
@@ -252,9 +252,9 @@ LABEL_10:
 
     v23->_state = 0;
     v23->_lastPotentialDropWasFromSourceApp = 1;
-    if ([v15 wantsPresentationUpdates])
+    if ([configurationCopy wantsPresentationUpdates])
     {
-      v57 = [v75 valueForEntitlement:@"com.apple.DragUI.presentationUpdateNotification"];
+      v57 = [connectionCopy valueForEntitlement:@"com.apple.DragUI.presentationUpdateNotification"];
       v23->_sourceReceivesPresentationUpdates = [v57 isEqual:&__kCFBooleanTrue];
     }
 
@@ -262,14 +262,14 @@ LABEL_10:
     connectionToDestinationMap = v23->_connectionToDestinationMap;
     v23->_connectionToDestinationMap = v58;
 
-    v60 = [v17 items];
-    v61 = [v60 count];
+    items = [itemCollection items];
+    v61 = [items count];
     if (v61)
     {
       for (i = 0; i != v61; ++i)
       {
         v63 = [DRDragItem alloc];
-        v64 = [v60 objectAtIndexedSubscript:i];
+        v64 = [items objectAtIndexedSubscript:i];
         v65 = [(DRDragItem *)v63 initWithPasteboardItem:v64];
 
         if (v65)
@@ -279,8 +279,8 @@ LABEL_10:
       }
     }
 
-    v23->_sourceDataOwner = [v17 originatorDataOwner];
-    [(DRDragSession *)v23 _updateIsAnyProcessBeingDebuggedWithConnection:v75];
+    v23->_sourceDataOwner = [itemCollection originatorDataOwner];
+    [(DRDragSession *)v23 _updateIsAnyProcessBeingDebuggedWithConnection:connectionCopy];
     if (qword_100063628 != -1)
     {
       sub_100030148();
@@ -328,19 +328,19 @@ LABEL_10:
   }
 
   self = v23;
-  v45 = self;
+  selfCopy = self;
 LABEL_17:
 
-  return v45;
+  return selfCopy;
 }
 
-- (void)_updateIsAnyProcessBeingDebuggedWithConnection:(id)a3
+- (void)_updateIsAnyProcessBeingDebuggedWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   dispatch_assert_queue_V2(self->_xpcQueue);
   if (!self->_isAnyProcessBeingDebugged)
   {
-    v4 = sub_100001D58([v5 processIdentifier]);
+    v4 = sub_100001D58([connectionCopy processIdentifier]);
     self->_isAnyProcessBeingDebugged = v4;
     if (v4)
     {
@@ -389,12 +389,12 @@ LABEL_17:
   }
 }
 
-- (void)setSetDownAnimationState:(int64_t)a3
+- (void)setSetDownAnimationState:(int64_t)state
 {
-  if (self->_setDownAnimationState != a3)
+  if (self->_setDownAnimationState != state)
   {
-    self->_setDownAnimationState = a3;
-    if (a3 == 2)
+    self->_setDownAnimationState = state;
+    if (state == 2)
     {
       setDownAnimationTimeoutTimer = self->_setDownAnimationTimeoutTimer;
       if (setDownAnimationTimeoutTimer)
@@ -413,7 +413,7 @@ LABEL_17:
       [(DRDragSession *)self _transitionToDoneIfPossible];
     }
 
-    else if (a3 == 1)
+    else if (state == 1)
     {
       if (!self->_setDownAnimationTimeoutTimer)
       {
@@ -454,7 +454,7 @@ LABEL_17:
 {
   if ([(DRDragSession *)self setDownAnimationState]== 1)
   {
-    v3 = self;
+    selfCopy2 = self;
     v4 = 6;
   }
 
@@ -465,40 +465,40 @@ LABEL_17:
       return;
     }
 
-    v5 = [(DRDragSession *)self sourceConnection];
-    [v5 invalidate];
+    sourceConnection = [(DRDragSession *)self sourceConnection];
+    [sourceConnection invalidate];
 
     WeakRetained = objc_loadWeakRetained(&self->_dropDestinationConnection);
     [WeakRetained invalidate];
 
-    v3 = self;
+    selfCopy2 = self;
     v4 = 7;
   }
 
-  [(DRDragSession *)v3 setState:v4];
+  [(DRDragSession *)selfCopy2 setState:v4];
 }
 
-- (void)addTouchID:(id)a3
+- (void)addTouchID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_xpcQueue);
-  if (([(NSMutableSet *)self->_touchIDs containsObject:v4]& 1) == 0)
+  if (([(NSMutableSet *)self->_touchIDs containsObject:dCopy]& 1) == 0)
   {
-    [(NSMutableSet *)self->_touchIDs addObject:v4];
+    [(NSMutableSet *)self->_touchIDs addObject:dCopy];
     v5 = DRLogTarget();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v7 = 138412546;
-      v8 = self;
+      selfCopy = self;
       v9 = 2112;
-      v10 = v4;
+      v10 = dCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Session %@: Added touch ID %@", &v7, 0x16u);
     }
 
     ++self->_pendingTouchUpObservationCount;
     self->_pendingDisplayTransitionLift = 0;
     v6 = +[BKSTouchDeliveryObservationService sharedInstance];
-    [v6 addObserver:self forTouchIdentifier:{objc_msgSend(v4, "unsignedIntegerValue")}];
+    [v6 addObserver:self forTouchIdentifier:{objc_msgSend(dCopy, "unsignedIntegerValue")}];
   }
 }
 
@@ -521,7 +521,7 @@ LABEL_17:
   return systemRoutingPolicy;
 }
 
-- (void)touchBeganWithID:(id)a3
+- (void)touchBeganWithID:(id)d
 {
   dispatch_assert_queue_V2(self->_xpcQueue);
   if (![(DRDragSession *)self synthesizesTouch])
@@ -531,7 +531,7 @@ LABEL_17:
   }
 }
 
-- (void)touchMovedWithID:(id)a3
+- (void)touchMovedWithID:(id)d
 {
   dispatch_assert_queue_V2(self->_xpcQueue);
   if (![(DRDragSession *)self synthesizesTouch])
@@ -541,22 +541,22 @@ LABEL_17:
   }
 }
 
-- (void)touchEndedWithID:(id)a3 contextID:(id)a4 pid:(id)a5 likelyMovingOffscreen:(BOOL)a6
+- (void)touchEndedWithID:(id)d contextID:(id)iD pid:(id)pid likelyMovingOffscreen:(BOOL)offscreen
 {
-  v6 = a6;
+  offscreenCopy = offscreen;
   xpcQueue = self->_xpcQueue;
-  v10 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(xpcQueue);
-  v9 = !v6 || self->_isSystemCommandeered;
-  [(DRDragSession *)self _touchEndedNormally:v9 withID:v10];
+  v9 = !offscreenCopy || self->_isSystemCommandeered;
+  [(DRDragSession *)self _touchEndedNormally:v9 withID:dCopy];
 }
 
-- (void)touchCancelledWithID:(id)a3
+- (void)touchCancelledWithID:(id)d
 {
   xpcQueue = self->_xpcQueue;
-  v5 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(xpcQueue);
-  [(DRDragSession *)self _touchEndedNormally:0 withID:v5];
+  [(DRDragSession *)self _touchEndedNormally:0 withID:dCopy];
 }
 
 - (BOOL)_areAllTouchesEndedOrCancelled
@@ -568,14 +568,14 @@ LABEL_17:
   return [(NSMutableSet *)touchIDs isSubsetOfSet:endedTouchIDs];
 }
 
-- (void)_resetTouchWatchdogWithTimeout:(double)a3
+- (void)_resetTouchWatchdogWithTimeout:(double)timeout
 {
   dispatch_assert_queue_V2(self->_xpcQueue);
   touchWatchdogTimer = self->_touchWatchdogTimer;
   if (touchWatchdogTimer)
   {
 
-    [(DRDispatchTimer *)touchWatchdogTimer resetWithTimeout:a3 leeway:0.5];
+    [(DRDispatchTimer *)touchWatchdogTimer resetWithTimeout:timeout leeway:0.5];
   }
 }
 
@@ -611,16 +611,16 @@ LABEL_17:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v17 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Session %@: cancel drag", buf, 0xCu);
   }
 
-  v4 = [(DRDragSession *)self touchIDs];
+  touchIDs = [(DRDragSession *)self touchIDs];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [touchIDs countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -632,7 +632,7 @@ LABEL_17:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(touchIDs);
         }
 
         [(DRDragSession *)self touchCancelledWithID:*(*(&v11 + 1) + 8 * v8)];
@@ -640,15 +640,15 @@ LABEL_17:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [touchIDs countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 
-  if ([v4 count])
+  if ([touchIDs count])
   {
-    v9 = [v4 allObjects];
+    allObjects = [touchIDs allObjects];
     BKSHIDServicesCancelTouchesWithIdentifiers();
   }
 
@@ -665,17 +665,17 @@ LABEL_17:
   }
 }
 
-- (void)touchUpOccuredForIdentifier:(unsigned int)a3 detached:(BOOL)a4 context:(unsigned int)a5 pid:(int)a6
+- (void)touchUpOccuredForIdentifier:(unsigned int)identifier detached:(BOOL)detached context:(unsigned int)context pid:(int)pid
 {
   xpcQueue = self->_xpcQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100017ACC;
   block[3] = &unk_1000556D0;
-  v11 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = a6;
+  detachedCopy = detached;
+  identifierCopy = identifier;
+  contextCopy = context;
+  pidCopy = pid;
   block[4] = self;
   dispatch_async(xpcQueue, block);
 }
@@ -689,12 +689,12 @@ LABEL_17:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
       v8 = 138412290;
-      v9 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Session %@: begin drag", &v8, 0xCu);
     }
 
-    v4 = [(DRDragSession *)self sourceConnection];
-    v5 = -[DRDragSession takeProcessAssertionOnPID:](self, "takeProcessAssertionOnPID:", [v4 processIdentifier]);
+    sourceConnection = [(DRDragSession *)self sourceConnection];
+    v5 = -[DRDragSession takeProcessAssertionOnPID:](self, "takeProcessAssertionOnPID:", [sourceConnection processIdentifier]);
     sourceKeepAliveAssertion = self->_sourceKeepAliveAssertion;
     self->_sourceKeepAliveAssertion = v5;
 
@@ -703,8 +703,8 @@ LABEL_17:
 
   if (![(DRDragSession *)self avoidsKeyboardSuppression])
   {
-    v7 = [(DRDragSession *)self delegate];
-    [v7 dragSession:self enableKeyboardIfNeeded:0];
+    delegate = [(DRDragSession *)self delegate];
+    [delegate dragSession:self enableKeyboardIfNeeded:0];
   }
 }
 
@@ -728,9 +728,9 @@ LABEL_17:
     v6 = 138543874;
     v7 = sourceConnection;
     v8 = 1024;
-    v9 = [(NSXPCConnection *)sourceConnection processIdentifier];
+    processIdentifier = [(NSXPCConnection *)sourceConnection processIdentifier];
     v10 = 2114;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Source connection %{public}@ from pid %d was invalidated for session %{public}@", &v6, 0x1Cu);
   }
 
@@ -746,17 +746,17 @@ LABEL_17:
   }
 }
 
-- (void)requestImagesForClient:(id)a3 itemIndexes:(id)a4
+- (void)requestImagesForClient:(id)client itemIndexes:(id)indexes
 {
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  indexesCopy = indexes;
   v8 = DRLogTarget();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
-    v16 = v7;
+    v16 = indexesCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Session %@: _requestDragImageForItemIndexes:%@", buf, 0x16u);
   }
 
@@ -766,17 +766,17 @@ LABEL_17:
   v10[2] = sub_100018064;
   v10[3] = &unk_1000556F8;
   objc_copyWeak(&v12, buf);
-  v9 = v6;
+  v9 = clientCopy;
   v11 = v9;
-  [v9 requestDragPreviewsForIndexSet:v7 reply:v10];
+  [v9 requestDragPreviewsForIndexSet:indexesCopy reply:v10];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(buf);
 }
 
-- (id)newDataTransferSessionWithDestinationAuditToken:(id *)a3 filter:(id)a4
+- (id)newDataTransferSessionWithDestinationAuditToken:(id *)token filter:(id)filter
 {
-  v6 = a4;
+  filterCopy = filter;
   v7 = [DRDataTransferSession alloc];
   itemCollection = self->_itemCollection;
   sourceConnection = self->_sourceConnection;
@@ -791,36 +791,36 @@ LABEL_17:
     v14 = 0u;
   }
 
-  v10 = [(DRDataTransferSession *)v7 initWithSourceItemCollection:itemCollection sourceAuditToken:&v13 dataProviderEndpoint:self->_dataProviderEndpoint filter:v6];
+  v10 = [(DRDataTransferSession *)v7 initWithSourceItemCollection:itemCollection sourceAuditToken:&v13 dataProviderEndpoint:self->_dataProviderEndpoint filter:filterCopy];
   [(DRDataTransferSession *)v10 setDelegate:self];
-  v11 = *&a3->var0[4];
-  v13 = *a3->var0;
+  v11 = *&token->var0[4];
+  v13 = *token->var0;
   v14 = v11;
   [(DRDataTransferSession *)v10 setDestinationAuditToken:&v13];
 
   return v10;
 }
 
-- (void)destinationConnectionWasInvalidated:(id)a3
+- (void)destinationConnectionWasInvalidated:(id)invalidated
 {
-  v4 = a3;
+  invalidatedCopy = invalidated;
   dispatch_assert_queue_V2(self->_xpcQueue);
   v5 = DRLogTarget();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    sub_100030454(v4);
+    sub_100030454(invalidatedCopy);
   }
 
-  [(NSMapTable *)self->_connectionToDestinationMap removeObjectForKey:v4];
+  [(NSMapTable *)self->_connectionToDestinationMap removeObjectForKey:invalidatedCopy];
 }
 
-- (void)performAfterReceivingOutsideAppSourceOperationMask:(id)a3
+- (void)performAfterReceivingOutsideAppSourceOperationMask:(id)mask
 {
-  v8 = a3;
+  maskCopy = mask;
   dispatch_assert_queue_V2(self->_xpcQueue);
   if (self->_receivedOutsideAppSourceOperationMask)
   {
-    v8[2](v8, 1);
+    maskCopy[2](maskCopy, 1);
   }
 
   else
@@ -835,56 +835,56 @@ LABEL_17:
       pendingMaskBlocks = self->_pendingMaskBlocks;
     }
 
-    v7 = objc_retainBlock(v8);
+    v7 = objc_retainBlock(maskCopy);
     [(NSMutableArray *)pendingMaskBlocks addObject:v7];
   }
 }
 
-- (id)itemCollectionForDestination:(id)a3
+- (id)itemCollectionForDestination:(id)destination
 {
   xpcQueue = self->_xpcQueue;
-  v5 = a3;
+  destinationCopy = destination;
   dispatch_assert_queue_V2(xpcQueue);
-  v6 = [(DRDragSession *)self dataTransferSessionForDestination:v5];
+  v6 = [(DRDragSession *)self dataTransferSessionForDestination:destinationCopy];
 
-  v7 = [v6 destinationItemCollection];
+  destinationItemCollection = [v6 destinationItemCollection];
 
-  return v7;
+  return destinationItemCollection;
 }
 
-- (id)dataTransferSessionForDestination:(id)a3
+- (id)dataTransferSessionForDestination:(id)destination
 {
-  v4 = a3;
+  destinationCopy = destination;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(NSMapTable *)self->_connectionToDestinationMap objectEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
-  if (v6)
+  objectEnumerator = [(NSMapTable *)self->_connectionToDestinationMap objectEnumerator];
+  dataTransferSession = [objectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
+  if (dataTransferSession)
   {
     v7 = *v13;
     while (2)
     {
-      for (i = 0; i != v6; i = i + 1)
+      for (i = 0; i != dataTransferSession; i = i + 1)
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        v10 = [v9 clientSession];
+        clientSession = [v9 clientSession];
 
-        if (v10 == v4)
+        if (clientSession == destinationCopy)
         {
-          v6 = [v9 dataTransferSession];
+          dataTransferSession = [v9 dataTransferSession];
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
-      if (v6)
+      dataTransferSession = [objectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
+      if (dataTransferSession)
       {
         continue;
       }
@@ -895,7 +895,7 @@ LABEL_17:
 
 LABEL_11:
 
-  return v6;
+  return dataTransferSession;
 }
 
 - (id)currentDestination
@@ -907,22 +907,22 @@ LABEL_11:
   return v4;
 }
 
-- (void)dirtySourceItems:(id)a3
+- (void)dirtySourceItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v5 = DRLogTarget();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v7 = 138412546;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
-    v10 = v4;
+    v10 = itemsCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Session %@: dirtySourceItems: %@", &v7, 0x16u);
   }
 
   dispatch_assert_queue_V2(self->_xpcQueue);
-  v6 = [(DRDragSession *)self clientSource];
-  [(DRDragSession *)self _handleDirtyItems:v4 fromClient:v6];
+  clientSource = [(DRDragSession *)self clientSource];
+  [(DRDragSession *)self _handleDirtyItems:itemsCopy fromClient:clientSource];
 }
 
 - (void)dragDidExitSourceApp
@@ -931,7 +931,7 @@ LABEL_11:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Session %@: dragDidExitSourceApp", &v7, 0xCu);
   }
 
@@ -961,35 +961,35 @@ LABEL_11:
   [(DRDragSession *)self _updatePotentialDrop:v6 forDestinationClient:self->_lastPotentialDropDestinationClient];
 }
 
-- (void)addItemCollection:(id)a3 dataProviderEndpoint:(id)a4
+- (void)addItemCollection:(id)collection dataProviderEndpoint:(id)endpoint
 {
-  v7 = a3;
-  v8 = a4;
+  collectionCopy = collection;
+  endpointCopy = endpoint;
   v9 = DRLogTarget();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
     *&buf[4] = self;
     *&buf[12] = 2112;
-    *&buf[14] = v7;
+    *&buf[14] = collectionCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Session %@: addItemCollection: %@", buf, 0x16u);
   }
 
   dispatch_assert_queue_V2(self->_xpcQueue);
   if ([(DRDragSession *)self state]== 1)
   {
-    v10 = [v7 items];
-    v11 = [v10 count];
-    v12 = [(PBItemCollection *)self->_itemCollection items];
-    v13 = [v12 count];
+    items = [collectionCopy items];
+    v11 = [items count];
+    items2 = [(PBItemCollection *)self->_itemCollection items];
+    v13 = [items2 count];
 
     if (v11 > v13)
     {
-      v14 = [(PBItemCollection *)self->_itemCollection items];
-      v15 = [v14 count];
+      items3 = [(PBItemCollection *)self->_itemCollection items];
+      v15 = [items3 count];
 
-      objc_storeStrong(&self->_itemCollection, a3);
-      objc_storeStrong(&self->_dataProviderEndpoint, a4);
+      objc_storeStrong(&self->_itemCollection, collection);
+      objc_storeStrong(&self->_dataProviderEndpoint, endpoint);
       memset(buf, 0, 32);
       v16 = +[NSXPCConnection currentConnection];
       v17 = v16;
@@ -1007,8 +1007,8 @@ LABEL_11:
       v37 = 0u;
       v34 = 0u;
       v35 = 0u;
-      v18 = [(NSMapTable *)self->_connectionToDestinationMap objectEnumerator];
-      v19 = [v18 countByEnumeratingWithState:&v34 objects:v38 count:16];
+      objectEnumerator = [(NSMapTable *)self->_connectionToDestinationMap objectEnumerator];
+      v19 = [objectEnumerator countByEnumeratingWithState:&v34 objects:v38 count:16];
       if (v19)
       {
         v20 = v19;
@@ -1019,34 +1019,34 @@ LABEL_11:
           {
             if (*v35 != v21)
             {
-              objc_enumerationMutation(v18);
+              objc_enumerationMutation(objectEnumerator);
             }
 
             v23 = *(*(&v34 + 1) + 8 * i);
-            v24 = [v23 dataTransferSession];
-            [v24 setSourceItemCollection:v7];
+            dataTransferSession = [v23 dataTransferSession];
+            [dataTransferSession setSourceItemCollection:collectionCopy];
 
-            v25 = [v23 dataTransferSession];
+            dataTransferSession2 = [v23 dataTransferSession];
             v33[0] = *buf;
             v33[1] = *&buf[16];
-            [v25 setDataProviderEndpoint:v8 auditToken:v33];
+            [dataTransferSession2 setDataProviderEndpoint:endpointCopy auditToken:v33];
           }
 
-          v20 = [v18 countByEnumeratingWithState:&v34 objects:v38 count:16];
+          v20 = [objectEnumerator countByEnumeratingWithState:&v34 objects:v38 count:16];
         }
 
         while (v20);
       }
 
-      v26 = [v7 items];
-      v27 = [v26 count];
+      items4 = [collectionCopy items];
+      v27 = [items4 count];
       v28 = +[NSMutableArray array];
       if (v15 < v27)
       {
         v29 = v15;
         do
         {
-          v30 = [v26 objectAtIndexedSubscript:v29];
+          v30 = [items4 objectAtIndexedSubscript:v29];
           [v28 addObject:v30];
           v31 = [[DRDragItem alloc] initWithPasteboardItem:v30];
           [(NSMutableArray *)self->_dragItems addObject:v31];
@@ -1057,8 +1057,8 @@ LABEL_11:
         while (v27 != v29);
       }
 
-      v32 = [(DRDragSession *)self delegate];
-      [v32 dragSession:self addedItemCount:{objc_msgSend(v28, "count")}];
+      delegate = [(DRDragSession *)self delegate];
+      [delegate dragSession:self addedItemCount:{objc_msgSend(v28, "count")}];
 
       [(DRDragSession *)self _notifyDestinationsWithAddedItemsStartingAtIndex:v15];
       [(DRDragSession *)self _resetTouchWatchdogWithTimeout:20.0];
@@ -1079,20 +1079,20 @@ LABEL_11:
   [(DRDragSession *)self _cancelDrag];
 }
 
-- (BOOL)shouldIgnoreRequest:(SEL)a3 fromDestination:(id)a4
+- (BOOL)shouldIgnoreRequest:(SEL)request fromDestination:(id)destination
 {
-  v6 = a4;
-  v7 = v6;
+  destinationCopy = destination;
+  v7 = destinationCopy;
   if (self->_pendingDisplayTransitionLift)
   {
     v8 = DRLogTarget();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = NSStringFromSelector(a3);
+      v9 = NSStringFromSelector(request);
       v15 = 138412546;
       v16 = v9;
       v17 = 2112;
-      v18 = self;
+      selfCopy4 = self;
       v10 = "~Ignoring Request~ (%@) Session %@: Pending transition move between displays.";
 LABEL_13:
       v11 = v8;
@@ -1106,16 +1106,16 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (!v6)
+  if (!destinationCopy)
   {
     v8 = DRLogTarget();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = NSStringFromSelector(a3);
+      v9 = NSStringFromSelector(request);
       v15 = 138412546;
       v16 = v9;
       v17 = 2112;
-      v18 = self;
+      selfCopy4 = self;
       v10 = "~Ignoring Request~ (%@) Session %@: Unable to find destination for request";
       goto LABEL_13;
     }
@@ -1131,7 +1131,7 @@ LABEL_19:
     goto LABEL_23;
   }
 
-  if (![v6 isPolicyDriven])
+  if (![destinationCopy isPolicyDriven])
   {
     v8 = DRLogTarget();
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -1139,11 +1139,11 @@ LABEL_19:
       goto LABEL_19;
     }
 
-    v9 = NSStringFromSelector(a3);
+    v9 = NSStringFromSelector(request);
     v15 = 138412802;
     v16 = v9;
     v17 = 2112;
-    v18 = self;
+    selfCopy4 = self;
     v19 = 2112;
     v20 = v7;
     v10 = "~Ignoring Request (Commandeered)~ (%@) Session %@: Destination:%@";
@@ -1161,11 +1161,11 @@ LABEL_23:
         goto LABEL_19;
       }
 
-      v9 = NSStringFromSelector(a3);
+      v9 = NSStringFromSelector(request);
       v15 = 138412802;
       v16 = v9;
       v17 = 2112;
-      v18 = self;
+      selfCopy4 = self;
       v19 = 2112;
       v20 = v7;
       v10 = "~Ignoring Request~ (%@) Session %@: Destination:%@";
@@ -1182,57 +1182,57 @@ LABEL_20:
   return v13;
 }
 
-- (void)dirtyDestinationItems:(id)a3
+- (void)dirtyDestinationItems:(id)items
 {
-  v5 = a3;
+  itemsCopy = items;
   dispatch_assert_queue_V2(self->_xpcQueue);
-  v6 = [(DRDragSession *)self currentDestination];
-  if (![(DRDragSession *)self shouldIgnoreRequest:a2 fromDestination:v6])
+  currentDestination = [(DRDragSession *)self currentDestination];
+  if (![(DRDragSession *)self shouldIgnoreRequest:a2 fromDestination:currentDestination])
   {
     v7 = DRLogTarget();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v6 clientSession];
+      clientSession = [currentDestination clientSession];
       v10 = 138412802;
-      v11 = self;
+      selfCopy = self;
       v12 = 2112;
-      v13 = v5;
+      v13 = itemsCopy;
       v14 = 2112;
-      v15 = v8;
+      v15 = clientSession;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Session %@: dirtyDestinationItems:%@ onDestination:%@", &v10, 0x20u);
     }
 
-    v9 = [v6 clientSession];
-    [(DRDragSession *)self _handleDirtyItems:v5 fromClient:v9];
+    clientSession2 = [currentDestination clientSession];
+    [(DRDragSession *)self _handleDirtyItems:itemsCopy fromClient:clientSession2];
   }
 }
 
-- (void)takePotentialDrop:(id)a3
+- (void)takePotentialDrop:(id)drop
 {
-  v5 = a3;
+  dropCopy = drop;
   dispatch_assert_queue_V2(self->_xpcQueue);
-  v6 = [(DRDragSession *)self currentDestination];
-  if (![(DRDragSession *)self shouldIgnoreRequest:a2 fromDestination:v6])
+  currentDestination = [(DRDragSession *)self currentDestination];
+  if (![(DRDragSession *)self shouldIgnoreRequest:a2 fromDestination:currentDestination])
   {
     v7 = DRLogTarget();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v6 clientSession];
+      clientSession = [currentDestination clientSession];
       LODWORD(v15[0]) = 138412802;
       *(v15 + 4) = self;
       WORD6(v15[0]) = 2112;
-      *(v15 + 14) = v5;
+      *(v15 + 14) = dropCopy;
       WORD3(v15[1]) = 2112;
-      *(&v15[1] + 1) = v8;
+      *(&v15[1] + 1) = clientSession;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Session %@: takePotentialDrop:%@ onDestination:%@", v15, 0x20u);
     }
 
-    v9 = [v6 dataTransferSession];
-    v10 = [v6 connection];
-    v11 = v10;
-    if (v10)
+    dataTransferSession = [currentDestination dataTransferSession];
+    connection = [currentDestination connection];
+    v11 = connection;
+    if (connection)
     {
-      [v10 auditToken];
+      [connection auditToken];
     }
 
     else
@@ -1240,51 +1240,51 @@ LABEL_20:
       memset(v15, 0, sizeof(v15));
     }
 
-    [v9 setDestinationAuditToken:v15];
+    [dataTransferSession setDestinationAuditToken:v15];
 
-    v12 = [v6 clientSession];
-    [(DRDragSession *)self _updatePotentialDrop:v5 forDestinationClient:v12];
+    clientSession2 = [currentDestination clientSession];
+    [(DRDragSession *)self _updatePotentialDrop:dropCopy forDestinationClient:clientSession2];
 
-    v13 = [v6 connection];
-    v14 = [v13 processIdentifier];
-    self->_lastPotentialDropWasFromSourceApp = v14 == [(NSXPCConnection *)self->_sourceConnection processIdentifier];
+    connection2 = [currentDestination connection];
+    processIdentifier = [connection2 processIdentifier];
+    self->_lastPotentialDropWasFromSourceApp = processIdentifier == [(NSXPCConnection *)self->_sourceConnection processIdentifier];
   }
 }
 
-- (void)requestDropWithOperation:(unint64_t)a3 layerContext:(id)a4
+- (void)requestDropWithOperation:(unint64_t)operation layerContext:(id)context
 {
-  v7 = a4;
+  contextCopy = context;
   dispatch_assert_queue_V2(self->_xpcQueue);
-  v8 = [(DRDragSession *)self currentDestination];
-  if (![(DRDragSession *)self shouldIgnoreRequest:a2 fromDestination:v8])
+  currentDestination = [(DRDragSession *)self currentDestination];
+  if (![(DRDragSession *)self shouldIgnoreRequest:a2 fromDestination:currentDestination])
   {
     v9 = DRLogTarget();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v8 clientSession];
+      clientSession = [currentDestination clientSession];
       *buf = 138412802;
-      v17 = self;
+      selfCopy = self;
       v18 = 2048;
-      v19 = a3;
+      operationCopy = operation;
       v20 = 2112;
-      v21 = v10;
+      v21 = clientSession;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Session %@: request drop with operation %lu on destination %@", buf, 0x20u);
     }
 
-    v11 = [v8 clientSession];
-    if (v11 && [(DRDragSession *)self state]== 1)
+    clientSession2 = [currentDestination clientSession];
+    if (clientSession2 && [(DRDragSession *)self state]== 1)
     {
 
-      if (a3)
+      if (operation)
       {
         v12[0] = _NSConcreteStackBlock;
         v12[1] = 3221225472;
         v12[2] = sub_100019668;
         v12[3] = &unk_100055720;
         v12[4] = self;
-        v15 = a3;
-        v13 = v7;
-        v14 = v8;
+        operationCopy2 = operation;
+        v13 = contextCopy;
+        v14 = currentDestination;
         [(DRDragSession *)self _performAfterLastTouchAndDestinationBothEnd:v12];
       }
     }
@@ -1295,60 +1295,60 @@ LABEL_20:
   }
 }
 
-- (void)didFinishRequestingDataForDragContinuation:(id)a3
+- (void)didFinishRequestingDataForDragContinuation:(id)continuation
 {
-  v4 = a3;
+  continuationCopy = continuation;
   xpcQueue = self->_xpcQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100019768;
   v7[3] = &unk_100054C50;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = continuationCopy;
+  v6 = continuationCopy;
   dispatch_async(xpcQueue, v7);
 }
 
-- (void)_animateOutVisibleItemsAndEndDragWithOperation:(unint64_t)a3 destination:(id)a4
+- (void)_animateOutVisibleItemsAndEndDragWithOperation:(unint64_t)operation destination:(id)destination
 {
-  v7 = a4;
-  v6 = [(DRDragSession *)self delegate];
-  [v6 dragSession:self animateOutVisibleItemsWithOperation:a3];
+  destinationCopy = destination;
+  delegate = [(DRDragSession *)self delegate];
+  [delegate dragSession:self animateOutVisibleItemsWithOperation:operation];
 
-  [(DRDragSession *)self _endDragWithOperation:a3 destination:v7];
+  [(DRDragSession *)self _endDragWithOperation:operation destination:destinationCopy];
 }
 
-- (void)_performDropOperation:(unint64_t)a3 layerContext:(id)a4 forConnection:(id)a5
+- (void)_performDropOperation:(unint64_t)operation layerContext:(id)context forConnection:(id)connection
 {
-  v8 = a4;
-  v9 = a5;
+  contextCopy = context;
+  connectionCopy = connection;
   v10 = DRLogTarget();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v51 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Session %@: last touch and destination have both ended, so proceeding with drop", buf, 0xCu);
   }
 
   dispatch_assert_queue_V2(self->_xpcQueue);
-  v11 = [(NSMapTable *)self->_connectionToDestinationMap objectForKey:v9];
+  v11 = [(NSMapTable *)self->_connectionToDestinationMap objectForKey:connectionCopy];
   if ([v11 clientSessionReportedDragEnd])
   {
-    v12 = [(DRDragSession *)self delegate];
-    v13 = [v12 dragSession:self destinationIsDragMonitorConnection:{objc_msgSend(v9, "processIdentifier")}];
+    delegate = [(DRDragSession *)self delegate];
+    v13 = [delegate dragSession:self destinationIsDragMonitorConnection:{objc_msgSend(connectionCopy, "processIdentifier")}];
 
-    v14 = [(DRDragSession *)self delegate];
-    LODWORD(v12) = [v14 dragSession:self destinationIsSystemConnection:v9];
+    delegate2 = [(DRDragSession *)self delegate];
+    LODWORD(delegate) = [delegate2 dragSession:self destinationIsSystemConnection:connectionCopy];
 
-    LODWORD(v14) = [v9 processIdentifier];
-    LODWORD(v14) = v14 == [(NSXPCConnection *)self->_sourceConnection processIdentifier];
-    if (((-[DRDragSession _isPolicyControlled](self, "_isPolicyControlled") & v12 | v13 | v14) & 1) != 0 || [v9 processIdentifier] == self->_lastTouchUpPID)
+    LODWORD(delegate2) = [connectionCopy processIdentifier];
+    LODWORD(delegate2) = delegate2 == [(NSXPCConnection *)self->_sourceConnection processIdentifier];
+    if (((-[DRDragSession _isPolicyControlled](self, "_isPolicyControlled") & delegate | v13 | delegate2) & 1) != 0 || [connectionCopy processIdentifier] == self->_lastTouchUpPID)
     {
       if ([(DRDragSession *)self state]== 1)
       {
-        objc_storeWeak(&self->_dropDestinationConnection, v9);
-        v15 = [v11 clientSession];
-        v29 = [v9 processIdentifier];
+        objc_storeWeak(&self->_dropDestinationConnection, connectionCopy);
+        clientSession = [v11 clientSession];
+        processIdentifier = [connectionCopy processIdentifier];
         [(DRDragSession *)self setState:2];
         objc_initWeak(buf, self);
         v46[0] = _NSConcreteStackBlock;
@@ -1356,8 +1356,8 @@ LABEL_20:
         v46[2] = sub_100019DB8;
         v46[3] = &unk_100055770;
         objc_copyWeak(v48, buf);
-        v48[1] = a3;
-        v16 = v15;
+        v48[1] = operation;
+        v16 = clientSession;
         v47 = v16;
         v49 = 1;
         v28 = objc_retainBlock(v46);
@@ -1366,10 +1366,10 @@ LABEL_20:
         v43[2] = sub_10001A100;
         v43[3] = &unk_100054DC8;
         objc_copyWeak(&v45, buf);
-        v17 = v9;
+        v17 = connectionCopy;
         v44 = v17;
         v18 = objc_retainBlock(v43);
-        v19 = [v11 clientSession];
+        clientSession2 = [v11 clientSession];
         v40[0] = _NSConcreteStackBlock;
         v40[1] = 3221225472;
         v40[2] = sub_10001A170;
@@ -1378,9 +1378,9 @@ LABEL_20:
         v40[4] = self;
         v20 = v16;
         v41 = v20;
-        v21 = [v19 remoteObjectProxyWithErrorHandler:v40];
+        v21 = [clientSession2 remoteObjectProxyWithErrorHandler:v40];
 
-        v22 = [(DRDragSession *)self delegate];
+        delegate3 = [(DRDragSession *)self delegate];
         xpcQueue = self->_xpcQueue;
         v30[0] = _NSConcreteStackBlock;
         v30[1] = 3221225472;
@@ -1388,8 +1388,8 @@ LABEL_20:
         v30[3] = &unk_1000557C0;
         v31 = v11;
         v32 = v17;
-        v33 = self;
-        v38 = v29;
+        selfCopy2 = self;
+        v38 = processIdentifier;
         v24 = v20;
         v34 = v24;
         v39 = 1;
@@ -1399,7 +1399,7 @@ LABEL_20:
         v36 = v26;
         v27 = v18;
         v37 = v27;
-        [v22 dragSession:self findVisibleDroppedItemsInSpaceOfLayerContext:v8 replyingOnQueue:xpcQueue with:v30];
+        [delegate3 dragSession:self findVisibleDroppedItemsInSpaceOfLayerContext:contextCopy replyingOnQueue:xpcQueue with:v30];
 
         objc_destroyWeak(&v42);
         objc_destroyWeak(&v45);
@@ -1423,7 +1423,7 @@ LABEL_20:
       v24 = DRLogTarget();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
-        sub_100030664(v9, &self->_lastTouchUpPID);
+        sub_100030664(connectionCopy, &self->_lastTouchUpPID);
       }
     }
   }
@@ -1441,26 +1441,26 @@ LABEL_20:
 - (void)sawDragEndEvent
 {
   dispatch_assert_queue_V2(self->_xpcQueue);
-  v4 = [(DRDragSession *)self currentDestination];
-  if (![(DRDragSession *)self shouldIgnoreRequest:a2 fromDestination:v4])
+  currentDestination = [(DRDragSession *)self currentDestination];
+  if (![(DRDragSession *)self shouldIgnoreRequest:a2 fromDestination:currentDestination])
   {
     v5 = DRLogTarget();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [v4 clientSession];
+      clientSession = [currentDestination clientSession];
       *buf = 138412546;
-      v12 = self;
+      selfCopy = self;
       v13 = 2112;
-      v14 = v6;
+      v14 = clientSession;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Session %@: saw drag end event on destination %@", buf, 0x16u);
     }
 
-    v7 = [v4 clientSession];
+    clientSession2 = [currentDestination clientSession];
 
-    if (v7)
+    if (clientSession2)
     {
-      v8 = [v4 connection];
-      [(DRDragSession *)self _receivedEndFromDestinationOnConnection:v8];
+      connection = [currentDestination connection];
+      [(DRDragSession *)self _receivedEndFromDestinationOnConnection:connection];
 
       v10[0] = _NSConcreteStackBlock;
       v10[1] = 3221225472;
@@ -1485,60 +1485,60 @@ LABEL_20:
 - (void)enableKeyboardIfNeeded
 {
   dispatch_assert_queue_V2(self->_xpcQueue);
-  v5 = [(DRDragSession *)self currentDestination];
+  currentDestination = [(DRDragSession *)self currentDestination];
   if (![(DRDragSession *)self shouldIgnoreRequest:a2 fromDestination:?]&& ![(DRDragSession *)self avoidsKeyboardSuppression])
   {
-    v4 = [(DRDragSession *)self delegate];
-    [v4 dragSession:self enableKeyboardIfNeeded:1];
+    delegate = [(DRDragSession *)self delegate];
+    [delegate dragSession:self enableKeyboardIfNeeded:1];
   }
 }
 
-- (void)requestVisibleItemsWithReply:(id)a3
+- (void)requestVisibleItemsWithReply:(id)reply
 {
-  v5 = a3;
+  replyCopy = reply;
   v6 = DRLogTarget();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v19 = self;
+    selfCopy3 = self;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Session %@: requesting visible items", buf, 0xCu);
   }
 
   dispatch_assert_queue_V2(self->_xpcQueue);
-  if (v5)
+  if (replyCopy)
   {
     v7 = +[NSXPCConnection currentConnection];
-    v8 = [(DRDragSession *)self currentDestination];
-    if ([(DRDragSession *)self shouldIgnoreRequest:a2 fromDestination:v8])
+    currentDestination = [(DRDragSession *)self currentDestination];
+    if ([(DRDragSession *)self shouldIgnoreRequest:a2 fromDestination:currentDestination])
     {
       v9 = DRLogTarget();
       if (!os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
 LABEL_8:
 
-        v5[2](v5, &__NSArray0__struct);
+        replyCopy[2](replyCopy, &__NSArray0__struct);
 LABEL_13:
 
         goto LABEL_14;
       }
 
       *buf = 138412290;
-      v19 = self;
+      selfCopy3 = self;
       v10 = "Session %@: requested visible items but request is ignored";
 LABEL_7:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, v10, buf, 0xCu);
       goto LABEL_8;
     }
 
-    v11 = [(DRDragSession *)self delegate];
-    if ([v11 dragSession:self destinationIsSystemConnection:v7])
+    delegate = [(DRDragSession *)self delegate];
+    if ([delegate dragSession:self destinationIsSystemConnection:v7])
     {
     }
 
     else
     {
-      v12 = [(DRDragSession *)self delegate];
-      v13 = [v12 dragSession:self destinationIsDragMonitorConnection:{objc_msgSend(v7, "processIdentifier")}];
+      delegate2 = [(DRDragSession *)self delegate];
+      v13 = [delegate2 dragSession:self destinationIsDragMonitorConnection:{objc_msgSend(v7, "processIdentifier")}];
 
       if (!v13)
       {
@@ -1549,21 +1549,21 @@ LABEL_7:
         }
 
         *buf = 138412290;
-        v19 = self;
+        selfCopy3 = self;
         v10 = "Session %@: requested visible items but not system connection";
         goto LABEL_7;
       }
     }
 
-    v14 = [(DRDragSession *)self delegate];
+    delegate3 = [(DRDragSession *)self delegate];
     xpcQueue = self->_xpcQueue;
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_10001A98C;
     v16[3] = &unk_1000557E8;
     v16[4] = self;
-    v17 = v5;
-    [v14 dragSession:self findVisibleDroppedItemsInSpaceOfLayerContext:0 replyingOnQueue:xpcQueue with:v16];
+    v17 = replyCopy;
+    [delegate3 dragSession:self findVisibleDroppedItemsInSpaceOfLayerContext:0 replyingOnQueue:xpcQueue with:v16];
 
     goto LABEL_13;
   }
@@ -1571,12 +1571,12 @@ LABEL_7:
 LABEL_14:
 }
 
-- (void)beginAccessibilityDragAtLocationIfNeeded:(CAPoint3D)a3 hidService:(id)a4
+- (void)beginAccessibilityDragAtLocationIfNeeded:(CAPoint3D)needed hidService:(id)service
 {
-  z = a3.z;
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
+  z = needed.z;
+  y = needed.y;
+  x = needed.x;
+  serviceCopy = service;
   xpcQueue = self->_xpcQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -1586,15 +1586,15 @@ LABEL_14:
   v14 = y;
   v15 = z;
   block[4] = self;
-  v12 = v8;
-  v10 = v8;
+  v12 = serviceCopy;
+  v10 = serviceCopy;
   dispatch_async(xpcQueue, block);
 }
 
-- (void)accessibilityMoveToPoint:(CGPoint)a3
+- (void)accessibilityMoveToPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v6 = DRLogTarget();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -1602,7 +1602,7 @@ LABEL_14:
     v14.y = y;
     v7 = NSStringFromCGPoint(v14);
     *buf = 138412546;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
     v13 = v7;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Session %@: AX moveToPoint:%@", buf, 0x16u);
@@ -1625,7 +1625,7 @@ LABEL_14:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Session %@: AX drop", buf, 0xCu);
   }
 
@@ -1655,12 +1655,12 @@ LABEL_14:
   dispatch_async(xpcQueue, block);
 }
 
-- (void)beginPointerDragAtLocationIfNeeded:(CAPoint3D)a3 hidService:(id)a4
+- (void)beginPointerDragAtLocationIfNeeded:(CAPoint3D)needed hidService:(id)service
 {
-  z = a3.z;
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
+  z = needed.z;
+  y = needed.y;
+  x = needed.x;
+  serviceCopy = service;
   xpcQueue = self->_xpcQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -1670,8 +1670,8 @@ LABEL_14:
   v14 = y;
   v15 = z;
   block[4] = self;
-  v12 = v8;
-  v10 = v8;
+  v12 = serviceCopy;
+  v10 = serviceCopy;
   dispatch_async(xpcQueue, block);
 }
 
@@ -1681,7 +1681,7 @@ LABEL_14:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Session %@: Pointer drag began", buf, 0xCu);
   }
 
@@ -1694,18 +1694,18 @@ LABEL_14:
   dispatch_async(xpcQueue, block);
 }
 
-- (void)movePointerDragToPoint:(CAPoint3D)a3 hidService:(id)a4
+- (void)movePointerDragToPoint:(CAPoint3D)point hidService:(id)service
 {
-  z = a3.z;
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
+  z = point.z;
+  y = point.y;
+  x = point.x;
+  serviceCopy = service;
   v9 = DRLogTarget();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v10 = [NSString stringWithFormat:@"{%.3f, %.3f, %.3f}", *&x, *&y, *&z];
     *buf = 138412546;
-    v19 = self;
+    selfCopy = self;
     v20 = 2112;
     v21 = v10;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Session %@: Pointer drag moveToPoint:%@", buf, 0x16u);
@@ -1717,11 +1717,11 @@ LABEL_14:
   block[2] = sub_10001B494;
   block[3] = &unk_100055810;
   block[4] = self;
-  v14 = v8;
+  v14 = serviceCopy;
   v15 = x;
   v16 = y;
   v17 = z;
-  v12 = v8;
+  v12 = serviceCopy;
   dispatch_async(xpcQueue, block);
 }
 
@@ -1731,7 +1731,7 @@ LABEL_14:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Session %@: Pointer drop", buf, 0xCu);
   }
 
@@ -1761,12 +1761,12 @@ LABEL_14:
   dispatch_async(xpcQueue, block);
 }
 
-- (void)_applyMainWindowExclusionToRoutingPolicy:(id)a3
+- (void)_applyMainWindowExclusionToRoutingPolicy:(id)policy
 {
-  v4 = a3;
-  v5 = [v4 contextIDsToExcludeFromHitTesting];
-  v6 = [(DRDragSession *)self delegate];
-  v7 = [v6 allWindowContextIdsForDragSession:self];
+  policyCopy = policy;
+  contextIDsToExcludeFromHitTesting = [policyCopy contextIDsToExcludeFromHitTesting];
+  delegate = [(DRDragSession *)self delegate];
+  v7 = [delegate allWindowContextIdsForDragSession:self];
   v8 = v7;
   if (v7)
   {
@@ -1780,10 +1780,10 @@ LABEL_14:
     v9 = [NSArray arrayWithObjects:&v17 count:1];
   }
 
-  v11 = [v9 arrayByExcludingObjectsInArray:v5];
+  v11 = [v9 arrayByExcludingObjectsInArray:contextIDsToExcludeFromHitTesting];
   if ([v11 count])
   {
-    v12 = [v5 mutableCopy];
+    v12 = [contextIDsToExcludeFromHitTesting mutableCopy];
     v13 = v12;
     if (v12)
     {
@@ -1799,21 +1799,21 @@ LABEL_14:
 
     [v15 addObjectsFromArray:v11];
     v16 = [v15 copy];
-    [v4 setContextIDsToExcludeFromHitTesting:v16];
+    [policyCopy setContextIDsToExcludeFromHitTesting:v16];
   }
 }
 
-- (void)updateRoutingPolicy:(id)a3
+- (void)updateRoutingPolicy:(id)policy
 {
-  v4 = a3;
-  [(DRDragSession *)self _applyMainWindowExclusionToRoutingPolicy:v4];
+  policyCopy = policy;
+  [(DRDragSession *)self _applyMainWindowExclusionToRoutingPolicy:policyCopy];
   systemRoutingPolicy = self->_systemRoutingPolicy;
-  self->_systemRoutingPolicy = v4;
-  v6 = v4;
+  self->_systemRoutingPolicy = policyCopy;
+  v6 = policyCopy;
 
   self->_isSystemCommandeered = [(UIDraggingSystemTouchRoutingPolicy *)self->_systemRoutingPolicy isHitTestingDisabled];
-  v7 = [(DRDragSession *)self delegate];
-  [v7 dragSession:self updateRoutingPolicy:v6];
+  delegate = [(DRDragSession *)self delegate];
+  [delegate dragSession:self updateRoutingPolicy:v6];
 }
 
 - (void)commandeerDragSession
@@ -1822,7 +1822,7 @@ LABEL_14:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "System Commandeer - session %@ ", &v5, 0xCu);
   }
 
@@ -1840,7 +1840,7 @@ LABEL_14:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "System Surrender - session %@", &v6, 0xCu);
   }
 
@@ -1849,8 +1849,8 @@ LABEL_14:
   {
     [(UIDraggingSystemTouchRoutingPolicy *)systemRoutingPolicy setHitTestingDisabled:0];
     [(DRDragSession *)self updateRoutingPolicy:self->_systemRoutingPolicy];
-    v5 = [(DRDragSession *)self delegate];
-    [v5 resetDestinationClientForDragSession:self];
+    delegate = [(DRDragSession *)self delegate];
+    [delegate resetDestinationClientForDragSession:self];
   }
 }
 
@@ -1866,21 +1866,21 @@ LABEL_14:
   [(DRDragSession *)self _cancelDrag];
 }
 
-- (void)loadURLForItemAtIndex:(unint64_t)a3 reply:(id)a4
+- (void)loadURLForItemAtIndex:(unint64_t)index reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v7 = DRLogTarget();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v21 = self;
+    selfCopy = self;
     v22 = 2048;
-    v23 = a3;
+    indexCopy = index;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "System session %@ - loadURLForItemAtIndex: %lu", buf, 0x16u);
   }
 
-  v8 = [(PBItemCollection *)self->_itemCollection items];
-  if ([v8 count] <= a3)
+  items = [(PBItemCollection *)self->_itemCollection items];
+  if ([items count] <= index)
   {
     v14 = DRLogTarget();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -1888,13 +1888,13 @@ LABEL_14:
       sub_1000309CC();
     }
 
-    v6[2](v6, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   else
   {
     v9 = [UIItemProvider alloc];
-    v10 = [v8 objectAtIndexedSubscript:a3];
+    v10 = [items objectAtIndexedSubscript:index];
     v11 = [v9 initWithPBItem:v10];
 
     loaderQueue = self->_loaderQueue;
@@ -1903,29 +1903,29 @@ LABEL_14:
     v15[2] = sub_10001BF9C;
     v15[3] = &unk_100055888;
     v16 = v11;
-    v17 = self;
-    v18 = v6;
-    v19 = a3;
+    selfCopy2 = self;
+    v18 = replyCopy;
+    indexCopy2 = index;
     v13 = v11;
     dispatch_async(loaderQueue, v15);
   }
 }
 
-- (void)loadUserActivityDataForItemAtIndex:(unint64_t)a3 reply:(id)a4
+- (void)loadUserActivityDataForItemAtIndex:(unint64_t)index reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v7 = DRLogTarget();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v20 = self;
+    selfCopy = self;
     v21 = 2048;
-    v22 = a3;
+    indexCopy = index;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "System session %@ - loadUserActivityForItemAtIndex: %lu", buf, 0x16u);
   }
 
-  v8 = [(PBItemCollection *)self->_itemCollection items];
-  if ([v8 count] <= a3)
+  items = [(PBItemCollection *)self->_itemCollection items];
+  if ([items count] <= index)
   {
     v14 = DRLogTarget();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -1933,13 +1933,13 @@ LABEL_14:
       sub_1000309CC();
     }
 
-    v6[2](v6, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   else
   {
     v9 = [UIItemProvider alloc];
-    v10 = [v8 objectAtIndexedSubscript:a3];
+    v10 = [items objectAtIndexedSubscript:index];
     v11 = [v9 initWithPBItem:v10];
 
     loaderQueue = self->_loaderQueue;
@@ -1948,16 +1948,16 @@ LABEL_14:
     block[2] = sub_10001C4B4;
     block[3] = &unk_100055468;
     v16 = v11;
-    v17 = self;
-    v18 = v6;
+    selfCopy2 = self;
+    v18 = replyCopy;
     v13 = v11;
     dispatch_async(loaderQueue, block);
   }
 }
 
-- (void)requestDragContinuationEndpointWithReply:(id)a3
+- (void)requestDragContinuationEndpointWithReply:(id)reply
 {
-  v8 = a3;
+  replyCopy = reply;
   continuationSession = self->_continuationSession;
   if (!continuationSession)
   {
@@ -1968,8 +1968,8 @@ LABEL_14:
     continuationSession = self->_continuationSession;
   }
 
-  v7 = [(DRDragContinuationSession *)continuationSession continuationEndpoint];
-  v8[2](v8, v7);
+  continuationEndpoint = [(DRDragContinuationSession *)continuationSession continuationEndpoint];
+  replyCopy[2](replyCopy, continuationEndpoint);
 }
 
 - (void)performOffscreenDrop
@@ -1978,22 +1978,22 @@ LABEL_14:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 138412290;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Ensemble session %@ - performOffscreenDrop", &v4, 0xCu);
   }
 
   [(DRDragSession *)self endPointerDrag];
 }
 
-- (void)overrideDragWindowToPoint:(CGPoint)a3
+- (void)overrideDragWindowToPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v6 = DRLogTarget();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v8 = 138412802;
-    v9 = self;
+    selfCopy = self;
     v10 = 2048;
     v11 = x;
     v12 = 2048;
@@ -2001,8 +2001,8 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Ensemble session %@ - overrideDragWindowToPoint: %f, %f", &v8, 0x20u);
   }
 
-  v7 = [(DRDragSession *)self delegate];
-  [v7 dragSession:self moveToLocation:{x, y, 0.0}];
+  delegate = [(DRDragSession *)self delegate];
+  [delegate dragSession:self moveToLocation:{x, y, 0.0}];
 }
 
 - (void)disableDragDisplay
@@ -2011,18 +2011,18 @@ LABEL_14:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 138412290;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Oneness session %@ - disableDragDisplay", &v4, 0xCu);
   }
 
   self->_continuityDisplayWantsDragsHidden = 1;
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
   dispatch_assert_queue_V2(self->_xpcQueue);
   state = self->_state;
-  if (state == a3)
+  if (state == state)
   {
     return;
   }
@@ -2033,23 +2033,23 @@ LABEL_14:
     {
       if (state == 1)
       {
-        if (a3 > 8)
+        if (state > 8)
         {
           goto LABEL_29;
         }
 
-        v6 = 1 << a3;
+        v6 = 1 << state;
         v7 = 284;
       }
 
       else
       {
-        if (state != 2 || a3 > 8)
+        if (state != 2 || state > 8)
         {
           goto LABEL_29;
         }
 
-        v6 = 1 << a3;
+        v6 = 1 << state;
         v7 = 304;
       }
 
@@ -2059,7 +2059,7 @@ LABEL_14:
       }
     }
 
-    else if (a3 == 8 || a3 == 1)
+    else if (state == 8 || state == 1)
     {
       goto LABEL_25;
     }
@@ -2069,9 +2069,9 @@ LABEL_29:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v12 = sub_100016F14(state);
-      v13 = sub_100016F14(a3);
+      v13 = sub_100016F14(state);
       v14 = 138412802;
-      v15 = self;
+      selfCopy2 = self;
       v16 = 2112;
       v17 = v12;
       v18 = 2112;
@@ -2086,7 +2086,7 @@ LABEL_29:
   {
     if (state != 5)
     {
-      if (state == 6 && (a3 - 7) < 2)
+      if (state == 6 && (state - 7) < 2)
       {
         goto LABEL_25;
       }
@@ -2100,7 +2100,7 @@ LABEL_29:
   if (state == 3)
   {
 LABEL_16:
-    if (a3 == 4 || a3 == 8)
+    if (state == 4 || state == 8)
     {
       goto LABEL_25;
     }
@@ -2108,20 +2108,20 @@ LABEL_16:
     goto LABEL_29;
   }
 
-  if ((a3 - 6) >= 3)
+  if ((state - 6) >= 3)
   {
     goto LABEL_29;
   }
 
 LABEL_25:
-  self->_state = a3;
+  self->_state = state;
   v8 = DRLogTarget();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = sub_100016F14(state);
-    v10 = sub_100016F14(a3);
+    v10 = sub_100016F14(state);
     v14 = 138412802;
-    v15 = self;
+    selfCopy2 = self;
     v16 = 2112;
     v17 = v9;
     v18 = 2112;
@@ -2129,29 +2129,29 @@ LABEL_25:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Session %@: setState: from %@ to %@", &v14, 0x20u);
   }
 
-  if ((a3 - 7) <= 1)
+  if ((state - 7) <= 1)
   {
-    [(DRDragSession *)self transitionFromState:state toTerminalState:a3];
+    [(DRDragSession *)self transitionFromState:state toTerminalState:state];
   }
 }
 
-- (void)transitionFromState:(int64_t)a3 toTerminalState:(int64_t)a4
+- (void)transitionFromState:(int64_t)state toTerminalState:(int64_t)terminalState
 {
   dispatch_assert_queue_V2(self->_xpcQueue);
-  if (a4 == 8 && (a3 - 1) <= 2)
+  if (terminalState == 8 && (state - 1) <= 2)
   {
     [(DRDragSession *)self sendDragEndedWithOperation:0];
   }
 
-  if (a3 <= 1 && a4 == 8)
+  if (state <= 1 && terminalState == 8)
   {
-    v7 = [(DRDragSession *)self touchIDs];
-    v8 = [v7 count];
+    touchIDs = [(DRDragSession *)self touchIDs];
+    v8 = [touchIDs count];
 
     if (v8)
     {
-      v9 = [(DRDragSession *)self touchIDs];
-      v10 = [v9 allObjects];
+      touchIDs2 = [(DRDragSession *)self touchIDs];
+      allObjects = [touchIDs2 allObjects];
       BKSHIDServicesCancelTouchesWithIdentifiers();
     }
   }
@@ -2160,11 +2160,11 @@ LABEL_25:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 138412802;
-    v20 = self;
+    selfCopy2 = self;
     v21 = 2048;
-    v22 = a4;
+    terminalStateCopy = terminalState;
     v23 = 2048;
-    v24 = a3;
+    stateCopy = state;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Session %@: Transitioned into terminal state %ld from %ld, cleaning up", &v19, 0x20u);
   }
 
@@ -2173,7 +2173,7 @@ LABEL_25:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v19 = 138412290;
-    v20 = self;
+    selfCopy2 = self;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Session %@: Invalidating destination process assertions.", &v19, 0xCu);
   }
 
@@ -2198,8 +2198,8 @@ LABEL_25:
   }
 
   [(DRDragSession *)self _cancelTouchWatchdog];
-  v18 = [(DRDragSession *)self delegate];
-  [v18 dragSessionDidEnd:self];
+  delegate = [(DRDragSession *)self delegate];
+  [delegate dragSessionDidEnd:self];
 }
 
 - (void)_endDragByCancelling
@@ -2220,7 +2220,7 @@ LABEL_25:
     v10[3] = &unk_100054B50;
     v10[4] = self;
     v4 = objc_retainBlock(v10);
-    v5 = [(DRDragSession *)self delegate];
+    delegate = [(DRDragSession *)self delegate];
     xpcQueue = self->_xpcQueue;
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
@@ -2229,7 +2229,7 @@ LABEL_25:
     v8[4] = self;
     v9 = v4;
     v7 = v4;
-    [v5 dragSession:self findVisibleDroppedItemsInSpaceOfLayerContext:0 replyingOnQueue:xpcQueue with:v8];
+    [delegate dragSession:self findVisibleDroppedItemsInSpaceOfLayerContext:0 replyingOnQueue:xpcQueue with:v8];
   }
 
   else if ([(DRDragSession *)self state]!= 3)
@@ -2238,11 +2238,11 @@ LABEL_25:
   }
 }
 
-- (void)_logStatisticsForDragEnd:(unint64_t)a3 destination:(id)a4
+- (void)_logStatisticsForDragEnd:(unint64_t)end destination:(id)destination
 {
-  v6 = a4;
+  destinationCopy = destination;
   dispatch_assert_queue_V2(self->_xpcQueue);
-  if (a3)
+  if (end)
   {
     v7 = [DRProcessInfo alloc];
     sourceConnection = self->_sourceConnection;
@@ -2258,19 +2258,19 @@ LABEL_25:
     }
 
     v9 = [(DRProcessInfo *)v7 initWithAuditToken:&v19];
-    v10 = [(DRDragSession *)self dataTransferSessionForDestination:v6];
-    v11 = [v10 destinationProcessInfo];
+    v10 = [(DRDragSession *)self dataTransferSessionForDestination:destinationCopy];
+    destinationProcessInfo = [v10 destinationProcessInfo];
 
-    v12 = [v11 bundleID];
-    if (!v12)
+    bundleID = [destinationProcessInfo bundleID];
+    if (!bundleID)
     {
       goto LABEL_7;
     }
 
-    v13 = v12;
-    v14 = [(DRProcessInfo *)v9 bundleID];
-    v15 = [v11 bundleID];
-    v16 = [v14 isEqualToString:v15];
+    v13 = bundleID;
+    bundleID2 = [(DRProcessInfo *)v9 bundleID];
+    bundleID3 = [destinationProcessInfo bundleID];
+    v16 = [bundleID2 isEqualToString:bundleID3];
 
     if (!v16)
     {
@@ -2284,23 +2284,23 @@ LABEL_7:
     }
 
     [_UIKitDragAndDropStatistics incrementUIKitScalarValueBy:1 forKey:v17, v19, v20];
-    v18 = [v11 bundleID];
-    [_UIKitDragAndDropStatistics incrementUIKitScalarValueForKnownInternalAppsForKey:@"dropSuccessfullOnto" bundleID:v18];
+    bundleID4 = [destinationProcessInfo bundleID];
+    [_UIKitDragAndDropStatistics incrementUIKitScalarValueForKnownInternalAppsForKey:@"dropSuccessfullOnto" bundleID:bundleID4];
   }
 }
 
-- (void)_endDragWithOperation:(unint64_t)a3 destination:(id)a4
+- (void)_endDragWithOperation:(unint64_t)operation destination:(id)destination
 {
-  v6 = a4;
-  [(DRDragSession *)self _logStatisticsForDragEnd:a3 destination:v6];
-  v7 = [(DRDragSession *)self dataTransferSessionForDestination:v6];
+  destinationCopy = destination;
+  [(DRDragSession *)self _logStatisticsForDragEnd:operation destination:destinationCopy];
+  v7 = [(DRDragSession *)self dataTransferSessionForDestination:destinationCopy];
 
-  [(DRDragSession *)self _endDragWithOperation:a3 dataTransferSession:v7];
+  [(DRDragSession *)self _endDragWithOperation:operation dataTransferSession:v7];
 }
 
-- (void)_endDragWithOperation:(unint64_t)a3 dataTransferSession:(id)a4
+- (void)_endDragWithOperation:(unint64_t)operation dataTransferSession:(id)session
 {
-  v7 = a4;
+  sessionCopy = session;
   dispatch_assert_queue_V2(self->_xpcQueue);
   performDropTimeoutTimer = self->_performDropTimeoutTimer;
   if (performDropTimeoutTimer)
@@ -2313,24 +2313,24 @@ LABEL_7:
   [(DRDragSession *)self setState:4];
   if ([(DRDragSession *)self state]== 4)
   {
-    v10 = [(DRDragSession *)self delegate];
-    [v10 dragSessionWillEnd:self];
+    delegate = [(DRDragSession *)self delegate];
+    [delegate dragSessionWillEnd:self];
 
-    [(DRDragSession *)self sendDragEndedWithOperation:a3];
-    if (a3)
+    [(DRDragSession *)self sendDragEndedWithOperation:operation];
+    if (operation)
     {
       v11 = DRLogTarget();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
-        v12 = [v7 destinationProcessInfo];
+        destinationProcessInfo = [sessionCopy destinationProcessInfo];
         v14 = 138412546;
-        v15 = self;
+        selfCopy = self;
         v16 = 2112;
-        v17 = v12;
+        v17 = destinationProcessInfo;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Session %@: startSendingDelegateCallbacksForDataTransfer (client - %@)", &v14, 0x16u);
       }
 
-      objc_storeStrong(&self->_pendingDataTransferSession, a4);
+      objc_storeStrong(&self->_pendingDataTransferSession, session);
       [(DRDataTransferSession *)self->_pendingDataTransferSession startSendingDelegateCallbacks];
     }
 
@@ -2355,26 +2355,26 @@ LABEL_7:
   }
 }
 
-- (void)dataTransferSessionFinished:(id)a3
+- (void)dataTransferSessionFinished:(id)finished
 {
-  v4 = a3;
+  finishedCopy = finished;
   xpcQueue = self->_xpcQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001D9EC;
   v7[3] = &unk_100054C50;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = finishedCopy;
+  v6 = finishedCopy;
   dispatch_async(xpcQueue, v7);
 }
 
-- (void)sendDragEndedWithOperation:(unint64_t)a3
+- (void)sendDragEndedWithOperation:(unint64_t)operation
 {
   v5 = DRLogTarget();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    if (!a3)
+    if (!operation)
     {
       v10 = @"None";
       goto LABEL_9;
@@ -2382,22 +2382,22 @@ LABEL_7:
 
     v6 = +[NSMutableArray array];
     v7 = v6;
-    v8 = a3;
-    if (a3)
+    operationCopy = operation;
+    if (operation)
     {
-      v8 = a3 & 0xFFFFFFFFFFFFFFFELL;
+      operationCopy = operation & 0xFFFFFFFFFFFFFFFELL;
       [v6 addObject:@"Copy"];
-      if ((a3 & 0x10) == 0)
+      if ((operation & 0x10) == 0)
       {
 LABEL_5:
-        if (!v8)
+        if (!operationCopy)
         {
 LABEL_7:
           v10 = [v7 componentsJoinedByString:@"|"];
 
 LABEL_9:
           *buf = 138412546;
-          v28 = self;
+          selfCopy = self;
           v29 = 2112;
           v30 = v10;
           _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Session %@: sendDragEndedWithOperation: %@", buf, 0x16u);
@@ -2406,21 +2406,21 @@ LABEL_9:
         }
 
 LABEL_6:
-        v9 = [NSString stringWithFormat:@"Unknown (%lu)", v8];
-        [v7 addObject:v9];
+        operationCopy = [NSString stringWithFormat:@"Unknown (%lu)", operationCopy];
+        [v7 addObject:operationCopy];
 
         goto LABEL_7;
       }
     }
 
-    else if ((a3 & 0x10) == 0)
+    else if ((operation & 0x10) == 0)
     {
       goto LABEL_5;
     }
 
-    v8 &= ~0x10uLL;
+    operationCopy &= ~0x10uLL;
     [v7 addObject:@"Move"];
-    if (!v8)
+    if (!operationCopy)
     {
       goto LABEL_7;
     }
@@ -2431,15 +2431,15 @@ LABEL_6:
 LABEL_10:
 
   dispatch_assert_queue_V2(self->_xpcQueue);
-  v11 = [(DRDragSession *)self accessibilityProxy];
-  [v11 dragDidEndWithOperation:a3];
+  accessibilityProxy = [(DRDragSession *)self accessibilityProxy];
+  [accessibilityProxy dragDidEndWithOperation:operation];
 
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v12 = [(NSMapTable *)self->_connectionToDestinationMap keyEnumerator];
-  v13 = [v12 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  keyEnumerator = [(NSMapTable *)self->_connectionToDestinationMap keyEnumerator];
+  v13 = [keyEnumerator countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v13)
   {
     v14 = v13;
@@ -2450,13 +2450,13 @@ LABEL_10:
       {
         if (*v23 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v17 = *(*(&v22 + 1) + 8 * i);
         v18 = [(NSMapTable *)self->_connectionToDestinationMap objectForKey:v17];
-        v19 = [v18 clientSession];
-        [v19 dragEnded];
+        clientSession = [v18 clientSession];
+        [clientSession dragEnded];
 
         WeakRetained = objc_loadWeakRetained(&self->_dropDestinationConnection);
         if (v17 != WeakRetained)
@@ -2465,26 +2465,26 @@ LABEL_10:
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v14 = [keyEnumerator countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v14);
   }
 
-  v21 = [(DRDragSession *)self clientSource];
-  [v21 dragEndedWithOperation:a3];
+  clientSource = [(DRDragSession *)self clientSource];
+  [clientSource dragEndedWithOperation:operation];
 }
 
-- (void)_handleDirtyItems:(id)a3 fromClient:(id)a4
+- (void)_handleDirtyItems:(id)items fromClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  clientCopy = client;
   dispatch_assert_queue_V2(self->_xpcQueue);
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = v6;
+  v8 = itemsCopy;
   v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
@@ -2501,8 +2501,8 @@ LABEL_10:
         }
 
         v13 = *(*(&v15 + 1) + 8 * v12);
-        v14 = [(DRDragSession *)self delegate];
-        [v14 dragSession:self invalidateImageForClient:v7 itemIndex:{objc_msgSend(v13, "index")}];
+        delegate = [(DRDragSession *)self delegate];
+        [delegate dragSession:self invalidateImageForClient:clientCopy itemIndex:{objc_msgSend(v13, "index")}];
 
         v12 = v12 + 1;
       }
@@ -2515,44 +2515,44 @@ LABEL_10:
   }
 }
 
-- (void)_acceptDragPreviews:(id)a3 fence:(id)a4 fromClient:(id)a5
+- (void)_acceptDragPreviews:(id)previews fence:(id)fence fromClient:(id)client
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
+  previewsCopy = previews;
+  fenceCopy = fence;
+  clientCopy = client;
   dispatch_assert_queue_V2(self->_xpcQueue);
   if ([(DRDragSession *)self state]== 1)
   {
-    v10 = [(DRDragSession *)self delegate];
-    [v10 dragSession:self updateDragItems:v11 forClient:v9 withFence:v8];
+    delegate = [(DRDragSession *)self delegate];
+    [delegate dragSession:self updateDragItems:previewsCopy forClient:clientCopy withFence:fenceCopy];
   }
 }
 
-- (void)notifyDragMonitorsWithUpdatedPresentation:(id)a3
+- (void)notifyDragMonitorsWithUpdatedPresentation:(id)presentation
 {
-  v4 = a3;
+  presentationCopy = presentation;
   xpcQueue = self->_xpcQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001DFA0;
   v7[3] = &unk_100054C50;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = presentationCopy;
+  v6 = presentationCopy;
   dispatch_async(xpcQueue, v7);
 }
 
-- (void)_notifyDestinationsWithAddedItemsStartingAtIndex:(unint64_t)a3
+- (void)_notifyDestinationsWithAddedItemsStartingAtIndex:(unint64_t)index
 {
   dispatch_assert_queue_V2(self->_xpcQueue);
-  if ([(NSMutableArray *)self->_dragItems count]> a3)
+  if ([(NSMutableArray *)self->_dragItems count]> index)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = [(NSMapTable *)self->_connectionToDestinationMap objectEnumerator];
-    v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    objectEnumerator = [(NSMapTable *)self->_connectionToDestinationMap objectEnumerator];
+    v6 = [objectEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
       v7 = v6;
@@ -2563,17 +2563,17 @@ LABEL_10:
         {
           if (*v15 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(objectEnumerator);
           }
 
           v10 = *(*(&v14 + 1) + 8 * i);
-          v11 = [v10 clientSession];
-          v12 = [v10 dataTransferSession];
-          v13 = [v12 destinationItemCollection];
-          [v11 addedItemCollection:v13];
+          clientSession = [v10 clientSession];
+          dataTransferSession = [v10 dataTransferSession];
+          destinationItemCollection = [dataTransferSession destinationItemCollection];
+          [clientSession addedItemCollection:destinationItemCollection];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v7 = [objectEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v7);
@@ -2581,9 +2581,9 @@ LABEL_10:
   }
 }
 
-- (void)_lastTouchEndedNormally:(BOOL)a3
+- (void)_lastTouchEndedNormally:(BOOL)normally
 {
-  v3 = a3;
+  normallyCopy = normally;
   dispatch_assert_queue_V2(self->_xpcQueue);
   if (self->_lastTouchEnded)
   {
@@ -2602,7 +2602,7 @@ LABEL_10:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = @"without";
-      if (v3)
+      if (normallyCopy)
       {
         v7 = @"with";
       }
@@ -2612,7 +2612,7 @@ LABEL_10:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Observed last touch for session within druid monitoring %@ normal conclusion.", buf, 0xCu);
     }
 
-    if (v3 && [(NSMapTable *)self->_connectionToDestinationMap count])
+    if (normallyCopy && [(NSMapTable *)self->_connectionToDestinationMap count])
     {
       if (![(DRDragSession *)self _runBlocksWaitingForLastTouchAndDestinationToEndIfPossible])
       {
@@ -2666,9 +2666,9 @@ LABEL_10:
   }
 }
 
-- (void)_receivedEndFromDestinationOnConnection:(id)a3
+- (void)_receivedEndFromDestinationOnConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   dispatch_assert_queue_V2(self->_xpcQueue);
   if (self->_receivedEndFromDestination)
   {
@@ -2682,21 +2682,21 @@ LABEL_10:
   else
   {
     self->_receivedEndFromDestination = 1;
-    v6 = [(NSMapTable *)self->_connectionToDestinationMap objectForKey:v4];
+    v6 = [(NSMapTable *)self->_connectionToDestinationMap objectForKey:connectionCopy];
     [v6 setClientSessionReportedDragEnd:1];
     [(DRDragSession *)self _runBlocksWaitingForLastTouchAndDestinationToEndIfPossible];
   }
 }
 
-- (void)_performAfterLastTouchAndDestinationBothEnd:(id)a3
+- (void)_performAfterLastTouchAndDestinationBothEnd:(id)end
 {
-  v4 = a3;
+  endCopy = end;
   dispatch_assert_queue_V2(self->_xpcQueue);
-  if (v4)
+  if (endCopy)
   {
     if ([(DRDragSession *)self _canRunBlocksWaitingForLastTouchAndDestinationToEnd])
     {
-      v4[2](v4);
+      endCopy[2](endCopy);
     }
 
     else
@@ -2708,7 +2708,7 @@ LABEL_10:
         lastTouchEnded = self->_lastTouchEnded;
         receivedEndFromDestination = self->_receivedEndFromDestination;
         v13 = 138413058;
-        v14 = self;
+        selfCopy = self;
         v15 = 1024;
         v16 = observedLastTouchUp;
         v17 = 1024;
@@ -2728,7 +2728,7 @@ LABEL_10:
         blocksWaitingForLastTouchAndDestinationToEnd = self->_blocksWaitingForLastTouchAndDestinationToEnd;
       }
 
-      v12 = objc_retainBlock(v4);
+      v12 = objc_retainBlock(endCopy);
       [(NSMutableArray *)blocksWaitingForLastTouchAndDestinationToEnd addObject:v12];
     }
   }
@@ -2742,7 +2742,7 @@ LABEL_10:
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     observedLastTouchUp = self->_observedLastTouchUp;
-    v6 = [(DRDragSession *)self _isPolicyControlled];
+    _isPolicyControlled = [(DRDragSession *)self _isPolicyControlled];
     lastTouchEnded = self->_lastTouchEnded;
     receivedEndFromDestination = self->_receivedEndFromDestination;
     v10[0] = 67110144;
@@ -2750,7 +2750,7 @@ LABEL_10:
     v11 = 1024;
     v12 = observedLastTouchUp;
     v13 = 1024;
-    v14 = v6;
+    v14 = _isPolicyControlled;
     v15 = 1024;
     v16 = lastTouchEnded;
     v17 = 1024;
@@ -2764,8 +2764,8 @@ LABEL_10:
 - (BOOL)_runBlocksWaitingForLastTouchAndDestinationToEndIfPossible
 {
   dispatch_assert_queue_V2(self->_xpcQueue);
-  v3 = [(DRDragSession *)self _canRunBlocksWaitingForLastTouchAndDestinationToEnd];
-  if (v3)
+  _canRunBlocksWaitingForLastTouchAndDestinationToEnd = [(DRDragSession *)self _canRunBlocksWaitingForLastTouchAndDestinationToEnd];
+  if (_canRunBlocksWaitingForLastTouchAndDestinationToEnd)
   {
     waitingForDestinationAndTouchObserverTimer = self->_waitingForDestinationAndTouchObserverTimer;
     if (waitingForDestinationAndTouchObserverTimer)
@@ -2778,7 +2778,7 @@ LABEL_10:
     [(DRDragSession *)self _runBlocksWaitingForLastTouchAndDestinationToEnd];
   }
 
-  return v3;
+  return _canRunBlocksWaitingForLastTouchAndDestinationToEnd;
 }
 
 - (void)_runBlocksWaitingForLastTouchAndDestinationToEnd
@@ -2790,7 +2790,7 @@ LABEL_10:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v16 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Session %@: running deferred blocks", buf, 0xCu);
     }
 
@@ -2833,77 +2833,77 @@ LABEL_10:
 - (void)_updateAccessibilityDragStatus
 {
   dispatch_assert_queue_V2(self->_xpcQueue);
-  v3 = [(DRDragSession *)self accessibilityProxy];
+  accessibilityProxy = [(DRDragSession *)self accessibilityProxy];
 
-  if (v3)
+  if (accessibilityProxy)
   {
     v9 = objc_alloc_init(_DUIAccessibilityDragStatus);
     [v9 setItemCount:{-[NSMutableArray count](self->_dragItems, "count")}];
     lastPotentialDrop = self->_lastPotentialDrop;
     if (lastPotentialDrop)
     {
-      v5 = [(_DUIPotentialDrop *)lastPotentialDrop operation];
+      operation = [(_DUIPotentialDrop *)lastPotentialDrop operation];
     }
 
     else
     {
-      v5 = 0;
+      operation = 0;
     }
 
-    [v9 setPotentialOperation:v5];
+    [v9 setPotentialOperation:operation];
     v6 = self->_lastPotentialDrop;
     if (v6)
     {
-      v7 = [(_DUIPotentialDrop *)v6 forbidden];
+      forbidden = [(_DUIPotentialDrop *)v6 forbidden];
     }
 
     else
     {
-      v7 = 0;
+      forbidden = 0;
     }
 
-    [v9 setForbidden:v7];
-    v8 = [(DRDragSession *)self accessibilityProxy];
-    [v8 dragStatusDidChange:v9];
+    [v9 setForbidden:forbidden];
+    accessibilityProxy2 = [(DRDragSession *)self accessibilityProxy];
+    [accessibilityProxy2 dragStatusDidChange:v9];
   }
 }
 
-- (void)_updatePotentialDrop:(id)a3 forDestinationClient:(id)a4
+- (void)_updatePotentialDrop:(id)drop forDestinationClient:(id)client
 {
-  v17 = a3;
-  v7 = a4;
+  dropCopy = drop;
+  clientCopy = client;
   dispatch_assert_queue_V2(self->_xpcQueue);
-  v8 = [(DRDragSession *)self dataTransferSessionForDestination:v7];
+  v8 = [(DRDragSession *)self dataTransferSessionForDestination:clientCopy];
   sourceDataOwner = self->_sourceDataOwner;
-  v10 = [v8 sourceProcessInfo];
-  v11 = [v8 destinationProcessInfo];
-  sub_100005ADC(v17, sourceDataOwner, v10, v11);
+  sourceProcessInfo = [v8 sourceProcessInfo];
+  destinationProcessInfo = [v8 destinationProcessInfo];
+  sub_100005ADC(dropCopy, sourceDataOwner, sourceProcessInfo, destinationProcessInfo);
 
   v12 = +[NSXPCConnection currentConnection];
-  v13 = [v12 processIdentifier];
-  if (self->_lastPotentialDropDestinationClient == v7)
+  processIdentifier = [v12 processIdentifier];
+  if (self->_lastPotentialDropDestinationClient == clientCopy)
   {
     lastPotentialDropProcessIdentifier = self->_lastPotentialDropProcessIdentifier;
   }
 
   else
   {
-    lastPotentialDropProcessIdentifier = v13;
+    lastPotentialDropProcessIdentifier = processIdentifier;
   }
 
   p_lastPotentialDrop = &self->_lastPotentialDrop;
-  if (![(_DUIPotentialDrop *)self->_lastPotentialDrop isEqual:v17]|| self->_lastPotentialDropDestinationClient != v7)
+  if (![(_DUIPotentialDrop *)self->_lastPotentialDrop isEqual:dropCopy]|| self->_lastPotentialDropDestinationClient != clientCopy)
   {
     if (*p_lastPotentialDrop && ([*p_lastPotentialDrop prefersFullSizePreview] & 1) == 0)
     {
-      [v17 setPrefersFullSizePreview:0];
+      [dropCopy setPrefersFullSizePreview:0];
     }
 
-    objc_storeStrong(&self->_lastPotentialDrop, a3);
-    objc_storeStrong(&self->_lastPotentialDropDestinationClient, a4);
+    objc_storeStrong(&self->_lastPotentialDrop, drop);
+    objc_storeStrong(&self->_lastPotentialDropDestinationClient, client);
     self->_lastPotentialDropProcessIdentifier = lastPotentialDropProcessIdentifier;
-    v16 = [(DRDragSession *)self delegate];
-    [v16 dragSession:self updatedPotentialDrop:v17 forDestinationClient:v7];
+    delegate = [(DRDragSession *)self delegate];
+    [delegate dragSession:self updatedPotentialDrop:dropCopy forDestinationClient:clientCopy];
 
     [(DRDragSession *)self _updateAccessibilityDragStatus];
   }

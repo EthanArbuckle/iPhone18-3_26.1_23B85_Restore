@@ -1,11 +1,11 @@
 @interface PHCarPlayDialerView
-- (PHCarPlayDialerView)initWithFrame:(CGRect)a3;
+- (PHCarPlayDialerView)initWithFrame:(CGRect)frame;
 - (id)_linearFocusMovementSequences;
 @end
 
 @implementation PHCarPlayDialerView
 
-- (PHCarPlayDialerView)initWithFrame:(CGRect)a3
+- (PHCarPlayDialerView)initWithFrame:(CGRect)frame
 {
   v127.receiver = self;
   v127.super_class = PHCarPlayDialerView;
@@ -29,37 +29,37 @@
     v6 = [(PHCarPlayDialerLCDView *)v5 initWithFrame:0.0, 0.0];
     [(PHCarPlayDialerView *)v3 setLcdView:v6];
 
-    v7 = [(PHCarPlayDialerView *)v3 lcdView];
-    [v7 setDelegate:v3];
+    lcdView = [(PHCarPlayDialerView *)v3 lcdView];
+    [lcdView setDelegate:v3];
 
-    v8 = [(PHCarPlayDialerView *)v3 lcdView];
-    [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+    lcdView2 = [(PHCarPlayDialerView *)v3 lcdView];
+    [lcdView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v9 = [PHCarPlayNumberPad alloc];
-    v10 = [(PHCarPlayDialerView *)v3 traitCollection];
-    v11 = -[PHCarPlayNumberPad initWithUserInterfaceStyle:](v9, "initWithUserInterfaceStyle:", [v10 userInterfaceStyle]);
+    traitCollection = [(PHCarPlayDialerView *)v3 traitCollection];
+    v11 = -[PHCarPlayNumberPad initWithUserInterfaceStyle:](v9, "initWithUserInterfaceStyle:", [traitCollection userInterfaceStyle]);
     [(PHCarPlayDialerView *)v3 setPhonePadView:v11];
 
-    v12 = [(PHCarPlayDialerView *)v3 phonePadView];
-    [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
+    phonePadView = [(PHCarPlayDialerView *)v3 phonePadView];
+    [phonePadView setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v13 = +[UIColor clearColor];
-    v14 = [(PHCarPlayDialerView *)v3 phonePadView];
-    [v14 setBackgroundColor:v13];
+    phonePadView2 = [(PHCarPlayDialerView *)v3 phonePadView];
+    [phonePadView2 setBackgroundColor:v13];
 
-    v15 = [(PHCarPlayDialerView *)v3 phonePadView];
-    [v15 setOpaque:0];
+    phonePadView3 = [(PHCarPlayDialerView *)v3 phonePadView];
+    [phonePadView3 setOpaque:0];
 
-    v16 = [(PHCarPlayDialerView *)v3 phonePadView];
-    [v16 setAccessibilityIdentifier:@"PHCarPlayNumberPad"];
+    phonePadView4 = [(PHCarPlayDialerView *)v3 phonePadView];
+    [phonePadView4 setAccessibilityIdentifier:@"PHCarPlayNumberPad"];
 
     v17 = objc_alloc_init(UIView);
     [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v18 = [(PHCarPlayDialerView *)v3 lcdView];
-    [v17 addSubview:v18];
+    lcdView3 = [(PHCarPlayDialerView *)v3 lcdView];
+    [v17 addSubview:lcdView3];
 
-    v19 = [(PHCarPlayDialerView *)v3 phonePadView];
-    [v17 addSubview:v19];
+    phonePadView5 = [(PHCarPlayDialerView *)v3 phonePadView];
+    [v17 addSubview:phonePadView5];
 
     [(PHCarPlayDialerView *)v3 addSubview:v17];
     if (_UISolariumEnabled())
@@ -73,7 +73,7 @@
       v21 = objc_alloc_init(PHCarPlayDialerCircleButton);
       [(PHCarPlayDialerView *)v3 setCallButton:v21];
 
-      v22 = [(PHCarPlayDialerView *)v3 callButton];
+      callButton = [(PHCarPlayDialerView *)v3 callButton];
       if (_os_feature_enabled_impl())
       {
         +[UIColor clearColor];
@@ -84,37 +84,37 @@
         +[UIColor tableBackgroundColor];
       }
       v23 = ;
-      [v22 setTitleColor:v23 forState:0];
+      [callButton setTitleColor:v23 forState:0];
 
-      v24 = [(PHCarPlayDialerView *)v3 callButton];
+      callButton2 = [(PHCarPlayDialerView *)v3 callButton];
       v25 = [UIImage tpImageForSymbolType:1 textStyle:UIFontTextStyleCallout scale:3 isStaticSize:1];
-      [v24 setImage:v25 forState:0];
+      [callButton2 setImage:v25 forState:0];
 
       v20 = +[UIColor whiteColor];
-      v26 = [(PHCarPlayDialerView *)v3 callButton];
-      [v26 setTintColor:v20];
+      callButton3 = [(PHCarPlayDialerView *)v3 callButton];
+      [callButton3 setTintColor:v20];
     }
 
-    v27 = [(PHCarPlayDialerView *)v3 callButton];
+    callButton4 = [(PHCarPlayDialerView *)v3 callButton];
     LODWORD(v28) = 1148846080;
-    [v27 setContentCompressionResistancePriority:0 forAxis:v28];
+    [callButton4 setContentCompressionResistancePriority:0 forAxis:v28];
 
-    v29 = [(PHCarPlayDialerView *)v3 callButton];
-    [v29 setTranslatesAutoresizingMaskIntoConstraints:0];
+    callButton5 = [(PHCarPlayDialerView *)v3 callButton];
+    [callButton5 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v30 = [(PHCarPlayDialerView *)v3 callButton];
-    [v30 setAccessibilityIdentifier:@"PHCarPlayDialerCallButton"];
+    callButton6 = [(PHCarPlayDialerView *)v3 callButton];
+    [callButton6 setAccessibilityIdentifier:@"PHCarPlayDialerCallButton"];
 
-    v31 = [(PHCarPlayDialerView *)v3 callButton];
-    [v17 addSubview:v31];
+    callButton7 = [(PHCarPlayDialerView *)v3 callButton];
+    [v17 addSubview:callButton7];
 
     v126 = [UIButton buttonWithType:0];
     [v126 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v126 setConfigurationUpdateHandler:&__block_literal_global_7];
     [v126 setAccessibilityIdentifier:@"PHCarPlayDialerDeleteButton"];
     [(PHCarPlayDialerView *)v3 setDeleteButton:v126];
-    v32 = [(PHCarPlayDialerView *)v3 deleteButton];
-    [v17 addSubview:v32];
+    deleteButton = [(PHCarPlayDialerView *)v3 deleteButton];
+    [v17 addSubview:deleteButton];
 
     v33 = [NSLayoutConstraint constraintWithItem:v17 attribute:7 relatedBy:-1 toItem:v3 attribute:7 multiplier:1.0 constant:0.0];
     [(PHCarPlayDialerView *)v3 addConstraint:v33];
@@ -136,146 +136,146 @@
     v40 = [NSLayoutConstraint constraintWithItem:v17 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:196.0 priority:v39];
     [(PHCarPlayDialerView *)v3 addConstraint:v40];
 
-    v41 = [(PHCarPlayDialerView *)v3 phonePadView];
-    v42 = [NSLayoutConstraint constraintWithItem:v41 attribute:1 relatedBy:0 toItem:v17 attribute:1 multiplier:1.0 constant:12.0];
+    phonePadView6 = [(PHCarPlayDialerView *)v3 phonePadView];
+    v42 = [NSLayoutConstraint constraintWithItem:phonePadView6 attribute:1 relatedBy:0 toItem:v17 attribute:1 multiplier:1.0 constant:12.0];
     [v17 addConstraint:v42];
 
-    v43 = [(PHCarPlayDialerView *)v3 phonePadView];
-    v44 = [NSLayoutConstraint constraintWithItem:v43 attribute:10 relatedBy:0 toItem:v17 attribute:10 multiplier:1.0 constant:0.0];
+    phonePadView7 = [(PHCarPlayDialerView *)v3 phonePadView];
+    v44 = [NSLayoutConstraint constraintWithItem:phonePadView7 attribute:10 relatedBy:0 toItem:v17 attribute:10 multiplier:1.0 constant:0.0];
     [v17 addConstraint:v44];
 
-    v45 = [(PHCarPlayDialerView *)v3 lcdView];
-    v46 = [(PHCarPlayDialerView *)v3 phonePadView];
-    v47 = [NSLayoutConstraint constraintWithItem:v45 attribute:1 relatedBy:0 toItem:v46 attribute:2 multiplier:1.0 constant:23.0];
+    lcdView4 = [(PHCarPlayDialerView *)v3 lcdView];
+    phonePadView8 = [(PHCarPlayDialerView *)v3 phonePadView];
+    v47 = [NSLayoutConstraint constraintWithItem:lcdView4 attribute:1 relatedBy:0 toItem:phonePadView8 attribute:2 multiplier:1.0 constant:23.0];
     [v17 addConstraint:v47];
 
-    v48 = [(PHCarPlayDialerView *)v3 lcdView];
-    v49 = [NSLayoutConstraint constraintWithItem:v48 attribute:11 relatedBy:0 toItem:v17 attribute:3 multiplier:1.0 constant:79.5];
+    lcdView5 = [(PHCarPlayDialerView *)v3 lcdView];
+    v49 = [NSLayoutConstraint constraintWithItem:lcdView5 attribute:11 relatedBy:0 toItem:v17 attribute:3 multiplier:1.0 constant:79.5];
     [v17 addConstraint:v49];
 
-    v50 = [(PHCarPlayDialerView *)v3 lcdView];
-    v51 = [NSLayoutConstraint constraintWithItem:v50 attribute:2 relatedBy:0 toItem:v17 attribute:2 multiplier:1.0 constant:-12.0];
+    lcdView6 = [(PHCarPlayDialerView *)v3 lcdView];
+    v51 = [NSLayoutConstraint constraintWithItem:lcdView6 attribute:2 relatedBy:0 toItem:v17 attribute:2 multiplier:1.0 constant:-12.0];
     [v17 addConstraint:v51];
 
-    v52 = [(PHCarPlayDialerView *)v3 deleteButton];
-    v53 = [(PHCarPlayDialerView *)v3 callButton];
-    v54 = [NSLayoutConstraint constraintWithItem:v52 attribute:1 relatedBy:1 toItem:v53 attribute:2 multiplier:1.0 constant:8.0];
+    deleteButton2 = [(PHCarPlayDialerView *)v3 deleteButton];
+    callButton8 = [(PHCarPlayDialerView *)v3 callButton];
+    v54 = [NSLayoutConstraint constraintWithItem:deleteButton2 attribute:1 relatedBy:1 toItem:callButton8 attribute:2 multiplier:1.0 constant:8.0];
     [v17 addConstraint:v54];
 
-    v55 = [(PHCarPlayDialerView *)v3 deleteButton];
-    v56 = [NSLayoutConstraint constraintWithItem:v55 attribute:2 relatedBy:0 toItem:v17 attribute:2 multiplier:1.0 constant:-12.0];
+    deleteButton3 = [(PHCarPlayDialerView *)v3 deleteButton];
+    v56 = [NSLayoutConstraint constraintWithItem:deleteButton3 attribute:2 relatedBy:0 toItem:v17 attribute:2 multiplier:1.0 constant:-12.0];
     [v17 addConstraint:v56];
 
-    v125 = [(PHCarPlayDialerView *)v3 deleteButton];
-    v124 = [v125 widthAnchor];
-    v123 = [v124 constraintEqualToConstant:36.0];
+    deleteButton4 = [(PHCarPlayDialerView *)v3 deleteButton];
+    widthAnchor = [deleteButton4 widthAnchor];
+    v123 = [widthAnchor constraintEqualToConstant:36.0];
     v128[0] = v123;
-    v122 = [(PHCarPlayDialerView *)v3 deleteButton];
-    v120 = [v122 heightAnchor];
-    v121 = [(PHCarPlayDialerView *)v3 deleteButton];
-    v57 = [v121 widthAnchor];
-    v58 = [v120 constraintEqualToAnchor:v57];
+    deleteButton5 = [(PHCarPlayDialerView *)v3 deleteButton];
+    heightAnchor = [deleteButton5 heightAnchor];
+    deleteButton6 = [(PHCarPlayDialerView *)v3 deleteButton];
+    widthAnchor2 = [deleteButton6 widthAnchor];
+    v58 = [heightAnchor constraintEqualToAnchor:widthAnchor2];
     v128[1] = v58;
-    v59 = [(PHCarPlayDialerView *)v3 deleteButton];
-    v60 = [v59 centerYAnchor];
-    v61 = [(PHCarPlayDialerView *)v3 callButton];
-    [v61 centerYAnchor];
+    deleteButton7 = [(PHCarPlayDialerView *)v3 deleteButton];
+    centerYAnchor = [deleteButton7 centerYAnchor];
+    callButton9 = [(PHCarPlayDialerView *)v3 callButton];
+    [callButton9 centerYAnchor];
     v62 = v119 = v17;
-    v63 = [v60 constraintEqualToAnchor:v62 constant:4.0];
+    v63 = [centerYAnchor constraintEqualToAnchor:v62 constant:4.0];
     v128[2] = v63;
     v64 = [NSArray arrayWithObjects:v128 count:3];
     [v17 addConstraints:v64];
 
-    v65 = [(PHCarPlayDialerView *)v3 callButton];
-    v66 = [NSLayoutConstraint constraintWithItem:v65 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:52.0];
+    callButton10 = [(PHCarPlayDialerView *)v3 callButton];
+    v66 = [NSLayoutConstraint constraintWithItem:callButton10 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:52.0];
     [v119 addConstraint:v66];
 
-    v67 = [(PHCarPlayDialerView *)v3 callButton];
-    v68 = [(PHCarPlayDialerView *)v3 callButton];
-    v69 = [NSLayoutConstraint constraintWithItem:v67 attribute:7 relatedBy:0 toItem:v68 attribute:8 multiplier:1.0 constant:0.0];
+    callButton11 = [(PHCarPlayDialerView *)v3 callButton];
+    callButton12 = [(PHCarPlayDialerView *)v3 callButton];
+    v69 = [NSLayoutConstraint constraintWithItem:callButton11 attribute:7 relatedBy:0 toItem:callButton12 attribute:8 multiplier:1.0 constant:0.0];
     [v119 addConstraint:v69];
 
-    v70 = [(PHCarPlayDialerView *)v3 callButton];
-    v71 = [(PHCarPlayDialerView *)v3 lcdView];
+    callButton13 = [(PHCarPlayDialerView *)v3 callButton];
+    lcdView7 = [(PHCarPlayDialerView *)v3 lcdView];
     LODWORD(v72) = 1144750080;
-    v73 = [NSLayoutConstraint constraintWithItem:v70 attribute:3 relatedBy:0 toItem:v71 attribute:11 multiplier:1.0 constant:56.0 priority:v72];
+    v73 = [NSLayoutConstraint constraintWithItem:callButton13 attribute:3 relatedBy:0 toItem:lcdView7 attribute:11 multiplier:1.0 constant:56.0 priority:v72];
     [v119 addConstraint:v73];
 
-    v74 = [(PHCarPlayDialerView *)v3 callButton];
-    v75 = [NSLayoutConstraint constraintWithItem:v74 attribute:4 relatedBy:-1 toItem:v119 attribute:4 multiplier:1.0 constant:-8.0];
+    callButton14 = [(PHCarPlayDialerView *)v3 callButton];
+    v75 = [NSLayoutConstraint constraintWithItem:callButton14 attribute:4 relatedBy:-1 toItem:v119 attribute:4 multiplier:1.0 constant:-8.0];
     [v119 addConstraint:v75];
 
-    v76 = [(PHCarPlayDialerView *)v3 callButton];
-    v77 = [(PHCarPlayDialerView *)v3 lcdView];
-    v78 = [NSLayoutConstraint constraintWithItem:v76 attribute:9 relatedBy:0 toItem:v77 attribute:9 multiplier:1.0 constant:0.0];
+    callButton15 = [(PHCarPlayDialerView *)v3 callButton];
+    lcdView8 = [(PHCarPlayDialerView *)v3 lcdView];
+    v78 = [NSLayoutConstraint constraintWithItem:callButton15 attribute:9 relatedBy:0 toItem:lcdView8 attribute:9 multiplier:1.0 constant:0.0];
     [v119 addConstraint:v78];
 
-    v79 = [(PHCarPlayDialerView *)v3 phonePadView];
+    phonePadView9 = [(PHCarPlayDialerView *)v3 phonePadView];
     LODWORD(v80) = 1148846080;
-    [v79 setContentCompressionResistancePriority:0 forAxis:v80];
+    [phonePadView9 setContentCompressionResistancePriority:0 forAxis:v80];
 
-    v81 = [(PHCarPlayDialerView *)v3 phonePadView];
+    phonePadView10 = [(PHCarPlayDialerView *)v3 phonePadView];
     LODWORD(v82) = 1148846080;
-    [v81 setContentHuggingPriority:0 forAxis:v82];
+    [phonePadView10 setContentHuggingPriority:0 forAxis:v82];
 
-    v83 = [(PHCarPlayDialerView *)v3 lcdView];
+    lcdView9 = [(PHCarPlayDialerView *)v3 lcdView];
     LODWORD(v84) = 1132068864;
-    [v83 setContentCompressionResistancePriority:0 forAxis:v84];
+    [lcdView9 setContentCompressionResistancePriority:0 forAxis:v84];
 
-    v85 = [(PHCarPlayDialerView *)v3 deleteButton];
+    deleteButton8 = [(PHCarPlayDialerView *)v3 deleteButton];
     LODWORD(v86) = 1148846080;
-    [v85 setContentCompressionResistancePriority:0 forAxis:v86];
+    [deleteButton8 setContentCompressionResistancePriority:0 forAxis:v86];
 
     v87 = objc_alloc_init(UIFocusContainerGuide);
     [(PHCarPlayDialerView *)v3 addLayoutGuide:v87];
-    v88 = [v87 topAnchor];
-    v89 = [(PHCarPlayDialerView *)v3 callButton];
-    v90 = [v89 topAnchor];
-    v91 = [v88 constraintEqualToAnchor:v90];
+    topAnchor = [v87 topAnchor];
+    callButton16 = [(PHCarPlayDialerView *)v3 callButton];
+    topAnchor2 = [callButton16 topAnchor];
+    v91 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [(PHCarPlayDialerView *)v3 addConstraint:v91];
 
-    v92 = [v87 leftAnchor];
-    v93 = [(PHCarPlayDialerView *)v3 phonePadView];
-    v94 = [v93 rightAnchor];
-    v95 = [v92 constraintEqualToAnchor:v94];
+    leftAnchor = [v87 leftAnchor];
+    phonePadView11 = [(PHCarPlayDialerView *)v3 phonePadView];
+    rightAnchor = [phonePadView11 rightAnchor];
+    v95 = [leftAnchor constraintEqualToAnchor:rightAnchor];
     [(PHCarPlayDialerView *)v3 addConstraint:v95];
 
-    v96 = [v87 rightAnchor];
-    v97 = [(PHCarPlayDialerView *)v3 rightAnchor];
-    v98 = [v96 constraintEqualToAnchor:v97];
+    rightAnchor2 = [v87 rightAnchor];
+    rightAnchor3 = [(PHCarPlayDialerView *)v3 rightAnchor];
+    v98 = [rightAnchor2 constraintEqualToAnchor:rightAnchor3];
     [(PHCarPlayDialerView *)v3 addConstraint:v98];
 
-    v99 = [v87 bottomAnchor];
-    v100 = [(PHCarPlayDialerView *)v3 bottomAnchor];
-    v101 = [v99 constraintEqualToAnchor:v100];
+    bottomAnchor = [v87 bottomAnchor];
+    bottomAnchor2 = [(PHCarPlayDialerView *)v3 bottomAnchor];
+    v101 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [(PHCarPlayDialerView *)v3 addConstraint:v101];
 
     v102 = objc_alloc_init(UIFocusContainerGuide);
     [(PHCarPlayDialerView *)v3 addLayoutGuide:v102];
-    v103 = [v102 topAnchor];
-    v104 = [(PHCarPlayDialerView *)v3 topAnchor];
-    v105 = [v103 constraintEqualToAnchor:v104];
+    topAnchor3 = [v102 topAnchor];
+    topAnchor4 = [(PHCarPlayDialerView *)v3 topAnchor];
+    v105 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     [(PHCarPlayDialerView *)v3 addConstraint:v105];
 
-    v106 = [v102 leftAnchor];
-    v107 = [(PHCarPlayDialerView *)v3 deleteButton];
-    v108 = [v107 leftAnchor];
-    v109 = [v106 constraintEqualToAnchor:v108];
+    leftAnchor2 = [v102 leftAnchor];
+    deleteButton9 = [(PHCarPlayDialerView *)v3 deleteButton];
+    leftAnchor3 = [deleteButton9 leftAnchor];
+    v109 = [leftAnchor2 constraintEqualToAnchor:leftAnchor3];
     [(PHCarPlayDialerView *)v3 addConstraint:v109];
 
-    v110 = [v102 rightAnchor];
-    v111 = [(PHCarPlayDialerView *)v3 deleteButton];
-    v112 = [v111 rightAnchor];
-    v113 = [v110 constraintEqualToAnchor:v112];
+    rightAnchor4 = [v102 rightAnchor];
+    deleteButton10 = [(PHCarPlayDialerView *)v3 deleteButton];
+    rightAnchor5 = [deleteButton10 rightAnchor];
+    v113 = [rightAnchor4 constraintEqualToAnchor:rightAnchor5];
     [(PHCarPlayDialerView *)v3 addConstraint:v113];
 
-    v114 = [v102 bottomAnchor];
-    v115 = [(PHCarPlayDialerView *)v3 bottomAnchor];
-    v116 = [v114 constraintEqualToAnchor:v115];
+    bottomAnchor3 = [v102 bottomAnchor];
+    bottomAnchor4 = [(PHCarPlayDialerView *)v3 bottomAnchor];
+    v116 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     [(PHCarPlayDialerView *)v3 addConstraint:v116];
 
-    v117 = [(PHCarPlayDialerView *)v3 phonePadView];
-    [v117 _setSpeedBumpEdges:15];
+    phonePadView12 = [(PHCarPlayDialerView *)v3 phonePadView];
+    [phonePadView12 _setSpeedBumpEdges:15];
   }
 
   return v3;
@@ -349,17 +349,17 @@ id __37__PHCarPlayDialerView_initWithFrame___block_invoke_2(uint64_t a1)
 
 - (id)_linearFocusMovementSequences
 {
-  v3 = [(PHCarPlayDialerView *)self phonePadView];
-  v4 = [v3 _linearFocusMovementSequences];
+  phonePadView = [(PHCarPlayDialerView *)self phonePadView];
+  _linearFocusMovementSequences = [phonePadView _linearFocusMovementSequences];
 
-  v5 = [v4 firstObject];
-  v6 = [v5 items];
-  v7 = [(PHCarPlayDialerView *)self callButton];
-  v15[0] = v7;
-  v8 = [(PHCarPlayDialerView *)self deleteButton];
-  v15[1] = v8;
+  firstObject = [_linearFocusMovementSequences firstObject];
+  items = [firstObject items];
+  callButton = [(PHCarPlayDialerView *)self callButton];
+  v15[0] = callButton;
+  deleteButton = [(PHCarPlayDialerView *)self deleteButton];
+  v15[1] = deleteButton;
   v9 = [NSArray arrayWithObjects:v15 count:2];
-  v10 = [v6 arrayByAddingObjectsFromArray:v9];
+  v10 = [items arrayByAddingObjectsFromArray:v9];
 
   v11 = [_UIFocusLinearMovementSequence sequenceWithItems:v10 loops:0];
   v14 = v11;

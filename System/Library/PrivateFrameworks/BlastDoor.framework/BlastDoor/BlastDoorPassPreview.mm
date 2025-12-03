@@ -23,7 +23,7 @@
 
 - (BlastDoorPassPreview_PassImage)headerImage
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_21456D448();
 
   return v3;
@@ -31,7 +31,7 @@
 
 - (BlastDoorPassPreview_PassImage)icon
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_21456D5F4();
 
   return v3;
@@ -147,7 +147,7 @@
 - (BlastDoorColor)backgroundColor
 {
   sub_214497A24(self + OBJC_IVAR___BlastDoorPassPreview_passPreview, v12);
-  v3 = self;
+  selfCopy = self;
   v9 = v14;
   v10 = v13;
   sub_214497A5C(v12);

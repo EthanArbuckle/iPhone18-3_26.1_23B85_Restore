@@ -1,9 +1,9 @@
 @interface CPNowPlayingButton
 - (CPControlDelegate)delegate;
-- (CPNowPlayingButton)initWithCoder:(id)a3;
+- (CPNowPlayingButton)initWithCoder:(id)coder;
 - (CPNowPlayingButton)initWithHandler:(void *)handler;
 - (NSString)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)handlePrimaryAction;
 - (void)setEnabled:(BOOL)enabled;
 @end
@@ -23,9 +23,9 @@
     v5->_handler = v6;
 
     v5->_enabled = 1;
-    v8 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     identifier = v5->_identifier;
-    v5->_identifier = v8;
+    v5->_identifier = uUID;
 
     v5->_selected = 0;
   }
@@ -33,31 +33,31 @@
   return v5;
 }
 
-- (CPNowPlayingButton)initWithCoder:(id)a3
+- (CPNowPlayingButton)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(CPNowPlayingButton *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CPNowPlayingButtonIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CPNowPlayingButtonIdentifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v5->_enabled = [v4 decodeBoolForKey:@"CPNowPlayingButtonEnabled"];
-    v5->_selected = [v4 decodeBoolForKey:@"kCPNowPlayingButtonSelectedKey"];
+    v5->_enabled = [coderCopy decodeBoolForKey:@"CPNowPlayingButtonEnabled"];
+    v5->_selected = [coderCopy decodeBoolForKey:@"kCPNowPlayingButtonSelectedKey"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(CPNowPlayingButton *)self identifier];
-  [v5 encodeObject:v4 forKey:@"CPNowPlayingButtonIdentifier"];
+  coderCopy = coder;
+  identifier = [(CPNowPlayingButton *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"CPNowPlayingButtonIdentifier"];
 
-  [v5 encodeBool:-[CPNowPlayingButton isEnabled](self forKey:{"isEnabled"), @"CPNowPlayingButtonEnabled"}];
-  [v5 encodeBool:-[CPNowPlayingButton isSelected](self forKey:{"isSelected"), @"kCPNowPlayingButtonSelectedKey"}];
+  [coderCopy encodeBool:-[CPNowPlayingButton isEnabled](self forKey:{"isEnabled"), @"CPNowPlayingButtonEnabled"}];
+  [coderCopy encodeBool:-[CPNowPlayingButton isSelected](self forKey:{"isSelected"), @"kCPNowPlayingButtonSelectedKey"}];
 }
 
 - (NSString)description
@@ -66,10 +66,10 @@
   v10.receiver = self;
   v10.super_class = CPNowPlayingButton;
   v4 = [(CPNowPlayingButton *)&v10 description];
-  v5 = [(CPNowPlayingButton *)self identifier];
+  identifier = [(CPNowPlayingButton *)self identifier];
   v6 = CPSStringFromBOOL([(CPNowPlayingButton *)self isEnabled]);
   v7 = CPSStringFromBOOL([(CPNowPlayingButton *)self isSelected]);
-  v8 = [v3 stringWithFormat:@"%@ {UUID: %@, enabled: %@, selected: %@}", v4, v5, v6, v7];
+  v8 = [v3 stringWithFormat:@"%@ {UUID: %@, enabled: %@, selected: %@}", v4, identifier, v6, v7];
 
   return v8;
 }
@@ -79,29 +79,29 @@
   if (self->_enabled != enabled)
   {
     self->_enabled = enabled;
-    v5 = [(CPNowPlayingButton *)self delegate];
-    [v5 control:self setEnabled:self->_enabled];
+    delegate = [(CPNowPlayingButton *)self delegate];
+    [delegate control:self setEnabled:self->_enabled];
   }
 }
 
 - (void)handlePrimaryAction
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = [(CPNowPlayingButton *)self handler];
+  handler = [(CPNowPlayingButton *)self handler];
 
   v4 = CarPlayFrameworkGeneralLogging();
-  v5 = v4;
-  if (v3)
+  handler2 = v4;
+  if (handler)
   {
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       v7 = 138412290;
-      v8 = self;
-      _os_log_impl(&dword_236ED4000, v5, OS_LOG_TYPE_INFO, "%@ will call action handler", &v7, 0xCu);
+      selfCopy = self;
+      _os_log_impl(&dword_236ED4000, handler2, OS_LOG_TYPE_INFO, "%@ will call action handler", &v7, 0xCu);
     }
 
-    v5 = [(CPNowPlayingButton *)self handler];
-    (*(v5 + 16))(v5, self);
+    handler2 = [(CPNowPlayingButton *)self handler];
+    (*(handler2 + 16))(handler2, self);
   }
 
   else if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))

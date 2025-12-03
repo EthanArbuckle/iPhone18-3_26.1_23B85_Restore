@@ -1,17 +1,17 @@
 @interface _UIPrototypingMenuNumberCell
-- (_UIPrototypingMenuNumberCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_UIPrototypingMenuNumberCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_prototypingSettingDidChange;
-- (void)_sliderDidChangeValue:(id)a3;
-- (void)_tapRecognizerDidRecognizer:(id)a3;
+- (void)_sliderDidChangeValue:(id)value;
+- (void)_tapRecognizerDidRecognizer:(id)recognizer;
 @end
 
 @implementation _UIPrototypingMenuNumberCell
 
-- (_UIPrototypingMenuNumberCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_UIPrototypingMenuNumberCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v25.receiver = self;
   v25.super_class = _UIPrototypingMenuNumberCell;
-  v4 = [(_UIPrototypingMenuCell *)&v25 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(_UIPrototypingMenuCell *)&v25 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = [UIStackView alloc];
@@ -29,8 +29,8 @@
     [(UIStackView *)v4->_floatValueStackView setSpacing:1.17549435e-38];
     [(UIStackView *)v4->_floatValueStackView setLayoutMarginsRelativeArrangement:1];
     [(UIView *)v4->_floatValueStackView setLayoutMargins:10.0, 0.0, 10.0, 0.0];
-    v12 = [(_UIPrototypingMenuCell *)v4 stackView];
-    [v12 addArrangedSubview:v4->_floatValueStackView];
+    stackView = [(_UIPrototypingMenuCell *)v4 stackView];
+    [stackView addArrangedSubview:v4->_floatValueStackView];
 
     v13 = [[UILabel alloc] initWithFrame:v6, v7, v8, v9];
     minLabel = v4->_minLabel;
@@ -67,26 +67,26 @@
   return v4;
 }
 
-- (void)_tapRecognizerDidRecognizer:(id)a3
+- (void)_tapRecognizerDidRecognizer:(id)recognizer
 {
-  [a3 locationInView:self];
+  [recognizer locationInView:self];
   v5 = v4;
-  v6 = [(_UIPrototypingMenuNumberCell *)self slider];
-  v7 = [(_UIPrototypingMenuNumberCell *)self slider];
-  [v7 knobCenter];
-  [v6 convertPoint:self toView:?];
+  slider = [(_UIPrototypingMenuNumberCell *)self slider];
+  slider2 = [(_UIPrototypingMenuNumberCell *)self slider];
+  [slider2 knobCenter];
+  [slider convertPoint:self toView:?];
   v9 = v8;
 
-  v10 = [(_UIPrototypingMenuNumberCell *)self slider];
-  v11 = v10;
+  slider3 = [(_UIPrototypingMenuNumberCell *)self slider];
+  v11 = slider3;
   if (v5 >= v9)
   {
-    [v10 increment];
+    [slider3 increment];
   }
 
   else
   {
-    [v10 decrement];
+    [slider3 decrement];
   }
 }
 
@@ -95,25 +95,25 @@
   v35.receiver = self;
   v35.super_class = _UIPrototypingMenuNumberCell;
   [(_UIPrototypingMenuCell *)&v35 _prototypingSettingDidChange];
-  v3 = [(_UIPrototypingMenuCell *)self prototypingSetting];
-  [v3 stepSize];
+  prototypingSetting = [(_UIPrototypingMenuCell *)self prototypingSetting];
+  [prototypingSetting stepSize];
   v5 = v4;
   if (v4 == 0.0)
   {
-    v6 = [v3 type];
-    if (v6 == 1)
+    type = [prototypingSetting type];
+    if (type == 1)
     {
       v5 = 0.01;
     }
 
-    else if (!v6)
+    else if (!type)
     {
       v5 = 1.0;
     }
   }
 
-  v7 = [v3 minimumValue];
-  [v7 floatValue];
+  minimumValue = [prototypingSetting minimumValue];
+  [minimumValue floatValue];
   v9 = v8;
 
   v11 = v5;
@@ -149,8 +149,8 @@ LABEL_13:
   v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.*f", v15, v9];
   [(UILabel *)self->_minLabel setText:v16];
 
-  v17 = [v3 maximumValue];
-  [v17 floatValue];
+  maximumValue = [prototypingSetting maximumValue];
+  [maximumValue floatValue];
   v19 = v18;
 
   if (v11 <= 0.0)
@@ -179,33 +179,33 @@ LABEL_19:
   v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.*f", v22, v19];
   [(UILabel *)self->_maxLabel setText:v23];
 
-  v24 = [v3 currentValue];
-  [v24 floatValue];
+  currentValue = [prototypingSetting currentValue];
+  [currentValue floatValue];
   v26 = v25;
 
-  v27 = [(_UIPrototypingMenuNumberCell *)self slider];
+  slider = [(_UIPrototypingMenuNumberCell *)self slider];
   *&v28 = v9;
-  [v27 setMinimumValue:v28];
+  [slider setMinimumValue:v28];
 
-  v29 = [(_UIPrototypingMenuNumberCell *)self slider];
+  slider2 = [(_UIPrototypingMenuNumberCell *)self slider];
   *&v30 = v19;
-  [v29 setMaximumValue:v30];
+  [slider2 setMaximumValue:v30];
 
-  v31 = [(_UIPrototypingMenuNumberCell *)self slider];
-  [v31 setStepSize:v5];
+  slider3 = [(_UIPrototypingMenuNumberCell *)self slider];
+  [slider3 setStepSize:v5];
 
-  v32 = [(_UIPrototypingMenuNumberCell *)self slider];
+  slider4 = [(_UIPrototypingMenuNumberCell *)self slider];
   LODWORD(v33) = v26;
-  [v32 setValue:v33];
+  [slider4 setValue:v33];
 }
 
-- (void)_sliderDidChangeValue:(id)a3
+- (void)_sliderDidChangeValue:(id)value
 {
   v4 = MEMORY[0x1E696AD98];
-  [a3 value];
+  [value value];
   v6 = [v4 numberWithFloat:?];
-  v5 = [(_UIPrototypingMenuCell *)self prototypingSetting];
-  [v5 setCurrentValue:v6];
+  prototypingSetting = [(_UIPrototypingMenuCell *)self prototypingSetting];
+  [prototypingSetting setCurrentValue:v6];
 }
 
 @end

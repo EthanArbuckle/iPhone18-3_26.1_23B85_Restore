@@ -1,27 +1,27 @@
 @interface _UIViewServiceHostSessionDeputyShim
-+ (id)connectToViewService:(id)a3 appBundleViewServiceBundleIdentifier:(id)a4 deputyInterfaces:(id)a5 connectionHandler:(id)a6;
++ (id)connectToViewService:(id)service appBundleViewServiceBundleIdentifier:(id)identifier deputyInterfaces:(id)interfaces connectionHandler:(id)handler;
 + (void)initialize;
 - ($115C4C562B26FF47E01F9F4EA65B5887)serviceAuditToken;
 - (NSString)debugDescription;
-- (id)_terminateWithError:(id)a3;
-- (id)connectToDeputyWithInterface:(id)a3 fromExportedHostingObject:(id)a4 connectionHandler:(id)a5;
+- (id)_terminateWithError:(id)error;
+- (id)connectToDeputyWithInterface:(id)interface fromExportedHostingObject:(id)object connectionHandler:(id)handler;
 - (id)disconnect;
 - (id)succinctDescription;
 - (void)_objc_initiateDealloc;
-- (void)_terminateUnconditionallyThen:(id)a3;
-- (void)_viewServiceHostSessionDidConnectToClient:(id)a3;
-- (void)appendDescriptionToStream:(id)a3;
-- (void)callConnectionHandlerWithError:(id)a3;
-- (void)createSessionForService:(id)a3 appBundleViewServiceBundleIdentifier:(id)a4;
+- (void)_terminateUnconditionallyThen:(id)then;
+- (void)_viewServiceHostSessionDidConnectToClient:(id)client;
+- (void)appendDescriptionToStream:(id)stream;
+- (void)callConnectionHandlerWithError:(id)error;
+- (void)createSessionForService:(id)service appBundleViewServiceBundleIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)setTerminationHandler:(id)a3;
+- (void)setTerminationHandler:(id)handler;
 @end
 
 @implementation _UIViewServiceHostSessionDeputyShim
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     _class_setCustomDeallocInitiation();
@@ -30,19 +30,19 @@
 
 - (void)_objc_initiateDealloc
 {
-  v3 = [(_UIViewServiceHostSessionDeputyShim *)self disconnect];
+  disconnect = [(_UIViewServiceHostSessionDeputyShim *)self disconnect];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __60___UIViewServiceHostSessionDeputyShim__objc_initiateDealloc__block_invoke;
   v4[3] = &__block_descriptor_40_e5_v8__0ls32l8;
   v4[4] = self;
-  [v3 whenCompleteDo:v4];
+  [disconnect whenCompleteDo:v4];
 }
 
-+ (id)connectToViewService:(id)a3 appBundleViewServiceBundleIdentifier:(id)a4 deputyInterfaces:(id)a5 connectionHandler:(id)a6
++ (id)connectToViewService:(id)service appBundleViewServiceBundleIdentifier:(id)identifier deputyInterfaces:(id)interfaces connectionHandler:(id)handler
 {
   v36 = *MEMORY[0x1E69E9840];
-  if (!(a3 | a4))
+  if (!(service | identifier))
   {
     v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"service || bundleIdentifier && !(service && bundleIdentifier)"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -54,7 +54,7 @@
       v26 = 2114;
       v27 = NSStringFromClass(v20);
       v28 = 2048;
-      v29 = a1;
+      selfCopy = self;
       v30 = 2114;
       v31 = @"_UIViewServiceHostSessionDeputyShim_NonARC.m";
       v32 = 1024;
@@ -72,10 +72,10 @@
 
   v10 = objc_alloc_init(_UIViewServiceHostSessionDeputyShim);
   v11 = v10;
-  v12 = a4;
-  if (!a4)
+  identifierCopy = identifier;
+  if (!identifier)
   {
-    v12 = [a3 identifier];
+    identifierCopy = [service identifier];
   }
 
   v13 = objc_opt_new();
@@ -83,7 +83,7 @@
   v23[1] = 3221225472;
   v23[2] = __132___UIViewServiceHostSessionDeputyShim_connectToViewService_appBundleViewServiceBundleIdentifier_deputyInterfaces_connectionHandler___block_invoke;
   v23[3] = &unk_1E7101CD0;
-  v23[5] = v12;
+  v23[5] = identifierCopy;
   v23[6] = v10;
   v23[4] = v13;
   v10->_cancellationInvocation = [_UIAsyncInvocation invocationWithBlock:v23];
@@ -93,9 +93,9 @@
   v22[2] = __132___UIViewServiceHostSessionDeputyShim_connectToViewService_appBundleViewServiceBundleIdentifier_deputyInterfaces_connectionHandler___block_invoke_3;
   v22[3] = &unk_1E7101CF8;
   v22[4] = v14;
-  v22[5] = v12;
+  v22[5] = identifierCopy;
   v22[6] = v13;
-  v22[7] = a6;
+  v22[7] = handler;
   v22[8] = v10;
   v10->_lock_connectionHandler = [v22 copy];
   v21[0] = MEMORY[0x1E69E9820];
@@ -105,28 +105,28 @@
   v21[4] = v10;
   v10->_terminateInvocation = [_UIAsyncInvocation invocationWithBlock:v21];
   v10->_lock._os_unfair_lock_opaque = 0;
-  v10->_loggingIdentifier = v12;
-  v10->_deputyInterfaces = a5;
-  [(_UIViewServiceHostSessionDeputyShim *)v10 createSessionForService:a3 appBundleViewServiceBundleIdentifier:a4];
+  v10->_loggingIdentifier = identifierCopy;
+  v10->_deputyInterfaces = interfaces;
+  [(_UIViewServiceHostSessionDeputyShim *)v10 createSessionForService:service appBundleViewServiceBundleIdentifier:identifier];
   return v10->_cancellationInvocation;
 }
 
-- (id)_terminateWithError:(id)a3
+- (id)_terminateWithError:(id)error
 {
   os_unfair_lock_lock(&self->_lock);
   if (!self->_lock_terminationError)
   {
-    self->_lock_terminationError = a3;
+    self->_lock_terminationError = error;
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  [(_UIViewServiceHostSessionDeputyShim *)self callConnectionHandlerWithError:a3];
+  [(_UIViewServiceHostSessionDeputyShim *)self callConnectionHandlerWithError:error];
   terminateInvocation = self->_terminateInvocation;
 
   return [(_UIAsyncInvocation *)terminateInvocation invoke];
 }
 
-- (void)_terminateUnconditionallyThen:(id)a3
+- (void)_terminateUnconditionallyThen:(id)then
 {
   os_unfair_lock_lock(&self->_lock);
   v5 = [self->_lock_terminationHandler copy];
@@ -139,25 +139,25 @@
     (v5)[2](v5, v6);
   }
 
-  v7 = [(_UIViewServiceHostSession *)self->_session sceneSynchronizer];
+  sceneSynchronizer = [(_UIViewServiceHostSession *)self->_session sceneSynchronizer];
   [(_UIViewServiceHostSession *)self->_session invalidate];
 
   self->_session = 0;
-  if (v7)
+  if (sceneSynchronizer)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __69___UIViewServiceHostSessionDeputyShim__terminateUnconditionallyThen___block_invoke;
     v9[3] = &unk_1E70F3168;
-    v9[4] = a3;
-    [v7 performAsyncOnSendingQueue:v9];
+    v9[4] = then;
+    [sceneSynchronizer performAsyncOnSendingQueue:v9];
   }
 
   else
   {
-    v8 = *(a3 + 2);
+    v8 = *(then + 2);
 
-    v8(a3);
+    v8(then);
   }
 }
 
@@ -176,7 +176,7 @@
       v10 = 2114;
       v11 = NSStringFromClass(v6);
       v12 = 2048;
-      v13 = self;
+      selfCopy = self;
       v14 = 2114;
       v15 = @"_UIViewServiceHostSessionDeputyShim_NonARC.m";
       v16 = 1024;
@@ -197,7 +197,7 @@
   [(_UIViewServiceHostSessionDeputyShim *)&v7 dealloc];
 }
 
-- (void)callConnectionHandlerWithError:(id)a3
+- (void)callConnectionHandlerWithError:(id)error
 {
   v12 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_lock);
@@ -218,18 +218,18 @@
       *buf = 138412546;
       v9 = loggingIdentifier;
       v10 = 2114;
-      v11 = a3;
+      errorCopy = error;
       _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEFAULT, "Ignoring request to call completion handler for already finished session deputy shim: '%@' : %{public}@", buf, 0x16u);
     }
   }
 }
 
-- (void)createSessionForService:(id)a3 appBundleViewServiceBundleIdentifier:(id)a4
+- (void)createSessionForService:(id)service appBundleViewServiceBundleIdentifier:(id)identifier
 {
   v21 = *MEMORY[0x1E69E9840];
   if (self->_session)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", a4, @"!_session"];
+    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", identifier, @"!_session"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v7 = NSStringFromSelector(a2);
@@ -239,7 +239,7 @@
       v11 = 2114;
       v12 = NSStringFromClass(v8);
       v13 = 2048;
-      v14 = self;
+      selfCopy = self;
       v15 = 2114;
       v16 = @"_UIViewServiceHostSessionDeputyShim_NonARC.m";
       v17 = 1024;
@@ -255,12 +255,12 @@
     JUMPOUT(0x1895CD200);
   }
 
-  self->_session = [[_UIViewServiceHostSession alloc] initWithService:a3 viewServiceAppBundleId:a4 delegate:self];
+  self->_session = [[_UIViewServiceHostSession alloc] initWithService:service viewServiceAppBundleId:identifier delegate:self];
 }
 
-- (id)connectToDeputyWithInterface:(id)a3 fromExportedHostingObject:(id)a4 connectionHandler:(id)a5
+- (id)connectToDeputyWithInterface:(id)interface fromExportedHostingObject:(id)object connectionHandler:(id)handler
 {
-  v31 = a4;
+  objectCopy = object;
   os_unfair_lock_lock(&self->_lock);
   v8 = atomic_load(&self->_lock_isTerminated);
   if (v8)
@@ -272,7 +272,7 @@
     block[2] = __112___UIViewServiceHostSessionDeputyShim_connectToDeputyWithInterface_fromExportedHostingObject_connectionHandler___block_invoke;
     block[3] = &unk_1E7101D40;
     block[5] = v9;
-    block[6] = a5;
+    block[6] = handler;
     block[4] = self;
     dispatch_async(global_queue, block);
     v29[0] = MEMORY[0x1E69E9820];
@@ -288,7 +288,7 @@
     os_unfair_lock_unlock(&self->_lock);
     v12 = MEMORY[0x1E696AEC0];
     v13 = objc_opt_class();
-    v14 = [objc_msgSend(v12 stringWithFormat:@"com.apple.uikit.%@ %@ %@ %p", NSStringFromClass(v13), self->_loggingIdentifier, a3, self), "UTF8String"];
+    v14 = [objc_msgSend(v12 stringWithFormat:@"com.apple.uikit.%@ %@ %@ %p", NSStringFromClass(v13), self->_loggingIdentifier, interface, self), "UTF8String"];
     v15 = dispatch_queue_create(v14, 0);
     v27[0] = 0;
     v27[1] = v27;
@@ -306,19 +306,19 @@
     v25[2] = __112___UIViewServiceHostSessionDeputyShim_connectToDeputyWithInterface_fromExportedHostingObject_connectionHandler___block_invoke_5;
     v25[3] = &unk_1E7101DE0;
     v25[4] = v26;
-    v25[5] = a5;
+    v25[5] = handler;
     v17 = [(NSXPCConnection *)serviceConnection remoteObjectProxyWithErrorHandler:v25];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __112___UIViewServiceHostSessionDeputyShim_connectToDeputyWithInterface_fromExportedHostingObject_connectionHandler___block_invoke_7;
     v23[3] = &unk_1E7101E08;
     v23[4] = v26;
-    v23[5] = a5;
+    v23[5] = handler;
     v24 = v23;
-    v18 = [a3 connectionInvocation];
-    if ([a3 hostObjectInterface])
+    connectionInvocation = [interface connectionInvocation];
+    if ([interface hostObjectInterface])
     {
-      v19 = &v31;
+      v19 = &objectCopy;
     }
 
     else
@@ -327,10 +327,10 @@
       v19 = &v22;
     }
 
-    [v18 setArgument:v19 atIndex:2];
-    [v18 setArgument:&v24 atIndex:3];
-    [v18 setSelector:{objc_msgSend(a3, "connectionSelector")}];
-    [v18 invokeWithTarget:v17];
+    [connectionInvocation setArgument:v19 atIndex:2];
+    [connectionInvocation setArgument:&v24 atIndex:3];
+    [connectionInvocation setSelector:{objc_msgSend(interface, "connectionSelector")}];
+    [connectionInvocation invokeWithTarget:v17];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __112___UIViewServiceHostSessionDeputyShim_connectToDeputyWithInterface_fromExportedHostingObject_connectionHandler___block_invoke_9;
@@ -344,14 +344,14 @@
   return v11;
 }
 
-- (void)setTerminationHandler:(id)a3
+- (void)setTerminationHandler:(id)handler
 {
   os_unfair_lock_lock(&self->_lock);
   lock_terminationHandler = self->_lock_terminationHandler;
-  if (lock_terminationHandler != a3)
+  if (lock_terminationHandler != handler)
   {
 
-    self->_lock_terminationHandler = [a3 copy];
+    self->_lock_terminationHandler = [handler copy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -377,9 +377,9 @@
   return result;
 }
 
-- (void)_viewServiceHostSessionDidConnectToClient:(id)a3
+- (void)_viewServiceHostSessionDidConnectToClient:(id)client
 {
-  v4 = [(_UIViewServiceHostSession *)a3 connectionWithClientContextBuilder:&__block_literal_global_134 replyHandler:?];
+  v4 = [(_UIViewServiceHostSession *)client connectionWithClientContextBuilder:&__block_literal_global_134 replyHandler:?];
   if (self->_deputyInterfaces)
   {
     [v4 setRemoteObjectInterface:{+[_UIViewServiceDeputyManager exportedInterfaceSupportingDeputyInterfaces:](_UIViewServiceDeputyManager, "exportedInterfaceSupportingDeputyInterfaces:")}];
@@ -393,41 +393,41 @@
   [(_UIViewServiceHostSessionDeputyShim *)self callConnectionHandlerWithError:0];
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __65___UIViewServiceHostSessionDeputyShim_appendDescriptionToStream___block_invoke;
   v6[3] = &unk_1E7101E78;
-  v6[4] = a3;
+  v6[4] = stream;
   v6[5] = self;
-  [a3 appendProem:self block:v6];
-  if ([objc_msgSend(a3 "style")] != 2)
+  [stream appendProem:self block:v6];
+  if ([objc_msgSend(stream "style")] != 2)
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __65___UIViewServiceHostSessionDeputyShim_appendDescriptionToStream___block_invoke_2;
     v5[3] = &unk_1E7101E78;
-    v5[4] = a3;
+    v5[4] = stream;
     v5[5] = self;
-    [a3 appendBodySectionWithName:0 block:v5];
+    [stream appendBodySectionWithName:0 block:v5];
   }
 }
 
 - (id)succinctDescription
 {
   v3 = MEMORY[0x1E698E688];
-  v4 = [MEMORY[0x1E698E690] succinctStyle];
+  succinctStyle = [MEMORY[0x1E698E690] succinctStyle];
 
-  return [v3 descriptionForRootObject:self withStyle:v4];
+  return [v3 descriptionForRootObject:self withStyle:succinctStyle];
 }
 
 - (NSString)debugDescription
 {
   v3 = MEMORY[0x1E698E688];
-  v4 = [MEMORY[0x1E698E690] debugStyle];
+  debugStyle = [MEMORY[0x1E698E690] debugStyle];
 
-  return [v3 descriptionForRootObject:self withStyle:v4];
+  return [v3 descriptionForRootObject:self withStyle:debugStyle];
 }
 
 @end

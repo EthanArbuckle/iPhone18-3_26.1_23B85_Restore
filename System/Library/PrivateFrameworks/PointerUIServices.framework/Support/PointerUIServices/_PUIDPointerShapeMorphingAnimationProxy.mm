@@ -1,7 +1,7 @@
 @interface _PUIDPointerShapeMorphingAnimationProxy
 - (_PUIDPointerShapeMorphingAnimationProxy)init;
-- (void)setValue:(id)a3 forKey:(id)a4;
-- (void)setValue:(id)a3 forKeyPath:(id)a4;
+- (void)setValue:(id)value forKey:(id)key;
+- (void)setValue:(id)value forKeyPath:(id)path;
 @end
 
 @implementation _PUIDPointerShapeMorphingAnimationProxy
@@ -21,31 +21,31 @@
   return v2;
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4
+- (void)setValue:(id)value forKey:(id)key
 {
   storage = self->_storage;
-  if (a3)
+  if (value)
   {
-    [(NSMutableDictionary *)storage setObject:a3 forKey:a4];
+    [(NSMutableDictionary *)storage setObject:value forKey:key];
   }
 
   else
   {
-    [(NSMutableDictionary *)storage removeObjectForKey:a4];
+    [(NSMutableDictionary *)storage removeObjectForKey:key];
   }
 }
 
-- (void)setValue:(id)a3 forKeyPath:(id)a4
+- (void)setValue:(id)value forKeyPath:(id)path
 {
   storage = self->_storage;
-  if (a3)
+  if (value)
   {
-    [(NSMutableDictionary *)storage setObject:a3 forKey:a4];
+    [(NSMutableDictionary *)storage setObject:value forKey:path];
   }
 
   else
   {
-    [(NSMutableDictionary *)storage removeObjectForKey:a4];
+    [(NSMutableDictionary *)storage removeObjectForKey:path];
   }
 }
 

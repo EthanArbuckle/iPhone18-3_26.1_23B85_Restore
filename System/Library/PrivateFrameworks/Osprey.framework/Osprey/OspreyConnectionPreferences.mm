@@ -1,58 +1,58 @@
 @interface OspreyConnectionPreferences
 - (BOOL)isDeviceAttestionExpired;
-- (BOOL)setDeviceAttestationData:(id)a3 withExpiration:(id)a4;
+- (BOOL)setDeviceAttestationData:(id)data withExpiration:(id)expiration;
 - (NSData)certificateData;
-- (OspreyConnectionPreferences)initWithConnectionHost:(id)a3 keychain:(id)a4;
-- (OspreyConnectionPreferences)initWithDictionary:(id)a3 keychain:(id)a4;
+- (OspreyConnectionPreferences)initWithConnectionHost:(id)host keychain:(id)keychain;
+- (OspreyConnectionPreferences)initWithDictionary:(id)dictionary keychain:(id)keychain;
 - (id)deviceAttestationData;
 - (id)dictionaryRepresentation;
 - (void)deleteAll;
 - (void)deleteCertificateData;
 - (void)deleteDeviceAttestationData;
 - (void)resetCachedDeviceAttestation;
-- (void)setCertificateData:(id)a3;
+- (void)setCertificateData:(id)data;
 @end
 
 @implementation OspreyConnectionPreferences
 
-- (OspreyConnectionPreferences)initWithConnectionHost:(id)a3 keychain:(id)a4
+- (OspreyConnectionPreferences)initWithConnectionHost:(id)host keychain:(id)keychain
 {
-  v6 = a3;
-  v7 = a4;
+  hostCopy = host;
+  keychainCopy = keychain;
   v13.receiver = self;
   v13.super_class = OspreyConnectionPreferences;
   v8 = [(OspreyConnectionPreferences *)&v13 init];
   if (v8)
   {
-    v9 = [v6 lowercaseString];
-    v10 = [v9 copy];
+    lowercaseString = [hostCopy lowercaseString];
+    v10 = [lowercaseString copy];
     connectionHost = v8->_connectionHost;
     v8->_connectionHost = v10;
 
-    objc_storeStrong(&v8->_keychain, a4);
+    objc_storeStrong(&v8->_keychain, keychain);
   }
 
   return v8;
 }
 
-- (OspreyConnectionPreferences)initWithDictionary:(id)a3 keychain:(id)a4
+- (OspreyConnectionPreferences)initWithDictionary:(id)dictionary keychain:(id)keychain
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKey:@"host"];
-  v9 = [(OspreyConnectionPreferences *)self initWithConnectionHost:v8 keychain:v7];
+  dictionaryCopy = dictionary;
+  keychainCopy = keychain;
+  v8 = [dictionaryCopy objectForKey:@"host"];
+  v9 = [(OspreyConnectionPreferences *)self initWithConnectionHost:v8 keychain:keychainCopy];
 
   if (v9 == self)
   {
-    v10 = [v6 objectForKey:@"deviceAttestationExpireOn"];
+    v10 = [dictionaryCopy objectForKey:@"deviceAttestationExpireOn"];
     deviceAttestionExpireOn = v9->_deviceAttestionExpireOn;
     v9->_deviceAttestionExpireOn = v10;
 
-    v12 = [v6 objectForKey:@"deviceAttestationVersion"];
+    v12 = [dictionaryCopy objectForKey:@"deviceAttestationVersion"];
     deviceAttestionVersion = v9->_deviceAttestionVersion;
     v9->_deviceAttestionVersion = v12;
 
-    v14 = [v6 objectForKey:@"deviceAuthenticationVersion"];
+    v14 = [dictionaryCopy objectForKey:@"deviceAuthenticationVersion"];
     deviceAuthenticationVersion = v9->_deviceAuthenticationVersion;
     v9->_deviceAuthenticationVersion = v14;
   }
@@ -94,8 +94,8 @@
   if (!self->_certificateDataFetched)
   {
     keychain = self->_keychain;
-    v4 = [(OspreyConnectionPreferences *)self _certificateDataKey];
-    v5 = [(OspreyKeychain *)keychain fetchDataWithIdentifier:v4];
+    _certificateDataKey = [(OspreyConnectionPreferences *)self _certificateDataKey];
+    v5 = [(OspreyKeychain *)keychain fetchDataWithIdentifier:_certificateDataKey];
     certificateData = self->_certificateData;
     self->_certificateData = v5;
 
@@ -107,19 +107,19 @@
   return v7;
 }
 
-- (void)setCertificateData:(id)a3
+- (void)setCertificateData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = [a3 copy];
+    v4 = [data copy];
     certificateData = self->_certificateData;
     self->_certificateData = v4;
 
     self->_certificateDataFetched = 1;
     keychain = self->_keychain;
     v7 = self->_certificateData;
-    v9 = [(OspreyConnectionPreferences *)self _certificateDataKey];
-    [(OspreyKeychain *)keychain saveData:v7 withIdentifier:v9];
+    _certificateDataKey = [(OspreyConnectionPreferences *)self _certificateDataKey];
+    [(OspreyKeychain *)keychain saveData:v7 withIdentifier:_certificateDataKey];
   }
 
   else
@@ -144,31 +144,31 @@
 - (BOOL)isDeviceAttestionExpired
 {
   deviceAttestionExpireOn = self->_deviceAttestionExpireOn;
-  v3 = [MEMORY[0x277CBEAA8] date];
-  LOBYTE(deviceAttestionExpireOn) = [(NSDate *)deviceAttestionExpireOn compare:v3]== NSOrderedAscending;
+  date = [MEMORY[0x277CBEAA8] date];
+  LOBYTE(deviceAttestionExpireOn) = [(NSDate *)deviceAttestionExpireOn compare:date]== NSOrderedAscending;
 
   return deviceAttestionExpireOn;
 }
 
-- (BOOL)setDeviceAttestationData:(id)a3 withExpiration:(id)a4
+- (BOOL)setDeviceAttestationData:(id)data withExpiration:(id)expiration
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  dataCopy = data;
+  expirationCopy = expiration;
+  if (dataCopy)
   {
-    objc_storeStrong(&self->_deviceAttestionExpireOn, a4);
-    v8 = [v6 copy];
+    objc_storeStrong(&self->_deviceAttestionExpireOn, expiration);
+    v8 = [dataCopy copy];
     deviceAttestationData = self->_deviceAttestationData;
     self->_deviceAttestationData = v8;
 
-    v10 = [(OspreyConnectionPreferences *)self _deviceAttestationDataKey];
+    _deviceAttestationDataKey = [(OspreyConnectionPreferences *)self _deviceAttestationDataKey];
     OspreyLoggingInit();
     if (os_log_type_enabled(OspreyLogContextPreferences, OS_LOG_TYPE_DEBUG))
     {
       [OspreyConnectionPreferences setDeviceAttestationData:withExpiration:];
     }
 
-    v11 = [(OspreyKeychain *)self->_keychain saveData:self->_deviceAttestationData withIdentifier:v10];
+    v11 = [(OspreyKeychain *)self->_keychain saveData:self->_deviceAttestationData withIdentifier:_deviceAttestationDataKey];
   }
 
   else
@@ -194,10 +194,10 @@
 
 - (id)deviceAttestationData
 {
-  v3 = [(OspreyConnectionPreferences *)self _deviceAttestationDataKey];
+  _deviceAttestationDataKey = [(OspreyConnectionPreferences *)self _deviceAttestationDataKey];
   if ([(OspreyConnectionPreferences *)self isDeviceAttestionExpired])
   {
-    [(OspreyKeychain *)self->_keychain deleteDataWithIdentifier:v3];
+    [(OspreyKeychain *)self->_keychain deleteDataWithIdentifier:_deviceAttestationDataKey];
     deviceAttestationData = self->_deviceAttestationData;
     self->_deviceAttestationData = 0;
 
@@ -209,7 +209,7 @@
     v6 = self->_deviceAttestationData;
     if (!v6)
     {
-      v7 = [(OspreyKeychain *)self->_keychain fetchDataWithIdentifier:v3];
+      v7 = [(OspreyKeychain *)self->_keychain fetchDataWithIdentifier:_deviceAttestationDataKey];
       v8 = self->_deviceAttestationData;
       self->_deviceAttestationData = v7;
 

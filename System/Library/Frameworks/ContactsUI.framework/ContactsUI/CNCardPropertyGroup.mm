@@ -1,8 +1,8 @@
 @interface CNCardPropertyGroup
-+ (id)groupForProperty:(id)a3 contact:(id)a4 store:(id)a5 policy:(id)a6 linkedPolicies:(id)a7;
-- (BOOL)_arrayContainsMaxAllowedItems:(id)a3;
-- (BOOL)_shouldShowGroupWhenEditing:(BOOL)a3;
-- (BOOL)addEditingItem:(id)a3;
++ (id)groupForProperty:(id)property contact:(id)contact store:(id)store policy:(id)policy linkedPolicies:(id)policies;
+- (BOOL)_arrayContainsMaxAllowedItems:(id)items;
+- (BOOL)_shouldShowGroupWhenEditing:(BOOL)editing;
+- (BOOL)addEditingItem:(id)item;
 - (BOOL)allowsAdding;
 - (BOOL)isFixedValue;
 - (BOOL)isMultiLine;
@@ -10,33 +10,33 @@
 - (BOOL)isRequired;
 - (BOOL)labelsAreUnique;
 - (BOOL)modified;
-- (BOOL)moveEditingItemFromIndex:(int64_t)a3 toIndex:(int64_t)a4;
-- (CNCardPropertyGroup)initWithProperty:(id)a3 contact:(id)a4 store:(id)a5 policy:(id)a6 linkedPolicies:(id)a7;
+- (BOOL)moveEditingItemFromIndex:(int64_t)index toIndex:(int64_t)toIndex;
+- (CNCardPropertyGroup)initWithProperty:(id)property contact:(id)contact store:(id)store policy:(id)policy linkedPolicies:(id)policies;
 - (Class)propertyGroupItemClass;
 - (NSArray)editingItems;
-- (id)_availableLabelsInLabels:(id)a3 forItem:(id)a4 withValueSelector:(SEL)a5 usedLabelsCount:(int64_t *)a6;
-- (id)_itemToBeMergedWith:(id)a3 fromItems:(id)a4 forEditing:(BOOL)a5;
+- (id)_availableLabelsInLabels:(id)labels forItem:(id)item withValueSelector:(SEL)selector usedLabelsCount:(int64_t *)count;
+- (id)_itemToBeMergedWith:(id)with fromItems:(id)items forEditing:(BOOL)editing;
 - (id)_loadPropertyItems;
-- (id)_mergeItems:(id)a3 forEditing:(BOOL)a4;
+- (id)_mergeItems:(id)items forEditing:(BOOL)editing;
 - (id)_nextAvailableInstantMessageService;
 - (id)_nextAvailableLabel;
-- (id)_nextAvailableLabelInLabels:(id)a3 withValueSelector:(SEL)a4;
+- (id)_nextAvailableLabelInLabels:(id)labels withValueSelector:(SEL)selector;
 - (id)_nextAvailableSocialService;
 - (id)description;
 - (id)displayItems;
-- (id)itemsUsingLabel:(id)a3;
-- (id)labelsForItem:(id)a3 options:(unint64_t)a4;
+- (id)itemsUsingLabel:(id)label;
+- (id)labelsForItem:(id)item options:(unint64_t)options;
 - (id)labelsInUseByGroup;
 - (id)lastEditingItem;
 - (id)nextAvailableLabel;
-- (id)policyForItem:(id)a3;
+- (id)policyForItem:(id)item;
 - (int64_t)valueEditingItemsCount;
-- (void)_updateNameValuesForItems:(id)a3;
-- (void)reloadDataPreservingChanges:(BOOL)a3;
-- (void)removeEditingItem:(id)a3;
+- (void)_updateNameValuesForItems:(id)items;
+- (void)reloadDataPreservingChanges:(BOOL)changes;
+- (void)removeEditingItem:(id)item;
 - (void)saveChanges;
-- (void)saveChangesForItems:(id)a3;
-- (void)setEditingItems:(id)a3;
+- (void)saveChangesForItems:(id)items;
+- (void)setEditingItems:(id)items;
 @end
 
 @implementation CNCardPropertyGroup
@@ -59,8 +59,8 @@
 
 - (id)_nextAvailableInstantMessageService
 {
-  v3 = [(CNCardPropertyGroup *)self policy];
-  v4 = [v3 supportedLabelsForContactProperty:*MEMORY[0x1E695C3D0]];
+  policy = [(CNCardPropertyGroup *)self policy];
+  v4 = [policy supportedLabelsForContactProperty:*MEMORY[0x1E695C3D0]];
 
   if (v4)
   {
@@ -70,10 +70,10 @@
   else
   {
     v6 = +[CNInstantMessagePickerController defaultServices];
-    v7 = [(CNCardGroup *)self contact];
-    v8 = [v7 supportsInstantMessageService];
+    contact = [(CNCardGroup *)self contact];
+    supportsInstantMessageService = [contact supportsInstantMessageService];
 
-    if (v8)
+    if (supportsInstantMessageService)
     {
       v5 = [(CNCardPropertyGroup *)self _nextAvailableLabelInLabels:v6 withValueSelector:sel_service];
     }
@@ -103,11 +103,11 @@
   return v4;
 }
 
-- (id)_nextAvailableLabelInLabels:(id)a3 withValueSelector:(SEL)a4
+- (id)_nextAvailableLabelInLabels:(id)labels withValueSelector:(SEL)selector
 {
-  v6 = a3;
+  labelsCopy = labels;
   v13 = 0;
-  v7 = [(CNCardPropertyGroup *)self _availableLabelsInLabels:v6 forItem:0 withValueSelector:a4 usedLabelsCount:&v13];
+  v7 = [(CNCardPropertyGroup *)self _availableLabelsInLabels:labelsCopy forItem:0 withValueSelector:selector usedLabelsCount:&v13];
   if ([v7 count])
   {
     v8 = v7;
@@ -116,10 +116,10 @@
 
   else
   {
-    if ([v6 count])
+    if ([labelsCopy count])
     {
       v10 = v13;
-      v9 = v10 % [v6 count];
+      v9 = v10 % [labelsCopy count];
     }
 
     else
@@ -127,7 +127,7 @@
       v9 = 0;
     }
 
-    v8 = v6;
+    v8 = labelsCopy;
   }
 
   v11 = [v8 objectAtIndexedSubscript:v9];
@@ -135,19 +135,19 @@
   return v11;
 }
 
-- (id)_availableLabelsInLabels:(id)a3 forItem:(id)a4 withValueSelector:(SEL)a5 usedLabelsCount:(int64_t *)a6
+- (id)_availableLabelsInLabels:(id)labels forItem:(id)item withValueSelector:(SEL)selector usedLabelsCount:(int64_t *)count
 {
   v46 = *MEMORY[0x1E69E9840];
-  v33 = a3;
-  v35 = a4;
+  labelsCopy = labels;
+  itemCopy = item;
   v9 = [MEMORY[0x1E695DFA8] set];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v31 = self;
-  v10 = [(CNCardPropertyGroup *)self editingItems];
-  v11 = [v10 countByEnumeratingWithState:&v40 objects:v45 count:16];
+  selfCopy = self;
+  editingItems = [(CNCardPropertyGroup *)self editingItems];
+  v11 = [editingItems countByEnumeratingWithState:&v40 objects:v45 count:16];
   if (v11)
   {
     v12 = v11;
@@ -158,43 +158,43 @@
       {
         if (*v41 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(editingItems);
         }
 
         v15 = *(*(&v40 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v16 = [v15 labeledValue];
-          v17 = [v16 value];
+          labeledValue = [v15 labeledValue];
+          value = [labeledValue value];
 
-          if (a5)
+          if (selector)
           {
             if ((objc_opt_respondsToSelector() & 1) == 0)
             {
-              v22 = [MEMORY[0x1E696AAA8] currentHandler];
-              [v22 handleFailureInMethod:a2 object:v31 file:@"CNCardPropertyGroup.m" lineNumber:601 description:@"A valueSelector has been specified but the value doesn’t support it."];
+              currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+              [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"CNCardPropertyGroup.m" lineNumber:601 description:@"A valueSelector has been specified but the value doesn’t support it."];
             }
 
-            v18 = ([v17 methodForSelector:a5])(v17, a5);
-            if (v18)
+            labeledValue3 = ([value methodForSelector:selector])(value, selector);
+            if (labeledValue3)
             {
-              [v9 addObject:v18];
+              [v9 addObject:labeledValue3];
             }
 
 LABEL_15:
           }
 
-          else if (v15 != v35)
+          else if (v15 != itemCopy)
           {
-            v19 = [v15 labeledValue];
-            v20 = [v19 label];
+            labeledValue2 = [v15 labeledValue];
+            label = [labeledValue2 label];
 
-            if (v20)
+            if (label)
             {
-              v18 = [v15 labeledValue];
-              v21 = [v18 label];
-              [v9 addObject:v21];
+              labeledValue3 = [v15 labeledValue];
+              label2 = [labeledValue3 label];
+              [v9 addObject:label2];
 
               goto LABEL_15;
             }
@@ -204,18 +204,18 @@ LABEL_15:
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v40 objects:v45 count:16];
+      v12 = [editingItems countByEnumeratingWithState:&v40 objects:v45 count:16];
     }
 
     while (v12);
   }
 
-  v23 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v24 = v33;
+  v24 = labelsCopy;
   v25 = [v24 countByEnumeratingWithState:&v36 objects:v44 count:16];
   if (v25)
   {
@@ -233,7 +233,7 @@ LABEL_15:
         v29 = *(*(&v36 + 1) + 8 * j);
         if (([v9 containsObject:v29] & 1) == 0)
         {
-          [v23 addObject:v29];
+          [array addObject:v29];
         }
       }
 
@@ -243,25 +243,25 @@ LABEL_15:
     while (v26);
   }
 
-  if (a6)
+  if (count)
   {
-    *a6 = [v9 count];
+    *count = [v9 count];
   }
 
-  return v23;
+  return array;
 }
 
-- (id)itemsUsingLabel:(id)a3
+- (id)itemsUsingLabel:(id)label
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  labelCopy = label;
+  array = [MEMORY[0x1E695DF70] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(CNCardPropertyGroup *)self editingItems];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  editingItems = [(CNCardPropertyGroup *)self editingItems];
+  v7 = [editingItems countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -272,42 +272,42 @@ LABEL_15:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(editingItems);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v12 = [v11 labeledValue];
-          v13 = [v12 label];
+          labeledValue = [v11 labeledValue];
+          label = [labeledValue label];
 
-          if ([v13 isEqualToString:v4])
+          if ([label isEqualToString:labelCopy])
           {
-            [v5 addObject:v11];
+            [array addObject:v11];
           }
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [editingItems countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
   }
 
-  return v5;
+  return array;
 }
 
 - (id)labelsInUseByGroup
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(CNCardPropertyGroup *)self editingItems];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  editingItems = [(CNCardPropertyGroup *)self editingItems];
+  v5 = [editingItems countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -319,44 +319,44 @@ LABEL_15:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(editingItems);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v11 = [v10 labeledValue];
-          v12 = [v11 label];
+          labeledValue = [v10 labeledValue];
+          label = [labeledValue label];
 
-          if ((*(v8 + 16))(v8, v12))
+          if ((*(v8 + 16))(v8, label))
           {
-            [v3 addObject:v12];
+            [array addObject:label];
           }
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [editingItems countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
-- (id)labelsForItem:(id)a3 options:(unint64_t)a4
+- (id)labelsForItem:(id)item options:(unint64_t)options
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(CNCardPropertyGroup *)self property];
-  v8 = [v7 isEqualToString:@"birthdays"];
+  itemCopy = item;
+  property = [(CNCardPropertyGroup *)self property];
+  v8 = [property isEqualToString:@"birthdays"];
 
-  v9 = [(CNCardPropertyGroup *)self policy];
-  v10 = v9;
+  policy = [(CNCardPropertyGroup *)self policy];
+  v10 = policy;
   if (v8)
   {
-    v11 = [v9 _cnui_maximumNumberOfValuesForProperty:@"birthdays"];
+    v11 = [policy _cnui_maximumNumberOfValuesForProperty:@"birthdays"];
 
     if (v11 < 2)
     {
@@ -368,31 +368,31 @@ LABEL_15:
     {
       v32[0] = @"_systemCalendar";
       v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:1];
-      v13 = [MEMORY[0x1E6996B48] availableAlternateCalendars];
-      v14 = [v12 arrayByAddingObjectsFromArray:v13];
+      availableAlternateCalendars = [MEMORY[0x1E6996B48] availableAlternateCalendars];
+      v14 = [v12 arrayByAddingObjectsFromArray:availableAlternateCalendars];
     }
   }
 
   else
   {
-    v15 = [(CNCardPropertyGroup *)self property];
-    v14 = [v10 supportedLabelsForContactProperty:v15];
+    property2 = [(CNCardPropertyGroup *)self property];
+    v14 = [v10 supportedLabelsForContactProperty:property2];
 
     if (!v14)
     {
       v16 = MEMORY[0x1E695CE18];
-      v17 = [(CNCardPropertyGroup *)self property];
-      v14 = [v16 standardLabelsForPropertyWithKey:v17 options:a4];
+      property3 = [(CNCardPropertyGroup *)self property];
+      v14 = [v16 standardLabelsForPropertyWithKey:property3 options:options];
     }
   }
 
   v29 = 0;
   if ([(CNCardPropertyGroup *)self labelsAreUnique])
   {
-    v18 = [(CNCardPropertyGroup *)self _availableLabelsInLabels:v14 forItem:v6 withValueSelector:0 usedLabelsCount:&v29];
+    v18 = [(CNCardPropertyGroup *)self _availableLabelsInLabels:v14 forItem:itemCopy withValueSelector:0 usedLabelsCount:&v29];
 
-    v19 = [(CNCardPropertyGroup *)self property];
-    v20 = [v19 isEqualToString:@"birthdays"];
+    property4 = [(CNCardPropertyGroup *)self property];
+    v20 = [property4 isEqualToString:@"birthdays"];
 
     if (v20)
     {
@@ -406,9 +406,9 @@ LABEL_15:
       else
       {
         v24 = MEMORY[0x1E69AAE08];
-        v25 = [MEMORY[0x1E695DF58] currentLocale];
-        v26 = [v25 localeIdentifier];
-        v23 = [v24 preferredLunarCalendarForLocaleID:v26];
+        currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+        localeIdentifier = [currentLocale localeIdentifier];
+        v23 = [v24 preferredLunarCalendarForLocaleID:localeIdentifier];
 
         if (v23 && [v18 containsObject:@"_systemCalendar"] && (objc_msgSend(v18, "containsObject:", @"_systemCalendar") & 1) == 0 && objc_msgSend(v18, "count") >= 2)
         {
@@ -427,16 +427,16 @@ LABEL_15:
   return v14;
 }
 
-- (void)saveChangesForItems:(id)a3
+- (void)saveChangesForItems:(id)items
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(CNCardPropertyGroup *)self _updateNameValuesForItems:v4];
+  itemsCopy = items;
+  [(CNCardPropertyGroup *)self _updateNameValuesForItems:itemsCopy];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = v4;
+  v5 = itemsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -474,35 +474,35 @@ LABEL_15:
   }
 }
 
-- (id)policyForItem:(id)a3
+- (id)policyForItem:(id)item
 {
-  v4 = [a3 contactProperty];
-  v5 = [v4 sourceContact];
-  v6 = [v5 identifier];
+  contactProperty = [item contactProperty];
+  sourceContact = [contactProperty sourceContact];
+  identifier = [sourceContact identifier];
 
-  v7 = [(CNCardPropertyGroup *)self policy];
-  v8 = [(CNCardGroup *)self contact];
-  v9 = [v8 identifier];
-  v10 = [v6 isEqual:v9];
+  policy = [(CNCardPropertyGroup *)self policy];
+  contact = [(CNCardGroup *)self contact];
+  identifier2 = [contact identifier];
+  v10 = [identifier isEqual:identifier2];
 
   if ((v10 & 1) == 0)
   {
-    v11 = [(CNCardPropertyGroup *)self linkedPolicies];
-    v12 = [v11 objectForKey:v6];
+    linkedPolicies = [(CNCardPropertyGroup *)self linkedPolicies];
+    v12 = [linkedPolicies objectForKey:identifier];
 
-    v7 = v12;
+    policy = v12;
   }
 
-  return v7;
+  return policy;
 }
 
-- (void)_updateNameValuesForItems:(id)a3
+- (void)_updateNameValuesForItems:(id)items
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemsCopy = items;
   v5 = +[CNContactView nameProperties];
-  v6 = [(CNCardPropertyGroup *)self property];
-  v7 = [v5 containsObject:v6];
+  property = [(CNCardPropertyGroup *)self property];
+  v7 = [v5 containsObject:property];
 
   if (!v7)
   {
@@ -513,12 +513,12 @@ LABEL_15:
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v8 = v4;
+  v8 = itemsCopy;
   v9 = [v8 countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (!v9)
   {
 LABEL_12:
-    v16 = v8;
+    value = v8;
     goto LABEL_24;
   }
 
@@ -559,10 +559,10 @@ LABEL_10:
     }
   }
 
-  v17 = [v15 labeledValue];
-  v16 = [v17 value];
+  labeledValue = [v15 labeledValue];
+  value = [labeledValue value];
 
-  if (!v16)
+  if (!value)
   {
     goto LABEL_25;
   }
@@ -591,7 +591,7 @@ LABEL_10:
         v24 = objc_opt_class();
         if ([v24 isSubclassOfClass:{objc_opt_class(), v25}])
         {
-          [v23 updateLabeledValueWithValue:v16];
+          [v23 updateLabeledValueWithValue:value];
         }
 
         ++v22;
@@ -608,11 +608,11 @@ LABEL_24:
 LABEL_25:
 }
 
-- (BOOL)_arrayContainsMaxAllowedItems:(id)a3
+- (BOOL)_arrayContainsMaxAllowedItems:(id)items
 {
-  v4 = a3;
-  v5 = [v4 count];
-  v6 = [v4 lastObject];
+  itemsCopy = items;
+  v5 = [itemsCopy count];
+  lastObject = [itemsCopy lastObject];
 
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
@@ -623,17 +623,17 @@ LABEL_25:
     return v5 != (isKindOfClass & 1);
   }
 
-  v9 = [(CNCardPropertyGroup *)self policy];
-  v10 = [(CNCardPropertyGroup *)self property];
-  v11 = v8 >= [v9 _cnui_maximumNumberOfValuesForProperty:v10];
+  policy = [(CNCardPropertyGroup *)self policy];
+  property = [(CNCardPropertyGroup *)self property];
+  v11 = v8 >= [policy _cnui_maximumNumberOfValuesForProperty:property];
 
   return v11;
 }
 
 - (BOOL)labelsAreUnique
 {
-  v2 = [(CNCardPropertyGroup *)self property];
-  v3 = [v2 isEqualToString:@"birthdays"];
+  property = [(CNCardPropertyGroup *)self property];
+  v3 = [property isEqualToString:@"birthdays"];
 
   return v3;
 }
@@ -641,54 +641,54 @@ LABEL_25:
 - (BOOL)isRequired
 {
   v3 = +[CNContactView requiredNameProperties];
-  v4 = [(CNCardPropertyGroup *)self property];
-  if ([v3 containsObject:v4])
+  property = [(CNCardPropertyGroup *)self property];
+  if ([v3 containsObject:property])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(CNCardPropertyGroup *)self property];
-    v5 = [v6 isEqualToString:*MEMORY[0x1E695C320]];
+    property2 = [(CNCardPropertyGroup *)self property];
+    v5 = [property2 isEqualToString:*MEMORY[0x1E695C320]];
   }
 
   return v5;
 }
 
-- (BOOL)_shouldShowGroupWhenEditing:(BOOL)a3
+- (BOOL)_shouldShowGroupWhenEditing:(BOOL)editing
 {
   v43 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!editing)
   {
-    v7 = [(CNCardPropertyGroup *)self property];
-    if ([v7 isEqualToString:*MEMORY[0x1E695C1E0]])
+    property = [(CNCardPropertyGroup *)self property];
+    if ([property isEqualToString:*MEMORY[0x1E695C1E0]])
     {
     }
 
     else
     {
-      v8 = [(CNCardPropertyGroup *)self property];
-      v9 = [v8 isEqualToString:*MEMORY[0x1E695C3F8]];
+      property2 = [(CNCardPropertyGroup *)self property];
+      v9 = [property2 isEqualToString:*MEMORY[0x1E695C3F8]];
 
       if (!v9)
       {
-        v21 = [(CNCardPropertyGroup *)self property];
-        v22 = [v21 isEqualToString:*MEMORY[0x1E695C320]];
+        property3 = [(CNCardPropertyGroup *)self property];
+        v22 = [property3 isEqualToString:*MEMORY[0x1E695C320]];
 
         if (v22)
         {
-          v23 = [(CNCardGroup *)self contact];
-          v24 = [v23 isUnknown];
+          contact = [(CNCardGroup *)self contact];
+          isUnknown = [contact isUnknown];
 
-          if (v24)
+          if (isUnknown)
           {
             v35 = 0u;
             v36 = 0u;
             v33 = 0u;
             v34 = 0u;
-            v25 = [(CNCardPropertyGroup *)self propertyItems];
-            v26 = [v25 countByEnumeratingWithState:&v33 objects:v41 count:16];
+            propertyItems = [(CNCardPropertyGroup *)self propertyItems];
+            v26 = [propertyItems countByEnumeratingWithState:&v33 objects:v41 count:16];
             if (v26)
             {
               v27 = v26;
@@ -699,12 +699,12 @@ LABEL_25:
                 {
                   if (*v34 != v28)
                   {
-                    objc_enumerationMutation(v25);
+                    objc_enumerationMutation(propertyItems);
                   }
 
-                  v30 = [*(*(&v33 + 1) + 8 * i) labeledValue];
-                  v31 = [v30 value];
-                  v32 = [v31 length];
+                  labeledValue = [*(*(&v33 + 1) + 8 * i) labeledValue];
+                  value = [labeledValue value];
+                  v32 = [value length];
 
                   if (v32)
                   {
@@ -713,7 +713,7 @@ LABEL_25:
                   }
                 }
 
-                v27 = [v25 countByEnumeratingWithState:&v33 objects:v41 count:16];
+                v27 = [propertyItems countByEnumeratingWithState:&v33 objects:v41 count:16];
                 if (v27)
                 {
                   continue;
@@ -736,8 +736,8 @@ LABEL_25:
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v10 = [(CNCardPropertyGroup *)self propertyItems];
-    v11 = [v10 countByEnumeratingWithState:&v37 objects:v42 count:16];
+    propertyItems2 = [(CNCardPropertyGroup *)self propertyItems];
+    v11 = [propertyItems2 countByEnumeratingWithState:&v37 objects:v42 count:16];
     if (v11)
     {
       v12 = *v38;
@@ -747,20 +747,20 @@ LABEL_25:
         {
           if (*v38 != v12)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(propertyItems2);
           }
 
-          v14 = [*(*(&v37 + 1) + 8 * j) labeledValue];
-          v15 = [v14 value];
+          labeledValue2 = [*(*(&v37 + 1) + 8 * j) labeledValue];
+          value2 = [labeledValue2 value];
 
-          if (v15)
+          if (value2)
           {
             LOBYTE(v11) = 1;
             goto LABEL_18;
           }
         }
 
-        v11 = [v10 countByEnumeratingWithState:&v37 objects:v42 count:16];
+        v11 = [propertyItems2 countByEnumeratingWithState:&v37 objects:v42 count:16];
         if (v11)
         {
           continue;
@@ -775,24 +775,24 @@ LABEL_18:
     return v11;
   }
 
-  v4 = [(CNCardGroup *)self contact];
-  v5 = [v4 isSuggested];
+  contact2 = [(CNCardGroup *)self contact];
+  isSuggested = [contact2 isSuggested];
 
-  if (v5)
+  if (isSuggested)
   {
-    v6 = [(CNCardPropertyGroup *)self property];
-    if ([v6 isEqualToString:*MEMORY[0x1E695C1E0]])
+    property4 = [(CNCardPropertyGroup *)self property];
+    if ([property4 isEqualToString:*MEMORY[0x1E695C1E0]])
     {
 
 LABEL_20:
-      v18 = [(CNCardGroup *)self contact];
-      v19 = [v18 isSuggestedMe];
+      contact3 = [(CNCardGroup *)self contact];
+      isSuggestedMe = [contact3 isSuggestedMe];
 
-      return v19;
+      return isSuggestedMe;
     }
 
-    v16 = [(CNCardPropertyGroup *)self property];
-    v17 = [v16 isEqualToString:*MEMORY[0x1E695C3F8]];
+    property5 = [(CNCardPropertyGroup *)self property];
+    v17 = [property5 isEqualToString:*MEMORY[0x1E695C3F8]];
 
     if (v17)
     {
@@ -805,17 +805,17 @@ LABEL_33:
   return v11;
 }
 
-- (id)_itemToBeMergedWith:(id)a3 fromItems:(id)a4 forEditing:(BOOL)a5
+- (id)_itemToBeMergedWith:(id)with fromItems:(id)items forEditing:(BOOL)editing
 {
-  v5 = a5;
+  editingCopy = editing;
   v21 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  withCopy = with;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = a4;
-  v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  itemsCopy = items;
+  v9 = [itemsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
     v10 = v9;
@@ -826,18 +826,18 @@ LABEL_33:
       {
         if (*v17 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(itemsCopy);
         }
 
         v13 = *(*(&v16 + 1) + 8 * i);
-        if ([v13 isEquivalentToItem:v7 whenEditing:{v5, v16}])
+        if ([v13 isEquivalentToItem:withCopy whenEditing:{editingCopy, v16}])
         {
           v14 = v13;
           goto LABEL_11;
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v10 = [itemsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v10)
       {
         continue;
@@ -853,20 +853,20 @@ LABEL_11:
   return v14;
 }
 
-- (id)_mergeItems:(id)a3 forEditing:(BOOL)a4
+- (id)_mergeItems:(id)items forEditing:(BOOL)editing
 {
-  v4 = a4;
+  editingCopy = editing;
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [MEMORY[0x1E695DF70] array];
-  if ([(CNCardPropertyGroup *)self _shouldShowGroupWhenEditing:v4])
+  itemsCopy = items;
+  array = [MEMORY[0x1E695DF70] array];
+  if ([(CNCardPropertyGroup *)self _shouldShowGroupWhenEditing:editingCopy])
   {
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v21 = v6;
-    obj = v6;
+    v21 = itemsCopy;
+    obj = itemsCopy;
     v8 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v8)
     {
@@ -882,35 +882,35 @@ LABEL_11:
           }
 
           v12 = *(*(&v23 + 1) + 8 * i);
-          if (!([MEMORY[0x1E695CD58] suggestionsShownInEditMode] | !v4))
+          if (!([MEMORY[0x1E695CD58] suggestionsShownInEditMode] | !editingCopy))
           {
             if ([v12 isSuggested])
             {
-              v13 = [(CNCardGroup *)self contact];
-              v14 = [v13 isSuggested];
+              contact = [(CNCardGroup *)self contact];
+              isSuggested = [contact isSuggested];
 
-              if (!v14)
+              if (!isSuggested)
               {
                 continue;
               }
             }
           }
 
-          if (v4)
+          if (editingCopy)
           {
             if ([v12 isSuggested])
             {
-              v15 = [(CNCardGroup *)self contact];
-              v16 = [v15 isSuggestedMe];
+              contact2 = [(CNCardGroup *)self contact];
+              isSuggestedMe = [contact2 isSuggestedMe];
 
-              if (v16)
+              if (isSuggestedMe)
               {
                 continue;
               }
             }
           }
 
-          v17 = [(CNCardPropertyGroup *)self _itemToBeMergedWith:v12 fromItems:v7 forEditing:v4];
+          v17 = [(CNCardPropertyGroup *)self _itemToBeMergedWith:v12 fromItems:array forEditing:editingCopy];
           v18 = v17;
           if (v17)
           {
@@ -924,7 +924,7 @@ LABEL_11:
 
           if (v19)
           {
-            [v7 addObject:v12];
+            [array addObject:v12];
           }
 
           else
@@ -939,26 +939,26 @@ LABEL_11:
       while (v9);
     }
 
-    v6 = v21;
+    itemsCopy = v21;
   }
 
-  return v7;
+  return array;
 }
 
 - (id)_loadPropertyItems
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(CNCardGroup *)self contact];
-  v5 = [(CNCardPropertyGroup *)self property];
-  v6 = [v4 valueForKey:v5];
+  array = [MEMORY[0x1E695DF70] array];
+  contact = [(CNCardGroup *)self contact];
+  property = [(CNCardPropertyGroup *)self property];
+  v6 = [contact valueForKey:property];
 
-  v7 = [(CNCardPropertyGroup *)self property];
-  v8 = [v7 isEqualToString:*MEMORY[0x1E695C1C0]];
+  property2 = [(CNCardPropertyGroup *)self property];
+  v8 = [property2 isEqualToString:*MEMORY[0x1E695C1C0]];
 
   if (v6 || [(CNCardPropertyGroup *)self isRequired]|| (([(CNCardPropertyGroup *)self isAdded]| v8) & 1) != 0)
   {
-    v9 = [(CNCardPropertyGroup *)self propertyGroupItemClass];
+    propertyGroupItemClass = [(CNCardPropertyGroup *)self propertyGroupItemClass];
     if ([(CNCardPropertyGroup *)self isMultiValue])
     {
       v20 = 0u;
@@ -980,8 +980,8 @@ LABEL_11:
               objc_enumerationMutation(v6);
             }
 
-            v14 = [(objc_class *)v9 propertyGroupItemWithLabeledValue:*(*(&v18 + 1) + 8 * i) group:self contact:v4, v18];
-            [v3 _cn_addNonNilObject:v14];
+            v14 = [(objc_class *)propertyGroupItemClass propertyGroupItemWithLabeledValue:*(*(&v18 + 1) + 8 * i) group:self contact:contact, v18];
+            [array _cn_addNonNilObject:v14];
           }
 
           v11 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -995,34 +995,34 @@ LABEL_11:
     {
       if (!v6)
       {
-        v6 = [(objc_class *)v9 emptyValueForLabel:0];
+        v6 = [(objc_class *)propertyGroupItemClass emptyValueForLabel:0];
       }
 
       v15 = [MEMORY[0x1E695CEE0] labeledValueWithLabel:0 value:v6];
-      v16 = [(objc_class *)v9 propertyGroupItemWithLabeledValue:v15 group:self contact:v4];
-      [v3 addObject:v16];
+      v16 = [(objc_class *)propertyGroupItemClass propertyGroupItemWithLabeledValue:v15 group:self contact:contact];
+      [array addObject:v16];
     }
   }
 
-  return v3;
+  return array;
 }
 
 - (Class)propertyGroupItemClass
 {
-  v2 = [(CNCardPropertyGroup *)self property];
-  v3 = [CNPropertyGroupItem classForProperty:v2];
+  property = [(CNCardPropertyGroup *)self property];
+  v3 = [CNPropertyGroupItem classForProperty:property];
 
   return v3;
 }
 
-- (void)setEditingItems:(id)a3
+- (void)setEditingItems:(id)items
 {
-  v5 = a3;
-  if (self->_editingItems != v5)
+  itemsCopy = items;
+  if (self->_editingItems != itemsCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_editingItems, a3);
-    v5 = v6;
+    v6 = itemsCopy;
+    objc_storeStrong(&self->_editingItems, items);
+    itemsCopy = v6;
   }
 }
 
@@ -1038,8 +1038,8 @@ LABEL_11:
     if ([(CNCardPropertyGroup *)self canAddEditingItem])
     {
       v6 = [CNPropertyPlaceholderItem alloc];
-      v7 = [(CNCardPropertyGroup *)self property];
-      v8 = [(CNPropertyPlaceholderItem *)v6 initWithProperty:v7];
+      property = [(CNCardPropertyGroup *)self property];
+      v8 = [(CNPropertyPlaceholderItem *)v6 initWithProperty:property];
 
       v9 = [(NSArray *)self->_editingItems arrayByAddingObject:v8];
       v10 = self->_editingItems;
@@ -1068,8 +1068,8 @@ LABEL_11:
     v4 = [(CNCardPropertyGroup *)self _mergeItems:self->_propertyItems forEditing:0];
     if ([v4 count] || -[CNCardPropertyGroup showActionsWhenEmpty](self, "showActionsWhenEmpty"))
     {
-      v5 = [(CNCardGroup *)self actionItems];
-      v6 = [v4 arrayByAddingObjectsFromArray:v5];
+      actionItems = [(CNCardGroup *)self actionItems];
+      v6 = [v4 arrayByAddingObjectsFromArray:actionItems];
       v7 = self->_displayItems;
       self->_displayItems = v6;
     }
@@ -1082,23 +1082,23 @@ LABEL_11:
 
 - (void)saveChanges
 {
-  v3 = [(CNCardPropertyGroup *)self deletedItems];
-  [(CNCardPropertyGroup *)self saveChangesForItems:v3];
+  deletedItems = [(CNCardPropertyGroup *)self deletedItems];
+  [(CNCardPropertyGroup *)self saveChangesForItems:deletedItems];
 
-  v4 = [(CNCardPropertyGroup *)self editingItems];
-  [(CNCardPropertyGroup *)self saveChangesForItems:v4];
+  editingItems = [(CNCardPropertyGroup *)self editingItems];
+  [(CNCardPropertyGroup *)self saveChangesForItems:editingItems];
 
   [(CNCardPropertyGroup *)self setDeletedItems:0];
   originalEditingItems = self->_originalEditingItems;
   self->_originalEditingItems = 0;
 }
 
-- (void)reloadDataPreservingChanges:(BOOL)a3
+- (void)reloadDataPreservingChanges:(BOOL)changes
 {
   displayItems = self->_displayItems;
   self->_displayItems = 0;
 
-  if (!a3)
+  if (!changes)
   {
     editingItems = self->_editingItems;
     self->_editingItems = 0;
@@ -1114,11 +1114,11 @@ LABEL_11:
 
 - (int64_t)valueEditingItemsCount
 {
-  v3 = [(CNCardPropertyGroup *)self editingItems];
-  v4 = [v3 count];
+  editingItems = [(CNCardPropertyGroup *)self editingItems];
+  v4 = [editingItems count];
 
-  v5 = [(CNCardPropertyGroup *)self editingItems];
-  v6 = [v5 lastObject];
+  editingItems2 = [(CNCardPropertyGroup *)self editingItems];
+  lastObject = [editingItems2 lastObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1127,9 +1127,9 @@ LABEL_11:
 
 - (id)lastEditingItem
 {
-  v2 = [(CNCardPropertyGroup *)self editingItems];
-  v3 = [v2 _cn_reversed];
-  v4 = [v3 _cn_firstObjectPassingTest:&__block_literal_global_3556];
+  editingItems = [(CNCardPropertyGroup *)self editingItems];
+  _cn_reversed = [editingItems _cn_reversed];
+  v4 = [_cn_reversed _cn_firstObjectPassingTest:&__block_literal_global_3556];
 
   return v4;
 }
@@ -1143,20 +1143,20 @@ BOOL __38__CNCardPropertyGroup_lastEditingItem__block_invoke(uint64_t a1, void *
   return (isKindOfClass & 1) == 0;
 }
 
-- (BOOL)moveEditingItemFromIndex:(int64_t)a3 toIndex:(int64_t)a4
+- (BOOL)moveEditingItemFromIndex:(int64_t)index toIndex:(int64_t)toIndex
 {
-  if ([(CNCardPropertyGroup *)self valueEditingItemsCount]<= a3 || [(CNCardPropertyGroup *)self valueEditingItemsCount]<= a4)
+  if ([(CNCardPropertyGroup *)self valueEditingItemsCount]<= index || [(CNCardPropertyGroup *)self valueEditingItemsCount]<= toIndex)
   {
     return 0;
   }
 
   v7 = objc_alloc(MEMORY[0x1E695DF70]);
-  v8 = [(CNCardPropertyGroup *)self editingItems];
-  v9 = [v7 initWithArray:v8];
+  editingItems = [(CNCardPropertyGroup *)self editingItems];
+  v9 = [v7 initWithArray:editingItems];
 
-  v10 = [v9 objectAtIndex:a3];
-  [v9 removeObjectAtIndex:a3];
-  [v9 insertObject:v10 atIndex:a4];
+  v10 = [v9 objectAtIndex:index];
+  [v9 removeObjectAtIndex:index];
+  [v9 insertObject:v10 atIndex:toIndex];
   [(CNCardPropertyGroup *)self setEditingItems:v9];
   v11 = 1;
   [(CNCardPropertyGroup *)self setHasReorderedItems:1];
@@ -1164,31 +1164,31 @@ BOOL __38__CNCardPropertyGroup_lastEditingItem__block_invoke(uint64_t a1, void *
   return v11;
 }
 
-- (void)removeEditingItem:(id)a3
+- (void)removeEditingItem:(id)item
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  itemCopy = item;
+  if (itemCopy)
   {
-    if ([(NSArray *)self->_editingItems containsObject:v4])
+    if ([(NSArray *)self->_editingItems containsObject:itemCopy])
     {
       v5 = [(NSArray *)self->_editingItems mutableCopy];
-      [v5 removeObjectIdenticalTo:v4];
+      [v5 removeObjectIdenticalTo:itemCopy];
       v6 = [v5 copy];
       editingItems = self->_editingItems;
       self->_editingItems = v6;
 
       if ([(CNCardPropertyGroup *)self canAddEditingItem])
       {
-        v8 = [v5 lastObject];
+        lastObject = [v5 lastObject];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if ((isKindOfClass & 1) == 0)
         {
           v10 = [CNPropertyPlaceholderItem alloc];
-          v11 = [(CNCardPropertyGroup *)self property];
-          v12 = [(CNPropertyPlaceholderItem *)v10 initWithProperty:v11];
+          property = [(CNCardPropertyGroup *)self property];
+          v12 = [(CNPropertyPlaceholderItem *)v10 initWithProperty:property];
 
           v13 = [(NSArray *)self->_editingItems arrayByAddingObject:v12];
           v14 = self->_editingItems;
@@ -1220,9 +1220,9 @@ LABEL_9:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v21 = [v20 labeledValue];
-          v22 = [v4 labeledValue];
-          v23 = [v21 isEqualIgnoringIdentifiers:v22];
+          labeledValue = [v20 labeledValue];
+          labeledValue2 = [itemCopy labeledValue];
+          v23 = [labeledValue isEqualIgnoringIdentifiers:labeledValue2];
 
           if (v23)
           {
@@ -1243,23 +1243,23 @@ LABEL_9:
       }
 
       v28 = objc_opt_class();
-      v29 = [v4 labeledValue];
-      v30 = [v29 label];
-      v31 = [v28 emptyValueForLabel:v30];
-      [v4 updateLabeledValueWithValue:v31];
+      labeledValue3 = [itemCopy labeledValue];
+      label = [labeledValue3 label];
+      v31 = [v28 emptyValueForLabel:label];
+      [itemCopy updateLabeledValueWithValue:v31];
 
-      v32 = [(CNCardPropertyGroup *)self deletedItems];
+      deletedItems = [(CNCardPropertyGroup *)self deletedItems];
 
-      if (v32)
+      if (deletedItems)
       {
-        v25 = [(CNCardPropertyGroup *)self deletedItems];
-        v26 = [v25 arrayByAddingObject:v4];
-        [(CNCardPropertyGroup *)self setDeletedItems:v26];
+        deletedItems2 = [(CNCardPropertyGroup *)self deletedItems];
+        label2 = [deletedItems2 arrayByAddingObject:itemCopy];
+        [(CNCardPropertyGroup *)self setDeletedItems:label2];
         goto LABEL_19;
       }
 
-      v25 = [MEMORY[0x1E695DEC8] arrayWithObject:v4];
-      [(CNCardPropertyGroup *)self setDeletedItems:v25];
+      deletedItems2 = [MEMORY[0x1E695DEC8] arrayWithObject:itemCopy];
+      [(CNCardPropertyGroup *)self setDeletedItems:deletedItems2];
     }
 
     else
@@ -1267,27 +1267,27 @@ LABEL_9:
 LABEL_16:
 
       v24 = objc_opt_class();
-      v25 = [v4 labeledValue];
-      v26 = [v25 label];
-      v27 = [v24 emptyValueForLabel:v26];
-      [v4 updateLabeledValueWithValue:v27];
+      deletedItems2 = [itemCopy labeledValue];
+      label2 = [deletedItems2 label];
+      v27 = [v24 emptyValueForLabel:label2];
+      [itemCopy updateLabeledValueWithValue:v27];
 
 LABEL_19:
     }
   }
 }
 
-- (BOOL)addEditingItem:(id)a3
+- (BOOL)addEditingItem:(id)item
 {
-  v4 = a3;
-  v5 = [(CNCardPropertyGroup *)self canAddEditingItem];
-  if (!v5)
+  itemCopy = item;
+  canAddEditingItem = [(CNCardPropertyGroup *)self canAddEditingItem];
+  if (!canAddEditingItem)
   {
     goto LABEL_10;
   }
 
-  v6 = [(CNCardPropertyGroup *)self editingItems];
-  v7 = [v6 count];
+  editingItems = [(CNCardPropertyGroup *)self editingItems];
+  v7 = [editingItems count];
 
   if (!v7)
   {
@@ -1296,12 +1296,12 @@ LABEL_19:
     goto LABEL_10;
   }
 
-  v8 = [(CNCardPropertyGroup *)self editingItems];
-  v9 = [v8 mutableCopy];
+  editingItems2 = [(CNCardPropertyGroup *)self editingItems];
+  array = [editingItems2 mutableCopy];
 
-  if (v9)
+  if (array)
   {
-    if (v4)
+    if (itemCopy)
     {
       goto LABEL_5;
     }
@@ -1309,54 +1309,54 @@ LABEL_19:
 
   else
   {
-    v9 = [MEMORY[0x1E695DF70] array];
-    if (v4)
+    array = [MEMORY[0x1E695DF70] array];
+    if (itemCopy)
     {
       goto LABEL_5;
     }
   }
 
-  v14 = [(CNCardPropertyGroup *)self propertyGroupItemClass];
-  v15 = [(CNCardPropertyGroup *)self nextAvailableLabel];
-  v16 = [(CNCardGroup *)self contact];
-  v4 = [(objc_class *)v14 propertyGroupItemWithLabel:v15 group:self contact:v16];
+  propertyGroupItemClass = [(CNCardPropertyGroup *)self propertyGroupItemClass];
+  nextAvailableLabel = [(CNCardPropertyGroup *)self nextAvailableLabel];
+  contact = [(CNCardGroup *)self contact];
+  itemCopy = [(objc_class *)propertyGroupItemClass propertyGroupItemWithLabel:nextAvailableLabel group:self contact:contact];
 
 LABEL_5:
-  v10 = [(CNCardPropertyGroup *)self editingItems];
-  [v9 insertObject:v4 atIndex:{objc_msgSend(v10, "count") - 1}];
+  editingItems3 = [(CNCardPropertyGroup *)self editingItems];
+  [array insertObject:itemCopy atIndex:{objc_msgSend(editingItems3, "count") - 1}];
 
-  if ([(CNCardPropertyGroup *)self _arrayContainsMaxAllowedItems:v9])
+  if ([(CNCardPropertyGroup *)self _arrayContainsMaxAllowedItems:array])
   {
-    v11 = [v9 lastObject];
+    lastObject = [array lastObject];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      [v9 removeLastObject];
+      [array removeLastObject];
     }
   }
 
-  [(CNCardPropertyGroup *)self setEditingItems:v9];
+  [(CNCardPropertyGroup *)self setEditingItems:array];
 
 LABEL_10:
-  return v5;
+  return canAddEditingItem;
 }
 
 - (id)nextAvailableLabel
 {
-  v3 = [(CNCardPropertyGroup *)self property];
-  v4 = [v3 isEqualToString:*MEMORY[0x1E695C3D0]];
+  property = [(CNCardPropertyGroup *)self property];
+  v4 = [property isEqualToString:*MEMORY[0x1E695C3D0]];
 
   if (v4)
   {
-    v5 = [(CNCardPropertyGroup *)self _nextAvailableSocialService];
+    _nextAvailableSocialService = [(CNCardPropertyGroup *)self _nextAvailableSocialService];
   }
 
   else
   {
-    v6 = [(CNCardPropertyGroup *)self property];
-    v7 = [v6 isEqualToString:*MEMORY[0x1E695C2B0]];
+    property2 = [(CNCardPropertyGroup *)self property];
+    v7 = [property2 isEqualToString:*MEMORY[0x1E695C2B0]];
 
     if (v7)
     {
@@ -1367,17 +1367,17 @@ LABEL_10:
     {
       [(CNCardPropertyGroup *)self _nextAvailableLabel];
     }
-    v5 = ;
+    _nextAvailableSocialService = ;
   }
 
-  return v5;
+  return _nextAvailableSocialService;
 }
 
 - (BOOL)modified
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(CNCardPropertyGroup *)self deletedItems];
-  v4 = [v3 count];
+  deletedItems = [(CNCardPropertyGroup *)self deletedItems];
+  v4 = [deletedItems count];
 
   if (v4 || [(CNCardPropertyGroup *)self hasReorderedItems])
   {
@@ -1390,8 +1390,8 @@ LABEL_10:
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v7 = [(CNCardPropertyGroup *)self editingItems];
-    v5 = [v7 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    editingItems = [(CNCardPropertyGroup *)self editingItems];
+    v5 = [editingItems countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v5)
     {
       v8 = *v12;
@@ -1401,7 +1401,7 @@ LABEL_10:
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(editingItems);
           }
 
           v10 = *(*(&v11 + 1) + 8 * i);
@@ -1413,7 +1413,7 @@ LABEL_10:
           }
         }
 
-        v5 = [v7 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v5 = [editingItems countByEnumeratingWithState:&v11 objects:v15 count:16];
         if (v5)
         {
           continue;
@@ -1431,16 +1431,16 @@ LABEL_16:
 
 - (BOOL)isMultiLine
 {
-  v3 = [(CNCardPropertyGroup *)self property];
-  if ([v3 isEqualToString:*MEMORY[0x1E695C360]])
+  property = [(CNCardPropertyGroup *)self property];
+  if ([property isEqualToString:*MEMORY[0x1E695C360]])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(CNCardPropertyGroup *)self property];
-    v4 = [v5 isEqualToString:*MEMORY[0x1E695C320]];
+    property2 = [(CNCardPropertyGroup *)self property];
+    v4 = [property2 isEqualToString:*MEMORY[0x1E695C320]];
   }
 
   return v4;
@@ -1448,24 +1448,24 @@ LABEL_16:
 
 - (BOOL)isFixedValue
 {
-  v2 = [(CNCardPropertyGroup *)self property];
-  v3 = [CNContactView isFixedValueProperty:v2];
+  property = [(CNCardPropertyGroup *)self property];
+  v3 = [CNContactView isFixedValueProperty:property];
 
   return v3;
 }
 
 - (BOOL)isMultiValue
 {
-  v2 = [(CNCardPropertyGroup *)self property];
-  v3 = [CNContactView isMultiValueProperty:v2];
+  property = [(CNCardPropertyGroup *)self property];
+  v3 = [CNContactView isMultiValueProperty:property];
 
   return v3;
 }
 
 - (BOOL)allowsAdding
 {
-  v3 = [(CNCardPropertyGroup *)self displayItems];
-  if ([v3 count] && !-[CNCardPropertyGroup isMultiValue](self, "isMultiValue"))
+  displayItems = [(CNCardPropertyGroup *)self displayItems];
+  if ([displayItems count] && !-[CNCardPropertyGroup isMultiValue](self, "isMultiValue"))
   {
     LOBYTE(v4) = 0;
   }
@@ -1482,37 +1482,37 @@ LABEL_16:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(CNCardPropertyGroup *)self property];
-  v6 = [(CNCardPropertyGroup *)self displayItems];
-  v7 = [v6 count];
-  v8 = [(CNCardPropertyGroup *)self editingItems];
-  v9 = [v8 count];
-  v10 = [(CNCardGroup *)self actions];
-  v11 = [v3 stringWithFormat:@"<%@ %p> [%@]: %d/%d items, %d actions", v4, self, v5, v7, v9, objc_msgSend(v10, "count")];
+  property = [(CNCardPropertyGroup *)self property];
+  displayItems = [(CNCardPropertyGroup *)self displayItems];
+  v7 = [displayItems count];
+  editingItems = [(CNCardPropertyGroup *)self editingItems];
+  v9 = [editingItems count];
+  actions = [(CNCardGroup *)self actions];
+  v11 = [v3 stringWithFormat:@"<%@ %p> [%@]: %d/%d items, %d actions", v4, self, property, v7, v9, objc_msgSend(actions, "count")];
 
   return v11;
 }
 
-- (CNCardPropertyGroup)initWithProperty:(id)a3 contact:(id)a4 store:(id)a5 policy:(id)a6 linkedPolicies:(id)a7
+- (CNCardPropertyGroup)initWithProperty:(id)property contact:(id)contact store:(id)store policy:(id)policy linkedPolicies:(id)policies
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  propertyCopy = property;
+  storeCopy = store;
+  policyCopy = policy;
+  policiesCopy = policies;
   v22.receiver = self;
   v22.super_class = CNCardPropertyGroup;
-  v17 = [(CNCardGroup *)&v22 initWithContact:a4];
+  v17 = [(CNCardGroup *)&v22 initWithContact:contact];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_property, a3);
-    v19 = [(CNCardPropertyGroup *)v18 _loadPropertyItems];
+    objc_storeStrong(&v17->_property, property);
+    _loadPropertyItems = [(CNCardPropertyGroup *)v18 _loadPropertyItems];
     propertyItems = v18->_propertyItems;
-    v18->_propertyItems = v19;
+    v18->_propertyItems = _loadPropertyItems;
 
-    objc_storeStrong(&v18->_policy, a6);
-    objc_storeStrong(&v18->_contactStore, a5);
-    objc_storeStrong(&v18->_linkedPolicies, a7);
+    objc_storeStrong(&v18->_policy, policy);
+    objc_storeStrong(&v18->_contactStore, store);
+    objc_storeStrong(&v18->_linkedPolicies, policies);
     v18->_allowsDisplayModePickerActions = 1;
     v18->_hasReorderedItems = 0;
     [(CNCardPropertyGroup *)v18 setShowActionsWhenEmpty:0];
@@ -1521,14 +1521,14 @@ LABEL_16:
   return v18;
 }
 
-+ (id)groupForProperty:(id)a3 contact:(id)a4 store:(id)a5 policy:(id)a6 linkedPolicies:(id)a7
++ (id)groupForProperty:(id)property contact:(id)contact store:(id)store policy:(id)policy linkedPolicies:(id)policies
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [[a1 alloc] initWithProperty:v16 contact:v15 store:v14 policy:v13 linkedPolicies:v12];
+  policiesCopy = policies;
+  policyCopy = policy;
+  storeCopy = store;
+  contactCopy = contact;
+  propertyCopy = property;
+  v17 = [[self alloc] initWithProperty:propertyCopy contact:contactCopy store:storeCopy policy:policyCopy linkedPolicies:policiesCopy];
 
   return v17;
 }

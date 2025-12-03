@@ -1,16 +1,16 @@
 @interface CSAttendingUsecaseProxy
 - (CSAttendingServiceDelegate)delegate;
 - (CSAttendingUsecaseManager)usecaseManager;
-- (CSAttendingUsecaseProxy)initWithConnection:(id)a3 audioProviderSelector:(id)a4 usecaseManager:(id)a5 attendingStatesProvidingProxy:(id)a6;
+- (CSAttendingUsecaseProxy)initWithConnection:(id)connection audioProviderSelector:(id)selector usecaseManager:(id)manager attendingStatesProvidingProxy:(id)proxy;
 - (void)_invokeHandler;
-- (void)attendingStoppedWithReason:(int64_t)a3;
+- (void)attendingStoppedWithReason:(int64_t)reason;
 - (void)dealloc;
 - (void)reset;
-- (void)setupConnectionErrorHandler:(id)a3;
-- (void)setupListenerDelegate:(id)a3;
-- (void)speechStartDetectedWithEventInfo:(id)a3;
-- (void)startAttendingWithOptions:(id)a3 completion:(id)a4;
-- (void)stopAttendingWithReason:(int64_t)a3;
+- (void)setupConnectionErrorHandler:(id)handler;
+- (void)setupListenerDelegate:(id)delegate;
+- (void)speechStartDetectedWithEventInfo:(id)info;
+- (void)startAttendingWithOptions:(id)options completion:(id)completion;
+- (void)stopAttendingWithReason:(int64_t)reason;
 @end
 
 @implementation CSAttendingUsecaseProxy
@@ -29,21 +29,21 @@
   return WeakRetained;
 }
 
-- (void)speechStartDetectedWithEventInfo:(id)a3
+- (void)speechStartDetectedWithEventInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100014D64;
   v7[3] = &unk_100253C48;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = infoCopy;
+  selfCopy = self;
+  v6 = infoCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)attendingStoppedWithReason:(int64_t)a3
+- (void)attendingStoppedWithReason:(int64_t)reason
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -51,7 +51,7 @@
   v4[2] = sub_100014EE0;
   v4[3] = &unk_100253C98;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = reason;
   dispatch_async(queue, v4);
 }
 
@@ -66,7 +66,7 @@
   dispatch_async(queue, block);
 }
 
-- (void)stopAttendingWithReason:(int64_t)a3
+- (void)stopAttendingWithReason:(int64_t)reason
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -74,24 +74,24 @@
   v4[2] = sub_100015134;
   v4[3] = &unk_100253C98;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = reason;
   dispatch_async(queue, v4);
 }
 
-- (void)startAttendingWithOptions:(id)a3 completion:(id)a4
+- (void)startAttendingWithOptions:(id)options completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000152B0;
   block[3] = &unk_1002533A0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = optionsCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = optionsCopy;
   dispatch_async(queue, block);
 }
 
@@ -103,7 +103,7 @@
     *buf = 136315394;
     v7 = "[CSAttendingUsecaseProxy dealloc]";
     v8 = 2112;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s Dealloc: %@", buf, 0x16u);
   }
 
@@ -127,16 +127,16 @@
   }
 }
 
-- (void)setupConnectionErrorHandler:(id)a3
+- (void)setupConnectionErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100015884;
   block[3] = &unk_100253718;
   block[4] = self;
-  v6 = v4;
+  v6 = handlerCopy;
   v18 = v6;
   dispatch_async(queue, block);
   objc_initWeak(&location, self);
@@ -165,40 +165,40 @@
   objc_destroyWeak(&location);
 }
 
-- (void)setupListenerDelegate:(id)a3
+- (void)setupListenerDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100015D10;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(queue, v7);
 }
 
-- (CSAttendingUsecaseProxy)initWithConnection:(id)a3 audioProviderSelector:(id)a4 usecaseManager:(id)a5 attendingStatesProvidingProxy:(id)a6
+- (CSAttendingUsecaseProxy)initWithConnection:(id)connection audioProviderSelector:(id)selector usecaseManager:(id)manager attendingStatesProvidingProxy:(id)proxy
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  connectionCopy = connection;
+  selectorCopy = selector;
+  managerCopy = manager;
+  proxyCopy = proxy;
   v23.receiver = self;
   v23.super_class = CSAttendingUsecaseProxy;
   v15 = [(CSAttendingUsecaseProxy *)&v23 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_connection, a3);
-    objc_storeStrong(&v16->_audioProviderSelector, a4);
-    objc_storeWeak(&v16->_usecaseManager, v13);
+    objc_storeStrong(&v15->_connection, connection);
+    objc_storeStrong(&v16->_audioProviderSelector, selector);
+    objc_storeWeak(&v16->_usecaseManager, managerCopy);
     v17 = objc_alloc_init(CSAttendingAnnounceHandler);
     announceHandler = v16->_announceHandler;
     v16->_announceHandler = v17;
 
-    objc_storeStrong(&v16->_attendingStatesProvidingProxy, a6);
+    objc_storeStrong(&v16->_attendingStatesProvidingProxy, proxy);
     v19 = [CSUtils getSerialQueue:@"CSAttendingUsecaseProxy Queue" qualityOfService:33];
     queue = v16->_queue;
     v16->_queue = v19;

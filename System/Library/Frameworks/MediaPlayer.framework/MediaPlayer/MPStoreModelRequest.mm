@@ -1,13 +1,13 @@
 @interface MPStoreModelRequest
 - (MPStoreModelRequest)init;
-- (MPStoreModelRequest)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (MPStoreModelRequest)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPStoreModelRequest
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v14.receiver = self;
   v14.super_class = MPStoreModelRequest;
@@ -17,15 +17,15 @@
   {
     v5[9] = *&self->_timeoutInterval;
     *(v5 + 64) = self->_didSetTimeoutInterval;
-    v7 = [(NSString *)self->_clientIdentifier copyWithZone:a3];
+    v7 = [(NSString *)self->_clientIdentifier copyWithZone:zone];
     v8 = v6[10];
     v6[10] = v7;
 
-    v9 = [(NSString *)self->_clientVersion copyWithZone:a3];
+    v9 = [(NSString *)self->_clientVersion copyWithZone:zone];
     v10 = v6[11];
     v6[11] = v9;
 
-    v11 = [(NSString *)self->_clientPlatformIdentifier copyWithZone:a3];
+    v11 = [(NSString *)self->_clientPlatformIdentifier copyWithZone:zone];
     v12 = v6[12];
     v6[12] = v11;
 
@@ -35,52 +35,52 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = MPStoreModelRequest;
-  [(MPModelRequest *)&v5 encodeWithCoder:v4];
+  [(MPModelRequest *)&v5 encodeWithCoder:coderCopy];
   if (self->_didSetTimeoutInterval)
   {
-    [v4 encodeDouble:@"MPStoreModelRequestTimeoutInterval" forKey:self->_timeoutInterval];
+    [coderCopy encodeDouble:@"MPStoreModelRequestTimeoutInterval" forKey:self->_timeoutInterval];
   }
 
-  [v4 encodeObject:self->_clientIdentifier forKey:@"MPStoreModelRequestClientIdentifier"];
-  [v4 encodeObject:self->_clientVersion forKey:@"MPStoreModelRequestClientVersion"];
-  [v4 encodeObject:self->_clientPlatformIdentifier forKey:@"MPStoreModelRequestClientPlatformIdentifier"];
-  [v4 encodeInteger:self->_authenticationOptions forKey:@"MPStoreModelRequestAuthenticationOptions"];
+  [coderCopy encodeObject:self->_clientIdentifier forKey:@"MPStoreModelRequestClientIdentifier"];
+  [coderCopy encodeObject:self->_clientVersion forKey:@"MPStoreModelRequestClientVersion"];
+  [coderCopy encodeObject:self->_clientPlatformIdentifier forKey:@"MPStoreModelRequestClientPlatformIdentifier"];
+  [coderCopy encodeInteger:self->_authenticationOptions forKey:@"MPStoreModelRequestAuthenticationOptions"];
 }
 
-- (MPStoreModelRequest)initWithCoder:(id)a3
+- (MPStoreModelRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = MPStoreModelRequest;
-  v5 = [(MPModelRequest *)&v14 initWithCoder:v4];
+  v5 = [(MPModelRequest *)&v14 initWithCoder:coderCopy];
   if (v5)
   {
-    if ([v4 containsValueForKey:@"MPStoreModelRequestTimeoutInterval"])
+    if ([coderCopy containsValueForKey:@"MPStoreModelRequestTimeoutInterval"])
     {
-      [v4 decodeDoubleForKey:@"MPStoreModelRequestTimeoutInterval"];
+      [coderCopy decodeDoubleForKey:@"MPStoreModelRequestTimeoutInterval"];
       v5->_timeoutInterval = v6;
     }
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MPStoreModelRequestClientIdentifier"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MPStoreModelRequestClientIdentifier"];
     clientIdentifier = v5->_clientIdentifier;
     v5->_clientIdentifier = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MPStoreModelRequestClientVersion"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MPStoreModelRequestClientVersion"];
     clientVersion = v5->_clientVersion;
     v5->_clientVersion = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MPStoreModelRequestClientPlatformIdentifier"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MPStoreModelRequestClientPlatformIdentifier"];
     clientPlatformIdentifier = v5->_clientPlatformIdentifier;
     v5->_clientPlatformIdentifier = v11;
 
-    if ([v4 containsValueForKey:@"MPStoreModelRequestAuthenticationOptions"])
+    if ([coderCopy containsValueForKey:@"MPStoreModelRequestAuthenticationOptions"])
     {
-      v5->_authenticationOptions = [v4 decodeIntegerForKey:@"MPStoreModelRequestAuthenticationOptions"];
+      v5->_authenticationOptions = [coderCopy decodeIntegerForKey:@"MPStoreModelRequestAuthenticationOptions"];
     }
   }
 

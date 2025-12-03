@@ -1,30 +1,30 @@
 @interface DeviceRecoveryBrain
 - (BOOL)ERMContentsPresent;
-- (BOOL)client:(id)a3 hasBooleanEntitlement:(id)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)client:(id)client hasBooleanEntitlement:(id)entitlement;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (NSXPCConnection)xpcConnection;
-- (id)initExternalBrain:(BOOL)a3;
-- (id)modifyTestFile:(id)a3 contents:(id)a4;
+- (id)initExternalBrain:(BOOL)brain;
+- (id)modifyTestFile:(id)file contents:(id)contents;
 - (id)recoverTestFiles;
 - (id)removeERMContents;
 - (id)scanForERMContents;
 - (id)scanForTestFiles;
-- (id)startService:(id)a3;
+- (id)startService:(id)service;
 - (uint64_t)removeERMContents;
 - (void)ERMContentsPresent;
-- (void)checkFreeSpace:(id)a3;
+- (void)checkFreeSpace:(id)space;
 - (void)connectionInvalidated;
-- (void)reclaimFreeSpace:(id)a3;
-- (void)recoverDevice:(id)a3;
-- (void)recoverDeviceFromBootedOS:(id)a3 userUnlocked:(BOOL)a4 completion:(id)a5;
-- (void)resetRecovery:(id)a3;
-- (void)scanForIssues:(id)a3;
+- (void)reclaimFreeSpace:(id)space;
+- (void)recoverDevice:(id)device;
+- (void)recoverDeviceFromBootedOS:(id)s userUnlocked:(BOOL)unlocked completion:(id)completion;
+- (void)resetRecovery:(id)recovery;
+- (void)scanForIssues:(id)issues;
 - (void)scanForTestFiles;
 @end
 
 @implementation DeviceRecoveryBrain
 
-- (id)initExternalBrain:(BOOL)a3
+- (id)initExternalBrain:(BOOL)brain
 {
   v6.receiver = self;
   v6.super_class = DeviceRecoveryBrain;
@@ -32,7 +32,7 @@
   if (v4)
   {
     [(DeviceRecoveryBrain *)v4 setIsInternalBuild:os_variant_allows_internal_security_policies()];
-    v4->_isExternalBrain = a3;
+    v4->_isExternalBrain = brain;
   }
 
   else
@@ -43,9 +43,9 @@
   return v4;
 }
 
-- (id)startService:(id)a3
+- (id)startService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v5 = DRGetLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -56,7 +56,7 @@
 
   v6 = DRGetLogHandle();
   v7 = v6;
-  if (!v4)
+  if (!serviceCopy)
   {
     [(DeviceRecoveryBrain *)v6 startService:buf];
 LABEL_14:
@@ -70,11 +70,11 @@ LABEL_14:
     *buf = 136446466;
     *&buf[4] = "[DeviceRecoveryBrain startService:]";
     v17 = 2114;
-    v18 = v4;
+    v18 = serviceCopy;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "%{public}s: Attempting to initialize listener for service %{public}@", buf, 0x16u);
   }
 
-  v8 = [[NSXPCListener alloc] initWithMachServiceName:v4];
+  v8 = [[NSXPCListener alloc] initWithMachServiceName:serviceCopy];
   if (!v8)
   {
     [DeviceRecoveryBrain startService:];
@@ -110,20 +110,20 @@ LABEL_9:
 
 - (void)connectionInvalidated
 {
-  v3 = [(DeviceRecoveryBrain *)self messageQueue];
+  messageQueue = [(DeviceRecoveryBrain *)self messageQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __44__DeviceRecoveryBrain_connectionInvalidated__block_invoke;
   block[3] = &unk_2C1A8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(messageQueue, block);
 }
 
-- (BOOL)client:(id)a3 hasBooleanEntitlement:(id)a4
+- (BOOL)client:(id)client hasBooleanEntitlement:(id)entitlement
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v6)
+  clientCopy = client;
+  entitlementCopy = entitlement;
+  if (!entitlementCopy)
   {
     [DeviceRecoveryBrain client:hasBooleanEntitlement:];
 LABEL_20:
@@ -135,13 +135,13 @@ LABEL_21:
     goto LABEL_7;
   }
 
-  if (!v5)
+  if (!clientCopy)
   {
     [DeviceRecoveryBrain client:hasBooleanEntitlement:];
     goto LABEL_20;
   }
 
-  v7 = [v5 valueForEntitlement:v6];
+  v7 = [clientCopy valueForEntitlement:entitlementCopy];
   if (!v7)
   {
     v11 = DRGetLogHandle();
@@ -153,7 +153,7 @@ LABEL_21:
     v12 = DRGetLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      [DeviceRecoveryBrain client:v5 hasBooleanEntitlement:?];
+      [DeviceRecoveryBrain client:clientCopy hasBooleanEntitlement:?];
     }
 
     v8 = 0;
@@ -173,14 +173,14 @@ LABEL_21:
     v12 = DRGetLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      [v5 processIdentifier];
+      [clientCopy processIdentifier];
       v14 = _ProcessNameForPid();
       v15 = objc_opt_class();
       v16 = NSStringFromClass(v15);
       *buf = 136446978;
       *&buf[4] = "[DeviceRecoveryBrain client:hasBooleanEntitlement:]";
       v19 = 2114;
-      v20 = v6;
+      v20 = entitlementCopy;
       v21 = 2114;
       v22 = v14;
       v23 = 2114;
@@ -203,11 +203,11 @@ LABEL_7:
   return v9;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  listenerCopy = listener;
+  connectionCopy = connection;
+  if (!connectionCopy)
   {
     [DeviceRecoveryBrain listener:shouldAcceptNewConnection:];
 LABEL_25:
@@ -216,15 +216,15 @@ LABEL_25:
     goto LABEL_22;
   }
 
-  v8 = [(DeviceRecoveryBrain *)self xpcConnection];
+  xpcConnection = [(DeviceRecoveryBrain *)self xpcConnection];
 
-  if (v8)
+  if (xpcConnection)
   {
     [DeviceRecoveryBrain listener:shouldAcceptNewConnection:];
     goto LABEL_25;
   }
 
-  [v7 processIdentifier];
+  [connectionCopy processIdentifier];
   v9 = _ProcessNameForPid();
   v10 = DRGetLogHandle();
   if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -281,7 +281,7 @@ LABEL_18:
   _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "%{public}s: Got connection from process %@ at qos %@", buf, 0x20u);
 
 LABEL_19:
-  if (![(DeviceRecoveryBrain *)self clientHasRecoveryBrainControllerEntitlement:v7])
+  if (![(DeviceRecoveryBrain *)self clientHasRecoveryBrainControllerEntitlement:connectionCopy])
   {
     [DeviceRecoveryBrain listener:shouldAcceptNewConnection:];
 LABEL_28:
@@ -290,19 +290,19 @@ LABEL_28:
   }
 
   v13 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___DeviceRecoveryBrainServiceInterface];
-  [v7 setExportedInterface:v13];
+  [connectionCopy setExportedInterface:v13];
 
-  v14 = [v7 exportedInterface];
+  exportedInterface = [connectionCopy exportedInterface];
 
-  if (!v14)
+  if (!exportedInterface)
   {
     [DeviceRecoveryBrain listener:shouldAcceptNewConnection:];
     goto LABEL_28;
   }
 
-  [v7 setExportedObject:self];
-  v15 = [(DeviceRecoveryBrain *)self messageQueue];
-  [v7 _setQueue:v15];
+  [connectionCopy setExportedObject:self];
+  messageQueue = [(DeviceRecoveryBrain *)self messageQueue];
+  [connectionCopy _setQueue:messageQueue];
 
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
@@ -310,21 +310,21 @@ LABEL_28:
   v23[3] = &unk_2C4C0;
   v16 = v9;
   v24 = v16;
-  v25 = self;
-  [v7 setInterruptionHandler:v23];
+  selfCopy = self;
+  [connectionCopy setInterruptionHandler:v23];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = __58__DeviceRecoveryBrain_listener_shouldAcceptNewConnection___block_invoke_48;
   v20[3] = &unk_2C4C0;
   v21 = v16;
-  v22 = self;
+  selfCopy2 = self;
   v9 = v16;
-  [v7 setInvalidationHandler:v20];
-  [(DeviceRecoveryBrain *)self setXpcConnection:v7];
+  [connectionCopy setInvalidationHandler:v20];
+  [(DeviceRecoveryBrain *)self setXpcConnection:connectionCopy];
   v17 = os_transaction_create();
   [(DeviceRecoveryBrain *)self setKeepAliveTransaction:v17];
 
-  [v7 resume];
+  [connectionCopy resume];
   v18 = 1;
 LABEL_22:
 
@@ -364,9 +364,9 @@ id __58__DeviceRecoveryBrain_listener_shouldAcceptNewConnection___block_invoke_4
   return [*(a1 + 40) setXpcConnection:0];
 }
 
-- (void)resetRecovery:(id)a3
+- (void)resetRecovery:(id)recovery
 {
-  v3 = a3;
+  recoveryCopy = recovery;
   v4 = DRGetLogHandle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -375,12 +375,12 @@ id __58__DeviceRecoveryBrain_listener_shouldAcceptNewConnection___block_invoke_4
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "%{public}s: ", &v5, 0xCu);
   }
 
-  (*(v3 + 2))(v3, 0, 0);
+  (*(recoveryCopy + 2))(recoveryCopy, 0, 0);
 }
 
-- (void)checkFreeSpace:(id)a3
+- (void)checkFreeSpace:(id)space
 {
-  v4 = a3;
+  spaceCopy = space;
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
@@ -395,7 +395,7 @@ id __58__DeviceRecoveryBrain_listener_shouldAcceptNewConnection___block_invoke_4
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "%{public}s: ", buf, 0xCu);
   }
 
-  if (!v4)
+  if (!spaceCopy)
   {
     v6 = DRGetLogHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -421,7 +421,7 @@ LABEL_8:
     v8 = 0;
 LABEL_24:
 
-    v4[2](v4, v7, v33[5]);
+    spaceCopy[2](spaceCopy, v7, v33[5]);
     goto LABEL_25;
   }
 
@@ -436,10 +436,10 @@ LABEL_24:
     }
 
     v13 = [DeviceRecoveryBrainSpaceManager alloc];
-    v14 = [(DeviceRecoveryBrain *)self systemDataVolumeMountPath];
-    v15 = [(DeviceRecoveryBrain *)self userDataVolumeMountPath];
-    v16 = [(DeviceRecoveryBrain *)self updateVolumeMountPath];
-    v6 = [(DeviceRecoveryBrainSpaceManager *)v13 initWithMounts:v14 userDataVolumeMountPath:v15 updateVolumeMountPath:v16];
+    systemDataVolumeMountPath = [(DeviceRecoveryBrain *)self systemDataVolumeMountPath];
+    userDataVolumeMountPath = [(DeviceRecoveryBrain *)self userDataVolumeMountPath];
+    updateVolumeMountPath = [(DeviceRecoveryBrain *)self updateVolumeMountPath];
+    v6 = [(DeviceRecoveryBrainSpaceManager *)v13 initWithMounts:systemDataVolumeMountPath userDataVolumeMountPath:userDataVolumeMountPath updateVolumeMountPath:updateVolumeMountPath];
 
     v31 = 0;
     v17 = [v6 getFreeSpaceOnDeviceForUser:&v31];
@@ -455,22 +455,22 @@ LABEL_24:
 
     else
     {
-      v18 = [v17 unsignedLongLongValue];
-      v19 = [(DeviceRecoveryBrain *)self freeSpaceThreshold];
-      LODWORD(v18) = v18 > [v19 unsignedLongLongValue];
+      unsignedLongLongValue = [v17 unsignedLongLongValue];
+      freeSpaceThreshold = [(DeviceRecoveryBrain *)self freeSpaceThreshold];
+      LODWORD(unsignedLongLongValue) = unsignedLongLongValue > [freeSpaceThreshold unsignedLongLongValue];
 
-      if (v18)
+      if (unsignedLongLongValue)
       {
         v20 = DRGetLogHandle();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
         {
-          v21 = [(DeviceRecoveryBrain *)self freeSpaceThreshold];
+          freeSpaceThreshold2 = [(DeviceRecoveryBrain *)self freeSpaceThreshold];
           *buf = 136446722;
           v44 = "[DeviceRecoveryBrain checkFreeSpace:]";
           v45 = 2114;
           v46 = v17;
           v47 = 2114;
-          v48 = v21;
+          v48 = freeSpaceThreshold2;
           _os_log_impl(&dword_0, v20, OS_LOG_TYPE_DEFAULT, "%{public}s: Free space on device(%{public}@) is greater than threshold(%{public}@). Sufficient space present", buf, 0x20u);
         }
       }
@@ -480,13 +480,13 @@ LABEL_24:
         v22 = DRGetLogHandle();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
         {
-          v23 = [(DeviceRecoveryBrain *)self freeSpaceThreshold];
+          freeSpaceThreshold3 = [(DeviceRecoveryBrain *)self freeSpaceThreshold];
           *buf = 136446722;
           v44 = "[DeviceRecoveryBrain checkFreeSpace:]";
           v45 = 2114;
           v46 = v17;
           v47 = 2114;
-          v48 = v23;
+          v48 = freeSpaceThreshold3;
           _os_log_impl(&dword_0, v22, OS_LOG_TYPE_DEFAULT, "%{public}s: Free space on device(%{public}@) is less than threshold(%{public}@). Space cleanup required", buf, 0x20u);
         }
 
@@ -517,14 +517,14 @@ LABEL_24:
   }
 
   v10 = dispatch_time(0, 1000000000);
-  v11 = [(DeviceRecoveryBrain *)self messageQueue];
+  messageQueue = [(DeviceRecoveryBrain *)self messageQueue];
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = __38__DeviceRecoveryBrain_checkFreeSpace___block_invoke;
   v28[3] = &unk_2C4E8;
   v30 = &v32;
-  v29 = v4;
-  dispatch_after(v10, v11, v28);
+  v29 = spaceCopy;
+  dispatch_after(v10, messageQueue, v28);
 
   v7 = 0;
   v8 = 0;
@@ -655,8 +655,8 @@ LABEL_11:
 
 - (id)scanForTestFiles
 {
-  v2 = [(DeviceRecoveryBrain *)self userHomeDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@".TestDeviceRecovery-remove"];
+  userHomeDirectory = [(DeviceRecoveryBrain *)self userHomeDirectory];
+  v3 = [userHomeDirectory stringByAppendingPathComponent:@".TestDeviceRecovery-remove"];
 
   v4 = +[NSFileManager defaultManager];
   v5 = [v4 fileExistsAtPath:v3];
@@ -693,8 +693,8 @@ LABEL_11:
     v7 = 0;
   }
 
-  v10 = [(DeviceRecoveryBrain *)self userHomeDirectory];
-  v11 = [(DeviceRecoveryBrain *)self filesInDirectory:v10 withPrefix:@".TestDeviceRecovery-modify" extension:@".plist" excludeSymlinks:1];
+  userHomeDirectory2 = [(DeviceRecoveryBrain *)self userHomeDirectory];
+  v11 = [(DeviceRecoveryBrain *)self filesInDirectory:userHomeDirectory2 withPrefix:@".TestDeviceRecovery-modify" extension:@".plist" excludeSymlinks:1];
 
   if (v11 && [v11 count])
   {
@@ -723,8 +723,8 @@ LABEL_11:
         }
 
         v16 = *(*(&v31 + 1) + 8 * v15);
-        v17 = [(DeviceRecoveryBrain *)self userHomeDirectory];
-        v18 = [v17 stringByAppendingPathComponent:v16];
+        userHomeDirectory3 = [(DeviceRecoveryBrain *)self userHomeDirectory];
+        v18 = [userHomeDirectory3 stringByAppendingPathComponent:v16];
 
         v19 = [NSDictionary dictionaryWithContentsOfFile:v18];
         v20 = v19;
@@ -811,14 +811,14 @@ LABEL_28:
   return v7;
 }
 
-- (id)modifyTestFile:(id)a3 contents:(id)a4
+- (id)modifyTestFile:(id)file contents:(id)contents
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  fileCopy = file;
+  contentsCopy = contents;
+  v7 = contentsCopy;
+  if (contentsCopy)
   {
-    v8 = [v6 objectForKeyedSubscript:@"RemoveThisProperty"];
+    v8 = [contentsCopy objectForKeyedSubscript:@"RemoveThisProperty"];
 
     if (v8)
     {
@@ -833,7 +833,7 @@ LABEL_28:
         v18 = 2114;
         v19 = v10;
         v20 = 2114;
-        v21 = v5;
+        v21 = fileCopy;
         _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "%{public}s: Removing property from test file ('%{public}@' = '%{public}@'): %{public}@", v15, 0x2Au);
       }
 
@@ -854,7 +854,7 @@ LABEL_28:
         v18 = 2114;
         v19 = @"Added by recovery brain!";
         v20 = 2114;
-        v21 = v5;
+        v21 = fileCopy;
         _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "%{public}s: Adding property to test file ('%{public}@' = '%{public}@'): %{public}@", v15, 0x2Au);
       }
 
@@ -875,8 +875,8 @@ LABEL_28:
 
 - (id)recoverTestFiles
 {
-  v3 = [(DeviceRecoveryBrain *)self userHomeDirectory];
-  v4 = [v3 stringByAppendingPathComponent:@".TestDeviceRecovery-remove"];
+  userHomeDirectory = [(DeviceRecoveryBrain *)self userHomeDirectory];
+  v4 = [userHomeDirectory stringByAppendingPathComponent:@".TestDeviceRecovery-remove"];
 
   v5 = OBJC_CLASS___DeviceRecoveryBrainSpaceManager_ptr;
   v6 = +[NSFileManager defaultManager];
@@ -908,8 +908,8 @@ LABEL_28:
     }
   }
 
-  v17 = [(DeviceRecoveryBrain *)self userHomeDirectory];
-  v18 = [(DeviceRecoveryBrain *)self filesInDirectory:v17 withPrefix:@".TestDeviceRecovery-modify" extension:@".plist" excludeSymlinks:1];
+  userHomeDirectory2 = [(DeviceRecoveryBrain *)self userHomeDirectory];
+  v18 = [(DeviceRecoveryBrain *)self filesInDirectory:userHomeDirectory2 withPrefix:@".TestDeviceRecovery-modify" extension:@".plist" excludeSymlinks:1];
 
   if (!v18 || ![v18 count])
   {
@@ -943,8 +943,8 @@ LABEL_10:
     }
 
     v22 = *(*&v60[2] + 8 * v21);
-    v23 = [(DeviceRecoveryBrain *)self userHomeDirectory];
-    v24 = [v23 stringByAppendingPathComponent:v22];
+    userHomeDirectory3 = [(DeviceRecoveryBrain *)self userHomeDirectory];
+    v24 = [userHomeDirectory3 stringByAppendingPathComponent:v22];
 
     v25 = [NSMutableDictionary dictionaryWithContentsOfFile:v24];
     if (!v25)
@@ -958,9 +958,9 @@ LABEL_29:
     }
 
     v31 = v25;
-    v32 = [(__objc2_class *)v5[25] defaultManager];
+    defaultManager = [(__objc2_class *)v5[25] defaultManager];
     v59 = 0;
-    v33 = [v32 attributesOfItemAtPath:v24 error:&v59];
+    v33 = [defaultManager attributesOfItemAtPath:v24 error:&v59];
     v34 = v59;
 
     if (!v33 || v34 != 0)
@@ -1019,9 +1019,9 @@ LABEL_29:
     }
 
     v37 = v5;
-    v38 = [(__objc2_class *)v5[25] defaultManager];
+    defaultManager2 = [(__objc2_class *)v5[25] defaultManager];
     v58 = 0;
-    v39 = [v38 setAttributes:v33 ofItemAtPath:v24 error:&v58];
+    v39 = [defaultManager2 setAttributes:v33 ofItemAtPath:v24 error:&v58];
     v40 = v58;
 
     if (!v39 || v40)
@@ -1101,14 +1101,14 @@ LABEL_44:
   return v41;
 }
 
-- (void)scanForIssues:(id)a3
+- (void)scanForIssues:(id)issues
 {
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = __37__DeviceRecoveryBrain_scanForIssues___block_invoke;
   v25[3] = &unk_2C510;
-  v4 = a3;
-  v26 = v4;
+  issuesCopy = issues;
+  v26 = issuesCopy;
   v5 = objc_retainBlock(v25);
   v6 = DRGetLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1118,7 +1118,7 @@ LABEL_44:
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "%{public}s: ", buf, 0xCu);
   }
 
-  if (!v4)
+  if (!issuesCopy)
   {
     [DeviceRecoveryBrain scanForIssues:];
 LABEL_11:
@@ -1130,8 +1130,8 @@ LABEL_37:
 
   if ([(DeviceRecoveryBrain *)self isInternalBuild])
   {
-    v7 = [(DeviceRecoveryBrain *)self issuesScanResultOverride];
-    switch(v7)
+    issuesScanResultOverride = [(DeviceRecoveryBrain *)self issuesScanResultOverride];
+    switch(issuesScanResultOverride)
     {
       case 1u:
         v21 = [NSString stringWithFormat:@"issues scan operation forced to fail"];
@@ -1139,7 +1139,7 @@ LABEL_37:
 
         if (v9)
         {
-          (*(v4 + 2))(v4, v9, 0);
+          (*(issuesCopy + 2))(issuesCopy, v9, 0);
         }
 
         goto LABEL_37;
@@ -1173,7 +1173,7 @@ LABEL_37:
           _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "%{public}s: issues scan operation forced to return no results", buf, 0xCu);
         }
 
-        (*(v4 + 2))(v4, 0, 0);
+        (*(issuesCopy + 2))(issuesCopy, 0, 0);
         goto LABEL_11;
     }
   }
@@ -1191,7 +1191,7 @@ LABEL_13:
     }
 
     v12 = dispatch_time(0, 2000000000);
-    v13 = [(DeviceRecoveryBrain *)self messageQueue];
+    messageQueue = [(DeviceRecoveryBrain *)self messageQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = __37__DeviceRecoveryBrain_scanForIssues___block_invoke_164;
@@ -1199,7 +1199,7 @@ LABEL_13:
     v24 = v5;
     v10 = v10;
     v23 = v10;
-    dispatch_after(v12, v13, block);
+    dispatch_after(v12, messageQueue, block);
   }
 
   else
@@ -1207,17 +1207,17 @@ LABEL_13:
     v14 = +[NSMutableArray array];
     if ([(DeviceRecoveryBrain *)self isInternalBuild]|| [(DeviceRecoveryBrain *)self isExternalBrain])
     {
-      v15 = [(DeviceRecoveryBrain *)self scanForTestFiles];
-      v16 = v15;
-      if (v15 && [v15 count])
+      scanForTestFiles = [(DeviceRecoveryBrain *)self scanForTestFiles];
+      v16 = scanForTestFiles;
+      if (scanForTestFiles && [scanForTestFiles count])
       {
         [v14 addObjectsFromArray:v16];
       }
     }
 
-    v17 = [(DeviceRecoveryBrain *)self scanForERMContents];
-    v18 = v17;
-    if (v17 && [v17 count])
+    scanForERMContents = [(DeviceRecoveryBrain *)self scanForERMContents];
+    v18 = scanForERMContents;
+    if (scanForERMContents && [scanForERMContents count])
     {
       [v14 addObjectsFromArray:v18];
     }
@@ -1303,9 +1303,9 @@ void __37__DeviceRecoveryBrain_scanForIssues___block_invoke_164(uint64_t a1)
   (*(v3 + 16))(v3, 0, v5, *(a1 + 32));
 }
 
-- (void)reclaimFreeSpace:(id)a3
+- (void)reclaimFreeSpace:(id)space
 {
-  v4 = a3;
+  spaceCopy = space;
   v5 = DRGetLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1320,7 +1320,7 @@ void __37__DeviceRecoveryBrain_scanForIssues___block_invoke_164(uint64_t a1)
   v36 = __Block_byref_object_copy__0;
   v37 = __Block_byref_object_dispose__0;
   v38 = 0;
-  if (v4)
+  if (spaceCopy)
   {
     if ([(DeviceRecoveryBrain *)self testModeEnabled])
     {
@@ -1329,22 +1329,22 @@ void __37__DeviceRecoveryBrain_scanForIssues___block_invoke_164(uint64_t a1)
         v6 = DRGetLogHandle();
         if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
         {
-          v7 = [(DeviceRecoveryBrain *)self freeSpaceThreshold];
+          freeSpaceThreshold = [(DeviceRecoveryBrain *)self freeSpaceThreshold];
           *v31 = 136446466;
           *&v31[4] = "[DeviceRecoveryBrain reclaimFreeSpace:]";
           v32 = 2114;
-          v33 = v7;
+          v33 = freeSpaceThreshold;
           _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "%{public}s: [TEST MODE] Attempting to free %{public}@ bytes as specified by override", v31, 0x16u);
         }
 
         v8 = [DeviceRecoveryBrainSpaceManager alloc];
-        v9 = [(DeviceRecoveryBrain *)self systemDataVolumeMountPath];
-        v10 = [(DeviceRecoveryBrain *)self userDataVolumeMountPath];
-        v11 = [(DeviceRecoveryBrain *)self updateVolumeMountPath];
-        v12 = [(DeviceRecoveryBrainSpaceManager *)v8 initWithMounts:v9 userDataVolumeMountPath:v10 updateVolumeMountPath:v11];
+        systemDataVolumeMountPath = [(DeviceRecoveryBrain *)self systemDataVolumeMountPath];
+        userDataVolumeMountPath = [(DeviceRecoveryBrain *)self userDataVolumeMountPath];
+        updateVolumeMountPath = [(DeviceRecoveryBrain *)self updateVolumeMountPath];
+        v12 = [(DeviceRecoveryBrainSpaceManager *)v8 initWithMounts:systemDataVolumeMountPath userDataVolumeMountPath:userDataVolumeMountPath updateVolumeMountPath:updateVolumeMountPath];
 
-        v13 = [(DeviceRecoveryBrain *)self freeSpaceThreshold];
-        v14 = [v12 freeSpaceOnMainContainerTillThreshold:v13];
+        freeSpaceThreshold2 = [(DeviceRecoveryBrain *)self freeSpaceThreshold];
+        v14 = [v12 freeSpaceOnMainContainerTillThreshold:freeSpaceThreshold2];
         v15 = *(*(&buf + 1) + 40);
         *(*(&buf + 1) + 40) = v14;
       }
@@ -1360,15 +1360,15 @@ void __37__DeviceRecoveryBrain_scanForIssues___block_invoke_164(uint64_t a1)
         }
       }
 
-      v25 = [(DeviceRecoveryBrain *)self messageQueue];
+      messageQueue = [(DeviceRecoveryBrain *)self messageQueue];
       v26 = v29;
       v29[0] = _NSConcreteStackBlock;
       v29[1] = 3221225472;
       v29[2] = __40__DeviceRecoveryBrain_reclaimFreeSpace___block_invoke_168;
       v29[3] = &unk_2C560;
-      v29[4] = v4;
+      v29[4] = spaceCopy;
       v29[5] = &buf;
-      dispatch_async(v25, v29);
+      dispatch_async(messageQueue, v29);
     }
 
     else
@@ -1382,13 +1382,13 @@ void __37__DeviceRecoveryBrain_scanForIssues___block_invoke_164(uint64_t a1)
         }
 
         v17 = [DeviceRecoveryBrainSpaceManager alloc];
-        v18 = [(DeviceRecoveryBrain *)self systemDataVolumeMountPath];
-        v19 = [(DeviceRecoveryBrain *)self userDataVolumeMountPath];
-        v20 = [(DeviceRecoveryBrain *)self updateVolumeMountPath];
-        v21 = [(DeviceRecoveryBrainSpaceManager *)v17 initWithMounts:v18 userDataVolumeMountPath:v19 updateVolumeMountPath:v20];
+        systemDataVolumeMountPath2 = [(DeviceRecoveryBrain *)self systemDataVolumeMountPath];
+        userDataVolumeMountPath2 = [(DeviceRecoveryBrain *)self userDataVolumeMountPath];
+        updateVolumeMountPath2 = [(DeviceRecoveryBrain *)self updateVolumeMountPath];
+        v21 = [(DeviceRecoveryBrainSpaceManager *)v17 initWithMounts:systemDataVolumeMountPath2 userDataVolumeMountPath:userDataVolumeMountPath2 updateVolumeMountPath:updateVolumeMountPath2];
 
-        v22 = [(DeviceRecoveryBrain *)self freeSpaceThreshold];
-        v23 = [v21 freeSpaceOnMainContainerTillThreshold:v22];
+        freeSpaceThreshold3 = [(DeviceRecoveryBrain *)self freeSpaceThreshold];
+        v23 = [v21 freeSpaceOnMainContainerTillThreshold:freeSpaceThreshold3];
         v24 = *(*(&buf + 1) + 40);
         *(*(&buf + 1) + 40) = v23;
       }
@@ -1404,15 +1404,15 @@ void __37__DeviceRecoveryBrain_scanForIssues___block_invoke_164(uint64_t a1)
         }
       }
 
-      v27 = [(DeviceRecoveryBrain *)self messageQueue];
+      messageQueue2 = [(DeviceRecoveryBrain *)self messageQueue];
       v26 = block;
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = __40__DeviceRecoveryBrain_reclaimFreeSpace___block_invoke;
       block[3] = &unk_2C560;
-      block[4] = v4;
+      block[4] = spaceCopy;
       block[5] = &buf;
-      dispatch_async(v27, block);
+      dispatch_async(messageQueue2, block);
     }
 
     v28 = v26[4];
@@ -1429,15 +1429,15 @@ void __37__DeviceRecoveryBrain_scanForIssues___block_invoke_164(uint64_t a1)
   _Block_object_dispose(&buf, 8);
 }
 
-- (void)recoverDevice:(id)a3
+- (void)recoverDevice:(id)device
 {
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = __37__DeviceRecoveryBrain_recoverDevice___block_invoke;
   v17[3] = &unk_2C588;
   v17[4] = self;
-  v4 = a3;
-  v18 = v4;
+  deviceCopy = device;
+  v18 = deviceCopy;
   v5 = objc_retainBlock(v17);
   v6 = DRGetLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1449,7 +1449,7 @@ void __37__DeviceRecoveryBrain_scanForIssues___block_invoke_164(uint64_t a1)
 
   v7 = DRGetLogHandle();
   v8 = v7;
-  if (!v4)
+  if (!deviceCopy)
   {
     [DeviceRecoveryBrain recoverDevice:v7];
     goto LABEL_20;
@@ -1457,11 +1457,11 @@ void __37__DeviceRecoveryBrain_scanForIssues___block_invoke_164(uint64_t a1)
 
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(DeviceRecoveryBrain *)self recoveryResultOverride];
+    recoveryResultOverride = [(DeviceRecoveryBrain *)self recoveryResultOverride];
     *buf = 136446466;
     *&buf[4] = "[DeviceRecoveryBrain recoverDevice:]";
     v21 = 1024;
-    v22 = v9;
+    v22 = recoveryResultOverride;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "%{public}s: recoveryResultOverride = %d", buf, 0x12u);
   }
 
@@ -1473,7 +1473,7 @@ void __37__DeviceRecoveryBrain_scanForIssues___block_invoke_164(uint64_t a1)
     if (v11)
     {
 LABEL_9:
-      (*(v4 + 2))(v4, v11, 0);
+      (*(deviceCopy + 2))(deviceCopy, v11, 0);
     }
   }
 
@@ -1511,13 +1511,13 @@ LABEL_9:
     }
 
     v13 = dispatch_time(0, 5000000000);
-    v14 = [(DeviceRecoveryBrain *)self messageQueue];
+    messageQueue = [(DeviceRecoveryBrain *)self messageQueue];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = __37__DeviceRecoveryBrain_recoverDevice___block_invoke_196;
     v15[3] = &unk_2C5B0;
     v16 = v5;
-    dispatch_after(v13, v14, v15);
+    dispatch_after(v13, messageQueue, v15);
   }
 
 LABEL_20:
@@ -1578,10 +1578,10 @@ uint64_t __37__DeviceRecoveryBrain_recoverDevice___block_invoke_196(uint64_t a1)
   return (*(*(a1 + 32) + 16))();
 }
 
-- (void)recoverDeviceFromBootedOS:(id)a3 userUnlocked:(BOOL)a4 completion:(id)a5
+- (void)recoverDeviceFromBootedOS:(id)s userUnlocked:(BOOL)unlocked completion:(id)completion
 {
-  v5 = a4;
-  v7 = a5;
+  unlockedCopy = unlocked;
+  completionCopy = completion;
   v8 = DRGetLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1598,24 +1598,24 @@ uint64_t __37__DeviceRecoveryBrain_recoverDevice___block_invoke_196(uint64_t a1)
       *buf = 136446466;
       v16 = "[DeviceRecoveryBrain recoverDeviceFromBootedOS:userUnlocked:completion:]";
       v17 = 1024;
-      v18 = v5;
+      v18 = unlockedCopy;
       _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "%{public}s: [TEST MODE] simulating bootedOS device recovery phase - userUnlocked: %d", buf, 0x12u);
     }
 
     v10 = dispatch_time(0, 5000000000);
-    v11 = [(DeviceRecoveryBrain *)self messageQueue];
+    messageQueue = [(DeviceRecoveryBrain *)self messageQueue];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = __73__DeviceRecoveryBrain_recoverDeviceFromBootedOS_userUnlocked_completion___block_invoke;
     v12[3] = &unk_2C5D8;
-    v14 = v5;
-    v13 = v7;
-    dispatch_after(v10, v11, v12);
+    v14 = unlockedCopy;
+    v13 = completionCopy;
+    dispatch_after(v10, messageQueue, v12);
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 

@@ -1,13 +1,13 @@
 @interface _NTKComplicationStateLayout
-- (id)ruleForLayoutOverride:(int64_t)a3;
-- (void)setRule:(id)a3 forLayoutOverride:(int64_t)a4;
+- (id)ruleForLayoutOverride:(int64_t)override;
+- (void)setRule:(id)rule forLayoutOverride:(int64_t)override;
 @end
 
 @implementation _NTKComplicationStateLayout
 
-- (void)setRule:(id)a3 forLayoutOverride:(int64_t)a4
+- (void)setRule:(id)rule forLayoutOverride:(int64_t)override
 {
-  v10 = a3;
+  ruleCopy = rule;
   overrideRules = self->_overrideRules;
   if (!overrideRules)
   {
@@ -18,11 +18,11 @@
     overrideRules = self->_overrideRules;
   }
 
-  v9 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
-  [(NSMutableDictionary *)overrideRules setObject:v10 forKey:v9];
+  v9 = [MEMORY[0x277CCABB0] numberWithInteger:override];
+  [(NSMutableDictionary *)overrideRules setObject:ruleCopy forKey:v9];
 }
 
-- (id)ruleForLayoutOverride:(int64_t)a3
+- (id)ruleForLayoutOverride:(int64_t)override
 {
   v9 = 0;
   v10 = &v9;
@@ -36,7 +36,7 @@
   v8[2] = __53___NTKComplicationStateLayout_ruleForLayoutOverride___block_invoke;
   v8[3] = &unk_278781AC0;
   v8[4] = &v9;
-  v8[5] = a3;
+  v8[5] = override;
   [(NSMutableDictionary *)overrideRules enumerateKeysAndObjectsUsingBlock:v8];
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);

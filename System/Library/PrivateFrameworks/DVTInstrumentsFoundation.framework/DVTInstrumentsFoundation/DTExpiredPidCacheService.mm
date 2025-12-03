@@ -3,9 +3,9 @@
 + (void)disableExpiredPidCaching;
 - (DTExpiredPidCacheService)init;
 - (id)allExpiredSignatures;
-- (id)signatureForExpiredPid:(id)a3;
+- (id)signatureForExpiredPid:(id)pid;
 - (void)dealloc;
-- (void)enableCaching:(BOOL)a3;
+- (void)enableCaching:(BOOL)caching;
 @end
 
 @implementation DTExpiredPidCacheService
@@ -35,9 +35,9 @@
 + (void)disableExpiredPidCaching
 {
   byte_27EE841D0 = 1;
-  v2 = [a1 defaultCache];
+  defaultCache = [self defaultCache];
 
-  if (v2)
+  if (defaultCache)
   {
     NSLog(&cfstr_PossibleRaceCo.isa);
   }
@@ -55,9 +55,9 @@
   return v3;
 }
 
-- (id)signatureForExpiredPid:(id)a3
+- (id)signatureForExpiredPid:(id)pid
 {
-  v4 = a3;
+  pidCopy = pid;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -68,7 +68,7 @@
   v8[1] = 3221225472;
   v8[2] = sub_247F6AFDC;
   v8[3] = &unk_278EF1000;
-  v5 = v4;
+  v5 = pidCopy;
   v9 = v5;
   v10 = &v11;
   [(XRExpiredPidCacheServiceProtected *)self _performOnCache:v8];
@@ -99,13 +99,13 @@
   return v2;
 }
 
-- (void)enableCaching:(BOOL)a3
+- (void)enableCaching:(BOOL)caching
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = sub_247F6B3EC;
   v3[3] = &unk_278EF1048;
-  v4 = a3;
+  cachingCopy = caching;
   [(XRExpiredPidCacheServiceProtected *)self _performOnCache:v3];
 }
 

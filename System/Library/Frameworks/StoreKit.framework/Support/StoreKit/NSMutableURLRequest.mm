@@ -1,18 +1,18 @@
 @interface NSMutableURLRequest
-- (void)asset_setRangeOffset:(unint64_t)a3;
+- (void)asset_setRangeOffset:(unint64_t)offset;
 @end
 
 @implementation NSMutableURLRequest
 
-- (void)asset_setRangeOffset:(unint64_t)a3
+- (void)asset_setRangeOffset:(unint64_t)offset
 {
-  if (a3)
+  if (offset)
   {
     v5 = [NSNumber numberWithUnsignedLongLong:?];
     [NSURLProtocol setProperty:v5 forKey:@"AssetRequetPropertyRangeOffset" inRequest:self];
 
-    v6 = [NSString stringWithFormat:@"bytes=%llu-", a3];
-    [(NSMutableURLRequest *)self setValue:v6 forHTTPHeaderField:@"Range"];
+    offset = [NSString stringWithFormat:@"bytes=%llu-", offset];
+    [(NSMutableURLRequest *)self setValue:offset forHTTPHeaderField:@"Range"];
   }
 
   else

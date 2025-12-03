@@ -177,20 +177,20 @@
   v41 = [MEMORY[0x277CBEA60] arrayWithObjects:v70 count:6];
   v42 = [v34 sectionWithRows:v41 title:@"Settings for All Buttons"];
 
-  v43 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v44 = 20;
   do
   {
     v45 = MEMORY[0x277D431B0];
     v46 = [MEMORY[0x277D43240] actionWithSettingsKeyPath:0];
     v47 = [v45 rowWithTitle:@"Restore Defaults" action:v46];
-    [v43 addObject:v47];
+    [array addObject:v47];
 
     --v44;
   }
 
   while (v44);
-  v48 = [MEMORY[0x277D43210] sectionWithRows:v43 title:@"Workaround Keyboard Bug"];
+  v48 = [MEMORY[0x277D43210] sectionWithRows:array title:@"Workaround Keyboard Bug"];
   v49 = MEMORY[0x277D43210];
   v69[0] = v68;
   v69[1] = v67;

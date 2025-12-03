@@ -8,15 +8,15 @@
 - (id)mpc_jsonValue
 {
   v2 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:3];
-  v3 = [a1 title];
-  [v2 setObject:v3 forKeyedSubscript:@"title"];
+  title = [self title];
+  [v2 setObject:title forKeyedSubscript:@"title"];
 
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a1, "type")}];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(self, "type")}];
   [v2 setObject:v4 forKeyedSubscript:@"type"];
 
-  v5 = [a1 event];
-  v6 = [v5 mpc_jsonValue];
-  [v2 setObject:v6 forKeyedSubscript:@"event"];
+  event = [self event];
+  mpc_jsonValue = [event mpc_jsonValue];
+  [v2 setObject:mpc_jsonValue forKeyedSubscript:@"event"];
 
   return v2;
 }
@@ -31,7 +31,7 @@
   v8 = [v5 objectForKeyedSubscript:@"title"];
   v9 = [v5 objectForKeyedSubscript:@"type"];
 
-  v10 = [a1 actionWithTitle:v8 type:objc_msgSend(v9 commandEvent:{"integerValue"), v7}];
+  v10 = [self actionWithTitle:v8 type:objc_msgSend(v9 commandEvent:{"integerValue"), v7}];
 
   return v10;
 }

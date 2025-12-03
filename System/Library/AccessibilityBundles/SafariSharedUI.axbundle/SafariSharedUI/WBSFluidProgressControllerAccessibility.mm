@@ -1,61 +1,61 @@
 @interface WBSFluidProgressControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)_axHandleProgressUpdate:(id)a3;
-- (void)_updateFluidProgressWithProgressStateSource:(id)a3;
-- (void)finishFluidProgressWithProgressStateSource:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)_axHandleProgressUpdate:(id)update;
+- (void)_updateFluidProgressWithProgressStateSource:(id)source;
+- (void)finishFluidProgressWithProgressStateSource:(id)source;
 @end
 
 @implementation WBSFluidProgressControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"WBSFluidProgressController" hasInstanceMethod:@"finishFluidProgressWithProgressStateSource:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"WBSFluidProgressController" hasInstanceMethod:@"_updateFluidProgressWithProgressStateSource:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"WBSFluidProgressController" hasInstanceMethod:@"_sendUpdateFluidProgressToObservers:progressState:source:updateAnimationPhase:" withFullSignature:{"v", "@", "@", "@", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"WBSFluidProgressController" hasInstanceMethod:@"finishFluidProgressWithProgressStateSource:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"WBSFluidProgressController" hasInstanceMethod:@"_updateFluidProgressWithProgressStateSource:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"WBSFluidProgressController" hasInstanceMethod:@"_sendUpdateFluidProgressToObservers:progressState:source:updateAnimationPhase:" withFullSignature:{"v", "@", "@", "@", "B", 0}];
 }
 
-- (void)finishFluidProgressWithProgressStateSource:(id)a3
+- (void)finishFluidProgressWithProgressStateSource:(id)source
 {
   v7.receiver = self;
   v7.super_class = WBSFluidProgressControllerAccessibility;
-  v4 = a3;
-  [(WBSFluidProgressControllerAccessibility *)&v7 finishFluidProgressWithProgressStateSource:v4];
+  sourceCopy = source;
+  [(WBSFluidProgressControllerAccessibility *)&v7 finishFluidProgressWithProgressStateSource:sourceCopy];
   v5 = AXLogAppAccessibility();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [WBSFluidProgressControllerAccessibility finishFluidProgressWithProgressStateSource:v5];
   }
 
-  v6 = [v4 progressState];
+  progressState = [sourceCopy progressState];
 
-  [(WBSFluidProgressControllerAccessibility *)self _axHandleProgressUpdate:v6];
+  [(WBSFluidProgressControllerAccessibility *)self _axHandleProgressUpdate:progressState];
 }
 
-- (void)_updateFluidProgressWithProgressStateSource:(id)a3
+- (void)_updateFluidProgressWithProgressStateSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v5 = AXLogAppAccessibility();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(WBSFluidProgressControllerAccessibility *)v4 _updateFluidProgressWithProgressStateSource:v5];
+    [(WBSFluidProgressControllerAccessibility *)sourceCopy _updateFluidProgressWithProgressStateSource:v5];
   }
 
   v7.receiver = self;
   v7.super_class = WBSFluidProgressControllerAccessibility;
-  [(WBSFluidProgressControllerAccessibility *)&v7 _updateFluidProgressWithProgressStateSource:v4];
-  v6 = [v4 progressState];
-  [(WBSFluidProgressControllerAccessibility *)self _axHandleProgressUpdate:v6];
+  [(WBSFluidProgressControllerAccessibility *)&v7 _updateFluidProgressWithProgressStateSource:sourceCopy];
+  progressState = [sourceCopy progressState];
+  [(WBSFluidProgressControllerAccessibility *)self _axHandleProgressUpdate:progressState];
 }
 
-- (void)_axHandleProgressUpdate:(id)a3
+- (void)_axHandleProgressUpdate:(id)update
 {
   v24 = *MEMORY[0x29EDCA608];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  updateCopy = update;
+  v4 = updateCopy;
+  if (updateCopy)
   {
-    [v3 updateFluidProgressValue];
+    [updateCopy updateFluidProgressValue];
     v5 = AXLogAppAccessibility();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
@@ -84,12 +84,12 @@
       v9 = [v10 numberWithDouble:?];
     }
 
-    v11 = [v4 loadURL];
-    v12 = v11;
+    loadURL = [v4 loadURL];
+    v12 = loadURL;
     v13 = &stru_2A22C8548;
-    if (v11)
+    if (loadURL)
     {
-      v13 = v11;
+      v13 = loadURL;
     }
 
     v17[1] = v13;

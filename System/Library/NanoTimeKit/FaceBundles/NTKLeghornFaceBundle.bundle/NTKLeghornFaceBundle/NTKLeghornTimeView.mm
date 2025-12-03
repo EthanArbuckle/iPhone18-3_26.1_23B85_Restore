@@ -1,39 +1,39 @@
 @interface NTKLeghornTimeView
-+ (void)drawSnapshotInContext:(CGContext *)a3 timeStyle:(unint64_t)a4 colorPalette:(id)a5 forDevice:(id)a6;
++ (void)drawSnapshotInContext:(CGContext *)context timeStyle:(unint64_t)style colorPalette:(id)palette forDevice:(id)device;
 - (CGRect)accessibilityFrame;
 - (CGRect)contentBounds;
-- (NTKLeghornTimeView)initWithFrame:(CGRect)a3 forDevice:(id)a4;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
+- (NTKLeghornTimeView)initWithFrame:(CGRect)frame forDevice:(id)device;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 - (id)_getAnalogTimeView;
 - (id)_getDigitalTimeView;
-- (id)_timeViewForStyle:(unint64_t)a3 force:(BOOL)a4;
+- (id)_timeViewForStyle:(unint64_t)style force:(BOOL)force;
 - (void)_removeAnalogTimeView;
 - (void)_removeDigitalTimeView;
 - (void)_updateDigitalViewColors;
-- (void)applyTransitionFraction:(double)a3 fromStyle:(unint64_t)a4 toStyle:(unint64_t)a5;
-- (void)setFrozen:(BOOL)a3;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
-- (void)setPalette:(id)a3;
-- (void)setTimeOffset:(double)a3;
-- (void)setTimeStyle:(unint64_t)a3;
+- (void)applyTransitionFraction:(double)fraction fromStyle:(unint64_t)style toStyle:(unint64_t)toStyle;
+- (void)setFrozen:(BOOL)frozen;
+- (void)setOverrideDate:(id)date duration:(double)duration;
+- (void)setPalette:(id)palette;
+- (void)setTimeOffset:(double)offset;
+- (void)setTimeStyle:(unint64_t)style;
 @end
 
 @implementation NTKLeghornTimeView
 
-- (NTKLeghornTimeView)initWithFrame:(CGRect)a3 forDevice:(id)a4
+- (NTKLeghornTimeView)initWithFrame:(CGRect)frame forDevice:(id)device
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  deviceCopy = device;
   v21.receiver = self;
   v21.super_class = NTKLeghornTimeView;
-  v11 = [(NTKLeghornTimeView *)&v21 initWithFrame:x, y, width, height];
-  v12 = v11;
-  if (v11)
+  height = [(NTKLeghornTimeView *)&v21 initWithFrame:x, y, width, height];
+  v12 = height;
+  if (height)
   {
-    objc_storeStrong(&v11->_device, a4);
+    objc_storeStrong(&height->_device, device);
     objc_msgSend_setUserInteractionEnabled_(v12, v13, v14, 0);
     v17 = objc_msgSend_layer(v12, v15, v16);
     objc_msgSend_setAllowsHitTesting_(v17, v18, v19, 0);
@@ -118,18 +118,18 @@
   }
 }
 
-- (void)applyTransitionFraction:(double)a3 fromStyle:(unint64_t)a4 toStyle:(unint64_t)a5
+- (void)applyTransitionFraction:(double)fraction fromStyle:(unint64_t)style toStyle:(unint64_t)toStyle
 {
-  v9 = a4 != a5 && a3 > 0.0;
-  v20 = objc_msgSend__timeViewForStyle_force_(self, a2, a3);
-  v12 = objc_msgSend__timeViewForStyle_force_(self, v10, v11, a5, v9);
+  v9 = style != toStyle && fraction > 0.0;
+  v20 = objc_msgSend__timeViewForStyle_force_(self, a2, fraction);
+  v12 = objc_msgSend__timeViewForStyle_force_(self, v10, v11, toStyle, v9);
   v14 = v12;
-  if (a4 == a5)
+  if (style == toStyle)
   {
-    if (a3 == 1.0)
+    if (fraction == 1.0)
     {
       v16 = &OBJC_IVAR___NTKLeghornTimeView__analogTimeView;
-      if (a4 == 1)
+      if (style == 1)
       {
         v16 = &OBJC_IVAR___NTKLeghornTimeView__digitalTimeView;
       }
@@ -144,16 +144,16 @@
 
   else
   {
-    objc_msgSend_setAlpha_(v12, v13, a3);
-    objc_msgSend_setAlpha_(v20, v15, 1.0 - a3);
+    objc_msgSend_setAlpha_(v12, v13, fraction);
+    objc_msgSend_setAlpha_(v20, v15, 1.0 - fraction);
   }
 }
 
-- (id)_timeViewForStyle:(unint64_t)a3 force:(BOOL)a4
+- (id)_timeViewForStyle:(unint64_t)style force:(BOOL)force
 {
-  if (a3 == 1)
+  if (style == 1)
   {
-    if (a4)
+    if (force)
     {
       v5 = objc_msgSend__getAnalogTimeView(self, a2, v4);
       goto LABEL_11;
@@ -164,13 +164,13 @@
 
   else
   {
-    if (a3)
+    if (style)
     {
       v5 = 0;
       goto LABEL_11;
     }
 
-    if (a4)
+    if (force)
     {
       v5 = objc_msgSend__getDigitalTimeView(self, a2, v4);
       goto LABEL_11;
@@ -185,15 +185,15 @@ LABEL_11:
   return v5;
 }
 
-- (void)setTimeStyle:(unint64_t)a3
+- (void)setTimeStyle:(unint64_t)style
 {
   p_analogTimeView = &self->_analogTimeView;
-  if (!self->_analogTimeView && !self->_digitalTimeView || self->_timeStyle != a3)
+  if (!self->_analogTimeView && !self->_digitalTimeView || self->_timeStyle != style)
   {
-    self->_timeStyle = a3;
-    if (a3)
+    self->_timeStyle = style;
+    if (style)
     {
-      if (a3 != 1)
+      if (style != 1)
       {
         return;
       }
@@ -215,28 +215,28 @@ LABEL_11:
   }
 }
 
-- (void)setFrozen:(BOOL)a3
+- (void)setFrozen:(BOOL)frozen
 {
-  v4 = a3;
+  frozenCopy = frozen;
   objc_msgSend_setFrozen_(self->_digitalTimeView, a2, v3);
-  objc_msgSend_setFrozen_(self->_analogTimeView, v6, v7, v4);
-  self->_frozen = v4;
+  objc_msgSend_setFrozen_(self->_analogTimeView, v6, v7, frozenCopy);
+  self->_frozen = frozenCopy;
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
   analogTimeView = self->_analogTimeView;
-  v9 = a3;
-  objc_msgSend_setOverrideDate_duration_(analogTimeView, v7, a4, v9);
-  objc_msgSend_setOverrideDate_duration_(self->_digitalTimeView, v8, a4, v9);
+  dateCopy = date;
+  objc_msgSend_setOverrideDate_duration_(analogTimeView, v7, duration, dateCopy);
+  objc_msgSend_setOverrideDate_duration_(self->_digitalTimeView, v8, duration, dateCopy);
 }
 
-- (void)setTimeOffset:(double)a3
+- (void)setTimeOffset:(double)offset
 {
-  objc_msgSend_setTimeOffset_(self->_analogTimeView, a2, a3);
+  objc_msgSend_setTimeOffset_(self->_analogTimeView, a2, offset);
   digitalTimeView = self->_digitalTimeView;
 
-  objc_msgSend_setTimeOffset_(digitalTimeView, v5, a3);
+  objc_msgSend_setTimeOffset_(digitalTimeView, v5, offset);
 }
 
 - (CGRect)contentBounds
@@ -279,9 +279,9 @@ LABEL_8:
   return result;
 }
 
-- (void)setPalette:(id)a3
+- (void)setPalette:(id)palette
 {
-  objc_storeStrong(&self->_palette, a3);
+  objc_storeStrong(&self->_palette, palette);
   objc_msgSend__updateAnalogViewColors(self, v4, v5);
 
   objc_msgSend__updateDigitalViewColors(self, v6, v7);
@@ -296,23 +296,23 @@ LABEL_8:
   objc_msgSend_setSecondsColor_(self->_digitalTimeView, v9, v10, v11);
 }
 
-+ (void)drawSnapshotInContext:(CGContext *)a3 timeStyle:(unint64_t)a4 colorPalette:(id)a5 forDevice:(id)a6
++ (void)drawSnapshotInContext:(CGContext *)context timeStyle:(unint64_t)style colorPalette:(id)palette forDevice:(id)device
 {
-  v9 = a6;
-  v10 = a5;
+  deviceCopy = device;
+  paletteCopy = palette;
   v11 = [NTKLeghornTimeView alloc];
-  objc_msgSend_screenBounds(v9, v12, v13);
-  v29 = objc_msgSend_initWithFrame_forDevice_(v11, v14, v15, v9);
+  objc_msgSend_screenBounds(deviceCopy, v12, v13);
+  v29 = objc_msgSend_initWithFrame_forDevice_(v11, v14, v15, deviceCopy);
 
-  objc_msgSend_setTimeStyle_(v29, v16, v17, a4);
-  objc_msgSend_setPalette_(v29, v18, v19, v10);
+  objc_msgSend_setTimeStyle_(v29, v16, v17, style);
+  objc_msgSend_setPalette_(v29, v18, v19, paletteCopy);
 
   objc_msgSend_setFrozen_(v29, v20, v21, 1);
   v22 = NTKIdealizedDate();
   objc_msgSend_setOverrideDate_duration_(v29, v23, 0.0, v22);
 
   v26 = objc_msgSend_layer(v29, v24, v25);
-  objc_msgSend_renderInContext_(v26, v27, v28, a3);
+  objc_msgSend_renderInContext_(v26, v27, v28, context);
 }
 
 - (CGRect)accessibilityFrame
@@ -359,11 +359,11 @@ LABEL_7:
   return result;
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   timeStyle = self->_timeStyle;
   if (timeStyle == 1)
   {
@@ -389,16 +389,16 @@ LABEL_7:
     v18.y = y;
     if (CGRectContainsPoint(v19, v18))
     {
-      v15 = self;
+      selfCopy = self;
       goto LABEL_10;
     }
   }
 
 LABEL_9:
-  v15 = 0;
+  selfCopy = 0;
 LABEL_10:
 
-  return v15;
+  return selfCopy;
 }
 
 @end

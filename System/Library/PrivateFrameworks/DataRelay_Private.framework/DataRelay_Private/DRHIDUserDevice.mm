@@ -2,7 +2,7 @@
 - (uint64_t)dealloc;
 - (void)activate;
 - (void)dealloc;
-- (void)handleReport:(id)a3;
+- (void)handleReport:(id)report;
 @end
 
 @implementation DRHIDUserDevice
@@ -85,11 +85,11 @@ void __27__DRHIDUserDevice_activate__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)handleReport:(id)a3
+- (void)handleReport:(id)report
 {
   userDevice = self->_userDevice;
-  v4 = a3;
-  [(HIDUserDevice *)userDevice handleReport:v4 withTimestamp:mach_absolute_time() error:0];
+  reportCopy = report;
+  [(HIDUserDevice *)userDevice handleReport:reportCopy withTimestamp:mach_absolute_time() error:0];
 }
 
 - (void)dealloc
@@ -112,8 +112,8 @@ void __27__DRHIDUserDevice_activate__block_invoke_2(uint64_t a1)
 
 - (uint64_t)dealloc
 {
-  [a1 dataType];
-  [a1 serviceID];
+  [self dataType];
+  [self serviceID];
   return LogPrintF();
 }
 

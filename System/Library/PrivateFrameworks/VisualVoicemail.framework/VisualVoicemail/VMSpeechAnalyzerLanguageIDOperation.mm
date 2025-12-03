@@ -1,24 +1,24 @@
 @interface VMSpeechAnalyzerLanguageIDOperation
-- (VMSpeechAnalyzerLanguageIDOperation)initWithClientIdentifier:(id)a3 transcriberResultDelegate:(id)a4 endpointingResultDelegate:(id)a5 languageDetectorResultDelegate:(id)a6 transcriberOptions:(id)a7 options:(id)a8 languageDetectorOptions:(id)a9 restrictedLogging:(BOOL)a10 didChangeVolatileRange:(id)a11;
-- (id)initSpeechAnalyzerForLanguageID:(id)a3;
+- (VMSpeechAnalyzerLanguageIDOperation)initWithClientIdentifier:(id)identifier transcriberResultDelegate:(id)delegate endpointingResultDelegate:(id)resultDelegate languageDetectorResultDelegate:(id)detectorResultDelegate transcriberOptions:(id)options options:(id)a8 languageDetectorOptions:(id)detectorOptions restrictedLogging:(BOOL)self0 didChangeVolatileRange:(id)self1;
+- (id)initSpeechAnalyzerForLanguageID:(id)d;
 - (void)cancel;
 - (void)main;
-- (void)speechAnalyzer:(id)a3 didProduceLanguageHypothesis:(id)a4;
-- (void)speechAnalyzer:(id)a3 didStopLanguageDetectorWithError:(id)a4;
+- (void)speechAnalyzer:(id)analyzer didProduceLanguageHypothesis:(id)hypothesis;
+- (void)speechAnalyzer:(id)analyzer didStopLanguageDetectorWithError:(id)error;
 @end
 
 @implementation VMSpeechAnalyzerLanguageIDOperation
 
-- (VMSpeechAnalyzerLanguageIDOperation)initWithClientIdentifier:(id)a3 transcriberResultDelegate:(id)a4 endpointingResultDelegate:(id)a5 languageDetectorResultDelegate:(id)a6 transcriberOptions:(id)a7 options:(id)a8 languageDetectorOptions:(id)a9 restrictedLogging:(BOOL)a10 didChangeVolatileRange:(id)a11
+- (VMSpeechAnalyzerLanguageIDOperation)initWithClientIdentifier:(id)identifier transcriberResultDelegate:(id)delegate endpointingResultDelegate:(id)resultDelegate languageDetectorResultDelegate:(id)detectorResultDelegate transcriberOptions:(id)options options:(id)a8 languageDetectorOptions:(id)detectorOptions restrictedLogging:(BOOL)self0 didChangeVolatileRange:(id)self1
 {
-  [(VMSpeechAnalyzerLanguageIDOperation *)self doesNotRecognizeSelector:a2, a4, a5, a6, a7, a8];
+  [(VMSpeechAnalyzerLanguageIDOperation *)self doesNotRecognizeSelector:a2, delegate, resultDelegate, detectorResultDelegate, options, a8];
 
   return 0;
 }
 
-- (id)initSpeechAnalyzerForLanguageID:(id)a3
+- (id)initSpeechAnalyzerForLanguageID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v6 = @"com.apple.visualvoicemail";
   v7 = objc_alloc_init(SFSpeechAnalyzerLanguageDetectorOptions);
   [v7 setAlternativeCount:5];
@@ -29,7 +29,7 @@
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_dataURL, a3);
+    objc_storeStrong(&v8->_dataURL, d);
   }
 
   return v9;
@@ -44,7 +44,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Cancelled LanguageID operation %@.", buf, 0xCu);
   }
 }
@@ -54,22 +54,22 @@
   v3 = sub_10000280C();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(VMSpeechAnalyzerLanguageIDOperation *)self dataURL];
-    v5 = [(VMSpeechAnalyzerLanguageIDOperation *)self queuePriority];
+    dataURL = [(VMSpeechAnalyzerLanguageIDOperation *)self dataURL];
+    queuePriority = [(VMSpeechAnalyzerLanguageIDOperation *)self queuePriority];
     v6 = +[MFPowerController sharedInstance];
-    v7 = [v6 isPluggedIn];
+    isPluggedIn = [v6 isPluggedIn];
     v8 = @" not";
     *buf = 138413058;
-    v32 = self;
+    selfCopy = self;
     v33 = 2112;
-    if (v7)
+    if (isPluggedIn)
     {
       v8 = &stru_1000F0098;
     }
 
-    v34 = v4;
+    v34 = dataURL;
     v35 = 2048;
-    v36 = v5;
+    v36 = queuePriority;
     v37 = 2112;
     v38 = v8;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Starting LanguageID operation %@ for %@. Priority is %ld and device is %@ charging.", buf, 0x2Au);
@@ -88,9 +88,9 @@
   if ([(VMSpeechAnalyzerLanguageIDOperation *)self queuePriority]== -4)
   {
     v14 = +[MFPowerController sharedInstance];
-    v15 = [v14 isPluggedIn];
+    isPluggedIn2 = [v14 isPluggedIn];
 
-    if ((v15 & 1) == 0)
+    if ((isPluggedIn2 & 1) == 0)
     {
       v9 = kVVErrorDomain;
       v27 = NSLocalizedDescriptionKey;
@@ -113,22 +113,22 @@ LABEL_7:
   v16 = dispatch_semaphore_create(0);
   [(VMSpeechAnalyzerLanguageIDOperation *)self setSemaphore:v16];
 
-  v17 = [(VMSpeechAnalyzerLanguageIDOperation *)self dataURL];
-  v18 = [(VMSpeechAnalyzerOperation *)self submitAudioToAnalyzer:v17 sampleRate:0 useFloat:16000.0];
+  dataURL2 = [(VMSpeechAnalyzerLanguageIDOperation *)self dataURL];
+  v18 = [(VMSpeechAnalyzerOperation *)self submitAudioToAnalyzer:dataURL2 sampleRate:0 useFloat:16000.0];
 
   if (v18)
   {
     v19 = sub_10000280C();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [(VMSpeechAnalyzerLanguageIDOperation *)self dataURL];
+      dataURL3 = [(VMSpeechAnalyzerLanguageIDOperation *)self dataURL];
       *buf = 138412290;
-      v32 = v20;
+      selfCopy = dataURL3;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "VMSpeechAnalyzerLanguageIDOperation: Submitted URL %@ for Language ID", buf, 0xCu);
     }
 
-    v21 = [(VMSpeechAnalyzerLanguageIDOperation *)self semaphore];
-    dispatch_semaphore_wait(v21, 0xFFFFFFFFFFFFFFFFLL);
+    semaphore = [(VMSpeechAnalyzerLanguageIDOperation *)self semaphore];
+    dispatch_semaphore_wait(semaphore, 0xFFFFFFFFFFFFFFFFLL);
     v13 = 0;
   }
 
@@ -137,64 +137,64 @@ LABEL_7:
     v22 = kVVErrorDomain;
     v25 = NSLocalizedDescriptionKey;
     v26 = @"Audio was not submitted to speech analyzer successfully.";
-    v21 = [NSDictionary dictionaryWithObjects:&v26 forKeys:&v25 count:1];
-    v13 = [NSError errorWithDomain:v22 code:1042 userInfo:v21];
+    semaphore = [NSDictionary dictionaryWithObjects:&v26 forKeys:&v25 count:1];
+    v13 = [NSError errorWithDomain:v22 code:1042 userInfo:semaphore];
   }
 
   [(VMSpeechAnalyzerLanguageIDOperation *)self cancel];
   if (v13)
   {
 LABEL_17:
-    v23 = [(VMSpeechAnalyzerLanguageIDOperation *)self languageIDOperationCompletion];
+    languageIDOperationCompletion = [(VMSpeechAnalyzerLanguageIDOperation *)self languageIDOperationCompletion];
 
-    if (v23)
+    if (languageIDOperationCompletion)
     {
-      v24 = [(VMSpeechAnalyzerLanguageIDOperation *)self languageIDOperationCompletion];
-      (v24)[2](v24, 0, v13);
+      languageIDOperationCompletion2 = [(VMSpeechAnalyzerLanguageIDOperation *)self languageIDOperationCompletion];
+      (languageIDOperationCompletion2)[2](languageIDOperationCompletion2, 0, v13);
     }
   }
 
 LABEL_19:
 }
 
-- (void)speechAnalyzer:(id)a3 didProduceLanguageHypothesis:(id)a4
+- (void)speechAnalyzer:(id)analyzer didProduceLanguageHypothesis:(id)hypothesis
 {
-  v5 = a4;
+  hypothesisCopy = hypothesis;
   v6 = sub_10000280C();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 dominantLocale];
-    v8 = [v7 localeIdentifier];
+    dominantLocale = [hypothesisCopy dominantLocale];
+    localeIdentifier = [dominantLocale localeIdentifier];
     v9 = 138412290;
-    v10 = v8;
+    v10 = localeIdentifier;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "VMSpeechAnalyzerLanguageIDOperation Dominant Locale detected: <%@>", &v9, 0xCu);
   }
 
-  [(VMSpeechAnalyzerLanguageIDOperation *)self setLanguageDetectorResult:v5];
+  [(VMSpeechAnalyzerLanguageIDOperation *)self setLanguageDetectorResult:hypothesisCopy];
 }
 
-- (void)speechAnalyzer:(id)a3 didStopLanguageDetectorWithError:(id)a4
+- (void)speechAnalyzer:(id)analyzer didStopLanguageDetectorWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = sub_10000280C();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v5;
+    v12 = errorCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "VMSpeechAnalyzerLanguageIDOperation didStopLanguageDetectorWithError. Error? %@", &v11, 0xCu);
   }
 
-  v7 = [(VMSpeechAnalyzerLanguageIDOperation *)self languageIDOperationCompletion];
+  languageIDOperationCompletion = [(VMSpeechAnalyzerLanguageIDOperation *)self languageIDOperationCompletion];
 
-  if (v7)
+  if (languageIDOperationCompletion)
   {
-    v8 = [(VMSpeechAnalyzerLanguageIDOperation *)self languageIDOperationCompletion];
-    v9 = [(VMSpeechAnalyzerLanguageIDOperation *)self languageDetectorResult];
-    (v8)[2](v8, v9, v5);
+    languageIDOperationCompletion2 = [(VMSpeechAnalyzerLanguageIDOperation *)self languageIDOperationCompletion];
+    languageDetectorResult = [(VMSpeechAnalyzerLanguageIDOperation *)self languageDetectorResult];
+    (languageIDOperationCompletion2)[2](languageIDOperationCompletion2, languageDetectorResult, errorCopy);
   }
 
-  v10 = [(VMSpeechAnalyzerLanguageIDOperation *)self semaphore];
-  dispatch_semaphore_signal(v10);
+  semaphore = [(VMSpeechAnalyzerLanguageIDOperation *)self semaphore];
+  dispatch_semaphore_signal(semaphore);
 }
 
 @end

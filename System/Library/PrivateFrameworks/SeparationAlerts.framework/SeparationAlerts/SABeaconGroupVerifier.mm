@@ -1,34 +1,34 @@
 @interface SABeaconGroupVerifier
-+ (id)verifyBeaconGroupsWithBeaconGroups:(id)a3 deviceUUIDtoDeviceMap:(id)a4 deviceToSafeLocationMap:(id)a5;
-+ (int)beaconGroupSizeForDevice:(id)a3;
++ (id)verifyBeaconGroupsWithBeaconGroups:(id)groups deviceUUIDtoDeviceMap:(id)map deviceToSafeLocationMap:(id)locationMap;
++ (int)beaconGroupSizeForDevice:(id)device;
 @end
 
 @implementation SABeaconGroupVerifier
 
-+ (id)verifyBeaconGroupsWithBeaconGroups:(id)a3 deviceUUIDtoDeviceMap:(id)a4 deviceToSafeLocationMap:(id)a5
++ (id)verifyBeaconGroupsWithBeaconGroups:(id)groups deviceUUIDtoDeviceMap:(id)map deviceToSafeLocationMap:(id)locationMap
 {
   v159 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  groupsCopy = groups;
+  mapCopy = map;
+  locationMapCopy = locationMap;
   v10 = objc_opt_new();
   [v10 setBeaconGroupComplete:1];
   [v10 setBeaconGroupSafeLocationsMatch:1];
-  v90 = v8;
-  v11 = [v8 mutableCopy];
+  v90 = mapCopy;
+  v11 = [mapCopy mutableCopy];
   [v10 setDeviceUUIDtoDeviceMap:v11];
 
-  v89 = v9;
-  v12 = [v9 mutableCopy];
+  v89 = locationMapCopy;
+  v12 = [locationMapCopy mutableCopy];
   [v10 setDeviceToSafeLocationMap:v12];
 
-  v92 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(v7, "count")}];
-  v103 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(v7, "count")}];
+  v92 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(groupsCopy, "count")}];
+  v103 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(groupsCopy, "count")}];
   v134 = 0u;
   v135 = 0u;
   v136 = 0u;
   v137 = 0u;
-  obj = v7;
+  obj = groupsCopy;
   v94 = [obj countByEnumeratingWithState:&v134 objects:v158 count:16];
   if (v94)
   {
@@ -60,9 +60,9 @@
             v20 = "NO";
           }
 
-          v21 = [v10 beaconGroupSafeLocationsMatch];
+          beaconGroupSafeLocationsMatch = [v10 beaconGroupSafeLocationsMatch];
           *buf = 68290307;
-          if (v21)
+          if (beaconGroupSafeLocationsMatch)
           {
             v22 = "YES";
           }
@@ -88,14 +88,14 @@
           _os_log_impl(&dword_2656EA000, v17, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#sa #beaconMonitoring for group, groupIdentifier:%{private}@, beaconGroup.count:%{public}lu, beacons:%{private}@, beaconGroupCompletePartialResult:%{public}s, safeLocationsMatchPartialResult:%{public}s}", buf, 0x44u);
         }
 
-        v23 = [v15 anyObject];
-        v108 = v23;
-        if (v23)
+        anyObject = [v15 anyObject];
+        v108 = anyObject;
+        if (anyObject)
         {
-          v24 = [v10 deviceUUIDtoDeviceMap];
-          v25 = [v24 objectForKeyedSubscript:v23];
+          deviceUUIDtoDeviceMap = [v10 deviceUUIDtoDeviceMap];
+          v25 = [deviceUUIDtoDeviceMap objectForKeyedSubscript:anyObject];
 
-          v26 = [a1 beaconGroupSizeForDevice:v25];
+          v26 = [self beaconGroupSizeForDevice:v25];
           if ([v15 count] != v26)
           {
             v27 = TASALog;
@@ -118,7 +118,7 @@
               v153 = v31;
               v154 = 2050;
               v155 = v28;
-              v23 = v108;
+              anyObject = v108;
               v156 = 2050;
               v157 = v32;
               _os_log_impl(&dword_2656EA000, v30, OS_LOG_TYPE_FAULT, "{msg%{public}.0s:#sa #beaconMonitoring incorrect beacon group size, groupIdentifier:%{private}@, beaconIdentifier:%{private}@, deviceType:%{public}@, expectedBeaconGroupSize:%{public}lu, beaconGroup.count:%{public}lu}", buf, 0x44u);
@@ -130,8 +130,8 @@
           v95 = v25;
           v105 = v14;
           v98 = i;
-          v33 = [v10 deviceToSafeLocationMap];
-          v34 = [v33 objectForKeyedSubscript:v23];
+          deviceToSafeLocationMap = [v10 deviceToSafeLocationMap];
+          v34 = [deviceToSafeLocationMap objectForKeyedSubscript:anyObject];
 
           v132 = 0u;
           v133 = 0u;
@@ -154,21 +154,21 @@
                 }
 
                 v40 = *(*(&v130 + 1) + 8 * j);
-                if (v40 != v23)
+                if (v40 != anyObject)
                 {
-                  v41 = [v10 deviceToSafeLocationMap];
-                  v42 = [v41 objectForKeyedSubscript:v40];
+                  deviceToSafeLocationMap2 = [v10 deviceToSafeLocationMap];
+                  v42 = [deviceToSafeLocationMap2 objectForKeyedSubscript:v40];
                   v43 = [v34 isEqualToSet:v42];
 
-                  v23 = v108;
+                  anyObject = v108;
                   if ((v43 & 1) == 0)
                   {
                     v44 = TASALog;
                     if (os_log_type_enabled(TASALog, OS_LOG_TYPE_FAULT))
                     {
                       v45 = v44;
-                      v46 = [v10 deviceToSafeLocationMap];
-                      v47 = [v46 objectForKeyedSubscript:v40];
+                      deviceToSafeLocationMap3 = [v10 deviceToSafeLocationMap];
+                      v47 = [deviceToSafeLocationMap3 objectForKeyedSubscript:v40];
                       *buf = 68290051;
                       v145 = 0;
                       v146 = 2082;
@@ -183,7 +183,7 @@
                       v155 = v47;
                       _os_log_impl(&dword_2656EA000, v45, OS_LOG_TYPE_FAULT, "{msg%{public}.0s:#sa #beaconMonitoring safe location mismatch, groupIdentifier:%{private}@, beaconIdentifier:%{private}@, safelocationsBaseline:%{public}@, safelocationsCompared:%{public}@}", buf, 0x3Au);
 
-                      v23 = v108;
+                      anyObject = v108;
                     }
 
                     [v103 addObject:v105];
@@ -219,9 +219,9 @@
               v50 = "NO";
             }
 
-            v51 = [v10 beaconGroupSafeLocationsMatch];
+            beaconGroupSafeLocationsMatch2 = [v10 beaconGroupSafeLocationsMatch];
             *buf = 68289795;
-            if (v51)
+            if (beaconGroupSafeLocationsMatch2)
             {
               v52 = "YES";
             }
@@ -238,7 +238,7 @@
             v149 = v14;
             v150 = 2082;
             v151 = v50;
-            v23 = 0;
+            anyObject = 0;
             v152 = 2082;
             v153 = v52;
             _os_log_impl(&dword_2656EA000, v49, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:#sa #beaconMonitoring beacon group is empty, groupIdentifier:%{private}@, beaconGroupComplete:%{public}s, safeLocationsMatch:%{public}s}", buf, 0x30u);
@@ -320,11 +320,11 @@
                   _os_log_impl(&dword_2656EA000, v62, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:#sa #beaconMonitoring suspending device due to incomplete beacon group, groupIdentifier:%{private}@, beaconIdentifier:%{private}@}", buf, 0x26u);
                 }
 
-                v63 = [v10 deviceToSafeLocationMap];
-                [v63 removeObjectForKey:v61];
+                deviceToSafeLocationMap4 = [v10 deviceToSafeLocationMap];
+                [deviceToSafeLocationMap4 removeObjectForKey:v61];
 
-                v64 = [v10 deviceUUIDtoDeviceMap];
-                [v64 removeObjectForKey:v61];
+                deviceUUIDtoDeviceMap2 = [v10 deviceUUIDtoDeviceMap];
+                [deviceUUIDtoDeviceMap2 removeObjectForKey:v61];
               }
 
               v58 = [v56 countByEnumeratingWithState:&v122 objects:v141 count:16];
@@ -403,8 +403,8 @@
                 }
 
                 v75 = *(*(&v114 + 1) + 8 * n);
-                v76 = [v10 deviceToSafeLocationMap];
-                v77 = [v76 objectForKeyedSubscript:v75];
+                deviceToSafeLocationMap5 = [v10 deviceToSafeLocationMap];
+                v77 = [deviceToSafeLocationMap5 objectForKeyedSubscript:v75];
                 [v69 unionSet:v77];
               }
 
@@ -435,8 +435,8 @@
 
                 v83 = *(*(&v110 + 1) + 8 * ii);
                 v84 = [v69 copy];
-                v85 = [v10 deviceToSafeLocationMap];
-                [v85 setObject:v84 forKeyedSubscript:v83];
+                deviceToSafeLocationMap6 = [v10 deviceToSafeLocationMap];
+                [deviceToSafeLocationMap6 setObject:v84 forKeyedSubscript:v83];
               }
 
               v80 = [v78 countByEnumeratingWithState:&v110 objects:v138 count:16];
@@ -475,21 +475,21 @@
   return v10;
 }
 
-+ (int)beaconGroupSizeForDevice:(id)a3
++ (int)beaconGroupSizeForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [v3 deviceType];
-  if ((v4 - 1) < 2)
+  deviceCopy = device;
+  deviceType = [deviceCopy deviceType];
+  if ((deviceType - 1) < 2)
   {
     v5 = 1;
   }
 
-  else if (v4 == 16)
+  else if (deviceType == 16)
   {
     v5 = 1;
-    if ([v3 productId] != 8202)
+    if ([deviceCopy productId] != 8202)
     {
-      if ([v3 productId] == 8223)
+      if ([deviceCopy productId] == 8223)
       {
         v5 = 1;
       }
@@ -501,9 +501,9 @@
     }
   }
 
-  else if (v4 == 4)
+  else if (deviceType == 4)
   {
-    if ([v3 isAppleAudioAccessory])
+    if ([deviceCopy isAppleAudioAccessory])
     {
       v5 = 3;
     }

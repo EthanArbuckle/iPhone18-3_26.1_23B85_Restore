@@ -1,26 +1,26 @@
 @interface VNHeatMapUtilities
-+ (BOOL)smoothedFloat32ImageBuffer:(vImage_Buffer *)a3 fromImageBuffer:(vImage_Buffer *)a4 originalImageSize:(CGSize)a5 sigmaX:(float)a6 sigmaY:(float)a7 nStd:(float)a8;
-+ (float)maximumValueFromFloat32ImageBuffer:(vImage_Buffer *)a3;
-+ (id)boundingBoxesFromFloat32ImageBuffer:(vImage_Buffer *)a3 thresholds:(id)a4 error:(id *)a5;
-+ (id)boundingBoxesFromFloat32ImageBuffer:(vImage_Buffer *)a3 thresholds:(id)a4 relativeToMaximum:(BOOL)a5 applySmoothing:(BOOL)a6 originalImageSize:(CGSize)a7 sigmaX:(float)a8 sigmaY:(float)a9 nStd:(float)a10 error:(id *)a11;
-+ (id)boundingBoxesFromFloat32PixelBuffer:(__CVBuffer *)a3 thresholds:(id)a4 relativeToMaximum:(BOOL)a5 applySmoothing:(BOOL)a6 originalImageSize:(CGSize)a7 sigmaX:(float)a8 sigmaY:(float)a9 nStd:(float)a10 error:(id *)a11;
-+ (id)significantRegionsFromFloat32ImageBuffer:(vImage_Buffer *)a3 threshold:(float)a4;
-+ (id)significantRegionsFromFloat32ImageBuffer:(vImage_Buffer *)a3 threshold:(float)a4 relativeToMaximum:(BOOL)a5;
-+ (id)significantRegionsFromFloat32PixelBuffer:(__CVBuffer *)a3 threshold:(float)a4 relativeToMaximum:(BOOL)a5 error:(id *)a6;
++ (BOOL)smoothedFloat32ImageBuffer:(vImage_Buffer *)buffer fromImageBuffer:(vImage_Buffer *)imageBuffer originalImageSize:(CGSize)size sigmaX:(float)x sigmaY:(float)y nStd:(float)std;
++ (float)maximumValueFromFloat32ImageBuffer:(vImage_Buffer *)buffer;
++ (id)boundingBoxesFromFloat32ImageBuffer:(vImage_Buffer *)buffer thresholds:(id)thresholds error:(id *)error;
++ (id)boundingBoxesFromFloat32ImageBuffer:(vImage_Buffer *)buffer thresholds:(id)thresholds relativeToMaximum:(BOOL)maximum applySmoothing:(BOOL)smoothing originalImageSize:(CGSize)size sigmaX:(float)x sigmaY:(float)y nStd:(float)self0 error:(id *)self1;
++ (id)boundingBoxesFromFloat32PixelBuffer:(__CVBuffer *)buffer thresholds:(id)thresholds relativeToMaximum:(BOOL)maximum applySmoothing:(BOOL)smoothing originalImageSize:(CGSize)size sigmaX:(float)x sigmaY:(float)y nStd:(float)self0 error:(id *)self1;
++ (id)significantRegionsFromFloat32ImageBuffer:(vImage_Buffer *)buffer threshold:(float)threshold;
++ (id)significantRegionsFromFloat32ImageBuffer:(vImage_Buffer *)buffer threshold:(float)threshold relativeToMaximum:(BOOL)maximum;
++ (id)significantRegionsFromFloat32PixelBuffer:(__CVBuffer *)buffer threshold:(float)threshold relativeToMaximum:(BOOL)maximum error:(id *)error;
 @end
 
 @implementation VNHeatMapUtilities
 
-+ (id)boundingBoxesFromFloat32PixelBuffer:(__CVBuffer *)a3 thresholds:(id)a4 relativeToMaximum:(BOOL)a5 applySmoothing:(BOOL)a6 originalImageSize:(CGSize)a7 sigmaX:(float)a8 sigmaY:(float)a9 nStd:(float)a10 error:(id *)a11
++ (id)boundingBoxesFromFloat32PixelBuffer:(__CVBuffer *)buffer thresholds:(id)thresholds relativeToMaximum:(BOOL)maximum applySmoothing:(BOOL)smoothing originalImageSize:(CGSize)size sigmaX:(float)x sigmaY:(float)y nStd:(float)self0 error:(id *)self1
 {
-  height = a7.height;
-  width = a7.width;
-  v17 = a6;
-  v18 = a5;
-  v21 = a4;
-  if (!a3)
+  height = size.height;
+  width = size.width;
+  smoothingCopy = smoothing;
+  maximumCopy = maximum;
+  thresholdsCopy = thresholds;
+  if (!buffer)
   {
-    if (a11)
+    if (error)
     {
       v24 = @"pixelBuffer cannot be null";
 LABEL_10:
@@ -33,9 +33,9 @@ LABEL_12:
     goto LABEL_14;
   }
 
-  if (CVPixelBufferGetPixelFormatType(a3) != 1278226534)
+  if (CVPixelBufferGetPixelFormatType(buffer) != 1278226534)
   {
-    if (a11)
+    if (error)
     {
       v24 = @"pixelBuffer is not in correct format. (Required format is one component, 32-float)";
       goto LABEL_10;
@@ -44,68 +44,68 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v22 = CVPixelBufferLockBaseAddress(a3, 1uLL);
+  v22 = CVPixelBufferLockBaseAddress(buffer, 1uLL);
   if (v22)
   {
-    if (a11)
+    if (error)
     {
       v23 = [VNError errorForCVReturnCode:v22 localizedDescription:@"unable to lock base address of pixelBuffer"];
 LABEL_11:
       v25 = 0;
-      *a11 = v23;
+      *error = v23;
       goto LABEL_14;
     }
 
     goto LABEL_12;
   }
 
-  v30[0] = CVPixelBufferGetBaseAddress(a3);
-  v30[1] = CVPixelBufferGetHeight(a3);
-  v30[2] = CVPixelBufferGetWidth(a3);
-  v30[3] = CVPixelBufferGetBytesPerRow(a3);
-  *&v26 = a8;
-  *&v27 = a9;
-  *&v28 = a10;
-  v25 = [a1 boundingBoxesFromFloat32ImageBuffer:v30 thresholds:v21 relativeToMaximum:v18 applySmoothing:v17 originalImageSize:a11 sigmaX:width sigmaY:height nStd:v26 error:{v27, v28}];
-  CVPixelBufferUnlockBaseAddress(a3, 1uLL);
+  v30[0] = CVPixelBufferGetBaseAddress(buffer);
+  v30[1] = CVPixelBufferGetHeight(buffer);
+  v30[2] = CVPixelBufferGetWidth(buffer);
+  v30[3] = CVPixelBufferGetBytesPerRow(buffer);
+  *&v26 = x;
+  *&v27 = y;
+  *&v28 = std;
+  v25 = [self boundingBoxesFromFloat32ImageBuffer:v30 thresholds:thresholdsCopy relativeToMaximum:maximumCopy applySmoothing:smoothingCopy originalImageSize:error sigmaX:width sigmaY:height nStd:v26 error:{v27, v28}];
+  CVPixelBufferUnlockBaseAddress(buffer, 1uLL);
 LABEL_14:
 
   return v25;
 }
 
-+ (id)boundingBoxesFromFloat32ImageBuffer:(vImage_Buffer *)a3 thresholds:(id)a4 relativeToMaximum:(BOOL)a5 applySmoothing:(BOOL)a6 originalImageSize:(CGSize)a7 sigmaX:(float)a8 sigmaY:(float)a9 nStd:(float)a10 error:(id *)a11
++ (id)boundingBoxesFromFloat32ImageBuffer:(vImage_Buffer *)buffer thresholds:(id)thresholds relativeToMaximum:(BOOL)maximum applySmoothing:(BOOL)smoothing originalImageSize:(CGSize)size sigmaX:(float)x sigmaY:(float)y nStd:(float)self0 error:(id *)self1
 {
-  height = a7.height;
-  width = a7.width;
-  v16 = a6;
-  v17 = a5;
+  height = size.height;
+  width = size.width;
+  smoothingCopy = smoothing;
+  maximumCopy = maximum;
   v55 = *MEMORY[0x1E69E9840];
-  v19 = a4;
-  v40 = v19;
-  if (v16)
+  thresholdsCopy = thresholds;
+  v40 = thresholdsCopy;
+  if (smoothingCopy)
   {
-    v41 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:a3->height * a3->rowBytes];
-    v20 = [v41 mutableBytes];
-    v22 = a3->height;
-    v21 = a3->width;
-    rowBytes = a3->rowBytes;
-    data = v20;
-    v50 = v20;
+    v41 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:buffer->height * buffer->rowBytes];
+    mutableBytes = [v41 mutableBytes];
+    v22 = buffer->height;
+    v21 = buffer->width;
+    rowBytes = buffer->rowBytes;
+    data = mutableBytes;
+    v50 = mutableBytes;
     v51 = v22;
     v52 = v21;
     v53 = rowBytes;
-    v24 = *&a3->width;
-    v49[0] = *&a3->data;
+    v24 = *&buffer->width;
+    v49[0] = *&buffer->data;
     v49[1] = v24;
-    *&v25 = a8;
-    *&v26 = a9;
-    *&v27 = a10;
-    if (([a1 smoothedFloat32ImageBuffer:&v50 fromImageBuffer:v49 originalImageSize:width sigmaX:height sigmaY:v25 nStd:{v26, v27}] & 1) == 0)
+    *&v25 = x;
+    *&v26 = y;
+    *&v27 = std;
+    if (([self smoothedFloat32ImageBuffer:&v50 fromImageBuffer:v49 originalImageSize:width sigmaX:height sigmaY:v25 nStd:{v26, v27}] & 1) == 0)
     {
-      if (a11)
+      if (error)
       {
         [VNError errorForInternalErrorWithLocalizedDescription:@"Unable to generate smoothed float-32 image buffer"];
-        *a11 = v28 = 0;
+        *error = v28 = 0;
       }
 
       else
@@ -119,27 +119,27 @@ LABEL_14:
 
   else
   {
-    v22 = a3->height;
+    v22 = buffer->height;
     v41 = 0;
-    data = a3->data;
-    v21 = a3->width;
-    rowBytes = a3->rowBytes;
+    data = buffer->data;
+    v21 = buffer->width;
+    rowBytes = buffer->rowBytes;
   }
 
-  if (v17)
+  if (maximumCopy)
   {
     v50 = data;
     v51 = v22;
     v52 = v21;
     v53 = rowBytes;
-    [a1 maximumValueFromFloat32ImageBuffer:&v50];
+    [self maximumValueFromFloat32ImageBuffer:&v50];
     v30 = v29;
-    v31 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v19, "count")}];
+    v31 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(thresholdsCopy, "count")}];
     v47 = 0u;
     v48 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v32 = v19;
+    v32 = thresholdsCopy;
     v33 = [v32 countByEnumeratingWithState:&v45 objects:v54 count:16];
     if (v33)
     {
@@ -168,25 +168,25 @@ LABEL_14:
 
   else
   {
-    v31 = v19;
+    v31 = thresholdsCopy;
   }
 
   v50 = data;
   v51 = v22;
   v52 = v21;
   v53 = rowBytes;
-  v28 = [a1 boundingBoxesFromFloat32ImageBuffer:&v50 thresholds:v31 error:a11];
+  v28 = [self boundingBoxesFromFloat32ImageBuffer:&v50 thresholds:v31 error:error];
 
 LABEL_17:
 
   return v28;
 }
 
-+ (id)boundingBoxesFromFloat32ImageBuffer:(vImage_Buffer *)a3 thresholds:(id)a4 error:(id *)a5
++ (id)boundingBoxesFromFloat32ImageBuffer:(vImage_Buffer *)buffer thresholds:(id)thresholds error:(id *)error
 {
   v50 = *MEMORY[0x1E69E9840];
-  v40 = a4;
-  v7 = [v40 count];
+  thresholdsCopy = thresholds;
+  v7 = [thresholdsCopy count];
   v8 = v7;
   if (v7)
   {
@@ -197,7 +197,7 @@ LABEL_17:
     {
       v12 = objc_alloc_init(VNHeatMapExtrema);
       [v10 addObject:v12];
-      v13 = [v40 objectAtIndexedSubscript:v11];
+      v13 = [thresholdsCopy objectAtIndexedSubscript:v11];
       [v13 floatValue];
       v9[v11] = v14;
 
@@ -205,12 +205,12 @@ LABEL_17:
     }
 
     while (v8 != v11);
-    height = a3->height;
+    height = buffer->height;
     if (height)
     {
       v16 = 0;
-      data = a3->data;
-      width = a3->width;
+      data = buffer->data;
+      width = buffer->width;
       do
       {
         if (width)
@@ -236,14 +236,14 @@ LABEL_17:
             while (v8 != v21);
             ++v20;
             ++v19;
-            width = a3->width;
+            width = buffer->width;
           }
 
           while (v19 < width);
-          height = a3->height;
+          height = buffer->height;
         }
 
-        data = (data + a3->rowBytes);
+        data = (data + buffer->rowBytes);
         ++v16;
       }
 
@@ -255,7 +255,7 @@ LABEL_17:
     v48 = 0u;
     v45 = 0u;
     v46 = 0u;
-    obj = v40;
+    obj = thresholdsCopy;
     v26 = [obj countByEnumeratingWithState:&v45 objects:v49 count:16];
     if (v26)
     {
@@ -275,8 +275,8 @@ LABEL_17:
           v32 = [v10 objectAtIndexedSubscript:v27];
           v43 = 0u;
           v44 = 0u;
-          v33 = *&a3->width;
-          v42[0] = *&a3->data;
+          v33 = *&buffer->width;
+          v42[0] = *&buffer->data;
           v42[1] = v33;
           [v32 computeRectFromExtremaUsingThreshold:v42 vImage:{COERCE_DOUBLE(__PAIR64__(DWORD1(v42[0]), v31))}];
           *&v43 = v34;
@@ -298,10 +298,10 @@ LABEL_17:
     free(v9);
   }
 
-  else if (a5)
+  else if (error)
   {
     [VNError errorForInvalidArgumentWithLocalizedDescription:@"thresholds not provided"];
-    *a5 = v25 = 0;
+    *error = v25 = 0;
   }
 
   else
@@ -312,15 +312,15 @@ LABEL_17:
   return v25;
 }
 
-+ (id)significantRegionsFromFloat32PixelBuffer:(__CVBuffer *)a3 threshold:(float)a4 relativeToMaximum:(BOOL)a5 error:(id *)a6
++ (id)significantRegionsFromFloat32PixelBuffer:(__CVBuffer *)buffer threshold:(float)threshold relativeToMaximum:(BOOL)maximum error:(id *)error
 {
-  if (!a3)
+  if (!buffer)
   {
-    if (a6)
+    if (error)
     {
       v13 = @"pixelBuffer cannot be null";
 LABEL_10:
-      v12 = [VNError errorForInvalidArgumentWithLocalizedDescription:v13, a5];
+      maximum = [VNError errorForInvalidArgumentWithLocalizedDescription:v13, maximum];
       goto LABEL_11;
     }
 
@@ -329,10 +329,10 @@ LABEL_12:
     goto LABEL_14;
   }
 
-  v7 = a5;
-  if (CVPixelBufferGetPixelFormatType(a3) != 1278226534)
+  maximumCopy = maximum;
+  if (CVPixelBufferGetPixelFormatType(buffer) != 1278226534)
   {
-    if (a6)
+    if (error)
     {
       v13 = @"pixelBuffer is not in correct format. (Required format is one component, 32-float)";
       goto LABEL_10;
@@ -341,63 +341,63 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v11 = CVPixelBufferLockBaseAddress(a3, 1uLL);
+  v11 = CVPixelBufferLockBaseAddress(buffer, 1uLL);
   if (v11)
   {
-    if (a6)
+    if (error)
     {
-      v12 = [VNError errorForCVReturnCode:v11 localizedDescription:@"unable to lock base address of pixelBuffer"];
+      maximum = [VNError errorForCVReturnCode:v11 localizedDescription:@"unable to lock base address of pixelBuffer"];
 LABEL_11:
       v14 = 0;
-      *a6 = v12;
+      *error = maximum;
       goto LABEL_14;
     }
 
     goto LABEL_12;
   }
 
-  v17[0] = CVPixelBufferGetBaseAddress(a3);
-  v17[1] = CVPixelBufferGetHeight(a3);
-  v17[2] = CVPixelBufferGetWidth(a3);
-  v17[3] = CVPixelBufferGetBytesPerRow(a3);
-  *&v15 = a4;
-  v14 = [a1 significantRegionsFromFloat32ImageBuffer:v17 threshold:v7 relativeToMaximum:v15];
-  CVPixelBufferUnlockBaseAddress(a3, 1uLL);
+  v17[0] = CVPixelBufferGetBaseAddress(buffer);
+  v17[1] = CVPixelBufferGetHeight(buffer);
+  v17[2] = CVPixelBufferGetWidth(buffer);
+  v17[3] = CVPixelBufferGetBytesPerRow(buffer);
+  *&v15 = threshold;
+  v14 = [self significantRegionsFromFloat32ImageBuffer:v17 threshold:maximumCopy relativeToMaximum:v15];
+  CVPixelBufferUnlockBaseAddress(buffer, 1uLL);
 LABEL_14:
 
   return v14;
 }
 
-+ (id)significantRegionsFromFloat32ImageBuffer:(vImage_Buffer *)a3 threshold:(float)a4 relativeToMaximum:(BOOL)a5
++ (id)significantRegionsFromFloat32ImageBuffer:(vImage_Buffer *)buffer threshold:(float)threshold relativeToMaximum:(BOOL)maximum
 {
-  if (a5)
+  if (maximum)
   {
-    v8 = *&a3->width;
-    v13 = *&a3->data;
+    v8 = *&buffer->width;
+    v13 = *&buffer->data;
     v14 = v8;
-    [a1 maximumValueFromFloat32ImageBuffer:&v13];
-    a4 = v9 * a4;
+    [self maximumValueFromFloat32ImageBuffer:&v13];
+    threshold = v9 * threshold;
   }
 
-  v10 = *&a3->width;
-  v13 = *&a3->data;
+  v10 = *&buffer->width;
+  v13 = *&buffer->data;
   v14 = v10;
-  v11 = [a1 significantRegionsFromFloat32ImageBuffer:&v13 threshold:{COERCE_DOUBLE(__PAIR64__(DWORD1(v13), LODWORD(a4)))}];
+  v11 = [self significantRegionsFromFloat32ImageBuffer:&v13 threshold:{COERCE_DOUBLE(__PAIR64__(DWORD1(v13), LODWORD(threshold)))}];
 
   return v11;
 }
 
-+ (id)significantRegionsFromFloat32ImageBuffer:(vImage_Buffer *)a3 threshold:(float)a4
++ (id)significantRegionsFromFloat32ImageBuffer:(vImage_Buffer *)buffer threshold:(float)threshold
 {
-  v6 = a3->height * a3->width;
+  v6 = buffer->height * buffer->width;
   LOBYTE(v44) = 0;
   std::vector<BOOL>::vector(__p, v6);
-  height = a3->height;
+  height = buffer->height;
   if (height)
   {
     v41 = 0;
     v8 = 0;
-    width = a3->width;
+    width = buffer->width;
     do
     {
       if (width)
@@ -409,7 +409,7 @@ LABEL_14:
           v12 = v10 + width * v8;
           v13 = v12 >> 6;
           v14 = 1 << v12;
-          if ((v11[v13] & (1 << v12)) == 0 && *(a3->data + 4 * v10 + a3->rowBytes * v8) > a4)
+          if ((v11[v13] & (1 << v12)) == 0 && *(buffer->data + 4 * v10 + buffer->rowBytes * v8) > threshold)
           {
             x = *MEMORY[0x1E695F050];
             y = *(MEMORY[0x1E695F050] + 8);
@@ -434,16 +434,16 @@ LABEL_14:
               }
 
               v21 = HIDWORD(v20);
-              v22 = v20 + a3->width * HIDWORD(v20);
+              v22 = v20 + buffer->width * HIDWORD(v20);
               if (v19 > v22)
               {
                 v23 = v22 >> 6;
-                v24 = 1 << (v20 + LOBYTE(a3->width) * BYTE4(v20));
+                v24 = 1 << (v20 + LOBYTE(buffer->width) * BYTE4(v20));
                 v25 = *(__p[0] + v23);
                 if ((v25 & v24) == 0)
                 {
                   *(__p[0] + v23) = v25 | v24;
-                  if (*(a3->data + 4 * v20 + a3->rowBytes * v21) > a4)
+                  if (*(buffer->data + 4 * v20 + buffer->rowBytes * v21) > threshold)
                   {
                     v51.origin.x = v20;
                     v51.origin.y = HIDWORD(v20);
@@ -458,7 +458,7 @@ LABEL_14:
                     y = v49.origin.y;
                     v18 = v49.size.width;
                     v17 = v49.size.height;
-                    if (a3->width > (v20 + 1))
+                    if (buffer->width > (v20 + 1))
                     {
                       LODWORD(v43) = v20 + 1;
                       HIDWORD(v43) = HIDWORD(v20);
@@ -472,7 +472,7 @@ LABEL_14:
                       std::deque<std::pair<unsigned int,unsigned int>>::emplace_back<std::pair<unsigned int,unsigned int>>(&v44, &v43);
                     }
 
-                    if (a3->height > (HIDWORD(v20) + 1))
+                    if (buffer->height > (HIDWORD(v20) + 1))
                     {
                       v43 = v20 + 0x100000000;
                       std::deque<std::pair<unsigned int,unsigned int>>::emplace_back<std::pair<unsigned int,unsigned int>>(&v44, &v43);
@@ -488,7 +488,7 @@ LABEL_14:
               }
             }
 
-            v26 = a3->height - (y + v17);
+            v26 = buffer->height - (y + v17);
             std::deque<std::pair<int,int>>::~deque[abi:ne200100](&v44);
             v50.origin.x = x;
             v50.origin.y = v26;
@@ -521,11 +521,11 @@ LABEL_14:
           v11 = __p[0];
           *(__p[0] + v13) |= v14;
           ++v10;
-          width = a3->width;
+          width = buffer->width;
         }
 
         while (v10 < width);
-        height = a3->height;
+        height = buffer->height;
       }
 
       ++v8;
@@ -565,14 +565,14 @@ LABEL_14:
       v33 = 0.0;
       v34 = 0.0;
       v35 = 0.0;
-      v36 = a3->width;
+      v36 = buffer->width;
       if (v36)
       {
         v34 = *(v32 - 16) / v36;
         v35 = *v32 / v36;
       }
 
-      v37 = a3->height;
+      v37 = buffer->height;
       v38 = 0.0;
       if (v37)
       {
@@ -598,35 +598,35 @@ LABEL_14:
   return v30;
 }
 
-+ (float)maximumValueFromFloat32ImageBuffer:(vImage_Buffer *)a3
++ (float)maximumValueFromFloat32ImageBuffer:(vImage_Buffer *)buffer
 {
   __C = 1.1755e-38;
-  width = a3->width;
-  if (a3->rowBytes == 4 * width)
+  width = buffer->width;
+  if (buffer->rowBytes == 4 * width)
   {
-    vDSP_maxv(a3->data, 1, &__C, a3->height * width);
+    vDSP_maxv(buffer->data, 1, &__C, buffer->height * width);
     return __C;
   }
 
-  else if (a3->height)
+  else if (buffer->height)
   {
     v6 = 0;
-    data = a3->data;
+    data = buffer->data;
     v5 = 1.1755e-38;
     do
     {
       v9 = 1.1755e-38;
-      vDSP_maxv(data, 1, &v9, a3->width);
+      vDSP_maxv(data, 1, &v9, buffer->width);
       if (v9 > v5)
       {
         v5 = v9;
       }
 
       ++v6;
-      data = (data + a3->rowBytes);
+      data = (data + buffer->rowBytes);
     }
 
-    while (v6 < a3->height);
+    while (v6 < buffer->height);
   }
 
   else
@@ -637,33 +637,33 @@ LABEL_14:
   return v5;
 }
 
-+ (BOOL)smoothedFloat32ImageBuffer:(vImage_Buffer *)a3 fromImageBuffer:(vImage_Buffer *)a4 originalImageSize:(CGSize)a5 sigmaX:(float)a6 sigmaY:(float)a7 nStd:(float)a8
++ (BOOL)smoothedFloat32ImageBuffer:(vImage_Buffer *)buffer fromImageBuffer:(vImage_Buffer *)imageBuffer originalImageSize:(CGSize)size sigmaX:(float)x sigmaY:(float)y nStd:(float)std
 {
-  if (!a3->data)
+  if (!buffer->data)
   {
     LOBYTE(v14) = 0;
     return v14;
   }
 
-  width = a5.width;
-  v12 = a4->width * a6;
-  if (a5.height <= width)
+  width = size.width;
+  v12 = imageBuffer->width * x;
+  if (size.height <= width)
   {
-    v12 = a5.height * v12 / width;
-    v13 = a4->height * a7;
+    v12 = size.height * v12 / width;
+    v13 = imageBuffer->height * y;
   }
 
   else
   {
-    v13 = width * a7 * a4->height / a5.height;
+    v13 = width * y * imageBuffer->height / size.height;
   }
 
   v29 = 0;
   kernel = 0;
   *kernel_width = 0;
-  if (ImageProcessing_smoothGaussian_createKernelForPlanarF(&kernel, &kernel_width[1], v12, a8) == 4224)
+  if (ImageProcessing_smoothGaussian_createKernelForPlanarF(&kernel, &kernel_width[1], v12, std) == 4224)
   {
-    v15 = ImageProcessing_smoothGaussian_createKernelForPlanarF(&v29, kernel_width, v13, a8);
+    v15 = ImageProcessing_smoothGaussian_createKernelForPlanarF(&v29, kernel_width, v13, std);
     v16 = kernel;
     if (v15 != 4224 || kernel == 0 || v29 == 0)
     {
@@ -672,14 +672,14 @@ LABEL_14:
       goto LABEL_23;
     }
 
-    v20 = a4->width;
-    dest.height = a4->height;
+    v20 = imageBuffer->width;
+    dest.height = imageBuffer->height;
     dest.width = v20;
     dest.rowBytes = (4 * v20 + 15) & 0xFFFFFFFFFFFFFFF0;
     v21 = dest.rowBytes * dest.height;
     v22 = kernel_width[1];
-    v23 = vImageConvolve_PlanarF(a4, a3, 0, 0, 0, 0, 1u, kernel_width[1], 0.0, 0x88u);
-    v24 = vImageConvolve_PlanarF(a4, a3, 0, 0, 0, 0, kernel_width[0], 1u, 0.0, 0x88u);
+    v23 = vImageConvolve_PlanarF(imageBuffer, buffer, 0, 0, 0, 0, 1u, kernel_width[1], 0.0, 0x88u);
+    v24 = vImageConvolve_PlanarF(imageBuffer, buffer, 0, 0, 0, 0, kernel_width[0], 1u, 0.0, 0x88u);
     if (v23 <= v24)
     {
       v25 = v24;
@@ -692,9 +692,9 @@ LABEL_14:
 
     v19 = malloc_type_malloc(v25 + v21, 0xE8E6B94CuLL);
     dest.data = v19;
-    if (!vImageConvolve_PlanarF(a4, &dest, &v19[v21], 0, 0, kernel, 1u, v22, 0.0, 8u))
+    if (!vImageConvolve_PlanarF(imageBuffer, &dest, &v19[v21], 0, 0, kernel, 1u, v22, 0.0, 8u))
     {
-      v14 = vImageConvolve_PlanarF(&dest, a3, &v19[v21], 0, 0, v29, kernel_width[0], 1u, 0.0, 8u) == 0;
+      v14 = vImageConvolve_PlanarF(&dest, buffer, &v19[v21], 0, 0, v29, kernel_width[0], 1u, 0.0, 8u) == 0;
       goto LABEL_22;
     }
   }

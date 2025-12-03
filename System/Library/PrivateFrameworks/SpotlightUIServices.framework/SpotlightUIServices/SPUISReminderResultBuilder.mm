@@ -1,6 +1,6 @@
 @interface SPUISReminderResultBuilder
-+ (id)stringWithCompletionDate:(id)a3 dueDate:(id)a4 modificationDate:(id)a5;
-- (SPUISReminderResultBuilder)initWithResult:(id)a3;
++ (id)stringWithCompletionDate:(id)date dueDate:(id)dueDate modificationDate:(id)modificationDate;
+- (SPUISReminderResultBuilder)initWithResult:(id)result;
 - (id)buildDescriptions;
 - (id)buildInlineCardSection;
 - (id)buildTitle;
@@ -8,27 +8,27 @@
 
 @implementation SPUISReminderResultBuilder
 
-+ (id)stringWithCompletionDate:(id)a3 dueDate:(id)a4 modificationDate:(id)a5
++ (id)stringWithCompletionDate:(id)date dueDate:(id)dueDate modificationDate:(id)modificationDate
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v7)
+  dateCopy = date;
+  dueDateCopy = dueDate;
+  modificationDateCopy = modificationDate;
+  v10 = modificationDateCopy;
+  if (dateCopy)
   {
     v11 = +[SPUISDateFormatManager dateCompletedStringFormat];
-    v12 = v7;
+    v12 = dateCopy;
   }
 
-  else if (v8)
+  else if (dueDateCopy)
   {
     v11 = +[SPUISDateFormatManager dateDueStringFormat];
-    v12 = v8;
+    v12 = dueDateCopy;
   }
 
   else
   {
-    if (!v9)
+    if (!modificationDateCopy)
     {
       v11 = 0;
       v13 = 0;
@@ -57,43 +57,43 @@ LABEL_11:
   return v16;
 }
 
-- (SPUISReminderResultBuilder)initWithResult:(id)a3
+- (SPUISReminderResultBuilder)initWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v17.receiver = self;
   v17.super_class = SPUISReminderResultBuilder;
-  v5 = [(SPUISResultBuilder *)&v17 initWithResult:v4];
+  v5 = [(SPUISResultBuilder *)&v17 initWithResult:resultCopy];
   if (v5)
   {
-    v6 = [v4 valueForAttribute:*MEMORY[0x277CC25E0] withType:objc_opt_class()];
+    v6 = [resultCopy valueForAttribute:*MEMORY[0x277CC25E0] withType:objc_opt_class()];
     [(SPUISReminderResultBuilder *)v5 setCompletionDate:v6];
 
-    v7 = [v4 valueForAttribute:*MEMORY[0x277CC2778] withType:objc_opt_class()];
+    v7 = [resultCopy valueForAttribute:*MEMORY[0x277CC2778] withType:objc_opt_class()];
     [(SPUISReminderResultBuilder *)v5 setDueDate:v7];
 
-    v8 = [v4 valueForAttribute:*MEMORY[0x277CC2660] withType:objc_opt_class()];
+    v8 = [resultCopy valueForAttribute:*MEMORY[0x277CC2660] withType:objc_opt_class()];
     [(SPUISReminderResultBuilder *)v5 setModificationDate:v8];
 
-    v9 = [v4 valueForAttribute:*MEMORY[0x277CC31F0] withType:objc_opt_class()];
+    v9 = [resultCopy valueForAttribute:*MEMORY[0x277CC31F0] withType:objc_opt_class()];
     [(SPUISReminderResultBuilder *)v5 setReminder:v9];
 
-    v10 = [v4 valueForAttribute:*MEMORY[0x277CC25D8] withType:objc_opt_class()];
+    v10 = [resultCopy valueForAttribute:*MEMORY[0x277CC25D8] withType:objc_opt_class()];
     [(SPUISReminderResultBuilder *)v5 setNote:v10];
 
-    v11 = [v4 valueForAttribute:*MEMORY[0x277CC2BA8] withType:objc_opt_class()];
+    v11 = [resultCopy valueForAttribute:*MEMORY[0x277CC2BA8] withType:objc_opt_class()];
     [(SPUISReminderResultBuilder *)v5 setHashtags:v11];
 
-    v12 = [v4 valueForAttribute:*MEMORY[0x277CC2C60] withType:objc_opt_class()];
+    v12 = [resultCopy valueForAttribute:*MEMORY[0x277CC2C60] withType:objc_opt_class()];
     -[SPUISReminderResultBuilder setIsAllDay:](v5, "setIsAllDay:", [v12 BOOLValue]);
 
-    v13 = [v4 valueForAttribute:*MEMORY[0x277CC3058] withType:objc_opt_class()];
+    v13 = [resultCopy valueForAttribute:*MEMORY[0x277CC3058] withType:objc_opt_class()];
     -[SPUISReminderResultBuilder setIsFlagged:](v5, "setIsFlagged:", [v13 BOOLValue]);
 
-    v14 = [v4 valueForAttribute:*MEMORY[0x277CC3060] withType:objc_opt_class()];
+    v14 = [resultCopy valueForAttribute:*MEMORY[0x277CC3060] withType:objc_opt_class()];
     -[SPUISReminderResultBuilder setIsRecurring:](v5, "setIsRecurring:", [v14 BOOLValue]);
 
-    v15 = [(SPUISReminderResultBuilder *)v5 completionDate];
-    [(SPUISReminderResultBuilder *)v5 setIsCompleted:v15 != 0];
+    completionDate = [(SPUISReminderResultBuilder *)v5 completionDate];
+    [(SPUISReminderResultBuilder *)v5 setIsCompleted:completionDate != 0];
   }
 
   return v5;
@@ -103,19 +103,19 @@ LABEL_11:
 {
   v8.receiver = self;
   v8.super_class = SPUISReminderResultBuilder;
-  v3 = [(SPUISResultBuilder *)&v8 buildInlineCardSection];
+  buildInlineCardSection = [(SPUISResultBuilder *)&v8 buildInlineCardSection];
   if ([(SPUISReminderResultBuilder *)self isFlagged])
   {
     v4 = objc_opt_new();
     [v4 setSymbolName:@"flag.fill"];
     v5 = objc_opt_new();
-    [v3 setTrailingTopText:v5];
+    [buildInlineCardSection setTrailingTopText:v5];
 
-    v6 = [v3 trailingTopText];
-    [v6 setGlyph:v4];
+    trailingTopText = [buildInlineCardSection trailingTopText];
+    [trailingTopText setGlyph:v4];
   }
 
-  return v3;
+  return buildInlineCardSection;
 }
 
 - (id)buildTitle
@@ -123,18 +123,18 @@ LABEL_11:
   v14[2] = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
   v4 = MEMORY[0x277D4C3A0];
-  v5 = [(SPUISReminderResultBuilder *)self reminder];
-  v6 = [v4 textWithString:v5];
+  reminder = [(SPUISReminderResultBuilder *)self reminder];
+  v6 = [v4 textWithString:reminder];
   v14[0] = v6;
   v7 = objc_opt_new();
   v14[1] = v7;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:2];
   [v3 setFormattedTextPieces:v8];
 
-  v9 = [(SPUISReminderResultBuilder *)self isCompleted];
-  v10 = [v3 formattedTextPieces];
-  v11 = [v10 objectAtIndexedSubscript:1];
-  [v11 setIsEmphasized:v9];
+  isCompleted = [(SPUISReminderResultBuilder *)self isCompleted];
+  formattedTextPieces = [v3 formattedTextPieces];
+  v11 = [formattedTextPieces objectAtIndexedSubscript:1];
+  [v11 setIsEmphasized:isCompleted];
 
   v12 = *MEMORY[0x277D85DE8];
 
@@ -145,24 +145,24 @@ LABEL_11:
 {
   v43 = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
-  v4 = [(SPUISReminderResultBuilder *)self note];
-  v5 = [v4 length];
+  note = [(SPUISReminderResultBuilder *)self note];
+  v5 = [note length];
 
   if (v5)
   {
     v6 = MEMORY[0x277D4C598];
-    v7 = [(SPUISReminderResultBuilder *)self note];
-    v8 = [v6 textWithString:v7];
+    note2 = [(SPUISReminderResultBuilder *)self note];
+    v8 = [v6 textWithString:note2];
     [v3 addObject:v8];
   }
 
   v9 = objc_opt_new();
-  v10 = [(SPUISReminderResultBuilder *)self dueDate];
+  dueDate = [(SPUISReminderResultBuilder *)self dueDate];
 
-  if (v10)
+  if (dueDate)
   {
-    v11 = [(SPUISReminderResultBuilder *)self dueDate];
-    v12 = [SPUISDateFormatManager shortDateTimeStringFromDate:v11 isAllDay:[(SPUISReminderResultBuilder *)self isAllDay] showAllDayString:0];
+    dueDate2 = [(SPUISReminderResultBuilder *)self dueDate];
+    v12 = [SPUISDateFormatManager shortDateTimeStringFromDate:dueDate2 isAllDay:[(SPUISReminderResultBuilder *)self isAllDay] showAllDayString:0];
 
     if ([(SPUISReminderResultBuilder *)self isRecurring])
     {
@@ -171,8 +171,8 @@ LABEL_11:
       v12 = v13;
     }
 
-    v14 = [(SPUISReminderResultBuilder *)self dueDate];
-    [v14 timeIntervalSinceNow];
+    dueDate3 = [(SPUISReminderResultBuilder *)self dueDate];
+    [dueDate3 timeIntervalSinceNow];
     if (v15 >= 0.0)
     {
       v16 = 0;
@@ -203,8 +203,8 @@ LABEL_11:
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v21 = [(SPUISReminderResultBuilder *)self hashtags];
-  v22 = [v21 countByEnumeratingWithState:&v38 objects:v42 count:16];
+  hashtags = [(SPUISReminderResultBuilder *)self hashtags];
+  v22 = [hashtags countByEnumeratingWithState:&v38 objects:v42 count:16];
   if (v22)
   {
     v23 = v22;
@@ -216,7 +216,7 @@ LABEL_11:
       {
         if (*v39 != v24)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(hashtags);
         }
 
         v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"#%@", *(*(&v38 + 1) + 8 * v25)];
@@ -226,7 +226,7 @@ LABEL_11:
       }
 
       while (v23 != v25);
-      v23 = [v21 countByEnumeratingWithState:&v38 objects:v42 count:16];
+      v23 = [hashtags countByEnumeratingWithState:&v38 objects:v42 count:16];
     }
 
     while (v23);

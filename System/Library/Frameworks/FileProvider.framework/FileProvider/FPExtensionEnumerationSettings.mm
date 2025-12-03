@@ -1,25 +1,25 @@
 @interface FPExtensionEnumerationSettings
-- (FPExtensionEnumerationSettings)initWithCoder:(id)a3;
+- (FPExtensionEnumerationSettings)initWithCoder:(id)coder;
 - (FPItemID)enumeratedItemID;
 - (FPItemID)nullableEnumeratedItemID;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)setEnumeratedItemID:(id)a3;
-- (void)setNullableEnumeratedItemID:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setEnumeratedItemID:(id)d;
+- (void)setNullableEnumeratedItemID:(id)d;
 @end
 
 @implementation FPExtensionEnumerationSettings
 
 - (id)description
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_enumeratedItemID;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_enumeratedItemID;
+  objc_sync_exit(selfCopy);
 
-  enumeratedURL = v2->_enumeratedURL;
-  if (v2->_buildAndFilterAppLibraries)
+  enumeratedURL = selfCopy->_enumeratedURL;
+  if (selfCopy->_buildAndFilterAppLibraries)
   {
     v5 = @"y";
   }
@@ -45,78 +45,78 @@
 
 - (FPItemID)enumeratedItemID
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_enumeratedItemID;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_enumeratedItemID;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v11.receiver = self;
   v11.super_class = FPExtensionEnumerationSettings;
-  v4 = [(FPEnumerationSettings *)&v11 copyWithZone:a3];
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(FPItemID *)v5->_enumeratedItemID copy];
+  v4 = [(FPEnumerationSettings *)&v11 copyWithZone:zone];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(FPItemID *)selfCopy->_enumeratedItemID copy];
   v7 = v4[3];
   v4[3] = v6;
 
-  objc_sync_exit(v5);
-  v8 = [(NSURL *)v5->_enumeratedURL copy];
+  objc_sync_exit(selfCopy);
+  v8 = [(NSURL *)selfCopy->_enumeratedURL copy];
   v9 = v4[5];
   v4[5] = v8;
 
-  *(v4 + 33) = v5->_wantsDirectExtensionEnumeration;
-  *(v4 + 34) = v5->_requireSandboxAccess;
-  *(v4 + 36) = v5->_buildAndFilterAppLibraries;
-  *(v4 + 35) = v5->_unbounded;
-  *(v4 + 32) = v5->_presenterEnumeration;
+  *(v4 + 33) = selfCopy->_wantsDirectExtensionEnumeration;
+  *(v4 + 34) = selfCopy->_requireSandboxAccess;
+  *(v4 + 36) = selfCopy->_buildAndFilterAppLibraries;
+  *(v4 + 35) = selfCopy->_unbounded;
+  *(v4 + 32) = selfCopy->_presenterEnumeration;
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = FPExtensionEnumerationSettings;
-  [(FPEnumerationSettings *)&v6 encodeWithCoder:v4];
-  v5 = self;
-  objc_sync_enter(v5);
-  [v4 encodeObject:v5->_enumeratedItemID forKey:@"enumeratedItemID"];
-  objc_sync_exit(v5);
+  [(FPEnumerationSettings *)&v6 encodeWithCoder:coderCopy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [coderCopy encodeObject:selfCopy->_enumeratedItemID forKey:@"enumeratedItemID"];
+  objc_sync_exit(selfCopy);
 
-  [v4 encodeObject:v5->_enumeratedURL forKey:@"enumeratedURL"];
-  [v4 encodeBool:v5->_presenterEnumeration forKey:@"presenterEnumeration"];
-  [v4 encodeBool:v5->_requireSandboxAccess forKey:@"requireSandboxAccess"];
-  [v4 encodeBool:v5->_unbounded forKey:@"unbounded"];
-  [v4 encodeBool:v5->_buildAndFilterAppLibraries forKey:@"buildAndFilterAppLibraries"];
-  [v4 encodeBool:v5->_wantsDirectExtensionEnumeration forKey:@"wantsDirectExtensionEnumeration"];
+  [coderCopy encodeObject:selfCopy->_enumeratedURL forKey:@"enumeratedURL"];
+  [coderCopy encodeBool:selfCopy->_presenterEnumeration forKey:@"presenterEnumeration"];
+  [coderCopy encodeBool:selfCopy->_requireSandboxAccess forKey:@"requireSandboxAccess"];
+  [coderCopy encodeBool:selfCopy->_unbounded forKey:@"unbounded"];
+  [coderCopy encodeBool:selfCopy->_buildAndFilterAppLibraries forKey:@"buildAndFilterAppLibraries"];
+  [coderCopy encodeBool:selfCopy->_wantsDirectExtensionEnumeration forKey:@"wantsDirectExtensionEnumeration"];
 }
 
-- (FPExtensionEnumerationSettings)initWithCoder:(id)a3
+- (FPExtensionEnumerationSettings)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = FPExtensionEnumerationSettings;
-  v5 = [(FPEnumerationSettings *)&v11 initWithCoder:v4];
+  v5 = [(FPEnumerationSettings *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"enumeratedItemID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"enumeratedItemID"];
     enumeratedItemID = v5->_enumeratedItemID;
     v5->_enumeratedItemID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"enumeratedURL"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"enumeratedURL"];
     enumeratedURL = v5->_enumeratedURL;
     v5->_enumeratedURL = v8;
 
-    v5->_presenterEnumeration = [v4 decodeBoolForKey:@"presenterEnumeration"];
-    v5->_requireSandboxAccess = [v4 decodeBoolForKey:@"requireSandboxAccess"];
-    v5->_unbounded = [v4 decodeBoolForKey:@"unbounded"];
-    v5->_buildAndFilterAppLibraries = [v4 decodeBoolForKey:@"buildAndFilterAppLibraries"];
-    v5->_wantsDirectExtensionEnumeration = [v4 decodeBoolForKey:@"wantsDirectExtensionEnumeration"];
+    v5->_presenterEnumeration = [coderCopy decodeBoolForKey:@"presenterEnumeration"];
+    v5->_requireSandboxAccess = [coderCopy decodeBoolForKey:@"requireSandboxAccess"];
+    v5->_unbounded = [coderCopy decodeBoolForKey:@"unbounded"];
+    v5->_buildAndFilterAppLibraries = [coderCopy decodeBoolForKey:@"buildAndFilterAppLibraries"];
+    v5->_wantsDirectExtensionEnumeration = [coderCopy decodeBoolForKey:@"wantsDirectExtensionEnumeration"];
   }
 
   return v5;
@@ -124,36 +124,36 @@
 
 - (FPItemID)nullableEnumeratedItemID
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_enumeratedItemID;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_enumeratedItemID;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setNullableEnumeratedItemID:(id)a3
+- (void)setNullableEnumeratedItemID:(id)d
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [v7 copy];
-  enumeratedItemID = v4->_enumeratedItemID;
-  v4->_enumeratedItemID = v5;
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [dCopy copy];
+  enumeratedItemID = selfCopy->_enumeratedItemID;
+  selfCopy->_enumeratedItemID = v5;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setEnumeratedItemID:(id)a3
+- (void)setEnumeratedItemID:(id)d
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [v7 copy];
-  enumeratedItemID = v4->_enumeratedItemID;
-  v4->_enumeratedItemID = v5;
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [dCopy copy];
+  enumeratedItemID = selfCopy->_enumeratedItemID;
+  selfCopy->_enumeratedItemID = v5;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 @end

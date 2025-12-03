@@ -1,33 +1,33 @@
 @interface AMSPageRenderMetricsPresenter
-- (AMSPageRenderMetricsPresenter)initWithBag:(id)a3 metrics:(id)a4;
+- (AMSPageRenderMetricsPresenter)initWithBag:(id)bag metrics:(id)metrics;
 - (NSDictionary)dictionaryForPosting;
-- (void)endWithActivity:(int64_t)a3 pageMetrics:(id)a4;
+- (void)endWithActivity:(int64_t)activity pageMetrics:(id)metrics;
 - (void)enqueueEvent;
-- (void)importTimings:(id)a3;
-- (void)startWithActivity:(int64_t)a3;
+- (void)importTimings:(id)timings;
+- (void)startWithActivity:(int64_t)activity;
 - (void)viewDidAppear;
 - (void)viewDidLoad;
 @end
 
 @implementation AMSPageRenderMetricsPresenter
 
-- (AMSPageRenderMetricsPresenter)initWithBag:(id)a3 metrics:(id)a4
+- (AMSPageRenderMetricsPresenter)initWithBag:(id)bag metrics:(id)metrics
 {
-  v6 = a3;
-  [(AMSPageRenderMetricsPresenter *)self setMetrics:a4];
+  bagCopy = bag;
+  [(AMSPageRenderMetricsPresenter *)self setMetrics:metrics];
   v7 = objc_alloc_init(AMSPageRenderMetricsEvent);
   [(AMSPageRenderMetricsPresenter *)self setPageRenderEvent:v7];
 
-  [(AMSPageRenderMetricsPresenter *)self setBag:v6];
+  [(AMSPageRenderMetricsPresenter *)self setBag:bagCopy];
   return self;
 }
 
 - (NSDictionary)dictionaryForPosting
 {
-  v2 = [(AMSPageRenderMetricsPresenter *)self pageRenderEvent];
-  v3 = [v2 dictionaryForPosting];
+  pageRenderEvent = [(AMSPageRenderMetricsPresenter *)self pageRenderEvent];
+  dictionaryForPosting = [pageRenderEvent dictionaryForPosting];
 
-  return v3;
+  return dictionaryForPosting;
 }
 
 - (void)enqueueEvent
@@ -35,9 +35,9 @@
   v3 = [(AMSPageRenderMetricsPresenter *)self bag];
   v4 = [v3 BOOLForKey:@"page-render-metrics-enabled"];
   v5 = [v4 valueWithError:0];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
     v7 = [(AMSPageRenderMetricsPresenter *)self bag];
     v8 = [AMSMetricsLoggingEvent shouldSampleErrorsWithBag:v7];
@@ -57,60 +57,60 @@ void __45__AMSPageRenderMetricsPresenter_enqueueEvent__block_invoke(uint64_t a1)
   [v3 enqueueEvent:v2];
 }
 
-- (void)endWithActivity:(int64_t)a3 pageMetrics:(id)a4
+- (void)endWithActivity:(int64_t)activity pageMetrics:(id)metrics
 {
-  v17 = a4;
-  if (a3 == 1)
+  metricsCopy = metrics;
+  if (activity == 1)
   {
-    v6 = [MEMORY[0x1E695DF00] date];
-    v7 = [AMSMetrics serverTimeFromDate:v6];
-    v8 = [(AMSPageRenderMetricsPresenter *)self pageRenderEvent];
-    [v8 setResourceRequestEndTime:v7];
+    date = [MEMORY[0x1E695DF00] date];
+    v7 = [AMSMetrics serverTimeFromDate:date];
+    pageRenderEvent = [(AMSPageRenderMetricsPresenter *)self pageRenderEvent];
+    [pageRenderEvent setResourceRequestEndTime:v7];
   }
 
   else
   {
-    if (a3)
+    if (activity)
     {
       goto LABEL_6;
     }
 
-    v6 = [MEMORY[0x1E695DF00] date];
-    v7 = [AMSMetrics serverTimeFromDate:v6];
-    v8 = [(AMSPageRenderMetricsPresenter *)self pageRenderEvent];
-    [v8 setPageEndTime:v7];
+    date = [MEMORY[0x1E695DF00] date];
+    v7 = [AMSMetrics serverTimeFromDate:date];
+    pageRenderEvent = [(AMSPageRenderMetricsPresenter *)self pageRenderEvent];
+    [pageRenderEvent setPageEndTime:v7];
   }
 
 LABEL_6:
-  v9 = [v17 objectForKeyedSubscript:@"eventType"];
-  v10 = [(AMSPageRenderMetricsPresenter *)self pageRenderEvent];
-  [v10 setEventType:v9];
+  v9 = [metricsCopy objectForKeyedSubscript:@"eventType"];
+  pageRenderEvent2 = [(AMSPageRenderMetricsPresenter *)self pageRenderEvent];
+  [pageRenderEvent2 setEventType:v9];
 
-  v11 = [v17 objectForKeyedSubscript:@"pageType"];
-  v12 = [(AMSPageRenderMetricsPresenter *)self pageRenderEvent];
-  [v12 setPageType:v11];
+  v11 = [metricsCopy objectForKeyedSubscript:@"pageType"];
+  pageRenderEvent3 = [(AMSPageRenderMetricsPresenter *)self pageRenderEvent];
+  [pageRenderEvent3 setPageType:v11];
 
-  v13 = [v17 objectForKeyedSubscript:@"pageUrl"];
-  v14 = [(AMSPageRenderMetricsPresenter *)self pageRenderEvent];
-  [v14 setPageUrl:v13];
+  v13 = [metricsCopy objectForKeyedSubscript:@"pageUrl"];
+  pageRenderEvent4 = [(AMSPageRenderMetricsPresenter *)self pageRenderEvent];
+  [pageRenderEvent4 setPageUrl:v13];
 
-  v15 = [v17 objectForKeyedSubscript:@"placement"];
-  v16 = [(AMSPageRenderMetricsPresenter *)self pageRenderEvent];
-  [v16 setPageId:v15];
+  v15 = [metricsCopy objectForKeyedSubscript:@"placement"];
+  pageRenderEvent5 = [(AMSPageRenderMetricsPresenter *)self pageRenderEvent];
+  [pageRenderEvent5 setPageId:v15];
 }
 
-- (void)importTimings:(id)a3
+- (void)importTimings:(id)timings
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  timingsCopy = timings;
   v5 = +[AMSLogConfig sharedConfig];
   if (!v5)
   {
     v5 = +[AMSLogConfig sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v5 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
     v8 = AMSLogKey();
@@ -119,15 +119,15 @@ LABEL_6:
     v24 = 2114;
     v25 = v8;
     v26 = 2112;
-    v27 = v4;
-    _os_log_impl(&dword_192869000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Importing PageRender timings from JS: %@", buf, 0x20u);
+    v27 = timingsCopy;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Importing PageRender timings from JS: %@", buf, 0x20u);
   }
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v9 = v4;
+  v9 = timingsCopy;
   v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
@@ -144,9 +144,9 @@ LABEL_6:
         }
 
         v14 = *(*(&v17 + 1) + 8 * v13);
-        v15 = [(AMSPageRenderMetricsPresenter *)self pageRenderEvent];
+        pageRenderEvent = [(AMSPageRenderMetricsPresenter *)self pageRenderEvent];
         v16 = [v9 objectForKeyedSubscript:v14];
-        [v15 setProperty:v16 forBodyKey:v14];
+        [pageRenderEvent setProperty:v16 forBodyKey:v14];
 
         ++v13;
       }
@@ -159,44 +159,44 @@ LABEL_6:
   }
 }
 
-- (void)startWithActivity:(int64_t)a3
+- (void)startWithActivity:(int64_t)activity
 {
-  if (a3 == 1)
+  if (activity == 1)
   {
-    v6 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     v4 = [AMSMetrics serverTimeFromDate:?];
-    v5 = [(AMSPageRenderMetricsPresenter *)self pageRenderEvent];
-    [v5 setResourceRequestStartTime:v4];
+    pageRenderEvent = [(AMSPageRenderMetricsPresenter *)self pageRenderEvent];
+    [pageRenderEvent setResourceRequestStartTime:v4];
   }
 
   else
   {
-    if (a3)
+    if (activity)
     {
       return;
     }
 
-    v6 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     v4 = [AMSMetrics serverTimeFromDate:?];
-    v5 = [(AMSPageRenderMetricsPresenter *)self pageRenderEvent];
-    [v5 setPageRequestTime:v4];
+    pageRenderEvent = [(AMSPageRenderMetricsPresenter *)self pageRenderEvent];
+    [pageRenderEvent setPageRequestTime:v4];
   }
 }
 
 - (void)viewDidAppear
 {
-  v5 = [MEMORY[0x1E695DF00] date];
-  v3 = [AMSMetrics serverTimeFromDate:v5];
-  v4 = [(AMSPageRenderMetricsPresenter *)self pageRenderEvent];
-  [v4 setPageUserInteractiveTime:v3];
+  date = [MEMORY[0x1E695DF00] date];
+  v3 = [AMSMetrics serverTimeFromDate:date];
+  pageRenderEvent = [(AMSPageRenderMetricsPresenter *)self pageRenderEvent];
+  [pageRenderEvent setPageUserInteractiveTime:v3];
 }
 
 - (void)viewDidLoad
 {
-  v5 = [MEMORY[0x1E695DF00] date];
-  v3 = [AMSMetrics serverTimeFromDate:v5];
-  v4 = [(AMSPageRenderMetricsPresenter *)self pageRenderEvent];
-  [v4 setPageAppearTime:v3];
+  date = [MEMORY[0x1E695DF00] date];
+  v3 = [AMSMetrics serverTimeFromDate:date];
+  pageRenderEvent = [(AMSPageRenderMetricsPresenter *)self pageRenderEvent];
+  [pageRenderEvent setPageAppearTime:v3];
 }
 
 @end

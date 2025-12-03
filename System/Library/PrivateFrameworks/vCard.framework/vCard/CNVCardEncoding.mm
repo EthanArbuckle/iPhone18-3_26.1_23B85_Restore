@@ -1,7 +1,7 @@
 @interface CNVCardEncoding
-+ (id)addPreferredEncoding:(id)a3 toEncodings:(id)a4;
++ (id)addPreferredEncoding:(id)encoding toEncodings:(id)encodings;
 + (id)asciiEncoding;
-+ (id)encodingWithName:(id)a3 stringEncoding:(unint64_t)a4;
++ (id)encodingWithName:(id)name stringEncoding:(unint64_t)encoding;
 + (id)encodingsFromUserDefaults;
 + (id)isoLatin1Encoding;
 + (id)macRomanEncoding;
@@ -9,7 +9,7 @@
 + (id)preferredEncodingInUserDefaults;
 + (id)standardEncodings;
 + (id)utf8Encoding;
-- (CNVCardEncoding)initWithName:(id)a3 stringEncoding:(unint64_t)a4;
+- (CNVCardEncoding)initWithName:(id)name stringEncoding:(unint64_t)encoding;
 @end
 
 @implementation CNVCardEncoding
@@ -20,7 +20,7 @@
   block[1] = 3221225472;
   block[2] = __36__CNVCardEncoding_standardEncodings__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (standardEncodings_cn_once_token_1 != -1)
   {
     dispatch_once(&standardEncodings_cn_once_token_1, block);
@@ -41,35 +41,35 @@ void __36__CNVCardEncoding_standardEncodings__block_invoke(uint64_t a1)
 
 + (id)makeStandardEncodings
 {
-  v2 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v3 = +[CNVCardEncoding asciiEncoding];
-  [v2 addObject:v3];
+  [array addObject:v3];
 
   v4 = +[CNVCardEncoding isoLatin1Encoding];
-  [v2 addObject:v4];
+  [array addObject:v4];
 
   v5 = +[CNVCardEncoding macRomanEncoding];
-  [v2 addObject:v5];
+  [array addObject:v5];
 
   v6 = +[CNVCardEncoding utf8Encoding];
-  [v2 addObject:v6];
+  [array addObject:v6];
 
-  return v2;
+  return array;
 }
 
-+ (id)addPreferredEncoding:(id)a3 toEncodings:(id)a4
++ (id)addPreferredEncoding:(id)encoding toEncodings:(id)encodings
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  encodingCopy = encoding;
+  encodingsCopy = encodings;
+  v7 = encodingsCopy;
+  if (encodingCopy)
   {
-    v8 = [MEMORY[0x277CBEB18] arrayWithArray:v6];
+    v8 = [MEMORY[0x277CBEB18] arrayWithArray:encodingsCopy];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __52__CNVCardEncoding_addPreferredEncoding_toEncodings___block_invoke;
     v11[3] = &unk_27A711198;
-    v9 = v5;
+    v9 = encodingCopy;
     v12 = v9;
     [v8 _cn_removeObjectsPassingTest:v11];
     if ([v8 count] == 1)
@@ -85,7 +85,7 @@ void __36__CNVCardEncoding_standardEncodings__block_invoke(uint64_t a1)
 
   else
   {
-    v8 = v6;
+    v8 = encodingsCopy;
   }
 
   return v8;
@@ -102,9 +102,9 @@ uint64_t __52__CNVCardEncoding_addPreferredEncoding_toEncodings___block_invoke(u
 
 + (id)encodingsFromUserDefaults
 {
-  v3 = [a1 standardEncodings];
-  v4 = [a1 preferredEncodingInUserDefaults];
-  v5 = [a1 addPreferredEncoding:v4 toEncodings:v3];
+  standardEncodings = [self standardEncodings];
+  preferredEncodingInUserDefaults = [self preferredEncodingInUserDefaults];
+  v5 = [self addPreferredEncoding:preferredEncodingInUserDefaults toEncodings:standardEncodings];
 
   return v5;
 }
@@ -119,9 +119,9 @@ uint64_t __52__CNVCardEncoding_addPreferredEncoding_toEncodings___block_invoke(u
 
   else
   {
-    v5 = [v3 uppercaseString];
+    uppercaseString = [v3 uppercaseString];
 
-    v6 = CFStringConvertIANACharSetNameToEncoding(v5);
+    v6 = CFStringConvertIANACharSetNameToEncoding(uppercaseString);
     if (v6 == -1)
     {
       v4 = 0;
@@ -129,19 +129,19 @@ uint64_t __52__CNVCardEncoding_addPreferredEncoding_toEncodings___block_invoke(u
 
     else
     {
-      v4 = [a1 encodingWithName:v5 stringEncoding:CFStringConvertEncodingToNSStringEncoding(v6)];
+      v4 = [self encodingWithName:uppercaseString stringEncoding:CFStringConvertEncodingToNSStringEncoding(v6)];
     }
 
-    v3 = v5;
+    v3 = uppercaseString;
   }
 
   return v4;
 }
 
-+ (id)encodingWithName:(id)a3 stringEncoding:(unint64_t)a4
++ (id)encodingWithName:(id)name stringEncoding:(unint64_t)encoding
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithName:v6 stringEncoding:a4];
+  nameCopy = name;
+  v7 = [[self alloc] initWithName:nameCopy stringEncoding:encoding];
 
   return v7;
 }
@@ -152,7 +152,7 @@ uint64_t __52__CNVCardEncoding_addPreferredEncoding_toEncodings___block_invoke(u
   block[1] = 3221225472;
   block[2] = __32__CNVCardEncoding_asciiEncoding__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (asciiEncoding_cn_once_token_2 != -1)
   {
     dispatch_once(&asciiEncoding_cn_once_token_2, block);
@@ -176,7 +176,7 @@ uint64_t __32__CNVCardEncoding_asciiEncoding__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __36__CNVCardEncoding_isoLatin1Encoding__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (isoLatin1Encoding_cn_once_token_3 != -1)
   {
     dispatch_once(&isoLatin1Encoding_cn_once_token_3, block);
@@ -200,7 +200,7 @@ uint64_t __36__CNVCardEncoding_isoLatin1Encoding__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __35__CNVCardEncoding_macRomanEncoding__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (macRomanEncoding_cn_once_token_4 != -1)
   {
     dispatch_once(&macRomanEncoding_cn_once_token_4, block);
@@ -224,7 +224,7 @@ uint64_t __35__CNVCardEncoding_macRomanEncoding__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __31__CNVCardEncoding_utf8Encoding__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (utf8Encoding_cn_once_token_5 != -1)
   {
     dispatch_once(&utf8Encoding_cn_once_token_5, block);
@@ -242,17 +242,17 @@ uint64_t __31__CNVCardEncoding_utf8Encoding__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (CNVCardEncoding)initWithName:(id)a3 stringEncoding:(unint64_t)a4
+- (CNVCardEncoding)initWithName:(id)name stringEncoding:(unint64_t)encoding
 {
-  v6 = a3;
+  nameCopy = name;
   v7 = [(CNVCardEncoding *)self init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [nameCopy copy];
     name = v7->_name;
     v7->_name = v8;
 
-    v7->_stringEncoding = a4;
+    v7->_stringEncoding = encoding;
     v10 = v7;
   }
 

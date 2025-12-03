@@ -1,7 +1,7 @@
 @interface TSUFakeProgress
-- (TSUFakeProgress)initWithMaxValue:(double)a3;
-- (TSUFakeProgress)initWithMaxValue:(double)a3 numberOfStages:(unint64_t)a4;
-- (void)advanceToStage:(unint64_t)a3;
+- (TSUFakeProgress)initWithMaxValue:(double)value;
+- (TSUFakeProgress)initWithMaxValue:(double)value numberOfStages:(unint64_t)stages;
+- (void)advanceToStage:(unint64_t)stage;
 - (void)p_slowlyAdvanceToNextStage;
 - (void)start;
 - (void)stop;
@@ -9,9 +9,9 @@
 
 @implementation TSUFakeProgress
 
-- (TSUFakeProgress)initWithMaxValue:(double)a3 numberOfStages:(unint64_t)a4
+- (TSUFakeProgress)initWithMaxValue:(double)value numberOfStages:(unint64_t)stages
 {
-  if (!a4)
+  if (!stages)
   {
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUFakeProgress initWithMaxValue:numberOfStages:]"];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSUProgress.m"];
@@ -22,7 +22,7 @@
 
   v14.receiver = self;
   v14.super_class = TSUFakeProgress;
-  v9 = [(TSUBasicProgress *)&v14 initWithMaxValue:a3];
+  v9 = [(TSUBasicProgress *)&v14 initWithMaxValue:value];
   if (v9)
   {
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -30,16 +30,16 @@
     accessQueue = v9->_accessQueue;
     v9->_accessQueue = v11;
 
-    v9->_numberOfStages = a4;
+    v9->_numberOfStages = stages;
     v9->_stopped = 1;
   }
 
   return v9;
 }
 
-- (TSUFakeProgress)initWithMaxValue:(double)a3
+- (TSUFakeProgress)initWithMaxValue:(double)value
 {
-  v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"-[TSUFakeProgress initWithMaxValue:]", a3}];
+  v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"-[TSUFakeProgress initWithMaxValue:]", value}];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSUProgress.m"];
   [TSUAssertionHandler handleFailureInFunction:v3 file:v4 lineNumber:689 isFatal:0 description:"Do not call method"];
 
@@ -75,7 +75,7 @@
   dispatch_async(accessQueue, block);
 }
 
-- (void)advanceToStage:(unint64_t)a3
+- (void)advanceToStage:(unint64_t)stage
 {
   accessQueue = self->_accessQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -83,7 +83,7 @@
   v4[2] = sub_2770949A4;
   v4[3] = &unk_27A7025D0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = stage;
   dispatch_async(accessQueue, v4);
 }
 

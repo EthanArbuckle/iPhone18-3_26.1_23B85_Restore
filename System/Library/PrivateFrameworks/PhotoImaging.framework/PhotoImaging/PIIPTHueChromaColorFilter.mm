@@ -7,8 +7,8 @@
 
 + (id)filterHueKernel
 {
-  v2 = [a1 hueChromaKernels];
-  v3 = [v2 objectForKeyedSubscript:@"ipt_hue_chroma_filter_hue"];
+  hueChromaKernels = [self hueChromaKernels];
+  v3 = [hueChromaKernels objectForKeyedSubscript:@"ipt_hue_chroma_filter_hue"];
 
   return v3;
 }
@@ -16,15 +16,15 @@
 - (id)outputImage
 {
   v41[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PIIPTHueChromaColorFilter *)self inputImage];
+  inputImage = [(PIIPTHueChromaColorFilter *)self inputImage];
 
-  if (v3)
+  if (inputImage)
   {
-    v4 = [(PIIPTHueChromaColorFilter *)self inputHueTarget];
-    v5 = v4;
-    if (v4)
+    inputHueTarget = [(PIIPTHueChromaColorFilter *)self inputHueTarget];
+    v5 = inputHueTarget;
+    if (inputHueTarget)
     {
-      v6 = v4;
+      v6 = inputHueTarget;
     }
 
     else
@@ -34,21 +34,21 @@
 
     v7 = v6;
 
-    v8 = [(PIIPTHueChromaColorFilter *)self inputHueRange];
-    v9 = v8;
+    inputHueRange = [(PIIPTHueChromaColorFilter *)self inputHueRange];
+    v9 = inputHueRange;
     v10 = &unk_1F471F3A0;
-    if (v8)
+    if (inputHueRange)
     {
-      v10 = v8;
+      v10 = inputHueRange;
     }
 
     v11 = v10;
 
-    v12 = [(PIIPTHueChromaColorFilter *)self inputChromaMin];
-    v13 = v12;
-    if (v12)
+    inputChromaMin = [(PIIPTHueChromaColorFilter *)self inputChromaMin];
+    v13 = inputChromaMin;
+    if (inputChromaMin)
     {
-      v14 = v12;
+      v14 = inputChromaMin;
     }
 
     else
@@ -58,10 +58,10 @@
 
     v15 = v14;
 
-    v16 = [(PIIPTHueChromaColorFilter *)self inputHueIsNormalized];
-    v17 = [v16 BOOLValue];
+    inputHueIsNormalized = [(PIIPTHueChromaColorFilter *)self inputHueIsNormalized];
+    bOOLValue = [inputHueIsNormalized BOOLValue];
 
-    if (v17)
+    if (bOOLValue)
     {
       v18 = 1.0;
     }
@@ -81,18 +81,18 @@
     v25 = v24;
 
     v26 = [v19 vectorWithX:v21 Y:v23 Z:v18 W:v25];
-    v27 = [objc_opt_class() filterHueKernel];
-    v28 = [(PIIPTHueChromaColorFilter *)self inputImage];
-    [v28 extent];
+    filterHueKernel = [objc_opt_class() filterHueKernel];
+    inputImage2 = [(PIIPTHueChromaColorFilter *)self inputImage];
+    [inputImage2 extent];
     v30 = v29;
     v32 = v31;
     v34 = v33;
     v36 = v35;
-    v37 = [(PIIPTHueChromaColorFilter *)self inputImage];
-    v41[0] = v37;
+    inputImage3 = [(PIIPTHueChromaColorFilter *)self inputImage];
+    v41[0] = inputImage3;
     v41[1] = v26;
     v38 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:2];
-    v39 = [v27 applyWithExtent:v38 arguments:{v30, v32, v34, v36}];
+    v39 = [filterHueKernel applyWithExtent:v38 arguments:{v30, v32, v34, v36}];
   }
 
   else

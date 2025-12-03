@@ -7,20 +7,20 @@
 
 - (id)rq_coded
 {
-  v2 = [MEMORY[0x277CBEB38] dictionary];
-  v3 = [a1 domain];
-  v4 = [v3 rq_coded];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  domain = [self domain];
+  rq_coded = [domain rq_coded];
 
-  v5 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(a1, "code")}];
-  v6 = [v5 rq_coded];
+  v5 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(self, "code")}];
+  rq_coded2 = [v5 rq_coded];
 
-  v7 = [v4 rq_coded];
-  [v2 setObject:v7 forKey:@"domain"];
+  v4Rq_coded = [rq_coded rq_coded];
+  [dictionary setObject:v4Rq_coded forKey:@"domain"];
 
-  v8 = [v6 rq_coded];
-  [v2 setObject:v8 forKey:@"code"];
+  v6Rq_coded = [rq_coded2 rq_coded];
+  [dictionary setObject:v6Rq_coded forKey:@"code"];
 
-  return v2;
+  return dictionary;
 }
 
 + (id)rq_instanceFromCoded:()MGRemoteQueryCoding

@@ -1,17 +1,17 @@
 @interface KNCanvasSelection
 + (id)emptySelection;
-- (BOOL)containsBuildChunksOfAnimationType:(int64_t)a3;
+- (BOOL)containsBuildChunksOfAnimationType:(int64_t)type;
 - (BOOL)containsOnlyUnlockedInfosSupportingHyperlinkActions;
-- (BOOL)isEqual:(id)a3;
-- (KNCanvasSelection)initWithInfos:(id)a3 buildChunks:(id)a4;
-- (KNCanvasSelection)initWithPersistableInfos:(id)a3 drawableToActionGhostIndexPromiseMap:(id)a4 buildChunks:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (KNCanvasSelection)initWithInfos:(id)infos buildChunks:(id)chunks;
+- (KNCanvasSelection)initWithPersistableInfos:(id)infos drawableToActionGhostIndexPromiseMap:(id)map buildChunks:(id)chunks;
 - (NSSet)drawableInfos;
 - (NSSet)unlockedDrawableInfos;
 - (NSSet)unlockedInfosSupportingHyperlinkActions;
 - (id)UUIDDescription;
-- (id)copyExcludingBuildChunks:(id)a3;
-- (id)copyReplacingChunksWithChunks:(id)a3;
-- (id)p_drawablesWithoutPromisesInDrawableToActionGhostIndexPromiseMap:(id)a3;
+- (id)copyExcludingBuildChunks:(id)chunks;
+- (id)copyReplacingChunksWithChunks:(id)chunks;
+- (id)p_drawablesWithoutPromisesInDrawableToActionGhostIndexPromiseMap:(id)map;
 - (id)subclassDescription;
 - (unint64_t)hash;
 @end
@@ -27,14 +27,14 @@
   return v5;
 }
 
-- (KNCanvasSelection)initWithPersistableInfos:(id)a3 drawableToActionGhostIndexPromiseMap:(id)a4 buildChunks:(id)a5
+- (KNCanvasSelection)initWithPersistableInfos:(id)infos drawableToActionGhostIndexPromiseMap:(id)map buildChunks:(id)chunks
 {
-  v8 = a3;
-  v9 = a5;
-  v13 = objc_msgSend_p_drawablesWithoutPromisesInDrawableToActionGhostIndexPromiseMap_(self, v10, a4);
-  if (v8)
+  infosCopy = infos;
+  chunksCopy = chunks;
+  v13 = objc_msgSend_p_drawablesWithoutPromisesInDrawableToActionGhostIndexPromiseMap_(self, v10, map);
+  if (infosCopy)
   {
-    objc_msgSend_setWithSet_(MEMORY[0x277CBEB58], v11, v8);
+    objc_msgSend_setWithSet_(MEMORY[0x277CBEB58], v11, infosCopy);
   }
 
   else
@@ -48,7 +48,7 @@
   v18 = [(TSDCanvasSelection *)&v22 initWithInfos:v14];
   if (v18)
   {
-    v19 = objc_msgSend_copy(v9, v16, v17);
+    v19 = objc_msgSend_copy(chunksCopy, v16, v17);
     buildChunks = v18->_buildChunks;
     v18->_buildChunks = v19;
   }
@@ -56,30 +56,30 @@
   return v18;
 }
 
-- (KNCanvasSelection)initWithInfos:(id)a3 buildChunks:(id)a4
+- (KNCanvasSelection)initWithInfos:(id)infos buildChunks:(id)chunks
 {
-  v6 = a4;
-  v7 = a3;
+  chunksCopy = chunks;
+  infosCopy = infos;
   v8 = objc_opt_class();
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_275DD7C00;
   v15[3] = &unk_27A698FE8;
   v15[4] = v8;
-  v10 = objc_msgSend_objectsPassingTest_(v7, v9, v15);
+  v10 = objc_msgSend_objectsPassingTest_(infosCopy, v9, v15);
 
   v11 = objc_alloc_init(MEMORY[0x277D812B8]);
-  v13 = objc_msgSend_initWithPersistableInfos_drawableToActionGhostIndexPromiseMap_buildChunks_(self, v12, v10, v11, v6);
+  v13 = objc_msgSend_initWithPersistableInfos_drawableToActionGhostIndexPromiseMap_buildChunks_(self, v12, v10, v11, chunksCopy);
 
   return v13;
 }
 
-- (id)copyExcludingBuildChunks:(id)a3
+- (id)copyExcludingBuildChunks:(id)chunks
 {
-  v4 = a3;
+  chunksCopy = chunks;
   v7 = objc_msgSend_copy(self, v5, v6);
   v10 = objc_msgSend_mutableCopy(v7[2], v8, v9);
-  objc_msgSend_minusSet_(v10, v11, v4);
+  objc_msgSend_minusSet_(v10, v11, chunksCopy);
 
   v12 = v7[2];
   v7[2] = v10;
@@ -87,11 +87,11 @@
   return v7;
 }
 
-- (id)copyReplacingChunksWithChunks:(id)a3
+- (id)copyReplacingChunksWithChunks:(id)chunks
 {
-  v4 = a3;
+  chunksCopy = chunks;
   v7 = objc_msgSend_copy(self, v5, v6);
-  v10 = objc_msgSend_copy(v4, v8, v9);
+  v10 = objc_msgSend_copy(chunksCopy, v8, v9);
 
   v11 = v7[2];
   v7[2] = v10;
@@ -99,7 +99,7 @@
   return v7;
 }
 
-- (BOOL)containsBuildChunksOfAnimationType:(int64_t)a3
+- (BOOL)containsBuildChunksOfAnimationType:(int64_t)type
 {
   v3 = MEMORY[0x277D81150];
   v4 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[KNCanvasSelection containsBuildChunksOfAnimationType:]");
@@ -172,16 +172,16 @@
   return v8;
 }
 
-- (id)p_drawablesWithoutPromisesInDrawableToActionGhostIndexPromiseMap:(id)a3
+- (id)p_drawablesWithoutPromisesInDrawableToActionGhostIndexPromiseMap:(id)map
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  mapCopy = map;
   v6 = objc_msgSend_set(MEMORY[0x277CBEB58], v4, v5);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = v3;
+  v7 = mapCopy;
   v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v7, v8, &v20, v24, 16);
   if (v9)
   {
@@ -213,12 +213,12 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v11.receiver = self;
   v11.super_class = KNCanvasSelection;
-  v4 = a3;
-  v5 = [(TSDCanvasSelection *)&v11 isEqual:v4];
+  equalCopy = equal;
+  v5 = [(TSDCanvasSelection *)&v11 isEqual:equalCopy];
   objc_opt_class();
   v6 = TSUDynamicCast();
 
@@ -296,9 +296,9 @@
 {
   v10.receiver = self;
   v10.super_class = KNCanvasSelection;
-  v3 = [(TSDCanvasSelection *)&v10 UUIDDescription];
+  uUIDDescription = [(TSDCanvasSelection *)&v10 UUIDDescription];
   v6 = objc_msgSend_subclassDescription(self, v4, v5);
-  v8 = objc_msgSend_stringByAppendingFormat_(v3, v7, @"%@", v6);
+  v8 = objc_msgSend_stringByAppendingFormat_(uUIDDescription, v7, @"%@", v6);
 
   return v8;
 }

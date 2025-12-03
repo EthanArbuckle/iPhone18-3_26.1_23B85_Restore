@@ -1,8 +1,8 @@
 @interface CKConversationListCollectionViewRecoverableConversationCell
 + (id)reuseIdentifier;
-+ (id)reuseIdentifierForAXFontSize:(BOOL)a3;
++ (id)reuseIdentifierForAXFontSize:(BOOL)size;
 + (id)reuseIdentifiers;
-- (void)updateDateLabel:(id)a3 conversation:(id)a4;
+- (void)updateDateLabel:(id)label conversation:(id)conversation;
 @end
 
 @implementation CKConversationListCollectionViewRecoverableConversationCell
@@ -10,8 +10,8 @@
 + (id)reuseIdentifiers
 {
   v7[2] = *MEMORY[0x1E69E9840];
-  v3 = [a1 reuseIdentifierForAXFontSize:0];
-  v4 = [a1 reuseIdentifierForAXFontSize:1];
+  v3 = [self reuseIdentifierForAXFontSize:0];
+  v4 = [self reuseIdentifierForAXFontSize:1];
   v7[0] = v3;
   v7[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:2];
@@ -22,12 +22,12 @@
 + (id)reuseIdentifier
 {
   v3 = +[CKUIBehavior sharedBehaviors];
-  v4 = [v3 isAccessibilityPreferredContentSizeCategory];
+  isAccessibilityPreferredContentSizeCategory = [v3 isAccessibilityPreferredContentSizeCategory];
 
-  return [a1 reuseIdentifierForAXFontSize:v4];
+  return [self reuseIdentifierForAXFontSize:isAccessibilityPreferredContentSizeCategory];
 }
 
-+ (id)reuseIdentifierForAXFontSize:(BOOL)a3
++ (id)reuseIdentifierForAXFontSize:(BOOL)size
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
@@ -39,10 +39,10 @@
   return v8;
 }
 
-- (void)updateDateLabel:(id)a3 conversation:(id)a4
+- (void)updateDateLabel:(id)label conversation:(id)conversation
 {
-  v6 = a3;
-  v7 = [(CKConversationListCollectionViewRecoverableConversationCell *)self _daysUntilDeletion:a4];
+  labelCopy = label;
+  v7 = [(CKConversationListCollectionViewRecoverableConversationCell *)self _daysUntilDeletion:conversation];
   if (v7 <= 1)
   {
     v8 = 1;
@@ -58,10 +58,10 @@
   v11 = [v10 localizedStringForKey:@"COUNT_DAYS" value:&stru_1F04268F8 table:@"ChatKit"];
   v12 = [v9 localizedStringWithFormat:v11, v8];
 
-  v13 = [MEMORY[0x1E69DC668] sharedApplication];
-  v14 = [v13 userInterfaceLayoutDirection];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-  if (v14 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v15 = @"\u200F";
   }
@@ -73,7 +73,7 @@
 
   v16 = [(__CFString *)v15 stringByAppendingString:v12];
 
-  [v6 setTextForOverride:v16];
+  [labelCopy setTextForOverride:v16];
 }
 
 @end

@@ -1,20 +1,20 @@
 @interface PRXCardContentViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)setInfoButtonAction:(id)a3;
+- (void)setInfoButtonAction:(id)action;
 - (void)viewDidLoad;
 @end
 
 @implementation PRXCardContentViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PRXCardContentViewController" hasInstanceMethod:@"infoButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PRXCardContentViewController" hasInstanceMethod:@"setInfoButtonAction:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"PRXCardContentViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"PRXCardContentViewController" hasInstanceVariable:@"_contentView" withType:"PRXCardContentView"];
-  [v3 validateClass:@"PRXCardContentView" hasInstanceVariable:@"_titleView" withType:"UIView<PRXTextContainer>"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PRXCardContentViewController" hasInstanceMethod:@"infoButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PRXCardContentViewController" hasInstanceMethod:@"setInfoButtonAction:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"PRXCardContentViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"PRXCardContentViewController" hasInstanceVariable:@"_contentView" withType:"PRXCardContentView"];
+  [validationsCopy validateClass:@"PRXCardContentView" hasInstanceVariable:@"_titleView" withType:"UIView<PRXTextContainer>"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -43,11 +43,11 @@ void __59__PRXCardContentViewControllerAccessibility_viewDidAppear___block_invok
   UIAccessibilityPostNotification(v1, v2);
 }
 
-- (void)setInfoButtonAction:(id)a3
+- (void)setInfoButtonAction:(id)action
 {
   v4.receiver = self;
   v4.super_class = PRXCardContentViewControllerAccessibility;
-  [(PRXCardContentViewControllerAccessibility *)&v4 setInfoButtonAction:a3];
+  [(PRXCardContentViewControllerAccessibility *)&v4 setInfoButtonAction:action];
   [(PRXCardContentViewControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 

@@ -1,52 +1,52 @@
 @interface BKLibraryImportStatus
-+ (id)statusWithAssetID:(id)a3 progressValue:(double)a4;
-- (BKLibraryImportStatus)initWithAssetID:(id)a3 progressValue:(double)a4;
++ (id)statusWithAssetID:(id)d progressValue:(double)value;
+- (BKLibraryImportStatus)initWithAssetID:(id)d progressValue:(double)value;
 - (NSString)description;
-- (void)updateWithStatus:(id)a3;
+- (void)updateWithStatus:(id)status;
 @end
 
 @implementation BKLibraryImportStatus
 
-+ (id)statusWithAssetID:(id)a3 progressValue:(double)a4
++ (id)statusWithAssetID:(id)d progressValue:(double)value
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithAssetID:v6 progressValue:a4];
+  dCopy = d;
+  v7 = [[self alloc] initWithAssetID:dCopy progressValue:value];
 
   return v7;
 }
 
-- (BKLibraryImportStatus)initWithAssetID:(id)a3 progressValue:(double)a4
+- (BKLibraryImportStatus)initWithAssetID:(id)d progressValue:(double)value
 {
-  v6 = a3;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = BKLibraryImportStatus;
   v7 = [(BKLibraryImportStatus *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [dCopy copy];
     assetID = v7->_assetID;
     v7->_assetID = v8;
 
-    v7->_progressValue = a4;
+    v7->_progressValue = value;
   }
 
   return v7;
 }
 
-- (void)updateWithStatus:(id)a3
+- (void)updateWithStatus:(id)status
 {
-  v9 = a3;
-  v4 = [v9 assetID];
-  v5 = [(BKLibraryImportStatus *)self assetID];
-  v6 = [v4 isEqualToString:v5];
+  statusCopy = status;
+  assetID = [statusCopy assetID];
+  assetID2 = [(BKLibraryImportStatus *)self assetID];
+  v6 = [assetID isEqualToString:assetID2];
 
   if (v6)
   {
-    [v9 progressValue];
+    [statusCopy progressValue];
     if (v7 != self->_progressValue)
     {
       [(BKLibraryImportStatus *)self willChangeValueForKey:@"progressValue"];
-      [v9 progressValue];
+      [statusCopy progressValue];
       self->_progressValue = v8;
       [(BKLibraryImportStatus *)self didChangeValueForKey:@"progressValue"];
     }

@@ -2,42 +2,42 @@
 - (BOOL)_deleteOnDiskLog;
 - (BOOL)_getSizeFromPath;
 - (BOOL)isAvailableOnDisk;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)name;
-- (id)_initWithLogMO_ON_MOC_QUEUE:(id)a3;
-- (id)_initWithLogPath:(id)a3 transferOwnership:(BOOL)a4 size:(unint64_t)a5;
+- (id)_initWithLogMO_ON_MOC_QUEUE:(id)e;
+- (id)_initWithLogPath:(id)path transferOwnership:(BOOL)ownership size:(unint64_t)size;
 - (id)debugDescription;
 - (id)fileDescription;
-- (void)_configureLogMO:(id)a3;
+- (void)_configureLogMO:(id)o;
 @end
 
 @implementation DRSLog
 
-- (id)_initWithLogMO_ON_MOC_QUEUE:(id)a3
+- (id)_initWithLogMO_ON_MOC_QUEUE:(id)e
 {
-  v4 = a3;
-  v5 = [v4 path];
-  v6 = [v4 transferOwnership];
-  v7 = [v4 size];
+  eCopy = e;
+  path = [eCopy path];
+  transferOwnership = [eCopy transferOwnership];
+  v7 = [eCopy size];
 
-  v8 = [(DRSLog *)self _initWithLogPath:v5 transferOwnership:v6 size:v7];
+  v8 = [(DRSLog *)self _initWithLogPath:path transferOwnership:transferOwnership size:v7];
   return v8;
 }
 
-- (void)_configureLogMO:(id)a3
+- (void)_configureLogMO:(id)o
 {
-  v5 = a3;
-  v4 = [(DRSLog *)self path];
-  [v5 setPath:v4];
+  oCopy = o;
+  path = [(DRSLog *)self path];
+  [oCopy setPath:path];
 
-  [v5 setSize:{-[DRSLog size](self, "size")}];
-  [v5 setTransferOwnership:{-[DRSLog transferOwnership](self, "transferOwnership")}];
+  [oCopy setSize:{-[DRSLog size](self, "size")}];
+  [oCopy setTransferOwnership:{-[DRSLog transferOwnership](self, "transferOwnership")}];
 }
 
-- (id)_initWithLogPath:(id)a3 transferOwnership:(BOOL)a4 size:(unint64_t)a5
+- (id)_initWithLogPath:(id)path transferOwnership:(BOOL)ownership size:(unint64_t)size
 {
-  v9 = a3;
-  if (v9)
+  pathCopy = path;
+  if (pathCopy)
   {
     v14.receiver = self;
     v14.super_class = DRSLog;
@@ -45,28 +45,28 @@
     v11 = v10;
     if (v10)
     {
-      objc_storeStrong(&v10->_path, a3);
-      v11->_transferOwnership = a4;
-      v11->_size = a5;
+      objc_storeStrong(&v10->_path, path);
+      v11->_transferOwnership = ownership;
+      v11->_size = size;
     }
 
     self = v11;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 - (BOOL)isAvailableOnDisk
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [(DRSLog *)self path];
-  v5 = [v3 fileExistsAtPath:v4];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [(DRSLog *)self path];
+  v5 = [defaultManager fileExistsAtPath:path];
 
   return v5;
 }
@@ -74,22 +74,22 @@
 - (BOOL)_getSizeFromPath
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [(DRSLog *)self path];
+  path = [(DRSLog *)self path];
 
-  if (v3)
+  if (path)
   {
-    v4 = [MEMORY[0x277CCAA00] defaultManager];
-    v5 = [(DRSLog *)self path];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path2 = [(DRSLog *)self path];
     v18 = 0;
-    v6 = [v4 attributesOfItemAtPath:v5 error:&v18];
+    v6 = [defaultManager attributesOfItemAtPath:path2 error:&v18];
     v7 = v18;
 
     if (v6)
     {
-      v8 = [v6 fileSize];
-      if (v8)
+      fileSize = [v6 fileSize];
+      if (fileSize)
       {
-        self->_size = v8;
+        self->_size = fileSize;
         v9 = 1;
 LABEL_15:
 
@@ -99,18 +99,18 @@ LABEL_15:
       v10 = DPLogHandle_RequestError();
       if (os_signpost_enabled(v10))
       {
-        v11 = [(DRSLog *)self path];
-        v15 = [v7 localizedDescription];
-        v13 = v15;
+        path3 = [(DRSLog *)self path];
+        localizedDescription = [v7 localizedDescription];
+        v13 = localizedDescription;
         v14 = @"Unknown";
-        if (v15)
+        if (localizedDescription)
         {
-          v14 = v15;
+          v14 = localizedDescription;
         }
 
 LABEL_13:
         *buf = 138543618;
-        v20 = v11;
+        v20 = path3;
         v21 = 2114;
         v22 = v14;
         _os_signpost_emit_with_name_impl(&dword_232906000, v10, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "LogSizeError", "Failed to get size of file for %{public}@ due to error: %{public}@", buf, 0x16u);
@@ -122,13 +122,13 @@ LABEL_13:
       v10 = DPLogHandle_RequestError();
       if (os_signpost_enabled(v10))
       {
-        v11 = [(DRSLog *)self path];
-        v12 = [v7 localizedDescription];
-        v13 = v12;
+        path3 = [(DRSLog *)self path];
+        localizedDescription2 = [v7 localizedDescription];
+        v13 = localizedDescription2;
         v14 = @"Unknown";
-        if (v12)
+        if (localizedDescription2)
         {
-          v14 = v12;
+          v14 = localizedDescription2;
         }
 
         goto LABEL_13;
@@ -145,27 +145,27 @@ LABEL_16:
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     LOBYTE(v11) = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     v7 = [(DRSLog *)self size];
     if (v7 == [(DRSLog *)v6 size])
     {
-      v8 = [(DRSLog *)self path];
-      v9 = [(DRSLog *)v6 path];
-      if ([v8 isEqualToString:v9])
+      path = [(DRSLog *)self path];
+      path2 = [(DRSLog *)v6 path];
+      if ([path isEqualToString:path2])
       {
-        v10 = [(DRSLog *)self transferOwnership];
-        v11 = v10 ^ [(DRSLog *)v6 transferOwnership]^ 1;
+        transferOwnership = [(DRSLog *)self transferOwnership];
+        v11 = transferOwnership ^ [(DRSLog *)v6 transferOwnership]^ 1;
       }
 
       else
@@ -191,47 +191,47 @@ LABEL_16:
 - (id)debugDescription
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
-  v4 = [(DRSLog *)self path];
+  path = [(DRSLog *)self path];
   v5 = [(DRSLog *)self size];
-  v6 = [(DRSLog *)self transferOwnership];
+  transferOwnership = [(DRSLog *)self transferOwnership];
   v7 = @"Copied";
-  if (v6)
+  if (transferOwnership)
   {
     v7 = @"Transferred";
   }
 
-  v8 = [v3 initWithFormat:@"%@ (%zuB) %@", v4, v5, v7];
+  v8 = [v3 initWithFormat:@"%@ (%zuB) %@", path, v5, v7];
 
   return v8;
 }
 
 - (BOOL)_deleteOnDiskLog
 {
-  v2 = [(DRSLog *)self path];
-  v3 = _deleteFileWithPath(v2);
+  path = [(DRSLog *)self path];
+  v3 = _deleteFileWithPath(path);
 
   return v3;
 }
 
 - (NSString)name
 {
-  v2 = [(DRSLog *)self path];
-  v3 = [v2 lastPathComponent];
+  path = [(DRSLog *)self path];
+  lastPathComponent = [path lastPathComponent];
 
-  return v3;
+  return lastPathComponent;
 }
 
 - (id)fileDescription
 {
   v3 = objc_alloc_init(DRSProtoFileDescription);
-  v4 = [(DRSLog *)self path];
-  v5 = [v4 lastPathComponent];
-  [(DRSProtoFileDescription *)v3 setFileName:v5];
+  path = [(DRSLog *)self path];
+  lastPathComponent = [path lastPathComponent];
+  [(DRSProtoFileDescription *)v3 setFileName:lastPathComponent];
 
   [(DRSProtoFileDescription *)v3 setLogSize:[(DRSLog *)self size]];
-  v6 = [(DRSLog *)self path];
-  v7 = [v6 pathExtension];
-  [(DRSProtoFileDescription *)v3 setLogType:v7];
+  path2 = [(DRSLog *)self path];
+  pathExtension = [path2 pathExtension];
+  [(DRSProtoFileDescription *)v3 setLogType:pathExtension];
 
   return v3;
 }

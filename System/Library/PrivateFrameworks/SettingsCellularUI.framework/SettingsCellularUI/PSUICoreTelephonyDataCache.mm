@@ -1,32 +1,32 @@
 @interface PSUICoreTelephonyDataCache
 + (PSUICoreTelephonyDataCache)sharedInstance;
 - (BOOL)getInternationalDataAccessStatus;
-- (BOOL)getInternationalDataAccessStatus:(id)a3;
-- (BOOL)hideDataRoaming:(id)a3;
+- (BOOL)getInternationalDataAccessStatus:(id)status;
+- (BOOL)hideDataRoaming:(id)roaming;
 - (BOOL)isAirplaneModeEnabled;
 - (BOOL)isCellularDataEnabled;
 - (BOOL)isCellularUsageStatisticsEnabled;
 - (BOOL)isDataFallbackEnabled;
-- (BOOL)isPrivacyProxyEnabled:(id)a3;
-- (BOOL)isPrivateNetworkSIM:(id)a3;
-- (BOOL)isUserSubscribedToPrivacyProxy:(id)a3;
+- (BOOL)isPrivacyProxyEnabled:(id)enabled;
+- (BOOL)isPrivateNetworkSIM:(id)m;
+- (BOOL)isUserSubscribedToPrivacyProxy:(id)proxy;
 - (PSUICoreTelephonyDataCache)init;
 - (id)copyStartDateOfCellularDataUsageRecords;
-- (id)getDataStatus:(id)a3;
+- (id)getDataStatus:(id)status;
 - (id)initPrivate;
 - (void)airplaneModeChanged;
-- (void)dataSettingsChanged:(id)a3;
-- (void)dataStatus:(id)a3 dataStatusInfo:(id)a4;
+- (void)dataSettingsChanged:(id)changed;
+- (void)dataStatus:(id)status dataStatusInfo:(id)info;
 - (void)dealloc;
 - (void)eraseCellularDataUsageRecords;
 - (void)fetchCellularDataEnabled;
 - (void)fetchCellularUsageStatisticsSetting;
 - (void)fetchDataStatus;
-- (void)fetchInternationalDataAccessStatus:(id)a3;
-- (void)fetchPrivacyProxyStatus:(id)a3;
-- (void)fetchPrivateNetworkCapabilities:(id)a3;
+- (void)fetchInternationalDataAccessStatus:(id)status;
+- (void)fetchPrivacyProxyStatus:(id)status;
+- (void)fetchPrivateNetworkCapabilities:(id)capabilities;
 - (void)preferPrivateNetworkCellularOverWiFiDidChange;
-- (void)simStatusDidChange:(id)a3 status:(id)a4;
+- (void)simStatusDidChange:(id)change status:(id)status;
 - (void)willEnterForeground;
 @end
 
@@ -88,8 +88,8 @@ uint64_t __44__PSUICoreTelephonyDataCache_sharedInstance__block_invoke()
 
     [(PSUICoreTelephonyDataCache *)v2 setCellularStatisticsSetting:0];
     [(PSUICoreTelephonyDataCache *)v2 setCellularStatisticsSettingFetched:0];
-    v13 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v13 addObserver:v2 selector:sel_willEnterForeground name:*MEMORY[0x277D76758] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_willEnterForeground name:*MEMORY[0x277D76758] object:0];
   }
 
   return v2;
@@ -97,11 +97,11 @@ uint64_t __44__PSUICoreTelephonyDataCache_sharedInstance__block_invoke()
 
 - (PSUICoreTelephonyDataCache)init
 {
-  v2 = [(PSUICoreTelephonyDataCache *)self getLogger];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_ERROR))
+  getLogger = [(PSUICoreTelephonyDataCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_ERROR))
   {
     *v3 = 0;
-    _os_log_error_impl(&dword_2658DE000, v2, OS_LOG_TYPE_ERROR, "Unsupported initializer called", v3, 2u);
+    _os_log_error_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_ERROR, "Unsupported initializer called", v3, 2u);
   }
 
   objc_exception_throw([objc_alloc(MEMORY[0x277CBEAD8]) initWithName:@"Unsupported initializer" reason:@"Unsupported initializer called" userInfo:0]);
@@ -109,8 +109,8 @@ uint64_t __44__PSUICoreTelephonyDataCache_sharedInstance__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PSUICoreTelephonyDataCache;
@@ -121,8 +121,8 @@ uint64_t __44__PSUICoreTelephonyDataCache_sharedInstance__block_invoke()
 {
   [(PSUICoreTelephonyDataCache *)self setCellularDataSettingInitialized:0];
   [(PSUICoreTelephonyDataCache *)self setCellularStatisticsSettingFetched:0];
-  v3 = [(PSUICoreTelephonyDataCache *)self intlDataAccessStatus];
-  [v3 removeAllObjects];
+  intlDataAccessStatus = [(PSUICoreTelephonyDataCache *)self intlDataAccessStatus];
+  [intlDataAccessStatus removeAllObjects];
 
   [(PSUICoreTelephonyDataCache *)self setDataStatusDict:0];
 }
@@ -130,22 +130,22 @@ uint64_t __44__PSUICoreTelephonyDataCache_sharedInstance__block_invoke()
 - (void)fetchDataStatus
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = [(PSUICoreTelephonyDataCache *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICoreTelephonyDataCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "Executing fetch for data status", buf, 2u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Executing fetch for data status", buf, 2u);
   }
 
-  v4 = [MEMORY[0x277D4D868] sharedInstance];
-  v5 = [v4 subscriptionContexts];
+  mEMORY[0x277D4D868] = [MEMORY[0x277D4D868] sharedInstance];
+  subscriptionContexts = [mEMORY[0x277D4D868] subscriptionContexts];
 
   v20 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = v5;
+  v6 = subscriptionContexts;
   v7 = [v6 countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v7)
   {
@@ -166,11 +166,11 @@ uint64_t __44__PSUICoreTelephonyDataCache_sharedInstance__block_invoke()
         v21 = 0;
         v13 = [(CoreTelephonyClient *)client getDataStatus:v11 error:&v21, v19];
         v14 = v21;
-        v15 = [(PSUICoreTelephonyDataCache *)self getLogger];
-        v16 = v15;
+        getLogger2 = [(PSUICoreTelephonyDataCache *)self getLogger];
+        v16 = getLogger2;
         if (v14)
         {
-          if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+          if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_ERROR))
           {
             *buf = v19;
             v27 = v11;
@@ -182,7 +182,7 @@ uint64_t __44__PSUICoreTelephonyDataCache_sharedInstance__block_invoke()
 
         else
         {
-          if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+          if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT))
           {
             *buf = v19;
             v27 = v11;
@@ -202,83 +202,83 @@ uint64_t __44__PSUICoreTelephonyDataCache_sharedInstance__block_invoke()
     while (v7);
   }
 
-  v17 = self;
-  objc_sync_enter(v17);
-  [(PSUICoreTelephonyDataCache *)v17 setDataStatusDict:v20];
-  objc_sync_exit(v17);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(PSUICoreTelephonyDataCache *)selfCopy setDataStatusDict:v20];
+  objc_sync_exit(selfCopy);
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getDataStatus:(id)a3
+- (id)getDataStatus:(id)status
 {
-  v4 = a3;
-  v5 = [(PSUICoreTelephonyDataCache *)self dataStatusDict];
+  statusCopy = status;
+  dataStatusDict = [(PSUICoreTelephonyDataCache *)self dataStatusDict];
 
-  if (!v5)
+  if (!dataStatusDict)
   {
     [(PSUICoreTelephonyDataCache *)self fetchDataStatus];
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(PSUICoreTelephonyDataCache *)v6 dataStatusDict];
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "slotID")}];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  dataStatusDict2 = [(PSUICoreTelephonyDataCache *)selfCopy dataStatusDict];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(statusCopy, "slotID")}];
+  v9 = [dataStatusDict2 objectForKeyedSubscript:v8];
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
 
-- (void)dataStatus:(id)a3 dataStatusInfo:(id)a4
+- (void)dataStatus:(id)status dataStatusInfo:(id)info
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PSUICoreTelephonyDataCache *)self getLogger];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  statusCopy = status;
+  infoCopy = info;
+  getLogger = [(PSUICoreTelephonyDataCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412546;
-    v13 = v6;
+    v13 = statusCopy;
     v14 = 2112;
-    v15 = v7;
-    _os_log_impl(&dword_2658DE000, v8, OS_LOG_TYPE_DEFAULT, "Updating data status: %@, %@", &v12, 0x16u);
+    v15 = infoCopy;
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Updating data status: %@, %@", &v12, 0x16u);
   }
 
-  v9 = self;
-  objc_sync_enter(v9);
-  v10 = [(PSUICoreTelephonyDataCache *)v9 dataStatusDict];
-  [v10 setObject:v7 forKeyedSubscript:v6];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  dataStatusDict = [(PSUICoreTelephonyDataCache *)selfCopy dataStatusDict];
+  [dataStatusDict setObject:infoCopy forKeyedSubscript:statusCopy];
 
-  objc_sync_exit(v9);
+  objc_sync_exit(selfCopy);
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dataSettingsChanged:(id)a3
+- (void)dataSettingsChanged:(id)changed
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PSUICoreTelephonyDataCache *)self getLogger];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  changedCopy = changed;
+  getLogger = [(PSUICoreTelephonyDataCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = v4;
-    _os_log_impl(&dword_2658DE000, v5, OS_LOG_TYPE_DEFAULT, "Updating data settings: %@", buf, 0xCu);
+    v16 = changedCopy;
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Updating data settings: %@", buf, 0xCu);
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(PSUICoreTelephonyDataCache *)v6 cellularDataSetting];
-  if (v7 != [(__CFString *)v4 isCellularDataEnabled])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cellularDataSetting = [(PSUICoreTelephonyDataCache *)selfCopy cellularDataSetting];
+  if (cellularDataSetting != [(__CFString *)changedCopy isCellularDataEnabled])
   {
-    v8 = [(PSUICoreTelephonyDataCache *)v6 getLogger];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    getLogger2 = [(PSUICoreTelephonyDataCache *)selfCopy getLogger];
+    if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(PSUICoreTelephonyDataCache *)v6 cellularDataSetting];
-      v10 = [(__CFString *)v4 isCellularDataEnabled];
+      cellularDataSetting2 = [(PSUICoreTelephonyDataCache *)selfCopy cellularDataSetting];
+      isCellularDataEnabled = [(__CFString *)changedCopy isCellularDataEnabled];
       v11 = @"NO";
-      if (v9)
+      if (cellularDataSetting2)
       {
         v12 = @"YES";
       }
@@ -288,7 +288,7 @@ uint64_t __44__PSUICoreTelephonyDataCache_sharedInstance__block_invoke()
         v12 = @"NO";
       }
 
-      if (v10)
+      if (isCellularDataEnabled)
       {
         v11 = @"YES";
       }
@@ -297,18 +297,18 @@ uint64_t __44__PSUICoreTelephonyDataCache_sharedInstance__block_invoke()
       v16 = v12;
       v17 = 2112;
       v18 = v11;
-      _os_log_impl(&dword_2658DE000, v8, OS_LOG_TYPE_DEFAULT, "Cellular data changing from %@ to %@", buf, 0x16u);
+      _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_DEFAULT, "Cellular data changing from %@ to %@", buf, 0x16u);
     }
   }
 
-  [(PSUICoreTelephonyDataCache *)v6 setCellularDataSettingInitialized:0];
-  objc_sync_exit(v6);
+  [(PSUICoreTelephonyDataCache *)selfCopy setCellularDataSettingInitialized:0];
+  objc_sync_exit(selfCopy);
 
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__PSUICoreTelephonyDataCache_dataSettingsChanged___block_invoke;
   block[3] = &unk_279BA9D58;
-  block[4] = v6;
+  block[4] = selfCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 
   v13 = *MEMORY[0x277D85DE8];
@@ -333,45 +333,45 @@ void __50__PSUICoreTelephonyDataCache_dataSettingsChanged___block_invoke(uint64_
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchInternationalDataAccessStatus:(id)a3
+- (void)fetchInternationalDataAccessStatus:(id)status
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(PSUICoreTelephonyDataCache *)v5 intlDataAccessStatus];
-  v7 = [v4 instance];
-  v8 = [v6 objectForKey:v7];
+  statusCopy = status;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  intlDataAccessStatus = [(PSUICoreTelephonyDataCache *)selfCopy intlDataAccessStatus];
+  instance = [statusCopy instance];
+  v8 = [intlDataAccessStatus objectForKey:instance];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   if (!v8)
   {
-    v9 = [(PSUICoreTelephonyDataCache *)v5 getLogger];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    getLogger = [(PSUICoreTelephonyDataCache *)selfCopy getLogger];
+    if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_2658DE000, v9, OS_LOG_TYPE_DEFAULT, "Executing fetch for international data access status", buf, 2u);
+      _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Executing fetch for international data access status", buf, 2u);
     }
 
-    client = v5->_client;
+    client = selfCopy->_client;
     v19 = 0;
-    v11 = [(CoreTelephonyClient *)client getInternationalDataAccessSync:v4 error:&v19];
+    v11 = [(CoreTelephonyClient *)client getInternationalDataAccessSync:statusCopy error:&v19];
     v12 = v19;
-    v13 = [(PSUICoreTelephonyDataCache *)v5 getLogger];
-    v14 = v13;
+    getLogger2 = [(PSUICoreTelephonyDataCache *)selfCopy getLogger];
+    intlDataAccessStatus2 = getLogger2;
     if (v12)
     {
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
         v21 = v12;
-        _os_log_error_impl(&dword_2658DE000, v14, OS_LOG_TYPE_ERROR, "International data access status fetch failed: %@", buf, 0xCu);
+        _os_log_error_impl(&dword_2658DE000, intlDataAccessStatus2, OS_LOG_TYPE_ERROR, "International data access status fetch failed: %@", buf, 0xCu);
       }
     }
 
     else
     {
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT))
       {
         v15 = @"NO";
         if (v11)
@@ -381,13 +381,13 @@ void __50__PSUICoreTelephonyDataCache_dataSettingsChanged___block_invoke(uint64_
 
         *buf = 138412290;
         v21 = v15;
-        _os_log_impl(&dword_2658DE000, v14, OS_LOG_TYPE_DEFAULT, "Fetch for international data access status succeeded: %@", buf, 0xCu);
+        _os_log_impl(&dword_2658DE000, intlDataAccessStatus2, OS_LOG_TYPE_DEFAULT, "Fetch for international data access status succeeded: %@", buf, 0xCu);
       }
 
-      v14 = [(PSUICoreTelephonyDataCache *)v5 intlDataAccessStatus];
+      intlDataAccessStatus2 = [(PSUICoreTelephonyDataCache *)selfCopy intlDataAccessStatus];
       v16 = [MEMORY[0x277CCABB0] numberWithBool:v11];
-      v17 = [v4 instance];
-      [v14 setObject:v16 forKey:v17];
+      instance2 = [statusCopy instance];
+      [intlDataAccessStatus2 setObject:v16 forKey:instance2];
     }
   }
 
@@ -398,11 +398,11 @@ void __50__PSUICoreTelephonyDataCache_dataSettingsChanged___block_invoke(uint64_
 {
   if (+[SettingsCellularUtils isUIDualSIM])
   {
-    v3 = [(PSUICoreTelephonyDataCache *)self getLogger];
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
+    getLogger = [(PSUICoreTelephonyDataCache *)self getLogger];
+    if (os_log_type_enabled(getLogger, OS_LOG_TYPE_ERROR))
     {
       *v7 = 0;
-      _os_log_error_impl(&dword_2658DE000, v3, OS_LOG_TYPE_ERROR, "Need a service descriptor, use getInternationalDataAccessStatus:", v7, 2u);
+      _os_log_error_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_ERROR, "Need a service descriptor, use getInternationalDataAccessStatus:", v7, 2u);
     }
   }
 
@@ -412,17 +412,17 @@ void __50__PSUICoreTelephonyDataCache_dataSettingsChanged___block_invoke(uint64_
   return v5;
 }
 
-- (BOOL)getInternationalDataAccessStatus:(id)a3
+- (BOOL)getInternationalDataAccessStatus:(id)status
 {
-  v4 = a3;
-  [(PSUICoreTelephonyDataCache *)self fetchInternationalDataAccessStatus:v4];
-  v5 = [(PSUICoreTelephonyDataCache *)self intlDataAccessStatus];
-  v6 = [v4 instance];
+  statusCopy = status;
+  [(PSUICoreTelephonyDataCache *)self fetchInternationalDataAccessStatus:statusCopy];
+  intlDataAccessStatus = [(PSUICoreTelephonyDataCache *)self intlDataAccessStatus];
+  instance = [statusCopy instance];
 
-  v7 = [v5 objectForKey:v6];
-  v8 = [v7 BOOLValue];
+  v7 = [intlDataAccessStatus objectForKey:instance];
+  bOOLValue = [v7 BOOLValue];
 
-  return v8;
+  return bOOLValue;
 }
 
 void __64__PSUICoreTelephonyDataCache_dataRoamingSettingsChanged_status___block_invoke(uint64_t a1)
@@ -447,37 +447,37 @@ void __64__PSUICoreTelephonyDataCache_dataRoamingSettingsChanged_status___block_
 - (void)fetchCellularDataEnabled
 {
   *&v10[5] = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(PSUICoreTelephonyDataCache *)v2 cellularDataSettingInitialized];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cellularDataSettingInitialized = [(PSUICoreTelephonyDataCache *)selfCopy cellularDataSettingInitialized];
+  objc_sync_exit(selfCopy);
 
-  if (!v3)
+  if (!cellularDataSettingInitialized)
   {
-    v8 = [(PSUICoreTelephonyDataCache *)v2 cellularDataSetting];
-    [(PSUICoreTelephonyDataCache *)v2 ctConnection];
+    cellularDataSetting = [(PSUICoreTelephonyDataCache *)selfCopy cellularDataSetting];
+    [(PSUICoreTelephonyDataCache *)selfCopy ctConnection];
     IsEnabled = _CTServerConnectionGetCellularDataIsEnabled();
     if (IsEnabled)
     {
-      v5 = [(PSUICoreTelephonyDataCache *)v2 getLogger];
-      if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+      getLogger = [(PSUICoreTelephonyDataCache *)selfCopy getLogger];
+      if (os_log_type_enabled(getLogger, OS_LOG_TYPE_ERROR))
       {
         *buf = 67109376;
         v10[0] = IsEnabled;
         LOWORD(v10[1]) = 1024;
         *(&v10[1] + 2) = HIDWORD(IsEnabled);
-        _os_log_error_impl(&dword_2658DE000, v5, OS_LOG_TYPE_ERROR, "Querying cellular data is enabled setting failed %d (%d)", buf, 0xEu);
+        _os_log_error_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_ERROR, "Querying cellular data is enabled setting failed %d (%d)", buf, 0xEu);
       }
     }
 
     else
     {
-      [(PSUICoreTelephonyDataCache *)v2 setCellularDataSetting:v8];
-      [(PSUICoreTelephonyDataCache *)v2 setCellularDataSettingInitialized:1];
-      v5 = [(PSUICoreTelephonyDataCache *)v2 getLogger];
-      if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+      [(PSUICoreTelephonyDataCache *)selfCopy setCellularDataSetting:cellularDataSetting];
+      [(PSUICoreTelephonyDataCache *)selfCopy setCellularDataSettingInitialized:1];
+      getLogger = [(PSUICoreTelephonyDataCache *)selfCopy getLogger];
+      if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
       {
-        if (v8)
+        if (cellularDataSetting)
         {
           v6 = @"YES";
         }
@@ -489,7 +489,7 @@ void __64__PSUICoreTelephonyDataCache_dataRoamingSettingsChanged_status___block_
 
         *buf = 138412290;
         *v10 = v6;
-        _os_log_impl(&dword_2658DE000, v5, OS_LOG_TYPE_DEFAULT, "Cellular data is enabled is %@", buf, 0xCu);
+        _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Cellular data is enabled is %@", buf, 0xCu);
       }
     }
   }
@@ -506,31 +506,31 @@ void __64__PSUICoreTelephonyDataCache_dataRoamingSettingsChanged_status___block_
 
 - (BOOL)isAirplaneModeEnabled
 {
-  v2 = [(PSUICoreTelephonyDataCache *)self radioPreferences];
-  v3 = [v2 airplaneMode];
+  radioPreferences = [(PSUICoreTelephonyDataCache *)self radioPreferences];
+  airplaneMode = [radioPreferences airplaneMode];
 
-  return v3;
+  return airplaneMode;
 }
 
 - (BOOL)isDataFallbackEnabled
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(PSUICoreTelephonyDataCache *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICoreTelephonyDataCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "Fetching dynamic data SIM switching support", buf, 2u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Fetching dynamic data SIM switching support", buf, 2u);
   }
 
   client = self->_client;
   v12 = 0;
   v5 = [(CoreTelephonyClient *)client getSupportDynamicDataSimSwitchSync:&v12];
   v6 = v12;
-  v7 = [(PSUICoreTelephonyDataCache *)self getLogger];
-  v8 = v7;
+  getLogger2 = [(PSUICoreTelephonyDataCache *)self getLogger];
+  v8 = getLogger2;
   if (v6)
   {
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       v14 = v6;
@@ -540,7 +540,7 @@ void __64__PSUICoreTelephonyDataCache_dataRoamingSettingsChanged_status___block_
     LOBYTE(v5) = 0;
   }
 
-  else if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  else if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT))
   {
     v9 = @"NO";
     if (v5)
@@ -560,43 +560,43 @@ void __64__PSUICoreTelephonyDataCache_dataRoamingSettingsChanged_status___block_
 - (void)airplaneModeChanged
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [(PSUICoreTelephonyDataCache *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICoreTelephonyDataCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(PSUICoreTelephonyDataCache *)self radioPreferences];
-    v5 = [v4 airplaneMode];
+    radioPreferences = [(PSUICoreTelephonyDataCache *)self radioPreferences];
+    airplaneMode = [radioPreferences airplaneMode];
     v6 = @"NO";
-    if (v5)
+    if (airplaneMode)
     {
       v6 = @"YES";
     }
 
     v9 = 138412290;
     v10 = v6;
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "Airplane mode changed to %@", &v9, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Airplane mode changed to %@", &v9, 0xCu);
   }
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 postNotificationName:@"PSCellularAirplaneModeChangedNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"PSCellularAirplaneModeChangedNotification" object:0];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchPrivacyProxyStatus:(id)a3
+- (void)fetchPrivacyProxyStatus:(id)status
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  statusCopy = status;
   client = self->_client;
-  v6 = [MEMORY[0x277CC3718] descriptorWithSubscriptionContext:v4];
+  v6 = [MEMORY[0x277CC3718] descriptorWithSubscriptionContext:statusCopy];
   v16 = 0;
   LOWORD(v7) = [(CoreTelephonyClient *)client getPrivacyProxyState:v6 error:&v16];
   v8 = v16;
 
-  v9 = [(PSUICoreTelephonyDataCache *)self getLogger];
-  v10 = v9;
+  getLogger = [(PSUICoreTelephonyDataCache *)self getLogger];
+  v10 = getLogger;
   if (v8)
   {
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(getLogger, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       v18 = v8;
@@ -609,7 +609,7 @@ void __64__PSUICoreTelephonyDataCache_dataRoamingSettingsChanged_status___block_
 
   else
   {
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
     {
       v12 = @"NO";
       if (v7)
@@ -638,33 +638,33 @@ void __64__PSUICoreTelephonyDataCache_dataRoamingSettingsChanged_status___block_
     v7 = v7;
   }
 
-  v14 = self;
-  objc_sync_enter(v14);
-  [(PSUICoreTelephonyDataCache *)v14 setPrivacyProxySetting:v7 | v11];
-  objc_sync_exit(v14);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(PSUICoreTelephonyDataCache *)selfCopy setPrivacyProxySetting:v7 | v11];
+  objc_sync_exit(selfCopy);
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isUserSubscribedToPrivacyProxy:(id)a3
+- (BOOL)isUserSubscribedToPrivacyProxy:(id)proxy
 {
-  v4 = a3;
+  proxyCopy = proxy;
   if (![(PSUICoreTelephonyDataCache *)self privacyProxySettingsFetched])
   {
-    [(PSUICoreTelephonyDataCache *)self fetchPrivacyProxyStatus:v4];
+    [(PSUICoreTelephonyDataCache *)self fetchPrivacyProxyStatus:proxyCopy];
   }
 
-  v5 = [(PSUICoreTelephonyDataCache *)self privacyProxySetting];
+  privacyProxySetting = [(PSUICoreTelephonyDataCache *)self privacyProxySetting];
 
-  return v5 & 1;
+  return privacyProxySetting & 1;
 }
 
-- (BOOL)isPrivacyProxyEnabled:(id)a3
+- (BOOL)isPrivacyProxyEnabled:(id)enabled
 {
-  v4 = a3;
+  enabledCopy = enabled;
   if (![(PSUICoreTelephonyDataCache *)self privacyProxySettingsFetched])
   {
-    [(PSUICoreTelephonyDataCache *)self fetchPrivacyProxyStatus:v4];
+    [(PSUICoreTelephonyDataCache *)self fetchPrivacyProxyStatus:enabledCopy];
   }
 
   v5 = ([(PSUICoreTelephonyDataCache *)self privacyProxySetting]>> 8) & 1;
@@ -672,111 +672,111 @@ void __64__PSUICoreTelephonyDataCache_dataRoamingSettingsChanged_status___block_
   return v5;
 }
 
-- (void)fetchPrivateNetworkCapabilities:(id)a3
+- (void)fetchPrivateNetworkCapabilities:(id)capabilities
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "slotID")}];
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(PSUICoreTelephonyDataCache *)v6 privateNetworkCapabilities];
-  v8 = [v7 objectForKeyedSubscript:v5];
+  capabilitiesCopy = capabilities;
+  v5 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(capabilitiesCopy, "slotID")}];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  privateNetworkCapabilities = [(PSUICoreTelephonyDataCache *)selfCopy privateNetworkCapabilities];
+  v8 = [privateNetworkCapabilities objectForKeyedSubscript:v5];
 
   if (!v8)
   {
-    client = v6->_client;
+    client = selfCopy->_client;
     v15 = 0;
-    v10 = [(CoreTelephonyClient *)client getPrivateNetworkCapabilitiesForContext:v4 error:&v15];
+    v10 = [(CoreTelephonyClient *)client getPrivateNetworkCapabilitiesForContext:capabilitiesCopy error:&v15];
     v11 = v15;
     if (v11)
     {
-      v12 = [(PSUICoreTelephonyDataCache *)v6 getLogger];
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+      getLogger = [(PSUICoreTelephonyDataCache *)selfCopy getLogger];
+      if (os_log_type_enabled(getLogger, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
         v17 = v11;
-        _os_log_error_impl(&dword_2658DE000, v12, OS_LOG_TYPE_ERROR, "Checking Private Network capabilities failed: %@", buf, 0xCu);
+        _os_log_error_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_ERROR, "Checking Private Network capabilities failed: %@", buf, 0xCu);
       }
     }
 
     else
     {
-      v13 = [(PSUICoreTelephonyDataCache *)v6 getLogger];
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+      getLogger2 = [(PSUICoreTelephonyDataCache *)selfCopy getLogger];
+      if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
         v17 = v5;
         v18 = 2112;
         v19 = v10;
-        _os_log_impl(&dword_2658DE000, v13, OS_LOG_TYPE_DEFAULT, "Private Network Capabilities for context slot id [%@]: %@", buf, 0x16u);
+        _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_DEFAULT, "Private Network Capabilities for context slot id [%@]: %@", buf, 0x16u);
       }
 
-      v12 = [(PSUICoreTelephonyDataCache *)v6 privateNetworkCapabilities];
-      [v12 setObject:v10 forKeyedSubscript:v5];
+      getLogger = [(PSUICoreTelephonyDataCache *)selfCopy privateNetworkCapabilities];
+      [getLogger setObject:v10 forKeyedSubscript:v5];
     }
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isPrivateNetworkSIM:(id)a3
+- (BOOL)isPrivateNetworkSIM:(id)m
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CC3798] contextWithServiceDescriptor:v4];
+  mCopy = m;
+  v5 = [MEMORY[0x277CC3798] contextWithServiceDescriptor:mCopy];
   [(PSUICoreTelephonyDataCache *)self fetchPrivateNetworkCapabilities:v5];
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(PSUICoreTelephonyDataCache *)v6 privateNetworkCapabilities];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  privateNetworkCapabilities = [(PSUICoreTelephonyDataCache *)selfCopy privateNetworkCapabilities];
   v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v5, "slotID")}];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  v9 = [privateNetworkCapabilities objectForKeyedSubscript:v8];
 
   if (v9)
   {
-    v10 = [(PSUICoreTelephonyDataCache *)v6 privateNetworkCapabilities];
+    privateNetworkCapabilities2 = [(PSUICoreTelephonyDataCache *)selfCopy privateNetworkCapabilities];
     v11 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v5, "slotID")}];
-    v12 = [v10 objectForKeyedSubscript:v11];
-    v13 = [v12 isPrivateNetworkSIM];
+    v12 = [privateNetworkCapabilities2 objectForKeyedSubscript:v11];
+    isPrivateNetworkSIM = [v12 isPrivateNetworkSIM];
   }
 
   else
   {
-    v13 = 0;
+    isPrivateNetworkSIM = 0;
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
-  return v13;
+  return isPrivateNetworkSIM;
 }
 
-- (BOOL)hideDataRoaming:(id)a3
+- (BOOL)hideDataRoaming:(id)roaming
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CC3798] contextWithServiceDescriptor:v4];
+  roamingCopy = roaming;
+  v5 = [MEMORY[0x277CC3798] contextWithServiceDescriptor:roamingCopy];
   [(PSUICoreTelephonyDataCache *)self fetchPrivateNetworkCapabilities:v5];
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(PSUICoreTelephonyDataCache *)v6 privateNetworkCapabilities];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  privateNetworkCapabilities = [(PSUICoreTelephonyDataCache *)selfCopy privateNetworkCapabilities];
   v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v5, "slotID")}];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  v9 = [privateNetworkCapabilities objectForKeyedSubscript:v8];
 
   if (v9)
   {
-    v10 = [(PSUICoreTelephonyDataCache *)v6 privateNetworkCapabilities];
+    privateNetworkCapabilities2 = [(PSUICoreTelephonyDataCache *)selfCopy privateNetworkCapabilities];
     v11 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v5, "slotID")}];
-    v12 = [v10 objectForKeyedSubscript:v11];
-    v13 = [v12 hideDataRoaming];
+    v12 = [privateNetworkCapabilities2 objectForKeyedSubscript:v11];
+    hideDataRoaming = [v12 hideDataRoaming];
   }
 
   else
   {
-    v13 = 0;
+    hideDataRoaming = 0;
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
-  return v13;
+  return hideDataRoaming;
 }
 
 - (id)copyStartDateOfCellularDataUsageRecords
@@ -788,58 +788,58 @@ void __64__PSUICoreTelephonyDataCache_dataRoamingSettingsChanged_status___block_
 
 - (void)eraseCellularDataUsageRecords
 {
-  v2 = [(PSUICoreTelephonyDataCache *)self ctConnection];
+  ctConnection = [(PSUICoreTelephonyDataCache *)self ctConnection];
 
-  MEMORY[0x282113248](v2);
+  MEMORY[0x282113248](ctConnection);
 }
 
 - (void)fetchCellularUsageStatisticsSetting
 {
   v18 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(PSUICoreTelephonyDataCache *)v2 cellularStatisticsSettingFetched];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cellularStatisticsSettingFetched = [(PSUICoreTelephonyDataCache *)selfCopy cellularStatisticsSettingFetched];
+  objc_sync_exit(selfCopy);
 
-  if (!v3)
+  if (!cellularStatisticsSettingFetched)
   {
-    client = v2->_client;
+    client = selfCopy->_client;
     v13 = 0;
     v5 = [(CoreTelephonyClient *)client usageCollectionEnabledSync:&v13];
     v6 = v13;
     if (v6)
     {
-      v7 = [(PSUICoreTelephonyDataCache *)v2 getLogger];
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+      getLogger = [(PSUICoreTelephonyDataCache *)selfCopy getLogger];
+      if (os_log_type_enabled(getLogger, OS_LOG_TYPE_ERROR))
       {
-        v12 = [v6 domain];
+        domain = [v6 domain];
         *buf = 138412546;
-        v15 = v12;
+        v15 = domain;
         v16 = 2112;
         v17 = v6;
-        _os_log_error_impl(&dword_2658DE000, v7, OS_LOG_TYPE_ERROR, "Failed to fetch cellular usage statistics setting %@ (%@)", buf, 0x16u);
+        _os_log_error_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_ERROR, "Failed to fetch cellular usage statistics setting %@ (%@)", buf, 0x16u);
       }
     }
 
     else
     {
-      v8 = [v5 BOOLValue];
-      v9 = [(PSUICoreTelephonyDataCache *)v2 getLogger];
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+      bOOLValue = [v5 BOOLValue];
+      getLogger2 = [(PSUICoreTelephonyDataCache *)selfCopy getLogger];
+      if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT))
       {
         v10 = @"NO";
-        if (v8)
+        if (bOOLValue)
         {
           v10 = @"YES";
         }
 
         *buf = 138412290;
         v15 = v10;
-        _os_log_impl(&dword_2658DE000, v9, OS_LOG_TYPE_DEFAULT, "Cellular usage statistics enabled: %@", buf, 0xCu);
+        _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_DEFAULT, "Cellular usage statistics enabled: %@", buf, 0xCu);
       }
 
-      [(PSUICoreTelephonyDataCache *)v2 setCellularStatisticsSetting:v8];
-      [(PSUICoreTelephonyDataCache *)v2 setCellularStatisticsSettingFetched:1];
+      [(PSUICoreTelephonyDataCache *)selfCopy setCellularStatisticsSetting:bOOLValue];
+      [(PSUICoreTelephonyDataCache *)selfCopy setCellularStatisticsSettingFetched:1];
     }
   }
 
@@ -921,49 +921,49 @@ void __75__PSUICoreTelephonyDataCache_setCellularUsageStatisticsEnabled_completi
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)simStatusDidChange:(id)a3 status:(id)a4
+- (void)simStatusDidChange:(id)change status:(id)status
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PSUICoreTelephonyDataCache *)self getLogger];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  changeCopy = change;
+  statusCopy = status;
+  getLogger = [(PSUICoreTelephonyDataCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412290;
-    v14 = v6;
-    _os_log_impl(&dword_2658DE000, v8, OS_LOG_TYPE_DEFAULT, "Clearing Private network SIM info for context %@", &v13, 0xCu);
+    v14 = changeCopy;
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Clearing Private network SIM info for context %@", &v13, 0xCu);
   }
 
-  v9 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v6, "slotID")}];
-  v10 = self;
-  objc_sync_enter(v10);
-  v11 = [(PSUICoreTelephonyDataCache *)v10 privateNetworkCapabilities];
-  [v11 setObject:0 forKeyedSubscript:v9];
+  v9 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(changeCopy, "slotID")}];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  privateNetworkCapabilities = [(PSUICoreTelephonyDataCache *)selfCopy privateNetworkCapabilities];
+  [privateNetworkCapabilities setObject:0 forKeyedSubscript:v9];
 
-  objc_sync_exit(v10);
+  objc_sync_exit(selfCopy);
   v12 = *MEMORY[0x277D85DE8];
 }
 
 - (void)preferPrivateNetworkCellularOverWiFiDidChange
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(PSUICoreTelephonyDataCache *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICoreTelephonyDataCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "Clearing Private network SIM infos due to profile update", buf, 2u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Clearing Private network SIM infos due to profile update", buf, 2u);
   }
 
-  v4 = [MEMORY[0x277D4D868] sharedInstance];
-  v5 = [v4 subscriptionContexts];
+  mEMORY[0x277D4D868] = [MEMORY[0x277D4D868] sharedInstance];
+  subscriptionContexts = [mEMORY[0x277D4D868] subscriptionContexts];
 
-  v6 = self;
-  objc_sync_enter(v6);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = v5;
+  v7 = subscriptionContexts;
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v19 count:16];
   if (v8)
   {
@@ -979,8 +979,8 @@ void __75__PSUICoreTelephonyDataCache_setCellularUsageStatisticsEnabled_completi
         }
 
         v11 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(*(*(&v14 + 1) + 8 * v10), "slotID", v14)}];
-        v12 = [(PSUICoreTelephonyDataCache *)v6 privateNetworkCapabilities];
-        [v12 setObject:0 forKeyedSubscript:v11];
+        privateNetworkCapabilities = [(PSUICoreTelephonyDataCache *)selfCopy privateNetworkCapabilities];
+        [privateNetworkCapabilities setObject:0 forKeyedSubscript:v11];
 
         ++v10;
       }
@@ -992,7 +992,7 @@ void __75__PSUICoreTelephonyDataCache_setCellularUsageStatisticsEnabled_completi
     while (v8);
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
   v13 = *MEMORY[0x277D85DE8];
 }
 

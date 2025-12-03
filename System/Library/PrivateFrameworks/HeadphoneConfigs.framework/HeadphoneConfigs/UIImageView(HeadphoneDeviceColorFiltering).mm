@@ -70,7 +70,7 @@
     }
 
     v44 = v10;
-    v45 = a1;
+    selfCopy2 = self;
     v43 = @"DarkBiasValue-%d";
     v26 = @"DarkMatrixValue-%d";
   }
@@ -111,7 +111,7 @@
     }
 
     v44 = v10;
-    v45 = a1;
+    selfCopy2 = self;
     v43 = @"LightBiasValue-%d";
     v26 = @"LightMatrixValue-%d";
   }
@@ -131,7 +131,7 @@
 
   v18 = v31;
   v19 = v32;
-  a1 = v45;
+  self = selfCopy2;
 LABEL_25:
   *buf = v22;
   v52 = v49;
@@ -151,8 +151,8 @@ LABEL_25:
 
   [v16 addObject:v13];
   [v16 addObject:v15];
-  v40 = [a1 layer];
-  [v40 setFilters:v16];
+  layer = [self layer];
+  [layer setFilters:v16];
 
   v41 = sharedBluetoothSettingsLogComponent();
   if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))

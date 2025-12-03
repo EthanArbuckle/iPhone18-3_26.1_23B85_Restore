@@ -1,18 +1,18 @@
 @interface PXGEdgeStretchEffect
 - (CGRect)sampleRect;
-- (PXGEdgeStretchEffect)initWithEntityManager:(id)a3;
-- (void)setSampleRect:(CGRect)a3;
+- (PXGEdgeStretchEffect)initWithEntityManager:(id)manager;
+- (void)setSampleRect:(CGRect)rect;
 @end
 
 @implementation PXGEdgeStretchEffect
 
-- (void)setSampleRect:(CGRect)a3
+- (void)setSampleRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  MinY = CGRectGetMinY(a3);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  MinY = CGRectGetMinY(rect);
   v17.origin.x = x;
   v17.origin.y = y;
   v17.size.width = width;
@@ -50,12 +50,12 @@
   return result;
 }
 
-- (PXGEdgeStretchEffect)initWithEntityManager:(id)a3
+- (PXGEdgeStretchEffect)initWithEntityManager:(id)manager
 {
   v12[1] = *MEMORY[0x277D85DE8];
   v11.receiver = self;
   v11.super_class = PXGEdgeStretchEffect;
-  v3 = [(PXGEffect *)&v11 initWithEntityManager:a3];
+  v3 = [(PXGEffect *)&v11 initWithEntityManager:manager];
   if (v3)
   {
     v4 = [[PXGUniform alloc] initWithName:@"sampleRect" type:3];

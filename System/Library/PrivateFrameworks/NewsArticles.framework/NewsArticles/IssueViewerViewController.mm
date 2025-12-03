@@ -1,17 +1,17 @@
 @interface IssueViewerViewController
-- (_TtC12NewsArticles25IssueViewerViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)contentScrollViewForEdge:(unint64_t)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtC12NewsArticles25IssueViewerViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)contentScrollViewForEdge:(unint64_t)edge;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation IssueViewerViewController
 
-- (_TtC12NewsArticles25IssueViewerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC12NewsArticles25IssueViewerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -20,36 +20,36 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   IssueViewerViewController.viewDidLoad()();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v8.receiver = self;
   v8.super_class = swift_getObjectType();
   v4 = v8.receiver;
-  [(IssueViewerViewController *)&v8 viewWillAppear:v3];
-  v5 = [v4 navigationController];
-  if (v5)
+  [(IssueViewerViewController *)&v8 viewWillAppear:appearCopy];
+  navigationController = [v4 navigationController];
+  if (navigationController)
   {
-    v6 = v5;
-    v7 = [v5 navigationBar];
+    v6 = navigationController;
+    navigationBar = [navigationController navigationBar];
 
-    [v7 setPrefersLargeTitles_];
+    [navigationBar setPrefersLargeTitles_];
   }
 
   sub_1D7D28E7C();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
   v4 = v7.receiver;
-  [(IssueViewerViewController *)&v7 viewDidAppear:v3];
+  [(IssueViewerViewController *)&v7 viewDidAppear:appearCopy];
   __swift_project_boxed_opaque_existential_1(&v4[OBJC_IVAR____TtC12NewsArticles25IssueViewerViewController_sceneStateManager], *&v4[OBJC_IVAR____TtC12NewsArticles25IssueViewerViewController_sceneStateManager + 24]);
   sub_1D7CCA100(&qword_1EC9E8440, v5, type metadata accessor for IssueViewerViewController);
   sub_1D7D291FC();
@@ -57,50 +57,50 @@
   __swift_destroy_boxed_opaque_existential_1(v6);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
   v4 = v7.receiver;
-  [(IssueViewerViewController *)&v7 viewWillDisappear:v3];
+  [(IssueViewerViewController *)&v7 viewWillDisappear:disappearCopy];
   if ([v4 isMovingFromParentViewController])
   {
-    v5 = [v4 navigationController];
-    if (v5)
+    navigationController = [v4 navigationController];
+    if (navigationController)
     {
-      v6 = v5;
-      [v5 setToolbarHidden:1 animated:1];
+      v6 = navigationController;
+      [navigationController setToolbarHidden:1 animated:1];
     }
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  IssueViewerViewController.viewDidDisappear(_:)(a3);
+  selfCopy = self;
+  IssueViewerViewController.viewDidDisappear(_:)(disappear);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  v9.is_nil = v6;
-  v7 = v6;
-  v9.value.super.isa = a3;
+  changeCopy = change;
+  selfCopy = self;
+  v9.is_nil = selfCopy;
+  v7 = selfCopy;
+  v9.value.super.isa = change;
   IssueViewerViewController.traitCollectionDidChange(_:)(v9);
 }
 
-- (id)contentScrollViewForEdge:(unint64_t)a3
+- (id)contentScrollViewForEdge:(unint64_t)edge
 {
-  v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC12NewsArticles25IssueViewerViewController_contentViewController);
-  if (v4)
+  contentScrollViewForEdge_ = *(&self->super.super.super.isa + OBJC_IVAR____TtC12NewsArticles25IssueViewerViewController_contentViewController);
+  if (contentScrollViewForEdge_)
   {
-    v4 = [v4 contentScrollViewForEdge_];
+    contentScrollViewForEdge_ = [contentScrollViewForEdge_ contentScrollViewForEdge_];
     v3 = vars8;
   }
 
-  return v4;
+  return contentScrollViewForEdge_;
 }
 
 @end

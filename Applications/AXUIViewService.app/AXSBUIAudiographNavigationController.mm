@@ -7,8 +7,8 @@
 
 - (BOOL)accessibilityPerformEscape
 {
-  v2 = [(AXSBUIAudiographNavigationController *)self dismissDelegate];
-  [v2 dismiss];
+  dismissDelegate = [(AXSBUIAudiographNavigationController *)self dismissDelegate];
+  [dismissDelegate dismiss];
 
   return 1;
 }

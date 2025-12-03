@@ -4,24 +4,24 @@
 - (CGPoint)topLeft;
 - (CGPoint)topRight;
 - (CGRect)bounds;
-- (CIRectangleFeature)initWithBounds:(CGRect)a3 topLeft:(CGPoint)a4 topRight:(CGPoint)a5 bottomLeft:(CGPoint)a6 bottomRight:(CGPoint)a7;
+- (CIRectangleFeature)initWithBounds:(CGRect)bounds topLeft:(CGPoint)left topRight:(CGPoint)right bottomLeft:(CGPoint)bottomLeft bottomRight:(CGPoint)bottomRight;
 @end
 
 @implementation CIRectangleFeature
 
-- (CIRectangleFeature)initWithBounds:(CGRect)a3 topLeft:(CGPoint)a4 topRight:(CGPoint)a5 bottomLeft:(CGPoint)a6 bottomRight:(CGPoint)a7
+- (CIRectangleFeature)initWithBounds:(CGRect)bounds topLeft:(CGPoint)left topRight:(CGPoint)right bottomLeft:(CGPoint)bottomLeft bottomRight:(CGPoint)bottomRight
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a4.y;
-  v10 = a4.x;
-  height = a3.size.height;
-  width = a3.size.width;
-  v13 = a3.origin.y;
-  v14 = a3.origin.x;
+  y = right.y;
+  x = right.x;
+  v9 = left.y;
+  v10 = left.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  v13 = bounds.origin.y;
+  v14 = bounds.origin.x;
   v16.receiver = self;
   v16.super_class = CIRectangleFeature;
-  result = [(CIFeature *)&v16 init:*&a6.x];
+  result = [(CIFeature *)&v16 init:*&bottomLeft.x];
   if (result)
   {
     result->bounds.origin.x = v14;

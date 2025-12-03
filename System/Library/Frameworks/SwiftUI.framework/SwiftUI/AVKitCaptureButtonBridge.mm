@@ -1,6 +1,6 @@
 @interface AVKitCaptureButtonBridge
 - (_TtC7SwiftUI24AVKitCaptureButtonBridge)init;
-- (void)_physicalButtonInteraction:(id)a3 handleAction:(id)a4 withActiveActions:(id)a5;
+- (void)_physicalButtonInteraction:(id)interaction handleAction:(id)action withActiveActions:(id)actions;
 @end
 
 @implementation AVKitCaptureButtonBridge
@@ -20,12 +20,12 @@
   return [(AVKitCaptureButtonBridge *)&v6 init];
 }
 
-- (void)_physicalButtonInteraction:(id)a3 handleAction:(id)a4 withActiveActions:(id)a5
+- (void)_physicalButtonInteraction:(id)interaction handleAction:(id)action withActiveActions:(id)actions
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  specialized AVKitCaptureButtonBridge._physicalButtonInteraction(_:handle:withActiveActions:)(v8);
+  interactionCopy = interaction;
+  actionCopy = action;
+  selfCopy = self;
+  specialized AVKitCaptureButtonBridge._physicalButtonInteraction(_:handle:withActiveActions:)(actionCopy);
 }
 
 @end

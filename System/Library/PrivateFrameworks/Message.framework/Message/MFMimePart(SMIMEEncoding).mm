@@ -18,13 +18,13 @@
   v11 = a4;
   v12 = a5;
   v27 = 0;
-  v13 = [a1 _signatureDataForContentData:v10 forSender:v11 compositionSpecification:v12 outError:&v27];
+  v13 = [self _signatureDataForContentData:v10 forSender:v11 compositionSpecification:v12 outError:&v27];
   v14 = v27;
   v15 = v14;
   if (v14)
   {
-    v16 = [v14 mf_shortDescription];
-    v17 = v16 == 0;
+    mf_shortDescription = [v14 mf_shortDescription];
+    v17 = mf_shortDescription == 0;
 
     if (v17)
     {
@@ -32,7 +32,7 @@
       [v15 setShortDescription:v18];
     }
 
-    [(MFMimePart *)a1 _setSMIMEError:v15];
+    [(MFMimePart *)self _setSMIMEError:v15];
     v19 = +[MFActivityMonitor currentMonitor];
     [v19 setError:v15];
 
@@ -72,7 +72,7 @@
       [v21 setSubtype:@"signed"];
       [v21 setBodyParameter:@"application/pkcs7-signature" forKey:@"protocol"];
       [v21 setBodyParameter:@"sha-256" forKey:@"micalg"];
-      [v21 addSubpart:a1];
+      [v21 addSubpart:self];
       v22 = objc_alloc_init(objc_opt_class());
       [v22 setType:@"application"];
       [v22 setSubtype:@"pkcs7-signature"];
@@ -106,12 +106,12 @@
   v12 = a5;
   if ([MEMORY[0x1E699ACE8] preferenceEnabled:23])
   {
-    [a1 _signatureDataUsingMessageSecurity:v10 forSender:v11 compositionSpecification:v12 outError:a6];
+    [self _signatureDataUsingMessageSecurity:v10 forSender:v11 compositionSpecification:v12 outError:a6];
   }
 
   else
   {
-    [a1 _signatureDataUsingSecCMSWithData:v10 forSender:v11 compositionSpecification:v12 outError:a6];
+    [self _signatureDataUsingSecCMSWithData:v10 forSender:v11 compositionSpecification:v12 outError:a6];
   }
   v13 = ;
 
@@ -122,7 +122,7 @@
 {
   v9 = a4;
   v10 = a5;
-  v11 = [a3 mf_dataByConvertingUnixNewlinesToNetwork];
+  mf_dataByConvertingUnixNewlinesToNetwork = [a3 mf_dataByConvertingUnixNewlinesToNetwork];
   v12 = [v10 objectForKey:@"SigningIdentity"];
   if (v12)
   {
@@ -154,12 +154,12 @@
     v19 = [MEMORY[0x1E699B220] oidsForEncryptWithGCM:HIBYTE(v21) encryptSubject:v21];
     if ([MEMORY[0x1E699ACE8] preferenceEnabled:25])
     {
-      [MEMORY[0x1E699B220] signedDataFromNetworkContentData:v11 forSender:v9 identity:v12 encryptionCertificate:certificateRef capabilities:v19 outError:a6];
+      [MEMORY[0x1E699B220] signedDataFromNetworkContentData:mf_dataByConvertingUnixNewlinesToNetwork forSender:v9 identity:v12 encryptionCertificate:certificateRef capabilities:v19 outError:a6];
     }
 
     else
     {
-      [MEMORY[0x1E699B220] signatureDataFromNetworkContentData:v11 forSender:v9 identity:v12 encryptionCertificate:certificateRef capabilities:v19 outError:a6];
+      [MEMORY[0x1E699B220] signatureDataFromNetworkContentData:mf_dataByConvertingUnixNewlinesToNetwork forSender:v9 identity:v12 encryptionCertificate:certificateRef capabilities:v19 outError:a6];
     }
     v17 = ;
     if (certificateRef)
@@ -189,7 +189,7 @@
   v12 = [[_MFSecCMSEncoder alloc] initForSigningWithSender:v10 compositionSpecification:v11 error:a6];
   if (!*a6)
   {
-    v13 = [v9 mf_dataByConvertingUnixNewlinesToNetwork];
+    mf_dataByConvertingUnixNewlinesToNetwork = [v9 mf_dataByConvertingUnixNewlinesToNetwork];
     v14 = MFDataConsumerConsumeCompleteData();
 
     if (v14 < 0)
@@ -217,9 +217,9 @@
   }
 
   [v12 done];
-  v24 = [v12 data];
+  data = [v12 data];
 
-  return v24;
+  return data;
 }
 
 - (id)newEncryptedPartWithData:()SMIMEEncoding compositionSpecification:encryptedData:
@@ -229,7 +229,7 @@
   v9 = a4;
   v18 = 0;
   v19 = 0;
-  v10 = [a1 _encryptedDataForContentData:v8 compositionSpecification:v9 contentType:&v19 error:&v18];
+  v10 = [self _encryptedDataForContentData:v8 compositionSpecification:v9 contentType:&v19 error:&v18];
   v11 = v19;
   v12 = v18;
   if (v12)
@@ -279,12 +279,12 @@
   v11 = a4;
   if ([MEMORY[0x1E699ACE8] preferenceEnabled:23])
   {
-    v12 = [a1 _encryptedDataUsingMessageSecurity:v10 compositionSpecification:v11 contentType:a5 error:a6];
+    v12 = [self _encryptedDataUsingMessageSecurity:v10 compositionSpecification:v11 contentType:a5 error:a6];
   }
 
   else
   {
-    v12 = [a1 _encryptedDataUsingSecCMS:v10 compositionSpecification:v11 error:a6];
+    v12 = [self _encryptedDataUsingSecCMS:v10 compositionSpecification:v11 error:a6];
     if (a5)
     {
       *a5 = @"enveloped-data";
@@ -313,7 +313,7 @@
     goto LABEL_4;
   }
 
-  v21 = [v8 mf_dataByConvertingUnixNewlinesToNetwork];
+  mf_dataByConvertingUnixNewlinesToNetwork = [v8 mf_dataByConvertingUnixNewlinesToNetwork];
   v22 = MFDataConsumerConsumeCompleteData();
 
   if (v22 >= 0)
@@ -341,8 +341,8 @@
   if (v12)
   {
 LABEL_4:
-    v13 = [v12 mf_shortDescription];
-    v14 = v13 == 0;
+    mf_shortDescription = [v12 mf_shortDescription];
+    v14 = mf_shortDescription == 0;
 
     if (v14)
     {
@@ -350,7 +350,7 @@ LABEL_4:
       [v12 setShortDescription:v15];
     }
 
-    [(MFMimePart *)a1 _setSMIMEError:v12];
+    [(MFMimePart *)self _setSMIMEError:v12];
     v16 = +[MFActivityMonitor currentMonitor];
     [v16 setError:v12];
 
@@ -376,7 +376,7 @@ LABEL_13:
 
 LABEL_10:
       [v11 done];
-      v20 = [v11 data];
+      data = [v11 data];
       goto LABEL_15;
     }
   }
@@ -398,12 +398,12 @@ LABEL_12:
   }
 
 LABEL_14:
-  v20 = 0;
+  data = 0;
 LABEL_15:
 
   v24 = *MEMORY[0x1E69E9840];
 
-  return v20;
+  return data;
 }
 
 - (id)_encryptedDataUsingMessageSecurity:()SMIMEEncoding compositionSpecification:contentType:error:
@@ -429,13 +429,13 @@ LABEL_15:
       v16 = v15;
       if (v15)
       {
-        v17 = [MEMORY[0x1E699B220] oidStringsForAuthenticatedEncryption];
-        v18 = [v17 firstObject];
+        oidStringsForAuthenticatedEncryption = [MEMORY[0x1E699B220] oidStringsForAuthenticatedEncryption];
+        firstObject = [oidStringsForAuthenticatedEncryption firstObject];
       }
 
       else
       {
-        v18 = 0;
+        firstObject = 0;
       }
 
       v21 = [v10 objectForKey:@"RecipientCertificates"];
@@ -445,10 +445,10 @@ LABEL_15:
       v31[3] = &unk_1E7AA7C88;
       v35 = v16;
       v32 = v13;
-      v33 = v18;
+      v33 = firstObject;
       v22 = v12;
       v34 = v22;
-      v23 = v18;
+      v23 = firstObject;
       [v21 enumerateKeysAndObjectsUsingBlock:v31];
 
       buf[0] = 0;

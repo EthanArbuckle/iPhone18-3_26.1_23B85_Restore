@@ -25,9 +25,9 @@
     v2->_isAppleInternalInstall = [objc_opt_class() _isAppleInternalInstall];
     v2->_isM8Device = [objc_opt_class() _isM8Device];
     v2->_isRunningInStoreDemoModeOrSimulator = [objc_opt_class() _isRunningInStoreDemoModeOrSimulator];
-    v3 = [objc_opt_class() _regionCode];
+    _regionCode = [objc_opt_class() _regionCode];
     regionCode = v2->_regionCode;
-    v2->_regionCode = v3;
+    v2->_regionCode = _regionCode;
 
     if (!v2->_isMobileKeyBagDisabledOrDeviceUnlockedSinceBoot)
     {
@@ -89,42 +89,42 @@ uint64_t __29__TCSBehavior_sharedBehavior__block_invoke()
 
 + (BOOL)isMobileKeyBagDisabledOrDeviceUnlockedSinceBoot
 {
-  v2 = [a1 sharedBehavior];
-  v3 = [v2 isMobileKeyBagDisabledOrDeviceUnlockedSinceBoot];
+  sharedBehavior = [self sharedBehavior];
+  isMobileKeyBagDisabledOrDeviceUnlockedSinceBoot = [sharedBehavior isMobileKeyBagDisabledOrDeviceUnlockedSinceBoot];
 
-  return v3;
+  return isMobileKeyBagDisabledOrDeviceUnlockedSinceBoot;
 }
 
 + (BOOL)isAppleInternalInstall
 {
-  v2 = [a1 sharedBehavior];
-  v3 = [v2 isAppleInternalInstall];
+  sharedBehavior = [self sharedBehavior];
+  isAppleInternalInstall = [sharedBehavior isAppleInternalInstall];
 
-  return v3;
+  return isAppleInternalInstall;
 }
 
 + (BOOL)isM8Device
 {
-  v2 = [a1 sharedBehavior];
-  v3 = [v2 isM8Device];
+  sharedBehavior = [self sharedBehavior];
+  isM8Device = [sharedBehavior isM8Device];
 
-  return v3;
+  return isM8Device;
 }
 
 + (BOOL)isRunningInStoreDemoModeOrSimulator
 {
-  v2 = [a1 sharedBehavior];
-  v3 = [v2 isRunningInStoreDemoModeOrSimulator];
+  sharedBehavior = [self sharedBehavior];
+  isRunningInStoreDemoModeOrSimulator = [sharedBehavior isRunningInStoreDemoModeOrSimulator];
 
-  return v3;
+  return isRunningInStoreDemoModeOrSimulator;
 }
 
 + (id)regionCode
 {
-  v2 = [a1 sharedBehavior];
-  v3 = [v2 regionCode];
+  sharedBehavior = [self sharedBehavior];
+  regionCode = [sharedBehavior regionCode];
 
-  return v3;
+  return regionCode;
 }
 
 + (BOOL)_isM8Device
@@ -177,8 +177,8 @@ uint64_t __29__TCSBehavior_sharedBehavior__block_invoke()
     _os_log_impl(&dword_26F110000, v3, OS_LOG_TYPE_DEFAULT, "TCSBehavior notifying clients of device first unlock.", v5, 2u);
   }
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 postNotificationName:@"TCSFirstUnlockNotification" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"TCSFirstUnlockNotification" object:self];
 }
 
 @end

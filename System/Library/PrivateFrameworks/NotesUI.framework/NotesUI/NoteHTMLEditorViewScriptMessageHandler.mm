@@ -1,31 +1,31 @@
 @interface NoteHTMLEditorViewScriptMessageHandler
 - (NoteHTMLEditorView)noteHTMLEditorView;
-- (NoteHTMLEditorViewScriptMessageHandler)initWithNoteHMLEditorView:(id)a3;
-- (void)userContentController:(id)a3 didReceiveScriptMessage:(id)a4;
+- (NoteHTMLEditorViewScriptMessageHandler)initWithNoteHMLEditorView:(id)view;
+- (void)userContentController:(id)controller didReceiveScriptMessage:(id)message;
 @end
 
 @implementation NoteHTMLEditorViewScriptMessageHandler
 
-- (NoteHTMLEditorViewScriptMessageHandler)initWithNoteHMLEditorView:(id)a3
+- (NoteHTMLEditorViewScriptMessageHandler)initWithNoteHMLEditorView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v8.receiver = self;
   v8.super_class = NoteHTMLEditorViewScriptMessageHandler;
   v5 = [(NoteHTMLEditorViewScriptMessageHandler *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_noteHTMLEditorView, v4);
+    objc_storeWeak(&v5->_noteHTMLEditorView, viewCopy);
   }
 
   return v6;
 }
 
-- (void)userContentController:(id)a3 didReceiveScriptMessage:(id)a4
+- (void)userContentController:(id)controller didReceiveScriptMessage:(id)message
 {
-  v5 = a4;
-  v6 = [(NoteHTMLEditorViewScriptMessageHandler *)self noteHTMLEditorView];
-  [v6 didReceiveScriptMessage:v5];
+  messageCopy = message;
+  noteHTMLEditorView = [(NoteHTMLEditorViewScriptMessageHandler *)self noteHTMLEditorView];
+  [noteHTMLEditorView didReceiveScriptMessage:messageCopy];
 }
 
 - (NoteHTMLEditorView)noteHTMLEditorView

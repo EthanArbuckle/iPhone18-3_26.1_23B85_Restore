@@ -1,11 +1,11 @@
 @interface C2SessionGroup
 - (BOOL)isEmpty;
-- (BOOL)removeSession:(id)a3;
-- (C2SessionGroup)initWithConfigurationName:(id)a3;
+- (BOOL)removeSession:(id)session;
+- (C2SessionGroup)initWithConfigurationName:(id)name;
 - (NSArray)sessions;
-- (id)sessionForOptions:(id)a3;
+- (id)sessionForOptions:(id)options;
 - (void)sessions;
-- (void)setSession:(id)a3 forOptions:(id)a4;
+- (void)setSession:(id)session forOptions:(id)options;
 @end
 
 @implementation C2SessionGroup
@@ -38,16 +38,16 @@
 
 - (BOOL)isEmpty
 {
-  v2 = [(C2SessionGroup *)self sessions];
-  v3 = [v2 count] == 0;
+  sessions = [(C2SessionGroup *)self sessions];
+  v3 = [sessions count] == 0;
 
   return v3;
 }
 
-- (C2SessionGroup)initWithConfigurationName:(id)a3
+- (C2SessionGroup)initWithConfigurationName:(id)name
 {
-  v5 = a3;
-  if (v5)
+  nameCopy = name;
+  if (nameCopy)
   {
     v10.receiver = self;
     v10.super_class = C2SessionGroup;
@@ -55,31 +55,31 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_configurationName, a3);
+      objc_storeStrong(&v6->_configurationName, name);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (id)sessionForOptions:(id)a3
+- (id)sessionForOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = self->_pinnedSessionAllowingExpiredDNS;
   if (v5)
   {
     goto LABEL_2;
   }
 
-  if (([v4 allowExpiredDNSBehavior] & 1) == 0)
+  if (([optionsCopy allowExpiredDNSBehavior] & 1) == 0)
   {
     v5 = self->_pinnedSession;
     if (v5)
@@ -88,7 +88,7 @@
     }
   }
 
-  if (([v4 allowExpiredDNSBehavior] & 1) == 0 && (objc_msgSend(v4, "tlsPinning") & 1) == 0)
+  if (([optionsCopy allowExpiredDNSBehavior] & 1) == 0 && (objc_msgSend(optionsCopy, "tlsPinning") & 1) == 0)
   {
     v5 = self->_unpinnedSession;
 LABEL_2:
@@ -102,11 +102,11 @@ LABEL_3:
   return v6;
 }
 
-- (void)setSession:(id)a3 forOptions:(id)a4
+- (void)setSession:(id)session forOptions:(id)options
 {
-  v9 = a3;
-  v7 = a4;
-  if ([v7 allowExpiredDNSBehavior])
+  sessionCopy = session;
+  optionsCopy = options;
+  if ([optionsCopy allowExpiredDNSBehavior])
   {
     p_pinnedSessionAllowingExpiredDNS = &self->_pinnedSessionAllowingExpiredDNS;
     if (self->_pinnedSessionAllowingExpiredDNS)
@@ -115,7 +115,7 @@ LABEL_3:
     }
   }
 
-  else if ([v7 tlsPinning])
+  else if ([optionsCopy tlsPinning])
   {
     if (self->_pinnedSessionAllowingExpiredDNS)
     {
@@ -134,23 +134,23 @@ LABEL_3:
     }
   }
 
-  objc_storeStrong(p_pinnedSessionAllowingExpiredDNS, a3);
+  objc_storeStrong(p_pinnedSessionAllowingExpiredDNS, session);
 }
 
-- (BOOL)removeSession:(id)a3
+- (BOOL)removeSession:(id)session
 {
-  v4 = a3;
-  v5 = v4;
+  sessionCopy = session;
+  v5 = sessionCopy;
   p_pinnedSessionAllowingExpiredDNS = &self->_pinnedSessionAllowingExpiredDNS;
   pinnedSessionAllowingExpiredDNS = self->_pinnedSessionAllowingExpiredDNS;
-  if (pinnedSessionAllowingExpiredDNS == v4)
+  if (pinnedSessionAllowingExpiredDNS == sessionCopy)
   {
     goto LABEL_6;
   }
 
   p_pinnedSessionAllowingExpiredDNS = &self->_pinnedSession;
   pinnedSessionAllowingExpiredDNS = self->_pinnedSession;
-  if (pinnedSessionAllowingExpiredDNS == v4)
+  if (pinnedSessionAllowingExpiredDNS == sessionCopy)
   {
     goto LABEL_6;
   }
@@ -158,7 +158,7 @@ LABEL_3:
   unpinnedSession = self->_unpinnedSession;
   p_unpinnedSession = &self->_unpinnedSession;
   pinnedSessionAllowingExpiredDNS = unpinnedSession;
-  if (unpinnedSession == v4)
+  if (unpinnedSession == sessionCopy)
   {
     p_pinnedSessionAllowingExpiredDNS = p_unpinnedSession;
 LABEL_6:
@@ -197,8 +197,8 @@ LABEL_7:
 
 - (void)sessions
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"C2SessionGroup.m" lineNumber:55 description:@"Failed to alloc sessions array"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"C2SessionGroup.m" lineNumber:55 description:@"Failed to alloc sessions array"];
 }
 
 @end

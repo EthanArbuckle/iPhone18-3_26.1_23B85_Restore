@@ -1,14 +1,14 @@
 @interface DADeviceConnectionAirPods
 - (BOOL)connect;
 - (BOOL)disconnect;
-- (DADeviceConnectionAirPods)initWithState:(id)a3 bluetoothDevice:(id)a4;
-- (void)DADeviceAirPodsSessionWillStartNotification:(id)a3;
-- (void)_btDeviceConnectFailedNotification:(id)a3;
-- (void)_btDeviceConnectSuccessNotification:(id)a3;
-- (void)_btDeviceDisconnectFailedNotification:(id)a3;
-- (void)_btDeviceDisconnectSuccessNotification:(id)a3;
-- (void)allowSessionAccessoryDisconnectForDuration:(id)a3;
-- (void)didFinishSendingResultForTest:(id)a3;
+- (DADeviceConnectionAirPods)initWithState:(id)state bluetoothDevice:(id)device;
+- (void)DADeviceAirPodsSessionWillStartNotification:(id)notification;
+- (void)_btDeviceConnectFailedNotification:(id)notification;
+- (void)_btDeviceConnectSuccessNotification:(id)notification;
+- (void)_btDeviceDisconnectFailedNotification:(id)notification;
+- (void)_btDeviceDisconnectSuccessNotification:(id)notification;
+- (void)allowSessionAccessoryDisconnectForDuration:(id)duration;
+- (void)didFinishSendingResultForTest:(id)test;
 - (void)end;
 - (void)endIgnoringDisconnects;
 - (void)start;
@@ -17,16 +17,16 @@
 
 @implementation DADeviceConnectionAirPods
 
-- (DADeviceConnectionAirPods)initWithState:(id)a3 bluetoothDevice:(id)a4
+- (DADeviceConnectionAirPods)initWithState:(id)state bluetoothDevice:(id)device
 {
-  v7 = a4;
+  deviceCopy = device;
   v24.receiver = self;
   v24.super_class = DADeviceConnectionAirPods;
-  v8 = [(DADeviceConnectionLocal *)&v24 initWithState:a3];
+  v8 = [(DADeviceConnectionLocal *)&v24 initWithState:state];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_airpodsDevice, a4);
+    objc_storeStrong(&v8->_airpodsDevice, device);
     v10 = dispatch_semaphore_create(0);
     connectSemaphore = v9->_connectSemaphore;
     v9->_connectSemaphore = v10;
@@ -39,7 +39,7 @@
     connectionCommandQueue = v9->_connectionCommandQueue;
     v9->_connectionCommandQueue = v14;
 
-    v9->_lastConnectionState = [v7 connected];
+    v9->_lastConnectionState = [deviceCopy connected];
     v16 = +[BluetoothManager sharedInstance];
     btManager = v9->_btManager;
     v9->_btManager = v16;
@@ -83,19 +83,19 @@
   v3 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(DADeviceConnectionAirPods *)self airpodsDevice];
+    airpodsDevice = [(DADeviceConnectionAirPods *)self airpodsDevice];
     v11 = 138412290;
-    v12 = v4;
+    v12 = airpodsDevice;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Connecting to AirPods %@...", &v11, 0xCu);
   }
 
   [(DADeviceConnectionAirPods *)self setConnecting:1];
-  v5 = [(DADeviceConnectionAirPods *)self airpodsDevice];
-  [v5 connect];
+  airpodsDevice2 = [(DADeviceConnectionAirPods *)self airpodsDevice];
+  [airpodsDevice2 connect];
 
-  v6 = [(DADeviceConnectionAirPods *)self connectSemaphore];
+  connectSemaphore = [(DADeviceConnectionAirPods *)self connectSemaphore];
   v7 = dispatch_time(0, 15000000000);
-  v8 = dispatch_semaphore_wait(v6, v7);
+  v8 = dispatch_semaphore_wait(connectSemaphore, v7);
 
   if (v8)
   {
@@ -115,19 +115,19 @@
   v3 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(DADeviceConnectionAirPods *)self airpodsDevice];
+    airpodsDevice = [(DADeviceConnectionAirPods *)self airpodsDevice];
     v11 = 138412290;
-    v12 = v4;
+    v12 = airpodsDevice;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Disconnecting from AirPods %@...", &v11, 0xCu);
   }
 
   [(DADeviceConnectionAirPods *)self setDisconnecting:1];
-  v5 = [(DADeviceConnectionAirPods *)self airpodsDevice];
-  [v5 disconnect];
+  airpodsDevice2 = [(DADeviceConnectionAirPods *)self airpodsDevice];
+  [airpodsDevice2 disconnect];
 
-  v6 = [(DADeviceConnectionAirPods *)self disconnectSemaphore];
+  disconnectSemaphore = [(DADeviceConnectionAirPods *)self disconnectSemaphore];
   v7 = dispatch_time(0, 15000000000);
-  v8 = dispatch_semaphore_wait(v6, v7);
+  v8 = dispatch_semaphore_wait(disconnectSemaphore, v7);
 
   if (v8)
   {
@@ -144,31 +144,31 @@
 
 - (void)start
 {
-  v3 = [(DADeviceConnectionAirPods *)self connectionCommandQueue];
+  connectionCommandQueue = [(DADeviceConnectionAirPods *)self connectionCommandQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100029AE4;
   block[3] = &unk_1001BC580;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(connectionCommandQueue, block);
 }
 
 - (void)end
 {
-  v3 = [(DADeviceConnectionAirPods *)self connectionCommandQueue];
+  connectionCommandQueue = [(DADeviceConnectionAirPods *)self connectionCommandQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100029D0C;
   block[3] = &unk_1001BC580;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(connectionCommandQueue, block);
 }
 
-- (void)didFinishSendingResultForTest:(id)a3
+- (void)didFinishSendingResultForTest:(id)test
 {
   v7.receiver = self;
   v7.super_class = DADeviceConnectionAirPods;
-  [(DADeviceConnectionLocal *)&v7 didFinishSendingResultForTest:a3];
+  [(DADeviceConnectionLocal *)&v7 didFinishSendingResultForTest:test];
   if ([(DADeviceConnectionAirPods *)self unpairOnTestCompletion])
   {
     v4 = dispatch_time(0, 2000000000);
@@ -182,27 +182,27 @@
   }
 }
 
-- (void)DADeviceAirPodsSessionWillStartNotification:(id)a3
+- (void)DADeviceAirPodsSessionWillStartNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v11 = [v4 objectForKeyedSubscript:@"DADeviceAirPodsDeviceKey"];
+  userInfo = [notification userInfo];
+  v11 = [userInfo objectForKeyedSubscript:@"DADeviceAirPodsDeviceKey"];
 
-  v5 = [(DADeviceConnectionAirPods *)self lastConnectionState];
+  lastConnectionState = [(DADeviceConnectionAirPods *)self lastConnectionState];
   v6 = v11;
-  if (v5)
+  if (lastConnectionState)
   {
-    v7 = [(DADeviceConnectionAirPods *)self airpodsDevice];
+    airpodsDevice = [(DADeviceConnectionAirPods *)self airpodsDevice];
 
     v6 = v11;
-    if (v7 != v11)
+    if (airpodsDevice != v11)
     {
-      v8 = [(DADeviceConnectionLocal *)self state];
-      if ([v8 phase])
+      state = [(DADeviceConnectionLocal *)self state];
+      if ([state phase])
       {
-        v9 = [(DADeviceConnectionLocal *)self state];
-        v10 = [v9 phase];
+        state2 = [(DADeviceConnectionLocal *)self state];
+        phase = [state2 phase];
 
-        if (v10 != 1)
+        if (phase != 1)
         {
           [(DADeviceConnectionAirPods *)self end];
 LABEL_8:
@@ -226,29 +226,29 @@ LABEL_9:
 - (void)unpair
 {
   objc_initWeak(&location, self);
-  v3 = [(DADeviceConnectionAirPods *)self connectionCommandQueue];
+  connectionCommandQueue = [(DADeviceConnectionAirPods *)self connectionCommandQueue];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10002A0E4;
   v4[3] = &unk_1001BC698;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(connectionCommandQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
 }
 
-- (void)allowSessionAccessoryDisconnectForDuration:(id)a3
+- (void)allowSessionAccessoryDisconnectForDuration:(id)duration
 {
-  v4 = a3;
-  v5 = [v4 intValue];
+  durationCopy = duration;
+  intValue = [durationCopy intValue];
   v6 = DiagnosticLogHandleForCategory();
   v7 = v6;
-  if (v5 <= 0)
+  if (intValue <= 0)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      sub_1001595F8(v4, v7);
+      sub_1001595F8(durationCopy, v7);
     }
   }
 
@@ -257,12 +257,12 @@ LABEL_9:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412290;
-      v9 = v4;
+      v9 = durationCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Ignoring accessory disconnects for %@ seconds", &v8, 0xCu);
     }
 
     [(DADeviceConnectionAirPods *)self setIsIgnoringDisconnect:1];
-    [v4 doubleValue];
+    [durationCopy doubleValue];
     v7 = [NSTimer scheduledTimerWithTimeInterval:self target:"endIgnoringDisconnects" selector:0 userInfo:0 repeats:?];
     [(DADeviceConnectionAirPods *)self setIgnoreDisconnectTimer:v7];
   }
@@ -277,12 +277,12 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Resuming handling for accessory disconnects", buf, 2u);
   }
 
-  v4 = [(DADeviceConnectionAirPods *)self ignoreDisconnectTimer];
+  ignoreDisconnectTimer = [(DADeviceConnectionAirPods *)self ignoreDisconnectTimer];
 
-  if (v4)
+  if (ignoreDisconnectTimer)
   {
-    v5 = [(DADeviceConnectionAirPods *)self ignoreDisconnectTimer];
-    [v5 invalidate];
+    ignoreDisconnectTimer2 = [(DADeviceConnectionAirPods *)self ignoreDisconnectTimer];
+    [ignoreDisconnectTimer2 invalidate];
 
     [(DADeviceConnectionAirPods *)self setIgnoreDisconnectTimer:0];
   }
@@ -296,85 +296,85 @@ LABEL_9:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Accessory is in a disconnected state upon resuming handling. Ending the session immediately.", v9, 2u);
     }
 
-    v7 = [(DADeviceConnectionLocal *)self state];
-    [v7 setPhase:1];
+    state = [(DADeviceConnectionLocal *)self state];
+    [state setPhase:1];
 
-    v8 = [(DADeviceConnectionLocal *)self state];
-    [v8 addErrorCode:12 userInfo:0];
+    state2 = [(DADeviceConnectionLocal *)self state];
+    [state2 addErrorCode:12 userInfo:0];
   }
 
   [(DADeviceConnectionAirPods *)self setIsIgnoringDisconnect:0];
   [(DADeviceConnectionAirPods *)self setHasIgnoredDisconnect:0];
 }
 
-- (void)_btDeviceConnectSuccessNotification:(id)a3
+- (void)_btDeviceConnectSuccessNotification:(id)notification
 {
-  v4 = [a3 object];
-  v5 = [(DADeviceConnectionAirPods *)self airpodsDevice];
-  v6 = [v4 isEqual:v5];
+  object = [notification object];
+  airpodsDevice = [(DADeviceConnectionAirPods *)self airpodsDevice];
+  v6 = [object isEqual:airpodsDevice];
 
   if (v6)
   {
     v7 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(DADeviceConnectionAirPods *)self airpodsDevice];
+      airpodsDevice2 = [(DADeviceConnectionAirPods *)self airpodsDevice];
       v10 = 138412290;
-      v11 = v8;
+      v11 = airpodsDevice2;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "AirPods device %@ has connected successfully!", &v10, 0xCu);
     }
 
     if ([(DADeviceConnectionAirPods *)self connecting])
     {
-      v9 = [(DADeviceConnectionAirPods *)self connectSemaphore];
-      dispatch_semaphore_signal(v9);
+      connectSemaphore = [(DADeviceConnectionAirPods *)self connectSemaphore];
+      dispatch_semaphore_signal(connectSemaphore);
     }
 
     [(DADeviceConnectionAirPods *)self setLastConnectionState:1];
   }
 }
 
-- (void)_btDeviceConnectFailedNotification:(id)a3
+- (void)_btDeviceConnectFailedNotification:(id)notification
 {
-  v4 = [a3 object];
-  v5 = [(DADeviceConnectionAirPods *)self airpodsDevice];
-  v6 = [v4 isEqual:v5];
+  object = [notification object];
+  airpodsDevice = [(DADeviceConnectionAirPods *)self airpodsDevice];
+  v6 = [object isEqual:airpodsDevice];
 
   if (v6)
   {
     v7 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(DADeviceConnectionAirPods *)self airpodsDevice];
+      airpodsDevice2 = [(DADeviceConnectionAirPods *)self airpodsDevice];
       v10 = 138412290;
-      v11 = v8;
+      v11 = airpodsDevice2;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "AirPods device %@ failed to connect!", &v10, 0xCu);
     }
 
     if ([(DADeviceConnectionAirPods *)self connecting])
     {
-      v9 = [(DADeviceConnectionAirPods *)self connectSemaphore];
-      dispatch_semaphore_signal(v9);
+      connectSemaphore = [(DADeviceConnectionAirPods *)self connectSemaphore];
+      dispatch_semaphore_signal(connectSemaphore);
     }
 
     [(DADeviceConnectionAirPods *)self setLastConnectionState:0];
   }
 }
 
-- (void)_btDeviceDisconnectSuccessNotification:(id)a3
+- (void)_btDeviceDisconnectSuccessNotification:(id)notification
 {
-  v4 = [a3 object];
-  v5 = [(DADeviceConnectionAirPods *)self airpodsDevice];
-  v6 = [v4 isEqual:v5];
+  object = [notification object];
+  airpodsDevice = [(DADeviceConnectionAirPods *)self airpodsDevice];
+  v6 = [object isEqual:airpodsDevice];
 
   if (v6)
   {
     v7 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(DADeviceConnectionAirPods *)self airpodsDevice];
+      airpodsDevice2 = [(DADeviceConnectionAirPods *)self airpodsDevice];
       v14 = 138412290;
-      v15 = v8;
+      v15 = airpodsDevice2;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "AirPods device %@ has disconected!", &v14, 0xCu);
     }
 
@@ -387,8 +387,8 @@ LABEL_9:
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Disconnect was expected", &v14, 2u);
       }
 
-      v10 = [(DADeviceConnectionAirPods *)self disconnectSemaphore];
-      dispatch_semaphore_signal(v10);
+      disconnectSemaphore = [(DADeviceConnectionAirPods *)self disconnectSemaphore];
+      dispatch_semaphore_signal(disconnectSemaphore);
     }
 
     else
@@ -419,38 +419,38 @@ LABEL_17:
         sub_100159670(v12);
       }
 
-      v13 = [(DADeviceConnectionLocal *)self state];
-      [v13 setPhase:1];
+      state = [(DADeviceConnectionLocal *)self state];
+      [state setPhase:1];
 
-      v10 = [(DADeviceConnectionLocal *)self state];
-      [v10 addErrorCode:12 userInfo:0];
+      disconnectSemaphore = [(DADeviceConnectionLocal *)self state];
+      [disconnectSemaphore addErrorCode:12 userInfo:0];
     }
 
     goto LABEL_17;
   }
 }
 
-- (void)_btDeviceDisconnectFailedNotification:(id)a3
+- (void)_btDeviceDisconnectFailedNotification:(id)notification
 {
-  v4 = [a3 object];
-  v5 = [(DADeviceConnectionAirPods *)self airpodsDevice];
-  v6 = [v4 isEqual:v5];
+  object = [notification object];
+  airpodsDevice = [(DADeviceConnectionAirPods *)self airpodsDevice];
+  v6 = [object isEqual:airpodsDevice];
 
   if (v6)
   {
     v7 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(DADeviceConnectionAirPods *)self airpodsDevice];
+      airpodsDevice2 = [(DADeviceConnectionAirPods *)self airpodsDevice];
       v11 = 138412290;
-      v12 = v8;
+      v12 = airpodsDevice2;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "AirPods device %@ has failed to disconnect!", &v11, 0xCu);
     }
 
     if ([(DADeviceConnectionAirPods *)self disconnecting])
     {
-      v9 = [(DADeviceConnectionAirPods *)self disconnectSemaphore];
-      dispatch_semaphore_signal(v9);
+      disconnectSemaphore = [(DADeviceConnectionAirPods *)self disconnectSemaphore];
+      dispatch_semaphore_signal(disconnectSemaphore);
     }
 
     else
@@ -462,11 +462,11 @@ LABEL_9:
         return;
       }
 
-      v10 = [(DADeviceConnectionLocal *)self state];
-      [v10 setPhase:1];
+      state = [(DADeviceConnectionLocal *)self state];
+      [state setPhase:1];
 
-      v9 = [(DADeviceConnectionLocal *)self state];
-      [v9 addErrorCode:12 userInfo:0];
+      disconnectSemaphore = [(DADeviceConnectionLocal *)self state];
+      [disconnectSemaphore addErrorCode:12 userInfo:0];
     }
 
     goto LABEL_9;

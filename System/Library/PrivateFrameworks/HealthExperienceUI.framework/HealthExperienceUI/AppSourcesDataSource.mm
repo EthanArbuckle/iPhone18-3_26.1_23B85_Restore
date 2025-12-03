@@ -1,14 +1,14 @@
 @interface AppSourcesDataSource
-- (void)sourceListDataSourceDidUpdate:(id)a3;
+- (void)sourceListDataSourceDidUpdate:(id)update;
 @end
 
 @implementation AppSourcesDataSource
 
-- (void)sourceListDataSourceDidUpdate:(id)a3
+- (void)sourceListDataSourceDidUpdate:(id)update
 {
-  v3 = a3;
+  updateCopy = update;
 
-  sub_1BA423660(v3);
+  sub_1BA423660(updateCopy);
 }
 
 @end

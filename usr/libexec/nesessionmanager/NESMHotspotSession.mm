@@ -1,26 +1,26 @@
 @interface NESMHotspotSession
 - (void)dealloc;
-- (void)didProviderExit:(id)a3;
-- (void)handleStartMessage:(id)a3;
+- (void)didProviderExit:(id)exit;
+- (void)handleStartMessage:(id)message;
 - (void)install;
 - (void)installPended;
-- (void)plugin:(id)a3 didInitializeWithUUIDs:(id)a4;
-- (void)plugin:(id)a3 didReceiveProviderError:(id)a4;
-- (void)plugin:(id)a3 didStartWithPID:(int)a4 error:(id)a5;
-- (void)pluginDidAcknowledgeSleep:(id)a3;
-- (void)pluginDidDispose:(id)a3;
+- (void)plugin:(id)plugin didInitializeWithUUIDs:(id)ds;
+- (void)plugin:(id)plugin didReceiveProviderError:(id)error;
+- (void)plugin:(id)plugin didStartWithPID:(int)d error:(id)error;
+- (void)pluginDidAcknowledgeSleep:(id)sleep;
+- (void)pluginDidDispose:(id)dispose;
 - (void)uninstall;
 @end
 
 @implementation NESMHotspotSession
 
-- (void)didProviderExit:(id)a3
+- (void)didProviderExit:(id)exit
 {
   v4 = ne_log_obj();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 138412290;
-    v19 = self;
+    selfCopy2 = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%@: didProviderExit: disposing ", &v18, 0xCu);
   }
 
@@ -42,13 +42,13 @@
       v14 = ne_log_obj();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
-        v15 = [(NESMSession *)self configuration];
-        v16 = [v15 hotspot];
-        v17 = [v16 authenticationProviderBundleIdentifier];
+        configuration = [(NESMSession *)self configuration];
+        hotspot = [configuration hotspot];
+        authenticationProviderBundleIdentifier = [hotspot authenticationProviderBundleIdentifier];
         v18 = 138412546;
-        v19 = self;
+        selfCopy2 = self;
         v20 = 2112;
-        v21 = v17;
+        v21 = authenticationProviderBundleIdentifier;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "%@ uninstalling policies for [%@]", &v18, 0x16u);
       }
 
@@ -70,30 +70,30 @@
   }
 }
 
-- (void)plugin:(id)a3 didReceiveProviderError:(id)a4
+- (void)plugin:(id)plugin didReceiveProviderError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = ne_log_obj();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v26 = 138412546;
-    v27 = self;
+    selfCopy5 = self;
     v28 = 2112;
-    v29 = v5;
+    v29 = errorCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%@: didReceiveProviderError: error: %@", &v26, 0x16u);
   }
 
   if (self->_active)
   {
-    if (v5)
+    if (errorCopy)
     {
       v7 = ne_log_obj();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
         v26 = 138412546;
-        v27 = self;
+        selfCopy5 = self;
         v28 = 2112;
-        v29 = v5;
+        v29 = errorCopy;
         _os_log_error_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "%@ hotspot provider failed to stop, error: %@", &v26, 0x16u);
       }
     }
@@ -131,14 +131,14 @@ LABEL_19:
   {
     v10 = ne_log_obj();
     v11 = v10;
-    if (v5)
+    if (errorCopy)
     {
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         v26 = 138412546;
-        v27 = self;
+        selfCopy5 = self;
         v28 = 2112;
-        v29 = v5;
+        v29 = errorCopy;
         _os_log_error_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "%@ hotspot provider failed to start, error: %@", &v26, 0x16u);
       }
 
@@ -158,13 +158,13 @@ LABEL_19:
         v22 = ne_log_obj();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
         {
-          v23 = [(NESMSession *)self configuration];
-          v24 = [v23 hotspot];
-          v25 = [v24 authenticationProviderBundleIdentifier];
+          configuration = [(NESMSession *)self configuration];
+          hotspot = [configuration hotspot];
+          authenticationProviderBundleIdentifier = [hotspot authenticationProviderBundleIdentifier];
           v26 = 138412546;
-          v27 = self;
+          selfCopy5 = self;
           v28 = 2112;
-          v29 = v25;
+          v29 = authenticationProviderBundleIdentifier;
           _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "%@ uninstalling policies for [%@]", &v26, 0x16u);
         }
 
@@ -194,7 +194,7 @@ LABEL_24:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         v26 = 138412290;
-        v27 = self;
+        selfCopy5 = self;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%@ hotspot provider started, session is active now", &v26, 0xCu);
       }
 
@@ -204,51 +204,51 @@ LABEL_24:
   }
 }
 
-- (void)pluginDidDispose:(id)a3
+- (void)pluginDidDispose:(id)dispose
 {
-  v4 = a3;
+  disposeCopy = dispose;
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412546;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
-    v10 = v4;
+    v10 = disposeCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@: plugin %@ disposed, requesting uninstall ...", &v7, 0x16u);
   }
 
-  v6 = [(NESMSession *)self server];
-  [v6 requestUninstallForSession:self];
+  server = [(NESMSession *)self server];
+  [server requestUninstallForSession:self];
 }
 
-- (void)pluginDidAcknowledgeSleep:(id)a3
+- (void)pluginDidAcknowledgeSleep:(id)sleep
 {
   v4 = ne_log_obj();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     v5 = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_debug_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "%@ pluginDidAcknowledgeSleep", &v5, 0xCu);
   }
 }
 
-- (void)plugin:(id)a3 didStartWithPID:(int)a4 error:(id)a5
+- (void)plugin:(id)plugin didStartWithPID:(int)d error:(id)error
 {
-  v85 = a3;
-  v86 = a5;
+  pluginCopy = plugin;
+  errorCopy = error;
   v8 = ne_log_obj();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
-    v145 = self;
+    selfCopy5 = self;
     v146 = 1024;
-    LODWORD(v147) = a4;
+    LODWORD(v147) = d;
     _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%@ didStartWithPID, pid: [%d]", buf, 0x12u);
   }
 
-  if (a4)
+  if (d)
   {
-    v9 = v86 == 0;
+    v9 = errorCopy == 0;
   }
 
   else
@@ -264,9 +264,9 @@ LABEL_24:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v145 = self;
+      selfCopy5 = self;
       v146 = 2112;
-      v147 = v86;
+      v147 = errorCopy;
       _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%@: failed to start with error: %@", buf, 0x16u);
     }
 
@@ -277,11 +277,11 @@ LABEL_24:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v145 = self;
+    selfCopy5 = self;
     v146 = 2112;
-    v147 = v85;
+    v147 = pluginCopy;
     v148 = 1024;
-    LODWORD(v149) = a4;
+    LODWORD(v149) = d;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%@: plugin %@ started with pid %d", buf, 0x1Cu);
   }
 
@@ -291,7 +291,7 @@ LABEL_24:
     if (sessionType != 11)
     {
 LABEL_19:
-      if (sessionType != 12 || objc_getProperty(self, v13, 368, 1) != v85)
+      if (sessionType != 12 || objc_getProperty(self, v13, 368, 1) != pluginCopy)
       {
         goto LABEL_104;
       }
@@ -299,61 +299,61 @@ LABEL_19:
       Property = objc_getProperty(self, v15, 368, 1);
       if (Property)
       {
-        v17 = [Property remotePluginObject];
-        [v17 startAuthenticationProvider];
+        remotePluginObject = [Property remotePluginObject];
+        [remotePluginObject startAuthenticationProvider];
       }
 
       v18 = ne_log_obj();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
-        v19 = [(NESMSession *)self configuration];
-        v20 = [v19 hotspot];
-        v21 = [v20 authenticationProviderBundleIdentifier];
+        configuration = [(NESMSession *)self configuration];
+        hotspot = [configuration hotspot];
+        authenticationProviderBundleIdentifier = [hotspot authenticationProviderBundleIdentifier];
         *buf = 138412546;
-        v145 = self;
+        selfCopy5 = self;
         v146 = 2112;
-        v147 = v21;
+        v147 = authenticationProviderBundleIdentifier;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "%@ installing policies for [%@]", buf, 0x16u);
       }
 
       v22 = objc_alloc_init(CWFInterface);
       [v22 activate];
-      v23 = [v22 interfaceName];
+      interfaceName = [v22 interfaceName];
       [v22 invalidate];
 
-      v24 = [(NESMSession *)self configuration];
-      v25 = [v24 hotspot];
-      v84 = [v25 authenticationProviderBundleIdentifier];
+      configuration2 = [(NESMSession *)self configuration];
+      hotspot2 = [configuration2 hotspot];
+      authenticationProviderBundleIdentifier2 = [hotspot2 authenticationProviderBundleIdentifier];
 
-      v26 = sub_10005D3B4(self, v84);
-      v27 = [(NESMSession *)self configuration];
-      v83 = [v27 application];
+      v26 = sub_10005D3B4(self, authenticationProviderBundleIdentifier2);
+      configuration3 = [(NESMSession *)self configuration];
+      application = [configuration3 application];
 
-      v28 = sub_10005D3B4(self, v83);
-      v29 = [(NESMSession *)self configuration];
-      v30 = [v29 hotspot];
-      v88 = [v30 safariDomains];
+      v28 = sub_10005D3B4(self, application);
+      configuration4 = [(NESMSession *)self configuration];
+      hotspot3 = [configuration4 hotspot];
+      safariDomains = [hotspot3 safariDomains];
 
       v94 = +[NEProcessInfo copyDNSUUIDs];
       v31 = ne_log_obj();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138413314;
-        v145 = self;
+        selfCopy5 = self;
         v146 = 2112;
-        v147 = v23;
+        v147 = interfaceName;
         v148 = 2112;
         v149 = v26;
         v150 = 2112;
         v151 = v28;
         v152 = 2112;
-        v153 = v88;
+        v153 = safariDomains;
         _os_log_debug_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEBUG, "%@ installing hotspot provider policies for Wi-Fi interface: [%@] \t\t\t\tprovider machOUUIDs: %@ \t\t\t\tapp machOUUIDs: %@ \t\t\t\tSafari domains: %@", buf, 0x34u);
       }
 
       v32 = objc_alloc_init(NSMutableArray);
-      v33 = [NEPolicyResult tunnelIPToInterfaceName:v23 secondaryResultType:1];
-      v98 = [NEPolicyResult scopeSocketToInterfaceName:v23];
+      v33 = [NEPolicyResult tunnelIPToInterfaceName:interfaceName secondaryResultType:1];
+      v98 = [NEPolicyResult scopeSocketToInterfaceName:interfaceName];
       v128 = 0;
       v129 = &v128;
       v130 = 0x3032000000;
@@ -379,7 +379,7 @@ LABEL_19:
             }
 
             v37 = *(*(&v124 + 1) + 8 * i);
-            v38 = sub_10005D5C4(self, 3, v33, v37, 0, 0, v23);
+            v38 = sub_10005D5C4(self, 3, v33, v37, 0, 0, interfaceName);
             v39 = v129[5];
             v129[5] = v38;
 
@@ -443,7 +443,7 @@ LABEL_19:
                     objc_enumerationMutation(v44);
                   }
 
-                  v48 = sub_10005D5C4(self, 3, v33, v43, *(*(&v116 + 1) + 8 * j), 0, v23);
+                  v48 = sub_10005D5C4(self, 3, v33, v43, *(*(&v116 + 1) + 8 * j), 0, interfaceName);
                   v49 = v129[5];
                   v129[5] = v48;
 
@@ -459,7 +459,7 @@ LABEL_19:
               while (v45);
             }
 
-            v50 = sub_10005D5C4(self, 3, v33, v43, 0, 0, v23);
+            v50 = sub_10005D5C4(self, 3, v33, v43, 0, 0, interfaceName);
             v51 = v129[5];
             v129[5] = v50;
 
@@ -487,7 +487,7 @@ LABEL_19:
         while (v42);
       }
 
-      if ([v88 count])
+      if ([safariDomains count])
       {
         sub_10005D3B4(self, @"com.apple.mobilesafari");
         v114 = 0u;
@@ -528,7 +528,7 @@ LABEL_19:
                       objc_enumerationMutation(v56);
                     }
 
-                    v60 = sub_10005D5C4(self, 3, v33, v55, *(*(&v108 + 1) + 8 * k), 0, v23);
+                    v60 = sub_10005D5C4(self, 3, v33, v55, *(*(&v108 + 1) + 8 * k), 0, interfaceName);
                     v61 = v129[5];
                     v129[5] = v60;
 
@@ -553,7 +553,7 @@ LABEL_19:
               v104 = v98;
               v105 = v55;
               v106 = v32;
-              [v88 enumerateObjectsUsingBlock:v103];
+              [safariDomains enumerateObjectsUsingBlock:v103];
 
               v97 = v97 + 1;
             }
@@ -607,7 +607,7 @@ LABEL_19:
               if (os_log_type_enabled(v71, OS_LOG_TYPE_DEBUG))
               {
                 *v134 = 138412546;
-                v135 = self;
+                selfCopy8 = self;
                 v136 = 2112;
                 v137 = v70;
                 _os_log_debug_impl(&_mh_execute_header, v71, OS_LOG_TYPE_DEBUG, "%@ adding policy %@", v134, 0x16u);
@@ -631,15 +631,15 @@ LABEL_19:
         }
 
         v76 = self->_hotspotPolicySession;
-        v77 = [(NEPolicySession *)v76 apply];
+        apply = [(NEPolicySession *)v76 apply];
 
-        if (v77)
+        if (apply)
         {
           v78 = ne_log_obj();
           if (os_log_type_enabled(v78, OS_LOG_TYPE_INFO))
           {
             *v134 = 138412290;
-            v135 = self;
+            selfCopy8 = self;
             v79 = "%@ successfully installed hotspot provider policies";
 LABEL_101:
             v82 = v134;
@@ -653,7 +653,7 @@ LABEL_101:
           if (os_log_type_enabled(v78, OS_LOG_TYPE_INFO))
           {
             *v134 = 138412290;
-            v135 = self;
+            selfCopy8 = self;
             v79 = "%@ failed to install hotspot provider policies";
             goto LABEL_101;
           }
@@ -666,7 +666,7 @@ LABEL_101:
         if (os_log_type_enabled(v78, OS_LOG_TYPE_INFO))
         {
           v138 = 138412290;
-          v139 = self;
+          selfCopy9 = self;
           v79 = "%@ unable to create hotspot provider policies";
           v82 = &v138;
 LABEL_102:
@@ -678,7 +678,7 @@ LABEL_102:
       goto LABEL_104;
     }
 
-    if (objc_getProperty(self, v13, 360, 1) != v85)
+    if (objc_getProperty(self, v13, 360, 1) != pluginCopy)
     {
       sessionType = self->_sessionType;
       goto LABEL_19;
@@ -687,24 +687,24 @@ LABEL_102:
     v80 = objc_getProperty(self, v13, 360, 1);
     if (v80)
     {
-      v81 = [v80 remotePluginObject];
-      [v81 startEvaluationProvider];
+      remotePluginObject2 = [v80 remotePluginObject];
+      [remotePluginObject2 startEvaluationProvider];
     }
   }
 
 LABEL_104:
 }
 
-- (void)plugin:(id)a3 didInitializeWithUUIDs:(id)a4
+- (void)plugin:(id)plugin didInitializeWithUUIDs:(id)ds
 {
-  v5 = a4;
+  dsCopy = ds;
   v6 = ne_log_obj();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     v7 = 138412546;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
-    v10 = v5;
+    v10 = dsCopy;
     _os_log_debug_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "%@ didInitializeWithUUIDs [%@]", &v7, 0x16u);
   }
 }
@@ -715,7 +715,7 @@ LABEL_104:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 138412290;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%@: received uninstall", &v4, 0xCu);
   }
 
@@ -730,18 +730,18 @@ LABEL_104:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%@: received install pending", buf, 0xCu);
   }
 
   v4 = dispatch_time(0, 2000000000);
-  v5 = [(NESMSession *)self queue];
+  queue = [(NESMSession *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10005DA9C;
   block[3] = &unk_1000EB1C0;
   block[4] = self;
-  dispatch_after(v4, v5, block);
+  dispatch_after(v4, queue, block);
 }
 
 - (void)install
@@ -750,7 +750,7 @@ LABEL_104:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%@: received install", &v11, 0xCu);
   }
 
@@ -773,8 +773,8 @@ LABEL_104:
 LABEL_15:
 
         v9 = objc_getProperty(self, v8, *v7, 1);
-        v10 = [(NESMSession *)self configuration];
-        sub_1000187A4(v9, v10);
+        configuration = [(NESMSession *)self configuration];
+        sub_1000187A4(v9, configuration);
 
         return;
       }
@@ -797,25 +797,25 @@ LABEL_15:
   }
 }
 
-- (void)handleStartMessage:(id)a3
+- (void)handleStartMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v9 = self;
+    selfCopy2 = self;
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%@ received request to handle start message for hotspot session", buf, 0xCu);
   }
 
   if (self->_active)
   {
-    v6 = ne_log_obj();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+    server = ne_log_obj();
+    if (os_log_type_enabled(server, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v9 = self;
-      _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%@ hotspot session is already active, unable to process start message request", buf, 0xCu);
+      selfCopy2 = self;
+      _os_log_impl(&_mh_execute_header, server, OS_LOG_TYPE_INFO, "%@ hotspot session is already active, unable to process start message request", buf, 0xCu);
     }
   }
 
@@ -823,9 +823,9 @@ LABEL_15:
   {
     v7.receiver = self;
     v7.super_class = NESMHotspotSession;
-    [(NESMSession *)&v7 handleStartMessage:v4];
-    v6 = [(NESMSession *)self server];
-    [v6 requestInstallForSession:self withParentSession:0 exclusive:0];
+    [(NESMSession *)&v7 handleStartMessage:messageCopy];
+    server = [(NESMSession *)self server];
+    [server requestInstallForSession:self withParentSession:0 exclusive:0];
   }
 }
 
@@ -835,7 +835,7 @@ LABEL_15:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_debug_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "%@ dealloced", buf, 0xCu);
   }
 

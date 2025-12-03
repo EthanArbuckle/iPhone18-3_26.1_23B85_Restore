@@ -1,26 +1,26 @@
 @interface _SFPBRFMultiButtonCardSection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBRFMultiButtonCardSection)initWithDictionary:(id)a3;
-- (_SFPBRFMultiButtonCardSection)initWithFacade:(id)a3;
-- (_SFPBRFMultiButtonCardSection)initWithJSON:(id)a3;
+- (_SFPBRFMultiButtonCardSection)initWithDictionary:(id)dictionary;
+- (_SFPBRFMultiButtonCardSection)initWithFacade:(id)facade;
+- (_SFPBRFMultiButtonCardSection)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)addButtons:(id)a3;
-- (void)setButtons:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addButtons:(id)buttons;
+- (void)setButtons:(id)buttons;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBRFMultiButtonCardSection
 
-- (_SFPBRFMultiButtonCardSection)initWithFacade:(id)a3
+- (_SFPBRFMultiButtonCardSection)initWithFacade:(id)facade
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBRFMultiButtonCardSection *)self init];
   if (v5)
   {
-    v6 = [v4 buttons];
-    if (v6)
+    buttons = [facadeCopy buttons];
+    if (buttons)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -34,8 +34,8 @@
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = [v4 buttons];
-    v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    buttons2 = [facadeCopy buttons];
+    v9 = [buttons2 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
     {
       v10 = v9;
@@ -46,7 +46,7 @@
         {
           if (*v18 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(buttons2);
           }
 
           v13 = [[_SFPBButtonItem alloc] initWithFacade:*(*(&v17 + 1) + 8 * i)];
@@ -56,16 +56,16 @@
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v10 = [buttons2 countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v10);
     }
 
     [(_SFPBRFMultiButtonCardSection *)v5 setButtons:v7];
-    if ([v4 hasLayoutType])
+    if ([facadeCopy hasLayoutType])
     {
-      -[_SFPBRFMultiButtonCardSection setLayoutType:](v5, "setLayoutType:", [v4 layoutType]);
+      -[_SFPBRFMultiButtonCardSection setLayoutType:](v5, "setLayoutType:", [facadeCopy layoutType]);
     }
 
     v14 = v5;
@@ -75,16 +75,16 @@
   return v5;
 }
 
-- (_SFPBRFMultiButtonCardSection)initWithDictionary:(id)a3
+- (_SFPBRFMultiButtonCardSection)initWithDictionary:(id)dictionary
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v23.receiver = self;
   v23.super_class = _SFPBRFMultiButtonCardSection;
   v5 = [(_SFPBRFMultiButtonCardSection *)&v23 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"buttons"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"buttons"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -128,7 +128,7 @@
       }
     }
 
-    v15 = [v4 objectForKeyedSubscript:{@"layoutType", v19}];
+    v15 = [dictionaryCopy objectForKeyedSubscript:{@"layoutType", v19}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -142,30 +142,30 @@
   return v5;
 }
 
-- (_SFPBRFMultiButtonCardSection)initWithJSON:(id)a3
+- (_SFPBRFMultiButtonCardSection)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBRFMultiButtonCardSection *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBRFMultiButtonCardSection *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBRFMultiButtonCardSection *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -179,10 +179,10 @@
 - (id)dictionaryRepresentation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_buttons count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
@@ -202,16 +202,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -221,54 +221,54 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"buttons"];
+    [dictionary setObject:array forKeyedSubscript:@"buttons"];
   }
 
   if (self->_layoutType)
   {
-    v12 = [(_SFPBRFMultiButtonCardSection *)self layoutType];
-    if (v12 >= 5)
+    layoutType = [(_SFPBRFMultiButtonCardSection *)self layoutType];
+    if (layoutType >= 5)
     {
-      v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v12];
+      v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", layoutType];
     }
 
     else
     {
-      v13 = off_1E7ACE448[v12];
+      v13 = off_1E7ACE448[layoutType];
     }
 
-    [v3 setObject:v13 forKeyedSubscript:@"layoutType"];
+    [dictionary setObject:v13 forKeyedSubscript:@"layoutType"];
   }
 
   v14 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_SFPBRFMultiButtonCardSection *)self buttons];
-    v6 = [v4 buttons];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    buttons = [(_SFPBRFMultiButtonCardSection *)self buttons];
+    buttons2 = [equalCopy buttons];
+    v7 = buttons2;
+    if ((buttons != 0) != (buttons2 == 0))
     {
-      v8 = [(_SFPBRFMultiButtonCardSection *)self buttons];
-      if (!v8)
+      buttons3 = [(_SFPBRFMultiButtonCardSection *)self buttons];
+      if (!buttons3)
       {
 
 LABEL_10:
         layoutType = self->_layoutType;
-        v13 = layoutType == [v4 layoutType];
+        v13 = layoutType == [equalCopy layoutType];
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(_SFPBRFMultiButtonCardSection *)self buttons];
-      v11 = [v4 buttons];
-      v12 = [v10 isEqual:v11];
+      v9 = buttons3;
+      buttons4 = [(_SFPBRFMultiButtonCardSection *)self buttons];
+      buttons5 = [equalCopy buttons];
+      v12 = [buttons4 isEqual:buttons5];
 
       if (v12)
       {
@@ -287,16 +287,16 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_SFPBRFMultiButtonCardSection *)self buttons];
+  toCopy = to;
+  buttons = [(_SFPBRFMultiButtonCardSection *)self buttons];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [buttons countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -308,7 +308,7 @@ LABEL_8:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(buttons);
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
@@ -317,7 +317,7 @@ LABEL_8:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [buttons countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -331,27 +331,27 @@ LABEL_8:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addButtons:(id)a3
+- (void)addButtons:(id)buttons
 {
-  v4 = a3;
+  buttonsCopy = buttons;
   buttons = self->_buttons;
-  v8 = v4;
+  v8 = buttonsCopy;
   if (!buttons)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_buttons;
-    self->_buttons = v6;
+    self->_buttons = array;
 
-    v4 = v8;
+    buttonsCopy = v8;
     buttons = self->_buttons;
   }
 
-  [(NSArray *)buttons addObject:v4];
+  [(NSArray *)buttons addObject:buttonsCopy];
 }
 
-- (void)setButtons:(id)a3
+- (void)setButtons:(id)buttons
 {
-  v4 = [a3 copy];
+  v4 = [buttons copy];
   buttons = self->_buttons;
   self->_buttons = v4;
 

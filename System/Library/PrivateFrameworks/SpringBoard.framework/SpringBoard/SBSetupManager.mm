@@ -1,19 +1,19 @@
 @interface SBSetupManager
 + (SBSetupManager)sharedInstance;
-- (BOOL)_setSetupRequiredReason:(unint64_t)a3;
+- (BOOL)_setSetupRequiredReason:(unint64_t)reason;
 - (BOOL)setupHasFinishedRestoringFromBackup;
 - (BOOL)updateInSetupMode;
 - (SBSetupManager)init;
 - (void)_invalidateFloatingDockBehaviorAssertions;
-- (void)_setupProcessChangedNotificationReceived:(id)a3;
-- (void)_takeFloatingDockBehaviorAssertionForFloatingDockController:(id)a3;
+- (void)_setupProcessChangedNotificationReceived:(id)received;
+- (void)_takeFloatingDockBehaviorAssertionForFloatingDockController:(id)controller;
 - (void)_takeFloatingDockBehaviorAssertions;
-- (void)_toggleSetupForMigrationNeeded:(BOOL)a3 forReason:(id)a4;
+- (void)_toggleSetupForMigrationNeeded:(BOOL)needed forReason:(id)reason;
 - (void)dealloc;
-- (void)eventSource:(id)a3 didBeginTransitionToMode:(int64_t)a4 withLayoutState:(id)a5 activatingElement:(id)a6 triggeredBy:(int64_t)a7;
-- (void)floatingDockControllerDidRegister:(id)a3;
+- (void)eventSource:(id)source didBeginTransitionToMode:(int64_t)mode withLayoutState:(id)state activatingElement:(id)element triggeredBy:(int64_t)by;
+- (void)floatingDockControllerDidRegister:(id)register;
 - (void)postLaunchCompleteNotificationForSetup;
-- (void)setDeferringDeviceOrientationUpdates:(BOOL)a3;
+- (void)setDeferringDeviceOrientationUpdates:(BOOL)updates;
 @end
 
 @implementation SBSetupManager
@@ -52,13 +52,13 @@ uint64_t __32__SBSetupManager_sharedInstance__block_invoke()
       [SBSetupManager init];
     }
 
-    v3 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     floatingDockControllers = v2->_floatingDockControllers;
-    v2->_floatingDockControllers = v3;
+    v2->_floatingDockControllers = weakObjectsHashTable;
 
-    v5 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     floatingDockBehaviorAssertionsByFloatingDockController = v2->_floatingDockBehaviorAssertionsByFloatingDockController;
-    v2->_floatingDockBehaviorAssertionsByFloatingDockController = v5;
+    v2->_floatingDockBehaviorAssertionsByFloatingDockController = weakToStrongObjectsMapTable;
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, 0, SBSetupDeviceMigrationNotificationReceived, *MEMORY[0x277D4D9F0], 0, CFNotificationSuspensionBehaviorDeliverImmediately);
@@ -84,19 +84,19 @@ uint64_t __32__SBSetupManager_sharedInstance__block_invoke()
     goto LABEL_7;
   }
 
-  v4 = [SBApp authenticationController];
-  v5 = [v4 hasPasscodeSet];
+  authenticationController = [SBApp authenticationController];
+  hasPasscodeSet = [authenticationController hasPasscodeSet];
 
-  if (!v5)
+  if (!hasPasscodeSet)
   {
 LABEL_7:
-    v7 = [SBApp userSessionController];
-    if ([v7 isMultiUserSupported] && objc_msgSend(v7, "isLoginSession"))
+    userSessionController = [SBApp userSessionController];
+    if ([userSessionController isMultiUserSupported] && objc_msgSend(userSessionController, "isLoginSession"))
     {
-      v8 = self;
+      selfCopy2 = self;
       v9 = 0;
 LABEL_24:
-      v16 = [(SBSetupManager *)v8 _setSetupRequiredReason:v9];
+      v16 = [(SBSetupManager *)selfCopy2 _setSetupRequiredReason:v9];
 
       return v16;
     }
@@ -119,9 +119,9 @@ LABEL_16:
     else
     {
       v14 = +[SBLockdownManager sharedInstance];
-      v15 = [v14 brickedDevice];
+      brickedDevice = [v14 brickedDevice];
 
-      if (v15)
+      if (brickedDevice)
       {
         v10 = SBLogCommon();
         if (!os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -156,7 +156,7 @@ LABEL_16:
 LABEL_22:
 
 LABEL_23:
-    v8 = self;
+    selfCopy2 = self;
     v9 = v11;
     goto LABEL_24;
   }
@@ -167,12 +167,12 @@ LABEL_23:
 - (BOOL)setupHasFinishedRestoringFromBackup
 {
   v2 = +[SBDefaults externalDefaults];
-  v3 = [v2 setupDefaults];
-  v4 = [v3 setupState];
+  setupDefaults = [v2 setupDefaults];
+  setupState = [setupDefaults setupState];
 
-  if (v4)
+  if (setupState)
   {
-    v5 = [v4 isEqualToString:@"RestoredFromiTunesBackup"];
+    v5 = [setupState isEqualToString:@"RestoredFromiTunesBackup"];
   }
 
   else
@@ -190,12 +190,12 @@ LABEL_23:
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.springboard.setupsnapshotremoved", 0, 0, 0);
 }
 
-- (void)setDeferringDeviceOrientationUpdates:(BOOL)a3
+- (void)setDeferringDeviceOrientationUpdates:(BOOL)updates
 {
   deferOrientationUpdatesAssertion = self->_deferOrientationUpdatesAssertion;
-  if ((((deferOrientationUpdatesAssertion == 0) ^ a3) & 1) == 0)
+  if ((((deferOrientationUpdatesAssertion == 0) ^ updates) & 1) == 0)
   {
-    if (a3)
+    if (updates)
     {
       v5 = [SBApp deviceOrientationUpdateDeferralAssertionWithReason:@"SBOrientationLockedForBuddy"];
     }
@@ -211,25 +211,25 @@ LABEL_23:
   }
 }
 
-- (BOOL)_setSetupRequiredReason:(unint64_t)a3
+- (BOOL)_setSetupRequiredReason:(unint64_t)reason
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = [(SBSetupManager *)self _isInSetupMode];
-  self->_setupRequiredReason = a3;
-  v6 = [(SBSetupManager *)self _isInSetupMode];
-  if (v5 != v6)
+  _isInSetupMode = [(SBSetupManager *)self _isInSetupMode];
+  self->_setupRequiredReason = reason;
+  _isInSetupMode2 = [(SBSetupManager *)self _isInSetupMode];
+  if (_isInSetupMode != _isInSetupMode2)
   {
-    if (v6)
+    if (_isInSetupMode2)
     {
-      v7 = [MEMORY[0x277D75418] currentDevice];
-      v8 = [v7 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if ((v8 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+      if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
       {
         v9 = +[SBWorkspace mainWorkspace];
-        v10 = [v9 mainWindowScene];
-        v11 = [v10 appInteractionEventSource];
-        [v11 addObserver:self];
+        mainWindowScene = [v9 mainWindowScene];
+        appInteractionEventSource = [mainWindowScene appInteractionEventSource];
+        [appInteractionEventSource addObserver:self];
       }
 
       [(SBSetupManager *)self _takeFloatingDockBehaviorAssertions];
@@ -239,15 +239,15 @@ LABEL_23:
     {
       self->_inSetupModeReadyToExit = 0;
       [(SBSetupManager *)self _invalidateFloatingDockBehaviorAssertions];
-      v12 = [MEMORY[0x277D75418] currentDevice];
-      v13 = [v12 userInterfaceIdiom];
+      currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-      if ((v13 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+      if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1)
       {
         v14 = +[SBWorkspace mainWorkspace];
-        v15 = [v14 mainWindowScene];
-        v16 = [v15 appInteractionEventSource];
-        [v16 removeObserver:self];
+        mainWindowScene2 = [v14 mainWindowScene];
+        appInteractionEventSource2 = [mainWindowScene2 appInteractionEventSource];
+        [appInteractionEventSource2 removeObserver:self];
       }
     }
 
@@ -270,21 +270,21 @@ LABEL_23:
       _os_log_impl(&dword_21ED4E000, v17, OS_LOG_TYPE_DEFAULT, "Setup mode state did change - required reason: %@", &v22, 0xCu);
     }
 
-    v20 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v20 postNotificationName:@"SBInBuddyModeDidChangeNotification" object:0 userInfo:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"SBInBuddyModeDidChangeNotification" object:0 userInfo:0];
   }
 
   return [(SBSetupManager *)self isInSetupMode];
 }
 
-- (void)_toggleSetupForMigrationNeeded:(BOOL)a3 forReason:(id)a4
+- (void)_toggleSetupForMigrationNeeded:(BOOL)needed forReason:(id)reason
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  self->_setupWantedForDeviceMigration = a3;
+  reasonCopy = reason;
+  self->_setupWantedForDeviceMigration = needed;
   [(SBSetupManager *)self updateInSetupMode];
   v7 = +[SBApplicationController sharedInstance];
-  v8 = [v7 setupApplication];
+  setupApplication = [v7 setupApplication];
 
   setupRequiredReason = self->_setupRequiredReason;
   v10 = SBLogCommon();
@@ -297,8 +297,8 @@ LABEL_23:
       _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_DEFAULT, "Activating Setup for device migration.", buf, 2u);
     }
 
-    v12 = +[SBWorkspace mainWorkspace];
-    v13 = [[SBDeviceApplicationSceneEntity alloc] initWithApplicationForMainDisplay:v8];
+    defaultCenter2 = +[SBWorkspace mainWorkspace];
+    v13 = [[SBDeviceApplicationSceneEntity alloc] initWithApplicationForMainDisplay:setupApplication];
     v14 = objc_alloc(MEMORY[0x277D757D0]);
     v15 = [MEMORY[0x277CBEBC0] URLWithString:*MEMORY[0x277D4D9F8]];
     v16 = [v14 initWithURL:v15];
@@ -306,20 +306,20 @@ LABEL_23:
     v17 = [MEMORY[0x277CBEB98] setWithObject:v16];
     [(SBApplicationSceneEntity *)v13 addActions:v17];
 
-    v18 = [v12 createRequestForApplicationActivation:v13 options:0];
+    v18 = [defaultCenter2 createRequestForApplicationActivation:v13 options:0];
     [v18 setEventLabel:@"ActivateBuddyForDeviceMigration"];
     v22 = MEMORY[0x277D85DD0];
     v23 = 3221225472;
     v24 = __59__SBSetupManager__toggleSetupForMigrationNeeded_forReason___block_invoke;
     v25 = &unk_2783A8BF0;
-    v19 = v8;
+    v19 = setupApplication;
     v26 = v19;
-    v27 = self;
+    selfCopy = self;
     v20 = [v18 addCompletionHandler:&v22];
-    v21 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v21 addObserver:self selector:sel__setupProcessChangedNotificationReceived_ name:@"SBApplicationProcessStateDidChange" object:v19];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__setupProcessChangedNotificationReceived_ name:@"SBApplicationProcessStateDidChange" object:v19];
 
-    [v12 executeTransitionRequest:v18];
+    [defaultCenter2 executeTransitionRequest:v18];
   }
 
   else
@@ -327,13 +327,13 @@ LABEL_23:
     if (v11)
     {
       *buf = 138543362;
-      v29 = v6;
+      v29 = reasonCopy;
       _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_DEFAULT, "Setup no longer required for device migration for reason: %{public}@", buf, 0xCu);
     }
 
     self->_setupWantedForDeviceMigration = 0;
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v12 removeObserver:self name:@"SBApplicationProcessStateDidChange" object:v8];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 removeObserver:self name:@"SBApplicationProcessStateDidChange" object:setupApplication];
   }
 }
 
@@ -347,17 +347,17 @@ void __59__SBSetupManager__toggleSetupForMigrationNeeded_forReason___block_invok
   }
 }
 
-- (void)_setupProcessChangedNotificationReceived:(id)a3
+- (void)_setupProcessChangedNotificationReceived:(id)received
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v8 = [v5 objectForKeyedSubscript:@"previousProcessState"];
+  receivedCopy = received;
+  userInfo = [receivedCopy userInfo];
+  v8 = [userInfo objectForKeyedSubscript:@"previousProcessState"];
 
-  v6 = [v4 object];
+  object = [receivedCopy object];
 
-  v7 = [v6 processState];
+  processState = [object processState];
 
-  if ([v8 isForeground] && (objc_msgSend(v7, "isForeground") & 1) == 0)
+  if ([v8 isForeground] && (objc_msgSend(processState, "isForeground") & 1) == 0)
   {
     [(SBSetupManager *)self _toggleSetupForMigrationNeeded:0 forReason:@"backgrounded or exited"];
   }
@@ -397,11 +397,11 @@ void __59__SBSetupManager__toggleSetupForMigrationNeeded_forReason___block_invok
   }
 }
 
-- (void)_takeFloatingDockBehaviorAssertionForFloatingDockController:(id)a3
+- (void)_takeFloatingDockBehaviorAssertionForFloatingDockController:(id)controller
 {
-  v4 = a3;
-  v5 = [[SBFloatingDockBehaviorAssertion alloc] initWithFloatingDockController:v4 visibleProgress:1 animated:0 gesturePossible:13 atLevel:@"in setup" reason:0 withCompletion:0.0];
-  [(NSMapTable *)self->_floatingDockBehaviorAssertionsByFloatingDockController setObject:v5 forKey:v4];
+  controllerCopy = controller;
+  v5 = [[SBFloatingDockBehaviorAssertion alloc] initWithFloatingDockController:controllerCopy visibleProgress:1 animated:0 gesturePossible:13 atLevel:@"in setup" reason:0 withCompletion:0.0];
+  [(NSMapTable *)self->_floatingDockBehaviorAssertionsByFloatingDockController setObject:v5 forKey:controllerCopy];
 }
 
 - (void)_invalidateFloatingDockBehaviorAssertions
@@ -439,26 +439,26 @@ void __59__SBSetupManager__toggleSetupForMigrationNeeded_forReason___block_invok
   }
 }
 
-- (void)floatingDockControllerDidRegister:(id)a3
+- (void)floatingDockControllerDidRegister:(id)register
 {
-  v6 = a3;
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  registerCopy = register;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v5 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
-    [(NSHashTable *)self->_floatingDockControllers addObject:v6];
+    [(NSHashTable *)self->_floatingDockControllers addObject:registerCopy];
     if ([(SBSetupManager *)self _isInSetupMode])
     {
-      [(SBSetupManager *)self _takeFloatingDockBehaviorAssertionForFloatingDockController:v6];
+      [(SBSetupManager *)self _takeFloatingDockBehaviorAssertionForFloatingDockController:registerCopy];
     }
   }
 }
 
-- (void)eventSource:(id)a3 didBeginTransitionToMode:(int64_t)a4 withLayoutState:(id)a5 activatingElement:(id)a6 triggeredBy:(int64_t)a7
+- (void)eventSource:(id)source didBeginTransitionToMode:(int64_t)mode withLayoutState:(id)state activatingElement:(id)element triggeredBy:(int64_t)by
 {
-  v9 = [(SBSetupManager *)self isInSetupModeReadyToExit:a3];
-  if (a4 == 1 && v9)
+  v9 = [(SBSetupManager *)self isInSetupModeReadyToExit:source];
+  if (mode == 1 && v9)
   {
 
     [(SBSetupManager *)self _invalidateFloatingDockBehaviorAssertions];

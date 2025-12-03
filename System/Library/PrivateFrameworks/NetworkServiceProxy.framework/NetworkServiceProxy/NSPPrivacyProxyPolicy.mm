@@ -1,14 +1,14 @@
 @interface NSPPrivacyProxyPolicy
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsConditions:(id)a3;
-- (int)conditionsAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (int)StringAsConditions:(id)conditions;
+- (int)conditionsAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NSPPrivacyProxyPolicy
@@ -21,161 +21,161 @@
   [(NSPPrivacyProxyPolicy *)&v3 dealloc];
 }
 
-- (int)conditionsAtIndex:(unint64_t)a3
+- (int)conditionsAtIndex:(unint64_t)index
 {
   p_conditions = &self->_conditions;
   count = self->_conditions.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_conditions->list[a3];
+  return p_conditions->list[index];
 }
 
-- (int)StringAsConditions:(id)a3
+- (int)StringAsConditions:(id)conditions
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN"])
+  conditionsCopy = conditions;
+  if ([conditionsCopy isEqualToString:@"UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SAFARI_UNENCRYPTED"])
+  else if ([conditionsCopy isEqualToString:@"SAFARI_UNENCRYPTED"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SAFARI_DNS"])
+  else if ([conditionsCopy isEqualToString:@"SAFARI_DNS"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SAFARI_TRACKER"])
+  else if ([conditionsCopy isEqualToString:@"SAFARI_TRACKER"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"MAIL_TRACKER"])
+  else if ([conditionsCopy isEqualToString:@"MAIL_TRACKER"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"SAFARI_ALL"])
+  else if ([conditionsCopy isEqualToString:@"SAFARI_ALL"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"SAFARI_HTTP"])
+  else if ([conditionsCopy isEqualToString:@"SAFARI_HTTP"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"ANY_UNENCRYPTED"])
+  else if ([conditionsCopy isEqualToString:@"ANY_UNENCRYPTED"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"ANY_DNS"])
+  else if ([conditionsCopy isEqualToString:@"ANY_DNS"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"ANY_KNOWN_TRACKER"])
+  else if ([conditionsCopy isEqualToString:@"ANY_KNOWN_TRACKER"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"ANY_APP_TRACKER"])
+  else if ([conditionsCopy isEqualToString:@"ANY_APP_TRACKER"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"NEWS_URL_RESOLUTION"])
+  else if ([conditionsCopy isEqualToString:@"NEWS_URL_RESOLUTION"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"EXPOSURE_NOTIFICATIONS"])
+  else if ([conditionsCopy isEqualToString:@"EXPOSURE_NOTIFICATIONS"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"APPLE_CERTIFICATES"])
+  else if ([conditionsCopy isEqualToString:@"APPLE_CERTIFICATES"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"NETWORK_TOOLS"])
+  else if ([conditionsCopy isEqualToString:@"NETWORK_TOOLS"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"METRICS_UPLOAD"])
+  else if ([conditionsCopy isEqualToString:@"METRICS_UPLOAD"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"BRANDED_CALLING"])
+  else if ([conditionsCopy isEqualToString:@"BRANDED_CALLING"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"NEWS_EMBEDDED_CONTENT"])
+  else if ([conditionsCopy isEqualToString:@"NEWS_EMBEDDED_CONTENT"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"APP_METRICS"])
+  else if ([conditionsCopy isEqualToString:@"APP_METRICS"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"SAFARI_PRIVATE_UNENCRYPTED"])
+  else if ([conditionsCopy isEqualToString:@"SAFARI_PRIVATE_UNENCRYPTED"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"SAFARI_PRIVATE_DNS"])
+  else if ([conditionsCopy isEqualToString:@"SAFARI_PRIVATE_DNS"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"SAFARI_PRIVATE_ALL"])
+  else if ([conditionsCopy isEqualToString:@"SAFARI_PRIVATE_ALL"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:@"SAFARI_METRICS"])
+  else if ([conditionsCopy isEqualToString:@"SAFARI_METRICS"])
   {
     v4 = 22;
   }
 
-  else if ([v3 isEqualToString:@"PROMOTED_CONTENT"])
+  else if ([conditionsCopy isEqualToString:@"PROMOTED_CONTENT"])
   {
     v4 = 23;
   }
 
-  else if ([v3 isEqualToString:@"POSTBACK_FETCH"])
+  else if ([conditionsCopy isEqualToString:@"POSTBACK_FETCH"])
   {
     v4 = 24;
   }
 
-  else if ([v3 isEqualToString:@"PM_PR_ICON_FETCHING"])
+  else if ([conditionsCopy isEqualToString:@"PM_PR_ICON_FETCHING"])
   {
     v4 = 25;
   }
 
-  else if ([v3 isEqualToString:@"LAUNCH_WARNING_DETAILS"])
+  else if ([conditionsCopy isEqualToString:@"LAUNCH_WARNING_DETAILS"])
   {
     v4 = 26;
   }
 
-  else if ([v3 isEqualToString:@"PODCASTS_LINK_PRESENTATION"])
+  else if ([conditionsCopy isEqualToString:@"PODCASTS_LINK_PRESENTATION"])
   {
     v4 = 27;
   }
@@ -194,15 +194,15 @@
   v8.receiver = self;
   v8.super_class = NSPPrivacyProxyPolicy;
   v4 = [(NSPPrivacyProxyPolicy *)&v8 description];
-  v5 = [(NSPPrivacyProxyPolicy *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NSPPrivacyProxyPolicy *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   p_conditions = &self->_conditions;
   if (self->_conditions.count)
   {
@@ -231,15 +231,15 @@
       while (v6 < p_conditions->count);
     }
 
-    [v3 setObject:v5 forKey:@"conditions"];
+    [dictionary setObject:v5 forKey:@"conditions"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   p_conditions = &self->_conditions;
   if (p_conditions->count)
   {
@@ -261,35 +261,35 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if ([(NSPPrivacyProxyPolicy *)self conditionsCount])
   {
-    [v7 clearConditions];
-    v4 = [(NSPPrivacyProxyPolicy *)self conditionsCount];
-    if (v4)
+    [toCopy clearConditions];
+    conditionsCount = [(NSPPrivacyProxyPolicy *)self conditionsCount];
+    if (conditionsCount)
     {
-      v5 = v4;
+      v5 = conditionsCount;
       for (i = 0; i != v5; ++i)
       {
-        [v7 addConditions:{-[NSPPrivacyProxyPolicy conditionsAtIndex:](self, "conditionsAtIndex:", i)}];
+        [toCopy addConditions:{-[NSPPrivacyProxyPolicy conditionsAtIndex:](self, "conditionsAtIndex:", i)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v3 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   PBRepeatedInt32Copy();
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
-  if ([v3 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     IsEqual = PBRepeatedInt32IsEqual();
   }
@@ -302,16 +302,16 @@
   return IsEqual;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v7 = a3;
-  v4 = [v7 conditionsCount];
-  if (v4)
+  fromCopy = from;
+  conditionsCount = [fromCopy conditionsCount];
+  if (conditionsCount)
   {
-    v5 = v4;
+    v5 = conditionsCount;
     for (i = 0; i != v5; ++i)
     {
-      -[NSPPrivacyProxyPolicy addConditions:](self, "addConditions:", [v7 conditionsAtIndex:i]);
+      -[NSPPrivacyProxyPolicy addConditions:](self, "addConditions:", [fromCopy conditionsAtIndex:i]);
     }
   }
 }

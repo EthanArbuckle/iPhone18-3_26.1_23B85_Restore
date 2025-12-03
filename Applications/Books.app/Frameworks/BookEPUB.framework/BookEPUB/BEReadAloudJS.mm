@@ -1,13 +1,13 @@
 @interface BEReadAloudJS
-- (id)mainFrameJavascriptURL:(int64_t)a3;
-- (id)mainFrameOnlyJavascript:(int64_t)a3;
+- (id)mainFrameJavascriptURL:(int64_t)l;
+- (id)mainFrameOnlyJavascript:(int64_t)javascript;
 @end
 
 @implementation BEReadAloudJS
 
-- (id)mainFrameOnlyJavascript:(int64_t)a3
+- (id)mainFrameOnlyJavascript:(int64_t)javascript
 {
-  if (a3)
+  if (javascript)
   {
     v5 = 0;
   }
@@ -20,9 +20,9 @@
   return v5;
 }
 
-- (id)mainFrameJavascriptURL:(int64_t)a3
+- (id)mainFrameJavascriptURL:(int64_t)l
 {
-  if (a3)
+  if (l)
   {
     v3 = 0;
   }

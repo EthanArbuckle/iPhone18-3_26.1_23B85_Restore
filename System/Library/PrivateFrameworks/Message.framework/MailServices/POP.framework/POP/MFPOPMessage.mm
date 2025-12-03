@@ -1,11 +1,11 @@
 @interface MFPOPMessage
-- (BOOL)messageData:(id *)a3 messageSize:(unint64_t *)a4 isComplete:(BOOL *)a5 downloadIfNecessary:(BOOL)a6;
+- (BOOL)messageData:(id *)data messageSize:(unint64_t *)size isComplete:(BOOL *)complete downloadIfNecessary:(BOOL)necessary;
 - (NSData)messageData;
 - (id)headers;
 - (id)messageDataHolder;
 - (unint64_t)messageSize;
-- (void)setAccountURL:(id)a3;
-- (void)setMessageData:(id)a3 isComplete:(BOOL)a4;
+- (void)setAccountURL:(id)l;
+- (void)setMessageData:(id)data isComplete:(BOOL)complete;
 @end
 
 @implementation MFPOPMessage
@@ -31,15 +31,15 @@
   return v3;
 }
 
-- (void)setMessageData:(id)a3 isComplete:(BOOL)a4
+- (void)setMessageData:(id)data isComplete:(BOOL)complete
 {
-  v7 = a3;
-  if (self->_messageData != v7)
+  dataCopy = data;
+  if (self->_messageData != dataCopy)
   {
-    v8 = v7;
-    objc_storeStrong(&self->_messageData, a3);
-    v7 = v8;
-    self->_messageDataIsComplete = a4;
+    v8 = dataCopy;
+    objc_storeStrong(&self->_messageData, data);
+    dataCopy = v8;
+    self->_messageDataIsComplete = complete;
   }
 }
 
@@ -67,30 +67,30 @@
   size = self->_size;
   if (!size)
   {
-    v3 = [(MFPOPMessage *)self messageData];
-    size = [v3 length];
+    messageData = [(MFPOPMessage *)self messageData];
+    size = [messageData length];
   }
 
   return size;
 }
 
-- (BOOL)messageData:(id *)a3 messageSize:(unint64_t *)a4 isComplete:(BOOL *)a5 downloadIfNecessary:(BOOL)a6
+- (BOOL)messageData:(id *)data messageSize:(unint64_t *)size isComplete:(BOOL *)complete downloadIfNecessary:(BOOL)necessary
 {
-  if (a3)
+  if (data)
   {
-    *a3 = self->_messageData;
+    *data = self->_messageData;
   }
 
-  if (a4)
+  if (size)
   {
     size = self->_size;
     if (size)
     {
-      *a4 = size;
+      *size = size;
     }
   }
 
-  if (a5)
+  if (complete)
   {
     messageData = self->_messageData;
     if (messageData)
@@ -98,7 +98,7 @@
       LOBYTE(messageData) = self->_messageDataIsComplete;
     }
 
-    *a5 = messageData & 1;
+    *complete = messageData & 1;
   }
 
   return self->_messageData != 0;
@@ -109,20 +109,20 @@
   v12 = -86;
   v3 = [(MFPOPMessage *)self messageDataIsComplete:&v12 downloadIfNecessary:1];
   v4 = v3;
-  if (!v3 || (v5 = [v3 mf_rangeOfRFC822HeaderData], v7 = v6, v5 + v6 > objc_msgSend(v4, "length")) || (objc_msgSend(v4, "mf_subdataWithRange:", v5, v7), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(objc_alloc(MEMORY[0x277D24F40]), "initWithHeaderData:encoding:", v8, -[MFPOPMessage preferredEncoding](self, "preferredEncoding")), v8, !v9))
+  if (!v3 || (v5 = [v3 mf_rangeOfRFC822HeaderData], v7 = v6, v5 + v6 > objc_msgSend(v4, "length")) || (objc_msgSend(v4, "mf_subdataWithRange:", v5, v7), v8 = objc_claimAutoreleasedReturnValue(), headers = objc_msgSend(objc_alloc(MEMORY[0x277D24F40]), "initWithHeaderData:encoding:", v8, -[MFPOPMessage preferredEncoding](self, "preferredEncoding")), v8, !headers))
   {
     v11.receiver = self;
     v11.super_class = MFPOPMessage;
-    v9 = [(MFPOPMessage *)&v11 headers];
+    headers = [(MFPOPMessage *)&v11 headers];
   }
 
-  return v9;
+  return headers;
 }
 
-- (void)setAccountURL:(id)a3
+- (void)setAccountURL:(id)l
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  lCopy = l;
+  v4 = [lCopy copy];
   accountURL = self->_accountURL;
   self->_accountURL = v4;
 }

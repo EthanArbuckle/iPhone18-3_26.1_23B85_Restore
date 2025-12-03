@@ -1,57 +1,57 @@
 @interface ICInAppMessageManager
 + (ICInAppMessageManager)sharedManager;
 - (BOOL)_privacyAcknowledgementRequired;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (ICInAppMessageManager)initWithMessageStore:(id)a3 identityStore:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (ICInAppMessageManager)initWithMessageStore:(id)store identityStore:(id)identityStore;
 - (id)_init;
 - (id)_resourceCacheDirectoryPath;
 - (id)_storeRequestContext;
 - (id)_supportedInterfaceForXPCConnection;
 - (id)_xpcClientConnection;
-- (void)_addConnection:(id)a3;
-- (void)_addMessageEntry:(id)a3 completion:(id)a4;
-- (void)_checkForMessageResourcesNeedingDownloadForcingIfNecessary:(BOOL)a3;
-- (void)_downloadResourcesForMessageWithIdentifier:(id)a3 bundleIdentifier:(id)a4 completion:(id)a5;
-- (void)_handleICInAppMessagesDidChangeDistributedNotification:(id)a3;
-- (void)_handleUserIdentityStoreDidChangeNotification:(id)a3;
-- (void)_loadConfigurationWithCompletion:(id)a3;
+- (void)_addConnection:(id)connection;
+- (void)_addMessageEntry:(id)entry completion:(id)completion;
+- (void)_checkForMessageResourcesNeedingDownloadForcingIfNecessary:(BOOL)necessary;
+- (void)_downloadResourcesForMessageWithIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier completion:(id)completion;
+- (void)_handleICInAppMessagesDidChangeDistributedNotification:(id)notification;
+- (void)_handleUserIdentityStoreDidChangeNotification:(id)notification;
+- (void)_loadConfigurationWithCompletion:(id)completion;
 - (void)_performCacheConsistencyCheck;
-- (void)_performSyncRetryIfPending:(BOOL)a3;
-- (void)_performSyncWithCompletion:(id)a3;
-- (void)_processSyncResponse:(id)a3 completion:(id)a4;
-- (void)_removeAllMessageEntriesForBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)_removeConnection:(id)a3;
-- (void)_removeMessageEntryWithIdentifier:(id)a3 forBundleIdentifier:(id)a4 completion:(id)a5;
+- (void)_performSyncRetryIfPending:(BOOL)pending;
+- (void)_performSyncWithCompletion:(id)completion;
+- (void)_processSyncResponse:(id)response completion:(id)completion;
+- (void)_removeAllMessageEntriesForBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)_removeConnection:(id)connection;
+- (void)_removeMessageEntryWithIdentifier:(id)identifier forBundleIdentifier:(id)bundleIdentifier completion:(id)completion;
 - (void)_schedulePeriodicUpdate;
-- (void)_updateShouldDownloadResources:(BOOL)a3 onMessageWithIdentifier:(id)a4 bundleIdentifier:(id)a5 completion:(id)a6;
-- (void)addMessageEntry:(id)a3 completion:(id)a4;
-- (void)addMessageEntryFromAMSDialogRequest:(id)a3 bundleIdentifier:(id)a4 completion:(id)a5;
-- (void)allMessageEntriesWithCompletion:(id)a3;
-- (void)clearCachedResourcesForMessageWithIdentifier:(id)a3 bundleIdentifier:(id)a4 completion:(id)a5;
-- (void)downloadResourcesForMessageWithIdentifier:(id)a3 bundleIdentifier:(id)a4 completion:(id)a5;
-- (void)environmentMonitorDidChangeNetworkReachability:(id)a3;
-- (void)flushEventsWithCompletion:(id)a3;
-- (void)getAllMetadataForBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)getAllMetadataForBundleIdentifiers:(id)a3 completion:(id)a4;
-- (void)getGlobalPropertyForKey:(id)a3 completion:(id)a4;
-- (void)getMetadataForMessageIdentifier:(id)a3 bundleIdentifier:(id)a4 completion:(id)a5;
-- (void)getPropertyForKey:(id)a3 bundleIdentifier:(id)a4 completion:(id)a5;
-- (void)messageEntriesForBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)messageEntriesForBundleIdentifiers:(id)a3 completion:(id)a4;
-- (void)messageEntryWithIdentifier:(id)a3 bundleIdentifier:(id)a4 completion:(id)a5;
-- (void)removeAllMessageEntriesForBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)removeApplicationBadgeForBundleIdentifier:(id)a3 fromPresentedMessageEntry:(id)a4 completion:(id)a5;
-- (void)removeMessageEntryWithIdentifier:(id)a3 forBundleIdentifier:(id)a4 completion:(id)a5;
-- (void)removeMetadataForMessageIdentifier:(id)a3 bundleIdentifier:(id)a4 completion:(id)a5;
-- (void)reportEventForMessageIdentifier:(id)a3 withParams:(id)a4 flushImmediately:(BOOL)a5 completion:(id)a6;
-- (void)resetMessagesWithCompletion:(id)a3;
-- (void)setGlobalProperty:(id)a3 forKey:(id)a4 completion:(id)a5;
-- (void)setProperty:(id)a3 forKey:(id)a4 bundleIdentifier:(id)a5 completion:(id)a6;
+- (void)_updateShouldDownloadResources:(BOOL)resources onMessageWithIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier completion:(id)completion;
+- (void)addMessageEntry:(id)entry completion:(id)completion;
+- (void)addMessageEntryFromAMSDialogRequest:(id)request bundleIdentifier:(id)identifier completion:(id)completion;
+- (void)allMessageEntriesWithCompletion:(id)completion;
+- (void)clearCachedResourcesForMessageWithIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier completion:(id)completion;
+- (void)downloadResourcesForMessageWithIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier completion:(id)completion;
+- (void)environmentMonitorDidChangeNetworkReachability:(id)reachability;
+- (void)flushEventsWithCompletion:(id)completion;
+- (void)getAllMetadataForBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)getAllMetadataForBundleIdentifiers:(id)identifiers completion:(id)completion;
+- (void)getGlobalPropertyForKey:(id)key completion:(id)completion;
+- (void)getMetadataForMessageIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier completion:(id)completion;
+- (void)getPropertyForKey:(id)key bundleIdentifier:(id)identifier completion:(id)completion;
+- (void)messageEntriesForBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)messageEntriesForBundleIdentifiers:(id)identifiers completion:(id)completion;
+- (void)messageEntryWithIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier completion:(id)completion;
+- (void)removeAllMessageEntriesForBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)removeApplicationBadgeForBundleIdentifier:(id)identifier fromPresentedMessageEntry:(id)entry completion:(id)completion;
+- (void)removeMessageEntryWithIdentifier:(id)identifier forBundleIdentifier:(id)bundleIdentifier completion:(id)completion;
+- (void)removeMetadataForMessageIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier completion:(id)completion;
+- (void)reportEventForMessageIdentifier:(id)identifier withParams:(id)params flushImmediately:(BOOL)immediately completion:(id)completion;
+- (void)resetMessagesWithCompletion:(id)completion;
+- (void)setGlobalProperty:(id)property forKey:(id)key completion:(id)completion;
+- (void)setProperty:(id)property forKey:(id)key bundleIdentifier:(id)identifier completion:(id)completion;
 - (void)startSystemService;
 - (void)stopSystemService;
-- (void)syncMessagesWithCompletion:(id)a3;
-- (void)updateMessageEntry:(id)a3 completion:(id)a4;
-- (void)updateMetadata:(id)a3 messageIdentifier:(id)a4 bundleIdentifier:(id)a5 completion:(id)a6;
+- (void)syncMessagesWithCompletion:(id)completion;
+- (void)updateMessageEntry:(id)entry completion:(id)completion;
+- (void)updateMetadata:(id)metadata messageIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier completion:(id)completion;
 @end
 
 @implementation ICInAppMessageManager
@@ -142,9 +142,9 @@ uint64_t __38__ICInAppMessageManager_sharedManager__block_invoke()
   v4 = [v2 arrayWithArray:v3];
 
   v5 = +[ICDeviceInfo currentDeviceInfo];
-  v6 = [v5 isMac];
+  isMac = [v5 isMac];
 
-  if ((v6 & 1) == 0)
+  if ((isMac & 1) == 0)
   {
     v22[0] = @"FitnessPlus";
     v22[1] = @"ImproveFitnessPlus";
@@ -198,40 +198,40 @@ LABEL_13:
   return v15;
 }
 
-- (void)environmentMonitorDidChangeNetworkReachability:(id)a3
+- (void)environmentMonitorDidChangeNetworkReachability:(id)reachability
 {
-  v4 = a3;
-  if ([v4 isRemoteServerLikelyReachable] && ((objc_msgSend(v4, "networkType") - 1) > 0x1F2 || objc_msgSend(v4, "isCurrentNetworkLinkHighQuality")))
+  reachabilityCopy = reachability;
+  if ([reachabilityCopy isRemoteServerLikelyReachable] && ((objc_msgSend(reachabilityCopy, "networkType") - 1) > 0x1F2 || objc_msgSend(reachabilityCopy, "isCurrentNetworkLinkHighQuality")))
   {
     [(ICInAppMessageManager *)self _checkForMessageResourcesNeedingDownloadForcingIfNecessary:0];
   }
 }
 
-- (void)_removeConnection:(id)a3
+- (void)_removeConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__ICInAppMessageManager__removeConnection___block_invoke;
   v7[3] = &unk_1E7BFA078;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = connectionCopy;
+  v6 = connectionCopy;
   dispatch_sync(accessQueue, v7);
 }
 
-- (void)_addConnection:(id)a3
+- (void)_addConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __40__ICInAppMessageManager__addConnection___block_invoke;
   v7[3] = &unk_1E7BFA078;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = connectionCopy;
+  v6 = connectionCopy;
   dispatch_sync(accessQueue, v7);
 }
 
@@ -274,15 +274,15 @@ uint64_t __60__ICInAppMessageManager__supportedInterfaceForXPCConnection__block_
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v8 = connectionCopy;
+  if (connectionCopy)
   {
-    [v7 auditToken];
+    [connectionCopy auditToken];
   }
 
   else
@@ -304,15 +304,15 @@ uint64_t __60__ICInAppMessageManager__supportedInterfaceForXPCConnection__block_
   }
 
   v11 = [v8 valueForEntitlement:@"com.apple.itunescloud.in-app-message-service"];
-  v12 = [v11 BOOLValue];
+  bOOLValue = [v11 BOOLValue];
 
-  if (v12)
+  if (bOOLValue)
   {
     [(ICInAppMessageManager *)self _performSyncRetryIfPending:0];
     objc_initWeak(buf, self);
     objc_initWeak(&location, v8);
-    v13 = [(ICInAppMessageManager *)self _supportedInterfaceForXPCConnection];
-    [v8 setExportedInterface:v13];
+    _supportedInterfaceForXPCConnection = [(ICInAppMessageManager *)self _supportedInterfaceForXPCConnection];
+    [v8 setExportedInterface:_supportedInterfaceForXPCConnection];
     [v8 setExportedObject:self];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
@@ -357,7 +357,7 @@ uint64_t __60__ICInAppMessageManager__supportedInterfaceForXPCConnection__block_
     }
   }
 
-  return v12;
+  return bOOLValue;
 }
 
 void __60__ICInAppMessageManager_listener_shouldAcceptNewConnection___block_invoke(uint64_t a1)
@@ -589,19 +589,19 @@ void __54__ICInAppMessageManager__performCacheConsistencyCheck__block_invoke_2(u
   [*(a1 + 40) finishWithError:0];
 }
 
-- (void)_loadConfigurationWithCompletion:(id)a3
+- (void)_loadConfigurationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[ICURLBagProvider sharedBagProvider];
-  v6 = [(ICInAppMessageManager *)self _storeRequestContext];
+  _storeRequestContext = [(ICInAppMessageManager *)self _storeRequestContext];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __58__ICInAppMessageManager__loadConfigurationWithCompletion___block_invoke;
   v8[3] = &unk_1E7BF68D8;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v5 getBagForRequestContext:v6 withCompletionHandler:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [v5 getBagForRequestContext:_storeRequestContext withCompletionHandler:v8];
 }
 
 void __58__ICInAppMessageManager__loadConfigurationWithCompletion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -662,17 +662,17 @@ void __58__ICInAppMessageManager__loadConfigurationWithCompletion___block_invoke
   return v4;
 }
 
-- (void)_downloadResourcesForMessageWithIdentifier:(id)a3 bundleIdentifier:(id)a4 completion:(id)a5
+- (void)_downloadResourcesForMessageWithIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier completion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [[ICNetworkConstraints alloc] initWithBundleIdentifier:v9];
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  completionCopy = completion;
+  v11 = [[ICNetworkConstraints alloc] initWithBundleIdentifier:bundleIdentifierCopy];
   v12 = +[ICEnvironmentMonitor sharedMonitor];
-  v13 = [v12 lastKnownNetworkType];
+  lastKnownNetworkType = [v12 lastKnownNetworkType];
 
-  if ([(ICNetworkConstraints *)v11 shouldAllowDataForNetworkType:v13])
+  if ([(ICNetworkConstraints *)v11 shouldAllowDataForNetworkType:lastKnownNetworkType])
   {
     messageStore = self->_messageStore;
     v17[0] = MEMORY[0x1E69E9820];
@@ -680,9 +680,9 @@ void __58__ICInAppMessageManager__loadConfigurationWithCompletion___block_invoke
     v17[2] = __96__ICInAppMessageManager__downloadResourcesForMessageWithIdentifier_bundleIdentifier_completion___block_invoke;
     v17[3] = &unk_1E7BF39D8;
     v17[4] = self;
-    v18 = v9;
-    v19 = v8;
-    v20 = v10;
+    v18 = bundleIdentifierCopy;
+    v19 = identifierCopy;
+    v20 = completionCopy;
     [(ICInAppMessageStore *)messageStore getMessageEntryWithIdentifier:v19 bundleIdentifier:v18 completion:v17];
   }
 
@@ -692,18 +692,18 @@ void __58__ICInAppMessageManager__loadConfigurationWithCompletion___block_invoke
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138544130;
-      v22 = self;
+      selfCopy = self;
       v23 = 2114;
-      v24 = v9;
+      v24 = bundleIdentifierCopy;
       v25 = 2114;
-      v26 = v8;
+      v26 = identifierCopy;
       v27 = 1024;
-      v28 = v13;
+      v28 = lastKnownNetworkType;
       _os_log_impl(&dword_1B4491000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ Skipping downloads for message %{public}@:%{public}@ as its not allowed on the current network type (%d)", buf, 0x26u);
     }
 
     v16 = [MEMORY[0x1E696ABC0] errorWithDomain:@"ICError" code:-7004 userInfo:0];
-    (*(v10 + 2))(v10, v16);
+    (*(completionCopy + 2))(completionCopy, v16);
   }
 }
 
@@ -1355,16 +1355,16 @@ void __96__ICInAppMessageManager__downloadResourcesForMessageWithIdentifier_bund
   [v1 setObject:v2 forKey:v3];
 }
 
-- (void)_checkForMessageResourcesNeedingDownloadForcingIfNecessary:(BOOL)a3
+- (void)_checkForMessageResourcesNeedingDownloadForcingIfNecessary:(BOOL)necessary
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (a3 || ![(NSOperationQueue *)self->_downloadOperationQueue operationCount])
+  if (necessary || ![(NSOperationQueue *)self->_downloadOperationQueue operationCount])
   {
     v4 = os_log_create("com.apple.amp.iTunesCloud", "Default");
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v9 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B4491000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ Initiating downloads for messages marked for caching", buf, 0xCu);
     }
 
@@ -1473,24 +1473,24 @@ void __84__ICInAppMessageManager__checkForMessageResourcesNeedingDownloadForcing
   }
 }
 
-- (void)_updateShouldDownloadResources:(BOOL)a3 onMessageWithIdentifier:(id)a4 bundleIdentifier:(id)a5 completion:(id)a6
+- (void)_updateShouldDownloadResources:(BOOL)resources onMessageWithIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier completion:(id)completion
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  completionCopy = completion;
   v13 = [ICAsyncBlockOperation alloc];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __108__ICInAppMessageManager__updateShouldDownloadResources_onMessageWithIdentifier_bundleIdentifier_completion___block_invoke;
   v18[3] = &unk_1E7BF3A28;
   v18[4] = self;
-  v19 = v10;
-  v20 = v11;
-  v21 = v12;
-  v22 = a3;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
+  v19 = identifierCopy;
+  v20 = bundleIdentifierCopy;
+  v21 = completionCopy;
+  resourcesCopy = resources;
+  v14 = completionCopy;
+  v15 = bundleIdentifierCopy;
+  v16 = identifierCopy;
   v17 = [(ICAsyncBlockOperation *)v13 initWithStartHandler:v18];
   [(ICAsyncBlockOperation *)v17 setName:@"com.apple.iTunesCloud.ICInAppMessageManager.setShouldDownloadResources"];
   [(NSOperationQueue *)self->_operationQueue addOperation:v17];
@@ -1600,7 +1600,7 @@ void __108__ICInAppMessageManager__updateShouldDownloadResources_onMessageWithId
   [*(a1 + 56) finishWithError:v3];
 }
 
-- (void)_performSyncRetryIfPending:(BOOL)a3
+- (void)_performSyncRetryIfPending:(BOOL)pending
 {
   v5 = [ICAsyncBlockOperation alloc];
   v7[0] = MEMORY[0x1E69E9820];
@@ -1608,7 +1608,7 @@ void __108__ICInAppMessageManager__updateShouldDownloadResources_onMessageWithId
   v7[2] = __52__ICInAppMessageManager__performSyncRetryIfPending___block_invoke;
   v7[3] = &unk_1E7BF3C80;
   v7[4] = self;
-  v8 = a3;
+  pendingCopy = pending;
   v6 = [(ICAsyncBlockOperation *)v5 initWithStartHandler:v7];
   [(ICAsyncBlockOperation *)v6 setName:@"com.apple.iTunesCloud.ICInAppMessageManager.performSyncRetryIfPending"];
   [(NSOperationQueue *)self->_operationQueue addOperation:v6];
@@ -1668,26 +1668,26 @@ void __52__ICInAppMessageManager__performSyncRetryIfPending___block_invoke_2(uin
   }
 }
 
-- (void)_handleICInAppMessagesDidChangeDistributedNotification:(id)a3
+- (void)_handleICInAppMessagesDidChangeDistributedNotification:(id)notification
 {
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 postNotificationName:@"ICInAppMessagesDidChangeNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"ICInAppMessagesDidChangeNotification" object:self];
 }
 
-- (void)_removeAllMessageEntriesForBundleIdentifier:(id)a3 completion:(id)a4
+- (void)_removeAllMessageEntriesForBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   messageStore = self->_messageStore;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __80__ICInAppMessageManager__removeAllMessageEntriesForBundleIdentifier_completion___block_invoke;
   v11[3] = &unk_1E7BF8F58;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = identifierCopy;
   [(ICInAppMessageStore *)messageStore getAllMessageEntriesForBundleIdentifier:v10 completion:v11];
 }
 
@@ -1883,23 +1883,23 @@ void __80__ICInAppMessageManager__removeAllMessageEntriesForBundleIdentifier_com
   (*(*(a1 + 56) + 16))();
 }
 
-- (void)_removeMessageEntryWithIdentifier:(id)a3 forBundleIdentifier:(id)a4 completion:(id)a5
+- (void)_removeMessageEntryWithIdentifier:(id)identifier forBundleIdentifier:(id)bundleIdentifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  completionCopy = completion;
   messageStore = self->_messageStore;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __90__ICInAppMessageManager__removeMessageEntryWithIdentifier_forBundleIdentifier_completion___block_invoke;
   v15[3] = &unk_1E7BF39D8;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = identifierCopy;
+  v17 = bundleIdentifierCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = bundleIdentifierCopy;
+  v14 = identifierCopy;
   [(ICInAppMessageStore *)messageStore getMessageEntryWithIdentifier:v14 bundleIdentifier:v13 completion:v15];
 }
 
@@ -2078,30 +2078,30 @@ void __90__ICInAppMessageManager__removeMessageEntryWithIdentifier_forBundleIden
   (*(*(a1 + 64) + 16))();
 }
 
-- (void)_addMessageEntry:(id)a3 completion:(id)a4
+- (void)_addMessageEntry:(id)entry completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 applicationMessage];
-  if ([v8 hasAssetPrefetchStrategy] && objc_msgSend(v8, "assetPrefetchStrategy") == 1)
+  entryCopy = entry;
+  completionCopy = completion;
+  applicationMessage = [entryCopy applicationMessage];
+  if ([applicationMessage hasAssetPrefetchStrategy] && objc_msgSend(applicationMessage, "assetPrefetchStrategy") == 1)
   {
-    [v6 setShouldDownloadResources:1];
+    [entryCopy setShouldDownloadResources:1];
   }
 
-  v9 = self;
-  messageStore = v9->_messageStore;
+  selfCopy = self;
+  messageStore = selfCopy->_messageStore;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __53__ICInAppMessageManager__addMessageEntry_completion___block_invoke;
   v15[3] = &unk_1E7BF8058;
-  v16 = v9;
-  v17 = v8;
-  v18 = v6;
-  v19 = v7;
-  v11 = v7;
-  v12 = v6;
-  v13 = v8;
-  v14 = v9;
+  v16 = selfCopy;
+  v17 = applicationMessage;
+  v18 = entryCopy;
+  v19 = completionCopy;
+  v11 = completionCopy;
+  v12 = entryCopy;
+  v13 = applicationMessage;
+  v14 = selfCopy;
   [(ICInAppMessageStore *)messageStore addMessageEntry:v12 completion:v15];
 }
 
@@ -2381,20 +2381,20 @@ void __53__ICInAppMessageManager__addMessageEntry_completion___block_invoke_387(
   }
 }
 
-- (void)_processSyncResponse:(id)a3 completion:(id)a4
+- (void)_processSyncResponse:(id)response completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  completionCopy = completion;
   messageStore = self->_messageStore;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __57__ICInAppMessageManager__processSyncResponse_completion___block_invoke;
   v11[3] = &unk_1E7BF3C30;
-  v12 = v6;
-  v13 = v7;
+  v12 = responseCopy;
+  v13 = completionCopy;
   v11[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = responseCopy;
+  v10 = completionCopy;
   [(ICInAppMessageStore *)messageStore getStorePropertyForKey:@"serverRevision" completion:v11];
 }
 
@@ -2688,17 +2688,17 @@ void __57__ICInAppMessageManager__processSyncResponse_completion___block_invoke_
   [v2 postNotificationName:@"com.apple.itunescloud.ICInAppMessagesDidChangeDistributedNotification" object:0];
 }
 
-- (void)_performSyncWithCompletion:(id)a3
+- (void)_performSyncWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   messageStore = self->_messageStore;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52__ICInAppMessageManager__performSyncWithCompletion___block_invoke;
   v7[3] = &unk_1E7BFA490;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(ICInAppMessageStore *)messageStore updateStoreProperty:MEMORY[0x1E695E118] forKey:@"syncPending" completion:v7];
 }
 
@@ -3085,7 +3085,7 @@ void __45__ICInAppMessageManager__xpcClientConnection__block_invoke()
   }
 }
 
-- (void)_handleUserIdentityStoreDidChangeNotification:(id)a3
+- (void)_handleUserIdentityStoreDidChangeNotification:(id)notification
 {
   v4 = [ICAsyncBlockOperation alloc];
   v6[0] = MEMORY[0x1E69E9820];
@@ -3296,12 +3296,12 @@ void __71__ICInAppMessageManager__handleUserIdentityStoreDidChangeNotification__
   [*(a1 + 40) finishWithError:v3];
 }
 
-- (void)removeApplicationBadgeForBundleIdentifier:(id)a3 fromPresentedMessageEntry:(id)a4 completion:(id)a5
+- (void)removeApplicationBadgeForBundleIdentifier:(id)identifier fromPresentedMessageEntry:(id)entry completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v9;
+  identifierCopy = identifier;
+  entryCopy = entry;
+  completionCopy = completion;
+  v11 = entryCopy;
   if ([v11 isBadgingApplication])
   {
     v12[0] = MEMORY[0x1E69E9820];
@@ -3309,16 +3309,16 @@ void __71__ICInAppMessageManager__handleUserIdentityStoreDidChangeNotification__
     v12[2] = __104__ICInAppMessageManager_removeApplicationBadgeForBundleIdentifier_fromPresentedMessageEntry_completion___block_invoke;
     v12[3] = &unk_1E7BF6A70;
     v13 = v11;
-    v14 = self;
-    v15 = v8;
+    selfCopy = self;
+    v15 = identifierCopy;
     v16 = v13;
-    v17 = v10;
+    v17 = completionCopy;
     [ICInAppMessageUserNotificationCoordinator removeBadgeIconForBundleIdentifier:v15 completion:v12];
   }
 
   else
   {
-    (*(v10 + 2))(v10, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -3390,10 +3390,10 @@ void __104__ICInAppMessageManager_removeApplicationBadgeForBundleIdentifier_from
   }
 }
 
-- (void)setProperty:(id)a3 forKey:(id)a4 bundleIdentifier:(id)a5 completion:(id)a6
+- (void)setProperty:(id)property forKey:(id)key bundleIdentifier:(id)identifier completion:(id)completion
 {
-  v10 = a6;
-  v11 = v10;
+  completionCopy = completion;
+  v11 = completionCopy;
   if (self->_isSystemService)
   {
     messageStore = self->_messageStore;
@@ -3403,19 +3403,19 @@ void __104__ICInAppMessageManager_removeApplicationBadgeForBundleIdentifier_from
     v23[3] = &unk_1E7BFA490;
     v23[4] = self;
     v13 = &v24;
-    v24 = v10;
-    v14 = a5;
-    v15 = a4;
-    v16 = a3;
-    [(ICInAppMessageStore *)messageStore updateStoreProperty:v16 forKey:v15 bundleIdentifier:v14 completion:v23];
+    v24 = completionCopy;
+    identifierCopy = identifier;
+    keyCopy = key;
+    propertyCopy = property;
+    [(ICInAppMessageStore *)messageStore updateStoreProperty:propertyCopy forKey:keyCopy bundleIdentifier:identifierCopy completion:v23];
   }
 
   else
   {
-    v17 = a5;
-    v18 = a4;
-    v19 = a3;
-    v20 = [(ICInAppMessageManager *)self _xpcClientConnection];
+    identifierCopy2 = identifier;
+    keyCopy2 = key;
+    propertyCopy2 = property;
+    _xpcClientConnection = [(ICInAppMessageManager *)self _xpcClientConnection];
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __72__ICInAppMessageManager_setProperty_forKey_bundleIdentifier_completion___block_invoke;
@@ -3424,14 +3424,14 @@ void __104__ICInAppMessageManager_removeApplicationBadgeForBundleIdentifier_from
     v13 = &v28;
     v21 = v11;
     v28 = v21;
-    v22 = [v20 remoteObjectProxyWithErrorHandler:v27];
+    v22 = [_xpcClientConnection remoteObjectProxyWithErrorHandler:v27];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __72__ICInAppMessageManager_setProperty_forKey_bundleIdentifier_completion___block_invoke_2;
     v25[3] = &unk_1E7BFA490;
     v25[4] = self;
     v26 = v21;
-    [v22 setProperty:v19 forKey:v18 bundleIdentifier:v17 completion:v25];
+    [v22 setProperty:propertyCopy2 forKey:keyCopy2 bundleIdentifier:identifierCopy2 completion:v25];
   }
 }
 
@@ -3492,10 +3492,10 @@ void __72__ICInAppMessageManager_setProperty_forKey_bundleIdentifier_completion_
   dispatch_async(v4, v7);
 }
 
-- (void)getPropertyForKey:(id)a3 bundleIdentifier:(id)a4 completion:(id)a5
+- (void)getPropertyForKey:(id)key bundleIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a5;
-  v9 = v8;
+  completionCopy = completion;
+  v9 = completionCopy;
   if (self->_isSystemService)
   {
     messageStore = self->_messageStore;
@@ -3505,17 +3505,17 @@ void __72__ICInAppMessageManager_setProperty_forKey_bundleIdentifier_completion_
     v19[3] = &unk_1E7BF3AA0;
     v19[4] = self;
     v11 = &v20;
-    v20 = v8;
-    v12 = a4;
-    v13 = a3;
-    [(ICInAppMessageStore *)messageStore getStorePropertyForKey:v13 bundleIdentifier:v12 completion:v19];
+    v20 = completionCopy;
+    identifierCopy = identifier;
+    keyCopy = key;
+    [(ICInAppMessageStore *)messageStore getStorePropertyForKey:keyCopy bundleIdentifier:identifierCopy completion:v19];
   }
 
   else
   {
-    v14 = a4;
-    v15 = a3;
-    v16 = [(ICInAppMessageManager *)self _xpcClientConnection];
+    identifierCopy2 = identifier;
+    keyCopy2 = key;
+    _xpcClientConnection = [(ICInAppMessageManager *)self _xpcClientConnection];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __71__ICInAppMessageManager_getPropertyForKey_bundleIdentifier_completion___block_invoke;
@@ -3524,14 +3524,14 @@ void __72__ICInAppMessageManager_setProperty_forKey_bundleIdentifier_completion_
     v11 = &v24;
     v17 = v9;
     v24 = v17;
-    v18 = [v16 remoteObjectProxyWithErrorHandler:v23];
+    v18 = [_xpcClientConnection remoteObjectProxyWithErrorHandler:v23];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __71__ICInAppMessageManager_getPropertyForKey_bundleIdentifier_completion___block_invoke_2;
     v21[3] = &unk_1E7BF3AA0;
     v21[4] = self;
     v22 = v17;
-    [v18 getPropertyForKey:v15 bundleIdentifier:v14 completion:v21];
+    [v18 getPropertyForKey:keyCopy2 bundleIdentifier:identifierCopy2 completion:v21];
   }
 }
 
@@ -3598,10 +3598,10 @@ void __71__ICInAppMessageManager_getPropertyForKey_bundleIdentifier_completion__
   dispatch_async(v7, block);
 }
 
-- (void)setGlobalProperty:(id)a3 forKey:(id)a4 completion:(id)a5
+- (void)setGlobalProperty:(id)property forKey:(id)key completion:(id)completion
 {
-  v8 = a5;
-  v9 = v8;
+  completionCopy = completion;
+  v9 = completionCopy;
   if (self->_isSystemService)
   {
     messageStore = self->_messageStore;
@@ -3611,17 +3611,17 @@ void __71__ICInAppMessageManager_getPropertyForKey_bundleIdentifier_completion__
     v19[3] = &unk_1E7BFA490;
     v19[4] = self;
     v11 = &v20;
-    v20 = v8;
-    v12 = a4;
-    v13 = a3;
-    [(ICInAppMessageStore *)messageStore updateStoreProperty:v13 forKey:v12 completion:v19];
+    v20 = completionCopy;
+    keyCopy = key;
+    propertyCopy = property;
+    [(ICInAppMessageStore *)messageStore updateStoreProperty:propertyCopy forKey:keyCopy completion:v19];
   }
 
   else
   {
-    v14 = a4;
-    v15 = a3;
-    v16 = [(ICInAppMessageManager *)self _xpcClientConnection];
+    keyCopy2 = key;
+    propertyCopy2 = property;
+    _xpcClientConnection = [(ICInAppMessageManager *)self _xpcClientConnection];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __61__ICInAppMessageManager_setGlobalProperty_forKey_completion___block_invoke;
@@ -3630,14 +3630,14 @@ void __71__ICInAppMessageManager_getPropertyForKey_bundleIdentifier_completion__
     v11 = &v24;
     v17 = v9;
     v24 = v17;
-    v18 = [v16 remoteObjectProxyWithErrorHandler:v23];
+    v18 = [_xpcClientConnection remoteObjectProxyWithErrorHandler:v23];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __61__ICInAppMessageManager_setGlobalProperty_forKey_completion___block_invoke_2;
     v21[3] = &unk_1E7BFA490;
     v21[4] = self;
     v22 = v17;
-    [v18 setGlobalProperty:v15 forKey:v14 completion:v21];
+    [v18 setGlobalProperty:propertyCopy2 forKey:keyCopy2 completion:v21];
   }
 }
 
@@ -3698,10 +3698,10 @@ void __61__ICInAppMessageManager_setGlobalProperty_forKey_completion___block_inv
   dispatch_async(v4, v7);
 }
 
-- (void)getGlobalPropertyForKey:(id)a3 completion:(id)a4
+- (void)getGlobalPropertyForKey:(id)key completion:(id)completion
 {
-  v6 = a4;
-  v7 = v6;
+  completionCopy = completion;
+  v7 = completionCopy;
   if (self->_isSystemService)
   {
     messageStore = self->_messageStore;
@@ -3711,15 +3711,15 @@ void __61__ICInAppMessageManager_setGlobalProperty_forKey_completion___block_inv
     v15[3] = &unk_1E7BF3AA0;
     v15[4] = self;
     v9 = &v16;
-    v16 = v6;
-    v10 = a3;
-    [(ICInAppMessageStore *)messageStore getStorePropertyForKey:v10 completion:v15];
+    v16 = completionCopy;
+    keyCopy = key;
+    [(ICInAppMessageStore *)messageStore getStorePropertyForKey:keyCopy completion:v15];
   }
 
   else
   {
-    v11 = a3;
-    v12 = [(ICInAppMessageManager *)self _xpcClientConnection];
+    keyCopy2 = key;
+    _xpcClientConnection = [(ICInAppMessageManager *)self _xpcClientConnection];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __60__ICInAppMessageManager_getGlobalPropertyForKey_completion___block_invoke;
@@ -3728,14 +3728,14 @@ void __61__ICInAppMessageManager_setGlobalProperty_forKey_completion___block_inv
     v9 = &v20;
     v13 = v7;
     v20 = v13;
-    v14 = [v12 remoteObjectProxyWithErrorHandler:v19];
+    v14 = [_xpcClientConnection remoteObjectProxyWithErrorHandler:v19];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __60__ICInAppMessageManager_getGlobalPropertyForKey_completion___block_invoke_2;
     v17[3] = &unk_1E7BF3AA0;
     v17[4] = self;
     v18 = v13;
-    [v14 getGlobalPropertyForKey:v11 completion:v17];
+    [v14 getGlobalPropertyForKey:keyCopy2 completion:v17];
   }
 }
 
@@ -3802,11 +3802,11 @@ void __60__ICInAppMessageManager_getGlobalPropertyForKey_completion___block_invo
   dispatch_async(v7, block);
 }
 
-- (void)removeMetadataForMessageIdentifier:(id)a3 bundleIdentifier:(id)a4 completion:(id)a5
+- (void)removeMetadataForMessageIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  completionCopy = completion;
   if (self->_isSystemService)
   {
     v11 = [ICAsyncBlockOperation alloc];
@@ -3814,14 +3814,14 @@ void __60__ICInAppMessageManager_getGlobalPropertyForKey_completion___block_invo
     v21 = 3221225472;
     v22 = __88__ICInAppMessageManager_removeMetadataForMessageIdentifier_bundleIdentifier_completion___block_invoke_4;
     v23 = &unk_1E7BF8BC0;
-    v24 = self;
+    selfCopy = self;
     v12 = &v25;
-    v25 = v8;
-    v26 = v9;
-    v27 = v10;
-    v13 = v10;
+    v25 = identifierCopy;
+    v26 = bundleIdentifierCopy;
+    v27 = completionCopy;
+    v13 = completionCopy;
     v14 = [(ICAsyncBlockOperation *)v11 initWithStartHandler:&v20];
-    [(ICAsyncBlockOperation *)v14 setName:@"com.apple.iTunesCloud.ICInAppMessageManager.clearMetadataForMessageIdentifier", v20, v21, v22, v23, v24];
+    [(ICAsyncBlockOperation *)v14 setName:@"com.apple.iTunesCloud.ICInAppMessageManager.clearMetadataForMessageIdentifier", v20, v21, v22, v23, selfCopy];
     [(NSOperationQueue *)self->_operationQueue addOperation:v14];
 
     v15 = v26;
@@ -3829,16 +3829,16 @@ void __60__ICInAppMessageManager_getGlobalPropertyForKey_completion___block_invo
 
   else
   {
-    v16 = [(ICInAppMessageManager *)self _xpcClientConnection];
+    _xpcClientConnection = [(ICInAppMessageManager *)self _xpcClientConnection];
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
     v30[2] = __88__ICInAppMessageManager_removeMetadataForMessageIdentifier_bundleIdentifier_completion___block_invoke;
     v30[3] = &unk_1E7BFA490;
     v30[4] = self;
     v12 = &v31;
-    v17 = v10;
+    v17 = completionCopy;
     v31 = v17;
-    v18 = [v16 remoteObjectProxyWithErrorHandler:v30];
+    v18 = [_xpcClientConnection remoteObjectProxyWithErrorHandler:v30];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __88__ICInAppMessageManager_removeMetadataForMessageIdentifier_bundleIdentifier_completion___block_invoke_2;
@@ -3846,7 +3846,7 @@ void __60__ICInAppMessageManager_getGlobalPropertyForKey_completion___block_invo
     v28[4] = self;
     v29 = v17;
     v19 = v17;
-    [v18 removeMetadataForMessageIdentifier:v8 bundleIdentifier:v9 completion:v28];
+    [v18 removeMetadataForMessageIdentifier:identifierCopy bundleIdentifier:bundleIdentifierCopy completion:v28];
 
     v15 = v29;
   }
@@ -3929,12 +3929,12 @@ void __88__ICInAppMessageManager_removeMetadataForMessageIdentifier_bundleIdenti
   [*(a1 + 40) finishWithError:{v6, v7, v8, v9, v10}];
 }
 
-- (void)updateMetadata:(id)a3 messageIdentifier:(id)a4 bundleIdentifier:(id)a5 completion:(id)a6
+- (void)updateMetadata:(id)metadata messageIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  metadataCopy = metadata;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  completionCopy = completion;
   if (self->_isSystemService)
   {
     v14 = [ICAsyncBlockOperation alloc];
@@ -3942,15 +3942,15 @@ void __88__ICInAppMessageManager_removeMetadataForMessageIdentifier_bundleIdenti
     v24 = 3221225472;
     v25 = __86__ICInAppMessageManager_updateMetadata_messageIdentifier_bundleIdentifier_completion___block_invoke_4;
     v26 = &unk_1E7BF3A78;
-    v27 = self;
+    selfCopy = self;
     v15 = &v28;
-    v28 = v10;
-    v29 = v11;
-    v30 = v12;
-    v31 = v13;
-    v16 = v13;
+    v28 = metadataCopy;
+    v29 = identifierCopy;
+    v30 = bundleIdentifierCopy;
+    v31 = completionCopy;
+    v16 = completionCopy;
     v17 = [(ICAsyncBlockOperation *)v14 initWithStartHandler:&v23];
-    [(ICAsyncBlockOperation *)v17 setName:@"com.apple.iTunesCloud.ICInAppMessageManager.updateMetadata", v23, v24, v25, v26, v27];
+    [(ICAsyncBlockOperation *)v17 setName:@"com.apple.iTunesCloud.ICInAppMessageManager.updateMetadata", v23, v24, v25, v26, selfCopy];
     [(NSOperationQueue *)self->_operationQueue addOperation:v17];
 
     v18 = v29;
@@ -3958,16 +3958,16 @@ void __88__ICInAppMessageManager_removeMetadataForMessageIdentifier_bundleIdenti
 
   else
   {
-    v19 = [(ICInAppMessageManager *)self _xpcClientConnection];
+    _xpcClientConnection = [(ICInAppMessageManager *)self _xpcClientConnection];
     v34[0] = MEMORY[0x1E69E9820];
     v34[1] = 3221225472;
     v34[2] = __86__ICInAppMessageManager_updateMetadata_messageIdentifier_bundleIdentifier_completion___block_invoke;
     v34[3] = &unk_1E7BFA490;
     v34[4] = self;
     v15 = &v35;
-    v20 = v13;
+    v20 = completionCopy;
     v35 = v20;
-    v21 = [v19 remoteObjectProxyWithErrorHandler:v34];
+    v21 = [_xpcClientConnection remoteObjectProxyWithErrorHandler:v34];
     v32[0] = MEMORY[0x1E69E9820];
     v32[1] = 3221225472;
     v32[2] = __86__ICInAppMessageManager_updateMetadata_messageIdentifier_bundleIdentifier_completion___block_invoke_2;
@@ -3975,7 +3975,7 @@ void __88__ICInAppMessageManager_removeMetadataForMessageIdentifier_bundleIdenti
     v32[4] = self;
     v33 = v20;
     v22 = v20;
-    [v21 updateMetadata:v10 messageIdentifier:v11 bundleIdentifier:v12 completion:v32];
+    [v21 updateMetadata:metadataCopy messageIdentifier:identifierCopy bundleIdentifier:bundleIdentifierCopy completion:v32];
 
     v18 = v33;
   }
@@ -4059,10 +4059,10 @@ void __86__ICInAppMessageManager_updateMetadata_messageIdentifier_bundleIdentifi
   [*(a1 + 40) finishWithError:{v6, v7, v8, v9, v10}];
 }
 
-- (void)getAllMetadataForBundleIdentifiers:(id)a3 completion:(id)a4
+- (void)getAllMetadataForBundleIdentifiers:(id)identifiers completion:(id)completion
 {
-  v6 = a4;
-  v7 = v6;
+  completionCopy = completion;
+  v7 = completionCopy;
   if (self->_isSystemService)
   {
     messageStore = self->_messageStore;
@@ -4072,15 +4072,15 @@ void __86__ICInAppMessageManager_updateMetadata_messageIdentifier_bundleIdentifi
     v15[3] = &unk_1E7BF6AC0;
     v15[4] = self;
     v9 = &v16;
-    v16 = v6;
-    v10 = a3;
-    [(ICInAppMessageStore *)messageStore getAllMetadataForBundleIdentifiers:v10 completion:v15];
+    v16 = completionCopy;
+    identifiersCopy = identifiers;
+    [(ICInAppMessageStore *)messageStore getAllMetadataForBundleIdentifiers:identifiersCopy completion:v15];
   }
 
   else
   {
-    v11 = a3;
-    v12 = [(ICInAppMessageManager *)self _xpcClientConnection];
+    identifiersCopy2 = identifiers;
+    _xpcClientConnection = [(ICInAppMessageManager *)self _xpcClientConnection];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __71__ICInAppMessageManager_getAllMetadataForBundleIdentifiers_completion___block_invoke;
@@ -4089,14 +4089,14 @@ void __86__ICInAppMessageManager_updateMetadata_messageIdentifier_bundleIdentifi
     v9 = &v20;
     v13 = v7;
     v20 = v13;
-    v14 = [v12 remoteObjectProxyWithErrorHandler:v19];
+    v14 = [_xpcClientConnection remoteObjectProxyWithErrorHandler:v19];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __71__ICInAppMessageManager_getAllMetadataForBundleIdentifiers_completion___block_invoke_2;
     v17[3] = &unk_1E7BF6AC0;
     v17[4] = self;
     v18 = v13;
-    [v14 getAllMetadataForBundleIdentifiers:v11 completion:v17];
+    [v14 getAllMetadataForBundleIdentifiers:identifiersCopy2 completion:v17];
   }
 }
 
@@ -4163,18 +4163,18 @@ void __71__ICInAppMessageManager_getAllMetadataForBundleIdentifiers_completion__
   dispatch_async(v7, block);
 }
 
-- (void)getAllMetadataForBundleIdentifier:(id)a3 completion:(id)a4
+- (void)getAllMetadataForBundleIdentifier:(id)identifier completion:(id)completion
 {
   v6 = MEMORY[0x1E695DFD8];
-  v7 = a4;
-  v8 = [v6 setWithObject:a3];
-  [(ICInAppMessageManager *)self getAllMetadataForBundleIdentifiers:v8 completion:v7];
+  completionCopy = completion;
+  v8 = [v6 setWithObject:identifier];
+  [(ICInAppMessageManager *)self getAllMetadataForBundleIdentifiers:v8 completion:completionCopy];
 }
 
-- (void)getMetadataForMessageIdentifier:(id)a3 bundleIdentifier:(id)a4 completion:(id)a5
+- (void)getMetadataForMessageIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier completion:(id)completion
 {
-  v8 = a5;
-  v9 = v8;
+  completionCopy = completion;
+  v9 = completionCopy;
   if (self->_isSystemService)
   {
     messageStore = self->_messageStore;
@@ -4184,17 +4184,17 @@ void __71__ICInAppMessageManager_getAllMetadataForBundleIdentifiers_completion__
     v19[3] = &unk_1E7BF3A50;
     v19[4] = self;
     v11 = &v20;
-    v20 = v8;
-    v12 = a4;
-    v13 = a3;
-    [(ICInAppMessageStore *)messageStore getMetadataForMessageIdentifier:v13 bundleIdentifier:v12 completion:v19];
+    v20 = completionCopy;
+    bundleIdentifierCopy = bundleIdentifier;
+    identifierCopy = identifier;
+    [(ICInAppMessageStore *)messageStore getMetadataForMessageIdentifier:identifierCopy bundleIdentifier:bundleIdentifierCopy completion:v19];
   }
 
   else
   {
-    v14 = a4;
-    v15 = a3;
-    v16 = [(ICInAppMessageManager *)self _xpcClientConnection];
+    bundleIdentifierCopy2 = bundleIdentifier;
+    identifierCopy2 = identifier;
+    _xpcClientConnection = [(ICInAppMessageManager *)self _xpcClientConnection];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __85__ICInAppMessageManager_getMetadataForMessageIdentifier_bundleIdentifier_completion___block_invoke;
@@ -4203,14 +4203,14 @@ void __71__ICInAppMessageManager_getAllMetadataForBundleIdentifiers_completion__
     v11 = &v24;
     v17 = v9;
     v24 = v17;
-    v18 = [v16 remoteObjectProxyWithErrorHandler:v23];
+    v18 = [_xpcClientConnection remoteObjectProxyWithErrorHandler:v23];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __85__ICInAppMessageManager_getMetadataForMessageIdentifier_bundleIdentifier_completion___block_invoke_2;
     v21[3] = &unk_1E7BF3A50;
     v21[4] = self;
     v22 = v17;
-    [v18 getMetadataForMessageIdentifier:v15 bundleIdentifier:v14 completion:v21];
+    [v18 getMetadataForMessageIdentifier:identifierCopy2 bundleIdentifier:bundleIdentifierCopy2 completion:v21];
   }
 }
 
@@ -4284,21 +4284,21 @@ void __85__ICInAppMessageManager_getMetadataForMessageIdentifier_bundleIdentifie
   dispatch_async(v9, block);
 }
 
-- (void)clearCachedResourcesForMessageWithIdentifier:(id)a3 bundleIdentifier:(id)a4 completion:(id)a5
+- (void)clearCachedResourcesForMessageWithIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier completion:(id)completion
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  completionCopy = completion;
   v11 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v25 = self;
+    selfCopy = self;
     v26 = 2114;
-    v27 = v9;
+    v27 = bundleIdentifierCopy;
     v28 = 2114;
-    v29 = v8;
+    v29 = identifierCopy;
     _os_log_impl(&dword_1B4491000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ clearing cached resources for message %{public}@:%{public}@", buf, 0x20u);
   }
 
@@ -4308,23 +4308,23 @@ void __85__ICInAppMessageManager_getMetadataForMessageIdentifier_bundleIdentifie
     v18[1] = 3221225472;
     v18[2] = __98__ICInAppMessageManager_clearCachedResourcesForMessageWithIdentifier_bundleIdentifier_completion___block_invoke_4;
     v18[3] = &unk_1E7BF77C0;
-    v19 = v10;
-    v12 = v10;
-    [(ICInAppMessageManager *)self _updateShouldDownloadResources:0 onMessageWithIdentifier:v8 bundleIdentifier:v9 completion:v18];
+    v19 = completionCopy;
+    v12 = completionCopy;
+    [(ICInAppMessageManager *)self _updateShouldDownloadResources:0 onMessageWithIdentifier:identifierCopy bundleIdentifier:bundleIdentifierCopy completion:v18];
     v13 = v19;
   }
 
   else
   {
-    v14 = [(ICInAppMessageManager *)self _xpcClientConnection];
+    _xpcClientConnection = [(ICInAppMessageManager *)self _xpcClientConnection];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __98__ICInAppMessageManager_clearCachedResourcesForMessageWithIdentifier_bundleIdentifier_completion___block_invoke;
     v22[3] = &unk_1E7BFA490;
     v22[4] = self;
-    v15 = v10;
+    v15 = completionCopy;
     v23 = v15;
-    v16 = [v14 remoteObjectProxyWithErrorHandler:v22];
+    v16 = [_xpcClientConnection remoteObjectProxyWithErrorHandler:v22];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __98__ICInAppMessageManager_clearCachedResourcesForMessageWithIdentifier_bundleIdentifier_completion___block_invoke_2;
@@ -4332,7 +4332,7 @@ void __85__ICInAppMessageManager_getMetadataForMessageIdentifier_bundleIdentifie
     v20[4] = self;
     v21 = v15;
     v17 = v15;
-    [v16 clearCachedResourcesForMessageWithIdentifier:v8 bundleIdentifier:v9 completion:v20];
+    [v16 clearCachedResourcesForMessageWithIdentifier:identifierCopy bundleIdentifier:bundleIdentifierCopy completion:v20];
 
     v13 = v23;
   }
@@ -4380,21 +4380,21 @@ void __98__ICInAppMessageManager_clearCachedResourcesForMessageWithIdentifier_bu
   dispatch_async(v4, v7);
 }
 
-- (void)downloadResourcesForMessageWithIdentifier:(id)a3 bundleIdentifier:(id)a4 completion:(id)a5
+- (void)downloadResourcesForMessageWithIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier completion:(id)completion
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  completionCopy = completion;
   v11 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v27 = self;
+    selfCopy = self;
     v28 = 2114;
-    v29 = v9;
+    v29 = bundleIdentifierCopy;
     v30 = 2114;
-    v31 = v8;
+    v31 = identifierCopy;
     _os_log_impl(&dword_1B4491000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ downloading resources for message %{public}@:%{public}@", buf, 0x20u);
   }
 
@@ -4404,11 +4404,11 @@ void __98__ICInAppMessageManager_clearCachedResourcesForMessageWithIdentifier_bu
     v18[1] = 3221225472;
     v18[2] = __95__ICInAppMessageManager_downloadResourcesForMessageWithIdentifier_bundleIdentifier_completion___block_invoke_4;
     v18[3] = &unk_1E7BF8058;
-    v21 = v10;
+    v21 = completionCopy;
     v18[4] = self;
-    v19 = v8;
-    v20 = v9;
-    v12 = v10;
+    v19 = identifierCopy;
+    v20 = bundleIdentifierCopy;
+    v12 = completionCopy;
     [(ICInAppMessageManager *)self _updateShouldDownloadResources:1 onMessageWithIdentifier:v19 bundleIdentifier:v20 completion:v18];
 
     v13 = v21;
@@ -4416,15 +4416,15 @@ void __98__ICInAppMessageManager_clearCachedResourcesForMessageWithIdentifier_bu
 
   else
   {
-    v14 = [(ICInAppMessageManager *)self _xpcClientConnection];
+    _xpcClientConnection = [(ICInAppMessageManager *)self _xpcClientConnection];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __95__ICInAppMessageManager_downloadResourcesForMessageWithIdentifier_bundleIdentifier_completion___block_invoke;
     v24[3] = &unk_1E7BFA490;
     v24[4] = self;
-    v15 = v10;
+    v15 = completionCopy;
     v25 = v15;
-    v16 = [v14 remoteObjectProxyWithErrorHandler:v24];
+    v16 = [_xpcClientConnection remoteObjectProxyWithErrorHandler:v24];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __95__ICInAppMessageManager_downloadResourcesForMessageWithIdentifier_bundleIdentifier_completion___block_invoke_2;
@@ -4432,7 +4432,7 @@ void __98__ICInAppMessageManager_clearCachedResourcesForMessageWithIdentifier_bu
     v22[4] = self;
     v23 = v15;
     v17 = v15;
-    [v16 downloadResourcesForMessageWithIdentifier:v8 bundleIdentifier:v9 completion:v22];
+    [v16 downloadResourcesForMessageWithIdentifier:identifierCopy bundleIdentifier:bundleIdentifierCopy completion:v22];
 
     v13 = v25;
   }
@@ -4536,29 +4536,29 @@ void __95__ICInAppMessageManager_downloadResourcesForMessageWithIdentifier_bundl
   [*(a1 + 32) finishWithError:v5];
 }
 
-- (void)flushEventsWithCompletion:(id)a3
+- (void)flushEventsWithCompletion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v25 = self;
+    selfCopy3 = self;
     _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ Flushing message events", buf, 0xCu);
   }
 
   if (!self->_isSystemService)
   {
-    v8 = [(ICInAppMessageManager *)self _xpcClientConnection];
+    _xpcClientConnection = [(ICInAppMessageManager *)self _xpcClientConnection];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __51__ICInAppMessageManager_flushEventsWithCompletion___block_invoke;
     v22[3] = &unk_1E7BFA490;
     v22[4] = self;
-    v9 = v4;
+    v9 = completionCopy;
     v23 = v9;
-    v10 = [v8 remoteObjectProxyWithErrorHandler:v22];
+    v10 = [_xpcClientConnection remoteObjectProxyWithErrorHandler:v22];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __51__ICInAppMessageManager_flushEventsWithCompletion___block_invoke_2;
@@ -4580,10 +4580,10 @@ LABEL_10:
     v15 = 3221225472;
     v16 = __51__ICInAppMessageManager_flushEventsWithCompletion___block_invoke_223;
     v17 = &unk_1E7BF8080;
-    v18 = self;
-    v19 = v4;
+    selfCopy2 = self;
+    v19 = completionCopy;
     v13 = [(ICAsyncBlockOperation *)v12 initWithStartHandler:&v14];
-    [(ICAsyncBlockOperation *)v13 setName:@"com.apple.iTunesCloud.ICInAppMessageManager.flushEvents", v14, v15, v16, v17, v18];
+    [(ICAsyncBlockOperation *)v13 setName:@"com.apple.iTunesCloud.ICInAppMessageManager.flushEvents", v14, v15, v16, v17, selfCopy2];
     [(NSOperationQueue *)self->_operationQueue addOperation:v13];
 
     v11 = v19;
@@ -4594,12 +4594,12 @@ LABEL_10:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v25 = self;
+    selfCopy3 = self;
     _os_log_impl(&dword_1B4491000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ Not flushing events because privacy acknowledgement is required", buf, 0xCu);
   }
 
   v7 = [MEMORY[0x1E696ABC0] errorWithDomain:@"ICError" code:-7007 userInfo:0];
-  (*(v4 + 2))(v4, v7);
+  (*(completionCopy + 2))(completionCopy, v7);
 
 LABEL_11:
 }
@@ -4822,22 +4822,22 @@ void __51__ICInAppMessageManager_flushEventsWithCompletion___block_invoke_2_230(
   }
 }
 
-- (void)reportEventForMessageIdentifier:(id)a3 withParams:(id)a4 flushImmediately:(BOOL)a5 completion:(id)a6
+- (void)reportEventForMessageIdentifier:(id)identifier withParams:(id)params flushImmediately:(BOOL)immediately completion:(id)completion
 {
-  v7 = a5;
+  immediatelyCopy = immediately;
   v39 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  identifierCopy = identifier;
+  paramsCopy = params;
+  completionCopy = completion;
   v13 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v34 = self;
+    selfCopy = self;
     v35 = 2114;
-    v36 = v10;
+    v36 = identifierCopy;
     v37 = 2114;
-    v38 = v11;
+    v38 = paramsCopy;
     _os_log_impl(&dword_1B4491000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ Reporting event for message identifier %{public}@: %{public}@", buf, 0x20u);
   }
 
@@ -4850,12 +4850,12 @@ void __51__ICInAppMessageManager_flushEventsWithCompletion___block_invoke_2_230(
     v24[3] = &unk_1E7BF3A28;
     v24[4] = self;
     v15 = &v25;
-    v25 = v10;
-    v16 = v11;
-    v28 = v7;
+    v25 = identifierCopy;
+    v16 = paramsCopy;
+    v28 = immediatelyCopy;
     v26 = v16;
-    v27 = v12;
-    v17 = v12;
+    v27 = completionCopy;
+    v17 = completionCopy;
     v18 = [(ICAsyncBlockOperation *)v14 initWithStartHandler:v24];
     [(ICAsyncBlockOperation *)v18 setName:@"com.apple.iTunesCloud.ICInAppMessageManager.reportEvents"];
     [(NSOperationQueue *)self->_operationQueue addOperation:v18];
@@ -4865,16 +4865,16 @@ void __51__ICInAppMessageManager_flushEventsWithCompletion___block_invoke_2_230(
 
   else
   {
-    v20 = [(ICInAppMessageManager *)self _xpcClientConnection];
+    _xpcClientConnection = [(ICInAppMessageManager *)self _xpcClientConnection];
     v31[0] = MEMORY[0x1E69E9820];
     v31[1] = 3221225472;
     v31[2] = __96__ICInAppMessageManager_reportEventForMessageIdentifier_withParams_flushImmediately_completion___block_invoke;
     v31[3] = &unk_1E7BFA490;
     v31[4] = self;
     v15 = &v32;
-    v21 = v12;
+    v21 = completionCopy;
     v32 = v21;
-    v22 = [v20 remoteObjectProxyWithErrorHandler:v31];
+    v22 = [_xpcClientConnection remoteObjectProxyWithErrorHandler:v31];
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __96__ICInAppMessageManager_reportEventForMessageIdentifier_withParams_flushImmediately_completion___block_invoke_2;
@@ -4882,7 +4882,7 @@ void __51__ICInAppMessageManager_flushEventsWithCompletion___block_invoke_2_230(
     v29[4] = self;
     v30 = v21;
     v23 = v21;
-    [v22 reportEventForMessageIdentifier:v10 withParams:v11 flushImmediately:v7 completion:v29];
+    [v22 reportEventForMessageIdentifier:identifierCopy withParams:paramsCopy flushImmediately:immediatelyCopy completion:v29];
 
     v19 = v30;
   }
@@ -4991,17 +4991,17 @@ void __96__ICInAppMessageManager_reportEventForMessageIdentifier_withParams_flus
   [*(a1 + 40) finishWithError:v3];
 }
 
-- (void)resetMessagesWithCompletion:(id)a3
+- (void)resetMessagesWithCompletion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   if (self->_isSystemService)
   {
     v5 = os_log_create("com.apple.amp.iTunesCloud", "Default");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v25 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ Performing reset", buf, 0xCu);
     }
 
@@ -5011,26 +5011,26 @@ void __96__ICInAppMessageManager_reportEventForMessageIdentifier_withParams_flus
     v16 = __53__ICInAppMessageManager_resetMessagesWithCompletion___block_invoke_207;
     v17 = &unk_1E7BF8080;
     v7 = &v19;
-    v18 = self;
-    v19 = v4;
-    v8 = v4;
+    selfCopy2 = self;
+    v19 = completionCopy;
+    v8 = completionCopy;
     v9 = [(ICAsyncBlockOperation *)v6 initWithStartHandler:&v14];
-    [(ICAsyncBlockOperation *)v9 setName:@"com.apple.iTunesCloud.ICInAppMessageManager.resetMessages", v14, v15, v16, v17, v18];
+    [(ICAsyncBlockOperation *)v9 setName:@"com.apple.iTunesCloud.ICInAppMessageManager.resetMessages", v14, v15, v16, v17, selfCopy2];
     [(NSOperationQueue *)self->_operationQueue addOperation:v9];
   }
 
   else
   {
-    v10 = [(ICInAppMessageManager *)self _xpcClientConnection];
+    _xpcClientConnection = [(ICInAppMessageManager *)self _xpcClientConnection];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __53__ICInAppMessageManager_resetMessagesWithCompletion___block_invoke;
     v22[3] = &unk_1E7BFA490;
     v22[4] = self;
     v7 = &v23;
-    v11 = v4;
+    v11 = completionCopy;
     v23 = v11;
-    v12 = [v10 remoteObjectProxyWithErrorHandler:v22];
+    v12 = [_xpcClientConnection remoteObjectProxyWithErrorHandler:v22];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __53__ICInAppMessageManager_resetMessagesWithCompletion___block_invoke_2;
@@ -5122,15 +5122,15 @@ void __53__ICInAppMessageManager_resetMessagesWithCompletion___block_invoke_2_20
   [*(a1 + 32) finishWithError:v3];
 }
 
-- (void)syncMessagesWithCompletion:(id)a3
+- (void)syncMessagesWithCompletion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v25 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ Performing sync", buf, 0xCu);
   }
 
@@ -5142,26 +5142,26 @@ void __53__ICInAppMessageManager_resetMessagesWithCompletion___block_invoke_2_20
     v16 = __52__ICInAppMessageManager_syncMessagesWithCompletion___block_invoke_4;
     v17 = &unk_1E7BF8080;
     v7 = &v19;
-    v18 = self;
-    v19 = v4;
-    v8 = v4;
+    selfCopy2 = self;
+    v19 = completionCopy;
+    v8 = completionCopy;
     v9 = [(ICAsyncBlockOperation *)v6 initWithStartHandler:&v14];
-    [(ICAsyncBlockOperation *)v9 setName:@"com.apple.iTunesCloud.ICInAppMessageManager.syncMessages", v14, v15, v16, v17, v18];
+    [(ICAsyncBlockOperation *)v9 setName:@"com.apple.iTunesCloud.ICInAppMessageManager.syncMessages", v14, v15, v16, v17, selfCopy2];
     [(NSOperationQueue *)self->_operationQueue addOperation:v9];
   }
 
   else
   {
-    v10 = [(ICInAppMessageManager *)self _xpcClientConnection];
+    _xpcClientConnection = [(ICInAppMessageManager *)self _xpcClientConnection];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __52__ICInAppMessageManager_syncMessagesWithCompletion___block_invoke;
     v22[3] = &unk_1E7BFA490;
     v22[4] = self;
     v7 = &v23;
-    v11 = v4;
+    v11 = completionCopy;
     v23 = v11;
-    v12 = [v10 remoteObjectProxyWithErrorHandler:v22];
+    v12 = [_xpcClientConnection remoteObjectProxyWithErrorHandler:v22];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __52__ICInAppMessageManager_syncMessagesWithCompletion___block_invoke_2;
@@ -5239,58 +5239,58 @@ void __52__ICInAppMessageManager_syncMessagesWithCompletion___block_invoke_5(uin
   [*(a1 + 32) finishWithError:v5];
 }
 
-- (void)addMessageEntryFromAMSDialogRequest:(id)a3 bundleIdentifier:(id)a4 completion:(id)a5
+- (void)addMessageEntryFromAMSDialogRequest:(id)request bundleIdentifier:(id)identifier completion:(id)completion
 {
   v90 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v63 = a5;
+  requestCopy = request;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v10 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v85 = self;
+    selfCopy = self;
     v86 = 2114;
-    v87 = v9;
+    v87 = identifierCopy;
     v88 = 2114;
-    v89 = v8;
+    v89 = requestCopy;
     _os_log_impl(&dword_1B4491000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ Adding message for bundle identifier '%{public}@' from dialog request %{public}@", buf, 0x20u);
   }
 
-  v11 = [v8 identifier];
-  v12 = v11;
-  v61 = self;
-  if (v11)
+  identifier = [requestCopy identifier];
+  v12 = identifier;
+  selfCopy2 = self;
+  if (identifier)
   {
-    v65 = v11;
+    uUIDString = identifier;
   }
 
   else
   {
-    v13 = [MEMORY[0x1E696AFB0] UUID];
-    v65 = [v13 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
   }
 
-  v59 = v9;
+  v59 = identifierCopy;
 
-  v14 = [v8 defaultAction];
-  v15 = [v14 deepLink];
+  defaultAction = [requestCopy defaultAction];
+  deepLink = [defaultAction deepLink];
 
-  v62 = v15;
-  if (v15)
+  v62 = deepLink;
+  if (deepLink)
   {
-    v16 = [v15 absoluteString];
+    absoluteString = [deepLink absoluteString];
   }
 
   else
   {
-    v16 = @"music://itunes.apple.com";
+    absoluteString = @"music://itunes.apple.com";
   }
 
   v17 = objc_alloc_init(ICIAMApplicationMessage);
-  [(ICIAMApplicationMessage *)v17 setIdentifier:v65];
-  v18 = [MEMORY[0x1E695DF00] date];
-  [v18 timeIntervalSince1970];
+  [(ICIAMApplicationMessage *)v17 setIdentifier:uUIDString];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSince1970];
   [(ICIAMApplicationMessage *)v17 setStartDate:?];
 
   v19 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:1209600.0];
@@ -5303,46 +5303,46 @@ void __52__ICInAppMessageManager_syncMessagesWithCompletion___block_invoke_5(uin
   [(ICIAMApplicationMessage *)v17 setMessageType:2];
   v20 = objc_alloc_init(ICIAMMessageContent);
   [(ICIAMMessageContent *)v20 setIdentifier:@"content-identifier"];
-  v21 = [v8 title];
-  [(ICIAMMessageContent *)v20 setTitle:v21];
+  title = [requestCopy title];
+  [(ICIAMMessageContent *)v20 setTitle:title];
 
-  v22 = [v8 message];
-  [(ICIAMMessageContent *)v20 setSubtitle:v22];
+  message = [requestCopy message];
+  [(ICIAMMessageContent *)v20 setSubtitle:message];
 
   v58 = v20;
   [(ICIAMApplicationMessage *)v17 addContentPages:v20];
-  v23 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v82[0] = @"title";
-  v24 = [v8 title];
-  v83[0] = v24;
+  title2 = [requestCopy title];
+  v83[0] = title2;
   v82[1] = @"body";
-  v64 = v8;
-  v25 = [v8 message];
+  v64 = requestCopy;
+  message2 = [requestCopy message];
   v82[2] = @"level";
-  v83[1] = v25;
+  v83[1] = message2;
   v83[2] = &unk_1F2C91FC0;
   v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v83 forKeys:v82 count:3];
 
   v57 = v26;
-  [v23 setObject:v26 forKey:@"alert"];
-  v27 = [MEMORY[0x1E695DF70] array];
+  [dictionary setObject:v26 forKey:@"alert"];
+  array = [MEMORY[0x1E695DF70] array];
   v80[0] = @"_tp";
   v80[1] = @"_url";
   v81[0] = &unk_1F2C91FD8;
-  v81[1] = v16;
+  v81[1] = absoluteString;
   v80[2] = @"_mt";
   v78[0] = @"actionType";
   v78[1] = @"actionUrl";
   v79[0] = @"tap";
-  v79[1] = v16;
-  v60 = v16;
+  v79[1] = absoluteString;
+  v60 = absoluteString;
   v78[2] = @"eventType";
   v78[3] = @"eventVersion";
   v79[2] = @"notificationAction";
   v79[3] = &unk_1F2C91FD8;
   v78[4] = @"notificationId";
   v78[5] = @"targetType";
-  v79[4] = v65;
+  v79[4] = uUIDString;
   v79[5] = @"notification";
   v78[6] = @"topic";
   v78[7] = @"app";
@@ -5360,10 +5360,10 @@ void __52__ICInAppMessageManager_syncMessagesWithCompletion___block_invoke_5(uin
   v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v81 forKeys:v80 count:3];
 
   v55 = v30;
-  [v27 addObject:v30];
-  v56 = v27;
-  [v23 setObject:v27 forKey:@"_ba"];
-  [v23 setObject:&unk_1F2C91FD8 forKey:@"content-available"];
+  [array addObject:v30];
+  v56 = array;
+  [dictionary setObject:array forKey:@"_ba"];
+  [dictionary setObject:&unk_1F2C91FD8 forKey:@"content-available"];
   v31 = +[ICUserIdentityStore defaultIdentityStore];
   v32 = +[ICUserIdentity activeAccount];
   v33 = [v31 DSIDForUserIdentity:v32 outError:0];
@@ -5371,36 +5371,36 @@ void __52__ICInAppMessageManager_syncMessagesWithCompletion___block_invoke_5(uin
   v54 = v33;
   if (v33)
   {
-    v34 = [v33 stringValue];
-    [v23 setObject:v34 forKey:@"_ds"];
+    stringValue = [v33 stringValue];
+    [dictionary setObject:stringValue forKey:@"_ds"];
   }
 
   else
   {
-    [v23 setObject:@"0" forKey:@"_ds"];
+    [dictionary setObject:@"0" forKey:@"_ds"];
   }
 
-  [v23 setObject:&unk_1F2C91FF0 forKey:@"_it"];
-  v35 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ams_%@", v65];
-  [v23 setObject:v35 forKey:@"_id"];
+  [dictionary setObject:&unk_1F2C91FF0 forKey:@"_it"];
+  v35 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ams_%@", uUIDString];
+  [dictionary setObject:v35 forKey:@"_id"];
 
-  [v23 setObject:v59 forKey:@"_bid"];
+  [dictionary setObject:v59 forKey:@"_bid"];
   v74[0] = @"eventType";
   v74[1] = @"eventVersion";
   v75[0] = @"notificationRequest";
   v75[1] = &unk_1F2C91FD8;
   v74[2] = @"language";
   v36 = +[ICDeviceInfo currentDeviceInfo];
-  v37 = [v36 currentLocale];
-  v38 = v37;
+  currentLocale = [v36 currentLocale];
+  v38 = currentLocale;
   v39 = &stru_1F2C4A680;
-  if (v37)
+  if (currentLocale)
   {
-    v39 = v37;
+    v39 = currentLocale;
   }
 
   v75[2] = v39;
-  v75[3] = v65;
+  v75[3] = uUIDString;
   v74[3] = @"notificationId";
   v74[4] = @"notificationType";
   v75[4] = @"Content";
@@ -5419,27 +5419,27 @@ void __52__ICInAppMessageManager_syncMessagesWithCompletion___block_invoke_5(uin
   v75[9] = v40;
   v41 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v75 forKeys:v74 count:10];
 
-  [v23 setObject:v41 forKey:@"_mt"];
+  [dictionary setObject:v41 forKey:@"_mt"];
   v42 = objc_alloc_init(ICIAMLocalNotification);
   v71 = 0;
-  v43 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v23 options:0 error:&v71];
+  v43 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionary options:0 error:&v71];
   v44 = v71;
   if (v43 && ([v43 base64EncodedStringWithOptions:0], (v45 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v46 = v45;
     [(ICIAMLocalNotification *)v42 setNotification:v45];
     [(ICIAMApplicationMessage *)v17 setLocalNotification:v42];
-    v47 = v61;
+    v47 = selfCopy2;
   }
 
   else
   {
     v46 = os_log_create("com.apple.amp.iTunesCloud", "Default");
-    v47 = v61;
+    v47 = selfCopy2;
     if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v85 = v61;
+      selfCopy = selfCopy2;
       v86 = 2114;
       v87 = v44;
       _os_log_impl(&dword_1B4491000, v46, OS_LOG_TYPE_ERROR, "%{public}@ Failed to serialize local notification data. err=%{public}@", buf, 0x16u);
@@ -5455,10 +5455,10 @@ void __52__ICInAppMessageManager_syncMessagesWithCompletion___block_invoke_5(uin
   v67 = v49;
   v68 = v17;
   v69 = v59;
-  v70 = v63;
+  v70 = completionCopy;
   v50 = v59;
   v51 = v17;
-  v52 = v63;
+  v52 = completionCopy;
   v53 = v49;
   [(ICInAppMessageManager *)v53 addMessageEntry:v48 completion:v66];
 }
@@ -5497,18 +5497,18 @@ void __89__ICInAppMessageManager_addMessageEntryFromAMSDialogRequest_bundleIdent
   }
 }
 
-- (void)removeAllMessageEntriesForBundleIdentifier:(id)a3 completion:(id)a4
+- (void)removeAllMessageEntriesForBundleIdentifier:(id)identifier completion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v26 = self;
+    selfCopy = self;
     v27 = 2114;
-    v28 = v6;
+    v28 = identifierCopy;
     _os_log_impl(&dword_1B4491000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ removing all messages for bundle identifier %{public}@", buf, 0x16u);
   }
 
@@ -5521,9 +5521,9 @@ void __89__ICInAppMessageManager_addMessageEntryFromAMSDialogRequest_bundleIdent
     v18[3] = &unk_1E7BF8BE8;
     v18[4] = self;
     v10 = &v19;
-    v19 = v6;
-    v20 = v7;
-    v11 = v7;
+    v19 = identifierCopy;
+    v20 = completionCopy;
+    v11 = completionCopy;
     v12 = [(ICAsyncBlockOperation *)v9 initWithStartHandler:v18];
     [(ICAsyncBlockOperation *)v12 setName:@"com.apple.iTunesCloud.ICInAppMessageManager.removeAllMessagesForBundleIdentifier"];
     [(NSOperationQueue *)self->_operationQueue addOperation:v12];
@@ -5533,16 +5533,16 @@ void __89__ICInAppMessageManager_addMessageEntryFromAMSDialogRequest_bundleIdent
 
   else
   {
-    v14 = [(ICInAppMessageManager *)self _xpcClientConnection];
+    _xpcClientConnection = [(ICInAppMessageManager *)self _xpcClientConnection];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __79__ICInAppMessageManager_removeAllMessageEntriesForBundleIdentifier_completion___block_invoke;
     v23[3] = &unk_1E7BFA490;
     v23[4] = self;
     v10 = &v24;
-    v15 = v7;
+    v15 = completionCopy;
     v24 = v15;
-    v16 = [v14 remoteObjectProxyWithErrorHandler:v23];
+    v16 = [_xpcClientConnection remoteObjectProxyWithErrorHandler:v23];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __79__ICInAppMessageManager_removeAllMessageEntriesForBundleIdentifier_completion___block_invoke_2;
@@ -5550,7 +5550,7 @@ void __89__ICInAppMessageManager_addMessageEntryFromAMSDialogRequest_bundleIdent
     v21[4] = self;
     v22 = v15;
     v17 = v15;
-    [v16 removeAllMessageEntriesForBundleIdentifier:v6 completion:v21];
+    [v16 removeAllMessageEntriesForBundleIdentifier:identifierCopy completion:v21];
 
     v13 = v22;
   }
@@ -5623,21 +5623,21 @@ void __79__ICInAppMessageManager_removeAllMessageEntriesForBundleIdentifier_comp
   [*(a1 + 32) finishWithError:v5];
 }
 
-- (void)removeMessageEntryWithIdentifier:(id)a3 forBundleIdentifier:(id)a4 completion:(id)a5
+- (void)removeMessageEntryWithIdentifier:(id)identifier forBundleIdentifier:(id)bundleIdentifier completion:(id)completion
 {
   v39 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  completionCopy = completion;
   v11 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v34 = self;
+    selfCopy = self;
     v35 = 2114;
-    v36 = v8;
+    v36 = identifierCopy;
     v37 = 2114;
-    v38 = v9;
+    v38 = bundleIdentifierCopy;
     _os_log_impl(&dword_1B4491000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ removing message %{public}@ for bundle identifier %{public}@", buf, 0x20u);
   }
 
@@ -5648,14 +5648,14 @@ void __79__ICInAppMessageManager_removeAllMessageEntriesForBundleIdentifier_comp
     v22 = 3221225472;
     v23 = __89__ICInAppMessageManager_removeMessageEntryWithIdentifier_forBundleIdentifier_completion___block_invoke_4;
     v24 = &unk_1E7BF8BC0;
-    v25 = self;
+    selfCopy2 = self;
     v13 = &v26;
-    v26 = v8;
-    v27 = v9;
-    v28 = v10;
-    v14 = v10;
+    v26 = identifierCopy;
+    v27 = bundleIdentifierCopy;
+    v28 = completionCopy;
+    v14 = completionCopy;
     v15 = [(ICAsyncBlockOperation *)v12 initWithStartHandler:&v21];
-    [(ICAsyncBlockOperation *)v15 setName:@"com.apple.iTunesCloud.ICInAppMessageManager.removeMessageWithIdentifier", v21, v22, v23, v24, v25];
+    [(ICAsyncBlockOperation *)v15 setName:@"com.apple.iTunesCloud.ICInAppMessageManager.removeMessageWithIdentifier", v21, v22, v23, v24, selfCopy2];
     [(NSOperationQueue *)self->_operationQueue addOperation:v15];
 
     v16 = v27;
@@ -5663,16 +5663,16 @@ void __79__ICInAppMessageManager_removeAllMessageEntriesForBundleIdentifier_comp
 
   else
   {
-    v17 = [(ICInAppMessageManager *)self _xpcClientConnection];
+    _xpcClientConnection = [(ICInAppMessageManager *)self _xpcClientConnection];
     v31[0] = MEMORY[0x1E69E9820];
     v31[1] = 3221225472;
     v31[2] = __89__ICInAppMessageManager_removeMessageEntryWithIdentifier_forBundleIdentifier_completion___block_invoke;
     v31[3] = &unk_1E7BFA490;
     v31[4] = self;
     v13 = &v32;
-    v18 = v10;
+    v18 = completionCopy;
     v32 = v18;
-    v19 = [v17 remoteObjectProxyWithErrorHandler:v31];
+    v19 = [_xpcClientConnection remoteObjectProxyWithErrorHandler:v31];
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __89__ICInAppMessageManager_removeMessageEntryWithIdentifier_forBundleIdentifier_completion___block_invoke_2;
@@ -5680,7 +5680,7 @@ void __79__ICInAppMessageManager_removeAllMessageEntriesForBundleIdentifier_comp
     v29[4] = self;
     v30 = v18;
     v20 = v18;
-    [v19 removeMessageEntryWithIdentifier:v8 forBundleIdentifier:v9 completion:v29];
+    [v19 removeMessageEntryWithIdentifier:identifierCopy forBundleIdentifier:bundleIdentifierCopy completion:v29];
 
     v16 = v30;
   }
@@ -5754,18 +5754,18 @@ void __89__ICInAppMessageManager_removeMessageEntryWithIdentifier_forBundleIdent
   [*(a1 + 32) finishWithError:v5];
 }
 
-- (void)updateMessageEntry:(id)a3 completion:(id)a4
+- (void)updateMessageEntry:(id)entry completion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  entryCopy = entry;
+  completionCopy = completion;
   v8 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v26 = self;
+    selfCopy = self;
     v27 = 2114;
-    v28 = v6;
+    v28 = entryCopy;
     _os_log_impl(&dword_1B4491000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ updating message %{public}@", buf, 0x16u);
   }
 
@@ -5778,9 +5778,9 @@ void __89__ICInAppMessageManager_removeMessageEntryWithIdentifier_forBundleIdent
     v18[3] = &unk_1E7BF8BE8;
     v18[4] = self;
     v10 = &v19;
-    v19 = v6;
-    v20 = v7;
-    v11 = v7;
+    v19 = entryCopy;
+    v20 = completionCopy;
+    v11 = completionCopy;
     v12 = [(ICAsyncBlockOperation *)v9 initWithStartHandler:v18];
     [(ICAsyncBlockOperation *)v12 setName:@"com.apple.iTunesCloud.ICInAppMessageManager.updateMessage"];
     [(NSOperationQueue *)self->_operationQueue addOperation:v12];
@@ -5790,16 +5790,16 @@ void __89__ICInAppMessageManager_removeMessageEntryWithIdentifier_forBundleIdent
 
   else
   {
-    v14 = [(ICInAppMessageManager *)self _xpcClientConnection];
+    _xpcClientConnection = [(ICInAppMessageManager *)self _xpcClientConnection];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __55__ICInAppMessageManager_updateMessageEntry_completion___block_invoke;
     v23[3] = &unk_1E7BFA490;
     v23[4] = self;
     v10 = &v24;
-    v15 = v7;
+    v15 = completionCopy;
     v24 = v15;
-    v16 = [v14 remoteObjectProxyWithErrorHandler:v23];
+    v16 = [_xpcClientConnection remoteObjectProxyWithErrorHandler:v23];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __55__ICInAppMessageManager_updateMessageEntry_completion___block_invoke_2;
@@ -5807,7 +5807,7 @@ void __89__ICInAppMessageManager_removeMessageEntryWithIdentifier_forBundleIdent
     v21[4] = self;
     v22 = v15;
     v17 = v15;
-    [v16 updateMessageEntry:v6 completion:v21];
+    [v16 updateMessageEntry:entryCopy completion:v21];
 
     v13 = v22;
   }
@@ -5894,18 +5894,18 @@ void __55__ICInAppMessageManager_updateMessageEntry_completion___block_invoke_5(
   [*(a1 + 40) finishWithError:v3];
 }
 
-- (void)addMessageEntry:(id)a3 completion:(id)a4
+- (void)addMessageEntry:(id)entry completion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  entryCopy = entry;
+  completionCopy = completion;
   v8 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v26 = self;
+    selfCopy = self;
     v27 = 2114;
-    v28 = v6;
+    v28 = entryCopy;
     _os_log_impl(&dword_1B4491000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ adding message: %{public}@", buf, 0x16u);
   }
 
@@ -5918,9 +5918,9 @@ void __55__ICInAppMessageManager_updateMessageEntry_completion___block_invoke_5(
     v18[3] = &unk_1E7BF8BE8;
     v18[4] = self;
     v10 = &v19;
-    v19 = v6;
-    v20 = v7;
-    v11 = v7;
+    v19 = entryCopy;
+    v20 = completionCopy;
+    v11 = completionCopy;
     v12 = [(ICAsyncBlockOperation *)v9 initWithStartHandler:v18];
     [(ICAsyncBlockOperation *)v12 setName:@"com.apple.iTunesCloud.ICInAppMessageManager.addMessage"];
     [(NSOperationQueue *)self->_operationQueue addOperation:v12];
@@ -5930,16 +5930,16 @@ void __55__ICInAppMessageManager_updateMessageEntry_completion___block_invoke_5(
 
   else
   {
-    v14 = [(ICInAppMessageManager *)self _xpcClientConnection];
+    _xpcClientConnection = [(ICInAppMessageManager *)self _xpcClientConnection];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __52__ICInAppMessageManager_addMessageEntry_completion___block_invoke;
     v23[3] = &unk_1E7BFA490;
     v23[4] = self;
     v10 = &v24;
-    v15 = v7;
+    v15 = completionCopy;
     v24 = v15;
-    v16 = [v14 remoteObjectProxyWithErrorHandler:v23];
+    v16 = [_xpcClientConnection remoteObjectProxyWithErrorHandler:v23];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __52__ICInAppMessageManager_addMessageEntry_completion___block_invoke_2;
@@ -5947,7 +5947,7 @@ void __55__ICInAppMessageManager_updateMessageEntry_completion___block_invoke_5(
     v21[4] = self;
     v22 = v15;
     v17 = v15;
-    [v16 addMessageEntry:v6 completion:v21];
+    [v16 addMessageEntry:entryCopy completion:v21];
 
     v13 = v22;
   }
@@ -6034,21 +6034,21 @@ void __52__ICInAppMessageManager_addMessageEntry_completion___block_invoke_5(uin
   [*(a1 + 40) finishWithError:v3];
 }
 
-- (void)messageEntryWithIdentifier:(id)a3 bundleIdentifier:(id)a4 completion:(id)a5
+- (void)messageEntryWithIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier completion:(id)completion
 {
   v36 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  completionCopy = completion;
   v11 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v31 = self;
+    selfCopy = self;
     v32 = 2114;
-    v33 = v8;
+    v33 = identifierCopy;
     v34 = 2114;
-    v35 = v9;
+    v35 = bundleIdentifierCopy;
     _os_log_impl(&dword_1B4491000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ fetching message with identifier %{public}@ for bundle identifier %{public}@", buf, 0x20u);
   }
 
@@ -6061,12 +6061,12 @@ void __52__ICInAppMessageManager_addMessageEntry_completion___block_invoke_5(uin
     v22[3] = &unk_1E7BF39D8;
     v22[4] = self;
     v13 = &v23;
-    v14 = v8;
+    v14 = identifierCopy;
     v23 = v14;
-    v15 = v9;
+    v15 = bundleIdentifierCopy;
     v24 = v15;
-    v25 = v10;
-    v16 = v10;
+    v25 = completionCopy;
+    v16 = completionCopy;
     [(ICInAppMessageStore *)messageStore getMessageEntryWithIdentifier:v14 bundleIdentifier:v15 completion:v22];
 
     v17 = v24;
@@ -6074,16 +6074,16 @@ void __52__ICInAppMessageManager_addMessageEntry_completion___block_invoke_5(uin
 
   else
   {
-    v18 = [(ICInAppMessageManager *)self _xpcClientConnection];
+    _xpcClientConnection = [(ICInAppMessageManager *)self _xpcClientConnection];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __80__ICInAppMessageManager_messageEntryWithIdentifier_bundleIdentifier_completion___block_invoke;
     v28[3] = &unk_1E7BFA490;
     v28[4] = self;
     v13 = &v29;
-    v19 = v10;
+    v19 = completionCopy;
     v29 = v19;
-    v20 = [v18 remoteObjectProxyWithErrorHandler:v28];
+    v20 = [_xpcClientConnection remoteObjectProxyWithErrorHandler:v28];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __80__ICInAppMessageManager_messageEntryWithIdentifier_bundleIdentifier_completion___block_invoke_2;
@@ -6091,7 +6091,7 @@ void __52__ICInAppMessageManager_addMessageEntry_completion___block_invoke_5(uin
     v26[4] = self;
     v27 = v19;
     v21 = v19;
-    [v20 messageEntryWithIdentifier:v8 bundleIdentifier:v9 completion:v26];
+    [v20 messageEntryWithIdentifier:identifierCopy bundleIdentifier:bundleIdentifierCopy completion:v26];
 
     v17 = v27;
   }
@@ -6170,18 +6170,18 @@ void __80__ICInAppMessageManager_messageEntryWithIdentifier_bundleIdentifier_com
   (*(a1[7] + 16))();
 }
 
-- (void)messageEntriesForBundleIdentifiers:(id)a3 completion:(id)a4
+- (void)messageEntriesForBundleIdentifiers:(id)identifiers completion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
   v8 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v26 = self;
+    selfCopy = self;
     v27 = 2114;
-    v28 = v6;
+    v28 = identifiersCopy;
     _os_log_impl(&dword_1B4491000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ fetching messages for bundle identifiers %{public}@", buf, 0x16u);
   }
 
@@ -6194,26 +6194,26 @@ void __80__ICInAppMessageManager_messageEntryWithIdentifier_bundleIdentifier_com
     v18[3] = &unk_1E7BF8F58;
     v18[4] = self;
     v10 = &v19;
-    v11 = v6;
+    v11 = identifiersCopy;
     v19 = v11;
-    v20 = v7;
-    v12 = v7;
+    v20 = completionCopy;
+    v12 = completionCopy;
     [(ICInAppMessageStore *)messageStore getAllMessageEntriesForBundleIdentifiers:v11 completion:v18];
     v13 = v20;
   }
 
   else
   {
-    v14 = [(ICInAppMessageManager *)self _xpcClientConnection];
+    _xpcClientConnection = [(ICInAppMessageManager *)self _xpcClientConnection];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __71__ICInAppMessageManager_messageEntriesForBundleIdentifiers_completion___block_invoke;
     v23[3] = &unk_1E7BFA490;
     v23[4] = self;
     v10 = &v24;
-    v15 = v7;
+    v15 = completionCopy;
     v24 = v15;
-    v16 = [v14 remoteObjectProxyWithErrorHandler:v23];
+    v16 = [_xpcClientConnection remoteObjectProxyWithErrorHandler:v23];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __71__ICInAppMessageManager_messageEntriesForBundleIdentifiers_completion___block_invoke_2;
@@ -6221,7 +6221,7 @@ void __80__ICInAppMessageManager_messageEntryWithIdentifier_bundleIdentifier_com
     v21[4] = self;
     v22 = v15;
     v17 = v15;
-    [v16 messageEntriesForBundleIdentifiers:v6 completion:v21];
+    [v16 messageEntriesForBundleIdentifiers:identifiersCopy completion:v21];
 
     v13 = v22;
   }
@@ -6297,23 +6297,23 @@ void __71__ICInAppMessageManager_messageEntriesForBundleIdentifiers_completion__
   (*(a1[6] + 16))();
 }
 
-- (void)messageEntriesForBundleIdentifier:(id)a3 completion:(id)a4
+- (void)messageEntriesForBundleIdentifier:(id)identifier completion:(id)completion
 {
   v6 = MEMORY[0x1E695DFD8];
-  v7 = a4;
-  v8 = [v6 setWithObject:a3];
-  [(ICInAppMessageManager *)self messageEntriesForBundleIdentifiers:v8 completion:v7];
+  completionCopy = completion;
+  v8 = [v6 setWithObject:identifier];
+  [(ICInAppMessageManager *)self messageEntriesForBundleIdentifiers:v8 completion:completionCopy];
 }
 
-- (void)allMessageEntriesWithCompletion:(id)a3
+- (void)allMessageEntriesWithCompletion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v20 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ fetching all messages", buf, 0xCu);
   }
 
@@ -6326,23 +6326,23 @@ void __71__ICInAppMessageManager_messageEntriesForBundleIdentifiers_completion__
     v13[3] = &unk_1E7BF8FD0;
     v7 = &v14;
     v13[4] = self;
-    v14 = v4;
-    v8 = v4;
+    v14 = completionCopy;
+    v8 = completionCopy;
     [(ICInAppMessageStore *)messageStore getAllMessageEntriesWithCompletion:v13];
   }
 
   else
   {
-    v9 = [(ICInAppMessageManager *)self _xpcClientConnection];
+    _xpcClientConnection = [(ICInAppMessageManager *)self _xpcClientConnection];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __57__ICInAppMessageManager_allMessageEntriesWithCompletion___block_invoke;
     v17[3] = &unk_1E7BFA490;
     v17[4] = self;
     v7 = &v18;
-    v10 = v4;
+    v10 = completionCopy;
     v18 = v10;
-    v11 = [v9 remoteObjectProxyWithErrorHandler:v17];
+    v11 = [_xpcClientConnection remoteObjectProxyWithErrorHandler:v17];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __57__ICInAppMessageManager_allMessageEntriesWithCompletion___block_invoke_2;
@@ -6428,7 +6428,7 @@ void __57__ICInAppMessageManager_allMessageEntriesWithCompletion___block_invoke_
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543362;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4491000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ Stopping system service...", &v9, 0xCu);
   }
 
@@ -6464,7 +6464,7 @@ void __57__ICInAppMessageManager_allMessageEntriesWithCompletion___block_invoke_
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v22 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4491000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ Starting system service...", buf, 0xCu);
   }
 
@@ -6472,8 +6472,8 @@ void __57__ICInAppMessageManager_allMessageEntriesWithCompletion___block_invoke_
   v4 = +[ICDeviceInfo currentDeviceInfo];
   if (([v4 isWatch] & 1) == 0 && (objc_msgSend(v4, "isAudioAccessory") & 1) == 0 && (objc_msgSend(v4, "isROSDevice") & 1) == 0)
   {
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:self selector:sel__handleUserIdentityStoreDidChangeNotification_ name:@"ICUserIdentityStoreDidChangeNotification" object:self->_identityStore];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__handleUserIdentityStoreDidChangeNotification_ name:@"ICUserIdentityStoreDidChangeNotification" object:self->_identityStore];
 
     v6 = [objc_alloc(MEMORY[0x1E696B0D8]) initWithMachServiceName:@"com.apple.itunescloud.in-app-message-service"];
     xpcServiceListener = self->_xpcServiceListener;
@@ -6504,9 +6504,9 @@ void __57__ICInAppMessageManager_allMessageEntriesWithCompletion___block_invoke_
     self->_musicPrivacyObserverToken = v11;
 
     v13 = +[ICDeviceInfo currentDeviceInfo];
-    v14 = [v13 isMac];
+    isMac = [v13 isMac];
 
-    if ((v14 & 1) == 0)
+    if ((isMac & 1) == 0)
     {
       v15 = +[ICPrivacyInfo sharedPrivacyInfo];
       v18[0] = MEMORY[0x1E69E9820];
@@ -6568,18 +6568,18 @@ uint64_t __43__ICInAppMessageManager_startSystemService__block_invoke_4(uint64_t
   return result;
 }
 
-- (ICInAppMessageManager)initWithMessageStore:(id)a3 identityStore:(id)a4
+- (ICInAppMessageManager)initWithMessageStore:(id)store identityStore:(id)identityStore
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  identityStoreCopy = identityStore;
   v21.receiver = self;
   v21.super_class = ICInAppMessageManager;
   v9 = [(ICInAppMessageManager *)&v21 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_messageStore, a3);
-    objc_storeStrong(&v10->_identityStore, a4);
+    objc_storeStrong(&v9->_messageStore, store);
+    objc_storeStrong(&v10->_identityStore, identityStore);
     v11 = objc_alloc_init(MEMORY[0x1E696ADC8]);
     operationQueue = v10->_operationQueue;
     v10->_operationQueue = v11;
@@ -6602,8 +6602,8 @@ uint64_t __43__ICInAppMessageManager_startSystemService__block_invoke_4(uint64_t
     callbackQueue = v10->_callbackQueue;
     v10->_callbackQueue = v17;
 
-    v19 = [MEMORY[0x1E696ABB0] defaultCenter];
-    [v19 addObserver:v10 selector:sel__handleICInAppMessagesDidChangeDistributedNotification_ name:@"com.apple.itunescloud.ICInAppMessagesDidChangeDistributedNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+    [defaultCenter addObserver:v10 selector:sel__handleICInAppMessagesDidChangeDistributedNotification_ name:@"com.apple.itunescloud.ICInAppMessagesDidChangeDistributedNotification" object:0];
   }
 
   return v10;

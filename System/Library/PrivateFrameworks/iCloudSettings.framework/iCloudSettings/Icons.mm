@@ -12,7 +12,7 @@
   v4 = *(*(v3 - 8) + 64);
   MEMORY[0x28223BE20](v3 - 8);
   v6 = &v14 - v5;
-  v7 = self;
+  selfCopy = self;
   sub_275875E60(v6);
 
   v8 = sub_2759B8508();

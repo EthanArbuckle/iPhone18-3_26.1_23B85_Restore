@@ -1,12 +1,12 @@
 @interface PHPhotoLibraryCloudStatusObserverRegistrar
 - (BOOL)hasObservers;
-- (PHPhotoLibraryCloudStatusObserverRegistrar)initWithLibraryBundle:(id)a3;
+- (PHPhotoLibraryCloudStatusObserverRegistrar)initWithLibraryBundle:(id)bundle;
 - (void)_lock_pauseCloudStatusHandlingIfNeeded;
 - (void)_lock_resumeCloudStatusHandlingIfNeeded;
-- (void)addObservers:(id)a3 authorizationStatus:(int64_t)a4;
+- (void)addObservers:(id)observers authorizationStatus:(int64_t)status;
 - (void)dealloc;
-- (void)getObserversWithBlock:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)getObserversWithBlock:(id)block;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation PHPhotoLibraryCloudStatusObserverRegistrar
@@ -59,11 +59,11 @@
       if (self->_lock_isCloudStatusHandlingAuthorized || (v7 = [PHPhotoLibrary checkAuthorizationStatusForAPIAccessLevel:2 suppressPrompt:1], self->_lock_isCloudStatusHandlingAuthorized = v7, v7))
       {
         self->_lock_isCloudStatusHandlingActive = 1;
-        v8 = [(PHPhotoLibraryCloudStatusObserverRegistrar *)self beginObservingCloudStatusBlock];
-        v9 = v8;
-        if (v8)
+        beginObservingCloudStatusBlock = [(PHPhotoLibraryCloudStatusObserverRegistrar *)self beginObservingCloudStatusBlock];
+        v9 = beginObservingCloudStatusBlock;
+        if (beginObservingCloudStatusBlock)
         {
-          (*(v8 + 16))(v8);
+          (*(beginObservingCloudStatusBlock + 16))(beginObservingCloudStatusBlock);
         }
       }
     }
@@ -89,9 +89,9 @@ uint64_t __58__PHPhotoLibraryCloudStatusObserverRegistrar_hasObservers__block_in
   return result;
 }
 
-- (void)getObserversWithBlock:(id)a3
+- (void)getObserversWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = 0;
   v5 = &v4;
   v6 = 0x3032000000;
@@ -99,7 +99,7 @@ uint64_t __58__PHPhotoLibraryCloudStatusObserverRegistrar_hasObservers__block_in
   v8 = __Block_byref_object_dispose__48420;
   v9 = MEMORY[0x1E695E0F0];
   PLRunWithUnfairLock();
-  v3[2](v3, v5[5]);
+  blockCopy[2](blockCopy, v5[5]);
   _Block_object_dispose(&v4, 8);
 }
 
@@ -113,10 +113,10 @@ uint64_t __68__PHPhotoLibraryCloudStatusObserverRegistrar_getObserversWithBlock_
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v3 = v4;
+  observerCopy = observer;
+  v3 = observerCopy;
   PLRunWithUnfairLock();
 }
 
@@ -128,10 +128,10 @@ uint64_t __61__PHPhotoLibraryCloudStatusObserverRegistrar_removeObserver___block
   return [v2 _lock_pauseCloudStatusHandlingIfNeeded];
 }
 
-- (void)addObservers:(id)a3 authorizationStatus:(int64_t)a4
+- (void)addObservers:(id)observers authorizationStatus:(int64_t)status
 {
-  v5 = a3;
-  v4 = v5;
+  observersCopy = observers;
+  v4 = observersCopy;
   PLRunWithUnfairLock();
 }
 
@@ -212,7 +212,7 @@ uint64_t __79__PHPhotoLibraryCloudStatusObserverRegistrar_addObservers_authoriza
     *buf = 138412546;
     v6 = objc_opt_class();
     v7 = 2048;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19C86F000, v3, OS_LOG_TYPE_DEBUG, "%@ %p dealloc", buf, 0x16u);
   }
 
@@ -221,22 +221,22 @@ uint64_t __79__PHPhotoLibraryCloudStatusObserverRegistrar_addObservers_authoriza
   [(PHPhotoLibraryCloudStatusObserverRegistrar *)&v4 dealloc];
 }
 
-- (PHPhotoLibraryCloudStatusObserverRegistrar)initWithLibraryBundle:(id)a3
+- (PHPhotoLibraryCloudStatusObserverRegistrar)initWithLibraryBundle:(id)bundle
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  bundleCopy = bundle;
   v14.receiver = self;
   v14.super_class = PHPhotoLibraryCloudStatusObserverRegistrar;
   v6 = [(PHPhotoLibraryCloudStatusObserverRegistrar *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_photoLibraryBundle, a3);
+    objc_storeStrong(&v6->_photoLibraryBundle, bundle);
     v7->_lock._os_unfair_lock_opaque = 0;
     *&v7->_lock_isCloudStatusHandlingAuthorized = 0;
-    v8 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     lock_cloudStatusObservers = v7->_lock_cloudStatusObservers;
-    v7->_lock_cloudStatusObservers = v8;
+    v7->_lock_cloudStatusObservers = weakObjectsHashTable;
 
     v10 = PLPhotosObjectLifecycleGetLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -247,7 +247,7 @@ uint64_t __79__PHPhotoLibraryCloudStatusObserverRegistrar_addObservers_authoriza
       v17 = 2048;
       v18 = v7;
       v19 = 2112;
-      v20 = v5;
+      v20 = bundleCopy;
       _os_log_impl(&dword_19C86F000, v10, OS_LOG_TYPE_DEBUG, "%@ %p initWithLibraryBundle:%@", buf, 0x20u);
     }
 

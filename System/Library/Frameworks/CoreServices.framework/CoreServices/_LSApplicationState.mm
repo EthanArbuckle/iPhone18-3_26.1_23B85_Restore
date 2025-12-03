@@ -1,12 +1,12 @@
 @interface _LSApplicationState
 - (BOOL)isRestricted;
-- (_LSApplicationState)initWithBundleIdentifier:(id)a3 stateFlags:(unint64_t)a4 ratingRank:(int)a5 installType:(unint64_t)a6;
-- (_LSApplicationState)initWithCoder:(id)a3;
+- (_LSApplicationState)initWithBundleIdentifier:(id)identifier stateFlags:(unint64_t)flags ratingRank:(int)rank installType:(unint64_t)type;
+- (_LSApplicationState)initWithCoder:(id)coder;
 - (id)description;
-- (uint64_t)_isRestrictedByRatingRankWithStateProvider:(uint64_t)a1;
+- (uint64_t)_isRestrictedByRatingRankWithStateProvider:(uint64_t)provider;
 - (unint64_t)restrictionReason;
-- (unint64_t)restrictionReasonWithStateProvider:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (unint64_t)restrictionReasonWithStateProvider:(id)provider;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _LSApplicationState
@@ -14,8 +14,8 @@
 - (BOOL)isRestricted
 {
   v3 = +[LSApplicationRestrictionsManager sharedInstance];
-  v4 = [(LSApplicationRestrictionsManager *)v3 defaultStateProvider];
-  LOBYTE(self) = [(_LSApplicationState *)self isRestrictedWithStateProvider:v4];
+  defaultStateProvider = [(LSApplicationRestrictionsManager *)v3 defaultStateProvider];
+  LOBYTE(self) = [(_LSApplicationState *)self isRestrictedWithStateProvider:defaultStateProvider];
 
   return self;
 }
@@ -74,9 +74,9 @@
     v9 = &stru_1EEF65710;
   }
 
-  v10 = [(_LSApplicationState *)self isRestricted];
+  isRestricted = [(_LSApplicationState *)self isRestricted];
   v11 = @"(restricted)";
-  if (!v10)
+  if (!isRestricted)
   {
     v11 = &stru_1EEF65710;
   }
@@ -87,15 +87,15 @@
 - (unint64_t)restrictionReason
 {
   v3 = +[LSApplicationRestrictionsManager sharedInstance];
-  v4 = [(LSApplicationRestrictionsManager *)v3 defaultStateProvider];
-  v5 = [(_LSApplicationState *)self restrictionReasonWithStateProvider:v4];
+  defaultStateProvider = [(LSApplicationRestrictionsManager *)v3 defaultStateProvider];
+  v5 = [(_LSApplicationState *)self restrictionReasonWithStateProvider:defaultStateProvider];
 
   return v5;
 }
 
-- (unint64_t)restrictionReasonWithStateProvider:(id)a3
+- (unint64_t)restrictionReasonWithStateProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   if ([(_LSApplicationState *)self isPlaceholder]&& (self->_stateFlags & 0x20) != 0)
   {
     v6 = 5;
@@ -104,54 +104,54 @@
   else
   {
     v5 = +[LSApplicationRestrictionsManager sharedInstance];
-    v6 = [(LSApplicationRestrictionsManager *)v5 reasonForApplicationRestriction:self->_stateFlags checkFlags:v4 stateProvider:?];
+    v6 = [(LSApplicationRestrictionsManager *)v5 reasonForApplicationRestriction:self->_stateFlags checkFlags:providerCopy stateProvider:?];
 
     if (!v6)
     {
-      v6 = [(_LSApplicationState *)self _isRestrictedByRatingRankWithStateProvider:v4];
+      v6 = [(_LSApplicationState *)self _isRestrictedByRatingRankWithStateProvider:providerCopy];
     }
   }
 
   return v6;
 }
 
-- (_LSApplicationState)initWithBundleIdentifier:(id)a3 stateFlags:(unint64_t)a4 ratingRank:(int)a5 installType:(unint64_t)a6
+- (_LSApplicationState)initWithBundleIdentifier:(id)identifier stateFlags:(unint64_t)flags ratingRank:(int)rank installType:(unint64_t)type
 {
-  v10 = a3;
+  identifierCopy = identifier;
   v15.receiver = self;
   v15.super_class = _LSApplicationState;
   v11 = [(_LSApplicationState *)&v15 init];
   if (v11)
   {
-    v12 = [v10 copy];
+    v12 = [identifierCopy copy];
     bundleIdentifier = v11->_bundleIdentifier;
     v11->_bundleIdentifier = v12;
 
-    v11->_stateFlags = a4;
-    v11->_ratingRank = a5;
-    v11->_installType = a6;
+    v11->_stateFlags = flags;
+    v11->_ratingRank = rank;
+    v11->_installType = type;
   }
 
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   bundleIdentifier = self->_bundleIdentifier;
-  v5 = a3;
-  [v5 encodeObject:bundleIdentifier forKey:@"bundleIdentifier"];
-  [v5 encodeInteger:self->_stateFlags forKey:@"_LSAppStateFlags"];
-  [v5 encodeInt:self->_ratingRank forKey:@"ratingRank"];
-  [v5 encodeInteger:self->_installType forKey:@"installType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:bundleIdentifier forKey:@"bundleIdentifier"];
+  [coderCopy encodeInteger:self->_stateFlags forKey:@"_LSAppStateFlags"];
+  [coderCopy encodeInt:self->_ratingRank forKey:@"ratingRank"];
+  [coderCopy encodeInteger:self->_installType forKey:@"installType"];
 }
 
-- (_LSApplicationState)initWithCoder:(id)a3
+- (_LSApplicationState)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 ls_decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
-  v6 = [v4 decodeIntegerForKey:@"_LSAppStateFlags"];
-  v7 = [v4 decodeIntForKey:@"ratingRank"];
-  v8 = [v4 decodeIntegerForKey:@"installType"];
+  coderCopy = coder;
+  v5 = [coderCopy ls_decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+  v6 = [coderCopy decodeIntegerForKey:@"_LSAppStateFlags"];
+  v7 = [coderCopy decodeIntForKey:@"ratingRank"];
+  v8 = [coderCopy decodeIntegerForKey:@"installType"];
   if (v5)
   {
     v9 = [(_LSApplicationState *)self initWithBundleIdentifier:v5 stateFlags:v6 ratingRank:v7 installType:v8];
@@ -160,7 +160,7 @@
   else
   {
     v10 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A250], 4865, 0, "[_LSApplicationState initWithCoder:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Workspace/LSApplicationState.m", 182);
-    [v4 failWithError:v10];
+    [coderCopy failWithError:v10];
 
     v9 = 0;
   }
@@ -168,34 +168,34 @@
   return v9;
 }
 
-- (uint64_t)_isRestrictedByRatingRankWithStateProvider:(uint64_t)a1
+- (uint64_t)_isRestrictedByRatingRankWithStateProvider:(uint64_t)provider
 {
   v3 = a2;
-  if (a1)
+  if (provider)
   {
-    v4 = [a1 bundleIdentifier];
-    v5 = *(a1 + 24);
-    v6 = [v3 maximumRating];
-    v7 = [v6 intValue];
+    bundleIdentifier = [provider bundleIdentifier];
+    v5 = *(provider + 24);
+    maximumRating = [v3 maximumRating];
+    intValue = [maximumRating intValue];
 
-    if (v5 <= v7)
+    if (v5 <= intValue)
     {
-      a1 = 0;
+      provider = 0;
     }
 
-    else if (v4)
+    else if (bundleIdentifier)
     {
-      v8 = [v3 ratingRankExceptionBundleIDs];
-      a1 = [v8 containsObject:v4] ^ 1;
+      ratingRankExceptionBundleIDs = [v3 ratingRankExceptionBundleIDs];
+      provider = [ratingRankExceptionBundleIDs containsObject:bundleIdentifier] ^ 1;
     }
 
     else
     {
-      a1 = 1;
+      provider = 1;
     }
   }
 
-  return a1;
+  return provider;
 }
 
 @end

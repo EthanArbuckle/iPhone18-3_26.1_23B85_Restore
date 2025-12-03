@@ -1,34 +1,34 @@
 @interface BLTSectionInfoSyncCoordinator
-- (BLTSectionInfoSyncCoordinator)initWithAlertingSectionIDs:(id)a3 infoProvider:(id)a4;
+- (BLTSectionInfoSyncCoordinator)initWithAlertingSectionIDs:(id)ds infoProvider:(id)provider;
 - (id)description;
-- (id)effectiveSectionInfoForSectionIDIndex:(unint64_t)a3;
-- (unint64_t)performSyncForSectionID:(id)a3 queue:(id)a4 completion:(id)a5;
+- (id)effectiveSectionInfoForSectionIDIndex:(unint64_t)index;
+- (unint64_t)performSyncForSectionID:(id)d queue:(id)queue completion:(id)completion;
 - (void)dealloc;
-- (void)sectionInfoSendCompleted:(unint64_t)a3;
+- (void)sectionInfoSendCompleted:(unint64_t)completed;
 @end
 
 @implementation BLTSectionInfoSyncCoordinator
 
-- (BLTSectionInfoSyncCoordinator)initWithAlertingSectionIDs:(id)a3 infoProvider:(id)a4
+- (BLTSectionInfoSyncCoordinator)initWithAlertingSectionIDs:(id)ds infoProvider:(id)provider
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  providerCopy = provider;
   v32.receiver = self;
   v32.super_class = BLTSectionInfoSyncCoordinator;
   v8 = [(BLTSectionInfoSyncCoordinator *)&v32 init];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [providerCopy copy];
     infoProvider = v8->_infoProvider;
     v8->_infoProvider = v9;
 
-    v11 = [v6 mutableCopy];
+    v11 = [dsCopy mutableCopy];
     alertingSectionIDs = v8->_alertingSectionIDs;
     v8->_alertingSectionIDs = v11;
 
     v13 = MEMORY[0x277CBEB38];
-    v14 = [MEMORY[0x277CBEAC0] sharedKeySetForKeys:v6];
+    v14 = [MEMORY[0x277CBEAC0] sharedKeySetForKeys:dsCopy];
     v15 = [v13 dictionaryWithSharedKeySet:v14];
     alertingSectionState = v8->_alertingSectionState;
     v8->_alertingSectionState = v15;
@@ -96,13 +96,13 @@ _DWORD *__73__BLTSectionInfoSyncCoordinator_initWithAlertingSectionIDs_infoProvi
   [(BLTSectionInfoSyncCoordinator *)&v4 dealloc];
 }
 
-- (unint64_t)performSyncForSectionID:(id)a3 queue:(id)a4 completion:(id)a5
+- (unint64_t)performSyncForSectionID:(id)d queue:(id)queue completion:(id)completion
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(NSMutableDictionary *)self->_alertingSectionState objectForKeyedSubscript:v8];
+  dCopy = d;
+  queueCopy = queue;
+  completionCopy = completion;
+  v11 = [(NSMutableDictionary *)self->_alertingSectionState objectForKeyedSubscript:dCopy];
   v12 = v11;
   if (!v11 || [v11 state] == 2)
   {
@@ -110,8 +110,8 @@ _DWORD *__73__BLTSectionInfoSyncCoordinator_initWithAlertingSectionIDs_infoProvi
     block[1] = 3221225472;
     block[2] = __74__BLTSectionInfoSyncCoordinator_performSyncForSectionID_queue_completion___block_invoke;
     block[3] = &unk_278D314F0;
-    v27 = v10;
-    dispatch_async(v9, block);
+    v27 = completionCopy;
+    dispatch_async(queueCopy, block);
     v13 = 3;
     v14 = v27;
     goto LABEL_4;
@@ -121,12 +121,12 @@ _DWORD *__73__BLTSectionInfoSyncCoordinator_initWithAlertingSectionIDs_infoProvi
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v29 = v8;
+    v29 = dCopy;
     _os_log_impl(&dword_241FB3000, v17, OS_LOG_TYPE_DEFAULT, "Section %@ hasn't completed sync'ing", buf, 0xCu);
   }
 
-  [v12 setClientCompletion:v10];
-  [v12 setClientQueue:v9];
+  [v12 setClientCompletion:completionCopy];
+  [v12 setClientQueue:queueCopy];
   if ([v12 state] == 1)
   {
     goto LABEL_17;
@@ -136,7 +136,7 @@ _DWORD *__73__BLTSectionInfoSyncCoordinator_initWithAlertingSectionIDs_infoProvi
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v29 = v8;
+    v29 = dCopy;
     _os_log_impl(&dword_241FB3000, v18, OS_LOG_TYPE_DEFAULT, "Moving %@ to front of send queue", buf, 0xCu);
   }
 
@@ -154,7 +154,7 @@ _DWORD *__73__BLTSectionInfoSyncCoordinator_initWithAlertingSectionIDs_infoProvi
     goto LABEL_17;
   }
 
-  v22 = [(NSMutableArray *)*p_alertingSectionIDs indexOfObject:v8];
+  v22 = [(NSMutableArray *)*p_alertingSectionIDs indexOfObject:dCopy];
   if (v22 == *p_mostRecentIndex + 1)
   {
 LABEL_17:
@@ -166,7 +166,7 @@ LABEL_17:
   v24 = [(NSMutableArray *)*p_alertingSectionIDs objectAtIndexedSubscript:?];
   [(NSMutableArray *)*p_alertingSectionIDs setObject:v24 atIndexedSubscript:v23];
 
-  [(NSMutableArray *)*p_alertingSectionIDs setObject:v8 atIndexedSubscript:*p_mostRecentIndex + 1];
+  [(NSMutableArray *)*p_alertingSectionIDs setObject:dCopy atIndexedSubscript:*p_mostRecentIndex + 1];
   v13 = 0;
 LABEL_18:
   if (self->_mostRecentIndexSinceSync != self->_mostRecentIndex)
@@ -191,45 +191,45 @@ LABEL_5:
   return v13;
 }
 
-- (id)effectiveSectionInfoForSectionIDIndex:(unint64_t)a3
+- (id)effectiveSectionInfoForSectionIDIndex:(unint64_t)index
 {
-  self->_mostRecentIndex = a3;
+  self->_mostRecentIndex = index;
   alertingSectionState = self->_alertingSectionState;
   v6 = [(NSMutableArray *)self->_alertingSectionIDs objectAtIndexedSubscript:?];
   v7 = [(NSMutableDictionary *)alertingSectionState objectForKeyedSubscript:v6];
   [v7 setState:1];
 
   infoProvider = self->_infoProvider;
-  v9 = [(NSMutableArray *)self->_alertingSectionIDs objectAtIndexedSubscript:a3];
+  v9 = [(NSMutableArray *)self->_alertingSectionIDs objectAtIndexedSubscript:index];
   v10 = infoProvider[2](infoProvider, v9);
 
   return v10;
 }
 
-- (void)sectionInfoSendCompleted:(unint64_t)a3
+- (void)sectionInfoSendCompleted:(unint64_t)completed
 {
   alertingSectionState = self->_alertingSectionState;
-  v4 = [(NSMutableArray *)self->_alertingSectionIDs objectAtIndexedSubscript:a3];
+  v4 = [(NSMutableArray *)self->_alertingSectionIDs objectAtIndexedSubscript:completed];
   v5 = [(NSMutableDictionary *)alertingSectionState objectForKeyedSubscript:v4];
 
   if ([v5 state] != 2)
   {
     [v5 setState:2];
-    v6 = [v5 clientCompletion];
-    if (v6)
+    clientCompletion = [v5 clientCompletion];
+    if (clientCompletion)
     {
-      v7 = v6;
-      v8 = [v5 clientQueue];
+      v7 = clientCompletion;
+      clientQueue = [v5 clientQueue];
 
-      if (v8)
+      if (clientQueue)
       {
-        v9 = [v5 clientQueue];
+        clientQueue2 = [v5 clientQueue];
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __58__BLTSectionInfoSyncCoordinator_sectionInfoSendCompleted___block_invoke;
         block[3] = &unk_278D31428;
         v11 = v5;
-        dispatch_async(v9, block);
+        dispatch_async(clientQueue2, block);
       }
     }
   }
@@ -247,9 +247,9 @@ void __58__BLTSectionInfoSyncCoordinator_sectionInfoSendCompleted___block_invoke
   v4 = [v3 appendObject:self->_alertingSectionState withName:@"alertingSectionState"];
   v5 = [v3 appendObject:self->_alertingSectionIDs withName:@"alertingSectionIDs"];
   v6 = [v3 appendUnsignedInteger:self->_mostRecentIndex withName:@"mostRecentIndex"];
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
 - (void)performSyncForSectionID:(uint64_t *)a1 queue:(id *)a2 completion:(NSObject *)a3 .cold.1(uint64_t *a1, id *a2, NSObject *a3)

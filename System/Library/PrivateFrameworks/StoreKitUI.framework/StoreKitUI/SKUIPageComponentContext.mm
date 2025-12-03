@@ -1,9 +1,9 @@
 @interface SKUIPageComponentContext
 - (SKUIPageComponentContext)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)itemForItemIdentifier:(id)a3;
-- (void)addUnavailableItemIdentifiers:(id)a3;
-- (void)setUnavailableItemIdentifiers:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)itemForItemIdentifier:(id)identifier;
+- (void)addUnavailableItemIdentifiers:(id)identifiers;
+- (void)setUnavailableItemIdentifiers:(id)identifiers;
 @end
 
 @implementation SKUIPageComponentContext
@@ -27,8 +27,8 @@
   v11 = [(SKUIPageComponentContext *)&v15 init];
   if (v11)
   {
-    v12 = [MEMORY[0x277D75418] currentDevice];
-    v13 = [v12 userInterfaceIdiom] == 1;
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    v13 = [currentDevice userInterfaceIdiom] == 1;
 
     v11->_layoutStyle = v13;
     v11->_pageGenerationTime = CFAbsoluteTimeGetCurrent();
@@ -37,53 +37,53 @@
   return v11;
 }
 
-- (void)addUnavailableItemIdentifiers:(id)a3
+- (void)addUnavailableItemIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   unavailableItems = self->_unavailableItems;
-  v8 = v4;
+  v8 = identifiersCopy;
   if (!unavailableItems)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v7 = self->_unavailableItems;
     self->_unavailableItems = v6;
 
-    v4 = v8;
+    identifiersCopy = v8;
     unavailableItems = self->_unavailableItems;
   }
 
-  [(NSMutableSet *)unavailableItems addObjectsFromArray:v4];
+  [(NSMutableSet *)unavailableItems addObjectsFromArray:identifiersCopy];
 }
 
-- (id)itemForItemIdentifier:(id)a3
+- (id)itemForItemIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (([(NSMutableSet *)self->_unavailableItems containsObject:v4]& 1) != 0)
+  identifierCopy = identifier;
+  if (([(NSMutableSet *)self->_unavailableItems containsObject:identifierCopy]& 1) != 0)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(NSDictionary *)self->_items objectForKey:v4];
+    v5 = [(NSDictionary *)self->_items objectForKey:identifierCopy];
   }
 
   return v5;
 }
 
-- (void)setUnavailableItemIdentifiers:(id)a3
+- (void)setUnavailableItemIdentifiers:(id)identifiers
 {
   unavailableItems = self->_unavailableItems;
   if (unavailableItems)
   {
-    v6 = a3;
+    identifiersCopy = identifiers;
     [(NSMutableSet *)unavailableItems removeAllObjects];
   }
 
   else
   {
     v7 = MEMORY[0x277CBEB58];
-    v8 = a3;
+    identifiersCopy2 = identifiers;
     v9 = objc_alloc_init(v7);
     v10 = self->_unavailableItems;
     self->_unavailableItems = v9;
@@ -94,30 +94,30 @@
   v11[2] = __58__SKUIPageComponentContext_setUnavailableItemIdentifiers___block_invoke;
   v11[3] = &unk_2781FA570;
   v11[4] = self;
-  [a3 enumerateKeysAndObjectsUsingBlock:v11];
+  [identifiers enumerateKeysAndObjectsUsingBlock:v11];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSDictionary *)self->_componentDictionary copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSDictionary *)self->_componentDictionary copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSArray *)self->_ineligibleGratisIdentifiers copyWithZone:a3];
+  v8 = [(NSArray *)self->_ineligibleGratisIdentifiers copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(NSDictionary *)self->_items copyWithZone:a3];
+  v10 = [(NSDictionary *)self->_items copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 
   v5[4] = self->_layoutStyle;
-  v12 = [(NSDictionary *)self->_platformKeyProfileOverrides copyWithZone:a3];
+  v12 = [(NSDictionary *)self->_platformKeyProfileOverrides copyWithZone:zone];
   v13 = v5[6];
   v5[6] = v12;
 
-  v14 = [(NSMutableSet *)self->_unavailableItems mutableCopyWithZone:a3];
+  v14 = [(NSMutableSet *)self->_unavailableItems mutableCopyWithZone:zone];
   v15 = v5[7];
   v5[7] = v14;
 

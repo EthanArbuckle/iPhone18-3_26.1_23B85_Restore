@@ -1,17 +1,17 @@
 @interface _FBSMISInterfaceWrapperImpl
-- (int)signatureVersion:(id)a3 version:(unsigned int *)a4;
-- (int)validateSignatureForPath:(id)a3 options:(id)a4 userInfo:(id *)a5;
+- (int)signatureVersion:(id)version version:(unsigned int *)a4;
+- (int)validateSignatureForPath:(id)path options:(id)options userInfo:(id *)info;
 @end
 
 @implementation _FBSMISInterfaceWrapperImpl
 
-- (int)validateSignatureForPath:(id)a3 options:(id)a4 userInfo:(id *)a5
+- (int)validateSignatureForPath:(id)path options:(id)options userInfo:(id *)info
 {
   v8 = 0;
-  v6 = soft_MISValidateSignatureAndCopyInfo(a3, a4, &v8);
-  if (a5)
+  v6 = soft_MISValidateSignatureAndCopyInfo(path, options, &v8);
+  if (info)
   {
-    *a5 = v8;
+    *info = v8;
   }
 
   else if (v8)
@@ -22,20 +22,20 @@
   return v6;
 }
 
-- (int)signatureVersion:(id)a3 version:(unsigned int *)a4
+- (int)signatureVersion:(id)version version:(unsigned int *)a4
 {
-  v5 = a3;
+  versionCopy = version;
   v9 = 0;
-  v6 = soft_MISValidationCopySignatureVersion(v5, &v9);
-  v7 = v9;
+  v6 = soft_MISValidationCopySignatureVersion(versionCopy, &v9);
+  unsignedIntValue = v9;
   if (v9)
   {
-    v7 = [v9 unsignedIntValue];
+    unsignedIntValue = [v9 unsignedIntValue];
   }
 
   if (a4)
   {
-    *a4 = v7;
+    *a4 = unsignedIntValue;
   }
 
   fbs_release(&v9);

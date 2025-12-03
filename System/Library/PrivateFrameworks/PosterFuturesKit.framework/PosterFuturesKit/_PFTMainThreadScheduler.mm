@@ -1,13 +1,13 @@
 @interface _PFTMainThreadScheduler
 - (_PFTMainThreadScheduler)init;
 - (double)timestamp;
-- (id)afterDelay:(double)a3 performBlock:(id)a4;
-- (id)afterDelay:(double)a3 performBlock:(id)a4 qualityOfService:(unint64_t)a5;
-- (id)performCancellableBlock:(id)a3;
-- (id)performCancellableBlock:(id)a3 qualityOfService:(unint64_t)a4;
+- (id)afterDelay:(double)delay performBlock:(id)block;
+- (id)afterDelay:(double)delay performBlock:(id)block qualityOfService:(unint64_t)service;
+- (id)performCancellableBlock:(id)block;
+- (id)performCancellableBlock:(id)block qualityOfService:(unint64_t)service;
 - (id)schedulerForImmediateExecution;
-- (void)performBlock:(id)a3;
-- (void)performBlock:(id)a3 qualityOfService:(unint64_t)a4;
+- (void)performBlock:(id)block;
+- (void)performBlock:(id)block qualityOfService:(unint64_t)service;
 @end
 
 @implementation _PFTMainThreadScheduler
@@ -56,60 +56,60 @@
   return v2;
 }
 
-- (void)performBlock:(id)a3
+- (void)performBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(_PFTMainThreadScheduler *)self schedulerForImmediateExecution];
-  [v5 performBlock:v4];
+  blockCopy = block;
+  schedulerForImmediateExecution = [(_PFTMainThreadScheduler *)self schedulerForImmediateExecution];
+  [schedulerForImmediateExecution performBlock:blockCopy];
 }
 
-- (void)performBlock:(id)a3 qualityOfService:(unint64_t)a4
+- (void)performBlock:(id)block qualityOfService:(unint64_t)service
 {
-  v6 = a3;
-  v7 = [(_PFTMainThreadScheduler *)self schedulerForImmediateExecution];
-  [v7 performBlock:v6 qualityOfService:a4];
+  blockCopy = block;
+  schedulerForImmediateExecution = [(_PFTMainThreadScheduler *)self schedulerForImmediateExecution];
+  [schedulerForImmediateExecution performBlock:blockCopy qualityOfService:service];
 }
 
-- (id)performCancellableBlock:(id)a3
+- (id)performCancellableBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(_PFTMainThreadScheduler *)self schedulerForImmediateExecution];
-  v6 = [v5 performCancellableBlock:v4];
+  blockCopy = block;
+  schedulerForImmediateExecution = [(_PFTMainThreadScheduler *)self schedulerForImmediateExecution];
+  v6 = [schedulerForImmediateExecution performCancellableBlock:blockCopy];
 
   return v6;
 }
 
-- (id)performCancellableBlock:(id)a3 qualityOfService:(unint64_t)a4
+- (id)performCancellableBlock:(id)block qualityOfService:(unint64_t)service
 {
-  v6 = a3;
-  v7 = [(_PFTMainThreadScheduler *)self schedulerForImmediateExecution];
-  v8 = [v7 performCancellableBlock:v6 qualityOfService:a4];
+  blockCopy = block;
+  schedulerForImmediateExecution = [(_PFTMainThreadScheduler *)self schedulerForImmediateExecution];
+  v8 = [schedulerForImmediateExecution performCancellableBlock:blockCopy qualityOfService:service];
 
   return v8;
 }
 
-- (id)afterDelay:(double)a3 performBlock:(id)a4
+- (id)afterDelay:(double)delay performBlock:(id)block
 {
-  v6 = a4;
-  v7 = [(_PFTMainThreadScheduler *)self schedulerForDelayedExecution];
-  v8 = [v7 afterDelay:v6 performBlock:a3];
+  blockCopy = block;
+  schedulerForDelayedExecution = [(_PFTMainThreadScheduler *)self schedulerForDelayedExecution];
+  v8 = [schedulerForDelayedExecution afterDelay:blockCopy performBlock:delay];
 
   return v8;
 }
 
-- (id)afterDelay:(double)a3 performBlock:(id)a4 qualityOfService:(unint64_t)a5
+- (id)afterDelay:(double)delay performBlock:(id)block qualityOfService:(unint64_t)service
 {
-  v8 = a4;
-  v9 = [(_PFTMainThreadScheduler *)self schedulerForDelayedExecution];
-  v10 = [v9 afterDelay:v8 performBlock:a5 qualityOfService:a3];
+  blockCopy = block;
+  schedulerForDelayedExecution = [(_PFTMainThreadScheduler *)self schedulerForDelayedExecution];
+  v10 = [schedulerForDelayedExecution afterDelay:blockCopy performBlock:service qualityOfService:delay];
 
   return v10;
 }
 
 - (double)timestamp
 {
-  v2 = [(_PFTMainThreadScheduler *)self schedulerForImmediateExecution];
-  [v2 timestamp];
+  schedulerForImmediateExecution = [(_PFTMainThreadScheduler *)self schedulerForImmediateExecution];
+  [schedulerForImmediateExecution timestamp];
   v4 = v3;
 
   return v4;

@@ -8,63 +8,63 @@
 - (BOOL)shouldOverrideLocalAuthenticationForTesting;
 - (NSString)buttonText;
 - (id)_setUpAlertImageWithConstraints;
-- (id)_verticalSpacerWithConstant:(double)a3;
-- (void)_addArrangedSpaceToMainStackView:(double)a3;
-- (void)_authorizationButtonBioSelected:(id)a3;
-- (void)_authorizationButtonCompanionSelected:(id)a3;
-- (void)_authorizationWithPasscodeOrPasswordButtonSelected:(id)a3;
-- (void)_authorizeAccountViaDelegationWithPasswordButtonSelected:(id)a3;
+- (id)_verticalSpacerWithConstant:(double)constant;
+- (void)_addArrangedSpaceToMainStackView:(double)view;
+- (void)_authorizationButtonBioSelected:(id)selected;
+- (void)_authorizationButtonCompanionSelected:(id)selected;
+- (void)_authorizationWithPasscodeOrPasswordButtonSelected:(id)selected;
+- (void)_authorizeAccountViaDelegationWithPasswordButtonSelected:(id)selected;
 - (void)_continueButtonTapped;
 - (void)_enableLAUIAuthenticationMechanism;
-- (void)_enterProcessingStateWithCompletionHandler:(id)a3;
-- (void)_initializeAuthorizationButtonAddingButtonPadding:(BOOL)a3;
-- (void)_performCompanionValidation:(id)a3;
-- (void)_setupBiometricButtonWithConstraints:(id)a3;
-- (void)_setupLabelWithTitle:(id)a3 animated:(BOOL)a4;
+- (void)_enterProcessingStateWithCompletionHandler:(id)handler;
+- (void)_initializeAuthorizationButtonAddingButtonPadding:(BOOL)padding;
+- (void)_performCompanionValidation:(id)validation;
+- (void)_setupBiometricButtonWithConstraints:(id)constraints;
+- (void)_setupLabelWithTitle:(id)title animated:(BOOL)animated;
 - (void)_switchToPasscodeOrPassword;
-- (void)_updateLabelAnimatedWithTitle:(id)a3;
-- (void)_waitForTimeInterval:(double)a3 withGroup:(id)a4;
-- (void)_windowDidBecomeKey:(id)a3;
-- (void)addToStackView:(id)a3 withCustomSpacingAfter:(double)a4 context:(id)a5;
-- (void)authenticationResult:(id)a3 error:(id)a4 context:(id)a5;
-- (void)biometricAuthenticationFailureWithAlertString:(id)a3;
+- (void)_updateLabelAnimatedWithTitle:(id)title;
+- (void)_waitForTimeInterval:(double)interval withGroup:(id)group;
+- (void)_windowDidBecomeKey:(id)key;
+- (void)addToStackView:(id)view withCustomSpacingAfter:(double)after context:(id)context;
+- (void)authenticationResult:(id)result error:(id)error context:(id)context;
+- (void)biometricAuthenticationFailureWithAlertString:(id)string;
 - (void)dealloc;
 - (void)disableBiometricView;
-- (void)finishProcessingWithCompletionHandler:(id)a3;
+- (void)finishProcessingWithCompletionHandler:(id)handler;
 - (void)invalidateProcessingState;
-- (void)performPasscodeOrPasswordValidation:(id)a3;
-- (void)processBiometricMatchWithCompletionHandler:(id)a3;
-- (void)setButtonText:(id)a3;
-- (void)setUpButtonInPaneContext:(id)a3 buttonTitle:(id)a4;
+- (void)performPasscodeOrPasswordValidation:(id)validation;
+- (void)processBiometricMatchWithCompletionHandler:(id)handler;
+- (void)setButtonText:(id)text;
+- (void)setUpButtonInPaneContext:(id)context buttonTitle:(id)title;
 - (void)showActivityIndicator;
-- (void)showAlertContinuingWithPassword:(BOOL)a3;
+- (void)showAlertContinuingWithPassword:(BOOL)password;
 - (void)showAuthenticationMechanismForExternalPasswordCredential;
 - (void)showContinueButton;
-- (void)showContinueButtonWithTitle:(id)a3;
-- (void)showContinueWithPasswordButtonWithTitle:(id)a3;
+- (void)showContinueButtonWithTitle:(id)title;
+- (void)showContinueWithPasswordButtonWithTitle:(id)title;
 @end
 
 @implementation ASCredentialRequestConfirmButtonSubPane
 
 - (NSString)buttonText
 {
-  v2 = [(ASCredentialRequestConfirmButtonSubPane *)self authorizationButton];
-  v3 = [v2 buttonText];
+  authorizationButton = [(ASCredentialRequestConfirmButtonSubPane *)self authorizationButton];
+  buttonText = [authorizationButton buttonText];
 
-  return v3;
+  return buttonText;
 }
 
-- (void)setButtonText:(id)a3
+- (void)setButtonText:(id)text
 {
-  v4 = a3;
-  v5 = [(ASCredentialRequestConfirmButtonSubPane *)self authorizationButton];
-  [v5 setButtonText:v4];
+  textCopy = text;
+  authorizationButton = [(ASCredentialRequestConfirmButtonSubPane *)self authorizationButton];
+  [authorizationButton setButtonText:textCopy];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = ASCredentialRequestConfirmButtonSubPane;
@@ -77,18 +77,18 @@
   [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v3 setAccessibilityIdentifier:@"ASAuthorizationControllerContinueButton"];
   [v3 setSpacing:0.0];
-  [v3 setAlignment:{objc_msgSend(a1, "_mainStackViewAlignment")}];
+  [v3 setAlignment:{objc_msgSend(self, "_mainStackViewAlignment")}];
   [v3 setAxis:1];
   [v3 setDistribution:0];
-  v4 = [MEMORY[0x1E69DC888] clearColor];
-  [v3 setBackgroundColor:v4];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v3 setBackgroundColor:clearColor];
 
   return v3;
 }
 
-- (void)_initializeAuthorizationButtonAddingButtonPadding:(BOOL)a3
+- (void)_initializeAuthorizationButtonAddingButtonPadding:(BOOL)padding
 {
-  v3 = a3;
+  paddingCopy = padding;
   v33[5] = *MEMORY[0x1E69E9840];
   v5 = objc_alloc(MEMORY[0x1E69DD250]);
   v6 = *MEMORY[0x1E695F058];
@@ -108,31 +108,31 @@
   [(UIView *)self->_authorizationButtonContainerView addSubview:self->_authorizationButton];
   [(UIStackView *)self->_mainStackView addArrangedSubview:self->_authorizationButtonContainerView];
   v14 = 0.0;
-  if (v3)
+  if (paddingCopy)
   {
     +[ASViewServiceInterfaceUtilities continueButtonTitleMargin];
     v14 = v15 + v15;
   }
 
-  v32 = [(ASCredentialRequestButton *)self->_authorizationButton centerXAnchor];
-  v31 = [(UIView *)self->_authorizationButtonContainerView centerXAnchor];
-  v30 = [v32 constraintEqualToAnchor:v31];
+  centerXAnchor = [(ASCredentialRequestButton *)self->_authorizationButton centerXAnchor];
+  centerXAnchor2 = [(UIView *)self->_authorizationButtonContainerView centerXAnchor];
+  v30 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v33[0] = v30;
-  v29 = [(ASCredentialRequestButton *)self->_authorizationButton centerYAnchor];
-  v28 = [(UIView *)self->_authorizationButtonContainerView centerYAnchor];
-  v16 = [v29 constraintEqualToAnchor:v28];
+  centerYAnchor = [(ASCredentialRequestButton *)self->_authorizationButton centerYAnchor];
+  centerYAnchor2 = [(UIView *)self->_authorizationButtonContainerView centerYAnchor];
+  v16 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v33[1] = v16;
-  v17 = [(UIView *)self->_authorizationButtonContainerView widthAnchor];
-  v18 = [(ASCredentialRequestButton *)self->_authorizationButton widthAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18 constant:v14];
+  widthAnchor = [(UIView *)self->_authorizationButtonContainerView widthAnchor];
+  widthAnchor2 = [(ASCredentialRequestButton *)self->_authorizationButton widthAnchor];
+  v19 = [widthAnchor constraintEqualToAnchor:widthAnchor2 constant:v14];
   v33[2] = v19;
-  v20 = [(UIView *)self->_authorizationButtonContainerView heightAnchor];
-  v21 = [(ASCredentialRequestButton *)self->_authorizationButton heightAnchor];
-  v22 = [v20 constraintEqualToAnchor:v21];
+  heightAnchor = [(UIView *)self->_authorizationButtonContainerView heightAnchor];
+  heightAnchor2 = [(ASCredentialRequestButton *)self->_authorizationButton heightAnchor];
+  v22 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
   v33[3] = v22;
-  v23 = [(ASCredentialRequestButton *)self->_authorizationButton heightAnchor];
+  heightAnchor3 = [(ASCredentialRequestButton *)self->_authorizationButton heightAnchor];
   +[ASViewServiceInterfaceUtilities continueButtonHeight];
-  v24 = [v23 constraintEqualToConstant:?];
+  v24 = [heightAnchor3 constraintEqualToConstant:?];
   v33[4] = v24;
   v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:5];
   [v27 activateConstraints:v25];
@@ -140,7 +140,7 @@
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_windowDidBecomeKey:(id)a3
+- (void)_windowDidBecomeKey:(id)key
 {
   if ([(LAUIAuthenticationView *)self->_biometricsView isMechanismEnabled:4])
   {
@@ -190,13 +190,13 @@ void __77__ASCredentialRequestConfirmButtonSubPane__enableLAUIAuthenticationMech
 
 - (BOOL)authorizationCapabilityEnabled
 {
-  v2 = [(ASCredentialRequestConfirmButtonSubPane *)self authorizationButton];
-  v3 = [v2 isEnabled];
+  authorizationButton = [(ASCredentialRequestConfirmButtonSubPane *)self authorizationButton];
+  isEnabled = [authorizationButton isEnabled];
 
-  return v3;
+  return isEnabled;
 }
 
-- (void)showAlertContinuingWithPassword:(BOOL)a3
+- (void)showAlertContinuingWithPassword:(BOOL)password
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -210,7 +210,7 @@ void __77__ASCredentialRequestConfirmButtonSubPane__enableLAUIAuthenticationMech
   v7[1] = 3221225472;
   v7[2] = __75__ASCredentialRequestConfirmButtonSubPane_showAlertContinuingWithPassword___block_invoke_2;
   v7[3] = &unk_1E7AF8BB8;
-  v8 = a3;
+  passwordCopy = password;
   v7[4] = self;
   dispatch_after(v6, v5, v7);
 }
@@ -237,11 +237,11 @@ uint64_t __75__ASCredentialRequestConfirmButtonSubPane_showAlertContinuingWithPa
   return [v3 _switchToBiometricsView:0 withAuthenticationMechanismEnabled:1 showAlert:0 alertString:0];
 }
 
-- (void)setUpButtonInPaneContext:(id)a3 buttonTitle:(id)a4
+- (void)setUpButtonInPaneContext:(id)context buttonTitle:(id)title
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  titleCopy = title;
   if (self->_canPerformBiometricAuthentication)
   {
     v8 = &selRef__authorizationButtonBioSelected_;
@@ -259,21 +259,21 @@ uint64_t __75__ASCredentialRequestConfirmButtonSubPane_showAlertContinuingWithPa
   }
 
   v9 = *v8;
-  if (!v7)
+  if (!titleCopy)
   {
-    v7 = _WBSLocalizedString();
+    titleCopy = _WBSLocalizedString();
   }
 
   v10 = MEMORY[0x1E696ACD8];
-  v11 = [(UIStackView *)self->_mainStackView widthAnchor];
-  v12 = [v6 stackView];
-  v13 = [v12 widthAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13];
+  widthAnchor = [(UIStackView *)self->_mainStackView widthAnchor];
+  stackView = [contextCopy stackView];
+  widthAnchor2 = [stackView widthAnchor];
+  v14 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v17[0] = v14;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
   [v10 activateConstraints:v15];
 
-  [(ASCredentialRequestButton *)self->_authorizationButton setButtonText:v7];
+  [(ASCredentialRequestButton *)self->_authorizationButton setButtonText:titleCopy];
   [(ASCredentialRequestButton *)self->_authorizationButton addTarget:self action:v9];
 
   v16 = *MEMORY[0x1E69E9840];
@@ -295,9 +295,9 @@ void __80__ASCredentialRequestConfirmButtonSubPane_setUpButtonInPaneContext_butt
   [(ASCredentialRequestConfirmButtonSubPane *)self showContinueButtonWithTitle:v3];
 }
 
-- (void)showContinueButtonWithTitle:(id)a3
+- (void)showContinueButtonWithTitle:(id)title
 {
-  [(ASCredentialRequestButton *)self->_authorizationButton setButtonText:a3];
+  [(ASCredentialRequestButton *)self->_authorizationButton setButtonText:title];
   [(ASCredentialRequestButton *)self->_authorizationButton addTarget:self action:sel__continueButtonTapped];
 
   [(ASCredentialRequestConfirmButtonSubPane *)self _switchToBiometricsView:0 withAuthenticationMechanismEnabled:1 showAlert:0 alertString:0];
@@ -339,7 +339,7 @@ void __99__ASCredentialRequestConfirmButtonSubPane_showAuthenticationMechanismFo
   }
 }
 
-- (void)_authorizationButtonBioSelected:(id)a3
+- (void)_authorizationButtonBioSelected:(id)selected
 {
   if ([(ASCredentialRequestConfirmButtonSubPane *)self _isDelegateReadyForAuthorization])
   {
@@ -348,7 +348,7 @@ void __99__ASCredentialRequestConfirmButtonSubPane_showAuthenticationMechanismFo
   }
 }
 
-- (void)_authorizationButtonCompanionSelected:(id)a3
+- (void)_authorizationButtonCompanionSelected:(id)selected
 {
   if ([(ASCredentialRequestConfirmButtonSubPane *)self _isDelegateReadyForAuthorization])
   {
@@ -372,7 +372,7 @@ void __81__ASCredentialRequestConfirmButtonSubPane__authorizationButtonCompanion
   }
 }
 
-- (void)_authorizationWithPasscodeOrPasswordButtonSelected:(id)a3
+- (void)_authorizationWithPasscodeOrPasswordButtonSelected:(id)selected
 {
   if ([(ASCredentialRequestConfirmButtonSubPane *)self _isDelegateReadyForAuthorization])
   {
@@ -396,7 +396,7 @@ void __94__ASCredentialRequestConfirmButtonSubPane__authorizationWithPasscodeOrP
   }
 }
 
-- (void)_authorizeAccountViaDelegationWithPasswordButtonSelected:(id)a3
+- (void)_authorizeAccountViaDelegationWithPasswordButtonSelected:(id)selected
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained performPasswordAuthentication:self];
@@ -408,16 +408,16 @@ void __94__ASCredentialRequestConfirmButtonSubPane__authorizationWithPasscodeOrP
   [WeakRetained userTappedContinueButton];
 }
 
-- (void)_performCompanionValidation:(id)a3
+- (void)_performCompanionValidation:(id)validation
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  validationCopy = validation;
   v5 = objc_alloc_init(MEMORY[0x1E696EE50]);
-  v6 = [(ASCredentialRequestConfirmButtonSubPane *)self _passcodeOrPasswordButtonTitle];
+  _passcodeOrPasswordButtonTitle = [(ASCredentialRequestConfirmButtonSubPane *)self _passcodeOrPasswordButtonTitle];
   v7 = MEMORY[0x1E695DF90];
   v17[0] = &unk_1F28F0578;
   v17[1] = &unk_1F28F0590;
-  v18[0] = v6;
+  v18[0] = _passcodeOrPasswordButtonTitle;
   v18[1] = &stru_1F28DE020;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:2];
   v9 = [v7 dictionaryWithDictionary:v8];
@@ -433,10 +433,10 @@ void __94__ASCredentialRequestConfirmButtonSubPane__authorizationWithPasscodeOrP
   v14[2] = __71__ASCredentialRequestConfirmButtonSubPane__performCompanionValidation___block_invoke;
   v14[3] = &unk_1E7AF8C08;
   v15 = v5;
-  v16 = v4;
+  v16 = validationCopy;
   v14[4] = self;
   v11 = v5;
-  v12 = v4;
+  v12 = validationCopy;
   [v11 evaluatePolicy:3 options:v9 reply:v14];
 
   v13 = *MEMORY[0x1E69E9840];
@@ -470,15 +470,15 @@ void __71__ASCredentialRequestConfirmButtonSubPane__performCompanionValidation__
   }
 }
 
-- (void)performPasscodeOrPasswordValidation:(id)a3
+- (void)performPasscodeOrPasswordValidation:(id)validation
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  validationCopy = validation;
   v5 = objc_alloc_init(MEMORY[0x1E696EE50]);
-  v6 = [(ASCredentialRequestConfirmButtonSubPane *)self _passcodeOrPasswordButtonTitle];
+  _passcodeOrPasswordButtonTitle = [(ASCredentialRequestConfirmButtonSubPane *)self _passcodeOrPasswordButtonTitle];
   v14[0] = &unk_1F28F0578;
   v14[1] = &unk_1F28F0590;
-  v15[0] = v6;
+  v15[0] = _passcodeOrPasswordButtonTitle;
   v15[1] = &stru_1F28DE020;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:2];
   v11[0] = MEMORY[0x1E69E9820];
@@ -486,10 +486,10 @@ void __71__ASCredentialRequestConfirmButtonSubPane__performCompanionValidation__
   v11[2] = __79__ASCredentialRequestConfirmButtonSubPane_performPasscodeOrPasswordValidation___block_invoke;
   v11[3] = &unk_1E7AF8C08;
   v12 = v5;
-  v13 = v4;
+  v13 = validationCopy;
   v11[4] = self;
   v8 = v5;
-  v9 = v4;
+  v9 = validationCopy;
   [v8 evaluatePolicy:1007 options:v7 reply:v11];
 
   v10 = *MEMORY[0x1E69E9840];
@@ -587,17 +587,17 @@ void __63__ASCredentialRequestConfirmButtonSubPane_disableBiometricView__block_i
   }
 }
 
-- (void)_addArrangedSpaceToMainStackView:(double)a3
+- (void)_addArrangedSpaceToMainStackView:(double)view
 {
-  v4 = [(ASCredentialRequestConfirmButtonSubPane *)self _verticalSpacerWithConstant:a3];
+  v4 = [(ASCredentialRequestConfirmButtonSubPane *)self _verticalSpacerWithConstant:view];
   [(UIStackView *)self->_mainStackView addArrangedSubview:v4];
 }
 
-- (id)_verticalSpacerWithConstant:(double)a3
+- (id)_verticalSpacerWithConstant:(double)constant
 {
   v4 = objc_alloc_init(MEMORY[0x1E69DD250]);
-  v5 = [v4 heightAnchor];
-  v6 = [v5 constraintEqualToConstant:a3];
+  heightAnchor = [v4 heightAnchor];
+  v6 = [heightAnchor constraintEqualToConstant:constant];
   [v4 addConstraint:v6];
 
   return v4;
@@ -607,8 +607,8 @@ void __63__ASCredentialRequestConfirmButtonSubPane_disableBiometricView__block_i
 {
   v18[3] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
-  v4 = [MEMORY[0x1E69DC888] redColor];
-  [v3 setTintColor:v4];
+  redColor = [MEMORY[0x1E69DC888] redColor];
+  [v3 setTintColor:redColor];
 
   v5 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:3 weight:50.0];
   [v3 setPreferredSymbolConfiguration:v5];
@@ -619,15 +619,15 @@ void __63__ASCredentialRequestConfirmButtonSubPane_disableBiometricView__block_i
   [v3 setContentMode:1];
   [v3 setFrame:{0.0, 0.0, 50.0, 50.0}];
   [(UIStackView *)self->_mainStackView addArrangedSubview:v3];
-  v7 = [v3 heightAnchor];
-  v8 = [v7 constraintEqualToConstant:50.0];
-  v9 = [v3 widthAnchor];
-  v10 = [v9 constraintEqualToConstant:50.0];
+  heightAnchor = [v3 heightAnchor];
+  v8 = [heightAnchor constraintEqualToConstant:50.0];
+  widthAnchor = [v3 widthAnchor];
+  v10 = [widthAnchor constraintEqualToConstant:50.0];
   v18[1] = v10;
-  v11 = [v3 centerXAnchor];
-  v12 = [(ASCredentialRequestSubPane *)self view];
-  v13 = [v12 centerXAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13];
+  centerXAnchor = [v3 centerXAnchor];
+  view = [(ASCredentialRequestSubPane *)self view];
+  centerXAnchor2 = [view centerXAnchor];
+  v14 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v18[2] = v14;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:3];
 
@@ -636,29 +636,29 @@ void __63__ASCredentialRequestConfirmButtonSubPane_disableBiometricView__block_i
   return v15;
 }
 
-- (void)_setupLabelWithTitle:(id)a3 animated:(BOOL)a4
+- (void)_setupLabelWithTitle:(id)title animated:(BOOL)animated
 {
-  v4 = a4;
-  v13 = a3;
+  animatedCopy = animated;
+  titleCopy = title;
   v6 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   [(UILabel *)v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v7 = [MEMORY[0x1E69DCA40] defaultMetrics];
+  defaultMetrics = [MEMORY[0x1E69DCA40] defaultMetrics];
   v8 = [MEMORY[0x1E69DB878] systemFontOfSize:15.0 weight:*MEMORY[0x1E69DB978]];
-  v9 = [v7 scaledFontForFont:v8];
+  v9 = [defaultMetrics scaledFontForFont:v8];
   [(UILabel *)v6 setFont:v9];
 
   [(UILabel *)v6 setTextAlignment:1];
   [(UILabel *)v6 setNumberOfLines:1];
   [(UILabel *)v6 setAdjustsFontForContentSizeCategory:1];
   [(UILabel *)v6 setAdjustsFontSizeToFitWidth:1];
-  if (v4)
+  if (animatedCopy)
   {
     v10 = &stru_1F28DE020;
   }
 
   else
   {
-    v10 = v13;
+    v10 = titleCopy;
   }
 
   [(UILabel *)v6 setText:v10];
@@ -669,34 +669,34 @@ void __63__ASCredentialRequestConfirmButtonSubPane_disableBiometricView__block_i
   biometricLabel = self->_biometricLabel;
   self->_biometricLabel = v6;
 
-  if (v4)
+  if (animatedCopy)
   {
-    [(ASCredentialRequestConfirmButtonSubPane *)self _updateLabelAnimatedWithTitle:v13];
+    [(ASCredentialRequestConfirmButtonSubPane *)self _updateLabelAnimatedWithTitle:titleCopy];
   }
 }
 
-- (void)_updateLabelAnimatedWithTitle:(id)a3
+- (void)_updateLabelAnimatedWithTitle:(id)title
 {
   v4 = MEMORY[0x1E6979538];
-  v5 = a3;
-  v9 = [v4 animation];
+  titleCopy = title;
+  animation = [v4 animation];
   v6 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979ED8]];
-  [v9 setTimingFunction:v6];
+  [animation setTimingFunction:v6];
 
   v7 = *MEMORY[0x1E697A030];
-  [v9 setType:*MEMORY[0x1E697A030]];
-  [v9 setDuration:0.15];
-  v8 = [(UILabel *)self->_biometricLabel layer];
-  [v8 addAnimation:v9 forKey:v7];
+  [animation setType:*MEMORY[0x1E697A030]];
+  [animation setDuration:0.15];
+  layer = [(UILabel *)self->_biometricLabel layer];
+  [layer addAnimation:animation forKey:v7];
 
-  [(UILabel *)self->_biometricLabel setText:v5];
+  [(UILabel *)self->_biometricLabel setText:titleCopy];
 }
 
-- (void)_setupBiometricButtonWithConstraints:(id)a3
+- (void)_setupBiometricButtonWithConstraints:(id)constraints
 {
   v14[2] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E69AD2E0];
-  v5 = a3;
+  constraintsCopy = constraints;
   v6 = [[v4 alloc] initWithFrame:4 mechanisms:{0.0, 0.0, 50.0, 50.0}];
   biometricsView = self->_biometricsView;
   self->_biometricsView = v6;
@@ -704,39 +704,39 @@ void __63__ASCredentialRequestConfirmButtonSubPane_disableBiometricView__block_i
   [(LAUIAuthenticationView *)self->_biometricsView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(LAUIAuthenticationView *)self->_biometricsView setDelegate:self];
   [(UIStackView *)self->_biometricsContainerView addArrangedSubview:self->_biometricsView];
-  v8 = [(LAUIAuthenticationView *)self->_biometricsView widthAnchor];
-  v9 = [v8 constraintEqualToConstant:50.0];
+  widthAnchor = [(LAUIAuthenticationView *)self->_biometricsView widthAnchor];
+  v9 = [widthAnchor constraintEqualToConstant:50.0];
   v14[0] = v9;
-  v10 = [(LAUIAuthenticationView *)self->_biometricsView heightAnchor];
-  v11 = [v10 constraintEqualToConstant:50.0];
+  heightAnchor = [(LAUIAuthenticationView *)self->_biometricsView heightAnchor];
+  v11 = [heightAnchor constraintEqualToConstant:50.0];
   v14[1] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:2];
-  [v5 addObjectsFromArray:v12];
+  [constraintsCopy addObjectsFromArray:v12];
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
 - (void)_switchToPasscodeOrPassword
 {
-  v3 = [(ASCredentialRequestConfirmButtonSubPane *)self _passcodeOrPasswordButtonTitle];
-  [(ASCredentialRequestButton *)self->_authorizationButton setButtonText:v3];
+  _passcodeOrPasswordButtonTitle = [(ASCredentialRequestConfirmButtonSubPane *)self _passcodeOrPasswordButtonTitle];
+  [(ASCredentialRequestButton *)self->_authorizationButton setButtonText:_passcodeOrPasswordButtonTitle];
 
   [(ASCredentialRequestButton *)self->_authorizationButton addTarget:self action:sel__authorizationWithPasscodeOrPasswordButtonSelected_];
 
   [(ASCredentialRequestConfirmButtonSubPane *)self _switchToBiometricsView:0 withAuthenticationMechanismEnabled:1 showAlert:0 alertString:0];
 }
 
-- (void)showContinueWithPasswordButtonWithTitle:(id)a3
+- (void)showContinueWithPasswordButtonWithTitle:(id)title
 {
-  [(ASCredentialRequestButton *)self->_authorizationButton setButtonText:a3];
+  [(ASCredentialRequestButton *)self->_authorizationButton setButtonText:title];
   [(ASCredentialRequestButton *)self->_authorizationButton addTarget:self action:sel__authorizeAccountViaDelegationWithPasswordButtonSelected_];
 
   [(ASCredentialRequestConfirmButtonSubPane *)self _switchToBiometricsView:0 withAuthenticationMechanismEnabled:1 showAlert:0 alertString:0];
 }
 
-- (void)_enterProcessingStateWithCompletionHandler:(id)a3
+- (void)_enterProcessingStateWithCompletionHandler:(id)handler
 {
-  aBlock = a3;
+  aBlock = handler;
   if (*&self->_processingStateCompletionHandler == 0)
   {
     v4 = dispatch_group_create();
@@ -767,23 +767,23 @@ void __86__ASCredentialRequestConfirmButtonSubPane__enterProcessingStateWithComp
   }
 }
 
-- (void)_waitForTimeInterval:(double)a3 withGroup:(id)a4
+- (void)_waitForTimeInterval:(double)interval withGroup:(id)group
 {
-  v5 = a4;
-  v6 = dispatch_time(0, (a3 * 1000000000.0));
-  dispatch_group_enter(v5);
+  groupCopy = group;
+  v6 = dispatch_time(0, (interval * 1000000000.0));
+  dispatch_group_enter(groupCopy);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __74__ASCredentialRequestConfirmButtonSubPane__waitForTimeInterval_withGroup___block_invoke;
   block[3] = &unk_1E7AF7608;
-  v9 = v5;
-  v7 = v5;
+  v9 = groupCopy;
+  v7 = groupCopy;
   dispatch_after(v6, MEMORY[0x1E69E96A0], block);
 }
 
-- (void)biometricAuthenticationFailureWithAlertString:(id)a3
+- (void)biometricAuthenticationFailureWithAlertString:(id)string
 {
-  [(ASCredentialRequestConfirmButtonSubPane *)self _switchToBiometricsView:0 withAuthenticationMechanismEnabled:0 showAlert:1 alertString:a3];
+  [(ASCredentialRequestConfirmButtonSubPane *)self _switchToBiometricsView:0 withAuthenticationMechanismEnabled:0 showAlert:1 alertString:string];
   v4 = dispatch_time(0, 1700000000);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -793,16 +793,16 @@ void __86__ASCredentialRequestConfirmButtonSubPane__enterProcessingStateWithComp
   dispatch_after(v4, MEMORY[0x1E69E96A0], block);
 }
 
-- (void)finishProcessingWithCompletionHandler:(id)a3
+- (void)finishProcessingWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __81__ASCredentialRequestConfirmButtonSubPane_finishProcessingWithCompletionHandler___block_invoke;
   v6[3] = &unk_1E7AF7E28;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -908,21 +908,21 @@ void __68__ASCredentialRequestConfirmButtonSubPane_invalidateProcessingState__bl
   [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIView *)self->_authorizationButtonContainerView addSubview:v3];
   v16 = MEMORY[0x1E696ACD8];
-  v18 = [v3 centerXAnchor];
-  v17 = [(UIView *)self->_authorizationButtonContainerView centerXAnchor];
-  v4 = [v18 constraintEqualToAnchor:v17];
+  centerXAnchor = [v3 centerXAnchor];
+  centerXAnchor2 = [(UIView *)self->_authorizationButtonContainerView centerXAnchor];
+  v4 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v19[0] = v4;
-  v5 = [v3 centerYAnchor];
-  v6 = [(UIView *)self->_authorizationButtonContainerView centerYAnchor];
-  v7 = [v5 constraintEqualToAnchor:v6];
+  centerYAnchor = [v3 centerYAnchor];
+  centerYAnchor2 = [(UIView *)self->_authorizationButtonContainerView centerYAnchor];
+  v7 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v19[1] = v7;
-  v8 = [v3 heightAnchor];
+  heightAnchor = [v3 heightAnchor];
   +[ASViewServiceInterfaceUtilities continueButtonHeight];
-  v10 = [v8 constraintEqualToConstant:v9 * 0.5];
+  v10 = [heightAnchor constraintEqualToConstant:v9 * 0.5];
   v19[2] = v10;
-  v11 = [v3 widthAnchor];
+  widthAnchor = [v3 widthAnchor];
   +[ASViewServiceInterfaceUtilities continueButtonHeight];
-  v13 = [v11 constraintEqualToConstant:v12 * 0.5];
+  v13 = [widthAnchor constraintEqualToConstant:v12 * 0.5];
   v19[3] = v13;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:4];
   [v16 activateConstraints:v14];
@@ -931,21 +931,21 @@ void __68__ASCredentialRequestConfirmButtonSubPane_invalidateProcessingState__bl
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)authenticationResult:(id)a3 error:(id)a4 context:(id)a5
+- (void)authenticationResult:(id)result error:(id)error context:(id)context
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v9)
+  resultCopy = result;
+  errorCopy = error;
+  contextCopy = context;
+  v11 = contextCopy;
+  if (!errorCopy)
   {
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __78__ASCredentialRequestConfirmButtonSubPane_authenticationResult_error_context___block_invoke;
     v24[3] = &unk_1E7AF76A8;
     v24[4] = self;
-    v25 = v10;
+    v25 = contextCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v24);
     v19 = v25;
     goto LABEL_9;
@@ -954,13 +954,13 @@ void __68__ASCredentialRequestConfirmButtonSubPane_invalidateProcessingState__bl
   v26 = *MEMORY[0x1E696EE30];
   v27[0] = &unk_1F28F0518;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:&v26 count:1];
-  v13 = [v9 safari_matchesErrorDomainsAndCodes:v12];
+  v13 = [errorCopy safari_matchesErrorDomainsAndCodes:v12];
 
-  v14 = [(ASCredentialRequestConfirmButtonSubPane *)self _shouldAllowFallbackToPasscodeAuthentication];
+  _shouldAllowFallbackToPasscodeAuthentication = [(ASCredentialRequestConfirmButtonSubPane *)self _shouldAllowFallbackToPasscodeAuthentication];
   authorizationActivity = self->_authorizationActivity;
   if (v13)
   {
-    v16 = !v14;
+    v16 = !_shouldAllowFallbackToPasscodeAuthentication;
   }
 
   else
@@ -970,12 +970,12 @@ void __68__ASCredentialRequestConfirmButtonSubPane_invalidateProcessingState__bl
 
   if (v16)
   {
-    v17 = v14;
+    v17 = _shouldAllowFallbackToPasscodeAuthentication;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __78__ASCredentialRequestConfirmButtonSubPane_authenticationResult_error_context___block_invoke_2;
     block[3] = &unk_1E7AF7608;
-    v22 = v9;
+    v22 = errorCopy;
     os_activity_apply(authorizationActivity, block);
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained confirmButtonSubPaneDidFailBiometry:self allowingPasscodeFallback:v17];
@@ -1023,16 +1023,16 @@ void __78__ASCredentialRequestConfirmButtonSubPane_authenticationResult_error_co
   }
 }
 
-- (void)processBiometricMatchWithCompletionHandler:(id)a3
+- (void)processBiometricMatchWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __86__ASCredentialRequestConfirmButtonSubPane_processBiometricMatchWithCompletionHandler___block_invoke;
   v6[3] = &unk_1E7AF7E28;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -1055,14 +1055,14 @@ uint64_t __86__ASCredentialRequestConfirmButtonSubPane_processBiometricMatchWith
   return result;
 }
 
-- (void)addToStackView:(id)a3 withCustomSpacingAfter:(double)a4 context:(id)a5
+- (void)addToStackView:(id)view withCustomSpacingAfter:(double)after context:(id)context
 {
-  v8 = a5;
+  contextCopy = context;
   v10.receiver = self;
   v10.super_class = ASCredentialRequestConfirmButtonSubPane;
-  [(ASCredentialRequestSubPane *)&v10 addToStackView:a3 withCustomSpacingAfter:v8 context:a4];
+  [(ASCredentialRequestSubPane *)&v10 addToStackView:view withCustomSpacingAfter:contextCopy context:after];
   paneContext = self->_paneContext;
-  self->_paneContext = v8;
+  self->_paneContext = contextCopy;
 }
 
 - (ASCredentialRequestSubPaneConfirmButtonDelegate)delegate
@@ -1074,7 +1074,7 @@ uint64_t __86__ASCredentialRequestConfirmButtonSubPane_processBiometricMatchWith
 
 - (BOOL)shouldOverrideLocalAuthenticationForTesting
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B1D24E50();
 
   return v3 & 1;
@@ -1082,9 +1082,9 @@ uint64_t __86__ASCredentialRequestConfirmButtonSubPane_processBiometricMatchWith
 
 - (BOOL)isBiometricAuthenticationAvailable
 {
-  v2 = self;
-  v3 = [(ASCredentialRequestConfirmButtonSubPane *)v2 testOptions];
-  if (v3 && (v4 = v3, v5 = sub_1B1D7B7DC(), v7 = v6, v4, (v7 & 1) == 0))
+  selfCopy = self;
+  testOptions = [(ASCredentialRequestConfirmButtonSubPane *)selfCopy testOptions];
+  if (testOptions && (v4 = testOptions, v5 = sub_1B1D7B7DC(), v7 = v6, v4, (v7 & 1) == 0))
   {
 
     return v5 != 0;
@@ -1092,9 +1092,9 @@ uint64_t __86__ASCredentialRequestConfirmButtonSubPane_processBiometricMatchWith
 
   else
   {
-    v8 = [objc_opt_self() isBiometricAuthenticationAvailable];
+    isBiometricAuthenticationAvailable = [objc_opt_self() isBiometricAuthenticationAvailable];
 
-    return v8;
+    return isBiometricAuthenticationAvailable;
   }
 }
 

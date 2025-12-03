@@ -1,5 +1,5 @@
 @interface WGWidgetAttributionViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 - (void)_accessibilityLoadAccessibilityInformation;
@@ -8,12 +8,12 @@
 
 @implementation WGWidgetAttributionViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"WGWidgetAttributionView" isKindOfClass:@"UITextView"];
-  [v3 validateClass:@"WGWidgetAttributionView" hasClassMethod:@"requestAttributedStringForIdentifier:withHandler:" withFullSignature:{"v", "@", "@?", 0}];
-  [v3 validateClass:@"WGWidgetAttributionView" hasInstanceMethod:@"_configureAttributedString" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"WGWidgetAttributionView" isKindOfClass:@"UITextView"];
+  [validationsCopy validateClass:@"WGWidgetAttributionView" hasClassMethod:@"requestAttributedStringForIdentifier:withHandler:" withFullSignature:{"v", "@", "@?", 0}];
+  [validationsCopy validateClass:@"WGWidgetAttributionView" hasInstanceMethod:@"_configureAttributedString" withFullSignature:{"v", 0}];
 }
 
 - (id)accessibilityLabel
@@ -22,7 +22,7 @@
   {
     v3 = @"stocks.attribution";
 LABEL_5:
-    v4 = accessibilityLocalizedString(v3);
+    accessibilityLabel = accessibilityLocalizedString(v3);
     goto LABEL_7;
   }
 
@@ -34,27 +34,27 @@ LABEL_5:
 
   v6.receiver = self;
   v6.super_class = WGWidgetAttributionViewAccessibility;
-  v4 = [(WGWidgetAttributionViewAccessibility *)&v6 accessibilityLabel];
+  accessibilityLabel = [(WGWidgetAttributionViewAccessibility *)&v6 accessibilityLabel];
 LABEL_7:
 
-  return v4;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
 {
   if ([(WGWidgetAttributionViewAccessibility *)self _axIsStockWidget]|| [(WGWidgetAttributionViewAccessibility *)self _axIsWeatherWidget])
   {
-    v3 = 0;
+    accessibilityValue = 0;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = WGWidgetAttributionViewAccessibility;
-    v3 = [(WGWidgetAttributionViewAccessibility *)&v5 accessibilityValue];
+    accessibilityValue = [(WGWidgetAttributionViewAccessibility *)&v5 accessibilityValue];
   }
 
-  return v3;
+  return accessibilityValue;
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

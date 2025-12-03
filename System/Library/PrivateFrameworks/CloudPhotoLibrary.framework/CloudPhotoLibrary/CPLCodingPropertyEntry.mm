@@ -1,11 +1,11 @@
 @interface CPLCodingPropertyEntry
 - (SEL)propertyGetter;
 - (SEL)propertySetter;
-- (id)ivarValueForObject:(id)a3;
-- (void)ivarAddrForObject:(id)a3;
-- (void)setIvarValue:(id)a3 forObject:(id)a4;
-- (void)setPropertyGetter:(SEL)a3;
-- (void)setPropertySetter:(SEL)a3;
+- (id)ivarValueForObject:(id)object;
+- (void)ivarAddrForObject:(id)object;
+- (void)setIvarValue:(id)value forObject:(id)object;
+- (void)setPropertyGetter:(SEL)getter;
+- (void)setPropertySetter:(SEL)setter;
 @end
 
 @implementation CPLCodingPropertyEntry
@@ -36,51 +36,51 @@
   }
 }
 
-- (void)setPropertySetter:(SEL)a3
+- (void)setPropertySetter:(SEL)setter
 {
-  if (a3)
+  if (setter)
   {
-    v3 = a3;
+    setterCopy = setter;
   }
 
   else
   {
-    v3 = 0;
+    setterCopy = 0;
   }
 
-  self->_propertySetter = v3;
+  self->_propertySetter = setterCopy;
 }
 
-- (void)setPropertyGetter:(SEL)a3
+- (void)setPropertyGetter:(SEL)getter
 {
-  if (a3)
+  if (getter)
   {
-    v3 = a3;
+    getterCopy = getter;
   }
 
   else
   {
-    v3 = 0;
+    getterCopy = 0;
   }
 
-  self->_propertyGetter = v3;
+  self->_propertyGetter = getterCopy;
 }
 
-- (void)setIvarValue:(id)a3 forObject:(id)a4
+- (void)setIvarValue:(id)value forObject:(id)object
 {
   ivar = self->_ivar;
   if (ivar)
   {
-    object_setIvar(a4, ivar, a3);
+    object_setIvar(object, ivar, value);
   }
 }
 
-- (id)ivarValueForObject:(id)a3
+- (id)ivarValueForObject:(id)object
 {
   ivar = self->_ivar;
   if (ivar)
   {
-    v5 = object_getIvar(a3, ivar);
+    v5 = object_getIvar(object, ivar);
   }
 
   else
@@ -91,12 +91,12 @@
   return v5;
 }
 
-- (void)ivarAddrForObject:(id)a3
+- (void)ivarAddrForObject:(id)object
 {
   result = self->_ivar;
   if (result)
   {
-    return a3 + ivar_getOffset(result);
+    return object + ivar_getOffset(result);
   }
 
   return result;

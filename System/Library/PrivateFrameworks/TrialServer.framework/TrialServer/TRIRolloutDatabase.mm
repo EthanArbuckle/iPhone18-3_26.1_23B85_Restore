@@ -1,31 +1,31 @@
 @interface TRIRolloutDatabase
-- ($61A80719B04F7407D3E47539F1B23CAA)removeRecordWithDeployment:(id)a3 usingRefCounting:(BOOL)a4;
-- (BOOL)_enumerateRecordsMatchingWhereClause:(id)a3 bind:(id)a4 prependingWithClause:(id)a5 usingTransaction:(id)a6 block:(id)a7;
-- (BOOL)activateDeployment:(id)a3 withFactorPackSetId:(id)a4 targetingRuleIndex:(id)a5 deactivatedDeployments:(id)a6 deactivatedFactorPackSetIds:(id)a7 deactivationStateTransitions:(id)a8 usingTransaction:(id)a9;
-- (BOOL)addNewRolloutWithRecord:(id)a3;
-- (BOOL)deactivateDeployment:(id)a3 usingTransaction:(id)a4;
-- (BOOL)deactivateDeploymentsWithRolloutId:(id)a3 deactivatedDeployment:(id *)a4 deactivatedFactorPackSetId:(id *)a5 deactivatedRampId:(id *)a6 deactivationStateTransitions:(id)a7 usingTransaction:(id)a8;
-- (BOOL)enumerateRecordsOverlappingNamespaces:(id)a3 usingTransaction:(id)a4 block:(id)a5;
-- (BOOL)enumerateRecordsWithRolloutId:(id)a3 usingTransaction:(id)a4 block:(id)a5;
-- (BOOL)hasRecordReferencingFactorPackSetId:(id)a3 withReferenceType:(unsigned int)a4;
-- (BOOL)setActiveFactorPackSetId:(id)a3 activeTargetingRuleIndex:(id)a4 forDeployment:(id)a5 usingTransaction:(id)a6;
-- (BOOL)setStatus:(int64_t)a3 forDeployment:(id)a4 usingTransaction:(id)a5;
-- (BOOL)setTargetedFactorPackSetId:(id)a3 targetedTargetingRuleIndex:(id)a4 forDeployment:(id)a5 usingTransaction:(id)a6;
-- (BOOL)targetDeployment:(id)a3 toFactorPackSetId:(id)a4 targetingRuleIndex:(id)a5 deallocatedDeployments:(id)a6 usingTransaction:(id)a7;
-- (TRIRolloutDatabase)initWithDatabase:(id)a3;
-- (id)_dataNoCopyFromStmt:(id)a3 columnName:(const char *)a4;
-- (id)recordWithDeployment:(id)a3 usingTransaction:(id)a4;
+- ($61A80719B04F7407D3E47539F1B23CAA)removeRecordWithDeployment:(id)deployment usingRefCounting:(BOOL)counting;
+- (BOOL)_enumerateRecordsMatchingWhereClause:(id)clause bind:(id)bind prependingWithClause:(id)withClause usingTransaction:(id)transaction block:(id)block;
+- (BOOL)activateDeployment:(id)deployment withFactorPackSetId:(id)id targetingRuleIndex:(id)index deactivatedDeployments:(id)deployments deactivatedFactorPackSetIds:(id)ids deactivationStateTransitions:(id)transitions usingTransaction:(id)transaction;
+- (BOOL)addNewRolloutWithRecord:(id)record;
+- (BOOL)deactivateDeployment:(id)deployment usingTransaction:(id)transaction;
+- (BOOL)deactivateDeploymentsWithRolloutId:(id)id deactivatedDeployment:(id *)deployment deactivatedFactorPackSetId:(id *)setId deactivatedRampId:(id *)rampId deactivationStateTransitions:(id)transitions usingTransaction:(id)transaction;
+- (BOOL)enumerateRecordsOverlappingNamespaces:(id)namespaces usingTransaction:(id)transaction block:(id)block;
+- (BOOL)enumerateRecordsWithRolloutId:(id)id usingTransaction:(id)transaction block:(id)block;
+- (BOOL)hasRecordReferencingFactorPackSetId:(id)id withReferenceType:(unsigned int)type;
+- (BOOL)setActiveFactorPackSetId:(id)id activeTargetingRuleIndex:(id)index forDeployment:(id)deployment usingTransaction:(id)transaction;
+- (BOOL)setStatus:(int64_t)status forDeployment:(id)deployment usingTransaction:(id)transaction;
+- (BOOL)setTargetedFactorPackSetId:(id)id targetedTargetingRuleIndex:(id)index forDeployment:(id)deployment usingTransaction:(id)transaction;
+- (BOOL)targetDeployment:(id)deployment toFactorPackSetId:(id)id targetingRuleIndex:(id)index deallocatedDeployments:(id)deployments usingTransaction:(id)transaction;
+- (TRIRolloutDatabase)initWithDatabase:(id)database;
+- (id)_dataNoCopyFromStmt:(id)stmt columnName:(const char *)name;
+- (id)recordWithDeployment:(id)deployment usingTransaction:(id)transaction;
 @end
 
 @implementation TRIRolloutDatabase
 
-- (TRIRolloutDatabase)initWithDatabase:(id)a3
+- (TRIRolloutDatabase)initWithDatabase:(id)database
 {
-  v6 = a3;
-  if (!v6)
+  databaseCopy = database;
+  if (!databaseCopy)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"TRIRolloutDatabase.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"database"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIRolloutDatabase.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"database"}];
   }
 
   v11.receiver = self;
@@ -34,29 +34,29 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_db, a3);
+    objc_storeStrong(&v7->_db, database);
   }
 
   return v8;
 }
 
-- (BOOL)addNewRolloutWithRecord:(id)a3
+- (BOOL)addNewRolloutWithRecord:(id)record
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  recordCopy = record;
+  if (!recordCopy)
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"TRIRolloutDatabase.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"record"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIRolloutDatabase.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"record"}];
   }
 
-  v6 = [v5 namespaces];
+  namespaces = [recordCopy namespaces];
   v7 = objc_opt_new();
-  v8 = [v6 _pas_leftFoldWithInitialObject:v7 accumulate:&__block_literal_global_20];
+  v8 = [namespaces _pas_leftFoldWithInitialObject:v7 accumulate:&__block_literal_global_20];
 
   v9 = [v8 count];
-  v10 = [v5 namespaces];
-  v11 = [v10 count];
+  namespaces2 = [recordCopy namespaces];
+  v11 = [namespaces2 count];
 
   if (v9 == v11)
   {
@@ -70,7 +70,7 @@
     v19[2] = __46__TRIRolloutDatabase_addNewRolloutWithRecord___block_invoke_48;
     v19[3] = &unk_279DDF9C0;
     v19[4] = self;
-    v20 = v5;
+    v20 = recordCopy;
     p_buf = &buf;
     [(TRIRolloutDatabase *)self writeTransactionWithFailableBlock:v19];
     v12 = *(*(&buf + 1) + 24);
@@ -83,10 +83,10 @@
     v13 = TRILogCategory_Server();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v16 = [v5 deployment];
-      v17 = [v16 shortDesc];
+      deployment = [recordCopy deployment];
+      shortDesc = [deployment shortDesc];
       LODWORD(buf) = 138543362;
-      *(&buf + 4) = v17;
+      *(&buf + 4) = shortDesc;
       _os_log_error_impl(&dword_26F567000, v13, OS_LOG_TYPE_ERROR, "Namespace names in rollout %{public}@ are not unique.", &buf, 0xCu);
     }
 
@@ -255,10 +255,10 @@ void __46__TRIRolloutDatabase_addNewRolloutWithRecord___block_invoke_2(uint64_t 
   [v4 bindNamedParam:":name" toNSString:*(a1 + 32)];
 }
 
-- (BOOL)setStatus:(int64_t)a3 forDeployment:(id)a4 usingTransaction:(id)a5
+- (BOOL)setStatus:(int64_t)status forDeployment:(id)deployment usingTransaction:(id)transaction
 {
-  v8 = a4;
-  v9 = a5;
+  deploymentCopy = deployment;
+  transactionCopy = transaction;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -267,16 +267,16 @@ void __46__TRIRolloutDatabase_addNewRolloutWithRecord___block_invoke_2(uint64_t 
   v16 = 3221225472;
   v17 = __63__TRIRolloutDatabase_setStatus_forDeployment_usingTransaction___block_invoke;
   v18 = &unk_279DE1560;
-  v22 = a3;
-  v10 = v8;
+  statusCopy = status;
+  v10 = deploymentCopy;
   v19 = v10;
-  v20 = self;
+  selfCopy = self;
   v21 = &v23;
   v11 = MEMORY[0x2743948D0](&v15);
   v12 = v11;
-  if (v9)
+  if (transactionCopy)
   {
-    (*(v11 + 16))(v11, v9);
+    (*(v11 + 16))(v11, transactionCopy);
   }
 
   else
@@ -342,12 +342,12 @@ void __63__TRIRolloutDatabase_setStatus_forDeployment_usingTransaction___block_i
   [v5 bindNamedParam:":deployment_id" toInt64:{objc_msgSend(*(a1 + 32), "deploymentId")}];
 }
 
-- (BOOL)setActiveFactorPackSetId:(id)a3 activeTargetingRuleIndex:(id)a4 forDeployment:(id)a5 usingTransaction:(id)a6
+- (BOOL)setActiveFactorPackSetId:(id)id activeTargetingRuleIndex:(id)index forDeployment:(id)deployment usingTransaction:(id)transaction
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  idCopy = id;
+  indexCopy = index;
+  deploymentCopy = deployment;
+  transactionCopy = transaction;
   v27 = 0;
   v28 = &v27;
   v29 = 0x2020000000;
@@ -356,19 +356,19 @@ void __63__TRIRolloutDatabase_setStatus_forDeployment_usingTransaction___block_i
   v21[1] = 3221225472;
   v21[2] = __103__TRIRolloutDatabase_setActiveFactorPackSetId_activeTargetingRuleIndex_forDeployment_usingTransaction___block_invoke;
   v21[3] = &unk_279DE17A8;
-  v14 = v10;
+  v14 = idCopy;
   v22 = v14;
-  v15 = v11;
+  v15 = indexCopy;
   v23 = v15;
-  v16 = v12;
+  v16 = deploymentCopy;
   v24 = v16;
-  v25 = self;
+  selfCopy = self;
   v26 = &v27;
   v17 = MEMORY[0x2743948D0](v21);
   v18 = v17;
-  if (v13)
+  if (transactionCopy)
   {
-    (*(v17 + 16))(v17, v13);
+    (*(v17 + 16))(v17, transactionCopy);
   }
 
   else
@@ -436,12 +436,12 @@ void __103__TRIRolloutDatabase_setActiveFactorPackSetId_activeTargetingRuleIndex
   [v5 bindNamedParam:":deployment_id" toInt64:{objc_msgSend(*(a1 + 48), "deploymentId")}];
 }
 
-- (BOOL)setTargetedFactorPackSetId:(id)a3 targetedTargetingRuleIndex:(id)a4 forDeployment:(id)a5 usingTransaction:(id)a6
+- (BOOL)setTargetedFactorPackSetId:(id)id targetedTargetingRuleIndex:(id)index forDeployment:(id)deployment usingTransaction:(id)transaction
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  idCopy = id;
+  indexCopy = index;
+  deploymentCopy = deployment;
+  transactionCopy = transaction;
   v27 = 0;
   v28 = &v27;
   v29 = 0x2020000000;
@@ -450,19 +450,19 @@ void __103__TRIRolloutDatabase_setActiveFactorPackSetId_activeTargetingRuleIndex
   v21[1] = 3221225472;
   v21[2] = __107__TRIRolloutDatabase_setTargetedFactorPackSetId_targetedTargetingRuleIndex_forDeployment_usingTransaction___block_invoke;
   v21[3] = &unk_279DE17A8;
-  v14 = v10;
+  v14 = idCopy;
   v22 = v14;
-  v15 = v11;
+  v15 = indexCopy;
   v23 = v15;
-  v16 = v12;
+  v16 = deploymentCopy;
   v24 = v16;
-  v25 = self;
+  selfCopy = self;
   v26 = &v27;
   v17 = MEMORY[0x2743948D0](v21);
   v18 = v17;
-  if (v13)
+  if (transactionCopy)
   {
-    (*(v17 + 16))(v17, v13);
+    (*(v17 + 16))(v17, transactionCopy);
   }
 
   else
@@ -530,10 +530,10 @@ void __107__TRIRolloutDatabase_setTargetedFactorPackSetId_targetedTargetingRuleI
   [v5 bindNamedParam:":deployment_id" toInt64:{objc_msgSend(*(a1 + 48), "deploymentId")}];
 }
 
-- (id)_dataNoCopyFromStmt:(id)a3 columnName:(const char *)a4
+- (id)_dataNoCopyFromStmt:(id)stmt columnName:(const char *)name
 {
-  v5 = a3;
-  v6 = sqlite3_column_count([v5 stmt]);
+  stmtCopy = stmt;
+  v6 = sqlite3_column_count([stmtCopy stmt]);
   if (v6 < 1)
   {
     goto LABEL_6;
@@ -543,10 +543,10 @@ void __107__TRIRolloutDatabase_setTargetedFactorPackSetId_targetedTargetingRuleI
   v8 = 0;
   while (1)
   {
-    v9 = sqlite3_column_name([v5 stmt], v8);
+    v9 = sqlite3_column_name([stmtCopy stmt], v8);
     if (v9)
     {
-      if (!strcmp(a4, v9))
+      if (!strcmp(name, v9))
       {
         break;
       }
@@ -558,10 +558,10 @@ void __107__TRIRolloutDatabase_setTargetedFactorPackSetId_targetedTargetingRuleI
     }
   }
 
-  v12 = sqlite3_column_blob([v5 stmt], v8);
+  v12 = sqlite3_column_blob([stmtCopy stmt], v8);
   if (v12)
   {
-    v10 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytesNoCopy:v12 length:sqlite3_column_bytes(objc_msgSend(v5 freeWhenDone:{"stmt"), v8), 0}];
+    v10 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytesNoCopy:v12 length:sqlite3_column_bytes(objc_msgSend(stmtCopy freeWhenDone:{"stmt"), v8), 0}];
   }
 
   else
@@ -573,17 +573,17 @@ LABEL_6:
   return v10;
 }
 
-- (BOOL)_enumerateRecordsMatchingWhereClause:(id)a3 bind:(id)a4 prependingWithClause:(id)a5 usingTransaction:(id)a6 block:(id)a7
+- (BOOL)_enumerateRecordsMatchingWhereClause:(id)clause bind:(id)bind prependingWithClause:(id)withClause usingTransaction:(id)transaction block:(id)block
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = v17;
-  if ((v14 != 0) == ((v13 | v15) != 0))
+  clauseCopy = clause;
+  bindCopy = bind;
+  withClauseCopy = withClause;
+  transactionCopy = transaction;
+  blockCopy = block;
+  v18 = blockCopy;
+  if ((bindCopy != 0) == ((clauseCopy | withClauseCopy) != 0))
   {
-    if (v17)
+    if (blockCopy)
     {
       goto LABEL_3;
     }
@@ -591,8 +591,8 @@ LABEL_6:
 
   else
   {
-    v28 = [MEMORY[0x277CCA890] currentHandler];
-    [v28 handleFailureInMethod:a2 object:self file:@"TRIRolloutDatabase.m" lineNumber:320 description:{@"Invalid parameter not satisfying: %@", @"((whereClause != nil) || (withClause != nil)) == (bind != nil)"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIRolloutDatabase.m" lineNumber:320 description:{@"Invalid parameter not satisfying: %@", @"((whereClause != nil) || (withClause != nil)) == (bind != nil)"}];
 
     if (v18)
     {
@@ -600,8 +600,8 @@ LABEL_6:
     }
   }
 
-  v29 = [MEMORY[0x277CCA890] currentHandler];
-  [v29 handleFailureInMethod:a2 object:self file:@"TRIRolloutDatabase.m" lineNumber:321 description:{@"Invalid parameter not satisfying: %@", @"block"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIRolloutDatabase.m" lineNumber:321 description:{@"Invalid parameter not satisfying: %@", @"block"}];
 
 LABEL_3:
   v19 = objc_autoreleasePoolPush();
@@ -613,22 +613,22 @@ LABEL_3:
   v30[1] = 3221225472;
   v30[2] = __108__TRIRolloutDatabase__enumerateRecordsMatchingWhereClause_bind_prependingWithClause_usingTransaction_block___block_invoke;
   v30[3] = &unk_279DE1C90;
-  v20 = v15;
+  v20 = withClauseCopy;
   v31 = v20;
-  v21 = v13;
+  v21 = clauseCopy;
   v32 = v21;
-  v22 = v14;
+  v22 = bindCopy;
   v37 = a2;
-  v33 = self;
+  selfCopy = self;
   v34 = v22;
   v23 = v18;
   v35 = v23;
   v36 = &v38;
   v24 = MEMORY[0x2743948D0](v30);
   v25 = v24;
-  if (v16)
+  if (transactionCopy)
   {
-    (*(v24 + 16))(v24, v16);
+    (*(v24 + 16))(v24, transactionCopy);
   }
 
   else
@@ -918,21 +918,21 @@ void __108__TRIRolloutDatabase__enumerateRecordsMatchingWhereClause_bind_prepend
   objc_autoreleasePoolPop(v6);
 }
 
-- (id)recordWithDeployment:(id)a3 usingTransaction:(id)a4
+- (id)recordWithDeployment:(id)deployment usingTransaction:(id)transaction
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  deploymentCopy = deployment;
+  transactionCopy = transaction;
+  if (!deploymentCopy)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"TRIRolloutDatabase.m" lineNumber:449 description:{@"Invalid parameter not satisfying: %@", @"deployment"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIRolloutDatabase.m" lineNumber:449 description:{@"Invalid parameter not satisfying: %@", @"deployment"}];
   }
 
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __60__TRIRolloutDatabase_recordWithDeployment_usingTransaction___block_invoke;
   v21[3] = &unk_279DDF860;
-  v9 = v7;
+  v9 = deploymentCopy;
   v22 = v9;
   v10 = MEMORY[0x2743948D0](v21);
   v15 = 0;
@@ -946,7 +946,7 @@ void __108__TRIRolloutDatabase__enumerateRecordsMatchingWhereClause_bind_prepend
   v14[2] = __60__TRIRolloutDatabase_recordWithDeployment_usingTransaction___block_invoke_132;
   v14[3] = &unk_279DE0818;
   v14[4] = &v15;
-  if ([(TRIRolloutDatabase *)self _enumerateRecordsMatchingWhereClause:@" WHERE   rolloutId = :rollout_id     AND deploymentId = :deployment_id" bind:v10 prependingWithClause:0 usingTransaction:v8 block:v14])
+  if ([(TRIRolloutDatabase *)self _enumerateRecordsMatchingWhereClause:@" WHERE   rolloutId = :rollout_id     AND deploymentId = :deployment_id" bind:v10 prependingWithClause:0 usingTransaction:transactionCopy block:v14])
   {
     v11 = v16[5];
   }
@@ -971,49 +971,49 @@ void __60__TRIRolloutDatabase_recordWithDeployment_usingTransaction___block_invo
   [v5 bindNamedParam:":deployment_id" toInt64:{objc_msgSend(*(a1 + 32), "deploymentId")}];
 }
 
-- (BOOL)enumerateRecordsWithRolloutId:(id)a3 usingTransaction:(id)a4 block:(id)a5
+- (BOOL)enumerateRecordsWithRolloutId:(id)id usingTransaction:(id)transaction block:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  idCopy = id;
+  transactionCopy = transaction;
+  blockCopy = block;
+  if (!idCopy)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"TRIRolloutDatabase.m" lineNumber:489 description:{@"Invalid parameter not satisfying: %@", @"rolloutId"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIRolloutDatabase.m" lineNumber:489 description:{@"Invalid parameter not satisfying: %@", @"rolloutId"}];
   }
 
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __75__TRIRolloutDatabase_enumerateRecordsWithRolloutId_usingTransaction_block___block_invoke;
   v17[3] = &unk_279DDF860;
-  v18 = v9;
-  v12 = v9;
+  v18 = idCopy;
+  v12 = idCopy;
   v13 = MEMORY[0x2743948D0](v17);
-  v14 = [(TRIRolloutDatabase *)self _enumerateRecordsMatchingWhereClause:@"WHERE rolloutId = :rollout_id" bind:v13 prependingWithClause:0 usingTransaction:v10 block:v11];
+  v14 = [(TRIRolloutDatabase *)self _enumerateRecordsMatchingWhereClause:@"WHERE rolloutId = :rollout_id" bind:v13 prependingWithClause:0 usingTransaction:transactionCopy block:blockCopy];
 
   return v14;
 }
 
-- (BOOL)enumerateRecordsOverlappingNamespaces:(id)a3 usingTransaction:(id)a4 block:(id)a5
+- (BOOL)enumerateRecordsOverlappingNamespaces:(id)namespaces usingTransaction:(id)transaction block:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  namespacesCopy = namespaces;
+  transactionCopy = transaction;
+  blockCopy = block;
+  if (!namespacesCopy)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"TRIRolloutDatabase.m" lineNumber:506 description:{@"Invalid parameter not satisfying: %@", @"namespaces"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIRolloutDatabase.m" lineNumber:506 description:{@"Invalid parameter not satisfying: %@", @"namespaces"}];
   }
 
-  if ([v9 count])
+  if ([namespacesCopy count])
   {
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __83__TRIRolloutDatabase_enumerateRecordsOverlappingNamespaces_usingTransaction_block___block_invoke;
     v16[3] = &unk_279DDF860;
-    v17 = v9;
+    v17 = namespacesCopy;
     v12 = MEMORY[0x2743948D0](v16);
-    v13 = [(TRIRolloutDatabase *)self _enumerateRecordsMatchingWhereClause:@" WHERE r.rowid IN selectedRowIds" bind:v12 prependingWithClause:@" WITH selectedRowIds AS(    SELECT rolloutsV2_rowid FROM rolloutV2Namespaces     WHERE name IN _pas_nsset(:name_set))" usingTransaction:v10 block:v11];
+    v13 = [(TRIRolloutDatabase *)self _enumerateRecordsMatchingWhereClause:@" WHERE r.rowid IN selectedRowIds" bind:v12 prependingWithClause:@" WITH selectedRowIds AS(    SELECT rolloutsV2_rowid FROM rolloutV2Namespaces     WHERE name IN _pas_nsset(:name_set))" usingTransaction:transactionCopy block:blockCopy];
   }
 
   else
@@ -1024,13 +1024,13 @@ void __60__TRIRolloutDatabase_recordWithDeployment_usingTransaction___block_invo
   return v13;
 }
 
-- ($61A80719B04F7407D3E47539F1B23CAA)removeRecordWithDeployment:(id)a3 usingRefCounting:(BOOL)a4
+- ($61A80719B04F7407D3E47539F1B23CAA)removeRecordWithDeployment:(id)deployment usingRefCounting:(BOOL)counting
 {
-  v7 = a3;
-  if (!v7)
+  deploymentCopy = deployment;
+  if (!deploymentCopy)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"TRIRolloutDatabase.m" lineNumber:545 description:{@"Invalid parameter not satisfying: %@", @"deployment"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIRolloutDatabase.m" lineNumber:545 description:{@"Invalid parameter not satisfying: %@", @"deployment"}];
   }
 
   v16 = 0;
@@ -1042,9 +1042,9 @@ void __60__TRIRolloutDatabase_recordWithDeployment_usingTransaction___block_invo
   v12[1] = 3221225472;
   v12[2] = __66__TRIRolloutDatabase_removeRecordWithDeployment_usingRefCounting___block_invoke;
   v12[3] = &unk_279DE17F8;
-  v15 = a4;
+  countingCopy = counting;
   v12[4] = self;
-  v8 = v7;
+  v8 = deploymentCopy;
   v13 = v8;
   v14 = &v16;
   [(TRIRolloutDatabase *)self writeTransactionWithFailableBlock:v12];
@@ -1141,16 +1141,16 @@ void __66__TRIRolloutDatabase_removeRecordWithDeployment_usingRefCounting___bloc
   [v5 bindNamedParam:":deployment_id" toInt64:{objc_msgSend(*(a1 + 32), "deploymentId")}];
 }
 
-- (BOOL)targetDeployment:(id)a3 toFactorPackSetId:(id)a4 targetingRuleIndex:(id)a5 deallocatedDeployments:(id)a6 usingTransaction:(id)a7
+- (BOOL)targetDeployment:(id)deployment toFactorPackSetId:(id)id targetingRuleIndex:(id)index deallocatedDeployments:(id)deployments usingTransaction:(id)transaction
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  if (v13)
+  deploymentCopy = deployment;
+  idCopy = id;
+  indexCopy = index;
+  deploymentsCopy = deployments;
+  transactionCopy = transaction;
+  if (deploymentCopy)
   {
-    if (v16)
+    if (deploymentsCopy)
     {
       goto LABEL_3;
     }
@@ -1158,17 +1158,17 @@ void __66__TRIRolloutDatabase_removeRecordWithDeployment_usingRefCounting___bloc
 
   else
   {
-    v26 = [MEMORY[0x277CCA890] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"TRIRolloutDatabase.m" lineNumber:631 description:{@"Invalid parameter not satisfying: %@", @"deployment"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIRolloutDatabase.m" lineNumber:631 description:{@"Invalid parameter not satisfying: %@", @"deployment"}];
 
-    if (v16)
+    if (deploymentsCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v27 = [MEMORY[0x277CCA890] currentHandler];
-  [v27 handleFailureInMethod:a2 object:self file:@"TRIRolloutDatabase.m" lineNumber:632 description:{@"Invalid parameter not satisfying: %@", @"deallocatedDeployments"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIRolloutDatabase.m" lineNumber:632 description:{@"Invalid parameter not satisfying: %@", @"deallocatedDeployments"}];
 
 LABEL_3:
   v36 = 0;
@@ -1180,20 +1180,20 @@ LABEL_3:
   v30[2] = __116__TRIRolloutDatabase_targetDeployment_toFactorPackSetId_targetingRuleIndex_deallocatedDeployments_usingTransaction___block_invoke;
   v30[3] = &unk_279DE1CB8;
   v30[4] = self;
-  v18 = v13;
+  v18 = deploymentCopy;
   v31 = v18;
-  v19 = v14;
+  v19 = idCopy;
   v32 = v19;
-  v20 = v15;
+  v20 = indexCopy;
   v33 = v20;
-  v21 = v16;
+  v21 = deploymentsCopy;
   v34 = v21;
   v35 = &v36;
   v22 = MEMORY[0x2743948D0](v30);
   v23 = v22;
-  if (v17)
+  if (transactionCopy)
   {
-    (v22)[2](v22, v17);
+    (v22)[2](v22, transactionCopy);
   }
 
   else
@@ -1393,27 +1393,27 @@ void __116__TRIRolloutDatabase_targetDeployment_toFactorPackSetId_targetingRuleI
   [*(a1 + 32) addObject:v3];
 }
 
-- (BOOL)activateDeployment:(id)a3 withFactorPackSetId:(id)a4 targetingRuleIndex:(id)a5 deactivatedDeployments:(id)a6 deactivatedFactorPackSetIds:(id)a7 deactivationStateTransitions:(id)a8 usingTransaction:(id)a9
+- (BOOL)activateDeployment:(id)deployment withFactorPackSetId:(id)id targetingRuleIndex:(id)index deactivatedDeployments:(id)deployments deactivatedFactorPackSetIds:(id)ids deactivationStateTransitions:(id)transitions usingTransaction:(id)transaction
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  if (v16)
+  deploymentCopy = deployment;
+  idCopy = id;
+  indexCopy = index;
+  deploymentsCopy = deployments;
+  idsCopy = ids;
+  transitionsCopy = transitions;
+  transactionCopy = transaction;
+  if (deploymentCopy)
   {
-    if (v17)
+    if (idCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_9:
-    v34 = [MEMORY[0x277CCA890] currentHandler];
-    [v34 handleFailureInMethod:a2 object:self file:@"TRIRolloutDatabase.m" lineNumber:717 description:{@"Invalid parameter not satisfying: %@", @"factorPackSetId"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIRolloutDatabase.m" lineNumber:717 description:{@"Invalid parameter not satisfying: %@", @"factorPackSetId"}];
 
-    if (v19)
+    if (deploymentsCopy)
     {
       goto LABEL_4;
     }
@@ -1421,26 +1421,26 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v33 = [MEMORY[0x277CCA890] currentHandler];
-  [v33 handleFailureInMethod:a2 object:self file:@"TRIRolloutDatabase.m" lineNumber:716 description:{@"Invalid parameter not satisfying: %@", @"deployment"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIRolloutDatabase.m" lineNumber:716 description:{@"Invalid parameter not satisfying: %@", @"deployment"}];
 
-  if (!v17)
+  if (!idCopy)
   {
     goto LABEL_9;
   }
 
 LABEL_3:
-  if (v19)
+  if (deploymentsCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_10:
-  v35 = [MEMORY[0x277CCA890] currentHandler];
-  [v35 handleFailureInMethod:a2 object:self file:@"TRIRolloutDatabase.m" lineNumber:718 description:{@"Invalid parameter not satisfying: %@", @"deactivatedDeployments"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"TRIRolloutDatabase.m" lineNumber:718 description:{@"Invalid parameter not satisfying: %@", @"deactivatedDeployments"}];
 
 LABEL_4:
-  [v19 removeAllObjects];
+  [deploymentsCopy removeAllObjects];
   v46 = 0;
   v47 = &v46;
   v48 = 0x2020000000;
@@ -1450,24 +1450,24 @@ LABEL_4:
   v38[2] = __177__TRIRolloutDatabase_activateDeployment_withFactorPackSetId_targetingRuleIndex_deactivatedDeployments_deactivatedFactorPackSetIds_deactivationStateTransitions_usingTransaction___block_invoke;
   v38[3] = &unk_279DE1D08;
   v38[4] = self;
-  v23 = v16;
+  v23 = deploymentCopy;
   v39 = v23;
-  v24 = v17;
+  v24 = idCopy;
   v40 = v24;
-  v25 = v18;
+  v25 = indexCopy;
   v41 = v25;
-  v26 = v21;
+  v26 = transitionsCopy;
   v42 = v26;
-  v27 = v19;
+  v27 = deploymentsCopy;
   v43 = v27;
-  v28 = v20;
+  v28 = idsCopy;
   v44 = v28;
   v45 = &v46;
   v29 = MEMORY[0x2743948D0](v38);
   v30 = v29;
-  if (v22)
+  if (transactionCopy)
   {
-    (v29)[2](v29, v22);
+    (v29)[2](v29, transactionCopy);
   }
 
   else
@@ -1741,14 +1741,14 @@ void __177__TRIRolloutDatabase_activateDeployment_withFactorPackSetId_targetingR
   [*(a1 + 32) addObject:v3];
 }
 
-- (BOOL)deactivateDeployment:(id)a3 usingTransaction:(id)a4
+- (BOOL)deactivateDeployment:(id)deployment usingTransaction:(id)transaction
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  deploymentCopy = deployment;
+  transactionCopy = transaction;
+  if (!deploymentCopy)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"TRIRolloutDatabase.m" lineNumber:831 description:{@"Invalid parameter not satisfying: %@", @"deployment"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIRolloutDatabase.m" lineNumber:831 description:{@"Invalid parameter not satisfying: %@", @"deployment"}];
   }
 
   v20 = 0;
@@ -1761,13 +1761,13 @@ void __177__TRIRolloutDatabase_activateDeployment_withFactorPackSetId_targetingR
   v17[3] = &unk_279DE15D0;
   v19 = &v20;
   v17[4] = self;
-  v9 = v7;
+  v9 = deploymentCopy;
   v18 = v9;
   v10 = MEMORY[0x2743948D0](v17);
   v11 = v10;
-  if (v8)
+  if (transactionCopy)
   {
-    (v10)[2](v10, v8);
+    (v10)[2](v10, transactionCopy);
   }
 
   else
@@ -1809,14 +1809,14 @@ uint64_t __60__TRIRolloutDatabase_deactivateDeployment_usingTransaction___block_
   return *v6;
 }
 
-- (BOOL)deactivateDeploymentsWithRolloutId:(id)a3 deactivatedDeployment:(id *)a4 deactivatedFactorPackSetId:(id *)a5 deactivatedRampId:(id *)a6 deactivationStateTransitions:(id)a7 usingTransaction:(id)a8
+- (BOOL)deactivateDeploymentsWithRolloutId:(id)id deactivatedDeployment:(id *)deployment deactivatedFactorPackSetId:(id *)setId deactivatedRampId:(id *)rampId deactivationStateTransitions:(id)transitions usingTransaction:(id)transaction
 {
-  v15 = a3;
-  v16 = a7;
-  v17 = a8;
-  if (v15)
+  idCopy = id;
+  transitionsCopy = transitions;
+  transactionCopy = transaction;
+  if (idCopy)
   {
-    if (a4)
+    if (deployment)
     {
       goto LABEL_3;
     }
@@ -1824,30 +1824,30 @@ uint64_t __60__TRIRolloutDatabase_deactivateDeployment_usingTransaction___block_
 
   else
   {
-    v26 = [MEMORY[0x277CCA890] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"TRIRolloutDatabase.m" lineNumber:859 description:{@"Invalid parameter not satisfying: %@", @"rolloutId"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIRolloutDatabase.m" lineNumber:859 description:{@"Invalid parameter not satisfying: %@", @"rolloutId"}];
 
-    if (a4)
+    if (deployment)
     {
       goto LABEL_3;
     }
   }
 
-  v27 = [MEMORY[0x277CCA890] currentHandler];
-  [v27 handleFailureInMethod:a2 object:self file:@"TRIRolloutDatabase.m" lineNumber:860 description:{@"Invalid parameter not satisfying: %@", @"deactivatedDeployment"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIRolloutDatabase.m" lineNumber:860 description:{@"Invalid parameter not satisfying: %@", @"deactivatedDeployment"}];
 
 LABEL_3:
-  v18 = *a4;
-  *a4 = 0;
+  v18 = *deployment;
+  *deployment = 0;
 
-  if (!a5)
+  if (!setId)
   {
-    v28 = [MEMORY[0x277CCA890] currentHandler];
-    [v28 handleFailureInMethod:a2 object:self file:@"TRIRolloutDatabase.m" lineNumber:862 description:{@"Invalid parameter not satisfying: %@", @"deactivatedFactorPackSetId"}];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"TRIRolloutDatabase.m" lineNumber:862 description:{@"Invalid parameter not satisfying: %@", @"deactivatedFactorPackSetId"}];
   }
 
-  v19 = *a5;
-  *a5 = 0;
+  v19 = *setId;
+  *setId = 0;
 
   v38 = 0;
   v39 = &v38;
@@ -1859,18 +1859,18 @@ LABEL_3:
   v31[3] = &unk_279DE1D58;
   v34 = &v38;
   v31[4] = self;
-  v20 = v15;
+  v20 = idCopy;
   v32 = v20;
-  v35 = a4;
-  v36 = a5;
-  v37 = a6;
-  v21 = v16;
+  deploymentCopy = deployment;
+  setIdCopy = setId;
+  rampIdCopy = rampId;
+  v21 = transitionsCopy;
   v33 = v21;
   v22 = MEMORY[0x2743948D0](v31);
   v23 = v22;
-  if (v17)
+  if (transactionCopy)
   {
-    (v22)[2](v22, v17);
+    (v22)[2](v22, transactionCopy);
   }
 
   else
@@ -2044,13 +2044,13 @@ LABEL_11:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)hasRecordReferencingFactorPackSetId:(id)a3 withReferenceType:(unsigned int)a4
+- (BOOL)hasRecordReferencingFactorPackSetId:(id)id withReferenceType:(unsigned int)type
 {
-  v7 = a3;
-  if (!v7)
+  idCopy = id;
+  if (!idCopy)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"TRIRolloutDatabase.m" lineNumber:915 description:{@"Invalid parameter not satisfying: %@", @"factorPackSetId"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIRolloutDatabase.m" lineNumber:915 description:{@"Invalid parameter not satisfying: %@", @"factorPackSetId"}];
   }
 
   v17 = 0;
@@ -2061,10 +2061,10 @@ LABEL_11:
   v12[1] = 3221225472;
   v12[2] = __76__TRIRolloutDatabase_hasRecordReferencingFactorPackSetId_withReferenceType___block_invoke;
   v12[3] = &unk_279DE1D80;
-  v16 = a4;
+  typeCopy = type;
   v15 = a2;
   v12[4] = self;
-  v8 = v7;
+  v8 = idCopy;
   v13 = v8;
   v14 = &v17;
   [(TRIRolloutDatabase *)self readTransactionWithFailableBlock:v12];

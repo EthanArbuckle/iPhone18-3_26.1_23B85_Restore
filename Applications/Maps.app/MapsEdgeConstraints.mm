@@ -1,9 +1,9 @@
 @interface MapsEdgeConstraints
-+ (MapsEdgeConstraints)edgeConstraintsWithTop:(id)a3 leading:(id)a4 bottom:(id)a5 trailing:(id)a6;
-+ (MapsEdgeConstraints)edgeConstraintsWithTop:(id)a3 left:(id)a4 bottom:(id)a5 right:(id)a6;
++ (MapsEdgeConstraints)edgeConstraintsWithTop:(id)top leading:(id)leading bottom:(id)bottom trailing:(id)trailing;
++ (MapsEdgeConstraints)edgeConstraintsWithTop:(id)top left:(id)left bottom:(id)bottom right:(id)right;
 - (NSArray)activeConstraints;
 - (NSArray)allConstraints;
-- (void)setConstantsFromEdgeInsets:(UIEdgeInsets)a3;
+- (void)setConstantsFromEdgeInsets:(UIEdgeInsets)insets;
 @end
 
 @implementation MapsEdgeConstraints
@@ -11,66 +11,66 @@
 - (NSArray)allConstraints
 {
   v3 = [NSMutableArray arrayWithCapacity:4];
-  v4 = [(MapsEdgeConstraints *)self topConstraint];
+  topConstraint = [(MapsEdgeConstraints *)self topConstraint];
 
-  if (v4)
+  if (topConstraint)
   {
-    v5 = [(MapsEdgeConstraints *)self topConstraint];
-    [v3 addObject:v5];
+    topConstraint2 = [(MapsEdgeConstraints *)self topConstraint];
+    [v3 addObject:topConstraint2];
   }
 
-  v6 = [(MapsEdgeConstraints *)self leftConstraint];
+  leftConstraint = [(MapsEdgeConstraints *)self leftConstraint];
 
-  if (v6)
+  if (leftConstraint)
   {
-    v7 = [(MapsEdgeConstraints *)self leftConstraint];
+    leftConstraint2 = [(MapsEdgeConstraints *)self leftConstraint];
   }
 
   else
   {
-    v8 = [(MapsEdgeConstraints *)self leadingConstraint];
+    leadingConstraint = [(MapsEdgeConstraints *)self leadingConstraint];
 
-    if (!v8)
+    if (!leadingConstraint)
     {
       goto LABEL_8;
     }
 
-    v7 = [(MapsEdgeConstraints *)self leadingConstraint];
+    leftConstraint2 = [(MapsEdgeConstraints *)self leadingConstraint];
   }
 
-  v9 = v7;
-  [v3 addObject:v7];
+  v9 = leftConstraint2;
+  [v3 addObject:leftConstraint2];
 
 LABEL_8:
-  v10 = [(MapsEdgeConstraints *)self bottomConstraint];
+  bottomConstraint = [(MapsEdgeConstraints *)self bottomConstraint];
 
-  if (v10)
+  if (bottomConstraint)
   {
-    v11 = [(MapsEdgeConstraints *)self bottomConstraint];
-    [v3 addObject:v11];
+    bottomConstraint2 = [(MapsEdgeConstraints *)self bottomConstraint];
+    [v3 addObject:bottomConstraint2];
   }
 
-  v12 = [(MapsEdgeConstraints *)self rightConstraint];
+  rightConstraint = [(MapsEdgeConstraints *)self rightConstraint];
 
-  if (v12)
+  if (rightConstraint)
   {
-    v13 = [(MapsEdgeConstraints *)self rightConstraint];
+    rightConstraint2 = [(MapsEdgeConstraints *)self rightConstraint];
   }
 
   else
   {
-    v14 = [(MapsEdgeConstraints *)self trailingConstraint];
+    trailingConstraint = [(MapsEdgeConstraints *)self trailingConstraint];
 
-    if (!v14)
+    if (!trailingConstraint)
     {
       goto LABEL_15;
     }
 
-    v13 = [(MapsEdgeConstraints *)self trailingConstraint];
+    rightConstraint2 = [(MapsEdgeConstraints *)self trailingConstraint];
   }
 
-  v15 = v13;
-  [v3 addObject:v13];
+  v15 = rightConstraint2;
+  [v3 addObject:rightConstraint2];
 
 LABEL_15:
   v16 = [v3 copy];
@@ -78,114 +78,114 @@ LABEL_15:
   return v16;
 }
 
-- (void)setConstantsFromEdgeInsets:(UIEdgeInsets)a3
+- (void)setConstantsFromEdgeInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v8 = [(MapsEdgeConstraints *)self topConstraint];
-  [v8 setConstant:top];
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  topConstraint = [(MapsEdgeConstraints *)self topConstraint];
+  [topConstraint setConstant:top];
 
-  v9 = [(MapsEdgeConstraints *)self leadingConstraint];
-  v10 = v9;
-  if (v9)
+  leadingConstraint = [(MapsEdgeConstraints *)self leadingConstraint];
+  v10 = leadingConstraint;
+  if (leadingConstraint)
   {
-    [v9 setConstant:left];
+    [leadingConstraint setConstant:left];
   }
 
   else
   {
-    v11 = [(MapsEdgeConstraints *)self leftConstraint];
-    [v11 setConstant:left];
+    leftConstraint = [(MapsEdgeConstraints *)self leftConstraint];
+    [leftConstraint setConstant:left];
   }
 
-  v12 = [(MapsEdgeConstraints *)self bottomConstraint];
-  [v12 setConstant:bottom];
+  bottomConstraint = [(MapsEdgeConstraints *)self bottomConstraint];
+  [bottomConstraint setConstant:bottom];
 
-  v13 = [(MapsEdgeConstraints *)self trailingConstraint];
-  v15 = v13;
-  if (v13)
+  trailingConstraint = [(MapsEdgeConstraints *)self trailingConstraint];
+  v15 = trailingConstraint;
+  if (trailingConstraint)
   {
-    [v13 setConstant:right];
+    [trailingConstraint setConstant:right];
   }
 
   else
   {
-    v14 = [(MapsEdgeConstraints *)self rightConstraint];
-    [v14 setConstant:right];
+    rightConstraint = [(MapsEdgeConstraints *)self rightConstraint];
+    [rightConstraint setConstant:right];
   }
 }
 
 - (NSArray)activeConstraints
 {
   v3 = [NSMutableArray arrayWithCapacity:4];
-  v4 = [(MapsEdgeConstraints *)self topConstraint];
-  v5 = [v4 isActive];
+  topConstraint = [(MapsEdgeConstraints *)self topConstraint];
+  isActive = [topConstraint isActive];
 
-  if (v5)
+  if (isActive)
   {
-    v6 = [(MapsEdgeConstraints *)self topConstraint];
-    [v3 addObject:v6];
+    topConstraint2 = [(MapsEdgeConstraints *)self topConstraint];
+    [v3 addObject:topConstraint2];
   }
 
-  v7 = [(MapsEdgeConstraints *)self leftConstraint];
-  v8 = [v7 isActive];
+  leftConstraint = [(MapsEdgeConstraints *)self leftConstraint];
+  isActive2 = [leftConstraint isActive];
 
-  if (v8)
+  if (isActive2)
   {
-    v9 = [(MapsEdgeConstraints *)self leftConstraint];
+    leftConstraint2 = [(MapsEdgeConstraints *)self leftConstraint];
   }
 
   else
   {
-    v10 = [(MapsEdgeConstraints *)self leadingConstraint];
-    v11 = [v10 isActive];
+    leadingConstraint = [(MapsEdgeConstraints *)self leadingConstraint];
+    isActive3 = [leadingConstraint isActive];
 
-    if (!v11)
+    if (!isActive3)
     {
       goto LABEL_8;
     }
 
-    v9 = [(MapsEdgeConstraints *)self leadingConstraint];
+    leftConstraint2 = [(MapsEdgeConstraints *)self leadingConstraint];
   }
 
-  v12 = v9;
-  [v3 addObject:v9];
+  v12 = leftConstraint2;
+  [v3 addObject:leftConstraint2];
 
 LABEL_8:
-  v13 = [(MapsEdgeConstraints *)self bottomConstraint];
-  v14 = [v13 isActive];
+  bottomConstraint = [(MapsEdgeConstraints *)self bottomConstraint];
+  isActive4 = [bottomConstraint isActive];
 
-  if (v14)
+  if (isActive4)
   {
-    v15 = [(MapsEdgeConstraints *)self bottomConstraint];
-    [v3 addObject:v15];
+    bottomConstraint2 = [(MapsEdgeConstraints *)self bottomConstraint];
+    [v3 addObject:bottomConstraint2];
   }
 
-  v16 = [(MapsEdgeConstraints *)self rightConstraint];
-  v17 = [v16 isActive];
+  rightConstraint = [(MapsEdgeConstraints *)self rightConstraint];
+  isActive5 = [rightConstraint isActive];
 
-  if (v17)
+  if (isActive5)
   {
-    v18 = [(MapsEdgeConstraints *)self rightConstraint];
+    rightConstraint2 = [(MapsEdgeConstraints *)self rightConstraint];
   }
 
   else
   {
-    v19 = [(MapsEdgeConstraints *)self trailingConstraint];
-    v20 = [v19 isActive];
+    trailingConstraint = [(MapsEdgeConstraints *)self trailingConstraint];
+    isActive6 = [trailingConstraint isActive];
 
-    if (!v20)
+    if (!isActive6)
     {
       goto LABEL_15;
     }
 
-    v18 = [(MapsEdgeConstraints *)self trailingConstraint];
+    rightConstraint2 = [(MapsEdgeConstraints *)self trailingConstraint];
   }
 
-  v21 = v18;
-  [v3 addObject:v18];
+  v21 = rightConstraint2;
+  [v3 addObject:rightConstraint2];
 
 LABEL_15:
   v22 = [v3 copy];
@@ -193,36 +193,36 @@ LABEL_15:
   return v22;
 }
 
-+ (MapsEdgeConstraints)edgeConstraintsWithTop:(id)a3 left:(id)a4 bottom:(id)a5 right:(id)a6
++ (MapsEdgeConstraints)edgeConstraintsWithTop:(id)top left:(id)left bottom:(id)bottom right:(id)right
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  rightCopy = right;
+  bottomCopy = bottom;
+  leftCopy = left;
+  topCopy = top;
   v13 = objc_alloc_init(MapsEdgeConstraints);
-  [(MapsEdgeConstraints *)v13 setTopConstraint:v12];
+  [(MapsEdgeConstraints *)v13 setTopConstraint:topCopy];
 
-  [(MapsEdgeConstraints *)v13 setLeftConstraint:v11];
-  [(MapsEdgeConstraints *)v13 setBottomConstraint:v10];
+  [(MapsEdgeConstraints *)v13 setLeftConstraint:leftCopy];
+  [(MapsEdgeConstraints *)v13 setBottomConstraint:bottomCopy];
 
-  [(MapsEdgeConstraints *)v13 setRightConstraint:v9];
+  [(MapsEdgeConstraints *)v13 setRightConstraint:rightCopy];
 
   return v13;
 }
 
-+ (MapsEdgeConstraints)edgeConstraintsWithTop:(id)a3 leading:(id)a4 bottom:(id)a5 trailing:(id)a6
++ (MapsEdgeConstraints)edgeConstraintsWithTop:(id)top leading:(id)leading bottom:(id)bottom trailing:(id)trailing
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  trailingCopy = trailing;
+  bottomCopy = bottom;
+  leadingCopy = leading;
+  topCopy = top;
   v13 = objc_alloc_init(MapsEdgeConstraints);
-  [(MapsEdgeConstraints *)v13 setTopConstraint:v12];
+  [(MapsEdgeConstraints *)v13 setTopConstraint:topCopy];
 
-  [(MapsEdgeConstraints *)v13 setLeadingConstraint:v11];
-  [(MapsEdgeConstraints *)v13 setBottomConstraint:v10];
+  [(MapsEdgeConstraints *)v13 setLeadingConstraint:leadingCopy];
+  [(MapsEdgeConstraints *)v13 setBottomConstraint:bottomCopy];
 
-  [(MapsEdgeConstraints *)v13 setTrailingConstraint:v9];
+  [(MapsEdgeConstraints *)v13 setTrailingConstraint:trailingCopy];
 
   return v13;
 }

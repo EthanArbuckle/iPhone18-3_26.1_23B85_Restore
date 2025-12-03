@@ -1,18 +1,18 @@
 @interface CKDMetadataCacheMigrator
-- (BOOL)migrateDatabase:(id)a3 fromVersion:(int)a4;
+- (BOOL)migrateDatabase:(id)database fromVersion:(int)version;
 @end
 
 @implementation CKDMetadataCacheMigrator
 
-- (BOOL)migrateDatabase:(id)a3 fromVersion:(int)a4
+- (BOOL)migrateDatabase:(id)database fromVersion:(int)version
 {
   v26 = *MEMORY[0x277D85DE8];
   v5 = 1525120803;
-  v6 = a3;
-  v8 = v6;
-  if (a4 == -421944720)
+  databaseCopy = database;
+  v8 = databaseCopy;
+  if (version == -421944720)
   {
-    v9 = objc_msgSend_performDatabaseOperation_(v6, v7, &unk_28385C980);
+    v9 = objc_msgSend_performDatabaseOperation_(databaseCopy, v7, &unk_28385C980);
     v10 = *MEMORY[0x277CBC878];
     v11 = *MEMORY[0x277CBC880];
     if (v9)
@@ -32,7 +32,7 @@
         _os_log_fault_impl(&dword_22506F000, v12, OS_LOG_TYPE_FAULT, "Failed to migrate metadata cache from version %d with error: %@", buf, 0x12u);
       }
 
-      a4 = -421944720;
+      version = -421944720;
     }
 
     else
@@ -43,7 +43,7 @@
       }
 
       v13 = *MEMORY[0x277CBC830];
-      a4 = 1525120803;
+      version = 1525120803;
       if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109120;
@@ -64,7 +64,7 @@
     v14 = 0;
   }
 
-  if (a4 == 1525120803)
+  if (version == 1525120803)
   {
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
@@ -95,11 +95,11 @@
       v5 = -533383990;
     }
 
-    a4 = v5;
+    version = v5;
   }
 
   v18 = *MEMORY[0x277D85DE8];
-  return a4 == -533383990;
+  return version == -533383990;
 }
 
 @end

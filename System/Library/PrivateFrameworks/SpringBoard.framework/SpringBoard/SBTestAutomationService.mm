@@ -1,50 +1,50 @@
 @interface SBTestAutomationService
-- (BOOL)_authenticateClient:(id)a3;
+- (BOOL)_authenticateClient:(id)client;
 - (SBTestAutomationService)init;
-- (id)_iconGridSizeClassFromClientArgument:(int64_t)a3;
+- (id)_iconGridSizeClassFromClientArgument:(int64_t)argument;
 - (id)_iconManager;
 - (id)_switcherController;
 - (id)_windowScene;
-- (id)systemServiceServer:(id)a3 getAnimationFrameRecordingsForClient:(id)a4;
-- (id)systemServiceServer:(id)a3 getAvailableRecordableFlipBookElementIdentifiers:(id)a4;
-- (id)systemServiceServer:(id)a3 getSystemApertureModelStateDumpForClient:(id)a4;
-- (id)systemServiceServer:(id)a3 getSystemApertureStateDumpForClient:(id)a4;
-- (id)systemServiceServer:(id)a3 getWidgetControllerStateDump:(id)a4;
-- (void)systemServiceServer:(id)a3 addWidgetsToEachPageForClient:(id)a4;
-- (void)systemServiceServer:(id)a3 clearAllUserNotificationsForClient:(id)a4;
-- (void)systemServiceServer:(id)a3 client:(id)a4 addWidgetStackWithIdentifiers:(id)a5 toPage:(int64_t)a6 withSizing:(int64_t)a7;
-- (void)systemServiceServer:(id)a3 client:(id)a4 addWidgetWithIdentifier:(id)a5 toPage:(int64_t)a6 withSizing:(int64_t)a7;
-- (void)systemServiceServer:(id)a3 client:(id)a4 countScenesForBundleIdentifier:(id)a5 withCompletion:(id)a6;
-- (void)systemServiceServer:(id)a3 client:(id)a4 getChamoisPrefersDockHiddenWithCompletion:(id)a5;
-- (void)systemServiceServer:(id)a3 client:(id)a4 getChamoisPrefersStripHiddenWithCompletion:(id)a5;
-- (void)systemServiceServer:(id)a3 client:(id)a4 getDeviceSupportsSystemAperture:(id)a5;
-- (void)systemServiceServer:(id)a3 client:(id)a4 getIsChamoisWindowingUIEnabledWithCompletion:(id)a5;
-- (void)systemServiceServer:(id)a3 client:(id)a4 initiateSecureFlipBookRecordingForElement:(id)a5 withCompletion:(id)a6;
-- (void)systemServiceServer:(id)a3 client:(id)a4 loadStashedSwitcherModelFromPath:(id)a5;
-- (void)systemServiceServer:(id)a3 client:(id)a4 port:(id)a5 acquireAssertionForReachabilityEnabled:(BOOL)a6;
-- (void)systemServiceServer:(id)a3 client:(id)a4 port:(id)a5 acquireHUDHiddenAssertionForIdentifier:(id)a6;
-- (void)systemServiceServer:(id)a3 client:(id)a4 resetToHomeScreenAnimated:(BOOL)a5;
-- (void)systemServiceServer:(id)a3 client:(id)a4 setAccessoryType:(int64_t)a5 attached:(BOOL)a6;
-- (void)systemServiceServer:(id)a3 client:(id)a4 setAlertsEnabled:(BOOL)a5;
-- (void)systemServiceServer:(id)a3 client:(id)a4 setAmbientMountState:(int64_t)a5;
-- (void)systemServiceServer:(id)a3 client:(id)a4 setAmbientPresentationState:(int64_t)a5;
-- (void)systemServiceServer:(id)a3 client:(id)a4 setApplicationBundleIdentifier:(id)a5 blockedForScreenTime:(BOOL)a6;
-- (void)systemServiceServer:(id)a3 client:(id)a4 setChamoisPrefersDockHidden:(BOOL)a5;
-- (void)systemServiceServer:(id)a3 client:(id)a4 setChamoisPrefersStripHidden:(BOOL)a5;
-- (void)systemServiceServer:(id)a3 client:(id)a4 setChamoisWindowingUIEnabled:(BOOL)a5;
-- (void)systemServiceServer:(id)a3 client:(id)a4 setHiddenFeaturesEnabled:(BOOL)a5;
-- (void)systemServiceServer:(id)a3 client:(id)a4 setIdleTimerEnabled:(BOOL)a5;
-- (void)systemServiceServer:(id)a3 client:(id)a4 setMallocStackLoggingEnabled:(BOOL)a5;
-- (void)systemServiceServer:(id)a3 client:(id)a4 setOrientationLockEnabled:(BOOL)a5;
-- (void)systemServiceServer:(id)a3 client:(id)a4 setReachabilityActive:(BOOL)a5;
-- (void)systemServiceServer:(id)a3 client:(id)a4 setSpringBoardAnimationFrameRecordingForUpdateTypes:(unint64_t)a5;
-- (void)systemServiceServer:(id)a3 client:(id)a4 setSystemApertureUnderAutomationTesting:(BOOL)a5;
-- (void)systemServiceServer:(id)a3 client:(id)a4 setTestRunnerRecoveryApplicationBundleIdentifier:(id)a5;
-- (void)systemServiceServer:(id)a3 client:(id)a4 stashSwitcherModelToPath:(id)a5;
-- (void)systemServiceServer:(id)a3 enterLostModeForClient:(id)a4;
-- (void)systemServiceServer:(id)a3 exitLostModeForClient:(id)a4;
-- (void)systemServiceServer:(id)a3 setUserPresenceDetectedSinceWakeForClient:(id)a4;
-- (void)systemServiceServer:(id)a3 suspendAllDisplaysForClient:(id)a4;
+- (id)systemServiceServer:(id)server getAnimationFrameRecordingsForClient:(id)client;
+- (id)systemServiceServer:(id)server getAvailableRecordableFlipBookElementIdentifiers:(id)identifiers;
+- (id)systemServiceServer:(id)server getSystemApertureModelStateDumpForClient:(id)client;
+- (id)systemServiceServer:(id)server getSystemApertureStateDumpForClient:(id)client;
+- (id)systemServiceServer:(id)server getWidgetControllerStateDump:(id)dump;
+- (void)systemServiceServer:(id)server addWidgetsToEachPageForClient:(id)client;
+- (void)systemServiceServer:(id)server clearAllUserNotificationsForClient:(id)client;
+- (void)systemServiceServer:(id)server client:(id)client addWidgetStackWithIdentifiers:(id)identifiers toPage:(int64_t)page withSizing:(int64_t)sizing;
+- (void)systemServiceServer:(id)server client:(id)client addWidgetWithIdentifier:(id)identifier toPage:(int64_t)page withSizing:(int64_t)sizing;
+- (void)systemServiceServer:(id)server client:(id)client countScenesForBundleIdentifier:(id)identifier withCompletion:(id)completion;
+- (void)systemServiceServer:(id)server client:(id)client getChamoisPrefersDockHiddenWithCompletion:(id)completion;
+- (void)systemServiceServer:(id)server client:(id)client getChamoisPrefersStripHiddenWithCompletion:(id)completion;
+- (void)systemServiceServer:(id)server client:(id)client getDeviceSupportsSystemAperture:(id)aperture;
+- (void)systemServiceServer:(id)server client:(id)client getIsChamoisWindowingUIEnabledWithCompletion:(id)completion;
+- (void)systemServiceServer:(id)server client:(id)client initiateSecureFlipBookRecordingForElement:(id)element withCompletion:(id)completion;
+- (void)systemServiceServer:(id)server client:(id)client loadStashedSwitcherModelFromPath:(id)path;
+- (void)systemServiceServer:(id)server client:(id)client port:(id)port acquireAssertionForReachabilityEnabled:(BOOL)enabled;
+- (void)systemServiceServer:(id)server client:(id)client port:(id)port acquireHUDHiddenAssertionForIdentifier:(id)identifier;
+- (void)systemServiceServer:(id)server client:(id)client resetToHomeScreenAnimated:(BOOL)animated;
+- (void)systemServiceServer:(id)server client:(id)client setAccessoryType:(int64_t)type attached:(BOOL)attached;
+- (void)systemServiceServer:(id)server client:(id)client setAlertsEnabled:(BOOL)enabled;
+- (void)systemServiceServer:(id)server client:(id)client setAmbientMountState:(int64_t)state;
+- (void)systemServiceServer:(id)server client:(id)client setAmbientPresentationState:(int64_t)state;
+- (void)systemServiceServer:(id)server client:(id)client setApplicationBundleIdentifier:(id)identifier blockedForScreenTime:(BOOL)time;
+- (void)systemServiceServer:(id)server client:(id)client setChamoisPrefersDockHidden:(BOOL)hidden;
+- (void)systemServiceServer:(id)server client:(id)client setChamoisPrefersStripHidden:(BOOL)hidden;
+- (void)systemServiceServer:(id)server client:(id)client setChamoisWindowingUIEnabled:(BOOL)enabled;
+- (void)systemServiceServer:(id)server client:(id)client setHiddenFeaturesEnabled:(BOOL)enabled;
+- (void)systemServiceServer:(id)server client:(id)client setIdleTimerEnabled:(BOOL)enabled;
+- (void)systemServiceServer:(id)server client:(id)client setMallocStackLoggingEnabled:(BOOL)enabled;
+- (void)systemServiceServer:(id)server client:(id)client setOrientationLockEnabled:(BOOL)enabled;
+- (void)systemServiceServer:(id)server client:(id)client setReachabilityActive:(BOOL)active;
+- (void)systemServiceServer:(id)server client:(id)client setSpringBoardAnimationFrameRecordingForUpdateTypes:(unint64_t)types;
+- (void)systemServiceServer:(id)server client:(id)client setSystemApertureUnderAutomationTesting:(BOOL)testing;
+- (void)systemServiceServer:(id)server client:(id)client setTestRunnerRecoveryApplicationBundleIdentifier:(id)identifier;
+- (void)systemServiceServer:(id)server client:(id)client stashSwitcherModelToPath:(id)path;
+- (void)systemServiceServer:(id)server enterLostModeForClient:(id)client;
+- (void)systemServiceServer:(id)server exitLostModeForClient:(id)client;
+- (void)systemServiceServer:(id)server setUserPresenceDetectedSinceWakeForClient:(id)client;
+- (void)systemServiceServer:(id)server suspendAllDisplaysForClient:(id)client;
 @end
 
 @implementation SBTestAutomationService
@@ -77,9 +77,9 @@
   return v2;
 }
 
-- (void)systemServiceServer:(id)a3 suspendAllDisplaysForClient:(id)a4
+- (void)systemServiceServer:(id)server suspendAllDisplaysForClient:(id)client
 {
-  v5 = a4;
+  clientCopy = client;
   v6 = SBLogCommon();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -87,16 +87,16 @@
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "[SBTestAutomationService] Received client request to suspend all displays", v8, 2u);
   }
 
-  v7 = [(SBTestAutomationService *)self _authenticateClient:v5];
+  v7 = [(SBTestAutomationService *)self _authenticateClient:clientCopy];
   if (v7)
   {
     BSDispatchMain();
   }
 }
 
-- (void)systemServiceServer:(id)a3 clearAllUserNotificationsForClient:(id)a4
+- (void)systemServiceServer:(id)server clearAllUserNotificationsForClient:(id)client
 {
-  v5 = a4;
+  clientCopy = client;
   v6 = SBLogCommon();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -104,7 +104,7 @@
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "[SBTestAutomationService] Received client request to clear all user notifications", v8, 2u);
   }
 
-  v7 = [(SBTestAutomationService *)self _authenticateClient:v5];
+  v7 = [(SBTestAutomationService *)self _authenticateClient:clientCopy];
   if (v7)
   {
     BSDispatchMain();
@@ -147,9 +147,9 @@ void __82__SBTestAutomationService_systemServiceServer_clearAllUserNotifications
   }
 }
 
-- (void)systemServiceServer:(id)a3 setUserPresenceDetectedSinceWakeForClient:(id)a4
+- (void)systemServiceServer:(id)server setUserPresenceDetectedSinceWakeForClient:(id)client
 {
-  v5 = a4;
+  clientCopy = client;
   v6 = SBLogCommon();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -157,23 +157,23 @@ void __82__SBTestAutomationService_systemServiceServer_clearAllUserNotifications
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "[SBTestAutomationService] Received client request to inject user presence detected", v8, 2u);
   }
 
-  v7 = [(SBTestAutomationService *)self _authenticateClient:v5];
+  v7 = [(SBTestAutomationService *)self _authenticateClient:clientCopy];
   if (v7)
   {
     BSDispatchMain();
   }
 }
 
-- (void)systemServiceServer:(id)a3 client:(id)a4 setAlertsEnabled:(BOOL)a5
+- (void)systemServiceServer:(id)server client:(id)client setAlertsEnabled:(BOOL)enabled
 {
-  v5 = a5;
+  enabledCopy = enabled;
   v13 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  clientCopy = client;
   v8 = SBLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = @"disable";
-    if (v5)
+    if (enabledCopy)
     {
       v9 = @"enable";
     }
@@ -183,7 +183,7 @@ void __82__SBTestAutomationService_systemServiceServer_clearAllUserNotifications
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "[SBTestAutomationService] Received client request to %@ pending alerts", buf, 0xCu);
   }
 
-  v10 = [(SBTestAutomationService *)self _authenticateClient:v7];
+  v10 = [(SBTestAutomationService *)self _authenticateClient:clientCopy];
   if (v10)
   {
     BSDispatchMain();
@@ -216,16 +216,16 @@ void __71__SBTestAutomationService_systemServiceServer_client_setAlertsEnabled__
   }
 }
 
-- (void)systemServiceServer:(id)a3 client:(id)a4 setHiddenFeaturesEnabled:(BOOL)a5
+- (void)systemServiceServer:(id)server client:(id)client setHiddenFeaturesEnabled:(BOOL)enabled
 {
-  v5 = a5;
+  enabledCopy = enabled;
   v13 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  clientCopy = client;
   v8 = SBLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = @"disable";
-    if (v5)
+    if (enabledCopy)
     {
       v9 = @"enable";
     }
@@ -235,23 +235,23 @@ void __71__SBTestAutomationService_systemServiceServer_client_setAlertsEnabled__
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "[SBTestAutomationService] Received client request to %@ hidden features", &v11, 0xCu);
   }
 
-  v10 = [(SBTestAutomationService *)self _authenticateClient:v7];
+  v10 = [(SBTestAutomationService *)self _authenticateClient:clientCopy];
   if (v10)
   {
     BSDispatchMain();
   }
 }
 
-- (void)systemServiceServer:(id)a3 client:(id)a4 setIdleTimerEnabled:(BOOL)a5
+- (void)systemServiceServer:(id)server client:(id)client setIdleTimerEnabled:(BOOL)enabled
 {
-  v5 = a5;
+  enabledCopy = enabled;
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  clientCopy = client;
   v8 = SBLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = @"disable";
-    if (v5)
+    if (enabledCopy)
     {
       v9 = @"enable";
     }
@@ -261,11 +261,11 @@ void __71__SBTestAutomationService_systemServiceServer_client_setAlertsEnabled__
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "[SBTestAutomationService] Received client request to %@ the idle timer", buf, 0xCu);
   }
 
-  v10 = [(SBTestAutomationService *)self _authenticateClient:v7];
+  v10 = [(SBTestAutomationService *)self _authenticateClient:clientCopy];
   if (v10)
   {
     idleTimerAssertion = self->_idleTimerAssertion;
-    if (v5 && idleTimerAssertion)
+    if (enabledCopy && idleTimerAssertion)
     {
       [(BSInvalidatable *)idleTimerAssertion invalidate];
       v12 = self->_idleTimerAssertion;
@@ -275,9 +275,9 @@ void __71__SBTestAutomationService_systemServiceServer_client_setAlertsEnabled__
     else
     {
       [(BSInvalidatable *)idleTimerAssertion invalidate];
-      v13 = [MEMORY[0x277D1B260] sharedInstance];
+      mEMORY[0x277D1B260] = [MEMORY[0x277D1B260] sharedInstance];
       v17 = 0;
-      v14 = [v13 newAssertionToDisableIdleTimerForReason:@"SBTestAutomationService client request" error:&v17];
+      v14 = [mEMORY[0x277D1B260] newAssertionToDisableIdleTimerForReason:@"SBTestAutomationService client request" error:&v17];
       v12 = v17;
       v15 = self->_idleTimerAssertion;
       self->_idleTimerAssertion = v14;
@@ -294,16 +294,16 @@ void __71__SBTestAutomationService_systemServiceServer_client_setAlertsEnabled__
   }
 }
 
-- (void)systemServiceServer:(id)a3 client:(id)a4 setOrientationLockEnabled:(BOOL)a5
+- (void)systemServiceServer:(id)server client:(id)client setOrientationLockEnabled:(BOOL)enabled
 {
-  v5 = a5;
+  enabledCopy = enabled;
   v13 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  clientCopy = client;
   v8 = SBLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = @"unlock";
-    if (v5)
+    if (enabledCopy)
     {
       v9 = @"lock";
     }
@@ -313,7 +313,7 @@ void __71__SBTestAutomationService_systemServiceServer_client_setAlertsEnabled__
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "[SBTestAutomationService] Received client request to %@ the interface orientation", buf, 0xCu);
   }
 
-  v10 = [(SBTestAutomationService *)self _authenticateClient:v7];
+  v10 = [(SBTestAutomationService *)self _authenticateClient:clientCopy];
   if (v10)
   {
     BSDispatchMain();
@@ -336,16 +336,16 @@ void __80__SBTestAutomationService_systemServiceServer_client_setOrientationLock
   }
 }
 
-- (void)systemServiceServer:(id)a3 client:(id)a4 setMallocStackLoggingEnabled:(BOOL)a5
+- (void)systemServiceServer:(id)server client:(id)client setMallocStackLoggingEnabled:(BOOL)enabled
 {
-  v5 = a5;
+  enabledCopy = enabled;
   v13 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  clientCopy = client;
   v8 = SBLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = @"disable";
-    if (v5)
+    if (enabledCopy)
     {
       v9 = @"enable";
     }
@@ -355,23 +355,23 @@ void __80__SBTestAutomationService_systemServiceServer_client_setOrientationLock
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "[SBTestAutomationService] Received client request to %@ Malloc Stack Logging", &v11, 0xCu);
   }
 
-  v10 = [(SBTestAutomationService *)self _authenticateClient:v7];
+  v10 = [(SBTestAutomationService *)self _authenticateClient:clientCopy];
   if (v10)
   {
     msl_turn_on_stack_logging();
   }
 }
 
-- (void)systemServiceServer:(id)a3 client:(id)a4 setReachabilityActive:(BOOL)a5
+- (void)systemServiceServer:(id)server client:(id)client setReachabilityActive:(BOOL)active
 {
-  v5 = a5;
+  activeCopy = active;
   v13 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  clientCopy = client;
   v8 = SBLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = @"deactivate";
-    if (v5)
+    if (activeCopy)
     {
       v9 = @"activate";
     }
@@ -381,7 +381,7 @@ void __80__SBTestAutomationService_systemServiceServer_client_setOrientationLock
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "[SBTestAutomationService] Received client request to %@ reachability", buf, 0xCu);
   }
 
-  v10 = [(SBTestAutomationService *)self _authenticateClient:v7];
+  v10 = [(SBTestAutomationService *)self _authenticateClient:clientCopy];
   if (v10)
   {
     BSDispatchMain();
@@ -419,33 +419,33 @@ void __76__SBTestAutomationService_systemServiceServer_client_setReachabilityAct
   }
 }
 
-- (void)systemServiceServer:(id)a3 client:(id)a4 port:(id)a5 acquireAssertionForReachabilityEnabled:(BOOL)a6
+- (void)systemServiceServer:(id)server client:(id)client port:(id)port acquireAssertionForReachabilityEnabled:(BOOL)enabled
 {
-  v6 = a6;
+  enabledCopy = enabled;
   v27 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 processHandle];
-  v12 = [v11 bundleIdentifier];
-  v13 = v12;
-  if (v12)
+  clientCopy = client;
+  portCopy = port;
+  processHandle = [clientCopy processHandle];
+  bundleIdentifier = [processHandle bundleIdentifier];
+  v13 = bundleIdentifier;
+  if (bundleIdentifier)
   {
-    v14 = v12;
+    v14 = bundleIdentifier;
   }
 
   else
   {
-    v15 = [v9 processHandle];
-    v16 = [v15 name];
-    v17 = v16;
-    if (v16)
+    processHandle2 = [clientCopy processHandle];
+    name = [processHandle2 name];
+    v17 = name;
+    if (name)
     {
-      v18 = v16;
+      v18 = name;
     }
 
     else
     {
-      v18 = [v9 description];
+      v18 = [clientCopy description];
     }
 
     v14 = v18;
@@ -455,7 +455,7 @@ void __76__SBTestAutomationService_systemServiceServer_client_setReachabilityAct
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     v20 = @"disable";
-    if (v6)
+    if (enabledCopy)
     {
       v20 = @"enable";
     }
@@ -467,10 +467,10 @@ void __76__SBTestAutomationService_systemServiceServer_client_setReachabilityAct
     _os_log_impl(&dword_21ED4E000, v19, OS_LOG_TYPE_DEFAULT, "[SBTestAutomationService] Received request from client %@ to acquire an assertion to %@ reachability", buf, 0x16u);
   }
 
-  if ([(SBTestAutomationService *)self _authenticateClient:v9])
+  if ([(SBTestAutomationService *)self _authenticateClient:clientCopy])
   {
     v21 = v14;
-    v22 = v10;
+    v22 = portCopy;
     BSDispatchMain();
   }
 }
@@ -586,14 +586,14 @@ uint64_t __98__SBTestAutomationService_systemServiceServer_client_port_acquireAs
   return [*(a1 + 40) invalidate];
 }
 
-- (void)systemServiceServer:(id)a3 client:(id)a4 setAmbientPresentationState:(int64_t)a5
+- (void)systemServiceServer:(id)server client:(id)client setAmbientPresentationState:(int64_t)state
 {
   v11 = *MEMORY[0x277D85DE8];
-  if ([(SBTestAutomationService *)self _authenticateClient:a4])
+  if ([(SBTestAutomationService *)self _authenticateClient:client])
   {
     v6 = SBLogCommon();
     v7 = v6;
-    if (a5 > 2)
+    if (state > 2)
     {
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
@@ -625,12 +625,12 @@ void __82__SBTestAutomationService_systemServiceServer_client_setAmbientPresenta
   [v4 test_updateAmbientPresentationState:*(a1 + 32) withReason:@"SBTestAutomationService"];
 }
 
-- (void)systemServiceServer:(id)a3 client:(id)a4 setAmbientMountState:(int64_t)a5
+- (void)systemServiceServer:(id)server client:(id)client setAmbientMountState:(int64_t)state
 {
   v11 = *MEMORY[0x277D85DE8];
-  if ([(SBTestAutomationService *)self _authenticateClient:a4])
+  if ([(SBTestAutomationService *)self _authenticateClient:client])
   {
-    if (a5 > 3 || a5 == 2)
+    if (state > 3 || state == 2)
     {
       v8 = SBLogCommon();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -664,9 +664,9 @@ void __75__SBTestAutomationService_systemServiceServer_client_setAmbientMountSta
   [v4 test_updateAmbientMountState:*(a1 + 32) withReason:@"SBTestAutomationService"];
 }
 
-- (void)systemServiceServer:(id)a3 client:(id)a4 resetToHomeScreenAnimated:(BOOL)a5
+- (void)systemServiceServer:(id)server client:(id)client resetToHomeScreenAnimated:(BOOL)animated
 {
-  v7 = a4;
+  clientCopy = client;
   v8 = SBLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -674,7 +674,7 @@ void __75__SBTestAutomationService_systemServiceServer_client_setAmbientMountSta
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "[SBTestAutomationService] Received client request to reset to home screen", buf, 2u);
   }
 
-  v9 = [(SBTestAutomationService *)self _authenticateClient:v7];
+  v9 = [(SBTestAutomationService *)self _authenticateClient:clientCopy];
   if (v9)
   {
     v12[0] = MEMORY[0x277D85DD0];
@@ -682,7 +682,7 @@ void __75__SBTestAutomationService_systemServiceServer_client_setAmbientMountSta
     v12[2] = __80__SBTestAutomationService_systemServiceServer_client_resetToHomeScreenAnimated___block_invoke;
     v12[3] = &unk_2783A9F58;
     v12[4] = self;
-    v13 = a5;
+    animatedCopy = animated;
     v11 = MEMORY[0x223D6F7F0](v12);
     v10 = v11;
     BSDispatchMain();
@@ -801,15 +801,15 @@ void __80__SBTestAutomationService_systemServiceServer_client_resetToHomeScreenA
   [v2 removeObject:WeakRetained];
 }
 
-- (void)systemServiceServer:(id)a3 client:(id)a4 setAccessoryType:(int64_t)a5 attached:(BOOL)a6
+- (void)systemServiceServer:(id)server client:(id)client setAccessoryType:(int64_t)type attached:(BOOL)attached
 {
-  v6 = a6;
+  attachedCopy = attached;
   v18 = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  clientCopy = client;
   v9 = SBLogCommon();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    if (v6)
+    if (attachedCopy)
     {
       v10 = @"attach";
     }
@@ -827,7 +827,7 @@ void __80__SBTestAutomationService_systemServiceServer_client_resetToHomeScreenA
     _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "[SBTestAutomationService] Received client request to %@ accessory with type '%@'", buf, 0x16u);
   }
 
-  v12 = [(SBTestAutomationService *)self _authenticateClient:v8];
+  v12 = [(SBTestAutomationService *)self _authenticateClient:clientCopy];
   if (v12)
   {
     if (CSMagSafeAccessoryTypeForSBSAccessoryType())
@@ -937,17 +937,17 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)systemServiceServer:(id)a3 client:(id)a4 setApplicationBundleIdentifier:(id)a5 blockedForScreenTime:(BOOL)a6
+- (void)systemServiceServer:(id)server client:(id)client setApplicationBundleIdentifier:(id)identifier blockedForScreenTime:(BOOL)time
 {
-  v6 = a6;
+  timeCopy = time;
   v19 = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  v10 = a4;
+  identifierCopy = identifier;
+  clientCopy = client;
   v11 = SBLogCommon();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12 = @"unblock";
-    if (v6)
+    if (timeCopy)
     {
       v12 = @"block";
     }
@@ -955,14 +955,14 @@ LABEL_17:
     *buf = 138412546;
     v16 = v12;
     v17 = 2112;
-    v18 = v9;
+    v18 = identifierCopy;
     _os_log_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_DEFAULT, "[SBTestAutomationService] Received client request to %@ application with bundle identifier '%@' for Screen Time", buf, 0x16u);
   }
 
-  v13 = [(SBTestAutomationService *)self _authenticateClient:v10];
+  v13 = [(SBTestAutomationService *)self _authenticateClient:clientCopy];
   if (v13)
   {
-    v14 = v9;
+    v14 = identifierCopy;
     BSDispatchMain();
   }
 }
@@ -975,33 +975,33 @@ void __106__SBTestAutomationService_systemServiceServer_client_setApplicationBun
   [SBScreenTimeTestRecipe _setApplicationBundleIdentifiers:v2 blockedForScreenTimeExpiration:*(a1 + 40)];
 }
 
-- (void)systemServiceServer:(id)a3 client:(id)a4 port:(id)a5 acquireHUDHiddenAssertionForIdentifier:(id)a6
+- (void)systemServiceServer:(id)server client:(id)client port:(id)port acquireHUDHiddenAssertionForIdentifier:(id)identifier
 {
   v28 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [v9 processHandle];
-  v13 = [v12 bundleIdentifier];
-  v14 = v13;
-  if (v13)
+  clientCopy = client;
+  portCopy = port;
+  identifierCopy = identifier;
+  processHandle = [clientCopy processHandle];
+  bundleIdentifier = [processHandle bundleIdentifier];
+  v14 = bundleIdentifier;
+  if (bundleIdentifier)
   {
-    v15 = v13;
+    v15 = bundleIdentifier;
   }
 
   else
   {
-    v16 = [v9 processHandle];
-    v17 = [v16 name];
-    v18 = v17;
-    if (v17)
+    processHandle2 = [clientCopy processHandle];
+    name = [processHandle2 name];
+    v18 = name;
+    if (name)
     {
-      v19 = v17;
+      v19 = name;
     }
 
     else
     {
-      v19 = [v9 description];
+      v19 = [clientCopy description];
     }
 
     v15 = v19;
@@ -1013,15 +1013,15 @@ void __106__SBTestAutomationService_systemServiceServer_client_setApplicationBun
     *buf = 138412546;
     v25 = v15;
     v26 = 2112;
-    v27 = v11;
+    v27 = identifierCopy;
     _os_log_impl(&dword_21ED4E000, v20, OS_LOG_TYPE_DEFAULT, "[SBTestAutomationService] Received request from client %@ to acquire an assertion to hide HUDs with identifier %@", buf, 0x16u);
   }
 
-  if ([(SBTestAutomationService *)self _authenticateClient:v9])
+  if ([(SBTestAutomationService *)self _authenticateClient:clientCopy])
   {
     v21 = v15;
-    v22 = v11;
-    v23 = v10;
+    v22 = identifierCopy;
+    v23 = portCopy;
     BSDispatchMain();
   }
 }
@@ -1105,23 +1105,23 @@ uint64_t __98__SBTestAutomationService_systemServiceServer_client_port_acquireHU
   return [*(a1 + 48) invalidate];
 }
 
-- (void)systemServiceServer:(id)a3 client:(id)a4 setTestRunnerRecoveryApplicationBundleIdentifier:(id)a5
+- (void)systemServiceServer:(id)server client:(id)client setTestRunnerRecoveryApplicationBundleIdentifier:(id)identifier
 {
   v14 = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = a4;
+  identifierCopy = identifier;
+  clientCopy = client;
   v9 = SBLogCommon();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v13 = v7;
+    v13 = identifierCopy;
     _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "[SBTestAutomationService] Received client request to set the test application recovery identifier to %@", buf, 0xCu);
   }
 
-  v10 = [(SBTestAutomationService *)self _authenticateClient:v8];
+  v10 = [(SBTestAutomationService *)self _authenticateClient:clientCopy];
   if (v10)
   {
-    v11 = v7;
+    v11 = identifierCopy;
     BSDispatchMain();
   }
 }
@@ -1133,25 +1133,25 @@ void __103__SBTestAutomationService_systemServiceServer_client_setTestRunnerReco
   [v2 setTestRunnerRecoveryApplicationBundleIdentifier:*(a1 + 32)];
 }
 
-- (void)systemServiceServer:(id)a3 client:(id)a4 countScenesForBundleIdentifier:(id)a5 withCompletion:(id)a6
+- (void)systemServiceServer:(id)server client:(id)client countScenesForBundleIdentifier:(id)identifier withCompletion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  v10 = a6;
-  v11 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  clientCopy = client;
   v12 = SBLogCommon();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v17 = v9;
+    v17 = identifierCopy;
     _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEFAULT, "[SBTestAutomationService] Received client request to set the test application recovery identifier to %@", buf, 0xCu);
   }
 
-  v13 = [(SBTestAutomationService *)self _authenticateClient:v11];
+  v13 = [(SBTestAutomationService *)self _authenticateClient:clientCopy];
   if (v13)
   {
-    v14 = v9;
-    v15 = v10;
+    v14 = identifierCopy;
+    v15 = completionCopy;
     BSDispatchMain();
   }
 }
@@ -1177,23 +1177,23 @@ uint64_t __100__SBTestAutomationService_systemServiceServer_client_countScenesFo
   return v5;
 }
 
-- (void)systemServiceServer:(id)a3 client:(id)a4 stashSwitcherModelToPath:(id)a5
+- (void)systemServiceServer:(id)server client:(id)client stashSwitcherModelToPath:(id)path
 {
   v14 = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = a4;
+  pathCopy = path;
+  clientCopy = client;
   v9 = SBLogCommon();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v13 = v7;
+    v13 = pathCopy;
     _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "[SBTestAutomationService] Received client request to stash switcher model state to %@", buf, 0xCu);
   }
 
-  v10 = [(SBTestAutomationService *)self _authenticateClient:v8];
+  v10 = [(SBTestAutomationService *)self _authenticateClient:clientCopy];
   if (v10)
   {
-    v11 = v7;
+    v11 = pathCopy;
     BSDispatchMain();
   }
 }
@@ -1209,23 +1209,23 @@ void __79__SBTestAutomationService_systemServiceServer_client_stashSwitcherModel
   }
 }
 
-- (void)systemServiceServer:(id)a3 client:(id)a4 loadStashedSwitcherModelFromPath:(id)a5
+- (void)systemServiceServer:(id)server client:(id)client loadStashedSwitcherModelFromPath:(id)path
 {
   v14 = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = a4;
+  pathCopy = path;
+  clientCopy = client;
   v9 = SBLogCommon();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v13 = v7;
+    v13 = pathCopy;
     _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "[SBTestAutomationService] Received client request to load switcher model state from %@", buf, 0xCu);
   }
 
-  v10 = [(SBTestAutomationService *)self _authenticateClient:v8];
+  v10 = [(SBTestAutomationService *)self _authenticateClient:clientCopy];
   if (v10)
   {
-    v11 = v7;
+    v11 = pathCopy;
     BSDispatchMain();
   }
 }
@@ -1241,9 +1241,9 @@ void __87__SBTestAutomationService_systemServiceServer_client_loadStashedSwitche
   }
 }
 
-- (void)systemServiceServer:(id)a3 addWidgetsToEachPageForClient:(id)a4
+- (void)systemServiceServer:(id)server addWidgetsToEachPageForClient:(id)client
 {
-  v5 = a4;
+  clientCopy = client;
   v6 = SBLogCommon();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -1251,7 +1251,7 @@ void __87__SBTestAutomationService_systemServiceServer_client_loadStashedSwitche
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "[SBTestAutomationService] Received client request to add a static set of widgets to the home screen.", buf, 2u);
   }
 
-  v7 = [(SBTestAutomationService *)self _authenticateClient:v5];
+  v7 = [(SBTestAutomationService *)self _authenticateClient:clientCopy];
   if (v7)
   {
     BSDispatchMain();
@@ -1267,25 +1267,25 @@ void __77__SBTestAutomationService_systemServiceServer_addWidgetsToEachPageForCl
   v3 = [v2 addWidgetsToEachPage];
 }
 
-- (void)systemServiceServer:(id)a3 client:(id)a4 addWidgetWithIdentifier:(id)a5 toPage:(int64_t)a6 withSizing:(int64_t)a7
+- (void)systemServiceServer:(id)server client:(id)client addWidgetWithIdentifier:(id)identifier toPage:(int64_t)page withSizing:(int64_t)sizing
 {
   v19 = *MEMORY[0x277D85DE8];
-  v10 = a5;
-  v11 = a4;
+  identifierCopy = identifier;
+  clientCopy = client;
   v12 = SBLogCommon();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v16 = v10;
+    v16 = identifierCopy;
     v17 = 2048;
-    v18 = a6;
+    pageCopy = page;
     _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEFAULT, "[SBTestAutomationService] Received client request to add widget with extension identifier '%@' to the Home Screen page '%lu'.", buf, 0x16u);
   }
 
-  v13 = [(SBTestAutomationService *)self _authenticateClient:v11];
+  v13 = [(SBTestAutomationService *)self _authenticateClient:clientCopy];
   if (v13)
   {
-    v14 = v10;
+    v14 = identifierCopy;
     BSDispatchMain();
   }
 }
@@ -1307,25 +1307,25 @@ void __96__SBTestAutomationService_systemServiceServer_client_addWidgetWithIdent
   [v4 addWidgetWithIdentifier:*(a1 + 40) toPage:v3 withSizeClass:v2];
 }
 
-- (void)systemServiceServer:(id)a3 client:(id)a4 addWidgetStackWithIdentifiers:(id)a5 toPage:(int64_t)a6 withSizing:(int64_t)a7
+- (void)systemServiceServer:(id)server client:(id)client addWidgetStackWithIdentifiers:(id)identifiers toPage:(int64_t)page withSizing:(int64_t)sizing
 {
   v19 = *MEMORY[0x277D85DE8];
-  v10 = a5;
-  v11 = a4;
+  identifiersCopy = identifiers;
+  clientCopy = client;
   v12 = SBLogCommon();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v16 = v10;
+    v16 = identifiersCopy;
     v17 = 2048;
-    v18 = a6;
+    pageCopy = page;
     _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEFAULT, "[SBTestAutomationService] Received client request to add widget stack with extension identifiers '%@' to the Home Screen page '%lu'.", buf, 0x16u);
   }
 
-  v13 = [(SBTestAutomationService *)self _authenticateClient:v11];
+  v13 = [(SBTestAutomationService *)self _authenticateClient:clientCopy];
   if (v13)
   {
-    v14 = v10;
+    v14 = identifiersCopy;
     BSDispatchMain();
   }
 }
@@ -1347,9 +1347,9 @@ void __102__SBTestAutomationService_systemServiceServer_client_addWidgetStackWit
   [v4 addWidgetStackWithIdentifiers:*(a1 + 40) toPage:v3 withSizeClass:v2];
 }
 
-- (void)systemServiceServer:(id)a3 enterLostModeForClient:(id)a4
+- (void)systemServiceServer:(id)server enterLostModeForClient:(id)client
 {
-  if ([(SBTestAutomationService *)self _authenticateClient:a4])
+  if ([(SBTestAutomationService *)self _authenticateClient:client])
   {
 
     BSDispatchMain();
@@ -1362,9 +1362,9 @@ void __70__SBTestAutomationService_systemServiceServer_enterLostModeForClient___
   [v0 activateLostModeForRemoteLock:0];
 }
 
-- (void)systemServiceServer:(id)a3 exitLostModeForClient:(id)a4
+- (void)systemServiceServer:(id)server exitLostModeForClient:(id)client
 {
-  if ([(SBTestAutomationService *)self _authenticateClient:a4])
+  if ([(SBTestAutomationService *)self _authenticateClient:client])
   {
 
     BSDispatchMain();
@@ -1377,10 +1377,10 @@ void __69__SBTestAutomationService_systemServiceServer_exitLostModeForClient___b
   [v0 exitLostModeIfNecessaryFromRemoteRequest:1];
 }
 
-- (void)systemServiceServer:(id)a3 client:(id)a4 getIsChamoisWindowingUIEnabledWithCompletion:(id)a5
+- (void)systemServiceServer:(id)server client:(id)client getIsChamoisWindowingUIEnabledWithCompletion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
+  completionCopy = completion;
+  clientCopy = client;
   v9 = SBLogCommon();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -1388,16 +1388,16 @@ void __69__SBTestAutomationService_systemServiceServer_exitLostModeForClient___b
     _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "[SBTestAutomationService] Received client request to get Chamois windowing enabled state", buf, 2u);
   }
 
-  v10 = [(SBTestAutomationService *)self _authenticateClient:v8];
+  v10 = [(SBTestAutomationService *)self _authenticateClient:clientCopy];
   if (v10)
   {
-    v11 = v7;
+    v11 = completionCopy;
     BSDispatchMain();
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -1416,20 +1416,20 @@ void __99__SBTestAutomationService_systemServiceServer_client_getIsChamoisWindow
   }
 }
 
-- (void)systemServiceServer:(id)a3 client:(id)a4 setChamoisWindowingUIEnabled:(BOOL)a5
+- (void)systemServiceServer:(id)server client:(id)client setChamoisWindowingUIEnabled:(BOOL)enabled
 {
-  v5 = a5;
+  enabledCopy = enabled;
   v12 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  clientCopy = client;
   v8 = SBLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v11 = v5;
+    v11 = enabledCopy;
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "[SBTestAutomationService] Received client request to set Chamois windowing enabled state to %d", buf, 8u);
   }
 
-  v9 = [(SBTestAutomationService *)self _authenticateClient:v7];
+  v9 = [(SBTestAutomationService *)self _authenticateClient:clientCopy];
   if (v9)
   {
     BSDispatchMain();
@@ -1453,18 +1453,18 @@ void __83__SBTestAutomationService_systemServiceServer_client_setChamoisWindowin
   }
 }
 
-- (void)systemServiceServer:(id)a3 client:(id)a4 getChamoisPrefersDockHiddenWithCompletion:(id)a5
+- (void)systemServiceServer:(id)server client:(id)client getChamoisPrefersDockHiddenWithCompletion:(id)completion
 {
-  v7 = a5;
-  if ([(SBTestAutomationService *)self _authenticateClient:a4])
+  completionCopy = completion;
+  if ([(SBTestAutomationService *)self _authenticateClient:client])
   {
-    v8 = v7;
+    v8 = completionCopy;
     BSDispatchMain();
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -1477,9 +1477,9 @@ void __96__SBTestAutomationService_systemServiceServer_client_getChamoisPrefersD
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)systemServiceServer:(id)a3 client:(id)a4 setChamoisPrefersDockHidden:(BOOL)a5
+- (void)systemServiceServer:(id)server client:(id)client setChamoisPrefersDockHidden:(BOOL)hidden
 {
-  if ([(SBTestAutomationService *)self _authenticateClient:a4])
+  if ([(SBTestAutomationService *)self _authenticateClient:client])
   {
     BSDispatchMain();
   }
@@ -1493,18 +1493,18 @@ void __82__SBTestAutomationService_systemServiceServer_client_setChamoisPrefersD
   [v3 setChamoisHideDock:*(a1 + 32)];
 }
 
-- (void)systemServiceServer:(id)a3 client:(id)a4 getChamoisPrefersStripHiddenWithCompletion:(id)a5
+- (void)systemServiceServer:(id)server client:(id)client getChamoisPrefersStripHiddenWithCompletion:(id)completion
 {
-  v7 = a5;
-  if ([(SBTestAutomationService *)self _authenticateClient:a4])
+  completionCopy = completion;
+  if ([(SBTestAutomationService *)self _authenticateClient:client])
   {
-    v8 = v7;
+    v8 = completionCopy;
     BSDispatchMain();
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -1517,9 +1517,9 @@ void __97__SBTestAutomationService_systemServiceServer_client_getChamoisPrefersS
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)systemServiceServer:(id)a3 client:(id)a4 setChamoisPrefersStripHidden:(BOOL)a5
+- (void)systemServiceServer:(id)server client:(id)client setChamoisPrefersStripHidden:(BOOL)hidden
 {
-  if ([(SBTestAutomationService *)self _authenticateClient:a4])
+  if ([(SBTestAutomationService *)self _authenticateClient:client])
   {
     BSDispatchMain();
   }
@@ -1533,18 +1533,18 @@ void __83__SBTestAutomationService_systemServiceServer_client_setChamoisPrefersS
   [v3 setChamoisHideStrips:*(a1 + 32)];
 }
 
-- (void)systemServiceServer:(id)a3 client:(id)a4 getDeviceSupportsSystemAperture:(id)a5
+- (void)systemServiceServer:(id)server client:(id)client getDeviceSupportsSystemAperture:(id)aperture
 {
-  v7 = a5;
-  if ([(SBTestAutomationService *)self _authenticateClient:a4])
+  apertureCopy = aperture;
+  if ([(SBTestAutomationService *)self _authenticateClient:client])
   {
-    v8 = v7;
+    v8 = apertureCopy;
     BSDispatchMain();
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(apertureCopy + 2))(apertureCopy, 0);
   }
 }
 
@@ -1557,91 +1557,91 @@ uint64_t __86__SBTestAutomationService_systemServiceServer_client_getDeviceSuppo
   return v3(v1, v2);
 }
 
-- (void)systemServiceServer:(id)a3 client:(id)a4 setSpringBoardAnimationFrameRecordingForUpdateTypes:(unint64_t)a5
+- (void)systemServiceServer:(id)server client:(id)client setSpringBoardAnimationFrameRecordingForUpdateTypes:(unint64_t)types
 {
-  v5 = a5;
-  if ([(SBTestAutomationService *)self _authenticateClient:a4])
+  typesCopy = types;
+  if ([(SBTestAutomationService *)self _authenticateClient:client])
   {
-    v6 = [SBApp systemApertureControllerForMainDisplay];
-    [v6 setSystemApertureAnimationFrameRecording:v5 & 1];
+    systemApertureControllerForMainDisplay = [SBApp systemApertureControllerForMainDisplay];
+    [systemApertureControllerForMainDisplay setSystemApertureAnimationFrameRecording:typesCopy & 1];
   }
 }
 
-- (id)systemServiceServer:(id)a3 getAnimationFrameRecordingsForClient:(id)a4
+- (id)systemServiceServer:(id)server getAnimationFrameRecordingsForClient:(id)client
 {
-  if ([(SBTestAutomationService *)self _authenticateClient:a4])
+  if ([(SBTestAutomationService *)self _authenticateClient:client])
   {
-    v4 = [SBApp systemApertureControllerForMainDisplay];
-    v5 = [v4 animationFrameRecordings];
+    systemApertureControllerForMainDisplay = [SBApp systemApertureControllerForMainDisplay];
+    animationFrameRecordings = [systemApertureControllerForMainDisplay animationFrameRecordings];
   }
 
   else
   {
-    v5 = 0;
+    animationFrameRecordings = 0;
   }
 
-  return v5;
+  return animationFrameRecordings;
 }
 
-- (id)systemServiceServer:(id)a3 getSystemApertureStateDumpForClient:(id)a4
+- (id)systemServiceServer:(id)server getSystemApertureStateDumpForClient:(id)client
 {
-  if ([(SBTestAutomationService *)self _authenticateClient:a4])
+  if ([(SBTestAutomationService *)self _authenticateClient:client])
   {
-    v4 = [SBApp systemApertureControllerForMainDisplay];
-    v5 = [v4 stateDump];
+    systemApertureControllerForMainDisplay = [SBApp systemApertureControllerForMainDisplay];
+    stateDump = [systemApertureControllerForMainDisplay stateDump];
   }
 
   else
   {
-    v5 = 0;
+    stateDump = 0;
   }
 
-  return v5;
+  return stateDump;
 }
 
-- (id)systemServiceServer:(id)a3 getSystemApertureModelStateDumpForClient:(id)a4
+- (id)systemServiceServer:(id)server getSystemApertureModelStateDumpForClient:(id)client
 {
-  if ([(SBTestAutomationService *)self _authenticateClient:a4])
+  if ([(SBTestAutomationService *)self _authenticateClient:client])
   {
-    v4 = [SBApp systemApertureControllerForMainDisplay];
-    v5 = [v4 systemApertureModelStateDump];
+    systemApertureControllerForMainDisplay = [SBApp systemApertureControllerForMainDisplay];
+    systemApertureModelStateDump = [systemApertureControllerForMainDisplay systemApertureModelStateDump];
   }
 
   else
   {
-    v5 = 0;
+    systemApertureModelStateDump = 0;
   }
 
-  return v5;
+  return systemApertureModelStateDump;
 }
 
-- (void)systemServiceServer:(id)a3 client:(id)a4 setSystemApertureUnderAutomationTesting:(BOOL)a5
+- (void)systemServiceServer:(id)server client:(id)client setSystemApertureUnderAutomationTesting:(BOOL)testing
 {
-  v5 = a5;
-  if ([(SBTestAutomationService *)self _authenticateClient:a4])
+  testingCopy = testing;
+  if ([(SBTestAutomationService *)self _authenticateClient:client])
   {
-    v6 = [SBApp systemApertureControllerForMainDisplay];
-    [v6 setSystemApertureUnderAutomationTesting:v5];
+    systemApertureControllerForMainDisplay = [SBApp systemApertureControllerForMainDisplay];
+    [systemApertureControllerForMainDisplay setSystemApertureUnderAutomationTesting:testingCopy];
   }
 }
 
-- (id)systemServiceServer:(id)a3 getWidgetControllerStateDump:(id)a4
+- (id)systemServiceServer:(id)server getWidgetControllerStateDump:(id)dump
 {
-  if ([(SBTestAutomationService *)self _authenticateClient:a4])
+  if ([(SBTestAutomationService *)self _authenticateClient:dump])
   {
     v4 = objc_opt_new();
-    v5 = [MEMORY[0x277CFA558] viewControllers];
+    viewControllers = [MEMORY[0x277CFA558] viewControllers];
     v6 = dispatch_semaphore_create(0);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __76__SBTestAutomationService_systemServiceServer_getWidgetControllerStateDump___block_invoke;
     block[3] = &unk_2783A8ED8;
-    v17 = v5;
+    v17 = viewControllers;
     v7 = v4;
     v18 = v7;
     v8 = v6;
     v19 = v8;
-    v9 = v5;
+    v9 = viewControllers;
     dispatch_async(MEMORY[0x277D85CD0], block);
     v10 = dispatch_time(0, 5000000000);
     dispatch_semaphore_wait(v8, v10);
@@ -1715,29 +1715,29 @@ intptr_t __76__SBTestAutomationService_systemServiceServer_getWidgetControllerSt
   return dispatch_semaphore_signal(*(a1 + 48));
 }
 
-- (void)systemServiceServer:(id)a3 client:(id)a4 initiateSecureFlipBookRecordingForElement:(id)a5 withCompletion:(id)a6
+- (void)systemServiceServer:(id)server client:(id)client initiateSecureFlipBookRecordingForElement:(id)element withCompletion:(id)completion
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  if ([(SBTestAutomationService *)self _authenticateClient:v9])
+  clientCopy = client;
+  elementCopy = element;
+  completionCopy = completion;
+  if ([(SBTestAutomationService *)self _authenticateClient:clientCopy])
   {
-    v12 = [SBApp systemApertureControllerForMainDisplay];
+    systemApertureControllerForMainDisplay = [SBApp systemApertureControllerForMainDisplay];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __111__SBTestAutomationService_systemServiceServer_client_initiateSecureFlipBookRecordingForElement_withCompletion___block_invoke;
     v16[3] = &unk_2783B14B0;
-    v17 = v11;
-    [v12 initiateSecureFlipBookRecordingsForElement:v10 withCompletion:v16];
+    v17 = completionCopy;
+    [systemApertureControllerForMainDisplay initiateSecureFlipBookRecordingsForElement:elementCopy withCompletion:v16];
   }
 
   else
   {
     v13 = MEMORY[0x277CCACA8];
-    v14 = [v9 description];
+    v14 = [clientCopy description];
     v15 = [v13 stringWithFormat:@"Client '%@' does not have the required entitlement.", v14];
 
-    (*(v11 + 2))(v11, 0, v15);
+    (*(completionCopy + 2))(completionCopy, 0, v15);
   }
 }
 
@@ -1751,48 +1751,48 @@ void __111__SBTestAutomationService_systemServiceServer_client_initiateSecureFli
   (*(v4 + 16))(v4, v7, v6);
 }
 
-- (id)systemServiceServer:(id)a3 getAvailableRecordableFlipBookElementIdentifiers:(id)a4
+- (id)systemServiceServer:(id)server getAvailableRecordableFlipBookElementIdentifiers:(id)identifiers
 {
-  if ([(SBTestAutomationService *)self _authenticateClient:a4])
+  if ([(SBTestAutomationService *)self _authenticateClient:identifiers])
   {
-    v4 = [SBApp systemApertureControllerForMainDisplay];
-    v5 = [v4 availableRecordableFlipBookElementIdentifiers];
+    systemApertureControllerForMainDisplay = [SBApp systemApertureControllerForMainDisplay];
+    availableRecordableFlipBookElementIdentifiers = [systemApertureControllerForMainDisplay availableRecordableFlipBookElementIdentifiers];
   }
 
   else
   {
-    v5 = 0;
+    availableRecordableFlipBookElementIdentifiers = 0;
   }
 
-  return v5;
+  return availableRecordableFlipBookElementIdentifiers;
 }
 
-- (BOOL)_authenticateClient:(id)a3
+- (BOOL)_authenticateClient:(id)client
 {
-  v4 = a3;
-  v5 = [(FBServiceClientAuthenticator *)self->_clientAuthenticator authenticateClient:v4];
+  clientCopy = client;
+  v5 = [(FBServiceClientAuthenticator *)self->_clientAuthenticator authenticateClient:clientCopy];
   if ((v5 & 1) == 0)
   {
     v6 = SBLogCommon();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(SBTestAutomationService *)v4 _authenticateClient:v6];
+      [(SBTestAutomationService *)clientCopy _authenticateClient:v6];
     }
   }
 
   return v5;
 }
 
-- (id)_iconGridSizeClassFromClientArgument:(int64_t)a3
+- (id)_iconGridSizeClassFromClientArgument:(int64_t)argument
 {
-  if ((a3 - 1) > 2)
+  if ((argument - 1) > 2)
   {
     v3 = MEMORY[0x277D66510];
   }
 
   else
   {
-    v3 = qword_2783B14D0[a3 - 1];
+    v3 = qword_2783B14D0[argument - 1];
   }
 
   return *v3;
@@ -1800,28 +1800,28 @@ void __111__SBTestAutomationService_systemServiceServer_client_initiateSecureFli
 
 - (id)_iconManager
 {
-  v2 = [(SBTestAutomationService *)self _windowScene];
-  v3 = [v2 homeScreenController];
+  _windowScene = [(SBTestAutomationService *)self _windowScene];
+  homeScreenController = [_windowScene homeScreenController];
 
-  v4 = [v3 iconManager];
+  iconManager = [homeScreenController iconManager];
 
-  return v4;
+  return iconManager;
 }
 
 - (id)_switcherController
 {
-  v2 = [(SBTestAutomationService *)self _windowScene];
-  v3 = [v2 switcherController];
+  _windowScene = [(SBTestAutomationService *)self _windowScene];
+  switcherController = [_windowScene switcherController];
 
-  return v3;
+  return switcherController;
 }
 
 - (id)_windowScene
 {
-  v2 = [SBApp windowSceneManager];
-  v3 = [v2 embeddedDisplayWindowScene];
+  windowSceneManager = [SBApp windowSceneManager];
+  embeddedDisplayWindowScene = [windowSceneManager embeddedDisplayWindowScene];
 
-  return v3;
+  return embeddedDisplayWindowScene;
 }
 
 - (void)_authenticateClient:(void *)a1 .cold.1(void *a1, NSObject *a2)

@@ -1,33 +1,33 @@
 @interface PEGASUSSchemaPEGASUSSportsExecutionTier1
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PEGASUSSchemaPEGASUSSportsExecutionTier1)initWithDictionary:(id)a3;
-- (PEGASUSSchemaPEGASUSSportsExecutionTier1)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PEGASUSSchemaPEGASUSSportsExecutionTier1)initWithDictionary:(id)dictionary;
+- (PEGASUSSchemaPEGASUSSportsExecutionTier1)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (int)sportNameAtIndex:(unint64_t)a3;
+- (int)sportNameAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)addAthleteEntities:(id)a3;
-- (void)addEventEntities:(id)a3;
-- (void)addLeague:(id)a3;
-- (void)addSportName:(int)a3;
-- (void)addTeamEntities:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAthleteEntities:(id)entities;
+- (void)addEventEntities:(id)entities;
+- (void)addLeague:(id)league;
+- (void)addSportName:(int)name;
+- (void)addTeamEntities:(id)entities;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PEGASUSSchemaPEGASUSSportsExecutionTier1
 
-- (PEGASUSSchemaPEGASUSSportsExecutionTier1)initWithDictionary:(id)a3
+- (PEGASUSSchemaPEGASUSSportsExecutionTier1)initWithDictionary:(id)dictionary
 {
   v76 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v70.receiver = self;
   v70.super_class = PEGASUSSchemaPEGASUSSportsExecutionTier1;
   v5 = [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)&v70 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"sportName"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"sportName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -65,7 +65,7 @@
       }
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"league"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"league"];
     objc_opt_class();
     v49 = v13;
     if (objc_opt_isKindOfClass())
@@ -105,7 +105,7 @@
       }
     }
 
-    v21 = [v4 objectForKeyedSubscript:@"athleteEntities"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"athleteEntities"];
     objc_opt_class();
     v48 = v21;
     if (objc_opt_isKindOfClass())
@@ -145,7 +145,7 @@
       }
     }
 
-    v29 = [v4 objectForKeyedSubscript:@"teamEntities"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"teamEntities"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -184,7 +184,7 @@
       }
     }
 
-    v37 = [v4 objectForKeyedSubscript:@"eventEntities"];
+    v37 = [dictionaryCopy objectForKeyedSubscript:@"eventEntities"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -232,30 +232,30 @@
   return v5;
 }
 
-- (PEGASUSSchemaPEGASUSSportsExecutionTier1)initWithJSON:(id)a3
+- (PEGASUSSchemaPEGASUSSportsExecutionTier1)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -268,45 +268,45 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_athleteEntities)
   {
-    v4 = [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self athleteEntities];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"athleteEntities"];
+    athleteEntities = [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self athleteEntities];
+    v5 = [athleteEntities copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"athleteEntities"];
   }
 
   if (self->_eventEntities)
   {
-    v6 = [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self eventEntities];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"eventEntities"];
+    eventEntities = [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self eventEntities];
+    v7 = [eventEntities copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"eventEntities"];
   }
 
   if (self->_leagues)
   {
-    v8 = [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self leagues];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"league"];
+    leagues = [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self leagues];
+    v9 = [leagues copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"league"];
   }
 
   if ([(NSArray *)self->_sportNames count])
   {
-    v10 = [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self sportNames];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"sportName"];
+    sportNames = [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self sportNames];
+    v11 = [sportNames copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"sportName"];
   }
 
   if (self->_teamEntities)
   {
-    v12 = [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self teamEntities];
-    v13 = [v12 copy];
-    [v3 setObject:v13 forKeyedSubscript:@"teamEntities"];
+    teamEntities = [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self teamEntities];
+    v13 = [teamEntities copy];
+    [dictionary setObject:v13 forKeyedSubscript:@"teamEntities"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -318,28 +318,28 @@
   return v6 ^ [(NSArray *)self->_eventEntities hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self sportNames];
-  v6 = [v4 sportNames];
-  if ((v5 != 0) == (v6 == 0))
+  sportNames = [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self sportNames];
+  sportNames2 = [equalCopy sportNames];
+  if ((sportNames != 0) == (sportNames2 == 0))
   {
     goto LABEL_26;
   }
 
-  v7 = [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self sportNames];
-  if (v7)
+  sportNames3 = [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self sportNames];
+  if (sportNames3)
   {
-    v8 = v7;
-    v9 = [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self sportNames];
-    v10 = [v4 sportNames];
-    v11 = [v9 isEqual:v10];
+    v8 = sportNames3;
+    sportNames4 = [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self sportNames];
+    sportNames5 = [equalCopy sportNames];
+    v11 = [sportNames4 isEqual:sportNames5];
 
     if (!v11)
     {
@@ -351,20 +351,20 @@
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self leagues];
-  v6 = [v4 leagues];
-  if ((v5 != 0) == (v6 == 0))
+  sportNames = [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self leagues];
+  sportNames2 = [equalCopy leagues];
+  if ((sportNames != 0) == (sportNames2 == 0))
   {
     goto LABEL_26;
   }
 
-  v12 = [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self leagues];
-  if (v12)
+  leagues = [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self leagues];
+  if (leagues)
   {
-    v13 = v12;
-    v14 = [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self leagues];
-    v15 = [v4 leagues];
-    v16 = [v14 isEqual:v15];
+    v13 = leagues;
+    leagues2 = [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self leagues];
+    leagues3 = [equalCopy leagues];
+    v16 = [leagues2 isEqual:leagues3];
 
     if (!v16)
     {
@@ -376,20 +376,20 @@
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self athleteEntities];
-  v6 = [v4 athleteEntities];
-  if ((v5 != 0) == (v6 == 0))
+  sportNames = [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self athleteEntities];
+  sportNames2 = [equalCopy athleteEntities];
+  if ((sportNames != 0) == (sportNames2 == 0))
   {
     goto LABEL_26;
   }
 
-  v17 = [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self athleteEntities];
-  if (v17)
+  athleteEntities = [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self athleteEntities];
+  if (athleteEntities)
   {
-    v18 = v17;
-    v19 = [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self athleteEntities];
-    v20 = [v4 athleteEntities];
-    v21 = [v19 isEqual:v20];
+    v18 = athleteEntities;
+    athleteEntities2 = [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self athleteEntities];
+    athleteEntities3 = [equalCopy athleteEntities];
+    v21 = [athleteEntities2 isEqual:athleteEntities3];
 
     if (!v21)
     {
@@ -401,20 +401,20 @@
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self teamEntities];
-  v6 = [v4 teamEntities];
-  if ((v5 != 0) == (v6 == 0))
+  sportNames = [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self teamEntities];
+  sportNames2 = [equalCopy teamEntities];
+  if ((sportNames != 0) == (sportNames2 == 0))
   {
     goto LABEL_26;
   }
 
-  v22 = [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self teamEntities];
-  if (v22)
+  teamEntities = [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self teamEntities];
+  if (teamEntities)
   {
-    v23 = v22;
-    v24 = [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self teamEntities];
-    v25 = [v4 teamEntities];
-    v26 = [v24 isEqual:v25];
+    v23 = teamEntities;
+    teamEntities2 = [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self teamEntities];
+    teamEntities3 = [equalCopy teamEntities];
+    v26 = [teamEntities2 isEqual:teamEntities3];
 
     if (!v26)
     {
@@ -426,12 +426,12 @@
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self eventEntities];
-  v6 = [v4 eventEntities];
-  if ((v5 != 0) != (v6 == 0))
+  sportNames = [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self eventEntities];
+  sportNames2 = [equalCopy eventEntities];
+  if ((sportNames != 0) != (sportNames2 == 0))
   {
-    v27 = [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self eventEntities];
-    if (!v27)
+    eventEntities = [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self eventEntities];
+    if (!eventEntities)
     {
 
 LABEL_30:
@@ -439,10 +439,10 @@ LABEL_30:
       goto LABEL_28;
     }
 
-    v28 = v27;
-    v29 = [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self eventEntities];
-    v30 = [v4 eventEntities];
-    v31 = [v29 isEqual:v30];
+    v28 = eventEntities;
+    eventEntities2 = [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self eventEntities];
+    eventEntities3 = [equalCopy eventEntities];
+    v31 = [eventEntities2 isEqual:eventEntities3];
 
     if (v31)
     {
@@ -462,10 +462,10 @@ LABEL_28:
   return v32;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v55 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
@@ -623,95 +623,95 @@ LABEL_28:
   }
 }
 
-- (void)addEventEntities:(id)a3
+- (void)addEventEntities:(id)entities
 {
-  v4 = a3;
+  entitiesCopy = entities;
   eventEntities = self->_eventEntities;
-  v8 = v4;
+  v8 = entitiesCopy;
   if (!eventEntities)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_eventEntities;
-    self->_eventEntities = v6;
+    self->_eventEntities = array;
 
-    v4 = v8;
+    entitiesCopy = v8;
     eventEntities = self->_eventEntities;
   }
 
-  [(NSArray *)eventEntities addObject:v4];
+  [(NSArray *)eventEntities addObject:entitiesCopy];
 }
 
-- (void)addTeamEntities:(id)a3
+- (void)addTeamEntities:(id)entities
 {
-  v4 = a3;
+  entitiesCopy = entities;
   teamEntities = self->_teamEntities;
-  v8 = v4;
+  v8 = entitiesCopy;
   if (!teamEntities)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_teamEntities;
-    self->_teamEntities = v6;
+    self->_teamEntities = array;
 
-    v4 = v8;
+    entitiesCopy = v8;
     teamEntities = self->_teamEntities;
   }
 
-  [(NSArray *)teamEntities addObject:v4];
+  [(NSArray *)teamEntities addObject:entitiesCopy];
 }
 
-- (void)addAthleteEntities:(id)a3
+- (void)addAthleteEntities:(id)entities
 {
-  v4 = a3;
+  entitiesCopy = entities;
   athleteEntities = self->_athleteEntities;
-  v8 = v4;
+  v8 = entitiesCopy;
   if (!athleteEntities)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_athleteEntities;
-    self->_athleteEntities = v6;
+    self->_athleteEntities = array;
 
-    v4 = v8;
+    entitiesCopy = v8;
     athleteEntities = self->_athleteEntities;
   }
 
-  [(NSArray *)athleteEntities addObject:v4];
+  [(NSArray *)athleteEntities addObject:entitiesCopy];
 }
 
-- (void)addLeague:(id)a3
+- (void)addLeague:(id)league
 {
-  v4 = a3;
+  leagueCopy = league;
   leagues = self->_leagues;
-  v8 = v4;
+  v8 = leagueCopy;
   if (!leagues)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_leagues;
-    self->_leagues = v6;
+    self->_leagues = array;
 
-    v4 = v8;
+    leagueCopy = v8;
     leagues = self->_leagues;
   }
 
-  [(NSArray *)leagues addObject:v4];
+  [(NSArray *)leagues addObject:leagueCopy];
 }
 
-- (int)sportNameAtIndex:(unint64_t)a3
+- (int)sportNameAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_sportNames objectAtIndexedSubscript:a3];
-  v4 = [v3 intValue];
+  v3 = [(NSArray *)self->_sportNames objectAtIndexedSubscript:index];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)addSportName:(int)a3
+- (void)addSportName:(int)name
 {
-  v3 = *&a3;
+  v3 = *&name;
   sportNames = self->_sportNames;
   if (!sportNames)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_sportNames;
-    self->_sportNames = v6;
+    self->_sportNames = array;
 
     sportNames = self->_sportNames;
   }
@@ -720,13 +720,13 @@ LABEL_28:
   [(NSArray *)sportNames addObject:v8];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v7.receiver = self;
   v7.super_class = PEGASUSSchemaPEGASUSSportsExecutionTier1;
-  v5 = [(SISchemaInstrumentationMessage *)&v7 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v7 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self deleteSportName];
     [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self deleteLeague];
@@ -735,7 +735,7 @@ LABEL_28:
     [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self deleteEventEntities];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self deleteSportName];
     [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self deleteLeague];
@@ -744,7 +744,7 @@ LABEL_28:
     [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self deleteEventEntities];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self deleteSportName];
     [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self deleteLeague];
@@ -753,7 +753,7 @@ LABEL_28:
     [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self deleteEventEntities];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self deleteSportName];
     [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self deleteLeague];
@@ -762,7 +762,7 @@ LABEL_28:
     [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self deleteEventEntities];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self deleteSportName];
     [(PEGASUSSchemaPEGASUSSportsExecutionTier1 *)self deleteLeague];

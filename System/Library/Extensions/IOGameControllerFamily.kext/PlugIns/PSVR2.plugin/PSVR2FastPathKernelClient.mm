@@ -1,14 +1,14 @@
 @interface PSVR2FastPathKernelClient
-- (BOOL)setProperty:(id)a3 value:(id)a4;
+- (BOOL)setProperty:(id)property value:(id)value;
 - (PSVR2FastPathKernelClient)init;
-- (id)getProperty:(id)a3;
-- (int)close:(unsigned int)a3;
-- (int)createControlQueueWithOptions:(id)a3 object:(IUnknownVTbl *)a4;
-- (int)createInputQueueWithOptions:(id)a3 object:(IUnknownVTbl *)a4;
-- (int)open:(unsigned int)a3;
-- (int)probe:(id)a3 service:(unsigned int)a4 outScore:(int *)a5;
-- (int)queryInterface:(id)a3 outInterface:(void *)a4;
-- (int)start:(id)a3 service:(unsigned int)a4;
+- (id)getProperty:(id)property;
+- (int)close:(unsigned int)close;
+- (int)createControlQueueWithOptions:(id)options object:(IUnknownVTbl *)object;
+- (int)createInputQueueWithOptions:(id)options object:(IUnknownVTbl *)object;
+- (int)open:(unsigned int)open;
+- (int)probe:(id)probe service:(unsigned int)service outScore:(int *)score;
+- (int)queryInterface:(id)interface outInterface:(void *)outInterface;
+- (int)start:(id)start service:(unsigned int)service;
 - (int)stop;
 - (void)dealloc;
 @end
@@ -33,9 +33,9 @@
   [(PSVR2FastPathKernelClient *)&v3 dealloc];
 }
 
-- (int)queryInterface:(id)a3 outInterface:(void *)a4
+- (int)queryInterface:(id)interface outInterface:(void *)outInterface
 {
-  v6 = CFUUIDCreateFromUUIDBytes(0, a3);
+  v6 = CFUUIDCreateFromUUIDBytes(0, interface);
   v7 = CFUUIDGetConstantUUIDWithBytes(kCFAllocatorSystemDefault, 0, 0, 0, 0, 0, 0, 0, 0, 0xC0u, 0, 0, 0, 0, 0, 0, 0x46u);
   if (CFEqual(v6, v7) || (v8 = CFUUIDGetConstantUUIDWithBytes(0, 0xC2u, 0x44u, 0xE8u, 0x58u, 0x10u, 0x9Cu, 0x11u, 0xD4u, 0x91u, 0xD4u, 0, 0x50u, 0xE4u, 0xC6u, 0x42u, 0x6Fu), CFEqual(v6, v8)))
   {
@@ -54,7 +54,7 @@
     v9 = 16;
   }
 
-  *a4 = self + v9;
+  *outInterface = self + v9;
   CFRetain(self);
   v10 = 0;
 LABEL_5:
@@ -62,19 +62,19 @@ LABEL_5:
   return v10;
 }
 
-- (int)probe:(id)a3 service:(unsigned int)a4 outScore:(int *)a5
+- (int)probe:(id)probe service:(unsigned int)service outScore:(int *)score
 {
-  if (!IOObjectConformsTo(a4, "PSVR2SenseDevice"))
+  if (!IOObjectConformsTo(service, "PSVR2SenseDevice"))
   {
     return -536870201;
   }
 
   result = 0;
-  *a5 = 1001;
+  *score = 1001;
   return result;
 }
 
-- (int)start:(id)a3 service:(unsigned int)a4
+- (int)start:(id)start service:(unsigned int)service
 {
   v13 = 0;
   v14 = &v13;
@@ -87,16 +87,16 @@ LABEL_5:
   block[3] = &unk_103A8;
   block[4] = self;
   block[5] = &v13;
-  v12 = a4;
+  serviceCopy = service;
   dispatch_sync(queue, block);
   v7 = sub_F0C();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     v10 = *(v14 + 6);
     *buf = 138412802;
-    v18 = self;
+    selfCopy = self;
     v19 = 2112;
-    v20 = a3;
+    startCopy = start;
     v21 = 1024;
     v22 = v10;
     _os_log_debug_impl(&dword_0, v7, OS_LOG_TYPE_DEBUG, "%@::start(%@) -> %{mach.errno}x", buf, 0x1Cu);
@@ -125,7 +125,7 @@ LABEL_5:
   return 0;
 }
 
-- (int)open:(unsigned int)a3
+- (int)open:(unsigned int)open
 {
   v9 = 0;
   v10 = &v9;
@@ -150,7 +150,7 @@ LABEL_5:
   return v6;
 }
 
-- (int)close:(unsigned int)a3
+- (int)close:(unsigned int)close
 {
   v9 = 0;
   v10 = &v9;
@@ -175,7 +175,7 @@ LABEL_5:
   return v6;
 }
 
-- (id)getProperty:(id)a3
+- (id)getProperty:(id)property
 {
   v18 = 0;
   v19 = &v18;
@@ -183,25 +183,25 @@ LABEL_5:
   v21 = sub_21E4;
   v22 = sub_21F4;
   v23 = 0;
-  if ([a3 isEqualToString:@"ProviderID"])
+  if ([property isEqualToString:@"ProviderID"])
   {
     v5 = [NSNumber numberWithUnsignedLongLong:self->_serviceID];
   }
 
   else
   {
-    if (![a3 isEqualToString:@"ClientID"])
+    if (![property isEqualToString:@"ClientID"])
     {
       queue = self->_queue;
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_7620;
       block[3] = &unk_10420;
-      block[5] = a3;
+      block[5] = property;
       block[6] = &v18;
       block[4] = self;
       dispatch_sync(queue, block);
-      if (a3)
+      if (property)
       {
         goto LABEL_6;
       }
@@ -215,13 +215,13 @@ LABEL_11:
   }
 
   v19[5] = v5;
-  if (!a3)
+  if (!property)
   {
     goto LABEL_11;
   }
 
 LABEL_6:
-  v6 = [a3 isEqualToString:@"PSVR2DeviceType"];
+  v6 = [property isEqualToString:@"PSVR2DeviceType"];
   v7 = v19;
   if (v6)
   {
@@ -264,7 +264,7 @@ LABEL_16:
   return v15;
 }
 
-- (BOOL)setProperty:(id)a3 value:(id)a4
+- (BOOL)setProperty:(id)property value:(id)value
 {
   v8 = 0;
   v9 = &v8;
@@ -276,8 +276,8 @@ LABEL_16:
   v7[2] = sub_7688;
   v7[3] = &unk_10448;
   v7[4] = self;
-  v7[5] = a3;
-  v7[6] = a4;
+  v7[5] = property;
+  v7[6] = value;
   v7[7] = &v8;
   dispatch_sync(queue, v7);
   v5 = *(v9 + 24);
@@ -285,14 +285,14 @@ LABEL_16:
   return v5;
 }
 
-- (int)createControlQueueWithOptions:(id)a3 object:(IUnknownVTbl *)a4
+- (int)createControlQueueWithOptions:(id)options object:(IUnknownVTbl *)object
 {
   v7 = -536870206;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = -536870201;
-  v8 = [a3 objectForKey:@"QueueChannel"];
+  v8 = [options objectForKey:@"QueueChannel"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -303,9 +303,9 @@ LABEL_16:
     block[3] = &unk_10470;
     block[4] = self;
     block[5] = v8;
-    block[6] = a3;
+    block[6] = options;
     block[7] = &v12;
-    block[8] = a4;
+    block[8] = object;
     dispatch_sync(queue, block);
     v7 = *(v13 + 6);
   }
@@ -319,14 +319,14 @@ LABEL_16:
   return v7;
 }
 
-- (int)createInputQueueWithOptions:(id)a3 object:(IUnknownVTbl *)a4
+- (int)createInputQueueWithOptions:(id)options object:(IUnknownVTbl *)object
 {
   v7 = -536870206;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = -536870201;
-  v8 = [a3 objectForKeyedSubscript:@"QueueChannel"];
+  v8 = [options objectForKeyedSubscript:@"QueueChannel"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -337,9 +337,9 @@ LABEL_16:
     block[3] = &unk_10470;
     block[4] = self;
     block[5] = v8;
-    block[6] = a3;
+    block[6] = options;
     block[7] = &v12;
-    block[8] = a4;
+    block[8] = object;
     dispatch_sync(queue, block);
     v7 = *(v13 + 6);
   }

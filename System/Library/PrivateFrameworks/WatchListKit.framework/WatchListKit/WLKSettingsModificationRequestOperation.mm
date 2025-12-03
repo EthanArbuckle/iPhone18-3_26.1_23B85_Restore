@@ -1,30 +1,30 @@
 @interface WLKSettingsModificationRequestOperation
-+ (id)_requestURL:(id *)a3;
-- (WLKSettingsModificationRequestOperation)initWithModifications:(id)a3;
++ (id)_requestURL:(id *)l;
+- (WLKSettingsModificationRequestOperation)initWithModifications:(id)modifications;
 - (id)_postBody;
-- (void)prepareURLRequest:(id)a3;
+- (void)prepareURLRequest:(id)request;
 @end
 
 @implementation WLKSettingsModificationRequestOperation
 
-- (WLKSettingsModificationRequestOperation)initWithModifications:(id)a3
+- (WLKSettingsModificationRequestOperation)initWithModifications:(id)modifications
 {
-  v5 = a3;
+  modificationsCopy = modifications;
   v9.receiver = self;
   v9.super_class = WLKSettingsModificationRequestOperation;
   v6 = [(WLKNetworkRequestOperation *)&v9 initWithURLRequest:0 options:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_modifications, a3);
+    objc_storeStrong(&v6->_modifications, modifications);
   }
 
   return v7;
 }
 
-- (void)prepareURLRequest:(id)a3
+- (void)prepareURLRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v9 = 0;
   v5 = [objc_opt_class() _requestURL:&v9];
   v6 = v9;
@@ -32,20 +32,20 @@
   {
     v7 = [objc_alloc(MEMORY[0x277CBAB50]) initWithURL:v5];
     [v7 setHTTPMethod:@"POST"];
-    v8 = [(WLKSettingsModificationRequestOperation *)self _postBody];
-    [v7 setHTTPBody:v8];
+    _postBody = [(WLKSettingsModificationRequestOperation *)self _postBody];
+    [v7 setHTTPBody:_postBody];
 
     [v7 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    v4[2](v4, v7, 0);
+    requestCopy[2](requestCopy, v7, 0);
   }
 
   else
   {
-    (v4)[2](v4, 0, v6);
+    (requestCopy)[2](requestCopy, 0, v6);
   }
 }
 
-+ (id)_requestURL:(id *)a3
++ (id)_requestURL:(id *)l
 {
   v3 = [MEMORY[0x277D6C480] app];
   v4 = [v3 cachedURLForKey:kBagKeyUpdateWatchListSettings];

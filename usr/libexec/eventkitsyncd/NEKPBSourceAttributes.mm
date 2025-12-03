@@ -1,32 +1,32 @@
 @interface NEKPBSourceAttributes
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAllowsCalendarAddDeleteModify:(BOOL)a3;
-- (void)setHasAllowsEvents:(BOOL)a3;
-- (void)setHasAllowsTasks:(BOOL)a3;
-- (void)setHasIsBirthdayStore:(BOOL)a3;
-- (void)setHasIsEnabled:(BOOL)a3;
-- (void)setHasIsFacebook:(BOOL)a3;
-- (void)setHasIsLocalStore:(BOOL)a3;
-- (void)setHasOnlyCreatorCanModify:(BOOL)a3;
-- (void)setHasSnoozeAlarmRequiresDetach:(BOOL)a3;
-- (void)setHasSupportsAlarmAcknowledgedDate:(BOOL)a3;
-- (void)setHasSupportsSharedCalendars:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)setHasUsesSelfAttendee:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAllowsCalendarAddDeleteModify:(BOOL)modify;
+- (void)setHasAllowsEvents:(BOOL)events;
+- (void)setHasAllowsTasks:(BOOL)tasks;
+- (void)setHasIsBirthdayStore:(BOOL)store;
+- (void)setHasIsEnabled:(BOOL)enabled;
+- (void)setHasIsFacebook:(BOOL)facebook;
+- (void)setHasIsLocalStore:(BOOL)store;
+- (void)setHasOnlyCreatorCanModify:(BOOL)modify;
+- (void)setHasSnoozeAlarmRequiresDetach:(BOOL)detach;
+- (void)setHasSupportsAlarmAcknowledgedDate:(BOOL)date;
+- (void)setHasSupportsSharedCalendars:(BOOL)calendars;
+- (void)setHasType:(BOOL)type;
+- (void)setHasUsesSelfAttendee:(BOOL)attendee;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NEKPBSourceAttributes
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -39,9 +39,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasIsEnabled:(BOOL)a3
+- (void)setHasIsEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 64;
   }
@@ -54,9 +54,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasIsFacebook:(BOOL)a3
+- (void)setHasIsFacebook:(BOOL)facebook
 {
-  if (a3)
+  if (facebook)
   {
     v3 = 128;
   }
@@ -69,9 +69,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasUsesSelfAttendee:(BOOL)a3
+- (void)setHasUsesSelfAttendee:(BOOL)attendee
 {
-  if (a3)
+  if (attendee)
   {
     v3 = 0x2000;
   }
@@ -84,9 +84,9 @@
   *&self->_has = *&self->_has & 0xDFFF | v3;
 }
 
-- (void)setHasSupportsSharedCalendars:(BOOL)a3
+- (void)setHasSupportsSharedCalendars:(BOOL)calendars
 {
-  if (a3)
+  if (calendars)
   {
     v3 = 4096;
   }
@@ -99,9 +99,9 @@
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasAllowsTasks:(BOOL)a3
+- (void)setHasAllowsTasks:(BOOL)tasks
 {
-  if (a3)
+  if (tasks)
   {
     v3 = 16;
   }
@@ -114,9 +114,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasAllowsEvents:(BOOL)a3
+- (void)setHasAllowsEvents:(BOOL)events
 {
-  if (a3)
+  if (events)
   {
     v3 = 8;
   }
@@ -129,9 +129,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasAllowsCalendarAddDeleteModify:(BOOL)a3
+- (void)setHasAllowsCalendarAddDeleteModify:(BOOL)modify
 {
-  if (a3)
+  if (modify)
   {
     v3 = 4;
   }
@@ -144,9 +144,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasOnlyCreatorCanModify:(BOOL)a3
+- (void)setHasOnlyCreatorCanModify:(BOOL)modify
 {
-  if (a3)
+  if (modify)
   {
     v3 = 512;
   }
@@ -159,9 +159,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasSnoozeAlarmRequiresDetach:(BOOL)a3
+- (void)setHasSnoozeAlarmRequiresDetach:(BOOL)detach
 {
-  if (a3)
+  if (detach)
   {
     v3 = 1024;
   }
@@ -174,9 +174,9 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasSupportsAlarmAcknowledgedDate:(BOOL)a3
+- (void)setHasSupportsAlarmAcknowledgedDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 2048;
   }
@@ -189,9 +189,9 @@
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasIsLocalStore:(BOOL)a3
+- (void)setHasIsLocalStore:(BOOL)store
 {
-  if (a3)
+  if (store)
   {
     v3 = 256;
   }
@@ -204,9 +204,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasIsBirthdayStore:(BOOL)a3
+- (void)setHasIsBirthdayStore:(BOOL)store
 {
-  if (a3)
+  if (store)
   {
     v3 = 32;
   }
@@ -224,8 +224,8 @@
   v7.receiver = self;
   v7.super_class = NEKPBSourceAttributes;
   v3 = [(NEKPBSourceAttributes *)&v7 description];
-  v4 = [(NEKPBSourceAttributes *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(NEKPBSourceAttributes *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -478,14 +478,14 @@ LABEL_31:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v21 = v4;
+  toCopy = to;
+  v21 = toCopy;
   if (self->_name)
   {
     PBDataWriterWriteStringField();
-    v4 = v21;
+    toCopy = v21;
   }
 
   has = self->_has;
@@ -493,7 +493,7 @@ LABEL_31:
   {
     defaultAlarmOffset = self->_defaultAlarmOffset;
     PBDataWriterWriteUint32Field();
-    v4 = v21;
+    toCopy = v21;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -514,7 +514,7 @@ LABEL_5:
 
   type = self->_type;
   PBDataWriterWriteUint32Field();
-  v4 = v21;
+  toCopy = v21;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -530,7 +530,7 @@ LABEL_6:
 LABEL_36:
   isEnabled = self->_isEnabled;
   PBDataWriterWriteBOOLField();
-  v4 = v21;
+  toCopy = v21;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -546,50 +546,50 @@ LABEL_7:
 LABEL_37:
   isFacebook = self->_isFacebook;
   PBDataWriterWriteBOOLField();
-  v4 = v21;
+  toCopy = v21;
   if ((*&self->_has & 0x2000) != 0)
   {
 LABEL_8:
     usesSelfAttendee = self->_usesSelfAttendee;
     PBDataWriterWriteBOOLField();
-    v4 = v21;
+    toCopy = v21;
   }
 
 LABEL_9:
   if (self->_constraintsDescriptionPath)
   {
     PBDataWriterWriteStringField();
-    v4 = v21;
+    toCopy = v21;
   }
 
   if (self->_externalID)
   {
     PBDataWriterWriteStringField();
-    v4 = v21;
+    toCopy = v21;
   }
 
   if (self->_externalModificationTag)
   {
     PBDataWriterWriteStringField();
-    v4 = v21;
+    toCopy = v21;
   }
 
   if (self->_creatorBundleID)
   {
     PBDataWriterWriteStringField();
-    v4 = v21;
+    toCopy = v21;
   }
 
   if (self->_creatorCodeSigningIdentity)
   {
     PBDataWriterWriteStringField();
-    v4 = v21;
+    toCopy = v21;
   }
 
   if (self->_accountPersistentID)
   {
     PBDataWriterWriteStringField();
-    v4 = v21;
+    toCopy = v21;
   }
 
   v7 = self->_has;
@@ -597,7 +597,7 @@ LABEL_9:
   {
     supportsSharedCalendars = self->_supportsSharedCalendars;
     PBDataWriterWriteBOOLField();
-    v4 = v21;
+    toCopy = v21;
     v7 = self->_has;
     if ((v7 & 0x10) == 0)
     {
@@ -618,7 +618,7 @@ LABEL_23:
 
   allowsTasks = self->_allowsTasks;
   PBDataWriterWriteBOOLField();
-  v4 = v21;
+  toCopy = v21;
   v7 = self->_has;
   if ((v7 & 8) == 0)
   {
@@ -634,7 +634,7 @@ LABEL_24:
 LABEL_41:
   allowsEvents = self->_allowsEvents;
   PBDataWriterWriteBOOLField();
-  v4 = v21;
+  toCopy = v21;
   v7 = self->_has;
   if ((v7 & 4) == 0)
   {
@@ -650,7 +650,7 @@ LABEL_25:
 LABEL_42:
   allowsCalendarAddDeleteModify = self->_allowsCalendarAddDeleteModify;
   PBDataWriterWriteBOOLField();
-  v4 = v21;
+  toCopy = v21;
   v7 = self->_has;
   if ((v7 & 0x200) == 0)
   {
@@ -666,7 +666,7 @@ LABEL_26:
 LABEL_43:
   onlyCreatorCanModify = self->_onlyCreatorCanModify;
   PBDataWriterWriteBOOLField();
-  v4 = v21;
+  toCopy = v21;
   v7 = self->_has;
   if ((v7 & 0x400) == 0)
   {
@@ -682,7 +682,7 @@ LABEL_27:
 LABEL_44:
   snoozeAlarmRequiresDetach = self->_snoozeAlarmRequiresDetach;
   PBDataWriterWriteBOOLField();
-  v4 = v21;
+  toCopy = v21;
   v7 = self->_has;
   if ((v7 & 0x800) == 0)
   {
@@ -698,7 +698,7 @@ LABEL_28:
 LABEL_45:
   supportsAlarmAcknowledgedDate = self->_supportsAlarmAcknowledgedDate;
   PBDataWriterWriteBOOLField();
-  v4 = v21;
+  toCopy = v21;
   v7 = self->_has;
   if ((v7 & 0x100) == 0)
   {
@@ -714,33 +714,33 @@ LABEL_29:
 LABEL_46:
   isLocalStore = self->_isLocalStore;
   PBDataWriterWriteBOOLField();
-  v4 = v21;
+  toCopy = v21;
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_30:
     isBirthdayStore = self->_isBirthdayStore;
     PBDataWriterWriteBOOLField();
-    v4 = v21;
+    toCopy = v21;
   }
 
 LABEL_31:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_name)
   {
-    [v4 setName:?];
-    v4 = v7;
+    [toCopy setName:?];
+    toCopy = v7;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 10) = self->_defaultAlarmOffset;
-    *(v4 + 44) |= 1u;
+    *(toCopy + 10) = self->_defaultAlarmOffset;
+    *(toCopy + 44) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -759,8 +759,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 18) = self->_type;
-  *(v4 + 44) |= 2u;
+  *(toCopy + 18) = self->_type;
+  *(toCopy + 44) |= 2u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -774,8 +774,8 @@ LABEL_6:
   }
 
 LABEL_36:
-  *(v4 + 80) = self->_isEnabled;
-  *(v4 + 44) |= 0x40u;
+  *(toCopy + 80) = self->_isEnabled;
+  *(toCopy + 44) |= 0x40u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -789,57 +789,57 @@ LABEL_7:
   }
 
 LABEL_37:
-  *(v4 + 81) = self->_isFacebook;
-  *(v4 + 44) |= 0x80u;
+  *(toCopy + 81) = self->_isFacebook;
+  *(toCopy + 44) |= 0x80u;
   if ((*&self->_has & 0x2000) != 0)
   {
 LABEL_8:
-    *(v4 + 87) = self->_usesSelfAttendee;
-    *(v4 + 44) |= 0x2000u;
+    *(toCopy + 87) = self->_usesSelfAttendee;
+    *(toCopy + 44) |= 0x2000u;
   }
 
 LABEL_9:
   if (self->_constraintsDescriptionPath)
   {
     [v7 setConstraintsDescriptionPath:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_externalID)
   {
     [v7 setExternalID:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_externalModificationTag)
   {
     [v7 setExternalModificationTag:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_creatorBundleID)
   {
     [v7 setCreatorBundleID:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_creatorCodeSigningIdentity)
   {
     [v7 setCreatorCodeSigningIdentity:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_accountPersistentID)
   {
     [v7 setAccountPersistentID:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if ((v6 & 0x1000) != 0)
   {
-    *(v4 + 86) = self->_supportsSharedCalendars;
-    *(v4 + 44) |= 0x1000u;
+    *(toCopy + 86) = self->_supportsSharedCalendars;
+    *(toCopy + 44) |= 0x1000u;
     v6 = self->_has;
     if ((v6 & 0x10) == 0)
     {
@@ -858,8 +858,8 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  *(v4 + 78) = self->_allowsTasks;
-  *(v4 + 44) |= 0x10u;
+  *(toCopy + 78) = self->_allowsTasks;
+  *(toCopy + 44) |= 0x10u;
   v6 = self->_has;
   if ((v6 & 8) == 0)
   {
@@ -873,8 +873,8 @@ LABEL_24:
   }
 
 LABEL_41:
-  *(v4 + 77) = self->_allowsEvents;
-  *(v4 + 44) |= 8u;
+  *(toCopy + 77) = self->_allowsEvents;
+  *(toCopy + 44) |= 8u;
   v6 = self->_has;
   if ((v6 & 4) == 0)
   {
@@ -888,8 +888,8 @@ LABEL_25:
   }
 
 LABEL_42:
-  *(v4 + 76) = self->_allowsCalendarAddDeleteModify;
-  *(v4 + 44) |= 4u;
+  *(toCopy + 76) = self->_allowsCalendarAddDeleteModify;
+  *(toCopy + 44) |= 4u;
   v6 = self->_has;
   if ((v6 & 0x200) == 0)
   {
@@ -903,8 +903,8 @@ LABEL_26:
   }
 
 LABEL_43:
-  *(v4 + 83) = self->_onlyCreatorCanModify;
-  *(v4 + 44) |= 0x200u;
+  *(toCopy + 83) = self->_onlyCreatorCanModify;
+  *(toCopy + 44) |= 0x200u;
   v6 = self->_has;
   if ((v6 & 0x400) == 0)
   {
@@ -918,8 +918,8 @@ LABEL_27:
   }
 
 LABEL_44:
-  *(v4 + 84) = self->_snoozeAlarmRequiresDetach;
-  *(v4 + 44) |= 0x400u;
+  *(toCopy + 84) = self->_snoozeAlarmRequiresDetach;
+  *(toCopy + 44) |= 0x400u;
   v6 = self->_has;
   if ((v6 & 0x800) == 0)
   {
@@ -933,8 +933,8 @@ LABEL_28:
   }
 
 LABEL_45:
-  *(v4 + 85) = self->_supportsAlarmAcknowledgedDate;
-  *(v4 + 44) |= 0x800u;
+  *(toCopy + 85) = self->_supportsAlarmAcknowledgedDate;
+  *(toCopy + 44) |= 0x800u;
   v6 = self->_has;
   if ((v6 & 0x100) == 0)
   {
@@ -948,22 +948,22 @@ LABEL_29:
   }
 
 LABEL_46:
-  *(v4 + 82) = self->_isLocalStore;
-  *(v4 + 44) |= 0x100u;
+  *(toCopy + 82) = self->_isLocalStore;
+  *(toCopy + 44) |= 0x100u;
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_30:
-    *(v4 + 79) = self->_isBirthdayStore;
-    *(v4 + 44) |= 0x20u;
+    *(toCopy + 79) = self->_isBirthdayStore;
+    *(toCopy + 44) |= 0x20u;
   }
 
 LABEL_31:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_name copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_name copyWithZone:zone];
   v7 = v5[8];
   v5[8] = v6;
 
@@ -1030,27 +1030,27 @@ LABEL_6:
   }
 
 LABEL_7:
-  v9 = [(NSString *)self->_constraintsDescriptionPath copyWithZone:a3];
+  v9 = [(NSString *)self->_constraintsDescriptionPath copyWithZone:zone];
   v10 = v5[2];
   v5[2] = v9;
 
-  v11 = [(NSString *)self->_externalID copyWithZone:a3];
+  v11 = [(NSString *)self->_externalID copyWithZone:zone];
   v12 = v5[6];
   v5[6] = v11;
 
-  v13 = [(NSString *)self->_externalModificationTag copyWithZone:a3];
+  v13 = [(NSString *)self->_externalModificationTag copyWithZone:zone];
   v14 = v5[7];
   v5[7] = v13;
 
-  v15 = [(NSString *)self->_creatorBundleID copyWithZone:a3];
+  v15 = [(NSString *)self->_creatorBundleID copyWithZone:zone];
   v16 = v5[3];
   v5[3] = v15;
 
-  v17 = [(NSString *)self->_creatorCodeSigningIdentity copyWithZone:a3];
+  v17 = [(NSString *)self->_creatorCodeSigningIdentity copyWithZone:zone];
   v18 = v5[4];
   v5[4] = v17;
 
-  v19 = [(NSString *)self->_accountPersistentID copyWithZone:a3];
+  v19 = [(NSString *)self->_accountPersistentID copyWithZone:zone];
   v20 = v5[1];
   v5[1] = v19;
 
@@ -1179,16 +1179,16 @@ LABEL_16:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_121;
   }
 
   name = self->_name;
-  if (name | *(v4 + 8))
+  if (name | *(equalCopy + 8))
   {
     if (![(NSString *)name isEqual:?])
     {
@@ -1197,10 +1197,10 @@ LABEL_16:
   }
 
   has = self->_has;
-  v7 = *(v4 + 44);
+  v7 = *(equalCopy + 44);
   if (has)
   {
-    if ((v7 & 1) == 0 || self->_defaultAlarmOffset != *(v4 + 10))
+    if ((v7 & 1) == 0 || self->_defaultAlarmOffset != *(equalCopy + 10))
     {
       goto LABEL_121;
     }
@@ -1213,7 +1213,7 @@ LABEL_16:
 
   if ((has & 2) != 0)
   {
-    if ((v7 & 2) == 0 || self->_type != *(v4 + 18))
+    if ((v7 & 2) == 0 || self->_type != *(equalCopy + 18))
     {
       goto LABEL_121;
     }
@@ -1231,16 +1231,16 @@ LABEL_16:
       goto LABEL_121;
     }
 
-    v17 = *(v4 + 80);
+    v17 = *(equalCopy + 80);
     if (self->_isEnabled)
     {
-      if ((*(v4 + 80) & 1) == 0)
+      if ((*(equalCopy + 80) & 1) == 0)
       {
         goto LABEL_121;
       }
     }
 
-    else if (*(v4 + 80))
+    else if (*(equalCopy + 80))
     {
       goto LABEL_121;
     }
@@ -1258,16 +1258,16 @@ LABEL_16:
       goto LABEL_121;
     }
 
-    v18 = *(v4 + 81);
+    v18 = *(equalCopy + 81);
     if (self->_isFacebook)
     {
-      if ((*(v4 + 81) & 1) == 0)
+      if ((*(equalCopy + 81) & 1) == 0)
       {
         goto LABEL_121;
       }
     }
 
-    else if (*(v4 + 81))
+    else if (*(equalCopy + 81))
     {
       goto LABEL_121;
     }
@@ -1280,39 +1280,39 @@ LABEL_16:
 
   if ((*&self->_has & 0x2000) != 0)
   {
-    if ((*(v4 + 44) & 0x2000) == 0)
+    if ((*(equalCopy + 44) & 0x2000) == 0)
     {
       goto LABEL_121;
     }
 
-    v19 = *(v4 + 87);
+    v19 = *(equalCopy + 87);
     if (self->_usesSelfAttendee)
     {
-      if ((*(v4 + 87) & 1) == 0)
+      if ((*(equalCopy + 87) & 1) == 0)
       {
         goto LABEL_121;
       }
     }
 
-    else if (*(v4 + 87))
+    else if (*(equalCopy + 87))
     {
       goto LABEL_121;
     }
   }
 
-  else if ((*(v4 + 44) & 0x2000) != 0)
+  else if ((*(equalCopy + 44) & 0x2000) != 0)
   {
     goto LABEL_121;
   }
 
   constraintsDescriptionPath = self->_constraintsDescriptionPath;
-  if (constraintsDescriptionPath | *(v4 + 2) && ![(NSString *)constraintsDescriptionPath isEqual:?])
+  if (constraintsDescriptionPath | *(equalCopy + 2) && ![(NSString *)constraintsDescriptionPath isEqual:?])
   {
     goto LABEL_121;
   }
 
   externalID = self->_externalID;
-  if (externalID | *(v4 + 6))
+  if (externalID | *(equalCopy + 6))
   {
     if (![(NSString *)externalID isEqual:?])
     {
@@ -1321,7 +1321,7 @@ LABEL_16:
   }
 
   externalModificationTag = self->_externalModificationTag;
-  if (externalModificationTag | *(v4 + 7))
+  if (externalModificationTag | *(equalCopy + 7))
   {
     if (![(NSString *)externalModificationTag isEqual:?])
     {
@@ -1330,7 +1330,7 @@ LABEL_16:
   }
 
   creatorBundleID = self->_creatorBundleID;
-  if (creatorBundleID | *(v4 + 3))
+  if (creatorBundleID | *(equalCopy + 3))
   {
     if (![(NSString *)creatorBundleID isEqual:?])
     {
@@ -1339,7 +1339,7 @@ LABEL_16:
   }
 
   creatorCodeSigningIdentity = self->_creatorCodeSigningIdentity;
-  if (creatorCodeSigningIdentity | *(v4 + 4))
+  if (creatorCodeSigningIdentity | *(equalCopy + 4))
   {
     if (![(NSString *)creatorCodeSigningIdentity isEqual:?])
     {
@@ -1348,7 +1348,7 @@ LABEL_16:
   }
 
   accountPersistentID = self->_accountPersistentID;
-  if (accountPersistentID | *(v4 + 1))
+  if (accountPersistentID | *(equalCopy + 1))
   {
     if (![(NSString *)accountPersistentID isEqual:?])
     {
@@ -1357,30 +1357,30 @@ LABEL_16:
   }
 
   v14 = self->_has;
-  v15 = *(v4 + 44);
+  v15 = *(equalCopy + 44);
   if ((v14 & 0x1000) != 0)
   {
-    if ((*(v4 + 44) & 0x1000) == 0)
+    if ((*(equalCopy + 44) & 0x1000) == 0)
     {
       goto LABEL_121;
     }
 
-    v20 = *(v4 + 86);
+    v20 = *(equalCopy + 86);
     if (self->_supportsSharedCalendars)
     {
-      if ((*(v4 + 86) & 1) == 0)
+      if ((*(equalCopy + 86) & 1) == 0)
       {
         goto LABEL_121;
       }
     }
 
-    else if (*(v4 + 86))
+    else if (*(equalCopy + 86))
     {
       goto LABEL_121;
     }
   }
 
-  else if ((*(v4 + 44) & 0x1000) != 0)
+  else if ((*(equalCopy + 44) & 0x1000) != 0)
   {
     goto LABEL_121;
   }
@@ -1392,16 +1392,16 @@ LABEL_16:
       goto LABEL_121;
     }
 
-    v21 = *(v4 + 78);
+    v21 = *(equalCopy + 78);
     if (self->_allowsTasks)
     {
-      if ((*(v4 + 78) & 1) == 0)
+      if ((*(equalCopy + 78) & 1) == 0)
       {
         goto LABEL_121;
       }
     }
 
-    else if (*(v4 + 78))
+    else if (*(equalCopy + 78))
     {
       goto LABEL_121;
     }
@@ -1419,16 +1419,16 @@ LABEL_16:
       goto LABEL_121;
     }
 
-    v22 = *(v4 + 77);
+    v22 = *(equalCopy + 77);
     if (self->_allowsEvents)
     {
-      if ((*(v4 + 77) & 1) == 0)
+      if ((*(equalCopy + 77) & 1) == 0)
       {
         goto LABEL_121;
       }
     }
 
-    else if (*(v4 + 77))
+    else if (*(equalCopy + 77))
     {
       goto LABEL_121;
     }
@@ -1446,16 +1446,16 @@ LABEL_16:
       goto LABEL_121;
     }
 
-    v23 = *(v4 + 76);
+    v23 = *(equalCopy + 76);
     if (self->_allowsCalendarAddDeleteModify)
     {
-      if ((*(v4 + 76) & 1) == 0)
+      if ((*(equalCopy + 76) & 1) == 0)
       {
         goto LABEL_121;
       }
     }
 
-    else if (*(v4 + 76))
+    else if (*(equalCopy + 76))
     {
       goto LABEL_121;
     }
@@ -1468,108 +1468,108 @@ LABEL_16:
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(v4 + 44) & 0x200) == 0)
+    if ((*(equalCopy + 44) & 0x200) == 0)
     {
       goto LABEL_121;
     }
 
-    v24 = *(v4 + 83);
+    v24 = *(equalCopy + 83);
     if (self->_onlyCreatorCanModify)
     {
-      if ((*(v4 + 83) & 1) == 0)
+      if ((*(equalCopy + 83) & 1) == 0)
       {
         goto LABEL_121;
       }
     }
 
-    else if (*(v4 + 83))
+    else if (*(equalCopy + 83))
     {
       goto LABEL_121;
     }
   }
 
-  else if ((*(v4 + 44) & 0x200) != 0)
+  else if ((*(equalCopy + 44) & 0x200) != 0)
   {
     goto LABEL_121;
   }
 
   if ((*&self->_has & 0x400) != 0)
   {
-    if ((*(v4 + 44) & 0x400) == 0)
+    if ((*(equalCopy + 44) & 0x400) == 0)
     {
       goto LABEL_121;
     }
 
-    v25 = *(v4 + 84);
+    v25 = *(equalCopy + 84);
     if (self->_snoozeAlarmRequiresDetach)
     {
-      if ((*(v4 + 84) & 1) == 0)
+      if ((*(equalCopy + 84) & 1) == 0)
       {
         goto LABEL_121;
       }
     }
 
-    else if (*(v4 + 84))
+    else if (*(equalCopy + 84))
     {
       goto LABEL_121;
     }
   }
 
-  else if ((*(v4 + 44) & 0x400) != 0)
+  else if ((*(equalCopy + 44) & 0x400) != 0)
   {
     goto LABEL_121;
   }
 
   if ((*&self->_has & 0x800) != 0)
   {
-    if ((*(v4 + 44) & 0x800) == 0)
+    if ((*(equalCopy + 44) & 0x800) == 0)
     {
       goto LABEL_121;
     }
 
-    v26 = *(v4 + 85);
+    v26 = *(equalCopy + 85);
     if (self->_supportsAlarmAcknowledgedDate)
     {
-      if ((*(v4 + 85) & 1) == 0)
+      if ((*(equalCopy + 85) & 1) == 0)
       {
         goto LABEL_121;
       }
     }
 
-    else if (*(v4 + 85))
+    else if (*(equalCopy + 85))
     {
       goto LABEL_121;
     }
   }
 
-  else if ((*(v4 + 44) & 0x800) != 0)
+  else if ((*(equalCopy + 44) & 0x800) != 0)
   {
     goto LABEL_121;
   }
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 44) & 0x100) == 0)
+    if ((*(equalCopy + 44) & 0x100) == 0)
     {
       goto LABEL_121;
     }
 
-    v27 = *(v4 + 82);
+    v27 = *(equalCopy + 82);
     if (self->_isLocalStore)
     {
-      if ((*(v4 + 82) & 1) == 0)
+      if ((*(equalCopy + 82) & 1) == 0)
       {
         goto LABEL_121;
       }
     }
 
-    else if (*(v4 + 82))
+    else if (*(equalCopy + 82))
     {
       goto LABEL_121;
     }
   }
 
-  else if ((*(v4 + 44) & 0x100) != 0)
+  else if ((*(equalCopy + 44) & 0x100) != 0)
   {
     goto LABEL_121;
   }
@@ -1580,13 +1580,13 @@ LABEL_16:
     {
       if (self->_isBirthdayStore)
       {
-        if (*(v4 + 79))
+        if (*(equalCopy + 79))
         {
           goto LABEL_123;
         }
       }
 
-      else if (!*(v4 + 79))
+      else if (!*(equalCopy + 79))
       {
 LABEL_123:
         v16 = 1;
@@ -1802,22 +1802,22 @@ LABEL_21:
   return v26 ^ v27 ^ v25 ^ v24 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19 ^ v20 ^ v21;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v7 = v4;
-  if (*(v4 + 8))
+  fromCopy = from;
+  v7 = fromCopy;
+  if (*(fromCopy + 8))
   {
     [(NEKPBSourceAttributes *)self setName:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if (v5)
   {
-    self->_defaultAlarmOffset = *(v4 + 10);
+    self->_defaultAlarmOffset = *(fromCopy + 10);
     *&self->_has |= 1u;
-    v5 = *(v4 + 44);
+    v5 = *(fromCopy + 44);
     if ((v5 & 2) == 0)
     {
 LABEL_5:
@@ -1835,9 +1835,9 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  self->_type = *(v4 + 18);
+  self->_type = *(fromCopy + 18);
   *&self->_has |= 2u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 0x40) == 0)
   {
 LABEL_6:
@@ -1850,9 +1850,9 @@ LABEL_6:
   }
 
 LABEL_36:
-  self->_isEnabled = *(v4 + 80);
+  self->_isEnabled = *(fromCopy + 80);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 0x80) == 0)
   {
 LABEL_7:
@@ -1865,58 +1865,58 @@ LABEL_7:
   }
 
 LABEL_37:
-  self->_isFacebook = *(v4 + 81);
+  self->_isFacebook = *(fromCopy + 81);
   *&self->_has |= 0x80u;
-  if ((*(v4 + 44) & 0x2000) != 0)
+  if ((*(fromCopy + 44) & 0x2000) != 0)
   {
 LABEL_8:
-    self->_usesSelfAttendee = *(v4 + 87);
+    self->_usesSelfAttendee = *(fromCopy + 87);
     *&self->_has |= 0x2000u;
   }
 
 LABEL_9:
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(NEKPBSourceAttributes *)self setConstraintsDescriptionPath:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(NEKPBSourceAttributes *)self setExternalID:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(NEKPBSourceAttributes *)self setExternalModificationTag:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(NEKPBSourceAttributes *)self setCreatorBundleID:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(NEKPBSourceAttributes *)self setCreatorCodeSigningIdentity:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(NEKPBSourceAttributes *)self setAccountPersistentID:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v6 = *(v4 + 44);
+  v6 = *(fromCopy + 44);
   if ((v6 & 0x1000) != 0)
   {
-    self->_supportsSharedCalendars = *(v4 + 86);
+    self->_supportsSharedCalendars = *(fromCopy + 86);
     *&self->_has |= 0x1000u;
-    v6 = *(v4 + 44);
+    v6 = *(fromCopy + 44);
     if ((v6 & 0x10) == 0)
     {
 LABEL_23:
@@ -1934,9 +1934,9 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  self->_allowsTasks = *(v4 + 78);
+  self->_allowsTasks = *(fromCopy + 78);
   *&self->_has |= 0x10u;
-  v6 = *(v4 + 44);
+  v6 = *(fromCopy + 44);
   if ((v6 & 8) == 0)
   {
 LABEL_24:
@@ -1949,9 +1949,9 @@ LABEL_24:
   }
 
 LABEL_41:
-  self->_allowsEvents = *(v4 + 77);
+  self->_allowsEvents = *(fromCopy + 77);
   *&self->_has |= 8u;
-  v6 = *(v4 + 44);
+  v6 = *(fromCopy + 44);
   if ((v6 & 4) == 0)
   {
 LABEL_25:
@@ -1964,9 +1964,9 @@ LABEL_25:
   }
 
 LABEL_42:
-  self->_allowsCalendarAddDeleteModify = *(v4 + 76);
+  self->_allowsCalendarAddDeleteModify = *(fromCopy + 76);
   *&self->_has |= 4u;
-  v6 = *(v4 + 44);
+  v6 = *(fromCopy + 44);
   if ((v6 & 0x200) == 0)
   {
 LABEL_26:
@@ -1979,9 +1979,9 @@ LABEL_26:
   }
 
 LABEL_43:
-  self->_onlyCreatorCanModify = *(v4 + 83);
+  self->_onlyCreatorCanModify = *(fromCopy + 83);
   *&self->_has |= 0x200u;
-  v6 = *(v4 + 44);
+  v6 = *(fromCopy + 44);
   if ((v6 & 0x400) == 0)
   {
 LABEL_27:
@@ -1994,9 +1994,9 @@ LABEL_27:
   }
 
 LABEL_44:
-  self->_snoozeAlarmRequiresDetach = *(v4 + 84);
+  self->_snoozeAlarmRequiresDetach = *(fromCopy + 84);
   *&self->_has |= 0x400u;
-  v6 = *(v4 + 44);
+  v6 = *(fromCopy + 44);
   if ((v6 & 0x800) == 0)
   {
 LABEL_28:
@@ -2009,9 +2009,9 @@ LABEL_28:
   }
 
 LABEL_45:
-  self->_supportsAlarmAcknowledgedDate = *(v4 + 85);
+  self->_supportsAlarmAcknowledgedDate = *(fromCopy + 85);
   *&self->_has |= 0x800u;
-  v6 = *(v4 + 44);
+  v6 = *(fromCopy + 44);
   if ((v6 & 0x100) == 0)
   {
 LABEL_29:
@@ -2024,12 +2024,12 @@ LABEL_29:
   }
 
 LABEL_46:
-  self->_isLocalStore = *(v4 + 82);
+  self->_isLocalStore = *(fromCopy + 82);
   *&self->_has |= 0x100u;
-  if ((*(v4 + 44) & 0x20) != 0)
+  if ((*(fromCopy + 44) & 0x20) != 0)
   {
 LABEL_30:
-    self->_isBirthdayStore = *(v4 + 79);
+    self->_isBirthdayStore = *(fromCopy + 79);
     *&self->_has |= 0x20u;
   }
 

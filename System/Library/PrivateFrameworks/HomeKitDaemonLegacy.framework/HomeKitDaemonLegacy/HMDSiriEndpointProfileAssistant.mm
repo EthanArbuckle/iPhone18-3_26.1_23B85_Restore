@@ -1,8 +1,8 @@
 @interface HMDSiriEndpointProfileAssistant
-- (BOOL)containsCharacteristic:(id)a3;
-- (BOOL)updateCharacteristic:(id)a3 value:(id)a4;
-- (HMDSiriEndpointProfileAssistant)initWithCoder:(id)a3;
-- (HMDSiriEndpointProfileAssistant)initWithService:(id)a3;
+- (BOOL)containsCharacteristic:(id)characteristic;
+- (BOOL)updateCharacteristic:(id)characteristic value:(id)value;
+- (HMDSiriEndpointProfileAssistant)initWithCoder:(id)coder;
+- (HMDSiriEndpointProfileAssistant)initWithService:(id)service;
 - (NSArray)allCharacteristics;
 - (NSArray)characteristicsToMonitor;
 - (NSNumber)active;
@@ -11,17 +11,17 @@
 - (id)_activeCharacteristic;
 - (id)_identifierCharacteristic;
 - (id)_nameCharacteristic;
-- (void)encodeWithCoder:(id)a3;
-- (void)setActive:(id)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setName:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setActive:(id)active;
+- (void)setIdentifier:(id)identifier;
+- (void)setName:(id)name;
 @end
 
 @implementation HMDSiriEndpointProfileAssistant
 
-- (HMDSiriEndpointProfileAssistant)initWithCoder:(id)a3
+- (HMDSiriEndpointProfileAssistant)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -33,34 +33,34 @@
   objc_exception_throw(v10);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMDSiriEndpointProfileAssistant *)self identifier];
-  [v4 encodeObject:v5 forKey:*MEMORY[0x277CD0FD0]];
+  coderCopy = coder;
+  identifier = [(HMDSiriEndpointProfileAssistant *)self identifier];
+  [coderCopy encodeObject:identifier forKey:*MEMORY[0x277CD0FD0]];
 
-  v6 = [(HMDSiriEndpointProfileAssistant *)self name];
-  [v4 encodeObject:v6 forKey:*MEMORY[0x277CD0FD8]];
+  name = [(HMDSiriEndpointProfileAssistant *)self name];
+  [coderCopy encodeObject:name forKey:*MEMORY[0x277CD0FD8]];
 
-  v7 = [(HMDSiriEndpointProfileAssistant *)self active];
-  [v4 encodeObject:v7 forKey:*MEMORY[0x277CD0FC8]];
+  active = [(HMDSiriEndpointProfileAssistant *)self active];
+  [coderCopy encodeObject:active forKey:*MEMORY[0x277CD0FC8]];
 }
 
-- (BOOL)updateCharacteristic:(id)a3 value:(id)a4
+- (BOOL)updateCharacteristic:(id)characteristic value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  if (![(HMDSiriEndpointProfileAssistant *)self containsCharacteristic:v6])
+  characteristicCopy = characteristic;
+  valueCopy = value;
+  if (![(HMDSiriEndpointProfileAssistant *)self containsCharacteristic:characteristicCopy])
   {
     goto LABEL_26;
   }
 
-  v8 = [v6 type];
-  v9 = [v8 isEqualToString:*MEMORY[0x277CCF8E8]];
+  type = [characteristicCopy type];
+  v9 = [type isEqualToString:*MEMORY[0x277CCF8E8]];
 
   if (v9)
   {
-    v10 = v7;
+    v10 = valueCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -78,12 +78,12 @@
     goto LABEL_24;
   }
 
-  v13 = [v6 type];
-  v14 = [v13 isEqualToString:*MEMORY[0x277CCF988]];
+  type2 = [characteristicCopy type];
+  v14 = [type2 isEqualToString:*MEMORY[0x277CCF988]];
 
   if (v14)
   {
-    v15 = v7;
+    v15 = valueCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -101,8 +101,8 @@
     goto LABEL_24;
   }
 
-  v17 = [v6 type];
-  v18 = [v17 isEqualToString:*MEMORY[0x277CCF748]];
+  type3 = [characteristicCopy type];
+  v18 = [type3 isEqualToString:*MEMORY[0x277CCF748]];
 
   if (!v18)
   {
@@ -111,7 +111,7 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  v19 = v7;
+  v19 = valueCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -131,8 +131,8 @@ LABEL_26:
     goto LABEL_25;
   }
 
-  v21 = [v12 integerValue];
-  if (v21 == 1)
+  integerValue = [v12 integerValue];
+  if (integerValue == 1)
   {
     v22 = 1;
   }
@@ -142,7 +142,7 @@ LABEL_26:
     v22 = -1;
   }
 
-  if (v21)
+  if (integerValue)
   {
     v23 = v22;
   }
@@ -163,21 +163,21 @@ LABEL_27:
   return v25;
 }
 
-- (BOOL)containsCharacteristic:(id)a3
+- (BOOL)containsCharacteristic:(id)characteristic
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  characteristicCopy = characteristic;
+  v5 = characteristicCopy;
+  if (characteristicCopy)
   {
-    v6 = [v4 service];
-    v7 = [v6 serviceType];
-    if ([v7 isEqualToString:@"0000026A-0000-1000-8000-0026BB765291"])
+    service = [characteristicCopy service];
+    serviceType = [service serviceType];
+    if ([serviceType isEqualToString:@"0000026A-0000-1000-8000-0026BB765291"])
     {
-      v8 = [v6 instanceID];
-      v9 = [(HMDSiriEndpointProfileAssistant *)self service];
-      v10 = [v9 instanceID];
-      v11 = [v8 isEqual:v10];
+      instanceID = [service instanceID];
+      service2 = [(HMDSiriEndpointProfileAssistant *)self service];
+      instanceID2 = [service2 instanceID];
+      v11 = [instanceID isEqual:instanceID2];
 
       if (v11)
       {
@@ -185,10 +185,10 @@ LABEL_27:
         v28 = 0u;
         v25 = 0u;
         v26 = 0u;
-        v12 = [(HMDSiriEndpointProfileAssistant *)self service];
-        v13 = [v12 characteristics];
+        service3 = [(HMDSiriEndpointProfileAssistant *)self service];
+        characteristics = [service3 characteristics];
 
-        v14 = [v13 countByEnumeratingWithState:&v25 objects:v29 count:16];
+        v14 = [characteristics countByEnumeratingWithState:&v25 objects:v29 count:16];
         if (v14)
         {
           v15 = v14;
@@ -199,13 +199,13 @@ LABEL_27:
             {
               if (*v26 != v16)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(characteristics);
               }
 
               v18 = *(*(&v25 + 1) + 8 * i);
-              v19 = [v5 instanceID];
-              v20 = [v18 instanceID];
-              v21 = [v19 isEqual:v20];
+              instanceID3 = [v5 instanceID];
+              instanceID4 = [v18 instanceID];
+              v21 = [instanceID3 isEqual:instanceID4];
 
               if (v21)
               {
@@ -215,7 +215,7 @@ LABEL_27:
               }
             }
 
-            v15 = [v13 countByEnumeratingWithState:&v25 objects:v29 count:16];
+            v15 = [characteristics countByEnumeratingWithState:&v25 objects:v29 count:16];
             if (v15)
             {
               continue;
@@ -247,24 +247,24 @@ LABEL_16:
 - (NSArray)allCharacteristics
 {
   v3 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:3];
-  v4 = [(HMDSiriEndpointProfileAssistant *)self _identifierCharacteristic];
-  if (v4)
+  _identifierCharacteristic = [(HMDSiriEndpointProfileAssistant *)self _identifierCharacteristic];
+  if (_identifierCharacteristic)
   {
-    [v3 addObject:v4];
+    [v3 addObject:_identifierCharacteristic];
   }
 
-  v5 = [(HMDSiriEndpointProfileAssistant *)self _nameCharacteristic];
+  _nameCharacteristic = [(HMDSiriEndpointProfileAssistant *)self _nameCharacteristic];
 
-  if (v5)
+  if (_nameCharacteristic)
   {
-    [v3 addObject:v5];
+    [v3 addObject:_nameCharacteristic];
   }
 
-  v6 = [(HMDSiriEndpointProfileAssistant *)self _activeCharacteristic];
+  _activeCharacteristic = [(HMDSiriEndpointProfileAssistant *)self _activeCharacteristic];
 
-  if (v6)
+  if (_activeCharacteristic)
   {
-    [v3 addObject:v6];
+    [v3 addObject:_activeCharacteristic];
   }
 
   v7 = [v3 copy];
@@ -275,10 +275,10 @@ LABEL_16:
 - (NSArray)characteristicsToMonitor
 {
   v3 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:1];
-  v4 = [(HMDSiriEndpointProfileAssistant *)self _activeCharacteristic];
-  if (v4)
+  _activeCharacteristic = [(HMDSiriEndpointProfileAssistant *)self _activeCharacteristic];
+  if (_activeCharacteristic)
   {
-    [v3 addObject:v4];
+    [v3 addObject:_activeCharacteristic];
   }
 
   v5 = [v3 copy];
@@ -286,11 +286,11 @@ LABEL_16:
   return v5;
 }
 
-- (void)setActive:(id)a3
+- (void)setActive:(id)active
 {
-  v6 = a3;
+  activeCopy = active;
   os_unfair_lock_lock_with_options();
-  v4 = [v6 copy];
+  v4 = [activeCopy copy];
   active = self->_active;
   self->_active = v4;
 
@@ -306,11 +306,11 @@ LABEL_16:
   return v3;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v6 = a3;
+  nameCopy = name;
   os_unfair_lock_lock_with_options();
-  v4 = [v6 copy];
+  v4 = [nameCopy copy];
   name = self->_name;
   self->_name = v4;
 
@@ -326,11 +326,11 @@ LABEL_16:
   return v3;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v6 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock_with_options();
-  v4 = [v6 copy];
+  v4 = [identifierCopy copy];
   identifier = self->_identifier;
   self->_identifier = v4;
 
@@ -348,38 +348,38 @@ LABEL_16:
 
 - (id)_activeCharacteristic
 {
-  v2 = [(HMDSiriEndpointProfileAssistant *)self service];
-  v3 = [v2 findCharacteristicWithType:*MEMORY[0x277CCF748]];
+  service = [(HMDSiriEndpointProfileAssistant *)self service];
+  v3 = [service findCharacteristicWithType:*MEMORY[0x277CCF748]];
 
   return v3;
 }
 
 - (id)_nameCharacteristic
 {
-  v2 = [(HMDSiriEndpointProfileAssistant *)self service];
-  v3 = [v2 findCharacteristicWithType:*MEMORY[0x277CCF988]];
+  service = [(HMDSiriEndpointProfileAssistant *)self service];
+  v3 = [service findCharacteristicWithType:*MEMORY[0x277CCF988]];
 
   return v3;
 }
 
 - (id)_identifierCharacteristic
 {
-  v2 = [(HMDSiriEndpointProfileAssistant *)self service];
-  v3 = [v2 findCharacteristicWithType:*MEMORY[0x277CCF8E8]];
+  service = [(HMDSiriEndpointProfileAssistant *)self service];
+  v3 = [service findCharacteristicWithType:*MEMORY[0x277CCF8E8]];
 
   return v3;
 }
 
-- (HMDSiriEndpointProfileAssistant)initWithService:(id)a3
+- (HMDSiriEndpointProfileAssistant)initWithService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   v9.receiver = self;
   v9.super_class = HMDSiriEndpointProfileAssistant;
   v6 = [(HMDSiriEndpointProfileAssistant *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_service, a3);
+    objc_storeStrong(&v6->_service, service);
   }
 
   return v7;

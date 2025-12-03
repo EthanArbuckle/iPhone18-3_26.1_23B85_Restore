@@ -1,29 +1,29 @@
 @interface HKUIIconUtilties
-+ (id)appleDeviceIconForHardwareVersion:(id)a3;
++ (id)appleDeviceIconForHardwareVersion:(id)version;
 @end
 
 @implementation HKUIIconUtilties
 
-+ (id)appleDeviceIconForHardwareVersion:(id)a3
++ (id)appleDeviceIconForHardwareVersion:(id)version
 {
-  v3 = a3;
-  if (([v3 hasPrefix:*MEMORY[0x1E696BC10]] & 1) != 0 || (objc_msgSend(v3, "hasPrefix:", *MEMORY[0x1E696BC18]) & 1) != 0 || (objc_msgSend(v3, "hasPrefix:", *MEMORY[0x1E696BC30]) & 1) != 0 || (objc_msgSend(v3, "hasPrefix:", *MEMORY[0x1E696BC28]) & 1) != 0 || (objc_msgSend(v3, "hasPrefix:", *MEMORY[0x1E696BC08]) & 1) != 0 || objc_msgSend(v3, "hasPrefix:", *MEMORY[0x1E696BC20]))
+  versionCopy = version;
+  if (([versionCopy hasPrefix:*MEMORY[0x1E696BC10]] & 1) != 0 || (objc_msgSend(versionCopy, "hasPrefix:", *MEMORY[0x1E696BC18]) & 1) != 0 || (objc_msgSend(versionCopy, "hasPrefix:", *MEMORY[0x1E696BC30]) & 1) != 0 || (objc_msgSend(versionCopy, "hasPrefix:", *MEMORY[0x1E696BC28]) & 1) != 0 || (objc_msgSend(versionCopy, "hasPrefix:", *MEMORY[0x1E696BC08]) & 1) != 0 || objc_msgSend(versionCopy, "hasPrefix:", *MEMORY[0x1E696BC20]))
   {
-    v4 = [MEMORY[0x1E6982C40] _typeWithDeviceModelCode:v3];
+    v4 = [MEMORY[0x1E6982C40] _typeWithDeviceModelCode:versionCopy];
     v5 = MEMORY[0x1E69A8A40];
-    v6 = [v4 identifier];
+    identifier = [v4 identifier];
     v15 = 0;
-    v7 = [v5 symbolForTypeIdentifier:v6 error:&v15];
+    v7 = [v5 symbolForTypeIdentifier:identifier error:&v15];
 
     v8 = MEMORY[0x1E69DCAD8];
-    v9 = [MEMORY[0x1E69DC888] systemBlueColor];
-    v10 = [v8 configurationWithHierarchicalColor:v9];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+    v10 = [v8 configurationWithHierarchicalColor:systemBlueColor];
 
     if (v7)
     {
       v11 = MEMORY[0x1E69DCAB8];
-      v12 = [v7 name];
-      v13 = [v11 _systemImageNamed:v12 withConfiguration:v10];
+      name = [v7 name];
+      v13 = [v11 _systemImageNamed:name withConfiguration:v10];
     }
 
     else

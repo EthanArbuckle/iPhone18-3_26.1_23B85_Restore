@@ -1,19 +1,19 @@
 @interface DIUserDataParams
-- (BOOL)embedWithError:(id *)a3;
-- (BOOL)openExistingImageWithError:(id *)a3;
-- (BOOL)retrieveWithError:(id *)a3;
-- (DIUserDataParams)initWithCoder:(id)a3;
-- (DIUserDataParams)initWithURL:(id)a3 error:(id *)a4;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)embedWithError:(id *)error;
+- (BOOL)openExistingImageWithError:(id *)error;
+- (BOOL)retrieveWithError:(id *)error;
+- (DIUserDataParams)initWithCoder:(id)coder;
+- (DIUserDataParams)initWithURL:(id)l error:(id *)error;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DIUserDataParams
 
-- (DIUserDataParams)initWithURL:(id)a3 error:(id *)a4
+- (DIUserDataParams)initWithURL:(id)l error:(id *)error
 {
   v8.receiver = self;
   v8.super_class = DIUserDataParams;
-  v4 = [(DIBaseParams *)&v8 initWithURL:a3 error:a4];
+  v4 = [(DIBaseParams *)&v8 initWithURL:l error:error];
   v5 = v4;
   if (v4)
   {
@@ -24,15 +24,15 @@
   return v5;
 }
 
-- (DIUserDataParams)initWithCoder:(id)a3
+- (DIUserDataParams)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = DIUserDataParams;
-  v5 = [(DIBaseParams *)&v17 initWithCoder:v4];
+  v5 = [(DIBaseParams *)&v17 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userData"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userData"];
     if (v6)
     {
       v7 = MEMORY[0x277CCAAC8];
@@ -62,17 +62,17 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = DIUserDataParams;
-  [(DIBaseParams *)&v18 encodeWithCoder:v4];
+  [(DIBaseParams *)&v18 encodeWithCoder:coderCopy];
   v5 = MEMORY[0x277CCAAB0];
-  v6 = [(DIUserDataParams *)self userDict];
+  userDict = [(DIUserDataParams *)self userDict];
   v17 = 0;
-  v7 = [v5 archivedDataWithRootObject:v6 requiringSecureCoding:0 error:&v17];
+  v7 = [v5 archivedDataWithRootObject:userDict requiringSecureCoding:0 error:&v17];
   v8 = v17;
 
   if (v8)
@@ -118,15 +118,15 @@
     *__error() = v9;
   }
 
-  [v4 encodeObject:v7 forKey:{@"userData", v14, v15, v16}];
+  [coderCopy encodeObject:v7 forKey:{@"userData", v14, v15, v16}];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)retrieveWithError:(id *)a3
+- (BOOL)retrieveWithError:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
-  if ([(DIBaseParams *)self openExistingImageWithFlags:0 error:a3])
+  if ([(DIBaseParams *)self openExistingImageWithFlags:0 error:error])
   {
     v5 = *__error();
     if (DIForwardLogs())
@@ -139,7 +139,7 @@
       v32 = 2080;
       v33 = "[DIUserDataParams retrieveWithError:]";
       v34 = 2114;
-      v35 = self;
+      selfCopy2 = self;
       LODWORD(v27) = 28;
       v26 = buf;
       v7 = _os_log_send_and_compose_impl();
@@ -161,21 +161,21 @@
         v32 = 2080;
         v33 = "[DIUserDataParams retrieveWithError:]";
         v34 = 2114;
-        v35 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_248DE0000, v9, OS_LOG_TYPE_DEFAULT, "%.*s: entry: %{public}@", buf, 0x1Cu);
       }
     }
 
     *__error() = v5;
     v10 = objc_alloc_init(DIClient2Controller_XPCHandler);
-    if ([(DIClient2Controller_XPCHandler *)v10 connectWithError:a3]&& [(DIBaseParams *)self prepareImageWithXpcHandler:v10 fileMode:2 error:a3])
+    if ([(DIClient2Controller_XPCHandler *)v10 connectWithError:error]&& [(DIBaseParams *)self prepareImageWithXpcHandler:v10 fileMode:2 error:error])
     {
-      v11 = [(DIBaseParams *)self diskImageParamsXPC];
-      v12 = [(DIBaseParams *)self shadowChain];
-      v13 = [v12 shouldValidate];
-      if (v11)
+      diskImageParamsXPC = [(DIBaseParams *)self diskImageParamsXPC];
+      shadowChain = [(DIBaseParams *)self shadowChain];
+      shouldValidate = [shadowChain shouldValidate];
+      if (diskImageParamsXPC)
       {
-        [v11 createDiskImageWithCache:0 shadowValidation:v13];
+        [diskImageParamsXPC createDiskImageWithCache:0 shadowValidation:shouldValidate];
       }
 
       else
@@ -200,7 +200,7 @@
         v32 = 2080;
         v33 = "[DIUserDataParams retrieveWithError:]";
         v34 = 1024;
-        LODWORD(v35) = v18;
+        LODWORD(selfCopy2) = v18;
         v19 = _os_log_send_and_compose_impl();
 
         if (v19)
@@ -215,14 +215,14 @@
         v20 = getDIOSLog();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
         {
-          v21 = [(DIUserDataParams *)self userDict];
-          v22 = [v21 count];
+          userDict = [(DIUserDataParams *)self userDict];
+          v22 = [userDict count];
           *buf = 68158210;
           v31 = 38;
           v32 = 2080;
           v33 = "[DIUserDataParams retrieveWithError:]";
           v34 = 1024;
-          LODWORD(v35) = v22;
+          LODWORD(selfCopy2) = v22;
           _os_log_impl(&dword_248DE0000, v20, OS_LOG_TYPE_DEFAULT, "%.*s: User data retrieving passed, %d value(s) found", buf, 0x18u);
         }
       }
@@ -254,20 +254,20 @@
   return v8;
 }
 
-- (BOOL)embedWithError:(id *)a3
+- (BOOL)embedWithError:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = [(DIUserDataParams *)self userDict];
-  if (!v5 || (-[DIUserDataParams userDict](self, "userDict"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 count], v6, v5, !v7))
+  userDict = [(DIUserDataParams *)self userDict];
+  if (!userDict || (-[DIUserDataParams userDict](self, "userDict"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 count], v6, userDict, !v7))
   {
     v13 = @"userDict cannot be nil or empty";
 LABEL_12:
-    v14 = [DIError failWithPOSIXCode:22 verboseInfo:v13 error:a3];
+    v14 = [DIError failWithPOSIXCode:22 verboseInfo:v13 error:error];
     goto LABEL_13;
   }
 
-  v8 = [(DIBaseParams *)self diskImageParamsXPC];
-  if (v8)
+  diskImageParamsXPC = [(DIBaseParams *)self diskImageParamsXPC];
+  if (diskImageParamsXPC)
   {
     [(DIBaseParams *)self backend];
     v9 = (*(**buf + 48))(*buf);
@@ -283,7 +283,7 @@ LABEL_12:
     }
   }
 
-  if ([(DIBaseParams *)self openExistingImageWithFlags:2 error:a3])
+  if ([(DIBaseParams *)self openExistingImageWithFlags:2 error:error])
   {
     v10 = *__error();
     if (DIForwardLogs())
@@ -296,7 +296,7 @@ LABEL_12:
       *v31 = 2080;
       *&v31[2] = "[DIUserDataParams embedWithError:]";
       v32 = 2114;
-      v33 = self;
+      selfCopy2 = self;
       v12 = _os_log_send_and_compose_impl();
 
       if (v12)
@@ -316,21 +316,21 @@ LABEL_12:
         *v31 = 2080;
         *&v31[2] = "[DIUserDataParams embedWithError:]";
         v32 = 2114;
-        v33 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_248DE0000, v17, OS_LOG_TYPE_DEFAULT, "%.*s: entry: %{public}@", buf, 0x1Cu);
       }
     }
 
     *__error() = v10;
     v18 = objc_alloc_init(DIClient2Controller_XPCHandler);
-    if (-[DIClient2Controller_XPCHandler connectWithError:](v18, "connectWithError:", a3) && -[DIBaseParams prepareImageWithXpcHandler:fileMode:error:](self, "prepareImageWithXpcHandler:fileMode:error:", v18, 4, a3) && (-[DIBaseParams diskImageParamsXPC](self, "diskImageParamsXPC"), v19 = objc_claimAutoreleasedReturnValue(), v20 = [v19 lockBackendsWithError:a3], v19, (v20 & 1) != 0))
+    if (-[DIClient2Controller_XPCHandler connectWithError:](v18, "connectWithError:", error) && -[DIBaseParams prepareImageWithXpcHandler:fileMode:error:](self, "prepareImageWithXpcHandler:fileMode:error:", v18, 4, error) && (-[DIBaseParams diskImageParamsXPC](self, "diskImageParamsXPC"), v19 = objc_claimAutoreleasedReturnValue(), v20 = [v19 lockBackendsWithError:error], v19, (v20 & 1) != 0))
     {
-      v21 = [(DIBaseParams *)self diskImageParamsXPC];
-      v22 = [(DIBaseParams *)self shadowChain];
-      v23 = [v22 shouldValidate];
-      if (v21)
+      diskImageParamsXPC2 = [(DIBaseParams *)self diskImageParamsXPC];
+      shadowChain = [(DIBaseParams *)self shadowChain];
+      shouldValidate = [shadowChain shouldValidate];
+      if (diskImageParamsXPC2)
       {
-        [v21 createDiskImageWithCache:0 shadowValidation:v23];
+        [diskImageParamsXPC2 createDiskImageWithCache:0 shadowValidation:shouldValidate];
       }
 
       else
@@ -338,8 +338,8 @@ LABEL_12:
         v29 = 0;
       }
 
-      v24 = [(DIUserDataParams *)self userDict];
-      (*(*v29 + 120))(v29, v24);
+      userDict2 = [(DIUserDataParams *)self userDict];
+      (*(*v29 + 120))(v29, userDict2);
 
       v25 = *__error();
       if (DIForwardLogs())
@@ -397,12 +397,12 @@ LABEL_13:
   return v14;
 }
 
-- (BOOL)openExistingImageWithError:(id *)a3
+- (BOOL)openExistingImageWithError:(id *)error
 {
-  v5 = [(DIUserDataParams *)self userDict];
-  LOBYTE(a3) = -[DIBaseParams openExistingImageWithFlags:error:](self, "openExistingImageWithFlags:error:", 2 * ([v5 count] != 0), a3);
+  userDict = [(DIUserDataParams *)self userDict];
+  LOBYTE(error) = -[DIBaseParams openExistingImageWithFlags:error:](self, "openExistingImageWithFlags:error:", 2 * ([userDict count] != 0), error);
 
-  return a3;
+  return error;
 }
 
 @end

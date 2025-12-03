@@ -11,7 +11,7 @@
   v6 = a4;
   v7 = a3;
   v8 = objc_alloc_init(RPBroadcastConfiguration);
-  [a1 completeRequestWithBroadcastURL:v7 broadcastConfiguration:v8 setupInfo:v6];
+  [self completeRequestWithBroadcastURL:v7 broadcastConfiguration:v8 setupInfo:v6];
 }
 
 - (void)completeRequestWithBroadcastURL:()RPBroadcastExtension broadcastConfiguration:setupInfo:
@@ -46,8 +46,8 @@
   v23 = [MEMORY[0x277CBEA60] arrayWithObjects:&v46 count:1];
   [v18 setAttachments:v23];
 
-  v24 = [MEMORY[0x277CCA8D8] mainBundle];
-  v25 = [v24 bundleIdentifier];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
   v26 = objc_alloc_init(MEMORY[0x277CCA9D8]);
   v27 = objc_alloc(MEMORY[0x277CCA898]);
@@ -55,7 +55,7 @@
   v29 = [v27 initWithString:v28];
   [v26 setAttributedTitle:v29];
 
-  v30 = [objc_alloc(MEMORY[0x277CCAA88]) initWithItem:v25 typeIdentifier:v15];
+  v30 = [objc_alloc(MEMORY[0x277CCAA88]) initWithItem:bundleIdentifier typeIdentifier:v15];
   v45 = v30;
   v31 = [MEMORY[0x277CBEA60] arrayWithObjects:&v45 count:1];
   [v26 setAttachments:v31];
@@ -78,7 +78,7 @@
   v43[2] = v33;
   v43[3] = v10;
   v39 = [MEMORY[0x277CBEA60] arrayWithObjects:v43 count:4];
-  [a1 completeRequestReturningItems:v39 completionHandler:0];
+  [self completeRequestReturningItems:v39 completionHandler:0];
 
   v40 = *MEMORY[0x277D85DE8];
 }
@@ -87,11 +87,11 @@
 {
   v4 = a3;
   v5 = *MEMORY[0x277CC2050];
-  v6 = [a1 inputItems];
-  v7 = [v6 firstObject];
+  inputItems = [self inputItems];
+  firstObject = [inputItems firstObject];
 
-  v8 = [v7 attachments];
-  v9 = [v8 firstObject];
+  attachments = [firstObject attachments];
+  firstObject2 = [attachments firstObject];
 
   v13[0] = 0;
   v13[1] = v13;
@@ -99,7 +99,7 @@
   v13[3] = __Block_byref_object_copy__0;
   v13[4] = __Block_byref_object_dispose__0;
   v14 = 0;
-  if ([v9 hasItemConformingToTypeIdentifier:v5])
+  if ([firstObject2 hasItemConformingToTypeIdentifier:v5])
   {
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
@@ -107,7 +107,7 @@
     v10[3] = &unk_278B62598;
     v12 = v13;
     v11 = v4;
-    [v9 loadItemForTypeIdentifier:v5 options:0 completionHandler:v10];
+    [firstObject2 loadItemForTypeIdentifier:v5 options:0 completionHandler:v10];
   }
 
   _Block_object_dispose(v13, 8);

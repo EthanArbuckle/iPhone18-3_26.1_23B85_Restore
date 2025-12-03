@@ -1,70 +1,70 @@
 @interface AVTSerialTaskScheduler
 + (id)fifoScheduler;
-+ (id)fifoSchedulerWithEnvironment:(id)a3;
++ (id)fifoSchedulerWithEnvironment:(id)environment;
 + (id)lifoScheduler;
-+ (id)lifoSchedulerWithEnvironment:(id)a3;
-+ (id)nextTaskToRunForPriorityTasks:(id)a3 backlogTasks:(id)a4 order:(int64_t)a5;
-- (AVTSerialTaskScheduler)initWithEnvironment:(id)a3 order:(int64_t)a4;
-- (void)didCompleteTask:(id)a3;
-- (void)lowerTaskPriority:(id)a3;
-- (void)performStateWork:(id)a3;
-- (void)scheduleTask:(id)a3;
-- (void)startTask:(id)a3;
++ (id)lifoSchedulerWithEnvironment:(id)environment;
++ (id)nextTaskToRunForPriorityTasks:(id)tasks backlogTasks:(id)backlogTasks order:(int64_t)order;
+- (AVTSerialTaskScheduler)initWithEnvironment:(id)environment order:(int64_t)order;
+- (void)didCompleteTask:(id)task;
+- (void)lowerTaskPriority:(id)priority;
+- (void)performStateWork:(id)work;
+- (void)scheduleTask:(id)task;
+- (void)startTask:(id)task;
 @end
 
 @implementation AVTSerialTaskScheduler
 
 + (id)lifoScheduler
 {
-  v3 = [MEMORY[0x1E698E330] defaultEnvironment];
-  v4 = [a1 lifoSchedulerWithEnvironment:v3];
+  defaultEnvironment = [MEMORY[0x1E698E330] defaultEnvironment];
+  v4 = [self lifoSchedulerWithEnvironment:defaultEnvironment];
 
   return v4;
 }
 
 + (id)fifoScheduler
 {
-  v3 = [MEMORY[0x1E698E330] defaultEnvironment];
-  v4 = [a1 fifoSchedulerWithEnvironment:v3];
+  defaultEnvironment = [MEMORY[0x1E698E330] defaultEnvironment];
+  v4 = [self fifoSchedulerWithEnvironment:defaultEnvironment];
 
   return v4;
 }
 
-+ (id)lifoSchedulerWithEnvironment:(id)a3
++ (id)lifoSchedulerWithEnvironment:(id)environment
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithEnvironment:v4 order:1];
+  environmentCopy = environment;
+  v5 = [[self alloc] initWithEnvironment:environmentCopy order:1];
 
   return v5;
 }
 
-+ (id)fifoSchedulerWithEnvironment:(id)a3
++ (id)fifoSchedulerWithEnvironment:(id)environment
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithEnvironment:v4 order:0];
+  environmentCopy = environment;
+  v5 = [[self alloc] initWithEnvironment:environmentCopy order:0];
 
   return v5;
 }
 
-- (AVTSerialTaskScheduler)initWithEnvironment:(id)a3 order:(int64_t)a4
+- (AVTSerialTaskScheduler)initWithEnvironment:(id)environment order:(int64_t)order
 {
-  v6 = a3;
+  environmentCopy = environment;
   v16.receiver = self;
   v16.super_class = AVTSerialTaskScheduler;
   v7 = [(AVTSerialTaskScheduler *)&v16 init];
   if (v7)
   {
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     priorityTasks = v7->_priorityTasks;
-    v7->_priorityTasks = v8;
+    v7->_priorityTasks = array;
 
-    v10 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     backlogTasks = v7->_backlogTasks;
-    v7->_backlogTasks = v10;
+    v7->_backlogTasks = array2;
 
-    v7->_order = a4;
-    v12 = [v6 lockProvider];
-    v13 = (v12)[2](v12, "com.apple.AvatarUI.AVTLIFOScheduler.stateLock");
+    v7->_order = order;
+    lockProvider = [environmentCopy lockProvider];
+    v13 = (lockProvider)[2](lockProvider, "com.apple.AvatarUI.AVTLIFOScheduler.stateLock");
     stateLock = v7->_stateLock;
     v7->_stateLock = v13;
   }
@@ -72,18 +72,18 @@
   return v7;
 }
 
-- (void)performStateWork:(id)a3
+- (void)performStateWork:(id)work
 {
-  v4 = a3;
-  v5 = [(AVTSerialTaskScheduler *)self stateLock];
+  workCopy = work;
+  stateLock = [(AVTSerialTaskScheduler *)self stateLock];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__AVTSerialTaskScheduler_performStateWork___block_invoke;
   v7[3] = &unk_1E7F3A8A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = workCopy;
+  v6 = workCopy;
+  dispatch_sync(stateLock, v7);
 }
 
 void __43__AVTSerialTaskScheduler_performStateWork___block_invoke(uint64_t a1)
@@ -94,14 +94,14 @@ void __43__AVTSerialTaskScheduler_performStateWork___block_invoke(uint64_t a1)
   (*(v2 + 16))(v2, v4, v3);
 }
 
-- (void)scheduleTask:(id)a3
+- (void)scheduleTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
-  v5 = [v4 copy];
+  v5 = [taskCopy copy];
   v7 = MEMORY[0x1E69E9820];
   v8 = 3221225472;
   v9 = __39__AVTSerialTaskScheduler_scheduleTask___block_invoke;
@@ -131,18 +131,18 @@ void __39__AVTSerialTaskScheduler_scheduleTask___block_invoke(uint64_t a1, void 
   *(*(*(a1 + 40) + 8) + 24) = v9;
 }
 
-- (void)startTask:(id)a3
+- (void)startTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   objc_initWeak(&location, self);
   v6 = MEMORY[0x1E69E9820];
   v7 = 3221225472;
   v8 = __36__AVTSerialTaskScheduler_startTask___block_invoke;
   v9 = &unk_1E7F3B020;
   objc_copyWeak(&v11, &location);
-  v5 = v4;
+  v5 = taskCopy;
   v10 = v5;
-  v4[2]();
+  taskCopy[2]();
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -154,9 +154,9 @@ void __36__AVTSerialTaskScheduler_startTask___block_invoke(uint64_t a1)
   [WeakRetained didCompleteTask:*(a1 + 32)];
 }
 
-- (void)didCompleteTask:(id)a3
+- (void)didCompleteTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -167,7 +167,7 @@ void __36__AVTSerialTaskScheduler_startTask___block_invoke(uint64_t a1)
   v6[1] = 3221225472;
   v6[2] = __42__AVTSerialTaskScheduler_didCompleteTask___block_invoke;
   v6[3] = &unk_1E7F3BEF8;
-  v5 = v4;
+  v5 = taskCopy;
   v7 = v5;
   v8 = &v9;
   v6[4] = self;
@@ -222,15 +222,15 @@ void __40__AVTSerialTaskScheduler_cancelAllTasks__block_invoke(uint64_t a1, void
   [v4 removeAllObjects];
 }
 
-- (void)lowerTaskPriority:(id)a3
+- (void)lowerTaskPriority:(id)priority
 {
-  v4 = a3;
+  priorityCopy = priority;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __44__AVTSerialTaskScheduler_lowerTaskPriority___block_invoke;
   v6[3] = &unk_1E7F3BF40;
-  v7 = v4;
-  v5 = v4;
+  v7 = priorityCopy;
+  v5 = priorityCopy;
   [(AVTSerialTaskScheduler *)self performStateWork:v6];
 }
 
@@ -250,18 +250,18 @@ void __44__AVTSerialTaskScheduler_lowerTaskPriority___block_invoke(uint64_t a1, 
   }
 }
 
-+ (id)nextTaskToRunForPriorityTasks:(id)a3 backlogTasks:(id)a4 order:(int64_t)a5
++ (id)nextTaskToRunForPriorityTasks:(id)tasks backlogTasks:(id)backlogTasks order:(int64_t)order
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v7 count])
+  tasksCopy = tasks;
+  backlogTasksCopy = backlogTasks;
+  if ([tasksCopy count])
   {
-    v9 = v7;
+    v9 = tasksCopy;
   }
 
   else
   {
-    v9 = v8;
+    v9 = backlogTasksCopy;
   }
 
   v10 = v9;
@@ -271,23 +271,23 @@ void __44__AVTSerialTaskScheduler_lowerTaskPriority___block_invoke(uint64_t a1, 
     goto LABEL_13;
   }
 
-  if (a5)
+  if (order)
   {
-    if (a5 != 1)
+    if (order != 1)
     {
       v13 = 0;
       goto LABEL_12;
     }
 
-    v11 = [v10 lastObject];
+    lastObject = [v10 lastObject];
   }
 
   else
   {
-    v11 = [v10 firstObject];
+    lastObject = [v10 firstObject];
   }
 
-  v13 = v11;
+  v13 = lastObject;
 LABEL_12:
   v12 = MEMORY[0x1BFB0DE80](v13);
 

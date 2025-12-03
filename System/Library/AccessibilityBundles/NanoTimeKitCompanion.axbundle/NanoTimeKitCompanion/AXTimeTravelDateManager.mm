@@ -1,12 +1,12 @@
 @interface AXTimeTravelDateManager
-+ (void)setTimeTravelDate:(id)a3;
++ (void)setTimeTravelDate:(id)date;
 @end
 
 @implementation AXTimeTravelDateManager
 
-+ (void)setTimeTravelDate:(id)a3
++ (void)setTimeTravelDate:(id)date
 {
-  __timeTravelDate = [a3 copy];
+  __timeTravelDate = [date copy];
 
   _objc_release_x1();
 }

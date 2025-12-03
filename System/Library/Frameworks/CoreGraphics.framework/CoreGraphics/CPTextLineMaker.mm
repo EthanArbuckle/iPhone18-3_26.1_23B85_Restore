@@ -1,31 +1,31 @@
 @interface CPTextLineMaker
-- (unsigned)makeTextLines:(id)a3;
+- (unsigned)makeTextLines:(id)lines;
 - (void)dealloc;
-- (void)zOrderSplitLines:(id)a3;
+- (void)zOrderSplitLines:(id)lines;
 @end
 
 @implementation CPTextLineMaker
 
-- (unsigned)makeTextLines:(id)a3
+- (unsigned)makeTextLines:(id)lines
 {
-  v5 = [a3 charactersInZone];
-  result = [v5 length];
+  charactersInZone = [lines charactersInZone];
+  result = [charactersInZone length];
   if (result)
   {
     v7 = result;
     self->textLines = objc_alloc_init(MEMORY[0x1E695DF70]);
-    if ([a3 hasRotatedCharacters])
+    if ([lines hasRotatedCharacters])
     {
-      [v5 sortByAnchorYDecreasingXIncreasingApprox];
+      [charactersInZone sortByAnchorYDecreasingXIncreasingApprox];
     }
 
     else
     {
-      [v5 sortByAnchorYDecreasingXIncreasing];
+      [charactersInZone sortByAnchorYDecreasingXIncreasing];
     }
 
     v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v7];
-    [v5 splitToSubsequences:v8 whereTrue:compareBaseline passing:0];
+    [charactersInZone splitToSubsequences:v8 whereTrue:compareBaseline passing:0];
     v9 = [v8 count];
     if (!v9)
     {
@@ -125,14 +125,14 @@
       while (v28-- > 0);
     }
 
-    -[CPTextLineMaker zOrderSplitLines:](self, "zOrderSplitLines:", [a3 page]);
+    -[CPTextLineMaker zOrderSplitLines:](self, "zOrderSplitLines:", [lines page]);
     return [(NSMutableArray *)self->textLines count];
   }
 
   return result;
 }
 
-- (void)zOrderSplitLines:(id)a3
+- (void)zOrderSplitLines:(id)lines
 {
   v5 = [(NSMutableArray *)self->textLines count];
   v6 = v5;
@@ -148,7 +148,7 @@
       v9 = HIDWORD(v11);
       if ([v8 length] != v9 - v10 + 1)
       {
-        -[CPTextLineMaker splitByGraphic:with:](self, "splitByGraphic:with:", v8, [a3 PDFContext]);
+        -[CPTextLineMaker splitByGraphic:with:](self, "splitByGraphic:with:", v8, [lines PDFContext]);
       }
 
       ++v7;

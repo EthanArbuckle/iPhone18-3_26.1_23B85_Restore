@@ -1,21 +1,21 @@
 @interface MOBiomeManager
-- (MOBiomeManager)initWithEventManager:(id)a3 setDefaultValues:(BOOL)a4;
-- (id)generateBiomeEventsFromBundle:(id)a3 andOnboardingStatus:(id)a4;
-- (id)generateBiomeEventsFromEvent:(id)a3 andOnboardingStatus:(id)a4;
-- (id)generateBiomeEventsFromMomentsEventDataBundle:(id)a3 withBundleEngagement:(id)a4;
-- (void)_fetchAndSetDemographicsWithCompletionHandler:(id)a3;
+- (MOBiomeManager)initWithEventManager:(id)manager setDefaultValues:(BOOL)values;
+- (id)generateBiomeEventsFromBundle:(id)bundle andOnboardingStatus:(id)status;
+- (id)generateBiomeEventsFromEvent:(id)event andOnboardingStatus:(id)status;
+- (id)generateBiomeEventsFromMomentsEventDataBundle:(id)bundle withBundleEngagement:(id)engagement;
+- (void)_fetchAndSetDemographicsWithCompletionHandler:(id)handler;
 - (void)_updateDataStreamWithEngagement;
-- (void)donateEvents:(id)a3 andBundles:(id)a4 andOnboardingStatus:(id)a5;
-- (void)fetchMomentsEngagementForBundles:(id)a3 CompletionHandler:(id)a4;
-- (void)fetchMomentsEventDataBetweenStartDate:(id)a3 EndDate:(id)a4 CompletionHandler:(id)a5;
+- (void)donateEvents:(id)events andBundles:(id)bundles andOnboardingStatus:(id)status;
+- (void)fetchMomentsEngagementForBundles:(id)bundles CompletionHandler:(id)handler;
+- (void)fetchMomentsEventDataBetweenStartDate:(id)date EndDate:(id)endDate CompletionHandler:(id)handler;
 @end
 
 @implementation MOBiomeManager
 
-- (MOBiomeManager)initWithEventManager:(id)a3 setDefaultValues:(BOOL)a4
+- (MOBiomeManager)initWithEventManager:(id)manager setDefaultValues:(BOOL)values
 {
-  v8 = a3;
-  if (v8)
+  managerCopy = manager;
+  if (managerCopy)
   {
     if (initWithEventManager_setDefaultValues__onceToken != -1)
     {
@@ -30,20 +30,20 @@
     {
       objc_storeStrong(&v9->_queue, initWithEventManager_setDefaultValues__sharedQueue);
       v11 = BiomeLibrary();
-      v12 = [v11 Moments];
-      v13 = [v12 Stats];
-      v14 = [v13 EventData];
+      moments = [v11 Moments];
+      stats = [moments Stats];
+      eventData = [stats EventData];
       stream = v10->_stream;
-      v10->_stream = v14;
+      v10->_stream = eventData;
 
       v16 = BiomeLibrary();
-      v17 = [v16 Moments];
-      v18 = [v17 Events];
-      v19 = [v18 Engagement];
+      moments2 = [v16 Moments];
+      events = [moments2 Events];
+      engagement = [events Engagement];
       engagementStream = v10->_engagementStream;
-      v10->_engagementStream = v19;
+      v10->_engagementStream = engagement;
 
-      objc_storeStrong(&v10->_eventManager, a3);
+      objc_storeStrong(&v10->_eventManager, manager);
       stateIHA = v10->_stateIHA;
       v10->_stateIHA = &__kCFBooleanFalse;
 
@@ -56,14 +56,14 @@
       biologicalSex = v10->_biologicalSex;
       v10->_biologicalSex = &off_10036B3E0;
 
-      v10->_setDefault = a4;
+      v10->_setDefault = values;
       v25 = objc_alloc_init(MOBiomeDonationUtility);
       biomeDonationUtility = v10->_biomeDonationUtility;
       v10->_biomeDonationUtility = v25;
     }
 
     self = v10;
-    v27 = self;
+    selfCopy = self;
   }
 
   else
@@ -77,10 +77,10 @@
     v29 = +[NSAssertionHandler currentHandler];
     [v29 handleFailureInMethod:a2 object:self file:@"MOBiomeManager.m" lineNumber:144 description:@"Invalid parameter not satisfying: eventManager"];
 
-    v27 = 0;
+    selfCopy = 0;
   }
 
-  return v27;
+  return selfCopy;
 }
 
 void __56__MOBiomeManager_initWithEventManager_setDefaultValues___block_invoke(id a1)
@@ -91,17 +91,17 @@ void __56__MOBiomeManager_initWithEventManager_setDefaultValues___block_invoke(i
   initWithEventManager_setDefaultValues__sharedQueue = v1;
 }
 
-- (id)generateBiomeEventsFromEvent:(id)a3 andOnboardingStatus:(id)a4
+- (id)generateBiomeEventsFromEvent:(id)event andOnboardingStatus:(id)status
 {
-  v6 = a4;
+  statusCopy = status;
   biomeDonationUtility = self->_biomeDonationUtility;
-  v8 = a3;
-  v33 = [(MOBiomeDonationUtility *)biomeDonationUtility convertEvent:v8];
-  v9 = [v6 objectForKeyedSubscript:@"onboardingStatus"];
+  eventCopy = event;
+  v33 = [(MOBiomeDonationUtility *)biomeDonationUtility convertEvent:eventCopy];
+  v9 = [statusCopy objectForKeyedSubscript:@"onboardingStatus"];
 
   if (v9)
   {
-    v10 = [v6 objectForKeyedSubscript:@"onboardingStatus"];
+    v10 = [statusCopy objectForKeyedSubscript:@"onboardingStatus"];
     v31 = +[MOBiomeDonationUtility mapOnboardingFlowCompletion:](MOBiomeDonationUtility, "mapOnboardingFlowCompletion:", [v10 intValue]);
   }
 
@@ -114,75 +114,75 @@ void __56__MOBiomeManager_initWithEventManager_setDefaultValues___block_invoke(i
   stateIHA = self->_stateIHA;
   v28 = v11;
   age = self->_age;
-  v27 = [(NSNumber *)self->_ageBucketed intValue];
-  v26 = [(NSNumber *)self->_biologicalSex intValue];
-  v37 = [v8 startDate];
-  v25 = [v8 endDate];
-  v24 = [v8 describeCategory];
+  intValue = [(NSNumber *)self->_ageBucketed intValue];
+  intValue2 = [(NSNumber *)self->_biologicalSex intValue];
+  startDate = [eventCopy startDate];
+  endDate = [eventCopy endDate];
+  describeCategory = [eventCopy describeCategory];
 
-  v36 = [v6 objectForKeyedSubscript:@"journalIsInstalled"];
-  v35 = [v6 objectForKeyedSubscript:@"journalConfigLockJournal"];
-  v34 = [v6 objectForKeyedSubscript:@"journalConfigSkipSuggestions"];
-  v23 = [v6 objectForKeyedSubscript:@"settingSwitchActivity"];
-  v12 = [v6 objectForKeyedSubscript:@"settingSwitchCommunication"];
-  v22 = [v6 objectForKeyedSubscript:@"settingSwitchLocation"];
-  v13 = [v6 objectForKeyedSubscript:@"settingSwitchMedia"];
-  v21 = [v6 objectForKeyedSubscript:@"settingSwitchPeople"];
-  v14 = [v6 objectForKeyedSubscript:@"settingSwitchPhoto"];
-  v15 = [v6 objectForKeyedSubscript:@"settingSwitchStateOfMind"];
-  v16 = [v6 objectForKeyedSubscript:@"settingSwitchReflection"];
-  v17 = [v6 objectForKeyedSubscript:@"settingBroaderSwitchLocation"];
+  v36 = [statusCopy objectForKeyedSubscript:@"journalIsInstalled"];
+  v35 = [statusCopy objectForKeyedSubscript:@"journalConfigLockJournal"];
+  v34 = [statusCopy objectForKeyedSubscript:@"journalConfigSkipSuggestions"];
+  v23 = [statusCopy objectForKeyedSubscript:@"settingSwitchActivity"];
+  v12 = [statusCopy objectForKeyedSubscript:@"settingSwitchCommunication"];
+  v22 = [statusCopy objectForKeyedSubscript:@"settingSwitchLocation"];
+  v13 = [statusCopy objectForKeyedSubscript:@"settingSwitchMedia"];
+  v21 = [statusCopy objectForKeyedSubscript:@"settingSwitchPeople"];
+  v14 = [statusCopy objectForKeyedSubscript:@"settingSwitchPhoto"];
+  v15 = [statusCopy objectForKeyedSubscript:@"settingSwitchStateOfMind"];
+  v16 = [statusCopy objectForKeyedSubscript:@"settingSwitchReflection"];
+  v17 = [statusCopy objectForKeyedSubscript:@"settingBroaderSwitchLocation"];
   LODWORD(v20) = v31;
-  LODWORD(v19) = v26;
-  v32 = [v28 initWithEvent:v33 bundle:0 isBundle:&__kCFBooleanFalse IHAState:stateIHA age:age ageRange:v27 biologicalSex:v19 startDate:v37 endDate:v25 categoryOfEvent:v24 bundleInterface:0 bundleEvergreenType:0 sugSeetEngType:0 appEntryEngType:0 megaSignalTypeUsed:0 viewVisibleSuggestionsCount:0 viewTotalSuggestionsCount:0 onboardingFlowCompletionState:v20 isJournalAppInstalled:v36 isJournalAppLocked:v35 isJournalSuggestionSkipped:v34 isActivitySettingsSwitchEnabled:v23 isCommunicationSettingsSwitchEnabled:v12 isSignificantLocationSettingsSwitchEnabled:v22 isMediaSettingsSwitchEnabled:v13 isNearbyPeopleSettingsSwitchEnabled:v21 isPhotoSettingsSwitchEnabled:v14 isStateOfMindSettingsSwitchEnabled:v15 isReflectionSettingsSwitchEnabled:v16 isBroadSystemLocationSettingsSwitchEnabled:v17];
+  LODWORD(v19) = intValue2;
+  v32 = [v28 initWithEvent:v33 bundle:0 isBundle:&__kCFBooleanFalse IHAState:stateIHA age:age ageRange:intValue biologicalSex:v19 startDate:startDate endDate:endDate categoryOfEvent:describeCategory bundleInterface:0 bundleEvergreenType:0 sugSeetEngType:0 appEntryEngType:0 megaSignalTypeUsed:0 viewVisibleSuggestionsCount:0 viewTotalSuggestionsCount:0 onboardingFlowCompletionState:v20 isJournalAppInstalled:v36 isJournalAppLocked:v35 isJournalSuggestionSkipped:v34 isActivitySettingsSwitchEnabled:v23 isCommunicationSettingsSwitchEnabled:v12 isSignificantLocationSettingsSwitchEnabled:v22 isMediaSettingsSwitchEnabled:v13 isNearbyPeopleSettingsSwitchEnabled:v21 isPhotoSettingsSwitchEnabled:v14 isStateOfMindSettingsSwitchEnabled:v15 isReflectionSettingsSwitchEnabled:v16 isBroadSystemLocationSettingsSwitchEnabled:v17];
 
   return v32;
 }
 
-- (id)generateBiomeEventsFromBundle:(id)a3 andOnboardingStatus:(id)a4
+- (id)generateBiomeEventsFromBundle:(id)bundle andOnboardingStatus:(id)status
 {
-  v6 = a3;
-  v7 = a4;
-  v44 = [(MOBiomeDonationUtility *)self->_biomeDonationUtility convertEventBundle:v6];
+  bundleCopy = bundle;
+  statusCopy = status;
+  v44 = [(MOBiomeDonationUtility *)self->_biomeDonationUtility convertEventBundle:bundleCopy];
   v49[0] = @"shopping";
   v49[1] = @"eating out";
   v49[2] = @"flight";
   v8 = [NSArray arrayWithObjects:v49 count:3];
-  v9 = v6;
-  v10 = [v6 action];
-  v11 = [v10 actionName];
+  v9 = bundleCopy;
+  action = [bundleCopy action];
+  actionName = [action actionName];
   v43 = v8;
-  LODWORD(v8) = [v8 containsObject:v11];
+  LODWORD(v8) = [v8 containsObject:actionName];
 
   if (v8)
   {
-    v12 = [v9 action];
-    v42 = [v12 actionName];
+    action2 = [v9 action];
+    actionName2 = [action2 actionName];
   }
 
   else
   {
-    v42 = 0;
+    actionName2 = 0;
   }
 
-  v41 = [v9 getBundleType];
+  getBundleType = [v9 getBundleType];
   if ([v9 interfaceType] == 11 && (objc_msgSend(v9, "resources"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "count"), v13, v14))
   {
-    v15 = [v9 resources];
-    v16 = [v15 objectAtIndexedSubscript:0];
-    v40 = [v16 name];
+    resources = [v9 resources];
+    v16 = [resources objectAtIndexedSubscript:0];
+    name = [v16 name];
   }
 
   else
   {
-    v40 = 0;
+    name = 0;
   }
 
-  v17 = [v7 objectForKeyedSubscript:@"onboardingStatus"];
+  v17 = [statusCopy objectForKeyedSubscript:@"onboardingStatus"];
 
   if (v17)
   {
-    v18 = [v7 objectForKeyedSubscript:@"onboardingStatus"];
+    v18 = [statusCopy objectForKeyedSubscript:@"onboardingStatus"];
     v38 = +[MOBiomeDonationUtility mapOnboardingFlowCompletion:](MOBiomeDonationUtility, "mapOnboardingFlowCompletion:", [v18 intValue]);
   }
 
@@ -195,42 +195,42 @@ void __56__MOBiomeManager_initWithEventManager_setDefaultValues___block_invoke(i
   stateIHA = self->_stateIHA;
   v35 = v19;
   age = self->_age;
-  v34 = [(NSNumber *)self->_ageBucketed intValue];
-  v33 = [(NSNumber *)self->_biologicalSex intValue];
-  v32 = [v9 startDate];
-  v48 = [v9 endDate];
-  v47 = [v7 objectForKeyedSubscript:@"journalIsInstalled"];
-  v46 = [v7 objectForKeyedSubscript:@"journalConfigLockJournal"];
-  v45 = [v7 objectForKeyedSubscript:@"journalConfigSkipSuggestions"];
-  v31 = [v7 objectForKeyedSubscript:@"settingSwitchActivity"];
-  v30 = [v7 objectForKeyedSubscript:@"settingSwitchCommunication"];
-  v29 = [v7 objectForKeyedSubscript:@"settingSwitchLocation"];
-  v28 = [v7 objectForKeyedSubscript:@"settingSwitchMedia"];
-  v27 = [v7 objectForKeyedSubscript:@"settingSwitchPeople"];
-  v20 = [v7 objectForKeyedSubscript:@"settingSwitchPhoto"];
-  v21 = [v7 objectForKeyedSubscript:@"settingSwitchStateOfMind"];
-  v22 = [v7 objectForKeyedSubscript:@"settingSwitchReflection"];
-  v23 = [v7 objectForKeyedSubscript:@"settingBroaderSwitchLocation"];
+  intValue = [(NSNumber *)self->_ageBucketed intValue];
+  intValue2 = [(NSNumber *)self->_biologicalSex intValue];
+  startDate = [v9 startDate];
+  endDate = [v9 endDate];
+  v47 = [statusCopy objectForKeyedSubscript:@"journalIsInstalled"];
+  v46 = [statusCopy objectForKeyedSubscript:@"journalConfigLockJournal"];
+  v45 = [statusCopy objectForKeyedSubscript:@"journalConfigSkipSuggestions"];
+  v31 = [statusCopy objectForKeyedSubscript:@"settingSwitchActivity"];
+  v30 = [statusCopy objectForKeyedSubscript:@"settingSwitchCommunication"];
+  v29 = [statusCopy objectForKeyedSubscript:@"settingSwitchLocation"];
+  v28 = [statusCopy objectForKeyedSubscript:@"settingSwitchMedia"];
+  v27 = [statusCopy objectForKeyedSubscript:@"settingSwitchPeople"];
+  v20 = [statusCopy objectForKeyedSubscript:@"settingSwitchPhoto"];
+  v21 = [statusCopy objectForKeyedSubscript:@"settingSwitchStateOfMind"];
+  v22 = [statusCopy objectForKeyedSubscript:@"settingSwitchReflection"];
+  v23 = [statusCopy objectForKeyedSubscript:@"settingBroaderSwitchLocation"];
   LODWORD(v26) = v38;
-  LODWORD(v25) = v33;
-  v39 = [v35 initWithEvent:0 bundle:v44 isBundle:&__kCFBooleanTrue IHAState:stateIHA age:age ageRange:v34 biologicalSex:v25 startDate:v32 endDate:v48 categoryOfEvent:0 bundleInterface:v41 bundleEvergreenType:v40 sugSeetEngType:0 appEntryEngType:0 megaSignalTypeUsed:v42 viewVisibleSuggestionsCount:0 viewTotalSuggestionsCount:0 onboardingFlowCompletionState:v26 isJournalAppInstalled:v47 isJournalAppLocked:v46 isJournalSuggestionSkipped:v45 isActivitySettingsSwitchEnabled:v31 isCommunicationSettingsSwitchEnabled:v30 isSignificantLocationSettingsSwitchEnabled:v29 isMediaSettingsSwitchEnabled:v28 isNearbyPeopleSettingsSwitchEnabled:v27 isPhotoSettingsSwitchEnabled:v20 isStateOfMindSettingsSwitchEnabled:v21 isReflectionSettingsSwitchEnabled:v22 isBroadSystemLocationSettingsSwitchEnabled:v23];
+  LODWORD(v25) = intValue2;
+  v39 = [v35 initWithEvent:0 bundle:v44 isBundle:&__kCFBooleanTrue IHAState:stateIHA age:age ageRange:intValue biologicalSex:v25 startDate:startDate endDate:endDate categoryOfEvent:0 bundleInterface:getBundleType bundleEvergreenType:name sugSeetEngType:0 appEntryEngType:0 megaSignalTypeUsed:actionName2 viewVisibleSuggestionsCount:0 viewTotalSuggestionsCount:0 onboardingFlowCompletionState:v26 isJournalAppInstalled:v47 isJournalAppLocked:v46 isJournalSuggestionSkipped:v45 isActivitySettingsSwitchEnabled:v31 isCommunicationSettingsSwitchEnabled:v30 isSignificantLocationSettingsSwitchEnabled:v29 isMediaSettingsSwitchEnabled:v28 isNearbyPeopleSettingsSwitchEnabled:v27 isPhotoSettingsSwitchEnabled:v20 isStateOfMindSettingsSwitchEnabled:v21 isReflectionSettingsSwitchEnabled:v22 isBroadSystemLocationSettingsSwitchEnabled:v23];
 
   return v39;
 }
 
-- (void)donateEvents:(id)a3 andBundles:(id)a4 andOnboardingStatus:(id)a5
+- (void)donateEvents:(id)events andBundles:(id)bundles andOnboardingStatus:(id)status
 {
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = __62__MOBiomeManager_donateEvents_andBundles_andOnboardingStatus___block_invoke;
   v11[3] = &unk_10033DE88;
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
-  v15 = a5;
-  v8 = v15;
-  v9 = v13;
-  v10 = v12;
+  eventsCopy = events;
+  bundlesCopy = bundles;
+  selfCopy = self;
+  statusCopy = status;
+  v8 = statusCopy;
+  v9 = bundlesCopy;
+  v10 = eventsCopy;
   [(MOBiomeManager *)self _fetchAndSetDemographicsWithCompletionHandler:v11];
 }
 
@@ -546,137 +546,137 @@ void __62__MOBiomeManager_donateEvents_andBundles_andOnboardingStatus___block_in
   }
 }
 
-- (id)generateBiomeEventsFromMomentsEventDataBundle:(id)a3 withBundleEngagement:(id)a4
+- (id)generateBiomeEventsFromMomentsEventDataBundle:(id)bundle withBundleEngagement:(id)engagement
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 bundle];
+  engagementCopy = engagement;
+  bundleCopy = bundle;
+  bundle = [bundleCopy bundle];
   v82 = [BMMomentsEventDataEventBundle alloc];
-  v117 = [v7 bundleIdentifier];
-  v113 = [v7 bundleStartDate];
-  v115 = [v7 bundleEndDate];
-  v107 = [v7 bundleCreationDate];
-  v101 = [v7 bundleExpirationDate];
-  v58 = [v7 bundleInterfaceType];
-  v111 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v7 bundleSourceHealthExists]);
-  v109 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v7 bundleSourcePhotoExists]);
-  v105 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v7 bundleSourceProactiveExists]);
-  v90 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v7 bundleSourceRoutineExists]);
-  v103 = [v7 bundlePromptLanguageFormat];
-  v57 = [v7 bundlePlaceType];
-  v56 = [v7 bundlePlaceUserType];
-  v55 = [v7 bundleBaseEventCateory];
-  v99 = [v7 bundleEventIDs];
-  v88 = [v7 bundleActionType];
-  v97 = [v7 backgroundActions];
-  v54 = [v7 bundleTimeTag];
-  v53 = [v5 type];
-  v95 = [v5 timestamp];
-  v93 = [v5 clientIdentifier];
-  v84 = [v5 viewContainerName];
-  [v5 viewVisibleTime];
+  bundleIdentifier = [bundle bundleIdentifier];
+  bundleStartDate = [bundle bundleStartDate];
+  bundleEndDate = [bundle bundleEndDate];
+  bundleCreationDate = [bundle bundleCreationDate];
+  bundleExpirationDate = [bundle bundleExpirationDate];
+  bundleInterfaceType = [bundle bundleInterfaceType];
+  v111 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [bundle bundleSourceHealthExists]);
+  v109 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [bundle bundleSourcePhotoExists]);
+  v105 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [bundle bundleSourceProactiveExists]);
+  v90 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [bundle bundleSourceRoutineExists]);
+  bundlePromptLanguageFormat = [bundle bundlePromptLanguageFormat];
+  bundlePlaceType = [bundle bundlePlaceType];
+  bundlePlaceUserType = [bundle bundlePlaceUserType];
+  bundleBaseEventCateory = [bundle bundleBaseEventCateory];
+  bundleEventIDs = [bundle bundleEventIDs];
+  bundleActionType = [bundle bundleActionType];
+  backgroundActions = [bundle backgroundActions];
+  bundleTimeTag = [bundle bundleTimeTag];
+  type = [engagementCopy type];
+  timestamp = [engagementCopy timestamp];
+  clientIdentifier = [engagementCopy clientIdentifier];
+  viewContainerName = [engagementCopy viewContainerName];
+  [engagementCopy viewVisibleTime];
   v89 = [NSNumber numberWithDouble:?];
-  v52 = [v5 typeAppEntry];
-  v86 = [v5 clientIdentifierAppEntry];
-  v79 = [v5 timestampAppEntry];
-  v81 = [v5 startTimeAppEntry];
-  v77 = [v5 endTimeAppEntry];
-  v71 = [v5 totalCharactersAppEntry];
-  v75 = [v5 addedCharactersAppEntry];
-  v69 = [v7 suggestionIdentifier];
-  v51 = [v7 photoSourceType];
-  v73 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v7 bundleSourcePostAnalyticsExists]);
-  v68 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v7 bundleSourcePDExists]);
-  v50 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v7 bundleSourceMotionExists]);
-  v67 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v7 bundleSourceBooksExists]);
-  v49 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v7 bundleSourceScreenTimeExists]);
-  v66 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v7 bundlePCount]);
-  v48 = [v7 labelConfidenceScore];
-  v47 = [v7 timeCorrelationScore];
-  v45 = [v7 callDuration];
-  v46 = [v7 interactionCount];
-  v44 = [v7 interactionType];
-  LODWORD(v43) = [v7 callPlace];
-  HIDWORD(v43) = [v7 distanceFromHome];
-  v42 = [v7 homeAvailability];
-  v41 = [v7 workAvailability];
-  v40 = [v7 bundleVisitMapItemSource];
-  v39 = [v7 bundleVisitPlaceType];
-  v38 = [v7 bundleVisitPlaceLabelGranularity];
-  v37 = [v7 bundleIncludesAnomalousEvent];
-  v65 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v7 isFiltered]);
-  [v7 bundleSuperType];
-  [v7 bundleSubType];
-  v64 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v7 isAggregatedAndSuppressed]);
-  [v7 summarizationGranularity];
-  v63 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v7 includedInSummaryBundleOnly]);
-  v62 = [v7 subBundleIDs];
-  v61 = [v7 subSuggestionIDs];
-  v36 = [v7 firstCreationDate];
-  v60 = [v7 resources];
-  v35 = [v7 persons];
-  v31 = [v7 mainPlace];
-  v34 = [v7 otherPlaces];
-  v30 = [v7 photoTraits];
-  v33 = [v7 clusterMetadata];
-  v29 = [v7 outlierMetadata];
-  [v7 bundleGoodnessScore];
+  typeAppEntry = [engagementCopy typeAppEntry];
+  clientIdentifierAppEntry = [engagementCopy clientIdentifierAppEntry];
+  timestampAppEntry = [engagementCopy timestampAppEntry];
+  startTimeAppEntry = [engagementCopy startTimeAppEntry];
+  endTimeAppEntry = [engagementCopy endTimeAppEntry];
+  totalCharactersAppEntry = [engagementCopy totalCharactersAppEntry];
+  addedCharactersAppEntry = [engagementCopy addedCharactersAppEntry];
+  suggestionIdentifier = [bundle suggestionIdentifier];
+  photoSourceType = [bundle photoSourceType];
+  v73 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [bundle bundleSourcePostAnalyticsExists]);
+  v68 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [bundle bundleSourcePDExists]);
+  v50 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [bundle bundleSourceMotionExists]);
+  v67 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [bundle bundleSourceBooksExists]);
+  v49 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [bundle bundleSourceScreenTimeExists]);
+  v66 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [bundle bundlePCount]);
+  labelConfidenceScore = [bundle labelConfidenceScore];
+  timeCorrelationScore = [bundle timeCorrelationScore];
+  callDuration = [bundle callDuration];
+  interactionCount = [bundle interactionCount];
+  interactionType = [bundle interactionType];
+  LODWORD(v43) = [bundle callPlace];
+  HIDWORD(v43) = [bundle distanceFromHome];
+  homeAvailability = [bundle homeAvailability];
+  workAvailability = [bundle workAvailability];
+  bundleVisitMapItemSource = [bundle bundleVisitMapItemSource];
+  bundleVisitPlaceType = [bundle bundleVisitPlaceType];
+  bundleVisitPlaceLabelGranularity = [bundle bundleVisitPlaceLabelGranularity];
+  bundleIncludesAnomalousEvent = [bundle bundleIncludesAnomalousEvent];
+  v65 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [bundle isFiltered]);
+  [bundle bundleSuperType];
+  [bundle bundleSubType];
+  v64 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [bundle isAggregatedAndSuppressed]);
+  [bundle summarizationGranularity];
+  v63 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [bundle includedInSummaryBundleOnly]);
+  subBundleIDs = [bundle subBundleIDs];
+  subSuggestionIDs = [bundle subSuggestionIDs];
+  firstCreationDate = [bundle firstCreationDate];
+  resources = [bundle resources];
+  persons = [bundle persons];
+  mainPlace = [bundle mainPlace];
+  otherPlaces = [bundle otherPlaces];
+  photoTraits = [bundle photoTraits];
+  clusterMetadata = [bundle clusterMetadata];
+  outlierMetadata = [bundle outlierMetadata];
+  [bundle bundleGoodnessScore];
   v32 = [NSNumber numberWithDouble:?];
-  [v7 distinctnessScore];
+  [bundle distinctnessScore];
   v28 = [NSNumber numberWithDouble:?];
-  [v7 richnessScore];
+  [bundle richnessScore];
   v27 = [NSNumber numberWithDouble:?];
-  [v7 engagementScore];
+  [bundle engagementScore];
   v26 = [NSNumber numberWithDouble:?];
-  [v7 heuristicsScore];
+  [bundle heuristicsScore];
   v8 = [NSNumber numberWithDouble:?];
-  [v7 metadataForRank];
-  HIDWORD(v24) = v48;
-  v25 = LODWORD(v22) = v52;
+  [bundle metadataForRank];
+  HIDWORD(v24) = labelConfidenceScore;
+  v25 = LODWORD(v22) = typeAppEntry;
   LODWORD(v24) = 0;
   LODWORD(v23) = 0;
-  LODWORD(v21) = v53;
+  LODWORD(v21) = type;
   LODWORD(v20) = 0;
-  LODWORD(v19) = v54;
-  LODWORD(v17) = v55;
-  v83 = [v82 initWithBundleIdentifier:v117 bundleStartDate:v113 bundleEndDate:v115 bundleCreationDate:v107 bundleExpirationDate:v101 bundleInterfaceType:v58 bundleSourceHealthExists:v111 bundleSourcePhotoExists:v109 bundleSourceProactiveExists:v105 bundleSourceRoutineExists:v90 bundlePromptLanguageFormat:v103 bundlePromptToneID:0 bundlePromptParametersAvailability:0 bundlePlaceType:__PAIR64__(v56 bundlePlaceUserType:v57) bundleBaseEventCateory:v17 bundleEventIDs:v99 bundleActionType:v88 backgroundActions:v97 bundleIsFamilyIncluded:0 bundleTimeTag:v19 isBundleResourceTypeUnknown:0 isBundleResourceTypeValueIncluded:0 isBundleResourceTypePhotoAssetsIncluded:0 isBundleResourceTypeMediaIncluded:0 isBundleResourceTypeWebLinkIncluded:0 isBundleResourceTypeInterenceTagIncluded:0 bundlEngagement:v20 bundleVersion:0 rankingVersion:0 suggestionType:v21 suggestionTimestamp:v95 suggestionClientIdentifier:v93 suggestionViewContainerName:v84 suggestionViewVisibleTime:v89 appEntryEventType:v22 appEntryEventClientIdentifier:v86 appEntryEventTimestamp:v79 appEntryEventStartTime:v81 appEntryEventEndTime:v77 appEntryEventTotalCharacters:v71 appEntryEventAddedCharacters:v75 clientActivityEventType:v23 clientActivityEventClientIdentifier:0 clientActivityEventTimestamp:0 suggestionIdentifier:v69 photoSourceType:v51 photoLibraryType:v73 bundleSourcePostAnalyticsExists:v68 bundleSourcePDExists:v50 bundleSourceMotionExists:v67 bundleSourceBooksExists:v49 bundleSourceScreenTimeExists:&__NSArray0__struct gaPRArray:v66 bundlePCount:v24 ranking:__PAIR64__(v45 labelConfidenceScore:v47) timeCorrelationScore:__PAIR64__(v44 callDuration:v46) interactionCount:v43 interactionType:__PAIR64__(v41 callPlace:v42) distanceFromHome:__PAIR64__(v39 homeAvailability:v40) workAvailability:__PAIR64__(v37 bundleVisitMapItemSource:v38) bundleVisitPlaceType:v65 bundleVisitPlaceLabelGranularity:? bundleIncludesAnomalousEvent:? isFiltered:? bundleSuperType:? bundleSubType:? isAggregatedAndSuppressed:? summarizationGranularity:? includedInSummaryBundleOnly:? subBundleIDs:? subSuggestionIDs:? firstCreationDate:? resources:? persons:? mainPlace:? otherPlaces:? photoTraits:? clusterMetadata:? outlierMetadata:? bundleGoodnessScore:? distinctnessScore:? richnessScore:? engagementScore:? heuristicsScore:? metadataForRank:?];
+  LODWORD(v19) = bundleTimeTag;
+  LODWORD(v17) = bundleBaseEventCateory;
+  v83 = [v82 initWithBundleIdentifier:bundleIdentifier bundleStartDate:bundleStartDate bundleEndDate:bundleEndDate bundleCreationDate:bundleCreationDate bundleExpirationDate:bundleExpirationDate bundleInterfaceType:bundleInterfaceType bundleSourceHealthExists:v111 bundleSourcePhotoExists:v109 bundleSourceProactiveExists:v105 bundleSourceRoutineExists:v90 bundlePromptLanguageFormat:bundlePromptLanguageFormat bundlePromptToneID:0 bundlePromptParametersAvailability:0 bundlePlaceType:__PAIR64__(bundlePlaceUserType bundlePlaceUserType:bundlePlaceType) bundleBaseEventCateory:v17 bundleEventIDs:bundleEventIDs bundleActionType:bundleActionType backgroundActions:backgroundActions bundleIsFamilyIncluded:0 bundleTimeTag:v19 isBundleResourceTypeUnknown:0 isBundleResourceTypeValueIncluded:0 isBundleResourceTypePhotoAssetsIncluded:0 isBundleResourceTypeMediaIncluded:0 isBundleResourceTypeWebLinkIncluded:0 isBundleResourceTypeInterenceTagIncluded:0 bundlEngagement:v20 bundleVersion:0 rankingVersion:0 suggestionType:v21 suggestionTimestamp:timestamp suggestionClientIdentifier:clientIdentifier suggestionViewContainerName:viewContainerName suggestionViewVisibleTime:v89 appEntryEventType:v22 appEntryEventClientIdentifier:clientIdentifierAppEntry appEntryEventTimestamp:timestampAppEntry appEntryEventStartTime:startTimeAppEntry appEntryEventEndTime:endTimeAppEntry appEntryEventTotalCharacters:totalCharactersAppEntry appEntryEventAddedCharacters:addedCharactersAppEntry clientActivityEventType:v23 clientActivityEventClientIdentifier:0 clientActivityEventTimestamp:0 suggestionIdentifier:suggestionIdentifier photoSourceType:photoSourceType photoLibraryType:v73 bundleSourcePostAnalyticsExists:v68 bundleSourcePDExists:v50 bundleSourceMotionExists:v67 bundleSourceBooksExists:v49 bundleSourceScreenTimeExists:&__NSArray0__struct gaPRArray:v66 bundlePCount:v24 ranking:__PAIR64__(callDuration labelConfidenceScore:timeCorrelationScore) timeCorrelationScore:__PAIR64__(interactionType callDuration:interactionCount) interactionCount:v43 interactionType:__PAIR64__(workAvailability callPlace:homeAvailability) distanceFromHome:__PAIR64__(bundleVisitPlaceType homeAvailability:bundleVisitMapItemSource) workAvailability:__PAIR64__(bundleIncludesAnomalousEvent bundleVisitMapItemSource:bundleVisitPlaceLabelGranularity) bundleVisitPlaceType:v65 bundleVisitPlaceLabelGranularity:? bundleIncludesAnomalousEvent:? isFiltered:? bundleSuperType:? bundleSubType:? isAggregatedAndSuppressed:? summarizationGranularity:? includedInSummaryBundleOnly:? subBundleIDs:? subSuggestionIDs:? firstCreationDate:? resources:? persons:? mainPlace:? otherPlaces:? photoTraits:? clusterMetadata:? outlierMetadata:? bundleGoodnessScore:? distinctnessScore:? richnessScore:? engagementScore:? heuristicsScore:? metadataForRank:?];
 
   v91 = [BMMomentsEventData alloc];
-  v118 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v6 IHAState]);
-  v116 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v6 age]);
-  LODWORD(v89) = [v6 ageRange];
-  LODWORD(v88) = [v6 biologicalSex];
-  v96 = [v6 bundle];
-  v112 = [v96 bundleStartDate];
-  v94 = [v6 bundle];
-  v114 = [v94 bundleEndDate];
-  v110 = [v6 bundleInterface];
-  v108 = [v6 bundleEvergreenType];
-  v106 = -[MOBiomeManager suggestionTypeToString:](self, "suggestionTypeToString:", [v5 type]);
-  v9 = [v5 typeAppEntry];
+  v118 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [bundleCopy IHAState]);
+  v116 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [bundleCopy age]);
+  LODWORD(v89) = [bundleCopy ageRange];
+  LODWORD(bundleActionType) = [bundleCopy biologicalSex];
+  bundle2 = [bundleCopy bundle];
+  bundleStartDate2 = [bundle2 bundleStartDate];
+  bundle3 = [bundleCopy bundle];
+  bundleEndDate2 = [bundle3 bundleEndDate];
+  bundleInterface = [bundleCopy bundleInterface];
+  bundleEvergreenType = [bundleCopy bundleEvergreenType];
+  v106 = -[MOBiomeManager suggestionTypeToString:](self, "suggestionTypeToString:", [engagementCopy type]);
+  typeAppEntry2 = [engagementCopy typeAppEntry];
 
-  v104 = [(MOBiomeManager *)self appEntryTypeToString:v9];
-  v87 = [v6 megaSignalTypeUsed];
-  v85 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v6 viewVisibleSuggestionsCount]);
-  v102 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v6 viewTotalSuggestionsCount]);
-  LODWORD(v81) = [v6 onboardingFlowCompletionState];
-  v80 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v6 isJournalAppInstalled]);
-  v100 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v6 isJournalAppLocked]);
-  v78 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v6 isJournalSuggestionSkipped]);
-  v98 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v6 isActivitySettingsSwitchEnabled]);
-  v74 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v6 isCommunicationSettingsSwitchEnabled]);
-  v72 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v6 isSignificantLocationSettingsSwitchEnabled]);
-  v76 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v6 isMediaSettingsSwitchEnabled]);
-  v70 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v6 isNearbyPeopleSettingsSwitchEnabled]);
-  v10 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v6 isPhotoSettingsSwitchEnabled]);
-  v11 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v6 isStateOfMindSettingsSwitchEnabled]);
-  v12 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v6 isReflectionSettingsSwitchEnabled]);
-  v13 = [v6 isBroadSystemLocationSettingsSwitchEnabled];
+  v104 = [(MOBiomeManager *)self appEntryTypeToString:typeAppEntry2];
+  megaSignalTypeUsed = [bundleCopy megaSignalTypeUsed];
+  v85 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [bundleCopy viewVisibleSuggestionsCount]);
+  v102 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [bundleCopy viewTotalSuggestionsCount]);
+  LODWORD(startTimeAppEntry) = [bundleCopy onboardingFlowCompletionState];
+  v80 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [bundleCopy isJournalAppInstalled]);
+  v100 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [bundleCopy isJournalAppLocked]);
+  v78 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [bundleCopy isJournalSuggestionSkipped]);
+  v98 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [bundleCopy isActivitySettingsSwitchEnabled]);
+  v74 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [bundleCopy isCommunicationSettingsSwitchEnabled]);
+  v72 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [bundleCopy isSignificantLocationSettingsSwitchEnabled]);
+  v76 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [bundleCopy isMediaSettingsSwitchEnabled]);
+  v70 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [bundleCopy isNearbyPeopleSettingsSwitchEnabled]);
+  v10 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [bundleCopy isPhotoSettingsSwitchEnabled]);
+  v11 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [bundleCopy isStateOfMindSettingsSwitchEnabled]);
+  v12 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [bundleCopy isReflectionSettingsSwitchEnabled]);
+  isBroadSystemLocationSettingsSwitchEnabled = [bundleCopy isBroadSystemLocationSettingsSwitchEnabled];
 
-  v14 = [NSNumber numberWithBool:v13];
-  LODWORD(v18) = v81;
-  LODWORD(v16) = v88;
-  v92 = [v91 initWithEvent:0 bundle:v83 isBundle:&__kCFBooleanTrue IHAState:v118 age:v116 ageRange:v89 biologicalSex:v16 startDate:v112 endDate:v114 categoryOfEvent:0 bundleInterface:v110 bundleEvergreenType:v108 sugSeetEngType:v106 appEntryEngType:v104 megaSignalTypeUsed:v87 viewVisibleSuggestionsCount:v85 viewTotalSuggestionsCount:v102 onboardingFlowCompletionState:v18 isJournalAppInstalled:v80 isJournalAppLocked:v100 isJournalSuggestionSkipped:v78 isActivitySettingsSwitchEnabled:v98 isCommunicationSettingsSwitchEnabled:v74 isSignificantLocationSettingsSwitchEnabled:v72 isMediaSettingsSwitchEnabled:v76 isNearbyPeopleSettingsSwitchEnabled:v70 isPhotoSettingsSwitchEnabled:v10 isStateOfMindSettingsSwitchEnabled:v11 isReflectionSettingsSwitchEnabled:v12 isBroadSystemLocationSettingsSwitchEnabled:v14];
+  v14 = [NSNumber numberWithBool:isBroadSystemLocationSettingsSwitchEnabled];
+  LODWORD(v18) = startTimeAppEntry;
+  LODWORD(v16) = bundleActionType;
+  v92 = [v91 initWithEvent:0 bundle:v83 isBundle:&__kCFBooleanTrue IHAState:v118 age:v116 ageRange:v89 biologicalSex:v16 startDate:bundleStartDate2 endDate:bundleEndDate2 categoryOfEvent:0 bundleInterface:bundleInterface bundleEvergreenType:bundleEvergreenType sugSeetEngType:v106 appEntryEngType:v104 megaSignalTypeUsed:megaSignalTypeUsed viewVisibleSuggestionsCount:v85 viewTotalSuggestionsCount:v102 onboardingFlowCompletionState:v18 isJournalAppInstalled:v80 isJournalAppLocked:v100 isJournalSuggestionSkipped:v78 isActivitySettingsSwitchEnabled:v98 isCommunicationSettingsSwitchEnabled:v74 isSignificantLocationSettingsSwitchEnabled:v72 isMediaSettingsSwitchEnabled:v76 isNearbyPeopleSettingsSwitchEnabled:v70 isPhotoSettingsSwitchEnabled:v10 isStateOfMindSettingsSwitchEnabled:v11 isReflectionSettingsSwitchEnabled:v12 isBroadSystemLocationSettingsSwitchEnabled:v14];
 
   return v92;
 }
@@ -690,11 +690,11 @@ void __62__MOBiomeManager_donateEvents_andBundles_andOnboardingStatus___block_in
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "update biome data stream with latest engagement.", buf, 2u);
   }
 
-  v4 = [(MOBiomeManager *)self stream];
-  v5 = [v4 source];
+  stream = [(MOBiomeManager *)self stream];
+  source = [stream source];
 
-  v6 = [(MOBiomeManager *)self stream];
-  v7 = [v6 pruner];
+  stream2 = [(MOBiomeManager *)self stream];
+  pruner = [stream2 pruner];
 
   v8 = +[NSDate distantPast];
   v9 = +[NSDate distantFuture];
@@ -703,10 +703,10 @@ void __62__MOBiomeManager_donateEvents_andBundles_andOnboardingStatus___block_in
   v12[2] = __49__MOBiomeManager__updateDataStreamWithEngagement__block_invoke;
   v12[3] = &unk_10033DF00;
   v12[4] = self;
-  v13 = v7;
-  v14 = v5;
-  v10 = v5;
-  v11 = v7;
+  v13 = pruner;
+  v14 = source;
+  v10 = source;
+  v11 = pruner;
   [(MOBiomeManager *)self fetchMomentsEventDataBetweenStartDate:v8 EndDate:v9 CompletionHandler:v12];
 }
 
@@ -988,21 +988,21 @@ LABEL_4:
   return v8;
 }
 
-- (void)fetchMomentsEngagementForBundles:(id)a3 CompletionHandler:(id)a4
+- (void)fetchMomentsEngagementForBundles:(id)bundles CompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && [v6 count])
+  bundlesCopy = bundles;
+  handlerCopy = handler;
+  if (bundlesCopy && [bundlesCopy count])
   {
-    v8 = [(MOBiomeManager *)self queue];
+    queue = [(MOBiomeManager *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = __69__MOBiomeManager_fetchMomentsEngagementForBundles_CompletionHandler___block_invoke;
     block[3] = &unk_10033BF58;
     block[4] = self;
-    v12 = v7;
-    v11 = v6;
-    dispatch_async(v8, block);
+    v12 = handlerCopy;
+    v11 = bundlesCopy;
+    dispatch_async(queue, block);
   }
 
   else
@@ -1014,7 +1014,7 @@ LABEL_4:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "No bundle identifier is passed in to return any engagements.", buf, 2u);
     }
 
-    (*(v7 + 2))(v7, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -1218,13 +1218,13 @@ void __69__MOBiomeManager_fetchMomentsEngagementForBundles_CompletionHandler___b
   }
 }
 
-- (void)fetchMomentsEventDataBetweenStartDate:(id)a3 EndDate:(id)a4 CompletionHandler:(id)a5
+- (void)fetchMomentsEventDataBetweenStartDate:(id)date EndDate:(id)endDate CompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 earlierDate:v9];
-  v12 = [v11 isEqualToDate:v9];
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
+  v11 = [dateCopy earlierDate:endDateCopy];
+  v12 = [v11 isEqualToDate:endDateCopy];
 
   if (v12)
   {
@@ -1234,21 +1234,21 @@ void __69__MOBiomeManager_fetchMomentsEngagementForBundles_CompletionHandler___b
       [MOBiomeManager fetchMomentsEventDataBetweenStartDate:EndDate:CompletionHandler:];
     }
 
-    v10[2](v10, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
   {
-    v14 = [(MOBiomeManager *)self queue];
+    queue = [(MOBiomeManager *)self queue];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = __82__MOBiomeManager_fetchMomentsEventDataBetweenStartDate_EndDate_CompletionHandler___block_invoke;
     v15[3] = &unk_10033DFC8;
     v15[4] = self;
-    v18 = v10;
-    v16 = v9;
-    v17 = v8;
-    dispatch_async(v14, v15);
+    v18 = handlerCopy;
+    v16 = endDateCopy;
+    v17 = dateCopy;
+    dispatch_async(queue, v15);
   }
 }
 
@@ -1368,10 +1368,10 @@ void __82__MOBiomeManager_fetchMomentsEventDataBetweenStartDate_EndDate_Completi
   }
 }
 
-- (void)_fetchAndSetDemographicsWithCompletionHandler:(id)a3
+- (void)_fetchAndSetDemographicsWithCompletionHandler:(id)handler
 {
-  v5 = a3;
-  if (!v5)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v6 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -1385,14 +1385,14 @@ void __82__MOBiomeManager_fetchMomentsEventDataBetweenStartDate_EndDate_Completi
 
   if (self->_eventManager && objc_opt_class() && +[MOPlatformInfo isIHAEnabled])
   {
-    v8 = [(MOBiomeManager *)self queue];
+    queue = [(MOBiomeManager *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = __64__MOBiomeManager__fetchAndSetDemographicsWithCompletionHandler___block_invoke;
     block[3] = &unk_100337B48;
     block[4] = self;
-    v12 = v5;
-    dispatch_async(v8, block);
+    v12 = handlerCopy;
+    dispatch_async(queue, block);
   }
 
   else
@@ -1404,7 +1404,7 @@ void __82__MOBiomeManager_fetchMomentsEventDataBetweenStartDate_EndDate_Completi
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "no IHA permission", buf, 2u);
     }
 
-    (*(v5 + 2))(v5, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 

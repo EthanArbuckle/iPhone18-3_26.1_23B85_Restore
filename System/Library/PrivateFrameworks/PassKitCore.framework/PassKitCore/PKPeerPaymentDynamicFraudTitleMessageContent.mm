@@ -1,21 +1,21 @@
 @interface PKPeerPaymentDynamicFraudTitleMessageContent
-- (BOOL)isEqual:(id)a3;
-- (PKPeerPaymentDynamicFraudTitleMessageContent)initWithCoder:(id)a3;
-- (PKPeerPaymentDynamicFraudTitleMessageContent)initWithDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKPeerPaymentDynamicFraudTitleMessageContent)initWithCoder:(id)coder;
+- (PKPeerPaymentDynamicFraudTitleMessageContent)initWithDictionary:(id)dictionary;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPeerPaymentDynamicFraudTitleMessageContent
 
-- (PKPeerPaymentDynamicFraudTitleMessageContent)initWithDictionary:(id)a3
+- (PKPeerPaymentDynamicFraudTitleMessageContent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = PKPeerPaymentDynamicFraudTitleMessageContent;
   v5 = [(PKPeerPaymentDynamicFraudTitleMessageContent *)&v12 init];
-  if (!v5 || ([v4 PKStringForKey:@"title"], v6 = objc_claimAutoreleasedReturnValue(), title = v5->_title, v5->_title = v6, title, objc_msgSend(v4, "PKStringForKey:", @"message"), v8 = objc_claimAutoreleasedReturnValue(), message = v5->_message, v5->_message = v8, message, v5->_title) && v5->_message)
+  if (!v5 || ([dictionaryCopy PKStringForKey:@"title"], v6 = objc_claimAutoreleasedReturnValue(), title = v5->_title, v5->_title = v6, title, objc_msgSend(dictionaryCopy, "PKStringForKey:", @"message"), v8 = objc_claimAutoreleasedReturnValue(), message = v5->_message, v5->_message = v8, message, v5->_title) && v5->_message)
   {
     v10 = v5;
   }
@@ -28,19 +28,19 @@
   return v10;
 }
 
-- (PKPeerPaymentDynamicFraudTitleMessageContent)initWithCoder:(id)a3
+- (PKPeerPaymentDynamicFraudTitleMessageContent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKPeerPaymentDynamicFraudTitleMessageContent;
   v5 = [(PKPeerPaymentDynamicFraudTitleMessageContent *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v5->_title;
     v5->_title = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"message"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"message"];
     message = v5->_message;
     v5->_message = v8;
   }
@@ -48,12 +48,12 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   title = self->_title;
-  v5 = a3;
-  [v5 encodeObject:title forKey:@"title"];
-  [v5 encodeObject:self->_message forKey:@"message"];
+  coderCopy = coder;
+  [coderCopy encodeObject:title forKey:@"title"];
+  [coderCopy encodeObject:self->_message forKey:@"message"];
 }
 
 - (id)description
@@ -66,9 +66,9 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -76,7 +76,7 @@
   }
 
   title = self->_title;
-  v6 = v4[1];
+  v6 = equalCopy[1];
   if (!title || !v6)
   {
     if (title == v6)
@@ -96,7 +96,7 @@ LABEL_9:
 
 LABEL_5:
   message = self->_message;
-  v8 = v4[2];
+  v8 = equalCopy[2];
   if (message && v8)
   {
     v9 = [(NSString *)message isEqual:?];
@@ -114,10 +114,10 @@ LABEL_10:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_title];
-  [v3 safelyAddObject:self->_message];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_title];
+  [array safelyAddObject:self->_message];
+  v4 = PKCombinedHash(17, array);
 
   return v4;
 }

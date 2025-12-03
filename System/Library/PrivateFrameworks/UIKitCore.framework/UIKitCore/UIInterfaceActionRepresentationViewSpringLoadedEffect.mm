@@ -1,6 +1,6 @@
 @interface UIInterfaceActionRepresentationViewSpringLoadedEffect
 - (UIInterfaceActionRepresentationViewSpringLoadedEffect)init;
-- (void)interaction:(id)a3 didChangeWithContext:(id)a4;
+- (void)interaction:(id)interaction didChangeWithContext:(id)context;
 @end
 
 @implementation UIInterfaceActionRepresentationViewSpringLoadedEffect
@@ -20,17 +20,17 @@
   return v2;
 }
 
-- (void)interaction:(id)a3 didChangeWithContext:(id)a4
+- (void)interaction:(id)interaction didChangeWithContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v10 = [v7 view];
-  v8 = [v6 state];
-  [(UISpringLoadedInteractionEffect *)self->_blinkEffect interaction:v7 didChangeWithContext:v6];
+  contextCopy = context;
+  interactionCopy = interaction;
+  view = [interactionCopy view];
+  state = [contextCopy state];
+  [(UISpringLoadedInteractionEffect *)self->_blinkEffect interaction:interactionCopy didChangeWithContext:contextCopy];
 
-  if (v8)
+  if (state)
   {
-    if (v8 != 1)
+    if (state != 1)
     {
       goto LABEL_6;
     }
@@ -43,7 +43,7 @@
     v9 = 0;
   }
 
-  [v10 setHighlighted:v9];
+  [view setHighlighted:v9];
 LABEL_6:
 }
 

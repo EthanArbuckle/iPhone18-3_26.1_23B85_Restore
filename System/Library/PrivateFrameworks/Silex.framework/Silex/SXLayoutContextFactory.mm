@@ -1,14 +1,14 @@
 @interface SXLayoutContextFactory
-- (id)createLayoutContextForColumnLayout:(id)a3 unitConverter:(id)a4;
+- (id)createLayoutContextForColumnLayout:(id)layout unitConverter:(id)converter;
 @end
 
 @implementation SXLayoutContextFactory
 
-- (id)createLayoutContextForColumnLayout:(id)a3 unitConverter:(id)a4
+- (id)createLayoutContextForColumnLayout:(id)layout unitConverter:(id)converter
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[SXLayoutContext alloc] initWithColumnLayout:v6 unitConverter:v5];
+  converterCopy = converter;
+  layoutCopy = layout;
+  v7 = [[SXLayoutContext alloc] initWithColumnLayout:layoutCopy unitConverter:converterCopy];
 
   return v7;
 }

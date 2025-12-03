@@ -1,16 +1,16 @@
 @interface AMSDAccountCachedServerDataService
-+ (BOOL)isConnectionEntitled:(id)a3;
-- (void)getDataForAccountIDs:(id)a3 reply:(id)a4;
-- (void)lazySyncForAccounts:(id)a3 reply:(id)a4;
-- (void)manualSyncForAccountID:(id)a3 reply:(id)a4;
-- (void)queueMetricsEventNotingExpiry:(id)a3 appID:(id)a4 reply:(id)a5;
++ (BOOL)isConnectionEntitled:(id)entitled;
+- (void)getDataForAccountIDs:(id)ds reply:(id)reply;
+- (void)lazySyncForAccounts:(id)accounts reply:(id)reply;
+- (void)manualSyncForAccountID:(id)d reply:(id)reply;
+- (void)queueMetricsEventNotingExpiry:(id)expiry appID:(id)d reply:(id)reply;
 @end
 
 @implementation AMSDAccountCachedServerDataService
 
-+ (BOOL)isConnectionEntitled:(id)a3
++ (BOOL)isConnectionEntitled:(id)entitled
 {
-  v3 = [a3 valueForEntitlement:@"com.apple.private.applemediaservices"];
+  v3 = [entitled valueForEntitlement:@"com.apple.private.applemediaservices"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -22,65 +22,65 @@
     v4 = 0;
   }
 
-  v5 = [v4 BOOLValue];
-  return v5;
+  bOOLValue = [v4 BOOLValue];
+  return bOOLValue;
 }
 
-- (void)getDataForAccountIDs:(id)a3 reply:(id)a4
+- (void)getDataForAccountIDs:(id)ds reply:(id)reply
 {
-  v5 = a4;
-  v6 = a3;
+  replyCopy = reply;
+  dsCopy = ds;
   v7 = +[_TtC12amsaccountsd23CachedServerDataService sharedService];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10003E600;
   v9[3] = &unk_1002AFE50;
-  v10 = v5;
-  v8 = v5;
-  [v7 dataWithAccounts:v6 completionHandler:v9];
+  v10 = replyCopy;
+  v8 = replyCopy;
+  [v7 dataWithAccounts:dsCopy completionHandler:v9];
 }
 
-- (void)queueMetricsEventNotingExpiry:(id)a3 appID:(id)a4 reply:(id)a5
+- (void)queueMetricsEventNotingExpiry:(id)expiry appID:(id)d reply:(id)reply
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  replyCopy = reply;
+  dCopy = d;
+  expiryCopy = expiry;
   v10 = +[_TtC12amsaccountsd23CachedServerDataService sharedService];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10003E9E4;
   v12[3] = &unk_1002AFE78;
-  v13 = v7;
-  v11 = v7;
-  [v10 queueMetricsEventFor:v9 appID:v8 completionHandler:v12];
+  v13 = replyCopy;
+  v11 = replyCopy;
+  [v10 queueMetricsEventFor:expiryCopy appID:dCopy completionHandler:v12];
 }
 
-- (void)manualSyncForAccountID:(id)a3 reply:(id)a4
+- (void)manualSyncForAccountID:(id)d reply:(id)reply
 {
-  v5 = a4;
-  v6 = a3;
+  replyCopy = reply;
+  dCopy = d;
   v7 = +[_TtC12amsaccountsd23CachedServerDataService sharedService];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10003EB50;
   v9[3] = &unk_1002AFE78;
-  v10 = v5;
-  v8 = v5;
-  [v7 manualSyncFor:v6 completionHandler:v9];
+  v10 = replyCopy;
+  v8 = replyCopy;
+  [v7 manualSyncFor:dCopy completionHandler:v9];
 }
 
-- (void)lazySyncForAccounts:(id)a3 reply:(id)a4
+- (void)lazySyncForAccounts:(id)accounts reply:(id)reply
 {
-  v5 = a4;
-  v6 = a3;
+  replyCopy = reply;
+  accountsCopy = accounts;
   v7 = +[_TtC12amsaccountsd23CachedServerDataService sharedService];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10003ECBC;
   v9[3] = &unk_1002AFE50;
-  v10 = v5;
-  v8 = v5;
-  [v7 dataWithAccounts:v6 completionHandler:v9];
+  v10 = replyCopy;
+  v8 = replyCopy;
+  [v7 dataWithAccounts:accountsCopy completionHandler:v9];
 }
 
 @end

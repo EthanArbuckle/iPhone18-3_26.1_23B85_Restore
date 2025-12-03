@@ -1,14 +1,14 @@
 @interface NTKPhotosColorPalette
-+ (void)applyColorRamp:(id)a3 colorRampAmount:(double)a4 monochromeColorMatrix:(id)a5 toView:(id)a6;
-+ (void)colorRampForMonochromeColorMatrix:(id)a3 fromPalette:(id)a4 toPalette:(id)a5 transitionFraction:(double)a6 completion:(id)a7;
-+ (void)removeColorRampFromView:(id)a3;
++ (void)applyColorRamp:(id)ramp colorRampAmount:(double)amount monochromeColorMatrix:(id)matrix toView:(id)view;
++ (void)colorRampForMonochromeColorMatrix:(id)matrix fromPalette:(id)palette toPalette:(id)toPalette transitionFraction:(double)fraction completion:(id)completion;
++ (void)removeColorRampFromView:(id)view;
 - (BOOL)isOriginalColor;
 - (id)_monocolorRampColor;
 - (id)colorRampImage;
 - (id)colorRampsIndex;
 - (id)colorRampsIndexByColorName;
 - (id)monocolorRampImage;
-- (id)swatchImageForSize:(CGSize)a3;
+- (id)swatchImageForSize:(CGSize)size;
 - (id)swatchPrimaryColor;
 @end
 
@@ -23,24 +23,24 @@
 
   else
   {
-    v4 = [(NTKPhotosColorPalette *)self imageAsset];
-    v5 = [(NTKPhotosColorPalette *)self colorRampsIndex];
-    v6 = v5;
-    if (v5)
+    imageAsset = [(NTKPhotosColorPalette *)self imageAsset];
+    colorRampsIndex = [(NTKPhotosColorPalette *)self colorRampsIndex];
+    v6 = colorRampsIndex;
+    if (colorRampsIndex)
     {
-      v7 = [v5 intValue];
+      intValue = [colorRampsIndex intValue];
     }
 
     else
     {
-      [v4 size];
+      [imageAsset size];
       v9 = v8;
-      [v4 scale];
-      v7 = (v9 * v10 + -1.0);
+      [imageAsset scale];
+      intValue = (v9 * v10 + -1.0);
     }
 
-    [v4 size];
-    v3 = NTKCropImage(v4, 0.0, v7, v11, 1.0);
+    [imageAsset size];
+    v3 = NTKCropImage(imageAsset, 0.0, intValue, v11, 1.0);
   }
 
   return v3;
@@ -55,11 +55,11 @@
 
   else
   {
-    v4 = [(NTKPhotosColorPalette *)self monocolorRampColor];
+    monocolorRampColor = [(NTKPhotosColorPalette *)self monocolorRampColor];
     v7.width = 1.0;
     v7.height = 1.0;
     UIGraphicsBeginImageContextWithOptions(v7, 1, 1.0);
-    [v4 setFill];
+    [monocolorRampColor setFill];
     v8.origin.x = 0.0;
     v8.origin.y = 0.0;
     v8.size.width = 1.0;
@@ -72,10 +72,10 @@
   return v3;
 }
 
-- (id)swatchImageForSize:(CGSize)a3
+- (id)swatchImageForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if ([(NTKPhotosColorPalette *)self isOriginalColor])
   {
     if (width == *MEMORY[0x277CBF3A8] && height == *(MEMORY[0x277CBF3A8] + 8))
@@ -85,12 +85,12 @@
       height = v8;
     }
 
-    v9 = [MEMORY[0x277D75348] blackColor];
+    blackColor = [MEMORY[0x277D75348] blackColor];
     v29.width = width;
     v29.height = height;
     UIGraphicsBeginImageContextWithOptions(v29, 0, 0.0);
     CurrentContext = UIGraphicsGetCurrentContext();
-    [v9 set];
+    [blackColor set];
     v33.origin.x = 0.0;
     v33.origin.y = 0.0;
     v33.size.width = width;
@@ -108,7 +108,7 @@
     v34.size.width = width;
     v34.size.height = height;
     CGContextClipToMask(v13, v34, Image);
-    [v9 set];
+    [blackColor set];
     transform.b = 0.0;
     transform.c = 0.0;
     transform.a = 1.0;
@@ -120,7 +120,7 @@
 
   if ([(NTKFaceColorPalette *)self isCompositePalette])
   {
-    v14 = [(NTKPhotosColorPalette *)self colorRampImage];
+    colorRampImage = [(NTKPhotosColorPalette *)self colorRampImage];
     if (width == *MEMORY[0x277CBF3A8] && height == *(MEMORY[0x277CBF3A8] + 8))
     {
       [NTKEditOption sizeForSwatchStyle:0];
@@ -132,8 +132,8 @@
     v31.height = height;
     UIGraphicsBeginImageContextWithOptions(v31, 0, 0.0);
     v18 = UIGraphicsGetCurrentContext();
-    v19 = [MEMORY[0x277D75348] blackColor];
-    [v19 set];
+    blackColor2 = [MEMORY[0x277D75348] blackColor];
+    [blackColor2 set];
 
     v35.origin.x = 0.0;
     v35.origin.y = 0.0;
@@ -155,13 +155,13 @@
     CGContextTranslateCTM(v22, width * 0.5, height * 0.5);
     CGContextRotateCTM(v22, -2.35619449);
     CGContextTranslateCTM(v22, width * -0.5, height * -0.5);
-    v23 = [v14 CGImage];
+    cGImage = [colorRampImage CGImage];
     v37.origin.x = 0.0;
     v37.origin.y = 0.0;
     v37.size.width = width;
     v37.size.height = height;
-    CGContextDrawImage(v22, v37, v23);
-    v24 = UIGraphicsGetImageFromCurrentImageContext();
+    CGContextDrawImage(v22, v37, cGImage);
+    height = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     CGImageRelease(v21);
   }
@@ -170,42 +170,42 @@
   {
     v26.receiver = self;
     v26.super_class = NTKPhotosColorPalette;
-    v24 = [(NTKFaceColorPalette *)&v26 swatchImageForSize:width, height];
+    height = [(NTKFaceColorPalette *)&v26 swatchImageForSize:width, height];
   }
 
-  return v24;
+  return height;
 }
 
 - (id)swatchPrimaryColor
 {
   if ([(NTKFaceColorPalette *)self isCompositePalette])
   {
-    v3 = 0;
+    swatchPrimaryColor = 0;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = NTKPhotosColorPalette;
-    v3 = [(NTKFaceColorPalette *)&v5 swatchPrimaryColor];
+    swatchPrimaryColor = [(NTKFaceColorPalette *)&v5 swatchPrimaryColor];
   }
 
-  return v3;
+  return swatchPrimaryColor;
 }
 
 - (id)colorRampsIndex
 {
-  v3 = [(NTKPhotosColorPalette *)self colorRampsIndexByColorName];
-  v4 = [(NTKFaceColorPalette *)self pigmentEditOption];
-  v5 = [v4 identifier];
-  v6 = [v3 objectForKeyedSubscript:v5];
+  colorRampsIndexByColorName = [(NTKPhotosColorPalette *)self colorRampsIndexByColorName];
+  pigmentEditOption = [(NTKFaceColorPalette *)self pigmentEditOption];
+  identifier = [pigmentEditOption identifier];
+  v6 = [colorRampsIndexByColorName objectForKeyedSubscript:identifier];
 
   if (!v6)
   {
-    v7 = [(NTKPhotosColorPalette *)self colorRampsIndexByColorName];
-    v8 = [(NTKFaceColorPalette *)self configuration];
-    v9 = [v8 colorOption];
-    v6 = [v7 objectForKeyedSubscript:v9];
+    colorRampsIndexByColorName2 = [(NTKPhotosColorPalette *)self colorRampsIndexByColorName];
+    configuration = [(NTKFaceColorPalette *)self configuration];
+    colorOption = [configuration colorOption];
+    v6 = [colorRampsIndexByColorName2 objectForKeyedSubscript:colorOption];
   }
 
   return v6;
@@ -1158,10 +1158,10 @@ void __51__NTKPhotosColorPalette_colorRampsIndexByColorName__block_invoke(uint64
 
 - (BOOL)isOriginalColor
 {
-  v2 = [(NTKFaceColorPalette *)self configuration];
-  v3 = [v2 colorOption];
+  configuration = [(NTKFaceColorPalette *)self configuration];
+  colorOption = [configuration colorOption];
   v4 = +[NTKPhotosColorEditOption originalColorName];
-  v5 = [v3 isEqualToString:v4];
+  v5 = [colorOption isEqualToString:v4];
 
   return v5;
 }
@@ -1171,114 +1171,114 @@ void __51__NTKPhotosColorPalette_colorRampsIndexByColorName__block_invoke(uint64
   if ([(NTKFaceColorPalette *)self isCompositePalette])
   {
     v3 = [(NTKFaceColorPalette *)self paletteAtIndex:0];
-    v4 = [v3 primaryColor];
+    primaryColor = [v3 primaryColor];
   }
 
   else
   {
-    v4 = [(NTKPhotosColorPalette *)self primaryColor];
+    primaryColor = [(NTKPhotosColorPalette *)self primaryColor];
   }
 
-  return v4;
+  return primaryColor;
 }
 
-+ (void)colorRampForMonochromeColorMatrix:(id)a3 fromPalette:(id)a4 toPalette:(id)a5 transitionFraction:(double)a6 completion:(id)a7
++ (void)colorRampForMonochromeColorMatrix:(id)matrix fromPalette:(id)palette toPalette:(id)toPalette transitionFraction:(double)fraction completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v22 = v11;
-  v14 = a7;
+  matrixCopy = matrix;
+  paletteCopy = palette;
+  toPaletteCopy = toPalette;
+  v22 = matrixCopy;
+  completionCopy = completion;
   v15 = NTKIsDefaultMonochromeColorMatrix(v22);
-  if (![v12 isOriginalColor])
+  if (![paletteCopy isOriginalColor])
   {
-    if (![v13 isOriginalColor])
+    if (![toPaletteCopy isOriginalColor])
     {
       if (v15)
       {
-        v20 = [v12 monocolorRampImage];
-        [v13 monocolorRampImage];
+        monocolorRampImage = [paletteCopy monocolorRampImage];
+        [toPaletteCopy monocolorRampImage];
       }
 
       else
       {
-        v20 = [v12 colorRampImage];
-        [v13 colorRampImage];
+        monocolorRampImage = [paletteCopy colorRampImage];
+        [toPaletteCopy colorRampImage];
       }
       v21 = ;
-      v19 = NTKInterpolateBetweenImages(v20, v21, a6);
+      v19 = NTKInterpolateBetweenImages(monocolorRampImage, v21, fraction);
 
-      a6 = 1.0;
+      fraction = 1.0;
       v16 = v22;
       goto LABEL_12;
     }
 
-    v16 = NTKInterpolateColorMatrixToIdentity(v22, a6);
+    v16 = NTKInterpolateColorMatrixToIdentity(v22, fraction);
 
-    a6 = 1.0 - a6;
-    v17 = v12;
+    fraction = 1.0 - fraction;
+    v17 = paletteCopy;
     if (v15)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
-    v18 = [v17 colorRampImage];
+    colorRampImage = [v17 colorRampImage];
     goto LABEL_7;
   }
 
-  v16 = NTKInterpolateColorMatrixToIdentity(v22, 1.0 - a6);
+  v16 = NTKInterpolateColorMatrixToIdentity(v22, 1.0 - fraction);
 
-  v17 = v13;
+  v17 = toPaletteCopy;
   if (!v15)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  v18 = [v17 monocolorRampImage];
+  colorRampImage = [v17 monocolorRampImage];
 LABEL_7:
-  v19 = v18;
+  v19 = colorRampImage;
 LABEL_12:
-  v14[2](v14, v19, v16, a6);
+  completionCopy[2](completionCopy, v19, v16, fraction);
 }
 
-+ (void)applyColorRamp:(id)a3 colorRampAmount:(double)a4 monochromeColorMatrix:(id)a5 toView:(id)a6
++ (void)applyColorRamp:(id)ramp colorRampAmount:(double)amount monochromeColorMatrix:(id)matrix toView:(id)view
 {
   v20[2] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  if (v10)
+  rampCopy = ramp;
+  matrixCopy = matrix;
+  if (rampCopy)
   {
     v12 = MEMORY[0x277CD9EA0];
     v13 = *MEMORY[0x277CDA2C0];
-    v14 = a6;
-    v15 = [v12 filterWithType:v13];
-    [v15 setValue:v11 forKey:@"inputColorMatrix"];
+    viewCopy = view;
+    viewCopy2 = [v12 filterWithType:v13];
+    [viewCopy2 setValue:matrixCopy forKey:@"inputColorMatrix"];
     v16 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA588]];
-    v17 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+    v17 = [MEMORY[0x277CCABB0] numberWithDouble:amount];
     [v16 setValue:v17 forKey:@"inputAmount"];
 
-    [v16 setValue:objc_msgSend(v10 forKey:{"CGImage"), @"inputColorMap"}];
-    v20[0] = v15;
+    [v16 setValue:objc_msgSend(rampCopy forKey:{"CGImage"), @"inputColorMap"}];
+    v20[0] = viewCopy2;
     v20[1] = v16;
     v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:2];
-    v19 = [v14 layer];
+    layer = [viewCopy layer];
 
-    [v19 setFilters:v18];
+    [layer setFilters:v18];
   }
 
   else
   {
-    v15 = a6;
-    [a1 removeColorRampFromView:v15];
+    viewCopy2 = view;
+    [self removeColorRampFromView:viewCopy2];
   }
 }
 
-+ (void)removeColorRampFromView:(id)a3
++ (void)removeColorRampFromView:(id)view
 {
-  v3 = [a3 layer];
-  [v3 setFilters:0];
+  layer = [view layer];
+  [layer setFilters:0];
 }
 
 @end

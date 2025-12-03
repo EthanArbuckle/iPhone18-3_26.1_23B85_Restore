@@ -1,7 +1,7 @@
 @interface TTSSpeechTracer
 + (_TtC12TextToSpeech15TTSSpeechTracer)shared;
 - (id)makeSpeechJobIdentifier;
-- (void)emitWithEvent:(id)a3 forIdentifier:(id)a4;
+- (void)emitWithEvent:(id)event forIdentifier:(id)identifier;
 @end
 
 @implementation TTSSpeechTracer
@@ -26,16 +26,16 @@
   return v2;
 }
 
-- (void)emitWithEvent:(id)a3 forIdentifier:(id)a4
+- (void)emitWithEvent:(id)event forIdentifier:(id)identifier
 {
   v6 = sub_1A957C0F8();
   v8 = v7;
   v9 = MEMORY[0x1E69E7D40];
-  v10 = *((*MEMORY[0x1E69E7D40] & *a3) + 0x58);
-  v11 = a3;
-  v12 = self;
+  v10 = *((*MEMORY[0x1E69E7D40] & *event) + 0x58);
+  eventCopy = event;
+  selfCopy = self;
   v10(v13);
-  (*((*v9 & v12->super.isa) + 0x128))(v13, v6, v8);
+  (*((*v9 & selfCopy->super.isa) + 0x128))(v13, v6, v8);
 
   v15[2] = v13[2];
   v15[3] = v13[3];

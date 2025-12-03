@@ -1,6 +1,6 @@
 @interface PKSharedPaymentWebServiceArchiver
 + (id)sharedPaymentWebServiceArchiver;
-- (void)archiveContext:(id)a3;
+- (void)archiveContext:(id)context;
 @end
 
 @implementation PKSharedPaymentWebServiceArchiver
@@ -12,11 +12,11 @@
   return v2;
 }
 
-- (void)archiveContext:(id)a3
+- (void)archiveContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = +[PKPaymentService paymentService];
-  [v4 setSharedPaymentWebServiceContext:v3];
+  [v4 setSharedPaymentWebServiceContext:contextCopy];
 }
 
 @end

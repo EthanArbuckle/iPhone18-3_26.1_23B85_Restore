@@ -1,66 +1,66 @@
 @interface TranscriptModelBuilder
-- (void)parser:(id)a3 didEndElementType:(int64_t)a4;
-- (void)parser:(id)a3 didStartElementType:(int64_t)a4;
-- (void)parser:(id)a3 foundCharacters:(id)a4;
-- (void)parser:(id)a3 parseErrorOccurred:(id)a4;
-- (void)parser:(id)a3 validationErrorOccurred:(id)a4;
-- (void)parserDidEndDocument:(id)a3;
-- (void)parserDidStartDocument:(id)a3;
+- (void)parser:(id)parser didEndElementType:(int64_t)type;
+- (void)parser:(id)parser didStartElementType:(int64_t)type;
+- (void)parser:(id)parser foundCharacters:(id)characters;
+- (void)parser:(id)parser parseErrorOccurred:(id)occurred;
+- (void)parser:(id)parser validationErrorOccurred:(id)occurred;
+- (void)parserDidEndDocument:(id)document;
+- (void)parserDidStartDocument:(id)document;
 @end
 
 @implementation TranscriptModelBuilder
 
-- (void)parser:(id)a3 didStartElementType:(int64_t)a4
+- (void)parser:(id)parser didStartElementType:(int64_t)type
 {
-  v6 = a3;
-  v7 = self;
-  sub_1D9143A90(v6, a4);
+  parserCopy = parser;
+  selfCopy = self;
+  sub_1D9143A90(parserCopy, type);
 }
 
-- (void)parser:(id)a3 didEndElementType:(int64_t)a4
+- (void)parser:(id)parser didEndElementType:(int64_t)type
 {
-  v6 = a3;
-  v7 = self;
-  sub_1D9144B88(a4);
+  parserCopy = parser;
+  selfCopy = self;
+  sub_1D9144B88(type);
 }
 
-- (void)parser:(id)a3 foundCharacters:(id)a4
+- (void)parser:(id)parser foundCharacters:(id)characters
 {
   v6 = sub_1D917820C();
   v8 = v7;
-  v9 = a3;
-  v10 = self;
+  parserCopy = parser;
+  selfCopy = self;
   sub_1D9144DE4(v6, v8);
 }
 
-- (void)parserDidStartDocument:(id)a3
+- (void)parserDidStartDocument:(id)document
 {
-  v4 = a3;
-  v5 = self;
+  documentCopy = document;
+  selfCopy = self;
   sub_1D9145044();
 }
 
-- (void)parserDidEndDocument:(id)a3
+- (void)parserDidEndDocument:(id)document
 {
-  v4 = a3;
-  v5 = self;
+  documentCopy = document;
+  selfCopy = self;
   sub_1D9145358();
 }
 
-- (void)parser:(id)a3 parseErrorOccurred:(id)a4
+- (void)parser:(id)parser parseErrorOccurred:(id)occurred
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
-  sub_1D91456EC(v8);
+  parserCopy = parser;
+  occurredCopy = occurred;
+  selfCopy = self;
+  sub_1D91456EC(occurredCopy);
 }
 
-- (void)parser:(id)a3 validationErrorOccurred:(id)a4
+- (void)parser:(id)parser validationErrorOccurred:(id)occurred
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
-  sub_1D9145B14(v8);
+  parserCopy = parser;
+  occurredCopy = occurred;
+  selfCopy = self;
+  sub_1D9145B14(occurredCopy);
 }
 
 @end

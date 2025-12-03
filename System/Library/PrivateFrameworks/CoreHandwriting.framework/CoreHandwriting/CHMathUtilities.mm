@@ -1,12 +1,12 @@
 @interface CHMathUtilities
-+ (id)syntaxAllowedSplitsForResult:(id)a3 outSubResultBounds:(void *)a4;
++ (id)syntaxAllowedSplitsForResult:(id)result outSubResultBounds:(void *)bounds;
 @end
 
 @implementation CHMathUtilities
 
-+ (id)syntaxAllowedSplitsForResult:(id)a3 outSubResultBounds:(void *)a4
++ (id)syntaxAllowedSplitsForResult:(id)result outSubResultBounds:(void *)bounds
 {
-  v4 = a3;
+  resultCopy = result;
   v10 = objc_msgSend_array(MEMORY[0x1E695DF70], v5, v6, v7, v8, v9);
   v387[0] = 0;
   v387[1] = v387;
@@ -26,8 +26,8 @@
   v385 = v387;
   v16 = v10;
   v383 = v16;
-  v371 = v4;
-  objc_msgSend_enumerateTokensInTopTranscriptionPathWithBlock_(v4, v17, v382, v18, v19, v20);
+  v371 = resultCopy;
+  objc_msgSend_enumerateTokensInTopTranscriptionPathWithBlock_(resultCopy, v17, v382, v18, v19, v20);
   if (objc_msgSend_count(v16, v21, v22, v23, v24, v25) <= 1)
   {
     v31 = v16;
@@ -304,21 +304,21 @@ LABEL_48:
       ++v317;
     }
 
-    sub_1836F13C4(a4, &v380);
+    sub_1836F13C4(bounds, &v380);
     ++v311;
   }
 
-  v359 = *a4;
-  v360 = *(a4 + 1);
-  v361 = v360 == *a4;
-  if (v360 == *a4)
+  v359 = *bounds;
+  v360 = *(bounds + 1);
+  v361 = v360 == *bounds;
+  if (v360 == *bounds)
   {
     v362 = v312;
   }
 
   else
   {
-    v362 = *a4;
+    v362 = *bounds;
   }
 
   v380 = *v362;
@@ -332,8 +332,8 @@ LABEL_48:
       while (1)
       {
         IsNull = CGRectIsNull(*&v359[v363].x);
-        v359 = *a4;
-        v366 = (*a4 + v363 * 16);
+        v359 = *bounds;
+        v366 = (*bounds + v363 * 16);
         if (IsNull)
         {
           break;
@@ -343,7 +343,7 @@ LABEL_48:
         v381 = v366[1];
         ++v364;
         v363 += 2;
-        if (v364 >= (*(a4 + 1) - v359) >> 5)
+        if (v364 >= (*(bounds + 1) - v359) >> 5)
         {
           goto LABEL_68;
         }
@@ -351,12 +351,12 @@ LABEL_48:
 
       *v366 = v380;
       v366[1] = v381;
-      v359 = *a4;
+      v359 = *bounds;
       ++v364;
       v363 += 2;
     }
 
-    while (v364 < (*(a4 + 1) - *a4) >> 5);
+    while (v364 < (*(bounds + 1) - *bounds) >> 5);
   }
 
 LABEL_68:

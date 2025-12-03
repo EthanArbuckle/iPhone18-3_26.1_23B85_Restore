@@ -1,15 +1,15 @@
 @interface ICDelegateAccountStoreSchema
-+ (BOOL)_createDefaultSchemaWithConnection:(id)a3 error:(id *)a4;
-+ (BOOL)setupWithConnection:(id)a3 error:(id *)a4;
++ (BOOL)_createDefaultSchemaWithConnection:(id)connection error:(id *)error;
++ (BOOL)setupWithConnection:(id)connection error:(id *)error;
 + (id)defaultDatabasePath;
 @end
 
 @implementation ICDelegateAccountStoreSchema
 
-+ (BOOL)_createDefaultSchemaWithConnection:(id)a3 error:(id *)a4
++ (BOOL)_createDefaultSchemaWithConnection:(id)connection error:(id *)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  connectionCopy = connection;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -34,17 +34,17 @@
 
         v13 = *(*(&v19 + 1) + 8 * v11);
         v18 = v12;
-        v14 = [v5 executeStatement:v13 error:&v18];
+        v14 = [connectionCopy executeStatement:v13 error:&v18];
         v9 = v18;
 
         if (!v14)
         {
 
-          if (a4)
+          if (error)
           {
             v15 = v9;
             v16 = 0;
-            *a4 = v9;
+            *error = v9;
           }
 
           else
@@ -81,9 +81,9 @@ LABEL_15:
   return v16;
 }
 
-+ (BOOL)setupWithConnection:(id)a3 error:(id *)a4
++ (BOOL)setupWithConnection:(id)connection error:(id *)error
 {
-  v6 = a3;
+  connectionCopy = connection;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -98,16 +98,16 @@ LABEL_15:
   v10[1] = 3221225472;
   v10[2] = __58__ICDelegateAccountStoreSchema_setupWithConnection_error___block_invoke;
   v10[3] = &unk_1E7BF9140;
-  v7 = v6;
+  v7 = connectionCopy;
   v11 = v7;
   v12 = &v15;
   v13 = &v21;
-  v14 = a1;
+  selfCopy = self;
   [v7 performTransaction:v10];
   v8 = *(v22 + 24);
-  if (a4 && (v22[3] & 1) == 0)
+  if (error && (v22[3] & 1) == 0)
   {
-    *a4 = v16[5];
+    *error = v16[5];
     v8 = *(v22 + 24);
   }
 

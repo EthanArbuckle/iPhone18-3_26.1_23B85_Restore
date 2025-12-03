@@ -34,19 +34,19 @@
 - (void)syncMusicSubscriptionInformation
 {
   v2 = *(*(&self->super.isa + OBJC_IVAR___MTPurchaseControllerWrapper_purchaseController) + *((*MEMORY[0x1E69E7D40] & **(&self->super.isa + OBJC_IVAR___MTPurchaseControllerWrapper_purchaseController)) + 0xB0));
-  v3 = self;
+  selfCopy = self;
   sub_1D8D6C624(0, sub_1D906A898, 0);
 }
 
 - (void)forceFetchLatestChannelUpdates
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D8DBA884();
 }
 
 - (void)fetchChannelUpdatesCheckingEntitlementsNotification
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D8DBADF0();
 }
 

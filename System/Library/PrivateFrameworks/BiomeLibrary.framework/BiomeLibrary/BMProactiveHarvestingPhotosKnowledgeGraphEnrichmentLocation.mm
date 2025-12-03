@@ -1,38 +1,38 @@
 @interface BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation)initWithStreet:(id)a3 city:(id)a4 state:(id)a5 country:(id)a6 encodedLocation:(id)a7;
-- (BOOL)isEqual:(id)a3;
+- (BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation)initWithStreet:(id)street city:(id)city state:(id)state country:(id)country encodedLocation:(id)location;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation *)self street];
-    v7 = [v5 street];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    street = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation *)self street];
+    street2 = [v5 street];
+    v8 = street2;
+    if (street == street2)
     {
     }
 
     else
     {
-      v9 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation *)self street];
-      v10 = [v5 street];
-      v11 = [v9 isEqual:v10];
+      street3 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation *)self street];
+      street4 = [v5 street];
+      v11 = [street3 isEqual:street4];
 
       if (!v11)
       {
@@ -40,18 +40,18 @@
       }
     }
 
-    v13 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation *)self city];
-    v14 = [v5 city];
-    v15 = v14;
-    if (v13 == v14)
+    city = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation *)self city];
+    city2 = [v5 city];
+    v15 = city2;
+    if (city == city2)
     {
     }
 
     else
     {
-      v16 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation *)self city];
-      v17 = [v5 city];
-      v18 = [v16 isEqual:v17];
+      city3 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation *)self city];
+      city4 = [v5 city];
+      v18 = [city3 isEqual:city4];
 
       if (!v18)
       {
@@ -59,18 +59,18 @@
       }
     }
 
-    v19 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation *)self state];
-    v20 = [v5 state];
-    v21 = v20;
-    if (v19 == v20)
+    state = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation *)self state];
+    state2 = [v5 state];
+    v21 = state2;
+    if (state == state2)
     {
     }
 
     else
     {
-      v22 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation *)self state];
-      v23 = [v5 state];
-      v24 = [v22 isEqual:v23];
+      state3 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation *)self state];
+      state4 = [v5 state];
+      v24 = [state3 isEqual:state4];
 
       if (!v24)
       {
@@ -78,18 +78,18 @@
       }
     }
 
-    v25 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation *)self country];
-    v26 = [v5 country];
-    v27 = v26;
-    if (v25 == v26)
+    country = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation *)self country];
+    country2 = [v5 country];
+    v27 = country2;
+    if (country == country2)
     {
     }
 
     else
     {
-      v28 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation *)self country];
-      v29 = [v5 country];
-      v30 = [v28 isEqual:v29];
+      country3 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation *)self country];
+      country4 = [v5 country];
+      v30 = [country3 isEqual:country4];
 
       if (!v30)
       {
@@ -101,18 +101,18 @@ LABEL_23:
       }
     }
 
-    v31 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation *)self encodedLocation];
-    v32 = [v5 encodedLocation];
-    if (v31 == v32)
+    encodedLocation = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation *)self encodedLocation];
+    encodedLocation2 = [v5 encodedLocation];
+    if (encodedLocation == encodedLocation2)
     {
       v12 = 1;
     }
 
     else
     {
-      v33 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation *)self encodedLocation];
-      v34 = [v5 encodedLocation];
-      v12 = [v33 isEqual:v34];
+      encodedLocation3 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation *)self encodedLocation];
+      encodedLocation4 = [v5 encodedLocation];
+      v12 = [encodedLocation3 isEqual:encodedLocation4];
     }
 
     goto LABEL_23;
@@ -127,58 +127,58 @@ LABEL_24:
 - (id)jsonDictionary
 {
   v24[5] = *MEMORY[0x1E69E9840];
-  v3 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation *)self street];
-  v4 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation *)self city];
-  v5 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation *)self state];
-  v6 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation *)self country];
-  v7 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation *)self encodedLocation];
-  v8 = [v7 base64EncodedStringWithOptions:0];
+  street = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation *)self street];
+  city = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation *)self city];
+  state = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation *)self state];
+  country = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation *)self country];
+  encodedLocation = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation *)self encodedLocation];
+  v8 = [encodedLocation base64EncodedStringWithOptions:0];
 
   v19 = @"street";
-  v9 = v3;
-  if (!v3)
+  null = street;
+  if (!street)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v17 = v9;
-  v24[0] = v9;
+  v17 = null;
+  v24[0] = null;
   v20 = @"city";
-  v10 = v4;
-  if (!v4)
+  null2 = city;
+  if (!city)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24[1] = v10;
+  v24[1] = null2;
   v21 = @"state";
-  v11 = v5;
-  if (!v5)
+  null3 = state;
+  if (!state)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24[2] = v11;
+  v24[2] = null3;
   v22 = @"country";
-  v12 = v6;
-  if (!v6)
+  null4 = country;
+  if (!country)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24[3] = v12;
+  v24[3] = null4;
   v23 = @"encodedLocation";
-  v13 = v8;
+  null5 = v8;
   if (!v8)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24[4] = v13;
+  v24[4] = null5;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:&v19 count:{5, v17}];
   if (v8)
   {
-    if (v6)
+    if (country)
     {
       goto LABEL_13;
     }
@@ -187,10 +187,10 @@ LABEL_24:
   else
   {
 
-    if (v6)
+    if (country)
     {
 LABEL_13:
-      if (v5)
+      if (state)
       {
         goto LABEL_14;
       }
@@ -199,17 +199,17 @@ LABEL_13:
     }
   }
 
-  if (v5)
+  if (state)
   {
 LABEL_14:
-    if (v4)
+    if (city)
     {
       goto LABEL_15;
     }
 
 LABEL_22:
 
-    if (v3)
+    if (street)
     {
       goto LABEL_16;
     }
@@ -219,13 +219,13 @@ LABEL_22:
 
 LABEL_21:
 
-  if (!v4)
+  if (!city)
   {
     goto LABEL_22;
   }
 
 LABEL_15:
-  if (v3)
+  if (street)
   {
     goto LABEL_16;
   }
@@ -238,29 +238,29 @@ LABEL_16:
   return v14;
 }
 
-- (BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v53[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"street"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"street"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"city"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"city"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v41 = 0;
           v16 = 0;
           goto LABEL_20;
         }
 
-        v35 = a4;
+        errorCopy = error;
         v22 = objc_alloc(MEMORY[0x1E696ABC0]);
         v23 = *MEMORY[0x1E698F240];
         v50 = *MEMORY[0x1E696A578];
@@ -269,7 +269,7 @@ LABEL_4:
         v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v51 forKeys:&v50 count:1];
         v41 = 0;
         v16 = 0;
-        *v35 = [v22 initWithDomain:v23 code:2 userInfo:v10];
+        *errorCopy = [v22 initWithDomain:v23 code:2 userInfo:v10];
         goto LABEL_19;
       }
 
@@ -281,22 +281,22 @@ LABEL_4:
       v41 = 0;
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"state"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"state"];
     v38 = v8;
-    v40 = self;
+    selfCopy = self;
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v39 = 0;
           v16 = 0;
           goto LABEL_19;
         }
 
-        v24 = a4;
+        errorCopy2 = error;
         v25 = objc_alloc(MEMORY[0x1E696ABC0]);
         v26 = *MEMORY[0x1E698F240];
         v48 = *MEMORY[0x1E696A578];
@@ -305,10 +305,10 @@ LABEL_4:
         v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v49 forKeys:&v48 count:1];
         v39 = 0;
         v16 = 0;
-        *v24 = [v25 initWithDomain:v26 code:2 userInfo:v11];
+        *errorCopy2 = [v25 initWithDomain:v26 code:2 userInfo:v11];
 LABEL_18:
 
-        self = v40;
+        self = selfCopy;
         v8 = v38;
 LABEL_19:
 
@@ -323,14 +323,14 @@ LABEL_19:
       v39 = 0;
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"country"];
-    v12 = a4;
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"country"];
+    errorCopy3 = error;
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v13 = 0;
           v16 = 0;
@@ -346,7 +346,7 @@ LABEL_19:
         v28 = [v36 initWithDomain:v27 code:2 userInfo:v14];
         v13 = 0;
         v16 = 0;
-        *v12 = v28;
+        *errorCopy3 = v28;
         goto LABEL_17;
       }
 
@@ -358,13 +358,13 @@ LABEL_19:
       v13 = 0;
     }
 
-    v14 = [v6 objectForKeyedSubscript:@"encodedLocation"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"encodedLocation"];
     if (!v14 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v15 = 0;
 LABEL_16:
-      v16 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation *)v40 initWithStreet:v38 city:v41 state:v39 country:v13 encodedLocation:v15];
-      v40 = v16;
+      v16 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation *)selfCopy initWithStreet:v38 city:v41 state:v39 country:v13 encodedLocation:v15];
+      selfCopy = v16;
 LABEL_17:
 
       goto LABEL_18;
@@ -386,7 +386,7 @@ LABEL_17:
         goto LABEL_16;
       }
 
-      if (v12)
+      if (errorCopy3)
       {
         v37 = objc_alloc(MEMORY[0x1E696ABC0]);
         v34 = *MEMORY[0x1E698F240];
@@ -398,11 +398,11 @@ LABEL_17:
         v32 = &v44;
 LABEL_49:
         v33 = [v30 dictionaryWithObjects:v31 forKeys:v32 count:1];
-        *v12 = [v37 initWithDomain:v34 code:2 userInfo:v33];
+        *errorCopy3 = [v37 initWithDomain:v34 code:2 userInfo:v33];
       }
     }
 
-    else if (v12)
+    else if (errorCopy3)
     {
       v37 = objc_alloc(MEMORY[0x1E696ABC0]);
       v34 = *MEMORY[0x1E698F240];
@@ -427,14 +427,14 @@ LABEL_49:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
     v16 = 0;
     goto LABEL_21;
   }
 
-  v19 = a4;
+  errorCopy4 = error;
   v20 = objc_alloc(MEMORY[0x1E696ABC0]);
   v21 = *MEMORY[0x1E698F240];
   v52 = *MEMORY[0x1E696A578];
@@ -443,7 +443,7 @@ LABEL_49:
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v53 forKeys:&v52 count:1];
   v8 = 0;
   v16 = 0;
-  *v19 = [v20 initWithDomain:v21 code:2 userInfo:v9];
+  *errorCopy4 = [v20 initWithDomain:v21 code:2 userInfo:v9];
 LABEL_20:
 
 LABEL_21:
@@ -455,49 +455,49 @@ LABEL_21:
 {
   v3 = objc_opt_new();
   [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_street)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_city)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_state)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_country)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_encodedLocation)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v23.receiver = self;
   v23.super_class = BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation;
   v5 = [(BMEventBase *)&v23 init];
@@ -506,12 +506,12 @@ LABEL_21:
     goto LABEL_36;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -522,18 +522,18 @@ LABEL_21:
       while (1)
       {
         v24 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v24 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v24 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v24 & 0x7F) << v7;
@@ -550,9 +550,9 @@ LABEL_21:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -605,13 +605,13 @@ LABEL_29:
       }
 
 LABEL_30:
-      v20 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v20 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_35:
     v21 = 0;
@@ -629,34 +629,34 @@ LABEL_36:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation *)self street];
-  v5 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation *)self city];
-  v6 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation *)self state];
-  v7 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation *)self country];
-  v8 = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation *)self encodedLocation];
-  v9 = [v3 initWithFormat:@"BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation with street: %@, city: %@, state: %@, country: %@, encodedLocation: %@", v4, v5, v6, v7, v8];
+  street = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation *)self street];
+  city = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation *)self city];
+  state = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation *)self state];
+  country = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation *)self country];
+  encodedLocation = [(BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation *)self encodedLocation];
+  v9 = [v3 initWithFormat:@"BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation with street: %@, city: %@, state: %@, country: %@, encodedLocation: %@", street, city, state, country, encodedLocation];
 
   return v9;
 }
 
-- (BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation)initWithStreet:(id)a3 city:(id)a4 state:(id)a5 country:(id)a6 encodedLocation:(id)a7
+- (BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation)initWithStreet:(id)street city:(id)city state:(id)state country:(id)country encodedLocation:(id)location
 {
-  v19 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  streetCopy = street;
+  cityCopy = city;
+  stateCopy = state;
+  countryCopy = country;
+  locationCopy = location;
   v20.receiver = self;
   v20.super_class = BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation;
   v17 = [(BMEventBase *)&v20 init];
   if (v17)
   {
     v17->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v17->_street, a3);
-    objc_storeStrong(&v17->_city, a4);
-    objc_storeStrong(&v17->_state, a5);
-    objc_storeStrong(&v17->_country, a6);
-    objc_storeStrong(&v17->_encodedLocation, a7);
+    objc_storeStrong(&v17->_street, street);
+    objc_storeStrong(&v17->_city, city);
+    objc_storeStrong(&v17->_state, state);
+    objc_storeStrong(&v17->_country, country);
+    objc_storeStrong(&v17->_encodedLocation, location);
   }
 
   return v17;
@@ -701,13 +701,13 @@ LABEL_36:
   return v7;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4 == 2)
+  if (version == 2)
   {
     v4 = MEMORY[0x1E69C65B8];
-    v5 = a3;
-    v6 = [[v4 alloc] initWithData:v5];
+    dataCopy = data;
+    v6 = [[v4 alloc] initWithData:dataCopy];
 
     v7 = [[BMProactiveHarvestingPhotosKnowledgeGraphEnrichmentLocation alloc] initByReadFrom:v6];
     v8 = v7;

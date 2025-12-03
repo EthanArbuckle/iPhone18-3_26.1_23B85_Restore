@@ -37,23 +37,23 @@
 
 - (id)imageByCroppingToRect:()AppleAccountUI
 {
-  [a1 _cropRectForRawImageOrientation:?];
+  [self _cropRectForRawImageOrientation:?];
   v3 = v2;
   v5 = v4;
   v7 = v6;
   v9 = v8;
-  if ([a1 CGImage])
+  if ([self CGImage])
   {
-    v10 = [a1 _imageByCroppingCGImageToRect:{v3, v5, v7, v9}];
+    v10 = [self _imageByCroppingCGImageToRect:{v3, v5, v7, v9}];
   }
 
   else
   {
-    v11 = [a1 CIImage];
+    cIImage = [self CIImage];
 
-    if (v11)
+    if (cIImage)
     {
-      v10 = [a1 _imageByCroppingCIImageToRect:{v3, v5, v7, v9}];
+      v10 = [self _imageByCroppingCIImageToRect:{v3, v5, v7, v9}];
     }
 
     else
@@ -67,15 +67,15 @@
 
 - (id)_imageByCroppingCGImageToRect:()AppleAccountUI
 {
-  v10 = [a1 CGImage];
+  cGImage = [self CGImage];
   v17.origin.x = a2;
   v17.origin.y = a3;
   v17.size.width = a4;
   v17.size.height = a5;
-  v11 = CGImageCreateWithImageInRect(v10, v17);
+  v11 = CGImageCreateWithImageInRect(cGImage, v17);
   v12 = MEMORY[0x1E69DCAB8];
-  [a1 scale];
-  v14 = [v12 imageWithCGImage:v11 scale:objc_msgSend(a1 orientation:{"imageOrientation"), v13}];
+  [self scale];
+  v14 = [v12 imageWithCGImage:v11 scale:objc_msgSend(self orientation:{"imageOrientation"), v13}];
   CGImageRelease(v11);
 
   return v14;
@@ -83,12 +83,12 @@
 
 - (id)_imageByCroppingCIImageToRect:()AppleAccountUI
 {
-  v10 = [a1 CIImage];
-  v11 = [v10 imageByCroppingToRect:{a2, a3, a4, a5}];
+  cIImage = [self CIImage];
+  v11 = [cIImage imageByCroppingToRect:{a2, a3, a4, a5}];
 
   v12 = MEMORY[0x1E69DCAB8];
-  [a1 scale];
-  v14 = [v12 imageWithCIImage:v11 scale:objc_msgSend(a1 orientation:{"imageOrientation"), v13}];
+  [self scale];
+  v14 = [v12 imageWithCIImage:v11 scale:objc_msgSend(self orientation:{"imageOrientation"), v13}];
 
   return v14;
 }
@@ -101,52 +101,52 @@
   v28 = v10;
   v27 = *(MEMORY[0x1E695EFD0] + 32);
   *&v31.tx = v27;
-  v11 = [a1 imageOrientation];
-  if (v11 <= 7)
+  imageOrientation = [self imageOrientation];
+  if (imageOrientation <= 7)
   {
-    if (((1 << v11) & 0x22) != 0)
+    if (((1 << imageOrientation) & 0x22) != 0)
     {
       *&v30.a = *&v31.a;
       *&v30.c = v28;
       *&v30.tx = v27;
       CGAffineTransformRotate(&v31, &v30, 3.14159265);
-      [a1 size];
+      [self size];
       v21 = v20;
-      [a1 scale];
+      [self scale];
       v23 = -(v21 * v22);
-      [a1 size];
+      [self size];
       v25 = v24;
-      [a1 scale];
+      [self scale];
       v16 = -(v25 * v26);
       v29 = v31;
       v15 = v23;
       goto LABEL_8;
     }
 
-    if (((1 << v11) & 0x44) != 0)
+    if (((1 << imageOrientation) & 0x44) != 0)
     {
       *&v30.a = *&v31.a;
       *&v30.c = v28;
       *&v30.tx = v27;
       CGAffineTransformRotate(&v31, &v30, 1.57079633);
-      [a1 size];
+      [self size];
       v18 = v17;
-      [a1 scale];
+      [self scale];
       v16 = -(v18 * v19);
       v29 = v31;
       v15 = 0.0;
       goto LABEL_8;
     }
 
-    if (((1 << v11) & 0x88) != 0)
+    if (((1 << imageOrientation) & 0x88) != 0)
     {
       *&v30.a = *&v31.a;
       *&v30.c = v28;
       *&v30.tx = v27;
       CGAffineTransformRotate(&v31, &v30, -1.57079633);
-      [a1 size];
+      [self size];
       v13 = v12;
-      [a1 scale];
+      [self scale];
       v15 = -(v13 * v14);
       v29 = v31;
       v16 = 0.0;
@@ -170,7 +170,7 @@ LABEL_8:
   v9 = a5;
   v10 = [[v8 alloc] initWithBundleIdentifier:v9];
 
-  v11 = [a1 _circularImageFromIcon:v10 size:a2 scale:a3];
+  v11 = [self _circularImageFromIcon:v10 size:a2 scale:a3];
 
   return v11;
 }
@@ -182,7 +182,7 @@ LABEL_8:
   v10 = [[v8 alloc] initWithSize:a2 scale:{a2, a3}];
   v11 = [v9 prepareImageForDescriptor:v10];
 
-  v12 = [a1 circularImageFromCGImage:objc_msgSend(v11 size:"CGImage") scale:{a2, a2, a3}];
+  v12 = [self circularImageFromCGImage:objc_msgSend(v11 size:"CGImage") scale:{a2, a2, a3}];
 
   return v12;
 }
@@ -193,8 +193,8 @@ LABEL_8:
   v9 = a5;
   v10 = [[v8 alloc] initWithType:v9];
 
-  v11 = [a1 _imageDescriptorForSize:{a2, a3}];
-  v12 = [a1 _imageForIcon:v10 imageDescriptor:v11];
+  v11 = [self _imageDescriptorForSize:{a2, a3}];
+  v12 = [self _imageForIcon:v10 imageDescriptor:v11];
 
   return v12;
 }
@@ -205,8 +205,8 @@ LABEL_8:
   v9 = a5;
   v10 = [[v8 alloc] initWithBundleIdentifier:v9];
 
-  v11 = [a1 _imageDescriptorForSize:{a2, a3}];
-  v12 = [a1 _imageForIcon:v10 imageDescriptor:v11];
+  v11 = [self _imageDescriptorForSize:{a2, a3}];
+  v12 = [self _imageForIcon:v10 imageDescriptor:v11];
 
   return v12;
 }
@@ -224,9 +224,9 @@ LABEL_8:
   }
 
   v9 = MEMORY[0x1E69DCAB8];
-  v10 = [v7 CGImage];
+  cGImage = [v7 CGImage];
   [v7 scale];
-  v11 = [v9 imageWithCGImage:v10 scale:0 orientation:?];
+  v11 = [v9 imageWithCGImage:cGImage scale:0 orientation:?];
 
   return v11;
 }
@@ -234,9 +234,9 @@ LABEL_8:
 + (id)_imageDescriptorForSize:()AppleAccountUI
 {
   v4 = objc_alloc_init(MEMORY[0x1E69A8A30]);
-  [v4 setSize:{a1, a2}];
-  v5 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v5 scale];
+  [v4 setSize:{self, a2}];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   [v4 setScale:?];
 
   return v4;
@@ -244,13 +244,13 @@ LABEL_8:
 
 + (id)circularImageFromCGImage:()AppleAccountUI size:scale:
 {
-  v10 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:{a1, a2}];
+  v10 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:{self, a2}];
   v11 = [MEMORY[0x1E69DCAB8] imageWithCGImage:a6 scale:0 orientation:a3];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __63__UIImage_AppleAccountUI__circularImageFromCGImage_size_scale___block_invoke;
   v16[3] = &unk_1E820C698;
-  v18 = a1;
+  selfCopy = self;
   v19 = a2;
   v17 = v11;
   v12 = v11;
@@ -292,7 +292,7 @@ LABEL_8:
   v39 = _Q0;
   v35 = v8;
   v36 = v7;
-  v40 = a1;
+  selfCopy = self;
   v41 = v10;
   v42 = v12;
   v43 = v14;

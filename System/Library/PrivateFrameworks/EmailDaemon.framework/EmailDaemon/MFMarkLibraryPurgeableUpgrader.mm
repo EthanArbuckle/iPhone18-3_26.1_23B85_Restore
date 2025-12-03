@@ -2,13 +2,13 @@
 + (BOOL)isComplete;
 + (OS_os_log)log;
 - (BOOL)_canRun;
-- (BOOL)_mailboxNeedsToBeMarkedPurgeable:(id)a3;
-- (BOOL)markDirectoryPurgeable:(id)a3 account:(id)a4 shouldCancel:(id)a5 error:(id *)a6;
-- (MFMarkLibraryPurgeableUpgrader)initWithMailboxUIDs:(id)a3;
+- (BOOL)_mailboxNeedsToBeMarkedPurgeable:(id)purgeable;
+- (BOOL)markDirectoryPurgeable:(id)purgeable account:(id)account shouldCancel:(id)cancel error:(id *)error;
+- (MFMarkLibraryPurgeableUpgrader)initWithMailboxUIDs:(id)ds;
 - (id)mailboxesNeededToBeMarkedPurgeable;
-- (void)_removePurgeableXAttrForMailbox:(id)a3;
-- (void)_setPurgeableXAttrForMailbox:(id)a3;
-- (void)runMarkLibraryPurgeableUpgraderShouldDefer:(id)a3 completion:(id)a4;
+- (void)_removePurgeableXAttrForMailbox:(id)mailbox;
+- (void)_setPurgeableXAttrForMailbox:(id)mailbox;
+- (void)runMarkLibraryPurgeableUpgraderShouldDefer:(id)defer completion:(id)completion;
 @end
 
 @implementation MFMarkLibraryPurgeableUpgrader
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = sub_100072134;
   block[3] = &unk_1001562E8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100185910 != -1)
   {
     dispatch_once(&qword_100185910, block);
@@ -30,15 +30,15 @@
   return v2;
 }
 
-- (MFMarkLibraryPurgeableUpgrader)initWithMailboxUIDs:(id)a3
+- (MFMarkLibraryPurgeableUpgrader)initWithMailboxUIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v11.receiver = self;
   v11.super_class = MFMarkLibraryPurgeableUpgrader;
   v5 = [(MFMarkLibraryPurgeableUpgrader *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dsCopy copy];
     mailboxUIDs = v5->_mailboxUIDs;
     v5->_mailboxUIDs = v6;
 
@@ -58,14 +58,14 @@
   return v3;
 }
 
-- (void)runMarkLibraryPurgeableUpgraderShouldDefer:(id)a3 completion:(id)a4
+- (void)runMarkLibraryPurgeableUpgraderShouldDefer:(id)defer completion:(id)completion
 {
-  v41 = a3;
-  v35 = a4;
+  deferCopy = defer;
+  completionCopy = completion;
   state.opaque[0] = 0xAAAAAAAAAAAAAAAALL;
   state.opaque[1] = 0xAAAAAAAAAAAAAAAALL;
-  v6 = [(MFMarkLibraryPurgeableUpgrader *)self activity];
-  os_activity_scope_enter(v6, &state);
+  activity = [(MFMarkLibraryPurgeableUpgrader *)self activity];
+  os_activity_scope_enter(activity, &state);
 
   if (![(MFMarkLibraryPurgeableUpgrader *)self _canRun])
   {
@@ -117,29 +117,29 @@
       }
 
       v11 = *(*(&v49 + 1) + 8 * i);
-      v12 = [v11 fullPath];
-      v13 = [NSURL fileURLWithPath:v12 isDirectory:1];
+      fullPath = [v11 fullPath];
+      v13 = [NSURL fileURLWithPath:fullPath isDirectory:1];
 
       v47[0] = _NSConcreteStackBlock;
       v47[1] = 3221225472;
       v47[2] = sub_100072A48;
       v47[3] = &unk_100158B20;
-      v14 = v41;
+      v14 = deferCopy;
       v47[4] = v11;
       v48 = v14;
       v15 = objc_retainBlock(v47);
       v16 = +[MFMarkLibraryPurgeableUpgrader log];
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [v11 fullPath];
+        fullPath2 = [v11 fullPath];
         *buf = 138412290;
-        v56 = v17;
+        v56 = fullPath2;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Begin marking files in directory purgeable {%@}", buf, 0xCu);
       }
 
-      v18 = [v11 account];
+      account = [v11 account];
       v46 = 0;
-      v19 = [(MFMarkLibraryPurgeableUpgrader *)self markDirectoryPurgeable:v13 account:v18 shouldCancel:v15 error:&v46];
+      v19 = [(MFMarkLibraryPurgeableUpgrader *)self markDirectoryPurgeable:v13 account:account shouldCancel:v15 error:&v46];
       v20 = v46;
 
       if (v19)
@@ -155,9 +155,9 @@
         v22 = +[MFMarkLibraryPurgeableUpgrader log];
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
         {
-          v25 = [v11 fullPath];
+          fullPath3 = [v11 fullPath];
           *buf = 138412290;
-          v56 = v25;
+          v56 = fullPath3;
           _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Finished marking files purgeable in directory: {%@}", buf, 0xCu);
         }
       }
@@ -167,17 +167,17 @@
         v22 = +[MFMarkLibraryPurgeableUpgrader log];
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
         {
-          v23 = [v11 fullPath];
-          v24 = [v20 ef_publicDescription];
+          fullPath4 = [v11 fullPath];
+          ef_publicDescription = [v20 ef_publicDescription];
           *buf = v34;
-          v56 = v23;
+          v56 = fullPath4;
           v57 = 2114;
-          v58 = v24;
+          v58 = ef_publicDescription;
           _os_log_error_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "Error occured attempting to mark files purgeable in {%@}: %{public}@", buf, 0x16u);
         }
       }
 
-      if (v41 && ((*(v41 + 2))(v14, v11) & 1) != 0)
+      if (deferCopy && ((*(deferCopy + 2))(v14, v11) & 1) != 0)
       {
         v21 = 0;
         v37 = 0;
@@ -224,8 +224,8 @@ LABEL_33:
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v30 = [(MFMarkLibraryPurgeableUpgrader *)self mailboxUIDs];
-  v31 = [v30 countByEnumeratingWithState:&v42 objects:v54 count:16];
+  mailboxUIDs = [(MFMarkLibraryPurgeableUpgrader *)self mailboxUIDs];
+  v31 = [mailboxUIDs countByEnumeratingWithState:&v42 objects:v54 count:16];
   if (v31)
   {
     v32 = *v43;
@@ -235,13 +235,13 @@ LABEL_33:
       {
         if (*v43 != v32)
         {
-          objc_enumerationMutation(v30);
+          objc_enumerationMutation(mailboxUIDs);
         }
 
         [(MFMarkLibraryPurgeableUpgrader *)self _removePurgeableXAttrForMailbox:*(*(&v42 + 1) + 8 * j)];
       }
 
-      v31 = [v30 countByEnumeratingWithState:&v42 objects:v54 count:16];
+      v31 = [mailboxUIDs countByEnumeratingWithState:&v42 objects:v54 count:16];
     }
 
     while (v31);
@@ -252,9 +252,9 @@ LABEL_43:
   v27 = obj;
 LABEL_44:
 
-  if (v35)
+  if (completionCopy)
   {
-    v35[2](v35, v26, v36 & 1);
+    completionCopy[2](completionCopy, v26, v36 & 1);
   }
 
   os_activity_scope_leave(&state);
@@ -262,13 +262,13 @@ LABEL_44:
 
 - (id)mailboxesNeededToBeMarkedPurgeable
 {
-  v3 = [(MFMarkLibraryPurgeableUpgrader *)self mailboxUIDs];
+  mailboxUIDs = [(MFMarkLibraryPurgeableUpgrader *)self mailboxUIDs];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100072B1C;
   v6[3] = &unk_100157208;
   v6[4] = self;
-  v4 = [v3 ef_filter:v6];
+  v4 = [mailboxUIDs ef_filter:v6];
 
   return v4;
 }
@@ -283,15 +283,15 @@ LABEL_44:
   return +[MFLibraryCompressor libraryCompressionComplete];
 }
 
-- (BOOL)_mailboxNeedsToBeMarkedPurgeable:(id)a3
+- (BOOL)_mailboxNeedsToBeMarkedPurgeable:(id)purgeable
 {
-  v3 = a3;
-  v4 = [v3 fullPath];
-  if (v4 && (+[NSFileManager defaultManager](NSFileManager, "defaultManager"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 fileExistsAtPath:v4], v5, v6))
+  purgeableCopy = purgeable;
+  fullPath = [purgeableCopy fullPath];
+  if (fullPath && (+[NSFileManager defaultManager](NSFileManager, "defaultManager"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 fileExistsAtPath:fullPath], v5, v6))
   {
     v7 = +[NSFileManager defaultManager];
     v13 = 0;
-    v8 = [v7 mf_valueForExtendedAttribute:@"com_apple_mail_markedPurgeable" ofItemAtPath:v4 error:&v13];
+    v8 = [v7 mf_valueForExtendedAttribute:@"com_apple_mail_markedPurgeable" ofItemAtPath:fullPath error:&v13];
     v9 = v13;
 
     if (!v8)
@@ -299,7 +299,7 @@ LABEL_44:
       v10 = +[MFMarkLibraryPurgeableUpgrader log];
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        [v3 URL];
+        [purgeableCopy URL];
         objc_claimAutoreleasedReturnValue();
         [v9 ef_publicDescription];
         objc_claimAutoreleasedReturnValue();
@@ -318,14 +318,14 @@ LABEL_44:
   return v11;
 }
 
-- (void)_setPurgeableXAttrForMailbox:(id)a3
+- (void)_setPurgeableXAttrForMailbox:(id)mailbox
 {
-  v3 = a3;
+  mailboxCopy = mailbox;
   v4 = [NSData dataWithBytes:"1" length:1];
   v5 = +[NSFileManager defaultManager];
-  v6 = [v3 fullPath];
+  fullPath = [mailboxCopy fullPath];
   v10 = 0;
-  v7 = [v5 mf_setValue:v4 forExtendedAttribute:@"com_apple_mail_markedPurgeable" ofItemAtPath:v6 error:&v10];
+  v7 = [v5 mf_setValue:v4 forExtendedAttribute:@"com_apple_mail_markedPurgeable" ofItemAtPath:fullPath error:&v10];
   v8 = v10;
 
   if ((v7 & 1) == 0)
@@ -333,7 +333,7 @@ LABEL_44:
     v9 = +[MFMarkLibraryPurgeableUpgrader log];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [v3 URL];
+      [mailboxCopy URL];
       objc_claimAutoreleasedReturnValue();
       [v8 ef_publicDescription];
       objc_claimAutoreleasedReturnValue();
@@ -342,19 +342,19 @@ LABEL_44:
   }
 }
 
-- (void)_removePurgeableXAttrForMailbox:(id)a3
+- (void)_removePurgeableXAttrForMailbox:(id)mailbox
 {
-  v3 = a3;
+  mailboxCopy = mailbox;
   v4 = +[NSFileManager defaultManager];
-  v5 = [v3 fullPath];
-  v6 = [v4 fileExistsAtPath:v5];
+  fullPath = [mailboxCopy fullPath];
+  v6 = [v4 fileExistsAtPath:fullPath];
 
   if (v6)
   {
     v7 = +[NSFileManager defaultManager];
-    v8 = [v3 fullPath];
+    fullPath2 = [mailboxCopy fullPath];
     v12 = 0;
-    v9 = [v7 mf_setValue:0 forExtendedAttribute:@"com_apple_mail_markedPurgeable" ofItemAtPath:v8 error:&v12];
+    v9 = [v7 mf_setValue:0 forExtendedAttribute:@"com_apple_mail_markedPurgeable" ofItemAtPath:fullPath2 error:&v12];
     v10 = v12;
 
     if ((v9 & 1) == 0)
@@ -362,7 +362,7 @@ LABEL_44:
       v11 = +[MFMarkLibraryPurgeableUpgrader log];
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        [v3 URL];
+        [mailboxCopy URL];
         objc_claimAutoreleasedReturnValue();
         [v10 ef_publicDescription];
         objc_claimAutoreleasedReturnValue();
@@ -377,15 +377,15 @@ LABEL_44:
   }
 }
 
-- (BOOL)markDirectoryPurgeable:(id)a3 account:(id)a4 shouldCancel:(id)a5 error:(id *)a6
+- (BOOL)markDirectoryPurgeable:(id)purgeable account:(id)account shouldCancel:(id)cancel error:(id *)error
 {
-  v8 = a3;
-  v37 = a4;
-  v41 = a5;
-  v40 = v8;
-  if ([v8 fileSystemRepresentation])
+  purgeableCopy = purgeable;
+  accountCopy = account;
+  cancelCopy = cancel;
+  v40 = purgeableCopy;
+  if ([purgeableCopy fileSystemRepresentation])
   {
-    v36 = strdup([v8 fileSystemRepresentation]);
+    v36 = strdup([purgeableCopy fileSystemRepresentation]);
     v51[0] = v36;
     v51[1] = 0;
     v9 = fts_open(v51, 80, 0);
@@ -409,8 +409,8 @@ LABEL_23:
           v32 = +[MFMarkLibraryPurgeableUpgrader log];
           if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
           {
-            v33 = [v26 ef_publicDescription];
-            sub_1000D4830(v33, buf, v40, v32);
+            ef_publicDescription = [v26 ef_publicDescription];
+            sub_1000D4830(ef_publicDescription, buf, v40, v32);
           }
 
           v39 = 0;
@@ -461,12 +461,12 @@ LABEL_23:
         else
         {
 LABEL_37:
-          if (v41)
+          if (cancelCopy)
           {
             v22 = v10++;
             if (v22 >= 29)
             {
-              if (v41[2]())
+              if (cancelCopy[2]())
               {
                 v23 = +[MFMarkLibraryPurgeableUpgrader log];
                 if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -512,23 +512,23 @@ LABEL_22:
   }
 
   v43 = NSURLErrorKey;
-  v44 = v8;
+  v44 = purgeableCopy;
   v27 = [NSDictionary dictionaryWithObjects:&v44 forKeys:&v43 count:1];
   v26 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:v27];
 
   v28 = +[MFMarkLibraryPurgeableUpgrader log];
   if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
   {
-    v29 = [v26 ef_publicDescription];
-    sub_1000D488C(v29, v8, buf, v28);
+    ef_publicDescription2 = [v26 ef_publicDescription];
+    sub_1000D488C(ef_publicDescription2, purgeableCopy, buf, v28);
   }
 
   v39 = 0;
 LABEL_32:
-  if (a6)
+  if (error)
   {
     v34 = v26;
-    *a6 = v26;
+    *error = v26;
   }
 
   return v39 & 1;

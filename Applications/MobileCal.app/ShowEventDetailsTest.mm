@@ -1,47 +1,47 @@
 @interface ShowEventDetailsTest
-- (id)_romanNumeralFromInt:(int)a3;
+- (id)_romanNumeralFromInt:(int)int;
 - (id)anyWritableEnabledCalendar;
-- (id)createTestEvent:(id)a3 numAttendees:(int64_t)a4;
+- (id)createTestEvent:(id)event numAttendees:(int64_t)attendees;
 - (void)cleanUp;
 @end
 
 @implementation ShowEventDetailsTest
 
-- (id)createTestEvent:(id)a3 numAttendees:(int64_t)a4
+- (id)createTestEvent:(id)event numAttendees:(int64_t)attendees
 {
-  v6 = a3;
-  v7 = [(ApplicationTest *)self model];
-  v8 = [v7 eventStore];
+  eventCopy = event;
+  model = [(ApplicationTest *)self model];
+  eventStore = [model eventStore];
 
-  v29 = v8;
-  v9 = [EKEvent eventWithEventStore:v8];
-  v10 = [(ShowEventDetailsTest *)self anyWritableEnabledCalendar];
+  v29 = eventStore;
+  v9 = [EKEvent eventWithEventStore:eventStore];
+  anyWritableEnabledCalendar = [(ShowEventDetailsTest *)self anyWritableEnabledCalendar];
   v11 = kCalUILogHandle;
   if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v34 = v10;
+    v34 = anyWritableEnabledCalendar;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Selected calendar %{public}@", buf, 0xCu);
   }
 
-  v28 = v10;
-  [v9 setCalendar:v10];
-  v30 = v6;
-  [v9 setTitle:v6];
+  v28 = anyWritableEnabledCalendar;
+  [v9 setCalendar:anyWritableEnabledCalendar];
+  v30 = eventCopy;
+  [v9 setTitle:eventCopy];
   v12 = CUIKNowDate();
   [v9 setStartDate:v12];
 
-  v13 = [v9 startDate];
-  v14 = [v13 dateByAddingTimeInterval:3600.0];
+  startDate = [v9 startDate];
+  v14 = [startDate dateByAddingTimeInterval:3600.0];
   [v9 setEndDate:v14];
 
   v31 = v9;
-  if (a4 >= 1)
+  if (attendees >= 1)
   {
     v15 = 0;
     do
     {
-      v16 = a4;
+      attendeesCopy = attendees;
       v17 = v15 + 1;
       [(ShowEventDetailsTest *)self _romanNumeralFromInt:v15 + 1];
       v19 = v18 = self;
@@ -57,8 +57,8 @@
 
       self = v18;
       v15 = v17;
-      v25 = v16 == v17;
-      a4 = v16;
+      v25 = attendeesCopy == v17;
+      attendees = attendeesCopy;
     }
 
     while (!v25);
@@ -78,10 +78,10 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(ApplicationTest *)self model];
-  v4 = [v3 selectedCalendars];
+  model = [(ApplicationTest *)self model];
+  selectedCalendars = [model selectedCalendars];
 
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v5 = [selectedCalendars countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -92,24 +92,24 @@
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(selectedCalendars);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
         if ([v9 allowsContentModifications])
         {
-          v10 = [v9 source];
-          v11 = [v10 sourceType];
+          source = [v9 source];
+          sourceType = [source sourceType];
 
-          if (v11 != 6)
+          if (sourceType != 6)
           {
-            v13 = v9;
+            defaultCalendarForNewEvents = v9;
             goto LABEL_12;
           }
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [selectedCalendars countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v6)
       {
         continue;
@@ -119,27 +119,27 @@
     }
   }
 
-  v4 = [(ApplicationTest *)self model];
-  v12 = [v4 eventStore];
-  v13 = [v12 defaultCalendarForNewEvents];
+  selectedCalendars = [(ApplicationTest *)self model];
+  eventStore = [selectedCalendars eventStore];
+  defaultCalendarForNewEvents = [eventStore defaultCalendarForNewEvents];
 
 LABEL_12:
 
-  return v13;
+  return defaultCalendarForNewEvents;
 }
 
-- (id)_romanNumeralFromInt:(int)a3
+- (id)_romanNumeralFromInt:(int)int
 {
-  if ((a3 - 1000) > 0xFFFFFC18)
+  if ((int - 1000) > 0xFFFFFC18)
   {
     v5 = [NSArray arrayWithObjects:@"I", @"II", @"III", @"IV", @"V", @"VI", @"VII", @"VIII", @"IX", 0];
     v6 = [NSArray arrayWithObjects:@"X", @"XX", @"XXX", @"XL", @"L", @"LX", @"LXX", @"LXXX", @"XC", 0];
     v7 = [NSArray arrayWithObjects:@"C", @"CC", @"CCC", @"CD", @"D", @"DC", @"DCC", @"DCCC", @"CM", 0];
-    v8 = 10 * (a3 / 0xAu);
-    v9 = a3 - v8;
+    v8 = 10 * (int / 0xAu);
+    v9 = int - v8;
     v10 = 100 * ((42949673 * v8) >> 32);
     v11 = v8 - v10;
-    v12 = a3 + v10 - a3;
+    v12 = int + v10 - int;
     v4 = objc_alloc_init(NSMutableString);
     if (v12 >= 100)
     {
@@ -162,7 +162,7 @@ LABEL_12:
 
   else
   {
-    v4 = [NSString stringWithFormat:@"%i", *&a3];
+    v4 = [NSString stringWithFormat:@"%i", *&int];
   }
 
   return v4;
@@ -172,9 +172,9 @@ LABEL_12:
 {
   if (self->_event)
   {
-    v4 = [(ApplicationTest *)self model];
-    v3 = [v4 eventStore];
-    [v3 removeEvent:self->_event span:0 error:0];
+    model = [(ApplicationTest *)self model];
+    eventStore = [model eventStore];
+    [eventStore removeEvent:self->_event span:0 error:0];
   }
 }
 

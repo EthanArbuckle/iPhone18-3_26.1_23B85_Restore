@@ -1,20 +1,20 @@
 @interface ABPK2DDetectionResult
-- (ABPK2DDetectionResult)initWithCoder:(id)a3;
-- (ABPK2DDetectionResult)initWithJoints:(ABPK2DDetectionResult *)self trackingStates:(SEL)a2 numberOfJoints:aligningPreviousSkeleton:rotation:;
-- (ABPK2DDetectionResult)initWithJoints:(ABPK2DDetectionResult *)self trackingStates:(SEL)a2 numberOfJoints:imageResolution:rotation:croppedRect:liftingData:;
-- (ABPK2DDetectionResult)initWithJoints:(ABPK2DDetectionResult *)self trackingStates:(SEL)a2 numberOfJoints:rotation:croppedRect:liftingData:;
-- (BOOL)isEqual:(id)a3;
+- (ABPK2DDetectionResult)initWithCoder:(id)coder;
+- (ABPK2DDetectionResult)initWithJoints:(ABPK2DDetectionResult *)self trackingStates:(SEL)states numberOfJoints:aligningPreviousSkeleton:rotation:;
+- (ABPK2DDetectionResult)initWithJoints:(ABPK2DDetectionResult *)self trackingStates:(SEL)states numberOfJoints:imageResolution:rotation:croppedRect:liftingData:;
+- (ABPK2DDetectionResult)initWithJoints:(ABPK2DDetectionResult *)self trackingStates:(SEL)states numberOfJoints:rotation:croppedRect:liftingData:;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)imageResolution;
 - (id).cxx_construct;
-- (id)alignSkeleton:(id)a3 rotationNeeded:(int64_t)a4;
+- (id)alignSkeleton:(id)skeleton rotationNeeded:(int64_t)needed;
 - (unint64_t)hash;
 - (unint64_t)trackedJointCount;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ABPK2DDetectionResult
 
-- (ABPK2DDetectionResult)initWithJoints:(ABPK2DDetectionResult *)self trackingStates:(SEL)a2 numberOfJoints:rotation:croppedRect:liftingData:
+- (ABPK2DDetectionResult)initWithJoints:(ABPK2DDetectionResult *)self trackingStates:(SEL)states numberOfJoints:rotation:croppedRect:liftingData:
 {
   v11 = v6;
   v12 = v10;
@@ -161,7 +161,7 @@
   return v22;
 }
 
-- (ABPK2DDetectionResult)initWithJoints:(ABPK2DDetectionResult *)self trackingStates:(SEL)a2 numberOfJoints:imageResolution:rotation:croppedRect:liftingData:
+- (ABPK2DDetectionResult)initWithJoints:(ABPK2DDetectionResult *)self trackingStates:(SEL)states numberOfJoints:imageResolution:rotation:croppedRect:liftingData:
 {
   v8 = v3;
   v9 = v2;
@@ -195,7 +195,7 @@
   return v4;
 }
 
-- (ABPK2DDetectionResult)initWithJoints:(ABPK2DDetectionResult *)self trackingStates:(SEL)a2 numberOfJoints:aligningPreviousSkeleton:rotation:
+- (ABPK2DDetectionResult)initWithJoints:(ABPK2DDetectionResult *)self trackingStates:(SEL)states numberOfJoints:aligningPreviousSkeleton:rotation:
 {
   v7 = v6;
   v8 = v4;
@@ -227,12 +227,12 @@ LABEL_42:
     while (v15);
   }
 
-  v18 = [v12 trackedJointCount];
+  trackedJointCount = [v12 trackedJointCount];
   v80[0] = 0;
   v80[1] = 0;
-  if (v14 >= v18)
+  if (v14 >= trackedJointCount)
   {
-    v19 = v18;
+    v19 = trackedJointCount;
   }
 
   else
@@ -247,12 +247,12 @@ LABEL_42:
   v78[1] = 0;
   v79 = v20;
   cva::MatrixData<float,0ul,0ul,false>::reserve(v78, v20);
-  v21 = [v12 rawJointsOutput];
-  v22 = [v12 jointCount];
-  v23 = [v12 jointTrackingStates];
-  if (v8 >= v22)
+  rawJointsOutput = [v12 rawJointsOutput];
+  jointCount = [v12 jointCount];
+  jointTrackingStates = [v12 jointTrackingStates];
+  if (v8 >= jointCount)
   {
-    v24 = v22;
+    v24 = jointCount;
   }
 
   else
@@ -270,12 +270,12 @@ LABEL_42:
     v30 = v79;
     v31 = v78[0];
     v32 = (v10 + 4);
-    v33 = v21 + 1;
+    v33 = rawJointsOutput + 1;
     v34 = "((row < mixed().rows()) && (col < mixed().columns())) || cva::detail::assertMessage(Index out of bounds!)";
     do
     {
       v35 = *v9++;
-      if (v35 && *v23)
+      if (v35 && *jointTrackingStates)
       {
         if (v26 <= v25 || (v27[v25] = *(v33 - 1), *&v27[v26 + v25] = -*v33, v27[v28 + v25] = 1065353216, v27[v29 + v25] = 0, v36 = v25 + 1, v26 <= v36))
         {
@@ -301,7 +301,7 @@ LABEL_46:
 
       v32 += 2;
       v33 += 2;
-      ++v23;
+      ++jointTrackingStates;
       --v24;
     }
 
@@ -330,17 +330,17 @@ LABEL_46:
   v37.i64[0] = *&v39 >> 64;
   v38 = v39;
   v69 = v37;
-  _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEE7reserveEm(v13 + 1, v22);
-  if (v22)
+  _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEE7reserveEm(v13 + 1, jointCount);
+  if (jointCount)
   {
     *&v40 = -*(&v38 + 1);
     HIDWORD(v40) = v38;
     v67 = v40;
     v41 = vneg_f32(0x3F0000003FLL);
-    v42 = v22;
+    v42 = jointCount;
     do
     {
-      v43 = vaddq_f32(v69, vmlaq_lane_f32(vmulq_n_f32(v38, COERCE_FLOAT(*v21)), v67, *v21, 1)).u64[0];
+      v43 = vaddq_f32(v69, vmlaq_lane_f32(vmulq_n_f32(v38, COERCE_FLOAT(*rawJointsOutput)), v67, *rawJointsOutput, 1)).u64[0];
       v44 = vdupq_lane_s64(v43, 0);
       v45.i32[0] = vmovn_s32(vcgtq_f32(v44, xmmword_23EE285B0)).u32[0];
       v45.i32[1] = vmovn_s32(vcgtq_f32(xmmword_23EE285B0, v44)).i32[1];
@@ -355,7 +355,7 @@ LABEL_46:
       }
 
       _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEE9push_backB8ne200100EOS1_((v13 + 8), &v74);
-      ++v21;
+      ++rawJointsOutput;
       --v42;
     }
 
@@ -421,10 +421,10 @@ LABEL_36:
     v60 = vsub_f32(v57, *(v58 + 8 * v55));
     if (sqrtf(vaddv_f32(vmul_f32(v60, v60))) <= 0.05)
     {
-      v62 = [v12 jointTrackingStates];
-      v63 = [v12 jointTrackingStates];
+      jointTrackingStates2 = [v12 jointTrackingStates];
+      jointTrackingStates3 = [v12 jointTrackingStates];
       memset(&v74, 0, 24);
-      std::vector<unsigned int>::__init_with_size[abi:ne200100]<unsigned int const*,unsigned int const*>(&v74, v62, v63 + 4 * v22, (v63 + 4 * v22 - v62) >> 2);
+      std::vector<unsigned int>::__init_with_size[abi:ne200100]<unsigned int const*,unsigned int const*>(&v74, jointTrackingStates2, jointTrackingStates3 + 4 * jointCount, (jointTrackingStates3 + 4 * jointCount - jointTrackingStates2) >> 2);
       v64 = *(v13 + 7);
       if (v64)
       {
@@ -459,21 +459,21 @@ void __104__ABPK2DDetectionResult_initWithJoints_trackingStates_numberOfJoints_a
   [ABPK2DDetectionResult initWithJoints:trackingStates:numberOfJoints:aligningPreviousSkeleton:rotation:]::neckIndex = [(ABPKSkeletonDefinition *)v0 indexOfJointWithName:@"neck"];
 }
 
-- (id)alignSkeleton:(id)a3 rotationNeeded:(int64_t)a4
+- (id)alignSkeleton:(id)skeleton rotationNeeded:(int64_t)needed
 {
-  v6 = a3;
-  v7 = [(ABPK2DDetectionResult *)self trackedJointCount];
-  v8 = [v6 trackedJointCount];
+  skeletonCopy = skeleton;
+  trackedJointCount = [(ABPK2DDetectionResult *)self trackedJointCount];
+  trackedJointCount2 = [skeletonCopy trackedJointCount];
   v67[0] = 0;
   v67[1] = 0;
-  if (v7 >= v8)
+  if (trackedJointCount >= trackedJointCount2)
   {
-    v9 = v8;
+    v9 = trackedJointCount2;
   }
 
   else
   {
-    v9 = v7;
+    v9 = trackedJointCount;
   }
 
   v10 = (2 * v9);
@@ -487,18 +487,18 @@ void __104__ABPK2DDetectionResult_initWithJoints_trackingStates_numberOfJoints_a
   v12 = 0;
   v13 = 1;
   v14 = "((row < mixed().rows()) && (col < mixed().columns())) || cva::detail::assertMessage(Index out of bounds!)";
-  while (-[ABPK2DDetectionResult jointCount](self, "jointCount") > v11 && [v6 jointCount] > v11)
+  while (-[ABPK2DDetectionResult jointCount](self, "jointCount") > v11 && [skeletonCopy jointCount] > v11)
   {
-    if (-[ABPK2DDetectionResult jointTrackingStates](self, "jointTrackingStates")[4 * v11] && *([v6 jointTrackingStates] + 4 * v11))
+    if (-[ABPK2DDetectionResult jointTrackingStates](self, "jointTrackingStates")[4 * v11] && *([skeletonCopy jointTrackingStates] + 4 * v11))
     {
-      v15 = [v6 rawJointsOutput];
+      rawJointsOutput = [skeletonCopy rawJointsOutput];
       if (v68 <= v12)
       {
         goto LABEL_33;
       }
 
-      *(v67[0] + v12) = *(v15 + 8 * v11);
-      v16 = [v6 rawJointsOutput];
+      *(v67[0] + v12) = *(rawJointsOutput + 8 * v11);
+      rawJointsOutput2 = [skeletonCopy rawJointsOutput];
       v17 = v68;
       if (v68 <= v12)
       {
@@ -506,13 +506,13 @@ void __104__ABPK2DDetectionResult_initWithJoints_trackingStates_numberOfJoints_a
       }
 
       v18 = v67[0];
-      *(v67[0] + v68 + v12) = -*(v16 + 4 * v13);
+      *(v67[0] + v68 + v12) = -*(rawJointsOutput2 + 4 * v13);
       v19 = v12 + 2 * v17;
       v18[v19] = 1065353216;
       v18[v19 + v17] = 0;
-      v20 = [v6 rawJointsOutput];
+      rawJointsOutput3 = [skeletonCopy rawJointsOutput];
       v21 = v12 + 1;
-      if (v68 <= v21 || (*(v67[0] + v21) = *(v20 + 4 * v13), v22 = [v6 rawJointsOutput], v23 = v68, v68 <= v21))
+      if (v68 <= v21 || (*(v67[0] + v21) = *(rawJointsOutput3 + 4 * v13), v22 = [skeletonCopy rawJointsOutput], v23 = v68, v68 <= v21))
       {
 LABEL_33:
         v53 = 2269;
@@ -524,8 +524,8 @@ LABEL_33:
       v25 = v21 + 2 * v23;
       v24[v25] = 0;
       v24[v25 + v23] = 1065353216;
-      v26 = [(ABPK2DDetectionResult *)self rawJointsOutput];
-      if (v66 <= v12 || (*(v65[0] + v12) = *(v26 + 8 * v11), v27 = [(ABPK2DDetectionResult *)self rawJointsOutput], v66 <= v21))
+      rawJointsOutput4 = [(ABPK2DDetectionResult *)self rawJointsOutput];
+      if (v66 <= v12 || (*(v65[0] + v12) = *(rawJointsOutput4 + 8 * v11), v27 = [(ABPK2DDetectionResult *)self rawJointsOutput], v66 <= v21))
       {
         v53 = 2283;
         v14 = "(i < mixed().elements()) || cva::detail::assertMessage(Index out of bounds!)";
@@ -564,17 +564,17 @@ LABEL_35:
   v29 = v30;
   v56 = v28;
   memset(&__p, 0, 24);
-  _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEE7reserveEm(&__p, [v6 jointCount]);
+  _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEE7reserveEm(&__p, [skeletonCopy jointCount]);
   v31 = 0;
   *&v32 = -*(&v29 + 1);
   HIDWORD(v32) = v29;
   v55 = v32;
   v54 = xmmword_23EE285B0;
   v33 = vneg_f32(0x3F0000003FLL);
-  while ([v6 jointCount] > v31)
+  while ([skeletonCopy jointCount] > v31)
   {
-    v34 = [v6 rawJointsOutput];
-    v35 = vaddq_f32(v56, vmlaq_lane_f32(vmulq_n_f32(v29, COERCE_FLOAT(*(v34 + 8 * v31))), v55, *(v34 + 8 * v31), 1)).u64[0];
+    rawJointsOutput5 = [skeletonCopy rawJointsOutput];
+    v35 = vaddq_f32(v56, vmlaq_lane_f32(vmulq_n_f32(v29, COERCE_FLOAT(*(rawJointsOutput5 + 8 * v31))), v55, *(rawJointsOutput5 + 8 * v31), 1)).u64[0];
     v36 = vdupq_lane_s64(v35, 0);
     v37.i32[0] = vmovn_s32(vcgtq_f32(v36, v54)).u32[0];
     v37.i32[1] = vmovn_s32(vcgtq_f32(v54, v36)).i32[1];
@@ -594,17 +594,17 @@ LABEL_35:
 
   v38 = [ABPK2DDetectionResult alloc];
   v39 = __p.columns[0].i64[0];
-  v40 = [v6 jointTrackingStates];
-  v41 = [(ABPK2DDetectionResult *)v38 initWithJoints:v39 trackingStates:v40 numberOfJoints:(__p.columns[0].i64[1] - __p.columns[0].i64[0]) >> 3 rotation:a4 croppedRect:0 liftingData:0.0, 0.0, 1.0, 1.0];
+  jointTrackingStates = [skeletonCopy jointTrackingStates];
+  v41 = [(ABPK2DDetectionResult *)v38 initWithJoints:v39 trackingStates:jointTrackingStates numberOfJoints:(__p.columns[0].i64[1] - __p.columns[0].i64[0]) >> 3 rotation:needed croppedRect:0 liftingData:0.0, 0.0, 1.0, 1.0];
   v42 = [[ABPKSkeletonDefinition alloc] initWithType:0];
   v43 = [(ABPKSkeletonDefinition *)v42 indexOfJointWithName:@"root"];
   v44 = [(ABPKSkeletonDefinition *)v42 indexOfJointWithName:@"neck"];
   v45 = *([(ABPK2DDetectionResult *)self joints]+ 8 * v43);
   v46 = *([(ABPK2DDetectionResult *)v41 joints]+ 8 * v43);
   v47 = *([(ABPK2DDetectionResult *)self joints]+ 8 * v44);
-  v48 = [(ABPK2DDetectionResult *)v41 joints];
+  joints = [(ABPK2DDetectionResult *)v41 joints];
   v49 = vsub_f32(v45, v46);
-  if (sqrtf(vaddv_f32(vmul_f32(v49, v49))) <= 0.05 && (v50 = vsub_f32(v47, *(v48 + 8 * v44)), sqrtf(vaddv_f32(vmul_f32(v50, v50))) <= 0.05))
+  if (sqrtf(vaddv_f32(vmul_f32(v49, v49))) <= 0.05 && (v50 = vsub_f32(v47, *(joints + 8 * v44)), sqrtf(vaddv_f32(vmul_f32(v50, v50))) <= 0.05))
   {
     v51 = v41;
   }
@@ -626,75 +626,75 @@ LABEL_35:
   return v51;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v9 = a3;
+  coderCopy = coder;
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:{-[ABPK2DDetectionResult jointCount](self, "jointCount")}];
-  [v9 encodeObject:v4 forKey:@"jointCount"];
+  [coderCopy encodeObject:v4 forKey:@"jointCount"];
 
-  v5 = [(ABPK2DDetectionResult *)self liftingData];
-  [v9 encodeObject:v5 forKey:@"liftingData"];
+  liftingData = [(ABPK2DDetectionResult *)self liftingData];
+  [coderCopy encodeObject:liftingData forKey:@"liftingData"];
 
   [(ABPK2DDetectionResult *)self imageResolution];
   *&v6 = v6;
-  [v9 encodeFloat:@"imageResolution.width" forKey:v6];
+  [coderCopy encodeFloat:@"imageResolution.width" forKey:v6];
   [(ABPK2DDetectionResult *)self imageResolution];
   *&v8 = v7;
-  [v9 encodeFloat:@"imageResolution.height" forKey:v8];
-  [v9 encodeInteger:-[ABPK2DDetectionResult rotation](self forKey:{"rotation"), @"rotation"}];
-  [v9 encodeBytes:-[ABPK2DDetectionResult rawJointsOutput](self length:"rawJointsOutput") forKey:{8 * -[ABPK2DDetectionResult jointCount](self, "jointCount"), @"rawJointsData"}];
-  [v9 encodeBytes:-[ABPK2DDetectionResult jointTrackingStates](self length:"jointTrackingStates") forKey:{4 * -[ABPK2DDetectionResult jointCount](self, "jointCount"), @"jointTrackingStates"}];
+  [coderCopy encodeFloat:@"imageResolution.height" forKey:v8];
+  [coderCopy encodeInteger:-[ABPK2DDetectionResult rotation](self forKey:{"rotation"), @"rotation"}];
+  [coderCopy encodeBytes:-[ABPK2DDetectionResult rawJointsOutput](self length:"rawJointsOutput") forKey:{8 * -[ABPK2DDetectionResult jointCount](self, "jointCount"), @"rawJointsData"}];
+  [coderCopy encodeBytes:-[ABPK2DDetectionResult jointTrackingStates](self length:"jointTrackingStates") forKey:{4 * -[ABPK2DDetectionResult jointCount](self, "jointCount"), @"jointTrackingStates"}];
 }
 
-- (ABPK2DDetectionResult)initWithCoder:(id)a3
+- (ABPK2DDetectionResult)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"jointCount"];
-  v6 = [v5 unsignedLongValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"jointCount"];
+  unsignedLongValue = [v5 unsignedLongValue];
 
-  v7 = [v4 decodeIntegerForKey:@"rotation"];
-  [v4 decodeFloatForKey:@"imageResolution.width"];
+  v7 = [coderCopy decodeIntegerForKey:@"rotation"];
+  [coderCopy decodeFloatForKey:@"imageResolution.width"];
   v9 = v8;
-  [v4 decodeFloatForKey:@"imageResolution.height"];
+  [coderCopy decodeFloatForKey:@"imageResolution.height"];
   v11 = v10;
   v21 = 0;
-  v12 = [v4 decodeBytesForKey:@"rawJointsData" returnedLength:&v21];
-  if (v6 != v21 >> 3)
+  v12 = [coderCopy decodeBytesForKey:@"rawJointsData" returnedLength:&v21];
+  if (unsignedLongValue != v21 >> 3)
   {
     NSLog(&cfstr_InconsistentJo.isa);
 LABEL_6:
-    v18 = 0;
+    selfCopy = 0;
     goto LABEL_7;
   }
 
   v13 = v12;
   v20 = 0;
-  v14 = [v4 decodeBytesForKey:@"jointTrackingStates" returnedLength:&v20];
-  if (v6 != v20 >> 2)
+  v14 = [coderCopy decodeBytesForKey:@"jointTrackingStates" returnedLength:&v20];
+  if (unsignedLongValue != v20 >> 2)
   {
     NSLog(&cfstr_InconsistentTr.isa);
     goto LABEL_6;
   }
 
   v15 = v14;
-  v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"liftingData"];
-  v17 = [[ABPK2DDetectionResult alloc] initWithJoints:v13 trackingStates:v15 numberOfJoints:v6 imageResolution:v7 rotation:v16 croppedRect:v9 liftingData:v11, 0.0, 0.0, 1.0, 1.0];
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"liftingData"];
+  v17 = [[ABPK2DDetectionResult alloc] initWithJoints:v13 trackingStates:v15 numberOfJoints:unsignedLongValue imageResolution:v7 rotation:v16 croppedRect:v9 liftingData:v11, 0.0, 0.0, 1.0, 1.0];
 
   self = v17;
-  v18 = self;
+  selfCopy = self;
 LABEL_7:
 
-  return v18;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(ABPK2DDetectionResult *)self jointCount];
-    if (v6 == [v5 jointCount])
+    v5 = equalCopy;
+    jointCount = [(ABPK2DDetectionResult *)self jointCount];
+    if (jointCount == [v5 jointCount])
     {
       v7 = *self->_anon_8;
       v8 = *&self->_anon_8[8];
@@ -737,9 +737,9 @@ LABEL_9:
 LABEL_14:
             if (self->_rotation == v5[13])
             {
-              v17 = [(ABPK2DDetectionResult *)self liftingData];
-              v18 = [v5 liftingData];
-              v19 = [v17 isEqual:v18];
+              liftingData = [(ABPK2DDetectionResult *)self liftingData];
+              liftingData2 = [v5 liftingData];
+              v19 = [liftingData isEqual:liftingData2];
 
 LABEL_18:
               goto LABEL_19;

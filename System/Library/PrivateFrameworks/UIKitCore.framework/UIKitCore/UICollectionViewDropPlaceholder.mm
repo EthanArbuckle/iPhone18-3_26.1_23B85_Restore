@@ -1,21 +1,21 @@
 @interface UICollectionViewDropPlaceholder
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation UICollectionViewDropPlaceholder
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [UICollectionViewDropPlaceholder alloc];
-  v5 = [(UICollectionViewPlaceholder *)self insertionIndexPath];
-  v6 = [(UICollectionViewPlaceholder *)self cellReuseIdentifier];
-  v7 = [(UICollectionViewPlaceholder *)v4 initWithInsertionIndexPath:v5 reuseIdentifier:v6];
+  insertionIndexPath = [(UICollectionViewPlaceholder *)self insertionIndexPath];
+  cellReuseIdentifier = [(UICollectionViewPlaceholder *)self cellReuseIdentifier];
+  v7 = [(UICollectionViewPlaceholder *)v4 initWithInsertionIndexPath:insertionIndexPath reuseIdentifier:cellReuseIdentifier];
 
-  v8 = [(UICollectionViewPlaceholder *)self cellUpdateHandler];
-  [(UICollectionViewPlaceholder *)v7 setCellUpdateHandler:v8];
+  cellUpdateHandler = [(UICollectionViewPlaceholder *)self cellUpdateHandler];
+  [(UICollectionViewPlaceholder *)v7 setCellUpdateHandler:cellUpdateHandler];
 
-  v9 = [(UICollectionViewDropPlaceholder *)self previewParametersProvider];
-  [(UICollectionViewDropPlaceholder *)v7 setPreviewParametersProvider:v9];
+  previewParametersProvider = [(UICollectionViewDropPlaceholder *)self previewParametersProvider];
+  [(UICollectionViewDropPlaceholder *)v7 setPreviewParametersProvider:previewParametersProvider];
 
   return v7;
 }

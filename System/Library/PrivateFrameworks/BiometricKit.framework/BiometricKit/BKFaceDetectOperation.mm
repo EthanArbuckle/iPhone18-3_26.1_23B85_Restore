@@ -1,14 +1,14 @@
 @interface BKFaceDetectOperation
-- (BKFaceDetectOperation)initWithDevice:(id)a3;
+- (BKFaceDetectOperation)initWithDevice:(id)device;
 @end
 
 @implementation BKFaceDetectOperation
 
-- (BKFaceDetectOperation)initWithDevice:(id)a3
+- (BKFaceDetectOperation)initWithDevice:(id)device
 {
   v4.receiver = self;
   v4.super_class = BKFaceDetectOperation;
-  result = [(BKOperation *)&v4 initWithDevice:a3];
+  result = [(BKOperation *)&v4 initWithDevice:device];
   if (result)
   {
     result->_mode = 2;

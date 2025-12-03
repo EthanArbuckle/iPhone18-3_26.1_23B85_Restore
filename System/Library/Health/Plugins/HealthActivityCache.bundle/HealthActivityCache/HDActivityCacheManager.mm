@@ -1,34 +1,34 @@
 @interface HDActivityCacheManager
-- (HDActivityCacheManager)initWithProfile:(id)a3;
+- (HDActivityCacheManager)initWithProfile:(id)profile;
 - (HKActivityCache)currentActivityCache;
 - (HKActivityCache)yesterdayActivityCache;
 - (id)calendar;
 - (void)_didReceiveSignificantTimeChangeNotification;
-- (void)_userCharacteristicsDidChangeNotification:(id)a3;
-- (void)accessStatisticsBuilderWithCacheIndex:(int64_t)a3 handler:(id)a4;
-- (void)addActivityCacheObserver:(id)a3;
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4;
+- (void)_userCharacteristicsDidChangeNotification:(id)notification;
+- (void)accessStatisticsBuilderWithCacheIndex:(int64_t)index handler:(id)handler;
+- (void)addActivityCacheObserver:(id)observer;
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available;
 - (void)dealloc;
-- (void)profileDidBecomeReady:(id)a3;
-- (void)removeActivityCacheObserver:(id)a3;
-- (void)samplesAdded:(id)a3 anchor:(id)a4;
-- (void)samplesOfTypesWereRemoved:(id)a3 anchor:(id)a4;
-- (void)setCurrentActivityCacheOverrideDate:(id)a3 timeZone:(id)a4 completion:(id)a5;
-- (void)workoutManager:(id)a3 didUpdateCurrentWorkout:(id)a4;
+- (void)profileDidBecomeReady:(id)ready;
+- (void)removeActivityCacheObserver:(id)observer;
+- (void)samplesAdded:(id)added anchor:(id)anchor;
+- (void)samplesOfTypesWereRemoved:(id)removed anchor:(id)anchor;
+- (void)setCurrentActivityCacheOverrideDate:(id)date timeZone:(id)zone completion:(id)completion;
+- (void)workoutManager:(id)manager didUpdateCurrentWorkout:(id)workout;
 @end
 
 @implementation HDActivityCacheManager
 
-- (HDActivityCacheManager)initWithProfile:(id)a3
+- (HDActivityCacheManager)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v59.receiver = self;
   v59.super_class = HDActivityCacheManager;
   v5 = [(HDActivityCacheManager *)&v59 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v7 = HKCreateSerialDispatchQueue();
     queue = v6->_queue;
     v6->_queue = v7;
@@ -66,7 +66,7 @@
     v6->_activityGoalScheduleType = v23;
 
     v52 = [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierActiveEnergyBurned];
-    v53 = v4;
+    v53 = profileCopy;
     v25 = [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierAppleMoveTime];
     v26 = +[HKObjectType briskMinuteDataType];
     v27 = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierStepCount];
@@ -78,7 +78,7 @@
     allQuantityTypes = v6->_allQuantityTypes;
     v6->_allQuantityTypes = v32;
 
-    v4 = v53;
+    profileCopy = v53;
     v34 = objc_alloc_init(NSMutableDictionary);
     goalsByIndex = v6->_goalsByIndex;
     v6->_goalsByIndex = v34;
@@ -112,13 +112,13 @@
 
     v6->_hasSubscribedToSignificantTimeChangeNotifications = 0;
     v46 = +[_HKBehavior sharedBehavior];
-    v47 = [v46 fitnessMode];
+    fitnessMode = [v46 fitnessMode];
 
-    if (v47 == &def_21990 + 2)
+    if (fitnessMode == &def_21990 + 2)
     {
       WeakRetained = objc_loadWeakRetained(&v6->_profile);
-      v49 = [WeakRetained workoutManager];
-      [v49 registerCurrentWorkoutObserver:v6];
+      workoutManager = [WeakRetained workoutManager];
+      [workoutManager registerCurrentWorkoutObserver:v6];
     }
 
     v50 = objc_loadWeakRetained(&v6->_profile);
@@ -136,29 +136,29 @@
 {
   [(HDActivityCacheDataSource *)self->_dataSource invalidate];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v4 = [WeakRetained database];
-  [v4 removeProtectedDataObserver:self];
+  database = [WeakRetained database];
+  [database removeProtectedDataObserver:self];
 
   v5 = +[_HKBehavior sharedBehavior];
-  v6 = [v5 fitnessMode];
+  fitnessMode = [v5 fitnessMode];
 
-  if (v6 == &def_21990 + 2)
+  if (fitnessMode == &def_21990 + 2)
   {
     v7 = objc_loadWeakRetained(&self->_profile);
-    v8 = [v7 workoutManager];
-    [v8 unregisterCurrentWorkoutObserver:self];
+    workoutManager = [v7 workoutManager];
+    [workoutManager unregisterCurrentWorkoutObserver:self];
   }
 
   v9 = objc_loadWeakRetained(&self->_profile);
-  v10 = [v9 dataManager];
+  dataManager = [v9 dataManager];
 
-  [v10 removeObserver:self forDataType:self->_calorieGoalType];
-  [v10 removeObserver:self forDataType:self->_moveMinuteGoalType];
-  [v10 removeObserver:self forDataType:self->_exerciseGoalType];
-  [v10 removeObserver:self forDataType:self->_standGoalType];
-  [v10 removeObserver:self forDataType:self->_activityMoveModeChangeType];
-  [v10 removeObserver:self forDataType:self->_pauseRingsScheduleType];
-  [v10 removeObserver:self forDataType:self->_activityGoalScheduleType];
+  [dataManager removeObserver:self forDataType:self->_calorieGoalType];
+  [dataManager removeObserver:self forDataType:self->_moveMinuteGoalType];
+  [dataManager removeObserver:self forDataType:self->_exerciseGoalType];
+  [dataManager removeObserver:self forDataType:self->_standGoalType];
+  [dataManager removeObserver:self forDataType:self->_activityMoveModeChangeType];
+  [dataManager removeObserver:self forDataType:self->_pauseRingsScheduleType];
+  [dataManager removeObserver:self forDataType:self->_activityGoalScheduleType];
   v11 = +[NSNotificationCenter defaultCenter];
   [v11 removeObserver:self name:HDUserCharacteristicsDidChangeNotification object:0];
 
@@ -174,32 +174,32 @@
   [(HDActivityCacheManager *)&v14 dealloc];
 }
 
-- (void)setCurrentActivityCacheOverrideDate:(id)a3 timeZone:(id)a4 completion:(id)a5
+- (void)setCurrentActivityCacheOverrideDate:(id)date timeZone:(id)zone completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dateCopy = date;
+  zoneCopy = zone;
+  completionCopy = completion;
   queue = self->_queue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1F778;
   v15[3] = &unk_348D8;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = dateCopy;
+  v17 = zoneCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = zoneCopy;
+  v14 = dateCopy;
   dispatch_async(queue, v15);
 }
 
 - (id)calendar
 {
-  if (a1)
+  if (self)
   {
     v2 = [NSCalendar calendarWithIdentifier:NSCalendarIdentifierGregorian];
-    v3 = sub_1F8E4(a1);
+    v3 = sub_1F8E4(self);
     [v2 setTimeZone:v3];
   }
 
@@ -211,29 +211,29 @@
   return v2;
 }
 
-- (void)samplesAdded:(id)a3 anchor:(id)a4
+- (void)samplesAdded:(id)added anchor:(id)anchor
 {
-  v5 = a3;
+  addedCopy = added;
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_82FC;
   v8[3] = &unk_34A28;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = addedCopy;
+  v7 = addedCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)samplesOfTypesWereRemoved:(id)a3 anchor:(id)a4
+- (void)samplesOfTypesWereRemoved:(id)removed anchor:(id)anchor
 {
-  v5 = a3;
+  removedCopy = removed;
   _HKInitializeLogging();
   v6 = HKLogActivityCache;
   if (os_log_type_enabled(HKLogActivityCache, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v10 = v5;
+    v10 = removedCopy;
     _os_log_impl(&def_21990, v6, OS_LOG_TYPE_DEFAULT, "Samples (%{public}@) were removed, rebuilding caches", buf, 0xCu);
   }
 
@@ -265,15 +265,15 @@
   dispatch_async(queue, block);
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
   dispatch_assert_queue_V2(self->_queue);
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 addObserver:self selector:"_userCharacteristicsDidChangeNotification:" name:HDUserCharacteristicsDidChangeNotification object:0];
 
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v6 = [WeakRetained database];
-  [v6 addProtectedDataObserver:self queue:self->_queue];
+  database = [WeakRetained database];
+  [database addProtectedDataObserver:self queue:self->_queue];
 
   sub_8534(self);
   sub_8630(self);
@@ -281,28 +281,28 @@
   sub_DA8(self);
 }
 
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available
 {
-  v4 = a4;
+  availableCopy = available;
   dispatch_assert_queue_V2(self->_queue);
-  if (v4)
+  if (availableCopy)
   {
 
     sub_DA8(self);
   }
 }
 
-- (void)workoutManager:(id)a3 didUpdateCurrentWorkout:(id)a4
+- (void)workoutManager:(id)manager didUpdateCurrentWorkout:(id)workout
 {
-  v5 = a4;
+  workoutCopy = workout;
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_8CB8;
   v8[3] = &unk_34A28;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = workoutCopy;
+  selfCopy = self;
+  v7 = workoutCopy;
   dispatch_async(queue, v8);
 }
 
@@ -350,24 +350,24 @@
   return v3;
 }
 
-- (void)accessStatisticsBuilderWithCacheIndex:(int64_t)a3 handler:(id)a4
+- (void)accessStatisticsBuilderWithCacheIndex:(int64_t)index handler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_9098;
   block[3] = &unk_34AA0;
-  v10 = v6;
-  v11 = a3;
+  v10 = handlerCopy;
+  indexCopy = index;
   block[4] = self;
-  v8 = v6;
+  v8 = handlerCopy;
   dispatch_sync(queue, block);
 }
 
-- (void)addActivityCacheObserver:(id)a3
+- (void)addActivityCacheObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   _HKInitializeLogging();
   if (os_log_type_enabled(HKLogActivityCache, OS_LOG_TYPE_DEBUG))
   {
@@ -380,26 +380,26 @@
   v7[2] = sub_922C;
   v7[3] = &unk_34A28;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)removeActivityCacheObserver:(id)a3
+- (void)removeActivityCacheObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_93C4;
   v7[3] = &unk_34A28;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)_userCharacteristicsDidChangeNotification:(id)a3
+- (void)_userCharacteristicsDidChangeNotification:(id)notification
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;

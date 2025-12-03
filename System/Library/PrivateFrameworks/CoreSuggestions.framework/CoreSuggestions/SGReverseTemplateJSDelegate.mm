@@ -1,14 +1,14 @@
 @interface SGReverseTemplateJSDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation SGReverseTemplateJSDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 valueForEntitlement:@"com.apple.private.reversetemplated"];
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v7 = [connectionCopy valueForEntitlement:@"com.apple.private.reversetemplated"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v7 BOOLValue])
   {
@@ -37,11 +37,11 @@
     [v21 setClasses:v14 forSelector:"diffSchemas:withExpectedSchemas:reply:" argumentIndex:0 ofReply:0];
     [v21 setClasses:v14 forSelector:"mergeSchemas:withExpectedSchemas:reply:" argumentIndex:0 ofReply:0];
     [v21 setClasses:v20 forSelector:"parseHTML:reply:" argumentIndex:0 ofReply:0];
-    [v6 setExportedInterface:v21];
+    [connectionCopy setExportedInterface:v21];
     v22 = objc_opt_new();
-    [v6 setExportedObject:v22];
+    [connectionCopy setExportedObject:v22];
 
-    [v6 resume];
+    [connectionCopy resume];
     v23 = 1;
   }
 

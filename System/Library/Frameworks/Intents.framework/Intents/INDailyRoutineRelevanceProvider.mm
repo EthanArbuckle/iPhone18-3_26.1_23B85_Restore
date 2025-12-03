@@ -1,15 +1,15 @@
 @interface INDailyRoutineRelevanceProvider
-- (BOOL)isEqual:(id)a3;
-- (INDailyRoutineRelevanceProvider)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INDailyRoutineRelevanceProvider)initWithCoder:(id)coder;
 - (INDailyRoutineRelevanceProvider)initWithSituation:(INDailyRoutineSituation)situation;
 @end
 
 @implementation INDailyRoutineRelevanceProvider
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -17,15 +17,15 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_situation == v4->_situation;
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_situation == equalCopy->_situation;
   }
 
   return v5;
 }
 
-- (INDailyRoutineRelevanceProvider)initWithCoder:(id)a3
+- (INDailyRoutineRelevanceProvider)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeIntegerForKey:@"situation"];
+  v4 = [coder decodeIntegerForKey:@"situation"];
 
   return [(INDailyRoutineRelevanceProvider *)self initWithSituation:v4];
 }
@@ -34,12 +34,12 @@
 {
   v8.receiver = self;
   v8.super_class = INDailyRoutineRelevanceProvider;
-  v4 = [(INRelevanceProvider *)&v8 _init];
-  v5 = v4;
-  if (v4)
+  _init = [(INRelevanceProvider *)&v8 _init];
+  v5 = _init;
+  if (_init)
   {
-    v4->_situation = situation;
-    v6 = v4;
+    _init->_situation = situation;
+    v6 = _init;
   }
 
   return v5;

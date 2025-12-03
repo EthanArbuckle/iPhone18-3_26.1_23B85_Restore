@@ -1,24 +1,24 @@
 @interface NWAccumulatorOverrideState
 - (NWAccumulatorOverrideState)init;
 - (id)description;
-- (void)updateWithState:(id)a3;
+- (void)updateWithState:(id)state;
 @end
 
 @implementation NWAccumulatorOverrideState
 
-- (void)updateWithState:(id)a3
+- (void)updateWithState:(id)state
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  stateCopy = state;
+  v5 = stateCopy;
+  if (stateCopy)
   {
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __46__NWAccumulatorOverrideState_updateWithState___block_invoke;
     v13[3] = &unk_1E6A3D760;
     v13[4] = self;
-    v14 = v4;
+    v14 = stateCopy;
     os_unfair_lock_lock(&self->_lock);
     __46__NWAccumulatorOverrideState_updateWithState___block_invoke(v13);
     os_unfair_lock_unlock(&self->_lock);
@@ -109,9 +109,9 @@ LABEL_3:
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(NWAccumulatorOverrideState *)self name];
-  v5 = [(NWAccumulatorOverrideState *)self state];
-  v6 = [v3 initWithFormat:@"<NWAccumulatorOverrideState %@, state: %@>", v4, v5];
+  name = [(NWAccumulatorOverrideState *)self name];
+  state = [(NWAccumulatorOverrideState *)self state];
+  v6 = [v3 initWithFormat:@"<NWAccumulatorOverrideState %@, state: %@>", name, state];
 
   return v6;
 }

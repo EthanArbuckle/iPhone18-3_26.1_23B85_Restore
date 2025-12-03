@@ -1,17 +1,17 @@
 @interface FCContentArchive
 + (BOOL)supportsSecureCoding;
-+ (FCContentArchive)archiveWithAVAsset:(id)a3;
-+ (FCContentArchive)archiveWithAVAssetKey:(id)a3;
-+ (FCContentArchive)archiveWithAsset:(id)a3 remoteURL:(id)a4 filePath:(id)a5;
-+ (FCContentArchive)archiveWithAssetWrappingKey:(id)a3 wrappingKeyID:(id)a4;
-+ (FCContentArchive)archiveWithChildArchives:(id)a3;
-+ (FCContentArchive)archiveWithPersistedArchivePath:(id)a3;
-+ (FCContentArchive)archiveWithRecord:(id)a3;
++ (FCContentArchive)archiveWithAVAsset:(id)asset;
++ (FCContentArchive)archiveWithAVAssetKey:(id)key;
++ (FCContentArchive)archiveWithAsset:(id)asset remoteURL:(id)l filePath:(id)path;
++ (FCContentArchive)archiveWithAssetWrappingKey:(id)key wrappingKeyID:(id)d;
++ (FCContentArchive)archiveWithChildArchives:(id)archives;
++ (FCContentArchive)archiveWithPersistedArchivePath:(id)path;
++ (FCContentArchive)archiveWithRecord:(id)record;
 + (FCContentArchive)empty;
-- (FCContentArchive)initWithCoder:(id)a3;
+- (FCContentArchive)initWithCoder:(id)coder;
 - (FCContentManifest)manifest;
-- (id)unarchiveIntoContentContext:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)unarchiveIntoContentContext:(id)context;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FCContentArchive
@@ -42,10 +42,10 @@
   objc_exception_throw(v6);
 }
 
-- (FCContentArchive)initWithCoder:(id)a3
+- (FCContentArchive)initWithCoder:(id)coder
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  coderCopy = coder;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Abstract method"];
@@ -69,10 +69,10 @@
   objc_exception_throw(v8);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  coderCopy = coder;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Abstract method"];
@@ -117,13 +117,13 @@ uint64_t __25__FCContentArchive_empty__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (FCContentArchive)archiveWithRecord:(id)a3
++ (FCContentArchive)archiveWithRecord:(id)record
 {
-  v4 = a3;
-  if (v4)
+  recordCopy = record;
+  if (recordCopy)
   {
     v5 = [FCRecordContentArchive alloc];
-    v6 = v4;
+    v6 = recordCopy;
     if (v5)
     {
       v9.receiver = v5;
@@ -132,7 +132,7 @@ uint64_t __25__FCContentArchive_empty__block_invoke()
       v5 = v7;
       if (v7)
       {
-        objc_storeStrong(v7 + 1, a3);
+        objc_storeStrong(v7 + 1, record);
       }
     }
   }
@@ -145,17 +145,17 @@ uint64_t __25__FCContentArchive_empty__block_invoke()
   return v5;
 }
 
-+ (FCContentArchive)archiveWithAsset:(id)a3 remoteURL:(id)a4 filePath:(id)a5
++ (FCContentArchive)archiveWithAsset:(id)asset remoteURL:(id)l filePath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  assetCopy = asset;
+  lCopy = l;
+  pathCopy = path;
+  if (pathCopy)
   {
     v11 = [FCAssetContentArchive alloc];
-    v12 = v8;
-    v13 = v9;
-    v14 = v10;
+    v12 = assetCopy;
+    v13 = lCopy;
+    v14 = pathCopy;
     if (v11)
     {
       v19.receiver = v11;
@@ -164,8 +164,8 @@ uint64_t __25__FCContentArchive_empty__block_invoke()
       v11 = v15;
       if (v15)
       {
-        objc_storeStrong(v15 + 1, a3);
-        objc_storeStrong(&v11->_remoteURL, a4);
+        objc_storeStrong(v15 + 1, asset);
+        objc_storeStrong(&v11->_remoteURL, l);
         v16 = [v14 copy];
         filePath = v11->_filePath;
         v11->_filePath = v16;
@@ -181,15 +181,15 @@ uint64_t __25__FCContentArchive_empty__block_invoke()
   return v11;
 }
 
-+ (FCContentArchive)archiveWithAssetWrappingKey:(id)a3 wrappingKeyID:(id)a4
++ (FCContentArchive)archiveWithAssetWrappingKey:(id)key wrappingKeyID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  keyCopy = key;
+  dCopy = d;
+  if (keyCopy)
   {
     v8 = [FCAssetKeyContentArchive alloc];
-    v9 = v6;
-    v10 = v7;
+    v9 = keyCopy;
+    v10 = dCopy;
     if (v8)
     {
       v13.receiver = v8;
@@ -198,8 +198,8 @@ uint64_t __25__FCContentArchive_empty__block_invoke()
       v8 = v11;
       if (v11)
       {
-        objc_storeStrong(v11 + 1, a3);
-        objc_storeStrong(&v8->_wrappingKeyID, a4);
+        objc_storeStrong(v11 + 1, key);
+        objc_storeStrong(&v8->_wrappingKeyID, d);
       }
     }
   }
@@ -212,13 +212,13 @@ uint64_t __25__FCContentArchive_empty__block_invoke()
   return v8;
 }
 
-+ (FCContentArchive)archiveWithAVAsset:(id)a3
++ (FCContentArchive)archiveWithAVAsset:(id)asset
 {
-  v4 = a3;
-  if (v4)
+  assetCopy = asset;
+  if (assetCopy)
   {
     v5 = [FCAVAssetContentArchive alloc];
-    v6 = v4;
+    v6 = assetCopy;
     if (v5)
     {
       v9.receiver = v5;
@@ -227,7 +227,7 @@ uint64_t __25__FCContentArchive_empty__block_invoke()
       v5 = v7;
       if (v7)
       {
-        objc_storeStrong(v7 + 1, a3);
+        objc_storeStrong(v7 + 1, asset);
       }
     }
   }
@@ -240,13 +240,13 @@ uint64_t __25__FCContentArchive_empty__block_invoke()
   return v5;
 }
 
-+ (FCContentArchive)archiveWithAVAssetKey:(id)a3
++ (FCContentArchive)archiveWithAVAssetKey:(id)key
 {
-  v4 = a3;
-  if (v4)
+  keyCopy = key;
+  if (keyCopy)
   {
     v5 = [FCAVAssetKeyContentArchive alloc];
-    v6 = v4;
+    v6 = keyCopy;
     if (v5)
     {
       v9.receiver = v5;
@@ -255,7 +255,7 @@ uint64_t __25__FCContentArchive_empty__block_invoke()
       v5 = v7;
       if (v7)
       {
-        objc_storeStrong(v7 + 1, a3);
+        objc_storeStrong(v7 + 1, key);
       }
     }
   }
@@ -268,11 +268,11 @@ uint64_t __25__FCContentArchive_empty__block_invoke()
   return v5;
 }
 
-+ (FCContentArchive)archiveWithPersistedArchivePath:(id)a3
++ (FCContentArchive)archiveWithPersistedArchivePath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = [FCPersistedContentArchive alloc];
-  v5 = v3;
+  v5 = pathCopy;
   if (v4)
   {
     v9.receiver = v4;
@@ -289,24 +289,24 @@ uint64_t __25__FCContentArchive_empty__block_invoke()
   return v4;
 }
 
-+ (FCContentArchive)archiveWithChildArchives:(id)a3
++ (FCContentArchive)archiveWithChildArchives:(id)archives
 {
-  v3 = a3;
-  if ([v3 count] == 1)
+  archivesCopy = archives;
+  if ([archivesCopy count] == 1)
   {
-    v4 = [v3 firstObject];
+    firstObject = [archivesCopy firstObject];
   }
 
   else
   {
-    v4 = [FCAggregateContentArchive alloc];
-    v5 = v3;
-    if (v4)
+    firstObject = [FCAggregateContentArchive alloc];
+    v5 = archivesCopy;
+    if (firstObject)
     {
-      v13.receiver = v4;
+      v13.receiver = firstObject;
       v13.super_class = FCAggregateContentArchive;
-      v4 = objc_msgSendSuper2(&v13, sel_init);
-      if (v4)
+      firstObject = objc_msgSendSuper2(&v13, sel_init);
+      if (firstObject)
       {
         v6 = MEMORY[0x1E695DFD8];
         v11[0] = MEMORY[0x1E69E9820];
@@ -315,20 +315,20 @@ uint64_t __25__FCContentArchive_empty__block_invoke()
         v11[3] = &unk_1E7C371F8;
         v12 = v5;
         v7 = [v6 fc_set:v11];
-        v8 = [v7 allObjects];
-        childArchives = v4->_childArchives;
-        v4->_childArchives = v8;
+        allObjects = [v7 allObjects];
+        childArchives = firstObject->_childArchives;
+        firstObject->_childArchives = allObjects;
       }
     }
   }
 
-  return v4;
+  return firstObject;
 }
 
-- (id)unarchiveIntoContentContext:(id)a3
+- (id)unarchiveIntoContentContext:(id)context
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  contextCopy = context;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Abstract method"];

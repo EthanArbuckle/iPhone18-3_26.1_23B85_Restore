@@ -18,8 +18,8 @@
 
   if ([(OrgApacheLuceneUtilPriorityQueue *)queue size]> 0)
   {
-    LOBYTE(v4) = 1;
-    return v4;
+    LOBYTE(hasNext) = 1;
+    return hasNext;
   }
 
   if (self->numTop_ >= 1)
@@ -51,21 +51,21 @@
         break;
       }
 
-      v4 = [(objc_class *)isa hasNext];
-      if (!v4 && ++v5 < self->numTop_)
+      hasNext = [(objc_class *)isa hasNext];
+      if (!hasNext && ++v5 < self->numTop_)
       {
         continue;
       }
 
-      return v4;
+      return hasNext;
     }
 
 LABEL_16:
     JreThrowNullPointerException();
   }
 
-  LOBYTE(v4) = 0;
-  return v4;
+  LOBYTE(hasNext) = 0;
+  return hasNext;
 }
 
 - (id)next
@@ -129,10 +129,10 @@ LABEL_16:
         break;
       }
 
-      v7 = [v6 hasNext];
+      hasNext = [v6 hasNext];
       v8 = *(v1 + 3);
       v9 = *(v8 + 8);
-      if (v7)
+      if (hasNext)
       {
         if (v2 >= v9)
         {
@@ -206,26 +206,26 @@ LABEL_25:
 
 - (id)pullTop
 {
-  v1 = *(a1 + 24);
+  v1 = *(self + 24);
   if (!v1)
   {
     goto LABEL_17;
   }
 
-  v3 = *(a1 + 36);
-  *(a1 + 36) = v3 + 1;
-  v4 = *(a1 + 16);
+  v3 = *(self + 36);
+  *(self + 36) = v3 + 1;
+  v4 = *(self + 16);
   if (!v4)
   {
     goto LABEL_17;
   }
 
   IOSObjectArray_Set(v1, v3, [v4 pop]);
-  if (*(a1 + 32) == 1)
+  if (*(self + 32) == 1)
   {
-    while ([*(a1 + 16) size])
+    while ([*(self + 16) size])
     {
-      v5 = [*(a1 + 16) top];
+      v5 = [*(self + 16) top];
       if (!v5)
       {
         goto LABEL_17;
@@ -237,7 +237,7 @@ LABEL_25:
         goto LABEL_17;
       }
 
-      v7 = *(a1 + 24);
+      v7 = *(self + 24);
       v8 = *(v7 + 8);
       if (v8 <= 0)
       {
@@ -255,13 +255,13 @@ LABEL_25:
         break;
       }
 
-      v10 = *(a1 + 36);
-      *(a1 + 36) = v10 + 1;
-      IOSObjectArray_Set(*(a1 + 24), v10, [*(a1 + 16) pop]);
+      v10 = *(self + 36);
+      *(self + 36) = v10 + 1;
+      IOSObjectArray_Set(*(self + 24), v10, [*(self + 16) pop]);
     }
   }
 
-  v11 = *(a1 + 24);
+  v11 = *(self + 24);
   v12 = *(v11 + 8);
   if (v12 <= 0)
   {
@@ -277,7 +277,7 @@ LABEL_17:
 
   v14 = *(v13 + 16);
 
-  return JreStrongAssign((a1 + 8), v14);
+  return JreStrongAssign((self + 8), v14);
 }
 
 - (void)dealloc

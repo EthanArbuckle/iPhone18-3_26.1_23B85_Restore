@@ -1,7 +1,7 @@
 @interface TITypologyRecordSetOriginalInput
-- (TITypologyRecordSetOriginalInput)initWithCoder:(id)a3;
+- (TITypologyRecordSetOriginalInput)initWithCoder:(id)coder;
 - (id)shortDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TITypologyRecordSetOriginalInput
@@ -9,30 +9,30 @@
 - (id)shortDescription
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(TITypologyRecordSetOriginalInput *)self originalInput];
-  v4 = [v2 stringWithFormat:@"SET ORIGINAL INPUT: %@", v3];
+  originalInput = [(TITypologyRecordSetOriginalInput *)self originalInput];
+  v4 = [v2 stringWithFormat:@"SET ORIGINAL INPUT: %@", originalInput];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = TITypologyRecordSetOriginalInput;
-  v4 = a3;
-  [(TITypologyRecord *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_originalInput forKey:{@"originalInput", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(TITypologyRecord *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_originalInput forKey:{@"originalInput", v5.receiver, v5.super_class}];
 }
 
-- (TITypologyRecordSetOriginalInput)initWithCoder:(id)a3
+- (TITypologyRecordSetOriginalInput)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = TITypologyRecordSetOriginalInput;
-  v5 = [(TITypologyRecord *)&v10 initWithCoder:v4];
+  v5 = [(TITypologyRecord *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"originalInput"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"originalInput"];
     v7 = [v6 copy];
     originalInput = v5->_originalInput;
     v5->_originalInput = v7;

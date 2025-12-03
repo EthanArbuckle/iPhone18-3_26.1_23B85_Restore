@@ -1,17 +1,17 @@
 @interface RemoteFollowCommandCenter
 - (_TtC16PodcastsPlayback25RemoteFollowCommandCenter)init;
-- (void)remoteSetPlaybackQueueCommand:(id)a3 completion:(id)a4;
+- (void)remoteSetPlaybackQueueCommand:(id)command completion:(id)completion;
 @end
 
 @implementation RemoteFollowCommandCenter
 
-- (void)remoteSetPlaybackQueueCommand:(id)a3 completion:(id)a4
+- (void)remoteSetPlaybackQueueCommand:(id)command completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  sub_189C8(v7, v8, v6);
+  commandCopy = command;
+  selfCopy = self;
+  sub_189C8(commandCopy, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }

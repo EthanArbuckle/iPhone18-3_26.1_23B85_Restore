@@ -1,25 +1,25 @@
 @interface HMDSHomeSharedResource
-- (HMDSHomeSharedResource)initWithDisplayName:(id)a3 displayDetail:(id)a4 participants:(id)a5 UUID:(id)a6;
+- (HMDSHomeSharedResource)initWithDisplayName:(id)name displayDetail:(id)detail participants:(id)participants UUID:(id)d;
 @end
 
 @implementation HMDSHomeSharedResource
 
-- (HMDSHomeSharedResource)initWithDisplayName:(id)a3 displayDetail:(id)a4 participants:(id)a5 UUID:(id)a6
+- (HMDSHomeSharedResource)initWithDisplayName:(id)name displayDetail:(id)detail participants:(id)participants UUID:(id)d
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  nameCopy = name;
+  detailCopy = detail;
+  participantsCopy = participants;
+  dCopy = d;
   v18.receiver = self;
   v18.super_class = HMDSHomeSharedResource;
   v15 = [(HMDSHomeSharedResource *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_displayName, a3);
-    objc_storeStrong(&v16->_displayDetail, a4);
-    objc_storeStrong(&v16->_participants, a5);
-    objc_storeStrong(&v16->_UUID, a6);
+    objc_storeStrong(&v15->_displayName, name);
+    objc_storeStrong(&v16->_displayDetail, detail);
+    objc_storeStrong(&v16->_participants, participants);
+    objc_storeStrong(&v16->_UUID, d);
   }
 
   return v16;

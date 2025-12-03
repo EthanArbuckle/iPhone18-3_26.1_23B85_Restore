@@ -1,7 +1,7 @@
 @interface HMDHomeManagerObjectLookup
 + (id)logCategory;
 - (HMDHomeManager)homeManager;
-- (HMDHomeManagerObjectLookup)initWithHomeManager:(id)a3;
+- (HMDHomeManagerObjectLookup)initWithHomeManager:(id)manager;
 - (void)_scanAccounts;
 - (void)_scanCloudZones;
 - (void)_scanHomes;
@@ -21,15 +21,15 @@
 {
   v46 = *MEMORY[0x277D85DE8];
   v3 = +[HMDAppleAccountManager sharedManager];
-  v4 = [v3 account];
+  account = [v3 account];
 
   v41 = 0u;
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v27 = v4;
-  v5 = [v4 modelBackedObjects];
-  v6 = [v5 countByEnumeratingWithState:&v39 objects:v45 count:16];
+  v27 = account;
+  modelBackedObjects = [account modelBackedObjects];
+  v6 = [modelBackedObjects countByEnumeratingWithState:&v39 objects:v45 count:16];
   if (v6)
   {
     v7 = v6;
@@ -40,20 +40,20 @@
       {
         if (*v40 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(modelBackedObjects);
         }
 
         v10 = *(*(&v39 + 1) + 8 * i);
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v11 = [(HMDObjectLookup *)self uuidToObjectMapping];
-          v12 = [v10 modelIdentifier];
-          [v11 setObject:v10 forKey:v12];
+          uuidToObjectMapping = [(HMDObjectLookup *)self uuidToObjectMapping];
+          modelIdentifier = [v10 modelIdentifier];
+          [uuidToObjectMapping setObject:v10 forKey:modelIdentifier];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v39 objects:v45 count:16];
+      v7 = [modelBackedObjects countByEnumeratingWithState:&v39 objects:v45 count:16];
     }
 
     while (v7);
@@ -88,8 +88,8 @@
           v34 = 0u;
           v31 = 0u;
           v32 = 0u;
-          v18 = [v17 modelBackedObjects];
-          v19 = [v18 countByEnumeratingWithState:&v31 objects:v43 count:16];
+          modelBackedObjects2 = [v17 modelBackedObjects];
+          v19 = [modelBackedObjects2 countByEnumeratingWithState:&v31 objects:v43 count:16];
           if (v19)
           {
             v20 = v19;
@@ -100,20 +100,20 @@
               {
                 if (*v32 != v21)
                 {
-                  objc_enumerationMutation(v18);
+                  objc_enumerationMutation(modelBackedObjects2);
                 }
 
                 v23 = *(*(&v31 + 1) + 8 * j);
                 objc_opt_class();
                 if ((objc_opt_isKindOfClass() & 1) == 0)
                 {
-                  v24 = [(HMDObjectLookup *)self uuidToObjectMapping];
-                  v25 = [v23 modelIdentifier];
-                  [v24 setObject:v23 forKey:v25];
+                  uuidToObjectMapping2 = [(HMDObjectLookup *)self uuidToObjectMapping];
+                  modelIdentifier2 = [v23 modelIdentifier];
+                  [uuidToObjectMapping2 setObject:v23 forKey:modelIdentifier2];
                 }
               }
 
-              v20 = [v18 countByEnumeratingWithState:&v31 objects:v43 count:16];
+              v20 = [modelBackedObjects2 countByEnumeratingWithState:&v31 objects:v43 count:16];
             }
 
             while (v20);
@@ -143,10 +143,10 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(HMDHomeManagerObjectLookup *)self homeManager];
-  v4 = [v3 cloudZones];
+  homeManager = [(HMDHomeManagerObjectLookup *)self homeManager];
+  cloudZones = [homeManager cloudZones];
 
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [cloudZones countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -158,19 +158,19 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(cloudZones);
         }
 
         v9 = *(*(&v13 + 1) + 8 * v8);
-        v10 = [(HMDObjectLookup *)self uuidToObjectMapping];
-        v11 = [v9 uuid];
-        [v10 setObject:v9 forKey:v11];
+        uuidToObjectMapping = [(HMDObjectLookup *)self uuidToObjectMapping];
+        uuid = [v9 uuid];
+        [uuidToObjectMapping setObject:v9 forKey:uuid];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [cloudZones countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -186,10 +186,10 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(HMDHomeManagerObjectLookup *)self homeManager];
-  v4 = [v3 homes];
+  homeManager = [(HMDHomeManagerObjectLookup *)self homeManager];
+  homes = [homeManager homes];
 
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [homes countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -201,19 +201,19 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(homes);
         }
 
         v9 = *(*(&v13 + 1) + 8 * v8);
-        v10 = [(HMDObjectLookup *)self uuidToObjectMapping];
-        v11 = [v9 uuid];
-        [v10 setObject:v9 forKey:v11];
+        uuidToObjectMapping = [(HMDObjectLookup *)self uuidToObjectMapping];
+        uuid = [v9 uuid];
+        [uuidToObjectMapping setObject:v9 forKey:uuid];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [homes countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -230,23 +230,23 @@
   [(HMDHomeManagerObjectLookup *)self _scanHomes];
   [(HMDHomeManagerObjectLookup *)self _scanCloudZones];
   [(HMDHomeManagerObjectLookup *)self _scanAccounts];
-  v3 = [(HMDHomeManagerObjectLookup *)self homeManager];
-  v4 = [(HMDObjectLookup *)self uuidToObjectMapping];
-  v5 = [v3 uuid];
-  [v4 setObject:v3 forKey:v5];
+  homeManager = [(HMDHomeManagerObjectLookup *)self homeManager];
+  uuidToObjectMapping = [(HMDObjectLookup *)self uuidToObjectMapping];
+  uuid = [homeManager uuid];
+  [uuidToObjectMapping setObject:homeManager forKey:uuid];
 }
 
-- (HMDHomeManagerObjectLookup)initWithHomeManager:(id)a3
+- (HMDHomeManagerObjectLookup)initWithHomeManager:(id)manager
 {
-  v4 = a3;
-  v5 = [v4 workQueue];
+  managerCopy = manager;
+  workQueue = [managerCopy workQueue];
   v8.receiver = self;
   v8.super_class = HMDHomeManagerObjectLookup;
-  v6 = [(HMDObjectLookup *)&v8 initWithWorkQueue:v5];
+  v6 = [(HMDObjectLookup *)&v8 initWithWorkQueue:workQueue];
 
   if (v6)
   {
-    objc_storeWeak(&v6->_homeManager, v4);
+    objc_storeWeak(&v6->_homeManager, managerCopy);
   }
 
   return v6;

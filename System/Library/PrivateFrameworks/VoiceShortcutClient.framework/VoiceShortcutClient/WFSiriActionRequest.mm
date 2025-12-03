@@ -1,11 +1,11 @@
 @interface WFSiriActionRequest
 - (WFSiriActionRequest)init;
-- (WFSiriActionRequest)initWithCoder:(id)a3;
+- (WFSiriActionRequest)initWithCoder:(id)coder;
 @end
 
 @implementation WFSiriActionRequest
 
-- (WFSiriActionRequest)initWithCoder:(id)a3
+- (WFSiriActionRequest)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = WFSiriActionRequest;

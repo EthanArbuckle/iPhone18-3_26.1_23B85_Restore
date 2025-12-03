@@ -1,17 +1,17 @@
 @interface TouchExclusionView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (TouchExclusionView)initWithFrame:(CGRect)a3 excludingView:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (TouchExclusionView)initWithFrame:(CGRect)frame excludingView:(id)view;
 @end
 
 @implementation TouchExclusionView
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
   [(UIView *)self->_excludingView convertPoint:self fromView:x, y];
-  if ([(UIView *)self->_excludingView pointInside:v7 withEvent:?])
+  if ([(UIView *)self->_excludingView pointInside:eventCopy withEvent:?])
   {
     v8 = 0;
   }
@@ -20,26 +20,26 @@
   {
     v10.receiver = self;
     v10.super_class = TouchExclusionView;
-    v8 = [(TouchExclusionView *)&v10 pointInside:v7 withEvent:x, y];
+    v8 = [(TouchExclusionView *)&v10 pointInside:eventCopy withEvent:x, y];
   }
 
   return v8;
 }
 
-- (TouchExclusionView)initWithFrame:(CGRect)a3 excludingView:(id)a4
+- (TouchExclusionView)initWithFrame:(CGRect)frame excludingView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
   v14.receiver = self;
   v14.super_class = TouchExclusionView;
-  v11 = [(TouchExclusionView *)&v14 initWithFrame:x, y, width, height];
-  v12 = v11;
-  if (v11)
+  height = [(TouchExclusionView *)&v14 initWithFrame:x, y, width, height];
+  v12 = height;
+  if (height)
   {
-    objc_storeStrong(&v11->_excludingView, a4);
+    objc_storeStrong(&height->_excludingView, view);
   }
 
   return v12;

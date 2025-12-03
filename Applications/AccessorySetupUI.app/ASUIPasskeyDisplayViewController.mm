@@ -1,5 +1,5 @@
 @interface ASUIPasskeyDisplayViewController
-- (_TtC16AccessorySetupUI32ASUIPasskeyDisplayViewController)initWithContentView:(id)a3;
+- (_TtC16AccessorySetupUI32ASUIPasskeyDisplayViewController)initWithContentView:(id)view;
 - (void)viewDidLoad;
 @end
 
@@ -7,11 +7,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100037AE0();
 }
 
-- (_TtC16AccessorySetupUI32ASUIPasskeyDisplayViewController)initWithContentView:(id)a3
+- (_TtC16AccessorySetupUI32ASUIPasskeyDisplayViewController)initWithContentView:(id)view
 {
   ObjectType = swift_getObjectType();
   self->PRXCardContentViewController_opaque[OBJC_IVAR____TtC16AccessorySetupUI32ASUIPasskeyDisplayViewController_type] = 7;
@@ -26,7 +26,7 @@
   swift_unknownObjectWeakInit();
   v8.receiver = self;
   v8.super_class = ObjectType;
-  return [(ASUIPasskeyDisplayViewController *)&v8 initWithContentView:a3];
+  return [(ASUIPasskeyDisplayViewController *)&v8 initWithContentView:view];
 }
 
 @end

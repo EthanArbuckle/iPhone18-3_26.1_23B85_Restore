@@ -6,18 +6,18 @@
 - (NSString)accessoryPairingPassword;
 - (NSUUID)accessoryPeerIdentifier;
 - (NSUUID)accessoryUUID;
-- (id)makeMessagePayloadWithError:(id *)a3;
-- (void)setAccessoryDescription:(id)a3;
-- (void)setAccessoryPairingPassword:(id)a3;
-- (void)setAccessoryPeerIdentifier:(id)a3;
-- (void)setAccessoryUUID:(id)a3;
-- (void)setSetupCodeDeferred:(BOOL)a3;
-- (void)setShouldRetrySetup:(BOOL)a3;
+- (id)makeMessagePayloadWithError:(id *)error;
+- (void)setAccessoryDescription:(id)description;
+- (void)setAccessoryPairingPassword:(id)password;
+- (void)setAccessoryPeerIdentifier:(id)identifier;
+- (void)setAccessoryUUID:(id)d;
+- (void)setSetupCodeDeferred:(BOOL)deferred;
+- (void)setShouldRetrySetup:(BOOL)setup;
 @end
 
 @implementation HMAddAccessoryRequestPayload
 
-- (id)makeMessagePayloadWithError:(id *)a3
+- (id)makeMessagePayloadWithError:(id *)error
 {
   v4 = type metadata accessor for HMAccessory.AddAccessoryRequestMessage.RequestPayload();
   v5 = *(*(v4 - 8) + 64);
@@ -59,13 +59,13 @@
   return v12;
 }
 
-- (void)setAccessoryUUID:(id)a3
+- (void)setAccessoryUUID:(id)d
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EAFE83D0, &unk_19BE37520);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v14 - v7;
-  if (a3)
+  if (d)
   {
     sub_19BE0DE6C();
     v9 = sub_19BE0DE8C();
@@ -81,7 +81,7 @@
   v11 = *(&self->super.isa + OBJC_IVAR___HMAddAccessoryRequestPayload_payload);
   v12 = OBJC_IVAR____TtCE7HomeKitCSo28HMAddAccessoryRequestPayloadP33_FA0A1A01509B8795493F726A62070D837Wrapper_wrapped;
   swift_beginAccess();
-  v13 = self;
+  selfCopy = self;
   sub_19BB54BE0(v8, v11 + v12);
   swift_endAccess();
   sub_19BB54C50(v8);
@@ -111,13 +111,13 @@
   return v12;
 }
 
-- (void)setAccessoryPeerIdentifier:(id)a3
+- (void)setAccessoryPeerIdentifier:(id)identifier
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EAFE83D0, &unk_19BE37520);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v14 - v7;
-  if (a3)
+  if (identifier)
   {
     sub_19BE0DE6C();
     v9 = sub_19BE0DE8C();
@@ -133,7 +133,7 @@
   v11 = *(&self->super.isa + OBJC_IVAR___HMAddAccessoryRequestPayload_payload) + OBJC_IVAR____TtCE7HomeKitCSo28HMAddAccessoryRequestPayloadP33_FA0A1A01509B8795493F726A62070D837Wrapper_wrapped;
   swift_beginAccess();
   v12 = *(type metadata accessor for HMAccessory.AddAccessoryRequestMessage.RequestPayload() + 20);
-  v13 = self;
+  selfCopy = self;
   sub_19BB54BE0(v8, &v11[v12]);
   swift_endAccess();
   sub_19BB54C50(v8);
@@ -160,9 +160,9 @@
   return v6;
 }
 
-- (void)setAccessoryPairingPassword:(id)a3
+- (void)setAccessoryPairingPassword:(id)password
 {
-  if (a3)
+  if (password)
   {
     v4 = sub_19BE0DFAC();
     v6 = v5;
@@ -184,17 +184,17 @@
 
 - (HMSetupAccessoryDescription)accessoryDescription
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_19BB54308();
 
   return v3;
 }
 
-- (void)setAccessoryDescription:(id)a3
+- (void)setAccessoryDescription:(id)description
 {
-  v6 = a3;
-  v5 = self;
-  sub_19BB54A58(a3);
+  descriptionCopy = description;
+  selfCopy = self;
+  sub_19BB54A58(description);
 }
 
 - (BOOL)setupCodeDeferred
@@ -204,11 +204,11 @@
   return v2[*(type metadata accessor for HMAccessory.AddAccessoryRequestMessage.RequestPayload() + 32)];
 }
 
-- (void)setSetupCodeDeferred:(BOOL)a3
+- (void)setSetupCodeDeferred:(BOOL)deferred
 {
   v4 = *(&self->super.isa + OBJC_IVAR___HMAddAccessoryRequestPayload_payload) + OBJC_IVAR____TtCE7HomeKitCSo28HMAddAccessoryRequestPayloadP33_FA0A1A01509B8795493F726A62070D837Wrapper_wrapped;
   swift_beginAccess();
-  v4[*(type metadata accessor for HMAccessory.AddAccessoryRequestMessage.RequestPayload() + 32)] = a3;
+  v4[*(type metadata accessor for HMAccessory.AddAccessoryRequestMessage.RequestPayload() + 32)] = deferred;
 }
 
 - (BOOL)shouldRetrySetup
@@ -218,11 +218,11 @@
   return v2[*(type metadata accessor for HMAccessory.AddAccessoryRequestMessage.RequestPayload() + 36)];
 }
 
-- (void)setShouldRetrySetup:(BOOL)a3
+- (void)setShouldRetrySetup:(BOOL)setup
 {
   v4 = *(&self->super.isa + OBJC_IVAR___HMAddAccessoryRequestPayload_payload) + OBJC_IVAR____TtCE7HomeKitCSo28HMAddAccessoryRequestPayloadP33_FA0A1A01509B8795493F726A62070D837Wrapper_wrapped;
   swift_beginAccess();
-  v4[*(type metadata accessor for HMAccessory.AddAccessoryRequestMessage.RequestPayload() + 36)] = a3;
+  v4[*(type metadata accessor for HMAccessory.AddAccessoryRequestMessage.RequestPayload() + 36)] = setup;
 }
 
 - (HMAddAccessoryRequestPayload)init

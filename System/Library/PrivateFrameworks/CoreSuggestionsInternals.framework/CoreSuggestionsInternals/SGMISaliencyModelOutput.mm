@@ -1,5 +1,5 @@
 @interface SGMISaliencyModelOutput
-- (SGMISaliencyModelOutput)initWithData:(id)a3;
+- (SGMISaliencyModelOutput)initWithData:(id)data;
 - (double)regularScore;
 - (double)salientScore;
 @end
@@ -24,16 +24,16 @@
   return v4;
 }
 
-- (SGMISaliencyModelOutput)initWithData:(id)a3
+- (SGMISaliencyModelOutput)initWithData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = SGMISaliencyModelOutput;
   v6 = [(SGMISaliencyModelOutput *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_data, a3);
+    objc_storeStrong(&v6->_data, data);
   }
 
   return v7;

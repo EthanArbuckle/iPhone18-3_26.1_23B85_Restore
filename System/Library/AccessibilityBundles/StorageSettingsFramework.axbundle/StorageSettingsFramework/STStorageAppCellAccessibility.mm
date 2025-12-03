@@ -1,15 +1,15 @@
 @interface STStorageAppCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation STStorageAppCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"STStorageAppCell" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
-  [v3 validateClass:@"STStorageAppCell" hasInstanceVariable:@"_sizeLabel" withType:"UILabel"];
-  [v3 validateClass:@"STStorageAppCell" hasInstanceVariable:@"_infoLabel" withType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"STStorageAppCell" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"STStorageAppCell" hasInstanceVariable:@"_sizeLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"STStorageAppCell" hasInstanceVariable:@"_infoLabel" withType:"UILabel"];
 }
 
 @end

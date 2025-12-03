@@ -1,40 +1,40 @@
 @interface SiriCoreNetworkActivity
-- (SiriCoreNetworkActivity)initWithLabel:(int64_t)a3 parent:(id)a4;
+- (SiriCoreNetworkActivity)initWithLabel:(int64_t)label parent:(id)parent;
 - (id)nwActivityToken;
-- (int)_completionReasonToNWActivityCompletionReason:(int64_t)a3;
-- (void)_networkActivityState:(int64_t)a3;
+- (int)_completionReasonToNWActivityCompletionReason:(int64_t)reason;
+- (void)_networkActivityState:(int64_t)state;
 - (void)activate;
-- (void)addConnection:(id)a3;
-- (void)removeConnection:(id)a3;
-- (void)stopWithCompletionReason:(int64_t)a3 andError:(id)a4;
+- (void)addConnection:(id)connection;
+- (void)removeConnection:(id)connection;
+- (void)stopWithCompletionReason:(int64_t)reason andError:(id)error;
 @end
 
 @implementation SiriCoreNetworkActivity
 
-- (int)_completionReasonToNWActivityCompletionReason:(int64_t)a3
+- (int)_completionReasonToNWActivityCompletionReason:(int64_t)reason
 {
-  if ((a3 - 1) > 4)
+  if ((reason - 1) > 4)
   {
     return 0;
   }
 
   else
   {
-    return dword_266A0C4D8[a3 - 1];
+    return dword_266A0C4D8[reason - 1];
   }
 }
 
-- (void)_networkActivityState:(int64_t)a3
+- (void)_networkActivityState:(int64_t)state
 {
-  v3 = a3;
+  stateCopy = state;
   state = self->_state;
   if (state > 1)
   {
     if (state == 2)
     {
-      if (a3 >= 2)
+      if (state >= 2)
       {
-        if (a3 == 2)
+        if (state == 2)
         {
           [(SiriCoreNetworkActivity *)self _networkActivityRestart];
           goto LABEL_21;
@@ -49,39 +49,39 @@
 
     else
     {
-      if (a3 >= 2)
+      if (state >= 2)
       {
-        v6 = a3;
+        stateCopy2 = state;
       }
 
       else
       {
-        v6 = 0;
+        stateCopy2 = 0;
       }
 
       if (state == 3)
       {
-        v3 = v6;
+        stateCopy = stateCopy2;
       }
     }
   }
 
   else if (state)
   {
-    if (state == 1 && (a3 == 3 || !a3))
+    if (state == 1 && (state == 3 || !state))
     {
       [(SiriCoreNetworkActivity *)self _networkActivityAbort];
 LABEL_21:
-      v3 = 0;
+      stateCopy = 0;
     }
   }
 
-  else if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  else if ((state & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
-    v3 = 0;
+    stateCopy = 0;
   }
 
-  self->_state = v3;
+  self->_state = stateCopy;
 }
 
 - (id)nwActivityToken
@@ -103,10 +103,10 @@ LABEL_21:
   return v4;
 }
 
-- (void)stopWithCompletionReason:(int64_t)a3 andError:(id)a4
+- (void)stopWithCompletionReason:(int64_t)reason andError:(id)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  errorCopy = error;
   [(SiriCoreNetworkActivity *)self _networkActivityState:3];
   if ([(NSMutableSet *)self->_connections count])
   {
@@ -141,30 +141,30 @@ LABEL_21:
     }
   }
 
-  if (v6)
+  if (errorCopy)
   {
-    v14 = [v6 code];
-    v15 = [v6 userInfo];
+    code = [errorCopy code];
+    userInfo = [errorCopy userInfo];
 
-    if (v15)
+    if (userInfo)
     {
-      v16 = [v6 userInfo];
-      v17 = [v16 objectForKey:*MEMORY[0x277CCA7E8]];
+      userInfo2 = [errorCopy userInfo];
+      v17 = [userInfo2 objectForKey:*MEMORY[0x277CCA7E8]];
 
       if (v17)
       {
-        v18 = [v17 code];
+        code2 = [v17 code];
       }
 
       else
       {
-        v18 = -1;
+        code2 = -1;
       }
     }
 
     else
     {
-      v18 = -1;
+      code2 = -1;
     }
 
     v20 = *MEMORY[0x277CEF0A0];
@@ -173,20 +173,20 @@ LABEL_21:
       *buf = 136315650;
       v28 = "[SiriCoreNetworkActivity stopWithCompletionReason:andError:]";
       v29 = 1024;
-      v30 = v14;
+      v30 = code;
       v31 = 1024;
-      v32 = v18;
+      v32 = code2;
       _os_log_impl(&dword_2669D1000, v20, OS_LOG_TYPE_INFO, "%s Reporting to nw_activity that SiriCoreNetworkActivity failed with error code %d and underlying error code %d", buf, 0x18u);
     }
 
     v21 = self->_activity;
-    [(SiriCoreNetworkActivity *)self _completionReasonToNWActivityCompletionReason:a3, v23];
+    [(SiriCoreNetworkActivity *)self _completionReasonToNWActivityCompletionReason:reason, v23];
   }
 
   else
   {
     v19 = self->_activity;
-    [(SiriCoreNetworkActivity *)self _completionReasonToNWActivityCompletionReason:a3];
+    [(SiriCoreNetworkActivity *)self _completionReasonToNWActivityCompletionReason:reason];
   }
 
   nw_activity_complete_with_reason_and_underlying_error();
@@ -194,20 +194,20 @@ LABEL_21:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeConnection:(id)a3
+- (void)removeConnection:(id)connection
 {
   if (self->_state == 2)
   {
     activity = self->_activity;
-    v6 = a3;
+    connectionCopy = connection;
     nw_connection_end_activity();
-    [(NSMutableSet *)self->_connections removeObject:v6];
+    [(NSMutableSet *)self->_connections removeObject:connectionCopy];
   }
 }
 
-- (void)addConnection:(id)a3
+- (void)addConnection:(id)connection
 {
-  v6 = a3;
+  connectionCopy = connection;
   state = self->_state;
   if (state <= 1)
   {
@@ -219,7 +219,7 @@ LABEL_21:
   {
     activity = self->_activity;
     nw_connection_start_activity();
-    [(NSMutableSet *)self->_connections addObject:v6];
+    [(NSMutableSet *)self->_connections addObject:connectionCopy];
   }
 }
 
@@ -237,18 +237,18 @@ LABEL_21:
   }
 }
 
-- (SiriCoreNetworkActivity)initWithLabel:(int64_t)a3 parent:(id)a4
+- (SiriCoreNetworkActivity)initWithLabel:(int64_t)label parent:(id)parent
 {
-  v6 = a4;
+  parentCopy = parent;
   v13.receiver = self;
   v13.super_class = SiriCoreNetworkActivity;
   v7 = [(SiriCoreNetworkActivity *)&v13 init];
   if (v7)
   {
-    if (a3)
+    if (label)
     {
       v8 = nw_activity_create();
-      if (v6)
+      if (parentCopy)
       {
         nw_activity_set_parent_activity();
         v7->_parentLabel = nw_activity_get_label();

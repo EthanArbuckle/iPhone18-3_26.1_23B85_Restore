@@ -1,17 +1,17 @@
 @interface CuratedCollectionsListFetcher
-- (CuratedCollectionsListFetcher)initWithTraits:(id)a3;
-- (void)fetchGuidesWithIdentifiers:(id)a3 completion:(id)a4;
+- (CuratedCollectionsListFetcher)initWithTraits:(id)traits;
+- (void)fetchGuidesWithIdentifiers:(id)identifiers completion:(id)completion;
 @end
 
 @implementation CuratedCollectionsListFetcher
 
-- (void)fetchGuidesWithIdentifiers:(id)a3 completion:(id)a4
+- (void)fetchGuidesWithIdentifiers:(id)identifiers completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
   v8 = +[MKMapService sharedService];
-  v9 = [(CuratedCollectionsListFetcher *)self traits];
-  v10 = [v8 ticketForCuratedCollections:v6 isBatchLookup:1 traits:v9];
+  traits = [(CuratedCollectionsListFetcher *)self traits];
+  v10 = [v8 ticketForCuratedCollections:identifiersCopy isBatchLookup:1 traits:traits];
 
   objc_initWeak(&location, self);
   v11 = sub_1005B0E0C();
@@ -31,7 +31,7 @@
   v16[3] = &unk_10163C080;
   v18[1] = v12;
   objc_copyWeak(v18, &location);
-  v15 = v7;
+  v15 = completionCopy;
   v17 = v15;
   [v10 submitWithHandler:v16 networkActivity:&stru_101622BD8];
 
@@ -39,16 +39,16 @@
   objc_destroyWeak(&location);
 }
 
-- (CuratedCollectionsListFetcher)initWithTraits:(id)a3
+- (CuratedCollectionsListFetcher)initWithTraits:(id)traits
 {
-  v5 = a3;
+  traitsCopy = traits;
   v9.receiver = self;
   v9.super_class = CuratedCollectionsListFetcher;
   v6 = [(CuratedCollectionsListFetcher *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_traits, a3);
+    objc_storeStrong(&v6->_traits, traits);
   }
 
   return v7;

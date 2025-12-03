@@ -1,15 +1,15 @@
 @interface PXStoryTVWatchNextCellConfiguration
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation PXStoryTVWatchNextCellConfiguration
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -19,25 +19,25 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v15.receiver = self;
       v15.super_class = PXStoryTVWatchNextCellConfiguration;
       if ([(PXGFocusEffectViewConfiguration *)&v15 isEqual:v5])
       {
-        v6 = [(PXStoryTVWatchNextCellConfiguration *)self title];
-        v7 = [(PXStoryTVWatchNextCellConfiguration *)v5 title];
-        if (v6 == v7 || [v6 isEqualToString:v7])
+        title = [(PXStoryTVWatchNextCellConfiguration *)self title];
+        title2 = [(PXStoryTVWatchNextCellConfiguration *)v5 title];
+        if (title == title2 || [title isEqualToString:title2])
         {
-          v8 = [(PXStoryTVWatchNextCellConfiguration *)self subtitle];
-          v9 = [(PXStoryTVWatchNextCellConfiguration *)v5 subtitle];
-          if (v8 == v9 || [v8 isEqualToString:v9])
+          subtitle = [(PXStoryTVWatchNextCellConfiguration *)self subtitle];
+          subtitle2 = [(PXStoryTVWatchNextCellConfiguration *)v5 subtitle];
+          if (subtitle == subtitle2 || [subtitle isEqualToString:subtitle2])
           {
-            v10 = [(PXStoryTVWatchNextCellConfiguration *)self spec];
-            v11 = [(PXStoryTVWatchNextCellConfiguration *)v5 spec];
-            if (v10 == v11 || [v10 isEqual:v11])
+            spec = [(PXStoryTVWatchNextCellConfiguration *)self spec];
+            spec2 = [(PXStoryTVWatchNextCellConfiguration *)v5 spec];
+            if (spec == spec2 || [spec isEqual:spec2])
             {
-              v12 = [(PXStoryTVWatchNextCellConfiguration *)self countdownValue];
-              v13 = v12 == [(PXStoryTVWatchNextCellConfiguration *)v5 countdownValue];
+              countdownValue = [(PXStoryTVWatchNextCellConfiguration *)self countdownValue];
+              v13 = countdownValue == [(PXStoryTVWatchNextCellConfiguration *)v5 countdownValue];
             }
 
             else
@@ -83,11 +83,11 @@
   return v5 ^ (8 * [(PXStoryTVCellSpec *)self->_spec hash]) ^ (16 * self->_countdownValue);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(PXGFocusableViewConfiguration *)self delegate];
-  [v4 setDelegate:v5];
+  delegate = [(PXGFocusableViewConfiguration *)self delegate];
+  [v4 setDelegate:delegate];
 
   [(PXGFocusEffectViewConfiguration *)self cornerRadius];
   [v4 setCornerRadius:?];

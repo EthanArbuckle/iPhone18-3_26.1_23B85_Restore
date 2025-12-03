@@ -1,7 +1,7 @@
 @interface TTRIQuickBarQuickPickView
 - (NSArray)accessibilityElements;
 - (void)_dynamicUserInterfaceTraitDidChange;
-- (void)itemAction:(id)a3;
+- (void)itemAction:(id)action;
 - (void)layoutSubviews;
 @end
 
@@ -9,7 +9,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_21D4AF6D8();
 }
 
@@ -23,10 +23,10 @@
   [v2 setNeedsLayout];
 }
 
-- (void)itemAction:(id)a3
+- (void)itemAction:(id)action
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_21DBFBC1C();
   swift_unknownObjectRelease();
   sub_21D4B0400(v5);
@@ -36,7 +36,7 @@
 
 - (NSArray)accessibilityElements
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_21D4B06AC();
 
   if (v3)

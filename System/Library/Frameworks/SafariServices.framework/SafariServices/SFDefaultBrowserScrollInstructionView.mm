@@ -1,21 +1,21 @@
 @interface SFDefaultBrowserScrollInstructionView
-- (SFDefaultBrowserScrollInstructionView)initWithFrame:(CGRect)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setPocketContainerInteraction:(id)a3;
+- (SFDefaultBrowserScrollInstructionView)initWithFrame:(CGRect)frame;
+- (void)setHidden:(BOOL)hidden;
+- (void)setPocketContainerInteraction:(id)interaction;
 @end
 
 @implementation SFDefaultBrowserScrollInstructionView
 
-- (SFDefaultBrowserScrollInstructionView)initWithFrame:(CGRect)a3
+- (SFDefaultBrowserScrollInstructionView)initWithFrame:(CGRect)frame
 {
   v46[4] = *MEMORY[0x1E69E9840];
   v44.receiver = self;
   v44.super_class = SFDefaultBrowserScrollInstructionView;
-  v3 = [(SFDefaultBrowserScrollInstructionView *)&v44 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFDefaultBrowserScrollInstructionView *)&v44 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [(SFDefaultBrowserScrollInstructionView *)v3 setBackgroundColor:v4];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [(SFDefaultBrowserScrollInstructionView *)v3 setBackgroundColor:systemBackgroundColor];
 
     if ([MEMORY[0x1E69C8880] isSolariumEnabled])
     {
@@ -24,8 +24,8 @@
 
     else
     {
-      v5 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-      [(SFDefaultBrowserScrollInstructionView *)v3 setBackgroundColor:v5];
+      systemBackgroundColor2 = [MEMORY[0x1E69DC888] systemBackgroundColor];
+      [(SFDefaultBrowserScrollInstructionView *)v3 setBackgroundColor:systemBackgroundColor2];
     }
 
     [(SFDefaultBrowserScrollInstructionView *)v3 setHidden:1];
@@ -36,26 +36,26 @@
     {
       v7 = objc_alloc(MEMORY[0x1E69DD250]);
       v8 = [v7 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
-      v9 = [MEMORY[0x1E69DC888] separatorColor];
-      [v8 setBackgroundColor:v9];
+      separatorColor = [MEMORY[0x1E69DC888] separatorColor];
+      [v8 setBackgroundColor:separatorColor];
 
       [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
       [(SFDefaultBrowserScrollInstructionView *)v3 addSubview:v8];
       v34 = MEMORY[0x1E696ACD8];
-      v42 = [v8 leadingAnchor];
-      v40 = [(SFDefaultBrowserScrollInstructionView *)v3 leadingAnchor];
-      v38 = [v42 constraintEqualToAnchor:v40];
+      leadingAnchor = [v8 leadingAnchor];
+      leadingAnchor2 = [(SFDefaultBrowserScrollInstructionView *)v3 leadingAnchor];
+      v38 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v46[0] = v38;
-      v36 = [v8 trailingAnchor];
-      v10 = [(SFDefaultBrowserScrollInstructionView *)v3 trailingAnchor];
-      v11 = [v36 constraintEqualToAnchor:v10];
+      trailingAnchor = [v8 trailingAnchor];
+      trailingAnchor2 = [(SFDefaultBrowserScrollInstructionView *)v3 trailingAnchor];
+      v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v46[1] = v11;
-      v12 = [v8 topAnchor];
-      v13 = [(SFDefaultBrowserScrollInstructionView *)v3 topAnchor];
-      v14 = [v12 constraintEqualToAnchor:v13];
+      topAnchor = [v8 topAnchor];
+      topAnchor2 = [(SFDefaultBrowserScrollInstructionView *)v3 topAnchor];
+      v14 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v46[2] = v14;
-      v15 = [v8 heightAnchor];
-      v16 = [v15 constraintEqualToConstant:0.5];
+      heightAnchor = [v8 heightAnchor];
+      v16 = [heightAnchor constraintEqualToConstant:0.5];
       v46[3] = v16;
       v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v46 count:4];
       [v34 activateConstraints:v17];
@@ -72,30 +72,30 @@
     [v18 setText:v20];
 
     [v18 setTextAlignment:1];
-    v21 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [v18 setTextColor:v21];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [v18 setTextColor:secondaryLabelColor];
 
     [v18 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v18 setAdjustsFontForContentSizeCategory:1];
     [v18 setMaximumContentSizeCategory:*MEMORY[0x1E69DDC70]];
     [(SFDefaultBrowserScrollInstructionView *)v3 addSubview:v18];
-    v22 = [(SFDefaultBrowserScrollInstructionView *)v3 layoutMarginsGuide];
+    layoutMarginsGuide = [(SFDefaultBrowserScrollInstructionView *)v3 layoutMarginsGuide];
     v33 = MEMORY[0x1E696ACD8];
-    v43 = [v18 topAnchor];
-    v41 = [v22 topAnchor];
-    v39 = [v43 constraintEqualToAnchor:v41];
+    topAnchor3 = [v18 topAnchor];
+    topAnchor4 = [layoutMarginsGuide topAnchor];
+    v39 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v45[0] = v39;
-    v37 = [v18 bottomAnchor];
-    v35 = [v22 bottomAnchor];
-    v32 = [v37 constraintEqualToAnchor:v35];
+    bottomAnchor = [v18 bottomAnchor];
+    bottomAnchor2 = [layoutMarginsGuide bottomAnchor];
+    v32 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v45[1] = v32;
-    v23 = [v18 leadingAnchor];
-    v24 = [v22 leadingAnchor];
-    v25 = [v23 constraintEqualToAnchor:v24];
+    leadingAnchor3 = [v18 leadingAnchor];
+    leadingAnchor4 = [layoutMarginsGuide leadingAnchor];
+    v25 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v45[2] = v25;
-    v26 = [v18 trailingAnchor];
-    v27 = [v22 trailingAnchor];
-    v28 = [v26 constraintEqualToAnchor:v27];
+    trailingAnchor3 = [v18 trailingAnchor];
+    trailingAnchor4 = [layoutMarginsGuide trailingAnchor];
+    v28 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v45[3] = v28;
     v29 = [*(v6 + 3784) arrayWithObjects:v45 count:4];
     [v33 activateConstraints:v29];
@@ -106,35 +106,35 @@
   return v3;
 }
 
-- (void)setPocketContainerInteraction:(id)a3
+- (void)setPocketContainerInteraction:(id)interaction
 {
-  v8 = a3;
-  v5 = [MEMORY[0x1E69C8880] isSolariumEnabled];
-  v6 = v8;
-  if (v5)
+  interactionCopy = interaction;
+  isSolariumEnabled = [MEMORY[0x1E69C8880] isSolariumEnabled];
+  v6 = interactionCopy;
+  if (isSolariumEnabled)
   {
     pocketContainerInteraction = self->_pocketContainerInteraction;
-    if (pocketContainerInteraction != v8)
+    if (pocketContainerInteraction != interactionCopy)
     {
       if (pocketContainerInteraction)
       {
         [(SFDefaultBrowserScrollInstructionView *)self removeInteraction:?];
       }
 
-      objc_storeStrong(&self->_pocketContainerInteraction, a3);
-      [(SFDefaultBrowserScrollInstructionView *)self addInteraction:v8];
-      v6 = v8;
+      objc_storeStrong(&self->_pocketContainerInteraction, interaction);
+      [(SFDefaultBrowserScrollInstructionView *)self addInteraction:interactionCopy];
+      v6 = interactionCopy;
     }
   }
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   v5.receiver = self;
   v5.super_class = SFDefaultBrowserScrollInstructionView;
   [(SFDefaultBrowserScrollInstructionView *)&v5 setHidden:?];
-  [(_UIScrollPocketContainerInteraction *)self->_pocketContainerInteraction _setActive:!v3];
+  [(_UIScrollPocketContainerInteraction *)self->_pocketContainerInteraction _setActive:!hiddenCopy];
 }
 
 @end

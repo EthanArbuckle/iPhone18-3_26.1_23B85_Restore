@@ -3,7 +3,7 @@
 - (NSString)requestId;
 - (NSString)selectedBundleIdentifier;
 - (SAAudioAppPredictorResult)init;
-- (SAAudioAppPredictorResult)initWithRequestId:(id)a3 selectedBundleIdentifier:(id)a4 disambiguateBundleIdentifiers:(id)a5;
+- (SAAudioAppPredictorResult)initWithRequestId:(id)id selectedBundleIdentifier:(id)identifier disambiguateBundleIdentifiers:(id)identifiers;
 @end
 
 @implementation SAAudioAppPredictorResult
@@ -60,14 +60,14 @@
   return result;
 }
 
-- (SAAudioAppPredictorResult)initWithRequestId:(id)a3 selectedBundleIdentifier:(id)a4 disambiguateBundleIdentifiers:(id)a5
+- (SAAudioAppPredictorResult)initWithRequestId:(id)id selectedBundleIdentifier:(id)identifier disambiguateBundleIdentifiers:(id)identifiers
 {
   v8 = sub_2664E02C8();
   v10 = v9;
-  if (!a4)
+  if (!identifier)
   {
     v12 = 0;
-    if (a5)
+    if (identifiers)
     {
       goto LABEL_3;
     }
@@ -77,9 +77,9 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  a4 = sub_2664E02C8();
+  identifier = sub_2664E02C8();
   v12 = v11;
-  if (!a5)
+  if (!identifiers)
   {
     goto LABEL_5;
   }
@@ -91,7 +91,7 @@ LABEL_6:
   *v14 = v8;
   v14[1] = v10;
   v15 = (self + OBJC_IVAR___SAAudioAppPredictorResult_selectedBundleIdentifier);
-  *v15 = a4;
+  *v15 = identifier;
   v15[1] = v12;
   *(self + OBJC_IVAR___SAAudioAppPredictorResult_disambiguateBundleIdentifiers) = v13;
   v17.receiver = self;

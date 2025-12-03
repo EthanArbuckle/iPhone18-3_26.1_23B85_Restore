@@ -1,10 +1,10 @@
 @interface APClientState
 - (APClientState)init;
-- (APClientState)initWithCoder:(id)a3;
-- (APClientState)initWithLockedAppBundleIdentifiers:(id)a3 hiddenAppBundleIdentifiers:(id)a4 effectivelyLockedBundleIdentifiers:(id)a5;
-- (BOOL)isEqual:(id)a3;
+- (APClientState)initWithCoder:(id)coder;
+- (APClientState)initWithLockedAppBundleIdentifiers:(id)identifiers hiddenAppBundleIdentifiers:(id)bundleIdentifiers effectivelyLockedBundleIdentifiers:(id)lockedBundleIdentifiers;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation APClientState
@@ -17,25 +17,25 @@
   return v4;
 }
 
-- (APClientState)initWithLockedAppBundleIdentifiers:(id)a3 hiddenAppBundleIdentifiers:(id)a4 effectivelyLockedBundleIdentifiers:(id)a5
+- (APClientState)initWithLockedAppBundleIdentifiers:(id)identifiers hiddenAppBundleIdentifiers:(id)bundleIdentifiers effectivelyLockedBundleIdentifiers:(id)lockedBundleIdentifiers
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifiersCopy = identifiers;
+  bundleIdentifiersCopy = bundleIdentifiers;
+  lockedBundleIdentifiersCopy = lockedBundleIdentifiers;
   v19.receiver = self;
   v19.super_class = APClientState;
   v11 = [(APClientState *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [identifiersCopy copy];
     lockedAppBundleIdentifiers = v11->_lockedAppBundleIdentifiers;
     v11->_lockedAppBundleIdentifiers = v12;
 
-    v14 = [v9 copy];
+    v14 = [bundleIdentifiersCopy copy];
     hiddenAppBundleIdentifiers = v11->_hiddenAppBundleIdentifiers;
     v11->_hiddenAppBundleIdentifiers = v14;
 
-    v16 = [v10 copy];
+    v16 = [lockedBundleIdentifiersCopy copy];
     effectivelyLockedAppBundleIdentifiers = v11->_effectivelyLockedAppBundleIdentifiers;
     v11->_effectivelyLockedAppBundleIdentifiers = v16;
   }
@@ -50,12 +50,12 @@
   return v4 ^ [(NSSet *)self->_effectivelyLockedAppBundleIdentifiers hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
     if ([v5[1] isEqual:self->_lockedAppBundleIdentifiers] && objc_msgSend(v5[2], "isEqual:", self->_hiddenAppBundleIdentifiers))
     {
       v6 = [v5[3] isEqual:self->_effectivelyLockedAppBundleIdentifiers];
@@ -75,31 +75,31 @@
   return v6;
 }
 
-- (APClientState)initWithCoder:(id)a3
+- (APClientState)initWithCoder:(id)coder
 {
   v54 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(APClientState *)self init];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"lockedAppBundleIdentifiers"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"lockedAppBundleIdentifiers"];
     lockedAppBundleIdentifiers = v5->_lockedAppBundleIdentifiers;
     v5->_lockedAppBundleIdentifiers = v9;
 
     v11 = MEMORY[0x1E695DFD8];
     v12 = objc_opt_class();
     v13 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"hiddenAppBundleIdentifiers"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"hiddenAppBundleIdentifiers"];
     hiddenAppBundleIdentifiers = v5->_hiddenAppBundleIdentifiers;
     v5->_hiddenAppBundleIdentifiers = v14;
 
     v16 = MEMORY[0x1E695DFD8];
     v17 = objc_opt_class();
     v18 = [v16 setWithObjects:{v17, objc_opt_class(), 0}];
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"effectivelyLockedAppBundleIdentifiers"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"effectivelyLockedAppBundleIdentifiers"];
     effectivelyLockedAppBundleIdentifiers = v5->_effectivelyLockedAppBundleIdentifiers;
     v5->_effectivelyLockedAppBundleIdentifiers = v19;
 
@@ -135,7 +135,7 @@
           if (objc_opt_isKindOfClass())
           {
             v27 = v5;
-            v28 = v4;
+            v28 = coderCopy;
             v29 = v26;
             v47 = 0u;
             v48 = 0u;
@@ -162,7 +162,7 @@
                   if ((objc_opt_isKindOfClass() & 1) == 0)
                   {
 
-                    v4 = v28;
+                    coderCopy = v28;
                     v5 = v27;
                     v24 = v39;
                     v23 = v40;
@@ -183,7 +183,7 @@
               }
             }
 
-            v4 = v28;
+            coderCopy = v28;
             v5 = v27;
             v24 = v39;
             v23 = v40;
@@ -194,7 +194,7 @@
 
 LABEL_19:
             v36 = _APMakeNSError(v42, 4864, "[APClientState initWithCoder:]", 86, 0);
-            [v4 failWithError:v36];
+            [coderCopy failWithError:v36];
 
             v5 = 0;
           }
@@ -214,13 +214,13 @@ LABEL_19:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   lockedAppBundleIdentifiers = self->_lockedAppBundleIdentifiers;
-  v5 = a3;
-  [v5 encodeObject:lockedAppBundleIdentifiers forKey:@"lockedAppBundleIdentifiers"];
-  [v5 encodeObject:self->_hiddenAppBundleIdentifiers forKey:@"hiddenAppBundleIdentifiers"];
-  [v5 encodeObject:self->_effectivelyLockedAppBundleIdentifiers forKey:@"effectivelyLockedAppBundleIdentifiers"];
+  coderCopy = coder;
+  [coderCopy encodeObject:lockedAppBundleIdentifiers forKey:@"lockedAppBundleIdentifiers"];
+  [coderCopy encodeObject:self->_hiddenAppBundleIdentifiers forKey:@"hiddenAppBundleIdentifiers"];
+  [coderCopy encodeObject:self->_effectivelyLockedAppBundleIdentifiers forKey:@"effectivelyLockedAppBundleIdentifiers"];
 }
 
 @end

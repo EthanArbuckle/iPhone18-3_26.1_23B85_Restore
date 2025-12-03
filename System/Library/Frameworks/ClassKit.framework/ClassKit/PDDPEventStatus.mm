@@ -1,11 +1,11 @@
 @interface PDDPEventStatus
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPEventStatus
@@ -15,8 +15,8 @@
   v7.receiver = self;
   v7.super_class = PDDPEventStatus;
   v3 = [(PDDPEventStatus *)&v7 description];
-  v4 = [(PDDPEventStatus *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPEventStatus *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -27,8 +27,8 @@
   status = self->_status;
   if (status)
   {
-    v5 = [(PDDPStatus *)status dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"status"];
+    dictionaryRepresentation = [(PDDPStatus *)status dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"status"];
   }
 
   objectId = self->_objectId;
@@ -40,61 +40,61 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_status)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_objectId)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_status)
   {
-    [v4 setStatus:?];
-    v4 = v5;
+    [toCopy setStatus:?];
+    toCopy = v5;
   }
 
   if (self->_objectId)
   {
     [v5 setObjectId:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(PDDPStatus *)self->_status copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(PDDPStatus *)self->_status copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(NSString *)self->_objectId copyWithZone:a3];
+  v8 = [(NSString *)self->_objectId copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((status = self->_status, !(status | v4[2])) || -[PDDPStatus isEqual:](status, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((status = self->_status, !(status | equalCopy[2])) || -[PDDPStatus isEqual:](status, "isEqual:")))
   {
     objectId = self->_objectId;
-    if (objectId | v4[1])
+    if (objectId | equalCopy[1])
     {
       v7 = [(NSString *)objectId isEqual:?];
     }
@@ -113,12 +113,12 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   status = self->_status;
-  v6 = v4[2];
-  v7 = v4;
+  v6 = fromCopy[2];
+  v7 = fromCopy;
   if (status)
   {
     if (!v6)
@@ -139,15 +139,15 @@
     status = [(PDDPEventStatus *)self setStatus:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_7:
-  if (v4[1])
+  if (fromCopy[1])
   {
     status = [(PDDPEventStatus *)self setObjectId:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  _objc_release_x1(status, v4);
+  _objc_release_x1(status, fromCopy);
 }
 
 @end

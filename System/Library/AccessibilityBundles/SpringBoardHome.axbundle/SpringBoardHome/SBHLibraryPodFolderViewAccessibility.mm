@@ -1,5 +1,5 @@
 @interface SBHLibraryPodFolderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)automationElements;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)layoutSubviews;
@@ -7,15 +7,15 @@
 
 @implementation SBHLibraryPodFolderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBFolderView" hasInstanceMethod:@"firstIconListView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBHLibraryPodFolderView" isKindOfClass:@"SBFolderView"];
-  [v3 validateClass:@"SBIconListView" hasInstanceVariable:@"_iconViews" withType:"NSMapTable"];
-  [v3 validateClass:@"SBHLibraryPodFolderView" hasInstanceVariable:@"_podScrollView" withType:"BSUIScrollView"];
-  [v3 validateClass:@"SBIconView" hasInstanceMethod:@"icon" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBIcon" hasInstanceMethod:@"_axIconView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBFolderView" hasInstanceMethod:@"firstIconListView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBHLibraryPodFolderView" isKindOfClass:@"SBFolderView"];
+  [validationsCopy validateClass:@"SBIconListView" hasInstanceVariable:@"_iconViews" withType:"NSMapTable"];
+  [validationsCopy validateClass:@"SBHLibraryPodFolderView" hasInstanceVariable:@"_podScrollView" withType:"BSUIScrollView"];
+  [validationsCopy validateClass:@"SBIconView" hasInstanceMethod:@"icon" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBIcon" hasInstanceMethod:@"_axIconView" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -87,8 +87,8 @@
             v32 = 0u;
             v29 = 0u;
             v30 = 0u;
-            v16 = [v28 objectEnumerator];
-            v15 = [v16 countByEnumeratingWithState:&v29 objects:v38 count:16];
+            objectEnumerator = [v28 objectEnumerator];
+            v15 = [objectEnumerator countByEnumeratingWithState:&v29 objects:v38 count:16];
             if (v15)
             {
               v17 = *v30;
@@ -98,7 +98,7 @@
                 {
                   if (*v30 != v17)
                   {
-                    objc_enumerationMutation(v16);
+                    objc_enumerationMutation(objectEnumerator);
                   }
 
                   v19 = *(*(&v29 + 1) + 8 * i);
@@ -112,7 +112,7 @@
                   }
                 }
 
-                v15 = [v16 countByEnumeratingWithState:&v29 objects:v38 count:16];
+                v15 = [objectEnumerator countByEnumeratingWithState:&v29 objects:v38 count:16];
                 if (v15)
                 {
                   continue;

@@ -1,11 +1,11 @@
 @interface PDClassPublish
-- (BOOL)processPayloadFromResponse:(id)a3 error:(id *)a4;
+- (BOOL)processPayloadFromResponse:(id)response error:(id *)error;
 - (NSMutableDictionary)erroredIDs;
-- (id)createActionPDDPEEPayloadFromCLSObject:(id)a3;
-- (id)deleteActionPDDPEEPayloadFromCLSObject:(id)a3;
-- (id)payloadForCLSObject:(id)a3;
+- (id)createActionPDDPEEPayloadFromCLSObject:(id)object;
+- (id)deleteActionPDDPEEPayloadFromCLSObject:(id)object;
+- (id)payloadForCLSObject:(id)object;
 - (id)requestData;
-- (id)updateActionPDDPEEPayloadFromCLSObject:(id)a3;
+- (id)updateActionPDDPEEPayloadFromCLSObject:(id)object;
 @end
 
 @implementation PDClassPublish
@@ -33,48 +33,48 @@
 {
   if ([(PDOperation *)self isFinished])
   {
-    v3 = 0;
+    immutableData = 0;
     goto LABEL_57;
   }
 
   v4 = objc_alloc_init(PBDataWriter);
   v5 = objc_alloc_init(PDDPPublishClassRequest);
-  v69 = [(PDURLRequestOperation *)self operationID];
+  operationID = [(PDURLRequestOperation *)self operationID];
   v6 = *(&self->_action + 2);
   v7 = [(PDClassPublish *)self payloadForCLSObject:v6];
   [(PDDPPublishClassRequest *)v5 addPayload:v7];
   [(PDDPPublishClassRequest *)v5 writeTo:v4];
   [(PDDPPublishClassRequest *)v5 clearPayloads];
-  v8 = [v4 data];
-  v9 = [v8 length];
-  v10 = [(PDURLRequestOperation *)self stats];
-  if (v10)
+  data = [v4 data];
+  v9 = [data length];
+  stats = [(PDURLRequestOperation *)self stats];
+  if (stats)
   {
-    v10[10] = v9;
+    stats[10] = v9;
   }
 
   v62 = v6;
 
-  v11 = [(PDURLRequestOperation *)self stats];
-  if (v11)
+  stats2 = [(PDURLRequestOperation *)self stats];
+  if (stats2)
   {
-    ++v11[14];
+    ++stats2[14];
   }
 
   CLSInitLog();
-  v12 = [(PDClassPublish *)self logSubsystem];
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
+  logSubsystem = [(PDClassPublish *)self logSubsystem];
+  if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_INFO))
   {
     v13 = objc_opt_class();
     v14 = v13;
-    v15 = [v7 dictionaryRepresentation];
+    dictionaryRepresentation = [v7 dictionaryRepresentation];
     *buf = 138543874;
     v81 = v13;
     v82 = 2114;
-    v83 = v69;
+    v83 = operationID;
     v84 = 2112;
-    v85 = v15;
-    _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%{public}@: %{public}@ added payload item %@ ", buf, 0x20u);
+    v85 = dictionaryRepresentation;
+    _os_log_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_INFO, "%{public}@: %{public}@ added payload item %@ ", buf, 0x20u);
   }
 
   v61 = v7;
@@ -103,42 +103,42 @@ LABEL_11:
       [(PDDPPublishClassRequest *)v5 addPayload:v19];
       [(PDDPPublishClassRequest *)v5 writeTo:v4];
       [(PDDPPublishClassRequest *)v5 clearPayloads];
-      v20 = [v4 data];
-      v21 = [v20 length];
-      v22 = [(PDURLRequestOperation *)self stats];
-      if (v22)
+      data2 = [v4 data];
+      v21 = [data2 length];
+      stats3 = [(PDURLRequestOperation *)self stats];
+      if (stats3)
       {
-        v22[10] = v21;
+        stats3[10] = v21;
       }
 
-      v23 = [(PDURLRequestOperation *)self stats];
-      if (v23)
+      stats4 = [(PDURLRequestOperation *)self stats];
+      if (stats4)
       {
-        ++v23[14];
+        ++stats4[14];
       }
 
       CLSInitLog();
-      v24 = [(PDClassPublish *)self logSubsystem];
-      if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
+      logSubsystem2 = [(PDClassPublish *)self logSubsystem];
+      if (os_log_type_enabled(logSubsystem2, OS_LOG_TYPE_INFO))
       {
         v25 = objc_opt_class();
         v26 = v25;
-        v27 = [v19 dictionaryRepresentation];
+        dictionaryRepresentation2 = [v19 dictionaryRepresentation];
         *buf = 138543874;
         v81 = v25;
         v82 = 2114;
-        v83 = v69;
+        v83 = operationID;
         v84 = 2112;
-        v85 = v27;
-        _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "%{public}@: %{public}@ added payload item %@ ", buf, 0x20u);
+        v85 = dictionaryRepresentation2;
+        _os_log_impl(&_mh_execute_header, logSubsystem2, OS_LOG_TYPE_INFO, "%{public}@: %{public}@ added payload item %@ ", buf, 0x20u);
       }
 
-      v28 = [(PDURLRequestOperation *)self stats];
-      v29 = v28;
-      v30 = v28 ? *(v28 + 80) : 0;
-      v31 = [(PDURLRequestOperation *)self stats];
-      v32 = v31;
-      v33 = v31 ? *(v31 + 112) : 0;
+      stats5 = [(PDURLRequestOperation *)self stats];
+      v29 = stats5;
+      v30 = stats5 ? *(stats5 + 80) : 0;
+      stats6 = [(PDURLRequestOperation *)self stats];
+      v32 = stats6;
+      v33 = stats6 ? *(stats6 + 112) : 0;
       v34 = [(PDEndpointRequestOperation *)self hasReachedRequestPayloadLimitBytes:v30 count:v33];
 
       objc_autoreleasePoolPop(v18);
@@ -185,42 +185,42 @@ LABEL_32:
       [(PDDPPublishClassRequest *)v5 addPayload:v39];
       [(PDDPPublishClassRequest *)v5 writeTo:v4];
       [(PDDPPublishClassRequest *)v5 clearPayloads];
-      v40 = [v4 data];
-      v41 = [v40 length];
-      v42 = [(PDURLRequestOperation *)self stats];
-      if (v42)
+      data3 = [v4 data];
+      v41 = [data3 length];
+      stats7 = [(PDURLRequestOperation *)self stats];
+      if (stats7)
       {
-        v42[10] = v41;
+        stats7[10] = v41;
       }
 
-      v43 = [(PDURLRequestOperation *)self stats];
-      if (v43)
+      stats8 = [(PDURLRequestOperation *)self stats];
+      if (stats8)
       {
-        ++v43[14];
+        ++stats8[14];
       }
 
       CLSInitLog();
-      v44 = [(PDClassPublish *)self logSubsystem];
-      if (os_log_type_enabled(v44, OS_LOG_TYPE_INFO))
+      logSubsystem3 = [(PDClassPublish *)self logSubsystem];
+      if (os_log_type_enabled(logSubsystem3, OS_LOG_TYPE_INFO))
       {
         v45 = objc_opt_class();
         v46 = v45;
-        v47 = [v39 dictionaryRepresentation];
+        dictionaryRepresentation3 = [v39 dictionaryRepresentation];
         *buf = 138543874;
         v81 = v45;
         v82 = 2114;
-        v83 = v69;
+        v83 = operationID;
         v84 = 2112;
-        v85 = v47;
-        _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_INFO, "%{public}@: %{public}@ added payload item %@ ", buf, 0x20u);
+        v85 = dictionaryRepresentation3;
+        _os_log_impl(&_mh_execute_header, logSubsystem3, OS_LOG_TYPE_INFO, "%{public}@: %{public}@ added payload item %@ ", buf, 0x20u);
       }
 
-      v48 = [(PDURLRequestOperation *)self stats];
-      v49 = v48;
-      v50 = v48 ? *(v48 + 80) : 0;
-      v51 = [(PDURLRequestOperation *)self stats];
-      v52 = v51;
-      v53 = v51 ? *(v51 + 112) : 0;
+      stats9 = [(PDURLRequestOperation *)self stats];
+      v49 = stats9;
+      v50 = stats9 ? *(stats9 + 80) : 0;
+      stats10 = [(PDURLRequestOperation *)self stats];
+      v52 = stats10;
+      v53 = stats10 ? *(stats10 + 112) : 0;
       v54 = [(PDEndpointRequestOperation *)self hasReachedRequestPayloadLimitBytes:v50 count:v53];
 
       objc_autoreleasePoolPop(v38);
@@ -243,15 +243,15 @@ LABEL_32:
     }
   }
 
-  v56 = [(PDURLRequestOperation *)self stats];
-  if (!v56)
+  stats11 = [(PDURLRequestOperation *)self stats];
+  if (!stats11)
   {
     v59 = v61;
     v58 = v62;
     goto LABEL_55;
   }
 
-  v57 = v56[14];
+  v57 = stats11[14];
 
   v59 = v61;
   v58 = v62;
@@ -259,34 +259,34 @@ LABEL_32:
   {
 LABEL_55:
     [(PDEndpointRequestOperation *)self markAsFinished];
-    v3 = 0;
+    immutableData = 0;
     goto LABEL_56;
   }
 
-  v3 = [v4 immutableData];
+  immutableData = [v4 immutableData];
 LABEL_56:
 
 LABEL_57:
 
-  return v3;
+  return immutableData;
 }
 
-- (id)payloadForCLSObject:(id)a3
+- (id)payloadForCLSObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   if (self)
   {
     v5 = *(&self->super._unresolvedMissingEntityIDs + 2);
     switch(v5)
     {
       case 3:
-        v6 = [(PDClassPublish *)self deleteActionPDDPEEPayloadFromCLSObject:v4];
+        v6 = [(PDClassPublish *)self deleteActionPDDPEEPayloadFromCLSObject:objectCopy];
         goto LABEL_10;
       case 2:
-        v6 = [(PDClassPublish *)self updateActionPDDPEEPayloadFromCLSObject:v4];
+        v6 = [(PDClassPublish *)self updateActionPDDPEEPayloadFromCLSObject:objectCopy];
         goto LABEL_10;
       case 1:
-        v6 = [(PDClassPublish *)self createActionPDDPEEPayloadFromCLSObject:v4];
+        v6 = [(PDClassPublish *)self createActionPDDPEEPayloadFromCLSObject:objectCopy];
 LABEL_10:
         v8 = v6;
         goto LABEL_11;
@@ -318,22 +318,22 @@ LABEL_11:
   return v8;
 }
 
-- (id)createActionPDDPEEPayloadFromCLSObject:(id)a3
+- (id)createActionPDDPEEPayloadFromCLSObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   v4 = objc_opt_new();
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [v4 setType:7];
-    v5 = sub_10008507C(v3);
+    v5 = sub_10008507C(objectCopy);
     [v4 setClassMember:v5];
 
-    v6 = [v3 objectID];
-    [v4 setTempObjectId:v6];
+    objectID = [objectCopy objectID];
+    [v4 setTempObjectId:objectID];
 
-    v7 = [v3 parentObjectID];
-    [v4 setTempParentObjectId:v7];
+    parentObjectID = [objectCopy parentObjectID];
+    [v4 setTempParentObjectId:parentObjectID];
   }
 
   else
@@ -345,36 +345,36 @@ LABEL_11:
     }
 
     [v4 setType:6];
-    v8 = v3;
-    v7 = objc_alloc_init(PDDPClass);
-    v9 = [v8 customClassName];
-    [(PDDPClass *)v7 setDisplayName:v9];
+    v8 = objectCopy;
+    parentObjectID = objc_alloc_init(PDDPClass);
+    customClassName = [v8 customClassName];
+    [(PDDPClass *)parentObjectID setDisplayName:customClassName];
 
-    v10 = [v8 locationID];
-    [(PDDPClass *)v7 setLocationId:v10];
+    locationID = [v8 locationID];
+    [(PDDPClass *)parentObjectID setLocationId:locationID];
 
-    v11 = [v8 iconID];
-    [(PDDPClass *)v7 setIconIdentifier:v11];
+    iconID = [v8 iconID];
+    [(PDDPClass *)parentObjectID setIconIdentifier:iconID];
 
-    v12 = [v8 dateCreated];
-    v13 = sub_10010426C(v12);
-    [(PDDPClass *)v7 setDateCreated:v13];
+    dateCreated = [v8 dateCreated];
+    v13 = sub_10010426C(dateCreated);
+    [(PDDPClass *)parentObjectID setDateCreated:v13];
 
-    v14 = [v8 dateLastModified];
-    v15 = sub_10010426C(v14);
-    [(PDDPClass *)v7 setDateLastModified:v15];
+    dateLastModified = [v8 dateLastModified];
+    v15 = sub_10010426C(dateLastModified);
+    [(PDDPClass *)parentObjectID setDateLastModified:v15];
 
     v16 = objc_alloc_init(PDDPEntityMeta);
-    [(PDDPClass *)v7 setEntityMeta:v16];
+    [(PDDPClass *)parentObjectID setEntityMeta:v16];
 
-    v17 = [v8 source];
-    v18 = [(PDDPClass *)v7 entityMeta];
-    [v18 setSource:v17];
+    source = [v8 source];
+    entityMeta = [(PDDPClass *)parentObjectID entityMeta];
+    [entityMeta setSource:source];
 
-    [v4 setClassInfo:v7];
-    v19 = [v8 objectID];
+    [v4 setClassInfo:parentObjectID];
+    objectID2 = [v8 objectID];
 
-    [v4 setTempObjectId:v19];
+    [v4 setTempObjectId:objectID2];
   }
 
 LABEL_6:
@@ -383,15 +383,15 @@ LABEL_6:
   return v4;
 }
 
-- (id)updateActionPDDPEEPayloadFromCLSObject:(id)a3
+- (id)updateActionPDDPEEPayloadFromCLSObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   v4 = objc_opt_new();
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [v4 setType:7];
-    v5 = sub_10008507C(v3);
+    v5 = sub_10008507C(objectCopy);
     [v4 setClassMember:v5];
   }
 
@@ -404,7 +404,7 @@ LABEL_6:
     }
 
     [v4 setType:6];
-    v5 = sub_100084D78(v3);
+    v5 = sub_100084D78(objectCopy);
     [v4 setClassInfo:v5];
   }
 
@@ -414,15 +414,15 @@ LABEL_6:
   return v4;
 }
 
-- (id)deleteActionPDDPEEPayloadFromCLSObject:(id)a3
+- (id)deleteActionPDDPEEPayloadFromCLSObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   v4 = objc_opt_new();
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [v4 setType:6];
-    v5 = sub_100084D78(v3);
+    v5 = sub_100084D78(objectCopy);
     [v4 setClassInfo:v5];
   }
 
@@ -435,7 +435,7 @@ LABEL_6:
     }
 
     [v4 setType:7];
-    v5 = sub_10008507C(v3);
+    v5 = sub_10008507C(objectCopy);
     [v4 setClassMember:v5];
   }
 
@@ -445,28 +445,28 @@ LABEL_6:
   return v4;
 }
 
-- (BOOL)processPayloadFromResponse:(id)a3 error:(id *)a4
+- (BOOL)processPayloadFromResponse:(id)response error:(id *)error
 {
-  v6 = a3;
+  responseCopy = response;
   v26.receiver = self;
   v26.super_class = PDClassPublish;
-  v7 = [(PDASMPayloadOperation *)&v26 processPayloadFromResponse:v6 error:a4];
-  if (!*a4 || [v6 type] != 7 || !objc_msgSend(v6, "hasClassMember"))
+  v7 = [(PDASMPayloadOperation *)&v26 processPayloadFromResponse:responseCopy error:error];
+  if (!*error || [responseCopy type] != 7 || !objc_msgSend(responseCopy, "hasClassMember"))
   {
     goto LABEL_69;
   }
 
-  v8 = *a4;
-  v9 = [v6 classMember];
-  v10 = sub_100085614(v9);
+  v8 = *error;
+  classMember = [responseCopy classMember];
+  v10 = sub_100085614(classMember);
 
-  v11 = [v6 status];
-  v12 = [v11 code];
-  if (v12 <= 299)
+  status = [responseCopy status];
+  code = [status code];
+  if (code <= 299)
   {
-    if (v12 > 3)
+    if (code > 3)
     {
-      switch(v12)
+      switch(code)
       {
         case 'd':
           v13 = @"E_BOOTSTRAP_REQUIRED";
@@ -535,14 +535,14 @@ LABEL_6:
           v13 = @"E_DISALLOWED_COUNTRY_CODE";
           break;
         default:
-          if (v12 == 4)
+          if (code == 4)
           {
             v13 = @"S_OK_HAS_MORE_DATA";
           }
 
           else
           {
-            if (v12 != 5)
+            if (code != 5)
             {
               goto LABEL_33;
             }
@@ -556,9 +556,9 @@ LABEL_6:
       goto LABEL_61;
     }
 
-    if (v12 > 1)
+    if (code > 1)
     {
-      if (v12 == 2)
+      if (code == 2)
       {
         v13 = @"E_ERROR";
       }
@@ -571,28 +571,28 @@ LABEL_6:
       goto LABEL_61;
     }
 
-    if (!v12)
+    if (!code)
     {
       v13 = @"UNKNOWN_CODE";
       goto LABEL_61;
     }
 
-    if (v12 == 1)
+    if (code == 1)
     {
       v13 = @"S_OK";
       goto LABEL_61;
     }
 
 LABEL_33:
-    v13 = [NSString stringWithFormat:@"(unknown: %i)", v12];
+    v13 = [NSString stringWithFormat:@"(unknown: %i)", code];
     goto LABEL_61;
   }
 
-  if (v12 <= 801)
+  if (code <= 801)
   {
-    if (v12 > 799)
+    if (code > 799)
     {
-      if (v12 == 800)
+      if (code == 800)
       {
         v13 = @"E_NOT_APPLICABLE_TYPE";
       }
@@ -605,13 +605,13 @@ LABEL_33:
       goto LABEL_61;
     }
 
-    if (v12 == 300)
+    if (code == 300)
     {
       v13 = @"E_DEVICE_UNSUPPORTED";
       goto LABEL_61;
     }
 
-    if (v12 == 500)
+    if (code == 500)
     {
       v13 = @"E_INVALID_FIELD_VALUE";
       goto LABEL_61;
@@ -620,9 +620,9 @@ LABEL_33:
     goto LABEL_33;
   }
 
-  if (v12 <= 803)
+  if (code <= 803)
   {
-    if (v12 == 802)
+    if (code == 802)
     {
       v13 = @"E_ENTITY_PRIVILEGE_CHANGE";
     }
@@ -635,19 +635,19 @@ LABEL_33:
     goto LABEL_61;
   }
 
-  if (v12 == 804)
+  if (code == 804)
   {
     v13 = @"E_ENTITY_EXPIRED";
     goto LABEL_61;
   }
 
-  if (v12 == 805)
+  if (code == 805)
   {
     v13 = @"E_NOT_ALLOWED_FEDERATED_ORGANIZATION";
     goto LABEL_61;
   }
 
-  if (v12 != 806)
+  if (code != 806)
   {
     goto LABEL_33;
   }
@@ -655,14 +655,14 @@ LABEL_33:
   v13 = @"E_DISALLOWED_EMAIL_DOMAIN";
 LABEL_61:
 
-  v14 = [(PDClassPublish *)self erroredIDs];
+  erroredIDs = [(PDClassPublish *)self erroredIDs];
   v15 = [v8 description];
-  v16 = [v14 objectForKey:v15];
+  v16 = [erroredIDs objectForKey:v15];
 
   if (v16)
   {
-    v17 = [(PDClassPublish *)self erroredIDs];
-    v18 = [v17 valueForKey:v13];
+    erroredIDs2 = [(PDClassPublish *)self erroredIDs];
+    v18 = [erroredIDs2 valueForKey:v13];
   }
 
   else
@@ -678,8 +678,8 @@ LABEL_61:
       v20 = 0;
     }
 
-    v17 = v20;
-    v21 = [v17 count];
+    erroredIDs2 = v20;
+    v21 = [erroredIDs2 count];
     if (self)
     {
       v22 = *(&self->_membersToInsert + 2);
@@ -696,8 +696,8 @@ LABEL_61:
   v23 = v18;
 
   [v23 addObjectsFromArray:v10];
-  v24 = [(PDClassPublish *)self erroredIDs];
-  [v24 setObject:v23 forKey:v13];
+  erroredIDs3 = [(PDClassPublish *)self erroredIDs];
+  [erroredIDs3 setObject:v23 forKey:v13];
 
 LABEL_69:
   return v7;

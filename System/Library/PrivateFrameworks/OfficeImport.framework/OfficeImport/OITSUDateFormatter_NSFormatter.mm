@@ -1,8 +1,8 @@
 @interface OITSUDateFormatter_NSFormatter
-- (BOOL)getObjectValue:(id *)a3 forString:(id)a4 errorDescription:(id *)a5;
+- (BOOL)getObjectValue:(id *)value forString:(id)string errorDescription:(id *)description;
 - (OITSUDateFormatter_NSFormatter)init;
-- (id)stringForObjectValue:(id)a3;
-- (void)setPreferredFormat:(id)a3;
+- (id)stringForObjectValue:(id)value;
+- (void)setPreferredFormat:(id)format;
 @end
 
 @implementation OITSUDateFormatter_NSFormatter
@@ -21,12 +21,12 @@
   return v2;
 }
 
-- (void)setPreferredFormat:(id)a3
+- (void)setPreferredFormat:(id)format
 {
-  v7 = a3;
+  formatCopy = format;
   if ([(OITSUDateFormatter_NSFormatter *)self isDateOnly])
   {
-    v4 = [OITSUDateFormatter datePortionOfDateTimeFormatString:v7];
+    v4 = [OITSUDateFormatter datePortionOfDateTimeFormatString:formatCopy];
 LABEL_5:
     preferredFormat = self->_preferredFormat;
     self->_preferredFormat = v4;
@@ -35,22 +35,22 @@ LABEL_5:
 
   if ([(OITSUDateFormatter_NSFormatter *)self isTimeOnly])
   {
-    v4 = [OITSUDateFormatter timePortionOfDateTimeFormatString:v7];
+    v4 = [OITSUDateFormatter timePortionOfDateTimeFormatString:formatCopy];
     goto LABEL_5;
   }
 
-  v6 = v7;
+  v6 = formatCopy;
   preferredFormat = self->_preferredFormat;
   self->_preferredFormat = v6;
 LABEL_7:
 }
 
-- (BOOL)getObjectValue:(id *)a3 forString:(id)a4 errorDescription:(id *)a5
+- (BOOL)getObjectValue:(id *)value forString:(id)string errorDescription:(id *)description
 {
-  v8 = a4;
-  v9 = [(OITSUDateFormatter_NSFormatter *)self locale];
+  stringCopy = string;
+  locale = [(OITSUDateFormatter_NSFormatter *)self locale];
   v15 = 0;
-  v10 = TSUCreateDateFromStringWithPreferredFormat(v8, v9, 0, &v15, 0);
+  v10 = TSUCreateDateFromStringWithPreferredFormat(stringCopy, locale, 0, &v15, 0);
 
   v11 = v15;
   if (v11)
@@ -61,28 +61,28 @@ LABEL_7:
   if (v10)
   {
     v12 = v10;
-    *a3 = v10;
+    *value = v10;
   }
 
   else
   {
-    *a3 = 0;
-    if (a5)
+    *value = 0;
+    if (description)
     {
       v13 = SFUBundle();
-      *a5 = [v13 localizedStringForKey:@"The date is invalid." value:&stru_286EE1130 table:@"TSUtility"];
+      *description = [v13 localizedStringForKey:@"The date is invalid." value:&stru_286EE1130 table:@"TSUtility"];
     }
   }
 
   return v10 != 0;
 }
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
-  v4 = a3;
-  v5 = [(OITSUDateFormatter_NSFormatter *)self locale];
+  valueCopy = value;
+  locale = [(OITSUDateFormatter_NSFormatter *)self locale];
 
-  if (!v5)
+  if (!locale)
   {
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[OITSUDateFormatter_NSFormatter stringForObjectValue:]"];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/TSUDateFormatter.m"];
@@ -93,23 +93,23 @@ LABEL_7:
     [(OITSUDateFormatter_NSFormatter *)self setLocale:v8];
   }
 
-  v9 = [(OITSUDateFormatter_NSFormatter *)self preferredFormat];
+  preferredFormat = [(OITSUDateFormatter_NSFormatter *)self preferredFormat];
 
-  if (!v9)
+  if (!preferredFormat)
   {
-    v10 = [(OITSUDateFormatter_NSFormatter *)self locale];
-    v11 = TSUShortestCompleteDateOnlyFormat(v10);
+    locale2 = [(OITSUDateFormatter_NSFormatter *)self locale];
+    v11 = TSUShortestCompleteDateOnlyFormat(locale2);
     [(OITSUDateFormatter_NSFormatter *)self setPreferredFormat:v11];
   }
 
   v12 = objc_opt_class();
-  v13 = TSUDynamicCast(v12, v4);
+  v13 = TSUDynamicCast(v12, valueCopy);
 
   if (v13)
   {
-    v14 = [(OITSUDateFormatter_NSFormatter *)self preferredFormat];
-    v15 = [(OITSUDateFormatter_NSFormatter *)self locale];
-    v16 = TSUDateFormatterStringFromDateWithFormat(v13, v14, v15);
+    preferredFormat2 = [(OITSUDateFormatter_NSFormatter *)self preferredFormat];
+    locale3 = [(OITSUDateFormatter_NSFormatter *)self locale];
+    v16 = TSUDateFormatterStringFromDateWithFormat(v13, preferredFormat2, locale3);
   }
 
   else

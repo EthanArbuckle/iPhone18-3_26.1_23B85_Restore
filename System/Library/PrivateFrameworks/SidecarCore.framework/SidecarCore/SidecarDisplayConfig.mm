@@ -1,8 +1,8 @@
 @interface SidecarDisplayConfig
 - (CGSize)size;
-- (SidecarDisplayConfig)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SidecarDisplayConfig)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SidecarDisplayConfig
@@ -16,7 +16,7 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[SidecarDisplayConfig allocWithZone:?]];
   objc_storeStrong(&v4->_cipher, self->_cipher);
@@ -44,39 +44,39 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = *MEMORY[0x277CCA2A0];
-  v5 = a3;
-  validateXPCCoder(self, v5, v4);
-  encodeObject(v5, @"cipher", self->_cipher);
-  encodeObject(v5, @"codec", self->_codec);
-  encodeObject(v5, @"configureDisplayExclusiveMode", self->_configureDisplayExclusiveMode);
-  encodeObject(v5, @"device", self->_device);
-  encodeObject(v5, @"displayID", self->_displayID);
-  encodeObject(v5, @"framerate", self->_framerate);
-  encodeObject(v5, @"hdr", self->_hdr);
-  encodeObject(v5, @"keyFrameInterval", self->_keyFrameInterval);
-  encodeObject(v5, @"lowLatency", self->_lowLatency);
-  encodeObject(v5, @"rtcp", self->_rtcp);
-  encodeObject(v5, @"rtcpTimeoutInterval", self->_rtcpTimeoutInterval);
-  encodeDouble(v5, @"scale", self->_scale);
-  encodeObject(v5, @"service", self->_service);
-  encodeDouble(v5, @"size.width", self->_size.width);
-  encodeDouble(v5, @"size.height", self->_size.height);
-  encodeObject(v5, @"timeSync", self->_enableTimeSync);
-  encodeObject(v5, @"touchBar", self->_showTouchBar);
-  encodeObject(v5, @"sideBar", self->_showSideBar);
-  encodeObject(v5, @"tiles", self->_tilesPerFrame);
-  encodeInteger(v5, @"transport", self->_transport);
-  encodeObject(v5, @"dataLink", self->_dataLink);
-  encodeObject(v5, @"txMinBitrate", self->_txMinBitrate);
-  encodeObject(v5, @"txMaxBitrate", self->_txMaxBitrate);
+  coderCopy = coder;
+  validateXPCCoder(self, coderCopy, v4);
+  encodeObject(coderCopy, @"cipher", self->_cipher);
+  encodeObject(coderCopy, @"codec", self->_codec);
+  encodeObject(coderCopy, @"configureDisplayExclusiveMode", self->_configureDisplayExclusiveMode);
+  encodeObject(coderCopy, @"device", self->_device);
+  encodeObject(coderCopy, @"displayID", self->_displayID);
+  encodeObject(coderCopy, @"framerate", self->_framerate);
+  encodeObject(coderCopy, @"hdr", self->_hdr);
+  encodeObject(coderCopy, @"keyFrameInterval", self->_keyFrameInterval);
+  encodeObject(coderCopy, @"lowLatency", self->_lowLatency);
+  encodeObject(coderCopy, @"rtcp", self->_rtcp);
+  encodeObject(coderCopy, @"rtcpTimeoutInterval", self->_rtcpTimeoutInterval);
+  encodeDouble(coderCopy, @"scale", self->_scale);
+  encodeObject(coderCopy, @"service", self->_service);
+  encodeDouble(coderCopy, @"size.width", self->_size.width);
+  encodeDouble(coderCopy, @"size.height", self->_size.height);
+  encodeObject(coderCopy, @"timeSync", self->_enableTimeSync);
+  encodeObject(coderCopy, @"touchBar", self->_showTouchBar);
+  encodeObject(coderCopy, @"sideBar", self->_showSideBar);
+  encodeObject(coderCopy, @"tiles", self->_tilesPerFrame);
+  encodeInteger(coderCopy, @"transport", self->_transport);
+  encodeObject(coderCopy, @"dataLink", self->_dataLink);
+  encodeObject(coderCopy, @"txMinBitrate", self->_txMinBitrate);
+  encodeObject(coderCopy, @"txMaxBitrate", self->_txMaxBitrate);
 }
 
-- (SidecarDisplayConfig)initWithCoder:(id)a3
+- (SidecarDisplayConfig)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v48.receiver = self;
   v48.super_class = SidecarDisplayConfig;
   v5 = [(SidecarDisplayConfig *)&v48 init];
@@ -85,84 +85,84 @@
     v6 = objc_opt_class();
     v7 = objc_opt_class();
     v8 = objc_opt_class();
-    validateXPCCoder(v5, v4, *MEMORY[0x277CCA2A8]);
-    v9 = decodeObject(v4, @"cipher", v7);
+    validateXPCCoder(v5, coderCopy, *MEMORY[0x277CCA2A8]);
+    v9 = decodeObject(coderCopy, @"cipher", v7);
     cipher = v5->_cipher;
     v5->_cipher = v9;
 
-    v11 = decodeObject(v4, @"codec", v7);
+    v11 = decodeObject(coderCopy, @"codec", v7);
     codec = v5->_codec;
     v5->_codec = v11;
 
-    v13 = decodeObject(v4, @"configureDisplayExclusiveMode", v7);
+    v13 = decodeObject(coderCopy, @"configureDisplayExclusiveMode", v7);
     configureDisplayExclusiveMode = v5->_configureDisplayExclusiveMode;
     v5->_configureDisplayExclusiveMode = v13;
 
-    v15 = decodeObject(v4, @"device", v6);
+    v15 = decodeObject(coderCopy, @"device", v6);
     device = v5->_device;
     v5->_device = v15;
 
-    v17 = decodeObject(v4, @"displayID", v7);
+    v17 = decodeObject(coderCopy, @"displayID", v7);
     displayID = v5->_displayID;
     v5->_displayID = v17;
 
-    v19 = decodeObject(v4, @"framerate", v7);
+    v19 = decodeObject(coderCopy, @"framerate", v7);
     framerate = v5->_framerate;
     v5->_framerate = v19;
 
-    v21 = decodeObject(v4, @"hdr", v7);
+    v21 = decodeObject(coderCopy, @"hdr", v7);
     hdr = v5->_hdr;
     v5->_hdr = v21;
 
-    v23 = decodeObject(v4, @"keyFrameInterval", v7);
+    v23 = decodeObject(coderCopy, @"keyFrameInterval", v7);
     keyFrameInterval = v5->_keyFrameInterval;
     v5->_keyFrameInterval = v23;
 
-    v25 = decodeObject(v4, @"lowLatency", v7);
+    v25 = decodeObject(coderCopy, @"lowLatency", v7);
     lowLatency = v5->_lowLatency;
     v5->_lowLatency = v25;
 
-    v27 = decodeObject(v4, @"rtcp", v7);
+    v27 = decodeObject(coderCopy, @"rtcp", v7);
     rtcp = v5->_rtcp;
     v5->_rtcp = v27;
 
-    v29 = decodeObject(v4, @"rtcpTimeoutInterval", v7);
+    v29 = decodeObject(coderCopy, @"rtcpTimeoutInterval", v7);
     rtcpTimeoutInterval = v5->_rtcpTimeoutInterval;
     v5->_rtcpTimeoutInterval = v29;
 
-    v5->_scale = decodeDouble(v4, @"scale");
-    v31 = decodeObject(v4, @"service", v8);
+    v5->_scale = decodeDouble(coderCopy, @"scale");
+    v31 = decodeObject(coderCopy, @"service", v8);
     service = v5->_service;
     v5->_service = v31;
 
-    v5->_size.width = decodeDouble(v4, @"size.width");
-    v5->_size.height = decodeDouble(v4, @"size.height");
-    v33 = decodeObject(v4, @"timeSync", v7);
+    v5->_size.width = decodeDouble(coderCopy, @"size.width");
+    v5->_size.height = decodeDouble(coderCopy, @"size.height");
+    v33 = decodeObject(coderCopy, @"timeSync", v7);
     enableTimeSync = v5->_enableTimeSync;
     v5->_enableTimeSync = v33;
 
-    v35 = decodeObject(v4, @"touchBar", v7);
+    v35 = decodeObject(coderCopy, @"touchBar", v7);
     showTouchBar = v5->_showTouchBar;
     v5->_showTouchBar = v35;
 
-    v37 = decodeObject(v4, @"sideBar", v7);
+    v37 = decodeObject(coderCopy, @"sideBar", v7);
     showSideBar = v5->_showSideBar;
     v5->_showSideBar = v37;
 
-    v39 = decodeObject(v4, @"tiles", v7);
+    v39 = decodeObject(coderCopy, @"tiles", v7);
     tilesPerFrame = v5->_tilesPerFrame;
     v5->_tilesPerFrame = v39;
 
-    v5->_transport = decodeInteger(v4, @"transport");
-    v41 = decodeObject(v4, @"dataLink", v7);
+    v5->_transport = decodeInteger(coderCopy, @"transport");
+    v41 = decodeObject(coderCopy, @"dataLink", v7);
     dataLink = v5->_dataLink;
     v5->_dataLink = v41;
 
-    v43 = decodeObject(v4, @"txMinBitrate", v7);
+    v43 = decodeObject(coderCopy, @"txMinBitrate", v7);
     txMinBitrate = v5->_txMinBitrate;
     v5->_txMinBitrate = v43;
 
-    v45 = decodeObject(v4, @"txMaxBitrate", v7);
+    v45 = decodeObject(coderCopy, @"txMaxBitrate", v7);
     txMaxBitrate = v5->_txMaxBitrate;
     v5->_txMaxBitrate = v45;
   }

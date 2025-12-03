@@ -44,9 +44,9 @@
   [v6 registerActivitiesWithSystem];
 
   out_token = 0;
-  v7 = [*MEMORY[0x277D02478] UTF8String];
+  uTF8String = [*MEMORY[0x277D02478] UTF8String];
   v8 = dispatch_get_global_queue(9, 0);
-  notify_register_dispatch(v7, &out_token, v8, &__block_literal_global_36);
+  notify_register_dispatch(uTF8String, &out_token, v8, &__block_literal_global_36);
 
   +[SGTextUnderstandingObservationSystem start];
 }

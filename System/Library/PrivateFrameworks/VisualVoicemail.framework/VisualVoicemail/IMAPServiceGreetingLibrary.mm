@@ -1,9 +1,9 @@
 @interface IMAPServiceGreetingLibrary
-- (id)addMessages:(id)a3 withMailbox:(id)a4 fetchBodies:(BOOL)a5 newMessagesByOldMessage:(id)a6 remoteIDs:(id)a7 setFlags:(unint64_t)a8 clearFlags:(unint64_t)a9 messageFlagsForMessages:(id)a10 copyFiles:(BOOL)a11 addPOPUIDs:(BOOL)a12 dataSectionsByMessage:(id)a13;
+- (id)addMessages:(id)messages withMailbox:(id)mailbox fetchBodies:(BOOL)bodies newMessagesByOldMessage:(id)message remoteIDs:(id)ds setFlags:(unint64_t)flags clearFlags:(unint64_t)clearFlags messageFlagsForMessages:(id)self0 copyFiles:(BOOL)self1 addPOPUIDs:(BOOL)self2 dataSectionsByMessage:(id)self3;
 - (id)messages;
 - (void)dealloc;
 - (void)resetMessages;
-- (void)updateSelectedMessages:(id)a3 withMailbox:(id)a4;
+- (void)updateSelectedMessages:(id)messages withMailbox:(id)mailbox;
 @end
 
 @implementation IMAPServiceGreetingLibrary
@@ -15,38 +15,38 @@
   [(IMAPServiceGreetingLibrary *)&v2 dealloc];
 }
 
-- (id)addMessages:(id)a3 withMailbox:(id)a4 fetchBodies:(BOOL)a5 newMessagesByOldMessage:(id)a6 remoteIDs:(id)a7 setFlags:(unint64_t)a8 clearFlags:(unint64_t)a9 messageFlagsForMessages:(id)a10 copyFiles:(BOOL)a11 addPOPUIDs:(BOOL)a12 dataSectionsByMessage:(id)a13
+- (id)addMessages:(id)messages withMailbox:(id)mailbox fetchBodies:(BOOL)bodies newMessagesByOldMessage:(id)message remoteIDs:(id)ds setFlags:(unint64_t)flags clearFlags:(unint64_t)clearFlags messageFlagsForMessages:(id)self0 copyFiles:(BOOL)self1 addPOPUIDs:(BOOL)self2 dataSectionsByMessage:(id)self3
 {
-  v14 = a3;
+  messagesCopy = messages;
   [(IMAPServiceGreetingLibrary *)self mf_lock];
   messages = self->_messages;
   if (messages)
   {
-    [(NSMutableArray *)messages addObjectsFromArray:v14];
+    [(NSMutableArray *)messages addObjectsFromArray:messagesCopy];
   }
 
   else
   {
-    v16 = [v14 mutableCopy];
+    v16 = [messagesCopy mutableCopy];
     v17 = self->_messages;
     self->_messages = v16;
   }
 
   [(IMAPServiceGreetingLibrary *)self mf_unlock];
 
-  return v14;
+  return messagesCopy;
 }
 
-- (void)updateSelectedMessages:(id)a3 withMailbox:(id)a4
+- (void)updateSelectedMessages:(id)messages withMailbox:(id)mailbox
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 name];
-  v8 = [v7 caseInsensitiveCompare:@"INBOX"];
+  messagesCopy = messages;
+  mailboxCopy = mailbox;
+  name = [mailboxCopy name];
+  v8 = [name caseInsensitiveCompare:@"INBOX"];
   v9 = sub_1000027C8();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v6 mambaID];
+    mambaID = [mailboxCopy mambaID];
     v12 = 136316162;
     if (v8)
     {
@@ -58,13 +58,13 @@
       v11 = 1;
     }
 
-    v13 = v10;
+    v13 = mambaID;
     v14 = 2080;
     v15 = " ";
     v16 = 2112;
-    v17 = v5;
+    v17 = messagesCopy;
     v18 = 2112;
-    v19 = v7;
+    v19 = name;
     v20 = 1024;
     v21 = v11;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "#I %s%sUpdate selected messages %@ for mailbox %@, mailbox type is %d", &v12, 0x30u);

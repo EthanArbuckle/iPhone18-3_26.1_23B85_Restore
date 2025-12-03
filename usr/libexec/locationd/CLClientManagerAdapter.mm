@@ -1,96 +1,96 @@
 @interface CLClientManagerAdapter
 + (id)getSilo;
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4;
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index;
 - (BOOL)syncgetHasAuthorizedClients;
 - (BOOL)syncgetIsMapsANonSystemLocationClient;
-- (BOOL)syncgetSetLocationServicesEnabledStatically:(BOOL)a3 withEventSource:(id)a4;
+- (BOOL)syncgetSetLocationServicesEnabledStatically:(BOOL)statically withEventSource:(id)source;
 - (CLClientManagerAdapter)init;
-- (double)syncgetAndSetOrChangeAppClipAuthorizationTime:(double)a3 forClient:(id)a4;
-- (id)syncgetApplyArchivedAuthorizationDecisionsAndDie:(id)a3 unlessTokenMatches:(id)a4;
+- (double)syncgetAndSetOrChangeAppClipAuthorizationTime:(double)time forClient:(id)client;
+- (id)syncgetApplyArchivedAuthorizationDecisionsAndDie:(id)die unlessTokenMatches:(id)matches;
 - (id)syncgetArchivedAuthorizationDecisions;
 - (id)syncgetCopyClients;
 - (id)syncgetLocationClientKeys;
 - (id)syncgetNonSystemLocationClientKey;
 - (id)syncgetNonSystemLocationClientKeys;
-- (id)syncgetTemporaryAuthorizationStatusForClient:(id)a3;
-- (int)syncgetClientEffectiveRegistrationResultWithTransientAwareness:(id)a3;
+- (id)syncgetTemporaryAuthorizationStatusForClient:(id)client;
+- (int)syncgetClientEffectiveRegistrationResultWithTransientAwareness:(id)awareness;
 - (void)adaptee;
-- (void)appLaunchedByAppLifecycleManager:(id)a3;
-- (void)appsWithClientKeysAreInstalledOnAPairedDevice:(id)a3;
-- (void)attemptSpendOneForPushClient:(id)a3 withReply:(id)a4;
+- (void)appLaunchedByAppLifecycleManager:(id)manager;
+- (void)appsWithClientKeysAreInstalledOnAPairedDevice:(id)device;
+- (void)attemptSpendOneForPushClient:(id)client withReply:(id)reply;
 - (void)beginService;
-- (void)calculateCheeseCoverage:(id)a3 interestInterval:(id)a4 withOptions:(id)a5 lookbackWindowStartDate:(id)a6 withReply:(id)a7;
+- (void)calculateCheeseCoverage:(id)coverage interestInterval:(id)interval withOptions:(id)options lookbackWindowStartDate:(id)date withReply:(id)reply;
 - (void)checkAppInstallationStatus;
-- (void)checkWeakPersistentClientWithIdentifier:(id)a3;
-- (void)considerPromptingForIncidentalUseForCkp:(id)a3;
-- (void)considerPromptingForTranscriptSession:(id)a3 dictionary:(id)a4 requestType:(int)a5 withReply:(id)a6;
-- (void)deleteInterestZoneWithId:(id)a3 registeredForClientKey:(id)a4 withReply:(id)a5;
+- (void)checkWeakPersistentClientWithIdentifier:(id)identifier;
+- (void)considerPromptingForIncidentalUseForCkp:(id)ckp;
+- (void)considerPromptingForTranscriptSession:(id)session dictionary:(id)dictionary requestType:(int)type withReply:(id)reply;
+- (void)deleteInterestZoneWithId:(id)id registeredForClientKey:(id)key withReply:(id)reply;
 - (void)dingAllActiveTranscriptSubscriptions;
-- (void)doAsync:(id)a3;
-- (void)doAsync:(id)a3 withReply:(id)a4;
+- (void)doAsync:(id)async;
+- (void)doAsync:(id)async withReply:(id)reply;
 - (void)endService;
-- (void)fetchClientDictionaryForCkp:(id)a3 withReply:(id)a4;
-- (void)fetchClientStaticRegistrationResult:(id)a3 withReply:(id)a4;
-- (void)fetchLocationClientKeysWithReply:(id)a3;
-- (void)getClientManagerInternalStateWithReply:(id)a3;
-- (void)getIncidentalUseModeForClient:(id)a3 withReply:(id)a4;
-- (void)getLearnedRoutesAccessForClient:(id)a3 withReply:(id)a4;
-- (void)getVisitHistoryAccessAllowedTimeForClient:(id)a3 withReply:(id)a4;
-- (void)getVisitHistoryAccessForClient:(id)a3 withReply:(id)a4;
-- (void)handleLiveActivityUpdate:(id)a3;
-- (void)handleProvisionalIntermediationForService:(unint64_t)a3 forClientKey:(id)a4 at:(id)a5 withReply:(id)a6;
-- (void)inUseAssertionInvalidatedDueToWatchConnectivityForClientKey:(id)a3;
-- (void)isAuthorizationUpgradeAvailableForClient:(id)a3 withReply:(id)a4;
-- (void)learnedRoutesSupportedForClient:(id)a3 withReply:(id)a4;
-- (void)markClientEmergencyEnablementTransition:(BOOL)a3;
-- (void)markClientEmergencyEnablementTransition:(BOOL)a3 shouldOverrideDeauthorization:(BOOL)a4 forBeneficiary:(id)a5;
-- (void)markClientTemporaryAuthorizationGranted:(BOOL)a3 forClientKey:(id)a4 andAuditToken:(id *)a5 byLocationButton:(BOOL)a6 voiceInteractionEnabled:(BOOL)a7;
-- (void)markReceivingLocationInformation:(id)a3;
-- (void)markTemporaryPreciseAuthorizationGranted:(BOOL)a3 forClientKey:(id)a4;
+- (void)fetchClientDictionaryForCkp:(id)ckp withReply:(id)reply;
+- (void)fetchClientStaticRegistrationResult:(id)result withReply:(id)reply;
+- (void)fetchLocationClientKeysWithReply:(id)reply;
+- (void)getClientManagerInternalStateWithReply:(id)reply;
+- (void)getIncidentalUseModeForClient:(id)client withReply:(id)reply;
+- (void)getLearnedRoutesAccessForClient:(id)client withReply:(id)reply;
+- (void)getVisitHistoryAccessAllowedTimeForClient:(id)client withReply:(id)reply;
+- (void)getVisitHistoryAccessForClient:(id)client withReply:(id)reply;
+- (void)handleLiveActivityUpdate:(id)update;
+- (void)handleProvisionalIntermediationForService:(unint64_t)service forClientKey:(id)key at:(id)at withReply:(id)reply;
+- (void)inUseAssertionInvalidatedDueToWatchConnectivityForClientKey:(id)key;
+- (void)isAuthorizationUpgradeAvailableForClient:(id)client withReply:(id)reply;
+- (void)learnedRoutesSupportedForClient:(id)client withReply:(id)reply;
+- (void)markClientEmergencyEnablementTransition:(BOOL)transition;
+- (void)markClientEmergencyEnablementTransition:(BOOL)transition shouldOverrideDeauthorization:(BOOL)deauthorization forBeneficiary:(id)beneficiary;
+- (void)markClientTemporaryAuthorizationGranted:(BOOL)granted forClientKey:(id)key andAuditToken:(id *)token byLocationButton:(BOOL)button voiceInteractionEnabled:(BOOL)enabled;
+- (void)markReceivingLocationInformation:(id)information;
+- (void)markTemporaryPreciseAuthorizationGranted:(BOOL)granted forClientKey:(id)key;
 - (void)onCapabilityChange;
-- (void)performMigrationWithReply:(id)a3;
-- (void)reduceAccuracy:(id)a3 withReply:(id)a4;
-- (void)registerCircularInterestZoneForClientKey:(id)a3 withId:(id)a4 latitude:(double)a5 longitude:(double)a6 serviceMaskOperator:(int)a7 provenanceType:(int)a8 radius:(double)a9 withReply:(id)a10;
-- (void)registerPhenolicInterestZoneForClientKey:(id)a3 withId:(id)a4 phenolicLocation:(int)a5 serviceMaskOperator:(int)a6 provenanceType:(int)a7 withReply:(id)a8;
-- (void)reportLocationUtilityEvent:(int)a3 atDate:(id)a4;
-- (void)requestPinnedLocationAuthorizationWithPayload:(id)a3;
-- (void)resetClient:(id)a3;
+- (void)performMigrationWithReply:(id)reply;
+- (void)reduceAccuracy:(id)accuracy withReply:(id)reply;
+- (void)registerCircularInterestZoneForClientKey:(id)key withId:(id)id latitude:(double)latitude longitude:(double)longitude serviceMaskOperator:(int)operator provenanceType:(int)type radius:(double)radius withReply:(id)self0;
+- (void)registerPhenolicInterestZoneForClientKey:(id)key withId:(id)id phenolicLocation:(int)location serviceMaskOperator:(int)operator provenanceType:(int)type withReply:(id)reply;
+- (void)reportLocationUtilityEvent:(int)event atDate:(id)date;
+- (void)requestPinnedLocationAuthorizationWithPayload:(id)payload;
+- (void)resetClient:(id)client;
 - (void)resetClients;
-- (void)resetNotificationConsumedForIdentifier:(id)a3;
-- (void)sendMetricForFunctionCallsForClientKey:(id)a3 info:(id)a4;
-- (void)setAllowableAuthorizationMask:(unint64_t)a3 forClientKey:(id)a4;
-- (void)setAuthorizationUpgradeAvailable:(BOOL)a3 forCkp:(id)a4;
-- (void)setClient:(id)a3;
-- (void)setClientAuthorization:(id)a3 zoneIdentifier:(id)a4 subIdentityIdentifier:(id)a5 status:(int)a6 correctiveCompensation:(int)a7 mayIncreaseAuth:(BOOL)a8 entity:(id)a9;
-- (void)setClientBackgroundIndicator:(id)a3 enabled:(BOOL)a4 entity:(id)a5;
-- (void)setClients:(id)a3 locationPushTo:(BOOL)a4;
-- (void)setClients:(id)a3 regionOfType:(int)a4 to:(BOOL)a5;
-- (void)setClients:(id)a3 significantLocationChangeTo:(BOOL)a4;
-- (void)setClients:(id)a3 significantLocationVisitTo:(BOOL)a4;
-- (void)setClients:(id)a3 transcriptSessionChangeTo:(BOOL)a4;
-- (void)setIncidentalUseMode:(int)a3 forClient:(id)a4;
-- (void)setLastLocationSettingsEventSource:(id)a3;
-- (void)setLearnedRoutesAccess:(int)a3 forClient:(id)a4;
-- (void)setLocationButtonUseMode:(int)a3 forClient:(id)a4;
-- (void)setProvisionalAuthorization:(id)a3;
-- (void)setPurpose:(id)a3 forClient:(id)a4;
-- (void)setRelevance:(BOOL)a3 forInterestZoneWithId:(id)a4 registeredForClientKey:(id)a5;
-- (void)setRelevance:(BOOL)a3 forInterestZoneWithId:(id)a4 registeredForClientKey:(id)a5 withReply:(id)a6;
-- (void)setTemporaryAuthorizationStatusInfoForClient:(id)a3 data:(id)a4;
-- (void)setVisitHistoryAccess:(int)a3 forClient:(id)a4;
-- (void)takeInUseAssertionForCkp:(id)a3 reason:(id)a4 assertionLevel:(int)a5 withReply:(id)a6;
-- (void)tearDownLocationAuthPrompt:(id)a3;
+- (void)resetNotificationConsumedForIdentifier:(id)identifier;
+- (void)sendMetricForFunctionCallsForClientKey:(id)key info:(id)info;
+- (void)setAllowableAuthorizationMask:(unint64_t)mask forClientKey:(id)key;
+- (void)setAuthorizationUpgradeAvailable:(BOOL)available forCkp:(id)ckp;
+- (void)setClient:(id)client;
+- (void)setClientAuthorization:(id)authorization zoneIdentifier:(id)identifier subIdentityIdentifier:(id)identityIdentifier status:(int)status correctiveCompensation:(int)compensation mayIncreaseAuth:(BOOL)auth entity:(id)entity;
+- (void)setClientBackgroundIndicator:(id)indicator enabled:(BOOL)enabled entity:(id)entity;
+- (void)setClients:(id)clients locationPushTo:(BOOL)to;
+- (void)setClients:(id)clients regionOfType:(int)type to:(BOOL)to;
+- (void)setClients:(id)clients significantLocationChangeTo:(BOOL)to;
+- (void)setClients:(id)clients significantLocationVisitTo:(BOOL)to;
+- (void)setClients:(id)clients transcriptSessionChangeTo:(BOOL)to;
+- (void)setIncidentalUseMode:(int)mode forClient:(id)client;
+- (void)setLastLocationSettingsEventSource:(id)source;
+- (void)setLearnedRoutesAccess:(int)access forClient:(id)client;
+- (void)setLocationButtonUseMode:(int)mode forClient:(id)client;
+- (void)setProvisionalAuthorization:(id)authorization;
+- (void)setPurpose:(id)purpose forClient:(id)client;
+- (void)setRelevance:(BOOL)relevance forInterestZoneWithId:(id)id registeredForClientKey:(id)key;
+- (void)setRelevance:(BOOL)relevance forInterestZoneWithId:(id)id registeredForClientKey:(id)key withReply:(id)reply;
+- (void)setTemporaryAuthorizationStatusInfoForClient:(id)client data:(id)data;
+- (void)setVisitHistoryAccess:(int)access forClient:(id)client;
+- (void)takeInUseAssertionForCkp:(id)ckp reason:(id)reason assertionLevel:(int)level withReply:(id)reply;
+- (void)tearDownLocationAuthPrompt:(id)prompt;
 - (void)triggerClearAppClipAuthorizationIfNecessary;
-- (void)wakeUpLaunchdManagedClient:(id)a3;
+- (void)wakeUpLaunchdManagedClient:(id)client;
 @end
 
 @implementation CLClientManagerAdapter
 
 - (id)syncgetNonSystemLocationClientKeys
 {
-  v2 = [(CLClientManagerAdapter *)self adaptee];
+  adaptee = [(CLClientManagerAdapter *)self adaptee];
 
-  return sub_10001AE68(v2);
+  return sub_10001AE68(adaptee);
 }
 
 - (void)adaptee
@@ -105,9 +105,9 @@
 
 - (BOOL)syncgetHasAuthorizedClients
 {
-  v2 = [(CLClientManagerAdapter *)self adaptee];
+  adaptee = [(CLClientManagerAdapter *)self adaptee];
 
-  return sub_10003F4E8(v2);
+  return sub_10003F4E8(adaptee);
 }
 
 - (void)dingAllActiveTranscriptSubscriptions
@@ -119,9 +119,9 @@
 
 - (id)syncgetLocationClientKeys
 {
-  v2 = [(CLClientManagerAdapter *)self adaptee];
+  adaptee = [(CLClientManagerAdapter *)self adaptee];
 
-  return sub_1001BDB40(v2);
+  return sub_1001BDB40(adaptee);
 }
 
 - (id)syncgetNonSystemLocationClientKey
@@ -155,12 +155,12 @@
   return v3;
 }
 
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index
 {
-  v5 = a4 + 1;
-  if (a4 + 1 < [a3 count])
+  v5 = index + 1;
+  if (index + 1 < [blocked count])
   {
-    [objc_msgSend(a3 objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", a3, v5}];
+    [objc_msgSend(blocked objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", blocked, v5}];
   }
 }
 
@@ -197,33 +197,33 @@
   v2();
 }
 
-- (void)doAsync:(id)a3
+- (void)doAsync:(id)async
 {
-  v4 = [(CLClientManagerAdapter *)self adaptee];
-  v5 = *(a3 + 2);
+  adaptee = [(CLClientManagerAdapter *)self adaptee];
+  v5 = *(async + 2);
 
-  v5(a3, v4);
+  v5(async, adaptee);
 }
 
-- (void)doAsync:(id)a3 withReply:(id)a4
+- (void)doAsync:(id)async withReply:(id)reply
 {
-  (*(a3 + 2))(a3, [(CLClientManagerAdapter *)self adaptee]);
-  v5 = *(a4 + 2);
+  (*(async + 2))(async, [(CLClientManagerAdapter *)self adaptee]);
+  v5 = *(reply + 2);
 
-  v5(a4);
+  v5(reply);
 }
 
-- (void)setAuthorizationUpgradeAvailable:(BOOL)a3 forCkp:(id)a4
+- (void)setAuthorizationUpgradeAvailable:(BOOL)available forCkp:(id)ckp
 {
-  v5 = a3;
-  v6 = [(CLClientManagerAdapter *)self adaptee];
+  availableCopy = available;
+  adaptee = [(CLClientManagerAdapter *)self adaptee];
 
-  sub_100791ACC(v6, a4, v5, 1);
+  sub_100791ACC(adaptee, ckp, availableCopy, 1);
 }
 
-- (void)setProvisionalAuthorization:(id)a3
+- (void)setProvisionalAuthorization:(id)authorization
 {
-  v4 = sub_100043ED8(a3);
+  v4 = sub_100043ED8(authorization);
   if (v4)
   {
     sub_1000350D0(__dst, v4);
@@ -263,16 +263,16 @@
       operator delete(__dst[0]);
     }
 
-    v6 = [(CLClientManagerAdapter *)self adaptee];
-    v7 = sub_100033370(v6, v5);
-    sub_100791C88(v6, v7, 0, 0, 1);
+    adaptee = [(CLClientManagerAdapter *)self adaptee];
+    v7 = sub_100033370(adaptee, v5);
+    sub_100791C88(adaptee, v7, 0, 0, 1);
   }
 }
 
-- (void)setClients:(id)a3 regionOfType:(int)a4 to:(BOOL)a5
+- (void)setClients:(id)clients regionOfType:(int)type to:(BOOL)to
 {
-  v5 = a5;
-  v8 = sub_100043ED8(a3);
+  toCopy = to;
+  v8 = sub_100043ED8(clients);
   if (v8)
   {
     sub_1000350D0(__dst, v8);
@@ -312,14 +312,14 @@
       operator delete(__dst[0]);
     }
 
-    sub_100777634([(CLClientManagerAdapter *)self adaptee], v9, a4, v5);
+    sub_100777634([(CLClientManagerAdapter *)self adaptee], v9, type, toCopy);
   }
 }
 
-- (void)setClients:(id)a3 significantLocationChangeTo:(BOOL)a4
+- (void)setClients:(id)clients significantLocationChangeTo:(BOOL)to
 {
-  v4 = a4;
-  v6 = sub_100043ED8(a3);
+  toCopy = to;
+  v6 = sub_100043ED8(clients);
   if (v6)
   {
     sub_1000350D0(__dst, v6);
@@ -359,16 +359,16 @@
       operator delete(__dst[0]);
     }
 
-    v8 = [(CLClientManagerAdapter *)self adaptee];
+    adaptee = [(CLClientManagerAdapter *)self adaptee];
     Current = CFAbsoluteTimeGetCurrent();
-    sub_10002FE04(v8, v7, 3uLL, v4, 0, 0, Current);
+    sub_10002FE04(adaptee, v7, 3uLL, toCopy, 0, 0, Current);
   }
 }
 
-- (void)setClients:(id)a3 transcriptSessionChangeTo:(BOOL)a4
+- (void)setClients:(id)clients transcriptSessionChangeTo:(BOOL)to
 {
-  v4 = a4;
-  v6 = sub_100043ED8(a3);
+  toCopy = to;
+  v6 = sub_100043ED8(clients);
   if (v6)
   {
     sub_1000350D0(__dst, v6);
@@ -408,16 +408,16 @@
       operator delete(__dst[0]);
     }
 
-    v8 = [(CLClientManagerAdapter *)self adaptee];
+    adaptee = [(CLClientManagerAdapter *)self adaptee];
     Current = CFAbsoluteTimeGetCurrent();
-    sub_10002FE04(v8, v7, 0x10uLL, v4, 0, 0, Current);
+    sub_10002FE04(adaptee, v7, 0x10uLL, toCopy, 0, 0, Current);
   }
 }
 
-- (void)setClients:(id)a3 significantLocationVisitTo:(BOOL)a4
+- (void)setClients:(id)clients significantLocationVisitTo:(BOOL)to
 {
-  v4 = a4;
-  v6 = sub_100043ED8(a3);
+  toCopy = to;
+  v6 = sub_100043ED8(clients);
   if (v6)
   {
     sub_1000350D0(__dst, v6);
@@ -457,16 +457,16 @@
       operator delete(__dst[0]);
     }
 
-    v8 = [(CLClientManagerAdapter *)self adaptee];
+    adaptee = [(CLClientManagerAdapter *)self adaptee];
     Current = CFAbsoluteTimeGetCurrent();
-    sub_10002FE04(v8, v7, 6uLL, v4, 0, 0, Current);
+    sub_10002FE04(adaptee, v7, 6uLL, toCopy, 0, 0, Current);
   }
 }
 
-- (void)setClients:(id)a3 locationPushTo:(BOOL)a4
+- (void)setClients:(id)clients locationPushTo:(BOOL)to
 {
-  v4 = a4;
-  v6 = sub_100043ED8(a3);
+  toCopy = to;
+  v6 = sub_100043ED8(clients);
   if (v6)
   {
     sub_1000350D0(__dst, v6);
@@ -506,98 +506,98 @@
       operator delete(__dst[0]);
     }
 
-    v8 = [(CLClientManagerAdapter *)self adaptee];
+    adaptee = [(CLClientManagerAdapter *)self adaptee];
     Current = CFAbsoluteTimeGetCurrent();
-    sub_10002FE04(v8, v7, 0xFuLL, v4, 0, 0, Current);
+    sub_10002FE04(adaptee, v7, 0xFuLL, toCopy, 0, 0, Current);
   }
 }
 
-- (void)considerPromptingForTranscriptSession:(id)a3 dictionary:(id)a4 requestType:(int)a5 withReply:(id)a6
+- (void)considerPromptingForTranscriptSession:(id)session dictionary:(id)dictionary requestType:(int)type withReply:(id)reply
 {
-  v10 = [CLClientKeyPath clientKeyPathWithLegacyClientKey:a3];
-  v11 = [(CLClientManagerAdapter *)self adaptee];
+  v10 = [CLClientKeyPath clientKeyPathWithLegacyClientKey:session];
+  adaptee = [(CLClientManagerAdapter *)self adaptee];
 
-  sub_100775014(v11, v10, a4, a5, a6);
+  sub_100775014(adaptee, v10, dictionary, type, reply);
 }
 
-- (void)markClientTemporaryAuthorizationGranted:(BOOL)a3 forClientKey:(id)a4 andAuditToken:(id *)a5 byLocationButton:(BOOL)a6 voiceInteractionEnabled:(BOOL)a7
+- (void)markClientTemporaryAuthorizationGranted:(BOOL)granted forClientKey:(id)key andAuditToken:(id *)token byLocationButton:(BOOL)button voiceInteractionEnabled:(BOOL)enabled
 {
-  v7 = a7;
-  v8 = a6;
-  v9 = a3;
-  v11 = [CLClientKeyPath clientKeyPathWithLegacyClientKey:a4];
-  v12 = [(CLClientManagerAdapter *)self adaptee];
+  enabledCopy = enabled;
+  buttonCopy = button;
+  grantedCopy = granted;
+  v11 = [CLClientKeyPath clientKeyPathWithLegacyClientKey:key];
+  adaptee = [(CLClientManagerAdapter *)self adaptee];
 
-  sub_10077B5E8(v12, v11, v13, v9, v8, v7);
+  sub_10077B5E8(adaptee, v11, v13, grantedCopy, buttonCopy, enabledCopy);
 }
 
-- (void)markTemporaryPreciseAuthorizationGranted:(BOOL)a3 forClientKey:(id)a4
+- (void)markTemporaryPreciseAuthorizationGranted:(BOOL)granted forClientKey:(id)key
 {
-  v4 = a3;
-  v6 = [CLClientKeyPath clientKeyPathWithLegacyClientKey:a4];
-  v7 = [(CLClientManagerAdapter *)self adaptee];
+  grantedCopy = granted;
+  v6 = [CLClientKeyPath clientKeyPathWithLegacyClientKey:key];
+  adaptee = [(CLClientManagerAdapter *)self adaptee];
 
-  sub_10077BA38(v7, v6, v4);
+  sub_10077BA38(adaptee, v6, grantedCopy);
 }
 
-- (void)tearDownLocationAuthPrompt:(id)a3
+- (void)tearDownLocationAuthPrompt:(id)prompt
 {
-  v4 = [CLClientKeyPath clientKeyPathWithLegacyClientKey:a3];
-  v5 = [(CLClientManagerAdapter *)self adaptee];
+  v4 = [CLClientKeyPath clientKeyPathWithLegacyClientKey:prompt];
+  adaptee = [(CLClientManagerAdapter *)self adaptee];
 
-  sub_10079EDEC(v5, 2, v4);
+  sub_10079EDEC(adaptee, 2, v4);
 }
 
-- (void)markClientEmergencyEnablementTransition:(BOOL)a3
+- (void)markClientEmergencyEnablementTransition:(BOOL)transition
 {
-  v3 = a3;
-  v4 = [(CLClientManagerAdapter *)self adaptee];
+  transitionCopy = transition;
+  adaptee = [(CLClientManagerAdapter *)self adaptee];
 
-  sub_10077BBC4(v4, v3, 0, 0);
+  sub_10077BBC4(adaptee, transitionCopy, 0, 0);
 }
 
-- (void)markClientEmergencyEnablementTransition:(BOOL)a3 shouldOverrideDeauthorization:(BOOL)a4 forBeneficiary:(id)a5
+- (void)markClientEmergencyEnablementTransition:(BOOL)transition shouldOverrideDeauthorization:(BOOL)deauthorization forBeneficiary:(id)beneficiary
 {
-  v6 = a4;
-  v7 = a3;
-  if ([a5 isEqualToString:@"*nobody*"])
+  deauthorizationCopy = deauthorization;
+  transitionCopy = transition;
+  if ([beneficiary isEqualToString:@"*nobody*"])
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = [CLClientKeyPath clientKeyPathWithLegacyClientKey:a5];
+    v9 = [CLClientKeyPath clientKeyPathWithLegacyClientKey:beneficiary];
   }
 
-  v10 = [(CLClientManagerAdapter *)self adaptee];
+  adaptee = [(CLClientManagerAdapter *)self adaptee];
 
-  sub_10077BBC4(v10, v7, v6, v9);
+  sub_10077BBC4(adaptee, transitionCopy, deauthorizationCopy, v9);
 }
 
-- (void)takeInUseAssertionForCkp:(id)a3 reason:(id)a4 assertionLevel:(int)a5 withReply:(id)a6
+- (void)takeInUseAssertionForCkp:(id)ckp reason:(id)reason assertionLevel:(int)level withReply:(id)reply
 {
-  v9 = sub_100033370([(CLClientManagerAdapter *)self adaptee], a3);
-  v10 = [(CLClientManagerAdapter *)self adaptee];
-  sub_10000EC00(&__p, [a4 UTF8String]);
-  sub_1000E4F54(v10, v9, &__p, a5, v12);
+  v9 = sub_100033370([(CLClientManagerAdapter *)self adaptee], ckp);
+  adaptee = [(CLClientManagerAdapter *)self adaptee];
+  sub_10000EC00(&__p, [reason UTF8String]);
+  sub_1000E4F54(adaptee, v9, &__p, level, v12);
   sub_1001457B8();
 }
 
-- (void)inUseAssertionInvalidatedDueToWatchConnectivityForClientKey:(id)a3
+- (void)inUseAssertionInvalidatedDueToWatchConnectivityForClientKey:(id)key
 {
-  v4 = [CLClientKeyPath clientKeyPathWithClientKey:a3];
-  v5 = [(CLClientManagerAdapter *)self adaptee];
+  v4 = [CLClientKeyPath clientKeyPathWithClientKey:key];
+  adaptee = [(CLClientManagerAdapter *)self adaptee];
 
-  sub_100778D10(v5, v4);
+  sub_100778D10(adaptee, v4);
 }
 
-- (void)reduceAccuracy:(id)a3 withReply:(id)a4
+- (void)reduceAccuracy:(id)accuracy withReply:(id)reply
 {
-  v6 = [(CLClientManagerAdapter *)self adaptee];
-  if (a3)
+  adaptee = [(CLClientManagerAdapter *)self adaptee];
+  if (accuracy)
   {
-    [a3 clientLocation];
+    [accuracy clientLocation];
   }
 
   else
@@ -605,12 +605,12 @@
     memset(v7, 0, 156);
   }
 
-  sub_10077E830(v6, v7, a4);
+  sub_10077E830(adaptee, v7, reply);
 }
 
-- (void)markReceivingLocationInformation:(id)a3
+- (void)markReceivingLocationInformation:(id)information
 {
-  (*(a3 + 2))(v5, a3, a2);
+  (*(information + 2))(v5, information, a2);
   v4 = [CLClientKeyPath clientKeyPathFromName:v5];
   if (v18 < 0)
   {
@@ -652,61 +652,61 @@
 
 - (void)onCapabilityChange
 {
-  v2 = [(CLClientManagerAdapter *)self adaptee];
-  v3 = v2[17];
+  adaptee = [(CLClientManagerAdapter *)self adaptee];
+  v3 = adaptee[17];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1007A5AAC;
   v4[3] = &unk_10246FC30;
-  v4[4] = v2;
+  v4[4] = adaptee;
   [v3 iterateAllAnchorKeyPathsWithBlock:v4];
 }
 
-- (void)wakeUpLaunchdManagedClient:(id)a3
+- (void)wakeUpLaunchdManagedClient:(id)client
 {
-  sub_10000EC00(__p, [a3 UTF8String]);
-  v4 = [(CLNotifierServiceAdapter *)self notifier];
-  if (v4)
+  sub_10000EC00(__p, [client UTF8String]);
+  notifier = [(CLNotifierServiceAdapter *)self notifier];
+  if (notifier)
   {
   }
 
-  sub_1000E7E28(v4, __p);
+  sub_1000E7E28(notifier, __p);
   if (v6 < 0)
   {
     operator delete(__p[0]);
   }
 }
 
-- (void)appLaunchedByAppLifecycleManager:(id)a3
+- (void)appLaunchedByAppLifecycleManager:(id)manager
 {
-  v4 = [CLClientKeyPath clientKeyPathWithLegacyClientKey:a3];
-  v5 = [(CLClientManagerAdapter *)self adaptee];
+  v4 = [CLClientKeyPath clientKeyPathWithLegacyClientKey:manager];
+  adaptee = [(CLClientManagerAdapter *)self adaptee];
 
-  sub_1007948F8(v5, v4);
+  sub_1007948F8(adaptee, v4);
 }
 
-- (void)performMigrationWithReply:(id)a3
+- (void)performMigrationWithReply:(id)reply
 {
   sub_100794D08([(CLClientManagerAdapter *)self adaptee]);
-  if (a3)
+  if (reply)
   {
-    v4 = *(a3 + 2);
+    v4 = *(reply + 2);
 
-    v4(a3);
+    v4(reply);
   }
 }
 
-- (void)resetNotificationConsumedForIdentifier:(id)a3
+- (void)resetNotificationConsumedForIdentifier:(id)identifier
 {
-  v4 = [(CLClientManagerAdapter *)self adaptee];
+  adaptee = [(CLClientManagerAdapter *)self adaptee];
 
-  sub_100794F34(v4, a3);
+  sub_100794F34(adaptee, identifier);
 }
 
-- (void)setClientBackgroundIndicator:(id)a3 enabled:(BOOL)a4 entity:(id)a5
+- (void)setClientBackgroundIndicator:(id)indicator enabled:(BOOL)enabled entity:(id)entity
 {
-  v6 = a4;
-  (*(a3 + 2))(v10, a3, a2);
+  enabledCopy = enabled;
+  (*(indicator + 2))(v10, indicator, a2);
   v8 = [CLClientKeyPath clientKeyPathFromName:v10];
   if (v23 < 0)
   {
@@ -743,16 +743,16 @@
     operator delete(v10[0]);
   }
 
-  v9 = [(CLClientManagerAdapter *)self adaptee];
-  [a5 UTF8String];
-  sub_100795358(v9, v8, v6);
+  adaptee = [(CLClientManagerAdapter *)self adaptee];
+  [entity UTF8String];
+  sub_100795358(adaptee, v8, enabledCopy);
 }
 
-- (void)setClientAuthorization:(id)a3 zoneIdentifier:(id)a4 subIdentityIdentifier:(id)a5 status:(int)a6 correctiveCompensation:(int)a7 mayIncreaseAuth:(BOOL)a8 entity:(id)a9
+- (void)setClientAuthorization:(id)authorization zoneIdentifier:(id)identifier subIdentityIdentifier:(id)identityIdentifier status:(int)status correctiveCompensation:(int)compensation mayIncreaseAuth:(BOOL)auth entity:(id)entity
 {
-  v9 = a8;
-  v10 = *&a7;
-  (*(a3 + 2))(v21, a3, a2);
+  authCopy = auth;
+  v10 = *&compensation;
+  (*(authorization + 2))(v21, authorization, a2);
   v15 = [CLClientKeyPath clientKeyPathFromName:v21];
   if (v34 < 0)
   {
@@ -789,9 +789,9 @@
     operator delete(v21[0]);
   }
 
-  if (a4 | a5)
+  if (identifier | identityIdentifier)
   {
-    if (a4)
+    if (identifier)
     {
       v16 = 122;
     }
@@ -801,17 +801,17 @@
       v16 = 0;
     }
 
-    if (a5)
+    if (identityIdentifier)
     {
-      v17 = a5;
+      identifierCopy = identityIdentifier;
     }
 
     else
     {
-      v17 = a4;
+      identifierCopy = identifier;
     }
 
-    if (a5)
+    if (identityIdentifier)
     {
       v18 = 119;
     }
@@ -821,58 +821,58 @@
       v18 = v16;
     }
 
-    v15 = [v15 clientKeyPathWithReplacementSubIdentityId:v17 subIdentityType:v18];
+    v15 = [v15 clientKeyPathWithReplacementSubIdentityId:identifierCopy subIdentityType:v18];
   }
 
-  v19 = [(CLClientManagerAdapter *)self adaptee];
-  [a9 UTF8String];
-  sub_100791600(v19, v15, a6, v10, v20, v9, 1);
+  adaptee = [(CLClientManagerAdapter *)self adaptee];
+  [entity UTF8String];
+  sub_100791600(adaptee, v15, status, v10, v20, authCopy, 1);
 }
 
-- (void)setLastLocationSettingsEventSource:(id)a3
+- (void)setLastLocationSettingsEventSource:(id)source
 {
-  v4 = [(CLClientManagerAdapter *)self adaptee];
-  sub_10000EC00(&__str, [a3 UTF8String]);
-  std::string::operator=((v4 + 976), &__str);
+  adaptee = [(CLClientManagerAdapter *)self adaptee];
+  sub_10000EC00(&__str, [source UTF8String]);
+  std::string::operator=((adaptee + 976), &__str);
   if (SHIBYTE(__str.__r_.__value_.__r.__words[2]) < 0)
   {
     operator delete(__str.__r_.__value_.__l.__data_);
   }
 }
 
-- (void)sendMetricForFunctionCallsForClientKey:(id)a3 info:(id)a4
+- (void)sendMetricForFunctionCallsForClientKey:(id)key info:(id)info
 {
-  v6 = [CLClientKeyPath clientKeyPathWithClientAnchor:a3 anchorType:105];
-  v7 = [(CLClientManagerAdapter *)self adaptee];
+  v6 = [CLClientKeyPath clientKeyPathWithClientAnchor:key anchorType:105];
+  adaptee = [(CLClientManagerAdapter *)self adaptee];
 
-  sub_1000E3DA0(v7, v6, a4);
+  sub_1000E3DA0(adaptee, v6, info);
 }
 
-- (void)reportLocationUtilityEvent:(int)a3 atDate:(id)a4
+- (void)reportLocationUtilityEvent:(int)event atDate:(id)date
 {
-  v6 = [(CLClientManagerAdapter *)self adaptee];
+  adaptee = [(CLClientManagerAdapter *)self adaptee];
 
-  sub_100779210(v6, a3, a4);
+  sub_100779210(adaptee, event, date);
 }
 
-- (void)resetClient:(id)a3
+- (void)resetClient:(id)client
 {
-  v4 = [CLClientKeyPath clientKeyPathWithLegacyClientKey:a3];
-  v5 = [(CLClientManagerAdapter *)self adaptee];
+  v4 = [CLClientKeyPath clientKeyPathWithLegacyClientKey:client];
+  adaptee = [(CLClientManagerAdapter *)self adaptee];
 
-  sub_10077A174(v5, v4);
+  sub_10077A174(adaptee, v4);
 }
 
 - (void)resetClients
 {
-  v2 = [(CLClientManagerAdapter *)self adaptee];
+  adaptee = [(CLClientManagerAdapter *)self adaptee];
 
-  sub_10078E990(v2);
+  sub_10078E990(adaptee);
 }
 
-- (void)setClient:(id)a3
+- (void)setClient:(id)client
 {
-  (*(a3 + 2))(v7, a3, a2);
+  (*(client + 2))(v7, client, a2);
   v4 = [CLClientKeyPath clientKeyPathFromName:v7];
   if (v20 < 0)
   {
@@ -909,14 +909,14 @@
     operator delete(v7[0]);
   }
 
-  v5 = [(CLClientManagerAdapter *)self adaptee];
-  v6 = sub_100033370(v5, v4);
-  sub_1000F7D18(v5, v6, 1);
+  adaptee = [(CLClientManagerAdapter *)self adaptee];
+  v6 = sub_100033370(adaptee, v4);
+  sub_1000F7D18(adaptee, v6, 1);
 }
 
-- (void)setPurpose:(id)a3 forClient:(id)a4
+- (void)setPurpose:(id)purpose forClient:(id)client
 {
-  (*(a4 + 2))(v7, a4, a2);
+  (*(client + 2))(v7, client, a2);
   v6 = [CLClientKeyPath clientKeyPathFromName:v7];
   if (v20 < 0)
   {
@@ -953,14 +953,14 @@
     operator delete(v7[0]);
   }
 
-  sub_100795954([(CLClientManagerAdapter *)self adaptee], v6, a3);
+  sub_100795954([(CLClientManagerAdapter *)self adaptee], v6, purpose);
 }
 
-- (BOOL)syncgetSetLocationServicesEnabledStatically:(BOOL)a3 withEventSource:(id)a4
+- (BOOL)syncgetSetLocationServicesEnabledStatically:(BOOL)statically withEventSource:(id)source
 {
-  v6 = [(CLClientManagerAdapter *)self adaptee];
-  sub_10000EC00(__p, [a4 UTF8String]);
-  sub_1007739D0(v6, a3, __p);
+  adaptee = [(CLClientManagerAdapter *)self adaptee];
+  sub_10000EC00(__p, [source UTF8String]);
+  sub_1007739D0(adaptee, statically, __p);
   if (v9 < 0)
   {
     operator delete(__p[0]);
@@ -971,59 +971,59 @@
 
 - (void)checkAppInstallationStatus
 {
-  v2 = [(CLClientManagerAdapter *)self adaptee];
+  adaptee = [(CLClientManagerAdapter *)self adaptee];
 
-  sub_10077D10C(v2);
+  sub_10077D10C(adaptee);
 }
 
-- (void)appsWithClientKeysAreInstalledOnAPairedDevice:(id)a3
+- (void)appsWithClientKeysAreInstalledOnAPairedDevice:(id)device
 {
-  v4 = [(CLClientManagerAdapter *)self adaptee];
+  adaptee = [(CLClientManagerAdapter *)self adaptee];
 
-  sub_100795ABC(v4, a3);
+  sub_100795ABC(adaptee, device);
 }
 
-- (void)setAllowableAuthorizationMask:(unint64_t)a3 forClientKey:(id)a4
+- (void)setAllowableAuthorizationMask:(unint64_t)mask forClientKey:(id)key
 {
-  v6 = [CLClientKeyPath clientKeyPathWithLegacyClientKey:a4];
-  v7 = [(CLClientManagerAdapter *)self adaptee];
+  v6 = [CLClientKeyPath clientKeyPathWithLegacyClientKey:key];
+  adaptee = [(CLClientManagerAdapter *)self adaptee];
 
-  sub_100056BBC(v7, v6, a3, 0);
+  sub_100056BBC(adaptee, v6, mask, 0);
 }
 
 - (id)syncgetCopyClients
 {
-  v2 = [(CLClientManagerAdapter *)self adaptee];
+  adaptee = [(CLClientManagerAdapter *)self adaptee];
 
-  return sub_100795C50(v2, v3, 0);
+  return sub_100795C50(adaptee, v3, 0);
 }
 
-- (void)fetchClientDictionaryForCkp:(id)a3 withReply:(id)a4
+- (void)fetchClientDictionaryForCkp:(id)ckp withReply:(id)reply
 {
-  v6 = [(CLClientManagerAdapter *)self adaptee];
+  adaptee = [(CLClientManagerAdapter *)self adaptee];
 
-  sub_1007962C4(v6, a3, a4);
+  sub_1007962C4(adaptee, ckp, reply);
 }
 
-- (void)isAuthorizationUpgradeAvailableForClient:(id)a3 withReply:(id)a4
+- (void)isAuthorizationUpgradeAvailableForClient:(id)client withReply:(id)reply
 {
-  v5 = sub_100796390([(CLClientManagerAdapter *)self adaptee], a3);
-  v6 = *(a4 + 2);
+  v5 = sub_100796390([(CLClientManagerAdapter *)self adaptee], client);
+  v6 = *(reply + 2);
 
-  v6(a4, v5);
+  v6(reply, v5);
 }
 
-- (void)fetchLocationClientKeysWithReply:(id)a3
+- (void)fetchLocationClientKeysWithReply:(id)reply
 {
   v4 = sub_1001BDB40([(CLClientManagerAdapter *)self adaptee]);
-  v5 = *(a3 + 2);
+  v5 = *(reply + 2);
 
-  v5(a3, v4);
+  v5(reply, v4);
 }
 
-- (void)fetchClientStaticRegistrationResult:(id)a3 withReply:(id)a4
+- (void)fetchClientStaticRegistrationResult:(id)result withReply:(id)reply
 {
-  (*(a3 + 2))(v8, a3, a2);
+  (*(result + 2))(v8, result, a2);
   v6 = [CLClientKeyPath clientKeyPathFromName:v8];
   if (v21 < 0)
   {
@@ -1061,15 +1061,15 @@
   }
 
   v7 = sub_100774074([(CLClientManagerAdapter *)self adaptee], v6);
-  if (a4)
+  if (reply)
   {
-    (*(a4 + 2))(a4, v7);
+    (*(reply + 2))(reply, v7);
   }
 }
 
-- (int)syncgetClientEffectiveRegistrationResultWithTransientAwareness:(id)a3
+- (int)syncgetClientEffectiveRegistrationResultWithTransientAwareness:(id)awareness
 {
-  (*(a3 + 2))(v6, a3, a2);
+  (*(awareness + 2))(v6, awareness, a2);
   v4 = [CLClientKeyPath clientKeyPathFromName:v6];
   if (v19 < 0)
   {
@@ -1109,9 +1109,9 @@
   return sub_100061324([(CLClientManagerAdapter *)self adaptee], v4);
 }
 
-- (void)getIncidentalUseModeForClient:(id)a3 withReply:(id)a4
+- (void)getIncidentalUseModeForClient:(id)client withReply:(id)reply
 {
-  (*(a3 + 2))(v7, a3, a2);
+  (*(client + 2))(v7, client, a2);
   v6 = [CLClientKeyPath clientKeyPathFromName:v7];
   if (v20 < 0)
   {
@@ -1148,39 +1148,39 @@
     operator delete(v7[0]);
   }
 
-  sub_100779070([(CLClientManagerAdapter *)self adaptee], v6, a4);
+  sub_100779070([(CLClientManagerAdapter *)self adaptee], v6, reply);
 }
 
-- (void)getVisitHistoryAccessAllowedTimeForClient:(id)a3 withReply:(id)a4
+- (void)getVisitHistoryAccessAllowedTimeForClient:(id)client withReply:(id)reply
 {
   [*(-[CLClientManagerAdapter adaptee](self "adaptee") + 17)];
-  v5 = *(a4 + 2);
+  v5 = *(reply + 2);
 
-  v5(a4);
+  v5(reply);
 }
 
-- (void)getVisitHistoryAccessForClient:(id)a3 withReply:(id)a4
+- (void)getVisitHistoryAccessForClient:(id)client withReply:(id)reply
 {
-  v5 = sub_1007A8E24([(CLClientManagerAdapter *)self adaptee], [CLClientKeyPath clientKeyPathWithLegacyClientKey:a3]);
-  v6 = *(a4 + 2);
+  v5 = sub_1007A8E24([(CLClientManagerAdapter *)self adaptee], [CLClientKeyPath clientKeyPathWithLegacyClientKey:client]);
+  v6 = *(reply + 2);
 
-  v6(a4, v5);
+  v6(reply, v5);
 }
 
-- (void)getLearnedRoutesAccessForClient:(id)a3 withReply:(id)a4
+- (void)getLearnedRoutesAccessForClient:(id)client withReply:(id)reply
 {
-  v5 = sub_1007A906C([(CLClientManagerAdapter *)self adaptee], [CLClientKeyPath clientKeyPathWithLegacyClientKey:a3]);
-  v6 = *(a4 + 2);
+  v5 = sub_1007A906C([(CLClientManagerAdapter *)self adaptee], [CLClientKeyPath clientKeyPathWithLegacyClientKey:client]);
+  v6 = *(reply + 2);
 
-  v6(a4, v5);
+  v6(reply, v5);
 }
 
-- (void)registerCircularInterestZoneForClientKey:(id)a3 withId:(id)a4 latitude:(double)a5 longitude:(double)a6 serviceMaskOperator:(int)a7 provenanceType:(int)a8 radius:(double)a9 withReply:(id)a10
+- (void)registerCircularInterestZoneForClientKey:(id)key withId:(id)id latitude:(double)latitude longitude:(double)longitude serviceMaskOperator:(int)operator provenanceType:(int)type radius:(double)radius withReply:(id)self0
 {
-  v18 = [(CLClientManagerAdapter *)self adaptee];
-  sub_10000EC00(v21, [a3 UTF8String]);
-  sub_10000EC00(__p, [a4 UTF8String]);
-  sub_100796A40(v18, v21, __p, 1, 0, a7, a8, 1, a5, a6, a9, 0, a10);
+  adaptee = [(CLClientManagerAdapter *)self adaptee];
+  sub_10000EC00(v21, [key UTF8String]);
+  sub_10000EC00(__p, [id UTF8String]);
+  sub_100796A40(adaptee, v21, __p, 1, 0, operator, type, 1, latitude, longitude, radius, 0, reply);
   if (v20 < 0)
   {
     operator delete(__p[0]);
@@ -1192,13 +1192,13 @@
   }
 }
 
-- (void)registerPhenolicInterestZoneForClientKey:(id)a3 withId:(id)a4 phenolicLocation:(int)a5 serviceMaskOperator:(int)a6 provenanceType:(int)a7 withReply:(id)a8
+- (void)registerPhenolicInterestZoneForClientKey:(id)key withId:(id)id phenolicLocation:(int)location serviceMaskOperator:(int)operator provenanceType:(int)type withReply:(id)reply
 {
-  v11 = *&a5;
-  v14 = [(CLClientManagerAdapter *)self adaptee];
-  sub_10000EC00(v17, [a3 UTF8String]);
-  sub_10000EC00(__p, [a4 UTF8String]);
-  sub_100796A40(v14, v17, __p, 2, v11, a6, a7, 1, -1.0, -1.0, -1.0, 0, a8);
+  v11 = *&location;
+  adaptee = [(CLClientManagerAdapter *)self adaptee];
+  sub_10000EC00(v17, [key UTF8String]);
+  sub_10000EC00(__p, [id UTF8String]);
+  sub_100796A40(adaptee, v17, __p, 2, v11, operator, type, 1, -1.0, -1.0, -1.0, 0, reply);
   if (v16 < 0)
   {
     operator delete(__p[0]);
@@ -1210,13 +1210,13 @@
   }
 }
 
-- (void)setRelevance:(BOOL)a3 forInterestZoneWithId:(id)a4 registeredForClientKey:(id)a5 withReply:(id)a6
+- (void)setRelevance:(BOOL)relevance forInterestZoneWithId:(id)id registeredForClientKey:(id)key withReply:(id)reply
 {
-  v9 = a3;
-  v10 = [(CLClientManagerAdapter *)self adaptee];
-  sub_10000EC00(v13, [a5 UTF8String]);
-  sub_10000EC00(__p, [a4 UTF8String]);
-  sub_1007976E8(v10, v13, __p, v9, a6);
+  relevanceCopy = relevance;
+  adaptee = [(CLClientManagerAdapter *)self adaptee];
+  sub_10000EC00(v13, [key UTF8String]);
+  sub_10000EC00(__p, [id UTF8String]);
+  sub_1007976E8(adaptee, v13, __p, relevanceCopy, reply);
   if (v12 < 0)
   {
     operator delete(__p[0]);
@@ -1228,13 +1228,13 @@
   }
 }
 
-- (void)setRelevance:(BOOL)a3 forInterestZoneWithId:(id)a4 registeredForClientKey:(id)a5
+- (void)setRelevance:(BOOL)relevance forInterestZoneWithId:(id)id registeredForClientKey:(id)key
 {
-  v7 = a3;
-  v8 = [(CLClientManagerAdapter *)self adaptee];
-  sub_10000EC00(v11, [a5 UTF8String]);
-  sub_10000EC00(__p, [a4 UTF8String]);
-  sub_1007976E8(v8, v11, __p, v7, 0);
+  relevanceCopy = relevance;
+  adaptee = [(CLClientManagerAdapter *)self adaptee];
+  sub_10000EC00(v11, [key UTF8String]);
+  sub_10000EC00(__p, [id UTF8String]);
+  sub_1007976E8(adaptee, v11, __p, relevanceCopy, 0);
   if (v10 < 0)
   {
     operator delete(__p[0]);
@@ -1246,12 +1246,12 @@
   }
 }
 
-- (void)deleteInterestZoneWithId:(id)a3 registeredForClientKey:(id)a4 withReply:(id)a5
+- (void)deleteInterestZoneWithId:(id)id registeredForClientKey:(id)key withReply:(id)reply
 {
-  v8 = [(CLClientManagerAdapter *)self adaptee];
-  sub_10000EC00(v11, [a4 UTF8String]);
-  sub_10000EC00(__p, [a3 UTF8String]);
-  sub_100797CA0(v8, v11, __p, a5);
+  adaptee = [(CLClientManagerAdapter *)self adaptee];
+  sub_10000EC00(v11, [key UTF8String]);
+  sub_10000EC00(__p, [id UTF8String]);
+  sub_100797CA0(adaptee, v11, __p, reply);
   if (v10 < 0)
   {
     operator delete(__p[0]);
@@ -1263,10 +1263,10 @@
   }
 }
 
-- (void)setIncidentalUseMode:(int)a3 forClient:(id)a4
+- (void)setIncidentalUseMode:(int)mode forClient:(id)client
 {
-  v4 = *&a3;
-  (*(a4 + 2))(v7, a4, a2);
+  v4 = *&mode;
+  (*(client + 2))(v7, client, a2);
   v6 = [CLClientKeyPath clientKeyPathFromName:v7];
   if (v20 < 0)
   {
@@ -1306,28 +1306,28 @@
   sub_10077A3D0([(CLClientManagerAdapter *)self adaptee], v4, v6, 1);
 }
 
-- (void)setVisitHistoryAccess:(int)a3 forClient:(id)a4
+- (void)setVisitHistoryAccess:(int)access forClient:(id)client
 {
-  v4 = *&a3;
-  v6 = [CLClientKeyPath clientKeyPathWithLegacyClientKey:a4];
-  v7 = [(CLClientManagerAdapter *)self adaptee];
+  v4 = *&access;
+  v6 = [CLClientKeyPath clientKeyPathWithLegacyClientKey:client];
+  adaptee = [(CLClientManagerAdapter *)self adaptee];
 
-  sub_100798220(v7, v6, v4);
+  sub_100798220(adaptee, v6, v4);
 }
 
-- (void)setLearnedRoutesAccess:(int)a3 forClient:(id)a4
+- (void)setLearnedRoutesAccess:(int)access forClient:(id)client
 {
-  v4 = *&a3;
-  v6 = [CLClientKeyPath clientKeyPathWithLegacyClientKey:a4];
-  v7 = [(CLClientManagerAdapter *)self adaptee];
+  v4 = *&access;
+  v6 = [CLClientKeyPath clientKeyPathWithLegacyClientKey:client];
+  adaptee = [(CLClientManagerAdapter *)self adaptee];
 
-  sub_10079856C(v7, v6, v4);
+  sub_10079856C(adaptee, v6, v4);
 }
 
-- (void)setLocationButtonUseMode:(int)a3 forClient:(id)a4
+- (void)setLocationButtonUseMode:(int)mode forClient:(id)client
 {
-  v4 = *&a3;
-  (*(a4 + 2))(v7, a4, a2);
+  v4 = *&mode;
+  (*(client + 2))(v7, client, a2);
   v6 = [CLClientKeyPath clientKeyPathFromName:v7];
   if (v20 < 0)
   {
@@ -1369,31 +1369,31 @@
 
 - (BOOL)syncgetIsMapsANonSystemLocationClient
 {
-  v2 = [(CLClientManagerAdapter *)self adaptee];
+  adaptee = [(CLClientManagerAdapter *)self adaptee];
   v3 = [CLClientKeyPath clientKeyPathWithClientAnchor:@"com.apple.Maps" anchorType:105];
 
-  return sub_100798960(v2, v3);
+  return sub_100798960(adaptee, v3);
 }
 
-- (id)syncgetApplyArchivedAuthorizationDecisionsAndDie:(id)a3 unlessTokenMatches:(id)a4
+- (id)syncgetApplyArchivedAuthorizationDecisionsAndDie:(id)die unlessTokenMatches:(id)matches
 {
-  v6 = [(CLClientManagerAdapter *)self adaptee];
+  adaptee = [(CLClientManagerAdapter *)self adaptee];
 
-  return sub_100780350(v6, a3, a4);
+  return sub_100780350(adaptee, die, matches);
 }
 
 - (id)syncgetArchivedAuthorizationDecisions
 {
-  v2 = [(CLClientManagerAdapter *)self adaptee];
+  adaptee = [(CLClientManagerAdapter *)self adaptee];
 
-  return sub_10077FF70(v2);
+  return sub_10077FF70(adaptee);
 }
 
-- (void)checkWeakPersistentClientWithIdentifier:(id)a3
+- (void)checkWeakPersistentClientWithIdentifier:(id)identifier
 {
-  v4 = [(CLClientManagerAdapter *)self adaptee];
-  (*(a3 + 2))(v5, a3);
-  sub_1007774D0(v4, v5);
+  adaptee = [(CLClientManagerAdapter *)self adaptee];
+  (*(identifier + 2))(v5, identifier);
+  sub_1007774D0(adaptee, v5);
   if (v8 < 0)
   {
     operator delete(__p);
@@ -1405,10 +1405,10 @@
   }
 }
 
-- (void)handleProvisionalIntermediationForService:(unint64_t)a3 forClientKey:(id)a4 at:(id)a5 withReply:(id)a6
+- (void)handleProvisionalIntermediationForService:(unint64_t)service forClientKey:(id)key at:(id)at withReply:(id)reply
 {
-  v7 = a5;
-  if (!a5)
+  atCopy = at;
+  if (!at)
   {
     v11 = [CLLocation alloc];
     LODWORD(v19[0]) = 0xFFFF;
@@ -1426,14 +1426,14 @@
     *(&v21 + 4) = 0xBFF0000000000000;
     HIDWORD(v21) = 0x7FFFFFFF;
     memset(v22, 0, 25);
-    v7 = [v11 initWithClientLocation:v19];
+    atCopy = [v11 initWithClientLocation:v19];
   }
 
-  v17 = [CLClientKeyPath clientKeyPathWithLegacyClientKey:a4];
-  v18 = [(CLClientManagerAdapter *)self adaptee];
-  if (v7)
+  v17 = [CLClientKeyPath clientKeyPathWithLegacyClientKey:key];
+  adaptee = [(CLClientManagerAdapter *)self adaptee];
+  if (atCopy)
   {
-    [v7 clientLocation];
+    [atCopy clientLocation];
   }
 
   else
@@ -1444,34 +1444,34 @@
     memset(v19, 0, sizeof(v19));
   }
 
-  sub_100045AEC(v18, a3, v17, v19, a6);
+  sub_100045AEC(adaptee, service, v17, v19, reply);
 }
 
-- (void)considerPromptingForIncidentalUseForCkp:(id)a3
+- (void)considerPromptingForIncidentalUseForCkp:(id)ckp
 {
-  v4 = [(CLClientManagerAdapter *)self adaptee];
+  adaptee = [(CLClientManagerAdapter *)self adaptee];
 
-  sub_10077834C(v4, a3);
+  sub_10077834C(adaptee, ckp);
 }
 
-- (void)learnedRoutesSupportedForClient:(id)a3 withReply:(id)a4
+- (void)learnedRoutesSupportedForClient:(id)client withReply:(id)reply
 {
-  v6 = [CLClientKeyPath clientKeyPathWithLegacyClientKey:a3];
-  v7 = [(CLClientManagerAdapter *)self adaptee];
+  v6 = [CLClientKeyPath clientKeyPathWithLegacyClientKey:client];
+  adaptee = [(CLClientManagerAdapter *)self adaptee];
 
-  sub_100798CB4(v7, v6, a4);
+  sub_100798CB4(adaptee, v6, reply);
 }
 
-- (void)attemptSpendOneForPushClient:(id)a3 withReply:(id)a4
+- (void)attemptSpendOneForPushClient:(id)client withReply:(id)reply
 {
-  v6 = [(CLClientManagerAdapter *)self adaptee];
+  adaptee = [(CLClientManagerAdapter *)self adaptee];
 
-  sub_100798E08(v6, a3, a4);
+  sub_100798E08(adaptee, client, reply);
 }
 
-- (void)setTemporaryAuthorizationStatusInfoForClient:(id)a3 data:(id)a4
+- (void)setTemporaryAuthorizationStatusInfoForClient:(id)client data:(id)data
 {
-  (*(a3 + 2))(v7, a3, a2);
+  (*(client + 2))(v7, client, a2);
   v6 = [CLClientKeyPath clientKeyPathFromName:v7];
   if (v20 < 0)
   {
@@ -1508,12 +1508,12 @@
     operator delete(v7[0]);
   }
 
-  sub_100798F74([(CLClientManagerAdapter *)self adaptee], v6, a4);
+  sub_100798F74([(CLClientManagerAdapter *)self adaptee], v6, data);
 }
 
-- (id)syncgetTemporaryAuthorizationStatusForClient:(id)a3
+- (id)syncgetTemporaryAuthorizationStatusForClient:(id)client
 {
-  (*(a3 + 2))(v6, a3, a2);
+  (*(client + 2))(v6, client, a2);
   v4 = [CLClientKeyPath clientKeyPathFromName:v6];
   if (v19 < 0)
   {
@@ -1553,9 +1553,9 @@
   return sub_100799DF4([(CLClientManagerAdapter *)self adaptee], v4);
 }
 
-- (double)syncgetAndSetOrChangeAppClipAuthorizationTime:(double)a3 forClient:(id)a4
+- (double)syncgetAndSetOrChangeAppClipAuthorizationTime:(double)time forClient:(id)client
 {
-  (*(a4 + 2))(v8, a4, a2);
+  (*(client + 2))(v8, client, a2);
   v6 = [CLClientKeyPath clientKeyPathFromName:v8];
   if (v21 < 0)
   {
@@ -1592,43 +1592,43 @@
     operator delete(v8[0]);
   }
 
-  sub_10079A3A4([(CLClientManagerAdapter *)self adaptee], v6, a3);
+  sub_10079A3A4([(CLClientManagerAdapter *)self adaptee], v6, time);
   return -1.0;
 }
 
 - (void)triggerClearAppClipAuthorizationIfNecessary
 {
-  v2 = [(CLClientManagerAdapter *)self adaptee];
+  adaptee = [(CLClientManagerAdapter *)self adaptee];
 
-  sub_10079A6C8(v2, 14400.0);
+  sub_10079A6C8(adaptee, 14400.0);
 }
 
-- (void)handleLiveActivityUpdate:(id)a3
+- (void)handleLiveActivityUpdate:(id)update
 {
-  v4 = [(CLClientManagerAdapter *)self adaptee];
+  adaptee = [(CLClientManagerAdapter *)self adaptee];
 
-  sub_1002FA8A4(v4, a3);
+  sub_1002FA8A4(adaptee, update);
 }
 
-- (void)calculateCheeseCoverage:(id)a3 interestInterval:(id)a4 withOptions:(id)a5 lookbackWindowStartDate:(id)a6 withReply:(id)a7
+- (void)calculateCheeseCoverage:(id)coverage interestInterval:(id)interval withOptions:(id)options lookbackWindowStartDate:(id)date withReply:(id)reply
 {
-  v12 = [CLClientKeyPath clientKeyPathWithLegacyClientKey:a3];
-  v13 = [(CLClientManagerAdapter *)self adaptee];
+  v12 = [CLClientKeyPath clientKeyPathWithLegacyClientKey:coverage];
+  adaptee = [(CLClientManagerAdapter *)self adaptee];
 
-  sub_100786AA8(v13, v12, a4, a5, a6, a7);
+  sub_100786AA8(adaptee, v12, interval, options, date, reply);
 }
 
-- (void)getClientManagerInternalStateWithReply:(id)a3
+- (void)getClientManagerInternalStateWithReply:(id)reply
 {
   v4 = sub_100786074([(CLClientManagerAdapter *)self adaptee]);
-  v5 = *(a3 + 2);
+  v5 = *(reply + 2);
 
-  v5(a3, v4);
+  v5(reply, v4);
 }
 
-- (void)requestPinnedLocationAuthorizationWithPayload:(id)a3
+- (void)requestPinnedLocationAuthorizationWithPayload:(id)payload
 {
-  if (!sub_100783014([(CLClientManagerAdapter *)self adaptee], a3))
+  if (!sub_100783014([(CLClientManagerAdapter *)self adaptee], payload))
   {
     v4 = [-[CLClientManagerAdapter vendor](self "vendor")];
     if (qword_1025D47A0 != -1)

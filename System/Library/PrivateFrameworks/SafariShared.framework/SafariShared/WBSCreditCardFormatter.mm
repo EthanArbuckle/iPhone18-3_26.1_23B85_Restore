@@ -1,22 +1,22 @@
 @interface WBSCreditCardFormatter
-+ (id)_formattedStringForNormalizedNumber:(id)a3 showCreditCardNumber:(BOOL)a4 showLastFourDigits:(BOOL)a5 isVirtualCard:(BOOL)a6;
-+ (id)formattedStringForNormalizedNumber:(id)a3 showCreditCardNumber:(BOOL)a4;
-- (BOOL)getObjectValue:(id *)a3 forString:(id)a4 errorDescription:(id *)a5;
-- (BOOL)isPartialStringValid:(id *)a3 proposedSelectedRange:(_NSRange *)a4 originalString:(id)a5 originalSelectedRange:(_NSRange)a6 errorDescription:(id *)a7;
-- (BOOL)isPartialStringValid:(id)a3 newEditingString:(id *)a4 errorDescription:(id *)a5;
-- (_NSRange)_normalizedSelectionRangeForFormattedCreditCardNumber:(id)a3 withOriginalSelectionRange:(_NSRange)a4;
-- (_NSRange)_selectionRangeInFormattedCreditCardNumber:(id)a3 forNormalizedSelectionRange:(_NSRange)a4 inNormalizedCreditCardNumber:(id)a5;
-- (id)stringForObjectValue:(id)a3;
++ (id)_formattedStringForNormalizedNumber:(id)number showCreditCardNumber:(BOOL)cardNumber showLastFourDigits:(BOOL)digits isVirtualCard:(BOOL)card;
++ (id)formattedStringForNormalizedNumber:(id)number showCreditCardNumber:(BOOL)cardNumber;
+- (BOOL)getObjectValue:(id *)value forString:(id)string errorDescription:(id *)description;
+- (BOOL)isPartialStringValid:(id *)valid proposedSelectedRange:(_NSRange *)range originalString:(id)string originalSelectedRange:(_NSRange)selectedRange errorDescription:(id *)description;
+- (BOOL)isPartialStringValid:(id)valid newEditingString:(id *)string errorDescription:(id *)description;
+- (_NSRange)_normalizedSelectionRangeForFormattedCreditCardNumber:(id)number withOriginalSelectionRange:(_NSRange)range;
+- (_NSRange)_selectionRangeInFormattedCreditCardNumber:(id)number forNormalizedSelectionRange:(_NSRange)range inNormalizedCreditCardNumber:(id)cardNumber;
+- (id)stringForObjectValue:(id)value;
 @end
 
 @implementation WBSCreditCardFormatter
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  valueCopy = value;
+  if (valueCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = [WBSCreditCardFormatter _formattedStringForNormalizedNumber:v4 showCreditCardNumber:[(WBSCreditCardFormatter *)self showCreditCardNumber] showLastFourDigits:[(WBSCreditCardFormatter *)self showLastFourDigits] isVirtualCard:[(WBSCreditCardFormatter *)self isVirtualCard]];
+    v5 = [WBSCreditCardFormatter _formattedStringForNormalizedNumber:valueCopy showCreditCardNumber:[(WBSCreditCardFormatter *)self showCreditCardNumber] showLastFourDigits:[(WBSCreditCardFormatter *)self showLastFourDigits] isVirtualCard:[(WBSCreditCardFormatter *)self isVirtualCard]];
   }
 
   else
@@ -27,18 +27,18 @@
   return v5;
 }
 
-- (BOOL)getObjectValue:(id *)a3 forString:(id)a4 errorDescription:(id *)a5
+- (BOOL)getObjectValue:(id *)value forString:(id)string errorDescription:(id *)description
 {
-  v7 = a4;
-  if ([v7 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
     v8 = WBSNormalizedCreditCardNumber();
     if (v8 && ([(WBSCreditCardFormatter *)self allowsUnknownCardTypes]|| WBSCreditCardTypeFromNumber()))
     {
-      if (a3)
+      if (value)
       {
         v9 = v8;
-        *a3 = v8;
+        *value = v8;
       }
 
       v10 = 1;
@@ -58,24 +58,24 @@
   return v10;
 }
 
-- (BOOL)isPartialStringValid:(id)a3 newEditingString:(id *)a4 errorDescription:(id *)a5
+- (BOOL)isPartialStringValid:(id)valid newEditingString:(id *)string errorDescription:(id *)description
 {
-  v7 = a3;
-  v8 = [v7 length];
+  validCopy = valid;
+  v8 = [validCopy length];
   if (v8)
   {
     v9 = WBSNormalizedCreditCardNumber();
     if (v9)
     {
-      if (a4)
+      if (string)
       {
         v10 = [WBSCreditCardFormatter _formattedStringForNormalizedNumber:v9 showCreditCardNumber:1 showLastFourDigits:[(WBSCreditCardFormatter *)self showLastFourDigits] isVirtualCard:[(WBSCreditCardFormatter *)self isVirtualCard]];
 LABEL_7:
-        *a4 = v10;
+        *string = v10;
       }
     }
 
-    else if (a4)
+    else if (string)
     {
       v10 = 0;
       goto LABEL_7;
@@ -85,39 +85,39 @@ LABEL_7:
   return v8 == 0;
 }
 
-- (BOOL)isPartialStringValid:(id *)a3 proposedSelectedRange:(_NSRange *)a4 originalString:(id)a5 originalSelectedRange:(_NSRange)a6 errorDescription:(id *)a7
+- (BOOL)isPartialStringValid:(id *)valid proposedSelectedRange:(_NSRange *)range originalString:(id)string originalSelectedRange:(_NSRange)selectedRange errorDescription:(id *)description
 {
-  length = a6.length;
-  location = a6.location;
-  v12 = a5;
-  v13 = [*a3 length];
+  length = selectedRange.length;
+  location = selectedRange.location;
+  stringCopy = string;
+  v13 = [*valid length];
   if (v13)
   {
     v14 = WBSNormalizedCreditCardNumber();
     if (v14)
     {
-      v15 = [(WBSCreditCardFormatter *)self _normalizedSelectionRangeForFormattedCreditCardNumber:*a3 withOriginalSelectionRange:a4->location, a4->length];
+      v15 = [(WBSCreditCardFormatter *)self _normalizedSelectionRangeForFormattedCreditCardNumber:*valid withOriginalSelectionRange:range->location, range->length];
       v17 = v16;
       v18 = [WBSCreditCardFormatter _formattedStringForNormalizedNumber:v14 showCreditCardNumber:1 showLastFourDigits:[(WBSCreditCardFormatter *)self showLastFourDigits] isVirtualCard:[(WBSCreditCardFormatter *)self isVirtualCard]];
-      *a3 = v18;
-      a4->location = [(WBSCreditCardFormatter *)self _selectionRangeInFormattedCreditCardNumber:v18 forNormalizedSelectionRange:v15 inNormalizedCreditCardNumber:v17, v14];
-      a4->length = v19;
+      *valid = v18;
+      range->location = [(WBSCreditCardFormatter *)self _selectionRangeInFormattedCreditCardNumber:v18 forNormalizedSelectionRange:v15 inNormalizedCreditCardNumber:v17, v14];
+      range->length = v19;
     }
 
     else
     {
-      *a3 = [v12 copy];
-      a4->location = location;
-      a4->length = length;
+      *valid = [stringCopy copy];
+      range->location = location;
+      range->length = length;
     }
   }
 
   return v13 == 0;
 }
 
-+ (id)formattedStringForNormalizedNumber:(id)a3 showCreditCardNumber:(BOOL)a4
++ (id)formattedStringForNormalizedNumber:(id)number showCreditCardNumber:(BOOL)cardNumber
 {
-  v4 = [WBSCreditCardFormatter _formattedStringForNormalizedNumber:a3 showCreditCardNumber:a4 showLastFourDigits:0 isVirtualCard:0];
+  v4 = [WBSCreditCardFormatter _formattedStringForNormalizedNumber:number showCreditCardNumber:cardNumber showLastFourDigits:0 isVirtualCard:0];
   v5 = v4;
   if (v4)
   {
@@ -134,12 +134,12 @@ LABEL_7:
   return v6;
 }
 
-+ (id)_formattedStringForNormalizedNumber:(id)a3 showCreditCardNumber:(BOOL)a4 showLastFourDigits:(BOOL)a5 isVirtualCard:(BOOL)a6
++ (id)_formattedStringForNormalizedNumber:(id)number showCreditCardNumber:(BOOL)cardNumber showLastFourDigits:(BOOL)digits isVirtualCard:(BOOL)card
 {
-  v6 = a6;
-  v7 = a5;
-  v9 = a3;
-  v10 = [v9 length];
+  cardCopy = card;
+  digitsCopy = digits;
+  numberCopy = number;
+  v10 = [numberCopy length];
   if (!v10)
   {
     v13 = 0;
@@ -147,15 +147,15 @@ LABEL_7:
   }
 
   v11 = v10 - 4;
-  if (v10 <= 4 && v6 && !a4)
+  if (v10 <= 4 && cardCopy && !cardNumber)
   {
     v12 = [@"•••• •••• •••• ••••" substringToIndex:{objc_msgSend(@"•••• •••• •••• ••••", "length") - v10}];
-    v13 = [v12 stringByAppendingString:v9];
+    v13 = [v12 stringByAppendingString:numberCopy];
 
     goto LABEL_24;
   }
 
-  if (v7)
+  if (digitsCopy)
   {
     if (v10 > 3)
     {
@@ -179,11 +179,11 @@ LABEL_7:
   v30 = 3221225472;
   v31 = __116__WBSCreditCardFormatter__formattedStringForNormalizedNumber_showCreditCardNumber_showLastFourDigits_isVirtualCard___block_invoke;
   v32 = &unk_1E7FC4F40;
-  v37 = a4;
+  cardNumberCopy = cardNumber;
   v34 = v10;
   v35 = v11;
   v36 = v14;
-  v15 = v9;
+  v15 = numberCopy;
   v33 = v15;
   v16 = MEMORY[0x1BFB13CE0](&v29);
   v17 = WBSCreditCardTypeFromNumberAllowingPartialMatch();
@@ -192,14 +192,14 @@ LABEL_7:
     if ([v15 length] == 14)
     {
       v18 = MEMORY[0x1E695DEC8];
-      v19 = v16[2](v16, 0, 4);
+      array = v16[2](v16, 0, 4);
       v20 = v16[2](v16, 4, 6);
       v16[2](v16, 10, 4);
       goto LABEL_17;
     }
 
 LABEL_18:
-    v19 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v23 = [v15 length];
     if (v23)
     {
@@ -213,11 +213,11 @@ LABEL_18:
         }
 
         v27 = v26;
-        [v19 addObject:v26];
+        [array addObject:v26];
       }
     }
 
-    v13 = [v19 componentsJoinedByString:@" "];
+    v13 = [array componentsJoinedByString:@" "];
     goto LABEL_23;
   }
 
@@ -227,11 +227,11 @@ LABEL_18:
   }
 
   v18 = MEMORY[0x1E695DEC8];
-  v19 = v16[2](v16, 0, 4);
+  array = v16[2](v16, 0, 4);
   v20 = v16[2](v16, 4, 6);
   v16[2](v16, 10, 5);
   v21 = LABEL_17:;
-  v22 = [v18 arrayWithObjects:{v19, v20, v21, 0, v29, v30, v31, v32}];
+  v22 = [v18 arrayWithObjects:{array, v20, v21, 0, v29, v30, v31, v32}];
   v13 = [v22 componentsJoinedByString:@" "];
 
 LABEL_23:
@@ -297,11 +297,11 @@ id __116__WBSCreditCardFormatter__formattedStringForNormalizedNumber_showCreditC
   return v8;
 }
 
-- (_NSRange)_normalizedSelectionRangeForFormattedCreditCardNumber:(id)a3 withOriginalSelectionRange:(_NSRange)a4
+- (_NSRange)_normalizedSelectionRangeForFormattedCreditCardNumber:(id)number withOriginalSelectionRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v6 = a3;
+  length = range.length;
+  location = range.location;
+  numberCopy = number;
   v7 = location + length;
   v8 = WBSAllowedCreditCardNumberSeparatorCharacters();
   if (location + length)
@@ -310,7 +310,7 @@ id __116__WBSCreditCardFormatter__formattedStringForNormalizedNumber_showCreditC
     v10 = location;
     do
     {
-      v11 = [v8 characterIsMember:{objc_msgSend(v6, "characterAtIndex:", v9)}];
+      v11 = [v8 characterIsMember:{objc_msgSend(numberCopy, "characterAtIndex:", v9)}];
       v12 = length - 1;
       v13 = v10 - 1;
       if (v9 > location)
@@ -347,15 +347,15 @@ id __116__WBSCreditCardFormatter__formattedStringForNormalizedNumber_showCreditC
   return result;
 }
 
-- (_NSRange)_selectionRangeInFormattedCreditCardNumber:(id)a3 forNormalizedSelectionRange:(_NSRange)a4 inNormalizedCreditCardNumber:(id)a5
+- (_NSRange)_selectionRangeInFormattedCreditCardNumber:(id)number forNormalizedSelectionRange:(_NSRange)range inNormalizedCreditCardNumber:(id)cardNumber
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = a3;
-  v9 = a5;
-  if (location == [v9 length])
+  length = range.length;
+  location = range.location;
+  numberCopy = number;
+  cardNumberCopy = cardNumber;
+  if (location == [cardNumberCopy length])
   {
-    v10 = [v8 length];
+    v10 = [numberCopy length];
     v11 = 0;
   }
 
@@ -370,7 +370,7 @@ id __116__WBSCreditCardFormatter__formattedStringForNormalizedNumber_showCreditC
     v18 = 0x3010000000;
     v19 = "";
     v20 = xmmword_1BB9145A0;
-    v12 = [v8 length];
+    v12 = [numberCopy length];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __126__WBSCreditCardFormatter__selectionRangeInFormattedCreditCardNumber_forNormalizedSelectionRange_inNormalizedCreditCardNumber___block_invoke;
@@ -379,7 +379,7 @@ id __116__WBSCreditCardFormatter__formattedStringForNormalizedNumber_showCreditC
     v15[5] = &v16;
     v15[6] = location;
     v15[7] = length;
-    [v8 enumerateSubstringsInRange:0 options:v12 usingBlock:{515, v15}];
+    [numberCopy enumerateSubstringsInRange:0 options:v12 usingBlock:{515, v15}];
     v10 = v17[4];
     v11 = v17[5];
     _Block_object_dispose(&v16, 8);

@@ -1,41 +1,41 @@
 @interface MusicLibraryAddKeepLocalControlAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityisStatusStructValidated;
 - (BOOL)isAccessibilityElement;
-- (id)_accessibilityCustomActionLabelForControlStatus:(int64_t)a3;
-- (id)_accessibilityLabelForStatusType:(int64_t)a3;
-- (id)_accessibilityValueForStatusType:(int64_t)a3 andDownloadProgress:(double)a4;
+- (id)_accessibilityCustomActionLabelForControlStatus:(int64_t)status;
+- (id)_accessibilityLabelForStatusType:(int64_t)type;
+- (id)_accessibilityValueForStatusType:(int64_t)type andDownloadProgress:(double)progress;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_updateControlStatusProperties;
-- (void)setTitle:(id)a3 forControlStatusType:(int64_t)a4;
+- (void)setTitle:(id)title forControlStatusType:(int64_t)type;
 @end
 
 @implementation MusicLibraryAddKeepLocalControlAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MusicLibraryAddKeepLocalControl" hasInstanceMethod:@"controlStatus" withFullSignature:{"{MusicLibraryAddKeepLocalControlStatus=qd}", 0}];
-  [v3 validateClass:@"MusicLibraryAddKeepLocalControl" hasInstanceMethod:@"setControlStatus:animated:" withFullSignature:{"v", "{MusicLibraryAddKeepLocalControlStatus=qd}", "B", 0}];
-  [v3 validateClass:@"MusicLibraryAddKeepLocalControl" hasInstanceMethod:@"_updateControlStatusProperties" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"MusicLibraryAddKeepLocalControl" hasInstanceVariable:@"_controlTitleLabel" withType:"UILabel"];
-  [v3 validateClass:@"MusicLibraryAddKeepLocalControl" isKindOfClass:@"UIControl"];
-  [v3 validateClass:@"MusicLibraryAddKeepLocalControl" hasInstanceMethod:@"setTitle:forControlStatusType:" withFullSignature:{"v", "@", "q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MusicLibraryAddKeepLocalControl" hasInstanceMethod:@"controlStatus" withFullSignature:{"{MusicLibraryAddKeepLocalControlStatus=qd}", 0}];
+  [validationsCopy validateClass:@"MusicLibraryAddKeepLocalControl" hasInstanceMethod:@"setControlStatus:animated:" withFullSignature:{"v", "{MusicLibraryAddKeepLocalControlStatus=qd}", "B", 0}];
+  [validationsCopy validateClass:@"MusicLibraryAddKeepLocalControl" hasInstanceMethod:@"_updateControlStatusProperties" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"MusicLibraryAddKeepLocalControl" hasInstanceVariable:@"_controlTitleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"MusicLibraryAddKeepLocalControl" isKindOfClass:@"UIControl"];
+  [validationsCopy validateClass:@"MusicLibraryAddKeepLocalControl" hasInstanceMethod:@"setTitle:forControlStatusType:" withFullSignature:{"v", "@", "q", 0}];
 }
 
 - (BOOL)_accessibilityisStatusStructValidated
 {
-  v2 = [MEMORY[0x29EDBD6E8] sharedInstance];
+  mEMORY[0x29EDBD6E8] = [MEMORY[0x29EDBD6E8] sharedInstance];
   block[0] = MEMORY[0x29EDCA5F8];
   block[1] = 3221225472;
   block[2] = __85__MusicLibraryAddKeepLocalControlAccessibility__accessibilityisStatusStructValidated__block_invoke;
   block[3] = &unk_29F2EA148;
-  v8 = v2;
+  v8 = mEMORY[0x29EDBD6E8];
   v3 = _accessibilityisStatusStructValidated_onceToken;
-  v4 = v2;
+  v4 = mEMORY[0x29EDBD6E8];
   if (v3 != -1)
   {
     dispatch_once(&_accessibilityisStatusStructValidated_onceToken, block);
@@ -61,16 +61,16 @@ uint64_t __85__MusicLibraryAddKeepLocalControlAccessibility__accessibilityisStat
 
 - (BOOL)isAccessibilityElement
 {
-  v3 = [(MusicLibraryAddKeepLocalControlAccessibility *)self accessibilityValue];
-  if ([v3 length])
+  accessibilityValue = [(MusicLibraryAddKeepLocalControlAccessibility *)self accessibilityValue];
+  if ([accessibilityValue length])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(MusicLibraryAddKeepLocalControlAccessibility *)self accessibilityLabel];
-    v4 = [v5 length] != 0;
+    accessibilityLabel = [(MusicLibraryAddKeepLocalControlAccessibility *)self accessibilityLabel];
+    v4 = [accessibilityLabel length] != 0;
   }
 
   return v4;
@@ -79,22 +79,22 @@ uint64_t __85__MusicLibraryAddKeepLocalControlAccessibility__accessibilityisStat
 - (id)accessibilityLabel
 {
   v3 = [(MusicLibraryAddKeepLocalControlAccessibility *)self safeValueForKey:@"_controlTitleLabel"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
 
-  if (!v4)
+  if (!accessibilityLabel)
   {
     if ([(MusicLibraryAddKeepLocalControlAccessibility *)self _accessibilityisStatusStructValidated])
     {
-      v4 = [(MusicLibraryAddKeepLocalControlAccessibility *)self _accessibilityLabelForStatusType:*[(MusicLibraryAddKeepLocalControlAccessibility *)self safeIvarForKey:@"_controlStatus"]];
+      accessibilityLabel = [(MusicLibraryAddKeepLocalControlAccessibility *)self _accessibilityLabelForStatusType:*[(MusicLibraryAddKeepLocalControlAccessibility *)self safeIvarForKey:@"_controlStatus"]];
     }
 
     else
     {
-      v4 = 0;
+      accessibilityLabel = 0;
     }
   }
 
-  return v4;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
@@ -113,9 +113,9 @@ uint64_t __85__MusicLibraryAddKeepLocalControlAccessibility__accessibilityisStat
   return v4;
 }
 
-- (id)_accessibilityLabelForStatusType:(int64_t)a3
+- (id)_accessibilityLabelForStatusType:(int64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     v4 = @"add.to.playlist";
 LABEL_5:
@@ -124,7 +124,7 @@ LABEL_5:
     return v5;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     v4 = @"download.button";
     goto LABEL_5;
@@ -135,14 +135,14 @@ LABEL_5:
   return v5;
 }
 
-- (id)_accessibilityValueForStatusType:(int64_t)a3 andDownloadProgress:(double)a4
+- (id)_accessibilityValueForStatusType:(int64_t)type andDownloadProgress:(double)progress
 {
-  if (a3 == 3)
+  if (type == 3)
   {
     v7 = accessibilityLocalizedString(@"waiting.download");
   }
 
-  else if (a3 == 4)
+  else if (type == 4)
   {
     v4 = MEMORY[0x29EDBA0F8];
     v5 = accessibilityLocalizedString(@"downloading.percentage");
@@ -158,16 +158,16 @@ LABEL_5:
   return v7;
 }
 
-- (id)_accessibilityCustomActionLabelForControlStatus:(int64_t)a3
+- (id)_accessibilityCustomActionLabelForControlStatus:(int64_t)status
 {
-  if ((a3 - 1) > 4)
+  if ((status - 1) > 4)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = accessibilityLocalizedString(off_29F2EA228[a3 - 1]);
+    v4 = accessibilityLocalizedString(off_29F2EA228[status - 1]);
   }
 
   return v4;
@@ -224,11 +224,11 @@ LABEL_5:
   [(MusicLibraryAddKeepLocalControlAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (void)setTitle:(id)a3 forControlStatusType:(int64_t)a4
+- (void)setTitle:(id)title forControlStatusType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = MusicLibraryAddKeepLocalControlAccessibility;
-  [(MusicLibraryAddKeepLocalControlAccessibility *)&v5 setTitle:a3 forControlStatusType:a4];
+  [(MusicLibraryAddKeepLocalControlAccessibility *)&v5 setTitle:title forControlStatusType:type];
   [(MusicLibraryAddKeepLocalControlAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 

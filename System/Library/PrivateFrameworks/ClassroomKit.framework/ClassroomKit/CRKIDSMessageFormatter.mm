@@ -1,20 +1,20 @@
 @interface CRKIDSMessageFormatter
-- (id)formatMessageForSending:(id)a3;
+- (id)formatMessageForSending:(id)sending;
 @end
 
 @implementation CRKIDSMessageFormatter
 
-- (id)formatMessageForSending:(id)a3
+- (id)formatMessageForSending:(id)sending
 {
-  v3 = a3;
-  v4 = +[CRKIDSMessageMetadata metadataWithMessageType:](CRKIDSMessageMetadata, "metadataWithMessageType:", [v3 messageType]);
+  sendingCopy = sending;
+  v4 = +[CRKIDSMessageMetadata metadataWithMessageType:](CRKIDSMessageMetadata, "metadataWithMessageType:", [sendingCopy messageType]);
   v5 = [CRKIDSMessagePayload alloc];
-  v6 = [v3 dictionaryValue];
+  dictionaryValue = [sendingCopy dictionaryValue];
 
-  v7 = [(CRKIDSMessagePayload *)v5 initWithMessageContent:v6 messageMetadata:v4];
-  v8 = [(CRKIDSMessagePayload *)v7 dictionaryValue];
+  v7 = [(CRKIDSMessagePayload *)v5 initWithMessageContent:dictionaryValue messageMetadata:v4];
+  dictionaryValue2 = [(CRKIDSMessagePayload *)v7 dictionaryValue];
 
-  return v8;
+  return dictionaryValue2;
 }
 
 @end

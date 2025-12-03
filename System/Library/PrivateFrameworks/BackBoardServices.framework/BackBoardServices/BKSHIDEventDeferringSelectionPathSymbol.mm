@@ -1,12 +1,12 @@
 @interface BKSHIDEventDeferringSelectionPathSymbol
 + (id)protobufSchema;
 - (BKSHIDEventDeferringSelectionPathSymbol)init;
-- (BKSHIDEventDeferringSelectionPathSymbol)initWithCoder:(id)a3;
+- (BKSHIDEventDeferringSelectionPathSymbol)initWithCoder:(id)coder;
 @end
 
 @implementation BKSHIDEventDeferringSelectionPathSymbol
 
-- (BKSHIDEventDeferringSelectionPathSymbol)initWithCoder:(id)a3
+- (BKSHIDEventDeferringSelectionPathSymbol)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = BKSHIDEventDeferringSelectionPathSymbol;
@@ -45,7 +45,7 @@
   block[1] = 3221225472;
   block[2] = __57__BKSHIDEventDeferringSelectionPathSymbol_protobufSchema__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (protobufSchema_onceToken_6407 != -1)
   {
     dispatch_once(&protobufSchema_onceToken_6407, block);

@@ -1,24 +1,24 @@
 @interface INStorageSummaryRequest
 - (INStorageSummaryRequest)init;
-- (INStorageSummaryRequest)initWithAccount:(id)a3 withBackupDeviceUDID:(id)a4;
+- (INStorageSummaryRequest)initWithAccount:(id)account withBackupDeviceUDID:(id)d;
 - (id)urlRequest;
 - (id)urlString;
 @end
 
 @implementation INStorageSummaryRequest
 
-- (INStorageSummaryRequest)initWithAccount:(id)a3 withBackupDeviceUDID:(id)a4
+- (INStorageSummaryRequest)initWithAccount:(id)account withBackupDeviceUDID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  accountCopy = account;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = INStorageSummaryRequest;
   v9 = [(INStorageSummaryRequest *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_account, a3);
-    objc_storeStrong(&v10->_backupDeviceUDID, a4);
+    objc_storeStrong(&v9->_account, account);
+    objc_storeStrong(&v10->_backupDeviceUDID, d);
   }
 
   return v10;
@@ -33,15 +33,15 @@
 
 - (id)urlString
 {
-  v3 = [(ACAccount *)self->_account aa_personID];
+  aa_personID = [(ACAccount *)self->_account aa_personID];
 
-  if (v3)
+  if (aa_personID)
   {
     v4 = [(ACAccount *)self->_account propertiesForDataclass:@"com.apple.Dataclass.Quota"];
     v5 = [v4 objectForKey:@"settingsUsageDetailsURL"];
-    v6 = [(ACAccount *)self->_account aa_personID];
+    aa_personID2 = [(ACAccount *)self->_account aa_personID];
     v7 = +[AADeviceInfo udid];
-    v8 = [INHelperFunctions urlStringFromFormat:v5 dsid:v6 udid:v7];
+    v8 = [INHelperFunctions urlStringFromFormat:v5 dsid:aa_personID2 udid:v7];
   }
 
   else
@@ -62,8 +62,8 @@
 {
   v19.receiver = self;
   v19.super_class = INStorageSummaryRequest;
-  v3 = [(INStorageSummaryRequest *)&v19 urlRequest];
-  v4 = [v3 mutableCopy];
+  urlRequest = [(INStorageSummaryRequest *)&v19 urlRequest];
+  v4 = [urlRequest mutableCopy];
 
   [v4 ind_addQuotaHeadersForAccount:self->_account];
   [v4 addValue:self->_backupDeviceUDID forHTTPHeaderField:@"X-Client-Backup-UUID"];
@@ -88,28 +88,28 @@
   }
 
   v7 = +[ACAccountStore ams_sharedAccountStore];
-  v8 = [v7 ams_activeiTunesAccount];
-  v9 = v8;
-  if (v8)
+  ams_activeiTunesAccount = [v7 ams_activeiTunesAccount];
+  v9 = ams_activeiTunesAccount;
+  if (ams_activeiTunesAccount)
   {
-    v10 = [v8 ams_DSID];
+    ams_DSID = [ams_activeiTunesAccount ams_DSID];
 
-    if (v10)
+    if (ams_DSID)
     {
-      v11 = [v9 ams_DSID];
-      v12 = [v11 stringValue];
-      [v4 setValue:v12 forHTTPHeaderField:@"X-Apple-Itunes-DSID"];
+      ams_DSID2 = [v9 ams_DSID];
+      stringValue = [ams_DSID2 stringValue];
+      [v4 setValue:stringValue forHTTPHeaderField:@"X-Apple-Itunes-DSID"];
     }
   }
 
-  v13 = [(ACAccount *)self->_account aa_personID];
+  aa_personID = [(ACAccount *)self->_account aa_personID];
   v14 = +[ACAccountStore defaultStore];
-  v15 = [v14 aa_primaryAppleAccount];
-  v16 = [v15 aa_personID];
+  aa_primaryAppleAccount = [v14 aa_primaryAppleAccount];
+  aa_personID2 = [aa_primaryAppleAccount aa_personID];
 
-  if (v13 && v16)
+  if (aa_personID && aa_personID2)
   {
-    if ([v13 isEqualToString:v16])
+    if ([aa_personID isEqualToString:aa_personID2])
     {
       v17 = @"true";
     }

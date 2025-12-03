@@ -1,51 +1,51 @@
 @interface PBFFocusPosterSelectionViewController
-- (BOOL)posterRackCollectionViewControllerDidPressDone:(id)a3;
-- (PBFFocusPosterSelectionViewController)initWithActivityUUID:(id)a3 activityIdentifier:(id)a4 galleryDataProvider:(id)a5 dataStore:(id)a6;
+- (BOOL)posterRackCollectionViewControllerDidPressDone:(id)done;
+- (PBFFocusPosterSelectionViewController)initWithActivityUUID:(id)d activityIdentifier:(id)identifier galleryDataProvider:(id)provider dataStore:(id)store;
 - (PBFFocusPosterSelectionViewControllerDelegate)delegate;
-- (PREditingSceneViewControllerTopButtonLayout)topButtonLayoutForEditingSceneViewController:(SEL)a3;
+- (PREditingSceneViewControllerTopButtonLayout)topButtonLayoutForEditingSceneViewController:(SEL)controller;
 - (id)_cancelBarButtonItem;
-- (id)_cellForItemAtIndexPath:(id)a3 identifier:(id)a4;
+- (id)_cellForItemAtIndexPath:(id)path identifier:(id)identifier;
 - (id)_createLockScreenFromSuggestionsHeaderDescription;
 - (id)_createLockScreenHeaderDescription;
 - (id)_doneBarButtonItem;
 - (id)_posterLimitExceededAlert;
-- (id)_supplementaryViewAtIndexPath:(id)a3;
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
+- (id)_supplementaryViewAtIndexPath:(id)path;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
 - (id)compositionalLayout;
-- (id)galleryViewController:(id)a3 willUseAnimationController:(id)a4 forDismissingEditingViewControllerWithAction:(int64_t)a5;
-- (id)mastheadSectionWithEnvironment:(id)a3;
-- (id)sectionWithEnvironment:(id)a3 section:(id)a4;
+- (id)galleryViewController:(id)controller willUseAnimationController:(id)animationController forDismissingEditingViewControllerWithAction:(int64_t)action;
+- (id)mastheadSectionWithEnvironment:(id)environment;
+- (id)sectionWithEnvironment:(id)environment section:(id)section;
 - (int64_t)pbf_layoutOrientation;
-- (void)_applySnapshotForCurrentStateWithAnimation:(BOOL)a3;
-- (void)_cancel:(id)a3;
+- (void)_applySnapshotForCurrentStateWithAnimation:(BOOL)animation;
+- (void)_cancel:(id)_cancel;
 - (void)_commitCheckedStates;
-- (void)_done:(id)a3;
-- (void)_logEditWithEditingViewController:(id)a3 posterUUID:(id)a4 lastModifiedDate:(id)a5;
+- (void)_done:(id)_done;
+- (void)_logEditWithEditingViewController:(id)controller posterUUID:(id)d lastModifiedDate:(id)date;
 - (void)_populateActivityMetadata;
-- (void)_reloadDataWithAnimation:(BOOL)a3;
-- (void)_showEditingForPoster:(id)a3 fromFocusPosterCell:(id)a4;
+- (void)_reloadDataWithAnimation:(BOOL)animation;
+- (void)_showEditingForPoster:(id)poster fromFocusPosterCell:(id)cell;
 - (void)_showGallery;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)dealloc;
-- (void)editingIngestionManager:(id)a3 didAccept:(id)a4 userChoice:(int64_t)a5;
-- (void)editingSceneViewController:(id)a3 userDidDismissWithAction:(int64_t)a4 updatedConfiguration:(id)a5 updatedConfiguredProperties:(id)a6 completion:(id)a7;
-- (void)galleryViewController:(id)a3 didSelectPreview:(id)a4 fromPreviewView:(id)a5;
-- (void)posterExtensionDataStoreDidUpdateConfigurations:(id)a3;
-- (void)posterRackCollectionViewControllerDidPressCancel:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)editingIngestionManager:(id)manager didAccept:(id)accept userChoice:(int64_t)choice;
+- (void)editingSceneViewController:(id)controller userDidDismissWithAction:(int64_t)action updatedConfiguration:(id)configuration updatedConfiguredProperties:(id)properties completion:(id)completion;
+- (void)galleryViewController:(id)controller didSelectPreview:(id)preview fromPreviewView:(id)view;
+- (void)posterExtensionDataStoreDidUpdateConfigurations:(id)configurations;
+- (void)posterRackCollectionViewControllerDidPressCancel:(id)cancel;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PBFFocusPosterSelectionViewController
 
-- (id)mastheadSectionWithEnvironment:(id)a3
+- (id)mastheadSectionWithEnvironment:(id)environment
 {
   v16[1] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CFB870];
-  v4 = [MEMORY[0x277CFB840] fractionalWidthDimension:{a3, 1.0}];
+  v4 = [MEMORY[0x277CFB840] fractionalWidthDimension:{environment, 1.0}];
   v5 = [MEMORY[0x277CFB840] estimatedDimension:0.0];
   v6 = [v3 sizeWithWidthDimension:v4 heightDimension:v5];
 
@@ -64,26 +64,26 @@
   return v13;
 }
 
-- (id)sectionWithEnvironment:(id)a3 section:(id)a4
+- (id)sectionWithEnvironment:(id)environment section:(id)section
 {
   v34[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [a3 container];
-  [v7 effectiveContentSize];
+  sectionCopy = section;
+  container = [environment container];
+  [container effectiveContentSize];
   v9 = (v8 + -64.0 + -40.0) / 3.0;
 
-  v10 = [(PBFFocusPosterSelectionViewController *)self view];
-  v11 = [v10 window];
-  v12 = [v11 screen];
-  v13 = v12;
-  if (!v12)
+  view = [(PBFFocusPosterSelectionViewController *)self view];
+  window = [view window];
+  screen = [window screen];
+  mainScreen = screen;
+  if (!screen)
   {
-    v13 = [MEMORY[0x277D759A0] mainScreen];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
   }
 
-  +[PBFFocusPosterCell estimatedCellSizeForItemWidth:screen:hasAccessory:](PBFFocusPosterCell, "estimatedCellSizeForItemWidth:screen:hasAccessory:", v13, [v6 isEqualToString:@"Configured"], v9);
+  +[PBFFocusPosterCell estimatedCellSizeForItemWidth:screen:hasAccessory:](PBFFocusPosterCell, "estimatedCellSizeForItemWidth:screen:hasAccessory:", mainScreen, [sectionCopy isEqualToString:@"Configured"], v9);
   v15 = v14;
-  if (!v12)
+  if (!screen)
   {
   }
 
@@ -183,13 +183,13 @@ LABEL_11:
   return result;
 }
 
-- (PBFFocusPosterSelectionViewController)initWithActivityUUID:(id)a3 activityIdentifier:(id)a4 galleryDataProvider:(id)a5 dataStore:(id)a6
+- (PBFFocusPosterSelectionViewController)initWithActivityUUID:(id)d activityIdentifier:(id)identifier galleryDataProvider:(id)provider dataStore:(id)store
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = v12;
+  dCopy = d;
+  identifierCopy = identifier;
+  providerCopy = provider;
+  storeCopy = store;
+  v16 = dCopy;
   NSClassFromString(&cfstr_Nsuuid.isa);
   if (!v16)
   {
@@ -201,7 +201,7 @@ LABEL_11:
     [PBFFocusPosterSelectionViewController initWithActivityUUID:a2 activityIdentifier:? galleryDataProvider:? dataStore:?];
   }
 
-  v17 = v13;
+  v17 = identifierCopy;
   NSClassFromString(&cfstr_Nsstring.isa);
   if (!v17)
   {
@@ -213,7 +213,7 @@ LABEL_11:
     [PBFFocusPosterSelectionViewController initWithActivityUUID:a2 activityIdentifier:? galleryDataProvider:? dataStore:?];
   }
 
-  v18 = v14;
+  v18 = providerCopy;
   NSClassFromString(&cfstr_Pbfpostergalle.isa);
   if (!v18)
   {
@@ -225,7 +225,7 @@ LABEL_11:
     [PBFFocusPosterSelectionViewController initWithActivityUUID:a2 activityIdentifier:? galleryDataProvider:? dataStore:?];
   }
 
-  v19 = v15;
+  v19 = storeCopy;
   NSClassFromString(&cfstr_Pbfposterexten.isa);
   if (!v19)
   {
@@ -237,10 +237,10 @@ LABEL_11:
     [PBFFocusPosterSelectionViewController initWithActivityUUID:a2 activityIdentifier:? galleryDataProvider:? dataStore:?];
   }
 
-  v20 = [(PBFFocusPosterSelectionViewController *)self compositionalLayout];
+  compositionalLayout = [(PBFFocusPosterSelectionViewController *)self compositionalLayout];
   v37.receiver = self;
   v37.super_class = PBFFocusPosterSelectionViewController;
-  v21 = [(PBFFocusPosterSelectionViewController *)&v37 initWithCollectionViewLayout:v20];
+  v21 = [(PBFFocusPosterSelectionViewController *)&v37 initWithCollectionViewLayout:compositionalLayout];
 
   if (v21)
   {
@@ -250,17 +250,17 @@ LABEL_11:
       [PBFFocusPosterSelectionViewController initWithActivityUUID:activityIdentifier:galleryDataProvider:dataStore:];
     }
 
-    objc_storeStrong(&v21->_activityUUID, a3);
+    objc_storeStrong(&v21->_activityUUID, d);
     v23 = [v17 copy];
     activityIdentifier = v21->_activityIdentifier;
     v21->_activityIdentifier = v23;
 
-    v25 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     configurationsToMetadata = v21->_configurationsToMetadata;
-    v21->_configurationsToMetadata = v25;
+    v21->_configurationsToMetadata = strongToStrongObjectsMapTable;
 
-    objc_storeStrong(&v21->_galleryDataProvider, a5);
-    objc_storeStrong(&v21->_dataStore, a6);
+    objc_storeStrong(&v21->_galleryDataProvider, provider);
+    objc_storeStrong(&v21->_dataStore, store);
     v27 = [[PBFApplicationStateNode alloc] initWithDescription:@"Focus Poster Selection View Controller"];
     state = v21->_state;
     v21->_state = v27;
@@ -268,7 +268,7 @@ LABEL_11:
     v29 = CACurrentMediaTime();
     [(PBFPosterExtensionDataStore *)v21->_dataStore addObserver:v21];
     dataStore = v21->_dataStore;
-    v31 = [(NSUUID *)v21->_activityUUID UUIDString];
+    uUIDString = [(NSUUID *)v21->_activityUUID UUIDString];
     v32 = +[PBFGenericDisplayContext mainScreen];
     v34[0] = MEMORY[0x277D85DD0];
     v34[1] = 3221225472;
@@ -276,7 +276,7 @@ LABEL_11:
     v34[3] = &unk_2782C56E8;
     v35 = v21;
     v36 = v29;
-    [(PBFPosterExtensionDataStore *)dataStore fetchPosterSuggestionsForFocusModeWithUUID:v31 context:v32 completion:v34];
+    [(PBFPosterExtensionDataStore *)dataStore fetchPosterSuggestionsForFocusModeWithUUID:uUIDString context:v32 completion:v34];
   }
 
   return v21;
@@ -340,42 +340,42 @@ uint64_t __111__PBFFocusPosterSelectionViewController_initWithActivityUUID_activ
   v25.super_class = PBFFocusPosterSelectionViewController;
   [(PBFFocusPosterSelectionViewController *)&v25 viewDidLoad];
   self->_initialLayoutOrientation = [(PBFFocusPosterSelectionViewController *)self pbf_layoutOrientation];
-  v3 = [(PBFFocusPosterSelectionViewController *)self view];
-  v4 = [MEMORY[0x277D75348] systemBackgroundColor];
-  [v3 setBackgroundColor:v4];
+  view = [(PBFFocusPosterSelectionViewController *)self view];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  [view setBackgroundColor:systemBackgroundColor];
 
-  v5 = [(PBFFocusPosterSelectionViewController *)self navigationItem];
-  v6 = [(PBFFocusPosterSelectionViewController *)self _cancelBarButtonItem];
-  [v5 setLeftBarButtonItem:v6];
+  navigationItem = [(PBFFocusPosterSelectionViewController *)self navigationItem];
+  _cancelBarButtonItem = [(PBFFocusPosterSelectionViewController *)self _cancelBarButtonItem];
+  [navigationItem setLeftBarButtonItem:_cancelBarButtonItem];
 
-  v7 = [(PBFFocusPosterSelectionViewController *)self navigationItem];
-  v8 = [(PBFFocusPosterSelectionViewController *)self _doneBarButtonItem];
-  [v7 setRightBarButtonItem:v8];
+  navigationItem2 = [(PBFFocusPosterSelectionViewController *)self navigationItem];
+  _doneBarButtonItem = [(PBFFocusPosterSelectionViewController *)self _doneBarButtonItem];
+  [navigationItem2 setRightBarButtonItem:_doneBarButtonItem];
 
-  v9 = [(PBFFocusPosterSelectionViewController *)self collectionView];
-  [v9 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"Suggestion"];
+  collectionView = [(PBFFocusPosterSelectionViewController *)self collectionView];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"Suggestion"];
 
-  v10 = [(PBFFocusPosterSelectionViewController *)self collectionView];
-  [v10 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"Poster"];
+  collectionView2 = [(PBFFocusPosterSelectionViewController *)self collectionView];
+  [collectionView2 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"Poster"];
 
-  v11 = [(PBFFocusPosterSelectionViewController *)self collectionView];
+  collectionView3 = [(PBFFocusPosterSelectionViewController *)self collectionView];
   v12 = objc_opt_class();
   v13 = *MEMORY[0x277D767D8];
-  [v11 registerClass:v12 forSupplementaryViewOfKind:*MEMORY[0x277D767D8] withReuseIdentifier:@"Header"];
+  [collectionView3 registerClass:v12 forSupplementaryViewOfKind:*MEMORY[0x277D767D8] withReuseIdentifier:@"Header"];
 
-  v14 = [(PBFFocusPosterSelectionViewController *)self collectionView];
-  [v14 registerClass:objc_opt_class() forSupplementaryViewOfKind:v13 withReuseIdentifier:@"Masthead"];
+  collectionView4 = [(PBFFocusPosterSelectionViewController *)self collectionView];
+  [collectionView4 registerClass:objc_opt_class() forSupplementaryViewOfKind:v13 withReuseIdentifier:@"Masthead"];
 
   [(PBFFocusPosterSelectionViewController *)self _populateActivityMetadata];
   objc_initWeak(&location, self);
   v15 = objc_alloc(MEMORY[0x277D752D0]);
-  v16 = [(PBFFocusPosterSelectionViewController *)self collectionView];
+  collectionView5 = [(PBFFocusPosterSelectionViewController *)self collectionView];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __52__PBFFocusPosterSelectionViewController_viewDidLoad__block_invoke;
   v22[3] = &unk_2782C5710;
   objc_copyWeak(&v23, &location);
-  v17 = [v15 initWithCollectionView:v16 cellProvider:v22];
+  v17 = [v15 initWithCollectionView:collectionView5 cellProvider:v22];
   dataSource = self->_dataSource;
   self->_dataSource = v17;
 
@@ -413,30 +413,30 @@ id __52__PBFFocusPosterSelectionViewController_viewDidLoad__block_invoke_2(uint6
 
 - (int64_t)pbf_layoutOrientation
 {
-  v2 = [(PBFFocusPosterSelectionViewController *)self presentingViewController];
-  v3 = [v2 interfaceOrientation];
+  presentingViewController = [(PBFFocusPosterSelectionViewController *)self presentingViewController];
+  interfaceOrientation = [presentingViewController interfaceOrientation];
 
-  return v3;
+  return interfaceOrientation;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v14.receiver = self;
   v14.super_class = PBFFocusPosterSelectionViewController;
-  v7 = a4;
-  [(PBFFocusPosterSelectionViewController *)&v14 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  v8 = [(PBFFocusPosterSelectionViewController *)self collectionView];
-  v9 = [v8 collectionViewLayout];
+  coordinatorCopy = coordinator;
+  [(PBFFocusPosterSelectionViewController *)&v14 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  collectionView = [(PBFFocusPosterSelectionViewController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __92__PBFFocusPosterSelectionViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v11[3] = &unk_2782C5760;
-  v12 = v9;
-  v13 = self;
-  v10 = v9;
-  [v7 animateAlongsideTransition:v11 completion:&__block_literal_global_155];
+  v12 = collectionViewLayout;
+  selfCopy = self;
+  v10 = collectionViewLayout;
+  [coordinatorCopy animateAlongsideTransition:v11 completion:&__block_literal_global_155];
 }
 
 uint64_t __92__PBFFocusPosterSelectionViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -461,34 +461,34 @@ uint64_t __92__PBFFocusPosterSelectionViewController_viewWillTransitionToSize_wi
   return v2;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = PBFFocusPosterSelectionViewController;
-  [(PBFFocusPosterSelectionViewController *)&v5 viewWillAppear:a3];
-  v4 = [(PBFPosterExtensionDataStore *)self->_dataStore applicationStateMonitor];
-  [v4 pushState:self->_state];
+  [(PBFFocusPosterSelectionViewController *)&v5 viewWillAppear:appear];
+  applicationStateMonitor = [(PBFPosterExtensionDataStore *)self->_dataStore applicationStateMonitor];
+  [applicationStateMonitor pushState:self->_state];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PBFFocusPosterSelectionViewController;
-  [(PBFFocusPosterSelectionViewController *)&v4 viewDidDisappear:a3];
+  [(PBFFocusPosterSelectionViewController *)&v4 viewDidDisappear:disappear];
   [(PBFApplicationStateNode *)self->_state cancel];
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   dataSource = self->_dataSource;
-  v8 = a3;
-  v9 = -[UICollectionViewDiffableDataSource sectionIdentifierForIndex:](dataSource, "sectionIdentifierForIndex:", [v6 section]);
-  v10 = [v8 cellForItemAtIndexPath:v6];
+  viewCopy = view;
+  v9 = -[UICollectionViewDiffableDataSource sectionIdentifierForIndex:](dataSource, "sectionIdentifierForIndex:", [pathCopy section]);
+  v10 = [viewCopy cellForItemAtIndexPath:pathCopy];
 
   if ([v9 isEqualToString:@"Create"])
   {
-    v11 = -[PBFFocusPosterSuggestionData objectAtIndexedSubscript:](self->_suggestionData, "objectAtIndexedSubscript:", [v6 row]);
+    v11 = -[PBFFocusPosterSuggestionData objectAtIndexedSubscript:](self->_suggestionData, "objectAtIndexedSubscript:", [pathCopy row]);
     [(PBFFocusPosterSelectionViewController *)self _showEditingForPoster:v11 fromFocusPosterCell:v10];
 LABEL_20:
 
@@ -497,10 +497,10 @@ LABEL_20:
 
   if ([v9 isEqualToString:@"Configured"])
   {
-    v11 = -[NSArray objectAtIndexedSubscript:](self->_configurations, "objectAtIndexedSubscript:", [v6 item]);
+    v11 = -[NSArray objectAtIndexedSubscript:](self->_configurations, "objectAtIndexedSubscript:", [pathCopy item]);
     v12 = [(NSMapTable *)self->_configurationsToMetadata objectForKey:v11];
-    v13 = [v12 isChecked];
-    if (v13)
+    isChecked = [v12 isChecked];
+    if (isChecked)
     {
       [v12 setChecked:0];
       v14 = [v11 loadFocusConfigurationWithError:0];
@@ -537,14 +537,14 @@ LABEL_20:
 
     else
     {
-      v26 = [v12 otherFocusSymbolImageName];
+      otherFocusSymbolImageName = [v12 otherFocusSymbolImageName];
 
-      if (!v26)
+      if (!otherFocusSymbolImageName)
       {
         [v12 setChecked:1];
         [(NSMutableArray *)self->_nonFocusAssociatedConfigurations removeObject:v11];
 LABEL_18:
-        [v10 setCheckboxOn:v13 ^ 1u];
+        [v10 setCheckboxOn:isChecked ^ 1u];
         goto LABEL_19;
       }
 
@@ -553,8 +553,8 @@ LABEL_18:
       v28 = MEMORY[0x277CCACA8];
       v39 = PBFBundle();
       v29 = [v39 localizedStringForKey:@"LINK_POSTER_CONFIRMATION_MESSAGE" value:&stru_282CD3858 table:0];
-      v30 = [v12 otherFocusDisplayName];
-      v31 = [v28 localizedStringWithFormat:v29, v30];
+      otherFocusDisplayName = [v12 otherFocusDisplayName];
+      v31 = [v28 localizedStringWithFormat:v29, otherFocusDisplayName];
       v38 = [v37 alertControllerWithTitle:v27 message:v31 preferredStyle:1];
 
       v32 = MEMORY[0x277D750F8];
@@ -569,7 +569,7 @@ LABEL_18:
       v40[2] = __81__PBFFocusPosterSelectionViewController_collectionView_didSelectItemAtIndexPath___block_invoke;
       v40[3] = &unk_2782C57A8;
       v41 = v12;
-      v42 = self;
+      selfCopy = self;
       v43 = v11;
       v44 = v10;
       v36 = [v34 actionWithTitle:v35 style:0 handler:v40];
@@ -597,27 +597,27 @@ uint64_t __81__PBFFocusPosterSelectionViewController_collectionView_didSelectIte
   return [v2 setFocusSymbolImageName:0];
 }
 
-- (void)_reloadDataWithAnimation:(BOOL)a3
+- (void)_reloadDataWithAnimation:(BOOL)animation
 {
-  v36 = a3;
+  animationCopy = animation;
   v56 = *MEMORY[0x277D85DE8];
-  v4 = [(PBFPosterExtensionDataStore *)self->_dataStore switcherConfiguration];
+  switcherConfiguration = [(PBFPosterExtensionDataStore *)self->_dataStore switcherConfiguration];
   switcherConfiguration = self->_switcherConfiguration;
-  self->_switcherConfiguration = v4;
+  self->_switcherConfiguration = switcherConfiguration;
 
-  v6 = [(PRSwitcherConfiguration *)self->_switcherConfiguration configurations];
+  configurations = [(PRSwitcherConfiguration *)self->_switcherConfiguration configurations];
   configurations = self->_configurations;
-  self->_configurations = v6;
+  self->_configurations = configurations;
 
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
   nonFocusAssociatedConfigurations = self->_nonFocusAssociatedConfigurations;
   self->_nonFocusAssociatedConfigurations = v8;
 
-  v10 = [MEMORY[0x277D0A9E8] sharedActivityManager];
-  v40 = [v10 availableActivities];
+  mEMORY[0x277D0A9E8] = [MEMORY[0x277D0A9E8] sharedActivityManager];
+  availableActivities = [mEMORY[0x277D0A9E8] availableActivities];
 
   v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v38 = [(UIViewController *)self pbf_displayContext];
+  pbf_displayContext = [(UIViewController *)self pbf_displayContext];
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
@@ -639,8 +639,8 @@ uint64_t __81__PBFFocusPosterSelectionViewController_collectionView_didSelectIte
 
         v13 = *(*(&v51 + 1) + 8 * i);
         v14 = [v13 loadFocusConfigurationWithError:0];
-        v15 = [v13 _path];
-        v16 = [v15 serverIdentity];
+        _path = [v13 _path];
+        serverIdentity = [_path serverIdentity];
 
         v17 = [(NSMapTable *)self->_configurationsToMetadata objectForKey:v13];
         if (!v17)
@@ -651,8 +651,8 @@ uint64_t __81__PBFFocusPosterSelectionViewController_collectionView_didSelectIte
 
         if (self->_activityUUID)
         {
-          v18 = [v14 activityUUID];
-          v19 = [v18 isEqual:self->_activityUUID];
+          activityUUID = [v14 activityUUID];
+          v19 = [activityUUID isEqual:self->_activityUUID];
 
           [(PBFFocusPosterConfigurationMetadata *)v17 setChecked:v19];
           v49[0] = MEMORY[0x277D85DD0];
@@ -660,7 +660,7 @@ uint64_t __81__PBFFocusPosterSelectionViewController_collectionView_didSelectIte
           v49[2] = __66__PBFFocusPosterSelectionViewController__reloadDataWithAnimation___block_invoke;
           v49[3] = &unk_2782C57D0;
           v50 = v14;
-          v20 = [v40 bs_firstObjectPassingTest:v49];
+          v20 = [availableActivities bs_firstObjectPassingTest:v49];
           v21 = v20;
           if (v19)
           {
@@ -670,11 +670,11 @@ uint64_t __81__PBFFocusPosterSelectionViewController_collectionView_didSelectIte
 
           else
           {
-            v22 = [v20 activitySymbolImageName];
-            [(PBFFocusPosterConfigurationMetadata *)v17 setOtherFocusSymbolImageName:v22];
+            activitySymbolImageName = [v20 activitySymbolImageName];
+            [(PBFFocusPosterConfigurationMetadata *)v17 setOtherFocusSymbolImageName:activitySymbolImageName];
 
-            v23 = [v21 activityDisplayName];
-            [(PBFFocusPosterConfigurationMetadata *)v17 setOtherFocusDisplayName:v23];
+            activityDisplayName = [v21 activityDisplayName];
+            [(PBFFocusPosterConfigurationMetadata *)v17 setOtherFocusDisplayName:activityDisplayName];
           }
         }
 
@@ -683,22 +683,22 @@ uint64_t __81__PBFFocusPosterSelectionViewController_collectionView_didSelectIte
           [(NSMutableArray *)self->_nonFocusAssociatedConfigurations addObject:v13];
         }
 
-        v24 = [v16 posterUUID];
-        v25 = [v24 UUIDString];
+        posterUUID = [serverIdentity posterUUID];
+        uUIDString = [posterUUID UUIDString];
 
-        if (!v25)
+        if (!uUIDString)
         {
           [PBFFocusPosterSelectionViewController _reloadDataWithAnimation:a2];
         }
 
-        [v11 setObject:v13 forKey:v25];
-        v26 = [(PBFFocusPosterConfigurationMetadata *)v17 cachedSnapshot];
+        [v11 setObject:v13 forKey:uUIDString];
+        cachedSnapshot = [(PBFFocusPosterConfigurationMetadata *)v17 cachedSnapshot];
 
-        if (!v26)
+        if (!cachedSnapshot)
         {
           dataStore = self->_dataStore;
-          v28 = [v16 provider];
-          v41 = [(PBFPosterExtensionDataStore *)dataStore providerForExtensionIdentifier:v28];
+          provider = [serverIdentity provider];
+          v41 = [(PBFPosterExtensionDataStore *)dataStore providerForExtensionIdentifier:provider];
 
           v29 = [[PBFPosterConfigurationGalleryPreview alloc] initWithConfiguration:v13 extension:v41];
           [(PBFFocusPosterConfigurationMetadata *)v17 setPosterPreview:v29];
@@ -707,11 +707,11 @@ uint64_t __81__PBFFocusPosterSelectionViewController_collectionView_didSelectIte
           v44[1] = 3221225472;
           v44[2] = __66__PBFFocusPosterSelectionViewController__reloadDataWithAnimation___block_invoke_201;
           v44[3] = &unk_2782C5820;
-          v31 = v38;
+          v31 = pbf_displayContext;
           v45 = v31;
-          v46 = self;
+          selfCopy = self;
           v47 = v17;
-          v48 = v25;
+          v48 = uUIDString;
           v32 = v31;
           v11 = v37;
           [(PBFPosterExtensionDataStore *)v30 fetchGallerySnapshotForConfiguration:v13 context:v32 completion:v44];
@@ -728,7 +728,7 @@ uint64_t __81__PBFFocusPosterSelectionViewController_collectionView_didSelectIte
   uuidsToConfigurations = self->_uuidsToConfigurations;
   self->_uuidsToConfigurations = v33;
 
-  [(PBFFocusPosterSelectionViewController *)self _applySnapshotForCurrentStateWithAnimation:v36];
+  [(PBFFocusPosterSelectionViewController *)self _applySnapshotForCurrentStateWithAnimation:animationCopy];
 }
 
 uint64_t __66__PBFFocusPosterSelectionViewController__reloadDataWithAnimation___block_invoke(uint64_t a1, void *a2)
@@ -811,12 +811,12 @@ void __66__PBFFocusPosterSelectionViewController__reloadDataWithAnimation___bloc
   }
 }
 
-- (void)_applySnapshotForCurrentStateWithAnimation:(BOOL)a3
+- (void)_applySnapshotForCurrentStateWithAnimation:(BOOL)animation
 {
-  v3 = a3;
+  animationCopy = animation;
   v15[1] = *MEMORY[0x277D85DE8];
-  v5 = [(PBFFocusPosterSuggestionData *)self->_suggestionData previews];
-  v6 = [v5 bs_compactMap:&__block_literal_global_205];
+  previews = [(PBFFocusPosterSuggestionData *)self->_suggestionData previews];
+  v6 = [previews bs_compactMap:&__block_literal_global_205];
 
   v7 = [(NSArray *)self->_configurations bs_compactMap:&__block_literal_global_208];
   v8 = objc_alloc_init(MEMORY[0x277CFB890]);
@@ -854,7 +854,7 @@ void __66__PBFFocusPosterSelectionViewController__reloadDataWithAnimation___bloc
     }
   }
 
-  [(UICollectionViewDiffableDataSource *)self->_dataSource applySnapshot:v8 animatingDifferences:v3];
+  [(UICollectionViewDiffableDataSource *)self->_dataSource applySnapshot:v8 animatingDifferences:animationCopy];
 }
 
 id __84__PBFFocusPosterSelectionViewController__applySnapshotForCurrentStateWithAnimation___block_invoke_2(uint64_t a1, void *a2)
@@ -867,7 +867,7 @@ id __84__PBFFocusPosterSelectionViewController__applySnapshotForCurrentStateWith
   return v5;
 }
 
-- (void)posterExtensionDataStoreDidUpdateConfigurations:(id)a3
+- (void)posterExtensionDataStoreDidUpdateConfigurations:(id)configurations
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -877,33 +877,33 @@ id __84__PBFFocusPosterSelectionViewController__applySnapshotForCurrentStateWith
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (id)_cellForItemAtIndexPath:(id)a3 identifier:(id)a4
+- (id)_cellForItemAtIndexPath:(id)path identifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PBFFocusPosterSelectionViewController *)self collectionView];
-  v9 = -[UICollectionViewDiffableDataSource sectionIdentifierForIndex:](self->_dataSource, "sectionIdentifierForIndex:", [v6 section]);
+  pathCopy = path;
+  identifierCopy = identifier;
+  collectionView = [(PBFFocusPosterSelectionViewController *)self collectionView];
+  v9 = -[UICollectionViewDiffableDataSource sectionIdentifierForIndex:](self->_dataSource, "sectionIdentifierForIndex:", [pathCopy section]);
   v10 = [v9 isEqualToString:@"Configured"];
 
   if (v10)
   {
-    v11 = [v8 dequeueReusableCellWithReuseIdentifier:@"Poster" forIndexPath:v6];
-    v12 = [(NSDictionary *)self->_uuidsToConfigurations objectForKey:v7];
+    v11 = [collectionView dequeueReusableCellWithReuseIdentifier:@"Poster" forIndexPath:pathCopy];
+    v12 = [(NSDictionary *)self->_uuidsToConfigurations objectForKey:identifierCopy];
     v13 = [(NSMapTable *)self->_configurationsToMetadata objectForKey:v12];
     [v11 setLayoutOrientation:self->_initialLayoutOrientation];
-    v14 = [v13 cachedSnapshot];
-    [v11 setPosterImage:v14];
+    cachedSnapshot = [v13 cachedSnapshot];
+    [v11 setPosterImage:cachedSnapshot];
 
     [v11 setPosterPreviewGenerator:self->_galleryDataProvider];
-    v15 = [v13 posterPreview];
-    [v11 setPosterPreview:v15];
+    posterPreview = [v13 posterPreview];
+    [v11 setPosterPreview:posterPreview];
 
-    [v11 setCheckboxAssociatedPosterIdentifier:v7];
+    [v11 setCheckboxAssociatedPosterIdentifier:identifierCopy];
     if (self->_activityUUID)
     {
       [v11 setCheckboxOn:{objc_msgSend(v13, "isChecked")}];
-      v16 = [v13 otherFocusSymbolImageName];
-      [v11 setFocusSymbolImageName:v16];
+      otherFocusSymbolImageName = [v13 otherFocusSymbolImageName];
+      [v11 setFocusSymbolImageName:otherFocusSymbolImageName];
     }
 
     else
@@ -917,8 +917,8 @@ id __84__PBFFocusPosterSelectionViewController__applySnapshotForCurrentStateWith
 
   else
   {
-    v12 = [(PBFFocusPosterSuggestionData *)self->_suggestionData previewForUniqueIdentifier:v7];
-    v11 = [v8 dequeueReusableCellWithReuseIdentifier:@"Suggestion" forIndexPath:v6];
+    v12 = [(PBFFocusPosterSuggestionData *)self->_suggestionData previewForUniqueIdentifier:identifierCopy];
+    v11 = [collectionView dequeueReusableCellWithReuseIdentifier:@"Suggestion" forIndexPath:pathCopy];
     [v11 setLayoutOrientation:self->_initialLayoutOrientation];
     [v11 setActionType:0];
     v17 = [(PBFFocusPosterSuggestionData *)self->_suggestionData snapshotForPoster:v12];
@@ -931,16 +931,16 @@ id __84__PBFFocusPosterSelectionViewController__applySnapshotForCurrentStateWith
   return v11;
 }
 
-- (id)_supplementaryViewAtIndexPath:(id)a3
+- (id)_supplementaryViewAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(PBFFocusPosterSelectionViewController *)self collectionView];
-  v6 = -[UICollectionViewDiffableDataSource sectionIdentifierForIndex:](self->_dataSource, "sectionIdentifierForIndex:", [v4 section]);
+  pathCopy = path;
+  collectionView = [(PBFFocusPosterSelectionViewController *)self collectionView];
+  v6 = -[UICollectionViewDiffableDataSource sectionIdentifierForIndex:](self->_dataSource, "sectionIdentifierForIndex:", [pathCopy section]);
   v7 = [v6 isEqualToString:@"Masthead"];
   v8 = *MEMORY[0x277D767D8];
   if (!v7)
   {
-    v9 = [v5 dequeueReusableSupplementaryViewOfKind:v8 withReuseIdentifier:@"Header" forIndexPath:v4];
+    v9 = [collectionView dequeueReusableSupplementaryViewOfKind:v8 withReuseIdentifier:@"Header" forIndexPath:pathCopy];
 
     if ([v6 isEqualToString:@"Create"])
     {
@@ -977,7 +977,7 @@ id __84__PBFFocusPosterSelectionViewController__applySnapshotForCurrentStateWith
     goto LABEL_12;
   }
 
-  v9 = [v5 dequeueReusableSupplementaryViewOfKind:v8 withReuseIdentifier:@"Masthead" forIndexPath:v4];
+  v9 = [collectionView dequeueReusableSupplementaryViewOfKind:v8 withReuseIdentifier:@"Masthead" forIndexPath:pathCopy];
 
   if (self->_activitySymbolColor && self->_activitySymbolImageName)
   {
@@ -991,14 +991,14 @@ LABEL_13:
   return v9;
 }
 
-- (PREditingSceneViewControllerTopButtonLayout)topButtonLayoutForEditingSceneViewController:(SEL)a3
+- (PREditingSceneViewControllerTopButtonLayout)topButtonLayoutForEditingSceneViewController:(SEL)controller
 {
-  v6 = [(PBFFocusPosterSelectionViewController *)self delegate];
-  if (v6)
+  delegate = [(PBFFocusPosterSelectionViewController *)self delegate];
+  if (delegate)
   {
-    v8 = v6;
-    [v6 topButtonLayoutForFocusPosterSelectionViewController:self];
-    v6 = v8;
+    v8 = delegate;
+    [delegate topButtonLayoutForFocusPosterSelectionViewController:self];
+    delegate = v8;
   }
 
   else
@@ -1012,14 +1012,14 @@ LABEL_13:
   return result;
 }
 
-- (void)editingSceneViewController:(id)a3 userDidDismissWithAction:(int64_t)a4 updatedConfiguration:(id)a5 updatedConfiguredProperties:(id)a6 completion:(id)a7
+- (void)editingSceneViewController:(id)controller userDidDismissWithAction:(int64_t)action updatedConfiguration:(id)configuration updatedConfiguredProperties:(id)properties completion:(id)completion
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  controllerCopy = controller;
+  configurationCopy = configuration;
+  propertiesCopy = properties;
+  completionCopy = completion;
   v16 = objc_opt_class();
-  v17 = v12;
+  v17 = controllerCopy;
   if (v16)
   {
     if (objc_opt_isKindOfClass())
@@ -1040,55 +1040,55 @@ LABEL_13:
 
   v19 = v18;
 
-  [v19 setGalleryDismissalAction:a4];
-  if (a4 == 1)
+  [v19 setGalleryDismissalAction:action];
+  if (action == 1)
   {
     v42 = v19;
-    v43 = v15;
-    v20 = [v14 suggestionMetadata];
-    v41 = [v20 lastModifiedDate];
+    v43 = completionCopy;
+    suggestionMetadata = [propertiesCopy suggestionMetadata];
+    lastModifiedDate = [suggestionMetadata lastModifiedDate];
 
-    v21 = [v14 suggestionMetadata];
-    v22 = [v21 metadataBySettingLastModifiedDateToNow];
+    suggestionMetadata2 = [propertiesCopy suggestionMetadata];
+    metadataBySettingLastModifiedDateToNow = [suggestionMetadata2 metadataBySettingLastModifiedDateToNow];
 
-    if (!v22)
+    if (!metadataBySettingLastModifiedDateToNow)
     {
       v23 = objc_alloc(MEMORY[0x277D3EE20]);
-      v24 = [MEMORY[0x277CBEAA8] date];
-      v22 = [v23 initWithSuggestedGalleryItem:0 suggestedComplicationsByIdentifier:MEMORY[0x277CBEC10] lastModifiedDate:v24];
+      date = [MEMORY[0x277CBEAA8] date];
+      metadataBySettingLastModifiedDateToNow = [v23 initWithSuggestedGalleryItem:0 suggestedComplicationsByIdentifier:MEMORY[0x277CBEC10] lastModifiedDate:date];
     }
 
-    v38 = v22;
-    v40 = [v14 mutableCopy];
-    [v40 setSuggestionMetadata:v22];
+    v38 = metadataBySettingLastModifiedDateToNow;
+    v40 = [propertiesCopy mutableCopy];
+    [v40 setSuggestionMetadata:metadataBySettingLastModifiedDateToNow];
     v39 = objc_alloc_init(PBFPosterEditingIngestionManager);
     [(PBFPosterEditingIngestionManager *)v39 setDelegate:self];
-    v25 = [(PBFPosterEditingIngestionManager *)v39 ingestConfiguration:v13 updatedConfiguredProperties:v40 editingViewController:v17 galleryViewController:0 showEditingConfirmation:1];
-    v44 = v14;
-    v26 = [(PBFPosterExtensionDataStore *)self->_dataStore switcherConfiguration];
-    v45 = v13;
-    v27 = [v26 mutableCopy];
+    v25 = [(PBFPosterEditingIngestionManager *)v39 ingestConfiguration:configurationCopy updatedConfiguredProperties:v40 editingViewController:v17 galleryViewController:0 showEditingConfirmation:1];
+    v44 = propertiesCopy;
+    switcherConfiguration = [(PBFPosterExtensionDataStore *)self->_dataStore switcherConfiguration];
+    v45 = configurationCopy;
+    v27 = [switcherConfiguration mutableCopy];
 
-    v28 = [v27 configurations];
-    v29 = [v28 lastObject];
+    configurations = [v27 configurations];
+    lastObject = [configurations lastObject];
 
     v30 = [objc_alloc(MEMORY[0x277D3ED98]) initWithActivityIdentifier:self->_activityIdentifier activityUUID:self->_activityUUID];
-    [v27 setFocusConfiguration:v30 forPosterConfiguration:v29];
+    [v27 setFocusConfiguration:v30 forPosterConfiguration:lastObject];
     dataStore = self->_dataStore;
     v46 = 0;
     v32 = [(PBFPosterExtensionDataStore *)dataStore updateDataStoreForSwitcherConfiguration:v27 reason:@"Focus Poster Selection change focus configuration" error:&v46];
     v33 = v46;
-    v34 = [v29 _path];
-    v35 = [v34 serverIdentity];
-    v36 = [v35 posterUUID];
-    v37 = [v36 UUIDString];
+    _path = [lastObject _path];
+    serverIdentity = [_path serverIdentity];
+    posterUUID = [serverIdentity posterUUID];
+    uUIDString = [posterUUID UUIDString];
 
-    [(PBFFocusPosterSelectionViewController *)self _logEditWithEditingViewController:v17 posterUUID:v37 lastModifiedDate:v41];
-    v15 = v43;
+    [(PBFFocusPosterSelectionViewController *)self _logEditWithEditingViewController:v17 posterUUID:uUIDString lastModifiedDate:lastModifiedDate];
+    completionCopy = v43;
     v43[2](v43, v33);
 
-    v14 = v44;
-    v13 = v45;
+    propertiesCopy = v44;
+    configurationCopy = v45;
 
     v19 = v42;
   }
@@ -1096,23 +1096,23 @@ LABEL_13:
   else
   {
     [v17 dismissViewControllerAnimated:1 completion:0];
-    v15[2](v15, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)_cancel:(id)a3
+- (void)_cancel:(id)_cancel
 {
-  v4 = [MEMORY[0x277D3EAF0] cancel];
-  v5 = [(PBFFocusPosterSelectionViewController *)self delegate];
-  [v5 focusPosterSelectionViewController:self willDismissWithResponse:v4];
+  cancel = [MEMORY[0x277D3EAF0] cancel];
+  delegate = [(PBFFocusPosterSelectionViewController *)self delegate];
+  [delegate focusPosterSelectionViewController:self willDismissWithResponse:cancel];
 
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __49__PBFFocusPosterSelectionViewController__cancel___block_invoke;
   v7[3] = &unk_2782C58B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = cancel;
+  v6 = cancel;
   [(PBFFocusPosterSelectionViewController *)self dismissViewControllerAnimated:1 completion:v7];
 }
 
@@ -1122,20 +1122,20 @@ void __49__PBFFocusPosterSelectionViewController__cancel___block_invoke(uint64_t
   [v2 focusPosterSelectionViewController:*(a1 + 32) didDismissWithResponse:*(a1 + 40)];
 }
 
-- (void)_done:(id)a3
+- (void)_done:(id)_done
 {
   [(PBFFocusPosterSelectionViewController *)self _commitCheckedStates];
-  v4 = [MEMORY[0x277D3EAF0] done];
-  v5 = [(PBFFocusPosterSelectionViewController *)self delegate];
-  [v5 focusPosterSelectionViewController:self willDismissWithResponse:v4];
+  done = [MEMORY[0x277D3EAF0] done];
+  delegate = [(PBFFocusPosterSelectionViewController *)self delegate];
+  [delegate focusPosterSelectionViewController:self willDismissWithResponse:done];
 
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__PBFFocusPosterSelectionViewController__done___block_invoke;
   v7[3] = &unk_2782C58B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = done;
+  v6 = done;
   [(PBFFocusPosterSelectionViewController *)self dismissViewControllerAnimated:1 completion:v7];
 }
 
@@ -1153,8 +1153,8 @@ void __47__PBFFocusPosterSelectionViewController__done___block_invoke(uint64_t a
     return;
   }
 
-  v23 = [(PBFPosterExtensionDataStore *)self->_dataStore switcherConfiguration];
-  v26 = [v23 mutableCopy];
+  switcherConfiguration = [(PBFPosterExtensionDataStore *)self->_dataStore switcherConfiguration];
+  v26 = [switcherConfiguration mutableCopy];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
@@ -1182,12 +1182,12 @@ void __47__PBFFocusPosterSelectionViewController__done___block_invoke(uint64_t a
       v7 = *(*(&v28 + 1) + 8 * i);
       v8 = [v7 loadFocusConfigurationWithError:0];
       v9 = [(NSMapTable *)self->_configurationsToMetadata objectForKey:v7];
-      v10 = [v9 isChecked];
+      isChecked = [v9 isChecked];
 
-      v11 = [v8 activityUUID];
-      v12 = [v11 isEqual:self->_activityUUID];
+      activityUUID = [v8 activityUUID];
+      v12 = [activityUUID isEqual:self->_activityUUID];
 
-      if (v10)
+      if (isChecked)
       {
         if (v12)
         {
@@ -1195,8 +1195,8 @@ void __47__PBFFocusPosterSelectionViewController__done___block_invoke(uint64_t a
         }
 
         v13 = [objc_alloc(MEMORY[0x277D3ED98]) initWithActivityIdentifier:self->_activityIdentifier activityUUID:self->_activityUUID];
-        v14 = [v23 activeConfiguration];
-        v15 = [v14 isEqual:v7];
+        activeConfiguration = [switcherConfiguration activeConfiguration];
+        v15 = [activeConfiguration isEqual:v7];
 
         v16 = v15 | v25;
       }
@@ -1208,8 +1208,8 @@ void __47__PBFFocusPosterSelectionViewController__done___block_invoke(uint64_t a
           goto LABEL_16;
         }
 
-        v17 = [v23 activeConfiguration];
-        v18 = [v17 isEqual:v7];
+        activeConfiguration2 = [switcherConfiguration activeConfiguration];
+        v18 = [activeConfiguration2 isEqual:v7];
 
         if (!v18)
         {
@@ -1260,61 +1260,61 @@ LABEL_20:
   [(PBFPosterGalleryPreviewViewController *)v8 setDelegate:self];
   [(PBFPosterGalleryPreviewViewController *)v8 setEditingSceneDelegate:self];
   [(PBFPosterGalleryPreviewViewController *)v8 setDataProvider:self->_galleryDataProvider];
-  v3 = [(PBFPosterGalleryPreviewViewController *)v8 sheetPresentationController];
-  [PBFPosterGalleryPreviewViewController configureSheetPresentationController:v3];
+  sheetPresentationController = [(PBFPosterGalleryPreviewViewController *)v8 sheetPresentationController];
+  [PBFPosterGalleryPreviewViewController configureSheetPresentationController:sheetPresentationController];
   [(PBFFocusPosterSelectionViewController *)self presentViewController:v8 animated:1 completion:0];
-  v4 = [(PBFPosterExtensionDataStore *)self->_dataStore currentGalleryConfiguration];
-  v5 = [v4 suggestedLayout];
+  currentGalleryConfiguration = [(PBFPosterExtensionDataStore *)self->_dataStore currentGalleryConfiguration];
+  suggestedLayout = [currentGalleryConfiguration suggestedLayout];
 
-  if (v5)
+  if (suggestedLayout)
   {
-    v6 = [MEMORY[0x277CEB530] sharedInstance];
-    v7 = [v5 proactiveRepresentation];
-    [v6 logFaceGalleryDidAppearWithFaceGalleryConfiguration:v7];
+    mEMORY[0x277CEB530] = [MEMORY[0x277CEB530] sharedInstance];
+    proactiveRepresentation = [suggestedLayout proactiveRepresentation];
+    [mEMORY[0x277CEB530] logFaceGalleryDidAppearWithFaceGalleryConfiguration:proactiveRepresentation];
   }
 }
 
-- (void)_showEditingForPoster:(id)a3 fromFocusPosterCell:(id)a4
+- (void)_showEditingForPoster:(id)poster fromFocusPosterCell:(id)cell
 {
-  v33 = a3;
-  v6 = a4;
+  posterCopy = poster;
+  cellCopy = cell;
   if ([(PBFPosterExtensionDataStore *)self->_dataStore canPersistNewPosterConfiguration])
   {
-    v7 = [v33 posterDescriptorLookupInfo];
-    v8 = [v7 posterDescriptorPath];
+    posterDescriptorLookupInfo = [posterCopy posterDescriptorLookupInfo];
+    posterDescriptorPath = [posterDescriptorLookupInfo posterDescriptorPath];
 
-    v9 = [v33 posterDescriptorLookupInfo];
-    v10 = [v9 posterDescriptorExtension];
+    posterDescriptorLookupInfo2 = [posterCopy posterDescriptorLookupInfo];
+    posterDescriptorExtension = [posterDescriptorLookupInfo2 posterDescriptorExtension];
 
     v11 = MEMORY[0x277D3EB78];
-    v12 = [v10 identity];
-    v13 = [MEMORY[0x277CCAD78] UUID];
-    v14 = [v11 extensionInstanceForIdentity:v12 instanceIdentifier:v13];
+    identity = [posterDescriptorExtension identity];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    v14 = [v11 extensionInstanceForIdentity:identity instanceIdentifier:uUID];
 
     v15 = [PBFFocusEditingSceneViewController alloc];
-    v16 = [MEMORY[0x277D3ED50] pbf_configurableOptionsForPreview:v33];
-    v17 = [MEMORY[0x277D3ED60] pbf_configuredPropertiesForPreview:v33];
-    v18 = [(PRSceneViewController *)v15 initWithProvider:v14 contents:v8 configurableOptions:v16 configuredProperties:v17];
+    v16 = [MEMORY[0x277D3ED50] pbf_configurableOptionsForPreview:posterCopy];
+    v17 = [MEMORY[0x277D3ED60] pbf_configuredPropertiesForPreview:posterCopy];
+    v18 = [(PRSceneViewController *)v15 initWithProvider:v14 contents:posterDescriptorPath configurableOptions:v16 configuredProperties:v17];
 
     [(PREditingSceneViewController *)v18 setAcceptButtonType:1];
     [(PREditingSceneViewController *)v18 setDelegate:self];
     [(PREditingSceneViewController *)v18 addObserver:self];
-    v19 = [v6 contentView];
-    [v6 posterPreviewFrame];
+    contentView = [cellCopy contentView];
+    [cellCopy posterPreviewFrame];
     v21 = v20;
     v23 = v22;
     v25 = v24;
     v27 = v26;
-    v28 = [v6 window];
-    [v19 convertRect:v28 toCoordinateSpace:{v21, v23, v25, v27}];
+    window = [cellCopy window];
+    [contentView convertRect:window toCoordinateSpace:{v21, v23, v25, v27}];
     [(PBFFocusEditingSceneViewController *)v18 setPosterPreviewFrame:?];
 
-    v29 = [v6 posterView];
-    v30 = [v29 snapshot];
-    [(PBFFocusEditingSceneViewController *)v18 setGalleryPreviewView:v30];
+    posterView = [cellCopy posterView];
+    snapshot = [posterView snapshot];
+    [(PBFFocusEditingSceneViewController *)v18 setGalleryPreviewView:snapshot];
 
-    v31 = [v6 makeComplicationsPortalView];
-    [(PBFFocusEditingSceneViewController *)v18 setPosterPreviewComplicationsView:v31];
+    makeComplicationsPortalView = [cellCopy makeComplicationsPortalView];
+    [(PBFFocusEditingSceneViewController *)v18 setPosterPreviewComplicationsView:makeComplicationsPortalView];
 
     v32 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v18];
     [v32 setNavigationBarHidden:1 animated:0];
@@ -1325,8 +1325,8 @@ LABEL_20:
 
   else
   {
-    v8 = [(PBFFocusPosterSelectionViewController *)self _posterLimitExceededAlert];
-    [(PBFFocusPosterSelectionViewController *)self presentViewController:v8 animated:1 completion:0];
+    posterDescriptorPath = [(PBFFocusPosterSelectionViewController *)self _posterLimitExceededAlert];
+    [(PBFFocusPosterSelectionViewController *)self presentViewController:posterDescriptorPath animated:1 completion:0];
   }
 }
 
@@ -1344,14 +1344,14 @@ LABEL_20:
     v6 = PBFLocalizedString(@"CREATE_NEW_LOCK_SCREEN_FROM_SUGGESTIONS_HEADER_DESCRIPTION");
     v3 = [v5 initWithString:v6];
 
-    v7 = [(NSAttributedString *)v3 string];
+    string = [(NSAttributedString *)v3 string];
     v8 = PBFLocalizedString(@"CREATE_NEW_LOCK_SCREEN_HEADER_DESCRIPTION_GALLERY");
-    v9 = [v7 rangeOfString:v8];
+    v9 = [string rangeOfString:v8];
     v11 = v10;
 
     v12 = *MEMORY[0x277D740C0];
-    v13 = [MEMORY[0x277D75348] systemBlueColor];
-    [(NSAttributedString *)v3 addAttribute:v12 value:v13 range:v9, v11];
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+    [(NSAttributedString *)v3 addAttribute:v12 value:systemBlueColor range:v9, v11];
 
     objc_storeStrong(&self->_createLockScreensFromSuggestionsHeaderDescription, v3);
   }
@@ -1373,14 +1373,14 @@ LABEL_20:
     v6 = PBFLocalizedString(@"CREATE_NEW_LOCK_SCREEN_HEADER_DESCRIPTION");
     v3 = [v5 initWithString:v6];
 
-    v7 = [(NSAttributedString *)v3 string];
+    string = [(NSAttributedString *)v3 string];
     v8 = PBFLocalizedString(@"CREATE_NEW_LOCK_SCREEN_HEADER_DESCRIPTION_GALLERY");
-    v9 = [v7 rangeOfString:v8];
+    v9 = [string rangeOfString:v8];
     v11 = v10;
 
     v12 = *MEMORY[0x277D740C0];
-    v13 = [MEMORY[0x277D75348] systemBlueColor];
-    [(NSAttributedString *)v3 addAttribute:v12 value:v13 range:v9, v11];
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+    [(NSAttributedString *)v3 addAttribute:v12 value:systemBlueColor range:v9, v11];
 
     objc_storeStrong(&self->_createLockScreensHeaderDescription, v3);
   }
@@ -1397,10 +1397,10 @@ LABEL_20:
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v3 = [MEMORY[0x277D0A9E8] sharedActivityManager];
-    v4 = [v3 availableActivities];
+    mEMORY[0x277D0A9E8] = [MEMORY[0x277D0A9E8] sharedActivityManager];
+    availableActivities = [mEMORY[0x277D0A9E8] availableActivities];
 
-    v5 = [v4 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    v5 = [availableActivities countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v5)
     {
       v6 = v5;
@@ -1411,21 +1411,21 @@ LABEL_20:
         {
           if (*v25 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(availableActivities);
           }
 
           v9 = *(*(&v24 + 1) + 8 * i);
-          v10 = [v9 activityUniqueIdentifier];
-          v11 = [v10 isEqual:self->_activityUUID];
+          activityUniqueIdentifier = [v9 activityUniqueIdentifier];
+          v11 = [activityUniqueIdentifier isEqual:self->_activityUUID];
 
           if (v11)
           {
-            v18 = [v9 activitySymbolImageName];
+            activitySymbolImageName = [v9 activitySymbolImageName];
             activitySymbolImageName = self->_activitySymbolImageName;
-            self->_activitySymbolImageName = v18;
+            self->_activitySymbolImageName = activitySymbolImageName;
 
-            v20 = [v9 activityColorName];
-            v21 = NSSelectorFromString(v20);
+            activityColorName = [v9 activityColorName];
+            v21 = NSSelectorFromString(activityColorName);
 
             if (objc_opt_respondsToSelector())
             {
@@ -1438,7 +1438,7 @@ LABEL_20:
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        v6 = [availableActivities countByEnumeratingWithState:&v24 objects:v28 count:16];
         if (v6)
         {
           continue;
@@ -1448,22 +1448,22 @@ LABEL_20:
       }
     }
 
-    v4 = PBFLogCommon();
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+    availableActivities = PBFLogCommon();
+    if (os_log_type_enabled(availableActivities, OS_LOG_TYPE_ERROR))
     {
-      [(PBFFocusPosterSelectionViewController *)&self->_activityUUID _populateActivityMetadata:v4];
+      [(PBFFocusPosterSelectionViewController *)&self->_activityUUID _populateActivityMetadata:availableActivities];
     }
 
 LABEL_14:
   }
 }
 
-- (void)_logEditWithEditingViewController:(id)a3 posterUUID:(id)a4 lastModifiedDate:(id)a5
+- (void)_logEditWithEditingViewController:(id)controller posterUUID:(id)d lastModifiedDate:(id)date
 {
-  v8 = a5;
-  v28 = a4;
-  v9 = a3;
-  v10 = [(PBFFocusPosterSelectionViewController *)self presentedViewController];
+  dateCopy = date;
+  dCopy = d;
+  controllerCopy = controller;
+  presentedViewController = [(PBFFocusPosterSelectionViewController *)self presentedViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v12 = @"focusSettingsSuggestion";
@@ -1474,29 +1474,29 @@ LABEL_14:
 
   v13 = v12;
 
-  v29 = [v9 modifications];
+  modifications = [controllerCopy modifications];
 
   v14 = objc_alloc(MEMORY[0x277CEB7B8]);
-  [v8 timeIntervalSinceNow];
+  [dateCopy timeIntervalSinceNow];
   v16 = v15;
 
-  v17 = [v29 colorModified];
-  v18 = [v29 fontModified];
-  v19 = [v29 numberingSystemModified];
-  v20 = [v29 posterContentModified];
-  v21 = [v29 widgetsModified];
-  v22 = [v29 containedWidgetsBeforeEdit];
-  v23 = [v29 startDate];
-  [v23 timeIntervalSinceNow];
-  BYTE4(v27) = v22;
-  BYTE3(v27) = v21;
-  BYTE2(v27) = v20;
-  BYTE1(v27) = v19;
-  LOBYTE(v27) = v18;
-  v25 = [v14 initWithLockscreenId:v28 entryPoint:v13 newlyCreated:1 secondsSinceLastEdit:-v16 outcome:@"accepted" userChangedColor:v17 userChangedFont:v27 userChangedNumberingSystem:-v24 userChangedPosterContent:? userChangedWidgets:? didLockscreenHaveWidgetsBeforeEdit:? duration:?];
+  colorModified = [modifications colorModified];
+  fontModified = [modifications fontModified];
+  numberingSystemModified = [modifications numberingSystemModified];
+  posterContentModified = [modifications posterContentModified];
+  widgetsModified = [modifications widgetsModified];
+  containedWidgetsBeforeEdit = [modifications containedWidgetsBeforeEdit];
+  startDate = [modifications startDate];
+  [startDate timeIntervalSinceNow];
+  BYTE4(v27) = containedWidgetsBeforeEdit;
+  BYTE3(v27) = widgetsModified;
+  BYTE2(v27) = posterContentModified;
+  BYTE1(v27) = numberingSystemModified;
+  LOBYTE(v27) = fontModified;
+  v25 = [v14 initWithLockscreenId:dCopy entryPoint:v13 newlyCreated:1 secondsSinceLastEdit:-v16 outcome:@"accepted" userChangedColor:colorModified userChangedFont:v27 userChangedNumberingSystem:-v24 userChangedPosterContent:? userChangedWidgets:? didLockscreenHaveWidgetsBeforeEdit:? duration:?];
 
-  v26 = [MEMORY[0x277CEB530] sharedInstance];
-  [v26 logPosterEdit:v25 completion:&__block_literal_global_264];
+  mEMORY[0x277CEB530] = [MEMORY[0x277CEB530] sharedInstance];
+  [mEMORY[0x277CEB530] logPosterEdit:v25 completion:&__block_literal_global_264];
 }
 
 void __103__PBFFocusPosterSelectionViewController__logEditWithEditingViewController_posterUUID_lastModifiedDate___block_invoke(uint64_t a1, void *a2)
@@ -1527,44 +1527,44 @@ void __103__PBFFocusPosterSelectionViewController__logEditWithEditingViewControl
   return v5;
 }
 
-- (void)galleryViewController:(id)a3 didSelectPreview:(id)a4 fromPreviewView:(id)a5
+- (void)galleryViewController:(id)controller didSelectPreview:(id)preview fromPreviewView:(id)view
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
+  controllerCopy = controller;
+  previewCopy = preview;
+  viewCopy = view;
   if ([(PBFPosterExtensionDataStore *)self->_dataStore canPersistNewPosterConfiguration])
   {
-    [v11 presentPreview:v8 withMode:2 fromView:v9];
+    [controllerCopy presentPreview:previewCopy withMode:2 fromView:viewCopy];
   }
 
   else
   {
-    v10 = [(PBFFocusPosterSelectionViewController *)self _posterLimitExceededAlert];
-    [v11 presentViewController:v10 animated:1 completion:0];
+    _posterLimitExceededAlert = [(PBFFocusPosterSelectionViewController *)self _posterLimitExceededAlert];
+    [controllerCopy presentViewController:_posterLimitExceededAlert animated:1 completion:0];
   }
 }
 
-- (id)galleryViewController:(id)a3 willUseAnimationController:(id)a4 forDismissingEditingViewControllerWithAction:(int64_t)a5
+- (id)galleryViewController:(id)controller willUseAnimationController:(id)animationController forDismissingEditingViewControllerWithAction:(int64_t)action
 {
-  if (a5 == 1)
+  if (action == 1)
   {
     return 0;
   }
 
   else
   {
-    return a4;
+    return animationController;
   }
 }
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
-  v7 = a3;
-  if (a5 == self && (objc_opt_self(), v8 = objc_claimAutoreleasedReturnValue(), isKindOfClass = objc_opt_isKindOfClass(), v8, (isKindOfClass & 1) != 0))
+  controllerCopy = controller;
+  if (sourceController == self && (objc_opt_self(), v8 = objc_claimAutoreleasedReturnValue(), isKindOfClass = objc_opt_isKindOfClass(), v8, (isKindOfClass & 1) != 0))
   {
-    v10 = [v7 bottomViewController];
+    bottomViewController = [controllerCopy bottomViewController];
     v11 = objc_opt_class();
-    v12 = v10;
+    v12 = bottomViewController;
     if (v11)
     {
       if (objc_opt_isKindOfClass())
@@ -1590,12 +1590,12 @@ void __103__PBFFocusPosterSelectionViewController__logEditWithEditingViewControl
     v20 = v19;
     v22 = v21;
     v24 = v23;
-    v25 = [v16 galleryPreviewView];
-    v26 = [v16 posterPreviewComplicationsView];
+    galleryPreviewView = [v16 galleryPreviewView];
+    posterPreviewComplicationsView = [v16 posterPreviewComplicationsView];
 
     v27 = [PBFEditingZoomUpAnimationController alloc];
     +[PBFFocusPosterCell cornerRadius];
-    v14 = [(PBFEditingZoomAnimationController *)v27 initWithPreviewFrame:v25 previewCornerRadius:v26 previewView:v18 complicationsView:v20, v22, v24, v28];
+    v14 = [(PBFEditingZoomAnimationController *)v27 initWithPreviewFrame:galleryPreviewView previewCornerRadius:posterPreviewComplicationsView previewView:v18 complicationsView:v20, v22, v24, v28];
   }
 
   else
@@ -1606,17 +1606,17 @@ void __103__PBFFocusPosterSelectionViewController__logEditWithEditingViewControl
   return v14;
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   v4 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [v3 bottomViewController];
+    bottomViewController = [controllerCopy bottomViewController];
     v7 = objc_opt_class();
-    v8 = v6;
+    v8 = bottomViewController;
     if (v7)
     {
       if (objc_opt_isKindOfClass())
@@ -1651,9 +1651,9 @@ void __103__PBFFocusPosterSelectionViewController__logEditWithEditingViewControl
       v17 = v16;
       v19 = v18;
       v21 = v20;
-      v22 = [v11 galleryPreviewView];
-      v23 = [v11 posterPreviewComplicationsView];
-      v10 = [(PBFEditingZoomAnimationController *)[PBFEditingZoomDownAnimationController alloc] initWithPreviewFrame:v22 previewCornerRadius:v23 previewView:v15 complicationsView:v17, v19, v21, v13];
+      galleryPreviewView = [v11 galleryPreviewView];
+      posterPreviewComplicationsView = [v11 posterPreviewComplicationsView];
+      v10 = [(PBFEditingZoomAnimationController *)[PBFEditingZoomDownAnimationController alloc] initWithPreviewFrame:galleryPreviewView previewCornerRadius:posterPreviewComplicationsView previewView:v15 complicationsView:v17, v19, v21, v13];
     }
   }
 
@@ -1665,22 +1665,22 @@ void __103__PBFFocusPosterSelectionViewController__logEditWithEditingViewControl
   return v10;
 }
 
-- (void)editingIngestionManager:(id)a3 didAccept:(id)a4 userChoice:(int64_t)a5
+- (void)editingIngestionManager:(id)manager didAccept:(id)accept userChoice:(int64_t)choice
 {
-  v9 = a3;
-  v10 = a4;
-  if (a5)
+  managerCopy = manager;
+  acceptCopy = accept;
+  if (choice)
   {
-    [v9 dismissViewController];
+    [managerCopy dismissViewController];
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v11 = [(PBFFocusPosterSelectionViewController *)self delegate];
-    v12 = v11;
-    if (v11)
+    delegate = [(PBFFocusPosterSelectionViewController *)self delegate];
+    v12 = delegate;
+    if (delegate)
     {
-      [v11 topButtonLayoutForFocusPosterSelectionViewController:self];
+      [delegate topButtonLayoutForFocusPosterSelectionViewController:self];
     }
 
     else
@@ -1695,35 +1695,35 @@ void __103__PBFFocusPosterSelectionViewController__logEditWithEditingViewControl
     v22[1] = v24;
     v22[2] = v25;
     v22[3] = v26;
-    v17 = [PBFPosterRackCollectionViewController simplifiedHomeScreenSwitcherFor:v10 delegate:self topButtonLayout:v22];
-    v18 = [v9 editingViewController];
-    v19 = [v18 navigationController];
+    v17 = [PBFPosterRackCollectionViewController simplifiedHomeScreenSwitcherFor:acceptCopy delegate:self topButtonLayout:v22];
+    editingViewController = [managerCopy editingViewController];
+    navigationController = [editingViewController navigationController];
 
-    if (!v19)
+    if (!navigationController)
     {
       [PBFFocusPosterSelectionViewController editingIngestionManager:a2 didAccept:? userChoice:?];
     }
 
-    v20 = [v9 editingViewController];
-    v21 = [v20 navigationController];
-    [v21 pushViewController:v17 animated:1];
+    editingViewController2 = [managerCopy editingViewController];
+    navigationController2 = [editingViewController2 navigationController];
+    [navigationController2 pushViewController:v17 animated:1];
   }
 
   else
   {
-    v13 = [MEMORY[0x277D3EAF0] done];
-    v14 = [(PBFFocusPosterSelectionViewController *)self delegate];
-    [v14 focusPosterSelectionViewController:self willDismissWithResponse:v13];
+    done = [MEMORY[0x277D3EAF0] done];
+    delegate2 = [(PBFFocusPosterSelectionViewController *)self delegate];
+    [delegate2 focusPosterSelectionViewController:self willDismissWithResponse:done];
 
-    v15 = [(PBFFocusPosterSelectionViewController *)self presentingViewController];
+    presentingViewController = [(PBFFocusPosterSelectionViewController *)self presentingViewController];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __86__PBFFocusPosterSelectionViewController_editingIngestionManager_didAccept_userChoice___block_invoke;
     v27[3] = &unk_2782C58B0;
     v27[4] = self;
-    v28 = v13;
-    v16 = v13;
-    [v15 dismissViewControllerAnimated:1 completion:v27];
+    v28 = done;
+    v16 = done;
+    [presentingViewController dismissViewControllerAnimated:1 completion:v27];
   }
 }
 
@@ -1733,21 +1733,21 @@ void __86__PBFFocusPosterSelectionViewController_editingIngestionManager_didAcce
   [v2 focusPosterSelectionViewController:*(a1 + 32) didDismissWithResponse:*(a1 + 40)];
 }
 
-- (BOOL)posterRackCollectionViewControllerDidPressDone:(id)a3
+- (BOOL)posterRackCollectionViewControllerDidPressDone:(id)done
 {
-  v4 = [MEMORY[0x277D3EAF0] done];
-  v5 = [(PBFFocusPosterSelectionViewController *)self delegate];
-  [v5 focusPosterSelectionViewController:self willDismissWithResponse:v4];
+  done = [MEMORY[0x277D3EAF0] done];
+  delegate = [(PBFFocusPosterSelectionViewController *)self delegate];
+  [delegate focusPosterSelectionViewController:self willDismissWithResponse:done];
 
-  v6 = [(PBFFocusPosterSelectionViewController *)self presentingViewController];
+  presentingViewController = [(PBFFocusPosterSelectionViewController *)self presentingViewController];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __88__PBFFocusPosterSelectionViewController_posterRackCollectionViewControllerDidPressDone___block_invoke;
   v9[3] = &unk_2782C58B0;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
-  [v6 dismissViewControllerAnimated:1 completion:v9];
+  v10 = done;
+  v7 = done;
+  [presentingViewController dismissViewControllerAnimated:1 completion:v9];
 
   return 1;
 }
@@ -1758,21 +1758,21 @@ void __88__PBFFocusPosterSelectionViewController_posterRackCollectionViewControl
   [v2 focusPosterSelectionViewController:*(a1 + 32) didDismissWithResponse:*(a1 + 40)];
 }
 
-- (void)posterRackCollectionViewControllerDidPressCancel:(id)a3
+- (void)posterRackCollectionViewControllerDidPressCancel:(id)cancel
 {
-  v4 = [MEMORY[0x277D3EAF0] cancel];
-  v5 = [(PBFFocusPosterSelectionViewController *)self delegate];
-  [v5 focusPosterSelectionViewController:self willDismissWithResponse:v4];
+  cancel = [MEMORY[0x277D3EAF0] cancel];
+  delegate = [(PBFFocusPosterSelectionViewController *)self delegate];
+  [delegate focusPosterSelectionViewController:self willDismissWithResponse:cancel];
 
-  v6 = [(PBFFocusPosterSelectionViewController *)self presentingViewController];
+  presentingViewController = [(PBFFocusPosterSelectionViewController *)self presentingViewController];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __90__PBFFocusPosterSelectionViewController_posterRackCollectionViewControllerDidPressCancel___block_invoke;
   v8[3] = &unk_2782C58B0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v6 dismissViewControllerAnimated:1 completion:v8];
+  v9 = cancel;
+  v7 = cancel;
+  [presentingViewController dismissViewControllerAnimated:1 completion:v8];
 }
 
 void __90__PBFFocusPosterSelectionViewController_posterRackCollectionViewControllerDidPressCancel___block_invoke(uint64_t a1)

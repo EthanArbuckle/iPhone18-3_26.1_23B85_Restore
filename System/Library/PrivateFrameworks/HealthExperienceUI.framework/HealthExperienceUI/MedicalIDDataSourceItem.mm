@@ -1,6 +1,6 @@
 @interface MedicalIDDataSourceItem
 - (_TtC18HealthExperienceUI23MedicalIDDataSourceItem)init;
-- (void)medicalIDViewControllerDidDelete:(id)a3;
+- (void)medicalIDViewControllerDidDelete:(id)delete;
 @end
 
 @implementation MedicalIDDataSourceItem
@@ -12,10 +12,10 @@
   return result;
 }
 
-- (void)medicalIDViewControllerDidDelete:(id)a3
+- (void)medicalIDViewControllerDidDelete:(id)delete
 {
-  v4 = a3;
-  v5 = self;
+  deleteCopy = delete;
+  selfCopy = self;
   sub_1BA16A26C();
 }
 

@@ -1,7 +1,7 @@
 @interface PBUILivePhotoPlayerLivePhotoView
 - (PBUILivePhotoPlayerLivePhotoView)init;
 - (int64_t)playbackState;
-- (void)_subclass_updateForForcingPlayback:(BOOL)a3;
+- (void)_subclass_updateForForcingPlayback:(BOOL)playback;
 @end
 
 @implementation PBUILivePhotoPlayerLivePhotoView
@@ -35,8 +35,8 @@
     livePhotoView = v2->_livePhotoView;
     v2->_livePhotoView = v5;
 
-    v7 = [(ISLivePhotoUIView *)v2->_livePhotoView player];
-    [(PBUILivePhotoPlayerView *)v2 _common_configurePlayer:v7];
+    player = [(ISLivePhotoUIView *)v2->_livePhotoView player];
+    [(PBUILivePhotoPlayerView *)v2 _common_configurePlayer:player];
 
     [(PBUILivePhotoPlayerView *)v2 _common_configurePlayerView:v2->_livePhotoView];
   }
@@ -46,33 +46,33 @@
 
 - (int64_t)playbackState
 {
-  v2 = [(ISLivePhotoUIView *)self->_livePhotoView player];
-  v3 = [v2 currentPlaybackStyle];
+  player = [(ISLivePhotoUIView *)self->_livePhotoView player];
+  currentPlaybackStyle = [player currentPlaybackStyle];
 
-  if ((v3 - 1) > 3)
+  if ((currentPlaybackStyle - 1) > 3)
   {
     return 0;
   }
 
   else
   {
-    return qword_21E70D250[v3 - 1];
+    return qword_21E70D250[currentPlaybackStyle - 1];
   }
 }
 
-- (void)_subclass_updateForForcingPlayback:(BOOL)a3
+- (void)_subclass_updateForForcingPlayback:(BOOL)playback
 {
-  v3 = a3;
-  v4 = [(ISLivePhotoUIView *)self->_livePhotoView player];
-  v5 = v4;
-  if (v3)
+  playbackCopy = playback;
+  player = [(ISLivePhotoUIView *)self->_livePhotoView player];
+  v5 = player;
+  if (playbackCopy)
   {
-    [v4 startPlaybackWithStyleWhenReady:1];
+    [player startPlaybackWithStyleWhenReady:1];
   }
 
   else
   {
-    [v4 stopPlayback];
+    [player stopPlayback];
   }
 }
 

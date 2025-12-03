@@ -1,18 +1,18 @@
 @interface SiriUISnippetManager
 + (id)sharedInstance;
-- (BOOL)_compareObject:(id)a3 toObject:(id)a4 usingBlock:(id)a5;
-- (BOOL)_listItem:(id)a3 isEqualToListItem:(id)a4;
-- (BOOL)_listItem:(id)a3 isPreferredOverListItem:(id)a4;
+- (BOOL)_compareObject:(id)object toObject:(id)toObject usingBlock:(id)block;
+- (BOOL)_listItem:(id)item isEqualToListItem:(id)listItem;
+- (BOOL)_listItem:(id)item isPreferredOverListItem:(id)listItem;
 - (SiriUISnippetManager)init;
-- (id)_createDebugViewControllerForAceObject:(id)a3;
+- (id)_createDebugViewControllerForAceObject:(id)object;
 - (id)_snippetExtensionsCache;
-- (id)disambiguationItemForListItem:(id)a3 disambiguationKey:(id)a4;
-- (id)extensionForSnippet:(id)a3;
-- (id)filteredDisambiguationListItems:(id)a3;
-- (id)listItemToPickInAutodisambiguationForListItems:(id)a3;
-- (id)safeDisambiguationItemForListItem:(id)a3 disambiguationKey:(id)a4;
-- (id)snippetViewControllerForSnippet:(id)a3;
-- (id)transcriptItemForObject:(id)a3 sizeClass:(int64_t)a4;
+- (id)disambiguationItemForListItem:(id)item disambiguationKey:(id)key;
+- (id)extensionForSnippet:(id)snippet;
+- (id)filteredDisambiguationListItems:(id)items;
+- (id)listItemToPickInAutodisambiguationForListItems:(id)items;
+- (id)safeDisambiguationItemForListItem:(id)item disambiguationKey:(id)key;
+- (id)snippetViewControllerForSnippet:(id)snippet;
+- (id)transcriptItemForObject:(id)object sizeClass:(int64_t)class;
 - (void)_prewarmSnippetExtensionsCacheSynchronously;
 - (void)preloadPluginBundles;
 - (void)prewarmSnippetExtensionsCache;
@@ -119,14 +119,14 @@ void __44__SiriUISnippetManager_preloadPluginBundles__block_invoke(uint64_t a1)
   dispatch_async(snippetExtensionsQueue, block);
 }
 
-- (id)extensionForSnippet:(id)a3
+- (id)extensionForSnippet:(id)snippet
 {
-  v4 = a3;
-  v5 = [(SiriUISnippetManager *)self _snippetExtensionsCache];
+  snippetCopy = snippet;
+  _snippetExtensionsCache = [(SiriUISnippetManager *)self _snippetExtensionsCache];
   v6 = objc_opt_class();
 
   v7 = NSStringFromClass(v6);
-  v8 = [v5 objectForKeyedSubscript:v7];
+  v8 = [_snippetExtensionsCache objectForKeyedSubscript:v7];
 
   return v8;
 }
@@ -270,10 +270,10 @@ void *__47__SiriUISnippetManager__snippetExtensionsCache__block_invoke(uint64_t 
   return result;
 }
 
-- (id)_createDebugViewControllerForAceObject:(id)a3
+- (id)_createDebugViewControllerForAceObject:(id)object
 {
   v13[4] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  objectCopy = object;
   v4 = MEMORY[0x277CCA8D8];
   v5 = MEMORY[0x277CCACA8];
   v6 = MEMORY[0x26D63F490]();
@@ -289,27 +289,27 @@ void *__47__SiriUISnippetManager__snippetExtensionsCache__block_invoke(uint64_t 
   if ([v9 loadAndReturnError:0])
   {
     v11 = objc_alloc_init([v9 principalClass]);
-    v10 = [v11 viewControllerForSnippet:v3];
+    v10 = [v11 viewControllerForSnippet:objectCopy];
   }
 
   return v10;
 }
 
-- (BOOL)_listItem:(id)a3 isEqualToListItem:(id)a4
+- (BOOL)_listItem:(id)item isEqualToListItem:(id)listItem
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 object];
-  v9 = [v7 object];
+  itemCopy = item;
+  listItemCopy = listItem;
+  object = [itemCopy object];
+  object2 = [listItemCopy object];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __52__SiriUISnippetManager__listItem_isEqualToListItem___block_invoke;
   v13[3] = &unk_279C5A420;
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
-  LOBYTE(self) = [(SiriUISnippetManager *)self _compareObject:v8 toObject:v9 usingBlock:v13];
+  v14 = itemCopy;
+  v15 = listItemCopy;
+  v10 = listItemCopy;
+  v11 = itemCopy;
+  LOBYTE(self) = [(SiriUISnippetManager *)self _compareObject:object toObject:object2 usingBlock:v13];
 
   return self;
 }
@@ -322,21 +322,21 @@ BOOL __52__SiriUISnippetManager__listItem_isEqualToListItem___block_invoke(uint6
   return v4;
 }
 
-- (BOOL)_listItem:(id)a3 isPreferredOverListItem:(id)a4
+- (BOOL)_listItem:(id)item isPreferredOverListItem:(id)listItem
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 object];
-  v9 = [v7 object];
-  if (v8 | v9)
+  itemCopy = item;
+  listItemCopy = listItem;
+  object = [itemCopy object];
+  object2 = [listItemCopy object];
+  if (object | object2)
   {
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __58__SiriUISnippetManager__listItem_isPreferredOverListItem___block_invoke;
     v12[3] = &unk_279C5A420;
-    v13 = v6;
-    v14 = v7;
-    v10 = [(SiriUISnippetManager *)self _compareObject:v8 toObject:v9 usingBlock:v12];
+    v13 = itemCopy;
+    v14 = listItemCopy;
+    v10 = [(SiriUISnippetManager *)self _compareObject:object toObject:object2 usingBlock:v12];
   }
 
   else
@@ -355,14 +355,14 @@ BOOL __58__SiriUISnippetManager__listItem_isPreferredOverListItem___block_invoke
   return v4;
 }
 
-- (BOOL)_compareObject:(id)a3 toObject:(id)a4 usingBlock:(id)a5
+- (BOOL)_compareObject:(id)object toObject:(id)toObject usingBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
+  objectCopy = object;
+  toObjectCopy = toObject;
+  blockCopy = block;
+  v11 = blockCopy;
   v12 = 0;
-  if (v10 && v8 && v9)
+  if (blockCopy && objectCopy && toObjectCopy)
   {
     v28 = 0;
     v29 = &v28;
@@ -373,13 +373,13 @@ BOOL __58__SiriUISnippetManager__listItem_isPreferredOverListItem___block_invoke
     v24 = __59__SiriUISnippetManager__compareObject_toObject_usingBlock___block_invoke;
     v25 = &unk_279C5A448;
     v27 = &v28;
-    v26 = v10;
+    v26 = blockCopy;
     v13 = MEMORY[0x26D63F900](&v22);
     pluginManager = self->_pluginManager;
-    v15 = [v8 groupIdentifier];
-    v16 = [v8 encodedClassName];
+    groupIdentifier = [objectCopy groupIdentifier];
+    encodedClassName = [objectCopy encodedClassName];
     v17 = *MEMORY[0x277CEEFB0];
-    [(AFClientPluginManager *)pluginManager enumerateFactoryInstancesForDomainKey:*MEMORY[0x277CEEFB0] groupIdentifier:v15 classIdentifier:v16 usingBlock:v13];
+    [(AFClientPluginManager *)pluginManager enumerateFactoryInstancesForDomainKey:*MEMORY[0x277CEEFB0] groupIdentifier:groupIdentifier classIdentifier:encodedClassName usingBlock:v13];
 
     if (v29[3])
     {
@@ -389,9 +389,9 @@ BOOL __58__SiriUISnippetManager__listItem_isPreferredOverListItem___block_invoke
     else
     {
       v18 = self->_pluginManager;
-      v19 = [v9 groupIdentifier];
-      v20 = [v9 encodedClassName];
-      [(AFClientPluginManager *)v18 enumerateFactoryInstancesForDomainKey:v17 groupIdentifier:v19 classIdentifier:v20 usingBlock:v13];
+      groupIdentifier2 = [toObjectCopy groupIdentifier];
+      encodedClassName2 = [toObjectCopy encodedClassName];
+      [(AFClientPluginManager *)v18 enumerateFactoryInstancesForDomainKey:v17 groupIdentifier:groupIdentifier2 classIdentifier:encodedClassName2 usingBlock:v13];
 
       v12 = *(v29 + 24);
     }
@@ -414,9 +414,9 @@ uint64_t __59__SiriUISnippetManager__compareObject_toObject_usingBlock___block_i
   return result;
 }
 
-- (id)transcriptItemForObject:(id)a3 sizeClass:(int64_t)a4
+- (id)transcriptItemForObject:(id)object sizeClass:(int64_t)class
 {
-  v7 = a3;
+  objectCopy = object;
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
@@ -431,11 +431,11 @@ uint64_t __59__SiriUISnippetManager__compareObject_toObject_usingBlock___block_i
   v18[1] = 3221225472;
   v18[2] = __58__SiriUISnippetManager_transcriptItemForObject_sizeClass___block_invoke;
   v18[3] = &unk_279C5A498;
-  v8 = v7;
+  v8 = objectCopy;
   v21 = &v24;
-  v22 = a4;
+  classCopy = class;
   v19 = v8;
-  v20 = self;
+  selfCopy = self;
   v23 = a2;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
@@ -445,7 +445,7 @@ uint64_t __59__SiriUISnippetManager__compareObject_toObject_usingBlock___block_i
   SiriUIBlockExecuteMonitored(v18, v17);
   if ([v25[5] conformsToProtocol:&unk_287A30D78])
   {
-    [v25[5] configureContentWithSizeClass:a4];
+    [v25[5] configureContentWithSizeClass:class];
   }
 
   if (!v25[5])
@@ -577,9 +577,9 @@ LABEL_7:
   return MEMORY[0x2821F96F8](v8, v9);
 }
 
-- (id)snippetViewControllerForSnippet:(id)a3
+- (id)snippetViewControllerForSnippet:(id)snippet
 {
-  v5 = a3;
+  snippetCopy = snippet;
   v28[0] = 0;
   v28[1] = v28;
   v28[2] = 0x3032000000;
@@ -599,21 +599,21 @@ LABEL_7:
   v24 = __Block_byref_object_dispose__0;
   v25 = 0;
   pluginManager = self->_pluginManager;
-  v7 = [v5 groupIdentifier];
-  v8 = [v5 encodedClassName];
+  groupIdentifier = [snippetCopy groupIdentifier];
+  encodedClassName = [snippetCopy encodedClassName];
   v9 = *MEMORY[0x277CEEFB8];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __56__SiriUISnippetManager_snippetViewControllerForSnippet___block_invoke;
   v13[3] = &unk_279C5A4C0;
   v16 = &v20;
-  v10 = v5;
+  v10 = snippetCopy;
   v14 = v10;
-  v15 = self;
+  selfCopy = self;
   v17 = v26;
   v18 = v28;
   v19 = a2;
-  [(AFClientPluginManager *)pluginManager enumerateFactoryInstancesForDomainKey:v9 groupIdentifier:v7 classIdentifier:v8 usingBlock:v13];
+  [(AFClientPluginManager *)pluginManager enumerateFactoryInstancesForDomainKey:v9 groupIdentifier:groupIdentifier classIdentifier:encodedClassName usingBlock:v13];
 
   v11 = v21[5];
   _Block_object_dispose(&v20, 8);
@@ -717,23 +717,23 @@ LABEL_13:
   }
 }
 
-- (id)filteredDisambiguationListItems:(id)a3
+- (id)filteredDisambiguationListItems:(id)items
 {
-  v4 = a3;
-  v5 = [v4 firstObject];
-  v6 = [v5 object];
-  if (v6)
+  itemsCopy = items;
+  firstObject = [itemsCopy firstObject];
+  object = [firstObject object];
+  if (object)
   {
     v17 = 0;
     v18 = &v17;
     v19 = 0x3032000000;
     v20 = __Block_byref_object_copy__0;
     v21 = __Block_byref_object_dispose__0;
-    v7 = v4;
+    v7 = itemsCopy;
     v22 = v7;
     pluginManager = self->_pluginManager;
-    v9 = [v6 groupIdentifier];
-    v10 = [v6 encodedClassName];
+    groupIdentifier = [object groupIdentifier];
+    encodedClassName = [object encodedClassName];
     v11 = *MEMORY[0x277CEEFB0];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
@@ -741,7 +741,7 @@ LABEL_13:
     v14[3] = &unk_279C5A4E8;
     v16 = &v17;
     v15 = v7;
-    [(AFClientPluginManager *)pluginManager enumerateFactoryInstancesForDomainKey:v11 groupIdentifier:v9 classIdentifier:v10 usingBlock:v14];
+    [(AFClientPluginManager *)pluginManager enumerateFactoryInstancesForDomainKey:v11 groupIdentifier:groupIdentifier classIdentifier:encodedClassName usingBlock:v14];
 
     v12 = v18[5];
     _Block_object_dispose(&v17, 8);
@@ -749,7 +749,7 @@ LABEL_13:
 
   else
   {
-    v12 = v4;
+    v12 = itemsCopy;
   }
 
   return v12;
@@ -769,10 +769,10 @@ void __56__SiriUISnippetManager_filteredDisambiguationListItems___block_invoke(u
   }
 }
 
-- (id)safeDisambiguationItemForListItem:(id)a3 disambiguationKey:(id)a4
+- (id)safeDisambiguationItemForListItem:(id)item disambiguationKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  keyCopy = key;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -785,11 +785,11 @@ void __56__SiriUISnippetManager_filteredDisambiguationListItems___block_invoke(u
   v13[2] = __76__SiriUISnippetManager_safeDisambiguationItemForListItem_disambiguationKey___block_invoke;
   v13[3] = &unk_279C5A510;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = itemCopy;
+  v15 = keyCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
+  v9 = keyCopy;
+  v10 = itemCopy;
   dispatch_sync(pluginBundlesQueue, v13);
   v11 = v18[5];
 
@@ -808,22 +808,22 @@ uint64_t __76__SiriUISnippetManager_safeDisambiguationItemForListItem_disambigua
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (id)disambiguationItemForListItem:(id)a3 disambiguationKey:(id)a4
+- (id)disambiguationItemForListItem:(id)item disambiguationKey:(id)key
 {
   v60 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 object];
+  itemCopy = item;
+  keyCopy = key;
+  object = [itemCopy object];
   v46 = 0;
   v47 = &v46;
   v48 = 0x3032000000;
   v49 = __Block_byref_object_copy__0;
   v50 = __Block_byref_object_dispose__0;
   v51 = 0;
-  if (!v9)
+  if (!object)
   {
-    v27 = [v7 title];
-    v28 = v27 == 0;
+    title = [itemCopy title];
+    v28 = title == 0;
 
     if (!v28)
     {
@@ -832,44 +832,44 @@ uint64_t __76__SiriUISnippetManager_safeDisambiguationItemForListItem_disambigua
       v47[5] = v29;
 
       v31 = v47[5];
-      v32 = [v7 title];
-      [v31 setTitle:v32];
+      title2 = [itemCopy title];
+      [v31 setTitle:title2];
 
       v25 = v47[5];
       goto LABEL_14;
     }
   }
 
-  v10 = [v9 groupIdentifier];
-  if (v10)
+  groupIdentifier = [object groupIdentifier];
+  if (groupIdentifier)
   {
-    v11 = [v9 encodedClassName];
-    v12 = v11 == 0;
+    encodedClassName = [object encodedClassName];
+    v12 = encodedClassName == 0;
 
     if (!v12)
     {
       pluginManager = self->_pluginManager;
-      v14 = [v9 groupIdentifier];
-      v15 = [v9 encodedClassName];
+      groupIdentifier2 = [object groupIdentifier];
+      encodedClassName2 = [object encodedClassName];
       v16 = *MEMORY[0x277CEEFB0];
       v36 = MEMORY[0x277D85DD0];
       v37 = 3221225472;
       v38 = __72__SiriUISnippetManager_disambiguationItemForListItem_disambiguationKey___block_invoke;
       v39 = &unk_279C5A538;
       v44 = &v46;
-      v17 = v7;
+      v17 = itemCopy;
       v40 = v17;
-      v41 = v8;
+      v41 = keyCopy;
       v45 = a2;
-      v42 = v9;
-      v43 = self;
-      [(AFClientPluginManager *)pluginManager enumerateFactoryInstancesForDomainKey:v16 groupIdentifier:v14 classIdentifier:v15 usingBlock:&v36];
+      v42 = object;
+      selfCopy = self;
+      [(AFClientPluginManager *)pluginManager enumerateFactoryInstancesForDomainKey:v16 groupIdentifier:groupIdentifier2 classIdentifier:encodedClassName2 usingBlock:&v36];
 
-      v18 = [v17 label];
-      if ([v18 length])
+      label = [v17 label];
+      if ([label length])
       {
-        v19 = [v17 labelValue];
-        v20 = [v19 length] == 0;
+        labelValue = [v17 labelValue];
+        v20 = [labelValue length] == 0;
 
         if (v20)
         {
@@ -882,9 +882,9 @@ LABEL_8:
         [v47[5] setHeadingText:0];
         v21 = v47[5];
         v22 = MEMORY[0x277CCACA8];
-        v18 = [v17 label];
-        v23 = [v17 labelValue];
-        v24 = [v22 stringWithFormat:@"%@ %@", v18, v23, v36, v37, v38, v39, v40, v41];
+        label = [v17 label];
+        labelValue2 = [v17 labelValue];
+        v24 = [v22 stringWithFormat:@"%@ %@", label, labelValue2, v36, v37, v38, v39, v40, v41];
         [v21 setSubtitle:v24];
       }
 
@@ -895,16 +895,16 @@ LABEL_8:
   v26 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
   {
-    v34 = [v9 groupIdentifier];
-    v35 = [v9 encodedClassName];
+    groupIdentifier3 = [object groupIdentifier];
+    encodedClassName3 = [object encodedClassName];
     *buf = 136315906;
     v53 = "[SiriUISnippetManager disambiguationItemForListItem:disambiguationKey:]";
     v54 = 2112;
-    v55 = v34;
+    v55 = groupIdentifier3;
     v56 = 2112;
-    v57 = v35;
+    v57 = encodedClassName3;
     v58 = 2112;
-    v59 = v7;
+    v59 = itemCopy;
     _os_log_error_impl(&dword_26948D000, v26, OS_LOG_TYPE_ERROR, "%s No disambiguation item can be found with empty groupIdentifier  (%@) or classname (%@). ListItem: %@", buf, 0x2Au);
   }
 
@@ -950,14 +950,14 @@ void __72__SiriUISnippetManager_disambiguationItemForListItem_disambiguationKey_
   }
 }
 
-- (id)listItemToPickInAutodisambiguationForListItems:(id)a3
+- (id)listItemToPickInAutodisambiguationForListItems:(id)items
 {
-  v4 = a3;
-  if ([v4 count])
+  itemsCopy = items;
+  if ([itemsCopy count])
   {
-    if ([v4 count] == 1)
+    if ([itemsCopy count] == 1)
     {
-      v5 = [v4 firstObject];
+      firstObject = [itemsCopy firstObject];
     }
 
     else
@@ -971,13 +971,13 @@ void __72__SiriUISnippetManager_disambiguationItemForListItem_disambiguationKey_
       v15 = 0x3032000000;
       v16 = __Block_byref_object_copy__0;
       v17 = __Block_byref_object_dispose__0;
-      v18 = [v4 firstObject];
+      firstObject2 = [itemsCopy firstObject];
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
       v8[2] = __71__SiriUISnippetManager_listItemToPickInAutodisambiguationForListItems___block_invoke;
       v8[3] = &unk_279C5A560;
-      v9 = v4;
-      v10 = self;
+      v9 = itemsCopy;
+      selfCopy = self;
       v11 = &v19;
       v12 = &v13;
       [v9 enumerateObjectsUsingBlock:v8];
@@ -991,7 +991,7 @@ void __72__SiriUISnippetManager_disambiguationItemForListItem_disambiguationKey_
         v6 = 0;
       }
 
-      v5 = v6;
+      firstObject = v6;
 
       _Block_object_dispose(&v13, 8);
       _Block_object_dispose(&v19, 8);
@@ -1000,10 +1000,10 @@ void __72__SiriUISnippetManager_disambiguationItemForListItem_disambiguationKey_
 
   else
   {
-    v5 = 0;
+    firstObject = 0;
   }
 
-  return v5;
+  return firstObject;
 }
 
 void __71__SiriUISnippetManager_listItemToPickInAutodisambiguationForListItems___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)

@@ -1,5 +1,5 @@
 @interface ManagedFinHealthTransactionEntityGroup
-- (_TtC10FinanceKit38ManagedFinHealthTransactionEntityGroup)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (_TtC10FinanceKit38ManagedFinHealthTransactionEntityGroup)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 - (void)willSave;
 @end
 
@@ -7,15 +7,15 @@
 
 - (void)willSave
 {
-  v2 = self;
+  selfCopy = self;
   ManagedFinHealthTransactionEntityGroup.willSave()();
 }
 
-- (_TtC10FinanceKit38ManagedFinHealthTransactionEntityGroup)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (_TtC10FinanceKit38ManagedFinHealthTransactionEntityGroup)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  return [(ManagedFinHealthTransactionEntityGroup *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(ManagedFinHealthTransactionEntityGroup *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 @end

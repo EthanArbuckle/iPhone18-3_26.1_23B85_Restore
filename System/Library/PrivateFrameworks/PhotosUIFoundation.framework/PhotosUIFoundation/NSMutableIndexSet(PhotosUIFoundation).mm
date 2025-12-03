@@ -11,7 +11,7 @@
   v4[1] = 3221225472;
   v4[2] = __71__NSMutableIndexSet_PhotosUIFoundation__px_adjustIndexesForInsertions___block_invoke;
   v4[3] = &unk_1E7BB7918;
-  v4[4] = a1;
+  v4[4] = self;
   return [a3 enumerateRangesUsingBlock:v4];
 }
 
@@ -21,7 +21,7 @@
   v4[1] = 3221225472;
   v4[2] = __70__NSMutableIndexSet_PhotosUIFoundation__px_adjustIndexesForDeletions___block_invoke;
   v4[3] = &unk_1E7BB7918;
-  v4[4] = a1;
+  v4[4] = self;
   return [a3 enumerateRangesWithOptions:2 usingBlock:v4];
 }
 

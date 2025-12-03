@@ -1,28 +1,28 @@
 @interface ICLocation
-+ (id)searchStringsForPlacemark:(id)a3;
++ (id)searchStringsForPlacemark:(id)placemark;
 - (CLPlacemark)placemark;
 - (NSString)formattedAddress;
 - (id)searchStrings;
 - (void)didTurnIntoFault;
-- (void)setLocationFromPlacemark:(id)a3;
-- (void)setLocationFromURL:(id)a3;
-- (void)setPlacemark:(id)a3;
+- (void)setLocationFromPlacemark:(id)placemark;
+- (void)setLocationFromURL:(id)l;
+- (void)setPlacemark:(id)placemark;
 @end
 
 @implementation ICLocation
 
-- (void)setPlacemark:(id)a3
+- (void)setPlacemark:(id)placemark
 {
-  v7 = a3;
+  placemarkCopy = placemark;
   if (([(CLPlacemark *)self->_placemark isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_placemark, a3);
-    if (v7)
+    objc_storeStrong(&self->_placemark, placemark);
+    if (placemarkCopy)
     {
       v5 = [objc_alloc(MEMORY[0x277CCAAB0]) initRequiringSecureCoding:1];
-      [v5 encodeObject:v7 forKey:@"placemark"];
-      v6 = [v5 encodedData];
-      [(ICLocation *)self setPlacemarkData:v6];
+      [v5 encodeObject:placemarkCopy forKey:@"placemark"];
+      encodedData = [v5 encodedData];
+      [(ICLocation *)self setPlacemarkData:encodedData];
     }
 
     else
@@ -37,11 +37,11 @@
   placemark = self->_placemark;
   if (!placemark)
   {
-    v4 = [(ICLocation *)self placemarkData];
-    if (v4)
+    placemarkData = [(ICLocation *)self placemarkData];
+    if (placemarkData)
     {
       v11 = 0;
-      v5 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:v4 error:&v11];
+      v5 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:placemarkData error:&v11];
       v6 = v11;
       if (v6)
       {
@@ -63,115 +63,115 @@
   return placemark;
 }
 
-+ (id)searchStringsForPlacemark:(id)a3
++ (id)searchStringsForPlacemark:(id)placemark
 {
   v41 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  placemarkCopy = placemark;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if (v3)
+  if (placemarkCopy)
   {
-    v5 = [v3 name];
+    name = [placemarkCopy name];
 
-    if (v5)
+    if (name)
     {
-      v6 = [v3 name];
-      [v4 addObject:v6];
+      name2 = [placemarkCopy name];
+      [v4 addObject:name2];
     }
 
-    v7 = [v3 thoroughfare];
+    thoroughfare = [placemarkCopy thoroughfare];
 
-    if (v7)
+    if (thoroughfare)
     {
-      v8 = [v3 thoroughfare];
-      [v4 addObject:v8];
+      thoroughfare2 = [placemarkCopy thoroughfare];
+      [v4 addObject:thoroughfare2];
     }
 
-    v9 = [v3 subThoroughfare];
+    subThoroughfare = [placemarkCopy subThoroughfare];
 
-    if (v9)
+    if (subThoroughfare)
     {
-      v10 = [v3 subThoroughfare];
-      [v4 addObject:v10];
+      subThoroughfare2 = [placemarkCopy subThoroughfare];
+      [v4 addObject:subThoroughfare2];
     }
 
-    v11 = [v3 locality];
+    locality = [placemarkCopy locality];
 
-    if (v11)
+    if (locality)
     {
-      v12 = [v3 locality];
-      [v4 addObject:v12];
+      locality2 = [placemarkCopy locality];
+      [v4 addObject:locality2];
     }
 
-    v13 = [v3 subLocality];
+    subLocality = [placemarkCopy subLocality];
 
-    if (v13)
+    if (subLocality)
     {
-      v14 = [v3 subLocality];
-      [v4 addObject:v14];
+      subLocality2 = [placemarkCopy subLocality];
+      [v4 addObject:subLocality2];
     }
 
-    v15 = [v3 administrativeArea];
+    administrativeArea = [placemarkCopy administrativeArea];
 
-    if (v15)
+    if (administrativeArea)
     {
-      v16 = [v3 administrativeArea];
-      [v4 addObject:v16];
+      administrativeArea2 = [placemarkCopy administrativeArea];
+      [v4 addObject:administrativeArea2];
     }
 
-    v17 = [v3 subAdministrativeArea];
+    subAdministrativeArea = [placemarkCopy subAdministrativeArea];
 
-    if (v17)
+    if (subAdministrativeArea)
     {
-      v18 = [v3 subAdministrativeArea];
-      [v4 addObject:v18];
+      subAdministrativeArea2 = [placemarkCopy subAdministrativeArea];
+      [v4 addObject:subAdministrativeArea2];
     }
 
-    v19 = [v3 postalCode];
+    postalCode = [placemarkCopy postalCode];
 
-    if (v19)
+    if (postalCode)
     {
-      v20 = [v3 postalCode];
-      [v4 addObject:v20];
+      postalCode2 = [placemarkCopy postalCode];
+      [v4 addObject:postalCode2];
     }
 
-    v21 = [v3 ISOcountryCode];
+    iSOcountryCode = [placemarkCopy ISOcountryCode];
 
-    if (v21)
+    if (iSOcountryCode)
     {
-      v22 = [v3 ISOcountryCode];
-      [v4 addObject:v22];
+      iSOcountryCode2 = [placemarkCopy ISOcountryCode];
+      [v4 addObject:iSOcountryCode2];
     }
 
-    v23 = [v3 country];
+    country = [placemarkCopy country];
 
-    if (v23)
+    if (country)
     {
-      v24 = [v3 country];
-      [v4 addObject:v24];
+      country2 = [placemarkCopy country];
+      [v4 addObject:country2];
     }
 
-    v25 = [v3 inlandWater];
+    inlandWater = [placemarkCopy inlandWater];
 
-    if (v25)
+    if (inlandWater)
     {
-      v26 = [v3 inlandWater];
-      [v4 addObject:v26];
+      inlandWater2 = [placemarkCopy inlandWater];
+      [v4 addObject:inlandWater2];
     }
 
-    v27 = [v3 ocean];
+    ocean = [placemarkCopy ocean];
 
-    if (v27)
+    if (ocean)
     {
-      v28 = [v3 ocean];
-      [v4 addObject:v28];
+      ocean2 = [placemarkCopy ocean];
+      [v4 addObject:ocean2];
     }
 
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v29 = [v3 areasOfInterest];
-    v30 = [v29 countByEnumeratingWithState:&v36 objects:v40 count:16];
+    areasOfInterest = [placemarkCopy areasOfInterest];
+    v30 = [areasOfInterest countByEnumeratingWithState:&v36 objects:v40 count:16];
     if (v30)
     {
       v31 = v30;
@@ -182,13 +182,13 @@
         {
           if (*v37 != v32)
           {
-            objc_enumerationMutation(v29);
+            objc_enumerationMutation(areasOfInterest);
           }
 
           [v4 addObject:*(*(&v36 + 1) + 8 * i)];
         }
 
-        v31 = [v29 countByEnumeratingWithState:&v36 objects:v40 count:16];
+        v31 = [areasOfInterest countByEnumeratingWithState:&v36 objects:v40 count:16];
       }
 
       while (v31);
@@ -203,8 +203,8 @@
 - (id)searchStrings
 {
   v3 = objc_opt_class();
-  v4 = [(ICLocation *)self placemark];
-  v5 = [v3 searchStringsForPlacemark:v4];
+  placemark = [(ICLocation *)self placemark];
+  v5 = [v3 searchStringsForPlacemark:placemark];
 
   return v5;
 }
@@ -212,49 +212,49 @@
 - (NSString)formattedAddress
 {
   v3 = objc_alloc_init(MEMORY[0x277CBDB60]);
-  v4 = [(ICLocation *)self placemark];
-  v5 = [v4 thoroughfare];
-  [v3 setStreet:v5];
+  placemark = [(ICLocation *)self placemark];
+  thoroughfare = [placemark thoroughfare];
+  [v3 setStreet:thoroughfare];
 
-  v6 = [(ICLocation *)self placemark];
-  v7 = [v6 subLocality];
-  [v3 setSubLocality:v7];
+  placemark2 = [(ICLocation *)self placemark];
+  subLocality = [placemark2 subLocality];
+  [v3 setSubLocality:subLocality];
 
-  v8 = [(ICLocation *)self placemark];
-  v9 = [v8 locality];
-  [v3 setCity:v9];
+  placemark3 = [(ICLocation *)self placemark];
+  locality = [placemark3 locality];
+  [v3 setCity:locality];
 
-  v10 = [(ICLocation *)self placemark];
-  v11 = [v10 subAdministrativeArea];
-  [v3 setSubAdministrativeArea:v11];
+  placemark4 = [(ICLocation *)self placemark];
+  subAdministrativeArea = [placemark4 subAdministrativeArea];
+  [v3 setSubAdministrativeArea:subAdministrativeArea];
 
-  v12 = [(ICLocation *)self placemark];
-  v13 = [v12 administrativeArea];
-  [v3 setState:v13];
+  placemark5 = [(ICLocation *)self placemark];
+  administrativeArea = [placemark5 administrativeArea];
+  [v3 setState:administrativeArea];
 
-  v14 = [(ICLocation *)self placemark];
-  v15 = [v14 postalCode];
-  [v3 setPostalCode:v15];
+  placemark6 = [(ICLocation *)self placemark];
+  postalCode = [placemark6 postalCode];
+  [v3 setPostalCode:postalCode];
 
-  v16 = [(ICLocation *)self placemark];
-  v17 = [v16 country];
-  [v3 setCountry:v17];
+  placemark7 = [(ICLocation *)self placemark];
+  country = [placemark7 country];
+  [v3 setCountry:country];
 
-  v18 = [(ICLocation *)self placemark];
-  v19 = [v18 ISOcountryCode];
-  [v3 setISOCountryCode:v19];
+  placemark8 = [(ICLocation *)self placemark];
+  iSOcountryCode = [placemark8 ISOcountryCode];
+  [v3 setISOCountryCode:iSOcountryCode];
 
   v20 = [MEMORY[0x277CBDB80] stringFromPostalAddress:v3 style:0];
 
   return v20;
 }
 
-- (void)setLocationFromURL:(id)a3
+- (void)setLocationFromURL:(id)l
 {
-  v4 = a3;
-  if ([MEMORY[0x277D0EBE8] isValidMapURL:v4])
+  lCopy = l;
+  if ([MEMORY[0x277D0EBE8] isValidMapURL:lCopy])
   {
-    v5 = [objc_alloc(MEMORY[0x277D0EBE8]) initWithURL:v4];
+    v5 = [objc_alloc(MEMORY[0x277D0EBE8]) initWithURL:lCopy];
     v6 = 0.0;
     v7 = 0.0;
     if ([v5 parseIncludingCustomParameters:1])
@@ -266,11 +266,11 @@
 
       else
       {
-        v10 = [v5 directionsDestinationAddressString];
-        if (v10)
+        directionsDestinationAddressString = [v5 directionsDestinationAddressString];
+        if (directionsDestinationAddressString)
         {
-          v11 = v10;
-          v12 = objc_msgSend(v10, "stringByReplacingOccurrencesOfString:withString:", @"("), &stru_2827172C0;
+          v11 = directionsDestinationAddressString;
+          v12 = objc_msgSend(directionsDestinationAddressString, "stringByReplacingOccurrencesOfString:withString:", @"("), &stru_2827172C0;
 
           v13 = [v12 stringByReplacingOccurrencesOfString:@"" withString:?], &stru_2827172C0);
 
@@ -280,7 +280,7 @@
             v17 = os_log_create("com.apple.notes", "CoreData");
             if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
             {
-              [(ICLocation *)v4 setLocationFromURL:v14, v17];
+              [(ICLocation *)lCopy setLocationFromURL:v14, v17];
             }
           }
 
@@ -314,23 +314,23 @@ LABEL_15:
   v5 = os_log_create("com.apple.notes", "CoreData");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    [(ICLocation *)v4 setLocationFromURL:v5];
+    [(ICLocation *)lCopy setLocationFromURL:v5];
   }
 
 LABEL_16:
 }
 
-- (void)setLocationFromPlacemark:(id)a3
+- (void)setLocationFromPlacemark:(id)placemark
 {
-  v4 = a3;
-  [(ICLocation *)self setPlacemark:v4];
-  v5 = [v4 location];
-  [v5 coordinate];
+  placemarkCopy = placemark;
+  [(ICLocation *)self setPlacemark:placemarkCopy];
+  location = [placemarkCopy location];
+  [location coordinate];
   [(ICLocation *)self setLatitude:?];
 
-  v7 = [v4 location];
+  location2 = [placemarkCopy location];
 
-  [v7 coordinate];
+  [location2 coordinate];
   [(ICLocation *)self setLongitude:v6];
 }
 

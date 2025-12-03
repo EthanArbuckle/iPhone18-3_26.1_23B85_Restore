@@ -1,21 +1,21 @@
 @interface NPUserEventAgent
 + (id)sharedAgent;
-- (void)handleProviderAction:(int64_t)a3 token:(unint64_t)a4 event:(id)a5;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)handleProviderAction:(int64_t)action token:(unint64_t)token event:(id)event;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)registerForCaptivePluginListChangedNotification;
 - (void)registerForDynamicStoreChanges;
 - (void)registerForUserActivityNotifications;
-- (void)setConfigurationFetchInterval:(int64_t)a3;
-- (void)setDirectPathProbeInterval:(int64_t)a3;
-- (void)setLocationMonitorInterval:(double)a3;
-- (void)setODoHAuthOutageRestoreInterval:(int64_t)a3;
-- (void)setODoHRestoreInterval:(int64_t)a3;
-- (void)setProxyPathProbeInterval:(int64_t)a3;
-- (void)setProxyRestoreInterval:(int64_t)a3;
-- (void)setResurrectionInterval:(int64_t)a3;
-- (void)setSubscriptionCheckInterval:(int64_t)a3;
-- (void)setTokenFetchInterval:(int64_t)a3;
-- (void)setTokenIssuanceRestrictedUntilInterval:(int64_t)a3;
+- (void)setConfigurationFetchInterval:(int64_t)interval;
+- (void)setDirectPathProbeInterval:(int64_t)interval;
+- (void)setLocationMonitorInterval:(double)interval;
+- (void)setODoHAuthOutageRestoreInterval:(int64_t)interval;
+- (void)setODoHRestoreInterval:(int64_t)interval;
+- (void)setProxyPathProbeInterval:(int64_t)interval;
+- (void)setProxyRestoreInterval:(int64_t)interval;
+- (void)setResurrectionInterval:(int64_t)interval;
+- (void)setSubscriptionCheckInterval:(int64_t)interval;
+- (void)setTokenFetchInterval:(int64_t)interval;
+- (void)setTokenIssuanceRestrictedUntilInterval:(int64_t)interval;
 - (void)unregisterForUserActivityNotifications;
 - (void)unwatchForPathChanges;
 - (void)watchForPathChanges;
@@ -35,19 +35,19 @@
   return v3;
 }
 
-- (void)setResurrectionInterval:(int64_t)a3
+- (void)setResurrectionInterval:(int64_t)interval
 {
-  v5 = [(NPUserEventAgent *)self resurrectionTimer];
+  resurrectionTimer = [(NPUserEventAgent *)self resurrectionTimer];
 
-  if (v5)
+  if (resurrectionTimer)
   {
-    v6 = [(NPUserEventAgent *)self resurrectionTimer];
-    [v6 invalidate];
+    resurrectionTimer2 = [(NPUserEventAgent *)self resurrectionTimer];
+    [resurrectionTimer2 invalidate];
 
     [(NPUserEventAgent *)self setResurrectionTimer:0];
   }
 
-  if (a3 < 1)
+  if (interval < 1)
   {
 
     [(NPUserEventAgent *)self setResurrectionDate:0];
@@ -55,27 +55,27 @@
 
   else
   {
-    v7 = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:a3];
+    v7 = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:interval];
     [(NPUserEventAgent *)self setResurrectionDate:v7];
 
-    v8 = [(NPUserEventAgent *)self resurrectionDate];
-    [v8 timeIntervalSinceNow];
+    resurrectionDate = [(NPUserEventAgent *)self resurrectionDate];
+    [resurrectionDate timeIntervalSinceNow];
     v10 = v9;
 
     if (v10 > 0.0)
     {
       v11 = [NSTimer alloc];
-      v12 = [(NPUserEventAgent *)self resurrectionDate];
-      v13 = [v11 initWithFireDate:v12 interval:0 repeats:&stru_14A50 block:0.0];
+      resurrectionDate2 = [(NPUserEventAgent *)self resurrectionDate];
+      v13 = [v11 initWithFireDate:resurrectionDate2 interval:0 repeats:&stru_14A50 block:0.0];
       [(NPUserEventAgent *)self setResurrectionTimer:v13];
 
-      v14 = [(NPUserEventAgent *)self resurrectionTimer];
+      resurrectionTimer3 = [(NPUserEventAgent *)self resurrectionTimer];
 
-      if (v14)
+      if (resurrectionTimer3)
       {
         v17 = +[NSRunLoop mainRunLoop];
-        v15 = [(NPUserEventAgent *)self resurrectionTimer];
-        [v17 addTimer:v15 forMode:NSDefaultRunLoopMode];
+        resurrectionTimer4 = [(NPUserEventAgent *)self resurrectionTimer];
+        [v17 addTimer:resurrectionTimer4 forMode:NSDefaultRunLoopMode];
       }
 
       else
@@ -90,19 +90,19 @@
   }
 }
 
-- (void)setConfigurationFetchInterval:(int64_t)a3
+- (void)setConfigurationFetchInterval:(int64_t)interval
 {
-  v5 = [(NPUserEventAgent *)self configurationFetchTimer];
+  configurationFetchTimer = [(NPUserEventAgent *)self configurationFetchTimer];
 
-  if (v5)
+  if (configurationFetchTimer)
   {
-    v6 = [(NPUserEventAgent *)self configurationFetchTimer];
-    [v6 invalidate];
+    configurationFetchTimer2 = [(NPUserEventAgent *)self configurationFetchTimer];
+    [configurationFetchTimer2 invalidate];
 
     [(NPUserEventAgent *)self setConfigurationFetchTimer:0];
   }
 
-  if (a3 < 1)
+  if (interval < 1)
   {
 
     [(NPUserEventAgent *)self setConfigurationFetchDate:0];
@@ -110,27 +110,27 @@
 
   else
   {
-    v7 = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:a3];
+    v7 = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:interval];
     [(NPUserEventAgent *)self setConfigurationFetchDate:v7];
 
-    v8 = [(NPUserEventAgent *)self configurationFetchDate];
-    [v8 timeIntervalSinceNow];
+    configurationFetchDate = [(NPUserEventAgent *)self configurationFetchDate];
+    [configurationFetchDate timeIntervalSinceNow];
     v10 = v9;
 
     if (v10 > 0.0)
     {
       v11 = [NSTimer alloc];
-      v12 = [(NPUserEventAgent *)self configurationFetchDate];
-      v13 = [v11 initWithFireDate:v12 interval:0 repeats:&stru_14A70 block:0.0];
+      configurationFetchDate2 = [(NPUserEventAgent *)self configurationFetchDate];
+      v13 = [v11 initWithFireDate:configurationFetchDate2 interval:0 repeats:&stru_14A70 block:0.0];
       [(NPUserEventAgent *)self setConfigurationFetchTimer:v13];
 
-      v14 = [(NPUserEventAgent *)self configurationFetchTimer];
+      configurationFetchTimer3 = [(NPUserEventAgent *)self configurationFetchTimer];
 
-      if (v14)
+      if (configurationFetchTimer3)
       {
         v17 = +[NSRunLoop mainRunLoop];
-        v15 = [(NPUserEventAgent *)self configurationFetchTimer];
-        [v17 addTimer:v15 forMode:NSDefaultRunLoopMode];
+        configurationFetchTimer4 = [(NPUserEventAgent *)self configurationFetchTimer];
+        [v17 addTimer:configurationFetchTimer4 forMode:NSDefaultRunLoopMode];
       }
 
       else
@@ -145,19 +145,19 @@
   }
 }
 
-- (void)setTokenFetchInterval:(int64_t)a3
+- (void)setTokenFetchInterval:(int64_t)interval
 {
-  v5 = [(NPUserEventAgent *)self tokenFetchTimer];
+  tokenFetchTimer = [(NPUserEventAgent *)self tokenFetchTimer];
 
-  if (v5)
+  if (tokenFetchTimer)
   {
-    v6 = [(NPUserEventAgent *)self tokenFetchTimer];
-    [v6 invalidate];
+    tokenFetchTimer2 = [(NPUserEventAgent *)self tokenFetchTimer];
+    [tokenFetchTimer2 invalidate];
 
     [(NPUserEventAgent *)self setTokenFetchTimer:0];
   }
 
-  if (a3 < 1)
+  if (interval < 1)
   {
 
     [(NPUserEventAgent *)self setTokenFetchDate:0];
@@ -165,27 +165,27 @@
 
   else
   {
-    v7 = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:a3];
+    v7 = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:interval];
     [(NPUserEventAgent *)self setTokenFetchDate:v7];
 
-    v8 = [(NPUserEventAgent *)self tokenFetchDate];
-    [v8 timeIntervalSinceNow];
+    tokenFetchDate = [(NPUserEventAgent *)self tokenFetchDate];
+    [tokenFetchDate timeIntervalSinceNow];
     v10 = v9;
 
     if (v10 > 0.0)
     {
       v11 = [NSTimer alloc];
-      v12 = [(NPUserEventAgent *)self tokenFetchDate];
-      v13 = [v11 initWithFireDate:v12 interval:0 repeats:&stru_14A90 block:0.0];
+      tokenFetchDate2 = [(NPUserEventAgent *)self tokenFetchDate];
+      v13 = [v11 initWithFireDate:tokenFetchDate2 interval:0 repeats:&stru_14A90 block:0.0];
       [(NPUserEventAgent *)self setTokenFetchTimer:v13];
 
-      v14 = [(NPUserEventAgent *)self tokenFetchTimer];
+      tokenFetchTimer3 = [(NPUserEventAgent *)self tokenFetchTimer];
 
-      if (v14)
+      if (tokenFetchTimer3)
       {
         v17 = +[NSRunLoop mainRunLoop];
-        v15 = [(NPUserEventAgent *)self tokenFetchTimer];
-        [v17 addTimer:v15 forMode:NSDefaultRunLoopMode];
+        tokenFetchTimer4 = [(NPUserEventAgent *)self tokenFetchTimer];
+        [v17 addTimer:tokenFetchTimer4 forMode:NSDefaultRunLoopMode];
       }
 
       else
@@ -200,19 +200,19 @@
   }
 }
 
-- (void)setTokenIssuanceRestrictedUntilInterval:(int64_t)a3
+- (void)setTokenIssuanceRestrictedUntilInterval:(int64_t)interval
 {
-  v5 = [(NPUserEventAgent *)self tokenIssuanceRestrictedUntilTimer];
+  tokenIssuanceRestrictedUntilTimer = [(NPUserEventAgent *)self tokenIssuanceRestrictedUntilTimer];
 
-  if (v5)
+  if (tokenIssuanceRestrictedUntilTimer)
   {
-    v6 = [(NPUserEventAgent *)self tokenIssuanceRestrictedUntilTimer];
-    [v6 invalidate];
+    tokenIssuanceRestrictedUntilTimer2 = [(NPUserEventAgent *)self tokenIssuanceRestrictedUntilTimer];
+    [tokenIssuanceRestrictedUntilTimer2 invalidate];
 
     [(NPUserEventAgent *)self setTokenIssuanceRestrictedUntilTimer:0];
   }
 
-  if (a3 < 1)
+  if (interval < 1)
   {
 
     [(NPUserEventAgent *)self setTokenIssuanceRestrictedUntilDate:0];
@@ -220,27 +220,27 @@
 
   else
   {
-    v7 = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:a3];
+    v7 = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:interval];
     [(NPUserEventAgent *)self setTokenIssuanceRestrictedUntilDate:v7];
 
-    v8 = [(NPUserEventAgent *)self tokenIssuanceRestrictedUntilDate];
-    [v8 timeIntervalSinceNow];
+    tokenIssuanceRestrictedUntilDate = [(NPUserEventAgent *)self tokenIssuanceRestrictedUntilDate];
+    [tokenIssuanceRestrictedUntilDate timeIntervalSinceNow];
     v10 = v9;
 
     if (v10 > 0.0)
     {
       v11 = [NSTimer alloc];
-      v12 = [(NPUserEventAgent *)self tokenIssuanceRestrictedUntilDate];
-      v13 = [v11 initWithFireDate:v12 interval:0 repeats:&stru_14AB0 block:0.0];
+      tokenIssuanceRestrictedUntilDate2 = [(NPUserEventAgent *)self tokenIssuanceRestrictedUntilDate];
+      v13 = [v11 initWithFireDate:tokenIssuanceRestrictedUntilDate2 interval:0 repeats:&stru_14AB0 block:0.0];
       [(NPUserEventAgent *)self setTokenIssuanceRestrictedUntilTimer:v13];
 
-      v14 = [(NPUserEventAgent *)self tokenIssuanceRestrictedUntilTimer];
+      tokenIssuanceRestrictedUntilTimer3 = [(NPUserEventAgent *)self tokenIssuanceRestrictedUntilTimer];
 
-      if (v14)
+      if (tokenIssuanceRestrictedUntilTimer3)
       {
         v17 = +[NSRunLoop mainRunLoop];
-        v15 = [(NPUserEventAgent *)self tokenIssuanceRestrictedUntilTimer];
-        [v17 addTimer:v15 forMode:NSDefaultRunLoopMode];
+        tokenIssuanceRestrictedUntilTimer4 = [(NPUserEventAgent *)self tokenIssuanceRestrictedUntilTimer];
+        [v17 addTimer:tokenIssuanceRestrictedUntilTimer4 forMode:NSDefaultRunLoopMode];
       }
 
       else
@@ -255,19 +255,19 @@
   }
 }
 
-- (void)setSubscriptionCheckInterval:(int64_t)a3
+- (void)setSubscriptionCheckInterval:(int64_t)interval
 {
-  v5 = [(NPUserEventAgent *)self subscriptionCheckTimer];
+  subscriptionCheckTimer = [(NPUserEventAgent *)self subscriptionCheckTimer];
 
-  if (v5)
+  if (subscriptionCheckTimer)
   {
-    v6 = [(NPUserEventAgent *)self subscriptionCheckTimer];
-    [v6 invalidate];
+    subscriptionCheckTimer2 = [(NPUserEventAgent *)self subscriptionCheckTimer];
+    [subscriptionCheckTimer2 invalidate];
 
     [(NPUserEventAgent *)self setSubscriptionCheckTimer:0];
   }
 
-  if (a3 < 1)
+  if (interval < 1)
   {
 
     [(NPUserEventAgent *)self setSubscriptionCheckDate:0];
@@ -275,27 +275,27 @@
 
   else
   {
-    v7 = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:a3];
+    v7 = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:interval];
     [(NPUserEventAgent *)self setSubscriptionCheckDate:v7];
 
-    v8 = [(NPUserEventAgent *)self subscriptionCheckDate];
-    [v8 timeIntervalSinceNow];
+    subscriptionCheckDate = [(NPUserEventAgent *)self subscriptionCheckDate];
+    [subscriptionCheckDate timeIntervalSinceNow];
     v10 = v9;
 
     if (v10 > 0.0)
     {
       v11 = [NSTimer alloc];
-      v12 = [(NPUserEventAgent *)self subscriptionCheckDate];
-      v13 = [v11 initWithFireDate:v12 interval:0 repeats:&stru_14AD0 block:0.0];
+      subscriptionCheckDate2 = [(NPUserEventAgent *)self subscriptionCheckDate];
+      v13 = [v11 initWithFireDate:subscriptionCheckDate2 interval:0 repeats:&stru_14AD0 block:0.0];
       [(NPUserEventAgent *)self setSubscriptionCheckTimer:v13];
 
-      v14 = [(NPUserEventAgent *)self subscriptionCheckTimer];
+      subscriptionCheckTimer3 = [(NPUserEventAgent *)self subscriptionCheckTimer];
 
-      if (v14)
+      if (subscriptionCheckTimer3)
       {
         v17 = +[NSRunLoop mainRunLoop];
-        v15 = [(NPUserEventAgent *)self subscriptionCheckTimer];
-        [v17 addTimer:v15 forMode:NSDefaultRunLoopMode];
+        subscriptionCheckTimer4 = [(NPUserEventAgent *)self subscriptionCheckTimer];
+        [v17 addTimer:subscriptionCheckTimer4 forMode:NSDefaultRunLoopMode];
       }
 
       else
@@ -310,19 +310,19 @@
   }
 }
 
-- (void)setProxyRestoreInterval:(int64_t)a3
+- (void)setProxyRestoreInterval:(int64_t)interval
 {
-  v5 = [(NPUserEventAgent *)self proxyRestoreTimer];
+  proxyRestoreTimer = [(NPUserEventAgent *)self proxyRestoreTimer];
 
-  if (v5)
+  if (proxyRestoreTimer)
   {
-    v6 = [(NPUserEventAgent *)self proxyRestoreTimer];
-    [v6 invalidate];
+    proxyRestoreTimer2 = [(NPUserEventAgent *)self proxyRestoreTimer];
+    [proxyRestoreTimer2 invalidate];
 
     [(NPUserEventAgent *)self setProxyRestoreTimer:0];
   }
 
-  if (a3 < 1)
+  if (interval < 1)
   {
 
     [(NPUserEventAgent *)self setProxyRestoreDate:0];
@@ -330,27 +330,27 @@
 
   else
   {
-    v7 = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:a3];
+    v7 = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:interval];
     [(NPUserEventAgent *)self setProxyRestoreDate:v7];
 
-    v8 = [(NPUserEventAgent *)self proxyRestoreDate];
-    [v8 timeIntervalSinceNow];
+    proxyRestoreDate = [(NPUserEventAgent *)self proxyRestoreDate];
+    [proxyRestoreDate timeIntervalSinceNow];
     v10 = v9;
 
     if (v10 > 0.0)
     {
       v11 = [NSTimer alloc];
-      v12 = [(NPUserEventAgent *)self proxyRestoreDate];
-      v13 = [v11 initWithFireDate:v12 interval:0 repeats:&stru_14AF0 block:0.0];
+      proxyRestoreDate2 = [(NPUserEventAgent *)self proxyRestoreDate];
+      v13 = [v11 initWithFireDate:proxyRestoreDate2 interval:0 repeats:&stru_14AF0 block:0.0];
       [(NPUserEventAgent *)self setProxyRestoreTimer:v13];
 
-      v14 = [(NPUserEventAgent *)self proxyRestoreTimer];
+      proxyRestoreTimer3 = [(NPUserEventAgent *)self proxyRestoreTimer];
 
-      if (v14)
+      if (proxyRestoreTimer3)
       {
         v17 = +[NSRunLoop mainRunLoop];
-        v15 = [(NPUserEventAgent *)self proxyRestoreTimer];
-        [v17 addTimer:v15 forMode:NSDefaultRunLoopMode];
+        proxyRestoreTimer4 = [(NPUserEventAgent *)self proxyRestoreTimer];
+        [v17 addTimer:proxyRestoreTimer4 forMode:NSDefaultRunLoopMode];
       }
 
       else
@@ -365,19 +365,19 @@
   }
 }
 
-- (void)setODoHRestoreInterval:(int64_t)a3
+- (void)setODoHRestoreInterval:(int64_t)interval
 {
-  v5 = [(NPUserEventAgent *)self odohRestoreTimer];
+  odohRestoreTimer = [(NPUserEventAgent *)self odohRestoreTimer];
 
-  if (v5)
+  if (odohRestoreTimer)
   {
-    v6 = [(NPUserEventAgent *)self odohRestoreTimer];
-    [v6 invalidate];
+    odohRestoreTimer2 = [(NPUserEventAgent *)self odohRestoreTimer];
+    [odohRestoreTimer2 invalidate];
 
     [(NPUserEventAgent *)self setOdohRestoreTimer:0];
   }
 
-  if (a3 < 1)
+  if (interval < 1)
   {
 
     [(NPUserEventAgent *)self setOdohRestoreDate:0];
@@ -385,27 +385,27 @@
 
   else
   {
-    v7 = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:a3];
+    v7 = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:interval];
     [(NPUserEventAgent *)self setOdohRestoreDate:v7];
 
-    v8 = [(NPUserEventAgent *)self odohRestoreDate];
-    [v8 timeIntervalSinceNow];
+    odohRestoreDate = [(NPUserEventAgent *)self odohRestoreDate];
+    [odohRestoreDate timeIntervalSinceNow];
     v10 = v9;
 
     if (v10 > 0.0)
     {
       v11 = [NSTimer alloc];
-      v12 = [(NPUserEventAgent *)self odohRestoreDate];
-      v13 = [v11 initWithFireDate:v12 interval:0 repeats:&stru_14B10 block:0.0];
+      odohRestoreDate2 = [(NPUserEventAgent *)self odohRestoreDate];
+      v13 = [v11 initWithFireDate:odohRestoreDate2 interval:0 repeats:&stru_14B10 block:0.0];
       [(NPUserEventAgent *)self setOdohRestoreTimer:v13];
 
-      v14 = [(NPUserEventAgent *)self odohRestoreTimer];
+      odohRestoreTimer3 = [(NPUserEventAgent *)self odohRestoreTimer];
 
-      if (v14)
+      if (odohRestoreTimer3)
       {
         v17 = +[NSRunLoop mainRunLoop];
-        v15 = [(NPUserEventAgent *)self odohRestoreTimer];
-        [v17 addTimer:v15 forMode:NSDefaultRunLoopMode];
+        odohRestoreTimer4 = [(NPUserEventAgent *)self odohRestoreTimer];
+        [v17 addTimer:odohRestoreTimer4 forMode:NSDefaultRunLoopMode];
       }
 
       else
@@ -420,19 +420,19 @@
   }
 }
 
-- (void)setODoHAuthOutageRestoreInterval:(int64_t)a3
+- (void)setODoHAuthOutageRestoreInterval:(int64_t)interval
 {
-  v5 = [(NPUserEventAgent *)self odohAuthOutageRestoreTimer];
+  odohAuthOutageRestoreTimer = [(NPUserEventAgent *)self odohAuthOutageRestoreTimer];
 
-  if (v5)
+  if (odohAuthOutageRestoreTimer)
   {
-    v6 = [(NPUserEventAgent *)self odohAuthOutageRestoreTimer];
-    [v6 invalidate];
+    odohAuthOutageRestoreTimer2 = [(NPUserEventAgent *)self odohAuthOutageRestoreTimer];
+    [odohAuthOutageRestoreTimer2 invalidate];
 
     [(NPUserEventAgent *)self setOdohAuthOutageRestoreTimer:0];
   }
 
-  if (a3 < 1)
+  if (interval < 1)
   {
 
     [(NPUserEventAgent *)self setOdohAuthOutageRestoreDate:0];
@@ -440,27 +440,27 @@
 
   else
   {
-    v7 = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:a3];
+    v7 = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:interval];
     [(NPUserEventAgent *)self setOdohAuthOutageRestoreDate:v7];
 
-    v8 = [(NPUserEventAgent *)self odohAuthOutageRestoreDate];
-    [v8 timeIntervalSinceNow];
+    odohAuthOutageRestoreDate = [(NPUserEventAgent *)self odohAuthOutageRestoreDate];
+    [odohAuthOutageRestoreDate timeIntervalSinceNow];
     v10 = v9;
 
     if (v10 > 0.0)
     {
       v11 = [NSTimer alloc];
-      v12 = [(NPUserEventAgent *)self odohAuthOutageRestoreDate];
-      v13 = [v11 initWithFireDate:v12 interval:0 repeats:&stru_14B30 block:0.0];
+      odohAuthOutageRestoreDate2 = [(NPUserEventAgent *)self odohAuthOutageRestoreDate];
+      v13 = [v11 initWithFireDate:odohAuthOutageRestoreDate2 interval:0 repeats:&stru_14B30 block:0.0];
       [(NPUserEventAgent *)self setOdohAuthOutageRestoreTimer:v13];
 
-      v14 = [(NPUserEventAgent *)self odohAuthOutageRestoreTimer];
+      odohAuthOutageRestoreTimer3 = [(NPUserEventAgent *)self odohAuthOutageRestoreTimer];
 
-      if (v14)
+      if (odohAuthOutageRestoreTimer3)
       {
         v17 = +[NSRunLoop mainRunLoop];
-        v15 = [(NPUserEventAgent *)self odohAuthOutageRestoreTimer];
-        [v17 addTimer:v15 forMode:NSDefaultRunLoopMode];
+        odohAuthOutageRestoreTimer4 = [(NPUserEventAgent *)self odohAuthOutageRestoreTimer];
+        [v17 addTimer:odohAuthOutageRestoreTimer4 forMode:NSDefaultRunLoopMode];
       }
 
       else
@@ -475,19 +475,19 @@
   }
 }
 
-- (void)setProxyPathProbeInterval:(int64_t)a3
+- (void)setProxyPathProbeInterval:(int64_t)interval
 {
-  v5 = [(NPUserEventAgent *)self proxyPathProbeTimer];
+  proxyPathProbeTimer = [(NPUserEventAgent *)self proxyPathProbeTimer];
 
-  if (v5)
+  if (proxyPathProbeTimer)
   {
-    v6 = [(NPUserEventAgent *)self proxyPathProbeTimer];
-    [v6 invalidate];
+    proxyPathProbeTimer2 = [(NPUserEventAgent *)self proxyPathProbeTimer];
+    [proxyPathProbeTimer2 invalidate];
 
     [(NPUserEventAgent *)self setProxyPathProbeTimer:0];
   }
 
-  if (a3 < 1)
+  if (interval < 1)
   {
 
     [(NPUserEventAgent *)self setProxyPathProbeTimer:0];
@@ -495,27 +495,27 @@
 
   else
   {
-    v7 = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:a3];
+    v7 = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:interval];
     [(NPUserEventAgent *)self setProxyPathProbeDate:v7];
 
-    v8 = [(NPUserEventAgent *)self proxyPathProbeDate];
-    [v8 timeIntervalSinceNow];
+    proxyPathProbeDate = [(NPUserEventAgent *)self proxyPathProbeDate];
+    [proxyPathProbeDate timeIntervalSinceNow];
     v10 = v9;
 
     if (v10 > 0.0)
     {
       v11 = [NSTimer alloc];
-      v12 = [(NPUserEventAgent *)self proxyPathProbeDate];
-      v13 = [v11 initWithFireDate:v12 interval:0 repeats:&stru_14B50 block:0.0];
+      proxyPathProbeDate2 = [(NPUserEventAgent *)self proxyPathProbeDate];
+      v13 = [v11 initWithFireDate:proxyPathProbeDate2 interval:0 repeats:&stru_14B50 block:0.0];
       [(NPUserEventAgent *)self setProxyPathProbeTimer:v13];
 
-      v14 = [(NPUserEventAgent *)self proxyPathProbeTimer];
+      proxyPathProbeTimer3 = [(NPUserEventAgent *)self proxyPathProbeTimer];
 
-      if (v14)
+      if (proxyPathProbeTimer3)
       {
         v17 = +[NSRunLoop mainRunLoop];
-        v15 = [(NPUserEventAgent *)self proxyPathProbeTimer];
-        [v17 addTimer:v15 forMode:NSDefaultRunLoopMode];
+        proxyPathProbeTimer4 = [(NPUserEventAgent *)self proxyPathProbeTimer];
+        [v17 addTimer:proxyPathProbeTimer4 forMode:NSDefaultRunLoopMode];
       }
 
       else
@@ -530,19 +530,19 @@
   }
 }
 
-- (void)setDirectPathProbeInterval:(int64_t)a3
+- (void)setDirectPathProbeInterval:(int64_t)interval
 {
-  v5 = [(NPUserEventAgent *)self directPathProbeTimer];
+  directPathProbeTimer = [(NPUserEventAgent *)self directPathProbeTimer];
 
-  if (v5)
+  if (directPathProbeTimer)
   {
-    v6 = [(NPUserEventAgent *)self directPathProbeTimer];
-    [v6 invalidate];
+    directPathProbeTimer2 = [(NPUserEventAgent *)self directPathProbeTimer];
+    [directPathProbeTimer2 invalidate];
 
     [(NPUserEventAgent *)self setDirectPathProbeTimer:0];
   }
 
-  if (a3 < 1)
+  if (interval < 1)
   {
 
     [(NPUserEventAgent *)self setDirectPathProbeTimer:0];
@@ -550,27 +550,27 @@
 
   else
   {
-    v7 = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:a3];
+    v7 = [[NSDate alloc] initWithTimeIntervalSinceReferenceDate:interval];
     [(NPUserEventAgent *)self setDirectPathProbeDate:v7];
 
-    v8 = [(NPUserEventAgent *)self directPathProbeDate];
-    [v8 timeIntervalSinceNow];
+    directPathProbeDate = [(NPUserEventAgent *)self directPathProbeDate];
+    [directPathProbeDate timeIntervalSinceNow];
     v10 = v9;
 
     if (v10 > 0.0)
     {
       v11 = [NSTimer alloc];
-      v12 = [(NPUserEventAgent *)self directPathProbeDate];
-      v13 = [v11 initWithFireDate:v12 interval:0 repeats:&stru_14B70 block:0.0];
+      directPathProbeDate2 = [(NPUserEventAgent *)self directPathProbeDate];
+      v13 = [v11 initWithFireDate:directPathProbeDate2 interval:0 repeats:&stru_14B70 block:0.0];
       [(NPUserEventAgent *)self setDirectPathProbeTimer:v13];
 
-      v14 = [(NPUserEventAgent *)self directPathProbeTimer];
+      directPathProbeTimer3 = [(NPUserEventAgent *)self directPathProbeTimer];
 
-      if (v14)
+      if (directPathProbeTimer3)
       {
         v17 = +[NSRunLoop mainRunLoop];
-        v15 = [(NPUserEventAgent *)self directPathProbeTimer];
-        [v17 addTimer:v15 forMode:NSDefaultRunLoopMode];
+        directPathProbeTimer4 = [(NPUserEventAgent *)self directPathProbeTimer];
+        [v17 addTimer:directPathProbeTimer4 forMode:NSDefaultRunLoopMode];
       }
 
       else
@@ -585,35 +585,35 @@
   }
 }
 
-- (void)setLocationMonitorInterval:(double)a3
+- (void)setLocationMonitorInterval:(double)interval
 {
-  v5 = [(NPUserEventAgent *)self locationMonitorTimer];
+  locationMonitorTimer = [(NPUserEventAgent *)self locationMonitorTimer];
 
-  if (v5)
+  if (locationMonitorTimer)
   {
-    v6 = [(NPUserEventAgent *)self locationMonitorTimer];
-    [v6 invalidate];
+    locationMonitorTimer2 = [(NPUserEventAgent *)self locationMonitorTimer];
+    [locationMonitorTimer2 invalidate];
 
     [(NPUserEventAgent *)self setLocationMonitorTimer:0];
   }
 
-  if (a3 >= 300.0)
+  if (interval >= 300.0)
   {
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_8C0C;
     v11[3] = &unk_14B98;
     v11[4] = self;
-    v7 = [NSTimer timerWithTimeInterval:0 repeats:v11 block:a3];
+    v7 = [NSTimer timerWithTimeInterval:0 repeats:v11 block:interval];
     [(NPUserEventAgent *)self setLocationMonitorTimer:v7];
 
-    v8 = [(NPUserEventAgent *)self locationMonitorTimer];
+    locationMonitorTimer3 = [(NPUserEventAgent *)self locationMonitorTimer];
 
-    if (v8)
+    if (locationMonitorTimer3)
     {
       v9 = +[NSRunLoop mainRunLoop];
-      v10 = [(NPUserEventAgent *)self locationMonitorTimer];
-      [v9 addTimer:v10 forMode:NSDefaultRunLoopMode];
+      locationMonitorTimer4 = [(NPUserEventAgent *)self locationMonitorTimer];
+      [v9 addTimer:locationMonitorTimer4 forMode:NSDefaultRunLoopMode];
     }
 
     else
@@ -674,9 +674,9 @@
 {
   if ([(NPUserEventAgent *)self userActivityNotificationHandle])
   {
-    v3 = [(NPUserEventAgent *)self userActivityNotificationHandle];
+    userActivityNotificationHandle = [(NPUserEventAgent *)self userActivityNotificationHandle];
 
-    _IOPMUnregisterNotification(v3);
+    _IOPMUnregisterNotification(userActivityNotificationHandle);
   }
 }
 
@@ -687,11 +687,11 @@
     [(NPUserEventAgent *)self setDynamicStore:SCDynamicStoreCreate(kCFAllocatorDefault, @"networkserviceproxy event agent", sub_929C, 0)];
     if ([(NPUserEventAgent *)self dynamicStore])
     {
-      v3 = [(NPUserEventAgent *)self dynamicStore];
+      dynamicStore = [(NPUserEventAgent *)self dynamicStore];
       v4 = dispatch_get_global_queue(0, 0);
-      LODWORD(v3) = SCDynamicStoreSetDispatchQueue(v3, v4);
+      LODWORD(dynamicStore) = SCDynamicStoreSetDispatchQueue(dynamicStore, v4);
 
-      if (v3)
+      if (dynamicStore)
       {
         v5 = SCDynamicStoreKeyCreateNetworkServiceEntity(kCFAllocatorDefault, kSCDynamicStoreDomainState, kSCCompAnyRegex, kSCEntNetPvD);
         v6 = SCDynamicStoreKeyCreateNetworkInterfaceEntity(kCFAllocatorDefault, kSCDynamicStoreDomainSetup, kSCCompAnyRegex, 0);
@@ -728,15 +728,15 @@
   }
 }
 
-- (void)handleProviderAction:(int64_t)a3 token:(unint64_t)a4 event:(id)a5
+- (void)handleProviderAction:(int64_t)action token:(unint64_t)token event:(id)event
 {
-  v8 = a5;
-  v9 = self;
-  objc_sync_enter(v9);
-  if (a3 == 1 && v8)
+  eventCopy = event;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (action == 1 && eventCopy)
   {
-    [(NPUserEventAgent *)v9 setEventToken:a4];
-    int64 = xpc_dictionary_get_int64(v8, "PID");
+    [(NPUserEventAgent *)selfCopy setEventToken:token];
+    int64 = xpc_dictionary_get_int64(eventCopy, "PID");
     if (int64)
     {
       v11 = nplog_obj();
@@ -751,82 +751,82 @@
       [v12 launchOwner];
     }
 
-    if (xpc_dictionary_get_int64(v8, "ResurrectionDate"))
+    if (xpc_dictionary_get_int64(eventCopy, "ResurrectionDate"))
     {
-      [(NPUserEventAgent *)v9 setResurrectionInterval:xpc_dictionary_get_int64(v8, "ResurrectionDate")];
+      [(NPUserEventAgent *)selfCopy setResurrectionInterval:xpc_dictionary_get_int64(eventCopy, "ResurrectionDate")];
     }
 
-    if (xpc_dictionary_get_int64(v8, "ConfigFetchDate"))
+    if (xpc_dictionary_get_int64(eventCopy, "ConfigFetchDate"))
     {
-      [(NPUserEventAgent *)v9 setConfigurationFetchInterval:xpc_dictionary_get_int64(v8, "ConfigFetchDate")];
+      [(NPUserEventAgent *)selfCopy setConfigurationFetchInterval:xpc_dictionary_get_int64(eventCopy, "ConfigFetchDate")];
     }
 
-    if (!xpc_dictionary_get_int64(v8, "ConfigFetchOnNetworkChange"))
+    if (!xpc_dictionary_get_int64(eventCopy, "ConfigFetchOnNetworkChange"))
     {
 LABEL_19:
-      if (xpc_dictionary_get_double(v8, "LocationMonitorTimeInterval") != 0.0)
+      if (xpc_dictionary_get_double(eventCopy, "LocationMonitorTimeInterval") != 0.0)
       {
-        [(NPUserEventAgent *)v9 setLocationMonitorInterval:xpc_dictionary_get_double(v8, "LocationMonitorTimeInterval")];
+        [(NPUserEventAgent *)selfCopy setLocationMonitorInterval:xpc_dictionary_get_double(eventCopy, "LocationMonitorTimeInterval")];
       }
 
-      if (xpc_dictionary_get_int64(v8, "TokenFetchDate"))
+      if (xpc_dictionary_get_int64(eventCopy, "TokenFetchDate"))
       {
-        [(NPUserEventAgent *)v9 setTokenFetchInterval:xpc_dictionary_get_int64(v8, "TokenFetchDate")];
+        [(NPUserEventAgent *)selfCopy setTokenFetchInterval:xpc_dictionary_get_int64(eventCopy, "TokenFetchDate")];
       }
 
-      if (!xpc_dictionary_get_int64(v8, "TokenFetchOnNetworkChange"))
+      if (!xpc_dictionary_get_int64(eventCopy, "TokenFetchOnNetworkChange"))
       {
 LABEL_31:
-        if (xpc_dictionary_get_int64(v8, "TokenIssuanceRestrictedUntilDate"))
+        if (xpc_dictionary_get_int64(eventCopy, "TokenIssuanceRestrictedUntilDate"))
         {
-          [(NPUserEventAgent *)v9 setTokenIssuanceRestrictedUntilInterval:xpc_dictionary_get_int64(v8, "TokenIssuanceRestrictedUntilDate")];
+          [(NPUserEventAgent *)selfCopy setTokenIssuanceRestrictedUntilInterval:xpc_dictionary_get_int64(eventCopy, "TokenIssuanceRestrictedUntilDate")];
         }
 
-        if (!xpc_dictionary_get_int64(v8, "SubscriptionCheckOnNetworkChange"))
+        if (!xpc_dictionary_get_int64(eventCopy, "SubscriptionCheckOnNetworkChange"))
         {
 LABEL_41:
-          if (xpc_dictionary_get_int64(v8, "SubscriptionCheckDate"))
+          if (xpc_dictionary_get_int64(eventCopy, "SubscriptionCheckDate"))
           {
-            [(NPUserEventAgent *)v9 setSubscriptionCheckInterval:xpc_dictionary_get_int64(v8, "SubscriptionCheckDate")];
+            [(NPUserEventAgent *)selfCopy setSubscriptionCheckInterval:xpc_dictionary_get_int64(eventCopy, "SubscriptionCheckDate")];
           }
 
-          if (xpc_dictionary_get_int64(v8, "ProxyRestoreDate"))
+          if (xpc_dictionary_get_int64(eventCopy, "ProxyRestoreDate"))
           {
-            [(NPUserEventAgent *)v9 setProxyRestoreInterval:xpc_dictionary_get_int64(v8, "ProxyRestoreDate")];
+            [(NPUserEventAgent *)selfCopy setProxyRestoreInterval:xpc_dictionary_get_int64(eventCopy, "ProxyRestoreDate")];
           }
 
-          if (xpc_dictionary_get_int64(v8, "ODoHRestoreDate"))
+          if (xpc_dictionary_get_int64(eventCopy, "ODoHRestoreDate"))
           {
-            [(NPUserEventAgent *)v9 setODoHRestoreInterval:xpc_dictionary_get_int64(v8, "ODoHRestoreDate")];
+            [(NPUserEventAgent *)selfCopy setODoHRestoreInterval:xpc_dictionary_get_int64(eventCopy, "ODoHRestoreDate")];
           }
 
-          if (xpc_dictionary_get_int64(v8, "odohAuthRestoreDate"))
+          if (xpc_dictionary_get_int64(eventCopy, "odohAuthRestoreDate"))
           {
-            [(NPUserEventAgent *)v9 setODoHAuthOutageRestoreInterval:xpc_dictionary_get_int64(v8, "odohAuthRestoreDate")];
+            [(NPUserEventAgent *)selfCopy setODoHAuthOutageRestoreInterval:xpc_dictionary_get_int64(eventCopy, "odohAuthRestoreDate")];
           }
 
-          if (xpc_dictionary_get_int64(v8, "ProxyPathProber"))
+          if (xpc_dictionary_get_int64(eventCopy, "ProxyPathProber"))
           {
-            [(NPUserEventAgent *)v9 setProxyPathProbeInterval:xpc_dictionary_get_int64(v8, "ProxyPathProber")];
+            [(NPUserEventAgent *)selfCopy setProxyPathProbeInterval:xpc_dictionary_get_int64(eventCopy, "ProxyPathProber")];
           }
 
-          if (!xpc_dictionary_get_int64(v8, "ProxyPathProbeOnNetworkChange"))
+          if (!xpc_dictionary_get_int64(eventCopy, "ProxyPathProbeOnNetworkChange"))
           {
 LABEL_59:
-            if (xpc_dictionary_get_int64(v8, "DirectPathProber"))
+            if (xpc_dictionary_get_int64(eventCopy, "DirectPathProber"))
             {
-              [(NPUserEventAgent *)v9 setDirectPathProbeInterval:xpc_dictionary_get_int64(v8, "DirectPathProber")];
+              [(NPUserEventAgent *)selfCopy setDirectPathProbeInterval:xpc_dictionary_get_int64(eventCopy, "DirectPathProber")];
             }
 
-            if (!xpc_dictionary_get_int64(v8, "DirectPathProbeOnNetworkChange"))
+            if (!xpc_dictionary_get_int64(eventCopy, "DirectPathProbeOnNetworkChange"))
             {
 LABEL_69:
-              if (!xpc_dictionary_get_int64(v8, "CaptiveOutage"))
+              if (!xpc_dictionary_get_int64(eventCopy, "CaptiveOutage"))
               {
                 goto LABEL_77;
               }
 
-              v28 = xpc_dictionary_get_int64(v8, "CaptiveOutage");
+              v28 = xpc_dictionary_get_int64(eventCopy, "CaptiveOutage");
               if (v28 == 1)
               {
                 v29 = nplog_obj();
@@ -852,21 +852,21 @@ LABEL_75:
                 }
               }
 
-              [(NPUserEventAgent *)v9 setCaptiveOutage:v28 == 1];
+              [(NPUserEventAgent *)selfCopy setCaptiveOutage:v28 == 1];
 LABEL_77:
-              if (!xpc_dictionary_get_int64(v8, "CaptiveOutageWaitingForUserActivity"))
+              if (!xpc_dictionary_get_int64(eventCopy, "CaptiveOutageWaitingForUserActivity"))
               {
 LABEL_85:
-                [(NPUserEventAgent *)v9 registerForCaptivePluginListChangedNotification];
-                [(NPUserEventAgent *)v9 registerForDynamicStoreChanges];
-                [(NPUserEventAgent *)v9 registerForUserActivityNotifications];
+                [(NPUserEventAgent *)selfCopy registerForCaptivePluginListChangedNotification];
+                [(NPUserEventAgent *)selfCopy registerForDynamicStoreChanges];
+                [(NPUserEventAgent *)selfCopy registerForUserActivityNotifications];
                 v34 = +[NSPUserEventAgentFileHandleMaintainer sharedEventAgentMaintainer];
                 [v34 setReceivedEventToken:1];
 
                 goto LABEL_86;
               }
 
-              v31 = xpc_dictionary_get_int64(v8, "CaptiveOutageWaitingForUserActivity");
+              v31 = xpc_dictionary_get_int64(eventCopy, "CaptiveOutageWaitingForUserActivity");
               if (v31 == 1)
               {
                 v32 = nplog_obj();
@@ -892,11 +892,11 @@ LABEL_83:
                 }
               }
 
-              [(NPUserEventAgent *)v9 setCaptiveOutageWaitingForUserActivity:v31 == 1];
+              [(NPUserEventAgent *)selfCopy setCaptiveOutageWaitingForUserActivity:v31 == 1];
               goto LABEL_85;
             }
 
-            v25 = xpc_dictionary_get_int64(v8, "DirectPathProbeOnNetworkChange");
+            v25 = xpc_dictionary_get_int64(eventCopy, "DirectPathProbeOnNetworkChange");
             if (v25 == 1)
             {
               v26 = nplog_obj();
@@ -920,11 +920,11 @@ LABEL_67:
               }
             }
 
-            [(NPUserEventAgent *)v9 setDirectPathProbeOnNetworkChange:v25 == 1];
+            [(NPUserEventAgent *)selfCopy setDirectPathProbeOnNetworkChange:v25 == 1];
             goto LABEL_69;
           }
 
-          v22 = xpc_dictionary_get_int64(v8, "ProxyPathProbeOnNetworkChange");
+          v22 = xpc_dictionary_get_int64(eventCopy, "ProxyPathProbeOnNetworkChange");
           if (v22 == 1)
           {
             v23 = nplog_obj();
@@ -948,11 +948,11 @@ LABEL_57:
             }
           }
 
-          [(NPUserEventAgent *)v9 setProxyPathProbeOnNetworkChange:v22 == 1];
+          [(NPUserEventAgent *)selfCopy setProxyPathProbeOnNetworkChange:v22 == 1];
           goto LABEL_59;
         }
 
-        v19 = xpc_dictionary_get_int64(v8, "SubscriptionCheckOnNetworkChange");
+        v19 = xpc_dictionary_get_int64(eventCopy, "SubscriptionCheckOnNetworkChange");
         if (v19 == 1)
         {
           v20 = nplog_obj();
@@ -976,11 +976,11 @@ LABEL_39:
           }
         }
 
-        [(NPUserEventAgent *)v9 setSubscriptionCheckOnNetworkChange:v19 == 1];
+        [(NPUserEventAgent *)selfCopy setSubscriptionCheckOnNetworkChange:v19 == 1];
         goto LABEL_41;
       }
 
-      v16 = xpc_dictionary_get_int64(v8, "TokenFetchOnNetworkChange");
+      v16 = xpc_dictionary_get_int64(eventCopy, "TokenFetchOnNetworkChange");
       if (v16 == 1)
       {
         v17 = nplog_obj();
@@ -1004,11 +1004,11 @@ LABEL_29:
         }
       }
 
-      [(NPUserEventAgent *)v9 setTokenFetchOnNetworkChange:v16 == 1];
+      [(NPUserEventAgent *)selfCopy setTokenFetchOnNetworkChange:v16 == 1];
       goto LABEL_31;
     }
 
-    v13 = xpc_dictionary_get_int64(v8, "ConfigFetchOnNetworkChange");
+    v13 = xpc_dictionary_get_int64(eventCopy, "ConfigFetchOnNetworkChange");
     if (v13 == 1)
     {
       v14 = nplog_obj();
@@ -1032,38 +1032,38 @@ LABEL_17:
       }
     }
 
-    [(NPUserEventAgent *)v9 setConfigFetchOnNetworkChange:v13 == 1];
+    [(NPUserEventAgent *)selfCopy setConfigFetchOnNetworkChange:v13 == 1];
     goto LABEL_19;
   }
 
 LABEL_86:
-  objc_sync_exit(v9);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v56 = v11;
-  if ([v10 isEqualToString:@"path"])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  v56 = objectCopy;
+  if ([pathCopy isEqualToString:@"path"])
   {
-    v13 = self;
-    objc_sync_enter(v13);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v14 = +[NWPathEvaluator sharedDefaultEvaluator];
-    v15 = [v14 path];
-    v16 = [v15 status];
+    path = [v14 path];
+    status = [path status];
 
-    if (v16 != &dword_0 + 1)
+    if (status != &dword_0 + 1)
     {
-      [(NPUserEventAgent *)v13 setWifiNetworkSignature:0];
+      [(NPUserEventAgent *)selfCopy setWifiNetworkSignature:0];
 LABEL_47:
-      objc_sync_exit(v13);
+      objc_sync_exit(selfCopy);
 
       goto LABEL_48;
     }
 
-    if ([(NPUserEventAgent *)v13 configFetchOnNetworkChange])
+    if ([(NPUserEventAgent *)selfCopy configFetchOnNetworkChange])
     {
       v17 = nplog_obj();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -1072,12 +1072,12 @@ LABEL_47:
         _os_log_impl(&dword_0, v17, OS_LOG_TYPE_DEFAULT, "Triggering configuration fetch on network change", buf, 2u);
       }
 
-      [(NPUserEventAgent *)v13 setConfigFetchOnNetworkChange:0];
+      [(NPUserEventAgent *)selfCopy setConfigFetchOnNetworkChange:0];
       v18 = +[NSPUserEventAgentFileHandleMaintainer sharedEventAgentMaintainer];
       [v18 launchOwner];
     }
 
-    if ([(NPUserEventAgent *)v13 tokenFetchOnNetworkChange])
+    if ([(NPUserEventAgent *)selfCopy tokenFetchOnNetworkChange])
     {
       v19 = nplog_obj();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -1086,12 +1086,12 @@ LABEL_47:
         _os_log_impl(&dword_0, v19, OS_LOG_TYPE_DEFAULT, "Triggering token fetch on network change", buf, 2u);
       }
 
-      [(NPUserEventAgent *)v13 setTokenFetchOnNetworkChange:0];
+      [(NPUserEventAgent *)selfCopy setTokenFetchOnNetworkChange:0];
       v20 = +[NSPUserEventAgentFileHandleMaintainer sharedEventAgentMaintainer];
       [v20 launchOwner];
     }
 
-    if ([(NPUserEventAgent *)v13 subscriptionCheckOnNetworkChange])
+    if ([(NPUserEventAgent *)selfCopy subscriptionCheckOnNetworkChange])
     {
       v21 = nplog_obj();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -1100,27 +1100,27 @@ LABEL_47:
         _os_log_impl(&dword_0, v21, OS_LOG_TYPE_DEFAULT, "Triggering subscription check on network change", buf, 2u);
       }
 
-      [(NPUserEventAgent *)v13 setSubscriptionCheckOnNetworkChange:0];
+      [(NPUserEventAgent *)selfCopy setSubscriptionCheckOnNetworkChange:0];
       v22 = +[NSPUserEventAgentFileHandleMaintainer sharedEventAgentMaintainer];
       [v22 launchOwner];
     }
 
     v23 = +[NWPathEvaluator sharedDefaultEvaluator];
-    v24 = [v23 path];
-    v25 = [v24 interface];
-    v26 = [v25 type] == &dword_0 + 1;
+    path2 = [v23 path];
+    interface = [path2 interface];
+    v26 = [interface type] == &dword_0 + 1;
 
     if (v26)
     {
       v27 = +[NWPathEvaluator sharedDefaultEvaluator];
-      v28 = [v27 path];
-      v29 = [NPUtilities copyCurrentNetworkCharacteristicsForPath:v28];
+      path3 = [v27 path];
+      v29 = [NPUtilities copyCurrentNetworkCharacteristicsForPath:path3];
 
       v30 = [v29 objectForKeyedSubscript:@"Signature"];
-      v31 = [(NPUserEventAgent *)v13 wifiNetworkSignature];
+      wifiNetworkSignature = [(NPUserEventAgent *)selfCopy wifiNetworkSignature];
       v32 = v30;
       v33 = v32;
-      if (!(v32 | v31) || v32 && v31 && [v31 isEqual:v32])
+      if (!(v32 | wifiNetworkSignature) || v32 && wifiNetworkSignature && [wifiNetworkSignature isEqual:v32])
       {
       }
 
@@ -1134,47 +1134,47 @@ LABEL_47:
           _os_log_impl(&dword_0, v34, OS_LOG_TYPE_DEFAULT, "WiFi signature changed", buf, 2u);
         }
 
-        [(NPUserEventAgent *)v13 setWifiNetworkSignature:v33];
-        v31 = +[NSPUserEventAgentFileHandleMaintainer sharedEventAgentMaintainer];
-        [v31 launchOwner];
+        [(NPUserEventAgent *)selfCopy setWifiNetworkSignature:v33];
+        wifiNetworkSignature = +[NSPUserEventAgentFileHandleMaintainer sharedEventAgentMaintainer];
+        [wifiNetworkSignature launchOwner];
       }
     }
 
     else
     {
-      [(NPUserEventAgent *)v13 setWifiNetworkSignature:0];
+      [(NPUserEventAgent *)selfCopy setWifiNetworkSignature:0];
     }
 
     v35 = +[NWPathEvaluator sharedDefaultEvaluator];
-    v36 = [v35 path];
-    v37 = [v36 interface];
-    if ([v37 type] == &dword_0 + 2)
+    path4 = [v35 path];
+    interface2 = [path4 interface];
+    if ([interface2 type] == &dword_0 + 2)
     {
     }
 
     else
     {
       v38 = +[NWPathEvaluator sharedDefaultEvaluator];
-      v39 = [v38 path];
-      v40 = [v39 interface];
-      v41 = [v40 type] == &dword_0 + 3;
+      path5 = [v38 path];
+      interface3 = [path5 interface];
+      v41 = [interface3 type] == &dword_0 + 3;
 
       if (!v41)
       {
-        [(NPUserEventAgent *)v13 setNonwifiNetworkSignature:0];
+        [(NPUserEventAgent *)selfCopy setNonwifiNetworkSignature:0];
         goto LABEL_47;
       }
     }
 
     v42 = +[NWPathEvaluator sharedDefaultEvaluator];
-    v43 = [v42 path];
-    v44 = [NPUtilities copyCurrentNetworkCharacteristicsForPath:v43];
+    path6 = [v42 path];
+    v44 = [NPUtilities copyCurrentNetworkCharacteristicsForPath:path6];
 
     v45 = [v44 objectForKeyedSubscript:@"Signature"];
-    v46 = [(NPUserEventAgent *)v13 nonwifiNetworkSignature];
+    nonwifiNetworkSignature = [(NPUserEventAgent *)selfCopy nonwifiNetworkSignature];
     v47 = v45;
     v48 = v47;
-    if (!(v47 | v46) || v47 && v46 && [v46 isEqual:v47])
+    if (!(v47 | nonwifiNetworkSignature) || v47 && nonwifiNetworkSignature && [nonwifiNetworkSignature isEqual:v47])
     {
     }
 
@@ -1182,15 +1182,15 @@ LABEL_47:
     {
 
       v49 = +[NWPathEvaluator sharedDefaultEvaluator];
-      v50 = [v49 path];
-      v51 = [v50 interface];
-      v52 = [v51 type];
+      path7 = [v49 path];
+      interface4 = [path7 interface];
+      type = [interface4 type];
 
       v53 = nplog_obj();
       if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
       {
         v54 = "Ethernet";
-        if (v52 == &dword_0 + 2)
+        if (type == &dword_0 + 2)
         {
           v54 = "Cellular";
         }
@@ -1200,8 +1200,8 @@ LABEL_47:
         _os_log_impl(&dword_0, v53, OS_LOG_TYPE_DEFAULT, "%s signature changed", buf, 0xCu);
       }
 
-      [(NPUserEventAgent *)v13 setNonwifiNetworkSignature:v48];
-      if (![(NPUserEventAgent *)v13 captiveOutage])
+      [(NPUserEventAgent *)selfCopy setNonwifiNetworkSignature:v48];
+      if (![(NPUserEventAgent *)selfCopy captiveOutage])
       {
         goto LABEL_45;
       }
@@ -1213,8 +1213,8 @@ LABEL_47:
         _os_log_impl(&dword_0, v55, OS_LOG_TYPE_DEFAULT, "captive outage is true, launching NSP", buf, 2u);
       }
 
-      v46 = +[NSPUserEventAgentFileHandleMaintainer sharedEventAgentMaintainer];
-      [v46 launchOwner];
+      nonwifiNetworkSignature = +[NSPUserEventAgentFileHandleMaintainer sharedEventAgentMaintainer];
+      [nonwifiNetworkSignature launchOwner];
     }
 
 LABEL_45:
@@ -1223,7 +1223,7 @@ LABEL_45:
 
   v57.receiver = self;
   v57.super_class = NPUserEventAgent;
-  [(NPUserEventAgent *)&v57 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+  [(NPUserEventAgent *)&v57 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
 LABEL_48:
 }
 

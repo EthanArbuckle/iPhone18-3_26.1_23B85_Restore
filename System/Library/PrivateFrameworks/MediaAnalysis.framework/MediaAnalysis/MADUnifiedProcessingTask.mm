@@ -1,40 +1,40 @@
 @interface MADUnifiedProcessingTask
-+ (id)taskWithCancelBlock:(id)a3 options:(id)a4 progressHandler:(id)a5 andCompletionHandler:(id)a6;
-+ (id)taskWithCancelBlock:(id)a3 taskID:(unint64_t)a4 options:(id)a5 progressHandler:(id)a6 andCompletionHandler:(id)a7;
-- (BOOL)run:(id *)a3;
-- (MADUnifiedProcessingTask)initWithCancelBlock:(id)a3 taskProviderTypes:(id)a4 options:(id)a5 progressHandler:(id)a6 andCompletionHandler:(id)a7;
++ (id)taskWithCancelBlock:(id)block options:(id)options progressHandler:(id)handler andCompletionHandler:(id)completionHandler;
++ (id)taskWithCancelBlock:(id)block taskID:(unint64_t)d options:(id)options progressHandler:(id)handler andCompletionHandler:(id)completionHandler;
+- (BOOL)run:(id *)run;
+- (MADUnifiedProcessingTask)initWithCancelBlock:(id)block taskProviderTypes:(id)types options:(id)options progressHandler:(id)handler andCompletionHandler:(id)completionHandler;
 - (int)completeSceneProcessing;
 @end
 
 @implementation MADUnifiedProcessingTask
 
-- (MADUnifiedProcessingTask)initWithCancelBlock:(id)a3 taskProviderTypes:(id)a4 options:(id)a5 progressHandler:(id)a6 andCompletionHandler:(id)a7
+- (MADUnifiedProcessingTask)initWithCancelBlock:(id)block taskProviderTypes:(id)types options:(id)options progressHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  blockCopy = block;
+  typesCopy = types;
+  optionsCopy = options;
+  handlerCopy = handler;
   v34[0] = _NSConcreteStackBlock;
   v34[1] = 3221225472;
   v34[2] = sub_1000E2528;
   v34[3] = &unk_100282858;
-  v16 = a7;
-  v35 = v16;
+  completionHandlerCopy = completionHandler;
+  v35 = completionHandlerCopy;
   v33.receiver = self;
   v33.super_class = MADUnifiedProcessingTask;
   v17 = [(MADUnifiedProcessingTask *)&v33 initWithCompletionHandler:v34];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_taskProviderTypes, a4);
-    objc_storeStrong(&v18->_options, a5);
-    v19 = objc_retainBlock(v15);
+    objc_storeStrong(&v17->_taskProviderTypes, types);
+    objc_storeStrong(&v18->_options, options);
+    v19 = objc_retainBlock(handlerCopy);
     progressHandler = v18->_progressHandler;
     v18->_progressHandler = v19;
 
     v32.receiver = v18;
     v32.super_class = MADUnifiedProcessingTask;
-    [(MADUnifiedProcessingTask *)&v32 setCancelBlock:v12];
+    [(MADUnifiedProcessingTask *)&v32 setCancelBlock:blockCopy];
     v21 = [(NSDictionary *)v18->_options objectForKeyedSubscript:@"PhotoLibrary"];
 
     if (v21)
@@ -61,9 +61,9 @@ LABEL_9:
     else
     {
       v27 = +[VCPPhotoLibraryManager sharedManager];
-      v28 = [v27 allPhotoLibraries];
+      allPhotoLibraries = [v27 allPhotoLibraries];
       v29 = v18->_photoLibraries;
-      v18->_photoLibraries = v28;
+      v18->_photoLibraries = allPhotoLibraries;
 
       if (MediaAnalysisLogLevel() >= 6)
       {
@@ -83,24 +83,24 @@ LABEL_9:
   return v18;
 }
 
-+ (id)taskWithCancelBlock:(id)a3 options:(id)a4 progressHandler:(id)a5 andCompletionHandler:(id)a6
++ (id)taskWithCancelBlock:(id)block options:(id)options progressHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[a1 alloc] initWithCancelBlock:v13 taskProviderTypes:&off_100296200 options:v12 progressHandler:v11 andCompletionHandler:v10];
+  completionHandlerCopy = completionHandler;
+  handlerCopy = handler;
+  optionsCopy = options;
+  blockCopy = block;
+  v14 = [[self alloc] initWithCancelBlock:blockCopy taskProviderTypes:&off_100296200 options:optionsCopy progressHandler:handlerCopy andCompletionHandler:completionHandlerCopy];
 
   return v14;
 }
 
-+ (id)taskWithCancelBlock:(id)a3 taskID:(unint64_t)a4 options:(id)a5 progressHandler:(id)a6 andCompletionHandler:(id)a7
++ (id)taskWithCancelBlock:(id)block taskID:(unint64_t)d options:(id)options progressHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  switch(a4)
+  blockCopy = block;
+  optionsCopy = options;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  switch(d)
   {
     case 3uLL:
       v16 = 1;
@@ -111,11 +111,11 @@ LABEL_9:
     case 0xAuLL:
       v16 = 2;
 LABEL_7:
-      v17 = [a1 alloc];
+      v17 = [self alloc];
       v18 = [NSNumber numberWithInteger:v16];
       v23 = v18;
       v19 = [NSArray arrayWithObjects:&v23 count:1];
-      v20 = [v17 initWithCancelBlock:v12 taskProviderTypes:v19 options:v13 progressHandler:v14 andCompletionHandler:v15];
+      v20 = [v17 initWithCancelBlock:blockCopy taskProviderTypes:v19 options:optionsCopy progressHandler:handlerCopy andCompletionHandler:completionHandlerCopy];
 
       goto LABEL_12;
   }
@@ -126,7 +126,7 @@ LABEL_7:
     if (os_log_type_enabled(&_os_log_default, v21))
     {
       *buf = 134217984;
-      v25 = a4;
+      dCopy = d;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v21, "[Unified] Unsupported taskID %llu given to task init, aborting", buf, 0xCu);
     }
   }
@@ -172,16 +172,16 @@ LABEL_12:
   return self;
 }
 
-- (BOOL)run:(id *)a3
+- (BOOL)run:(id *)run
 {
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
-  v28 = [(MADUnifiedProcessingTask *)self completeSceneProcessing];
+  completeSceneProcessing = [(MADUnifiedProcessingTask *)self completeSceneProcessing];
   v5 = *(v26 + 6);
   if (v5)
   {
-    if (a3)
+    if (run)
     {
       v31 = NSLocalizedDescriptionKey;
       v6 = "failed";
@@ -194,8 +194,8 @@ LABEL_12:
       v32 = v7;
       v8 = [NSDictionary dictionaryWithObjects:&v32 forKeys:&v31 count:1];
       v9 = [NSError errorWithDomain:NSOSStatusErrorDomain code:v5 userInfo:v8];
-      v10 = *a3;
-      *a3 = v9;
+      v10 = *run;
+      *run = v9;
     }
 
     [(MADUnifiedProcessingTask *)self purgeCachedModels];
@@ -210,7 +210,7 @@ LABEL_12:
     v24[3] = &unk_100285FB8;
     v24[4] = self;
     v24[5] = &v25;
-    v24[6] = a3;
+    v24[6] = run;
     v12 = objc_retainBlock(v24);
     v13 = 0;
     v14 = 0;
@@ -256,8 +256,8 @@ LABEL_12:
     }
 
     [(MADUnifiedProcessingTask *)self purgeCachedModels];
-    v21 = [(MADUnifiedProcessingTask *)self completionHandler];
-    v21[2](v21, 0, 0);
+    completionHandler = [(MADUnifiedProcessingTask *)self completionHandler];
+    completionHandler[2](completionHandler, 0, 0);
 
 LABEL_18:
   }

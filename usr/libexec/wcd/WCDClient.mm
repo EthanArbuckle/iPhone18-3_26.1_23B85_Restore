@@ -2,92 +2,92 @@
 + (id)clientsStorageURL;
 - (BOOL)complicationEnabled;
 - (BOOL)foregroundOrPrivileged;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)reachable;
 - (BOOL)watchAppInstalled;
 - (NSString)description;
 - (NSString)state;
 - (WCDApplicationInfo)applicationInfo;
-- (WCDClient)initWithCommunicationID:(id)a3 connection:(id)a4;
+- (WCDClient)initWithCommunicationID:(id)d connection:(id)connection;
 - (WCDClientDelegate)delegate;
 - (id)clientStorageFileURL;
 - (id)newSessionState;
 - (id)remoteObjectProxy;
 - (int64_t)outstandingMessagesToSendCount;
 - (unint64_t)hash;
-- (unint64_t)remainingComplicationUserInfoTransfersWithComplicationEnabled:(BOOL)a3;
-- (void)acknowledgeFileIndexWithIdentifier:(id)a3 clientPairingID:(id)a4;
-- (void)acknowledgeFileResultIndexWithIdentifier:(id)a3 clientPairingID:(id)a4;
-- (void)acknowledgeUserInfoIndexWithIdentifier:(id)a3 clientPairingID:(id)a4;
-- (void)acknowledgeUserInfoResultIndexWithIdentifier:(id)a3 clientPairingID:(id)a4;
-- (void)addOutstandingMessage:(id)a3;
+- (unint64_t)remainingComplicationUserInfoTransfersWithComplicationEnabled:(BOOL)enabled;
+- (void)acknowledgeFileIndexWithIdentifier:(id)identifier clientPairingID:(id)d;
+- (void)acknowledgeFileResultIndexWithIdentifier:(id)identifier clientPairingID:(id)d;
+- (void)acknowledgeUserInfoIndexWithIdentifier:(id)identifier clientPairingID:(id)d;
+- (void)acknowledgeUserInfoResultIndexWithIdentifier:(id)identifier clientPairingID:(id)d;
+- (void)addOutstandingMessage:(id)message;
 - (void)cancelAllOutstandingMessages;
-- (void)cancelSendWithIdentifier:(id)a3;
+- (void)cancelSendWithIdentifier:(id)identifier;
 - (void)clearPersistedClientState;
-- (void)connection:(id)a3 handleInvocation:(id)a4 isReply:(BOOL)a5;
-- (void)copyProgressUpdatesForFileTransfer:(id)a3 fromClonedFileURL:(id)a4;
+- (void)connection:(id)connection handleInvocation:(id)invocation isReply:(BOOL)reply;
+- (void)copyProgressUpdatesForFileTransfer:(id)transfer fromClonedFileURL:(id)l;
 - (void)dealloc;
 - (void)dequeuePendingContent;
 - (void)handleActiveDeviceSwitchStarted;
-- (void)handleApplicationContextWithPairingID:(id)a3;
-- (void)handleFileResultWithPairingID:(id)a3;
-- (void)handleIncomingFileWithPairingID:(id)a3;
-- (void)handleIncomingUserInfoWithPairingID:(id)a3;
-- (void)handleRequest:(id)a3;
-- (void)handleResponse:(id)a3;
-- (void)handleSentMessageWithIdentifier:(id)a3 error:(id)a4;
-- (void)handleUserInfoResultWithPairingID:(id)a3;
+- (void)handleApplicationContextWithPairingID:(id)d;
+- (void)handleFileResultWithPairingID:(id)d;
+- (void)handleIncomingFileWithPairingID:(id)d;
+- (void)handleIncomingUserInfoWithPairingID:(id)d;
+- (void)handleRequest:(id)request;
+- (void)handleResponse:(id)response;
+- (void)handleSentMessageWithIdentifier:(id)identifier error:(id)error;
+- (void)handleUserInfoResultWithPairingID:(id)d;
 - (void)handleXPCInvalidation;
 - (void)loadPersistedClientState;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)persistClientState;
-- (void)registerForUpdatesForProgress:(id)a3;
-- (void)removeOutstandingMessage:(id)a3;
-- (void)removeProgressForFileTransfer:(id)a3;
-- (void)sendMessage:(id)a3 clientPairingID:(id)a4 acceptanceHandler:(id)a5;
-- (void)setClientCurrentPairingID:(id)a3;
-- (void)setConnection:(id)a3;
-- (void)setCounterpartCanEstablishXPCConnection:(BOOL)a3;
+- (void)registerForUpdatesForProgress:(id)progress;
+- (void)removeOutstandingMessage:(id)message;
+- (void)removeProgressForFileTransfer:(id)transfer;
+- (void)sendMessage:(id)message clientPairingID:(id)d acceptanceHandler:(id)handler;
+- (void)setClientCurrentPairingID:(id)d;
+- (void)setConnection:(id)connection;
+- (void)setCounterpartCanEstablishXPCConnection:(BOOL)connection;
 - (void)setupBundleIDMonitoring;
 - (void)systemObserverActiveDeviceConnectedChanged;
 - (void)systemObserverActiveDeviceSwitchStarted;
-- (void)systemObserverAppDidSuspendForBundleID:(id)a3;
+- (void)systemObserverAppDidSuspendForBundleID:(id)d;
 - (void)systemObserverInitialSetUpComplete;
-- (void)systemObserverProcessStateChangedForBundleID:(id)a3;
+- (void)systemObserverProcessStateChangedForBundleID:(id)d;
 - (void)systemObserverRemainingComplicationUserInfoTransfersReset;
 - (void)systemObserverRunningIndependentlyWatchApps;
 - (void)terminateApplicationDueToSwitchIfEligible;
-- (void)transferFile:(id)a3 sandboxToken:(id)a4 clientPairingID:(id)a5 errorHandler:(id)a6;
-- (void)transferUserInfo:(id)a3 withURL:(id)a4 clientPairingID:(id)a5 errorHandler:(id)a6;
-- (void)updateApplicationContext:(id)a3 clientPairingID:(id)a4 errorHandler:(id)a5;
+- (void)transferFile:(id)file sandboxToken:(id)token clientPairingID:(id)d errorHandler:(id)handler;
+- (void)transferUserInfo:(id)info withURL:(id)l clientPairingID:(id)d errorHandler:(id)handler;
+- (void)updateApplicationContext:(id)context clientPairingID:(id)d errorHandler:(id)handler;
 - (void)updateClientWithSessionState;
 - (void)updateMessagesClientIfNeeded;
 @end
 
 @implementation WCDClient
 
-- (WCDClient)initWithCommunicationID:(id)a3 connection:(id)a4
+- (WCDClient)initWithCommunicationID:(id)d connection:(id)connection
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  connectionCopy = connection;
   v17.receiver = self;
   v17.super_class = WCDClient;
   v9 = [(WCDClient *)&v17 init];
   if (v9)
   {
-    v9->_increasedPriorityTraffic = [v8 wc_connectionHasEntitlement:WCServiceIncreasedPriorityTrafficEntitlement];
-    v9->_alwaysReachable = [v8 wc_connectionHasEntitlement:WCServiceAlwaysReachableEntitlement];
+    v9->_increasedPriorityTraffic = [connectionCopy wc_connectionHasEntitlement:WCServiceIncreasedPriorityTrafficEntitlement];
+    v9->_alwaysReachable = [connectionCopy wc_connectionHasEntitlement:WCServiceAlwaysReachableEntitlement];
     v10 = objc_opt_new();
     outstandingMessagesToSend = v9->_outstandingMessagesToSend;
     v9->_outstandingMessagesToSend = v10;
 
-    objc_storeStrong(&v9->_communicationID, a3);
+    objc_storeStrong(&v9->_communicationID, d);
     v12 = objc_alloc_init(NSMutableDictionary);
     outstandingFileTransfers = v9->_outstandingFileTransfers;
     v9->_outstandingFileTransfers = v12;
 
-    objc_storeStrong(&v9->_bundleID, a3);
-    [(WCDClient *)v9 setConnection:v8];
+    objc_storeStrong(&v9->_bundleID, d);
+    [(WCDClient *)v9 setConnection:connectionCopy];
     v14 = +[WCDSystemMonitor sharedSystemMonitor];
     [v14 addObserver:v9];
 
@@ -109,8 +109,8 @@
 {
   [(WCDClient *)self clearPersistedClientState];
   v3 = +[WCDSystemMonitor sharedSystemMonitor];
-  v4 = [(WCDClient *)self bundleID];
-  [v3 stopMonitoringBundleID:v4];
+  bundleID = [(WCDClient *)self bundleID];
+  [v3 stopMonitoringBundleID:bundleID];
 
   v5 = +[WCDSystemMonitor sharedSystemMonitor];
   [v5 removeObserver:self];
@@ -126,10 +126,10 @@
 - (WCDApplicationInfo)applicationInfo
 {
   v3 = +[WCDSystemMonitor sharedSystemMonitor];
-  v4 = [v3 applicationWorkspace];
+  applicationWorkspace = [v3 applicationWorkspace];
 
-  v5 = [(WCDClient *)self communicationID];
-  v6 = [v4 applicationInfoForBundleIdentifier:v5 type:1 allowPlaceholder:1];
+  communicationID = [(WCDClient *)self communicationID];
+  v6 = [applicationWorkspace applicationInfoForBundleIdentifier:communicationID type:1 allowPlaceholder:1];
 
   return v6;
 }
@@ -141,7 +141,7 @@
   NSAppendPrintF();
   v4 = 0;
 
-  v17 = [(WCDClient *)self communicationID];
+  communicationID = [(WCDClient *)self communicationID];
   NSAppendPrintF();
   v5 = v4;
 
@@ -205,8 +205,8 @@
 - (void)setupBundleIDMonitoring
 {
   v4 = +[WCDSystemMonitor sharedSystemMonitor];
-  v3 = [(WCDClient *)self bundleID];
-  [v4 startMonitoringBundleID:v3];
+  bundleID = [(WCDClient *)self bundleID];
+  [v4 startMonitoringBundleID:bundleID];
 }
 
 + (id)clientsStorageURL
@@ -223,19 +223,19 @@
 
 - (id)clientStorageFileURL
 {
-  v2 = [(WCDClient *)self communicationID];
-  v3 = [NSString stringWithFormat:@"%@.plist", v2];
-  v4 = [objc_opt_class() clientsStorageURL];
-  v5 = [NSURL fileURLWithPath:v3 isDirectory:0 relativeToURL:v4];
+  communicationID = [(WCDClient *)self communicationID];
+  v3 = [NSString stringWithFormat:@"%@.plist", communicationID];
+  clientsStorageURL = [objc_opt_class() clientsStorageURL];
+  v5 = [NSURL fileURLWithPath:v3 isDirectory:0 relativeToURL:clientsStorageURL];
 
   return v5;
 }
 
 - (void)loadPersistedClientState
 {
-  v3 = [(WCDClient *)self clientStorageFileURL];
+  clientStorageFileURL = [(WCDClient *)self clientStorageFileURL];
   v17 = 0;
-  v4 = [NSData dataWithContentsOfURL:v3 options:0 error:&v17];
+  v4 = [NSData dataWithContentsOfURL:clientStorageFileURL options:0 error:&v17];
   v5 = v17;
 
   if (v4)
@@ -255,19 +255,19 @@
       v10 = wc_log();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [(WCDClient *)self loggingIdentifier];
-        v12 = [(WCDClient *)self clientCurrentPairingID];
-        v13 = [(WCDClient *)self clientSupportsActiveDeviceSwitch];
+        loggingIdentifier = [(WCDClient *)self loggingIdentifier];
+        clientCurrentPairingID = [(WCDClient *)self clientCurrentPairingID];
+        clientSupportsActiveDeviceSwitch = [(WCDClient *)self clientSupportsActiveDeviceSwitch];
         v14 = "NO";
         *buf = 138543874;
-        v19 = v11;
-        if (v13)
+        v19 = loggingIdentifier;
+        if (clientSupportsActiveDeviceSwitch)
         {
           v14 = "YES";
         }
 
         v20 = 2114;
-        v21 = v12;
+        v21 = clientCurrentPairingID;
         v22 = 2080;
         v23 = v14;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: clientCurrentPairingID: %{public}@, clientSupportsActiveDeviceSwitch: %s", buf, 0x20u);
@@ -289,39 +289,39 @@
 
 - (void)persistClientState
 {
-  v3 = [(WCDClient *)self clientCurrentPairingID];
-  if (v3)
+  clientCurrentPairingID = [(WCDClient *)self clientCurrentPairingID];
+  if (clientCurrentPairingID)
   {
-    v4 = v3;
-    v5 = [(WCDClient *)self clientSupportsActiveDeviceSwitch];
+    v4 = clientCurrentPairingID;
+    clientSupportsActiveDeviceSwitch = [(WCDClient *)self clientSupportsActiveDeviceSwitch];
 
-    if ((v5 & 1) == 0)
+    if ((clientSupportsActiveDeviceSwitch & 1) == 0)
     {
       v6 = wc_log();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        v7 = [(WCDClient *)self loggingIdentifier];
-        v8 = [(WCDClient *)self clientCurrentPairingID];
-        v9 = [(WCDClient *)self clientSupportsActiveDeviceSwitch];
+        loggingIdentifier = [(WCDClient *)self loggingIdentifier];
+        clientCurrentPairingID2 = [(WCDClient *)self clientCurrentPairingID];
+        clientSupportsActiveDeviceSwitch2 = [(WCDClient *)self clientSupportsActiveDeviceSwitch];
         v10 = "NO";
         *buf = 138543874;
-        v24 = v7;
-        if (v9)
+        v24 = loggingIdentifier;
+        if (clientSupportsActiveDeviceSwitch2)
         {
           v10 = "YES";
         }
 
         v25 = 2114;
-        v26 = v8;
+        v26 = clientCurrentPairingID2;
         v27 = 2080;
         v28 = v10;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: clientCurrentPairingID: %{public}@, clientSupportsActiveDeviceSwitch: %s", buf, 0x20u);
       }
 
       v21[0] = @"pairingID";
-      v11 = [(WCDClient *)self clientCurrentPairingID];
+      clientCurrentPairingID3 = [(WCDClient *)self clientCurrentPairingID];
       v21[1] = @"supportsActiveDeviceSwitch";
-      v22[0] = v11;
+      v22[0] = clientCurrentPairingID3;
       v12 = [NSNumber numberWithBool:[(WCDClient *)self clientSupportsActiveDeviceSwitch]];
       v22[1] = v12;
       v13 = [NSDictionary dictionaryWithObjects:v22 forKeys:v21 count:2];
@@ -331,9 +331,9 @@
       v15 = v20;
       if (v14)
       {
-        v16 = [(WCDClient *)self clientStorageFileURL];
+        clientStorageFileURL = [(WCDClient *)self clientStorageFileURL];
         v19 = v15;
-        [v14 writeToURL:v16 options:1073741825 error:&v19];
+        [v14 writeToURL:clientStorageFileURL options:1073741825 error:&v19];
         v17 = v19;
 
         v15 = v17;
@@ -356,16 +356,16 @@
   v3 = wc_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(WCDClient *)self loggingIdentifier];
+    loggingIdentifier = [(WCDClient *)self loggingIdentifier];
     *buf = 138543362;
-    v11 = v4;
+    v11 = loggingIdentifier;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
   }
 
   v5 = +[NSFileManager defaultManager];
-  v6 = [(WCDClient *)self clientStorageFileURL];
+  clientStorageFileURL = [(WCDClient *)self clientStorageFileURL];
   v9 = 0;
-  [v5 removeItemAtURL:v6 error:&v9];
+  [v5 removeItemAtURL:clientStorageFileURL error:&v9];
   v7 = v9;
 
   if (v7 && [v7 code] != -1100 && objc_msgSend(v7, "code") != 260 && objc_msgSend(v7, "code") != 4)
@@ -378,15 +378,15 @@
   }
 }
 
-- (void)setConnection:(id)a3
+- (void)setConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   p_connection = &self->_connection;
-  if (([(NSXPCConnection *)self->_connection isEqual:v5]& 1) == 0)
+  if (([(NSXPCConnection *)self->_connection isEqual:connectionCopy]& 1) == 0)
   {
     [(NSXPCConnection *)self->_connection invalidate];
     self->_allowMessageSending = 1;
-    objc_storeStrong(&self->_connection, a3);
+    objc_storeStrong(&self->_connection, connection);
     [(NSXPCConnection *)self->_connection setDelegate:self];
     v7 = +[WCXPCManager daemonInterface];
     [(NSXPCConnection *)self->_connection setExportedInterface:v7];
@@ -410,7 +410,7 @@
     [(NSXPCConnection *)*p_connection setInvalidationHandler:v13];
     [(NSXPCConnection *)*p_connection resume];
     transaction = self->_transaction;
-    if (v5)
+    if (connectionCopy)
     {
       if (!transaction)
       {
@@ -448,36 +448,36 @@ LABEL_7:
     self->_transaction = 0;
   }
 
-  v5 = [(WCDClient *)self reachable];
+  reachable = [(WCDClient *)self reachable];
   v6 = wc_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(WCDClient *)self loggingIdentifier];
-    v8 = v7;
+    loggingIdentifier = [(WCDClient *)self loggingIdentifier];
+    v8 = loggingIdentifier;
     v9 = "NO";
-    if (v5)
+    if (reachable)
     {
       v9 = "YES";
     }
 
     v11 = 138543618;
-    v12 = v7;
+    v12 = loggingIdentifier;
     v13 = 2080;
     v14 = v9;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: Reachable changed for connection lost (reachable: %s)", &v11, 0x16u);
   }
 
-  v10 = [(WCDClient *)self delegate];
-  [v10 clientXPCConnectionDidDisconnect:self];
+  delegate = [(WCDClient *)self delegate];
+  [delegate clientXPCConnectionDidDisconnect:self];
 }
 
-- (void)setClientCurrentPairingID:(id)a3
+- (void)setClientCurrentPairingID:(id)d
 {
   p_clientCurrentPairingID = &self->_clientCurrentPairingID;
-  v6 = a3;
+  dCopy = d;
   if (([*p_clientCurrentPairingID isEqual:?] & 1) == 0)
   {
-    objc_storeStrong(&self->_clientCurrentPairingID, a3);
+    objc_storeStrong(&self->_clientCurrentPairingID, d);
     if (*p_clientCurrentPairingID)
     {
       [(WCDClient *)self persistClientState];
@@ -492,43 +492,43 @@ LABEL_7:
 
 - (BOOL)watchAppInstalled
 {
-  v2 = [(WCDClient *)self applicationInfo];
-  v3 = [v2 isWatchAppInstalled];
+  applicationInfo = [(WCDClient *)self applicationInfo];
+  isWatchAppInstalled = [applicationInfo isWatchAppInstalled];
 
-  return v3;
+  return isWatchAppInstalled;
 }
 
 - (BOOL)complicationEnabled
 {
   v3 = +[WCDSystemMonitor sharedSystemMonitor];
-  v4 = [v3 iOSApplicationsContainingActiveComplications];
+  iOSApplicationsContainingActiveComplications = [v3 iOSApplicationsContainingActiveComplications];
 
-  v5 = [(WCDClient *)self bundleID];
-  v6 = [v4 containsObject:v5];
+  bundleID = [(WCDClient *)self bundleID];
+  v6 = [iOSApplicationsContainingActiveComplications containsObject:bundleID];
 
   LOBYTE(self) = [(WCDClient *)self watchAppInstalled];
   return self & v6;
 }
 
-- (unint64_t)remainingComplicationUserInfoTransfersWithComplicationEnabled:(BOOL)a3
+- (unint64_t)remainingComplicationUserInfoTransfersWithComplicationEnabled:(BOOL)enabled
 {
-  if (!a3)
+  if (!enabled)
   {
     return 0;
   }
 
-  v4 = [(objc_class *)off_1000546C8() sharedComplication];
-  v5 = [(WCDClient *)self bundleID];
-  v6 = [v4 remainingPushesOnComplicationForiOSApplicationWithBundleID:v5];
+  sharedComplication = [(objc_class *)off_1000546C8() sharedComplication];
+  bundleID = [(WCDClient *)self bundleID];
+  v6 = [sharedComplication remainingPushesOnComplicationForiOSApplicationWithBundleID:bundleID];
 
   return v6;
 }
 
-- (void)setCounterpartCanEstablishXPCConnection:(BOOL)a3
+- (void)setCounterpartCanEstablishXPCConnection:(BOOL)connection
 {
-  if (self->_counterpartCanEstablishXPCConnection != a3)
+  if (self->_counterpartCanEstablishXPCConnection != connection)
   {
-    self->_counterpartCanEstablishXPCConnection = a3;
+    self->_counterpartCanEstablishXPCConnection = connection;
     [(WCDClient *)self updateClientWithSessionState];
   }
 
@@ -544,9 +544,9 @@ LABEL_7:
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(WCDClient *)self loggingIdentifier];
-  v6 = [(WCDClient *)self communicationID];
-  v7 = [(WCDClient *)self connection];
+  loggingIdentifier = [(WCDClient *)self loggingIdentifier];
+  communicationID = [(WCDClient *)self communicationID];
+  connection = [(WCDClient *)self connection];
   v8 = "YES";
   if ([(WCDClient *)self hasIncreasedPriorityTraffic])
   {
@@ -563,23 +563,23 @@ LABEL_7:
     v8 = "NO";
   }
 
-  v10 = [(WCDClient *)self clientCurrentPairingID];
-  v11 = [(WCDClient *)self isInUse];
+  clientCurrentPairingID = [(WCDClient *)self clientCurrentPairingID];
+  isInUse = [(WCDClient *)self isInUse];
   v12 = &stru_1000497E8;
-  if (v11)
+  if (isInUse)
   {
     v12 = @", isInUse: YES";
   }
 
-  v13 = [NSString stringWithFormat:@"<%@: %p, communicationID: %@, identifier: %@, connection: <%@>(%s, %s), clientCurrentPairingID: %@%@>", v4, self, v5, v6, v7, v9, v8, v10, v12];
+  v13 = [NSString stringWithFormat:@"<%@: %p, communicationID: %@, identifier: %@, connection: <%@>(%s, %s), clientCurrentPairingID: %@%@>", v4, self, loggingIdentifier, communicationID, connection, v9, v8, clientCurrentPairingID, v12];
 
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -589,14 +589,14 @@ LABEL_7:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(WCDClient *)self communicationID];
-      v7 = [(WCDClient *)v5 communicationID];
-      if ([v6 isEqual:v7])
+      v5 = equalCopy;
+      communicationID = [(WCDClient *)self communicationID];
+      communicationID2 = [(WCDClient *)v5 communicationID];
+      if ([communicationID isEqual:communicationID2])
       {
-        v8 = [(WCDClient *)self connection];
-        v9 = [(WCDClient *)v5 connection];
-        v10 = [v8 isEqual:v9];
+        connection = [(WCDClient *)self connection];
+        connection2 = [(WCDClient *)v5 connection];
+        v10 = [connection isEqual:connection2];
       }
 
       else
@@ -616,24 +616,24 @@ LABEL_7:
 
 - (unint64_t)hash
 {
-  v3 = [(WCDClient *)self communicationID];
-  v4 = [v3 hash];
-  v5 = [(WCDClient *)self connection];
-  v6 = [v5 hash];
+  communicationID = [(WCDClient *)self communicationID];
+  v4 = [communicationID hash];
+  connection = [(WCDClient *)self connection];
+  v6 = [connection hash];
 
   return v6 ^ v4;
 }
 
-- (void)connection:(id)a3 handleInvocation:(id)a4 isReply:(BOOL)a5
+- (void)connection:(id)connection handleInvocation:(id)invocation isReply:(BOOL)reply
 {
-  v5 = a4;
-  [v5 retainArguments];
+  invocationCopy = invocation;
+  [invocationCopy retainArguments];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100005950;
   block[3] = &unk_100048A48;
-  v8 = v5;
-  v6 = v5;
+  v8 = invocationCopy;
+  v6 = invocationCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
@@ -642,19 +642,19 @@ LABEL_7:
   v3 = wc_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(WCDClient *)self loggingIdentifier];
+    loggingIdentifier = [(WCDClient *)self loggingIdentifier];
     v8 = 138543362;
-    v9 = v4;
+    v9 = loggingIdentifier;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@", &v8, 0xCu);
   }
 
-  v5 = [(WCDClient *)self clientCurrentPairingID];
+  clientCurrentPairingID = [(WCDClient *)self clientCurrentPairingID];
 
-  if (!v5)
+  if (!clientCurrentPairingID)
   {
     v6 = +[WCDSystemMonitor sharedSystemMonitor];
-    v7 = [v6 pairingID];
-    [(WCDClient *)self setClientCurrentPairingID:v7];
+    pairingID = [v6 pairingID];
+    [(WCDClient *)self setClientCurrentPairingID:pairingID];
   }
 
   [(WCDClient *)self updateClientWithSessionState];
@@ -672,9 +672,9 @@ LABEL_7:
   v3 = wc_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(WCDClient *)self loggingIdentifier];
+    loggingIdentifier = [(WCDClient *)self loggingIdentifier];
     v5 = 138543362;
-    v6 = v4;
+    v6 = loggingIdentifier;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@", &v5, 0xCu);
   }
 
@@ -686,9 +686,9 @@ LABEL_7:
   v3 = wc_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(WCDClient *)self loggingIdentifier];
+    loggingIdentifier = [(WCDClient *)self loggingIdentifier];
     v5 = 138543362;
-    v6 = v4;
+    v6 = loggingIdentifier;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@", &v5, 0xCu);
   }
 
@@ -700,42 +700,42 @@ LABEL_7:
   v3 = wc_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(WCDClient *)self loggingIdentifier];
+    loggingIdentifier = [(WCDClient *)self loggingIdentifier];
     v5 = 138543362;
-    v6 = v4;
+    v6 = loggingIdentifier;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@", &v5, 0xCu);
   }
 
   [(WCDClient *)self updateClientWithSessionState];
 }
 
-- (void)systemObserverAppDidSuspendForBundleID:(id)a3
+- (void)systemObserverAppDidSuspendForBundleID:(id)d
 {
-  v4 = a3;
-  v5 = [(WCDClient *)self bundleID];
-  v6 = [v4 isEqual:v5];
+  dCopy = d;
+  bundleID = [(WCDClient *)self bundleID];
+  v6 = [dCopy isEqual:bundleID];
 
   if (v6)
   {
     v7 = wc_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(WCDClient *)self loggingIdentifier];
+      loggingIdentifier = [(WCDClient *)self loggingIdentifier];
       v10 = 138543362;
-      v11 = v8;
+      v11 = loggingIdentifier;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: suspended; invalidating xpc connection", &v10, 0xCu);
     }
 
-    v9 = [(WCDClient *)self connection];
-    [v9 invalidate];
+    connection = [(WCDClient *)self connection];
+    [connection invalidate];
   }
 }
 
-- (void)systemObserverProcessStateChangedForBundleID:(id)a3
+- (void)systemObserverProcessStateChangedForBundleID:(id)d
 {
-  v4 = a3;
-  v5 = [(WCDClient *)self communicationID];
-  v6 = [v4 isEqual:v5];
+  dCopy = d;
+  communicationID = [(WCDClient *)self communicationID];
+  v6 = [dCopy isEqual:communicationID];
 
   if (v6)
   {
@@ -746,34 +746,34 @@ LABEL_7:
 
 - (void)terminateApplicationDueToSwitchIfEligible
 {
-  v3 = [(WCDClient *)self clientCurrentPairingID];
-  if (v3)
+  clientCurrentPairingID = [(WCDClient *)self clientCurrentPairingID];
+  if (clientCurrentPairingID)
   {
-    v4 = v3;
-    v5 = [(WCDClient *)self clientSupportsActiveDeviceSwitch];
+    v4 = clientCurrentPairingID;
+    clientSupportsActiveDeviceSwitch = [(WCDClient *)self clientSupportsActiveDeviceSwitch];
 
-    if ((v5 & 1) == 0)
+    if ((clientSupportsActiveDeviceSwitch & 1) == 0)
     {
       v6 = +[WCDSystemMonitor sharedSystemMonitor];
-      v7 = [(WCDClient *)self communicationID];
-      v8 = [v6 applicationStateForBundleID:v7];
-      v9 = [(WCDClient *)self clientCurrentPairingID];
-      v10 = [v6 pairingID];
-      v11 = [v9 isEqual:v10];
+      communicationID = [(WCDClient *)self communicationID];
+      v8 = [v6 applicationStateForBundleID:communicationID];
+      clientCurrentPairingID2 = [(WCDClient *)self clientCurrentPairingID];
+      pairingID = [v6 pairingID];
+      v11 = [clientCurrentPairingID2 isEqual:pairingID];
 
       if ((v8 == 4 || v8 == 2) && (v11 & 1) == 0)
       {
         v12 = wc_log();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
-          v13 = [(WCDClient *)self loggingIdentifier];
+          loggingIdentifier = [(WCDClient *)self loggingIdentifier];
           v15 = 138543362;
-          v16 = v13;
+          v16 = loggingIdentifier;
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: being terminated as active device switch has occurred", &v15, 0xCu);
         }
 
         v14 = +[FBSSystemService sharedService];
-        [v14 terminateApplication:v7 forReason:3 andReport:0 withDescription:0];
+        [v14 terminateApplication:communicationID forReason:3 andReport:0 withDescription:0];
       }
     }
   }
@@ -784,16 +784,16 @@ LABEL_7:
   v3 = wc_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(WCDClient *)self loggingIdentifier];
+    loggingIdentifier = [(WCDClient *)self loggingIdentifier];
     v6 = 138543362;
-    v7 = v4;
+    v7 = loggingIdentifier;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@", &v6, 0xCu);
   }
 
   self->_previousReachable = 0;
   self->_pendingContentDequeued = 0;
-  v5 = [(WCDClient *)self remoteObjectProxy];
-  [v5 handleActiveDeviceSwitchStarted];
+  remoteObjectProxy = [(WCDClient *)self remoteObjectProxy];
+  [remoteObjectProxy handleActiveDeviceSwitchStarted];
 
   [(WCDClient *)self terminateApplicationDueToSwitchIfEligible];
 }
@@ -803,20 +803,20 @@ LABEL_7:
   v3 = +[WCDSystemMonitor sharedSystemMonitor];
   if (-[WCDClient counterpartCanEstablishXPCConnection](self, "counterpartCanEstablishXPCConnection") && [v3 isPaired] && objc_msgSend(v3, "activeDeviceConnected"))
   {
-    v4 = [(WCDClient *)self watchAppInstalled];
+    watchAppInstalled = [(WCDClient *)self watchAppInstalled];
   }
 
   else
   {
-    v4 = 0;
+    watchAppInstalled = 0;
   }
 
-  v5 = ([(WCDClient *)self isAlwaysReachable]| v4) & 1;
+  v5 = ([(WCDClient *)self isAlwaysReachable]| watchAppInstalled) & 1;
   if ([(WCDClient *)self previousReachable]!= v5)
   {
     [(WCDClient *)self setPreviousReachable:v5];
-    v6 = [(WCDClient *)self delegate];
-    [v6 clientReachabilityDidChange:self];
+    delegate = [(WCDClient *)self delegate];
+    [delegate clientReachabilityDidChange:self];
   }
 
   return v5;
@@ -835,18 +835,18 @@ LABEL_7:
 - (id)newSessionState
 {
   v3 = +[WCDSystemMonitor sharedSystemMonitor];
-  v4 = [(WCDClient *)self complicationEnabled];
-  v5 = [(WCDClient *)self remainingComplicationUserInfoTransfersWithComplicationEnabled:v4];
-  v6 = [(WCDClient *)self applicationInfo];
-  v7 = [v6 uniqueInstallID];
+  complicationEnabled = [(WCDClient *)self complicationEnabled];
+  v5 = [(WCDClient *)self remainingComplicationUserInfoTransfersWithComplicationEnabled:complicationEnabled];
+  applicationInfo = [(WCDClient *)self applicationInfo];
+  uniqueInstallID = [applicationInfo uniqueInstallID];
 
   v8 = [WCSessionState alloc];
-  v9 = [(WCDClient *)self reachable];
-  v10 = [v3 isPaired];
-  v11 = [(WCDClient *)self watchAppInstalled];
-  v12 = [v3 pairingID];
-  v13 = [v3 pairedDevicesPairingIDs];
-  v14 = [v8 initWithReachable:v9 paired:v10 appInstalled:v11 complicationEnabled:v4 remainingComplicationUserInfoTransfers:v5 activePairingID:v12 pairedDevicesPairingIDs:v13 appInstallationID:v7];
+  reachable = [(WCDClient *)self reachable];
+  isPaired = [v3 isPaired];
+  watchAppInstalled = [(WCDClient *)self watchAppInstalled];
+  pairingID = [v3 pairingID];
+  pairedDevicesPairingIDs = [v3 pairedDevicesPairingIDs];
+  v14 = [v8 initWithReachable:reachable paired:isPaired appInstalled:watchAppInstalled complicationEnabled:complicationEnabled remainingComplicationUserInfoTransfers:v5 activePairingID:pairingID pairedDevicesPairingIDs:pairedDevicesPairingIDs appInstallationID:uniqueInstallID];
 
   return v14;
 }
@@ -856,9 +856,9 @@ LABEL_7:
   v5 = +[WCDSystemMonitor sharedSystemMonitor];
   if (-[WCDClient counterpartCanEstablishXPCConnectionCalled](self, "counterpartCanEstablishXPCConnectionCalled") && -[WCDClient privilegedCalled](self, "privilegedCalled") && [v5 initialSetUpComplete])
   {
-    v3 = [(WCDClient *)self remoteObjectProxy];
-    v4 = [(WCDClient *)self newSessionState];
-    [v3 handleSessionStateChanged:v4];
+    remoteObjectProxy = [(WCDClient *)self remoteObjectProxy];
+    newSessionState = [(WCDClient *)self newSessionState];
+    [remoteObjectProxy handleSessionStateChanged:newSessionState];
 
     [(WCDClient *)self dequeuePendingContent];
   }
@@ -870,100 +870,100 @@ LABEL_7:
   {
     [(WCDClient *)self setPendingContentDequeued:1];
     v3 = +[WCDSystemMonitor sharedSystemMonitor];
-    v4 = [(WCDClient *)self clientCurrentPairingID];
-    v5 = [v3 pairingID];
-    v6 = [v4 isEqual:v5];
+    clientCurrentPairingID = [(WCDClient *)self clientCurrentPairingID];
+    pairingID = [v3 pairingID];
+    v6 = [clientCurrentPairingID isEqual:pairingID];
 
     if (v6)
     {
       v7 = wc_log();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [(WCDClient *)self loggingIdentifier];
+        loggingIdentifier = [(WCDClient *)self loggingIdentifier];
         v21 = 138543362;
-        v22 = v8;
+        v22 = loggingIdentifier;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ causing client to check to see if there is any pending content awaiting", &v21, 0xCu);
       }
 
       v9 = +[WatchConnectivityDaemon sharedDaemon];
       [v9 dequeueContentForClient:self];
 
-      v10 = [(WCDClient *)self clientCurrentPairingID];
-      [(WCDClient *)self handleApplicationContextWithPairingID:v10];
+      clientCurrentPairingID2 = [(WCDClient *)self clientCurrentPairingID];
+      [(WCDClient *)self handleApplicationContextWithPairingID:clientCurrentPairingID2];
 
-      v11 = [(WCDClient *)self clientCurrentPairingID];
-      [(WCDClient *)self handleUserInfoResultWithPairingID:v11];
+      clientCurrentPairingID3 = [(WCDClient *)self clientCurrentPairingID];
+      [(WCDClient *)self handleUserInfoResultWithPairingID:clientCurrentPairingID3];
 
-      v12 = [(WCDClient *)self clientCurrentPairingID];
-      [(WCDClient *)self handleIncomingUserInfoWithPairingID:v12];
+      clientCurrentPairingID4 = [(WCDClient *)self clientCurrentPairingID];
+      [(WCDClient *)self handleIncomingUserInfoWithPairingID:clientCurrentPairingID4];
 
-      v13 = [(WCDClient *)self clientCurrentPairingID];
-      [(WCDClient *)self handleFileResultWithPairingID:v13];
+      clientCurrentPairingID5 = [(WCDClient *)self clientCurrentPairingID];
+      [(WCDClient *)self handleFileResultWithPairingID:clientCurrentPairingID5];
 
-      v14 = [(WCDClient *)self clientCurrentPairingID];
-      [(WCDClient *)self handleIncomingFileWithPairingID:v14];
+      clientCurrentPairingID6 = [(WCDClient *)self clientCurrentPairingID];
+      [(WCDClient *)self handleIncomingFileWithPairingID:clientCurrentPairingID6];
     }
 
     else
     {
-      v15 = [(WCDClient *)self clientCurrentPairingID];
+      clientCurrentPairingID7 = [(WCDClient *)self clientCurrentPairingID];
 
-      v14 = wc_log();
-      v16 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
-      if (v15)
+      clientCurrentPairingID6 = wc_log();
+      v16 = os_log_type_enabled(clientCurrentPairingID6, OS_LOG_TYPE_DEFAULT);
+      if (clientCurrentPairingID7)
       {
         if (v16)
         {
-          v17 = [(WCDClient *)self loggingIdentifier];
-          v18 = [(WCDClient *)self clientCurrentPairingID];
-          v19 = [v3 pairingID];
+          loggingIdentifier2 = [(WCDClient *)self loggingIdentifier];
+          clientCurrentPairingID8 = [(WCDClient *)self clientCurrentPairingID];
+          pairingID2 = [v3 pairingID];
           v21 = 138543874;
-          v22 = v17;
+          v22 = loggingIdentifier2;
           v23 = 2114;
-          v24 = v18;
+          v24 = clientCurrentPairingID8;
           v25 = 2114;
-          v26 = v19;
-          _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ not dequeueing content for client as pairingIDs don't match (%{public}@ vs %{public}@)", &v21, 0x20u);
+          v26 = pairingID2;
+          _os_log_impl(&_mh_execute_header, clientCurrentPairingID6, OS_LOG_TYPE_DEFAULT, "%{public}@ not dequeueing content for client as pairingIDs don't match (%{public}@ vs %{public}@)", &v21, 0x20u);
         }
       }
 
       else if (v16)
       {
-        v20 = [(WCDClient *)self loggingIdentifier];
+        loggingIdentifier3 = [(WCDClient *)self loggingIdentifier];
         v21 = 138543362;
-        v22 = v20;
-        _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ not dequeueing content for client as it has no pairingID", &v21, 0xCu);
+        v22 = loggingIdentifier3;
+        _os_log_impl(&_mh_execute_header, clientCurrentPairingID6, OS_LOG_TYPE_DEFAULT, "%{public}@ not dequeueing content for client as it has no pairingID", &v21, 0xCu);
       }
     }
   }
 }
 
-- (void)sendMessage:(id)a3 clientPairingID:(id)a4 acceptanceHandler:(id)a5
+- (void)sendMessage:(id)message clientPairingID:(id)d acceptanceHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  dCopy = d;
+  handlerCopy = handler;
   if ([(WCDClient *)self outstandingMessagesToSendCount]<= 9)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = v8;
+      v11 = messageCopy;
       v12 = objc_opt_new();
       [v12 setVersion:1];
-      v13 = [v11 data];
-      [v12 setClientData:v13];
+      data = [v11 data];
+      [v12 setClientData:data];
 
       [v12 setExpectsResponse:{objc_msgSend(v11, "expectsResponse")}];
       [v12 setDictionaryMessage:{objc_msgSend(v11, "isDictionaryMessage")}];
       [v12 setIsInUse:{-[WCDClient isInUse](self, "isInUse")}];
-      v14 = [v11 identifier];
-      [(WCDClient *)self addOutstandingMessage:v14];
+      identifier = [v11 identifier];
+      [(WCDClient *)self addOutstandingMessage:identifier];
 
       +[WatchConnectivityDaemon sharedDaemon];
-      v15 = v40 = v10;
-      v16 = [v11 identifier];
-      v17 = [(WCDClient *)self communicationID];
+      v15 = v40 = handlerCopy;
+      identifier2 = [v11 identifier];
+      communicationID = [(WCDClient *)self communicationID];
       v44[0] = _NSConcreteStackBlock;
       v44[1] = 3221225472;
       v44[2] = sub_100006FD0;
@@ -973,15 +973,15 @@ LABEL_7:
       v19 = v11;
       v20 = &v46;
       v21 = v15;
-      v10 = v40;
+      handlerCopy = v40;
       v45 = v19;
       v46 = v19;
       v22 = v44;
       v23 = v21;
       v24 = v12;
-      v25 = v16;
+      v25 = identifier2;
       v26 = 0;
-      v27 = v17;
+      v27 = communicationID;
     }
 
     else
@@ -994,46 +994,46 @@ LABEL_12:
         v36 = wc_log();
         if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
         {
-          v37 = [(WCDClient *)self loggingIdentifier];
-          v38 = [(WCDClient *)self allowMessageSending];
+          loggingIdentifier = [(WCDClient *)self loggingIdentifier];
+          allowMessageSending = [(WCDClient *)self allowMessageSending];
           v39 = "NO";
-          if (v38)
+          if (allowMessageSending)
           {
             v39 = "YES";
           }
 
           *buf = 138543618;
-          v48 = v37;
+          v48 = loggingIdentifier;
           v49 = 2080;
           v50 = v39;
           _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "%{public}@ current YES, next %s", buf, 0x16u);
         }
 
-        v10[2](v10, 1, [(WCDClient *)self allowMessageSending]);
+        handlerCopy[2](handlerCopy, 1, [(WCDClient *)self allowMessageSending]);
         goto LABEL_17;
       }
 
-      v30 = v8;
+      v30 = messageCopy;
       v12 = objc_opt_new();
       [v12 setVersion:1];
-      v31 = [v30 data];
-      [v12 setClientData:v31];
+      data2 = [v30 data];
+      [v12 setClientData:data2];
 
-      v32 = [v30 error];
+      error = [v30 error];
 
-      if (v32)
+      if (error)
       {
-        v33 = [v30 error];
-        [v12 setErrorCode:{objc_msgSend(v33, "code")}];
+        error2 = [v30 error];
+        [v12 setErrorCode:{objc_msgSend(error2, "code")}];
       }
 
       [v12 setDictionaryMessage:{objc_msgSend(v30, "isDictionaryMessage")}];
-      v34 = [v30 identifier];
-      [(WCDClient *)self addOutstandingMessage:v34];
+      identifier3 = [v30 identifier];
+      [(WCDClient *)self addOutstandingMessage:identifier3];
 
       v21 = +[WatchConnectivityDaemon sharedDaemon];
-      v16 = [v30 identifier];
-      v17 = [(WCDClient *)self communicationID];
+      identifier2 = [v30 identifier];
+      communicationID = [(WCDClient *)self communicationID];
       v41[0] = _NSConcreteStackBlock;
       v41[1] = 3221225472;
       v41[2] = sub_100007068;
@@ -1047,12 +1047,12 @@ LABEL_12:
       v22 = v41;
       v23 = v21;
       v24 = v12;
-      v25 = v16;
+      v25 = identifier2;
       v26 = 1;
-      v27 = v17;
+      v27 = communicationID;
     }
 
-    [v23 sendMessage:v24 withIdentifier:v25 isResponse:v26 clientID:v27 clientPairingID:v9 errorHandler:v22];
+    [v23 sendMessage:v24 withIdentifier:v25 isResponse:v26 clientID:v27 clientPairingID:dCopy errorHandler:v22];
 
     goto LABEL_12;
   }
@@ -1061,30 +1061,30 @@ LABEL_12:
   v28 = wc_log();
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
   {
-    v29 = [(WCDClient *)self loggingIdentifier];
+    loggingIdentifier2 = [(WCDClient *)self loggingIdentifier];
     *buf = 138543362;
-    v48 = v29;
+    v48 = loggingIdentifier2;
     _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "%{public}@ outstanding messages at maximum", buf, 0xCu);
   }
 
-  v10[2](v10, 0, 0);
+  handlerCopy[2](handlerCopy, 0, 0);
 LABEL_17:
 }
 
-- (void)addOutstandingMessage:(id)a3
+- (void)addOutstandingMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(WCDClient *)self outstandingMessagesToSend];
-  [v5 addObject:v4];
+  messageCopy = message;
+  outstandingMessagesToSend = [(WCDClient *)self outstandingMessagesToSend];
+  [outstandingMessagesToSend addObject:messageCopy];
 }
 
-- (void)removeOutstandingMessage:(id)a3
+- (void)removeOutstandingMessage:(id)message
 {
-  if (a3)
+  if (message)
   {
-    v4 = a3;
-    v5 = [(WCDClient *)self outstandingMessagesToSend];
-    [v5 removeObject:v4];
+    messageCopy = message;
+    outstandingMessagesToSend = [(WCDClient *)self outstandingMessagesToSend];
+    [outstandingMessagesToSend removeObject:messageCopy];
 
     [(WCDClient *)self updateMessagesClientIfNeeded];
   }
@@ -1092,8 +1092,8 @@ LABEL_17:
 
 - (int64_t)outstandingMessagesToSendCount
 {
-  v2 = [(WCDClient *)self outstandingMessagesToSend];
-  v3 = [v2 count];
+  outstandingMessagesToSend = [(WCDClient *)self outstandingMessagesToSend];
+  v3 = [outstandingMessagesToSend count];
 
   return v3;
 }
@@ -1103,31 +1103,31 @@ LABEL_17:
   if (![(WCDClient *)self allowMessageSending]&& [(WCDClient *)self outstandingMessagesToSendCount]<= 6)
   {
     [(WCDClient *)self setAllowMessageSending:1];
-    v3 = [(WCDClient *)self remoteObjectProxy];
-    [v3 handleMessageSendingAllowed];
+    remoteObjectProxy = [(WCDClient *)self remoteObjectProxy];
+    [remoteObjectProxy handleMessageSendingAllowed];
   }
 }
 
-- (void)handleRequest:(id)a3
+- (void)handleRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(WCDClient *)self remoteObjectProxy];
-  [v5 handleRequest:v4];
+  requestCopy = request;
+  remoteObjectProxy = [(WCDClient *)self remoteObjectProxy];
+  [remoteObjectProxy handleRequest:requestCopy];
 }
 
-- (void)handleResponse:(id)a3
+- (void)handleResponse:(id)response
 {
-  v4 = a3;
-  v5 = [(WCDClient *)self remoteObjectProxy];
-  [v5 handleResponse:v4];
+  responseCopy = response;
+  remoteObjectProxy = [(WCDClient *)self remoteObjectProxy];
+  [remoteObjectProxy handleResponse:responseCopy];
 }
 
-- (void)handleSentMessageWithIdentifier:(id)a3 error:(id)a4
+- (void)handleSentMessageWithIdentifier:(id)identifier error:(id)error
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(WCDClient *)self remoteObjectProxy];
-  [v8 handleSentMessageWithIdentifier:v7 error:v6];
+  errorCopy = error;
+  identifierCopy = identifier;
+  remoteObjectProxy = [(WCDClient *)self remoteObjectProxy];
+  [remoteObjectProxy handleSentMessageWithIdentifier:identifierCopy error:errorCopy];
 }
 
 - (void)cancelAllOutstandingMessages
@@ -1136,8 +1136,8 @@ LABEL_17:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(WCDClient *)self outstandingMessagesToSend];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v20 count:16];
+  outstandingMessagesToSend = [(WCDClient *)self outstandingMessagesToSend];
+  v4 = [outstandingMessagesToSend countByEnumeratingWithState:&v12 objects:v20 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1148,16 +1148,16 @@ LABEL_17:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(outstandingMessagesToSend);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
         v9 = wc_log();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
-          v10 = [(WCDClient *)self loggingIdentifier];
+          loggingIdentifier = [(WCDClient *)self loggingIdentifier];
           *buf = 138543618;
-          v17 = v10;
+          v17 = loggingIdentifier;
           v18 = 2114;
           v19 = v8;
           _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ %{public}@", buf, 0x16u);
@@ -1166,132 +1166,132 @@ LABEL_17:
         [(WCDClient *)self cancelSendWithIdentifier:v8];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v20 count:16];
+      v5 = [outstandingMessagesToSend countByEnumeratingWithState:&v12 objects:v20 count:16];
     }
 
     while (v5);
   }
 
-  v11 = [(WCDClient *)self outstandingMessagesToSend];
-  [v11 removeAllObjects];
+  outstandingMessagesToSend2 = [(WCDClient *)self outstandingMessagesToSend];
+  [outstandingMessagesToSend2 removeAllObjects];
 }
 
-- (void)handleApplicationContextWithPairingID:(id)a3
+- (void)handleApplicationContextWithPairingID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = wc_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(WCDClient *)self loggingIdentifier];
+    loggingIdentifier = [(WCDClient *)self loggingIdentifier];
     v8 = 138543618;
-    v9 = v6;
+    v9 = loggingIdentifier;
     v10 = 2114;
-    v11 = v4;
+    v11 = dCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ %{public}@", &v8, 0x16u);
   }
 
-  v7 = [(WCDClient *)self remoteObjectProxy];
-  [v7 handleApplicationContextWithPairingID:v4];
+  remoteObjectProxy = [(WCDClient *)self remoteObjectProxy];
+  [remoteObjectProxy handleApplicationContextWithPairingID:dCopy];
 }
 
-- (void)handleIncomingFileWithPairingID:(id)a3
+- (void)handleIncomingFileWithPairingID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = wc_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(WCDClient *)self loggingIdentifier];
+    loggingIdentifier = [(WCDClient *)self loggingIdentifier];
     v8 = 138543618;
-    v9 = v6;
+    v9 = loggingIdentifier;
     v10 = 2114;
-    v11 = v4;
+    v11 = dCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ %{public}@", &v8, 0x16u);
   }
 
-  v7 = [(WCDClient *)self remoteObjectProxy];
-  [v7 handleIncomingFileWithPairingID:v4];
+  remoteObjectProxy = [(WCDClient *)self remoteObjectProxy];
+  [remoteObjectProxy handleIncomingFileWithPairingID:dCopy];
 }
 
-- (void)handleFileResultWithPairingID:(id)a3
+- (void)handleFileResultWithPairingID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = wc_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(WCDClient *)self loggingIdentifier];
+    loggingIdentifier = [(WCDClient *)self loggingIdentifier];
     v8 = 138543618;
-    v9 = v6;
+    v9 = loggingIdentifier;
     v10 = 2114;
-    v11 = v4;
+    v11 = dCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ %{public}@", &v8, 0x16u);
   }
 
-  v7 = [(WCDClient *)self remoteObjectProxy];
-  [v7 handleFileResultWithPairingID:v4];
+  remoteObjectProxy = [(WCDClient *)self remoteObjectProxy];
+  [remoteObjectProxy handleFileResultWithPairingID:dCopy];
 }
 
-- (void)handleIncomingUserInfoWithPairingID:(id)a3
+- (void)handleIncomingUserInfoWithPairingID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = wc_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(WCDClient *)self loggingIdentifier];
+    loggingIdentifier = [(WCDClient *)self loggingIdentifier];
     v8 = 138543618;
-    v9 = v6;
+    v9 = loggingIdentifier;
     v10 = 2114;
-    v11 = v4;
+    v11 = dCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ %{public}@", &v8, 0x16u);
   }
 
-  v7 = [(WCDClient *)self remoteObjectProxy];
-  [v7 handleIncomingUserInfoWithPairingID:v4];
+  remoteObjectProxy = [(WCDClient *)self remoteObjectProxy];
+  [remoteObjectProxy handleIncomingUserInfoWithPairingID:dCopy];
 }
 
-- (void)handleUserInfoResultWithPairingID:(id)a3
+- (void)handleUserInfoResultWithPairingID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = wc_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(WCDClient *)self loggingIdentifier];
+    loggingIdentifier = [(WCDClient *)self loggingIdentifier];
     v8 = 138543618;
-    v9 = v6;
+    v9 = loggingIdentifier;
     v10 = 2114;
-    v11 = v4;
+    v11 = dCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ %{public}@", &v8, 0x16u);
   }
 
-  v7 = [(WCDClient *)self remoteObjectProxy];
-  [v7 handleUserInfoResultWithPairingID:v4];
+  remoteObjectProxy = [(WCDClient *)self remoteObjectProxy];
+  [remoteObjectProxy handleUserInfoResultWithPairingID:dCopy];
 }
 
-- (void)updateApplicationContext:(id)a3 clientPairingID:(id)a4 errorHandler:(id)a5
+- (void)updateApplicationContext:(id)context clientPairingID:(id)d errorHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  dCopy = d;
+  contextCopy = context;
   v13 = objc_opt_new();
   [v13 setVersion:1];
-  [v13 setClientData:v10];
+  [v13 setClientData:contextCopy];
 
   v11 = +[WatchConnectivityDaemon sharedDaemon];
-  v12 = [(WCDClient *)self communicationID];
-  [v11 updateApplicationContext:v13 clientID:v12 clientPairingID:v9 errorHandler:v8];
+  communicationID = [(WCDClient *)self communicationID];
+  [v11 updateApplicationContext:v13 clientID:communicationID clientPairingID:dCopy errorHandler:handlerCopy];
 }
 
-- (void)transferFile:(id)a3 sandboxToken:(id)a4 clientPairingID:(id)a5 errorHandler:(id)a6
+- (void)transferFile:(id)file sandboxToken:(id)token clientPairingID:(id)d errorHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a6;
+  fileCopy = file;
+  handlerCopy = handler;
   v54 = 0u;
   v55 = 0u;
-  v11 = a4;
-  v12 = [(WCDClient *)self connection];
-  v13 = v12;
-  if (v12)
+  tokenCopy = token;
+  connection = [(WCDClient *)self connection];
+  v13 = connection;
+  if (connection)
   {
-    [v12 auditToken];
+    [connection auditToken];
   }
 
   else
@@ -1300,8 +1300,8 @@ LABEL_17:
     v55 = 0u;
   }
 
-  v14 = [v9 file];
-  v15 = [v14 fileURL];
+  file = [fileCopy file];
+  fileURL = [file fileURL];
   *buf = v54;
   *&buf[16] = v55;
   v16 = WCCheckFileAndConsumeSandboxTokenForAuditToken();
@@ -1309,7 +1309,7 @@ LABEL_17:
   if (v16 <= 0)
   {
     v21 = [NSError wcErrorWithCode:7013];
-    v10[2](v10, v21);
+    handlerCopy[2](handlerCopy, v21);
   }
 
   else
@@ -1318,8 +1318,8 @@ LABEL_17:
     v18 = [NSURL fileURLWithPath:v17 isDirectory:1];
 
     v19 = +[NSUUID UUID];
-    v20 = [v19 UUIDString];
-    v21 = [v18 URLByAppendingPathComponent:v20 isDirectory:1];
+    uUIDString = [v19 UUIDString];
+    v21 = [v18 URLByAppendingPathComponent:uUIDString isDirectory:1];
 
     v22 = +[NSFileManager defaultManager];
     v53 = 0;
@@ -1329,55 +1329,55 @@ LABEL_17:
     if (v18)
     {
       v48 = v23;
-      v24 = [v9 file];
-      v25 = [v24 fileURL];
-      v26 = [v25 standardizedURL];
-      v27 = [v26 lastPathComponent];
+      file2 = [fileCopy file];
+      fileURL2 = [file2 fileURL];
+      standardizedURL = [fileURL2 standardizedURL];
+      lastPathComponent = [standardizedURL lastPathComponent];
 
-      v47 = v27;
-      v46 = [v21 URLByAppendingPathComponent:v27];
+      v47 = lastPathComponent;
+      v46 = [v21 URLByAppendingPathComponent:lastPathComponent];
       v28 = objc_opt_new();
       [v28 setObject:&off_10004AAF8 forKeyedSubscript:@"t"];
-      v29 = [v9 file];
-      v30 = [v29 userInfoData];
+      file3 = [fileCopy file];
+      userInfoData = [file3 userInfoData];
 
-      if (v30)
+      if (userInfoData)
       {
-        v31 = [v9 file];
-        v32 = [v31 userInfoData];
-        [v28 setObject:v32 forKeyedSubscript:@"u"];
+        file4 = [fileCopy file];
+        userInfoData2 = [file4 userInfoData];
+        [v28 setObject:userInfoData2 forKeyedSubscript:@"u"];
       }
 
       v33 = wc_log();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
       {
-        v34 = [(WCDClient *)self loggingIdentifier];
-        v35 = [v9 file];
-        v36 = [v35 fileURL];
-        v37 = [v36 path];
+        loggingIdentifier = [(WCDClient *)self loggingIdentifier];
+        file5 = [fileCopy file];
+        fileURL3 = [file5 fileURL];
+        path = [fileURL3 path];
         *buf = 138543874;
-        *&buf[4] = v34;
+        *&buf[4] = loggingIdentifier;
         *&buf[12] = 2114;
-        *&buf[14] = v37;
+        *&buf[14] = path;
         *&buf[22] = 2114;
         *&buf[24] = v28;
         _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "%{public}@ Client sending file %{public}@ with metadata %{public}@, ", buf, 0x20u);
       }
 
       v38 = +[WatchConnectivityDaemon sharedDaemon];
-      v39 = [v9 file];
-      v40 = [v39 fileDescriptor];
-      v41 = [v9 transferIdentifier];
+      file6 = [fileCopy file];
+      fileDescriptor = [file6 fileDescriptor];
+      transferIdentifier = [fileCopy transferIdentifier];
       v49[0] = _NSConcreteStackBlock;
       v49[1] = 3221225472;
       v49[2] = sub_10000804C;
       v49[3] = &unk_100048BF0;
       v49[4] = self;
-      v50 = v9;
+      v50 = fileCopy;
       v51 = v46;
-      v52 = v10;
+      v52 = handlerCopy;
       v42 = v46;
-      [v38 transferFile:v40 withMetadata:v28 identifier:v41 forClient:self destFilePath:v42 errorHandler:v49];
+      [v38 transferFile:fileDescriptor withMetadata:v28 identifier:transferIdentifier forClient:self destFilePath:v42 errorHandler:v49];
 
       v43 = v47;
       v23 = v48;
@@ -1396,28 +1396,28 @@ LABEL_17:
       v45 = [NSDictionary dictionaryWithObjects:&v57 forKeys:&v56 count:1];
       v43 = [NSError wcErrorWithCode:7001 userInfo:v45];
 
-      v10[2](v10, v43);
+      handlerCopy[2](handlerCopy, v43);
     }
   }
 }
 
-- (void)copyProgressUpdatesForFileTransfer:(id)a3 fromClonedFileURL:(id)a4
+- (void)copyProgressUpdatesForFileTransfer:(id)transfer fromClonedFileURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  transferCopy = transfer;
+  lCopy = l;
   objc_initWeak(&location, self);
   v8 = wc_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 file];
-    v10 = [v9 fileURL];
-    v11 = [v6 transferIdentifier];
+    file = [transferCopy file];
+    fileURL = [file fileURL];
+    transferIdentifier = [transferCopy transferIdentifier];
     *buf = 138412802;
-    v23 = v10;
+    v23 = fileURL;
     v24 = 2112;
-    v25 = v7;
+    v25 = lCopy;
     v26 = 2112;
-    v27 = v11;
+    v27 = transferIdentifier;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Creating progress copy for originalFile: %@, clonedFile: %@, transferID: %@", buf, 0x20u);
   }
 
@@ -1425,35 +1425,35 @@ LABEL_17:
   v15 = 3221225472;
   v16 = sub_1000082D8;
   v17 = &unk_100048C40;
-  v12 = v6;
+  v12 = transferCopy;
   v18 = v12;
-  v19 = self;
+  selfCopy = self;
   objc_copyWeak(&v20, &location);
-  v13 = [NSProgress addSubscriberForFileURL:v7 withPublishingHandler:&v14];
+  v13 = [NSProgress addSubscriberForFileURL:lCopy withPublishingHandler:&v14];
   [v12 setProgressToken:{v13, v14, v15, v16, v17}];
 
   objc_destroyWeak(&v20);
   objc_destroyWeak(&location);
 }
 
-- (void)registerForUpdatesForProgress:(id)a3
+- (void)registerForUpdatesForProgress:(id)progress
 {
-  v4 = a3;
-  [v4 addObserver:self forKeyPath:@"userInfo.NSProgressByteCompletedCountKey" options:1 context:0];
-  [v4 addObserver:self forKeyPath:@"totalUnitCount" options:1 context:0];
-  [v4 addObserver:self forKeyPath:@"completedUnitCount" options:1 context:0];
-  [v4 addObserver:self forKeyPath:@"finished" options:1 context:0];
-  [v4 addObserver:self forKeyPath:@"cancelled" options:1 context:0];
+  progressCopy = progress;
+  [progressCopy addObserver:self forKeyPath:@"userInfo.NSProgressByteCompletedCountKey" options:1 context:0];
+  [progressCopy addObserver:self forKeyPath:@"totalUnitCount" options:1 context:0];
+  [progressCopy addObserver:self forKeyPath:@"completedUnitCount" options:1 context:0];
+  [progressCopy addObserver:self forKeyPath:@"finished" options:1 context:0];
+  [progressCopy addObserver:self forKeyPath:@"cancelled" options:1 context:0];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v8 = a3;
-  v9 = a4;
+  pathCopy = path;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v9;
+    v10 = objectCopy;
   }
 
   else
@@ -1462,46 +1462,46 @@ LABEL_17:
   }
 
   v11 = v10;
-  v12 = [v11 userInfo];
-  v13 = [v12 objectForKeyedSubscript:IDSSendResourceProgressIdentifier];
+  userInfo = [v11 userInfo];
+  v13 = [userInfo objectForKeyedSubscript:IDSSendResourceProgressIdentifier];
 
   v14 = [(NSMutableDictionary *)self->_outstandingFileTransfers objectForKeyedSubscript:v13];
-  if ([v8 isEqual:@"completedUnitCount"])
+  if ([pathCopy isEqual:@"completedUnitCount"])
   {
     [v14 setCompletedUnitCount:{objc_msgSend(v11, "completedUnitCount")}];
     goto LABEL_11;
   }
 
-  if ([v8 isEqual:@"totalUnitCount"])
+  if ([pathCopy isEqual:@"totalUnitCount"])
   {
     [v14 setTotalUnitCount:{objc_msgSend(v11, "totalUnitCount")}];
     goto LABEL_11;
   }
 
-  if ([v8 isEqual:@"userInfo.NSProgressByteCompletedCountKey"])
+  if ([pathCopy isEqual:@"userInfo.NSProgressByteCompletedCountKey"])
   {
-    v15 = [v11 byteCompletedCount];
-    [v14 setByteCompletedCount:v15];
+    byteCompletedCount = [v11 byteCompletedCount];
+    [v14 setByteCompletedCount:byteCompletedCount];
 LABEL_10:
 
     goto LABEL_11;
   }
 
-  if (![v8 isEqual:@"finished"])
+  if (![pathCopy isEqual:@"finished"])
   {
-    if (![v8 isEqual:@"cancelled"])
+    if (![pathCopy isEqual:@"cancelled"])
     {
       goto LABEL_11;
     }
 
-    v15 = wc_log();
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+    byteCompletedCount = wc_log();
+    if (os_log_type_enabled(byteCompletedCount, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 136446466;
       v18 = "[WCDClient observeValueForKeyPath:ofObject:change:context:]";
       v19 = 2112;
       v20 = v13;
-      _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%{public}s Progress cancelled for identifier %@", &v17, 0x16u);
+      _os_log_impl(&_mh_execute_header, byteCompletedCount, OS_LOG_TYPE_DEFAULT, "%{public}s Progress cancelled for identifier %@", &v17, 0x16u);
     }
 
     goto LABEL_10;
@@ -1527,33 +1527,33 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)removeProgressForFileTransfer:(id)a3
+- (void)removeProgressForFileTransfer:(id)transfer
 {
-  v3 = a3;
-  v4 = [v3 progress];
-  v5 = [v4 isFinished];
+  transferCopy = transfer;
+  progress = [transferCopy progress];
+  isFinished = [progress isFinished];
 
-  if (v5)
+  if (isFinished)
   {
-    v6 = [v3 progressToken];
+    progressToken = [transferCopy progressToken];
 
     v7 = wc_log();
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-    if (v6)
+    if (progressToken)
     {
       if (v8)
       {
         v10 = 136446466;
         v11 = "[WCDClient removeProgressForFileTransfer:]";
         v12 = 2114;
-        v13 = v3;
+        v13 = transferCopy;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}s Removing progress for transfer %{public}@", &v10, 0x16u);
       }
 
-      v9 = [v3 progressToken];
-      [NSProgress _removeSubscriber:v9];
+      progressToken2 = [transferCopy progressToken];
+      [NSProgress _removeSubscriber:progressToken2];
 
-      [v3 setProgressToken:0];
+      [transferCopy setProgressToken:0];
     }
 
     else
@@ -1563,38 +1563,38 @@ LABEL_11:
         v10 = 136446466;
         v11 = "[WCDClient removeProgressForFileTransfer:]";
         v12 = 2114;
-        v13 = v3;
+        v13 = transferCopy;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}s Missing item to remove (identifier: %{public}@)", &v10, 0x16u);
       }
     }
   }
 }
 
-- (void)transferUserInfo:(id)a3 withURL:(id)a4 clientPairingID:(id)a5 errorHandler:(id)a6
+- (void)transferUserInfo:(id)info withURL:(id)l clientPairingID:(id)d errorHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = a4;
-  if ([v10 isCurrentComplicationInfo])
+  infoCopy = info;
+  dCopy = d;
+  handlerCopy = handler;
+  lCopy = l;
+  if ([infoCopy isCurrentComplicationInfo])
   {
     v14 = objc_opt_new();
     [v14 setVersion:1];
-    v15 = [v10 userInfoData];
-    [v14 setClientData:v15];
+    userInfoData = [infoCopy userInfoData];
+    [v14 setClientData:userInfoData];
 
-    v16 = [v10 transferIdentifier];
-    [v14 setTransferIdentifier:v16];
+    transferIdentifier = [infoCopy transferIdentifier];
+    [v14 setTransferIdentifier:transferIdentifier];
 
     v17 = +[WatchConnectivityDaemon sharedDaemon];
-    v18 = [(WCDClient *)self communicationID];
-    v19 = [v10 complicationTransferIdentifier];
+    communicationID = [(WCDClient *)self communicationID];
+    complicationTransferIdentifier = [infoCopy complicationTransferIdentifier];
     v25[0] = _NSConcreteStackBlock;
     v25[1] = 3221225472;
     v25[2] = sub_100008EBC;
     v25[3] = &unk_100048C68;
     v25[4] = self;
-    v20 = [v17 sendComplicationUserInfo:v14 clientID:v18 clientPairingID:v11 identifier:v19 errorHandler:v25];
+    v20 = [v17 sendComplicationUserInfo:v14 clientID:communicationID clientPairingID:dCopy identifier:complicationTransferIdentifier errorHandler:v25];
 
     if (v20)
     {
@@ -1606,112 +1606,112 @@ LABEL_11:
   v27 = &off_10004AB10;
   v21 = [NSDictionary dictionaryWithObjects:&v27 forKeys:&v26 count:1];
   v22 = +[WatchConnectivityDaemon sharedDaemon];
-  v23 = [v10 transferIdentifier];
-  v24 = [(WCDClient *)self communicationID];
-  [v22 transferUserInfo:v13 withMetadata:v21 identifier:v23 clientID:v24 clientPairingID:v11 errorHandler:v12];
+  transferIdentifier2 = [infoCopy transferIdentifier];
+  communicationID2 = [(WCDClient *)self communicationID];
+  [v22 transferUserInfo:lCopy withMetadata:v21 identifier:transferIdentifier2 clientID:communicationID2 clientPairingID:dCopy errorHandler:handlerCopy];
 }
 
-- (void)cancelSendWithIdentifier:(id)a3
+- (void)cancelSendWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[WatchConnectivityDaemon sharedDaemon];
-  [v4 cancelSendWithIdentifier:v3];
+  [v4 cancelSendWithIdentifier:identifierCopy];
 }
 
-- (void)acknowledgeFileIndexWithIdentifier:(id)a3 clientPairingID:(id)a4
+- (void)acknowledgeFileIndexWithIdentifier:(id)identifier clientPairingID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  dCopy = d;
   v8 = wc_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(WCDClient *)self loggingIdentifier];
+    loggingIdentifier = [(WCDClient *)self loggingIdentifier];
     v13 = 138543874;
-    v14 = v9;
+    v14 = loggingIdentifier;
     v15 = 2114;
-    v16 = v6;
+    v16 = identifierCopy;
     v17 = 2114;
-    v18 = v7;
+    v18 = dCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ identifier: %{public}@, clientPairingID: %{public}@", &v13, 0x20u);
   }
 
   v10 = +[WCDIndexManager sharedManager];
-  v11 = [(WCDClient *)self applicationInfo];
-  v12 = [v10 fileIndexForApplication:v11 pairingID:v7];
+  applicationInfo = [(WCDClient *)self applicationInfo];
+  v12 = [v10 fileIndexForApplication:applicationInfo pairingID:dCopy];
 
-  [v12 removeContentIdentifier:v6];
+  [v12 removeContentIdentifier:identifierCopy];
 }
 
-- (void)acknowledgeFileResultIndexWithIdentifier:(id)a3 clientPairingID:(id)a4
+- (void)acknowledgeFileResultIndexWithIdentifier:(id)identifier clientPairingID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  dCopy = d;
   v8 = wc_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(WCDClient *)self loggingIdentifier];
+    loggingIdentifier = [(WCDClient *)self loggingIdentifier];
     v13 = 138543874;
-    v14 = v9;
+    v14 = loggingIdentifier;
     v15 = 2114;
-    v16 = v6;
+    v16 = identifierCopy;
     v17 = 2114;
-    v18 = v7;
+    v18 = dCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ identifier: %{public}@, clientPairingID: %{public}@", &v13, 0x20u);
   }
 
   v10 = +[WCDIndexManager sharedManager];
-  v11 = [(WCDClient *)self applicationInfo];
-  v12 = [v10 fileResultsIndexForApplication:v11 pairingID:v7];
+  applicationInfo = [(WCDClient *)self applicationInfo];
+  v12 = [v10 fileResultsIndexForApplication:applicationInfo pairingID:dCopy];
 
-  [v12 removeContentIdentifier:v6];
+  [v12 removeContentIdentifier:identifierCopy];
 }
 
-- (void)acknowledgeUserInfoIndexWithIdentifier:(id)a3 clientPairingID:(id)a4
+- (void)acknowledgeUserInfoIndexWithIdentifier:(id)identifier clientPairingID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  dCopy = d;
   v8 = wc_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(WCDClient *)self loggingIdentifier];
+    loggingIdentifier = [(WCDClient *)self loggingIdentifier];
     v13 = 138543874;
-    v14 = v9;
+    v14 = loggingIdentifier;
     v15 = 2114;
-    v16 = v6;
+    v16 = identifierCopy;
     v17 = 2114;
-    v18 = v7;
+    v18 = dCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ identifier: %{public}@, clientPairingID: %{public}@", &v13, 0x20u);
   }
 
   v10 = +[WCDIndexManager sharedManager];
-  v11 = [(WCDClient *)self applicationInfo];
-  v12 = [v10 userInfoIndexForApplication:v11 pairingID:v7];
+  applicationInfo = [(WCDClient *)self applicationInfo];
+  v12 = [v10 userInfoIndexForApplication:applicationInfo pairingID:dCopy];
 
-  [v12 removeContentIdentifier:v6];
+  [v12 removeContentIdentifier:identifierCopy];
 }
 
-- (void)acknowledgeUserInfoResultIndexWithIdentifier:(id)a3 clientPairingID:(id)a4
+- (void)acknowledgeUserInfoResultIndexWithIdentifier:(id)identifier clientPairingID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  dCopy = d;
   v8 = wc_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(WCDClient *)self loggingIdentifier];
+    loggingIdentifier = [(WCDClient *)self loggingIdentifier];
     v13 = 138543874;
-    v14 = v9;
+    v14 = loggingIdentifier;
     v15 = 2114;
-    v16 = v6;
+    v16 = identifierCopy;
     v17 = 2114;
-    v18 = v7;
+    v18 = dCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ identifier: %{public}@, clientPairingID: %{public}@", &v13, 0x20u);
   }
 
   v10 = +[WCDIndexManager sharedManager];
-  v11 = [(WCDClient *)self applicationInfo];
-  v12 = [v10 userInfoResultsIndexForApplication:v11 pairingID:v7];
+  applicationInfo = [(WCDClient *)self applicationInfo];
+  v12 = [v10 userInfoResultsIndexForApplication:applicationInfo pairingID:dCopy];
 
-  [v12 removeContentIdentifier:v6];
+  [v12 removeContentIdentifier:identifierCopy];
 }
 
 - (id)remoteObjectProxy

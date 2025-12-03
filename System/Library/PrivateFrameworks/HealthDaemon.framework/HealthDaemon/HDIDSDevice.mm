@@ -1,37 +1,37 @@
 @interface HDIDSDevice
-- (BOOL)isEqual:(id)a3;
-- (HDIDSDevice)initWithIDSDevice:(id)a3;
-- (HDIDSDevice)initWithIdentifier:(id)a3 name:(id)a4 destinationID:(id)a5 deviceType:(int64_t)a6 buildVersion:(id)a7;
+- (BOOL)isEqual:(id)equal;
+- (HDIDSDevice)initWithIDSDevice:(id)device;
+- (HDIDSDevice)initWithIdentifier:(id)identifier name:(id)name destinationID:(id)d deviceType:(int64_t)type buildVersion:(id)version;
 - (unint64_t)hash;
 @end
 
 @implementation HDIDSDevice
 
-- (HDIDSDevice)initWithIdentifier:(id)a3 name:(id)a4 destinationID:(id)a5 deviceType:(int64_t)a6 buildVersion:(id)a7
+- (HDIDSDevice)initWithIdentifier:(id)identifier name:(id)name destinationID:(id)d deviceType:(int64_t)type buildVersion:(id)version
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  identifierCopy = identifier;
+  nameCopy = name;
+  dCopy = d;
+  versionCopy = version;
   v26.receiver = self;
   v26.super_class = HDIDSDevice;
   v16 = [(HDIDSDevice *)&v26 init];
   if (v16)
   {
-    v17 = [v12 copy];
+    v17 = [identifierCopy copy];
     identifier = v16->_identifier;
     v16->_identifier = v17;
 
-    v19 = [v13 copy];
+    v19 = [nameCopy copy];
     name = v16->_name;
     v16->_name = v19;
 
-    v21 = [v14 copy];
+    v21 = [dCopy copy];
     destinationID = v16->_destinationID;
     v16->_destinationID = v21;
 
-    v16->_deviceType = a6;
-    v23 = [v15 copy];
+    v16->_deviceType = type;
+    v23 = [versionCopy copy];
     buildVersion = v16->_buildVersion;
     v16->_buildVersion = v23;
   }
@@ -39,33 +39,33 @@
   return v16;
 }
 
-- (HDIDSDevice)initWithIDSDevice:(id)a3
+- (HDIDSDevice)initWithIDSDevice:(id)device
 {
-  if (a3)
+  if (device)
   {
-    v4 = a3;
-    v5 = [v4 uniqueID];
-    v6 = [v4 name];
+    deviceCopy = device;
+    uniqueID = [deviceCopy uniqueID];
+    name = [deviceCopy name];
     v7 = IDSCopyIDForDevice();
-    v8 = [v4 deviceType];
-    v9 = [v4 productBuildVersion];
+    deviceType = [deviceCopy deviceType];
+    productBuildVersion = [deviceCopy productBuildVersion];
 
-    self = [(HDIDSDevice *)self initWithIdentifier:v5 name:v6 destinationID:v7 deviceType:v8 buildVersion:v9];
-    v10 = self;
+    self = [(HDIDSDevice *)self initWithIdentifier:uniqueID name:name destinationID:v7 deviceType:deviceType buildVersion:productBuildVersion];
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v14 = 1;
   }
@@ -75,7 +75,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       identifier = self->_identifier;
       v7 = v5->_identifier;
       if (identifier != v7 && (!v7 || ![(NSString *)identifier isEqualToString:?]))

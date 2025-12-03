@@ -1,22 +1,22 @@
 @interface EBHyperlinkTable
-+ (void)readWithState:(id)a3;
++ (void)readWithState:(id)state;
 @end
 
 @implementation EBHyperlinkTable
 
-+ (void)readWithState:(id)a3
++ (void)readWithState:(id)state
 {
-  v3 = a3;
+  stateCopy = state;
   v17 = 0;
   v18 = 0;
   v19 = 0;
-  v4 = [v3 xlReader];
-  (*(*v4 + 480))(v4, &v16);
+  xlReader = [stateCopy xlReader];
+  (*(*xlReader + 480))(xlReader, &v16);
   v5 = v18 - v17;
   if (((v18 - v17) >> 3))
   {
-    v6 = [v3 edSheet];
-    v7 = [v6 hyperlinks];
+    edSheet = [stateCopy edSheet];
+    hyperlinks = [edSheet hyperlinks];
     v8 = (v5 >> 3);
 
     v9 = 0;
@@ -35,8 +35,8 @@
 
       else
       {
-        v12 = [v3 resources];
-        v11 = [EBHyperlink edHyperlinkFromXlHLink:v10 edResources:v12];
+        resources = [stateCopy resources];
+        v11 = [EBHyperlink edHyperlinkFromXlHLink:v10 edResources:resources];
       }
 
       v13 = v9 + 1;
@@ -50,14 +50,14 @@
         v14 = v17[v13];
         if (*(v14 + 12) == 2048)
         {
-          v15 = [v3 resources];
-          [EBHyperlink addToolTip:v14 toEdHyperLink:v11 edResources:v15];
+          resources2 = [stateCopy resources];
+          [EBHyperlink addToolTip:v14 toEdHyperLink:v11 edResources:resources2];
 
           ++v9;
         }
       }
 
-      [v7 addObject:v11];
+      [hyperlinks addObject:v11];
 
       ++v9;
     }

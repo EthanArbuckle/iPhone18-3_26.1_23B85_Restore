@@ -1,6 +1,6 @@
 @interface MPStoreModelRadioStationBuilder
 + (id)allSupportedProperties;
-- (id)modelObjectWithStoreItemMetadata:(id)a3 sourceModelObject:(id)a4 userIdentity:(id)a5;
+- (id)modelObjectWithStoreItemMetadata:(id)metadata sourceModelObject:(id)object userIdentity:(id)identity;
 @end
 
 @implementation MPStoreModelRadioStationBuilder
@@ -30,16 +30,16 @@
   return v3;
 }
 
-- (id)modelObjectWithStoreItemMetadata:(id)a3 sourceModelObject:(id)a4 userIdentity:(id)a5
+- (id)modelObjectWithStoreItemMetadata:(id)metadata sourceModelObject:(id)object userIdentity:(id)identity
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  metadataCopy = metadata;
+  objectCopy = object;
+  identityCopy = identity;
   if ((*&self->_requestedRadioStationProperties & 1) == 0)
   {
-    v11 = [(MPStoreModelObjectBuilder *)self requestedPropertySet];
-    v12 = [v11 properties];
-    if ([v12 containsObject:@"MPModelPropertyRadioStationBeats1"])
+    requestedPropertySet = [(MPStoreModelObjectBuilder *)self requestedPropertySet];
+    properties = [requestedPropertySet properties];
+    if ([properties containsObject:@"MPModelPropertyRadioStationBeats1"])
     {
       v13 = 2;
     }
@@ -50,7 +50,7 @@
     }
 
     self->_requestedRadioStationProperties = (*&self->_requestedRadioStationProperties & 0xFFFFFFFD | v13);
-    if ([v12 containsObject:@"MPModelPropertyRadioStationName"])
+    if ([properties containsObject:@"MPModelPropertyRadioStationName"])
     {
       v14 = 4;
     }
@@ -61,7 +61,7 @@
     }
 
     self->_requestedRadioStationProperties = (*&self->_requestedRadioStationProperties & 0xFFFFFFFB | v14);
-    if ([v12 containsObject:@"MPModelPropertyRadioStationEditorNotes"])
+    if ([properties containsObject:@"MPModelPropertyRadioStationEditorNotes"])
     {
       v15 = 8;
     }
@@ -72,7 +72,7 @@
     }
 
     self->_requestedRadioStationProperties = (*&self->_requestedRadioStationProperties & 0xFFFFFFF7 | v15);
-    if ([v12 containsObject:@"MPModelPropertyRadioStationShortEditorNotes"])
+    if ([properties containsObject:@"MPModelPropertyRadioStationShortEditorNotes"])
     {
       v16 = 16;
     }
@@ -83,7 +83,7 @@
     }
 
     self->_requestedRadioStationProperties = (*&self->_requestedRadioStationProperties & 0xFFFFFFEF | v16);
-    if ([v12 containsObject:@"MPModelPropertyRadioStationHasExplicitContent"])
+    if ([properties containsObject:@"MPModelPropertyRadioStationHasExplicitContent"])
     {
       v17 = 32;
     }
@@ -94,7 +94,7 @@
     }
 
     self->_requestedRadioStationProperties = (*&self->_requestedRadioStationProperties & 0xFFFFFFDF | v17);
-    if ([v12 containsObject:@"MPModelPropertyRadioStationType"])
+    if ([properties containsObject:@"MPModelPropertyRadioStationType"])
     {
       v18 = 64;
     }
@@ -105,7 +105,7 @@
     }
 
     self->_requestedRadioStationProperties = (*&self->_requestedRadioStationProperties & 0xFFFFFFBF | v18);
-    if ([v12 containsObject:@"MPModelPropertyRadioStationSubtype"])
+    if ([properties containsObject:@"MPModelPropertyRadioStationSubtype"])
     {
       v19 = 128;
     }
@@ -116,7 +116,7 @@
     }
 
     self->_requestedRadioStationProperties = (*&self->_requestedRadioStationProperties & 0xFFFFFF7F | v19);
-    if ([v12 containsObject:@"MPModelPropertyRadioStationArtwork"])
+    if ([properties containsObject:@"MPModelPropertyRadioStationArtwork"])
     {
       v20 = 256;
     }
@@ -127,7 +127,7 @@
     }
 
     self->_requestedRadioStationProperties = (*&self->_requestedRadioStationProperties & 0xFFFFFEFF | v20);
-    if ([v12 containsObject:@"MPModelPropertyRadioStationGlyph"])
+    if ([properties containsObject:@"MPModelPropertyRadioStationGlyph"])
     {
       v21 = 512;
     }
@@ -138,7 +138,7 @@
     }
 
     self->_requestedRadioStationProperties = (*&self->_requestedRadioStationProperties & 0xFFFFFDFF | v21);
-    if ([v12 containsObject:@"MPModelPropertyRadioStationEditorialArtwork"])
+    if ([properties containsObject:@"MPModelPropertyRadioStationEditorialArtwork"])
     {
       v22 = 1024;
     }
@@ -149,7 +149,7 @@
     }
 
     self->_requestedRadioStationProperties = (*&self->_requestedRadioStationProperties & 0xFFFFFBFF | v22);
-    if ([v12 containsObject:@"MPModelPropertyRadioStationAttributionLabel"])
+    if ([properties containsObject:@"MPModelPropertyRadioStationAttributionLabel"])
     {
       v23 = 2048;
     }
@@ -160,7 +160,7 @@
     }
 
     self->_requestedRadioStationProperties = (*&self->_requestedRadioStationProperties & 0xFFFFF7FF | v23);
-    if ([v12 containsObject:@"MPModelPropertyRadioStationProviderName"])
+    if ([properties containsObject:@"MPModelPropertyRadioStationProviderName"])
     {
       v24 = 4096;
     }
@@ -171,7 +171,7 @@
     }
 
     self->_requestedRadioStationProperties = (*&self->_requestedRadioStationProperties & 0xFFFFEFFF | v24);
-    if ([v12 containsObject:@"MPModelPropertyRadioStationLive"])
+    if ([properties containsObject:@"MPModelPropertyRadioStationLive"])
     {
       v25 = 0x2000;
     }
@@ -182,7 +182,7 @@
     }
 
     self->_requestedRadioStationProperties = (*&self->_requestedRadioStationProperties & 0xFFFFDFFF | v25);
-    if ([v12 containsObject:@"MPModelPropertyRadioStationStartingAirDate"])
+    if ([properties containsObject:@"MPModelPropertyRadioStationStartingAirDate"])
     {
       v26 = 0x4000;
     }
@@ -193,7 +193,7 @@
     }
 
     self->_requestedRadioStationProperties = (*&self->_requestedRadioStationProperties & 0xFFFFBFFF | v26);
-    if ([v12 containsObject:@"MPModelPropertyRadioStationEndingAirDate"])
+    if ([properties containsObject:@"MPModelPropertyRadioStationEndingAirDate"])
     {
       v27 = 0x8000;
     }
@@ -204,7 +204,7 @@
     }
 
     self->_requestedRadioStationProperties = (*&self->_requestedRadioStationProperties & 0xFFFF7FFF | v27);
-    if ([v12 containsObject:@"MPModelPropertyRadioStationSubscriptionRequired"])
+    if ([properties containsObject:@"MPModelPropertyRadioStationSubscriptionRequired"])
     {
       v28 = 65537;
     }
@@ -221,32 +221,32 @@
   aBlock[1] = 3221225472;
   aBlock[2] = __99__MPStoreModelRadioStationBuilder_modelObjectWithStoreItemMetadata_sourceModelObject_userIdentity___block_invoke;
   aBlock[3] = &unk_1E767EE00;
-  v29 = v8;
+  v29 = metadataCopy;
   v49 = v29;
-  v30 = v10;
+  v30 = identityCopy;
   v50 = v30;
   v31 = _Block_copy(aBlock);
   v42 = MEMORY[0x1E69E9820];
   v43 = 3221225472;
   v44 = __99__MPStoreModelRadioStationBuilder_modelObjectWithStoreItemMetadata_sourceModelObject_userIdentity___block_invoke_4;
   v45 = &unk_1E767EC90;
-  v46 = self;
+  selfCopy = self;
   v32 = v29;
   v47 = v32;
   v33 = _Block_copy(&v42);
-  if (v9)
+  if (objectCopy)
   {
-    v34 = [v9 identifiers];
-    v35 = [v34 copyWithSource:@"StorePlatform" block:v31];
-    v36 = [v9 copyWithIdentifiers:v35 block:v33];
+    identifiers = [objectCopy identifiers];
+    v35 = [identifiers copyWithSource:@"StorePlatform" block:v31];
+    v36 = [objectCopy copyWithIdentifiers:v35 block:v33];
   }
 
   else
   {
     v37 = [MPModelRadioStation alloc];
     v38 = [MPIdentifierSet alloc];
-    v34 = [MPModelRadioStationKind identityKind:v42];
-    v35 = [(MPIdentifierSet *)v38 initWithSource:@"StorePlatform" modelKind:v34 block:v31];
+    identifiers = [MPModelRadioStationKind identityKind:v42];
+    v35 = [(MPIdentifierSet *)v38 initWithSource:@"StorePlatform" modelKind:identifiers block:v31];
     v36 = [(MPModelObject *)v37 initWithIdentifiers:v35 block:v33];
   }
 

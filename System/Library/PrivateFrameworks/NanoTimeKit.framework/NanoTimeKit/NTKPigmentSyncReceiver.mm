@@ -1,7 +1,7 @@
 @interface NTKPigmentSyncReceiver
 - (NTKPigmentSyncReceiver)init;
-- (void)finishSyncingForDeviceUUID:(id)a3 success:(BOOL)a4;
-- (void)processSyncData:(id)a3 domain:(id)a4 deviceUUID:(id)a5;
+- (void)finishSyncingForDeviceUUID:(id)d success:(BOOL)success;
+- (void)processSyncData:(id)data domain:(id)domain deviceUUID:(id)d;
 @end
 
 @implementation NTKPigmentSyncReceiver
@@ -26,23 +26,23 @@
   return v2;
 }
 
-- (void)processSyncData:(id)a3 domain:(id)a4 deviceUUID:(id)a5
+- (void)processSyncData:(id)data domain:(id)domain deviceUUID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  domainCopy = domain;
+  dCopy = d;
   privateQueue = self->_privateQueue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __60__NTKPigmentSyncReceiver_processSyncData_domain_deviceUUID___block_invoke;
   v15[3] = &unk_278780FF8;
   v15[4] = self;
-  v16 = v10;
-  v17 = v9;
-  v18 = v8;
-  v12 = v8;
-  v13 = v9;
-  v14 = v10;
+  v16 = dCopy;
+  v17 = domainCopy;
+  v18 = dataCopy;
+  v12 = dataCopy;
+  v13 = domainCopy;
+  v14 = dCopy;
   dispatch_sync(privateQueue, v15);
 }
 
@@ -92,17 +92,17 @@ void __60__NTKPigmentSyncReceiver_processSyncData_domain_deviceUUID___block_invo
   }
 }
 
-- (void)finishSyncingForDeviceUUID:(id)a3 success:(BOOL)a4
+- (void)finishSyncingForDeviceUUID:(id)d success:(BOOL)success
 {
-  v5 = a3;
+  dCopy = d;
   privateQueue = self->_privateQueue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __61__NTKPigmentSyncReceiver_finishSyncingForDeviceUUID_success___block_invoke;
   v8[3] = &unk_27877E438;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = dCopy;
+  v7 = dCopy;
   dispatch_sync(privateQueue, v8);
 }
 

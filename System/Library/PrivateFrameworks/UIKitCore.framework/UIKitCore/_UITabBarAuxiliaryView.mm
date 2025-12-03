@@ -1,5 +1,5 @@
 @interface _UITabBarAuxiliaryView
-- (_TtC5UIKit22_UITabBarAuxiliaryView)initWithFrame:(CGRect)a3;
+- (_TtC5UIKit22_UITabBarAuxiliaryView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -7,11 +7,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_188E94BA4();
 }
 
-- (_TtC5UIKit22_UITabBarAuxiliaryView)initWithFrame:(CGRect)a3
+- (_TtC5UIKit22_UITabBarAuxiliaryView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

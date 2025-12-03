@@ -1,22 +1,22 @@
 @interface HDCloudSyncCodableAttachmentReference
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasOptions:(BOOL)a3;
-- (void)setHasSchemaVersion:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasOptions:(BOOL)options;
+- (void)setHasSchemaVersion:(BOOL)version;
+- (void)setHasType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCloudSyncCodableAttachmentReference
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -29,9 +29,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasOptions:(BOOL)a3
+- (void)setHasOptions:(BOOL)options
 {
-  if (a3)
+  if (options)
   {
     v3 = 2;
   }
@@ -44,9 +44,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasSchemaVersion:(BOOL)a3
+- (void)setHasSchemaVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 4;
   }
@@ -65,20 +65,20 @@
   v8.receiver = self;
   v8.super_class = HDCloudSyncCodableAttachmentReference;
   v4 = [(HDCloudSyncCodableAttachmentReference *)&v8 description];
-  v5 = [(HDCloudSyncCodableAttachmentReference *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCloudSyncCodableAttachmentReference *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   objectIdentifier = self->_objectIdentifier;
   if (objectIdentifier)
   {
-    [v3 setObject:objectIdentifier forKey:@"objectIdentifier"];
+    [dictionary setObject:objectIdentifier forKey:@"objectIdentifier"];
   }
 
   schemaIdentifier = self->_schemaIdentifier;
@@ -161,26 +161,26 @@ LABEL_11:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_objectIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_schemaIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_attachmentIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   has = self->_has;
@@ -188,7 +188,7 @@ LABEL_11:
   {
     type = self->_type;
     PBDataWriterWriteInt64Field();
-    v4 = v10;
+    toCopy = v10;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -209,75 +209,75 @@ LABEL_9:
 
   creationDate = self->_creationDate;
   PBDataWriterWriteDoubleField();
-  v4 = v10;
+  toCopy = v10;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_10:
     options = self->_options;
     PBDataWriterWriteInt64Field();
-    v4 = v10;
+    toCopy = v10;
   }
 
 LABEL_11:
   if (self->_metadata)
   {
     PBDataWriterWriteDataField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if ((*&self->_has & 4) != 0)
   {
     schemaVersion = self->_schemaVersion;
     PBDataWriterWriteInt64Field();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_systemBuildVersion)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_productType)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_deviceName)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_objectIdentifier)
   {
-    [v4 setObjectIdentifier:?];
-    v4 = v6;
+    [toCopy setObjectIdentifier:?];
+    toCopy = v6;
   }
 
   if (self->_schemaIdentifier)
   {
     [v6 setSchemaIdentifier:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_attachmentIdentifier)
   {
     [v6 setAttachmentIdentifier:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 8) != 0)
   {
-    *(v4 + 4) = self->_type;
-    *(v4 + 96) |= 8u;
+    *(toCopy + 4) = self->_type;
+    *(toCopy + 96) |= 8u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -296,59 +296,59 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  *(v4 + 1) = *&self->_creationDate;
-  *(v4 + 96) |= 1u;
+  *(toCopy + 1) = *&self->_creationDate;
+  *(toCopy + 96) |= 1u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_10:
-    *(v4 + 2) = self->_options;
-    *(v4 + 96) |= 2u;
+    *(toCopy + 2) = self->_options;
+    *(toCopy + 96) |= 2u;
   }
 
 LABEL_11:
   if (self->_metadata)
   {
     [v6 setMetadata:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    *(v4 + 3) = self->_schemaVersion;
-    *(v4 + 96) |= 4u;
+    *(toCopy + 3) = self->_schemaVersion;
+    *(toCopy + 96) |= 4u;
   }
 
   if (self->_systemBuildVersion)
   {
     [v6 setSystemBuildVersion:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_productType)
   {
     [v6 setProductType:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_deviceName)
   {
     [v6 setDeviceName:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_objectIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_objectIdentifier copyWithZone:zone];
   v7 = *(v5 + 64);
   *(v5 + 64) = v6;
 
-  v8 = [(NSString *)self->_schemaIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_schemaIdentifier copyWithZone:zone];
   v9 = *(v5 + 80);
   *(v5 + 80) = v8;
 
-  v10 = [(NSString *)self->_attachmentIdentifier copyWithZone:a3];
+  v10 = [(NSString *)self->_attachmentIdentifier copyWithZone:zone];
   v11 = *(v5 + 40);
   *(v5 + 40) = v10;
 
@@ -385,7 +385,7 @@ LABEL_4:
   }
 
 LABEL_5:
-  v13 = [(NSData *)self->_metadata copyWithZone:a3];
+  v13 = [(NSData *)self->_metadata copyWithZone:zone];
   v14 = *(v5 + 56);
   *(v5 + 56) = v13;
 
@@ -395,31 +395,31 @@ LABEL_5:
     *(v5 + 96) |= 4u;
   }
 
-  v15 = [(NSString *)self->_systemBuildVersion copyWithZone:a3];
+  v15 = [(NSString *)self->_systemBuildVersion copyWithZone:zone];
   v16 = *(v5 + 88);
   *(v5 + 88) = v15;
 
-  v17 = [(NSString *)self->_productType copyWithZone:a3];
+  v17 = [(NSString *)self->_productType copyWithZone:zone];
   v18 = *(v5 + 72);
   *(v5 + 72) = v17;
 
-  v19 = [(NSString *)self->_deviceName copyWithZone:a3];
+  v19 = [(NSString *)self->_deviceName copyWithZone:zone];
   v20 = *(v5 + 48);
   *(v5 + 48) = v19;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_37;
   }
 
   objectIdentifier = self->_objectIdentifier;
-  if (objectIdentifier | *(v4 + 8))
+  if (objectIdentifier | *(equalCopy + 8))
   {
     if (![(NSString *)objectIdentifier isEqual:?])
     {
@@ -428,7 +428,7 @@ LABEL_5:
   }
 
   schemaIdentifier = self->_schemaIdentifier;
-  if (schemaIdentifier | *(v4 + 10))
+  if (schemaIdentifier | *(equalCopy + 10))
   {
     if (![(NSString *)schemaIdentifier isEqual:?])
     {
@@ -437,7 +437,7 @@ LABEL_5:
   }
 
   attachmentIdentifier = self->_attachmentIdentifier;
-  if (attachmentIdentifier | *(v4 + 5))
+  if (attachmentIdentifier | *(equalCopy + 5))
   {
     if (![(NSString *)attachmentIdentifier isEqual:?])
     {
@@ -446,48 +446,48 @@ LABEL_5:
   }
 
   has = self->_has;
-  v9 = *(v4 + 96);
+  v9 = *(equalCopy + 96);
   if ((has & 8) != 0)
   {
-    if ((*(v4 + 96) & 8) == 0 || self->_type != *(v4 + 4))
+    if ((*(equalCopy + 96) & 8) == 0 || self->_type != *(equalCopy + 4))
     {
       goto LABEL_37;
     }
   }
 
-  else if ((*(v4 + 96) & 8) != 0)
+  else if ((*(equalCopy + 96) & 8) != 0)
   {
     goto LABEL_37;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 96) & 1) == 0 || self->_creationDate != *(v4 + 1))
+    if ((*(equalCopy + 96) & 1) == 0 || self->_creationDate != *(equalCopy + 1))
     {
       goto LABEL_37;
     }
   }
 
-  else if (*(v4 + 96))
+  else if (*(equalCopy + 96))
   {
     goto LABEL_37;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 96) & 2) == 0 || self->_options != *(v4 + 2))
+    if ((*(equalCopy + 96) & 2) == 0 || self->_options != *(equalCopy + 2))
     {
       goto LABEL_37;
     }
   }
 
-  else if ((*(v4 + 96) & 2) != 0)
+  else if ((*(equalCopy + 96) & 2) != 0)
   {
     goto LABEL_37;
   }
 
   metadata = self->_metadata;
-  if (metadata | *(v4 + 7))
+  if (metadata | *(equalCopy + 7))
   {
     if (![(NSData *)metadata isEqual:?])
     {
@@ -497,12 +497,12 @@ LABEL_37:
     }
 
     has = self->_has;
-    v9 = *(v4 + 96);
+    v9 = *(equalCopy + 96);
   }
 
   if ((has & 4) != 0)
   {
-    if ((v9 & 4) == 0 || self->_schemaVersion != *(v4 + 3))
+    if ((v9 & 4) == 0 || self->_schemaVersion != *(equalCopy + 3))
     {
       goto LABEL_37;
     }
@@ -514,13 +514,13 @@ LABEL_37:
   }
 
   systemBuildVersion = self->_systemBuildVersion;
-  if (systemBuildVersion | *(v4 + 11) && ![(NSString *)systemBuildVersion isEqual:?])
+  if (systemBuildVersion | *(equalCopy + 11) && ![(NSString *)systemBuildVersion isEqual:?])
   {
     goto LABEL_37;
   }
 
   productType = self->_productType;
-  if (productType | *(v4 + 9))
+  if (productType | *(equalCopy + 9))
   {
     if (![(NSString *)productType isEqual:?])
     {
@@ -529,7 +529,7 @@ LABEL_37:
   }
 
   deviceName = self->_deviceName;
-  if (deviceName | *(v4 + 6))
+  if (deviceName | *(equalCopy + 6))
   {
     v14 = [(NSString *)deviceName isEqual:?];
   }
@@ -622,34 +622,34 @@ LABEL_9:
   return v16 ^ v18 ^ [(NSString *)self->_deviceName hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 8))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 8))
   {
     [(HDCloudSyncCodableAttachmentReference *)self setObjectIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(HDCloudSyncCodableAttachmentReference *)self setSchemaIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(HDCloudSyncCodableAttachmentReference *)self setAttachmentIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 96);
+  v5 = *(fromCopy + 96);
   if ((v5 & 8) != 0)
   {
-    self->_type = *(v4 + 4);
+    self->_type = *(fromCopy + 4);
     *&self->_has |= 8u;
-    v5 = *(v4 + 96);
+    v5 = *(fromCopy + 96);
     if ((v5 & 1) == 0)
     {
 LABEL_9:
@@ -662,49 +662,49 @@ LABEL_9:
     }
   }
 
-  else if ((*(v4 + 96) & 1) == 0)
+  else if ((*(fromCopy + 96) & 1) == 0)
   {
     goto LABEL_9;
   }
 
-  self->_creationDate = *(v4 + 1);
+  self->_creationDate = *(fromCopy + 1);
   *&self->_has |= 1u;
-  if ((*(v4 + 96) & 2) != 0)
+  if ((*(fromCopy + 96) & 2) != 0)
   {
 LABEL_10:
-    self->_options = *(v4 + 2);
+    self->_options = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
 LABEL_11:
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(HDCloudSyncCodableAttachmentReference *)self setMetadata:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if ((*(v4 + 96) & 4) != 0)
+  if ((*(fromCopy + 96) & 4) != 0)
   {
-    self->_schemaVersion = *(v4 + 3);
+    self->_schemaVersion = *(fromCopy + 3);
     *&self->_has |= 4u;
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(HDCloudSyncCodableAttachmentReference *)self setSystemBuildVersion:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(HDCloudSyncCodableAttachmentReference *)self setProductType:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(HDCloudSyncCodableAttachmentReference *)self setDeviceName:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

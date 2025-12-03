@@ -1,24 +1,24 @@
 @interface KTPCSOperations
-+ (id)PCSOperationWithSpecificUser:(id)a3;
-- (KTPCSOperations)initWithSpecificUser:(id)a3;
-- (id)getCurrentKTPCSIdentity:(id)a3 error:(id *)a4;
-- (void)createManateeIdentity:(id)a3 service:(id)a4 complete:(id)a5;
++ (id)PCSOperationWithSpecificUser:(id)user;
+- (KTPCSOperations)initWithSpecificUser:(id)user;
+- (id)getCurrentKTPCSIdentity:(id)identity error:(id *)error;
+- (void)createManateeIdentity:(id)identity service:(id)service complete:(id)complete;
 - (void)dealloc;
 @end
 
 @implementation KTPCSOperations
 
-+ (id)PCSOperationWithSpecificUser:(id)a3
++ (id)PCSOperationWithSpecificUser:(id)user
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithSpecificUser:v4];
+  userCopy = user;
+  v5 = [[self alloc] initWithSpecificUser:userCopy];
 
   return v5;
 }
 
-- (KTPCSOperations)initWithSpecificUser:(id)a3
+- (KTPCSOperations)initWithSpecificUser:(id)user
 {
-  v4 = a3;
+  userCopy = user;
   v17.receiver = self;
   v17.super_class = KTPCSOperations;
   cf = 0;
@@ -30,12 +30,12 @@ LABEL_9:
     goto LABEL_18;
   }
 
-  v6 = [v4 dsid];
-  [(KTPCSOperations *)v5 setDsid:v6];
+  dsid = [userCopy dsid];
+  [(KTPCSOperations *)v5 setDsid:dsid];
 
-  v7 = [(KTPCSOperations *)v5 dsid];
+  dsid2 = [(KTPCSOperations *)v5 dsid];
 
-  if (!v7)
+  if (!dsid2)
   {
     if (qword_10039CB40 != -1)
     {
@@ -52,17 +52,17 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v8 = [v4 altDSID];
-  [(KTPCSOperations *)v5 setAltDSID:v8];
+  altDSID = [userCopy altDSID];
+  [(KTPCSOperations *)v5 setAltDSID:altDSID];
 
   v21 = kPCSSetupDSID;
-  v9 = [(KTPCSOperations *)v5 dsid];
-  v22 = v9;
+  dsid3 = [(KTPCSOperations *)v5 dsid];
+  v22 = dsid3;
   v10 = [NSDictionary dictionaryWithObjects:&v22 forKeys:&v21 count:1];
   v11 = [v10 mutableCopy];
 
-  v12 = [(KTPCSOperations *)v5 altDSID];
-  [v11 setObject:v12 forKeyedSubscript:kPCSSetupAltDSID];
+  altDSID2 = [(KTPCSOperations *)v5 altDSID];
+  [v11 setObject:altDSID2 forKeyedSubscript:kPCSSetupAltDSID];
 
   [(KTPCSOperations *)v5 setSet:PCSIdentitySetCreate()];
   if ([(KTPCSOperations *)v5 set])
@@ -111,44 +111,44 @@ LABEL_18:
   [(KTPCSOperations *)&v4 dealloc];
 }
 
-- (void)createManateeIdentity:(id)a3 service:(id)a4 complete:(id)a5
+- (void)createManateeIdentity:(id)identity service:(id)service complete:(id)complete
 {
-  v8 = a5;
+  completeCopy = complete;
   v16[0] = kPCSSetupDSID;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(KTPCSOperations *)self dsid];
+  serviceCopy = service;
+  identityCopy = identity;
+  dsid = [(KTPCSOperations *)self dsid];
   v16[1] = kPCSSetupSyncIdentity;
-  v17[0] = v11;
+  v17[0] = dsid;
   v17[1] = &__kCFBooleanTrue;
   v12 = [NSDictionary dictionaryWithObjects:v17 forKeys:v16 count:2];
   v13 = [v12 mutableCopy];
 
-  v14 = [(KTPCSOperations *)self altDSID];
-  [v13 setObject:v14 forKeyedSubscript:kPCSSetupAltDSID];
+  altDSID = [(KTPCSOperations *)self altDSID];
+  [v13 setObject:altDSID forKeyedSubscript:kPCSSetupAltDSID];
 
-  LODWORD(v14) = [v10 roll];
-  if (v14)
+  LODWORD(altDSID) = [identityCopy roll];
+  if (altDSID)
   {
     [v13 setObject:&__kCFBooleanTrue forKeyedSubscript:kPCSSetupRollIdentity];
   }
 
   [(KTPCSOperations *)self set];
-  v15 = v8;
+  v15 = completeCopy;
   PCSIdentitySetCreateManatee();
 }
 
-- (id)getCurrentKTPCSIdentity:(id)a3 error:(id *)a4
+- (id)getCurrentKTPCSIdentity:(id)identity error:(id *)error
 {
-  v6 = a3;
+  identityCopy = identity;
   v7 = kTransparencyFlagForceCDPWaiting;
   if ([TransparencySettings getBool:kTransparencyFlagForceCDPWaiting defaultValue:0])
   {
     v8 = [TransparencyError errorWithDomain:kTransparencyErrorInternal code:-350 description:@"Identity creation failed: %@ set", v7];
-    if (a4 && v8)
+    if (error && v8)
     {
       v8 = v8;
-      *a4 = v8;
+      *error = v8;
     }
 
 LABEL_6:
@@ -162,24 +162,24 @@ LABEL_6:
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(KTPCSOperations *)self dsid];
-      v11 = [(KTPCSOperations *)self altDSID];
+      dsid = [(KTPCSOperations *)self dsid];
+      altDSID = [(KTPCSOperations *)self altDSID];
       *buf = 138412802;
-      v14 = v10;
+      v14 = dsid;
       v15 = 2112;
-      v16 = v11;
+      v16 = altDSID;
       v17 = 2112;
       v18 = 0;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "PCSIdentitySetCopyCurrentIdentityWithError: %@[%@] %@", buf, 0x20u);
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_6;
     }
 
     v9 = 0;
-    *a4 = 0;
+    *error = 0;
   }
 
 LABEL_12:

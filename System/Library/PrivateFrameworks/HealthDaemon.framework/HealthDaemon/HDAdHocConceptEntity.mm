@@ -1,38 +1,38 @@
 @interface HDAdHocConceptEntity
-+ (BOOL)deleteNonIndexedConceptsWithTransaction:(id)a3 internalContentDatabaseManager:(id)a4 error:(id *)a5;
-+ (BOOL)enumerateAdHocConceptWithRawIdentifiers:(id)a3 options:(unint64_t)a4 profile:(id)a5 error:(id *)a6 enumerationHandler:(id)a7;
-+ (id)_adHocConceptForCodingCollection:(uint64_t)a3 options:(void *)a4 transaction:(uint64_t)a5 error:;
-+ (id)_conceptForRow:(uint64_t)a3 options:;
-+ (id)adHocConceptForCodingCollection:(id)a3 options:(unint64_t)a4 profile:(id)a5 error:(id *)a6;
-+ (id)adHocConceptForIdentifier:(id)a3 options:(unint64_t)a4 profile:(id)a5 error:(id *)a6;
-+ (id)generateAdHocConceptForCodingCollection:(id)a3 options:(unint64_t)a4 profile:(id)a5 error:(id *)a6;
++ (BOOL)deleteNonIndexedConceptsWithTransaction:(id)transaction internalContentDatabaseManager:(id)manager error:(id *)error;
++ (BOOL)enumerateAdHocConceptWithRawIdentifiers:(id)identifiers options:(unint64_t)options profile:(id)profile error:(id *)error enumerationHandler:(id)handler;
++ (id)_adHocConceptForCodingCollection:(uint64_t)collection options:(void *)options transaction:(uint64_t)transaction error:;
++ (id)_conceptForRow:(uint64_t)row options:;
++ (id)adHocConceptForCodingCollection:(id)collection options:(unint64_t)options profile:(id)profile error:(id *)error;
++ (id)adHocConceptForIdentifier:(id)identifier options:(unint64_t)options profile:(id)profile error:(id *)error;
++ (id)generateAdHocConceptForCodingCollection:(id)collection options:(unint64_t)options profile:(id)profile error:(id *)error;
 @end
 
 @implementation HDAdHocConceptEntity
 
-+ (id)adHocConceptForIdentifier:(id)a3 options:(unint64_t)a4 profile:(id)a5 error:(id *)a6
++ (id)adHocConceptForIdentifier:(id)identifier options:(unint64_t)options profile:(id)profile error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
+  identifierCopy = identifier;
+  profileCopy = profile;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
   v25 = __Block_byref_object_copy__154;
   v26 = __Block_byref_object_dispose__154;
   v27 = 0;
-  v12 = [v11 database];
+  database = [profileCopy database];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __72__HDAdHocConceptEntity_adHocConceptForIdentifier_options_profile_error___block_invoke;
   v17[3] = &unk_278627E78;
   v19 = &v22;
-  v20 = a1;
-  v13 = v10;
+  selfCopy = self;
+  v13 = identifierCopy;
   v18 = v13;
-  v21 = a4;
-  LODWORD(a6) = [a1 performReadTransactionWithHealthDatabase:v12 error:a6 block:v17];
+  optionsCopy = options;
+  LODWORD(error) = [self performReadTransactionWithHealthDatabase:database error:error block:v17];
 
-  if (a6)
+  if (error)
   {
     v14 = v23[5];
   }
@@ -108,29 +108,29 @@ BOOL __72__HDAdHocConceptEntity_adHocConceptForIdentifier_options_profile_error_
   return *(*(*(a1 + 40) + 8) + 40) != 0;
 }
 
-+ (id)adHocConceptForCodingCollection:(id)a3 options:(unint64_t)a4 profile:(id)a5 error:(id *)a6
++ (id)adHocConceptForCodingCollection:(id)collection options:(unint64_t)options profile:(id)profile error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
+  collectionCopy = collection;
+  profileCopy = profile;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
   v25 = __Block_byref_object_copy__154;
   v26 = __Block_byref_object_dispose__154;
   v27 = 0;
-  v12 = [v11 database];
+  database = [profileCopy database];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __78__HDAdHocConceptEntity_adHocConceptForCodingCollection_options_profile_error___block_invoke;
   v17[3] = &unk_278627E78;
   v19 = &v22;
-  v20 = a1;
-  v13 = v10;
+  selfCopy = self;
+  v13 = collectionCopy;
   v18 = v13;
-  v21 = a4;
-  LODWORD(a6) = [a1 performReadTransactionWithHealthDatabase:v12 error:a6 block:v17];
+  optionsCopy = options;
+  LODWORD(error) = [self performReadTransactionWithHealthDatabase:database error:error block:v17];
 
-  if (a6)
+  if (error)
   {
     v14 = v23[5];
   }
@@ -157,13 +157,13 @@ BOOL __78__HDAdHocConceptEntity_adHocConceptForCodingCollection_options_profile_
   return *(*(*(a1 + 40) + 8) + 40) != 0;
 }
 
-+ (id)_adHocConceptForCodingCollection:(uint64_t)a3 options:(void *)a4 transaction:(uint64_t)a5 error:
++ (id)_adHocConceptForCodingCollection:(uint64_t)collection options:(void *)options transaction:(uint64_t)transaction error:
 {
   v8 = a2;
-  v9 = a4;
+  optionsCopy = options;
   v10 = objc_opt_self();
   v11 = [MEMORY[0x277CCD1F8] adHocCodingForCodingCollection:v8];
-  v12 = [v11 code];
+  code = [v11 code];
 
   v22 = 0;
   v23 = &v22;
@@ -171,7 +171,7 @@ BOOL __78__HDAdHocConceptEntity_adHocConceptForCodingCollection_options_profile_
   v25 = __Block_byref_object_copy__154;
   v26 = __Block_byref_object_dispose__154;
   v27 = 0;
-  v13 = [v9 protectedDatabase];
+  protectedDatabase = [optionsCopy protectedDatabase];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __83__HDAdHocConceptEntity__adHocConceptForCodingCollection_options_transaction_error___block_invoke;
@@ -181,7 +181,7 @@ BOOL __78__HDAdHocConceptEntity_adHocConceptForCodingCollection_options_profile_
   v19[1] = 3221225472;
   v19[2] = __83__HDAdHocConceptEntity__adHocConceptForCodingCollection_options_transaction_error___block_invoke_2;
   v19[3] = &unk_278614860;
-  v14 = v12;
+  v14 = code;
   v20 = v14;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
@@ -189,15 +189,15 @@ BOOL __78__HDAdHocConceptEntity_adHocConceptForCodingCollection_options_profile_
   v18[3] = &unk_278627EC8;
   v18[4] = &v22;
   v18[5] = v10;
-  v18[6] = a3;
-  LOBYTE(a3) = [v13 executeCachedStatementForKey:&_adHocConceptForCodingCollection_options_transaction_error__statementKey error:a5 SQLGenerator:v21 bindingHandler:v19 enumerationHandler:v18];
+  v18[6] = collection;
+  LOBYTE(collection) = [protectedDatabase executeCachedStatementForKey:&_adHocConceptForCodingCollection_options_transaction_error__statementKey error:transaction SQLGenerator:v21 bindingHandler:v19 enumerationHandler:v18];
 
-  if (a3)
+  if (collection)
   {
     v15 = v23[5];
     if (!v15)
     {
-      [MEMORY[0x277CCA9B8] hk_assignError:a5 code:118 format:{@"No adHoc concept found for code %@", v14}];
+      [MEMORY[0x277CCA9B8] hk_assignError:transaction code:118 format:{@"No adHoc concept found for code %@", v14}];
       v15 = v23[5];
     }
 
@@ -214,29 +214,29 @@ BOOL __78__HDAdHocConceptEntity_adHocConceptForCodingCollection_options_profile_
   return v16;
 }
 
-+ (id)generateAdHocConceptForCodingCollection:(id)a3 options:(unint64_t)a4 profile:(id)a5 error:(id *)a6
++ (id)generateAdHocConceptForCodingCollection:(id)collection options:(unint64_t)options profile:(id)profile error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
+  collectionCopy = collection;
+  profileCopy = profile;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
   v25 = __Block_byref_object_copy__154;
   v26 = __Block_byref_object_dispose__154;
   v27 = 0;
-  v12 = [v11 database];
+  database = [profileCopy database];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __86__HDAdHocConceptEntity_generateAdHocConceptForCodingCollection_options_profile_error___block_invoke;
   v17[3] = &unk_278627E78;
   v19 = &v22;
-  v20 = a1;
-  v13 = v10;
+  selfCopy = self;
+  v13 = collectionCopy;
   v18 = v13;
-  v21 = a4;
-  LODWORD(a6) = [a1 performWriteTransactionWithHealthDatabase:v12 error:a6 block:v17];
+  optionsCopy = options;
+  LODWORD(error) = [self performWriteTransactionWithHealthDatabase:database error:error block:v17];
 
-  if (a6)
+  if (error)
   {
     v14 = v23[5];
   }
@@ -295,25 +295,25 @@ BOOL __86__HDAdHocConceptEntity_generateAdHocConceptForCodingCollection_options_
   return *(*(*(a1 + 40) + 8) + 40) != 0;
 }
 
-+ (BOOL)enumerateAdHocConceptWithRawIdentifiers:(id)a3 options:(unint64_t)a4 profile:(id)a5 error:(id *)a6 enumerationHandler:(id)a7
++ (BOOL)enumerateAdHocConceptWithRawIdentifiers:(id)identifiers options:(unint64_t)options profile:(id)profile error:(id *)error enumerationHandler:(id)handler
 {
-  v12 = a7;
+  handlerCopy = handler;
   v13 = MEMORY[0x277D10B28];
-  v14 = a5;
-  v15 = [v13 containsPredicateWithProperty:@"concept_identifier" values:a3];
-  v16 = [v14 database];
+  profileCopy = profile;
+  v15 = [v13 containsPredicateWithProperty:@"concept_identifier" values:identifiers];
+  database = [profileCopy database];
 
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __105__HDAdHocConceptEntity_enumerateAdHocConceptWithRawIdentifiers_options_profile_error_enumerationHandler___block_invoke;
   v19[3] = &unk_278627EA0;
-  v20 = v12;
-  v21 = a1;
-  v22 = a4;
-  v17 = v12;
-  LOBYTE(a6) = [a1 enumerateProperties:&unk_283CAFBC8 withPredicate:v15 healthDatabase:v16 error:a6 enumerationHandler:v19];
+  v20 = handlerCopy;
+  selfCopy = self;
+  optionsCopy = options;
+  v17 = handlerCopy;
+  LOBYTE(error) = [self enumerateProperties:&unk_283CAFBC8 withPredicate:v15 healthDatabase:database error:error enumerationHandler:v19];
 
-  return a6;
+  return error;
 }
 
 uint64_t __105__HDAdHocConceptEntity_enumerateAdHocConceptWithRawIdentifiers_options_profile_error_enumerationHandler___block_invoke(void *a1, uint64_t a2, uint64_t a3, uint64_t a4, uint64_t a5)
@@ -325,7 +325,7 @@ uint64_t __105__HDAdHocConceptEntity_enumerateAdHocConceptWithRawIdentifiers_opt
   return v8;
 }
 
-+ (id)_conceptForRow:(uint64_t)a3 options:
++ (id)_conceptForRow:(uint64_t)row options:
 {
   objc_opt_self();
   v5 = HDSQLiteColumnAsInt64();
@@ -346,27 +346,27 @@ uint64_t __105__HDAdHocConceptEntity_enumerateAdHocConceptWithRawIdentifiers_opt
 
   v15 = objc_alloc(MEMORY[0x277CCD1B0]);
   v16 = [objc_alloc(MEMORY[0x277CCD1D0]) initWithRawIdentifier:v5];
-  v17 = [v15 initWithIdentifier:v16 attributes:v13 relationships:MEMORY[0x277CBEBF8] version:v7 deleted:0 options:a3];
+  v17 = [v15 initWithIdentifier:v16 attributes:v13 relationships:MEMORY[0x277CBEBF8] version:v7 deleted:0 options:row];
 
   return v17;
 }
 
-+ (BOOL)deleteNonIndexedConceptsWithTransaction:(id)a3 internalContentDatabaseManager:(id)a4 error:(id *)a5
++ (BOOL)deleteNonIndexedConceptsWithTransaction:(id)transaction internalContentDatabaseManager:(id)manager error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  transactionCopy = transaction;
+  managerCopy = manager;
   if (objc_opt_respondsToSelector())
   {
-    [v9 unitTesting_willDeleteNonIndexedAdhocConcepts];
+    [managerCopy unitTesting_willDeleteNonIndexedAdhocConcepts];
   }
 
-  v10 = [v8 protectedDatabase];
+  protectedDatabase = [transactionCopy protectedDatabase];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __101__HDAdHocConceptEntity_deleteNonIndexedConceptsWithTransaction_internalContentDatabaseManager_error___block_invoke;
   v13[3] = &__block_descriptor_40_e15___NSString_8__0l;
-  v13[4] = a1;
-  v11 = [v10 executeCachedStatementForKey:&deleteNonIndexedConceptsWithTransaction_internalContentDatabaseManager_error__statementKey error:a5 SQLGenerator:v13 bindingHandler:0 enumerationHandler:0];
+  v13[4] = self;
+  v11 = [protectedDatabase executeCachedStatementForKey:&deleteNonIndexedConceptsWithTransaction_internalContentDatabaseManager_error__statementKey error:error SQLGenerator:v13 bindingHandler:0 enumerationHandler:0];
 
   return v11;
 }

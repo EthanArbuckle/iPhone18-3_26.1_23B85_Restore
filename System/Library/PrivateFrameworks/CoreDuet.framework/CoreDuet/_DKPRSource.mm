@@ -1,6 +1,6 @@
 @interface _DKPRSource
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (uint64_t)bundleID;
@@ -11,12 +11,12 @@
 - (uint64_t)sourceID;
 - (uint64_t)userID;
 - (unint64_t)hash;
-- (void)setBundleID:(uint64_t)a1;
-- (void)setDeviceID:(uint64_t)a1;
-- (void)setGroupID:(uint64_t)a1;
-- (void)setItemID:(uint64_t)a1;
-- (void)setSourceID:(uint64_t)a1;
-- (void)writeTo:(id)a3;
+- (void)setBundleID:(uint64_t)d;
+- (void)setDeviceID:(uint64_t)d;
+- (void)setGroupID:(uint64_t)d;
+- (void)setItemID:(uint64_t)d;
+- (void)setSourceID:(uint64_t)d;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _DKPRSource
@@ -27,20 +27,20 @@
   v8.receiver = self;
   v8.super_class = _DKPRSource;
   v4 = [(_DKPRSource *)&v8 description];
-  v5 = [(_DKPRSource *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_DKPRSource *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   sourceID = self->_sourceID;
   if (sourceID)
   {
-    [v3 setObject:sourceID forKey:@"sourceID"];
+    [dictionary setObject:sourceID forKey:@"sourceID"];
   }
 
   bundleID = self->_bundleID;
@@ -76,68 +76,68 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_sourceID)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_bundleID)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_itemID)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_groupID)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_deviceID)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     userID = self->_userID;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_sourceID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_sourceID copyWithZone:zone];
   v7 = *(v5 + 40);
   *(v5 + 40) = v6;
 
-  v8 = [(NSString *)self->_bundleID copyWithZone:a3];
+  v8 = [(NSString *)self->_bundleID copyWithZone:zone];
   v9 = *(v5 + 8);
   *(v5 + 8) = v8;
 
-  v10 = [(NSString *)self->_itemID copyWithZone:a3];
+  v10 = [(NSString *)self->_itemID copyWithZone:zone];
   v11 = *(v5 + 32);
   *(v5 + 32) = v10;
 
-  v12 = [(NSString *)self->_groupID copyWithZone:a3];
+  v12 = [(NSString *)self->_groupID copyWithZone:zone];
   v13 = *(v5 + 24);
   *(v5 + 24) = v12;
 
-  v14 = [(NSString *)self->_deviceID copyWithZone:a3];
+  v14 = [(NSString *)self->_deviceID copyWithZone:zone];
   v15 = *(v5 + 16);
   *(v5 + 16) = v14;
 
@@ -150,16 +150,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
   sourceID = self->_sourceID;
-  if (sourceID | *(v4 + 5))
+  if (sourceID | *(equalCopy + 5))
   {
     if (![(NSString *)sourceID isEqual:?])
     {
@@ -168,7 +168,7 @@
   }
 
   bundleID = self->_bundleID;
-  if (bundleID | *(v4 + 1))
+  if (bundleID | *(equalCopy + 1))
   {
     if (![(NSString *)bundleID isEqual:?])
     {
@@ -177,7 +177,7 @@
   }
 
   itemID = self->_itemID;
-  if (itemID | *(v4 + 4))
+  if (itemID | *(equalCopy + 4))
   {
     if (![(NSString *)itemID isEqual:?])
     {
@@ -186,7 +186,7 @@
   }
 
   groupID = self->_groupID;
-  if (groupID | *(v4 + 3))
+  if (groupID | *(equalCopy + 3))
   {
     if (![(NSString *)groupID isEqual:?])
     {
@@ -195,7 +195,7 @@
   }
 
   deviceID = self->_deviceID;
-  if (deviceID | *(v4 + 2))
+  if (deviceID | *(equalCopy + 2))
   {
     if (![(NSString *)deviceID isEqual:?])
     {
@@ -203,10 +203,10 @@
     }
   }
 
-  v10 = (*(v4 + 52) & 1) == 0;
+  v10 = (*(equalCopy + 52) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 52) & 1) != 0 && self->_userID == *(v4 + 12))
+    if ((*(equalCopy + 52) & 1) != 0 && self->_userID == *(equalCopy + 12))
     {
       v10 = 1;
       goto LABEL_17;
@@ -252,43 +252,43 @@ LABEL_17:
   return result;
 }
 
-- (void)setSourceID:(uint64_t)a1
+- (void)setSourceID:(uint64_t)d
 {
-  if (a1)
+  if (d)
   {
-    OUTLINED_FUNCTION_0_8(a1, a2, 40);
+    OUTLINED_FUNCTION_0_8(d, a2, 40);
   }
 }
 
-- (void)setBundleID:(uint64_t)a1
+- (void)setBundleID:(uint64_t)d
 {
-  if (a1)
+  if (d)
   {
-    OUTLINED_FUNCTION_0_8(a1, a2, 8);
+    OUTLINED_FUNCTION_0_8(d, a2, 8);
   }
 }
 
-- (void)setItemID:(uint64_t)a1
+- (void)setItemID:(uint64_t)d
 {
-  if (a1)
+  if (d)
   {
-    OUTLINED_FUNCTION_0_8(a1, a2, 32);
+    OUTLINED_FUNCTION_0_8(d, a2, 32);
   }
 }
 
-- (void)setGroupID:(uint64_t)a1
+- (void)setGroupID:(uint64_t)d
 {
-  if (a1)
+  if (d)
   {
-    OUTLINED_FUNCTION_0_8(a1, a2, 24);
+    OUTLINED_FUNCTION_0_8(d, a2, 24);
   }
 }
 
-- (void)setDeviceID:(uint64_t)a1
+- (void)setDeviceID:(uint64_t)d
 {
-  if (a1)
+  if (d)
   {
-    OUTLINED_FUNCTION_0_8(a1, a2, 16);
+    OUTLINED_FUNCTION_0_8(d, a2, 16);
   }
 }
 

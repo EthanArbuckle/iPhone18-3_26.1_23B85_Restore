@@ -1,44 +1,44 @@
 @interface CKSettingSMSRelayController
-+ (BOOL)deviceIsAuthorized:(id)a3;
-+ (BOOL)isDeviceUsingMiCWithIdentifier:(id)a3;
++ (BOOL)deviceIsAuthorized:(id)authorized;
++ (BOOL)isDeviceUsingMiCWithIdentifier:(id)identifier;
 + (BOOL)shouldShowSMSRelaySettings;
 + (id)authorizedSMSRelayDevices;
 + (id)micSMSRelayDevices;
 + (unint64_t)numberOfActiveDevices;
-- (BOOL)isDeviceUsingMiCWithIdentifier:(id)a3;
+- (BOOL)isDeviceUsingMiCWithIdentifier:(id)identifier;
 - (BOOL)isMiCEnabled;
-- (CKSettingSMSRelayController)initWithNibName:(id)a3 bundle:(id)a4;
+- (CKSettingSMSRelayController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)_footerSpecifierForSMSRelayGroup;
 - (id)_headerSpecifierForMicGroup;
-- (id)_headerSpecifierForNonMicGroupDisplayingHeader:(BOOL)a3;
-- (id)_specifiersForDevices:(id)a3 cellType:(int64_t)a4 get:(SEL)a5;
-- (id)getDeviceActive:(id)a3;
-- (id)getDeviceOn:(id)a3;
+- (id)_headerSpecifierForNonMicGroupDisplayingHeader:(BOOL)header;
+- (id)_specifiersForDevices:(id)devices cellType:(int64_t)type get:(SEL)get;
+- (id)getDeviceActive:(id)active;
+- (id)getDeviceOn:(id)on;
 - (id)specifiers;
 - (void)dealloc;
 - (void)emitNavigationEvent;
-- (void)setDeviceActive:(id)a3 specifier:(id)a4;
+- (void)setDeviceActive:(id)active specifier:(id)specifier;
 - (void)viewDidLoad;
 @end
 
 @implementation CKSettingSMSRelayController
 
-- (CKSettingSMSRelayController)initWithNibName:(id)a3 bundle:(id)a4
+- (CKSettingSMSRelayController)initWithNibName:(id)name bundle:(id)bundle
 {
   v11.receiver = self;
   v11.super_class = CKSettingSMSRelayController;
-  v4 = [(CKSettingSMSRelayController *)&v11 initWithNibName:a3 bundle:a4];
+  v4 = [(CKSettingSMSRelayController *)&v11 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = objc_alloc(MEMORY[0x277D18778]);
     v6 = [v5 initWithService:*MEMORY[0x277D186A8]];
     [(CKSettingSMSRelayController *)v4 setRelayService:v6];
 
-    v7 = [(CKSettingSMSRelayController *)v4 relayService];
-    [v7 addDelegate:v4 queue:MEMORY[0x277D85CD0]];
+    relayService = [(CKSettingSMSRelayController *)v4 relayService];
+    [relayService addDelegate:v4 queue:MEMORY[0x277D85CD0]];
 
-    v8 = [MEMORY[0x277D18D68] sharedInstance];
-    [v8 blockUntilConnected];
+    mEMORY[0x277D18D68] = [MEMORY[0x277D18D68] sharedInstance];
+    [mEMORY[0x277D18D68] blockUntilConnected];
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v4, _SMSRelayActiveDevicesChanged, @"com.apple.sms.smsRelayDevices.changed", v4, CFNotificationSuspensionBehaviorDeliverImmediately);
@@ -76,16 +76,16 @@
   v5 = [v4 URLByAppendingPathComponent:@"SMS_RELAY_DEVICES"];
 
   v6 = objc_alloc(MEMORY[0x277CCAEB8]);
-  v7 = [MEMORY[0x277CBEAF8] currentLocale];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
   v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v9 = [v8 bundleURL];
-  v10 = [v6 initWithKey:@"Messages" table:0 locale:v7 bundleURL:v9];
+  bundleURL = [v8 bundleURL];
+  v10 = [v6 initWithKey:@"Messages" table:0 locale:currentLocale bundleURL:bundleURL];
 
   v11 = objc_alloc(MEMORY[0x277CCAEB8]);
-  v12 = [MEMORY[0x277CBEAF8] currentLocale];
+  currentLocale2 = [MEMORY[0x277CBEAF8] currentLocale];
   v13 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v14 = [v13 bundleURL];
-  v15 = [v11 initWithKey:@"Text Message Forwarding" table:0 locale:v12 bundleURL:v14];
+  bundleURL2 = [v13 bundleURL];
+  v15 = [v11 initWithKey:@"Text Message Forwarding" table:0 locale:currentLocale2 bundleURL:bundleURL2];
 
   v18[0] = v15;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
@@ -113,14 +113,14 @@
   else
   {
     v35 = *MEMORY[0x277D3FC48];
-    v5 = [(CKSettingSMSRelayController *)self isMiCEnabled];
+    isMiCEnabled = [(CKSettingSMSRelayController *)self isMiCEnabled];
     if (IMOSLoggingEnabled())
     {
       v6 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
         v7 = @"NO";
-        if (v5)
+        if (isMiCEnabled)
         {
           v7 = @"YES";
         }
@@ -133,17 +133,17 @@
 
     v36 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    if (v5)
+    if (isMiCEnabled)
     {
       v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v43 = 0u;
       v44 = 0u;
       v41 = 0u;
       v42 = 0u;
-      v10 = [(CKSettingSMSRelayController *)self relayService];
-      v11 = [v10 devices];
+      relayService = [(CKSettingSMSRelayController *)self relayService];
+      devices = [relayService devices];
 
-      v12 = [v11 countByEnumeratingWithState:&v41 objects:v46 count:16];
+      v12 = [devices countByEnumeratingWithState:&v41 objects:v46 count:16];
       if (v12)
       {
         v13 = *v42;
@@ -153,14 +153,14 @@
           {
             if (*v42 != v13)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(devices);
             }
 
             v15 = *(*(&v41 + 1) + 8 * i);
             if (([v15 isWatch] & 1) == 0)
             {
-              v16 = [v15 uniqueID];
-              v17 = [(CKSettingSMSRelayController *)self isDeviceUsingMiCWithIdentifier:v16];
+              uniqueID = [v15 uniqueID];
+              v17 = [(CKSettingSMSRelayController *)self isDeviceUsingMiCWithIdentifier:uniqueID];
 
               if (v17)
               {
@@ -176,7 +176,7 @@
             }
           }
 
-          v12 = [v11 countByEnumeratingWithState:&v41 objects:v46 count:16];
+          v12 = [devices countByEnumeratingWithState:&v41 objects:v46 count:16];
         }
 
         while (v12);
@@ -184,9 +184,9 @@
 
       if ([v8 count])
       {
-        v19 = [(CKSettingSMSRelayController *)self _headerSpecifierForMicGroup];
+        _headerSpecifierForMicGroup = [(CKSettingSMSRelayController *)self _headerSpecifierForMicGroup];
         v20 = [(CKSettingSMSRelayController *)self _specifiersForDevices:v8 cellType:-1 get:sel_getDeviceOn_];
-        [v36 addObject:v19];
+        [v36 addObject:_headerSpecifierForMicGroup];
         [v36 addObjectsFromArray:v20];
       }
 
@@ -199,7 +199,7 @@
       }
 
       v23 = [MEMORY[0x277CBEA60] arrayWithArray:v36];
-      v24 = *(&self->super.super.super.super.super.isa + v35);
+      _footerSpecifierForSMSRelayGroup = *(&self->super.super.super.super.super.isa + v35);
       *(&self->super.super.super.super.super.isa + v35) = v23;
     }
 
@@ -209,10 +209,10 @@
       v40 = 0u;
       v37 = 0u;
       v38 = 0u;
-      v25 = [(CKSettingSMSRelayController *)self relayService];
-      v26 = [v25 devices];
+      relayService2 = [(CKSettingSMSRelayController *)self relayService];
+      devices2 = [relayService2 devices];
 
-      v27 = [v26 countByEnumeratingWithState:&v37 objects:v45 count:16];
+      v27 = [devices2 countByEnumeratingWithState:&v37 objects:v45 count:16];
       if (v27)
       {
         v28 = *v38;
@@ -222,7 +222,7 @@
           {
             if (*v38 != v28)
             {
-              objc_enumerationMutation(v26);
+              objc_enumerationMutation(devices2);
             }
 
             v30 = *(*(&v37 + 1) + 8 * j);
@@ -232,15 +232,15 @@
             }
           }
 
-          v27 = [v26 countByEnumeratingWithState:&v37 objects:v45 count:16];
+          v27 = [devices2 countByEnumeratingWithState:&v37 objects:v45 count:16];
         }
 
         while (v27);
       }
 
       v9 = [(CKSettingSMSRelayController *)self _specifiersForDevices:v8 cellType:6 get:sel_getDeviceActive_];
-      v24 = [(CKSettingSMSRelayController *)self _footerSpecifierForSMSRelayGroup];
-      [v36 addObject:v24];
+      _footerSpecifierForSMSRelayGroup = [(CKSettingSMSRelayController *)self _footerSpecifierForSMSRelayGroup];
+      [v36 addObject:_footerSpecifierForSMSRelayGroup];
       [v36 addObjectsFromArray:v9];
       v31 = [MEMORY[0x277CBEA60] arrayWithArray:v36];
       v32 = *(&self->super.super.super.super.super.isa + v35);
@@ -266,9 +266,9 @@
   return v4;
 }
 
-- (id)_headerSpecifierForNonMicGroupDisplayingHeader:(BOOL)a3
+- (id)_headerSpecifierForNonMicGroupDisplayingHeader:(BOOL)header
 {
-  if (a3)
+  if (header)
   {
     [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"MOC_NON_SMS_REALY_GROUP"];
   }
@@ -291,22 +291,22 @@
   v2 = CommunicationsSetupUIBundle();
   v3 = [v2 localizedStringForKey:@"SMS_RELAY_DEVICES_HEADER" value:@"SMS_RELAY_DEVICES_HEADER" table:@"Messages"];
 
-  v4 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-  [v4 setProperty:v3 forKey:*MEMORY[0x277D3FF88]];
+  emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+  [emptyGroupSpecifier setProperty:v3 forKey:*MEMORY[0x277D3FF88]];
 
-  return v4;
+  return emptyGroupSpecifier;
 }
 
-- (id)_specifiersForDevices:(id)a3 cellType:(int64_t)a4 get:(SEL)a5
+- (id)_specifiersForDevices:(id)devices cellType:(int64_t)type get:(SEL)get
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  devicesCopy = devices;
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = v5;
+  obj = devicesCopy;
   v7 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v7)
   {
@@ -322,15 +322,15 @@
         }
 
         v11 = *(*(&v25 + 1) + 8 * i);
-        v12 = [v11 name];
+        name = [v11 name];
         v13 = MEMORY[0x277D19238];
-        v14 = [v11 modelIdentifier];
-        v15 = [v13 marketingNameForModel:v14];
+        modelIdentifier = [v11 modelIdentifier];
+        v15 = [v13 marketingNameForModel:modelIdentifier];
 
-        v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ (%@)", v12, v15];
-        v17 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v16 target:self set:sel_setDeviceActive_specifier_ get:a5 detail:0 cell:a4 edit:0];
-        v18 = [v11 uniqueID];
-        [v17 setIdentifier:v18];
+        v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ (%@)", name, v15];
+        v17 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v16 target:self set:sel_setDeviceActive_specifier_ get:get detail:0 cell:type edit:0];
+        uniqueID = [v11 uniqueID];
+        [v17 setIdentifier:uniqueID];
 
         [v6 addObject:v17];
       }
@@ -346,12 +346,12 @@
   return v6;
 }
 
-- (id)getDeviceActive:(id)a3
+- (id)getDeviceActive:(id)active
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 identifier];
-  v5 = [objc_opt_class() deviceIsAuthorized:v4];
+  activeCopy = active;
+  identifier = [activeCopy identifier];
+  v5 = [objc_opt_class() deviceIsAuthorized:identifier];
   v6 = IMOSLoggingEnabled();
   if (v5)
   {
@@ -364,7 +364,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v11 = 138412290;
-      v12 = v4;
+      v12 = identifier;
       _os_log_impl(&dword_243BE5000, v7, OS_LOG_TYPE_INFO, "Device {%@} has SMS Forwarding enabled.", &v11, 0xCu);
     }
   }
@@ -380,7 +380,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v11 = 138412290;
-      v12 = v4;
+      v12 = identifier;
       _os_log_impl(&dword_243BE5000, v7, OS_LOG_TYPE_INFO, "Device {%@} has SMS Forwarding disabled.", &v11, 0xCu);
     }
   }
@@ -393,7 +393,7 @@ LABEL_10:
   return v8;
 }
 
-- (id)getDeviceOn:(id)a3
+- (id)getDeviceOn:(id)on
 {
   v3 = CommunicationsSetupUIBundle();
   v4 = [v3 localizedStringForKey:@"SMS_RELAY_ON" value:@"SMS_RELAY_ON" table:@"Messages"];
@@ -401,12 +401,12 @@ LABEL_10:
   return v4;
 }
 
-- (void)setDeviceActive:(id)a3 specifier:(id)a4
+- (void)setDeviceActive:(id)active specifier:(id)specifier
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277D18DE0] smsService];
+  activeCopy = active;
+  specifierCopy = specifier;
+  smsService = [MEMORY[0x277D18DE0] smsService];
   v8 = IMPreferredAccountForService();
 
   if (IMOSLoggingEnabled())
@@ -426,24 +426,24 @@ LABEL_10:
     }
   }
 
-  v11 = [v5 BOOLValue];
+  bOOLValue = [activeCopy BOOLValue];
   v12 = IMOSLoggingEnabled();
-  if (v11)
+  if (bOOLValue)
   {
     if (v12)
     {
       v13 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
-        v14 = [v6 identifier];
+        identifier = [specifierCopy identifier];
         v19 = 138412290;
-        v20 = v14;
+        v20 = identifier;
         _os_log_impl(&dword_243BE5000, v13, OS_LOG_TYPE_INFO, "Enrolling device in SMS relay. specifier_identifier={%@}", &v19, 0xCu);
       }
     }
 
-    v15 = [v6 identifier];
-    [v8 enrollDeviceInSMSRelay:v15];
+    identifier2 = [specifierCopy identifier];
+    [v8 enrollDeviceInSMSRelay:identifier2];
   }
 
   else
@@ -453,24 +453,24 @@ LABEL_10:
       v16 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
-        v17 = [v6 identifier];
+        identifier3 = [specifierCopy identifier];
         v19 = 138412290;
-        v20 = v17;
+        v20 = identifier3;
         _os_log_impl(&dword_243BE5000, v16, OS_LOG_TYPE_INFO, "Unenrolling device in SMS relay. specifier_identifier={%@}", &v19, 0xCu);
       }
     }
 
-    v15 = [v6 identifier];
-    [v8 unEnrollDeviceInSMSRelay:v15];
+    identifier2 = [specifierCopy identifier];
+    [v8 unEnrollDeviceInSMSRelay:identifier2];
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isDeviceUsingMiCWithIdentifier:(id)a3
+- (BOOL)isDeviceUsingMiCWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [objc_opt_class() isDeviceUsingMiCWithIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [objc_opt_class() isDeviceUsingMiCWithIdentifier:identifierCopy];
 
   return v4;
 }
@@ -482,10 +482,10 @@ LABEL_10:
   return v2;
 }
 
-+ (BOOL)deviceIsAuthorized:(id)a3
++ (BOOL)deviceIsAuthorized:(id)authorized
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  authorizedCopy = authorized;
   +[CKSettingSMSRelayController authorizedSMSRelayDevices];
   v10 = 0u;
   v11 = 0u;
@@ -504,7 +504,7 @@ LABEL_10:
           objc_enumerationMutation(v4);
         }
 
-        if ([*(*(&v10 + 1) + 8 * i) isEqualToString:{v3, v10}])
+        if ([*(*(&v10 + 1) + 8 * i) isEqualToString:{authorizedCopy, v10}])
         {
           LOBYTE(v5) = 1;
           goto LABEL_11;
@@ -534,10 +534,10 @@ LABEL_11:
   return v2;
 }
 
-+ (BOOL)isDeviceUsingMiCWithIdentifier:(id)a3
++ (BOOL)isDeviceUsingMiCWithIdentifier:(id)identifier
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  identifierCopy = identifier;
   +[CKSettingSMSRelayController micSMSRelayDevices];
   v10 = 0u;
   v11 = 0u;
@@ -556,7 +556,7 @@ LABEL_11:
           objc_enumerationMutation(v4);
         }
 
-        if ([*(*(&v10 + 1) + 8 * i) isEqualToString:{v3, v10}])
+        if ([*(*(&v10 + 1) + 8 * i) isEqualToString:{identifierCopy, v10}])
         {
           LOBYTE(v5) = 1;
           goto LABEL_11;
@@ -588,8 +588,8 @@ LABEL_11:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [v3 devices];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  devices = [v3 devices];
+  v5 = [devices countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -601,16 +601,16 @@ LABEL_11:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(devices);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 uniqueID];
-        if ([CKSettingSMSRelayController deviceIsAuthorized:v11])
+        uniqueID = [v10 uniqueID];
+        if ([CKSettingSMSRelayController deviceIsAuthorized:uniqueID])
         {
-          v12 = [v10 isWatch];
+          isWatch = [v10 isWatch];
 
-          v7 += v12 ^ 1u;
+          v7 += isWatch ^ 1u;
         }
 
         else
@@ -618,7 +618,7 @@ LABEL_11:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [devices countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);
@@ -642,8 +642,8 @@ LABEL_11:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [v3 devices];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  devices = [v3 devices];
+  v5 = [devices countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (!v5)
   {
 
@@ -661,13 +661,13 @@ LABEL_11:
     {
       if (*v14 != v8)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(devices);
       }
 
       v7 += ([*(*(&v13 + 1) + 8 * i) isWatch] & 1) == 0;
     }
 
-    v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    v6 = [devices countByEnumeratingWithState:&v13 objects:v17 count:16];
   }
 
   while (v6);

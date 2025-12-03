@@ -1,7 +1,7 @@
 @interface MCMClientCodeSignInfoCache
 - (MCMCache)cache;
 - (MCMClientCodeSignInfoCache)init;
-- (id)codeSignInfoForCDHash:(id)a3 identifier:(id)a4 error:(id *)a5 generator:(id)a6;
+- (id)codeSignInfoForCDHash:(id)hash identifier:(id)identifier error:(id *)error generator:(id)generator;
 - (void)flush;
 @end
 
@@ -15,18 +15,18 @@
   return result;
 }
 
-- (id)codeSignInfoForCDHash:(id)a3 identifier:(id)a4 error:(id *)a5 generator:(id)a6
+- (id)codeSignInfoForCDHash:(id)hash identifier:(id)identifier error:(id *)error generator:(id)generator
 {
   v29 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a6;
-  v12 = a3;
-  v13 = [[MCMClientCodeSignIndex alloc] initWithCDHash:v12 identifier:v10];
+  identifierCopy = identifier;
+  generatorCopy = generator;
+  hashCopy = hash;
+  v13 = [[MCMClientCodeSignIndex alloc] initWithCDHash:hashCopy identifier:identifierCopy];
 
   if (v13)
   {
-    v14 = [(MCMClientCodeSignInfoCache *)self cache];
-    v15 = [v14 objectForKey:v13];
+    cache = [(MCMClientCodeSignInfoCache *)self cache];
+    v15 = [cache objectForKey:v13];
 
     if (v15)
     {
@@ -37,7 +37,7 @@ LABEL_13:
     }
 
     v26 = 0;
-    v15 = v11[2](v11, &v26);
+    v15 = generatorCopy[2](generatorCopy, &v26);
     v16 = v26;
     if (v15)
     {
@@ -45,11 +45,11 @@ LABEL_13:
       v19 = v20;
       if (v20)
       {
-        v21 = [v20 entitlements];
-        [v21 prune];
+        entitlements = [v20 entitlements];
+        [entitlements prune];
 
-        v22 = [(MCMClientCodeSignInfoCache *)self cache];
-        [v22 setObject:v19 forKey:v13];
+        cache2 = [(MCMClientCodeSignInfoCache *)self cache];
+        [cache2 setObject:v19 forKey:v13];
       }
 
       goto LABEL_14;
@@ -62,14 +62,14 @@ LABEL_13:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v28 = v10;
+      v28 = identifierCopy;
       _os_log_error_impl(&dword_1DF2C3000, v17, OS_LOG_TYPE_ERROR, "Could not generate code sign index for [%@]", buf, 0xCu);
     }
 
     v16 = 0;
   }
 
-  if (!a5)
+  if (!error)
   {
     v15 = 0;
     goto LABEL_13;
@@ -78,7 +78,7 @@ LABEL_13:
   v18 = v16;
   v15 = 0;
   v19 = 0;
-  *a5 = v16;
+  *error = v16;
 LABEL_14:
   v23 = v15;
 
@@ -89,8 +89,8 @@ LABEL_14:
 - (void)flush
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = [(MCMClientCodeSignInfoCache *)self cache];
-  [v3 removeAllObjects];
+  cache = [(MCMClientCodeSignInfoCache *)self cache];
+  [cache removeAllObjects];
   v2 = *MEMORY[0x1E69E9840];
 }
 

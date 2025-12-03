@@ -1,5 +1,5 @@
 @interface AVAudioEnvironmentDistanceAttenuationParameters
-- (AVAudioEnvironmentDistanceAttenuationParameters)initWithEnvironment:(void *)a3;
+- (AVAudioEnvironmentDistanceAttenuationParameters)initWithEnvironment:(void *)environment;
 - (void)dealloc;
 - (void)setDistanceAttenuationModel:(AVAudioEnvironmentDistanceAttenuationModel)distanceAttenuationModel;
 - (void)setMaximumDistance:(float)maximumDistance;
@@ -94,14 +94,14 @@
   }
 }
 
-- (AVAudioEnvironmentDistanceAttenuationParameters)initWithEnvironment:(void *)a3
+- (AVAudioEnvironmentDistanceAttenuationParameters)initWithEnvironment:(void *)environment
 {
   v5.receiver = self;
   v5.super_class = AVAudioEnvironmentDistanceAttenuationParameters;
   result = [(AVAudioEnvironmentDistanceAttenuationParameters *)&v5 init];
   if (result)
   {
-    result->_impl = a3;
+    result->_impl = environment;
   }
 
   return result;

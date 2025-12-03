@@ -1,54 +1,54 @@
 @interface POUtilities
-+ (BOOL)errorIsApplicationRequiresPreflight:(id)a3;
-+ (BOOL)errorIsNoNetwork:(id)a3;
++ (BOOL)errorIsApplicationRequiresPreflight:(id)preflight;
++ (BOOL)errorIsNoNetwork:(id)network;
 + (BOOL)isPodcastsNowPlaying;
-+ (_MRSystemAppPlaybackQueue)createPlaybackQueueFromRequestIdentifiers:(id)a3 startPlaying:(BOOL)a4 assetInfo:(id)a5 isSiriRequest:(BOOL)a6 requesterSharedUserId:(id)a7 sharedUserIdFromPlayableITunesAccount:(id)a8;
-+ (id)commandStatusForRemoteStatus:(unsigned int)a3 error:(id)a4 isRemoteStorePlayback:(BOOL)a5;
-+ (id)identifierFromDomainObject:(id)a3;
-+ (id)typeFromDomainObject:(id)a3;
-+ (void)modifyContextForAirplay:(id)a3 andPlayLocally:(id)a4 completion:(id)a5;
-+ (void)performPodcastsPlaybackRequestWithIdentifier:(id)a3 assetInfo:(id)a4 hashedRouteUIDs:(id)a5 decodedRouteUIDs:(id)a6 originatingOutputDeviceUID:(id)a7 startPlaying:(BOOL)a8 requesterSharedUserId:(id)a9 sharedUserIdFromPlayableITunesAccount:(id)a10 context:(id)a11 allowsFallback:(BOOL)a12 completion:(id)a13;
-+ (void)setPlaybackRate:(float)a3 failureErrorCode:(int64_t)a4 completion:(id)a5;
++ (_MRSystemAppPlaybackQueue)createPlaybackQueueFromRequestIdentifiers:(id)identifiers startPlaying:(BOOL)playing assetInfo:(id)info isSiriRequest:(BOOL)request requesterSharedUserId:(id)id sharedUserIdFromPlayableITunesAccount:(id)account;
++ (id)commandStatusForRemoteStatus:(unsigned int)status error:(id)error isRemoteStorePlayback:(BOOL)playback;
++ (id)identifierFromDomainObject:(id)object;
++ (id)typeFromDomainObject:(id)object;
++ (void)modifyContextForAirplay:(id)airplay andPlayLocally:(id)locally completion:(id)completion;
++ (void)performPodcastsPlaybackRequestWithIdentifier:(id)identifier assetInfo:(id)info hashedRouteUIDs:(id)ds decodedRouteUIDs:(id)iDs originatingOutputDeviceUID:(id)d startPlaying:(BOOL)playing requesterSharedUserId:(id)id sharedUserIdFromPlayableITunesAccount:(id)self0 context:(id)self1 allowsFallback:(BOOL)self2 completion:(id)self3;
++ (void)setPlaybackRate:(float)rate failureErrorCode:(int64_t)code completion:(id)completion;
 @end
 
 @implementation POUtilities
 
-+ (id)identifierFromDomainObject:(id)a3
++ (id)identifierFromDomainObject:(id)object
 {
-  v3 = [a3 identifier];
-  v4 = [v3 lastPathComponent];
+  identifier = [object identifier];
+  lastPathComponent = [identifier lastPathComponent];
 
-  return v4;
+  return lastPathComponent;
 }
 
-+ (id)typeFromDomainObject:(id)a3
++ (id)typeFromDomainObject:(id)object
 {
-  v3 = [a3 identifier];
-  v4 = [v3 host];
+  identifier = [object identifier];
+  host = [identifier host];
 
-  return v4;
+  return host;
 }
 
-+ (void)performPodcastsPlaybackRequestWithIdentifier:(id)a3 assetInfo:(id)a4 hashedRouteUIDs:(id)a5 decodedRouteUIDs:(id)a6 originatingOutputDeviceUID:(id)a7 startPlaying:(BOOL)a8 requesterSharedUserId:(id)a9 sharedUserIdFromPlayableITunesAccount:(id)a10 context:(id)a11 allowsFallback:(BOOL)a12 completion:(id)a13
++ (void)performPodcastsPlaybackRequestWithIdentifier:(id)identifier assetInfo:(id)info hashedRouteUIDs:(id)ds decodedRouteUIDs:(id)iDs originatingOutputDeviceUID:(id)d startPlaying:(BOOL)playing requesterSharedUserId:(id)id sharedUserIdFromPlayableITunesAccount:(id)self0 context:(id)self1 allowsFallback:(BOOL)self2 completion:(id)self3
 {
-  v57 = a8;
+  playingCopy = playing;
   v86 = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v61 = a4;
-  v18 = a5;
-  v19 = a6;
-  v60 = a7;
-  v20 = a9;
-  v21 = a10;
-  v22 = a11;
-  v23 = a13;
-  if ([v17 length])
+  identifierCopy = identifier;
+  infoCopy = info;
+  dsCopy = ds;
+  iDsCopy = iDs;
+  dCopy = d;
+  idCopy = id;
+  accountCopy = account;
+  contextCopy = context;
+  completionCopy = completion;
+  if ([identifierCopy length])
   {
-    v55 = v23;
-    v58 = v21;
-    v59 = v20;
-    v24 = v19;
-    if ([v18 count] || objc_msgSend(v19, "count") && objc_msgSend(v60, "length") || (+[PODataSource sharedInstance](PODataSource, "sharedInstance"), v52 = objc_claimAutoreleasedReturnValue(), v53 = objc_msgSend(v52, "isPodcastsInstalled"), v52, (v53 & 1) != 0))
+    v55 = completionCopy;
+    v58 = accountCopy;
+    v59 = idCopy;
+    v24 = iDsCopy;
+    if ([dsCopy count] || objc_msgSend(iDsCopy, "count") && objc_msgSend(dCopy, "length") || (+[PODataSource sharedInstance](PODataSource, "sharedInstance"), v52 = objc_claimAutoreleasedReturnValue(), v53 = objc_msgSend(v52, "isPodcastsInstalled"), v52, (v53 & 1) != 0))
     {
       POLogInitIfNeeded();
       if (POLogContextCommand)
@@ -64,75 +64,75 @@
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
         v26 = v25;
-        [v18 componentsJoinedByString:{@", "}];
-        v28 = v27 = v18;
-        v29 = [v19 componentsJoinedByString:{@", "}];
+        [dsCopy componentsJoinedByString:{@", "}];
+        v28 = v27 = dsCopy;
+        v29 = [iDsCopy componentsJoinedByString:{@", "}];
         *buf = 138413058;
-        v79 = v17;
+        v79 = identifierCopy;
         v80 = 2112;
         v81 = v28;
         v82 = 2112;
         v83 = v29;
         v84 = 2112;
-        v85 = v60;
-        v24 = v19;
+        v85 = dCopy;
+        v24 = iDsCopy;
         _os_log_impl(&dword_25E9F0000, v26, OS_LOG_TYPE_DEFAULT, "Will be setting playbackQueue using MediaRemote to %@ with routeUIDs %@ decodedRouteUIDs %@ originatingOutputDeviceUID %@", buf, 0x2Au);
 
-        v18 = v27;
+        dsCopy = v27;
       }
 
-      v77 = v17;
+      v77 = identifierCopy;
       v30 = [MEMORY[0x277CBEA60] arrayWithObjects:&v77 count:1];
-      v31 = [a1 createPlaybackQueueFromRequestIdentifiers:v30 startPlaying:v57 assetInfo:v61 isSiriRequest:v22 != 0 requesterSharedUserId:v20 sharedUserIdFromPlayableITunesAccount:v58];
+      v31 = [self createPlaybackQueueFromRequestIdentifiers:v30 startPlaying:playingCopy assetInfo:infoCopy isSiriRequest:contextCopy != 0 requesterSharedUserId:idCopy sharedUserIdFromPlayableITunesAccount:v58];
 
-      v32 = v18;
-      v33 = v17;
+      v32 = dsCopy;
+      v33 = identifierCopy;
       v34 = v24;
-      v35 = v22;
-      v36 = [[MTMPCAssistantGenericPlaybackQueue alloc] initWithContextID:v22 playbackQueueRef:v31];
-      v37 = [MEMORY[0x277D27850] podcastsApplicationDestination];
-      [v37 setSingleGroup:1];
+      v35 = contextCopy;
+      v36 = [[MTMPCAssistantGenericPlaybackQueue alloc] initWithContextID:contextCopy playbackQueueRef:v31];
+      podcastsApplicationDestination = [MEMORY[0x277D27850] podcastsApplicationDestination];
+      [podcastsApplicationDestination setSingleGroup:1];
       v62[0] = MEMORY[0x277D85DD0];
       v62[1] = 3221225472;
       v62[2] = __237__POUtilities_performPodcastsPlaybackRequestWithIdentifier_assetInfo_hashedRouteUIDs_decodedRouteUIDs_originatingOutputDeviceUID_startPlaying_requesterSharedUserId_sharedUserIdFromPlayableITunesAccount_context_allowsFallback_completion___block_invoke;
       v62[3] = &unk_279A44AB0;
-      v74 = a1;
-      v63 = v37;
+      selfCopy = self;
+      v63 = podcastsApplicationDestination;
       v64 = v32;
       v65 = v34;
-      v38 = v60;
-      v66 = v60;
-      v23 = v55;
+      v38 = dCopy;
+      v66 = dCopy;
+      completionCopy = v55;
       v73 = v55;
       v67 = v36;
-      v75 = a12;
+      fallbackCopy = fallback;
       v68 = v33;
-      v76 = v57;
-      v69 = v61;
+      v76 = playingCopy;
+      v69 = infoCopy;
       v70 = v35;
       v71 = v59;
       v72 = v58;
       v39 = v36;
-      v22 = v35;
+      contextCopy = v35;
       v24 = v34;
-      v17 = v33;
-      v18 = v32;
+      identifierCopy = v33;
+      dsCopy = v32;
       v40 = v39;
-      v41 = v37;
+      v41 = podcastsApplicationDestination;
       MPAssistantWatchGetCurrentAudioRoutingInfo(v62);
 
-      v21 = v58;
-      v20 = v59;
+      accountCopy = v58;
+      idCopy = v59;
     }
 
     else
     {
       v54 = [MEMORY[0x277CCA9B8] errorWithDomain:@"POUtilitiesErrorDomain" code:103 userInfo:0];
-      v23 = v55;
+      completionCopy = v55;
       (v55)[2](v55, 2, v54);
 
-      v38 = v60;
-      v21 = v58;
+      v38 = dCopy;
+      accountCopy = v58;
     }
   }
 
@@ -155,10 +155,10 @@
     }
 
     v50 = [MEMORY[0x277CCA9B8] errorWithDomain:@"POUtilitiesErrorDomain" code:102 userInfo:0];
-    (*(v23 + 2))(v23, 2, v50);
+    (*(completionCopy + 2))(completionCopy, 2, v50);
 
-    v24 = v19;
-    v38 = v60;
+    v24 = iDsCopy;
+    v38 = dCopy;
   }
 
   v51 = *MEMORY[0x277D85DE8];
@@ -491,12 +491,12 @@ LABEL_66:
   v49 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)modifyContextForAirplay:(id)a3 andPlayLocally:(id)a4 completion:(id)a5
++ (void)modifyContextForAirplay:(id)airplay andPlayLocally:(id)locally completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
+  locallyCopy = locally;
+  completionCopy = completion;
   v9 = modifyContextForAirplay_andPlayLocally_completion__onceToken;
-  v10 = a3;
+  airplayCopy = airplay;
   if (v9 != -1)
   {
     +[POUtilities modifyContextForAirplay:andPlayLocally:completion:];
@@ -507,11 +507,11 @@ LABEL_66:
   v14[1] = 3221225472;
   v14[2] = __65__POUtilities_modifyContextForAirplay_andPlayLocally_completion___block_invoke_2;
   v14[3] = &unk_279A44B00;
-  v15 = v7;
-  v16 = v8;
-  v12 = v7;
-  v13 = v8;
-  [v11 modifySystemMusicContextForDestination:v10 completion:v14];
+  v15 = locallyCopy;
+  v16 = completionCopy;
+  v12 = locallyCopy;
+  v13 = completionCopy;
+  [v11 modifySystemMusicContextForDestination:airplayCopy completion:v14];
 }
 
 uint64_t __65__POUtilities_modifyContextForAirplay_andPlayLocally_completion___block_invoke()
@@ -608,27 +608,27 @@ void __65__POUtilities_modifyContextForAirplay_andPlayLocally_completion___block
   v14 = *MEMORY[0x277D85DE8];
 }
 
-+ (_MRSystemAppPlaybackQueue)createPlaybackQueueFromRequestIdentifiers:(id)a3 startPlaying:(BOOL)a4 assetInfo:(id)a5 isSiriRequest:(BOOL)a6 requesterSharedUserId:(id)a7 sharedUserIdFromPlayableITunesAccount:(id)a8
++ (_MRSystemAppPlaybackQueue)createPlaybackQueueFromRequestIdentifiers:(id)identifiers startPlaying:(BOOL)playing assetInfo:(id)info isSiriRequest:(BOOL)request requesterSharedUserId:(id)id sharedUserIdFromPlayableITunesAccount:(id)account
 {
-  v9 = a6;
-  v12 = a7;
-  v13 = a8;
+  requestCopy = request;
+  idCopy = id;
+  accountCopy = account;
   v14 = *MEMORY[0x277CBECE8];
-  v15 = a5;
-  v16 = a3;
+  infoCopy = info;
+  identifiersCopy = identifiers;
   v17 = MRSystemAppPlaybackQueueCreate();
   MRSystemAppPlaybackQueueSetGenericTrackIdentifiers();
 
   v18 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:2];
   v19 = v18;
-  if (v12)
+  if (idCopy)
   {
-    [v18 setObject:v12 forKey:@"requesterUserId"];
+    [v18 setObject:idCopy forKey:@"requesterUserId"];
   }
 
-  if (v13)
+  if (accountCopy)
   {
-    [v19 setObject:v13 forKey:@"sharedUserId"];
+    [v19 setObject:accountCopy forKey:@"sharedUserId"];
   }
 
   MRSystemAppPlaybackQueueSetUserInfo();
@@ -637,7 +637,7 @@ void __65__POUtilities_modifyContextForAirplay_andPlayLocally_completion___block
   MRSystemAppPlaybackQueueSetReplaceIntent();
   MRSystemAppPlaybackQueueSetSiriAssetInfo();
 
-  if (v9)
+  if (requestCopy)
   {
     MRSystemAppPlaybackQueueSetFeatureName();
   }
@@ -645,70 +645,70 @@ void __65__POUtilities_modifyContextForAirplay_andPlayLocally_completion___block
   return v17;
 }
 
-+ (id)commandStatusForRemoteStatus:(unsigned int)a3 error:(id)a4 isRemoteStorePlayback:(BOOL)a5
++ (id)commandStatusForRemoteStatus:(unsigned int)status error:(id)error isRemoteStorePlayback:(BOOL)playback
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = [v7 domain];
-  if ([v8 isEqualToString:*MEMORY[0x277D277F8]])
+  playbackCopy = playback;
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:*MEMORY[0x277D277F8]])
   {
-    v9 = [v7 code];
+    code = [errorCopy code];
   }
 
   else
   {
-    v10 = [v7 domain];
-    if ([v10 isEqualToString:@"POUtilitiesMRSendCommandErrorDomain"])
+    domain2 = [errorCopy domain];
+    if ([domain2 isEqualToString:@"POUtilitiesMRSendCommandErrorDomain"])
     {
-      v9 = [v7 code];
+      code = [errorCopy code];
     }
 
     else
     {
-      v9 = 0;
+      code = 0;
     }
   }
 
-  v11 = [v7 domain];
-  if ([v11 isEqualToString:*MEMORY[0x277D277F0]])
+  domain3 = [errorCopy domain];
+  if ([domain3 isEqualToString:*MEMORY[0x277D277F0]])
   {
-    v12 = [v7 code];
+    code2 = [errorCopy code];
   }
 
   else
   {
-    v12 = 0;
+    code2 = 0;
   }
 
-  v13 = [v7 domain];
-  if ([v13 isEqualToString:@"POUtilitiesErrorDomain"])
+  domain4 = [errorCopy domain];
+  if ([domain4 isEqualToString:@"POUtilitiesErrorDomain"])
   {
-    v14 = [v7 code];
+    code3 = [errorCopy code];
   }
 
   else
   {
-    v14 = 0;
+    code3 = 0;
   }
 
-  if (v9)
+  if (code)
   {
     v15 = objc_alloc(MEMORY[0x277D47208]);
-    v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"MediaRemote error code %ld", v9];
+    v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"MediaRemote error code %ld", code];
     v17 = [v15 initWithReason:v16];
 
     goto LABEL_52;
   }
 
-  if (a3 > 9)
+  if (status > 9)
   {
-    if (a3 == 20)
+    if (status == 20)
     {
       v18 = MEMORY[0x277D48688];
       goto LABEL_28;
     }
 
-    if (a3 == 10)
+    if (status == 10)
     {
       v18 = MEMORY[0x277D485D0];
       goto LABEL_28;
@@ -717,16 +717,16 @@ void __65__POUtilities_modifyContextForAirplay_andPlayLocally_completion___block
     goto LABEL_23;
   }
 
-  if (!a3)
+  if (!status)
   {
     v19 = 0;
     goto LABEL_29;
   }
 
-  if (a3 != 1)
+  if (status != 1)
   {
 LABEL_23:
-    if (v5)
+    if (playbackCopy)
     {
       v19 = *MEMORY[0x277D48680];
     }
@@ -739,7 +739,7 @@ LABEL_23:
     goto LABEL_29;
   }
 
-  if (v5)
+  if (playbackCopy)
   {
     v18 = MEMORY[0x277D48658];
 LABEL_28:
@@ -748,8 +748,8 @@ LABEL_28:
   }
 
   v25 = +[PODataSource sharedInstance];
-  v26 = [v25 podcastCollections];
-  v27 = [v26 count];
+  podcastCollections = [v25 podcastCollections];
+  v27 = [podcastCollections count];
   v28 = MEMORY[0x277D485E0];
   if (!v27)
   {
@@ -759,16 +759,16 @@ LABEL_28:
   v19 = *v28;
 
 LABEL_29:
-  if (v14 > 103)
+  if (code3 > 103)
   {
-    if (v14 == 104)
+    if (code3 == 104)
     {
       v20 = MEMORY[0x277D485A8];
     }
 
     else
     {
-      if (v14 != 105)
+      if (code3 != 105)
       {
         goto LABEL_39;
       }
@@ -777,14 +777,14 @@ LABEL_29:
     }
   }
 
-  else if (v14 == 101)
+  else if (code3 == 101)
   {
     v20 = MEMORY[0x277D48628];
   }
 
   else
   {
-    if (v14 != 103)
+    if (code3 != 103)
     {
       goto LABEL_39;
     }
@@ -796,7 +796,7 @@ LABEL_29:
 LABEL_39:
   if (v19)
   {
-    if (v12 != 1)
+    if (code2 != 1)
     {
       goto LABEL_47;
     }
@@ -804,14 +804,14 @@ LABEL_39:
     v21 = MEMORY[0x277D485A0];
   }
 
-  else if (v12 == 6)
+  else if (code2 == 6)
   {
     v21 = MEMORY[0x277D48668];
   }
 
   else
   {
-    if (v12 != 7)
+    if (code2 != 7)
     {
 LABEL_49:
       v22 = MEMORY[0x277D47218];
@@ -888,12 +888,12 @@ void __35__POUtilities_isPodcastsNowPlaying__block_invoke(uint64_t a1)
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-+ (void)setPlaybackRate:(float)a3 failureErrorCode:(int64_t)a4 completion:(id)a5
++ (void)setPlaybackRate:(float)rate failureErrorCode:(int64_t)code completion:(id)completion
 {
   v17[2] = *MEMORY[0x277D85DE8];
-  v6 = a5;
+  completionCopy = completion;
   v16[0] = *MEMORY[0x277D27D60];
-  *&v7 = a3;
+  *&v7 = rate;
   v8 = [MEMORY[0x277CCABB0] numberWithFloat:v7];
   v16[1] = *MEMORY[0x277D27D10];
   v17[0] = v8;
@@ -914,12 +914,12 @@ void __35__POUtilities_isPodcastsNowPlaying__block_invoke(uint64_t a1)
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v15 = a3;
+    rateCopy = rate;
     _os_log_impl(&dword_25E9F0000, v10, OS_LOG_TYPE_INFO, "Will be setting currentPlaybackRate using MediaRemote to %f", buf, 0xCu);
   }
 
   v11 = dispatch_get_global_queue(0, 0);
-  v12 = v6;
+  v12 = completionCopy;
   MRMediaRemoteSendCommandWithReply();
 
   v13 = *MEMORY[0x277D85DE8];
@@ -1026,13 +1026,13 @@ LABEL_27:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)errorIsNoNetwork:(id)a3
++ (BOOL)errorIsNoNetwork:(id)network
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqualToString:@"MTSetPlaybackQueueUtilErrorDomain"])
+  networkCopy = network;
+  domain = [networkCopy domain];
+  if ([domain isEqualToString:@"MTSetPlaybackQueueUtilErrorDomain"])
   {
-    v5 = [v3 code] == -433001;
+    v5 = [networkCopy code] == -433001;
   }
 
   else
@@ -1043,13 +1043,13 @@ LABEL_27:
   return v5;
 }
 
-+ (BOOL)errorIsApplicationRequiresPreflight:(id)a3
++ (BOOL)errorIsApplicationRequiresPreflight:(id)preflight
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqualToString:*MEMORY[0x277D277F8]])
+  preflightCopy = preflight;
+  domain = [preflightCopy domain];
+  if ([domain isEqualToString:*MEMORY[0x277D277F8]])
   {
-    v5 = [v3 code] == 15;
+    v5 = [preflightCopy code] == 15;
   }
 
   else

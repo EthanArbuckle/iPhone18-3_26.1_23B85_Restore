@@ -1,6 +1,6 @@
 @interface _PASLazyImmortalResult
-- (_PASLazyImmortalResult)initWithResult:(id)a3;
-- (id)_initWithBlock:(id)a3;
+- (_PASLazyImmortalResult)initWithResult:(id)result;
+- (id)_initWithBlock:(id)block;
 - (id)result;
 - (id)resultIfAvailable;
 @end
@@ -53,25 +53,25 @@
   return v5;
 }
 
-- (_PASLazyImmortalResult)initWithResult:(id)a3
+- (_PASLazyImmortalResult)initWithResult:(id)result
 {
-  v5 = a3;
-  v6 = [(_PASLazyResult *)[_PASLazyImmortalResult alloc] _init];
+  resultCopy = result;
+  _init = [(_PASLazyResult *)[_PASLazyImmortalResult alloc] _init];
 
-  if (v6)
+  if (_init)
   {
-    objc_storeStrong(&v6->super._data, a3);
-    atomic_store(1u, &v6->_done);
+    objc_storeStrong(&_init->super._data, result);
+    atomic_store(1u, &_init->_done);
   }
 
-  return v6;
+  return _init;
 }
 
-- (id)_initWithBlock:(id)a3
+- (id)_initWithBlock:(id)block
 {
   v4.receiver = self;
   v4.super_class = _PASLazyImmortalResult;
-  result = [(_PASLazyResult *)&v4 _initWithBlock:a3];
+  result = [(_PASLazyResult *)&v4 _initWithBlock:block];
   if (result)
   {
     atomic_store(0, result + 88);

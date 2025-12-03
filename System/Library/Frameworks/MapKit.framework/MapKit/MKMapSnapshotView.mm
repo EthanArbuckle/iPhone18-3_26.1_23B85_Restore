@@ -1,7 +1,7 @@
 @interface MKMapSnapshotView
-- (MKMapSnapshotView)initWithFrame:(CGRect)a3;
+- (MKMapSnapshotView)initWithFrame:(CGRect)frame;
 - (void)cancel;
-- (void)takeSnapshotWithOptions:(id)a3 gridOptions:(id)a4 completionHandler:(id)a5;
+- (void)takeSnapshotWithOptions:(id)options gridOptions:(id)gridOptions completionHandler:(id)handler;
 @end
 
 @implementation MKMapSnapshotView
@@ -22,11 +22,11 @@
   }
 }
 
-- (void)takeSnapshotWithOptions:(id)a3 gridOptions:(id)a4 completionHandler:(id)a5
+- (void)takeSnapshotWithOptions:(id)options gridOptions:(id)gridOptions completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  optionsCopy = options;
+  gridOptionsCopy = gridOptions;
+  handlerCopy = handler;
   [(MKMapSnapshotter *)self->_gridSnapshotter cancel];
   gridSnapshotter = self->_gridSnapshotter;
   self->_gridSnapshotter = 0;
@@ -39,9 +39,9 @@
   v29[1] = v29;
   v29[2] = 0x2020000000;
   v30 = 0;
-  if (v9)
+  if (gridOptionsCopy)
   {
-    v13 = [[MKMapSnapshotter alloc] initWithOptions:v9];
+    v13 = [[MKMapSnapshotter alloc] initWithOptions:gridOptionsCopy];
     v14 = self->_gridSnapshotter;
     self->_gridSnapshotter = v13;
 
@@ -53,14 +53,14 @@
     v24[3] = &unk_1E76CD788;
     v26 = v29;
     objc_copyWeak(&v27, &location);
-    v25 = v10;
+    v25 = handlerCopy;
     [(MKMapSnapshotter *)v15 startWithCompletionHandler:v24];
 
     objc_destroyWeak(&v27);
     objc_destroyWeak(&location);
   }
 
-  v16 = [[MKMapSnapshotter alloc] initWithOptions:v8];
+  v16 = [[MKMapSnapshotter alloc] initWithOptions:optionsCopy];
   v17 = self->_snapshotter;
   self->_snapshotter = v16;
 
@@ -72,7 +72,7 @@
   v20[3] = &unk_1E76CD788;
   objc_copyWeak(&v23, &location);
   v22 = v29;
-  v19 = v10;
+  v19 = handlerCopy;
   v21 = v19;
   [(MKMapSnapshotter *)v18 startWithCompletionHandler:v20];
 
@@ -150,11 +150,11 @@ void __75__MKMapSnapshotView_takeSnapshotWithOptions_gridOptions_completionHandl
   }
 }
 
-- (MKMapSnapshotView)initWithFrame:(CGRect)a3
+- (MKMapSnapshotView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MKMapSnapshotView;
-  v3 = [(MKMapSnapshotView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MKMapSnapshotView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

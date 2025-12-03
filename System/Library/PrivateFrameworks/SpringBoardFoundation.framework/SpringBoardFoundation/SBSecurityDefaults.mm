@@ -1,7 +1,7 @@
 @interface SBSecurityDefaults
-- (id)deviceLockDefaultForKey:(id)a3;
+- (id)deviceLockDefaultForKey:(id)key;
 - (void)_bindAndRegisterDefaults;
-- (void)setDeviceLockDefault:(id)a3 forKey:(id)a4;
+- (void)setDeviceLockDefault:(id)default forKey:(id)key;
 @end
 
 @implementation SBSecurityDefaults
@@ -44,29 +44,29 @@
   [(BSAbstractDefaultDomain *)self _bindProperty:v15 withDefaultKey:@"SBEnableSecureDrawViolationAlerts" toDefaultValue:v13 options:1];
 }
 
-- (id)deviceLockDefaultForKey:(id)a3
+- (id)deviceLockDefaultForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(BSAbstractDefaultDomain *)self _store];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  _store = [(BSAbstractDefaultDomain *)self _store];
+  v6 = [_store objectForKey:keyCopy];
 
   return v6;
 }
 
-- (void)setDeviceLockDefault:(id)a3 forKey:(id)a4
+- (void)setDeviceLockDefault:(id)default forKey:(id)key
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(BSAbstractDefaultDomain *)self _store];
-  v8 = v7;
-  if (v9)
+  defaultCopy = default;
+  keyCopy = key;
+  _store = [(BSAbstractDefaultDomain *)self _store];
+  v8 = _store;
+  if (defaultCopy)
   {
-    [v7 setObject:v9 forKey:v6];
+    [_store setObject:defaultCopy forKey:keyCopy];
   }
 
   else
   {
-    [v7 removeObjectForKey:v6];
+    [_store removeObjectForKey:keyCopy];
   }
 }
 

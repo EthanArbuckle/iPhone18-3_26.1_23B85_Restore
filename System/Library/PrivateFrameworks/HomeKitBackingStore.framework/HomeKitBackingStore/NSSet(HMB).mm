@@ -7,8 +7,8 @@
 - (id)hmbDescription
 {
   v2 = [@"{" mutableCopy];
-  v3 = [a1 allObjects];
-  v4 = [v3 componentsJoinedByString:{@", "}];
+  allObjects = [self allObjects];
+  v4 = [allObjects componentsJoinedByString:{@", "}];
   [v2 appendString:v4];
 
   [v2 appendString:@"}"];

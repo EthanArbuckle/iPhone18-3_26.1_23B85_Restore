@@ -1,18 +1,18 @@
 @interface CNUICoreFamilyMemberSaveRequestFactory
-+ (id)saveRequestToUpdateContactListByAddingContacts:(id)a3 toContainer:(id)a4;
-+ (id)saveRequestToUpdateContactListByRemovingContacts:(id)a3;
-+ (id)saveRequestToUpdateContactListByUpdatingContacts:(id)a3;
-+ (id)saveRequestToUpdateContactWhitelistByRemovingContacts:(id)a3;
-+ (id)saveRequestToupdateContactWhitelistByAddingContacts:(id)a3;
++ (id)saveRequestToUpdateContactListByAddingContacts:(id)contacts toContainer:(id)container;
++ (id)saveRequestToUpdateContactListByRemovingContacts:(id)contacts;
++ (id)saveRequestToUpdateContactListByUpdatingContacts:(id)contacts;
++ (id)saveRequestToUpdateContactWhitelistByRemovingContacts:(id)contacts;
++ (id)saveRequestToupdateContactWhitelistByAddingContacts:(id)contacts;
 @end
 
 @implementation CNUICoreFamilyMemberSaveRequestFactory
 
-+ (id)saveRequestToUpdateContactListByAddingContacts:(id)a3 toContainer:(id)a4
++ (id)saveRequestToUpdateContactListByAddingContacts:(id)contacts toContainer:(id)container
 {
-  v5 = a4;
+  containerCopy = container;
   v6 = MEMORY[0x1E695CF88];
-  v7 = a3;
+  contactsCopy = contacts;
   v8 = objc_alloc_init(v6);
   [v8 setIgnoresGuardianRestrictions:1];
   v14[0] = MEMORY[0x1E69E9820];
@@ -21,9 +21,9 @@
   v14[3] = &unk_1E76E8538;
   v9 = v8;
   v15 = v9;
-  v16 = v5;
-  v10 = v5;
-  [v7 _cn_each:v14];
+  v16 = containerCopy;
+  v10 = containerCopy;
+  [contactsCopy _cn_each:v14];
 
   v11 = v16;
   v12 = v9;
@@ -39,10 +39,10 @@ void __101__CNUICoreFamilyMemberSaveRequestFactory_saveRequestToUpdateContactLis
   [v3 addContact:v5 toContainerWithIdentifier:v4];
 }
 
-+ (id)saveRequestToUpdateContactListByUpdatingContacts:(id)a3
++ (id)saveRequestToUpdateContactListByUpdatingContacts:(id)contacts
 {
   v3 = MEMORY[0x1E695CF88];
-  v4 = a3;
+  contactsCopy = contacts;
   v5 = objc_alloc_init(v3);
   [v5 setIgnoresGuardianRestrictions:1];
   v8[0] = MEMORY[0x1E69E9820];
@@ -51,7 +51,7 @@ void __101__CNUICoreFamilyMemberSaveRequestFactory_saveRequestToUpdateContactLis
   v8[3] = &unk_1E76E8560;
   v6 = v5;
   v9 = v6;
-  [v4 _cn_each:v8];
+  [contactsCopy _cn_each:v8];
 
   return v6;
 }
@@ -63,10 +63,10 @@ void __91__CNUICoreFamilyMemberSaveRequestFactory_saveRequestToUpdateContactList
   [v2 updateContact:v3];
 }
 
-+ (id)saveRequestToUpdateContactListByRemovingContacts:(id)a3
++ (id)saveRequestToUpdateContactListByRemovingContacts:(id)contacts
 {
   v3 = MEMORY[0x1E695CF88];
-  v4 = a3;
+  contactsCopy = contacts;
   v5 = objc_alloc_init(v3);
   [v5 setIgnoresGuardianRestrictions:1];
   v8[0] = MEMORY[0x1E69E9820];
@@ -75,7 +75,7 @@ void __91__CNUICoreFamilyMemberSaveRequestFactory_saveRequestToUpdateContactList
   v8[3] = &unk_1E76E8560;
   v6 = v5;
   v9 = v6;
-  [v4 _cn_each:v8];
+  [contactsCopy _cn_each:v8];
 
   return v6;
 }
@@ -87,10 +87,10 @@ void __91__CNUICoreFamilyMemberSaveRequestFactory_saveRequestToUpdateContactList
   [v2 deleteContact:v3];
 }
 
-+ (id)saveRequestToupdateContactWhitelistByAddingContacts:(id)a3
++ (id)saveRequestToupdateContactWhitelistByAddingContacts:(id)contacts
 {
   v3 = MEMORY[0x1E695CF88];
-  v4 = a3;
+  contactsCopy = contacts;
   v5 = objc_alloc_init(v3);
   [v5 setIgnoresGuardianRestrictions:1];
   v8[0] = MEMORY[0x1E69E9820];
@@ -99,7 +99,7 @@ void __91__CNUICoreFamilyMemberSaveRequestFactory_saveRequestToUpdateContactList
   v8[3] = &unk_1E76E8560;
   v6 = v5;
   v9 = v6;
-  [v4 _cn_each:v8];
+  [contactsCopy _cn_each:v8];
 
   return v6;
 }
@@ -111,10 +111,10 @@ void __94__CNUICoreFamilyMemberSaveRequestFactory_saveRequestToupdateContactWhit
   [*(a1 + 32) updateContact:v3];
 }
 
-+ (id)saveRequestToUpdateContactWhitelistByRemovingContacts:(id)a3
++ (id)saveRequestToUpdateContactWhitelistByRemovingContacts:(id)contacts
 {
   v3 = MEMORY[0x1E695CF88];
-  v4 = a3;
+  contactsCopy = contacts;
   v5 = objc_alloc_init(v3);
   [v5 setIgnoresGuardianRestrictions:1];
   v8[0] = MEMORY[0x1E69E9820];
@@ -123,7 +123,7 @@ void __94__CNUICoreFamilyMemberSaveRequestFactory_saveRequestToupdateContactWhit
   v8[3] = &unk_1E76E8560;
   v6 = v5;
   v9 = v6;
-  [v4 _cn_each:v8];
+  [contactsCopy _cn_each:v8];
 
   return v6;
 }

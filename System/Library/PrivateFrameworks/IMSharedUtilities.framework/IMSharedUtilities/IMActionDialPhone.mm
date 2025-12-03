@@ -1,6 +1,6 @@
 @interface IMActionDialPhone
 - (IMActionDialPhone)init;
-- (IMActionDialPhone)initWithPhoneNumber:(id)a3 fallbackUrl:(id)a4;
+- (IMActionDialPhone)initWithPhoneNumber:(id)number fallbackUrl:(id)url;
 - (NSString)fallbackUrl;
 - (NSString)phoneNumber;
 - (id)dictionaryRepresentation;
@@ -32,11 +32,11 @@
   return v2;
 }
 
-- (IMActionDialPhone)initWithPhoneNumber:(id)a3 fallbackUrl:(id)a4
+- (IMActionDialPhone)initWithPhoneNumber:(id)number fallbackUrl:(id)url
 {
   v6 = sub_1A88C82E8();
   v8 = v7;
-  if (a4)
+  if (url)
   {
     v9 = sub_1A88C82E8();
   }
@@ -60,7 +60,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A876FE58();
 
   v3 = sub_1A88C8188();

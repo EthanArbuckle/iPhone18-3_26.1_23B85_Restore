@@ -1,7 +1,7 @@
 @interface MSDLocationViewController
 - (MSDLocationViewController)init;
-- (void)_locationButtonTapped:(id)a3;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
+- (void)_locationButtonTapped:(id)tapped;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
 - (void)viewDidLoad;
 @end
 
@@ -20,8 +20,8 @@
     v7 = objc_alloc_init(MEMORY[0x277CBFC10]);
     [(MSDLocationViewController *)v6 setLocationManager:v7];
 
-    v8 = [(MSDLocationViewController *)v6 locationManager];
-    [v8 setDelegate:v6];
+    locationManager = [(MSDLocationViewController *)v6 locationManager];
+    [locationManager setDelegate:v6];
   }
 
   return v6;
@@ -39,33 +39,33 @@
   [v3 setCornerRadius:14.0];
   [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v3 addTarget:self action:sel__locationButtonTapped_ forControlEvents:64];
-  v4 = [MEMORY[0x277D37618] boldButton];
-  [v4 setTitle:@"placeholder" forState:0];
-  v5 = [(MSDLocationViewController *)self buttonTray];
-  [v5 addButton:v4];
+  boldButton = [MEMORY[0x277D37618] boldButton];
+  [boldButton setTitle:@"placeholder" forState:0];
+  buttonTray = [(MSDLocationViewController *)self buttonTray];
+  [buttonTray addButton:boldButton];
 
-  v6 = [(MSDLocationViewController *)self buttonTray];
-  [v6 addSubview:v3];
+  buttonTray2 = [(MSDLocationViewController *)self buttonTray];
+  [buttonTray2 addSubview:v3];
 
-  v28 = [v3 topAnchor];
-  v27 = [v4 topAnchor];
-  v26 = [v28 constraintEqualToAnchor:v27];
+  topAnchor = [v3 topAnchor];
+  topAnchor2 = [boldButton topAnchor];
+  v26 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v32[0] = v26;
-  v25 = [v3 bottomAnchor];
-  v24 = [v4 bottomAnchor];
-  v23 = [v25 constraintEqualToAnchor:v24];
+  bottomAnchor = [v3 bottomAnchor];
+  bottomAnchor2 = [boldButton bottomAnchor];
+  v23 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v32[1] = v23;
-  v22 = [v3 leadingAnchor];
-  v7 = [v4 leadingAnchor];
-  v8 = [v22 constraintEqualToAnchor:v7];
+  leadingAnchor = [v3 leadingAnchor];
+  leadingAnchor2 = [boldButton leadingAnchor];
+  v8 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v32[2] = v8;
-  v9 = [v3 trailingAnchor];
-  v10 = [v4 trailingAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  trailingAnchor = [v3 trailingAnchor];
+  trailingAnchor2 = [boldButton trailingAnchor];
+  v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v32[3] = v11;
-  v12 = [v3 heightAnchor];
-  [v4 frame];
-  v14 = [v12 constraintEqualToConstant:v13];
+  heightAnchor = [v3 heightAnchor];
+  [boldButton frame];
+  v14 = [heightAnchor constraintEqualToConstant:v13];
   v32[4] = v14;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:5];
 
@@ -79,9 +79,9 @@
   }
 
   v17 = MEMORY[0x277CBFC10];
-  v18 = [MEMORY[0x277CCA8D8] mainBundle];
-  v19 = [v18 bundleIdentifier];
-  [v17 setLocationButtonUseMode:2 forBundleIdentifier:v19];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  [v17 setLocationButtonUseMode:2 forBundleIdentifier:bundleIdentifier];
 
   v20 = +[MSDSetupUIController sharedInstance];
   [v20 enableLocationServices];
@@ -89,10 +89,10 @@
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  authorizationCopy = authorization;
   v4 = defaultLogHandle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -101,13 +101,13 @@
     v13 = 138543874;
     v14 = v5;
     v15 = 1024;
-    v16 = [v3 authorizationStatus];
+    authorizationStatus = [authorizationCopy authorizationStatus];
     v17 = 2048;
-    v18 = [v3 accuracyAuthorization];
+    accuracyAuthorization = [authorizationCopy accuracyAuthorization];
     _os_log_impl(&dword_259BCA000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: location authorization status changed to %d; accuracy authorization %ld", &v13, 0x1Cu);
   }
 
-  if ([v3 authorizationStatus] >= 3)
+  if ([authorizationCopy authorizationStatus] >= 3)
   {
     v7 = defaultLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -127,17 +127,17 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_locationButtonTapped:(id)a3
+- (void)_locationButtonTapped:(id)tapped
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  tappedCopy = tapped;
   v4 = defaultLogHandle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543618;
     v8 = objc_opt_class();
     v9 = 2114;
-    v10 = v3;
+    v10 = tappedCopy;
     v5 = v8;
     _os_log_impl(&dword_259BCA000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: Location button tapped from: %{public}@", &v7, 0x16u);
   }

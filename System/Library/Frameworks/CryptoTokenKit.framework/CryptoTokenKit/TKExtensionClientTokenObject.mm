@@ -1,36 +1,36 @@
 @interface TKExtensionClientTokenObject
-- (BOOL)deleteWithError:(id *)a3;
-- (id)operation:(int64_t)a3 data:(id)a4 algorithms:(id)a5 parameters:(id)a6 error:(id *)a7;
+- (BOOL)deleteWithError:(id *)error;
+- (id)operation:(int64_t)operation data:(id)data algorithms:(id)algorithms parameters:(id)parameters error:(id *)error;
 @end
 
 @implementation TKExtensionClientTokenObject
 
-- (id)operation:(int64_t)a3 data:(id)a4 algorithms:(id)a5 parameters:(id)a6 error:(id *)a7
+- (id)operation:(int64_t)operation data:(id)data algorithms:(id)algorithms parameters:(id)parameters error:(id *)error
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dataCopy = data;
+  algorithmsCopy = algorithms;
+  parametersCopy = parameters;
   v15 = _os_activity_create(&dword_1DF413000, "ExtClientObject: operation", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v15, &state);
-  v16 = [(TKClientTokenObject *)self session];
-  v17 = [(TKClientTokenObject *)self accessControlRef];
+  session = [(TKClientTokenObject *)self session];
+  accessControlRef = [(TKClientTokenObject *)self accessControlRef];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __75__TKExtensionClientTokenObject_operation_data_algorithms_parameters_error___block_invoke;
   v24[3] = &unk_1E86B7B98;
-  v18 = v16;
+  v18 = session;
   v25 = v18;
-  v26 = self;
-  v30 = a3;
-  v19 = v12;
+  selfCopy = self;
+  operationCopy = operation;
+  v19 = dataCopy;
   v27 = v19;
-  v20 = v13;
+  v20 = algorithmsCopy;
   v28 = v20;
-  v21 = v14;
+  v21 = parametersCopy;
   v29 = v21;
-  v22 = [v18 withError:a7 accessControl:v17 invoke:v24];
+  v22 = [v18 withError:error accessControl:accessControlRef invoke:v24];
 
   os_activity_scope_leave(&state);
 
@@ -95,26 +95,26 @@ void __75__TKExtensionClientTokenObject_operation_data_algorithms_parameters_err
   *(v9 + 40) = v6;
 }
 
-- (BOOL)deleteWithError:(id *)a3
+- (BOOL)deleteWithError:(id *)error
 {
   v5 = _os_activity_create(&dword_1DF413000, "ExtClientObject: delete", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v5, &state);
-  v6 = [(TKClientTokenObject *)self session];
-  v7 = [(TKClientTokenObject *)self accessControlRef];
+  session = [(TKClientTokenObject *)self session];
+  accessControlRef = [(TKClientTokenObject *)self accessControlRef];
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __48__TKExtensionClientTokenObject_deleteWithError___block_invoke;
   v14 = &unk_1E86B7BC0;
-  v8 = v6;
+  v8 = session;
   v15 = v8;
-  v16 = self;
-  v9 = [v8 withError:a3 accessControl:v7 invoke:&v11];
-  LOBYTE(a3) = [v9 BOOLValue];
+  selfCopy = self;
+  v9 = [v8 withError:error accessControl:accessControlRef invoke:&v11];
+  LOBYTE(error) = [v9 BOOLValue];
 
   os_activity_scope_leave(&state);
-  return a3;
+  return error;
 }
 
 id __48__TKExtensionClientTokenObject_deleteWithError___block_invoke(uint64_t a1, void *a2, void *a3)

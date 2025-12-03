@@ -1,31 +1,31 @@
 @interface CPLStoreMigrationAssistant_110019222
-- (BOOL)performMigrationWithError:(id *)a3;
-- (CPLStoreMigrationAssistant_110019222)initWithStore:(id)a3;
+- (BOOL)performMigrationWithError:(id *)error;
+- (CPLStoreMigrationAssistant_110019222)initWithStore:(id)store;
 @end
 
 @implementation CPLStoreMigrationAssistant_110019222
 
-- (CPLStoreMigrationAssistant_110019222)initWithStore:(id)a3
+- (CPLStoreMigrationAssistant_110019222)initWithStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = CPLStoreMigrationAssistant_110019222;
   v6 = [(CPLStoreMigrationAssistant_110019222 *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_store, a3);
+    objc_storeStrong(&v6->_store, store);
   }
 
   return v7;
 }
 
-- (BOOL)performMigrationWithError:(id *)a3
+- (BOOL)performMigrationWithError:(id *)error
 {
-  v5 = [(CPLEngineStore *)self->_store scopes];
-  v6 = [(CPLEngineStore *)self->_store platformObject];
-  v7 = [v5 primaryScope];
-  if (v7 && ([v5 valueForFlag:16 forScope:v7] & 1) == 0 && (objc_msgSend(v5, "sharingScopeForScope:", v7), (v8 = objc_claimAutoreleasedReturnValue()) != 0))
+  scopes = [(CPLEngineStore *)self->_store scopes];
+  platformObject = [(CPLEngineStore *)self->_store platformObject];
+  primaryScope = [scopes primaryScope];
+  if (primaryScope && ([scopes valueForFlag:16 forScope:primaryScope] & 1) == 0 && (objc_msgSend(scopes, "sharingScopeForScope:", primaryScope), (v8 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v9 = v8;
     if ((_CPLSilentLogging & 1) == 0)
@@ -43,17 +43,17 @@
       }
     }
 
-    [v6 recordUpgradeEvent:@"Resetting sync anchor for shared library user"];
+    [platformObject recordUpgradeEvent:@"Resetting sync anchor for shared library user"];
     store = self->_store;
     v16 = 0;
     v12 = [(CPLEngineStore *)store resetSyncAnchorWithCause:@"upgrading shared library user" error:&v16];
     v13 = v16;
 
-    if (a3 && (v12 & 1) == 0)
+    if (error && (v12 & 1) == 0)
     {
       v14 = v13;
       v12 = 0;
-      *a3 = v13;
+      *error = v13;
     }
   }
 

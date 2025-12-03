@@ -1,28 +1,28 @@
 @interface HUCollectionLayoutManager
 - (HUCollectionLayoutManager)init;
-- (HUGridSize)gridSizeForItem:(id)a3;
-- (id)buildAdaptiveTileSectionFor:(id)a3 layoutEnvironment:(id)a4;
+- (HUGridSize)gridSizeForItem:(id)item;
+- (id)buildAdaptiveTileSectionFor:(id)for layoutEnvironment:(id)environment;
 @end
 
 @implementation HUCollectionLayoutManager
 
-- (id)buildAdaptiveTileSectionFor:(id)a3 layoutEnvironment:(id)a4
+- (id)buildAdaptiveTileSectionFor:(id)for layoutEnvironment:(id)environment
 {
   sub_20CECF940(0, &qword_281120AC0);
   v6 = sub_20D567A78();
   swift_unknownObjectRetain();
-  v7 = self;
-  v8 = sub_20CEFABF8(v6, a4);
+  selfCopy = self;
+  v8 = sub_20CEFABF8(v6, environment);
   swift_unknownObjectRelease();
 
   return v8;
 }
 
-- (HUGridSize)gridSizeForItem:(id)a3
+- (HUGridSize)gridSizeForItem:(id)item
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_20CEFC9BC(v4);
+  itemCopy = item;
+  selfCopy = self;
+  v6 = sub_20CEFC9BC(itemCopy);
   v8 = v7;
 
   v9 = v6;

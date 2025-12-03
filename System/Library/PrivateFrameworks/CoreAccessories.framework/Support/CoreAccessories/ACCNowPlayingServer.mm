@@ -1,13 +1,13 @@
 @interface ACCNowPlayingServer
 + (id)sharedServer;
-- (ACCNowPlayingServer)initWithXPCServiceName:(id)a3 andFeatureNotification:(const char *)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)shouldAcceptXPCConnection:(id)a3;
+- (ACCNowPlayingServer)initWithXPCServiceName:(id)name andFeatureNotification:(const char *)notification;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)shouldAcceptXPCConnection:(id)connection;
 - (NSXPCConnection)activeConnection;
-- (void)cancelRequestPlaybackQueueListInfo:(id)a3 requestID:(id)a4;
+- (void)cancelRequestPlaybackQueueListInfo:(id)info requestID:(id)d;
 - (void)sendUpdatedSubscriberList;
-- (void)setPlaybackElapsedTime:(id)a3;
-- (void)setPlaybackQueueIndex:(id)a3;
+- (void)setPlaybackElapsedTime:(id)time;
+- (void)setPlaybackQueueIndex:(id)index;
 - (void)triggerMediaItemArtworkUpdate;
 - (void)triggerMediaItemAttributesUpdate;
 - (void)triggerPlaybackAttributesUpdate;
@@ -15,11 +15,11 @@
 
 @implementation ACCNowPlayingServer
 
-- (ACCNowPlayingServer)initWithXPCServiceName:(id)a3 andFeatureNotification:(const char *)a4
+- (ACCNowPlayingServer)initWithXPCServiceName:(id)name andFeatureNotification:(const char *)notification
 {
   v10.receiver = self;
   v10.super_class = ACCNowPlayingServer;
-  v4 = [(ACCFeatureServer *)&v10 initWithXPCServiceName:a3 andFeatureNotification:a4];
+  v4 = [(ACCFeatureServer *)&v10 initWithXPCServiceName:name andFeatureNotification:notification];
   if (v4)
   {
     v5 = objc_alloc_init(NSMutableArray);
@@ -36,10 +36,10 @@
   return v4;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 5;
@@ -75,16 +75,16 @@
   }
 
   v12 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___AccessoryNowPlayingXPCServerProtocol];
-  [v7 setExportedInterface:v12];
+  [connectionCopy setExportedInterface:v12];
 
-  v13 = [[ACCNowPlayingServerRemote alloc] initWithXPCConnection:v7];
-  [v7 setExportedObject:v13];
+  v13 = [[ACCNowPlayingServerRemote alloc] initWithXPCConnection:connectionCopy];
+  [connectionCopy setExportedObject:v13];
 
   v14 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___AccessoryNowPlayingXPCClientProtocol];
-  [v7 setRemoteObjectInterface:v14];
+  [connectionCopy setRemoteObjectInterface:v14];
 
   objc_initWeak(&location, self);
-  objc_initWeak(&from, v7);
+  objc_initWeak(&from, connectionCopy);
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = __58__ACCNowPlayingServer_listener_shouldAcceptNewConnection___block_invoke;
@@ -92,9 +92,9 @@
   objc_copyWeak(&v29, &from);
   v28[4] = self;
   objc_copyWeak(&v30, &location);
-  [v7 setInvalidationHandler:v28];
-  v15 = [(ACCNowPlayingServer *)self clientConnections];
-  [v15 addObject:v7];
+  [connectionCopy setInvalidationHandler:v28];
+  clientConnections = [(ACCNowPlayingServer *)self clientConnections];
+  [clientConnections addObject:connectionCopy];
 
   if (gLogObjects && gNumLogObjects >= 5)
   {
@@ -114,22 +114,22 @@
 
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [(ACCNowPlayingServer *)self clientConnections];
-    v19 = [v18 count];
+    clientConnections2 = [(ACCNowPlayingServer *)self clientConnections];
+    v19 = [clientConnections2 count];
     *buf = 134217984;
     v34 = v19;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "[#Now Playing] There are now %lu client(s).", buf, 0xCu);
   }
 
-  [v7 resume];
-  v20 = [(ACCNowPlayingServer *)self clientConnections];
-  v21 = [v20 count] == 1;
+  [connectionCopy resume];
+  clientConnections3 = [(ACCNowPlayingServer *)self clientConnections];
+  v21 = [clientConnections3 count] == 1;
 
   if (v21)
   {
-    [(ACCNowPlayingServer *)self setActiveConnection:v7];
-    v22 = [(ACCNowPlayingServer *)self activeConnection];
-    v23 = [v22 remoteObjectProxyWithErrorHandler:&__block_literal_global_1];
+    [(ACCNowPlayingServer *)self setActiveConnection:connectionCopy];
+    activeConnection = [(ACCNowPlayingServer *)self activeConnection];
+    v23 = [activeConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_1];
     [(ACCNowPlayingServer *)self setRemoteObject:v23];
 
     if (gLogObjects && gNumLogObjects >= 5)
@@ -150,8 +150,8 @@
 
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
     {
-      v26 = [(ACCNowPlayingServer *)self remoteObject];
-      [(ACCNowPlayingServer *)v26 listener:buf shouldAcceptNewConnection:v24];
+      remoteObject = [(ACCNowPlayingServer *)self remoteObject];
+      [(ACCNowPlayingServer *)remoteObject listener:buf shouldAcceptNewConnection:v24];
     }
   }
 
@@ -282,15 +282,15 @@ void __58__ACCNowPlayingServer_listener_shouldAcceptNewConnection___block_invoke
   }
 }
 
-- (BOOL)shouldAcceptXPCConnection:(id)a3
+- (BOOL)shouldAcceptXPCConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(ACCNowPlayingServer *)self clientConnections];
-  if ([v5 count])
+  connectionCopy = connection;
+  clientConnections = [(ACCNowPlayingServer *)self clientConnections];
+  if ([clientConnections count])
   {
-    v6 = [(ACCNowPlayingServer *)self clientConnections];
-    v7 = [v6 objectAtIndexedSubscript:0];
-    v8 = [v7 isEqual:v4];
+    clientConnections2 = [(ACCNowPlayingServer *)self clientConnections];
+    v7 = [clientConnections2 objectAtIndexedSubscript:0];
+    v8 = [v7 isEqual:connectionCopy];
   }
 
   else
@@ -335,10 +335,10 @@ void __58__ACCNowPlayingServer_listener_shouldAcceptNewConnection___block_invoke
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[#Now Playing] sendUpdatedSubscriberList...", v9, 2u);
   }
 
-  v6 = [(ACCNowPlayingServer *)self remoteObject];
-  v7 = [(ACCFeatureServer *)self subFeatureSubscribers];
-  v8 = [v7 allObjects];
-  [v6 updateSubscriberList:v8 WithReply:&__block_literal_global_77];
+  remoteObject = [(ACCNowPlayingServer *)self remoteObject];
+  subFeatureSubscribers = [(ACCFeatureServer *)self subFeatureSubscribers];
+  allObjects = [subFeatureSubscribers allObjects];
+  [remoteObject updateSubscriberList:allObjects WithReply:&__block_literal_global_77];
 }
 
 void __48__ACCNowPlayingServer_sendUpdatedSubscriberList__block_invoke(id a1, BOOL a2)
@@ -377,18 +377,18 @@ void __48__ACCNowPlayingServer_sendUpdatedSubscriberList__block_invoke(id a1, BO
 
 - (void)triggerMediaItemAttributesUpdate
 {
-  v3 = [(ACCNowPlayingServer *)self remoteObject];
+  remoteObject = [(ACCNowPlayingServer *)self remoteObject];
 
-  if (v3)
+  if (remoteObject)
   {
-    v4 = [(ACCNowPlayingServer *)self remoteObject];
-    [v4 triggerMediaItemAttributesUpdateWithReply:&__block_literal_global_79];
+    remoteObject2 = [(ACCNowPlayingServer *)self remoteObject];
+    [remoteObject2 triggerMediaItemAttributesUpdateWithReply:&__block_literal_global_79];
   }
 
   else
   {
-    v4 = dispatch_get_global_queue(0, 0);
-    dispatch_async(v4, &__block_literal_global_82);
+    remoteObject2 = dispatch_get_global_queue(0, 0);
+    dispatch_async(remoteObject2, &__block_literal_global_82);
   }
 }
 
@@ -466,18 +466,18 @@ void __55__ACCNowPlayingServer_triggerMediaItemAttributesUpdate__block_invoke_80
 
 - (void)triggerMediaItemArtworkUpdate
 {
-  v3 = [(ACCNowPlayingServer *)self remoteObject];
+  remoteObject = [(ACCNowPlayingServer *)self remoteObject];
 
-  if (v3)
+  if (remoteObject)
   {
-    v4 = [(ACCNowPlayingServer *)self remoteObject];
-    [v4 triggerMediaItemArtworkUpdateWithReply:&__block_literal_global_84];
+    remoteObject2 = [(ACCNowPlayingServer *)self remoteObject];
+    [remoteObject2 triggerMediaItemArtworkUpdateWithReply:&__block_literal_global_84];
   }
 
   else
   {
-    v4 = dispatch_get_global_queue(0, 0);
-    dispatch_async(v4, &__block_literal_global_87);
+    remoteObject2 = dispatch_get_global_queue(0, 0);
+    dispatch_async(remoteObject2, &__block_literal_global_87);
   }
 }
 
@@ -555,18 +555,18 @@ void __52__ACCNowPlayingServer_triggerMediaItemArtworkUpdate__block_invoke_85(id
 
 - (void)triggerPlaybackAttributesUpdate
 {
-  v3 = [(ACCNowPlayingServer *)self remoteObject];
+  remoteObject = [(ACCNowPlayingServer *)self remoteObject];
 
-  if (v3)
+  if (remoteObject)
   {
-    v4 = [(ACCNowPlayingServer *)self remoteObject];
-    [v4 triggerPlaybackAttributesUpdateWithReply:&__block_literal_global_89];
+    remoteObject2 = [(ACCNowPlayingServer *)self remoteObject];
+    [remoteObject2 triggerPlaybackAttributesUpdateWithReply:&__block_literal_global_89];
   }
 
   else
   {
-    v4 = dispatch_get_global_queue(0, 0);
-    dispatch_async(v4, &__block_literal_global_92);
+    remoteObject2 = dispatch_get_global_queue(0, 0);
+    dispatch_async(remoteObject2, &__block_literal_global_92);
   }
 }
 
@@ -679,16 +679,16 @@ void __92__ACCNowPlayingServer_requestPlaybackQueueListInfo_requestID_startIndex
   platform_nowPlaying_playbackQueueListChanged(0);
 }
 
-- (void)cancelRequestPlaybackQueueListInfo:(id)a3 requestID:(id)a4
+- (void)cancelRequestPlaybackQueueListInfo:(id)info requestID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ACCNowPlayingServer *)self remoteObject];
+  infoCopy = info;
+  dCopy = d;
+  remoteObject = [(ACCNowPlayingServer *)self remoteObject];
 
-  if (v8)
+  if (remoteObject)
   {
-    v9 = [(ACCNowPlayingServer *)self remoteObject];
-    [v9 cancelRequestPlaybackQueueListInfo:v6 requestID:v7];
+    remoteObject2 = [(ACCNowPlayingServer *)self remoteObject];
+    [remoteObject2 cancelRequestPlaybackQueueListInfo:infoCopy requestID:dCopy];
   }
 
   else
@@ -710,31 +710,31 @@ void __92__ACCNowPlayingServer_requestPlaybackQueueListInfo_requestID_startIndex
         platform_connectionInfo_configStreamGetCategories_cold_2();
       }
 
-      v9 = &_os_log_default;
+      remoteObject2 = &_os_log_default;
       v11 = &_os_log_default;
     }
 
     else
     {
-      v9 = *(gLogObjects + 32);
+      remoteObject2 = *(gLogObjects + 32);
     }
 
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(remoteObject2, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412546;
-      v13 = v6;
+      v13 = infoCopy;
       v14 = 2112;
-      v15 = v7;
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[#Now Playing] No clients connected, ignore cancel for accessoryUID %@, requestID %@", &v12, 0x16u);
+      v15 = dCopy;
+      _os_log_impl(&_mh_execute_header, remoteObject2, OS_LOG_TYPE_DEFAULT, "[#Now Playing] No clients connected, ignore cancel for accessoryUID %@, requestID %@", &v12, 0x16u);
     }
   }
 }
 
-- (void)setPlaybackElapsedTime:(id)a3
+- (void)setPlaybackElapsedTime:(id)time
 {
-  v4 = a3;
-  v5 = [(ACCNowPlayingServer *)self remoteObject];
-  [v5 setPlaybackElapsedTime:v4 withReply:&__block_literal_global_96];
+  timeCopy = time;
+  remoteObject = [(ACCNowPlayingServer *)self remoteObject];
+  [remoteObject setPlaybackElapsedTime:timeCopy withReply:&__block_literal_global_96];
 }
 
 void __46__ACCNowPlayingServer_setPlaybackElapsedTime___block_invoke(id a1, BOOL a2)
@@ -771,11 +771,11 @@ void __46__ACCNowPlayingServer_setPlaybackElapsedTime___block_invoke(id a1, BOOL
   }
 }
 
-- (void)setPlaybackQueueIndex:(id)a3
+- (void)setPlaybackQueueIndex:(id)index
 {
-  v4 = a3;
-  v5 = [(ACCNowPlayingServer *)self remoteObject];
-  [v5 setPlaybackQueueIndex:v4 withReply:&__block_literal_global_98];
+  indexCopy = index;
+  remoteObject = [(ACCNowPlayingServer *)self remoteObject];
+  [remoteObject setPlaybackQueueIndex:indexCopy withReply:&__block_literal_global_98];
 }
 
 void __45__ACCNowPlayingServer_setPlaybackQueueIndex___block_invoke(id a1, BOOL a2)
@@ -814,13 +814,13 @@ void __45__ACCNowPlayingServer_setPlaybackQueueIndex___block_invoke(id a1, BOOL 
 
 - (NSXPCConnection)activeConnection
 {
-  v3 = [(ACCNowPlayingServer *)self clientConnections];
-  v4 = [v3 count];
+  clientConnections = [(ACCNowPlayingServer *)self clientConnections];
+  v4 = [clientConnections count];
 
   if (v4)
   {
-    v5 = [(ACCNowPlayingServer *)self clientConnections];
-    v6 = [v5 objectAtIndexedSubscript:0];
+    clientConnections2 = [(ACCNowPlayingServer *)self clientConnections];
+    v6 = [clientConnections2 objectAtIndexedSubscript:0];
   }
 
   else
@@ -837,7 +837,7 @@ void __45__ACCNowPlayingServer_setPlaybackQueueIndex___block_invoke(id a1, BOOL 
   block[1] = 3221225472;
   block[2] = __35__ACCNowPlayingServer_sharedServer__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedServer_once != -1)
   {
     dispatch_once(&sharedServer_once, block);

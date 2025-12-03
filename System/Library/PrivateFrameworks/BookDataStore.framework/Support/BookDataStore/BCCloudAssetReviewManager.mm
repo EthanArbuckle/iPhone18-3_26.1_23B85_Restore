@@ -1,53 +1,53 @@
 @interface BCCloudAssetReviewManager
-- (BCCloudAssetReviewManager)initWithCloudDataSource:(id)a3 cloudKitController:(id)a4;
+- (BCCloudAssetReviewManager)initWithCloudDataSource:(id)source cloudKitController:(id)controller;
 - (BCCloudKitController)cloudKitController;
-- (void)assetReviewForAssetReviewID:(id)a3 completion:(id)a4;
-- (void)assetReviewsForAssetReviewIDs:(id)a3 completion:(id)a4;
-- (void)deleteAssetReviewForAssetReviewID:(id)a3 completion:(id)a4;
-- (void)deleteAssetReviewForAssetReviewIDs:(id)a3 completion:(id)a4;
-- (void)dissociateCloudDataFromSyncWithCompletion:(id)a3;
-- (void)fetchAssetReviewsForUserID:(id)a3 includingDeleted:(BOOL)a4 completion:(id)a5;
-- (void)getAssetReviewChangesSince:(id)a3 completion:(id)a4;
-- (void)hasSaltChangedWithCompletion:(id)a3;
-- (void)removeAssetReviewsForSaltedHashedRecordIDs:(id)a3 completion:(id)a4;
-- (void)setAssetReview:(id)a3 completion:(id)a4;
-- (void)setAssetReviews:(id)a3 completion:(id)a4;
-- (void)setEnableCloudSync:(BOOL)a3;
-- (void)signalSyncToCKForSyncManager:(id)a3;
-- (void)syncManager:(id)a3 failedRecordIDs:(id)a4 completion:(id)a5;
-- (void)syncManager:(id)a3 removeCloudDataForIDs:(id)a4 completion:(id)a5;
-- (void)syncManager:(id)a3 resolveConflictsForRecords:(id)a4 completion:(id)a5;
-- (void)syncManager:(id)a3 startSyncToCKWithCompletion:(id)a4;
-- (void)syncManager:(id)a3 updateSyncGenerationFromCloudData:(id)a4 completion:(id)a5;
-- (void)updateSyncGenerationFromCloudData:(id)a3 completion:(id)a4;
+- (void)assetReviewForAssetReviewID:(id)d completion:(id)completion;
+- (void)assetReviewsForAssetReviewIDs:(id)ds completion:(id)completion;
+- (void)deleteAssetReviewForAssetReviewID:(id)d completion:(id)completion;
+- (void)deleteAssetReviewForAssetReviewIDs:(id)ds completion:(id)completion;
+- (void)dissociateCloudDataFromSyncWithCompletion:(id)completion;
+- (void)fetchAssetReviewsForUserID:(id)d includingDeleted:(BOOL)deleted completion:(id)completion;
+- (void)getAssetReviewChangesSince:(id)since completion:(id)completion;
+- (void)hasSaltChangedWithCompletion:(id)completion;
+- (void)removeAssetReviewsForSaltedHashedRecordIDs:(id)ds completion:(id)completion;
+- (void)setAssetReview:(id)review completion:(id)completion;
+- (void)setAssetReviews:(id)reviews completion:(id)completion;
+- (void)setEnableCloudSync:(BOOL)sync;
+- (void)signalSyncToCKForSyncManager:(id)manager;
+- (void)syncManager:(id)manager failedRecordIDs:(id)ds completion:(id)completion;
+- (void)syncManager:(id)manager removeCloudDataForIDs:(id)ds completion:(id)completion;
+- (void)syncManager:(id)manager resolveConflictsForRecords:(id)records completion:(id)completion;
+- (void)syncManager:(id)manager startSyncToCKWithCompletion:(id)completion;
+- (void)syncManager:(id)manager updateSyncGenerationFromCloudData:(id)data completion:(id)completion;
+- (void)updateSyncGenerationFromCloudData:(id)data completion:(id)completion;
 @end
 
 @implementation BCCloudAssetReviewManager
 
-- (BCCloudAssetReviewManager)initWithCloudDataSource:(id)a3 cloudKitController:(id)a4
+- (BCCloudAssetReviewManager)initWithCloudDataSource:(id)source cloudKitController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  sourceCopy = source;
+  controllerCopy = controller;
   v22.receiver = self;
   v22.super_class = BCCloudAssetReviewManager;
   v9 = [(BCCloudAssetReviewManager *)&v22 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_assetReviewDataSource, a3);
-    objc_storeWeak(&v10->_cloudKitController, v8);
-    v11 = [[BCCloudDataSyncManager alloc] initWithCloudKitController:v8];
+    objc_storeStrong(&v9->_assetReviewDataSource, source);
+    objc_storeWeak(&v10->_cloudKitController, controllerCopy);
+    v11 = [[BCCloudDataSyncManager alloc] initWithCloudKitController:controllerCopy];
     syncManager = v10->_syncManager;
     v10->_syncManager = v11;
 
     [(BCCloudDataSyncManager *)v10->_syncManager setDelegate:v10];
     v13 = [BCCloudDataManager alloc];
-    v14 = [(BCCloudAssetReviewManager *)v10 entityName];
+    entityName = [(BCCloudAssetReviewManager *)v10 entityName];
     v15 = objc_opt_class();
     v16 = objc_opt_class();
     v17 = v10->_syncManager;
     WeakRetained = objc_loadWeakRetained(&v10->_cloudKitController);
-    v19 = [(BCCloudDataManager *)v13 initWithCloudDataSource:v7 entityName:v14 notificationName:@"BCCloudAssetReviewManagerChanged" immutableClass:v15 mutableClass:v16 syncManager:v17 cloudKitController:WeakRetained];
+    v19 = [(BCCloudDataManager *)v13 initWithCloudDataSource:sourceCopy entityName:entityName notificationName:@"BCCloudAssetReviewManagerChanged" immutableClass:v15 mutableClass:v16 syncManager:v17 cloudKitController:WeakRetained];
     dataManager = v10->_dataManager;
     v10->_dataManager = v19;
   }
@@ -55,20 +55,20 @@
   return v10;
 }
 
-- (void)syncManager:(id)a3 startSyncToCKWithCompletion:(id)a4
+- (void)syncManager:(id)manager startSyncToCKWithCompletion:(id)completion
 {
-  v9 = a3;
-  v6 = a4;
+  managerCopy = manager;
+  completionCopy = completion;
   if ([(BCCloudAssetReviewManager *)self enableCloudSync])
   {
-    v7 = [(BCCloudAssetReviewManager *)self dataManager];
-    [v7 startSyncToCKWithSyncManager:v9 completion:v6];
+    dataManager = [(BCCloudAssetReviewManager *)self dataManager];
+    [dataManager startSyncToCKWithSyncManager:managerCopy completion:completionCopy];
   }
 
   else
   {
-    v8 = objc_retainBlock(v6);
-    v7 = v8;
+    v8 = objc_retainBlock(completionCopy);
+    dataManager = v8;
     if (v8)
     {
       (*(v8 + 2))(v8);
@@ -76,30 +76,30 @@
   }
 }
 
-- (void)signalSyncToCKForSyncManager:(id)a3
+- (void)signalSyncToCKForSyncManager:(id)manager
 {
   if ([(BCCloudAssetReviewManager *)self enableCloudSync])
   {
-    v7 = [(BCCloudAssetReviewManager *)self cloudKitController];
-    v4 = [v7 transactionManager];
-    v5 = [(BCCloudAssetReviewManager *)self entityName];
-    v6 = [(BCCloudAssetReviewManager *)self syncManager];
-    [v4 signalSyncToCKTransactionForEntityName:v5 syncManager:v6];
+    cloudKitController = [(BCCloudAssetReviewManager *)self cloudKitController];
+    transactionManager = [cloudKitController transactionManager];
+    entityName = [(BCCloudAssetReviewManager *)self entityName];
+    syncManager = [(BCCloudAssetReviewManager *)self syncManager];
+    [transactionManager signalSyncToCKTransactionForEntityName:entityName syncManager:syncManager];
   }
 }
 
-- (void)syncManager:(id)a3 removeCloudDataForIDs:(id)a4 completion:(id)a5
+- (void)syncManager:(id)manager removeCloudDataForIDs:(id)ds completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
+  dsCopy = ds;
+  completionCopy = completion;
   if ([(BCCloudAssetReviewManager *)self enableCloudSync])
   {
-    v9 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v7 count]);
+    v9 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [dsCopy count]);
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v10 = v7;
+    v10 = dsCopy;
     v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v11)
     {
@@ -115,8 +115,8 @@
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v18 + 1) + 8 * v14) recordName];
-          [v9 addObject:v15];
+          recordName = [*(*(&v18 + 1) + 8 * v14) recordName];
+          [v9 addObject:recordName];
 
           v14 = v14 + 1;
         }
@@ -128,12 +128,12 @@
       while (v12);
     }
 
-    [(BCCloudAssetReviewManager *)self removeAssetReviewsForSaltedHashedRecordIDs:v9 completion:v8];
+    [(BCCloudAssetReviewManager *)self removeAssetReviewsForSaltedHashedRecordIDs:v9 completion:completionCopy];
   }
 
   else
   {
-    v16 = objc_retainBlock(v8);
+    v16 = objc_retainBlock(completionCopy);
     v17 = v16;
     if (v16)
     {
@@ -142,18 +142,18 @@
   }
 }
 
-- (void)syncManager:(id)a3 updateSyncGenerationFromCloudData:(id)a4 completion:(id)a5
+- (void)syncManager:(id)manager updateSyncGenerationFromCloudData:(id)data completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
+  dataCopy = data;
+  completionCopy = completion;
   if ([(BCCloudAssetReviewManager *)self enableCloudSync])
   {
-    v9 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v7 count]);
+    v9 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [dataCopy count]);
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v10 = v7;
+    v10 = dataCopy;
     v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v11)
     {
@@ -169,8 +169,8 @@
           }
 
           v15 = *(*(&v19 + 1) + 8 * i);
-          v16 = [v15 assetReviewID];
-          [v9 setObject:v15 forKey:v16];
+          assetReviewID = [v15 assetReviewID];
+          [v9 setObject:v15 forKey:assetReviewID];
         }
 
         v12 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -179,12 +179,12 @@
       while (v12);
     }
 
-    [(BCCloudAssetReviewManager *)self updateSyncGenerationFromCloudData:v9 completion:v8];
+    [(BCCloudAssetReviewManager *)self updateSyncGenerationFromCloudData:v9 completion:completionCopy];
   }
 
   else
   {
-    v17 = objc_retainBlock(v8);
+    v17 = objc_retainBlock(completionCopy);
     v18 = v17;
     if (v17)
     {
@@ -193,24 +193,24 @@
   }
 }
 
-- (void)syncManager:(id)a3 resolveConflictsForRecords:(id)a4 completion:(id)a5
+- (void)syncManager:(id)manager resolveConflictsForRecords:(id)records completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
+  recordsCopy = records;
+  completionCopy = completion;
   if ([(BCCloudAssetReviewManager *)self enableCloudSync])
   {
-    v9 = [(BCCloudAssetReviewManager *)self dataManager];
+    dataManager = [(BCCloudAssetReviewManager *)self dataManager];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_1000689EC;
     v12[3] = &unk_100241770;
-    v13 = v8;
-    [v9 resolveConflictsForRecords:v7 completion:v12];
+    v13 = completionCopy;
+    [dataManager resolveConflictsForRecords:recordsCopy completion:v12];
   }
 
   else
   {
-    v10 = objc_retainBlock(v8);
+    v10 = objc_retainBlock(completionCopy);
     v11 = v10;
     if (v10)
     {
@@ -219,24 +219,24 @@
   }
 }
 
-- (void)syncManager:(id)a3 failedRecordIDs:(id)a4 completion:(id)a5
+- (void)syncManager:(id)manager failedRecordIDs:(id)ds completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
+  dsCopy = ds;
+  completionCopy = completion;
   if ([(BCCloudAssetReviewManager *)self enableCloudSync])
   {
-    v9 = [(BCCloudAssetReviewManager *)self dataManager];
+    dataManager = [(BCCloudAssetReviewManager *)self dataManager];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_100068B60;
     v12[3] = &unk_100240D90;
-    v13 = v8;
-    [v9 failedRecordIDs:v7 completion:v12];
+    v13 = completionCopy;
+    [dataManager failedRecordIDs:dsCopy completion:v12];
   }
 
   else
   {
-    v10 = objc_retainBlock(v8);
+    v10 = objc_retainBlock(completionCopy);
     v11 = v10;
     if (v10)
     {
@@ -245,19 +245,19 @@
   }
 }
 
-- (void)setEnableCloudSync:(BOOL)a3
+- (void)setEnableCloudSync:(BOOL)sync
 {
-  v3 = a3;
+  syncCopy = sync;
   v5 = +[BULogUtilities shared];
-  v6 = [v5 verboseLoggingEnabled];
+  verboseLoggingEnabled = [v5 verboseLoggingEnabled];
 
-  if (v6)
+  if (verboseLoggingEnabled)
   {
     v7 = sub_10000DB80();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = @"NO";
-      if (v3)
+      if (syncCopy)
       {
         v8 = @"YES";
       }
@@ -268,147 +268,147 @@
     }
   }
 
-  if (self->_enableCloudSync != v3)
+  if (self->_enableCloudSync != syncCopy)
   {
-    self->_enableCloudSync = v3;
-    if (v3)
+    self->_enableCloudSync = syncCopy;
+    if (syncCopy)
     {
-      v9 = [(BCCloudAssetReviewManager *)self cloudKitController];
-      v10 = [v9 privateCloudDatabaseController];
-      [v10 addObserver:self->_syncManager recordType:@"assetReview"];
+      cloudKitController = [(BCCloudAssetReviewManager *)self cloudKitController];
+      privateCloudDatabaseController = [cloudKitController privateCloudDatabaseController];
+      [privateCloudDatabaseController addObserver:self->_syncManager recordType:@"assetReview"];
 
-      v11 = [(BCCloudAssetReviewManager *)self cloudKitController];
-      v12 = [v11 transactionManager];
-      v13 = [(BCCloudAssetReviewManager *)self entityName];
-      v14 = [(BCCloudAssetReviewManager *)self syncManager];
-      [v12 signalSyncToCKTransactionForEntityName:v13 syncManager:v14];
+      cloudKitController2 = [(BCCloudAssetReviewManager *)self cloudKitController];
+      transactionManager = [cloudKitController2 transactionManager];
+      entityName = [(BCCloudAssetReviewManager *)self entityName];
+      syncManager = [(BCCloudAssetReviewManager *)self syncManager];
+      [transactionManager signalSyncToCKTransactionForEntityName:entityName syncManager:syncManager];
     }
 
     else
     {
-      v11 = +[BCCloudKitController sharedInstance];
-      v12 = [v11 privateCloudDatabaseController];
-      [v12 removeObserver:self->_syncManager recordType:@"assetReview"];
+      cloudKitController2 = +[BCCloudKitController sharedInstance];
+      transactionManager = [cloudKitController2 privateCloudDatabaseController];
+      [transactionManager removeObserver:self->_syncManager recordType:@"assetReview"];
     }
   }
 }
 
-- (void)hasSaltChangedWithCompletion:(id)a3
+- (void)hasSaltChangedWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BCCloudAssetReviewManager *)self dataManager];
-  [v5 hasSaltChangedWithCompletion:v4];
+  completionCopy = completion;
+  dataManager = [(BCCloudAssetReviewManager *)self dataManager];
+  [dataManager hasSaltChangedWithCompletion:completionCopy];
 }
 
-- (void)dissociateCloudDataFromSyncWithCompletion:(id)a3
+- (void)dissociateCloudDataFromSyncWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BCCloudAssetReviewManager *)self dataManager];
-  [v5 dissociateCloudDataFromSyncWithCompletion:v4];
+  completionCopy = completion;
+  dataManager = [(BCCloudAssetReviewManager *)self dataManager];
+  [dataManager dissociateCloudDataFromSyncWithCompletion:completionCopy];
 }
 
-- (void)setAssetReview:(id)a3 completion:(id)a4
+- (void)setAssetReview:(id)review completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v10 = [(BCCloudAssetReviewManager *)self dataManager];
-  v8 = [v7 assetReviewID];
-  v9 = [NSPredicate predicateWithFormat:@"assetReviewID = %@", v8];
-  [v10 setCloudData:v7 predicate:v9 completion:v6];
+  completionCopy = completion;
+  reviewCopy = review;
+  dataManager = [(BCCloudAssetReviewManager *)self dataManager];
+  assetReviewID = [reviewCopy assetReviewID];
+  v9 = [NSPredicate predicateWithFormat:@"assetReviewID = %@", assetReviewID];
+  [dataManager setCloudData:reviewCopy predicate:v9 completion:completionCopy];
 }
 
-- (void)setAssetReviews:(id)a3 completion:(id)a4
+- (void)setAssetReviews:(id)reviews completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v10 = [(BCCloudAssetReviewManager *)self dataManager];
-  v8 = [v7 allKeys];
-  v9 = [NSPredicate predicateWithFormat:@"assetReviewID IN %@", v8];
-  [v10 setCloudData:v7 predicate:v9 propertyIDKey:@"assetReviewID" completion:v6];
+  completionCopy = completion;
+  reviewsCopy = reviews;
+  dataManager = [(BCCloudAssetReviewManager *)self dataManager];
+  allKeys = [reviewsCopy allKeys];
+  v9 = [NSPredicate predicateWithFormat:@"assetReviewID IN %@", allKeys];
+  [dataManager setCloudData:reviewsCopy predicate:v9 propertyIDKey:@"assetReviewID" completion:completionCopy];
 }
 
-- (void)removeAssetReviewsForSaltedHashedRecordIDs:(id)a3 completion:(id)a4
+- (void)removeAssetReviewsForSaltedHashedRecordIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  dsCopy = ds;
+  completionCopy = completion;
+  if ([dsCopy count])
   {
-    v8 = [(BCCloudAssetReviewManager *)self dataManager];
-    v9 = [NSPredicate predicateWithFormat:@"saltedHashedID IN %@", v6];
-    [v8 removeCloudDataForPredicate:v9 completion:v7];
+    dataManager = [(BCCloudAssetReviewManager *)self dataManager];
+    dsCopy = [NSPredicate predicateWithFormat:@"saltedHashedID IN %@", dsCopy];
+    [dataManager removeCloudDataForPredicate:dsCopy completion:completionCopy];
   }
 
   else
   {
-    v8 = sub_100002660();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    dataManager = sub_100002660();
+    if (os_log_type_enabled(dataManager, OS_LOG_TYPE_ERROR))
     {
-      sub_1001C2BB4(v8);
+      sub_1001C2BB4(dataManager);
     }
   }
 }
 
-- (void)updateSyncGenerationFromCloudData:(id)a3 completion:(id)a4
+- (void)updateSyncGenerationFromCloudData:(id)data completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v10 = [(BCCloudAssetReviewManager *)self dataManager];
-  v8 = [v7 allKeys];
-  v9 = [NSPredicate predicateWithFormat:@"assetReviewID IN %@", v8];
-  [v10 updateSyncGenerationFromCloudData:v7 predicate:v9 propertyIDKey:@"assetReviewID" completion:v6];
+  completionCopy = completion;
+  dataCopy = data;
+  dataManager = [(BCCloudAssetReviewManager *)self dataManager];
+  allKeys = [dataCopy allKeys];
+  v9 = [NSPredicate predicateWithFormat:@"assetReviewID IN %@", allKeys];
+  [dataManager updateSyncGenerationFromCloudData:dataCopy predicate:v9 propertyIDKey:@"assetReviewID" completion:completionCopy];
 }
 
-- (void)deleteAssetReviewForAssetReviewID:(id)a3 completion:(id)a4
+- (void)deleteAssetReviewForAssetReviewID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BCCloudAssetReviewManager *)self dataManager];
-  v8 = [NSPredicate predicateWithFormat:@"assetReviewID = %@", v7];
+  completionCopy = completion;
+  dCopy = d;
+  dataManager = [(BCCloudAssetReviewManager *)self dataManager];
+  dCopy = [NSPredicate predicateWithFormat:@"assetReviewID = %@", dCopy];
 
-  [v9 deleteCloudDataForPredicate:v8 completion:v6];
+  [dataManager deleteCloudDataForPredicate:dCopy completion:completionCopy];
 }
 
-- (void)deleteAssetReviewForAssetReviewIDs:(id)a3 completion:(id)a4
+- (void)deleteAssetReviewForAssetReviewIDs:(id)ds completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BCCloudAssetReviewManager *)self dataManager];
-  v8 = [NSPredicate predicateWithFormat:@"assetReviewID IN %@", v7];
+  completionCopy = completion;
+  dsCopy = ds;
+  dataManager = [(BCCloudAssetReviewManager *)self dataManager];
+  dsCopy = [NSPredicate predicateWithFormat:@"assetReviewID IN %@", dsCopy];
 
-  [v9 deleteCloudDataForPredicate:v8 completion:v6];
+  [dataManager deleteCloudDataForPredicate:dsCopy completion:completionCopy];
 }
 
-- (void)assetReviewForAssetReviewID:(id)a3 completion:(id)a4
+- (void)assetReviewForAssetReviewID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BCCloudAssetReviewManager *)self dataManager];
-  v9 = [NSPredicate predicateWithFormat:@"assetReviewID = %@ AND (deletedFlag == NULL OR deletedFlag == NO)", v7];
+  completionCopy = completion;
+  dCopy = d;
+  dataManager = [(BCCloudAssetReviewManager *)self dataManager];
+  dCopy = [NSPredicate predicateWithFormat:@"assetReviewID = %@ AND (deletedFlag == NULL OR deletedFlag == NO)", dCopy];
 
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000693BC;
   v11[3] = &unk_100241798;
-  v12 = v6;
-  v10 = v6;
-  [v8 cloudDataWithPredicate:v9 sortDescriptors:0 completion:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [dataManager cloudDataWithPredicate:dCopy sortDescriptors:0 completion:v11];
 }
 
-- (void)assetReviewsForAssetReviewIDs:(id)a3 completion:(id)a4
+- (void)assetReviewsForAssetReviewIDs:(id)ds completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BCCloudAssetReviewManager *)self dataManager];
-  v8 = [NSPredicate predicateWithFormat:@"assetReviewID IN %@ AND (deletedFlag == NULL OR deletedFlag == NO)", v7];
+  completionCopy = completion;
+  dsCopy = ds;
+  dataManager = [(BCCloudAssetReviewManager *)self dataManager];
+  dsCopy = [NSPredicate predicateWithFormat:@"assetReviewID IN %@ AND (deletedFlag == NULL OR deletedFlag == NO)", dsCopy];
 
-  [v9 cloudDatasWithPredicate:v8 completion:v6];
+  [dataManager cloudDatasWithPredicate:dsCopy completion:completionCopy];
 }
 
-- (void)fetchAssetReviewsForUserID:(id)a3 includingDeleted:(BOOL)a4 completion:(id)a5
+- (void)fetchAssetReviewsForUserID:(id)d includingDeleted:(BOOL)deleted completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  if (v5)
+  deletedCopy = deleted;
+  completionCopy = completion;
+  if (deletedCopy)
   {
     v9 = @"userID == %@";
   }
@@ -418,17 +418,17 @@
     v9 = @"(deletedFlag == NULL OR deletedFlag == NO) AND userID == %@";
   }
 
-  v11 = [NSPredicate predicateWithFormat:v9, a3];
-  v10 = [(BCCloudAssetReviewManager *)self dataManager];
-  [v10 cloudDatasWithPredicate:v11 completion:v8];
+  v11 = [NSPredicate predicateWithFormat:v9, d];
+  dataManager = [(BCCloudAssetReviewManager *)self dataManager];
+  [dataManager cloudDatasWithPredicate:v11 completion:completionCopy];
 }
 
-- (void)getAssetReviewChangesSince:(id)a3 completion:(id)a4
+- (void)getAssetReviewChangesSince:(id)since completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BCCloudAssetReviewManager *)self dataManager];
-  [v8 getChangesSince:v7 forEntityClass:objc_opt_class() completion:v6];
+  completionCopy = completion;
+  sinceCopy = since;
+  dataManager = [(BCCloudAssetReviewManager *)self dataManager];
+  [dataManager getChangesSince:sinceCopy forEntityClass:objc_opt_class() completion:completionCopy];
 }
 
 - (BCCloudKitController)cloudKitController

@@ -1,5 +1,5 @@
 @interface SLHighlightDisambiguationPillMetrics
-+ (id)accessibilityLabelFor:(id)a3;
++ (id)accessibilityLabelFor:(id)for;
 - (BOOL)useChevron;
 - (BOOL)useSingleLineLayout;
 - (CGColor)firstLineColor;
@@ -14,9 +14,9 @@
 - (NSMutableAttributedString)firstLineAttributedString;
 - (NSMutableAttributedString)secondLineAttributedString;
 - (SLHighlightDisambiguationPillMetrics)init;
-- (SLHighlightDisambiguationPillMetrics)initWithSlotStyle:(id)a3 tag:(id)a4;
+- (SLHighlightDisambiguationPillMetrics)initWithSlotStyle:(id)style tag:(id)tag;
 - (const)firstLineFont;
-- (const)lineFrom:(id)a3 maxWidth:(double)a4;
+- (const)lineFrom:(id)from maxWidth:(double)width;
 - (const)secondLineFont;
 - (double)avatarDiameter;
 - (double)chevronLeadingMargin;
@@ -25,21 +25,21 @@
 
 @implementation SLHighlightDisambiguationPillMetrics
 
-- (SLHighlightDisambiguationPillMetrics)initWithSlotStyle:(id)a3 tag:(id)a4
+- (SLHighlightDisambiguationPillMetrics)initWithSlotStyle:(id)style tag:(id)tag
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[SLHighlightDisambiguationPillMetrics initWithSlotStyle:tag:variant:](self, sel_initWithSlotStyle_tag_variant_, v6, v7, [v7 variant]);
+  styleCopy = style;
+  tagCopy = tag;
+  v8 = -[SLHighlightDisambiguationPillMetrics initWithSlotStyle:tag:variant:](self, sel_initWithSlotStyle_tag_variant_, styleCopy, tagCopy, [tagCopy variant]);
 
   return v8;
 }
 
-+ (id)accessibilityLabelFor:(id)a3
++ (id)accessibilityLabelFor:(id)for
 {
-  v3 = a3;
-  v4 = specialized static DisambiguationPillMetrics.firstLineString(for:)(v3);
+  forCopy = for;
+  v4 = specialized static DisambiguationPillMetrics.firstLineString(for:)(forCopy);
   v6 = v5;
-  v7 = specialized static DisambiguationPillMetrics.secondLineString(for:)(v3);
+  v7 = specialized static DisambiguationPillMetrics.secondLineString(for:)(forCopy);
   v9 = v8;
 
   MEMORY[0x231934620](v7, v9);
@@ -58,7 +58,7 @@
 
 - (NSEdgeInsets)margins
 {
-  v2 = self;
+  selfCopy = self;
   DisambiguationPillMetrics.pillMetrics.getter(&v7);
 
   v4 = *(&v7 + 1);
@@ -74,7 +74,7 @@
 
 - (double)pillHeight
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DisambiguationPillMetrics.pillHeight.getter();
 
   return v3;
@@ -82,7 +82,7 @@
 
 - (CGSize)pillSize
 {
-  v2 = self;
+  selfCopy = self;
   DisambiguationPillMetrics.pillMetrics.getter(&v5);
 
   v3 = v6;
@@ -94,7 +94,7 @@
 
 - (double)avatarDiameter
 {
-  v2 = self;
+  selfCopy = self;
   DisambiguationPillMetrics.pillMetrics.getter(v4);
 
   return v5;
@@ -102,7 +102,7 @@
 
 - (BOOL)useSingleLineLayout
 {
-  v2 = self;
+  selfCopy = self;
   DisambiguationPillMetrics.pillMetrics.getter(v4);
 
   return v5;
@@ -133,7 +133,7 @@
 
 - (CGSize)chevronSize
 {
-  v2 = self;
+  selfCopy = self;
   DisambiguationPillMetrics.chevronSize.getter();
   v4 = v3;
   v6 = v5;
@@ -147,7 +147,7 @@
 
 - (double)chevronLeadingMargin
 {
-  v2 = self;
+  selfCopy = self;
   DisambiguationPillMetrics.chevronLeadingMargin.getter();
   v4 = v3;
 
@@ -156,7 +156,7 @@
 
 - (NSEdgeInsets)labelHorizontalMargins
 {
-  v2 = self;
+  selfCopy = self;
   DisambiguationPillMetrics.pillMetrics.getter(v7);
 
   v3 = v8;
@@ -170,10 +170,10 @@
   return result;
 }
 
-- (const)lineFrom:(id)a3 maxWidth:(double)a4
+- (const)lineFrom:(id)from maxWidth:(double)width
 {
-  v4 = a3;
-  v5 = CTLineCreateWithAttributedString(v4);
+  fromCopy = from;
+  v5 = CTLineCreateWithAttributedString(fromCopy);
   TruncatedLineWithTokenHandler = CTLineCreateTruncatedLineWithTokenHandler();
   if (TruncatedLineWithTokenHandler)
   {
@@ -193,7 +193,7 @@
 
 - (CGSize)firstLineSize
 {
-  v2 = self;
+  selfCopy = self;
   DisambiguationPillMetrics.pillMetrics.getter(v5);
 
   v3 = v6;
@@ -238,7 +238,7 @@
   v6 = v14;
   __swift_project_boxed_opaque_existential_1(v12, v13);
   v7 = *(v6 + 80);
-  v8 = self;
+  selfCopy = self;
   v9 = v7(v5, v6);
   v10 = (*(v4 + 192))(v9);
 
@@ -274,7 +274,7 @@
 
 - (CGSize)secondLineSize
 {
-  v2 = self;
+  selfCopy = self;
   DisambiguationPillMetrics.pillMetrics.getter(v5);
 
   v3 = v6;
@@ -295,7 +295,7 @@
   v6 = v14;
   __swift_project_boxed_opaque_existential_1(v12, v13);
   v7 = *(v6 + 104);
-  v8 = self;
+  selfCopy = self;
   v9 = v7(v5, v6);
   v10 = (*(v4 + 200))(v9);
 

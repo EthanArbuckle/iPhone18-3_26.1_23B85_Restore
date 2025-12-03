@@ -6,10 +6,10 @@
 
 - (id)domainFromSADObject
 {
-  v2 = [(SADomainObjectPunchOut *)self domainItem];
-  v3 = [v2 groupIdentifier];
+  domainItem = [(SADomainObjectPunchOut *)self domainItem];
+  groupIdentifier = [domainItem groupIdentifier];
 
-  return v3;
+  return groupIdentifier;
 }
 
 @end

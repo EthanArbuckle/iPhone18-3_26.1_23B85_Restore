@@ -1,26 +1,26 @@
 @interface _OSIBLMAnalyticsHandler
 + (id)sharedInstance;
 + (int64_t)currentBatteryLevel;
-- (PPSTelemetryIdentifier)ppsIDForSubsystem:(id)a3 category:(id)a4;
+- (PPSTelemetryIdentifier)ppsIDForSubsystem:(id)subsystem category:(id)category;
 - (_OSIBLMAnalyticsHandler)init;
 - (id)dateFormatter;
-- (id)featureEngagementMetricsFromDrainData:(id)a3 engagementData:(id)a4;
-- (id)historicalDrainDataForDate:(id)a3;
-- (id)historicalEngagementDataForDate:(id)a3;
-- (id)historicalPluggedInDataForDate:(id)a3;
-- (id)modelStringForModel:(int64_t)a3;
+- (id)featureEngagementMetricsFromDrainData:(id)data engagementData:(id)engagementData;
+- (id)historicalDrainDataForDate:(id)date;
+- (id)historicalEngagementDataForDate:(id)date;
+- (id)historicalPluggedInDataForDate:(id)date;
+- (id)modelStringForModel:(int64_t)model;
 - (void)cancelTask;
 - (void)extractAndReportMetrics;
-- (void)recordAnalyticsFeatureState:(int64_t)a3 forCategory:(id)a4;
-- (void)recordFeatureNotificationState:(int64_t)a3;
-- (void)recordFeatureState:(int64_t)a3;
-- (void)recordIBLMFirstUserNotificationResponse:(int64_t)a3;
-- (void)recordIBLMFirstUserNotificationTrigger:(int64_t)a3;
-- (void)recordMitigationUpdateTo:(id)a3 fromPrevious:(id)a4;
+- (void)recordAnalyticsFeatureState:(int64_t)state forCategory:(id)category;
+- (void)recordFeatureNotificationState:(int64_t)state;
+- (void)recordFeatureState:(int64_t)state;
+- (void)recordIBLMFirstUserNotificationResponse:(int64_t)response;
+- (void)recordIBLMFirstUserNotificationTrigger:(int64_t)trigger;
+- (void)recordMitigationUpdateTo:(id)to fromPrevious:(id)previous;
 - (void)reportDailyFeatureState;
-- (void)reportDrainResult:(id)a3 forModel:(int64_t)a4;
-- (void)reportNewMitigation:(id)a3;
-- (void)sendDataToPPS:(id)a3 subsystem:(id)a4 category:(id)a5;
+- (void)reportDrainResult:(id)result forModel:(int64_t)model;
+- (void)reportNewMitigation:(id)mitigation;
+- (void)sendDataToPPS:(id)s subsystem:(id)subsystem category:(id)category;
 - (void)submitTask;
 @end
 
@@ -58,18 +58,18 @@
     defaults = v2->_defaults;
     v2->_defaults = v8;
 
-    v10 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     subsystemToPPSID = v2->_subsystemToPPSID;
-    v2->_subsystemToPPSID = v10;
+    v2->_subsystemToPPSID = dictionary;
 
-    v12 = [MEMORY[0x277CF0810] sharedScheduler];
+    mEMORY[0x277CF0810] = [MEMORY[0x277CF0810] sharedScheduler];
     v13 = v2->_queue;
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __31___OSIBLMAnalyticsHandler_init__block_invoke;
     v15[3] = &unk_2799C1798;
     v16 = v2;
-    [v12 registerForTaskWithIdentifier:@"com.apple.osintelligence.iblm.dailyAnalytics" usingQueue:v13 launchHandler:v15];
+    [mEMORY[0x277CF0810] registerForTaskWithIdentifier:@"com.apple.osintelligence.iblm.dailyAnalytics" usingQueue:v13 launchHandler:v15];
   }
 
   return v2;
@@ -91,13 +91,13 @@
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (PPSTelemetryIdentifier)ppsIDForSubsystem:(id)a3 category:(id)a4
+- (PPSTelemetryIdentifier)ppsIDForSubsystem:(id)subsystem category:(id)category
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", v6, v7];
-  v9 = [(NSMutableDictionary *)self->_subsystemToPPSID objectForKeyedSubscript:v8];
+  subsystemCopy = subsystem;
+  categoryCopy = category;
+  categoryCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", subsystemCopy, categoryCopy];
+  v9 = [(NSMutableDictionary *)self->_subsystemToPPSID objectForKeyedSubscript:categoryCopy];
   v15 = 0;
   if (v9)
   {
@@ -112,7 +112,7 @@ LABEL_7:
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v17 = v8;
+    v17 = categoryCopy;
     _os_log_impl(&dword_25D171000, log, OS_LOG_TYPE_INFO, "Creating PPS ID for %@", buf, 0xCu);
   }
 
@@ -120,7 +120,7 @@ LABEL_7:
   if (v15)
   {
     v10 = [MEMORY[0x277CCAE60] value:&v15 withObjCType:"^{PPSTelemetryIdentifier=}"];
-    [(NSMutableDictionary *)self->_subsystemToPPSID setObject:v10 forKeyedSubscript:v8];
+    [(NSMutableDictionary *)self->_subsystemToPPSID setObject:v10 forKeyedSubscript:categoryCopy];
     goto LABEL_7;
   }
 
@@ -136,29 +136,29 @@ LABEL_8:
   return v12;
 }
 
-- (void)sendDataToPPS:(id)a3 subsystem:(id)a4 category:(id)a5
+- (void)sendDataToPPS:(id)s subsystem:(id)subsystem category:(id)category
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sCopy = s;
+  subsystemCopy = subsystem;
+  categoryCopy = category;
   queue = self->_queue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __60___OSIBLMAnalyticsHandler_sendDataToPPS_subsystem_category___block_invoke;
   v15[3] = &unk_2799C1A08;
   v15[4] = self;
-  v16 = v9;
-  v17 = v10;
-  v18 = v8;
-  v12 = v8;
-  v13 = v10;
-  v14 = v9;
+  v16 = subsystemCopy;
+  v17 = categoryCopy;
+  v18 = sCopy;
+  v12 = sCopy;
+  v13 = categoryCopy;
+  v14 = subsystemCopy;
   dispatch_async(queue, v15);
 }
 
-- (id)historicalDrainDataForDate:(id)a3
+- (id)historicalDrainDataForDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = os_transaction_create();
   v36 = 0;
   v37 = &v36;
@@ -178,15 +178,15 @@ LABEL_8:
   v26[3] = __Block_byref_object_copy__3;
   v26[4] = __Block_byref_object_dispose__3;
   v27 = 0;
-  v6 = [OSIUtilities midnightDateFrom:v4];
+  v6 = [OSIUtilities midnightDateFrom:dateCopy];
   v23 = v5;
   v7 = [v6 dateByAddingTimeInterval:86340.0];
   v8 = [objc_alloc(MEMORY[0x277CF1A50]) initWithStartDate:v6 endDate:v7 maxEvents:0 lastN:0 reversed:0];
   v9 = BiomeLibrary();
-  v10 = [v9 Device];
-  v11 = [v10 Power];
-  v12 = [v11 BatteryLevel];
-  v13 = [v12 publisherWithOptions:v8];
+  device = [v9 Device];
+  power = [device Power];
+  batteryLevel = [power BatteryLevel];
+  v13 = [batteryLevel publisherWithOptions:v8];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __54___OSIBLMAnalyticsHandler_historicalDrainDataForDate___block_invoke;
@@ -225,9 +225,9 @@ LABEL_8:
   return v17;
 }
 
-- (id)historicalPluggedInDataForDate:(id)a3
+- (id)historicalPluggedInDataForDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = os_transaction_create();
   v45 = 0;
   v46 = &v45;
@@ -243,7 +243,7 @@ LABEL_8:
   v39[3] = __Block_byref_object_copy__3;
   v39[4] = __Block_byref_object_dispose__3;
   v40 = 0;
-  v6 = [OSIUtilities midnightDateFrom:v4];
+  v6 = [OSIUtilities midnightDateFrom:dateCopy];
   v26 = v5;
   v27 = [v6 dateByAddingTimeInterval:86340.0];
   v37[0] = 0;
@@ -252,10 +252,10 @@ LABEL_8:
   v38 = 0;
   v7 = [objc_alloc(MEMORY[0x277CF1A50]) initWithStartDate:0 endDate:v6 maxEvents:1 lastN:0 reversed:1];
   v8 = BiomeLibrary();
-  v9 = [v8 Device];
-  v10 = [v9 Power];
-  v11 = [v10 PluggedIn];
-  v12 = [v11 publisherWithOptions:v7];
+  device = [v8 Device];
+  power = [device Power];
+  pluggedIn = [power PluggedIn];
+  v12 = [pluggedIn publisherWithOptions:v7];
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
   v36[2] = __58___OSIBLMAnalyticsHandler_historicalPluggedInDataForDate___block_invoke;
@@ -270,10 +270,10 @@ LABEL_8:
 
   v14 = [objc_alloc(MEMORY[0x277CF1A50]) initWithStartDate:v6 endDate:v27 maxEvents:0 lastN:0 reversed:0];
   v15 = BiomeLibrary();
-  v16 = [v15 Device];
-  v17 = [v16 Power];
-  v18 = [v17 PluggedIn];
-  v19 = [v18 publisherWithOptions:v14];
+  device2 = [v15 Device];
+  power2 = [device2 Power];
+  pluggedIn2 = [power2 PluggedIn];
+  v19 = [pluggedIn2 publisherWithOptions:v14];
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
   v34[2] = __58___OSIBLMAnalyticsHandler_historicalPluggedInDataForDate___block_invoke_2;
@@ -307,15 +307,15 @@ LABEL_8:
   return v22;
 }
 
-- (id)historicalEngagementDataForDate:(id)a3
+- (id)historicalEngagementDataForDate:(id)date
 {
-  v4 = a3;
-  v5 = [OSIUtilities midnightDateFrom:v4];
-  v6 = [(_OSIBLMAnalyticsHandler *)self dateFormatter];
-  v7 = [v6 stringFromDate:v5];
+  dateCopy = date;
+  v5 = [OSIUtilities midnightDateFrom:dateCopy];
+  dateFormatter = [(_OSIBLMAnalyticsHandler *)self dateFormatter];
+  v7 = [dateFormatter stringFromDate:v5];
 
-  v8 = [(_OSIBLMAnalyticsHandler *)self defaults];
-  v9 = [v8 objectForKey:@"historicalIBLMEngagement"];
+  defaults = [(_OSIBLMAnalyticsHandler *)self defaults];
+  v9 = [defaults objectForKey:@"historicalIBLMEngagement"];
 
   v10 = 0.0;
   if (v9 && ([v9 objectForKeyedSubscript:v7], v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
@@ -326,78 +326,78 @@ LABEL_8:
     v10 = v14;
 
     v15 = [v12 objectForKeyedSubscript:@"dailyEngagementCount"];
-    v16 = [v15 integerValue];
+    integerValue = [v15 integerValue];
   }
 
   else
   {
-    v16 = 0;
+    integerValue = 0;
   }
 
   v17 = objc_opt_new();
   v18 = [MEMORY[0x277CCABB0] numberWithDouble:v10];
   [v17 setObject:v18 forKeyedSubscript:@"dailyEngagementDurationMins"];
 
-  v19 = [MEMORY[0x277CCABB0] numberWithInteger:v16];
+  v19 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue];
   [v17 setObject:v19 forKeyedSubscript:@"dailyEngagementCount"];
 
-  v20 = [MEMORY[0x277CCABB0] numberWithInt:v16 != 0];
+  v20 = [MEMORY[0x277CCABB0] numberWithInt:integerValue != 0];
   [v17 setObject:v20 forKeyedSubscript:@"didEngage"];
 
-  v21 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __59___OSIBLMAnalyticsHandler_historicalEngagementDataForDate___block_invoke;
   v25[3] = &unk_2799C1AD0;
   v25[4] = self;
-  v26 = v4;
-  v27 = v21;
-  v22 = v21;
-  v23 = v4;
+  v26 = dateCopy;
+  v27 = dictionary;
+  v22 = dictionary;
+  v23 = dateCopy;
   [v9 enumerateKeysAndObjectsUsingBlock:v25];
   [(NSUserDefaults *)self->_defaults setObject:v22 forKey:@"historicalIBLMEngagement"];
 
   return v17;
 }
 
-- (id)featureEngagementMetricsFromDrainData:(id)a3 engagementData:(id)a4
+- (id)featureEngagementMetricsFromDrainData:(id)data engagementData:(id)engagementData
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  dataCopy = data;
+  engagementDataCopy = engagementData;
+  v7 = engagementDataCopy;
   v8 = 0;
-  if (v5 && v6)
+  if (dataCopy && engagementDataCopy)
   {
-    if ([v5 count] && objc_msgSend(v7, "count"))
+    if ([dataCopy count] && objc_msgSend(v7, "count"))
     {
-      v9 = [v5 objectForKeyedSubscript:@"dailyDrain"];
+      v9 = [dataCopy objectForKeyedSubscript:@"dailyDrain"];
       [v9 doubleValue];
       v11 = v10;
 
       v12 = [v7 objectForKeyedSubscript:@"didEngage"];
-      v13 = [v12 BOOLValue];
+      bOOLValue = [v12 BOOLValue];
 
       v8 = objc_opt_new();
       [v8 setObject:&unk_286EB8BB8 forKeyedSubscript:@"engagementTruePositive"];
       [v8 setObject:&unk_286EB8BB8 forKeyedSubscript:@"engagementTrueNegative"];
       [v8 setObject:&unk_286EB8BB8 forKeyedSubscript:@"engagementFalsePositive"];
       [v8 setObject:&unk_286EB8BB8 forKeyedSubscript:@"engagementFalseNegative"];
-      if (v11 > 90.0 && ((v13 ^ 1) & 1) == 0)
+      if (v11 > 90.0 && ((bOOLValue ^ 1) & 1) == 0)
       {
         [v8 setObject:&unk_286EB8BD0 forKeyedSubscript:@"engagementTruePositive"];
       }
 
-      if (!((v11 <= 90.0) | v13 & 1))
+      if (!((v11 <= 90.0) | bOOLValue & 1))
       {
         [v8 setObject:&unk_286EB8BD0 forKeyedSubscript:@"engagementFalseNegative"];
       }
 
-      if (!((v11 > 90.0) | (v13 ^ 1) & 1))
+      if (!((v11 > 90.0) | (bOOLValue ^ 1) & 1))
       {
         [v8 setObject:&unk_286EB8BD0 forKeyedSubscript:@"engagementFalsePositive"];
       }
 
-      if (!((v11 > 90.0) | v13 & 1))
+      if (!((v11 > 90.0) | bOOLValue & 1))
       {
         [v8 setObject:&unk_286EB8BD0 forKeyedSubscript:@"engagementTrueNegative"];
       }
@@ -454,9 +454,9 @@ LABEL_8:
 - (void)reportDailyFeatureState
 {
   v3 = +[_OSIBLMState sharedInstance];
-  v4 = [v3 isIBLMCurrentlyEnabled];
+  isIBLMCurrentlyEnabled = [v3 isIBLMCurrentlyEnabled];
 
-  if (v4)
+  if (isIBLMCurrentlyEnabled)
   {
     v5 = 3;
   }
@@ -468,9 +468,9 @@ LABEL_8:
 
   [(_OSIBLMAnalyticsHandler *)self recordAnalyticsFeatureState:v5 forCategory:@"IBLMFeatureState"];
   v6 = +[_OSIBLMState sharedInstance];
-  v7 = [v6 isIBLMNotificationsCurrentlyEnabled];
+  isIBLMNotificationsCurrentlyEnabled = [v6 isIBLMNotificationsCurrentlyEnabled];
 
-  if (v7)
+  if (isIBLMNotificationsCurrentlyEnabled)
   {
     v8 = 3;
   }
@@ -495,15 +495,15 @@ LABEL_8:
   return v3;
 }
 
-- (id)modelStringForModel:(int64_t)a3
+- (id)modelStringForModel:(int64_t)model
 {
   v3 = @"Unknown";
-  if (a3 == 2)
+  if (model == 2)
   {
     v3 = @"StatMedian";
   }
 
-  if (a3 == 1)
+  if (model == 1)
   {
     return @"MLP12N12";
   }
@@ -514,32 +514,32 @@ LABEL_8:
   }
 }
 
-- (void)reportDrainResult:(id)a3 forModel:(int64_t)a4
+- (void)reportDrainResult:(id)result forModel:(int64_t)model
 {
-  v14 = a3;
+  resultCopy = result;
   v6 = objc_opt_new();
-  v7 = [(_OSIBLMAnalyticsHandler *)self modelStringForModel:a4];
+  v7 = [(_OSIBLMAnalyticsHandler *)self modelStringForModel:model];
   [v6 setObject:v7 forKeyedSubscript:@"Model"];
 
-  v8 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v14, "isHighDrain")}];
+  v8 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(resultCopy, "isHighDrain")}];
   [v6 setObject:v8 forKeyedSubscript:@"Decision"];
 
-  if (a4 == 2)
+  if (model == 2)
   {
     v12 = MEMORY[0x277CCABB0];
-    [v14 batteryDifference];
+    [resultCopy batteryDifference];
     v11 = [v12 numberWithDouble:?];
   }
 
   else
   {
-    if (a4 != 1)
+    if (model != 1)
     {
       goto LABEL_6;
     }
 
     v9 = MEMORY[0x277CCABB0];
-    [v14 confidence];
+    [resultCopy confidence];
     v11 = [v9 numberWithInteger:(v10 * 100.0)];
   }
 
@@ -550,42 +550,42 @@ LABEL_6:
   [(_OSIBLMAnalyticsHandler *)self sendDataToPPS:v6 subsystem:@"OSIPrediction" category:@"IBLMPredictionAlgorithmOutput"];
 }
 
-- (void)reportNewMitigation:(id)a3
+- (void)reportNewMitigation:(id)mitigation
 {
-  v4 = a3;
+  mitigationCopy = mitigation;
   v9 = objc_opt_new();
-  v5 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "level")}];
+  v5 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(mitigationCopy, "level")}];
   [v9 setObject:v5 forKeyedSubscript:@"FeatureEngagementState"];
 
   v6 = MEMORY[0x277CCABB0];
-  v7 = [v4 decisionMaker];
+  decisionMaker = [mitigationCopy decisionMaker];
 
-  v8 = [v6 numberWithInteger:v7];
+  v8 = [v6 numberWithInteger:decisionMaker];
   [v9 setObject:v8 forKeyedSubscript:@"DecisionMaker"];
 
   [(_OSIBLMAnalyticsHandler *)self sendDataToPPS:v9 subsystem:@"OSIPrediction" category:@"IBLMFeatureEngagement"];
 }
 
-- (void)recordMitigationUpdateTo:(id)a3 fromPrevious:(id)a4
+- (void)recordMitigationUpdateTo:(id)to fromPrevious:(id)previous
 {
-  v6 = a3;
-  v7 = a4;
+  toCopy = to;
+  previousCopy = previous;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65___OSIBLMAnalyticsHandler_recordMitigationUpdateTo_fromPrevious___block_invoke;
   block[3] = &unk_2799C1B20;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = toCopy;
+  v13 = previousCopy;
+  v9 = previousCopy;
+  v10 = toCopy;
   dispatch_async(queue, block);
 }
 
-- (void)recordFeatureState:(int64_t)a3
+- (void)recordFeatureState:(int64_t)state
 {
-  if (a3 >= 2)
+  if (state >= 2)
   {
     if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
     {
@@ -600,9 +600,9 @@ LABEL_6:
   }
 }
 
-- (void)recordFeatureNotificationState:(int64_t)a3
+- (void)recordFeatureNotificationState:(int64_t)state
 {
-  if (a3 >= 2)
+  if (state >= 2)
   {
     if (os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
     {
@@ -617,37 +617,37 @@ LABEL_6:
   }
 }
 
-- (void)recordAnalyticsFeatureState:(int64_t)a3 forCategory:(id)a4
+- (void)recordAnalyticsFeatureState:(int64_t)state forCategory:(id)category
 {
-  v6 = a4;
+  categoryCopy = category;
   v8 = objc_opt_new();
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:state];
   [v8 setObject:v7 forKeyedSubscript:@"FeatureState"];
 
-  [(_OSIBLMAnalyticsHandler *)self sendDataToPPS:v8 subsystem:@"OSIPrediction" category:v6];
+  [(_OSIBLMAnalyticsHandler *)self sendDataToPPS:v8 subsystem:@"OSIPrediction" category:categoryCopy];
 }
 
 + (int64_t)currentBatteryLevel
 {
-  v2 = [MEMORY[0x277CFE318] userContext];
-  v3 = [MEMORY[0x277CFE338] keyPathForBatteryStateDataDictionary];
-  v4 = [v2 objectForKeyedSubscript:v3];
+  userContext = [MEMORY[0x277CFE318] userContext];
+  keyPathForBatteryStateDataDictionary = [MEMORY[0x277CFE338] keyPathForBatteryStateDataDictionary];
+  v4 = [userContext objectForKeyedSubscript:keyPathForBatteryStateDataDictionary];
 
-  v5 = [MEMORY[0x277CFE338] batteryPercentageKey];
-  v6 = [v4 objectForKeyedSubscript:v5];
-  v7 = [v6 integerValue];
+  batteryPercentageKey = [MEMORY[0x277CFE338] batteryPercentageKey];
+  v6 = [v4 objectForKeyedSubscript:batteryPercentageKey];
+  integerValue = [v6 integerValue];
 
-  return v7;
+  return integerValue;
 }
 
-- (void)recordIBLMFirstUserNotificationResponse:(int64_t)a3
+- (void)recordIBLMFirstUserNotificationResponse:(int64_t)response
 {
   v13 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_new();
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:{+[_OSIBLMAnalyticsHandler currentBatteryLevel](_OSIBLMAnalyticsHandler, "currentBatteryLevel")}];
   [v5 setObject:v6 forKeyedSubscript:@"batteryLevel"];
 
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:response];
   [v5 setObject:v7 forKeyedSubscript:@"notificationResponse"];
 
   v8 = v5;
@@ -663,14 +663,14 @@ LABEL_6:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)recordIBLMFirstUserNotificationTrigger:(int64_t)a3
+- (void)recordIBLMFirstUserNotificationTrigger:(int64_t)trigger
 {
   v13 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_new();
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:{+[_OSIBLMAnalyticsHandler currentBatteryLevel](_OSIBLMAnalyticsHandler, "currentBatteryLevel")}];
   [v5 setObject:v6 forKeyedSubscript:@"batteryLevel"];
 
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:trigger];
   [v5 setObject:v7 forKeyedSubscript:@"notificationTrigger"];
 
   v8 = v5;

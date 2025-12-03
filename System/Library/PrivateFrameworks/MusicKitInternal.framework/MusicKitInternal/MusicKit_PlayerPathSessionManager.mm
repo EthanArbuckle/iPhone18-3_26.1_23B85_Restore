@@ -1,7 +1,7 @@
 @interface MusicKit_PlayerPathSessionManager
 + (MusicKit_PlayerPathSessionManager)sharedSessionManager;
 - (MusicKit_PlayerPathSessionManager)init;
-- (id)sessionIDForPlayerPath:(id)a3;
+- (id)sessionIDForPlayerPath:(id)path;
 @end
 
 @implementation MusicKit_PlayerPathSessionManager
@@ -35,23 +35,23 @@
   return v3;
 }
 
-- (id)sessionIDForPlayerPath:(id)a3
+- (id)sessionIDForPlayerPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   os_unfair_lock_lock(&self->_lock);
-  v5 = v4;
-  v6 = [(NSMutableDictionary *)self->_sessionIDsByPlayerPath objectForKey:v5];
-  if (!v6)
+  v5 = pathCopy;
+  uUIDString = [(NSMutableDictionary *)self->_sessionIDsByPlayerPath objectForKey:v5];
+  if (!uUIDString)
   {
-    v7 = [MEMORY[0x1E696AFB0] UUID];
-    v6 = [v7 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
 
-    [(NSMutableDictionary *)self->_sessionIDsByPlayerPath setObject:v6 forKey:v5];
+    [(NSMutableDictionary *)self->_sessionIDsByPlayerPath setObject:uUIDString forKey:v5];
   }
 
   os_unfair_lock_unlock(&self->_lock);
 
-  return v6;
+  return uUIDString;
 }
 
 @end

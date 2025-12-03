@@ -1,21 +1,21 @@
 @interface TFFeedbackFormBaseCell
-+ (CGSize)sizeForEntry:(id)a3 dataSource:(id)a4 fittingSize:(CGSize)result inTraitEnvironment:(id)a6;
-- (CGRect)_separatorFrameForTop:(BOOL)a3 inLayoutBounds:(CGRect)a4;
++ (CGSize)sizeForEntry:(id)entry dataSource:(id)source fittingSize:(CGSize)result inTraitEnvironment:(id)environment;
+- (CGRect)_separatorFrameForTop:(BOOL)top inLayoutBounds:(CGRect)bounds;
 - (TFFeedbackDataUpdateProxy)updateProxy;
-- (TFFeedbackFormBaseCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (TFFeedbackFormBaseCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)_createSeparatorSubview;
-- (void)_setupSeparatorViewsForAppearingInSectionLocation:(int)a3;
+- (void)_setupSeparatorViewsForAppearingInSectionLocation:(int)location;
 - (void)layoutSubviews;
-- (void)prepareSeparatorsForCellInSectionLocation:(int)a3;
+- (void)prepareSeparatorsForCellInSectionLocation:(int)location;
 @end
 
 @implementation TFFeedbackFormBaseCell
 
-- (TFFeedbackFormBaseCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (TFFeedbackFormBaseCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v9.receiver = self;
   v9.super_class = TFFeedbackFormBaseCell;
-  v4 = [(TFFeedbackFormBaseCell *)&v9 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(TFFeedbackFormBaseCell *)&v9 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -39,62 +39,62 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(TFFeedbackFormBaseCell *)self topSeparator];
-  if (v11)
+  topSeparator = [(TFFeedbackFormBaseCell *)self topSeparator];
+  if (topSeparator)
   {
-    v12 = v11;
-    v13 = [(TFFeedbackFormBaseCell *)self topSeparator];
-    v14 = [v13 isHidden];
+    v12 = topSeparator;
+    topSeparator2 = [(TFFeedbackFormBaseCell *)self topSeparator];
+    isHidden = [topSeparator2 isHidden];
 
-    if ((v14 & 1) == 0)
+    if ((isHidden & 1) == 0)
     {
-      v15 = [(TFFeedbackFormBaseCell *)self topSeparator];
+      topSeparator3 = [(TFFeedbackFormBaseCell *)self topSeparator];
       [(TFFeedbackFormBaseCell *)self _separatorFrameForTop:1 inLayoutBounds:v4, v6, v8, v10];
-      [v15 setFrame:?];
+      [topSeparator3 setFrame:?];
     }
   }
 
-  v16 = [(TFFeedbackFormBaseCell *)self bottomSeparator];
-  if (v16)
+  bottomSeparator = [(TFFeedbackFormBaseCell *)self bottomSeparator];
+  if (bottomSeparator)
   {
-    v17 = v16;
-    v18 = [(TFFeedbackFormBaseCell *)self bottomSeparator];
-    v19 = [v18 isHidden];
+    v17 = bottomSeparator;
+    bottomSeparator2 = [(TFFeedbackFormBaseCell *)self bottomSeparator];
+    isHidden2 = [bottomSeparator2 isHidden];
 
-    if ((v19 & 1) == 0)
+    if ((isHidden2 & 1) == 0)
     {
-      v20 = [(TFFeedbackFormBaseCell *)self bottomSeparator];
+      bottomSeparator3 = [(TFFeedbackFormBaseCell *)self bottomSeparator];
       [(TFFeedbackFormBaseCell *)self _separatorFrameForTop:0 inLayoutBounds:v4, v6, v8, v10];
-      [v20 setFrame:?];
+      [bottomSeparator3 setFrame:?];
     }
   }
 }
 
-- (void)prepareSeparatorsForCellInSectionLocation:(int)a3
+- (void)prepareSeparatorsForCellInSectionLocation:(int)location
 {
-  [(TFFeedbackFormBaseCell *)self _setupSeparatorViewsForAppearingInSectionLocation:*&a3];
+  [(TFFeedbackFormBaseCell *)self _setupSeparatorViewsForAppearingInSectionLocation:*&location];
 
   [(TFFeedbackFormBaseCell *)self setNeedsLayout];
 }
 
-+ (CGSize)sizeForEntry:(id)a3 dataSource:(id)a4 fittingSize:(CGSize)result inTraitEnvironment:(id)a6
++ (CGSize)sizeForEntry:(id)entry dataSource:(id)source fittingSize:(CGSize)result inTraitEnvironment:(id)environment
 {
   v6 = 44.0;
   result.height = v6;
   return result;
 }
 
-- (void)_setupSeparatorViewsForAppearingInSectionLocation:(int)a3
+- (void)_setupSeparatorViewsForAppearingInSectionLocation:(int)location
 {
-  v4 = a3 - 5;
-  if (a3 == 4 || a3 == 2)
+  v4 = location - 5;
+  if (location == 4 || location == 2)
   {
-    v5 = [(TFFeedbackFormBaseCell *)self topSeparator];
+    topSeparator = [(TFFeedbackFormBaseCell *)self topSeparator];
 
-    if (!v5)
+    if (!topSeparator)
     {
-      v6 = [(TFFeedbackFormBaseCell *)self _createSeparatorSubview];
-      [(TFFeedbackFormBaseCell *)self setTopSeparator:v6];
+      _createSeparatorSubview = [(TFFeedbackFormBaseCell *)self _createSeparatorSubview];
+      [(TFFeedbackFormBaseCell *)self setTopSeparator:_createSeparatorSubview];
     }
 
     v7 = 0;
@@ -105,47 +105,47 @@
     v7 = 1;
   }
 
-  v8 = [(TFFeedbackFormBaseCell *)self topSeparator];
-  [v8 setHidden:v7];
+  topSeparator2 = [(TFFeedbackFormBaseCell *)self topSeparator];
+  [topSeparator2 setHidden:v7];
 
   if (v4 >= 0xFFFFFFFE)
   {
-    v9 = [(TFFeedbackFormBaseCell *)self bottomSeparator];
+    bottomSeparator = [(TFFeedbackFormBaseCell *)self bottomSeparator];
 
-    if (!v9)
+    if (!bottomSeparator)
     {
-      v10 = [(TFFeedbackFormBaseCell *)self _createSeparatorSubview];
-      [(TFFeedbackFormBaseCell *)self setBottomSeparator:v10];
+      _createSeparatorSubview2 = [(TFFeedbackFormBaseCell *)self _createSeparatorSubview];
+      [(TFFeedbackFormBaseCell *)self setBottomSeparator:_createSeparatorSubview2];
     }
   }
 
-  v11 = [(TFFeedbackFormBaseCell *)self bottomSeparator];
-  [v11 setHidden:v4 < 0xFFFFFFFE];
+  bottomSeparator2 = [(TFFeedbackFormBaseCell *)self bottomSeparator];
+  [bottomSeparator2 setHidden:v4 < 0xFFFFFFFE];
 }
 
 - (id)_createSeparatorSubview
 {
   v3 = objc_alloc_init(MEMORY[0x277D75D18]);
-  v4 = [MEMORY[0x277D75348] separatorColor];
-  [v3 setBackgroundColor:v4];
+  separatorColor = [MEMORY[0x277D75348] separatorColor];
+  [v3 setBackgroundColor:separatorColor];
 
   [(TFFeedbackFormBaseCell *)self addSubview:v3];
 
   return v3;
 }
 
-- (CGRect)_separatorFrameForTop:(BOOL)a3 inLayoutBounds:(CGRect)a4
+- (CGRect)_separatorFrameForTop:(BOOL)top inLayoutBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = [MEMORY[0x277D759A0] mainScreen];
-  [v9 scale];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v11 = 1.0 / v10;
 
   v12 = 0.0;
-  if (!a3)
+  if (!top)
   {
     v17.origin.x = x;
     v17.origin.y = y;

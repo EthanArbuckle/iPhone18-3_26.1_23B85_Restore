@@ -1,15 +1,15 @@
 @interface ASCSKPurchaseIntent
-- (ASCSKPurchaseIntent)initWithBundleId:(id)a3 productIdentifier:(id)a4 appName:(id)a5 productName:(id)a6;
+- (ASCSKPurchaseIntent)initWithBundleId:(id)id productIdentifier:(id)identifier appName:(id)name productName:(id)productName;
 @end
 
 @implementation ASCSKPurchaseIntent
 
-- (ASCSKPurchaseIntent)initWithBundleId:(id)a3 productIdentifier:(id)a4 appName:(id)a5 productName:(id)a6
+- (ASCSKPurchaseIntent)initWithBundleId:(id)id productIdentifier:(id)identifier appName:(id)name productName:(id)productName
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  idCopy = id;
+  identifierCopy = identifier;
+  nameCopy = name;
+  productNameCopy = productName;
   v20.receiver = self;
   v20.super_class = ASCSKPurchaseIntent;
   v14 = [(ASCSKPurchaseIntent *)&v20 init];
@@ -33,7 +33,7 @@
 
     v16 = v15;
     _Block_object_dispose(&v22, 8);
-    v17 = [[v15 alloc] initWithBundleId:v10 productIdentifier:v11 appName:v12 productName:v13];
+    v17 = [[v15 alloc] initWithBundleId:idCopy productIdentifier:identifierCopy appName:nameCopy productName:productNameCopy];
     purchaseIntent = v14->_purchaseIntent;
     v14->_purchaseIntent = v17;
   }

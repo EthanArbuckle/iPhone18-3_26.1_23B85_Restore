@@ -1,14 +1,14 @@
 @interface AppInstallsDatabaseTransaction
-- (AppInstallsDatabaseTransaction)initWithConnection:(id)a3;
+- (AppInstallsDatabaseTransaction)initWithConnection:(id)connection;
 @end
 
 @implementation AppInstallsDatabaseTransaction
 
-- (AppInstallsDatabaseTransaction)initWithConnection:(id)a3
+- (AppInstallsDatabaseTransaction)initWithConnection:(id)connection
 {
   v7.receiver = self;
   v7.super_class = AppInstallsDatabaseTransaction;
-  v3 = [(AppInstallsDatabaseSession *)&v7 initWithConnection:a3];
+  v3 = [(AppInstallsDatabaseSession *)&v7 initWithConnection:connection];
   if (v3)
   {
     v4 = objc_alloc_init(AppInstallsDatabaseChangeset);

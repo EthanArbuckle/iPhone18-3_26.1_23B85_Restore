@@ -1,30 +1,30 @@
 @interface TUIFeedCaptureController
-+ (id)feedCaptureInfoWithURL:(id)a3 packagesURL:(id)a4;
-- (TUIFeedCaptureController)initWithEntry:(id)a3 title:(id)a4;
-- (TUIFeedCaptureController)initWithTitle:(id)a3;
++ (id)feedCaptureInfoWithURL:(id)l packagesURL:(id)rL;
+- (TUIFeedCaptureController)initWithEntry:(id)entry title:(id)title;
+- (TUIFeedCaptureController)initWithTitle:(id)title;
 - (id)_feedInfo;
-- (id)_makeDir:(id)a3;
-- (id)instantiateCaptureForEntry:(id)a3;
+- (id)_makeDir:(id)dir;
+- (id)instantiateCaptureForEntry:(id)entry;
 - (void)_copyPackages;
 - (void)_emitDynamicState;
 - (void)_emitImages;
-- (void)beginCaptureWithFactory:(id)a3 completion:(id)a4;
-- (void)captureSectionWithEntry:(id)a3 bindings:(id)a4 template:(id)a5;
+- (void)beginCaptureWithFactory:(id)factory completion:(id)completion;
+- (void)captureSectionWithEntry:(id)entry bindings:(id)bindings template:(id)template;
 - (void)endCapture;
 @end
 
 @implementation TUIFeedCaptureController
 
-- (TUIFeedCaptureController)initWithTitle:(id)a3
+- (TUIFeedCaptureController)initWithTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v31.receiver = self;
   v31.super_class = TUIFeedCaptureController;
   v5 = [(TUIFeedCaptureController *)&v31 init];
   if (v5)
   {
-    v30 = v4;
-    v6 = [v4 copy];
+    v30 = titleCopy;
+    v6 = [titleCopy copy];
     v7 = v6;
     if (v6)
     {
@@ -46,8 +46,8 @@
     v5->_url = v12;
 
     v14 = +[NSFileManager defaultManager];
-    v15 = [(NSURL *)v5->_url path];
-    LODWORD(v11) = [v14 fileExistsAtPath:v15];
+    path = [(NSURL *)v5->_url path];
+    LODWORD(v11) = [v14 fileExistsAtPath:path];
 
     if (v11)
     {
@@ -62,8 +62,8 @@
         v22 = v5->_url;
         v5->_url = v21;
 
-        v23 = [(NSURL *)v5->_url path];
-        LOBYTE(v17) = [v14 fileExistsAtPath:v23];
+        path2 = [(NSURL *)v5->_url path];
+        LOBYTE(v17) = [v14 fileExistsAtPath:path2];
 
         ++v16;
       }
@@ -82,41 +82,41 @@
     completionGroup = v5->_completionGroup;
     v5->_completionGroup = v27;
 
-    v4 = v30;
+    titleCopy = v30;
   }
 
   return v5;
 }
 
-- (TUIFeedCaptureController)initWithEntry:(id)a3 title:(id)a4
+- (TUIFeedCaptureController)initWithEntry:(id)entry title:(id)title
 {
-  v7 = a3;
-  v8 = [(TUIFeedCaptureController *)self initWithTitle:a4];
+  entryCopy = entry;
+  v8 = [(TUIFeedCaptureController *)self initWithTitle:title];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_entry, a3);
+    objc_storeStrong(&v8->_entry, entry);
   }
 
   return v9;
 }
 
-- (id)_makeDir:(id)a3
+- (id)_makeDir:(id)dir
 {
-  v3 = [(NSURL *)self->_url URLByAppendingPathComponent:a3];
+  v3 = [(NSURL *)self->_url URLByAppendingPathComponent:dir];
   v4 = +[NSFileManager defaultManager];
   [v4 createDirectoryAtURL:v3 withIntermediateDirectories:1 attributes:0 error:0];
 
   return v3;
 }
 
-- (void)beginCaptureWithFactory:(id)a3 completion:(id)a4
+- (void)beginCaptureWithFactory:(id)factory completion:(id)completion
 {
-  objc_storeStrong(&self->_factory, a3);
-  v7 = a3;
-  v8 = a4;
+  objc_storeStrong(&self->_factory, factory);
+  factoryCopy = factory;
+  completionCopy = completion;
   dispatch_group_enter(self->_completionGroup);
-  TUIDispatchGroupNotifyViaRunloopIfMain(self->_completionGroup, &_dispatch_main_q, v8);
+  TUIDispatchGroupNotifyViaRunloopIfMain(self->_completionGroup, &_dispatch_main_q, completionCopy);
 }
 
 - (void)endCapture
@@ -125,26 +125,26 @@
   [(TUIFeedCaptureController *)self _emitDynamicState];
   [(TUIFeedCaptureController *)self _emitImages];
   v5 = [(NSURL *)self->_url URLByAppendingPathComponent:@"feed.json"];
-  v3 = [(TUIFeedCaptureController *)self _feedInfo];
-  v4 = [NSJSONSerialization dataWithJSONObject:v3 options:1 error:0];
+  _feedInfo = [(TUIFeedCaptureController *)self _feedInfo];
+  v4 = [NSJSONSerialization dataWithJSONObject:_feedInfo options:1 error:0];
   [v4 writeToURL:v5 atomically:0];
 
   dispatch_group_leave(self->_completionGroup);
 }
 
-- (void)captureSectionWithEntry:(id)a3 bindings:(id)a4 template:(id)a5
+- (void)captureSectionWithEntry:(id)entry bindings:(id)bindings template:(id)template
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[_TUIFeedCaptureSection alloc] initWithEntry:v10 bindings:v9 template:v8];
+  templateCopy = template;
+  bindingsCopy = bindings;
+  entryCopy = entry;
+  v11 = [[_TUIFeedCaptureSection alloc] initWithEntry:entryCopy bindings:bindingsCopy template:templateCopy];
 
   [(NSMutableArray *)self->_sections addObject:v11];
 }
 
-- (id)instantiateCaptureForEntry:(id)a3
+- (id)instantiateCaptureForEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -164,9 +164,9 @@
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        v10 = [v9 entry];
+        entry = [v9 entry];
 
-        if (v10 == v4)
+        if (entry == entryCopy)
         {
           v6 = v9;
           goto LABEL_11;
@@ -242,13 +242,13 @@ LABEL_11:
         }
 
         v12 = [*(*(&v17 + 1) + 8 * v11) url];
-        v13 = [v12 URLByDeletingLastPathComponent];
+        uRLByDeletingLastPathComponent = [v12 URLByDeletingLastPathComponent];
 
-        v14 = [v13 lastPathComponent];
-        v15 = [v6 URLByAppendingPathComponent:v14];
+        lastPathComponent = [uRLByDeletingLastPathComponent lastPathComponent];
+        v15 = [v6 URLByAppendingPathComponent:lastPathComponent];
 
         v16 = +[NSFileManager defaultManager];
-        [v16 copyItemAtURL:v13 toURL:v15 error:0];
+        [v16 copyItemAtURL:uRLByDeletingLastPathComponent toURL:v15 error:0];
 
         v11 = v11 + 1;
       }
@@ -417,11 +417,11 @@ LABEL_11:
   }
 }
 
-+ (id)feedCaptureInfoWithURL:(id)a3 packagesURL:(id)a4
++ (id)feedCaptureInfoWithURL:(id)l packagesURL:(id)rL
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[_TUIFeedCaptureInfo alloc] initWithURL:v6 packagesURL:v5];
+  rLCopy = rL;
+  lCopy = l;
+  v7 = [[_TUIFeedCaptureInfo alloc] initWithURL:lCopy packagesURL:rLCopy];
 
   return v7;
 }

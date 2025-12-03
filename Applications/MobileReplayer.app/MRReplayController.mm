@@ -3,10 +3,10 @@
 + (void)initialize;
 - (MRReplayControllerDelegate)delegate;
 - (MRReplayControllerDelegate)strongDelegate;
-- (id)_replayerControllerSupportForCaptureStore:(id)a3;
+- (id)_replayerControllerSupportForCaptureStore:(id)store;
 - (void)_displayPlaybackEngine;
-- (void)_processMessage:(id)a3;
-- (void)_updateBackgroundImage:(id)a3;
+- (void)_processMessage:(id)message;
+- (void)_updateBackgroundImage:(id)image;
 - (void)dealloc;
 @end
 
@@ -48,8 +48,8 @@
     sub_1000036F8();
   }
 
-  v7 = [(MRReplayController *)self strongDelegate];
-  if ([v7 shouldCreateViewController])
+  strongDelegate = [(MRReplayController *)self strongDelegate];
+  if ([strongDelegate shouldCreateViewController])
   {
     backgroundImageViewController = self->_backgroundImageViewController;
 
@@ -58,17 +58,17 @@
       return;
     }
 
-    v7 = [(MRReplayController *)self replayControllerSupport];
-    v4 = [(MRReplayController *)self strongDelegate];
-    v5 = [(MRReplayController *)self playbackEngine];
-    v6 = [v7 viewControllerForPlaybackEngine:v5];
-    [v4 setViewController:v6];
+    strongDelegate = [(MRReplayController *)self replayControllerSupport];
+    strongDelegate2 = [(MRReplayController *)self strongDelegate];
+    playbackEngine = [(MRReplayController *)self playbackEngine];
+    v6 = [strongDelegate viewControllerForPlaybackEngine:playbackEngine];
+    [strongDelegate2 setViewController:v6];
   }
 }
 
-- (id)_replayerControllerSupportForCaptureStore:(id)a3
+- (id)_replayerControllerSupportForCaptureStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v5 = +[DYExtensionRegistry sharedExtensionRegistry];
   v6 = [v5 extensionsForSlot:@"com.apple.mobileReplayer.replayControllerSupport"];
 
@@ -94,18 +94,18 @@
         v12 = [v11 objectForKey:{@"class", v18}];
         if (v12)
         {
-          v13 = [v11 bundle];
-          v14 = [v13 classNamed:v12];
+          bundle = [v11 bundle];
+          v14 = [bundle classNamed:v12];
 
           if (v14)
           {
-            v15 = [[v14 alloc] initWithCaptureStore:v4];
+            v15 = [[v14 alloc] initWithCaptureStore:storeCopy];
             if (v15)
             {
               if (objc_opt_respondsToSelector())
               {
-                v16 = [(MRReplayController *)self strongDelegate];
-                [v15 setShouldCreateViewController:{objc_msgSend(v16, "shouldCreateViewController")}];
+                strongDelegate = [(MRReplayController *)self strongDelegate];
+                [v15 setShouldCreateViewController:{objc_msgSend(strongDelegate, "shouldCreateViewController")}];
               }
 
               goto LABEL_15;
@@ -132,7 +132,7 @@ LABEL_15:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [DYStandardPluginDirectoryProvider alloc];
     v3 = +[NSBundle mainBundle];
@@ -142,95 +142,95 @@ LABEL_15:
   }
 }
 
-- (void)_processMessage:(id)a3
+- (void)_processMessage:(id)message
 {
-  v4 = a3;
-  v5 = [v4 kind];
-  if (v5 - 4117 < 2)
+  messageCopy = message;
+  kind = [messageCopy kind];
+  if (kind - 4117 < 2)
   {
-    v7 = [(MRReplayController *)self replayControllerSupport];
-    v8 = [(MRReplayController *)self playbackEngine];
-    v9 = [v7 isDebugPlaybackEngine:v8];
+    replayControllerSupport = [(MRReplayController *)self replayControllerSupport];
+    playbackEngine = [(MRReplayController *)self playbackEngine];
+    v9 = [replayControllerSupport isDebugPlaybackEngine:playbackEngine];
 
     if (v9)
     {
-      if ([v4 kind] != 4117)
+      if ([messageCopy kind] != 4117)
       {
-        v46 = v7;
+        v46 = replayControllerSupport;
         if (!self->_shaderProfiler)
         {
-          v19 = [(MRReplayController *)self playbackEngine];
-          v20 = [v4 objectPayload];
-          v21 = [v7 newShaderProfilerWithPlaybackEngine:v19 payload:v20];
+          playbackEngine2 = [(MRReplayController *)self playbackEngine];
+          objectPayload = [messageCopy objectPayload];
+          v21 = [replayControllerSupport newShaderProfilerWithPlaybackEngine:playbackEngine2 payload:objectPayload];
           shaderProfiler = self->_shaderProfiler;
           self->_shaderProfiler = v21;
         }
 
         objc_initWeak(&from, self);
-        v23 = [v4 attributes];
-        v24 = v23 == 0;
+        attributes = [messageCopy attributes];
+        v24 = attributes == 0;
 
         if (v24)
         {
-          v41 = [(MRReplayController *)self shaderProfiler];
-          v42 = [v4 objectPayload];
-          [v41 updatePayload:v42];
+          shaderProfiler = [(MRReplayController *)self shaderProfiler];
+          objectPayload2 = [messageCopy objectPayload];
+          [shaderProfiler updatePayload:objectPayload2];
 
-          v43 = [(MRReplayController *)self profileBlockQueue];
+          profileBlockQueue = [(MRReplayController *)self profileBlockQueue];
           v48[0] = _NSConcreteStackBlock;
           v48[1] = 3221225472;
           v48[2] = sub_100002450;
           v48[3] = &unk_100008318;
           objc_copyWeak(&v52, &from);
-          v49 = v7;
-          v50 = self;
-          v51 = v4;
-          [v43 pushBlock:v48];
+          v49 = replayControllerSupport;
+          selfCopy = self;
+          v51 = messageCopy;
+          [profileBlockQueue pushBlock:v48];
 
           objc_destroyWeak(&v52);
         }
 
         else
         {
-          v25 = [v4 attributes];
-          v26 = [v25 objectForKeyedSubscript:@"collectInBackground"];
+          attributes2 = [messageCopy attributes];
+          v26 = [attributes2 objectForKeyedSubscript:@"collectInBackground"];
           v27 = v26 == 0;
 
           if (v27)
           {
-            v44 = [(MRReplayController *)self profileBlockQueue];
+            profileBlockQueue2 = [(MRReplayController *)self profileBlockQueue];
             v53[0] = _NSConcreteStackBlock;
             v53[1] = 3221225472;
             v53[2] = sub_1000021E8;
             v53[3] = &unk_100008318;
             objc_copyWeak(&v57, &from);
-            v54 = v7;
-            v55 = v4;
-            v56 = self;
-            [v44 pushBlock:v53];
+            v54 = replayControllerSupport;
+            v55 = messageCopy;
+            selfCopy2 = self;
+            [profileBlockQueue2 pushBlock:v53];
 
             objc_destroyWeak(&v57);
           }
 
           else
           {
-            v28 = [(MRReplayController *)self shaderProfiler];
-            v29 = [v4 objectPayload];
-            [v28 updatePayload:v29];
+            shaderProfiler2 = [(MRReplayController *)self shaderProfiler];
+            objectPayload3 = [messageCopy objectPayload];
+            [shaderProfiler2 updatePayload:objectPayload3];
 
-            v30 = [v4 objectPayload];
-            v45 = [v30 objectForKeyedSubscript:@"maxDrawsInAnyEncoder"];
+            objectPayload4 = [messageCopy objectPayload];
+            v45 = [objectPayload4 objectForKeyedSubscript:@"maxDrawsInAnyEncoder"];
 
             if (v45)
             {
-              v31 = [(MRReplayController *)self transport];
-              v32 = [v4 kind];
+              transport = [(MRReplayController *)self transport];
+              kind2 = [messageCopy kind];
               v33 = objc_opt_new();
-              v34 = [DYTransportMessage messageWithKind:v32 plistPayload:v33];
-              [v31 send:v34 inReplyTo:v4 error:0];
+              v34 = [DYTransportMessage messageWithKind:kind2 plistPayload:v33];
+              [transport send:v34 inReplyTo:messageCopy error:0];
 
-              v35 = [v45 unsignedIntegerValue];
-              if (v35)
+              unsignedIntegerValue = [v45 unsignedIntegerValue];
+              if (unsignedIntegerValue)
               {
                 v36 = 0;
                 do
@@ -242,27 +242,27 @@ LABEL_15:
                   location[4] = sub_100001FE0;
                   v37 = [NSNumber numberWithUnsignedInteger:++v36, v45];
                   v71[0] = v37;
-                  v38 = [NSNumber numberWithUnsignedInteger:v35];
+                  v38 = [NSNumber numberWithUnsignedInteger:unsignedIntegerValue];
                   v71[1] = v38;
                   v64 = [NSArray arrayWithObjects:v71 count:2];
 
-                  v39 = [(MRReplayController *)self profileBlockBackgroundQueue];
+                  profileBlockBackgroundQueue = [(MRReplayController *)self profileBlockBackgroundQueue];
                   v58[0] = _NSConcreteStackBlock;
                   v58[1] = 3221225472;
                   v58[2] = sub_100001FE8;
                   v58[3] = &unk_100008368;
                   objc_copyWeak(&v62, &from);
                   v40 = v46;
-                  v60 = self;
+                  selfCopy3 = self;
                   v61 = location;
                   v59 = v40;
-                  [v39 pushBlock:v58];
+                  [profileBlockBackgroundQueue pushBlock:v58];
 
                   objc_destroyWeak(&v62);
                   _Block_object_dispose(location, 8);
                 }
 
-                while (v35 != v36);
+                while (unsignedIntegerValue != v36);
               }
             }
           }
@@ -272,84 +272,84 @@ LABEL_15:
         goto LABEL_26;
       }
 
-      v10 = [(MRReplayController *)self playbackEngine];
-      v11 = [v4 objectPayload];
-      v12 = [v7 newShaderProfilerWithPlaybackEngine:v10 payload:v11];
+      playbackEngine3 = [(MRReplayController *)self playbackEngine];
+      objectPayload5 = [messageCopy objectPayload];
+      v12 = [replayControllerSupport newShaderProfilerWithPlaybackEngine:playbackEngine3 payload:objectPayload5];
       v13 = self->_shaderProfiler;
       self->_shaderProfiler = v12;
 
       if (self->_shaderProfiler)
       {
-        v14 = [(MRReplayController *)self profileBlockQueue];
-        v46 = v7;
-        [v14 clear];
+        profileBlockQueue3 = [(MRReplayController *)self profileBlockQueue];
+        v46 = replayControllerSupport;
+        [profileBlockQueue3 clear];
 
-        v15 = [(MRReplayController *)self profileBlockBackgroundQueue];
-        [v15 clear];
+        profileBlockBackgroundQueue2 = [(MRReplayController *)self profileBlockBackgroundQueue];
+        [profileBlockBackgroundQueue2 clear];
 
         objc_initWeak(location, self);
-        v16 = [(MRReplayController *)self profileBlockQueue];
+        profileBlockQueue4 = [(MRReplayController *)self profileBlockQueue];
         v66[0] = _NSConcreteStackBlock;
         v66[1] = 3221225472;
         v66[2] = sub_100001E88;
         v66[3] = &unk_100008318;
         objc_copyWeak(&v70, location);
-        v67 = v7;
-        v68 = self;
-        v69 = v4;
-        [v16 pushBlock:v66];
+        v67 = replayControllerSupport;
+        selfCopy4 = self;
+        v69 = messageCopy;
+        [profileBlockQueue4 pushBlock:v66];
 
         objc_destroyWeak(&v70);
         objc_destroyWeak(location);
 LABEL_26:
-        v7 = v46;
+        replayControllerSupport = v46;
         goto LABEL_27;
       }
     }
 
-    v17 = [(MRReplayController *)self transport];
-    v18 = +[DYTransportMessage messageWithKind:](DYTransportMessage, "messageWithKind:", [v4 kind]);
-    [v17 send:v18 inReplyTo:v4 error:0];
+    transport2 = [(MRReplayController *)self transport];
+    v18 = +[DYTransportMessage messageWithKind:](DYTransportMessage, "messageWithKind:", [messageCopy kind]);
+    [transport2 send:v18 inReplyTo:messageCopy error:0];
 
 LABEL_27:
     goto LABEL_28;
   }
 
-  if (v5 == 4101)
+  if (kind == 4101)
   {
-    v6 = [v4 objectPayload];
-    [(MRReplayController *)self _updateBackgroundImage:v6];
+    objectPayload6 = [messageCopy objectPayload];
+    [(MRReplayController *)self _updateBackgroundImage:objectPayload6];
   }
 
   else
   {
-    if (v5 != 4113)
+    if (kind != 4113)
     {
       v47.receiver = self;
       v47.super_class = MRReplayController;
-      [(MRReplayController *)&v47 _processMessage:v4];
+      [(MRReplayController *)&v47 _processMessage:messageCopy];
       goto LABEL_28;
     }
 
-    v6 = [v4 payload];
-    [(MRReplayController *)self _updateBackgroundImage:v6];
+    objectPayload6 = [messageCopy payload];
+    [(MRReplayController *)self _updateBackgroundImage:objectPayload6];
   }
 
 LABEL_28:
 }
 
-- (void)_updateBackgroundImage:(id)a3
+- (void)_updateBackgroundImage:(id)image
 {
-  v4 = a3;
-  v5 = [(MRReplayController *)self strongDelegate];
-  v6 = [v5 shouldCreateViewController];
+  imageCopy = image;
+  strongDelegate = [(MRReplayController *)self strongDelegate];
+  shouldCreateViewController = [strongDelegate shouldCreateViewController];
 
-  if (v6)
+  if (shouldCreateViewController)
   {
-    if (v4)
+    if (imageCopy)
     {
-      v7 = [UIImage imageWithData:v4];
-      v8 = v7;
+      v7 = [UIImage imageWithData:imageCopy];
+      replayControllerSupport = v7;
       if (v7)
       {
         v12[0] = _NSConcreteStackBlock;
@@ -357,8 +357,8 @@ LABEL_28:
         v12[2] = sub_1000027FC;
         v12[3] = &unk_1000083B8;
         v12[4] = self;
-        v8 = v7;
-        v13 = v8;
+        replayControllerSupport = v7;
+        v13 = replayControllerSupport;
         dispatch_async(&_dispatch_main_q, v12);
       }
 
@@ -370,9 +370,9 @@ LABEL_28:
 
     else
     {
-      v8 = [(MRReplayController *)self replayControllerSupport];
-      v9 = [(MRReplayController *)self playbackEngine];
-      v10 = [v8 viewControllerForPlaybackEngine:v9];
+      replayControllerSupport = [(MRReplayController *)self replayControllerSupport];
+      playbackEngine = [(MRReplayController *)self playbackEngine];
+      v10 = [replayControllerSupport viewControllerForPlaybackEngine:playbackEngine];
 
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;

@@ -1,9 +1,9 @@
 @interface JavaUtilFormatter_FormatToken
-- (BOOL)setFlagWithInt:(int)a3;
+- (BOOL)setFlagWithInt:(int)int;
 - (JavaUtilFormatter_FormatToken)init;
 - (id)getStrFlags;
 - (id)unknownFormatConversionException;
-- (void)checkFlagsWithId:(id)a3;
+- (void)checkFlagsWithId:(id)id;
 - (void)dealloc;
 @end
 
@@ -23,13 +23,13 @@
   }
 }
 
-- (BOOL)setFlagWithInt:(int)a3
+- (BOOL)setFlagWithInt:(int)int
 {
-  v3 = a3;
+  intCopy = int;
   result = 0;
-  if (a3 <= 42)
+  if (int <= 42)
   {
-    switch(a3)
+    switch(int)
     {
       case ' ':
         flagSpace = self->flagSpace_;
@@ -63,9 +63,9 @@
     }
   }
 
-  else if (a3 > 44)
+  else if (int > 44)
   {
-    if (a3 == 48)
+    if (int == 48)
     {
       flagZero = self->flagZero_;
       self->flagZero_ = 1;
@@ -77,7 +77,7 @@
 
     else
     {
-      if (a3 != 45)
+      if (int != 45)
       {
         return result;
       }
@@ -93,7 +93,7 @@
 
   else
   {
-    if (a3 != 43)
+    if (int != 43)
     {
       flagComma = self->flagComma_;
       self->flagComma_ = 1;
@@ -110,7 +110,7 @@
     if (flagPlus)
     {
 LABEL_23:
-      v16 = NSString_valueOfInt_(a3);
+      v16 = NSString_valueOfInt_(int);
       v17 = new_JavaUtilDuplicateFormatFlagsException_initWithNSString_(v16);
       objc_exception_throw(v17);
     }
@@ -131,11 +131,11 @@ LABEL_16:
     }
   }
 
-  [(JavaLangStringBuilder *)v10 appendWithChar:v3];
+  [(JavaLangStringBuilder *)v10 appendWithChar:intCopy];
   return 1;
 }
 
-- (void)checkFlagsWithId:(id)a3
+- (void)checkFlagsWithId:(id)id
 {
   v9 = self->conversionType_ - 65;
   v10 = 0;
@@ -181,7 +181,7 @@ LABEL_8:
       goto LABEL_23;
     case 18:
     case 50:
-      v12 = [JavaUtilFormattable_class_() isInstance:a3];
+      v12 = [JavaUtilFormattable_class_() isInstance:id];
       v10 = 0;
       v11 = 0;
       v13 = 0;
@@ -189,7 +189,7 @@ LABEL_8:
       goto LABEL_16;
     case 23:
     case 46:
-      if (a3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+      if (id && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
         v10 = 0;
         v11 = 0;
@@ -316,7 +316,7 @@ LABEL_31:
       if ((self->flagMinus_ || self->flagZero_) && self->width_ == -1)
       {
         v25 = self->conversionType_;
-        v22 = JreStrcat("CC", a2, a3, v3, v4, v5, v6, v7, 45);
+        v22 = JreStrcat("CC", a2, id, v3, v4, v5, v6, v7, 45);
         v23 = new_JavaUtilMissingFormatWidthException_initWithNSString_(v22);
         goto LABEL_59;
       }
@@ -324,7 +324,7 @@ LABEL_31:
       if ((v15 & 1) == 0 && self->argIndex_ != -1)
       {
         v26 = self->conversionType_;
-        v19 = JreStrcat("CC$", a2, a3, v3, v4, v5, v6, v7, 37);
+        v19 = JreStrcat("CC$", a2, id, v3, v4, v5, v6, v7, 37);
         goto LABEL_57;
       }
 

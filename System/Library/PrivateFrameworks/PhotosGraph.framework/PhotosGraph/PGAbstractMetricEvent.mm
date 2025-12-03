@@ -28,9 +28,9 @@
   v10.super_class = PGAbstractMetricEvent;
   v4 = [(PGAbstractMetricEvent *)&v10 description];
   v5 = [objc_opt_class() description];
-  v6 = [(PGAbstractMetricEvent *)self identifier];
-  v7 = [(PGAbstractMetricEvent *)self payload];
-  v8 = [v3 stringWithFormat:@"%@ %@:\nIdentifier:%@\nPayload:%@", v4, v5, v6, v7];
+  identifier = [(PGAbstractMetricEvent *)self identifier];
+  payload = [(PGAbstractMetricEvent *)self payload];
+  v8 = [v3 stringWithFormat:@"%@ %@:\nIdentifier:%@\nPayload:%@", v4, v5, identifier, payload];
 
   return v8;
 }

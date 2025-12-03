@@ -1,26 +1,26 @@
 @interface LuceneContextResult
-- (LuceneContextResult)initWithCoder:(id)a3;
-- (LuceneContextResult)initWithDocId:(int64_t)a3 title:(id)a4 query:(id)a5 url:(id)a6 category:(id)a7;
-- (LuceneContextResult)initWithText:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)addToFoldedResults:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (LuceneContextResult)initWithCoder:(id)coder;
+- (LuceneContextResult)initWithDocId:(int64_t)id title:(id)title query:(id)query url:(id)url category:(id)category;
+- (LuceneContextResult)initWithText:(id)text;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)addToFoldedResults:(id)results;
+- (void)encodeWithCoder:(id)coder;
 - (void)finalizeFoldedResult;
-- (void)mergeWithResult:(id)a3;
+- (void)mergeWithResult:(id)result;
 @end
 
 @implementation LuceneContextResult
 
-- (LuceneContextResult)initWithDocId:(int64_t)a3 title:(id)a4 query:(id)a5 url:(id)a6 category:(id)a7
+- (LuceneContextResult)initWithDocId:(int64_t)id title:(id)title query:(id)query url:(id)url category:(id)category
 {
   v13.receiver = self;
   v13.super_class = LuceneContextResult;
-  v8 = [(LuceneContextResult *)&v13 initWithTitle:a4 query:a5 url:a6 category:a7];
+  v8 = [(LuceneContextResult *)&v13 initWithTitle:title query:query url:url category:category];
   v9 = v8;
   if (v8)
   {
     v8->_foldCurrentRank = 0x7FFFFFFFFFFFFFFFLL;
-    v10 = [NSNumber numberWithInteger:a3];
+    v10 = [NSNumber numberWithInteger:id];
     docId = v9->_docId;
     v9->_docId = v10;
   }
@@ -28,11 +28,11 @@
   return v9;
 }
 
-- (LuceneContextResult)initWithText:(id)a3
+- (LuceneContextResult)initWithText:(id)text
 {
   v7.receiver = self;
   v7.super_class = LuceneContextResult;
-  v3 = [(LuceneContextResult *)&v7 initWithTitle:a3 query:a3 url:0 category:0];
+  v3 = [(LuceneContextResult *)&v7 initWithTitle:text query:text url:0 category:0];
   v4 = v3;
   if (v3)
   {
@@ -44,25 +44,25 @@
   return v4;
 }
 
-- (LuceneContextResult)initWithCoder:(id)a3
+- (LuceneContextResult)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = LuceneContextResult;
-  return [(LuceneContextResult *)&v4 initWithCoder:a3];
+  return [(LuceneContextResult *)&v4 initWithCoder:coder];
 }
 
-- (void)addToFoldedResults:(id)a3
+- (void)addToFoldedResults:(id)results
 {
   foldedResults = self->_foldedResults;
   if (foldedResults)
   {
-    v4 = a3;
+    resultsCopy = results;
     v5 = foldedResults;
   }
 
   else
   {
-    v7 = a3;
+    resultsCopy2 = results;
     v8 = +[NSMutableArray array];
     v9 = self->_foldedResults;
     self->_foldedResults = v8;
@@ -72,38 +72,38 @@
     [(NSMutableArray *)v10 addObject:v11];
 
     v5 = self->_foldedResults;
-    v4 = v7;
+    resultsCopy = resultsCopy2;
   }
 
-  [(NSMutableArray *)v5 addObject:v4];
+  [(NSMutableArray *)v5 addObject:resultsCopy];
 }
 
-- (void)mergeWithResult:(id)a3
+- (void)mergeWithResult:(id)result
 {
-  v22 = a3;
-  v4 = [(LuceneContextResult *)self topicId];
+  resultCopy = result;
+  topicId = [(LuceneContextResult *)self topicId];
 
-  if (!v4)
+  if (!topicId)
   {
-    v5 = [v22 topicId];
-    [(LuceneContextResult *)self setTopicId:v5];
+    topicId2 = [resultCopy topicId];
+    [(LuceneContextResult *)self setTopicId:topicId2];
   }
 
-  v6 = [(LuceneContextResult *)self debug];
-  v7 = v22;
-  if (v6)
+  debug = [(LuceneContextResult *)self debug];
+  v7 = resultCopy;
+  if (debug)
   {
-    v8 = [v22 debug];
+    debug2 = [resultCopy debug];
 
-    v7 = v22;
-    if (v8)
+    v7 = resultCopy;
+    if (debug2)
     {
-      v9 = [(LuceneContextResult *)self debug];
-      v10 = [v22 category];
-      v11 = v10;
-      if (v10)
+      debug3 = [(LuceneContextResult *)self debug];
+      category = [resultCopy category];
+      v11 = category;
+      if (category)
       {
-        v12 = v10;
+        v12 = category;
       }
 
       else
@@ -111,64 +111,64 @@
         v12 = &stru_100484358;
       }
 
-      v13 = [v22 debug];
-      v14 = [v9 stringByAppendingFormat:@"\n  mergedWith: %@ %@", v12, v13];
+      debug4 = [resultCopy debug];
+      v14 = [debug3 stringByAppendingFormat:@"\n  mergedWith: %@ %@", v12, debug4];
       [(LuceneContextResult *)self setDebug:v14];
 
-      v7 = v22;
+      v7 = resultCopy;
     }
   }
 
-  v15 = [v7 tags];
-  v16 = [v15 count];
+  tags = [v7 tags];
+  v16 = [tags count];
 
   if (v16)
   {
-    v17 = [(LuceneContextResult *)self tags];
-    v18 = [v17 count];
+    tags2 = [(LuceneContextResult *)self tags];
+    v18 = [tags2 count];
 
     if (v18)
     {
-      v19 = [(LuceneContextResult *)self tags];
-      v20 = [v22 tags];
-      v21 = [v19 setByAddingObjectsFromSet:v20];
+      tags3 = [(LuceneContextResult *)self tags];
+      tags4 = [resultCopy tags];
+      v21 = [tags3 setByAddingObjectsFromSet:tags4];
       [(LuceneContextResult *)self setTags:v21];
     }
 
     else
     {
-      v19 = [v22 tags];
-      v20 = [v19 copy];
-      [(LuceneContextResult *)self setTags:v20];
+      tags3 = [resultCopy tags];
+      tags4 = [tags3 copy];
+      [(LuceneContextResult *)self setTags:tags4];
     }
   }
 
-  [(LuceneContextResult *)self addToFoldedResults:v22];
+  [(LuceneContextResult *)self addToFoldedResults:resultCopy];
 }
 
 - (void)finalizeFoldedResult
 {
   v12 = [(NSMutableArray *)self->_foldedResults objectAtIndexedSubscript:0];
-  v3 = [v12 docId];
-  [(LuceneContextResult *)self setDocId:v3];
+  docId = [v12 docId];
+  [(LuceneContextResult *)self setDocId:docId];
 
-  v4 = [v12 title];
-  [(LuceneContextResult *)self setTitle:v4];
+  title = [v12 title];
+  [(LuceneContextResult *)self setTitle:title];
 
-  v5 = [v12 query];
-  [(LuceneContextResult *)self setQuery:v5];
+  query = [v12 query];
+  [(LuceneContextResult *)self setQuery:query];
 
   v6 = [v12 url];
   [(LuceneContextResult *)self setUrl:v6];
 
-  v7 = [v12 topicId];
-  [(LuceneContextResult *)self setTopicId:v7];
+  topicId = [v12 topicId];
+  [(LuceneContextResult *)self setTopicId:topicId];
 
-  v8 = [v12 category];
-  [(LuceneContextResult *)self setCategory:v8];
+  category = [v12 category];
+  [(LuceneContextResult *)self setCategory:category];
 
-  v9 = [v12 debug];
-  [(LuceneContextResult *)self setDebug:v9];
+  debug = [v12 debug];
+  [(LuceneContextResult *)self setDebug:debug];
 
   -[LuceneContextResult setTitlePrimary:](self, "setTitlePrimary:", [v12 titlePrimary]);
   -[LuceneContextResult setTitleMatch:](self, "setTitleMatch:", [v12 titleMatch]);
@@ -176,27 +176,27 @@
   [(LuceneContextResult *)self setRelativeScore:?];
   [v12 luceneScore];
   [(LuceneContextResult *)self setLuceneScore:?];
-  v10 = [v12 titleTokenString];
-  [(LuceneContextResult *)self setTitleTokenString:v10];
+  titleTokenString = [v12 titleTokenString];
+  [(LuceneContextResult *)self setTitleTokenString:titleTokenString];
 
   -[LuceneContextResult setMinPrefix:](self, "setMinPrefix:", [v12 minPrefix]);
   -[LuceneContextResult setForceBottomRank:](self, "setForceBottomRank:", [v12 forceBottomRank]);
-  v11 = [v12 relatedField];
-  [(LuceneContextResult *)self setRelatedField:v11];
+  relatedField = [v12 relatedField];
+  [(LuceneContextResult *)self setRelatedField:relatedField];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = LuceneContextResult;
-  [(LuceneContextResult *)&v3 encodeWithCoder:a3];
+  [(LuceneContextResult *)&v3 encodeWithCoder:coder];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = LuceneContextResult;
-  v4 = [(LuceneContextResult *)&v8 copyWithZone:a3];
+  v4 = [(LuceneContextResult *)&v8 copyWithZone:zone];
   [v4 setDocId:self->_docId];
   [v4 setTitlePrimary:self->_titlePrimary];
   [v4 setTitleMatch:self->_titleMatch];

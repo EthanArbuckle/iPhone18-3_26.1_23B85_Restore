@@ -1,37 +1,37 @@
 @interface RBContainerManager
-- (BOOL)containerRequiredForServiceDict:(id)a3;
-- (OptionalUID)_fetchCacheUIDChoice:(id)a3;
-- (RBContainerManager)initWithPersonaManager:(id)a3;
+- (BOOL)containerRequiredForServiceDict:(id)dict;
+- (OptionalUID)_fetchCacheUIDChoice:(id)choice;
+- (RBContainerManager)initWithPersonaManager:(id)manager;
 - (id)_allowedContainerOverrideIdentifiers;
-- (id)_lookupContainerPathForIdentity:(id)a3 context:(id)a4 persona:(id)a5 containerIdentifier:(id)a6 retry:(BOOL)a7 error:(id *)a8;
-- (id)_retryLookupAfterCacheMissForIdentity:(id)a3 context:(id)a4 persona:(id)a5 containerIdentifier:(id)a6;
-- (id)_sandboxContainerURLForExtensionContext:(id)a3 containerOverrideIdentifier:(id)a4;
-- (id)containerPathForIdentity:(id)a3 context:(id)a4 persona:(id)a5 error:(id *)a6;
-- (id)sandboxContainerURLForExtensionContext:(id)a3 containerOverrideIdentifier:(id)a4;
-- (void)_fetchCache:(id)a3;
-- (void)_probeCache:(const void *)a3 withContainerIdentifier:(id)a4 persona:(id)a5 completionHandler:(id)a6;
-- (void)_probeCacheSubqueryIterationEvaluate:(container_object_s *)a3 withAccummulatedState:(ProbeCacheSubqueryIterationAccumulatedState *)a4;
+- (id)_lookupContainerPathForIdentity:(id)identity context:(id)context persona:(id)persona containerIdentifier:(id)identifier retry:(BOOL)retry error:(id *)error;
+- (id)_retryLookupAfterCacheMissForIdentity:(id)identity context:(id)context persona:(id)persona containerIdentifier:(id)identifier;
+- (id)_sandboxContainerURLForExtensionContext:(id)context containerOverrideIdentifier:(id)identifier;
+- (id)containerPathForIdentity:(id)identity context:(id)context persona:(id)persona error:(id *)error;
+- (id)sandboxContainerURLForExtensionContext:(id)context containerOverrideIdentifier:(id)identifier;
+- (void)_fetchCache:(id)cache;
+- (void)_probeCache:(const void *)cache withContainerIdentifier:(id)identifier persona:(id)persona completionHandler:(id)handler;
+- (void)_probeCacheSubqueryIterationEvaluate:(container_object_s *)evaluate withAccummulatedState:(ProbeCacheSubqueryIterationAccumulatedState *)state;
 - (void)dealloc;
 @end
 
 @implementation RBContainerManager
 
-- (RBContainerManager)initWithPersonaManager:(id)a3
+- (RBContainerManager)initWithPersonaManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = RBContainerManager;
   v6 = [(RBContainerManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_personaManager, a3);
+    objc_storeStrong(&v6->_personaManager, manager);
   }
 
   return v7;
 }
 
-- (OptionalUID)_fetchCacheUIDChoice:(id)a3
+- (OptionalUID)_fetchCacheUIDChoice:(id)choice
 {
   if (xpc_user_sessions_enabled())
   {
@@ -45,9 +45,9 @@
   }
 }
 
-- (void)_fetchCache:(id)a3
+- (void)_fetchCache:(id)cache
 {
-  v4 = [(RBContainerManager *)self _fetchCacheUIDChoice:a3];
+  v4 = [(RBContainerManager *)self _fetchCacheUIDChoice:cache];
   v5 = *&v4.set;
   v6 = 0;
   v7 = HIDWORD(*&v4);
@@ -94,13 +94,13 @@
   }
 }
 
-- (id)_retryLookupAfterCacheMissForIdentity:(id)a3 context:(id)a4 persona:(id)a5 containerIdentifier:(id)a6
+- (id)_retryLookupAfterCacheMissForIdentity:(id)identity context:(id)context persona:(id)persona containerIdentifier:(id)identifier
 {
   v30 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [a5 UTF8String];
+  identityCopy = identity;
+  contextCopy = context;
+  identifierCopy = identifier;
+  uTF8String = [persona UTF8String];
   container_query_create();
   container_query_set_class();
   container_query_operation_set_flags();
@@ -112,14 +112,14 @@
     container_query_set_uid();
   }
 
-  v14 = xpc_string_create([v12 UTF8String]);
+  v14 = xpc_string_create([identifierCopy UTF8String]);
   container_query_set_identifiers();
-  if (v13)
+  if (uTF8String)
   {
     container_query_set_persona_unique_string();
   }
 
-  [v10 platform];
+  [identityCopy platform];
   container_query_operation_set_platform();
   if (container_query_get_single_result() && (path = container_get_path()) != 0)
   {
@@ -145,13 +145,13 @@
     v21 = rbs_job_log();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [v11 bundleIdentifier];
+      bundleIdentifier = [contextCopy bundleIdentifier];
       *v25 = 138543874;
-      *&v25[4] = v10;
+      *&v25[4] = identityCopy;
       v26 = 2114;
-      v27 = v12;
+      v27 = identifierCopy;
       v28 = 2114;
-      v29 = v22;
+      v29 = bundleIdentifier;
       _os_log_impl(&dword_262485000, v21, OS_LOG_TYPE_DEFAULT, "%{public}@ Container path could not be computed for identifier '%{public}@', will not be passed to launch of %{public}@", v25, 0x20u);
     }
 
@@ -165,11 +165,11 @@
   return v20;
 }
 
-- (void)_probeCacheSubqueryIterationEvaluate:(container_object_s *)a3 withAccummulatedState:(ProbeCacheSubqueryIterationAccumulatedState *)a4
+- (void)_probeCacheSubqueryIterationEvaluate:(container_object_s *)evaluate withAccummulatedState:(ProbeCacheSubqueryIterationAccumulatedState *)state
 {
   v31[1] = *MEMORY[0x277D85DE8];
-  ++a4->var2;
-  if (a4->var0)
+  ++state->var2;
+  if (state->var0)
   {
 LABEL_14:
     v21 = *MEMORY[0x277D85DE8];
@@ -181,7 +181,7 @@ LABEL_14:
   v7 = v6;
   if (!path || !v6)
   {
-    if (!a4->var1)
+    if (!state->var1)
     {
       v14 = "path";
       if (path)
@@ -197,8 +197,8 @@ LABEL_14:
       v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:&v30 count:1];
       v19 = [v16 errorWithDomain:v17 code:22 userInfo:v18];
 
-      var1 = a4->var1;
-      a4->var1 = v19;
+      var1 = state->var1;
+      state->var1 = v19;
     }
 
     free(v7);
@@ -210,7 +210,7 @@ LABEL_14:
   free(v7);
   if (v8 < 0)
   {
-    if (!a4->var1)
+    if (!state->var1)
     {
       v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"Container token could not be consumed: errno %d", v9];
       v23 = MEMORY[0x277CCA9B8];
@@ -220,8 +220,8 @@ LABEL_14:
       v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:&v30 count:1];
       v26 = [v23 errorWithDomain:v24 code:22 userInfo:v25];
 
-      v27 = a4->var1;
-      a4->var1 = v26;
+      v27 = state->var1;
+      state->var1 = v26;
     }
 
     goto LABEL_14;
@@ -229,20 +229,20 @@ LABEL_14:
 
   if (!access(path, 0))
   {
-    v11 = [MEMORY[0x277CCAA00] defaultManager];
-    v28 = [v11 stringWithFileSystemRepresentation:path length:strlen(path)];
-    var0 = a4->var0;
-    a4->var0 = v28;
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v28 = [defaultManager stringWithFileSystemRepresentation:path length:strlen(path)];
+    var0 = state->var0;
+    state->var0 = v28;
     goto LABEL_18;
   }
 
-  if (*__error() != 2 && !a4->var1)
+  if (*__error() != 2 && !state->var1)
   {
     v10 = *__error();
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"access test failed while computing process container path"];
-    v12 = _posixErrorWithCodeAndDescription(v10, v11);
-    var0 = a4->var1;
-    a4->var1 = v12;
+    defaultManager = [MEMORY[0x277CCACA8] stringWithFormat:@"access test failed while computing process container path"];
+    v12 = _posixErrorWithCodeAndDescription(v10, defaultManager);
+    var0 = state->var1;
+    state->var1 = v12;
 LABEL_18:
   }
 
@@ -251,16 +251,16 @@ LABEL_18:
   MEMORY[0x282204FA0](v8);
 }
 
-- (void)_probeCache:(const void *)a3 withContainerIdentifier:(id)a4 persona:(id)a5 completionHandler:(id)a6
+- (void)_probeCache:(const void *)cache withContainerIdentifier:(id)identifier persona:(id)persona completionHandler:(id)handler
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = a6;
+  identifierCopy = identifier;
+  personaCopy = persona;
+  handlerCopy = handler;
   container_query_create();
-  v11 = xpc_string_create([v8 UTF8String]);
+  v11 = xpc_string_create([identifierCopy UTF8String]);
   container_query_set_identifiers();
-  if ([v9 UTF8String])
+  if ([personaCopy UTF8String])
   {
     container_query_set_persona_unique_string();
   }
@@ -295,19 +295,19 @@ LABEL_18:
     v19 = 0;
   }
 
-  v10[2](v10, 0, v19);
+  handlerCopy[2](handlerCopy, 0, v19);
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_lookupContainerPathForIdentity:(id)a3 context:(id)a4 persona:(id)a5 containerIdentifier:(id)a6 retry:(BOOL)a7 error:(id *)a8
+- (id)_lookupContainerPathForIdentity:(id)identity context:(id)context persona:(id)persona containerIdentifier:(id)identifier retry:(BOOL)retry error:(id *)error
 {
-  v9 = a7;
+  retryCopy = retry;
   v45 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
+  identityCopy = identity;
+  contextCopy = context;
+  personaCopy = persona;
+  identifierCopy = identifier;
   v38 = 0;
   v39[0] = &v38;
   v39[1] = 0x3032000000;
@@ -327,7 +327,7 @@ LABEL_18:
   v31[3] = &unk_279B33730;
   v31[4] = &v32;
   v31[5] = &v38;
-  [(RBContainerManager *)self _probeCache:queryForApps withContainerIdentifier:v17 persona:v16 completionHandler:v31];
+  [(RBContainerManager *)self _probeCache:queryForApps withContainerIdentifier:identifierCopy persona:personaCopy completionHandler:v31];
   v19 = v39[0];
   if (!v33[5] && !*(v39[0] + 40) && self->_queryForPlugins)
   {
@@ -335,9 +335,9 @@ LABEL_18:
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v42 = v14;
+      v42 = identityCopy;
       v43 = 2114;
-      v44 = v17;
+      v44 = identifierCopy;
       _os_log_impl(&dword_262485000, v20, OS_LOG_TYPE_DEFAULT, "%{public}@ Attempting lookup in plugin cache of container path for container identifier (%{public}@)", buf, 0x16u);
     }
 
@@ -348,7 +348,7 @@ LABEL_18:
     v30[3] = &unk_279B33730;
     v30[4] = &v32;
     v30[5] = &v38;
-    [(RBContainerManager *)self _probeCache:queryForPlugins withContainerIdentifier:v17 persona:v16 completionHandler:v30];
+    [(RBContainerManager *)self _probeCache:queryForPlugins withContainerIdentifier:identifierCopy persona:personaCopy completionHandler:v30];
     v19 = v39[0];
   }
 
@@ -357,7 +357,7 @@ LABEL_18:
     v22 = rbs_job_log();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
-      [RBContainerManager _lookupContainerPathForIdentity:v14 context:v39 persona:v22 containerIdentifier:? retry:? error:?];
+      [RBContainerManager _lookupContainerPathForIdentity:identityCopy context:v39 persona:v22 containerIdentifier:? retry:? error:?];
     }
 
     v23 = 0;
@@ -375,17 +375,17 @@ LABEL_18:
     }
 
     *buf = 138543618;
-    v42 = v14;
+    v42 = identityCopy;
     v43 = 2114;
     v44 = v23;
     v29 = "%{public}@ Found container path (%{public}@)";
     goto LABEL_23;
   }
 
-  if (!v9)
+  if (!retryCopy)
   {
     v23 = 0;
-    if (!a8)
+    if (!error)
     {
       goto LABEL_14;
     }
@@ -393,12 +393,12 @@ LABEL_18:
     goto LABEL_12;
   }
 
-  v23 = [(RBContainerManager *)self _retryLookupAfterCacheMissForIdentity:v14 context:v15 persona:v16 containerIdentifier:v17];
+  v23 = [(RBContainerManager *)self _retryLookupAfterCacheMissForIdentity:identityCopy context:contextCopy persona:personaCopy containerIdentifier:identifierCopy];
   v22 = rbs_job_log();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v42 = v14;
+    v42 = identityCopy;
     v43 = 2114;
     v44 = v23;
     v29 = "%{public}@ Found container path on retry (%{public}@)";
@@ -408,7 +408,7 @@ LABEL_23:
 
 LABEL_11:
 
-  if (!a8)
+  if (!error)
   {
     goto LABEL_14;
   }
@@ -417,7 +417,7 @@ LABEL_12:
   v24 = *(v39[0] + 40);
   if (v24)
   {
-    *a8 = v24;
+    *error = v24;
   }
 
 LABEL_14:
@@ -458,23 +458,23 @@ void __102__RBContainerManager__lookupContainerPathForIdentity_context_persona_c
   *(v9 + 40) = v6;
 }
 
-- (id)containerPathForIdentity:(id)a3 context:(id)a4 persona:(id)a5 error:(id *)a6
+- (id)containerPathForIdentity:(id)identity context:(id)context persona:(id)persona error:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v11 containerIdentifier];
-  if (v13 || ([v11 bundleIdentifier], (v13 = objc_claimAutoreleasedReturnValue()) != 0))
+  identityCopy = identity;
+  contextCopy = context;
+  personaCopy = persona;
+  containerIdentifier = [contextCopy containerIdentifier];
+  if (containerIdentifier || ([contextCopy bundleIdentifier], (containerIdentifier = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v14 = v13;
+    v14 = containerIdentifier;
     v15 = rbs_job_log();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      v28 = v10;
+      v28 = identityCopy;
       v29 = 2114;
-      v30 = *&v12;
+      v30 = *&personaCopy;
       v31 = 2114;
       v32 = v14;
       _os_log_impl(&dword_262485000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ Looking up container path with persona %{public}@ using container identifier '%{public}@'", buf, 0x20u);
@@ -482,7 +482,7 @@ void __102__RBContainerManager__lookupContainerPathForIdentity_context_persona_c
 
     if ((_os_feature_enabled_impl() & 1) == 0)
     {
-      if (v12 && [(RBPersonaManager *)self->_personaManager isConcretePersona:v12])
+      if (personaCopy && [(RBPersonaManager *)self->_personaManager isConcretePersona:personaCopy])
       {
         goto LABEL_13;
       }
@@ -491,18 +491,18 @@ void __102__RBContainerManager__lookupContainerPathForIdentity_context_persona_c
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v28 = v10;
+        v28 = identityCopy;
         v29 = 2114;
-        v30 = *&v12;
+        v30 = *&personaCopy;
         _os_log_impl(&dword_262485000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@ Persona (%{public}@) for launch context is not a concrete persona - converting to Personal", buf, 0x16u);
       }
 
-      v17 = [(RBPersonaManager *)self->_personaManager personalPersonaUniqueString];
+      personalPersonaUniqueString = [(RBPersonaManager *)self->_personaManager personalPersonaUniqueString];
 
-      v12 = v17;
+      personaCopy = personalPersonaUniqueString;
     }
 
-    if (!v12)
+    if (!personaCopy)
     {
       v18 = 0;
       v19 = 0;
@@ -516,9 +516,9 @@ LABEL_18:
 
 LABEL_13:
     Current = CFAbsoluteTimeGetCurrent();
-    [(RBContainerManager *)self _fetchCache:v11];
+    [(RBContainerManager *)self _fetchCache:contextCopy];
     v26 = 0;
-    v19 = [(RBContainerManager *)self _lookupContainerPathForIdentity:v10 context:v11 persona:v12 containerIdentifier:v14 retry:1 error:&v26];
+    v19 = [(RBContainerManager *)self _lookupContainerPathForIdentity:identityCopy context:contextCopy persona:personaCopy containerIdentifier:v14 retry:1 error:&v26];
     v18 = v26;
     [(RBContainerManager *)self _clearCache];
     v21 = CFAbsoluteTimeGetCurrent();
@@ -532,10 +532,10 @@ LABEL_13:
       _os_log_impl(&dword_262485000, v22, OS_LOG_TYPE_DEFAULT, "%s: containermanager query required %f seconds wall clock time.", buf, 0x16u);
     }
 
-    if (a6 && v18)
+    if (error && v18)
     {
       v23 = v18;
-      *a6 = v18;
+      *error = v18;
     }
 
     goto LABEL_18;
@@ -545,9 +545,9 @@ LABEL_13:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v28 = v10;
+    v28 = identityCopy;
     v29 = 2114;
-    v30 = *&v12;
+    v30 = *&personaCopy;
     _os_log_impl(&dword_262485000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ Missing container identifier during container path look up, persona %{public}@", buf, 0x16u);
   }
 
@@ -559,35 +559,35 @@ LABEL_19:
   return v19;
 }
 
-- (id)_sandboxContainerURLForExtensionContext:(id)a3 containerOverrideIdentifier:(id)a4
+- (id)_sandboxContainerURLForExtensionContext:(id)context containerOverrideIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RBContainerManager *)self _fetchCacheUIDChoice:v6];
+  contextCopy = context;
+  identifierCopy = identifier;
+  v8 = [(RBContainerManager *)self _fetchCacheUIDChoice:contextCopy];
   container_query_create();
-  if (v7)
+  if (identifierCopy)
   {
-    v9 = v7;
+    xpcServiceIdentifier = identifierCopy;
   }
 
   else
   {
-    v10 = [v6 identity];
-    v9 = [v10 xpcServiceIdentifier];
+    identity = [contextCopy identity];
+    xpcServiceIdentifier = [identity xpcServiceIdentifier];
   }
 
-  v11 = [v6 identity];
-  v12 = [v11 personaString];
+  identity2 = [contextCopy identity];
+  personaString = [identity2 personaString];
 
-  if (v12)
+  if (personaString)
   {
-    v13 = [v6 identity];
-    v14 = [v13 personaString];
-    [v14 UTF8String];
+    identity3 = [contextCopy identity];
+    personaString2 = [identity3 personaString];
+    [personaString2 UTF8String];
     container_query_set_persona_unique_string();
   }
 
-  v15 = xpc_string_create([v9 UTF8String]);
+  v15 = xpc_string_create([xpcServiceIdentifier UTF8String]);
   container_query_set_identifiers();
 
   container_query_set_class();
@@ -643,16 +643,16 @@ uint64_t __58__RBContainerManager__allowedContainerOverrideIdentifiers__block_in
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)sandboxContainerURLForExtensionContext:(id)a3 containerOverrideIdentifier:(id)a4
+- (id)sandboxContainerURLForExtensionContext:(id)context containerOverrideIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7 && (-[RBContainerManager _allowedContainerOverrideIdentifiers](self, "_allowedContainerOverrideIdentifiers"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 containsObject:v7], v8, (v9 & 1) == 0))
+  contextCopy = context;
+  identifierCopy = identifier;
+  if (identifierCopy && (-[RBContainerManager _allowedContainerOverrideIdentifiers](self, "_allowedContainerOverrideIdentifiers"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 containsObject:identifierCopy], v8, (v9 & 1) == 0))
   {
     v11 = rbs_job_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [RBContainerManager sandboxContainerURLForExtensionContext:v7 containerOverrideIdentifier:v11];
+      [RBContainerManager sandboxContainerURLForExtensionContext:identifierCopy containerOverrideIdentifier:v11];
     }
 
     v10 = 0;
@@ -661,16 +661,16 @@ uint64_t __58__RBContainerManager__allowedContainerOverrideIdentifiers__block_in
   else
   {
     voucher_adopt();
-    v10 = [(RBContainerManager *)self _sandboxContainerURLForExtensionContext:v6 containerOverrideIdentifier:v7];
+    v10 = [(RBContainerManager *)self _sandboxContainerURLForExtensionContext:contextCopy containerOverrideIdentifier:identifierCopy];
   }
 
   return v10;
 }
 
-- (BOOL)containerRequiredForServiceDict:(id)a3
+- (BOOL)containerRequiredForServiceDict:(id)dict
 {
-  v3 = a3;
-  v4 = xpc_dictionary_get_value(v3, "_SandboxContainer");
+  dictCopy = dict;
+  v4 = xpc_dictionary_get_value(dictCopy, "_SandboxContainer");
   if (v4)
   {
     v5 = 0;
@@ -678,7 +678,7 @@ uint64_t __58__RBContainerManager__allowedContainerOverrideIdentifiers__block_in
 
   else
   {
-    v6 = xpc_dictionary_get_value(v3, "_MultipleInstances");
+    v6 = xpc_dictionary_get_value(dictCopy, "_MultipleInstances");
     v5 = v6 == 0;
   }
 

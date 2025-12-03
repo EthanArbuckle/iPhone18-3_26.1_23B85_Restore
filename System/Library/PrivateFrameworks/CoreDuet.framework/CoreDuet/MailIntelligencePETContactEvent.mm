@@ -1,121 +1,121 @@
 @interface MailIntelligencePETContactEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCallBirthday:(BOOL)a3;
-- (void)setHasCallDurEveFri:(BOOL)a3;
-- (void)setHasCallDurEveSat:(BOOL)a3;
-- (void)setHasCallDurEveSun:(BOOL)a3;
-- (void)setHasCallDurEveWeekday:(BOOL)a3;
-- (void)setHasCallDurMorningFri:(BOOL)a3;
-- (void)setHasCallDurMorningSat:(BOOL)a3;
-- (void)setHasCallDurMorningSun:(BOOL)a3;
-- (void)setHasCallDurMorningWeekday:(BOOL)a3;
-- (void)setHasCallDurNightFri:(BOOL)a3;
-- (void)setHasCallDurNightSat:(BOOL)a3;
-- (void)setHasCallDurNightSun:(BOOL)a3;
-- (void)setHasCallDurNightWeekday:(BOOL)a3;
-- (void)setHasCallDurNoonFri:(BOOL)a3;
-- (void)setHasCallDurNoonSat:(BOOL)a3;
-- (void)setHasCallDurNoonSun:(BOOL)a3;
-- (void)setHasCallDurNoonWeekday:(BOOL)a3;
-- (void)setHasCallEveFri:(BOOL)a3;
-- (void)setHasCallEveSat:(BOOL)a3;
-- (void)setHasCallEveSun:(BOOL)a3;
-- (void)setHasCallEveWeekday:(BOOL)a3;
-- (void)setHasCallLongEveFri:(BOOL)a3;
-- (void)setHasCallLongEveSat:(BOOL)a3;
-- (void)setHasCallLongEveSun:(BOOL)a3;
-- (void)setHasCallLongEveWeekday:(BOOL)a3;
-- (void)setHasCallLongMorningFri:(BOOL)a3;
-- (void)setHasCallLongMorningSat:(BOOL)a3;
-- (void)setHasCallLongMorningSun:(BOOL)a3;
-- (void)setHasCallLongMorningWeekday:(BOOL)a3;
-- (void)setHasCallLongNightFri:(BOOL)a3;
-- (void)setHasCallLongNightSat:(BOOL)a3;
-- (void)setHasCallLongNightSun:(BOOL)a3;
-- (void)setHasCallLongNightWeekday:(BOOL)a3;
-- (void)setHasCallLongNoonFri:(BOOL)a3;
-- (void)setHasCallLongNoonSat:(BOOL)a3;
-- (void)setHasCallLongNoonSun:(BOOL)a3;
-- (void)setHasCallLongNoonWeekday:(BOOL)a3;
-- (void)setHasCallLongRatio:(BOOL)a3;
-- (void)setHasCallMaxDur:(BOOL)a3;
-- (void)setHasCallMorningFri:(BOOL)a3;
-- (void)setHasCallMorningSat:(BOOL)a3;
-- (void)setHasCallMorningSun:(BOOL)a3;
-- (void)setHasCallMorningWeekday:(BOOL)a3;
-- (void)setHasCallNightFri:(BOOL)a3;
-- (void)setHasCallNightSat:(BOOL)a3;
-- (void)setHasCallNightSun:(BOOL)a3;
-- (void)setHasCallNightWeekday:(BOOL)a3;
-- (void)setHasCallNoonFri:(BOOL)a3;
-- (void)setHasCallNoonSat:(BOOL)a3;
-- (void)setHasCallNoonSun:(BOOL)a3;
-- (void)setHasCallNoonWeekday:(BOOL)a3;
-- (void)setHasCallOutgoingRatio:(BOOL)a3;
-- (void)setHasCallTotal:(BOOL)a3;
-- (void)setHasCallTotalDur:(BOOL)a3;
-- (void)setHasContactEmergency:(BOOL)a3;
-- (void)setHasContactEmergencyFamily:(BOOL)a3;
-- (void)setHasContactFamilyName:(BOOL)a3;
-- (void)setHasContactFamilyRelation:(BOOL)a3;
-- (void)setHasContactFavorite:(BOOL)a3;
-- (void)setHasContactInAirDrop:(BOOL)a3;
-- (void)setHasContactInAirDropAtHome:(BOOL)a3;
-- (void)setHasContactInFMFFavorite:(BOOL)a3;
-- (void)setHasContactInFMFFollowingMe:(BOOL)a3;
-- (void)setHasContactInFMFSharingWithMe:(BOOL)a3;
-- (void)setHasContactInHome:(BOOL)a3;
-- (void)setHasContactInPhotos:(BOOL)a3;
-- (void)setHasContactParent:(BOOL)a3;
-- (void)setHasFirstPartyMsgEveFri:(BOOL)a3;
-- (void)setHasFirstPartyMsgEveSat:(BOOL)a3;
-- (void)setHasFirstPartyMsgEveSun:(BOOL)a3;
-- (void)setHasFirstPartyMsgEveWeekday:(BOOL)a3;
-- (void)setHasFirstPartyMsgMorningFri:(BOOL)a3;
-- (void)setHasFirstPartyMsgMorningSat:(BOOL)a3;
-- (void)setHasFirstPartyMsgMorningSun:(BOOL)a3;
-- (void)setHasFirstPartyMsgMorningWeekday:(BOOL)a3;
-- (void)setHasFirstPartyMsgNightFri:(BOOL)a3;
-- (void)setHasFirstPartyMsgNightSat:(BOOL)a3;
-- (void)setHasFirstPartyMsgNightWeekday:(BOOL)a3;
-- (void)setHasFirstPartyMsgNoonFri:(BOOL)a3;
-- (void)setHasFirstPartyMsgNoonSat:(BOOL)a3;
-- (void)setHasFirstPartyMsgNoonSun:(BOOL)a3;
-- (void)setHasFirstPartyMsgNoonWeekday:(BOOL)a3;
-- (void)setHasFirstPartyMsgOutgoingRatio:(BOOL)a3;
-- (void)setHasFirstPartyMsgTotal:(BOOL)a3;
-- (void)setHasThirdPartyMsgEveFri:(BOOL)a3;
-- (void)setHasThirdPartyMsgEveSat:(BOOL)a3;
-- (void)setHasThirdPartyMsgEveSun:(BOOL)a3;
-- (void)setHasThirdPartyMsgEveWeekday:(BOOL)a3;
-- (void)setHasThirdPartyMsgMorningFri:(BOOL)a3;
-- (void)setHasThirdPartyMsgMorningSat:(BOOL)a3;
-- (void)setHasThirdPartyMsgMorningSun:(BOOL)a3;
-- (void)setHasThirdPartyMsgMorningWeekday:(BOOL)a3;
-- (void)setHasThirdPartyMsgNightFri:(BOOL)a3;
-- (void)setHasThirdPartyMsgNightSat:(BOOL)a3;
-- (void)setHasThirdPartyMsgNightSun:(BOOL)a3;
-- (void)setHasThirdPartyMsgNightWeekday:(BOOL)a3;
-- (void)setHasThirdPartyMsgNoonFri:(BOOL)a3;
-- (void)setHasThirdPartyMsgNoonSat:(BOOL)a3;
-- (void)setHasThirdPartyMsgNoonSun:(BOOL)a3;
-- (void)setHasThirdPartyMsgNoonWeekday:(BOOL)a3;
-- (void)setHasThirdPartyMsgTotal:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCallBirthday:(BOOL)birthday;
+- (void)setHasCallDurEveFri:(BOOL)fri;
+- (void)setHasCallDurEveSat:(BOOL)sat;
+- (void)setHasCallDurEveSun:(BOOL)sun;
+- (void)setHasCallDurEveWeekday:(BOOL)weekday;
+- (void)setHasCallDurMorningFri:(BOOL)fri;
+- (void)setHasCallDurMorningSat:(BOOL)sat;
+- (void)setHasCallDurMorningSun:(BOOL)sun;
+- (void)setHasCallDurMorningWeekday:(BOOL)weekday;
+- (void)setHasCallDurNightFri:(BOOL)fri;
+- (void)setHasCallDurNightSat:(BOOL)sat;
+- (void)setHasCallDurNightSun:(BOOL)sun;
+- (void)setHasCallDurNightWeekday:(BOOL)weekday;
+- (void)setHasCallDurNoonFri:(BOOL)fri;
+- (void)setHasCallDurNoonSat:(BOOL)sat;
+- (void)setHasCallDurNoonSun:(BOOL)sun;
+- (void)setHasCallDurNoonWeekday:(BOOL)weekday;
+- (void)setHasCallEveFri:(BOOL)fri;
+- (void)setHasCallEveSat:(BOOL)sat;
+- (void)setHasCallEveSun:(BOOL)sun;
+- (void)setHasCallEveWeekday:(BOOL)weekday;
+- (void)setHasCallLongEveFri:(BOOL)fri;
+- (void)setHasCallLongEveSat:(BOOL)sat;
+- (void)setHasCallLongEveSun:(BOOL)sun;
+- (void)setHasCallLongEveWeekday:(BOOL)weekday;
+- (void)setHasCallLongMorningFri:(BOOL)fri;
+- (void)setHasCallLongMorningSat:(BOOL)sat;
+- (void)setHasCallLongMorningSun:(BOOL)sun;
+- (void)setHasCallLongMorningWeekday:(BOOL)weekday;
+- (void)setHasCallLongNightFri:(BOOL)fri;
+- (void)setHasCallLongNightSat:(BOOL)sat;
+- (void)setHasCallLongNightSun:(BOOL)sun;
+- (void)setHasCallLongNightWeekday:(BOOL)weekday;
+- (void)setHasCallLongNoonFri:(BOOL)fri;
+- (void)setHasCallLongNoonSat:(BOOL)sat;
+- (void)setHasCallLongNoonSun:(BOOL)sun;
+- (void)setHasCallLongNoonWeekday:(BOOL)weekday;
+- (void)setHasCallLongRatio:(BOOL)ratio;
+- (void)setHasCallMaxDur:(BOOL)dur;
+- (void)setHasCallMorningFri:(BOOL)fri;
+- (void)setHasCallMorningSat:(BOOL)sat;
+- (void)setHasCallMorningSun:(BOOL)sun;
+- (void)setHasCallMorningWeekday:(BOOL)weekday;
+- (void)setHasCallNightFri:(BOOL)fri;
+- (void)setHasCallNightSat:(BOOL)sat;
+- (void)setHasCallNightSun:(BOOL)sun;
+- (void)setHasCallNightWeekday:(BOOL)weekday;
+- (void)setHasCallNoonFri:(BOOL)fri;
+- (void)setHasCallNoonSat:(BOOL)sat;
+- (void)setHasCallNoonSun:(BOOL)sun;
+- (void)setHasCallNoonWeekday:(BOOL)weekday;
+- (void)setHasCallOutgoingRatio:(BOOL)ratio;
+- (void)setHasCallTotal:(BOOL)total;
+- (void)setHasCallTotalDur:(BOOL)dur;
+- (void)setHasContactEmergency:(BOOL)emergency;
+- (void)setHasContactEmergencyFamily:(BOOL)family;
+- (void)setHasContactFamilyName:(BOOL)name;
+- (void)setHasContactFamilyRelation:(BOOL)relation;
+- (void)setHasContactFavorite:(BOOL)favorite;
+- (void)setHasContactInAirDrop:(BOOL)drop;
+- (void)setHasContactInAirDropAtHome:(BOOL)home;
+- (void)setHasContactInFMFFavorite:(BOOL)favorite;
+- (void)setHasContactInFMFFollowingMe:(BOOL)me;
+- (void)setHasContactInFMFSharingWithMe:(BOOL)me;
+- (void)setHasContactInHome:(BOOL)home;
+- (void)setHasContactInPhotos:(BOOL)photos;
+- (void)setHasContactParent:(BOOL)parent;
+- (void)setHasFirstPartyMsgEveFri:(BOOL)fri;
+- (void)setHasFirstPartyMsgEveSat:(BOOL)sat;
+- (void)setHasFirstPartyMsgEveSun:(BOOL)sun;
+- (void)setHasFirstPartyMsgEveWeekday:(BOOL)weekday;
+- (void)setHasFirstPartyMsgMorningFri:(BOOL)fri;
+- (void)setHasFirstPartyMsgMorningSat:(BOOL)sat;
+- (void)setHasFirstPartyMsgMorningSun:(BOOL)sun;
+- (void)setHasFirstPartyMsgMorningWeekday:(BOOL)weekday;
+- (void)setHasFirstPartyMsgNightFri:(BOOL)fri;
+- (void)setHasFirstPartyMsgNightSat:(BOOL)sat;
+- (void)setHasFirstPartyMsgNightWeekday:(BOOL)weekday;
+- (void)setHasFirstPartyMsgNoonFri:(BOOL)fri;
+- (void)setHasFirstPartyMsgNoonSat:(BOOL)sat;
+- (void)setHasFirstPartyMsgNoonSun:(BOOL)sun;
+- (void)setHasFirstPartyMsgNoonWeekday:(BOOL)weekday;
+- (void)setHasFirstPartyMsgOutgoingRatio:(BOOL)ratio;
+- (void)setHasFirstPartyMsgTotal:(BOOL)total;
+- (void)setHasThirdPartyMsgEveFri:(BOOL)fri;
+- (void)setHasThirdPartyMsgEveSat:(BOOL)sat;
+- (void)setHasThirdPartyMsgEveSun:(BOOL)sun;
+- (void)setHasThirdPartyMsgEveWeekday:(BOOL)weekday;
+- (void)setHasThirdPartyMsgMorningFri:(BOOL)fri;
+- (void)setHasThirdPartyMsgMorningSat:(BOOL)sat;
+- (void)setHasThirdPartyMsgMorningSun:(BOOL)sun;
+- (void)setHasThirdPartyMsgMorningWeekday:(BOOL)weekday;
+- (void)setHasThirdPartyMsgNightFri:(BOOL)fri;
+- (void)setHasThirdPartyMsgNightSat:(BOOL)sat;
+- (void)setHasThirdPartyMsgNightSun:(BOOL)sun;
+- (void)setHasThirdPartyMsgNightWeekday:(BOOL)weekday;
+- (void)setHasThirdPartyMsgNoonFri:(BOOL)fri;
+- (void)setHasThirdPartyMsgNoonSat:(BOOL)sat;
+- (void)setHasThirdPartyMsgNoonSun:(BOOL)sun;
+- (void)setHasThirdPartyMsgNoonWeekday:(BOOL)weekday;
+- (void)setHasThirdPartyMsgTotal:(BOOL)total;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MailIntelligencePETContactEvent
 
-- (void)setHasFirstPartyMsgTotal:(BOOL)a3
+- (void)setHasFirstPartyMsgTotal:(BOOL)total
 {
   v3 = 128;
-  if (!a3)
+  if (!total)
   {
     v3 = 0;
   }
@@ -123,10 +123,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFFFFFFF7FLL | v3;
 }
 
-- (void)setHasFirstPartyMsgOutgoingRatio:(BOOL)a3
+- (void)setHasFirstPartyMsgOutgoingRatio:(BOOL)ratio
 {
   v3 = 64;
-  if (!a3)
+  if (!ratio)
   {
     v3 = 0;
   }
@@ -134,10 +134,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFFFFFFFBFLL | v3;
 }
 
-- (void)setHasFirstPartyMsgMorningWeekday:(BOOL)a3
+- (void)setHasFirstPartyMsgMorningWeekday:(BOOL)weekday
 {
   v3 = 0x2000000000000000;
-  if (!a3)
+  if (!weekday)
   {
     v3 = 0;
   }
@@ -145,10 +145,10 @@
   *&self->_has = *&self->_has & 0xDFFFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasFirstPartyMsgMorningFri:(BOOL)a3
+- (void)setHasFirstPartyMsgMorningFri:(BOOL)fri
 {
   v3 = 0x400000000000000;
-  if (!a3)
+  if (!fri)
   {
     v3 = 0;
   }
@@ -156,10 +156,10 @@
   *&self->_has = *&self->_has & 0xFBFFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasFirstPartyMsgMorningSat:(BOOL)a3
+- (void)setHasFirstPartyMsgMorningSat:(BOOL)sat
 {
   v3 = 0x800000000000000;
-  if (!a3)
+  if (!sat)
   {
     v3 = 0;
   }
@@ -167,10 +167,10 @@
   *&self->_has = *&self->_has & 0xF7FFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasFirstPartyMsgMorningSun:(BOOL)a3
+- (void)setHasFirstPartyMsgMorningSun:(BOOL)sun
 {
   v3 = 0x1000000000000000;
-  if (!a3)
+  if (!sun)
   {
     v3 = 0;
   }
@@ -178,10 +178,10 @@
   *&self->_has = *&self->_has & 0xEFFFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasFirstPartyMsgNoonWeekday:(BOOL)a3
+- (void)setHasFirstPartyMsgNoonWeekday:(BOOL)weekday
 {
   v3 = 32;
-  if (!a3)
+  if (!weekday)
   {
     v3 = 0;
   }
@@ -189,10 +189,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFFFFFFFDFLL | v3;
 }
 
-- (void)setHasFirstPartyMsgNoonFri:(BOOL)a3
+- (void)setHasFirstPartyMsgNoonFri:(BOOL)fri
 {
   v3 = 4;
-  if (!a3)
+  if (!fri)
   {
     v3 = 0;
   }
@@ -200,10 +200,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFFFFFFFFBLL | v3;
 }
 
-- (void)setHasFirstPartyMsgNoonSat:(BOOL)a3
+- (void)setHasFirstPartyMsgNoonSat:(BOOL)sat
 {
   v3 = 8;
-  if (!a3)
+  if (!sat)
   {
     v3 = 0;
   }
@@ -211,10 +211,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFFFFFFFF7 | v3;
 }
 
-- (void)setHasFirstPartyMsgNoonSun:(BOOL)a3
+- (void)setHasFirstPartyMsgNoonSun:(BOOL)sun
 {
   v3 = 16;
-  if (!a3)
+  if (!sun)
   {
     v3 = 0;
   }
@@ -222,10 +222,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFFFFFFFEFLL | v3;
 }
 
-- (void)setHasFirstPartyMsgEveWeekday:(BOOL)a3
+- (void)setHasFirstPartyMsgEveWeekday:(BOOL)weekday
 {
   v3 = 0x200000000000000;
-  if (!a3)
+  if (!weekday)
   {
     v3 = 0;
   }
@@ -233,10 +233,10 @@
   *&self->_has = *&self->_has & 0xFDFFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasFirstPartyMsgEveFri:(BOOL)a3
+- (void)setHasFirstPartyMsgEveFri:(BOOL)fri
 {
   v3 = 0x40000000000000;
-  if (!a3)
+  if (!fri)
   {
     v3 = 0;
   }
@@ -244,10 +244,10 @@
   *&self->_has = *&self->_has & 0xFFBFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasFirstPartyMsgEveSat:(BOOL)a3
+- (void)setHasFirstPartyMsgEveSat:(BOOL)sat
 {
   v3 = 0x80000000000000;
-  if (!a3)
+  if (!sat)
   {
     v3 = 0;
   }
@@ -255,10 +255,10 @@
   *&self->_has = *&self->_has & 0xFF7FFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasFirstPartyMsgEveSun:(BOOL)a3
+- (void)setHasFirstPartyMsgEveSun:(BOOL)sun
 {
   v3 = 0x100000000000000;
-  if (!a3)
+  if (!sun)
   {
     v3 = 0;
   }
@@ -266,10 +266,10 @@
   *&self->_has = *&self->_has & 0xFEFFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasFirstPartyMsgNightWeekday:(BOOL)a3
+- (void)setHasFirstPartyMsgNightWeekday:(BOOL)weekday
 {
   v3 = 2;
-  if (!a3)
+  if (!weekday)
   {
     v3 = 0;
   }
@@ -277,10 +277,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFFFFFFFFDLL | v3;
 }
 
-- (void)setHasFirstPartyMsgNightFri:(BOOL)a3
+- (void)setHasFirstPartyMsgNightFri:(BOOL)fri
 {
   v3 = 0x4000000000000000;
-  if (!a3)
+  if (!fri)
   {
     v3 = 0;
   }
@@ -288,10 +288,10 @@
   *&self->_has = *&self->_has & 0xBFFFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasFirstPartyMsgNightSat:(BOOL)a3
+- (void)setHasFirstPartyMsgNightSat:(BOOL)sat
 {
   v3 = 0x8000000000000000;
-  if (!a3)
+  if (!sat)
   {
     v3 = 0;
   }
@@ -299,10 +299,10 @@
   *&self->_has = v3 & 0x8000000000000000 | *&self->_has & 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (void)setHasThirdPartyMsgTotal:(BOOL)a3
+- (void)setHasThirdPartyMsgTotal:(BOOL)total
 {
   v3 = 0x1000000;
-  if (!a3)
+  if (!total)
   {
     v3 = 0;
   }
@@ -310,10 +310,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFFEFFFFFFLL | v3;
 }
 
-- (void)setHasThirdPartyMsgMorningWeekday:(BOOL)a3
+- (void)setHasThirdPartyMsgMorningWeekday:(BOOL)weekday
 {
   v3 = 0x8000;
-  if (!a3)
+  if (!weekday)
   {
     v3 = 0;
   }
@@ -321,10 +321,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFFFFF7FFFLL | v3;
 }
 
-- (void)setHasThirdPartyMsgMorningFri:(BOOL)a3
+- (void)setHasThirdPartyMsgMorningFri:(BOOL)fri
 {
   v3 = 4096;
-  if (!a3)
+  if (!fri)
   {
     v3 = 0;
   }
@@ -332,10 +332,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFFFFFEFFFLL | v3;
 }
 
-- (void)setHasThirdPartyMsgMorningSat:(BOOL)a3
+- (void)setHasThirdPartyMsgMorningSat:(BOOL)sat
 {
   v3 = 0x2000;
-  if (!a3)
+  if (!sat)
   {
     v3 = 0;
   }
@@ -343,10 +343,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFFFFFDFFFLL | v3;
 }
 
-- (void)setHasThirdPartyMsgMorningSun:(BOOL)a3
+- (void)setHasThirdPartyMsgMorningSun:(BOOL)sun
 {
   v3 = 0x4000;
-  if (!a3)
+  if (!sun)
   {
     v3 = 0;
   }
@@ -354,10 +354,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFFFFFBFFFLL | v3;
 }
 
-- (void)setHasThirdPartyMsgNoonWeekday:(BOOL)a3
+- (void)setHasThirdPartyMsgNoonWeekday:(BOOL)weekday
 {
   v3 = 0x800000;
-  if (!a3)
+  if (!weekday)
   {
     v3 = 0;
   }
@@ -365,10 +365,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFFF7FFFFFLL | v3;
 }
 
-- (void)setHasThirdPartyMsgNoonFri:(BOOL)a3
+- (void)setHasThirdPartyMsgNoonFri:(BOOL)fri
 {
   v3 = 0x100000;
-  if (!a3)
+  if (!fri)
   {
     v3 = 0;
   }
@@ -376,10 +376,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFFFEFFFFFLL | v3;
 }
 
-- (void)setHasThirdPartyMsgNoonSat:(BOOL)a3
+- (void)setHasThirdPartyMsgNoonSat:(BOOL)sat
 {
   v3 = 0x200000;
-  if (!a3)
+  if (!sat)
   {
     v3 = 0;
   }
@@ -387,10 +387,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFFFDFFFFFLL | v3;
 }
 
-- (void)setHasThirdPartyMsgNoonSun:(BOOL)a3
+- (void)setHasThirdPartyMsgNoonSun:(BOOL)sun
 {
   v3 = 0x400000;
-  if (!a3)
+  if (!sun)
   {
     v3 = 0;
   }
@@ -398,10 +398,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFFFBFFFFFLL | v3;
 }
 
-- (void)setHasThirdPartyMsgEveWeekday:(BOOL)a3
+- (void)setHasThirdPartyMsgEveWeekday:(BOOL)weekday
 {
   v3 = 2048;
-  if (!a3)
+  if (!weekday)
   {
     v3 = 0;
   }
@@ -409,10 +409,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFFFFFF7FFLL | v3;
 }
 
-- (void)setHasThirdPartyMsgEveFri:(BOOL)a3
+- (void)setHasThirdPartyMsgEveFri:(BOOL)fri
 {
   v3 = 256;
-  if (!a3)
+  if (!fri)
   {
     v3 = 0;
   }
@@ -420,10 +420,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFFFFFFEFFLL | v3;
 }
 
-- (void)setHasThirdPartyMsgEveSat:(BOOL)a3
+- (void)setHasThirdPartyMsgEveSat:(BOOL)sat
 {
   v3 = 512;
-  if (!a3)
+  if (!sat)
   {
     v3 = 0;
   }
@@ -431,10 +431,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFFFFFFDFFLL | v3;
 }
 
-- (void)setHasThirdPartyMsgEveSun:(BOOL)a3
+- (void)setHasThirdPartyMsgEveSun:(BOOL)sun
 {
   v3 = 1024;
-  if (!a3)
+  if (!sun)
   {
     v3 = 0;
   }
@@ -442,10 +442,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFFFFFFBFFLL | v3;
 }
 
-- (void)setHasThirdPartyMsgNightWeekday:(BOOL)a3
+- (void)setHasThirdPartyMsgNightWeekday:(BOOL)weekday
 {
   v3 = 0x80000;
-  if (!a3)
+  if (!weekday)
   {
     v3 = 0;
   }
@@ -453,10 +453,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFFFF7FFFFLL | v3;
 }
 
-- (void)setHasThirdPartyMsgNightFri:(BOOL)a3
+- (void)setHasThirdPartyMsgNightFri:(BOOL)fri
 {
   v3 = 0x10000;
-  if (!a3)
+  if (!fri)
   {
     v3 = 0;
   }
@@ -464,10 +464,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFFFFEFFFFLL | v3;
 }
 
-- (void)setHasThirdPartyMsgNightSat:(BOOL)a3
+- (void)setHasThirdPartyMsgNightSat:(BOOL)sat
 {
   v3 = 0x20000;
-  if (!a3)
+  if (!sat)
   {
     v3 = 0;
   }
@@ -475,10 +475,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFFFFDFFFFLL | v3;
 }
 
-- (void)setHasThirdPartyMsgNightSun:(BOOL)a3
+- (void)setHasThirdPartyMsgNightSun:(BOOL)sun
 {
   v3 = 0x40000;
-  if (!a3)
+  if (!sun)
   {
     v3 = 0;
   }
@@ -486,10 +486,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFFFFBFFFFLL | v3;
 }
 
-- (void)setHasCallTotal:(BOOL)a3
+- (void)setHasCallTotal:(BOOL)total
 {
   v3 = 0x10000000000000;
-  if (!a3)
+  if (!total)
   {
     v3 = 0;
   }
@@ -497,10 +497,10 @@
   *&self->_has = *&self->_has & 0xFFEFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasCallBirthday:(BOOL)a3
+- (void)setHasCallBirthday:(BOOL)birthday
 {
   v3 = 0x2000000;
-  if (!a3)
+  if (!birthday)
   {
     v3 = 0;
   }
@@ -508,10 +508,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFFDFFFFFFLL | v3;
 }
 
-- (void)setHasContactFavorite:(BOOL)a3
+- (void)setHasContactFavorite:(BOOL)favorite
 {
   v3 = 0x40000000;
-  if (!a3)
+  if (!favorite)
   {
     v3 = 0;
   }
@@ -519,10 +519,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFBFFFFFFFLL | v3;
 }
 
-- (void)setHasCallTotalDur:(BOOL)a3
+- (void)setHasCallTotalDur:(BOOL)dur
 {
   v3 = 0x20000000000000;
-  if (!a3)
+  if (!dur)
   {
     v3 = 0;
   }
@@ -530,10 +530,10 @@
   *&self->_has = *&self->_has & 0xFFDFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasCallLongRatio:(BOOL)a3
+- (void)setHasCallLongRatio:(BOOL)ratio
 {
   v3 = 0x2000000000;
-  if (!a3)
+  if (!ratio)
   {
     v3 = 0;
   }
@@ -541,10 +541,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFDFFFFFFFFFLL | v3;
 }
 
-- (void)setHasCallOutgoingRatio:(BOOL)a3
+- (void)setHasCallOutgoingRatio:(BOOL)ratio
 {
   v3 = 0x8000000000000;
-  if (!a3)
+  if (!ratio)
   {
     v3 = 0;
   }
@@ -552,10 +552,10 @@
   *&self->_has = *&self->_has & 0xFFF7FFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasCallMaxDur:(BOOL)a3
+- (void)setHasCallMaxDur:(BOOL)dur
 {
   v3 = 0x4000000000;
-  if (!a3)
+  if (!dur)
   {
     v3 = 0;
   }
@@ -563,10 +563,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFBFFFFFFFFFLL | v3;
 }
 
-- (void)setHasCallMorningWeekday:(BOOL)a3
+- (void)setHasCallMorningWeekday:(BOOL)weekday
 {
   v3 = 0x40000000000;
-  if (!a3)
+  if (!weekday)
   {
     v3 = 0;
   }
@@ -574,10 +574,10 @@
   *&self->_has = *&self->_has & 0xFFFFFBFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasCallMorningFri:(BOOL)a3
+- (void)setHasCallMorningFri:(BOOL)fri
 {
   v3 = 0x8000000000;
-  if (!a3)
+  if (!fri)
   {
     v3 = 0;
   }
@@ -585,10 +585,10 @@
   *&self->_has = *&self->_has & 0xFFFFFF7FFFFFFFFFLL | v3;
 }
 
-- (void)setHasCallMorningSat:(BOOL)a3
+- (void)setHasCallMorningSat:(BOOL)sat
 {
   v3 = 0x10000000000;
-  if (!a3)
+  if (!sat)
   {
     v3 = 0;
   }
@@ -596,10 +596,10 @@
   *&self->_has = *&self->_has & 0xFFFFFEFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasCallMorningSun:(BOOL)a3
+- (void)setHasCallMorningSun:(BOOL)sun
 {
   v3 = 0x20000000000;
-  if (!a3)
+  if (!sun)
   {
     v3 = 0;
   }
@@ -607,10 +607,10 @@
   *&self->_has = *&self->_has & 0xFFFFFDFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasCallNoonWeekday:(BOOL)a3
+- (void)setHasCallNoonWeekday:(BOOL)weekday
 {
   v3 = 0x4000000000000;
-  if (!a3)
+  if (!weekday)
   {
     v3 = 0;
   }
@@ -618,10 +618,10 @@
   *&self->_has = *&self->_has & 0xFFFBFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasCallNoonFri:(BOOL)a3
+- (void)setHasCallNoonFri:(BOOL)fri
 {
   v3 = 0x800000000000;
-  if (!a3)
+  if (!fri)
   {
     v3 = 0;
   }
@@ -629,10 +629,10 @@
   *&self->_has = *&self->_has & 0xFFFF7FFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasCallNoonSat:(BOOL)a3
+- (void)setHasCallNoonSat:(BOOL)sat
 {
   v3 = 0x1000000000000;
-  if (!a3)
+  if (!sat)
   {
     v3 = 0;
   }
@@ -640,10 +640,10 @@
   *&self->_has = *&self->_has & 0xFFFEFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasCallNoonSun:(BOOL)a3
+- (void)setHasCallNoonSun:(BOOL)sun
 {
   v3 = 0x2000000000000;
-  if (!a3)
+  if (!sun)
   {
     v3 = 0;
   }
@@ -651,10 +651,10 @@
   *&self->_has = *&self->_has & 0xFFFDFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasCallEveWeekday:(BOOL)a3
+- (void)setHasCallEveWeekday:(BOOL)weekday
 {
   v3 = 0x100000;
-  if (!a3)
+  if (!weekday)
   {
     v3 = 0;
   }
@@ -662,10 +662,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFEFFFFFLL | v3;
 }
 
-- (void)setHasCallEveFri:(BOOL)a3
+- (void)setHasCallEveFri:(BOOL)fri
 {
   v3 = 0x20000;
-  if (!a3)
+  if (!fri)
   {
     v3 = 0;
   }
@@ -673,10 +673,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFDFFFFLL | v3;
 }
 
-- (void)setHasCallEveSat:(BOOL)a3
+- (void)setHasCallEveSat:(BOOL)sat
 {
   v3 = 0x40000;
-  if (!a3)
+  if (!sat)
   {
     v3 = 0;
   }
@@ -684,10 +684,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFBFFFFLL | v3;
 }
 
-- (void)setHasCallEveSun:(BOOL)a3
+- (void)setHasCallEveSun:(BOOL)sun
 {
   v3 = 0x80000;
-  if (!a3)
+  if (!sun)
   {
     v3 = 0;
   }
@@ -695,10 +695,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFF7FFFFLL | v3;
 }
 
-- (void)setHasCallNightWeekday:(BOOL)a3
+- (void)setHasCallNightWeekday:(BOOL)weekday
 {
   v3 = 0x400000000000;
-  if (!a3)
+  if (!weekday)
   {
     v3 = 0;
   }
@@ -706,10 +706,10 @@
   *&self->_has = *&self->_has & 0xFFFFBFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasCallNightFri:(BOOL)a3
+- (void)setHasCallNightFri:(BOOL)fri
 {
   v3 = 0x80000000000;
-  if (!a3)
+  if (!fri)
   {
     v3 = 0;
   }
@@ -717,10 +717,10 @@
   *&self->_has = *&self->_has & 0xFFFFF7FFFFFFFFFFLL | v3;
 }
 
-- (void)setHasCallNightSat:(BOOL)a3
+- (void)setHasCallNightSat:(BOOL)sat
 {
   v3 = 0x100000000000;
-  if (!a3)
+  if (!sat)
   {
     v3 = 0;
   }
@@ -728,10 +728,10 @@
   *&self->_has = *&self->_has & 0xFFFFEFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasCallNightSun:(BOOL)a3
+- (void)setHasCallNightSun:(BOOL)sun
 {
   v3 = 0x200000000000;
-  if (!a3)
+  if (!sun)
   {
     v3 = 0;
   }
@@ -739,10 +739,10 @@
   *&self->_has = *&self->_has & 0xFFFFDFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasCallDurMorningWeekday:(BOOL)a3
+- (void)setHasCallDurMorningWeekday:(BOOL)weekday
 {
   v3 = 256;
-  if (!a3)
+  if (!weekday)
   {
     v3 = 0;
   }
@@ -750,10 +750,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFEFFLL | v3;
 }
 
-- (void)setHasCallDurMorningFri:(BOOL)a3
+- (void)setHasCallDurMorningFri:(BOOL)fri
 {
   v3 = 32;
-  if (!a3)
+  if (!fri)
   {
     v3 = 0;
   }
@@ -761,10 +761,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFFDFLL | v3;
 }
 
-- (void)setHasCallDurMorningSat:(BOOL)a3
+- (void)setHasCallDurMorningSat:(BOOL)sat
 {
   v3 = 64;
-  if (!a3)
+  if (!sat)
   {
     v3 = 0;
   }
@@ -772,10 +772,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFFBFLL | v3;
 }
 
-- (void)setHasCallDurMorningSun:(BOOL)a3
+- (void)setHasCallDurMorningSun:(BOOL)sun
 {
   v3 = 128;
-  if (!a3)
+  if (!sun)
   {
     v3 = 0;
   }
@@ -783,10 +783,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFF7FLL | v3;
 }
 
-- (void)setHasCallDurNoonWeekday:(BOOL)a3
+- (void)setHasCallDurNoonWeekday:(BOOL)weekday
 {
   v3 = 0x10000;
-  if (!a3)
+  if (!weekday)
   {
     v3 = 0;
   }
@@ -794,10 +794,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFEFFFFLL | v3;
 }
 
-- (void)setHasCallDurNoonFri:(BOOL)a3
+- (void)setHasCallDurNoonFri:(BOOL)fri
 {
   v3 = 0x2000;
-  if (!a3)
+  if (!fri)
   {
     v3 = 0;
   }
@@ -805,10 +805,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFDFFFLL | v3;
 }
 
-- (void)setHasCallDurNoonSat:(BOOL)a3
+- (void)setHasCallDurNoonSat:(BOOL)sat
 {
   v3 = 0x4000;
-  if (!a3)
+  if (!sat)
   {
     v3 = 0;
   }
@@ -816,10 +816,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFBFFFLL | v3;
 }
 
-- (void)setHasCallDurNoonSun:(BOOL)a3
+- (void)setHasCallDurNoonSun:(BOOL)sun
 {
   v3 = 0x8000;
-  if (!a3)
+  if (!sun)
   {
     v3 = 0;
   }
@@ -827,10 +827,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFF7FFFLL | v3;
 }
 
-- (void)setHasCallDurEveWeekday:(BOOL)a3
+- (void)setHasCallDurEveWeekday:(BOOL)weekday
 {
   v3 = 16;
-  if (!a3)
+  if (!weekday)
   {
     v3 = 0;
   }
@@ -838,10 +838,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFFEFLL | v3;
 }
 
-- (void)setHasCallDurEveFri:(BOOL)a3
+- (void)setHasCallDurEveFri:(BOOL)fri
 {
   v3 = 2;
-  if (!a3)
+  if (!fri)
   {
     v3 = 0;
   }
@@ -849,10 +849,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFFFDLL | v3;
 }
 
-- (void)setHasCallDurEveSat:(BOOL)a3
+- (void)setHasCallDurEveSat:(BOOL)sat
 {
   v3 = 4;
-  if (!a3)
+  if (!sat)
   {
     v3 = 0;
   }
@@ -860,10 +860,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFFFBLL | v3;
 }
 
-- (void)setHasCallDurEveSun:(BOOL)a3
+- (void)setHasCallDurEveSun:(BOOL)sun
 {
   v3 = 8;
-  if (!a3)
+  if (!sun)
   {
     v3 = 0;
   }
@@ -871,10 +871,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFFF7 | v3;
 }
 
-- (void)setHasCallDurNightWeekday:(BOOL)a3
+- (void)setHasCallDurNightWeekday:(BOOL)weekday
 {
   v3 = 4096;
-  if (!a3)
+  if (!weekday)
   {
     v3 = 0;
   }
@@ -882,10 +882,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFEFFFLL | v3;
 }
 
-- (void)setHasCallDurNightFri:(BOOL)a3
+- (void)setHasCallDurNightFri:(BOOL)fri
 {
   v3 = 512;
-  if (!a3)
+  if (!fri)
   {
     v3 = 0;
   }
@@ -893,10 +893,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFDFFLL | v3;
 }
 
-- (void)setHasCallDurNightSat:(BOOL)a3
+- (void)setHasCallDurNightSat:(BOOL)sat
 {
   v3 = 1024;
-  if (!a3)
+  if (!sat)
   {
     v3 = 0;
   }
@@ -904,10 +904,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFBFFLL | v3;
 }
 
-- (void)setHasCallDurNightSun:(BOOL)a3
+- (void)setHasCallDurNightSun:(BOOL)sun
 {
   v3 = 2048;
-  if (!a3)
+  if (!sun)
   {
     v3 = 0;
   }
@@ -915,10 +915,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFF7FFLL | v3;
 }
 
-- (void)setHasCallLongMorningWeekday:(BOOL)a3
+- (void)setHasCallLongMorningWeekday:(BOOL)weekday
 {
   v3 = 0x10000000;
-  if (!a3)
+  if (!weekday)
   {
     v3 = 0;
   }
@@ -926,10 +926,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFEFFFFFFFLL | v3;
 }
 
-- (void)setHasCallLongMorningFri:(BOOL)a3
+- (void)setHasCallLongMorningFri:(BOOL)fri
 {
   v3 = 0x2000000;
-  if (!a3)
+  if (!fri)
   {
     v3 = 0;
   }
@@ -937,10 +937,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFDFFFFFFLL | v3;
 }
 
-- (void)setHasCallLongMorningSat:(BOOL)a3
+- (void)setHasCallLongMorningSat:(BOOL)sat
 {
   v3 = 0x4000000;
-  if (!a3)
+  if (!sat)
   {
     v3 = 0;
   }
@@ -948,10 +948,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFBFFFFFFLL | v3;
 }
 
-- (void)setHasCallLongMorningSun:(BOOL)a3
+- (void)setHasCallLongMorningSun:(BOOL)sun
 {
   v3 = 0x8000000;
-  if (!a3)
+  if (!sun)
   {
     v3 = 0;
   }
@@ -959,10 +959,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFF7FFFFFFLL | v3;
 }
 
-- (void)setHasCallLongNoonWeekday:(BOOL)a3
+- (void)setHasCallLongNoonWeekday:(BOOL)weekday
 {
   v3 = 0x1000000000;
-  if (!a3)
+  if (!weekday)
   {
     v3 = 0;
   }
@@ -970,10 +970,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFEFFFFFFFFFLL | v3;
 }
 
-- (void)setHasCallLongNoonFri:(BOOL)a3
+- (void)setHasCallLongNoonFri:(BOOL)fri
 {
   v3 = 0x200000000;
-  if (!a3)
+  if (!fri)
   {
     v3 = 0;
   }
@@ -981,10 +981,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFDFFFFFFFFLL | v3;
 }
 
-- (void)setHasCallLongNoonSat:(BOOL)a3
+- (void)setHasCallLongNoonSat:(BOOL)sat
 {
   v3 = 0x400000000;
-  if (!a3)
+  if (!sat)
   {
     v3 = 0;
   }
@@ -992,10 +992,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFBFFFFFFFFLL | v3;
 }
 
-- (void)setHasCallLongNoonSun:(BOOL)a3
+- (void)setHasCallLongNoonSun:(BOOL)sun
 {
   v3 = 0x800000000;
-  if (!a3)
+  if (!sun)
   {
     v3 = 0;
   }
@@ -1003,10 +1003,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFF7FFFFFFFFLL | v3;
 }
 
-- (void)setHasCallLongEveWeekday:(BOOL)a3
+- (void)setHasCallLongEveWeekday:(BOOL)weekday
 {
   v3 = 0x1000000;
-  if (!a3)
+  if (!weekday)
   {
     v3 = 0;
   }
@@ -1014,10 +1014,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFEFFFFFFLL | v3;
 }
 
-- (void)setHasCallLongEveFri:(BOOL)a3
+- (void)setHasCallLongEveFri:(BOOL)fri
 {
   v3 = 0x200000;
-  if (!a3)
+  if (!fri)
   {
     v3 = 0;
   }
@@ -1025,10 +1025,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFDFFFFFLL | v3;
 }
 
-- (void)setHasCallLongEveSat:(BOOL)a3
+- (void)setHasCallLongEveSat:(BOOL)sat
 {
   v3 = 0x400000;
-  if (!a3)
+  if (!sat)
   {
     v3 = 0;
   }
@@ -1036,10 +1036,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFBFFFFFLL | v3;
 }
 
-- (void)setHasCallLongEveSun:(BOOL)a3
+- (void)setHasCallLongEveSun:(BOOL)sun
 {
   v3 = 0x800000;
-  if (!a3)
+  if (!sun)
   {
     v3 = 0;
   }
@@ -1047,10 +1047,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFF7FFFFFLL | v3;
 }
 
-- (void)setHasCallLongNightWeekday:(BOOL)a3
+- (void)setHasCallLongNightWeekday:(BOOL)weekday
 {
   v3 = 0x100000000;
-  if (!a3)
+  if (!weekday)
   {
     v3 = 0;
   }
@@ -1058,10 +1058,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFEFFFFFFFFLL | v3;
 }
 
-- (void)setHasCallLongNightFri:(BOOL)a3
+- (void)setHasCallLongNightFri:(BOOL)fri
 {
   v3 = 0x20000000;
-  if (!a3)
+  if (!fri)
   {
     v3 = 0;
   }
@@ -1069,10 +1069,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFDFFFFFFFLL | v3;
 }
 
-- (void)setHasCallLongNightSat:(BOOL)a3
+- (void)setHasCallLongNightSat:(BOOL)sat
 {
   v3 = 0x40000000;
-  if (!a3)
+  if (!sat)
   {
     v3 = 0;
   }
@@ -1080,10 +1080,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFBFFFFFFFLL | v3;
 }
 
-- (void)setHasCallLongNightSun:(BOOL)a3
+- (void)setHasCallLongNightSun:(BOOL)sun
 {
   v3 = 0x80000000;
-  if (!a3)
+  if (!sun)
   {
     v3 = 0;
   }
@@ -1091,10 +1091,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFF7FFFFFFFLL | v3;
 }
 
-- (void)setHasContactFamilyRelation:(BOOL)a3
+- (void)setHasContactFamilyRelation:(BOOL)relation
 {
   v3 = 0x20000000;
-  if (!a3)
+  if (!relation)
   {
     v3 = 0;
   }
@@ -1102,10 +1102,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFDFFFFFFFLL | v3;
 }
 
-- (void)setHasContactFamilyName:(BOOL)a3
+- (void)setHasContactFamilyName:(BOOL)name
 {
   v3 = 0x10000000;
-  if (!a3)
+  if (!name)
   {
     v3 = 0;
   }
@@ -1113,10 +1113,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFEFFFFFFFLL | v3;
 }
 
-- (void)setHasContactParent:(BOOL)a3
+- (void)setHasContactParent:(BOOL)parent
 {
   v3 = 0x4000000000;
-  if (!a3)
+  if (!parent)
   {
     v3 = 0;
   }
@@ -1124,10 +1124,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFBFFFFFFFFFLL | v3;
 }
 
-- (void)setHasContactEmergency:(BOOL)a3
+- (void)setHasContactEmergency:(BOOL)emergency
 {
   v3 = 0x4000000;
-  if (!a3)
+  if (!emergency)
   {
     v3 = 0;
   }
@@ -1135,10 +1135,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFFBFFFFFFLL | v3;
 }
 
-- (void)setHasContactEmergencyFamily:(BOOL)a3
+- (void)setHasContactEmergencyFamily:(BOOL)family
 {
   v3 = 0x8000000;
-  if (!a3)
+  if (!family)
   {
     v3 = 0;
   }
@@ -1146,10 +1146,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFFF7FFFFFFLL | v3;
 }
 
-- (void)setHasContactInHome:(BOOL)a3
+- (void)setHasContactInHome:(BOOL)home
 {
   v3 = 0x1000000000;
-  if (!a3)
+  if (!home)
   {
     v3 = 0;
   }
@@ -1157,10 +1157,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFEFFFFFFFFFLL | v3;
 }
 
-- (void)setHasContactInPhotos:(BOOL)a3
+- (void)setHasContactInPhotos:(BOOL)photos
 {
   v3 = 0x2000000000;
-  if (!a3)
+  if (!photos)
   {
     v3 = 0;
   }
@@ -1168,10 +1168,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFDFFFFFFFFFLL | v3;
 }
 
-- (void)setHasContactInAirDrop:(BOOL)a3
+- (void)setHasContactInAirDrop:(BOOL)drop
 {
   v3 = 0x80000000;
-  if (!a3)
+  if (!drop)
   {
     v3 = 0;
   }
@@ -1179,10 +1179,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFF7FFFFFFFLL | v3;
 }
 
-- (void)setHasContactInAirDropAtHome:(BOOL)a3
+- (void)setHasContactInAirDropAtHome:(BOOL)home
 {
   v3 = 0x100000000;
-  if (!a3)
+  if (!home)
   {
     v3 = 0;
   }
@@ -1190,10 +1190,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFEFFFFFFFFLL | v3;
 }
 
-- (void)setHasContactInFMFFollowingMe:(BOOL)a3
+- (void)setHasContactInFMFFollowingMe:(BOOL)me
 {
   v3 = 0x400000000;
-  if (!a3)
+  if (!me)
   {
     v3 = 0;
   }
@@ -1201,10 +1201,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFFBFFFFFFFFLL | v3;
 }
 
-- (void)setHasContactInFMFSharingWithMe:(BOOL)a3
+- (void)setHasContactInFMFSharingWithMe:(BOOL)me
 {
   v3 = 0x800000000;
-  if (!a3)
+  if (!me)
   {
     v3 = 0;
   }
@@ -1212,10 +1212,10 @@
   *(&self->_has + 1) = *(&self->_has + 1) & 0xFFFFFFF7FFFFFFFFLL | v3;
 }
 
-- (void)setHasContactInFMFFavorite:(BOOL)a3
+- (void)setHasContactInFMFFavorite:(BOOL)favorite
 {
   v3 = 0x200000000;
-  if (!a3)
+  if (!favorite)
   {
     v3 = 0;
   }
@@ -1229,21 +1229,21 @@
   v8.receiver = self;
   v8.super_class = MailIntelligencePETContactEvent;
   v4 = [(MailIntelligencePETContactEvent *)&v8 description];
-  v5 = [(MailIntelligencePETContactEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MailIntelligencePETContactEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   p_has = &self->_has;
   v5 = *(&self->_has + 1);
   if ((v5 & 0x80) != 0)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_firstPartyMsgTotal];
-    [v3 setObject:v6 forKey:@"firstPartyMsgTotal"];
+    [dictionary setObject:v6 forKey:@"firstPartyMsgTotal"];
 
     v5 = *(&self->_has + 1);
   }
@@ -1251,14 +1251,14 @@
   if ((v5 & 0x40) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithDouble:self->_firstPartyMsgOutgoingRatio];
-    [v3 setObject:v7 forKey:@"firstPartyMsgOutgoingRatio"];
+    [dictionary setObject:v7 forKey:@"firstPartyMsgOutgoingRatio"];
   }
 
   v8 = *p_has;
   if ((*p_has & 0x2000000000000000) != 0)
   {
     v33 = [MEMORY[0x1E696AD98] numberWithDouble:self->_firstPartyMsgMorningWeekday];
-    [v3 setObject:v33 forKey:@"firstPartyMsgMorningWeekday"];
+    [dictionary setObject:v33 forKey:@"firstPartyMsgMorningWeekday"];
 
     v8 = *p_has;
     if ((*p_has & 0x400000000000000) == 0)
@@ -1279,7 +1279,7 @@ LABEL_7:
   }
 
   v34 = [MEMORY[0x1E696AD98] numberWithDouble:self->_firstPartyMsgMorningFri];
-  [v3 setObject:v34 forKey:@"firstPartyMsgMorningFri"];
+  [dictionary setObject:v34 forKey:@"firstPartyMsgMorningFri"];
 
   v8 = *p_has;
   if ((*p_has & 0x800000000000000) == 0)
@@ -1295,13 +1295,13 @@ LABEL_8:
 
 LABEL_124:
   v35 = [MEMORY[0x1E696AD98] numberWithDouble:self->_firstPartyMsgMorningSat];
-  [v3 setObject:v35 forKey:@"firstPartyMsgMorningSat"];
+  [dictionary setObject:v35 forKey:@"firstPartyMsgMorningSat"];
 
   if ((*p_has & 0x1000000000000000) != 0)
   {
 LABEL_9:
     v9 = [MEMORY[0x1E696AD98] numberWithDouble:self->_firstPartyMsgMorningSun];
-    [v3 setObject:v9 forKey:@"firstPartyMsgMorningSun"];
+    [dictionary setObject:v9 forKey:@"firstPartyMsgMorningSun"];
   }
 
 LABEL_10:
@@ -1309,7 +1309,7 @@ LABEL_10:
   if ((v10 & 0x20) != 0)
   {
     v36 = [MEMORY[0x1E696AD98] numberWithDouble:self->_firstPartyMsgNoonWeekday];
-    [v3 setObject:v36 forKey:@"firstPartyMsgNoonWeekday"];
+    [dictionary setObject:v36 forKey:@"firstPartyMsgNoonWeekday"];
 
     v10 = *(&self->_has + 1);
     if ((v10 & 4) == 0)
@@ -1330,7 +1330,7 @@ LABEL_12:
   }
 
   v37 = [MEMORY[0x1E696AD98] numberWithDouble:self->_firstPartyMsgNoonFri];
-  [v3 setObject:v37 forKey:@"firstPartyMsgNoonFri"];
+  [dictionary setObject:v37 forKey:@"firstPartyMsgNoonFri"];
 
   v10 = *(&self->_has + 1);
   if ((v10 & 8) == 0)
@@ -1346,13 +1346,13 @@ LABEL_13:
 
 LABEL_128:
   v38 = [MEMORY[0x1E696AD98] numberWithDouble:self->_firstPartyMsgNoonSat];
-  [v3 setObject:v38 forKey:@"firstPartyMsgNoonSat"];
+  [dictionary setObject:v38 forKey:@"firstPartyMsgNoonSat"];
 
   if ((*(&self->_has + 1) & 0x10) != 0)
   {
 LABEL_14:
     v11 = [MEMORY[0x1E696AD98] numberWithDouble:self->_firstPartyMsgNoonSun];
-    [v3 setObject:v11 forKey:@"firstPartyMsgNoonSun"];
+    [dictionary setObject:v11 forKey:@"firstPartyMsgNoonSun"];
   }
 
 LABEL_15:
@@ -1360,7 +1360,7 @@ LABEL_15:
   if ((*p_has & 0x200000000000000) != 0)
   {
     v39 = [MEMORY[0x1E696AD98] numberWithDouble:self->_firstPartyMsgEveWeekday];
-    [v3 setObject:v39 forKey:@"firstPartyMsgEveWeekday"];
+    [dictionary setObject:v39 forKey:@"firstPartyMsgEveWeekday"];
 
     v12 = *p_has;
     if ((*p_has & 0x40000000000000) == 0)
@@ -1381,7 +1381,7 @@ LABEL_17:
   }
 
   v40 = [MEMORY[0x1E696AD98] numberWithDouble:self->_firstPartyMsgEveFri];
-  [v3 setObject:v40 forKey:@"firstPartyMsgEveFri"];
+  [dictionary setObject:v40 forKey:@"firstPartyMsgEveFri"];
 
   v12 = *p_has;
   if ((*p_has & 0x80000000000000) == 0)
@@ -1397,27 +1397,27 @@ LABEL_18:
 
 LABEL_132:
   v41 = [MEMORY[0x1E696AD98] numberWithDouble:self->_firstPartyMsgEveSat];
-  [v3 setObject:v41 forKey:@"firstPartyMsgEveSat"];
+  [dictionary setObject:v41 forKey:@"firstPartyMsgEveSat"];
 
   if ((*p_has & 0x100000000000000) != 0)
   {
 LABEL_19:
     v13 = [MEMORY[0x1E696AD98] numberWithDouble:self->_firstPartyMsgEveSun];
-    [v3 setObject:v13 forKey:@"firstPartyMsgEveSun"];
+    [dictionary setObject:v13 forKey:@"firstPartyMsgEveSun"];
   }
 
 LABEL_20:
   if ((*(&self->_has + 8) & 2) != 0)
   {
     v14 = [MEMORY[0x1E696AD98] numberWithDouble:self->_firstPartyMsgNightWeekday];
-    [v3 setObject:v14 forKey:@"firstPartyMsgNightWeekday"];
+    [dictionary setObject:v14 forKey:@"firstPartyMsgNightWeekday"];
   }
 
   v15 = *p_has;
   if ((*p_has & 0x4000000000000000) != 0)
   {
     v16 = [MEMORY[0x1E696AD98] numberWithDouble:self->_firstPartyMsgNightFri];
-    [v3 setObject:v16 forKey:@"firstPartyMsgNightFri"];
+    [dictionary setObject:v16 forKey:@"firstPartyMsgNightFri"];
 
     v15 = *p_has;
   }
@@ -1425,14 +1425,14 @@ LABEL_20:
   if (v15 < 0)
   {
     v17 = [MEMORY[0x1E696AD98] numberWithDouble:self->_firstPartyMsgNightSat];
-    [v3 setObject:v17 forKey:@"firstPartyMsgNightSat"];
+    [dictionary setObject:v17 forKey:@"firstPartyMsgNightSat"];
   }
 
   v18 = *(&self->_has + 1);
   if (v18)
   {
     v42 = [MEMORY[0x1E696AD98] numberWithDouble:self->_firstPartyMsgNightSun];
-    [v3 setObject:v42 forKey:@"firstPartyMsgNightSun"];
+    [dictionary setObject:v42 forKey:@"firstPartyMsgNightSun"];
 
     v18 = *(&self->_has + 1);
     if ((v18 & 0x1000000) == 0)
@@ -1453,7 +1453,7 @@ LABEL_28:
   }
 
   v43 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_thirdPartyMsgTotal];
-  [v3 setObject:v43 forKey:@"thirdPartyMsgTotal"];
+  [dictionary setObject:v43 forKey:@"thirdPartyMsgTotal"];
 
   v18 = *(&self->_has + 1);
   if ((v18 & 0x8000) == 0)
@@ -1469,7 +1469,7 @@ LABEL_29:
 
 LABEL_136:
   v44 = [MEMORY[0x1E696AD98] numberWithDouble:self->_thirdPartyMsgMorningWeekday];
-  [v3 setObject:v44 forKey:@"thirdPartyMsgMorningWeekday"];
+  [dictionary setObject:v44 forKey:@"thirdPartyMsgMorningWeekday"];
 
   v18 = *(&self->_has + 1);
   if ((v18 & 0x1000) == 0)
@@ -1485,7 +1485,7 @@ LABEL_30:
 
 LABEL_137:
   v45 = [MEMORY[0x1E696AD98] numberWithDouble:self->_thirdPartyMsgMorningFri];
-  [v3 setObject:v45 forKey:@"thirdPartyMsgMorningFri"];
+  [dictionary setObject:v45 forKey:@"thirdPartyMsgMorningFri"];
 
   v18 = *(&self->_has + 1);
   if ((v18 & 0x2000) == 0)
@@ -1501,7 +1501,7 @@ LABEL_31:
 
 LABEL_138:
   v46 = [MEMORY[0x1E696AD98] numberWithDouble:self->_thirdPartyMsgMorningSat];
-  [v3 setObject:v46 forKey:@"thirdPartyMsgMorningSat"];
+  [dictionary setObject:v46 forKey:@"thirdPartyMsgMorningSat"];
 
   v18 = *(&self->_has + 1);
   if ((v18 & 0x4000) == 0)
@@ -1517,7 +1517,7 @@ LABEL_32:
 
 LABEL_139:
   v47 = [MEMORY[0x1E696AD98] numberWithDouble:self->_thirdPartyMsgMorningSun];
-  [v3 setObject:v47 forKey:@"thirdPartyMsgMorningSun"];
+  [dictionary setObject:v47 forKey:@"thirdPartyMsgMorningSun"];
 
   v18 = *(&self->_has + 1);
   if ((v18 & 0x800000) == 0)
@@ -1533,7 +1533,7 @@ LABEL_33:
 
 LABEL_140:
   v48 = [MEMORY[0x1E696AD98] numberWithDouble:self->_thirdPartyMsgNoonWeekday];
-  [v3 setObject:v48 forKey:@"thirdPartyMsgNoonWeekday"];
+  [dictionary setObject:v48 forKey:@"thirdPartyMsgNoonWeekday"];
 
   v18 = *(&self->_has + 1);
   if ((v18 & 0x100000) == 0)
@@ -1549,7 +1549,7 @@ LABEL_34:
 
 LABEL_141:
   v49 = [MEMORY[0x1E696AD98] numberWithDouble:self->_thirdPartyMsgNoonFri];
-  [v3 setObject:v49 forKey:@"thirdPartyMsgNoonFri"];
+  [dictionary setObject:v49 forKey:@"thirdPartyMsgNoonFri"];
 
   v18 = *(&self->_has + 1);
   if ((v18 & 0x200000) == 0)
@@ -1565,7 +1565,7 @@ LABEL_35:
 
 LABEL_142:
   v50 = [MEMORY[0x1E696AD98] numberWithDouble:self->_thirdPartyMsgNoonSat];
-  [v3 setObject:v50 forKey:@"thirdPartyMsgNoonSat"];
+  [dictionary setObject:v50 forKey:@"thirdPartyMsgNoonSat"];
 
   v18 = *(&self->_has + 1);
   if ((v18 & 0x400000) == 0)
@@ -1581,7 +1581,7 @@ LABEL_36:
 
 LABEL_143:
   v51 = [MEMORY[0x1E696AD98] numberWithDouble:self->_thirdPartyMsgNoonSun];
-  [v3 setObject:v51 forKey:@"thirdPartyMsgNoonSun"];
+  [dictionary setObject:v51 forKey:@"thirdPartyMsgNoonSun"];
 
   v18 = *(&self->_has + 1);
   if ((v18 & 0x800) == 0)
@@ -1597,7 +1597,7 @@ LABEL_37:
 
 LABEL_144:
   v52 = [MEMORY[0x1E696AD98] numberWithDouble:self->_thirdPartyMsgEveWeekday];
-  [v3 setObject:v52 forKey:@"thirdPartyMsgEveWeekday"];
+  [dictionary setObject:v52 forKey:@"thirdPartyMsgEveWeekday"];
 
   v18 = *(&self->_has + 1);
   if ((v18 & 0x100) == 0)
@@ -1613,7 +1613,7 @@ LABEL_38:
 
 LABEL_145:
   v53 = [MEMORY[0x1E696AD98] numberWithDouble:self->_thirdPartyMsgEveFri];
-  [v3 setObject:v53 forKey:@"thirdPartyMsgEveFri"];
+  [dictionary setObject:v53 forKey:@"thirdPartyMsgEveFri"];
 
   v18 = *(&self->_has + 1);
   if ((v18 & 0x200) == 0)
@@ -1629,7 +1629,7 @@ LABEL_39:
 
 LABEL_146:
   v54 = [MEMORY[0x1E696AD98] numberWithDouble:self->_thirdPartyMsgEveSat];
-  [v3 setObject:v54 forKey:@"thirdPartyMsgEveSat"];
+  [dictionary setObject:v54 forKey:@"thirdPartyMsgEveSat"];
 
   v18 = *(&self->_has + 1);
   if ((v18 & 0x400) == 0)
@@ -1645,7 +1645,7 @@ LABEL_40:
 
 LABEL_147:
   v55 = [MEMORY[0x1E696AD98] numberWithDouble:self->_thirdPartyMsgEveSun];
-  [v3 setObject:v55 forKey:@"thirdPartyMsgEveSun"];
+  [dictionary setObject:v55 forKey:@"thirdPartyMsgEveSun"];
 
   v18 = *(&self->_has + 1);
   if ((v18 & 0x80000) == 0)
@@ -1661,7 +1661,7 @@ LABEL_41:
 
 LABEL_148:
   v56 = [MEMORY[0x1E696AD98] numberWithDouble:self->_thirdPartyMsgNightWeekday];
-  [v3 setObject:v56 forKey:@"thirdPartyMsgNightWeekday"];
+  [dictionary setObject:v56 forKey:@"thirdPartyMsgNightWeekday"];
 
   v18 = *(&self->_has + 1);
   if ((v18 & 0x10000) == 0)
@@ -1677,7 +1677,7 @@ LABEL_42:
 
 LABEL_149:
   v57 = [MEMORY[0x1E696AD98] numberWithDouble:self->_thirdPartyMsgNightFri];
-  [v3 setObject:v57 forKey:@"thirdPartyMsgNightFri"];
+  [dictionary setObject:v57 forKey:@"thirdPartyMsgNightFri"];
 
   v18 = *(&self->_has + 1);
   if ((v18 & 0x20000) == 0)
@@ -1693,27 +1693,27 @@ LABEL_43:
 
 LABEL_150:
   v58 = [MEMORY[0x1E696AD98] numberWithDouble:self->_thirdPartyMsgNightSat];
-  [v3 setObject:v58 forKey:@"thirdPartyMsgNightSat"];
+  [dictionary setObject:v58 forKey:@"thirdPartyMsgNightSat"];
 
   if ((*(&self->_has + 1) & 0x40000) != 0)
   {
 LABEL_44:
     v19 = [MEMORY[0x1E696AD98] numberWithDouble:self->_thirdPartyMsgNightSun];
-    [v3 setObject:v19 forKey:@"thirdPartyMsgNightSun"];
+    [dictionary setObject:v19 forKey:@"thirdPartyMsgNightSun"];
   }
 
 LABEL_45:
   if ((*(&self->_has + 6) & 0x10) != 0)
   {
     v20 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_callTotal];
-    [v3 setObject:v20 forKey:@"callTotal"];
+    [dictionary setObject:v20 forKey:@"callTotal"];
   }
 
   v21 = *(&self->_has + 1);
   if ((v21 & 0x2000000) != 0)
   {
     v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_callBirthday];
-    [v3 setObject:v22 forKey:@"callBirthday"];
+    [dictionary setObject:v22 forKey:@"callBirthday"];
 
     v21 = *(&self->_has + 1);
   }
@@ -1721,14 +1721,14 @@ LABEL_45:
   if ((v21 & 0x40000000) != 0)
   {
     v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_contactFavorite];
-    [v3 setObject:v23 forKey:@"contactFavorite"];
+    [dictionary setObject:v23 forKey:@"contactFavorite"];
   }
 
   v24 = *p_has;
   if ((*p_has & 0x20000000000000) != 0)
   {
     v59 = [MEMORY[0x1E696AD98] numberWithDouble:self->_callTotalDur];
-    [v3 setObject:v59 forKey:@"callTotalDur"];
+    [dictionary setObject:v59 forKey:@"callTotalDur"];
 
     v24 = *p_has;
     if ((*p_has & 0x2000000000) == 0)
@@ -1749,7 +1749,7 @@ LABEL_53:
   }
 
   v60 = [MEMORY[0x1E696AD98] numberWithDouble:self->_callLongRatio];
-  [v3 setObject:v60 forKey:@"callLongRatio"];
+  [dictionary setObject:v60 forKey:@"callLongRatio"];
 
   v24 = *p_has;
   if ((*p_has & 0x8000000000000) == 0)
@@ -1765,7 +1765,7 @@ LABEL_54:
 
 LABEL_154:
   v61 = [MEMORY[0x1E696AD98] numberWithDouble:self->_callOutgoingRatio];
-  [v3 setObject:v61 forKey:@"callOutgoingRatio"];
+  [dictionary setObject:v61 forKey:@"callOutgoingRatio"];
 
   v24 = *p_has;
   if ((*p_has & 1) == 0)
@@ -1781,7 +1781,7 @@ LABEL_55:
 
 LABEL_155:
   v62 = [MEMORY[0x1E696AD98] numberWithDouble:self->_callAvgDur];
-  [v3 setObject:v62 forKey:@"callAvgDur"];
+  [dictionary setObject:v62 forKey:@"callAvgDur"];
 
   v24 = *p_has;
   if ((*p_has & 0x4000000000) == 0)
@@ -1797,7 +1797,7 @@ LABEL_56:
 
 LABEL_156:
   v63 = [MEMORY[0x1E696AD98] numberWithDouble:self->_callMaxDur];
-  [v3 setObject:v63 forKey:@"callMaxDur"];
+  [dictionary setObject:v63 forKey:@"callMaxDur"];
 
   v24 = *p_has;
   if ((*p_has & 0x40000000000) == 0)
@@ -1813,7 +1813,7 @@ LABEL_57:
 
 LABEL_157:
   v64 = [MEMORY[0x1E696AD98] numberWithDouble:self->_callMorningWeekday];
-  [v3 setObject:v64 forKey:@"callMorningWeekday"];
+  [dictionary setObject:v64 forKey:@"callMorningWeekday"];
 
   v24 = *p_has;
   if ((*p_has & 0x8000000000) == 0)
@@ -1829,7 +1829,7 @@ LABEL_58:
 
 LABEL_158:
   v65 = [MEMORY[0x1E696AD98] numberWithDouble:self->_callMorningFri];
-  [v3 setObject:v65 forKey:@"callMorningFri"];
+  [dictionary setObject:v65 forKey:@"callMorningFri"];
 
   v24 = *p_has;
   if ((*p_has & 0x10000000000) == 0)
@@ -1845,7 +1845,7 @@ LABEL_59:
 
 LABEL_159:
   v66 = [MEMORY[0x1E696AD98] numberWithDouble:self->_callMorningSat];
-  [v3 setObject:v66 forKey:@"callMorningSat"];
+  [dictionary setObject:v66 forKey:@"callMorningSat"];
 
   v24 = *p_has;
   if ((*p_has & 0x20000000000) == 0)
@@ -1861,7 +1861,7 @@ LABEL_60:
 
 LABEL_160:
   v67 = [MEMORY[0x1E696AD98] numberWithDouble:self->_callMorningSun];
-  [v3 setObject:v67 forKey:@"callMorningSun"];
+  [dictionary setObject:v67 forKey:@"callMorningSun"];
 
   v24 = *p_has;
   if ((*p_has & 0x4000000000000) == 0)
@@ -1877,7 +1877,7 @@ LABEL_61:
 
 LABEL_161:
   v68 = [MEMORY[0x1E696AD98] numberWithDouble:self->_callNoonWeekday];
-  [v3 setObject:v68 forKey:@"callNoonWeekday"];
+  [dictionary setObject:v68 forKey:@"callNoonWeekday"];
 
   v24 = *p_has;
   if ((*p_has & 0x800000000000) == 0)
@@ -1893,7 +1893,7 @@ LABEL_62:
 
 LABEL_162:
   v69 = [MEMORY[0x1E696AD98] numberWithDouble:self->_callNoonFri];
-  [v3 setObject:v69 forKey:@"callNoonFri"];
+  [dictionary setObject:v69 forKey:@"callNoonFri"];
 
   v24 = *p_has;
   if ((*p_has & 0x1000000000000) == 0)
@@ -1909,7 +1909,7 @@ LABEL_63:
 
 LABEL_163:
   v70 = [MEMORY[0x1E696AD98] numberWithDouble:self->_callNoonSat];
-  [v3 setObject:v70 forKey:@"callNoonSat"];
+  [dictionary setObject:v70 forKey:@"callNoonSat"];
 
   v24 = *p_has;
   if ((*p_has & 0x2000000000000) == 0)
@@ -1925,7 +1925,7 @@ LABEL_64:
 
 LABEL_164:
   v71 = [MEMORY[0x1E696AD98] numberWithDouble:self->_callNoonSun];
-  [v3 setObject:v71 forKey:@"callNoonSun"];
+  [dictionary setObject:v71 forKey:@"callNoonSun"];
 
   v24 = *p_has;
   if ((*p_has & 0x100000) == 0)
@@ -1941,7 +1941,7 @@ LABEL_65:
 
 LABEL_165:
   v72 = [MEMORY[0x1E696AD98] numberWithDouble:self->_callEveWeekday];
-  [v3 setObject:v72 forKey:@"callEveWeekday"];
+  [dictionary setObject:v72 forKey:@"callEveWeekday"];
 
   v24 = *p_has;
   if ((*p_has & 0x20000) == 0)
@@ -1957,7 +1957,7 @@ LABEL_66:
 
 LABEL_166:
   v73 = [MEMORY[0x1E696AD98] numberWithDouble:self->_callEveFri];
-  [v3 setObject:v73 forKey:@"callEveFri"];
+  [dictionary setObject:v73 forKey:@"callEveFri"];
 
   v24 = *p_has;
   if ((*p_has & 0x40000) == 0)
@@ -1973,7 +1973,7 @@ LABEL_67:
 
 LABEL_167:
   v74 = [MEMORY[0x1E696AD98] numberWithDouble:self->_callEveSat];
-  [v3 setObject:v74 forKey:@"callEveSat"];
+  [dictionary setObject:v74 forKey:@"callEveSat"];
 
   v24 = *p_has;
   if ((*p_has & 0x80000) == 0)
@@ -1989,7 +1989,7 @@ LABEL_68:
 
 LABEL_168:
   v75 = [MEMORY[0x1E696AD98] numberWithDouble:self->_callEveSun];
-  [v3 setObject:v75 forKey:@"callEveSun"];
+  [dictionary setObject:v75 forKey:@"callEveSun"];
 
   v24 = *p_has;
   if ((*p_has & 0x400000000000) == 0)
@@ -2005,7 +2005,7 @@ LABEL_69:
 
 LABEL_169:
   v76 = [MEMORY[0x1E696AD98] numberWithDouble:self->_callNightWeekday];
-  [v3 setObject:v76 forKey:@"callNightWeekday"];
+  [dictionary setObject:v76 forKey:@"callNightWeekday"];
 
   v24 = *p_has;
   if ((*p_has & 0x80000000000) == 0)
@@ -2021,7 +2021,7 @@ LABEL_70:
 
 LABEL_170:
   v77 = [MEMORY[0x1E696AD98] numberWithDouble:self->_callNightFri];
-  [v3 setObject:v77 forKey:@"callNightFri"];
+  [dictionary setObject:v77 forKey:@"callNightFri"];
 
   v24 = *p_has;
   if ((*p_has & 0x100000000000) == 0)
@@ -2037,7 +2037,7 @@ LABEL_71:
 
 LABEL_171:
   v78 = [MEMORY[0x1E696AD98] numberWithDouble:self->_callNightSat];
-  [v3 setObject:v78 forKey:@"callNightSat"];
+  [dictionary setObject:v78 forKey:@"callNightSat"];
 
   v24 = *p_has;
   if ((*p_has & 0x200000000000) == 0)
@@ -2053,7 +2053,7 @@ LABEL_72:
 
 LABEL_172:
   v79 = [MEMORY[0x1E696AD98] numberWithDouble:self->_callNightSun];
-  [v3 setObject:v79 forKey:@"callNightSun"];
+  [dictionary setObject:v79 forKey:@"callNightSun"];
 
   v24 = *p_has;
   if ((*p_has & 0x100) == 0)
@@ -2069,7 +2069,7 @@ LABEL_73:
 
 LABEL_173:
   v80 = [MEMORY[0x1E696AD98] numberWithDouble:self->_callDurMorningWeekday];
-  [v3 setObject:v80 forKey:@"callDurMorningWeekday"];
+  [dictionary setObject:v80 forKey:@"callDurMorningWeekday"];
 
   v24 = *p_has;
   if ((*p_has & 0x20) == 0)
@@ -2085,7 +2085,7 @@ LABEL_74:
 
 LABEL_174:
   v81 = [MEMORY[0x1E696AD98] numberWithDouble:self->_callDurMorningFri];
-  [v3 setObject:v81 forKey:@"callDurMorningFri"];
+  [dictionary setObject:v81 forKey:@"callDurMorningFri"];
 
   v24 = *p_has;
   if ((*p_has & 0x40) == 0)
@@ -2101,7 +2101,7 @@ LABEL_75:
 
 LABEL_175:
   v82 = [MEMORY[0x1E696AD98] numberWithDouble:self->_callDurMorningSat];
-  [v3 setObject:v82 forKey:@"callDurMorningSat"];
+  [dictionary setObject:v82 forKey:@"callDurMorningSat"];
 
   v24 = *p_has;
   if ((*p_has & 0x80) == 0)
@@ -2117,7 +2117,7 @@ LABEL_76:
 
 LABEL_176:
   v83 = [MEMORY[0x1E696AD98] numberWithDouble:self->_callDurMorningSun];
-  [v3 setObject:v83 forKey:@"callDurMorningSun"];
+  [dictionary setObject:v83 forKey:@"callDurMorningSun"];
 
   v24 = *p_has;
   if ((*p_has & 0x10000) == 0)
@@ -2133,7 +2133,7 @@ LABEL_77:
 
 LABEL_177:
   v84 = [MEMORY[0x1E696AD98] numberWithDouble:self->_callDurNoonWeekday];
-  [v3 setObject:v84 forKey:@"callDurNoonWeekday"];
+  [dictionary setObject:v84 forKey:@"callDurNoonWeekday"];
 
   v24 = *p_has;
   if ((*p_has & 0x2000) == 0)
@@ -2149,7 +2149,7 @@ LABEL_78:
 
 LABEL_178:
   v85 = [MEMORY[0x1E696AD98] numberWithDouble:self->_callDurNoonFri];
-  [v3 setObject:v85 forKey:@"callDurNoonFri"];
+  [dictionary setObject:v85 forKey:@"callDurNoonFri"];
 
   v24 = *p_has;
   if ((*p_has & 0x4000) == 0)
@@ -2165,7 +2165,7 @@ LABEL_79:
 
 LABEL_179:
   v86 = [MEMORY[0x1E696AD98] numberWithDouble:self->_callDurNoonSat];
-  [v3 setObject:v86 forKey:@"callDurNoonSat"];
+  [dictionary setObject:v86 forKey:@"callDurNoonSat"];
 
   v24 = *p_has;
   if ((*p_has & 0x8000) == 0)
@@ -2181,7 +2181,7 @@ LABEL_80:
 
 LABEL_180:
   v87 = [MEMORY[0x1E696AD98] numberWithDouble:self->_callDurNoonSun];
-  [v3 setObject:v87 forKey:@"callDurNoonSun"];
+  [dictionary setObject:v87 forKey:@"callDurNoonSun"];
 
   v24 = *p_has;
   if ((*p_has & 0x10) == 0)
@@ -2197,7 +2197,7 @@ LABEL_81:
 
 LABEL_181:
   v88 = [MEMORY[0x1E696AD98] numberWithDouble:self->_callDurEveWeekday];
-  [v3 setObject:v88 forKey:@"callDurEveWeekday"];
+  [dictionary setObject:v88 forKey:@"callDurEveWeekday"];
 
   v24 = *p_has;
   if ((*p_has & 2) == 0)
@@ -2213,7 +2213,7 @@ LABEL_82:
 
 LABEL_182:
   v89 = [MEMORY[0x1E696AD98] numberWithDouble:self->_callDurEveFri];
-  [v3 setObject:v89 forKey:@"callDurEveFri"];
+  [dictionary setObject:v89 forKey:@"callDurEveFri"];
 
   v24 = *p_has;
   if ((*p_has & 4) == 0)
@@ -2229,7 +2229,7 @@ LABEL_83:
 
 LABEL_183:
   v90 = [MEMORY[0x1E696AD98] numberWithDouble:self->_callDurEveSat];
-  [v3 setObject:v90 forKey:@"callDurEveSat"];
+  [dictionary setObject:v90 forKey:@"callDurEveSat"];
 
   v24 = *p_has;
   if ((*p_has & 8) == 0)
@@ -2245,7 +2245,7 @@ LABEL_84:
 
 LABEL_184:
   v91 = [MEMORY[0x1E696AD98] numberWithDouble:self->_callDurEveSun];
-  [v3 setObject:v91 forKey:@"callDurEveSun"];
+  [dictionary setObject:v91 forKey:@"callDurEveSun"];
 
   v24 = *p_has;
   if ((*p_has & 0x1000) == 0)
@@ -2261,7 +2261,7 @@ LABEL_85:
 
 LABEL_185:
   v92 = [MEMORY[0x1E696AD98] numberWithDouble:self->_callDurNightWeekday];
-  [v3 setObject:v92 forKey:@"callDurNightWeekday"];
+  [dictionary setObject:v92 forKey:@"callDurNightWeekday"];
 
   v24 = *p_has;
   if ((*p_has & 0x200) == 0)
@@ -2277,7 +2277,7 @@ LABEL_86:
 
 LABEL_186:
   v93 = [MEMORY[0x1E696AD98] numberWithDouble:self->_callDurNightFri];
-  [v3 setObject:v93 forKey:@"callDurNightFri"];
+  [dictionary setObject:v93 forKey:@"callDurNightFri"];
 
   v24 = *p_has;
   if ((*p_has & 0x400) == 0)
@@ -2293,7 +2293,7 @@ LABEL_87:
 
 LABEL_187:
   v94 = [MEMORY[0x1E696AD98] numberWithDouble:self->_callDurNightSat];
-  [v3 setObject:v94 forKey:@"callDurNightSat"];
+  [dictionary setObject:v94 forKey:@"callDurNightSat"];
 
   v24 = *p_has;
   if ((*p_has & 0x800) == 0)
@@ -2309,7 +2309,7 @@ LABEL_88:
 
 LABEL_188:
   v95 = [MEMORY[0x1E696AD98] numberWithDouble:self->_callDurNightSun];
-  [v3 setObject:v95 forKey:@"callDurNightSun"];
+  [dictionary setObject:v95 forKey:@"callDurNightSun"];
 
   v24 = *p_has;
   if ((*p_has & 0x10000000) == 0)
@@ -2325,7 +2325,7 @@ LABEL_89:
 
 LABEL_189:
   v96 = [MEMORY[0x1E696AD98] numberWithDouble:self->_callLongMorningWeekday];
-  [v3 setObject:v96 forKey:@"callLongMorningWeekday"];
+  [dictionary setObject:v96 forKey:@"callLongMorningWeekday"];
 
   v24 = *p_has;
   if ((*p_has & 0x2000000) == 0)
@@ -2341,7 +2341,7 @@ LABEL_90:
 
 LABEL_190:
   v97 = [MEMORY[0x1E696AD98] numberWithDouble:self->_callLongMorningFri];
-  [v3 setObject:v97 forKey:@"callLongMorningFri"];
+  [dictionary setObject:v97 forKey:@"callLongMorningFri"];
 
   v24 = *p_has;
   if ((*p_has & 0x4000000) == 0)
@@ -2357,7 +2357,7 @@ LABEL_91:
 
 LABEL_191:
   v98 = [MEMORY[0x1E696AD98] numberWithDouble:self->_callLongMorningSat];
-  [v3 setObject:v98 forKey:@"callLongMorningSat"];
+  [dictionary setObject:v98 forKey:@"callLongMorningSat"];
 
   v24 = *p_has;
   if ((*p_has & 0x8000000) == 0)
@@ -2373,7 +2373,7 @@ LABEL_92:
 
 LABEL_192:
   v99 = [MEMORY[0x1E696AD98] numberWithDouble:self->_callLongMorningSun];
-  [v3 setObject:v99 forKey:@"callLongMorningSun"];
+  [dictionary setObject:v99 forKey:@"callLongMorningSun"];
 
   v24 = *p_has;
   if ((*p_has & 0x1000000000) == 0)
@@ -2389,7 +2389,7 @@ LABEL_93:
 
 LABEL_193:
   v100 = [MEMORY[0x1E696AD98] numberWithDouble:self->_callLongNoonWeekday];
-  [v3 setObject:v100 forKey:@"callLongNoonWeekday"];
+  [dictionary setObject:v100 forKey:@"callLongNoonWeekday"];
 
   v24 = *p_has;
   if ((*p_has & 0x200000000) == 0)
@@ -2405,7 +2405,7 @@ LABEL_94:
 
 LABEL_194:
   v101 = [MEMORY[0x1E696AD98] numberWithDouble:self->_callLongNoonFri];
-  [v3 setObject:v101 forKey:@"callLongNoonFri"];
+  [dictionary setObject:v101 forKey:@"callLongNoonFri"];
 
   v24 = *p_has;
   if ((*p_has & 0x400000000) == 0)
@@ -2421,7 +2421,7 @@ LABEL_95:
 
 LABEL_195:
   v102 = [MEMORY[0x1E696AD98] numberWithDouble:self->_callLongNoonSat];
-  [v3 setObject:v102 forKey:@"callLongNoonSat"];
+  [dictionary setObject:v102 forKey:@"callLongNoonSat"];
 
   v24 = *p_has;
   if ((*p_has & 0x800000000) == 0)
@@ -2437,7 +2437,7 @@ LABEL_96:
 
 LABEL_196:
   v103 = [MEMORY[0x1E696AD98] numberWithDouble:self->_callLongNoonSun];
-  [v3 setObject:v103 forKey:@"callLongNoonSun"];
+  [dictionary setObject:v103 forKey:@"callLongNoonSun"];
 
   v24 = *p_has;
   if ((*p_has & 0x1000000) == 0)
@@ -2453,7 +2453,7 @@ LABEL_97:
 
 LABEL_197:
   v104 = [MEMORY[0x1E696AD98] numberWithDouble:self->_callLongEveWeekday];
-  [v3 setObject:v104 forKey:@"callLongEveWeekday"];
+  [dictionary setObject:v104 forKey:@"callLongEveWeekday"];
 
   v24 = *p_has;
   if ((*p_has & 0x200000) == 0)
@@ -2469,7 +2469,7 @@ LABEL_98:
 
 LABEL_198:
   v105 = [MEMORY[0x1E696AD98] numberWithDouble:self->_callLongEveFri];
-  [v3 setObject:v105 forKey:@"callLongEveFri"];
+  [dictionary setObject:v105 forKey:@"callLongEveFri"];
 
   v24 = *p_has;
   if ((*p_has & 0x400000) == 0)
@@ -2485,7 +2485,7 @@ LABEL_99:
 
 LABEL_199:
   v106 = [MEMORY[0x1E696AD98] numberWithDouble:self->_callLongEveSat];
-  [v3 setObject:v106 forKey:@"callLongEveSat"];
+  [dictionary setObject:v106 forKey:@"callLongEveSat"];
 
   v24 = *p_has;
   if ((*p_has & 0x800000) == 0)
@@ -2501,7 +2501,7 @@ LABEL_100:
 
 LABEL_200:
   v107 = [MEMORY[0x1E696AD98] numberWithDouble:self->_callLongEveSun];
-  [v3 setObject:v107 forKey:@"callLongEveSun"];
+  [dictionary setObject:v107 forKey:@"callLongEveSun"];
 
   v24 = *p_has;
   if ((*p_has & 0x100000000) == 0)
@@ -2517,7 +2517,7 @@ LABEL_101:
 
 LABEL_201:
   v108 = [MEMORY[0x1E696AD98] numberWithDouble:self->_callLongNightWeekday];
-  [v3 setObject:v108 forKey:@"callLongNightWeekday"];
+  [dictionary setObject:v108 forKey:@"callLongNightWeekday"];
 
   v24 = *p_has;
   if ((*p_has & 0x20000000) == 0)
@@ -2533,7 +2533,7 @@ LABEL_102:
 
 LABEL_202:
   v109 = [MEMORY[0x1E696AD98] numberWithDouble:self->_callLongNightFri];
-  [v3 setObject:v109 forKey:@"callLongNightFri"];
+  [dictionary setObject:v109 forKey:@"callLongNightFri"];
 
   v24 = *p_has;
   if ((*p_has & 0x40000000) == 0)
@@ -2549,33 +2549,33 @@ LABEL_103:
 
 LABEL_203:
   v110 = [MEMORY[0x1E696AD98] numberWithDouble:self->_callLongNightSat];
-  [v3 setObject:v110 forKey:@"callLongNightSat"];
+  [dictionary setObject:v110 forKey:@"callLongNightSat"];
 
   if ((*p_has & 0x80000000) != 0)
   {
 LABEL_104:
     v25 = [MEMORY[0x1E696AD98] numberWithDouble:self->_callLongNightSun];
-    [v3 setObject:v25 forKey:@"callLongNightSun"];
+    [dictionary setObject:v25 forKey:@"callLongNightSun"];
   }
 
 LABEL_105:
   if ((*(&self->_has + 11) & 0x20) != 0)
   {
     v26 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_contactFamilyRelation];
-    [v3 setObject:v26 forKey:@"contactFamilyRelation"];
+    [dictionary setObject:v26 forKey:@"contactFamilyRelation"];
   }
 
   contactRelation = self->_contactRelation;
   if (contactRelation)
   {
-    [v3 setObject:contactRelation forKey:@"contactRelation"];
+    [dictionary setObject:contactRelation forKey:@"contactRelation"];
   }
 
   v28 = *(&self->_has + 1);
   if ((v28 & 0x10000000) != 0)
   {
     v111 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_contactFamilyName];
-    [v3 setObject:v111 forKey:@"contactFamilyName"];
+    [dictionary setObject:v111 forKey:@"contactFamilyName"];
 
     v28 = *(&self->_has + 1);
     if ((v28 & 0x4000000000) == 0)
@@ -2596,7 +2596,7 @@ LABEL_111:
   }
 
   v112 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_contactParent];
-  [v3 setObject:v112 forKey:@"contactParent"];
+  [dictionary setObject:v112 forKey:@"contactParent"];
 
   v28 = *(&self->_has + 1);
   if ((v28 & 0x4000000) == 0)
@@ -2612,7 +2612,7 @@ LABEL_112:
 
 LABEL_207:
   v113 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_contactEmergency];
-  [v3 setObject:v113 forKey:@"contactEmergency"];
+  [dictionary setObject:v113 forKey:@"contactEmergency"];
 
   v28 = *(&self->_has + 1);
   if ((v28 & 0x8000000) == 0)
@@ -2628,7 +2628,7 @@ LABEL_113:
 
 LABEL_208:
   v114 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_contactEmergencyFamily];
-  [v3 setObject:v114 forKey:@"contactEmergencyFamily"];
+  [dictionary setObject:v114 forKey:@"contactEmergencyFamily"];
 
   v28 = *(&self->_has + 1);
   if ((v28 & 0x1000000000) == 0)
@@ -2644,7 +2644,7 @@ LABEL_114:
 
 LABEL_209:
   v115 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_contactInHome];
-  [v3 setObject:v115 forKey:@"contactInHome"];
+  [dictionary setObject:v115 forKey:@"contactInHome"];
 
   v28 = *(&self->_has + 1);
   if ((v28 & 0x2000000000) == 0)
@@ -2660,7 +2660,7 @@ LABEL_115:
 
 LABEL_210:
   v116 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_contactInPhotos];
-  [v3 setObject:v116 forKey:@"contactInPhotos"];
+  [dictionary setObject:v116 forKey:@"contactInPhotos"];
 
   v28 = *(&self->_has + 1);
   if ((v28 & 0x80000000) == 0)
@@ -2676,7 +2676,7 @@ LABEL_116:
 
 LABEL_211:
   v117 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_contactInAirDrop];
-  [v3 setObject:v117 forKey:@"contactInAirDrop"];
+  [dictionary setObject:v117 forKey:@"contactInAirDrop"];
 
   v28 = *(&self->_has + 1);
   if ((v28 & 0x100000000) == 0)
@@ -2692,7 +2692,7 @@ LABEL_117:
 
 LABEL_212:
   v118 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_contactInAirDropAtHome];
-  [v3 setObject:v118 forKey:@"contactInAirDropAtHome"];
+  [dictionary setObject:v118 forKey:@"contactInAirDropAtHome"];
 
   v28 = *(&self->_has + 1);
   if ((v28 & 0x400000000) == 0)
@@ -2705,7 +2705,7 @@ LABEL_118:
 
 LABEL_214:
     v120 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_contactInFMFSharingWithMe];
-    [v3 setObject:v120 forKey:@"contactInFMFSharingWithMe"];
+    [dictionary setObject:v120 forKey:@"contactInFMFSharingWithMe"];
 
     if ((*(&self->_has + 1) & 0x200000000) == 0)
     {
@@ -2717,7 +2717,7 @@ LABEL_214:
 
 LABEL_213:
   v119 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_contactInFMFFollowingMe];
-  [v3 setObject:v119 forKey:@"contactInFMFFollowingMe"];
+  [dictionary setObject:v119 forKey:@"contactInFMFFollowingMe"];
 
   v28 = *(&self->_has + 1);
   if ((v28 & 0x800000000) != 0)
@@ -2730,20 +2730,20 @@ LABEL_119:
   {
 LABEL_120:
     v29 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_contactInFMFFavorite];
-    [v3 setObject:v29 forKey:@"contactInFMFFavorite"];
+    [dictionary setObject:v29 forKey:@"contactInFMFFavorite"];
   }
 
 LABEL_121:
   v30 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_mailIntelligenceContactId];
-  [v3 setObject:v30 forKey:@"mailIntelligenceContactId"];
+  [dictionary setObject:v30 forKey:@"mailIntelligenceContactId"];
 
-  v31 = v3;
-  return v3;
+  v31 = dictionary;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v118 = a3;
+  toCopy = to;
   p_has = &self->_has;
   v5 = *(&self->_has + 1);
   if ((v5 & 0x80) != 0)
@@ -4152,29 +4152,29 @@ LABEL_121:
   PBDataWriterWriteUint64Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   p_has = &self->_has;
   v6 = *(&self->_has + 1);
   if ((v6 & 0x80) != 0)
   {
-    v4[72] = self->_firstPartyMsgTotal;
-    v4[100] |= 0x80uLL;
+    toCopy[72] = self->_firstPartyMsgTotal;
+    toCopy[100] |= 0x80uLL;
     v6 = *(&self->_has + 1);
   }
 
   if ((v6 & 0x40) != 0)
   {
-    v4[71] = *&self->_firstPartyMsgOutgoingRatio;
-    v4[100] |= 0x40uLL;
+    toCopy[71] = *&self->_firstPartyMsgOutgoingRatio;
+    toCopy[100] |= 0x40uLL;
   }
 
   has = *p_has;
   if ((*p_has & 0x2000000000000000) != 0)
   {
-    v4[62] = *&self->_firstPartyMsgMorningWeekday;
-    v4[99] |= 0x2000000000000000uLL;
+    toCopy[62] = *&self->_firstPartyMsgMorningWeekday;
+    toCopy[99] |= 0x2000000000000000uLL;
     has = self->_has;
     if ((has & 0x400000000000000) == 0)
     {
@@ -4193,8 +4193,8 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v4[59] = *&self->_firstPartyMsgMorningFri;
-  v4[99] |= 0x400000000000000uLL;
+  toCopy[59] = *&self->_firstPartyMsgMorningFri;
+  toCopy[99] |= 0x400000000000000uLL;
   has = self->_has;
   if ((has & 0x800000000000000) == 0)
   {
@@ -4208,21 +4208,21 @@ LABEL_8:
   }
 
 LABEL_126:
-  v4[60] = *&self->_firstPartyMsgMorningSat;
-  v4[99] |= 0x800000000000000uLL;
+  toCopy[60] = *&self->_firstPartyMsgMorningSat;
+  toCopy[99] |= 0x800000000000000uLL;
   if ((*&self->_has & 0x1000000000000000) != 0)
   {
 LABEL_9:
-    v4[61] = *&self->_firstPartyMsgMorningSun;
-    v4[99] |= 0x1000000000000000uLL;
+    toCopy[61] = *&self->_firstPartyMsgMorningSun;
+    toCopy[99] |= 0x1000000000000000uLL;
   }
 
 LABEL_10:
   v8 = *(&self->_has + 1);
   if ((v8 & 0x20) != 0)
   {
-    v4[70] = *&self->_firstPartyMsgNoonWeekday;
-    v4[100] |= 0x20uLL;
+    toCopy[70] = *&self->_firstPartyMsgNoonWeekday;
+    toCopy[100] |= 0x20uLL;
     v8 = *(&self->_has + 1);
     if ((v8 & 4) == 0)
     {
@@ -4241,8 +4241,8 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v4[67] = *&self->_firstPartyMsgNoonFri;
-  v4[100] |= 4uLL;
+  toCopy[67] = *&self->_firstPartyMsgNoonFri;
+  toCopy[100] |= 4uLL;
   v8 = *(&self->_has + 1);
   if ((v8 & 8) == 0)
   {
@@ -4256,21 +4256,21 @@ LABEL_13:
   }
 
 LABEL_130:
-  v4[68] = *&self->_firstPartyMsgNoonSat;
-  v4[100] |= 8uLL;
+  toCopy[68] = *&self->_firstPartyMsgNoonSat;
+  toCopy[100] |= 8uLL;
   if ((*(&self->_has + 1) & 0x10) != 0)
   {
 LABEL_14:
-    v4[69] = *&self->_firstPartyMsgNoonSun;
-    v4[100] |= 0x10uLL;
+    toCopy[69] = *&self->_firstPartyMsgNoonSun;
+    toCopy[100] |= 0x10uLL;
   }
 
 LABEL_15:
   v9 = *p_has;
   if ((*p_has & 0x200000000000000) != 0)
   {
-    v4[58] = *&self->_firstPartyMsgEveWeekday;
-    v4[99] |= 0x200000000000000uLL;
+    toCopy[58] = *&self->_firstPartyMsgEveWeekday;
+    toCopy[99] |= 0x200000000000000uLL;
     v9 = self->_has;
     if ((v9 & 0x40000000000000) == 0)
     {
@@ -4289,8 +4289,8 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v4[55] = *&self->_firstPartyMsgEveFri;
-  v4[99] |= 0x40000000000000uLL;
+  toCopy[55] = *&self->_firstPartyMsgEveFri;
+  toCopy[99] |= 0x40000000000000uLL;
   v9 = self->_has;
   if ((v9 & 0x80000000000000) == 0)
   {
@@ -4304,41 +4304,41 @@ LABEL_18:
   }
 
 LABEL_134:
-  v4[56] = *&self->_firstPartyMsgEveSat;
-  v4[99] |= 0x80000000000000uLL;
+  toCopy[56] = *&self->_firstPartyMsgEveSat;
+  toCopy[99] |= 0x80000000000000uLL;
   if ((*&self->_has & 0x100000000000000) != 0)
   {
 LABEL_19:
-    v4[57] = *&self->_firstPartyMsgEveSun;
-    v4[99] |= 0x100000000000000uLL;
+    toCopy[57] = *&self->_firstPartyMsgEveSun;
+    toCopy[99] |= 0x100000000000000uLL;
   }
 
 LABEL_20:
   if ((*(&self->_has + 8) & 2) != 0)
   {
-    v4[66] = *&self->_firstPartyMsgNightWeekday;
-    v4[100] |= 2uLL;
+    toCopy[66] = *&self->_firstPartyMsgNightWeekday;
+    toCopy[100] |= 2uLL;
   }
 
   v10 = *p_has;
   if ((*p_has & 0x4000000000000000) != 0)
   {
-    v4[63] = *&self->_firstPartyMsgNightFri;
-    v4[99] |= 0x4000000000000000uLL;
+    toCopy[63] = *&self->_firstPartyMsgNightFri;
+    toCopy[99] |= 0x4000000000000000uLL;
     v10 = self->_has;
   }
 
   if (v10 < 0)
   {
-    v4[64] = *&self->_firstPartyMsgNightSat;
-    v4[99] |= 0x8000000000000000;
+    toCopy[64] = *&self->_firstPartyMsgNightSat;
+    toCopy[99] |= 0x8000000000000000;
   }
 
   v11 = *(&self->_has + 1);
   if (v11)
   {
-    v4[65] = *&self->_firstPartyMsgNightSun;
-    v4[100] |= 1uLL;
+    toCopy[65] = *&self->_firstPartyMsgNightSun;
+    toCopy[100] |= 1uLL;
     v11 = *(&self->_has + 1);
     if ((v11 & 0x1000000) == 0)
     {
@@ -4357,8 +4357,8 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  v4[90] = self->_thirdPartyMsgTotal;
-  v4[100] |= 0x1000000uLL;
+  toCopy[90] = self->_thirdPartyMsgTotal;
+  toCopy[100] |= 0x1000000uLL;
   v11 = *(&self->_has + 1);
   if ((v11 & 0x8000) == 0)
   {
@@ -4372,8 +4372,8 @@ LABEL_29:
   }
 
 LABEL_138:
-  v4[81] = *&self->_thirdPartyMsgMorningWeekday;
-  v4[100] |= 0x8000uLL;
+  toCopy[81] = *&self->_thirdPartyMsgMorningWeekday;
+  toCopy[100] |= 0x8000uLL;
   v11 = *(&self->_has + 1);
   if ((v11 & 0x1000) == 0)
   {
@@ -4387,8 +4387,8 @@ LABEL_30:
   }
 
 LABEL_139:
-  v4[78] = *&self->_thirdPartyMsgMorningFri;
-  v4[100] |= 0x1000uLL;
+  toCopy[78] = *&self->_thirdPartyMsgMorningFri;
+  toCopy[100] |= 0x1000uLL;
   v11 = *(&self->_has + 1);
   if ((v11 & 0x2000) == 0)
   {
@@ -4402,8 +4402,8 @@ LABEL_31:
   }
 
 LABEL_140:
-  v4[79] = *&self->_thirdPartyMsgMorningSat;
-  v4[100] |= 0x2000uLL;
+  toCopy[79] = *&self->_thirdPartyMsgMorningSat;
+  toCopy[100] |= 0x2000uLL;
   v11 = *(&self->_has + 1);
   if ((v11 & 0x4000) == 0)
   {
@@ -4417,8 +4417,8 @@ LABEL_32:
   }
 
 LABEL_141:
-  v4[80] = *&self->_thirdPartyMsgMorningSun;
-  v4[100] |= 0x4000uLL;
+  toCopy[80] = *&self->_thirdPartyMsgMorningSun;
+  toCopy[100] |= 0x4000uLL;
   v11 = *(&self->_has + 1);
   if ((v11 & 0x800000) == 0)
   {
@@ -4432,8 +4432,8 @@ LABEL_33:
   }
 
 LABEL_142:
-  v4[89] = *&self->_thirdPartyMsgNoonWeekday;
-  v4[100] |= 0x800000uLL;
+  toCopy[89] = *&self->_thirdPartyMsgNoonWeekday;
+  toCopy[100] |= 0x800000uLL;
   v11 = *(&self->_has + 1);
   if ((v11 & 0x100000) == 0)
   {
@@ -4447,8 +4447,8 @@ LABEL_34:
   }
 
 LABEL_143:
-  v4[86] = *&self->_thirdPartyMsgNoonFri;
-  v4[100] |= 0x100000uLL;
+  toCopy[86] = *&self->_thirdPartyMsgNoonFri;
+  toCopy[100] |= 0x100000uLL;
   v11 = *(&self->_has + 1);
   if ((v11 & 0x200000) == 0)
   {
@@ -4462,8 +4462,8 @@ LABEL_35:
   }
 
 LABEL_144:
-  v4[87] = *&self->_thirdPartyMsgNoonSat;
-  v4[100] |= 0x200000uLL;
+  toCopy[87] = *&self->_thirdPartyMsgNoonSat;
+  toCopy[100] |= 0x200000uLL;
   v11 = *(&self->_has + 1);
   if ((v11 & 0x400000) == 0)
   {
@@ -4477,8 +4477,8 @@ LABEL_36:
   }
 
 LABEL_145:
-  v4[88] = *&self->_thirdPartyMsgNoonSun;
-  v4[100] |= 0x400000uLL;
+  toCopy[88] = *&self->_thirdPartyMsgNoonSun;
+  toCopy[100] |= 0x400000uLL;
   v11 = *(&self->_has + 1);
   if ((v11 & 0x800) == 0)
   {
@@ -4492,8 +4492,8 @@ LABEL_37:
   }
 
 LABEL_146:
-  v4[77] = *&self->_thirdPartyMsgEveWeekday;
-  v4[100] |= 0x800uLL;
+  toCopy[77] = *&self->_thirdPartyMsgEveWeekday;
+  toCopy[100] |= 0x800uLL;
   v11 = *(&self->_has + 1);
   if ((v11 & 0x100) == 0)
   {
@@ -4507,8 +4507,8 @@ LABEL_38:
   }
 
 LABEL_147:
-  v4[74] = *&self->_thirdPartyMsgEveFri;
-  v4[100] |= 0x100uLL;
+  toCopy[74] = *&self->_thirdPartyMsgEveFri;
+  toCopy[100] |= 0x100uLL;
   v11 = *(&self->_has + 1);
   if ((v11 & 0x200) == 0)
   {
@@ -4522,8 +4522,8 @@ LABEL_39:
   }
 
 LABEL_148:
-  v4[75] = *&self->_thirdPartyMsgEveSat;
-  v4[100] |= 0x200uLL;
+  toCopy[75] = *&self->_thirdPartyMsgEveSat;
+  toCopy[100] |= 0x200uLL;
   v11 = *(&self->_has + 1);
   if ((v11 & 0x400) == 0)
   {
@@ -4537,8 +4537,8 @@ LABEL_40:
   }
 
 LABEL_149:
-  v4[76] = *&self->_thirdPartyMsgEveSun;
-  v4[100] |= 0x400uLL;
+  toCopy[76] = *&self->_thirdPartyMsgEveSun;
+  toCopy[100] |= 0x400uLL;
   v11 = *(&self->_has + 1);
   if ((v11 & 0x80000) == 0)
   {
@@ -4552,8 +4552,8 @@ LABEL_41:
   }
 
 LABEL_150:
-  v4[85] = *&self->_thirdPartyMsgNightWeekday;
-  v4[100] |= 0x80000uLL;
+  toCopy[85] = *&self->_thirdPartyMsgNightWeekday;
+  toCopy[100] |= 0x80000uLL;
   v11 = *(&self->_has + 1);
   if ((v11 & 0x10000) == 0)
   {
@@ -4567,8 +4567,8 @@ LABEL_42:
   }
 
 LABEL_151:
-  v4[82] = *&self->_thirdPartyMsgNightFri;
-  v4[100] |= 0x10000uLL;
+  toCopy[82] = *&self->_thirdPartyMsgNightFri;
+  toCopy[100] |= 0x10000uLL;
   v11 = *(&self->_has + 1);
   if ((v11 & 0x20000) == 0)
   {
@@ -4582,41 +4582,41 @@ LABEL_43:
   }
 
 LABEL_152:
-  v4[83] = *&self->_thirdPartyMsgNightSat;
-  v4[100] |= 0x20000uLL;
+  toCopy[83] = *&self->_thirdPartyMsgNightSat;
+  toCopy[100] |= 0x20000uLL;
   if ((*(&self->_has + 1) & 0x40000) != 0)
   {
 LABEL_44:
-    v4[84] = *&self->_thirdPartyMsgNightSun;
-    v4[100] |= 0x40000uLL;
+    toCopy[84] = *&self->_thirdPartyMsgNightSun;
+    toCopy[100] |= 0x40000uLL;
   }
 
 LABEL_45:
   if ((*(&self->_has + 6) & 0x10) != 0)
   {
-    v4[53] = self->_callTotal;
-    v4[99] |= 0x10000000000000uLL;
+    toCopy[53] = self->_callTotal;
+    toCopy[99] |= 0x10000000000000uLL;
   }
 
   v12 = *(&self->_has + 1);
   if ((v12 & 0x2000000) != 0)
   {
-    *(v4 + 182) = self->_callBirthday;
-    v4[100] |= 0x2000000uLL;
+    *(toCopy + 182) = self->_callBirthday;
+    toCopy[100] |= 0x2000000uLL;
     v12 = *(&self->_has + 1);
   }
 
   if ((v12 & 0x40000000) != 0)
   {
-    *(v4 + 187) = self->_contactFavorite;
-    v4[100] |= 0x40000000uLL;
+    *(toCopy + 187) = self->_contactFavorite;
+    toCopy[100] |= 0x40000000uLL;
   }
 
   v13 = *p_has;
   if ((*p_has & 0x20000000000000) != 0)
   {
-    v4[54] = *&self->_callTotalDur;
-    v4[99] |= 0x20000000000000uLL;
+    toCopy[54] = *&self->_callTotalDur;
+    toCopy[99] |= 0x20000000000000uLL;
     v13 = self->_has;
     if ((v13 & 0x2000000000) == 0)
     {
@@ -4635,8 +4635,8 @@ LABEL_53:
     goto LABEL_53;
   }
 
-  v4[38] = *&self->_callLongRatio;
-  v4[99] |= 0x2000000000uLL;
+  toCopy[38] = *&self->_callLongRatio;
+  toCopy[99] |= 0x2000000000uLL;
   v13 = self->_has;
   if ((v13 & 0x8000000000000) == 0)
   {
@@ -4650,8 +4650,8 @@ LABEL_54:
   }
 
 LABEL_156:
-  v4[52] = *&self->_callOutgoingRatio;
-  v4[99] |= 0x8000000000000uLL;
+  toCopy[52] = *&self->_callOutgoingRatio;
+  toCopy[99] |= 0x8000000000000uLL;
   v13 = self->_has;
   if ((v13 & 1) == 0)
   {
@@ -4665,8 +4665,8 @@ LABEL_55:
   }
 
 LABEL_157:
-  v4[1] = *&self->_callAvgDur;
-  v4[99] |= 1uLL;
+  toCopy[1] = *&self->_callAvgDur;
+  toCopy[99] |= 1uLL;
   v13 = self->_has;
   if ((v13 & 0x4000000000) == 0)
   {
@@ -4680,8 +4680,8 @@ LABEL_56:
   }
 
 LABEL_158:
-  v4[39] = *&self->_callMaxDur;
-  v4[99] |= 0x4000000000uLL;
+  toCopy[39] = *&self->_callMaxDur;
+  toCopy[99] |= 0x4000000000uLL;
   v13 = self->_has;
   if ((v13 & 0x40000000000) == 0)
   {
@@ -4695,8 +4695,8 @@ LABEL_57:
   }
 
 LABEL_159:
-  v4[43] = *&self->_callMorningWeekday;
-  v4[99] |= 0x40000000000uLL;
+  toCopy[43] = *&self->_callMorningWeekday;
+  toCopy[99] |= 0x40000000000uLL;
   v13 = self->_has;
   if ((v13 & 0x8000000000) == 0)
   {
@@ -4710,8 +4710,8 @@ LABEL_58:
   }
 
 LABEL_160:
-  v4[40] = *&self->_callMorningFri;
-  v4[99] |= 0x8000000000uLL;
+  toCopy[40] = *&self->_callMorningFri;
+  toCopy[99] |= 0x8000000000uLL;
   v13 = self->_has;
   if ((v13 & 0x10000000000) == 0)
   {
@@ -4725,8 +4725,8 @@ LABEL_59:
   }
 
 LABEL_161:
-  v4[41] = *&self->_callMorningSat;
-  v4[99] |= 0x10000000000uLL;
+  toCopy[41] = *&self->_callMorningSat;
+  toCopy[99] |= 0x10000000000uLL;
   v13 = self->_has;
   if ((v13 & 0x20000000000) == 0)
   {
@@ -4740,8 +4740,8 @@ LABEL_60:
   }
 
 LABEL_162:
-  v4[42] = *&self->_callMorningSun;
-  v4[99] |= 0x20000000000uLL;
+  toCopy[42] = *&self->_callMorningSun;
+  toCopy[99] |= 0x20000000000uLL;
   v13 = self->_has;
   if ((v13 & 0x4000000000000) == 0)
   {
@@ -4755,8 +4755,8 @@ LABEL_61:
   }
 
 LABEL_163:
-  v4[51] = *&self->_callNoonWeekday;
-  v4[99] |= 0x4000000000000uLL;
+  toCopy[51] = *&self->_callNoonWeekday;
+  toCopy[99] |= 0x4000000000000uLL;
   v13 = self->_has;
   if ((v13 & 0x800000000000) == 0)
   {
@@ -4770,8 +4770,8 @@ LABEL_62:
   }
 
 LABEL_164:
-  v4[48] = *&self->_callNoonFri;
-  v4[99] |= 0x800000000000uLL;
+  toCopy[48] = *&self->_callNoonFri;
+  toCopy[99] |= 0x800000000000uLL;
   v13 = self->_has;
   if ((v13 & 0x1000000000000) == 0)
   {
@@ -4785,8 +4785,8 @@ LABEL_63:
   }
 
 LABEL_165:
-  v4[49] = *&self->_callNoonSat;
-  v4[99] |= 0x1000000000000uLL;
+  toCopy[49] = *&self->_callNoonSat;
+  toCopy[99] |= 0x1000000000000uLL;
   v13 = self->_has;
   if ((v13 & 0x2000000000000) == 0)
   {
@@ -4800,8 +4800,8 @@ LABEL_64:
   }
 
 LABEL_166:
-  v4[50] = *&self->_callNoonSun;
-  v4[99] |= 0x2000000000000uLL;
+  toCopy[50] = *&self->_callNoonSun;
+  toCopy[99] |= 0x2000000000000uLL;
   v13 = self->_has;
   if ((v13 & 0x100000) == 0)
   {
@@ -4815,8 +4815,8 @@ LABEL_65:
   }
 
 LABEL_167:
-  v4[21] = *&self->_callEveWeekday;
-  v4[99] |= 0x100000uLL;
+  toCopy[21] = *&self->_callEveWeekday;
+  toCopy[99] |= 0x100000uLL;
   v13 = self->_has;
   if ((v13 & 0x20000) == 0)
   {
@@ -4830,8 +4830,8 @@ LABEL_66:
   }
 
 LABEL_168:
-  v4[18] = *&self->_callEveFri;
-  v4[99] |= 0x20000uLL;
+  toCopy[18] = *&self->_callEveFri;
+  toCopy[99] |= 0x20000uLL;
   v13 = self->_has;
   if ((v13 & 0x40000) == 0)
   {
@@ -4845,8 +4845,8 @@ LABEL_67:
   }
 
 LABEL_169:
-  v4[19] = *&self->_callEveSat;
-  v4[99] |= 0x40000uLL;
+  toCopy[19] = *&self->_callEveSat;
+  toCopy[99] |= 0x40000uLL;
   v13 = self->_has;
   if ((v13 & 0x80000) == 0)
   {
@@ -4860,8 +4860,8 @@ LABEL_68:
   }
 
 LABEL_170:
-  v4[20] = *&self->_callEveSun;
-  v4[99] |= 0x80000uLL;
+  toCopy[20] = *&self->_callEveSun;
+  toCopy[99] |= 0x80000uLL;
   v13 = self->_has;
   if ((v13 & 0x400000000000) == 0)
   {
@@ -4875,8 +4875,8 @@ LABEL_69:
   }
 
 LABEL_171:
-  v4[47] = *&self->_callNightWeekday;
-  v4[99] |= 0x400000000000uLL;
+  toCopy[47] = *&self->_callNightWeekday;
+  toCopy[99] |= 0x400000000000uLL;
   v13 = self->_has;
   if ((v13 & 0x80000000000) == 0)
   {
@@ -4890,8 +4890,8 @@ LABEL_70:
   }
 
 LABEL_172:
-  v4[44] = *&self->_callNightFri;
-  v4[99] |= 0x80000000000uLL;
+  toCopy[44] = *&self->_callNightFri;
+  toCopy[99] |= 0x80000000000uLL;
   v13 = self->_has;
   if ((v13 & 0x100000000000) == 0)
   {
@@ -4905,8 +4905,8 @@ LABEL_71:
   }
 
 LABEL_173:
-  v4[45] = *&self->_callNightSat;
-  v4[99] |= 0x100000000000uLL;
+  toCopy[45] = *&self->_callNightSat;
+  toCopy[99] |= 0x100000000000uLL;
   v13 = self->_has;
   if ((v13 & 0x200000000000) == 0)
   {
@@ -4920,8 +4920,8 @@ LABEL_72:
   }
 
 LABEL_174:
-  v4[46] = *&self->_callNightSun;
-  v4[99] |= 0x200000000000uLL;
+  toCopy[46] = *&self->_callNightSun;
+  toCopy[99] |= 0x200000000000uLL;
   v13 = self->_has;
   if ((v13 & 0x100) == 0)
   {
@@ -4935,8 +4935,8 @@ LABEL_73:
   }
 
 LABEL_175:
-  v4[9] = *&self->_callDurMorningWeekday;
-  v4[99] |= 0x100uLL;
+  toCopy[9] = *&self->_callDurMorningWeekday;
+  toCopy[99] |= 0x100uLL;
   v13 = self->_has;
   if ((v13 & 0x20) == 0)
   {
@@ -4950,8 +4950,8 @@ LABEL_74:
   }
 
 LABEL_176:
-  v4[6] = *&self->_callDurMorningFri;
-  v4[99] |= 0x20uLL;
+  toCopy[6] = *&self->_callDurMorningFri;
+  toCopy[99] |= 0x20uLL;
   v13 = self->_has;
   if ((v13 & 0x40) == 0)
   {
@@ -4965,8 +4965,8 @@ LABEL_75:
   }
 
 LABEL_177:
-  v4[7] = *&self->_callDurMorningSat;
-  v4[99] |= 0x40uLL;
+  toCopy[7] = *&self->_callDurMorningSat;
+  toCopy[99] |= 0x40uLL;
   v13 = self->_has;
   if ((v13 & 0x80) == 0)
   {
@@ -4980,8 +4980,8 @@ LABEL_76:
   }
 
 LABEL_178:
-  v4[8] = *&self->_callDurMorningSun;
-  v4[99] |= 0x80uLL;
+  toCopy[8] = *&self->_callDurMorningSun;
+  toCopy[99] |= 0x80uLL;
   v13 = self->_has;
   if ((v13 & 0x10000) == 0)
   {
@@ -4995,8 +4995,8 @@ LABEL_77:
   }
 
 LABEL_179:
-  v4[17] = *&self->_callDurNoonWeekday;
-  v4[99] |= 0x10000uLL;
+  toCopy[17] = *&self->_callDurNoonWeekday;
+  toCopy[99] |= 0x10000uLL;
   v13 = self->_has;
   if ((v13 & 0x2000) == 0)
   {
@@ -5010,8 +5010,8 @@ LABEL_78:
   }
 
 LABEL_180:
-  v4[14] = *&self->_callDurNoonFri;
-  v4[99] |= 0x2000uLL;
+  toCopy[14] = *&self->_callDurNoonFri;
+  toCopy[99] |= 0x2000uLL;
   v13 = self->_has;
   if ((v13 & 0x4000) == 0)
   {
@@ -5025,8 +5025,8 @@ LABEL_79:
   }
 
 LABEL_181:
-  v4[15] = *&self->_callDurNoonSat;
-  v4[99] |= 0x4000uLL;
+  toCopy[15] = *&self->_callDurNoonSat;
+  toCopy[99] |= 0x4000uLL;
   v13 = self->_has;
   if ((v13 & 0x8000) == 0)
   {
@@ -5040,8 +5040,8 @@ LABEL_80:
   }
 
 LABEL_182:
-  v4[16] = *&self->_callDurNoonSun;
-  v4[99] |= 0x8000uLL;
+  toCopy[16] = *&self->_callDurNoonSun;
+  toCopy[99] |= 0x8000uLL;
   v13 = self->_has;
   if ((v13 & 0x10) == 0)
   {
@@ -5055,8 +5055,8 @@ LABEL_81:
   }
 
 LABEL_183:
-  v4[5] = *&self->_callDurEveWeekday;
-  v4[99] |= 0x10uLL;
+  toCopy[5] = *&self->_callDurEveWeekday;
+  toCopy[99] |= 0x10uLL;
   v13 = self->_has;
   if ((v13 & 2) == 0)
   {
@@ -5070,8 +5070,8 @@ LABEL_82:
   }
 
 LABEL_184:
-  v4[2] = *&self->_callDurEveFri;
-  v4[99] |= 2uLL;
+  toCopy[2] = *&self->_callDurEveFri;
+  toCopy[99] |= 2uLL;
   v13 = self->_has;
   if ((v13 & 4) == 0)
   {
@@ -5085,8 +5085,8 @@ LABEL_83:
   }
 
 LABEL_185:
-  v4[3] = *&self->_callDurEveSat;
-  v4[99] |= 4uLL;
+  toCopy[3] = *&self->_callDurEveSat;
+  toCopy[99] |= 4uLL;
   v13 = self->_has;
   if ((v13 & 8) == 0)
   {
@@ -5100,8 +5100,8 @@ LABEL_84:
   }
 
 LABEL_186:
-  v4[4] = *&self->_callDurEveSun;
-  v4[99] |= 8uLL;
+  toCopy[4] = *&self->_callDurEveSun;
+  toCopy[99] |= 8uLL;
   v13 = self->_has;
   if ((v13 & 0x1000) == 0)
   {
@@ -5115,8 +5115,8 @@ LABEL_85:
   }
 
 LABEL_187:
-  v4[13] = *&self->_callDurNightWeekday;
-  v4[99] |= 0x1000uLL;
+  toCopy[13] = *&self->_callDurNightWeekday;
+  toCopy[99] |= 0x1000uLL;
   v13 = self->_has;
   if ((v13 & 0x200) == 0)
   {
@@ -5130,8 +5130,8 @@ LABEL_86:
   }
 
 LABEL_188:
-  v4[10] = *&self->_callDurNightFri;
-  v4[99] |= 0x200uLL;
+  toCopy[10] = *&self->_callDurNightFri;
+  toCopy[99] |= 0x200uLL;
   v13 = self->_has;
   if ((v13 & 0x400) == 0)
   {
@@ -5145,8 +5145,8 @@ LABEL_87:
   }
 
 LABEL_189:
-  v4[11] = *&self->_callDurNightSat;
-  v4[99] |= 0x400uLL;
+  toCopy[11] = *&self->_callDurNightSat;
+  toCopy[99] |= 0x400uLL;
   v13 = self->_has;
   if ((v13 & 0x800) == 0)
   {
@@ -5160,8 +5160,8 @@ LABEL_88:
   }
 
 LABEL_190:
-  v4[12] = *&self->_callDurNightSun;
-  v4[99] |= 0x800uLL;
+  toCopy[12] = *&self->_callDurNightSun;
+  toCopy[99] |= 0x800uLL;
   v13 = self->_has;
   if ((v13 & 0x10000000) == 0)
   {
@@ -5175,8 +5175,8 @@ LABEL_89:
   }
 
 LABEL_191:
-  v4[29] = *&self->_callLongMorningWeekday;
-  v4[99] |= 0x10000000uLL;
+  toCopy[29] = *&self->_callLongMorningWeekday;
+  toCopy[99] |= 0x10000000uLL;
   v13 = self->_has;
   if ((v13 & 0x2000000) == 0)
   {
@@ -5190,8 +5190,8 @@ LABEL_90:
   }
 
 LABEL_192:
-  v4[26] = *&self->_callLongMorningFri;
-  v4[99] |= 0x2000000uLL;
+  toCopy[26] = *&self->_callLongMorningFri;
+  toCopy[99] |= 0x2000000uLL;
   v13 = self->_has;
   if ((v13 & 0x4000000) == 0)
   {
@@ -5205,8 +5205,8 @@ LABEL_91:
   }
 
 LABEL_193:
-  v4[27] = *&self->_callLongMorningSat;
-  v4[99] |= 0x4000000uLL;
+  toCopy[27] = *&self->_callLongMorningSat;
+  toCopy[99] |= 0x4000000uLL;
   v13 = self->_has;
   if ((v13 & 0x8000000) == 0)
   {
@@ -5220,8 +5220,8 @@ LABEL_92:
   }
 
 LABEL_194:
-  v4[28] = *&self->_callLongMorningSun;
-  v4[99] |= 0x8000000uLL;
+  toCopy[28] = *&self->_callLongMorningSun;
+  toCopy[99] |= 0x8000000uLL;
   v13 = self->_has;
   if ((v13 & 0x1000000000) == 0)
   {
@@ -5235,8 +5235,8 @@ LABEL_93:
   }
 
 LABEL_195:
-  v4[37] = *&self->_callLongNoonWeekday;
-  v4[99] |= 0x1000000000uLL;
+  toCopy[37] = *&self->_callLongNoonWeekday;
+  toCopy[99] |= 0x1000000000uLL;
   v13 = self->_has;
   if ((v13 & 0x200000000) == 0)
   {
@@ -5250,8 +5250,8 @@ LABEL_94:
   }
 
 LABEL_196:
-  v4[34] = *&self->_callLongNoonFri;
-  v4[99] |= 0x200000000uLL;
+  toCopy[34] = *&self->_callLongNoonFri;
+  toCopy[99] |= 0x200000000uLL;
   v13 = self->_has;
   if ((v13 & 0x400000000) == 0)
   {
@@ -5265,8 +5265,8 @@ LABEL_95:
   }
 
 LABEL_197:
-  v4[35] = *&self->_callLongNoonSat;
-  v4[99] |= 0x400000000uLL;
+  toCopy[35] = *&self->_callLongNoonSat;
+  toCopy[99] |= 0x400000000uLL;
   v13 = self->_has;
   if ((v13 & 0x800000000) == 0)
   {
@@ -5280,8 +5280,8 @@ LABEL_96:
   }
 
 LABEL_198:
-  v4[36] = *&self->_callLongNoonSun;
-  v4[99] |= 0x800000000uLL;
+  toCopy[36] = *&self->_callLongNoonSun;
+  toCopy[99] |= 0x800000000uLL;
   v13 = self->_has;
   if ((v13 & 0x1000000) == 0)
   {
@@ -5295,8 +5295,8 @@ LABEL_97:
   }
 
 LABEL_199:
-  v4[25] = *&self->_callLongEveWeekday;
-  v4[99] |= 0x1000000uLL;
+  toCopy[25] = *&self->_callLongEveWeekday;
+  toCopy[99] |= 0x1000000uLL;
   v13 = self->_has;
   if ((v13 & 0x200000) == 0)
   {
@@ -5310,8 +5310,8 @@ LABEL_98:
   }
 
 LABEL_200:
-  v4[22] = *&self->_callLongEveFri;
-  v4[99] |= 0x200000uLL;
+  toCopy[22] = *&self->_callLongEveFri;
+  toCopy[99] |= 0x200000uLL;
   v13 = self->_has;
   if ((v13 & 0x400000) == 0)
   {
@@ -5325,8 +5325,8 @@ LABEL_99:
   }
 
 LABEL_201:
-  v4[23] = *&self->_callLongEveSat;
-  v4[99] |= 0x400000uLL;
+  toCopy[23] = *&self->_callLongEveSat;
+  toCopy[99] |= 0x400000uLL;
   v13 = self->_has;
   if ((v13 & 0x800000) == 0)
   {
@@ -5340,8 +5340,8 @@ LABEL_100:
   }
 
 LABEL_202:
-  v4[24] = *&self->_callLongEveSun;
-  v4[99] |= 0x800000uLL;
+  toCopy[24] = *&self->_callLongEveSun;
+  toCopy[99] |= 0x800000uLL;
   v13 = self->_has;
   if ((v13 & 0x100000000) == 0)
   {
@@ -5355,8 +5355,8 @@ LABEL_101:
   }
 
 LABEL_203:
-  v4[33] = *&self->_callLongNightWeekday;
-  v4[99] |= 0x100000000uLL;
+  toCopy[33] = *&self->_callLongNightWeekday;
+  toCopy[99] |= 0x100000000uLL;
   v13 = self->_has;
   if ((v13 & 0x20000000) == 0)
   {
@@ -5370,8 +5370,8 @@ LABEL_102:
   }
 
 LABEL_204:
-  v4[30] = *&self->_callLongNightFri;
-  v4[99] |= 0x20000000uLL;
+  toCopy[30] = *&self->_callLongNightFri;
+  toCopy[99] |= 0x20000000uLL;
   v13 = self->_has;
   if ((v13 & 0x40000000) == 0)
   {
@@ -5385,34 +5385,34 @@ LABEL_103:
   }
 
 LABEL_205:
-  v4[31] = *&self->_callLongNightSat;
-  v4[99] |= 0x40000000uLL;
+  toCopy[31] = *&self->_callLongNightSat;
+  toCopy[99] |= 0x40000000uLL;
   if ((*&self->_has & 0x80000000) != 0)
   {
 LABEL_104:
-    v4[32] = *&self->_callLongNightSun;
-    v4[99] |= 0x80000000uLL;
+    toCopy[32] = *&self->_callLongNightSun;
+    toCopy[99] |= 0x80000000uLL;
   }
 
 LABEL_105:
   if ((*(&self->_has + 11) & 0x20) != 0)
   {
-    *(v4 + 186) = self->_contactFamilyRelation;
-    v4[100] |= 0x20000000uLL;
+    *(toCopy + 186) = self->_contactFamilyRelation;
+    toCopy[100] |= 0x20000000uLL;
   }
 
   if (self->_contactRelation)
   {
-    v15 = v4;
-    [v4 setContactRelation:?];
-    v4 = v15;
+    v15 = toCopy;
+    [toCopy setContactRelation:?];
+    toCopy = v15;
   }
 
   v14 = *(&self->_has + 1);
   if ((v14 & 0x10000000) != 0)
   {
-    *(v4 + 185) = self->_contactFamilyName;
-    v4[100] |= 0x10000000uLL;
+    *(toCopy + 185) = self->_contactFamilyName;
+    toCopy[100] |= 0x10000000uLL;
     v14 = *(&self->_has + 1);
     if ((v14 & 0x4000000000) == 0)
     {
@@ -5431,8 +5431,8 @@ LABEL_111:
     goto LABEL_111;
   }
 
-  *(v4 + 195) = self->_contactParent;
-  v4[100] |= 0x4000000000uLL;
+  *(toCopy + 195) = self->_contactParent;
+  toCopy[100] |= 0x4000000000uLL;
   v14 = *(&self->_has + 1);
   if ((v14 & 0x4000000) == 0)
   {
@@ -5446,8 +5446,8 @@ LABEL_112:
   }
 
 LABEL_209:
-  *(v4 + 183) = self->_contactEmergency;
-  v4[100] |= 0x4000000uLL;
+  *(toCopy + 183) = self->_contactEmergency;
+  toCopy[100] |= 0x4000000uLL;
   v14 = *(&self->_has + 1);
   if ((v14 & 0x8000000) == 0)
   {
@@ -5461,8 +5461,8 @@ LABEL_113:
   }
 
 LABEL_210:
-  *(v4 + 184) = self->_contactEmergencyFamily;
-  v4[100] |= 0x8000000uLL;
+  *(toCopy + 184) = self->_contactEmergencyFamily;
+  toCopy[100] |= 0x8000000uLL;
   v14 = *(&self->_has + 1);
   if ((v14 & 0x1000000000) == 0)
   {
@@ -5476,8 +5476,8 @@ LABEL_114:
   }
 
 LABEL_211:
-  *(v4 + 193) = self->_contactInHome;
-  v4[100] |= 0x1000000000uLL;
+  *(toCopy + 193) = self->_contactInHome;
+  toCopy[100] |= 0x1000000000uLL;
   v14 = *(&self->_has + 1);
   if ((v14 & 0x2000000000) == 0)
   {
@@ -5491,8 +5491,8 @@ LABEL_115:
   }
 
 LABEL_212:
-  *(v4 + 194) = self->_contactInPhotos;
-  v4[100] |= 0x2000000000uLL;
+  *(toCopy + 194) = self->_contactInPhotos;
+  toCopy[100] |= 0x2000000000uLL;
   v14 = *(&self->_has + 1);
   if ((v14 & 0x80000000) == 0)
   {
@@ -5506,8 +5506,8 @@ LABEL_116:
   }
 
 LABEL_213:
-  *(v4 + 188) = self->_contactInAirDrop;
-  v4[100] |= 0x80000000uLL;
+  *(toCopy + 188) = self->_contactInAirDrop;
+  toCopy[100] |= 0x80000000uLL;
   v14 = *(&self->_has + 1);
   if ((v14 & 0x100000000) == 0)
   {
@@ -5521,8 +5521,8 @@ LABEL_117:
   }
 
 LABEL_214:
-  *(v4 + 189) = self->_contactInAirDropAtHome;
-  v4[100] |= 0x100000000uLL;
+  *(toCopy + 189) = self->_contactInAirDropAtHome;
+  toCopy[100] |= 0x100000000uLL;
   v14 = *(&self->_has + 1);
   if ((v14 & 0x400000000) == 0)
   {
@@ -5536,8 +5536,8 @@ LABEL_118:
   }
 
 LABEL_215:
-  *(v4 + 191) = self->_contactInFMFFollowingMe;
-  v4[100] |= 0x400000000uLL;
+  *(toCopy + 191) = self->_contactInFMFFollowingMe;
+  toCopy[100] |= 0x400000000uLL;
   v14 = *(&self->_has + 1);
   if ((v14 & 0x800000000) == 0)
   {
@@ -5551,22 +5551,22 @@ LABEL_119:
   }
 
 LABEL_216:
-  *(v4 + 192) = self->_contactInFMFSharingWithMe;
-  v4[100] |= 0x800000000uLL;
+  *(toCopy + 192) = self->_contactInFMFSharingWithMe;
+  toCopy[100] |= 0x800000000uLL;
   if ((*(&self->_has + 1) & 0x200000000) != 0)
   {
 LABEL_120:
-    *(v4 + 190) = self->_contactInFMFFavorite;
-    v4[100] |= 0x200000000uLL;
+    *(toCopy + 190) = self->_contactInFMFFavorite;
+    toCopy[100] |= 0x200000000uLL;
   }
 
 LABEL_121:
-  v4[73] = self->_mailIntelligenceContactId;
+  toCopy[73] = self->_mailIntelligenceContactId;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   p_has = &self->_has;
   v8 = *(&self->_has + 1);
@@ -6814,7 +6814,7 @@ LABEL_105:
     *(v5 + 800) |= 0x20000000uLL;
   }
 
-  v16 = [(NSString *)self->_contactRelation copyWithZone:a3];
+  v16 = [(NSString *)self->_contactRelation copyWithZone:zone];
   v17 = *(v6 + 784);
   *(v6 + 784) = v16;
 
@@ -6977,20 +6977,20 @@ LABEL_119:
   return v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_520;
   }
 
   p_has = &self->_has;
   v6 = *(&self->_has + 1);
-  v7 = *(v4 + 100);
+  v7 = *(equalCopy + 100);
   if ((v6 & 0x80) != 0)
   {
-    if ((v7 & 0x80) == 0 || self->_firstPartyMsgTotal != *(v4 + 72))
+    if ((v7 & 0x80) == 0 || self->_firstPartyMsgTotal != *(equalCopy + 72))
     {
       goto LABEL_520;
     }
@@ -7003,7 +7003,7 @@ LABEL_119:
 
   if ((v6 & 0x40) != 0)
   {
-    if ((v7 & 0x40) == 0 || self->_firstPartyMsgOutgoingRatio != *(v4 + 71))
+    if ((v7 & 0x40) == 0 || self->_firstPartyMsgOutgoingRatio != *(equalCopy + 71))
     {
       goto LABEL_520;
     }
@@ -7015,10 +7015,10 @@ LABEL_119:
   }
 
   v8 = *p_has;
-  v9 = *(v4 + 99);
+  v9 = *(equalCopy + 99);
   if ((*p_has & 0x2000000000000000) != 0)
   {
-    if ((v9 & 0x2000000000000000) == 0 || self->_firstPartyMsgMorningWeekday != *(v4 + 62))
+    if ((v9 & 0x2000000000000000) == 0 || self->_firstPartyMsgMorningWeekday != *(equalCopy + 62))
     {
       goto LABEL_520;
     }
@@ -7031,7 +7031,7 @@ LABEL_119:
 
   if ((v8 & 0x400000000000000) != 0)
   {
-    if ((v9 & 0x400000000000000) == 0 || self->_firstPartyMsgMorningFri != *(v4 + 59))
+    if ((v9 & 0x400000000000000) == 0 || self->_firstPartyMsgMorningFri != *(equalCopy + 59))
     {
       goto LABEL_520;
     }
@@ -7044,7 +7044,7 @@ LABEL_119:
 
   if ((v8 & 0x800000000000000) != 0)
   {
-    if ((v9 & 0x800000000000000) == 0 || self->_firstPartyMsgMorningSat != *(v4 + 60))
+    if ((v9 & 0x800000000000000) == 0 || self->_firstPartyMsgMorningSat != *(equalCopy + 60))
     {
       goto LABEL_520;
     }
@@ -7057,7 +7057,7 @@ LABEL_119:
 
   if ((v8 & 0x1000000000000000) != 0)
   {
-    if ((v9 & 0x1000000000000000) == 0 || self->_firstPartyMsgMorningSun != *(v4 + 61))
+    if ((v9 & 0x1000000000000000) == 0 || self->_firstPartyMsgMorningSun != *(equalCopy + 61))
     {
       goto LABEL_520;
     }
@@ -7070,7 +7070,7 @@ LABEL_119:
 
   if ((v6 & 0x20) != 0)
   {
-    if ((v7 & 0x20) == 0 || self->_firstPartyMsgNoonWeekday != *(v4 + 70))
+    if ((v7 & 0x20) == 0 || self->_firstPartyMsgNoonWeekday != *(equalCopy + 70))
     {
       goto LABEL_520;
     }
@@ -7083,7 +7083,7 @@ LABEL_119:
 
   if ((v6 & 4) != 0)
   {
-    if ((v7 & 4) == 0 || self->_firstPartyMsgNoonFri != *(v4 + 67))
+    if ((v7 & 4) == 0 || self->_firstPartyMsgNoonFri != *(equalCopy + 67))
     {
       goto LABEL_520;
     }
@@ -7096,7 +7096,7 @@ LABEL_119:
 
   if ((v6 & 8) != 0)
   {
-    if ((v7 & 8) == 0 || self->_firstPartyMsgNoonSat != *(v4 + 68))
+    if ((v7 & 8) == 0 || self->_firstPartyMsgNoonSat != *(equalCopy + 68))
     {
       goto LABEL_520;
     }
@@ -7109,7 +7109,7 @@ LABEL_119:
 
   if ((v6 & 0x10) != 0)
   {
-    if ((v7 & 0x10) == 0 || self->_firstPartyMsgNoonSun != *(v4 + 69))
+    if ((v7 & 0x10) == 0 || self->_firstPartyMsgNoonSun != *(equalCopy + 69))
     {
       goto LABEL_520;
     }
@@ -7122,7 +7122,7 @@ LABEL_119:
 
   if ((v8 & 0x200000000000000) != 0)
   {
-    if ((v9 & 0x200000000000000) == 0 || self->_firstPartyMsgEveWeekday != *(v4 + 58))
+    if ((v9 & 0x200000000000000) == 0 || self->_firstPartyMsgEveWeekday != *(equalCopy + 58))
     {
       goto LABEL_520;
     }
@@ -7135,7 +7135,7 @@ LABEL_119:
 
   if ((v8 & 0x40000000000000) != 0)
   {
-    if ((v9 & 0x40000000000000) == 0 || self->_firstPartyMsgEveFri != *(v4 + 55))
+    if ((v9 & 0x40000000000000) == 0 || self->_firstPartyMsgEveFri != *(equalCopy + 55))
     {
       goto LABEL_520;
     }
@@ -7148,7 +7148,7 @@ LABEL_119:
 
   if ((v8 & 0x80000000000000) != 0)
   {
-    if ((v9 & 0x80000000000000) == 0 || self->_firstPartyMsgEveSat != *(v4 + 56))
+    if ((v9 & 0x80000000000000) == 0 || self->_firstPartyMsgEveSat != *(equalCopy + 56))
     {
       goto LABEL_520;
     }
@@ -7161,7 +7161,7 @@ LABEL_119:
 
   if ((v8 & 0x100000000000000) != 0)
   {
-    if ((v9 & 0x100000000000000) == 0 || self->_firstPartyMsgEveSun != *(v4 + 57))
+    if ((v9 & 0x100000000000000) == 0 || self->_firstPartyMsgEveSun != *(equalCopy + 57))
     {
       goto LABEL_520;
     }
@@ -7174,7 +7174,7 @@ LABEL_119:
 
   if ((v6 & 2) != 0)
   {
-    if ((v7 & 2) == 0 || self->_firstPartyMsgNightWeekday != *(v4 + 66))
+    if ((v7 & 2) == 0 || self->_firstPartyMsgNightWeekday != *(equalCopy + 66))
     {
       goto LABEL_520;
     }
@@ -7187,7 +7187,7 @@ LABEL_119:
 
   if ((v8 & 0x4000000000000000) != 0)
   {
-    if ((v9 & 0x4000000000000000) == 0 || self->_firstPartyMsgNightFri != *(v4 + 63))
+    if ((v9 & 0x4000000000000000) == 0 || self->_firstPartyMsgNightFri != *(equalCopy + 63))
     {
       goto LABEL_520;
     }
@@ -7200,7 +7200,7 @@ LABEL_119:
 
   if (v8 < 0)
   {
-    if ((v9 & 0x8000000000000000) == 0 || self->_firstPartyMsgNightSat != *(v4 + 64))
+    if ((v9 & 0x8000000000000000) == 0 || self->_firstPartyMsgNightSat != *(equalCopy + 64))
     {
       goto LABEL_520;
     }
@@ -7213,7 +7213,7 @@ LABEL_119:
 
   if (v6)
   {
-    if ((v7 & 1) == 0 || self->_firstPartyMsgNightSun != *(v4 + 65))
+    if ((v7 & 1) == 0 || self->_firstPartyMsgNightSun != *(equalCopy + 65))
     {
       goto LABEL_520;
     }
@@ -7226,7 +7226,7 @@ LABEL_119:
 
   if ((v6 & 0x1000000) != 0)
   {
-    if ((v7 & 0x1000000) == 0 || self->_thirdPartyMsgTotal != *(v4 + 90))
+    if ((v7 & 0x1000000) == 0 || self->_thirdPartyMsgTotal != *(equalCopy + 90))
     {
       goto LABEL_520;
     }
@@ -7239,7 +7239,7 @@ LABEL_119:
 
   if ((v6 & 0x8000) != 0)
   {
-    if ((v7 & 0x8000) == 0 || self->_thirdPartyMsgMorningWeekday != *(v4 + 81))
+    if ((v7 & 0x8000) == 0 || self->_thirdPartyMsgMorningWeekday != *(equalCopy + 81))
     {
       goto LABEL_520;
     }
@@ -7252,7 +7252,7 @@ LABEL_119:
 
   if ((v6 & 0x1000) != 0)
   {
-    if ((v7 & 0x1000) == 0 || self->_thirdPartyMsgMorningFri != *(v4 + 78))
+    if ((v7 & 0x1000) == 0 || self->_thirdPartyMsgMorningFri != *(equalCopy + 78))
     {
       goto LABEL_520;
     }
@@ -7265,7 +7265,7 @@ LABEL_119:
 
   if ((v6 & 0x2000) != 0)
   {
-    if ((v7 & 0x2000) == 0 || self->_thirdPartyMsgMorningSat != *(v4 + 79))
+    if ((v7 & 0x2000) == 0 || self->_thirdPartyMsgMorningSat != *(equalCopy + 79))
     {
       goto LABEL_520;
     }
@@ -7278,7 +7278,7 @@ LABEL_119:
 
   if ((v6 & 0x4000) != 0)
   {
-    if ((v7 & 0x4000) == 0 || self->_thirdPartyMsgMorningSun != *(v4 + 80))
+    if ((v7 & 0x4000) == 0 || self->_thirdPartyMsgMorningSun != *(equalCopy + 80))
     {
       goto LABEL_520;
     }
@@ -7291,7 +7291,7 @@ LABEL_119:
 
   if ((v6 & 0x800000) != 0)
   {
-    if ((v7 & 0x800000) == 0 || self->_thirdPartyMsgNoonWeekday != *(v4 + 89))
+    if ((v7 & 0x800000) == 0 || self->_thirdPartyMsgNoonWeekday != *(equalCopy + 89))
     {
       goto LABEL_520;
     }
@@ -7304,7 +7304,7 @@ LABEL_119:
 
   if ((v6 & 0x100000) != 0)
   {
-    if ((v7 & 0x100000) == 0 || self->_thirdPartyMsgNoonFri != *(v4 + 86))
+    if ((v7 & 0x100000) == 0 || self->_thirdPartyMsgNoonFri != *(equalCopy + 86))
     {
       goto LABEL_520;
     }
@@ -7317,7 +7317,7 @@ LABEL_119:
 
   if ((v6 & 0x200000) != 0)
   {
-    if ((v7 & 0x200000) == 0 || self->_thirdPartyMsgNoonSat != *(v4 + 87))
+    if ((v7 & 0x200000) == 0 || self->_thirdPartyMsgNoonSat != *(equalCopy + 87))
     {
       goto LABEL_520;
     }
@@ -7330,7 +7330,7 @@ LABEL_119:
 
   if ((v6 & 0x400000) != 0)
   {
-    if ((v7 & 0x400000) == 0 || self->_thirdPartyMsgNoonSun != *(v4 + 88))
+    if ((v7 & 0x400000) == 0 || self->_thirdPartyMsgNoonSun != *(equalCopy + 88))
     {
       goto LABEL_520;
     }
@@ -7343,7 +7343,7 @@ LABEL_119:
 
   if ((v6 & 0x800) != 0)
   {
-    if ((v7 & 0x800) == 0 || self->_thirdPartyMsgEveWeekday != *(v4 + 77))
+    if ((v7 & 0x800) == 0 || self->_thirdPartyMsgEveWeekday != *(equalCopy + 77))
     {
       goto LABEL_520;
     }
@@ -7356,7 +7356,7 @@ LABEL_119:
 
   if ((v6 & 0x100) != 0)
   {
-    if ((v7 & 0x100) == 0 || self->_thirdPartyMsgEveFri != *(v4 + 74))
+    if ((v7 & 0x100) == 0 || self->_thirdPartyMsgEveFri != *(equalCopy + 74))
     {
       goto LABEL_520;
     }
@@ -7369,7 +7369,7 @@ LABEL_119:
 
   if ((v6 & 0x200) != 0)
   {
-    if ((v7 & 0x200) == 0 || self->_thirdPartyMsgEveSat != *(v4 + 75))
+    if ((v7 & 0x200) == 0 || self->_thirdPartyMsgEveSat != *(equalCopy + 75))
     {
       goto LABEL_520;
     }
@@ -7382,7 +7382,7 @@ LABEL_119:
 
   if ((v6 & 0x400) != 0)
   {
-    if ((v7 & 0x400) == 0 || self->_thirdPartyMsgEveSun != *(v4 + 76))
+    if ((v7 & 0x400) == 0 || self->_thirdPartyMsgEveSun != *(equalCopy + 76))
     {
       goto LABEL_520;
     }
@@ -7395,7 +7395,7 @@ LABEL_119:
 
   if ((v6 & 0x80000) != 0)
   {
-    if ((v7 & 0x80000) == 0 || self->_thirdPartyMsgNightWeekday != *(v4 + 85))
+    if ((v7 & 0x80000) == 0 || self->_thirdPartyMsgNightWeekday != *(equalCopy + 85))
     {
       goto LABEL_520;
     }
@@ -7408,7 +7408,7 @@ LABEL_119:
 
   if ((v6 & 0x10000) != 0)
   {
-    if ((v7 & 0x10000) == 0 || self->_thirdPartyMsgNightFri != *(v4 + 82))
+    if ((v7 & 0x10000) == 0 || self->_thirdPartyMsgNightFri != *(equalCopy + 82))
     {
       goto LABEL_520;
     }
@@ -7421,7 +7421,7 @@ LABEL_119:
 
   if ((v6 & 0x20000) != 0)
   {
-    if ((v7 & 0x20000) == 0 || self->_thirdPartyMsgNightSat != *(v4 + 83))
+    if ((v7 & 0x20000) == 0 || self->_thirdPartyMsgNightSat != *(equalCopy + 83))
     {
       goto LABEL_520;
     }
@@ -7434,7 +7434,7 @@ LABEL_119:
 
   if ((v6 & 0x40000) != 0)
   {
-    if ((v7 & 0x40000) == 0 || self->_thirdPartyMsgNightSun != *(v4 + 84))
+    if ((v7 & 0x40000) == 0 || self->_thirdPartyMsgNightSun != *(equalCopy + 84))
     {
       goto LABEL_520;
     }
@@ -7447,7 +7447,7 @@ LABEL_119:
 
   if ((v8 & 0x10000000000000) != 0)
   {
-    if ((v9 & 0x10000000000000) == 0 || self->_callTotal != *(v4 + 53))
+    if ((v9 & 0x10000000000000) == 0 || self->_callTotal != *(equalCopy + 53))
     {
       goto LABEL_520;
     }
@@ -7460,7 +7460,7 @@ LABEL_119:
 
   if ((v6 & 0x2000000) != 0)
   {
-    if ((v7 & 0x2000000) == 0 || self->_callBirthday != *(v4 + 182))
+    if ((v7 & 0x2000000) == 0 || self->_callBirthday != *(equalCopy + 182))
     {
       goto LABEL_520;
     }
@@ -7473,7 +7473,7 @@ LABEL_119:
 
   if ((v6 & 0x40000000) != 0)
   {
-    if ((v7 & 0x40000000) == 0 || self->_contactFavorite != *(v4 + 187))
+    if ((v7 & 0x40000000) == 0 || self->_contactFavorite != *(equalCopy + 187))
     {
       goto LABEL_520;
     }
@@ -7486,7 +7486,7 @@ LABEL_119:
 
   if ((v8 & 0x20000000000000) != 0)
   {
-    if ((v9 & 0x20000000000000) == 0 || self->_callTotalDur != *(v4 + 54))
+    if ((v9 & 0x20000000000000) == 0 || self->_callTotalDur != *(equalCopy + 54))
     {
       goto LABEL_520;
     }
@@ -7499,7 +7499,7 @@ LABEL_119:
 
   if ((v8 & 0x2000000000) != 0)
   {
-    if ((v9 & 0x2000000000) == 0 || self->_callLongRatio != *(v4 + 38))
+    if ((v9 & 0x2000000000) == 0 || self->_callLongRatio != *(equalCopy + 38))
     {
       goto LABEL_520;
     }
@@ -7512,7 +7512,7 @@ LABEL_119:
 
   if ((v8 & 0x8000000000000) != 0)
   {
-    if ((v9 & 0x8000000000000) == 0 || self->_callOutgoingRatio != *(v4 + 52))
+    if ((v9 & 0x8000000000000) == 0 || self->_callOutgoingRatio != *(equalCopy + 52))
     {
       goto LABEL_520;
     }
@@ -7525,7 +7525,7 @@ LABEL_119:
 
   if (v8)
   {
-    if ((v9 & 1) == 0 || self->_callAvgDur != *(v4 + 1))
+    if ((v9 & 1) == 0 || self->_callAvgDur != *(equalCopy + 1))
     {
       goto LABEL_520;
     }
@@ -7538,7 +7538,7 @@ LABEL_119:
 
   if ((v8 & 0x4000000000) != 0)
   {
-    if ((v9 & 0x4000000000) == 0 || self->_callMaxDur != *(v4 + 39))
+    if ((v9 & 0x4000000000) == 0 || self->_callMaxDur != *(equalCopy + 39))
     {
       goto LABEL_520;
     }
@@ -7551,7 +7551,7 @@ LABEL_119:
 
   if ((v8 & 0x40000000000) != 0)
   {
-    if ((v9 & 0x40000000000) == 0 || self->_callMorningWeekday != *(v4 + 43))
+    if ((v9 & 0x40000000000) == 0 || self->_callMorningWeekday != *(equalCopy + 43))
     {
       goto LABEL_520;
     }
@@ -7564,7 +7564,7 @@ LABEL_119:
 
   if ((v8 & 0x8000000000) != 0)
   {
-    if ((v9 & 0x8000000000) == 0 || self->_callMorningFri != *(v4 + 40))
+    if ((v9 & 0x8000000000) == 0 || self->_callMorningFri != *(equalCopy + 40))
     {
       goto LABEL_520;
     }
@@ -7577,7 +7577,7 @@ LABEL_119:
 
   if ((v8 & 0x10000000000) != 0)
   {
-    if ((v9 & 0x10000000000) == 0 || self->_callMorningSat != *(v4 + 41))
+    if ((v9 & 0x10000000000) == 0 || self->_callMorningSat != *(equalCopy + 41))
     {
       goto LABEL_520;
     }
@@ -7590,7 +7590,7 @@ LABEL_119:
 
   if ((v8 & 0x20000000000) != 0)
   {
-    if ((v9 & 0x20000000000) == 0 || self->_callMorningSun != *(v4 + 42))
+    if ((v9 & 0x20000000000) == 0 || self->_callMorningSun != *(equalCopy + 42))
     {
       goto LABEL_520;
     }
@@ -7603,7 +7603,7 @@ LABEL_119:
 
   if ((v8 & 0x4000000000000) != 0)
   {
-    if ((v9 & 0x4000000000000) == 0 || self->_callNoonWeekday != *(v4 + 51))
+    if ((v9 & 0x4000000000000) == 0 || self->_callNoonWeekday != *(equalCopy + 51))
     {
       goto LABEL_520;
     }
@@ -7616,7 +7616,7 @@ LABEL_119:
 
   if ((v8 & 0x800000000000) != 0)
   {
-    if ((v9 & 0x800000000000) == 0 || self->_callNoonFri != *(v4 + 48))
+    if ((v9 & 0x800000000000) == 0 || self->_callNoonFri != *(equalCopy + 48))
     {
       goto LABEL_520;
     }
@@ -7629,7 +7629,7 @@ LABEL_119:
 
   if ((v8 & 0x1000000000000) != 0)
   {
-    if ((v9 & 0x1000000000000) == 0 || self->_callNoonSat != *(v4 + 49))
+    if ((v9 & 0x1000000000000) == 0 || self->_callNoonSat != *(equalCopy + 49))
     {
       goto LABEL_520;
     }
@@ -7642,7 +7642,7 @@ LABEL_119:
 
   if ((v8 & 0x2000000000000) != 0)
   {
-    if ((v9 & 0x2000000000000) == 0 || self->_callNoonSun != *(v4 + 50))
+    if ((v9 & 0x2000000000000) == 0 || self->_callNoonSun != *(equalCopy + 50))
     {
       goto LABEL_520;
     }
@@ -7655,7 +7655,7 @@ LABEL_119:
 
   if ((v8 & 0x100000) != 0)
   {
-    if ((v9 & 0x100000) == 0 || self->_callEveWeekday != *(v4 + 21))
+    if ((v9 & 0x100000) == 0 || self->_callEveWeekday != *(equalCopy + 21))
     {
       goto LABEL_520;
     }
@@ -7668,7 +7668,7 @@ LABEL_119:
 
   if ((v8 & 0x20000) != 0)
   {
-    if ((v9 & 0x20000) == 0 || self->_callEveFri != *(v4 + 18))
+    if ((v9 & 0x20000) == 0 || self->_callEveFri != *(equalCopy + 18))
     {
       goto LABEL_520;
     }
@@ -7679,10 +7679,10 @@ LABEL_119:
     goto LABEL_520;
   }
 
-  v10 = *(v4 + 99);
+  v10 = *(equalCopy + 99);
   if ((v8 & 0x40000) != 0)
   {
-    if ((v10 & 0x40000) == 0 || self->_callEveSat != *(v4 + 19))
+    if ((v10 & 0x40000) == 0 || self->_callEveSat != *(equalCopy + 19))
     {
       goto LABEL_520;
     }
@@ -7695,7 +7695,7 @@ LABEL_119:
 
   if ((v8 & 0x80000) != 0)
   {
-    if ((v10 & 0x80000) == 0 || self->_callEveSun != *(v4 + 20))
+    if ((v10 & 0x80000) == 0 || self->_callEveSun != *(equalCopy + 20))
     {
       goto LABEL_520;
     }
@@ -7708,7 +7708,7 @@ LABEL_119:
 
   if ((v8 & 0x400000000000) != 0)
   {
-    if ((v10 & 0x400000000000) == 0 || self->_callNightWeekday != *(v4 + 47))
+    if ((v10 & 0x400000000000) == 0 || self->_callNightWeekday != *(equalCopy + 47))
     {
       goto LABEL_520;
     }
@@ -7721,7 +7721,7 @@ LABEL_119:
 
   if ((v8 & 0x80000000000) != 0)
   {
-    if ((v10 & 0x80000000000) == 0 || self->_callNightFri != *(v4 + 44))
+    if ((v10 & 0x80000000000) == 0 || self->_callNightFri != *(equalCopy + 44))
     {
       goto LABEL_520;
     }
@@ -7734,7 +7734,7 @@ LABEL_119:
 
   if ((v8 & 0x100000000000) != 0)
   {
-    if ((v10 & 0x100000000000) == 0 || self->_callNightSat != *(v4 + 45))
+    if ((v10 & 0x100000000000) == 0 || self->_callNightSat != *(equalCopy + 45))
     {
       goto LABEL_520;
     }
@@ -7747,7 +7747,7 @@ LABEL_119:
 
   if ((v8 & 0x200000000000) != 0)
   {
-    if ((v10 & 0x200000000000) == 0 || self->_callNightSun != *(v4 + 46))
+    if ((v10 & 0x200000000000) == 0 || self->_callNightSun != *(equalCopy + 46))
     {
       goto LABEL_520;
     }
@@ -7760,7 +7760,7 @@ LABEL_119:
 
   if ((v8 & 0x100) != 0)
   {
-    if ((v10 & 0x100) == 0 || self->_callDurMorningWeekday != *(v4 + 9))
+    if ((v10 & 0x100) == 0 || self->_callDurMorningWeekday != *(equalCopy + 9))
     {
       goto LABEL_520;
     }
@@ -7773,7 +7773,7 @@ LABEL_119:
 
   if ((v8 & 0x20) != 0)
   {
-    if ((v10 & 0x20) == 0 || self->_callDurMorningFri != *(v4 + 6))
+    if ((v10 & 0x20) == 0 || self->_callDurMorningFri != *(equalCopy + 6))
     {
       goto LABEL_520;
     }
@@ -7786,7 +7786,7 @@ LABEL_119:
 
   if ((v8 & 0x40) != 0)
   {
-    if ((v10 & 0x40) == 0 || self->_callDurMorningSat != *(v4 + 7))
+    if ((v10 & 0x40) == 0 || self->_callDurMorningSat != *(equalCopy + 7))
     {
       goto LABEL_520;
     }
@@ -7799,7 +7799,7 @@ LABEL_119:
 
   if ((v8 & 0x80) != 0)
   {
-    if ((v10 & 0x80) == 0 || self->_callDurMorningSun != *(v4 + 8))
+    if ((v10 & 0x80) == 0 || self->_callDurMorningSun != *(equalCopy + 8))
     {
       goto LABEL_520;
     }
@@ -7812,7 +7812,7 @@ LABEL_119:
 
   if ((v8 & 0x10000) != 0)
   {
-    if ((v10 & 0x10000) == 0 || self->_callDurNoonWeekday != *(v4 + 17))
+    if ((v10 & 0x10000) == 0 || self->_callDurNoonWeekday != *(equalCopy + 17))
     {
       goto LABEL_520;
     }
@@ -7825,7 +7825,7 @@ LABEL_119:
 
   if ((v8 & 0x2000) != 0)
   {
-    if ((v10 & 0x2000) == 0 || self->_callDurNoonFri != *(v4 + 14))
+    if ((v10 & 0x2000) == 0 || self->_callDurNoonFri != *(equalCopy + 14))
     {
       goto LABEL_520;
     }
@@ -7838,7 +7838,7 @@ LABEL_119:
 
   if ((v8 & 0x4000) != 0)
   {
-    if ((v10 & 0x4000) == 0 || self->_callDurNoonSat != *(v4 + 15))
+    if ((v10 & 0x4000) == 0 || self->_callDurNoonSat != *(equalCopy + 15))
     {
       goto LABEL_520;
     }
@@ -7851,7 +7851,7 @@ LABEL_119:
 
   if ((v8 & 0x8000) != 0)
   {
-    if ((v10 & 0x8000) == 0 || self->_callDurNoonSun != *(v4 + 16))
+    if ((v10 & 0x8000) == 0 || self->_callDurNoonSun != *(equalCopy + 16))
     {
       goto LABEL_520;
     }
@@ -7864,7 +7864,7 @@ LABEL_119:
 
   if ((v8 & 0x10) != 0)
   {
-    if ((v10 & 0x10) == 0 || self->_callDurEveWeekday != *(v4 + 5))
+    if ((v10 & 0x10) == 0 || self->_callDurEveWeekday != *(equalCopy + 5))
     {
       goto LABEL_520;
     }
@@ -7877,7 +7877,7 @@ LABEL_119:
 
   if ((v8 & 2) != 0)
   {
-    if ((v10 & 2) == 0 || self->_callDurEveFri != *(v4 + 2))
+    if ((v10 & 2) == 0 || self->_callDurEveFri != *(equalCopy + 2))
     {
       goto LABEL_520;
     }
@@ -7890,7 +7890,7 @@ LABEL_119:
 
   if ((v8 & 4) != 0)
   {
-    if ((v10 & 4) == 0 || self->_callDurEveSat != *(v4 + 3))
+    if ((v10 & 4) == 0 || self->_callDurEveSat != *(equalCopy + 3))
     {
       goto LABEL_520;
     }
@@ -7903,7 +7903,7 @@ LABEL_119:
 
   if ((v8 & 8) != 0)
   {
-    if ((v10 & 8) == 0 || self->_callDurEveSun != *(v4 + 4))
+    if ((v10 & 8) == 0 || self->_callDurEveSun != *(equalCopy + 4))
     {
       goto LABEL_520;
     }
@@ -7916,7 +7916,7 @@ LABEL_119:
 
   if ((v8 & 0x1000) != 0)
   {
-    if ((v10 & 0x1000) == 0 || self->_callDurNightWeekday != *(v4 + 13))
+    if ((v10 & 0x1000) == 0 || self->_callDurNightWeekday != *(equalCopy + 13))
     {
       goto LABEL_520;
     }
@@ -7929,7 +7929,7 @@ LABEL_119:
 
   if ((v8 & 0x200) != 0)
   {
-    if ((v10 & 0x200) == 0 || self->_callDurNightFri != *(v4 + 10))
+    if ((v10 & 0x200) == 0 || self->_callDurNightFri != *(equalCopy + 10))
     {
       goto LABEL_520;
     }
@@ -7942,7 +7942,7 @@ LABEL_119:
 
   if ((v8 & 0x400) != 0)
   {
-    if ((v10 & 0x400) == 0 || self->_callDurNightSat != *(v4 + 11))
+    if ((v10 & 0x400) == 0 || self->_callDurNightSat != *(equalCopy + 11))
     {
       goto LABEL_520;
     }
@@ -7955,7 +7955,7 @@ LABEL_119:
 
   if ((v8 & 0x800) != 0)
   {
-    if ((v10 & 0x800) == 0 || self->_callDurNightSun != *(v4 + 12))
+    if ((v10 & 0x800) == 0 || self->_callDurNightSun != *(equalCopy + 12))
     {
       goto LABEL_520;
     }
@@ -7968,7 +7968,7 @@ LABEL_119:
 
   if ((v8 & 0x10000000) != 0)
   {
-    if ((v10 & 0x10000000) == 0 || self->_callLongMorningWeekday != *(v4 + 29))
+    if ((v10 & 0x10000000) == 0 || self->_callLongMorningWeekday != *(equalCopy + 29))
     {
       goto LABEL_520;
     }
@@ -7981,7 +7981,7 @@ LABEL_119:
 
   if ((v8 & 0x2000000) != 0)
   {
-    if ((v10 & 0x2000000) == 0 || self->_callLongMorningFri != *(v4 + 26))
+    if ((v10 & 0x2000000) == 0 || self->_callLongMorningFri != *(equalCopy + 26))
     {
       goto LABEL_520;
     }
@@ -7994,7 +7994,7 @@ LABEL_119:
 
   if ((v8 & 0x4000000) != 0)
   {
-    if ((v10 & 0x4000000) == 0 || self->_callLongMorningSat != *(v4 + 27))
+    if ((v10 & 0x4000000) == 0 || self->_callLongMorningSat != *(equalCopy + 27))
     {
       goto LABEL_520;
     }
@@ -8007,7 +8007,7 @@ LABEL_119:
 
   if ((v8 & 0x8000000) != 0)
   {
-    if ((v10 & 0x8000000) == 0 || self->_callLongMorningSun != *(v4 + 28))
+    if ((v10 & 0x8000000) == 0 || self->_callLongMorningSun != *(equalCopy + 28))
     {
       goto LABEL_520;
     }
@@ -8020,7 +8020,7 @@ LABEL_119:
 
   if ((v8 & 0x1000000000) != 0)
   {
-    if ((v10 & 0x1000000000) == 0 || self->_callLongNoonWeekday != *(v4 + 37))
+    if ((v10 & 0x1000000000) == 0 || self->_callLongNoonWeekday != *(equalCopy + 37))
     {
       goto LABEL_520;
     }
@@ -8033,7 +8033,7 @@ LABEL_119:
 
   if ((v8 & 0x200000000) != 0)
   {
-    if ((v10 & 0x200000000) == 0 || self->_callLongNoonFri != *(v4 + 34))
+    if ((v10 & 0x200000000) == 0 || self->_callLongNoonFri != *(equalCopy + 34))
     {
       goto LABEL_520;
     }
@@ -8046,7 +8046,7 @@ LABEL_119:
 
   if ((v8 & 0x400000000) != 0)
   {
-    if ((v10 & 0x400000000) == 0 || self->_callLongNoonSat != *(v4 + 35))
+    if ((v10 & 0x400000000) == 0 || self->_callLongNoonSat != *(equalCopy + 35))
     {
       goto LABEL_520;
     }
@@ -8059,7 +8059,7 @@ LABEL_119:
 
   if ((v8 & 0x800000000) != 0)
   {
-    if ((v10 & 0x800000000) == 0 || self->_callLongNoonSun != *(v4 + 36))
+    if ((v10 & 0x800000000) == 0 || self->_callLongNoonSun != *(equalCopy + 36))
     {
       goto LABEL_520;
     }
@@ -8072,7 +8072,7 @@ LABEL_119:
 
   if ((v8 & 0x1000000) != 0)
   {
-    if ((v10 & 0x1000000) == 0 || self->_callLongEveWeekday != *(v4 + 25))
+    if ((v10 & 0x1000000) == 0 || self->_callLongEveWeekday != *(equalCopy + 25))
     {
       goto LABEL_520;
     }
@@ -8085,7 +8085,7 @@ LABEL_119:
 
   if ((v8 & 0x200000) != 0)
   {
-    if ((v10 & 0x200000) == 0 || self->_callLongEveFri != *(v4 + 22))
+    if ((v10 & 0x200000) == 0 || self->_callLongEveFri != *(equalCopy + 22))
     {
       goto LABEL_520;
     }
@@ -8098,7 +8098,7 @@ LABEL_119:
 
   if ((v8 & 0x400000) != 0)
   {
-    if ((v10 & 0x400000) == 0 || self->_callLongEveSat != *(v4 + 23))
+    if ((v10 & 0x400000) == 0 || self->_callLongEveSat != *(equalCopy + 23))
     {
       goto LABEL_520;
     }
@@ -8111,7 +8111,7 @@ LABEL_119:
 
   if ((v8 & 0x800000) != 0)
   {
-    if ((v10 & 0x800000) == 0 || self->_callLongEveSun != *(v4 + 24))
+    if ((v10 & 0x800000) == 0 || self->_callLongEveSun != *(equalCopy + 24))
     {
       goto LABEL_520;
     }
@@ -8124,7 +8124,7 @@ LABEL_119:
 
   if ((v8 & 0x100000000) != 0)
   {
-    if ((v10 & 0x100000000) == 0 || self->_callLongNightWeekday != *(v4 + 33))
+    if ((v10 & 0x100000000) == 0 || self->_callLongNightWeekday != *(equalCopy + 33))
     {
       goto LABEL_520;
     }
@@ -8137,7 +8137,7 @@ LABEL_119:
 
   if ((v8 & 0x20000000) != 0)
   {
-    if ((v10 & 0x20000000) == 0 || self->_callLongNightFri != *(v4 + 30))
+    if ((v10 & 0x20000000) == 0 || self->_callLongNightFri != *(equalCopy + 30))
     {
       goto LABEL_520;
     }
@@ -8150,7 +8150,7 @@ LABEL_119:
 
   if ((v8 & 0x40000000) != 0)
   {
-    if ((v10 & 0x40000000) == 0 || self->_callLongNightSat != *(v4 + 31))
+    if ((v10 & 0x40000000) == 0 || self->_callLongNightSat != *(equalCopy + 31))
     {
       goto LABEL_520;
     }
@@ -8163,7 +8163,7 @@ LABEL_119:
 
   if ((v8 & 0x80000000) != 0)
   {
-    if ((v10 & 0x80000000) == 0 || self->_callLongNightSun != *(v4 + 32))
+    if ((v10 & 0x80000000) == 0 || self->_callLongNightSun != *(equalCopy + 32))
     {
       goto LABEL_520;
     }
@@ -8174,10 +8174,10 @@ LABEL_119:
     goto LABEL_520;
   }
 
-  v11 = *(v4 + 100);
+  v11 = *(equalCopy + 100);
   if ((v6 & 0x20000000) != 0)
   {
-    if ((v11 & 0x20000000) == 0 || self->_contactFamilyRelation != *(v4 + 186))
+    if ((v11 & 0x20000000) == 0 || self->_contactFamilyRelation != *(equalCopy + 186))
     {
       goto LABEL_520;
     }
@@ -8189,16 +8189,16 @@ LABEL_119:
   }
 
   contactRelation = self->_contactRelation;
-  if (contactRelation | *(v4 + 98) && ![(NSString *)contactRelation isEqual:?])
+  if (contactRelation | *(equalCopy + 98) && ![(NSString *)contactRelation isEqual:?])
   {
     goto LABEL_520;
   }
 
   v13 = *(&self->_has + 1);
-  v14 = *(v4 + 100);
+  v14 = *(equalCopy + 100);
   if ((v13 & 0x10000000) != 0)
   {
-    if ((v14 & 0x10000000) == 0 || self->_contactFamilyName != *(v4 + 185))
+    if ((v14 & 0x10000000) == 0 || self->_contactFamilyName != *(equalCopy + 185))
     {
       goto LABEL_520;
     }
@@ -8211,7 +8211,7 @@ LABEL_119:
 
   if ((v13 & 0x4000000000) != 0)
   {
-    if ((v14 & 0x4000000000) == 0 || self->_contactParent != *(v4 + 195))
+    if ((v14 & 0x4000000000) == 0 || self->_contactParent != *(equalCopy + 195))
     {
       goto LABEL_520;
     }
@@ -8224,7 +8224,7 @@ LABEL_119:
 
   if ((v13 & 0x4000000) != 0)
   {
-    if ((v14 & 0x4000000) == 0 || self->_contactEmergency != *(v4 + 183))
+    if ((v14 & 0x4000000) == 0 || self->_contactEmergency != *(equalCopy + 183))
     {
       goto LABEL_520;
     }
@@ -8237,7 +8237,7 @@ LABEL_119:
 
   if ((v13 & 0x8000000) != 0)
   {
-    if ((v14 & 0x8000000) == 0 || self->_contactEmergencyFamily != *(v4 + 184))
+    if ((v14 & 0x8000000) == 0 || self->_contactEmergencyFamily != *(equalCopy + 184))
     {
       goto LABEL_520;
     }
@@ -8250,7 +8250,7 @@ LABEL_119:
 
   if ((v13 & 0x1000000000) != 0)
   {
-    if ((v14 & 0x1000000000) == 0 || self->_contactInHome != *(v4 + 193))
+    if ((v14 & 0x1000000000) == 0 || self->_contactInHome != *(equalCopy + 193))
     {
       goto LABEL_520;
     }
@@ -8263,7 +8263,7 @@ LABEL_119:
 
   if ((v13 & 0x2000000000) != 0)
   {
-    if ((v14 & 0x2000000000) == 0 || self->_contactInPhotos != *(v4 + 194))
+    if ((v14 & 0x2000000000) == 0 || self->_contactInPhotos != *(equalCopy + 194))
     {
       goto LABEL_520;
     }
@@ -8276,7 +8276,7 @@ LABEL_119:
 
   if ((v13 & 0x80000000) != 0)
   {
-    if ((v14 & 0x80000000) == 0 || self->_contactInAirDrop != *(v4 + 188))
+    if ((v14 & 0x80000000) == 0 || self->_contactInAirDrop != *(equalCopy + 188))
     {
       goto LABEL_520;
     }
@@ -8289,7 +8289,7 @@ LABEL_119:
 
   if ((v13 & 0x100000000) != 0)
   {
-    if ((v14 & 0x100000000) == 0 || self->_contactInAirDropAtHome != *(v4 + 189))
+    if ((v14 & 0x100000000) == 0 || self->_contactInAirDropAtHome != *(equalCopy + 189))
     {
       goto LABEL_520;
     }
@@ -8302,7 +8302,7 @@ LABEL_119:
 
   if ((v13 & 0x400000000) != 0)
   {
-    if ((v14 & 0x400000000) == 0 || self->_contactInFMFFollowingMe != *(v4 + 191))
+    if ((v14 & 0x400000000) == 0 || self->_contactInFMFFollowingMe != *(equalCopy + 191))
     {
       goto LABEL_520;
     }
@@ -8315,7 +8315,7 @@ LABEL_119:
 
   if ((v13 & 0x800000000) != 0)
   {
-    if ((v14 & 0x800000000) == 0 || self->_contactInFMFSharingWithMe != *(v4 + 192))
+    if ((v14 & 0x800000000) == 0 || self->_contactInFMFSharingWithMe != *(equalCopy + 192))
     {
       goto LABEL_520;
     }
@@ -8338,13 +8338,13 @@ LABEL_520:
     goto LABEL_521;
   }
 
-  if ((v14 & 0x200000000) == 0 || self->_contactInFMFFavorite != *(v4 + 190))
+  if ((v14 & 0x200000000) == 0 || self->_contactInFMFFavorite != *(equalCopy + 190))
   {
     goto LABEL_520;
   }
 
 LABEL_519:
-  v15 = self->_mailIntelligenceContactId == *(v4 + 73);
+  v15 = self->_mailIntelligenceContactId == *(equalCopy + 73);
 LABEL_521:
 
   return v15;
@@ -11476,7 +11476,7 @@ LABEL_304:
   v362 = v349;
   if ((v358 & 0x4000000) != 0)
   {
-    v365 = self;
+    selfCopy2 = self;
     v363 = 2654435761 * self->_contactEmergency;
     v364 = v449;
   }
@@ -11485,16 +11485,16 @@ LABEL_304:
   {
     v363 = 0;
     v364 = v449;
-    v365 = self;
+    selfCopy2 = self;
   }
 
   if ((v358 & 0x8000000) != 0)
   {
-    v366 = 2654435761 * v365->_contactEmergencyFamily;
+    v366 = 2654435761 * selfCopy2->_contactEmergencyFamily;
     if ((v358 & 0x1000000000) != 0)
     {
 LABEL_736:
-      v367 = 2654435761 * v365->_contactInHome;
+      v367 = 2654435761 * selfCopy2->_contactInHome;
       if ((v358 & 0x2000000000) != 0)
       {
         goto LABEL_737;
@@ -11517,7 +11517,7 @@ LABEL_736:
   if ((v358 & 0x2000000000) != 0)
   {
 LABEL_737:
-    v368 = 2654435761 * v365->_contactInPhotos;
+    v368 = 2654435761 * selfCopy2->_contactInPhotos;
     if ((v358 & 0x80000000) != 0)
     {
       goto LABEL_738;
@@ -11531,7 +11531,7 @@ LABEL_745:
   if ((v358 & 0x80000000) != 0)
   {
 LABEL_738:
-    v369 = 2654435761 * v365->_contactInAirDrop;
+    v369 = 2654435761 * selfCopy2->_contactInAirDrop;
     if ((v358 & 0x100000000) != 0)
     {
       goto LABEL_739;
@@ -11545,7 +11545,7 @@ LABEL_746:
   if ((v358 & 0x100000000) != 0)
   {
 LABEL_739:
-    v370 = 2654435761 * v365->_contactInAirDropAtHome;
+    v370 = 2654435761 * selfCopy2->_contactInAirDropAtHome;
     if ((v358 & 0x400000000) != 0)
     {
       goto LABEL_740;
@@ -11559,7 +11559,7 @@ LABEL_747:
   if ((v358 & 0x400000000) != 0)
   {
 LABEL_740:
-    v371 = 2654435761 * v365->_contactInFMFFollowingMe;
+    v371 = 2654435761 * selfCopy2->_contactInFMFFollowingMe;
     if ((v358 & 0x800000000) != 0)
     {
       goto LABEL_741;
@@ -11574,7 +11574,7 @@ LABEL_749:
 
 LABEL_750:
     v373 = 0;
-    return v429 ^ v434 ^ v430 ^ v451 ^ v431 ^ v452 ^ v453 ^ v455 ^ v457 ^ v458 ^ v461 ^ v460 ^ v459 ^ v444 ^ v443 ^ v456 ^ v436 ^ v442 ^ v432 ^ v454 ^ v441 ^ v177 ^ v351 ^ v361 ^ v362 ^ v364 ^ v450 ^ v448 ^ v435 ^ v447 ^ v428 ^ v446 ^ v427 ^ v445 ^ v426 ^ v425 ^ v424 ^ v423 ^ v422 ^ v421 ^ v420 ^ v419 ^ v418 ^ v417 ^ v416 ^ v415 ^ v414 ^ v413 ^ v177 ^ v412 ^ v411 ^ v410 ^ v409 ^ v408 ^ v407 ^ v406 ^ v405 ^ v404 ^ v403 ^ v402 ^ v225 ^ v401 ^ v400 ^ v399 ^ v241 ^ v398 ^ v397 ^ v254 ^ v396 ^ v262 ^ v395 ^ v394 ^ v393 ^ v392 ^ v391 ^ v390 ^ v389 ^ v388 ^ v387 ^ v386 ^ v385 ^ v384 ^ v383 ^ v382 ^ v381 ^ v380 ^ v379 ^ v378 ^ v377 ^ v438 ^ v376 ^ v375 ^ v357 ^ v359 ^ v360 ^ v363 ^ v366 ^ v367 ^ v368 ^ v369 ^ v370 ^ v371 ^ v372 ^ v373 ^ (2654435761u * v365->_mailIntelligenceContactId);
+    return v429 ^ v434 ^ v430 ^ v451 ^ v431 ^ v452 ^ v453 ^ v455 ^ v457 ^ v458 ^ v461 ^ v460 ^ v459 ^ v444 ^ v443 ^ v456 ^ v436 ^ v442 ^ v432 ^ v454 ^ v441 ^ v177 ^ v351 ^ v361 ^ v362 ^ v364 ^ v450 ^ v448 ^ v435 ^ v447 ^ v428 ^ v446 ^ v427 ^ v445 ^ v426 ^ v425 ^ v424 ^ v423 ^ v422 ^ v421 ^ v420 ^ v419 ^ v418 ^ v417 ^ v416 ^ v415 ^ v414 ^ v413 ^ v177 ^ v412 ^ v411 ^ v410 ^ v409 ^ v408 ^ v407 ^ v406 ^ v405 ^ v404 ^ v403 ^ v402 ^ v225 ^ v401 ^ v400 ^ v399 ^ v241 ^ v398 ^ v397 ^ v254 ^ v396 ^ v262 ^ v395 ^ v394 ^ v393 ^ v392 ^ v391 ^ v390 ^ v389 ^ v388 ^ v387 ^ v386 ^ v385 ^ v384 ^ v383 ^ v382 ^ v381 ^ v380 ^ v379 ^ v378 ^ v377 ^ v438 ^ v376 ^ v375 ^ v357 ^ v359 ^ v360 ^ v363 ^ v366 ^ v367 ^ v368 ^ v369 ^ v370 ^ v371 ^ v372 ^ v373 ^ (2654435761u * selfCopy2->_mailIntelligenceContactId);
   }
 
 LABEL_748:
@@ -11585,41 +11585,41 @@ LABEL_748:
   }
 
 LABEL_741:
-  v372 = 2654435761 * v365->_contactInFMFSharingWithMe;
+  v372 = 2654435761 * selfCopy2->_contactInFMFSharingWithMe;
   if ((v358 & 0x200000000) == 0)
   {
     goto LABEL_750;
   }
 
 LABEL_742:
-  v373 = 2654435761 * v365->_contactInFMFFavorite;
-  return v429 ^ v434 ^ v430 ^ v451 ^ v431 ^ v452 ^ v453 ^ v455 ^ v457 ^ v458 ^ v461 ^ v460 ^ v459 ^ v444 ^ v443 ^ v456 ^ v436 ^ v442 ^ v432 ^ v454 ^ v441 ^ v177 ^ v351 ^ v361 ^ v362 ^ v364 ^ v450 ^ v448 ^ v435 ^ v447 ^ v428 ^ v446 ^ v427 ^ v445 ^ v426 ^ v425 ^ v424 ^ v423 ^ v422 ^ v421 ^ v420 ^ v419 ^ v418 ^ v417 ^ v416 ^ v415 ^ v414 ^ v413 ^ v177 ^ v412 ^ v411 ^ v410 ^ v409 ^ v408 ^ v407 ^ v406 ^ v405 ^ v404 ^ v403 ^ v402 ^ v225 ^ v401 ^ v400 ^ v399 ^ v241 ^ v398 ^ v397 ^ v254 ^ v396 ^ v262 ^ v395 ^ v394 ^ v393 ^ v392 ^ v391 ^ v390 ^ v389 ^ v388 ^ v387 ^ v386 ^ v385 ^ v384 ^ v383 ^ v382 ^ v381 ^ v380 ^ v379 ^ v378 ^ v377 ^ v438 ^ v376 ^ v375 ^ v357 ^ v359 ^ v360 ^ v363 ^ v366 ^ v367 ^ v368 ^ v369 ^ v370 ^ v371 ^ v372 ^ v373 ^ (2654435761u * v365->_mailIntelligenceContactId);
+  v373 = 2654435761 * selfCopy2->_contactInFMFFavorite;
+  return v429 ^ v434 ^ v430 ^ v451 ^ v431 ^ v452 ^ v453 ^ v455 ^ v457 ^ v458 ^ v461 ^ v460 ^ v459 ^ v444 ^ v443 ^ v456 ^ v436 ^ v442 ^ v432 ^ v454 ^ v441 ^ v177 ^ v351 ^ v361 ^ v362 ^ v364 ^ v450 ^ v448 ^ v435 ^ v447 ^ v428 ^ v446 ^ v427 ^ v445 ^ v426 ^ v425 ^ v424 ^ v423 ^ v422 ^ v421 ^ v420 ^ v419 ^ v418 ^ v417 ^ v416 ^ v415 ^ v414 ^ v413 ^ v177 ^ v412 ^ v411 ^ v410 ^ v409 ^ v408 ^ v407 ^ v406 ^ v405 ^ v404 ^ v403 ^ v402 ^ v225 ^ v401 ^ v400 ^ v399 ^ v241 ^ v398 ^ v397 ^ v254 ^ v396 ^ v262 ^ v395 ^ v394 ^ v393 ^ v392 ^ v391 ^ v390 ^ v389 ^ v388 ^ v387 ^ v386 ^ v385 ^ v384 ^ v383 ^ v382 ^ v381 ^ v380 ^ v379 ^ v378 ^ v377 ^ v438 ^ v376 ^ v375 ^ v357 ^ v359 ^ v360 ^ v363 ^ v366 ^ v367 ^ v368 ^ v369 ^ v370 ^ v371 ^ v372 ^ v373 ^ (2654435761u * selfCopy2->_mailIntelligenceContactId);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = (v4 + 792);
-  v6 = *(v4 + 100);
+  fromCopy = from;
+  v5 = (fromCopy + 792);
+  v6 = *(fromCopy + 100);
   if ((v6 & 0x80) != 0)
   {
-    self->_firstPartyMsgTotal = *(v4 + 72);
+    self->_firstPartyMsgTotal = *(fromCopy + 72);
     *(&self->_has + 1) |= 0x80uLL;
-    v6 = *(v4 + 100);
+    v6 = *(fromCopy + 100);
   }
 
   if ((v6 & 0x40) != 0)
   {
-    self->_firstPartyMsgOutgoingRatio = *(v4 + 71);
+    self->_firstPartyMsgOutgoingRatio = *(fromCopy + 71);
     *(&self->_has + 1) |= 0x40uLL;
   }
 
   v7 = *v5;
   if ((*v5 & 0x2000000000000000) != 0)
   {
-    self->_firstPartyMsgMorningWeekday = *(v4 + 62);
+    self->_firstPartyMsgMorningWeekday = *(fromCopy + 62);
     *&self->_has |= 0x2000000000000000uLL;
-    v7 = *(v4 + 99);
+    v7 = *(fromCopy + 99);
     if ((v7 & 0x400000000000000) == 0)
     {
 LABEL_7:
@@ -11637,9 +11637,9 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  self->_firstPartyMsgMorningFri = *(v4 + 59);
+  self->_firstPartyMsgMorningFri = *(fromCopy + 59);
   *&self->_has |= 0x400000000000000uLL;
-  v7 = *(v4 + 99);
+  v7 = *(fromCopy + 99);
   if ((v7 & 0x800000000000000) == 0)
   {
 LABEL_8:
@@ -11652,22 +11652,22 @@ LABEL_8:
   }
 
 LABEL_126:
-  self->_firstPartyMsgMorningSat = *(v4 + 60);
+  self->_firstPartyMsgMorningSat = *(fromCopy + 60);
   *&self->_has |= 0x800000000000000uLL;
-  if ((*(v4 + 99) & 0x1000000000000000) != 0)
+  if ((*(fromCopy + 99) & 0x1000000000000000) != 0)
   {
 LABEL_9:
-    self->_firstPartyMsgMorningSun = *(v4 + 61);
+    self->_firstPartyMsgMorningSun = *(fromCopy + 61);
     *&self->_has |= 0x1000000000000000uLL;
   }
 
 LABEL_10:
-  v8 = *(v4 + 100);
+  v8 = *(fromCopy + 100);
   if ((v8 & 0x20) != 0)
   {
-    self->_firstPartyMsgNoonWeekday = *(v4 + 70);
+    self->_firstPartyMsgNoonWeekday = *(fromCopy + 70);
     *(&self->_has + 1) |= 0x20uLL;
-    v8 = *(v4 + 100);
+    v8 = *(fromCopy + 100);
     if ((v8 & 4) == 0)
     {
 LABEL_12:
@@ -11685,9 +11685,9 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  self->_firstPartyMsgNoonFri = *(v4 + 67);
+  self->_firstPartyMsgNoonFri = *(fromCopy + 67);
   *(&self->_has + 1) |= 4uLL;
-  v8 = *(v4 + 100);
+  v8 = *(fromCopy + 100);
   if ((v8 & 8) == 0)
   {
 LABEL_13:
@@ -11700,12 +11700,12 @@ LABEL_13:
   }
 
 LABEL_130:
-  self->_firstPartyMsgNoonSat = *(v4 + 68);
+  self->_firstPartyMsgNoonSat = *(fromCopy + 68);
   *(&self->_has + 1) |= 8uLL;
-  if ((*(v4 + 100) & 0x10) != 0)
+  if ((*(fromCopy + 100) & 0x10) != 0)
   {
 LABEL_14:
-    self->_firstPartyMsgNoonSun = *(v4 + 69);
+    self->_firstPartyMsgNoonSun = *(fromCopy + 69);
     *(&self->_has + 1) |= 0x10uLL;
   }
 
@@ -11713,9 +11713,9 @@ LABEL_15:
   v9 = *v5;
   if ((*v5 & 0x200000000000000) != 0)
   {
-    self->_firstPartyMsgEveWeekday = *(v4 + 58);
+    self->_firstPartyMsgEveWeekday = *(fromCopy + 58);
     *&self->_has |= 0x200000000000000uLL;
-    v9 = *(v4 + 99);
+    v9 = *(fromCopy + 99);
     if ((v9 & 0x40000000000000) == 0)
     {
 LABEL_17:
@@ -11733,9 +11733,9 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  self->_firstPartyMsgEveFri = *(v4 + 55);
+  self->_firstPartyMsgEveFri = *(fromCopy + 55);
   *&self->_has |= 0x40000000000000uLL;
-  v9 = *(v4 + 99);
+  v9 = *(fromCopy + 99);
   if ((v9 & 0x80000000000000) == 0)
   {
 LABEL_18:
@@ -11748,42 +11748,42 @@ LABEL_18:
   }
 
 LABEL_134:
-  self->_firstPartyMsgEveSat = *(v4 + 56);
+  self->_firstPartyMsgEveSat = *(fromCopy + 56);
   *&self->_has |= 0x80000000000000uLL;
-  if ((*(v4 + 99) & 0x100000000000000) != 0)
+  if ((*(fromCopy + 99) & 0x100000000000000) != 0)
   {
 LABEL_19:
-    self->_firstPartyMsgEveSun = *(v4 + 57);
+    self->_firstPartyMsgEveSun = *(fromCopy + 57);
     *&self->_has |= 0x100000000000000uLL;
   }
 
 LABEL_20:
-  if ((v4[800] & 2) != 0)
+  if ((fromCopy[800] & 2) != 0)
   {
-    self->_firstPartyMsgNightWeekday = *(v4 + 66);
+    self->_firstPartyMsgNightWeekday = *(fromCopy + 66);
     *(&self->_has + 1) |= 2uLL;
   }
 
   v10 = *v5;
   if ((*v5 & 0x4000000000000000) != 0)
   {
-    self->_firstPartyMsgNightFri = *(v4 + 63);
+    self->_firstPartyMsgNightFri = *(fromCopy + 63);
     *&self->_has |= 0x4000000000000000uLL;
-    v10 = *(v4 + 99);
+    v10 = *(fromCopy + 99);
   }
 
   if (v10 < 0)
   {
-    self->_firstPartyMsgNightSat = *(v4 + 64);
+    self->_firstPartyMsgNightSat = *(fromCopy + 64);
     *&self->_has |= 0x8000000000000000;
   }
 
-  v11 = *(v4 + 100);
+  v11 = *(fromCopy + 100);
   if (v11)
   {
-    self->_firstPartyMsgNightSun = *(v4 + 65);
+    self->_firstPartyMsgNightSun = *(fromCopy + 65);
     *(&self->_has + 1) |= 1uLL;
-    v11 = *(v4 + 100);
+    v11 = *(fromCopy + 100);
     if ((v11 & 0x1000000) == 0)
     {
 LABEL_28:
@@ -11801,9 +11801,9 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  self->_thirdPartyMsgTotal = *(v4 + 90);
+  self->_thirdPartyMsgTotal = *(fromCopy + 90);
   *(&self->_has + 1) |= 0x1000000uLL;
-  v11 = *(v4 + 100);
+  v11 = *(fromCopy + 100);
   if ((v11 & 0x8000) == 0)
   {
 LABEL_29:
@@ -11816,9 +11816,9 @@ LABEL_29:
   }
 
 LABEL_138:
-  self->_thirdPartyMsgMorningWeekday = *(v4 + 81);
+  self->_thirdPartyMsgMorningWeekday = *(fromCopy + 81);
   *(&self->_has + 1) |= 0x8000uLL;
-  v11 = *(v4 + 100);
+  v11 = *(fromCopy + 100);
   if ((v11 & 0x1000) == 0)
   {
 LABEL_30:
@@ -11831,9 +11831,9 @@ LABEL_30:
   }
 
 LABEL_139:
-  self->_thirdPartyMsgMorningFri = *(v4 + 78);
+  self->_thirdPartyMsgMorningFri = *(fromCopy + 78);
   *(&self->_has + 1) |= 0x1000uLL;
-  v11 = *(v4 + 100);
+  v11 = *(fromCopy + 100);
   if ((v11 & 0x2000) == 0)
   {
 LABEL_31:
@@ -11846,9 +11846,9 @@ LABEL_31:
   }
 
 LABEL_140:
-  self->_thirdPartyMsgMorningSat = *(v4 + 79);
+  self->_thirdPartyMsgMorningSat = *(fromCopy + 79);
   *(&self->_has + 1) |= 0x2000uLL;
-  v11 = *(v4 + 100);
+  v11 = *(fromCopy + 100);
   if ((v11 & 0x4000) == 0)
   {
 LABEL_32:
@@ -11861,9 +11861,9 @@ LABEL_32:
   }
 
 LABEL_141:
-  self->_thirdPartyMsgMorningSun = *(v4 + 80);
+  self->_thirdPartyMsgMorningSun = *(fromCopy + 80);
   *(&self->_has + 1) |= 0x4000uLL;
-  v11 = *(v4 + 100);
+  v11 = *(fromCopy + 100);
   if ((v11 & 0x800000) == 0)
   {
 LABEL_33:
@@ -11876,9 +11876,9 @@ LABEL_33:
   }
 
 LABEL_142:
-  self->_thirdPartyMsgNoonWeekday = *(v4 + 89);
+  self->_thirdPartyMsgNoonWeekday = *(fromCopy + 89);
   *(&self->_has + 1) |= 0x800000uLL;
-  v11 = *(v4 + 100);
+  v11 = *(fromCopy + 100);
   if ((v11 & 0x100000) == 0)
   {
 LABEL_34:
@@ -11891,9 +11891,9 @@ LABEL_34:
   }
 
 LABEL_143:
-  self->_thirdPartyMsgNoonFri = *(v4 + 86);
+  self->_thirdPartyMsgNoonFri = *(fromCopy + 86);
   *(&self->_has + 1) |= 0x100000uLL;
-  v11 = *(v4 + 100);
+  v11 = *(fromCopy + 100);
   if ((v11 & 0x200000) == 0)
   {
 LABEL_35:
@@ -11906,9 +11906,9 @@ LABEL_35:
   }
 
 LABEL_144:
-  self->_thirdPartyMsgNoonSat = *(v4 + 87);
+  self->_thirdPartyMsgNoonSat = *(fromCopy + 87);
   *(&self->_has + 1) |= 0x200000uLL;
-  v11 = *(v4 + 100);
+  v11 = *(fromCopy + 100);
   if ((v11 & 0x400000) == 0)
   {
 LABEL_36:
@@ -11921,9 +11921,9 @@ LABEL_36:
   }
 
 LABEL_145:
-  self->_thirdPartyMsgNoonSun = *(v4 + 88);
+  self->_thirdPartyMsgNoonSun = *(fromCopy + 88);
   *(&self->_has + 1) |= 0x400000uLL;
-  v11 = *(v4 + 100);
+  v11 = *(fromCopy + 100);
   if ((v11 & 0x800) == 0)
   {
 LABEL_37:
@@ -11936,9 +11936,9 @@ LABEL_37:
   }
 
 LABEL_146:
-  self->_thirdPartyMsgEveWeekday = *(v4 + 77);
+  self->_thirdPartyMsgEveWeekday = *(fromCopy + 77);
   *(&self->_has + 1) |= 0x800uLL;
-  v11 = *(v4 + 100);
+  v11 = *(fromCopy + 100);
   if ((v11 & 0x100) == 0)
   {
 LABEL_38:
@@ -11951,9 +11951,9 @@ LABEL_38:
   }
 
 LABEL_147:
-  self->_thirdPartyMsgEveFri = *(v4 + 74);
+  self->_thirdPartyMsgEveFri = *(fromCopy + 74);
   *(&self->_has + 1) |= 0x100uLL;
-  v11 = *(v4 + 100);
+  v11 = *(fromCopy + 100);
   if ((v11 & 0x200) == 0)
   {
 LABEL_39:
@@ -11966,9 +11966,9 @@ LABEL_39:
   }
 
 LABEL_148:
-  self->_thirdPartyMsgEveSat = *(v4 + 75);
+  self->_thirdPartyMsgEveSat = *(fromCopy + 75);
   *(&self->_has + 1) |= 0x200uLL;
-  v11 = *(v4 + 100);
+  v11 = *(fromCopy + 100);
   if ((v11 & 0x400) == 0)
   {
 LABEL_40:
@@ -11981,9 +11981,9 @@ LABEL_40:
   }
 
 LABEL_149:
-  self->_thirdPartyMsgEveSun = *(v4 + 76);
+  self->_thirdPartyMsgEveSun = *(fromCopy + 76);
   *(&self->_has + 1) |= 0x400uLL;
-  v11 = *(v4 + 100);
+  v11 = *(fromCopy + 100);
   if ((v11 & 0x80000) == 0)
   {
 LABEL_41:
@@ -11996,9 +11996,9 @@ LABEL_41:
   }
 
 LABEL_150:
-  self->_thirdPartyMsgNightWeekday = *(v4 + 85);
+  self->_thirdPartyMsgNightWeekday = *(fromCopy + 85);
   *(&self->_has + 1) |= 0x80000uLL;
-  v11 = *(v4 + 100);
+  v11 = *(fromCopy + 100);
   if ((v11 & 0x10000) == 0)
   {
 LABEL_42:
@@ -12011,9 +12011,9 @@ LABEL_42:
   }
 
 LABEL_151:
-  self->_thirdPartyMsgNightFri = *(v4 + 82);
+  self->_thirdPartyMsgNightFri = *(fromCopy + 82);
   *(&self->_has + 1) |= 0x10000uLL;
-  v11 = *(v4 + 100);
+  v11 = *(fromCopy + 100);
   if ((v11 & 0x20000) == 0)
   {
 LABEL_43:
@@ -12026,42 +12026,42 @@ LABEL_43:
   }
 
 LABEL_152:
-  self->_thirdPartyMsgNightSat = *(v4 + 83);
+  self->_thirdPartyMsgNightSat = *(fromCopy + 83);
   *(&self->_has + 1) |= 0x20000uLL;
-  if ((*(v4 + 100) & 0x40000) != 0)
+  if ((*(fromCopy + 100) & 0x40000) != 0)
   {
 LABEL_44:
-    self->_thirdPartyMsgNightSun = *(v4 + 84);
+    self->_thirdPartyMsgNightSun = *(fromCopy + 84);
     *(&self->_has + 1) |= 0x40000uLL;
   }
 
 LABEL_45:
-  if ((v4[798] & 0x10) != 0)
+  if ((fromCopy[798] & 0x10) != 0)
   {
-    self->_callTotal = *(v4 + 53);
+    self->_callTotal = *(fromCopy + 53);
     *&self->_has |= 0x10000000000000uLL;
   }
 
-  v12 = *(v4 + 100);
+  v12 = *(fromCopy + 100);
   if ((v12 & 0x2000000) != 0)
   {
-    self->_callBirthday = *(v4 + 182);
+    self->_callBirthday = *(fromCopy + 182);
     *(&self->_has + 1) |= 0x2000000uLL;
-    v12 = *(v4 + 100);
+    v12 = *(fromCopy + 100);
   }
 
   if ((v12 & 0x40000000) != 0)
   {
-    self->_contactFavorite = *(v4 + 187);
+    self->_contactFavorite = *(fromCopy + 187);
     *(&self->_has + 1) |= 0x40000000uLL;
   }
 
   v13 = *v5;
   if ((*v5 & 0x20000000000000) != 0)
   {
-    self->_callTotalDur = *(v4 + 54);
+    self->_callTotalDur = *(fromCopy + 54);
     *&self->_has |= 0x20000000000000uLL;
-    v13 = *(v4 + 99);
+    v13 = *(fromCopy + 99);
     if ((v13 & 0x2000000000) == 0)
     {
 LABEL_53:
@@ -12079,9 +12079,9 @@ LABEL_53:
     goto LABEL_53;
   }
 
-  self->_callLongRatio = *(v4 + 38);
+  self->_callLongRatio = *(fromCopy + 38);
   *&self->_has |= 0x2000000000uLL;
-  v13 = *(v4 + 99);
+  v13 = *(fromCopy + 99);
   if ((v13 & 0x8000000000000) == 0)
   {
 LABEL_54:
@@ -12094,9 +12094,9 @@ LABEL_54:
   }
 
 LABEL_156:
-  self->_callOutgoingRatio = *(v4 + 52);
+  self->_callOutgoingRatio = *(fromCopy + 52);
   *&self->_has |= 0x8000000000000uLL;
-  v13 = *(v4 + 99);
+  v13 = *(fromCopy + 99);
   if ((v13 & 1) == 0)
   {
 LABEL_55:
@@ -12109,9 +12109,9 @@ LABEL_55:
   }
 
 LABEL_157:
-  self->_callAvgDur = *(v4 + 1);
+  self->_callAvgDur = *(fromCopy + 1);
   *&self->_has |= 1uLL;
-  v13 = *(v4 + 99);
+  v13 = *(fromCopy + 99);
   if ((v13 & 0x4000000000) == 0)
   {
 LABEL_56:
@@ -12124,9 +12124,9 @@ LABEL_56:
   }
 
 LABEL_158:
-  self->_callMaxDur = *(v4 + 39);
+  self->_callMaxDur = *(fromCopy + 39);
   *&self->_has |= 0x4000000000uLL;
-  v13 = *(v4 + 99);
+  v13 = *(fromCopy + 99);
   if ((v13 & 0x40000000000) == 0)
   {
 LABEL_57:
@@ -12139,9 +12139,9 @@ LABEL_57:
   }
 
 LABEL_159:
-  self->_callMorningWeekday = *(v4 + 43);
+  self->_callMorningWeekday = *(fromCopy + 43);
   *&self->_has |= 0x40000000000uLL;
-  v13 = *(v4 + 99);
+  v13 = *(fromCopy + 99);
   if ((v13 & 0x8000000000) == 0)
   {
 LABEL_58:
@@ -12154,9 +12154,9 @@ LABEL_58:
   }
 
 LABEL_160:
-  self->_callMorningFri = *(v4 + 40);
+  self->_callMorningFri = *(fromCopy + 40);
   *&self->_has |= 0x8000000000uLL;
-  v13 = *(v4 + 99);
+  v13 = *(fromCopy + 99);
   if ((v13 & 0x10000000000) == 0)
   {
 LABEL_59:
@@ -12169,9 +12169,9 @@ LABEL_59:
   }
 
 LABEL_161:
-  self->_callMorningSat = *(v4 + 41);
+  self->_callMorningSat = *(fromCopy + 41);
   *&self->_has |= 0x10000000000uLL;
-  v13 = *(v4 + 99);
+  v13 = *(fromCopy + 99);
   if ((v13 & 0x20000000000) == 0)
   {
 LABEL_60:
@@ -12184,9 +12184,9 @@ LABEL_60:
   }
 
 LABEL_162:
-  self->_callMorningSun = *(v4 + 42);
+  self->_callMorningSun = *(fromCopy + 42);
   *&self->_has |= 0x20000000000uLL;
-  v13 = *(v4 + 99);
+  v13 = *(fromCopy + 99);
   if ((v13 & 0x4000000000000) == 0)
   {
 LABEL_61:
@@ -12199,9 +12199,9 @@ LABEL_61:
   }
 
 LABEL_163:
-  self->_callNoonWeekday = *(v4 + 51);
+  self->_callNoonWeekday = *(fromCopy + 51);
   *&self->_has |= 0x4000000000000uLL;
-  v13 = *(v4 + 99);
+  v13 = *(fromCopy + 99);
   if ((v13 & 0x800000000000) == 0)
   {
 LABEL_62:
@@ -12214,9 +12214,9 @@ LABEL_62:
   }
 
 LABEL_164:
-  self->_callNoonFri = *(v4 + 48);
+  self->_callNoonFri = *(fromCopy + 48);
   *&self->_has |= 0x800000000000uLL;
-  v13 = *(v4 + 99);
+  v13 = *(fromCopy + 99);
   if ((v13 & 0x1000000000000) == 0)
   {
 LABEL_63:
@@ -12229,9 +12229,9 @@ LABEL_63:
   }
 
 LABEL_165:
-  self->_callNoonSat = *(v4 + 49);
+  self->_callNoonSat = *(fromCopy + 49);
   *&self->_has |= 0x1000000000000uLL;
-  v13 = *(v4 + 99);
+  v13 = *(fromCopy + 99);
   if ((v13 & 0x2000000000000) == 0)
   {
 LABEL_64:
@@ -12244,9 +12244,9 @@ LABEL_64:
   }
 
 LABEL_166:
-  self->_callNoonSun = *(v4 + 50);
+  self->_callNoonSun = *(fromCopy + 50);
   *&self->_has |= 0x2000000000000uLL;
-  v13 = *(v4 + 99);
+  v13 = *(fromCopy + 99);
   if ((v13 & 0x100000) == 0)
   {
 LABEL_65:
@@ -12259,9 +12259,9 @@ LABEL_65:
   }
 
 LABEL_167:
-  self->_callEveWeekday = *(v4 + 21);
+  self->_callEveWeekday = *(fromCopy + 21);
   *&self->_has |= 0x100000uLL;
-  v13 = *(v4 + 99);
+  v13 = *(fromCopy + 99);
   if ((v13 & 0x20000) == 0)
   {
 LABEL_66:
@@ -12274,9 +12274,9 @@ LABEL_66:
   }
 
 LABEL_168:
-  self->_callEveFri = *(v4 + 18);
+  self->_callEveFri = *(fromCopy + 18);
   *&self->_has |= 0x20000uLL;
-  v13 = *(v4 + 99);
+  v13 = *(fromCopy + 99);
   if ((v13 & 0x40000) == 0)
   {
 LABEL_67:
@@ -12289,9 +12289,9 @@ LABEL_67:
   }
 
 LABEL_169:
-  self->_callEveSat = *(v4 + 19);
+  self->_callEveSat = *(fromCopy + 19);
   *&self->_has |= 0x40000uLL;
-  v13 = *(v4 + 99);
+  v13 = *(fromCopy + 99);
   if ((v13 & 0x80000) == 0)
   {
 LABEL_68:
@@ -12304,9 +12304,9 @@ LABEL_68:
   }
 
 LABEL_170:
-  self->_callEveSun = *(v4 + 20);
+  self->_callEveSun = *(fromCopy + 20);
   *&self->_has |= 0x80000uLL;
-  v13 = *(v4 + 99);
+  v13 = *(fromCopy + 99);
   if ((v13 & 0x400000000000) == 0)
   {
 LABEL_69:
@@ -12319,9 +12319,9 @@ LABEL_69:
   }
 
 LABEL_171:
-  self->_callNightWeekday = *(v4 + 47);
+  self->_callNightWeekday = *(fromCopy + 47);
   *&self->_has |= 0x400000000000uLL;
-  v13 = *(v4 + 99);
+  v13 = *(fromCopy + 99);
   if ((v13 & 0x80000000000) == 0)
   {
 LABEL_70:
@@ -12334,9 +12334,9 @@ LABEL_70:
   }
 
 LABEL_172:
-  self->_callNightFri = *(v4 + 44);
+  self->_callNightFri = *(fromCopy + 44);
   *&self->_has |= 0x80000000000uLL;
-  v13 = *(v4 + 99);
+  v13 = *(fromCopy + 99);
   if ((v13 & 0x100000000000) == 0)
   {
 LABEL_71:
@@ -12349,9 +12349,9 @@ LABEL_71:
   }
 
 LABEL_173:
-  self->_callNightSat = *(v4 + 45);
+  self->_callNightSat = *(fromCopy + 45);
   *&self->_has |= 0x100000000000uLL;
-  v13 = *(v4 + 99);
+  v13 = *(fromCopy + 99);
   if ((v13 & 0x200000000000) == 0)
   {
 LABEL_72:
@@ -12364,9 +12364,9 @@ LABEL_72:
   }
 
 LABEL_174:
-  self->_callNightSun = *(v4 + 46);
+  self->_callNightSun = *(fromCopy + 46);
   *&self->_has |= 0x200000000000uLL;
-  v13 = *(v4 + 99);
+  v13 = *(fromCopy + 99);
   if ((v13 & 0x100) == 0)
   {
 LABEL_73:
@@ -12379,9 +12379,9 @@ LABEL_73:
   }
 
 LABEL_175:
-  self->_callDurMorningWeekday = *(v4 + 9);
+  self->_callDurMorningWeekday = *(fromCopy + 9);
   *&self->_has |= 0x100uLL;
-  v13 = *(v4 + 99);
+  v13 = *(fromCopy + 99);
   if ((v13 & 0x20) == 0)
   {
 LABEL_74:
@@ -12394,9 +12394,9 @@ LABEL_74:
   }
 
 LABEL_176:
-  self->_callDurMorningFri = *(v4 + 6);
+  self->_callDurMorningFri = *(fromCopy + 6);
   *&self->_has |= 0x20uLL;
-  v13 = *(v4 + 99);
+  v13 = *(fromCopy + 99);
   if ((v13 & 0x40) == 0)
   {
 LABEL_75:
@@ -12409,9 +12409,9 @@ LABEL_75:
   }
 
 LABEL_177:
-  self->_callDurMorningSat = *(v4 + 7);
+  self->_callDurMorningSat = *(fromCopy + 7);
   *&self->_has |= 0x40uLL;
-  v13 = *(v4 + 99);
+  v13 = *(fromCopy + 99);
   if ((v13 & 0x80) == 0)
   {
 LABEL_76:
@@ -12424,9 +12424,9 @@ LABEL_76:
   }
 
 LABEL_178:
-  self->_callDurMorningSun = *(v4 + 8);
+  self->_callDurMorningSun = *(fromCopy + 8);
   *&self->_has |= 0x80uLL;
-  v13 = *(v4 + 99);
+  v13 = *(fromCopy + 99);
   if ((v13 & 0x10000) == 0)
   {
 LABEL_77:
@@ -12439,9 +12439,9 @@ LABEL_77:
   }
 
 LABEL_179:
-  self->_callDurNoonWeekday = *(v4 + 17);
+  self->_callDurNoonWeekday = *(fromCopy + 17);
   *&self->_has |= 0x10000uLL;
-  v13 = *(v4 + 99);
+  v13 = *(fromCopy + 99);
   if ((v13 & 0x2000) == 0)
   {
 LABEL_78:
@@ -12454,9 +12454,9 @@ LABEL_78:
   }
 
 LABEL_180:
-  self->_callDurNoonFri = *(v4 + 14);
+  self->_callDurNoonFri = *(fromCopy + 14);
   *&self->_has |= 0x2000uLL;
-  v13 = *(v4 + 99);
+  v13 = *(fromCopy + 99);
   if ((v13 & 0x4000) == 0)
   {
 LABEL_79:
@@ -12469,9 +12469,9 @@ LABEL_79:
   }
 
 LABEL_181:
-  self->_callDurNoonSat = *(v4 + 15);
+  self->_callDurNoonSat = *(fromCopy + 15);
   *&self->_has |= 0x4000uLL;
-  v13 = *(v4 + 99);
+  v13 = *(fromCopy + 99);
   if ((v13 & 0x8000) == 0)
   {
 LABEL_80:
@@ -12484,9 +12484,9 @@ LABEL_80:
   }
 
 LABEL_182:
-  self->_callDurNoonSun = *(v4 + 16);
+  self->_callDurNoonSun = *(fromCopy + 16);
   *&self->_has |= 0x8000uLL;
-  v13 = *(v4 + 99);
+  v13 = *(fromCopy + 99);
   if ((v13 & 0x10) == 0)
   {
 LABEL_81:
@@ -12499,9 +12499,9 @@ LABEL_81:
   }
 
 LABEL_183:
-  self->_callDurEveWeekday = *(v4 + 5);
+  self->_callDurEveWeekday = *(fromCopy + 5);
   *&self->_has |= 0x10uLL;
-  v13 = *(v4 + 99);
+  v13 = *(fromCopy + 99);
   if ((v13 & 2) == 0)
   {
 LABEL_82:
@@ -12514,9 +12514,9 @@ LABEL_82:
   }
 
 LABEL_184:
-  self->_callDurEveFri = *(v4 + 2);
+  self->_callDurEveFri = *(fromCopy + 2);
   *&self->_has |= 2uLL;
-  v13 = *(v4 + 99);
+  v13 = *(fromCopy + 99);
   if ((v13 & 4) == 0)
   {
 LABEL_83:
@@ -12529,9 +12529,9 @@ LABEL_83:
   }
 
 LABEL_185:
-  self->_callDurEveSat = *(v4 + 3);
+  self->_callDurEveSat = *(fromCopy + 3);
   *&self->_has |= 4uLL;
-  v13 = *(v4 + 99);
+  v13 = *(fromCopy + 99);
   if ((v13 & 8) == 0)
   {
 LABEL_84:
@@ -12544,9 +12544,9 @@ LABEL_84:
   }
 
 LABEL_186:
-  self->_callDurEveSun = *(v4 + 4);
+  self->_callDurEveSun = *(fromCopy + 4);
   *&self->_has |= 8uLL;
-  v13 = *(v4 + 99);
+  v13 = *(fromCopy + 99);
   if ((v13 & 0x1000) == 0)
   {
 LABEL_85:
@@ -12559,9 +12559,9 @@ LABEL_85:
   }
 
 LABEL_187:
-  self->_callDurNightWeekday = *(v4 + 13);
+  self->_callDurNightWeekday = *(fromCopy + 13);
   *&self->_has |= 0x1000uLL;
-  v13 = *(v4 + 99);
+  v13 = *(fromCopy + 99);
   if ((v13 & 0x200) == 0)
   {
 LABEL_86:
@@ -12574,9 +12574,9 @@ LABEL_86:
   }
 
 LABEL_188:
-  self->_callDurNightFri = *(v4 + 10);
+  self->_callDurNightFri = *(fromCopy + 10);
   *&self->_has |= 0x200uLL;
-  v13 = *(v4 + 99);
+  v13 = *(fromCopy + 99);
   if ((v13 & 0x400) == 0)
   {
 LABEL_87:
@@ -12589,9 +12589,9 @@ LABEL_87:
   }
 
 LABEL_189:
-  self->_callDurNightSat = *(v4 + 11);
+  self->_callDurNightSat = *(fromCopy + 11);
   *&self->_has |= 0x400uLL;
-  v13 = *(v4 + 99);
+  v13 = *(fromCopy + 99);
   if ((v13 & 0x800) == 0)
   {
 LABEL_88:
@@ -12604,9 +12604,9 @@ LABEL_88:
   }
 
 LABEL_190:
-  self->_callDurNightSun = *(v4 + 12);
+  self->_callDurNightSun = *(fromCopy + 12);
   *&self->_has |= 0x800uLL;
-  v13 = *(v4 + 99);
+  v13 = *(fromCopy + 99);
   if ((v13 & 0x10000000) == 0)
   {
 LABEL_89:
@@ -12619,9 +12619,9 @@ LABEL_89:
   }
 
 LABEL_191:
-  self->_callLongMorningWeekday = *(v4 + 29);
+  self->_callLongMorningWeekday = *(fromCopy + 29);
   *&self->_has |= 0x10000000uLL;
-  v13 = *(v4 + 99);
+  v13 = *(fromCopy + 99);
   if ((v13 & 0x2000000) == 0)
   {
 LABEL_90:
@@ -12634,9 +12634,9 @@ LABEL_90:
   }
 
 LABEL_192:
-  self->_callLongMorningFri = *(v4 + 26);
+  self->_callLongMorningFri = *(fromCopy + 26);
   *&self->_has |= 0x2000000uLL;
-  v13 = *(v4 + 99);
+  v13 = *(fromCopy + 99);
   if ((v13 & 0x4000000) == 0)
   {
 LABEL_91:
@@ -12649,9 +12649,9 @@ LABEL_91:
   }
 
 LABEL_193:
-  self->_callLongMorningSat = *(v4 + 27);
+  self->_callLongMorningSat = *(fromCopy + 27);
   *&self->_has |= 0x4000000uLL;
-  v13 = *(v4 + 99);
+  v13 = *(fromCopy + 99);
   if ((v13 & 0x8000000) == 0)
   {
 LABEL_92:
@@ -12664,9 +12664,9 @@ LABEL_92:
   }
 
 LABEL_194:
-  self->_callLongMorningSun = *(v4 + 28);
+  self->_callLongMorningSun = *(fromCopy + 28);
   *&self->_has |= 0x8000000uLL;
-  v13 = *(v4 + 99);
+  v13 = *(fromCopy + 99);
   if ((v13 & 0x1000000000) == 0)
   {
 LABEL_93:
@@ -12679,9 +12679,9 @@ LABEL_93:
   }
 
 LABEL_195:
-  self->_callLongNoonWeekday = *(v4 + 37);
+  self->_callLongNoonWeekday = *(fromCopy + 37);
   *&self->_has |= 0x1000000000uLL;
-  v13 = *(v4 + 99);
+  v13 = *(fromCopy + 99);
   if ((v13 & 0x200000000) == 0)
   {
 LABEL_94:
@@ -12694,9 +12694,9 @@ LABEL_94:
   }
 
 LABEL_196:
-  self->_callLongNoonFri = *(v4 + 34);
+  self->_callLongNoonFri = *(fromCopy + 34);
   *&self->_has |= 0x200000000uLL;
-  v13 = *(v4 + 99);
+  v13 = *(fromCopy + 99);
   if ((v13 & 0x400000000) == 0)
   {
 LABEL_95:
@@ -12709,9 +12709,9 @@ LABEL_95:
   }
 
 LABEL_197:
-  self->_callLongNoonSat = *(v4 + 35);
+  self->_callLongNoonSat = *(fromCopy + 35);
   *&self->_has |= 0x400000000uLL;
-  v13 = *(v4 + 99);
+  v13 = *(fromCopy + 99);
   if ((v13 & 0x800000000) == 0)
   {
 LABEL_96:
@@ -12724,9 +12724,9 @@ LABEL_96:
   }
 
 LABEL_198:
-  self->_callLongNoonSun = *(v4 + 36);
+  self->_callLongNoonSun = *(fromCopy + 36);
   *&self->_has |= 0x800000000uLL;
-  v13 = *(v4 + 99);
+  v13 = *(fromCopy + 99);
   if ((v13 & 0x1000000) == 0)
   {
 LABEL_97:
@@ -12739,9 +12739,9 @@ LABEL_97:
   }
 
 LABEL_199:
-  self->_callLongEveWeekday = *(v4 + 25);
+  self->_callLongEveWeekday = *(fromCopy + 25);
   *&self->_has |= 0x1000000uLL;
-  v13 = *(v4 + 99);
+  v13 = *(fromCopy + 99);
   if ((v13 & 0x200000) == 0)
   {
 LABEL_98:
@@ -12754,9 +12754,9 @@ LABEL_98:
   }
 
 LABEL_200:
-  self->_callLongEveFri = *(v4 + 22);
+  self->_callLongEveFri = *(fromCopy + 22);
   *&self->_has |= 0x200000uLL;
-  v13 = *(v4 + 99);
+  v13 = *(fromCopy + 99);
   if ((v13 & 0x400000) == 0)
   {
 LABEL_99:
@@ -12769,9 +12769,9 @@ LABEL_99:
   }
 
 LABEL_201:
-  self->_callLongEveSat = *(v4 + 23);
+  self->_callLongEveSat = *(fromCopy + 23);
   *&self->_has |= 0x400000uLL;
-  v13 = *(v4 + 99);
+  v13 = *(fromCopy + 99);
   if ((v13 & 0x800000) == 0)
   {
 LABEL_100:
@@ -12784,9 +12784,9 @@ LABEL_100:
   }
 
 LABEL_202:
-  self->_callLongEveSun = *(v4 + 24);
+  self->_callLongEveSun = *(fromCopy + 24);
   *&self->_has |= 0x800000uLL;
-  v13 = *(v4 + 99);
+  v13 = *(fromCopy + 99);
   if ((v13 & 0x100000000) == 0)
   {
 LABEL_101:
@@ -12799,9 +12799,9 @@ LABEL_101:
   }
 
 LABEL_203:
-  self->_callLongNightWeekday = *(v4 + 33);
+  self->_callLongNightWeekday = *(fromCopy + 33);
   *&self->_has |= 0x100000000uLL;
-  v13 = *(v4 + 99);
+  v13 = *(fromCopy + 99);
   if ((v13 & 0x20000000) == 0)
   {
 LABEL_102:
@@ -12814,9 +12814,9 @@ LABEL_102:
   }
 
 LABEL_204:
-  self->_callLongNightFri = *(v4 + 30);
+  self->_callLongNightFri = *(fromCopy + 30);
   *&self->_has |= 0x20000000uLL;
-  v13 = *(v4 + 99);
+  v13 = *(fromCopy + 99);
   if ((v13 & 0x40000000) == 0)
   {
 LABEL_103:
@@ -12829,33 +12829,33 @@ LABEL_103:
   }
 
 LABEL_205:
-  self->_callLongNightSat = *(v4 + 31);
+  self->_callLongNightSat = *(fromCopy + 31);
   *&self->_has |= 0x40000000uLL;
-  if ((*(v4 + 99) & 0x80000000) != 0)
+  if ((*(fromCopy + 99) & 0x80000000) != 0)
   {
 LABEL_104:
-    self->_callLongNightSun = *(v4 + 32);
+    self->_callLongNightSun = *(fromCopy + 32);
     *&self->_has |= 0x80000000uLL;
   }
 
 LABEL_105:
-  if ((v4[803] & 0x20) != 0)
+  if ((fromCopy[803] & 0x20) != 0)
   {
-    self->_contactFamilyRelation = *(v4 + 186);
+    self->_contactFamilyRelation = *(fromCopy + 186);
     *(&self->_has + 1) |= 0x20000000uLL;
   }
 
-  if (*(v4 + 98))
+  if (*(fromCopy + 98))
   {
-    v15 = v4;
+    v15 = fromCopy;
     [(MailIntelligencePETContactEvent *)self setContactRelation:?];
-    v4 = v15;
+    fromCopy = v15;
   }
 
   v14 = v5[1];
   if ((v14 & 0x10000000) != 0)
   {
-    self->_contactFamilyName = *(v4 + 185);
+    self->_contactFamilyName = *(fromCopy + 185);
     *(&self->_has + 1) |= 0x10000000uLL;
     v14 = v5[1];
     if ((v14 & 0x4000000000) == 0)
@@ -12875,7 +12875,7 @@ LABEL_111:
     goto LABEL_111;
   }
 
-  self->_contactParent = *(v4 + 195);
+  self->_contactParent = *(fromCopy + 195);
   *(&self->_has + 1) |= 0x4000000000uLL;
   v14 = v5[1];
   if ((v14 & 0x4000000) == 0)
@@ -12890,7 +12890,7 @@ LABEL_112:
   }
 
 LABEL_209:
-  self->_contactEmergency = *(v4 + 183);
+  self->_contactEmergency = *(fromCopy + 183);
   *(&self->_has + 1) |= 0x4000000uLL;
   v14 = v5[1];
   if ((v14 & 0x8000000) == 0)
@@ -12905,7 +12905,7 @@ LABEL_113:
   }
 
 LABEL_210:
-  self->_contactEmergencyFamily = *(v4 + 184);
+  self->_contactEmergencyFamily = *(fromCopy + 184);
   *(&self->_has + 1) |= 0x8000000uLL;
   v14 = v5[1];
   if ((v14 & 0x1000000000) == 0)
@@ -12920,7 +12920,7 @@ LABEL_114:
   }
 
 LABEL_211:
-  self->_contactInHome = *(v4 + 193);
+  self->_contactInHome = *(fromCopy + 193);
   *(&self->_has + 1) |= 0x1000000000uLL;
   v14 = v5[1];
   if ((v14 & 0x2000000000) == 0)
@@ -12935,7 +12935,7 @@ LABEL_115:
   }
 
 LABEL_212:
-  self->_contactInPhotos = *(v4 + 194);
+  self->_contactInPhotos = *(fromCopy + 194);
   *(&self->_has + 1) |= 0x2000000000uLL;
   v14 = v5[1];
   if ((v14 & 0x80000000) == 0)
@@ -12950,7 +12950,7 @@ LABEL_116:
   }
 
 LABEL_213:
-  self->_contactInAirDrop = *(v4 + 188);
+  self->_contactInAirDrop = *(fromCopy + 188);
   *(&self->_has + 1) |= 0x80000000uLL;
   v14 = v5[1];
   if ((v14 & 0x100000000) == 0)
@@ -12965,7 +12965,7 @@ LABEL_117:
   }
 
 LABEL_214:
-  self->_contactInAirDropAtHome = *(v4 + 189);
+  self->_contactInAirDropAtHome = *(fromCopy + 189);
   *(&self->_has + 1) |= 0x100000000uLL;
   v14 = v5[1];
   if ((v14 & 0x400000000) == 0)
@@ -12980,7 +12980,7 @@ LABEL_118:
   }
 
 LABEL_215:
-  self->_contactInFMFFollowingMe = *(v4 + 191);
+  self->_contactInFMFFollowingMe = *(fromCopy + 191);
   *(&self->_has + 1) |= 0x400000000uLL;
   v14 = v5[1];
   if ((v14 & 0x800000000) == 0)
@@ -12995,17 +12995,17 @@ LABEL_119:
   }
 
 LABEL_216:
-  self->_contactInFMFSharingWithMe = *(v4 + 192);
+  self->_contactInFMFSharingWithMe = *(fromCopy + 192);
   *(&self->_has + 1) |= 0x800000000uLL;
   if ((v5[1] & 0x200000000) != 0)
   {
 LABEL_120:
-    self->_contactInFMFFavorite = *(v4 + 190);
+    self->_contactInFMFFavorite = *(fromCopy + 190);
     *(&self->_has + 1) |= 0x200000000uLL;
   }
 
 LABEL_121:
-  self->_mailIntelligenceContactId = *(v4 + 73);
+  self->_mailIntelligenceContactId = *(fromCopy + 73);
 }
 
 @end

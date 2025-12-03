@@ -1,12 +1,12 @@
 @interface MTPBSyncMessage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MTPBSyncMessage
@@ -17,47 +17,47 @@
   v8.receiver = self;
   v8.super_class = MTPBSyncMessage;
   v4 = [(MTPBSyncMessage *)&v8 description];
-  v5 = [(MTPBSyncMessage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MTPBSyncMessage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   snoozeAction = self->_snoozeAction;
   if (snoozeAction)
   {
-    v5 = [(MTPBSnoozeAction *)snoozeAction dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"snoozeAction"];
+    dictionaryRepresentation = [(MTPBSnoozeAction *)snoozeAction dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"snoozeAction"];
   }
 
   dismissAction = self->_dismissAction;
   if (dismissAction)
   {
-    v7 = [(MTPBDismissAction *)dismissAction dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"dismissAction"];
+    dictionaryRepresentation2 = [(MTPBDismissAction *)dismissAction dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"dismissAction"];
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithDouble:self->_syncDate];
-  [v3 setObject:v8 forKey:@"syncDate"];
+  [dictionary setObject:v8 forKey:@"syncDate"];
 
   syncID = self->_syncID;
   if (syncID)
   {
-    [v3 setObject:syncID forKey:@"syncID"];
+    [dictionary setObject:syncID forKey:@"syncID"];
   }
 
   v10 = [MEMORY[0x1E696AD98] numberWithDouble:self->_syncVersion];
-  [v3 setObject:v10 forKey:@"syncVersion"];
+  [dictionary setObject:v10 forKey:@"syncVersion"];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if (self->_snoozeAction)
   {
     PBDataWriterWriteSubmessage();
@@ -76,40 +76,40 @@
   PBDataWriterWriteDoubleField();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_snoozeAction)
   {
-    [v4 setSnoozeAction:?];
-    v4 = v5;
+    [toCopy setSnoozeAction:?];
+    toCopy = v5;
   }
 
   if (self->_dismissAction)
   {
     [v5 setDismissAction:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
-  v4[1] = self->_syncDate;
-  [v4 setSyncID:self->_syncID];
+  toCopy[1] = self->_syncDate;
+  [toCopy setSyncID:self->_syncID];
   v5[2] = self->_syncVersion;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(MTPBSnoozeAction *)self->_snoozeAction copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(MTPBSnoozeAction *)self->_snoozeAction copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
-  v8 = [(MTPBDismissAction *)self->_dismissAction copyWithZone:a3];
+  v8 = [(MTPBDismissAction *)self->_dismissAction copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
   *(v5 + 8) = self->_syncDate;
-  v10 = [(NSString *)self->_syncID copyWithZone:a3];
+  v10 = [(NSString *)self->_syncID copyWithZone:zone];
   v11 = *(v5 + 40);
   *(v5 + 40) = v10;
 
@@ -117,10 +117,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v8 = [v4 isMemberOfClass:objc_opt_class()] && ((snoozeAction = self->_snoozeAction, !(snoozeAction | *(v4 + 4))) || -[MTPBSnoozeAction isEqual:](snoozeAction, "isEqual:")) && ((dismissAction = self->_dismissAction, !(dismissAction | *(v4 + 3))) || -[MTPBDismissAction isEqual:](dismissAction, "isEqual:")) && self->_syncDate == *(v4 + 1) && ((syncID = self->_syncID, !(syncID | *(v4 + 5))) || -[NSString isEqual:](syncID, "isEqual:")) && self->_syncVersion == *(v4 + 2);
+  equalCopy = equal;
+  v8 = [equalCopy isMemberOfClass:objc_opt_class()] && ((snoozeAction = self->_snoozeAction, !(snoozeAction | *(equalCopy + 4))) || -[MTPBSnoozeAction isEqual:](snoozeAction, "isEqual:")) && ((dismissAction = self->_dismissAction, !(dismissAction | *(equalCopy + 3))) || -[MTPBDismissAction isEqual:](dismissAction, "isEqual:")) && self->_syncDate == *(equalCopy + 1) && ((syncID = self->_syncID, !(syncID | *(equalCopy + 5))) || -[NSString isEqual:](syncID, "isEqual:")) && self->_syncVersion == *(equalCopy + 2);
 
   return v8;
 }
@@ -187,12 +187,12 @@
   return v4 ^ v3 ^ v14 ^ v13 ^ v21;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   snoozeAction = self->_snoozeAction;
-  v6 = *(v4 + 4);
-  v9 = v4;
+  v6 = *(fromCopy + 4);
+  v9 = fromCopy;
   if (snoozeAction)
   {
     if (!v6)
@@ -213,10 +213,10 @@
     [(MTPBSyncMessage *)self setSnoozeAction:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_7:
   dismissAction = self->_dismissAction;
-  v8 = *(v4 + 3);
+  v8 = *(fromCopy + 3);
   if (dismissAction)
   {
     if (!v8)
@@ -237,18 +237,18 @@ LABEL_7:
     dismissAction = [(MTPBSyncMessage *)self setDismissAction:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_13:
-  self->_syncDate = *(v4 + 1);
-  if (*(v4 + 5))
+  self->_syncDate = *(fromCopy + 1);
+  if (*(fromCopy + 5))
   {
     dismissAction = [(MTPBSyncMessage *)self setSyncID:?];
-    v4 = v9;
+    fromCopy = v9;
   }
 
-  self->_syncVersion = *(v4 + 2);
+  self->_syncVersion = *(fromCopy + 2);
 
-  MEMORY[0x1EEE66BB8](dismissAction, v4);
+  MEMORY[0x1EEE66BB8](dismissAction, fromCopy);
 }
 
 @end

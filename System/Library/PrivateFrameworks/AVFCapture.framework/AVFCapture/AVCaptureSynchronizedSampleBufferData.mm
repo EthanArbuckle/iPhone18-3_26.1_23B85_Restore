@@ -1,13 +1,13 @@
 @interface AVCaptureSynchronizedSampleBufferData
-- (id)_initWithSampleBuffer:(opaqueCMSampleBuffer *)a3 sampleBufferWasDropped:(BOOL)a4;
+- (id)_initWithSampleBuffer:(opaqueCMSampleBuffer *)buffer sampleBufferWasDropped:(BOOL)dropped;
 - (void)dealloc;
 @end
 
 @implementation AVCaptureSynchronizedSampleBufferData
 
-- (id)_initWithSampleBuffer:(opaqueCMSampleBuffer *)a3 sampleBufferWasDropped:(BOOL)a4
+- (id)_initWithSampleBuffer:(opaqueCMSampleBuffer *)buffer sampleBufferWasDropped:(BOOL)dropped
 {
-  if (!a3)
+  if (!buffer)
   {
     v14 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:0];
 
@@ -20,9 +20,9 @@
     return 0;
   }
 
-  v5 = a4;
+  droppedCopy = dropped;
   memset(&v18, 0, sizeof(v18));
-  CMSampleBufferGetPresentationTimeStamp(&v18, a3);
+  CMSampleBufferGetPresentationTimeStamp(&v18, buffer);
   v17.receiver = self;
   v17.super_class = AVCaptureSynchronizedSampleBufferData;
   v16 = v18;
@@ -40,33 +40,33 @@
     return 0;
   }
 
-  *(v7[2] + 8) = CFRetain(a3);
-  *(v7[2] + 16) = v5;
-  if (v5)
+  *(v7[2] + 8) = CFRetain(buffer);
+  *(v7[2] + 16) = droppedCopy;
+  if (droppedCopy)
   {
-    *(v7[2] + 24) = [AVCaptureOutput dataDroppedReasonFromSampleBuffer:a3];
+    *(v7[2] + 24) = [AVCaptureOutput dataDroppedReasonFromSampleBuffer:buffer];
   }
 
   v9 = *MEMORY[0x1E69914F8];
-  *(v7[2] + 32) = [CMGetAttachment(a3 *MEMORY[0x1E69914F8]];
-  CMRemoveAttachment(a3, v9);
+  *(v7[2] + 32) = [CMGetAttachment(buffer *MEMORY[0x1E69914F8]];
+  CMRemoveAttachment(buffer, v9);
   v10 = *MEMORY[0x1E6991500];
-  *(v7[2] + 33) = [CMGetAttachment(a3 *MEMORY[0x1E6991500]];
-  CMRemoveAttachment(a3, v10);
+  *(v7[2] + 33) = [CMGetAttachment(buffer *MEMORY[0x1E6991500]];
+  CMRemoveAttachment(buffer, v10);
   v11 = *MEMORY[0x1E6991130];
-  v12 = CMGetAttachment(a3, *MEMORY[0x1E6991130], 0);
+  v12 = CMGetAttachment(buffer, *MEMORY[0x1E6991130], 0);
   if (v12)
   {
-    v13 = [v12 intValue];
+    intValue = [v12 intValue];
   }
 
   else
   {
-    v13 = -1;
+    intValue = -1;
   }
 
-  *(v7[2] + 36) = v13;
-  CMRemoveAttachment(a3, v11);
+  *(v7[2] + 36) = intValue;
+  CMRemoveAttachment(buffer, v11);
   return v7;
 }
 

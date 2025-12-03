@@ -1,6 +1,6 @@
 @interface ABVCardWatchdogTimer
-+ (ABVCardWatchdogTimer)timerWithTimeProvider:(id)a3;
-- (ABVCardWatchdogTimer)initWithTimeProvider:(id)a3;
++ (ABVCardWatchdogTimer)timerWithTimeProvider:(id)provider;
+- (ABVCardWatchdogTimer)initWithTimeProvider:(id)provider;
 - (BOOL)isValid;
 - (void)checkValidity;
 - (void)dealloc;
@@ -9,26 +9,26 @@
 
 @implementation ABVCardWatchdogTimer
 
-+ (ABVCardWatchdogTimer)timerWithTimeProvider:(id)a3
++ (ABVCardWatchdogTimer)timerWithTimeProvider:(id)provider
 {
-  if (![a1 shouldCheckTime])
+  if (![self shouldCheckTime])
   {
     return 0;
   }
 
-  v5 = [[a1 alloc] initWithTimeProvider:a3];
+  v5 = [[self alloc] initWithTimeProvider:provider];
 
   return v5;
 }
 
-- (ABVCardWatchdogTimer)initWithTimeProvider:(id)a3
+- (ABVCardWatchdogTimer)initWithTimeProvider:(id)provider
 {
   v6.receiver = self;
   v6.super_class = ABVCardWatchdogTimer;
   v4 = [(ABVCardWatchdogTimer *)&v6 init];
   if (v4)
   {
-    v4->_timeProvider = a3;
+    v4->_timeProvider = provider;
     v4->_valid = 1;
   }
 

@@ -1,14 +1,14 @@
 @interface _UIViewCALayerKeyValueMapper
-+ (id)CALayerKeyPathForUIViewKeyPath:(id)a3;
-+ (id)CALayerValueForUIViewValue:(id)a3 forUIViewKey:(id)a4;
++ (id)CALayerKeyPathForUIViewKeyPath:(id)path;
++ (id)CALayerValueForUIViewValue:(id)value forUIViewKey:(id)key;
 @end
 
 @implementation _UIViewCALayerKeyValueMapper
 
-+ (id)CALayerKeyPathForUIViewKeyPath:(id)a3
++ (id)CALayerKeyPathForUIViewKeyPath:(id)path
 {
-  v3 = a3;
-  if (!v3)
+  pathCopy = path;
+  if (!pathCopy)
   {
     v4 = 0;
     goto LABEL_15;
@@ -19,15 +19,15 @@
     dispatch_once(&qword_1ED4A2C90, &__block_literal_global_712);
   }
 
-  v4 = [_MergedGlobals_1392 objectForKeyedSubscript:v3];
+  v4 = [_MergedGlobals_1392 objectForKeyedSubscript:pathCopy];
   if (!v4)
   {
-    v5 = [v3 componentsSeparatedByString:@"."];
+    v5 = [pathCopy componentsSeparatedByString:@"."];
     v6 = qword_1ED4A2C88;
     v7 = [v5 objectAtIndexedSubscript:0];
     v8 = [v6 objectForKeyedSubscript:v7];
 
-    v9 = v3;
+    v9 = pathCopy;
     v10 = v9;
     if (v8)
     {
@@ -70,25 +70,25 @@ LABEL_15:
   return v4;
 }
 
-+ (id)CALayerValueForUIViewValue:(id)a3 forUIViewKey:(id)a4
++ (id)CALayerValueForUIViewValue:(id)value forUIViewKey:(id)key
 {
-  v5 = a3;
-  v6 = a4;
+  valueCopy = value;
+  keyCopy = key;
   if (qword_1ED4A2CA0 != -1)
   {
     dispatch_once(&qword_1ED4A2CA0, &__block_literal_global_35_2);
   }
 
-  v7 = [qword_1ED4A2C98 objectForKeyedSubscript:v6];
+  v7 = [qword_1ED4A2C98 objectForKeyedSubscript:keyCopy];
   v8 = v7;
   if (v7)
   {
-    v9 = (*(v7 + 16))(v7, v5);
+    v9 = (*(v7 + 16))(v7, valueCopy);
   }
 
   else
   {
-    v9 = v5;
+    v9 = valueCopy;
   }
 
   v10 = v9;

@@ -1,30 +1,30 @@
 @interface DSWifiSyncController
 - (DSNavigationDelegate)delegate;
 - (DSWifiSyncController)init;
-- (id)dateDescription:(id)a3;
+- (id)dateDescription:(id)description;
 - (id)localizedDetailText;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)titleForPairedComputer:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)titleForPairedComputer:(id)computer;
 - (void)_updateButtons;
-- (void)addPairedDevices:(id)a3;
+- (void)addPairedDevices:(id)devices;
 - (void)finalizeComputerReviewAndPushNextPane;
 - (void)finalizePairingReviewReport;
 - (void)learnMoreWifiSyncPressed;
 - (void)presentFetchedErrorAlert;
 - (void)presentRemoveAllDevicesAlert;
-- (void)presentRemoveErrorAlert:(id)a3;
+- (void)presentRemoveErrorAlert:(id)alert;
 - (void)presentRemoveSelectedDevicesAlert;
 - (void)reloadDetailText;
 - (void)removeAllPairedDevicesAndPushNextPane;
 - (void)removeDetailViewControllerFromStack;
 - (void)removeSelectedPairedDevicesAndPushNextPane;
-- (void)reportReviewedComputers:(id)a3;
-- (void)reportUnpairedComputers:(id)a3;
-- (void)returnFromDetailAndRemoveComputer:(id)a3;
-- (void)shouldShowWithCompletion:(id)a3;
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4;
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)reportReviewedComputers:(id)computers;
+- (void)reportUnpairedComputers:(id)computers;
+- (void)returnFromDetailAndRemoveComputer:(id)computer;
+- (void)shouldShowWithCompletion:(id)completion;
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path;
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -46,8 +46,8 @@
   }
 
   v4 = MEMORY[0x277D755D0];
-  v5 = [MEMORY[0x277D75348] systemBlueColor];
-  v6 = [v4 configurationWithHierarchicalColor:v5];
+  systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+  v6 = [v4 configurationWithHierarchicalColor:systemBlueColor];
 
   v7 = [MEMORY[0x277D755B8] systemImageNamed:@"arrow.triangle.2.circlepath.circle.fill" withConfiguration:v6];
   v8 = [v7 imageWithRenderingMode:2];
@@ -72,17 +72,17 @@ LABEL_5:
     v13 = DSLog_12;
     DSLog_12 = v12;
 
-    v14 = [(DSWifiSyncController *)v3 headerView];
+    headerView = [(DSWifiSyncController *)v3 headerView];
     v15 = DSUILocStringForKey(@"WIFI_SYNC_TITLE");
-    [v14 setTitle:v15];
+    [headerView setTitle:v15];
 
-    v16 = [(DSWifiSyncController *)v3 headerView];
-    v17 = [(DSWifiSyncController *)v3 localizedDetailText];
-    [v16 setDetailText:v17];
+    headerView2 = [(DSWifiSyncController *)v3 headerView];
+    localizedDetailText = [(DSWifiSyncController *)v3 localizedDetailText];
+    [headerView2 setDetailText:localizedDetailText];
 
     v18 = DSUILocStringForKey(@"SKIP");
-    v19 = [(DSWifiSyncController *)v3 delegate];
-    v20 = [DSUIUtilities setUpBoldButtonForController:v3 title:v18 target:v19 selector:sel_pushNextPane];
+    delegate = [(DSWifiSyncController *)v3 delegate];
+    v20 = [DSUIUtilities setUpBoldButtonForController:v3 title:v18 target:delegate selector:sel_pushNextPane];
     [(DSTableWelcomeController *)v3 setBoldButton:v20];
 
     v21 = DSUILocStringForKey(@"WIFI_SYNC_REMOVE_ALL");
@@ -93,19 +93,19 @@ LABEL_5:
   return v3;
 }
 
-- (void)addPairedDevices:(id)a3
+- (void)addPairedDevices:(id)devices
 {
-  v4 = a3;
+  devicesCopy = devices;
   [(NSMutableArray *)self->_pairedComputers removeAllObjects];
-  v5 = [(DSWifiSyncController *)self wifiSyncStore];
+  wifiSyncStore = [(DSWifiSyncController *)self wifiSyncStore];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __41__DSWifiSyncController_addPairedDevices___block_invoke;
   v7[3] = &unk_278F75CE0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 fetchPairedDevicesOnQueue:MEMORY[0x277D85CD0] completion:v7];
+  v8 = devicesCopy;
+  v6 = devicesCopy;
+  [wifiSyncStore fetchPairedDevicesOnQueue:MEMORY[0x277D85CD0] completion:v7];
 }
 
 void __41__DSWifiSyncController_addPairedDevices___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -138,16 +138,16 @@ void __41__DSWifiSyncController_addPairedDevices___block_invoke(uint64_t a1, voi
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)shouldShowWithCompletion:(id)a3
+- (void)shouldShowWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __49__DSWifiSyncController_shouldShowWithCompletion___block_invoke;
   v6[3] = &unk_278F75AC8;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = completionCopy;
   v7 = v5;
   [(DSWifiSyncController *)self addPairedDevices:v6];
 
@@ -166,16 +166,16 @@ void __49__DSWifiSyncController_shouldShowWithCompletion___block_invoke(uint64_t
 
 - (void)removeAllPairedDevicesAndPushNextPane
 {
-  v3 = [(DSWifiSyncController *)self pairedComputers];
-  v4 = [(DSWifiSyncController *)self wifiSyncStore];
+  pairedComputers = [(DSWifiSyncController *)self pairedComputers];
+  wifiSyncStore = [(DSWifiSyncController *)self wifiSyncStore];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __61__DSWifiSyncController_removeAllPairedDevicesAndPushNextPane__block_invoke;
   v6[3] = &unk_278F759E8;
   v6[4] = self;
-  v7 = v3;
-  v5 = v3;
-  [v4 removeAllPairedDevicesOnQueue:MEMORY[0x277D85CD0] completion:v6];
+  v7 = pairedComputers;
+  v5 = pairedComputers;
+  [wifiSyncStore removeAllPairedDevicesOnQueue:MEMORY[0x277D85CD0] completion:v6];
 }
 
 void __61__DSWifiSyncController_removeAllPairedDevicesAndPushNextPane__block_invoke(uint64_t a1, void *a2)
@@ -220,18 +220,18 @@ void __61__DSWifiSyncController_removeAllPairedDevicesAndPushNextPane__block_inv
 
 - (void)reloadDetailText
 {
-  v4 = [(DSWifiSyncController *)self headerView];
-  v3 = [(DSWifiSyncController *)self localizedDetailText];
-  [v4 setDetailText:v3];
+  headerView = [(DSWifiSyncController *)self headerView];
+  localizedDetailText = [(DSWifiSyncController *)self localizedDetailText];
+  [headerView setDetailText:localizedDetailText];
 }
 
 - (id)localizedDetailText
 {
   v3 = [(NSMutableArray *)self->_pairedComputers count];
-  v4 = [(DSWifiSyncController *)self wifiSyncStore];
-  v5 = [v4 fetchWifiSyncStatus];
+  wifiSyncStore = [(DSWifiSyncController *)self wifiSyncStore];
+  fetchWifiSyncStatus = [wifiSyncStore fetchWifiSyncStatus];
 
-  if (v5)
+  if (fetchWifiSyncStatus)
   {
     v6 = MGGetBoolAnswer();
     v7 = @"WIFI_SYNC_DETAIL_MULTIPLE";
@@ -274,9 +274,9 @@ void __61__DSWifiSyncController_removeAllPairedDevicesAndPushNextPane__block_inv
 
 - (void)learnMoreWifiSyncPressed
 {
-  v4 = [(DSWifiSyncController *)self delegate];
+  delegate = [(DSWifiSyncController *)self delegate];
   v3 = DSUILocStringForKey(@"WIFI_SYNC_LEARN_MORE_URL");
-  [v4 learnMorePressedForController:self withURL:v3];
+  [delegate learnMorePressedForController:self withURL:v3];
 }
 
 - (void)presentFetchedErrorAlert
@@ -289,7 +289,7 @@ void __61__DSWifiSyncController_removeAllPairedDevicesAndPushNextPane__block_inv
   [(DSTableWelcomeController *)self presentErrorAlertController:v6];
 }
 
-- (void)presentRemoveErrorAlert:(id)a3
+- (void)presentRemoveErrorAlert:(id)alert
 {
   v4 = MEMORY[0x277D75110];
   v5 = DSUILocStringForKey(@"WIFI_SYNC_REMOVE_ERROR_TITLE");
@@ -309,7 +309,7 @@ void __61__DSWifiSyncController_removeAllPairedDevicesAndPushNextPane__block_inv
 - (void)viewDidLoad
 {
   v10 = *MEMORY[0x277D85DE8];
-  v9 = HIDWORD(*a1);
+  v9 = HIDWORD(*self);
   OUTLINED_FUNCTION_0(&dword_248C7E000, a2, a3, "Error occurred during data fetch: %@", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -322,31 +322,31 @@ void __35__DSWifiSyncController_viewDidLoad__block_invoke(uint64_t a1)
   [v1 reloadData];
 }
 
-- (id)titleForPairedComputer:(id)a3
+- (id)titleForPairedComputer:(id)computer
 {
-  v3 = a3;
-  v4 = [v3 deviceName];
-  if (v4)
+  computerCopy = computer;
+  deviceName = [computerCopy deviceName];
+  if (deviceName)
   {
-    v5 = v4;
-    v6 = [v3 deviceName];
-    v7 = [v6 length];
+    v5 = deviceName;
+    deviceName2 = [computerCopy deviceName];
+    v7 = [deviceName2 length];
 
     if (v7)
     {
-      v8 = [v3 deviceName];
+      deviceName3 = [computerCopy deviceName];
 LABEL_6:
-      v11 = v8;
+      v11 = deviceName3;
       goto LABEL_8;
     }
   }
 
-  v9 = [v3 marketingName];
-  v10 = [v9 isEqualToString:@"Windows PC"];
+  marketingName = [computerCopy marketingName];
+  v10 = [marketingName isEqualToString:@"Windows PC"];
 
   if (v10)
   {
-    v8 = DSUILocStringForKey(@"WINDOWS_PC");
+    deviceName3 = DSUILocStringForKey(@"WINDOWS_PC");
     goto LABEL_6;
   }
 
@@ -356,15 +356,15 @@ LABEL_8:
   return v11;
 }
 
-- (id)dateDescription:(id)a3
+- (id)dateDescription:(id)description
 {
-  if (a3)
+  if (description)
   {
     v3 = MEMORY[0x277CCA968];
-    v4 = a3;
+    descriptionCopy = description;
     v5 = objc_alloc_init(v3);
     [v5 setDateStyle:1];
-    v6 = [v5 stringFromDate:v4];
+    v6 = [v5 stringFromDate:descriptionCopy];
 
     v7 = MEMORY[0x277CCACA8];
     v8 = DSUILocStringForKey(@"WIFI_SYNC_TIME_SYNCED");
@@ -379,18 +379,18 @@ LABEL_8:
   return v9;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = -[NSMutableArray objectAtIndexedSubscript:](self->_pairedComputers, "objectAtIndexedSubscript:", [v5 row]);
-  v7 = [(OBTableWelcomeController *)self tableView];
+  pathCopy = path;
+  v6 = -[NSMutableArray objectAtIndexedSubscript:](self->_pairedComputers, "objectAtIndexedSubscript:", [pathCopy row]);
+  tableView = [(OBTableWelcomeController *)self tableView];
   v8 = [(DSWifiSyncController *)self titleForPairedComputer:v6];
-  v9 = [v6 datePaired];
-  v10 = [(DSWifiSyncController *)self dateDescription:v9];
-  v11 = [DSIconTableViewCell iconTableViewCellFromTableView:v7 withText:v8 detail:v10 icon:0];
+  datePaired = [v6 datePaired];
+  v10 = [(DSWifiSyncController *)self dateDescription:datePaired];
+  v11 = [DSIconTableViewCell iconTableViewCellFromTableView:tableView withText:v8 detail:v10 icon:0];
 
-  v12 = [v6 datePaired];
-  if (v12 || ([v6 serialNumber], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
+  datePaired2 = [v6 datePaired];
+  if (datePaired2 || ([v6 serialNumber], (datePaired2 = objc_claimAutoreleasedReturnValue()) != 0))
   {
 
 LABEL_4:
@@ -398,57 +398,57 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v17 = [v6 marketingName];
+  marketingName = [v6 marketingName];
 
-  if (v17)
+  if (marketingName)
   {
     goto LABEL_4;
   }
 
 LABEL_5:
-  v13 = [(DSWifiSyncController *)self selectedPairedComputers];
-  v14 = [v13 containsObject:v6];
+  selectedPairedComputers = [(DSWifiSyncController *)self selectedPairedComputers];
+  v14 = [selectedPairedComputers containsObject:v6];
 
   if (v14)
   {
-    v15 = [(OBTableWelcomeController *)self tableView];
-    [v15 selectRowAtIndexPath:v5 animated:1 scrollPosition:0];
+    tableView2 = [(OBTableWelcomeController *)self tableView];
+    [tableView2 selectRowAtIndexPath:pathCopy animated:1 scrollPosition:0];
   }
 
   return v11;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(DSWifiSyncController *)self selectedPairedComputers];
+  pathCopy = path;
+  selectedPairedComputers = [(DSWifiSyncController *)self selectedPairedComputers];
   pairedComputers = self->_pairedComputers;
-  v8 = [v5 row];
+  v8 = [pathCopy row];
 
   v9 = [(NSMutableArray *)pairedComputers objectAtIndex:v8];
-  [v6 addObject:v9];
+  [selectedPairedComputers addObject:v9];
 
   [(DSWifiSyncController *)self _updateButtons];
 }
 
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(DSWifiSyncController *)self selectedPairedComputers];
+  pathCopy = path;
+  selectedPairedComputers = [(DSWifiSyncController *)self selectedPairedComputers];
   pairedComputers = self->_pairedComputers;
-  v8 = [v5 row];
+  v8 = [pathCopy row];
 
   v9 = [(NSMutableArray *)pairedComputers objectAtIndex:v8];
-  [v6 removeObject:v9];
+  [selectedPairedComputers removeObject:v9];
 
   [(DSWifiSyncController *)self _updateButtons];
 }
 
 - (void)removeSelectedPairedDevicesAndPushNextPane
 {
-  v3 = [(DSWifiSyncController *)self selectedPairedComputers];
+  selectedPairedComputers = [(DSWifiSyncController *)self selectedPairedComputers];
   objc_initWeak(&location, self);
-  v4 = [(DSWifiSyncController *)self wifiSyncStore];
+  wifiSyncStore = [(DSWifiSyncController *)self wifiSyncStore];
   v5 = MEMORY[0x277D85CD0];
   v6 = MEMORY[0x277D85CD0];
   v8[0] = MEMORY[0x277D85DD0];
@@ -456,10 +456,10 @@ LABEL_5:
   v8[2] = __66__DSWifiSyncController_removeSelectedPairedDevicesAndPushNextPane__block_invoke;
   v8[3] = &unk_278F75D08;
   objc_copyWeak(&v11, &location);
-  v7 = v3;
+  v7 = selectedPairedComputers;
   v9 = v7;
-  v10 = self;
-  [v4 removePairedDevices:v7 onQueue:v5 withCompletion:v8];
+  selfCopy = self;
+  [wifiSyncStore removePairedDevices:v7 onQueue:v5 withCompletion:v8];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -581,35 +581,35 @@ uint64_t __66__DSWifiSyncController_removeSelectedPairedDevicesAndPushNextPane__
 
   v14 = DSUILocStringForKey(v5);
   v7 = *v6;
-  v8 = [(DSTableWelcomeController *)self boldButton];
-  [v8 removeTarget:0 action:0 forControlEvents:0xFFFFFFFFLL];
+  boldButton = [(DSTableWelcomeController *)self boldButton];
+  [boldButton removeTarget:0 action:0 forControlEvents:0xFFFFFFFFLL];
 
-  v9 = [(DSTableWelcomeController *)self boldButton];
-  [v9 setTitle:v14 forState:0];
+  boldButton2 = [(DSTableWelcomeController *)self boldButton];
+  [boldButton2 setTitle:v14 forState:0];
 
-  v10 = [(DSTableWelcomeController *)self boldButton];
-  [v10 addTarget:self action:v7 forControlEvents:64];
+  boldButton3 = [(DSTableWelcomeController *)self boldButton];
+  [boldButton3 addTarget:self action:v7 forControlEvents:64];
 
-  v11 = [(DSTableWelcomeController *)self linkButton];
+  linkButton = [(DSTableWelcomeController *)self linkButton];
   v12 = DSUILocStringForKey(@"WIFI_SYNC_REMOVE_ALL");
-  [v11 setTitle:v12 forState:0];
+  [linkButton setTitle:v12 forState:0];
 
-  v13 = [(DSTableWelcomeController *)self linkButton];
-  [v13 addTarget:self action:sel_presentRemoveAllDevicesAlert forControlEvents:64];
+  linkButton2 = [(DSTableWelcomeController *)self linkButton];
+  [linkButton2 addTarget:self action:sel_presentRemoveAllDevicesAlert forControlEvents:64];
 }
 
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v5 = -[NSMutableArray objectAtIndexedSubscript:](self->_pairedComputers, "objectAtIndexedSubscript:", [a4 row]);
+  v5 = -[NSMutableArray objectAtIndexedSubscript:](self->_pairedComputers, "objectAtIndexedSubscript:", [path row]);
   v6 = [[DSWifiSyncDetailController alloc] initWithPairedComputer:v5];
   [(DSWifiSyncDetailController *)v6 setDelegate:self];
   v10[0] = v5;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
   [(DSWifiSyncController *)self reportReviewedComputers:v7];
 
-  v8 = [(DSWifiSyncController *)self navigationController];
-  [v8 pushViewController:v6 animated:1];
+  navigationController = [(DSWifiSyncController *)self navigationController];
+  [navigationController pushViewController:v6 animated:1];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -622,10 +622,10 @@ uint64_t __66__DSWifiSyncController_removeSelectedPairedDevicesAndPushNextPane__
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(DSWifiSyncController *)self navigationController];
-  v5 = [v4 viewControllers];
+  navigationController = [(DSWifiSyncController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
 
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v6 = [viewControllers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -637,7 +637,7 @@ uint64_t __66__DSWifiSyncController_removeSelectedPairedDevicesAndPushNextPane__
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(viewControllers);
         }
 
         v10 = *(*(&v14 + 1) + 8 * v9);
@@ -651,30 +651,30 @@ uint64_t __66__DSWifiSyncController_removeSelectedPairedDevicesAndPushNextPane__
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [viewControllers countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
   }
 
-  v12 = [(DSWifiSyncController *)self navigationController];
-  [v12 setViewControllers:v3];
+  navigationController2 = [(DSWifiSyncController *)self navigationController];
+  [navigationController2 setViewControllers:v3];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)returnFromDetailAndRemoveComputer:(id)a3
+- (void)returnFromDetailAndRemoveComputer:(id)computer
 {
-  v4 = a3;
+  computerCopy = computer;
   wifiSyncStore = self->_wifiSyncStore;
-  v6 = [MEMORY[0x277CBEA60] arrayWithObject:v4];
+  v6 = [MEMORY[0x277CBEA60] arrayWithObject:computerCopy];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __58__DSWifiSyncController_returnFromDetailAndRemoveComputer___block_invoke;
   v8[3] = &unk_278F759E8;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = computerCopy;
+  v7 = computerCopy;
   [(DSWifiSyncStore *)wifiSyncStore removePairedDevices:v6 onQueue:MEMORY[0x277D85CD0] withCompletion:v8];
 }
 
@@ -746,28 +746,28 @@ void __58__DSWifiSyncController_returnFromDetailAndRemoveComputer___block_invoke
 - (void)finalizeComputerReviewAndPushNextPane
 {
   [(DSWifiSyncController *)self finalizePairingReviewReport];
-  v3 = [(DSWifiSyncController *)self delegate];
-  [v3 pushNextPane];
+  delegate = [(DSWifiSyncController *)self delegate];
+  [delegate pushNextPane];
 }
 
 - (void)finalizePairingReviewReport
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(DSWifiSyncController *)self delegate];
+  delegate = [(DSWifiSyncController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 unpairedComputers];
-    v5 = [v4 count];
+    unpairedComputers = [delegate unpairedComputers];
+    v5 = [unpairedComputers count];
 
     if (v5)
     {
-      v6 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v17 = 0u;
       v18 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v7 = [(DSWifiSyncController *)self pairedComputers];
-      v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      pairedComputers = [(DSWifiSyncController *)self pairedComputers];
+      v8 = [pairedComputers countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v8)
       {
         v9 = v8;
@@ -778,20 +778,20 @@ void __58__DSWifiSyncController_returnFromDetailAndRemoveComputer___block_invoke
           {
             if (*v18 != v10)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(pairedComputers);
             }
 
             v12 = *(*(&v17 + 1) + 8 * i);
-            v13 = [v12 lockdownFrameworkKey];
+            lockdownFrameworkKey = [v12 lockdownFrameworkKey];
 
-            if (v13)
+            if (lockdownFrameworkKey)
             {
-              v14 = [v12 lockdownFrameworkKey];
-              [v6 addObject:v14];
+              lockdownFrameworkKey2 = [v12 lockdownFrameworkKey];
+              [array addObject:lockdownFrameworkKey2];
             }
           }
 
-          v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+          v9 = [pairedComputers countByEnumeratingWithState:&v17 objects:v21 count:16];
         }
 
         while (v9);
@@ -799,8 +799,8 @@ void __58__DSWifiSyncController_returnFromDetailAndRemoveComputer___block_invoke
 
       if (objc_opt_respondsToSelector())
       {
-        v15 = [v3 reviewedComputers];
-        [v15 addObjectsFromArray:v6];
+        reviewedComputers = [delegate reviewedComputers];
+        [reviewedComputers addObjectsFromArray:array];
       }
     }
   }
@@ -808,17 +808,17 @@ void __58__DSWifiSyncController_returnFromDetailAndRemoveComputer___block_invoke
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reportUnpairedComputers:(id)a3
+- (void)reportUnpairedComputers:(id)computers
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DSWifiSyncController *)self delegate];
-  v6 = [MEMORY[0x277CBEB18] array];
+  computersCopy = computers;
+  delegate = [(DSWifiSyncController *)self delegate];
+  array = [MEMORY[0x277CBEB18] array];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v7 = v4;
+  v7 = computersCopy;
   v8 = [v7 countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v8)
   {
@@ -834,12 +834,12 @@ void __58__DSWifiSyncController_returnFromDetailAndRemoveComputer___block_invoke
         }
 
         v12 = *(*(&v28 + 1) + 8 * i);
-        v13 = [v12 lockdownFrameworkKey];
+        lockdownFrameworkKey = [v12 lockdownFrameworkKey];
 
-        if (v13)
+        if (lockdownFrameworkKey)
         {
-          v14 = [v12 lockdownFrameworkKey];
-          [v6 addObject:v14];
+          lockdownFrameworkKey2 = [v12 lockdownFrameworkKey];
+          [array addObject:lockdownFrameworkKey2];
         }
       }
 
@@ -851,8 +851,8 @@ void __58__DSWifiSyncController_returnFromDetailAndRemoveComputer___block_invoke
 
   if (objc_opt_respondsToSelector())
   {
-    v15 = [v5 unpairedComputers];
-    [v15 addObjectsFromArray:v6];
+    unpairedComputers = [delegate unpairedComputers];
+    [unpairedComputers addObjectsFromArray:array];
   }
 
   if (objc_opt_respondsToSelector())
@@ -861,7 +861,7 @@ void __58__DSWifiSyncController_returnFromDetailAndRemoveComputer___block_invoke
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v16 = v6;
+    v16 = array;
     v17 = [v16 countByEnumeratingWithState:&v24 objects:v32 count:16];
     if (v17)
     {
@@ -877,8 +877,8 @@ void __58__DSWifiSyncController_returnFromDetailAndRemoveComputer___block_invoke
           }
 
           v21 = *(*(&v24 + 1) + 8 * j);
-          v22 = [v5 reviewedComputers];
-          [v22 removeObject:v21];
+          reviewedComputers = [delegate reviewedComputers];
+          [reviewedComputers removeObject:v21];
         }
 
         v18 = [v16 countByEnumeratingWithState:&v24 objects:v32 count:16];
@@ -891,17 +891,17 @@ void __58__DSWifiSyncController_returnFromDetailAndRemoveComputer___block_invoke
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reportReviewedComputers:(id)a3
+- (void)reportReviewedComputers:(id)computers
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DSWifiSyncController *)self delegate];
-  v6 = [MEMORY[0x277CBEB18] array];
+  computersCopy = computers;
+  delegate = [(DSWifiSyncController *)self delegate];
+  array = [MEMORY[0x277CBEB18] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = v4;
+  v7 = computersCopy;
   v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
@@ -917,12 +917,12 @@ void __58__DSWifiSyncController_returnFromDetailAndRemoveComputer___block_invoke
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        v13 = [v12 lockdownFrameworkKey];
+        lockdownFrameworkKey = [v12 lockdownFrameworkKey];
 
-        if (v13)
+        if (lockdownFrameworkKey)
         {
-          v14 = [v12 lockdownFrameworkKey];
-          [v6 addObject:v14];
+          lockdownFrameworkKey2 = [v12 lockdownFrameworkKey];
+          [array addObject:lockdownFrameworkKey2];
         }
       }
 
@@ -934,8 +934,8 @@ void __58__DSWifiSyncController_returnFromDetailAndRemoveComputer___block_invoke
 
   if (objc_opt_respondsToSelector())
   {
-    v15 = [v5 reviewedComputers];
-    [v15 addObjectsFromArray:v6];
+    reviewedComputers = [delegate reviewedComputers];
+    [reviewedComputers addObjectsFromArray:array];
   }
 
   v16 = *MEMORY[0x277D85DE8];

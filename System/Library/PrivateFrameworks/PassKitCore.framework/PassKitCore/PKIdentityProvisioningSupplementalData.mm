@@ -1,9 +1,9 @@
 @interface PKIdentityProvisioningSupplementalData
-+ (id)createWithData:(id)a3;
++ (id)createWithData:(id)data;
 - (PKIdentityProvisioningSupplementalData)init;
-- (PKIdentityProvisioningSupplementalData)initWithCoder:(id)a3;
+- (PKIdentityProvisioningSupplementalData)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKIdentityProvisioningSupplementalData
@@ -15,41 +15,41 @@
   return [(PKIdentityProvisioningSupplementalData *)&v3 init];
 }
 
-+ (id)createWithData:(id)a3
++ (id)createWithData:(id)data
 {
   v3 = MEMORY[0x1E696ACD0];
-  v4 = a3;
-  v5 = [v3 unarchivedObjectOfClass:objc_opt_class() fromData:v4 error:0];
+  dataCopy = data;
+  v5 = [v3 unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:0];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   passTypeIdentifier = self->_passTypeIdentifier;
-  v5 = a3;
-  [v5 encodeObject:passTypeIdentifier forKey:@"passTypeIdentifier"];
-  [v5 encodeObject:self->_passSerialNumber forKey:@"passSerialNumber"];
-  [v5 encodeObject:self->_accountKeyIdentifier forKey:@"accountKeyIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:passTypeIdentifier forKey:@"passTypeIdentifier"];
+  [coderCopy encodeObject:self->_passSerialNumber forKey:@"passSerialNumber"];
+  [coderCopy encodeObject:self->_accountKeyIdentifier forKey:@"accountKeyIdentifier"];
 }
 
-- (PKIdentityProvisioningSupplementalData)initWithCoder:(id)a3
+- (PKIdentityProvisioningSupplementalData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PKIdentityProvisioningSupplementalData;
   v5 = [(PKIdentityProvisioningSupplementalData *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passTypeIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passTypeIdentifier"];
     passTypeIdentifier = v5->_passTypeIdentifier;
     v5->_passTypeIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passSerialNumber"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passSerialNumber"];
     passSerialNumber = v5->_passSerialNumber;
     v5->_passSerialNumber = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountKeyIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountKeyIdentifier"];
     accountKeyIdentifier = v5->_accountKeyIdentifier;
     v5->_accountKeyIdentifier = v10;
   }

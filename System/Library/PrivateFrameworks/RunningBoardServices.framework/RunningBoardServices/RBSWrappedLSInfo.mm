@@ -1,26 +1,26 @@
 @interface RBSWrappedLSInfo
-- (id)_initWithBundleID:(id)a3 personaString:(id)a4 persistentJobLabel:(id)a5 platform:(int)a6 bundleInode:(unint64_t)a7 execInode:(unint64_t)a8;
+- (id)_initWithBundleID:(id)d personaString:(id)string persistentJobLabel:(id)label platform:(int)platform bundleInode:(unint64_t)inode execInode:(unint64_t)execInode;
 @end
 
 @implementation RBSWrappedLSInfo
 
-- (id)_initWithBundleID:(id)a3 personaString:(id)a4 persistentJobLabel:(id)a5 platform:(int)a6 bundleInode:(unint64_t)a7 execInode:(unint64_t)a8
+- (id)_initWithBundleID:(id)d personaString:(id)string persistentJobLabel:(id)label platform:(int)platform bundleInode:(unint64_t)inode execInode:(unint64_t)execInode
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
+  dCopy = d;
+  stringCopy = string;
+  labelCopy = label;
   v22.receiver = self;
   v22.super_class = RBSWrappedLSInfo;
   v18 = [(RBSWrappedLSInfo *)&v22 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_bundleID, a3);
-    objc_storeStrong(&v19->_personaString, a4);
-    objc_storeStrong(&v19->_persistentJobLabel, a5);
-    v19->_platform = a6;
-    v19->_bundleInode = a7;
-    v19->_execInode = a8;
+    objc_storeStrong(&v18->_bundleID, d);
+    objc_storeStrong(&v19->_personaString, string);
+    objc_storeStrong(&v19->_persistentJobLabel, label);
+    v19->_platform = platform;
+    v19->_bundleInode = inode;
+    v19->_execInode = execInode;
     v20 = v19;
   }
 

@@ -24,8 +24,8 @@
 
   else
   {
-    v5 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v5 userInterfaceIdiom] == 1)
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice userInterfaceIdiom] == 1)
     {
       v6 = @"SBLastRotationLockedOrientationiPad";
     }

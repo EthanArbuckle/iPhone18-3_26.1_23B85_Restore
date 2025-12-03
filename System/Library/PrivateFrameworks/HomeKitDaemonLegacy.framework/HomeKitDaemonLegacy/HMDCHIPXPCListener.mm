@@ -1,7 +1,7 @@
 @interface HMDCHIPXPCListener
 + (id)logCategory;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (HMDCHIPXPCListener)initWithHomeManager:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (HMDCHIPXPCListener)initWithHomeManager:(id)manager;
 - (HMDHomeManager)homeManager;
 - (void)start;
 - (void)stop;
@@ -16,13 +16,13 @@
   return WeakRetained;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v48 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -30,15 +30,15 @@
     *buf = 138543618;
     *&buf[4] = v11;
     *&buf[12] = 2112;
-    *&buf[14] = v7;
+    *&buf[14] = connectionCopy;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@New CHIP XPC connection requested: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
   v12 = *MEMORY[0x277D6C258];
-  if (v7)
+  if (connectionCopy)
   {
-    [v7 auditToken];
+    [connectionCopy auditToken];
   }
 
   else
@@ -48,7 +48,7 @@
 
   if (TCCAccessCheckAuditToken())
   {
-    v13 = [v7 valueForEntitlement:@"com.apple.developer.homekit"];
+    v13 = [connectionCopy valueForEntitlement:@"com.apple.developer.homekit"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -62,10 +62,10 @@
 
     v15 = v14;
 
-    v16 = [v15 BOOLValue];
-    if (v16)
+    bOOLValue = [v15 BOOLValue];
+    if (bOOLValue)
     {
-      v17 = [v7 valueForEntitlement:@"com.apple.developer.homekit.background-mode"];
+      v17 = [connectionCopy valueForEntitlement:@"com.apple.developer.homekit.background-mode"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -79,9 +79,9 @@
 
       v19 = v18;
 
-      v20 = [v19 BOOLValue];
+      bOOLValue2 = [v19 BOOLValue];
       v21 = objc_autoreleasePoolPush();
-      v22 = v9;
+      v22 = selfCopy;
       v23 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
       {
@@ -95,42 +95,42 @@
       }
 
       objc_autoreleasePoolPop(v21);
-      v26 = [(os_unfair_lock_s *)v22 exportedInterface];
-      [v7 setExportedInterface:v26];
+      exportedInterface = [(os_unfair_lock_s *)v22 exportedInterface];
+      [connectionCopy setExportedInterface:exportedInterface];
 
-      v27 = [(os_unfair_lock_s *)v22 remoteObjectInterface];
-      [v7 setRemoteObjectInterface:v27];
+      remoteObjectInterface = [(os_unfair_lock_s *)v22 remoteObjectInterface];
+      [connectionCopy setRemoteObjectInterface:remoteObjectInterface];
 
-      LODWORD(v27) = [v7 processIdentifier];
-      v28 = [v7 remoteObjectProxy];
-      v29 = [(os_unfair_lock_s *)v22 homeManager];
-      v30 = [(os_unfair_lock_s *)v22 createClientConnectionWithRemoteObjectProxy:v28 homeManager:v29 connection:v7 backgroundModeEntitled:v20];
+      LODWORD(remoteObjectInterface) = [connectionCopy processIdentifier];
+      remoteObjectProxy = [connectionCopy remoteObjectProxy];
+      homeManager = [(os_unfair_lock_s *)v22 homeManager];
+      v30 = [(os_unfair_lock_s *)v22 createClientConnectionWithRemoteObjectProxy:remoteObjectProxy homeManager:homeManager connection:connectionCopy backgroundModeEntitled:bOOLValue2];
 
       os_unfair_lock_lock_with_options();
-      v31 = [(os_unfair_lock_s *)v22 mutableConnections];
-      [v31 addObject:v30];
+      mutableConnections = [(os_unfair_lock_s *)v22 mutableConnections];
+      [mutableConnections addObject:v30];
 
       os_unfair_lock_unlock(v22 + 2);
-      [v7 setExportedObject:v30];
+      [connectionCopy setExportedObject:v30];
       v44[0] = MEMORY[0x277D85DD0];
       v44[1] = 3221225472;
       v44[2] = __57__HMDCHIPXPCListener_listener_shouldAcceptNewConnection___block_invoke;
       v44[3] = &unk_279720C58;
-      v46 = v27;
+      v46 = remoteObjectInterface;
       v44[4] = v22;
       v45 = v30;
       v32 = v30;
-      [v7 setInvalidationHandler:v44];
-      v33 = [(os_unfair_lock_s *)v22 workQueue];
-      [v7 _setQueue:v33];
+      [connectionCopy setInvalidationHandler:v44];
+      workQueue = [(os_unfair_lock_s *)v22 workQueue];
+      [connectionCopy _setQueue:workQueue];
 
-      [v7 resume];
+      [connectionCopy resume];
     }
 
     else
     {
       v38 = objc_autoreleasePoolPush();
-      v39 = v9;
+      v39 = selfCopy;
       v40 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
       {
@@ -138,7 +138,7 @@
         *buf = 138543618;
         *&buf[4] = v41;
         *&buf[12] = 2112;
-        *&buf[14] = v7;
+        *&buf[14] = connectionCopy;
         _os_log_impl(&dword_2531F8000, v40, OS_LOG_TYPE_INFO, "%{public}@XPC connection does not have public HomeKit entitlement: %@", buf, 0x16u);
       }
 
@@ -149,7 +149,7 @@
   else
   {
     v34 = objc_autoreleasePoolPush();
-    v35 = v9;
+    v35 = selfCopy;
     v36 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
     {
@@ -157,16 +157,16 @@
       *buf = 138543618;
       *&buf[4] = v37;
       *&buf[12] = 2112;
-      *&buf[14] = v7;
+      *&buf[14] = connectionCopy;
       _os_log_impl(&dword_2531F8000, v36, OS_LOG_TYPE_DEFAULT, "%{public}@XPC connection has no permission to access Home data: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v34);
-    v16 = 0;
+    bOOLValue = 0;
   }
 
   v42 = *MEMORY[0x277D85DE8];
-  return v16;
+  return bOOLValue;
 }
 
 void __57__HMDCHIPXPCListener_listener_shouldAcceptNewConnection___block_invoke(uint64_t a1)
@@ -227,15 +227,15 @@ BOOL __57__HMDCHIPXPCListener_listener_shouldAcceptNewConnection___block_invoke_
 
 - (void)stop
 {
-  v2 = [(HMDCHIPXPCListener *)self listener];
-  [v2 suspend];
+  listener = [(HMDCHIPXPCListener *)self listener];
+  [listener suspend];
 }
 
 - (void)start
 {
   v11 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -246,15 +246,15 @@ BOOL __57__HMDCHIPXPCListener_listener_shouldAcceptNewConnection___block_invoke_
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMDCHIPXPCListener *)v4 listener];
-  [v7 resume];
+  listener = [(HMDCHIPXPCListener *)selfCopy listener];
+  [listener resume];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDCHIPXPCListener)initWithHomeManager:(id)a3
+- (HMDCHIPXPCListener)initWithHomeManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v29.receiver = self;
   v29.super_class = HMDCHIPXPCListener;
   v5 = [(HMDCHIPXPCListener *)&v29 init];
@@ -263,9 +263,9 @@ BOOL __57__HMDCHIPXPCListener_listener_shouldAcceptNewConnection___block_invoke_
   {
     v5->_lock._os_unfair_lock_opaque = 0;
     v7 = HMDispatchQueueNameString();
-    v8 = [v7 UTF8String];
+    uTF8String = [v7 UTF8String];
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v10 = dispatch_queue_create(v8, v9);
+    v10 = dispatch_queue_create(uTF8String, v9);
     workQueue = v6->_workQueue;
     v6->_workQueue = v10;
 
@@ -284,11 +284,11 @@ BOOL __57__HMDCHIPXPCListener_listener_shouldAcceptNewConnection___block_invoke_
     remoteObjectInterface = v6->_remoteObjectInterface;
     v6->_remoteObjectInterface = v17;
 
-    objc_storeWeak(&v6->_homeManager, v4);
+    objc_storeWeak(&v6->_homeManager, managerCopy);
     v19 = HMDispatchQueueNameString();
-    v20 = [v19 UTF8String];
+    uTF8String2 = [v19 UTF8String];
     v21 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v22 = dispatch_queue_create(v20, v21);
+    v22 = dispatch_queue_create(uTF8String2, v21);
     processMonitorQueue = v6->_processMonitorQueue;
     v6->_processMonitorQueue = v22;
 

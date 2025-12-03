@@ -14,13 +14,13 @@
 - (uint64_t)needToGeneratePreviews
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = [a1 attachment];
-  if ([v4 hasSynapseLink])
+  attachment = [self attachment];
+  if ([attachment hasSynapseLink])
   {
-    v5 = [a1 attachment];
-    v6 = [v5 previewUpdateDate];
+    attachment2 = [self attachment];
+    previewUpdateDate = [attachment2 previewUpdateDate];
 
-    if (v6)
+    if (previewUpdateDate)
     {
       return 0;
     }
@@ -30,22 +30,22 @@
   {
   }
 
-  v8 = [a1 attachment];
-  v9 = [v8 URL];
-  if ([v9 ic_isWebURL] && (objc_msgSend(a1, "isGeneratingPreviews") & 1) == 0)
+  attachment3 = [self attachment];
+  v9 = [attachment3 URL];
+  if ([v9 ic_isWebURL] && (objc_msgSend(self, "isGeneratingPreviews") & 1) == 0)
   {
-    v10 = [a1 attachment];
-    if ([v10 wasCreatedByCurrentUser])
+    attachment4 = [self attachment];
+    if ([attachment4 wasCreatedByCurrentUser])
     {
-      v11 = [a1 attachment];
-      if ([v11 metadataExists])
+      attachment5 = [self attachment];
+      if ([attachment5 metadataExists])
       {
-        v12 = [a1 attachment];
-        v13 = [v12 previewUpdateDate];
-        if (v13)
+        attachment6 = [self attachment];
+        previewUpdateDate2 = [attachment6 previewUpdateDate];
+        if (previewUpdateDate2)
         {
-          v14 = [a1 attachment];
-          v7 = [v14 hasMetadata] ^ 1;
+          attachment7 = [self attachment];
+          v7 = [attachment7 hasMetadata] ^ 1;
         }
 
         else
@@ -77,23 +77,23 @@
     v17 = objc_opt_class();
     v18 = NSStringFromClass(v17);
     v19 = NSStringFromSelector(a2);
-    v20 = [a1 attachment];
-    v21 = [v20 identifier];
-    v22 = [a1 attachment];
-    v23 = [v22 previewUpdateDate];
-    v24 = [a1 attachment];
+    attachment8 = [self attachment];
+    identifier = [attachment8 identifier];
+    attachment9 = [self attachment];
+    previewUpdateDate3 = [attachment9 previewUpdateDate];
+    attachment10 = [self attachment];
     v25 = 138413570;
     v26 = v18;
     v27 = 2112;
     v28 = v19;
     v29 = 2112;
-    v30 = v21;
+    v30 = identifier;
     v31 = 1024;
     v32 = v7;
     v33 = 2112;
-    v34 = v23;
+    v34 = previewUpdateDate3;
     v35 = 1024;
-    v36 = [v24 hasMetadata];
+    hasMetadata = [attachment10 hasMetadata];
     _os_log_debug_impl(&dword_1D4171000, v15, OS_LOG_TYPE_DEBUG, "%@ %@ %@ return %d self.attachment.previewUpdateDate %@ has self.attachment.metadataData %d", &v25, 0x36u);
   }
 
@@ -103,7 +103,7 @@
 - (uint64_t)generatePreviewsInOperation:()PreviewGeneration
 {
   v5 = a3;
-  if ([a1 isGeneratingPreviews])
+  if ([self isGeneratingPreviews])
   {
     v6 = os_log_create("com.apple.notes", "PreviewGeneration");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -115,7 +115,7 @@
     goto LABEL_15;
   }
 
-  [a1 setGeneratingPreviews:1];
+  [self setGeneratingPreviews:1];
   v44 = 0;
   v45[0] = &v44;
   v45[1] = 0x3032000000;
@@ -142,9 +142,9 @@
   v27 = __Block_byref_object_copy__45;
   v28 = __Block_byref_object_dispose__45;
   v29 = 0;
-  objc_initWeak(&location, a1);
-  v8 = [a1 attachment];
-  v9 = [v8 managedObjectContext];
+  objc_initWeak(&location, self);
+  attachment = [self attachment];
+  managedObjectContext = [attachment managedObjectContext];
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
   v15 = __71__ICAttachmentWebModel_PreviewGeneration__generatePreviewsInOperation___block_invoke;
@@ -156,16 +156,16 @@
   v20 = &v34;
   v22[1] = a2;
   v21 = &v30;
-  [v9 performBlockAndWait:&v13];
+  [managedObjectContext performBlockAndWait:&v13];
 
   if (*(v35 + 24) == 1)
   {
-    v10 = [a1 downloadPreviewForAttachmentURL:{v39[5], v13, v14, v15, v16}];
+    updateAttachmentPreviewImagesMetadata = [self downloadPreviewForAttachmentURL:{v39[5], v13, v14, v15, v16}];
   }
 
   else if (*(v31 + 24) == 1)
   {
-    v10 = [a1 updateAttachmentPreviewImagesMetadata];
+    updateAttachmentPreviewImagesMetadata = [self updateAttachmentPreviewImagesMetadata];
   }
 
   else
@@ -176,10 +176,10 @@
       goto LABEL_12;
     }
 
-    v10 = [a1 extractPreviewImagesFromSynapseData:{v13, v14, v15, v16}];
+    updateAttachmentPreviewImagesMetadata = [self extractPreviewImagesFromSynapseData:{v13, v14, v15, v16}];
   }
 
-  v7 = v10;
+  v7 = updateAttachmentPreviewImagesMetadata;
 LABEL_12:
   v11 = os_log_create("com.apple.notes", "PreviewGeneration");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -187,7 +187,7 @@ LABEL_12:
     [(ICAttachmentWebModel(PreviewGeneration) *)v45 generatePreviewsInOperation:v11];
   }
 
-  [a1 setGeneratingPreviews:0];
+  [self setGeneratingPreviews:0];
   objc_destroyWeak(v22);
   objc_destroyWeak(&location);
   _Block_object_dispose(&v24, 8);
@@ -209,16 +209,16 @@ LABEL_15:
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 1;
-  objc_initWeak(&location, a1);
-  v5 = [a1 attachment];
-  v6 = [v5 managedObjectContext];
+  objc_initWeak(&location, self);
+  attachment = [self attachment];
+  managedObjectContext = [attachment managedObjectContext];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __79__ICAttachmentWebModel_PreviewGeneration__extractPreviewImagesFromSynapseData___block_invoke;
   v9[3] = &unk_1E846AAB8;
   objc_copyWeak(&v10, &location);
   v9[4] = &v12;
-  [v6 performBlockAndWait:v9];
+  [managedObjectContext performBlockAndWait:v9];
 
   v7 = *(v13 + 24);
   objc_destroyWeak(&v10);
@@ -232,7 +232,7 @@ LABEL_15:
 {
   v4 = a3;
   v5 = dispatch_semaphore_create(0);
-  objc_initWeak(&location, a1);
+  objc_initWeak(&location, self);
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -246,7 +246,7 @@ LABEL_15:
   objc_copyWeak(&v15, &location);
   v13 = v5;
   v14 = &v16;
-  v12 = a1;
+  selfCopy = self;
   v7 = v5;
   dispatch_sync(MEMORY[0x1E69E96A0], v10);
   dispatch_semaphore_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
@@ -264,15 +264,15 @@ LABEL_15:
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v2 = [a1 attachment];
-  v3 = [v2 managedObjectContext];
+  attachment = [self attachment];
+  managedObjectContext = [attachment managedObjectContext];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __80__ICAttachmentWebModel_PreviewGeneration__updateAttachmentPreviewImagesMetadata__block_invoke;
   v6[3] = &unk_1E846B1D8;
-  v6[4] = a1;
+  v6[4] = self;
   v6[5] = &v7;
-  [v3 performBlockAndWait:v6];
+  [managedObjectContext performBlockAndWait:v6];
 
   v4 = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
@@ -283,53 +283,53 @@ LABEL_15:
 {
   v7 = a3;
   v8 = a4;
-  v9 = [a1 attachment];
-  if (![v9 isValidObject])
+  attachment = [self attachment];
+  if (![attachment isValidObject])
   {
 LABEL_10:
 
     goto LABEL_11;
   }
 
-  v10 = [a1 previewGenerationOperationCancelled];
+  previewGenerationOperationCancelled = [self previewGenerationOperationCancelled];
 
-  if ((v10 & 1) == 0)
+  if ((previewGenerationOperationCancelled & 1) == 0)
   {
     v11 = MEMORY[0x1E696AEC0];
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
     v14 = NSStringFromSelector(a2);
-    v15 = [a1 attachment];
-    v16 = [v15 identifier];
-    v9 = [v11 stringWithFormat:@"%@ %@ %@", v13, v14, v16];
+    attachment2 = [self attachment];
+    identifier = [attachment2 identifier];
+    attachment = [v11 stringWithFormat:@"%@ %@ %@", v13, v14, identifier];
 
     v17 = os_log_create("com.apple.notes", "PreviewGeneration");
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
-      [(ICAttachmentWebModel(PreviewGeneration) *)a2 updateTitle:v9 andDescription:v17];
+      [(ICAttachmentWebModel(PreviewGeneration) *)a2 updateTitle:attachment andDescription:v17];
     }
 
     if ([v7 length])
     {
-      v18 = [a1 attachment];
-      v19 = [v18 title];
-      v20 = [v19 isEqualToString:v7];
+      attachment3 = [self attachment];
+      title = [attachment3 title];
+      v20 = [title isEqualToString:v7];
 
       if ((v20 & 1) == 0)
       {
-        v21 = [a1 attachment];
-        [v21 setTitle:v7];
+        attachment4 = [self attachment];
+        [attachment4 setTitle:v7];
       }
     }
 
-    v22 = [a1 attachment];
-    v23 = [v22 summary];
-    v24 = [v23 length];
+    attachment5 = [self attachment];
+    summary = [attachment5 summary];
+    v24 = [summary length];
 
     if (!v24)
     {
-      v25 = [a1 attachment];
-      [v25 setSummary:v8];
+      attachment6 = [self attachment];
+      [attachment6 setSummary:v8];
     }
 
     goto LABEL_10;
@@ -341,47 +341,47 @@ LABEL_11:
 - (void)saveImagesFromLinkMetadata:()PreviewGeneration
 {
   v17 = a3;
-  v4 = [v17 image];
+  image = [v17 image];
 
-  if (v4)
+  if (image)
   {
-    v5 = [v17 image];
-    v6 = [v5 platformImage];
-    [v6 size];
+    image2 = [v17 image];
+    platformImage = [image2 platformImage];
+    [platformImage size];
     v9 = v8 <= 192.0 && v7 <= 192.0;
     goto LABEL_7;
   }
 
-  v10 = [v17 icon];
+  icon = [v17 icon];
 
-  if (v10)
+  if (icon)
   {
-    v5 = [v17 icon];
-    v6 = [v5 platformImage];
+    image2 = [v17 icon];
+    platformImage = [image2 platformImage];
     v9 = 1;
 LABEL_7:
-    [a1 updateAttachmentWithPreviewImage:v6];
+    [self updateAttachmentWithPreviewImage:platformImage];
 
     goto LABEL_8;
   }
 
   v9 = 1;
 LABEL_8:
-  v11 = [a1 attachment];
-  v12 = [v11 metadata];
-  v13 = v12;
-  if (!v12)
+  attachment = [self attachment];
+  metadata = [attachment metadata];
+  v13 = metadata;
+  if (!metadata)
   {
-    v12 = MEMORY[0x1E695E0F8];
+    metadata = MEMORY[0x1E695E0F8];
   }
 
-  v14 = [v12 mutableCopy];
+  v14 = [metadata mutableCopy];
 
   v15 = [MEMORY[0x1E696AD98] numberWithBool:v9];
   [v14 setObject:v15 forKey:*MEMORY[0x1E69B7408]];
 
-  v16 = [a1 attachment];
-  [v16 setMetadata:v14];
+  attachment2 = [self attachment];
+  [attachment2 setMetadata:v14];
 }
 
 - (void)updateAttachmentWithPreviewImage:()PreviewGeneration
@@ -389,14 +389,14 @@ LABEL_8:
   v10 = a3;
   [v10 scale];
   v5 = v4;
-  v6 = [a1 attachment];
-  v7 = [v6 updateAttachmentPreviewImageWithImage:v10 scale:1 scaleWhenDrawing:0 metadata:0 sendNotification:v5];
+  attachment = [self attachment];
+  v7 = [attachment updateAttachmentPreviewImageWithImage:v10 scale:1 scaleWhenDrawing:0 metadata:0 sendNotification:v5];
 
-  v8 = [a1 attachment];
-  [v8 updateChangeCountWithReason:@"Updated preview images with image"];
+  attachment2 = [self attachment];
+  [attachment2 updateChangeCountWithReason:@"Updated preview images with image"];
 
-  v9 = [a1 attachment];
-  [v9 ic_postNotificationOnMainThreadWithName:*MEMORY[0x1E69B7420]];
+  attachment3 = [self attachment];
+  [attachment3 ic_postNotificationOnMainThreadWithName:*MEMORY[0x1E69B7420]];
 }
 
 - (void)generatePreviewsInOperation:()PreviewGeneration .cold.1(uint64_t a1, NSObject *a2)

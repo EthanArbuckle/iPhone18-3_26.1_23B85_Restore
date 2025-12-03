@@ -1,27 +1,27 @@
 @interface UIDictationInterpretation
-+ (id)serializedInterpretationFromTokens:(id)a3 transform:(__CFString *)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)serializedInterpretationFromTokens:(id)tokens transform:(__CFString *)transform;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)removeSpaceAfter;
 - (BOOL)removeSpaceBefore;
-- (UIDictationInterpretation)initWithCoder:(id)a3;
-- (UIDictationInterpretation)initWithTokens:(id)a3;
-- (UIDictationInterpretation)initWithTokens:(id)a3 score:(double)a4;
+- (UIDictationInterpretation)initWithCoder:(id)coder;
+- (UIDictationInterpretation)initWithTokens:(id)tokens;
+- (UIDictationInterpretation)initWithTokens:(id)tokens score:(double)score;
 - (id)description;
-- (id)serializedInterpretationWithTransform:(__CFString *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)serializedInterpretationWithTransform:(__CFString *)transform;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UIDictationInterpretation
 
-- (UIDictationInterpretation)initWithTokens:(id)a3
+- (UIDictationInterpretation)initWithTokens:(id)tokens
 {
-  v4 = a3;
+  tokensCopy = tokens;
   v17.receiver = self;
   v17.super_class = UIDictationInterpretation;
   v5 = [(UIDictationInterpretation *)&v17 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [tokensCopy copy];
     tokens = v5->_tokens;
     v5->_tokens = v6;
 
@@ -36,10 +36,10 @@
     v12[3] = &unk_1E7115800;
     v12[4] = &v13;
     [(NSArray *)v8 enumerateObjectsUsingBlock:v12];
-    if ([v4 count])
+    if ([tokensCopy count])
     {
       v9 = v14[3];
-      v5->_averageConfidenceScore = v9 / [v4 count];
+      v5->_averageConfidenceScore = v9 / [tokensCopy count];
     }
 
     v10 = v5;
@@ -58,28 +58,28 @@ double __44__UIDictationInterpretation_initWithTokens___block_invoke(uint64_t a1
   return result;
 }
 
-- (UIDictationInterpretation)initWithTokens:(id)a3 score:(double)a4
+- (UIDictationInterpretation)initWithTokens:(id)tokens score:(double)score
 {
-  v6 = a3;
+  tokensCopy = tokens;
   v12.receiver = self;
   v12.super_class = UIDictationInterpretation;
   v7 = [(UIDictationInterpretation *)&v12 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [tokensCopy copy];
     tokens = v7->_tokens;
     v7->_tokens = v8;
 
-    v7->_averageConfidenceScore = a4;
+    v7->_averageConfidenceScore = score;
     v10 = v7;
   }
 
   return v7;
 }
 
-- (UIDictationInterpretation)initWithCoder:(id)a3
+- (UIDictationInterpretation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = UIDictationInterpretation;
   v5 = [(UIDictationInterpretation *)&v14 init];
@@ -88,11 +88,11 @@ double __44__UIDictationInterpretation_initWithTokens___block_invoke(uint64_t a1
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"tokens"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"tokens"];
     tokens = v5->_tokens;
     v5->_tokens = v9;
 
-    [v4 decodeDoubleForKey:@"averageConfidenceScore"];
+    [coderCopy decodeDoubleForKey:@"averageConfidenceScore"];
     v5->_averageConfidenceScore = v11;
     v12 = v5;
   }
@@ -100,49 +100,49 @@ double __44__UIDictationInterpretation_initWithTokens___block_invoke(uint64_t a1
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   tokens = self->_tokens;
-  v5 = a3;
-  [v5 encodeObject:tokens forKey:@"tokens"];
-  [v5 encodeDouble:@"averageConfidenceScore" forKey:self->_averageConfidenceScore];
+  coderCopy = coder;
+  [coderCopy encodeObject:tokens forKey:@"tokens"];
+  [coderCopy encodeDouble:@"averageConfidenceScore" forKey:self->_averageConfidenceScore];
 }
 
 - (BOOL)removeSpaceBefore
 {
-  v2 = [(NSArray *)self->_tokens firstObject];
-  v3 = [v2 removeSpaceBefore];
+  firstObject = [(NSArray *)self->_tokens firstObject];
+  removeSpaceBefore = [firstObject removeSpaceBefore];
 
-  return v3;
+  return removeSpaceBefore;
 }
 
 - (BOOL)removeSpaceAfter
 {
-  v2 = [(NSArray *)self->_tokens lastObject];
-  v3 = [v2 removeSpaceAfter];
+  lastObject = [(NSArray *)self->_tokens lastObject];
+  removeSpaceAfter = [lastObject removeSpaceAfter];
 
-  return v3;
+  return removeSpaceAfter;
 }
 
-- (id)serializedInterpretationWithTransform:(__CFString *)a3
+- (id)serializedInterpretationWithTransform:(__CFString *)transform
 {
   v5 = objc_opt_class();
-  v6 = [(UIDictationInterpretation *)self tokens];
-  v7 = [v5 serializedInterpretationFromTokens:v6 transform:a3];
+  tokens = [(UIDictationInterpretation *)self tokens];
+  v7 = [v5 serializedInterpretationFromTokens:tokens transform:transform];
 
   return v7;
 }
 
-+ (id)serializedInterpretationFromTokens:(id)a3 transform:(__CFString *)a4
++ (id)serializedInterpretationFromTokens:(id)tokens transform:(__CFString *)transform
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AD60] string];
+  tokensCopy = tokens;
+  string = [MEMORY[0x1E696AD60] string];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = v4;
+  v6 = tokensCopy;
   v7 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v7)
   {
@@ -161,11 +161,11 @@ double __44__UIDictationInterpretation_initWithTokens___block_invoke(uint64_t a1
         v12 = *(*(&v21 + 1) + 8 * i);
         if ((v9 & 1) != 0 && ([*(*(&v21 + 1) + 8 * i) removeSpaceBefore] & 1) == 0)
         {
-          [v5 appendString:@" "];
+          [string appendString:@" "];
         }
 
-        v13 = [v12 text];
-        v14 = [UIDictationUtilities _properNameForString:v13];
+        text = [v12 text];
+        v14 = [UIDictationUtilities _properNameForString:text];
         v15 = v14;
         if (v14)
         {
@@ -174,13 +174,13 @@ double __44__UIDictationInterpretation_initWithTokens___block_invoke(uint64_t a1
 
         else
         {
-          v16 = v13;
+          v16 = text;
         }
 
         v17 = v16;
 
         [v17 length];
-        [v5 appendString:v17];
+        [string appendString:v17];
 
         v9 = [v12 removeSpaceAfter] ^ 1;
       }
@@ -191,23 +191,23 @@ double __44__UIDictationInterpretation_initWithTokens___block_invoke(uint64_t a1
     while (v8);
   }
 
-  v18 = [v5 _stringByApplyingTransform:a4];
+  v18 = [string _stringByApplyingTransform:transform];
 
   return v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     tokens = self->_tokens;
-    v6 = [v4 tokens];
-    if ([(NSArray *)tokens isEqualToArray:v6])
+    tokens = [equalCopy tokens];
+    if ([(NSArray *)tokens isEqualToArray:tokens])
     {
       averageConfidenceScore = self->_averageConfidenceScore;
-      [v4 averageConfidenceScore];
+      [equalCopy averageConfidenceScore];
       v9 = vabdd_f64(averageConfidenceScore, v8) < 0.000000001;
     }
 
@@ -231,8 +231,8 @@ double __44__UIDictationInterpretation_initWithTokens___block_invoke(uint64_t a1
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
   v6 = [(UIDictationInterpretation *)self serializedInterpretationWithTransform:0];
-  v7 = [(NSArray *)self->_tokens firstObject];
-  if ([v7 removeSpaceBefore])
+  firstObject = [(NSArray *)self->_tokens firstObject];
+  if ([firstObject removeSpaceBefore])
   {
     v8 = "YES";
   }
@@ -242,8 +242,8 @@ double __44__UIDictationInterpretation_initWithTokens___block_invoke(uint64_t a1
     v8 = "NO";
   }
 
-  v9 = [(NSArray *)self->_tokens lastObject];
-  if ([v9 removeSpaceAfter])
+  lastObject = [(NSArray *)self->_tokens lastObject];
+  if ([lastObject removeSpaceAfter])
   {
     v10 = "YES";
   }

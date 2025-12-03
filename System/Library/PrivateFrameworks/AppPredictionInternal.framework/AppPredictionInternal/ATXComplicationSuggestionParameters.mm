@@ -113,15 +113,15 @@ void __53__ATXComplicationSuggestionParameters_sharedInstance__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)showPreviewsInPosterGallery
@@ -130,15 +130,15 @@ void __53__ATXComplicationSuggestionParameters_sharedInstance__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 @end

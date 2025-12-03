@@ -1,123 +1,123 @@
 @interface MTLGPUDebugRenderCommandEncoder
-- (MTLGPUDebugRenderCommandEncoder)initWithRenderCommandEncoder:(id)a3 commandBuffer:(id)a4 descriptor:(id)a5 encoderID:(unsigned int)a6;
-- (MTLGPUDebugRenderCommandEncoder)initWithRenderCommandEncoder:(id)a3 parallelEncoder:(id)a4 encoderID:(unsigned int)a5;
+- (MTLGPUDebugRenderCommandEncoder)initWithRenderCommandEncoder:(id)encoder commandBuffer:(id)buffer descriptor:(id)descriptor encoderID:(unsigned int)d;
+- (MTLGPUDebugRenderCommandEncoder)initWithRenderCommandEncoder:(id)encoder parallelEncoder:(id)parallelEncoder encoderID:(unsigned int)d;
 - (id).cxx_construct;
-- (id)_internalBindingTableForStage:(unint64_t)a3;
-- (id)temporaryBufferWithBytes:(const void *)a3 length:(unint64_t)a4;
-- (id)temporaryBufferWithLength:(unint64_t)a3;
-- (void)_setBufferForStage:(id)a3 atIndex:(unint64_t)a4 stage:(unint64_t)a5;
-- (void)_setInternalBindingTableForStage:(id)a3 stage:(unint64_t)a4;
-- (void)_useResourceCommon:(id)a3 usage:(unint64_t)a4 stages:(optional<unsigned long>)a5;
-- (void)bindInternalBufferForStage:(id)a3 index:(unint64_t)a4 stage:(unint64_t)a5 offset:(unint64_t)a6;
-- (void)dispatchThreadsPerTile:(id *)a3;
-- (void)dispatchThreadsPerTile:(id *)a3 inRegion:(id *)a4;
-- (void)dispatchThreadsPerTile:(id *)a3 withCondition:(int64_t)a4;
-- (void)drawIndexedPatches:(unint64_t)a3 patchIndexBuffer:(id)a4 patchIndexBufferOffset:(unint64_t)a5 controlPointIndexBuffer:(id)a6 controlPointIndexBufferOffset:(unint64_t)a7 indirectBuffer:(id)a8 indirectBufferOffset:(unint64_t)a9;
-- (void)drawIndexedPatches:(unint64_t)a3 patchStart:(unint64_t)a4 patchCount:(unint64_t)a5 patchIndexBuffer:(id)a6 patchIndexBufferOffset:(unint64_t)a7 controlPointIndexBuffer:(id)a8 controlPointIndexBufferOffset:(unint64_t)a9 instanceCount:(unint64_t)a10 baseInstance:(unint64_t)a11;
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexCount:(unint64_t)a4 indexType:(unint64_t)a5 indexBuffer:(id)a6 indexBufferOffset:(unint64_t)a7;
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexCount:(unint64_t)a4 indexType:(unint64_t)a5 indexBuffer:(id)a6 indexBufferOffset:(unint64_t)a7 instanceCount:(unint64_t)a8;
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexCount:(unint64_t)a4 indexType:(unint64_t)a5 indexBuffer:(id)a6 indexBufferOffset:(unint64_t)a7 instanceCount:(unint64_t)a8 baseVertex:(int64_t)a9 baseInstance:(unint64_t)a10;
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexType:(unint64_t)a4 indexBuffer:(id)a5 indexBufferOffset:(unint64_t)a6 indirectBuffer:(id)a7 indirectBufferOffset:(unint64_t)a8;
-- (void)drawMeshThreadgroups:(id *)a3 threadsPerObjectThreadgroup:(id *)a4 threadsPerMeshThreadgroup:(id *)a5;
-- (void)drawMeshThreadgroupsWithIndirectBuffer:(id)a3 indirectBufferOffset:(unint64_t)a4 threadsPerObjectThreadgroup:(id *)a5 threadsPerMeshThreadgroup:(id *)a6;
-- (void)drawMeshThreads:(id *)a3 threadsPerObjectThreadgroup:(id *)a4 threadsPerMeshThreadgroup:(id *)a5;
-- (void)drawPatches:(unint64_t)a3 patchIndexBuffer:(id)a4 patchIndexBufferOffset:(unint64_t)a5 indirectBuffer:(id)a6 indirectBufferOffset:(unint64_t)a7;
-- (void)drawPatches:(unint64_t)a3 patchStart:(unint64_t)a4 patchCount:(unint64_t)a5 patchIndexBuffer:(id)a6 patchIndexBufferOffset:(unint64_t)a7 instanceCount:(unint64_t)a8 baseInstance:(unint64_t)a9;
-- (void)drawPrimitives:(unint64_t)a3 indirectBuffer:(id)a4 indirectBufferOffset:(unint64_t)a5;
-- (void)drawPrimitives:(unint64_t)a3 vertexStart:(unint64_t)a4 vertexCount:(unint64_t)a5;
-- (void)drawPrimitives:(unint64_t)a3 vertexStart:(unint64_t)a4 vertexCount:(unint64_t)a5 instanceCount:(unint64_t)a6;
-- (void)drawPrimitives:(unint64_t)a3 vertexStart:(unint64_t)a4 vertexCount:(unint64_t)a5 instanceCount:(unint64_t)a6 baseInstance:(unint64_t)a7;
+- (id)_internalBindingTableForStage:(unint64_t)stage;
+- (id)temporaryBufferWithBytes:(const void *)bytes length:(unint64_t)length;
+- (id)temporaryBufferWithLength:(unint64_t)length;
+- (void)_setBufferForStage:(id)stage atIndex:(unint64_t)index stage:(unint64_t)a5;
+- (void)_setInternalBindingTableForStage:(id)stage stage:(unint64_t)a4;
+- (void)_useResourceCommon:(id)common usage:(unint64_t)usage stages:(optional<unsigned long>)stages;
+- (void)bindInternalBufferForStage:(id)stage index:(unint64_t)index stage:(unint64_t)a5 offset:(unint64_t)offset;
+- (void)dispatchThreadsPerTile:(id *)tile;
+- (void)dispatchThreadsPerTile:(id *)tile inRegion:(id *)region;
+- (void)dispatchThreadsPerTile:(id *)tile withCondition:(int64_t)condition;
+- (void)drawIndexedPatches:(unint64_t)patches patchIndexBuffer:(id)buffer patchIndexBufferOffset:(unint64_t)offset controlPointIndexBuffer:(id)indexBuffer controlPointIndexBufferOffset:(unint64_t)bufferOffset indirectBuffer:(id)indirectBuffer indirectBufferOffset:(unint64_t)indirectBufferOffset;
+- (void)drawIndexedPatches:(unint64_t)patches patchStart:(unint64_t)start patchCount:(unint64_t)count patchIndexBuffer:(id)buffer patchIndexBufferOffset:(unint64_t)offset controlPointIndexBuffer:(id)indexBuffer controlPointIndexBufferOffset:(unint64_t)bufferOffset instanceCount:(unint64_t)self0 baseInstance:(unint64_t)self1;
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexCount:(unint64_t)count indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset;
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexCount:(unint64_t)count indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset instanceCount:(unint64_t)instanceCount;
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexCount:(unint64_t)count indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset instanceCount:(unint64_t)instanceCount baseVertex:(int64_t)vertex baseInstance:(unint64_t)self0;
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset indirectBuffer:(id)indirectBuffer indirectBufferOffset:(unint64_t)bufferOffset;
+- (void)drawMeshThreadgroups:(id *)threadgroups threadsPerObjectThreadgroup:(id *)threadgroup threadsPerMeshThreadgroup:(id *)meshThreadgroup;
+- (void)drawMeshThreadgroupsWithIndirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset threadsPerObjectThreadgroup:(id *)threadgroup threadsPerMeshThreadgroup:(id *)meshThreadgroup;
+- (void)drawMeshThreads:(id *)threads threadsPerObjectThreadgroup:(id *)threadgroup threadsPerMeshThreadgroup:(id *)meshThreadgroup;
+- (void)drawPatches:(unint64_t)patches patchIndexBuffer:(id)buffer patchIndexBufferOffset:(unint64_t)offset indirectBuffer:(id)indirectBuffer indirectBufferOffset:(unint64_t)bufferOffset;
+- (void)drawPatches:(unint64_t)patches patchStart:(unint64_t)start patchCount:(unint64_t)count patchIndexBuffer:(id)buffer patchIndexBufferOffset:(unint64_t)offset instanceCount:(unint64_t)instanceCount baseInstance:(unint64_t)instance;
+- (void)drawPrimitives:(unint64_t)primitives indirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset;
+- (void)drawPrimitives:(unint64_t)primitives vertexStart:(unint64_t)start vertexCount:(unint64_t)count;
+- (void)drawPrimitives:(unint64_t)primitives vertexStart:(unint64_t)start vertexCount:(unint64_t)count instanceCount:(unint64_t)instanceCount;
+- (void)drawPrimitives:(unint64_t)primitives vertexStart:(unint64_t)start vertexCount:(unint64_t)count instanceCount:(unint64_t)instanceCount baseInstance:(unint64_t)instance;
 - (void)endEncoding;
-- (void)executeCommandsInBuffer:(id)a3 indirectBuffer:(id)a4 indirectBufferOffset:(unint64_t)a5;
-- (void)executeCommandsInBuffer:(id)a3 withRange:(_NSRange)a4;
+- (void)executeCommandsInBuffer:(id)buffer indirectBuffer:(id)indirectBuffer indirectBufferOffset:(unint64_t)offset;
+- (void)executeCommandsInBuffer:(id)buffer withRange:(_NSRange)range;
 - (void)flushBindings;
 - (void)resetTileCondition;
-- (void)restoreInternalState:(id)a3;
-- (void)setBufferUsageTable:(id)a3 textureUsageTable:(id)a4 textureTypeTable:(id)a5 forStage:(unint64_t)a6;
-- (void)setDepthStencilState:(id)a3;
-- (void)setFragmentAccelerationStructure:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setFragmentBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setFragmentBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5;
-- (void)setFragmentBytes:(const void *)a3 length:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setFragmentIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setFragmentIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
-- (void)setFragmentTexture:(id)a3 atIndex:(unint64_t)a4;
-- (void)setFragmentTextures:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setFragmentVisibleFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setFragmentVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
-- (void)setInternalBytesForStage:(const void *)a3 length:(unint64_t)a4 atIndex:(unint64_t)a5 stage:(unint64_t)a6;
-- (void)setMeshAccelerationStructure:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setMeshBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setMeshBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5;
-- (void)setMeshBytes:(const void *)a3 length:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setMeshIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setMeshIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
-- (void)setMeshTexture:(id)a3 atIndex:(unint64_t)a4;
-- (void)setMeshTextures:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setMeshVisibleFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setMeshVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
-- (void)setObjectAccelerationStructure:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setObjectBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setObjectBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5;
-- (void)setObjectBytes:(const void *)a3 length:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setObjectIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setObjectIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
-- (void)setObjectTexture:(id)a3 atIndex:(unint64_t)a4;
-- (void)setObjectTextures:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setObjectThreadgroupMemoryLength:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (void)setObjectVisibleFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setObjectVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
-- (void)setRenderPipelineState:(id)a3;
-- (void)setRenderPipelineStateBuffers:(id)a3;
-- (void)setTessellationFactorBuffer:(id)a3 offset:(unint64_t)a4 instanceStride:(unint64_t)a5;
-- (void)setThreadgroupMemoryLength:(unint64_t)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setTileAccelerationStructure:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setTileBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setTileBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5;
-- (void)setTileBytes:(const void *)a3 length:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setTileIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setTileIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
-- (void)setTileTexture:(id)a3 atIndex:(unint64_t)a4;
-- (void)setTileTextures:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setTileVisibleFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setTileVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
-- (void)setVertexAccelerationStructure:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setVertexAmplificationCount:(unint64_t)a3 viewMappings:(id *)a4;
-- (void)setVertexBuffer:(id)a3 offset:(unint64_t)a4 attributeStride:(unint64_t)a5 atIndex:(unint64_t)a6;
-- (void)setVertexBuffers:(const void *)a3 offsets:(const unint64_t *)a4 attributeStrides:(const unint64_t *)a5 withRange:(_NSRange)a6;
-- (void)setVertexBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5;
-- (void)setVertexBytes:(const void *)a3 length:(unint64_t)a4 attributeStride:(unint64_t)a5 atIndex:(unint64_t)a6;
-- (void)setVertexIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setVertexIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
-- (void)setVertexTexture:(id)a3 atIndex:(unint64_t)a4;
-- (void)setVertexTextures:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setVertexVisibleFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setVertexVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
-- (void)useHeap:(id)a3;
-- (void)useHeap:(id)a3 stages:(unint64_t)a4;
-- (void)useHeaps:(const void *)a3 count:(unint64_t)a4;
-- (void)useHeaps:(const void *)a3 count:(unint64_t)a4 stages:(unint64_t)a5;
-- (void)useResidencySet:(id)a3;
-- (void)useResidencySets:(const void *)a3 count:(unint64_t)a4;
-- (void)useResourceInternal:(id)a3 usage:(unint64_t)a4 stages:(optional<unsigned long>)a5;
-- (void)useResources:(const void *)a3 count:(unint64_t)a4 usage:(unint64_t)a5;
-- (void)useResources:(const void *)a3 count:(unint64_t)a4 usage:(unint64_t)a5 stages:(unint64_t)a6;
+- (void)restoreInternalState:(id)state;
+- (void)setBufferUsageTable:(id)table textureUsageTable:(id)usageTable textureTypeTable:(id)typeTable forStage:(unint64_t)stage;
+- (void)setDepthStencilState:(id)state;
+- (void)setFragmentAccelerationStructure:(id)structure atBufferIndex:(unint64_t)index;
+- (void)setFragmentBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setFragmentBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range;
+- (void)setFragmentBytes:(const void *)bytes length:(unint64_t)length atIndex:(unint64_t)index;
+- (void)setFragmentIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setFragmentIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
+- (void)setFragmentTexture:(id)texture atIndex:(unint64_t)index;
+- (void)setFragmentTextures:(const void *)textures withRange:(_NSRange)range;
+- (void)setFragmentVisibleFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setFragmentVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
+- (void)setInternalBytesForStage:(const void *)stage length:(unint64_t)length atIndex:(unint64_t)index stage:(unint64_t)a6;
+- (void)setMeshAccelerationStructure:(id)structure atBufferIndex:(unint64_t)index;
+- (void)setMeshBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setMeshBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range;
+- (void)setMeshBytes:(const void *)bytes length:(unint64_t)length atIndex:(unint64_t)index;
+- (void)setMeshIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setMeshIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
+- (void)setMeshTexture:(id)texture atIndex:(unint64_t)index;
+- (void)setMeshTextures:(const void *)textures withRange:(_NSRange)range;
+- (void)setMeshVisibleFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setMeshVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
+- (void)setObjectAccelerationStructure:(id)structure atBufferIndex:(unint64_t)index;
+- (void)setObjectBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setObjectBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range;
+- (void)setObjectBytes:(const void *)bytes length:(unint64_t)length atIndex:(unint64_t)index;
+- (void)setObjectIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setObjectIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
+- (void)setObjectTexture:(id)texture atIndex:(unint64_t)index;
+- (void)setObjectTextures:(const void *)textures withRange:(_NSRange)range;
+- (void)setObjectThreadgroupMemoryLength:(unint64_t)length atIndex:(unint64_t)index;
+- (void)setObjectVisibleFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setObjectVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
+- (void)setRenderPipelineState:(id)state;
+- (void)setRenderPipelineStateBuffers:(id)buffers;
+- (void)setTessellationFactorBuffer:(id)buffer offset:(unint64_t)offset instanceStride:(unint64_t)stride;
+- (void)setThreadgroupMemoryLength:(unint64_t)length offset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setTileAccelerationStructure:(id)structure atBufferIndex:(unint64_t)index;
+- (void)setTileBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setTileBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range;
+- (void)setTileBytes:(const void *)bytes length:(unint64_t)length atIndex:(unint64_t)index;
+- (void)setTileIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setTileIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
+- (void)setTileTexture:(id)texture atIndex:(unint64_t)index;
+- (void)setTileTextures:(const void *)textures withRange:(_NSRange)range;
+- (void)setTileVisibleFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setTileVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
+- (void)setVertexAccelerationStructure:(id)structure atBufferIndex:(unint64_t)index;
+- (void)setVertexAmplificationCount:(unint64_t)count viewMappings:(id *)mappings;
+- (void)setVertexBuffer:(id)buffer offset:(unint64_t)offset attributeStride:(unint64_t)stride atIndex:(unint64_t)index;
+- (void)setVertexBuffers:(const void *)buffers offsets:(const unint64_t *)offsets attributeStrides:(const unint64_t *)strides withRange:(_NSRange)range;
+- (void)setVertexBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range;
+- (void)setVertexBytes:(const void *)bytes length:(unint64_t)length attributeStride:(unint64_t)stride atIndex:(unint64_t)index;
+- (void)setVertexIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setVertexIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
+- (void)setVertexTexture:(id)texture atIndex:(unint64_t)index;
+- (void)setVertexTextures:(const void *)textures withRange:(_NSRange)range;
+- (void)setVertexVisibleFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setVertexVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
+- (void)useHeap:(id)heap;
+- (void)useHeap:(id)heap stages:(unint64_t)stages;
+- (void)useHeaps:(const void *)heaps count:(unint64_t)count;
+- (void)useHeaps:(const void *)heaps count:(unint64_t)count stages:(unint64_t)stages;
+- (void)useResidencySet:(id)set;
+- (void)useResidencySets:(const void *)sets count:(unint64_t)count;
+- (void)useResourceInternal:(id)internal usage:(unint64_t)usage stages:(optional<unsigned long>)stages;
+- (void)useResources:(const void *)resources count:(unint64_t)count usage:(unint64_t)usage;
+- (void)useResources:(const void *)resources count:(unint64_t)count usage:(unint64_t)usage stages:(unint64_t)stages;
 @end
 
 @implementation MTLGPUDebugRenderCommandEncoder
 
-- (id)_internalBindingTableForStage:(unint64_t)a3
+- (id)_internalBindingTableForStage:(unint64_t)stage
 {
   v3 = 0;
-  if (a3 <= 3)
+  if (stage <= 3)
   {
-    if (a3 == 1)
+    if (stage == 1)
     {
       internalBindingTables = self->_internalBindingTables;
       return *internalBindingTables;
     }
 
-    if (a3 == 2)
+    if (stage == 2)
     {
       internalBindingTables = &self->_internalBindingTables[1];
       return *internalBindingTables;
@@ -126,7 +126,7 @@
 
   else
   {
-    switch(a3)
+    switch(stage)
     {
       case 4uLL:
         internalBindingTables = &self->_internalBindingTables[4];
@@ -143,7 +143,7 @@
   return v3;
 }
 
-- (void)_setInternalBindingTableForStage:(id)a3 stage:(unint64_t)a4
+- (void)_setInternalBindingTableForStage:(id)stage stage:(unint64_t)a4
 {
   if (a4 <= 3)
   {
@@ -181,21 +181,21 @@
     }
   }
 
-  *internalBindingTables = a3;
+  *internalBindingTables = stage;
 }
 
-- (void)_setBufferForStage:(id)a3 atIndex:(unint64_t)a4 stage:(unint64_t)a5
+- (void)_setBufferForStage:(id)stage atIndex:(unint64_t)index stage:(unint64_t)a5
 {
   if (a5 <= 3)
   {
     if (a5 == 1)
     {
-      [(MTLToolsObject *)self->super.super.super._baseObject setVertexBuffer:a3 offset:0 atIndex:a4];
+      [(MTLToolsObject *)self->super.super.super._baseObject setVertexBuffer:stage offset:0 atIndex:index];
     }
 
     else if (a5 == 2)
     {
-      [(MTLToolsObject *)self->super.super.super._baseObject setFragmentBuffer:a3 offset:0 atIndex:a4];
+      [(MTLToolsObject *)self->super.super.super._baseObject setFragmentBuffer:stage offset:0 atIndex:index];
     }
   }
 
@@ -204,67 +204,67 @@
     switch(a5)
     {
       case 4uLL:
-        [(MTLToolsObject *)self->super.super.super._baseObject setTileBuffer:a3 offset:0 atIndex:a4];
+        [(MTLToolsObject *)self->super.super.super._baseObject setTileBuffer:stage offset:0 atIndex:index];
         break;
       case 8uLL:
-        [(MTLToolsObject *)self->super.super.super._baseObject setObjectBuffer:a3 offset:0 atIndex:a4];
+        [(MTLToolsObject *)self->super.super.super._baseObject setObjectBuffer:stage offset:0 atIndex:index];
         break;
       case 0x10uLL:
-        [(MTLToolsObject *)self->super.super.super._baseObject setMeshBuffer:a3 offset:0 atIndex:a4];
+        [(MTLToolsObject *)self->super.super.super._baseObject setMeshBuffer:stage offset:0 atIndex:index];
         break;
     }
   }
 }
 
-- (void)bindInternalBufferForStage:(id)a3 index:(unint64_t)a4 stage:(unint64_t)a5 offset:(unint64_t)a6
+- (void)bindInternalBufferForStage:(id)stage index:(unint64_t)index stage:(unint64_t)a5 offset:(unint64_t)offset
 {
-  if (a3)
+  if (stage)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     baseObject = self->super.super.super._baseObject;
     if (isKindOfClass)
     {
-      v13 = [a3 baseObject];
+      stageCopy = [stage baseObject];
       v14 = baseObject;
     }
 
     else
     {
       v14 = self->super.super.super._baseObject;
-      v13 = a3;
+      stageCopy = stage;
     }
 
-    [(MTLToolsObject *)v14 useResource:v13 usage:3 stages:a5];
-    v15 = [a3 gpuAddress] + a6;
+    [(MTLToolsObject *)v14 useResource:stageCopy usage:3 stages:a5];
+    v15 = [stage gpuAddress] + offset;
 
-    [(MTLGPUDebugRenderCommandEncoder *)self bindInternalValueForStage:v15 index:a4 stage:a5];
+    [(MTLGPUDebugRenderCommandEncoder *)self bindInternalValueForStage:v15 index:index stage:a5];
   }
 }
 
-- (void)setInternalBytesForStage:(const void *)a3 length:(unint64_t)a4 atIndex:(unint64_t)a5 stage:(unint64_t)a6
+- (void)setInternalBytesForStage:(const void *)stage length:(unint64_t)length atIndex:(unint64_t)index stage:(unint64_t)a6
 {
-  v9 = [(MTLToolsDevice *)self->super.super.super._device newBufferWithBytes:a3 length:a4 options:0];
+  v9 = [(MTLToolsDevice *)self->super.super.super._device newBufferWithBytes:stage length:length options:0];
   [(MTLToolsRetainingContainer *)[(MTLToolsCommandEncoder *)self commandBuffer] _addUsedBuffer:v9];
   [v9 contents];
   [v9 setLabel:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"Base: %llX End: %llX", objc_msgSend(v9, "gpuAddress"), objc_msgSend(v9, "bufferEndAddress"))}];
 
-  [(MTLGPUDebugRenderCommandEncoder *)self bindInternalBufferForStage:v9 index:a5 stage:a6];
+  [(MTLGPUDebugRenderCommandEncoder *)self bindInternalBufferForStage:v9 index:index stage:a6];
 }
 
-- (MTLGPUDebugRenderCommandEncoder)initWithRenderCommandEncoder:(id)a3 commandBuffer:(id)a4 descriptor:(id)a5 encoderID:(unsigned int)a6
+- (MTLGPUDebugRenderCommandEncoder)initWithRenderCommandEncoder:(id)encoder commandBuffer:(id)buffer descriptor:(id)descriptor encoderID:(unsigned int)d
 {
   v12.receiver = self;
   v12.super_class = MTLGPUDebugRenderCommandEncoder;
-  v8 = [(MTLToolsRenderCommandEncoder *)&v12 initWithRenderCommandEncoder:a3 parent:a4 descriptor:a5];
+  v8 = [(MTLToolsRenderCommandEncoder *)&v12 initWithRenderCommandEncoder:encoder parent:buffer descriptor:descriptor];
   v9 = v8;
   if (v8)
   {
-    v8->_commandBuffer = a4;
+    v8->_commandBuffer = buffer;
     v8->_encoderType = 0;
     p_deviceWrapper = &v8->super.super.super._device[2]._deviceWrapper;
     v8->_options = p_deviceWrapper;
-    v8->_drawID.encoderID = a6;
+    v8->_drawID.encoderID = d;
     v8->_drawID.eventID = 0;
     *(&v8->_enableUseResourceValidation + 4) = (*(p_deviceWrapper + 20) & 0x200000001) != 0;
     MTLGPUDebugStageBufferHandles::clear(&v8->_vertexHandles);
@@ -274,19 +274,19 @@
   return v9;
 }
 
-- (MTLGPUDebugRenderCommandEncoder)initWithRenderCommandEncoder:(id)a3 parallelEncoder:(id)a4 encoderID:(unsigned int)a5
+- (MTLGPUDebugRenderCommandEncoder)initWithRenderCommandEncoder:(id)encoder parallelEncoder:(id)parallelEncoder encoderID:(unsigned int)d
 {
   v10.receiver = self;
   v10.super_class = MTLGPUDebugRenderCommandEncoder;
-  v7 = [(MTLToolsRenderCommandEncoder *)&v10 initWithRenderCommandEncoder:a3 parent:?];
+  v7 = [(MTLToolsRenderCommandEncoder *)&v10 initWithRenderCommandEncoder:encoder parent:?];
   if (v7)
   {
-    v7->_commandBuffer = [a4 commandBuffer];
+    v7->_commandBuffer = [parallelEncoder commandBuffer];
     v7->_encoderType = 3;
     p_deviceWrapper = &v7->super.super.super._device[2]._deviceWrapper;
     v7->_options = p_deviceWrapper;
     *(&v7->_enableUseResourceValidation + 4) = (*(p_deviceWrapper + 20) & 0x200000001) != 0;
-    v7->_drawID.encoderID = a5;
+    v7->_drawID.encoderID = d;
     v7->_drawID.eventID = 0;
     MTLGPUDebugStageBufferHandles::clear(&v7->_vertexHandles);
   }
@@ -294,43 +294,43 @@
   return v7;
 }
 
-- (id)temporaryBufferWithBytes:(const void *)a3 length:(unint64_t)a4
+- (id)temporaryBufferWithBytes:(const void *)bytes length:(unint64_t)length
 {
-  v5 = [(MTLToolsRetainingContainer *)[(MTLToolsCommandEncoder *)self commandBuffer] temporaryBufferWithBytes:a3 length:a4];
+  v5 = [(MTLToolsRetainingContainer *)[(MTLToolsCommandEncoder *)self commandBuffer] temporaryBufferWithBytes:bytes length:length];
   [(MTLGPUDebugRenderCommandEncoder *)self useResource:v5 usage:3 stages:31];
   return v5;
 }
 
-- (id)temporaryBufferWithLength:(unint64_t)a3
+- (id)temporaryBufferWithLength:(unint64_t)length
 {
-  v4 = [(MTLToolsRetainingContainer *)[(MTLToolsCommandEncoder *)self commandBuffer] temporaryBufferWithLength:a3];
+  v4 = [(MTLToolsRetainingContainer *)[(MTLToolsCommandEncoder *)self commandBuffer] temporaryBufferWithLength:length];
   [(MTLGPUDebugRenderCommandEncoder *)self useResource:v4 usage:3 stages:31];
   return v4;
 }
 
 - (void)flushBindings
 {
-  v3 = [(MTLToolsCommandEncoder *)self commandBuffer];
-  [(MTLToolsRetainingContainer *)v3 setNumDispatches:[(MTLToolsRetainingContainer *)v3 numDispatches]+ 1];
+  commandBuffer = [(MTLToolsCommandEncoder *)self commandBuffer];
+  [(MTLToolsRetainingContainer *)commandBuffer setNumDispatches:[(MTLToolsRetainingContainer *)commandBuffer numDispatches]+ 1];
   v4 = *&self->_options->var0 & 0x7000000;
   if (*(&self->_enableUseResourceValidation + 3))
   {
-    v5 = [(MTLDebugInstrumentationData *)[(MTLToolsRenderPipelineState *)self->_currentPipeline meshDebugInstrumentationData] activeThreadgroupMask];
-    v6 = [(MTLDebugInstrumentationData *)[(MTLToolsRenderPipelineState *)self->_currentPipeline meshDebugInstrumentationData] threadgroupArgumentOffset];
+    activeThreadgroupMask = [(MTLDebugInstrumentationData *)[(MTLToolsRenderPipelineState *)self->_currentPipeline meshDebugInstrumentationData] activeThreadgroupMask];
+    threadgroupArgumentOffset = [(MTLDebugInstrumentationData *)[(MTLToolsRenderPipelineState *)self->_currentPipeline meshDebugInstrumentationData] threadgroupArgumentOffset];
     if (v4)
     {
       if (self->_meshThreadgroup.needsFlush)
       {
-        v27 = v5;
-        v7 = MTLGPUDebugThreadgroupLengths::setupTableEntries(&self->_meshThreadgroup, &v27, v6);
+        v27 = activeThreadgroupMask;
+        v7 = MTLGPUDebugThreadgroupLengths::setupTableEntries(&self->_meshThreadgroup, &v27, threadgroupArgumentOffset);
         if (v7)
         {
           v8 = v7;
           v9 = (*&self->_options->var0 & 0x10000) != 0 ? 4 : 34;
           [(MTLGPUDebugRenderCommandEncoder *)self setInternalBytesForStage:self->_meshThreadgroup.entries length:256 atIndex:v9 stage:16];
-          if (v5)
+          if (activeThreadgroupMask)
           {
-            [(MTLToolsObject *)self->super.super.super._baseObject setThreadgroupMemoryLength:v8 offset:0 atIndex:__clz(__rbit32(v5))];
+            [(MTLToolsObject *)self->super.super.super._baseObject setThreadgroupMemoryLength:v8 offset:0 atIndex:__clz(__rbit32(activeThreadgroupMask))];
           }
         }
 
@@ -341,22 +341,22 @@
 
   if (*(&self->_enableUseResourceValidation + 2))
   {
-    v10 = [(MTLDebugInstrumentationData *)[(MTLToolsRenderPipelineState *)self->_currentPipeline objectDebugInstrumentationData] activeThreadgroupMask];
-    v11 = [(MTLDebugInstrumentationData *)[(MTLToolsRenderPipelineState *)self->_currentPipeline objectDebugInstrumentationData] threadgroupArgumentOffset];
+    activeThreadgroupMask2 = [(MTLDebugInstrumentationData *)[(MTLToolsRenderPipelineState *)self->_currentPipeline objectDebugInstrumentationData] activeThreadgroupMask];
+    threadgroupArgumentOffset2 = [(MTLDebugInstrumentationData *)[(MTLToolsRenderPipelineState *)self->_currentPipeline objectDebugInstrumentationData] threadgroupArgumentOffset];
     if (v4)
     {
       if (self->_objectThreadgroup.needsFlush)
       {
-        v27 = v10;
-        v12 = MTLGPUDebugThreadgroupLengths::setupTableEntries(&self->_objectThreadgroup, &v27, v11);
+        v27 = activeThreadgroupMask2;
+        v12 = MTLGPUDebugThreadgroupLengths::setupTableEntries(&self->_objectThreadgroup, &v27, threadgroupArgumentOffset2);
         if (v12)
         {
           v13 = v12;
           v14 = (*&self->_options->var0 & 0x10000) != 0 ? 4 : 34;
           [(MTLGPUDebugRenderCommandEncoder *)self setInternalBytesForStage:self->_objectThreadgroup.entries length:256 atIndex:v14 stage:8];
-          if (v10)
+          if (activeThreadgroupMask2)
           {
-            [(MTLToolsObject *)self->super.super.super._baseObject setObjectThreadgroupMemoryLength:v13 atIndex:__clz(__rbit32(v10))];
+            [(MTLToolsObject *)self->super.super.super._baseObject setObjectThreadgroupMemoryLength:v13 atIndex:__clz(__rbit32(activeThreadgroupMask2))];
           }
         }
 
@@ -367,12 +367,12 @@
 
   if (self->_tileThreadgroup.needsFlush)
   {
-    v15 = [(MTLDebugInstrumentationData *)[(MTLToolsRenderPipelineState *)self->_currentPipeline tileDebugInstrumentationData] activeThreadgroupMask];
-    v16 = [(MTLDebugInstrumentationData *)[(MTLToolsRenderPipelineState *)self->_currentPipeline fragmentDebugInstrumentationData] activeThreadgroupMask];
+    activeThreadgroupMask3 = [(MTLDebugInstrumentationData *)[(MTLToolsRenderPipelineState *)self->_currentPipeline tileDebugInstrumentationData] activeThreadgroupMask];
+    activeThreadgroupMask4 = [(MTLDebugInstrumentationData *)[(MTLToolsRenderPipelineState *)self->_currentPipeline fragmentDebugInstrumentationData] activeThreadgroupMask];
     if (v4)
     {
-      v17 = v16 | v15;
-      v27 = v16 | v15;
+      v17 = activeThreadgroupMask4 | activeThreadgroupMask3;
+      v27 = activeThreadgroupMask4 | activeThreadgroupMask3;
       v18 = MTLGPUDebugTileThreadgroup::setupTableEntries(&self->_tileThreadgroup, &v27);
       if (v18)
       {
@@ -416,8 +416,8 @@
     [(MTLGPUDebugRenderCommandEncoder *)self bindInternalBufferForStage:[(MTLGPUDebugRenderCommandEncoder *)self temporaryBufferWithBytes:&v27 length:4] index:24 stage:2];
     if ((*&self->_options->var0 & 0x400000001) != 0)
     {
-      v26 = [(MTLGPUDebugRenderPipelineState *)self->_currentPipeline fragmentMaxCallStackDepth];
-      [(MTLGPUDebugRenderCommandEncoder *)self setInternalBytesForStage:&v26 length:4 atIndex:22 stage:2];
+      fragmentMaxCallStackDepth = [(MTLGPUDebugRenderPipelineState *)self->_currentPipeline fragmentMaxCallStackDepth];
+      [(MTLGPUDebugRenderCommandEncoder *)self setInternalBytesForStage:&fragmentMaxCallStackDepth length:4 atIndex:22 stage:2];
     }
 
     v21 = -[MTLGPUDebugRenderCommandEncoder temporaryBufferWithBytes:length:](self, "temporaryBufferWithBytes:length:", [-[MTLGPUDebugRenderCommandEncoder _internalBindingTableForStage:](self _internalBindingTableForStage:{2), "contents"}], 320);
@@ -436,8 +436,8 @@
     [(MTLGPUDebugRenderCommandEncoder *)self _internalBindingTableForStage:4];
     if ((*&self->_options->var0 & 0x400000001) != 0)
     {
-      v26 = [(MTLGPUDebugRenderPipelineState *)self->_currentPipeline tileMaxCallStackDepth];
-      [(MTLGPUDebugRenderCommandEncoder *)self setInternalBytesForStage:&v26 length:4 atIndex:22 stage:4];
+      fragmentMaxCallStackDepth = [(MTLGPUDebugRenderPipelineState *)self->_currentPipeline tileMaxCallStackDepth];
+      [(MTLGPUDebugRenderCommandEncoder *)self setInternalBytesForStage:&fragmentMaxCallStackDepth length:4 atIndex:22 stage:4];
     }
 
     v22 = -[MTLGPUDebugRenderCommandEncoder temporaryBufferWithBytes:length:](self, "temporaryBufferWithBytes:length:", [-[MTLGPUDebugRenderCommandEncoder _internalBindingTableForStage:](self _internalBindingTableForStage:{4), "contents"}], 320);
@@ -455,8 +455,8 @@
     [(MTLToolsObject *)self->super.super.super._baseObject setObjectBuffer:[(MTLGPUDebugRenderCommandEncoder *)self _internalBindingTableForStage:8] offset:0 atIndex:31];
     if ((*&self->_options->var0 & 0x400000001) != 0)
     {
-      v26 = [(MTLGPUDebugRenderPipelineState *)self->_currentPipeline objectMaxCallStackDepth];
-      [(MTLGPUDebugRenderCommandEncoder *)self setInternalBytesForStage:&v26 length:4 atIndex:22 stage:8];
+      fragmentMaxCallStackDepth = [(MTLGPUDebugRenderPipelineState *)self->_currentPipeline objectMaxCallStackDepth];
+      [(MTLGPUDebugRenderCommandEncoder *)self setInternalBytesForStage:&fragmentMaxCallStackDepth length:4 atIndex:22 stage:8];
     }
 
     v23 = -[MTLGPUDebugRenderCommandEncoder temporaryBufferWithBytes:length:](self, "temporaryBufferWithBytes:length:", [-[MTLGPUDebugRenderCommandEncoder _internalBindingTableForStage:](self _internalBindingTableForStage:{8), "contents"}], 320);
@@ -485,8 +485,8 @@
     [(MTLGPUDebugRenderCommandEncoder *)self _internalBindingTableForStage:16];
     if ((*&self->_options->var0 & 0x400000001) != 0)
     {
-      v26 = [(MTLGPUDebugRenderPipelineState *)self->_currentPipeline meshMaxCallStackDepth];
-      [(MTLGPUDebugRenderCommandEncoder *)self setInternalBytesForStage:&v26 length:4 atIndex:22 stage:16];
+      fragmentMaxCallStackDepth = [(MTLGPUDebugRenderPipelineState *)self->_currentPipeline meshMaxCallStackDepth];
+      [(MTLGPUDebugRenderCommandEncoder *)self setInternalBytesForStage:&fragmentMaxCallStackDepth length:4 atIndex:22 stage:16];
     }
 
     v25 = -[MTLGPUDebugRenderCommandEncoder temporaryBufferWithBytes:length:](self, "temporaryBufferWithBytes:length:", [-[MTLGPUDebugRenderCommandEncoder _internalBindingTableForStage:](self _internalBindingTableForStage:{16), "contents"}], 320);
@@ -497,16 +497,16 @@
   ++self->_drawID.eventID;
 }
 
-- (void)setBufferUsageTable:(id)a3 textureUsageTable:(id)a4 textureTypeTable:(id)a5 forStage:(unint64_t)a6
+- (void)setBufferUsageTable:(id)table textureUsageTable:(id)usageTable textureTypeTable:(id)typeTable forStage:(unint64_t)stage
 {
   if (*(&self->_options->var0 + 2))
   {
-    [(MTLGPUDebugRenderCommandEncoder *)self bindInternalBufferForStage:a3 index:5 stage:a6];
-    [(MTLGPUDebugRenderCommandEncoder *)self bindInternalBufferForStage:a4 index:6 stage:a6];
-    [(MTLGPUDebugRenderCommandEncoder *)self bindInternalBufferForStage:a5 index:7 stage:a6];
-    if (a6 > 7)
+    [(MTLGPUDebugRenderCommandEncoder *)self bindInternalBufferForStage:table index:5 stage:stage];
+    [(MTLGPUDebugRenderCommandEncoder *)self bindInternalBufferForStage:usageTable index:6 stage:stage];
+    [(MTLGPUDebugRenderCommandEncoder *)self bindInternalBufferForStage:typeTable index:7 stage:stage];
+    if (stage > 7)
     {
-      if (a6 == 8)
+      if (stage == 8)
       {
         v11 = &OBJC_IVAR___MTLGPUDebugRenderCommandEncoder__objectTextureTypeTable;
         v12 = &OBJC_IVAR___MTLGPUDebugRenderCommandEncoder__objectTextureUsageTable;
@@ -515,7 +515,7 @@
 
       else
       {
-        if (a6 != 16)
+        if (stage != 16)
         {
           return;
         }
@@ -526,7 +526,7 @@
       }
     }
 
-    else if (a6 == 1)
+    else if (stage == 1)
     {
       v11 = &OBJC_IVAR___MTLGPUDebugRenderCommandEncoder__vertexTextureTypeTable;
       v12 = &OBJC_IVAR___MTLGPUDebugRenderCommandEncoder__vertexTextureUsageTable;
@@ -535,7 +535,7 @@
 
     else
     {
-      if (a6 != 2)
+      if (stage != 2)
       {
         return;
       }
@@ -545,76 +545,76 @@
       v13 = &OBJC_IVAR___MTLGPUDebugRenderCommandEncoder__fragmentBufferUsageTable;
     }
 
-    *(&self->super.super.super.super.isa + *v13) = a3;
-    *(&self->super.super.super.super.isa + *v12) = a4;
-    *(&self->super.super.super.super.isa + *v11) = a5;
+    *(&self->super.super.super.super.isa + *v13) = table;
+    *(&self->super.super.super.super.isa + *v12) = usageTable;
+    *(&self->super.super.super.super.isa + *v11) = typeTable;
   }
 }
 
-- (void)setRenderPipelineStateBuffers:(id)a3
+- (void)setRenderPipelineStateBuffers:(id)buffers
 {
   v27 = *MEMORY[0x277D85DE8];
   if (*(&self->_enableUseResourceValidation + 1))
   {
-    v5 = [a3 vertexConstantsBuffer];
+    vertexConstantsBuffer = [buffers vertexConstantsBuffer];
   }
 
   else
   {
-    v5 = 0;
+    vertexConstantsBuffer = 0;
   }
 
   if (self->_enableUseResourceValidation)
   {
-    v6 = [a3 fragmentConstantsBuffer];
+    fragmentConstantsBuffer = [buffers fragmentConstantsBuffer];
   }
 
   else
   {
-    v6 = 0;
+    fragmentConstantsBuffer = 0;
   }
 
   if (self->_objectStageActive)
   {
-    v7 = [a3 tileConstantsBuffer];
+    tileConstantsBuffer = [buffers tileConstantsBuffer];
   }
 
   else
   {
-    v7 = 0;
+    tileConstantsBuffer = 0;
   }
 
   if (*(&self->_enableUseResourceValidation + 3))
   {
-    v8 = [a3 meshConstantsBuffer];
+    meshConstantsBuffer = [buffers meshConstantsBuffer];
   }
 
   else
   {
-    v8 = 0;
+    meshConstantsBuffer = 0;
   }
 
   if (*(&self->_enableUseResourceValidation + 2))
   {
-    v9 = [a3 objectConstantsBuffer];
+    objectConstantsBuffer = [buffers objectConstantsBuffer];
   }
 
   else
   {
-    v9 = 0;
+    objectConstantsBuffer = 0;
   }
 
   if ((*(&self->_options->var0 + 2) & 0x80) != 0)
   {
-    v19 = v7;
-    v20 = v8;
-    v21 = v9;
+    v19 = tileConstantsBuffer;
+    v20 = meshConstantsBuffer;
+    v21 = objectConstantsBuffer;
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v12 = [a3 binaryFunctionData];
-    v13 = [v12 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    binaryFunctionData = [buffers binaryFunctionData];
+    v13 = [binaryFunctionData countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v13)
     {
       v14 = v13;
@@ -625,7 +625,7 @@
         {
           if (*v23 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(binaryFunctionData);
           }
 
           v17 = *(*(&v22 + 1) + 8 * i);
@@ -636,32 +636,32 @@
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v14 = [binaryFunctionData countByEnumeratingWithState:&v22 objects:v26 count:16];
       }
 
       while (v14);
     }
 
-    if (v5)
+    if (vertexConstantsBuffer)
     {
-      [(MTLToolsCommandEncoder *)self addRetainedObject:v5];
-      [(MTLGPUDebugRenderCommandEncoder *)self useResource:v5 usage:1 stages:1];
+      [(MTLToolsCommandEncoder *)self addRetainedObject:vertexConstantsBuffer];
+      [(MTLGPUDebugRenderCommandEncoder *)self useResource:vertexConstantsBuffer usage:1 stages:1];
     }
 
-    if (v6)
+    if (fragmentConstantsBuffer)
     {
-      [(MTLToolsCommandEncoder *)self addRetainedObject:v6];
-      [(MTLGPUDebugRenderCommandEncoder *)self useResource:v6 usage:1 stages:2];
+      [(MTLToolsCommandEncoder *)self addRetainedObject:fragmentConstantsBuffer];
+      [(MTLGPUDebugRenderCommandEncoder *)self useResource:fragmentConstantsBuffer usage:1 stages:2];
     }
 
     if (*(&self->_enableUseResourceValidation + 1))
     {
-      [(MTLGPUDebugRenderCommandEncoder *)self bindInternalBufferForStage:v5 index:12 stage:1];
+      [(MTLGPUDebugRenderCommandEncoder *)self bindInternalBufferForStage:vertexConstantsBuffer index:12 stage:1];
     }
 
     if (self->_enableUseResourceValidation)
     {
-      [(MTLGPUDebugRenderCommandEncoder *)self bindInternalBufferForStage:v6 index:12 stage:2];
+      [(MTLGPUDebugRenderCommandEncoder *)self bindInternalBufferForStage:fragmentConstantsBuffer index:12 stage:2];
     }
 
     if (self->_objectStageActive)
@@ -700,60 +700,60 @@
     goto LABEL_60;
   }
 
-  if (v5)
+  if (vertexConstantsBuffer)
   {
-    [(MTLGPUDebugRenderCommandEncoder *)self bindInternalBufferForStage:v5 index:12 stage:1];
+    [(MTLGPUDebugRenderCommandEncoder *)self bindInternalBufferForStage:vertexConstantsBuffer index:12 stage:1];
   }
 
-  if (v6)
+  if (fragmentConstantsBuffer)
   {
-    -[MTLGPUDebugRenderCommandEncoder bindInternalValueForStage:index:stage:](self, "bindInternalValueForStage:index:stage:", [v6 gpuAddress], 12, 2);
+    -[MTLGPUDebugRenderCommandEncoder bindInternalValueForStage:index:stage:](self, "bindInternalValueForStage:index:stage:", [fragmentConstantsBuffer gpuAddress], 12, 2);
   }
 
-  if (v7)
+  if (tileConstantsBuffer)
   {
-    -[MTLGPUDebugRenderCommandEncoder bindInternalValueForStage:index:stage:](self, "bindInternalValueForStage:index:stage:", [v7 gpuAddress], 12, 4);
+    -[MTLGPUDebugRenderCommandEncoder bindInternalValueForStage:index:stage:](self, "bindInternalValueForStage:index:stage:", [tileConstantsBuffer gpuAddress], 12, 4);
   }
 
-  if (v8)
+  if (meshConstantsBuffer)
   {
-    -[MTLGPUDebugRenderCommandEncoder bindInternalValueForStage:index:stage:](self, "bindInternalValueForStage:index:stage:", [v8 gpuAddress], 12, 16);
+    -[MTLGPUDebugRenderCommandEncoder bindInternalValueForStage:index:stage:](self, "bindInternalValueForStage:index:stage:", [meshConstantsBuffer gpuAddress], 12, 16);
   }
 
-  if (!v9)
+  if (!objectConstantsBuffer)
   {
 LABEL_60:
     v18 = *MEMORY[0x277D85DE8];
     return;
   }
 
-  v10 = [v9 gpuAddress];
+  gpuAddress = [objectConstantsBuffer gpuAddress];
   v11 = *MEMORY[0x277D85DE8];
 
-  [(MTLGPUDebugRenderCommandEncoder *)self bindInternalValueForStage:v10 index:12 stage:8];
+  [(MTLGPUDebugRenderCommandEncoder *)self bindInternalValueForStage:gpuAddress index:12 stage:8];
 }
 
-- (void)setVertexBuffer:(id)a3 offset:(unint64_t)a4 attributeStride:(unint64_t)a5 atIndex:(unint64_t)a6
+- (void)setVertexBuffer:(id)buffer offset:(unint64_t)offset attributeStride:(unint64_t)stride atIndex:(unint64_t)index
 {
-  v11 = &self->_vertexEncoderBoundBuffers[a6];
-  v11->stride = a5;
-  v11->resource = [a3 baseObject];
-  v11->offset = a4;
+  v11 = &self->_vertexEncoderBoundBuffers[index];
+  v11->stride = stride;
+  v11->resource = [buffer baseObject];
+  v11->offset = offset;
   if (*(&self->_enableUseResourceValidation + 4))
   {
-    [(MTLGPUDebugCommandBuffer *)self->_commandBuffer markBuffer:a3 usage:3 stages:1];
+    [(MTLGPUDebugCommandBuffer *)self->_commandBuffer markBuffer:buffer usage:3 stages:1];
   }
 
-  -[MTLToolsObject setVertexBuffer:offset:attributeStride:atIndex:](self->super.super.super._baseObject, "setVertexBuffer:offset:attributeStride:atIndex:", [a3 baseObject], a4, a5, a6);
+  -[MTLToolsObject setVertexBuffer:offset:attributeStride:atIndex:](self->super.super.super._baseObject, "setVertexBuffer:offset:attributeStride:atIndex:", [buffer baseObject], offset, stride, index);
 
-  [(MTLToolsCommandEncoder *)self addRetainedObject:a3];
+  [(MTLToolsCommandEncoder *)self addRetainedObject:buffer];
 }
 
-- (void)setVertexBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5
+- (void)setVertexBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
-  std::vector<unsigned long>::vector[abi:ne200100](__p, a5.length);
+  length = range.length;
+  location = range.location;
+  std::vector<unsigned long>::vector[abi:ne200100](__p, range.length);
   v10 = __p[0];
   if (length)
   {
@@ -767,7 +767,7 @@ LABEL_60:
     while (length > v11++);
   }
 
-  [(MTLGPUDebugRenderCommandEncoder *)self setVertexBuffers:a3 offsets:a4 attributeStrides:v10 withRange:location, length];
+  [(MTLGPUDebugRenderCommandEncoder *)self setVertexBuffers:buffers offsets:offsets attributeStrides:v10 withRange:location, length];
   if (__p[0])
   {
     __p[1] = __p[0];
@@ -775,19 +775,19 @@ LABEL_60:
   }
 }
 
-- (void)setVertexBuffers:(const void *)a3 offsets:(const unint64_t *)a4 attributeStrides:(const unint64_t *)a5 withRange:(_NSRange)a6
+- (void)setVertexBuffers:(const void *)buffers offsets:(const unint64_t *)offsets attributeStrides:(const unint64_t *)strides withRange:(_NSRange)range
 {
-  if (a6.length)
+  if (range.length)
   {
-    length = a6.length;
-    location = a6.location;
+    length = range.length;
+    location = range.location;
     do
     {
-      v13 = *a3++;
+      v13 = *buffers++;
       v12 = v13;
-      v15 = *a4++;
+      v15 = *offsets++;
       v14 = v15;
-      v16 = *a5++;
+      v16 = *strides++;
       [(MTLGPUDebugRenderCommandEncoder *)self setVertexBuffer:v12 offset:v14 attributeStride:v16 atIndex:location++];
       --length;
     }
@@ -796,46 +796,46 @@ LABEL_60:
   }
 }
 
-- (void)setVertexBytes:(const void *)a3 length:(unint64_t)a4 attributeStride:(unint64_t)a5 atIndex:(unint64_t)a6
+- (void)setVertexBytes:(const void *)bytes length:(unint64_t)length attributeStride:(unint64_t)stride atIndex:(unint64_t)index
 {
-  v11 = [(MTLToolsDevice *)self->super.super.super._device newBufferWithLength:a4 options:0];
+  v11 = [(MTLToolsDevice *)self->super.super.super._device newBufferWithLength:length options:0];
   [(MTLGPUDebugCommandBuffer *)self->_commandBuffer _addUsedBuffer:v11];
-  memcpy([v11 contents], a3, a4);
-  v12 = [v11 offset];
+  memcpy([v11 contents], bytes, length);
+  offset = [v11 offset];
 
-  [(MTLGPUDebugRenderCommandEncoder *)self setVertexBuffer:v11 offset:v12 attributeStride:a5 atIndex:a6];
+  [(MTLGPUDebugRenderCommandEncoder *)self setVertexBuffer:v11 offset:offset attributeStride:stride atIndex:index];
 }
 
-- (void)setFragmentBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setFragmentBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index
 {
-  v9 = [a3 baseObject];
-  v10 = &self->_fragmentEncoderBoundBuffers[a5];
-  v10->resource = v9;
-  v10->offset = a4;
-  MTLGPUDebugStageBufferHandles::setBuffer(&self->_fragmentHandles, a3, a4, a5);
+  baseObject = [buffer baseObject];
+  v10 = &self->_fragmentEncoderBoundBuffers[index];
+  v10->resource = baseObject;
+  v10->offset = offset;
+  MTLGPUDebugStageBufferHandles::setBuffer(&self->_fragmentHandles, buffer, offset, index);
   if (*(&self->_enableUseResourceValidation + 4))
   {
-    [(MTLGPUDebugCommandBuffer *)self->_commandBuffer markBuffer:a3 usage:3 stages:2];
+    [(MTLGPUDebugCommandBuffer *)self->_commandBuffer markBuffer:buffer usage:3 stages:2];
   }
 
-  [(MTLToolsCommandEncoder *)self addRetainedObject:a3];
+  [(MTLToolsCommandEncoder *)self addRetainedObject:buffer];
   baseObject = self->super.super.super._baseObject;
-  v12 = [a3 baseObject];
+  baseObject2 = [buffer baseObject];
 
-  [(MTLToolsObject *)baseObject setFragmentBuffer:v12 offset:a4 atIndex:a5];
+  [(MTLToolsObject *)baseObject setFragmentBuffer:baseObject2 offset:offset atIndex:index];
 }
 
-- (void)setFragmentBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5
+- (void)setFragmentBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range
 {
-  if (a5.length)
+  if (range.length)
   {
-    length = a5.length;
-    location = a5.location;
+    length = range.length;
+    location = range.location;
     do
     {
-      v11 = *a3++;
+      v11 = *buffers++;
       v10 = v11;
-      v12 = *a4++;
+      v12 = *offsets++;
       [(MTLGPUDebugRenderCommandEncoder *)self setFragmentBuffer:v10 offset:v12 atIndex:location++];
       --length;
     }
@@ -844,53 +844,53 @@ LABEL_60:
   }
 }
 
-- (void)setTessellationFactorBuffer:(id)a3 offset:(unint64_t)a4 instanceStride:(unint64_t)a5
+- (void)setTessellationFactorBuffer:(id)buffer offset:(unint64_t)offset instanceStride:(unint64_t)stride
 {
   if (*(&self->_enableUseResourceValidation + 4))
   {
-    [(MTLGPUDebugCommandBuffer *)self->_commandBuffer markBuffer:a3 usage:3 stages:1];
+    [(MTLGPUDebugCommandBuffer *)self->_commandBuffer markBuffer:buffer usage:3 stages:1];
   }
 
   v9.receiver = self;
   v9.super_class = MTLGPUDebugRenderCommandEncoder;
-  [(MTLToolsRenderCommandEncoder *)&v9 setTessellationFactorBuffer:a3 offset:a4 instanceStride:a5];
+  [(MTLToolsRenderCommandEncoder *)&v9 setTessellationFactorBuffer:buffer offset:offset instanceStride:stride];
 }
 
-- (void)setFragmentBytes:(const void *)a3 length:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setFragmentBytes:(const void *)bytes length:(unint64_t)length atIndex:(unint64_t)index
 {
-  v9 = [(MTLToolsDevice *)self->super.super.super._device newBufferWithLength:a4 options:0];
+  v9 = [(MTLToolsDevice *)self->super.super.super._device newBufferWithLength:length options:0];
   [(MTLGPUDebugCommandBuffer *)self->_commandBuffer _addUsedBuffer:v9];
-  memcpy([v9 contents], a3, a4);
-  v10 = [v9 offset];
+  memcpy([v9 contents], bytes, length);
+  offset = [v9 offset];
 
-  [(MTLGPUDebugRenderCommandEncoder *)self setFragmentBuffer:v9 offset:v10 atIndex:a5];
+  [(MTLGPUDebugRenderCommandEncoder *)self setFragmentBuffer:v9 offset:offset atIndex:index];
 }
 
-- (void)setTileBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setTileBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index
 {
   if (*(&self->_enableUseResourceValidation + 4))
   {
-    [(MTLGPUDebugCommandBuffer *)self->_commandBuffer markBuffer:a3 usage:3 stages:4];
+    [(MTLGPUDebugCommandBuffer *)self->_commandBuffer markBuffer:buffer usage:3 stages:4];
   }
 
-  [(MTLToolsCommandEncoder *)self addRetainedObject:a3];
+  [(MTLToolsCommandEncoder *)self addRetainedObject:buffer];
   baseObject = self->super.super.super._baseObject;
-  v10 = [a3 baseObject];
+  baseObject = [buffer baseObject];
 
-  [(MTLToolsObject *)baseObject setTileBuffer:v10 offset:a4 atIndex:a5];
+  [(MTLToolsObject *)baseObject setTileBuffer:baseObject offset:offset atIndex:index];
 }
 
-- (void)setTileBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5
+- (void)setTileBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range
 {
-  if (a5.length)
+  if (range.length)
   {
-    length = a5.length;
-    location = a5.location;
+    length = range.length;
+    location = range.location;
     do
     {
-      v11 = *a3++;
+      v11 = *buffers++;
       v10 = v11;
-      v12 = *a4++;
+      v12 = *offsets++;
       [(MTLGPUDebugRenderCommandEncoder *)self setTileBuffer:v10 offset:v12 atIndex:location++];
       --length;
     }
@@ -899,23 +899,23 @@ LABEL_60:
   }
 }
 
-- (void)setTileBytes:(const void *)a3 length:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setTileBytes:(const void *)bytes length:(unint64_t)length atIndex:(unint64_t)index
 {
-  v9 = [(MTLToolsDevice *)self->super.super.super._device newBufferWithLength:a4 options:0];
+  v9 = [(MTLToolsDevice *)self->super.super.super._device newBufferWithLength:length options:0];
   [(MTLGPUDebugCommandBuffer *)self->_commandBuffer _addUsedBuffer:v9];
-  memcpy([v9 contents], a3, a4);
-  v10 = [v9 offset];
+  memcpy([v9 contents], bytes, length);
+  offset = [v9 offset];
 
-  [(MTLGPUDebugRenderCommandEncoder *)self setTileBuffer:v9 offset:v10 atIndex:a5];
+  [(MTLGPUDebugRenderCommandEncoder *)self setTileBuffer:v9 offset:offset atIndex:index];
 }
 
-- (void)setObjectThreadgroupMemoryLength:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setObjectThreadgroupMemoryLength:(unint64_t)length atIndex:(unint64_t)index
 {
   if ((*(&self->_options->var0 + 3) & 7) != 0)
   {
     p_objectThreadgroup = &self->_objectThreadgroup;
 
-    MTLGPUDebugThreadgroupLengths::setThreadgroupMemoryLength(p_objectThreadgroup, a3, a4);
+    MTLGPUDebugThreadgroupLengths::setThreadgroupMemoryLength(p_objectThreadgroup, length, index);
   }
 
   else
@@ -924,57 +924,57 @@ LABEL_60:
     v9 = v5;
     v7.receiver = self;
     v7.super_class = MTLGPUDebugRenderCommandEncoder;
-    [(MTLToolsRenderCommandEncoder *)&v7 setObjectThreadgroupMemoryLength:a3 atIndex:a4];
+    [(MTLToolsRenderCommandEncoder *)&v7 setObjectThreadgroupMemoryLength:length atIndex:index];
   }
 }
 
-- (void)setThreadgroupMemoryLength:(unint64_t)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setThreadgroupMemoryLength:(unint64_t)length offset:(unint64_t)offset atIndex:(unint64_t)index
 {
-  v6 = a3;
+  lengthCopy = length;
   if ((*(&self->_options->var0 + 3) & 7) != 0)
   {
-    MTLGPUDebugTileThreadgroup::setThreadgroupMemoryLength(&self->_tileThreadgroup, a3, a4, a5);
+    MTLGPUDebugTileThreadgroup::setThreadgroupMemoryLength(&self->_tileThreadgroup, length, offset, index);
 
-    MTLGPUDebugThreadgroupLengths::setThreadgroupMemoryLength(&self->_meshThreadgroup, v6, a5);
+    MTLGPUDebugThreadgroupLengths::setThreadgroupMemoryLength(&self->_meshThreadgroup, lengthCopy, index);
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = MTLGPUDebugRenderCommandEncoder;
-    [(MTLToolsRenderCommandEncoder *)&v8 setThreadgroupMemoryLength:a3 offset:a4 atIndex:a5];
+    [(MTLToolsRenderCommandEncoder *)&v8 setThreadgroupMemoryLength:length offset:offset atIndex:index];
   }
 }
 
-- (void)setObjectBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setObjectBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index
 {
-  v9 = [a3 baseObject];
-  v10 = &self->_objectEncoderBoundBuffers[a5];
-  v10->resource = v9;
-  v10->offset = a4;
+  baseObject = [buffer baseObject];
+  v10 = &self->_objectEncoderBoundBuffers[index];
+  v10->resource = baseObject;
+  v10->offset = offset;
   if (*(&self->_enableUseResourceValidation + 4))
   {
-    [(MTLGPUDebugCommandBuffer *)self->_commandBuffer markBuffer:a3 usage:3 stages:8];
+    [(MTLGPUDebugCommandBuffer *)self->_commandBuffer markBuffer:buffer usage:3 stages:8];
   }
 
-  [(MTLToolsCommandEncoder *)self addRetainedObject:a3];
+  [(MTLToolsCommandEncoder *)self addRetainedObject:buffer];
   baseObject = self->super.super.super._baseObject;
-  v12 = [a3 baseObject];
+  baseObject2 = [buffer baseObject];
 
-  [(MTLToolsObject *)baseObject setObjectBuffer:v12 offset:a4 atIndex:a5];
+  [(MTLToolsObject *)baseObject setObjectBuffer:baseObject2 offset:offset atIndex:index];
 }
 
-- (void)setObjectBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5
+- (void)setObjectBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range
 {
-  if (a5.length)
+  if (range.length)
   {
-    length = a5.length;
-    location = a5.location;
+    length = range.length;
+    location = range.location;
     do
     {
-      v11 = *a3++;
+      v11 = *buffers++;
       v10 = v11;
-      v12 = *a4++;
+      v12 = *offsets++;
       [(MTLGPUDebugRenderCommandEncoder *)self setObjectBuffer:v10 offset:v12 atIndex:location++];
       --length;
     }
@@ -983,45 +983,45 @@ LABEL_60:
   }
 }
 
-- (void)setObjectBytes:(const void *)a3 length:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setObjectBytes:(const void *)bytes length:(unint64_t)length atIndex:(unint64_t)index
 {
-  v9 = [(MTLToolsDevice *)self->super.super.super._device newBufferWithLength:a4 options:0];
+  v9 = [(MTLToolsDevice *)self->super.super.super._device newBufferWithLength:length options:0];
   [(MTLGPUDebugCommandBuffer *)self->_commandBuffer _addUsedBuffer:v9];
-  memcpy([v9 contents], a3, a4);
-  v10 = [v9 offset];
+  memcpy([v9 contents], bytes, length);
+  offset = [v9 offset];
 
-  [(MTLGPUDebugRenderCommandEncoder *)self setObjectBuffer:v9 offset:v10 atIndex:a5];
+  [(MTLGPUDebugRenderCommandEncoder *)self setObjectBuffer:v9 offset:offset atIndex:index];
 }
 
-- (void)setMeshBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setMeshBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index
 {
-  v9 = [a3 baseObject];
-  v10 = &self->_meshEncoderBoundBuffers[a5];
-  v10->resource = v9;
-  v10->offset = a4;
+  baseObject = [buffer baseObject];
+  v10 = &self->_meshEncoderBoundBuffers[index];
+  v10->resource = baseObject;
+  v10->offset = offset;
   if (*(&self->_enableUseResourceValidation + 4))
   {
-    [(MTLGPUDebugCommandBuffer *)self->_commandBuffer markBuffer:a3 usage:3 stages:16];
+    [(MTLGPUDebugCommandBuffer *)self->_commandBuffer markBuffer:buffer usage:3 stages:16];
   }
 
-  [(MTLToolsCommandEncoder *)self addRetainedObject:a3];
+  [(MTLToolsCommandEncoder *)self addRetainedObject:buffer];
   baseObject = self->super.super.super._baseObject;
-  v12 = [a3 baseObject];
+  baseObject2 = [buffer baseObject];
 
-  [(MTLToolsObject *)baseObject setMeshBuffer:v12 offset:a4 atIndex:a5];
+  [(MTLToolsObject *)baseObject setMeshBuffer:baseObject2 offset:offset atIndex:index];
 }
 
-- (void)setMeshBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5
+- (void)setMeshBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range
 {
-  if (a5.length)
+  if (range.length)
   {
-    length = a5.length;
-    location = a5.location;
+    length = range.length;
+    location = range.location;
     do
     {
-      v11 = *a3++;
+      v11 = *buffers++;
       v10 = v11;
-      v12 = *a4++;
+      v12 = *offsets++;
       [(MTLGPUDebugRenderCommandEncoder *)self setMeshBuffer:v10 offset:v12 atIndex:location++];
       --length;
     }
@@ -1030,44 +1030,44 @@ LABEL_60:
   }
 }
 
-- (void)setMeshBytes:(const void *)a3 length:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setMeshBytes:(const void *)bytes length:(unint64_t)length atIndex:(unint64_t)index
 {
-  v9 = [(MTLToolsDevice *)self->super.super.super._device newBufferWithLength:a4 options:0];
+  v9 = [(MTLToolsDevice *)self->super.super.super._device newBufferWithLength:length options:0];
   [(MTLGPUDebugCommandBuffer *)self->_commandBuffer _addUsedBuffer:v9];
-  memcpy([v9 contents], a3, a4);
-  v10 = [v9 offset];
+  memcpy([v9 contents], bytes, length);
+  offset = [v9 offset];
 
-  [(MTLGPUDebugRenderCommandEncoder *)self setMeshBuffer:v9 offset:v10 atIndex:a5];
+  [(MTLGPUDebugRenderCommandEncoder *)self setMeshBuffer:v9 offset:offset atIndex:index];
 }
 
-- (void)setVertexTexture:(id)a3 atIndex:(unint64_t)a4
+- (void)setVertexTexture:(id)texture atIndex:(unint64_t)index
 {
-  v7 = [a3 baseObject];
-  if (a3)
+  baseObject = [texture baseObject];
+  if (texture)
   {
     if (*(&self->_enableUseResourceValidation + 4))
     {
-      -[MTLGPUDebugCommandBuffer markTexture:usage:stages:](self->_commandBuffer, "markTexture:usage:stages:", [a3 gpuIdentifier], 3, 1);
+      -[MTLGPUDebugCommandBuffer markTexture:usage:stages:](self->_commandBuffer, "markTexture:usage:stages:", [texture gpuIdentifier], 3, 1);
     }
 
-    [(MTLToolsCommandEncoder *)self addRetainedObject:a3];
+    [(MTLToolsCommandEncoder *)self addRetainedObject:texture];
   }
 
   baseObject = self->super.super.super._baseObject;
 
-  [(MTLToolsObject *)baseObject setVertexTexture:v7 atIndex:a4];
+  [(MTLToolsObject *)baseObject setVertexTexture:baseObject atIndex:index];
 }
 
-- (void)setVertexTextures:(const void *)a3 withRange:(_NSRange)a4
+- (void)setVertexTextures:(const void *)textures withRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    length = a4.length;
-    location = a4.location;
+    length = range.length;
+    location = range.location;
     do
     {
-      v8 = *a3;
-      v9 = [*a3 baseObject];
+      v8 = *textures;
+      baseObject = [*textures baseObject];
       if (v8)
       {
         if (*(&self->_enableUseResourceValidation + 4))
@@ -1078,8 +1078,8 @@ LABEL_60:
         [(MTLToolsCommandEncoder *)self addRetainedObject:v8];
       }
 
-      [(MTLToolsObject *)self->super.super.super._baseObject setVertexTexture:v9 atIndex:location++];
-      ++a3;
+      [(MTLToolsObject *)self->super.super.super._baseObject setVertexTexture:baseObject atIndex:location++];
+      ++textures;
       --length;
     }
 
@@ -1087,34 +1087,34 @@ LABEL_60:
   }
 }
 
-- (void)setFragmentTexture:(id)a3 atIndex:(unint64_t)a4
+- (void)setFragmentTexture:(id)texture atIndex:(unint64_t)index
 {
-  v7 = [a3 baseObject];
-  if (a3)
+  baseObject = [texture baseObject];
+  if (texture)
   {
     if (*(&self->_enableUseResourceValidation + 4))
     {
-      -[MTLGPUDebugCommandBuffer markTexture:usage:stages:](self->_commandBuffer, "markTexture:usage:stages:", [a3 gpuIdentifier], 3, 2);
+      -[MTLGPUDebugCommandBuffer markTexture:usage:stages:](self->_commandBuffer, "markTexture:usage:stages:", [texture gpuIdentifier], 3, 2);
     }
 
-    [(MTLToolsCommandEncoder *)self addRetainedObject:a3];
+    [(MTLToolsCommandEncoder *)self addRetainedObject:texture];
   }
 
   baseObject = self->super.super.super._baseObject;
 
-  [(MTLToolsObject *)baseObject setFragmentTexture:v7 atIndex:a4];
+  [(MTLToolsObject *)baseObject setFragmentTexture:baseObject atIndex:index];
 }
 
-- (void)setFragmentTextures:(const void *)a3 withRange:(_NSRange)a4
+- (void)setFragmentTextures:(const void *)textures withRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    length = a4.length;
-    location = a4.location;
+    length = range.length;
+    location = range.location;
     do
     {
-      v8 = *a3;
-      v9 = [*a3 baseObject];
+      v8 = *textures;
+      baseObject = [*textures baseObject];
       if (v8)
       {
         if (*(&self->_enableUseResourceValidation + 4))
@@ -1125,8 +1125,8 @@ LABEL_60:
         [(MTLToolsCommandEncoder *)self addRetainedObject:v8];
       }
 
-      [(MTLToolsObject *)self->super.super.super._baseObject setFragmentTexture:v9 atIndex:location++];
-      ++a3;
+      [(MTLToolsObject *)self->super.super.super._baseObject setFragmentTexture:baseObject atIndex:location++];
+      ++textures;
       --length;
     }
 
@@ -1134,34 +1134,34 @@ LABEL_60:
   }
 }
 
-- (void)setTileTexture:(id)a3 atIndex:(unint64_t)a4
+- (void)setTileTexture:(id)texture atIndex:(unint64_t)index
 {
-  v7 = [a3 baseObject];
-  if (a3)
+  baseObject = [texture baseObject];
+  if (texture)
   {
     if (*(&self->_enableUseResourceValidation + 4))
     {
-      -[MTLGPUDebugCommandBuffer markTexture:usage:stages:](self->_commandBuffer, "markTexture:usage:stages:", [a3 gpuIdentifier], 3, 4);
+      -[MTLGPUDebugCommandBuffer markTexture:usage:stages:](self->_commandBuffer, "markTexture:usage:stages:", [texture gpuIdentifier], 3, 4);
     }
 
-    [(MTLToolsCommandEncoder *)self addRetainedObject:a3];
+    [(MTLToolsCommandEncoder *)self addRetainedObject:texture];
   }
 
   baseObject = self->super.super.super._baseObject;
 
-  [(MTLToolsObject *)baseObject setTileTexture:v7 atIndex:a4];
+  [(MTLToolsObject *)baseObject setTileTexture:baseObject atIndex:index];
 }
 
-- (void)setTileTextures:(const void *)a3 withRange:(_NSRange)a4
+- (void)setTileTextures:(const void *)textures withRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    length = a4.length;
-    location = a4.location;
+    length = range.length;
+    location = range.location;
     do
     {
-      v8 = *a3;
-      v9 = [*a3 baseObject];
+      v8 = *textures;
+      baseObject = [*textures baseObject];
       if (v8)
       {
         if (*(&self->_enableUseResourceValidation + 4))
@@ -1172,8 +1172,8 @@ LABEL_60:
         [(MTLToolsCommandEncoder *)self addRetainedObject:v8];
       }
 
-      [(MTLToolsObject *)self->super.super.super._baseObject setTileTexture:v9 atIndex:location++];
-      ++a3;
+      [(MTLToolsObject *)self->super.super.super._baseObject setTileTexture:baseObject atIndex:location++];
+      ++textures;
       --length;
     }
 
@@ -1181,34 +1181,34 @@ LABEL_60:
   }
 }
 
-- (void)setMeshTexture:(id)a3 atIndex:(unint64_t)a4
+- (void)setMeshTexture:(id)texture atIndex:(unint64_t)index
 {
-  v7 = [a3 baseObject];
-  if (a3)
+  baseObject = [texture baseObject];
+  if (texture)
   {
     if (*(&self->_enableUseResourceValidation + 4))
     {
-      -[MTLGPUDebugCommandBuffer markTexture:usage:stages:](self->_commandBuffer, "markTexture:usage:stages:", [a3 gpuIdentifier], 3, 16);
+      -[MTLGPUDebugCommandBuffer markTexture:usage:stages:](self->_commandBuffer, "markTexture:usage:stages:", [texture gpuIdentifier], 3, 16);
     }
 
-    [(MTLToolsCommandEncoder *)self addRetainedObject:a3];
+    [(MTLToolsCommandEncoder *)self addRetainedObject:texture];
   }
 
   baseObject = self->super.super.super._baseObject;
 
-  [(MTLToolsObject *)baseObject setMeshTexture:v7 atIndex:a4];
+  [(MTLToolsObject *)baseObject setMeshTexture:baseObject atIndex:index];
 }
 
-- (void)setMeshTextures:(const void *)a3 withRange:(_NSRange)a4
+- (void)setMeshTextures:(const void *)textures withRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    length = a4.length;
-    location = a4.location;
+    length = range.length;
+    location = range.location;
     do
     {
-      v8 = *a3;
-      v9 = [*a3 baseObject];
+      v8 = *textures;
+      baseObject = [*textures baseObject];
       if (v8)
       {
         if (*(&self->_enableUseResourceValidation + 4))
@@ -1219,8 +1219,8 @@ LABEL_60:
         [(MTLToolsCommandEncoder *)self addRetainedObject:v8];
       }
 
-      [(MTLToolsObject *)self->super.super.super._baseObject setMeshTexture:v9 atIndex:location++];
-      ++a3;
+      [(MTLToolsObject *)self->super.super.super._baseObject setMeshTexture:baseObject atIndex:location++];
+      ++textures;
       --length;
     }
 
@@ -1228,34 +1228,34 @@ LABEL_60:
   }
 }
 
-- (void)setObjectTexture:(id)a3 atIndex:(unint64_t)a4
+- (void)setObjectTexture:(id)texture atIndex:(unint64_t)index
 {
-  v7 = [a3 baseObject];
-  if (a3)
+  baseObject = [texture baseObject];
+  if (texture)
   {
     if (*(&self->_enableUseResourceValidation + 4))
     {
-      -[MTLGPUDebugCommandBuffer markTexture:usage:stages:](self->_commandBuffer, "markTexture:usage:stages:", [a3 gpuIdentifier], 3, 8);
+      -[MTLGPUDebugCommandBuffer markTexture:usage:stages:](self->_commandBuffer, "markTexture:usage:stages:", [texture gpuIdentifier], 3, 8);
     }
 
-    [(MTLToolsCommandEncoder *)self addRetainedObject:a3];
+    [(MTLToolsCommandEncoder *)self addRetainedObject:texture];
   }
 
   baseObject = self->super.super.super._baseObject;
 
-  [(MTLToolsObject *)baseObject setObjectTexture:v7 atIndex:a4];
+  [(MTLToolsObject *)baseObject setObjectTexture:baseObject atIndex:index];
 }
 
-- (void)setObjectTextures:(const void *)a3 withRange:(_NSRange)a4
+- (void)setObjectTextures:(const void *)textures withRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    length = a4.length;
-    location = a4.location;
+    length = range.length;
+    location = range.location;
     do
     {
-      v8 = *a3;
-      v9 = [*a3 baseObject];
+      v8 = *textures;
+      baseObject = [*textures baseObject];
       if (v8)
       {
         if (*(&self->_enableUseResourceValidation + 4))
@@ -1266,8 +1266,8 @@ LABEL_60:
         [(MTLToolsCommandEncoder *)self addRetainedObject:v8];
       }
 
-      [(MTLToolsObject *)self->super.super.super._baseObject setObjectTexture:v9 atIndex:location++];
-      ++a3;
+      [(MTLToolsObject *)self->super.super.super._baseObject setObjectTexture:baseObject atIndex:location++];
+      ++textures;
       --length;
     }
 
@@ -1275,152 +1275,152 @@ LABEL_60:
   }
 }
 
-- (void)drawPrimitives:(unint64_t)a3 vertexStart:(unint64_t)a4 vertexCount:(unint64_t)a5
+- (void)drawPrimitives:(unint64_t)primitives vertexStart:(unint64_t)start vertexCount:(unint64_t)count
 {
   [(MTLGPUDebugRenderCommandEncoder *)self flushBindings];
   v9.receiver = self;
   v9.super_class = MTLGPUDebugRenderCommandEncoder;
-  [(MTLToolsRenderCommandEncoder *)&v9 drawPrimitives:a3 vertexStart:a4 vertexCount:a5];
+  [(MTLToolsRenderCommandEncoder *)&v9 drawPrimitives:primitives vertexStart:start vertexCount:count];
 }
 
-- (void)drawPrimitives:(unint64_t)a3 indirectBuffer:(id)a4 indirectBufferOffset:(unint64_t)a5
+- (void)drawPrimitives:(unint64_t)primitives indirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset
 {
   [(MTLGPUDebugRenderCommandEncoder *)self flushBindings];
   v9.receiver = self;
   v9.super_class = MTLGPUDebugRenderCommandEncoder;
-  [(MTLToolsRenderCommandEncoder *)&v9 drawPrimitives:a3 indirectBuffer:a4 indirectBufferOffset:a5];
+  [(MTLToolsRenderCommandEncoder *)&v9 drawPrimitives:primitives indirectBuffer:buffer indirectBufferOffset:offset];
 }
 
-- (void)drawPrimitives:(unint64_t)a3 vertexStart:(unint64_t)a4 vertexCount:(unint64_t)a5 instanceCount:(unint64_t)a6
+- (void)drawPrimitives:(unint64_t)primitives vertexStart:(unint64_t)start vertexCount:(unint64_t)count instanceCount:(unint64_t)instanceCount
 {
   [(MTLGPUDebugRenderCommandEncoder *)self flushBindings];
   v11.receiver = self;
   v11.super_class = MTLGPUDebugRenderCommandEncoder;
-  [(MTLToolsRenderCommandEncoder *)&v11 drawPrimitives:a3 vertexStart:a4 vertexCount:a5 instanceCount:a6];
+  [(MTLToolsRenderCommandEncoder *)&v11 drawPrimitives:primitives vertexStart:start vertexCount:count instanceCount:instanceCount];
 }
 
-- (void)drawPrimitives:(unint64_t)a3 vertexStart:(unint64_t)a4 vertexCount:(unint64_t)a5 instanceCount:(unint64_t)a6 baseInstance:(unint64_t)a7
+- (void)drawPrimitives:(unint64_t)primitives vertexStart:(unint64_t)start vertexCount:(unint64_t)count instanceCount:(unint64_t)instanceCount baseInstance:(unint64_t)instance
 {
   [(MTLGPUDebugRenderCommandEncoder *)self flushBindings];
   v13.receiver = self;
   v13.super_class = MTLGPUDebugRenderCommandEncoder;
-  [(MTLToolsRenderCommandEncoder *)&v13 drawPrimitives:a3 vertexStart:a4 vertexCount:a5 instanceCount:a6 baseInstance:a7];
+  [(MTLToolsRenderCommandEncoder *)&v13 drawPrimitives:primitives vertexStart:start vertexCount:count instanceCount:instanceCount baseInstance:instance];
 }
 
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexCount:(unint64_t)a4 indexType:(unint64_t)a5 indexBuffer:(id)a6 indexBufferOffset:(unint64_t)a7
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexCount:(unint64_t)count indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset
 {
   [(MTLGPUDebugRenderCommandEncoder *)self flushBindings];
   v13.receiver = self;
   v13.super_class = MTLGPUDebugRenderCommandEncoder;
-  [(MTLToolsRenderCommandEncoder *)&v13 drawIndexedPrimitives:a3 indexCount:a4 indexType:a5 indexBuffer:a6 indexBufferOffset:a7];
+  [(MTLToolsRenderCommandEncoder *)&v13 drawIndexedPrimitives:primitives indexCount:count indexType:type indexBuffer:buffer indexBufferOffset:offset];
 }
 
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexCount:(unint64_t)a4 indexType:(unint64_t)a5 indexBuffer:(id)a6 indexBufferOffset:(unint64_t)a7 instanceCount:(unint64_t)a8
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexCount:(unint64_t)count indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset instanceCount:(unint64_t)instanceCount
 {
   [(MTLGPUDebugRenderCommandEncoder *)self flushBindings];
   v15.receiver = self;
   v15.super_class = MTLGPUDebugRenderCommandEncoder;
-  [(MTLToolsRenderCommandEncoder *)&v15 drawIndexedPrimitives:a3 indexCount:a4 indexType:a5 indexBuffer:a6 indexBufferOffset:a7 instanceCount:a8];
+  [(MTLToolsRenderCommandEncoder *)&v15 drawIndexedPrimitives:primitives indexCount:count indexType:type indexBuffer:buffer indexBufferOffset:offset instanceCount:instanceCount];
 }
 
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexType:(unint64_t)a4 indexBuffer:(id)a5 indexBufferOffset:(unint64_t)a6 indirectBuffer:(id)a7 indirectBufferOffset:(unint64_t)a8
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset indirectBuffer:(id)indirectBuffer indirectBufferOffset:(unint64_t)bufferOffset
 {
   [(MTLGPUDebugRenderCommandEncoder *)self flushBindings];
   v15.receiver = self;
   v15.super_class = MTLGPUDebugRenderCommandEncoder;
-  [(MTLToolsRenderCommandEncoder *)&v15 drawIndexedPrimitives:a3 indexType:a4 indexBuffer:a5 indexBufferOffset:a6 indirectBuffer:a7 indirectBufferOffset:a8];
+  [(MTLToolsRenderCommandEncoder *)&v15 drawIndexedPrimitives:primitives indexType:type indexBuffer:buffer indexBufferOffset:offset indirectBuffer:indirectBuffer indirectBufferOffset:bufferOffset];
 }
 
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexCount:(unint64_t)a4 indexType:(unint64_t)a5 indexBuffer:(id)a6 indexBufferOffset:(unint64_t)a7 instanceCount:(unint64_t)a8 baseVertex:(int64_t)a9 baseInstance:(unint64_t)a10
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexCount:(unint64_t)count indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset instanceCount:(unint64_t)instanceCount baseVertex:(int64_t)vertex baseInstance:(unint64_t)self0
 {
   [(MTLGPUDebugRenderCommandEncoder *)self flushBindings];
   v17.receiver = self;
   v17.super_class = MTLGPUDebugRenderCommandEncoder;
-  [(MTLToolsRenderCommandEncoder *)&v17 drawIndexedPrimitives:a3 indexCount:a4 indexType:a5 indexBuffer:a6 indexBufferOffset:a7 instanceCount:a8 baseVertex:a9 baseInstance:a10];
+  [(MTLToolsRenderCommandEncoder *)&v17 drawIndexedPrimitives:primitives indexCount:count indexType:type indexBuffer:buffer indexBufferOffset:offset instanceCount:instanceCount baseVertex:vertex baseInstance:instance];
 }
 
-- (void)drawPatches:(unint64_t)a3 patchIndexBuffer:(id)a4 patchIndexBufferOffset:(unint64_t)a5 indirectBuffer:(id)a6 indirectBufferOffset:(unint64_t)a7
+- (void)drawPatches:(unint64_t)patches patchIndexBuffer:(id)buffer patchIndexBufferOffset:(unint64_t)offset indirectBuffer:(id)indirectBuffer indirectBufferOffset:(unint64_t)bufferOffset
 {
   if (*(&self->_enableUseResourceValidation + 4))
   {
-    [(MTLGPUDebugCommandBuffer *)self->_commandBuffer markBuffer:a6 usage:3 stages:1, a6, a7];
-    [(MTLGPUDebugCommandBuffer *)self->_commandBuffer markBuffer:a4 usage:3 stages:1];
+    [(MTLGPUDebugCommandBuffer *)self->_commandBuffer markBuffer:indirectBuffer usage:3 stages:1, indirectBuffer, bufferOffset];
+    [(MTLGPUDebugCommandBuffer *)self->_commandBuffer markBuffer:buffer usage:3 stages:1];
   }
 
   [(MTLGPUDebugRenderCommandEncoder *)self flushBindings];
   v12.receiver = self;
   v12.super_class = MTLGPUDebugRenderCommandEncoder;
-  [(MTLToolsRenderCommandEncoder *)&v12 drawPatches:a3 patchIndexBuffer:a4 patchIndexBufferOffset:a5 indirectBuffer:a6 indirectBufferOffset:a5];
+  [(MTLToolsRenderCommandEncoder *)&v12 drawPatches:patches patchIndexBuffer:buffer patchIndexBufferOffset:offset indirectBuffer:indirectBuffer indirectBufferOffset:offset];
 }
 
-- (void)drawPatches:(unint64_t)a3 patchStart:(unint64_t)a4 patchCount:(unint64_t)a5 patchIndexBuffer:(id)a6 patchIndexBufferOffset:(unint64_t)a7 instanceCount:(unint64_t)a8 baseInstance:(unint64_t)a9
+- (void)drawPatches:(unint64_t)patches patchStart:(unint64_t)start patchCount:(unint64_t)count patchIndexBuffer:(id)buffer patchIndexBufferOffset:(unint64_t)offset instanceCount:(unint64_t)instanceCount baseInstance:(unint64_t)instance
 {
   if (*(&self->_enableUseResourceValidation + 4))
   {
-    [(MTLGPUDebugCommandBuffer *)self->_commandBuffer markBuffer:a6 usage:3 stages:1];
+    [(MTLGPUDebugCommandBuffer *)self->_commandBuffer markBuffer:buffer usage:3 stages:1];
   }
 
   [(MTLGPUDebugRenderCommandEncoder *)self flushBindings];
   v16.receiver = self;
   v16.super_class = MTLGPUDebugRenderCommandEncoder;
-  [(MTLToolsRenderCommandEncoder *)&v16 drawPatches:a3 patchStart:a4 patchCount:a5 patchIndexBuffer:a6 patchIndexBufferOffset:a7 instanceCount:a8 baseInstance:a9];
+  [(MTLToolsRenderCommandEncoder *)&v16 drawPatches:patches patchStart:start patchCount:count patchIndexBuffer:buffer patchIndexBufferOffset:offset instanceCount:instanceCount baseInstance:instance];
 }
 
-- (void)drawIndexedPatches:(unint64_t)a3 patchIndexBuffer:(id)a4 patchIndexBufferOffset:(unint64_t)a5 controlPointIndexBuffer:(id)a6 controlPointIndexBufferOffset:(unint64_t)a7 indirectBuffer:(id)a8 indirectBufferOffset:(unint64_t)a9
+- (void)drawIndexedPatches:(unint64_t)patches patchIndexBuffer:(id)buffer patchIndexBufferOffset:(unint64_t)offset controlPointIndexBuffer:(id)indexBuffer controlPointIndexBufferOffset:(unint64_t)bufferOffset indirectBuffer:(id)indirectBuffer indirectBufferOffset:(unint64_t)indirectBufferOffset
 {
   if (*(&self->_enableUseResourceValidation + 4))
   {
-    [(MTLGPUDebugCommandBuffer *)self->_commandBuffer markBuffer:a6 usage:3 stages:1];
-    [(MTLGPUDebugCommandBuffer *)self->_commandBuffer markBuffer:a4 usage:3 stages:1];
-    [(MTLGPUDebugCommandBuffer *)self->_commandBuffer markBuffer:a8 usage:3 stages:1];
+    [(MTLGPUDebugCommandBuffer *)self->_commandBuffer markBuffer:indexBuffer usage:3 stages:1];
+    [(MTLGPUDebugCommandBuffer *)self->_commandBuffer markBuffer:buffer usage:3 stages:1];
+    [(MTLGPUDebugCommandBuffer *)self->_commandBuffer markBuffer:indirectBuffer usage:3 stages:1];
   }
 
   [(MTLGPUDebugRenderCommandEncoder *)self flushBindings];
   v16.receiver = self;
   v16.super_class = MTLGPUDebugRenderCommandEncoder;
-  [(MTLToolsRenderCommandEncoder *)&v16 drawIndexedPatches:a3 patchIndexBuffer:a4 patchIndexBufferOffset:a5 controlPointIndexBuffer:a6 controlPointIndexBufferOffset:a7 indirectBuffer:a8 indirectBufferOffset:a9];
+  [(MTLToolsRenderCommandEncoder *)&v16 drawIndexedPatches:patches patchIndexBuffer:buffer patchIndexBufferOffset:offset controlPointIndexBuffer:indexBuffer controlPointIndexBufferOffset:bufferOffset indirectBuffer:indirectBuffer indirectBufferOffset:indirectBufferOffset];
 }
 
-- (void)drawIndexedPatches:(unint64_t)a3 patchStart:(unint64_t)a4 patchCount:(unint64_t)a5 patchIndexBuffer:(id)a6 patchIndexBufferOffset:(unint64_t)a7 controlPointIndexBuffer:(id)a8 controlPointIndexBufferOffset:(unint64_t)a9 instanceCount:(unint64_t)a10 baseInstance:(unint64_t)a11
+- (void)drawIndexedPatches:(unint64_t)patches patchStart:(unint64_t)start patchCount:(unint64_t)count patchIndexBuffer:(id)buffer patchIndexBufferOffset:(unint64_t)offset controlPointIndexBuffer:(id)indexBuffer controlPointIndexBufferOffset:(unint64_t)bufferOffset instanceCount:(unint64_t)self0 baseInstance:(unint64_t)self1
 {
-  v12 = a7;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
+  offsetCopy2 = offset;
+  countCopy2 = count;
+  startCopy2 = start;
+  patchesCopy2 = patches;
   if (*(&self->_enableUseResourceValidation + 4))
   {
-    [(MTLGPUDebugCommandBuffer *)self->_commandBuffer markBuffer:a8 usage:3 stages:1];
-    v12 = a7;
-    v14 = a5;
-    v15 = a4;
-    v16 = a3;
-    [(MTLGPUDebugCommandBuffer *)self->_commandBuffer markBuffer:a6 usage:3 stages:1];
+    [(MTLGPUDebugCommandBuffer *)self->_commandBuffer markBuffer:indexBuffer usage:3 stages:1];
+    offsetCopy2 = offset;
+    countCopy2 = count;
+    startCopy2 = start;
+    patchesCopy2 = patches;
+    [(MTLGPUDebugCommandBuffer *)self->_commandBuffer markBuffer:buffer usage:3 stages:1];
   }
 
   [(MTLGPUDebugRenderCommandEncoder *)self flushBindings];
   v22.receiver = self;
   v22.super_class = MTLGPUDebugRenderCommandEncoder;
-  [(MTLToolsRenderCommandEncoder *)&v22 drawIndexedPatches:v16 patchStart:v15 patchCount:v14 patchIndexBuffer:a6 patchIndexBufferOffset:v12 controlPointIndexBuffer:a8 controlPointIndexBufferOffset:a9 instanceCount:a10 baseInstance:a11];
+  [(MTLToolsRenderCommandEncoder *)&v22 drawIndexedPatches:patchesCopy2 patchStart:startCopy2 patchCount:countCopy2 patchIndexBuffer:buffer patchIndexBufferOffset:offsetCopy2 controlPointIndexBuffer:indexBuffer controlPointIndexBufferOffset:bufferOffset instanceCount:instanceCount baseInstance:instance];
 }
 
-- (void)dispatchThreadsPerTile:(id *)a3
+- (void)dispatchThreadsPerTile:(id *)tile
 {
   [(MTLGPUDebugRenderCommandEncoder *)self flushBindings];
-  v6 = *a3;
+  v6 = *tile;
   v5.receiver = self;
   v5.super_class = MTLGPUDebugRenderCommandEncoder;
   [(MTLToolsRenderCommandEncoder *)&v5 dispatchThreadsPerTile:&v6];
 }
 
-- (void)dispatchThreadsPerTile:(id *)a3 inRegion:(id *)a4
+- (void)dispatchThreadsPerTile:(id *)tile inRegion:(id *)region
 {
   [(MTLGPUDebugRenderCommandEncoder *)self flushBindings];
-  v7 = *&a3->var0;
-  var2 = a3->var2;
-  v8 = *&a4->var0.var2;
-  v10[0] = *&a4->var0.var0;
+  v7 = *&tile->var0;
+  var2 = tile->var2;
+  v8 = *&region->var0.var2;
+  v10[0] = *&region->var0.var0;
   v10[1] = v8;
-  v10[2] = *&a4->var1.var1;
+  v10[2] = *&region->var1.var1;
   v11 = v7;
   v9.receiver = self;
   v9.super_class = MTLGPUDebugRenderCommandEncoder;
@@ -1434,53 +1434,53 @@ LABEL_60:
   [(MTLToolsRenderCommandEncoder *)&v2 resetTileCondition];
 }
 
-- (void)dispatchThreadsPerTile:(id *)a3 withCondition:(int64_t)a4
+- (void)dispatchThreadsPerTile:(id *)tile withCondition:(int64_t)condition
 {
   [(MTLGPUDebugRenderCommandEncoder *)self flushBindings];
-  v8 = *a3;
+  v8 = *tile;
   v7.receiver = self;
   v7.super_class = MTLGPUDebugRenderCommandEncoder;
-  [(MTLToolsRenderCommandEncoder *)&v7 dispatchThreadsPerTile:&v8 withCondition:a4];
+  [(MTLToolsRenderCommandEncoder *)&v7 dispatchThreadsPerTile:&v8 withCondition:condition];
 }
 
-- (void)drawMeshThreadgroups:(id *)a3 threadsPerObjectThreadgroup:(id *)a4 threadsPerMeshThreadgroup:(id *)a5
+- (void)drawMeshThreadgroups:(id *)threadgroups threadsPerObjectThreadgroup:(id *)threadgroup threadsPerMeshThreadgroup:(id *)meshThreadgroup
 {
   [(MTLGPUDebugRenderCommandEncoder *)self flushBindings];
-  v12 = *a3;
-  v11 = *a4;
-  v10 = *a5;
+  v12 = *threadgroups;
+  v11 = *threadgroup;
+  v10 = *meshThreadgroup;
   v9.receiver = self;
   v9.super_class = MTLGPUDebugRenderCommandEncoder;
   [(MTLToolsRenderCommandEncoder *)&v9 drawMeshThreadgroups:&v12 threadsPerObjectThreadgroup:&v11 threadsPerMeshThreadgroup:&v10];
 }
 
-- (void)drawMeshThreads:(id *)a3 threadsPerObjectThreadgroup:(id *)a4 threadsPerMeshThreadgroup:(id *)a5
+- (void)drawMeshThreads:(id *)threads threadsPerObjectThreadgroup:(id *)threadgroup threadsPerMeshThreadgroup:(id *)meshThreadgroup
 {
   [(MTLGPUDebugRenderCommandEncoder *)self flushBindings];
-  v12 = *a3;
-  v11 = *a4;
-  v10 = *a5;
+  v12 = *threads;
+  v11 = *threadgroup;
+  v10 = *meshThreadgroup;
   v9.receiver = self;
   v9.super_class = MTLGPUDebugRenderCommandEncoder;
   [(MTLToolsRenderCommandEncoder *)&v9 drawMeshThreads:&v12 threadsPerObjectThreadgroup:&v11 threadsPerMeshThreadgroup:&v10];
 }
 
-- (void)drawMeshThreadgroupsWithIndirectBuffer:(id)a3 indirectBufferOffset:(unint64_t)a4 threadsPerObjectThreadgroup:(id *)a5 threadsPerMeshThreadgroup:(id *)a6
+- (void)drawMeshThreadgroupsWithIndirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset threadsPerObjectThreadgroup:(id *)threadgroup threadsPerMeshThreadgroup:(id *)meshThreadgroup
 {
   [(MTLGPUDebugRenderCommandEncoder *)self flushBindings];
-  v13 = *a5;
-  v12 = *a6;
+  v13 = *threadgroup;
+  v12 = *meshThreadgroup;
   v11.receiver = self;
   v11.super_class = MTLGPUDebugRenderCommandEncoder;
-  [(MTLToolsRenderCommandEncoder *)&v11 drawMeshThreadgroupsWithIndirectBuffer:a3 indirectBufferOffset:a4 threadsPerObjectThreadgroup:&v13 threadsPerMeshThreadgroup:&v12];
+  [(MTLToolsRenderCommandEncoder *)&v11 drawMeshThreadgroupsWithIndirectBuffer:buffer indirectBufferOffset:offset threadsPerObjectThreadgroup:&v13 threadsPerMeshThreadgroup:&v12];
 }
 
-- (void)restoreInternalState:(id)a3
+- (void)restoreInternalState:(id)state
 {
-  v5 = [(MTLToolsObject *)self baseObject];
-  v6 = [a3 inheritsBuffers];
-  v7 = [a3 inheritsPipelineState];
-  if (!v6 || (v7 & 1) == 0)
+  baseObject = [(MTLToolsObject *)self baseObject];
+  inheritsBuffers = [state inheritsBuffers];
+  inheritsPipelineState = [state inheritsPipelineState];
+  if (!inheritsBuffers || (inheritsPipelineState & 1) == 0)
   {
     count = self->_vertexAmpState.count;
     if (self->_vertexAmpState.mappingsValid)
@@ -1493,64 +1493,64 @@ LABEL_60:
       mappings = 0;
     }
 
-    [v5 setVertexAmplificationCount:count viewMappings:mappings];
+    [baseObject setVertexAmplificationCount:count viewMappings:mappings];
   }
 }
 
-- (void)executeCommandsInBuffer:(id)a3 withRange:(_NSRange)a4
+- (void)executeCommandsInBuffer:(id)buffer withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = LODWORD(a4.location) | (LODWORD(a4.length) << 32);
+  length = range.length;
+  location = range.location;
+  v9 = LODWORD(range.location) | (LODWORD(range.length) << 32);
   v10 = 1;
-  [(MTLGPUDebugRenderCommandEncoder *)self prepareExecuteIndirect:a3 variant:&v9];
+  [(MTLGPUDebugRenderCommandEncoder *)self prepareExecuteIndirect:buffer variant:&v9];
   v8.receiver = self;
   v8.super_class = MTLGPUDebugRenderCommandEncoder;
-  [(MTLToolsRenderCommandEncoder *)&v8 executeCommandsInBuffer:a3 withRange:location, length];
-  [(MTLGPUDebugRenderCommandEncoder *)self restoreInternalState:a3];
+  [(MTLToolsRenderCommandEncoder *)&v8 executeCommandsInBuffer:buffer withRange:location, length];
+  [(MTLGPUDebugRenderCommandEncoder *)self restoreInternalState:buffer];
 }
 
-- (void)executeCommandsInBuffer:(id)a3 indirectBuffer:(id)a4 indirectBufferOffset:(unint64_t)a5
+- (void)executeCommandsInBuffer:(id)buffer indirectBuffer:(id)indirectBuffer indirectBufferOffset:(unint64_t)offset
 {
-  v10[0] = a4;
-  v10[1] = a5;
+  v10[0] = indirectBuffer;
+  v10[1] = offset;
   v11 = 0;
-  [(MTLGPUDebugRenderCommandEncoder *)self prepareExecuteIndirect:a3 variant:v10];
+  [(MTLGPUDebugRenderCommandEncoder *)self prepareExecuteIndirect:buffer variant:v10];
   v9.receiver = self;
   v9.super_class = MTLGPUDebugRenderCommandEncoder;
-  [(MTLToolsRenderCommandEncoder *)&v9 executeCommandsInBuffer:a3 indirectBuffer:a4 indirectBufferOffset:a5];
-  [(MTLGPUDebugRenderCommandEncoder *)self restoreInternalState:a3];
+  [(MTLToolsRenderCommandEncoder *)&v9 executeCommandsInBuffer:buffer indirectBuffer:indirectBuffer indirectBufferOffset:offset];
+  [(MTLGPUDebugRenderCommandEncoder *)self restoreInternalState:buffer];
 }
 
-- (void)setVertexAmplificationCount:(unint64_t)a3 viewMappings:(id *)a4
+- (void)setVertexAmplificationCount:(unint64_t)count viewMappings:(id *)mappings
 {
-  self->_vertexAmpState.count = a3;
-  self->_vertexAmpState.mappingsValid = a4 != 0;
-  if (a3 && a4)
+  self->_vertexAmpState.count = count;
+  self->_vertexAmpState.mappingsValid = mappings != 0;
+  if (count && mappings)
   {
-    memmove(self->_vertexAmpState.mappings, a4, 8 * a3);
+    memmove(self->_vertexAmpState.mappings, mappings, 8 * count);
   }
 
   v7.receiver = self;
   v7.super_class = MTLGPUDebugRenderCommandEncoder;
-  [(MTLToolsRenderCommandEncoder *)&v7 setVertexAmplificationCount:a3 viewMappings:a4];
+  [(MTLToolsRenderCommandEncoder *)&v7 setVertexAmplificationCount:count viewMappings:mappings];
 }
 
-- (void)useResourceInternal:(id)a3 usage:(unint64_t)a4 stages:(optional<unsigned long>)a5
+- (void)useResourceInternal:(id)internal usage:(unint64_t)usage stages:(optional<unsigned long>)stages
 {
-  if (!a5.var1)
+  if (!stages.var1)
   {
-    a5.var0.var1 = 31;
+    stages.var0.var1 = 31;
   }
 
-  [(MTLToolsObject *)self->super.super.super._baseObject useResource:a3 usage:a4 stages:a5.var0.var1];
+  [(MTLToolsObject *)self->super.super.super._baseObject useResource:internal usage:usage stages:stages.var0.var1];
 }
 
-- (void)_useResourceCommon:(id)a3 usage:(unint64_t)a4 stages:(optional<unsigned long>)a5
+- (void)_useResourceCommon:(id)common usage:(unint64_t)usage stages:(optional<unsigned long>)stages
 {
-  v5 = *&a5.var1;
-  var1 = a5.var0.var1;
-  -[MTLGPUDebugRenderCommandEncoder useResourceInternal:usage:stages:](self, "useResourceInternal:usage:stages:", [a3 baseObject], a4, a5.var0.var1, *&a5.var1);
+  v5 = *&stages.var1;
+  var1 = stages.var0.var1;
+  -[MTLGPUDebugRenderCommandEncoder useResourceInternal:usage:stages:](self, "useResourceInternal:usage:stages:", [common baseObject], usage, stages.var0.var1, *&stages.var1);
   if (v5)
   {
     v10 = var1;
@@ -1566,7 +1566,7 @@ LABEL_60:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(MTLGPUDebugCommandBuffer *)self->_commandBuffer markBuffer:a3 usage:a4 stages:v10];
+      [(MTLGPUDebugCommandBuffer *)self->_commandBuffer markBuffer:common usage:usage stages:v10];
     }
 
     else
@@ -1574,18 +1574,18 @@ LABEL_60:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        -[MTLGPUDebugCommandBuffer markTexture:usage:stages:](self->_commandBuffer, "markTexture:usage:stages:", [a3 gpuIdentifier], a4, v10);
+        -[MTLGPUDebugCommandBuffer markTexture:usage:stages:](self->_commandBuffer, "markTexture:usage:stages:", [common gpuIdentifier], usage, v10);
       }
     }
 
-    if ([a3 conformsToProtocol:&unk_284228AC0])
+    if ([common conformsToProtocol:&unk_284228AC0])
     {
-      if (a3)
+      if (common)
       {
-        [a3 getActiveViews];
+        [common getActiveViews];
         for (i = v13; i; i = *i)
         {
-          [(MTLGPUDebugCommandBuffer *)self->_commandBuffer markTexture:i[2] usage:a4 stages:v10];
+          [(MTLGPUDebugCommandBuffer *)self->_commandBuffer markTexture:i[2] usage:usage stages:v10];
         }
       }
 
@@ -1600,151 +1600,151 @@ LABEL_60:
     }
   }
 
-  [a3 useWithRenderEncoder:self usage:a4 stages:{var1, v5, v12, v13, v14}];
+  [common useWithRenderEncoder:self usage:usage stages:{var1, v5, v12, v13, v14}];
 }
 
-- (void)useResources:(const void *)a3 count:(unint64_t)a4 usage:(unint64_t)a5
+- (void)useResources:(const void *)resources count:(unint64_t)count usage:(unint64_t)usage
 {
-  if (a4)
+  if (count)
   {
-    v6 = a4;
+    countCopy = count;
     do
     {
-      v9 = *a3++;
-      [(MTLGPUDebugRenderCommandEncoder *)self useResource:v9 usage:a5];
-      --v6;
+      v9 = *resources++;
+      [(MTLGPUDebugRenderCommandEncoder *)self useResource:v9 usage:usage];
+      --countCopy;
     }
 
-    while (v6);
+    while (countCopy);
   }
 }
 
-- (void)useResources:(const void *)a3 count:(unint64_t)a4 usage:(unint64_t)a5 stages:(unint64_t)a6
+- (void)useResources:(const void *)resources count:(unint64_t)count usage:(unint64_t)usage stages:(unint64_t)stages
 {
-  if (a4)
+  if (count)
   {
-    v8 = a4;
+    countCopy = count;
     do
     {
-      v11 = *a3++;
-      [(MTLGPUDebugRenderCommandEncoder *)self useResource:v11 usage:a5 stages:a6];
-      --v8;
+      v11 = *resources++;
+      [(MTLGPUDebugRenderCommandEncoder *)self useResource:v11 usage:usage stages:stages];
+      --countCopy;
     }
 
-    while (v8);
+    while (countCopy);
   }
 }
 
-- (void)useHeap:(id)a3
+- (void)useHeap:(id)heap
 {
   if (*(&self->_enableUseResourceValidation + 4))
   {
-    [(MTLGPUDebugCommandBuffer *)self->_commandBuffer markHeap:a3 stages:31];
+    [(MTLGPUDebugCommandBuffer *)self->_commandBuffer markHeap:heap stages:31];
   }
 
-  [(MTLToolsCommandEncoder *)self addRetainedObject:a3];
+  [(MTLToolsCommandEncoder *)self addRetainedObject:heap];
   baseObject = self->super.super.super._baseObject;
-  v6 = [a3 baseObject];
+  baseObject = [heap baseObject];
 
-  [(MTLToolsObject *)baseObject useHeap:v6];
+  [(MTLToolsObject *)baseObject useHeap:baseObject];
 }
 
-- (void)useHeap:(id)a3 stages:(unint64_t)a4
+- (void)useHeap:(id)heap stages:(unint64_t)stages
 {
   if (*(&self->_enableUseResourceValidation + 4))
   {
-    [(MTLGPUDebugCommandBuffer *)self->_commandBuffer markHeap:a3 stages:a4];
+    [(MTLGPUDebugCommandBuffer *)self->_commandBuffer markHeap:heap stages:stages];
   }
 
-  [(MTLToolsCommandEncoder *)self addRetainedObject:a3];
+  [(MTLToolsCommandEncoder *)self addRetainedObject:heap];
   baseObject = self->super.super.super._baseObject;
-  v8 = [a3 baseObject];
+  baseObject = [heap baseObject];
 
-  [(MTLToolsObject *)baseObject useHeap:v8 stages:a4];
+  [(MTLToolsObject *)baseObject useHeap:baseObject stages:stages];
 }
 
-- (void)useHeaps:(const void *)a3 count:(unint64_t)a4
+- (void)useHeaps:(const void *)heaps count:(unint64_t)count
 {
-  if (a4)
+  if (count)
   {
-    v4 = a4;
+    countCopy = count;
     do
     {
-      v7 = *a3++;
+      v7 = *heaps++;
       [(MTLGPUDebugRenderCommandEncoder *)self useHeap:v7];
-      --v4;
+      --countCopy;
     }
 
-    while (v4);
+    while (countCopy);
   }
 }
 
-- (void)useHeaps:(const void *)a3 count:(unint64_t)a4 stages:(unint64_t)a5
+- (void)useHeaps:(const void *)heaps count:(unint64_t)count stages:(unint64_t)stages
 {
-  if (a4)
+  if (count)
   {
-    v6 = a4;
+    countCopy = count;
     do
     {
-      v9 = *a3++;
-      [(MTLGPUDebugRenderCommandEncoder *)self useHeap:v9 stages:a5];
-      --v6;
+      v9 = *heaps++;
+      [(MTLGPUDebugRenderCommandEncoder *)self useHeap:v9 stages:stages];
+      --countCopy;
     }
 
-    while (v6);
+    while (countCopy);
   }
 }
 
-- (void)useResidencySet:(id)a3
+- (void)useResidencySet:(id)set
 {
   if ((*&self->_options->var0 & 0x200000001) != 0)
   {
-    [(MTLToolsRetainingContainer *)[(MTLToolsCommandEncoder *)self commandBuffer] addResidencySetGPUDebug:a3 fromEncoder:self];
+    [(MTLToolsRetainingContainer *)[(MTLToolsCommandEncoder *)self commandBuffer] addResidencySetGPUDebug:set fromEncoder:self];
   }
 
   v5.receiver = self;
   v5.super_class = MTLGPUDebugRenderCommandEncoder;
-  [(MTLToolsRenderCommandEncoder *)&v5 useResidencySet:a3];
+  [(MTLToolsRenderCommandEncoder *)&v5 useResidencySet:set];
 }
 
-- (void)useResidencySets:(const void *)a3 count:(unint64_t)a4
+- (void)useResidencySets:(const void *)sets count:(unint64_t)count
 {
-  if ((*&self->_options->var0 & 0x200000001) != 0 && a4 != 0)
+  if ((*&self->_options->var0 & 0x200000001) != 0 && count != 0)
   {
-    v8 = a3;
-    v9 = a4;
+    setsCopy = sets;
+    countCopy = count;
     do
     {
-      v10 = *v8++;
+      v10 = *setsCopy++;
       [(MTLToolsRetainingContainer *)[(MTLToolsCommandEncoder *)self commandBuffer] addResidencySetGPUDebug:v10 fromEncoder:self];
-      --v9;
+      --countCopy;
     }
 
-    while (v9);
+    while (countCopy);
   }
 
   v11.receiver = self;
   v11.super_class = MTLGPUDebugRenderCommandEncoder;
-  [(MTLToolsRenderCommandEncoder *)&v11 useResidencySets:a3 count:a4];
+  [(MTLToolsRenderCommandEncoder *)&v11 useResidencySets:sets count:count];
 }
 
-- (void)setDepthStencilState:(id)a3
+- (void)setDepthStencilState:(id)state
 {
-  self->_currentDepthStencil = a3;
+  self->_currentDepthStencil = state;
   v3.receiver = self;
   v3.super_class = MTLGPUDebugRenderCommandEncoder;
   [(MTLToolsRenderCommandEncoder *)&v3 setDepthStencilState:?];
 }
 
-- (void)setRenderPipelineState:(id)a3
+- (void)setRenderPipelineState:(id)state
 {
-  self->_drawID.pipelineStateID = a3;
-  *(&self->_enableUseResourceValidation + 1) = [a3 vertexFunctionData] != 0;
-  self->_enableUseResourceValidation = [a3 fragmentFunctionData] != 0;
-  v5 = [a3 tileFunctionData] != 0;
+  self->_drawID.pipelineStateID = state;
+  *(&self->_enableUseResourceValidation + 1) = [state vertexFunctionData] != 0;
+  self->_enableUseResourceValidation = [state fragmentFunctionData] != 0;
+  v5 = [state tileFunctionData] != 0;
   self->_objectStageActive = v5;
   self->_meshStageActive |= v5;
-  v6 = !*(&self->_enableUseResourceValidation + 1) && [a3 objectFunctionData] != 0;
+  v6 = !*(&self->_enableUseResourceValidation + 1) && [state objectFunctionData] != 0;
   *(&self->_enableUseResourceValidation + 2) = v6;
   if (*(&self->_enableUseResourceValidation + 1))
   {
@@ -1753,14 +1753,14 @@ LABEL_60:
 
   else
   {
-    v7 = [a3 meshFunctionData];
-    *(&self->_enableUseResourceValidation + 3) = v7 != 0;
-    if (v7)
+    meshFunctionData = [state meshFunctionData];
+    *(&self->_enableUseResourceValidation + 3) = meshFunctionData != 0;
+    if (meshFunctionData)
     {
-      if (self->_currentPipeline != a3)
+      if (self->_currentPipeline != state)
       {
-        v8 = [a3 meshDebugInstrumentationData];
-        if ([v8 activeThreadgroupMask] || objc_msgSend(v8, "threadgroupArgumentOffset"))
+        meshDebugInstrumentationData = [state meshDebugInstrumentationData];
+        if ([meshDebugInstrumentationData activeThreadgroupMask] || objc_msgSend(meshDebugInstrumentationData, "threadgroupArgumentOffset"))
         {
           self->_meshThreadgroup.needsFlush = 1;
         }
@@ -1768,30 +1768,30 @@ LABEL_60:
     }
   }
 
-  if (*(&self->_enableUseResourceValidation + 2) && self->_currentPipeline != a3)
+  if (*(&self->_enableUseResourceValidation + 2) && self->_currentPipeline != state)
   {
-    v9 = [a3 objectDebugInstrumentationData];
-    if ([v9 activeThreadgroupMask] || objc_msgSend(v9, "threadgroupArgumentOffset"))
+    objectDebugInstrumentationData = [state objectDebugInstrumentationData];
+    if ([objectDebugInstrumentationData activeThreadgroupMask] || objc_msgSend(objectDebugInstrumentationData, "threadgroupArgumentOffset"))
     {
       self->_objectThreadgroup.needsFlush = 1;
     }
   }
 
-  if (self->_meshStageActive && self->_currentPipeline != a3)
+  if (self->_meshStageActive && self->_currentPipeline != state)
   {
-    v10 = [a3 tileDebugInstrumentationData];
-    v11 = [a3 fragmentDebugInstrumentationData];
-    if ([v10 activeThreadgroupMask] || objc_msgSend(v11, "activeThreadgroupMask"))
+    tileDebugInstrumentationData = [state tileDebugInstrumentationData];
+    fragmentDebugInstrumentationData = [state fragmentDebugInstrumentationData];
+    if ([tileDebugInstrumentationData activeThreadgroupMask] || objc_msgSend(fragmentDebugInstrumentationData, "activeThreadgroupMask"))
     {
       self->_tileThreadgroup.needsFlush = 1;
     }
   }
 
-  if (self->_currentPipeline != a3)
+  if (self->_currentPipeline != state)
   {
     if ((*(&self->_options->var0 + 2) & 0x40) != 0)
     {
-      [(MTLGPUDebugRenderCommandEncoder *)self setRenderPipelineStateBuffers:a3];
+      [(MTLGPUDebugRenderCommandEncoder *)self setRenderPipelineStateBuffers:state];
     }
 
     self->_vertexHandles.needsFlush |= *(&self->_enableUseResourceValidation + 1);
@@ -1799,37 +1799,37 @@ LABEL_60:
     self->_tileHandles.needsFlush |= self->_objectStageActive;
   }
 
-  self->_currentPipeline = a3;
+  self->_currentPipeline = state;
   v12.receiver = self;
   v12.super_class = MTLGPUDebugRenderCommandEncoder;
-  [(MTLToolsRenderCommandEncoder *)&v12 setRenderPipelineState:a3];
+  [(MTLToolsRenderCommandEncoder *)&v12 setRenderPipelineState:state];
 }
 
-- (void)setVertexVisibleFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setVertexVisibleFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
-  if (a3)
+  if (table)
   {
-    v6 = &self->_vertexEncoderBoundBuffers[a4];
-    v6->resource = *(a3 + 2);
+    v6 = &self->_vertexEncoderBoundBuffers[index];
+    v6->resource = *(table + 2);
     v6->offset = 0;
     v6->type = 115;
-    [(MTLToolsObject *)self->super.super.super._baseObject setVertexVisibleFunctionTable:*(a3 + 2) atBufferIndex:?];
+    [(MTLToolsObject *)self->super.super.super._baseObject setVertexVisibleFunctionTable:*(table + 2) atBufferIndex:?];
     baseObject = self->super.super.super._baseObject;
-    v8 = *(a3 + 2);
+    v8 = *(table + 2);
 
     [(MTLToolsObject *)baseObject useResource:v8 usage:1 stages:1];
   }
 }
 
-- (void)setVertexVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setVertexVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    length = a4.length;
-    location = a4.location;
+    length = range.length;
+    location = range.location;
     do
     {
-      v8 = *a3++;
+      v8 = *tables++;
       [(MTLGPUDebugRenderCommandEncoder *)self setVertexVisibleFunctionTable:v8 atBufferIndex:location++];
       --length;
     }
@@ -1838,31 +1838,31 @@ LABEL_60:
   }
 }
 
-- (void)setFragmentVisibleFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setFragmentVisibleFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
-  if (a3)
+  if (table)
   {
-    v7 = &self->_fragmentEncoderBoundBuffers[a4];
-    v7->resource = *(a3 + 2);
+    v7 = &self->_fragmentEncoderBoundBuffers[index];
+    v7->resource = *(table + 2);
     v7->offset = 0;
     v7->type = 115;
-    [(MTLToolsObject *)self->super.super.super._baseObject useResource:*(a3 + 2) usage:1 stages:2];
+    [(MTLToolsObject *)self->super.super.super._baseObject useResource:*(table + 2) usage:1 stages:2];
     baseObject = self->super.super.super._baseObject;
-    v9 = *(a3 + 2);
+    v9 = *(table + 2);
 
-    [(MTLToolsObject *)baseObject setFragmentVisibleFunctionTable:v9 atBufferIndex:a4];
+    [(MTLToolsObject *)baseObject setFragmentVisibleFunctionTable:v9 atBufferIndex:index];
   }
 }
 
-- (void)setFragmentVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setFragmentVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    length = a4.length;
-    location = a4.location;
+    length = range.length;
+    location = range.location;
     do
     {
-      v8 = *a3++;
+      v8 = *tables++;
       [(MTLGPUDebugRenderCommandEncoder *)self setFragmentVisibleFunctionTable:v8 atBufferIndex:location++];
       --length;
     }
@@ -1871,27 +1871,27 @@ LABEL_60:
   }
 }
 
-- (void)setTileVisibleFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setTileVisibleFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
-  if (a3)
+  if (table)
   {
-    [(MTLToolsObject *)self->super.super.super._baseObject setTileVisibleFunctionTable:*(a3 + 2) atBufferIndex:a4];
+    [(MTLToolsObject *)self->super.super.super._baseObject setTileVisibleFunctionTable:*(table + 2) atBufferIndex:index];
     baseObject = self->super.super.super._baseObject;
-    v7 = *(a3 + 2);
+    v7 = *(table + 2);
 
     [(MTLToolsObject *)baseObject useResource:v7 usage:1 stages:4];
   }
 }
 
-- (void)setTileVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setTileVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    length = a4.length;
-    location = a4.location;
+    length = range.length;
+    location = range.location;
     do
     {
-      v8 = *a3++;
+      v8 = *tables++;
       [(MTLGPUDebugRenderCommandEncoder *)self setTileVisibleFunctionTable:v8 atBufferIndex:location++];
       --length;
     }
@@ -1900,32 +1900,32 @@ LABEL_60:
   }
 }
 
-- (void)setObjectVisibleFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setObjectVisibleFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
-  if (a3)
+  if (table)
   {
-    v7 = [a3 baseObject];
-    v8 = &self->_objectEncoderBoundBuffers[a4];
-    v8->resource = v7;
+    baseObject = [table baseObject];
+    v8 = &self->_objectEncoderBoundBuffers[index];
+    v8->resource = baseObject;
     v8->offset = 0;
     v8->type = 115;
-    [(MTLToolsObject *)self->super.super.super._baseObject setObjectVisibleFunctionTable:*(a3 + 2) atBufferIndex:a4];
+    [(MTLToolsObject *)self->super.super.super._baseObject setObjectVisibleFunctionTable:*(table + 2) atBufferIndex:index];
     baseObject = self->super.super.super._baseObject;
-    v10 = *(a3 + 2);
+    v10 = *(table + 2);
 
     [(MTLToolsObject *)baseObject useResource:v10 usage:1 stages:8];
   }
 }
 
-- (void)setObjectVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setObjectVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    length = a4.length;
-    location = a4.location;
+    length = range.length;
+    location = range.location;
     do
     {
-      v8 = *a3++;
+      v8 = *tables++;
       [(MTLGPUDebugRenderCommandEncoder *)self setObjectVisibleFunctionTable:v8 atBufferIndex:location++];
       --length;
     }
@@ -1934,32 +1934,32 @@ LABEL_60:
   }
 }
 
-- (void)setMeshVisibleFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setMeshVisibleFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
-  if (a3)
+  if (table)
   {
-    v7 = [a3 baseObject];
-    v8 = &self->_meshEncoderBoundBuffers[a4];
-    v8->resource = v7;
+    baseObject = [table baseObject];
+    v8 = &self->_meshEncoderBoundBuffers[index];
+    v8->resource = baseObject;
     v8->offset = 0;
     v8->type = 115;
-    [(MTLToolsObject *)self->super.super.super._baseObject setMeshVisibleFunctionTable:*(a3 + 2) atBufferIndex:a4];
+    [(MTLToolsObject *)self->super.super.super._baseObject setMeshVisibleFunctionTable:*(table + 2) atBufferIndex:index];
     baseObject = self->super.super.super._baseObject;
-    v10 = *(a3 + 2);
+    v10 = *(table + 2);
 
     [(MTLToolsObject *)baseObject useResource:v10 usage:1 stages:16];
   }
 }
 
-- (void)setMeshVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setMeshVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    length = a4.length;
-    location = a4.location;
+    length = range.length;
+    location = range.location;
     do
     {
-      v8 = *a3++;
+      v8 = *tables++;
       [(MTLGPUDebugRenderCommandEncoder *)self setMeshVisibleFunctionTable:v8 atBufferIndex:location++];
       --length;
     }
@@ -1968,33 +1968,33 @@ LABEL_60:
   }
 }
 
-- (void)setVertexIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setVertexIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
-  MTLGPUDebugStageBufferHandles::setResource(&self->_vertexHandles, a3, a4);
-  if (a3)
+  MTLGPUDebugStageBufferHandles::setResource(&self->_vertexHandles, table, index);
+  if (table)
   {
-    v7 = [a3 baseObject];
-    v8 = &self->_vertexEncoderBoundBuffers[a4];
-    v8->resource = v7;
+    baseObject = [table baseObject];
+    v8 = &self->_vertexEncoderBoundBuffers[index];
+    v8->resource = baseObject;
     v8->offset = 0;
     v8->type = 116;
-    -[MTLToolsObject setVertexIntersectionFunctionTable:atBufferIndex:](self->super.super.super._baseObject, "setVertexIntersectionFunctionTable:atBufferIndex:", [a3 baseObject], a4);
+    -[MTLToolsObject setVertexIntersectionFunctionTable:atBufferIndex:](self->super.super.super._baseObject, "setVertexIntersectionFunctionTable:atBufferIndex:", [table baseObject], index);
     baseObject = self->super.super.super._baseObject;
-    v10 = *(a3 + 2);
+    v10 = *(table + 2);
 
     [(MTLToolsObject *)baseObject useResource:v10 usage:1 stages:1];
   }
 }
 
-- (void)setVertexIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setVertexIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    length = a4.length;
-    location = a4.location;
+    length = range.length;
+    location = range.location;
     do
     {
-      v8 = *a3++;
+      v8 = *tables++;
       [(MTLGPUDebugRenderCommandEncoder *)self setVertexIntersectionFunctionTable:v8 atBufferIndex:location++];
       --length;
     }
@@ -2003,32 +2003,32 @@ LABEL_60:
   }
 }
 
-- (void)setFragmentIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setFragmentIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
-  if (a3)
+  if (table)
   {
-    v7 = [a3 baseObject];
-    v8 = &self->_fragmentEncoderBoundBuffers[a4];
-    v8->resource = v7;
+    baseObject = [table baseObject];
+    v8 = &self->_fragmentEncoderBoundBuffers[index];
+    v8->resource = baseObject;
     v8->offset = 0;
     v8->type = 116;
-    -[MTLToolsObject setFragmentIntersectionFunctionTable:atBufferIndex:](self->super.super.super._baseObject, "setFragmentIntersectionFunctionTable:atBufferIndex:", [a3 baseObject], a4);
+    -[MTLToolsObject setFragmentIntersectionFunctionTable:atBufferIndex:](self->super.super.super._baseObject, "setFragmentIntersectionFunctionTable:atBufferIndex:", [table baseObject], index);
     baseObject = self->super.super.super._baseObject;
-    v10 = *(a3 + 2);
+    v10 = *(table + 2);
 
     [(MTLToolsObject *)baseObject useResource:v10 usage:1 stages:2];
   }
 }
 
-- (void)setFragmentIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setFragmentIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    length = a4.length;
-    location = a4.location;
+    length = range.length;
+    location = range.location;
     do
     {
-      v8 = *a3++;
+      v8 = *tables++;
       [(MTLGPUDebugRenderCommandEncoder *)self setFragmentIntersectionFunctionTable:v8 atBufferIndex:location++];
       --length;
     }
@@ -2037,28 +2037,28 @@ LABEL_60:
   }
 }
 
-- (void)setTileIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setTileIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
-  MTLGPUDebugStageBufferHandles::setResource(&self->_tileHandles, a3, a4);
-  if (a3)
+  MTLGPUDebugStageBufferHandles::setResource(&self->_tileHandles, table, index);
+  if (table)
   {
-    -[MTLToolsObject setTileIntersectionFunctionTable:atBufferIndex:](self->super.super.super._baseObject, "setTileIntersectionFunctionTable:atBufferIndex:", [a3 baseObject], a4);
+    -[MTLToolsObject setTileIntersectionFunctionTable:atBufferIndex:](self->super.super.super._baseObject, "setTileIntersectionFunctionTable:atBufferIndex:", [table baseObject], index);
     baseObject = self->super.super.super._baseObject;
-    v8 = *(a3 + 2);
+    v8 = *(table + 2);
 
     [(MTLToolsObject *)baseObject useResource:v8 usage:1 stages:4];
   }
 }
 
-- (void)setTileIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setTileIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    length = a4.length;
-    location = a4.location;
+    length = range.length;
+    location = range.location;
     do
     {
-      v8 = *a3++;
+      v8 = *tables++;
       [(MTLGPUDebugRenderCommandEncoder *)self setTileIntersectionFunctionTable:v8 atBufferIndex:location++];
       --length;
     }
@@ -2067,63 +2067,63 @@ LABEL_60:
   }
 }
 
-- (void)setVertexAccelerationStructure:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setVertexAccelerationStructure:(id)structure atBufferIndex:(unint64_t)index
 {
-  v7 = [a3 debugBuf];
-  v8 = &self->_vertexEncoderBoundBuffers[a4];
-  v8->resource = v7;
+  debugBuf = [structure debugBuf];
+  v8 = &self->_vertexEncoderBoundBuffers[index];
+  v8->resource = debugBuf;
   v8->offset = 0;
   baseObject = self->super.super.super._baseObject;
-  v10 = [a3 debugBuf];
+  debugBuf2 = [structure debugBuf];
 
-  [(MTLToolsObject *)baseObject setVertexBuffer:v10 offset:0 atIndex:a4];
+  [(MTLToolsObject *)baseObject setVertexBuffer:debugBuf2 offset:0 atIndex:index];
 }
 
-- (void)setFragmentAccelerationStructure:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setFragmentAccelerationStructure:(id)structure atBufferIndex:(unint64_t)index
 {
-  v7 = [a3 debugBuf];
-  v8 = &self->_fragmentEncoderBoundBuffers[a4];
-  v8->resource = v7;
+  debugBuf = [structure debugBuf];
+  v8 = &self->_fragmentEncoderBoundBuffers[index];
+  v8->resource = debugBuf;
   v8->offset = 0;
   baseObject = self->super.super.super._baseObject;
-  v10 = [a3 debugBuf];
+  debugBuf2 = [structure debugBuf];
 
-  [(MTLToolsObject *)baseObject setFragmentBuffer:v10 offset:0 atIndex:a4];
+  [(MTLToolsObject *)baseObject setFragmentBuffer:debugBuf2 offset:0 atIndex:index];
 }
 
-- (void)setTileAccelerationStructure:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setTileAccelerationStructure:(id)structure atBufferIndex:(unint64_t)index
 {
   baseObject = self->super.super.super._baseObject;
-  v6 = [a3 debugBuf];
+  debugBuf = [structure debugBuf];
 
-  [(MTLToolsObject *)baseObject setTileBuffer:v6 offset:0 atIndex:a4];
+  [(MTLToolsObject *)baseObject setTileBuffer:debugBuf offset:0 atIndex:index];
 }
 
-- (void)setObjectIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setObjectIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
-  if (a3)
+  if (table)
   {
-    v7 = [a3 baseObject];
-    v8 = &self->_objectEncoderBoundBuffers[a4];
-    v8->resource = v7;
+    baseObject = [table baseObject];
+    v8 = &self->_objectEncoderBoundBuffers[index];
+    v8->resource = baseObject;
     v8->offset = 0;
     v8->type = 116;
     baseObject = self->super.super.super._baseObject;
-    v10 = *(a3 + 2);
+    v10 = *(table + 2);
 
-    [(MTLToolsObject *)baseObject setObjectIntersectionFunctionTable:v10 atBufferIndex:a4];
+    [(MTLToolsObject *)baseObject setObjectIntersectionFunctionTable:v10 atBufferIndex:index];
   }
 }
 
-- (void)setObjectIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setObjectIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    length = a4.length;
-    location = a4.location;
+    length = range.length;
+    location = range.location;
     do
     {
-      v8 = *a3++;
+      v8 = *tables++;
       [(MTLGPUDebugRenderCommandEncoder *)self setObjectIntersectionFunctionTable:v8 atBufferIndex:location++];
       --length;
     }
@@ -2132,33 +2132,33 @@ LABEL_60:
   }
 }
 
-- (void)setMeshIntersectionFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setMeshIntersectionFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
-  MTLGPUDebugStageBufferHandles::setResource(&self->_meshHandles, a3, a4);
-  if (a3)
+  MTLGPUDebugStageBufferHandles::setResource(&self->_meshHandles, table, index);
+  if (table)
   {
-    v7 = [a3 baseObject];
-    v8 = &self->_meshEncoderBoundBuffers[a4];
-    v8->resource = v7;
+    baseObject = [table baseObject];
+    v8 = &self->_meshEncoderBoundBuffers[index];
+    v8->resource = baseObject;
     v8->offset = 0;
     v8->type = 116;
-    [(MTLToolsObject *)self->super.super.super._baseObject setMeshIntersectionFunctionTable:*(a3 + 2) atBufferIndex:a4];
+    [(MTLToolsObject *)self->super.super.super._baseObject setMeshIntersectionFunctionTable:*(table + 2) atBufferIndex:index];
     baseObject = self->super.super.super._baseObject;
-    v10 = *(a3 + 2);
+    v10 = *(table + 2);
 
     [(MTLToolsObject *)baseObject useResource:v10 usage:1 stages:16];
   }
 }
 
-- (void)setMeshIntersectionFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setMeshIntersectionFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    length = a4.length;
-    location = a4.location;
+    length = range.length;
+    location = range.location;
     do
     {
-      v8 = *a3++;
+      v8 = *tables++;
       [(MTLGPUDebugRenderCommandEncoder *)self setMeshIntersectionFunctionTable:v8 atBufferIndex:location++];
       --length;
     }
@@ -2167,28 +2167,28 @@ LABEL_60:
   }
 }
 
-- (void)setObjectAccelerationStructure:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setObjectAccelerationStructure:(id)structure atBufferIndex:(unint64_t)index
 {
-  v7 = [a3 debugBuf];
-  v8 = &self->_objectEncoderBoundBuffers[a4];
-  v8->resource = v7;
+  debugBuf = [structure debugBuf];
+  v8 = &self->_objectEncoderBoundBuffers[index];
+  v8->resource = debugBuf;
   v8->offset = 0;
   baseObject = self->super.super.super._baseObject;
-  v10 = [a3 debugBuf];
+  debugBuf2 = [structure debugBuf];
 
-  [(MTLToolsObject *)baseObject setObjectBuffer:v10 offset:0 atIndex:a4];
+  [(MTLToolsObject *)baseObject setObjectBuffer:debugBuf2 offset:0 atIndex:index];
 }
 
-- (void)setMeshAccelerationStructure:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setMeshAccelerationStructure:(id)structure atBufferIndex:(unint64_t)index
 {
-  v7 = [a3 debugBuf];
-  v8 = &self->_meshEncoderBoundBuffers[a4];
-  v8->resource = v7;
+  debugBuf = [structure debugBuf];
+  v8 = &self->_meshEncoderBoundBuffers[index];
+  v8->resource = debugBuf;
   v8->offset = 0;
   baseObject = self->super.super.super._baseObject;
-  v10 = [a3 debugBuf];
+  debugBuf2 = [structure debugBuf];
 
-  [(MTLToolsObject *)baseObject setMeshBuffer:v10 offset:0 atIndex:a4];
+  [(MTLToolsObject *)baseObject setMeshBuffer:debugBuf2 offset:0 atIndex:index];
 }
 
 - (void)endEncoding

@@ -1,32 +1,32 @@
 @interface UITouchForceGestureRecognizer
 - (BOOL)_hasExceededAllowableMovement;
 - (BOOL)_hasExceededMaximumNumberOfTouches;
-- (BOOL)_shouldReceiveTouch:(id)a3 forEvent:(id)a4 recognizerView:(id)a5;
+- (BOOL)_shouldReceiveTouch:(id)touch forEvent:(id)event recognizerView:(id)view;
 - (BOOL)_validateHysteresis;
-- (UITouchForceGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
-- (double)_evaluateAutomaticTouchForceForTimeInterval:(double)a3 actualTouchForce:(double)a4;
+- (UITouchForceGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
+- (double)_evaluateAutomaticTouchForceForTimeInterval:(double)interval actualTouchForce:(double)force;
 - (double)touchDuration;
-- (void)_beginForContinuousEvaluationForTouches:(id)a3;
-- (void)_endIfNeeded:(BOOL)a3;
-- (void)_evaluateTouches:(id)a3 withEvent:(id)a4;
-- (void)_evaluateWithTouchForce:(double)a3 centroidAtLocation:(CGPoint)a4;
-- (void)_updateForContinuousEvaluation:(id)a3;
-- (void)_updateTouchForce:(double)a3;
+- (void)_beginForContinuousEvaluationForTouches:(id)touches;
+- (void)_endIfNeeded:(BOOL)needed;
+- (void)_evaluateTouches:(id)touches withEvent:(id)event;
+- (void)_evaluateWithTouchForce:(double)force centroidAtLocation:(CGPoint)location;
+- (void)_updateForContinuousEvaluation:(id)evaluation;
+- (void)_updateTouchForce:(double)force;
 - (void)reset;
-- (void)setView:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)setView:(id)view;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation UITouchForceGestureRecognizer
 
-- (UITouchForceGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (UITouchForceGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v10.receiver = self;
   v10.super_class = UITouchForceGestureRecognizer;
-  v4 = [(UIGestureRecognizer *)&v10 initWithTarget:a3 action:a4];
+  v4 = [(UIGestureRecognizer *)&v10 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {
@@ -52,9 +52,9 @@
   return v5;
 }
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
-  if (!a3)
+  if (!view)
   {
     [(CADisplayLink *)self->_continuousEvaluationDisplayLink invalidate];
     continuousEvaluationDisplayLink = self->_continuousEvaluationDisplayLink;
@@ -63,7 +63,7 @@
 
   v6.receiver = self;
   v6.super_class = UITouchForceGestureRecognizer;
-  [(UIGestureRecognizer *)&v6 setView:a3];
+  [(UIGestureRecognizer *)&v6 setView:view];
 }
 
 - (void)reset
@@ -87,42 +87,42 @@
   [(UITouchForceGestureRecognizer *)self _endContinuousEvaluation];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   currentTouches = self->_currentTouches;
   if (currentTouches)
   {
-    [(NSMutableSet *)currentTouches unionSet:a3];
+    [(NSMutableSet *)currentTouches unionSet:began];
   }
 
   else
   {
-    v8 = [a3 mutableCopy];
+    v8 = [began mutableCopy];
     v9 = self->_currentTouches;
     self->_currentTouches = v8;
 
-    v10 = [a3 anyObject];
-    [v10 timestamp];
+    anyObject = [began anyObject];
+    [anyObject timestamp];
     self->_touchesBeganTimestamp = v11;
 
-    self->_currentCentroidOfTouches.x = _CentroidOfTouches(a3, 0);
+    self->_currentCentroidOfTouches.x = _CentroidOfTouches(began, 0);
     self->_currentCentroidOfTouches.y = v12;
     self->_initialCentroidOfTouches = self->_currentCentroidOfTouches;
-    [(UITouchForceGestureRecognizer *)self _beginForContinuousEvaluationForTouches:a3];
+    [(UITouchForceGestureRecognizer *)self _beginForContinuousEvaluationForTouches:began];
   }
 
-  [(UITouchForceGestureRecognizer *)self _evaluateTouches:a3 withEvent:a4];
+  [(UITouchForceGestureRecognizer *)self _evaluateTouches:began withEvent:event];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   v26 = *MEMORY[0x1E69E9840];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = a3;
-  v7 = [v6 countByEnumeratingWithState:&v20 objects:v25 count:16];
+  movedCopy = moved;
+  v7 = [movedCopy countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v7)
   {
     v8 = v7;
@@ -134,7 +134,7 @@
       {
         if (*v21 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(movedCopy);
         }
 
         if ([(UITouch *)*(*(&v20 + 1) + 8 * v10) _mightBeConsideredForForceSystemGesture])
@@ -159,7 +159,7 @@
                   objc_enumerationMutation(v11);
                 }
 
-                [(UIGestureRecognizer *)self ignoreTouch:*(*(&v16 + 1) + 8 * v15++) forEvent:a4, v16];
+                [(UIGestureRecognizer *)self ignoreTouch:*(*(&v16 + 1) + 8 * v15++) forEvent:event, v16];
               }
 
               while (v13 != v15);
@@ -179,7 +179,7 @@
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v20 objects:v25 count:16];
+      v8 = [movedCopy countByEnumeratingWithState:&v20 objects:v25 count:16];
       if (v8)
       {
         continue;
@@ -189,23 +189,23 @@
     }
   }
 
-  [(UITouchForceGestureRecognizer *)self _evaluateTouches:v6 withEvent:a4];
+  [(UITouchForceGestureRecognizer *)self _evaluateTouches:movedCopy withEvent:event];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  [(NSMutableSet *)self->_currentTouches minusSet:a3, a4];
+  [(NSMutableSet *)self->_currentTouches minusSet:ended, event];
   if (![(NSMutableSet *)self->_currentTouches count])
   {
-    v5 = [(UITouchForceGestureRecognizer *)self _validateHysteresis];
+    _validateHysteresis = [(UITouchForceGestureRecognizer *)self _validateHysteresis];
 
-    [(UITouchForceGestureRecognizer *)self _endIfNeeded:v5];
+    [(UITouchForceGestureRecognizer *)self _endIfNeeded:_validateHysteresis];
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  [(NSMutableSet *)self->_currentTouches minusSet:a3, a4];
+  [(NSMutableSet *)self->_currentTouches minusSet:cancelled, event];
   if (![(NSMutableSet *)self->_currentTouches count])
   {
 
@@ -213,9 +213,9 @@
   }
 }
 
-- (BOOL)_shouldReceiveTouch:(id)a3 forEvent:(id)a4 recognizerView:(id)a5
+- (BOOL)_shouldReceiveTouch:(id)touch forEvent:(id)event recognizerView:(id)view
 {
-  if (([(UITouch *)a3 _mightBeConsideredForForceSystemGesture]& 1) != 0)
+  if (([(UITouch *)touch _mightBeConsideredForForceSystemGesture]& 1) != 0)
   {
     return 0;
   }
@@ -229,11 +229,11 @@
   [(UITouchForceGestureRecognizer *)self automaticTouchForce];
   if (v10 == 0.0)
   {
-    v11 = [a3 view];
-    v12 = [v11 traitCollection];
-    v13 = [v12 forceTouchCapability];
+    view = [touch view];
+    traitCollection = [view traitCollection];
+    forceTouchCapability = [traitCollection forceTouchCapability];
 
-    if (v13 != 2)
+    if (forceTouchCapability != 2)
     {
       return 0;
     }
@@ -241,20 +241,20 @@
 
   v15.receiver = self;
   v15.super_class = UITouchForceGestureRecognizer;
-  return [(UIGestureRecognizer *)&v15 _shouldReceiveTouch:a3 forEvent:a4 recognizerView:a5];
+  return [(UIGestureRecognizer *)&v15 _shouldReceiveTouch:touch forEvent:event recognizerView:view];
 }
 
-- (void)_evaluateTouches:(id)a3 withEvent:(id)a4
+- (void)_evaluateTouches:(id)touches withEvent:(id)event
 {
   v23 = *MEMORY[0x1E69E9840];
-  if ([a3 count])
+  if ([touches count])
   {
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v7 = a3;
-    v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    touchesCopy = touches;
+    v8 = [touchesCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v8)
     {
       v9 = v8;
@@ -266,14 +266,14 @@
         {
           if (*v19 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(touchesCopy);
           }
 
           [*(*(&v18 + 1) + 8 * i) force];
           v11 = v11 + v13;
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v9 = [touchesCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v9);
@@ -284,7 +284,7 @@
       v11 = 0.0;
     }
 
-    v14 = v11 / [v7 count];
+    v14 = v11 / [touchesCopy count];
   }
 
   else
@@ -292,78 +292,78 @@
     v14 = 0.0;
   }
 
-  self->_currentCentroidOfTouches.x = _CentroidOfTouches(a3, 0);
+  self->_currentCentroidOfTouches.x = _CentroidOfTouches(touches, 0);
   self->_currentCentroidOfTouches.y = v15;
   self->_currentTouchForce = v14;
-  v16 = [a4 allTouches];
-  self->_eventTouchCount = [v16 count];
+  allTouches = [event allTouches];
+  self->_eventTouchCount = [allTouches count];
 
-  v17 = [a3 anyObject];
-  [v17 timestamp];
+  anyObject = [touches anyObject];
+  [anyObject timestamp];
   [UITouchForceGestureRecognizer _evaluateAutomaticTouchForceForTimeInterval:"_evaluateAutomaticTouchForceForTimeInterval:actualTouchForce:" actualTouchForce:?];
   [UITouchForceGestureRecognizer _evaluateWithTouchForce:"_evaluateWithTouchForce:centroidAtLocation:" centroidAtLocation:?];
 }
 
-- (void)_evaluateWithTouchForce:(double)a3 centroidAtLocation:(CGPoint)a4
+- (void)_evaluateWithTouchForce:(double)force centroidAtLocation:(CGPoint)location
 {
-  if ([(UITouchForceGestureRecognizer *)self _validateHysteresis:a3])
+  if ([(UITouchForceGestureRecognizer *)self _validateHysteresis:force])
   {
-    [(UITouchForceGestureRecognizer *)self _updateTouchForce:a3];
+    [(UITouchForceGestureRecognizer *)self _updateTouchForce:force];
 
     [(UITouchForceGestureRecognizer *)self _endIfNeeded:1];
   }
 
   else
   {
-    v6 = [(UIGestureRecognizer *)self state];
-    if ((v6 - 3) < 3)
+    state = [(UIGestureRecognizer *)self state];
+    if ((state - 3) < 3)
     {
-      v10 = 0.0;
-      v9 = self;
+      forceCopy = 0.0;
+      selfCopy4 = self;
     }
 
     else
     {
-      if ((v6 - 1) >= 2)
+      if ((state - 1) >= 2)
       {
-        if (v6 || self->_minimumRequiredTouchForce > a3)
+        if (state || self->_minimumRequiredTouchForce > force)
         {
           return;
         }
 
-        v7 = self;
+        selfCopy3 = self;
         v8 = 1;
       }
 
       else
       {
-        v7 = self;
+        selfCopy3 = self;
         v8 = 2;
       }
 
-      [(UIGestureRecognizer *)v7 setState:v8];
-      v9 = self;
-      v10 = a3;
+      [(UIGestureRecognizer *)selfCopy3 setState:v8];
+      selfCopy4 = self;
+      forceCopy = force;
     }
 
-    [(UITouchForceGestureRecognizer *)v9 _updateTouchForce:v10];
+    [(UITouchForceGestureRecognizer *)selfCopy4 _updateTouchForce:forceCopy];
   }
 }
 
-- (void)_endIfNeeded:(BOOL)a3
+- (void)_endIfNeeded:(BOOL)needed
 {
-  v3 = a3;
-  v5 = [(UIGestureRecognizer *)self state];
-  if ((v5 - 3) < 3)
+  neededCopy = needed;
+  state = [(UIGestureRecognizer *)self state];
+  if ((state - 3) < 3)
   {
 LABEL_7:
     [(UITouchForceGestureRecognizer *)self _updateTouchForce:0.0];
     goto LABEL_8;
   }
 
-  if ((v5 - 1) < 2)
+  if ((state - 1) < 2)
   {
-    if (v3)
+    if (neededCopy)
     {
       v6 = 4;
     }
@@ -377,7 +377,7 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  if (v5 == UIGestureRecognizerStatePossible)
+  if (state == UIGestureRecognizerStatePossible)
   {
     [(UIGestureRecognizer *)self setState:5];
   }
@@ -387,11 +387,11 @@ LABEL_8:
   [(UITouchForceGestureRecognizer *)self _endContinuousEvaluation];
 }
 
-- (void)_updateTouchForce:(double)a3
+- (void)_updateTouchForce:(double)force
 {
   [(UITouchForceGestureRecognizer *)self setTouchForce:?];
   v5 = 0.0;
-  [(_UIVelocityIntegrator *)self->_velocityIntegrator addSample:0.0, a3];
+  [(_UIVelocityIntegrator *)self->_velocityIntegrator addSample:0.0, force];
   if ([(_UIVelocityIntegrator *)self->_velocityIntegrator hasVelocity])
   {
     [(_UIVelocityIntegrator *)self->_velocityIntegrator velocity];
@@ -429,13 +429,13 @@ LABEL_8:
 
 - (BOOL)_hasExceededMaximumNumberOfTouches
 {
-  v3 = [(UITouchForceGestureRecognizer *)self maximumNumberOfTouches];
-  if (v3)
+  maximumNumberOfTouches = [(UITouchForceGestureRecognizer *)self maximumNumberOfTouches];
+  if (maximumNumberOfTouches)
   {
-    LOBYTE(v3) = self->_eventTouchCount > v3;
+    LOBYTE(maximumNumberOfTouches) = self->_eventTouchCount > maximumNumberOfTouches;
   }
 
-  return v3;
+  return maximumNumberOfTouches;
 }
 
 - (BOOL)_validateHysteresis
@@ -448,28 +448,28 @@ LABEL_8:
   return [(UITouchForceGestureRecognizer *)self _hasExceededMaximumNumberOfTouches];
 }
 
-- (void)_beginForContinuousEvaluationForTouches:(id)a3
+- (void)_beginForContinuousEvaluationForTouches:(id)touches
 {
   continuousEvaluationDisplayLink = self->_continuousEvaluationDisplayLink;
   if (!continuousEvaluationDisplayLink)
   {
-    v5 = [a3 anyObject];
-    v6 = [v5 view];
-    v7 = [v6 window];
-    v8 = [v7 screen];
+    anyObject = [touches anyObject];
+    view = [anyObject view];
+    window = [view window];
+    screen = [window screen];
 
-    if (!v8)
+    if (!screen)
     {
-      v8 = [objc_opt_self() mainScreen];
+      screen = [objc_opt_self() mainScreen];
     }
 
-    v9 = [v8 displayLinkWithTarget:self selector:sel__updateForContinuousEvaluation_];
+    v9 = [screen displayLinkWithTarget:self selector:sel__updateForContinuousEvaluation_];
     v10 = self->_continuousEvaluationDisplayLink;
     self->_continuousEvaluationDisplayLink = v9;
 
     v11 = self->_continuousEvaluationDisplayLink;
-    v12 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    [(CADisplayLink *)v11 addToRunLoop:v12 forMode:*MEMORY[0x1E695DA28]];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+    [(CADisplayLink *)v11 addToRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
 
     continuousEvaluationDisplayLink = self->_continuousEvaluationDisplayLink;
   }
@@ -477,26 +477,26 @@ LABEL_8:
   [(CADisplayLink *)continuousEvaluationDisplayLink setPaused:0];
 }
 
-- (void)_updateForContinuousEvaluation:(id)a3
+- (void)_updateForContinuousEvaluation:(id)evaluation
 {
   [(UITouchForceGestureRecognizer *)self _evaluateAutomaticTouchForceForTimeInterval:CACurrentMediaTime() actualTouchForce:self->_currentTouchForce];
 
   [UITouchForceGestureRecognizer _evaluateWithTouchForce:"_evaluateWithTouchForce:centroidAtLocation:" centroidAtLocation:?];
 }
 
-- (double)_evaluateAutomaticTouchForceForTimeInterval:(double)a3 actualTouchForce:(double)a4
+- (double)_evaluateAutomaticTouchForceForTimeInterval:(double)interval actualTouchForce:(double)force
 {
   automaticTouchForce = self->_automaticTouchForce;
   if (automaticTouchForce > 0.0)
   {
-    v5 = automaticTouchForce * ((a3 - self->_touchesBeganTimestamp) / self->_automaticTouchForceDuration);
-    if (v5 >= a4)
+    v5 = automaticTouchForce * ((interval - self->_touchesBeganTimestamp) / self->_automaticTouchForceDuration);
+    if (v5 >= force)
     {
       return v5;
     }
   }
 
-  return a4;
+  return force;
 }
 
 - (double)touchDuration

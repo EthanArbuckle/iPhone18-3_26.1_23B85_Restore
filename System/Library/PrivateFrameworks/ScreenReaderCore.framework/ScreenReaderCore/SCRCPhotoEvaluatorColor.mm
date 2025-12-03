@@ -1,35 +1,35 @@
 @interface SCRCPhotoEvaluatorColor
-+ (id)detect:(id)a3 inRect:(CGRect)a4;
++ (id)detect:(id)detect inRect:(CGRect)rect;
 @end
 
 @implementation SCRCPhotoEvaluatorColor
 
-+ (id)detect:(id)a3 inRect:(CGRect)a4
++ (id)detect:(id)detect inRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  detectCopy = detect;
   v36.origin.x = x;
   v36.origin.y = y;
   v36.size.width = width;
   v36.size.height = height;
   if (CGRectIsEmpty(v36) || (v37.origin.x = x, v37.origin.y = y, v37.size.width = width, v37.size.height = height, CGRectIsNull(v37)) || (v38.origin.x = x, v38.origin.y = y, v38.size.width = width, v38.size.height = height, CGRectIsInfinite(v38)))
   {
-    v10 = [a1 detect:v9];
+    v10 = [self detect:detectCopy];
   }
 
   else
   {
-    v13 = [v9 data];
-    v14 = [v9 bytesPerPixel];
-    v15 = [v9 width];
-    v16 = [v9 height];
+    data = [detectCopy data];
+    bytesPerPixel = [detectCopy bytesPerPixel];
+    width = [detectCopy width];
+    height = [detectCopy height];
     v17 = width;
     v18 = height;
     v19 = y;
-    v20 = v15 - width;
+    v20 = width - width;
     if (v20 >= x)
     {
       v20 = x;
@@ -45,8 +45,8 @@
       v21 = 0;
     }
 
-    v22 = v16 - v18;
-    if (v16 - v18 >= v19)
+    v22 = height - v18;
+    if (height - v18 >= v19)
     {
       v22 = y;
     }
@@ -74,7 +74,7 @@
       v25 = 0;
       v26 = 0;
       v27 = 0;
-      v28 = v13 + v14 * (v21 + v23 * v15) + 2;
+      v28 = data + bytesPerPixel * (v21 + v23 * width) + 2;
       do
       {
         v29 = height;
@@ -86,7 +86,7 @@
             v25 += *(v30 - 2);
             v27 += *(v30 - 1);
             v26 += *v30;
-            v30 += v15 * v14;
+            v30 += width * bytesPerPixel;
             --v29;
           }
 
@@ -94,7 +94,7 @@
         }
 
         ++v24;
-        v28 += v14;
+        v28 += bytesPerPixel;
       }
 
       while (v24 != v17);

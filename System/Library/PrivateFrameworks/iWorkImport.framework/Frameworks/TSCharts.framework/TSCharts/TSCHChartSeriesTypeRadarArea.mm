@@ -3,8 +3,8 @@
 - (id)elementBuilder;
 - (id)g_genericToSpecificPropertyMapRadarArea;
 - (id)genericToSpecificPropertyMap;
-- (id)legendFillForSeries:(id)a3;
-- (id)p_axisForSeries:(id)a3 isCategory:(BOOL)a4;
+- (id)legendFillForSeries:(id)series;
+- (id)p_axisForSeries:(id)series isCategory:(BOOL)category;
 @end
 
 @implementation TSCHChartSeriesTypeRadarArea
@@ -36,18 +36,18 @@
   return v3;
 }
 
-- (id)p_axisForSeries:(id)a3 isCategory:(BOOL)a4
+- (id)p_axisForSeries:(id)series isCategory:(BOOL)category
 {
-  v4 = a4;
-  v5 = a3;
-  v10 = objc_msgSend_model(v5, v6, v7, v8, v9);
-  v15 = objc_msgSend_axisIDForAxisType_(v5, v11, v12, v13, v14, 5);
+  categoryCopy = category;
+  seriesCopy = series;
+  v10 = objc_msgSend_model(seriesCopy, v6, v7, v8, v9);
+  v15 = objc_msgSend_axisIDForAxisType_(seriesCopy, v11, v12, v13, v14, 5);
   v20 = objc_msgSend_axisForID_(v10, v16, v17, v18, v19, v15);
 
-  v25 = objc_msgSend_axisIDForAxisType_(v5, v21, v22, v23, v24, 6);
+  v25 = objc_msgSend_axisIDForAxisType_(seriesCopy, v21, v22, v23, v24, 6);
   v30 = objc_msgSend_axisForID_(v10, v26, v27, v28, v29, v25);
 
-  if (objc_msgSend_isCategory(v30, v31, v32, v33, v34) != v4)
+  if (objc_msgSend_isCategory(v30, v31, v32, v33, v34) != categoryCopy)
   {
     v35 = v20;
   }
@@ -62,9 +62,9 @@
   return v35;
 }
 
-- (id)legendFillForSeries:(id)a3
+- (id)legendFillForSeries:(id)series
 {
-  v6 = objc_msgSend_fillForSeries(a3, a2, v3, v4, v5);
+  v6 = objc_msgSend_fillForSeries(series, a2, v3, v4, v5);
 
   return v6;
 }

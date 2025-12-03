@@ -7,9 +7,9 @@
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD319750();
-  v3.receiver = v2;
+  v3.receiver = selfCopy;
   v3.super_class = type metadata accessor for CarKeyProvisioningUICoordinator();
   [(CarKeyProvisioningUICoordinator *)&v3 dealloc];
 }

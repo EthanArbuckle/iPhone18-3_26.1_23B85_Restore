@@ -1,53 +1,53 @@
 @interface EKLocationSearchModel
-+ (id)URLsFromSource:(id)a3;
++ (id)URLsFromSource:(id)source;
 + (id)_dataDetector;
-+ (id)_linksInSource:(id)a3;
-+ (id)mapItemForMapKitHandle:(id)a3;
++ (id)_linksInSource:(id)source;
++ (id)mapItemForMapKitHandle:(id)handle;
 + (void)initialize;
-- (BOOL)removeRecentLocation:(id)a3;
+- (BOOL)removeRecentLocation:(id)location;
 - (BOOL)resultsPending;
-- (EKLocationSearchModel)initWithEventStore:(id)a3;
+- (EKLocationSearchModel)initWithEventStore:(id)store;
 - (EKLocationSearchModelDelegate)delegate;
-- (id)_availabilityRequestForConferenceRooms:(id)a3 eventID:(id)a4 source:(id)a5 dateRange:(id)a6 resultsBlock:(id)a7 completionBlock:(id)a8;
-- (id)splitEventLocations:(id)a3;
+- (id)_availabilityRequestForConferenceRooms:(id)rooms eventID:(id)d source:(id)source dateRange:(id)range resultsBlock:(id)block completionBlock:(id)completionBlock;
+- (id)splitEventLocations:(id)locations;
 - (unint64_t)dedupeResults;
-- (void)_addDiscoveredConferenceRooms:(id)a3;
-- (void)_addLocationToRecents:(id)a3 addressString:(id)a4 mapItem:(id)a5;
-- (void)_decrementPendingOperationsCountForDomain:(id)a3;
-- (void)_handleAvailabilityResults:(id)a3 forOperation:(id)a4;
-- (void)_incrementPendingOperationsCountForDomain:(id)a3;
-- (void)_processDirectorySearchResultSet:(id)a3 forOperation:(id)a4;
-- (void)_updateAllPossibleVirtualConferenceResultsWithRoomTypes:(id)a3;
-- (void)_updateContactsSearchWithResults:(id)a3 forToken:(id)a4;
-- (void)_updateMapURL:(id)a3;
-- (void)_updateVirtualConferenceCustomOptions:(id)a3;
-- (void)_updateVirtualConferenceOptions:(id)a3;
-- (void)addConferenceRoomToRecents:(id)a3 fromSource:(id)a4;
-- (void)beginSearchForTerm:(id)a3;
+- (void)_addDiscoveredConferenceRooms:(id)rooms;
+- (void)_addLocationToRecents:(id)recents addressString:(id)string mapItem:(id)item;
+- (void)_decrementPendingOperationsCountForDomain:(id)domain;
+- (void)_handleAvailabilityResults:(id)results forOperation:(id)operation;
+- (void)_incrementPendingOperationsCountForDomain:(id)domain;
+- (void)_processDirectorySearchResultSet:(id)set forOperation:(id)operation;
+- (void)_updateAllPossibleVirtualConferenceResultsWithRoomTypes:(id)types;
+- (void)_updateContactsSearchWithResults:(id)results forToken:(id)token;
+- (void)_updateMapURL:(id)l;
+- (void)_updateVirtualConferenceCustomOptions:(id)options;
+- (void)_updateVirtualConferenceOptions:(id)options;
+- (void)addConferenceRoomToRecents:(id)recents fromSource:(id)source;
+- (void)beginSearchForTerm:(id)term;
 - (void)cancelSearch;
-- (void)completerDidFail:(id)a3 error:(id)a4;
-- (void)completerDidUpdateResults:(id)a3 finished:(BOOL)a4;
+- (void)completerDidFail:(id)fail error:(id)error;
+- (void)completerDidUpdateResults:(id)results finished:(BOOL)finished;
 - (void)dealloc;
 - (void)getCurrentLocation;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
 - (void)resetConferenceRoomSearchResults;
 - (void)resetContactsSearchResults;
 - (void)resetEventsSearchResults;
 - (void)resetRecentsSearchResults;
-- (void)resetSearchResults:(BOOL)a3;
-- (void)searchConferenceRooms:(id)a3;
-- (void)searchFrequentLocations:(id)a3;
+- (void)resetSearchResults:(BOOL)results;
+- (void)searchConferenceRooms:(id)rooms;
+- (void)searchFrequentLocations:(id)locations;
 - (void)selectCurrentLocation;
-- (void)selectLocation:(id)a3;
-- (void)selectMapSearchCompletion:(id)a3;
-- (void)selectVirtualConferenceRoomType:(id)a3;
+- (void)selectLocation:(id)location;
+- (void)selectMapSearchCompletion:(id)completion;
+- (void)selectVirtualConferenceRoomType:(id)type;
 - (void)stopUpdatingLocation;
-- (void)updateConferenceRoomAvailability:(id)a3 duringEvent:(id)a4 completionBlock:(id)a5;
-- (void)updateContacts:(id)a3;
-- (void)updateEventLocations:(id)a3;
-- (void)updateRecents:(id)a3;
-- (void)updateVirtualConferenceRoomOptions:(id)a3;
+- (void)updateConferenceRoomAvailability:(id)availability duringEvent:(id)event completionBlock:(id)block;
+- (void)updateContacts:(id)contacts;
+- (void)updateEventLocations:(id)locations;
+- (void)updateRecents:(id)recents;
+- (void)updateVirtualConferenceRoomOptions:(id)options;
 @end
 
 @implementation EKLocationSearchModel
@@ -67,16 +67,16 @@ uint64_t __35__EKLocationSearchModel_initialize__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (EKLocationSearchModel)initWithEventStore:(id)a3
+- (EKLocationSearchModel)initWithEventStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v39.receiver = self;
   v39.super_class = EKLocationSearchModel;
   v6 = [(EKLocationSearchModel *)&v39 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_eventStore, a3);
+    objc_storeStrong(&v6->_eventStore, store);
     v8 = objc_alloc_init(EKWeakLinkClass());
     [v8 setIncludeIncludeManagedAppleIDs:1];
     v9 = [objc_alloc(EKWeakLinkClass()) initWithConfiguration:v8];
@@ -84,9 +84,9 @@ uint64_t __35__EKLocationSearchModel_initialize__block_invoke()
     v7->_contactStore = v9;
 
     v7->_supportedSearchTypes = 2047;
-    v11 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
     whitespaceAndNewlineCharacterSet = v7->_whitespaceAndNewlineCharacterSet;
-    v7->_whitespaceAndNewlineCharacterSet = v11;
+    v7->_whitespaceAndNewlineCharacterSet = whitespaceAndNewlineCharacterSet;
 
     v13 = dispatch_queue_create("com.apple.mobilecal.ConferenceRoomProcessing", 0);
     conferenceRoomProcessingQueue = v7->_conferenceRoomProcessingQueue;
@@ -104,9 +104,9 @@ uint64_t __35__EKLocationSearchModel_initialize__block_invoke()
     conferenceRoomAddressesToConferenceRooms = v7->_conferenceRoomAddressesToConferenceRooms;
     v7->_conferenceRoomAddressesToConferenceRooms = v19;
 
-    v21 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     recentsSearchResults = v7->_recentsSearchResults;
-    v7->_recentsSearchResults = v21;
+    v7->_recentsSearchResults = array;
 
     v23 = EKWeakLinkClass();
     v24 = EKWeakLinkSymbol();
@@ -192,20 +192,20 @@ uint64_t __35__EKLocationSearchModel_initialize__block_invoke()
   return v3;
 }
 
-- (void)_incrementPendingOperationsCountForDomain:(id)a3
+- (void)_incrementPendingOperationsCountForDomain:(id)domain
 {
-  v4 = a3;
+  domainCopy = domain;
   os_unfair_lock_lock(&self->_pendingOperationsCountsLock);
-  [(NSCountedSet *)self->_pendingOperationsCounts addObject:v4];
+  [(NSCountedSet *)self->_pendingOperationsCounts addObject:domainCopy];
 
   os_unfair_lock_unlock(&self->_pendingOperationsCountsLock);
 }
 
-- (void)_decrementPendingOperationsCountForDomain:(id)a3
+- (void)_decrementPendingOperationsCountForDomain:(id)domain
 {
-  v4 = a3;
+  domainCopy = domain;
   os_unfair_lock_lock(&self->_pendingOperationsCountsLock);
-  [(NSCountedSet *)self->_pendingOperationsCounts removeObject:v4];
+  [(NSCountedSet *)self->_pendingOperationsCounts removeObject:domainCopy];
 
   os_unfair_lock_unlock(&self->_pendingOperationsCountsLock);
 }
@@ -233,8 +233,8 @@ uint64_t __35__EKLocationSearchModel_initialize__block_invoke()
 - (void)stopUpdatingLocation
 {
   [(EKLocationSearchModel *)self _decrementPendingOperationsCountForDomain:@"OperationDomainCurrentLocation"];
-  v3 = [(EKLocationSearchModel *)self delegate];
-  [v3 locationSearchModel:self updatedSearchTypes:1];
+  delegate = [(EKLocationSearchModel *)self delegate];
+  [delegate locationSearchModel:self updatedSearchTypes:1];
 
   [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel_stopUpdatingLocation object:0];
   [(CLLocationManager *)self->_locationManager stopUpdatingLocation];
@@ -249,15 +249,15 @@ uint64_t __35__EKLocationSearchModel_initialize__block_invoke()
   }
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
   v10 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  errorCopy = error;
   v6 = +[EKLogSubsystem locationSearch];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
     v8 = 138412290;
-    v9 = v5;
+    v9 = errorCopy;
     _os_log_impl(&dword_1A805E000, v6, OS_LOG_TYPE_ERROR, "Updating current location failed with error: %@", &v8, 0xCu);
   }
 
@@ -265,10 +265,10 @@ uint64_t __35__EKLocationSearchModel_initialize__block_invoke()
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v6 = a4;
-  v7 = [a3 _limitsPrecision];
+  locationsCopy = locations;
+  _limitsPrecision = [manager _limitsPrecision];
   v8 = +[EKLogSubsystem locationSearch];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -276,16 +276,16 @@ uint64_t __35__EKLocationSearchModel_initialize__block_invoke()
     _os_log_impl(&dword_1A805E000, v8, OS_LOG_TYPE_INFO, "Found current location, shifting...", buf, 2u);
   }
 
-  v9 = [v6 lastObject];
+  lastObject = [locationsCopy lastObject];
 
   v10 = objc_alloc_init(EKWeakLinkClass());
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __60__EKLocationSearchModel_locationManager_didUpdateLocations___block_invoke;
   v11[3] = &unk_1E77FF7C0;
-  v12 = v7;
+  v12 = _limitsPrecision;
   v11[4] = self;
-  [v10 shiftLocation:v9 withCompletionHandler:v11];
+  [v10 shiftLocation:lastObject withCompletionHandler:v11];
   [(EKLocationSearchModel *)self stopUpdatingLocation];
 }
 
@@ -396,9 +396,9 @@ void __60__EKLocationSearchModel_locationManager_didUpdateLocations___block_invo
   [(NSMutableArray *)recentsSearchResults removeAllObjects];
 }
 
-- (void)resetSearchResults:(BOOL)a3
+- (void)resetSearchResults:(BOOL)results
 {
-  v3 = a3;
+  resultsCopy = results;
   v5 = +[EKLogSubsystem locationSearch];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -406,7 +406,7 @@ void __60__EKLocationSearchModel_locationManager_didUpdateLocations___block_invo
     _os_log_impl(&dword_1A805E000, v5, OS_LOG_TYPE_INFO, "Resetting location search results", v13, 2u);
   }
 
-  if (v3)
+  if (resultsCopy)
   {
     [(CLGeocoder *)self->_geocoder cancelGeocode];
     [(MKLocalSearchCompleter *)self->_completer cancel];
@@ -434,10 +434,10 @@ void __60__EKLocationSearchModel_locationManager_didUpdateLocations___block_invo
   virtualConferenceCustomSearchResults = self->_virtualConferenceCustomSearchResults;
   self->_virtualConferenceCustomSearchResults = 0;
 
-  if (v3)
+  if (resultsCopy)
   {
-    v12 = [(EKLocationSearchModel *)self delegate];
-    [v12 locationSearchModel:self updatedSearchTypes:2047];
+    delegate = [(EKLocationSearchModel *)self delegate];
+    [delegate locationSearchModel:self updatedSearchTypes:2047];
   }
 }
 
@@ -452,10 +452,10 @@ void __60__EKLocationSearchModel_locationManager_didUpdateLocations___block_invo
   }
 }
 
-- (void)beginSearchForTerm:(id)a3
+- (void)beginSearchForTerm:(id)term
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  termCopy = term;
   [(EKLocationSearchModel *)self _incrementPendingOperationsCountForDomain:@"OperationDomainSearch"];
   v5 = ICSRedactString();
   v6 = +[EKLogSubsystem locationSearch];
@@ -482,8 +482,8 @@ void __60__EKLocationSearchModel_locationManager_didUpdateLocations___block_invo
       currentLocation = self->_currentLocation;
       if (currentLocation)
       {
-        v11 = [(EKStructuredLocation *)currentLocation geoLocation];
-        [(MKLocalSearchCompleter *)self->_completer setDeviceLocation:v11];
+        geoLocation = [(EKStructuredLocation *)currentLocation geoLocation];
+        [(MKLocalSearchCompleter *)self->_completer setDeviceLocation:geoLocation];
       }
 
       else if (self->_currentImpreciseLocation)
@@ -501,7 +501,7 @@ void __60__EKLocationSearchModel_locationManager_didUpdateLocations___block_invo
     }
 
     [(EKLocationSearchModel *)self _incrementPendingOperationsCountForDomain:@"OperationDomainMapCompletions"];
-    [(MKLocalSearchCompleter *)self->_completer setQueryFragment:v4];
+    [(MKLocalSearchCompleter *)self->_completer setQueryFragment:termCopy];
     v13 = dispatch_time(0, 5000000000);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -535,7 +535,7 @@ LABEL_5:
     _os_log_impl(&dword_1A805E000, v14, OS_LOG_TYPE_INFO, "[%{public}@] >>>> MapKit from URL", buf, 0xCu);
   }
 
-  [(EKLocationSearchModel *)self _updateMapURL:v4];
+  [(EKLocationSearchModel *)self _updateMapURL:termCopy];
   supportedSearchTypes = self->_supportedSearchTypes;
   if ((supportedSearchTypes & 8) == 0)
   {
@@ -557,7 +557,7 @@ LABEL_21:
     _os_log_impl(&dword_1A805E000, v15, OS_LOG_TYPE_INFO, "[%{public}@] >>>> Contacts", buf, 0xCu);
   }
 
-  [(EKLocationSearchModel *)self updateContacts:v4];
+  [(EKLocationSearchModel *)self updateContacts:termCopy];
   supportedSearchTypes = self->_supportedSearchTypes;
   if ((supportedSearchTypes & 0x10) == 0)
   {
@@ -579,7 +579,7 @@ LABEL_24:
     _os_log_impl(&dword_1A805E000, v16, OS_LOG_TYPE_INFO, "[%{public}@] >>>> Recents", buf, 0xCu);
   }
 
-  [(EKLocationSearchModel *)self updateRecents:v4];
+  [(EKLocationSearchModel *)self updateRecents:termCopy];
   supportedSearchTypes = self->_supportedSearchTypes;
   if ((supportedSearchTypes & 0x20) == 0)
   {
@@ -601,7 +601,7 @@ LABEL_27:
     _os_log_impl(&dword_1A805E000, v17, OS_LOG_TYPE_INFO, "[%{public}@] >>>> Frequents", buf, 0xCu);
   }
 
-  [(EKLocationSearchModel *)self searchFrequentLocations:v4];
+  [(EKLocationSearchModel *)self searchFrequentLocations:termCopy];
   supportedSearchTypes = self->_supportedSearchTypes;
   if ((supportedSearchTypes & 0x100) != 0)
   {
@@ -614,7 +614,7 @@ LABEL_30:
       _os_log_impl(&dword_1A805E000, v18, OS_LOG_TYPE_INFO, "[%{public}@] >>>> ConferenceRooms", buf, 0xCu);
     }
 
-    [(EKLocationSearchModel *)self searchConferenceRooms:v4];
+    [(EKLocationSearchModel *)self searchConferenceRooms:termCopy];
     supportedSearchTypes = self->_supportedSearchTypes;
   }
 
@@ -629,7 +629,7 @@ LABEL_33:
       _os_log_impl(&dword_1A805E000, v19, OS_LOG_TYPE_INFO, "[%{public}@] >>>> Events", buf, 0xCu);
     }
 
-    [(EKLocationSearchModel *)self updateEventLocations:v4];
+    [(EKLocationSearchModel *)self updateEventLocations:termCopy];
     supportedSearchTypes = self->_supportedSearchTypes;
   }
 
@@ -643,7 +643,7 @@ LABEL_33:
       _os_log_impl(&dword_1A805E000, v20, OS_LOG_TYPE_INFO, "[%{public}@] >>>> Virtual Conference Rooms", buf, 0xCu);
     }
 
-    [(EKLocationSearchModel *)self updateVirtualConferenceRoomOptions:v4];
+    [(EKLocationSearchModel *)self updateVirtualConferenceRoomOptions:termCopy];
     supportedSearchTypes = self->_supportedSearchTypes;
   }
 
@@ -657,7 +657,7 @@ LABEL_33:
       _os_log_impl(&dword_1A805E000, v21, OS_LOG_TYPE_INFO, "[%{public}@] >>>> Virtual Conference Custom", buf, 0xCu);
     }
 
-    [(EKLocationSearchModel *)self _updateVirtualConferenceCustomOptions:v4];
+    [(EKLocationSearchModel *)self _updateVirtualConferenceCustomOptions:termCopy];
   }
 
   [(EKLocationSearchModel *)self _decrementPendingOperationsCountForDomain:@"OperationDomainSearch"];
@@ -694,8 +694,8 @@ void __44__EKLocationSearchModel_beginSearchForTerm___block_invoke(uint64_t a1)
           objc_enumerationMutation(v3);
         }
 
-        v9 = [*(*(&v43 + 1) + 8 * i) recent];
-        v10 = [EKRecents locationForRecent:v9];
+        recent = [*(*(&v43 + 1) + 8 * i) recent];
+        v10 = [EKRecents locationForRecent:recent];
 
         frequentsSearchResults = self->_frequentsSearchResults;
         if (frequentsSearchResults && [(NSMutableArray *)frequentsSearchResults count])
@@ -840,24 +840,24 @@ uint64_t __38__EKLocationSearchModel_dedupeResults__block_invoke_3(uint64_t a1, 
   return v4;
 }
 
-- (void)completerDidUpdateResults:(id)a3 finished:(BOOL)a4
+- (void)completerDidUpdateResults:(id)results finished:(BOOL)finished
 {
   v35 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  resultsCopy = results;
   [(EKLocationSearchModel *)self _decrementPendingOperationsCountForDomain:@"OperationDomainMapCompletions"];
-  v6 = [v5 queryFragment];
+  queryFragment = [resultsCopy queryFragment];
   v7 = ICSRedactString();
 
-  v8 = [v5 resultsAreCurrent];
+  resultsAreCurrent = [resultsCopy resultsAreCurrent];
   v9 = +[EKLogSubsystem locationSearch];
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_INFO);
-  if (v8)
+  if (resultsAreCurrent)
   {
     if (v10)
     {
       v11 = MEMORY[0x1E696AD98];
-      v12 = [v5 results];
-      v13 = [v11 numberWithUnsignedInteger:{objc_msgSend(v12, "count")}];
+      results = [resultsCopy results];
+      v13 = [v11 numberWithUnsignedInteger:{objc_msgSend(results, "count")}];
       *buf = 138543618;
       v32 = v7;
       v33 = 2114;
@@ -865,12 +865,12 @@ uint64_t __38__EKLocationSearchModel_dedupeResults__block_invoke_3(uint64_t a1, 
       _os_log_impl(&dword_1A805E000, v9, OS_LOG_TYPE_INFO, "[%{public}@] <<<< MapKit %{public}@ results", buf, 0x16u);
     }
 
-    v14 = [v5 results];
-    v9 = v14;
-    if (v14)
+    results2 = [resultsCopy results];
+    v9 = results2;
+    if (results2)
     {
       v25 = v7;
-      v15 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[NSObject count](v14, "count")}];
+      v15 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[NSObject count](results2, "count")}];
       v26 = 0u;
       v27 = 0u;
       v28 = 0u;
@@ -911,8 +911,8 @@ uint64_t __38__EKLocationSearchModel_dedupeResults__block_invoke_3(uint64_t a1, 
     mapCompletionSearchResults = self->_mapCompletionSearchResults;
     self->_mapCompletionSearchResults = v15;
 
-    v23 = [(EKLocationSearchModel *)self delegate];
-    [v23 locationSearchModel:self updatedSearchTypes:4];
+    delegate = [(EKLocationSearchModel *)self delegate];
+    [delegate locationSearchModel:self updatedSearchTypes:4];
   }
 
   else if (v10)
@@ -925,16 +925,16 @@ uint64_t __38__EKLocationSearchModel_dedupeResults__block_invoke_3(uint64_t a1, 
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)completerDidFail:(id)a3 error:(id)a4
+- (void)completerDidFail:(id)fail error:(id)error
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  errorCopy = error;
+  failCopy = fail;
   [(EKLocationSearchModel *)self _decrementPendingOperationsCountForDomain:@"OperationDomainMapCompletions"];
-  v8 = [(EKLocationSearchModel *)self delegate];
-  [v8 locationSearchModel:self updatedSearchTypes:4];
+  delegate = [(EKLocationSearchModel *)self delegate];
+  [delegate locationSearchModel:self updatedSearchTypes:4];
 
-  v9 = [v7 queryFragment];
+  queryFragment = [failCopy queryFragment];
 
   v10 = ICSRedactString();
 
@@ -944,16 +944,16 @@ uint64_t __38__EKLocationSearchModel_dedupeResults__block_invoke_3(uint64_t a1, 
     v13 = 138543618;
     v14 = v10;
     v15 = 2112;
-    v16 = v6;
+    v16 = errorCopy;
     _os_log_impl(&dword_1A805E000, v11, OS_LOG_TYPE_ERROR, "[%{public}@] MapKit failed with error: %@", &v13, 0x16u);
   }
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateContacts:(id)a3
+- (void)updateContacts:(id)contacts
 {
-  v4 = a3;
+  contactsCopy = contacts;
   [(EKLocationSearchModel *)self _incrementPendingOperationsCountForDomain:@"OperationDomainContacts"];
   v18 = ICSRedactString();
   [(EKLocationSearchModel *)self resetContactsSearchResults];
@@ -961,14 +961,14 @@ uint64_t __38__EKLocationSearchModel_dedupeResults__block_invoke_3(uint64_t a1, 
   contactsSearchResults = self->_contactsSearchResults;
   self->_contactsSearchResults = v5;
 
-  v7 = [(EKLocationSearchModel *)self delegate];
-  [v7 locationSearchModel:self updatedSearchTypes:8];
+  delegate = [(EKLocationSearchModel *)self delegate];
+  [delegate locationSearchModel:self updatedSearchTypes:8];
 
   v8 = EKDescriptorForRequiredKeysForLabeledDisplayString();
   v9 = [v8 arrayByAddingObject:*MEMORY[0x1E695C360]];
 
   v10 = [objc_alloc(EKWeakLinkClass()) initWithKeysToFetch:v9];
-  v11 = [MEMORY[0x1E695CD58] predicateForContactsMatchingFullTextSearch:v4 containerIdentifiers:0 groupIdentifiers:0];
+  v11 = [MEMORY[0x1E695CD58] predicateForContactsMatchingFullTextSearch:contactsCopy containerIdentifiers:0 groupIdentifiers:0];
   [v10 setPredicate:v11];
 
   v42[0] = 0;
@@ -1014,7 +1014,7 @@ uint64_t __38__EKLocationSearchModel_dedupeResults__block_invoke_3(uint64_t a1, 
   v19[3] = &unk_1E77FF8D8;
   v14 = v26;
   v20 = v14;
-  v21 = self;
+  selfCopy = self;
   v23 = v42;
   v24 = &v36;
   v15 = v12;
@@ -1202,24 +1202,24 @@ void __40__EKLocationSearchModel_updateContacts___block_invoke_2_139(uint64_t a1
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateContactsSearchWithResults:(id)a3 forToken:(id)a4
+- (void)_updateContactsSearchWithResults:(id)results forToken:(id)token
 {
-  if (self->_contactsSearchToken == a4)
+  if (self->_contactsSearchToken == token)
   {
-    [(NSMutableArray *)self->_contactsSearchResults addObjectsFromArray:a3];
-    v6 = [(EKLocationSearchModel *)self delegate];
-    [v6 locationSearchModel:self updatedSearchTypes:8];
+    [(NSMutableArray *)self->_contactsSearchResults addObjectsFromArray:results];
+    delegate = [(EKLocationSearchModel *)self delegate];
+    [delegate locationSearchModel:self updatedSearchTypes:8];
   }
 }
 
-- (void)updateRecents:(id)a3
+- (void)updateRecents:(id)recents
 {
   v37[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  recentsCopy = recents;
   if ((self->_supportedSearchTypes & 0x10) != 0)
   {
     [(EKLocationSearchModel *)self _incrementPendingOperationsCountForDomain:@"OperationDomainRecents"];
-    if (v4)
+    if (recentsCopy)
     {
       v28 = EKWeakLinkStringConstant();
       v27 = EKWeakLinkStringConstant();
@@ -1230,9 +1230,9 @@ void __40__EKLocationSearchModel_updateContacts___block_invoke_2_139(uint64_t a1
       v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v36 count:1];
       v7 = [v5 predicateForKey:v27 inCollection:v6];
       v37[0] = v7;
-      v8 = [v5 predicateForKey:v26 matchingText:v4 comparison:1];
+      v8 = [v5 predicateForKey:v26 matchingText:recentsCopy comparison:1];
       v35[0] = v8;
-      v9 = [v5 predicateForKey:v25 matchingText:v4 comparison:1];
+      v9 = [v5 predicateForKey:v25 matchingText:recentsCopy comparison:1];
       v35[1] = v9;
       v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:2];
       v11 = [v5 predicateSatisfyingAnySubpredicate:v10];
@@ -1268,11 +1268,11 @@ void __40__EKLocationSearchModel_updateContacts___block_invoke_2_139(uint64_t a1
     v19 = objc_alloc_init(v18);
     [v19 setSearchPredicate:v13];
     [v19 setDomains:&unk_1F1B6B200];
-    v20 = [(objc_class *)v18 frecencyComparator];
-    [v19 setComparator:v20];
+    frecencyComparator = [(objc_class *)v18 frecencyComparator];
+    [v19 setComparator:frecencyComparator];
 
     objc_storeStrong(&self->_currentRecentsSearch, v19);
-    v21 = [v17 defaultInstance];
+    defaultInstance = [v17 defaultInstance];
     v22 = self->_recentsQueue;
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
@@ -1281,10 +1281,10 @@ void __40__EKLocationSearchModel_updateContacts___block_invoke_2_139(uint64_t a1
     objc_copyWeak(v33, &buf);
     v23 = v19;
     v30 = v23;
-    v31 = self;
+    selfCopy = self;
     v33[1] = v17;
-    v32 = v4;
-    [v21 performRecentsSearch:v23 queue:v22 completion:v29];
+    v32 = recentsCopy;
+    [defaultInstance performRecentsSearch:v23 queue:v22 completion:v29];
 
     objc_destroyWeak(v33);
     objc_destroyWeak(&buf);
@@ -1599,9 +1599,9 @@ LABEL_11:
   [v3 _decrementPendingOperationsCountForDomain:@"OperationDomainRecents"];
 }
 
-+ (id)mapItemForMapKitHandle:(id)a3
++ (id)mapItemForMapKitHandle:(id)handle
 {
-  if (a3)
+  if (handle)
   {
     v4 = [_mapItemCache objectForKey:?];
   }
@@ -1614,9 +1614,9 @@ LABEL_11:
   return v4;
 }
 
-- (void)searchFrequentLocations:(id)a3
+- (void)searchFrequentLocations:(id)locations
 {
-  v4 = a3;
+  locationsCopy = locations;
   [(EKLocationSearchModel *)self _incrementPendingOperationsCountForDomain:@"OperationDomainFrequents"];
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x1E69E9820];
@@ -1624,7 +1624,7 @@ LABEL_11:
   v6[2] = __49__EKLocationSearchModel_searchFrequentLocations___block_invoke;
   v6[3] = &unk_1E77FF9C8;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = locationsCopy;
   v7 = v5;
   [EKTravelLookupManager estimateGeolocationFromHistoricDevicePositionAtLocation:v5 withCompletionBlock:v6];
 
@@ -1700,18 +1700,18 @@ void __49__EKLocationSearchModel_searchFrequentLocations___block_invoke_2(uint64
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (id)splitEventLocations:(id)a3
+- (id)splitEventLocations:(id)locations
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v23 = [v3 structuredLocationWithoutPrediction];
-  v4 = [v3 preferredLocationWithoutPrediction];
-  v5 = [v4 title];
-  v6 = [v5 componentsSeparatedByString:@" "];;
+  locationsCopy = locations;
+  structuredLocationWithoutPrediction = [locationsCopy structuredLocationWithoutPrediction];
+  preferredLocationWithoutPrediction = [locationsCopy preferredLocationWithoutPrediction];
+  title = [preferredLocationWithoutPrediction title];
+  v6 = [title componentsSeparatedByString:@" "];;
 
   [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "count")}];
-  v22 = v21 = v3;
-  v25 = [v3 attendees];
+  v22 = v21 = locationsCopy;
+  attendees = [locationsCopy attendees];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
@@ -1736,7 +1736,7 @@ void __49__EKLocationSearchModel_searchFrequentLocations___block_invoke_2(uint64
         v27 = 0u;
         v28 = 0u;
         v29 = 0u;
-        v12 = v25;
+        v12 = attendees;
         v13 = [v12 countByEnumeratingWithState:&v26 objects:v34 count:16];
         if (v13)
         {
@@ -1751,8 +1751,8 @@ LABEL_8:
               objc_enumerationMutation(v12);
             }
 
-            v17 = [*(*(&v26 + 1) + 8 * v16) name];
-            v18 = [v17 isEqualToString:v11];
+            name = [*(*(&v26 + 1) + 8 * v16) name];
+            v18 = [name isEqualToString:v11];
 
             if (v18)
             {
@@ -1776,9 +1776,9 @@ LABEL_8:
         {
 LABEL_14:
 
-          if (v23)
+          if (structuredLocationWithoutPrediction)
           {
-            [v23 duplicate];
+            [structuredLocationWithoutPrediction duplicate];
           }
 
           else
@@ -1802,11 +1802,11 @@ LABEL_14:
   return v22;
 }
 
-- (void)updateEventLocations:(id)a3
+- (void)updateEventLocations:(id)locations
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 isEqualToString:&stru_1F1B49D68] & 1) == 0 && self->_eventStore)
+  locationsCopy = locations;
+  v5 = locationsCopy;
+  if (locationsCopy && ([locationsCopy isEqualToString:&stru_1F1B49D68] & 1) == 0 && self->_eventStore)
   {
     [(EKLocationSearchModel *)self _incrementPendingOperationsCountForDomain:@"OperationDomainEvents"];
     v6 = MEMORY[0x1E695DFD8];
@@ -1819,7 +1819,7 @@ LABEL_14:
     v18[2] = __46__EKLocationSearchModel_updateEventLocations___block_invoke;
     v18[3] = &unk_1E77FFAB8;
     v19 = v5;
-    v20 = self;
+    selfCopy = self;
     v10 = [(EKOccurrenceCacheSearch *)EKOccurrenceCacheLocationSearch searchWithCalendars:v8 searchTerm:v19 store:eventStore callback:v18];
     eventsSearch = self->_eventsSearch;
     self->_eventsSearch = v10;
@@ -2372,17 +2372,17 @@ void __46__EKLocationSearchModel_updateEventLocations___block_invoke_2_191(uint6
   [WeakRetained locationSearchModel:*(a1 + 32) updatedSearchTypes:64];
 }
 
-- (void)searchConferenceRooms:(id)a3
+- (void)searchConferenceRooms:(id)rooms
 {
-  v4 = a3;
+  roomsCopy = rooms;
   [(EKLocationSearchModel *)self _incrementPendingOperationsCountForDomain:@"OperationDomainConferenceRooms"];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __47__EKLocationSearchModel_searchConferenceRooms___block_invoke;
   v6[3] = &unk_1E77FD580;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = roomsCopy;
+  v5 = roomsCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -2569,20 +2569,20 @@ void __47__EKLocationSearchModel_searchConferenceRooms___block_invoke_197(uint64
   [v2 locationSearchModel:*(a1 + 32) updatedSearchTypes:256];
 }
 
-- (void)_processDirectorySearchResultSet:(id)a3 forOperation:(id)a4
+- (void)_processDirectorySearchResultSet:(id)set forOperation:(id)operation
 {
-  v6 = a3;
-  v7 = a4;
+  setCopy = set;
+  operationCopy = operation;
   [(EKLocationSearchModel *)self _incrementPendingOperationsCountForDomain:@"OperationDomainConferenceRooms"];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __71__EKLocationSearchModel__processDirectorySearchResultSet_forOperation___block_invoke;
   block[3] = &unk_1E77FD7C8;
-  v11 = v7;
-  v12 = self;
-  v13 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = operationCopy;
+  selfCopy = self;
+  v13 = setCopy;
+  v8 = setCopy;
+  v9 = operationCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -2637,20 +2637,20 @@ void __71__EKLocationSearchModel__processDirectorySearchResultSet_forOperation__
   }
 }
 
-- (void)_addDiscoveredConferenceRooms:(id)a3
+- (void)_addDiscoveredConferenceRooms:(id)rooms
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  roomsCopy = rooms;
   v5 = +[EKLogSubsystem locationSearch];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v4, "count")}];
+    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(roomsCopy, "count")}];
     *buf = 138543362;
     v39 = v6;
     _os_log_impl(&dword_1A805E000, v5, OS_LOG_TYPE_INFO, "<<<< ConferenceRooms %{public}@ results", buf, 0xCu);
   }
 
-  [(NSMutableArray *)self->_mutableConferenceRoomSearchResults addObjectsFromArray:v4];
+  [(NSMutableArray *)self->_mutableConferenceRoomSearchResults addObjectsFromArray:roomsCopy];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __55__EKLocationSearchModel__addDiscoveredConferenceRooms___block_invoke;
@@ -2658,17 +2658,17 @@ void __71__EKLocationSearchModel__processDirectorySearchResultSet_forOperation__
   aBlock[4] = 193;
   v7 = _Block_copy(aBlock);
   [(NSMutableArray *)self->_mutableConferenceRoomSearchResults sortWithOptions:16 usingComparator:v7];
-  v8 = [(EKLocationSearchModel *)self delegate];
-  v9 = [v8 eventIDForSearchModel:self];
+  delegate = [(EKLocationSearchModel *)self delegate];
+  v9 = [delegate eventIDForSearchModel:self];
 
-  v10 = [(EKLocationSearchModel *)self delegate];
-  v11 = [v10 sourceForSearchModel:self];
+  delegate2 = [(EKLocationSearchModel *)self delegate];
+  v11 = [delegate2 sourceForSearchModel:self];
 
-  v12 = [(EKLocationSearchModel *)self delegate];
-  v13 = [v12 dateRangeForSearchModel:self];
+  delegate3 = [(EKLocationSearchModel *)self delegate];
+  v13 = [delegate3 dateRangeForSearchModel:self];
 
-  v14 = [(EKLocationSearchModel *)self delegate];
-  v15 = [v14 shouldIssueAvailabilityRequestForSearchModel:self];
+  delegate4 = [(EKLocationSearchModel *)self delegate];
+  v15 = [delegate4 shouldIssueAvailabilityRequestForSearchModel:self];
 
   if (!v15)
   {
@@ -2690,10 +2690,10 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v16 = [v11 _constraintsInternal];
-  v17 = [v16 supportsAvailabilityRequests];
+  _constraintsInternal = [v11 _constraintsInternal];
+  supportsAvailabilityRequests = [_constraintsInternal supportsAvailabilityRequests];
 
-  if ((v17 & 1) == 0)
+  if ((supportsAvailabilityRequests & 1) == 0)
   {
     v22 = +[EKLogSubsystem locationSearch];
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
@@ -2716,8 +2716,8 @@ LABEL_11:
   v34[3] = &unk_1E77FFBA0;
   v19 = v18;
   v35 = v19;
-  v36 = self;
-  [v4 enumerateObjectsUsingBlock:v34];
+  selfCopy = self;
+  [roomsCopy enumerateObjectsUsingBlock:v34];
   conferenceRoomProcessingQueue = self->_conferenceRoomProcessingQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -2729,12 +2729,12 @@ LABEL_11:
   v30 = v9;
   v31 = v11;
   v32 = v13;
-  v33 = v4;
+  v33 = roomsCopy;
   dispatch_async(conferenceRoomProcessingQueue, block);
 
 LABEL_12:
-  v26 = [(EKLocationSearchModel *)self delegate];
-  [v26 locationSearchModel:self updatedSearchTypes:256];
+  delegate5 = [(EKLocationSearchModel *)self delegate];
+  [delegate5 locationSearchModel:self updatedSearchTypes:256];
 
   v27 = *MEMORY[0x1E69E9840];
 }
@@ -2912,66 +2912,66 @@ void __55__EKLocationSearchModel__addDiscoveredConferenceRooms___block_invoke_2_
   }
 }
 
-- (id)_availabilityRequestForConferenceRooms:(id)a3 eventID:(id)a4 source:(id)a5 dateRange:(id)a6 resultsBlock:(id)a7 completionBlock:(id)a8
+- (id)_availabilityRequestForConferenceRooms:(id)rooms eventID:(id)d source:(id)source dateRange:(id)range resultsBlock:(id)block completionBlock:(id)completionBlock
 {
-  v13 = a8;
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
+  completionBlockCopy = completionBlock;
+  blockCopy = block;
+  rangeCopy = range;
+  sourceCopy = source;
+  dCopy = d;
+  roomsCopy = rooms;
   v19 = [EKRequestAvailabilityOperation alloc];
-  v20 = [v15 startDate];
-  v21 = [v15 endDate];
+  startDate = [rangeCopy startDate];
+  endDate = [rangeCopy endDate];
 
-  v22 = [(EKRequestAvailabilityOperation *)v19 initWithSource:v16 startDate:v20 endDate:v21 ignoredEventID:v17 addresses:v18 resultsBlock:v14];
-  [(EKRequestAvailabilityOperation *)v22 setCompletionBlock:v13];
+  v22 = [(EKRequestAvailabilityOperation *)v19 initWithSource:sourceCopy startDate:startDate endDate:endDate ignoredEventID:dCopy addresses:roomsCopy resultsBlock:blockCopy];
+  [(EKRequestAvailabilityOperation *)v22 setCompletionBlock:completionBlockCopy];
 
   return v22;
 }
 
-- (void)updateConferenceRoomAvailability:(id)a3 duringEvent:(id)a4 completionBlock:(id)a5
+- (void)updateConferenceRoomAvailability:(id)availability duringEvent:(id)event completionBlock:(id)block
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  availabilityCopy = availability;
+  eventCopy = event;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __86__EKLocationSearchModel_updateConferenceRoomAvailability_duringEvent_completionBlock___block_invoke;
   aBlock[3] = &unk_1E77FE278;
-  v9 = v7;
+  v9 = availabilityCopy;
   v33 = v9;
-  v10 = a5;
+  blockCopy = block;
   v28 = _Block_copy(aBlock);
   v26 = v9;
-  v25 = [v9 location];
-  v24 = [v25 preferredAddress];
-  v34[0] = v24;
+  location = [v9 location];
+  preferredAddress = [location preferredAddress];
+  v34[0] = preferredAddress;
   v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:1];
-  v11 = [v8 isDetached];
-  if (v11)
+  isDetached = [eventCopy isDetached];
+  if (isDetached)
   {
-    v23 = [v8 originalItem];
-    [v23 uniqueID];
+    originalItem = [eventCopy originalItem];
+    [originalItem uniqueID];
   }
 
   else
   {
-    [v8 uniqueID];
+    [eventCopy uniqueID];
   }
   v12 = ;
-  v13 = [v8 calendar];
-  v14 = [v13 source];
+  calendar = [eventCopy calendar];
+  source = [calendar source];
   v15 = objc_alloc(MEMORY[0x1E6992F70]);
-  v16 = [v8 startDate];
-  v17 = [v8 endDateUnadjustedForLegacyClients];
-  v18 = [v15 initWithStartDate:v16 endDate:v17];
-  v19 = [(EKLocationSearchModel *)self _availabilityRequestForConferenceRooms:v27 eventID:v12 source:v14 dateRange:v18 resultsBlock:v28 completionBlock:v10];
+  startDate = [eventCopy startDate];
+  endDateUnadjustedForLegacyClients = [eventCopy endDateUnadjustedForLegacyClients];
+  v18 = [v15 initWithStartDate:startDate endDate:endDateUnadjustedForLegacyClients];
+  v19 = [(EKLocationSearchModel *)self _availabilityRequestForConferenceRooms:v27 eventID:v12 source:source dateRange:v18 resultsBlock:v28 completionBlock:blockCopy];
 
-  if (v11)
+  if (isDetached)
   {
 
-    v12 = v23;
+    v12 = originalItem;
   }
 
   [v26 setAvailabilityRequestInProgress:1];
@@ -3000,17 +3000,17 @@ void __86__EKLocationSearchModel_updateConferenceRoomAvailability_duringEvent_co
   [*(a1 + 32) setAvailabilityRequestInProgress:0];
 }
 
-- (void)_handleAvailabilityResults:(id)a3 forOperation:(id)a4
+- (void)_handleAvailabilityResults:(id)results forOperation:(id)operation
 {
-  v6 = a3;
-  if (([a4 isCancelled] & 1) == 0)
+  resultsCopy = results;
+  if (([operation isCancelled] & 1) == 0)
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __65__EKLocationSearchModel__handleAvailabilityResults_forOperation___block_invoke;
     v7[3] = &unk_1E77FD580;
-    v8 = v6;
-    v9 = self;
+    v8 = resultsCopy;
+    selfCopy = self;
     dispatch_async(MEMORY[0x1E69E96A0], v7);
   }
 }
@@ -3038,34 +3038,34 @@ void __65__EKLocationSearchModel__handleAvailabilityResults_forOperation___block
   [v7 setAvailabilityRequestInProgress:0];
 }
 
-- (void)_addLocationToRecents:(id)a3 addressString:(id)a4 mapItem:(id)a5
+- (void)_addLocationToRecents:(id)recents addressString:(id)string mapItem:(id)item
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 contactLabel];
-  v11 = v10;
-  if (v10)
+  recentsCopy = recents;
+  stringCopy = string;
+  itemCopy = item;
+  contactLabel = [recentsCopy contactLabel];
+  v11 = contactLabel;
+  if (contactLabel)
   {
-    v12 = v10;
+    title = contactLabel;
   }
 
   else
   {
-    v12 = [v7 title];
+    title = [recentsCopy title];
   }
 
-  v13 = v12;
+  v13 = title;
 
-  if (v8 && v13)
+  if (stringCopy && v13)
   {
     v14 = EKWeakLinkClass();
-    v15 = [EKRecents recentForLocation:v7 withAddressString:v8 andTitle:v13 mapItem:v9];
-    v16 = [v14 defaultInstance];
+    v15 = [EKRecents recentForLocation:recentsCopy withAddressString:stringCopy andTitle:v13 mapItem:itemCopy];
+    defaultInstance = [v14 defaultInstance];
     v23[0] = v15;
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
-    [v16 recordContactEvents:v17 recentsDomain:@"com.apple.eventkit.ios" sendingAddress:0 completion:0];
+    [defaultInstance recordContactEvents:v17 recentsDomain:@"com.apple.eventkit.ios" sendingAddress:0 completion:0];
 
 LABEL_9:
     goto LABEL_10;
@@ -3074,11 +3074,11 @@ LABEL_9:
   v15 = +[EKLogSubsystem locationSearch];
   if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
   {
-    v16 = [v7 title];
+    defaultInstance = [recentsCopy title];
     v19 = 138412546;
-    v20 = v8;
+    v20 = stringCopy;
     v21 = 2112;
-    v22 = v16;
+    v22 = defaultInstance;
     _os_log_impl(&dword_1A805E000, v15, OS_LOG_TYPE_ERROR, "can't add to recents, missing info: %@ %@", &v19, 0x16u);
     goto LABEL_9;
   }
@@ -3088,32 +3088,32 @@ LABEL_10:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addConferenceRoomToRecents:(id)a3 fromSource:(id)a4
+- (void)addConferenceRoomToRecents:(id)recents fromSource:(id)source
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = a3;
+  sourceCopy = source;
+  recentsCopy = recents;
   v7 = EKWeakLinkClass();
-  v8 = [v6 location];
+  location = [recentsCopy location];
 
-  v9 = [EKRecents recentForDirectoryLocation:v8 onSource:v5];
+  v9 = [EKRecents recentForDirectoryLocation:location onSource:sourceCopy];
 
-  v10 = [v7 defaultInstance];
+  defaultInstance = [v7 defaultInstance];
   v13[0] = v9;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
-  [v10 recordContactEvents:v11 recentsDomain:@"com.apple.eventkit.ios" sendingAddress:0 completion:0];
+  [defaultInstance recordContactEvents:v11 recentsDomain:@"com.apple.eventkit.ios" sendingAddress:0 completion:0];
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)removeRecentLocation:(id)a3
+- (BOOL)removeRecentLocation:(id)location
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [EKWeakLinkClass() defaultInstance];
-  v14[0] = v4;
+  locationCopy = location;
+  defaultInstance = [EKWeakLinkClass() defaultInstance];
+  v14[0] = locationCopy;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-  v7 = [v5 removeRecentContacts:v6 error:0];
+  v7 = [defaultInstance removeRecentContacts:v6 error:0];
 
   if (v7)
   {
@@ -3122,10 +3122,10 @@ LABEL_10:
     v12[1] = 3221225472;
     v12[2] = __46__EKLocationSearchModel_removeRecentLocation___block_invoke;
     v12[3] = &unk_1E77FFC10;
-    v13 = v4;
+    v13 = locationCopy;
     [(NSMutableArray *)self->_recentsSearchResults removeObjectAtIndex:[(NSMutableArray *)recentsSearchResults indexOfObjectPassingTest:v12]];
-    v9 = [(EKLocationSearchModel *)self delegate];
-    [v9 locationSearchModel:self updatedSearchTypes:16];
+    delegate = [(EKLocationSearchModel *)self delegate];
+    [delegate locationSearchModel:self updatedSearchTypes:16];
   }
 
   v10 = *MEMORY[0x1E69E9840];
@@ -3140,9 +3140,9 @@ uint64_t __46__EKLocationSearchModel_removeRecentLocation___block_invoke(uint64_
   return v4;
 }
 
-- (void)selectMapSearchCompletion:(id)a3
+- (void)selectMapSearchCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   localSearch = self->_localSearch;
   if (localSearch)
   {
@@ -3156,12 +3156,12 @@ uint64_t __46__EKLocationSearchModel_removeRecentLocation___block_invoke(uint64_
   v10[2] = __51__EKLocationSearchModel_selectMapSearchCompletion___block_invoke;
   v10[3] = &unk_1E77FFC38;
   v10[4] = self;
-  v7 = [EKMapSearchCompletionResolver resolveMapSearchCompletion:v4 withCompletionHander:v10];
+  v7 = [EKMapSearchCompletionResolver resolveMapSearchCompletion:completionCopy withCompletionHander:v10];
   v8 = self->_localSearch;
   self->_localSearch = v7;
 
-  v9 = [v4 mapSearchCompletion];
-  [v9 sendFeedback];
+  mapSearchCompletion = [completionCopy mapSearchCompletion];
+  [mapSearchCompletion sendFeedback];
 }
 
 void __51__EKLocationSearchModel_selectMapSearchCompletion___block_invoke(uint64_t a1, EKStructuredLocation *a2, void *a3)
@@ -3196,43 +3196,43 @@ void __51__EKLocationSearchModel_selectMapSearchCompletion___block_invoke(uint64
   [v13 locationSearchModel:*(a1 + 32) selectedLocation:a2 withError:v14];
 }
 
-- (void)selectLocation:(id)a3
+- (void)selectLocation:(id)location
 {
-  v4 = a3;
-  v5 = [v4 mapKitHandle];
+  locationCopy = location;
+  mapKitHandle = [locationCopy mapKitHandle];
 
-  if (v5)
+  if (mapKitHandle)
   {
     MKMapItemClass = getMKMapItemClass();
-    v7 = [v4 mapKitHandle];
+    mapKitHandle2 = [locationCopy mapKitHandle];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __40__EKLocationSearchModel_selectLocation___block_invoke;
     v18[3] = &unk_1E77FFC60;
     v18[4] = self;
-    v19 = v4;
-    v8 = v4;
-    [MKMapItemClass _mapItemFromHandle:v7 completionHandler:v18];
+    v19 = locationCopy;
+    v8 = locationCopy;
+    [MKMapItemClass _mapItemFromHandle:mapKitHandle2 completionHandler:v18];
 
-    v9 = [(EKLocationSearchModel *)self delegate];
-    [v9 locationSearchModel:self selectedLocation:v8 withError:0];
+    delegate = [(EKLocationSearchModel *)self delegate];
+    [delegate locationSearchModel:self selectedLocation:v8 withError:0];
   }
 
   else
   {
     v10 = MEMORY[0x1E6992FD8];
-    v11 = [v4 title];
-    v12 = [v4 address];
-    v8 = [v10 fullDisplayStringWithTitle:v11 address:v12];
+    title = [locationCopy title];
+    address = [locationCopy address];
+    v8 = [v10 fullDisplayStringWithTitle:title address:address];
 
     v13 = MEMORY[0x1E6992FB8];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __40__EKLocationSearchModel_selectLocation___block_invoke_218;
     v15[3] = &unk_1E77FFC60;
-    v16 = v4;
-    v17 = self;
-    v14 = v4;
+    v16 = locationCopy;
+    selfCopy = self;
+    v14 = locationCopy;
     [v13 geocodeLocationString:v8 withCompletionBlock:v15];
   }
 }
@@ -3314,13 +3314,13 @@ void __40__EKLocationSearchModel_selectLocation___block_invoke_218(uint64_t a1, 
 
   objc_initWeak(&location, self);
   v6 = self->_geocoder;
-  v7 = [(EKStructuredLocation *)self->_currentLocation geoLocation];
+  geoLocation = [(EKStructuredLocation *)self->_currentLocation geoLocation];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __46__EKLocationSearchModel_selectCurrentLocation__block_invoke;
   v8[3] = &unk_1E77FFC88;
   objc_copyWeak(&v9, &location);
-  [(CLGeocoder *)v6 reverseGeocodeLocation:v7 completionHandler:v8];
+  [(CLGeocoder *)v6 reverseGeocodeLocation:geoLocation completionHandler:v8];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -3425,25 +3425,25 @@ void __38__EKLocationSearchModel__dataDetector__block_invoke()
   }
 }
 
-+ (id)_linksInSource:(id)a3
++ (id)_linksInSource:(id)source
 {
-  v3 = a3;
-  v4 = [objc_opt_class() _dataDetector];
-  v5 = [v4 matchesInString:v3 options:0 range:{0, objc_msgSend(v3, "length")}];
+  sourceCopy = source;
+  _dataDetector = [objc_opt_class() _dataDetector];
+  v5 = [_dataDetector matchesInString:sourceCopy options:0 range:{0, objc_msgSend(sourceCopy, "length")}];
 
   return v5;
 }
 
-+ (id)URLsFromSource:(id)a3
++ (id)URLsFromSource:(id)source
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  sourceCopy = source;
+  array = [MEMORY[0x1E695DF70] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [a1 _linksInSource:{v4, 0}];
+  v6 = [self _linksInSource:{sourceCopy, 0}];
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -3461,14 +3461,14 @@ void __38__EKLocationSearchModel__dataDetector__block_invoke()
         v11 = *(*(&v16 + 1) + 8 * i);
         if ([v11 resultType] == 32)
         {
-          v12 = [v11 URL];
+          phoneURL = [v11 URL];
         }
 
         else
         {
           if ([v11 resultType] != 2048)
           {
-            v12 = 0;
+            phoneURL = 0;
             if (([0 cal_hasSchemeMailto] & 1) == 0)
             {
               continue;
@@ -3477,18 +3477,18 @@ void __38__EKLocationSearchModel__dataDetector__block_invoke()
             goto LABEL_14;
           }
 
-          v13 = [v11 phoneNumber];
-          v12 = [v13 phoneURL];
+          phoneNumber = [v11 phoneNumber];
+          phoneURL = [phoneNumber phoneURL];
         }
 
-        if (([v12 cal_hasSchemeMailto] & 1) == 0)
+        if (([phoneURL cal_hasSchemeMailto] & 1) == 0)
         {
-          if (!v12)
+          if (!phoneURL)
           {
             continue;
           }
 
-          [v5 addObject:v12];
+          [array addObject:phoneURL];
         }
 
 LABEL_14:
@@ -3502,17 +3502,17 @@ LABEL_14:
 
   v14 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return array;
 }
 
-- (void)_updateVirtualConferenceCustomOptions:(id)a3
+- (void)_updateVirtualConferenceCustomOptions:(id)options
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  optionsCopy = options;
+  v5 = optionsCopy;
   if ((self->_supportedSearchTypes & 0x400) != 0)
   {
-    if ([v4 length])
+    if ([optionsCopy length])
     {
       [(EKLocationSearchModel *)self _incrementPendingOperationsCountForDomain:@"OperationDomainVirtualConferencesCustom"];
       customConferenceQueue = self->_customConferenceQueue;
@@ -3551,8 +3551,8 @@ LABEL_14:
         _os_log_impl(&dword_1A805E000, v11, OS_LOG_TYPE_INFO, "[%{public}@] <<<< Virtual Conference Custom %{public}@ results", buf, 0x16u);
       }
 
-      v13 = [(EKLocationSearchModel *)self delegate];
-      [v13 locationSearchModel:self updatedSearchTypes:1024];
+      delegate = [(EKLocationSearchModel *)self delegate];
+      [delegate locationSearchModel:self updatedSearchTypes:1024];
     }
   }
 
@@ -3616,18 +3616,18 @@ void __63__EKLocationSearchModel__updateVirtualConferenceCustomOptions___block_i
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)selectVirtualConferenceRoomType:(id)a3
+- (void)selectVirtualConferenceRoomType:(id)type
 {
-  v4 = a3;
-  v5 = [(EKLocationSearchModel *)self delegate];
-  v6 = [v5 sourceForSearchModel:self];
+  typeCopy = type;
+  delegate = [(EKLocationSearchModel *)self delegate];
+  v6 = [delegate sourceForSearchModel:self];
 
-  [EKVirtualConferenceRoomTypeRecents selectRoomType:v4 forSource:v6];
+  [EKVirtualConferenceRoomTypeRecents selectRoomType:typeCopy forSource:v6];
 }
 
-- (void)updateVirtualConferenceRoomOptions:(id)a3
+- (void)updateVirtualConferenceRoomOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   if ((self->_supportedSearchTypes & 0x200) != 0)
   {
     [(EKLocationSearchModel *)self _incrementPendingOperationsCountForDomain:@"OperationDomainVirtualConferences"];
@@ -3638,7 +3638,7 @@ void __63__EKLocationSearchModel__updateVirtualConferenceCustomOptions___block_i
 
     if (self->_allPossibleVirtualConferenceRooms)
     {
-      [(EKLocationSearchModel *)self _updateVirtualConferenceOptions:v4];
+      [(EKLocationSearchModel *)self _updateVirtualConferenceOptions:optionsCopy];
     }
 
     else
@@ -3648,7 +3648,7 @@ void __63__EKLocationSearchModel__updateVirtualConferenceCustomOptions___block_i
       v5[2] = __60__EKLocationSearchModel_updateVirtualConferenceRoomOptions___block_invoke_2;
       v5[3] = &unk_1E77FFAB8;
       v5[4] = self;
-      v6 = v4;
+      v6 = optionsCopy;
       [EKVirtualConferenceRoomType virtualConferenceRoomTypesWithCompletion:v5 queue:MEMORY[0x1E69E96A0]];
     }
   }
@@ -3670,15 +3670,15 @@ uint64_t __60__EKLocationSearchModel_updateVirtualConferenceRoomOptions___block_
   return [v8 _updateVirtualConferenceOptions:v9];
 }
 
-- (void)_updateAllPossibleVirtualConferenceResultsWithRoomTypes:(id)a3
+- (void)_updateAllPossibleVirtualConferenceResultsWithRoomTypes:(id)types
 {
   allPossibleVirtualConferenceRooms = self->_allPossibleVirtualConferenceRooms;
-  v5 = a3;
+  typesCopy = types;
   [(NSMutableArray *)allPossibleVirtualConferenceRooms removeAllObjects];
-  v6 = [(EKLocationSearchModel *)self delegate];
-  v8 = [v6 sourceForSearchModel:self];
+  delegate = [(EKLocationSearchModel *)self delegate];
+  v8 = [delegate sourceForSearchModel:self];
 
-  v7 = [EKVirtualConferenceRoomTypeRecents roomTypesOrderedByMRU:v5 forSource:v8];
+  v7 = [EKVirtualConferenceRoomTypeRecents roomTypesOrderedByMRU:typesCopy forSource:v8];
 
   if (v7)
   {
@@ -3686,10 +3686,10 @@ uint64_t __60__EKLocationSearchModel_updateVirtualConferenceRoomOptions___block_
   }
 }
 
-- (void)_updateVirtualConferenceOptions:(id)a3
+- (void)_updateVirtualConferenceOptions:(id)options
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  optionsCopy = options;
   virtualConferenceRoomSearchResults = self->_virtualConferenceRoomSearchResults;
   if (!virtualConferenceRoomSearchResults)
   {
@@ -3701,7 +3701,7 @@ uint64_t __60__EKLocationSearchModel_updateVirtualConferenceRoomOptions___block_
   }
 
   [(NSMutableArray *)virtualConferenceRoomSearchResults removeAllObjects];
-  if (v4)
+  if (optionsCopy)
   {
     v23 = 0u;
     v24 = 0u;
@@ -3723,8 +3723,8 @@ uint64_t __60__EKLocationSearchModel_updateVirtualConferenceRoomOptions___block_
           }
 
           v13 = *(*(&v21 + 1) + 8 * i);
-          v14 = [v13 title];
-          v15 = [v14 rangeOfString:v4 options:1];
+          title = [v13 title];
+          v15 = [title rangeOfString:optionsCopy options:1];
 
           if (v15 != 0x7FFFFFFFFFFFFFFFLL)
           {
@@ -3757,52 +3757,52 @@ uint64_t __60__EKLocationSearchModel_updateVirtualConferenceRoomOptions___block_
   }
 
   [(EKLocationSearchModel *)self _decrementPendingOperationsCountForDomain:@"OperationDomainVirtualConferences"];
-  v19 = [(EKLocationSearchModel *)self delegate];
-  [v19 locationSearchModel:self updatedSearchTypes:512];
+  delegate = [(EKLocationSearchModel *)self delegate];
+  [delegate locationSearchModel:self updatedSearchTypes:512];
 
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateMapURL:(id)a3
+- (void)_updateMapURL:(id)l
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lCopy = l;
   v5 = ICSRedactString();
-  v6 = [MEMORY[0x1E695DFF8] URLWithString:v4];
+  v6 = [MEMORY[0x1E695DFF8] URLWithString:lCopy];
   if (!v6)
   {
     goto LABEL_5;
   }
 
   v7 = [getMKMapItemClass() _mapItemBackedByURL:v6];
-  v8 = v7;
+  delegate2 = v7;
   if (v7 && ([v7 isCurrentLocation] & 1) == 0)
   {
     v13 = objc_alloc_init(EKStructuredLocationSearchResult);
     locationFromMapsURL = self->_locationFromMapsURL;
     self->_locationFromMapsURL = v13;
 
-    v15 = [EKStructuredLocation locationWithMapItem:v8];
-    v16 = [v8 _geoAddress];
-    v17 = [v16 formattedAddressLines];
-    v31 = [v17 lastObject];
+    v15 = [EKStructuredLocation locationWithMapItem:delegate2];
+    _geoAddress = [delegate2 _geoAddress];
+    formattedAddressLines = [_geoAddress formattedAddressLines];
+    lastObject = [formattedAddressLines lastObject];
 
-    [v15 setAddress:v31];
+    [v15 setAddress:lastObject];
     [(EKStructuredLocationSearchResult *)self->_locationFromMapsURL setLocation:v15];
-    if (([v8 isPlaceHolder] & 1) == 0)
+    if (([delegate2 isPlaceHolder] & 1) == 0)
     {
-      v18 = [(EKStructuredLocationSearchResult *)self->_locationFromMapsURL location];
-      [v18 setTitle:0];
+      location = [(EKStructuredLocationSearchResult *)self->_locationFromMapsURL location];
+      [location setTitle:0];
     }
 
-    v19 = [(EKStructuredLocationSearchResult *)self->_locationFromMapsURL location];
-    v20 = [v19 address];
-    if (v20)
+    location2 = [(EKStructuredLocationSearchResult *)self->_locationFromMapsURL location];
+    address = [location2 address];
+    if (address)
     {
-      v21 = [(EKStructuredLocationSearchResult *)self->_locationFromMapsURL location];
-      v22 = [v21 title];
+      location3 = [(EKStructuredLocationSearchResult *)self->_locationFromMapsURL location];
+      title = [location3 title];
 
-      if (v22)
+      if (title)
       {
         v23 = +[EKLogSubsystem locationSearch];
         if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
@@ -3815,8 +3815,8 @@ uint64_t __60__EKLocationSearchModel_updateVirtualConferenceRoomOptions___block_
           _os_log_impl(&dword_1A805E000, v23, OS_LOG_TYPE_INFO, "[%{public}@] <<<< MapKit from URL %{public}@ results", buf, 0x16u);
         }
 
-        v25 = [(EKLocationSearchModel *)self delegate];
-        [v25 locationSearchModel:self updatedSearchTypes:2];
+        delegate = [(EKLocationSearchModel *)self delegate];
+        [delegate locationSearchModel:self updatedSearchTypes:2];
 
 LABEL_22:
         goto LABEL_8;
@@ -3845,14 +3845,14 @@ LABEL_22:
     [(EKLocationSearchModel *)self _incrementPendingOperationsCountForDomain:@"OperationDomainLocationFromMapsURL"];
     objc_initWeak(buf, self);
     v29 = self->_geocoder;
-    v30 = [v15 geoLocation];
+    geoLocation = [v15 geoLocation];
     v32[0] = MEMORY[0x1E69E9820];
     v32[1] = 3221225472;
     v32[2] = __39__EKLocationSearchModel__updateMapURL___block_invoke;
     v32[3] = &unk_1E77FFCD0;
     objc_copyWeak(&v34, buf);
     v33 = v5;
-    [(CLGeocoder *)v29 reverseGeocodeLocation:v30 completionHandler:v32];
+    [(CLGeocoder *)v29 reverseGeocodeLocation:geoLocation completionHandler:v32];
 
     objc_destroyWeak(&v34);
     objc_destroyWeak(buf);
@@ -3874,8 +3874,8 @@ LABEL_5:
     _os_log_impl(&dword_1A805E000, v10, OS_LOG_TYPE_INFO, "[%{public}@] <<<< MapKit from URL %{public}@ results", buf, 0x16u);
   }
 
-  v8 = [(EKLocationSearchModel *)self delegate];
-  [v8 locationSearchModel:self updatedSearchTypes:2];
+  delegate2 = [(EKLocationSearchModel *)self delegate];
+  [delegate2 locationSearchModel:self updatedSearchTypes:2];
 LABEL_8:
 
   v12 = *MEMORY[0x1E69E9840];

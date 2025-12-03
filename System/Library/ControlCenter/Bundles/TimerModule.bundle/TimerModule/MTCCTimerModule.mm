@@ -1,15 +1,15 @@
 @interface MTCCTimerModule
-+ (id)firstThatMatches:(id)a3 fromTimers:(id)a4;
++ (id)firstThatMatches:(id)matches fromTimers:(id)timers;
 - (MTCCTimerModule)init;
 - (double)defaultDuration;
-- (id)launchURLForTouchType:(int64_t)a3;
-- (id)processChangesForNewState:(id)a3;
-- (void)setDefaultDuration:(double)a3;
-- (void)timerBackgroundViewController:(id)a3 timerDidChange:(id)a4;
-- (void)timerBackgroundViewControllerAddButtonTapped:(id)a3 withEvent:(id)a4;
-- (void)timerDidChange:(id)a3;
-- (void)timerViewController:(id)a3 timerDidChange:(id)a4;
-- (void)timerViewControllerButtonTapped:(id)a3 withEvent:(id)a4;
+- (id)launchURLForTouchType:(int64_t)type;
+- (id)processChangesForNewState:(id)state;
+- (void)setDefaultDuration:(double)duration;
+- (void)timerBackgroundViewController:(id)controller timerDidChange:(id)change;
+- (void)timerBackgroundViewControllerAddButtonTapped:(id)tapped withEvent:(id)event;
+- (void)timerDidChange:(id)change;
+- (void)timerViewController:(id)controller timerDidChange:(id)change;
+- (void)timerViewControllerButtonTapped:(id)tapped withEvent:(id)event;
 @end
 
 @implementation MTCCTimerModule
@@ -57,7 +57,7 @@
   return v2;
 }
 
-- (id)launchURLForTouchType:(int64_t)a3
+- (id)launchURLForTouchType:(int64_t)type
 {
   if (self->_addButtonTapped)
   {
@@ -68,20 +68,20 @@
   {
     v5.receiver = self;
     v5.super_class = MTCCTimerModule;
-    v3 = [(CCUIAppLauncherModule *)&v5 launchURLForTouchType:a3];
+    v3 = [(CCUIAppLauncherModule *)&v5 launchURLForTouchType:type];
   }
 
   return v3;
 }
 
-- (void)timerDidChange:(id)a3
+- (void)timerDidChange:(id)change
 {
   v10 = *MEMORY[0x29EDCA608];
   v4 = MTLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_29C9FA000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ Timer did change notification received", &v8, 0xCu);
   }
 
@@ -89,9 +89,9 @@
   v7 = *MEMORY[0x29EDCA608];
 }
 
-- (void)timerViewController:(id)a3 timerDidChange:(id)a4
+- (void)timerViewController:(id)controller timerDidChange:(id)change
 {
-  v5 = objc_msgSend_processChangesForNewState_(self, a2, a4);
+  v5 = objc_msgSend_processChangesForNewState_(self, a2, change);
   v8 = objc_msgSend_mtMainThreadScheduler(MEMORY[0x29EDC5E58], v6, v7);
   v10 = objc_msgSend_reschedule_(v5, v9, v8);
   v13[0] = MEMORY[0x29EDCA5F8];
@@ -102,19 +102,19 @@
   v12 = objc_msgSend_addSuccessBlock_(v10, v11, v13);
 }
 
-- (void)timerViewControllerButtonTapped:(id)a3 withEvent:(id)a4
+- (void)timerViewControllerButtonTapped:(id)tapped withEvent:(id)event
 {
   v20 = *MEMORY[0x29EDCA608];
-  v5 = a4;
+  eventCopy = event;
   v6 = MTLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 138543362;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&dword_29C9FA000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ Handling start/stop button tapped", &v18, 0xCu);
   }
 
-  v9 = objc_msgSend_allTouches(v5, v7, v8);
+  v9 = objc_msgSend_allTouches(eventCopy, v7, v8);
 
   v12 = objc_msgSend_anyObject(v9, v10, v11);
 
@@ -125,9 +125,9 @@
   v17 = *MEMORY[0x29EDCA608];
 }
 
-- (void)timerBackgroundViewController:(id)a3 timerDidChange:(id)a4
+- (void)timerBackgroundViewController:(id)controller timerDidChange:(id)change
 {
-  v5 = objc_msgSend_processChangesForNewState_(self, a2, a4);
+  v5 = objc_msgSend_processChangesForNewState_(self, a2, change);
   v8 = objc_msgSend_mtMainThreadScheduler(MEMORY[0x29EDC5E58], v6, v7);
   v10 = objc_msgSend_reschedule_(v5, v9, v8);
   v13[0] = MEMORY[0x29EDCA5F8];
@@ -138,19 +138,19 @@
   v12 = objc_msgSend_addSuccessBlock_(v10, v11, v13);
 }
 
-- (void)timerBackgroundViewControllerAddButtonTapped:(id)a3 withEvent:(id)a4
+- (void)timerBackgroundViewControllerAddButtonTapped:(id)tapped withEvent:(id)event
 {
   v20 = *MEMORY[0x29EDCA608];
-  v5 = a4;
+  eventCopy = event;
   v6 = MTLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 138543362;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&dword_29C9FA000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ Handling add button tapped", &v18, 0xCu);
   }
 
-  v9 = objc_msgSend_allTouches(v5, v7, v8);
+  v9 = objc_msgSend_allTouches(eventCopy, v7, v8);
 
   v12 = objc_msgSend_anyObject(v9, v10, v11);
 
@@ -180,9 +180,9 @@
   return valuePtr;
 }
 
-- (void)setDefaultDuration:(double)a3
+- (void)setDefaultDuration:(double)duration
 {
-  valuePtr = a3;
+  valuePtr = duration;
   v3 = CFNumberCreate(*MEMORY[0x29EDB8ED8], kCFNumberDoubleType, &valuePtr);
   CFPreferencesSetAppValue(@"MTCCTimerDefaultDuration", v3, @"com.apple.mobiletimer");
   if (v3)
@@ -191,18 +191,18 @@
   }
 }
 
-+ (id)firstThatMatches:(id)a3 fromTimers:(id)a4
++ (id)firstThatMatches:(id)matches fromTimers:(id)timers
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  matchesCopy = matches;
+  v6 = matchesCopy;
+  if (matchesCopy)
   {
     v10[0] = MEMORY[0x29EDCA5F8];
     v10[1] = 3221225472;
     v10[2] = sub_29C9FBAAC;
     v10[3] = &unk_29F33F840;
-    v11 = v5;
-    v8 = objc_msgSend_na_firstObjectPassingTest_(a4, v7, v10);
+    v11 = matchesCopy;
+    v8 = objc_msgSend_na_firstObjectPassingTest_(timers, v7, v10);
   }
 
   else
@@ -213,9 +213,9 @@
   return v8;
 }
 
-- (id)processChangesForNewState:(id)a3
+- (id)processChangesForNewState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v7 = objc_msgSend_latestDuration(self->_timerManager, v5, v6);
   v10 = objc_msgSend_mainThreadScheduler(MEMORY[0x29EDC5E58], v8, v9);
   v12 = objc_msgSend_reschedule_(v7, v11, v10);
@@ -224,8 +224,8 @@
   v17[2] = sub_29C9FBC40;
   v17[3] = &unk_29F33F890;
   v17[4] = self;
-  v18 = v4;
-  v13 = v4;
+  v18 = stateCopy;
+  v13 = stateCopy;
   v15 = objc_msgSend_flatMap_(v12, v14, v17);
 
   return v15;

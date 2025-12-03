@@ -1,33 +1,33 @@
 @interface GKDashboardTurnDetailViewController
-- (GKDashboardTurnDetailViewController)initWithTurnBasedMatch:(id)a3;
+- (GKDashboardTurnDetailViewController)initWithTurnBasedMatch:(id)match;
 - (id)preferredFocusEnvironments;
-- (void)acceptInvitation:(id)a3;
-- (void)chooseMatch:(id)a3;
+- (void)acceptInvitation:(id)invitation;
+- (void)chooseMatch:(id)match;
 - (void)dealloc;
-- (void)declineInvitation:(id)a3;
+- (void)declineInvitation:(id)invitation;
 - (void)disableButtons;
-- (void)handleTurnBasedEvent:(id)a3;
-- (void)quitMatch:(id)a3;
+- (void)handleTurnBasedEvent:(id)event;
+- (void)quitMatch:(id)match;
 - (void)refreshPresenter;
-- (void)removeMatch:(id)a3;
+- (void)removeMatch:(id)match;
 - (void)viewDidLoad;
 @end
 
 @implementation GKDashboardTurnDetailViewController
 
-- (GKDashboardTurnDetailViewController)initWithTurnBasedMatch:(id)a3
+- (GKDashboardTurnDetailViewController)initWithTurnBasedMatch:(id)match
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _gkPlatformNibName];
+  matchCopy = match;
+  _gkPlatformNibName = [objc_opt_class() _gkPlatformNibName];
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v10.receiver = self;
   v10.super_class = GKDashboardTurnDetailViewController;
-  v7 = [(GKDashboardCollectionViewController *)&v10 initWithNibName:v5 bundle:v6];
+  v7 = [(GKDashboardCollectionViewController *)&v10 initWithNibName:_gkPlatformNibName bundle:v6];
 
   if (v7)
   {
-    [(GKDashboardTurnDetailViewController *)v7 setMatch:v4];
-    v8 = [[GKDashboardTurnDetailDataSource alloc] initWithMatch:v4];
+    [(GKDashboardTurnDetailViewController *)v7 setMatch:matchCopy];
+    v8 = [[GKDashboardTurnDetailDataSource alloc] initWithMatch:matchCopy];
     [(GKCollectionDataSource *)v8 setOnDarkBackground:0];
     [(GKDashboardCollectionViewController *)v7 setDataSource:v8];
   }
@@ -37,8 +37,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = GKDashboardTurnDetailViewController;
@@ -51,17 +51,17 @@
   v28.super_class = GKDashboardTurnDetailViewController;
   [(GKDetailViewController *)&v28 viewDidLoad];
   [(UIViewController *)self _gkModifyTopConstraintToLayoutGuideForSubview:self->_playingWithLabel];
-  v3 = [(GKDashboardCollectionViewController *)self collectionView];
-  [v3 setAllowsSelection:0];
-  v4 = [(GKDashboardTurnDetailViewController *)self match];
-  v5 = [v4 matchTitle];
-  [(UILabel *)self->_playingWithLabel setText:v5];
+  collectionView = [(GKDashboardCollectionViewController *)self collectionView];
+  [collectionView setAllowsSelection:0];
+  match = [(GKDashboardTurnDetailViewController *)self match];
+  matchTitle = [match matchTitle];
+  [(UILabel *)self->_playingWithLabel setText:matchTitle];
 
   v6 = MEMORY[0x277CCACA8];
   v7 = GKGameCenterUIFrameworkBundle();
   v8 = GKGetLocalizedStringFromTableInBundle();
-  v9 = [(GKTurnBasedMatch *)self->_match creationDate];
-  v10 = [v9 _gkFormattedDateForStyle:2 relative:0];
+  creationDate = [(GKTurnBasedMatch *)self->_match creationDate];
+  v10 = [creationDate _gkFormattedDateForStyle:2 relative:0];
   v11 = [v6 stringWithFormat:v8, v10];
   [(UILabel *)self->_createdLabel setText:v11];
 
@@ -83,16 +83,16 @@
     v15 = *v17;
   }
 
-  v19 = [(GKTurnBasedMatch *)self->_match state];
+  state = [(GKTurnBasedMatch *)self->_match state];
   v20 = 0;
-  if (v19 > 4)
+  if (state > 4)
   {
-    if (v19 == 5)
+    if (state == 5)
     {
       v25 = GKGameCenterUIFrameworkBundle();
       v20 = GKGetLocalizedStringFromTableInBundle();
 
-      v22 = 0;
+      isMyTurn = 0;
       v23 = sel_removeMatch_;
       if (!v20)
       {
@@ -102,15 +102,15 @@
       goto LABEL_16;
     }
 
-    if (v19 != 6)
+    if (state != 6)
     {
       goto LABEL_21;
     }
   }
 
-  else if ((v19 - 2) >= 3)
+  else if ((state - 2) >= 3)
   {
-    if (v19 != 1)
+    if (state != 1)
     {
       goto LABEL_21;
     }
@@ -118,7 +118,7 @@
     v21 = GKGameCenterUIFrameworkBundle();
     v20 = GKGetLocalizedStringFromTableInBundle();
 
-    v22 = 0;
+    isMyTurn = 0;
     v23 = sel_declineInvitation_;
     if (!v20)
     {
@@ -134,7 +134,7 @@
   v23 = sel_quitMatch_;
   if (self->_shouldShowQuit)
   {
-    v22 = 0;
+    isMyTurn = 0;
     if (!v20)
     {
       goto LABEL_21;
@@ -143,7 +143,7 @@
 
   else
   {
-    v22 = [(GKTurnBasedMatch *)self->_match isMyTurn];
+    isMyTurn = [(GKTurnBasedMatch *)self->_match isMyTurn];
     if (!v20)
     {
       goto LABEL_21;
@@ -151,7 +151,7 @@
   }
 
 LABEL_16:
-  if ((v22 & 1) == 0)
+  if ((isMyTurn & 1) == 0)
   {
     if (v14)
     {
@@ -197,17 +197,17 @@ LABEL_21:
 
 - (void)refreshPresenter
 {
-  v2 = [(UIViewController *)self _gkOriginatingViewController];
+  _gkOriginatingViewController = [(UIViewController *)self _gkOriginatingViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v2 setNeedsRefresh];
+    [_gkOriginatingViewController setNeedsRefresh];
   }
 }
 
-- (void)acceptInvitation:(id)a3
+- (void)acceptInvitation:(id)invitation
 {
-  v4 = a3;
+  invitationCopy = invitation;
   if (!*MEMORY[0x277D0C2A0])
   {
     v5 = GKOSLoggers();
@@ -237,9 +237,9 @@ void __56__GKDashboardTurnDetailViewController_acceptInvitation___block_invoke(u
   [v4 finishWithTurnBasedMatch:v3];
 }
 
-- (void)declineInvitation:(id)a3
+- (void)declineInvitation:(id)invitation
 {
-  v4 = a3;
+  invitationCopy = invitation;
   if (!*MEMORY[0x277D0C2A0])
   {
     v5 = GKOSLoggers();
@@ -270,9 +270,9 @@ uint64_t __57__GKDashboardTurnDetailViewController_declineInvitation___block_inv
   return [v2 _gkRemoveViewController:v2 animated:1];
 }
 
-- (void)chooseMatch:(id)a3
+- (void)chooseMatch:(id)match
 {
-  v4 = a3;
+  matchCopy = match;
   if (!*MEMORY[0x277D0C2A0])
   {
     v5 = GKOSLoggers();
@@ -286,13 +286,13 @@ uint64_t __57__GKDashboardTurnDetailViewController_declineInvitation___block_inv
   }
 
   v7 = MEMORY[0x277D0C238];
-  v8 = [(GKTurnBasedMatch *)self->_match matchID];
+  matchID = [(GKTurnBasedMatch *)self->_match matchID];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __51__GKDashboardTurnDetailViewController_chooseMatch___block_invoke;
   v9[3] = &unk_27966B0B0;
   v9[4] = self;
-  [v7 loadTurnBasedMatchWithDetailsForMatchID:v8 withCompletionHandler:v9];
+  [v7 loadTurnBasedMatchWithDetailsForMatchID:matchID withCompletionHandler:v9];
 }
 
 void __51__GKDashboardTurnDetailViewController_chooseMatch___block_invoke(uint64_t a1, void *a2)
@@ -311,9 +311,9 @@ void __51__GKDashboardTurnDetailViewController_chooseMatch___block_invoke(uint64
   [(GKDashboardTurnDetailViewController *)self setNeedsFocusUpdate];
 }
 
-- (void)quitMatch:(id)a3
+- (void)quitMatch:(id)match
 {
-  v4 = a3;
+  matchCopy = match;
   v5 = MEMORY[0x277D0C2A0];
   if (!*MEMORY[0x277D0C2A0])
   {
@@ -330,19 +330,19 @@ void __51__GKDashboardTurnDetailViewController_chooseMatch___block_invoke(uint64
   [(GKDashboardTurnDetailViewController *)self disableButtons];
   if ([(GKTurnBasedMatch *)self->_match isMyTurn])
   {
-    v8 = [MEMORY[0x277CCA9A0] defaultCenter];
-    [v8 addObserver:self selector:sel_handleTurnBasedEvent_ name:*MEMORY[0x277D0BB70] object:0];
+    defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_handleTurnBasedEvent_ name:*MEMORY[0x277D0BB70] object:0];
 
-    v9 = [(UIViewController *)self _gkExtensionViewController];
-    [v9 quitTurnBasedMatch:self->_match];
+    _gkExtensionViewController = [(UIViewController *)self _gkExtensionViewController];
+    [_gkExtensionViewController quitTurnBasedMatch:self->_match];
   }
 
   else
   {
-    v10 = [(GKTurnBasedMatch *)self->_match localPlayerParticipant];
-    v11 = [v10 status];
+    localPlayerParticipant = [(GKTurnBasedMatch *)self->_match localPlayerParticipant];
+    status = [localPlayerParticipant status];
 
-    if (v11 == 4)
+    if (status == 4)
     {
       v12 = *v5;
       if (!*v5)
@@ -375,9 +375,9 @@ uint64_t __49__GKDashboardTurnDetailViewController_quitMatch___block_invoke(uint
   return [v2 _gkRemoveViewController:v2 animated:1];
 }
 
-- (void)removeMatch:(id)a3
+- (void)removeMatch:(id)match
 {
-  v4 = a3;
+  matchCopy = match;
   if (!*MEMORY[0x277D0C2A0])
   {
     v5 = GKOSLoggers();
@@ -408,11 +408,11 @@ uint64_t __51__GKDashboardTurnDetailViewController_removeMatch___block_invoke(ui
   return [v2 _gkRemoveViewController:v2 animated:1];
 }
 
-- (void)handleTurnBasedEvent:(id)a3
+- (void)handleTurnBasedEvent:(id)event
 {
-  v4 = [a3 object];
-  v5 = [(GKTurnBasedMatch *)self->_match matchID];
-  v6 = [v4 isEqualToString:v5];
+  object = [event object];
+  matchID = [(GKTurnBasedMatch *)self->_match matchID];
+  v6 = [object isEqualToString:matchID];
 
   if (v6)
   {

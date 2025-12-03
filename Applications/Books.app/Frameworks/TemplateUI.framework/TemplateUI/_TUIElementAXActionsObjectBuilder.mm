@@ -1,25 +1,25 @@
 @interface _TUIElementAXActionsObjectBuilder
-- (void)addAXAction:(id)a3;
+- (void)addAXAction:(id)action;
 @end
 
 @implementation _TUIElementAXActionsObjectBuilder
 
-- (void)addAXAction:(id)a3
+- (void)addAXAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   actions = self->_actions;
-  v8 = v4;
+  v8 = actionCopy;
   if (!actions)
   {
     v6 = objc_opt_new();
     v7 = self->_actions;
     self->_actions = v6;
 
-    v4 = v8;
+    actionCopy = v8;
     actions = self->_actions;
   }
 
-  [(NSMutableArray *)actions addObject:v4];
+  [(NSMutableArray *)actions addObject:actionCopy];
 }
 
 @end

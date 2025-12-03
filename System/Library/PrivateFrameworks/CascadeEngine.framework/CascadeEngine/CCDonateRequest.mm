@@ -1,13 +1,13 @@
 @interface CCDonateRequest
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDonateRequest:(id)a3;
-- (CCDonateRequest)initWithConnection:(id)a3 manager:(id)a4 itemType:(unsigned __int16)a5 encodedDescriptors:(id)a6 personaIdentifier:(id)a7 sourceVersion:(unint64_t)a8 sourceValidity:(id)a9 options:(unsigned __int16)a10 accessAssertion:(id)a11;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDonateRequest:(id)request;
+- (CCDonateRequest)initWithConnection:(id)connection manager:(id)manager itemType:(unsigned __int16)type encodedDescriptors:(id)descriptors personaIdentifier:(id)identifier sourceVersion:(unint64_t)version sourceValidity:(id)validity options:(unsigned __int16)self0 accessAssertion:(id)self1;
 - (id)_connectionTypeString;
 - (id)description;
 - (unint64_t)hash;
 - (void)handle;
 - (void)reject;
-- (void)terminateWithType:(int64_t)a3;
+- (void)terminateWithType:(int64_t)type;
 - (void)timeout;
 @end
 
@@ -21,10 +21,10 @@
   requestQueuedSignpostId = self->_requestQueuedSignpostId;
   if (requestQueuedSignpostId - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v3))
   {
-    v6 = [(CCDonateRequest *)self _connectionTypeString];
+    _connectionTypeString = [(CCDonateRequest *)self _connectionTypeString];
     itemType = self->_itemType;
     *buf = 138543618;
-    v19 = v6;
+    selfCopy = _connectionTypeString;
     v20 = 1026;
     v21 = itemType;
     _os_signpost_emit_with_name_impl(&dword_1DA444000, v4, OS_SIGNPOST_INTERVAL_END, requestQueuedSignpostId, "donateRequestQueued", " requestType=%{public,signpost.telemetry:string1}@  itemType=%{public,signpost.telemetry:number1}d ", buf, 0x12u);
@@ -43,9 +43,9 @@
 
   self->_requestHandledSignpostId = v9;
   WeakRetained = objc_loadWeakRetained(&self->_connection);
-  v13 = [WeakRetained isAlive];
+  isAlive = [WeakRetained isAlive];
 
-  if (v13)
+  if (isAlive)
   {
     personaIdentifier = self->_personaIdentifier;
     v17[0] = MEMORY[0x1E69E9820];
@@ -62,7 +62,7 @@
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v19 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DA444000, v15, OS_LOG_TYPE_DEFAULT, "Connection is invalidated for request %@", buf, 0xCu);
     }
 
@@ -115,39 +115,39 @@ void __25__CCDonateRequest_handle__block_invoke(uint64_t a1, void *a2)
 {
   v3 = MEMORY[0x1E696AEC0];
   requestId = self->_requestId;
-  v5 = [(CCDonateRequest *)self _connectionTypeString];
+  _connectionTypeString = [(CCDonateRequest *)self _connectionTypeString];
   sourceVersion = self->_sourceVersion;
   sourceValidity = self->_sourceValidity;
   itemType = self->_itemType;
   encodedDescriptors = self->_encodedDescriptors;
   options = self->_options;
   v11 = CCDonateServiceRequestDescription();
-  v12 = [v3 stringWithFormat:@"#%u [%@] %@", requestId, v5, v11];
+  v12 = [v3 stringWithFormat:@"#%u [%@] %@", requestId, _connectionTypeString, v11];
 
   return v12;
 }
 
-- (CCDonateRequest)initWithConnection:(id)a3 manager:(id)a4 itemType:(unsigned __int16)a5 encodedDescriptors:(id)a6 personaIdentifier:(id)a7 sourceVersion:(unint64_t)a8 sourceValidity:(id)a9 options:(unsigned __int16)a10 accessAssertion:(id)a11
+- (CCDonateRequest)initWithConnection:(id)connection manager:(id)manager itemType:(unsigned __int16)type encodedDescriptors:(id)descriptors personaIdentifier:(id)identifier sourceVersion:(unint64_t)version sourceValidity:(id)validity options:(unsigned __int16)self0 accessAssertion:(id)self1
 {
-  v17 = a3;
-  v18 = a4;
-  v29 = a6;
-  v28 = a7;
-  v27 = a9;
-  v19 = a11;
+  connectionCopy = connection;
+  managerCopy = manager;
+  descriptorsCopy = descriptors;
+  identifierCopy = identifier;
+  validityCopy = validity;
+  assertionCopy = assertion;
   v31.receiver = self;
   v31.super_class = CCDonateRequest;
   v20 = [(CCDonateRequest *)&v31 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeWeak(&v20->_connection, v17);
-    objc_storeWeak(&v21->_manager, v18);
-    v21->_itemType = a5;
-    objc_storeStrong(&v21->_encodedDescriptors, a6);
-    objc_storeStrong(&v21->_personaIdentifier, a7);
-    v21->_sourceVersion = a8;
-    objc_storeStrong(&v21->_sourceValidity, a9);
+    objc_storeWeak(&v20->_connection, connectionCopy);
+    objc_storeWeak(&v21->_manager, managerCopy);
+    v21->_itemType = type;
+    objc_storeStrong(&v21->_encodedDescriptors, descriptors);
+    objc_storeStrong(&v21->_personaIdentifier, identifier);
+    v21->_sourceVersion = version;
+    objc_storeStrong(&v21->_sourceValidity, validity);
     v21->_requestId = atomic_fetch_add(requestCount, 1u);
     v22 = __biome_log_for_category();
     v23 = os_signpost_id_generate(v22);
@@ -161,8 +161,8 @@ void __25__CCDonateRequest_handle__block_invoke(uint64_t a1, void *a2)
     }
 
     v21->_requestQueuedSignpostId = v23;
-    v21->_options = a10;
-    objc_storeStrong(&v21->_accessAssertion, a11);
+    v21->_options = options;
+    objc_storeStrong(&v21->_accessAssertion, assertion);
   }
 
   return v21;
@@ -186,7 +186,7 @@ void __25__CCDonateRequest_handle__block_invoke(uint64_t a1, void *a2)
   [v4 completeRequest:self];
 }
 
-- (void)terminateWithType:(int64_t)a3
+- (void)terminateWithType:(int64_t)type
 {
   v19 = *MEMORY[0x1E69E9840];
   v5 = __biome_log_for_category();
@@ -195,22 +195,22 @@ void __25__CCDonateRequest_handle__block_invoke(uint64_t a1, void *a2)
   if (requestHandledSignpostId - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
   {
     itemType = self->_itemType;
-    v9 = [(CCDonateRequest *)self _connectionTypeString];
-    v10 = v9;
-    if (a3 > 4)
+    _connectionTypeString = [(CCDonateRequest *)self _connectionTypeString];
+    v10 = _connectionTypeString;
+    if (type > 4)
     {
       v11 = @"Undefined";
     }
 
     else
     {
-      v11 = off_1E85C3250[a3];
+      v11 = off_1E85C3250[type];
     }
 
     v14[0] = 67240706;
     v14[1] = itemType;
     v15 = 2114;
-    v16 = v9;
+    v16 = _connectionTypeString;
     v17 = 2114;
     v18 = v11;
     _os_signpost_emit_with_name_impl(&dword_1DA444000, v6, OS_SIGNPOST_INTERVAL_END, requestHandledSignpostId, "donateRequestHandled", " itemType=%{public,signpost.telemetry:number1}d  requestType=%{public,signpost.telemetry:string1}@  result=%{public,signpost.telemetry:string2}@ ", v14, 0x1Cu);
@@ -222,28 +222,28 @@ void __25__CCDonateRequest_handle__block_invoke(uint64_t a1, void *a2)
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CCDonateRequest *)self isEqualToDonateRequest:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CCDonateRequest *)self isEqualToDonateRequest:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToDonateRequest:(id)a3
+- (BOOL)isEqualToDonateRequest:(id)request
 {
-  v6 = a3;
+  requestCopy = request;
   requestId = self->_requestId;
-  if (requestId != [v6 requestId] || (itemType = self->_itemType, itemType != objc_msgSend(v6, "itemType")))
+  if (requestId != [requestCopy requestId] || (itemType = self->_itemType, itemType != objc_msgSend(requestCopy, "itemType")))
   {
     v13 = 0;
     goto LABEL_9;
@@ -253,20 +253,20 @@ void __25__CCDonateRequest_handle__block_invoke(uint64_t a1, void *a2)
   v10 = encodedDescriptors;
   if (!encodedDescriptors)
   {
-    v11 = [v6 encodedDescriptors];
-    if (!v11)
+    encodedDescriptors = [requestCopy encodedDescriptors];
+    if (!encodedDescriptors)
     {
       v31 = 0;
       v12 = 0;
       goto LABEL_12;
     }
 
-    v31 = v11;
+    v31 = encodedDescriptors;
     v10 = self->_encodedDescriptors;
   }
 
-  v3 = [v6 encodedDescriptors];
-  if (![(NSString *)v10 isEqual:v3])
+  encodedDescriptors2 = [requestCopy encodedDescriptors];
+  if (![(NSString *)v10 isEqual:encodedDescriptors2])
   {
     v13 = 0;
 LABEL_32:
@@ -280,14 +280,14 @@ LABEL_12:
   v16 = personaIdentifier;
   if (!personaIdentifier)
   {
-    v17 = [v6 personaIdentifier];
-    if (!v17)
+    personaIdentifier = [requestCopy personaIdentifier];
+    if (!personaIdentifier)
     {
       sourceVersion = self->_sourceVersion;
       v19 = 0;
       v30 = 0;
       v13 = 0;
-      if (sourceVersion != [v6 sourceVersion])
+      if (sourceVersion != [requestCopy sourceVersion])
       {
         goto LABEL_35;
       }
@@ -295,12 +295,12 @@ LABEL_12:
       goto LABEL_21;
     }
 
-    v30 = v17;
+    v30 = personaIdentifier;
     v16 = self->_personaIdentifier;
   }
 
-  v4 = [v6 personaIdentifier];
-  if (([(NSString *)v16 isEqual:v4]& 1) == 0)
+  personaIdentifier2 = [requestCopy personaIdentifier];
+  if (([(NSString *)v16 isEqual:personaIdentifier2]& 1) == 0)
   {
 
     v13 = 0;
@@ -308,7 +308,7 @@ LABEL_12:
   }
 
   v18 = self->_sourceVersion;
-  if (v18 != [v6 sourceVersion])
+  if (v18 != [requestCopy sourceVersion])
   {
     v13 = 0;
     goto LABEL_29;
@@ -320,11 +320,11 @@ LABEL_21:
   v22 = sourceValidity;
   if (!sourceValidity)
   {
-    v23 = [v6 sourceValidity];
-    if (!v23)
+    sourceValidity = [requestCopy sourceValidity];
+    if (!sourceValidity)
     {
       options = self->_options;
-      v13 = options == [v6 options];
+      v13 = options == [requestCopy options];
       if ((v19 & 1) == 0)
       {
         goto LABEL_30;
@@ -335,16 +335,16 @@ LABEL_29:
       goto LABEL_30;
     }
 
-    v27 = v23;
+    v27 = sourceValidity;
     v22 = self->_sourceValidity;
   }
 
   v29 = v19;
-  v24 = [v6 sourceValidity];
-  if ([(NSString *)v22 isEqual:v24])
+  sourceValidity2 = [requestCopy sourceValidity];
+  if ([(NSString *)v22 isEqual:sourceValidity2])
   {
     v25 = self->_options;
-    v13 = v25 == [v6 options];
+    v13 = v25 == [requestCopy options];
   }
 
   else

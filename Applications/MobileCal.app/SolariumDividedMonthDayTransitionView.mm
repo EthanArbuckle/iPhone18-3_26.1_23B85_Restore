@@ -1,25 +1,25 @@
 @interface SolariumDividedMonthDayTransitionView
-- (void)animateToDayWithCompletion:(id)a3;
-- (void)animateToMonthWithCompletion:(id)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)animateToDayWithCompletion:(id)completion;
+- (void)animateToMonthWithCompletion:(id)completion;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 @end
 
 @implementation SolariumDividedMonthDayTransitionView
 
-- (void)animateToMonthWithCompletion:(id)a3
+- (void)animateToMonthWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(MonthDayTransitionView *)self animating])
   {
     [(MonthDayTransitionView *)self _haltAnimations];
   }
 
-  [(SolariumDividedMonthDayTransitionView *)self setCompletion:v4];
-  v5 = [(MonthDayTransitionView *)self paletteView];
-  [v5 layoutSubviews];
+  [(SolariumDividedMonthDayTransitionView *)self setCompletion:completionCopy];
+  paletteView = [(MonthDayTransitionView *)self paletteView];
+  [paletteView layoutSubviews];
 
-  v6 = [(MonthDayTransitionView *)self monthViewController];
-  [v6 forceUpdateListView];
+  monthViewController = [(MonthDayTransitionView *)self monthViewController];
+  [monthViewController forceUpdateListView];
 
   [(MonthDayTransitionView *)self monthScrubberFrame];
   v8 = v7;
@@ -28,38 +28,38 @@
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(MonthDayTransitionView *)self monthViewController];
-  [v15 enterAnimationSplitStateWithCutOutArea:v8 topBoundary:{v10, v12, v14, 0.0}];
+  monthViewController2 = [(MonthDayTransitionView *)self monthViewController];
+  [monthViewController2 enterAnimationSplitStateWithCutOutArea:v8 topBoundary:{v10, v12, v14, 0.0}];
 
-  v16 = [(MonthDayTransitionView *)self monthViewController];
-  v17 = [v16 view];
-  [v17 frame];
+  monthViewController3 = [(MonthDayTransitionView *)self monthViewController];
+  view = [monthViewController3 view];
+  [view frame];
 
-  v18 = [(MonthDayTransitionView *)self bottomView];
-  [v18 setHidden:1];
+  bottomView = [(MonthDayTransitionView *)self bottomView];
+  [bottomView setHidden:1];
 
-  v19 = [(MonthDayTransitionView *)self bottomView];
-  [v19 frame];
+  bottomView2 = [(MonthDayTransitionView *)self bottomView];
+  [bottomView2 frame];
   v21 = v20;
   v23 = v22;
 
   [(MonthDayTransitionView *)self dayViewDayLocation];
   v25 = v24;
   v27 = v26;
-  v28 = [(MonthDayTransitionView *)self bottomView];
-  [v28 setFrame:{v25, v27, v21, v23}];
+  bottomView3 = [(MonthDayTransitionView *)self bottomView];
+  [bottomView3 setFrame:{v25, v27, v21, v23}];
 
-  v29 = [(MonthDayTransitionView *)self allDayView];
-  [v29 setAlpha:1.0];
+  allDayView = [(MonthDayTransitionView *)self allDayView];
+  [allDayView setAlpha:1.0];
 
-  v30 = [(MonthDayTransitionView *)self bottomView];
-  v31 = [v30 snapshotViewAfterScreenUpdates:0];
+  bottomView4 = [(MonthDayTransitionView *)self bottomView];
+  v31 = [bottomView4 snapshotViewAfterScreenUpdates:0];
 
-  v32 = [(MonthDayTransitionView *)self bottomView];
-  [(SolariumDividedMonthDayTransitionView *)self insertSubview:v31 aboveSubview:v32];
+  bottomView5 = [(MonthDayTransitionView *)self bottomView];
+  [(SolariumDividedMonthDayTransitionView *)self insertSubview:v31 aboveSubview:bottomView5];
 
-  v33 = [(MonthDayTransitionView *)self bottomView];
-  [v33 convertPoint:self toView:{CGPointZero.x, CGPointZero.y}];
+  bottomView6 = [(MonthDayTransitionView *)self bottomView];
+  [bottomView6 convertPoint:self toView:{CGPointZero.x, CGPointZero.y}];
   v35 = v34;
   v37 = v36;
 
@@ -68,52 +68,52 @@
   v41 = v40;
   [v31 setFrame:{v35, v37}];
   [(MonthDayTransitionView *)self setAnimating:1];
-  v42 = [(MonthDayTransitionView *)self scrubber];
-  [v42 setHidden:0];
+  scrubber = [(MonthDayTransitionView *)self scrubber];
+  [scrubber setHidden:0];
 
-  v43 = [objc_opt_class() dividedMonthPaletteBackgroundColor];
-  v44 = [(MonthDayTransitionView *)self scrubber];
-  [v44 setBackgroundColor:v43];
+  dividedMonthPaletteBackgroundColor = [objc_opt_class() dividedMonthPaletteBackgroundColor];
+  scrubber2 = [(MonthDayTransitionView *)self scrubber];
+  [scrubber2 setBackgroundColor:dividedMonthPaletteBackgroundColor];
 
-  v45 = [(MonthDayTransitionView *)self paletteView];
-  v46 = [v45 dayScrubberController];
-  v47 = [v46 view];
-  [v47 setHidden:1];
+  paletteView2 = [(MonthDayTransitionView *)self paletteView];
+  dayScrubberController = [paletteView2 dayScrubberController];
+  view2 = [dayScrubberController view];
+  [view2 setHidden:1];
 
-  v48 = [(MonthDayTransitionView *)self scrubber];
-  [v48 setVerticallyCompressedState:1];
+  scrubber3 = [(MonthDayTransitionView *)self scrubber];
+  [scrubber3 setVerticallyCompressedState:1];
 
-  v49 = [(MonthDayTransitionView *)self scrubber];
-  [v49 layoutIfNeeded];
+  scrubber4 = [(MonthDayTransitionView *)self scrubber];
+  [scrubber4 layoutIfNeeded];
 
-  v50 = [(MonthDayTransitionView *)self scrubber];
-  [v50 animateToMonthLayout];
+  scrubber5 = [(MonthDayTransitionView *)self scrubber];
+  [scrubber5 animateToMonthLayout];
 
-  v51 = [(MonthDayTransitionView *)self scrubber];
-  [(SolariumDividedMonthDayTransitionView *)self bringSubviewToFront:v51];
+  scrubber6 = [(MonthDayTransitionView *)self scrubber];
+  [(SolariumDividedMonthDayTransitionView *)self bringSubviewToFront:scrubber6];
 
-  v52 = [(MonthDayTransitionView *)self monthViewController];
-  v53 = [v52 view];
-  [v53 frame];
+  monthViewController4 = [(MonthDayTransitionView *)self monthViewController];
+  view3 = [monthViewController4 view];
+  [view3 frame];
   v55 = v54;
   v57 = v56;
 
-  v58 = [(MonthDayTransitionView *)self monthViewController];
-  v59 = [v58 view];
-  [v59 frame];
+  monthViewController5 = [(MonthDayTransitionView *)self monthViewController];
+  view4 = [monthViewController5 view];
+  [view4 frame];
   v61 = v60;
 
-  v62 = [(MonthDayTransitionView *)self monthViewController];
-  [v62 frameOfListView];
+  monthViewController6 = [(MonthDayTransitionView *)self monthViewController];
+  [monthViewController6 frameOfListView];
   v63 = CGRectGetMinY(v142) + -63.0 + -17.0;
 
-  v64 = [(MonthDayTransitionView *)self monthViewController];
-  v65 = [v64 view];
-  [v65 setAlpha:0.0];
+  monthViewController7 = [(MonthDayTransitionView *)self monthViewController];
+  view5 = [monthViewController7 view];
+  [view5 setAlpha:0.0];
 
-  v66 = [(MonthDayTransitionView *)self monthViewController];
-  v67 = [v66 view];
-  [v67 setFrame:{0.0, -v63, v39, v41}];
+  monthViewController8 = [(MonthDayTransitionView *)self monthViewController];
+  view6 = [monthViewController8 view];
+  [view6 setFrame:{0.0, -v63, v39, v41}];
 
   springAnimationDuration();
   v69 = v68;
@@ -138,18 +138,18 @@
   v141[4] = self;
   [UIView _animateWithDuration:393216 delay:v70 options:v71 factory:v141 animations:v69 completion:0.0];
 
-  v72 = [(MonthDayTransitionView *)self paletteView];
-  v73 = [v72 dateLabel];
-  [v73 setAlpha:0.0];
+  paletteView3 = [(MonthDayTransitionView *)self paletteView];
+  dateLabel = [paletteView3 dateLabel];
+  [dateLabel setAlpha:0.0];
 
   [(MonthDayTransitionView *)self weekDayInitialsDay];
   v75 = v74;
   v77 = v76;
   v79 = v78;
   v81 = v80;
-  v82 = [(MonthDayTransitionView *)self paletteView];
-  v83 = [v82 dayInitialsHeaderView];
-  [v83 setFrame:{v75, v77, v79, v81}];
+  paletteView4 = [(MonthDayTransitionView *)self paletteView];
+  dayInitialsHeaderView = [paletteView4 dayInitialsHeaderView];
+  [dayInitialsHeaderView setFrame:{v75, v77, v79, v81}];
 
   springAnimationDuration();
   v85 = v84;
@@ -158,19 +158,19 @@
   v137 = 3221225472;
   v138 = sub_10012001C;
   v139 = &unk_10020EB00;
-  v140 = self;
+  selfCopy = self;
   v87 = navigationAnimationsPreferringFRR();
   [UIView _animateWithDuration:393216 delay:v86 options:v87 factory:0 animations:v85 completion:0.0];
 
-  v88 = [(MonthDayTransitionView *)self monthViewController];
-  [v88 frameOfListView];
+  monthViewController9 = [(MonthDayTransitionView *)self monthViewController];
+  [monthViewController9 frameOfListView];
   v90 = v89;
   v92 = v91;
   v94 = v93;
   v96 = v95;
-  v97 = [(MonthDayTransitionView *)self monthViewController];
-  v98 = [v97 view];
-  [(SolariumDividedMonthDayTransitionView *)self convertRect:v98 fromView:v90, v92, v94, v96];
+  monthViewController10 = [(MonthDayTransitionView *)self monthViewController];
+  view7 = [monthViewController10 view];
+  [(SolariumDividedMonthDayTransitionView *)self convertRect:view7 fromView:v90, v92, v94, v96];
   v100 = v99;
   v102 = v101;
   v104 = v103;
@@ -203,9 +203,9 @@
   v115 = navigationAnimationsPreferringFRR();
   [UIView _animateWithDuration:393216 delay:v113 options:v115 factory:0 animations:v112 completion:0.0];
 
-  v116 = [(MonthDayTransitionView *)self bottomView];
+  bottomView7 = [(MonthDayTransitionView *)self bottomView];
   [(MonthDayTransitionView *)self dayViewMonthLocation];
-  v117 = [(MonthDayTransitionView *)self _animateView:v116 toPosition:1 setDelegate:?];
+  v117 = [(MonthDayTransitionView *)self _animateView:bottomView7 toPosition:1 setDelegate:?];
 
   block[5] = _NSConcreteStackBlock;
   block[6] = 3221225472;
@@ -236,31 +236,31 @@
   dispatch_after(v122, &_dispatch_main_q, block);
 }
 
-- (void)animateToDayWithCompletion:(id)a3
+- (void)animateToDayWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(MonthDayTransitionView *)self animating])
   {
     [(MonthDayTransitionView *)self _haltAnimations];
   }
 
-  [(SolariumDividedMonthDayTransitionView *)self setCompletion:v4];
-  v5 = [(MonthDayTransitionView *)self monthViewController];
-  [v5 forceUpdateListView];
+  [(SolariumDividedMonthDayTransitionView *)self setCompletion:completionCopy];
+  monthViewController = [(MonthDayTransitionView *)self monthViewController];
+  [monthViewController forceUpdateListView];
 
-  v6 = [(MonthDayTransitionView *)self monthViewController];
-  v7 = [v6 view];
+  monthViewController2 = [(MonthDayTransitionView *)self monthViewController];
+  view = [monthViewController2 view];
   [(MonthDayTransitionView *)self monthScrubberFrame];
-  [v7 convertRect:self fromView:?];
+  [view convertRect:self fromView:?];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
 
-  v16 = [(MonthDayTransitionView *)self monthViewController];
-  v17 = [v16 view];
+  monthViewController3 = [(MonthDayTransitionView *)self monthViewController];
+  view2 = [monthViewController3 view];
   [(MonthDayTransitionView *)self dayScrubberFrame];
-  [v17 convertPoint:self fromView:?];
+  [view2 convertPoint:self fromView:?];
   v19 = v18;
 
   v111.origin.x = v9;
@@ -268,17 +268,17 @@
   v111.size.width = v13;
   v111.size.height = v15;
   v20 = CGRectGetMinY(v111) - v19;
-  v21 = [(MonthDayTransitionView *)self monthViewController];
-  [v21 enterAnimationSplitStateWithCutOutArea:v9 topBoundary:{v11, v13, v15, v19}];
+  monthViewController4 = [(MonthDayTransitionView *)self monthViewController];
+  [monthViewController4 enterAnimationSplitStateWithCutOutArea:v9 topBoundary:{v11, v13, v15, v19}];
 
-  v22 = [(MonthDayTransitionView *)self paletteView];
-  v23 = [(MonthDayTransitionView *)self monthViewController];
-  v24 = [v23 view];
-  [v22 convertPoint:v24 fromView:{CGPointZero.x, CGPointZero.y}];
+  paletteView = [(MonthDayTransitionView *)self paletteView];
+  monthViewController5 = [(MonthDayTransitionView *)self monthViewController];
+  view3 = [monthViewController5 view];
+  [paletteView convertPoint:view3 fromView:{CGPointZero.x, CGPointZero.y}];
 
-  v25 = [(MonthDayTransitionView *)self monthViewController];
-  v26 = [v25 view];
-  [v26 frame];
+  monthViewController6 = [(MonthDayTransitionView *)self monthViewController];
+  view4 = [monthViewController6 view];
+  [view4 frame];
   v28 = v27;
 
   [(MonthDayTransitionView *)self weekDayInitialsMonth];
@@ -286,34 +286,34 @@
   v32 = v31;
   v34 = v33;
   v36 = v35;
-  v37 = [(MonthDayTransitionView *)self paletteView];
-  v38 = [v37 dayInitialsHeaderView];
-  [v38 setFrame:{v30, v32, v34, v36}];
+  paletteView2 = [(MonthDayTransitionView *)self paletteView];
+  dayInitialsHeaderView = [paletteView2 dayInitialsHeaderView];
+  [dayInitialsHeaderView setFrame:{v30, v32, v34, v36}];
 
   [(MonthDayTransitionView *)self setAnimating:1];
-  v39 = [(MonthDayTransitionView *)self paletteView];
-  v40 = [v39 dayScrubberController];
-  v41 = [v40 view];
-  [v41 setHidden:1];
+  paletteView3 = [(MonthDayTransitionView *)self paletteView];
+  dayScrubberController = [paletteView3 dayScrubberController];
+  view5 = [dayScrubberController view];
+  [view5 setHidden:1];
 
-  v42 = [(MonthDayTransitionView *)self scrubber];
-  [v42 setHidden:0];
+  scrubber = [(MonthDayTransitionView *)self scrubber];
+  [scrubber setHidden:0];
 
-  v43 = [(MonthDayTransitionView *)self scrubber];
-  [v43 setVerticallyCompressedState:1];
+  scrubber2 = [(MonthDayTransitionView *)self scrubber];
+  [scrubber2 setVerticallyCompressedState:1];
 
-  v44 = [(MonthDayTransitionView *)self scrubber];
-  [v44 layoutIfNeeded];
+  scrubber3 = [(MonthDayTransitionView *)self scrubber];
+  [scrubber3 layoutIfNeeded];
 
   v45 = +[CompactMonthViewController dividedModeBackgroundColor];
-  v46 = [(MonthDayTransitionView *)self scrubber];
-  [v46 setBackgroundColor:v45];
+  scrubber4 = [(MonthDayTransitionView *)self scrubber];
+  [scrubber4 setBackgroundColor:v45];
 
-  v47 = [(MonthDayTransitionView *)self scrubber];
-  [v47 animateToDayLayout];
+  scrubber5 = [(MonthDayTransitionView *)self scrubber];
+  [scrubber5 animateToDayLayout];
 
-  v48 = [(MonthDayTransitionView *)self scrubber];
-  [(SolariumDividedMonthDayTransitionView *)self bringSubviewToFront:v48];
+  scrubber6 = [(MonthDayTransitionView *)self scrubber];
+  [(SolariumDividedMonthDayTransitionView *)self bringSubviewToFront:scrubber6];
 
   springAnimationDuration();
   v50 = v49;
@@ -331,13 +331,13 @@
   v56 = v55;
   v58 = v57;
   v60 = v59;
-  v61 = [(MonthDayTransitionView *)self paletteView];
-  v62 = [v61 dayInitialsHeaderView];
-  [v62 setFrame:{v54, v56, v58, v60}];
+  paletteView4 = [(MonthDayTransitionView *)self paletteView];
+  dayInitialsHeaderView2 = [paletteView4 dayInitialsHeaderView];
+  [dayInitialsHeaderView2 setFrame:{v54, v56, v58, v60}];
 
-  v63 = [(MonthDayTransitionView *)self paletteView];
-  v64 = [v63 animatableDateLabel];
-  [v64 setAlpha:1.0];
+  paletteView5 = [(MonthDayTransitionView *)self paletteView];
+  animatableDateLabel = [paletteView5 animatableDateLabel];
+  [animatableDateLabel setAlpha:1.0];
 
   springAnimationDuration();
   v66 = v65;
@@ -350,19 +350,19 @@
   v68 = navigationAnimationsPreferringFRR();
   [UIView _animateWithDuration:393216 delay:v67 options:v68 factory:0 animations:v66 completion:0.0];
 
-  v69 = [(MonthDayTransitionView *)self monthViewController];
-  v70 = [v69 view];
-  [v70 frame];
+  monthViewController7 = [(MonthDayTransitionView *)self monthViewController];
+  view6 = [monthViewController7 view];
+  [view6 frame];
   v72 = v71;
 
-  v73 = [(MonthDayTransitionView *)self monthViewController];
-  v74 = [v73 view];
-  [v74 frame];
+  monthViewController8 = [(MonthDayTransitionView *)self monthViewController];
+  view7 = [monthViewController8 view];
+  [view7 frame];
   v76 = v75;
 
-  v77 = [(MonthDayTransitionView *)self monthViewController];
-  v78 = [v77 view];
-  [v78 setAlpha:1.0];
+  monthViewController9 = [(MonthDayTransitionView *)self monthViewController];
+  view8 = [monthViewController9 view];
+  [view8 setAlpha:1.0];
 
   springAnimationDuration();
   v80 = v79;
@@ -386,33 +386,33 @@
   v110[7] = v72;
   [UIView _animateWithDuration:393216 delay:v81 options:v82 factory:v110 animations:v80 completion:0.0];
 
-  v83 = [(MonthDayTransitionView *)self monthViewController];
-  [v83 frameOfListView];
+  monthViewController10 = [(MonthDayTransitionView *)self monthViewController];
+  [monthViewController10 frameOfListView];
   MinY = CGRectGetMinY(v112);
-  v85 = [(MonthDayTransitionView *)self monthViewController];
-  v86 = [v85 view];
-  [v86 frame];
+  monthViewController11 = [(MonthDayTransitionView *)self monthViewController];
+  view9 = [monthViewController11 view];
+  [view9 frame];
   v87 = MinY / CGRectGetHeight(v113);
 
   CATransform3DMakeScale(&v109, 1.0, v87, 1.0);
-  v88 = [(MonthDayTransitionView *)self bottomView];
-  v89 = [v88 layer];
+  bottomView = [(MonthDayTransitionView *)self bottomView];
+  layer = [bottomView layer];
   v108 = v109;
-  [v89 setTransform:&v108];
+  [layer setTransform:&v108];
 
-  v90 = [(MonthDayTransitionView *)self bottomView];
-  [v90 setAlpha:0.0];
+  bottomView2 = [(MonthDayTransitionView *)self bottomView];
+  [bottomView2 setAlpha:0.0];
 
-  v91 = [(MonthDayTransitionView *)self bottomView];
-  [v91 setHidden:0];
+  bottomView3 = [(MonthDayTransitionView *)self bottomView];
+  [bottomView3 setHidden:0];
 
-  v92 = [(MonthDayTransitionView *)self bottomView];
-  [v92 frame];
+  bottomView4 = [(MonthDayTransitionView *)self bottomView];
+  [bottomView4 frame];
   v94 = v93;
   v96 = v95;
 
-  v97 = [(MonthDayTransitionView *)self bottomView];
-  [v97 setFrame:{0.0, v28, v94, v96}];
+  bottomView5 = [(MonthDayTransitionView *)self bottomView];
+  [bottomView5 setFrame:{0.0, v28, v94, v96}];
 
   springAnimationDuration();
   v99 = v98;
@@ -451,13 +451,13 @@
   dispatch_after(v105, &_dispatch_main_q, block);
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
   v12.receiver = self;
   v12.super_class = SolariumDividedMonthDayTransitionView;
-  [(MonthDayTransitionView *)&v12 animationDidStop:a3 finished:a4];
-  v5 = [(MonthDayTransitionView *)self bottomView];
-  v6 = [v5 layer];
+  [(MonthDayTransitionView *)&v12 animationDidStop:stop finished:finished];
+  bottomView = [(MonthDayTransitionView *)self bottomView];
+  layer = [bottomView layer];
   v7 = *&CATransform3DIdentity.m33;
   v11[4] = *&CATransform3DIdentity.m31;
   v11[5] = v7;
@@ -470,7 +470,7 @@
   v10 = *&CATransform3DIdentity.m23;
   v11[2] = *&CATransform3DIdentity.m21;
   v11[3] = v10;
-  [v6 setTransform:v11];
+  [layer setTransform:v11];
 }
 
 @end

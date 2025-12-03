@@ -1,30 +1,30 @@
 @interface AMSFailingBagValue
-- (AMSFailingBagValue)initWithKey:(id)a3 valueType:(unint64_t)a4 error:(id)a5;
-- (AMSFailingBagValue)valueWithCompletion:(id)a3;
+- (AMSFailingBagValue)initWithKey:(id)key valueType:(unint64_t)type error:(id)error;
+- (AMSFailingBagValue)valueWithCompletion:(id)completion;
 @end
 
 @implementation AMSFailingBagValue
 
-- (AMSFailingBagValue)initWithKey:(id)a3 valueType:(unint64_t)a4 error:(id)a5
+- (AMSFailingBagValue)initWithKey:(id)key valueType:(unint64_t)type error:(id)error
 {
-  v9 = a5;
+  errorCopy = error;
   v13.receiver = self;
   v13.super_class = AMSFailingBagValue;
-  v10 = [(AMSFrozenBagValue *)&v13 initWithKey:a3 value:0 valueType:a4];
+  v10 = [(AMSFrozenBagValue *)&v13 initWithKey:key value:0 valueType:type];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_error, a5);
+    objc_storeStrong(&v10->_error, error);
   }
 
   return v11;
 }
 
-- (AMSFailingBagValue)valueWithCompletion:(id)a3
+- (AMSFailingBagValue)valueWithCompletion:(id)completion
 {
-  v5 = a3;
-  v7 = [(AMSFailingBagValue *)self error];
-  (*(a3 + 2))(v5, 0, 0, v7);
+  completionCopy = completion;
+  error = [(AMSFailingBagValue *)self error];
+  (*(completion + 2))(completionCopy, 0, 0, error);
 
   return result;
 }

@@ -9,7 +9,7 @@
 {
   v8 = a3;
   v9 = a4;
-  v10 = [[a1 alloc] initForReadingFromData:v9 error:a5];
+  v10 = [[self alloc] initForReadingFromData:v9 error:a5];
   if (v10)
   {
     v11 = v10;
@@ -31,7 +31,7 @@
   v8 = MEMORY[0x1E695DFD8];
   v9 = a4;
   v10 = [v8 setWithObject:a3];
-  v11 = [a1 ar_unarchivedObjectOfClasses:v10 fromData:v9 error:a5];
+  v11 = [self ar_unarchivedObjectOfClasses:v10 fromData:v9 error:a5];
 
   return v11;
 }

@@ -1,13 +1,13 @@
 @interface POPlayPodcastCollection
-- (id)_playbackQueueIdentifiers:(BOOL *)a3 queueStatus:(unint64_t *)a4;
-- (void)performWithCompletion:(id)a3 serviceHelper:(id)a4;
+- (id)_playbackQueueIdentifiers:(BOOL *)identifiers queueStatus:(unint64_t *)status;
+- (void)performWithCompletion:(id)completion serviceHelper:(id)helper;
 @end
 
 @implementation POPlayPodcastCollection
 
-- (void)performWithCompletion:(id)a3 serviceHelper:(id)a4
+- (void)performWithCompletion:(id)completion serviceHelper:(id)helper
 {
-  v5 = a3;
+  completionCopy = completion;
   v51 = 0;
   v50 = 0;
   v8 = objc_msgSend__playbackQueueIdentifiers_queueStatus_(self, v6, &v51, &v50, v7);
@@ -16,7 +16,7 @@
   if (v13)
   {
     v19 = objc_msgSend_dictionary(v13, v14, v15, v16, v17);
-    v5[2](v5, v19);
+    completionCopy[2](completionCopy, v19);
   }
 
   else
@@ -32,16 +32,16 @@
     v47[2] = sub_233536B78;
     v47[3] = &unk_2789DE628;
     v49 = v51;
-    v48 = v5;
+    v48 = completionCopy;
     objc_msgSend_performPodcastsPlaybackRequestWithIdentifier_assetInfo_hashedRouteUIDs_startPlaying_requesterSharedUserId_sharedUserIdFromPlayableITunesAccount_context_completion_(POUtilities, v46, v8, v20, v25, started, v35, v40, v45, v47);
 
     v19 = v48;
   }
 }
 
-- (id)_playbackQueueIdentifiers:(BOOL *)a3 queueStatus:(unint64_t *)a4
+- (id)_playbackQueueIdentifiers:(BOOL *)identifiers queueStatus:(unint64_t *)status
 {
-  v7 = objc_msgSend_podcastCollection(self, a2, a3, a4, v4);
+  v7 = objc_msgSend_podcastCollection(self, a2, identifiers, status, v4);
   v11 = objc_msgSend_typeFromDomainObject_(POUtilities, v8, v7, v9, v10);
 
   v16 = objc_msgSend_podcastCollection(self, v12, v13, v14, v15);
@@ -64,9 +64,9 @@
     v59 = objc_msgSend_episodePlaybackOrder(self, v55, v56, v57, v58);
     v49 = objc_msgSend_playbackQueueIdentifierForPodcastAdamId_sampPlaybackOrder_(v54, v60, v20, v59, v61);
 
-    if (a3)
+    if (identifiers)
     {
-      *a3 = 1;
+      *identifiers = 1;
     }
   }
 

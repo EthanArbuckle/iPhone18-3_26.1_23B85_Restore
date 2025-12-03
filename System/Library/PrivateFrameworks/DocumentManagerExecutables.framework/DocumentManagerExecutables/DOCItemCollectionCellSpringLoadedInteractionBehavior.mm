@@ -1,23 +1,23 @@
 @interface DOCItemCollectionCellSpringLoadedInteractionBehavior
-- (BOOL)shouldAllowInteraction:(id)a3 withContext:(id)a4;
+- (BOOL)shouldAllowInteraction:(id)interaction withContext:(id)context;
 - (_TtC26DocumentManagerExecutables52DOCItemCollectionCellSpringLoadedInteractionBehavior)init;
-- (void)interactionDidFinish:(id)a3;
+- (void)interactionDidFinish:(id)finish;
 @end
 
 @implementation DOCItemCollectionCellSpringLoadedInteractionBehavior
 
-- (BOOL)shouldAllowInteraction:(id)a3 withContext:(id)a4
+- (BOOL)shouldAllowInteraction:(id)interaction withContext:(id)context
 {
-  v6 = a3;
+  interactionCopy = interaction;
   swift_unknownObjectRetain();
-  v7 = self;
-  v8 = specialized DOCItemCollectionCellSpringLoadedInteractionBehavior.shouldAllow(_:with:)(a4);
+  selfCopy = self;
+  v8 = specialized DOCItemCollectionCellSpringLoadedInteractionBehavior.shouldAllow(_:with:)(context);
 
   swift_unknownObjectRelease();
   return v8 & 1;
 }
 
-- (void)interactionDidFinish:(id)a3
+- (void)interactionDidFinish:(id)finish
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)

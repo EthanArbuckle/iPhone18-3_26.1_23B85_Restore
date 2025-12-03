@@ -1,42 +1,42 @@
 @interface PKPhysicalCardManualActivationViewController
-- (PKPhysicalCardManualActivationViewController)initWithAccountService:(id)a3 account:(id)a4 accountUser:(id)a5 paymentPass:(id)a6 physicalCard:(id)a7 activationCode:(id)a8;
-- (id)presentationSceneIdentifierForPhysicalCardActionController:(id)a3;
-- (void)_presentDisplayableError:(id)a3;
+- (PKPhysicalCardManualActivationViewController)initWithAccountService:(id)service account:(id)account accountUser:(id)user paymentPass:(id)pass physicalCard:(id)card activationCode:(id)code;
+- (id)presentationSceneIdentifierForPhysicalCardActionController:(id)controller;
+- (void)_presentDisplayableError:(id)error;
 - (void)_setupForCurrentState;
-- (void)_showSpinner:(BOOL)a3;
+- (void)_showSpinner:(BOOL)spinner;
 - (void)dealloc;
-- (void)explanationViewDidSelectContinue:(id)a3;
-- (void)explanationViewDidSelectSetupLater:(id)a3;
-- (void)physicalCardActionController:(id)a3 didChangeToState:(int64_t)a4 withError:(id)a5;
+- (void)explanationViewDidSelectContinue:(id)continue;
+- (void)explanationViewDidSelectSetupLater:(id)later;
+- (void)physicalCardActionController:(id)controller didChangeToState:(int64_t)state withError:(id)error;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PKPhysicalCardManualActivationViewController
 
-- (PKPhysicalCardManualActivationViewController)initWithAccountService:(id)a3 account:(id)a4 accountUser:(id)a5 paymentPass:(id)a6 physicalCard:(id)a7 activationCode:(id)a8
+- (PKPhysicalCardManualActivationViewController)initWithAccountService:(id)service account:(id)account accountUser:(id)user paymentPass:(id)pass physicalCard:(id)card activationCode:(id)code
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  serviceCopy = service;
+  accountCopy = account;
+  userCopy = user;
+  passCopy = pass;
+  cardCopy = card;
+  codeCopy = code;
   v27.receiver = self;
   v27.super_class = PKPhysicalCardManualActivationViewController;
   v20 = [(PKExplanationViewController *)&v27 initWithContext:0];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_physicalCard, a7);
-    v22 = [[PKPhysicalCardActionController alloc] initWithAccountService:v14 account:v15 accountUser:v16 delegate:v21];
+    objc_storeStrong(&v20->_physicalCard, card);
+    v22 = [[PKPhysicalCardActionController alloc] initWithAccountService:serviceCopy account:accountCopy accountUser:userCopy delegate:v21];
     actionController = v21->_actionController;
     v21->_actionController = v22;
 
-    v21->_feature = [v15 feature];
-    objc_storeStrong(&v21->_paymentPass, a6);
-    v24 = [v19 copy];
+    v21->_feature = [accountCopy feature];
+    objc_storeStrong(&v21->_paymentPass, pass);
+    v24 = [codeCopy copy];
     activationCode = v21->_activationCode;
     v21->_activationCode = v24;
 
@@ -68,29 +68,29 @@
   v9.receiver = self;
   v9.super_class = PKPhysicalCardManualActivationViewController;
   [(PKExplanationViewController *)&v9 viewDidLoad];
-  v3 = [(PKPhysicalCardManualActivationViewController *)self navigationItem];
-  [v3 setHidesBackButton:1 animated:0];
+  navigationItem = [(PKPhysicalCardManualActivationViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:1 animated:0];
 
   v4 = objc_alloc_init(PKOrderPhysicalCardHeroView);
   hero = self->_hero;
   self->_hero = v4;
 
-  v6 = [(PKOrderPhysicalCardHeroView *)self->_hero artworkView];
-  v7 = [(PKPhysicalCard *)self->_physicalCard nameOnCard];
-  [v6 setNameOnCard:v7];
+  artworkView = [(PKOrderPhysicalCardHeroView *)self->_hero artworkView];
+  nameOnCard = [(PKPhysicalCard *)self->_physicalCard nameOnCard];
+  [artworkView setNameOnCard:nameOnCard];
 
-  v8 = [(PKExplanationViewController *)self explanationView];
-  [v8 setShowPrivacyView:0];
-  [v8 setHeroView:self->_hero];
-  [v8 setImageIgnoresTopSafeArea:1];
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  [explanationView setShowPrivacyView:0];
+  [explanationView setHeroView:self->_hero];
+  [explanationView setImageIgnoresTopSafeArea:1];
   [(PKPhysicalCardManualActivationViewController *)self _setupForCurrentState];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = PKPhysicalCardManualActivationViewController;
-  [(PKPhysicalCardManualActivationViewController *)&v6 viewWillAppear:a3];
+  [(PKPhysicalCardManualActivationViewController *)&v6 viewWillAppear:appear];
   if (!self->_sharingClient)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69CDE40]);
@@ -101,11 +101,11 @@
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v8.receiver = self;
   v8.super_class = PKPhysicalCardManualActivationViewController;
-  [(PKPhysicalCardManualActivationViewController *)&v8 viewWillDisappear:a3];
+  [(PKPhysicalCardManualActivationViewController *)&v8 viewWillDisappear:disappear];
   inUseAssertion = self->_inUseAssertion;
   if (inUseAssertion)
   {
@@ -123,7 +123,7 @@
   }
 }
 
-- (void)explanationViewDidSelectSetupLater:(id)a3
+- (void)explanationViewDidSelectSetupLater:(id)later
 {
   if (PKDeviceSupportsReaderMode())
   {
@@ -183,13 +183,13 @@ uint64_t __83__PKPhysicalCardManualActivationViewController_explanationViewDidSe
   }
 }
 
-- (void)explanationViewDidSelectContinue:(id)a3
+- (void)explanationViewDidSelectContinue:(id)continue
 {
-  v4 = a3;
+  continueCopy = continue;
   state = self->_state;
   if (state == 2)
   {
-    v12 = v4;
+    v12 = continueCopy;
     [(PKPhysicalCardManualActivationViewController *)self dismissViewControllerAnimated:1 completion:0];
   }
 
@@ -200,7 +200,7 @@ uint64_t __83__PKPhysicalCardManualActivationViewController_explanationViewDidSe
       goto LABEL_10;
     }
 
-    v12 = v4;
+    v12 = continueCopy;
     if (!self->_inUseAssertion)
     {
       v6 = MEMORY[0x1E695FBE0];
@@ -223,21 +223,21 @@ uint64_t __83__PKPhysicalCardManualActivationViewController_explanationViewDidSe
     }
   }
 
-  v4 = v12;
+  continueCopy = v12;
 LABEL_10:
 }
 
-- (void)physicalCardActionController:(id)a3 didChangeToState:(int64_t)a4 withError:(id)a5
+- (void)physicalCardActionController:(id)controller didChangeToState:(int64_t)state withError:(id)error
 {
-  v7 = a5;
+  errorCopy = error;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __104__PKPhysicalCardManualActivationViewController_physicalCardActionController_didChangeToState_withError___block_invoke;
   block[3] = &unk_1E8012C50;
-  v10 = v7;
-  v11 = a4;
+  v10 = errorCopy;
+  stateCopy = state;
   block[4] = self;
-  v8 = v7;
+  v8 = errorCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -288,14 +288,14 @@ LABEL_14:
   }
 }
 
-- (id)presentationSceneIdentifierForPhysicalCardActionController:(id)a3
+- (id)presentationSceneIdentifierForPhysicalCardActionController:(id)controller
 {
-  v3 = [(PKPhysicalCardManualActivationViewController *)self view];
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
-  v6 = [v5 _sceneIdentifier];
+  view = [(PKPhysicalCardManualActivationViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  _sceneIdentifier = [windowScene _sceneIdentifier];
 
-  return v6;
+  return _sceneIdentifier;
 }
 
 - (void)_setupForCurrentState
@@ -346,41 +346,41 @@ LABEL_6:
   v9 = 1;
 LABEL_10:
   [(PKPhysicalCardManualActivationViewController *)self _showSpinner:v7];
-  v10 = [(PKExplanationViewController *)self explanationView];
-  [v10 setForceShowSetupLaterButton:businessChatSupported];
-  [v10 setBodyText:v4];
-  [v10 setTitleText:v17];
-  v11 = [v10 dockView];
-  v12 = [v11 primaryButton];
-  [v12 setTitle:v5 forState:0];
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  [explanationView setForceShowSetupLaterButton:businessChatSupported];
+  [explanationView setBodyText:v4];
+  [explanationView setTitleText:v17];
+  dockView = [explanationView dockView];
+  primaryButton = [dockView primaryButton];
+  [primaryButton setTitle:v5 forState:0];
 
-  [v11 setButtonExplanationText:v6];
-  v13 = [v10 dockView];
-  v14 = [v13 footerView];
+  [dockView setButtonExplanationText:v6];
+  dockView2 = [explanationView dockView];
+  footerView = [dockView2 footerView];
 
   if (businessChatSupported || ([(PKExplanationViewController *)self context], PKPaymentSetupContextIsSetupAssistant()))
   {
-    v15 = [v14 setUpLaterButton];
+    setUpLaterButton = [footerView setUpLaterButton];
     v16 = PKLocalizedFeatureString();
-    [v15 setTitle:v16 forState:0];
+    [setUpLaterButton setTitle:v16 forState:0];
   }
 
   [(PKExplanationViewController *)self setShowCancelButton:v9];
 }
 
-- (void)_showSpinner:(BOOL)a3
+- (void)_showSpinner:(BOOL)spinner
 {
-  v3 = a3;
-  v5 = [(PKExplanationViewController *)self explanationView];
-  v6 = [v5 dockView];
-  [v6 setButtonsEnabled:v3 ^ 1];
+  spinnerCopy = spinner;
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  dockView = [explanationView dockView];
+  [dockView setButtonsEnabled:spinnerCopy ^ 1];
 
-  [(PKExplanationViewController *)self showNavigationBarSpinner:v3];
+  [(PKExplanationViewController *)self showNavigationBarSpinner:spinnerCopy];
 }
 
-- (void)_presentDisplayableError:(id)a3
+- (void)_presentDisplayableError:(id)error
 {
-  v4 = PKAlertForDisplayableErrorWithHandlers(a3, 0, 0, 0);
+  v4 = PKAlertForDisplayableErrorWithHandlers(error, 0, 0, 0);
   [(PKPhysicalCardManualActivationViewController *)self presentViewController:v4 animated:1 completion:0];
 }
 

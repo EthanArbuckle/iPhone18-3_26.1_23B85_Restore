@@ -1,30 +1,30 @@
 @interface AWAttentionAwareService
 + (id)sharedAttentionService;
 - (AWAttentionAwareService)init;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (void)LockScreenStateChanging:(BOOL)a3;
-- (void)MotionStateChanging:(BOOL)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (void)LockScreenStateChanging:(BOOL)changing;
+- (void)MotionStateChanging:(BOOL)changing;
 - (void)_createUnitTestScheduler;
-- (void)addClient:(id)a3 clientConfig:(id)a4 clientIndex:(int)a5 clientId:(id)a6 unitTestMode:(BOOL)a7 reply:(id)a8 subscribeForStreamingEvents:(BOOL)a9;
-- (void)carPlayStateChanging:(BOOL)a3;
-- (void)clientCountChangedFrom:(unint64_t)a3 to:(unint64_t)a4 forScheduler:(id)a5;
-- (void)crashWithReply:(id)a3;
+- (void)addClient:(id)client clientConfig:(id)config clientIndex:(int)index clientId:(id)id unitTestMode:(BOOL)mode reply:(id)reply subscribeForStreamingEvents:(BOOL)events;
+- (void)carPlayStateChanging:(BOOL)changing;
+- (void)clientCountChangedFrom:(unint64_t)from to:(unint64_t)to forScheduler:(id)scheduler;
+- (void)crashWithReply:(id)reply;
 - (void)dealloc;
-- (void)getDebugPreferences:(id)a3;
-- (void)getSupportedEventsWithReply:(id)a3;
-- (void)getUnitTestSamplerWithReply:(id)a3;
-- (void)outputPowerLogWithReply:(id)a3;
-- (void)processHIDEvent:(__IOHIDEvent *)a3 mask:(unint64_t)a4 timestamp:(unint64_t)a5 senderID:(__IOHIDService *)a6;
-- (void)screenStateChanging:(BOOL)a3;
-- (void)setDebugPreference:(id)a3 reply:(id)a4;
-- (void)setSmartCoverClosed:(BOOL)a3;
+- (void)getDebugPreferences:(id)preferences;
+- (void)getSupportedEventsWithReply:(id)reply;
+- (void)getUnitTestSamplerWithReply:(id)reply;
+- (void)outputPowerLogWithReply:(id)reply;
+- (void)processHIDEvent:(__IOHIDEvent *)event mask:(unint64_t)mask timestamp:(unint64_t)timestamp senderID:(__IOHIDService *)d;
+- (void)screenStateChanging:(BOOL)changing;
+- (void)setDebugPreference:(id)preference reply:(id)reply;
+- (void)setSmartCoverClosed:(BOOL)closed;
 @end
 
 @implementation AWAttentionAwareService
 
-- (void)LockScreenStateChanging:(BOOL)a3
+- (void)LockScreenStateChanging:(BOOL)changing
 {
-  v3 = a3;
+  changingCopy = changing;
   v27 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
   if (currentLogLevel == 5)
@@ -44,7 +44,7 @@
       }
 
       v12 = "IS NOT";
-      if (v3)
+      if (changingCopy)
       {
         v12 = "IS";
       }
@@ -95,7 +95,7 @@
         *buf = 136315906;
         v22 = *&v8;
         v23 = 1024;
-        if (v3)
+        if (changingCopy)
         {
           v16 = "IS";
         }
@@ -122,14 +122,14 @@ LABEL_24:
   v19[1] = 3221225472;
   v19[2] = __51__AWAttentionAwareService_LockScreenStateChanging___block_invoke;
   v19[3] = &__block_descriptor_33_e38_v32__0__NSString_8__AWScheduler_16_B24l;
-  v20 = v3;
+  v20 = changingCopy;
   [(NSMutableDictionary *)schedulers enumerateKeysAndObjectsUsingBlock:v19];
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)MotionStateChanging:(BOOL)a3
+- (void)MotionStateChanging:(BOOL)changing
 {
-  v3 = a3;
+  changingCopy = changing;
   v27 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
   if (currentLogLevel == 5)
@@ -149,7 +149,7 @@ LABEL_24:
       }
 
       v12 = "IS NOT";
-      if (v3)
+      if (changingCopy)
       {
         v12 = "IS";
       }
@@ -200,7 +200,7 @@ LABEL_24:
         *buf = 136315906;
         v22 = *&v8;
         v23 = 1024;
-        if (v3)
+        if (changingCopy)
         {
           v16 = "IS";
         }
@@ -227,12 +227,12 @@ LABEL_24:
   v19[1] = 3221225472;
   v19[2] = __47__AWAttentionAwareService_MotionStateChanging___block_invoke;
   v19[3] = &__block_descriptor_33_e38_v32__0__NSString_8__AWScheduler_16_B24l;
-  v20 = v3;
+  v20 = changingCopy;
   [(NSMutableDictionary *)schedulers enumerateKeysAndObjectsUsingBlock:v19];
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)carPlayStateChanging:(BOOL)a3
+- (void)carPlayStateChanging:(BOOL)changing
 {
   dispatch_assert_queue_V2(self->_queue);
   schedulers = self->_schedulers;
@@ -240,11 +240,11 @@ LABEL_24:
   v6[1] = 3221225472;
   v6[2] = __48__AWAttentionAwareService_carPlayStateChanging___block_invoke;
   v6[3] = &__block_descriptor_33_e38_v32__0__NSString_8__AWScheduler_16_B24l;
-  v7 = a3;
+  changingCopy = changing;
   [(NSMutableDictionary *)schedulers enumerateKeysAndObjectsUsingBlock:v6];
 }
 
-- (void)screenStateChanging:(BOOL)a3
+- (void)screenStateChanging:(BOOL)changing
 {
   dispatch_assert_queue_V2(self->_queue);
   schedulers = self->_schedulers;
@@ -252,16 +252,16 @@ LABEL_24:
   v6[1] = 3221225472;
   v6[2] = __47__AWAttentionAwareService_screenStateChanging___block_invoke;
   v6[3] = &__block_descriptor_33_e38_v32__0__NSString_8__AWScheduler_16_B24l;
-  v7 = a3;
+  changingCopy = changing;
   [(NSMutableDictionary *)schedulers enumerateKeysAndObjectsUsingBlock:v6];
 }
 
-- (void)crashWithReply:(id)a3
+- (void)crashWithReply:(id)reply
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E696B0B8] currentConnection];
-  HasEntitlement = connectionHasEntitlement(v4, @"com.apple.private.attentionawareness.unittest");
+  replyCopy = reply;
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+  HasEntitlement = connectionHasEntitlement(currentConnection, @"com.apple.private.attentionawareness.unittest");
 
   if (HasEntitlement)
   {
@@ -298,11 +298,11 @@ LABEL_24:
           v18 = v17 / 1000000000.0;
         }
 
-        v19 = [MEMORY[0x1E696B0B8] currentConnection];
+        currentConnection2 = [MEMORY[0x1E696B0B8] currentConnection];
         *buf = 134218240;
         v23 = v18;
         v24 = 1024;
-        v25 = [v19 processIdentifier];
+        processIdentifier = [currentConnection2 processIdentifier];
         _os_log_error_impl(&dword_1BB2EF000, v12, OS_LOG_TYPE_ERROR, "%13.5f: process %d not entitled to use unit test sampling", buf, 0x12u);
       }
     }
@@ -319,22 +319,22 @@ LABEL_24:
 
   v15 = [v9 errorWithDomain:v10 code:v11 userInfo:v8];
 
-  v3[2](v3, v15);
+  replyCopy[2](replyCopy, v15);
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getUnitTestSamplerWithReply:(id)a3
+- (void)getUnitTestSamplerWithReply:(id)reply
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = __Block_byref_object_copy_;
   v19 = __Block_byref_object_dispose_;
   v20 = 0;
-  v5 = [MEMORY[0x1E696B0B8] currentConnection];
-  HasEntitlement = connectionHasEntitlement(v5, @"com.apple.private.attentionawareness.unittest");
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+  HasEntitlement = connectionHasEntitlement(currentConnection, @"com.apple.private.attentionawareness.unittest");
 
   if (HasEntitlement)
   {
@@ -364,17 +364,17 @@ LABEL_24:
         v11 = v10 / 1000000000.0;
       }
 
-      v12 = [MEMORY[0x1E696B0B8] currentConnection];
-      v13 = [v12 processIdentifier];
+      currentConnection2 = [MEMORY[0x1E696B0B8] currentConnection];
+      processIdentifier = [currentConnection2 processIdentifier];
       *buf = 134218240;
       v22 = v11;
       v23 = 1024;
-      v24 = v13;
+      v24 = processIdentifier;
       _os_log_error_impl(&dword_1BB2EF000, v8, OS_LOG_TYPE_ERROR, "%13.5f: process %d not entitled to use unit test sampling", buf, 0x12u);
     }
   }
 
-  v4[2](v4, v16[5]);
+  replyCopy[2](replyCopy, v16[5]);
   _Block_object_dispose(&v15, 8);
 
   v9 = *MEMORY[0x1E69E9840];
@@ -408,11 +408,11 @@ void __55__AWAttentionAwareService_getUnitTestSamplerWithReply___block_invoke(ui
   }
 }
 
-- (void)outputPowerLogWithReply:(id)a3
+- (void)outputPowerLogWithReply:(id)reply
 {
-  v7 = a3;
-  v3 = [MEMORY[0x1E696B0B8] currentConnection];
-  HasEntitlement = connectionHasEntitlement(v3, @"com.apple.private.attentionawareness.configuration");
+  replyCopy = reply;
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+  HasEntitlement = connectionHasEntitlement(currentConnection, @"com.apple.private.attentionawareness.configuration");
 
   if (HasEntitlement)
   {
@@ -427,37 +427,37 @@ void __55__AWAttentionAwareService_getUnitTestSamplerWithReply___block_invoke(ui
     v6 = @"Not entitled";
   }
 
-  v7[2](v7, v6);
+  replyCopy[2](replyCopy, v6);
 }
 
-- (void)setDebugPreference:(id)a3 reply:(id)a4
+- (void)setDebugPreference:(id)preference reply:(id)reply
 {
-  v17 = a3;
-  v5 = a4;
-  v6 = [MEMORY[0x1E696B0B8] currentConnection];
-  HasEntitlement = connectionHasEntitlement(v6, @"com.apple.private.attentionawareness.configuration");
+  preferenceCopy = preference;
+  replyCopy = reply;
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+  HasEntitlement = connectionHasEntitlement(currentConnection, @"com.apple.private.attentionawareness.configuration");
 
   if (!HasEntitlement)
   {
-    v9 = @"Not entitled";
+    preferenceCopy = @"Not entitled";
     goto LABEL_19;
   }
 
-  v8 = [v17 rangeOfString:@"="];
+  v8 = [preferenceCopy rangeOfString:@"="];
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"no value specified for key %@", v17];
+    preferenceCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"no value specified for key %@", preferenceCopy];
     goto LABEL_19;
   }
 
   v10 = v8;
-  v11 = [v17 substringToIndex:v8];
-  v12 = [v17 substringFromIndex:v10 + 1];
+  v11 = [preferenceCopy substringToIndex:v8];
+  v12 = [preferenceCopy substringFromIndex:v10 + 1];
   if (![(__CFString *)v11 isEqualToString:@"LogLevel"])
   {
     if (![(__CFString *)v11 isEqualToString:@"PearlDisabled"])
     {
-      v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"invalid key %@", v11];
+      preferenceCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"invalid key %@", v11];
       goto LABEL_18;
     }
 
@@ -472,19 +472,19 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v13 = [v12 intValue];
-  if ((v13 & ~(v13 >> 31)) >= 7)
+  intValue = [v12 intValue];
+  if ((intValue & ~(intValue >> 31)) >= 7)
   {
     v14 = 7;
   }
 
   else
   {
-    v14 = v13 & ~(v13 >> 31);
+    v14 = intValue & ~(intValue >> 31);
   }
 
   currentLogLevel = v14;
-  if (v13 == 5)
+  if (intValue == 5)
   {
     goto LABEL_15;
   }
@@ -496,24 +496,24 @@ LABEL_16:
   CFPreferencesSetAppValue(v11, v16, @"com.apple.AttentionAwareness");
   CFPreferencesAppSynchronize(@"com.apple.AttentionAwareness");
   notify_post("com.apple.AttentionAwareness.PreferencesChanged");
-  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"set %@ to %@", v11, v16];
+  preferenceCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"set %@ to %@", v11, v16];
 
 LABEL_18:
 LABEL_19:
-  v5[2](v5, v9);
+  replyCopy[2](replyCopy, preferenceCopy);
 }
 
-- (void)getDebugPreferences:(id)a3
+- (void)getDebugPreferences:(id)preferences
 {
-  v3 = a3;
+  preferencesCopy = preferences;
   CFPreferencesAppSynchronize(@"com.apple.AttentionAwareness");
   v4 = CFPreferencesCopyMultiple(0, @"com.apple.AttentionAwareness", *MEMORY[0x1E695E8B8], *MEMORY[0x1E695E8B0]);
-  v3[2](v3, v4);
+  preferencesCopy[2](preferencesCopy, v4);
 }
 
-- (void)getSupportedEventsWithReply:(id)a3
+- (void)getSupportedEventsWithReply:(id)reply
 {
-  v6 = a3;
+  replyCopy = reply;
   if (deviceSupportsPearl())
   {
     v4 = 207;
@@ -534,10 +534,10 @@ LABEL_19:
     v5 = v4;
   }
 
-  (*(a3 + 2))(v6, v5);
+  (*(reply + 2))(replyCopy, v5);
 }
 
-- (void)setSmartCoverClosed:(BOOL)a3
+- (void)setSmartCoverClosed:(BOOL)closed
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -545,7 +545,7 @@ LABEL_19:
   v4[2] = __47__AWAttentionAwareService_setSmartCoverClosed___block_invoke;
   v4[3] = &unk_1E7F37FC8;
   v4[4] = self;
-  v5 = a3;
+  closedCopy = closed;
   dispatch_async(queue, v4);
 }
 
@@ -560,18 +560,18 @@ uint64_t __47__AWAttentionAwareService_setSmartCoverClosed___block_invoke(uint64
   return [v1 enumerateKeysAndObjectsUsingBlock:v3];
 }
 
-- (void)processHIDEvent:(__IOHIDEvent *)a3 mask:(unint64_t)a4 timestamp:(unint64_t)a5 senderID:(__IOHIDService *)a6
+- (void)processHIDEvent:(__IOHIDEvent *)event mask:(unint64_t)mask timestamp:(unint64_t)timestamp senderID:(__IOHIDService *)d
 {
-  v7 = a5;
-  if (!a5)
+  timestampCopy = timestamp;
+  if (!timestamp)
   {
-    v7 = absTimeNS();
+    timestampCopy = absTimeNS();
   }
 
-  CFRetain(a3);
-  if (a6)
+  CFRetain(event);
+  if (d)
   {
-    CFRetain(a6);
+    CFRetain(d);
   }
 
   queue = self->_queue;
@@ -579,11 +579,11 @@ uint64_t __47__AWAttentionAwareService_setSmartCoverClosed___block_invoke(uint64
   block[1] = 3221225472;
   block[2] = __67__AWAttentionAwareService_processHIDEvent_mask_timestamp_senderID___block_invoke;
   block[3] = &unk_1E7F37598;
-  block[6] = a4;
-  block[7] = a6;
+  block[6] = mask;
+  block[7] = d;
   block[4] = self;
-  block[5] = v7;
-  block[8] = a3;
+  block[5] = timestampCopy;
+  block[8] = event;
   dispatch_async(queue, block);
 }
 
@@ -736,15 +736,15 @@ void __67__AWAttentionAwareService_processHIDEvent_mask_timestamp_senderID___blo
   }
 }
 
-- (void)addClient:(id)a3 clientConfig:(id)a4 clientIndex:(int)a5 clientId:(id)a6 unitTestMode:(BOOL)a7 reply:(id)a8 subscribeForStreamingEvents:(BOOL)a9
+- (void)addClient:(id)client clientConfig:(id)config clientIndex:(int)index clientId:(id)id unitTestMode:(BOOL)mode reply:(id)reply subscribeForStreamingEvents:(BOOL)events
 {
-  v10 = a7;
+  modeCopy = mode;
   v45 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  v18 = a8;
-  if (v10 && ([MEMORY[0x1E696B0B8] currentConnection], v19 = objc_claimAutoreleasedReturnValue(), HasEntitlement = connectionHasEntitlement(v19, @"com.apple.private.attentionawareness.unittest"), v19, (HasEntitlement & 1) == 0))
+  clientCopy = client;
+  configCopy = config;
+  idCopy = id;
+  replyCopy = reply;
+  if (modeCopy && ([MEMORY[0x1E696B0B8] currentConnection], v19 = objc_claimAutoreleasedReturnValue(), HasEntitlement = connectionHasEntitlement(v19, @"com.apple.private.attentionawareness.unittest"), v19, (HasEntitlement & 1) == 0))
   {
     if (currentLogLevel >= 3)
     {
@@ -762,11 +762,11 @@ void __67__AWAttentionAwareService_processHIDEvent_mask_timestamp_senderID___blo
           v29 = v28 / 1000000000.0;
         }
 
-        v30 = [v16 identifier];
+        identifier = [configCopy identifier];
         *buf = 134218242;
         v42 = v29;
         v43 = 2112;
-        v44 = v30;
+        v44 = identifier;
         _os_log_error_impl(&dword_1BB2EF000, v22, OS_LOG_TYPE_ERROR, "%13.5f: client %@ not entitled for unit test access", buf, 0x16u);
       }
     }
@@ -778,7 +778,7 @@ void __67__AWAttentionAwareService_processHIDEvent_mask_timestamp_senderID___blo
     v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v40 forKeys:&v39 count:1];
     v26 = [v23 errorWithDomain:v24 code:1 userInfo:v25];
 
-    v18[2](v18, 0, 0xFFFFFFFFLL, v26);
+    replyCopy[2](replyCopy, 0, 0xFFFFFFFFLL, v26);
   }
 
   else
@@ -788,14 +788,14 @@ void __67__AWAttentionAwareService_processHIDEvent_mask_timestamp_senderID___blo
     v31[1] = 3221225472;
     v31[2] = __118__AWAttentionAwareService_addClient_clientConfig_clientIndex_clientId_unitTestMode_reply_subscribeForStreamingEvents___block_invoke;
     v31[3] = &unk_1E7F37548;
-    v37 = v10;
+    v37 = modeCopy;
     v31[4] = self;
-    v32 = v16;
-    v35 = v18;
-    v38 = a9;
-    v33 = v17;
-    v34 = v15;
-    v36 = a5;
+    v32 = configCopy;
+    v35 = replyCopy;
+    eventsCopy = events;
+    v33 = idCopy;
+    v34 = clientCopy;
+    indexCopy = index;
     dispatch_sync(queue, v31);
   }
 
@@ -965,12 +965,12 @@ uint64_t __118__AWAttentionAwareService_addClient_clientConfig_clientIndex_clien
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)clientCountChangedFrom:(unint64_t)a3 to:(unint64_t)a4 forScheduler:(id)a5
+- (void)clientCountChangedFrom:(unint64_t)from to:(unint64_t)to forScheduler:(id)scheduler
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  schedulerCopy = scheduler;
   dispatch_assert_queue_V2(self->_queue);
-  [(AWAttentionAwareService *)self setClientCount:a4 - a3 + [(AWAttentionAwareService *)self clientCount]];
+  [(AWAttentionAwareService *)self setClientCount:to - from + [(AWAttentionAwareService *)self clientCount]];
   if (currentLogLevel == 5)
   {
     v9 = _AALog();
@@ -1036,7 +1036,7 @@ LABEL_20:
           *&v27[4] = 2048;
           *&v27[6] = v15;
           v28 = 2048;
-          v29 = [(AWAttentionAwareService *)self clientCount];
+          clientCount = [(AWAttentionAwareService *)self clientCount];
           v16 = "%30s:%-4d: %13.5f: %lu total attention aware service clients";
           v17 = v9;
           v18 = 38;
@@ -1049,7 +1049,7 @@ LABEL_20:
   }
 
 LABEL_21:
-  if (!a4)
+  if (!to)
   {
     v20 = [(NSMutableDictionary *)self->_schedulers valueForKey:@"Unit test scheduler"];
     if (v20)
@@ -1057,7 +1057,7 @@ LABEL_21:
       v21 = v20;
       v22 = [(NSMutableDictionary *)self->_schedulers objectForKeyedSubscript:@"Unit test scheduler"];
 
-      if (v22 == v8)
+      if (v22 == schedulerCopy)
       {
         v23 = [(NSMutableDictionary *)self->_schedulers objectForKeyedSubscript:@"Unit test scheduler"];
         [v23 setObserver:0];
@@ -1070,26 +1070,26 @@ LABEL_21:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  HasEntitlement = connectionHasEntitlement(v7, @"com.apple.private.attentionawareness");
+  listenerCopy = listener;
+  connectionCopy = connection;
+  HasEntitlement = connectionHasEntitlement(connectionCopy, @"com.apple.private.attentionawareness");
   if (HasEntitlement)
   {
     v9 = xpcInterfaceForScheduler();
-    [v7 setExportedInterface:v9];
+    [connectionCopy setExportedInterface:v9];
 
-    [v7 setExportedObject:self];
-    objc_initWeak(&location, v7);
+    [connectionCopy setExportedObject:self];
+    objc_initWeak(&location, connectionCopy);
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __62__AWAttentionAwareService_listener_shouldAcceptNewConnection___block_invoke;
     v11[3] = &unk_1E7F37910;
     v11[4] = self;
     objc_copyWeak(&v12, &location);
-    [v7 setInvalidationHandler:v11];
-    [v7 resume];
+    [connectionCopy setInvalidationHandler:v11];
+    [connectionCopy resume];
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);
   }

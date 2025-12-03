@@ -1,9 +1,9 @@
 @interface GDXPCViewService
-- (BOOL)reportSQLiteErrorForViewName:(id)a3 sqliteErrorCode:(int64_t)a4 useCase:(id)a5 error:(id *)a6;
-- (BOOL)reportUnknownErrorForViewName:(id)a3 useCase:(id)a4 error:(id *)a5;
+- (BOOL)reportSQLiteErrorForViewName:(id)name sqliteErrorCode:(int64_t)code useCase:(id)case error:(id *)error;
+- (BOOL)reportUnknownErrorForViewName:(id)name useCase:(id)case error:(id *)error;
 - (GDXPCViewService)init;
-- (id)accessInfoForViewName:(id)a3 useCase:(id)a4 error:(id *)a5;
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
+- (id)accessInfoForViewName:(id)name useCase:(id)case error:(id *)error;
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
 - (void)dealloc;
 - (void)locked_establishConnection;
 @end
@@ -25,11 +25,11 @@
   return v2;
 }
 
-- (BOOL)reportSQLiteErrorForViewName:(id)a3 sqliteErrorCode:(int64_t)a4 useCase:(id)a5 error:(id *)a6
+- (BOOL)reportSQLiteErrorForViewName:(id)name sqliteErrorCode:(int64_t)code useCase:(id)case error:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
+  nameCopy = name;
+  caseCopy = case;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -44,9 +44,9 @@
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v30 = v10;
+    v30 = nameCopy;
     v31 = 2048;
-    v32 = a4;
+    codeCopy = code;
     _os_log_impl(&dword_1ABA78000, v12, OS_LOG_TYPE_DEFAULT, "GDXPCViewService: reportSQLiteErrorForViewName called (viewName=%@) (code=%lld).", buf, 0x16u);
   }
 
@@ -62,12 +62,12 @@
   v17[3] = &unk_1E79628A0;
   v17[4] = &v25;
   v17[5] = &v19;
-  [v13 reportSQLiteErrorForViewName:v10 sqliteErrorCode:a4 useCase:v11 completion:v17];
+  [v13 reportSQLiteErrorForViewName:nameCopy sqliteErrorCode:code useCase:caseCopy completion:v17];
 
   v14 = *(v26 + 24);
-  if (a6 && (v26[3] & 1) == 0)
+  if (error && (v26[3] & 1) == 0)
   {
-    *a6 = v20[5];
+    *error = v20[5];
     v14 = *(v26 + 24);
   }
 
@@ -78,11 +78,11 @@
   return v14 & 1;
 }
 
-- (BOOL)reportUnknownErrorForViewName:(id)a3 useCase:(id)a4 error:(id *)a5
+- (BOOL)reportUnknownErrorForViewName:(id)name useCase:(id)case error:(id *)error
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  nameCopy = name;
+  caseCopy = case;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -97,7 +97,7 @@
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v28 = v8;
+    v28 = nameCopy;
     _os_log_impl(&dword_1ABA78000, v10, OS_LOG_TYPE_DEFAULT, "GDXPCViewService: reportUnknownErrorForViewName called (viewName=%@).", buf, 0xCu);
   }
 
@@ -113,12 +113,12 @@
   v15[3] = &unk_1E79628A0;
   v15[4] = &v23;
   v15[5] = &v17;
-  [v11 reportUnknownErrorForViewName:v8 useCase:v9 completion:v15];
+  [v11 reportUnknownErrorForViewName:nameCopy useCase:caseCopy completion:v15];
 
   v12 = *(v24 + 24);
-  if (a5 && (v24[3] & 1) == 0)
+  if (error && (v24[3] & 1) == 0)
   {
-    *a5 = v18[5];
+    *error = v18[5];
     v12 = *(v24 + 24);
   }
 
@@ -129,11 +129,11 @@
   return v12 & 1;
 }
 
-- (id)accessInfoForViewName:(id)a3 useCase:(id)a4 error:(id *)a5
+- (id)accessInfoForViewName:(id)name useCase:(id)case error:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  nameCopy = name;
+  caseCopy = case;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -150,9 +150,9 @@
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v31 = v8;
+    v31 = nameCopy;
     v32 = 2112;
-    v33 = v9;
+    v33 = caseCopy;
     _os_log_impl(&dword_1ABA78000, v10, OS_LOG_TYPE_DEFAULT, "GDXPCViewService: accessInfoForViewName called (viewName=%@) useCase: %@", buf, 0x16u);
   }
 
@@ -168,12 +168,12 @@
   v16[3] = &unk_1E7962918;
   v16[4] = &v24;
   v16[5] = &v18;
-  [v11 accessInfoForViewName:v8 useCase:v9 completion:v16];
+  [v11 accessInfoForViewName:nameCopy useCase:caseCopy completion:v16];
 
   v12 = v25[5];
-  if (a5 && !v12)
+  if (error && !v12)
   {
-    *a5 = v19[5];
+    *error = v19[5];
     v12 = v25[5];
   }
 
@@ -186,14 +186,14 @@
   return v13;
 }
 
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  [(GDXPCViewService *)v5 locked_establishConnection];
-  v6 = [(NSXPCConnection *)v5->_connection synchronousRemoteObjectProxyWithErrorHandler:v4];
-  objc_sync_exit(v5);
+  handlerCopy = handler;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(GDXPCViewService *)selfCopy locked_establishConnection];
+  v6 = [(NSXPCConnection *)selfCopy->_connection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }

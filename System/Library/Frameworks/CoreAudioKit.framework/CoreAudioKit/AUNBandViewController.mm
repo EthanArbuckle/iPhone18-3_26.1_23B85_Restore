@@ -1,29 +1,29 @@
 @interface AUNBandViewController
 - (_TtC12CoreAudioKit21AUNBandViewController)init;
-- (void)hintDismissedWithRecognizer:(id)a3;
-- (void)typeControlChangedWithSender:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)hintDismissedWithRecognizer:(id)recognizer;
+- (void)typeControlChangedWithSender:(id)sender;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation AUNBandViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = self;
+  selfCopy = self;
   sub_23712D6CC();
 }
 
-- (void)hintDismissedWithRecognizer:(id)a3
+- (void)hintDismissedWithRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v8 = self;
-  v5 = [(AUNBandViewController *)v8 view];
-  if (v5)
+  recognizerCopy = recognizer;
+  selfCopy = self;
+  view = [(AUNBandViewController *)selfCopy view];
+  if (view)
   {
-    v6 = v5;
-    [v5 removeGestureRecognizer_];
+    v6 = view;
+    [view removeGestureRecognizer_];
 
-    v7 = *(&v8->super.super.super.super.super.isa + OBJC_IVAR____TtC12CoreAudioKit21AUNBandViewController_hintView);
+    v7 = *(&selfCopy->super.super.super.super.super.isa + OBJC_IVAR____TtC12CoreAudioKit21AUNBandViewController_hintView);
     [v7 removeFromSuperview];
   }
 
@@ -33,11 +33,11 @@
   }
 }
 
-- (void)typeControlChangedWithSender:(id)a3
+- (void)typeControlChangedWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
-  sub_23712C784([v4 tag], 1);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_23712C784([senderCopy tag], 1);
 }
 
 - (_TtC12CoreAudioKit21AUNBandViewController)init

@@ -5,13 +5,13 @@
 - (NSArray)sections;
 - (SPSearchAgentDelegate)delegate;
 - (unint64_t)currentQueryId;
-- (void)didReceiveResponse:(id)a3;
+- (void)didReceiveResponse:(id)response;
 - (void)disableUpdates;
 - (void)enableUpdates;
 - (void)invalidate;
-- (void)invalidateQuery:(id)a3;
+- (void)invalidateQuery:(id)query;
 - (void)purgeMemory;
-- (void)updateWithResponse:(id)a3;
+- (void)updateWithResponse:(id)response;
 @end
 
 @implementation SPUISearchModel
@@ -78,43 +78,43 @@ uint64_t __40__SPUISearchModel_sharedFullZWKInstance__block_invoke()
 
   if (os_log_type_enabled(v3, v5))
   {
-    v6 = [(SPQueryResponse *)self->_lastResponse resultSections];
+    resultSections = [(SPQueryResponse *)self->_lastResponse resultSections];
     v10 = 138412290;
-    v11 = v6;
+    v11 = resultSections;
     _os_log_impl(&dword_26B837000, v4, v5, "Sections: %@", &v10, 0xCu);
   }
 
-  v7 = [(SPQueryResponse *)self->_lastResponse resultSections];
+  resultSections2 = [(SPQueryResponse *)self->_lastResponse resultSections];
   v8 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return resultSections2;
 }
 
 - (BOOL)wantsCompletions
 {
-  v2 = [(SPUISearchModel *)self queryTask];
-  v3 = [v2 queryKind];
+  queryTask = [(SPUISearchModel *)self queryTask];
+  queryKind = [queryTask queryKind];
 
-  return (v3 - 1) < 2;
+  return (queryKind - 1) < 2;
 }
 
 - (unint64_t)currentQueryId
 {
-  v3 = [(SPUISearchModel *)self queryTask];
-  v4 = [v3 query];
-  v5 = [v4 queryContext];
+  queryTask = [(SPUISearchModel *)self queryTask];
+  query = [queryTask query];
+  queryContext = [query queryContext];
 
-  if (v5)
+  if (queryContext)
   {
-    v6 = [v5 queryIdent];
+    queryIdent = [queryContext queryIdent];
   }
 
   else
   {
-    v6 = [(SPUISearchModel *)self lastStoredQueryId];
+    queryIdent = [(SPUISearchModel *)self lastStoredQueryId];
   }
 
-  v7 = v6;
+  v7 = queryIdent;
 
   return v7;
 }
@@ -148,24 +148,24 @@ uint64_t __40__SPUISearchModel_sharedFullZWKInstance__block_invoke()
 
 - (void)purgeMemory
 {
-  v3 = [(SPUISearchModel *)self queryTask];
-  v4 = [v3 query];
-  v5 = [v4 queryContext];
-  -[SPUISearchModel setLastStoredQueryId:](self, "setLastStoredQueryId:", [v5 queryIdent]);
+  queryTask = [(SPUISearchModel *)self queryTask];
+  query = [queryTask query];
+  queryContext = [query queryContext];
+  -[SPUISearchModel setLastStoredQueryId:](self, "setLastStoredQueryId:", [queryContext queryIdent]);
 
   [(SPUISearchModel *)self setLastResponse:0];
 
   [(SPUISearchModel *)self setQueryTask:0];
 }
 
-- (void)updateWithResponse:(id)a3
+- (void)updateWithResponse:(id)response
 {
   v50 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 task];
-  v6 = [(SPUISearchModel *)self queryTask];
+  responseCopy = response;
+  task = [responseCopy task];
+  queryTask = [(SPUISearchModel *)self queryTask];
 
-  if (v5 == v6)
+  if (task == queryTask)
   {
     v7 = SPLogForSPLogCategoryDefault();
     v8 = v7;
@@ -182,26 +182,26 @@ uint64_t __40__SPUISearchModel_sharedFullZWKInstance__block_invoke()
     if (os_log_type_enabled(v7, v9))
     {
       *buf = 138412290;
-      v49 = v4;
+      v49 = responseCopy;
       _os_log_impl(&dword_26B837000, v8, v9, "updateWithResponse: %@", buf, 0xCu);
     }
 
     v10 = objc_alloc(MEMORY[0x277CBEB18]);
-    v11 = [v4 resultSections];
-    v36 = [v10 initWithCapacity:{objc_msgSend(v11, "count")}];
+    resultSections = [responseCopy resultSections];
+    v36 = [v10 initWithCapacity:{objc_msgSend(resultSections, "count")}];
 
     v12 = objc_opt_new();
-    v31 = self;
-    v13 = [(SPUISearchModel *)self queryTask];
-    v14 = [v13 query];
-    v37 = [v14 queryContext];
+    selfCopy = self;
+    queryTask2 = [(SPUISearchModel *)self queryTask];
+    query = [queryTask2 query];
+    queryContext = [query queryContext];
 
     v44 = 0u;
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v32 = v4;
-    obj = [v4 resultSections];
+    v32 = responseCopy;
+    obj = [responseCopy resultSections];
     v35 = [obj countByEnumeratingWithState:&v42 objects:v47 count:16];
     if (v35)
     {
@@ -216,12 +216,12 @@ uint64_t __40__SPUISearchModel_sharedFullZWKInstance__block_invoke()
           }
 
           v16 = *(*(&v42 + 1) + 8 * i);
-          v17 = [v16 results];
+          results = [v16 results];
           v38 = 0u;
           v39 = 0u;
           v40 = 0u;
           v41 = 0u;
-          v18 = v17;
+          v18 = results;
           v19 = [v18 countByEnumeratingWithState:&v38 objects:v46 count:16];
           if (v19)
           {
@@ -242,7 +242,7 @@ uint64_t __40__SPUISearchModel_sharedFullZWKInstance__block_invoke()
                   goto LABEL_24;
                 }
 
-                v26 = [MEMORY[0x277D65D58] buildResultWithResult:v23 queryContext:v37];
+                v26 = [MEMORY[0x277D65D58] buildResultWithResult:v23 queryContext:queryContext];
                 [v12 addObject:v26];
               }
 
@@ -273,31 +273,31 @@ LABEL_24:
       while (v35);
     }
 
-    v4 = v32;
+    responseCopy = v32;
     [v32 setResultSections:v36];
-    [(SPUISearchModel *)v31 setLastResponse:v32];
-    v27 = [v32 state];
-    [(SPUISearchModel *)v31 setQueryPartiallyComplete:(v27 & 0xFFFFFFFFFFFFFFFELL) == 2];
-    [(SPUISearchModel *)v31 setQueryJustHasTopHits:v27 == 1];
-    -[SPUISearchModel setQueryComplete:](v31, "setQueryComplete:", [v32 state] == 4);
-    v28 = [v32 kind];
-    if (v28 == 1)
+    [(SPUISearchModel *)selfCopy setLastResponse:v32];
+    state = [v32 state];
+    [(SPUISearchModel *)selfCopy setQueryPartiallyComplete:(state & 0xFFFFFFFFFFFFFFFELL) == 2];
+    [(SPUISearchModel *)selfCopy setQueryJustHasTopHits:state == 1];
+    -[SPUISearchModel setQueryComplete:](selfCopy, "setQueryComplete:", [v32 state] == 4);
+    kind = [v32 kind];
+    if (kind == 1)
     {
-      v29 = [(SPUISearchModel *)v31 delegate];
-      [v29 searchAgentFinishedQueryWithoutAdditionalResults:v31];
+      delegate = [(SPUISearchModel *)selfCopy delegate];
+      [delegate searchAgentFinishedQueryWithoutAdditionalResults:selfCopy];
     }
 
     else
     {
-      if (v28)
+      if (kind)
       {
 LABEL_33:
 
         goto LABEL_34;
       }
 
-      v29 = [(SPUISearchModel *)v31 delegate];
-      [v29 searchAgentUpdatedResults:v31];
+      delegate = [(SPUISearchModel *)selfCopy delegate];
+      [delegate searchAgentUpdatedResults:selfCopy];
     }
 
     goto LABEL_33;
@@ -308,10 +308,10 @@ LABEL_34:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didReceiveResponse:(id)a3
+- (void)didReceiveResponse:(id)response
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = SPLogForSPLogCategoryDefault();
   v6 = v5;
   if (*MEMORY[0x277D4BF48])
@@ -327,24 +327,24 @@ LABEL_34:
   if (os_log_type_enabled(v5, v7))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = responseCopy;
     _os_log_impl(&dword_26B837000, v6, v7, "Got response %@", &v9, 0xCu);
   }
 
-  [(SPUISearchModel *)self performSelectorOnMainThread:sel_updateWithResponse_ withObject:v4 waitUntilDone:0];
+  [(SPUISearchModel *)self performSelectorOnMainThread:sel_updateWithResponse_ withObject:responseCopy waitUntilDone:0];
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)invalidateQuery:(id)a3
+- (void)invalidateQuery:(id)query
 {
-  v4 = a3;
-  v5 = [(SPUISearchModel *)self queryTask];
+  queryCopy = query;
+  queryTask = [(SPUISearchModel *)self queryTask];
 
-  if (v5 == v4)
+  if (queryTask == queryCopy)
   {
     [(SPUISearchModel *)self setLastResponse:0];
-    v6 = [(SPUISearchModel *)self delegate];
-    [v6 searchAgentUpdatedResults:self];
+    delegate = [(SPUISearchModel *)self delegate];
+    [delegate searchAgentUpdatedResults:self];
   }
 }
 

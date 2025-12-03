@@ -1,5 +1,5 @@
 @interface PKDiscoveryCardViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityScrollToVisible;
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)_accessibilitySupplementaryHeaderViews;
@@ -10,16 +10,16 @@
 
 @implementation PKDiscoveryCardViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKDiscoveryCardView" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
-  [v3 validateClass:@"PKDiscoveryCardView" hasInstanceVariable:@"_headingLabel" withType:"UILabel"];
-  [v3 validateClass:@"PKContinuousButton"];
-  [v3 validateClass:@"PKDiscoveryCardView" hasInstanceVariable:@"_dismissButton" withType:"UIButton"];
-  [v3 validateClass:@"PKDiscoveryCallToActionFooterView"];
-  [v3 validateClass:@"PKDiscoveryCardView" hasInstanceVariable:@"_ctaFooterView" withType:"PKDiscoveryCallToActionFooterView"];
-  [v3 validateClass:@"PKDiscoveryCardView" hasInstanceMethod:@"_dismissButtonPressed" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKDiscoveryCardView" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"PKDiscoveryCardView" hasInstanceVariable:@"_headingLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"PKContinuousButton"];
+  [validationsCopy validateClass:@"PKDiscoveryCardView" hasInstanceVariable:@"_dismissButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"PKDiscoveryCallToActionFooterView"];
+  [validationsCopy validateClass:@"PKDiscoveryCardView" hasInstanceVariable:@"_ctaFooterView" withType:"PKDiscoveryCallToActionFooterView"];
+  [validationsCopy validateClass:@"PKDiscoveryCardView" hasInstanceMethod:@"_dismissButtonPressed" withFullSignature:{"v", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -35,9 +35,9 @@
 - (id)accessibilityLabel
 {
   v3 = [(PKDiscoveryCardViewAccessibility *)self safeValueForKey:@"_headingLabel"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
   v5 = [(PKDiscoveryCardViewAccessibility *)self safeValueForKey:@"_titleLabel"];
-  v8 = [v5 accessibilityLabel];
+  accessibilityLabel2 = [v5 accessibilityLabel];
   v6 = __UIAXStringForVariables();
 
   return v6;
@@ -78,23 +78,23 @@
     {
       v13.receiver = self;
       v13.super_class = PKDiscoveryCardViewAccessibility;
-      v11 = [(PKDiscoveryCardViewAccessibility *)&v13 _accessibilityScrollToVisible];
+      _accessibilityScrollToVisible = [(PKDiscoveryCardViewAccessibility *)&v13 _accessibilityScrollToVisible];
     }
 
     else
     {
       [v5 setContentOffset:0 animated:{*MEMORY[0x29EDB90B8], *(MEMORY[0x29EDB90B8] + 8)}];
       UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
-      v11 = 1;
+      _accessibilityScrollToVisible = 1;
     }
   }
 
   else
   {
-    v11 = 0;
+    _accessibilityScrollToVisible = 0;
   }
 
-  return v11;
+  return _accessibilityScrollToVisible;
 }
 
 - (void)_dismissButtonPressed

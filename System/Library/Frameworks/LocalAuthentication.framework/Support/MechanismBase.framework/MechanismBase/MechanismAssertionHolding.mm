@@ -1,30 +1,30 @@
 @interface MechanismAssertionHolding
-- (MechanismAssertionHolding)initWithMechanism:(id)a3 object:(id)a4;
-- (void)dropWithReason:(id)a3;
+- (MechanismAssertionHolding)initWithMechanism:(id)mechanism object:(id)object;
+- (void)dropWithReason:(id)reason;
 @end
 
 @implementation MechanismAssertionHolding
 
-- (MechanismAssertionHolding)initWithMechanism:(id)a3 object:(id)a4
+- (MechanismAssertionHolding)initWithMechanism:(id)mechanism object:(id)object
 {
-  v7 = a4;
+  objectCopy = object;
   v11.receiver = self;
   v11.super_class = MechanismAssertionHolding;
-  v8 = [(MechanismAssertion *)&v11 initWithMechanism:a3];
+  v8 = [(MechanismAssertion *)&v11 initWithMechanism:mechanism];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_object, a4);
+    objc_storeStrong(&v8->_object, object);
   }
 
   return v9;
 }
 
-- (void)dropWithReason:(id)a3
+- (void)dropWithReason:(id)reason
 {
   v5.receiver = self;
   v5.super_class = MechanismAssertionHolding;
-  [(MechanismAssertion *)&v5 dropWithReason:a3];
+  [(MechanismAssertion *)&v5 dropWithReason:reason];
   object = self->_object;
   self->_object = 0;
 }

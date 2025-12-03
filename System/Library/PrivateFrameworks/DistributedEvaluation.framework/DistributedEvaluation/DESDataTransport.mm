@@ -1,12 +1,12 @@
 @interface DESDataTransport
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DESDataTransport
@@ -17,110 +17,110 @@
   v8.receiver = self;
   v8.super_class = DESDataTransport;
   v4 = [(DESDataTransport *)&v8 description];
-  v5 = [(DESDataTransport *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(DESDataTransport *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   binary64 = self->_binary64;
   if (binary64)
   {
-    v5 = [(DESBinary64Transport *)binary64 dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"binary64"];
+    dictionaryRepresentation = [(DESBinary64Transport *)binary64 dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"binary64"];
   }
 
   binary32 = self->_binary32;
   if (binary32)
   {
-    v7 = [(DESBinary32Transport *)binary32 dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"binary32"];
+    dictionaryRepresentation2 = [(DESBinary32Transport *)binary32 dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"binary32"];
   }
 
   bfloat16 = self->_bfloat16;
   if (bfloat16)
   {
-    v9 = [(DESBfloat16Transport *)bfloat16 dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"bfloat16"];
+    dictionaryRepresentation3 = [(DESBfloat16Transport *)bfloat16 dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"bfloat16"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_binary64)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_binary32)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_bfloat16)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_binary64)
   {
-    [v4 setBinary64:?];
-    v4 = v5;
+    [toCopy setBinary64:?];
+    toCopy = v5;
   }
 
   if (self->_binary32)
   {
     [v5 setBinary32:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_bfloat16)
   {
     [v5 setBfloat16:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(DESBinary64Transport *)self->_binary64 copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(DESBinary64Transport *)self->_binary64 copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
-  v8 = [(DESBinary32Transport *)self->_binary32 copyWithZone:a3];
+  v8 = [(DESBinary32Transport *)self->_binary32 copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(DESBfloat16Transport *)self->_bfloat16 copyWithZone:a3];
+  v10 = [(DESBfloat16Transport *)self->_bfloat16 copyWithZone:zone];
   v11 = v5[1];
   v5[1] = v10;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((binary64 = self->_binary64, !(binary64 | v4[3])) || -[DESBinary64Transport isEqual:](binary64, "isEqual:")) && ((binary32 = self->_binary32, !(binary32 | v4[2])) || -[DESBinary32Transport isEqual:](binary32, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((binary64 = self->_binary64, !(binary64 | equalCopy[3])) || -[DESBinary64Transport isEqual:](binary64, "isEqual:")) && ((binary32 = self->_binary32, !(binary32 | equalCopy[2])) || -[DESBinary32Transport isEqual:](binary32, "isEqual:")))
   {
     bfloat16 = self->_bfloat16;
-    if (bfloat16 | v4[1])
+    if (bfloat16 | equalCopy[1])
     {
       v8 = [(DESBfloat16Transport *)bfloat16 isEqual:?];
     }
@@ -146,12 +146,12 @@
   return v4 ^ [(DESBfloat16Transport *)self->_bfloat16 hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   binary64 = self->_binary64;
-  v6 = v4[3];
-  v11 = v4;
+  v6 = fromCopy[3];
+  v11 = fromCopy;
   if (binary64)
   {
     if (!v6)
@@ -172,10 +172,10 @@
     [(DESDataTransport *)self setBinary64:?];
   }
 
-  v4 = v11;
+  fromCopy = v11;
 LABEL_7:
   binary32 = self->_binary32;
-  v8 = v4[2];
+  v8 = fromCopy[2];
   if (binary32)
   {
     if (!v8)
@@ -196,10 +196,10 @@ LABEL_7:
     [(DESDataTransport *)self setBinary32:?];
   }
 
-  v4 = v11;
+  fromCopy = v11;
 LABEL_13:
   bfloat16 = self->_bfloat16;
-  v10 = v4[1];
+  v10 = fromCopy[1];
   if (bfloat16)
   {
     if (v10)

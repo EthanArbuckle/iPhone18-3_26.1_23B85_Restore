@@ -1,11 +1,11 @@
 @interface ATXSpotlightSuggestions
 - (ATXSpotlightSuggestions)init;
-- (id)createSectionsFromServerResults:(id)a3;
+- (id)createSectionsFromServerResults:(id)results;
 @end
 
 @implementation ATXSpotlightSuggestions
 
-- (id)createSectionsFromServerResults:(id)a3
+- (id)createSectionsFromServerResults:(id)results
 {
   sub_244194FC8(0, &qword_27EDD5FB8, 0x277D4C588);
   v3 = sub_2441D8CFC();

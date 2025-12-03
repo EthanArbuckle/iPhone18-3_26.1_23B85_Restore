@@ -1,8 +1,8 @@
 @interface EKEventCommentDetailItem
-- (BOOL)configureWithEvent:(id)a3 calendar:(id)a4 preview:(BOOL)a5;
-- (id)cellForSubitemAtIndex:(unint64_t)a3;
+- (BOOL)configureWithEvent:(id)event calendar:(id)calendar preview:(BOOL)preview;
+- (id)cellForSubitemAtIndex:(unint64_t)index;
 - (void)reset;
-- (void)textFieldDidEndEditing:(id)a3;
+- (void)textFieldDidEndEditing:(id)editing;
 @end
 
 @implementation EKEventCommentDetailItem
@@ -13,14 +13,14 @@
   self->_cell = 0;
 }
 
-- (BOOL)configureWithEvent:(id)a3 calendar:(id)a4 preview:(BOOL)a5
+- (BOOL)configureWithEvent:(id)event calendar:(id)calendar preview:(BOOL)preview
 {
-  v6 = a4;
+  calendarCopy = calendar;
   if ([(EKEvent *)self->super._event allowsParticipationStatusModifications])
   {
-    v7 = [v6 source];
-    v8 = [v7 constraints];
-    if ([v8 supportsResponseComments])
+    source = [calendarCopy source];
+    constraints = [source constraints];
+    if ([constraints supportsResponseComments])
     {
       v9 = [(EKEvent *)self->super._event actionsState]== 0;
     }
@@ -39,7 +39,7 @@
   return v9;
 }
 
-- (id)cellForSubitemAtIndex:(unint64_t)a3
+- (id)cellForSubitemAtIndex:(unint64_t)index
 {
   cell = self->_cell;
   if (!cell)
@@ -48,8 +48,8 @@
     v6 = self->_cell;
     self->_cell = v5;
 
-    v7 = [(EKEventDetailCommentCell *)self->_cell editableTextField];
-    [v7 setDelegate:self];
+    editableTextField = [(EKEventDetailCommentCell *)self->_cell editableTextField];
+    [editableTextField setDelegate:self];
 
     [(EKEventDetailCommentCell *)self->_cell update];
     v8 = self->_cell;
@@ -64,34 +64,34 @@
   return v10;
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
   event = self->super._event;
-  v5 = a3;
-  v13 = [(EKEvent *)event responseComment];
-  v6 = [v5 text];
+  editingCopy = editing;
+  responseComment = [(EKEvent *)event responseComment];
+  text = [editingCopy text];
 
-  v7 = [(EKEvent *)self->super._event proposedStartDate];
+  proposedStartDate = [(EKEvent *)self->super._event proposedStartDate];
 
-  if (v7)
+  if (proposedStartDate)
   {
     v8 = MEMORY[0x1E6993410];
-    v9 = [(EKEvent *)self->super._event proposedStartDate];
-    v10 = [(EKEvent *)self->super._event timeZone];
-    v11 = [v8 comment:v6 withInsertedAutoCommentForDate:v9 timeZone:v10];
+    proposedStartDate2 = [(EKEvent *)self->super._event proposedStartDate];
+    timeZone = [(EKEvent *)self->super._event timeZone];
+    v11 = [v8 comment:text withInsertedAutoCommentForDate:proposedStartDate2 timeZone:timeZone];
 
-    v6 = v11;
+    text = v11;
   }
 
-  if (![v6 length])
+  if (![text length])
   {
 
-    v6 = 0;
+    text = 0;
   }
 
-  if ([v13 length])
+  if ([responseComment length])
   {
-    v12 = v13;
+    v12 = responseComment;
   }
 
   else
@@ -103,7 +103,7 @@
   v14 = v12;
   if ((CalEqualStrings() & 1) == 0)
   {
-    [(EKEvent *)self->super._event setResponseComment:v6];
+    [(EKEvent *)self->super._event setResponseComment:text];
   }
 
   [(EKEventDetailItem *)self notifySubitemDidSave:0];

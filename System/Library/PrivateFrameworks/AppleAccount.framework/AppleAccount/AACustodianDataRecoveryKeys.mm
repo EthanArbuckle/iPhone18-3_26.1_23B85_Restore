@@ -1,32 +1,32 @@
 @interface AACustodianDataRecoveryKeys
-- (AACustodianDataRecoveryKeys)initWithCoder:(id)a3;
-- (AACustodianDataRecoveryKeys)initWithWrappedRKC:(id)a3 wrappingKey:(id)a4 custodianUUID:(id)a5 recordBuildVersion:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (AACustodianDataRecoveryKeys)initWithCoder:(id)coder;
+- (AACustodianDataRecoveryKeys)initWithWrappedRKC:(id)c wrappingKey:(id)key custodianUUID:(id)d recordBuildVersion:(id)version;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AACustodianDataRecoveryKeys
 
-- (AACustodianDataRecoveryKeys)initWithCoder:(id)a3
+- (AACustodianDataRecoveryKeys)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(AACustodianDataRecoveryKeys *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_wrappedRKC"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_wrappedRKC"];
     wrappedRKC = v5->_wrappedRKC;
     v5->_wrappedRKC = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_wrappingKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_wrappingKey"];
     wrappingKey = v5->_wrappingKey;
     v5->_wrappingKey = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_custodianUUID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_custodianUUID"];
     custodianUUID = v5->_custodianUUID;
     v5->_custodianUUID = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_recordBuildVersion"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_recordBuildVersion"];
     recordBuildVersion = v5->_recordBuildVersion;
     v5->_recordBuildVersion = v12;
   }
@@ -34,38 +34,38 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   wrappedRKC = self->_wrappedRKC;
-  v5 = a3;
-  [v5 encodeObject:wrappedRKC forKey:@"_wrappedRKC"];
-  [v5 encodeObject:self->_wrappingKey forKey:@"_wrappingKey"];
-  [v5 encodeObject:self->_custodianUUID forKey:@"_custodianUUID"];
-  [v5 encodeObject:self->_recordBuildVersion forKey:@"_recordBuildVersion"];
+  coderCopy = coder;
+  [coderCopy encodeObject:wrappedRKC forKey:@"_wrappedRKC"];
+  [coderCopy encodeObject:self->_wrappingKey forKey:@"_wrappingKey"];
+  [coderCopy encodeObject:self->_custodianUUID forKey:@"_custodianUUID"];
+  [coderCopy encodeObject:self->_recordBuildVersion forKey:@"_recordBuildVersion"];
 }
 
-- (AACustodianDataRecoveryKeys)initWithWrappedRKC:(id)a3 wrappingKey:(id)a4 custodianUUID:(id)a5 recordBuildVersion:(id)a6
+- (AACustodianDataRecoveryKeys)initWithWrappedRKC:(id)c wrappingKey:(id)key custodianUUID:(id)d recordBuildVersion:(id)version
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  cCopy = c;
+  keyCopy = key;
+  dCopy = d;
+  versionCopy = version;
   v18.receiver = self;
   v18.super_class = AACustodianDataRecoveryKeys;
   v15 = [(AACustodianDataRecoveryKeys *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_wrappedRKC, a3);
-    objc_storeStrong(&v16->_wrappingKey, a4);
-    objc_storeStrong(&v16->_custodianUUID, a5);
-    objc_storeStrong(&v16->_recordBuildVersion, a6);
+    objc_storeStrong(&v15->_wrappedRKC, c);
+    objc_storeStrong(&v16->_wrappingKey, key);
+    objc_storeStrong(&v16->_custodianUUID, d);
+    objc_storeStrong(&v16->_recordBuildVersion, version);
   }
 
   return v16;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[AACustodianDataRecoveryKeys allocWithZone:?]];
   v5 = [(NSData *)self->_wrappedRKC copy];
@@ -91,8 +91,8 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(NSUUID *)self->_custodianUUID UUIDString];
-  v6 = [v3 stringWithFormat:@"<%@: %p> for UUID: %@ recordBuildVersion: %@", v4, self, v5, self->_recordBuildVersion];
+  uUIDString = [(NSUUID *)self->_custodianUUID UUIDString];
+  v6 = [v3 stringWithFormat:@"<%@: %p> for UUID: %@ recordBuildVersion: %@", v4, self, uUIDString, self->_recordBuildVersion];
 
   return v6;
 }

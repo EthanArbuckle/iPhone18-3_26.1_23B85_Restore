@@ -1,6 +1,6 @@
 @interface MTRThermostatClusterSystemModeChangeEvent
 - (MTRThermostatClusterSystemModeChangeEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRThermostatClusterSystemModeChangeEvent);
-  v5 = [(MTRThermostatClusterSystemModeChangeEvent *)self previousSystemMode];
-  [(MTRThermostatClusterSystemModeChangeEvent *)v4 setPreviousSystemMode:v5];
+  previousSystemMode = [(MTRThermostatClusterSystemModeChangeEvent *)self previousSystemMode];
+  [(MTRThermostatClusterSystemModeChangeEvent *)v4 setPreviousSystemMode:previousSystemMode];
 
-  v6 = [(MTRThermostatClusterSystemModeChangeEvent *)self currentSystemMode];
-  [(MTRThermostatClusterSystemModeChangeEvent *)v4 setCurrentSystemMode:v6];
+  currentSystemMode = [(MTRThermostatClusterSystemModeChangeEvent *)self currentSystemMode];
+  [(MTRThermostatClusterSystemModeChangeEvent *)v4 setCurrentSystemMode:currentSystemMode];
 
   return v4;
 }

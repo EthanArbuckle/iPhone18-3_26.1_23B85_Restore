@@ -1,17 +1,17 @@
 @interface WFCNContactStore
-- (BOOL)addContact:(id)a3 error:(id *)a4;
+- (BOOL)addContact:(id)contact error:(id *)error;
 - (WFCNContactStore)init;
-- (WFCNContactStore)initWithContactStore:(id)a3;
-- (id)allContactsWithSortOrder:(int64_t)a3 passingTest:(id)a4;
+- (WFCNContactStore)initWithContactStore:(id)store;
+- (id)allContactsWithSortOrder:(int64_t)order passingTest:(id)test;
 - (id)allUsedRelationLabels;
-- (id)contactWithIdentifier:(id)a3;
-- (id)contactsMatchingPredicate:(id)a3 error:(id *)a4;
-- (id)contactsWithName:(id)a3;
-- (id)contactsWithName:(id)a3 keysToFetch:(id)a4;
+- (id)contactWithIdentifier:(id)identifier;
+- (id)contactsMatchingPredicate:(id)predicate error:(id *)error;
+- (id)contactsWithName:(id)name;
+- (id)contactsWithName:(id)name keysToFetch:(id)fetch;
 - (id)currentUserContact;
-- (id)firstContactWithEmailAddress:(id)a3;
-- (id)firstContactWithPhoneNumber:(id)a3;
-- (id)firstContactWithPredicate:(id)a3 propertyID:(int)a4 valueEqualityBlock:(id)a5;
+- (id)firstContactWithEmailAddress:(id)address;
+- (id)firstContactWithPhoneNumber:(id)number;
+- (id)firstContactWithPredicate:(id)predicate propertyID:(int)d valueEqualityBlock:(id)block;
 @end
 
 @implementation WFCNContactStore
@@ -339,115 +339,115 @@
                               v45 = [v43 if_flatMap:v83];
                               v46 = [v42 orderedSetWithArray:v45];
 
-                              v47 = [v46 array];
-                              [v44 addObjectsFromArray:v47];
+                              array = [v46 array];
+                              [v44 addObjectsFromArray:array];
 
-                              v48 = [v44 array];
+                              array2 = [v44 array];
                               v49 = self->_cachedAllUsedLabels;
-                              self->_cachedAllUsedLabels = v48;
+                              self->_cachedAllUsedLabels = array2;
 
                               cachedAllUsedLabels = self->_cachedAllUsedLabels;
                               goto LABEL_42;
                             }
 
-                            v75 = [MEMORY[0x277CCA890] currentHandler];
+                            currentHandler = [MEMORY[0x277CCA890] currentHandler];
                             v76 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString * _Nonnull getCNLabelContactRelationManager(void)"];
-                            [v75 handleFailureInFunction:v76 file:@"WFCNContact.m" lineNumber:60 description:{@"%s", dlerror(), v77, v78, v79, v80, v81, v82}];
+                            [currentHandler handleFailureInFunction:v76 file:@"WFCNContact.m" lineNumber:60 description:{@"%s", dlerror(), v77, v78, v79, v80, v81, v82}];
                           }
 
                           else
                           {
-                            v73 = [MEMORY[0x277CCA890] currentHandler];
+                            currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
                             v74 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString * _Nonnull getCNLabelContactRelationAssistant(void)"];
-                            [v73 handleFailureInFunction:v74 file:@"WFCNContact.m" lineNumber:59 description:{@"%s", dlerror(), v77, v78, v79, v80, v81, v82}];
+                            [currentHandler2 handleFailureInFunction:v74 file:@"WFCNContact.m" lineNumber:59 description:{@"%s", dlerror(), v77, v78, v79, v80, v81, v82}];
                           }
                         }
 
                         else
                         {
-                          v71 = [MEMORY[0x277CCA890] currentHandler];
+                          currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
                           v72 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString * _Nonnull getCNLabelContactRelationPartner(void)"];
-                          [v71 handleFailureInFunction:v72 file:@"WFCNContact.m" lineNumber:58 description:{@"%s", dlerror(), v77, v78, v79, v80, v81, v82}];
+                          [currentHandler3 handleFailureInFunction:v72 file:@"WFCNContact.m" lineNumber:58 description:{@"%s", dlerror(), v77, v78, v79, v80, v81, v82}];
                         }
                       }
 
                       else
                       {
-                        v69 = [MEMORY[0x277CCA890] currentHandler];
+                        currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
                         v70 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString * _Nonnull getCNLabelContactRelationSpouse(void)"];
-                        [v69 handleFailureInFunction:v70 file:@"WFCNContact.m" lineNumber:57 description:{@"%s", dlerror(), v77, v78, v79, v80, v81, v82}];
+                        [currentHandler4 handleFailureInFunction:v70 file:@"WFCNContact.m" lineNumber:57 description:{@"%s", dlerror(), v77, v78, v79, v80, v81, v82}];
                       }
                     }
 
                     else
                     {
-                      v67 = [MEMORY[0x277CCA890] currentHandler];
+                      currentHandler5 = [MEMORY[0x277CCA890] currentHandler];
                       v68 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString * _Nonnull getCNLabelContactRelationFriend(void)"];
-                      [v67 handleFailureInFunction:v68 file:@"WFCNContact.m" lineNumber:56 description:{@"%s", dlerror(), v77, v78, v79, v80, v81, v82}];
+                      [currentHandler5 handleFailureInFunction:v68 file:@"WFCNContact.m" lineNumber:56 description:{@"%s", dlerror(), v77, v78, v79, v80, v81, v82}];
                     }
                   }
 
                   else
                   {
-                    v65 = [MEMORY[0x277CCA890] currentHandler];
+                    currentHandler6 = [MEMORY[0x277CCA890] currentHandler];
                     v66 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString * _Nonnull getCNLabelContactRelationChild(void)"];
-                    [v65 handleFailureInFunction:v66 file:@"WFCNContact.m" lineNumber:55 description:{@"%s", dlerror(), v77, v78, v79, v80, v81, v82}];
+                    [currentHandler6 handleFailureInFunction:v66 file:@"WFCNContact.m" lineNumber:55 description:{@"%s", dlerror(), v77, v78, v79, v80, v81, v82}];
                   }
                 }
 
                 else
                 {
-                  v63 = [MEMORY[0x277CCA890] currentHandler];
+                  currentHandler7 = [MEMORY[0x277CCA890] currentHandler];
                   v64 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString * _Nonnull getCNLabelContactRelationDaughter(void)"];
-                  [v63 handleFailureInFunction:v64 file:@"WFCNContact.m" lineNumber:54 description:{@"%s", dlerror(), v77, v78, v79, v80, v81, v82}];
+                  [currentHandler7 handleFailureInFunction:v64 file:@"WFCNContact.m" lineNumber:54 description:{@"%s", dlerror(), v77, v78, v79, v80, v81, v82}];
                 }
               }
 
               else
               {
-                v61 = [MEMORY[0x277CCA890] currentHandler];
+                currentHandler8 = [MEMORY[0x277CCA890] currentHandler];
                 v62 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString * _Nonnull getCNLabelContactRelationSon(void)"];
-                [v61 handleFailureInFunction:v62 file:@"WFCNContact.m" lineNumber:53 description:{@"%s", dlerror()}];
+                [currentHandler8 handleFailureInFunction:v62 file:@"WFCNContact.m" lineNumber:53 description:{@"%s", dlerror()}];
               }
             }
 
             else
             {
-              v59 = [MEMORY[0x277CCA890] currentHandler];
+              currentHandler9 = [MEMORY[0x277CCA890] currentHandler];
               v60 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString * _Nonnull getCNLabelContactRelationSister(void)"];
-              [v59 handleFailureInFunction:v60 file:@"WFCNContact.m" lineNumber:52 description:{@"%s", dlerror()}];
+              [currentHandler9 handleFailureInFunction:v60 file:@"WFCNContact.m" lineNumber:52 description:{@"%s", dlerror()}];
             }
           }
 
           else
           {
-            v57 = [MEMORY[0x277CCA890] currentHandler];
+            currentHandler10 = [MEMORY[0x277CCA890] currentHandler];
             v58 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString * _Nonnull getCNLabelContactRelationBrother(void)"];
-            [v57 handleFailureInFunction:v58 file:@"WFCNContact.m" lineNumber:51 description:{@"%s", dlerror()}];
+            [currentHandler10 handleFailureInFunction:v58 file:@"WFCNContact.m" lineNumber:51 description:{@"%s", dlerror()}];
           }
         }
 
         else
         {
-          v55 = [MEMORY[0x277CCA890] currentHandler];
+          currentHandler11 = [MEMORY[0x277CCA890] currentHandler];
           v56 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString * _Nonnull getCNLabelContactRelationParent(void)"];
-          [v55 handleFailureInFunction:v56 file:@"WFCNContact.m" lineNumber:50 description:{@"%s", dlerror()}];
+          [currentHandler11 handleFailureInFunction:v56 file:@"WFCNContact.m" lineNumber:50 description:{@"%s", dlerror()}];
         }
       }
 
       else
       {
-        v53 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler12 = [MEMORY[0x277CCA890] currentHandler];
         v54 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString * _Nonnull getCNLabelContactRelationFather(void)"];
-        [v53 handleFailureInFunction:v54 file:@"WFCNContact.m" lineNumber:49 description:{@"%s", dlerror()}];
+        [currentHandler12 handleFailureInFunction:v54 file:@"WFCNContact.m" lineNumber:49 description:{@"%s", dlerror()}];
       }
     }
 
     else
     {
-      v51 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler13 = [MEMORY[0x277CCA890] currentHandler];
       v52 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString * _Nonnull getCNLabelContactRelationMother(void)"];
-      [v51 handleFailureInFunction:v52 file:@"WFCNContact.m" lineNumber:48 description:{@"%s", dlerror()}];
+      [currentHandler13 handleFailureInFunction:v52 file:@"WFCNContact.m" lineNumber:48 description:{@"%s", dlerror()}];
     }
 
     __break(1u);
@@ -508,7 +508,7 @@ LABEL_3:
       goto LABEL_8;
     }
 
-    v7 = [getCNContactClass() predicateForMeContact];
+    predicateForMeContact = [getCNContactClass() predicateForMeContact];
     v8 = objc_alloc(MEMORY[0x277CBEB18]);
     v9 = +[WFCNContact requiredKeysToFetch];
     v10 = [v8 initWithArray:v9];
@@ -535,25 +535,25 @@ LABEL_3:
     _Block_object_dispose(&v24, 8);
     if (!v11)
     {
-      v21 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString * _Nonnull getCNContactRelationsKey(void)"];
-      [v21 handleFailureInFunction:v22 file:@"WFCNContact.m" lineNumber:44 description:{@"%s", dlerror()}];
+      [currentHandler handleFailureInFunction:v22 file:@"WFCNContact.m" lineNumber:44 description:{@"%s", dlerror()}];
 
       __break(1u);
     }
 
     [v10 addObject:*v11];
-    v14 = [(WFCNContactStore *)self contactStore];
+    contactStore = [(WFCNContactStore *)self contactStore];
     v23 = 0;
-    v15 = [v14 unifiedContactsMatchingPredicate:v7 keysToFetch:v10 error:&v23];
+    v15 = [contactStore unifiedContactsMatchingPredicate:predicateForMeContact keysToFetch:v10 error:&v23];
     v16 = v23;
 
     if (v15)
     {
       if ([v15 count])
       {
-        v17 = [v15 firstObject];
-        v18 = [WFCNContact contactWithCNContact:v17];
+        firstObject = [v15 firstObject];
+        v18 = [WFCNContact contactWithCNContact:firstObject];
         v19 = self->_currentUserWFCNContact;
         self->_currentUserWFCNContact = v18;
 
@@ -593,9 +593,9 @@ LABEL_8:
   return v4;
 }
 
-- (BOOL)addContact:(id)a3 error:(id *)a4
+- (BOOL)addContact:(id)contact error:(id *)error
 {
-  v6 = a3;
+  contactCopy = contact;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2050000000;
@@ -615,66 +615,66 @@ LABEL_8:
   v8 = v7;
   _Block_object_dispose(&v14, 8);
   v9 = objc_alloc_init(v7);
-  [v9 addContact:v6 toContainerWithIdentifier:0];
-  v10 = [(WFCNContactStore *)self contactStore];
-  v11 = [v10 executeSaveRequest:v9 error:a4];
+  [v9 addContact:contactCopy toContainerWithIdentifier:0];
+  contactStore = [(WFCNContactStore *)self contactStore];
+  v11 = [contactStore executeSaveRequest:v9 error:error];
 
   return v11;
 }
 
-- (id)contactsMatchingPredicate:(id)a3 error:(id *)a4
+- (id)contactsMatchingPredicate:(id)predicate error:(id *)error
 {
-  v6 = a3;
-  v7 = [(WFCNContactStore *)self contactStore];
+  predicateCopy = predicate;
+  contactStore = [(WFCNContactStore *)self contactStore];
   v8 = +[WFCNContact requiredKeysToFetch];
-  v9 = [v7 unifiedContactsMatchingPredicate:v6 keysToFetch:v8 error:a4];
+  v9 = [contactStore unifiedContactsMatchingPredicate:predicateCopy keysToFetch:v8 error:error];
 
   v10 = [v9 if_map:&__block_literal_global_75_11772];
 
   return v10;
 }
 
-- (id)contactWithIdentifier:(id)a3
+- (id)contactWithIdentifier:(id)identifier
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"WFCNContact.m" lineNumber:216 description:{@"Invalid parameter not satisfying: %@", @"contactIdentifier"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFCNContact.m" lineNumber:216 description:{@"Invalid parameter not satisfying: %@", @"contactIdentifier"}];
   }
 
   if (WFCNContactAuthorizationStatus() == 3)
   {
     CNContactClass = getCNContactClass();
-    v27[0] = v5;
+    v27[0] = identifierCopy;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:1];
     v8 = [CNContactClass predicateForContactsWithIdentifiers:v7];
 
-    v9 = [(WFCNContactStore *)self contactStore];
+    contactStore = [(WFCNContactStore *)self contactStore];
     v10 = +[WFCNContact requiredKeysToFetch];
     v20 = 0;
-    v11 = [v9 unifiedContactsMatchingPredicate:v8 keysToFetch:v10 error:&v20];
+    v11 = [contactStore unifiedContactsMatchingPredicate:v8 keysToFetch:v10 error:&v20];
     v12 = v20;
 
     if (v11)
     {
       if ([v11 count])
       {
-        v13 = [v11 firstObject];
-        v14 = [WFCNContact contactWithCNContact:v13];
+        firstObject = [v11 firstObject];
+        v14 = [WFCNContact contactWithCNContact:firstObject];
 LABEL_16:
 
         goto LABEL_17;
       }
 
-      v13 = getWFWFContactLogObject();
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+      firstObject = getWFWFContactLogObject();
+      if (os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
       {
         *buf = 136315138;
         v22 = "[WFCNContactStore contactWithIdentifier:]";
         v15 = "%s No contacts found, returning nil!";
-        v16 = v13;
+        v16 = firstObject;
         v17 = 12;
         goto LABEL_14;
       }
@@ -682,8 +682,8 @@ LABEL_16:
 
     else
     {
-      v13 = getWFWFContactLogObject();
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+      firstObject = getWFWFContactLogObject();
+      if (os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
       {
         *buf = 136315650;
         v22 = "[WFCNContactStore contactWithIdentifier:]";
@@ -692,7 +692,7 @@ LABEL_16:
         v25 = 2114;
         v26 = v12;
         v15 = "%s Failed to fetch contacts for predicate %{public}@: %{public}@";
-        v16 = v13;
+        v16 = firstObject;
         v17 = 32;
 LABEL_14:
         _os_log_impl(&dword_21E1BD000, v16, OS_LOG_TYPE_ERROR, v15, buf, v17);
@@ -717,9 +717,9 @@ LABEL_17:
   return v14;
 }
 
-- (id)firstContactWithPhoneNumber:(id)a3
+- (id)firstContactWithPhoneNumber:(id)number
 {
-  v4 = a3;
+  numberCopy = number;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2050000000;
@@ -738,8 +738,8 @@ LABEL_17:
 
   v6 = v5;
   _Block_object_dispose(&v15, 8);
-  v7 = [v4 string];
-  v8 = [v5 phoneNumberWithStringValue:v7];
+  string = [numberCopy string];
+  v8 = [v5 phoneNumberWithStringValue:string];
 
   if (v8)
   {
@@ -768,19 +768,19 @@ uint64_t __48__WFCNContactStore_firstContactWithPhoneNumber___block_invoke(uint6
   return v4;
 }
 
-- (id)firstContactWithEmailAddress:(id)a3
+- (id)firstContactWithEmailAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   CNContactClass = getCNContactClass();
-  v6 = [v4 address];
-  v7 = [CNContactClass predicateForContactsMatchingEmailAddress:v6 groupIdentifiers:0 limitToOneResult:1];
+  address = [addressCopy address];
+  v7 = [CNContactClass predicateForContactsMatchingEmailAddress:address groupIdentifiers:0 limitToOneResult:1];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __49__WFCNContactStore_firstContactWithEmailAddress___block_invoke;
   v11[3] = &unk_278347920;
-  v12 = v4;
-  v8 = v4;
+  v12 = addressCopy;
+  v8 = addressCopy;
   v9 = [(WFCNContactStore *)self firstContactWithPredicate:v7 propertyID:4 valueEqualityBlock:v11];
 
   return v9;
@@ -795,38 +795,38 @@ uint64_t __49__WFCNContactStore_firstContactWithEmailAddress___block_invoke(uint
   return v5;
 }
 
-- (id)firstContactWithPredicate:(id)a3 propertyID:(int)a4 valueEqualityBlock:(id)a5
+- (id)firstContactWithPredicate:(id)predicate propertyID:(int)d valueEqualityBlock:(id)block
 {
-  v6 = *&a4;
+  v6 = *&d;
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  predicateCopy = predicate;
+  blockCopy = block;
   if (WFCNContactAuthorizationStatus() == 3)
   {
     v10 = 0;
     goto LABEL_16;
   }
 
-  v11 = [(WFCNContactStore *)self contactStore];
+  contactStore = [(WFCNContactStore *)self contactStore];
   v12 = +[WFCNContact requiredKeysToFetch];
   v25 = 0;
-  v13 = [v11 unifiedContactsMatchingPredicate:v8 keysToFetch:v12 error:&v25];
+  v13 = [contactStore unifiedContactsMatchingPredicate:predicateCopy keysToFetch:v12 error:&v25];
   v14 = v25;
 
   if (v13)
   {
-    v15 = [v13 firstObject];
-    if (v15)
+    firstObject = [v13 firstObject];
+    if (firstObject)
     {
       v16 = CNContactPropertyKeyFromWFContactPropertyID(v6);
-      if ([v15 isKeyAvailable:v16])
+      if ([firstObject isKeyAvailable:v16])
       {
-        v17 = [v15 valueForKey:v16];
+        v17 = [firstObject valueForKey:v16];
         v20 = MEMORY[0x277D85DD0];
         v21 = 3221225472;
         v22 = __76__WFCNContactStore_firstContactWithPredicate_propertyID_valueEqualityBlock___block_invoke;
         v23 = &unk_278347130;
-        v24 = v9;
+        v24 = blockCopy;
         v18 = [v17 indexOfObjectPassingTest:&v20];
         if (v18 == 0x7FFFFFFFFFFFFFFFLL)
         {
@@ -835,7 +835,7 @@ uint64_t __49__WFCNContactStore_firstContactWithEmailAddress___block_invoke(uint
 
         else
         {
-          v10 = [WFCNContact contactWithCNContact:v15 propertyID:v6 multivalueIndex:v18, v20, v21, v22, v23];
+          v10 = [WFCNContact contactWithCNContact:firstObject propertyID:v6 multivalueIndex:v18, v20, v21, v22, v23];
         }
       }
 
@@ -850,16 +850,16 @@ uint64_t __49__WFCNContactStore_firstContactWithEmailAddress___block_invoke(uint
 
   else
   {
-    v15 = getWFWFContactLogObject();
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    firstObject = getWFWFContactLogObject();
+    if (os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315650;
       v27 = "[WFCNContactStore firstContactWithPredicate:propertyID:valueEqualityBlock:]";
       v28 = 2114;
-      v29 = v8;
+      v29 = predicateCopy;
       v30 = 2114;
       v31 = v14;
-      _os_log_impl(&dword_21E1BD000, v15, OS_LOG_TYPE_ERROR, "%s Failed to fetch contacts for predicate %{public}@: %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_21E1BD000, firstObject, OS_LOG_TYPE_ERROR, "%s Failed to fetch contacts for predicate %{public}@: %{public}@", buf, 0x20u);
     }
   }
 
@@ -871,10 +871,10 @@ LABEL_16:
   return v10;
 }
 
-- (id)contactsWithName:(id)a3 keysToFetch:(id)a4
+- (id)contactsWithName:(id)name keysToFetch:(id)fetch
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  fetchCopy = fetch;
   if (WFCNContactAuthorizationStatus() == 3)
   {
     v8 = 0;
@@ -882,54 +882,54 @@ LABEL_16:
 
   else
   {
-    v9 = [(WFCNContactStore *)self contactStore];
-    v10 = [getCNContactClass() predicateForContactsMatchingName:v6];
-    v11 = [v9 unifiedContactsMatchingPredicate:v10 keysToFetch:v7 error:0];
+    contactStore = [(WFCNContactStore *)self contactStore];
+    v10 = [getCNContactClass() predicateForContactsMatchingName:nameCopy];
+    v11 = [contactStore unifiedContactsMatchingPredicate:v10 keysToFetch:fetchCopy error:0];
     v8 = [v11 if_map:&__block_literal_global_59];
   }
 
   return v8;
 }
 
-- (id)contactsWithName:(id)a3
+- (id)contactsWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = +[WFCNContact requiredKeysToFetch];
-  v6 = [(WFCNContactStore *)self contactsWithName:v4 keysToFetch:v5];
+  v6 = [(WFCNContactStore *)self contactsWithName:nameCopy keysToFetch:v5];
 
   return v6;
 }
 
-- (id)allContactsWithSortOrder:(int64_t)a3 passingTest:(id)a4
+- (id)allContactsWithSortOrder:(int64_t)order passingTest:(id)test
 {
-  v6 = a4;
+  testCopy = test;
   if (WFCNContactAuthorizationStatus() == 3)
   {
     v7 = objc_alloc(getCNContactFetchRequestClass());
     v8 = +[WFCNContact requiredKeysToFetch];
     v9 = [v7 initWithKeysToFetch:v8];
 
-    if ((a3 - 1) >= 3)
+    if ((order - 1) >= 3)
     {
-      v10 = 0;
+      orderCopy = 0;
     }
 
     else
     {
-      v10 = a3;
+      orderCopy = order;
     }
 
-    [v9 setSortOrder:v10];
+    [v9 setSortOrder:orderCopy];
     v11 = objc_opt_new();
-    v12 = [(WFCNContactStore *)self contactStore];
+    contactStore = [(WFCNContactStore *)self contactStore];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __57__WFCNContactStore_allContactsWithSortOrder_passingTest___block_invoke;
     v17[3] = &unk_2783470C8;
-    v19 = v6;
+    v19 = testCopy;
     v13 = v11;
     v18 = v13;
-    [v12 enumerateContactsWithFetchRequest:v9 error:0 usingBlock:v17];
+    [contactStore enumerateContactsWithFetchRequest:v9 error:0 usingBlock:v17];
 
     v14 = v18;
     v15 = v13;
@@ -952,16 +952,16 @@ void __57__WFCNContactStore_allContactsWithSortOrder_passingTest___block_invoke(
   }
 }
 
-- (WFCNContactStore)initWithContactStore:(id)a3
+- (WFCNContactStore)initWithContactStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v10.receiver = self;
   v10.super_class = WFCNContactStore;
   v6 = [(WFContactStore *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contactStore, a3);
+    objc_storeStrong(&v6->_contactStore, store);
     v8 = v7;
   }
 

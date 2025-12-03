@@ -1,21 +1,21 @@
 @interface MFNanoBridgeSettingsMailboxPickerController
-- (BOOL)selectedMailboxes:(id)a3 containsMailbox:(id)a4;
-- (BOOL)toggleAllInboxesForSelectedMailboxes:(id)a3;
-- (BOOL)toggleUnifiedMailboxForSelectedMailboxes:(id)a3;
-- (BOOL)updateInboxSelectionWithNewMailboxSelection:(id)a3 selectedMailboxes:(id)a4;
+- (BOOL)selectedMailboxes:(id)mailboxes containsMailbox:(id)mailbox;
+- (BOOL)toggleAllInboxesForSelectedMailboxes:(id)mailboxes;
+- (BOOL)toggleUnifiedMailboxForSelectedMailboxes:(id)mailboxes;
+- (BOOL)updateInboxSelectionWithNewMailboxSelection:(id)selection selectedMailboxes:(id)mailboxes;
 - (MFNanoBridgeSettingsMailboxPickerController)init;
 - (MFNanoBridgeSettingsMailboxPickerControllerDelegate)delegate;
-- (id)_indexPathForMailbox:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)_indexPathForMailbox:(id)mailbox;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_notifyDelegateThatSelectedMailboxesChanged;
 - (void)_recreateMailboxes;
-- (void)accountMailboxPickerController:(id)a3 didChangeSelectedMailboxes:(id)a4;
+- (void)accountMailboxPickerController:(id)controller didChangeSelectedMailboxes:(id)mailboxes;
 - (void)refreshData;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation MFNanoBridgeSettingsMailboxPickerController
@@ -27,15 +27,15 @@
   return [(MFNanoBridgeSettingsMailboxPickerController *)&v3 initWithStyle:2];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v7.receiver = self;
   v7.super_class = MFNanoBridgeSettingsMailboxPickerController;
   [(MFNanoBridgeSettingsMailboxPickerController *)&v7 viewWillAppear:?];
-  v5 = [(MFNanoBridgeSettingsMailboxPickerController *)self tableView];
+  tableView = [(MFNanoBridgeSettingsMailboxPickerController *)self tableView];
   v6 = [NSIndexPath indexPathForRow:0x7FFFFFFFFFFFFFFFLL inSection:0x7FFFFFFFFFFFFFFFLL];
-  [v5 selectRowAtIndexPath:v6 animated:v3 scrollPosition:0];
+  [tableView selectRowAtIndexPath:v6 animated:appearCopy scrollPosition:0];
 }
 
 - (void)viewDidLoad
@@ -43,14 +43,14 @@
   v6.receiver = self;
   v6.super_class = MFNanoBridgeSettingsMailboxPickerController;
   [(MFNanoBridgeSettingsMailboxPickerController *)&v6 viewDidLoad];
-  v3 = [(MFNanoBridgeSettingsMailboxPickerController *)self tableView];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"kMailboxCellIdentifier"];
+  tableView = [(MFNanoBridgeSettingsMailboxPickerController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"kMailboxCellIdentifier"];
 
-  v4 = [(MFNanoBridgeSettingsMailboxPickerController *)self tableView];
-  [v4 registerClass:objc_opt_class() forCellReuseIdentifier:@"kAccountCellIdentifier"];
+  tableView2 = [(MFNanoBridgeSettingsMailboxPickerController *)self tableView];
+  [tableView2 registerClass:objc_opt_class() forCellReuseIdentifier:@"kAccountCellIdentifier"];
 
-  v5 = [(MFNanoBridgeSettingsMailboxPickerController *)self tableView];
-  [v5 setSectionFooterHeight:0.0];
+  tableView3 = [(MFNanoBridgeSettingsMailboxPickerController *)self tableView];
+  [tableView3 setSectionFooterHeight:0.0];
 
   [(MFNanoBridgeSettingsMailboxPickerController *)self setClearsSelectionOnViewWillAppear:0];
   [(MFNanoBridgeSettingsMailboxPickerController *)self refreshData];
@@ -58,22 +58,22 @@
 
 - (void)refreshData
 {
-  v3 = [(NSMutableArray *)self->_selectedMailboxes firstObject];
-  v30 = [(MFNanoBridgeSettingsMailboxPickerController *)self _indexPathForMailbox:v3];
+  firstObject = [(NSMutableArray *)self->_selectedMailboxes firstObject];
+  v30 = [(MFNanoBridgeSettingsMailboxPickerController *)self _indexPathForMailbox:firstObject];
 
   v4 = +[MFNanoBridgeSettingsManager sharedInstance];
   [v4 reloadCachedAccounts];
 
   v5 = +[MFNanoBridgeSettingsManager sharedInstance];
-  v6 = [v5 activeAccounts];
+  activeAccounts = [v5 activeAccounts];
   activeAccounts = self->_activeAccounts;
-  self->_activeAccounts = v6;
+  self->_activeAccounts = activeAccounts;
 
-  v8 = [(MFNanoBridgeSettingsMailboxPickerController *)self navigationController];
-  v9 = [v8 topViewController];
+  navigationController = [(MFNanoBridgeSettingsMailboxPickerController *)self navigationController];
+  topViewController = [navigationController topViewController];
   currentAccountMailboxPickerController = self->_currentAccountMailboxPickerController;
 
-  if (v9 == currentAccountMailboxPickerController)
+  if (topViewController == currentAccountMailboxPickerController)
   {
     v34 = 0u;
     v35 = 0u;
@@ -93,10 +93,10 @@
             objc_enumerationMutation(v12);
           }
 
-          v16 = [*(*(&v32 + 1) + 8 * i) uniqueID];
-          v17 = [(MFNanoBridgeSettingsAccountMailboxPickerController *)self->_currentAccountMailboxPickerController account];
-          v18 = [v17 uniqueID];
-          v19 = [v16 isEqualToString:v18];
+          uniqueID = [*(*(&v32 + 1) + 8 * i) uniqueID];
+          account = [(MFNanoBridgeSettingsAccountMailboxPickerController *)self->_currentAccountMailboxPickerController account];
+          uniqueID2 = [account uniqueID];
+          v19 = [uniqueID isEqualToString:uniqueID2];
 
           if (v19)
           {
@@ -115,8 +115,8 @@
       }
     }
 
-    v20 = [(MFNanoBridgeSettingsMailboxPickerController *)self navigationController];
-    v21 = [v20 popViewControllerAnimated:1];
+    navigationController2 = [(MFNanoBridgeSettingsMailboxPickerController *)self navigationController];
+    v21 = [navigationController2 popViewControllerAnimated:1];
   }
 
   else
@@ -128,28 +128,28 @@
 LABEL_13:
   [(MFNanoBridgeSettingsMailboxPickerController *)self _recreateMailboxes];
   v22 = +[MFNanoBridgeSettingsManager sharedInstance];
-  v23 = [v22 includeMailMailboxes];
-  v24 = [v23 mutableCopy];
+  includeMailMailboxes = [v22 includeMailMailboxes];
+  v24 = [includeMailMailboxes mutableCopy];
   selectedMailboxes = self->_selectedMailboxes;
   self->_selectedMailboxes = v24;
 
-  v26 = [(MFNanoBridgeSettingsMailboxPickerController *)self tableView];
-  [v26 reloadData];
+  tableView = [(MFNanoBridgeSettingsMailboxPickerController *)self tableView];
+  [tableView reloadData];
 
-  v27 = [(NSMutableArray *)self->_selectedMailboxes firstObject];
-  v28 = [(MFNanoBridgeSettingsMailboxPickerController *)self _indexPathForMailbox:v27];
+  firstObject2 = [(NSMutableArray *)self->_selectedMailboxes firstObject];
+  v28 = [(MFNanoBridgeSettingsMailboxPickerController *)self _indexPathForMailbox:firstObject2];
 
   if (v28 && ([v28 isEqual:v31] & 1) == 0)
   {
-    v29 = [(MFNanoBridgeSettingsMailboxPickerController *)self tableView];
-    [v29 scrollToRowAtIndexPath:v28 atScrollPosition:2 animated:0];
+    tableView2 = [(MFNanoBridgeSettingsMailboxPickerController *)self tableView];
+    [tableView2 scrollToRowAtIndexPath:v28 atScrollPosition:2 animated:0];
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = a3;
-  if (!a4)
+  viewCopy = view;
+  if (!section)
   {
     v8 = &OBJC_IVAR___MFNanoBridgeSettingsMailboxPickerController__mailboxes;
     goto LABEL_5;
@@ -168,9 +168,9 @@ LABEL_5:
   return v9;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  if (a4 < 1)
+  if (section < 1)
   {
     v7 = 0;
   }
@@ -195,16 +195,16 @@ LABEL_5:
   return v7;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v26 = a3;
-  v27 = a4;
-  if ([v27 section] && -[NSArray count](self->_activeAccounts, "count") != &dword_0 + 1)
+  viewCopy = view;
+  pathCopy = path;
+  if ([pathCopy section] && -[NSArray count](self->_activeAccounts, "count") != &dword_0 + 1)
   {
-    v28 = [v26 dequeueReusableCellWithIdentifier:@"kAccountCellIdentifier" forIndexPath:v27];
-    v6 = -[NSArray objectAtIndexedSubscript:](self->_activeAccounts, "objectAtIndexedSubscript:", [v27 row]);
-    v7 = [v6 displayName];
-    [v28 setTitle:v7];
+    v28 = [viewCopy dequeueReusableCellWithIdentifier:@"kAccountCellIdentifier" forIndexPath:pathCopy];
+    v6 = -[NSArray objectAtIndexedSubscript:](self->_activeAccounts, "objectAtIndexedSubscript:", [pathCopy row]);
+    displayName = [v6 displayName];
+    [v28 setTitle:displayName];
 
     v8 = [MailAccount accountImageForAccount:v6];
     [v28 setIcon:v8];
@@ -234,16 +234,16 @@ LABEL_5:
           if (objc_opt_isKindOfClass())
           {
             v14 = v13;
-            v15 = [v14 accountUniqueIdentifier];
-            v16 = [v6 uniqueID];
-            if ([v15 isEqualToString:v16])
+            accountUniqueIdentifier = [v14 accountUniqueIdentifier];
+            uniqueID = [v6 uniqueID];
+            if ([accountUniqueIdentifier isEqualToString:uniqueID])
             {
               v17 = [v14 type] == &dword_4 + 3;
 
               if (!v17)
               {
-                v24 = [v14 displayName];
-                [v28 setSubtitle:v24];
+                displayName2 = [v14 displayName];
+                [v28 setSubtitle:displayName2];
 
                 goto LABEL_28;
               }
@@ -268,33 +268,33 @@ LABEL_28:
 
   else
   {
-    v28 = [v26 dequeueReusableCellWithIdentifier:@"kMailboxCellIdentifier" forIndexPath:v27];
-    if ([v27 section])
+    v28 = [viewCopy dequeueReusableCellWithIdentifier:@"kMailboxCellIdentifier" forIndexPath:pathCopy];
+    if ([pathCopy section])
     {
-      -[NSArray objectAtIndexedSubscript:](self->_singleAccountMailboxes, "objectAtIndexedSubscript:", [v27 row]);
+      -[NSArray objectAtIndexedSubscript:](self->_singleAccountMailboxes, "objectAtIndexedSubscript:", [pathCopy row]);
     }
 
     else
     {
-      -[NSArray objectAtIndexedSubscript:](self->_mailboxes, "objectAtIndexedSubscript:", [v27 row]);
+      -[NSArray objectAtIndexedSubscript:](self->_mailboxes, "objectAtIndexedSubscript:", [pathCopy row]);
     }
     v18 = ;
     if ([(NSArray *)self->_activeAccounts count]>= 2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v19 = [v18 accountUniqueIdentifier];
-      v20 = [MailAccount accountWithUniqueId:v19];
-      v21 = [v20 displayName];
-      [v28 setTitle:v21];
+      accountUniqueIdentifier2 = [v18 accountUniqueIdentifier];
+      v20 = [MailAccount accountWithUniqueId:accountUniqueIdentifier2];
+      displayName3 = [v20 displayName];
+      [v28 setTitle:displayName3];
     }
 
     else
     {
-      v19 = [v18 displayName];
-      [v28 setTitle:v19];
+      accountUniqueIdentifier2 = [v18 displayName];
+      [v28 setTitle:accountUniqueIdentifier2];
     }
 
-    v22 = [v18 icon];
-    [v28 setIcon:v22];
+    icon = [v18 icon];
+    [v28 setIcon:icon];
 
     [v28 setLevel:{objc_msgSend(v18, "level")}];
     [v28 setSubtitle:&stru_34FF0];
@@ -314,48 +314,48 @@ LABEL_28:
   return v28;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 section] && -[NSArray count](self->_activeAccounts, "count") != &dword_0 + 1)
+  viewCopy = view;
+  pathCopy = path;
+  if ([pathCopy section] && -[NSArray count](self->_activeAccounts, "count") != &dword_0 + 1)
   {
     v8 = [MFNanoBridgeSettingsAccountMailboxPickerController alloc];
-    v9 = -[NSArray objectAtIndexedSubscript:](self->_activeAccounts, "objectAtIndexedSubscript:", [v7 row]);
+    v9 = -[NSArray objectAtIndexedSubscript:](self->_activeAccounts, "objectAtIndexedSubscript:", [pathCopy row]);
     v10 = [(MFNanoBridgeSettingsAccountMailboxPickerController *)v8 initWithAccount:v9];
     currentAccountMailboxPickerController = self->_currentAccountMailboxPickerController;
     self->_currentAccountMailboxPickerController = v10;
 
     [(MFNanoBridgeSettingsAccountMailboxPickerController *)self->_currentAccountMailboxPickerController setDelegate:self];
-    v12 = [(MFNanoBridgeSettingsMailboxPickerController *)self navigationController];
-    [v12 pushViewController:self->_currentAccountMailboxPickerController animated:1];
+    navigationController = [(MFNanoBridgeSettingsMailboxPickerController *)self navigationController];
+    [navigationController pushViewController:self->_currentAccountMailboxPickerController animated:1];
   }
 
   else
   {
-    if ([v7 section])
+    if ([pathCopy section])
     {
-      -[NSArray objectAtIndexedSubscript:](self->_singleAccountMailboxes, "objectAtIndexedSubscript:", [v7 row]);
+      -[NSArray objectAtIndexedSubscript:](self->_singleAccountMailboxes, "objectAtIndexedSubscript:", [pathCopy row]);
     }
 
     else
     {
-      -[NSArray objectAtIndexedSubscript:](self->_mailboxes, "objectAtIndexedSubscript:", [v7 row]);
+      -[NSArray objectAtIndexedSubscript:](self->_mailboxes, "objectAtIndexedSubscript:", [pathCopy row]);
     }
-    v12 = ;
-    v13 = [v6 cellForRowAtIndexPath:v7];
-    v14 = [(MFNanoBridgeSettingsMailboxPickerController *)self selectedMailboxes:self->_selectedMailboxes containsMailbox:v12];
+    navigationController = ;
+    v13 = [viewCopy cellForRowAtIndexPath:pathCopy];
+    v14 = [(MFNanoBridgeSettingsMailboxPickerController *)self selectedMailboxes:self->_selectedMailboxes containsMailbox:navigationController];
     selectedMailboxes = self->_selectedMailboxes;
     if (v14)
     {
       if ([(NSMutableArray *)selectedMailboxes count]>= 2)
       {
         v16 = [(NSMutableArray *)self->_selectedMailboxes mutableCopy];
-        [v16 removeObject:v12];
-        [(MFNanoBridgeSettingsMailboxPickerController *)self updateInboxSelectionWithNewMailboxSelection:v12 selectedMailboxes:v16];
+        [v16 removeObject:navigationController];
+        [(MFNanoBridgeSettingsMailboxPickerController *)self updateInboxSelectionWithNewMailboxSelection:navigationController selectedMailboxes:v16];
         if ([v16 count])
         {
-          [(NSMutableArray *)self->_selectedMailboxes removeObject:v12];
+          [(NSMutableArray *)self->_selectedMailboxes removeObject:navigationController];
           if (v13)
           {
             [v13 setAccessoryType:0];
@@ -367,14 +367,14 @@ LABEL_28:
 
     else
     {
-      [(NSMutableArray *)selectedMailboxes addObject:v12];
+      [(NSMutableArray *)selectedMailboxes addObject:navigationController];
       if (v13)
       {
         [v13 setAccessoryType:3];
       }
     }
 
-    if ([(MFNanoBridgeSettingsMailboxPickerController *)self updateInboxSelectionWithNewMailboxSelection:v12 selectedMailboxes:self->_selectedMailboxes])
+    if ([(MFNanoBridgeSettingsMailboxPickerController *)self updateInboxSelectionWithNewMailboxSelection:navigationController selectedMailboxes:self->_selectedMailboxes])
     {
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
@@ -385,25 +385,25 @@ LABEL_28:
     }
 
     [(MFNanoBridgeSettingsMailboxPickerController *)self _notifyDelegateThatSelectedMailboxesChanged];
-    [v6 deselectRowAtIndexPath:v7 animated:1];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
   }
 }
 
-- (void)accountMailboxPickerController:(id)a3 didChangeSelectedMailboxes:(id)a4
+- (void)accountMailboxPickerController:(id)controller didChangeSelectedMailboxes:(id)mailboxes
 {
-  v6 = a4;
+  mailboxesCopy = mailboxes;
   [(NSMutableArray *)self->_selectedMailboxes removeAllObjects];
-  [(NSMutableArray *)self->_selectedMailboxes addObjectsFromArray:v6];
+  [(NSMutableArray *)self->_selectedMailboxes addObjectsFromArray:mailboxesCopy];
   [(MFNanoBridgeSettingsMailboxPickerController *)self toggleUnifiedMailboxForSelectedMailboxes:self->_selectedMailboxes];
   [(MFNanoBridgeSettingsMailboxPickerController *)self _notifyDelegateThatSelectedMailboxesChanged];
-  v5 = [(MFNanoBridgeSettingsMailboxPickerController *)self tableView];
-  [v5 reloadData];
+  tableView = [(MFNanoBridgeSettingsMailboxPickerController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)_recreateMailboxes
 {
   v3 = objc_alloc_init(NSMutableArray);
-  v30 = self;
+  selfCopy = self;
   if ([(NSArray *)self->_activeAccounts count]>= 2)
   {
     v4 = [[MFNanoBridgeSettingsUnifiedMailbox alloc] initWithType:7];
@@ -461,9 +461,9 @@ LABEL_28:
   [(NSArray *)v3 addObject:v18];
 
   v31 = objc_alloc_init(NSMutableArray);
-  if ([(NSArray *)v30->_activeAccounts count]== &dword_0 + 1)
+  if ([(NSArray *)selfCopy->_activeAccounts count]== &dword_0 + 1)
   {
-    v19 = [(NSArray *)v30->_activeAccounts objectAtIndexedSubscript:0];
+    v19 = [(NSArray *)selfCopy->_activeAccounts objectAtIndexedSubscript:0];
     [v19 allMailboxUidsSortedWithSpecialsAtTopIncludingLocals:1];
     v34 = 0u;
     v35 = 0u;
@@ -486,8 +486,8 @@ LABEL_28:
         }
 
         v24 = *(*(&v32 + 1) + 8 * j);
-        v25 = [v24 nano_mailbox];
-        if (([(MFNanoBridgeSettingsAccountSpecificMailbox *)v25 shouldFilter]& 1) == 0)
+        nano_mailbox = [v24 nano_mailbox];
+        if (([(MFNanoBridgeSettingsAccountSpecificMailbox *)nano_mailbox shouldFilter]& 1) == 0)
         {
           v26 = [v24 mailboxType] == &dword_4 + 3;
 
@@ -496,8 +496,8 @@ LABEL_28:
             continue;
           }
 
-          v25 = [[MFNanoBridgeSettingsAccountSpecificMailbox alloc] initWithMailboxUid:v24 account:v19];
-          [(NSArray *)v31 addObject:v25];
+          nano_mailbox = [[MFNanoBridgeSettingsAccountSpecificMailbox alloc] initWithMailboxUid:v24 account:v19];
+          [(NSArray *)v31 addObject:nano_mailbox];
         }
       }
 
@@ -511,23 +511,23 @@ LABEL_22:
     }
   }
 
-  mailboxes = v30->_mailboxes;
-  v30->_mailboxes = v3;
+  mailboxes = selfCopy->_mailboxes;
+  selfCopy->_mailboxes = v3;
   v28 = v3;
 
-  singleAccountMailboxes = v30->_singleAccountMailboxes;
-  v30->_singleAccountMailboxes = v31;
+  singleAccountMailboxes = selfCopy->_singleAccountMailboxes;
+  selfCopy->_singleAccountMailboxes = v31;
 }
 
-- (id)_indexPathForMailbox:(id)a3
+- (id)_indexPathForMailbox:(id)mailbox
 {
-  v4 = a3;
-  if (v4 && (mailboxes = self->_mailboxes) != 0 && self->_activeAccounts)
+  mailboxCopy = mailbox;
+  if (mailboxCopy && (mailboxes = self->_mailboxes) != 0 && self->_activeAccounts)
   {
     for (i = 0; i < [(NSArray *)mailboxes count]; ++i)
     {
       v7 = [(NSArray *)self->_mailboxes objectAtIndexedSubscript:i];
-      if ([v4 isEqual:v7])
+      if ([mailboxCopy isEqual:v7])
       {
         v9 = [NSIndexPath indexPathForRow:i inSection:0];
 LABEL_23:
@@ -541,7 +541,7 @@ LABEL_23:
     for (j = 0; j < [(NSArray *)self->_singleAccountMailboxes count]; ++j)
     {
       v7 = [(NSArray *)self->_singleAccountMailboxes objectAtIndexedSubscript:j];
-      if ([v4 isEqual:v7])
+      if ([mailboxCopy isEqual:v7])
       {
         v9 = [NSIndexPath indexPathForRow:j inSection:1];
         goto LABEL_23;
@@ -554,17 +554,17 @@ LABEL_23:
       goto LABEL_21;
     }
 
-    v7 = v4;
+    v7 = mailboxCopy;
     for (k = 0; k < [(NSArray *)self->_activeAccounts count]; ++k)
     {
       v11 = [(NSArray *)self->_activeAccounts objectAtIndexedSubscript:k];
-      v12 = [v7 accountUniqueIdentifier];
-      v13 = [v11 uniqueID];
-      if ([v12 isEqualToString:v13])
+      accountUniqueIdentifier = [v7 accountUniqueIdentifier];
+      uniqueID = [v11 uniqueID];
+      if ([accountUniqueIdentifier isEqualToString:uniqueID])
       {
-        v14 = [v7 type];
+        type = [v7 type];
 
-        if (v14 != &dword_4 + 3)
+        if (type != &dword_4 + 3)
         {
           v16 = [NSIndexPath indexPathForRow:k inSection:1];
 
@@ -590,15 +590,15 @@ LABEL_21:
   return v16;
 }
 
-- (BOOL)selectedMailboxes:(id)a3 containsMailbox:(id)a4
+- (BOOL)selectedMailboxes:(id)mailboxes containsMailbox:(id)mailbox
 {
-  v5 = a3;
-  v6 = a4;
+  mailboxesCopy = mailboxes;
+  mailboxCopy = mailbox;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = v5;
+  v7 = mailboxesCopy;
   v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
@@ -612,7 +612,7 @@ LABEL_21:
           objc_enumerationMutation(v7);
         }
 
-        if ([*(*(&v12 + 1) + 8 * i) isEqual:{v6, v12}])
+        if ([*(*(&v12 + 1) + 8 * i) isEqual:{mailboxCopy, v12}])
         {
           LOBYTE(v8) = 1;
           goto LABEL_11;
@@ -640,14 +640,14 @@ LABEL_11:
   [WeakRetained mailboxPickerController:self didChangeSelectedMailboxes:self->_selectedMailboxes];
 }
 
-- (BOOL)updateInboxSelectionWithNewMailboxSelection:(id)a3 selectedMailboxes:(id)a4
+- (BOOL)updateInboxSelectionWithNewMailboxSelection:(id)selection selectedMailboxes:(id)mailboxes
 {
-  v6 = a3;
-  v7 = a4;
+  selectionCopy = selection;
+  mailboxesCopy = mailboxes;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [(MFNanoBridgeSettingsMailboxPickerController *)self toggleAllInboxesForSelectedMailboxes:v7];
+    v8 = [(MFNanoBridgeSettingsMailboxPickerController *)self toggleAllInboxesForSelectedMailboxes:mailboxesCopy];
   }
 
   else
@@ -659,7 +659,7 @@ LABEL_11:
       goto LABEL_7;
     }
 
-    v8 = [(MFNanoBridgeSettingsMailboxPickerController *)self toggleUnifiedMailboxForSelectedMailboxes:v7];
+    v8 = [(MFNanoBridgeSettingsMailboxPickerController *)self toggleUnifiedMailboxForSelectedMailboxes:mailboxesCopy];
   }
 
   v9 = v8;
@@ -668,14 +668,14 @@ LABEL_7:
   return v9;
 }
 
-- (BOOL)toggleUnifiedMailboxForSelectedMailboxes:(id)a3
+- (BOOL)toggleUnifiedMailboxForSelectedMailboxes:(id)mailboxes
 {
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  mailboxesCopy = mailboxes;
+  v5 = [mailboxesCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = 0;
@@ -686,7 +686,7 @@ LABEL_7:
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(mailboxesCopy);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
@@ -707,7 +707,7 @@ LABEL_7:
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v5 = [mailboxesCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v5)
       {
         continue;
@@ -721,7 +721,7 @@ LABEL_7:
 LABEL_15:
 
   v12 = [[MFNanoBridgeSettingsUnifiedMailbox alloc] initWithType:7];
-  v13 = [(MFNanoBridgeSettingsMailboxPickerController *)self selectedMailboxes:v4 containsMailbox:v12];
+  v13 = [(MFNanoBridgeSettingsMailboxPickerController *)self selectedMailboxes:mailboxesCopy containsMailbox:v12];
   if ((v11 | v13))
   {
     if ((v11 & v13) != 1)
@@ -730,12 +730,12 @@ LABEL_15:
       goto LABEL_21;
     }
 
-    [v4 removeObject:v12];
+    [mailboxesCopy removeObject:v12];
   }
 
   else
   {
-    [v4 addObject:v12];
+    [mailboxesCopy addObject:v12];
   }
 
   v14 = 1;
@@ -744,11 +744,11 @@ LABEL_21:
   return v14;
 }
 
-- (BOOL)toggleAllInboxesForSelectedMailboxes:(id)a3
+- (BOOL)toggleAllInboxesForSelectedMailboxes:(id)mailboxes
 {
-  v4 = a3;
+  mailboxesCopy = mailboxes;
   v15 = [[MFNanoBridgeSettingsUnifiedMailbox alloc] initWithType:7];
-  v16 = [(MFNanoBridgeSettingsMailboxPickerController *)self selectedMailboxes:v4 containsMailbox:v15];
+  v16 = [(MFNanoBridgeSettingsMailboxPickerController *)self selectedMailboxes:mailboxesCopy containsMailbox:v15];
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
@@ -773,19 +773,19 @@ LABEL_21:
         if (v11)
         {
           v12 = [[MFNanoBridgeSettingsAccountSpecificMailbox alloc] initWithMailboxUid:v11 account:v10];
-          v13 = [(MFNanoBridgeSettingsMailboxPickerController *)self selectedMailboxes:v4 containsMailbox:v12];
+          v13 = [(MFNanoBridgeSettingsMailboxPickerController *)self selectedMailboxes:mailboxesCopy containsMailbox:v12];
           if ((v16 ^ 1 | v13))
           {
             if (!(v16 & 1 | ((v13 & 1) == 0)))
             {
-              [v4 removeObject:v12];
+              [mailboxesCopy removeObject:v12];
               goto LABEL_11;
             }
           }
 
           else
           {
-            [v4 addObject:v12];
+            [mailboxesCopy addObject:v12];
 LABEL_11:
             v6 = 1;
           }

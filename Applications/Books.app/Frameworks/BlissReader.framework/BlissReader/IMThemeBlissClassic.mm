@@ -1,14 +1,14 @@
 @interface IMThemeBlissClassic
-- (id)backgroundColorForNavigationBar:(id)a3;
+- (id)backgroundColorForNavigationBar:(id)bar;
 @end
 
 @implementation IMThemeBlissClassic
 
-- (id)backgroundColorForNavigationBar:(id)a3
+- (id)backgroundColorForNavigationBar:(id)bar
 {
-  v3 = [a3 traitCollection];
+  traitCollection = [bar traitCollection];
 
-  return [UIColor bc_darkSystemBackgroundForTraitCollection:v3];
+  return [UIColor bc_darkSystemBackgroundForTraitCollection:traitCollection];
 }
 
 @end

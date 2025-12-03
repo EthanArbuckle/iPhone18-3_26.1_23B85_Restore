@@ -1,46 +1,46 @@
 @interface _EARAppLmArtifact
-+ (BOOL)createEmptyArtifact:(id)a3 version:(id)a4 locale:(id)a5 saveTo:(id)a6;
-+ (BOOL)createPhraseCountsArtifact:(id)a3 version:(id)a4 locale:(id)a5 rawPhraseCountsPath:(id)a6 customPronunciationsPath:(id)a7 saveTo:(id)a8;
-+ (BOOL)transitionArtifactAt:(id)a3 toStage:(unint64_t)a4 configPath:(id)a5 dataRoot:(id)a6 estimationRoot:(id)a7 minimize:(BOOL)a8 saveTo:(id)a9;
-+ (BOOL)transitionArtifactAt:(id)a3 toStage:(unint64_t)a4 configPath:(id)a5 ncsRoot:(id)a6 dataRoot:(id)a7 estimationRoot:(id)a8 minimize:(BOOL)a9 saveTo:(id)a10;
-+ (id)loadLmHandleFromArtifactAt:(id)a3 configPath:(id)a4;
-+ (id)loadLmHandleFromArtifactAt:(id)a3 configPath:(id)a4 ncsRoot:(id)a5;
-+ (id)transitionArtifactAt:(id)a3 toStage:(unint64_t)a4 configPath:(id)a5 dataRoot:(id)a6 estimationRoot:(id)a7 minimize:(BOOL)a8;
-+ (id)transitionArtifactAt:(id)a3 toStage:(unint64_t)a4 configPath:(id)a5 ncsRoot:(id)a6 dataRoot:(id)a7 estimationRoot:(id)a8 minimize:(BOOL)a9;
-- (BOOL)isAdaptableToSpeechModelVersion:(id)a3 locale:(id)a4;
-- (_EARAppLmArtifact)initWithAppLmArtifact:(shared_ptr<quasar::artifact::AppLmArtifact>)a3;
-- (_EARAppLmArtifact)initWithPath:(id)a3;
-- (_EARAppLmArtifact)initWithVersion:(id)a3 andLocale:(id)a4;
++ (BOOL)createEmptyArtifact:(id)artifact version:(id)version locale:(id)locale saveTo:(id)to;
++ (BOOL)createPhraseCountsArtifact:(id)artifact version:(id)version locale:(id)locale rawPhraseCountsPath:(id)path customPronunciationsPath:(id)pronunciationsPath saveTo:(id)to;
++ (BOOL)transitionArtifactAt:(id)at toStage:(unint64_t)stage configPath:(id)path dataRoot:(id)root estimationRoot:(id)estimationRoot minimize:(BOOL)minimize saveTo:(id)to;
++ (BOOL)transitionArtifactAt:(id)at toStage:(unint64_t)stage configPath:(id)path ncsRoot:(id)root dataRoot:(id)dataRoot estimationRoot:(id)estimationRoot minimize:(BOOL)minimize saveTo:(id)self0;
++ (id)loadLmHandleFromArtifactAt:(id)at configPath:(id)path;
++ (id)loadLmHandleFromArtifactAt:(id)at configPath:(id)path ncsRoot:(id)root;
++ (id)transitionArtifactAt:(id)at toStage:(unint64_t)stage configPath:(id)path dataRoot:(id)root estimationRoot:(id)estimationRoot minimize:(BOOL)minimize;
++ (id)transitionArtifactAt:(id)at toStage:(unint64_t)stage configPath:(id)path ncsRoot:(id)root dataRoot:(id)dataRoot estimationRoot:(id)estimationRoot minimize:(BOOL)minimize;
+- (BOOL)isAdaptableToSpeechModelVersion:(id)version locale:(id)locale;
+- (_EARAppLmArtifact)initWithAppLmArtifact:(shared_ptr<quasar::artifact::AppLmArtifact>)artifact;
+- (_EARAppLmArtifact)initWithPath:(id)path;
+- (_EARAppLmArtifact)initWithVersion:(id)version andLocale:(id)locale;
 - (id).cxx_construct;
-- (id)loadAppLmData:(id)a3 dataRoot:(id)a4;
-- (id)loadAppLmData:(id)a3 ncsRoot:(id)a4 dataRoot:(id)a5;
-- (id)loadCustomPronData:(id)a3 dataRoot:(id)a4;
-- (id)loadCustomPronData:(id)a3 ncsRoot:(id)a4 dataRoot:(id)a5;
-- (id)loadLmHandleWithWeight:(id)a3;
+- (id)loadAppLmData:(id)data dataRoot:(id)root;
+- (id)loadAppLmData:(id)data ncsRoot:(id)root dataRoot:(id)dataRoot;
+- (id)loadCustomPronData:(id)data dataRoot:(id)root;
+- (id)loadCustomPronData:(id)data ncsRoot:(id)root dataRoot:(id)dataRoot;
+- (id)loadLmHandleWithWeight:(id)weight;
 - (id)loadOovs;
-- (shared_ptr<quasar::AppLmData>)_loadRawAppLmData:(id)a3 ncsRoot:(id)a4 dataRoot:(id)a5;
-- (shared_ptr<quasar::AppLmData>)_tryToLoadCachedLmData:(id)a3 ncsRoot:(id)a4 dataRoot:(id)a5;
+- (shared_ptr<quasar::AppLmData>)_loadRawAppLmData:(id)data ncsRoot:(id)root dataRoot:(id)dataRoot;
+- (shared_ptr<quasar::AppLmData>)_tryToLoadCachedLmData:(id)data ncsRoot:(id)root dataRoot:(id)dataRoot;
 - (unint64_t)getLifeCycleStage;
-- (void)_cacheLmData:(shared_ptr<quasar:(id)a4 :(id)a5 AppLmData>)a3 configFilepath:(id)a6 ncsRoot:dataRoot:;
+- (void)_cacheLmData:(shared_ptr<quasar:(id)data :(id)a5 AppLmData>)a3 configFilepath:(id)filepath ncsRoot:dataRoot:;
 @end
 
 @implementation _EARAppLmArtifact
 
-- (_EARAppLmArtifact)initWithVersion:(id)a3 andLocale:(id)a4
+- (_EARAppLmArtifact)initWithVersion:(id)version andLocale:(id)locale
 {
-  v6 = a3;
-  v7 = a4;
+  versionCopy = version;
+  localeCopy = locale;
   v15.receiver = self;
   v15.super_class = _EARAppLmArtifact;
   if ([(_EARAppLmArtifact *)&v15 init])
   {
-    if (v6)
+    if (versionCopy)
     {
-      [v6 ear_toString];
-      if (v7)
+      [versionCopy ear_toString];
+      if (localeCopy)
       {
 LABEL_4:
-        [v7 ear_toString];
+        [localeCopy ear_toString];
         goto LABEL_7;
       }
     }
@@ -50,7 +50,7 @@ LABEL_4:
       v12 = 0;
       v13 = 0;
       v14 = 0;
-      if (v7)
+      if (localeCopy)
       {
         goto LABEL_4;
       }
@@ -66,17 +66,17 @@ LABEL_7:
   return 0;
 }
 
-- (_EARAppLmArtifact)initWithPath:(id)a3
+- (_EARAppLmArtifact)initWithPath:(id)path
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathCopy = path;
   v7.receiver = self;
   v7.super_class = _EARAppLmArtifact;
   if ([(_EARAppLmArtifact *)&v7 init])
   {
-    if (v4)
+    if (pathCopy)
     {
-      [v4 ear_toString];
+      [pathCopy ear_toString];
     }
 
     else
@@ -94,12 +94,12 @@ LABEL_7:
   return v5;
 }
 
-- (_EARAppLmArtifact)initWithAppLmArtifact:(shared_ptr<quasar::artifact::AppLmArtifact>)a3
+- (_EARAppLmArtifact)initWithAppLmArtifact:(shared_ptr<quasar::artifact::AppLmArtifact>)artifact
 {
-  var0 = a3.var0;
+  var0 = artifact.var0;
   v10.receiver = self;
   v10.super_class = _EARAppLmArtifact;
-  v4 = [(_EARAppLmArtifact *)&v10 init:a3.var0];
+  v4 = [(_EARAppLmArtifact *)&v10 init:artifact.var0];
   v5 = v4;
   if (v4)
   {
@@ -131,13 +131,13 @@ LABEL_7:
   return v5;
 }
 
-- (shared_ptr<quasar::AppLmData>)_tryToLoadCachedLmData:(id)a3 ncsRoot:(id)a4 dataRoot:(id)a5
+- (shared_ptr<quasar::AppLmData>)_tryToLoadCachedLmData:(id)data ncsRoot:(id)root dataRoot:(id)dataRoot
 {
   v9 = v5;
-  v16 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (self->_cachedLmData.__ptr_ && (cachedConfigFilepath = self->_cachedConfigFilepath) != 0 && self->_cachedNcsRoot && self->_cachedDataRoot && [(NSString *)cachedConfigFilepath isEqualToString:v16]&& [(NSString *)self->_cachedNcsRoot isEqualToString:v10]&& [(NSString *)self->_cachedDataRoot isEqualToString:v11])
+  dataCopy = data;
+  rootCopy = root;
+  dataRootCopy = dataRoot;
+  if (self->_cachedLmData.__ptr_ && (cachedConfigFilepath = self->_cachedConfigFilepath) != 0 && self->_cachedNcsRoot && self->_cachedDataRoot && [(NSString *)cachedConfigFilepath isEqualToString:dataCopy]&& [(NSString *)self->_cachedNcsRoot isEqualToString:rootCopy]&& [(NSString *)self->_cachedDataRoot isEqualToString:dataRootCopy])
   {
     cntrl = self->_cachedLmData.__cntrl_;
     *v9 = self->_cachedLmData.__ptr_;
@@ -159,11 +159,11 @@ LABEL_7:
   return result;
 }
 
-- (void)_cacheLmData:(shared_ptr<quasar:(id)a4 :(id)a5 AppLmData>)a3 configFilepath:(id)a6 ncsRoot:dataRoot:
+- (void)_cacheLmData:(shared_ptr<quasar:(id)data :(id)a5 AppLmData>)a3 configFilepath:(id)filepath ncsRoot:dataRoot:
 {
   ptr = a3.__ptr_;
   v10 = a3.__cntrl_;
-  v11 = a4;
+  dataCopy = data;
   v12 = a5;
   v14 = *ptr;
   v13 = *(ptr + 1);
@@ -185,21 +185,21 @@ LABEL_7:
   v20 = v10;
 
   cachedNcsRoot = self->_cachedNcsRoot;
-  self->_cachedNcsRoot = v11;
-  v18 = v11;
+  self->_cachedNcsRoot = dataCopy;
+  v18 = dataCopy;
 
   cachedDataRoot = self->_cachedDataRoot;
   self->_cachedDataRoot = v12;
 }
 
-- (shared_ptr<quasar::AppLmData>)_loadRawAppLmData:(id)a3 ncsRoot:(id)a4 dataRoot:(id)a5
+- (shared_ptr<quasar::AppLmData>)_loadRawAppLmData:(id)data ncsRoot:(id)root dataRoot:(id)dataRoot
 {
   v9 = v5;
   v29 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  [(_EARAppLmArtifact *)self _tryToLoadCachedLmData:v10 ncsRoot:v11 dataRoot:v12];
+  dataCopy = data;
+  rootCopy = root;
+  dataRootCopy = dataRoot;
+  [(_EARAppLmArtifact *)self _tryToLoadCachedLmData:dataCopy ncsRoot:rootCopy dataRoot:dataRootCopy];
   if (v27)
   {
     v13 = *(&v27 + 1);
@@ -225,7 +225,7 @@ LABEL_7:
       if (quasar::artifact::AppLmArtifactLifeCycleStage::isTextNormalized(LifeCycleStage))
       {
         v19 = 0;
-        if (v12)
+        if (dataRootCopy)
         {
           goto LABEL_9;
         }
@@ -233,23 +233,23 @@ LABEL_7:
 
       else
       {
-        if (v11)
+        if (rootCopy)
         {
-          [_EARQuasarTokenizer tokenizerWithNcsRoot:v11];
+          [_EARQuasarTokenizer tokenizerWithNcsRoot:rootCopy];
         }
 
         else
         {
-          [_EARQuasarTokenizer tokenizerWithRecognizerConfigPath:v10];
+          [_EARQuasarTokenizer tokenizerWithRecognizerConfigPath:dataCopy];
         }
 
         v19 = *buf;
-        if (v12)
+        if (dataRootCopy)
         {
 LABEL_9:
-          if (v10)
+          if (dataCopy)
           {
-            [v10 ear_toString];
+            [dataCopy ear_toString];
           }
 
           else
@@ -261,14 +261,14 @@ LABEL_9:
 
           quasar::filesystem::Path::Path(buf, &v24);
           __p[3] = v19;
-          [v12 ear_toString];
+          [dataRootCopy ear_toString];
           quasar::artifact::AppLmArtifact::loadAppLmData(v16);
         }
       }
 
-      if (v10)
+      if (dataCopy)
       {
-        [v10 ear_toString];
+        [dataCopy ear_toString];
       }
 
       else
@@ -304,16 +304,16 @@ LABEL_18:
   return result;
 }
 
-- (id)loadAppLmData:(id)a3 dataRoot:(id)a4
+- (id)loadAppLmData:(id)data dataRoot:(id)root
 {
-  v4 = [(_EARAppLmArtifact *)self loadAppLmData:a3 ncsRoot:0 dataRoot:a4];
+  v4 = [(_EARAppLmArtifact *)self loadAppLmData:data ncsRoot:0 dataRoot:root];
 
   return v4;
 }
 
-- (id)loadAppLmData:(id)a3 ncsRoot:(id)a4 dataRoot:(id)a5
+- (id)loadAppLmData:(id)data ncsRoot:(id)root dataRoot:(id)dataRoot
 {
-  [(_EARAppLmArtifact *)self _loadRawAppLmData:a3 ncsRoot:a4 dataRoot:a5];
+  [(_EARAppLmArtifact *)self _loadRawAppLmData:data ncsRoot:root dataRoot:dataRoot];
   if (v10)
   {
     v5 = [_EARAppLmData alloc];
@@ -344,19 +344,19 @@ LABEL_18:
   return v6;
 }
 
-- (id)loadCustomPronData:(id)a3 dataRoot:(id)a4
+- (id)loadCustomPronData:(id)data dataRoot:(id)root
 {
-  v4 = [(_EARAppLmArtifact *)self loadCustomPronData:a3 ncsRoot:0 dataRoot:a4];
+  v4 = [(_EARAppLmArtifact *)self loadCustomPronData:data ncsRoot:0 dataRoot:root];
 
   return v4;
 }
 
-- (id)loadCustomPronData:(id)a3 ncsRoot:(id)a4 dataRoot:(id)a5
+- (id)loadCustomPronData:(id)data ncsRoot:(id)root dataRoot:(id)dataRoot
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  rootCopy = root;
+  dataRootCopy = dataRoot;
   ptr = self->super._artifact.__ptr_;
   {
     v13 = v12;
@@ -366,7 +366,7 @@ LABEL_18:
       atomic_fetch_add_explicit(cntrl + 1, 1uLL, memory_order_relaxed);
     }
 
-    [(_EARAppLmArtifact *)self _loadRawAppLmData:v8 ncsRoot:v9 dataRoot:v10];
+    [(_EARAppLmArtifact *)self _loadRawAppLmData:dataCopy ncsRoot:rootCopy dataRoot:dataRootCopy];
     if (*buf)
     {
       quasar::LmData::getSymbolTableData(*buf);
@@ -469,10 +469,10 @@ LABEL_13:
   return v6;
 }
 
-- (id)loadLmHandleWithWeight:(id)a3
+- (id)loadLmHandleWithWeight:(id)weight
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  weightCopy = weight;
   ptr = self->super._artifact.__ptr_;
   if (ptr)
   {
@@ -487,9 +487,9 @@ LABEL_13:
 
       v24 = 0;
       v25 = 0;
-      if (v4)
+      if (weightCopy)
       {
-        [v4 doubleValue];
+        [weightCopy doubleValue];
         v10 = v9;
 LABEL_7:
         v11 = EarArtifactLogger();
@@ -603,11 +603,11 @@ LABEL_32:
   return v7;
 }
 
-- (BOOL)isAdaptableToSpeechModelVersion:(id)a3 locale:(id)a4
+- (BOOL)isAdaptableToSpeechModelVersion:(id)version locale:(id)locale
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  versionCopy = version;
+  localeCopy = locale;
   ptr = self->super._artifact.__ptr_;
   {
     v10 = v9;
@@ -617,9 +617,9 @@ LABEL_32:
       atomic_fetch_add_explicit(cntrl + 1, 1uLL, memory_order_relaxed);
     }
 
-    if (v7)
+    if (localeCopy)
     {
-      [v7 ear_toString];
+      [localeCopy ear_toString];
     }
 
     else
@@ -631,9 +631,9 @@ LABEL_32:
 
     std::string::basic_string[abi:ne200100]<0>(v17, "_");
     quasar::Locale::fromInternalShortIdentifier(v19, v17, &buf);
-    if (v6)
+    if (versionCopy)
     {
-      [v6 ear_toString];
+      [versionCopy ear_toString];
     }
 
     else
@@ -782,17 +782,17 @@ LABEL_32:
   return v10;
 }
 
-+ (BOOL)createEmptyArtifact:(id)a3 version:(id)a4 locale:(id)a5 saveTo:(id)a6
++ (BOOL)createEmptyArtifact:(id)artifact version:(id)version locale:(id)locale saveTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  EARLogger::initializeLogging(a6);
-  if (v9)
+  artifactCopy = artifact;
+  versionCopy = version;
+  localeCopy = locale;
+  EARLogger::initializeLogging(to);
+  if (artifactCopy)
   {
-    [v9 ear_toString];
-    if (v10)
+    [artifactCopy ear_toString];
+    if (versionCopy)
     {
       goto LABEL_3;
     }
@@ -801,14 +801,14 @@ LABEL_32:
   else
   {
     memset(v16, 0, sizeof(v16));
-    if (v10)
+    if (versionCopy)
     {
 LABEL_3:
-      [v10 ear_toString];
-      if (v11)
+      [versionCopy ear_toString];
+      if (localeCopy)
       {
 LABEL_4:
-        [v11 ear_toString];
+        [localeCopy ear_toString];
         goto LABEL_8;
       }
 
@@ -822,7 +822,7 @@ LABEL_8:
   }
 
   memset(v15, 0, sizeof(v15));
-  if (v11)
+  if (localeCopy)
   {
     goto LABEL_4;
   }
@@ -830,19 +830,19 @@ LABEL_8:
   goto LABEL_7;
 }
 
-+ (BOOL)createPhraseCountsArtifact:(id)a3 version:(id)a4 locale:(id)a5 rawPhraseCountsPath:(id)a6 customPronunciationsPath:(id)a7 saveTo:(id)a8
++ (BOOL)createPhraseCountsArtifact:(id)artifact version:(id)version locale:(id)locale rawPhraseCountsPath:(id)path customPronunciationsPath:(id)pronunciationsPath saveTo:(id)to
 {
   v26 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  EARLogger::initializeLogging(a8);
-  if (v13)
+  artifactCopy = artifact;
+  versionCopy = version;
+  localeCopy = locale;
+  pathCopy = path;
+  pronunciationsPathCopy = pronunciationsPath;
+  EARLogger::initializeLogging(to);
+  if (artifactCopy)
   {
-    [v13 ear_toString];
-    if (v14)
+    [artifactCopy ear_toString];
+    if (versionCopy)
     {
       goto LABEL_3;
     }
@@ -851,14 +851,14 @@ LABEL_8:
   else
   {
     memset(&v24[6], 0, 24);
-    if (v14)
+    if (versionCopy)
     {
 LABEL_3:
-      [v14 ear_toString];
-      if (v15)
+      [versionCopy ear_toString];
+      if (localeCopy)
       {
 LABEL_4:
-        [v15 ear_toString];
+        [localeCopy ear_toString];
         goto LABEL_8;
       }
 
@@ -867,9 +867,9 @@ LABEL_7:
 LABEL_8:
       std::string::basic_string[abi:ne200100]<0>(v23, "_");
       quasar::Locale::fromInternalShortIdentifier(v24, v23, &v25);
-      if (v16)
+      if (pathCopy)
       {
-        [v16 ear_toString];
+        [pathCopy ear_toString];
       }
 
       else
@@ -878,9 +878,9 @@ LABEL_8:
       }
 
       quasar::filesystem::Path::Path(&v22, v21);
-      if (v17)
+      if (pronunciationsPathCopy)
       {
-        [v17 ear_toString];
+        [pronunciationsPathCopy ear_toString];
       }
 
       else
@@ -894,7 +894,7 @@ LABEL_8:
   }
 
   memset(&v24[3], 0, 24);
-  if (v15)
+  if (localeCopy)
   {
     goto LABEL_4;
   }
@@ -902,51 +902,51 @@ LABEL_8:
   goto LABEL_7;
 }
 
-+ (id)transitionArtifactAt:(id)a3 toStage:(unint64_t)a4 configPath:(id)a5 dataRoot:(id)a6 estimationRoot:(id)a7 minimize:(BOOL)a8
++ (id)transitionArtifactAt:(id)at toStage:(unint64_t)stage configPath:(id)path dataRoot:(id)root estimationRoot:(id)estimationRoot minimize:(BOOL)minimize
 {
-  LOBYTE(v10) = a8;
-  v8 = [a1 transitionArtifactAt:a3 toStage:a4 configPath:a5 ncsRoot:0 dataRoot:a6 estimationRoot:a7 minimize:v10];
+  LOBYTE(v10) = minimize;
+  v8 = [self transitionArtifactAt:at toStage:stage configPath:path ncsRoot:0 dataRoot:root estimationRoot:estimationRoot minimize:v10];
 
   return v8;
 }
 
-+ (id)transitionArtifactAt:(id)a3 toStage:(unint64_t)a4 configPath:(id)a5 ncsRoot:(id)a6 dataRoot:(id)a7 estimationRoot:(id)a8 minimize:(BOOL)a9
++ (id)transitionArtifactAt:(id)at toStage:(unint64_t)stage configPath:(id)path ncsRoot:(id)root dataRoot:(id)dataRoot estimationRoot:(id)estimationRoot minimize:(BOOL)minimize
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  EARLogger::initializeLogging(a8);
-  if (v13)
+  atCopy = at;
+  pathCopy = path;
+  rootCopy = root;
+  dataRootCopy = dataRoot;
+  EARLogger::initializeLogging(estimationRoot);
+  if (atCopy)
   {
-    [v13 ear_toString];
+    [atCopy ear_toString];
   }
 
   operator new();
 }
 
-+ (BOOL)transitionArtifactAt:(id)a3 toStage:(unint64_t)a4 configPath:(id)a5 dataRoot:(id)a6 estimationRoot:(id)a7 minimize:(BOOL)a8 saveTo:(id)a9
++ (BOOL)transitionArtifactAt:(id)at toStage:(unint64_t)stage configPath:(id)path dataRoot:(id)root estimationRoot:(id)estimationRoot minimize:(BOOL)minimize saveTo:(id)to
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a9;
-  LOBYTE(v20) = a8;
-  LOBYTE(a4) = [objc_opt_class() transitionArtifactAt:v14 toStage:a4 configPath:v15 ncsRoot:0 dataRoot:v16 estimationRoot:v17 minimize:v20 saveTo:v18];
+  atCopy = at;
+  pathCopy = path;
+  rootCopy = root;
+  estimationRootCopy = estimationRoot;
+  toCopy = to;
+  LOBYTE(v20) = minimize;
+  LOBYTE(stage) = [objc_opt_class() transitionArtifactAt:atCopy toStage:stage configPath:pathCopy ncsRoot:0 dataRoot:rootCopy estimationRoot:estimationRootCopy minimize:v20 saveTo:toCopy];
 
-  return a4;
+  return stage;
 }
 
-+ (BOOL)transitionArtifactAt:(id)a3 toStage:(unint64_t)a4 configPath:(id)a5 ncsRoot:(id)a6 dataRoot:(id)a7 estimationRoot:(id)a8 minimize:(BOOL)a9 saveTo:(id)a10
++ (BOOL)transitionArtifactAt:(id)at toStage:(unint64_t)stage configPath:(id)path ncsRoot:(id)root dataRoot:(id)dataRoot estimationRoot:(id)estimationRoot minimize:(BOOL)minimize saveTo:(id)self0
 {
-  v16 = a10;
-  LOBYTE(v21) = a9;
-  v17 = [_EARAppLmArtifact transitionArtifactAt:a3 toStage:a4 configPath:a5 ncsRoot:a6 dataRoot:a7 estimationRoot:a8 minimize:v21];
+  toCopy = to;
+  LOBYTE(v21) = minimize;
+  v17 = [_EARAppLmArtifact transitionArtifactAt:at toStage:stage configPath:path ncsRoot:root dataRoot:dataRoot estimationRoot:estimationRoot minimize:v21];
   v18 = v17;
   if (v17)
   {
-    v19 = [v17 write:v16];
+    v19 = [v17 write:toCopy];
   }
 
   else
@@ -957,44 +957,44 @@ LABEL_8:
   return v19;
 }
 
-+ (id)loadLmHandleFromArtifactAt:(id)a3 configPath:(id)a4
++ (id)loadLmHandleFromArtifactAt:(id)at configPath:(id)path
 {
-  v4 = [a1 loadLmHandleFromArtifactAt:a3 configPath:a4 ncsRoot:0];
+  v4 = [self loadLmHandleFromArtifactAt:at configPath:path ncsRoot:0];
 
   return v4;
 }
 
-+ (id)loadLmHandleFromArtifactAt:(id)a3 configPath:(id)a4 ncsRoot:(id)a5
++ (id)loadLmHandleFromArtifactAt:(id)at configPath:(id)path ncsRoot:(id)root
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v9)
+  atCopy = at;
+  pathCopy = path;
+  rootCopy = root;
+  if (rootCopy)
   {
-    [_EARQuasarTokenizer tokenizerWithNcsRoot:v9];
+    [_EARQuasarTokenizer tokenizerWithNcsRoot:rootCopy];
   }
 
   else
   {
-    [_EARQuasarTokenizer tokenizerWithRecognizerConfigPath:v8];
+    [_EARQuasarTokenizer tokenizerWithRecognizerConfigPath:pathCopy];
   }
 
-  if (v7)
+  if (atCopy)
   {
-    [v7 ear_toString];
-    if (!v8)
+    [atCopy ear_toString];
+    if (!pathCopy)
     {
       goto LABEL_8;
     }
   }
 
-  else if (!v8)
+  else if (!pathCopy)
   {
 LABEL_8:
     quasar::artifact::LoadLmHandleFromArtifact();
   }
 
-  [v8 ear_toString];
+  [pathCopy ear_toString];
   goto LABEL_8;
 }
 

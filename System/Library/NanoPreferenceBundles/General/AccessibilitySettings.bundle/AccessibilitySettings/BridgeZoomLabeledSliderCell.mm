@@ -1,25 +1,25 @@
 @interface BridgeZoomLabeledSliderCell
 - (double)initialValue;
 - (id)_zoomDomainAccessor;
-- (void)handleSliderDidFinishDrag:(id)a3;
+- (void)handleSliderDidFinishDrag:(id)drag;
 @end
 
 @implementation BridgeZoomLabeledSliderCell
 
-- (void)handleSliderDidFinishDrag:(id)a3
+- (void)handleSliderDidFinishDrag:(id)drag
 {
-  v4 = a3;
-  v5 = [(BridgeZoomLabeledSliderCell *)self _zoomDomainAccessor];
+  dragCopy = drag;
+  _zoomDomainAccessor = [(BridgeZoomLabeledSliderCell *)self _zoomDomainAccessor];
   v6 = MEMORY[0x277CCABB0];
-  [v4 value];
+  [dragCopy value];
   v8 = v7;
 
   LODWORD(v9) = v8;
   v10 = [v6 numberWithFloat:v9];
-  [v5 setObject:v10 forKey:@"ZoomPreferredMaximumZoomScale"];
+  [_zoomDomainAccessor setObject:v10 forKey:@"ZoomPreferredMaximumZoomScale"];
 
-  v11 = [(BridgeZoomLabeledSliderCell *)self _zoomDomainAccessor];
-  v12 = [v11 synchronize];
+  _zoomDomainAccessor2 = [(BridgeZoomLabeledSliderCell *)self _zoomDomainAccessor];
+  synchronize = [_zoomDomainAccessor2 synchronize];
 
   v14 = objc_opt_new();
   v13 = [MEMORY[0x277CBEB98] setWithArray:&unk_284E7E6B8];
@@ -43,8 +43,8 @@
 
 - (double)initialValue
 {
-  v2 = [(BridgeZoomLabeledSliderCell *)self _zoomDomainAccessor];
-  v3 = [v2 objectForKey:@"ZoomPreferredMaximumZoomScale"];
+  _zoomDomainAccessor = [(BridgeZoomLabeledSliderCell *)self _zoomDomainAccessor];
+  v3 = [_zoomDomainAccessor objectForKey:@"ZoomPreferredMaximumZoomScale"];
 
   if (v3)
   {

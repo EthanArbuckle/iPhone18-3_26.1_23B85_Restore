@@ -1,39 +1,39 @@
 @interface WFDialogPresentationManager
 - (BOOL)hasPersistentState;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (BOOL)queue_hasMoreDialogsToPresent;
 - (BOOL)shouldShowStatus;
-- (WFDialogPresentationManager)initWithListener:(id)a3 notificationManager:(id)a4 dialogAlertPresenter:(id)a5 screenOnObserver:(id)a6;
-- (WFDialogPresentationManager)initWithNotificationManager:(id)a3;
+- (WFDialogPresentationManager)initWithListener:(id)listener notificationManager:(id)manager dialogAlertPresenter:(id)presenter screenOnObserver:(id)observer;
+- (WFDialogPresentationManager)initWithNotificationManager:(id)manager;
 - (WFDialogPresentationManagerDelegate)delegate;
 - (void)acquireStatusPresenterAssertionIfNecessary;
-- (void)activateRemoteAlertTiedToBundleIdentifier:(id)a3;
+- (void)activateRemoteAlertTiedToBundleIdentifier:(id)identifier;
 - (void)activateStatusPresenter;
-- (void)assertion:(id)a3 didInvalidateWithError:(id)a4;
+- (void)assertion:(id)assertion didInvalidateWithError:(id)error;
 - (void)beginConnection;
-- (void)beginPersistentModeWithRunningContext:(id)a3 attribution:(id)a4 completionHandler:(id)a5;
+- (void)beginPersistentModeWithRunningContext:(id)context attribution:(id)attribution completionHandler:(id)handler;
 - (void)cancelWorkflow;
-- (void)completePersistentModeWithSuccess:(id)a3 runningContext:(id)a4 completion:(id)a5;
+- (void)completePersistentModeWithSuccess:(id)success runningContext:(id)context completion:(id)completion;
 - (void)dealloc;
-- (void)dialogAlertPresenter:(id)a3 didConnectToAlert:(id)a4;
-- (void)dialogAlertPresenterDidDeactivateAlert:(id)a3;
-- (void)dialogAlertPresenterDidDisconnectFromAlert:(id)a3;
-- (void)dialogAlertPresenterDidInvalidateAlert:(id)a3;
-- (void)dismissPresentedContentForRunningContext:(id)a3 completionHandler:(id)a4;
-- (void)handleRemovedIgnoredNotifications:(id)a3;
-- (void)logFinishDialogPresentationWithPresentedDialog:(id)a3;
-- (void)postNotificationWithRequest:(id)a3 presentationMode:(unint64_t)a4 context:(id)a5;
+- (void)dialogAlertPresenter:(id)presenter didConnectToAlert:(id)alert;
+- (void)dialogAlertPresenterDidDeactivateAlert:(id)alert;
+- (void)dialogAlertPresenterDidDisconnectFromAlert:(id)alert;
+- (void)dialogAlertPresenterDidInvalidateAlert:(id)alert;
+- (void)dismissPresentedContentForRunningContext:(id)context completionHandler:(id)handler;
+- (void)handleRemovedIgnoredNotifications:(id)notifications;
+- (void)logFinishDialogPresentationWithPresentedDialog:(id)dialog;
+- (void)postNotificationWithRequest:(id)request presentationMode:(unint64_t)mode context:(id)context;
 - (void)queue_clearPersistentModeStateIfNecessary;
 - (void)queue_connectedRemoteAlertDidDisconnect;
 - (void)queue_deactivateRemoteAlertAndInvalidateConnection;
 - (void)queue_presentNextDialog;
-- (void)requestDismissalWithReason:(id)a3;
-- (void)screenOnStateDidChange:(id)a3;
-- (void)showDialogRequest:(id)a3 runningContext:(id)a4 completionHandler:(id)a5;
-- (void)statusPresenterDidConnectToService:(id)a3;
+- (void)requestDismissalWithReason:(id)reason;
+- (void)screenOnStateDidChange:(id)change;
+- (void)showDialogRequest:(id)request runningContext:(id)context completionHandler:(id)handler;
+- (void)statusPresenterDidConnectToService:(id)service;
 - (void)statusPresenterDidDisconnect;
-- (void)trackDialogEventWithKey:(id)a3 request:(id)a4 presentationMode:(unint64_t)a5 automationType:(id)a6;
-- (void)trackSuspendShortcutWithPresentedDialog:(id)a3;
+- (void)trackDialogEventWithKey:(id)key request:(id)request presentationMode:(unint64_t)mode automationType:(id)type;
+- (void)trackSuspendShortcutWithPresentedDialog:(id)dialog;
 - (void)workflowStatusHostBeginConnection;
 @end
 
@@ -46,14 +46,14 @@
   return WeakRetained;
 }
 
-- (void)trackDialogEventWithKey:(id)a3 request:(id)a4 presentationMode:(unint64_t)a5 automationType:(id)a6
+- (void)trackDialogEventWithKey:(id)key request:(id)request presentationMode:(unint64_t)mode automationType:(id)type
 {
   v9 = MEMORY[0x277D7C8C8];
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
+  typeCopy = type;
+  requestCopy = request;
+  keyCopy = key;
   v17 = objc_alloc_init(v9);
-  [v17 setKey:v12];
+  [v17 setKey:keyCopy];
 
   v13 = objc_opt_class();
   v14 = NSStringFromClass(v13);
@@ -62,53 +62,53 @@
   v15 = WFStringForDialogPresentationMode();
   [v17 setPresentationStyle:v15];
 
-  v16 = [(WFDialogPresentationManager *)self dismissalReason];
-  [v17 setDismissalType:v16];
+  dismissalReason = [(WFDialogPresentationManager *)self dismissalReason];
+  [v17 setDismissalType:dismissalReason];
 
-  [v17 setAutomationType:v10];
+  [v17 setAutomationType:typeCopy];
   [v17 track];
 }
 
-- (void)logFinishDialogPresentationWithPresentedDialog:(id)a3
+- (void)logFinishDialogPresentationWithPresentedDialog:(id)dialog
 {
-  v4 = a3;
-  v8 = [v4 request];
-  v5 = [v4 presentationMode];
-  v6 = [v4 context];
+  dialogCopy = dialog;
+  request = [dialogCopy request];
+  presentationMode = [dialogCopy presentationMode];
+  context = [dialogCopy context];
 
-  v7 = [v6 automationType];
-  [(WFDialogPresentationManager *)self trackDialogEventWithKey:@"ShowDialogFinish" request:v8 presentationMode:v5 automationType:v7];
+  automationType = [context automationType];
+  [(WFDialogPresentationManager *)self trackDialogEventWithKey:@"ShowDialogFinish" request:request presentationMode:presentationMode automationType:automationType];
 }
 
-- (void)trackSuspendShortcutWithPresentedDialog:(id)a3
+- (void)trackSuspendShortcutWithPresentedDialog:(id)dialog
 {
   v4 = MEMORY[0x277D7C930];
-  v5 = a3;
+  dialogCopy = dialog;
   v8 = objc_alloc_init(v4);
   [v8 setKey:@"SuspendShortcutEvent"];
-  [v5 presentationMode];
+  [dialogCopy presentationMode];
 
   v6 = WFStringForDialogPresentationMode();
   [v8 setPresentationStyle:v6];
 
-  v7 = [(WFDialogPresentationManager *)self dismissalReason];
-  [v8 setDismissalType:v7];
+  dismissalReason = [(WFDialogPresentationManager *)self dismissalReason];
+  [v8 setDismissalType:dismissalReason];
 
   [v8 track];
 }
 
-- (void)screenOnStateDidChange:(id)a3
+- (void)screenOnStateDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(WFDialogPresentationManager *)self queue];
+  changeCopy = change;
+  queue = [(WFDialogPresentationManager *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__WFDialogPresentationManager_screenOnStateDidChange___block_invoke;
   v7[3] = &unk_2788FFFC0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = changeCopy;
+  selfCopy = self;
+  v6 = changeCopy;
+  dispatch_async(queue, v7);
 }
 
 void __54__WFDialogPresentationManager_screenOnStateDidChange___block_invoke(uint64_t a1)
@@ -255,21 +255,21 @@ uint64_t __107__WFDialogPresentationManager_dismissPersistentChromeInDialog_succ
   return result;
 }
 
-- (void)completePersistentModeWithSuccess:(id)a3 runningContext:(id)a4 completion:(id)a5
+- (void)completePersistentModeWithSuccess:(id)success runningContext:(id)context completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [(WFDialogPresentationManager *)self queue];
+  successCopy = success;
+  completionCopy = completion;
+  queue = [(WFDialogPresentationManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __91__WFDialogPresentationManager_completePersistentModeWithSuccess_runningContext_completion___block_invoke;
   block[3] = &unk_2788FFF98;
   block[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
-  dispatch_async(v9, block);
+  v13 = successCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = successCopy;
+  dispatch_async(queue, block);
 }
 
 void __91__WFDialogPresentationManager_completePersistentModeWithSuccess_runningContext_completion___block_invoke(uint64_t a1)
@@ -324,24 +324,24 @@ void __91__WFDialogPresentationManager_completePersistentModeWithSuccess_running
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)beginPersistentModeWithRunningContext:(id)a3 attribution:(id)a4 completionHandler:(id)a5
+- (void)beginPersistentModeWithRunningContext:(id)context attribution:(id)attribution completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WFDialogPresentationManager *)self queue];
+  contextCopy = context;
+  attributionCopy = attribution;
+  handlerCopy = handler;
+  queue = [(WFDialogPresentationManager *)self queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __99__WFDialogPresentationManager_beginPersistentModeWithRunningContext_attribution_completionHandler___block_invoke;
   v15[3] = &unk_2788FF468;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = contextCopy;
+  v17 = attributionCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = attributionCopy;
+  v14 = contextCopy;
+  dispatch_async(queue, v15);
 }
 
 void __99__WFDialogPresentationManager_beginPersistentModeWithRunningContext_attribution_completionHandler___block_invoke(uint64_t a1)
@@ -466,24 +466,24 @@ LABEL_25:
 
 - (BOOL)shouldShowStatus
 {
-  v2 = [MEMORY[0x277D79F18] currentDevice];
-  v3 = [v2 hasSystemAperture];
+  currentDevice = [MEMORY[0x277D79F18] currentDevice];
+  hasSystemAperture = [currentDevice hasSystemAperture];
 
-  return v3;
+  return hasSystemAperture;
 }
 
-- (void)assertion:(id)a3 didInvalidateWithError:(id)a4
+- (void)assertion:(id)assertion didInvalidateWithError:(id)error
 {
-  v5 = a3;
-  v6 = [(WFDialogPresentationManager *)self queue];
+  assertionCopy = assertion;
+  queue = [(WFDialogPresentationManager *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __64__WFDialogPresentationManager_assertion_didInvalidateWithError___block_invoke;
   v8[3] = &unk_2788FFFC0;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = assertionCopy;
+  selfCopy = self;
+  v7 = assertionCopy;
+  dispatch_async(queue, v8);
 }
 
 uint64_t __64__WFDialogPresentationManager_assertion_didInvalidateWithError___block_invoke(uint64_t a1)
@@ -496,13 +496,13 @@ uint64_t __64__WFDialogPresentationManager_assertion_didInvalidateWithError___bl
 
 - (void)acquireStatusPresenterAssertionIfNecessary
 {
-  v3 = [(WFDialogPresentationManager *)self queue];
+  queue = [(WFDialogPresentationManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __73__WFDialogPresentationManager_acquireStatusPresenterAssertionIfNecessary__block_invoke;
   block[3] = &unk_278900148;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __73__WFDialogPresentationManager_acquireStatusPresenterAssertionIfNecessary__block_invoke(uint64_t a1)
@@ -570,13 +570,13 @@ void __73__WFDialogPresentationManager_acquireStatusPresenterAssertionIfNecessar
 
 - (void)statusPresenterDidDisconnect
 {
-  v3 = [(WFDialogPresentationManager *)self queue];
+  queue = [(WFDialogPresentationManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__WFDialogPresentationManager_statusPresenterDidDisconnect__block_invoke;
   block[3] = &unk_278900148;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __59__WFDialogPresentationManager_statusPresenterDidDisconnect__block_invoke(uint64_t a1)
@@ -585,18 +585,18 @@ void __59__WFDialogPresentationManager_statusPresenterDidDisconnect__block_invok
   [v1 invalidate];
 }
 
-- (void)statusPresenterDidConnectToService:(id)a3
+- (void)statusPresenterDidConnectToService:(id)service
 {
-  v4 = a3;
-  v5 = [(WFDialogPresentationManager *)self queue];
+  serviceCopy = service;
+  queue = [(WFDialogPresentationManager *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __66__WFDialogPresentationManager_statusPresenterDidConnectToService___block_invoke;
   v7[3] = &unk_2788FFFC0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = serviceCopy;
+  v6 = serviceCopy;
+  dispatch_async(queue, v7);
 }
 
 uint64_t __66__WFDialogPresentationManager_statusPresenterDidConnectToService___block_invoke(uint64_t a1)
@@ -610,13 +610,13 @@ uint64_t __66__WFDialogPresentationManager_statusPresenterDidConnectToService___
 
 - (void)workflowStatusHostBeginConnection
 {
-  v3 = [(WFDialogPresentationManager *)self queue];
+  queue = [(WFDialogPresentationManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64__WFDialogPresentationManager_workflowStatusHostBeginConnection__block_invoke;
   block[3] = &unk_278900148;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __64__WFDialogPresentationManager_workflowStatusHostBeginConnection__block_invoke(uint64_t a1)
@@ -669,15 +669,15 @@ void __64__WFDialogPresentationManager_workflowStatusHostBeginConnection__block_
   [v16 removeAllObjects];
 }
 
-- (void)dialogAlertPresenterDidInvalidateAlert:(id)a3
+- (void)dialogAlertPresenterDidInvalidateAlert:(id)alert
 {
-  v4 = [(WFDialogPresentationManager *)self queue];
+  queue = [(WFDialogPresentationManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__WFDialogPresentationManager_dialogAlertPresenterDidInvalidateAlert___block_invoke;
   block[3] = &unk_278900148;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(queue, block);
 }
 
 void __70__WFDialogPresentationManager_dialogAlertPresenterDidInvalidateAlert___block_invoke(uint64_t a1)
@@ -753,15 +753,15 @@ void __70__WFDialogPresentationManager_dialogAlertPresenterDidInvalidateAlert___
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dialogAlertPresenterDidDeactivateAlert:(id)a3
+- (void)dialogAlertPresenterDidDeactivateAlert:(id)alert
 {
-  v4 = [(WFDialogPresentationManager *)self queue];
+  queue = [(WFDialogPresentationManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__WFDialogPresentationManager_dialogAlertPresenterDidDeactivateAlert___block_invoke;
   block[3] = &unk_278900148;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(queue, block);
 }
 
 uint64_t __70__WFDialogPresentationManager_dialogAlertPresenterDidDeactivateAlert___block_invoke(uint64_t a1)
@@ -841,15 +841,15 @@ uint64_t __70__WFDialogPresentationManager_dialogAlertPresenterDidDeactivateAler
   return result;
 }
 
-- (void)dialogAlertPresenterDidDisconnectFromAlert:(id)a3
+- (void)dialogAlertPresenterDidDisconnectFromAlert:(id)alert
 {
-  v4 = [(WFDialogPresentationManager *)self queue];
+  queue = [(WFDialogPresentationManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __74__WFDialogPresentationManager_dialogAlertPresenterDidDisconnectFromAlert___block_invoke;
   block[3] = &unk_278900148;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(queue, block);
 }
 
 uint64_t __74__WFDialogPresentationManager_dialogAlertPresenterDidDisconnectFromAlert___block_invoke(uint64_t a1)
@@ -880,34 +880,34 @@ uint64_t __74__WFDialogPresentationManager_dialogAlertPresenterDidDisconnectFrom
   return result;
 }
 
-- (void)dialogAlertPresenter:(id)a3 didConnectToAlert:(id)a4
+- (void)dialogAlertPresenter:(id)presenter didConnectToAlert:(id)alert
 {
-  v5 = a4;
-  v6 = [(WFDialogPresentationManager *)self queue];
+  alertCopy = alert;
+  queue = [(WFDialogPresentationManager *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __70__WFDialogPresentationManager_dialogAlertPresenter_didConnectToAlert___block_invoke;
   v8[3] = &unk_2788FFFC0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = alertCopy;
+  v7 = alertCopy;
+  dispatch_async(queue, v8);
 }
 
 - (void)cancelWorkflow
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(WFDialogPresentationManager *)self presentedDialog];
-  v4 = [v3 context];
+  presentedDialog = [(WFDialogPresentationManager *)self presentedDialog];
+  context = [presentedDialog context];
 
-  if (v4)
+  if (context)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [(WFDialogPresentationManager *)self connectedRunners];
-    v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    connectedRunners = [(WFDialogPresentationManager *)self connectedRunners];
+    v6 = [connectedRunners countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v6)
     {
       v7 = v6;
@@ -919,17 +919,17 @@ uint64_t __74__WFDialogPresentationManager_dialogAlertPresenterDidDisconnectFrom
         {
           if (*v13 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(connectedRunners);
           }
 
-          v10 = [*(*(&v12 + 1) + 8 * v9) remoteObjectProxy];
-          [v10 presenterRequestedWorkflowStopForContext:v4];
+          remoteObjectProxy = [*(*(&v12 + 1) + 8 * v9) remoteObjectProxy];
+          [remoteObjectProxy presenterRequestedWorkflowStopForContext:context];
 
           ++v9;
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v7 = [connectedRunners countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v7);
@@ -939,18 +939,18 @@ uint64_t __74__WFDialogPresentationManager_dialogAlertPresenterDidDisconnectFrom
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestDismissalWithReason:(id)a3
+- (void)requestDismissalWithReason:(id)reason
 {
-  v4 = a3;
-  v5 = [(WFDialogPresentationManager *)self queue];
+  reasonCopy = reason;
+  queue = [(WFDialogPresentationManager *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__WFDialogPresentationManager_requestDismissalWithReason___block_invoke;
   v7[3] = &unk_2788FFFC0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = reasonCopy;
+  v6 = reasonCopy;
+  dispatch_async(queue, v7);
 }
 
 uint64_t __58__WFDialogPresentationManager_requestDismissalWithReason___block_invoke(uint64_t a1)
@@ -1036,13 +1036,13 @@ uint64_t __58__WFDialogPresentationManager_requestDismissalWithReason___block_in
 
 - (void)beginConnection
 {
-  v3 = [(WFDialogPresentationManager *)self queue];
+  queue = [(WFDialogPresentationManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __46__WFDialogPresentationManager_beginConnection__block_invoke;
   block[3] = &unk_278900148;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __46__WFDialogPresentationManager_beginConnection__block_invoke(uint64_t a1)
@@ -1083,32 +1083,32 @@ void __46__WFDialogPresentationManager_beginConnection__block_invoke(uint64_t a1
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFDialogPresentationManager *)self queue];
-  dispatch_assert_queue_not_V2(v8);
+  listenerCopy = listener;
+  connectionCopy = connection;
+  queue = [(WFDialogPresentationManager *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  v9 = [(WFDialogPresentationManager *)self queue];
+  queue2 = [(WFDialogPresentationManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66__WFDialogPresentationManager_listener_shouldAcceptNewConnection___block_invoke;
   block[3] = &unk_278900198;
-  v14 = self;
+  selfCopy = self;
   v15 = &v16;
-  v13 = v7;
-  v10 = v7;
-  dispatch_sync(v9, block);
+  v13 = connectionCopy;
+  v10 = connectionCopy;
+  dispatch_sync(queue2, block);
 
-  LOBYTE(v7) = *(v17 + 24);
+  LOBYTE(connectionCopy) = *(v17 + 24);
   _Block_object_dispose(&v16, 8);
 
-  return v7;
+  return connectionCopy;
 }
 
 void __66__WFDialogPresentationManager_listener_shouldAcceptNewConnection___block_invoke(uint64_t a1)
@@ -1239,22 +1239,22 @@ void __66__WFDialogPresentationManager_listener_shouldAcceptNewConnection___bloc
   [v2 removeObject:*(a1 + 40)];
 }
 
-- (void)postNotificationWithRequest:(id)a3 presentationMode:(unint64_t)a4 context:(id)a5
+- (void)postNotificationWithRequest:(id)request presentationMode:(unint64_t)mode context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(WFDialogPresentationManager *)self queue];
+  requestCopy = request;
+  contextCopy = context;
+  queue = [(WFDialogPresentationManager *)self queue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __84__WFDialogPresentationManager_postNotificationWithRequest_presentationMode_context___block_invoke;
   v13[3] = &unk_2788FE9E8;
-  v14 = v8;
-  v15 = v9;
-  v16 = self;
-  v17 = a4;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = requestCopy;
+  v15 = contextCopy;
+  selfCopy = self;
+  modeCopy = mode;
+  v11 = contextCopy;
+  v12 = requestCopy;
+  dispatch_async(queue, v13);
 }
 
 void __84__WFDialogPresentationManager_postNotificationWithRequest_presentationMode_context___block_invoke(uint64_t a1)
@@ -1335,13 +1335,13 @@ void __84__WFDialogPresentationManager_postNotificationWithRequest_presentationM
 
 - (void)activateStatusPresenter
 {
-  v3 = [(WFDialogPresentationManager *)self queue];
+  queue = [(WFDialogPresentationManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__WFDialogPresentationManager_activateStatusPresenter__block_invoke;
   block[3] = &unk_278900148;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __54__WFDialogPresentationManager_activateStatusPresenter__block_invoke(uint64_t a1)
@@ -1350,18 +1350,18 @@ void __54__WFDialogPresentationManager_activateStatusPresenter__block_invoke(uin
   [v1 activateAlertInMainSceneOfApplicationWithBundleIdentifier:0];
 }
 
-- (void)activateRemoteAlertTiedToBundleIdentifier:(id)a3
+- (void)activateRemoteAlertTiedToBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(WFDialogPresentationManager *)self queue];
+  identifierCopy = identifier;
+  queue = [(WFDialogPresentationManager *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __73__WFDialogPresentationManager_activateRemoteAlertTiedToBundleIdentifier___block_invoke;
   v7[3] = &unk_2788FFFC0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = identifierCopy;
+  v6 = identifierCopy;
+  dispatch_async(queue, v7);
 }
 
 void __73__WFDialogPresentationManager_activateRemoteAlertTiedToBundleIdentifier___block_invoke(uint64_t a1)
@@ -1394,19 +1394,19 @@ void __73__WFDialogPresentationManager_activateRemoteAlertTiedToBundleIdentifier
 - (void)queue_clearPersistentModeStateIfNecessary
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(WFDialogPresentationManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(WFDialogPresentationManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(WFDialogPresentationManager *)self persistentRunningContext];
-  if (v4)
+  persistentRunningContext = [(WFDialogPresentationManager *)self persistentRunningContext];
+  if (persistentRunningContext)
   {
   }
 
   else
   {
-    v5 = [(WFDialogPresentationManager *)self persistentRunningAttribution];
+    persistentRunningAttribution = [(WFDialogPresentationManager *)self persistentRunningAttribution];
 
-    if (!v5)
+    if (!persistentRunningAttribution)
     {
       goto LABEL_7;
     }
@@ -1415,18 +1415,18 @@ void __73__WFDialogPresentationManager_activateRemoteAlertTiedToBundleIdentifier
   v6 = getWFDialogLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(WFDialogPresentationManager *)self persistentRunningContext];
+    persistentRunningContext2 = [(WFDialogPresentationManager *)self persistentRunningContext];
     v10 = 136315394;
     v11 = "[WFDialogPresentationManager queue_clearPersistentModeStateIfNecessary]";
     v12 = 2112;
-    v13 = v7;
+    v13 = persistentRunningContext2;
     _os_log_impl(&dword_23103C000, v6, OS_LOG_TYPE_DEFAULT, "%s Clearing persistent state (%@)", &v10, 0x16u);
   }
 
   [(WFDialogPresentationManager *)self setPersistentRunningContext:0];
   [(WFDialogPresentationManager *)self setPersistentRunningAttribution:0];
-  v8 = [(WFDialogPresentationManager *)self persistentPresentationQueue];
-  [v8 removeAllObjects];
+  persistentPresentationQueue = [(WFDialogPresentationManager *)self persistentPresentationQueue];
+  [persistentPresentationQueue removeAllObjects];
 
 LABEL_7:
   v9 = *MEMORY[0x277D85DE8];
@@ -1435,8 +1435,8 @@ LABEL_7:
 - (void)queue_deactivateRemoteAlertAndInvalidateConnection
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = [(WFDialogPresentationManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(WFDialogPresentationManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = getWFDialogLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -1447,8 +1447,8 @@ LABEL_7:
   }
 
   [(WFDialogPresentationManager *)self queue_connectedRemoteAlertDidDisconnect];
-  v5 = [(WFDialogPresentationManager *)self remoteAlertPresenter];
-  [v5 deactivateAlert];
+  remoteAlertPresenter = [(WFDialogPresentationManager *)self remoteAlertPresenter];
+  [remoteAlertPresenter deactivateAlert];
 
   v6 = *MEMORY[0x277D85DE8];
 }
@@ -1456,11 +1456,11 @@ LABEL_7:
 - (void)queue_presentNextDialog
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = [(WFDialogPresentationManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(WFDialogPresentationManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(WFDialogPresentationManager *)self persistentRunningContext];
-  v5 = v4 == 0;
+  persistentRunningContext = [(WFDialogPresentationManager *)self persistentRunningContext];
+  v5 = persistentRunningContext == 0;
 
   v6 = getWFDialogLogObject();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_INFO);
@@ -1473,7 +1473,7 @@ LABEL_7:
       _os_log_impl(&dword_23103C000, v6, OS_LOG_TYPE_INFO, "%s Dequeueing dialog from transient queue.", buf, 0xCu);
     }
 
-    v8 = [(WFDialogPresentationManager *)self otherPresentationQueue];
+    otherPresentationQueue = [(WFDialogPresentationManager *)self otherPresentationQueue];
   }
 
   else
@@ -1485,43 +1485,43 @@ LABEL_7:
       _os_log_impl(&dword_23103C000, v6, OS_LOG_TYPE_INFO, "%s Dequeueing dialog from persistent queue.", buf, 0xCu);
     }
 
-    v8 = [(WFDialogPresentationManager *)self persistentPresentationQueue];
+    otherPresentationQueue = [(WFDialogPresentationManager *)self persistentPresentationQueue];
   }
 
-  v9 = v8;
-  if ([v8 count])
+  v9 = otherPresentationQueue;
+  if ([otherPresentationQueue count])
   {
-    v10 = [(WFDialogPresentationManager *)self connectedRemoteAlert];
-    if (v10)
+    connectedRemoteAlert = [(WFDialogPresentationManager *)self connectedRemoteAlert];
+    if (connectedRemoteAlert)
     {
-      v11 = [(WFDialogPresentationManager *)self presentedDialog];
+      presentedDialog = [(WFDialogPresentationManager *)self presentedDialog];
 
-      if (!v11)
+      if (!presentedDialog)
       {
-        v16 = [v9 firstObject];
+        firstObject = [v9 firstObject];
         [v9 removeObjectAtIndex:0];
         v17 = getWFDialogLogObject();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
-          v18 = [v16 request];
+          request = [firstObject request];
           *buf = 136315394;
           v25 = "[WFDialogPresentationManager queue_presentNextDialog]";
           v26 = 2112;
-          v27 = v18;
+          v27 = request;
           _os_log_impl(&dword_23103C000, v17, OS_LOG_TYPE_DEFAULT, "%s Asking connected dialog to show request: %@", buf, 0x16u);
         }
 
-        [(WFDialogPresentationManager *)self setPresentedDialog:v16];
+        [(WFDialogPresentationManager *)self setPresentedDialog:firstObject];
         objc_initWeak(buf, self);
-        v19 = [v16 request];
+        request2 = [firstObject request];
         v21[0] = MEMORY[0x277D85DD0];
         v21[1] = 3221225472;
         v21[2] = __54__WFDialogPresentationManager_queue_presentNextDialog__block_invoke;
         v21[3] = &unk_2788FE9C0;
         objc_copyWeak(&v23, buf);
-        v12 = v16;
+        v12 = firstObject;
         v22 = v12;
-        [v10 showDialogRequest:v19 completionHandler:v21];
+        [connectedRemoteAlert showDialogRequest:request2 completionHandler:v21];
 
         objc_destroyWeak(&v23);
         objc_destroyWeak(buf);
@@ -1560,12 +1560,12 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v10 = getWFDialogLogObject();
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  connectedRemoteAlert = getWFDialogLogObject();
+  if (os_log_type_enabled(connectedRemoteAlert, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315138;
     v25 = "[WFDialogPresentationManager queue_presentNextDialog]";
-    _os_log_impl(&dword_23103C000, v10, OS_LOG_TYPE_DEFAULT, "%s Presentation queue is empty, so not presenting any dialogs.", buf, 0xCu);
+    _os_log_impl(&dword_23103C000, connectedRemoteAlert, OS_LOG_TYPE_DEFAULT, "%s Presentation queue is empty, so not presenting any dialogs.", buf, 0xCu);
   }
 
 LABEL_22:
@@ -1663,18 +1663,18 @@ LABEL_12:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dismissPresentedContentForRunningContext:(id)a3 completionHandler:(id)a4
+- (void)dismissPresentedContentForRunningContext:(id)context completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = [(WFDialogPresentationManager *)self queue];
+  handlerCopy = handler;
+  queue = [(WFDialogPresentationManager *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __90__WFDialogPresentationManager_dismissPresentedContentForRunningContext_completionHandler___block_invoke;
   v8[3] = &unk_2788FF680;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  dispatch_async(queue, v8);
 }
 
 void __90__WFDialogPresentationManager_dismissPresentedContentForRunningContext_completionHandler___block_invoke(uint64_t a1)
@@ -1769,25 +1769,25 @@ void __90__WFDialogPresentationManager_dismissPresentedContentForRunningContext_
   }
 }
 
-- (void)showDialogRequest:(id)a3 runningContext:(id)a4 completionHandler:(id)a5
+- (void)showDialogRequest:(id)request runningContext:(id)context completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(WFDialogPresentationManager *)self queue];
+  requestCopy = request;
+  contextCopy = context;
+  handlerCopy = handler;
+  queue = [(WFDialogPresentationManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __82__WFDialogPresentationManager_showDialogRequest_runningContext_completionHandler___block_invoke;
   block[3] = &unk_2788FF548;
-  v20 = v11;
+  v20 = handlerCopy;
   v21 = a2;
-  v17 = v10;
-  v18 = self;
-  v19 = v9;
-  v13 = v11;
-  v14 = v9;
-  v15 = v10;
-  dispatch_async(v12, block);
+  v17 = contextCopy;
+  selfCopy = self;
+  v19 = requestCopy;
+  v13 = handlerCopy;
+  v14 = requestCopy;
+  v15 = contextCopy;
+  dispatch_async(queue, block);
 }
 
 void __82__WFDialogPresentationManager_showDialogRequest_runningContext_completionHandler___block_invoke(uint64_t a1)
@@ -2098,26 +2098,26 @@ void __82__WFDialogPresentationManager_showDialogRequest_runningContext_completi
 
 - (BOOL)hasPersistentState
 {
-  v2 = self;
-  v3 = [(WFDialogPresentationManager *)self queue];
-  dispatch_assert_queue_not_V2(v3);
+  selfCopy = self;
+  queue = [(WFDialogPresentationManager *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v4 = [(WFDialogPresentationManager *)v2 queue];
+  queue2 = [(WFDialogPresentationManager *)selfCopy queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __49__WFDialogPresentationManager_hasPersistentState__block_invoke;
   v6[3] = &unk_2789000D0;
-  v6[4] = v2;
+  v6[4] = selfCopy;
   v6[5] = &v7;
-  dispatch_sync(v4, v6);
+  dispatch_sync(queue2, v6);
 
-  LOBYTE(v2) = *(v8 + 24);
+  LOBYTE(selfCopy) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __49__WFDialogPresentationManager_hasPersistentState__block_invoke(uint64_t a1)
@@ -2128,11 +2128,11 @@ void __49__WFDialogPresentationManager_hasPersistentState__block_invoke(uint64_t
 
 - (BOOL)queue_hasMoreDialogsToPresent
 {
-  v3 = [(WFDialogPresentationManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(WFDialogPresentationManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(WFDialogPresentationManager *)self persistentRunningContext];
-  if (v4)
+  persistentRunningContext = [(WFDialogPresentationManager *)self persistentRunningContext];
+  if (persistentRunningContext)
   {
     [(WFDialogPresentationManager *)self persistentPresentationQueue];
   }
@@ -2150,8 +2150,8 @@ void __49__WFDialogPresentationManager_hasPersistentState__block_invoke(uint64_t
 - (void)queue_connectedRemoteAlertDidDisconnect
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(WFDialogPresentationManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(WFDialogPresentationManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = getWFDialogLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -2166,8 +2166,8 @@ void __49__WFDialogPresentationManager_hasPersistentState__block_invoke(uint64_t
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(WFDialogPresentationManager *)self contentDismissalCompletionHandlers];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  contentDismissalCompletionHandlers = [(WFDialogPresentationManager *)self contentDismissalCompletionHandlers];
+  v6 = [contentDismissalCompletionHandlers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2179,7 +2179,7 @@ void __49__WFDialogPresentationManager_hasPersistentState__block_invoke(uint64_t
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(contentDismissalCompletionHandlers);
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
@@ -2192,7 +2192,7 @@ void __49__WFDialogPresentationManager_hasPersistentState__block_invoke(uint64_t
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [contentDismissalCompletionHandlers countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -2201,11 +2201,11 @@ void __49__WFDialogPresentationManager_hasPersistentState__block_invoke(uint64_t
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleRemovedIgnoredNotifications:(id)a3
+- (void)handleRemovedIgnoredNotifications:(id)notifications
 {
-  v4 = a3;
-  v5 = [(WFDialogPresentationManager *)self notificationManager];
-  [v5 handleRemovedIgnoredNotifications:v4];
+  notificationsCopy = notifications;
+  notificationManager = [(WFDialogPresentationManager *)self notificationManager];
+  [notificationManager handleRemovedIgnoredNotifications:notificationsCopy];
 }
 
 - (void)dealloc
@@ -2216,19 +2216,19 @@ void __49__WFDialogPresentationManager_hasPersistentState__block_invoke(uint64_t
   [(WFDialogPresentationManager *)&v3 dealloc];
 }
 
-- (WFDialogPresentationManager)initWithListener:(id)a3 notificationManager:(id)a4 dialogAlertPresenter:(id)a5 screenOnObserver:(id)a6
+- (WFDialogPresentationManager)initWithListener:(id)listener notificationManager:(id)manager dialogAlertPresenter:(id)presenter screenOnObserver:(id)observer
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  listenerCopy = listener;
+  managerCopy = manager;
+  presenterCopy = presenter;
+  observerCopy = observer;
   v37.receiver = self;
   v37.super_class = WFDialogPresentationManager;
   v15 = [(WFDialogPresentationManager *)&v37 init];
   if (v15)
   {
-    [v13 setDelegate:v15];
-    objc_storeStrong(&v15->_remoteAlertPresenter, a5);
+    [presenterCopy setDelegate:v15];
+    objc_storeStrong(&v15->_remoteAlertPresenter, presenter);
     v16 = objc_opt_new();
     [v16 setStatusPresenterDelegate:v15];
     statusPresenter = v15->_statusPresenter;
@@ -2243,7 +2243,7 @@ void __49__WFDialogPresentationManager_hasPersistentState__block_invoke(uint64_t
     attributionsAwaitingStatusPresentation = v15->_attributionsAwaitingStatusPresentation;
     v15->_attributionsAwaitingStatusPresentation = v20;
 
-    objc_storeStrong(&v15->_listener, a3);
+    objc_storeStrong(&v15->_listener, listener);
     [(NSXPCListener *)v15->_listener setDelegate:v15];
     v22 = objc_opt_new();
     connectedRunners = v15->_connectedRunners;
@@ -2267,8 +2267,8 @@ void __49__WFDialogPresentationManager_hasPersistentState__block_invoke(uint64_t
     contentDismissalCompletionHandlers = v15->_contentDismissalCompletionHandlers;
     v15->_contentDismissalCompletionHandlers = v32;
 
-    objc_storeStrong(&v15->_notificationManager, a4);
-    objc_storeStrong(&v15->_screenOnObserver, a6);
+    objc_storeStrong(&v15->_notificationManager, manager);
+    objc_storeStrong(&v15->_screenOnObserver, observer);
     [(WFScreenOnObserver *)v15->_screenOnObserver setDelegate:v15];
     [(WFScreenOnObserver *)v15->_screenOnObserver start];
 
@@ -2278,14 +2278,14 @@ void __49__WFDialogPresentationManager_hasPersistentState__block_invoke(uint64_t
   return v15;
 }
 
-- (WFDialogPresentationManager)initWithNotificationManager:(id)a3
+- (WFDialogPresentationManager)initWithNotificationManager:(id)manager
 {
   v4 = MEMORY[0x277CCAE98];
-  v5 = a3;
+  managerCopy = manager;
   v6 = [[v4 alloc] initWithMachServiceName:@"com.apple.shortcuts.dialogpresentation"];
   v7 = objc_alloc_init(WFSpringBoardRemoteAlertPresenter);
   v8 = objc_alloc_init(MEMORY[0x277D7C848]);
-  v9 = [(WFDialogPresentationManager *)self initWithListener:v6 notificationManager:v5 dialogAlertPresenter:v7 screenOnObserver:v8];
+  v9 = [(WFDialogPresentationManager *)self initWithListener:v6 notificationManager:managerCopy dialogAlertPresenter:v7 screenOnObserver:v8];
 
   v10 = v9;
   [v6 resume];

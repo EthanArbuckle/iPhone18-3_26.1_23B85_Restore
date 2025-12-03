@@ -1,39 +1,39 @@
 @interface PXLogsViewController
-- (BOOL)isCollectionRepresentation:(id)a3;
-- (PXLogsViewController)initWithSubsystem:(id)a3 category:(id)a4 startDate:(id)a5;
-- (PXLogsViewController)initWithSubsystemsAndCategories:(id)a3 startDate:(id)a4;
-- (id)initLiveWithSubsystem:(id)a3 category:(id)a4;
-- (id)initLiveWithSubsystemsAndCategories:(id)a3;
-- (id)substitutionForCollectionRepresentation:(id)a3 attributes:(id)a4;
-- (id)substitutionForObjectRepresentation:(id)a3;
-- (id)subsystemsAndCategoriesPredicateWithSubsystemsAndCategories:(id)a3;
-- (void)logAttributedString:(id)a3;
+- (BOOL)isCollectionRepresentation:(id)representation;
+- (PXLogsViewController)initWithSubsystem:(id)subsystem category:(id)category startDate:(id)date;
+- (PXLogsViewController)initWithSubsystemsAndCategories:(id)categories startDate:(id)date;
+- (id)initLiveWithSubsystem:(id)subsystem category:(id)category;
+- (id)initLiveWithSubsystemsAndCategories:(id)categories;
+- (id)substitutionForCollectionRepresentation:(id)representation attributes:(id)attributes;
+- (id)substitutionForObjectRepresentation:(id)representation;
+- (id)subsystemsAndCategoriesPredicateWithSubsystemsAndCategories:(id)categories;
+- (void)logAttributedString:(id)string;
 - (void)prepareDiskStore;
 - (void)prepareLiveStore;
 - (void)removeSpinner;
-- (void)setupEventStream:(id)a3;
-- (void)tapped:(id)a3;
-- (void)toggleModeForStringIndex:(unint64_t)a3;
+- (void)setupEventStream:(id)stream;
+- (void)tapped:(id)tapped;
+- (void)toggleModeForStringIndex:(unint64_t)index;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PXLogsViewController
 
-- (id)substitutionForCollectionRepresentation:(id)a3 attributes:(id)a4
+- (id)substitutionForCollectionRepresentation:(id)representation attributes:(id)attributes
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v6 attributes:v7];
+  representationCopy = representation;
+  attributesCopy = attributes;
+  v8 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:representationCopy attributes:attributesCopy];
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
   v24 = __Block_byref_object_copy__199116;
   v25 = __Block_byref_object_dispose__199117;
   v26 = 0;
-  v9 = [v7 mutableCopy];
-  v10 = [MEMORY[0x1E69DC888] lightGrayColor];
-  [v9 setObject:v10 forKeyedSubscript:*MEMORY[0x1E69DB600]];
+  v9 = [attributesCopy mutableCopy];
+  lightGrayColor = [MEMORY[0x1E69DC888] lightGrayColor];
+  [v9 setObject:lightGrayColor forKeyedSubscript:*MEMORY[0x1E69DB600]];
 
   substitutionByObjectRepresentation = self->_substitutionByObjectRepresentation;
   v17[0] = MEMORY[0x1E69E9820];
@@ -98,40 +98,40 @@ void __75__PXLogsViewController_substitutionForCollectionRepresentation_attribut
   }
 }
 
-- (BOOL)isCollectionRepresentation:(id)a3
+- (BOOL)isCollectionRepresentation:(id)representation
 {
-  v3 = a3;
-  if (([v3 hasPrefix:@"("] != 0)
+  representationCopy = representation;
+  if (([representationCopy hasPrefix:@"("] != 0)
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 hasPrefix:@"{"];
+    v4 = [representationCopy hasPrefix:@"{"];
   }
 
   return v4;
 }
 
-- (id)substitutionForObjectRepresentation:(id)a3
+- (id)substitutionForObjectRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_substitutionByObjectRepresentation objectForKeyedSubscript:v4];
+  representationCopy = representation;
+  v5 = [(NSMutableDictionary *)self->_substitutionByObjectRepresentation objectForKeyedSubscript:representationCopy];
   if (!v5)
   {
-    if ([v4 hasPrefix:@"<"])
+    if ([representationCopy hasPrefix:@"<"])
     {
-      v6 = [v4 rangeOfString:@">"];
-      v7 = [v4 rangeOfString:@": 0x"];
+      v6 = [representationCopy rangeOfString:@">"];
+      v7 = [representationCopy rangeOfString:@": 0x"];
       v5 = 0;
       if (v6 != 0x7FFFFFFFFFFFFFFFLL && v7 < v6)
       {
-        v8 = [v4 substringWithRange:{1, v7 - 1}];
+        v8 = [representationCopy substringWithRange:{1, v7 - 1}];
         v9 = [(NSMutableDictionary *)self->_nextAvailableIndexByClassName objectForKeyedSubscript:v8];
-        v10 = [v9 unsignedIntegerValue];
+        unsignedIntegerValue = [v9 unsignedIntegerValue];
 
-        v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %lu", v8, v10];
+        v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %lu", v8, unsignedIntegerValue];
         if (!self->_substitutionByObjectRepresentation)
         {
           v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -143,10 +143,10 @@ void __75__PXLogsViewController_substitutionForCollectionRepresentation_attribut
           self->_nextAvailableIndexByClassName = v13;
         }
 
-        v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v10 + 1];
+        v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:unsignedIntegerValue + 1];
         [(NSMutableDictionary *)self->_nextAvailableIndexByClassName setObject:v15 forKeyedSubscript:v8];
 
-        [(NSMutableDictionary *)self->_substitutionByObjectRepresentation setObject:v5 forKeyedSubscript:v4];
+        [(NSMutableDictionary *)self->_substitutionByObjectRepresentation setObject:v5 forKeyedSubscript:representationCopy];
       }
     }
 
@@ -159,7 +159,7 @@ void __75__PXLogsViewController_substitutionForCollectionRepresentation_attribut
   return v5;
 }
 
-- (void)toggleModeForStringIndex:(unint64_t)a3
+- (void)toggleModeForStringIndex:(unint64_t)index
 {
   v5 = 0;
   v6 = 0;
@@ -183,26 +183,26 @@ void __75__PXLogsViewController_substitutionForCollectionRepresentation_attribut
     ++v7;
   }
 
-  while (v7 <= a3);
-  if (([(NSMutableIndexSet *)self->_isExpanded containsIndex:a3]& 1) != 0)
+  while (v7 <= index);
+  if (([(NSMutableIndexSet *)self->_isExpanded containsIndex:index]& 1) != 0)
   {
-    v10 = [(NSMutableArray *)self->_compactLogs objectAtIndexedSubscript:a3];
-    [(NSMutableIndexSet *)self->_isExpanded removeIndex:a3];
+    v10 = [(NSMutableArray *)self->_compactLogs objectAtIndexedSubscript:index];
+    [(NSMutableIndexSet *)self->_isExpanded removeIndex:index];
   }
 
   else
   {
-    v10 = [(NSMutableArray *)self->_expandedLogs objectAtIndexedSubscript:a3];
-    [(NSMutableIndexSet *)self->_isExpanded addIndex:a3];
+    v10 = [(NSMutableArray *)self->_expandedLogs objectAtIndexedSubscript:index];
+    [(NSMutableIndexSet *)self->_isExpanded addIndex:index];
   }
 
   [(NSMutableAttributedString *)self->_fullAttributedString replaceCharactersInRange:v5 withAttributedString:v6, v10];
   [(UITextView *)self->_textView setAttributedText:self->_fullAttributedString];
 }
 
-- (void)logAttributedString:(id)a3
+- (void)logAttributedString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   fullAttributedString = self->_fullAttributedString;
   if (!fullAttributedString)
   {
@@ -213,7 +213,7 @@ void __75__PXLogsViewController_substitutionForCollectionRepresentation_attribut
     fullAttributedString = self->_fullAttributedString;
   }
 
-  [(NSMutableAttributedString *)fullAttributedString appendAttributedString:v4];
+  [(NSMutableAttributedString *)fullAttributedString appendAttributedString:stringCopy];
   if (!self->_hasScheduledTextViewUpdate)
   {
     self->_hasScheduledTextViewUpdate = 1;
@@ -241,18 +241,18 @@ uint64_t __44__PXLogsViewController_logAttributedString___block_invoke(uint64_t 
   self->_spinnerView = 0;
 }
 
-- (void)setupEventStream:(id)a3
+- (void)setupEventStream:(id)stream
 {
   v38[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 setFlags:389];
-  v25 = [MEMORY[0x1E696AE18] predicateWithFormat:@"type = %d", 1024];
+  streamCopy = stream;
+  [streamCopy setFlags:389];
+  1024 = [MEMORY[0x1E696AE18] predicateWithFormat:@"type = %d", 1024];
   v5 = [(PXLogsViewController *)self subsystemsAndCategoriesPredicateWithSubsystemsAndCategories:self->_subsystemsAndCategories];
   v6 = v5;
   if (v5)
   {
     v7 = MEMORY[0x1E696AB28];
-    v38[0] = v25;
+    v38[0] = 1024;
     v38[1] = v5;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:2];
     v9 = [v7 andPredicateWithSubpredicates:v8];
@@ -260,16 +260,16 @@ uint64_t __44__PXLogsViewController_logAttributedString___block_invoke(uint64_t 
 
   else
   {
-    v9 = v25;
+    v9 = 1024;
   }
 
-  [v4 setFilterPredicate:v9];
-  v10 = [(PXLogsViewController *)self dateFormatter];
-  if (!v10)
+  [streamCopy setFilterPredicate:v9];
+  dateFormatter = [(PXLogsViewController *)self dateFormatter];
+  if (!dateFormatter)
   {
-    v10 = objc_alloc_init(MEMORY[0x1E696AB78]);
-    [v10 setDateStyle:1];
-    [v10 setTimeStyle:1];
+    dateFormatter = objc_alloc_init(MEMORY[0x1E696AB78]);
+    [dateFormatter setDateStyle:1];
+    [dateFormatter setTimeStyle:1];
   }
 
   v11 = [MEMORY[0x1E69DC888] colorWithRed:0.9 green:0.9 blue:0.9 alpha:1.0];
@@ -303,18 +303,18 @@ uint64_t __44__PXLogsViewController_logAttributedString___block_invoke(uint64_t 
   v28 = v21;
   v22 = v12;
   v29 = v22;
-  v30 = self;
-  v23 = v10;
+  selfCopy = self;
+  v23 = dateFormatter;
   v31 = v23;
   v24 = v14;
   v32 = v24;
-  [v4 setEventHandler:v27];
+  [streamCopy setEventHandler:v27];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __41__PXLogsViewController_setupEventStream___block_invoke_3;
   v26[3] = &unk_1E7743358;
   v26[4] = self;
-  [v4 setInvalidationHandler:v26];
+  [streamCopy setInvalidationHandler:v26];
 
   _Block_object_dispose(v34, 8);
 }
@@ -488,19 +488,19 @@ uint64_t __41__PXLogsViewController_setupEventStream___block_invoke_2(void *a1)
   return [v2 logAttributedString:v3];
 }
 
-- (id)subsystemsAndCategoriesPredicateWithSubsystemsAndCategories:(id)a3
+- (id)subsystemsAndCategoriesPredicateWithSubsystemsAndCategories:(id)categories
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count])
+  categoriesCopy = categories;
+  if ([categoriesCopy count])
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v20 = v3;
-    v5 = v3;
+    v20 = categoriesCopy;
+    v5 = categoriesCopy;
     v22 = [v5 countByEnumeratingWithState:&v23 objects:v28 count:16];
     if (!v22)
     {
@@ -521,12 +521,12 @@ uint64_t __41__PXLogsViewController_setupEventStream___block_invoke_2(void *a1)
         v8 = [*(*(&v23 + 1) + 8 * i) componentsSeparatedByString:@":"];
         if ([v8 count])
         {
-          v9 = [v8 firstObject];
+          firstObject = [v8 firstObject];
         }
 
         else
         {
-          v9 = &stru_1F1741150;
+          firstObject = &stru_1F1741150;
         }
 
         if ([v8 count] >= 2)
@@ -534,9 +534,9 @@ uint64_t __41__PXLogsViewController_setupEventStream___block_invoke_2(void *a1)
           v6 = [v8 objectAtIndexedSubscript:1];
         }
 
-        if ([(__CFString *)v9 length])
+        if ([(__CFString *)firstObject length])
         {
-          v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"subsystem = %@", v9];
+          v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"subsystem = %@", firstObject];
           if (![(__CFString *)v6 length])
           {
             if (v10)
@@ -618,7 +618,7 @@ LABEL_27:
           [MEMORY[0x1E696AB28] orPredicateWithSubpredicates:v4];
         }
         v18 = ;
-        v3 = v20;
+        categoriesCopy = v20;
 
         goto LABEL_32;
       }
@@ -633,13 +633,13 @@ LABEL_32:
 
 - (void)prepareLiveStore
 {
-  v3 = [MEMORY[0x1E69AD3A8] liveLocalStore];
+  liveLocalStore = [MEMORY[0x1E69AD3A8] liveLocalStore];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __40__PXLogsViewController_prepareLiveStore__block_invoke;
   v4[3] = &unk_1E7743308;
   v4[4] = self;
-  [v3 prepareWithCompletionHandler:v4];
+  [liveLocalStore prepareWithCompletionHandler:v4];
 }
 
 void __40__PXLogsViewController_prepareLiveStore__block_invoke(uint64_t a1, void *a2)
@@ -659,13 +659,13 @@ void __40__PXLogsViewController_prepareLiveStore__block_invoke(uint64_t a1, void
 
 - (void)prepareDiskStore
 {
-  v3 = [MEMORY[0x1E69AD3C8] localStore];
+  localStore = [MEMORY[0x1E69AD3C8] localStore];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __40__PXLogsViewController_prepareDiskStore__block_invoke;
   v4[3] = &unk_1E77432E0;
   v4[4] = self;
-  [v3 prepareWithCompletionHandler:v4];
+  [localStore prepareWithCompletionHandler:v4];
 }
 
 void __40__PXLogsViewController_prepareDiskStore__block_invoke(uint64_t a1, void *a2)
@@ -683,13 +683,13 @@ void __40__PXLogsViewController_prepareDiskStore__block_invoke(uint64_t a1, void
   [v8 activateStreamFromDate:*(*(a1 + 32) + 1000)];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(OSLogEventStreamBase *)self->_eventStream invalidate];
   v5.receiver = self;
   v5.super_class = PXLogsViewController;
-  [(PXLogsViewController *)&v5 viewWillDisappear:v3];
+  [(PXLogsViewController *)&v5 viewWillDisappear:disappearCopy];
 }
 
 - (void)viewDidLoad
@@ -697,20 +697,20 @@ void __40__PXLogsViewController_prepareDiskStore__block_invoke(uint64_t a1, void
   v29.receiver = self;
   v29.super_class = PXLogsViewController;
   [(PXLogsViewController *)&v29 viewDidLoad];
-  v3 = [(PXLogsViewController *)self view];
+  view = [(PXLogsViewController *)self view];
   v4 = objc_alloc(MEMORY[0x1E69DD168]);
-  [v3 bounds];
+  [view bounds];
   v5 = [v4 initWithFrame:?];
   textView = self->_textView;
   self->_textView = v5;
 
   [(UITextView *)self->_textView setAutoresizingMask:18];
   [(UITextView *)self->_textView setEditable:0];
-  v7 = [(UITextView *)self->_textView textContainer];
-  [v7 setLineBreakMode:1];
+  textContainer = [(UITextView *)self->_textView textContainer];
+  [textContainer setLineBreakMode:1];
 
   [(UITextView *)self->_textView setTextAlignment:0];
-  [v3 addSubview:self->_textView];
+  [view addSubview:self->_textView];
   v8 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel_tapped_];
   [(UITextView *)self->_textView addGestureRecognizer:v8];
   if (self->_startDate)
@@ -729,19 +729,19 @@ void __40__PXLogsViewController_prepareDiskStore__block_invoke(uint64_t a1, void
     spinnerView = self->_spinnerView;
     self->_spinnerView = v9;
 
-    v11 = [MEMORY[0x1E69DC888] grayColor];
-    [(UIActivityIndicatorView *)self->_spinnerView setColor:v11];
+    grayColor = [MEMORY[0x1E69DC888] grayColor];
+    [(UIActivityIndicatorView *)self->_spinnerView setColor:grayColor];
 
     [(UIActivityIndicatorView *)self->_spinnerView bounds];
     v13 = v12;
     v15 = v14;
     v17 = v16;
     v19 = v18;
-    [v3 bounds];
+    [view bounds];
     v21 = v20;
     [(UIActivityIndicatorView *)self->_spinnerView bounds];
     v23 = (v21 - v22) * 0.5;
-    [v3 bounds];
+    [view bounds];
     v25 = v24;
     [(UIActivityIndicatorView *)self->_spinnerView bounds];
     v27 = (v25 - v26) * 0.5;
@@ -753,22 +753,22 @@ void __40__PXLogsViewController_prepareDiskStore__block_invoke(uint64_t a1, void
     [(UIActivityIndicatorView *)self->_spinnerView setFrame:v31.origin.x, v31.origin.y, v31.size.width, v31.size.height];
     [(UIActivityIndicatorView *)self->_spinnerView setAutoresizingMask:45];
     [(UIActivityIndicatorView *)self->_spinnerView setHidesWhenStopped:1];
-    [v3 addSubview:self->_spinnerView];
+    [view addSubview:self->_spinnerView];
     [(UIActivityIndicatorView *)self->_spinnerView startAnimating];
   }
 
-  v28 = [(PXLogsViewController *)self navigationController];
-  [v28 setToolbarHidden:1 animated:0];
+  navigationController = [(PXLogsViewController *)self navigationController];
+  [navigationController setToolbarHidden:1 animated:0];
 }
 
-- (void)tapped:(id)a3
+- (void)tapped:(id)tapped
 {
-  [a3 locationInView:self->_textView];
+  [tapped locationInView:self->_textView];
   v5 = v4;
   v7 = v6;
-  v8 = [(UITextView *)self->_textView layoutManager];
-  v9 = [(UITextView *)self->_textView textContainer];
-  v10 = [v8 characterIndexForPoint:v9 inTextContainer:0 fractionOfDistanceBetweenInsertionPoints:{v5, v7}];
+  layoutManager = [(UITextView *)self->_textView layoutManager];
+  textContainer = [(UITextView *)self->_textView textContainer];
+  v10 = [layoutManager characterIndexForPoint:textContainer inTextContainer:0 fractionOfDistanceBetweenInsertionPoints:{v5, v7}];
 
   if ([(NSMutableArray *)self->_compactLogs count])
   {
@@ -800,100 +800,100 @@ void __40__PXLogsViewController_prepareDiskStore__block_invoke(uint64_t a1, void
   }
 }
 
-- (id)initLiveWithSubsystem:(id)a3 category:(id)a4
+- (id)initLiveWithSubsystem:(id)subsystem category:(id)category
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v5 = &stru_1F1741150;
-  if (a3)
+  categoryCopy = &stru_1F1741150;
+  if (subsystem)
   {
-    v6 = a3;
+    subsystemCopy = subsystem;
   }
 
   else
   {
-    v6 = &stru_1F1741150;
+    subsystemCopy = &stru_1F1741150;
   }
 
-  if (a4)
+  if (category)
   {
-    v5 = a4;
+    categoryCopy = category;
   }
 
-  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%@", v6, v5];
-  v11[0] = v7;
+  categoryCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%@", subsystemCopy, categoryCopy];
+  v11[0] = categoryCopy;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
   v9 = [(PXLogsViewController *)self initLiveWithSubsystemsAndCategories:v8];
 
   return v9;
 }
 
-- (id)initLiveWithSubsystemsAndCategories:(id)a3
+- (id)initLiveWithSubsystemsAndCategories:(id)categories
 {
-  v5 = a3;
+  categoriesCopy = categories;
   v9.receiver = self;
   v9.super_class = PXLogsViewController;
   v6 = [(PXLogsViewController *)&v9 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_subsystemsAndCategories, a3);
+    objc_storeStrong(&v6->_subsystemsAndCategories, categories);
   }
 
   return v7;
 }
 
-- (PXLogsViewController)initWithSubsystem:(id)a3 category:(id)a4 startDate:(id)a5
+- (PXLogsViewController)initWithSubsystem:(id)subsystem category:(id)category startDate:(id)date
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E696AEC0];
-  if (a3)
+  if (subsystem)
   {
-    v7 = a3;
+    subsystemCopy = subsystem;
   }
 
   else
   {
-    v7 = &stru_1F1741150;
+    subsystemCopy = &stru_1F1741150;
   }
 
-  if (a4)
+  if (category)
   {
-    v8 = a4;
+    categoryCopy = category;
   }
 
   else
   {
-    v8 = &stru_1F1741150;
+    categoryCopy = &stru_1F1741150;
   }
 
-  v9 = a5;
-  v10 = [v6 stringWithFormat:@"%@:%@", v7, v8];
-  v14[0] = v10;
+  dateCopy = date;
+  categoryCopy = [v6 stringWithFormat:@"%@:%@", subsystemCopy, categoryCopy];
+  v14[0] = categoryCopy;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-  v12 = [(PXLogsViewController *)self initWithSubsystemsAndCategories:v11 startDate:v9];
+  v12 = [(PXLogsViewController *)self initWithSubsystemsAndCategories:v11 startDate:dateCopy];
 
   return v12;
 }
 
-- (PXLogsViewController)initWithSubsystemsAndCategories:(id)a3 startDate:(id)a4
+- (PXLogsViewController)initWithSubsystemsAndCategories:(id)categories startDate:(id)date
 {
-  v7 = a3;
-  v8 = a4;
+  categoriesCopy = categories;
+  dateCopy = date;
   v13.receiver = self;
   v13.super_class = PXLogsViewController;
   v9 = [(PXLogsViewController *)&v13 initWithNibName:0 bundle:0];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_subsystemsAndCategories, a3);
-    v11 = v8;
-    if (!v8)
+    objc_storeStrong(&v9->_subsystemsAndCategories, categories);
+    distantPast = dateCopy;
+    if (!dateCopy)
     {
-      v11 = [MEMORY[0x1E695DF00] distantPast];
+      distantPast = [MEMORY[0x1E695DF00] distantPast];
     }
 
-    objc_storeStrong(&v10->_startDate, v11);
-    if (!v8)
+    objc_storeStrong(&v10->_startDate, distantPast);
+    if (!dateCopy)
     {
     }
   }

@@ -2,10 +2,10 @@
 + (void)run;
 - (NTKBundleComplicationMigrationCompanionDevicePrewarmer)init;
 - (id)_nextDeviceToPrewarm;
-- (unint64_t)_failureCountForDevice:(id)a3;
+- (unint64_t)_failureCountForDevice:(id)device;
 - (void)_handlePairedNotification;
 - (void)_handleUnpairedNotification;
-- (void)_incrementFailureCountForDevice:(id)a3;
+- (void)_incrementFailureCountForDevice:(id)device;
 - (void)_purgeCaches;
 - (void)_queue_prewarmIfNeeded;
 @end
@@ -50,11 +50,11 @@ void __61__NTKBundleComplicationMigrationCompanionDevicePrewarmer_run__block_inv
     queue_failureCount = v2->_queue_failureCount;
     v2->_queue_failureCount = v6;
 
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v2 selector:sel__handlePairedNotification name:*MEMORY[0x277D37C18] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__handlePairedNotification name:*MEMORY[0x277D37C18] object:0];
 
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 addObserver:v2 selector:sel__handleUnpairedNotification name:*MEMORY[0x277D37C20] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel__handleUnpairedNotification name:*MEMORY[0x277D37C20] object:0];
 
     v10 = v2->_queue;
     block[0] = MEMORY[0x277D85DD0];
@@ -82,16 +82,16 @@ uint64_t __62__NTKBundleComplicationMigrationCompanionDevicePrewarmer_init__bloc
   dispatch_assert_queue_V2(self->_queue);
   if (!self->_queue_servicing)
   {
-    v3 = [(NTKBundleComplicationMigrationCompanionDevicePrewarmer *)self _nextDeviceToPrewarm];
-    if (v3)
+    _nextDeviceToPrewarm = [(NTKBundleComplicationMigrationCompanionDevicePrewarmer *)self _nextDeviceToPrewarm];
+    if (_nextDeviceToPrewarm)
     {
       self->_queue_servicing = 1;
       v4 = _NTKLoggingObjectForDomain(56, "NTKLoggingDomainBundleComplicationMigration");
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
       {
-        v5 = [v3 pairingID];
+        pairingID = [_nextDeviceToPrewarm pairingID];
         *buf = 138412290;
-        v11 = v5;
+        v11 = pairingID;
         _os_log_impl(&dword_22D9C5000, v4, OS_LOG_TYPE_DEFAULT, "CompanionDevicePrewarmer: Prewarming %@ migration lookup", buf, 0xCu);
       }
 
@@ -101,7 +101,7 @@ uint64_t __62__NTKBundleComplicationMigrationCompanionDevicePrewarmer_init__bloc
       v8[2] = __80__NTKBundleComplicationMigrationCompanionDevicePrewarmer__queue_prewarmIfNeeded__block_invoke;
       v8[3] = &unk_278786660;
       v8[4] = self;
-      v9 = v3;
+      v9 = _nextDeviceToPrewarm;
       [v6 ensureTypeLookupForDevice:v9 completion:v8];
     }
 
@@ -170,11 +170,11 @@ uint64_t __80__NTKBundleComplicationMigrationCompanionDevicePrewarmer__queue_pre
 {
   v24 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
-  v16 = [MEMORY[0x277D37B50] sharedInstance];
+  mEMORY[0x277D37B50] = [MEMORY[0x277D37B50] sharedInstance];
   v17 = objc_opt_new();
-  v3 = [v16 devices];
-  v4 = [v3 paired];
-  v5 = [v4 all];
+  devices = [mEMORY[0x277D37B50] devices];
+  paired = [devices paired];
+  v5 = [paired all];
 
   v21 = 0u;
   v22 = 0u;
@@ -219,15 +219,15 @@ uint64_t __80__NTKBundleComplicationMigrationCompanionDevicePrewarmer__queue_pre
     v18[3] = &unk_278786688;
     v18[4] = self;
     [v17 sortUsingComparator:v18];
-    v14 = [v17 firstObject];
+    firstObject = [v17 firstObject];
   }
 
   else
   {
-    v14 = 0;
+    firstObject = 0;
   }
 
-  return v14;
+  return firstObject;
 }
 
 uint64_t __78__NTKBundleComplicationMigrationCompanionDevicePrewarmer__nextDeviceToPrewarm__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -261,45 +261,45 @@ uint64_t __78__NTKBundleComplicationMigrationCompanionDevicePrewarmer__nextDevic
   return v7;
 }
 
-- (unint64_t)_failureCountForDevice:(id)a3
+- (unint64_t)_failureCountForDevice:(id)device
 {
   queue = self->_queue;
-  v5 = a3;
+  deviceCopy = device;
   dispatch_assert_queue_V2(queue);
   queue_failureCount = self->_queue_failureCount;
-  v7 = [v5 pairingID];
+  pairingID = [deviceCopy pairingID];
 
-  v8 = [(NSMutableDictionary *)queue_failureCount objectForKey:v7];
-  v9 = [v8 unsignedIntegerValue];
+  v8 = [(NSMutableDictionary *)queue_failureCount objectForKey:pairingID];
+  unsignedIntegerValue = [v8 unsignedIntegerValue];
 
-  return v9;
+  return unsignedIntegerValue;
 }
 
-- (void)_incrementFailureCountForDevice:(id)a3
+- (void)_incrementFailureCountForDevice:(id)device
 {
   queue = self->_queue;
-  v5 = a3;
+  deviceCopy = device;
   dispatch_assert_queue_V2(queue);
   queue_failureCount = self->_queue_failureCount;
-  v7 = [v5 pairingID];
-  v8 = [(NSMutableDictionary *)queue_failureCount objectForKey:v7];
-  v9 = [v8 unsignedIntegerValue];
+  pairingID = [deviceCopy pairingID];
+  v8 = [(NSMutableDictionary *)queue_failureCount objectForKey:pairingID];
+  unsignedIntegerValue = [v8 unsignedIntegerValue];
 
-  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v9 + 1];
+  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue + 1];
   v10 = self->_queue_failureCount;
-  v11 = [v5 pairingID];
+  pairingID2 = [deviceCopy pairingID];
 
-  [(NSMutableDictionary *)v10 setObject:v12 forKeyedSubscript:v11];
+  [(NSMutableDictionary *)v10 setObject:v12 forKeyedSubscript:pairingID2];
 }
 
 - (void)_purgeCaches
 {
   v54 = *MEMORY[0x277D85DE8];
   v2 = objc_opt_new();
-  v3 = [MEMORY[0x277D37B50] sharedInstance];
-  v4 = [v3 devices];
-  v5 = [v4 paired];
-  v6 = [v5 all];
+  mEMORY[0x277D37B50] = [MEMORY[0x277D37B50] sharedInstance];
+  devices = [mEMORY[0x277D37B50] devices];
+  paired = [devices paired];
+  v6 = [paired all];
 
   v46 = 0u;
   v47 = 0u;
@@ -320,9 +320,9 @@ uint64_t __78__NTKBundleComplicationMigrationCompanionDevicePrewarmer__nextDevic
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v44 + 1) + 8 * i) pairingID];
-        v13 = [v12 UUIDString];
-        [v2 addObject:v13];
+        pairingID = [*(*(&v44 + 1) + 8 * i) pairingID];
+        uUIDString = [pairingID UUIDString];
+        [v2 addObject:uUIDString];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v44 objects:v53 count:16];
@@ -334,9 +334,9 @@ uint64_t __78__NTKBundleComplicationMigrationCompanionDevicePrewarmer__nextDevic
   v35 = v7;
 
   v14 = 0x277CCA000uLL;
-  v15 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v16 = NTKBundleComplicationMigrationServiceLookupDirectory();
-  v17 = [v15 enumeratorAtPath:v16];
+  v17 = [defaultManager enumeratorAtPath:v16];
 
   v42 = 0u;
   v43 = 0u;
@@ -362,23 +362,23 @@ uint64_t __78__NTKBundleComplicationMigrationCompanionDevicePrewarmer__nextDevic
 
         v23 = *(*(&v40 + 1) + 8 * v22);
         v39 = 0;
-        v24 = [*(v14 + 2560) defaultManager];
-        [v24 fileExistsAtPath:v23 isDirectory:&v39];
+        defaultManager2 = [*(v14 + 2560) defaultManager];
+        [defaultManager2 fileExistsAtPath:v23 isDirectory:&v39];
 
         if ((v39 & 1) == 0)
         {
-          v25 = [v23 lastPathComponent];
-          v26 = [v25 stringByDeletingPathExtension];
+          lastPathComponent = [v23 lastPathComponent];
+          stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-          if (([v2 containsObject:v26] & 1) == 0)
+          if (([v2 containsObject:stringByDeletingPathExtension] & 1) == 0)
           {
             v27 = NTKBundleComplicationMigrationServiceLookupDirectory();
             v28 = [v27 stringByAppendingPathComponent:v23];
 
             v29 = v14;
-            v30 = [*(v14 + 2560) defaultManager];
+            defaultManager3 = [*(v14 + 2560) defaultManager];
             v38 = 0;
-            v31 = [v30 removeItemAtPath:v28 error:&v38];
+            v31 = [defaultManager3 removeItemAtPath:v28 error:&v38];
             v32 = v38;
 
             v33 = _NTKLoggingObjectForDomain(56, "NTKLoggingDomainBundleComplicationMigration");

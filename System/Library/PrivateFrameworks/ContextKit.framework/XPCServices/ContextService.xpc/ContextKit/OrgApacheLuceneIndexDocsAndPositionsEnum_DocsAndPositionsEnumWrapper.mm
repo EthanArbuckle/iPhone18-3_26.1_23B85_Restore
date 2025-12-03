@@ -98,9 +98,9 @@
     JreThrowNullPointerException();
   }
 
-  v4 = [(OrgApacheLuceneIndexPostingsEnum *)in nextDoc];
+  nextDoc = [(OrgApacheLuceneIndexPostingsEnum *)in nextDoc];
 
-  return sub_100010108(self, v4);
+  return sub_100010108(self, nextDoc);
 }
 
 - (int64_t)cost

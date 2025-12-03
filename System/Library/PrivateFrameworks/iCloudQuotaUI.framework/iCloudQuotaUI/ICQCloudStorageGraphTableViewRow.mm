@@ -1,7 +1,7 @@
 @interface ICQCloudStorageGraphTableViewRow
 - (ICQCloudStorageGraphTableViewRow)init;
-- (ICQCloudStorageGraphTableViewRow)initWithAccount:(id)a3;
-- (float)rowHeightWithMax:(float)a3 peggedHeight:(float)a4 tableView:(id)a5 indexPath:(id)a6;
+- (ICQCloudStorageGraphTableViewRow)initWithAccount:(id)account;
+- (float)rowHeightWithMax:(float)max peggedHeight:(float)height tableView:(id)view indexPath:(id)path;
 - (id)tableCell;
 @end
 
@@ -9,23 +9,23 @@
 
 - (ICQCloudStorageGraphTableViewRow)init
 {
-  v3 = [MEMORY[0x277CB8F48] defaultStore];
-  v4 = [v3 aa_primaryAppleAccount];
+  defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+  aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
 
-  v5 = [(ICQCloudStorageGraphTableViewRow *)self initWithAccount:v4];
+  v5 = [(ICQCloudStorageGraphTableViewRow *)self initWithAccount:aa_primaryAppleAccount];
   return v5;
 }
 
-- (ICQCloudStorageGraphTableViewRow)initWithAccount:(id)a3
+- (ICQCloudStorageGraphTableViewRow)initWithAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v11.receiver = self;
   v11.super_class = ICQCloudStorageGraphTableViewRow;
   v6 = [(RUIElement *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_account, a3);
+    objc_storeStrong(&v6->_account, account);
     v8 = objc_alloc_init(MEMORY[0x277CCAAF8]);
     tableCellLock = v7->_tableCellLock;
     v7->_tableCellLock = v8;
@@ -40,18 +40,18 @@
   tableCell = self->_tableCell;
   if (tableCell)
   {
-    v4 = tableCell;
+    tableCell = tableCell;
   }
 
   else
   {
     v25.receiver = self;
     v25.super_class = ICQCloudStorageGraphTableViewRow;
-    v4 = [(RUITableViewRow *)&v25 tableCell];
+    tableCell = [(RUITableViewRow *)&v25 tableCell];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = tableCell;
       v6 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:0 target:0 set:0 get:0 detail:0 cell:-1 edit:0];
       [v6 setIdentifier:@"CLOUD_STORAGE_GRAPH"];
       [v6 setProperty:objc_opt_class() forKey:*MEMORY[0x277D3FE58]];
@@ -89,12 +89,12 @@
       _Block_object_dispose(&v19, 8);
     }
 
-    objc_storeStrong(&self->_tableCell, v4);
+    objc_storeStrong(&self->_tableCell, tableCell);
   }
 
   [(NSLock *)self->_tableCellLock unlock];
 
-  return v4;
+  return tableCell;
 }
 
 void __45__ICQCloudStorageGraphTableViewRow_tableCell__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -155,18 +155,18 @@ void __45__ICQCloudStorageGraphTableViewRow_tableCell__block_invoke_2(uint64_t a
   *(v8 + 40) = 0;
 }
 
-- (float)rowHeightWithMax:(float)a3 peggedHeight:(float)a4 tableView:(id)a5 indexPath:(id)a6
+- (float)rowHeightWithMax:(float)max peggedHeight:(float)height tableView:(id)view indexPath:(id)path
 {
-  v8 = a6;
-  v9 = a5;
-  v10 = [(ICQCloudStorageGraphTableViewRow *)self tableCell];
-  [v9 _contentWidthForCell:v10 forRowAtIndexPath:v8];
+  pathCopy = path;
+  viewCopy = view;
+  tableCell = [(ICQCloudStorageGraphTableViewRow *)self tableCell];
+  [viewCopy _contentWidthForCell:tableCell forRowAtIndexPath:pathCopy];
   v12 = v11;
 
-  v13 = [(ICQCloudStorageGraphTableViewRow *)self tableCell];
+  tableCell2 = [(ICQCloudStorageGraphTableViewRow *)self tableCell];
   LODWORD(v14) = 1112014848;
   LODWORD(v15) = 1112014848;
-  [v13 systemLayoutSizeFittingSize:v12 withHorizontalFittingPriority:0.0 verticalFittingPriority:{v14, v15}];
+  [tableCell2 systemLayoutSizeFittingSize:v12 withHorizontalFittingPriority:0.0 verticalFittingPriority:{v14, v15}];
   *&v12 = v16;
 
   return *&v12;

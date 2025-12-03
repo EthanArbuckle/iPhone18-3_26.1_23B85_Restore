@@ -1,5 +1,5 @@
 @interface SUUIPlayButton
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
 - (CGSize)buttonSize;
 - (float)buttonCornerRadius;
 - (id)cancelImage;
@@ -9,21 +9,21 @@
 - (id)playImage;
 - (void)_updateEnabledState;
 - (void)layoutSubviews;
-- (void)playIndicatorDidChange:(BOOL)a3;
+- (void)playIndicatorDidChange:(BOOL)change;
 - (void)refresh;
-- (void)reloadWithItemStatus:(id)a3 animated:(BOOL)a4;
-- (void)setBackgroundType:(int64_t)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setRadio:(BOOL)a3;
-- (void)setStyle:(int64_t)a3;
+- (void)reloadWithItemStatus:(id)status animated:(BOOL)animated;
+- (void)setBackgroundType:(int64_t)type;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setRadio:(BOOL)radio;
+- (void)setStyle:(int64_t)style;
 - (void)tintColorDidChange;
 @end
 
 @implementation SUUIPlayButton
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
-  v5 = fmin(a3, 36.0);
+  v5 = fmin(width, 36.0);
   v6 = v5;
   result.height = v6;
   result.width = v5;
@@ -42,23 +42,23 @@
       [(SUUIPlayButton *)self buttonSize];
       v4 = v3;
       v6 = v5;
-      v7 = [(SUUIPlayButtonControl *)self imageView];
-      [v7 setFrame:{0.0, 4.0, v4, v6}];
+      imageView = [(SUUIPlayButtonControl *)self imageView];
+      [imageView setFrame:{0.0, 4.0, v4, v6}];
     }
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   v5.receiver = self;
   v5.super_class = SUUIPlayButton;
-  [(SUUIPlayButtonControl *)&v5 setEnabled:a3];
+  [(SUUIPlayButtonControl *)&v5 setEnabled:enabled];
   if ([(SUUIPlayButton *)self style]== 2)
   {
     if ([(SUUIPlayButtonControl *)self showingPlayIndicator])
     {
-      v4 = [(SUUIPlayButtonControl *)self imageView];
-      [v4 setAlpha:1.0];
+      imageView = [(SUUIPlayButtonControl *)self imageView];
+      [imageView setAlpha:1.0];
     }
   }
 }
@@ -72,9 +72,9 @@
   {
     if ([(SUUIPlayButtonControl *)self showingPlayIndicator])
     {
-      v3 = [(SUUIPlayButtonControl *)self imageView];
-      v4 = [(SUUIPlayButton *)self tintColor];
-      [v3 setTintColor:v4];
+      imageView = [(SUUIPlayButtonControl *)self imageView];
+      tintColor = [(SUUIPlayButton *)self tintColor];
+      [imageView setTintColor:tintColor];
     }
   }
 }
@@ -106,94 +106,94 @@
 
 - (id)cancelImage
 {
-  v3 = [(SUUIPlayButtonControl *)self customToggleImage];
+  customToggleImage = [(SUUIPlayButtonControl *)self customToggleImage];
 
-  if (v3)
+  if (customToggleImage)
   {
-    v4 = [(SUUIPlayButtonControl *)self customToggleImage];
+    customToggleImage2 = [(SUUIPlayButtonControl *)self customToggleImage];
   }
 
   else
   {
     showStop = self->_showStop;
-    v6 = [(SUUIPlayButton *)self images];
-    v7 = v6;
+    images = [(SUUIPlayButton *)self images];
+    v7 = images;
     if (showStop)
     {
-      [v6 stopImage];
+      [images stopImage];
     }
 
     else
     {
-      [v6 pauseImage];
+      [images pauseImage];
     }
-    v4 = ;
+    customToggleImage2 = ;
   }
 
-  return v4;
+  return customToggleImage2;
 }
 
 - (id)defaultBackgroundColor
 {
   if ([(SUUIPlayButton *)self style]== 2 && [(SUUIPlayButtonControl *)self backgroundType]== 1)
   {
-    v3 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = SUUIPlayButton;
-    v3 = [(SUUIPlayButtonControl *)&v5 defaultBackgroundColor];
+    whiteColor = [(SUUIPlayButtonControl *)&v5 defaultBackgroundColor];
   }
 
-  return v3;
+  return whiteColor;
 }
 
 - (id)outerBorderColor
 {
   if ([(SUUIPlayButton *)self style]== 2 || [(SUUIPlayButtonControl *)self isIndeterminate])
   {
-    v3 = [(SUUIPlayButton *)self tintColor];
+    tintColor = [(SUUIPlayButton *)self tintColor];
   }
 
   else
   {
-    v3 = 0;
+    tintColor = 0;
   }
 
-  return v3;
+  return tintColor;
 }
 
 - (id)playImage
 {
-  v3 = [(SUUIPlayButtonControl *)self customPlayImage];
+  customPlayImage = [(SUUIPlayButtonControl *)self customPlayImage];
 
-  if (v3)
+  if (customPlayImage)
   {
-    v4 = [(SUUIPlayButtonControl *)self customPlayImage];
+    customPlayImage2 = [(SUUIPlayButtonControl *)self customPlayImage];
   }
 
   else
   {
-    v5 = [(SUUIPlayButton *)self images];
-    v4 = [v5 playImage];
+    images = [(SUUIPlayButton *)self images];
+    customPlayImage2 = [images playImage];
   }
 
-  return v4;
+  return customPlayImage2;
 }
 
-- (void)playIndicatorDidChange:(BOOL)a3
+- (void)playIndicatorDidChange:(BOOL)change
 {
-  v3 = a3;
-  if ([(SUUIPlayButton *)self style]== 2 && v3)
+  changeCopy = change;
+  if ([(SUUIPlayButton *)self style]== 2 && changeCopy)
   {
-    v5 = [(SUUIPlayButtonControl *)self imageView];
-    [v5 setAlpha:1.0];
+    imageView = [(SUUIPlayButtonControl *)self imageView];
+    [imageView setAlpha:1.0];
 
-    v10 = [(SUUIPlayButtonControl *)self imageView];
-    v6 = [(SUUIPlayButton *)self tintColor];
-    [v10 setTintColor:v6];
+    imageView2 = [(SUUIPlayButtonControl *)self imageView];
+    tintColor = [(SUUIPlayButton *)self tintColor];
+    [imageView2 setTintColor:tintColor];
   }
 
   else
@@ -203,13 +203,13 @@
       return;
     }
 
-    v7 = [(SUUIPlayButtonControl *)self imageView];
-    v8 = [MEMORY[0x277D75348] blackColor];
-    [v7 setTintColor:v8];
+    imageView3 = [(SUUIPlayButtonControl *)self imageView];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [imageView3 setTintColor:blackColor];
 
-    v10 = [(SUUIPlayButtonControl *)self imageView];
+    imageView2 = [(SUUIPlayButtonControl *)self imageView];
     [(SUUIPlayButtonControl *)self playButtonDefaultAlpha];
-    [v10 setAlpha:v9];
+    [imageView2 setAlpha:v9];
   }
 }
 
@@ -221,15 +221,15 @@
   [(SUUIPlayButtonControl *)&v2 refresh];
 }
 
-- (void)reloadWithItemStatus:(id)a3 animated:(BOOL)a4
+- (void)reloadWithItemStatus:(id)status animated:(BOOL)animated
 {
-  v4 = a4;
-  v12 = a3;
-  v6 = [v12 playState];
-  v7 = [(SUUIPlayButtonControl *)self isIndeterminate];
-  if (v6 == 1)
+  animatedCopy = animated;
+  statusCopy = status;
+  playState = [statusCopy playState];
+  isIndeterminate = [(SUUIPlayButtonControl *)self isIndeterminate];
+  if (playState == 1)
   {
-    if (!v7)
+    if (!isIndeterminate)
     {
       [(SUUIPlayButtonControl *)self beginIndeterminateAnimation];
     }
@@ -237,78 +237,78 @@
 
   else
   {
-    if (v7)
+    if (isIndeterminate)
     {
       [(SUUIPlayButtonControl *)self endIndeterminateAnimation];
     }
 
-    [v12 duration];
+    [statusCopy duration];
     v9 = v8;
-    if (self->_showStop != [v12 hideDuration])
+    if (self->_showStop != [statusCopy hideDuration])
     {
-      self->_showStop = [v12 hideDuration];
+      self->_showStop = [statusCopy hideDuration];
       [(SUUIPlayButtonControl *)self showPlayIndicator:[(SUUIPlayButtonControl *)self showingPlayIndicator] force:1];
     }
 
-    if (v9 < 2.22044605e-16 || [v12 hideDuration])
+    if (v9 < 2.22044605e-16 || [statusCopy hideDuration])
     {
       v10 = 0.0;
     }
 
     else
     {
-      [v12 currentTime];
+      [statusCopy currentTime];
       v10 = v11 / v9;
       *&v10 = v10;
     }
 
-    [(SUUIPlayButtonControl *)self setProgress:v4 animated:v10];
+    [(SUUIPlayButtonControl *)self setProgress:animatedCopy animated:v10];
   }
 }
 
-- (void)setBackgroundType:(int64_t)a3
+- (void)setBackgroundType:(int64_t)type
 {
   self->_showStop = 0;
   v3.receiver = self;
   v3.super_class = SUUIPlayButton;
-  [(SUUIPlayButtonControl *)&v3 setBackgroundType:a3];
+  [(SUUIPlayButtonControl *)&v3 setBackgroundType:type];
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
+    self->_style = style;
     v5 = [SUUIPlayButtonImageCache imageCacheForStyle:?];
     imageCache = self->_imageCache;
     self->_imageCache = v5;
 
     [(SUUIPlayButton *)self refresh];
-    if (a3 == 2)
+    if (style == 2)
     {
-      v7 = [(SUUIPlayButton *)self playImage];
-      v13 = [v7 imageWithRenderingMode:2];
+      playImage = [(SUUIPlayButton *)self playImage];
+      v13 = [playImage imageWithRenderingMode:2];
 
-      v8 = [(SUUIPlayButtonControl *)self imageView];
-      v9 = [v8 image];
+      imageView = [(SUUIPlayButtonControl *)self imageView];
+      image = [imageView image];
 
-      if (v9 != v13)
+      if (image != v13)
       {
-        v10 = [(SUUIPlayButtonControl *)self imageView];
-        [v10 setImage:v13];
+        imageView2 = [(SUUIPlayButtonControl *)self imageView];
+        [imageView2 setImage:v13];
       }
 
       if ([(SUUIPlayButtonControl *)self backgroundType]== 1)
       {
-        v11 = [(SUUIPlayButton *)self defaultBackgroundColor];
-        [(SUUIPlayButtonControl *)self setControlColor:v11];
+        defaultBackgroundColor = [(SUUIPlayButton *)self defaultBackgroundColor];
+        [(SUUIPlayButtonControl *)self setControlColor:defaultBackgroundColor];
       }
 
       else
       {
-        v11 = [(SUUIPlayButtonControl *)self imageView];
-        v12 = [(SUUIPlayButton *)self tintColor];
-        [v11 setTintColor:v12];
+        defaultBackgroundColor = [(SUUIPlayButtonControl *)self imageView];
+        tintColor = [(SUUIPlayButton *)self tintColor];
+        [defaultBackgroundColor setTintColor:tintColor];
       }
 
       [(SUUIPlayButtonControl *)self updateOuterProgressLayerStroke];
@@ -340,9 +340,9 @@
   return imageCache;
 }
 
-- (void)setRadio:(BOOL)a3
+- (void)setRadio:(BOOL)radio
 {
-  if (a3)
+  if (radio)
   {
     v3 = 2;
   }
@@ -367,8 +367,8 @@
       [(SUUIPlayButton *)self buttonSize];
       v4 = v3;
       v6 = v5;
-      v7 = [(SUUIPlayButtonControl *)self imageView];
-      [v7 setFrame:{0.0, 4.0, v4, v6}];
+      imageView = [(SUUIPlayButtonControl *)self imageView];
+      [imageView setFrame:{0.0, 4.0, v4, v6}];
     }
   }
 }

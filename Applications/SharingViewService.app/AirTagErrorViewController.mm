@@ -1,20 +1,20 @@
 @interface AirTagErrorViewController
-- (_TtC18SharingViewService25AirTagErrorViewController)initWithContentView:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (_TtC18SharingViewService25AirTagErrorViewController)initWithContentView:(id)view;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation AirTagErrorViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1000EA1E8(a3);
+  selfCopy = self;
+  sub_1000EA1E8(appear);
 }
 
-- (_TtC18SharingViewService25AirTagErrorViewController)initWithContentView:(id)a3
+- (_TtC18SharingViewService25AirTagErrorViewController)initWithContentView:(id)view
 {
-  v4 = a3;
-  v5 = sub_1000EADE8(a3);
+  viewCopy = view;
+  v5 = sub_1000EADE8(view);
 
   return v5;
 }

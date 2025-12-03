@@ -1,45 +1,45 @@
 @interface PKPaymentInstallmentConfiguration
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToInstallmentConfiguration:(id)a3;
-- (PKPaymentInstallmentConfiguration)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToInstallmentConfiguration:(id)configuration;
+- (PKPaymentInstallmentConfiguration)initWithCoder:(id)coder;
 - (unint64_t)hash;
-- (void)encodeToBodyDictionary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeToBodyDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentInstallmentConfiguration
 
-- (void)encodeToBodyDictionary:(id)a3
+- (void)encodeToBodyDictionary:(id)dictionary
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"isInstallment"];
-  v5 = [(PKPaymentInstallmentConfiguration *)self openToBuyThresholdAmount];
-  v6 = [v5 stringValue];
-  [v4 setObject:v6 forKeyedSubscript:@"installmentAmount"];
+  dictionaryCopy = dictionary;
+  [dictionaryCopy setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"isInstallment"];
+  openToBuyThresholdAmount = [(PKPaymentInstallmentConfiguration *)self openToBuyThresholdAmount];
+  stringValue = [openToBuyThresholdAmount stringValue];
+  [dictionaryCopy setObject:stringValue forKeyedSubscript:@"installmentAmount"];
 
-  v7 = [(PKPaymentInstallmentConfiguration *)self currencyCode];
-  [v4 setObject:v7 forKeyedSubscript:@"installmentCurrencyCode"];
+  currencyCode = [(PKPaymentInstallmentConfiguration *)self currencyCode];
+  [dictionaryCopy setObject:currencyCode forKeyedSubscript:@"installmentCurrencyCode"];
 
   v8 = PKInstallmentRetailChannelToString([(PKPaymentInstallmentConfiguration *)self retailChannel]);
-  [v4 setObject:v8 forKeyedSubscript:@"installmentChannel"];
+  [dictionaryCopy setObject:v8 forKeyedSubscript:@"installmentChannel"];
 
-  v9 = [(PKPaymentInstallmentConfiguration *)self installmentItems];
-  if ([v9 count])
+  installmentItems = [(PKPaymentInstallmentConfiguration *)self installmentItems];
+  if ([installmentItems count])
   {
-    v10 = [v9 pk_arrayByApplyingBlock:&__block_literal_global_0];
-    [v4 setObject:v10 forKeyedSubscript:@"installmentItems"];
+    v10 = [installmentItems pk_arrayByApplyingBlock:&__block_literal_global_0];
+    [dictionaryCopy setObject:v10 forKeyedSubscript:@"installmentItems"];
   }
 
-  v11 = [(PKPaymentInstallmentConfiguration *)self applicationMetadata];
-  if (v11)
+  applicationMetadata = [(PKPaymentInstallmentConfiguration *)self applicationMetadata];
+  if (applicationMetadata)
   {
     v15 = 0;
-    v12 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v11 options:0 error:&v15];
+    v12 = [MEMORY[0x1E696ACB0] dataWithJSONObject:applicationMetadata options:0 error:&v15];
     v13 = v15;
     if (v12)
     {
-      [v4 setObject:v11 forKeyedSubscript:@"installmentMetadata"];
+      [dictionaryCopy setObject:applicationMetadata forKeyedSubscript:@"installmentMetadata"];
     }
 
     else
@@ -104,33 +104,33 @@ id __86__PKPaymentInstallmentConfiguration_PKApplyWebServiceRequest__encodeToBod
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPaymentInstallmentConfiguration *)self isEqualToInstallmentConfiguration:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPaymentInstallmentConfiguration *)self isEqualToInstallmentConfiguration:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToInstallmentConfiguration:(id)a3
+- (BOOL)isEqualToInstallmentConfiguration:(id)configuration
 {
-  v4 = a3;
-  if (!v4)
+  configurationCopy = configuration;
+  if (!configurationCopy)
   {
     goto LABEL_47;
   }
 
   merchandisingImageData = self->_merchandisingImageData;
-  v6 = v4[3];
+  v6 = configurationCopy[3];
   if (merchandisingImageData)
   {
     v7 = v6 == 0;
@@ -154,13 +154,13 @@ id __86__PKPaymentInstallmentConfiguration_PKApplyWebServiceRequest__encodeToBod
     goto LABEL_47;
   }
 
-  if (self->_feature != v4[2])
+  if (self->_feature != configurationCopy[2])
   {
     goto LABEL_47;
   }
 
   openToBuyThresholdAmount = self->_openToBuyThresholdAmount;
-  v9 = v4[4];
+  v9 = configurationCopy[4];
   if (openToBuyThresholdAmount && v9)
   {
     if (([(NSDecimalNumber *)openToBuyThresholdAmount isEqual:?]& 1) == 0)
@@ -175,7 +175,7 @@ id __86__PKPaymentInstallmentConfiguration_PKApplyWebServiceRequest__encodeToBod
   }
 
   bindingTotalAmount = self->_bindingTotalAmount;
-  v11 = v4[5];
+  v11 = configurationCopy[5];
   if (bindingTotalAmount && v11)
   {
     if (([(NSDecimalNumber *)bindingTotalAmount isEqual:?]& 1) == 0)
@@ -190,7 +190,7 @@ id __86__PKPaymentInstallmentConfiguration_PKApplyWebServiceRequest__encodeToBod
   }
 
   currencyCode = self->_currencyCode;
-  v13 = v4[6];
+  v13 = configurationCopy[6];
   if (currencyCode && v13)
   {
     if (([(NSString *)currencyCode isEqual:?]& 1) == 0)
@@ -204,13 +204,13 @@ id __86__PKPaymentInstallmentConfiguration_PKApplyWebServiceRequest__encodeToBod
     goto LABEL_47;
   }
 
-  if (self->_inStorePurchase != *(v4 + 8))
+  if (self->_inStorePurchase != *(configurationCopy + 8))
   {
     goto LABEL_47;
   }
 
   installmentMerchantIdentifier = self->_installmentMerchantIdentifier;
-  v15 = v4[7];
+  v15 = configurationCopy[7];
   if (installmentMerchantIdentifier && v15)
   {
     if (([(NSString *)installmentMerchantIdentifier isEqual:?]& 1) == 0)
@@ -225,7 +225,7 @@ id __86__PKPaymentInstallmentConfiguration_PKApplyWebServiceRequest__encodeToBod
   }
 
   referrerIdentifier = self->_referrerIdentifier;
-  v17 = v4[8];
+  v17 = configurationCopy[8];
   if (referrerIdentifier && v17)
   {
     if (([(NSString *)referrerIdentifier isEqual:?]& 1) == 0)
@@ -240,7 +240,7 @@ id __86__PKPaymentInstallmentConfiguration_PKApplyWebServiceRequest__encodeToBod
   }
 
   installmentItems = self->_installmentItems;
-  v19 = v4[9];
+  v19 = configurationCopy[9];
   if (installmentItems && v19)
   {
     if (([(NSArray *)installmentItems isEqual:?]& 1) == 0)
@@ -255,7 +255,7 @@ id __86__PKPaymentInstallmentConfiguration_PKApplyWebServiceRequest__encodeToBod
   }
 
   applicationMetadata = self->_applicationMetadata;
-  v21 = v4[10];
+  v21 = configurationCopy[10];
   if (!applicationMetadata || !v21)
   {
     if (applicationMetadata == v21)
@@ -274,54 +274,54 @@ LABEL_47:
   }
 
 LABEL_45:
-  v22 = self->_retailChannel == v4[11];
+  v22 = self->_retailChannel == configurationCopy[11];
 LABEL_48:
 
   return v22;
 }
 
-- (PKPaymentInstallmentConfiguration)initWithCoder:(id)a3
+- (PKPaymentInstallmentConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v27.receiver = self;
   v27.super_class = PKPaymentInstallmentConfiguration;
   v5 = [(PKPaymentInstallmentConfiguration *)&v27 init];
   if (v5)
   {
-    v5->_feature = [v4 decodeIntegerForKey:@"feature"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"merchandisingImageData"];
+    v5->_feature = [coderCopy decodeIntegerForKey:@"feature"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"merchandisingImageData"];
     merchandisingImageData = v5->_merchandisingImageData;
     v5->_merchandisingImageData = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"openToBuyThresholdAmount"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"openToBuyThresholdAmount"];
     openToBuyThresholdAmount = v5->_openToBuyThresholdAmount;
     v5->_openToBuyThresholdAmount = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bindingTotalAmount"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bindingTotalAmount"];
     bindingTotalAmount = v5->_bindingTotalAmount;
     v5->_bindingTotalAmount = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currencyCode"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currencyCode"];
     currencyCode = v5->_currencyCode;
     v5->_currencyCode = v12;
 
-    v5->_inStorePurchase = [v4 decodeBoolForKey:@"inStorePurchase"];
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"installmentMerchantIdentifier"];
+    v5->_inStorePurchase = [coderCopy decodeBoolForKey:@"inStorePurchase"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"installmentMerchantIdentifier"];
     installmentMerchantIdentifier = v5->_installmentMerchantIdentifier;
     v5->_installmentMerchantIdentifier = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"referrerIdentifier"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"referrerIdentifier"];
     referrerIdentifier = v5->_referrerIdentifier;
     v5->_referrerIdentifier = v16;
 
     v18 = MEMORY[0x1E695DFD8];
     v19 = objc_opt_class();
     v20 = [v18 setWithObjects:{v19, objc_opt_class(), 0}];
-    v21 = [v4 decodeObjectOfClasses:v20 forKey:@"installmentItems"];
+    v21 = [coderCopy decodeObjectOfClasses:v20 forKey:@"installmentItems"];
     installmentItems = v5->_installmentItems;
     v5->_installmentItems = v21;
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"applicationMetadata"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"applicationMetadata"];
     if (v23)
     {
       v24 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v23 options:0 error:0];
@@ -329,32 +329,32 @@ LABEL_48:
       v5->_applicationMetadata = v24;
     }
 
-    v5->_retailChannel = [v4 decodeIntegerForKey:@"retailChannel"];
+    v5->_retailChannel = [coderCopy decodeIntegerForKey:@"retailChannel"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  [v6 encodeInteger:self->_feature forKey:@"feature"];
-  [v6 encodeObject:self->_merchandisingImageData forKey:@"merchandisingImageData"];
-  [v6 encodeObject:self->_openToBuyThresholdAmount forKey:@"openToBuyThresholdAmount"];
-  [v6 encodeObject:self->_bindingTotalAmount forKey:@"bindingTotalAmount"];
-  [v6 encodeObject:self->_currencyCode forKey:@"currencyCode"];
-  [v6 encodeBool:self->_inStorePurchase forKey:@"inStorePurchase"];
-  [v6 encodeObject:self->_installmentMerchantIdentifier forKey:@"installmentMerchantIdentifier"];
-  [v6 encodeObject:self->_referrerIdentifier forKey:@"referrerIdentifier"];
-  [v6 encodeObject:self->_installmentItems forKey:@"installmentItems"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:self->_feature forKey:@"feature"];
+  [coderCopy encodeObject:self->_merchandisingImageData forKey:@"merchandisingImageData"];
+  [coderCopy encodeObject:self->_openToBuyThresholdAmount forKey:@"openToBuyThresholdAmount"];
+  [coderCopy encodeObject:self->_bindingTotalAmount forKey:@"bindingTotalAmount"];
+  [coderCopy encodeObject:self->_currencyCode forKey:@"currencyCode"];
+  [coderCopy encodeBool:self->_inStorePurchase forKey:@"inStorePurchase"];
+  [coderCopy encodeObject:self->_installmentMerchantIdentifier forKey:@"installmentMerchantIdentifier"];
+  [coderCopy encodeObject:self->_referrerIdentifier forKey:@"referrerIdentifier"];
+  [coderCopy encodeObject:self->_installmentItems forKey:@"installmentItems"];
   applicationMetadata = self->_applicationMetadata;
   if (applicationMetadata)
   {
     v5 = [MEMORY[0x1E696ACB0] dataWithJSONObject:applicationMetadata options:0 error:0];
-    [v6 encodeObject:v5 forKey:@"applicationMetadata"];
+    [coderCopy encodeObject:v5 forKey:@"applicationMetadata"];
   }
 
-  [v6 encodeInteger:self->_retailChannel forKey:@"retailChannel"];
+  [coderCopy encodeInteger:self->_retailChannel forKey:@"retailChannel"];
 }
 
 @end

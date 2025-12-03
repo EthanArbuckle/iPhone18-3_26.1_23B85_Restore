@@ -1,15 +1,15 @@
 @interface ICImportLegacyAccountOperation
 + (unint64_t)noteMigrationBatchSize;
-+ (void)ensurePermanentObjectIDForObject:(id)a3;
-- (BOOL)isLegacyNoteADuplicate:(id)a3;
-- (ICImportLegacyAccountOperation)initWithLegacyAccount:(id)a3 destinationAccount:(id)a4 renameFolders:(BOOL)a5;
-- (id)existingImportedNoteForLegacyNote:(id)a3 withContentHash:(id)a4 identifier:(id)a5 context:(id)a6;
-- (id)hashFromAttributedString:(id)a3;
-- (id)importLegacyFolder:(id)a3 toAccount:(id)a4;
-- (id)importLegacyNote:(id)a3 deviceMigrationIdentifier:(id)a4 toFolder:(id)a5;
-- (id)legacyAccountInContext:(id)a3;
++ (void)ensurePermanentObjectIDForObject:(id)object;
+- (BOOL)isLegacyNoteADuplicate:(id)duplicate;
+- (ICImportLegacyAccountOperation)initWithLegacyAccount:(id)account destinationAccount:(id)destinationAccount renameFolders:(BOOL)folders;
+- (id)existingImportedNoteForLegacyNote:(id)note withContentHash:(id)hash identifier:(id)identifier context:(id)context;
+- (id)hashFromAttributedString:(id)string;
+- (id)importLegacyFolder:(id)folder toAccount:(id)account;
+- (id)importLegacyNote:(id)note deviceMigrationIdentifier:(id)identifier toFolder:(id)folder;
+- (id)legacyAccountInContext:(id)context;
 - (id)legacyNoteObjectIDsToImport;
-- (int64_t)importChoiceForLegacyNote:(id)a3 withContentHash:(id)a4 identifier:(id)a5 existingImportedNote:(id)a6 destinationAccount:(id)a7;
+- (int64_t)importChoiceForLegacyNote:(id)note withContentHash:(id)hash identifier:(id)identifier existingImportedNote:(id)importedNote destinationAccount:(id)account;
 - (void)cancelIfAccountWasDeleted;
 - (void)importFolders;
 - (void)importNotes;
@@ -18,17 +18,17 @@
 
 @implementation ICImportLegacyAccountOperation
 
-- (ICImportLegacyAccountOperation)initWithLegacyAccount:(id)a3 destinationAccount:(id)a4 renameFolders:(BOOL)a5
+- (ICImportLegacyAccountOperation)initWithLegacyAccount:(id)account destinationAccount:(id)destinationAccount renameFolders:(BOOL)folders
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  foldersCopy = folders;
+  accountCopy = account;
+  destinationAccountCopy = destinationAccount;
   v15.receiver = self;
   v15.super_class = ICImportLegacyAccountOperation;
   v10 = [(ICImportLegacyAccountOperation *)&v15 init];
   if (v10)
   {
-    if ([v8 isManaged])
+    if ([accountCopy isManaged])
     {
       v11 = os_log_create("com.apple.notes", "Migration");
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -41,15 +41,15 @@
 
     else
     {
-      [objc_opt_class() ensurePermanentObjectIDForObject:v8];
-      v12 = [v8 objectID];
-      [(ICImportLegacyAccountOperation *)v10 setLegacyAccountObjectID:v12];
+      [objc_opt_class() ensurePermanentObjectIDForObject:accountCopy];
+      objectID = [accountCopy objectID];
+      [(ICImportLegacyAccountOperation *)v10 setLegacyAccountObjectID:objectID];
 
-      [objc_opt_class() ensurePermanentObjectIDForObject:v9];
-      v13 = [v9 objectID];
-      [(ICImportLegacyAccountOperation *)v10 setDestinationAccountObjectID:v13];
+      [objc_opt_class() ensurePermanentObjectIDForObject:destinationAccountCopy];
+      objectID2 = [destinationAccountCopy objectID];
+      [(ICImportLegacyAccountOperation *)v10 setDestinationAccountObjectID:objectID2];
 
-      [(ICImportLegacyAccountOperation *)v10 setRenameFolders:v5];
+      [(ICImportLegacyAccountOperation *)v10 setRenameFolders:foldersCopy];
       [(ICImportLegacyAccountOperation *)v10 setCopyingPrimaryAccount:1];
     }
   }
@@ -60,15 +60,15 @@
 - (void)cancelIfAccountWasDeleted
 {
   v3 = +[ICNoteContext sharedContext];
-  v4 = [v3 snapshotManagedObjectContext];
+  snapshotManagedObjectContext = [v3 snapshotManagedObjectContext];
 
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10009AF0C;
   v10[3] = &unk_100645BA0;
   v10[4] = self;
-  v11 = v4;
-  v5 = v4;
+  v11 = snapshotManagedObjectContext;
+  v5 = snapshotManagedObjectContext;
   [v5 performBlockAndWait:v10];
   if (([(ICImportLegacyAccountOperation *)self isCancelled]& 1) == 0)
   {
@@ -88,7 +88,7 @@
   }
 }
 
-- (id)legacyAccountInContext:(id)a3
+- (id)legacyAccountInContext:(id)context
 {
   v16 = 0;
   v17 = &v16;
@@ -101,10 +101,10 @@
   v12[2] = sub_10009B210;
   v12[3] = &unk_100645A40;
   v15 = &v16;
-  v5 = a3;
-  v13 = v5;
-  v14 = self;
-  [v5 performBlockAndWait:v12];
+  contextCopy = context;
+  v13 = contextCopy;
+  selfCopy = self;
+  [contextCopy performBlockAndWait:v12];
   v6 = v17[5];
   if (!v6)
   {
@@ -116,7 +116,7 @@
       *buf = 138412802;
       v23 = v8;
       v24 = 2048;
-      v25 = self;
+      selfCopy2 = self;
       v26 = 2112;
       v27 = v9;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[%@(%p) %@] no legacy account found", buf, 0x20u);
@@ -209,21 +209,21 @@
 {
   v3 = ICNewLegacyContext();
   v4 = +[ICAccountUtilities sharedInstance];
-  v5 = [v4 primaryICloudACAccount];
-  v6 = [v5 identifier];
+  primaryICloudACAccount = [v4 primaryICloudACAccount];
+  identifier = [primaryICloudACAccount identifier];
 
-  v7 = [objc_opt_class() noteMigrationBatchSize];
-  v8 = [(ICImportLegacyAccountOperation *)self legacyNoteObjectIDsToImport];
-  v9 = [v8 ic_arrayByGroupingIntoArraysWithMaxCount:v7];
+  noteMigrationBatchSize = [objc_opt_class() noteMigrationBatchSize];
+  legacyNoteObjectIDsToImport = [(ICImportLegacyAccountOperation *)self legacyNoteObjectIDsToImport];
+  v9 = [legacyNoteObjectIDsToImport ic_arrayByGroupingIntoArraysWithMaxCount:noteMigrationBatchSize];
   v10 = os_log_create("com.apple.notes", "Migration");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218496;
-    v23 = [v8 count];
+    v23 = [legacyNoteObjectIDsToImport count];
     v24 = 2048;
     v25 = [v9 count];
     v26 = 2048;
-    v27 = v7;
+    v27 = noteMigrationBatchSize;
     _os_log_debug_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "About to import %lu notes in %lu batches of %lu notes each", buf, 0x20u);
   }
 
@@ -261,7 +261,7 @@
       v18[4] = self;
       v19 = v12;
       v20 = v3;
-      v21 = v6;
+      v21 = identifier;
       v15 = v12;
       [v14 pauseCloudSyncWhileSynchronouslyPerformingBlock:v18];
 
@@ -296,11 +296,11 @@ LABEL_11:
   }
 }
 
-- (id)importLegacyNote:(id)a3 deviceMigrationIdentifier:(id)a4 toFolder:(id)a5
+- (id)importLegacyNote:(id)note deviceMigrationIdentifier:(id)identifier toFolder:(id)folder
 {
-  v8 = a3;
-  v68 = a4;
-  v74 = a5;
+  noteCopy = note;
+  identifierCopy = identifier;
+  folderCopy = folder;
   v115 = 0;
   v116 = &v115;
   v117 = 0x3032000000;
@@ -313,16 +313,16 @@ LABEL_11:
   v112 = sub_10009B1F8;
   v113 = sub_10009B208;
   v114 = 0;
-  v9 = [v8 managedObjectContext];
+  managedObjectContext = [noteCopy managedObjectContext];
   v105[0] = _NSConcreteStackBlock;
   v105[1] = 3221225472;
   v105[2] = sub_10009CD40;
   v105[3] = &unk_100647B98;
   v107 = &v115;
-  v73 = v8;
+  v73 = noteCopy;
   v106 = v73;
   v108 = &v109;
-  [v9 performBlockAndWait:v105];
+  [managedObjectContext performBlockAndWait:v105];
 
   v10 = [ICNote attributedStringFromHTMLString:v116[5]];
   v71 = v10;
@@ -351,42 +351,42 @@ LABEL_11:
     }
 
     v17 = v110[5];
-    v18 = [v74 managedObjectContext];
-    v70 = [(ICImportLegacyAccountOperation *)self existingImportedNoteForLegacyNote:v73 withContentHash:v72 identifier:v17 context:v18];
+    managedObjectContext2 = [folderCopy managedObjectContext];
+    v70 = [(ICImportLegacyAccountOperation *)self existingImportedNoteForLegacyNote:v73 withContentHash:v72 identifier:v17 context:managedObjectContext2];
 
     v19 = v110[5];
-    v20 = [v74 account];
-    v21 = [(ICImportLegacyAccountOperation *)self importChoiceForLegacyNote:v73 withContentHash:v72 identifier:v19 existingImportedNote:v70 destinationAccount:v20];
+    account = [folderCopy account];
+    v21 = [(ICImportLegacyAccountOperation *)self importChoiceForLegacyNote:v73 withContentHash:v72 identifier:v19 existingImportedNote:v70 destinationAccount:account];
 
     switch(v21)
     {
       case 0:
-        v30 = [v70 folder];
-        v31 = v30;
-        if (v74 && v30)
+        folder = [v70 folder];
+        v31 = folder;
+        if (folderCopy && folder)
         {
-          v32 = [v70 folder];
-          v33 = v32 == v74;
+          folder2 = [v70 folder];
+          v33 = folder2 == folderCopy;
 
           if (!v33)
           {
             v34 = os_log_create("com.apple.notes", "Migration");
             if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
             {
-              v63 = [v70 identifier];
-              v64 = [v70 folder];
-              v65 = [v64 identifier];
-              v66 = [v74 identifier];
+              identifier = [v70 identifier];
+              folder3 = [v70 folder];
+              identifier2 = [folder3 identifier];
+              identifier3 = [folderCopy identifier];
               *buf = 138412802;
-              *&buf[4] = v63;
+              *&buf[4] = identifier;
               *&buf[12] = 2112;
-              *&buf[14] = v65;
+              *&buf[14] = identifier2;
               *&buf[22] = 2112;
-              v128 = v66;
+              v128 = identifier3;
               _os_log_debug_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEBUG, "Existing imported note (%@) changed folders from (%@) to (%@)", buf, 0x20u);
             }
 
-            [v70 setFolder:v74];
+            [v70 setFolder:folderCopy];
             [v70 updateChangeCountWithReason:@"Updated folder for existing HTML note"];
           }
         }
@@ -404,12 +404,12 @@ LABEL_11:
 
         else
         {
-          v25 = [ICNote newNoteWithoutIdentifierInFolder:v74];
+          v25 = [ICNote newNoteWithoutIdentifierInFolder:folderCopy];
           if (!v25)
           {
 LABEL_29:
             v44 = +[NSMutableArray array];
-            v45 = [v73 managedObjectContext];
+            managedObjectContext3 = [v73 managedObjectContext];
             v86[0] = _NSConcreteStackBlock;
             v86[1] = 3221225472;
             v86[2] = sub_10009CE40;
@@ -418,7 +418,7 @@ LABEL_29:
             v87 = v46;
             v47 = v44;
             v88 = v47;
-            [v45 performBlockAndWait:v86];
+            [managedObjectContext3 performBlockAndWait:v86];
 
             v84 = 0u;
             v85 = 0u;
@@ -451,7 +451,7 @@ LABEL_29:
                   v102 = sub_10009B1F8;
                   v103 = sub_10009B208;
                   v104 = 0;
-                  v51 = [v46 managedObjectContext];
+                  managedObjectContext4 = [v46 managedObjectContext];
                   v77[0] = _NSConcreteStackBlock;
                   v77[1] = 3221225472;
                   v77[2] = sub_10009CF58;
@@ -460,18 +460,18 @@ LABEL_29:
                   v79 = v50;
                   v80 = buf;
                   v81 = &v99;
-                  [v51 performBlockAndWait:v77];
+                  [managedObjectContext4 performBlockAndWait:v77];
 
                   v52 = *(*&buf[8] + 40);
                   if (v52 && v100[5])
                   {
-                    v53 = [v74 managedObjectContext];
-                    v54 = [ICAttachment attachmentWithIdentifier:v52 context:v53];
+                    managedObjectContext5 = [folderCopy managedObjectContext];
+                    v54 = [ICAttachment attachmentWithIdentifier:v52 context:managedObjectContext5];
 
                     if (v54)
                     {
-                      v55 = [v54 media];
-                      v56 = v55 == 0;
+                      media = [v54 media];
+                      v56 = media == 0;
 
                       if (v56)
                       {
@@ -526,11 +526,11 @@ LABEL_46:
         break;
       case 2:
         v22 = +[NSUUID UUID];
-        v23 = [v22 UUIDString];
+        uUIDString = [v22 UUIDString];
         v24 = v110[5];
-        v110[5] = v23;
+        v110[5] = uUIDString;
 
-        v25 = [ICNote newNoteWithoutIdentifierInFolder:v74];
+        v25 = [ICNote newNoteWithoutIdentifierInFolder:folderCopy];
         [v70 setLegacyManagedObjectID:0];
         if (!v25)
         {
@@ -564,7 +564,7 @@ LABEL_46:
     v96 = v95;
     v97 = 0x2020000000;
     v98 = 0;
-    v35 = [v73 managedObjectContext];
+    managedObjectContext6 = [v73 managedObjectContext];
     v89[0] = _NSConcreteStackBlock;
     v89[1] = 3221225472;
     v89[2] = sub_10009CDAC;
@@ -575,37 +575,37 @@ LABEL_46:
     v92 = &v99;
     v93 = v123;
     v94 = v95;
-    [v35 performBlockAndWait:v89];
+    [managedObjectContext6 performBlockAndWait:v89];
 
     [v25 setIdentifier:v110[5]];
     [v25 setCreationDate:*(*&buf[8] + 40)];
     [v25 setModificationDate:v100[5]];
     [v25 setTitle:*(*&v123[8] + 40)];
-    v37 = [v36 objectID];
-    [v25 setLegacyManagedObjectID:v37];
+    objectID = [v36 objectID];
+    [v25 setLegacyManagedObjectID:objectID];
 
     if (v21 != 2)
     {
       [v25 setLegacyModificationDateAtImport:v100[5]];
       [v25 setLegacyContentHashAtImport:v72];
-      [v25 setLegacyImportDeviceIdentifier:v68];
+      [v25 setLegacyImportDeviceIdentifier:identifierCopy];
       v38 = [NSNumber numberWithBool:v96[24]];
       [v25 setLegacyNoteWasPlainText:v38];
     }
 
-    v39 = [v69 wantsUndoCommands];
+    wantsUndoCommands = [v69 wantsUndoCommands];
     [v69 setWantsUndoCommands:0];
     v40 = +[ICAttachmentPreviewGenerator sharedGenerator];
     [ICLegacyNoteUtilities importLegacyNote:v36 temporaryTextStorage:v69 toNote:v25 attachmentPreviewGenerator:v40];
 
-    [v69 setWantsUndoCommands:v39];
-    [v25 setFolder:v74];
+    [v69 setWantsUndoCommands:wantsUndoCommands];
+    [v25 setFolder:folderCopy];
     v41 = os_log_create("com.apple.notes", "Migration");
     if (os_log_type_enabled(v41, OS_LOG_TYPE_DEBUG))
     {
       v42 = v110[5];
-      v43 = [v74 identifier];
-      sub_1004DB5AC(v42, v43, v122, v41);
+      identifier4 = [folderCopy identifier];
+      sub_1004DB5AC(v42, identifier4, v122, v41);
     }
 
     [v25 updateChangeCountWithReason:@"Imported HTML note"];
@@ -640,28 +640,28 @@ LABEL_47:
   return v29;
 }
 
-- (id)existingImportedNoteForLegacyNote:(id)a3 withContentHash:(id)a4 identifier:(id)a5 context:(id)a6
+- (id)existingImportedNoteForLegacyNote:(id)note withContentHash:(id)hash identifier:(id)identifier context:(id)context
 {
-  v8 = a5;
-  v9 = a6;
-  v10 = [a3 objectID];
-  v11 = [ICNote noteWithLegacyManagedObjectID:v10 context:v9];
+  identifierCopy = identifier;
+  contextCopy = context;
+  objectID = [note objectID];
+  v11 = [ICNote noteWithLegacyManagedObjectID:objectID context:contextCopy];
 
   if (!v11)
   {
-    v11 = [ICNote noteWithIdentifier:v8 context:v9];
+    v11 = [ICNote noteWithIdentifier:identifierCopy context:contextCopy];
   }
 
   return v11;
 }
 
-- (int64_t)importChoiceForLegacyNote:(id)a3 withContentHash:(id)a4 identifier:(id)a5 existingImportedNote:(id)a6 destinationAccount:(id)a7
+- (int64_t)importChoiceForLegacyNote:(id)note withContentHash:(id)hash identifier:(id)identifier existingImportedNote:(id)importedNote destinationAccount:(id)account
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  noteCopy = note;
+  hashCopy = hash;
+  identifierCopy = identifier;
+  importedNoteCopy = importedNote;
+  accountCopy = account;
   v68 = 0;
   v69 = &v68;
   v70 = 0x3032000000;
@@ -680,17 +680,17 @@ LABEL_47:
   v59 = sub_10009B1F8;
   v60 = sub_10009B208;
   v61 = 0;
-  v17 = [v12 managedObjectContext];
+  managedObjectContext = [noteCopy managedObjectContext];
   v51[0] = _NSConcreteStackBlock;
   v51[1] = 3221225472;
   v51[2] = sub_10009D8F8;
   v51[3] = &unk_100647C10;
   v53 = &v68;
-  v18 = v12;
+  v18 = noteCopy;
   v52 = v18;
   v54 = &v62;
   v55 = &v56;
-  [v17 performBlockAndWait:v51];
+  [managedObjectContext performBlockAndWait:v51];
 
   if (![v69[5] length])
   {
@@ -716,11 +716,11 @@ LABEL_47:
     goto LABEL_17;
   }
 
-  if ([v16 supportsLegacyTombstones])
+  if ([accountCopy supportsLegacyTombstones])
   {
-    v19 = [ICLegacyTombstone tombstoneIdentifierForObjectIdentifier:v14 type:1];
-    v20 = [v16 managedObjectContext];
-    v21 = [ICLegacyTombstone legacyTombstoneWithIdentifier:v19 context:v20];
+    v19 = [ICLegacyTombstone tombstoneIdentifierForObjectIdentifier:identifierCopy type:1];
+    managedObjectContext2 = [accountCopy managedObjectContext];
+    v21 = [ICLegacyTombstone legacyTombstoneWithIdentifier:v19 context:managedObjectContext2];
 
     if (!v21 || ([v21 markedForDeletion] & 1) != 0)
     {
@@ -728,15 +728,15 @@ LABEL_47:
       goto LABEL_7;
     }
 
-    v29 = [v21 contentHashAtImport];
-    if ([v29 isEqualToString:v13])
+    contentHashAtImport = [v21 contentHashAtImport];
+    if ([contentHashAtImport isEqualToString:hashCopy])
     {
     }
 
     else
     {
-      v36 = [v21 modificationDateAtImport];
-      v37 = [v36 isEqualToDate:v63[5]];
+      modificationDateAtImport = [v21 modificationDateAtImport];
+      v37 = [modificationDateAtImport isEqualToDate:v63[5]];
 
       if (!v37)
       {
@@ -764,7 +764,7 @@ LABEL_47:
   }
 
 LABEL_7:
-  if (!v15)
+  if (!importedNoteCopy)
   {
     v19 = os_log_create("com.apple.notes", "Migration");
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -775,34 +775,34 @@ LABEL_7:
     goto LABEL_20;
   }
 
-  v22 = [v15 legacyContentHashAtImport];
-  v23 = [v22 isEqualToString:v13];
+  legacyContentHashAtImport = [importedNoteCopy legacyContentHashAtImport];
+  v23 = [legacyContentHashAtImport isEqualToString:hashCopy];
 
   if (!v23)
   {
-    v26 = [v15 legacyModificationDateAtImport];
-    v27 = [v26 isEqualToDate:v63[5]];
+    legacyModificationDateAtImport = [importedNoteCopy legacyModificationDateAtImport];
+    v27 = [legacyModificationDateAtImport isEqualToDate:v63[5]];
 
     if (v27)
     {
       v19 = os_log_create("com.apple.notes", "Migration");
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
       {
-        v28 = [v15 identifier];
-        sub_1004DB8AC(v28, buf, v19);
+        identifier = [importedNoteCopy identifier];
+        sub_1004DB8AC(identifier, buf, v19);
       }
 
       goto LABEL_31;
     }
 
-    v50 = [v15 legacyManagedObjectIDURIRepresentation];
-    v30 = [v18 objectID];
-    v31 = [v30 URIRepresentation];
-    v32 = [v31 absoluteString];
-    if ([v50 isEqual:v32])
+    legacyManagedObjectIDURIRepresentation = [importedNoteCopy legacyManagedObjectIDURIRepresentation];
+    objectID = [v18 objectID];
+    uRIRepresentation = [objectID URIRepresentation];
+    absoluteString = [uRIRepresentation absoluteString];
+    if ([legacyManagedObjectIDURIRepresentation isEqual:absoluteString])
     {
-      v33 = [v15 identifier];
-      v49 = [v33 isEqualToString:v57[5]];
+      identifier2 = [importedNoteCopy identifier];
+      v49 = [identifier2 isEqualToString:v57[5]];
 
       if ((v49 & 1) == 0)
       {
@@ -810,11 +810,11 @@ LABEL_7:
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
           v34 = v57[5];
-          v35 = [v15 identifier];
+          identifier3 = [importedNoteCopy identifier];
           *buf = 138412546;
           v75 = v34;
           v76 = 2112;
-          v77 = v35;
+          v77 = identifier3;
           _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "We have already duplicated note (%@) to (%@)", buf, 0x16u);
         }
 
@@ -826,8 +826,8 @@ LABEL_7:
     {
     }
 
-    v39 = [v15 legacyModificationDateAtImport];
-    v40 = [v39 ic_isLaterThanDate:v63[5]];
+    legacyModificationDateAtImport2 = [importedNoteCopy legacyModificationDateAtImport];
+    v40 = [legacyModificationDateAtImport2 ic_isLaterThanDate:v63[5]];
 
     if (v40)
     {
@@ -840,9 +840,9 @@ LABEL_7:
       goto LABEL_14;
     }
 
-    v41 = [v15 modificationDate];
-    v42 = [v15 legacyModificationDateAtImport];
-    v43 = [v41 isEqualToDate:v42];
+    modificationDate = [importedNoteCopy modificationDate];
+    legacyModificationDateAtImport3 = [importedNoteCopy legacyModificationDateAtImport];
+    v43 = [modificationDate isEqualToDate:legacyModificationDateAtImport3];
 
     v44 = os_log_create("com.apple.notes", "Migration");
     v19 = v44;
@@ -850,8 +850,8 @@ LABEL_7:
     {
       if (os_log_type_enabled(v44, OS_LOG_TYPE_DEBUG))
       {
-        v45 = [v15 identifier];
-        sub_1004DB7F4(v45, buf, v19);
+        identifier4 = [importedNoteCopy identifier];
+        sub_1004DB7F4(identifier4, buf, v19);
       }
 
 LABEL_20:
@@ -862,13 +862,13 @@ LABEL_20:
     if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
     {
       v47 = v63[5];
-      v48 = [v15 loggingDescription];
+      loggingDescription = [importedNoteCopy loggingDescription];
       *buf = 138412802;
-      v75 = v13;
+      v75 = hashCopy;
       v76 = 2112;
       v77 = v47;
       v78 = 2112;
-      v79 = v48;
+      v79 = loggingDescription;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "We have imported this note, the legacy version is newer than the one we imported, and the user has edited the note since import: newContentHash=%@ newModificationDate=%@ %@", buf, 0x20u);
     }
 
@@ -880,8 +880,8 @@ LABEL_17:
   v19 = os_log_create("com.apple.notes", "Migration");
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
   {
-    v24 = [v15 identifier];
-    sub_1004DB8FC(v24, buf, v19);
+    identifier5 = [importedNoteCopy identifier];
+    sub_1004DB8FC(identifier5, buf, v19);
   }
 
 LABEL_31:
@@ -907,7 +907,7 @@ LABEL_48:
   v17 = 0;
   v3 = ICNewLegacyContext();
   v4 = [(ICImportLegacyAccountOperation *)self legacyAccountInContext:v3];
-  v5 = [v4 managedObjectContext];
+  managedObjectContext = [v4 managedObjectContext];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10009DB60;
@@ -915,17 +915,17 @@ LABEL_48:
   v15 = v16;
   v6 = v4;
   v14 = v6;
-  [v5 performBlockAndWait:v13];
+  [managedObjectContext performBlockAndWait:v13];
 
   v7 = +[ICNoteContext sharedContext];
-  v8 = [v7 snapshotManagedObjectContext];
+  snapshotManagedObjectContext = [v7 snapshotManagedObjectContext];
 
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10009DC20;
   v10[3] = &unk_100646008;
   v10[4] = self;
-  v9 = v8;
+  v9 = snapshotManagedObjectContext;
   v11 = v9;
   v12 = v16;
   [v9 performBlockAndWait:v10];
@@ -933,27 +933,27 @@ LABEL_48:
   _Block_object_dispose(v16, 8);
 }
 
-- (id)importLegacyFolder:(id)a3 toAccount:(id)a4
+- (id)importLegacyFolder:(id)folder toAccount:(id)account
 {
-  v6 = a3;
-  v7 = a4;
+  folderCopy = folder;
+  accountCopy = account;
   v68 = 0;
   v69 = &v68;
   v70 = 0x2020000000;
   v71 = 0;
-  v8 = [v6 managedObjectContext];
+  managedObjectContext = [folderCopy managedObjectContext];
   v65[0] = _NSConcreteStackBlock;
   v65[1] = 3221225472;
   v65[2] = sub_10009E434;
   v65[3] = &unk_1006463C8;
   v67 = &v68;
-  v9 = v6;
+  v9 = folderCopy;
   v66 = v9;
-  [v8 performBlockAndWait:v65];
+  [managedObjectContext performBlockAndWait:v65];
 
   if (*(v69 + 24) == 1 && ![(ICImportLegacyAccountOperation *)self renameFolders])
   {
-    v21 = [v7 defaultFolder];
+    defaultFolder = [accountCopy defaultFolder];
     goto LABEL_31;
   }
 
@@ -981,7 +981,7 @@ LABEL_48:
   v44 = sub_10009B1F8;
   v45 = sub_10009B208;
   v46 = 0;
-  v10 = [v9 managedObjectContext];
+  managedObjectContext2 = [v9 managedObjectContext];
   v31 = _NSConcreteStackBlock;
   v32 = 3221225472;
   v33 = sub_10009E4B4;
@@ -990,11 +990,11 @@ LABEL_48:
   v38 = &v53;
   v39 = &v41;
   v35 = v9;
-  v36 = self;
+  selfCopy = self;
   v40 = &v47;
-  [v10 performBlockAndWait:&v31];
+  [managedObjectContext2 performBlockAndWait:&v31];
 
-  if ([v7 accountType] == 3)
+  if ([accountCopy accountType] == 3)
   {
     v11 = [NSString stringWithFormat:@"Local-%@", v48[5], v31, v32, v33, v34];
     v12 = v48[5];
@@ -1004,17 +1004,17 @@ LABEL_48:
   v13 = [ICLegacyTombstone tombstoneIdentifierForObjectIdentifier:v48[5] type:2];
   if ([v13 length] >= 0x100)
   {
-    v14 = [v48[5] ic_md5];
+    ic_md5 = [v48[5] ic_md5];
     v15 = v48[5];
-    v48[5] = v14;
+    v48[5] = ic_md5;
 
     v16 = [ICLegacyTombstone tombstoneIdentifierForObjectIdentifier:v48[5] type:2];
 
     v13 = v16;
   }
 
-  v17 = [v7 managedObjectContext];
-  v18 = [ICLegacyTombstone legacyTombstoneWithIdentifier:v13 context:v17];
+  managedObjectContext3 = [accountCopy managedObjectContext];
+  v18 = [ICLegacyTombstone legacyTombstoneWithIdentifier:v13 context:managedObjectContext3];
 
   if (v18 && ([v18 markedForDeletion] & 1) == 0)
   {
@@ -1024,8 +1024,8 @@ LABEL_48:
       sub_1004DBAC8();
     }
 
-    v21 = [v7 defaultFolder];
-    if (v21)
+    defaultFolder = [accountCopy defaultFolder];
+    if (defaultFolder)
     {
       goto LABEL_28;
     }
@@ -1034,10 +1034,10 @@ LABEL_48:
   }
 
   v19 = v48[5];
-  v20 = [v7 managedObjectContext];
-  v21 = [ICFolder folderWithIdentifier:v19 context:v20];
+  managedObjectContext4 = [accountCopy managedObjectContext];
+  defaultFolder = [ICFolder folderWithIdentifier:v19 context:managedObjectContext4];
 
-  if (!v21)
+  if (!defaultFolder)
   {
 LABEL_15:
     v23 = os_log_create("com.apple.notes", "Migration");
@@ -1046,29 +1046,29 @@ LABEL_15:
       sub_1004DBB30();
     }
 
-    v21 = [ICFolder newFolderWithIdentifier:v48[5] account:v7];
-    [v21 setTitle:v54[5]];
+    defaultFolder = [ICFolder newFolderWithIdentifier:v48[5] account:accountCopy];
+    [defaultFolder setTitle:v54[5]];
     if ([(ICImportLegacyAccountOperation *)self renameFolders])
     {
-      v24 = [v60[5] ic_md5];
-      v25 = [v7 managedObjectContext];
-      v26 = [ICFolder folderWithIdentifier:v24 context:v25];
+      ic_md52 = [v60[5] ic_md5];
+      managedObjectContext5 = [accountCopy managedObjectContext];
+      v26 = [ICFolder folderWithIdentifier:ic_md52 context:managedObjectContext5];
 
       if (!v26)
       {
-        v27 = [v60[5] ic_md5];
-        v26 = [ICFolder newFolderWithIdentifier:v27 account:v7];
+        ic_md53 = [v60[5] ic_md5];
+        v26 = [ICFolder newFolderWithIdentifier:ic_md53 account:accountCopy];
 
         [v26 setTitle:v60[5]];
         [v26 updateChangeCountWithReason:@"Imported HTML parent folder"];
       }
 
-      [v21 setParent:v26];
+      [defaultFolder setParent:v26];
     }
 
     if ([(ICImportLegacyAccountOperation *)self isCopyingPrimaryAccount])
     {
-      [v21 setImportedFromLegacy:1];
+      [defaultFolder setImportedFromLegacy:1];
     }
 
     if (v42[5])
@@ -1079,17 +1079,17 @@ LABEL_15:
         sub_1004DBB98();
       }
 
-      v29 = [(ICImportLegacyAccountOperation *)self importLegacyFolder:v42[5] toAccount:v7];
-      [v21 setParent:v29];
+      v29 = [(ICImportLegacyAccountOperation *)self importLegacyFolder:v42[5] toAccount:accountCopy];
+      [defaultFolder setParent:v29];
     }
 
-    [v21 updateChangeCountWithReason:@"Imported HTML folder"];
+    [defaultFolder updateChangeCountWithReason:@"Imported HTML folder"];
   }
 
 LABEL_28:
   if (![(ICImportLegacyAccountOperation *)self isCopyingPrimaryAccount])
   {
-    [v21 unmarkForDeletion];
+    [defaultFolder unmarkForDeletion];
   }
 
   _Block_object_dispose(&v41, 8);
@@ -1101,30 +1101,30 @@ LABEL_28:
 LABEL_31:
   _Block_object_dispose(&v68, 8);
 
-  return v21;
+  return defaultFolder;
 }
 
-+ (void)ensurePermanentObjectIDForObject:(id)a3
++ (void)ensurePermanentObjectIDForObject:(id)object
 {
-  v3 = a3;
-  v4 = [v3 objectID];
-  v5 = [v4 isTemporaryID];
+  objectCopy = object;
+  objectID = [objectCopy objectID];
+  isTemporaryID = [objectID isTemporaryID];
 
-  if (v5)
+  if (isTemporaryID)
   {
-    v6 = [v3 managedObjectContext];
+    managedObjectContext = [objectCopy managedObjectContext];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_10009E768;
     v7[3] = &unk_100645E30;
-    v8 = v3;
-    [v6 performBlockAndWait:v7];
+    v8 = objectCopy;
+    [managedObjectContext performBlockAndWait:v7];
   }
 }
 
-- (id)hashFromAttributedString:(id)a3
+- (id)hashFromAttributedString:(id)string
 {
-  v3 = [a3 mutableCopy];
+  v3 = [string mutableCopy];
   v4 = [v3 length];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
@@ -1133,36 +1133,36 @@ LABEL_31:
   v12 = v3;
   v5 = v3;
   [v5 enumerateAttribute:NSAttachmentAttributeName inRange:0 options:v4 usingBlock:{0, v11}];
-  v6 = [v5 string];
+  string = [v5 string];
   v7 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
-  v8 = [v6 stringByTrimmingCharactersInSet:v7];
+  v8 = [string stringByTrimmingCharactersInSet:v7];
 
-  v9 = [v8 ic_md5];
+  ic_md5 = [v8 ic_md5];
 
-  return v9;
+  return ic_md5;
 }
 
-- (BOOL)isLegacyNoteADuplicate:(id)a3
+- (BOOL)isLegacyNoteADuplicate:(id)duplicate
 {
-  v3 = a3;
+  duplicateCopy = duplicate;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  v4 = [v3 managedObjectContext];
+  managedObjectContext = [duplicateCopy managedObjectContext];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10009EC70;
   v7[3] = &unk_100645FE0;
-  v5 = v3;
+  v5 = duplicateCopy;
   v8 = v5;
   v9 = &v10;
-  [v4 performBlockAndWait:v7];
+  [managedObjectContext performBlockAndWait:v7];
 
-  LOBYTE(v4) = *(v11 + 24);
+  LOBYTE(managedObjectContext) = *(v11 + 24);
   _Block_object_dispose(&v10, 8);
 
-  return v4;
+  return managedObjectContext;
 }
 
 @end

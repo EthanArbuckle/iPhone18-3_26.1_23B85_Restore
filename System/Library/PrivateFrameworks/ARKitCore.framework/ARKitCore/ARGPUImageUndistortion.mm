@@ -1,7 +1,7 @@
 @interface ARGPUImageUndistortion
 - (ARGPUImageUndistortion)init;
-- (uint64_t)undistortFisheyeTexture:(float32x4_t)a3 withFisheyeIntrinsics:(float32x4_t)a4 withFisheyeRadialCoefficients:(float32x4_t)a5 toRectilinearImage:(__n128)a6 withRectilinearIntrinsics:(__n128)a7;
-- (void)undistortFisheyeImage:(double)a3 withFisheyeIntrinsics:(double)a4 withFisheyeRadialCoefficients:(double)a5 toRectilinearImage:(double)a6 withRectilinearIntrinsics:(double)a7;
+- (uint64_t)undistortFisheyeTexture:(float32x4_t)texture withFisheyeIntrinsics:(float32x4_t)intrinsics withFisheyeRadialCoefficients:(float32x4_t)coefficients toRectilinearImage:(__n128)image withRectilinearIntrinsics:(__n128)rectilinearIntrinsics;
+- (void)undistortFisheyeImage:(double)image withFisheyeIntrinsics:(double)intrinsics withFisheyeRadialCoefficients:(double)coefficients toRectilinearImage:(double)rectilinearImage withRectilinearIntrinsics:(double)rectilinearIntrinsics;
 @end
 
 @implementation ARGPUImageUndistortion
@@ -15,13 +15,13 @@
   if (v2)
   {
     v3 = +[ARSharedGPUDevice sharedInstance];
-    v4 = [v3 device];
+    device = [v3 device];
     device = v2->_device;
-    v2->_device = v4;
+    v2->_device = device;
 
-    v6 = [(MTLDevice *)v2->_device newCommandQueue];
+    newCommandQueue = [(MTLDevice *)v2->_device newCommandQueue];
     commandQueue = v2->_commandQueue;
-    v2->_commandQueue = v6;
+    v2->_commandQueue = newCommandQueue;
 
     [(MTLCommandQueue *)v2->_commandQueue setLabel:@"com.apple.arkit.gpuimageundistortion.queue"];
     v8 = ARKitCoreBundle();
@@ -210,7 +210,7 @@ LABEL_30:
   return v2;
 }
 
-- (void)undistortFisheyeImage:(double)a3 withFisheyeIntrinsics:(double)a4 withFisheyeRadialCoefficients:(double)a5 toRectilinearImage:(double)a6 withRectilinearIntrinsics:(double)a7
+- (void)undistortFisheyeImage:(double)image withFisheyeIntrinsics:(double)intrinsics withFisheyeRadialCoefficients:(double)coefficients toRectilinearImage:(double)rectilinearImage withRectilinearIntrinsics:(double)rectilinearIntrinsics
 {
   v42[1] = *MEMORY[0x1E69E9840];
   Width = CVPixelBufferGetWidth(a10);
@@ -230,19 +230,19 @@ LABEL_30:
   v19 = CVPixelBufferGetHeight(*a11);
   v31 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:10 width:Width height:Height mipmapped:0];
   [v31 setUsage:3];
-  v20 = [a1[1] newTextureWithDescriptor:v31 iosurface:CVPixelBufferGetIOSurface(a10) plane:0];
+  v20 = [self[1] newTextureWithDescriptor:v31 iosurface:CVPixelBufferGetIOSurface(a10) plane:0];
   [v20 setLabel:@"com.apple.arkit.gpuimageundistortion.srcY"];
   v30 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:30 width:Width >> 1 height:Height >> 1 mipmapped:0];
   [v30 setUsage:1];
-  v21 = [a1[1] newTextureWithDescriptor:v30 iosurface:CVPixelBufferGetIOSurface(a10) plane:1];
+  v21 = [self[1] newTextureWithDescriptor:v30 iosurface:CVPixelBufferGetIOSurface(a10) plane:1];
   [v21 setLabel:@"com.apple.arkit.gpuimageundistortion.srcCbCr"];
   v22 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:10 width:v18 height:v19 mipmapped:0];
   [v22 setUsage:3];
-  v23 = [a1[1] newTextureWithDescriptor:v22 iosurface:CVPixelBufferGetIOSurface(*a11) plane:0];
+  v23 = [self[1] newTextureWithDescriptor:v22 iosurface:CVPixelBufferGetIOSurface(*a11) plane:0];
   [v23 setLabel:@"com.apple.arkit.gpuimageundistortion.dstY"];
   v24 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:30 width:v18 >> 1 height:v19 >> 1 mipmapped:0];
   [v24 setUsage:3];
-  v25 = [a1[1] newTextureWithDescriptor:v24 iosurface:CVPixelBufferGetIOSurface(*a11) plane:1];
+  v25 = [self[1] newTextureWithDescriptor:v24 iosurface:CVPixelBufferGetIOSurface(*a11) plane:1];
   [v25 setLabel:@"com.apple.arkit.gpuimageundistortion.dstCbCr"];
   v26 = CVBufferRetain(a10);
   v40[0] = v20;
@@ -252,22 +252,22 @@ LABEL_30:
   v39[0] = v23;
   v39[1] = v25;
   v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:2];
-  [a1 undistortFisheyeTexture:v28 withFisheyeIntrinsics:v29 withFisheyeRadialCoefficients:a2 toRectilinearImage:a3 withRectilinearIntrinsics:{a4, a5, a6, a7, a8}];
+  [self undistortFisheyeTexture:v28 withFisheyeIntrinsics:v29 withFisheyeRadialCoefficients:a2 toRectilinearImage:image withRectilinearIntrinsics:{intrinsics, coefficients, rectilinearImage, rectilinearIntrinsics, a8}];
 
   CVBufferRelease(v26);
 }
 
-- (uint64_t)undistortFisheyeTexture:(float32x4_t)a3 withFisheyeIntrinsics:(float32x4_t)a4 withFisheyeRadialCoefficients:(float32x4_t)a5 toRectilinearImage:(__n128)a6 withRectilinearIntrinsics:(__n128)a7
+- (uint64_t)undistortFisheyeTexture:(float32x4_t)texture withFisheyeIntrinsics:(float32x4_t)intrinsics withFisheyeRadialCoefficients:(float32x4_t)coefficients toRectilinearImage:(__n128)image withRectilinearIntrinsics:(__n128)rectilinearIntrinsics
 {
-  *&v61[16] = a7;
+  *&v61[16] = rectilinearIntrinsics;
   *&v61[32] = a8;
-  *v61 = a6;
+  *v61 = image;
   v73 = *MEMORY[0x1E69E9840];
   v68 = a2;
-  v69 = a3;
-  v70 = a4;
+  textureCopy = texture;
+  intrinsicsCopy = intrinsics;
   v13 = a10;
-  v67 = a5;
+  coefficientsCopy = coefficients;
   v14 = a11;
   if (![v13 count] || objc_msgSend(v13, "count") > 2 || (v15 = objc_msgSend(v13, "count"), v15 != objc_msgSend(v14, "count")))
   {
@@ -278,7 +278,7 @@ LABEL_30:
 
     v42 = ARShouldUseLogTypeError_internalOSVersion_46;
     v43 = _ARLogGeneral_41();
-    v16 = v43;
+    firstObject = v43;
     if (v42 == 1)
     {
       if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
@@ -288,9 +288,9 @@ LABEL_30:
         *buf = 138543618;
         *&buf[4] = v45;
         *&buf[12] = 2048;
-        *&buf[14] = a1;
+        *&buf[14] = self;
         v46 = "%{public}@ <%p>: Incorrect number of input/output textures";
-        v47 = v16;
+        v47 = firstObject;
         v48 = OS_LOG_TYPE_ERROR;
 LABEL_26:
         _os_log_impl(&dword_1C241C000, v47, v48, v46, buf, 0x16u);
@@ -304,9 +304,9 @@ LABEL_26:
       *buf = 138543618;
       *&buf[4] = v45;
       *&buf[12] = 2048;
-      *&buf[14] = a1;
+      *&buf[14] = self;
       v46 = "Error: %{public}@ <%p>: Incorrect number of input/output textures";
-      v47 = v16;
+      v47 = firstObject;
       v48 = OS_LOG_TYPE_INFO;
       goto LABEL_26;
     }
@@ -316,35 +316,35 @@ LABEL_26:
   }
 
   v56 = [v13 count];
-  v16 = [v14 firstObject];
-  v17 = [v16 width];
-  v57 = [v16 height];
-  v18 = [*(a1 + 16) commandBuffer];
-  [v18 setLabel:@"com.apple.arkit.gpuimageundistortion.commandBuffer"];
-  v19 = *(a1 + 48);
-  if (!v19 || [v19 width] != v17 || objc_msgSend(*(a1 + 48), "height") != v57 || (v20 = vandq_s8(vandq_s8(vceqq_f32(*(a1 + 80), a3), vceqq_f32(*(a1 + 64), a2)), vceqq_f32(*(a1 + 96), a4)), v20.i32[3] = v20.i32[2], (vminvq_u32(v20) & 0x80000000) == 0) || (vminvq_u32(vceqq_f32(*(a1 + 112), a5)) & 0x80000000) == 0 || (v21 = vandq_s8(vandq_s8(vceqq_f32(*(a1 + 144), *&v61[16]), vceqq_f32(*(a1 + 128), *v61)), vceqq_f32(*(a1 + 160), *&v61[32])), v21.i32[3] = v21.i32[2], (vminvq_u32(v21) & 0x80000000) == 0))
+  firstObject = [v14 firstObject];
+  width = [firstObject width];
+  height = [firstObject height];
+  commandBuffer = [*(self + 16) commandBuffer];
+  [commandBuffer setLabel:@"com.apple.arkit.gpuimageundistortion.commandBuffer"];
+  v19 = *(self + 48);
+  if (!v19 || [v19 width] != width || objc_msgSend(*(self + 48), "height") != height || (v20 = vandq_s8(vandq_s8(vceqq_f32(*(self + 80), texture), vceqq_f32(*(self + 64), a2)), vceqq_f32(*(self + 96), intrinsics)), v20.i32[3] = v20.i32[2], (vminvq_u32(v20) & 0x80000000) == 0) || (vminvq_u32(vceqq_f32(*(self + 112), coefficients)) & 0x80000000) == 0 || (v21 = vandq_s8(vandq_s8(vceqq_f32(*(self + 144), *&v61[16]), vceqq_f32(*(self + 128), *v61)), vceqq_f32(*(self + 160), *&v61[32])), v21.i32[3] = v21.i32[2], (vminvq_u32(v21) & 0x80000000) == 0))
   {
-    v22 = v69;
-    *(a1 + 64) = v68;
-    *(a1 + 80) = v22;
-    *(a1 + 96) = v70;
-    *(a1 + 112) = a5;
-    *(a1 + 128) = *v61;
-    *(a1 + 144) = *&v61[16];
-    *(a1 + 160) = *&v61[32];
-    v23 = *(a1 + 48);
-    if (!v23 || [v23 width] != v17 || objc_msgSend(*(a1 + 48), "height") != v57)
+    v22 = textureCopy;
+    *(self + 64) = v68;
+    *(self + 80) = v22;
+    *(self + 96) = intrinsicsCopy;
+    *(self + 112) = coefficients;
+    *(self + 128) = *v61;
+    *(self + 144) = *&v61[16];
+    *(self + 160) = *&v61[32];
+    v23 = *(self + 48);
+    if (!v23 || [v23 width] != width || objc_msgSend(*(self + 48), "height") != height)
     {
-      v24 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:105 width:v17 height:v57 mipmapped:0];
+      v24 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:105 width:width height:height mipmapped:0];
       [v24 setUsage:3];
-      v25 = [*(a1 + 8) newTextureWithDescriptor:v24];
-      v26 = *(a1 + 48);
-      *(a1 + 48) = v25;
+      v25 = [*(self + 8) newTextureWithDescriptor:v24];
+      v26 = *(self + 48);
+      *(self + 48) = v25;
     }
 
-    v27 = [v18 computeCommandEncoder];
-    [v27 setLabel:@"com.apple.arkit.gpuimageundistortion.lutgeneration"];
-    [v27 setComputePipelineState:*(a1 + 40)];
+    computeCommandEncoder = [commandBuffer computeCommandEncoder];
+    [computeCommandEncoder setLabel:@"com.apple.arkit.gpuimageundistortion.lutgeneration"];
+    [computeCommandEncoder setComputePipelineState:*(self + 40)];
     *&buf[16] = 0u;
     v72 = 0u;
     *buf = 0u;
@@ -355,80 +355,80 @@ LABEL_26:
     *&buf[16] = v74.columns[1].i64[0];
     DWORD2(v72) = v74.columns[2].i32[2];
     *&v72 = v74.columns[2].i64[0];
-    [v27 setTexture:*(a1 + 48) atIndex:0];
-    [v27 setBytes:&v68 length:48 atIndex:0];
-    [v27 setBytes:&v67 length:16 atIndex:1];
-    [v27 setBytes:buf length:48 atIndex:2];
-    v28 = [*(a1 + 40) threadExecutionWidth];
-    v29 = [*(a1 + 40) maxTotalThreadsPerThreadgroup] / v28;
-    v30 = v18;
-    v31 = v17;
-    v32 = (v28 + [*(a1 + 48) width] - 1) / v28;
-    v33 = [*(a1 + 48) height];
+    [computeCommandEncoder setTexture:*(self + 48) atIndex:0];
+    [computeCommandEncoder setBytes:&v68 length:48 atIndex:0];
+    [computeCommandEncoder setBytes:&coefficientsCopy length:16 atIndex:1];
+    [computeCommandEncoder setBytes:buf length:48 atIndex:2];
+    threadExecutionWidth = [*(self + 40) threadExecutionWidth];
+    v29 = [*(self + 40) maxTotalThreadsPerThreadgroup] / threadExecutionWidth;
+    v30 = commandBuffer;
+    v31 = width;
+    v32 = (threadExecutionWidth + [*(self + 48) width] - 1) / threadExecutionWidth;
+    height2 = [*(self + 48) height];
     v64 = v32;
-    v65 = (v29 + v33 - 1) / v29;
-    v17 = v31;
-    v18 = v30;
+    v65 = (v29 + height2 - 1) / v29;
+    width = v31;
+    commandBuffer = v30;
     v66 = 1;
-    v63[0] = v28;
+    v63[0] = threadExecutionWidth;
     v63[1] = v29;
     v63[2] = 1;
-    [v27 dispatchThreadgroups:&v64 threadsPerThreadgroup:v63];
-    [v27 endEncoding];
+    [computeCommandEncoder dispatchThreadgroups:&v64 threadsPerThreadgroup:v63];
+    [computeCommandEncoder endEncoding];
   }
 
-  v34 = [v18 computeCommandEncoder];
-  [v34 setLabel:@"com.apple.arkit.gpuimageundistortion.textureundistort"];
+  computeCommandEncoder2 = [commandBuffer computeCommandEncoder];
+  [computeCommandEncoder2 setLabel:@"com.apple.arkit.gpuimageundistortion.textureundistort"];
   v35 = 24;
   if (v56 == 1)
   {
     v35 = 32;
   }
 
-  v36 = *(a1 + v35);
-  [v34 setComputePipelineState:v36];
-  v37 = [v13 firstObject];
-  [v34 setTexture:v37 atIndex:0];
+  v36 = *(self + v35);
+  [computeCommandEncoder2 setComputePipelineState:v36];
+  firstObject2 = [v13 firstObject];
+  [computeCommandEncoder2 setTexture:firstObject2 atIndex:0];
 
   if (v56 == 1)
   {
-    [v34 setTexture:*(a1 + 48) atIndex:1];
-    v38 = [v14 firstObject];
-    v39 = v34;
-    v40 = v38;
+    [computeCommandEncoder2 setTexture:*(self + 48) atIndex:1];
+    firstObject3 = [v14 firstObject];
+    v39 = computeCommandEncoder2;
+    v40 = firstObject3;
     v41 = 2;
   }
 
   else
   {
-    v52 = [v13 lastObject];
-    [v34 setTexture:v52 atIndex:1];
+    lastObject = [v13 lastObject];
+    [computeCommandEncoder2 setTexture:lastObject atIndex:1];
 
-    [v34 setTexture:*(a1 + 48) atIndex:2];
-    v53 = [v14 firstObject];
-    [v34 setTexture:v53 atIndex:3];
+    [computeCommandEncoder2 setTexture:*(self + 48) atIndex:2];
+    firstObject4 = [v14 firstObject];
+    [computeCommandEncoder2 setTexture:firstObject4 atIndex:3];
 
-    v38 = [v14 lastObject];
-    v39 = v34;
-    v40 = v38;
+    firstObject3 = [v14 lastObject];
+    v39 = computeCommandEncoder2;
+    v40 = firstObject3;
     v41 = 4;
   }
 
   [v39 setTexture:v40 atIndex:v41];
 
-  v54 = [v36 threadExecutionWidth];
-  v55 = [v36 maxTotalThreadsPerThreadgroup];
-  *buf = (v17 + v54 - 1) / v54;
-  *&buf[8] = (v57 + v55 / v54 - 1) / (v55 / v54);
+  threadExecutionWidth2 = [v36 threadExecutionWidth];
+  maxTotalThreadsPerThreadgroup = [v36 maxTotalThreadsPerThreadgroup];
+  *buf = (width + threadExecutionWidth2 - 1) / threadExecutionWidth2;
+  *&buf[8] = (height + maxTotalThreadsPerThreadgroup / threadExecutionWidth2 - 1) / (maxTotalThreadsPerThreadgroup / threadExecutionWidth2);
   v50 = 1;
   *&buf[16] = 1;
-  v64 = v54;
-  v65 = v55 / v54;
+  v64 = threadExecutionWidth2;
+  v65 = maxTotalThreadsPerThreadgroup / threadExecutionWidth2;
   v66 = 1;
-  [v34 dispatchThreadgroups:buf threadsPerThreadgroup:&v64];
-  [v34 endEncoding];
-  [v18 commit];
-  [v18 waitUntilCompleted];
+  [computeCommandEncoder2 dispatchThreadgroups:buf threadsPerThreadgroup:&v64];
+  [computeCommandEncoder2 endEncoding];
+  [commandBuffer commit];
+  [commandBuffer waitUntilCompleted];
 
 LABEL_28:
   return v50;

@@ -1,13 +1,13 @@
 @interface SBRingerSwitchMetric
-- (BOOL)handleEvent:(unint64_t)a3 withContext:(id)a4;
+- (BOOL)handleEvent:(unint64_t)event withContext:(id)context;
 @end
 
 @implementation SBRingerSwitchMetric
 
-- (BOOL)handleEvent:(unint64_t)a3 withContext:(id)a4
+- (BOOL)handleEvent:(unint64_t)event withContext:(id)context
 {
-  v5 = a4;
-  if (a3 == 11 || a3 == 60)
+  contextCopy = context;
+  if (event == 11 || event == 60)
   {
     AnalyticsSendEventLazy();
     v6 = 1;

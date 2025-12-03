@@ -1,25 +1,25 @@
 @interface MUCardButton
-- (MUCardButton)initWithFrame:(CGRect)a3;
+- (MUCardButton)initWithFrame:(CGRect)frame;
 - (void)_setupButton;
 - (void)_setupConstraints;
 - (void)_setupDefaults;
 - (void)_updateButtonAppearance;
-- (void)setBackgroundView:(id)a3;
-- (void)setBlurBackground:(BOOL)a3;
-- (void)setDirectionalLayoutMargins:(NSDirectionalEdgeInsets)a3;
-- (void)setDrawBackground:(BOOL)a3;
-- (void)setForegroundColor:(id)a3;
-- (void)setSymbolName:(id)a3;
+- (void)setBackgroundView:(id)view;
+- (void)setBlurBackground:(BOOL)background;
+- (void)setDirectionalLayoutMargins:(NSDirectionalEdgeInsets)margins;
+- (void)setDrawBackground:(BOOL)background;
+- (void)setForegroundColor:(id)color;
+- (void)setSymbolName:(id)name;
 @end
 
 @implementation MUCardButton
 
-- (void)setDirectionalLayoutMargins:(NSDirectionalEdgeInsets)a3
+- (void)setDirectionalLayoutMargins:(NSDirectionalEdgeInsets)margins
 {
-  trailing = a3.trailing;
-  bottom = a3.bottom;
-  leading = a3.leading;
-  top = a3.top;
+  trailing = margins.trailing;
+  bottom = margins.bottom;
+  leading = margins.leading;
+  top = margins.top;
   v8.receiver = self;
   v8.super_class = MUCardButton;
   [(MUCardButton *)&v8 setDirectionalLayoutMargins:?];
@@ -29,54 +29,54 @@
   }
 }
 
-- (void)setForegroundColor:(id)a3
+- (void)setForegroundColor:(id)color
 {
-  v5 = a3;
-  if (self->_foregroundColor != v5)
+  colorCopy = color;
+  if (self->_foregroundColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_foregroundColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_foregroundColor, color);
     [(MUCardButton *)self _updateButtonAppearance];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setBackgroundView:(id)a3
+- (void)setBackgroundView:(id)view
 {
-  v5 = a3;
-  if (self->_backgroundView != v5)
+  viewCopy = view;
+  if (self->_backgroundView != viewCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_backgroundView, a3);
+    v6 = viewCopy;
+    objc_storeStrong(&self->_backgroundView, view);
     [(MUCardButton *)self _updateButtonAppearance];
-    v5 = v6;
+    viewCopy = v6;
   }
 }
 
-- (void)setDrawBackground:(BOOL)a3
+- (void)setDrawBackground:(BOOL)background
 {
-  if (self->_drawBackground != a3)
+  if (self->_drawBackground != background)
   {
-    self->_drawBackground = a3;
-    [(MUCardButton *)self _updateButtonAppearance];
-  }
-}
-
-- (void)setBlurBackground:(BOOL)a3
-{
-  if (self->_blurBackground != a3)
-  {
-    self->_blurBackground = a3;
+    self->_drawBackground = background;
     [(MUCardButton *)self _updateButtonAppearance];
   }
 }
 
-- (void)setSymbolName:(id)a3
+- (void)setBlurBackground:(BOOL)background
 {
-  v6 = a3;
+  if (self->_blurBackground != background)
+  {
+    self->_blurBackground = background;
+    [(MUCardButton *)self _updateButtonAppearance];
+  }
+}
+
+- (void)setSymbolName:(id)name
+{
+  nameCopy = name;
   if (([(NSString *)self->_symbolName isEqual:?]& 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [nameCopy copy];
     symbolName = self->_symbolName;
     self->_symbolName = v4;
 
@@ -86,26 +86,26 @@
 
 - (void)_updateButtonAppearance
 {
-  v15 = [MEMORY[0x1E69DC740] filledButtonConfiguration];
+  filledButtonConfiguration = [MEMORY[0x1E69DC740] filledButtonConfiguration];
   if (self->_drawBackground)
   {
     if (self->_blurBackground)
     {
-      v3 = [MEMORY[0x1E69DC888] clearColor];
-      v4 = [v15 background];
-      [v4 setBackgroundColor:v3];
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
+      background = [filledButtonConfiguration background];
+      [background setBackgroundColor:clearColor];
 
-      v5 = [MEMORY[0x1E69DC888] systemWhiteColor];
-      [v15 setBaseForegroundColor:v5];
+      systemWhiteColor = [MEMORY[0x1E69DC888] systemWhiteColor];
+      [filledButtonConfiguration setBaseForegroundColor:systemWhiteColor];
 
       v6 = [MEMORY[0x1E69DC730] effectWithStyle:16];
-      v7 = [v15 background];
-      [v7 setVisualEffect:v6];
+      background2 = [filledButtonConfiguration background];
+      [background2 setVisualEffect:v6];
 
       goto LABEL_10;
     }
 
-    v8 = [MEMORY[0x1E69DC888] tertiarySystemFillColor];
+    tertiarySystemFillColor = [MEMORY[0x1E69DC888] tertiarySystemFillColor];
   }
 
   else
@@ -119,28 +119,28 @@
     {
       [MEMORY[0x1E69DC888] clearColor];
     }
-    v8 = ;
+    tertiarySystemFillColor = ;
   }
 
-  v9 = v8;
-  v10 = [v15 background];
-  [v10 setBackgroundColor:v9];
+  v9 = tertiarySystemFillColor;
+  background3 = [filledButtonConfiguration background];
+  [background3 setBackgroundColor:v9];
 
-  [v15 setBaseForegroundColor:self->_foregroundColor];
+  [filledButtonConfiguration setBaseForegroundColor:self->_foregroundColor];
 LABEL_10:
-  [v15 setCornerStyle:4];
+  [filledButtonConfiguration setCornerStyle:4];
   v11 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:7 weight:2 scale:15.0];
   v12 = [MEMORY[0x1E69DCAB8] systemImageNamed:self->_symbolName withConfiguration:v11];
-  [v15 setImage:v12];
+  [filledButtonConfiguration setImage:v12];
 
   backgroundView = self->_backgroundView;
   if (backgroundView)
   {
-    v14 = [v15 background];
-    [v14 setCustomView:backgroundView];
+    background4 = [filledButtonConfiguration background];
+    [background4 setCustomView:backgroundView];
   }
 
-  [(UIButton *)self->_actionButton setConfiguration:v15];
+  [(UIButton *)self->_actionButton setConfiguration:filledButtonConfiguration];
 }
 
 - (void)_setupConstraints
@@ -156,16 +156,16 @@ LABEL_10:
     v3 = 30.0;
   }
 
-  v4 = [(UIButton *)self->_actionButton heightAnchor];
-  v5 = [v4 constraintEqualToConstant:v3];
+  heightAnchor = [(UIButton *)self->_actionButton heightAnchor];
+  v5 = [heightAnchor constraintEqualToConstant:v3];
 
   v6 = v5;
   v32 = v5;
   LODWORD(v7) = 1148846080;
   [v5 setPriority:v7];
-  v8 = [(UIButton *)self->_actionButton widthAnchor];
-  v9 = [(UIButton *)self->_actionButton heightAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  widthAnchor = [(UIButton *)self->_actionButton widthAnchor];
+  heightAnchor2 = [(UIButton *)self->_actionButton heightAnchor];
+  v10 = [widthAnchor constraintEqualToAnchor:heightAnchor2];
 
   v31 = v10;
   LODWORD(v11) = 1148846080;
@@ -173,25 +173,25 @@ LABEL_10:
   v23 = MEMORY[0x1E696ACD8];
   v33[0] = v6;
   v33[1] = v10;
-  v29 = [(UIButton *)self->_actionButton topAnchor];
-  v30 = [(MUCardButton *)self layoutMarginsGuide];
-  v28 = [v30 topAnchor];
-  v27 = [v29 constraintEqualToAnchor:v28];
+  topAnchor = [(UIButton *)self->_actionButton topAnchor];
+  layoutMarginsGuide = [(MUCardButton *)self layoutMarginsGuide];
+  topAnchor2 = [layoutMarginsGuide topAnchor];
+  v27 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v33[2] = v27;
-  v25 = [(UIButton *)self->_actionButton bottomAnchor];
-  v26 = [(MUCardButton *)self layoutMarginsGuide];
-  v24 = [v26 bottomAnchor];
-  v12 = [v25 constraintEqualToAnchor:v24];
+  bottomAnchor = [(UIButton *)self->_actionButton bottomAnchor];
+  layoutMarginsGuide2 = [(MUCardButton *)self layoutMarginsGuide];
+  bottomAnchor2 = [layoutMarginsGuide2 bottomAnchor];
+  v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v33[3] = v12;
-  v13 = [(UIButton *)self->_actionButton leadingAnchor];
-  v14 = [(MUCardButton *)self layoutMarginsGuide];
-  v15 = [v14 leadingAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15];
+  leadingAnchor = [(UIButton *)self->_actionButton leadingAnchor];
+  layoutMarginsGuide3 = [(MUCardButton *)self layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide3 leadingAnchor];
+  v16 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v33[4] = v16;
-  v17 = [(UIButton *)self->_actionButton trailingAnchor];
-  v18 = [(MUCardButton *)self layoutMarginsGuide];
-  v19 = [v18 trailingAnchor];
-  v20 = [v17 constraintEqualToAnchor:v19];
+  trailingAnchor = [(UIButton *)self->_actionButton trailingAnchor];
+  layoutMarginsGuide4 = [(MUCardButton *)self layoutMarginsGuide];
+  trailingAnchor2 = [layoutMarginsGuide4 trailingAnchor];
+  v20 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v33[5] = v20;
   v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:6];
   [v23 activateConstraints:v21];
@@ -231,18 +231,18 @@ LABEL_10:
   symbolName = self->_symbolName;
   self->_symbolName = &stru_1F44CA030;
 
-  v4 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
   foregroundColor = self->_foregroundColor;
-  self->_foregroundColor = v4;
+  self->_foregroundColor = secondaryLabelColor;
 
-  MEMORY[0x1EEE66BB8](v4, foregroundColor);
+  MEMORY[0x1EEE66BB8](secondaryLabelColor, foregroundColor);
 }
 
-- (MUCardButton)initWithFrame:(CGRect)a3
+- (MUCardButton)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MUCardButton;
-  v3 = [(MUCardButton *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MUCardButton *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

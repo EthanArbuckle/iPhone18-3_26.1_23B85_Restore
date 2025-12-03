@@ -1,33 +1,33 @@
 @interface RCBackgroundFetchConfiguration
-- (RCBackgroundFetchConfiguration)initWithTaskIdentifier:(id)a3 sessionIdentifier:(id)a4 sharedContainerIdentifier:(id)a5 earliestBeginDate:(id)a6 timeout:(double)a7;
+- (RCBackgroundFetchConfiguration)initWithTaskIdentifier:(id)identifier sessionIdentifier:(id)sessionIdentifier sharedContainerIdentifier:(id)containerIdentifier earliestBeginDate:(id)date timeout:(double)timeout;
 - (double)timeout;
-- (void)setTimeout:(double)a3;
+- (void)setTimeout:(double)timeout;
 @end
 
 @implementation RCBackgroundFetchConfiguration
 
-- (RCBackgroundFetchConfiguration)initWithTaskIdentifier:(id)a3 sessionIdentifier:(id)a4 sharedContainerIdentifier:(id)a5 earliestBeginDate:(id)a6 timeout:(double)a7
+- (RCBackgroundFetchConfiguration)initWithTaskIdentifier:(id)identifier sessionIdentifier:(id)sessionIdentifier sharedContainerIdentifier:(id)containerIdentifier earliestBeginDate:(id)date timeout:(double)timeout
 {
-  v11 = a3;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  identifierCopy = identifier;
+  identifierCopy2 = identifier;
+  sessionIdentifierCopy = sessionIdentifier;
+  containerIdentifierCopy = containerIdentifier;
+  dateCopy = date;
   v31.receiver = self;
   v31.super_class = RCBackgroundFetchConfiguration;
   v17 = [(RCBackgroundFetchConfiguration *)&v31 init];
   if (v17)
   {
-    if (!v13 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+    if (!identifierCopy2 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       [RCBackgroundFetchConfiguration initWithTaskIdentifier:sessionIdentifier:sharedContainerIdentifier:earliestBeginDate:timeout:];
-      if (v14)
+      if (sessionIdentifierCopy)
       {
         goto LABEL_7;
       }
     }
 
-    else if (v14)
+    else if (sessionIdentifierCopy)
     {
       goto LABEL_7;
     }
@@ -38,48 +38,48 @@
     }
 
 LABEL_7:
-    if (!v15 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+    if (!containerIdentifierCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       [RCBackgroundFetchConfiguration initWithTaskIdentifier:sessionIdentifier:sharedContainerIdentifier:earliestBeginDate:timeout:];
-      if (v16)
+      if (dateCopy)
       {
         goto LABEL_10;
       }
     }
 
-    else if (v16)
+    else if (dateCopy)
     {
 LABEL_10:
       [MEMORY[0x277CBEAA8] date];
-      v18 = v29 = v11;
-      [v18 dateByAddingTimeInterval:a7];
-      v30 = a4;
-      v19 = a5;
-      v20 = a6;
-      v21 = v15;
-      v22 = v14;
-      v24 = v23 = v13;
-      v25 = [v24 rc_isLaterThan:v16];
+      v18 = v29 = identifierCopy;
+      [v18 dateByAddingTimeInterval:timeout];
+      sessionIdentifierCopy2 = sessionIdentifier;
+      containerIdentifierCopy2 = containerIdentifier;
+      dateCopy2 = date;
+      v21 = containerIdentifierCopy;
+      v22 = sessionIdentifierCopy;
+      v24 = v23 = identifierCopy2;
+      v25 = [v24 rc_isLaterThan:dateCopy];
 
-      v13 = v23;
-      v14 = v22;
-      v15 = v21;
-      a6 = v20;
-      a5 = v19;
-      a4 = v30;
+      identifierCopy2 = v23;
+      sessionIdentifierCopy = v22;
+      containerIdentifierCopy = v21;
+      date = dateCopy2;
+      containerIdentifier = containerIdentifierCopy2;
+      sessionIdentifier = sessionIdentifierCopy2;
 
-      v11 = v29;
+      identifierCopy = v29;
       if ((v25 & 1) == 0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
         [RCBackgroundFetchConfiguration initWithTaskIdentifier:sessionIdentifier:sharedContainerIdentifier:earliestBeginDate:timeout:];
       }
     }
 
-    objc_storeStrong(&v17->_taskIdentifier, v11);
-    objc_storeStrong(&v17->_sessionIdentifier, a4);
-    objc_storeStrong(&v17->_sharedContainerIdentifier, a5);
-    objc_storeStrong(&v17->_earliestBeginDate, a6);
-    v17->_internalTimeout = a7;
+    objc_storeStrong(&v17->_taskIdentifier, identifierCopy);
+    objc_storeStrong(&v17->_sessionIdentifier, sessionIdentifier);
+    objc_storeStrong(&v17->_sharedContainerIdentifier, containerIdentifier);
+    objc_storeStrong(&v17->_earliestBeginDate, date);
+    v17->_internalTimeout = timeout;
     v26 = objc_alloc_init(RCUnfairLock);
     accessLock = v17->_accessLock;
     v17->_accessLock = v26;
@@ -94,14 +94,14 @@ LABEL_10:
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(RCBackgroundFetchConfiguration *)self accessLock];
+  accessLock = [(RCBackgroundFetchConfiguration *)self accessLock];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __41__RCBackgroundFetchConfiguration_timeout__block_invoke;
   v6[3] = &unk_27822F288;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 performWithLockSync:v6];
+  [accessLock performWithLockSync:v6];
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -115,16 +115,16 @@ uint64_t __41__RCBackgroundFetchConfiguration_timeout__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setTimeout:(double)a3
+- (void)setTimeout:(double)timeout
 {
-  v5 = [(RCBackgroundFetchConfiguration *)self accessLock];
+  accessLock = [(RCBackgroundFetchConfiguration *)self accessLock];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __45__RCBackgroundFetchConfiguration_setTimeout___block_invoke;
   v6[3] = &unk_27822F238;
   v6[4] = self;
-  *&v6[5] = a3;
-  [v5 performWithLockSync:v6];
+  *&v6[5] = timeout;
+  [accessLock performWithLockSync:v6];
 }
 
 - (void)initWithTaskIdentifier:sessionIdentifier:sharedContainerIdentifier:earliestBeginDate:timeout:.cold.1()

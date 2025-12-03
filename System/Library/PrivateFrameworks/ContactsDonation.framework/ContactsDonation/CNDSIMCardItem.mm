@@ -1,19 +1,19 @@
 @interface CNDSIMCardItem
-- (BOOL)isEqual:(id)a3;
-- (CNDSIMCardItem)initWithCoder:(id)a3;
-- (CNDSIMCardItem)initWithIdentifier:(id)a3 value:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (CNDSIMCardItem)initWithCoder:(id)coder;
+- (CNDSIMCardItem)initWithIdentifier:(id)identifier value:(id)value;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNDSIMCardItem
 
-- (CNDSIMCardItem)initWithIdentifier:(id)a3 value:(id)a4
+- (CNDSIMCardItem)initWithIdentifier:(id)identifier value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  identifierCopy = identifier;
+  valueCopy = value;
+  if (identifierCopy)
   {
     goto LABEL_5;
   }
@@ -27,7 +27,7 @@
   if (os_log_type_enabled(CNGuardOSLog_cn_once_object_0_1, OS_LOG_TYPE_FAULT))
   {
     [CNDSIMCardItem initWithIdentifier:v8 value:?];
-    if (v7)
+    if (valueCopy)
     {
       goto LABEL_10;
     }
@@ -36,7 +36,7 @@
   else
   {
 LABEL_5:
-    if (v7)
+    if (valueCopy)
     {
       goto LABEL_10;
     }
@@ -59,11 +59,11 @@ LABEL_10:
   v10 = [(CNDSIMCardItem *)&v17 init];
   if (v10)
   {
-    v11 = [v6 copy];
+    v11 = [identifierCopy copy];
     identifier = v10->_identifier;
     v10->_identifier = v11;
 
-    v13 = [v7 copy];
+    v13 = [valueCopy copy];
     value = v10->_value;
     v10->_value = v13;
 
@@ -76,36 +76,36 @@ LABEL_10:
 - (id)description
 {
   v3 = [MEMORY[0x277CFBDF0] descriptionBuilderWithObject:self];
-  v4 = [(CNDSIMCardItem *)self identifier];
-  v5 = [v3 appendName:@"identifier" object:v4];
+  identifier = [(CNDSIMCardItem *)self identifier];
+  v5 = [v3 appendName:@"identifier" object:identifier];
 
-  v6 = [(CNDSIMCardItem *)self value];
-  v7 = [v3 appendName:@"value" object:v6];
+  value = [(CNDSIMCardItem *)self value];
+  v7 = [v3 appendName:@"value" object:value];
 
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = MEMORY[0x277CFBE18];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __26__CNDSIMCardItem_isEqual___block_invoke;
   v15[3] = &unk_2785698D8;
   v15[4] = self;
-  v16 = v4;
+  v16 = equalCopy;
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __26__CNDSIMCardItem_isEqual___block_invoke_2;
   v12 = &unk_2785698D8;
-  v13 = self;
+  selfCopy = self;
   v14 = v16;
   v6 = v16;
   v7 = MEMORY[0x22AA69CD0](&v9);
-  LOBYTE(self) = [v5 isObject:self memberOfSameClassAndEqualTo:v6 withBlocks:{v15, v7, 0, v9, v10, v11, v12, v13}];
+  LOBYTE(self) = [v5 isObject:self memberOfSameClassAndEqualTo:v6 withBlocks:{v15, v7, 0, v9, v10, v11, v12, selfCopy}];
 
   return self;
 }
@@ -167,20 +167,20 @@ uint64_t __22__CNDSIMCardItem_hash__block_invoke_2(uint64_t a1)
   return v3;
 }
 
-- (CNDSIMCardItem)initWithCoder:(id)a3
+- (CNDSIMCardItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = CNDSIMCardItem;
   v5 = [(CNDSIMCardItem *)&v14 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_identifier"];
     v7 = [v6 copy];
     identifier = v5->_identifier;
     v5->_identifier = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_value"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_value"];
     v10 = [v9 copy];
     value = v5->_value;
     v5->_value = v10;
@@ -191,12 +191,12 @@ uint64_t __22__CNDSIMCardItem_hash__block_invoke_2(uint64_t a1)
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"_identifier"];
-  [v5 encodeObject:self->_value forKey:@"_value"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"_identifier"];
+  [coderCopy encodeObject:self->_value forKey:@"_value"];
 }
 
 @end

@@ -2,8 +2,8 @@
 - (GKLoadableContentViewController)init;
 - (void)didEnterLoadingState;
 - (void)didExitLoadingState;
-- (void)setLoadingState:(id)a3;
-- (void)setViewsToHideWhileLoading:(id)a3;
+- (void)setLoadingState:(id)state;
+- (void)setViewsToHideWhileLoading:(id)loading;
 @end
 
 @implementation GKLoadableContentViewController
@@ -26,27 +26,27 @@
   return v2;
 }
 
-- (void)setLoadingState:(id)a3
+- (void)setLoadingState:(id)state
 {
-  v6 = a3;
-  v4 = [(_GKStateMachine *)self->_loadingMachine currentState];
+  stateCopy = state;
+  currentState = [(_GKStateMachine *)self->_loadingMachine currentState];
 
-  v5 = v6;
-  if (v4 != v6)
+  v5 = stateCopy;
+  if (currentState != stateCopy)
   {
-    [(_GKStateMachine *)self->_loadingMachine setCurrentState:v6];
-    v5 = v6;
+    [(_GKStateMachine *)self->_loadingMachine setCurrentState:stateCopy];
+    v5 = stateCopy;
   }
 }
 
-- (void)setViewsToHideWhileLoading:(id)a3
+- (void)setViewsToHideWhileLoading:(id)loading
 {
-  v5 = a3;
-  if (self->_viewsToHideWhileLoading != v5)
+  loadingCopy = loading;
+  if (self->_viewsToHideWhileLoading != loadingCopy)
   {
-    objc_storeStrong(&self->_viewsToHideWhileLoading, a3);
-    v6 = [(GKLoadableContentViewController *)self loadingState];
-    if ([v6 isEqualToString:@"LoadingState"])
+    objc_storeStrong(&self->_viewsToHideWhileLoading, loading);
+    loadingState = [(GKLoadableContentViewController *)self loadingState];
+    if ([loadingState isEqualToString:@"LoadingState"])
     {
       v7 = 0.0;
     }
@@ -61,28 +61,28 @@
     v8[2] = __62__GKLoadableContentViewController_setViewsToHideWhileLoading___block_invoke;
     v8[3] = &__block_descriptor_40_e23_v32__0__UIView_8Q16_B24l;
     *&v8[4] = v7;
-    [(NSArray *)v5 enumerateObjectsUsingBlock:v8];
+    [(NSArray *)loadingCopy enumerateObjectsUsingBlock:v8];
   }
 }
 
 - (void)didEnterLoadingState
 {
   v3 = ++didEnterLoadingState_globalSeed;
-  v4 = [(GKLoadableContentViewController *)self loadingMachine];
-  v5 = [v4 currentState];
+  loadingMachine = [(GKLoadableContentViewController *)self loadingMachine];
+  currentState = [loadingMachine currentState];
 
   v6 = dispatch_time(0, (self->_loadingIndicatorDelay * 1000000000.0));
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__GKLoadableContentViewController_didEnterLoadingState__block_invoke;
   block[3] = &unk_27966A7D0;
-  v10 = v5;
+  v10 = currentState;
   v11 = v3;
   block[4] = self;
-  v7 = v5;
+  v7 = currentState;
   dispatch_after(v6, MEMORY[0x277D85CD0], block);
-  v8 = [(GKLoadableContentViewController *)self viewsToHideWhileLoading];
-  [v8 enumerateObjectsUsingBlock:&__block_literal_global_6];
+  viewsToHideWhileLoading = [(GKLoadableContentViewController *)self viewsToHideWhileLoading];
+  [viewsToHideWhileLoading enumerateObjectsUsingBlock:&__block_literal_global_6];
 }
 
 void __55__GKLoadableContentViewController_didEnterLoadingState__block_invoke(uint64_t a1)

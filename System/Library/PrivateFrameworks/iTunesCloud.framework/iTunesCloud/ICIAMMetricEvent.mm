@@ -1,41 +1,41 @@
 @interface ICIAMMetricEvent
-- (BOOL)isEqual:(id)a3;
-- (id)actionTypeAsString:(int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)actionTypeAsString:(int)string;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)pageTypeAsString:(int)a3;
-- (id)targetTypeAsString:(int)a3;
-- (int)StringAsActionType:(id)a3;
-- (int)StringAsPageType:(id)a3;
-- (int)StringAsTargetType:(id)a3;
+- (id)pageTypeAsString:(int)string;
+- (id)targetTypeAsString:(int)string;
+- (int)StringAsActionType:(id)type;
+- (int)StringAsPageType:(id)type;
+- (int)StringAsTargetType:(id)type;
 - (int)actionType;
 - (int)pageType;
 - (int)targetType;
 - (unint64_t)hash;
-- (void)addActionDetails:(id)a3;
-- (void)addPageDetails:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasPageType:(BOOL)a3;
-- (void)setHasTargetType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addActionDetails:(id)details;
+- (void)addPageDetails:(id)details;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasPageType:(BOOL)type;
+- (void)setHasTargetType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ICIAMMetricEvent
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 8))
+  fromCopy = from;
+  if (*(fromCopy + 8))
   {
     [(ICIAMMetricEvent *)self setPageId:?];
   }
 
-  if ((*(v4 + 100) & 2) != 0)
+  if ((*(fromCopy + 100) & 2) != 0)
   {
-    self->_pageType = *(v4 + 18);
+    self->_pageType = *(fromCopy + 18);
     *&self->_has |= 2u;
   }
 
@@ -43,7 +43,7 @@
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = *(v4 + 7);
+  v5 = *(fromCopy + 7);
   v6 = [v5 countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v6)
   {
@@ -67,26 +67,26 @@
     while (v7);
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(ICIAMMetricEvent *)self setTargetId:?];
   }
 
-  v10 = *(v4 + 100);
+  v10 = *(fromCopy + 100);
   if ((v10 & 4) != 0)
   {
-    self->_targetType = *(v4 + 24);
+    self->_targetType = *(fromCopy + 24);
     *&self->_has |= 4u;
-    v10 = *(v4 + 100);
+    v10 = *(fromCopy + 100);
   }
 
   if (v10)
   {
-    self->_actionType = *(v4 + 4);
+    self->_actionType = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(ICIAMMetricEvent *)self setActionURL:?];
   }
@@ -95,7 +95,7 @@
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v11 = *(v4 + 1);
+  v11 = *(fromCopy + 1);
   v12 = [v11 countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v12)
   {
@@ -119,23 +119,23 @@
     while (v13);
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(ICIAMMetricEvent *)self setEventType:?];
   }
 
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(ICIAMMetricEvent *)self setPageUrl:?];
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(ICIAMMetricEvent *)self setImpressionType:?];
   }
 
   impression = self->_impression;
-  v17 = *(v4 + 5);
+  v17 = *(fromCopy + 5);
   if (impression)
   {
     if (v17)
@@ -196,16 +196,16 @@ LABEL_9:
   return v11 ^ v14 ^ [(ICIAMImpressionNode *)self->_impression hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_35;
   }
 
   pageId = self->_pageId;
-  if (pageId | *(v4 + 8))
+  if (pageId | *(equalCopy + 8))
   {
     if (![(NSString *)pageId isEqual:?])
     {
@@ -215,13 +215,13 @@ LABEL_9:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 100) & 2) == 0 || self->_pageType != *(v4 + 18))
+    if ((*(equalCopy + 100) & 2) == 0 || self->_pageType != *(equalCopy + 18))
     {
       goto LABEL_35;
     }
   }
 
-  else if ((*(v4 + 100) & 2) != 0)
+  else if ((*(equalCopy + 100) & 2) != 0)
   {
 LABEL_35:
     v14 = 0;
@@ -229,13 +229,13 @@ LABEL_35:
   }
 
   pageDetails = self->_pageDetails;
-  if (pageDetails | *(v4 + 7) && ![(NSMutableArray *)pageDetails isEqual:?])
+  if (pageDetails | *(equalCopy + 7) && ![(NSMutableArray *)pageDetails isEqual:?])
   {
     goto LABEL_35;
   }
 
   targetId = self->_targetId;
-  if (targetId | *(v4 + 11))
+  if (targetId | *(equalCopy + 11))
   {
     if (![(NSString *)targetId isEqual:?])
     {
@@ -245,38 +245,38 @@ LABEL_35:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 100) & 4) == 0 || self->_targetType != *(v4 + 24))
+    if ((*(equalCopy + 100) & 4) == 0 || self->_targetType != *(equalCopy + 24))
     {
       goto LABEL_35;
     }
   }
 
-  else if ((*(v4 + 100) & 4) != 0)
+  else if ((*(equalCopy + 100) & 4) != 0)
   {
     goto LABEL_35;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 100) & 1) == 0 || self->_actionType != *(v4 + 4))
+    if ((*(equalCopy + 100) & 1) == 0 || self->_actionType != *(equalCopy + 4))
     {
       goto LABEL_35;
     }
   }
 
-  else if (*(v4 + 100))
+  else if (*(equalCopy + 100))
   {
     goto LABEL_35;
   }
 
   actionURL = self->_actionURL;
-  if (actionURL | *(v4 + 3) && ![(NSString *)actionURL isEqual:?])
+  if (actionURL | *(equalCopy + 3) && ![(NSString *)actionURL isEqual:?])
   {
     goto LABEL_35;
   }
 
   actionDetails = self->_actionDetails;
-  if (actionDetails | *(v4 + 1))
+  if (actionDetails | *(equalCopy + 1))
   {
     if (![(NSMutableArray *)actionDetails isEqual:?])
     {
@@ -285,7 +285,7 @@ LABEL_35:
   }
 
   eventType = self->_eventType;
-  if (eventType | *(v4 + 4))
+  if (eventType | *(equalCopy + 4))
   {
     if (![(NSString *)eventType isEqual:?])
     {
@@ -294,7 +294,7 @@ LABEL_35:
   }
 
   pageUrl = self->_pageUrl;
-  if (pageUrl | *(v4 + 10))
+  if (pageUrl | *(equalCopy + 10))
   {
     if (![(NSString *)pageUrl isEqual:?])
     {
@@ -303,7 +303,7 @@ LABEL_35:
   }
 
   impressionType = self->_impressionType;
-  if (impressionType | *(v4 + 6))
+  if (impressionType | *(equalCopy + 6))
   {
     if (![(NSString *)impressionType isEqual:?])
     {
@@ -312,7 +312,7 @@ LABEL_35:
   }
 
   impression = self->_impression;
-  if (impression | *(v4 + 5))
+  if (impression | *(equalCopy + 5))
   {
     v14 = [(ICIAMImpressionNode *)impression isEqual:?];
   }
@@ -327,11 +327,11 @@ LABEL_36:
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v44 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_pageId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_pageId copyWithZone:zone];
   v7 = *(v5 + 64);
   *(v5 + 64) = v6;
 
@@ -360,7 +360,7 @@ LABEL_36:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v38 + 1) + 8 * i) copyWithZone:a3];
+        v13 = [*(*(&v38 + 1) + 8 * i) copyWithZone:zone];
         [v5 addPageDetails:v13];
       }
 
@@ -370,7 +370,7 @@ LABEL_36:
     while (v10);
   }
 
-  v14 = [(NSString *)self->_targetId copyWithZone:a3];
+  v14 = [(NSString *)self->_targetId copyWithZone:zone];
   v15 = *(v5 + 88);
   *(v5 + 88) = v14;
 
@@ -388,7 +388,7 @@ LABEL_36:
     *(v5 + 100) |= 1u;
   }
 
-  v17 = [(NSString *)self->_actionURL copyWithZone:a3];
+  v17 = [(NSString *)self->_actionURL copyWithZone:zone];
   v18 = *(v5 + 24);
   *(v5 + 24) = v17;
 
@@ -411,7 +411,7 @@ LABEL_36:
           objc_enumerationMutation(v19);
         }
 
-        v24 = [*(*(&v34 + 1) + 8 * j) copyWithZone:{a3, v34}];
+        v24 = [*(*(&v34 + 1) + 8 * j) copyWithZone:{zone, v34}];
         [v5 addActionDetails:v24];
       }
 
@@ -421,48 +421,48 @@ LABEL_36:
     while (v21);
   }
 
-  v25 = [(NSString *)self->_eventType copyWithZone:a3];
+  v25 = [(NSString *)self->_eventType copyWithZone:zone];
   v26 = *(v5 + 32);
   *(v5 + 32) = v25;
 
-  v27 = [(NSString *)self->_pageUrl copyWithZone:a3];
+  v27 = [(NSString *)self->_pageUrl copyWithZone:zone];
   v28 = *(v5 + 80);
   *(v5 + 80) = v27;
 
-  v29 = [(NSString *)self->_impressionType copyWithZone:a3];
+  v29 = [(NSString *)self->_impressionType copyWithZone:zone];
   v30 = *(v5 + 48);
   *(v5 + 48) = v29;
 
-  v31 = [(ICIAMImpressionNode *)self->_impression copyWithZone:a3];
+  v31 = [(ICIAMImpressionNode *)self->_impression copyWithZone:zone];
   v32 = *(v5 + 40);
   *(v5 + 40) = v31;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v15 = v4;
+  toCopy = to;
+  v15 = toCopy;
   if (self->_pageId)
   {
-    [v4 setPageId:?];
-    v4 = v15;
+    [toCopy setPageId:?];
+    toCopy = v15;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 18) = self->_pageType;
-    *(v4 + 100) |= 2u;
+    *(toCopy + 18) = self->_pageType;
+    *(toCopy + 100) |= 2u;
   }
 
   if ([(ICIAMMetricEvent *)self pageDetailsCount])
   {
     [v15 clearPageDetails];
-    v5 = [(ICIAMMetricEvent *)self pageDetailsCount];
-    if (v5)
+    pageDetailsCount = [(ICIAMMetricEvent *)self pageDetailsCount];
+    if (pageDetailsCount)
     {
-      v6 = v5;
+      v6 = pageDetailsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(ICIAMMetricEvent *)self pageDetailsAtIndex:i];
@@ -498,10 +498,10 @@ LABEL_36:
   if ([(ICIAMMetricEvent *)self actionDetailsCount])
   {
     [v15 clearActionDetails];
-    v10 = [(ICIAMMetricEvent *)self actionDetailsCount];
-    if (v10)
+    actionDetailsCount = [(ICIAMMetricEvent *)self actionDetailsCount];
+    if (actionDetailsCount)
     {
-      v11 = v10;
+      v11 = actionDetailsCount;
       for (j = 0; j != v11; ++j)
       {
         v13 = [(ICIAMMetricEvent *)self actionDetailsAtIndex:j];
@@ -535,10 +535,10 @@ LABEL_36:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_pageId)
   {
     PBDataWriterWriteStringField();
@@ -651,12 +651,12 @@ LABEL_36:
 - (id)dictionaryRepresentation
 {
   v45 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   pageId = self->_pageId;
   if (pageId)
   {
-    [v3 setObject:pageId forKey:@"pageId"];
+    [dictionary setObject:pageId forKey:@"pageId"];
   }
 
   if ((*&self->_has & 2) != 0)
@@ -697,8 +697,8 @@ LABEL_36:
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v39 + 1) + 8 * i) dictionaryRepresentation];
-          [v8 addObject:v14];
+          dictionaryRepresentation = [*(*(&v39 + 1) + 8 * i) dictionaryRepresentation];
+          [v8 addObject:dictionaryRepresentation];
         }
 
         v11 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v39 objects:v44 count:16];
@@ -779,8 +779,8 @@ LABEL_36:
             objc_enumerationMutation(v23);
           }
 
-          v28 = [*(*(&v35 + 1) + 8 * j) dictionaryRepresentation];
-          [v22 addObject:v28];
+          dictionaryRepresentation2 = [*(*(&v35 + 1) + 8 * j) dictionaryRepresentation];
+          [v22 addObject:dictionaryRepresentation2];
         }
 
         v25 = [(NSMutableArray *)v23 countByEnumeratingWithState:&v35 objects:v43 count:16];
@@ -813,8 +813,8 @@ LABEL_36:
   impression = self->_impression;
   if (impression)
   {
-    v33 = [(ICIAMImpressionNode *)impression dictionaryRepresentation];
-    [v4 setObject:v33 forKey:@"impression"];
+    dictionaryRepresentation3 = [(ICIAMImpressionNode *)impression dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"impression"];
   }
 
   return v4;
@@ -826,44 +826,44 @@ LABEL_36:
   v8.receiver = self;
   v8.super_class = ICIAMMetricEvent;
   v4 = [(ICIAMMetricEvent *)&v8 description];
-  v5 = [(ICIAMMetricEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ICIAMMetricEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addActionDetails:(id)a3
+- (void)addActionDetails:(id)details
 {
-  v4 = a3;
+  detailsCopy = details;
   actionDetails = self->_actionDetails;
-  v8 = v4;
+  v8 = detailsCopy;
   if (!actionDetails)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_actionDetails;
     self->_actionDetails = v6;
 
-    v4 = v8;
+    detailsCopy = v8;
     actionDetails = self->_actionDetails;
   }
 
-  [(NSMutableArray *)actionDetails addObject:v4];
+  [(NSMutableArray *)actionDetails addObject:detailsCopy];
 }
 
-- (int)StringAsActionType:(id)a3
+- (int)StringAsActionType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Navigate"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Navigate"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Swipe"])
+  else if ([typeCopy isEqualToString:@"Swipe"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Select"])
+  else if ([typeCopy isEqualToString:@"Select"])
   {
     v4 = 2;
   }
@@ -876,16 +876,16 @@ LABEL_36:
   return v4;
 }
 
-- (id)actionTypeAsString:(int)a3
+- (id)actionTypeAsString:(int)string
 {
-  if (a3 >= 3)
+  if (string >= 3)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_1E7BF5B70[a3];
+    v4 = off_1E7BF5B70[string];
   }
 
   return v4;
@@ -904,30 +904,30 @@ LABEL_36:
   }
 }
 
-- (int)StringAsTargetType:(id)a3
+- (int)StringAsTargetType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Card"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Card"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Button"])
+  else if ([typeCopy isEqualToString:@"Button"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Slider"])
+  else if ([typeCopy isEqualToString:@"Slider"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Banner"])
+  else if ([typeCopy isEqualToString:@"Banner"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Close"])
+  else if ([typeCopy isEqualToString:@"Close"])
   {
     v4 = 4;
   }
@@ -940,24 +940,24 @@ LABEL_36:
   return v4;
 }
 
-- (id)targetTypeAsString:(int)a3
+- (id)targetTypeAsString:(int)string
 {
-  if (a3 >= 5)
+  if (string >= 5)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_1E7BF5B48[a3];
+    v4 = off_1E7BF5B48[string];
   }
 
   return v4;
 }
 
-- (void)setHasTargetType:(BOOL)a3
+- (void)setHasTargetType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -983,43 +983,43 @@ LABEL_36:
   }
 }
 
-- (void)addPageDetails:(id)a3
+- (void)addPageDetails:(id)details
 {
-  v4 = a3;
+  detailsCopy = details;
   pageDetails = self->_pageDetails;
-  v8 = v4;
+  v8 = detailsCopy;
   if (!pageDetails)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_pageDetails;
     self->_pageDetails = v6;
 
-    v4 = v8;
+    detailsCopy = v8;
     pageDetails = self->_pageDetails;
   }
 
-  [(NSMutableArray *)pageDetails addObject:v4];
+  [(NSMutableArray *)pageDetails addObject:detailsCopy];
 }
 
-- (int)StringAsPageType:(id)a3
+- (int)StringAsPageType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Banner"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Banner"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Modal"])
+  else if ([typeCopy isEqualToString:@"Modal"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Native"])
+  else if ([typeCopy isEqualToString:@"Native"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Notification"])
+  else if ([typeCopy isEqualToString:@"Notification"])
   {
     v4 = 4;
   }
@@ -1032,24 +1032,24 @@ LABEL_36:
   return v4;
 }
 
-- (id)pageTypeAsString:(int)a3
+- (id)pageTypeAsString:(int)string
 {
-  if (a3 < 5 && ((0x17u >> a3) & 1) != 0)
+  if (string < 5 && ((0x17u >> string) & 1) != 0)
   {
-    v4 = off_1E7BF5B20[a3];
+    v4 = off_1E7BF5B20[string];
   }
 
   else
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   return v4;
 }
 
-- (void)setHasPageType:(BOOL)a3
+- (void)setHasPageType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }

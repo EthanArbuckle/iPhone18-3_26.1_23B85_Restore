@@ -1,14 +1,14 @@
 @interface _HMMutableCameraUserSettings
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation _HMMutableCameraUserSettings
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [_HMCameraUserSettings alloc];
-  v5 = [(_HMCameraUserSettings *)self UUID];
-  v6 = [(_HMCameraUserSettings *)v4 initWithUUID:v5];
+  uUID = [(_HMCameraUserSettings *)self UUID];
+  v6 = [(_HMCameraUserSettings *)v4 initWithUUID:uUID];
 
   [(_HMCameraUserSettings *)v6 setSupportedFeatures:[(_HMCameraUserSettings *)self supportedFeatures]];
   [(_HMCameraUserSettings *)v6 setAccessModeAtHome:[(_HMCameraUserSettings *)self accessModeAtHome]];
@@ -16,11 +16,11 @@
   [(_HMCameraUserSettings *)v6 setCurrentAccessMode:[(_HMCameraUserSettings *)self currentAccessMode]];
   [(_HMCameraUserSettings *)v6 setRecordingEventTriggers:[(_HMCameraUserSettings *)self recordingEventTriggers]];
   [(_HMCameraUserSettings *)v6 setCameraManuallyDisabled:[(_HMCameraUserSettings *)self isCameraManuallyDisabled]];
-  v7 = [(_HMCameraUserSettings *)self notificationSettings];
-  [(_HMCameraUserSettings *)v6 setNotificationSettings:v7];
+  notificationSettings = [(_HMCameraUserSettings *)self notificationSettings];
+  [(_HMCameraUserSettings *)v6 setNotificationSettings:notificationSettings];
 
-  v8 = [(_HMCameraUserSettings *)self activityZones];
-  [(_HMCameraUserSettings *)v6 setActivityZones:v8];
+  activityZones = [(_HMCameraUserSettings *)self activityZones];
+  [(_HMCameraUserSettings *)v6 setActivityZones:activityZones];
 
   [(_HMCameraUserSettings *)v6 setActivityZonesIncludedForSignificantEventDetection:[(_HMCameraUserSettings *)self areActivityZonesIncludedForSignificantEventDetection]];
   return v6;

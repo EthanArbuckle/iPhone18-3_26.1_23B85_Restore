@@ -23,8 +23,8 @@
 - (id)fontFamilies
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  v2 = [(SXSanFranciscoFontFamilyProvider *)self family];
-  v5[0] = v2;
+  family = [(SXSanFranciscoFontFamilyProvider *)self family];
+  v5[0] = family;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:1];
 
   return v3;

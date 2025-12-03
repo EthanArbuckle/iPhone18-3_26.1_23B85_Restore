@@ -1,7 +1,7 @@
 @interface ICSEMainViewController
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (BOOL)canShareToFolder:(id)a3;
-- (BOOL)canShareToNote:(id)a3;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (BOOL)canShareToFolder:(id)folder;
+- (BOOL)canShareToNote:(id)note;
 - (BOOL)shouldRetrieveLastSelectedNote;
 - (ICSEContainerViewController)containerViewController;
 - (ICSEImagesView)imagesView;
@@ -30,34 +30,34 @@
 - (UIView)titleFooterView;
 - (UIView)titleHeaderView;
 - (UIView)titleViewContainer;
-- (double)consumedBottomAreaForResizer:(id)a3;
+- (double)consumedBottomAreaForResizer:(id)resizer;
 - (id)stringForTitleFooter;
 - (void)attachmentsAvailable;
-- (void)cancel:(id)a3;
+- (void)cancel:(id)cancel;
 - (void)cleanupTemporaryImageFilesIfNecessary;
 - (void)cleanupTemporaryNewNoteIfNecesary;
 - (void)configureUI;
-- (void)contentSizeCategoryChanged:(id)a3;
+- (void)contentSizeCategoryChanged:(id)changed;
 - (void)dealloc;
 - (void)dismissRootViewController;
-- (void)extensionHostDidBecomeActive:(id)a3;
-- (void)installBrickForAttachmentInfo:(id)a3;
-- (void)installImagesViewForAttachments:(id)a3;
+- (void)extensionHostDidBecomeActive:(id)active;
+- (void)installBrickForAttachmentInfo:(id)info;
+- (void)installImagesViewForAttachments:(id)attachments;
 - (void)loadAccountsAndAttachments;
 - (void)purgeAttachments;
-- (void)saveToNote:(id)a3;
-- (void)scrollTextToVisibleForTextView:(id)a3;
-- (void)setBottomTextViewCollapsed:(BOOL)a3;
-- (void)setBrickViewCollapsed:(BOOL)a3;
-- (void)setImageViewCollapsed:(BOOL)a3;
-- (void)setLayoutType:(unint64_t)a3;
-- (void)setUpForLayoutType:(unint64_t)a3;
+- (void)saveToNote:(id)note;
+- (void)scrollTextToVisibleForTextView:(id)view;
+- (void)setBottomTextViewCollapsed:(BOOL)collapsed;
+- (void)setBrickViewCollapsed:(BOOL)collapsed;
+- (void)setImageViewCollapsed:(BOOL)collapsed;
+- (void)setLayoutType:(unint64_t)type;
+- (void)setUpForLayoutType:(unint64_t)type;
 - (void)showActivityIndicator;
 - (void)showSaveButton;
-- (void)tabKeyPressed:(id)a3;
-- (void)textViewDidBeginEditing:(id)a3;
-- (void)textViewDidEndEditing:(id)a3;
-- (void)titleViewDidTap:(id)a3;
+- (void)tabKeyPressed:(id)pressed;
+- (void)textViewDidBeginEditing:(id)editing;
+- (void)textViewDidEndEditing:(id)editing;
+- (void)titleViewDidTap:(id)tap;
 - (void)updateBrickContainerHeightConstraint;
 - (void)updateTextViewsForContentSizeChangeIfNecessary;
 - (void)updateTitleFooter;
@@ -97,24 +97,24 @@
 
   v4 = +[NSBundle mainBundle];
   v5 = [v4 localizedStringForKey:@"Notes" value:&stru_1000F6F48 table:0];
-  v6 = [(ICSEMainViewController *)self navigationItem];
-  [v6 setTitle:v5];
+  navigationItem = [(ICSEMainViewController *)self navigationItem];
+  [navigationItem setTitle:v5];
 
-  v7 = [(ICSEMainViewController *)self navigationController];
-  v8 = [v7 navigationBar];
-  [v8 setForceFullHeightInLandscape:1];
+  navigationController = [(ICSEMainViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar setForceFullHeightInLandscape:1];
 
   if (+[UIDevice ic_isVision])
   {
-    v9 = [(ICSEMainViewController *)self navigationController];
-    v10 = [v9 navigationBar];
-    [v10 setBackgroundColor:0];
+    navigationController2 = [(ICSEMainViewController *)self navigationController];
+    navigationBar2 = [navigationController2 navigationBar];
+    [navigationBar2 setBackgroundColor:0];
 
-    v11 = [(ICSEMainViewController *)self view];
-    [v11 setBackgroundColor:0];
+    view = [(ICSEMainViewController *)self view];
+    [view setBackgroundColor:0];
 
-    v12 = [(ICSEMainViewController *)self scrollView];
-    [v12 setBackgroundColor:0];
+    scrollView = [(ICSEMainViewController *)self scrollView];
+    [scrollView setBackgroundColor:0];
   }
 
   else
@@ -128,14 +128,14 @@
     {
       +[UIColor ICTintColor];
     }
-    v12 = ;
-    v13 = [(ICSEMainViewController *)self navigationController];
-    v14 = [v13 navigationBar];
-    [v14 setTintColor:v12];
+    scrollView = ;
+    navigationController3 = [(ICSEMainViewController *)self navigationController];
+    navigationBar3 = [navigationController3 navigationBar];
+    [navigationBar3 setTintColor:scrollView];
   }
 
-  v15 = [(ICSEMainViewController *)self scrollView];
-  [v15 setDelegate:self];
+  scrollView2 = [(ICSEMainViewController *)self scrollView];
+  [scrollView2 setDelegate:self];
 
   [(ICSEMainViewController *)self showPlaceholderText:1];
   v16 = +[ICSENoteTitleView newNoteTitleView];
@@ -144,87 +144,87 @@
   if (+[UIDevice ic_isVision])
   {
     v17 = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
-    v18 = [v17 ic_fontWithSingleLineA];
-    v19 = [(ICSEMainViewController *)self saveToHeaderLabel];
-    [v19 setFont:v18];
+    ic_fontWithSingleLineA = [v17 ic_fontWithSingleLineA];
+    saveToHeaderLabel = [(ICSEMainViewController *)self saveToHeaderLabel];
+    [saveToHeaderLabel setFont:ic_fontWithSingleLineA];
 
-    v20 = [(ICSEMainViewController *)self titleFooterLabel];
-    [v20 setTextAlignment:1];
+    titleFooterLabel = [(ICSEMainViewController *)self titleFooterLabel];
+    [titleFooterLabel setTextAlignment:1];
 
-    v21 = [(ICSEMainViewController *)self titleFooterViewHeightConstraint];
-    v87 = v21;
+    titleFooterViewHeightConstraint = [(ICSEMainViewController *)self titleFooterViewHeightConstraint];
+    v87 = titleFooterViewHeightConstraint;
     v22 = [NSArray arrayWithObjects:&v87 count:1];
     [NSLayoutConstraint deactivateConstraints:v22];
 
-    v23 = [(ICSEMainViewController *)self titleFooterView];
-    v24 = [v23 bottomAnchor];
-    v25 = [(ICSEMainViewController *)self contentViewContainer];
-    v26 = [v25 topAnchor];
-    v27 = [v24 constraintLessThanOrEqualToAnchor:v26 constant:-16.0];
+    titleFooterView = [(ICSEMainViewController *)self titleFooterView];
+    bottomAnchor = [titleFooterView bottomAnchor];
+    contentViewContainer = [(ICSEMainViewController *)self contentViewContainer];
+    topAnchor = [contentViewContainer topAnchor];
+    v27 = [bottomAnchor constraintLessThanOrEqualToAnchor:topAnchor constant:-16.0];
     v86 = v27;
     v28 = [NSArray arrayWithObjects:&v86 count:1];
     [NSLayoutConstraint activateConstraints:v28];
   }
 
-  v29 = [(ICSEMainViewController *)self titleViewContainer];
-  [v29 ic_applyRoundedCornersWithRadius:26.0];
+  titleViewContainer = [(ICSEMainViewController *)self titleViewContainer];
+  [titleViewContainer ic_applyRoundedCornersWithRadius:26.0];
 
-  v30 = [(ICSEMainViewController *)self titleViewContainer];
-  [v30 addSubview:v16];
+  titleViewContainer2 = [(ICSEMainViewController *)self titleViewContainer];
+  [titleViewContainer2 addSubview:v16];
 
   v31 = +[UIColor tableCellGroupedBackgroundColor];
-  v32 = [(ICSEMainViewController *)self titleViewContainer];
-  [v32 setBackgroundColor:v31];
+  titleViewContainer3 = [(ICSEMainViewController *)self titleViewContainer];
+  [titleViewContainer3 setBackgroundColor:v31];
 
-  v33 = [(ICSEMainViewController *)self titleViewContainer];
-  [v33 setAccessibilityIdentifier:@"titleViewContainer"];
+  titleViewContainer4 = [(ICSEMainViewController *)self titleViewContainer];
+  [titleViewContainer4 setAccessibilityIdentifier:@"titleViewContainer"];
 
   [(ICSEMainViewController *)self updateTitleViewHeightConstraint];
-  v83 = [v16 leadingAnchor];
-  v84 = [(ICSEMainViewController *)self titleViewContainer];
-  v82 = [v84 layoutMarginsGuide];
-  v81 = [v82 leadingAnchor];
-  v80 = [v83 constraintEqualToAnchor:v81 constant:8.0];
+  leadingAnchor = [v16 leadingAnchor];
+  titleViewContainer5 = [(ICSEMainViewController *)self titleViewContainer];
+  layoutMarginsGuide = [titleViewContainer5 layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v80 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:8.0];
   v85[0] = v80;
-  v78 = [v16 trailingAnchor];
-  v79 = [(ICSEMainViewController *)self titleViewContainer];
-  v77 = [v79 layoutMarginsGuide];
-  v76 = [v77 trailingAnchor];
-  v75 = [v78 constraintEqualToAnchor:v76 constant:-8.0];
+  trailingAnchor = [v16 trailingAnchor];
+  titleViewContainer6 = [(ICSEMainViewController *)self titleViewContainer];
+  layoutMarginsGuide2 = [titleViewContainer6 layoutMarginsGuide];
+  trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+  v75 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-8.0];
   v85[1] = v75;
-  v74 = [v16 topAnchor];
-  v34 = [(ICSEMainViewController *)self titleViewContainer];
-  v35 = [v34 topAnchor];
-  v36 = [v74 constraintEqualToAnchor:v35];
+  topAnchor2 = [v16 topAnchor];
+  titleViewContainer7 = [(ICSEMainViewController *)self titleViewContainer];
+  topAnchor3 = [titleViewContainer7 topAnchor];
+  v36 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
   v85[2] = v36;
-  v37 = [v16 bottomAnchor];
-  v38 = [(ICSEMainViewController *)self titleViewContainer];
-  [v38 bottomAnchor];
+  bottomAnchor2 = [v16 bottomAnchor];
+  titleViewContainer8 = [(ICSEMainViewController *)self titleViewContainer];
+  [titleViewContainer8 bottomAnchor];
   v40 = v39 = v16;
-  v41 = [v37 constraintEqualToAnchor:v40];
+  v41 = [bottomAnchor2 constraintEqualToAnchor:v40];
   v85[3] = v41;
   v42 = [NSArray arrayWithObjects:v85 count:4];
   [NSLayoutConstraint activateConstraints:v42];
 
   v43 = v39;
   [(ICSEMainViewController *)self setTitleView:v39];
-  v44 = [(ICSEMainViewController *)self contentViewContainer];
-  [v44 ic_applyRoundedCornersWithRadius:20.0];
+  contentViewContainer2 = [(ICSEMainViewController *)self contentViewContainer];
+  [contentViewContainer2 ic_applyRoundedCornersWithRadius:20.0];
 
   v45 = +[UIColor tableCellGroupedBackgroundColor];
-  v46 = [(ICSEMainViewController *)self contentViewContainer];
-  [v46 setBackgroundColor:v45];
+  contentViewContainer3 = [(ICSEMainViewController *)self contentViewContainer];
+  [contentViewContainer3 setBackgroundColor:v45];
 
   v47 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:100];
   [(ICSEMainViewController *)self setActivityIndicatorView:v47];
 
   v48 = [UIBarButtonItem alloc];
-  v49 = [(ICSEMainViewController *)self activityIndicatorView];
-  v50 = [v48 initWithCustomView:v49];
+  activityIndicatorView = [(ICSEMainViewController *)self activityIndicatorView];
+  v50 = [v48 initWithCustomView:activityIndicatorView];
   [(ICSEMainViewController *)self setActivityIndicatorBarButtonItem:v50];
 
-  v51 = [(ICSEMainViewController *)self saveToNoteBarButtonItem];
-  [v51 setEnabled:0];
+  saveToNoteBarButtonItem = [(ICSEMainViewController *)self saveToNoteBarButtonItem];
+  [saveToNoteBarButtonItem setEnabled:0];
 
   if (UIAccessibilityDarkerSystemColorsEnabled())
   {
@@ -236,45 +236,45 @@
     +[UIColor ICTintColor];
   }
   v52 = ;
-  v53 = [(ICSEMainViewController *)self saveToNoteBarButtonItem];
-  [v53 setTintColor:v52];
+  saveToNoteBarButtonItem2 = [(ICSEMainViewController *)self saveToNoteBarButtonItem];
+  [saveToNoteBarButtonItem2 setTintColor:v52];
 
   if (![(ICSEMainViewController *)self layoutType])
   {
     [(ICSEMainViewController *)self setUpForLayoutType:3];
   }
 
-  v54 = [(ICSEMainViewController *)self topTextView];
-  [v54 setDelegate:self];
+  topTextView = [(ICSEMainViewController *)self topTextView];
+  [topTextView setDelegate:self];
 
-  v55 = [(ICSEMainViewController *)self bottomTextView];
-  [v55 setDelegate:self];
+  bottomTextView = [(ICSEMainViewController *)self bottomTextView];
+  [bottomTextView setDelegate:self];
 
   if ((+[UIDevice ic_isVision]& 1) == 0)
   {
     left = UIEdgeInsetsZero.left;
     bottom = UIEdgeInsetsZero.bottom;
     right = UIEdgeInsetsZero.right;
-    v59 = [(ICSEMainViewController *)self topTextView];
-    [v59 setTextContainerInset:{UIEdgeInsetsZero.top, left, bottom, right}];
+    topTextView2 = [(ICSEMainViewController *)self topTextView];
+    [topTextView2 setTextContainerInset:{UIEdgeInsetsZero.top, left, bottom, right}];
 
-    v60 = [(ICSEMainViewController *)self topTextView];
-    v61 = [v60 textContainer];
-    [v61 setLineFragmentPadding:0.0];
+    topTextView3 = [(ICSEMainViewController *)self topTextView];
+    textContainer = [topTextView3 textContainer];
+    [textContainer setLineFragmentPadding:0.0];
 
-    v62 = [(ICSEMainViewController *)self bottomTextView];
-    [v62 setTextContainerInset:{UIEdgeInsetsZero.top, left, bottom, right}];
+    bottomTextView2 = [(ICSEMainViewController *)self bottomTextView];
+    [bottomTextView2 setTextContainerInset:{UIEdgeInsetsZero.top, left, bottom, right}];
 
-    v63 = [(ICSEMainViewController *)self bottomTextView];
-    v64 = [v63 textContainer];
-    [v64 setLineFragmentPadding:0.0];
+    bottomTextView3 = [(ICSEMainViewController *)self bottomTextView];
+    textContainer2 = [bottomTextView3 textContainer];
+    [textContainer2 setLineFragmentPadding:0.0];
   }
 
-  v65 = [(ICSEMainViewController *)self topTextViewMinHeightConstraint];
-  [v65 setConstant:48.0];
+  topTextViewMinHeightConstraint = [(ICSEMainViewController *)self topTextViewMinHeightConstraint];
+  [topTextViewMinHeightConstraint setConstant:48.0];
 
-  v66 = [(ICSEMainViewController *)self bottomTextviewCollapsibleZeroHeightConstraint];
-  [v66 setConstant:72.0];
+  bottomTextviewCollapsibleZeroHeightConstraint = [(ICSEMainViewController *)self bottomTextviewCollapsibleZeroHeightConstraint];
+  [bottomTextviewCollapsibleZeroHeightConstraint setConstant:72.0];
 
   [(ICSEMainViewController *)self updateTextViewsForContentSizeChangeIfNecessary];
   v67 = +[NSBundle mainBundle];
@@ -297,50 +297,50 @@
 
 - (void)showActivityIndicator
 {
-  v3 = [(ICSEMainViewController *)self activityIndicatorBarButtonItem];
-  v4 = [(ICSEMainViewController *)self navigationItem];
-  [v4 setRightBarButtonItem:v3];
+  activityIndicatorBarButtonItem = [(ICSEMainViewController *)self activityIndicatorBarButtonItem];
+  navigationItem = [(ICSEMainViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:activityIndicatorBarButtonItem];
 
-  v5 = [(ICSEMainViewController *)self activityIndicatorView];
-  [v5 startAnimating];
+  activityIndicatorView = [(ICSEMainViewController *)self activityIndicatorView];
+  [activityIndicatorView startAnimating];
 }
 
 - (void)showSaveButton
 {
-  v4 = [(ICSEMainViewController *)self saveToNoteBarButtonItem];
-  v3 = [(ICSEMainViewController *)self navigationItem];
-  [v3 setRightBarButtonItem:v4];
+  saveToNoteBarButtonItem = [(ICSEMainViewController *)self saveToNoteBarButtonItem];
+  navigationItem = [(ICSEMainViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:saveToNoteBarButtonItem];
 }
 
 - (void)loadAccountsAndAttachments
 {
   v3 = +[ICNoteContext sharedContext];
-  v4 = [v3 managedObjectContext];
-  v5 = [ICAccount allActiveAccountsInContextSortedByAccountType:v4];
+  managedObjectContext = [v3 managedObjectContext];
+  v5 = [ICAccount allActiveAccountsInContextSortedByAccountType:managedObjectContext];
 
   if (v5 && [v5 count])
   {
     [(ICSEMainViewController *)self setAccounts:v5];
-    v6 = [(ICSEMainViewController *)self containerViewController];
-    v7 = [v6 tableViewController];
-    [v7 setAccounts:v5];
+    containerViewController = [(ICSEMainViewController *)self containerViewController];
+    tableViewController = [containerViewController tableViewController];
+    [tableViewController setAccounts:v5];
 
     v8 = +[ICNoteContext sharedContext];
-    v9 = [v8 managedObjectContext];
-    v10 = [ICFolder defaultFolderInContext:v9];
+    managedObjectContext2 = [v8 managedObjectContext];
+    v10 = [ICFolder defaultFolderInContext:managedObjectContext2];
     v11 = [ICNote newEmptyNoteInFolder:v10];
 
     [v11 markForDeletion];
     [(ICSEMainViewController *)self setTemporaryNewNote:v11];
     v12 = +[ICSharingExtensionAttachmentsManager sharedManager];
-    v13 = [v12 lastNoteSavedTo];
+    lastNoteSavedTo = [v12 lastNoteSavedTo];
 
-    -[ICSEMainViewController setSelectionToNote:folder:prefersSystemPaper:](self, "setSelectionToNote:folder:prefersSystemPaper:", v13, 0, [v13 isSystemPaper]);
+    -[ICSEMainViewController setSelectionToNote:folder:prefersSystemPaper:](self, "setSelectionToNote:folder:prefersSystemPaper:", lastNoteSavedTo, 0, [lastNoteSavedTo isSystemPaper]);
     objc_initWeak(location, self);
-    v14 = [v11 account];
-    v15 = [v14 identifier];
+    account = [v11 account];
+    identifier = [account identifier];
     v16 = +[ICSharingExtensionAttachmentsManager sharedManager];
-    [v16 setAccountId:v15];
+    [v16 setAccountId:identifier];
 
     v17 = dispatch_get_global_queue(0, 0);
     v18[0] = _NSConcreteStackBlock;
@@ -371,21 +371,21 @@
   v8.receiver = self;
   v8.super_class = ICSEMainViewController;
   [(ICSEMainViewController *)&v8 viewDidLayoutSubviews];
-  v3 = [(ICSEMainViewController *)self view];
-  v4 = [v3 window];
+  view = [(ICSEMainViewController *)self view];
+  window = [view window];
 
-  if (!v4)
+  if (!window)
   {
     [ICAssert handleFailedAssertWithCondition:"((self.view.window) != nil)" functionName:"[ICSEMainViewController viewDidLayoutSubviews]" simulateCrash:1 showAlert:0 format:@"Expected non-nil value for '%s'", "self.view.window"];
   }
 
-  v5 = [(ICSEMainViewController *)self scrollViewResizer];
-  v6 = [v5 isAutoResizing];
+  scrollViewResizer = [(ICSEMainViewController *)self scrollViewResizer];
+  isAutoResizing = [scrollViewResizer isAutoResizing];
 
-  if ((v6 & 1) == 0)
+  if ((isAutoResizing & 1) == 0)
   {
-    v7 = [(ICSEMainViewController *)self scrollViewResizer];
-    [v7 startAutoResizing];
+    scrollViewResizer2 = [(ICSEMainViewController *)self scrollViewResizer];
+    [scrollViewResizer2 startAutoResizing];
   }
 }
 
@@ -395,8 +395,8 @@
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(ICSEMainViewController *)self attachments];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  attachments = [(ICSEMainViewController *)self attachments];
+  v3 = [attachments countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -408,7 +408,7 @@
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(attachments);
         }
 
         [*(*(&v7 + 1) + 8 * v6) deleteTemporaryImageFileIfNecessary];
@@ -416,7 +416,7 @@
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [attachments countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
@@ -425,15 +425,15 @@
 
 - (void)cleanupTemporaryNewNoteIfNecesary
 {
-  v3 = [(ICSEMainViewController *)self temporaryNewNote];
-  v4 = [v3 managedObjectContext];
+  temporaryNewNote = [(ICSEMainViewController *)self temporaryNewNote];
+  managedObjectContext = [temporaryNewNote managedObjectContext];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100022E48;
   v6[3] = &unk_1000F2390;
-  v7 = v3;
-  v5 = v3;
-  [v4 performBlockAndWait:v6];
+  v7 = temporaryNewNote;
+  v5 = temporaryNewNote;
+  [managedObjectContext performBlockAndWait:v6];
 
   [(ICSEMainViewController *)self setTemporaryNewNote:0];
 }
@@ -443,21 +443,21 @@
   v4.receiver = self;
   v4.super_class = ICSEMainViewController;
   [(ICSEMainViewController *)&v4 viewSafeAreaInsetsDidChange];
-  v3 = [(ICSEMainViewController *)self scrollViewResizer];
-  [v3 reapplyInsets];
+  scrollViewResizer = [(ICSEMainViewController *)self scrollViewResizer];
+  [scrollViewResizer reapplyInsets];
 }
 
 - (void)updateTitleFooter
 {
-  v4 = [(ICSEMainViewController *)self stringForTitleFooter];
-  v3 = [(ICSEMainViewController *)self titleFooterLabel];
-  [v3 setText:v4];
+  stringForTitleFooter = [(ICSEMainViewController *)self stringForTitleFooter];
+  titleFooterLabel = [(ICSEMainViewController *)self titleFooterLabel];
+  [titleFooterLabel setText:stringForTitleFooter];
 }
 
 - (id)stringForTitleFooter
 {
-  v3 = [(ICSEMainViewController *)self attachments];
-  v4 = [v3 count];
+  attachments = [(ICSEMainViewController *)self attachments];
+  v4 = [attachments count];
 
   if (!v4)
   {
@@ -465,31 +465,31 @@
     goto LABEL_174;
   }
 
-  v5 = [(ICSEMainViewController *)self attachments];
-  v74 = [v5 count];
+  attachments2 = [(ICSEMainViewController *)self attachments];
+  v74 = [attachments2 count];
 
-  v6 = [(ICSEMainViewController *)self selectedNote];
-  v7 = [(ICSEMainViewController *)self selectedFolder];
-  v8 = v7;
-  if (v7)
+  selectedNote = [(ICSEMainViewController *)self selectedNote];
+  selectedFolder = [(ICSEMainViewController *)self selectedFolder];
+  v8 = selectedFolder;
+  if (selectedFolder)
   {
-    v9 = v7;
+    folder = selectedFolder;
   }
 
   else
   {
-    v9 = [v6 folder];
+    folder = [selectedNote folder];
   }
 
-  v11 = v9;
+  v11 = folder;
 
-  if (v6)
+  if (selectedNote)
   {
-    v12 = [v6 title];
-    v13 = [v12 ic_truncatedStringWithMaxLength:35 truncated:0];
-    v77 = [v13 ic_quotedString];
+    title = [selectedNote title];
+    v13 = [title ic_truncatedStringWithMaxLength:35 truncated:0];
+    ic_quotedString = [v13 ic_quotedString];
 
-    if ([v6 isSharedRootObject] && (objc_msgSend(v6, "sharedOwnerName"), (v14 = objc_claimAutoreleasedReturnValue()) != 0))
+    if ([selectedNote isSharedRootObject] && (objc_msgSend(selectedNote, "sharedOwnerName"), (v14 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v76 = v14;
       v15 = 0;
@@ -503,14 +503,14 @@
       v15 = 1;
     }
 
-    v73 = v15 & [v6 isSharedRootObject];
+    v73 = v15 & [selectedNote isSharedRootObject];
   }
 
   else
   {
     v16 = 0;
     v76 = 0;
-    v77 = 0;
+    ic_quotedString = 0;
     v73 = 0;
   }
 
@@ -523,20 +523,20 @@ LABEL_16:
     v18 = 0;
     v75 = 0;
     v19 = 0;
-    v20 = 0;
+    ic_quotedString2 = 0;
     v21 = 0;
     goto LABEL_17;
   }
 
-  v33 = [v11 localizedTitle];
-  v17 = v33;
-  if (!v33 || ![v33 length])
+  localizedTitle = [v11 localizedTitle];
+  v17 = localizedTitle;
+  if (!localizedTitle || ![localizedTitle length])
   {
     goto LABEL_16;
   }
 
   v34 = [v17 ic_truncatedStringWithMaxLength:35 truncated:0];
-  v20 = [v34 ic_quotedString];
+  ic_quotedString2 = [v34 ic_quotedString];
 
   if ([v11 isSharedViaICloud] && (objc_msgSend(v11, "sharedOwnerName"), (v35 = objc_claimAutoreleasedReturnValue()) != 0))
   {
@@ -555,15 +555,15 @@ LABEL_16:
   v21 = v36 & [v11 isSharedViaICloud];
   v19 = 1;
 LABEL_17:
-  v22 = [(ICSEMainViewController *)self accounts];
-  v23 = [v22 count];
+  accounts = [(ICSEMainViewController *)self accounts];
+  v23 = [accounts count];
 
-  v79 = v6;
+  v79 = selectedNote;
   if (v23 < 2)
   {
     v25 = 0;
     v26 = &stru_1000F6F48;
-    if (!v6)
+    if (!selectedNote)
     {
       goto LABEL_44;
     }
@@ -578,10 +578,10 @@ LABEL_21:
           v27 = +[NSBundle mainBundle];
           v28 = v27;
           v30 = v76;
-          v29 = v77;
+          v29 = ic_quotedString;
           if (v25)
           {
-            v31 = v20;
+            v31 = ic_quotedString2;
             if (v74 > 1)
             {
               v32 = @"These attachments will be saved to the note %@ in the folder %@ shared by %@ in your %@ account.";
@@ -598,7 +598,7 @@ LABEL_21:
 
           else
           {
-            v31 = v20;
+            v31 = ic_quotedString2;
             if (v74 > 1)
             {
               v62 = @"These attachments will be saved to the note %@ in the folder %@ shared by %@.";
@@ -618,14 +618,14 @@ LABEL_21:
         }
 
         v30 = v76;
-        v29 = v77;
+        v29 = ic_quotedString;
         if ((v21 & 1) == 0)
         {
           [ICAssert handleFailedAssertWithCondition:"isOwnedSharedFolder" functionName:"[ICSEMainViewController stringForTitleFooter]" simulateCrash:1 showAlert:0 format:@"Unexpected case in updateTitleFooter"];
         }
 
         v28 = +[NSBundle mainBundle];
-        v31 = v20;
+        v31 = ic_quotedString2;
         if (v25)
         {
           v38 = v75;
@@ -665,7 +665,7 @@ LABEL_165:
 
       v48 = +[NSBundle mainBundle];
       v28 = v48;
-      v31 = v20;
+      v31 = ic_quotedString2;
       if (v25)
       {
         v38 = v75;
@@ -674,7 +674,7 @@ LABEL_165:
           if (v73)
           {
             v30 = v76;
-            v29 = v77;
+            v29 = ic_quotedString;
             if (v74 > 1)
             {
               v54 = @"These attachments will be saved to your shared note %@ in the folder %@ in your %@ account.";
@@ -689,7 +689,7 @@ LABEL_165:
           else
           {
             v30 = v76;
-            v29 = v77;
+            v29 = ic_quotedString;
             if (v74 > 1)
             {
               v54 = @"These attachments will be saved to the note %@ in the folder %@ in your %@ account.";
@@ -726,7 +726,7 @@ LABEL_165:
           if (v73)
           {
             v30 = v76;
-            v29 = v77;
+            v29 = ic_quotedString;
             if (v74 > 1)
             {
               v64 = @"These attachments will be saved to your shared note %@ in the folder %@.";
@@ -741,7 +741,7 @@ LABEL_165:
           else
           {
             v30 = v76;
-            v29 = v77;
+            v29 = ic_quotedString;
             if (v74 > 1)
             {
               v64 = @"These attachments will be saved to the note %@ in the folder %@.";
@@ -776,7 +776,7 @@ LABEL_165:
     {
       v37 = +[NSBundle mainBundle];
       v28 = v37;
-      v31 = v20;
+      v31 = ic_quotedString2;
       if (v25)
       {
         if (!v16)
@@ -785,7 +785,7 @@ LABEL_165:
           if (v73)
           {
             v30 = v76;
-            v29 = v77;
+            v29 = ic_quotedString;
             if (v74 > 1)
             {
               v55 = @"These attachments will be saved to your shared note %@ in your %@ account.";
@@ -800,7 +800,7 @@ LABEL_165:
           else
           {
             v30 = v76;
-            v29 = v77;
+            v29 = ic_quotedString;
             if (v74 > 1)
             {
               v55 = @"These attachments will be saved to the note %@ in your %@ account.";
@@ -840,7 +840,7 @@ LABEL_165:
           if (v73)
           {
             v30 = v76;
-            v29 = v77;
+            v29 = ic_quotedString;
             if (v74 > 1)
             {
               v57 = @"These attachments will be saved to your shared note %@.";
@@ -855,7 +855,7 @@ LABEL_165:
           else
           {
             v30 = v76;
-            v29 = v77;
+            v29 = ic_quotedString;
             if (v74 > 1)
             {
               v57 = @"These attachments will be saved to the note %@.";
@@ -887,19 +887,19 @@ LABEL_165:
     }
 
     v30 = v76;
-    v29 = v77;
+    v29 = ic_quotedString;
     v70 = v76;
 LABEL_167:
     [NSString localizedStringWithFormat:v63, v29, v70, v71, v72];
     v61 = LABEL_168:;
 
-    v6 = v79;
+    selectedNote = v79;
     goto LABEL_169;
   }
 
-  if (v6)
+  if (selectedNote)
   {
-    v24 = v6;
+    v24 = selectedNote;
   }
 
   else
@@ -907,17 +907,17 @@ LABEL_167:
     v24 = v78;
   }
 
-  v40 = [v24 account];
-  if (!v40)
+  account = [v24 account];
+  if (!account)
   {
     v41 = +[ICNoteContext sharedContext];
-    v42 = [v41 managedObjectContext];
-    v40 = [ICAccount defaultAccountInContext:v42];
+    managedObjectContext = [v41 managedObjectContext];
+    account = [ICAccount defaultAccountInContext:managedObjectContext];
   }
 
-  v43 = [v40 localizedName];
-  v44 = v43;
-  if (v43 && [v43 length])
+  localizedName = [account localizedName];
+  v44 = localizedName;
+  if (localizedName && [localizedName length])
   {
     v26 = [v44 ic_truncatedStringWithMaxLength:35 truncated:0];
     v25 = 1;
@@ -929,7 +929,7 @@ LABEL_167:
     v25 = 0;
   }
 
-  v6 = v79;
+  selectedNote = v79;
   if (v79)
   {
     goto LABEL_21;
@@ -939,14 +939,14 @@ LABEL_44:
   if (v19)
   {
     v30 = v76;
-    v29 = v77;
+    v29 = ic_quotedString;
     if (((v18 | v21) & 1) == 0)
     {
       v51 = +[NSBundle mainBundle];
       v28 = v51;
       if (v25)
       {
-        v31 = v20;
+        v31 = ic_quotedString2;
         if (v74 > 1)
         {
           v52 = @"These attachments will be saved in a new note in the folder %@ in your %@ account.";
@@ -958,12 +958,12 @@ LABEL_44:
         }
 
         v66 = [v51 localizedStringForKey:v52 value:&stru_1000F6F48 table:0];
-        [NSString localizedStringWithFormat:v66, v20, v26];
+        [NSString localizedStringWithFormat:v66, ic_quotedString2, v26];
       }
 
       else
       {
-        v31 = v20;
+        v31 = ic_quotedString2;
         if (v74 > 1)
         {
           v60 = @"These attachments will be saved in a new note in the folder %@.";
@@ -975,11 +975,11 @@ LABEL_44:
         }
 
         v66 = [v51 localizedStringForKey:v60 value:&stru_1000F6F48 table:0];
-        [NSString localizedStringWithFormat:v66, v20, v70];
+        [NSString localizedStringWithFormat:v66, ic_quotedString2, v70];
       }
       v61 = ;
 
-      v6 = v79;
+      selectedNote = v79;
       v38 = v75;
       goto LABEL_169;
     }
@@ -990,7 +990,7 @@ LABEL_44:
       v28 = v45;
       if (v25)
       {
-        v31 = v20;
+        v31 = ic_quotedString2;
         if (v74 > 1)
         {
           v46 = @"These attachments will be saved in a new note in the folder %@ shared by %@ in your %@ account.";
@@ -1007,7 +1007,7 @@ LABEL_44:
 
       else
       {
-        v31 = v20;
+        v31 = ic_quotedString2;
         if (v74 > 1)
         {
           v65 = @"These attachments will be saved in a new note in the folder %@ shared by %@.";
@@ -1034,7 +1034,7 @@ LABEL_44:
 
       v58 = +[NSBundle mainBundle];
       v28 = v58;
-      v31 = v20;
+      v31 = ic_quotedString2;
       if (v25)
       {
         v38 = v75;
@@ -1074,8 +1074,8 @@ LABEL_44:
   }
 
   v30 = v76;
-  v29 = v77;
-  v31 = v20;
+  v29 = ic_quotedString;
+  v31 = ic_quotedString2;
   if ((v25 | ![(ICSEMainViewController *)self prefersSystemPaper]))
   {
     v38 = v75;
@@ -1162,33 +1162,33 @@ LABEL_174:
   return v10;
 }
 
-- (BOOL)canShareToNote:(id)a3
+- (BOOL)canShareToNote:(id)note
 {
-  v3 = a3;
-  if ([v3 isPasswordProtected] & 1) != 0 || !objc_msgSend(v3, "isEditable") || (objc_msgSend(v3, "isDeletedOrInTrash"))
+  noteCopy = note;
+  if ([noteCopy isPasswordProtected] & 1) != 0 || !objc_msgSend(noteCopy, "isEditable") || (objc_msgSend(noteCopy, "isDeletedOrInTrash"))
   {
     LOBYTE(v4) = 0;
   }
 
   else
   {
-    v4 = [v3 markedForDeletion] ^ 1;
+    v4 = [noteCopy markedForDeletion] ^ 1;
   }
 
   return v4;
 }
 
-- (BOOL)canShareToFolder:(id)a3
+- (BOOL)canShareToFolder:(id)folder
 {
-  v3 = a3;
-  if (![v3 canMoveAddOrDeleteContents] || (objc_msgSend(v3, "isDeleted") & 1) != 0 || (objc_msgSend(v3, "isTrashFolder") & 1) != 0)
+  folderCopy = folder;
+  if (![folderCopy canMoveAddOrDeleteContents] || (objc_msgSend(folderCopy, "isDeleted") & 1) != 0 || (objc_msgSend(folderCopy, "isTrashFolder") & 1) != 0)
   {
     LOBYTE(v4) = 0;
   }
 
   else
   {
-    v4 = [v3 markedForDeletion] ^ 1;
+    v4 = [folderCopy markedForDeletion] ^ 1;
   }
 
   return v4;
@@ -1196,19 +1196,19 @@ LABEL_174:
 
 - (BOOL)shouldRetrieveLastSelectedNote
 {
-  v3 = [(ICSEMainViewController *)self selectedNote];
+  selectedNote = [(ICSEMainViewController *)self selectedNote];
 
-  v4 = [(ICSEMainViewController *)self selectedFolder];
+  selectedFolder = [(ICSEMainViewController *)self selectedFolder];
 
-  v5 = [(ICSEMainViewController *)self selectedNote];
-  v6 = [(ICSEMainViewController *)self canShareToNote:v5];
+  selectedNote2 = [(ICSEMainViewController *)self selectedNote];
+  v6 = [(ICSEMainViewController *)self canShareToNote:selectedNote2];
 
-  v7 = [(ICSEMainViewController *)self selectedFolder];
-  v8 = [(ICSEMainViewController *)self canShareToFolder:v7];
+  selectedFolder2 = [(ICSEMainViewController *)self selectedFolder];
+  v8 = [(ICSEMainViewController *)self canShareToFolder:selectedFolder2];
 
-  if (!v3 || v6)
+  if (!selectedNote || v6)
   {
-    return (v4 != 0) & (v8 ^ 1);
+    return (selectedFolder != 0) & (v8 ^ 1);
   }
 
   else
@@ -1221,118 +1221,118 @@ LABEL_174:
 {
   if ([(ICSEMainViewController *)self isShowingPlaceholderText])
   {
-    v3 = 0;
+    attributedText = 0;
   }
 
   else
   {
-    v4 = [(ICSEMainViewController *)self topTextView];
-    v5 = [v4 text];
-    v6 = [v5 ic_trimmedString];
+    topTextView = [(ICSEMainViewController *)self topTextView];
+    text = [topTextView text];
+    ic_trimmedString = [text ic_trimmedString];
 
-    if ([v6 length])
+    if ([ic_trimmedString length])
     {
-      v7 = [(ICSEMainViewController *)self topTextView];
-      v3 = [v7 attributedText];
+      topTextView2 = [(ICSEMainViewController *)self topTextView];
+      attributedText = [topTextView2 attributedText];
     }
 
     else
     {
-      v3 = 0;
+      attributedText = 0;
     }
   }
 
-  return v3;
+  return attributedText;
 }
 
 - (NSAttributedString)textAfter
 {
-  v3 = [(ICSEMainViewController *)self bottomTextView];
-  v4 = [v3 text];
-  v5 = [v4 ic_trimmedString];
+  bottomTextView = [(ICSEMainViewController *)self bottomTextView];
+  text = [bottomTextView text];
+  ic_trimmedString = [text ic_trimmedString];
 
-  if ([v5 length])
+  if ([ic_trimmedString length])
   {
-    v6 = [(ICSEMainViewController *)self bottomTextView];
-    v7 = [v6 attributedText];
+    bottomTextView2 = [(ICSEMainViewController *)self bottomTextView];
+    attributedText = [bottomTextView2 attributedText];
   }
 
   else
   {
-    v7 = 0;
+    attributedText = 0;
   }
 
-  return v7;
+  return attributedText;
 }
 
-- (void)tabKeyPressed:(id)a3
+- (void)tabKeyPressed:(id)pressed
 {
-  v4 = [(ICSEMainViewController *)self bottomTextViewCollapsed];
-  v5 = [(ICSEMainViewController *)self topTextView];
-  v6 = [v5 ic_isFirstResponder];
+  bottomTextViewCollapsed = [(ICSEMainViewController *)self bottomTextViewCollapsed];
+  topTextView = [(ICSEMainViewController *)self topTextView];
+  ic_isFirstResponder = [topTextView ic_isFirstResponder];
 
-  if (v4)
+  if (bottomTextViewCollapsed)
   {
-    if (v6)
+    if (ic_isFirstResponder)
     {
       return;
     }
 
-    v7 = [(ICSEMainViewController *)self topTextView];
+    topTextView2 = [(ICSEMainViewController *)self topTextView];
   }
 
   else
   {
-    v7 = [(ICSEMainViewController *)self topTextView];
-    if (v6)
+    topTextView2 = [(ICSEMainViewController *)self topTextView];
+    if (ic_isFirstResponder)
     {
-      v9 = v7;
-      v8 = [v7 ic_isFirstResponder];
+      v9 = topTextView2;
+      ic_isFirstResponder2 = [topTextView2 ic_isFirstResponder];
 
-      if (!v8)
+      if (!ic_isFirstResponder2)
       {
         return;
       }
 
-      v7 = [(ICSEMainViewController *)self bottomTextView];
+      topTextView2 = [(ICSEMainViewController *)self bottomTextView];
     }
   }
 
-  v10 = v7;
-  [v7 ic_becomeFirstResponder];
+  v10 = topTextView2;
+  [topTextView2 ic_becomeFirstResponder];
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  if ("saveToNote:" == a3)
+  senderCopy = sender;
+  if ("saveToNote:" == action)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(ICSEMainViewController *)self containerViewController];
-      if ([v7 isShowingTableContainer])
+      containerViewController = [(ICSEMainViewController *)self containerViewController];
+      if ([containerViewController isShowingTableContainer])
       {
         LOBYTE(self) = 0;
       }
 
       else
       {
-        v8 = [(ICSEMainViewController *)self saveToNoteBarButtonItem];
-        LOBYTE(self) = [v8 isEnabled];
+        saveToNoteBarButtonItem = [(ICSEMainViewController *)self saveToNoteBarButtonItem];
+        LOBYTE(self) = [saveToNoteBarButtonItem isEnabled];
       }
 
       goto LABEL_10;
     }
   }
 
-  if ("tabKeyPressed:" == a3)
+  if ("tabKeyPressed:" == action)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(ICSEMainViewController *)self containerViewController];
-      LODWORD(self) = [v7 isShowingTableContainer] ^ 1;
+      containerViewController = [(ICSEMainViewController *)self containerViewController];
+      LODWORD(self) = [containerViewController isShowingTableContainer] ^ 1;
 LABEL_10:
 
       goto LABEL_11;
@@ -1341,22 +1341,22 @@ LABEL_10:
 
   v10.receiver = self;
   v10.super_class = ICSEMainViewController;
-  LOBYTE(self) = [(ICSEMainViewController *)&v10 canPerformAction:a3 withSender:v6];
+  LOBYTE(self) = [(ICSEMainViewController *)&v10 canPerformAction:action withSender:senderCopy];
 LABEL_11:
 
   return self;
 }
 
-- (void)saveToNote:(id)a3
+- (void)saveToNote:(id)note
 {
-  v4 = [(ICSEMainViewController *)self selectedNote];
-  if (v4)
+  selectedNote = [(ICSEMainViewController *)self selectedNote];
+  if (selectedNote)
   {
-    v5 = v4;
-    v6 = [(ICSEMainViewController *)self selectedNote];
-    v7 = [v6 isEditable];
+    v5 = selectedNote;
+    selectedNote2 = [(ICSEMainViewController *)self selectedNote];
+    isEditable = [selectedNote2 isEditable];
 
-    if ((v7 & 1) == 0)
+    if ((isEditable & 1) == 0)
     {
       v36 = os_log_create("com.apple.notes", "SharingExtension");
       if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
@@ -1368,14 +1368,14 @@ LABEL_11:
     }
   }
 
-  v8 = [(ICSEMainViewController *)self selectedFolder];
-  if (v8)
+  selectedFolder = [(ICSEMainViewController *)self selectedFolder];
+  if (selectedFolder)
   {
-    v9 = v8;
-    v10 = [(ICSEMainViewController *)self selectedFolder];
-    v11 = [v10 canMoveAddOrDeleteContents];
+    v9 = selectedFolder;
+    selectedFolder2 = [(ICSEMainViewController *)self selectedFolder];
+    canMoveAddOrDeleteContents = [selectedFolder2 canMoveAddOrDeleteContents];
 
-    if ((v11 & 1) == 0)
+    if ((canMoveAddOrDeleteContents & 1) == 0)
     {
       v36 = os_log_create("com.apple.notes", "SharingExtension");
       if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
@@ -1389,22 +1389,22 @@ LABEL_11:
 
   [(ICSEMainViewController *)self setIsSaving:1];
   [(ICSEMainViewController *)self showActivityIndicator];
-  v12 = [(ICSEMainViewController *)self textBefore];
-  v13 = [(ICSEMainViewController *)self textAfter];
-  v14 = [(ICSEMainViewController *)self selectedNote];
+  textBefore = [(ICSEMainViewController *)self textBefore];
+  textAfter = [(ICSEMainViewController *)self textAfter];
+  selectedNote3 = [(ICSEMainViewController *)self selectedNote];
 
-  v85 = v13;
-  if (!v14)
+  v85 = textAfter;
+  if (!selectedNote3)
   {
-    v37 = [(ICSEMainViewController *)self attachments];
-    v38 = [v37 count];
+    attachments = [(ICSEMainViewController *)self attachments];
+    v38 = [attachments count];
     v39 = +[ICCloudConfiguration sharedConfiguration];
-    v40 = [v39 maxAttachmentsPerNote];
+    maxAttachmentsPerNote = [v39 maxAttachmentsPerNote];
 
-    if (v38 <= v40)
+    if (v38 <= maxAttachmentsPerNote)
     {
-      v43 = [v12 length];
-      v44 = &v43[[v13 length]];
+      v43 = [textBefore length];
+      v44 = &v43[[textAfter length]];
       if (v44 < +[ICNote maxNoteTextLength])
       {
         goto LABEL_8;
@@ -1424,19 +1424,19 @@ LABEL_27:
     goto LABEL_32;
   }
 
-  v15 = [(ICSEMainViewController *)self selectedNote];
-  v16 = [(ICSEMainViewController *)self attachments];
-  v17 = [v15 canAddAttachments:{objc_msgSend(v16, "count")}];
+  selectedNote4 = [(ICSEMainViewController *)self selectedNote];
+  attachments2 = [(ICSEMainViewController *)self attachments];
+  v17 = [selectedNote4 canAddAttachments:{objc_msgSend(attachments2, "count")}];
 
   if (!v17)
   {
     goto LABEL_27;
   }
 
-  v18 = [(ICSEMainViewController *)self selectedNote];
-  v19 = [(ICSEMainViewController *)self selectedNote];
-  v20 = [v19 textStorage];
-  v21 = [v18 allowsNewTextLength:{objc_msgSend(v13, "length") + objc_msgSend(v12, "length") + objc_msgSend(v20, "length")}];
+  selectedNote5 = [(ICSEMainViewController *)self selectedNote];
+  selectedNote6 = [(ICSEMainViewController *)self selectedNote];
+  textStorage = [selectedNote6 textStorage];
+  v21 = [selectedNote5 allowsNewTextLength:{objc_msgSend(textAfter, "length") + objc_msgSend(textBefore, "length") + objc_msgSend(textStorage, "length")}];
 
   if ((v21 & 1) == 0)
   {
@@ -1444,13 +1444,13 @@ LABEL_27:
   }
 
 LABEL_8:
-  v84 = v12;
+  v84 = textBefore;
   v96 = 0u;
   v97 = 0u;
   v94 = 0u;
   v95 = 0u;
-  v22 = [(ICSEMainViewController *)self attachments];
-  v23 = [v22 countByEnumeratingWithState:&v94 objects:v98 count:16];
+  attachments3 = [(ICSEMainViewController *)self attachments];
+  v23 = [attachments3 countByEnumeratingWithState:&v94 objects:v98 count:16];
   if (!v23)
   {
     v25 = 0;
@@ -1466,33 +1466,33 @@ LABEL_8:
     {
       if (*v95 != v26)
       {
-        objc_enumerationMutation(v22);
+        objc_enumerationMutation(attachments3);
       }
 
       v28 = *(*(&v94 + 1) + 8 * i);
-      v29 = [v28 mediaData];
-      v30 = [v29 length];
+      mediaData = [v28 mediaData];
+      unsignedLongLongValue = [mediaData length];
 
-      if (v30)
+      if (unsignedLongLongValue)
       {
 LABEL_14:
-        v31 = [(ICSEMainViewController *)self selectedNote];
-        v32 = [v31 attachmentExceedsMaxSizeAllowed:v30];
+        selectedNote7 = [(ICSEMainViewController *)self selectedNote];
+        v32 = [selectedNote7 attachmentExceedsMaxSizeAllowed:unsignedLongLongValue];
 
         v25 |= v32;
         continue;
       }
 
-      v33 = [v28 mediaURL];
+      mediaURL = [v28 mediaURL];
       v93 = 0;
-      v34 = [v33 getResourceValue:&v93 forKey:NSURLFileSizeKey error:0];
+      v34 = [mediaURL getResourceValue:&v93 forKey:NSURLFileSizeKey error:0];
       v35 = v93;
 
       if (v34)
       {
-        v30 = [v35 unsignedLongLongValue];
+        unsignedLongLongValue = [v35 unsignedLongLongValue];
 
-        if (v30)
+        if (unsignedLongLongValue)
         {
           goto LABEL_14;
         }
@@ -1503,7 +1503,7 @@ LABEL_14:
       }
     }
 
-    v24 = [v22 countByEnumeratingWithState:&v94 objects:v98 count:16];
+    v24 = [attachments3 countByEnumeratingWithState:&v94 objects:v98 count:16];
   }
 
   while (v24);
@@ -1511,19 +1511,19 @@ LABEL_31:
 
   v42 = 0;
   v41 = 0;
-  v12 = v84;
+  textBefore = v84;
 LABEL_32:
-  v45 = [(ICSEMainViewController *)self selectedFolder];
-  v46 = v45;
-  if (v45)
+  selectedFolder3 = [(ICSEMainViewController *)self selectedFolder];
+  v46 = selectedFolder3;
+  if (selectedFolder3)
   {
-    v47 = v45;
+    folder = selectedFolder3;
   }
 
   else
   {
-    v48 = [(ICSEMainViewController *)self temporaryNewNote];
-    v47 = [v48 folder];
+    temporaryNewNote = [(ICSEMainViewController *)self temporaryNewNote];
+    folder = [temporaryNewNote folder];
   }
 
   v89[0] = _NSConcreteStackBlock;
@@ -1531,28 +1531,28 @@ LABEL_32:
   v89[2] = sub_100024BC8;
   v89[3] = &unk_1000F2CF8;
   v89[4] = self;
-  v36 = v12;
+  v36 = textBefore;
   v90 = v36;
   v49 = v85;
   v91 = v49;
-  v50 = v47;
+  v50 = folder;
   v92 = v50;
   v51 = objc_retainBlock(v89);
   v86 = v49;
   if (v42)
   {
     v52 = +[ICCloudConfiguration sharedConfiguration];
-    v53 = [v52 maxAttachmentsPerNote];
+    maxAttachmentsPerNote2 = [v52 maxAttachmentsPerNote];
 
-    v54 = [(ICSEMainViewController *)self selectedNote];
-    if (!v54 || (v55 = v54, -[ICSEMainViewController selectedNote](self, "selectedNote"), v56 = objc_claimAutoreleasedReturnValue(), v57 = [v56 visibleTopLevelAttachmentsCount], v56, v55, v57 < v53))
+    selectedNote8 = [(ICSEMainViewController *)self selectedNote];
+    if (!selectedNote8 || (v55 = selectedNote8, -[ICSEMainViewController selectedNote](self, "selectedNote"), v56 = objc_claimAutoreleasedReturnValue(), v57 = [v56 visibleTopLevelAttachmentsCount], v56, v55, v57 < maxAttachmentsPerNote2))
     {
-      v58 = [(ICSEMainViewController *)self selectedNote];
+      selectedNote9 = [(ICSEMainViewController *)self selectedNote];
 
-      if (v58)
+      if (selectedNote9)
       {
-        v59 = [(ICSEMainViewController *)self selectedNote];
-        v53 -= [v59 visibleTopLevelAttachmentsCount];
+        selectedNote10 = [(ICSEMainViewController *)self selectedNote];
+        maxAttachmentsPerNote2 -= [selectedNote10 visibleTopLevelAttachmentsCount];
 
         v60 = @"At most %lu more attachments can be added.";
       }
@@ -1564,10 +1564,10 @@ LABEL_32:
 
       v77 = +[NSBundle mainBundle];
       v78 = [v77 localizedStringForKey:v60 value:&stru_1000F6F48 table:0];
-      v76 = [NSString localizedStringWithFormat:v78, v53];
+      v76 = [NSString localizedStringWithFormat:v78, maxAttachmentsPerNote2];
 
       v62 = +[NSBundle mainBundle];
-      v73 = [v62 localizedStringForKey:@"Too many attachments." value:&stru_1000F6F48 table:0];
+      rootViewController = [v62 localizedStringForKey:@"Too many attachments." value:&stru_1000F6F48 table:0];
       goto LABEL_54;
     }
 
@@ -1575,7 +1575,7 @@ LABEL_32:
     v62 = v61;
     v63 = @"Maximum attachments reached.";
 LABEL_51:
-    v73 = [v61 localizedStringForKey:v63 value:&stru_1000F6F48 table:0];
+    rootViewController = [v61 localizedStringForKey:v63 value:&stru_1000F6F48 table:0];
     v76 = 0;
     goto LABEL_54;
   }
@@ -1591,12 +1591,12 @@ LABEL_51:
   if (v25)
   {
     v64 = +[ICCloudConfiguration sharedConfiguration];
-    v65 = [v64 maximumAttachmentSizeMB];
-    v66 = [v65 unsignedLongLongValue] << 20;
+    maximumAttachmentSizeMB = [v64 maximumAttachmentSizeMB];
+    v66 = [maximumAttachmentSizeMB unsignedLongLongValue] << 20;
 
     v62 = [NSByteCountFormatter stringFromByteCount:v66 countStyle:3];
-    v67 = [(ICSEMainViewController *)self attachments];
-    v68 = [v67 count];
+    attachments4 = [(ICSEMainViewController *)self attachments];
+    v68 = [attachments4 count];
 
     v69 = +[NSBundle mainBundle];
     v70 = v69;
@@ -1620,16 +1620,16 @@ LABEL_51:
       v72 = @"Some of these attachments are too large. Each attachment must be smaller than %@.";
     }
 
-    v73 = [v69 localizedStringForKey:v71 value:&stru_1000F6F48 table:0];
+    rootViewController = [v69 localizedStringForKey:v71 value:&stru_1000F6F48 table:0];
 
     v74 = +[NSBundle mainBundle];
     v75 = [v74 localizedStringForKey:v72 value:&stru_1000F6F48 table:0];
     v76 = [NSString localizedStringWithFormat:v75, v62];
 
 LABEL_54:
-    if (v73)
+    if (rootViewController)
     {
-      v79 = [UIAlertController alertControllerWithTitle:v73 message:v76 preferredStyle:1];
+      v79 = [UIAlertController alertControllerWithTitle:rootViewController message:v76 preferredStyle:1];
       v80 = +[NSBundle mainBundle];
       v81 = [v80 localizedStringForKey:@"OK" value:&stru_1000F6F48 table:0];
       v87[0] = _NSConcreteStackBlock;
@@ -1653,36 +1653,36 @@ LABEL_54:
   v83 = +[ICBackgroundTaskScheduler sharedScheduler];
   [v83 scheduleTask:objc_opt_class() completion:&stru_1000F2D40];
 
-  v73 = [(ICSEMainViewController *)self rootViewController];
-  [v73 dismissWithCompletion:v51];
+  rootViewController = [(ICSEMainViewController *)self rootViewController];
+  [rootViewController dismissWithCompletion:v51];
 LABEL_58:
 
 LABEL_59:
 }
 
-- (void)titleViewDidTap:(id)a3
+- (void)titleViewDidTap:(id)tap
 {
   if (![(ICSEMainViewController *)self titleViewTapped])
   {
-    v4 = [(ICSEMainViewController *)self rootViewController];
-    v5 = [v4 tableViewController];
-    v6 = [(ICSEMainViewController *)self selectedNote];
-    [v5 pushFolderViewForNote:v6];
+    rootViewController = [(ICSEMainViewController *)self rootViewController];
+    tableViewController = [rootViewController tableViewController];
+    selectedNote = [(ICSEMainViewController *)self selectedNote];
+    [tableViewController pushFolderViewForNote:selectedNote];
 
     [(ICSEMainViewController *)self setTitleViewTapped:1];
   }
 
-  v7 = [(ICSEMainViewController *)self topTextView];
-  [v7 resignFirstResponder];
+  topTextView = [(ICSEMainViewController *)self topTextView];
+  [topTextView resignFirstResponder];
 
-  v8 = [(ICSEMainViewController *)self bottomTextView];
-  [v8 resignFirstResponder];
+  bottomTextView = [(ICSEMainViewController *)self bottomTextView];
+  [bottomTextView resignFirstResponder];
 
-  v9 = [(ICSEMainViewController *)self rootViewController];
-  [v9 setIsShowingSearchResults:1 animated:1];
+  rootViewController2 = [(ICSEMainViewController *)self rootViewController];
+  [rootViewController2 setIsShowingSearchResults:1 animated:1];
 }
 
-- (void)cancel:(id)a3
+- (void)cancel:(id)cancel
 {
   [(ICSEMainViewController *)self purgeAttachments];
 
@@ -1695,8 +1695,8 @@ LABEL_59:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(ICSEMainViewController *)self attachments];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  attachments = [(ICSEMainViewController *)self attachments];
+  v4 = [attachments countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1707,21 +1707,21 @@ LABEL_59:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(attachments);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
         [v8 deleteTemporaryImageFileIfNecessary];
-        v9 = [v8 attachment];
-        v10 = v9;
-        if (v9)
+        attachment = [v8 attachment];
+        v10 = attachment;
+        if (attachment)
         {
-          [v9 purgeAttachmentPreviewImages];
+          [attachment purgeAttachmentPreviewImages];
           [ICAttachment purgeAttachment:v10];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [attachments countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -1734,27 +1734,27 @@ LABEL_59:
 
 - (void)dismissRootViewController
 {
-  v3 = [(ICSEMainViewController *)self rootViewController];
-  [v3 setDidCancel:1];
+  rootViewController = [(ICSEMainViewController *)self rootViewController];
+  [rootViewController setDidCancel:1];
 
-  v4 = [(ICSEMainViewController *)self rootViewController];
+  rootViewController2 = [(ICSEMainViewController *)self rootViewController];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100025304;
   v5[3] = &unk_1000F2390;
   v5[4] = self;
-  [v4 dismissWithCompletion:v5];
+  [rootViewController2 dismissWithCompletion:v5];
 }
 
-- (void)textViewDidBeginEditing:(id)a3
+- (void)textViewDidBeginEditing:(id)editing
 {
-  v6 = a3;
-  v4 = [(ICSEMainViewController *)self topTextView];
-  if (v4 == v6)
+  editingCopy = editing;
+  topTextView = [(ICSEMainViewController *)self topTextView];
+  if (topTextView == editingCopy)
   {
-    v5 = [(ICSEMainViewController *)self isShowingPlaceholderText];
+    isShowingPlaceholderText = [(ICSEMainViewController *)self isShowingPlaceholderText];
 
-    if (v5)
+    if (isShowingPlaceholderText)
     {
       [(ICSEMainViewController *)self showPlaceholderText:0];
     }
@@ -1764,48 +1764,48 @@ LABEL_59:
   {
   }
 
-  [(ICSEMainViewController *)self scrollTextToVisibleForTextView:v6];
-  [v6 becomeFirstResponder];
+  [(ICSEMainViewController *)self scrollTextToVisibleForTextView:editingCopy];
+  [editingCopy becomeFirstResponder];
 }
 
-- (void)textViewDidEndEditing:(id)a3
+- (void)textViewDidEndEditing:(id)editing
 {
-  v4 = a3;
-  v5 = [(ICSEMainViewController *)self topTextView];
+  editingCopy = editing;
+  topTextView = [(ICSEMainViewController *)self topTextView];
 
-  if (v5 == v4)
+  if (topTextView == editingCopy)
   {
     dispatchMainAfterDelay();
   }
 
-  [v4 resignFirstResponder];
+  [editingCopy resignFirstResponder];
 }
 
-- (void)extensionHostDidBecomeActive:(id)a3
+- (void)extensionHostDidBecomeActive:(id)active
 {
   if ([(ICSEMainViewController *)self shouldRetrieveLastSelectedNote])
   {
     v4 = +[ICSharingExtensionAttachmentsManager sharedManager];
-    v6 = [v4 lastNoteSavedTo];
+    lastNoteSavedTo = [v4 lastNoteSavedTo];
 
-    v5 = [(ICSEMainViewController *)self selectedFolder];
-    -[ICSEMainViewController setSelectionToNote:folder:prefersSystemPaper:](self, "setSelectionToNote:folder:prefersSystemPaper:", v6, v5, [v6 isSystemPaper]);
+    selectedFolder = [(ICSEMainViewController *)self selectedFolder];
+    -[ICSEMainViewController setSelectionToNote:folder:prefersSystemPaper:](self, "setSelectionToNote:folder:prefersSystemPaper:", lastNoteSavedTo, selectedFolder, [lastNoteSavedTo isSystemPaper]);
   }
 }
 
-- (void)scrollTextToVisibleForTextView:(id)a3
+- (void)scrollTextToVisibleForTextView:(id)view
 {
-  v4 = a3;
-  v26 = [v4 selectedTextRange];
-  v5 = [v26 start];
-  [v4 caretRectForPosition:v5];
+  viewCopy = view;
+  selectedTextRange = [viewCopy selectedTextRange];
+  start = [selectedTextRange start];
+  [viewCopy caretRectForPosition:start];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  v14 = [(ICSEMainViewController *)self scrollView];
-  [v14 convertRect:v4 fromView:{v7, v9, v11, v13}];
+  scrollView = [(ICSEMainViewController *)self scrollView];
+  [scrollView convertRect:viewCopy fromView:{v7, v9, v11, v13}];
   v16 = v15;
   v18 = v17;
   v20 = v19;
@@ -1817,8 +1817,8 @@ LABEL_59:
   v28.size.height = v22;
   if (!CGRectIsInfinite(v28))
   {
-    v23 = [(ICSEMainViewController *)self scrollView];
-    [v23 bounds];
+    scrollView2 = [(ICSEMainViewController *)self scrollView];
+    [scrollView2 bounds];
     v30.origin.x = v16;
     v30.origin.y = v18;
     v30.size.width = v20;
@@ -1827,8 +1827,8 @@ LABEL_59:
 
     if (!v24)
     {
-      v25 = [(ICSEMainViewController *)self scrollView];
-      [v25 scrollRectToVisible:1 animated:{v16, v18, v20, v22}];
+      scrollView3 = [(ICSEMainViewController *)self scrollView];
+      [scrollView3 scrollRectToVisible:1 animated:{v16, v18, v20, v22}];
     }
   }
 }
@@ -1840,8 +1840,8 @@ LABEL_59:
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v5 = [(ICSEMainViewController *)self attachments];
-  v6 = [v5 countByEnumeratingWithState:&v29 objects:v33 count:16];
+  attachments = [(ICSEMainViewController *)self attachments];
+  v6 = [attachments countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1852,26 +1852,26 @@ LABEL_59:
       {
         if (*v30 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(attachments);
         }
 
-        v2 = *(*(&v29 + 1) + 8 * i);
-        v3 = [v2 attributedContentText];
-        v10 = [v3 length];
+        string = *(*(&v29 + 1) + 8 * i);
+        attributedContentText = [string attributedContentText];
+        v10 = [attributedContentText length];
 
         if (v10)
         {
           [(ICSEMainViewController *)self showPlaceholderText:0];
-          v11 = [v2 attributedContentText];
-          v2 = [v11 string];
-          v3 = [(ICSEMainViewController *)self topTextView];
-          [v3 setText:v2];
+          attributedContentText2 = [string attributedContentText];
+          string = [attributedContentText2 string];
+          attributedContentText = [(ICSEMainViewController *)self topTextView];
+          [attributedContentText setText:string];
 
           goto LABEL_11;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      v7 = [attachments countByEnumeratingWithState:&v29 objects:v33 count:16];
       if (v7)
       {
         continue;
@@ -1883,87 +1883,87 @@ LABEL_59:
 
 LABEL_11:
 
-  v12 = [(ICSEMainViewController *)self attachments];
-  v13 = [v12 firstObject];
+  attachments2 = [(ICSEMainViewController *)self attachments];
+  firstObject = [attachments2 firstObject];
 
-  v14 = [v13 attachment];
+  attachment = [firstObject attachment];
 
-  if (v14)
+  if (attachment)
   {
     [(ICSEMainViewController *)self setLayoutType:1];
-    v15 = [v13 attachment];
-    [(ICSEMainViewController *)self installBrickForAttachmentInfo:v13];
-    v16 = [v15 attachmentModel];
-    v17 = [v16 needToGeneratePreviews];
+    attachment2 = [firstObject attachment];
+    [(ICSEMainViewController *)self installBrickForAttachmentInfo:firstObject];
+    attachmentModel = [attachment2 attachmentModel];
+    needToGeneratePreviews = [attachmentModel needToGeneratePreviews];
 
-    if (v17)
+    if (needToGeneratePreviews)
     {
       v18 = dispatch_get_global_queue(0, 0);
       v23 = _NSConcreteStackBlock;
       v24 = 3221225472;
       v25 = sub_100025B60;
       v26 = &unk_1000F23B8;
-      v27 = v15;
-      v28 = self;
+      v27 = attachment2;
+      selfCopy = self;
       dispatch_async(v18, &v23);
     }
 
     goto LABEL_27;
   }
 
-  v19 = [v13 attributedContentText];
-  if (![v19 length])
+  attributedContentText3 = [firstObject attributedContentText];
+  if (![attributedContentText3 length])
   {
 
 LABEL_18:
-    v20 = [v13 mediaUTI];
-    if (v20)
+    mediaUTI = [firstObject mediaUTI];
+    if (mediaUTI)
     {
-      v2 = [v13 mediaUTI];
-      v3 = [UTType typeWithIdentifier:v2];
-      if ([v3 conformsToType:UTTypeImage])
+      string = [firstObject mediaUTI];
+      attributedContentText = [UTType typeWithIdentifier:string];
+      if ([attributedContentText conformsToType:UTTypeImage])
       {
         goto LABEL_22;
       }
     }
 
-    v21 = [v13 mediaUTI];
-    if (([ICAttachment typeUTIIsPlayableMovie:v21]& 1) == 0)
+    mediaUTI2 = [firstObject mediaUTI];
+    if (([ICAttachment typeUTIIsPlayableMovie:mediaUTI2]& 1) == 0)
     {
-      v22 = [v13 image];
+      image = [firstObject image];
 
-      if (v20)
+      if (mediaUTI)
       {
       }
 
-      if (!v22)
+      if (!image)
       {
         [(ICSEMainViewController *)self setLayoutType:1];
-        [(ICSEMainViewController *)self installBrickForAttachmentInfo:v13];
+        [(ICSEMainViewController *)self installBrickForAttachmentInfo:firstObject];
         goto LABEL_28;
       }
 
       goto LABEL_26;
     }
 
-    if (v20)
+    if (mediaUTI)
     {
 LABEL_22:
     }
 
 LABEL_26:
     [(ICSEMainViewController *)self setLayoutType:2];
-    v15 = [(ICSEMainViewController *)self attachments];
-    [(ICSEMainViewController *)self installImagesViewForAttachments:v15];
+    attachment2 = [(ICSEMainViewController *)self attachments];
+    [(ICSEMainViewController *)self installImagesViewForAttachments:attachment2];
 LABEL_27:
 
     goto LABEL_28;
   }
 
-  v2 = [(ICSEMainViewController *)self attachments];
-  v3 = [v2 count];
+  string = [(ICSEMainViewController *)self attachments];
+  attributedContentText = [string count];
 
-  if (v3 != 1)
+  if (attributedContentText != 1)
   {
     goto LABEL_18;
   }
@@ -1973,72 +1973,72 @@ LABEL_28:
   [(ICSEMainViewController *)self updateTitleFooter:v23];
 }
 
-- (void)installBrickForAttachmentInfo:(id)a3
+- (void)installBrickForAttachmentInfo:(id)info
 {
-  v35 = a3;
-  v4 = [v35 mediaURL];
-  if (v4)
+  infoCopy = info;
+  mediaURL = [infoCopy mediaURL];
+  if (mediaURL)
   {
   }
 
   else
   {
-    v5 = [v35 attachment];
+    attachment = [infoCopy attachment];
 
-    if (!v5)
+    if (!attachment)
     {
       goto LABEL_5;
     }
   }
 
-  v6 = [(ICSEMainViewController *)self brickContainer];
-  v7 = [v6 subviews];
-  [v7 makeObjectsPerformSelector:"removeFromSuperview"];
+  brickContainer = [(ICSEMainViewController *)self brickContainer];
+  subviews = [brickContainer subviews];
+  [subviews makeObjectsPerformSelector:"removeFromSuperview"];
 
   +[ICAttachmentBrickView defaultBrickSize];
-  v8 = [(ICSEMainViewController *)self brickContainer];
-  [v8 bounds];
+  brickContainer2 = [(ICSEMainViewController *)self brickContainer];
+  [brickContainer2 bounds];
 
   v9 = [[ICAttachmentBrickView alloc] initWithType:3];
   [(ICSEMainViewController *)self setAttachmentBrickView:v9];
 
-  v10 = [(ICSEMainViewController *)self attachmentBrickView];
-  [v10 setShareExtensionAttachmentInfo:v35];
+  attachmentBrickView = [(ICSEMainViewController *)self attachmentBrickView];
+  [attachmentBrickView setShareExtensionAttachmentInfo:infoCopy];
 
-  v11 = [(ICSEMainViewController *)self attachmentBrickView];
-  v12 = [(ICSEMainViewController *)self brickContainer];
-  [v12 addSubview:v11];
+  attachmentBrickView2 = [(ICSEMainViewController *)self attachmentBrickView];
+  brickContainer3 = [(ICSEMainViewController *)self brickContainer];
+  [brickContainer3 addSubview:attachmentBrickView2];
 
-  v13 = [v11 leadingAnchor];
-  v14 = [(ICSEMainViewController *)self brickContainer];
-  v15 = [v14 leadingAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15];
+  leadingAnchor = [attachmentBrickView2 leadingAnchor];
+  brickContainer4 = [(ICSEMainViewController *)self brickContainer];
+  leadingAnchor2 = [brickContainer4 leadingAnchor];
+  v16 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v16 setActive:1];
 
-  v17 = [v11 topAnchor];
-  v18 = [(ICSEMainViewController *)self brickContainer];
-  v19 = [v18 topAnchor];
-  v20 = [v17 constraintEqualToAnchor:v19];
+  topAnchor = [attachmentBrickView2 topAnchor];
+  brickContainer5 = [(ICSEMainViewController *)self brickContainer];
+  topAnchor2 = [brickContainer5 topAnchor];
+  v20 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v20 setActive:1];
 
-  v21 = [v11 bottomAnchor];
-  v22 = [(ICSEMainViewController *)self brickContainer];
-  v23 = [v22 bottomAnchor];
-  v24 = [v21 constraintEqualToAnchor:v23];
+  bottomAnchor = [attachmentBrickView2 bottomAnchor];
+  brickContainer6 = [(ICSEMainViewController *)self brickContainer];
+  bottomAnchor2 = [brickContainer6 bottomAnchor];
+  v24 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v24 setActive:1];
 
-  v25 = [v11 widthAnchor];
-  v26 = [(ICSEMainViewController *)self brickContainer];
-  v27 = [v26 widthAnchor];
-  v28 = [v25 constraintLessThanOrEqualToAnchor:v27 multiplier:1.0];
+  widthAnchor = [attachmentBrickView2 widthAnchor];
+  brickContainer7 = [(ICSEMainViewController *)self brickContainer];
+  widthAnchor2 = [brickContainer7 widthAnchor];
+  v28 = [widthAnchor constraintLessThanOrEqualToAnchor:widthAnchor2 multiplier:1.0];
 
   LODWORD(v29) = 1148829696;
   [v28 setPriority:v29];
   [v28 setActive:1];
-  v30 = [v11 trailingAnchor];
-  v31 = [(ICSEMainViewController *)self brickContainer];
-  v32 = [v31 trailingAnchor];
-  v33 = [v30 constraintEqualToAnchor:v32];
+  trailingAnchor = [attachmentBrickView2 trailingAnchor];
+  brickContainer8 = [(ICSEMainViewController *)self brickContainer];
+  trailingAnchor2 = [brickContainer8 trailingAnchor];
+  v33 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
 
   LODWORD(v34) = 1148682240;
   [v33 setPriority:v34];
@@ -2048,7 +2048,7 @@ LABEL_28:
 LABEL_5:
 }
 
-- (void)contentSizeCategoryChanged:(id)a3
+- (void)contentSizeCategoryChanged:(id)changed
 {
   [(ICSEMainViewController *)self updateTextViewsForContentSizeChangeIfNecessary];
   [(ICSEMainViewController *)self updateTitleViewHeightConstraint];
@@ -2068,31 +2068,31 @@ LABEL_5:
     v3 = sub_1000032EC();
   }
 
-  v4 = [(ICSEMainViewController *)self titleViewMinHeightConstraint];
-  [v4 setConstant:v3];
+  titleViewMinHeightConstraint = [(ICSEMainViewController *)self titleViewMinHeightConstraint];
+  [titleViewMinHeightConstraint setConstant:v3];
 }
 
 - (void)updateBrickContainerHeightConstraint
 {
-  v6 = [(ICSEMainViewController *)self attachmentBrickView];
-  [v6 computedSize];
+  attachmentBrickView = [(ICSEMainViewController *)self attachmentBrickView];
+  [attachmentBrickView computedSize];
   v4 = v3;
-  v5 = [(ICSEMainViewController *)self brickContainerHeightConstraint];
-  [v5 setConstant:v4];
+  brickContainerHeightConstraint = [(ICSEMainViewController *)self brickContainerHeightConstraint];
+  [brickContainerHeightConstraint setConstant:v4];
 }
 
-- (void)setLayoutType:(unint64_t)a3
+- (void)setLayoutType:(unint64_t)type
 {
-  if (self->_layoutType != a3)
+  if (self->_layoutType != type)
   {
-    self->_layoutType = a3;
+    self->_layoutType = type;
     [(ICSEMainViewController *)self setUpForLayoutType:?];
   }
 }
 
-- (void)setUpForLayoutType:(unint64_t)a3
+- (void)setUpForLayoutType:(unint64_t)type
 {
-  if (a3 - 3 < 2)
+  if (type - 3 < 2)
   {
     v5 = 1;
     v6 = 64.0;
@@ -2101,7 +2101,7 @@ LABEL_5:
 
   else
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       v5 = 0;
       v4 = 1;
@@ -2109,7 +2109,7 @@ LABEL_5:
 
     else
     {
-      if (a3 == 2)
+      if (type == 2)
       {
         v4 = 0;
         v5 = 1;
@@ -2128,14 +2128,14 @@ LABEL_9:
   [(ICSEMainViewController *)self setBrickViewCollapsed:v5];
   [(ICSEMainViewController *)self setBottomTextViewCollapsed:v5];
   [(ICSEMainViewController *)self setImageViewCollapsed:v4];
-  v7 = [(ICSEMainViewController *)self topTextViewMinHeightConstraint];
-  [v7 setConstant:v6];
+  topTextViewMinHeightConstraint = [(ICSEMainViewController *)self topTextViewMinHeightConstraint];
+  [topTextViewMinHeightConstraint setConstant:v6];
 }
 
-- (void)setImageViewCollapsed:(BOOL)a3
+- (void)setImageViewCollapsed:(BOOL)collapsed
 {
-  self->_imageViewCollapsed = a3;
-  if (a3)
+  self->_imageViewCollapsed = collapsed;
+  if (collapsed)
   {
     v4 = 999.0;
   }
@@ -2145,19 +2145,19 @@ LABEL_9:
     v4 = 1.0;
   }
 
-  v5 = [(ICSEMainViewController *)self imageCollapsibleZeroWidthConstraint];
+  imageCollapsibleZeroWidthConstraint = [(ICSEMainViewController *)self imageCollapsibleZeroWidthConstraint];
   *&v6 = v4;
-  [v5 setPriority:v6];
+  [imageCollapsibleZeroWidthConstraint setPriority:v6];
 
   imageViewCollapsed = self->_imageViewCollapsed;
-  v8 = [(ICSEMainViewController *)self imagesView];
-  [v8 setHidden:imageViewCollapsed];
+  imagesView = [(ICSEMainViewController *)self imagesView];
+  [imagesView setHidden:imageViewCollapsed];
 }
 
-- (void)setBrickViewCollapsed:(BOOL)a3
+- (void)setBrickViewCollapsed:(BOOL)collapsed
 {
-  self->_brickViewCollapsed = a3;
-  if (a3)
+  self->_brickViewCollapsed = collapsed;
+  if (collapsed)
   {
     v4 = 999.0;
   }
@@ -2167,19 +2167,19 @@ LABEL_9:
     v4 = 1.0;
   }
 
-  v5 = [(ICSEMainViewController *)self brickCollapsibleZeroHeightConstraint];
+  brickCollapsibleZeroHeightConstraint = [(ICSEMainViewController *)self brickCollapsibleZeroHeightConstraint];
   *&v6 = v4;
-  [v5 setPriority:v6];
+  [brickCollapsibleZeroHeightConstraint setPriority:v6];
 
   brickViewCollapsed = self->_brickViewCollapsed;
-  v8 = [(ICSEMainViewController *)self brickContainer];
-  [v8 setHidden:brickViewCollapsed];
+  brickContainer = [(ICSEMainViewController *)self brickContainer];
+  [brickContainer setHidden:brickViewCollapsed];
 }
 
-- (void)setBottomTextViewCollapsed:(BOOL)a3
+- (void)setBottomTextViewCollapsed:(BOOL)collapsed
 {
-  self->_bottomTextViewCollapsed = a3;
-  if (a3)
+  self->_bottomTextViewCollapsed = collapsed;
+  if (collapsed)
   {
     v4 = 999.0;
   }
@@ -2189,54 +2189,54 @@ LABEL_9:
     v4 = 1.0;
   }
 
-  v5 = [(ICSEMainViewController *)self bottomTextviewCollapsibleZeroHeightConstraint];
+  bottomTextviewCollapsibleZeroHeightConstraint = [(ICSEMainViewController *)self bottomTextviewCollapsibleZeroHeightConstraint];
   *&v6 = v4;
-  [v5 setPriority:v6];
+  [bottomTextviewCollapsibleZeroHeightConstraint setPriority:v6];
 
   bottomTextViewCollapsed = self->_bottomTextViewCollapsed;
-  v8 = [(ICSEMainViewController *)self bottomTextView];
-  [v8 setHidden:bottomTextViewCollapsed];
+  bottomTextView = [(ICSEMainViewController *)self bottomTextView];
+  [bottomTextView setHidden:bottomTextViewCollapsed];
 }
 
 - (ICSERootViewController)rootViewController
 {
-  v2 = [(ICSEMainViewController *)self containerViewController];
-  v3 = [v2 rootViewController];
+  containerViewController = [(ICSEMainViewController *)self containerViewController];
+  rootViewController = [containerViewController rootViewController];
 
-  return v3;
+  return rootViewController;
 }
 
 - (void)updateTextViewsForContentSizeChangeIfNecessary
 {
   v3 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-  v4 = [v3 ic_fontWithSingleLineA];
-  v5 = [(ICSEMainViewController *)self topTextView];
-  [v5 setFont:v4];
+  ic_fontWithSingleLineA = [v3 ic_fontWithSingleLineA];
+  topTextView = [(ICSEMainViewController *)self topTextView];
+  [topTextView setFont:ic_fontWithSingleLineA];
 
   v8 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-  v6 = [v8 ic_fontWithSingleLineA];
-  v7 = [(ICSEMainViewController *)self bottomTextView];
-  [v7 setFont:v6];
+  ic_fontWithSingleLineA2 = [v8 ic_fontWithSingleLineA];
+  bottomTextView = [(ICSEMainViewController *)self bottomTextView];
+  [bottomTextView setFont:ic_fontWithSingleLineA2];
 }
 
-- (void)installImagesViewForAttachments:(id)a3
+- (void)installImagesViewForAttachments:(id)attachments
 {
-  v4 = a3;
+  attachmentsCopy = attachments;
   v5 = dispatch_get_global_queue(0, 0);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000266E8;
   v7[3] = &unk_1000F23B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = attachmentsCopy;
+  v6 = attachmentsCopy;
   dispatch_async(v5, v7);
 }
 
-- (double)consumedBottomAreaForResizer:(id)a3
+- (double)consumedBottomAreaForResizer:(id)resizer
 {
-  v3 = [(ICSEMainViewController *)self view];
-  [v3 safeAreaInsets];
+  view = [(ICSEMainViewController *)self view];
+  [view safeAreaInsets];
   v5 = v4;
 
   return v5;

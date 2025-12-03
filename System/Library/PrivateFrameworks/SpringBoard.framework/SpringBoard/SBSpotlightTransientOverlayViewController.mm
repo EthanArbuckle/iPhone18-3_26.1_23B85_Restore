@@ -2,7 +2,7 @@
 - (BOOL)_isReduceMotionOrTransparency;
 - (BOOL)_isSpotlightVisible;
 - (BOOL)handleHomeButtonPress;
-- (BOOL)isPresentedFromSceneWithIdentityTokenString:(id)a3;
+- (BOOL)isPresentedFromSceneWithIdentityTokenString:(id)string;
 - (FBSDisplayConfiguration)targetDisplayConfiguration;
 - (SBSpotlightTransientOverlayViewController)init;
 - (SBSpotlightTransientOverlayViewControllerDelegate)delegate;
@@ -11,23 +11,23 @@
 - (id)newTransientOverlayPresentationTransitionCoordinator;
 - (id)sceneDeactivationPredicate;
 - (int)_preferredStatusBarVisibility;
-- (void)_configureBlurFilterOnView:(id)a3;
-- (void)_handlePanGestureRecognizer:(id)a3;
-- (void)_handleTapToDismissGestureRecognizer:(id)a3;
-- (void)_setSpotlightAlpha:(double)a3 scale:(double)a4 blurProgress:(double)a5 translation:(CGPoint)a6 withAnimationMode:(int64_t)a7 alongsideAnimationBlock:(id)a8 completion:(id)a9;
-- (void)_setSpotlightPresented:(BOOL)a3 withAnimationMode:(int64_t)a4 alongsideAnimationBlock:(id)a5 completion:(id)a6;
+- (void)_configureBlurFilterOnView:(id)view;
+- (void)_handlePanGestureRecognizer:(id)recognizer;
+- (void)_handleTapToDismissGestureRecognizer:(id)recognizer;
+- (void)_setSpotlightAlpha:(double)alpha scale:(double)scale blurProgress:(double)progress translation:(CGPoint)translation withAnimationMode:(int64_t)mode alongsideAnimationBlock:(id)block completion:(id)completion;
+- (void)_setSpotlightPresented:(BOOL)presented withAnimationMode:(int64_t)mode alongsideAnimationBlock:(id)block completion:(id)completion;
 - (void)beginInteractivePresentation;
 - (void)dealloc;
 - (void)dismissSearchView;
-- (void)endInteractivePresentation:(BOOL)a3;
+- (void)endInteractivePresentation:(BOOL)presentation;
 - (void)handleGestureDismissal;
-- (void)setPresentationSource:(unint64_t)a3;
-- (void)setTargetDisplayConfiguration:(id)a3;
-- (void)updateInteractivePresentationWithProgress:(double)a3 translation:(double)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)setPresentationSource:(unint64_t)source;
+- (void)setTargetDisplayConfiguration:(id)configuration;
+- (void)updateInteractivePresentationWithProgress:(double)progress translation:(double)translation;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SBSpotlightTransientOverlayViewController
@@ -58,27 +58,27 @@
   [(SBTransientOverlayViewController *)&v3 dealloc];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = SBSpotlightTransientOverlayViewController;
-  [(SBTransientOverlayViewController *)&v5 viewDidAppear:a3];
-  v4 = [(SBSpotlightTransientOverlayViewController *)self delegate];
+  [(SBTransientOverlayViewController *)&v5 viewDidAppear:appear];
+  delegate = [(SBSpotlightTransientOverlayViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 spotlightTransientOverlayViewControllerDidPresent:self];
+    [delegate spotlightTransientOverlayViewControllerDidPresent:self];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = SBSpotlightTransientOverlayViewController;
-  [(SBSpotlightTransientOverlayViewController *)&v5 viewWillDisappear:a3];
-  v4 = [(SBSpotlightTransientOverlayViewController *)self delegate];
+  [(SBSpotlightTransientOverlayViewController *)&v5 viewWillDisappear:disappear];
+  delegate = [(SBSpotlightTransientOverlayViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 spotlightTransientOverlayViewControllerWillDismiss:self];
+    [delegate spotlightTransientOverlayViewControllerWillDismiss:self];
   }
 }
 
@@ -87,8 +87,8 @@
   v25.receiver = self;
   v25.super_class = SBSpotlightTransientOverlayViewController;
   [(SBTransientOverlayViewController *)&v25 viewDidLayoutSubviews];
-  v3 = [(SBTransientOverlayViewController *)self contentView];
-  [v3 bounds];
+  contentView = [(SBTransientOverlayViewController *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -98,19 +98,19 @@
   [(SBSpotlightSettings *)self->_settings anchorPointY];
   v13 = v12;
   [(UIView *)self->_scalingView setCenter:v5 + v9 * 0.5, v7 + v11 * v12];
-  v14 = [(UIView *)self->_scalingView layer];
-  [v14 setAnchorPoint:{0.5, v13}];
+  layer = [(UIView *)self->_scalingView layer];
+  [layer setAnchorPoint:{0.5, v13}];
 
-  v15 = [(SBTransientOverlayViewController *)self backgroundView];
-  [v15 bounds];
+  backgroundView = [(SBTransientOverlayViewController *)self backgroundView];
+  [backgroundView bounds];
   v17 = v16;
   v19 = v18;
   v21 = v20;
   v23 = v22;
 
   [(UIVisualEffectView *)self->_blurEffectView setFrame:v17, v19, v21, v23];
-  v24 = [(SBSpotlightTransientOverlaySpotlightViewController *)self->_spotlightViewController view];
-  [v24 setFrame:{v5, v7, v9, v11}];
+  view = [(SBSpotlightTransientOverlaySpotlightViewController *)self->_spotlightViewController view];
+  [view setFrame:{v5, v7, v9, v11}];
 }
 
 - (void)viewDidLoad
@@ -118,7 +118,7 @@
   v26.receiver = self;
   v26.super_class = SBSpotlightTransientOverlayViewController;
   [(SBTransientOverlayViewController *)&v26 viewDidLoad];
-  v3 = [(SBTransientOverlayViewController *)self backgroundView];
+  backgroundView = [(SBTransientOverlayViewController *)self backgroundView];
   if (([MEMORY[0x277D65D28] enableFloatingWindow] & 1) == 0)
   {
     v4 = [MEMORY[0x277D75210] effectWithStyle:2];
@@ -126,18 +126,18 @@
     blurEffectView = self->_blurEffectView;
     self->_blurEffectView = v5;
 
-    [v3 addSubview:self->_blurEffectView];
+    [backgroundView addSubview:self->_blurEffectView];
   }
 
   v7 = objc_alloc(MEMORY[0x277D75D18]);
-  v8 = [(SBTransientOverlayViewController *)self contentView];
-  [v8 bounds];
+  contentView = [(SBTransientOverlayViewController *)self contentView];
+  [contentView bounds];
   v9 = [v7 initWithFrame:?];
   scalingView = self->_scalingView;
   self->_scalingView = v9;
 
-  v11 = [(SBTransientOverlayViewController *)self contentView];
-  [v11 addSubview:self->_scalingView];
+  contentView2 = [(SBTransientOverlayViewController *)self contentView];
+  [contentView2 addSubview:self->_scalingView];
 
   v12 = objc_alloc_init(SBSpotlightTransientOverlaySpotlightViewController);
   spotlightViewController = self->_spotlightViewController;
@@ -151,8 +151,8 @@
   [(SBSpotlightMultiplexingViewController *)self->_spotlightViewController setSpotlightDelegate:self];
   [(SBSpotlightTransientOverlayViewController *)self addChildViewController:self->_spotlightViewController];
   v16 = self->_scalingView;
-  v17 = [(SBSpotlightTransientOverlaySpotlightViewController *)self->_spotlightViewController view];
-  [(UIView *)v16 addSubview:v17];
+  view = [(SBSpotlightTransientOverlaySpotlightViewController *)self->_spotlightViewController view];
+  [(UIView *)v16 addSubview:view];
 
   [(SBSpotlightTransientOverlaySpotlightViewController *)self->_spotlightViewController didMoveToParentViewController:self];
   v18 = [objc_alloc(MEMORY[0x277D757F8]) initWithTarget:self action:sel__handlePanGestureRecognizer_];
@@ -160,52 +160,52 @@
   self->_panGestureRecognizer = v18;
 
   [(UIPanGestureRecognizer *)self->_panGestureRecognizer setAllowedScrollTypesMask:3];
-  v20 = [(SBSpotlightTransientOverlayViewController *)self view];
-  [v20 addGestureRecognizer:self->_panGestureRecognizer];
+  view2 = [(SBSpotlightTransientOverlayViewController *)self view];
+  [view2 addGestureRecognizer:self->_panGestureRecognizer];
 
   v21 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel__handleTapToDismissGestureRecognizer_];
   tapToDismissGestureRecognizer = self->_tapToDismissGestureRecognizer;
   self->_tapToDismissGestureRecognizer = v21;
 
-  v23 = [(SBSpotlightTransientOverlayViewController *)self view];
-  [v23 addGestureRecognizer:self->_tapToDismissGestureRecognizer];
+  view3 = [(SBSpotlightTransientOverlayViewController *)self view];
+  [view3 addGestureRecognizer:self->_tapToDismissGestureRecognizer];
 
-  v24 = [(SBSpotlightTransientOverlayViewController *)self view];
-  v25 = [v24 layer];
-  [v25 setHitTestsAsOpaque:1];
+  view4 = [(SBSpotlightTransientOverlayViewController *)self view];
+  layer = [view4 layer];
+  [layer setHitTestsAsOpaque:1];
 
   [(SBSpotlightTransientOverlayViewController *)self _setSpotlightPresented:0 withAnimationMode:2 alongsideAnimationBlock:0 completion:0];
 }
 
-- (void)_handlePanGestureRecognizer:(id)a3
+- (void)_handlePanGestureRecognizer:(id)recognizer
 {
-  v7 = a3;
-  v4 = [(SBTransientOverlayViewController *)self _sbWindowScene];
-  v5 = [v4 modalUIFluidDismissGestureManager];
+  recognizerCopy = recognizer;
+  _sbWindowScene = [(SBTransientOverlayViewController *)self _sbWindowScene];
+  modalUIFluidDismissGestureManager = [_sbWindowScene modalUIFluidDismissGestureManager];
 
-  v6 = [v7 state];
-  if ((v6 - 3) >= 3)
+  state = [recognizerCopy state];
+  if ((state - 3) >= 3)
   {
-    if (v6 == 2)
+    if (state == 2)
     {
-      [v5 handleGestureChanged:v7];
+      [modalUIFluidDismissGestureManager handleGestureChanged:recognizerCopy];
     }
 
-    else if (v6 == 1)
+    else if (state == 1)
     {
-      [v5 handleGestureBegan:v7 initiatedFromBottomEdge:0];
+      [modalUIFluidDismissGestureManager handleGestureBegan:recognizerCopy initiatedFromBottomEdge:0];
     }
   }
 
   else
   {
-    [v5 handleGestureEnded:v7];
+    [modalUIFluidDismissGestureManager handleGestureEnded:recognizerCopy];
   }
 }
 
-- (void)_handleTapToDismissGestureRecognizer:(id)a3
+- (void)_handleTapToDismissGestureRecognizer:(id)recognizer
 {
-  if ([a3 state] == 3)
+  if ([recognizer state] == 3)
   {
 
     [(SBSpotlightTransientOverlayViewController *)self dismissSearchView];
@@ -214,10 +214,10 @@
 
 - (int)_preferredStatusBarVisibility
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  return 2 * ((v3 & 0xFFFFFFFFFFFFFFFBLL) != 1);
+  return 2 * ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1);
 }
 
 - (BOOL)handleHomeButtonPress
@@ -226,17 +226,17 @@
   if (objc_opt_respondsToSelector())
   {
     [WeakRetained spotlightTransientOverlayViewControllerRequestsDismissal:self];
-    v4 = 1;
+    handleHomeButtonPress = 1;
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = SBSpotlightTransientOverlayViewController;
-    v4 = [(SBTransientOverlayViewController *)&v6 handleHomeButtonPress];
+    handleHomeButtonPress = [(SBTransientOverlayViewController *)&v6 handleHomeButtonPress];
   }
 
-  return v4;
+  return handleHomeButtonPress;
 }
 
 - (void)handleGestureDismissal
@@ -250,15 +250,15 @@
 
 - (id)sceneDeactivationPredicate
 {
-  v2 = [objc_opt_class() sharedRemoteSearchViewController];
-  v3 = [v2 sceneIdentifier];
+  sharedRemoteSearchViewController = [objc_opt_class() sharedRemoteSearchViewController];
+  sceneIdentifier = [sharedRemoteSearchViewController sceneIdentifier];
 
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __71__SBSpotlightTransientOverlayViewController_sceneDeactivationPredicate__block_invoke;
   v7[3] = &unk_2783ADD00;
-  v8 = v3;
-  v4 = v3;
+  v8 = sceneIdentifier;
+  v4 = sceneIdentifier;
   v5 = MEMORY[0x223D6F7F0](v7);
 
   return v5;
@@ -391,28 +391,28 @@ void __97__SBSpotlightTransientOverlayViewController_newTransientOverlayPresenta
   }
 }
 
-- (BOOL)isPresentedFromSceneWithIdentityTokenString:(id)a3
+- (BOOL)isPresentedFromSceneWithIdentityTokenString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = +[SBSpotlightMultiplexingViewController spotlightSceneIdentityTokenIfActiveForeground];
-  v5 = [v4 stringRepresentation];
-  v6 = [v5 isEqualToString:v3];
+  stringRepresentation = [v4 stringRepresentation];
+  v6 = [stringRepresentation isEqualToString:stringCopy];
 
   return v6;
 }
 
-- (void)setPresentationSource:(unint64_t)a3
+- (void)setPresentationSource:(unint64_t)source
 {
-  if (self->_presentationSource != a3)
+  if (self->_presentationSource != source)
   {
-    self->_presentationSource = a3;
+    self->_presentationSource = source;
     [(SBSpotlightTransientOverlaySpotlightViewController *)self->_spotlightViewController setPresentationSource:?];
   }
 }
 
-- (void)setTargetDisplayConfiguration:(id)a3
+- (void)setTargetDisplayConfiguration:(id)configuration
 {
-  obj = a3;
+  obj = configuration;
   WeakRetained = objc_loadWeakRetained(&self->_targetDisplayConfiguration);
 
   if (WeakRetained != obj)
@@ -427,22 +427,22 @@ void __97__SBSpotlightTransientOverlayViewController_newTransientOverlayPresenta
   [(SBSpotlightTransientOverlayViewController *)self loadViewIfNeeded];
   self->_presentingInteractively = 1;
   self->_performedAlongsideAnimations = 0;
-  v3 = [objc_opt_class() sharedRemoteSearchViewController];
-  [v3 setRevealProgress:0.0];
+  sharedRemoteSearchViewController = [objc_opt_class() sharedRemoteSearchViewController];
+  [sharedRemoteSearchViewController setRevealProgress:0.0];
 
   [(SBSpotlightTransientOverlayViewController *)self _setSpotlightPresented:0 withAnimationMode:2 alongsideAnimationBlock:0 completion:0];
 }
 
-- (void)updateInteractivePresentationWithProgress:(double)a3 translation:(double)a4
+- (void)updateInteractivePresentationWithProgress:(double)progress translation:(double)translation
 {
   v7 = self->_settings;
   [(SBSpotlightSettings *)self->_settings hiddenScale];
   v9 = v8;
-  v10 = [(SBSpotlightTransientOverlayViewController *)self _isSpotlightVisible];
+  _isSpotlightVisible = [(SBSpotlightTransientOverlayViewController *)self _isSpotlightVisible];
   if ([(SBSpotlightTransientOverlayViewController *)self _isReduceMotionOrTransparency])
   {
     [(SBSpotlightSettings *)v7 minTranslationToShowSpotlight];
-    v12 = a4 / v11;
+    v12 = translation / v11;
     v13 = 0.0;
     if (v12 <= 0.0)
     {
@@ -474,9 +474,9 @@ void __97__SBSpotlightTransientOverlayViewController_newTransientOverlayPresenta
   {
     v13 = *MEMORY[0x277CBF348];
     v20 = *(MEMORY[0x277CBF348] + 8);
-    if (v10)
+    if (_isSpotlightVisible)
     {
-      if (a4 <= 0.0)
+      if (translation <= 0.0)
       {
         [(SBSpotlightSettings *)self->_settings hiddenScale];
         v9 = v28;
@@ -509,7 +509,7 @@ void __97__SBSpotlightTransientOverlayViewController_newTransientOverlayPresenta
     {
       [(SBSpotlightSettings *)v7 minTranslationToShowSpotlight];
       v21 = 3;
-      if (v27 >= a4)
+      if (v27 >= translation)
       {
         v22 = 1.0;
       }
@@ -519,7 +519,7 @@ void __97__SBSpotlightTransientOverlayViewController_newTransientOverlayPresenta
         v22 = 0.0;
       }
 
-      if (v27 >= a4)
+      if (v27 >= translation)
       {
         v15 = 0.0;
       }
@@ -529,7 +529,7 @@ void __97__SBSpotlightTransientOverlayViewController_newTransientOverlayPresenta
         v15 = 1.0;
       }
 
-      if (v27 < a4)
+      if (v27 < translation)
       {
         v9 = 1.0;
       }
@@ -541,11 +541,11 @@ void __97__SBSpotlightTransientOverlayViewController_newTransientOverlayPresenta
   v30[1] = 3221225472;
   v30[2] = __99__SBSpotlightTransientOverlayViewController_updateInteractivePresentationWithProgress_translation___block_invoke;
   v30[3] = &unk_2783A8BC8;
-  *&v30[5] = a4;
+  *&v30[5] = translation;
   v30[4] = self;
   [(SBSpotlightTransientOverlayViewController *)self _setSpotlightAlpha:v21 scale:v30 blurProgress:0 translation:v15 withAnimationMode:v9 alongsideAnimationBlock:v22 completion:v13, v20];
-  v29 = [objc_opt_class() sharedRemoteSearchViewController];
-  [v29 setRevealProgress:a3];
+  sharedRemoteSearchViewController = [objc_opt_class() sharedRemoteSearchViewController];
+  [sharedRemoteSearchViewController setRevealProgress:progress];
 
   if (BSFloatIsOne() && !self->_performedAlongsideAnimations)
   {
@@ -565,18 +565,18 @@ uint64_t __99__SBSpotlightTransientOverlayViewController_updateInteractivePresen
   return [*(a1 + 32) setPresentationDimmingAlpha:?];
 }
 
-- (void)endInteractivePresentation:(BOOL)a3
+- (void)endInteractivePresentation:(BOOL)presentation
 {
-  if (a3)
+  if (presentation)
   {
     [(SBSpotlightTransientOverlayViewController *)self _setSpotlightPresented:1 withAnimationMode:3 alongsideAnimationBlock:0 completion:0];
   }
 
   v5 = +[SBLockScreenManager sharedInstance];
-  v6 = [v5 isUILocked] & a3;
+  v6 = [v5 isUILocked] & presentation;
 
   v7 = MEMORY[0x277D75D18];
-  v8 = [(SBSpotlightSettings *)self->_settings opacityAnimationSettings];
+  opacityAnimationSettings = [(SBSpotlightSettings *)self->_settings opacityAnimationSettings];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __72__SBSpotlightTransientOverlayViewController_endInteractivePresentation___block_invoke;
@@ -589,7 +589,7 @@ uint64_t __99__SBSpotlightTransientOverlayViewController_updateInteractivePresen
   v11[3] = &unk_2783AD430;
   v12 = v6;
   v11[4] = self;
-  [v7 sb_animateWithSettings:v8 mode:3 animations:v13 completion:v11];
+  [v7 sb_animateWithSettings:opacityAnimationSettings mode:3 animations:v13 completion:v11];
 
   interactivePresentationContextProvider = self->_interactivePresentationContextProvider;
   if (interactivePresentationContextProvider)
@@ -642,8 +642,8 @@ uint64_t __72__SBSpotlightTransientOverlayViewController_endInteractivePresentat
 
 - (BOOL)_isSpotlightVisible
 {
-  v2 = [(SBSpotlightTransientOverlayViewController *)self scalingView];
-  [v2 alpha];
+  scalingView = [(SBSpotlightTransientOverlayViewController *)self scalingView];
+  [scalingView alpha];
   IsOne = BSFloatIsOne();
 
   return IsOne;
@@ -659,10 +659,10 @@ uint64_t __72__SBSpotlightTransientOverlayViewController_endInteractivePresentat
   return SBReduceTransparency();
 }
 
-- (void)_configureBlurFilterOnView:(id)a3
+- (void)_configureBlurFilterOnView:(id)view
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  viewCopy = view;
   v5 = 0.0;
   if (![(SBSpotlightTransientOverlayViewController *)self _isSpotlightVisible])
   {
@@ -677,19 +677,19 @@ uint64_t __72__SBSpotlightTransientOverlayViewController_endInteractivePresentat
   v8 = [MEMORY[0x277CCABB0] numberWithDouble:v5];
   [v7 setValue:v8 forKey:@"inputRadius"];
 
-  v9 = [v4 layer];
+  layer = [viewCopy layer];
 
   v11[0] = v7;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
-  [v9 setFilters:v10];
+  [layer setFilters:v10];
 }
 
-- (void)_setSpotlightPresented:(BOOL)a3 withAnimationMode:(int64_t)a4 alongsideAnimationBlock:(id)a5 completion:(id)a6
+- (void)_setSpotlightPresented:(BOOL)presented withAnimationMode:(int64_t)mode alongsideAnimationBlock:(id)block completion:(id)completion
 {
-  v8 = a3;
-  v21 = a5;
-  v10 = a6;
-  if (v8)
+  presentedCopy = presented;
+  blockCopy = block;
+  completionCopy = completion;
+  if (presentedCopy)
   {
     v11 = 1.0;
     v12 = 0.0;
@@ -709,7 +709,7 @@ uint64_t __72__SBSpotlightTransientOverlayViewController_endInteractivePresentat
     goto LABEL_13;
   }
 
-  if (a4 == 3)
+  if (mode == 3)
   {
     v16 = 1472;
 LABEL_9:
@@ -723,7 +723,7 @@ LABEL_9:
     goto LABEL_11;
   }
 
-  if (a4 == 2)
+  if (mode == 2)
   {
     v16 = 1464;
     goto LABEL_9;
@@ -732,7 +732,7 @@ LABEL_9:
 LABEL_11:
   v11 = 1.0;
   v12 = 0.0;
-  if (!v8)
+  if (!presentedCopy)
   {
     [(SBSpotlightSettings *)self->_settings minTranslationToShowSpotlight];
     v14 = -v17;
@@ -743,37 +743,37 @@ LABEL_13:
   if (!self->_presentingInteractively)
   {
     v18 = +[SBLockScreenManager sharedInstance];
-    v19 = [v18 isUILocked];
+    isUILocked = [v18 isUILocked];
 
-    if (v19)
+    if (isUILocked)
     {
       [(SBTransientOverlayViewController *)self setPresentationDimmingViewHidden:0];
     }
   }
 
   v20 = 0.0;
-  if (v8)
+  if (presentedCopy)
   {
     v20 = 1.0;
   }
 
-  [(SBSpotlightTransientOverlayViewController *)self _setSpotlightAlpha:a4 scale:v21 blurProgress:v10 translation:v20 withAnimationMode:v11 alongsideAnimationBlock:v12 completion:v15, v14];
+  [(SBSpotlightTransientOverlayViewController *)self _setSpotlightAlpha:mode scale:blockCopy blurProgress:completionCopy translation:v20 withAnimationMode:v11 alongsideAnimationBlock:v12 completion:v15, v14];
 }
 
-- (void)_setSpotlightAlpha:(double)a3 scale:(double)a4 blurProgress:(double)a5 translation:(CGPoint)a6 withAnimationMode:(int64_t)a7 alongsideAnimationBlock:(id)a8 completion:(id)a9
+- (void)_setSpotlightAlpha:(double)alpha scale:(double)scale blurProgress:(double)progress translation:(CGPoint)translation withAnimationMode:(int64_t)mode alongsideAnimationBlock:(id)block completion:(id)completion
 {
-  y = a6.y;
-  x = a6.x;
-  v17 = a8;
-  v18 = a9;
+  y = translation.y;
+  x = translation.x;
+  blockCopy = block;
+  completionCopy = completion;
   if ([MEMORY[0x277D65D28] enableFloatingWindow])
   {
     v19 = self->_settings;
-    v20 = [(SBSpotlightTransientOverlayViewController *)self prefersWindowHitTestingDisabled];
-    v21 = [(SBSpotlightTransientOverlayViewController *)self scalingView];
-    if ((a7 - 3) <= 0xFFFFFFFFFFFFFFFDLL && !self->_animationCount && ![(SBSpotlightTransientOverlayViewController *)self _isReduceMotionOrTransparency])
+    prefersWindowHitTestingDisabled = [(SBSpotlightTransientOverlayViewController *)self prefersWindowHitTestingDisabled];
+    scalingView = [(SBSpotlightTransientOverlayViewController *)self scalingView];
+    if ((mode - 3) <= 0xFFFFFFFFFFFFFFFDLL && !self->_animationCount && ![(SBSpotlightTransientOverlayViewController *)self _isReduceMotionOrTransparency])
     {
-      [(SBSpotlightTransientOverlayViewController *)self _configureBlurFilterOnView:v21];
+      [(SBSpotlightTransientOverlayViewController *)self _configureBlurFilterOnView:scalingView];
     }
 
     ++self->_animationCount;
@@ -783,14 +783,14 @@ LABEL_13:
     v33[2] = __148__SBSpotlightTransientOverlayViewController__setSpotlightAlpha_scale_blurProgress_translation_withAnimationMode_alongsideAnimationBlock_completion___block_invoke_3;
     v33[3] = &unk_2783B9160;
     v33[4] = self;
-    v37 = a3;
+    alphaCopy = alpha;
     v23 = v19;
-    v38 = a7;
+    modeCopy = mode;
     v34 = v23;
-    v36 = v17;
-    v35 = v21;
-    v39 = a5;
-    v40 = a4;
+    v36 = blockCopy;
+    v35 = scalingView;
+    progressCopy = progress;
+    scaleCopy = scale;
     v41 = x;
     v42 = y;
     v30[0] = MEMORY[0x277D85DD0];
@@ -799,12 +799,12 @@ LABEL_13:
     v30[3] = &unk_2783B9188;
     v30[4] = self;
     v31 = v35;
-    v32 = v18;
-    v24 = v18;
-    v25 = v17;
+    v32 = completionCopy;
+    v24 = completionCopy;
+    v25 = blockCopy;
     v26 = v35;
     [v22 perform:v33 finalCompletion:v30];
-    if (v20 != [(SBSpotlightTransientOverlayViewController *)self prefersWindowHitTestingDisabled])
+    if (prefersWindowHitTestingDisabled != [(SBSpotlightTransientOverlayViewController *)self prefersWindowHitTestingDisabled])
     {
       [(SBTransientOverlayViewController *)self setNeedsWindowHitTestingUpdate];
     }
@@ -817,16 +817,16 @@ LABEL_13:
     v45[1] = 3221225472;
     v45[2] = __148__SBSpotlightTransientOverlayViewController__setSpotlightAlpha_scale_blurProgress_translation_withAnimationMode_alongsideAnimationBlock_completion___block_invoke;
     v45[3] = &unk_2783AB990;
-    v47 = a3;
+    alphaCopy2 = alpha;
     v45[4] = self;
-    v46 = v17;
+    v46 = blockCopy;
     v43[0] = MEMORY[0x277D85DD0];
     v43[1] = 3221225472;
     v43[2] = __148__SBSpotlightTransientOverlayViewController__setSpotlightAlpha_scale_blurProgress_translation_withAnimationMode_alongsideAnimationBlock_completion___block_invoke_2;
     v43[3] = &unk_2783A9C70;
-    v44 = v18;
-    v28 = v18;
-    v29 = v17;
+    v44 = completionCopy;
+    v28 = completionCopy;
+    v29 = blockCopy;
     [v27 animateWithDuration:v45 animations:v43 completion:0.2];
   }
 }

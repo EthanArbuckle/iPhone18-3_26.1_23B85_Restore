@@ -3,9 +3,9 @@
 - (MusicSettingsAudioQualityController)init;
 - (id)cellularDataEnabled;
 - (id)highBandwidthLabel;
-- (void)displayDowngradeAlertIfNeededWithCompletion:(id)a3;
-- (void)setParentController:(id)a3;
-- (void)setShowLosslessAudio:(id)a3 specifier:(id)a4;
+- (void)displayDowngradeAlertIfNeededWithCompletion:(id)completion;
+- (void)setParentController:(id)controller;
+- (void)setShowLosslessAudio:(id)audio specifier:(id)specifier;
 @end
 
 @implementation MusicSettingsAudioQualityController
@@ -25,15 +25,15 @@
   return v3;
 }
 
-- (void)setParentController:(id)a3
+- (void)setParentController:(id)controller
 {
-  v4 = a3;
-  v5 = [(MusicSettingsAudioQualityController *)self parentViewController];
+  controllerCopy = controller;
+  parentViewController = [(MusicSettingsAudioQualityController *)self parentViewController];
   v6.receiver = self;
   v6.super_class = MusicSettingsAudioQualityController;
-  [(MusicSettingsAudioQualityController *)&v6 setParentController:v4];
+  [(MusicSettingsAudioQualityController *)&v6 setParentController:controllerCopy];
 
-  if (v4 && v5 != v4)
+  if (controllerCopy && parentViewController != controllerCopy)
   {
     [(MusicSettingsAudioQualityController *)self reloadSpecifiers];
   }
@@ -52,26 +52,26 @@
   }
 
   v6 = objc_loadWeakRetained(&self->MusicSettingsListViewController_opaque[v3]);
-  v7 = [v6 cellularHighDataModeEnabled];
+  cellularHighDataModeEnabled = [v6 cellularHighDataModeEnabled];
 
-  return v7;
+  return cellularHighDataModeEnabled;
 }
 
-- (void)setShowLosslessAudio:(id)a3 specifier:(id)a4
+- (void)setShowLosslessAudio:(id)audio specifier:(id)specifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MusicSettingsAudioQualityController *)self rootController];
-  v9 = v8;
-  if (!v8)
+  specifierCopy = specifier;
+  audioCopy = audio;
+  selfCopy = [(MusicSettingsAudioQualityController *)self rootController];
+  v9 = selfCopy;
+  if (!selfCopy)
   {
-    v8 = self;
+    selfCopy = self;
   }
 
-  [v8 setPreferenceValue:v7 specifier:v6];
+  [selfCopy setPreferenceValue:audioCopy specifier:specifierCopy];
 
-  v10 = [v7 BOOLValue];
-  if (v10)
+  bOOLValue = [audioCopy BOOLValue];
+  if (bOOLValue)
   {
     v11 = +[MPPlaybackUserDefaults standardUserDefaults];
     v12 = 48000;
@@ -86,27 +86,27 @@ LABEL_11:
 
   [(MusicSettingsAudioQualityController *)self displayDowngradeAlertIfNeededWithCompletion:&stru_24FC8];
   v13 = +[MPPlaybackUserDefaults standardUserDefaults];
-  v14 = [v13 preferredMusicLowBandwidthResolution];
+  preferredMusicLowBandwidthResolution = [v13 preferredMusicLowBandwidthResolution];
 
-  if (v14 >= 48000)
+  if (preferredMusicLowBandwidthResolution >= 48000)
   {
     v15 = +[MPPlaybackUserDefaults standardUserDefaults];
     [v15 setPreferredMusicLowBandwidthResolution:256];
   }
 
   v16 = +[MPPlaybackUserDefaults standardUserDefaults];
-  v17 = [v16 preferredMusicHighBandwidthResolution];
+  preferredMusicHighBandwidthResolution = [v16 preferredMusicHighBandwidthResolution];
 
-  if (v17 >= 48000)
+  if (preferredMusicHighBandwidthResolution >= 48000)
   {
     v18 = +[MPPlaybackUserDefaults standardUserDefaults];
     [v18 setPreferredMusicHighBandwidthResolution:256];
   }
 
   v19 = +[MPPlaybackUserDefaults standardUserDefaults];
-  v20 = [v19 preferredMusicDownloadResolution];
+  preferredMusicDownloadResolution = [v19 preferredMusicDownloadResolution];
 
-  if (v20 >= 48000)
+  if (preferredMusicDownloadResolution >= 48000)
   {
     v12 = 256;
     goto LABEL_11;
@@ -127,38 +127,38 @@ LABEL_12:
   if (isKindOfClass)
   {
     v6 = objc_loadWeakRetained(&self->MusicSettingsListViewController_opaque[v3]);
-    v7 = [v6 cellularDataEnabled];
+    cellularDataEnabled = [v6 cellularDataEnabled];
   }
 
   else
   {
-    v7 = &__kCFBooleanFalse;
+    cellularDataEnabled = &__kCFBooleanFalse;
   }
 
-  return v7;
+  return cellularDataEnabled;
 }
 
 - (id)highBandwidthLabel
 {
   v3 = +[UIDevice currentDevice];
-  v4 = [v3 sf_isChinaRegionCellularDevice];
+  sf_isChinaRegionCellularDevice = [v3 sf_isChinaRegionCellularDevice];
 
-  v5 = [(MusicSettingsAudioQualityController *)self cellularHighDataModeEnabled];
+  cellularHighDataModeEnabled = [(MusicSettingsAudioQualityController *)self cellularHighDataModeEnabled];
   v6 = [NSBundle bundleForClass:objc_opt_class()];
   v7 = v6;
   v8 = @"FIVEG_AND_WIFI_STREAMING";
-  if (v4)
+  if (sf_isChinaRegionCellularDevice)
   {
     v8 = @"FIVEG_AND_WLAN_STREAMING";
   }
 
   v9 = @"WLAN_STREAMING";
-  if (!v4)
+  if (!sf_isChinaRegionCellularDevice)
   {
     v9 = @"WIFI_STREAMING";
   }
 
-  if (v5)
+  if (cellularHighDataModeEnabled)
   {
     v10 = v8;
   }
@@ -173,9 +173,9 @@ LABEL_12:
   return v11;
 }
 
-- (void)displayDowngradeAlertIfNeededWithCompletion:(id)a3
+- (void)displayDowngradeAlertIfNeededWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[ML3MusicLibrary autoupdatingSharedLibrary];
   v6 = [ML3BitMaskPredicate predicateWithProperty:ML3TrackPropertyHLSAssetTraits mask:20 value:0];
   v7 = [ML3NegationPredicate predicateWithPredicate:v6];
@@ -190,7 +190,7 @@ LABEL_12:
   if ([v11 hasEntities])
   {
     v12 = +[UIDevice currentDevice];
-    v13 = [v12 sf_isChinaRegionCellularDevice];
+    sf_isChinaRegionCellularDevice = [v12 sf_isChinaRegionCellularDevice];
 
     v14 = [NSBundle bundleForClass:objc_opt_class()];
     [v14 localizedStringForKey:@"LOSSLESS_DOWNGRADE_TITLE" value:&stru_25A88 table:@"MusicSettings"];
@@ -198,7 +198,7 @@ LABEL_12:
     v29 = v11;
     v16 = [NSBundle bundleForClass:objc_opt_class()];
     v17 = v16;
-    if (v13)
+    if (sf_isChinaRegionCellularDevice)
     {
       v18 = @"LOSSLESS_DOWNGRADE_WLAN_BODY";
     }
@@ -209,7 +209,7 @@ LABEL_12:
     }
 
     [v16 localizedStringForKey:v18 value:&stru_25A88 table:@"MusicSettings"];
-    v19 = v31 = v4;
+    v19 = v31 = completionCopy;
     v20 = [UIAlertController alertControllerWithTitle:v15 message:v19 preferredStyle:1];
 
     v21 = [NSBundle bundleForClass:objc_opt_class()];
@@ -238,13 +238,13 @@ LABEL_12:
     v28 = [UIAlertAction actionWithTitle:v26 style:1 handler:v32];
     [v20 addAction:v28];
 
-    v4 = v31;
+    completionCopy = v31;
     [(MusicSettingsAudioQualityController *)self presentViewController:v20 animated:1 completion:0];
   }
 
   else
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 }
 

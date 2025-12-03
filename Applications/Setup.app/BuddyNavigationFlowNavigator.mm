@@ -1,54 +1,54 @@
 @interface BuddyNavigationFlowNavigator
 - (BFFNavigationController)navigationController;
-- (BuddyNavigationFlowNavigator)initWithNavigationController:(id)a3;
-- (id)popToRootViewControllerAnimated:(BOOL)a3;
-- (id)popToViewController:(id)a3 animated:(BOOL)a4;
+- (BuddyNavigationFlowNavigator)initWithNavigationController:(id)controller;
+- (id)popToRootViewControllerAnimated:(BOOL)animated;
+- (id)popToViewController:(id)controller animated:(BOOL)animated;
 - (id)presentedViewController;
 - (id)topViewController;
 - (id)view;
 - (id)viewControllers;
-- (void)addDelegateObserver:(id)a3;
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4;
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)pushViewController:(id)a3 animated:(BOOL)a4;
-- (void)pushViewController:(id)a3 completion:(id)a4;
-- (void)pushViewController:(id)a3 usingShieldColor:(id)a4 completion:(id)a5;
-- (void)setViewControllers:(id)a3 animated:(BOOL)a4;
+- (void)addDelegateObserver:(id)observer;
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion;
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)pushViewController:(id)controller animated:(BOOL)animated;
+- (void)pushViewController:(id)controller completion:(id)completion;
+- (void)pushViewController:(id)controller usingShieldColor:(id)color completion:(id)completion;
+- (void)setViewControllers:(id)controllers animated:(BOOL)animated;
 @end
 
 @implementation BuddyNavigationFlowNavigator
 
-- (BuddyNavigationFlowNavigator)initWithNavigationController:(id)a3
+- (BuddyNavigationFlowNavigator)initWithNavigationController:(id)controller
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v8;
-  v8 = 0;
+  objc_storeStrong(location, controller);
+  v3 = selfCopy;
+  selfCopy = 0;
   v6.receiver = v3;
   v6.super_class = BuddyNavigationFlowNavigator;
-  v8 = [(BuddyNavigationFlowNavigator *)&v6 init];
-  objc_storeStrong(&v8, v8);
-  if (v8)
+  selfCopy = [(BuddyNavigationFlowNavigator *)&v6 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeWeak(v8 + 1, location[0]);
+    objc_storeWeak(selfCopy + 1, location[0]);
   }
 
-  v4 = v8;
+  v4 = selfCopy;
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v8, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v4;
 }
 
-- (void)addDelegateObserver:(id)a3
+- (void)addDelegateObserver:(id)observer
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyNavigationFlowNavigator *)v5 navigationController];
-  [(BFFNavigationController *)v3 addDelegateObserver:location[0]];
+  objc_storeStrong(location, observer);
+  navigationController = [(BuddyNavigationFlowNavigator *)selfCopy navigationController];
+  [(BFFNavigationController *)navigationController addDelegateObserver:location[0]];
 
   objc_storeStrong(location, 0);
 }
@@ -56,36 +56,36 @@
 - (id)topViewController
 {
   v2 = [(BuddyNavigationFlowNavigator *)self navigationController:a2];
-  v3 = [(BFFNavigationController *)v2 topViewController];
+  topViewController = [(BFFNavigationController *)v2 topViewController];
 
-  return v3;
+  return topViewController;
 }
 
 - (id)presentedViewController
 {
   v2 = [(BuddyNavigationFlowNavigator *)self navigationController:a2];
-  v3 = [(BFFNavigationController *)v2 presentedViewController];
+  presentedViewController = [(BFFNavigationController *)v2 presentedViewController];
 
-  return v3;
+  return presentedViewController;
 }
 
 - (id)viewControllers
 {
   v2 = [(BuddyNavigationFlowNavigator *)self navigationController:a2];
-  v3 = [(BFFNavigationController *)v2 viewControllers];
+  viewControllers = [(BFFNavigationController *)v2 viewControllers];
 
-  return v3;
+  return viewControllers;
 }
 
-- (void)setViewControllers:(id)a3 animated:(BOOL)a4
+- (void)setViewControllers:(id)controllers animated:(BOOL)animated
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = a4;
-  v5 = [(BuddyNavigationFlowNavigator *)v8 navigationController];
-  [(BFFNavigationController *)v5 setViewControllers:location[0] animated:v6];
+  objc_storeStrong(location, controllers);
+  animatedCopy = animated;
+  navigationController = [(BuddyNavigationFlowNavigator *)selfCopy navigationController];
+  [(BFFNavigationController *)navigationController setViewControllers:location[0] animated:animatedCopy];
 
   objc_storeStrong(location, 0);
 }
@@ -93,105 +93,105 @@
 - (id)view
 {
   v2 = [(BuddyNavigationFlowNavigator *)self navigationController:a2];
-  v3 = [(BFFNavigationController *)v2 view];
+  view = [(BFFNavigationController *)v2 view];
 
-  return v3;
+  return view;
 }
 
-- (void)pushViewController:(id)a3 animated:(BOOL)a4
+- (void)pushViewController:(id)controller animated:(BOOL)animated
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [(BuddyNavigationFlowNavigator *)v6 navigationController];
-  [(BFFNavigationController *)v4 pushViewController:location[0] animated:1];
+  objc_storeStrong(location, controller);
+  navigationController = [(BuddyNavigationFlowNavigator *)selfCopy navigationController];
+  [(BFFNavigationController *)navigationController pushViewController:location[0] animated:1];
 
   objc_storeStrong(location, 0);
 }
 
-- (void)pushViewController:(id)a3 completion:(id)a4
+- (void)pushViewController:(id)controller completion:(id)completion
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
-  v5 = [(BuddyNavigationFlowNavigator *)v8 navigationController];
-  [(BFFNavigationController *)v5 pushViewController:location[0] completion:v6];
+  objc_storeStrong(&v6, completion);
+  navigationController = [(BuddyNavigationFlowNavigator *)selfCopy navigationController];
+  [(BFFNavigationController *)navigationController pushViewController:location[0] completion:v6];
 
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)pushViewController:(id)a3 usingShieldColor:(id)a4 completion:(id)a5
+- (void)pushViewController:(id)controller usingShieldColor:(id)color completion:(id)completion
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
+  objc_storeStrong(&v9, color);
   v8 = 0;
-  objc_storeStrong(&v8, a5);
-  v7 = [(BuddyNavigationFlowNavigator *)v11 navigationController];
-  [(BFFNavigationController *)v7 pushViewController:location[0] usingShieldColor:v9 completion:v8];
+  objc_storeStrong(&v8, completion);
+  navigationController = [(BuddyNavigationFlowNavigator *)selfCopy navigationController];
+  [(BFFNavigationController *)navigationController pushViewController:location[0] usingShieldColor:v9 completion:v8];
 
   objc_storeStrong(&v8, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 }
 
-- (id)popToViewController:(id)a3 animated:(BOOL)a4
+- (id)popToViewController:(id)controller animated:(BOOL)animated
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v8 = a4;
-  v5 = [(BuddyNavigationFlowNavigator *)v10 navigationController];
-  v6 = [(BFFNavigationController *)v5 popToViewController:location[0] animated:v8];
+  objc_storeStrong(location, controller);
+  animatedCopy = animated;
+  navigationController = [(BuddyNavigationFlowNavigator *)selfCopy navigationController];
+  v6 = [(BFFNavigationController *)navigationController popToViewController:location[0] animated:animatedCopy];
 
   objc_storeStrong(location, 0);
 
   return v6;
 }
 
-- (id)popToRootViewControllerAnimated:(BOOL)a3
+- (id)popToRootViewControllerAnimated:(BOOL)animated
 {
-  v6 = a3;
-  v3 = [(BuddyNavigationFlowNavigator *)self navigationController];
-  v4 = [(BFFNavigationController *)v3 popToRootViewControllerAnimated:v6];
+  animatedCopy = animated;
+  navigationController = [(BuddyNavigationFlowNavigator *)self navigationController];
+  v4 = [(BFFNavigationController *)navigationController popToRootViewControllerAnimated:animatedCopy];
 
   return v4;
 }
 
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v9 = a4;
+  objc_storeStrong(location, controller);
+  animatedCopy = animated;
   v8 = 0;
-  objc_storeStrong(&v8, a5);
-  v7 = [(BuddyNavigationFlowNavigator *)v11 navigationController];
-  [(BFFNavigationController *)v7 presentViewController:location[0] animated:v9 completion:v8];
+  objc_storeStrong(&v8, completion);
+  navigationController = [(BuddyNavigationFlowNavigator *)selfCopy navigationController];
+  [(BFFNavigationController *)navigationController presentViewController:location[0] animated:animatedCopy completion:v8];
 
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
-  v6 = a3;
+  animatedCopy = animated;
   v5 = 0;
-  objc_storeStrong(&v5, a4);
-  v4 = [(BuddyNavigationFlowNavigator *)v8 navigationController];
-  [(BFFNavigationController *)v4 dismissViewControllerAnimated:v6 completion:v5];
+  objc_storeStrong(&v5, completion);
+  navigationController = [(BuddyNavigationFlowNavigator *)selfCopy navigationController];
+  [(BFFNavigationController *)navigationController dismissViewControllerAnimated:animatedCopy completion:v5];
 
   objc_storeStrong(&v5, 0);
 }

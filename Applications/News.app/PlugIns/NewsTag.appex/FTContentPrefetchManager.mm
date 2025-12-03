@@ -1,8 +1,8 @@
 @interface FTContentPrefetchManager
 + (void)initialize;
 - (FTContentPrefetchManager)init;
-- (void)prefetchContentForBanner:(id)a3 withQualityOfService:(int64_t)a4 completionHandler:(id)a5;
-- (void)prefetchContentForHeadlines:(id)a3 withQualityOfService:(int64_t)a4 completionHandler:(id)a5;
+- (void)prefetchContentForBanner:(id)banner withQualityOfService:(int64_t)service completionHandler:(id)handler;
+- (void)prefetchContentForHeadlines:(id)headlines withQualityOfService:(int64_t)service completionHandler:(id)handler;
 @end
 
 @implementation FTContentPrefetchManager
@@ -23,9 +23,9 @@
   {
     v3 = [FCAssetManager alloc];
     v4 = FCURLForContainerizedUserAccountCachesDirectory();
-    v5 = [v4 path];
+    path = [v4 path];
     v6 = +[FCNetworkReachability sharedNetworkReachability];
-    v7 = [v3 initWithName:@"widget-assets" directory:v5 keyManager:0 avAssetFactory:0 resourceURLGenerator:0 networkBehaviorMonitor:0 networkReachability:v6];
+    v7 = [v3 initWithName:@"widget-assets" directory:path keyManager:0 avAssetFactory:0 resourceURLGenerator:0 networkBehaviorMonitor:0 networkReachability:v6];
 
     assetManager = v2->_assetManager;
     v2->_assetManager = v7;
@@ -37,10 +37,10 @@
   return v2;
 }
 
-- (void)prefetchContentForBanner:(id)a3 withQualityOfService:(int64_t)a4 completionHandler:(id)a5
+- (void)prefetchContentForBanner:(id)banner withQualityOfService:(int64_t)service completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
+  bannerCopy = banner;
+  handlerCopy = handler;
   v9 = PrefetchLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -49,11 +49,11 @@
   }
 
   v10 = dispatch_group_create();
-  if ([v7 imageMethod] == 2 && (objc_msgSend(v7, "imageURL"), v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
+  if ([bannerCopy imageMethod] == 2 && (objc_msgSend(bannerCopy, "imageURL"), v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
   {
-    v12 = [v7 imageURL];
-    v13 = [(FTContentPrefetchManager *)self assetManager];
-    v14 = [v13 assetHandleForCKAssetURL:v12 lifetimeHint:0];
+    imageURL = [bannerCopy imageURL];
+    assetManager = [(FTContentPrefetchManager *)self assetManager];
+    v14 = [assetManager assetHandleForCKAssetURL:imageURL lifetimeHint:0];
 
     dispatch_group_enter(v10);
     v23[0] = _NSConcreteStackBlock;
@@ -62,7 +62,7 @@
     v23[3] = &unk_1000D7298;
     v15 = v14;
     v24 = v15;
-    v25 = v7;
+    v25 = bannerCopy;
     v26 = v10;
     v16 = [v15 downloadIfNeededWithCompletion:v23];
   }
@@ -78,23 +78,23 @@
   v20[2] = sub_100011FB0;
   v20[3] = &unk_1000D72C0;
   v21 = v15;
-  v22 = v8;
+  v22 = handlerCopy;
   v20[4] = self;
   v18 = v15;
-  v19 = v8;
+  v19 = handlerCopy;
   dispatch_group_notify(v10, v17, v20);
 }
 
-- (void)prefetchContentForHeadlines:(id)a3 withQualityOfService:(int64_t)a4 completionHandler:(id)a5
+- (void)prefetchContentForHeadlines:(id)headlines withQualityOfService:(int64_t)service completionHandler:(id)handler
 {
-  v23 = a4;
-  v6 = a3;
-  v24 = a5;
+  serviceCopy = service;
+  headlinesCopy = headlines;
+  handlerCopy = handler;
   v7 = PrefetchLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v40 = [v6 count];
+    v40 = [headlinesCopy count];
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "prefetching content for %zd headlines", buf, 0xCu);
   }
 
@@ -104,7 +104,7 @@
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v9 = v6;
+  v9 = headlinesCopy;
   v10 = [v9 countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v10)
   {
@@ -120,13 +120,13 @@
         }
 
         v14 = *(*(&v34 + 1) + 8 * i);
-        v15 = [v14 flintDocumentURL];
-        if (v15)
+        flintDocumentURL = [v14 flintDocumentURL];
+        if (flintDocumentURL)
         {
-          v16 = [(FTContentPrefetchManager *)self assetManager];
-          v17 = [v16 assetHandleForCKAssetURL:v15 lifetimeHint:0];
+          assetManager = [(FTContentPrefetchManager *)self assetManager];
+          v17 = [assetManager assetHandleForCKAssetURL:flintDocumentURL lifetimeHint:0];
 
-          [v25 setObject:v17 forKeyedSubscript:v15];
+          [v25 setObject:v17 forKeyedSubscript:flintDocumentURL];
           dispatch_group_enter(v8);
           v30[0] = _NSConcreteStackBlock;
           v30[1] = 3221225472;
@@ -153,9 +153,9 @@
   block[3] = &unk_1000D72C0;
   block[4] = self;
   v28 = v25;
-  v29 = v24;
+  v29 = handlerCopy;
   v21 = v25;
-  v22 = v24;
+  v22 = handlerCopy;
   dispatch_group_notify(v8, v20, block);
 }
 

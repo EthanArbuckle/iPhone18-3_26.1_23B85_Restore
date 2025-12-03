@@ -1,6 +1,6 @@
 @interface CKIntroductionsButtonsChatItem
 - (BOOL)shouldShowIntroductionsLabel;
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4;
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets;
 - (CKIntroductionsButtonsChatItem)init;
 - (Class)cellClass;
 @end
@@ -16,41 +16,41 @@
 
 - (BOOL)shouldShowIntroductionsLabel
 {
-  v2 = self;
-  v3 = [(CKChatItem *)v2 IMChatItem];
-  if (v3)
+  selfCopy = self;
+  iMChatItem = [(CKChatItem *)selfCopy IMChatItem];
+  if (iMChatItem)
   {
-    v4 = v3;
+    v4 = iMChatItem;
     objc_opt_self();
     v5 = swift_dynamicCastObjCClass();
     if (v5)
     {
-      v6 = [v5 chatWantsIntroductionsLabel];
+      chatWantsIntroductionsLabel = [v5 chatWantsIntroductionsLabel];
       v7 = v4;
     }
 
     else
     {
-      v6 = 0;
-      v7 = v2;
-      v2 = v4;
+      chatWantsIntroductionsLabel = 0;
+      v7 = selfCopy;
+      selfCopy = v4;
     }
   }
 
   else
   {
-    v6 = 0;
+    chatWantsIntroductionsLabel = 0;
   }
 
-  return v6;
+  return chatWantsIntroductionsLabel;
 }
 
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = self;
-  v8 = CKIntroductionsButtonsChatItem.loadSizeThatFits(_:textAlignmentInsets:)(a4, width, height);
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
+  v8 = CKIntroductionsButtonsChatItem.loadSizeThatFits(_:textAlignmentInsets:)(insets, width, height);
   v10 = v9;
 
   v11 = v8;

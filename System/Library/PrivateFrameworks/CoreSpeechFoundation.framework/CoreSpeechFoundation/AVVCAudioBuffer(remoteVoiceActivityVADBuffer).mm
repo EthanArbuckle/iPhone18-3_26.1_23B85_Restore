@@ -6,10 +6,10 @@
 
 - (id)remoteVoiceActivityVADBuffer
 {
-  if ([a1 remoteVoiceActivityAvailable])
+  if ([self remoteVoiceActivityAvailable])
   {
-    v4 = [a1 remoteVoiceActivityVAD];
-    v2 = [MEMORY[0x1E695DEF0] dataWithBytes:&v4 length:1];
+    remoteVoiceActivityVAD = [self remoteVoiceActivityVAD];
+    v2 = [MEMORY[0x1E695DEF0] dataWithBytes:&remoteVoiceActivityVAD length:1];
   }
 
   else

@@ -1,6 +1,6 @@
 @interface UISegmentedControlSpringLoadedEffect
 - (UISegmentedControlSpringLoadedEffect)init;
-- (void)interaction:(id)a3 didChangeWithContext:(id)a4;
+- (void)interaction:(id)interaction didChangeWithContext:(id)context;
 @end
 
 @implementation UISegmentedControlSpringLoadedEffect
@@ -19,38 +19,38 @@
   return v2;
 }
 
-- (void)interaction:(id)a3 didChangeWithContext:(id)a4
+- (void)interaction:(id)interaction didChangeWithContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v15 = [v7 view];
-  v8 = [v6 targetItem];
-  v9 = [v8 integerValue];
+  contextCopy = context;
+  interactionCopy = interaction;
+  view = [interactionCopy view];
+  targetItem = [contextCopy targetItem];
+  integerValue = [targetItem integerValue];
 
-  v10 = [v15 _segmentAtIndex:v9];
-  [v6 setTargetView:v10];
+  v10 = [view _segmentAtIndex:integerValue];
+  [contextCopy setTargetView:v10];
 
-  v11 = [v6 state];
-  v12 = [(UISegmentedControlSpringLoadedEffect *)self blinkEffect];
-  [v12 interaction:v7 didChangeWithContext:v6];
+  state = [contextCopy state];
+  blinkEffect = [(UISegmentedControlSpringLoadedEffect *)self blinkEffect];
+  [blinkEffect interaction:interactionCopy didChangeWithContext:contextCopy];
 
   v13 = -1;
-  if (v11)
+  if (state)
   {
-    v14 = v15;
-    if (v11 != 3)
+    v14 = view;
+    if (state != 3)
     {
-      if (v11 != 1)
+      if (state != 1)
       {
         goto LABEL_6;
       }
 
-      v13 = v9;
+      v13 = integerValue;
     }
   }
 
-  [v15 _highlightSegment:v13];
-  v14 = v15;
+  [view _highlightSegment:v13];
+  v14 = view;
 LABEL_6:
 }
 

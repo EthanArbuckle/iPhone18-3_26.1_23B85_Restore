@@ -1,20 +1,20 @@
 @interface CSDConversationLocalParticipantBlobTracker
 - (void)handleConversationStateUpdated;
-- (void)invalidateLocalParticipantBlobWantsDeliveryOverPush:(BOOL)a3;
+- (void)invalidateLocalParticipantBlobWantsDeliveryOverPush:(BOOL)push;
 @end
 
 @implementation CSDConversationLocalParticipantBlobTracker
 
 - (void)handleConversationStateUpdated
 {
-  v2 = self;
+  selfCopy = self;
   sub_10034CD4C();
 }
 
-- (void)invalidateLocalParticipantBlobWantsDeliveryOverPush:(BOOL)a3
+- (void)invalidateLocalParticipantBlobWantsDeliveryOverPush:(BOOL)push
 {
-  v4 = self;
-  sub_10034D040(a3);
+  selfCopy = self;
+  sub_10034D040(push);
 }
 
 @end

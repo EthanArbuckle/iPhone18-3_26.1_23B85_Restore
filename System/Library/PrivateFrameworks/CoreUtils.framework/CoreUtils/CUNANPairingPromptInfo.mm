@@ -1,5 +1,5 @@
 @interface CUNANPairingPromptInfo
-- (CUNANPairingPromptInfo)initWithDataSession:(id)a3;
+- (CUNANPairingPromptInfo)initWithDataSession:(id)session;
 - (id)description;
 @end
 
@@ -20,7 +20,7 @@
   return v22;
 }
 
-- (CUNANPairingPromptInfo)initWithDataSession:(id)a3
+- (CUNANPairingPromptInfo)initWithDataSession:(id)session
 {
   v7.receiver = self;
   v7.super_class = CUNANPairingPromptInfo;

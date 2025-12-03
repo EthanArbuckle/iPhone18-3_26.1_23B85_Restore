@@ -1,60 +1,60 @@
 @interface BKTOCWebViewCellLoadRequest
-+ (BKTOCWebViewCellLoadRequest)loadRequestWithContents:(id)a3 template:(id)a4 fontFamily:(id)a5 fontSize:(double)a6 maxSpan:(double)a7 textColor:(id)a8 selectedColor:(id)a9 backgroundColor:(id)a10 baseURL:(id)a11 forObject:(id)a12;
-+ (BKTOCWebViewCellLoadRequest)loadRequestWithHTML:(id)a3 maxSpan:(double)a4 selectedColor:(id)a5 baseURL:(id)a6 forObject:(id)a7;
-+ (id)_generateCacheKey:(id)a3 maxSpan:(double)a4 baseURL:(id)a5;
++ (BKTOCWebViewCellLoadRequest)loadRequestWithContents:(id)contents template:(id)template fontFamily:(id)family fontSize:(double)size maxSpan:(double)span textColor:(id)color selectedColor:(id)selectedColor backgroundColor:(id)self0 baseURL:(id)self1 forObject:(id)self2;
++ (BKTOCWebViewCellLoadRequest)loadRequestWithHTML:(id)l maxSpan:(double)span selectedColor:(id)color baseURL:(id)rL forObject:(id)object;
++ (id)_generateCacheKey:(id)key maxSpan:(double)span baseURL:(id)l;
 - (BKTOCWebViewCellLoadDelegate)requester;
-- (BKTOCWebViewCellLoadRequest)initWithHTML:(id)a3 maxSpan:(double)a4 selectedColor:(id)a5 baseURL:(id)a6 forObject:(id)a7;
+- (BKTOCWebViewCellLoadRequest)initWithHTML:(id)l maxSpan:(double)span selectedColor:(id)color baseURL:(id)rL forObject:(id)object;
 - (NSString)cacheKey;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation BKTOCWebViewCellLoadRequest
 
-+ (BKTOCWebViewCellLoadRequest)loadRequestWithHTML:(id)a3 maxSpan:(double)a4 selectedColor:(id)a5 baseURL:(id)a6 forObject:(id)a7
++ (BKTOCWebViewCellLoadRequest)loadRequestWithHTML:(id)l maxSpan:(double)span selectedColor:(id)color baseURL:(id)rL forObject:(id)object
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a3;
-  v15 = [[BKTOCWebViewCellLoadRequest alloc] initWithHTML:v14 maxSpan:v13 selectedColor:v12 baseURL:v11 forObject:a4];
+  objectCopy = object;
+  rLCopy = rL;
+  colorCopy = color;
+  lCopy = l;
+  v15 = [[BKTOCWebViewCellLoadRequest alloc] initWithHTML:lCopy maxSpan:colorCopy selectedColor:rLCopy baseURL:objectCopy forObject:span];
 
   return v15;
 }
 
-+ (BKTOCWebViewCellLoadRequest)loadRequestWithContents:(id)a3 template:(id)a4 fontFamily:(id)a5 fontSize:(double)a6 maxSpan:(double)a7 textColor:(id)a8 selectedColor:(id)a9 backgroundColor:(id)a10 baseURL:(id)a11 forObject:(id)a12
++ (BKTOCWebViewCellLoadRequest)loadRequestWithContents:(id)contents template:(id)template fontFamily:(id)family fontSize:(double)size maxSpan:(double)span textColor:(id)color selectedColor:(id)selectedColor backgroundColor:(id)self0 baseURL:(id)self1 forObject:(id)self2
 {
-  v19 = a3;
-  v20 = a5;
-  v21 = a9;
-  v22 = a11;
-  v23 = a12;
-  v24 = a10;
-  v25 = a4;
-  v26 = [a8 bc_rgbaString];
-  v27 = [v24 bc_rgbaString];
+  contentsCopy = contents;
+  familyCopy = family;
+  selectedColorCopy = selectedColor;
+  lCopy = l;
+  objectCopy = object;
+  backgroundColorCopy = backgroundColor;
+  templateCopy = template;
+  bc_rgbaString = [color bc_rgbaString];
+  bc_rgbaString2 = [backgroundColorCopy bc_rgbaString];
 
   v38[0] = @"contents";
   v38[1] = @"fontFamily";
-  v36 = v19;
-  v39[0] = v19;
-  v39[1] = v20;
+  v36 = contentsCopy;
+  v39[0] = contentsCopy;
+  v39[1] = familyCopy;
   v38[2] = @"fontSize";
-  v28 = [NSNumber numberWithDouble:a6];
+  v28 = [NSNumber numberWithDouble:size];
   v39[2] = v28;
   v38[3] = @"maxSpan";
-  v29 = [NSNumber numberWithDouble:a7];
+  v29 = [NSNumber numberWithDouble:span];
   v39[3] = v29;
-  v39[4] = v26;
+  v39[4] = bc_rgbaString;
   v38[4] = @"textColor";
   v38[5] = @"backgroundColor";
-  v39[5] = v27;
+  v39[5] = bc_rgbaString2;
   v30 = [NSDictionary dictionaryWithObjects:v39 forKeys:v38 count:6];
 
   v37 = 0;
-  v31 = [v25 evaluateWithData:v30 error:&v37];
+  v31 = [templateCopy evaluateWithData:v30 error:&v37];
 
   v32 = v37;
-  if (v25)
+  if (templateCopy)
   {
     if (!v37)
     {
@@ -73,7 +73,7 @@
 
   sub_136DC4();
 LABEL_3:
-  v33 = [a1 loadRequestWithHTML:v31 maxSpan:v21 selectedColor:v22 baseURL:v23 forObject:{a7, a1}];
+  v33 = [self loadRequestWithHTML:v31 maxSpan:selectedColorCopy selectedColor:lCopy baseURL:objectCopy forObject:{span, self}];
 
   return v33;
 }
@@ -81,49 +81,49 @@ LABEL_3:
 - (NSString)cacheKey
 {
   v3 = objc_opt_class();
-  v4 = [(BKTOCWebViewCellLoadRequest *)self htmlContentString];
+  htmlContentString = [(BKTOCWebViewCellLoadRequest *)self htmlContentString];
   [(BKTOCWebViewCellLoadRequest *)self span];
   v6 = v5;
-  v7 = [(BKTOCWebViewCellLoadRequest *)self baseURL];
-  v8 = [v3 _generateCacheKey:v4 maxSpan:v7 baseURL:v6];
+  baseURL = [(BKTOCWebViewCellLoadRequest *)self baseURL];
+  v8 = [v3 _generateCacheKey:htmlContentString maxSpan:baseURL baseURL:v6];
 
   return v8;
 }
 
-+ (id)_generateCacheKey:(id)a3 maxSpan:(double)a4 baseURL:(id)a5
++ (id)_generateCacheKey:(id)key maxSpan:(double)span baseURL:(id)l
 {
-  v7 = a5;
-  v8 = a3;
+  lCopy = l;
+  keyCopy = key;
   v9 = [NSString alloc];
-  v10 = [NSNumber numberWithDouble:a4];
-  v11 = [v7 absoluteString];
+  v10 = [NSNumber numberWithDouble:span];
+  absoluteString = [lCopy absoluteString];
 
-  v12 = [v9 initWithFormat:@"%@-%@-%@", v8, v10, v11];
+  v12 = [v9 initWithFormat:@"%@-%@-%@", keyCopy, v10, absoluteString];
 
   return v12;
 }
 
-- (BKTOCWebViewCellLoadRequest)initWithHTML:(id)a3 maxSpan:(double)a4 selectedColor:(id)a5 baseURL:(id)a6 forObject:(id)a7
+- (BKTOCWebViewCellLoadRequest)initWithHTML:(id)l maxSpan:(double)span selectedColor:(id)color baseURL:(id)rL forObject:(id)object
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  lCopy = l;
+  colorCopy = color;
+  rLCopy = rL;
+  objectCopy = object;
   v22.receiver = self;
   v22.super_class = BKTOCWebViewCellLoadRequest;
   v16 = [(BKTOCWebViewCellLoadRequest *)&v22 init];
   if (v16)
   {
-    v17 = [v12 copy];
+    v17 = [lCopy copy];
     htmlContentString = v16->_htmlContentString;
     v16->_htmlContentString = v17;
 
-    v16->_span = a4;
-    objc_storeStrong(&v16->_baseURL, a6);
-    objc_storeWeak(&v16->_requester, v15);
-    if (v13)
+    v16->_span = span;
+    objc_storeStrong(&v16->_baseURL, rL);
+    objc_storeWeak(&v16->_requester, objectCopy);
+    if (colorCopy)
     {
-      v19 = v13;
+      v19 = colorCopy;
     }
 
     else
@@ -138,15 +138,15 @@ LABEL_3:
   return v16;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(BKTOCWebViewCellLoadRequest *)self htmlContentString];
+  htmlContentString = [(BKTOCWebViewCellLoadRequest *)self htmlContentString];
   [(BKTOCWebViewCellLoadRequest *)self span];
   v6 = v5;
-  v7 = [(BKTOCWebViewCellLoadRequest *)self selectedColor];
-  v8 = [(BKTOCWebViewCellLoadRequest *)self baseURL];
-  v9 = [(BKTOCWebViewCellLoadRequest *)self requester];
-  v10 = [BKTOCWebViewCellLoadRequest loadRequestWithHTML:v4 maxSpan:v7 selectedColor:v8 baseURL:v9 forObject:v6];
+  selectedColor = [(BKTOCWebViewCellLoadRequest *)self selectedColor];
+  baseURL = [(BKTOCWebViewCellLoadRequest *)self baseURL];
+  requester = [(BKTOCWebViewCellLoadRequest *)self requester];
+  v10 = [BKTOCWebViewCellLoadRequest loadRequestWithHTML:htmlContentString maxSpan:selectedColor selectedColor:baseURL baseURL:requester forObject:v6];
 
   return v10;
 }

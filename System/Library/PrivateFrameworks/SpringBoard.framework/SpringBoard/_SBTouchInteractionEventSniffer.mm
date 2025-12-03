@@ -1,7 +1,7 @@
 @interface _SBTouchInteractionEventSniffer
 - (SBWindowScene)windowScene;
 - (_SBTouchInteractionEventSnifferDelegate)delegate;
-- (void)handleEvent:(id)a3;
+- (void)handleEvent:(id)event;
 @end
 
 @implementation _SBTouchInteractionEventSniffer
@@ -13,14 +13,14 @@
   return WeakRetained;
 }
 
-- (void)handleEvent:(id)a3
+- (void)handleEvent:(id)event
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  WeakRetained = [a3 allTouches];
+  WeakRetained = [event allTouches];
   v5 = [WeakRetained countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {

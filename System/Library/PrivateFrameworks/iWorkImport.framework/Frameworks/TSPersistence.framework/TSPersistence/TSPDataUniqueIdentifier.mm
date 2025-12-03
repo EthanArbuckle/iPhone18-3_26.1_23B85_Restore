@@ -1,6 +1,6 @@
 @interface TSPDataUniqueIdentifier
 - (TSPDataUniqueIdentifier)init;
-- (TSPDataUniqueIdentifier)initWithDigest:(id)a3;
+- (TSPDataUniqueIdentifier)initWithDigest:(id)digest;
 @end
 
 @implementation TSPDataUniqueIdentifier
@@ -21,16 +21,16 @@
   objc_exception_throw(v13);
 }
 
-- (TSPDataUniqueIdentifier)initWithDigest:(id)a3
+- (TSPDataUniqueIdentifier)initWithDigest:(id)digest
 {
-  v5 = a3;
+  digestCopy = digest;
   v9.receiver = self;
   v9.super_class = TSPDataUniqueIdentifier;
   v6 = [(TSPDataUniqueIdentifier *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_digest, a3);
+    objc_storeStrong(&v6->_digest, digest);
   }
 
   return v7;

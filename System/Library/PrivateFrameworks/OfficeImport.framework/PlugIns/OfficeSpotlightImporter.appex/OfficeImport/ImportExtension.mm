@@ -1,59 +1,59 @@
 @interface ImportExtension
-- (BOOL)updateAttributes:(id)a3 forFileAtURL:(id)a4 error:(id *)a5;
+- (BOOL)updateAttributes:(id)attributes forFileAtURL:(id)l error:(id *)error;
 @end
 
 @implementation ImportExtension
 
-- (BOOL)updateAttributes:(id)a3 forFileAtURL:(id)a4 error:(id *)a5
+- (BOOL)updateAttributes:(id)attributes forFileAtURL:(id)l error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  attributesCopy = attributes;
+  lCopy = l;
   v10 = logForCSLogCategoryIndex();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    sub_100000C20(v9, v10);
+    sub_100000C20(lCopy, v10);
   }
 
   v11 = logForCSLogCategoryIndex();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    sub_100000C98(v8, v11);
+    sub_100000C98(attributesCopy, v11);
   }
 
-  v12 = self;
-  objc_sync_enter(v12);
-  if (!v12->_spotlightImporter)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_spotlightImporter)
   {
     v13 = objc_alloc_init(OISpotlightImporter);
-    spotlightImporter = v12->_spotlightImporter;
-    v12->_spotlightImporter = v13;
+    spotlightImporter = selfCopy->_spotlightImporter;
+    selfCopy->_spotlightImporter = v13;
   }
 
-  objc_sync_exit(v12);
+  objc_sync_exit(selfCopy);
 
-  v15 = [(OISpotlightImporter *)v12->_spotlightImporter searchableAttributesForOfficeFileAtURL:v9 error:a5];
+  v15 = [(OISpotlightImporter *)selfCopy->_spotlightImporter searchableAttributesForOfficeFileAtURL:lCopy error:error];
   if (v15)
   {
-    [v8 addAttributesFromAttributeSet:v15];
-    v16 = logForCSLogCategoryIndex();
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
+    [attributesCopy addAttributesFromAttributeSet:v15];
+    absoluteString = logForCSLogCategoryIndex();
+    if (os_log_type_enabled(absoluteString, OS_LOG_TYPE_DEBUG))
     {
-      sub_100000E4C(v16);
+      sub_100000E4C(absoluteString);
     }
   }
 
   else
   {
-    v16 = [v9 absoluteString];
+    absoluteString = [lCopy absoluteString];
     v17 = logForCSLogCategoryIndex();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      sub_100000D34(a5, v17);
+      sub_100000D34(error, v17);
     }
 
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
-      sub_100000DBC(v16, a5);
+      sub_100000DBC(absoluteString, error);
     }
   }
 

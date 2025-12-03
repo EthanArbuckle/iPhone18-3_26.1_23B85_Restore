@@ -1,25 +1,25 @@
 @interface VCAudioPayloadConfig
-- (BOOL)configure:(id)a3;
-- (VCAudioPayloadConfig)initWithConfigDict:(id)a3;
-- (float)qualityForBitRate:(unsigned int)a3;
+- (BOOL)configure:(id)configure;
+- (VCAudioPayloadConfig)initWithConfigDict:(id)dict;
+- (float)qualityForBitRate:(unsigned int)rate;
 - (id)className;
 - (id)description;
 - (unsigned)aacBitrate;
 - (unsigned)acc24Bitrate;
 - (unsigned)flags;
-- (void)applyCodecTypeWithConfiguration:(id)a3;
+- (void)applyCodecTypeWithConfiguration:(id)configuration;
 - (void)createSupportedBitrates;
 - (void)dealloc;
-- (void)setUseSBR:(BOOL)a3;
-- (void)setupEncodeProperties:(id)a3;
+- (void)setUseSBR:(BOOL)r;
+- (void)setupEncodeProperties:(id)properties;
 @end
 
 @implementation VCAudioPayloadConfig
 
-- (BOOL)configure:(id)a3
+- (BOOL)configure:(id)configure
 {
   v65 = *MEMORY[0x1E69E9840];
-  v5 = [a3 objectForKeyedSubscript:@"vcAudioPayloadConfigKeyPayloadType"];
+  v5 = [configure objectForKeyedSubscript:@"vcAudioPayloadConfigKeyPayloadType"];
   if (!v5)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -40,24 +40,24 @@
 
   self->_payload = [v5 intValue];
   p_payload = &self->_payload;
-  [(VCAudioPayloadConfig *)self applyCodecTypeWithConfiguration:a3];
-  v7 = [a3 objectForKeyedSubscript:@"vcPayloadConfigKeySampleRate"];
+  [(VCAudioPayloadConfig *)self applyCodecTypeWithConfiguration:configure];
+  v7 = [configure objectForKeyedSubscript:@"vcPayloadConfigKeySampleRate"];
   if (v7)
   {
-    v8 = [v7 intValue];
+    intValue = [v7 intValue];
   }
 
   else
   {
-    v8 = [VCPayloadUtils sampleRateForCodecType:self->_codecType];
-    if (!v8)
+    intValue = [VCPayloadUtils sampleRateForCodecType:self->_codecType];
+    if (!intValue)
     {
-      v8 = [VCPayloadUtils sampleRateForPayload:*p_payload];
+      intValue = [VCPayloadUtils sampleRateForPayload:*p_payload];
     }
   }
 
-  self->_codecSampleRate = v8;
-  if (!v8 && *p_payload != 117)
+  self->_codecSampleRate = intValue;
+  if (!intValue && *p_payload != 117)
   {
     if (VRTraceGetErrorLogLevelForModule() < 3)
     {
@@ -75,12 +75,12 @@
     return v11;
   }
 
-  v12 = [a3 objectForKeyedSubscript:@"vcAudioPayloadConfigKeyInputSampleRate"];
+  v12 = [configure objectForKeyedSubscript:@"vcAudioPayloadConfigKeyInputSampleRate"];
   if (v12)
   {
-    v13 = [v12 intValue];
-    self->_inputSampleRate = v13;
-    if (v13)
+    intValue2 = [v12 intValue];
+    self->_inputSampleRate = intValue2;
+    if (intValue2)
     {
       goto LABEL_16;
     }
@@ -99,19 +99,19 @@
 
   self->_inputSampleRate = codecSampleRate;
 LABEL_16:
-  v15 = [a3 objectForKeyedSubscript:@"vcPayloadConfigKeyInternalBundleFactor"];
+  v15 = [configure objectForKeyedSubscript:@"vcPayloadConfigKeyInternalBundleFactor"];
   if (v15)
   {
-    v16 = [v15 intValue];
+    intValue3 = [v15 intValue];
   }
 
   else
   {
-    v16 = [VCPayloadUtils internalBundleFactorForPayload:*p_payload];
+    intValue3 = [VCPayloadUtils internalBundleFactorForPayload:*p_payload];
   }
 
-  self->_internalBundleFactor = v16;
-  if (v16 - 4 <= 0xFFFFFFFC)
+  self->_internalBundleFactor = intValue3;
+  if (intValue3 - 4 <= 0xFFFFFFFC)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
     {
@@ -131,61 +131,61 @@ LABEL_75:
     return v11;
   }
 
-  v17 = [a3 objectForKeyedSubscript:@"vcAudioPayloadConfigKeyBlockSize"];
+  v17 = [configure objectForKeyedSubscript:@"vcAudioPayloadConfigKeyBlockSize"];
   if (v17)
   {
-    v18 = [v17 intValue];
+    intValue4 = [v17 intValue];
   }
 
   else
   {
-    v18 = [VCPayloadUtils codecSamplesPerFrameForCodecType:self->_codecType secondsPerFrame:0.02];
-    if (!v18)
+    intValue4 = [VCPayloadUtils codecSamplesPerFrameForCodecType:self->_codecType secondsPerFrame:0.02];
+    if (!intValue4)
     {
-      v18 = [VCPayloadUtils codecSamplesPerFrameForPayload:*p_payload blockSize:0.02];
+      intValue4 = [VCPayloadUtils codecSamplesPerFrameForPayload:*p_payload blockSize:0.02];
     }
   }
 
-  self->_blockSize = v18;
-  if (v18)
+  self->_blockSize = intValue4;
+  if (intValue4)
   {
-    v21 = self->_internalBundleFactor * v18;
+    v21 = self->_internalBundleFactor * intValue4;
     LODWORD(v20) = self->_codecSampleRate;
     LODWORD(v19) = self->_inputSampleRate;
     self->_codecSamplesPerFrame = v21;
     self->_inputSamplesPerFrame = vcvtpd_u64_f64(v19 / v20 * v21);
-    v22 = [a3 objectForKeyedSubscript:@"vcPayloadConfigKeyOctetAligned"];
+    v22 = [configure objectForKeyedSubscript:@"vcPayloadConfigKeyOctetAligned"];
     if (v22)
     {
-      v23 = [v22 BOOLValue];
+      bOOLValue = [v22 BOOLValue];
     }
 
     else
     {
-      v23 = 1;
+      bOOLValue = 1;
     }
 
-    self->_payloadOctetAligned = v23;
-    v24 = [a3 objectForKeyedSubscript:@"vcPayloadConfigKeyDTXEnabled"];
+    self->_payloadOctetAligned = bOOLValue;
+    v24 = [configure objectForKeyedSubscript:@"vcPayloadConfigKeyDTXEnabled"];
     if (v24)
     {
       LOBYTE(v24) = [v24 BOOLValue];
     }
 
     self->_isDTXEnabled = v24;
-    v25 = [a3 objectForKeyedSubscript:@"vcPayloadConfigKeyEVSSIDPeriod"];
+    v25 = [configure objectForKeyedSubscript:@"vcPayloadConfigKeyEVSSIDPeriod"];
     if (v25)
     {
-      v26 = [v25 intValue];
+      intValue5 = [v25 intValue];
     }
 
     else
     {
-      v26 = 8;
+      intValue5 = 8;
     }
 
-    self->_evsSIDPeriod = v26;
-    v27 = [a3 objectForKeyedSubscript:@"vcPayloadConfigKeyEVSChannelAwareOffset"];
+    self->_evsSIDPeriod = intValue5;
+    v27 = [configure objectForKeyedSubscript:@"vcPayloadConfigKeyEVSChannelAwareOffset"];
     if (v27)
     {
       LOWORD(v27) = [v27 intValue];
@@ -193,35 +193,35 @@ LABEL_75:
 
     self->_evsChannelAwareOffset = v27;
     self->_evsChannelAwareIndicator = 1;
-    v28 = [a3 objectForKeyedSubscript:@"vcPayloadConfigKeyEVSHeaderFullOnly"];
+    v28 = [configure objectForKeyedSubscript:@"vcPayloadConfigKeyEVSHeaderFullOnly"];
     if (v28)
     {
       LOBYTE(v28) = [v28 BOOLValue];
     }
 
     self->_evsHeaderFullOnly = v28;
-    v29 = [a3 objectForKeyedSubscript:@"vcPayloadConfigKeyEVSCMRMode"];
+    v29 = [configure objectForKeyedSubscript:@"vcPayloadConfigKeyEVSCMRMode"];
     if (v29)
     {
       LODWORD(v29) = [v29 integerValue];
     }
 
     self->_evsCMRMode = v29;
-    v30 = [a3 objectForKeyedSubscript:@"vcAudioPayloadConfigKeyOPUSInBandFecEnabled"];
+    v30 = [configure objectForKeyedSubscript:@"vcAudioPayloadConfigKeyOPUSInBandFecEnabled"];
     if (v30)
     {
       LOBYTE(v30) = [v30 BOOLValue];
     }
 
     self->_isOpusInBandFecEnabled = v30;
-    v31 = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcAudioPayloadConfigKeyOpusRestrictedLowDelayEnabled", "BOOLValue"}];
+    v31 = [objc_msgSend(configure objectForKeyedSubscript:{@"vcAudioPayloadConfigKeyOpusRestrictedLowDelayEnabled", "BOOLValue"}];
     self->_opusRestrictedLowDelayEnabled = v31;
     if (!self->_isOpusInBandFecEnabled && !v31 || *p_payload == 119)
     {
-      [(VCAudioPayloadConfig *)self setupEncodeProperties:a3];
+      [(VCAudioPayloadConfig *)self setupEncodeProperties:configure];
       if (HIWORD(self->_format) << 16 == 0x100000)
       {
-        v32 = [a3 objectForKeyedSubscript:@"vcPayloadConfigKeyUseSBR"];
+        v32 = [configure objectForKeyedSubscript:@"vcPayloadConfigKeyUseSBR"];
         if (v32)
         {
           -[VCAudioPayloadConfig setUseSBR:](self, "setUseSBR:", [v32 BOOLValue]);
@@ -233,14 +233,14 @@ LABEL_75:
         }
       }
 
-      v34 = [a3 objectForKeyedSubscript:@"vcAudioPayloadConfigKeyACC24FixedBitrateModeEnabled"];
+      v34 = [configure objectForKeyedSubscript:@"vcAudioPayloadConfigKeyACC24FixedBitrateModeEnabled"];
       if (v34)
       {
         LOBYTE(v34) = [v34 BOOLValue];
       }
 
       self->_isACC24FixedBitrateModeEnabled = v34;
-      v35 = [a3 objectForKeyedSubscript:@"vcAudioPayloadConfigKeyPayloadTypeOverride"];
+      v35 = [configure objectForKeyedSubscript:@"vcAudioPayloadConfigKeyPayloadTypeOverride"];
       if (v35)
       {
         *p_payload = [v35 intValue];
@@ -278,8 +278,8 @@ LABEL_75:
       *v57 = payload;
       *&v57[4] = 1024;
       *&v57[6] = isOpusInBandFecEnabled;
-      LOWORD(v58) = 1024;
-      *(&v58 + 2) = opusRestrictedLowDelayEnabled;
+      LOWORD(selfCopy) = 1024;
+      *(&selfCopy + 2) = opusRestrictedLowDelayEnabled;
       v41 = " [%s] %s:%d payload=%d Invalid payload configuration, isOpusInBandFecEnabled=%{BOOL}d opusRestrictedLowDelayEnabled=%{BOOL}d";
       v42 = v37;
       v43 = 46;
@@ -322,7 +322,7 @@ LABEL_75:
       v56 = 2112;
       *v57 = v33;
       *&v57[8] = 2048;
-      v58 = self;
+      selfCopy = self;
       v59 = 1024;
       v60 = v46;
       v61 = 1024;
@@ -354,9 +354,9 @@ LABEL_75:
   return v11;
 }
 
-- (void)setUseSBR:(BOOL)a3
+- (void)setUseSBR:(BOOL)r
 {
-  if (a3)
+  if (r)
   {
     v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:self->_supportedBitrates];
     [(NSArray *)v4 addObject:&unk_1F579BFB8];
@@ -489,7 +489,7 @@ LABEL_13:
   self->_supportedBitrates = [MEMORY[0x1E695DEC8] arrayWithObjects:v3 count:1];
 }
 
-- (void)setupEncodeProperties:(id)a3
+- (void)setupEncodeProperties:(id)properties
 {
   payload = self->_payload;
   if (payload <= 12)
@@ -531,9 +531,9 @@ LABEL_27:
   {
     case 0:
       self->_format = 4202304;
-      if ([a3 objectForKeyedSubscript:@"vcPayloadConfigKeyPreferredBitrate"])
+      if ([properties objectForKeyedSubscript:@"vcPayloadConfigKeyPreferredBitrate"])
       {
-        v8 = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcPayloadConfigKeyPreferredBitrate", "unsignedIntValue"}];
+        v8 = [objc_msgSend(properties objectForKeyedSubscript:{@"vcPayloadConfigKeyPreferredBitrate", "unsignedIntValue"}];
       }
 
       else
@@ -542,7 +542,7 @@ LABEL_27:
       }
 
       self->_bitrate = v8;
-      v18 = [a3 objectForKeyedSubscript:@"vcPayloadConfigKeyCodecBitrates"];
+      v18 = [properties objectForKeyedSubscript:@"vcPayloadConfigKeyCodecBitrates"];
       self->_supportedBitrates = v18;
       if (!v18)
       {
@@ -553,9 +553,9 @@ LABEL_27:
       return;
     case 1:
       self->_format = 4210304;
-      if ([a3 objectForKeyedSubscript:@"vcPayloadConfigKeyPreferredBitrate"])
+      if ([properties objectForKeyedSubscript:@"vcPayloadConfigKeyPreferredBitrate"])
       {
-        v14 = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcPayloadConfigKeyPreferredBitrate", "unsignedIntValue"}];
+        v14 = [objc_msgSend(properties objectForKeyedSubscript:{@"vcPayloadConfigKeyPreferredBitrate", "unsignedIntValue"}];
       }
 
       else
@@ -564,7 +564,7 @@ LABEL_27:
       }
 
       self->_bitrate = v14;
-      v19 = [a3 objectForKeyedSubscript:@"vcPayloadConfigKeyCodecBitrates"];
+      v19 = [properties objectForKeyedSubscript:@"vcPayloadConfigKeyCodecBitrates"];
       self->_supportedBitrates = v19;
       if (!v19)
       {
@@ -610,9 +610,9 @@ LABEL_18:
 LABEL_19:
       self->_format = v7;
       self->_bundleHeaderBytes = 1;
-      if ([a3 objectForKeyedSubscript:@"vcPayloadConfigKeyPreferredBitrate"])
+      if ([properties objectForKeyedSubscript:@"vcPayloadConfigKeyPreferredBitrate"])
       {
-        v13 = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcPayloadConfigKeyPreferredBitrate", "unsignedIntValue"}];
+        v13 = [objc_msgSend(properties objectForKeyedSubscript:{@"vcPayloadConfigKeyPreferredBitrate", "unsignedIntValue"}];
       }
 
       else
@@ -621,8 +621,8 @@ LABEL_19:
       }
 
       self->_bitrate = v13;
-      self->_supportedBitrates = [a3 objectForKeyedSubscript:@"vcPayloadConfigKeyCodecBitrates"];
-      self->_supportedBandwidths = [a3 objectForKeyedSubscript:@"vcAudioPayloadConfigKeySupportedBandwidths"];
+      self->_supportedBitrates = [properties objectForKeyedSubscript:@"vcPayloadConfigKeyCodecBitrates"];
+      self->_supportedBandwidths = [properties objectForKeyedSubscript:@"vcAudioPayloadConfigKeySupportedBandwidths"];
       if (!self->_supportedBitrates)
       {
 
@@ -681,7 +681,7 @@ LABEL_19:
   }
 }
 
-- (VCAudioPayloadConfig)initWithConfigDict:(id)a3
+- (VCAudioPayloadConfig)initWithConfigDict:(id)dict
 {
   v28 = *MEMORY[0x1E69E9840];
   v15.receiver = self;
@@ -690,7 +690,7 @@ LABEL_19:
   v5 = v4;
   if (v4)
   {
-    if ([(VCAudioPayloadConfig *)v4 configure:a3])
+    if ([(VCAudioPayloadConfig *)v4 configure:dict])
     {
       [(VCAudioPayloadConfig *)v5 updateDescription];
       if (objc_opt_class() == v5)
@@ -776,9 +776,9 @@ LABEL_14:
   [(VCAudioPayloadConfig *)&v3 dealloc];
 }
 
-- (float)qualityForBitRate:(unsigned int)a3
+- (float)qualityForBitRate:(unsigned int)rate
 {
-  v3 = *&a3;
+  v3 = *&rate;
   if ([VCPayloadUtils canSetBitrateForPayload:self->_payload])
   {
     if (!-[NSArray containsObject:](self->_supportedBitrates, "containsObject:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v3]))
@@ -851,11 +851,11 @@ LABEL_14:
   return v2;
 }
 
-- (void)applyCodecTypeWithConfiguration:(id)a3
+- (void)applyCodecTypeWithConfiguration:(id)configuration
 {
   v30 = *MEMORY[0x1E69E9840];
   self->_codecType = 0;
-  v4 = [a3 objectForKeyedSubscript:@"vcAudioPayloadConfigKeyCodecType"];
+  v4 = [configuration objectForKeyedSubscript:@"vcAudioPayloadConfigKeyCodecType"];
   if (v4)
   {
     self->_codecType = [v4 integerValue];
@@ -877,7 +877,7 @@ LABEL_14:
         v22 = v8;
         v23 = v9;
         v24 = 2048;
-        v25 = v10;
+        selfCopy = v10;
         v11 = " [%s] %s:%d codecType=%s[%ld]";
         v12 = v7;
         v13 = 48;
@@ -913,7 +913,7 @@ LABEL_13:
         v22 = 2112;
         v23 = v5;
         v24 = 2048;
-        v25 = self;
+        selfCopy = self;
         v26 = v16;
         v27 = v17;
         v28 = 2048;

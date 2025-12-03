@@ -1,19 +1,19 @@
 @interface WifiScannerCommonDarwin
-+ (id)channelDictsForChannels:(id)a3 withSupportedChannelDicts:(id)a4;
-+ (id)commonNetworkResultsToScanResults:(id)a3 withConverter:(id)a4;
-+ (id)dictionaryToScanSettings:(id)a3;
-+ (id)findChannel:(int)a3 in:(id)a4;
-+ (id)networkResultsToScanResults:(id)a3;
-+ (id)scanResultWithAge:(id)a3 bssid:(id)a4 ssid:(id)a5 channel:(id)a6 rssi:(id)a7 flags:(id)a8 adHoc:(BOOL)a9 captive:(BOOL)a10 mode:(id)a11 personalHotspot:(BOOL)a12;
-+ (id)scanSettingsToDictionary:(id)a3 usingSupportedChannels:(id)a4 logTo:(id)a5;
++ (id)channelDictsForChannels:(id)channels withSupportedChannelDicts:(id)dicts;
++ (id)commonNetworkResultsToScanResults:(id)results withConverter:(id)converter;
++ (id)dictionaryToScanSettings:(id)settings;
++ (id)findChannel:(int)channel in:(id)in;
++ (id)networkResultsToScanResults:(id)results;
++ (id)scanResultWithAge:(id)age bssid:(id)bssid ssid:(id)ssid channel:(id)channel rssi:(id)rssi flags:(id)flags adHoc:(BOOL)hoc captive:(BOOL)self0 mode:(id)self1 personalHotspot:(BOOL)self2;
++ (id)scanSettingsToDictionary:(id)dictionary usingSupportedChannels:(id)channels logTo:(id)to;
 @end
 
 @implementation WifiScannerCommonDarwin
 
-+ (id)dictionaryToScanSettings:(id)a3
++ (id)dictionaryToScanSettings:(id)settings
 {
-  v3 = a3;
-  v27 = [v3 objectForKeyedSubscript:@"SCAN_CHANNELS"];
+  settingsCopy = settings;
+  v27 = [settingsCopy objectForKeyedSubscript:@"SCAN_CHANNELS"];
   v4 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v27, "count")}];
   v30 = 0u;
   v31 = 0u;
@@ -80,34 +80,34 @@ LABEL_11:
   while (v10);
 LABEL_15:
 
-  v11 = [v3 objectForKeyedSubscript:@"SCAN_DWELL_TIME"];
-  v12 = [v11 intValue];
+  v11 = [settingsCopy objectForKeyedSubscript:@"SCAN_DWELL_TIME"];
+  intValue = [v11 intValue];
 
-  v13 = [v3 objectForKeyedSubscript:@"SCAN_INC_OFFCHANNEL_BSS"];
+  v13 = [settingsCopy objectForKeyedSubscript:@"SCAN_INC_OFFCHANNEL_BSS"];
   v14 = v13;
   if (v13)
   {
-    v15 = [v13 BOOLValue];
+    bOOLValue = [v13 BOOLValue];
   }
 
   else
   {
-    v15 = 0;
+    bOOLValue = 0;
   }
 
-  v16 = [v3 objectForKeyedSubscript:@"SCAN_TYPE"];
+  v16 = [settingsCopy objectForKeyedSubscript:@"SCAN_TYPE"];
   v17 = v16;
   if (v16)
   {
-    v18 = [v16 intValue];
-    if (v18 == 1)
+    intValue2 = [v16 intValue];
+    if (intValue2 == 1)
     {
       v19 = 1;
     }
 
     else
     {
-      v19 = 2 * (v18 == 2);
+      v19 = 2 * (intValue2 == 2);
     }
   }
 
@@ -116,33 +116,33 @@ LABEL_15:
     v19 = 0;
   }
 
-  v20 = [v3 objectForKeyedSubscript:@"SCAN_LOW_PRIORITY"];
+  v20 = [settingsCopy objectForKeyedSubscript:@"SCAN_LOW_PRIORITY"];
   v21 = v20;
   if (v20)
   {
-    v22 = [v20 BOOLValue];
+    bOOLValue2 = [v20 BOOLValue];
   }
 
   else
   {
-    v22 = 0;
+    bOOLValue2 = 0;
   }
 
   v23 = [WifiScannerSettings alloc];
   LODWORD(v24) = 2141192192;
-  v25 = [(WifiScannerSettings *)v23 initWithChannels:v4 dwell:v12 scanType:v19 includingOffChannelResults:v15 atDutyCycle:v22 asLowPriority:v24];
+  v25 = [(WifiScannerSettings *)v23 initWithChannels:v4 dwell:intValue scanType:v19 includingOffChannelResults:bOOLValue atDutyCycle:bOOLValue2 asLowPriority:v24];
 
   return v25;
 }
 
-+ (id)findChannel:(int)a3 in:(id)a4
++ (id)findChannel:(int)channel in:(id)in
 {
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = a4;
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v21 count:16];
+  inCopy = in;
+  v6 = [inCopy countByEnumeratingWithState:&v15 objects:v21 count:16];
   if (v6)
   {
     v7 = *v16;
@@ -152,13 +152,13 @@ LABEL_15:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(inCopy);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
         v10 = [v9 objectForKeyedSubscript:{@"SUP_CHANNEL", v15}];
         v11 = v10;
-        if (v10 && [v10 intValue] == a3)
+        if (v10 && [v10 intValue] == channel)
         {
           v19[0] = @"CHANNEL";
           v19[1] = @"CHANNEL_FLAGS";
@@ -171,7 +171,7 @@ LABEL_15:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v15 objects:v21 count:16];
+      v6 = [inCopy countByEnumeratingWithState:&v15 objects:v21 count:16];
       if (v6)
       {
         continue;
@@ -187,22 +187,22 @@ LABEL_12:
   return v12;
 }
 
-+ (id)channelDictsForChannels:(id)a3 withSupportedChannelDicts:(id)a4
++ (id)channelDictsForChannels:(id)channels withSupportedChannelDicts:(id)dicts
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  channelsCopy = channels;
+  dictsCopy = dicts;
+  if (channelsCopy)
   {
-    v7 = [v5 count];
+    v7 = [channelsCopy count];
     v8 = 0;
-    if (v6 && v7)
+    if (dictsCopy && v7)
     {
-      v8 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v5, "count")}];
+      v8 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(channelsCopy, "count")}];
       v17 = 0u;
       v18 = 0u;
       v15 = 0u;
       v16 = 0u;
-      v9 = v5;
+      v9 = channelsCopy;
       v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v10)
       {
@@ -216,7 +216,7 @@ LABEL_12:
               objc_enumerationMutation(v9);
             }
 
-            v13 = +[WifiScannerCommonDarwin findChannel:in:](WifiScannerCommonDarwin, "findChannel:in:", [*(*(&v15 + 1) + 8 * i) intValue], v6);
+            v13 = +[WifiScannerCommonDarwin findChannel:in:](WifiScannerCommonDarwin, "findChannel:in:", [*(*(&v15 + 1) + 8 * i) intValue], dictsCopy);
             if (v13)
             {
               [v8 addObject:v13];
@@ -239,30 +239,30 @@ LABEL_12:
   return v8;
 }
 
-+ (id)scanSettingsToDictionary:(id)a3 usingSupportedChannels:(id)a4 logTo:(id)a5
++ (id)scanSettingsToDictionary:(id)dictionary usingSupportedChannels:(id)channels logTo:(id)to
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  channelsCopy = channels;
   v8 = [[NSMutableDictionary alloc] initWithCapacity:4];
   [v8 setObject:&__kCFBooleanFalse forKey:@"SCAN_MERGE"];
-  if (!v6)
+  if (!dictionaryCopy)
   {
     [v8 setObject:&off_10044F2A0 forKey:@"SCAN_TYPE"];
     [v8 setObject:&off_10044F2B8 forKey:@"SCAN_DWELL_TIME"];
     goto LABEL_31;
   }
 
-  v9 = [v6 scanType];
-  if (v9)
+  scanType = [dictionaryCopy scanType];
+  if (scanType)
   {
-    if (v9 == 1)
+    if (scanType == 1)
     {
       v10 = &off_10044F2D0;
     }
 
     else
     {
-      if (v9 != 2)
+      if (scanType != 2)
       {
         if (qword_10045B050 != -1)
         {
@@ -273,7 +273,7 @@ LABEL_12:
         if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
         {
           v20 = 67109120;
-          LODWORD(v21) = [v6 scanType];
+          LODWORD(v21) = [dictionaryCopy scanType];
           _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "Unsupported scan type %d", &v20, 8u);
         }
 
@@ -287,14 +287,14 @@ LABEL_12:
   }
 
 LABEL_14:
-  if ([v6 lowPriorityScan])
+  if ([dictionaryCopy lowPriorityScan])
   {
     [v8 setObject:&__kCFBooleanTrue forKeyedSubscript:@"SCAN_LOW_PRIORITY"];
   }
 
   [v8 setObject:&__kCFBooleanTrue forKeyedSubscript:@"SCAN_TRIM_RESULTS"];
-  v12 = [v6 dwell];
-  if (v12 < 1)
+  dwell = [dictionaryCopy dwell];
+  if (dwell < 1)
   {
     if (qword_10045B050 != -1)
     {
@@ -305,25 +305,25 @@ LABEL_14:
     if (os_log_type_enabled(qword_10045B058, OS_LOG_TYPE_ERROR))
     {
       v20 = 134217984;
-      v21 = v12;
+      v21 = dwell;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Invalid dwell duration of %lld ms specified.  Default well time will be used", &v20, 0xCu);
     }
   }
 
   else
   {
-    v13 = [NSNumber numberWithLongLong:v12];
+    v13 = [NSNumber numberWithLongLong:dwell];
     [v8 setObject:v13 forKey:@"SCAN_DWELL_TIME"];
   }
 
-  if ([v6 includeOffChannelResults])
+  if ([dictionaryCopy includeOffChannelResults])
   {
     [v8 setObject:&__kCFBooleanTrue forKey:@"SCAN_INC_OFFCHANNEL_BSS"];
   }
 
-  v15 = [v6 channels];
-  v16 = v7[2](v7);
-  v17 = [WifiScannerCommonDarwin channelDictsForChannels:v15 withSupportedChannelDicts:v16];
+  channels = [dictionaryCopy channels];
+  v16 = channelsCopy[2](channelsCopy);
+  v17 = [WifiScannerCommonDarwin channelDictsForChannels:channels withSupportedChannelDicts:v16];
 
   if (v17)
   {
@@ -350,28 +350,28 @@ LABEL_31:
   return v8;
 }
 
-+ (id)scanResultWithAge:(id)a3 bssid:(id)a4 ssid:(id)a5 channel:(id)a6 rssi:(id)a7 flags:(id)a8 adHoc:(BOOL)a9 captive:(BOOL)a10 mode:(id)a11 personalHotspot:(BOOL)a12
++ (id)scanResultWithAge:(id)age bssid:(id)bssid ssid:(id)ssid channel:(id)channel rssi:(id)rssi flags:(id)flags adHoc:(BOOL)hoc captive:(BOOL)self0 mode:(id)self1 personalHotspot:(BOOL)self2
 {
-  v17 = a3;
-  v33 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a11;
+  ageCopy = age;
+  bssidCopy = bssid;
+  ssidCopy = ssid;
+  channelCopy = channel;
+  rssiCopy = rssi;
+  flagsCopy = flags;
+  modeCopy = mode;
   v23 = [WifiScanResult alloc];
-  if (v17)
+  if (ageCopy)
   {
-    [v17 floatValue];
+    [ageCopy floatValue];
     v25 = v24;
-    if (v19)
+    if (channelCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
-    v26 = 4294966296;
-    if (v20)
+    intValue = 4294966296;
+    if (rssiCopy)
     {
       goto LABEL_4;
     }
@@ -380,60 +380,60 @@ LABEL_6:
   }
 
   v25 = NAN;
-  if (!v19)
+  if (!channelCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  v26 = [v19 intValue];
-  if (v20)
+  intValue = [channelCopy intValue];
+  if (rssiCopy)
   {
 LABEL_4:
-    v27 = [v20 intValue];
+    intValue2 = [rssiCopy intValue];
     goto LABEL_8;
   }
 
 LABEL_7:
-  v27 = 2000000000;
+  intValue2 = 2000000000;
 LABEL_8:
-  v28 = [v21 unsignedIntValue];
-  if (v22)
+  unsignedIntValue = [flagsCopy unsignedIntValue];
+  if (modeCopy)
   {
-    v29 = [v22 intValue];
+    intValue3 = [modeCopy intValue];
   }
 
   else
   {
-    v29 = -2000000000;
+    intValue3 = -2000000000;
   }
 
-  HIDWORD(v32) = v29;
-  BYTE2(v32) = a10;
-  BYTE1(v32) = a12;
-  LOBYTE(v32) = a9;
-  v30 = [WifiScanResult initWithAge:v23 bssid:"initWithAge:bssid:ssid:channel:rssi:flags:adHoc:personalHotspot:captive:mode:" ssid:(v25 * 1000000.0) channel:v33 rssi:v18 flags:v26 adHoc:v27 personalHotspot:v28 captive:v32 mode:?];
+  HIDWORD(v32) = intValue3;
+  BYTE2(v32) = captive;
+  BYTE1(v32) = hotspot;
+  LOBYTE(v32) = hoc;
+  v30 = [WifiScanResult initWithAge:v23 bssid:"initWithAge:bssid:ssid:channel:rssi:flags:adHoc:personalHotspot:captive:mode:" ssid:(v25 * 1000000.0) channel:bssidCopy rssi:ssidCopy flags:intValue adHoc:intValue2 personalHotspot:unsignedIntValue captive:v32 mode:?];
 
   return v30;
 }
 
-+ (id)networkResultsToScanResults:(id)a3
++ (id)networkResultsToScanResults:(id)results
 {
-  v3 = [WifiScannerCommonDarwin commonNetworkResultsToScanResults:a3 withConverter:&stru_100448448];
+  v3 = [WifiScannerCommonDarwin commonNetworkResultsToScanResults:results withConverter:&stru_100448448];
 
   return v3;
 }
 
-+ (id)commonNetworkResultsToScanResults:(id)a3 withConverter:(id)a4
++ (id)commonNetworkResultsToScanResults:(id)results withConverter:(id)converter
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v5, "count")}];
+  resultsCopy = results;
+  converterCopy = converter;
+  v7 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(resultsCopy, "count")}];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = v5;
+  v8 = resultsCopy;
   v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
@@ -447,7 +447,7 @@ LABEL_8:
           objc_enumerationMutation(v8);
         }
 
-        v12 = v6[2](v6, *(*(&v14 + 1) + 8 * i));
+        v12 = converterCopy[2](converterCopy, *(*(&v14 + 1) + 8 * i));
         [v7 addObject:{v12, v14}];
       }
 

@@ -1,51 +1,51 @@
 @interface SFTranscription
-- (BOOL)isEqual:(id)a3;
-- (SFTranscription)initWithCoder:(id)a3;
-- (id)_initWithSegments:(id)a3 formattedString:(id)a4 speakingRate:(double)a5 averagePauseDuration:(double)a6;
+- (BOOL)isEqual:(id)equal;
+- (SFTranscription)initWithCoder:(id)coder;
+- (id)_initWithSegments:(id)segments formattedString:(id)string speakingRate:(double)rate averagePauseDuration:(double)duration;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFTranscription
 
-- (id)_initWithSegments:(id)a3 formattedString:(id)a4 speakingRate:(double)a5 averagePauseDuration:(double)a6
+- (id)_initWithSegments:(id)segments formattedString:(id)string speakingRate:(double)rate averagePauseDuration:(double)duration
 {
-  v10 = a3;
-  v11 = a4;
+  segmentsCopy = segments;
+  stringCopy = string;
   v18.receiver = self;
   v18.super_class = SFTranscription;
   v12 = [(SFTranscription *)&v18 init];
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [segmentsCopy copy];
     segments = v12->_segments;
     v12->_segments = v13;
 
-    v15 = [v11 copy];
+    v15 = [stringCopy copy];
     formattedString = v12->_formattedString;
     v12->_formattedString = v15;
 
-    v12->_speakingRate = a5;
-    v12->_averagePauseDuration = a6;
+    v12->_speakingRate = rate;
+    v12->_averagePauseDuration = duration;
   }
 
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   segments = self->_segments;
-  v5 = a3;
-  [v5 encodeObject:segments forKey:@"_segments"];
-  [v5 encodeObject:self->_formattedString forKey:@"_formattedString"];
-  [v5 encodeDouble:@"_speakingRate" forKey:self->_speakingRate];
-  [v5 encodeDouble:@"_avgPauseDuration" forKey:self->_averagePauseDuration];
+  coderCopy = coder;
+  [coderCopy encodeObject:segments forKey:@"_segments"];
+  [coderCopy encodeObject:self->_formattedString forKey:@"_formattedString"];
+  [coderCopy encodeDouble:@"_speakingRate" forKey:self->_speakingRate];
+  [coderCopy encodeDouble:@"_avgPauseDuration" forKey:self->_averagePauseDuration];
 }
 
-- (SFTranscription)initWithCoder:(id)a3
+- (SFTranscription)initWithCoder:(id)coder
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = SFTranscription;
   v5 = [(SFTranscription *)&v17 init];
@@ -56,17 +56,17 @@
     v18[1] = objc_opt_class();
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
     v8 = [v6 setWithArray:v7];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"_segments"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"_segments"];
     segments = v5->_segments;
     v5->_segments = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_formattedString"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_formattedString"];
     formattedString = v5->_formattedString;
     v5->_formattedString = v11;
 
-    [v4 decodeDoubleForKey:@"_speakingRate"];
+    [coderCopy decodeDoubleForKey:@"_speakingRate"];
     v5->_speakingRate = v13;
-    [v4 decodeDoubleForKey:@"_avgPauseDuration"];
+    [coderCopy decodeDoubleForKey:@"_avgPauseDuration"];
     v5->_averagePauseDuration = v14;
   }
 
@@ -84,18 +84,18 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v7 = 0;
   if (objc_opt_isKindOfClass())
   {
     segments = self->_segments;
-    if (segments == v4[2] || [(NSArray *)segments isEqual:?])
+    if (segments == equalCopy[2] || [(NSArray *)segments isEqual:?])
     {
       formattedString = self->_formattedString;
-      if (formattedString == v4[1] || [(NSString *)formattedString isEqual:?])
+      if (formattedString == equalCopy[1] || [(NSString *)formattedString isEqual:?])
       {
         v7 = 1;
       }

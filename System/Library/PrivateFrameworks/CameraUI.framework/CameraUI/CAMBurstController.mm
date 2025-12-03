@@ -1,39 +1,39 @@
 @interface CAMBurstController
 - (CAMBurstController)init;
-- (CAMBurstController)initWithProtectionController:(id)a3 powerController:(id)a4 remoteShutterController:(id)a5;
+- (CAMBurstController)initWithProtectionController:(id)controller powerController:(id)powerController remoteShutterController:(id)shutterController;
 - (CAMBurstDelegate)burstDelegate;
 - (CAMPersistenceController)_persistenceController;
 - (NSString)currentBurstIdentifier;
-- (id)startBurstCaptureWithPersistenceUUID:(id)a3;
+- (id)startBurstCaptureWithPersistenceUUID:(id)d;
 - (unint64_t)currentBurstCount;
-- (unint64_t)estimatedCountForIdentifier:(id)a3;
-- (unint64_t)inflightCountForIdentifier:(id)a3;
-- (void)_mutexQueueProcessCompleteBurstSessionWithIdentifier:(id)a3 device:(int64_t)a4;
+- (unint64_t)estimatedCountForIdentifier:(id)identifier;
+- (unint64_t)inflightCountForIdentifier:(id)identifier;
+- (void)_mutexQueueProcessCompleteBurstSessionWithIdentifier:(id)identifier device:(int64_t)device;
 - (void)cancelBurstCapture;
-- (void)finishBurstCaptureForDevice:(int64_t)a3;
-- (void)processCapturedRequest:(id)a3 withResult:(id)a4;
-- (void)processEnqueuedRequest:(id)a3;
-- (void)processFaceResults:(id)a3;
-- (void)processPersistedRequest:(id)a3 withResult:(id)a4;
-- (void)setPersistenceController:(id)a3;
+- (void)finishBurstCaptureForDevice:(int64_t)device;
+- (void)processCapturedRequest:(id)request withResult:(id)result;
+- (void)processEnqueuedRequest:(id)request;
+- (void)processFaceResults:(id)results;
+- (void)processPersistedRequest:(id)request withResult:(id)result;
+- (void)setPersistenceController:(id)controller;
 @end
 
 @implementation CAMBurstController
 
-- (CAMBurstController)initWithProtectionController:(id)a3 powerController:(id)a4 remoteShutterController:(id)a5
+- (CAMBurstController)initWithProtectionController:(id)controller powerController:(id)powerController remoteShutterController:(id)shutterController
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  controllerCopy = controller;
+  powerControllerCopy = powerController;
+  shutterControllerCopy = shutterController;
   v26.receiver = self;
   v26.super_class = CAMBurstController;
   v12 = [(CAMBurstController *)&v26 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->__protectionController, a3);
-    objc_storeStrong(&v13->__powerController, a4);
-    objc_storeStrong(&v13->__remoteShutterController, a5);
+    objc_storeStrong(&v12->__protectionController, controller);
+    objc_storeStrong(&v13->__powerController, powerController);
+    objc_storeStrong(&v13->__remoteShutterController, shutterController);
     v14 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_UTILITY, 0);
     v15 = dispatch_queue_create("com.apple.camera.burst-controller.analysis-queue", v14);
     analysisQueue = v13->__analysisQueue;
@@ -97,17 +97,17 @@ void __91__CAMBurstController_initWithProtectionController_powerController_remot
   return [(CAMBurstController *)self initWithProtectionController:0 powerController:0 remoteShutterController:0];
 }
 
-- (void)setPersistenceController:(id)a3
+- (void)setPersistenceController:(id)controller
 {
-  objc_initWeak(&location, a3);
-  v4 = [(CAMBurstController *)self _mutexQueue];
+  objc_initWeak(&location, controller);
+  _mutexQueue = [(CAMBurstController *)self _mutexQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __47__CAMBurstController_setPersistenceController___block_invoke;
   block[3] = &unk_1E76FC960;
   block[4] = self;
   objc_copyWeak(&v6, &location);
-  dispatch_sync(v4, block);
+  dispatch_sync(_mutexQueue, block);
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -127,19 +127,19 @@ void __47__CAMBurstController_setPersistenceController___block_invoke(uint64_t a
   v10 = __Block_byref_object_copy__18;
   v11 = __Block_byref_object_dispose__18;
   v12 = 0;
-  v3 = [(CAMBurstController *)self _mutexQueue];
+  _mutexQueue = [(CAMBurstController *)self _mutexQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __44__CAMBurstController_currentBurstIdentifier__block_invoke;
   v6[3] = &unk_1E76FAFF0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(_mutexQueue, v6);
 
-  v4 = [v8[5] identifier];
+  identifier = [v8[5] identifier];
   _Block_object_dispose(&v7, 8);
 
-  return v4;
+  return identifier;
 }
 
 uint64_t __44__CAMBurstController_currentBurstIdentifier__block_invoke(uint64_t a1)
@@ -160,14 +160,14 @@ uint64_t __44__CAMBurstController_currentBurstIdentifier__block_invoke(uint64_t 
   v10 = __Block_byref_object_copy__18;
   v11 = __Block_byref_object_dispose__18;
   v12 = 0;
-  v3 = [(CAMBurstController *)self _mutexQueue];
+  _mutexQueue = [(CAMBurstController *)self _mutexQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __39__CAMBurstController_currentBurstCount__block_invoke;
   v6[3] = &unk_1E76FAFF0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(_mutexQueue, v6);
 
   v4 = [v8[5] count];
   _Block_object_dispose(&v7, 8);
@@ -185,25 +185,25 @@ uint64_t __39__CAMBurstController_currentBurstCount__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (id)startBurstCaptureWithPersistenceUUID:(id)a3
+- (id)startBurstCaptureWithPersistenceUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__18;
   v16 = __Block_byref_object_dispose__18;
   v17 = 0;
-  v5 = [(CAMBurstController *)self _mutexQueue];
+  _mutexQueue = [(CAMBurstController *)self _mutexQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __59__CAMBurstController_startBurstCaptureWithPersistenceUUID___block_invoke;
   block[3] = &unk_1E76FB778;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = dCopy;
+  dispatch_sync(_mutexQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -232,27 +232,27 @@ void __59__CAMBurstController_startBurstCaptureWithPersistenceUUID___block_invok
   [v9 startProtectingNebulaDaemonWritesForIdentifier:*(*(*(a1 + 48) + 8) + 40)];
 }
 
-- (void)_mutexQueueProcessCompleteBurstSessionWithIdentifier:(id)a3 device:(int64_t)a4
+- (void)_mutexQueueProcessCompleteBurstSessionWithIdentifier:(id)identifier device:(int64_t)device
 {
-  v6 = a3;
-  if (v6)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v7 = [(CAMBurstController *)self _protectionController];
-    v8 = [(CAMBurstController *)self _persistenceController];
-    v9 = [(CAMBurstController *)self _powerController];
+    _protectionController = [(CAMBurstController *)self _protectionController];
+    _persistenceController = [(CAMBurstController *)self _persistenceController];
+    _powerController = [(CAMBurstController *)self _powerController];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __82__CAMBurstController__mutexQueueProcessCompleteBurstSessionWithIdentifier_device___block_invoke;
     v13[3] = &unk_1E76FCA00;
     v13[4] = self;
-    v14 = v6;
-    v15 = v9;
-    v17 = v7;
-    v18 = a4;
-    v16 = v8;
-    v10 = v7;
-    v11 = v8;
-    v12 = v9;
+    v14 = identifierCopy;
+    v15 = _powerController;
+    v17 = _protectionController;
+    deviceCopy = device;
+    v16 = _persistenceController;
+    v10 = _protectionController;
+    v11 = _persistenceController;
+    v12 = _powerController;
     [v11 performDeferredRemotePersistenceWithCompletionHandler:v13];
   }
 }
@@ -400,16 +400,16 @@ uint64_t __82__CAMBurstController__mutexQueueProcessCompleteBurstSessionWithIden
   return result;
 }
 
-- (void)finishBurstCaptureForDevice:(int64_t)a3
+- (void)finishBurstCaptureForDevice:(int64_t)device
 {
-  v5 = [(CAMBurstController *)self _mutexQueue];
+  _mutexQueue = [(CAMBurstController *)self _mutexQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __50__CAMBurstController_finishBurstCaptureForDevice___block_invoke;
   v6[3] = &unk_1E76F7A38;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_sync(v5, v6);
+  v6[5] = device;
+  dispatch_sync(_mutexQueue, v6);
 }
 
 void __50__CAMBurstController_finishBurstCaptureForDevice___block_invoke(uint64_t a1)
@@ -427,27 +427,27 @@ void __50__CAMBurstController_finishBurstCaptureForDevice___block_invoke(uint64_
 
 - (void)cancelBurstCapture
 {
-  v5 = [(CAMBurstController *)self _activeSession];
-  v3 = [v5 identifier];
+  _activeSession = [(CAMBurstController *)self _activeSession];
+  identifier = [_activeSession identifier];
   [(CAMBurstController *)self _setActiveSession:0];
-  v4 = [(CAMBurstController *)self _protectionController];
-  [v4 stopProtectingBurstProcessingForIdentifier:v3];
-  [v4 stopProtectingNebulaDaemonWritesForIdentifier:v3];
+  _protectionController = [(CAMBurstController *)self _protectionController];
+  [_protectionController stopProtectingBurstProcessingForIdentifier:identifier];
+  [_protectionController stopProtectingNebulaDaemonWritesForIdentifier:identifier];
 }
 
-- (void)processEnqueuedRequest:(id)a3
+- (void)processEnqueuedRequest:(id)request
 {
-  v4 = [a3 burstIdentifier];
-  if (v4)
+  burstIdentifier = [request burstIdentifier];
+  if (burstIdentifier)
   {
-    v5 = [(CAMBurstController *)self _mutexQueue];
+    _mutexQueue = [(CAMBurstController *)self _mutexQueue];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __45__CAMBurstController_processEnqueuedRequest___block_invoke;
     v7[3] = &unk_1E76F7960;
     v7[4] = self;
-    v8 = v4;
-    dispatch_sync(v5, v7);
+    v8 = burstIdentifier;
+    dispatch_sync(_mutexQueue, v7);
   }
 
   else
@@ -474,21 +474,21 @@ void __45__CAMBurstController_processEnqueuedRequest___block_invoke(uint64_t a1)
   }
 }
 
-- (void)processCapturedRequest:(id)a3 withResult:(id)a4
+- (void)processCapturedRequest:(id)request withResult:(id)result
 {
-  v6 = a4;
-  v7 = [a3 burstIdentifier];
-  if (v7)
+  resultCopy = result;
+  burstIdentifier = [request burstIdentifier];
+  if (burstIdentifier)
   {
-    v8 = [(CAMBurstController *)self _mutexQueue];
+    _mutexQueue = [(CAMBurstController *)self _mutexQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __56__CAMBurstController_processCapturedRequest_withResult___block_invoke;
     block[3] = &unk_1E76F7938;
     block[4] = self;
-    v11 = v7;
-    v12 = v6;
-    dispatch_sync(v8, block);
+    v11 = burstIdentifier;
+    v12 = resultCopy;
+    dispatch_sync(_mutexQueue, block);
   }
 
   else
@@ -515,23 +515,23 @@ void __56__CAMBurstController_processCapturedRequest_withResult___block_invoke(u
   }
 }
 
-- (void)processPersistedRequest:(id)a3 withResult:(id)a4
+- (void)processPersistedRequest:(id)request withResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 burstIdentifier];
-  if (v8)
+  requestCopy = request;
+  resultCopy = result;
+  burstIdentifier = [requestCopy burstIdentifier];
+  if (burstIdentifier)
   {
-    v9 = [(CAMBurstController *)self _mutexQueue];
+    _mutexQueue = [(CAMBurstController *)self _mutexQueue];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __57__CAMBurstController_processPersistedRequest_withResult___block_invoke;
     v11[3] = &unk_1E76F8230;
     v11[4] = self;
-    v12 = v8;
-    v13 = v7;
-    v14 = v6;
-    dispatch_sync(v9, v11);
+    v12 = burstIdentifier;
+    v13 = resultCopy;
+    v14 = requestCopy;
+    dispatch_sync(_mutexQueue, v11);
   }
 
   else
@@ -565,18 +565,18 @@ void __57__CAMBurstController_processPersistedRequest_withResult___block_invoke(
   }
 }
 
-- (void)processFaceResults:(id)a3
+- (void)processFaceResults:(id)results
 {
-  v4 = a3;
-  v5 = [(CAMBurstController *)self _mutexQueue];
+  resultsCopy = results;
+  _mutexQueue = [(CAMBurstController *)self _mutexQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __41__CAMBurstController_processFaceResults___block_invoke;
   v7[3] = &unk_1E76F7960;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = resultsCopy;
+  v6 = resultsCopy;
+  dispatch_sync(_mutexQueue, v7);
 }
 
 void __41__CAMBurstController_processFaceResults___block_invoke(uint64_t a1)
@@ -600,23 +600,23 @@ void __41__CAMBurstController_processFaceResults___block_invoke(uint64_t a1)
   }
 }
 
-- (unint64_t)estimatedCountForIdentifier:(id)a3
+- (unint64_t)estimatedCountForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v5 = [(CAMBurstController *)self _mutexQueue];
+  _mutexQueue = [(CAMBurstController *)self _mutexQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __50__CAMBurstController_estimatedCountForIdentifier___block_invoke;
   block[3] = &unk_1E76FCA28;
   block[4] = self;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = identifierCopy;
+  dispatch_sync(_mutexQueue, block);
 
   v7 = v13[3];
   _Block_object_dispose(&v12, 8);
@@ -630,23 +630,23 @@ void __50__CAMBurstController_estimatedCountForIdentifier___block_invoke(uint64_
   *(*(*(a1 + 48) + 8) + 24) = [v2 estimatedCount];
 }
 
-- (unint64_t)inflightCountForIdentifier:(id)a3
+- (unint64_t)inflightCountForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v5 = [(CAMBurstController *)self _mutexQueue];
+  _mutexQueue = [(CAMBurstController *)self _mutexQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __49__CAMBurstController_inflightCountForIdentifier___block_invoke;
   block[3] = &unk_1E76FB778;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = identifierCopy;
+  dispatch_sync(_mutexQueue, block);
 
   v7 = v13[3];
   _Block_object_dispose(&v12, 8);

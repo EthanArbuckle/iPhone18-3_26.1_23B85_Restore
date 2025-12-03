@@ -1,11 +1,11 @@
 @interface FMDExtBluetoothDiscoveryFactory
-+ (id)configurationDictWithBleDevice:(id)a3;
++ (id)configurationDictWithBleDevice:(id)device;
 - (BOOL)isDiscoveryActive;
 - (FMDExtBluetoothDiscoveryFactory)init;
 - (id)newDiscovery;
-- (void)didDiscoverDevice:(id)a3;
-- (void)didLoseDevice:(id)a3;
-- (void)setAllAudioChannelsActive:(BOOL)a3;
+- (void)didDiscoverDevice:(id)device;
+- (void)didLoseDevice:(id)device;
+- (void)setAllAudioChannelsActive:(BOOL)active;
 - (void)setupDiscovery;
 @end
 
@@ -27,18 +27,18 @@
 
 - (id)newDiscovery
 {
-  v2 = [(FMDExtBluetoothDiscoveryFactory *)self discoveryCoordinator];
-  v3 = [v2 newDiscovery];
+  discoveryCoordinator = [(FMDExtBluetoothDiscoveryFactory *)self discoveryCoordinator];
+  newDiscovery = [discoveryCoordinator newDiscovery];
 
-  return v3;
+  return newDiscovery;
 }
 
 - (BOOL)isDiscoveryActive
 {
-  v2 = [(FMDExtBluetoothDiscoveryFactory *)self discoveryCoordinator];
-  v3 = [v2 isDiscoveryActive];
+  discoveryCoordinator = [(FMDExtBluetoothDiscoveryFactory *)self discoveryCoordinator];
+  isDiscoveryActive = [discoveryCoordinator isDiscoveryActive];
 
-  return v3;
+  return isDiscoveryActive;
 }
 
 - (void)setupDiscovery
@@ -65,32 +65,32 @@
   v18[2] = sub_100009E6C;
   v18[3] = &unk_10001D3E0;
   objc_copyWeak(&v19, &location);
-  v8 = [(FMDExtBluetoothDiscoveryFactory *)self discoveryCoordinator];
-  [v8 setDidDiscoverDevice:v18];
+  discoveryCoordinator = [(FMDExtBluetoothDiscoveryFactory *)self discoveryCoordinator];
+  [discoveryCoordinator setDidDiscoverDevice:v18];
 
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_100009FDC;
   v16[3] = &unk_10001D3E0;
   objc_copyWeak(&v17, &location);
-  v9 = [(FMDExtBluetoothDiscoveryFactory *)self discoveryCoordinator];
-  [v9 setDidLoseDevice:v16];
+  discoveryCoordinator2 = [(FMDExtBluetoothDiscoveryFactory *)self discoveryCoordinator];
+  [discoveryCoordinator2 setDidLoseDevice:v16];
 
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10000A14C;
   v14[3] = &unk_10001D430;
   objc_copyWeak(&v15, &location);
-  v10 = [(FMDExtBluetoothDiscoveryFactory *)self discoveryCoordinator];
-  [v10 setDidEndDiscovery:v14];
+  discoveryCoordinator3 = [(FMDExtBluetoothDiscoveryFactory *)self discoveryCoordinator];
+  [discoveryCoordinator3 setDidEndDiscovery:v14];
 
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10000A260;
   v12[3] = &unk_10001D330;
   objc_copyWeak(&v13, &location);
-  v11 = [(FMDExtBluetoothDiscoveryFactory *)self discoveryCoordinator];
-  [v11 setDidStartDiscovery:v12];
+  discoveryCoordinator4 = [(FMDExtBluetoothDiscoveryFactory *)self discoveryCoordinator];
+  [discoveryCoordinator4 setDidStartDiscovery:v12];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&v15);
@@ -99,12 +99,12 @@
   objc_destroyWeak(&location);
 }
 
-- (void)setAllAudioChannelsActive:(BOOL)a3
+- (void)setAllAudioChannelsActive:(BOOL)active
 {
-  v3 = a3;
-  v8 = [(FMDExtBluetoothDiscoveryFactory *)self delegate];
-  v5 = [(FMDExtBluetoothDiscoveryFactory *)self accessoryId];
-  if (v3)
+  activeCopy = active;
+  delegate = [(FMDExtBluetoothDiscoveryFactory *)self delegate];
+  accessoryId = [(FMDExtBluetoothDiscoveryFactory *)self accessoryId];
+  if (activeCopy)
   {
     v6 = &off_1000207A8;
     v7 = &stru_10001D450;
@@ -116,26 +116,26 @@
     v7 = &stru_10001D470;
   }
 
-  [v8 availabilitydidChangeFor:v5 status:v6 withCompletion:v7];
+  [delegate availabilitydidChangeFor:accessoryId status:v6 withCompletion:v7];
 }
 
-- (void)didDiscoverDevice:(id)a3
+- (void)didDiscoverDevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 bluetoothAddress];
-  v6 = [v5 fm_MACAddressString];
-  v7 = [(FMDExtBluetoothDiscoveryFactory *)self address];
-  v8 = [v6 isEqualToString:v7];
+  deviceCopy = device;
+  bluetoothAddress = [deviceCopy bluetoothAddress];
+  fm_MACAddressString = [bluetoothAddress fm_MACAddressString];
+  address = [(FMDExtBluetoothDiscoveryFactory *)self address];
+  v8 = [fm_MACAddressString isEqualToString:address];
 
   if (v8)
   {
-    v9 = [objc_opt_class() configurationDictWithBleDevice:v4];
+    v9 = [objc_opt_class() configurationDictWithBleDevice:deviceCopy];
     v10 = sub_100003F1C();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v4 advertisementFields];
+      advertisementFields = [deviceCopy advertisementFields];
       v14 = 138412546;
-      v15 = v11;
+      v15 = advertisementFields;
       v16 = 2112;
       v17 = v9;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "didDiscoverDevice = %@ %@", &v14, 0x16u);
@@ -143,30 +143,30 @@
 
     if (v9)
     {
-      v12 = [(FMDExtBluetoothDiscoveryFactory *)self delegate];
-      v13 = [(FMDExtBluetoothDiscoveryFactory *)self accessoryId];
-      [v12 availabilitydidChangeFor:v13 status:v9 withCompletion:&stru_10001D490];
+      delegate = [(FMDExtBluetoothDiscoveryFactory *)self delegate];
+      accessoryId = [(FMDExtBluetoothDiscoveryFactory *)self accessoryId];
+      [delegate availabilitydidChangeFor:accessoryId status:v9 withCompletion:&stru_10001D490];
     }
   }
 }
 
-- (void)didLoseDevice:(id)a3
+- (void)didLoseDevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 bluetoothAddress];
-  v6 = [v5 fm_MACAddressString];
-  v7 = [(FMDExtBluetoothDiscoveryFactory *)self address];
-  v8 = [v6 isEqualToString:v7];
+  deviceCopy = device;
+  bluetoothAddress = [deviceCopy bluetoothAddress];
+  fm_MACAddressString = [bluetoothAddress fm_MACAddressString];
+  address = [(FMDExtBluetoothDiscoveryFactory *)self address];
+  v8 = [fm_MACAddressString isEqualToString:address];
 
   if (v8)
   {
-    v9 = [objc_opt_class() configurationDictWithBleDevice:v4];
+    v9 = [objc_opt_class() configurationDictWithBleDevice:deviceCopy];
     v10 = sub_100003F1C();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v4 advertisementFields];
+      advertisementFields = [deviceCopy advertisementFields];
       v14 = 138412546;
-      v15 = v11;
+      v15 = advertisementFields;
       v16 = 2112;
       v17 = v9;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "didLoseDevice = %@ %@", &v14, 0x16u);
@@ -174,17 +174,17 @@
 
     if (v9)
     {
-      v12 = [(FMDExtBluetoothDiscoveryFactory *)self delegate];
-      v13 = [(FMDExtBluetoothDiscoveryFactory *)self accessoryId];
-      [v12 availabilitydidChangeFor:v13 status:v9 withCompletion:&stru_10001D4B0];
+      delegate = [(FMDExtBluetoothDiscoveryFactory *)self delegate];
+      accessoryId = [(FMDExtBluetoothDiscoveryFactory *)self accessoryId];
+      [delegate availabilitydidChangeFor:accessoryId status:v9 withCompletion:&stru_10001D4B0];
     }
   }
 }
 
-+ (id)configurationDictWithBleDevice:(id)a3
++ (id)configurationDictWithBleDevice:(id)device
 {
-  v3 = [a3 advertisementFields];
-  v4 = [v3 objectForKeyedSubscript:@"aState"];
+  advertisementFields = [device advertisementFields];
+  v4 = [advertisementFields objectForKeyedSubscript:@"aState"];
   v5 = v4;
   v6 = &off_1000207F8;
   if (v4)
@@ -195,15 +195,15 @@
   v7 = v6;
 
   v32 = [v7 isEqualToNumber:&off_100020810];
-  v8 = [v3 objectForKeyedSubscript:@"hsStatus"];
-  v9 = [v8 unsignedIntValue];
-  v10 = dword_10002873C & v9;
-  v11 = dword_100028720 & v9;
-  v12 = dword_100028724 & v9;
-  v13 = dword_100028730 & v9;
-  v14 = dword_100028728 & v9;
-  v15 = dword_100028734 & v9;
-  v16 = dword_100028740 & v9;
+  v8 = [advertisementFields objectForKeyedSubscript:@"hsStatus"];
+  unsignedIntValue = [v8 unsignedIntValue];
+  v10 = dword_10002873C & unsignedIntValue;
+  v11 = dword_100028720 & unsignedIntValue;
+  v12 = dword_100028724 & unsignedIntValue;
+  v13 = dword_100028730 & unsignedIntValue;
+  v14 = dword_100028728 & unsignedIntValue;
+  v15 = dword_100028734 & unsignedIntValue;
+  v16 = dword_100028740 & unsignedIntValue;
   v17 = sub_100003BEC();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {

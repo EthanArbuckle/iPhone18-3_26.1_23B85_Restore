@@ -1,12 +1,12 @@
 @interface VCPInterAssetAnalyzer
-+ (BOOL)canUseLastFrameOfAsset:(id)a3 withResources:(id)a4;
-+ (CGSize)thumbnailSizeForAsset:(id)a3 withResources:(id)a4;
++ (BOOL)canUseLastFrameOfAsset:(id)asset withResources:(id)resources;
++ (CGSize)thumbnailSizeForAsset:(id)asset withResources:(id)resources;
 - (VCPInterAssetAnalyzer)init;
-- (__CVBuffer)_getThumbnailForAsset:(id)a3 withResouces:(id)a4 andPixelFormat:(int)a5;
-- (int)_generateLastFrameDistanceDescriptor:(id *)a3 withDescriptorClass:(Class)a4 forAsset:(id)a5;
-- (int)computeDistance:(float *)a3 fromArray:(id)a4 toArray:(id)a5;
-- (int)computeDistance:(float *)a3 withDescriptorClass:(id)a4 fromAsset:(id)a5 toAsset:(id)a6;
-- (int)generateDistanceDescriptor:(id *)a3 withDescriptorClass:(Class)a4 forAsset:(id)a5 withResources:(id)a6 lastFrame:(BOOL)a7;
+- (__CVBuffer)_getThumbnailForAsset:(id)asset withResouces:(id)resouces andPixelFormat:(int)format;
+- (int)_generateLastFrameDistanceDescriptor:(id *)descriptor withDescriptorClass:(Class)class forAsset:(id)asset;
+- (int)computeDistance:(float *)distance fromArray:(id)array toArray:(id)toArray;
+- (int)computeDistance:(float *)distance withDescriptorClass:(id)class fromAsset:(id)asset toAsset:(id)toAsset;
+- (int)generateDistanceDescriptor:(id *)descriptor withDescriptorClass:(Class)class forAsset:(id)asset withResources:(id)resources lastFrame:(BOOL)frame;
 @end
 
 @implementation VCPInterAssetAnalyzer
@@ -25,18 +25,18 @@
   return v3;
 }
 
-+ (BOOL)canUseLastFrameOfAsset:(id)a3 withResources:(id)a4
++ (BOOL)canUseLastFrameOfAsset:(id)asset withResources:(id)resources
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 mediaType] == 1)
+  assetCopy = asset;
+  resourcesCopy = resources;
+  if ([assetCopy mediaType] == 1)
   {
     LOBYTE(v7) = 1;
   }
 
-  else if ([v5 mediaType] == 2 && objc_msgSend(v6, "vcp_hasLocalMovie:", objc_msgSend(v5, "hasAdjustments")))
+  else if ([assetCopy mediaType] == 2 && objc_msgSend(resourcesCopy, "vcp_hasLocalMovie:", objc_msgSend(assetCopy, "hasAdjustments")))
   {
-    v7 = [v5 vcp_isVideoSlowmo] ^ 1;
+    v7 = [assetCopy vcp_isVideoSlowmo] ^ 1;
   }
 
   else
@@ -47,27 +47,27 @@
   return v7;
 }
 
-+ (CGSize)thumbnailSizeForAsset:(id)a3 withResources:(id)a4
++ (CGSize)thumbnailSizeForAsset:(id)asset withResources:(id)resources
 {
-  v5 = a3;
-  v6 = [a4 vcp_thumbnailResource];
-  [v6 vcp_size];
+  assetCopy = asset;
+  vcp_thumbnailResource = [resources vcp_thumbnailResource];
+  [vcp_thumbnailResource vcp_size];
   if (v7.f64[0] == *MEMORY[0x1E695F060] && v8 == *(MEMORY[0x1E695F060] + 8))
   {
-    v10 = [v5 pixelWidth];
-    v11 = [v5 pixelHeight];
-    v12.f64[0] = v10;
-    if (v11 >= v10)
+    pixelWidth = [assetCopy pixelWidth];
+    pixelHeight = [assetCopy pixelHeight];
+    v12.f64[0] = pixelWidth;
+    if (pixelHeight >= pixelWidth)
     {
-      v13 = v10;
+      v13 = pixelWidth;
     }
 
     else
     {
-      v13 = v11;
+      v13 = pixelHeight;
     }
 
-    v12.f64[1] = v11;
+    v12.f64[1] = pixelHeight;
     if (v13 <= 256.0)
     {
       v18 = v12;
@@ -95,15 +95,15 @@ LABEL_13:
   return result;
 }
 
-- (int)_generateLastFrameDistanceDescriptor:(id *)a3 withDescriptorClass:(Class)a4 forAsset:(id)a5
+- (int)_generateLastFrameDistanceDescriptor:(id *)descriptor withDescriptorClass:(Class)class forAsset:(id)asset
 {
   v28 = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  if ([v7 mediaType] == 2)
+  assetCopy = asset;
+  if ([assetCopy mediaType] == 2)
   {
-    v8 = [MEMORY[0x1E69786D0] vcp_allAcceptableResourcesForAsset:v7];
+    v8 = [MEMORY[0x1E69786D0] vcp_allAcceptableResourcesForAsset:assetCopy];
     cf = 0;
-    v9 = [v8 vcp_avAsset:{objc_msgSend(v7, "hasAdjustments")}];
+    v9 = [v8 vcp_avAsset:{objc_msgSend(assetCopy, "hasAdjustments")}];
     v10 = [v9 vcp_firstEnabledTrackWithMediaType:*MEMORY[0x1E6987608]];
     v11 = v10;
     if (v10)
@@ -115,10 +115,10 @@ LABEL_13:
       rhs = v22[1];
       CMTimeAdd(&v25, &lhs, &rhs);
       v12 = MEMORY[0x1E6987E68];
-      v13 = [v11 asset];
-      v14 = [v12 assetImageGeneratorWithAsset:v13];
+      asset = [v11 asset];
+      v14 = [v12 assetImageGeneratorWithAsset:asset];
 
-      [VCPInterAssetAnalyzer thumbnailSizeForAsset:v7 withResources:v8];
+      [VCPInterAssetAnalyzer thumbnailSizeForAsset:assetCopy withResources:v8];
       [v14 setMaximumSize:?];
       [v14 setAppliesPreferredTrackTransform:1];
       buf[0] = **&MEMORY[0x1E6960C70];
@@ -126,15 +126,15 @@ LABEL_13:
       v15 = [v14 copyCGImageAtTime:v22 actualTime:buf error:0];
       if (v15)
       {
-        v16 = [[VCPImageConverter alloc] initWithPixelFormat:[(objc_class *)a4 preferredPixelFormat]];
+        v16 = [[VCPImageConverter alloc] initWithPixelFormat:[(objc_class *)class preferredPixelFormat]];
         v17 = v16;
         if (v16)
         {
           v18 = [(VCPImageConverter *)v16 convertImage:v15 yuvFrame:&cf];
           if (!v18)
           {
-            v20 = [(objc_class *)a4 descriptorWithImage:cf];
-            *a3 = v20;
+            v20 = [(objc_class *)class descriptorWithImage:cf];
+            *descriptor = v20;
             if (v20)
             {
               v18 = 0;
@@ -165,9 +165,9 @@ LABEL_13:
     {
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
-        v19 = [v7 localIdentifier];
+        localIdentifier = [assetCopy localIdentifier];
         LODWORD(buf[0].value) = 138412290;
-        *(&buf[0].value + 4) = v19;
+        *(&buf[0].value + 4) = localIdentifier;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "  [%@] Invalid videoTrack", buf, 0xCu);
       }
 
@@ -194,25 +194,25 @@ LABEL_13:
   return v18;
 }
 
-- (__CVBuffer)_getThumbnailForAsset:(id)a3 withResouces:(id)a4 andPixelFormat:(int)a5
+- (__CVBuffer)_getThumbnailForAsset:(id)asset withResouces:(id)resouces andPixelFormat:(int)format
 {
-  v5 = *&a5;
+  v5 = *&format;
   v34 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 vcp_thumbnailResource];
-  if ([v9 vcp_isLocallyAvailable])
+  assetCopy = asset;
+  resoucesCopy = resouces;
+  vcp_thumbnailResource = [resoucesCopy vcp_thumbnailResource];
+  if ([vcp_thumbnailResource vcp_isLocallyAvailable])
   {
     v10 = +[VCPImageManager sharedImageManager];
-    v11 = [v10 imageForResource:v9 pixelFormat:v5];
+    v11 = [v10 imageForResource:vcp_thumbnailResource pixelFormat:v5];
   }
 
   else
   {
-    v12 = [v8 vcp_localPhotoResourcesSorted:{objc_msgSend(v7, "hasAdjustments")}];
+    v12 = [resoucesCopy vcp_localPhotoResourcesSorted:{objc_msgSend(assetCopy, "hasAdjustments")}];
     if ([v12 count])
     {
-      [VCPInterAssetAnalyzer thumbnailSizeForAsset:v7 withResources:v8];
+      [VCPInterAssetAnalyzer thumbnailSizeForAsset:assetCopy withResources:resoucesCopy];
       v15 = v13;
       v16 = v14;
       if (v13 >= v14)
@@ -248,8 +248,8 @@ LABEL_13:
             [v23 vcp_size];
             if (v24 * v25 >= v21)
             {
-              v27 = +[VCPImageManager sharedImageManager];
-              v11 = [v27 imageForResource:v23 pixelFormat:v5 maxDimension:v17];
+              lastObject = +[VCPImageManager sharedImageManager];
+              v11 = [lastObject imageForResource:v23 pixelFormat:v5 maxDimension:v17];
               goto LABEL_17;
             }
           }
@@ -265,8 +265,8 @@ LABEL_13:
       }
 
       v26 = +[VCPImageManager sharedImageManager];
-      v27 = [v18 lastObject];
-      v11 = [v26 imageForResource:v27 pixelFormat:v5];
+      lastObject = [v18 lastObject];
+      v11 = [v26 imageForResource:lastObject pixelFormat:v5];
       v18 = v26;
 LABEL_17:
     }
@@ -280,15 +280,15 @@ LABEL_17:
   return v11;
 }
 
-- (int)generateDistanceDescriptor:(id *)a3 withDescriptorClass:(Class)a4 forAsset:(id)a5 withResources:(id)a6 lastFrame:(BOOL)a7
+- (int)generateDistanceDescriptor:(id *)descriptor withDescriptorClass:(Class)class forAsset:(id)asset withResources:(id)resources lastFrame:(BOOL)frame
 {
-  v7 = a7;
+  frameCopy = frame;
   v21 = *MEMORY[0x1E69E9840];
-  v12 = a5;
-  v13 = a6;
-  if (v7 && [v12 mediaType] == 2 && +[VCPInterAssetAnalyzer canUseLastFrameOfAsset:withResources:](VCPInterAssetAnalyzer, "canUseLastFrameOfAsset:withResources:", v12, v13))
+  assetCopy = asset;
+  resourcesCopy = resources;
+  if (frameCopy && [assetCopy mediaType] == 2 && +[VCPInterAssetAnalyzer canUseLastFrameOfAsset:withResources:](VCPInterAssetAnalyzer, "canUseLastFrameOfAsset:withResources:", assetCopy, resourcesCopy))
   {
-    if (![(VCPInterAssetAnalyzer *)self _generateLastFrameDistanceDescriptor:a3 withDescriptorClass:a4 forAsset:v12])
+    if (![(VCPInterAssetAnalyzer *)self _generateLastFrameDistanceDescriptor:descriptor withDescriptorClass:class forAsset:assetCopy])
     {
       v17 = 0;
       goto LABEL_14;
@@ -296,18 +296,18 @@ LABEL_17:
 
     if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
     {
-      v14 = [v12 localIdentifier];
+      localIdentifier = [assetCopy localIdentifier];
       v19 = 138412290;
-      v20 = v14;
+      v20 = localIdentifier;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "  [%@] Failed to decode last frame of video, fall back to thumbnail ", &v19, 0xCu);
     }
   }
 
-  v15 = [(VCPInterAssetAnalyzer *)self _getThumbnailForAsset:v12 withResouces:v13 andPixelFormat:[(objc_class *)a4 preferredPixelFormat]];
+  v15 = [(VCPInterAssetAnalyzer *)self _getThumbnailForAsset:assetCopy withResouces:resourcesCopy andPixelFormat:[(objc_class *)class preferredPixelFormat]];
   if (v15)
   {
-    v16 = [(objc_class *)a4 descriptorWithImage:v15];
-    *a3 = v16;
+    v16 = [(objc_class *)class descriptorWithImage:v15];
+    *descriptor = v16;
     if (v16)
     {
       v17 = 0;
@@ -331,15 +331,15 @@ LABEL_14:
   return v17;
 }
 
-- (int)computeDistance:(float *)a3 withDescriptorClass:(id)a4 fromAsset:(id)a5 toAsset:(id)a6
+- (int)computeDistance:(float *)distance withDescriptorClass:(id)class fromAsset:(id)asset toAsset:(id)toAsset
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [MEMORY[0x1E69786D0] vcp_allAcceptableResourcesForAsset:v11];
-  v14 = [MEMORY[0x1E69786D0] vcp_allAcceptableResourcesForAsset:v12];
+  classCopy = class;
+  assetCopy = asset;
+  toAssetCopy = toAsset;
+  v13 = [MEMORY[0x1E69786D0] vcp_allAcceptableResourcesForAsset:assetCopy];
+  v14 = [MEMORY[0x1E69786D0] vcp_allAcceptableResourcesForAsset:toAssetCopy];
   v20 = 0;
-  v15 = [(VCPInterAssetAnalyzer *)self generateDistanceDescriptor:&v20 withDescriptorClass:v10 forAsset:v11 withResources:v13 lastFrame:1];
+  v15 = [(VCPInterAssetAnalyzer *)self generateDistanceDescriptor:&v20 withDescriptorClass:classCopy forAsset:assetCopy withResources:v13 lastFrame:1];
   v16 = v20;
   if (v15)
   {
@@ -349,45 +349,45 @@ LABEL_14:
   else
   {
     v19 = 0;
-    v15 = [(VCPInterAssetAnalyzer *)self generateDistanceDescriptor:&v19 withDescriptorClass:v10 forAsset:v12 withResources:v14 lastFrame:0];
+    v15 = [(VCPInterAssetAnalyzer *)self generateDistanceDescriptor:&v19 withDescriptorClass:classCopy forAsset:toAssetCopy withResources:v14 lastFrame:0];
     v17 = v19;
     if (!v15)
     {
-      v15 = [v16 computeDistance:a3 toDescriptor:v17];
+      v15 = [v16 computeDistance:distance toDescriptor:v17];
     }
   }
 
   return v15;
 }
 
-- (int)computeDistance:(float *)a3 fromArray:(id)a4 toArray:(id)a5
+- (int)computeDistance:(float *)distance fromArray:(id)array toArray:(id)toArray
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = v8;
+  arrayCopy = array;
+  toArrayCopy = toArray;
+  v9 = toArrayCopy;
   v10 = 0;
   v11 = -50;
-  if (a3 && v7)
+  if (distance && arrayCopy)
   {
     v12 = 0;
-    if (v8)
+    if (toArrayCopy)
     {
-      if ([v7 count] && objc_msgSend(v9, "count"))
+      if ([arrayCopy count] && objc_msgSend(v9, "count"))
       {
-        if ([v7 count] == 1 && objc_msgSend(v9, "count") == 1)
+        if ([arrayCopy count] == 1 && objc_msgSend(v9, "count") == 1)
         {
-          v13 = [v7 objectAtIndexedSubscript:0];
+          v13 = [arrayCopy objectAtIndexedSubscript:0];
           v12 = [v13 objectForKeyedSubscript:@"attributes"];
 
           v14 = [v9 objectAtIndexedSubscript:0];
           v10 = [v14 objectForKeyedSubscript:@"attributes"];
 
-          v11 = [v12 computeDistance:a3 toDescriptor:v10];
+          v11 = [v12 computeDistance:distance toDescriptor:v10];
         }
 
         else
         {
-          v15 = [v7 count];
+          v15 = [arrayCopy count];
           v16 = [v9 count] * v15;
           if (v16 < 0)
           {
@@ -402,7 +402,7 @@ LABEL_14:
           v33 = operator new[](v17, MEMORY[0x1E69E5398]);
           if (v33)
           {
-            v30 = a3;
+            distanceCopy = distance;
             v31 = v16;
             v18 = 0;
             v19 = 0;
@@ -410,9 +410,9 @@ LABEL_14:
             v21 = 0;
             v22 = 0.0;
             v23 = 3.4028e38;
-            while ([v7 count] > v18)
+            while ([arrayCopy count] > v18)
             {
-              v24 = [v7 objectAtIndexedSubscript:v18];
+              v24 = [arrayCopy objectAtIndexedSubscript:v18];
               v12 = [v24 objectForKeyedSubscript:@"attributes"];
 
               v25 = 0;
@@ -448,7 +448,7 @@ LABEL_14:
             }
 
             v11 = 0;
-            *v30 = ((v22 / v31) * 0.4) + (v23 * 0.6);
+            *distanceCopy = ((v22 / v31) * 0.4) + (v23 * 0.6);
             v10 = v19;
             v12 = v20;
 LABEL_26:

@@ -1,6 +1,6 @@
 @interface HUSetupCodeFieldItem
 - (HUSetupCodeFieldItem)init;
-- (void)setValue:(id)a3;
+- (void)setValue:(id)value;
 @end
 
 @implementation HUSetupCodeFieldItem
@@ -31,32 +31,32 @@
     [(UILabel *)v3->_digitLabel setClipsToBounds:0];
     [(HUSetupCodeFieldItem *)v3 setClipsToBounds:0];
     v8 = [MEMORY[0x277D75348] colorWithRed:0.937254902 green:0.937254902 blue:0.956862745 alpha:1.0];
-    v9 = [v8 CGColor];
-    v10 = [(HUSetupCodeFieldItem *)v3 layer];
-    [v10 setBorderColor:v9];
+    cGColor = [v8 CGColor];
+    layer = [(HUSetupCodeFieldItem *)v3 layer];
+    [layer setBorderColor:cGColor];
 
-    v11 = [(HUSetupCodeFieldItem *)v3 layer];
-    [v11 setBorderWidth:2.0];
+    layer2 = [(HUSetupCodeFieldItem *)v3 layer];
+    [layer2 setBorderWidth:2.0];
 
-    v12 = [(HUSetupCodeFieldItem *)v3 layer];
-    [v12 setCornerRadius:6.0];
+    layer3 = [(HUSetupCodeFieldItem *)v3 layer];
+    [layer3 setCornerRadius:6.0];
   }
 
   return v3;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v9 = a3;
-  v5 = [(HUSetupCodeFieldItem *)self value];
+  valueCopy = value;
+  value = [(HUSetupCodeFieldItem *)self value];
 
-  if (v5 != v9)
+  if (value != valueCopy)
   {
-    objc_storeStrong(&self->_value, a3);
-    v6 = [(HUSetupCodeFieldItem *)self value];
-    v7 = [v6 stringValue];
-    v8 = [(HUSetupCodeFieldItem *)self digitLabel];
-    [v8 setText:v7];
+    objc_storeStrong(&self->_value, value);
+    value2 = [(HUSetupCodeFieldItem *)self value];
+    stringValue = [value2 stringValue];
+    digitLabel = [(HUSetupCodeFieldItem *)self digitLabel];
+    [digitLabel setText:stringValue];
   }
 }
 

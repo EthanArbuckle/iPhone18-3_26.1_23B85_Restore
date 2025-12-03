@@ -1,27 +1,27 @@
 @interface _WBSSafariCyclerConfigurationCommand
-- (BOOL)invokeWithParameters:(id)a3;
+- (BOOL)invokeWithParameters:(id)parameters;
 - (SEL)action;
-- (_WBSSafariCyclerConfigurationCommand)initWithName:(id)a3 help:(id)a4;
+- (_WBSSafariCyclerConfigurationCommand)initWithName:(id)name help:(id)help;
 - (id)target;
-- (void)setAction:(SEL)a3;
+- (void)setAction:(SEL)action;
 @end
 
 @implementation _WBSSafariCyclerConfigurationCommand
 
-- (_WBSSafariCyclerConfigurationCommand)initWithName:(id)a3 help:(id)a4
+- (_WBSSafariCyclerConfigurationCommand)initWithName:(id)name help:(id)help
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  helpCopy = help;
   v15.receiver = self;
   v15.super_class = _WBSSafariCyclerConfigurationCommand;
   v8 = [(_WBSSafariCyclerConfigurationCommand *)&v15 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     name = v8->_name;
     v8->_name = v9;
 
-    v11 = [v7 copy];
+    v11 = [helpCopy copy];
     help = v8->_help;
     v8->_help = v11;
 
@@ -31,11 +31,11 @@
   return v8;
 }
 
-- (BOOL)invokeWithParameters:(id)a3
+- (BOOL)invokeWithParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   WeakRetained = objc_loadWeakRetained(&self->_target);
-  if ([v4 count] >= self->_minimumArgumentCount && objc_msgSend(v4, "count") <= self->_maximumArgumentCount)
+  if ([parametersCopy count] >= self->_minimumArgumentCount && objc_msgSend(parametersCopy, "count") <= self->_maximumArgumentCount)
   {
     action = self->_action;
     if (action)
@@ -56,9 +56,9 @@
     printf("Invalid arguments to subcommand '%s'", [(NSString *)self->_name UTF8String]);
     if (self->_usage)
     {
-      v6 = [MEMORY[0x1E696AE30] processInfo];
-      v7 = [v6 processName];
-      printf("\nUSAGE: %s %s %s\n", [v7 UTF8String], -[NSString UTF8String](self->_name, "UTF8String"), -[NSString UTF8String](self->_usage, "UTF8String"));
+      processInfo = [MEMORY[0x1E696AE30] processInfo];
+      processName = [processInfo processName];
+      printf("\nUSAGE: %s %s %s\n", [processName UTF8String], -[NSString UTF8String](self->_name, "UTF8String"), -[NSString UTF8String](self->_usage, "UTF8String"));
     }
 
     v8 = 0;
@@ -87,19 +87,19 @@
   }
 }
 
-- (void)setAction:(SEL)a3
+- (void)setAction:(SEL)action
 {
-  if (a3)
+  if (action)
   {
-    v3 = a3;
+    actionCopy = action;
   }
 
   else
   {
-    v3 = 0;
+    actionCopy = 0;
   }
 
-  self->_action = v3;
+  self->_action = actionCopy;
 }
 
 @end

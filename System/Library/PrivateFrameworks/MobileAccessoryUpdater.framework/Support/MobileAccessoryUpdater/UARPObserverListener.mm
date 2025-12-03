@@ -1,31 +1,31 @@
 @interface UARPObserverListener
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)xpcConnectionHasEntitlement:(id)a3;
-- (UARPObserverListener)initWithManager:(id)a3 dispatchQueue:(id)a4;
-- (void)addAccessoryID:(id)a3 assetID:(id)a4;
-- (void)addObserver:(id)a3 withEndpoint:(id)a4;
-- (void)clearDropboxForModelNumber:(id)a3 withFusing:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)xpcConnectionHasEntitlement:(id)entitlement;
+- (UARPObserverListener)initWithManager:(id)manager dispatchQueue:(id)queue;
+- (void)addAccessoryID:(id)d assetID:(id)iD;
+- (void)addObserver:(id)observer withEndpoint:(id)endpoint;
+- (void)clearDropboxForModelNumber:(id)number withFusing:(id)fusing;
 - (void)dealloc;
-- (void)firmwareUpdateProgressForAccessoryID:(id)a3 assetID:(id)a4 bytesSent:(unint64_t)a5 bytesTotal:(unint64_t)a6;
-- (void)removeAccessoryID:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)stagingCompleteForAccessoryID:(id)a3 assetID:(id)a4 status:(unint64_t)a5;
+- (void)firmwareUpdateProgressForAccessoryID:(id)d assetID:(id)iD bytesSent:(unint64_t)sent bytesTotal:(unint64_t)total;
+- (void)removeAccessoryID:(id)d;
+- (void)removeObserver:(id)observer;
+- (void)stagingCompleteForAccessoryID:(id)d assetID:(id)iD status:(unint64_t)status;
 @end
 
 @implementation UARPObserverListener
 
-- (UARPObserverListener)initWithManager:(id)a3 dispatchQueue:(id)a4
+- (UARPObserverListener)initWithManager:(id)manager dispatchQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  queueCopy = queue;
   v18.receiver = self;
   v18.super_class = UARPObserverListener;
   v9 = [(UARPObserverListener *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_manager, a3);
-    objc_storeStrong(&v10->_internalQueue, a4);
+    objc_storeStrong(&v9->_manager, manager);
+    objc_storeStrong(&v10->_internalQueue, queue);
     v11 = os_log_create("com.apple.accessoryupdater.uarp", "observer");
     xpcLog = v10->_xpcLog;
     v10->_xpcLog = v11;
@@ -53,9 +53,9 @@
   [(UARPObserverListener *)&v3 dealloc];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -66,9 +66,9 @@
   block[2] = sub_10002E820;
   block[3] = &unk_100081CC8;
   block[4] = self;
-  v10 = v5;
+  v10 = connectionCopy;
   v11 = &v12;
-  v7 = v5;
+  v7 = connectionCopy;
   dispatch_sync(internalQueue, block);
   LOBYTE(internalQueue) = *(v13 + 24);
 
@@ -76,10 +76,10 @@
   return internalQueue;
 }
 
-- (BOOL)xpcConnectionHasEntitlement:(id)a3
+- (BOOL)xpcConnectionHasEntitlement:(id)entitlement
 {
-  v4 = a3;
-  v5 = [v4 valueForEntitlement:@"com.apple.accessoryupdater.launchauhelper.entitled"];
+  entitlementCopy = entitlement;
+  v5 = [entitlementCopy valueForEntitlement:@"com.apple.accessoryupdater.launchauhelper.entitled"];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && ([v5 BOOLValue])
   {
@@ -91,7 +91,7 @@
     xpcLog = self->_xpcLog;
     if (os_log_type_enabled(xpcLog, OS_LOG_TYPE_ERROR))
     {
-      sub_10004F4D4(xpcLog, v4);
+      sub_10004F4D4(xpcLog, entitlementCopy);
     }
 
     v6 = 0;
@@ -100,68 +100,68 @@
   return v6;
 }
 
-- (void)addObserver:(id)a3 withEndpoint:(id)a4
+- (void)addObserver:(id)observer withEndpoint:(id)endpoint
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->_registeredObservers objectForKey:v6];
+  observerCopy = observer;
+  endpointCopy = endpoint;
+  v8 = [(NSMutableDictionary *)self->_registeredObservers objectForKey:observerCopy];
   if (v8)
   {
     xpcLog = self->_xpcLog;
     if (os_log_type_enabled(xpcLog, OS_LOG_TYPE_ERROR))
     {
-      sub_10004F560(v6, xpcLog);
+      sub_10004F560(observerCopy, xpcLog);
     }
   }
 
-  [(NSMutableDictionary *)self->_registeredObservers setObject:v7 forKey:v6];
+  [(NSMutableDictionary *)self->_registeredObservers setObject:endpointCopy forKey:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_registeredObservers objectForKey:v4];
+  observerCopy = observer;
+  v5 = [(NSMutableDictionary *)self->_registeredObservers objectForKey:observerCopy];
   if (v5)
   {
     xpcLog = self->_xpcLog;
     if (os_log_type_enabled(xpcLog, OS_LOG_TYPE_ERROR))
     {
-      sub_10004F5D8(v4, xpcLog);
+      sub_10004F5D8(observerCopy, xpcLog);
     }
   }
 
   else
   {
-    [(NSMutableDictionary *)self->_registeredObservers removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_registeredObservers removeObjectForKey:observerCopy];
   }
 }
 
-- (void)clearDropboxForModelNumber:(id)a3 withFusing:(id)a4
+- (void)clearDropboxForModelNumber:(id)number withFusing:(id)fusing
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
+  numberCopy = number;
+  fusingCopy = fusing;
+  v7 = numberCopy;
   v8 = &MGCopyAnswer_ptr;
   v9 = [UARPSupportedAccessory findByAppleModelNumber:v7];
-  v10 = [v9 mobileAssetAppleModelNumber];
+  mobileAssetAppleModelNumber = [v9 mobileAssetAppleModelNumber];
 
-  v11 = v7;
-  if (v10)
+  mobileAssetAppleModelNumber2 = v7;
+  if (mobileAssetAppleModelNumber)
   {
-    v11 = [v9 mobileAssetAppleModelNumber];
+    mobileAssetAppleModelNumber2 = [v9 mobileAssetAppleModelNumber];
   }
 
-  if (sub_100037FC0(v11, v6))
+  if (sub_100037FC0(mobileAssetAppleModelNumber2, fusingCopy))
   {
     v26 = v9;
     v27 = v7;
     v29 = +[AUDeveloperSettingsDatabase sharedDatabase];
-    v12 = [v29 accessoriesDictionary];
+    accessoriesDictionary = [v29 accessoriesDictionary];
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v30 = [v12 countByEnumeratingWithState:&v33 objects:v37 count:16];
+    v30 = [accessoriesDictionary countByEnumeratingWithState:&v33 objects:v37 count:16];
     if (v30)
     {
       v13 = *v34;
@@ -172,43 +172,43 @@
         {
           if (*v34 != v13)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(accessoriesDictionary);
           }
 
           v31 = *(*(&v33 + 1) + 8 * i);
-          v15 = [v12 objectForKeyedSubscript:?];
+          v15 = [accessoriesDictionary objectForKeyedSubscript:?];
           v16 = [v15 objectForKeyedSubscript:@"modelNumber"];
           v32 = [v15 objectForKeyedSubscript:@"fusing"];
           v17 = [v8[315] findByAppleModelNumber:v16];
-          v18 = [v17 mobileAssetAppleModelNumber];
+          mobileAssetAppleModelNumber3 = [v17 mobileAssetAppleModelNumber];
 
-          if (v18)
+          if (mobileAssetAppleModelNumber3)
           {
-            v19 = [v17 mobileAssetAppleModelNumber];
+            mobileAssetAppleModelNumber4 = [v17 mobileAssetAppleModelNumber];
 
-            v16 = v19;
+            v16 = mobileAssetAppleModelNumber4;
           }
 
-          if ([v16 isEqualToString:v11] && (!v6 || objc_msgSend(v6, "isEqualToString:", v32)))
+          if ([v16 isEqualToString:mobileAssetAppleModelNumber2] && (!fusingCopy || objc_msgSend(fusingCopy, "isEqualToString:", v32)))
           {
             v20 = [NSMutableDictionary dictionaryWithDictionary:v15];
             [v20 setObject:0 forKeyedSubscript:@"dropboxVersion"];
             [NSDictionary dictionaryWithDictionary:v20];
-            v21 = v12;
-            v22 = v11;
+            v21 = accessoriesDictionary;
+            v22 = mobileAssetAppleModelNumber2;
             v23 = v8;
-            v25 = v24 = v6;
+            v25 = v24 = fusingCopy;
             [v29 addAccessoryWithSerialNumber:v31 info:v25];
 
-            v6 = v24;
+            fusingCopy = v24;
             v8 = v23;
-            v11 = v22;
-            v12 = v21;
+            mobileAssetAppleModelNumber2 = v22;
+            accessoriesDictionary = v21;
             v13 = v28;
           }
         }
 
-        v30 = [v12 countByEnumeratingWithState:&v33 objects:v37 count:16];
+        v30 = [accessoriesDictionary countByEnumeratingWithState:&v33 objects:v37 count:16];
       }
 
       while (v30);
@@ -219,19 +219,19 @@
   }
 }
 
-- (void)addAccessoryID:(id)a3 assetID:(id)a4
+- (void)addAccessoryID:(id)d assetID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   xpcLog = self->_xpcLog;
   if (os_log_type_enabled(xpcLog, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v16 = "[UARPObserverListener addAccessoryID:assetID:]";
     v17 = 2112;
-    v18 = v6;
+    v18 = dCopy;
     v19 = 2112;
-    v20 = v7;
+    v20 = iDCopy;
     _os_log_impl(&_mh_execute_header, xpcLog, OS_LOG_TYPE_INFO, "RECEIVED %s: %@ %@", buf, 0x20u);
   }
 
@@ -241,23 +241,23 @@
   block[2] = sub_10002F12C;
   block[3] = &unk_1000814D8;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = dCopy;
+  v14 = iDCopy;
+  v10 = iDCopy;
+  v11 = dCopy;
   dispatch_async(internalQueue, block);
 }
 
-- (void)removeAccessoryID:(id)a3
+- (void)removeAccessoryID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   xpcLog = self->_xpcLog;
   if (os_log_type_enabled(xpcLog, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v11 = "[UARPObserverListener removeAccessoryID:]";
     v12 = 2112;
-    v13 = v4;
+    v13 = dCopy;
     _os_log_impl(&_mh_execute_header, xpcLog, OS_LOG_TYPE_INFO, "RECEIVED %s: %@", buf, 0x16u);
   }
 
@@ -267,28 +267,28 @@
   v8[2] = sub_10002F410;
   v8[3] = &unk_100081438;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = dCopy;
+  v7 = dCopy;
   dispatch_async(internalQueue, v8);
 }
 
-- (void)firmwareUpdateProgressForAccessoryID:(id)a3 assetID:(id)a4 bytesSent:(unint64_t)a5 bytesTotal:(unint64_t)a6
+- (void)firmwareUpdateProgressForAccessoryID:(id)d assetID:(id)iD bytesSent:(unint64_t)sent bytesTotal:(unint64_t)total
 {
-  v10 = a3;
-  v11 = a4;
+  dCopy = d;
+  iDCopy = iD;
   xpcLog = self->_xpcLog;
   if (os_log_type_enabled(xpcLog, OS_LOG_TYPE_INFO))
   {
     *buf = 136316162;
     v22 = "[UARPObserverListener firmwareUpdateProgressForAccessoryID:assetID:bytesSent:bytesTotal:]";
     v23 = 2112;
-    v24 = v10;
+    v24 = dCopy;
     v25 = 2112;
-    v26 = v11;
+    v26 = iDCopy;
     v27 = 2048;
-    v28 = a5;
+    sentCopy = sent;
     v29 = 2048;
-    v30 = a6;
+    totalCopy = total;
     _os_log_impl(&_mh_execute_header, xpcLog, OS_LOG_TYPE_INFO, "RECEIVED %s: %@ %@, bytesSent=%lu, bytesTotal=%lu", buf, 0x34u);
   }
 
@@ -298,19 +298,19 @@
   block[2] = sub_10002F748;
   block[3] = &unk_100081CF0;
   block[4] = self;
-  v17 = v10;
-  v18 = v11;
-  v19 = a5;
-  v20 = a6;
-  v14 = v11;
-  v15 = v10;
+  v17 = dCopy;
+  v18 = iDCopy;
+  sentCopy2 = sent;
+  totalCopy2 = total;
+  v14 = iDCopy;
+  v15 = dCopy;
   dispatch_async(internalQueue, block);
 }
 
-- (void)stagingCompleteForAccessoryID:(id)a3 assetID:(id)a4 status:(unint64_t)a5
+- (void)stagingCompleteForAccessoryID:(id)d assetID:(id)iD status:(unint64_t)status
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  iDCopy = iD;
   xpcLog = self->_xpcLog;
   if (os_log_type_enabled(xpcLog, OS_LOG_TYPE_INFO))
   {
@@ -318,9 +318,9 @@
     *buf = 136315906;
     v20 = "[UARPObserverListener stagingCompleteForAccessoryID:assetID:status:]";
     v21 = 2112;
-    v22 = v8;
+    v22 = dCopy;
     v23 = 2112;
-    v24 = v9;
+    v24 = iDCopy;
     v25 = 2080;
     v26 = UARPFirmwareStagingCompletionStatusToString();
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "RECEIVED %s: %@ %@ status=%s", buf, 0x2Au);
@@ -332,11 +332,11 @@
   v15[2] = sub_10002FA88;
   v15[3] = &unk_100081D18;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = a5;
-  v13 = v9;
-  v14 = v8;
+  v16 = dCopy;
+  v17 = iDCopy;
+  statusCopy = status;
+  v13 = iDCopy;
+  v14 = dCopy;
   dispatch_async(internalQueue, v15);
 }
 

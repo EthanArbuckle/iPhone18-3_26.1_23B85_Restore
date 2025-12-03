@@ -6,12 +6,12 @@
 
 - (NSString)valueString
 {
-  v3 = [(_SKUIInspectableProperty *)self value];
+  value = [(_SKUIInspectableProperty *)self value];
 
-  if (v3)
+  if (value)
   {
-    v4 = [(_SKUIInspectableProperty *)self value];
-    v5 = [v4 debugDescription];
+    value2 = [(_SKUIInspectableProperty *)self value];
+    v5 = [value2 debugDescription];
   }
 
   else

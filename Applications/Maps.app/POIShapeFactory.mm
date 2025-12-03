@@ -1,26 +1,26 @@
 @interface POIShapeFactory
-+ (id)composedWaypointPOIShapeWithMapView:(id)a3 composedWaypoint:(id)a4;
-+ (id)customPOIShapeWithMapView:(id)a3 customFeatureAnnotation:(id)a4;
-+ (id)searchResultWaypointPOIShapeWithMapView:(id)a3 searchResult:(id)a4;
-+ (id)userLocationPOIShapeWithMapView:(id)a3;
-+ (id)userLocationPOIShapeWithMapView:(id)a3 coordinate:(CLLocationCoordinate2D)a4;
++ (id)composedWaypointPOIShapeWithMapView:(id)view composedWaypoint:(id)waypoint;
++ (id)customPOIShapeWithMapView:(id)view customFeatureAnnotation:(id)annotation;
++ (id)searchResultWaypointPOIShapeWithMapView:(id)view searchResult:(id)result;
++ (id)userLocationPOIShapeWithMapView:(id)view;
++ (id)userLocationPOIShapeWithMapView:(id)view coordinate:(CLLocationCoordinate2D)coordinate;
 @end
 
 @implementation POIShapeFactory
 
-+ (id)searchResultWaypointPOIShapeWithMapView:(id)a3 searchResult:(id)a4
++ (id)searchResultWaypointPOIShapeWithMapView:(id)view searchResult:(id)result
 {
-  v6 = a4;
-  v7 = a3;
-  if ([v6 isDynamicCurrentLocation])
+  resultCopy = result;
+  viewCopy = view;
+  if ([resultCopy isDynamicCurrentLocation])
   {
-    [v6 coordinate];
-    v8 = [a1 userLocationPOIShapeWithMapView:v7 coordinate:?];
+    [resultCopy coordinate];
+    v8 = [self userLocationPOIShapeWithMapView:viewCopy coordinate:?];
   }
 
   else
   {
-    v8 = [[POIShapeSearchResult alloc] initWithMapView:v7 searchResult:v6];
+    v8 = [[POIShapeSearchResult alloc] initWithMapView:viewCopy searchResult:resultCopy];
   }
 
   v9 = v8;
@@ -28,19 +28,19 @@
   return v9;
 }
 
-+ (id)composedWaypointPOIShapeWithMapView:(id)a3 composedWaypoint:(id)a4
++ (id)composedWaypointPOIShapeWithMapView:(id)view composedWaypoint:(id)waypoint
 {
-  v6 = a4;
-  v7 = a3;
-  if ([v6 isCurrentLocation])
+  waypointCopy = waypoint;
+  viewCopy = view;
+  if ([waypointCopy isCurrentLocation])
   {
-    [v6 coordinate];
-    v8 = [a1 userLocationPOIShapeWithMapView:v7 coordinate:?];
+    [waypointCopy coordinate];
+    v8 = [self userLocationPOIShapeWithMapView:viewCopy coordinate:?];
   }
 
   else
   {
-    v8 = [[POIShapeComposedWaypoint alloc] initWithMapView:v7 composedWaypoint:v6];
+    v8 = [[POIShapeComposedWaypoint alloc] initWithMapView:viewCopy composedWaypoint:waypointCopy];
   }
 
   v9 = v8;
@@ -48,29 +48,29 @@
   return v9;
 }
 
-+ (id)customPOIShapeWithMapView:(id)a3 customFeatureAnnotation:(id)a4
++ (id)customPOIShapeWithMapView:(id)view customFeatureAnnotation:(id)annotation
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[POIShapeCustomFeatureAnnotation alloc] initWithMapView:v6 customFeatureAnnotation:v5];
+  annotationCopy = annotation;
+  viewCopy = view;
+  v7 = [[POIShapeCustomFeatureAnnotation alloc] initWithMapView:viewCopy customFeatureAnnotation:annotationCopy];
 
   return v7;
 }
 
-+ (id)userLocationPOIShapeWithMapView:(id)a3 coordinate:(CLLocationCoordinate2D)a4
++ (id)userLocationPOIShapeWithMapView:(id)view coordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
-  v6 = a3;
-  v7 = [[POIShapeUserLocation alloc] initWithMapView:v6 coordinate:latitude, longitude];
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  viewCopy = view;
+  longitude = [[POIShapeUserLocation alloc] initWithMapView:viewCopy coordinate:latitude, longitude];
 
-  return v7;
+  return longitude;
 }
 
-+ (id)userLocationPOIShapeWithMapView:(id)a3
++ (id)userLocationPOIShapeWithMapView:(id)view
 {
-  v3 = a3;
-  v4 = [[POIShapeUserLocation alloc] initWithMapView:v3 coordinate:kCLLocationCoordinate2DInvalid.latitude, kCLLocationCoordinate2DInvalid.longitude];
+  viewCopy = view;
+  v4 = [[POIShapeUserLocation alloc] initWithMapView:viewCopy coordinate:kCLLocationCoordinate2DInvalid.latitude, kCLLocationCoordinate2DInvalid.longitude];
 
   return v4;
 }

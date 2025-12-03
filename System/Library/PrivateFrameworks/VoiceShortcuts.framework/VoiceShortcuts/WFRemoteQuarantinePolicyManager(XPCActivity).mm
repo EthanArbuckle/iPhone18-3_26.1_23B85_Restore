@@ -23,7 +23,7 @@
   v9[2] = __97__WFRemoteQuarantinePolicyManager_XPCActivity__scheduleRegularPolicyUpdatesWithDatabaseProvider___block_invoke;
   v9[3] = &unk_2788FEE68;
   v10 = v4;
-  v11 = a1;
+  selfCopy = self;
   v6 = v4;
   v7 = [WFXPCActivityScheduler activatedSchedulerWithActivityIdentifier:@"com.apple.siriactionsd.RemoteQuarantineUpdate" runHandler:v9];
 

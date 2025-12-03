@@ -1,56 +1,56 @@
 @interface _CNAvatarImageProvider
-+ (id)roundImage:(id)a3;
-- (_CNAvatarImageProvider)initWithLikenessProvider:(id)a3;
-- (id)imageForSize:(CGSize)a3 scale:(double)a4 style:(unint64_t)a5;
++ (id)roundImage:(id)image;
+- (_CNAvatarImageProvider)initWithLikenessProvider:(id)provider;
+- (id)imageForSize:(CGSize)size scale:(double)scale style:(unint64_t)style;
 @end
 
 @implementation _CNAvatarImageProvider
 
-- (id)imageForSize:(CGSize)a3 scale:(double)a4 style:(unint64_t)a5
+- (id)imageForSize:(CGSize)size scale:(double)scale style:(unint64_t)style
 {
-  height = a3.height;
-  width = a3.width;
-  if (a5 == 1)
+  height = size.height;
+  width = size.width;
+  if (style == 1)
   {
-    v13 = [(_CNAvatarImageProvider *)self likenessProvider];
+    likenessProvider = [(_CNAvatarImageProvider *)self likenessProvider];
     v14 = objc_opt_respondsToSelector();
 
     if (v14)
     {
-      v11 = [(_CNAvatarImageProvider *)self likenessProvider];
-      v12 = [v11 _cnui_roundedRectImageForSize:width scale:{height, a4}];
+      likenessProvider2 = [(_CNAvatarImageProvider *)self likenessProvider];
+      v12 = [likenessProvider2 _cnui_roundedRectImageForSize:width scale:{height, scale}];
       goto LABEL_7;
     }
 
 LABEL_8:
-    v17 = [(_CNAvatarImageProvider *)self likenessProvider];
+    likenessProvider3 = [(_CNAvatarImageProvider *)self likenessProvider];
     v18 = objc_opt_respondsToSelector();
 
-    v19 = [(_CNAvatarImageProvider *)self likenessProvider];
-    v20 = v19;
+    likenessProvider4 = [(_CNAvatarImageProvider *)self likenessProvider];
+    v20 = likenessProvider4;
     if (v18)
     {
-      [v19 _cnui_likenessForSize:width scale:{height, a4}];
+      [likenessProvider4 _cnui_likenessForSize:width scale:{height, scale}];
     }
 
     else
     {
-      [v19 _cnui_likeness];
+      [likenessProvider4 _cnui_likeness];
     }
     v21 = ;
 
-    v22 = [v21 snapshotWithSize:0 scale:width options:{height, a4}];
+    v22 = [v21 snapshotWithSize:0 scale:width options:{height, scale}];
     v16 = [objc_opt_class() roundImage:v22];
 
     goto LABEL_12;
   }
 
-  if (a5)
+  if (style)
   {
     goto LABEL_8;
   }
 
-  v9 = [(_CNAvatarImageProvider *)self likenessProvider];
+  likenessProvider5 = [(_CNAvatarImageProvider *)self likenessProvider];
   v10 = objc_opt_respondsToSelector();
 
   if ((v10 & 1) == 0)
@@ -58,41 +58,41 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v11 = [(_CNAvatarImageProvider *)self likenessProvider];
-  v12 = [v11 _cnui_circularImageForSize:width scale:{height, a4}];
+  likenessProvider2 = [(_CNAvatarImageProvider *)self likenessProvider];
+  v12 = [likenessProvider2 _cnui_circularImageForSize:width scale:{height, scale}];
 LABEL_7:
   v15 = v12;
 
-  v16 = [MEMORY[0x1E69DCAB8] imageWithCGImage:v15 scale:0 orientation:a4];
+  v16 = [MEMORY[0x1E69DCAB8] imageWithCGImage:v15 scale:0 orientation:scale];
 LABEL_12:
 
   return v16;
 }
 
-- (_CNAvatarImageProvider)initWithLikenessProvider:(id)a3
+- (_CNAvatarImageProvider)initWithLikenessProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = _CNAvatarImageProvider;
   v6 = [(_CNAvatarImageProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_likenessProvider, a3);
+    objc_storeStrong(&v6->_likenessProvider, provider);
   }
 
   return v7;
 }
 
-+ (id)roundImage:(id)a3
++ (id)roundImage:(id)image
 {
   v3 = *MEMORY[0x1E695F058];
   v4 = *(MEMORY[0x1E695F058] + 8);
-  v5 = a3;
-  [v5 size];
+  imageCopy = image;
+  [imageCopy size];
   v7 = v6;
   v9 = v8;
-  [v5 scale];
+  [imageCopy scale];
   v11 = v10;
   v16.width = v7;
   v16.height = v9;
@@ -104,7 +104,7 @@ LABEL_12:
   v12 = [MEMORY[0x1E69DC728] bezierPathWithRoundedRect:v3 cornerRadius:{v4, v7, v9, CGRectGetWidth(v17) * 0.5}];
   [v12 addClip];
 
-  [v5 drawInRect:{v3, v4, v7, v9}];
+  [imageCopy drawInRect:{v3, v4, v7, v9}];
   v13 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
 

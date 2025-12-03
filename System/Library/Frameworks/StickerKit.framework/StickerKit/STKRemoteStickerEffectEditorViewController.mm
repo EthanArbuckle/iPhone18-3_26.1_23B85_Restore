@@ -1,15 +1,15 @@
 @interface STKRemoteStickerEffectEditorViewController
-- (STKRemoteStickerEffectEditorViewController)initWithCoder:(id)a3;
-- (STKRemoteStickerEffectEditorViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (STKRemoteStickerEffectEditorViewController)initWithStickerIdentifier:(id)a3;
+- (STKRemoteStickerEffectEditorViewController)initWithCoder:(id)coder;
+- (STKRemoteStickerEffectEditorViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (STKRemoteStickerEffectEditorViewController)initWithStickerIdentifier:(id)identifier;
 - (STKStickerEffectEditorViewControllerDelegate)delegate;
-- (void)showStickerEffectViewWithSourceRect:(CGRect)a3 showing:(BOOL)a4;
+- (void)showStickerEffectViewWithSourceRect:(CGRect)rect showing:(BOOL)showing;
 - (void)stickerEffectEditorViewControllerControllerDidTapDone;
 @end
 
 @implementation STKRemoteStickerEffectEditorViewController
 
-- (STKRemoteStickerEffectEditorViewController)initWithStickerIdentifier:(id)a3
+- (STKRemoteStickerEffectEditorViewController)initWithStickerIdentifier:(id)identifier
 {
   v4 = sub_19A7A8F64();
   v5 = *(v4 - 8);
@@ -30,7 +30,7 @@
   return v10;
 }
 
-- (STKRemoteStickerEffectEditorViewController)initWithCoder:(id)a3
+- (STKRemoteStickerEffectEditorViewController)initWithCoder:(id)coder
 {
   sub_19A7A8F54();
   swift_unknownObjectWeakInit();
@@ -58,14 +58,14 @@
   }
 }
 
-- (void)showStickerEffectViewWithSourceRect:(CGRect)a3 showing:(BOOL)a4
+- (void)showStickerEffectViewWithSourceRect:(CGRect)rect showing:(BOOL)showing
 {
-  *&v7 = a3.origin.x;
-  *(&v7 + 1) = *&a3.origin.y;
-  width = a3.size.width;
-  height = a3.size.height;
-  v10 = a4;
-  v4 = self;
+  *&v7 = rect.origin.x;
+  *(&v7 + 1) = *&rect.origin.y;
+  width = rect.size.width;
+  height = rect.size.height;
+  showingCopy = showing;
+  selfCopy = self;
   v5 = sub_19A626D64(0, &v7, 0, 1);
   swift_getKeyPath();
   swift_getKeyPath();
@@ -74,7 +74,7 @@
   [v6 sendAction_];
 }
 
-- (STKRemoteStickerEffectEditorViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (STKRemoteStickerEffectEditorViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

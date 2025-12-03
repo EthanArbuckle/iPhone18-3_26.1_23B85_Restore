@@ -1,9 +1,9 @@
 @interface RBAssertionTransientState
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)addTag:(id)a3;
-- (void)unionState:(id)a3;
+- (void)addTag:(id)tag;
+- (void)unionState:(id)state;
 @end
 
 @implementation RBAssertionTransientState
@@ -11,8 +11,8 @@
 - (id)description
 {
   v3 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  v4 = [(NSMutableSet *)self->_tags allObjects];
-  v5 = [v4 count];
+  allObjects = [(NSMutableSet *)self->_tags allObjects];
+  v5 = [allObjects count];
 
   cpuUsageViolationPoliciesByRole = self->_cpuUsageViolationPoliciesByRole;
   v15[0] = MEMORY[0x277D85DD0];
@@ -27,8 +27,8 @@
   v10 = v9;
   if (v5)
   {
-    v11 = [(NSMutableSet *)self->_tags allObjects];
-    v12 = [v11 componentsJoinedByString:{@", \n\t"}];
+    allObjects2 = [(NSMutableSet *)self->_tags allObjects];
+    v12 = [allObjects2 componentsJoinedByString:{@", \n\t"}];
     v13 = [v8 initWithFormat:@"<%@| policies:[\n\t%@\n\t]%@%@>", v10, v7, @" tags:[\n\t", v12];
   }
 
@@ -52,31 +52,31 @@ void __40__RBAssertionTransientState_description__block_invoke(uint64_t a1, void
   [v4 appendFormat:@"%@=%@\n\t", v7, v6];
 }
 
-- (void)addTag:(id)a3
+- (void)addTag:(id)tag
 {
-  v4 = a3;
+  tagCopy = tag;
   tags = self->_tags;
-  v8 = v4;
+  v8 = tagCopy;
   if (!tags)
   {
     v6 = [MEMORY[0x277CBEB58] set];
     v7 = self->_tags;
     self->_tags = v6;
 
-    v4 = v8;
+    tagCopy = v8;
     tags = self->_tags;
   }
 
-  [(NSMutableSet *)tags addObject:v4];
+  [(NSMutableSet *)tags addObject:tagCopy];
 }
 
-- (void)unionState:(id)a3
+- (void)unionState:(id)state
 {
-  v4 = a3;
-  p_isa = &v4->super.isa;
-  if (v4 && v4 != self)
+  stateCopy = state;
+  p_isa = &stateCopy->super.isa;
+  if (stateCopy && stateCopy != self)
   {
-    v6 = v4->_cpuUsageViolationPoliciesByRole;
+    v6 = stateCopy->_cpuUsageViolationPoliciesByRole;
     if ([(NSMutableDictionary *)v6 count])
     {
       if (self->_cpuUsageViolationPoliciesByRole)
@@ -140,27 +140,27 @@ void __40__RBAssertionTransientState_unionState___block_invoke(uint64_t a1, void
   [*(*(a1 + 32) + 8) setObject:v12 forKeyedSubscript:v7];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[RBAssertionTransientState allocWithZone:](RBAssertionTransientState init];
-  v6 = [(NSMutableDictionary *)self->_cpuUsageViolationPoliciesByRole mutableCopyWithZone:a3];
+  v6 = [(NSMutableDictionary *)self->_cpuUsageViolationPoliciesByRole mutableCopyWithZone:zone];
   cpuUsageViolationPoliciesByRole = v5->_cpuUsageViolationPoliciesByRole;
   v5->_cpuUsageViolationPoliciesByRole = v6;
 
-  v8 = [(NSMutableSet *)self->_tags mutableCopyWithZone:a3];
+  v8 = [(NSMutableSet *)self->_tags mutableCopyWithZone:zone];
   tags = v5->_tags;
   v5->_tags = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v6 = 1;
-  if (self != v4)
+  if (self != equalCopy)
   {
-    if ((v5 = objc_opt_class(), v5 != objc_opt_class()) || (tags = self->_tags, tags != v4->_tags) && ![(NSMutableSet *)tags isEqualToSet:?]|| (cpuUsageViolationPoliciesByRole = self->_cpuUsageViolationPoliciesByRole, cpuUsageViolationPoliciesByRole != v4->_cpuUsageViolationPoliciesByRole) && ![(NSMutableDictionary *)cpuUsageViolationPoliciesByRole isEqualToDictionary:?])
+    if ((v5 = objc_opt_class(), v5 != objc_opt_class()) || (tags = self->_tags, tags != equalCopy->_tags) && ![(NSMutableSet *)tags isEqualToSet:?]|| (cpuUsageViolationPoliciesByRole = self->_cpuUsageViolationPoliciesByRole, cpuUsageViolationPoliciesByRole != equalCopy->_cpuUsageViolationPoliciesByRole) && ![(NSMutableDictionary *)cpuUsageViolationPoliciesByRole isEqualToDictionary:?])
     {
       v6 = 0;
     }

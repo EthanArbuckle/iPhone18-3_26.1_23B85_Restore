@@ -1,42 +1,42 @@
 @interface SFClearHistoryUtilities
-+ (id)clearHistoryTimeFrameStringFromItemType:(int64_t)a3;
-+ (int64_t)clearHistoryTimeFrameItemTypeFromString:(id)a3;
++ (id)clearHistoryTimeFrameStringFromItemType:(int64_t)type;
++ (int64_t)clearHistoryTimeFrameItemTypeFromString:(id)string;
 @end
 
 @implementation SFClearHistoryUtilities
 
-+ (id)clearHistoryTimeFrameStringFromItemType:(int64_t)a3
++ (id)clearHistoryTimeFrameStringFromItemType:(int64_t)type
 {
-  if (a3 > 3)
+  if (type > 3)
   {
     return 0;
   }
 
   else
   {
-    return off_1E721EBB8[a3];
+    return off_1E721EBB8[type];
   }
 }
 
-+ (int64_t)clearHistoryTimeFrameItemTypeFromString:(id)a3
++ (int64_t)clearHistoryTimeFrameItemTypeFromString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"LastHour"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"LastHour"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Today"])
+  else if ([stringCopy isEqualToString:@"Today"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"TodayAndYesterday"])
+  else if ([stringCopy isEqualToString:@"TodayAndYesterday"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"All"])
+  else if ([stringCopy isEqualToString:@"All"])
   {
     v4 = 3;
   }

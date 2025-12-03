@@ -1,39 +1,39 @@
 @interface MPSpotlightIndexExtensionHandler
 - (MPSpotlightIndexExtensionHandler)init;
-- (void)searchableIndex:(id)a3 reindexAllSearchableItemsWithAcknowledgementHandler:(id)a4;
-- (void)searchableIndex:(id)a3 reindexSearchableItemsWithIdentifiers:(id)a4 acknowledgementHandler:(id)a5;
-- (void)searchableItemsDidUpdate:(id)a3;
+- (void)searchableIndex:(id)index reindexAllSearchableItemsWithAcknowledgementHandler:(id)handler;
+- (void)searchableIndex:(id)index reindexSearchableItemsWithIdentifiers:(id)identifiers acknowledgementHandler:(id)handler;
+- (void)searchableItemsDidUpdate:(id)update;
 @end
 
 @implementation MPSpotlightIndexExtensionHandler
 
-- (void)searchableIndex:(id)a3 reindexAllSearchableItemsWithAcknowledgementHandler:(id)a4
+- (void)searchableIndex:(id)index reindexAllSearchableItemsWithAcknowledgementHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  sub_10000338C(v8, v6, "Asked to reindex all items. Setting needsReindexing to true");
+  indexCopy = index;
+  selfCopy = self;
+  sub_10000338C(selfCopy, v6, "Asked to reindex all items. Setting needsReindexing to true");
   _Block_release(v6);
   _Block_release(v6);
 }
 
-- (void)searchableIndex:(id)a3 reindexSearchableItemsWithIdentifiers:(id)a4 acknowledgementHandler:(id)a5
+- (void)searchableIndex:(id)index reindexSearchableItemsWithIdentifiers:(id)identifiers acknowledgementHandler:(id)handler
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(handler);
   _Block_copy(v7);
-  v8 = a3;
-  v9 = self;
-  sub_10000338C(v9, v7, "Asked to reindex items with identifiers. Setting needsReindexing to true");
+  indexCopy = index;
+  selfCopy = self;
+  sub_10000338C(selfCopy, v7, "Asked to reindex items with identifiers. Setting needsReindexing to true");
   _Block_release(v7);
   _Block_release(v7);
 }
 
-- (void)searchableItemsDidUpdate:(id)a3
+- (void)searchableItemsDidUpdate:(id)update
 {
   sub_100002A0C();
   v4 = sub_1000036BC();
-  v5 = self;
+  selfCopy = self;
   sub_1000015B8(v4);
 }
 

@@ -2,7 +2,7 @@
 - (NSString)symbolName;
 - (NSString)titleString;
 - (id)actionBlock;
-- (void)setActionBlock:(id)a3;
+- (void)setActionBlock:(id)block;
 @end
 
 @implementation EVChargingMoreButtonViewModel
@@ -59,9 +59,9 @@
   return v4;
 }
 
-- (void)setActionBlock:(id)a3
+- (void)setActionBlock:(id)block
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -80,7 +80,7 @@
   v8 = v6[1];
   *v6 = v4;
   v6[1] = v5;
-  v9 = self;
+  selfCopy = self;
   sub_1C5632FA8(v7);
 }
 

@@ -1,40 +1,40 @@
 @interface ASTOnDeviceEyeTrackingSettingsHelper
-- (ASTOnDeviceEyeTrackingSettingsHelper)initWithEyeTracker:(id)a3;
+- (ASTOnDeviceEyeTrackingSettingsHelper)initWithEyeTracker:(id)tracker;
 - (NSArray)autoHideTimeoutAndSliderContiguousSpecs;
 - (PSSpecifier)autoHideOpacityGroupSpecifier;
 - (PSSpecifier)autoHideOpacitySliderSpecifier;
 - (PSSpecifier)autoHideTimeoutGroupSpecifier;
 - (PSSpecifier)autoHideTimeoutStepperSpecifier;
-- (double)maximumValueForSpecifier:(id)a3;
-- (double)minimumValueForSpecifier:(id)a3;
-- (double)stepValueForSpecifier:(id)a3;
-- (double)valueForSpecifier:(id)a3;
-- (id)assistiveTouchBubbleModeEnabled:(id)a3;
-- (id)assistiveTouchKeyboardZoomEnabled:(id)a3;
-- (id)assistiveTouchOnDeviceEyeTrackingAutoHideEnabled:(id)a3;
-- (id)assistiveTouchOnDeviceEyeTrackingSmoothingBufferSize:(id)a3;
+- (double)maximumValueForSpecifier:(id)specifier;
+- (double)minimumValueForSpecifier:(id)specifier;
+- (double)stepValueForSpecifier:(id)specifier;
+- (double)valueForSpecifier:(id)specifier;
+- (id)assistiveTouchBubbleModeEnabled:(id)enabled;
+- (id)assistiveTouchKeyboardZoomEnabled:(id)enabled;
+- (id)assistiveTouchOnDeviceEyeTrackingAutoHideEnabled:(id)enabled;
+- (id)assistiveTouchOnDeviceEyeTrackingSmoothingBufferSize:(id)size;
 - (id)specifiers;
-- (id)stringValueForSpecifier:(id)a3;
-- (id)unitsStringForSpecifier:(id)a3;
-- (void)setAssistiveTouchBubbleModeEnabled:(id)a3 specifier:(id)a4;
-- (void)setAssistiveTouchKeyboardZoomEnabled:(id)a3 specifier:(id)a4;
-- (void)setAssistiveTouchOnDeviceEyeTrackingAutoHideEnabled:(id)a3 specifier:(id)a4;
-- (void)setAssistiveTouchOnDeviceEyeTrackingSmoothingBufferSize:(id)a3 specifier:(id)a4;
-- (void)specifier:(id)a3 setValue:(double)a4;
+- (id)stringValueForSpecifier:(id)specifier;
+- (id)unitsStringForSpecifier:(id)specifier;
+- (void)setAssistiveTouchBubbleModeEnabled:(id)enabled specifier:(id)specifier;
+- (void)setAssistiveTouchKeyboardZoomEnabled:(id)enabled specifier:(id)specifier;
+- (void)setAssistiveTouchOnDeviceEyeTrackingAutoHideEnabled:(id)enabled specifier:(id)specifier;
+- (void)setAssistiveTouchOnDeviceEyeTrackingSmoothingBufferSize:(id)size specifier:(id)specifier;
+- (void)specifier:(id)specifier setValue:(double)value;
 @end
 
 @implementation ASTOnDeviceEyeTrackingSettingsHelper
 
-- (ASTOnDeviceEyeTrackingSettingsHelper)initWithEyeTracker:(id)a3
+- (ASTOnDeviceEyeTrackingSettingsHelper)initWithEyeTracker:(id)tracker
 {
-  v5 = a3;
+  trackerCopy = tracker;
   v9.receiver = self;
   v9.super_class = ASTOnDeviceEyeTrackingSettingsHelper;
   v6 = [(ASTOnDeviceEyeTrackingSettingsHelper *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_onDeviceEyeTracker, a3);
+    objc_storeStrong(&v6->_onDeviceEyeTracker, tracker);
   }
 
   return v7;
@@ -54,8 +54,8 @@
   [v3 addObject:v5];
   v8 = [PSSpecifier preferenceSpecifierNamed:0 target:self set:0 get:0 detail:0 cell:-1 edit:0];
   [v8 setProperty:objc_opt_class() forKey:PSCellClassKey];
-  v9 = [(ASTOnDeviceEyeTrackingSettingsHelper *)self onDeviceEyeTracker];
-  [v8 setProperty:v9 forKey:@"ASTOnDeviceEyeTrackerKey"];
+  onDeviceEyeTracker = [(ASTOnDeviceEyeTrackingSettingsHelper *)self onDeviceEyeTracker];
+  [v8 setProperty:onDeviceEyeTracker forKey:@"ASTOnDeviceEyeTrackerKey"];
 
   v10 = PSIDKey;
   [v8 setProperty:@"SMOOTHING" forKey:PSIDKey];
@@ -88,17 +88,17 @@
 
   if (v18)
   {
-    v21 = [(ASTOnDeviceEyeTrackingSettingsHelper *)self autoHideTimeoutGroupSpecifier];
-    [v3 addObject:v21];
+    autoHideTimeoutGroupSpecifier = [(ASTOnDeviceEyeTrackingSettingsHelper *)self autoHideTimeoutGroupSpecifier];
+    [v3 addObject:autoHideTimeoutGroupSpecifier];
 
-    v22 = [(ASTOnDeviceEyeTrackingSettingsHelper *)self autoHideTimeoutStepperSpecifier];
-    [v3 addObject:v22];
+    autoHideTimeoutStepperSpecifier = [(ASTOnDeviceEyeTrackingSettingsHelper *)self autoHideTimeoutStepperSpecifier];
+    [v3 addObject:autoHideTimeoutStepperSpecifier];
 
-    v23 = [(ASTOnDeviceEyeTrackingSettingsHelper *)self autoHideOpacityGroupSpecifier];
-    [v3 addObject:v23];
+    autoHideOpacityGroupSpecifier = [(ASTOnDeviceEyeTrackingSettingsHelper *)self autoHideOpacityGroupSpecifier];
+    [v3 addObject:autoHideOpacityGroupSpecifier];
 
-    v24 = [(ASTOnDeviceEyeTrackingSettingsHelper *)self autoHideOpacitySliderSpecifier];
-    [v3 addObject:v24];
+    autoHideOpacitySliderSpecifier = [(ASTOnDeviceEyeTrackingSettingsHelper *)self autoHideOpacitySliderSpecifier];
+    [v3 addObject:autoHideOpacitySliderSpecifier];
   }
 
   return v3;
@@ -176,20 +176,20 @@
 
 - (NSArray)autoHideTimeoutAndSliderContiguousSpecs
 {
-  v3 = [(ASTOnDeviceEyeTrackingSettingsHelper *)self autoHideTimeoutGroupSpecifier];
-  v9[0] = v3;
-  v4 = [(ASTOnDeviceEyeTrackingSettingsHelper *)self autoHideTimeoutStepperSpecifier];
-  v9[1] = v4;
-  v5 = [(ASTOnDeviceEyeTrackingSettingsHelper *)self autoHideOpacityGroupSpecifier];
-  v9[2] = v5;
-  v6 = [(ASTOnDeviceEyeTrackingSettingsHelper *)self autoHideOpacitySliderSpecifier];
-  v9[3] = v6;
+  autoHideTimeoutGroupSpecifier = [(ASTOnDeviceEyeTrackingSettingsHelper *)self autoHideTimeoutGroupSpecifier];
+  v9[0] = autoHideTimeoutGroupSpecifier;
+  autoHideTimeoutStepperSpecifier = [(ASTOnDeviceEyeTrackingSettingsHelper *)self autoHideTimeoutStepperSpecifier];
+  v9[1] = autoHideTimeoutStepperSpecifier;
+  autoHideOpacityGroupSpecifier = [(ASTOnDeviceEyeTrackingSettingsHelper *)self autoHideOpacityGroupSpecifier];
+  v9[2] = autoHideOpacityGroupSpecifier;
+  autoHideOpacitySliderSpecifier = [(ASTOnDeviceEyeTrackingSettingsHelper *)self autoHideOpacitySliderSpecifier];
+  v9[3] = autoHideOpacitySliderSpecifier;
   v7 = [NSArray arrayWithObjects:v9 count:4];
 
   return v7;
 }
 
-- (id)assistiveTouchOnDeviceEyeTrackingSmoothingBufferSize:(id)a3
+- (id)assistiveTouchOnDeviceEyeTrackingSmoothingBufferSize:(id)size
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v3 assistiveTouchOnDeviceEyeTrackingSmoothingBufferSize]);
@@ -197,14 +197,14 @@
   return v4;
 }
 
-- (void)setAssistiveTouchOnDeviceEyeTrackingSmoothingBufferSize:(id)a3 specifier:(id)a4
+- (void)setAssistiveTouchOnDeviceEyeTrackingSmoothingBufferSize:(id)size specifier:(id)specifier
 {
-  v4 = [a3 unsignedIntegerValue];
+  unsignedIntegerValue = [size unsignedIntegerValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setAssistiveTouchOnDeviceEyeTrackingSmoothingBufferSize:v4];
+  [v5 setAssistiveTouchOnDeviceEyeTrackingSmoothingBufferSize:unsignedIntegerValue];
 }
 
-- (id)assistiveTouchBubbleModeEnabled:(id)a3
+- (id)assistiveTouchBubbleModeEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 assistiveTouchBubbleModeEnabled]);
@@ -212,14 +212,14 @@
   return v4;
 }
 
-- (void)setAssistiveTouchBubbleModeEnabled:(id)a3 specifier:(id)a4
+- (void)setAssistiveTouchBubbleModeEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setAssistiveTouchBubbleModeEnabled:v4];
+  [v5 setAssistiveTouchBubbleModeEnabled:bOOLValue];
 }
 
-- (id)assistiveTouchKeyboardZoomEnabled:(id)a3
+- (id)assistiveTouchKeyboardZoomEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 assistiveTouchEyeTrackingUseZoomForKeyboardKeys]);
@@ -227,14 +227,14 @@
   return v4;
 }
 
-- (void)setAssistiveTouchKeyboardZoomEnabled:(id)a3 specifier:(id)a4
+- (void)setAssistiveTouchKeyboardZoomEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setAssistiveTouchEyeTrackingUseZoomForKeyboardKeys:v4];
+  [v5 setAssistiveTouchEyeTrackingUseZoomForKeyboardKeys:bOOLValue];
 }
 
-- (id)assistiveTouchOnDeviceEyeTrackingAutoHideEnabled:(id)a3
+- (id)assistiveTouchOnDeviceEyeTrackingAutoHideEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 assistiveTouchOnDeviceEyeTrackingAutoHideEnabled]);
@@ -242,17 +242,17 @@
   return v4;
 }
 
-- (void)setAssistiveTouchOnDeviceEyeTrackingAutoHideEnabled:(id)a3 specifier:(id)a4
+- (void)setAssistiveTouchOnDeviceEyeTrackingAutoHideEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setAssistiveTouchOnDeviceEyeTrackingAutoHideEnabled:v4];
+  [v5 setAssistiveTouchOnDeviceEyeTrackingAutoHideEnabled:bOOLValue];
 }
 
-- (double)maximumValueForSpecifier:(id)a3
+- (double)maximumValueForSpecifier:(id)specifier
 {
-  v3 = [a3 identifier];
-  if ([v3 isEqualToString:@"OnDeviceEyeTrackingAutoHideTimeout"])
+  identifier = [specifier identifier];
+  if ([identifier isEqualToString:@"OnDeviceEyeTrackingAutoHideTimeout"])
   {
     v4 = kAXSAssistiveTouchEyeTrackingAutoHideTimeoutMax;
   }
@@ -265,10 +265,10 @@
   return v4;
 }
 
-- (double)minimumValueForSpecifier:(id)a3
+- (double)minimumValueForSpecifier:(id)specifier
 {
-  v3 = [a3 identifier];
-  if ([v3 isEqualToString:@"OnDeviceEyeTrackingAutoHideTimeout"])
+  identifier = [specifier identifier];
+  if ([identifier isEqualToString:@"OnDeviceEyeTrackingAutoHideTimeout"])
   {
     v4 = kAXSAssistiveTouchEyeTrackingAutoHideTimeoutMin;
   }
@@ -281,13 +281,13 @@
   return v4;
 }
 
-- (double)stepValueForSpecifier:(id)a3
+- (double)stepValueForSpecifier:(id)specifier
 {
-  v3 = [a3 identifier];
+  identifier = [specifier identifier];
   v4 = 1.0;
-  if (([v3 isEqualToString:@"ODETSmoothingBufferSize"] & 1) == 0)
+  if (([identifier isEqualToString:@"ODETSmoothingBufferSize"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"OnDeviceEyeTrackingAutoHideTimeout"])
+    if ([identifier isEqualToString:@"OnDeviceEyeTrackingAutoHideTimeout"])
     {
       v4 = kAXSAssistiveTouchEyeTrackingAutoHideTimeoutStepInterval;
     }
@@ -301,19 +301,19 @@
   return v4;
 }
 
-- (id)stringValueForSpecifier:(id)a3
+- (id)stringValueForSpecifier:(id)specifier
 {
-  [(ASTOnDeviceEyeTrackingSettingsHelper *)self valueForSpecifier:a3];
+  [(ASTOnDeviceEyeTrackingSettingsHelper *)self valueForSpecifier:specifier];
   v3 = [NSNumber numberWithDouble:?];
   v4 = AXFormatNumberWithOptions();
 
   return v4;
 }
 
-- (id)unitsStringForSpecifier:(id)a3
+- (id)unitsStringForSpecifier:(id)specifier
 {
-  v3 = [a3 identifier];
-  if ([v3 isEqualToString:@"ODETSmoothingBufferSize"])
+  identifier = [specifier identifier];
+  if ([identifier isEqualToString:@"ODETSmoothingBufferSize"])
   {
     v4 = @"Smoothing Buffer Size";
   }
@@ -326,53 +326,53 @@
   return v4;
 }
 
-- (void)specifier:(id)a3 setValue:(double)a4
+- (void)specifier:(id)specifier setValue:(double)value
 {
-  v6 = [a3 identifier];
-  if ([v6 isEqualToString:@"ODETSmoothingBufferSize"])
+  identifier = [specifier identifier];
+  if ([identifier isEqualToString:@"ODETSmoothingBufferSize"])
   {
     v5 = +[AXSettings sharedInstance];
-    [v5 setAssistiveTouchOnDeviceEyeTrackingSmoothingBufferSize:a4];
+    [v5 setAssistiveTouchOnDeviceEyeTrackingSmoothingBufferSize:value];
   }
 
   else
   {
-    if (![v6 isEqualToString:@"OnDeviceEyeTrackingAutoHideTimeout"])
+    if (![identifier isEqualToString:@"OnDeviceEyeTrackingAutoHideTimeout"])
     {
       goto LABEL_6;
     }
 
     v5 = +[AXSettings sharedInstance];
-    [v5 setAssistiveTouchEyeTrackingAutoHideTimeout:a4];
+    [v5 setAssistiveTouchEyeTrackingAutoHideTimeout:value];
   }
 
 LABEL_6:
 }
 
-- (double)valueForSpecifier:(id)a3
+- (double)valueForSpecifier:(id)specifier
 {
-  v3 = [a3 identifier];
-  if ([v3 isEqualToString:@"ODETSmoothingBufferSize"])
+  identifier = [specifier identifier];
+  if ([identifier isEqualToString:@"ODETSmoothingBufferSize"])
   {
     v4 = +[AXSettings sharedInstance];
-    v5 = [v4 assistiveTouchOnDeviceEyeTrackingSmoothingBufferSize];
+    assistiveTouchOnDeviceEyeTrackingSmoothingBufferSize = [v4 assistiveTouchOnDeviceEyeTrackingSmoothingBufferSize];
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  v5 = 0.0;
-  if ([v3 isEqualToString:@"OnDeviceEyeTrackingAutoHideTimeout"])
+  assistiveTouchOnDeviceEyeTrackingSmoothingBufferSize = 0.0;
+  if ([identifier isEqualToString:@"OnDeviceEyeTrackingAutoHideTimeout"])
   {
     v4 = +[AXSettings sharedInstance];
     [v4 assistiveTouchEyeTrackingAutoHideTimeout];
-    v5 = v6;
+    assistiveTouchOnDeviceEyeTrackingSmoothingBufferSize = v6;
     goto LABEL_5;
   }
 
 LABEL_6:
 
-  return v5;
+  return assistiveTouchOnDeviceEyeTrackingSmoothingBufferSize;
 }
 
 @end

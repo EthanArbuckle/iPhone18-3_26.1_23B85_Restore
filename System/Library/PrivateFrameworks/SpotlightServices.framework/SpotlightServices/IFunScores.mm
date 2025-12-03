@@ -1,28 +1,28 @@
 @interface IFunScores
-- (IFunScores)initWithSFEngagementSignal:(id)a3;
+- (IFunScores)initWithSFEngagementSignal:(id)signal;
 @end
 
 @implementation IFunScores
 
-- (IFunScores)initWithSFEngagementSignal:(id)a3
+- (IFunScores)initWithSFEngagementSignal:(id)signal
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  signalCopy = signal;
   v31.receiver = self;
   v31.super_class = IFunScores;
   v5 = [(IFunScores *)&v31 init];
-  if (v4)
+  if (signalCopy)
   {
-    v6 = [v4 serverScore];
+    serverScore = [signalCopy serverScore];
     serverScore = v5->_serverScore;
-    v5->_serverScore = v6;
+    v5->_serverScore = serverScore;
 
-    v8 = [v4 localScore];
+    localScore = [signalCopy localScore];
     localScore = v5->_localScore;
-    v5->_localScore = v8;
+    v5->_localScore = localScore;
 
-    v10 = [v4 domainEngagementScores];
-    v11 = [v10 count];
+    domainEngagementScores = [signalCopy domainEngagementScores];
+    v11 = [domainEngagementScores count];
 
     if (v11)
     {
@@ -31,9 +31,9 @@
       v28 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v26 = v4;
-      v13 = [v4 domainEngagementScores];
-      v14 = [v13 countByEnumeratingWithState:&v27 objects:v32 count:16];
+      v26 = signalCopy;
+      domainEngagementScores2 = [signalCopy domainEngagementScores];
+      v14 = [domainEngagementScores2 countByEnumeratingWithState:&v27 objects:v32 count:16];
       if (v14)
       {
         v15 = v14;
@@ -44,24 +44,24 @@
           {
             if (*v28 != v16)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(domainEngagementScores2);
             }
 
             v18 = *(*(&v27 + 1) + 8 * i);
             if ([v18 domain])
             {
-              v19 = [v18 score];
+              score = [v18 score];
 
-              if (v19)
+              if (score)
               {
-                v20 = [v18 score];
+                score2 = [v18 score];
                 v21 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v18, "domain")}];
-                [v12 setObject:v20 forKeyedSubscript:v21];
+                [v12 setObject:score2 forKeyedSubscript:v21];
               }
             }
           }
 
-          v15 = [v13 countByEnumeratingWithState:&v27 objects:v32 count:16];
+          v15 = [domainEngagementScores2 countByEnumeratingWithState:&v27 objects:v32 count:16];
         }
 
         while (v15);
@@ -71,7 +71,7 @@
       domainScores = v5->_domainScores;
       v5->_domainScores = v22;
 
-      v4 = v26;
+      signalCopy = v26;
     }
   }
 

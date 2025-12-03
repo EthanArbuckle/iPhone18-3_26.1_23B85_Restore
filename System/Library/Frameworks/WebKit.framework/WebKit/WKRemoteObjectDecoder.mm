@@ -1,22 +1,22 @@
 @interface WKRemoteObjectDecoder
-- (BOOL)containsValueForKey:(id)a3;
-- (BOOL)decodeBoolForKey:(id)a3;
-- (WKRemoteObjectDecoder)initWithInterface:(id)a3 rootObjectDictionary:(void *)a4 replyToSelector:(SEL)a5;
-- (const)decodeBytesForKey:(id)a3 returnedLength:(unint64_t *)a4;
-- (double)decodeDoubleForKey:(id)a3;
-- (float)decodeFloatForKey:(id)a3;
+- (BOOL)containsValueForKey:(id)key;
+- (BOOL)decodeBoolForKey:(id)key;
+- (WKRemoteObjectDecoder)initWithInterface:(id)interface rootObjectDictionary:(void *)dictionary replyToSelector:(SEL)selector;
+- (const)decodeBytesForKey:(id)key returnedLength:(unint64_t *)length;
+- (double)decodeDoubleForKey:(id)key;
+- (float)decodeFloatForKey:(id)key;
 - (id).cxx_construct;
 - (id)allowedClasses;
-- (id)decodeObjectOfClasses:(id)a3 forKey:(id)a4;
-- (int)decodeInt32ForKey:(id)a3;
-- (int)decodeIntForKey:(id)a3;
-- (int64_t)decodeInt64ForKey:(id)a3;
-- (void)decodeValueOfObjCType:(const char *)a3 at:(void *)a4;
+- (id)decodeObjectOfClasses:(id)classes forKey:(id)key;
+- (int)decodeInt32ForKey:(id)key;
+- (int)decodeIntForKey:(id)key;
+- (int64_t)decodeInt64ForKey:(id)key;
+- (void)decodeValueOfObjCType:(const char *)type at:(void *)at;
 @end
 
 @implementation WKRemoteObjectDecoder
 
-- (WKRemoteObjectDecoder)initWithInterface:(id)a3 rootObjectDictionary:(void *)a4 replyToSelector:(SEL)a5
+- (WKRemoteObjectDecoder)initWithInterface:(id)interface rootObjectDictionary:(void *)dictionary replyToSelector:(SEL)selector
 {
   v21.receiver = self;
   v21.super_class = WKRemoteObjectDecoder;
@@ -24,15 +24,15 @@
   v9 = v8;
   if (v8)
   {
-    WTF::RetainPtr<NSNumber>::operator=(&v8->_interface.m_ptr, a3);
+    WTF::RetainPtr<NSNumber>::operator=(&v8->_interface.m_ptr, interface);
     if (v9->_rootDictionary.m_ptr)
     {
       __break(0xC471u);
       goto LABEL_19;
     }
 
-    v10 = *a4;
-    *a4 = 0;
+    v10 = *dictionary;
+    *dictionary = 0;
     m_ptr = v9->_rootDictionary.m_ptr;
     v9->_rootDictionary.m_ptr = v10;
     if (m_ptr)
@@ -42,17 +42,17 @@
     }
 
     WTF::RefPtr<API::Dictionary const,WTF::RawPtrTraits<API::Dictionary const>,WTF::DefaultRefDerefTraits<API::Dictionary const>>::operator=(&v9->_currentDictionary, v10);
-    if (a5)
+    if (selector)
     {
-      v12 = a5;
+      selectorCopy = selector;
     }
 
     else
     {
-      v12 = 0;
+      selectorCopy = 0;
     }
 
-    v9->_replyToSelector = v12;
+    v9->_replyToSelector = selectorCopy;
     v13 = v9->_rootDictionary.m_ptr;
     WTF::StringImpl::createWithoutCopyingNonEmpty();
     v15 = API::Dictionary::get<API::Array>(v13, &v20, v14);
@@ -86,13 +86,13 @@ LABEL_19:
   return v9;
 }
 
-- (void)decodeValueOfObjCType:(const char *)a3 at:(void *)a4
+- (void)decodeValueOfObjCType:(const char *)type at:(void *)at
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v6 = *a3;
+  v6 = *type;
   if (v6 <= 0x62)
   {
-    if (*a3 > 0x4Bu)
+    if (*type > 0x4Bu)
     {
       switch(v6)
       {
@@ -101,23 +101,23 @@ LABEL_19:
           WTF::HashSet<void const*,WTF::DefaultHash<void const*>,WTF::HashTraits<void const*>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1>::HashSet(&v15, v17, 1);
           decodeObjectFromObjectStream(&v16, self, &v15);
           v7 = v16;
-          v8 = [v16 unsignedLongValue];
+          unsignedLongValue = [v16 unsignedLongValue];
           break;
         case 'Q':
           v17[0] = objc_opt_class();
           WTF::HashSet<void const*,WTF::DefaultHash<void const*>,WTF::HashTraits<void const*>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1>::HashSet(&v15, v17, 1);
           decodeObjectFromObjectStream(&v16, self, &v15);
           v7 = v16;
-          v8 = [v16 unsignedLongLongValue];
+          unsignedLongValue = [v16 unsignedLongLongValue];
           break;
         case 'S':
           v17[0] = objc_opt_class();
           WTF::HashSet<void const*,WTF::DefaultHash<void const*>,WTF::HashTraits<void const*>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1>::HashSet(&v15, v17, 1);
           decodeObjectFromObjectStream(&v16, self, &v15);
           v7 = v16;
-          v12 = [v16 unsignedShortValue];
+          unsignedShortValue = [v16 unsignedShortValue];
 LABEL_24:
-          *a4 = v12;
+          *at = unsignedShortValue;
           if (!v7)
           {
             goto LABEL_41;
@@ -129,7 +129,7 @@ LABEL_24:
       }
 
 LABEL_39:
-      *a4 = v8;
+      *at = unsignedLongValue;
       if (!v7)
       {
         goto LABEL_41;
@@ -145,21 +145,21 @@ LABEL_39:
         WTF::HashSet<void const*,WTF::DefaultHash<void const*>,WTF::HashTraits<void const*>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1>::HashSet(&v15, v17, 1);
         decodeObjectFromObjectStream(&v16, self, &v15);
         v7 = v16;
-        v13 = [v16 BOOLValue];
+        bOOLValue = [v16 BOOLValue];
         break;
       case 'C':
         v17[0] = objc_opt_class();
         WTF::HashSet<void const*,WTF::DefaultHash<void const*>,WTF::HashTraits<void const*>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1>::HashSet(&v15, v17, 1);
         decodeObjectFromObjectStream(&v16, self, &v15);
         v7 = v16;
-        v13 = [v16 unsignedCharValue];
+        bOOLValue = [v16 unsignedCharValue];
         break;
       case 'I':
         v17[0] = objc_opt_class();
         WTF::HashSet<void const*,WTF::DefaultHash<void const*>,WTF::HashTraits<void const*>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1>::HashSet(&v15, v17, 1);
         decodeObjectFromObjectStream(&v16, self, &v15);
         v7 = v16;
-        v10 = [v16 unsignedIntValue];
+        unsignedIntValue = [v16 unsignedIntValue];
         goto LABEL_27;
       default:
         goto LABEL_43;
@@ -168,9 +168,9 @@ LABEL_39:
     goto LABEL_36;
   }
 
-  if (*a3 > 0x68u)
+  if (*type > 0x68u)
   {
-    if (*a3 <= 0x70u)
+    if (*type <= 0x70u)
     {
       if (v6 != 105)
       {
@@ -180,12 +180,12 @@ LABEL_39:
           WTF::HashSet<void const*,WTF::DefaultHash<void const*>,WTF::HashTraits<void const*>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1>::HashSet(&v15, v17, 1);
           decodeObjectFromObjectStream(&v16, self, &v15);
           v7 = v16;
-          v8 = [v16 longValue];
+          unsignedLongValue = [v16 longValue];
           goto LABEL_39;
         }
 
 LABEL_43:
-        [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E696A4C8] format:{@"Unsupported type '%s'", a3}];
+        [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E696A4C8] format:{@"Unsupported type '%s'", type}];
         return;
       }
 
@@ -193,9 +193,9 @@ LABEL_43:
       WTF::HashSet<void const*,WTF::DefaultHash<void const*>,WTF::HashTraits<void const*>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1>::HashSet(&v15, v17, 1);
       decodeObjectFromObjectStream(&v16, self, &v15);
       v7 = v16;
-      v10 = [v16 intValue];
+      unsignedIntValue = [v16 intValue];
 LABEL_27:
-      *a4 = v10;
+      *at = unsignedIntValue;
       if (!v7)
       {
         goto LABEL_41;
@@ -217,7 +217,7 @@ LABEL_40:
       WTF::HashSet<void const*,WTF::DefaultHash<void const*>,WTF::HashTraits<void const*>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1>::HashSet(&v15, v17, 1);
       decodeObjectFromObjectStream(&v16, self, &v15);
       v7 = v16;
-      v12 = [v16 shortValue];
+      unsignedShortValue = [v16 shortValue];
       goto LABEL_24;
     }
 
@@ -225,7 +225,7 @@ LABEL_40:
     WTF::HashSet<void const*,WTF::DefaultHash<void const*>,WTF::HashTraits<void const*>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1>::HashSet(&v15, v17, 1);
     decodeObjectFromObjectStream(&v16, self, &v15);
     v7 = v16;
-    v8 = [v16 longLongValue];
+    unsignedLongValue = [v16 longLongValue];
     goto LABEL_39;
   }
 
@@ -236,9 +236,9 @@ LABEL_40:
       WTF::HashSet<void const*,WTF::DefaultHash<void const*>,WTF::HashTraits<void const*>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1>::HashSet(&v15, v17, 1);
       decodeObjectFromObjectStream(&v16, self, &v15);
       v7 = v16;
-      v13 = [v16 charValue];
+      bOOLValue = [v16 charValue];
 LABEL_36:
-      *a4 = v13;
+      *at = bOOLValue;
       if (v7)
       {
         goto LABEL_40;
@@ -251,7 +251,7 @@ LABEL_36:
       decodeObjectFromObjectStream(&v16, self, &v15);
       v7 = v16;
       [v16 doubleValue];
-      *a4 = v14;
+      *at = v14;
       if (v7)
       {
         goto LABEL_40;
@@ -264,7 +264,7 @@ LABEL_36:
       decodeObjectFromObjectStream(&v16, self, &v15);
       v7 = v16;
       [v16 floatValue];
-      *a4 = v11;
+      *at = v11;
       if (v7)
       {
         goto LABEL_40;
@@ -282,16 +282,16 @@ LABEL_41:
   }
 }
 
-- (BOOL)containsValueForKey:(id)a3
+- (BOOL)containsValueForKey:(id)key
 {
   m_ptr = self->_currentDictionary.m_ptr;
   CFRetain(*(m_ptr + 1));
-  if ([a3 length] && objc_msgSend(a3, "characterAtIndex:", 0) == 36)
+  if ([key length] && objc_msgSend(key, "characterAtIndex:", 0) == 36)
   {
-    a3 = [@"$" stringByAppendingString:a3];
+    key = [@"$" stringByAppendingString:key];
   }
 
-  MEMORY[0x19EB02040](&v16, a3);
+  MEMORY[0x19EB02040](&v16, key);
   v7 = *(m_ptr + 2);
   v8 = v16;
   if (v7)
@@ -361,16 +361,16 @@ LABEL_20:
   return v7;
 }
 
-- (BOOL)decodeBoolForKey:(id)a3
+- (BOOL)decodeBoolForKey:(id)key
 {
   m_ptr = self->_currentDictionary.m_ptr;
   CFRetain(*(m_ptr + 1));
-  if ([a3 length] && objc_msgSend(a3, "characterAtIndex:", 0) == 36)
+  if ([key length] && objc_msgSend(key, "characterAtIndex:", 0) == 36)
   {
-    a3 = [@"$" stringByAppendingString:a3];
+    key = [@"$" stringByAppendingString:key];
   }
 
-  MEMORY[0x19EB02040](&v12, a3);
+  MEMORY[0x19EB02040](&v12, key);
   v6 = API::Dictionary::get<API::Boolean>(m_ptr, &v12, v5);
   v8 = v6;
   if (v6)
@@ -400,16 +400,16 @@ LABEL_20:
   return v10 & 1;
 }
 
-- (int)decodeIntForKey:(id)a3
+- (int)decodeIntForKey:(id)key
 {
   m_ptr = self->_currentDictionary.m_ptr;
   CFRetain(*(m_ptr + 1));
-  if ([a3 length] && objc_msgSend(a3, "characterAtIndex:", 0) == 36)
+  if ([key length] && objc_msgSend(key, "characterAtIndex:", 0) == 36)
   {
-    a3 = [@"$" stringByAppendingString:a3];
+    key = [@"$" stringByAppendingString:key];
   }
 
-  MEMORY[0x19EB02040](&v12, a3);
+  MEMORY[0x19EB02040](&v12, key);
   v6 = API::Dictionary::get<API::UInt64>(m_ptr, &v12, v5);
   v8 = v6;
   if (v6)
@@ -435,16 +435,16 @@ LABEL_20:
   return v10;
 }
 
-- (int)decodeInt32ForKey:(id)a3
+- (int)decodeInt32ForKey:(id)key
 {
   m_ptr = self->_currentDictionary.m_ptr;
   CFRetain(*(m_ptr + 1));
-  if ([a3 length] && objc_msgSend(a3, "characterAtIndex:", 0) == 36)
+  if ([key length] && objc_msgSend(key, "characterAtIndex:", 0) == 36)
   {
-    a3 = [@"$" stringByAppendingString:a3];
+    key = [@"$" stringByAppendingString:key];
   }
 
-  MEMORY[0x19EB02040](&v12, a3);
+  MEMORY[0x19EB02040](&v12, key);
   v6 = API::Dictionary::get<API::UInt64>(m_ptr, &v12, v5);
   v8 = v6;
   if (v6)
@@ -470,16 +470,16 @@ LABEL_20:
   return v10;
 }
 
-- (int64_t)decodeInt64ForKey:(id)a3
+- (int64_t)decodeInt64ForKey:(id)key
 {
   m_ptr = self->_currentDictionary.m_ptr;
   CFRetain(*(m_ptr + 1));
-  if ([a3 length] && objc_msgSend(a3, "characterAtIndex:", 0) == 36)
+  if ([key length] && objc_msgSend(key, "characterAtIndex:", 0) == 36)
   {
-    a3 = [@"$" stringByAppendingString:a3];
+    key = [@"$" stringByAppendingString:key];
   }
 
-  MEMORY[0x19EB02040](&v12, a3);
+  MEMORY[0x19EB02040](&v12, key);
   v6 = API::Dictionary::get<API::UInt64>(m_ptr, &v12, v5);
   v8 = v6;
   if (v6)
@@ -505,16 +505,16 @@ LABEL_20:
   return v10;
 }
 
-- (float)decodeFloatForKey:(id)a3
+- (float)decodeFloatForKey:(id)key
 {
   m_ptr = self->_currentDictionary.m_ptr;
   CFRetain(*(m_ptr + 1));
-  if ([a3 length] && objc_msgSend(a3, "characterAtIndex:", 0) == 36)
+  if ([key length] && objc_msgSend(key, "characterAtIndex:", 0) == 36)
   {
-    a3 = [@"$" stringByAppendingString:a3];
+    key = [@"$" stringByAppendingString:key];
   }
 
-  MEMORY[0x19EB02040](&v12, a3);
+  MEMORY[0x19EB02040](&v12, key);
   v6 = API::Dictionary::get<API::Double>(m_ptr, &v12, v5);
   v8 = v6;
   if (v6)
@@ -540,16 +540,16 @@ LABEL_20:
   return v10;
 }
 
-- (double)decodeDoubleForKey:(id)a3
+- (double)decodeDoubleForKey:(id)key
 {
   m_ptr = self->_currentDictionary.m_ptr;
   CFRetain(*(m_ptr + 1));
-  if ([a3 length] && objc_msgSend(a3, "characterAtIndex:", 0) == 36)
+  if ([key length] && objc_msgSend(key, "characterAtIndex:", 0) == 36)
   {
-    a3 = [@"$" stringByAppendingString:a3];
+    key = [@"$" stringByAppendingString:key];
   }
 
-  MEMORY[0x19EB02040](&v12, a3);
+  MEMORY[0x19EB02040](&v12, key);
   v6 = API::Dictionary::get<API::Double>(m_ptr, &v12, v5);
   v8 = v6;
   if (v6)
@@ -575,16 +575,16 @@ LABEL_20:
   return v10;
 }
 
-- (const)decodeBytesForKey:(id)a3 returnedLength:(unint64_t *)a4
+- (const)decodeBytesForKey:(id)key returnedLength:(unint64_t *)length
 {
   m_ptr = self->_currentDictionary.m_ptr;
   CFRetain(*(m_ptr + 1));
-  if ([a3 length] && objc_msgSend(a3, "characterAtIndex:", 0) == 36)
+  if ([key length] && objc_msgSend(key, "characterAtIndex:", 0) == 36)
   {
-    a3 = [@"$" stringByAppendingString:a3];
+    key = [@"$" stringByAppendingString:key];
   }
 
-  MEMORY[0x19EB02040](&v16, a3);
+  MEMORY[0x19EB02040](&v16, key);
   v8 = WTF::HashMap<WTF::String,WTF::RefPtr<API::Object,WTF::RawPtrTraits<API::Object>,WTF::DefaultRefDerefTraits<API::Object>>,WTF::DefaultHash<WTF::String>,WTF::HashTraits<WTF::String>,WTF::HashTraits<WTF::RefPtr<API::Object,WTF::RawPtrTraits<API::Object>,WTF::DefaultRefDerefTraits<API::Object>>>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::get<WTF::IdentityHashTranslator<WTF::HashMap<WTF::String,WTF::RefPtr<API::Object,WTF::RawPtrTraits<API::Object>,WTF::DefaultRefDerefTraits<API::Object>>,WTF::DefaultHash<WTF::String>,WTF::HashTraits<WTF::String>,WTF::HashTraits<WTF::RefPtr<API::Object,WTF::RawPtrTraits<API::Object>,WTF::DefaultRefDerefTraits<API::Object>>>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::KeyValuePairTraits,WTF::DefaultHash<WTF::String>>,WTF::String>(m_ptr + 2, &v16, v7);
   v10 = v8;
   if (!v8)
@@ -614,7 +614,7 @@ LABEL_9:
   if (v11)
   {
     v13 = 0;
-    *a4 = 0;
+    *length = 0;
   }
 
   else
@@ -630,21 +630,21 @@ LABEL_9:
       v13 = 0;
     }
 
-    *a4 = v14;
+    *length = v14;
     CFRelease(*(v10 + 1));
   }
 
   return v13;
 }
 
-- (id)decodeObjectOfClasses:(id)a3 forKey:(id)a4
+- (id)decodeObjectOfClasses:(id)classes forKey:(id)key
 {
   v26 = *MEMORY[0x1E69E9840];
   v24 = 0;
   memset(&v21._replyToSelector, 0, 32);
   v22 = 0u;
   v23 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v21._replyToSelector objects:v25 count:16];
+  v7 = [classes countByEnumeratingWithState:&v21._replyToSelector objects:v25 count:16];
   if (v7)
   {
     v8 = *v21._objectStreamPosition;
@@ -655,7 +655,7 @@ LABEL_9:
       {
         if (*v21._objectStreamPosition != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(classes);
         }
 
         v21._currentDictionary.m_ptr = *(v21._objectStream.m_ptr + v9);
@@ -664,7 +664,7 @@ LABEL_9:
       }
 
       while (v7 != v9);
-      v7 = [a3 countByEnumeratingWithState:&v21._replyToSelector objects:v25 count:16];
+      v7 = [classes countByEnumeratingWithState:&v21._replyToSelector objects:v25 count:16];
     }
 
     while (v7);
@@ -672,12 +672,12 @@ LABEL_9:
 
   m_ptr = self->_currentDictionary.m_ptr;
   CFRetain(*(m_ptr + 1));
-  if ([a4 length] && objc_msgSend(a4, "characterAtIndex:", 0) == 36)
+  if ([key length] && objc_msgSend(key, "characterAtIndex:", 0) == 36)
   {
-    a4 = [@"$" stringByAppendingString:a4];
+    key = [@"$" stringByAppendingString:key];
   }
 
-  MEMORY[0x19EB02040](&v21, a4);
+  MEMORY[0x19EB02040](&v21, key);
   v12 = WTF::HashMap<WTF::String,WTF::RefPtr<API::Object,WTF::RawPtrTraits<API::Object>,WTF::DefaultRefDerefTraits<API::Object>>,WTF::DefaultHash<WTF::String>,WTF::HashTraits<WTF::String>,WTF::HashTraits<WTF::RefPtr<API::Object,WTF::RawPtrTraits<API::Object>,WTF::DefaultRefDerefTraits<API::Object>>>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::get<WTF::IdentityHashTranslator<WTF::HashMap<WTF::String,WTF::RefPtr<API::Object,WTF::RawPtrTraits<API::Object>,WTF::DefaultRefDerefTraits<API::Object>>,WTF::DefaultHash<WTF::String>,WTF::HashTraits<WTF::String>,WTF::HashTraits<WTF::RefPtr<API::Object,WTF::RawPtrTraits<API::Object>,WTF::DefaultRefDerefTraits<API::Object>>>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::KeyValuePairTraits,WTF::DefaultHash<WTF::String>>,WTF::String>(m_ptr + 2, &v21.super.super.isa, v11);
   v14 = v12;
   if (!v12)

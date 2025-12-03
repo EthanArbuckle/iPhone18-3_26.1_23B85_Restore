@@ -1,68 +1,68 @@
 @interface AXHearingAidMode
-- (AXHearingAidMode)initWithCoder:(id)a3;
-- (AXHearingAidMode)initWithRepresentation:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (AXHearingAidMode)initWithCoder:(id)coder;
+- (AXHearingAidMode)initWithRepresentation:(id)representation;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isStreamOrMixingStream;
 - (id)description;
 - (id)transportRepresentation;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AXHearingAidMode
 
-- (AXHearingAidMode)initWithCoder:(id)a3
+- (AXHearingAidMode)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = AXHearingAidMode;
   v5 = [(AXHearingAidMode *)&v8 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     [(AXHearingAidMode *)v5 setName:v6];
 
-    v5->_category = [v4 decodeIntegerForKey:@"category"];
-    v5->_index = [v4 decodeIntForKey:@"index"];
-    v5->_isSelected = [v4 decodeBoolForKey:@"isSelected"];
-    v5->_ear = [v4 decodeIntForKey:@"ear"];
+    v5->_category = [coderCopy decodeIntegerForKey:@"category"];
+    v5->_index = [coderCopy decodeIntForKey:@"index"];
+    v5->_isSelected = [coderCopy decodeBoolForKey:@"isSelected"];
+    v5->_ear = [coderCopy decodeIntForKey:@"ear"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   name = self->_name;
-  v5 = a3;
-  [v5 encodeObject:name forKey:@"name"];
-  [v5 encodeInteger:self->_category forKey:@"category"];
-  [v5 encodeInt:self->_index forKey:@"index"];
-  [v5 encodeBool:self->_isSelected forKey:@"isSelected"];
-  [v5 encodeInt:self->_ear forKey:@"ear"];
+  coderCopy = coder;
+  [coderCopy encodeObject:name forKey:@"name"];
+  [coderCopy encodeInteger:self->_category forKey:@"category"];
+  [coderCopy encodeInt:self->_index forKey:@"index"];
+  [coderCopy encodeBool:self->_isSelected forKey:@"isSelected"];
+  [coderCopy encodeInt:self->_ear forKey:@"ear"];
 }
 
-- (AXHearingAidMode)initWithRepresentation:(id)a3
+- (AXHearingAidMode)initWithRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v12.receiver = self;
   v12.super_class = AXHearingAidMode;
   v5 = [(AXHearingAidMode *)&v12 init];
   if (v5)
   {
-    v6 = [v4 valueForKey:@"name"];
+    v6 = [representationCopy valueForKey:@"name"];
     [(AXHearingAidMode *)v5 setName:v6];
 
-    v7 = [v4 valueForKey:@"category"];
+    v7 = [representationCopy valueForKey:@"category"];
     v5->_category = [v7 integerValue];
 
-    v8 = [v4 valueForKey:@"index"];
+    v8 = [representationCopy valueForKey:@"index"];
     v5->_index = [v8 intValue];
 
-    v9 = [v4 valueForKey:@"isSelected"];
+    v9 = [representationCopy valueForKey:@"isSelected"];
     v5->_isSelected = [v9 BOOLValue];
 
-    v10 = [v4 valueForKey:@"ear"];
+    v10 = [representationCopy valueForKey:@"ear"];
     v5->_ear = [v10 intValue];
   }
 
@@ -90,18 +90,18 @@
   [(AXHearingAidMode *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 name];
-    v6 = [(AXHearingAidMode *)self name];
-    if ([v5 isEqualToString:v6] && (v7 = objc_msgSend(v4, "category"), v7 == -[AXHearingAidMode category](self, "category")))
+    name = [equalCopy name];
+    name2 = [(AXHearingAidMode *)self name];
+    if ([name isEqualToString:name2] && (v7 = objc_msgSend(equalCopy, "category"), v7 == -[AXHearingAidMode category](self, "category")))
     {
-      v8 = [v4 index];
-      v9 = v8 == [(AXHearingAidMode *)self index];
+      index = [equalCopy index];
+      v9 = index == [(AXHearingAidMode *)self index];
     }
 
     else
@@ -134,7 +134,7 @@
   v9.receiver = self;
   v9.super_class = AXHearingAidMode;
   v4 = [(AXHearingAidMode *)&v9 description];
-  v5 = [(AXHearingAidMode *)self name];
+  name = [(AXHearingAidMode *)self name];
   if ([(AXHearingAidMode *)self isSelected])
   {
     v6 = @"selected";
@@ -145,7 +145,7 @@
     v6 = @"not selected";
   }
 
-  v7 = [v3 stringWithFormat:@"%@ - %@ (%@) - %d: Category: %ld Ear: %d", v4, v5, v6, -[AXHearingAidMode index](self, "index"), -[AXHearingAidMode category](self, "category"), -[AXHearingAidMode ear](self, "ear")];
+  v7 = [v3 stringWithFormat:@"%@ - %@ (%@) - %d: Category: %ld Ear: %d", v4, name, v6, -[AXHearingAidMode index](self, "index"), -[AXHearingAidMode category](self, "category"), -[AXHearingAidMode ear](self, "ear")];
 
   return v7;
 }

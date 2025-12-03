@@ -1,33 +1,33 @@
 @interface NWURLSessionUploadResumeInfo
-+ (id)infoWithResumeData:(id)a3;
-+ (id)infoWithTask:(id)a3;
-- (NWURLSessionUploadResumeInfo)initWithCoder:(id)a3;
++ (id)infoWithResumeData:(id)data;
++ (id)infoWithTask:(id)task;
+- (NWURLSessionUploadResumeInfo)initWithCoder:(id)coder;
 - (id)serialize;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NWURLSessionUploadResumeInfo
 
-- (NWURLSessionUploadResumeInfo)initWithCoder:(id)a3
+- (NWURLSessionUploadResumeInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = NWURLSessionUploadResumeInfo;
-  v5 = [(NWURLSessionResumeInfo *)&v14 initWithCoder:v4];
+  v5 = [(NWURLSessionResumeInfo *)&v14 initWithCoder:coderCopy];
   if (!v5)
   {
     goto LABEL_4;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"resumeURL"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"resumeURL"];
   if (v6)
   {
     v7 = v6;
     [(NWURLSessionUploadResumeInfo *)v5 setResumeURL:v6];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"data"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"data"];
     [(NWURLSessionUploadResumeInfo *)v5 setData:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fileURL"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fileURL"];
     [(NWURLSessionUploadResumeInfo *)v5 setFileURL:v9];
 
 LABEL_4:
@@ -53,20 +53,20 @@ LABEL_10:
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = NWURLSessionUploadResumeInfo;
-  v4 = a3;
-  [(NWURLSessionResumeInfo *)&v8 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(NWURLSessionResumeInfo *)&v8 encodeWithCoder:coderCopy];
   v5 = [(NWURLSessionUploadResumeInfo *)self resumeURL:v8.receiver];
-  [v4 encodeObject:v5 forKey:@"resumeURL"];
+  [coderCopy encodeObject:v5 forKey:@"resumeURL"];
 
-  v6 = [(NWURLSessionUploadResumeInfo *)self data];
-  [v4 encodeObject:v6 forKey:@"data"];
+  data = [(NWURLSessionUploadResumeInfo *)self data];
+  [coderCopy encodeObject:data forKey:@"data"];
 
-  v7 = [(NWURLSessionUploadResumeInfo *)self fileURL];
-  [v4 encodeObject:v7 forKey:@"fileURL"];
+  fileURL = [(NWURLSessionUploadResumeInfo *)self fileURL];
+  [coderCopy encodeObject:fileURL forKey:@"fileURL"];
 }
 
 - (id)serialize
@@ -79,31 +79,31 @@ LABEL_10:
 
   if (v4)
   {
-    v5 = [v4 mutableBytes];
+    mutableBytes = [v4 mutableBytes];
     if ([v4 length])
     {
-      *v5 ^= 0x43u;
+      *mutableBytes ^= 0x43u;
       if ([v4 length] >= 2)
       {
-        v5[1] ^= 0x6Fu;
+        mutableBytes[1] ^= 0x6Fu;
         if ([v4 length] >= 3)
         {
-          v5[2] ^= 0x6Cu;
+          mutableBytes[2] ^= 0x6Cu;
           if ([v4 length] >= 4)
           {
-            v5[3] ^= 0x6Fu;
+            mutableBytes[3] ^= 0x6Fu;
             if ([v4 length] >= 5)
             {
-              v5[4] ^= 0x72u;
+              mutableBytes[4] ^= 0x72u;
               if ([v4 length] >= 6)
               {
-                v5[5] ^= 0x61u;
+                mutableBytes[5] ^= 0x61u;
                 if ([v4 length] >= 7)
                 {
-                  v5[6] ^= 0x64u;
+                  mutableBytes[6] ^= 0x64u;
                   if ([v4 length] >= 8)
                   {
-                    v5[7] ^= 0x6Fu;
+                    mutableBytes[7] ^= 0x6Fu;
                   }
                 }
               }
@@ -137,37 +137,37 @@ LABEL_10:
   return v6;
 }
 
-+ (id)infoWithResumeData:(id)a3
++ (id)infoWithResumeData:(id)data
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (data)
   {
-    v3 = [a3 mutableCopy];
-    v4 = [v3 mutableBytes];
+    v3 = [data mutableCopy];
+    mutableBytes = [v3 mutableBytes];
     if ([v3 length])
     {
-      *v4 ^= 0x43u;
+      *mutableBytes ^= 0x43u;
       if ([v3 length]>= 2)
       {
-        v4[1] ^= 0x6Fu;
+        mutableBytes[1] ^= 0x6Fu;
         if ([v3 length]>= 3)
         {
-          v4[2] ^= 0x6Cu;
+          mutableBytes[2] ^= 0x6Cu;
           if ([v3 length]>= 4)
           {
-            v4[3] ^= 0x6Fu;
+            mutableBytes[3] ^= 0x6Fu;
             if ([v3 length]>= 5)
             {
-              v4[4] ^= 0x72u;
+              mutableBytes[4] ^= 0x72u;
               if ([v3 length]>= 6)
               {
-                v4[5] ^= 0x61u;
+                mutableBytes[5] ^= 0x61u;
                 if ([v3 length]>= 7)
                 {
-                  v4[6] ^= 0x64u;
+                  mutableBytes[6] ^= 0x64u;
                   if ([v3 length]>= 8)
                   {
-                    v4[7] ^= 0x6Fu;
+                    mutableBytes[7] ^= 0x6Fu;
                   }
                 }
               }
@@ -222,17 +222,17 @@ LABEL_10:
   return v5;
 }
 
-+ (id)infoWithTask:(id)a3
++ (id)infoWithTask:(id)task
 {
-  v3 = a3;
-  v4 = [v3 resumeURL];
-  if (v4)
+  taskCopy = task;
+  resumeURL = [taskCopy resumeURL];
+  if (resumeURL)
   {
-    v5 = [(NWURLSessionResumeInfo *)[NWURLSessionUploadResumeInfo alloc] initWithTask:v3];
-    [v5 setResumeURL:v4];
-    if (v3)
+    v5 = [(NWURLSessionResumeInfo *)[NWURLSessionUploadResumeInfo alloc] initWithTask:taskCopy];
+    [v5 setResumeURL:resumeURL];
+    if (taskCopy)
     {
-      v6 = v3[54];
+      v6 = taskCopy[54];
     }
 
     else

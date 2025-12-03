@@ -1,11 +1,11 @@
 @interface AnalyticsConfigurationObserver
 - (AnalyticsConfigurationObserver)init;
 - (AnalyticsConfigurationObserverDelegate)delegate;
-- (BOOL)startObservingConfigurationType:(id)a3;
-- (BOOL)stopObservingConfigurationType:(id)a3;
+- (BOOL)startObservingConfigurationType:(id)type;
+- (BOOL)stopObservingConfigurationType:(id)type;
 - (id).cxx_construct;
 - (void)dealloc;
-- (void)setConfigurationObserverDelegate:(id)a3 queue:(id)a4;
+- (void)setConfigurationObserverDelegate:(id)delegate queue:(id)queue;
 @end
 
 @implementation AnalyticsConfigurationObserver
@@ -47,23 +47,23 @@
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setConfigurationObserverDelegate:(id)a3 queue:(id)a4
+- (void)setConfigurationObserverDelegate:(id)delegate queue:(id)queue
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   CASPIEnter();
-  v8 = [(AnalyticsConfigurationObserver *)self queue];
+  queue = [(AnalyticsConfigurationObserver *)self queue];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __73__AnalyticsConfigurationObserver_setConfigurationObserverDelegate_queue___block_invoke;
   v12[3] = &unk_1E7A2A538;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_barrier_async(v8, v12);
+  v13 = delegateCopy;
+  v14 = queueCopy;
+  v9 = queueCopy;
+  v10 = delegateCopy;
+  dispatch_barrier_async(queue, v12);
 
   v11 = *MEMORY[0x1E69E9840];
 }
@@ -77,20 +77,20 @@ uint64_t __73__AnalyticsConfigurationObserver_setConfigurationObserverDelegate_q
   return [v3 setDelegateQueue:v2];
 }
 
-- (BOOL)startObservingConfigurationType:(id)a3
+- (BOOL)startObservingConfigurationType:(id)type
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typeCopy = type;
   CASPIEnter();
-  v5 = [(AnalyticsConfigurationObserver *)self queue];
+  queue = [(AnalyticsConfigurationObserver *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __66__AnalyticsConfigurationObserver_startObservingConfigurationType___block_invoke;
   block[3] = &unk_1E7A2A658;
   block[4] = self;
-  v10 = v4;
-  v6 = v4;
-  dispatch_barrier_async(v5, block);
+  v10 = typeCopy;
+  v6 = typeCopy;
+  dispatch_barrier_async(queue, block);
 
   v7 = *MEMORY[0x1E69E9840];
   return 1;
@@ -107,17 +107,17 @@ void __66__AnalyticsConfigurationObserver_startObservingConfigurationType___bloc
   operator new();
 }
 
-- (BOOL)stopObservingConfigurationType:(id)a3
+- (BOOL)stopObservingConfigurationType:(id)type
 {
   v7[5] = *MEMORY[0x1E69E9840];
   CASPIEnter();
-  v4 = [(AnalyticsConfigurationObserver *)self queue];
+  queue = [(AnalyticsConfigurationObserver *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __65__AnalyticsConfigurationObserver_stopObservingConfigurationType___block_invoke;
   v7[3] = &unk_1E7A2A560;
   v7[4] = self;
-  dispatch_barrier_async(v4, v7);
+  dispatch_barrier_async(queue, v7);
 
   v5 = *MEMORY[0x1E69E9840];
   return 1;

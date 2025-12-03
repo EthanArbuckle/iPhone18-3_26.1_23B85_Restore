@@ -1,34 +1,34 @@
 @interface CPAccNavParam
-+ (CPAccNavParam)paramWithProperty:(id)a3 keys:(id)a4;
-+ (Class)_objcTypeForUpdate:(Class)a3 parameter:(id)a4;
-+ (id)_encodedTypeForClass:(Class)a3 property:(id)a4;
-+ (int64_t)_accNavTypeForUpdate:(Class)a3 parameter:(id)a4 key:(id)a5;
++ (CPAccNavParam)paramWithProperty:(id)property keys:(id)keys;
++ (Class)_objcTypeForUpdate:(Class)update parameter:(id)parameter;
++ (id)_encodedTypeForClass:(Class)class property:(id)property;
++ (int64_t)_accNavTypeForUpdate:(Class)update parameter:(id)parameter key:(id)key;
 - (CPAccNavParam)init;
 - (CPAccNavParamKey)primaryKey;
-- (id)copySettingCollectionGeneric:(Class)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copySettingCollectionGeneric:(Class)generic;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)configureTypesForUpdate:(Class)a3;
+- (void)configureTypesForUpdate:(Class)update;
 @end
 
 @implementation CPAccNavParam
 
 - (CPAccNavParamKey)primaryKey
 {
-  v2 = [(CPAccNavParam *)self keys];
-  v3 = [v2 firstObject];
+  keys = [(CPAccNavParam *)self keys];
+  firstObject = [keys firstObject];
 
-  return v3;
+  return firstObject;
 }
 
-+ (CPAccNavParam)paramWithProperty:(id)a3 keys:(id)a4
++ (CPAccNavParam)paramWithProperty:(id)property keys:(id)keys
 {
-  v5 = a4;
-  v6 = a3;
+  keysCopy = keys;
+  propertyCopy = property;
   v7 = objc_opt_new();
-  [v7 setProperty:v6];
+  [v7 setProperty:propertyCopy];
 
-  [v7 setKeys:v5];
+  [v7 setKeys:keysCopy];
 
   return v7;
 }
@@ -66,26 +66,26 @@
 
   v10 = MEMORY[0x277CCACA8];
   v11 = objc_opt_class();
-  v12 = [(CPAccNavParam *)self property];
+  property = [(CPAccNavParam *)self property];
   if ([(CPAccNavParam *)self objcType])
   {
     v5 = v9;
   }
 
-  v13 = [(CPAccNavParam *)self keys];
-  v14 = [v10 stringWithFormat:@"<%@: %p property=%@%@ %@>", v11, self, v12, v5, v13];
+  keys = [(CPAccNavParam *)self keys];
+  v14 = [v10 stringWithFormat:@"<%@: %p property=%@%@ %@>", v11, self, property, v5, keys];
 
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
-  v5 = [(CPAccNavParam *)self property];
-  [v4 setProperty:v5];
+  property = [(CPAccNavParam *)self property];
+  [v4 setProperty:property];
 
-  v6 = [(CPAccNavParam *)self keys];
-  [v4 setKeys:v6];
+  keys = [(CPAccNavParam *)self keys];
+  [v4 setKeys:keys];
 
   [v4 setCollectionGeneric:{-[CPAccNavParam collectionGeneric](self, "collectionGeneric")}];
   [v4 setEncodeable:{-[CPAccNavParam encodeable](self, "encodeable")}];
@@ -93,25 +93,25 @@
   return v4;
 }
 
-- (id)copySettingCollectionGeneric:(Class)a3
+- (id)copySettingCollectionGeneric:(Class)generic
 {
   v4 = [(CPAccNavParam *)self copy];
-  [v4 setCollectionGeneric:a3];
+  [v4 setCollectionGeneric:generic];
   return v4;
 }
 
-- (void)configureTypesForUpdate:(Class)a3
+- (void)configureTypesForUpdate:(Class)update
 {
   v17 = *MEMORY[0x277D85DE8];
-  if (![(CPAccNavParam *)self objcType]&& [(objc_class *)a3 conformsToProtocol:&unk_284A05938])
+  if (![(CPAccNavParam *)self objcType]&& [(objc_class *)update conformsToProtocol:&unk_284A05938])
   {
-    [(CPAccNavParam *)self setObjcType:[CPAccNavParam _objcTypeForUpdate:a3 parameter:self]];
+    [(CPAccNavParam *)self setObjcType:[CPAccNavParam _objcTypeForUpdate:update parameter:self]];
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [(CPAccNavParam *)self keys];
-    v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    keys = [(CPAccNavParam *)self keys];
+    v6 = [keys countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v6)
     {
       v7 = v6;
@@ -122,15 +122,15 @@
         {
           if (*v13 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(keys);
           }
 
           v10 = *(*(&v12 + 1) + 8 * i);
-          [v10 setAccNavType:{+[CPAccNavParam _accNavTypeForUpdate:parameter:key:](CPAccNavParam, "_accNavTypeForUpdate:parameter:key:", a3, self, v10)}];
+          [v10 setAccNavType:{+[CPAccNavParam _accNavTypeForUpdate:parameter:key:](CPAccNavParam, "_accNavTypeForUpdate:parameter:key:", update, self, v10)}];
           [v10 setParam:self];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v7 = [keys countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v7);
@@ -140,10 +140,10 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-+ (Class)_objcTypeForUpdate:(Class)a3 parameter:(id)a4
++ (Class)_objcTypeForUpdate:(Class)update parameter:(id)parameter
 {
-  v6 = [a4 property];
-  v7 = [a1 _encodedTypeForClass:a3 property:v6];
+  property = [parameter property];
+  v7 = [self _encodedTypeForClass:update property:property];
 
   v8 = [v7 characterAtIndex:0];
   v9 = 0;
@@ -188,78 +188,78 @@ LABEL_4:
   return v9;
 }
 
-+ (int64_t)_accNavTypeForUpdate:(Class)a3 parameter:(id)a4 key:(id)a5
++ (int64_t)_accNavTypeForUpdate:(Class)update parameter:(id)parameter key:(id)key
 {
-  v8 = a4;
-  v9 = a5;
-  if ([v9 accNavType] != -1)
+  parameterCopy = parameter;
+  keyCopy = key;
+  if ([keyCopy accNavType] != -1)
   {
-    v10 = [v9 accNavType];
+    accNavType = [keyCopy accNavType];
     goto LABEL_6;
   }
 
-  v11 = [v8 objcType];
-  if ([v9 enumType] || (objc_msgSend(v9, "isBoolValue") & 1) != 0)
+  objcType = [parameterCopy objcType];
+  if ([keyCopy enumType] || (objc_msgSend(keyCopy, "isBoolValue") & 1) != 0)
   {
-    v10 = 3;
+    accNavType = 3;
     goto LABEL_6;
   }
 
-  if ([v9 isTimeIntervalValue])
+  if ([keyCopy isTimeIntervalValue])
   {
-    v10 = 0;
+    accNavType = 0;
     goto LABEL_6;
   }
 
-  v13 = [v9 dimension];
-  v14 = [MEMORY[0x277CCADA8] degrees];
-  v15 = [v13 isEqual:v14];
+  dimension = [keyCopy dimension];
+  degrees = [MEMORY[0x277CCADA8] degrees];
+  v15 = [dimension isEqual:degrees];
 
   if (v15)
   {
-    v10 = 6;
+    accNavType = 6;
     goto LABEL_6;
   }
 
-  v16 = [v9 dimension];
-  v17 = [MEMORY[0x277CCAE20] meters];
-  v18 = [v16 isEqual:v17];
+  dimension2 = [keyCopy dimension];
+  meters = [MEMORY[0x277CCAE20] meters];
+  v18 = [dimension2 isEqual:meters];
 
   if (v18)
   {
     goto LABEL_12;
   }
 
-  v19 = [v9 dimension];
-  v20 = [MEMORY[0x277CCADE8] volts];
-  v21 = [v19 isEqual:v20];
+  dimension3 = [keyCopy dimension];
+  volts = [MEMORY[0x277CCADE8] volts];
+  v21 = [dimension3 isEqual:volts];
 
   if (v21)
   {
-    v10 = 2;
+    accNavType = 2;
     goto LABEL_6;
   }
 
-  v22 = [v9 dimension];
-  v23 = [MEMORY[0x277CCAE30] watts];
-  v24 = [v22 isEqual:v23];
+  dimension4 = [keyCopy dimension];
+  watts = [MEMORY[0x277CCAE30] watts];
+  v24 = [dimension4 isEqual:watts];
 
-  if (v24 & 1) != 0 || ([v9 dimension], v25 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x277CCADF8], "wattHours"), v26 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend(v25, "isEqual:", v26), v26, v25, (v27))
+  if (v24 & 1) != 0 || ([keyCopy dimension], v25 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x277CCADF8], "wattHours"), v26 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend(v25, "isEqual:", v26), v26, v25, (v27))
   {
 LABEL_12:
-    v10 = 1;
+    accNavType = 1;
     goto LABEL_6;
   }
 
-  if ([v9 hasVariants])
+  if ([keyCopy hasVariants])
   {
-    v11 = [v8 collectionGeneric];
+    objcType = [parameterCopy collectionGeneric];
   }
 
-  if (v11 == objc_opt_class())
+  if (objcType == objc_opt_class())
   {
-    v28 = [v8 property];
-    v29 = [a1 _encodedTypeForClass:a3 property:v28];
+    property = [parameterCopy property];
+    v29 = [self _encodedTypeForClass:update property:property];
 
     v30 = [v29 characterAtIndex:0];
     if (v30 > 98)
@@ -268,7 +268,7 @@ LABEL_12:
       {
         if (v30 == 99)
         {
-          v10 = 7;
+          accNavType = 7;
           goto LABEL_53;
         }
 
@@ -278,25 +278,25 @@ LABEL_12:
         }
 
 LABEL_44:
-        v10 = 0;
+        accNavType = 0;
         goto LABEL_53;
       }
 
       switch(v30)
       {
         case 'i':
-          v10 = 5;
+          accNavType = 5;
           goto LABEL_53;
         case 'q':
-          v10 = 4;
+          accNavType = 4;
           goto LABEL_53;
         case 's':
-          v10 = 6;
+          accNavType = 6;
           goto LABEL_53;
       }
 
 LABEL_52:
-      v10 = -1;
+      accNavType = -1;
       goto LABEL_53;
     }
 
@@ -307,14 +307,14 @@ LABEL_52:
         goto LABEL_52;
       }
 
-      v10 = 3;
+      accNavType = 3;
     }
 
     else
     {
       if (v30 == 73)
       {
-        v10 = 1;
+        accNavType = 1;
         goto LABEL_53;
       }
 
@@ -328,7 +328,7 @@ LABEL_52:
         goto LABEL_52;
       }
 
-      v10 = 2;
+      accNavType = 2;
     }
 
 LABEL_53:
@@ -336,34 +336,34 @@ LABEL_53:
     goto LABEL_6;
   }
 
-  if (v11 == objc_opt_class() || v11 == objc_opt_class())
+  if (objcType == objc_opt_class() || objcType == objc_opt_class())
   {
-    v10 = 10;
+    accNavType = 10;
   }
 
-  else if (v11 == objc_opt_class() || v11 == objc_opt_class())
+  else if (objcType == objc_opt_class() || objcType == objc_opt_class())
   {
-    v10 = 8;
+    accNavType = 8;
   }
 
-  else if (v11 == objc_opt_class())
+  else if (objcType == objc_opt_class())
   {
-    v10 = 0;
+    accNavType = 0;
   }
 
   else
   {
-    v10 = -1;
+    accNavType = -1;
   }
 
 LABEL_6:
 
-  return v10;
+  return accNavType;
 }
 
-+ (id)_encodedTypeForClass:(Class)a3 property:(id)a4
++ (id)_encodedTypeForClass:(Class)class property:(id)property
 {
-  Property = class_getProperty(a3, [a4 UTF8String]);
+  Property = class_getProperty(class, [property UTF8String]);
   v5 = property_copyAttributeValue(Property, "T");
   v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:v5];
   free(v5);

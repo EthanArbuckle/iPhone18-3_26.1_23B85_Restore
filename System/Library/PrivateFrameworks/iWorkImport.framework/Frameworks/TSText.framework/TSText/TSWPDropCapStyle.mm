@@ -1,23 +1,23 @@
 @interface TSWPDropCapStyle
 + (id)defaultPropertyMap;
-+ (id)defaultStyleWithContext:(id)a3;
-+ (id)defaultValueForProperty:(int)a3;
++ (id)defaultStyleWithContext:(id)context;
++ (id)defaultValueForProperty:(int)property;
 + (id)dropCapProperties;
 + (id)properties;
 + (id)propertiesAllowingNSNull;
-- (BOOL)wantsCustomResolveLogicForProperty:(int)a3 forStyles:(id)a4;
+- (BOOL)wantsCustomResolveLogicForProperty:(int)property forStyles:(id)styles;
 - (TSWPDropCap)dropCap;
 - (TSWPDropCapStyle)variationWithSingleCharacterDropCap;
-- (double)resolvedFloatForProperty:(int)a3 inStyles:(id)a4;
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4;
-- (id)resolvedValueForProperty:(int)a3 inStyles:(id)a4;
-- (int)resolvedIntForProperty:(int)a3 inStyles:(id)a4;
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4;
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)mapNonDefaultPropertyOverridesForParentStyle:(id)a3 propertyMap:(id)a4;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)saveToArchiver:(id)a3;
+- (double)resolvedFloatForProperty:(int)property inStyles:(id)styles;
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object;
+- (id)resolvedValueForProperty:(int)property inStyles:(id)styles;
+- (int)resolvedIntForProperty:(int)property inStyles:(id)styles;
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context;
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)mapNonDefaultPropertyOverridesForParentStyle:(id)style propertyMap:(id)map;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)saveToArchiver:(id)archiver;
 @end
 
 @implementation TSWPDropCapStyle
@@ -28,7 +28,7 @@
   block[1] = 3221225472;
   block[2] = sub_276DAC7FC;
   block[3] = &unk_27A6F3D70;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280A582E8 != -1)
   {
     dispatch_once(&qword_280A582E8, block);
@@ -63,21 +63,21 @@
   return v3;
 }
 
-+ (id)defaultValueForProperty:(int)a3
++ (id)defaultValueForProperty:(int)property
 {
-  switch(a3)
+  switch(property)
   {
     case 258:
-      v3 = objc_msgSend_emptyStroke(MEMORY[0x277D803C0], a2, *&a3);
+      v3 = objc_msgSend_emptyStroke(MEMORY[0x277D803C0], a2, *&property);
       break;
     case 257:
-      v3 = objc_msgSend_colorWithWhite_alpha_(MEMORY[0x277D801F8], a2, *&a3, 0.5, 1.0);
+      v3 = objc_msgSend_colorWithWhite_alpha_(MEMORY[0x277D801F8], a2, *&property, 0.5, 1.0);
       break;
     case 256:
-      v3 = objc_msgSend_dropCap(TSWPDropCap, a2, *&a3);
+      v3 = objc_msgSend_dropCap(TSWPDropCap, a2, *&property);
       break;
     default:
-      v5.receiver = a1;
+      v5.receiver = self;
       v5.super_class = &OBJC_METACLASS___TSWPDropCapStyle;
       v3 = objc_msgSendSuper2(&v5, sel_defaultValueForProperty_);
       break;
@@ -86,11 +86,11 @@
   return v3;
 }
 
-+ (id)defaultStyleWithContext:(id)a3
++ (id)defaultStyleWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = objc_alloc(objc_opt_class());
-  isVariation = objc_msgSend_initWithContext_name_overridePropertyMap_isVariation_(v4, v5, v3, 0, 0, 0);
+  isVariation = objc_msgSend_initWithContext_name_overridePropertyMap_isVariation_(v4, v5, contextCopy, 0, 0, 0);
 
   return isVariation;
 }
@@ -98,13 +98,13 @@
 + (id)defaultPropertyMap
 {
   v3 = objc_alloc_init(MEMORY[0x277D80AB8]);
-  v5 = objc_msgSend_defaultValueForProperty_(a1, v4, 256);
+  v5 = objc_msgSend_defaultValueForProperty_(self, v4, 256);
   objc_msgSend_setObject_forProperty_(v3, v6, v5, 256);
 
-  v8 = objc_msgSend_defaultValueForProperty_(a1, v7, 257);
+  v8 = objc_msgSend_defaultValueForProperty_(self, v7, 257);
   objc_msgSend_setObject_forProperty_(v3, v9, v8, 257);
 
-  v11 = objc_msgSend_defaultValueForProperty_(a1, v10, 258);
+  v11 = objc_msgSend_defaultValueForProperty_(self, v10, 258);
   objc_msgSend_setObject_forProperty_(v3, v12, v11, 258);
 
   return v3;
@@ -121,28 +121,28 @@
 
 - (TSWPDropCapStyle)variationWithSingleCharacterDropCap
 {
-  v2 = self;
-  v5 = objc_msgSend_dropCap(v2, v3, v4);
+  selfCopy = self;
+  v5 = objc_msgSend_dropCap(selfCopy, v3, v4);
   if (objc_msgSend_numberOfCharacters(v5, v6, v7) != 1)
   {
     v10 = objc_msgSend_mutableCopy(v5, v8, v9);
     objc_msgSend_setNumberOfCharacters_(v10, v11, 1);
-    v14 = objc_msgSend_propertyMap(v2, v12, v13);
+    v14 = objc_msgSend_propertyMap(selfCopy, v12, v13);
     objc_msgSend_setObject_forProperty_(v14, v15, v10, 256);
     v16 = [TSWPDropCapStyle alloc];
-    v19 = objc_msgSend_context(v2, v17, v18);
+    v19 = objc_msgSend_context(selfCopy, v17, v18);
     isVariation = objc_msgSend_initWithContext_name_overridePropertyMap_isVariation_(v16, v20, v19, 0, v14, 1);
 
-    v2 = isVariation;
+    selfCopy = isVariation;
   }
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)mapNonDefaultPropertyOverridesForParentStyle:(id)a3 propertyMap:(id)a4
+- (void)mapNonDefaultPropertyOverridesForParentStyle:(id)style propertyMap:(id)map
 {
-  v6 = a3;
-  v7 = a4;
+  styleCopy = style;
+  mapCopy = map;
   v10 = objc_msgSend_properties(TSWPCharacterStyle, v8, v9);
   v11 = objc_opt_class();
   v14 = objc_msgSend_propertiesAllowingNSNull(v11, v12, v13);
@@ -152,18 +152,18 @@
   v20[1] = 3221225472;
   v20[2] = sub_276DACE04;
   v20[3] = &unk_27A6F44F8;
-  v21 = v6;
-  v22 = self;
-  v23 = v7;
-  v17 = v7;
-  v18 = v6;
+  v21 = styleCopy;
+  selfCopy = self;
+  v23 = mapCopy;
+  v17 = mapCopy;
+  v18 = styleCopy;
   objc_msgSend_enumeratePropertiesUsingBlock_(v16, v19, v20);
 }
 
-- (BOOL)wantsCustomResolveLogicForProperty:(int)a3 forStyles:(id)a4
+- (BOOL)wantsCustomResolveLogicForProperty:(int)property forStyles:(id)styles
 {
-  v5 = a4;
-  v8 = objc_msgSend_firstObject(v5, v6, v7);
+  stylesCopy = styles;
+  v8 = objc_msgSend_firstObject(stylesCopy, v6, v7);
 
   if (v8 != self)
   {
@@ -175,17 +175,17 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v16, v17);
   }
 
-  v18 = objc_msgSend_firstObject(v5, v9, v10);
+  v18 = objc_msgSend_firstObject(stylesCopy, v9, v10);
   v19 = v18 == self;
 
   return v19;
 }
 
-- (id)resolvedValueForProperty:(int)a3 inStyles:(id)a4
+- (id)resolvedValueForProperty:(int)property inStyles:(id)styles
 {
-  v4 = *&a3;
-  v6 = a4;
-  v9 = objc_msgSend_firstObject(v6, v7, v8);
+  v4 = *&property;
+  stylesCopy = styles;
+  v9 = objc_msgSend_firstObject(stylesCopy, v7, v8);
 
   if (v9 != self)
   {
@@ -197,7 +197,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v17, v18);
   }
 
-  if (objc_msgSend_count(v6, v10, v11) <= 1)
+  if (objc_msgSend_count(stylesCopy, v10, v11) <= 1)
   {
     v20 = MEMORY[0x277D81150];
     v21 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v19, "[TSWPDropCapStyle resolvedValueForProperty:inStyles:]");
@@ -210,7 +210,7 @@
   v29 = objc_msgSend_boxedValueForProperty_(self, v19, v4);
   if (!v29 || (objc_msgSend_null(MEMORY[0x277CBEB68], v27, v28), v30 = objc_claimAutoreleasedReturnValue(), v30, v29 == v30))
   {
-    v31 = objc_msgSend_tsu_arrayByRemovingFirstObject(v6, v27, v28);
+    v31 = objc_msgSend_tsu_arrayByRemovingFirstObject(stylesCopy, v27, v28);
     v32 = TSWPResolvePropertyForStyles(v31, v4);
 
     v29 = v32;
@@ -219,10 +219,10 @@
   return v29;
 }
 
-- (int)resolvedIntForProperty:(int)a3 inStyles:(id)a4
+- (int)resolvedIntForProperty:(int)property inStyles:(id)styles
 {
-  v4 = *&a3;
-  v6 = a4;
+  v4 = *&property;
+  stylesCopy = styles;
   if (objc_msgSend_definesProperty_(self, v7, v4))
   {
     v10 = objc_msgSend_intValueForProperty_(self, v8, v4);
@@ -230,17 +230,17 @@
 
   else
   {
-    v11 = objc_msgSend_tsu_arrayByRemovingFirstObject(v6, v8, v9);
+    v11 = objc_msgSend_tsu_arrayByRemovingFirstObject(stylesCopy, v8, v9);
     v10 = sub_276D38764(v11, v4, 0);
   }
 
   return v10;
 }
 
-- (double)resolvedFloatForProperty:(int)a3 inStyles:(id)a4
+- (double)resolvedFloatForProperty:(int)property inStyles:(id)styles
 {
-  v4 = *&a3;
-  v6 = a4;
+  v4 = *&property;
+  stylesCopy = styles;
   if (objc_msgSend_definesProperty_(self, v7, v4))
   {
     objc_msgSend_floatValueForProperty_(self, v8, v4);
@@ -249,16 +249,16 @@
 
   else
   {
-    v12 = objc_msgSend_tsu_arrayByRemovingFirstObject(v6, v8, v9);
+    v12 = objc_msgSend_tsu_arrayByRemovingFirstObject(stylesCopy, v8, v9);
     v11 = sub_276D389B0(v12, v4, 0.0);
   }
 
   return v11;
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context
 {
-  v5 = a3;
+  objectCopy = object;
   objc_opt_class();
   v6 = TSUCheckedDynamicCast();
 
@@ -273,26 +273,26 @@
   return v64;
 }
 
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3 >= 1.0)
+  objectCopy = object;
+  v7 = objectCopy;
+  if (fraction >= 1.0)
   {
-    self = v6;
+    self = objectCopy;
   }
 
-  v8 = self;
+  selfCopy = self;
 
   return self;
 }
 
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
-  if (*(a3 + 3))
+  unarchiverCopy = unarchiver;
+  if (*(archive + 3))
   {
-    v7 = *(a3 + 3);
+    v7 = *(archive + 3);
   }
 
   else
@@ -302,25 +302,25 @@
 
   v43.receiver = self;
   v43.super_class = TSWPDropCapStyle;
-  [(TSWPDropCapStyle *)&v43 loadFromArchive:v7 unarchiver:v6];
-  v8 = *(a3 + 12);
+  [(TSWPDropCapStyle *)&v43 loadFromArchive:v7 unarchiver:unarchiverCopy];
+  v8 = *(archive + 12);
   if (v8)
   {
     v9 = objc_alloc(MEMORY[0x277D80AB8]);
     v12 = objc_msgSend_initWithCapacity_(v9, v10, v8);
-    if (*(a3 + 4))
+    if (*(archive + 4))
     {
-      objc_msgSend_loadCharacterStylePropertiesIntoPropertyMap_fromArchive_unarchiver_(self, v11, v12, *(a3 + 4), v6);
+      objc_msgSend_loadCharacterStylePropertiesIntoPropertyMap_fromArchive_unarchiver_(self, v11, v12, *(archive + 4), unarchiverCopy);
     }
 
     else
     {
-      objc_msgSend_loadCharacterStylePropertiesIntoPropertyMap_fromArchive_unarchiver_(self, v11, v12, &TSWP::_CharacterStylePropertiesArchive_default_instance_, v6);
+      objc_msgSend_loadCharacterStylePropertiesIntoPropertyMap_fromArchive_unarchiver_(self, v11, v12, &TSWP::_CharacterStylePropertiesArchive_default_instance_, unarchiverCopy);
     }
 
-    if (*(a3 + 5))
+    if (*(archive + 5))
     {
-      v13 = *(a3 + 5);
+      v13 = *(archive + 5);
     }
 
     else
@@ -332,7 +332,7 @@
     v17 = *(v13 + 4);
     if (v17)
     {
-      v18 = objc_msgSend_instanceWithArchive_unarchiver_(TSWPDropCap, v14, v13[3], v6);
+      v18 = objc_msgSend_instanceWithArchive_unarchiver_(TSWPDropCap, v14, v13[3], unarchiverCopy);
       v42 = v18;
       v19 = objc_opt_class();
       v21 = objc_msgSend_validateObjectValue_withClass_forProperty_(v16, v20, &v42, v19, 256);
@@ -348,7 +348,7 @@
 
     if ((v17 & 2) != 0)
     {
-      v24 = objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D803C0], v14, v13[4], v6);
+      v24 = objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D803C0], v14, v13[4], unarchiverCopy);
       v41 = v24;
       v25 = objc_opt_class();
       v27 = objc_msgSend_validateObjectValue_withClass_forProperty_(v16, v26, &v41, v25, 258);
@@ -362,9 +362,9 @@
       v17 = *(v13 + 4);
     }
 
-    if ((v17 & 4) != 0 && v6)
+    if ((v17 & 4) != 0 && unarchiverCopy)
     {
-      v30 = objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D80248], v14, v13[5], v6);
+      v30 = objc_msgSend_instanceWithArchive_unarchiver_(MEMORY[0x277D80248], v14, v13[5], unarchiverCopy);
     }
 
     else
@@ -405,35 +405,35 @@ LABEL_30:
   }
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v7 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithDescriptor_(v7, v4, off_2812DC408[186]);
+  v5 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812DC408[186]);
 
-  objc_msgSend_loadFromArchive_unarchiver_(self, v6, v5, v7);
+  objc_msgSend_loadFromArchive_unarchiver_(self, v6, v5, unarchiverCopy);
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v6 = a4;
-  *(a3 + 4) |= 1u;
-  v7 = *(a3 + 3);
+  archiverCopy = archiver;
+  *(archive + 4) |= 1u;
+  v7 = *(archive + 3);
   if (!v7)
   {
-    v8 = *(a3 + 1);
+    v8 = *(archive + 1);
     if (v8)
     {
       v8 = *(v8 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v7 = MEMORY[0x277CA3260](v8);
-    *(a3 + 3) = v7;
+    *(archive + 3) = v7;
   }
 
   v62.receiver = self;
   v62.super_class = TSWPDropCapStyle;
-  [(TSWPDropCapStyle *)&v62 saveToArchive:v7 archiver:v6];
+  [(TSWPDropCapStyle *)&v62 saveToArchive:v7 archiver:archiverCopy];
   v11 = objc_msgSend_overrideCount(self, v9, v10);
   if (v11)
   {
@@ -448,29 +448,29 @@ LABEL_30:
       LODWORD(v11) = -1;
     }
 
-    *(a3 + 4) |= 8u;
-    *(a3 + 12) = v11;
+    *(archive + 4) |= 8u;
+    *(archive + 12) = v11;
     v59[0] = MEMORY[0x277D85DD0];
     v59[1] = 3221225472;
     v59[2] = sub_276DEB41C;
     v59[3] = &unk_27A6F3E30;
     v59[4] = self;
-    v61 = a3;
-    v13 = v6;
+    archiveCopy = archive;
+    v13 = archiverCopy;
     v60 = v13;
-    objc_msgSend_pushScopeForField_message_usingBlock_(v13, v14, 11, a3, v59);
-    *(a3 + 4) |= 4u;
-    v15 = *(a3 + 5);
+    objc_msgSend_pushScopeForField_message_usingBlock_(v13, v14, 11, archive, v59);
+    *(archive + 4) |= 4u;
+    v15 = *(archive + 5);
     if (!v15)
     {
-      v16 = *(a3 + 1);
+      v16 = *(archive + 1);
       if (v16)
       {
         v16 = *(v16 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v15 = google::protobuf::Arena::CreateMaybeMessage<TSWP::DropCapStylePropertiesArchive>(v16);
-      *(a3 + 5) = v15;
+      *(archive + 5) = v15;
     }
 
     v17 = objc_opt_class();
@@ -573,13 +573,13 @@ LABEL_30:
   }
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v7 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithNewFunction_descriptor_(v7, v4, sub_276DEB558, off_2812DC408[186]);
+  v5 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_276DEB558, off_2812DC408[186]);
 
-  objc_msgSend_saveToArchive_archiver_(self, v6, v5, v7);
+  objc_msgSend_saveToArchive_archiver_(self, v6, v5, archiverCopy);
 }
 
 @end

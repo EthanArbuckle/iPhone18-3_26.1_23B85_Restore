@@ -1,6 +1,6 @@
 @interface OrgApacheLuceneIndexTermState
 - (id)clone;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation OrgApacheLuceneIndexTermState
@@ -9,21 +9,21 @@
 {
   v4.receiver = self;
   v4.super_class = OrgApacheLuceneIndexTermState;
-  v2 = [(OrgApacheLuceneIndexTermState *)&v4 clone];
+  clone = [(OrgApacheLuceneIndexTermState *)&v4 clone];
   objc_opt_class();
-  if (v2 && (objc_opt_isKindOfClass() & 1) == 0)
+  if (clone && (objc_opt_isKindOfClass() & 1) == 0)
   {
     JreThrowClassCastException();
   }
 
-  return v2;
+  return clone;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [(OrgApacheLuceneIndexTermState *)self clone];
+  clone = [(OrgApacheLuceneIndexTermState *)self clone];
 
-  return v3;
+  return clone;
 }
 
 @end

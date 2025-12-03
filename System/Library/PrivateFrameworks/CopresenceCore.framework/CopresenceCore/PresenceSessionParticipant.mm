@@ -1,14 +1,14 @@
 @interface PresenceSessionParticipant
 - (NSString)description;
 - (_TtC14CopresenceCore26PresenceSessionParticipant)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PresenceSessionParticipant
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PresenceSessionParticipant.description.getter();
   v5 = v4;
 
@@ -17,11 +17,11 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  PresenceSessionParticipant.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  PresenceSessionParticipant.encode(with:)(coderCopy);
 }
 
 - (_TtC14CopresenceCore26PresenceSessionParticipant)init

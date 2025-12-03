@@ -1,10 +1,10 @@
 @interface TTRIPopupMenuTableViewCell
-- (TTRIPopupMenuTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (TTRIPopupMenuTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)buttonTitleAttributes;
 - (id)titleFont;
-- (void)setAccessoryTitle:(id)a3;
-- (void)setPopupMenu:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setAccessoryTitle:(id)title;
+- (void)setPopupMenu:(id)menu;
+- (void)setTitle:(id)title;
 @end
 
 @implementation TTRIPopupMenuTableViewCell
@@ -13,11 +13,11 @@
 {
   v2 = MEMORY[0x277D74300];
   v3 = *MEMORY[0x277D76918];
-  v4 = [(TTRIPopupMenuTableViewCell *)self traitCollection];
-  v5 = [v2 preferredFontForTextStyle:v3 compatibleWithTraitCollection:v4];
+  traitCollection = [(TTRIPopupMenuTableViewCell *)self traitCollection];
+  v5 = [v2 preferredFontForTextStyle:v3 compatibleWithTraitCollection:traitCollection];
 
-  v6 = [v5 fontDescriptor];
-  v7 = [v6 fontDescriptorWithDesign:*MEMORY[0x277D74368]];
+  fontDescriptor = [v5 fontDescriptor];
+  v7 = [fontDescriptor fontDescriptorWithDesign:*MEMORY[0x277D74368]];
 
   v8 = [MEMORY[0x277D74300] fontWithDescriptor:v7 size:0.0];
 
@@ -28,89 +28,89 @@
 {
   v7[2] = *MEMORY[0x277D85DE8];
   v6[0] = *MEMORY[0x277D740A8];
-  v2 = [(TTRIPopupMenuTableViewCell *)self titleFont];
-  v7[0] = v2;
+  titleFont = [(TTRIPopupMenuTableViewCell *)self titleFont];
+  v7[0] = titleFont;
   v6[1] = *MEMORY[0x277D740C0];
-  v3 = [MEMORY[0x277D75348] secondaryLabelColor];
-  v7[1] = v3;
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  v7[1] = secondaryLabelColor;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:v6 count:2];
 
   return v4;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(TTRIPopupMenuTableViewCell *)self titleLabel];
-  [v5 setText:v4];
+  titleCopy = title;
+  titleLabel = [(TTRIPopupMenuTableViewCell *)self titleLabel];
+  [titleLabel setText:titleCopy];
 
-  v6 = [(TTRIPopupMenuTableViewCell *)self titleLabel];
-  [v6 sizeToFit];
+  titleLabel2 = [(TTRIPopupMenuTableViewCell *)self titleLabel];
+  [titleLabel2 sizeToFit];
 
-  v7 = [(NUITableViewContainerCell *)self containerView];
-  [v7 invalidateIntrinsicContentSize];
+  containerView = [(NUITableViewContainerCell *)self containerView];
+  [containerView invalidateIntrinsicContentSize];
 }
 
-- (void)setAccessoryTitle:(id)a3
+- (void)setAccessoryTitle:(id)title
 {
   v4 = MEMORY[0x277CCA898];
-  v5 = a3;
+  titleCopy = title;
   v6 = [v4 alloc];
-  v7 = [(TTRIPopupMenuTableViewCell *)self buttonTitleAttributes];
-  v10 = [v6 initWithString:v5 attributes:v7];
+  buttonTitleAttributes = [(TTRIPopupMenuTableViewCell *)self buttonTitleAttributes];
+  v10 = [v6 initWithString:titleCopy attributes:buttonTitleAttributes];
 
-  v8 = [(TTRIPopupMenuTableViewCell *)self menuButton];
-  [v8 setAttributedTitle:v10 forState:0];
+  menuButton = [(TTRIPopupMenuTableViewCell *)self menuButton];
+  [menuButton setAttributedTitle:v10 forState:0];
 
-  v9 = [(TTRIPopupMenuTableViewCell *)self accessoriesStackView];
-  [v9 invalidateIntrinsicContentSize];
+  accessoriesStackView = [(TTRIPopupMenuTableViewCell *)self accessoriesStackView];
+  [accessoriesStackView invalidateIntrinsicContentSize];
 }
 
-- (void)setPopupMenu:(id)a3
+- (void)setPopupMenu:(id)menu
 {
-  v4 = a3;
-  v5 = [(TTRIPopupMenuTableViewCell *)self menuButton];
-  [v5 setMenu:v4];
+  menuCopy = menu;
+  menuButton = [(TTRIPopupMenuTableViewCell *)self menuButton];
+  [menuButton setMenu:menuCopy];
 
-  v6 = [(TTRIPopupMenuTableViewCell *)self menuButton];
-  [v6 setChangesSelectionAsPrimaryAction:1];
+  menuButton2 = [(TTRIPopupMenuTableViewCell *)self menuButton];
+  [menuButton2 setChangesSelectionAsPrimaryAction:1];
 
-  v7 = [(TTRIPopupMenuTableViewCell *)self menuButton];
-  [v7 setHidden:0];
+  menuButton3 = [(TTRIPopupMenuTableViewCell *)self menuButton];
+  [menuButton3 setHidden:0];
 
-  v8 = [(TTRIPopupMenuTableViewCell *)self menuButton];
-  [(TTRIPopupMenuTableViewCell *)self _setPopupMenuButton:v8];
+  menuButton4 = [(TTRIPopupMenuTableViewCell *)self menuButton];
+  [(TTRIPopupMenuTableViewCell *)self _setPopupMenuButton:menuButton4];
 }
 
-- (TTRIPopupMenuTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (TTRIPopupMenuTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v25[1] = *MEMORY[0x277D85DE8];
   v24.receiver = self;
   v24.super_class = TTRIPopupMenuTableViewCell;
-  v4 = [(NUITableViewContainerCell *)&v24 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(NUITableViewContainerCell *)&v24 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [(NUITableViewContainerCell *)v4 containerView];
-    [v6 setDistribution:4];
+    containerView = [(NUITableViewContainerCell *)v4 containerView];
+    [containerView setDistribution:4];
 
     v7 = objc_alloc(MEMORY[0x277D756B8]);
     v8 = [v7 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
-    v9 = [(TTRIPopupMenuTableViewCell *)v5 titleFont];
-    [v8 setFont:v9];
+    titleFont = [(TTRIPopupMenuTableViewCell *)v5 titleFont];
+    [v8 setFont:titleFont];
 
-    v10 = [MEMORY[0x277D75230] plainButtonConfiguration];
-    [v10 setTitleAlignment:3];
-    [v10 setContentInsets:{*MEMORY[0x277D75060], *(MEMORY[0x277D75060] + 8), *(MEMORY[0x277D75060] + 16), *(MEMORY[0x277D75060] + 24)}];
-    v11 = [MEMORY[0x277D75348] clearColor];
-    v12 = [v10 background];
-    [v12 setBackgroundColor:v11];
+    plainButtonConfiguration = [MEMORY[0x277D75230] plainButtonConfiguration];
+    [plainButtonConfiguration setTitleAlignment:3];
+    [plainButtonConfiguration setContentInsets:{*MEMORY[0x277D75060], *(MEMORY[0x277D75060] + 8), *(MEMORY[0x277D75060] + 16), *(MEMORY[0x277D75060] + 24)}];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    background = [plainButtonConfiguration background];
+    [background setBackgroundColor:clearColor];
 
-    v13 = [MEMORY[0x277D75220] buttonWithConfiguration:v10 primaryAction:0];
+    v13 = [MEMORY[0x277D75220] buttonWithConfiguration:plainButtonConfiguration primaryAction:0];
     [v13 setShowsMenuAsPrimaryAction:1];
     [v13 setContentHorizontalAlignment:2];
-    v14 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [v13 setTintColor:v14];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [v13 setTintColor:secondaryLabelColor];
 
     [v13 setHidden:1];
     [(TTRIPopupMenuTableViewCell *)v5 setMenuButton:v13];
@@ -123,19 +123,19 @@
     [v17 setSpacing:8.0];
     [v17 setInvalidatingIntrinsicContentSizeAlsoInvalidatesSuperview:1];
     [(TTRIPopupMenuTableViewCell *)v5 setAccessoriesStackView:v17];
-    v18 = [(TTRIPopupMenuTableViewCell *)v5 accessoriesStackView];
-    [v18 setBaselineRelativeArrangement:1];
+    accessoriesStackView = [(TTRIPopupMenuTableViewCell *)v5 accessoriesStackView];
+    [accessoriesStackView setBaselineRelativeArrangement:1];
 
-    v19 = [(NUITableViewContainerCell *)v5 containerView];
-    [v19 setBaselineRelativeArrangement:1];
+    containerView2 = [(NUITableViewContainerCell *)v5 containerView];
+    [containerView2 setBaselineRelativeArrangement:1];
 
     LODWORD(v20) = 1148846080;
     [v13 setLayoutSize:*MEMORY[0x277CEC620] withContentPriority:{*(MEMORY[0x277CEC620] + 8), v20}];
-    v21 = [(NUITableViewContainerCell *)v5 containerView];
-    [v21 addArrangedSubview:v8];
+    containerView3 = [(NUITableViewContainerCell *)v5 containerView];
+    [containerView3 addArrangedSubview:v8];
 
-    v22 = [(NUITableViewContainerCell *)v5 containerView];
-    [v22 addArrangedSubview:v17];
+    containerView4 = [(NUITableViewContainerCell *)v5 containerView];
+    [containerView4 addArrangedSubview:v17];
 
     [(TTRIPopupMenuTableViewCell *)v5 setSeparatorInset:*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)];
   }

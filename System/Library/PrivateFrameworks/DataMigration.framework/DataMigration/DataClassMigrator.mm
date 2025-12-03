@@ -1,5 +1,5 @@
 @interface DataClassMigrator
-+ (id)dataClassMigratorForBundleAtPath:(id)a3;
++ (id)dataClassMigratorForBundleAtPath:(id)path;
 - (BOOL)didMigrateBackupFromDifferentDevice;
 - (BOOL)didRestoreFromBackup;
 - (BOOL)didRestoreFromCloudBackup;
@@ -13,62 +13,62 @@
 - (BOOL)didUpgrade
 {
   v2 = [(NSDictionary *)self->_context objectForKey:@"SyntheticDidUpgrade"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)didRestoreFromBackup
 {
   v2 = [(NSDictionary *)self->_context objectForKey:@"DidRestoreFromBackup"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)didMigrateBackupFromDifferentDevice
 {
   v2 = [(NSDictionary *)self->_context objectForKey:@"DidMigrateBackupFromDifferentDevice"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)didRestoreFromCloudBackup
 {
   v2 = [(NSDictionary *)self->_context objectForKey:@"DidRestoreFromCloudBackup"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)shouldPreserveSettingsAfterRestore
 {
   v2 = [(NSDictionary *)self->_context objectForKey:@"ShouldPreserveSettingsAfterRestore"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)wasPasscodeSetInBackup
 {
   v2 = [(NSDictionary *)self->_context objectForKey:@"WasPasscodeSetInBackup"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-+ (id)dataClassMigratorForBundleAtPath:(id)a3
++ (id)dataClassMigratorForBundleAtPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   _DMLogFunc(v3, 7, @"Will create migrator bundle at %@");
-  v5 = [MEMORY[0x277CCA8D8] bundleWithPath:{v4, v4}];
+  v5 = [MEMORY[0x277CCA8D8] bundleWithPath:{pathCopy, pathCopy}];
   if (!v5)
   {
     _DMLogFunc(v3, 3, @"%@ Failed to create migration plugin bundle at %@");
 LABEL_8:
     v12 = 0;
-    v9 = 0;
+    bundleIdentifier = 0;
     goto LABEL_9;
   }
 
@@ -85,17 +85,17 @@ LABEL_8:
   }
 
   _DMLogFunc(v3, 7, @"Will get migrator bundle identifier");
-  v9 = [v5 bundleIdentifier];
+  bundleIdentifier = [v5 bundleIdentifier];
   _DMLogFunc(v3, 7, @"Will check migrator principal class");
-  v10 = [v5 principalClass];
-  if (([(objc_class *)v10 isSubclassOfClass:objc_opt_class()]& 1) != 0)
+  principalClass = [v5 principalClass];
+  if (([(objc_class *)principalClass isSubclassOfClass:objc_opt_class()]& 1) != 0)
   {
     _DMLogFunc(v3, 7, @"Will instantiate migrator principal class");
-    v11 = objc_alloc_init(v10);
+    v11 = objc_alloc_init(principalClass);
     v12 = v11;
     if (v11)
     {
-      [v11 setDmBundleIdentifier:v9];
+      [v11 setDmBundleIdentifier:bundleIdentifier];
     }
 
     else

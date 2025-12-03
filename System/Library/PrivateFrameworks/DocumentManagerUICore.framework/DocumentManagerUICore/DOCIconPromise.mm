@@ -1,15 +1,15 @@
 @interface DOCIconPromise
-- (DOCIconPromise)initWithRequest:(id)a3;
+- (DOCIconPromise)initWithRequest:(id)request;
 - (UIImage)thumbnail;
-- (id)averageColorInRect:(CGRect)a3;
+- (id)averageColorInRect:(CGRect)rect;
 @end
 
 @implementation DOCIconPromise
 
-- (DOCIconPromise)initWithRequest:(id)a3
+- (DOCIconPromise)initWithRequest:(id)request
 {
-  v6 = a3;
-  if (!v6)
+  requestCopy = request;
+  if (!requestCopy)
   {
     [(DOCIconPromise *)a2 initWithRequest:?];
   }
@@ -20,7 +20,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_request, a3);
+    objc_storeStrong(&v7->_request, request);
   }
 
   return v8;
@@ -28,9 +28,9 @@
 
 - (UIImage)thumbnail
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  icon = v2->_icon;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  icon = selfCopy->_icon;
   if (!icon)
   {
     v14 = 0;
@@ -43,7 +43,7 @@
     v11 = __Block_byref_object_copy_;
     v12 = __Block_byref_object_dispose_;
     v13 = 0;
-    request = v2->_request;
+    request = selfCopy->_request;
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __27__DOCIconPromise_thumbnail__block_invoke;
@@ -56,15 +56,15 @@
       __assert_rtn("[DOCIconPromise thumbnail]", "DOCThumbnail.m", 448, "blockWasCalled");
     }
 
-    objc_storeStrong(&v2->_icon, v9[5]);
+    objc_storeStrong(&selfCopy->_icon, v9[5]);
     _Block_object_dispose(&v8, 8);
 
     _Block_object_dispose(&v14, 8);
-    icon = v2->_icon;
+    icon = selfCopy->_icon;
   }
 
   v5 = icon;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
@@ -83,24 +83,24 @@ void __27__DOCIconPromise_thumbnail__block_invoke(uint64_t a1, void *a2, void *a
   *(v6 + 40) = v5;
 }
 
-- (id)averageColorInRect:(CGRect)a3
+- (id)averageColorInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if ([(DOCIconPromise *)self isRepresentativeIcon])
   {
-    v8 = [(DOCIconPromise *)self thumbnail];
-    v9 = [v8 doc_averageColorInRect:{x, y, width, height}];
+    thumbnail = [(DOCIconPromise *)self thumbnail];
+    whiteColor = [thumbnail doc_averageColorInRect:{x, y, width, height}];
   }
 
   else
   {
-    v9 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
   }
 
-  return v9;
+  return whiteColor;
 }
 
 - (void)initWithRequest:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

@@ -1,21 +1,21 @@
 @interface AXInvertColorsAppHelper
-+ (BOOL)hasInvertFilter:(id)a3;
++ (BOOL)hasInvertFilter:(id)filter;
 + (BOOL)initializedOverrides;
-+ (id)_accessibilityUpdateInvertColorsFilters:(id)a3 traverseAncestors:(BOOL)a4 updateType:(int64_t)a5;
++ (id)_accessibilityUpdateInvertColorsFilters:(id)filters traverseAncestors:(BOOL)ancestors updateType:(int64_t)type;
 + (id)bundleName;
-+ (id)insertBackgroundView:(id)a3 alpha:(double)a4;
-+ (id)insertBackgroundView:(id)a3 color:(id)a4;
-+ (id)invertImage:(id)a3;
++ (id)insertBackgroundView:(id)view alpha:(double)alpha;
++ (id)insertBackgroundView:(id)view color:(id)color;
++ (id)invertImage:(id)image;
 + (void)_initializeOverrides;
-+ (void)_removeInvertFilter:(id)a3;
-+ (void)applyInvertFilterToLayer:(id)a3;
++ (void)_removeInvertFilter:(id)filter;
++ (void)applyInvertFilterToLayer:(id)layer;
 + (void)initializeOverrides;
-+ (void)moveInvertFilterToFront:(id)a3;
-+ (void)removeBackgroundView:(id)a3;
-+ (void)toggleDarkModeWindowInvertFilterToLayer:(id)a3 enabled:(BOOL)a4;
-+ (void)toggleInvertColorsOnLayer:(id)a3 moveFilterToFront:(BOOL)a4;
-+ (void)toggleInvertColorsOnView:(id)a3;
-+ (void)unapplyInvertFilterToLayer:(id)a3;
++ (void)moveInvertFilterToFront:(id)front;
++ (void)removeBackgroundView:(id)view;
++ (void)toggleDarkModeWindowInvertFilterToLayer:(id)layer enabled:(BOOL)enabled;
++ (void)toggleInvertColorsOnLayer:(id)layer moveFilterToFront:(BOOL)front;
++ (void)toggleInvertColorsOnView:(id)view;
++ (void)unapplyInvertFilterToLayer:(id)layer;
 @end
 
 @implementation AXInvertColorsAppHelper
@@ -23,48 +23,48 @@
 + (BOOL)initializedOverrides
 {
   v2 = qword_834E0;
-  v3 = NSStringFromClass(a1);
+  v3 = NSStringFromClass(self);
   v4 = [v2 objectForKeyedSubscript:v3];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
-+ (id)insertBackgroundView:(id)a3 color:(id)a4
++ (id)insertBackgroundView:(id)view color:(id)color
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5 && ![AXInvertColorsManager objectIsOnCarScreen:v5])
+  viewCopy = view;
+  colorCopy = color;
+  if (viewCopy && ![AXInvertColorsManager objectIsOnCarScreen:viewCopy])
   {
-    v7 = [v5 viewWithTag:123456789];
+    v7 = [viewCopy viewWithTag:123456789];
     if (!v7)
     {
       v8 = [UIView alloc];
-      v9 = [v5 window];
-      [v9 bounds];
+      window = [viewCopy window];
+      [window bounds];
       v7 = [v8 initWithFrame:?];
 
       [v7 setTag:123456789];
-      [v7 setBackgroundColor:v6];
+      [v7 setBackgroundColor:colorCopy];
       [v7 setUserInteractionEnabled:0];
       [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
       [v7 setAccessibilityIgnoresInvertColors:1];
-      [v5 insertSubview:v7 atIndex:0];
-      v23 = [v7 leadingAnchor];
-      v22 = [v5 leadingAnchor];
-      v21 = [v23 constraintEqualToAnchor:v22];
+      [viewCopy insertSubview:v7 atIndex:0];
+      leadingAnchor = [v7 leadingAnchor];
+      leadingAnchor2 = [viewCopy leadingAnchor];
+      v21 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v24[0] = v21;
-      v20 = [v7 trailingAnchor];
-      v19 = [v5 trailingAnchor];
-      v18 = [v20 constraintEqualToAnchor:v19];
+      trailingAnchor = [v7 trailingAnchor];
+      trailingAnchor2 = [viewCopy trailingAnchor];
+      v18 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v24[1] = v18;
-      v10 = [v7 topAnchor];
-      v11 = [v5 topAnchor];
-      v12 = [v10 constraintEqualToAnchor:v11];
+      topAnchor = [v7 topAnchor];
+      topAnchor2 = [viewCopy topAnchor];
+      v12 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v24[2] = v12;
-      v13 = [v7 bottomAnchor];
-      v14 = [v5 bottomAnchor];
-      v15 = [v13 constraintEqualToAnchor:v14];
+      bottomAnchor = [v7 bottomAnchor];
+      bottomAnchor2 = [viewCopy bottomAnchor];
+      v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v24[3] = v15;
       v16 = [NSArray arrayWithObjects:v24 count:4];
       [NSLayoutConstraint activateConstraints:v16];
@@ -79,47 +79,47 @@
   return v7;
 }
 
-+ (id)insertBackgroundView:(id)a3 alpha:(double)a4
++ (id)insertBackgroundView:(id)view alpha:(double)alpha
 {
-  v6 = a3;
-  v7 = [UIColor colorWithRed:0.1 green:0.1 blue:0.1 alpha:a4];
-  v8 = [a1 insertBackgroundView:v6 color:v7];
+  viewCopy = view;
+  v7 = [UIColor colorWithRed:0.1 green:0.1 blue:0.1 alpha:alpha];
+  v8 = [self insertBackgroundView:viewCopy color:v7];
 
   return v8;
 }
 
-+ (void)removeBackgroundView:(id)a3
++ (void)removeBackgroundView:(id)view
 {
-  v3 = [a3 viewWithTag:123456789];
+  v3 = [view viewWithTag:123456789];
   [v3 removeFromSuperview];
 }
 
-+ (id)_accessibilityUpdateInvertColorsFilters:(id)a3 traverseAncestors:(BOOL)a4 updateType:(int64_t)a5
++ (id)_accessibilityUpdateInvertColorsFilters:(id)filters traverseAncestors:(BOOL)ancestors updateType:(int64_t)type
 {
-  v8 = a3;
+  filtersCopy = filters;
   IsInvertColorsEnabled = UIAccessibilityIsInvertColorsEnabled();
-  if (a5 == 1 && !IsInvertColorsEnabled)
+  if (type == 1 && !IsInvertColorsEnabled)
   {
     v10 = 0;
     goto LABEL_20;
   }
 
-  v11 = v8;
-  if (v11 && !a5)
+  v11 = filtersCopy;
+  if (v11 && !type)
   {
     while (1)
     {
-      v12 = [v11 filters];
-      v13 = [v12 indexOfObjectPassingTest:&stru_445C0] == 0x7FFFFFFFFFFFFFFFLL || v12 == 0;
-      if (!v13 || !a4)
+      filters = [v11 filters];
+      v13 = [filters indexOfObjectPassingTest:&stru_445C0] == 0x7FFFFFFFFFFFFFFFLL || filters == 0;
+      if (!v13 || !ancestors)
       {
         break;
       }
 
-      v14 = [v11 superlayer];
+      superlayer = [v11 superlayer];
 
-      v11 = v14;
-      if (!v14)
+      v11 = superlayer;
+      if (!superlayer)
       {
         goto LABEL_13;
       }
@@ -129,21 +129,21 @@
   }
 
 LABEL_13:
-  if (!a5)
+  if (!type)
   {
 LABEL_17:
-    [a1 unapplyInvertFilterToLayer:v11];
+    [self unapplyInvertFilterToLayer:v11];
     goto LABEL_18;
   }
 
-  if (a5 < 1)
+  if (type < 1)
   {
 LABEL_18:
     v10 = 0;
     goto LABEL_19;
   }
 
-  [a1 applyInvertFilterToLayer:v11];
+  [self applyInvertFilterToLayer:v11];
   v10 = v11;
 LABEL_19:
 
@@ -152,14 +152,14 @@ LABEL_20:
   return v10;
 }
 
-+ (void)toggleDarkModeWindowInvertFilterToLayer:(id)a3 enabled:(BOOL)a4
++ (void)toggleDarkModeWindowInvertFilterToLayer:(id)layer enabled:(BOOL)enabled
 {
-  v4 = a4;
-  v9 = a3;
-  v6 = [v9 filters];
-  v7 = [v6 mutableCopy];
+  enabledCopy = enabled;
+  layerCopy = layer;
+  filters = [layerCopy filters];
+  v7 = [filters mutableCopy];
 
-  if (v4)
+  if (enabledCopy)
   {
     if (([v7 ax_containsObjectUsingBlock:&stru_44600] & 1) == 0)
     {
@@ -172,58 +172,58 @@ LABEL_20:
       [v8 setName:@"InvertColorsDarkModeWindowFilter"];
       [v8 setAccessibility:1];
       [v7 addObject:v8];
-      [v9 setValue:v7 forKey:@"filters"];
-      [a1 unapplyInvertFilterToLayer:v9];
+      [layerCopy setValue:v7 forKey:@"filters"];
+      [self unapplyInvertFilterToLayer:layerCopy];
     }
   }
 
   else
   {
     [v7 ax_removeObjectsFromArrayUsingBlock:&stru_44620];
-    [v9 setValue:v7 forKey:@"filters"];
+    [layerCopy setValue:v7 forKey:@"filters"];
   }
 }
 
-+ (void)unapplyInvertFilterToLayer:(id)a3
++ (void)unapplyInvertFilterToLayer:(id)layer
 {
-  v8 = a3;
-  v3 = [v8 filters];
-  v4 = v3;
-  if (v3)
+  layerCopy = layer;
+  filters = [layerCopy filters];
+  v4 = filters;
+  if (filters)
   {
-    v5 = [v3 indexOfObjectPassingTest:&stru_445C0];
+    v5 = [filters indexOfObjectPassingTest:&stru_445C0];
     if (v5 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v6 = v5;
       v7 = [v4 mutableCopy];
       [v7 removeObjectAtIndex:v6];
-      [v8 setValue:v7 forKey:@"filters"];
+      [layerCopy setValue:v7 forKey:@"filters"];
     }
   }
 }
 
-+ (id)invertImage:(id)a3
++ (id)invertImage:(id)image
 {
-  v3 = a3;
-  [v3 size];
+  imageCopy = image;
+  [imageCopy size];
   v5 = v4;
-  [v3 size];
+  [imageCopy size];
   v7 = v6;
   if (fabs(v5) < 0.001 || fabs(v6) < 0.001 || v5 <= 0.0 || v6 <= 0.0)
   {
-    v15 = v3;
+    v15 = imageCopy;
   }
 
   else
   {
-    [v3 scale];
+    [imageCopy scale];
     v9 = v8;
     v18.width = v5;
     v18.height = v7;
     UIGraphicsBeginImageContextWithOptions(v18, 0, v9);
     CurrentContext = UIGraphicsGetCurrentContext();
     CGContextSetBlendMode(CurrentContext, kCGBlendModeCopy);
-    [v3 drawInRect:{0.0, 0.0, v5, v7}];
+    [imageCopy drawInRect:{0.0, 0.0, v5, v7}];
     v11 = UIGraphicsGetCurrentContext();
     CGContextSetBlendMode(v11, kCGBlendModeDifference);
     v12 = UIGraphicsGetCurrentContext();
@@ -243,10 +243,10 @@ LABEL_20:
   return v15;
 }
 
-+ (void)applyInvertFilterToLayer:(id)a3
++ (void)applyInvertFilterToLayer:(id)layer
 {
-  v7 = a3;
-  v3 = [v7 valueForKeyPath:@"filters.InvertColorsDoubleInvert"];
+  layerCopy = layer;
+  v3 = [layerCopy valueForKeyPath:@"filters.InvertColorsDoubleInvert"];
   if (v3)
   {
 LABEL_2:
@@ -254,12 +254,12 @@ LABEL_2:
     goto LABEL_4;
   }
 
-  v4 = [v7 valueForKeyPath:@"filters.InvertColorsDarkModeWindowFilter"];
+  v4 = [layerCopy valueForKeyPath:@"filters.InvertColorsDarkModeWindowFilter"];
 
   if (!v4)
   {
-    v5 = [v7 filters];
-    v3 = [v5 mutableCopy];
+    filters = [layerCopy filters];
+    v3 = [filters mutableCopy];
 
     if (!v3)
     {
@@ -270,7 +270,7 @@ LABEL_2:
     [v6 setName:@"InvertColorsDoubleInvert"];
     [v6 setAccessibility:1];
     [v3 addObject:v6];
-    [v7 setValue:v3 forKey:@"filters"];
+    [layerCopy setValue:v3 forKey:@"filters"];
 
     goto LABEL_2;
   }
@@ -278,51 +278,51 @@ LABEL_2:
 LABEL_4:
 }
 
-+ (void)moveInvertFilterToFront:(id)a3
++ (void)moveInvertFilterToFront:(id)front
 {
-  v8 = a3;
-  v3 = [v8 filters];
-  v4 = [v3 indexOfObjectPassingTest:&stru_445C0];
+  frontCopy = front;
+  filters = [frontCopy filters];
+  v4 = [filters indexOfObjectPassingTest:&stru_445C0];
 
   if ((v4 - 1) <= 0x7FFFFFFFFFFFFFFDLL)
   {
-    v5 = [v8 filters];
-    v6 = [v5 mutableCopy];
+    filters2 = [frontCopy filters];
+    v6 = [filters2 mutableCopy];
 
     v7 = [v6 objectAtIndex:v4];
     [v6 removeObjectAtIndex:v4];
     [v6 insertObject:v7 atIndex:0];
-    [v8 setValue:v6 forKey:@"filters"];
+    [frontCopy setValue:v6 forKey:@"filters"];
   }
 }
 
-+ (void)_removeInvertFilter:(id)a3
++ (void)_removeInvertFilter:(id)filter
 {
-  v9 = a3;
-  v3 = [v9 layer];
-  v4 = [v3 filters];
+  filterCopy = filter;
+  layer = [filterCopy layer];
+  filters = [layer filters];
 
-  if (v4)
+  if (filters)
   {
-    v5 = [v4 indexOfObjectPassingTest:&stru_445C0];
+    v5 = [filters indexOfObjectPassingTest:&stru_445C0];
     if (v5 <= 0x7FFFFFFFFFFFFFFELL)
     {
       v6 = v5;
-      v7 = [v4 mutableCopy];
+      v7 = [filters mutableCopy];
       [v7 removeObjectAtIndex:v6];
-      v8 = [v9 layer];
-      [v8 setValue:v7 forKey:@"filters"];
+      layer2 = [filterCopy layer];
+      [layer2 setValue:v7 forKey:@"filters"];
     }
   }
 }
 
-+ (BOOL)hasInvertFilter:(id)a3
++ (BOOL)hasInvertFilter:(id)filter
 {
-  v3 = a3;
+  filterCopy = filter;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 layer];
+    layer = [filterCopy layer];
   }
 
   else
@@ -335,16 +335,16 @@ LABEL_8:
       goto LABEL_11;
     }
 
-    v4 = v3;
+    layer = filterCopy;
   }
 
-  v5 = v4;
-  if (!v4)
+  v5 = layer;
+  if (!layer)
   {
     goto LABEL_8;
   }
 
-  v6 = [v4 valueForKeyPath:@"filters.InvertColorsDoubleInvert"];
+  v6 = [layer valueForKeyPath:@"filters.InvertColorsDoubleInvert"];
   if (v6)
   {
     v7 = 1;
@@ -382,16 +382,16 @@ LABEL_11:
 
 + (void)_initializeOverrides
 {
-  if (([a1 initializedOverrides] & 1) == 0)
+  if (([self initializedOverrides] & 1) == 0)
   {
     v3 = +[AXValidationManager sharedInstance];
-    v13[4] = a1;
+    v13[4] = self;
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_4EC8;
     v14[3] = &unk_44640;
-    v14[4] = a1;
-    v12[4] = a1;
+    v14[4] = self;
+    v12[4] = self;
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_4EEC;
@@ -402,11 +402,11 @@ LABEL_11:
     v12[3] = &unk_446A0;
     [v3 performValidations:v14 withPreValidationHandler:v13 postValidationHandler:&stru_44680 safeCategoryInstallationHandler:v12];
 
-    [a1 setInitializedOverrides:1];
+    [self setInitializedOverrides:1];
     v4 = +[AXSubsystemInvertColors sharedInstance];
-    v5 = [v4 ignoreLogging];
+    ignoreLogging = [v4 ignoreLogging];
 
-    if ((v5 & 1) == 0)
+    if ((ignoreLogging & 1) == 0)
     {
       v6 = +[AXSubsystemInvertColors identifier];
       v7 = AXLoggerForFacility();
@@ -415,7 +415,7 @@ LABEL_11:
       if (os_log_type_enabled(v7, v8))
       {
         v9 = AXColorizeFormatLog();
-        v11 = [a1 bundleName];
+        bundleName = [self bundleName];
         v10 = _AXStringForArgs();
 
         if (os_log_type_enabled(v7, v8))
@@ -432,9 +432,9 @@ LABEL_11:
 + (void)initializeOverrides
 {
   v3 = +[AXSubsystemInvertColors sharedInstance];
-  v4 = [v3 ignoreLogging];
+  ignoreLogging = [v3 ignoreLogging];
 
-  if ((v4 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
     v5 = +[AXSubsystemInvertColors identifier];
     v6 = AXLoggerForFacility();
@@ -443,7 +443,7 @@ LABEL_11:
     if (os_log_type_enabled(v6, v7))
     {
       v8 = AXColorizeFormatLog();
-      v14 = [a1 bundleName];
+      bundleName = [self bundleName];
       v9 = _AXStringForArgs();
 
       if (os_log_type_enabled(v6, v7))
@@ -459,111 +459,111 @@ LABEL_11:
   v15[1] = 3221225472;
   v15[2] = sub_5248;
   v15[3] = &unk_446C0;
-  v15[4] = a1;
+  v15[4] = self;
   v10 = objc_retainBlock(v15);
-  v11 = [a1 helperType];
-  if (v11 > 2)
+  helperType = [self helperType];
+  if (helperType > 2)
   {
-    if (v11 == (&dword_0 + 3))
+    if (helperType == (&dword_0 + 3))
     {
-      v12 = [sub_5390() sharedInstance];
-      v13 = [a1 bundleName];
-      [v12 addHandler:v10 forAppExtension:v13];
+      sharedInstance = [sub_5390() sharedInstance];
+      bundleName2 = [self bundleName];
+      [sharedInstance addHandler:v10 forAppExtension:bundleName2];
       goto LABEL_16;
     }
 
-    if (v11 == &dword_4)
+    if (helperType == &dword_4)
     {
-      v12 = [sub_5390() sharedInstance];
-      v13 = [a1 bundleName];
-      [v12 addHandler:v10 forBundleName:v13];
+      sharedInstance = [sub_5390() sharedInstance];
+      bundleName2 = [self bundleName];
+      [sharedInstance addHandler:v10 forBundleName:bundleName2];
       goto LABEL_16;
     }
   }
 
   else
   {
-    if (v11 == (&dword_0 + 1))
+    if (helperType == (&dword_0 + 1))
     {
-      v12 = [sub_5390() sharedInstance];
-      v13 = [a1 bundleName];
-      [v12 addHandler:v10 forFramework:v13];
+      sharedInstance = [sub_5390() sharedInstance];
+      bundleName2 = [self bundleName];
+      [sharedInstance addHandler:v10 forFramework:bundleName2];
       goto LABEL_16;
     }
 
-    if (v11 == (&dword_0 + 2))
+    if (helperType == (&dword_0 + 2))
     {
-      v12 = [sub_5390() sharedInstance];
-      v13 = [a1 bundleName];
-      [v12 addHandler:v10 forApp:v13];
+      sharedInstance = [sub_5390() sharedInstance];
+      bundleName2 = [self bundleName];
+      [sharedInstance addHandler:v10 forApp:bundleName2];
 LABEL_16:
     }
   }
 }
 
-+ (void)toggleInvertColorsOnLayer:(id)a3 moveFilterToFront:(BOOL)a4
++ (void)toggleInvertColorsOnLayer:(id)layer moveFilterToFront:(BOOL)front
 {
-  v4 = a4;
-  v10 = a3;
-  v5 = [v10 delegate];
+  frontCopy = front;
+  layerCopy = layer;
+  delegate = [layerCopy delegate];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v10 delegate];
+    delegate2 = [layerCopy delegate];
   }
 
   else
   {
-    v6 = 0;
+    delegate2 = 0;
   }
 
-  v7 = [v6 window];
-  v8 = [v7 traitCollection];
-  v9 = [v8 userInterfaceStyle];
+  window = [delegate2 window];
+  traitCollection = [window traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (!_AXSInvertColorsEnabled() || v9 == &dword_0 + 2)
+  if (!_AXSInvertColorsEnabled() || userInterfaceStyle == &dword_0 + 2)
   {
-    [AXInvertColorsAppHelper unapplyInvertFilterToLayer:v10];
+    [AXInvertColorsAppHelper unapplyInvertFilterToLayer:layerCopy];
   }
 
   else
   {
-    [AXInvertColorsAppHelper applyInvertFilterToLayer:v10];
-    if (v4)
+    [AXInvertColorsAppHelper applyInvertFilterToLayer:layerCopy];
+    if (frontCopy)
     {
-      [AXInvertColorsAppHelper moveInvertFilterToFront:v10];
+      [AXInvertColorsAppHelper moveInvertFilterToFront:layerCopy];
     }
   }
 }
 
-+ (void)toggleInvertColorsOnView:(id)a3
++ (void)toggleInvertColorsOnView:(id)view
 {
-  v7 = a3;
-  if (([v7 accessibilityInvertColorsIsolatedTree] & 1) == 0)
+  viewCopy = view;
+  if (([viewCopy accessibilityInvertColorsIsolatedTree] & 1) == 0)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v3 = v7;
+      window = viewCopy;
     }
 
     else
     {
-      v3 = [v7 window];
+      window = [viewCopy window];
     }
 
-    v4 = v3;
-    v5 = [v3 traitCollection];
-    v6 = [v5 userInterfaceStyle];
+    v4 = window;
+    traitCollection = [window traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if ([v7 _accessibilityAppliesInvertColors] && v6 != &dword_0 + 2 || objc_msgSend(v7, "_accessibilityAppliesInvertColorsInDarkUI") && v6 == &dword_0 + 2)
+    if ([viewCopy _accessibilityAppliesInvertColors] && userInterfaceStyle != &dword_0 + 2 || objc_msgSend(viewCopy, "_accessibilityAppliesInvertColorsInDarkUI") && userInterfaceStyle == &dword_0 + 2)
     {
-      [v7 _accessibilityApplyInvertFilter];
+      [viewCopy _accessibilityApplyInvertFilter];
     }
 
     else
     {
-      [AXInvertColorsAppHelper _removeInvertFilter:v7];
+      [AXInvertColorsAppHelper _removeInvertFilter:viewCopy];
     }
   }
 }

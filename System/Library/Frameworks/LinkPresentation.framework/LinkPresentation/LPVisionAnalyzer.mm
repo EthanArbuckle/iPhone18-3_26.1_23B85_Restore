@@ -1,26 +1,26 @@
 @interface LPVisionAnalyzer
-- (CGImage)resampleAndCropWithImage:(id)a3 width:(int64_t)a4 height:(int64_t)a5;
+- (CGImage)resampleAndCropWithImage:(id)image width:(int64_t)width height:(int64_t)height;
 - (LPVisionAnalyzer)init;
-- (id)computeSimilarityOfFirstImage:(id)a3 with:(id)a4 error:(id *)a5;
+- (id)computeSimilarityOfFirstImage:(id)image with:(id)with error:(id *)error;
 @end
 
 @implementation LPVisionAnalyzer
 
-- (CGImage)resampleAndCropWithImage:(id)a3 width:(int64_t)a4 height:(int64_t)a5
+- (CGImage)resampleAndCropWithImage:(id)image width:(int64_t)width height:(int64_t)height
 {
-  v8 = a3;
-  v9 = self;
-  v10 = sub_1AE974204(v8, a4, a5);
+  imageCopy = image;
+  selfCopy = self;
+  v10 = sub_1AE974204(imageCopy, width, height);
 
   return v10;
 }
 
-- (id)computeSimilarityOfFirstImage:(id)a3 with:(id)a4 error:(id *)a5
+- (id)computeSimilarityOfFirstImage:(id)image with:(id)with error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  v10 = sub_1AE972518(v7, v8);
+  imageCopy = image;
+  withCopy = with;
+  selfCopy = self;
+  v10 = sub_1AE972518(imageCopy, withCopy);
 
   return v10;
 }

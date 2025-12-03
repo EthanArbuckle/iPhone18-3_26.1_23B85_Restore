@@ -1,70 +1,70 @@
 @interface HKOverlayRoomViewControllerIntegratedContext
-+ (id)distributionContextWithStyle:(int64_t)a3 namedPredicate:(id)a4 overlayChartController:(id)a5 applicationItems:(id)a6 optionalDelegate:(id)a7 options:(int64_t)a8 mode:(int64_t)a9;
-+ (id)quantityContextWithIdentifier:(id)a3 overlayChartController:(id)a4 applicationItems:(id)a5 optionalDelegate:(id)a6 seriesOptions:(int64_t)a7 mode:(int64_t)a8;
-+ (id)quantityContextWithIdentifier:(id)a3 overlayChartController:(id)a4 applicationItems:(id)a5 optionalDelegate:(id)a6 seriesOptions:(int64_t)a7 mode:(int64_t)a8 optionalBaseDisplayType:(id)a9;
-- (BOOL)_obsoleteDateRange:(id)a3;
-- (HKOverlayRoomViewControllerIntegratedContext)initWithOverlayChartController:(id)a3 applicationItems:(id)a4 mode:(int64_t)a5;
++ (id)distributionContextWithStyle:(int64_t)style namedPredicate:(id)predicate overlayChartController:(id)controller applicationItems:(id)items optionalDelegate:(id)delegate options:(int64_t)options mode:(int64_t)mode;
++ (id)quantityContextWithIdentifier:(id)identifier overlayChartController:(id)controller applicationItems:(id)items optionalDelegate:(id)delegate seriesOptions:(int64_t)options mode:(int64_t)mode;
++ (id)quantityContextWithIdentifier:(id)identifier overlayChartController:(id)controller applicationItems:(id)items optionalDelegate:(id)delegate seriesOptions:(int64_t)options mode:(int64_t)mode optionalBaseDisplayType:(id)type;
+- (BOOL)_obsoleteDateRange:(id)range;
+- (HKOverlayRoomViewControllerIntegratedContext)initWithOverlayChartController:(id)controller applicationItems:(id)items mode:(int64_t)mode;
 - (id)_buildMonitoringSampleType;
-- (id)_minMaxValueFromChartPoints:(id)a3 displayType:(id)a4 unitPreferenceController:(id)a5 isUnitIncludedInValue:(BOOL *)a6;
-- (id)buildContextItemWithValue:(id)a3 unit:(id)a4 valueContext:(id)a5 forTimeScope:(int64_t)a6 isUnitIncludedInValue:(BOOL)a7;
-- (id)buildOverlayDisplayTypeForTimeScope:(int64_t)a3;
+- (id)_minMaxValueFromChartPoints:(id)points displayType:(id)type unitPreferenceController:(id)controller isUnitIncludedInValue:(BOOL *)value;
+- (id)buildContextItemWithValue:(id)value unit:(id)unit valueContext:(id)context forTimeScope:(int64_t)scope isUnitIncludedInValue:(BOOL)inValue;
+- (id)buildOverlayDisplayTypeForTimeScope:(int64_t)scope;
 - (id)contextItemForLastUpdate;
-- (id)overlayDisplayTypeForTimeScope:(int64_t)a3;
+- (id)overlayDisplayTypeForTimeScope:(int64_t)scope;
 - (id)representativeDisplayType;
 - (id)sampleTypeForDateRangeUpdates;
-- (id)valueString:(id)a3 applicationItems:(id)a4 representativeDisplayType:(id)a5 isUnitIncludedInValue:(BOOL *)a6;
-- (void)fetchCachedDataForTimeScope:(int64_t)a3 resolution:(int64_t)a4 dateInterval:(id)a5 completion:(id)a6;
-- (void)updateContextItemForDateInterval:(id)a3 overlayController:(id)a4 timeScope:(int64_t)a5 resolution:(int64_t)a6 completion:(id)a7;
+- (id)valueString:(id)string applicationItems:(id)items representativeDisplayType:(id)type isUnitIncludedInValue:(BOOL *)value;
+- (void)fetchCachedDataForTimeScope:(int64_t)scope resolution:(int64_t)resolution dateInterval:(id)interval completion:(id)completion;
+- (void)updateContextItemForDateInterval:(id)interval overlayController:(id)controller timeScope:(int64_t)scope resolution:(int64_t)resolution completion:(id)completion;
 @end
 
 @implementation HKOverlayRoomViewControllerIntegratedContext
 
-+ (id)distributionContextWithStyle:(int64_t)a3 namedPredicate:(id)a4 overlayChartController:(id)a5 applicationItems:(id)a6 optionalDelegate:(id)a7 options:(int64_t)a8 mode:(int64_t)a9
++ (id)distributionContextWithStyle:(int64_t)style namedPredicate:(id)predicate overlayChartController:(id)controller applicationItems:(id)items optionalDelegate:(id)delegate options:(int64_t)options mode:(int64_t)mode
 {
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
-  v17 = a4;
-  v18 = [[HKOverlayRoomViewControllerDistributionContext alloc] initWithStyle:a3 namedPredicate:v17 overlayChartController:v16 applicationItems:v15 optionalDelegate:v14 options:a8 mode:a9];
+  delegateCopy = delegate;
+  itemsCopy = items;
+  controllerCopy = controller;
+  predicateCopy = predicate;
+  v18 = [[HKOverlayRoomViewControllerDistributionContext alloc] initWithStyle:style namedPredicate:predicateCopy overlayChartController:controllerCopy applicationItems:itemsCopy optionalDelegate:delegateCopy options:options mode:mode];
 
   return v18;
 }
 
-+ (id)quantityContextWithIdentifier:(id)a3 overlayChartController:(id)a4 applicationItems:(id)a5 optionalDelegate:(id)a6 seriesOptions:(int64_t)a7 mode:(int64_t)a8
++ (id)quantityContextWithIdentifier:(id)identifier overlayChartController:(id)controller applicationItems:(id)items optionalDelegate:(id)delegate seriesOptions:(int64_t)options mode:(int64_t)mode
 {
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [[HKOverlayRoomViewControllerQuantityContext alloc] initWithQuantityIdentifier:v16 overlayChartController:v15 applicationItems:v14 optionalDelegate:v13 seriesOptions:a7 mode:a8 optionalBaseDisplayType:0];
+  delegateCopy = delegate;
+  itemsCopy = items;
+  controllerCopy = controller;
+  identifierCopy = identifier;
+  v17 = [[HKOverlayRoomViewControllerQuantityContext alloc] initWithQuantityIdentifier:identifierCopy overlayChartController:controllerCopy applicationItems:itemsCopy optionalDelegate:delegateCopy seriesOptions:options mode:mode optionalBaseDisplayType:0];
 
   return v17;
 }
 
-+ (id)quantityContextWithIdentifier:(id)a3 overlayChartController:(id)a4 applicationItems:(id)a5 optionalDelegate:(id)a6 seriesOptions:(int64_t)a7 mode:(int64_t)a8 optionalBaseDisplayType:(id)a9
++ (id)quantityContextWithIdentifier:(id)identifier overlayChartController:(id)controller applicationItems:(id)items optionalDelegate:(id)delegate seriesOptions:(int64_t)options mode:(int64_t)mode optionalBaseDisplayType:(id)type
 {
-  v15 = a9;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
-  v20 = [[HKOverlayRoomViewControllerQuantityContext alloc] initWithQuantityIdentifier:v19 overlayChartController:v18 applicationItems:v17 optionalDelegate:v16 seriesOptions:a7 mode:a8 optionalBaseDisplayType:v15];
+  typeCopy = type;
+  delegateCopy = delegate;
+  itemsCopy = items;
+  controllerCopy = controller;
+  identifierCopy = identifier;
+  v20 = [[HKOverlayRoomViewControllerQuantityContext alloc] initWithQuantityIdentifier:identifierCopy overlayChartController:controllerCopy applicationItems:itemsCopy optionalDelegate:delegateCopy seriesOptions:options mode:mode optionalBaseDisplayType:typeCopy];
 
   return v20;
 }
 
-- (HKOverlayRoomViewControllerIntegratedContext)initWithOverlayChartController:(id)a3 applicationItems:(id)a4 mode:(int64_t)a5
+- (HKOverlayRoomViewControllerIntegratedContext)initWithOverlayChartController:(id)controller applicationItems:(id)items mode:(int64_t)mode
 {
-  v9 = a3;
-  v10 = a4;
+  controllerCopy = controller;
+  itemsCopy = items;
   v18.receiver = self;
   v18.super_class = HKOverlayRoomViewControllerIntegratedContext;
   v11 = [(HKOverlayRoomViewControllerIntegratedContext *)&v18 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_overlayChartController, a3);
-    objc_storeStrong(&v12->_applicationItems, a4);
+    objc_storeStrong(&v11->_overlayChartController, controller);
+    objc_storeStrong(&v12->_applicationItems, items);
     v13 = objc_alloc_init(MEMORY[0x1E695DF90]);
     displayTypesForTimeScopes = v12->_displayTypesForTimeScopes;
     v12->_displayTypesForTimeScopes = v13;
@@ -75,7 +75,7 @@
     lastUpdatedContextItem = v12->_lastUpdatedContextItem;
     v12->_lastUpdatedContextItem = 0;
 
-    v12->_overlayMode = a5;
+    v12->_overlayMode = mode;
   }
 
   return v12;
@@ -83,93 +83,93 @@
 
 - (id)representativeDisplayType
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"HKOverlayRoomViewController.m" lineNumber:2973 description:@"Subclasses must provide an implementation of representativeDisplayType:"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HKOverlayRoomViewController.m" lineNumber:2973 description:@"Subclasses must provide an implementation of representativeDisplayType:"];
 
   return 0;
 }
 
-- (id)buildContextItemWithValue:(id)a3 unit:(id)a4 valueContext:(id)a5 forTimeScope:(int64_t)a6 isUnitIncludedInValue:(BOOL)a7
+- (id)buildContextItemWithValue:(id)value unit:(id)unit valueContext:(id)context forTimeScope:(int64_t)scope isUnitIncludedInValue:(BOOL)inValue
 {
-  v9 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v9 handleFailureInMethod:a2 object:self file:@"HKOverlayRoomViewController.m" lineNumber:2978 description:@"Subclasses must provide an implementation of buildContextItemWithValue:unit:valueContext:forTimeScope:isUnitIncludedInValue:"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HKOverlayRoomViewController.m" lineNumber:2978 description:@"Subclasses must provide an implementation of buildContextItemWithValue:unit:valueContext:forTimeScope:isUnitIncludedInValue:"];
 
   return 0;
 }
 
-- (id)buildOverlayDisplayTypeForTimeScope:(int64_t)a3
+- (id)buildOverlayDisplayTypeForTimeScope:(int64_t)scope
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"HKOverlayRoomViewController.m" lineNumber:2984 description:@"Subclasses must provide an implementation of buildOverlayDisplayTypeForTimeScope:"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HKOverlayRoomViewController.m" lineNumber:2984 description:@"Subclasses must provide an implementation of buildOverlayDisplayTypeForTimeScope:"];
 
   return 0;
 }
 
-- (void)fetchCachedDataForTimeScope:(int64_t)a3 resolution:(int64_t)a4 dateInterval:(id)a5 completion:(id)a6
+- (void)fetchCachedDataForTimeScope:(int64_t)scope resolution:(int64_t)resolution dateInterval:(id)interval completion:(id)completion
 {
   v8 = MEMORY[0x1E696AAA8];
-  v10 = a6;
-  v9 = [v8 currentHandler];
-  [v9 handleFailureInMethod:a2 object:self file:@"HKOverlayRoomViewController.m" lineNumber:2992 description:@"Subclasses must provide an implementation of fetchCachedDataForTimeScope:resolution:dateInterval:completion:"];
+  completionCopy = completion;
+  currentHandler = [v8 currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HKOverlayRoomViewController.m" lineNumber:2992 description:@"Subclasses must provide an implementation of fetchCachedDataForTimeScope:resolution:dateInterval:completion:"];
 
-  (*(v10 + 2))(v10, MEMORY[0x1E695E0F0], 0, 0);
+  (*(completionCopy + 2))(completionCopy, MEMORY[0x1E695E0F0], 0, 0);
 }
 
-- (id)valueString:(id)a3 applicationItems:(id)a4 representativeDisplayType:(id)a5 isUnitIncludedInValue:(BOOL *)a6
+- (id)valueString:(id)string applicationItems:(id)items representativeDisplayType:(id)type isUnitIncludedInValue:(BOOL *)value
 {
-  v10 = a5;
-  v11 = a3;
-  v12 = [a4 unitController];
-  v13 = [(HKOverlayRoomViewControllerIntegratedContext *)self _minMaxValueFromChartPoints:v11 displayType:v10 unitPreferenceController:v12 isUnitIncludedInValue:a6];
+  typeCopy = type;
+  stringCopy = string;
+  unitController = [items unitController];
+  v13 = [(HKOverlayRoomViewControllerIntegratedContext *)self _minMaxValueFromChartPoints:stringCopy displayType:typeCopy unitPreferenceController:unitController isUnitIncludedInValue:value];
 
   return v13;
 }
 
 - (id)sampleTypeForDateRangeUpdates
 {
-  v3 = [(HKOverlayRoomViewControllerIntegratedContext *)self monitoringSampleType];
+  monitoringSampleType = [(HKOverlayRoomViewControllerIntegratedContext *)self monitoringSampleType];
 
-  if (!v3)
+  if (!monitoringSampleType)
   {
-    v4 = [(HKOverlayRoomViewControllerIntegratedContext *)self _buildMonitoringSampleType];
-    [(HKOverlayRoomViewControllerIntegratedContext *)self setMonitoringSampleType:v4];
+    _buildMonitoringSampleType = [(HKOverlayRoomViewControllerIntegratedContext *)self _buildMonitoringSampleType];
+    [(HKOverlayRoomViewControllerIntegratedContext *)self setMonitoringSampleType:_buildMonitoringSampleType];
   }
 
   return [(HKOverlayRoomViewControllerIntegratedContext *)self monitoringSampleType];
 }
 
-- (id)overlayDisplayTypeForTimeScope:(int64_t)a3
+- (id)overlayDisplayTypeForTimeScope:(int64_t)scope
 {
-  v5 = [(HKOverlayRoomViewControllerIntegratedContext *)self displayTypesForTimeScopes];
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v7 = [v5 objectForKey:v6];
+  displayTypesForTimeScopes = [(HKOverlayRoomViewControllerIntegratedContext *)self displayTypesForTimeScopes];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:scope];
+  v7 = [displayTypesForTimeScopes objectForKey:v6];
 
   if (!v7)
   {
-    v7 = [(HKOverlayRoomViewControllerIntegratedContext *)self buildOverlayDisplayTypeForTimeScope:a3];
-    v8 = [(HKOverlayRoomViewControllerIntegratedContext *)self displayTypesForTimeScopes];
-    v9 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-    [v8 setObject:v7 forKeyedSubscript:v9];
+    v7 = [(HKOverlayRoomViewControllerIntegratedContext *)self buildOverlayDisplayTypeForTimeScope:scope];
+    displayTypesForTimeScopes2 = [(HKOverlayRoomViewControllerIntegratedContext *)self displayTypesForTimeScopes];
+    v9 = [MEMORY[0x1E696AD98] numberWithInteger:scope];
+    [displayTypesForTimeScopes2 setObject:v7 forKeyedSubscript:v9];
   }
 
   return v7;
 }
 
-- (void)updateContextItemForDateInterval:(id)a3 overlayController:(id)a4 timeScope:(int64_t)a5 resolution:(int64_t)a6 completion:(id)a7
+- (void)updateContextItemForDateInterval:(id)interval overlayController:(id)controller timeScope:(int64_t)scope resolution:(int64_t)resolution completion:(id)completion
 {
-  v11 = a3;
-  v12 = a7;
+  intervalCopy = interval;
+  completionCopy = completion;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __131__HKOverlayRoomViewControllerIntegratedContext_updateContextItemForDateInterval_overlayController_timeScope_resolution_completion___block_invoke;
   v15[3] = &unk_1E81B5FA8;
   v15[4] = self;
-  v16 = v11;
-  v17 = v12;
-  v18 = a5;
-  v13 = v12;
-  v14 = v11;
-  [(HKOverlayRoomViewControllerIntegratedContext *)self fetchCachedDataForTimeScope:a5 resolution:a6 dateInterval:v14 completion:v15];
+  v16 = intervalCopy;
+  v17 = completionCopy;
+  scopeCopy = scope;
+  v13 = completionCopy;
+  v14 = intervalCopy;
+  [(HKOverlayRoomViewControllerIntegratedContext *)self fetchCachedDataForTimeScope:scope resolution:resolution dateInterval:v14 completion:v15];
 }
 
 void __131__HKOverlayRoomViewControllerIntegratedContext_updateContextItemForDateInterval_overlayController_timeScope_resolution_completion___block_invoke(uint64_t a1, void *a2, int a3)
@@ -235,36 +235,36 @@ uint64_t __131__HKOverlayRoomViewControllerIntegratedContext_updateContextItemFo
   return v3();
 }
 
-- (BOOL)_obsoleteDateRange:(id)a3
+- (BOOL)_obsoleteDateRange:(id)range
 {
-  v4 = a3;
-  v5 = [(HKOverlayRoomViewControllerIntegratedContext *)self overlayChartController];
-  v6 = [v5 primaryGraphViewController];
-  v7 = [v6 graphView];
-  v8 = [v7 effectiveVisibleRangeActive];
+  rangeCopy = range;
+  overlayChartController = [(HKOverlayRoomViewControllerIntegratedContext *)self overlayChartController];
+  primaryGraphViewController = [overlayChartController primaryGraphViewController];
+  graphView = [primaryGraphViewController graphView];
+  effectiveVisibleRangeActive = [graphView effectiveVisibleRangeActive];
 
-  v9 = [v8 startDate];
-  v10 = [v8 endDate];
-  v11 = [v4 startDate];
-  v12 = [v4 endDate];
+  startDate = [effectiveVisibleRangeActive startDate];
+  endDate = [effectiveVisibleRangeActive endDate];
+  startDate2 = [rangeCopy startDate];
+  endDate2 = [rangeCopy endDate];
 
-  v13 = [v9 compare:v11] || objc_msgSend(v10, "compare:", v12);
+  v13 = [startDate compare:startDate2] || objc_msgSend(endDate, "compare:", endDate2);
   return v13;
 }
 
 - (id)contextItemForLastUpdate
 {
-  v3 = [(HKOverlayRoomViewControllerIntegratedContext *)self lastUpdatedContextItem];
+  lastUpdatedContextItem = [(HKOverlayRoomViewControllerIntegratedContext *)self lastUpdatedContextItem];
 
-  if (!v3)
+  if (!lastUpdatedContextItem)
   {
-    v4 = [(HKOverlayRoomViewControllerIntegratedContext *)self applicationItems];
-    v5 = [v4 timeScopeController];
-    v6 = [v5 selectedTimeScope];
+    applicationItems = [(HKOverlayRoomViewControllerIntegratedContext *)self applicationItems];
+    timeScopeController = [applicationItems timeScopeController];
+    selectedTimeScope = [timeScopeController selectedTimeScope];
 
     v7 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     v8 = [v7 localizedStringForKey:@"NO_DATA" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-    v9 = [(HKOverlayRoomViewControllerIntegratedContext *)self buildContextItemWithValue:v8 unit:0 valueContext:0 forTimeScope:v6 isUnitIncludedInValue:0];
+    v9 = [(HKOverlayRoomViewControllerIntegratedContext *)self buildContextItemWithValue:v8 unit:0 valueContext:0 forTimeScope:selectedTimeScope isUnitIncludedInValue:0];
     [(HKOverlayRoomViewControllerIntegratedContext *)self setLastUpdatedContextItem:v9];
   }
 
@@ -273,12 +273,12 @@ uint64_t __131__HKOverlayRoomViewControllerIntegratedContext_updateContextItemFo
 
 - (id)_buildMonitoringSampleType
 {
-  v2 = [(HKOverlayRoomViewControllerIntegratedContext *)self representativeDisplayType];
-  v3 = [v2 objectType];
+  representativeDisplayType = [(HKOverlayRoomViewControllerIntegratedContext *)self representativeDisplayType];
+  objectType = [representativeDisplayType objectType];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = objectType;
   }
 
   else
@@ -289,29 +289,29 @@ uint64_t __131__HKOverlayRoomViewControllerIntegratedContext_updateContextItemFo
   return v4;
 }
 
-- (id)_minMaxValueFromChartPoints:(id)a3 displayType:(id)a4 unitPreferenceController:(id)a5 isUnitIncludedInValue:(BOOL *)a6
+- (id)_minMaxValueFromChartPoints:(id)points displayType:(id)type unitPreferenceController:(id)controller isUnitIncludedInValue:(BOOL *)value
 {
   v44 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pointsCopy = points;
+  typeCopy = type;
+  controllerCopy = controller;
   v11 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v12 = [v11 localizedStringForKey:@"NO_DATA" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
 
-  if (!v8 || ![v8 count])
+  if (!pointsCopy || ![pointsCopy count])
   {
     v27 = v12;
     goto LABEL_26;
   }
 
   v34 = v12;
-  v36 = v10;
-  v37 = v9;
+  v36 = controllerCopy;
+  v37 = typeCopy;
   v41 = 0u;
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v13 = v8;
+  v13 = pointsCopy;
   v14 = [v13 countByEnumeratingWithState:&v39 objects:v43 count:16];
   if (!v14)
   {
@@ -336,14 +336,14 @@ uint64_t __131__HKOverlayRoomViewControllerIntegratedContext_updateContextItemFo
       v20 = *(*(&v39 + 1) + 8 * i);
       if (!v16 || ([*(*(&v39 + 1) + 8 * i) minYValue], v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "compare:", v16), v21, v22 == -1))
       {
-        v23 = [v20 minYValue];
+        minYValue = [v20 minYValue];
 
-        v16 = v23;
+        v16 = minYValue;
         if (v17)
         {
 LABEL_13:
-          v24 = [v20 maxYValue];
-          v25 = [v24 compare:v17];
+          maxYValue = [v20 maxYValue];
+          v25 = [maxYValue compare:v17];
 
           if (v25 != 1)
           {
@@ -357,9 +357,9 @@ LABEL_13:
         goto LABEL_13;
       }
 
-      v26 = [v20 maxYValue];
+      maxYValue2 = [v20 maxYValue];
 
-      v17 = v26;
+      v17 = maxYValue2;
     }
 
     v15 = [v13 countByEnumeratingWithState:&v39 objects:v43 count:16];
@@ -370,13 +370,13 @@ LABEL_20:
 
   v28 = objc_alloc_init(HKInteractiveChartNumberRangeFormatter);
   v29 = v28;
-  if (a6)
+  if (value)
   {
-    *a6 = 1;
+    *value = 1;
   }
 
-  v10 = v36;
-  v9 = v37;
+  controllerCopy = v36;
+  typeCopy = v37;
   v30 = [(HKInteractiveChartNumberRangeFormatter *)v28 stringForMinimumValue:v16 maximumValue:v17 displayType:v37 unitPreferenceController:v36, v34];
   v31 = v30;
   v12 = v35;

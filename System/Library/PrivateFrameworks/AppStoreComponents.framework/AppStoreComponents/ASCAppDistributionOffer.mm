@@ -1,52 +1,52 @@
 @interface ASCAppDistributionOffer
-- (ASCAppDistributionOffer)initWithCoder:(id)a3;
-- (ASCAppDistributionOffer)initWithID:(id)a3 titles:(id)a4 subtitles:(id)a5 flags:(int64_t)a6 ageRating:(id)a7 metrics:(id)a8 appVersionId:(id)a9 distributorId:(id)a10;
-- (ASCAppDistributionOffer)offerWithMetrics:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASCAppDistributionOffer)initWithCoder:(id)coder;
+- (ASCAppDistributionOffer)initWithID:(id)d titles:(id)titles subtitles:(id)subtitles flags:(int64_t)flags ageRating:(id)rating metrics:(id)metrics appVersionId:(id)id distributorId:(id)self0;
+- (ASCAppDistributionOffer)offerWithMetrics:(id)metrics;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASCAppDistributionOffer
 
-- (ASCAppDistributionOffer)initWithID:(id)a3 titles:(id)a4 subtitles:(id)a5 flags:(int64_t)a6 ageRating:(id)a7 metrics:(id)a8 appVersionId:(id)a9 distributorId:(id)a10
+- (ASCAppDistributionOffer)initWithID:(id)d titles:(id)titles subtitles:(id)subtitles flags:(int64_t)flags ageRating:(id)rating metrics:(id)metrics appVersionId:(id)id distributorId:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
+  dCopy = d;
+  titlesCopy = titles;
+  subtitlesCopy = subtitles;
+  ratingCopy = rating;
+  metricsCopy = metrics;
+  idCopy = id;
+  distributorIdCopy = distributorId;
   v37.receiver = self;
   v37.super_class = ASCAppDistributionOffer;
   v23 = [(ASCAppDistributionOffer *)&v37 init];
   if (v23)
   {
-    v24 = [v16 copy];
+    v24 = [dCopy copy];
     id = v23->_id;
     v23->_id = v24;
 
-    v26 = [v17 copy];
+    v26 = [titlesCopy copy];
     titles = v23->_titles;
     v23->_titles = v26;
 
-    v28 = [v18 copy];
+    v28 = [subtitlesCopy copy];
     subtitles = v23->_subtitles;
     v23->_subtitles = v28;
 
-    v23->_flags = a6;
-    objc_storeStrong(&v23->_ageRating, a7);
-    v30 = [v20 copy];
+    v23->_flags = flags;
+    objc_storeStrong(&v23->_ageRating, rating);
+    v30 = [metricsCopy copy];
     metrics = v23->_metrics;
     v23->_metrics = v30;
 
-    v32 = [v21 copy];
+    v32 = [idCopy copy];
     appVersionId = v23->_appVersionId;
     v23->_appVersionId = v32;
 
-    v34 = [v22 copy];
+    v34 = [distributorIdCopy copy];
     distributorId = v23->_distributorId;
     v23->_distributorId = v34;
   }
@@ -54,32 +54,32 @@
   return v23;
 }
 
-- (ASCAppDistributionOffer)initWithCoder:(id)a3
+- (ASCAppDistributionOffer)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"id"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"id"];
   if (v5)
   {
-    v6 = ASCOfferTitlesDecodeForKey(v4, @"titles");
+    v6 = ASCOfferTitlesDecodeForKey(coderCopy, @"titles");
     if (v6)
     {
-      v7 = ASCOfferTitlesDecodeForKey(v4, @"subtitles");
+      v7 = ASCOfferTitlesDecodeForKey(coderCopy, @"subtitles");
       if (v7)
       {
-        v8 = [v4 decodeIntegerForKey:@"flags"];
-        v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ageRating"];
-        v10 = ASCMetricsDataDecodeArrayForKey(v4, @"metrics");
+        v8 = [coderCopy decodeIntegerForKey:@"flags"];
+        v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ageRating"];
+        v10 = ASCMetricsDataDecodeArrayForKey(coderCopy, @"metrics");
         if (v10)
         {
-          v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appVersionId"];
+          v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appVersionId"];
           if (v11)
           {
-            v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"distributorId"];
+            v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"distributorId"];
             v13 = v12;
             if (v12)
             {
               self = [(ASCAppDistributionOffer *)self initWithID:v5 titles:v6 subtitles:v7 flags:v8 ageRating:v9 metrics:v10 appVersionId:v11 distributorId:v12];
-              v14 = self;
+              selfCopy = self;
             }
 
             else
@@ -90,7 +90,7 @@
                 [(ASCAppDistributionOffer *)v55 initWithCoder:v56, v57, v58, v59, v60, v61, v62];
               }
 
-              v14 = 0;
+              selfCopy = 0;
             }
           }
 
@@ -102,7 +102,7 @@
               [(ASCAppDistributionOffer *)v47 initWithCoder:v48, v49, v50, v51, v52, v53, v54];
             }
 
-            v14 = 0;
+            selfCopy = 0;
           }
         }
 
@@ -114,7 +114,7 @@
             [(ASCAppDistributionOffer *)v39 initWithCoder:v40, v41, v42, v43, v44, v45, v46];
           }
 
-          v14 = 0;
+          selfCopy = 0;
         }
       }
 
@@ -126,7 +126,7 @@
           [(ASCAppDistributionOffer *)v31 initWithCoder:v32, v33, v34, v35, v36, v37, v38];
         }
 
-        v14 = 0;
+        selfCopy = 0;
       }
     }
 
@@ -138,7 +138,7 @@
         [(ASCAppDistributionOffer *)v23 initWithCoder:v24, v25, v26, v27, v28, v29, v30];
       }
 
-      v14 = 0;
+      selfCopy = 0;
     }
   }
 
@@ -150,50 +150,50 @@
       [(ASCAppDistributionOffer *)v15 initWithCoder:v16, v17, v18, v19, v20, v21, v22];
     }
 
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(ASCAppDistributionOffer *)self id];
-  [v4 encodeObject:v5 forKey:@"id"];
+  [coderCopy encodeObject:v5 forKey:@"id"];
 
-  v6 = [(ASCAppDistributionOffer *)self titles];
-  [v4 encodeObject:v6 forKey:@"titles"];
+  titles = [(ASCAppDistributionOffer *)self titles];
+  [coderCopy encodeObject:titles forKey:@"titles"];
 
-  v7 = [(ASCAppDistributionOffer *)self subtitles];
-  [v4 encodeObject:v7 forKey:@"subtitles"];
+  subtitles = [(ASCAppDistributionOffer *)self subtitles];
+  [coderCopy encodeObject:subtitles forKey:@"subtitles"];
 
-  [v4 encodeInteger:-[ASCAppDistributionOffer flags](self forKey:{"flags"), @"flags"}];
-  v8 = [(ASCAppDistributionOffer *)self ageRating];
-  [v4 encodeObject:v8 forKey:@"ageRating"];
+  [coderCopy encodeInteger:-[ASCAppDistributionOffer flags](self forKey:{"flags"), @"flags"}];
+  ageRating = [(ASCAppDistributionOffer *)self ageRating];
+  [coderCopy encodeObject:ageRating forKey:@"ageRating"];
 
-  v9 = [(ASCAppDistributionOffer *)self metrics];
-  [v4 encodeObject:v9 forKey:@"metrics"];
+  metrics = [(ASCAppDistributionOffer *)self metrics];
+  [coderCopy encodeObject:metrics forKey:@"metrics"];
 
-  v10 = [(ASCAppDistributionOffer *)self appVersionId];
-  [v4 encodeObject:v10 forKey:@"appVersionId"];
+  appVersionId = [(ASCAppDistributionOffer *)self appVersionId];
+  [coderCopy encodeObject:appVersionId forKey:@"appVersionId"];
 
-  v11 = [(ASCAppDistributionOffer *)self distributorId];
-  [v4 encodeObject:v11 forKey:@"distributorId"];
+  distributorId = [(ASCAppDistributionOffer *)self distributorId];
+  [coderCopy encodeObject:distributorId forKey:@"distributorId"];
 }
 
-- (ASCAppDistributionOffer)offerWithMetrics:(id)a3
+- (ASCAppDistributionOffer)offerWithMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   v5 = objc_alloc(objc_opt_class());
   v6 = [(ASCAppDistributionOffer *)self id];
-  v7 = [(ASCAppDistributionOffer *)self titles];
-  v8 = [(ASCAppDistributionOffer *)self subtitles];
-  v9 = [(ASCAppDistributionOffer *)self flags];
-  v10 = [(ASCAppDistributionOffer *)self ageRating];
-  v11 = [(ASCAppDistributionOffer *)self appVersionId];
-  v12 = [(ASCAppDistributionOffer *)self distributorId];
-  v13 = [v5 initWithID:v6 titles:v7 subtitles:v8 flags:v9 ageRating:v10 metrics:v4 appVersionId:v11 distributorId:v12];
+  titles = [(ASCAppDistributionOffer *)self titles];
+  subtitles = [(ASCAppDistributionOffer *)self subtitles];
+  flags = [(ASCAppDistributionOffer *)self flags];
+  ageRating = [(ASCAppDistributionOffer *)self ageRating];
+  appVersionId = [(ASCAppDistributionOffer *)self appVersionId];
+  distributorId = [(ASCAppDistributionOffer *)self distributorId];
+  v13 = [v5 initWithID:v6 titles:titles subtitles:subtitles flags:flags ageRating:ageRating metrics:metricsCopy appVersionId:appVersionId distributorId:distributorId];
 
   return v13;
 }
@@ -204,34 +204,34 @@
   v4 = [(ASCAppDistributionOffer *)self id];
   [(ASCHasher *)v3 combineObject:v4];
 
-  v5 = [(ASCAppDistributionOffer *)self titles];
-  [(ASCHasher *)v3 combineObject:v5];
+  titles = [(ASCAppDistributionOffer *)self titles];
+  [(ASCHasher *)v3 combineObject:titles];
 
-  v6 = [(ASCAppDistributionOffer *)self subtitles];
-  [(ASCHasher *)v3 combineObject:v6];
+  subtitles = [(ASCAppDistributionOffer *)self subtitles];
+  [(ASCHasher *)v3 combineObject:subtitles];
 
   [(ASCHasher *)v3 combineInteger:[(ASCAppDistributionOffer *)self flags]];
-  v7 = [(ASCAppDistributionOffer *)self ageRating];
-  [(ASCHasher *)v3 combineObject:v7];
+  ageRating = [(ASCAppDistributionOffer *)self ageRating];
+  [(ASCHasher *)v3 combineObject:ageRating];
 
-  v8 = [(ASCAppDistributionOffer *)self metrics];
-  [(ASCHasher *)v3 combineObject:v8];
+  metrics = [(ASCAppDistributionOffer *)self metrics];
+  [(ASCHasher *)v3 combineObject:metrics];
 
-  v9 = [(ASCAppDistributionOffer *)self appVersionId];
-  [(ASCHasher *)v3 combineObject:v9];
+  appVersionId = [(ASCAppDistributionOffer *)self appVersionId];
+  [(ASCHasher *)v3 combineObject:appVersionId];
 
-  v10 = [(ASCAppDistributionOffer *)self distributorId];
-  [(ASCHasher *)v3 combineObject:v10];
+  distributorId = [(ASCAppDistributionOffer *)self distributorId];
+  [(ASCHasher *)v3 combineObject:distributorId];
 
-  v11 = [(ASCHasher *)v3 finalizeHash];
-  return v11;
+  finalizeHash = [(ASCHasher *)v3 finalizeHash];
+  return finalizeHash;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = v4;
+  v5 = equalCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -262,69 +262,69 @@
       if ([v8 isEqual:v9])
       {
 LABEL_10:
-        v11 = [(ASCAppDistributionOffer *)self titles];
-        v12 = [v7 titles];
-        v13 = v12;
-        if (v11 && v12)
+        titles = [(ASCAppDistributionOffer *)self titles];
+        titles2 = [v7 titles];
+        v13 = titles2;
+        if (titles && titles2)
         {
-          if ([v11 isEqual:v12])
+          if ([titles isEqual:titles2])
           {
 LABEL_13:
-            v14 = [(ASCAppDistributionOffer *)self subtitles];
-            v15 = [v7 subtitles];
-            v16 = v15;
-            if (v14 && v15)
+            subtitles = [(ASCAppDistributionOffer *)self subtitles];
+            subtitles2 = [v7 subtitles];
+            v16 = subtitles2;
+            if (subtitles && subtitles2)
             {
-              if (![v14 isEqual:v15])
+              if (![subtitles isEqual:subtitles2])
               {
                 goto LABEL_36;
               }
             }
 
-            else if (v14 != v15)
+            else if (subtitles != subtitles2)
             {
               goto LABEL_36;
             }
 
-            v18 = [(ASCAppDistributionOffer *)self flags];
-            if (v18 == [v7 flags])
+            flags = [(ASCAppDistributionOffer *)self flags];
+            if (flags == [v7 flags])
             {
-              v19 = [(ASCAppDistributionOffer *)self ageRating];
-              v20 = [v7 ageRating];
-              v21 = v20;
-              v47 = v19;
-              if (v19 && v20)
+              ageRating = [(ASCAppDistributionOffer *)self ageRating];
+              ageRating2 = [v7 ageRating];
+              v21 = ageRating2;
+              v47 = ageRating;
+              if (ageRating && ageRating2)
               {
-                v22 = v19;
+                v22 = ageRating;
                 v23 = v21;
                 v24 = [v22 isEqual:v21];
                 v21 = v23;
-                v19 = v47;
+                ageRating = v47;
                 if (v24)
                 {
 LABEL_27:
                   v45 = v21;
-                  v25 = [(ASCAppDistributionOffer *)self metrics];
-                  v26 = [v7 metrics];
-                  v27 = v26;
-                  v46 = v25;
-                  if (v25 && v26)
+                  metrics = [(ASCAppDistributionOffer *)self metrics];
+                  metrics2 = [v7 metrics];
+                  v27 = metrics2;
+                  v46 = metrics;
+                  if (metrics && metrics2)
                   {
-                    v28 = v26;
-                    v29 = [v46 isEqual:v26];
+                    v28 = metrics2;
+                    v29 = [v46 isEqual:metrics2];
                     v27 = v28;
                     if (v29)
                     {
 LABEL_30:
                       v43 = v27;
-                      v30 = [(ASCAppDistributionOffer *)self appVersionId];
-                      v31 = [v7 appVersionId];
-                      v32 = v31;
-                      v44 = v30;
-                      if (v30 && v31)
+                      appVersionId = [(ASCAppDistributionOffer *)self appVersionId];
+                      appVersionId2 = [v7 appVersionId];
+                      v32 = appVersionId2;
+                      v44 = appVersionId;
+                      if (appVersionId && appVersionId2)
                       {
-                        v33 = v31;
-                        v34 = [v44 isEqual:v31];
+                        v33 = appVersionId2;
+                        v34 = [v44 isEqual:appVersionId2];
                         v32 = v33;
                         if (v34)
                         {
@@ -332,25 +332,25 @@ LABEL_30:
                         }
                       }
 
-                      else if (v30 == v31)
+                      else if (appVersionId == appVersionId2)
                       {
 LABEL_33:
-                        v35 = [(ASCAppDistributionOffer *)self distributorId];
-                        v36 = [v7 distributorId];
-                        v37 = v36;
-                        if (v35 && v36)
+                        distributorId = [(ASCAppDistributionOffer *)self distributorId];
+                        distributorId2 = [v7 distributorId];
+                        v37 = distributorId2;
+                        if (distributorId && distributorId2)
                         {
-                          v38 = v36;
-                          v39 = [v35 isEqual:v36];
+                          v38 = distributorId2;
+                          v39 = [distributorId isEqual:distributorId2];
                           v37 = v38;
-                          v40 = v35;
+                          v40 = distributorId;
                           v17 = v39;
                         }
 
                         else
                         {
-                          v40 = v35;
-                          v17 = v35 == v36;
+                          v40 = distributorId;
+                          v17 = distributorId == distributorId2;
                         }
 
                         v32 = v42;
@@ -365,7 +365,7 @@ LABEL_45:
                     }
                   }
 
-                  else if (v25 == v26)
+                  else if (metrics == metrics2)
                   {
                     goto LABEL_30;
                   }
@@ -374,12 +374,12 @@ LABEL_45:
 LABEL_46:
 
                   v21 = v45;
-                  v19 = v47;
+                  ageRating = v47;
                   goto LABEL_47;
                 }
               }
 
-              else if (v19 == v20)
+              else if (ageRating == ageRating2)
               {
                 goto LABEL_27;
               }
@@ -398,7 +398,7 @@ LABEL_48:
           }
         }
 
-        else if (v11 == v12)
+        else if (titles == titles2)
         {
           goto LABEL_13;
         }
@@ -433,30 +433,30 @@ LABEL_51:
   v4 = [(ASCAppDistributionOffer *)self id];
   [(ASCDescriber *)v3 addObject:v4 withName:@"id"];
 
-  v5 = [(ASCAppDistributionOffer *)self titles];
-  [(ASCDescriber *)v3 addObject:v5 withName:@"titles"];
+  titles = [(ASCAppDistributionOffer *)self titles];
+  [(ASCDescriber *)v3 addObject:titles withName:@"titles"];
 
-  v6 = [(ASCAppDistributionOffer *)self subtitles];
-  [(ASCDescriber *)v3 addObject:v6 withName:@"subtitles"];
+  subtitles = [(ASCAppDistributionOffer *)self subtitles];
+  [(ASCDescriber *)v3 addObject:subtitles withName:@"subtitles"];
 
   v7 = ASCOfferFlagsGetDescription([(ASCAppDistributionOffer *)self flags]);
   [(ASCDescriber *)v3 addObject:v7 withName:@"flags"];
 
-  v8 = [(ASCAppDistributionOffer *)self ageRating];
-  [(ASCDescriber *)v3 addObject:v8 withName:@"ageRating"];
+  ageRating = [(ASCAppDistributionOffer *)self ageRating];
+  [(ASCDescriber *)v3 addObject:ageRating withName:@"ageRating"];
 
-  v9 = [(ASCAppDistributionOffer *)self metrics];
-  [(ASCDescriber *)v3 addSensitiveObject:v9 withName:@"metrics"];
+  metrics = [(ASCAppDistributionOffer *)self metrics];
+  [(ASCDescriber *)v3 addSensitiveObject:metrics withName:@"metrics"];
 
-  v10 = [(ASCAppDistributionOffer *)self appVersionId];
-  [(ASCDescriber *)v3 addObject:v10 withName:@"appVersionId"];
+  appVersionId = [(ASCAppDistributionOffer *)self appVersionId];
+  [(ASCDescriber *)v3 addObject:appVersionId withName:@"appVersionId"];
 
-  v11 = [(ASCAppDistributionOffer *)self distributorId];
-  [(ASCDescriber *)v3 addObject:v11 withName:@"distributorId"];
+  distributorId = [(ASCAppDistributionOffer *)self distributorId];
+  [(ASCDescriber *)v3 addObject:distributorId withName:@"distributorId"];
 
-  v12 = [(ASCDescriber *)v3 finalizeDescription];
+  finalizeDescription = [(ASCDescriber *)v3 finalizeDescription];
 
-  return v12;
+  return finalizeDescription;
 }
 
 @end

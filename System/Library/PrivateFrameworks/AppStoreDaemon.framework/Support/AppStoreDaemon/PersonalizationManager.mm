@@ -1,8 +1,8 @@
 @interface PersonalizationManager
 - (PersonalizationManager)init;
-- (id)createMetricsEventsForEventType:(unsigned __int8)a3 context:(id)a4;
-- (void)_handleAnalyticsUsageSwitchChange:(id)a3;
-- (void)decorateMetricsEvent:(id)a3 context:(id)a4;
+- (id)createMetricsEventsForEventType:(unsigned __int8)type context:(id)context;
+- (void)_handleAnalyticsUsageSwitchChange:(id)change;
+- (void)decorateMetricsEvent:(id)event context:(id)context;
 @end
 
 @implementation PersonalizationManager
@@ -27,9 +27,9 @@
     v3->_dispatchQueue = v8;
 
     v10 = sub_1003BBF50();
-    v11 = [v10 isHRNMode];
+    isHRNMode = [v10 isHRNMode];
 
-    if ((v11 & 1) == 0)
+    if ((isHRNMode & 1) == 0)
     {
       v12 = +[NSNotificationCenter defaultCenter];
       [v12 addObserver:v3 selector:"_handleAnalyticsUsageSwitchChange:" name:MCEffectiveSettingsChangedNotification object:0];
@@ -39,23 +39,23 @@
   return v3;
 }
 
-- (id)createMetricsEventsForEventType:(unsigned __int8)a3 context:(id)a4
+- (id)createMetricsEventsForEventType:(unsigned __int8)type context:(id)context
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = sub_1002AAAA4(self, v4, v6);
-  v8 = sub_1002A911C(self, v4, v7, v6);
+  typeCopy = type;
+  contextCopy = context;
+  v7 = sub_1002AAAA4(self, typeCopy, contextCopy);
+  v8 = sub_1002A911C(self, typeCopy, v7, contextCopy);
 
   return v8;
 }
 
-- (void)decorateMetricsEvent:(id)a3 context:(id)a4
+- (void)decorateMetricsEvent:(id)event context:(id)context
 {
-  v11 = a3;
-  v5 = a4;
-  if (v11)
+  eventCopy = event;
+  contextCopy = context;
+  if (eventCopy)
   {
-    v6 = v11[9];
+    v6 = eventCopy[9];
   }
 
   else
@@ -67,10 +67,10 @@
 
   if (v7)
   {
-    sub_1003D886C(v11, 1);
-    if (v5)
+    sub_1003D886C(eventCopy, 1);
+    if (contextCopy)
     {
-      v8 = v5[2];
+      v8 = contextCopy[2];
     }
 
     else
@@ -79,26 +79,26 @@
     }
 
     v9 = v8;
-    sub_1003D7020(v11, v9);
+    sub_1003D7020(eventCopy, v9);
   }
 
-  [v11 setAnonymous:1];
-  if (v5)
+  [eventCopy setAnonymous:1];
+  if (contextCopy)
   {
-    sub_1003D87FC(v11, v5[15]);
-    v10 = v5[11];
+    sub_1003D87FC(eventCopy, contextCopy[15]);
+    v10 = contextCopy[11];
   }
 
   else
   {
-    sub_1003D87FC(v11, 0);
+    sub_1003D87FC(eventCopy, 0);
     v10 = 0;
   }
 
-  sub_1003D878C(v11, v10);
+  sub_1003D878C(eventCopy, v10);
 }
 
-- (void)_handleAnalyticsUsageSwitchChange:(id)a3
+- (void)_handleAnalyticsUsageSwitchChange:(id)change
 {
   v4 = sub_1002EDE64(self);
   obj = self;

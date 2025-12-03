@@ -1,5 +1,5 @@
 @interface CECBusPollingOperation
-- (CECBusPollingOperation)initWithInterface:(id)a3 initiator:(unsigned __int8)a4 queue:(id)a5;
+- (CECBusPollingOperation)initWithInterface:(id)interface initiator:(unsigned __int8)initiator queue:(id)queue;
 - (void)continuePolling;
 - (void)dealloc;
 - (void)poll;
@@ -8,17 +8,17 @@
 
 @implementation CECBusPollingOperation
 
-- (CECBusPollingOperation)initWithInterface:(id)a3 initiator:(unsigned __int8)a4 queue:(id)a5
+- (CECBusPollingOperation)initWithInterface:(id)interface initiator:(unsigned __int8)initiator queue:(id)queue
 {
   v10.receiver = self;
   v10.super_class = CECBusPollingOperation;
   v8 = [(CECBusPollingOperation *)&v10 init];
   if (v8)
   {
-    v8->_interface = a3;
-    v8->_initiatorAddress = a4;
+    v8->_interface = interface;
+    v8->_initiatorAddress = initiator;
     v8->_pollingAddress = 15;
-    v8->_queue = a5;
+    v8->_queue = queue;
   }
 
   return v8;
@@ -82,7 +82,7 @@ LABEL_7:
 
 - (void)poll
 {
-  v3 = [(CECBusPollingOperation *)self delegate];
+  delegate = [(CECBusPollingOperation *)self delegate];
   v6 = 0;
   v4 = [CECMessage pollFrom:self->_initiatorAddress to:self->_pollingAddress];
   if (!v4)
@@ -97,7 +97,7 @@ LABEL_7:
     {
       if (objc_opt_respondsToSelector())
       {
-        [(CECBusPollingOperationDelegate *)v3 pollingOperation:self deviceNotRespondingAtAddress:self->_pollingAddress];
+        [(CECBusPollingOperationDelegate *)delegate pollingOperation:self deviceNotRespondingAtAddress:self->_pollingAddress];
       }
 
       return;
@@ -106,7 +106,7 @@ LABEL_7:
 LABEL_10:
     if (objc_opt_respondsToSelector())
     {
-      [(CECBusPollingOperationDelegate *)v3 pollingOperation:self encounteredError:v6 forMessage:v4];
+      [(CECBusPollingOperationDelegate *)delegate pollingOperation:self encounteredError:v6 forMessage:v4];
     }
 
     return;

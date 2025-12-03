@@ -1,22 +1,22 @@
 @interface QLExternalThumbnailCacheDatabase
 - (BOOL)deleteOldestThumbnail;
-- (BOOL)insertOrReplaceThumbnailRepresentingFPItem:(id)a3 size:(unint64_t)a4 modificationDate:(id)a5 fileExtension:(id)a6 error:(id *)a7;
+- (BOOL)insertOrReplaceThumbnailRepresentingFPItem:(id)item size:(unint64_t)size modificationDate:(id)date fileExtension:(id)extension error:(id *)error;
 - (BOOL)open;
-- (BOOL)removeAllThumbnails:(id *)a3;
-- (QLExternalThumbnailCacheDatabase)initWithURL:(id)a3;
-- (id)_createDatabaseIfNeededAtURL:(id)a3 error:(id *)a4;
-- (id)_openDatabaseAtURL:(id)a3;
-- (id)_setupDatabaseTablesIfNeeded:(id)a3 error:(id *)a4;
-- (id)deleteOldestThumbnailsToFreeAtLeastSpace:(unint64_t)a3 error:(id *)a4;
-- (id)oldestThumbnailsToFreeAtLeastSpace:(unint64_t)a3 error:(id *)a4;
-- (id)pathExtensionForItem:(id)a3 error:(id *)a4;
-- (id)whereClauseForItem:(id)a3;
+- (BOOL)removeAllThumbnails:(id *)thumbnails;
+- (QLExternalThumbnailCacheDatabase)initWithURL:(id)l;
+- (id)_createDatabaseIfNeededAtURL:(id)l error:(id *)error;
+- (id)_openDatabaseAtURL:(id)l;
+- (id)_setupDatabaseTablesIfNeeded:(id)needed error:(id *)error;
+- (id)deleteOldestThumbnailsToFreeAtLeastSpace:(unint64_t)space error:(id *)error;
+- (id)oldestThumbnailsToFreeAtLeastSpace:(unint64_t)space error:(id *)error;
+- (id)pathExtensionForItem:(id)item error:(id *)error;
+- (id)whereClauseForItem:(id)item;
 - (unint64_t)totalThumbnailCount;
 - (unint64_t)totalThumbnailsSize;
-- (void)_closeDatabaseOnItsQueue:(id)a3;
+- (void)_closeDatabaseOnItsQueue:(id)queue;
 - (void)close;
 - (void)deleteOldestThumbnail;
-- (void)logError:(id)a3 onDB:(id)a4 statement:(id)a5;
+- (void)logError:(id)error onDB:(id)b statement:(id)statement;
 - (void)open;
 - (void)totalThumbnailCount;
 - (void)totalThumbnailsSize;
@@ -24,10 +24,10 @@
 
 @implementation QLExternalThumbnailCacheDatabase
 
-- (QLExternalThumbnailCacheDatabase)initWithURL:(id)a3
+- (QLExternalThumbnailCacheDatabase)initWithURL:(id)l
 {
-  v5 = a3;
-  if (v5)
+  lCopy = l;
+  if (lCopy)
   {
     v10.receiver = self;
     v10.super_class = QLExternalThumbnailCacheDatabase;
@@ -35,26 +35,26 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_databaseURL, a3);
+      objc_storeStrong(&v6->_databaseURL, l);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (BOOL)open
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_db)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_db)
   {
     v3 = _log_1();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
@@ -67,25 +67,25 @@
 
   else
   {
-    v5 = [(QLExternalThumbnailCacheDatabase *)v2 _openDatabaseAtURL:v2->_databaseURL];
+    v5 = [(QLExternalThumbnailCacheDatabase *)selfCopy _openDatabaseAtURL:selfCopy->_databaseURL];
     if (v5)
     {
-      objc_storeStrong(&v2->_db, v5);
+      objc_storeStrong(&selfCopy->_db, v5);
     }
 
-    v4 = v2->_db != 0;
+    v4 = selfCopy->_db != 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
-- (id)_openDatabaseAtURL:(id)a3
+- (id)_openDatabaseAtURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v21 = 0;
-  v5 = [(QLExternalThumbnailCacheDatabase *)self _createDatabaseIfNeededAtURL:v4 error:&v21];
+  v5 = [(QLExternalThumbnailCacheDatabase *)self _createDatabaseIfNeededAtURL:lCopy error:&v21];
   v6 = v21;
   if (!v5)
   {
@@ -95,8 +95,8 @@
       [QLExternalThumbnailCacheDatabase _openDatabaseAtURL:];
     }
 
-    v8 = [v6 code];
-    if (v8 > 0x1A || ((1 << v8) & 0x5000800) == 0)
+    code = [v6 code];
+    if (code > 0x1A || ((1 << code) & 0x5000800) == 0)
     {
       goto LABEL_18;
     }
@@ -107,11 +107,11 @@
       [QLExternalThumbnailCacheDatabase _openDatabaseAtURL:];
     }
 
-    v11 = [MEMORY[0x1E696AC08] defaultManager];
-    [v11 removeItemAtURL:v4 error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager removeItemAtURL:lCopy error:0];
 
     v20 = v6;
-    v5 = [(QLExternalThumbnailCacheDatabase *)self _createDatabaseIfNeededAtURL:v4 error:&v20];
+    v5 = [(QLExternalThumbnailCacheDatabase *)self _createDatabaseIfNeededAtURL:lCopy error:&v20];
     v12 = v20;
 
     v6 = v12;
@@ -158,16 +158,16 @@ LABEL_22:
   return v14;
 }
 
-- (id)_createDatabaseIfNeededAtURL:(id)a3 error:(id *)a4
+- (id)_createDatabaseIfNeededAtURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v7 = _log_1();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     [QLExternalThumbnailCacheDatabase _createDatabaseIfNeededAtURL:error:];
   }
 
-  if ([v6 checkResourceIsReachableAndReturnError:0])
+  if ([lCopy checkResourceIsReachableAndReturnError:0])
   {
 LABEL_7:
     v11 = objc_alloc_init(MEMORY[0x1E69E5930]);
@@ -187,34 +187,34 @@ LABEL_7:
     aBlock[1] = 3221225472;
     aBlock[2] = __71__QLExternalThumbnailCacheDatabase__createDatabaseIfNeededAtURL_error___block_invoke_2;
     aBlock[3] = &unk_1E8369F18;
-    v23 = a4;
-    v8 = v11;
-    v21 = v8;
+    errorCopy = error;
+    uRLByDeletingLastPathComponent = v11;
+    v21 = uRLByDeletingLastPathComponent;
     v22 = v25;
     v12 = _Block_copy(aBlock);
-    [v8 setLabel:@"External thumbnail cache"];
-    if ([v8 openAtURL:v6 sharedCache:0 error:a4])
+    [uRLByDeletingLastPathComponent setLabel:@"External thumbnail cache"];
+    if ([uRLByDeletingLastPathComponent openAtURL:lCopy sharedCache:0 error:error])
     {
-      if ([v8 setupPragmas])
+      if ([uRLByDeletingLastPathComponent setupPragmas])
       {
-        [v8 setSynchronousMode:1];
-        v13 = [v8 lastError];
+        [uRLByDeletingLastPathComponent setSynchronousMode:1];
+        lastError = [uRLByDeletingLastPathComponent lastError];
 
-        if (!v13)
+        if (!lastError)
         {
           v19[0] = MEMORY[0x1E69E9820];
           v19[1] = 3221225472;
           v19[2] = __71__QLExternalThumbnailCacheDatabase__createDatabaseIfNeededAtURL_error___block_invoke_78;
           v19[3] = &unk_1E8369F40;
           v19[4] = self;
-          [v8 setSqliteErrorHandler:v19];
+          [uRLByDeletingLastPathComponent setSqliteErrorHandler:v19];
           v18 = _log_1();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
           {
             [QLExternalThumbnailCacheDatabase _createDatabaseIfNeededAtURL:error:];
           }
 
-          v15 = v8;
+          v15 = uRLByDeletingLastPathComponent;
           goto LABEL_15;
         }
       }
@@ -227,11 +227,11 @@ LABEL_7:
       v14 = _log_1();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        [QLExternalThumbnailCacheDatabase _createDatabaseIfNeededAtURL:a4 error:?];
+        [QLExternalThumbnailCacheDatabase _createDatabaseIfNeededAtURL:error error:?];
       }
     }
 
-    [v8 close:0];
+    [uRLByDeletingLastPathComponent close:0];
     v15 = 0;
 LABEL_15:
 
@@ -239,8 +239,8 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v8 = [v6 URLByDeletingLastPathComponent];
-  if ([v8 checkResourceIsReachableAndReturnError:0] & 1) != 0 || (objc_msgSend(MEMORY[0x1E696AC08], "defaultManager"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "createDirectoryAtURL:withIntermediateDirectories:attributes:error:", v8, 0, 0, a4), v9, (v10))
+  uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
+  if ([uRLByDeletingLastPathComponent checkResourceIsReachableAndReturnError:0] & 1) != 0 || (objc_msgSend(MEMORY[0x1E696AC08], "defaultManager"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "createDirectoryAtURL:withIntermediateDirectories:attributes:error:", uRLByDeletingLastPathComponent, 0, 0, error), v9, (v10))
   {
 
     goto LABEL_7;
@@ -249,7 +249,7 @@ LABEL_15:
   v17 = _log_1();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
   {
-    [QLExternalThumbnailCacheDatabase _createDatabaseIfNeededAtURL:a4 error:?];
+    [QLExternalThumbnailCacheDatabase _createDatabaseIfNeededAtURL:error error:?];
   }
 
   v15 = 0;
@@ -289,21 +289,21 @@ void __71__QLExternalThumbnailCacheDatabase__createDatabaseIfNeededAtURL_error__
   }
 }
 
-- (id)_setupDatabaseTablesIfNeeded:(id)a3 error:(id *)a4
+- (id)_setupDatabaseTablesIfNeeded:(id)needed error:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  neededCopy = needed;
   v6 = _log_1();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     [QLExternalThumbnailCacheDatabase _setupDatabaseTablesIfNeeded:error:];
   }
 
-  v7 = [v5 userVersion];
-  v8 = v7;
-  if (v7)
+  userVersion = [neededCopy userVersion];
+  v8 = userVersion;
+  if (userVersion)
   {
-    if ([v7 unsignedIntValue])
+    if ([userVersion unsignedIntValue])
     {
       v9 = _log_1();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -327,12 +327,12 @@ void __71__QLExternalThumbnailCacheDatabase__createDatabaseIfNeededAtURL_error__
       v22[2] = __71__QLExternalThumbnailCacheDatabase__setupDatabaseTablesIfNeeded_error___block_invoke;
       v22[3] = &__block_descriptor_44_e23_B16__0__PQLConnection_8l;
       v23 = 0;
-      v22[4] = a4;
-      v10 = [v5 performWithFlags:10 action:v22];
-      v14 = [v5 userVersion];
-      v15 = [v14 unsignedIntValue];
+      v22[4] = error;
+      v10 = [neededCopy performWithFlags:10 action:v22];
+      userVersion2 = [neededCopy userVersion];
+      unsignedIntValue = [userVersion2 unsignedIntValue];
 
-      if (v15 == 1)
+      if (unsignedIntValue == 1)
       {
         goto LABEL_19;
       }
@@ -340,10 +340,10 @@ void __71__QLExternalThumbnailCacheDatabase__createDatabaseIfNeededAtURL_error__
       v9 = _log_1();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        v20 = [v5 userVersion];
-        v21 = [v20 unsignedIntValue];
+        userVersion3 = [neededCopy userVersion];
+        unsignedIntValue2 = [userVersion3 unsignedIntValue];
         *buf = 67109376;
-        v25 = v21;
+        v25 = unsignedIntValue2;
         v26 = 1024;
         v27 = 1;
         _os_log_error_impl(&dword_1CA1E7000, v9, OS_LOG_TYPE_ERROR, "database is at version %u instead of %d", buf, 0xEu);
@@ -351,37 +351,37 @@ void __71__QLExternalThumbnailCacheDatabase__createDatabaseIfNeededAtURL_error__
     }
 
 LABEL_19:
-    v16 = [v5 userVersion];
-    v17 = [v16 unsignedIntValue];
-    if (v10 && !v17)
+    userVersion4 = [neededCopy userVersion];
+    unsignedIntValue3 = [userVersion4 unsignedIntValue];
+    if (v10 && !unsignedIntValue3)
     {
       [QLExternalThumbnailCacheDatabase _setupDatabaseTablesIfNeeded:error:];
     }
 
     if ((v10 & 1) == 0)
     {
-      [v5 close:0];
+      [neededCopy close:0];
 
-      v5 = 0;
+      neededCopy = 0;
     }
 
-    v5 = v5;
-    v12 = v5;
+    neededCopy = neededCopy;
+    v12 = neededCopy;
     goto LABEL_24;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = [v5 lastError];
+    *error = [neededCopy lastError];
   }
 
   v11 = _log_1();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
-    [QLExternalThumbnailCacheDatabase _setupDatabaseTablesIfNeeded:v5 error:v11];
+    [QLExternalThumbnailCacheDatabase _setupDatabaseTablesIfNeeded:neededCopy error:v11];
   }
 
-  [v5 close:0];
+  [neededCopy close:0];
   v12 = 0;
 LABEL_24:
 
@@ -413,11 +413,11 @@ uint64_t __71__QLExternalThumbnailCacheDatabase__setupDatabaseTablesIfNeeded_err
   return v3;
 }
 
-- (void)_closeDatabaseOnItsQueue:(id)a3
+- (void)_closeDatabaseOnItsQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v9 = 0;
-  v5 = [(PQLConnection *)v4 close:&v9];
+  v5 = [(PQLConnection *)queueCopy close:&v9];
   v6 = v9;
   if ((v5 & 1) == 0)
   {
@@ -429,7 +429,7 @@ uint64_t __71__QLExternalThumbnailCacheDatabase__setupDatabaseTablesIfNeeded_err
   }
 
   db = self->_db;
-  if (db == v4)
+  if (db == queueCopy)
   {
     self->_db = 0;
   }
@@ -437,17 +437,17 @@ uint64_t __71__QLExternalThumbnailCacheDatabase__setupDatabaseTablesIfNeeded_err
 
 - (void)close
 {
-  v3 = [(PQLConnection *)self->_db serialQueue];
+  serialQueue = [(PQLConnection *)self->_db serialQueue];
 
-  if (v3)
+  if (serialQueue)
   {
-    v4 = [(PQLConnection *)self->_db serialQueue];
+    serialQueue2 = [(PQLConnection *)self->_db serialQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __41__QLExternalThumbnailCacheDatabase_close__block_invoke;
     block[3] = &unk_1E8369F88;
     block[4] = self;
-    dispatch_sync(v4, block);
+    dispatch_sync(serialQueue2, block);
   }
 }
 
@@ -458,24 +458,24 @@ void __41__QLExternalThumbnailCacheDatabase_close__block_invoke(uint64_t a1)
   [v1 _closeDatabaseOnItsQueue:v2];
 }
 
-- (void)logError:(id)a3 onDB:(id)a4 statement:(id)a5
+- (void)logError:(id)error onDB:(id)b statement:(id)statement
 {
   v19 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  errorCopy = error;
+  bCopy = b;
+  statementCopy = statement;
   v10 = _log_1();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_ERROR);
-  if (v9)
+  if (statementCopy)
   {
     if (v11)
     {
       v13 = 138412802;
-      v14 = v9;
+      v14 = statementCopy;
       v15 = 2112;
-      v16 = v8;
+      v16 = bCopy;
       v17 = 2112;
-      v18 = v7;
+      v18 = errorCopy;
       _os_log_error_impl(&dword_1CA1E7000, v10, OS_LOG_TYPE_ERROR, "Sqlite request %@ failed on %@ with error [%@]", &v13, 0x20u);
     }
   }
@@ -488,12 +488,12 @@ void __41__QLExternalThumbnailCacheDatabase_close__block_invoke(uint64_t a1)
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)insertOrReplaceThumbnailRepresentingFPItem:(id)a3 size:(unint64_t)a4 modificationDate:(id)a5 fileExtension:(id)a6 error:(id *)a7
+- (BOOL)insertOrReplaceThumbnailRepresentingFPItem:(id)item size:(unint64_t)size modificationDate:(id)date fileExtension:(id)extension error:(id *)error
 {
   v40 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
+  itemCopy = item;
+  dateCopy = date;
+  extensionCopy = extension;
   db = self->_db;
   if (db)
   {
@@ -501,18 +501,18 @@ void __41__QLExternalThumbnailCacheDatabase_close__block_invoke(uint64_t a1)
     v31 = &v30;
     v32 = 0x2020000000;
     v33 = 0;
-    v16 = [(PQLConnection *)db serialQueue];
+    serialQueue = [(PQLConnection *)db serialQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __121__QLExternalThumbnailCacheDatabase_insertOrReplaceThumbnailRepresentingFPItem_size_modificationDate_fileExtension_error___block_invoke;
     block[3] = &unk_1E8369FB0;
     v28 = &v30;
     block[4] = self;
-    v17 = v12;
+    v17 = itemCopy;
     v26 = v17;
-    v29 = a4;
-    v27 = v14;
-    dispatch_sync(v16, block);
+    sizeCopy = size;
+    v27 = extensionCopy;
+    dispatch_sync(serialQueue, block);
 
     if (*(v31 + 24) == 1)
     {
@@ -522,9 +522,9 @@ void __41__QLExternalThumbnailCacheDatabase_close__block_invoke(uint64_t a1)
         *buf = 138412802;
         v35 = v17;
         v36 = 2048;
-        v37 = a4;
+        sizeCopy2 = size;
         v38 = 2112;
-        v39 = v13;
+        v39 = dateCopy;
         _os_log_debug_impl(&dword_1CA1E7000, v18, OS_LOG_TYPE_DEBUG, "Successfully inserted or updated thumbnail for FPItem: %@, size: %lu, date: %@.", buf, 0x20u);
       }
     }
@@ -534,13 +534,13 @@ void __41__QLExternalThumbnailCacheDatabase_close__block_invoke(uint64_t a1)
       v21 = _log_1();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
-        v22 = [(PQLConnection *)self->_db lastError];
-        [QLExternalThumbnailCacheDatabase insertOrReplaceThumbnailRepresentingFPItem:v17 size:v22 modificationDate:buf fileExtension:v21 error:?];
+        lastError = [(PQLConnection *)self->_db lastError];
+        [QLExternalThumbnailCacheDatabase insertOrReplaceThumbnailRepresentingFPItem:v17 size:lastError modificationDate:buf fileExtension:v21 error:?];
       }
 
-      if (a7)
+      if (error)
       {
-        *a7 = [(PQLConnection *)self->_db lastError];
+        *error = [(PQLConnection *)self->_db lastError];
       }
     }
 
@@ -574,7 +574,7 @@ void __121__QLExternalThumbnailCacheDatabase_insertOrReplaceThumbnailRepresentin
   *(*(*(a1 + 56) + 8) + 24) = [v6 execute:{@"INSERT OR REPLACE INTO thumbnails(fpitemId, versionId, last_hit_date, size, file_extension) VALUES (%@, %@, %@, %llu, %@)", v2, v3, v4, v5, *(a1 + 48)}];
 }
 
-- (id)deleteOldestThumbnailsToFreeAtLeastSpace:(unint64_t)a3 error:(id *)a4
+- (id)deleteOldestThumbnailsToFreeAtLeastSpace:(unint64_t)space error:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
   v7 = [QLExternalThumbnailCacheDatabase oldestThumbnailsToFreeAtLeastSpace:"oldestThumbnailsToFreeAtLeastSpace:error:" error:?];
@@ -599,14 +599,14 @@ void __121__QLExternalThumbnailCacheDatabase_insertOrReplaceThumbnailRepresentin
     {
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
-        [QLExternalThumbnailCacheDatabase deleteOldestThumbnailsToFreeAtLeastSpace:v8 error:a3];
+        [QLExternalThumbnailCacheDatabase deleteOldestThumbnailsToFreeAtLeastSpace:v8 error:space];
       }
 
       *buf = 0;
       v24 = buf;
       v25 = 0x2020000000;
       v26 = 0;
-      v12 = [(PQLConnection *)self->_db serialQueue];
+      serialQueue = [(PQLConnection *)self->_db serialQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __83__QLExternalThumbnailCacheDatabase_deleteOldestThumbnailsToFreeAtLeastSpace_error___block_invoke;
@@ -615,20 +615,20 @@ void __121__QLExternalThumbnailCacheDatabase_insertOrReplaceThumbnailRepresentin
       block[4] = self;
       v13 = v8;
       v21 = v13;
-      dispatch_sync(v12, block);
+      dispatch_sync(serialQueue, block);
 
       if ((v24[24] & 1) == 0)
       {
-        if (a4)
+        if (error)
         {
-          *a4 = [(PQLConnection *)self->_db lastError];
+          *error = [(PQLConnection *)self->_db lastError];
         }
 
         v14 = _log_1();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
         {
-          v15 = [(PQLConnection *)self->_db lastError];
-          [(QLExternalThumbnailCacheDatabase *)v15 deleteOldestThumbnailsToFreeAtLeastSpace:v27 error:v14];
+          lastError = [(PQLConnection *)self->_db lastError];
+          [(QLExternalThumbnailCacheDatabase *)lastError deleteOldestThumbnailsToFreeAtLeastSpace:v27 error:v14];
         }
 
         v13 = 0;
@@ -649,9 +649,9 @@ void __121__QLExternalThumbnailCacheDatabase_insertOrReplaceThumbnailRepresentin
       [QLExternalThumbnailCacheDatabase deleteOldestThumbnailsToFreeAtLeastSpace:error:];
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"QLExternalThumbnailCacheDatabaseErrorDomain" code:1 userInfo:0];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"QLExternalThumbnailCacheDatabaseErrorDomain" code:1 userInfo:0];
     }
   }
 
@@ -682,14 +682,14 @@ void __83__QLExternalThumbnailCacheDatabase_deleteOldestThumbnailsToFreeAtLeastS
     v11 = &v10;
     v12 = 0x2020000000;
     v13 = 0;
-    v6 = [(PQLConnection *)self->_db serialQueue];
+    serialQueue = [(PQLConnection *)self->_db serialQueue];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __57__QLExternalThumbnailCacheDatabase_deleteOldestThumbnail__block_invoke;
     v9[3] = &unk_1E8369DB0;
     v9[4] = self;
     v9[5] = &v10;
-    dispatch_sync(v6, v9);
+    dispatch_sync(serialQueue, v9);
 
     v7 = *(v11 + 24);
     _Block_object_dispose(&v10, 8);
@@ -723,14 +723,14 @@ void __57__QLExternalThumbnailCacheDatabase_deleteOldestThumbnail__block_invoke(
     v10 = &v9;
     v11 = 0x2020000000;
     v12 = 0;
-    v4 = [(PQLConnection *)db serialQueue];
+    serialQueue = [(PQLConnection *)db serialQueue];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __55__QLExternalThumbnailCacheDatabase_totalThumbnailsSize__block_invoke;
     v8[3] = &unk_1E8369FD8;
     v8[4] = self;
     v8[5] = &v9;
-    dispatch_sync(v4, v8);
+    dispatch_sync(serialQueue, v8);
 
     v5 = v10[3];
     _Block_object_dispose(&v9, 8);
@@ -767,14 +767,14 @@ void __55__QLExternalThumbnailCacheDatabase_totalThumbnailsSize__block_invoke(ui
     v10 = &v9;
     v11 = 0x2020000000;
     v12 = 0;
-    v4 = [(PQLConnection *)db serialQueue];
+    serialQueue = [(PQLConnection *)db serialQueue];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __55__QLExternalThumbnailCacheDatabase_totalThumbnailCount__block_invoke;
     v8[3] = &unk_1E8369FD8;
     v8[4] = self;
     v8[5] = &v9;
-    dispatch_sync(v4, v8);
+    dispatch_sync(serialQueue, v8);
 
     v5 = v10[3];
     _Block_object_dispose(&v9, 8);
@@ -802,9 +802,9 @@ void __55__QLExternalThumbnailCacheDatabase_totalThumbnailCount__block_invoke(ui
   *(*(*(a1 + 40) + 8) + 24) = [v3 longLongValue];
 }
 
-- (id)pathExtensionForItem:(id)a3 error:(id *)a4
+- (id)pathExtensionForItem:(id)item error:(id *)error
 {
-  v6 = a3;
+  itemCopy = item;
   db = self->_db;
   if (db)
   {
@@ -820,23 +820,23 @@ void __55__QLExternalThumbnailCacheDatabase_totalThumbnailCount__block_invoke(ui
     v20 = __Block_byref_object_copy__1;
     v21 = __Block_byref_object_dispose__1;
     v22 = 0;
-    v8 = [(PQLConnection *)db serialQueue];
+    serialQueue = [(PQLConnection *)db serialQueue];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __63__QLExternalThumbnailCacheDatabase_pathExtensionForItem_error___block_invoke;
     v13[3] = &unk_1E836A000;
     v13[4] = self;
-    v14 = v6;
+    v14 = itemCopy;
     v15 = &v17;
     v16 = &v23;
-    dispatch_sync(v8, v13);
+    dispatch_sync(serialQueue, v13);
 
-    if (a4)
+    if (error)
     {
       v9 = v18[5];
       if (v9)
       {
-        *a4 = v9;
+        *error = v9;
       }
     }
 
@@ -848,9 +848,9 @@ void __55__QLExternalThumbnailCacheDatabase_totalThumbnailCount__block_invoke(ui
 
   else
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"QLExternalThumbnailCacheDatabaseErrorDomain" code:1 userInfo:0];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"QLExternalThumbnailCacheDatabaseErrorDomain" code:1 userInfo:0];
     }
 
     v11 = _log_1();
@@ -897,7 +897,7 @@ LABEL_7:
   }
 }
 
-- (id)oldestThumbnailsToFreeAtLeastSpace:(unint64_t)a3 error:(id *)a4
+- (id)oldestThumbnailsToFreeAtLeastSpace:(unint64_t)space error:(id *)error
 {
   v26 = *MEMORY[0x1E69E9840];
   v15 = 0;
@@ -908,9 +908,9 @@ LABEL_7:
   v20 = 0;
   if (!self->_db)
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"QLExternalThumbnailCacheDatabaseErrorDomain" code:1 userInfo:0];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"QLExternalThumbnailCacheDatabaseErrorDomain" code:1 userInfo:0];
     }
 
     v7 = _log_1();
@@ -922,18 +922,18 @@ LABEL_7:
     goto LABEL_12;
   }
 
-  if ([(QLExternalThumbnailCacheDatabase *)self totalThumbnailsSize]< a3)
+  if ([(QLExternalThumbnailCacheDatabase *)self totalThumbnailsSize]< space)
   {
-    if (a4)
+    if (error)
     {
-      *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"QLExternalThumbnailCacheDatabaseErrorDomain" code:0 userInfo:0];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"QLExternalThumbnailCacheDatabaseErrorDomain" code:0 userInfo:0];
     }
 
     v7 = _log_1();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       LODWORD(buf) = 134217984;
-      *(&buf + 4) = a3;
+      *(&buf + 4) = space;
       _os_log_impl(&dword_1CA1E7000, v7, OS_LOG_TYPE_INFO, "Can't free space (%lu) because less than this space is stored in the DB.", &buf, 0xCu);
     }
 
@@ -943,32 +943,32 @@ LABEL_12:
     goto LABEL_17;
   }
 
-  v9 = [(QLExternalThumbnailCacheDatabase *)self totalThumbnailCount];
+  totalThumbnailCount = [(QLExternalThumbnailCacheDatabase *)self totalThumbnailCount];
   *&buf = 0;
   *(&buf + 1) = &buf;
   v22 = 0x3032000000;
   v23 = __Block_byref_object_copy__1;
   v24 = __Block_byref_object_dispose__1;
   v25 = 0;
-  v10 = [(PQLConnection *)self->_db serialQueue];
+  serialQueue = [(PQLConnection *)self->_db serialQueue];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __77__QLExternalThumbnailCacheDatabase_oldestThumbnailsToFreeAtLeastSpace_error___block_invoke;
   v14[3] = &unk_1E836A028;
   v14[4] = self;
   v14[5] = &v15;
-  v14[8] = v9;
-  v14[9] = vcvtpd_u64_f64(v9 * 10.0 / 100.0);
+  v14[8] = totalThumbnailCount;
+  v14[9] = vcvtpd_u64_f64(totalThumbnailCount * 10.0 / 100.0);
   v14[6] = &buf;
-  v14[7] = a3;
-  dispatch_sync(v10, v14);
+  v14[7] = space;
+  dispatch_sync(serialQueue, v14);
 
-  if (a4)
+  if (error)
   {
     v11 = *(*(&buf + 1) + 40);
     if (v11)
     {
-      *a4 = v11;
+      *error = v11;
     }
   }
 
@@ -1066,7 +1066,7 @@ void __77__QLExternalThumbnailCacheDatabase_oldestThumbnailsToFreeAtLeastSpace_e
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)removeAllThumbnails:(id *)a3
+- (BOOL)removeAllThumbnails:(id *)thumbnails
 {
   v20 = *MEMORY[0x1E69E9840];
   v5 = self->_db == 0;
@@ -1079,10 +1079,10 @@ void __77__QLExternalThumbnailCacheDatabase_oldestThumbnailsToFreeAtLeastSpace_e
       [QLExternalThumbnailCacheDatabase removeAllThumbnails:];
     }
 
-    if (a3)
+    if (thumbnails)
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:@"QLExternalThumbnailCacheDatabaseErrorDomain" code:1 userInfo:0];
-      *a3 = v11 = 0;
+      *thumbnails = v11 = 0;
     }
 
     else
@@ -1102,27 +1102,27 @@ void __77__QLExternalThumbnailCacheDatabase_oldestThumbnailsToFreeAtLeastSpace_e
     v16 = &v15;
     v17 = 0x2020000000;
     v18 = 0;
-    v8 = [(PQLConnection *)self->_db serialQueue];
+    serialQueue = [(PQLConnection *)self->_db serialQueue];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __56__QLExternalThumbnailCacheDatabase_removeAllThumbnails___block_invoke;
     v14[3] = &unk_1E8369DB0;
     v14[4] = self;
     v14[5] = &v15;
-    dispatch_sync(v8, v14);
+    dispatch_sync(serialQueue, v14);
 
     if ((v16[3] & 1) == 0)
     {
       v9 = _log_1();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        v10 = [(PQLConnection *)self->_db lastError];
-        [(QLExternalThumbnailCacheDatabase *)v10 removeAllThumbnails:buf, v9];
+        lastError = [(PQLConnection *)self->_db lastError];
+        [(QLExternalThumbnailCacheDatabase *)lastError removeAllThumbnails:buf, v9];
       }
 
-      if (a3)
+      if (thumbnails)
       {
-        *a3 = [(PQLConnection *)self->_db lastError];
+        *thumbnails = [(PQLConnection *)self->_db lastError];
       }
     }
 
@@ -1140,19 +1140,19 @@ void __56__QLExternalThumbnailCacheDatabase_removeAllThumbnails___block_invoke(u
   *(*(*(a1 + 40) + 8) + 24) = [v2 execute:@"DELETE FROM thumbnails"];
 }
 
-- (id)whereClauseForItem:(id)a3
+- (id)whereClauseForItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v4 = _log_1();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    [(QLExternalThumbnailCacheDatabase *)v3 whereClauseForItem:v4];
+    [(QLExternalThumbnailCacheDatabase *)itemCopy whereClauseForItem:v4];
   }
 
   v5 = MEMORY[0x1E69E5938];
-  v6 = [v3 itemIdentifier];
-  v7 = [v3 versionIdentifier];
-  v8 = [v5 formatInjection:{@"fpItemId = %@ AND versionId = %@", v6, v7}];
+  itemIdentifier = [itemCopy itemIdentifier];
+  versionIdentifier = [itemCopy versionIdentifier];
+  v8 = [v5 formatInjection:{@"fpItemId = %@ AND versionId = %@", itemIdentifier, versionIdentifier}];
 
   return v8;
 }

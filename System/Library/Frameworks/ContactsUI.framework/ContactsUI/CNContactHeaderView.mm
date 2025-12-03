@@ -1,17 +1,17 @@
 @interface CNContactHeaderView
 + (CGSize)defaultPhotoSize;
-+ (id)descriptorForRequiredKeysIncludingAvatarViewDescriptors:(BOOL)a3;
-+ (id)makePhotoViewWithShouldAllowTakePhotoAction:(BOOL)a3 shouldAllowImageDrops:(BOOL)a4 monogramOnly:(BOOL)a5;
++ (id)descriptorForRequiredKeysIncludingAvatarViewDescriptors:(BOOL)descriptors;
++ (id)makePhotoViewWithShouldAllowTakePhotoAction:(BOOL)action shouldAllowImageDrops:(BOOL)drops monogramOnly:(BOOL)only;
 - (BOOL)isOrientationPhoneLandscape;
 - (BOOL)isPad;
 - (BOOL)isPadCompactHorizontalSize;
 - (BOOL)isPadRegularHorizontalSize;
 - (BOOL)isPhotoLowQuality;
-- (CNContactHeaderView)initWithContact:(id)a3 frame:(CGRect)a4 shouldAllowTakePhotoAction:(BOOL)a5 shouldAllowImageDrops:(BOOL)a6 showingNavBar:(BOOL)a7 monogramOnly:(BOOL)a8 delegate:(id)a9;
+- (CNContactHeaderView)initWithContact:(id)contact frame:(CGRect)frame shouldAllowTakePhotoAction:(BOOL)action shouldAllowImageDrops:(BOOL)drops showingNavBar:(BOOL)bar monogramOnly:(BOOL)only delegate:(id)delegate;
 - (CNContactHeaderViewDelegate)delegate;
 - (CNPresenterDelegate)presenterDelegate;
 - (double)currentHeightPercentMaximized;
-- (double)currentHeightPercentMaximizedForMaxHeight:(double)a3;
+- (double)currentHeightPercentMaximizedForMaxHeight:(double)height;
 - (double)currentHeightPercentMaximizedForPhoto;
 - (double)defaultMaxBaseHeight;
 - (double)maxHeight;
@@ -22,24 +22,24 @@
 - (id)backgroundGradientDefaultGrayColors;
 - (id)colorExtractionContext;
 - (id)contactViewCache;
-- (id)dataForBackgroundColorService:(id)a3;
+- (id)dataForBackgroundColorService:(id)service;
 - (id)descriptorForRequiredKeys;
-- (id)viewControllerForPhotoView:(id)a3;
+- (id)viewControllerForPhotoView:(id)view;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)photoView:(id)a3 didAcceptDropOfImageData:(id)a4;
-- (void)photoViewDidUpdate:(id)a3;
+- (void)photoView:(id)view didAcceptDropOfImageData:(id)data;
+- (void)photoViewDidUpdate:(id)update;
 - (void)reloadDataIfNeeded;
-- (void)reloadDataPreservingChanges:(BOOL)a3;
-- (void)setConstrainedMaxHeight:(double)a3 enabled:(BOOL)a4;
+- (void)reloadDataPreservingChanges:(BOOL)changes;
+- (void)setConstrainedMaxHeight:(double)height enabled:(BOOL)enabled;
 - (void)setNeedsReload;
-- (void)setPresenterDelegate:(id)a3;
+- (void)setPresenterDelegate:(id)delegate;
 - (void)updateConstraints;
 - (void)updateFontSizes;
-- (void)updateForShowingNavBar:(BOOL)a3;
+- (void)updateForShowingNavBar:(BOOL)bar;
 - (void)updateSizeDependentAttributes;
-- (void)updateWithContacts:(id)a3;
-- (void)updateWithNewContact:(id)a3;
+- (void)updateWithContacts:(id)contacts;
+- (void)updateWithNewContact:(id)contact;
 @end
 
 @implementation CNContactHeaderView
@@ -60,36 +60,36 @@
 
 - (BOOL)isPhotoLowQuality
 {
-  v2 = [(CNContactHeaderView *)self contacts];
-  v3 = [v2 firstObject];
-  v4 = [v3 hasLowQualityImage];
+  contacts = [(CNContactHeaderView *)self contacts];
+  firstObject = [contacts firstObject];
+  hasLowQualityImage = [firstObject hasLowQualityImage];
 
-  return v4;
+  return hasLowQualityImage;
 }
 
 - (BOOL)isOrientationPhoneLandscape
 {
-  v2 = [(CNContactHeaderView *)self delegate];
-  v3 = [v2 isOrientationPhoneLandscape];
+  delegate = [(CNContactHeaderView *)self delegate];
+  isOrientationPhoneLandscape = [delegate isOrientationPhoneLandscape];
 
-  return v3;
+  return isOrientationPhoneLandscape;
 }
 
 - (BOOL)isPad
 {
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  return v3 == 1;
+  return userInterfaceIdiom == 1;
 }
 
 - (BOOL)isPadCompactHorizontalSize
 {
-  v3 = [(CNContactHeaderView *)self traitCollection];
-  v4 = [v3 horizontalSizeClass];
+  traitCollection = [(CNContactHeaderView *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
   result = [(CNContactHeaderView *)self isPad];
-  if (v4 != 1)
+  if (horizontalSizeClass != 1)
   {
     return 0;
   }
@@ -99,11 +99,11 @@
 
 - (BOOL)isPadRegularHorizontalSize
 {
-  v3 = [(CNContactHeaderView *)self traitCollection];
-  v4 = [v3 horizontalSizeClass];
+  traitCollection = [(CNContactHeaderView *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
   result = [(CNContactHeaderView *)self isPad];
-  if (v4 == 1)
+  if (horizontalSizeClass == 1)
   {
     return 0;
   }
@@ -113,42 +113,42 @@
 
 - (id)contactViewCache
 {
-  v3 = [(CNContactHeaderView *)self delegate];
+  delegate = [(CNContactHeaderView *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(CNContactHeaderView *)self delegate];
-    v6 = [v5 contactViewCache];
+    delegate2 = [(CNContactHeaderView *)self delegate];
+    contactViewCache = [delegate2 contactViewCache];
   }
 
   else
   {
-    v6 = 0;
+    contactViewCache = 0;
   }
 
-  return v6;
+  return contactViewCache;
 }
 
-- (id)viewControllerForPhotoView:(id)a3
+- (id)viewControllerForPhotoView:(id)view
 {
-  v4 = [(CNContactHeaderView *)self delegate];
-  v5 = [v4 viewControllerForHeaderView:self];
+  delegate = [(CNContactHeaderView *)self delegate];
+  v5 = [delegate viewControllerForHeaderView:self];
 
   return v5;
 }
 
-- (void)photoView:(id)a3 didAcceptDropOfImageData:(id)a4
+- (void)photoView:(id)view didAcceptDropOfImageData:(id)data
 {
-  v5 = a4;
-  v6 = [(CNContactHeaderView *)self delegate];
-  [v6 headerView:self didAcceptDropOfImageData:v5];
+  dataCopy = data;
+  delegate = [(CNContactHeaderView *)self delegate];
+  [delegate headerView:self didAcceptDropOfImageData:dataCopy];
 }
 
-- (void)photoViewDidUpdate:(id)a3
+- (void)photoViewDidUpdate:(id)update
 {
-  v3 = [(CNContactHeaderView *)self delegate];
-  [v3 headerPhotoDidUpdate];
+  delegate = [(CNContactHeaderView *)self delegate];
+  [delegate headerPhotoDidUpdate];
 }
 
 - (void)updateSizeDependentAttributes
@@ -161,44 +161,44 @@
     v6 = 0.0;
     if ([(CNContactHeaderView *)self shouldShowBelowNavigationTitle])
     {
-      v7 = [(CNContactHeaderView *)self sizeAttributes];
-      [v7 navbarTitleOffsetWithPercentMax:v5];
+      sizeAttributes = [(CNContactHeaderView *)self sizeAttributes];
+      [sizeAttributes navbarTitleOffsetWithPercentMax:v5];
       v6 = v8;
     }
 
-    v9 = [(CNContactHeaderView *)self isSiri];
+    isSiri = [(CNContactHeaderView *)self isSiri];
     [(CNContactHeaderView *)self safeAreaPhotoOffset];
     v11 = v6 + v10;
-    v12 = [(CNContactHeaderView *)self sizeAttributes];
-    v13 = v12;
-    if (v9)
+    sizeAttributes2 = [(CNContactHeaderView *)self sizeAttributes];
+    v13 = sizeAttributes2;
+    if (isSiri)
     {
-      [v12 photoMinTopMargin];
+      [sizeAttributes2 photoMinTopMargin];
       v15 = v11 + v14;
-      v16 = [(CNContactHeaderView *)self photoTopConstraint];
-      [v16 setConstant:v15];
+      photoTopConstraint = [(CNContactHeaderView *)self photoTopConstraint];
+      [photoTopConstraint setConstant:v15];
     }
 
     else
     {
-      [v12 photoTopMarginWithPercentMax:v5];
+      [sizeAttributes2 photoTopMarginWithPercentMax:v5];
       v18 = v11 + v17;
-      v16 = [(CNContactHeaderView *)self sizeAttributes];
-      [v16 photoMinTopMargin];
+      photoTopConstraint = [(CNContactHeaderView *)self sizeAttributes];
+      [photoTopConstraint photoMinTopMargin];
       v20 = v18 - v19;
-      v21 = [(CNContactHeaderView *)self photoTopConstraint];
-      [v21 setConstant:v20];
+      photoTopConstraint2 = [(CNContactHeaderView *)self photoTopConstraint];
+      [photoTopConstraint2 setConstant:v20];
     }
 
-    v22 = [(CNContactHeaderView *)self sizeAttributes];
-    [v22 photoHeightWithPercentMax:v5];
+    sizeAttributes3 = [(CNContactHeaderView *)self sizeAttributes];
+    [sizeAttributes3 photoHeightWithPercentMax:v5];
     v24 = v23;
-    v25 = [(CNContactHeaderView *)self photoHeightConstraint];
-    [v25 setConstant:v24];
+    photoHeightConstraint = [(CNContactHeaderView *)self photoHeightConstraint];
+    [photoHeightConstraint setConstant:v24];
 
     v26 = pow(v5, 3.0);
-    v27 = [(CNContactHeaderView *)self photoView];
-    [v27 setLabelAlpha:v26];
+    photoView = [(CNContactHeaderView *)self photoView];
+    [photoView setLabelAlpha:v26];
   }
 }
 
@@ -224,19 +224,19 @@
   }
 }
 
-- (double)currentHeightPercentMaximizedForMaxHeight:(double)a3
+- (double)currentHeightPercentMaximizedForMaxHeight:(double)height
 {
   [(CNContactHeaderView *)self minHeight];
   v6 = v5;
   result = 1.0;
-  if (v6 < a3)
+  if (v6 < height)
   {
     [(CNContactHeaderView *)self bounds];
     v9 = v8;
     [(CNContactHeaderView *)self minHeight];
     v11 = v9 - v10;
     [(CNContactHeaderView *)self minHeight];
-    result = v11 / (a3 - v12);
+    result = v11 / (height - v12);
     if (result < 0.0)
     {
       result = 0.0;
@@ -267,10 +267,10 @@
   return result;
 }
 
-- (void)reloadDataPreservingChanges:(BOOL)a3
+- (void)reloadDataPreservingChanges:(BOOL)changes
 {
   photoView = self->_photoView;
-  if (a3)
+  if (changes)
   {
     [(CNContactPhotoView *)photoView updatePhoto];
   }
@@ -319,10 +319,10 @@
 
 - (id)backgroundGradientDefaultGrayColors
 {
-  v2 = [(CNContactHeaderView *)self traitCollection];
-  v3 = [v2 userInterfaceStyle];
+  traitCollection = [(CNContactHeaderView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v3 == 2)
+  if (userInterfaceStyle == 2)
   {
     [MEMORY[0x1E6996B28] defaultDarkGrayColors];
   }
@@ -336,12 +336,12 @@
   return v4;
 }
 
-- (id)dataForBackgroundColorService:(id)a3
+- (id)dataForBackgroundColorService:(id)service
 {
-  v3 = a3;
-  v4 = mmap(0, [v3 length], 3, 4097, -1, 0);
-  [v3 getBytes:v4 length:{objc_msgSend(v3, "length")}];
-  v5 = [v3 length];
+  serviceCopy = service;
+  v4 = mmap(0, [serviceCopy length], 3, 4097, -1, 0);
+  [serviceCopy getBytes:v4 length:{objc_msgSend(serviceCopy, "length")}];
+  v5 = [serviceCopy length];
 
   v6 = dispatch_get_global_queue(0, 0);
   v7 = dispatch_data_create(v4, v5, v6, *MEMORY[0x1E69E9650]);
@@ -384,17 +384,17 @@
   [self cn_updateDictionaryForKey:@"nameTextAttributes" withChanges:v9];
 }
 
-- (void)updateWithContacts:(id)a3
+- (void)updateWithContacts:(id)contacts
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (([(NSArray *)self->_contacts _cn_isIdenticalToArray:v5]& 1) == 0)
+  contactsCopy = contacts;
+  if (([(NSArray *)self->_contacts _cn_isIdenticalToArray:contactsCopy]& 1) == 0)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = v5;
+    v6 = contactsCopy;
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v19 count:16];
     if (v7)
     {
@@ -410,8 +410,8 @@
           }
 
           v11 = *(*(&v14 + 1) + 8 * i);
-          v12 = [objc_opt_class() descriptorForRequiredKeys];
-          v18 = v12;
+          descriptorForRequiredKeys = [objc_opt_class() descriptorForRequiredKeys];
+          v18 = descriptorForRequiredKeys;
           v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v18 count:1];
           [v11 assertKeysAreAvailable:v13];
         }
@@ -422,21 +422,21 @@
       while (v8);
     }
 
-    objc_storeStrong(&self->_contacts, a3);
+    objc_storeStrong(&self->_contacts, contacts);
     [(CNContactPhotoView *)self->_photoView setContacts:v6];
     -[CNContactHeaderView setHidden:](self, "setHidden:", [v6 count] == 0);
     [(CNContactHeaderView *)self setNeedsReload];
   }
 }
 
-- (void)updateWithNewContact:(id)a3
+- (void)updateWithNewContact:(id)contact
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  contactCopy = contact;
+  v5 = contactCopy;
+  if (contactCopy)
   {
-    v7[0] = v4;
+    v7[0] = contactCopy;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
     [(CNContactHeaderView *)self updateWithContacts:v6];
   }
@@ -454,44 +454,44 @@
   v19.super_class = CNContactHeaderView;
   [(CNContactHeaderView *)&v19 updateConstraints];
   v3 = MEMORY[0x1E696ACD8];
-  v4 = [(CNContactHeaderView *)self activatedConstraints];
-  [v3 deactivateConstraints:v4];
+  activatedConstraints = [(CNContactHeaderView *)self activatedConstraints];
+  [v3 deactivateConstraints:activatedConstraints];
 
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = [(CNContactHeaderView *)self photoView];
-  v7 = [v6 topAnchor];
-  v8 = [(CNContactHeaderView *)self safeAreaLayoutGuide];
-  v9 = [v8 topAnchor];
+  array = [MEMORY[0x1E695DF70] array];
+  photoView = [(CNContactHeaderView *)self photoView];
+  topAnchor = [photoView topAnchor];
+  safeAreaLayoutGuide = [(CNContactHeaderView *)self safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
   [(CNContactHeaderView *)self safeAreaPhotoOffset];
-  v10 = [v7 constraintEqualToAnchor:v9 constant:?];
+  v10 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:?];
   [(CNContactHeaderView *)self setPhotoTopConstraint:v10];
 
-  v11 = [(CNContactHeaderView *)self photoTopConstraint];
+  photoTopConstraint = [(CNContactHeaderView *)self photoTopConstraint];
   LODWORD(v12) = 1148829696;
-  [v11 setPriority:v12];
+  [photoTopConstraint setPriority:v12];
 
-  v13 = [(CNContactHeaderView *)self photoTopConstraint];
-  [v5 addObject:v13];
+  photoTopConstraint2 = [(CNContactHeaderView *)self photoTopConstraint];
+  [array addObject:photoTopConstraint2];
 
-  v14 = [(CNContactHeaderView *)self photoView];
-  v15 = [v14 heightAnchor];
-  v16 = [(CNContactHeaderView *)self sizeAttributes];
-  [v16 photoMinHeight];
-  v17 = [v15 constraintEqualToConstant:?];
+  photoView2 = [(CNContactHeaderView *)self photoView];
+  heightAnchor = [photoView2 heightAnchor];
+  sizeAttributes = [(CNContactHeaderView *)self sizeAttributes];
+  [sizeAttributes photoMinHeight];
+  v17 = [heightAnchor constraintEqualToConstant:?];
   [(CNContactHeaderView *)self setPhotoHeightConstraint:v17];
 
-  v18 = [(CNContactHeaderView *)self photoHeightConstraint];
-  [v5 addObject:v18];
+  photoHeightConstraint = [(CNContactHeaderView *)self photoHeightConstraint];
+  [array addObject:photoHeightConstraint];
 
-  [(CNContactHeaderView *)self setActivatedConstraints:v5];
-  [MEMORY[0x1E696ACD8] activateConstraints:v5];
+  [(CNContactHeaderView *)self setActivatedConstraints:array];
+  [MEMORY[0x1E696ACD8] activateConstraints:array];
 }
 
-- (void)setConstrainedMaxHeight:(double)a3 enabled:(BOOL)a4
+- (void)setConstrainedMaxHeight:(double)height enabled:(BOOL)enabled
 {
-  v4 = a4;
-  [(CNContactHeaderView *)self setConstrainedMaxHeight:a3];
-  [(CNContactHeaderView *)self setShouldUseConstrainedMaxHeight:v4];
+  enabledCopy = enabled;
+  [(CNContactHeaderView *)self setConstrainedMaxHeight:height];
+  [(CNContactHeaderView *)self setShouldUseConstrainedMaxHeight:enabledCopy];
 
   [(CNContactHeaderView *)self setNeedsLayout];
 }
@@ -501,13 +501,13 @@
   v3 = 0.0;
   if ([(CNContactHeaderView *)self shouldShowBelowNavigationTitle])
   {
-    v4 = [(CNContactHeaderView *)self sizeAttributes];
-    [v4 maxNavbarTitleOffset];
+    sizeAttributes = [(CNContactHeaderView *)self sizeAttributes];
+    [sizeAttributes maxNavbarTitleOffset];
     v3 = v5;
   }
 
-  v6 = [(CNContactHeaderView *)self sizeAttributes];
-  [v6 maxHeight];
+  sizeAttributes2 = [(CNContactHeaderView *)self sizeAttributes];
+  [sizeAttributes2 maxHeight];
   v8 = v3 + v7;
   [(CNContactHeaderView *)self safeAreaTop];
   v10 = v8 + v9;
@@ -544,8 +544,8 @@
     return 0.0;
   }
 
-  v3 = [(CNContactHeaderView *)self sizeAttributes];
-  [v3 minNavbarTitleOffset];
+  sizeAttributes = [(CNContactHeaderView *)self sizeAttributes];
+  [sizeAttributes minNavbarTitleOffset];
   v5 = v4;
 
   return v5;
@@ -555,8 +555,8 @@
 {
   [(CNContactHeaderView *)self minTitleOffset];
   v4 = v3;
-  v5 = [(CNContactHeaderView *)self sizeAttributes];
-  [v5 minHeight];
+  sizeAttributes = [(CNContactHeaderView *)self sizeAttributes];
+  [sizeAttributes minHeight];
   v7 = v4 + v6;
   [(CNContactHeaderView *)self safeAreaTop];
   v9 = v7 + v8;
@@ -568,27 +568,27 @@
 {
   [(CNContactHeaderView *)self safeAreaInsets];
   v4 = v3;
-  v5 = [(CNContactHeaderView *)self sizeAttributes];
-  [v5 photoMinHeight];
+  sizeAttributes = [(CNContactHeaderView *)self sizeAttributes];
+  [sizeAttributes photoMinHeight];
   v7 = v6;
-  v8 = [(CNContactHeaderView *)self sizeAttributes];
-  [v8 photoMinTopMargin];
+  sizeAttributes2 = [(CNContactHeaderView *)self sizeAttributes];
+  [sizeAttributes2 photoMinTopMargin];
   v10 = v7 + v9;
 
-  v11 = [(CNContactHeaderView *)self sizeAttributes];
-  v12 = v11;
+  sizeAttributes3 = [(CNContactHeaderView *)self sizeAttributes];
+  v12 = sizeAttributes3;
   if (v4 >= v10)
   {
-    [v11 photoMinHeight];
+    [sizeAttributes3 photoMinHeight];
     v16 = -v15;
-    v17 = [(CNContactHeaderView *)self sizeAttributes];
-    [v17 photoMinTopMargin];
+    sizeAttributes4 = [(CNContactHeaderView *)self sizeAttributes];
+    [sizeAttributes4 photoMinTopMargin];
     v14 = v16 - v18;
   }
 
   else
   {
-    [v11 photoMinTopMargin];
+    [sizeAttributes3 photoMinTopMargin];
     v14 = -(v4 - v13);
   }
 
@@ -611,90 +611,90 @@
   return v4 + v5;
 }
 
-- (void)setPresenterDelegate:(id)a3
+- (void)setPresenterDelegate:(id)delegate
 {
-  v4 = a3;
-  objc_storeWeak(&self->_presenterDelegate, v4);
-  [(CNContactPhotoView *)self->_photoView setPresenterDelegate:v4];
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_presenterDelegate, delegateCopy);
+  [(CNContactPhotoView *)self->_photoView setPresenterDelegate:delegateCopy];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = CNContactHeaderView;
   [(CNContactHeaderView *)&v4 dealloc];
 }
 
-- (void)updateForShowingNavBar:(BOOL)a3
+- (void)updateForShowingNavBar:(BOOL)bar
 {
-  v3 = a3;
+  barCopy = bar;
   [(CNContactHeaderView *)self setShouldShowBelowNavigationTitle:?];
-  v5 = [objc_opt_class() sizeAttributesShowingNavBar:v3];
+  v5 = [objc_opt_class() sizeAttributesShowingNavBar:barCopy];
   [(CNContactHeaderView *)self setSizeAttributes:v5];
 
   [(CNContactHeaderView *)self updateSizeDependentAttributes];
 }
 
-- (CNContactHeaderView)initWithContact:(id)a3 frame:(CGRect)a4 shouldAllowTakePhotoAction:(BOOL)a5 shouldAllowImageDrops:(BOOL)a6 showingNavBar:(BOOL)a7 monogramOnly:(BOOL)a8 delegate:(id)a9
+- (CNContactHeaderView)initWithContact:(id)contact frame:(CGRect)frame shouldAllowTakePhotoAction:(BOOL)action shouldAllowImageDrops:(BOOL)drops showingNavBar:(BOOL)bar monogramOnly:(BOOL)only delegate:(id)delegate
 {
-  v9 = a8;
-  v10 = a7;
-  v11 = a6;
-  v12 = a5;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  onlyCopy = only;
+  barCopy = bar;
+  dropsCopy = drops;
+  actionCopy = action;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v41[2] = *MEMORY[0x1E69E9840];
   v39.receiver = self;
   v39.super_class = CNContactHeaderView;
-  v18 = a9;
-  v19 = a3;
-  v20 = [(CNContactHeaderView *)&v39 initWithFrame:x, y, width, height];
-  objc_storeWeak(&v20->_delegate, v18);
+  delegateCopy = delegate;
+  contactCopy = contact;
+  height = [(CNContactHeaderView *)&v39 initWithFrame:x, y, width, height];
+  objc_storeWeak(&height->_delegate, delegateCopy);
 
-  v21 = [MEMORY[0x1E69DC938] currentDevice];
-  if ([v21 userInterfaceIdiom])
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  if ([currentDevice userInterfaceIdiom])
   {
-    v22 = [MEMORY[0x1E69966E8] currentEnvironment];
-    v23 = [v22 featureFlags];
-    v20->_useDualSimParity = [v23 isFeatureEnabled:15];
+    currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+    featureFlags = [currentEnvironment featureFlags];
+    height->_useDualSimParity = [featureFlags isFeatureEnabled:15];
   }
 
   else
   {
-    v20->_useDualSimParity = 0;
+    height->_useDualSimParity = 0;
   }
 
-  [(CNContactHeaderView *)v20 setShowMonogramsOnly:v9];
-  [(CNContactHeaderView *)v20 setShouldShowBelowNavigationTitle:v10];
-  v24 = [objc_opt_class() sizeAttributesShowingNavBar:v10];
-  [(CNContactHeaderView *)v20 setSizeAttributes:v24];
+  [(CNContactHeaderView *)height setShowMonogramsOnly:onlyCopy];
+  [(CNContactHeaderView *)height setShouldShowBelowNavigationTitle:barCopy];
+  v24 = [objc_opt_class() sizeAttributesShowingNavBar:barCopy];
+  [(CNContactHeaderView *)height setSizeAttributes:v24];
 
   v25 = dispatch_queue_create("com.apple.contact.backgroundColorCaching", 0);
-  backgroundColorCacheQueue = v20->_backgroundColorCacheQueue;
-  v20->_backgroundColorCacheQueue = v25;
+  backgroundColorCacheQueue = height->_backgroundColorCacheQueue;
+  height->_backgroundColorCacheQueue = v25;
 
-  v27 = [objc_opt_class() makePhotoViewWithShouldAllowTakePhotoAction:v12 shouldAllowImageDrops:v11 monogramOnly:v9];
-  photoView = v20->_photoView;
-  v20->_photoView = v27;
+  v27 = [objc_opt_class() makePhotoViewWithShouldAllowTakePhotoAction:actionCopy shouldAllowImageDrops:dropsCopy monogramOnly:onlyCopy];
+  photoView = height->_photoView;
+  height->_photoView = v27;
 
-  [(CNContactPhotoView *)v20->_photoView setTranslatesAutoresizingMaskIntoConstraints:0];
-  [(CNContactPhotoView *)v20->_photoView setDelegate:v20];
-  [(CNContactHeaderView *)v20 addSubview:v20->_photoView];
+  [(CNContactPhotoView *)height->_photoView setTranslatesAutoresizingMaskIntoConstraints:0];
+  [(CNContactPhotoView *)height->_photoView setDelegate:height];
+  [(CNContactHeaderView *)height addSubview:height->_photoView];
   v41[0] = *MEMORY[0x1E69DDDB8];
   v29 = v41[0];
   v30 = *MEMORY[0x1E69DB650];
   v40[0] = @"ABTextStyleAttributeName";
   v40[1] = v30;
-  v31 = [(CNContactHeaderView *)v20 contactStyle];
-  v32 = [v31 textColor];
-  v41[1] = v32;
+  contactStyle = [(CNContactHeaderView *)height contactStyle];
+  textColor = [contactStyle textColor];
+  v41[1] = textColor;
   v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v41 forKeys:v40 count:2];
-  [(CNContactHeaderView *)v20 setNameTextAttributes:v33];
+  [(CNContactHeaderView *)height setNameTextAttributes:v33];
 
   v34 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:v29];
   v35 = sCurrentNameFont;
@@ -704,11 +704,11 @@
   v37 = sCurrentTaglineFont;
   sCurrentTaglineFont = v36;
 
-  [(CNContactHeaderView *)v20 setNeedsUpdateConstraints];
-  [(CNContactHeaderView *)v20 setNeedsLayout];
-  [(CNContactHeaderView *)v20 updateWithNewContact:v19];
+  [(CNContactHeaderView *)height setNeedsUpdateConstraints];
+  [(CNContactHeaderView *)height setNeedsLayout];
+  [(CNContactHeaderView *)height updateWithNewContact:contactCopy];
 
-  return v20;
+  return height;
 }
 
 - (id)descriptorForRequiredKeys
@@ -718,9 +718,9 @@
   return [v2 descriptorForRequiredKeys];
 }
 
-+ (id)makePhotoViewWithShouldAllowTakePhotoAction:(BOOL)a3 shouldAllowImageDrops:(BOOL)a4 monogramOnly:(BOOL)a5
++ (id)makePhotoViewWithShouldAllowTakePhotoAction:(BOOL)action shouldAllowImageDrops:(BOOL)drops monogramOnly:(BOOL)only
 {
-  v5 = a1;
+  selfCopy = self;
   v6 = CNAbstractMethodException();
   objc_exception_throw(v6);
 }
@@ -733,9 +733,9 @@
   return result;
 }
 
-+ (id)descriptorForRequiredKeysIncludingAvatarViewDescriptors:(BOOL)a3
++ (id)descriptorForRequiredKeysIncludingAvatarViewDescriptors:(BOOL)descriptors
 {
-  v3 = a3;
+  descriptorsCopy = descriptors;
   v30[28] = *MEMORY[0x1E69E9840];
   v4 = [CNMonogrammer descriptorForRequiredKeysIncludingImage:1];
   v30[0] = v4;
@@ -775,17 +775,17 @@
   v17 = *MEMORY[0x1E695C3C8];
   v30[22] = *MEMORY[0x1E695C400];
   v30[23] = v17;
-  v18 = [MEMORY[0x1E695CEB0] descriptorForRequiredKeys];
+  descriptorForRequiredKeys = [MEMORY[0x1E695CEB0] descriptorForRequiredKeys];
   v19 = *MEMORY[0x1E695C200];
-  v30[24] = v18;
+  v30[24] = descriptorForRequiredKeys;
   v30[25] = v19;
-  v20 = [MEMORY[0x1E695CDB0] descriptorForRequiredKeys];
+  descriptorForRequiredKeys2 = [MEMORY[0x1E695CDB0] descriptorForRequiredKeys];
   v21 = *MEMORY[0x1E695C1D0];
-  v30[26] = v20;
+  v30[26] = descriptorForRequiredKeys2;
   v30[27] = v21;
   v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:28];
 
-  if (v3)
+  if (descriptorsCopy)
   {
     v23 = [CNAvatarView descriptorForRequiredKeysWithThreeDTouchEnabled:1];
     v24 = [v22 arrayByAddingObject:v23];

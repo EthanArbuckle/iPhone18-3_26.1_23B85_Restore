@@ -1,38 +1,38 @@
 @interface MKLookAroundPresentAnimationController
-- (MKLookAroundPresentAnimationController)initWithSourceView:(id)a3 initialFrame:(CGRect)a4;
-- (void)animateTransition:(id)a3;
+- (MKLookAroundPresentAnimationController)initWithSourceView:(id)view initialFrame:(CGRect)frame;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation MKLookAroundPresentAnimationController
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [v4 viewControllerForKey:*MEMORY[0x1E69DE778]];
+  transitionCopy = transition;
+  v5 = [transitionCopy viewControllerForKey:*MEMORY[0x1E69DE778]];
   if (v5)
   {
-    v6 = [v4 containerView];
+    containerView = [transitionCopy containerView];
     v7 = self->_sourceView;
-    [v4 finalFrameForViewController:v5];
+    [transitionCopy finalFrameForViewController:v5];
     v9 = v8;
     v11 = v10;
     v13 = v12;
     v15 = v14;
-    [(MKLookAroundPresentAnimationController *)self transitionDuration:v4];
+    [(MKLookAroundPresentAnimationController *)self transitionDuration:transitionCopy];
     v17 = v16;
-    v18 = [v4 viewForKey:*MEMORY[0x1E69DE780]];
+    v18 = [transitionCopy viewForKey:*MEMORY[0x1E69DE780]];
     if (v18)
     {
-      [v6 addSubview:v18];
+      [containerView addSubview:v18];
     }
 
-    [v6 addSubview:v7];
+    [containerView addSubview:v7];
     [v18 setHidden:1];
     [(UIView *)v7 setFrame:self->_initialFrame.origin.x, self->_initialFrame.origin.y, self->_initialFrame.size.width, self->_initialFrame.size.height];
     [v18 setFrame:{v9, v11, v13, v15}];
-    v19 = [(MKLookAroundPresentAnimationController *)self _shouldUseSpringWithDampingAnimationStyle];
+    _shouldUseSpringWithDampingAnimationStyle = [(MKLookAroundPresentAnimationController *)self _shouldUseSpringWithDampingAnimationStyle];
     v20 = MEMORY[0x1E69DD250];
-    if (v19)
+    if (_shouldUseSpringWithDampingAnimationStyle)
     {
       v41[0] = MEMORY[0x1E69E9820];
       v41[1] = 3221225472;
@@ -54,7 +54,7 @@
       v38 = v18;
       v39 = v21;
       v24 = &v40;
-      v40 = v4;
+      v40 = transitionCopy;
       v25 = v21;
       v26 = v18;
       [v20 animateWithDuration:0 delay:v41 usingSpringWithDamping:v37 initialSpringVelocity:v17 options:0.0 animations:0.666666687 completion:0.0];
@@ -82,7 +82,7 @@
       v32 = v18;
       v33 = v27;
       v24 = &v34;
-      v34 = v4;
+      v34 = transitionCopy;
       v28 = v27;
       v29 = v18;
       [v20 animateWithDuration:0 delay:v35 options:v31 animations:v17 completion:0.0];
@@ -110,20 +110,20 @@ uint64_t __60__MKLookAroundPresentAnimationController_animateTransition___block_
   return [v2 completeTransition:v3];
 }
 
-- (MKLookAroundPresentAnimationController)initWithSourceView:(id)a3 initialFrame:(CGRect)a4
+- (MKLookAroundPresentAnimationController)initWithSourceView:(id)view initialFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
   v14.receiver = self;
   v14.super_class = MKLookAroundPresentAnimationController;
   v11 = [(MKLookAroundPresentAnimationController *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_sourceView, a3);
+    objc_storeStrong(&v11->_sourceView, view);
     v12->_initialFrame.origin.x = x;
     v12->_initialFrame.origin.y = y;
     v12->_initialFrame.size.width = width;

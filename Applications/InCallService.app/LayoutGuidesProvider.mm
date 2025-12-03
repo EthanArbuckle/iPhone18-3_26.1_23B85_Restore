@@ -8,17 +8,17 @@
 - (UILayoutGuide)posterLayoutGuide;
 - (UILayoutGuide)sensitiveContentWarningCenteringLayoutGuide;
 - (UILayoutGuide)trailingPanelLayoutGuide;
-- (void)updateMiddleShelfStateWithIsOpen:(BOOL)a3;
-- (void)updateMiddleShelfStateWithIsOpen:(BOOL)a3 animation:(id)a4 completion:(id)a5;
-- (void)updateMiddleShelfStateWithIsOpen:(BOOL)a3 contentView:(id)a4 animation:(id)a5 completion:(id)a6;
-- (void)updateMiddleStateWithIsEmpty:(BOOL)a3;
+- (void)updateMiddleShelfStateWithIsOpen:(BOOL)open;
+- (void)updateMiddleShelfStateWithIsOpen:(BOOL)open animation:(id)animation completion:(id)completion;
+- (void)updateMiddleShelfStateWithIsOpen:(BOOL)open contentView:(id)view animation:(id)animation completion:(id)completion;
+- (void)updateMiddleStateWithIsEmpty:(BOOL)empty;
 @end
 
 @implementation LayoutGuidesProvider
 
 - (UILayoutGuide)callerDetailsLayoutGuide
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1001601E4();
 
   return v3;
@@ -26,7 +26,7 @@
 
 - (UILayoutGuide)middleShelfLayoutGuide
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100160254();
 
   return v3;
@@ -34,7 +34,7 @@
 
 - (UILayoutGuide)bottomShelfLayoutGuide
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1001602C4();
 
   return v3;
@@ -42,7 +42,7 @@
 
 - (UILayoutGuide)posterLayoutGuide
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100160334();
 
   return v3;
@@ -50,7 +50,7 @@
 
 - (UILayoutGuide)trailingPanelLayoutGuide
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1001603A4();
 
   return v3;
@@ -58,7 +58,7 @@
 
 - (UILayoutGuide)photoPosterLayoutGuide
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100160414();
 
   return v3;
@@ -66,7 +66,7 @@
 
 - (UILayoutGuide)monogramPosterLayoutGuide
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100160484();
 
   return v3;
@@ -74,7 +74,7 @@
 
 - (UILayoutGuide)memojiPosterLayoutGuide
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1001604F4();
 
   return v3;
@@ -82,22 +82,22 @@
 
 - (UILayoutGuide)sensitiveContentWarningCenteringLayoutGuide
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100160564();
 
   return v3;
 }
 
-- (void)updateMiddleShelfStateWithIsOpen:(BOOL)a3
+- (void)updateMiddleShelfStateWithIsOpen:(BOOL)open
 {
-  v3 = self;
+  selfCopy = self;
   sub_100160590();
 }
 
-- (void)updateMiddleShelfStateWithIsOpen:(BOOL)a3 animation:(id)a4 completion:(id)a5
+- (void)updateMiddleShelfStateWithIsOpen:(BOOL)open animation:(id)animation completion:(id)completion
 {
-  v7 = _Block_copy(a4);
-  v8 = _Block_copy(a5);
+  v7 = _Block_copy(animation);
+  v8 = _Block_copy(completion);
   v9 = v8;
   if (v7)
   {
@@ -119,16 +119,16 @@ LABEL_3:
   }
 
 LABEL_5:
-  v10 = self;
+  selfCopy = self;
   sub_100160624();
   sub_1000081F4(v9);
   sub_1000081F4(v7);
 }
 
-- (void)updateMiddleShelfStateWithIsOpen:(BOOL)a3 contentView:(id)a4 animation:(id)a5 completion:(id)a6
+- (void)updateMiddleShelfStateWithIsOpen:(BOOL)open contentView:(id)view animation:(id)animation completion:(id)completion
 {
-  v9 = _Block_copy(a5);
-  v10 = _Block_copy(a6);
+  v9 = _Block_copy(animation);
+  v10 = _Block_copy(completion);
   v11 = v10;
   if (v9)
   {
@@ -150,17 +150,17 @@ LABEL_3:
   }
 
 LABEL_5:
-  v12 = a4;
-  v13 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_100160788();
   sub_1000081F4(v11);
   sub_1000081F4(v9);
 }
 
-- (void)updateMiddleStateWithIsEmpty:(BOOL)a3
+- (void)updateMiddleStateWithIsEmpty:(BOOL)empty
 {
-  v4 = self;
-  sub_1001608F4(a3);
+  selfCopy = self;
+  sub_1001608F4(empty);
 }
 
 @end

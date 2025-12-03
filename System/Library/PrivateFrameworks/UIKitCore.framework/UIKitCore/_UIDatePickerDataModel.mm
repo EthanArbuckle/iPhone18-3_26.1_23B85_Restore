@@ -5,21 +5,21 @@
 - (NSDateComponents)effectiveDateComponents;
 - (NSLocale)effectiveLocale;
 - (_UIDatePickerDataModel)init;
-- (id)_dateForRoundingDateToMinuteInterval:(id)a3;
+- (id)_dateForRoundingDateToMinuteInterval:(id)interval;
 - (id)createDatePickerRepresentingDataModel;
-- (id)createDatePickerRepresentingDataModelForMode:(int64_t)a3 style:(int64_t)a4;
+- (id)createDatePickerRepresentingDataModelForMode:(int64_t)mode style:(int64_t)style;
 - (int64_t)datePickerMode;
 - (void)_setupDerivedLocaleAndCalendars;
 - (void)resetForCurrentLocaleOrCalendarChange;
-- (void)setCalendar:(id)a3;
-- (void)setDate:(id)a3;
-- (void)setDatePickerStyle:(int64_t)a3;
-- (void)setLastSelectedDateComponents:(id)a3;
-- (void)setLocale:(id)a3;
-- (void)setMaximumDate:(id)a3;
-- (void)setMinimumDate:(id)a3;
-- (void)setMinuteInterval:(int64_t)a3;
-- (void)setTimeZone:(id)a3;
+- (void)setCalendar:(id)calendar;
+- (void)setDate:(id)date;
+- (void)setDatePickerStyle:(int64_t)style;
+- (void)setLastSelectedDateComponents:(id)components;
+- (void)setLocale:(id)locale;
+- (void)setMaximumDate:(id)date;
+- (void)setMinimumDate:(id)date;
+- (void)setMinuteInterval:(int64_t)interval;
+- (void)setTimeZone:(id)zone;
 @end
 
 @implementation _UIDatePickerDataModel
@@ -45,7 +45,7 @@
 
 - (void)_setupDerivedLocaleAndCalendars
 {
-  v31 = [MEMORY[0x1E695DEE8] currentCalendar];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
   v3 = [(NSCalendar *)self->_calendar copy];
   if (v3)
   {
@@ -54,7 +54,7 @@
 
   else
   {
-    v4 = v31;
+    v4 = currentCalendar;
   }
 
   v5 = v4;
@@ -62,20 +62,20 @@
   locale = self->_locale;
   if (locale)
   {
-    v7 = locale;
+    currentLocale = locale;
   }
 
   else
   {
-    v7 = [MEMORY[0x1E695DF58] currentLocale];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
   }
 
-  v8 = v7;
+  v8 = currentLocale;
   if (self->_calendar)
   {
     v9 = MEMORY[0x1E695DF58];
-    v10 = [(NSLocale *)v7 localeIdentifier];
-    v11 = [v9 componentsFromLocaleIdentifier:v10];
+    localeIdentifier = [(NSLocale *)currentLocale localeIdentifier];
+    v11 = [v9 componentsFromLocaleIdentifier:localeIdentifier];
     v12 = [v11 mutableCopy];
 
     [(NSLocale *)v12 removeObjectForKey:@"calendar"];
@@ -88,27 +88,27 @@
 
   else
   {
-    v16 = v7;
+    v16 = currentLocale;
     v12 = self->_effectiveLocale;
     self->_effectiveLocale = v16;
   }
 
-  v17 = [(NSCalendar *)v5 calendarIdentifier];
-  if ([v17 isEqualToString:*MEMORY[0x1E695D828]])
+  calendarIdentifier = [(NSCalendar *)v5 calendarIdentifier];
+  if ([calendarIdentifier isEqualToString:*MEMORY[0x1E695D828]])
   {
     goto LABEL_13;
   }
 
-  v18 = [(NSCalendar *)v5 calendarIdentifier];
-  if ([v18 isEqualToString:*MEMORY[0x1E695D838]])
+  calendarIdentifier2 = [(NSCalendar *)v5 calendarIdentifier];
+  if ([calendarIdentifier2 isEqualToString:*MEMORY[0x1E695D838]])
   {
 
 LABEL_13:
     goto LABEL_14;
   }
 
-  v23 = [(NSCalendar *)v5 calendarIdentifier];
-  v24 = [v23 isEqualToString:*MEMORY[0x1E695D8E0]];
+  calendarIdentifier3 = [(NSCalendar *)v5 calendarIdentifier];
+  v24 = [calendarIdentifier3 isEqualToString:*MEMORY[0x1E695D8E0]];
 
   if ((v24 & 1) == 0)
   {
@@ -118,9 +118,9 @@ LABEL_13:
   }
 
 LABEL_14:
-  v19 = [(NSCalendar *)v5 firstWeekday];
+  firstWeekday = [(NSCalendar *)v5 firstWeekday];
   [(NSCalendar *)v5 setLocale:self->_effectiveLocale];
-  [(NSCalendar *)v5 setFirstWeekday:v19];
+  [(NSCalendar *)v5 setFirstWeekday:firstWeekday];
   v20 = self->_chineseWrapperCalendar;
   if (v20)
   {
@@ -137,18 +137,18 @@ LABEL_20:
   calendar = self->_calendar;
   if (!calendar)
   {
-    calendar = v31;
+    calendar = currentCalendar;
   }
 
   v26 = calendar;
-  v27 = [(_UIDatePickerDataModel *)self timeZone];
+  timeZone = [(_UIDatePickerDataModel *)self timeZone];
 
-  if (v27)
+  if (timeZone)
   {
     v28 = [(NSCalendar *)v26 copy];
 
-    v29 = [(_UIDatePickerDataModel *)self timeZone];
-    [(NSCalendar *)v28 setTimeZone:v29];
+    timeZone2 = [(_UIDatePickerDataModel *)self timeZone];
+    [(NSCalendar *)v28 setTimeZone:timeZone2];
 
     v26 = v28;
   }
@@ -157,17 +157,17 @@ LABEL_20:
   self->_effectiveCalendar = v26;
 }
 
-- (void)setLocale:(id)a3
+- (void)setLocale:(id)locale
 {
-  objc_storeStrong(&self->_locale, a3);
-  v6 = a3;
+  objc_storeStrong(&self->_locale, locale);
+  localeCopy = locale;
   effectiveLocale = self->_effectiveLocale;
   self->_effectiveLocale = 0;
 }
 
-- (void)setCalendar:(id)a3
+- (void)setCalendar:(id)calendar
 {
-  v4 = [a3 copy];
+  v4 = [calendar copy];
   calendar = self->_calendar;
   self->_calendar = v4;
 
@@ -178,10 +178,10 @@ LABEL_20:
   self->_effectiveCalendar = 0;
 }
 
-- (void)setTimeZone:(id)a3
+- (void)setTimeZone:(id)zone
 {
-  objc_storeStrong(&self->_timeZone, a3);
-  v6 = a3;
+  objc_storeStrong(&self->_timeZone, zone);
+  zoneCopy = zone;
   effectiveCalendar = self->_effectiveCalendar;
   self->_effectiveCalendar = 0;
 }
@@ -205,10 +205,10 @@ LABEL_20:
     [(_UIDatePickerDataModel *)self _setupDerivedLocaleAndCalendars];
   }
 
-  v3 = self;
-  if ([(_UIDatePickerDataModel *)v3 datePickerStyle]!= 1 || (effectiveCalendar = v3->_chineseWrapperCalendar) == 0)
+  selfCopy = self;
+  if ([(_UIDatePickerDataModel *)selfCopy datePickerStyle]!= 1 || (effectiveCalendar = selfCopy->_chineseWrapperCalendar) == 0)
   {
-    effectiveCalendar = v3->_effectiveCalendar;
+    effectiveCalendar = selfCopy->_effectiveCalendar;
   }
 
   v5 = effectiveCalendar;
@@ -218,43 +218,43 @@ LABEL_20:
 
 - (NSCalendar)formattingCalendar
 {
-  v2 = self;
-  if ([(_UIDatePickerDataModel *)v2 datePickerStyle]== 1 && (chineseWrapperCalendar = v2->_chineseWrapperCalendar) != 0)
+  selfCopy = self;
+  if ([(_UIDatePickerDataModel *)selfCopy datePickerStyle]== 1 && (chineseWrapperCalendar = selfCopy->_chineseWrapperCalendar) != 0)
   {
-    v4 = [(_UIDatePickerChineseCalendar *)chineseWrapperCalendar realCalendar];
+    realCalendar = [(_UIDatePickerChineseCalendar *)chineseWrapperCalendar realCalendar];
   }
 
   else
   {
-    v4 = v2->_effectiveCalendar;
+    realCalendar = selfCopy->_effectiveCalendar;
   }
 
-  v5 = v4;
+  v5 = realCalendar;
 
   return v5;
 }
 
-- (void)setLastSelectedDateComponents:(id)a3
+- (void)setLastSelectedDateComponents:(id)components
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  componentsCopy = components;
+  v5 = componentsCopy;
+  if (componentsCopy)
   {
-    v6 = [(NSCalendar *)v4 calendar];
+    calendar = [(NSCalendar *)componentsCopy calendar];
 
-    if (v6)
+    if (calendar)
     {
-      v4 = 0;
+      componentsCopy = 0;
     }
 
     else
     {
-      v4 = [(_UIDatePickerDataModel *)self effectiveCalendar];
+      componentsCopy = [(_UIDatePickerDataModel *)self effectiveCalendar];
     }
   }
 
   lastSelectedDateComponentsCalendar = self->_lastSelectedDateComponentsCalendar;
-  self->_lastSelectedDateComponentsCalendar = v4;
+  self->_lastSelectedDateComponentsCalendar = componentsCopy;
 
   lastSelectedDateComponents = self->_lastSelectedDateComponents;
   self->_lastSelectedDateComponents = v5;
@@ -272,18 +272,18 @@ LABEL_20:
   }
 }
 
-- (void)setDate:(id)a3
+- (void)setDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   if ([(_UIDatePickerDataModel *)self roundsToMinuteInterval])
   {
-    v5 = [(_UIDatePickerDataModel *)self _dateForRoundingDateToMinuteInterval:v4];
+    v5 = [(_UIDatePickerDataModel *)self _dateForRoundingDateToMinuteInterval:dateCopy];
 
-    v4 = v5;
+    dateCopy = v5;
   }
 
   date = self->_date;
-  self->_date = v4;
+  self->_date = dateCopy;
 }
 
 - (NSDate)effectiveDate
@@ -291,40 +291,40 @@ LABEL_20:
   date = self->_date;
   if (date)
   {
-    v4 = date;
+    date = date;
 LABEL_3:
-    v5 = v4;
+    v5 = date;
     goto LABEL_4;
   }
 
   lastSelectedDateComponents = self->_lastSelectedDateComponents;
   if (!lastSelectedDateComponents)
   {
-    v4 = objc_opt_new();
+    date = objc_opt_new();
     goto LABEL_3;
   }
 
-  v11 = [(NSDateComponents *)lastSelectedDateComponents calendar];
+  calendar = [(NSDateComponents *)lastSelectedDateComponents calendar];
 
-  if (v11)
+  if (calendar)
   {
-    v4 = [(NSDateComponents *)self->_lastSelectedDateComponents date];
+    date = [(NSDateComponents *)self->_lastSelectedDateComponents date];
     goto LABEL_3;
   }
 
   lastSelectedDateComponentsCalendar = self->_lastSelectedDateComponentsCalendar;
   if (lastSelectedDateComponentsCalendar)
   {
-    v13 = lastSelectedDateComponentsCalendar;
+    effectiveCalendar = lastSelectedDateComponentsCalendar;
   }
 
   else
   {
-    v13 = [(_UIDatePickerDataModel *)self effectiveCalendar];
+    effectiveCalendar = [(_UIDatePickerDataModel *)self effectiveCalendar];
   }
 
-  v14 = v13;
-  v5 = [(NSCalendar *)v13 dateFromComponents:self->_lastSelectedDateComponents];
+  v14 = effectiveCalendar;
+  v5 = [(NSCalendar *)effectiveCalendar dateFromComponents:self->_lastSelectedDateComponents];
 
 LABEL_4:
   if ([(_UIDatePickerDataModel *)self roundsToMinuteInterval])
@@ -348,38 +348,38 @@ LABEL_4:
   return v5;
 }
 
-- (id)_dateForRoundingDateToMinuteInterval:(id)a3
+- (id)_dateForRoundingDateToMinuteInterval:(id)interval
 {
-  v4 = a3;
-  if (v4 && [(_UIDatePickerDataModel *)self minuteInterval]>= 2)
+  intervalCopy = interval;
+  if (intervalCopy && [(_UIDatePickerDataModel *)self minuteInterval]>= 2)
   {
     if (!self->_effectiveLocale || !self->_effectiveCalendar)
     {
       [(_UIDatePickerDataModel *)self _setupDerivedLocaleAndCalendars];
     }
 
-    v5 = self;
-    if ([(_UIDatePickerDataModel *)v5 datePickerStyle]!= 1 || (effectiveCalendar = v5->_chineseWrapperCalendar) == 0)
+    selfCopy = self;
+    if ([(_UIDatePickerDataModel *)selfCopy datePickerStyle]!= 1 || (effectiveCalendar = selfCopy->_chineseWrapperCalendar) == 0)
     {
-      effectiveCalendar = v5->_effectiveCalendar;
+      effectiveCalendar = selfCopy->_effectiveCalendar;
     }
 
     v7 = effectiveCalendar;
 
-    v8 = [(_UIDatePickerChineseCalendar *)v7 components:766 fromDate:v4];
-    v9 = [v8 minute];
-    if (v9 % [(_UIDatePickerDataModel *)v5 minuteInterval])
+    v8 = [(_UIDatePickerChineseCalendar *)v7 components:766 fromDate:intervalCopy];
+    minute = [v8 minute];
+    if (minute % [(_UIDatePickerDataModel *)selfCopy minuteInterval])
     {
-      v10 = [v8 minute];
-      v11 = [(_UIDatePickerDataModel *)v5 minuteInterval];
-      [v8 setMinute:(floor(v10 / v11) * v11)];
+      minute2 = [v8 minute];
+      minuteInterval = [(_UIDatePickerDataModel *)selfCopy minuteInterval];
+      [v8 setMinute:(floor(minute2 / minuteInterval) * minuteInterval)];
       v12 = [(_UIDatePickerChineseCalendar *)v7 dateFromComponents:v8];
 
-      v4 = v12;
+      intervalCopy = v12;
     }
   }
 
-  return v4;
+  return intervalCopy;
 }
 
 - (NSDateComponents)effectiveDateComponents
@@ -394,10 +394,10 @@ LABEL_4:
     goto LABEL_9;
   }
 
-  v3 = self;
-  if ([(_UIDatePickerDataModel *)v3 datePickerStyle]!= 1 || (effectiveCalendar = v3->_chineseWrapperCalendar) == 0)
+  selfCopy = self;
+  if ([(_UIDatePickerDataModel *)selfCopy datePickerStyle]!= 1 || (effectiveCalendar = selfCopy->_chineseWrapperCalendar) == 0)
   {
-    effectiveCalendar = v3->_effectiveCalendar;
+    effectiveCalendar = selfCopy->_effectiveCalendar;
   }
 
   v5 = effectiveCalendar;
@@ -415,27 +415,27 @@ LABEL_9:
 
     else
     {
-      v9 = self;
-      if ([(_UIDatePickerDataModel *)v9 datePickerStyle]!= 1 || (chineseWrapperCalendar = v9->_chineseWrapperCalendar) == 0)
+      selfCopy2 = self;
+      if ([(_UIDatePickerDataModel *)selfCopy2 datePickerStyle]!= 1 || (chineseWrapperCalendar = selfCopy2->_chineseWrapperCalendar) == 0)
       {
-        chineseWrapperCalendar = v9->_effectiveCalendar;
+        chineseWrapperCalendar = selfCopy2->_effectiveCalendar;
       }
 
       v11 = chineseWrapperCalendar;
 
-      v12 = [MEMORY[0x1E695DF00] date];
-      v6 = [(_UIDatePickerChineseCalendar *)v11 components:766 fromDate:v12];
+      date = [MEMORY[0x1E695DF00] date];
+      v6 = [(_UIDatePickerChineseCalendar *)v11 components:766 fromDate:date];
     }
   }
 
-  v13 = [v6 calendar];
+  calendar = [v6 calendar];
 
-  if (!v13)
+  if (!calendar)
   {
-    v14 = self;
-    if ([(_UIDatePickerDataModel *)v14 datePickerStyle]!= 1 || (v15 = v14->_chineseWrapperCalendar) == 0)
+    selfCopy3 = self;
+    if ([(_UIDatePickerDataModel *)selfCopy3 datePickerStyle]!= 1 || (v15 = selfCopy3->_chineseWrapperCalendar) == 0)
     {
-      v15 = v14->_effectiveCalendar;
+      v15 = selfCopy3->_effectiveCalendar;
     }
 
     v16 = v15;
@@ -446,18 +446,18 @@ LABEL_9:
   return v6;
 }
 
-- (void)setMinuteInterval:(int64_t)a3
+- (void)setMinuteInterval:(int64_t)interval
 {
-  if (a3 <= 0x1E && ((1 << a3) & 0x4010947E) != 0)
+  if (interval <= 0x1E && ((1 << interval) & 0x4010947E) != 0)
   {
-    self->_minuteInterval = a3;
+    self->_minuteInterval = interval;
   }
 }
 
-- (void)setMinimumDate:(id)a3
+- (void)setMinimumDate:(id)date
 {
   dateRange = self->_dateRange;
-  if (a3 | dateRange)
+  if (date | dateRange)
   {
     v5 = [(_UIDatePickerDateRange *)dateRange copyWithStartDate:?];
     v6 = self->_dateRange;
@@ -465,10 +465,10 @@ LABEL_9:
   }
 }
 
-- (void)setMaximumDate:(id)a3
+- (void)setMaximumDate:(id)date
 {
   dateRange = self->_dateRange;
-  if (a3 | dateRange)
+  if (date | dateRange)
   {
     v5 = [(_UIDatePickerDateRange *)dateRange copyWithEndDate:?];
     v6 = self->_dateRange;
@@ -476,15 +476,15 @@ LABEL_9:
   }
 }
 
-- (void)setDatePickerStyle:(int64_t)a3
+- (void)setDatePickerStyle:(int64_t)style
 {
-  if (!a3)
+  if (!style)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"_UIDatePickerDataModel.m" lineNumber:283 description:@"date picker style can not be .automatic after being resolved."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDatePickerDataModel.m" lineNumber:283 description:@"date picker style can not be .automatic after being resolved."];
   }
 
-  self->_datePickerStyle = a3;
+  self->_datePickerStyle = style;
 }
 
 - (int64_t)datePickerMode
@@ -502,38 +502,38 @@ LABEL_9:
 
 - (id)createDatePickerRepresentingDataModel
 {
-  v3 = [(_UIDatePickerDataModel *)self datePickerMode];
-  v4 = [(_UIDatePickerDataModel *)self datePickerStyle];
+  datePickerMode = [(_UIDatePickerDataModel *)self datePickerMode];
+  datePickerStyle = [(_UIDatePickerDataModel *)self datePickerStyle];
 
-  return [(_UIDatePickerDataModel *)self createDatePickerRepresentingDataModelForMode:v3 style:v4];
+  return [(_UIDatePickerDataModel *)self createDatePickerRepresentingDataModelForMode:datePickerMode style:datePickerStyle];
 }
 
-- (id)createDatePickerRepresentingDataModelForMode:(int64_t)a3 style:(int64_t)a4
+- (id)createDatePickerRepresentingDataModelForMode:(int64_t)mode style:(int64_t)style
 {
   v7 = objc_opt_new();
-  [v7 setDatePickerMode:a3];
-  [v7 setPreferredDatePickerStyle:a4];
-  v8 = [(_UIDatePickerDataModel *)self calendar];
-  [v7 setCalendar:v8];
+  [v7 setDatePickerMode:mode];
+  [v7 setPreferredDatePickerStyle:style];
+  calendar = [(_UIDatePickerDataModel *)self calendar];
+  [v7 setCalendar:calendar];
 
-  v9 = [(_UIDatePickerDataModel *)self locale];
-  [v7 setLocale:v9];
+  locale = [(_UIDatePickerDataModel *)self locale];
+  [v7 setLocale:locale];
 
-  v10 = [(_UIDatePickerDataModel *)self timeZone];
-  [v7 setTimeZone:v10];
+  timeZone = [(_UIDatePickerDataModel *)self timeZone];
+  [v7 setTimeZone:timeZone];
 
-  v11 = [(_UIDatePickerDataModel *)self minimumDate];
-  [v7 setMinimumDate:v11];
+  minimumDate = [(_UIDatePickerDataModel *)self minimumDate];
+  [v7 setMinimumDate:minimumDate];
 
-  v12 = [(_UIDatePickerDataModel *)self maximumDate];
-  [v7 setMaximumDate:v12];
+  maximumDate = [(_UIDatePickerDataModel *)self maximumDate];
+  [v7 setMaximumDate:maximumDate];
 
-  v13 = [(_UIDatePickerDataModel *)self effectiveDate];
-  [v7 setDate:v13];
+  effectiveDate = [(_UIDatePickerDataModel *)self effectiveDate];
+  [v7 setDate:effectiveDate];
 
   [v7 setMinuteInterval:{-[_UIDatePickerDataModel minuteInterval](self, "minuteInterval")}];
-  v14 = [(_UIDatePickerDataModel *)self customFontDesign];
-  [v7 _setCustomFontDesign:v14];
+  customFontDesign = [(_UIDatePickerDataModel *)self customFontDesign];
+  [v7 _setCustomFontDesign:customFontDesign];
 
   [v7 setRoundsToMinuteInterval:{-[_UIDatePickerDataModel roundsToMinuteInterval](self, "roundsToMinuteInterval")}];
 

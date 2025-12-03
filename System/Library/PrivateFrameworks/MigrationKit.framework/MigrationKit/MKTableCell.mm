@@ -6,18 +6,18 @@
 
 - (id)formattedValue
 {
-  v3 = [(MKTableCell *)self formatter];
-  if (v3)
+  formatter = [(MKTableCell *)self formatter];
+  if (formatter)
   {
-    v4 = [(MKTableCell *)self formatter];
-    v5 = [(MKTableCell *)self value];
-    v6 = [v4 stringForObjectValue:v5];
+    formatter2 = [(MKTableCell *)self formatter];
+    value = [(MKTableCell *)self value];
+    v6 = [formatter2 stringForObjectValue:value];
   }
 
   else
   {
-    v4 = [(MKTableCell *)self value];
-    v6 = [v4 description];
+    formatter2 = [(MKTableCell *)self value];
+    v6 = [formatter2 description];
   }
 
   return v6;

@@ -12,7 +12,7 @@
 - (uint64_t)initWithCoreCryptoStatus:()KCCreationHelpers description:args:
 {
   v7 = UserInfoFromVA(a4, a5);
-  v8 = [a1 initWithCoreCryptoStatus:a3 userInfo:v7];
+  v8 = [self initWithCoreCryptoStatus:a3 userInfo:v7];
 
   return v8;
 }
@@ -20,7 +20,7 @@
 - (uint64_t)initWithOSStatus:()KCCreationHelpers description:args:
 {
   v7 = UserInfoFromVA(a4, a5);
-  v8 = [a1 initWithOSStatus:a3 userInfo:v7];
+  v8 = [self initWithOSStatus:a3 userInfo:v7];
 
   return v8;
 }

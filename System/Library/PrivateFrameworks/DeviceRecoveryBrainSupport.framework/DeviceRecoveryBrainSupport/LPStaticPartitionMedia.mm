@@ -9,19 +9,19 @@
 
 + (id)supportedContentTypes
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
-    v3 = [a1 contentTypesForPartitionMedia];
+    contentTypesForPartitionMedia = [self contentTypesForPartitionMedia];
   }
 
   else
   {
-    v5.receiver = a1;
+    v5.receiver = self;
     v5.super_class = &OBJC_METACLASS___LPStaticPartitionMedia;
-    v3 = objc_msgSendSuper2(&v5, "supportedContentTypes");
+    contentTypesForPartitionMedia = objc_msgSendSuper2(&v5, "supportedContentTypes");
   }
 
-  return v3;
+  return contentTypesForPartitionMedia;
 }
 
 + (id)contentTypesForPartitionMedia

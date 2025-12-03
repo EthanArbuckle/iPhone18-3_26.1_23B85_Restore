@@ -21,21 +21,21 @@
 
   if (v4)
   {
-    v9 = a1;
+    selfCopy = self;
   }
 
   else
   {
     [v2 zoomFactor];
     v6 = 1.0 / v5;
-    [a1 size];
+    [self size];
     v12 = v8;
     v13 = v7;
     CGAffineTransformMakeScale(&v14, v6, v6);
-    v9 = [a1 sbf_resizeImageToSize:{vmlaq_n_f64(vmulq_n_f64(*&v14.c, v12), *&v14.a, v13)}];
+    selfCopy = [self sbf_resizeImageToSize:{vmlaq_n_f64(vmulq_n_f64(*&v14.c, v12), *&v14.a, v13)}];
   }
 
-  v10 = v9;
+  v10 = selfCopy;
 
   return v10;
 }

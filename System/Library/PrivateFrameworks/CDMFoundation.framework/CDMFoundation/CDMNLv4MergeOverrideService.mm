@@ -1,9 +1,9 @@
 @interface CDMNLv4MergeOverrideService
-- (BOOL)InitializeNLv4OverrideStore:(id)a3;
-- (id)handle:(id)a3;
+- (BOOL)InitializeNLv4OverrideStore:(id)store;
+- (id)handle:(id)handle;
 - (id)handleRequestCommandTypeNames;
-- (id)setup:(id)a3;
-- (id)setupFailedFor:(id)a3;
+- (id)setup:(id)setup;
+- (id)setupFailedFor:(id)for;
 - (id)setupSucceeded;
 @end
 
@@ -35,43 +35,43 @@
   }
 
   self->super.super._serviceState = 2;
-  v4 = [(CDMBaseService *)self createSetupResponseCommand];
+  createSetupResponseCommand = [(CDMBaseService *)self createSetupResponseCommand];
   v5 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return createSetupResponseCommand;
 }
 
-- (id)setupFailedFor:(id)a3
+- (id)setupFailedFor:(id)for
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  forCopy = for;
   v5 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     v10 = 136315394;
     v11 = "[CDMNLv4MergeOverrideService setupFailedFor:]";
     v12 = 2112;
-    v13 = v4;
+    v13 = forCopy;
     _os_log_error_impl(&dword_1DC287000, v5, OS_LOG_TYPE_ERROR, "%s [ERR]: NLv4 Overrides service failed to setup: %@", &v10, 0x16u);
   }
 
   self->super.super._serviceState = 3;
-  v6 = [(CDMBaseService *)self createSetupResponseCommand];
-  v7 = [(CDMBaseService *)self createErrorWithCode:0 description:v4];
-  [v6 setCmdError:v7];
+  createSetupResponseCommand = [(CDMBaseService *)self createSetupResponseCommand];
+  v7 = [(CDMBaseService *)self createErrorWithCode:0 description:forCopy];
+  [createSetupResponseCommand setCmdError:v7];
 
   v8 = *MEMORY[0x1E69E9840];
 
-  return v6;
+  return createSetupResponseCommand;
 }
 
-- (id)handle:(id)a3
+- (id)handle:(id)handle
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CDMNLv4MergeOverrideService *)self isOverrideServiceEnabled];
+  handleCopy = handle;
+  isOverrideServiceEnabled = [(CDMNLv4MergeOverrideService *)self isOverrideServiceEnabled];
   v6 = @"disabled";
-  if (v5)
+  if (isOverrideServiceEnabled)
   {
     v6 = @"enabled";
   }
@@ -88,12 +88,12 @@
     _os_signpost_emit_with_name_impl(&dword_1DC287000, v10, OS_SIGNPOST_INTERVAL_BEGIN, v8, "NLv4MergeOverride", "invokeNLv4MergeOverrideService: %@", buf, 0xCu);
   }
 
-  if (v5 && self->_store)
+  if (isOverrideServiceEnabled && self->_store)
   {
-    v12 = [v4 request];
-    v13 = [v12 inputs];
+    request = [handleCopy request];
+    inputs = [request inputs];
 
-    v14 = [(SiriNLUOverrideProxy *)self->_store matchWithInputs:v13 overrideNamespace:5];
+    v14 = [(SiriNLUOverrideProxy *)self->_store matchWithInputs:inputs overrideNamespace:5];
     if (v14)
     {
       v15 = v14;
@@ -106,8 +106,8 @@
       }
 
       v18 = [CDMOverridesProtoResponseCommand alloc];
-      v19 = [v15 userParse];
-      v25 = v19;
+      userParse = [v15 userParse];
+      v25 = userParse;
       v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v25 count:1];
       v21 = [(CDMOverridesProtoResponseCommand *)v18 initWithParsesForReplacement:v20 parsesForAppending:MEMORY[0x1E695E0F0]];
 
@@ -116,11 +116,11 @@
   }
 
   v22 = CDMLogContext;
-  v13 = v22;
+  inputs = v22;
   if (v11 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v22))
   {
     *buf = 0;
-    _os_signpost_emit_with_name_impl(&dword_1DC287000, v13, OS_SIGNPOST_INTERVAL_END, v8, "NLv4MergeOverride", "", buf, 2u);
+    _os_signpost_emit_with_name_impl(&dword_1DC287000, inputs, OS_SIGNPOST_INTERVAL_END, v8, "NLv4MergeOverride", "", buf, 2u);
   }
 
   v21 = 0;
@@ -131,17 +131,17 @@ LABEL_18:
   return v21;
 }
 
-- (BOOL)InitializeNLv4OverrideStore:(id)a3
+- (BOOL)InitializeNLv4OverrideStore:(id)store
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   v5 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v13 = 136315394;
     v14 = "[CDMNLv4MergeOverrideService InitializeNLv4OverrideStore:]";
     v15 = 2112;
-    v16 = v4;
+    v16 = storeCopy;
     _os_log_impl(&dword_1DC287000, v5, OS_LOG_TYPE_INFO, "%s Overrides Trie asset bundle is:%@", &v13, 0x16u);
   }
 
@@ -149,7 +149,7 @@ LABEL_18:
   store = self->_store;
   self->_store = v6;
 
-  v8 = [(SiriNLUOverrideProxy *)self->_store loadComponentOverrideTrieStoreWithTrieFilePath:v4];
+  v8 = [(SiriNLUOverrideProxy *)self->_store loadComponentOverrideTrieStoreWithTrieFilePath:storeCopy];
   v9 = CDMOSLoggerForCategory(0);
   v10 = v9;
   if (v8)
@@ -173,10 +173,10 @@ LABEL_18:
   return v8;
 }
 
-- (id)setup:(id)a3
+- (id)setup:(id)setup
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  setupCopy = setup;
   v5 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -185,9 +185,9 @@ LABEL_18:
     _os_log_debug_impl(&dword_1DC287000, v5, OS_LOG_TYPE_DEBUG, "%s Beginning setup of new instance of NLv4 Service Overrides service", &v38, 0xCu);
   }
 
-  v6 = [(CDMNLv4MergeOverrideService *)self isOverrideServiceEnabled];
+  isOverrideServiceEnabled = [(CDMNLv4MergeOverrideService *)self isOverrideServiceEnabled];
   v7 = @"disabled";
-  if (v6)
+  if (isOverrideServiceEnabled)
   {
     v7 = @"enabled";
   }
@@ -204,7 +204,7 @@ LABEL_18:
     _os_signpost_emit_with_name_impl(&dword_1DC287000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v9, "NLv4MergeOverride", "setupNLv4MergeOverrideService: %@", &v38, 0xCu);
   }
 
-  if (v6)
+  if (isOverrideServiceEnabled)
   {
     v13 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
@@ -214,13 +214,13 @@ LABEL_18:
       _os_log_impl(&dword_1DC287000, v13, OS_LOG_TYPE_INFO, "%s The NLv4 Overrides service is enabled", &v38, 0xCu);
     }
 
-    v14 = [v4 dynamicConfig];
-    v15 = [v14 getAssetForFactorName:@"com.apple.siri.nl.nlv4"];
+    dynamicConfig = [setupCopy dynamicConfig];
+    v15 = [dynamicConfig getAssetForFactorName:@"com.apple.siri.nl.nlv4"];
     nlAsset = self->_nlAsset;
     self->_nlAsset = v15;
 
-    v17 = [v4 dynamicConfig];
-    v18 = [v17 getAssetBundlePathForFactorName:@"com.apple.siri.nl.nlv4"];
+    dynamicConfig2 = [setupCopy dynamicConfig];
+    v18 = [dynamicConfig2 getAssetBundlePathForFactorName:@"com.apple.siri.nl.nlv4"];
 
     if (!v18)
     {
@@ -232,21 +232,21 @@ LABEL_18:
         _os_signpost_emit_with_name_impl(&dword_1DC287000, v28, OS_SIGNPOST_INTERVAL_END, v9, "NLv4MergeOverride", "", &v38, 2u);
       }
 
-      v29 = [(CDMNLv4MergeOverrideService *)self setupFailedFor:@"Unable to locate NSBundle of requisite file assets to handle requests"];
+      setupSucceeded2 = [(CDMNLv4MergeOverrideService *)self setupFailedFor:@"Unable to locate NSBundle of requisite file assets to handle requests"];
       goto LABEL_40;
     }
 
     if (+[CDMFeatureFlags isTrieOverridesEnabled])
     {
-      v19 = [v18 resourcePath];
-      v20 = [v19 stringByAppendingPathComponent:@"trie_bundle"];
+      resourcePath = [v18 resourcePath];
+      v20 = [resourcePath stringByAppendingPathComponent:@"trie_bundle"];
 
-      v21 = [MEMORY[0x1E696AC08] defaultManager];
-      if ([v21 fileExistsAtPath:v20])
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      if ([defaultManager fileExistsAtPath:v20])
       {
-        v22 = self;
-        objc_sync_enter(v22);
-        if ([(CDMNLv4MergeOverrideService *)v22 InitializeNLv4OverrideStore:v20])
+        selfCopy = self;
+        objc_sync_enter(selfCopy);
+        if ([(CDMNLv4MergeOverrideService *)selfCopy InitializeNLv4OverrideStore:v20])
         {
           v23 = CDMOSLoggerForCategory(0);
           if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
@@ -264,7 +264,7 @@ LABEL_18:
             _os_signpost_emit_with_name_impl(&dword_1DC287000, v25, OS_SIGNPOST_INTERVAL_END, v9, "NLv4MergeOverride", "", &v38, 2u);
           }
 
-          v26 = [(CDMNLv4MergeOverrideService *)v22 setupSucceeded];
+          setupSucceeded = [(CDMNLv4MergeOverrideService *)selfCopy setupSucceeded];
         }
 
         else
@@ -285,11 +285,11 @@ LABEL_18:
             _os_signpost_emit_with_name_impl(&dword_1DC287000, v35, OS_SIGNPOST_INTERVAL_END, v9, "NLv4MergeOverride", "", &v38, 2u);
           }
 
-          v26 = [(CDMNLv4MergeOverrideService *)v22 setupFailedFor:@"Failed to load NLv4 overrides bundle. See CDM Logs for details"];
+          setupSucceeded = [(CDMNLv4MergeOverrideService *)selfCopy setupFailedFor:@"Failed to load NLv4 overrides bundle. See CDM Logs for details"];
         }
 
-        v29 = v26;
-        objc_sync_exit(v22);
+        setupSucceeded2 = setupSucceeded;
+        objc_sync_exit(selfCopy);
 
 LABEL_40:
         goto LABEL_41;
@@ -313,12 +313,12 @@ LABEL_40:
     _os_signpost_emit_with_name_impl(&dword_1DC287000, v32, OS_SIGNPOST_INTERVAL_END, v9, "NLv4MergeOverride", "", &v38, 2u);
   }
 
-  v29 = [(CDMNLv4MergeOverrideService *)self setupSucceeded];
+  setupSucceeded2 = [(CDMNLv4MergeOverrideService *)self setupSucceeded];
 LABEL_41:
 
   v36 = *MEMORY[0x1E69E9840];
 
-  return v29;
+  return setupSucceeded2;
 }
 
 @end

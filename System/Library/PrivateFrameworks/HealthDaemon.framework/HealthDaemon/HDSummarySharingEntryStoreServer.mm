@@ -1,50 +1,50 @@
 @interface HDSummarySharingEntryStoreServer
 + (id)requiredEntitlements;
 + (id)taskIdentifier;
-- (HDSummarySharingEntryStoreServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
+- (HDSummarySharingEntryStoreServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
 - (void)dealloc;
-- (void)profileDidBecomeReady:(id)a3;
-- (void)remote_acceptInvitationWithUUID:(id)a3 completion:(id)a4;
-- (void)remote_declineInvitationWithUUID:(id)a3 completion:(id)a4;
-- (void)remote_fetchSharingEntriesWithCompletionHandler:(id)a3;
-- (void)remote_inviteSharingDataWithIdentifier:(id)a3 firstName:(id)a4 lastName:(id)a5 sharingAuthorizations:(id)a6 userWheelchairMode:(int64_t)a7 completion:(id)a8;
-- (void)remote_leaveInvitationWithUUID:(id)a3 completion:(id)a4;
-- (void)remote_revokeInvitationWithUUID:(id)a3 completion:(id)a4;
-- (void)remote_unpauseInvitationWithUUID:(id)a3 completion:(id)a4;
-- (void)remote_updateNotificationStatusWithUUID:(id)a3 notificationStatus:(int64_t)a4 completion:(id)a5;
-- (void)sharingEntriesDidUpdate:(id)a3;
-- (void)summarySharingEntryIDSManager:(id)a3 didUpdateReachabilityStatus:(id)a4 error:(id)a5;
+- (void)profileDidBecomeReady:(id)ready;
+- (void)remote_acceptInvitationWithUUID:(id)d completion:(id)completion;
+- (void)remote_declineInvitationWithUUID:(id)d completion:(id)completion;
+- (void)remote_fetchSharingEntriesWithCompletionHandler:(id)handler;
+- (void)remote_inviteSharingDataWithIdentifier:(id)identifier firstName:(id)name lastName:(id)lastName sharingAuthorizations:(id)authorizations userWheelchairMode:(int64_t)mode completion:(id)completion;
+- (void)remote_leaveInvitationWithUUID:(id)d completion:(id)completion;
+- (void)remote_revokeInvitationWithUUID:(id)d completion:(id)completion;
+- (void)remote_unpauseInvitationWithUUID:(id)d completion:(id)completion;
+- (void)remote_updateNotificationStatusWithUUID:(id)d notificationStatus:(int64_t)status completion:(id)completion;
+- (void)sharingEntriesDidUpdate:(id)update;
+- (void)summarySharingEntryIDSManager:(id)manager didUpdateReachabilityStatus:(id)status error:(id)error;
 @end
 
 @implementation HDSummarySharingEntryStoreServer
 
-- (HDSummarySharingEntryStoreServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDSummarySharingEntryStoreServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
-  v10 = a5;
+  clientCopy = client;
   v23.receiver = self;
   v23.super_class = HDSummarySharingEntryStoreServer;
-  v11 = [(HDStandardTaskServer *)&v23 initWithUUID:a3 configuration:a4 client:v10 delegate:a6];
+  v11 = [(HDStandardTaskServer *)&v23 initWithUUID:d configuration:configuration client:clientCopy delegate:delegate];
   if (v11)
   {
-    v12 = [v10 profile];
-    v13 = [v12 summarySharingEntryIDSManager];
+    profile = [clientCopy profile];
+    summarySharingEntryIDSManager = [profile summarySharingEntryIDSManager];
     summarySharingEntryIDSManager = v11->_summarySharingEntryIDSManager;
-    v11->_summarySharingEntryIDSManager = v13;
+    v11->_summarySharingEntryIDSManager = summarySharingEntryIDSManager;
 
-    v15 = [v10 profile];
-    v16 = [v15 sharingEntryManager];
+    profile2 = [clientCopy profile];
+    sharingEntryManager = [profile2 sharingEntryManager];
     sharingEntryManager = v11->_sharingEntryManager;
-    v11->_sharingEntryManager = v16;
+    v11->_sharingEntryManager = sharingEntryManager;
 
-    v18 = [v10 profile];
-    v19 = [v18 sharingAuthorizationManager];
+    profile3 = [clientCopy profile];
+    sharingAuthorizationManager = [profile3 sharingAuthorizationManager];
     sharingAuthorizationManager = v11->_sharingAuthorizationManager;
-    v11->_sharingAuthorizationManager = v19;
+    v11->_sharingAuthorizationManager = sharingAuthorizationManager;
 
     [(HDSummarySharingEntryIDSManager *)v11->_summarySharingEntryIDSManager addObserver:v11];
     [(HDSummarySharingEntryManager *)v11->_sharingEntryManager addObserver:v11];
-    v21 = [v10 profile];
-    [v21 registerProfileReadyObserver:v11 queue:0];
+    profile4 = [clientCopy profile];
+    [profile4 registerProfileReadyObserver:v11 queue:0];
   }
 
   return v11;
@@ -59,7 +59,7 @@
   [(HDSummarySharingEntryStoreServer *)&v3 dealloc];
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
   v14 = *MEMORY[0x277D85DE8];
   sharingEntryManager = self->_sharingEntryManager;
@@ -73,7 +73,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v11 = self;
+      selfCopy = self;
       v12 = 2114;
       v13 = v6;
       _os_log_error_impl(&dword_228986000, v7, OS_LOG_TYPE_ERROR, "[summary-sharing] %{public}@: Failed to resolve contacts: %{public}@", buf, 0x16u);
@@ -100,20 +100,20 @@
   return v2;
 }
 
-- (void)summarySharingEntryIDSManager:(id)a3 didUpdateReachabilityStatus:(id)a4 error:(id)a5
+- (void)summarySharingEntryIDSManager:(id)manager didUpdateReachabilityStatus:(id)status error:(id)error
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(HDStandardTaskServer *)self client];
-  v10 = [v9 connection];
+  errorCopy = error;
+  statusCopy = status;
+  client = [(HDStandardTaskServer *)self client];
+  connection = [client connection];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __100__HDSummarySharingEntryStoreServer_summarySharingEntryIDSManager_didUpdateReachabilityStatus_error___block_invoke;
   v12[3] = &unk_2786138D0;
   v12[4] = self;
-  v11 = [v10 remoteObjectProxyWithErrorHandler:v12];
+  v11 = [connection remoteObjectProxyWithErrorHandler:v12];
 
-  [v11 clientRemote_reachabilityStatusDidUpdate:v8 error:v7];
+  [v11 clientRemote_reachabilityStatusDidUpdate:statusCopy error:errorCopy];
 }
 
 void __100__HDSummarySharingEntryStoreServer_summarySharingEntryIDSManager_didUpdateReachabilityStatus_error___block_invoke(uint64_t a1, void *a2)
@@ -135,38 +135,38 @@ void __100__HDSummarySharingEntryStoreServer_summarySharingEntryIDSManager_didUp
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sharingEntriesDidUpdate:(id)a3
+- (void)sharingEntriesDidUpdate:(id)update
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  updateCopy = update;
+  if ([updateCopy count])
   {
     _HKInitializeLogging();
     v5 = HKLogSharing();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v36 = self;
+      selfCopy2 = self;
       v37 = 2112;
-      v38 = v4;
+      v38 = updateCopy;
       _os_log_impl(&dword_228986000, v5, OS_LOG_TYPE_DEFAULT, "[summary-sharing] %{public}@: Sharing entries updated: %@", buf, 0x16u);
     }
 
-    v6 = [(HDStandardTaskServer *)self client];
-    v7 = [v6 connection];
+    client = [(HDStandardTaskServer *)self client];
+    connection = [client connection];
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
     v33[2] = __60__HDSummarySharingEntryStoreServer_sharingEntriesDidUpdate___block_invoke;
     v33[3] = &unk_2786138D0;
     v33[4] = self;
-    v25 = [v7 remoteObjectProxyWithErrorHandler:v33];
+    v25 = [connection remoteObjectProxyWithErrorHandler:v33];
 
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v9 = v4;
+    v9 = updateCopy;
     v10 = [v9 countByEnumeratingWithState:&v29 objects:v34 count:16];
     if (v10)
     {
@@ -182,8 +182,8 @@ void __100__HDSummarySharingEntryStoreServer_summarySharingEntryIDSManager_didUp
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v29 + 1) + 8 * v13) UUID];
-          v15 = HDSummarySharingEntryPredicateForUUID(v14);
+          uUID = [*(*(&v29 + 1) + 8 * v13) UUID];
+          v15 = HDSummarySharingEntryPredicateForUUID(uUID);
           [v8 addObject:v15];
 
           ++v13;
@@ -223,7 +223,7 @@ void __100__HDSummarySharingEntryStoreServer_summarySharingEntryIDSManager_didUp
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v36 = self;
+        selfCopy2 = self;
         v37 = 2112;
         v38 = v21;
         _os_log_error_impl(&dword_228986000, v23, OS_LOG_TYPE_ERROR, "[summary-sharing] %{public}@: Sharing entries updated but failed to fetch new entries. %@", buf, 0x16u);
@@ -274,27 +274,27 @@ uint64_t __60__HDSummarySharingEntryStoreServer_sharingEntriesDidUpdate___block_
   return 1;
 }
 
-- (void)remote_fetchSharingEntriesWithCompletionHandler:(id)a3
+- (void)remote_fetchSharingEntriesWithCompletionHandler:(id)handler
 {
   sharingEntryManager = self->_sharingEntryManager;
   v7 = 0;
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [(HDSummarySharingEntryManager *)sharingEntryManager fetchSharingEntriesWithError:&v7];
   v6 = v7;
-  v4[2](v4, v5, v6);
+  handlerCopy[2](handlerCopy, v5, v6);
 }
 
-- (void)remote_inviteSharingDataWithIdentifier:(id)a3 firstName:(id)a4 lastName:(id)a5 sharingAuthorizations:(id)a6 userWheelchairMode:(int64_t)a7 completion:(id)a8
+- (void)remote_inviteSharingDataWithIdentifier:(id)identifier firstName:(id)name lastName:(id)lastName sharingAuthorizations:(id)authorizations userWheelchairMode:(int64_t)mode completion:(id)completion
 {
-  v14 = a8;
+  completionCopy = completion;
   summarySharingEntryIDSManager = self->_summarySharingEntryIDSManager;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __146__HDSummarySharingEntryStoreServer_remote_inviteSharingDataWithIdentifier_firstName_lastName_sharingAuthorizations_userWheelchairMode_completion___block_invoke;
   v17[3] = &unk_2786130D8;
-  v18 = v14;
-  v16 = v14;
-  [(HDSummarySharingEntryIDSManager *)summarySharingEntryIDSManager inviteSharingDataWithIdentifier:a3 firstName:a4 lastName:a5 sharingAuthorizations:a6 userWheelchairMode:a7 completion:v17];
+  v18 = completionCopy;
+  v16 = completionCopy;
+  [(HDSummarySharingEntryIDSManager *)summarySharingEntryIDSManager inviteSharingDataWithIdentifier:identifier firstName:name lastName:lastName sharingAuthorizations:authorizations userWheelchairMode:mode completion:v17];
 }
 
 void __146__HDSummarySharingEntryStoreServer_remote_inviteSharingDataWithIdentifier_firstName_lastName_sharingAuthorizations_userWheelchairMode_completion___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -304,17 +304,17 @@ void __146__HDSummarySharingEntryStoreServer_remote_inviteSharingDataWithIdentif
   (*(v4 + 16))(v4, a2, v5);
 }
 
-- (void)remote_acceptInvitationWithUUID:(id)a3 completion:(id)a4
+- (void)remote_acceptInvitationWithUUID:(id)d completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   summarySharingEntryIDSManager = self->_summarySharingEntryIDSManager;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __79__HDSummarySharingEntryStoreServer_remote_acceptInvitationWithUUID_completion___block_invoke;
   v9[3] = &unk_2786130D8;
-  v10 = v6;
-  v8 = v6;
-  [(HDSummarySharingEntryIDSManager *)summarySharingEntryIDSManager acceptInvitationWithUUID:a3 completion:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [(HDSummarySharingEntryIDSManager *)summarySharingEntryIDSManager acceptInvitationWithUUID:d completion:v9];
 }
 
 void __79__HDSummarySharingEntryStoreServer_remote_acceptInvitationWithUUID_completion___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -324,17 +324,17 @@ void __79__HDSummarySharingEntryStoreServer_remote_acceptInvitationWithUUID_comp
   (*(v4 + 16))(v4, a2, v5);
 }
 
-- (void)remote_declineInvitationWithUUID:(id)a3 completion:(id)a4
+- (void)remote_declineInvitationWithUUID:(id)d completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   summarySharingEntryIDSManager = self->_summarySharingEntryIDSManager;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __80__HDSummarySharingEntryStoreServer_remote_declineInvitationWithUUID_completion___block_invoke;
   v9[3] = &unk_2786130D8;
-  v10 = v6;
-  v8 = v6;
-  [(HDSummarySharingEntryIDSManager *)summarySharingEntryIDSManager declineInvitationWithUUID:a3 completion:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [(HDSummarySharingEntryIDSManager *)summarySharingEntryIDSManager declineInvitationWithUUID:d completion:v9];
 }
 
 void __80__HDSummarySharingEntryStoreServer_remote_declineInvitationWithUUID_completion___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -344,17 +344,17 @@ void __80__HDSummarySharingEntryStoreServer_remote_declineInvitationWithUUID_com
   (*(v4 + 16))(v4, a2, v5);
 }
 
-- (void)remote_revokeInvitationWithUUID:(id)a3 completion:(id)a4
+- (void)remote_revokeInvitationWithUUID:(id)d completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   summarySharingEntryIDSManager = self->_summarySharingEntryIDSManager;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __79__HDSummarySharingEntryStoreServer_remote_revokeInvitationWithUUID_completion___block_invoke;
   v9[3] = &unk_2786130D8;
-  v10 = v6;
-  v8 = v6;
-  [(HDSummarySharingEntryIDSManager *)summarySharingEntryIDSManager revokeInvitationWithUUID:a3 completion:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [(HDSummarySharingEntryIDSManager *)summarySharingEntryIDSManager revokeInvitationWithUUID:d completion:v9];
 }
 
 void __79__HDSummarySharingEntryStoreServer_remote_revokeInvitationWithUUID_completion___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -364,17 +364,17 @@ void __79__HDSummarySharingEntryStoreServer_remote_revokeInvitationWithUUID_comp
   (*(v4 + 16))(v4, a2, v5);
 }
 
-- (void)remote_leaveInvitationWithUUID:(id)a3 completion:(id)a4
+- (void)remote_leaveInvitationWithUUID:(id)d completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   summarySharingEntryIDSManager = self->_summarySharingEntryIDSManager;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __78__HDSummarySharingEntryStoreServer_remote_leaveInvitationWithUUID_completion___block_invoke;
   v9[3] = &unk_2786130D8;
-  v10 = v6;
-  v8 = v6;
-  [(HDSummarySharingEntryIDSManager *)summarySharingEntryIDSManager leaveInvitationWithUUID:a3 completion:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [(HDSummarySharingEntryIDSManager *)summarySharingEntryIDSManager leaveInvitationWithUUID:d completion:v9];
 }
 
 void __78__HDSummarySharingEntryStoreServer_remote_leaveInvitationWithUUID_completion___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -384,39 +384,39 @@ void __78__HDSummarySharingEntryStoreServer_remote_leaveInvitationWithUUID_compl
   (*(v4 + 16))(v4, a2, v5);
 }
 
-- (void)remote_unpauseInvitationWithUUID:(id)a3 completion:(id)a4
+- (void)remote_unpauseInvitationWithUUID:(id)d completion:(id)completion
 {
   sharingEntryManager = self->_sharingEntryManager;
   v9 = 0;
-  v6 = a4;
-  v7 = [(HDSummarySharingEntryManager *)sharingEntryManager updateEntryWithUUID:a3 pauseStatus:0 error:&v9];
+  completionCopy = completion;
+  v7 = [(HDSummarySharingEntryManager *)sharingEntryManager updateEntryWithUUID:d pauseStatus:0 error:&v9];
   v8 = v9;
-  v6[2](v6, v7, v8);
+  completionCopy[2](completionCopy, v7, v8);
 }
 
-- (void)remote_updateNotificationStatusWithUUID:(id)a3 notificationStatus:(int64_t)a4 completion:(id)a5
+- (void)remote_updateNotificationStatusWithUUID:(id)d notificationStatus:(int64_t)status completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   sharingEntryManager = self->_sharingEntryManager;
   v19 = 0;
-  v10 = [(HDSummarySharingEntryManager *)sharingEntryManager codableEntryWithUUID:a3 errorOut:&v19];
+  v10 = [(HDSummarySharingEntryManager *)sharingEntryManager codableEntryWithUUID:d errorOut:&v19];
   v11 = v19;
   if (v10)
   {
     v12 = self->_sharingEntryManager;
     v13 = objc_alloc(MEMORY[0x277CCAD78]);
-    v14 = [v10 invitationUUID];
-    v15 = [v13 initWithUUIDString:v14];
+    invitationUUID = [v10 invitationUUID];
+    v15 = [v13 initWithUUIDString:invitationUUID];
     v18 = 0;
-    v16 = [(HDSummarySharingEntryManager *)v12 updateEntryWithInvitationUUID:v15 newNotificationStatus:a4 error:&v18];
+    v16 = [(HDSummarySharingEntryManager *)v12 updateEntryWithInvitationUUID:v15 newNotificationStatus:status error:&v18];
     v17 = v18;
 
-    v8[2](v8, v16, v17);
+    completionCopy[2](completionCopy, v16, v17);
   }
 
   else
   {
-    v8[2](v8, 0, v11);
+    completionCopy[2](completionCopy, 0, v11);
   }
 }
 

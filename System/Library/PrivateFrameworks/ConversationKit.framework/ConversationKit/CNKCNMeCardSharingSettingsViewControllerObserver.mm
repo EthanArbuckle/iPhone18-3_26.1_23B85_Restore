@@ -1,30 +1,30 @@
 @interface CNKCNMeCardSharingSettingsViewControllerObserver
-- (void)sharingSettingsViewController:(id)a3 didSelectSharingAudience:(unint64_t)a4;
-- (void)sharingSettingsViewController:(id)a3 didUpdateSharingState:(BOOL)a4;
-- (void)sharingSettingsViewController:(id)a3 didUpdateWithSharingResult:(id)a4;
+- (void)sharingSettingsViewController:(id)controller didSelectSharingAudience:(unint64_t)audience;
+- (void)sharingSettingsViewController:(id)controller didUpdateSharingState:(BOOL)state;
+- (void)sharingSettingsViewController:(id)controller didUpdateWithSharingResult:(id)result;
 @end
 
 @implementation CNKCNMeCardSharingSettingsViewControllerObserver
 
-- (void)sharingSettingsViewController:(id)a3 didUpdateSharingState:(BOOL)a4
+- (void)sharingSettingsViewController:(id)controller didUpdateSharingState:(BOOL)state
 {
-  v4 = a4;
-  v5 = [MEMORY[0x1E69A8108] sharedInstance];
-  [v5 setSharingEnabled:v4];
+  stateCopy = state;
+  mEMORY[0x1E69A8108] = [MEMORY[0x1E69A8108] sharedInstance];
+  [mEMORY[0x1E69A8108] setSharingEnabled:stateCopy];
 }
 
-- (void)sharingSettingsViewController:(id)a3 didSelectSharingAudience:(unint64_t)a4
+- (void)sharingSettingsViewController:(id)controller didSelectSharingAudience:(unint64_t)audience
 {
-  v5 = [MEMORY[0x1E69A8108] sharedInstance];
-  [v5 setSharingAudience:a4];
+  mEMORY[0x1E69A8108] = [MEMORY[0x1E69A8108] sharedInstance];
+  [mEMORY[0x1E69A8108] setSharingAudience:audience];
 }
 
-- (void)sharingSettingsViewController:(id)a3 didUpdateWithSharingResult:(id)a4
+- (void)sharingSettingsViewController:(id)controller didUpdateWithSharingResult:(id)result
 {
   v4 = MEMORY[0x1E69A5C10];
-  v5 = a4;
-  v6 = [v4 sharedInstance];
-  [v6 updatePersonalNicknameIfNecessaryWithMeCardSharingResult:v5];
+  resultCopy = result;
+  sharedInstance = [v4 sharedInstance];
+  [sharedInstance updatePersonalNicknameIfNecessaryWithMeCardSharingResult:resultCopy];
 }
 
 @end

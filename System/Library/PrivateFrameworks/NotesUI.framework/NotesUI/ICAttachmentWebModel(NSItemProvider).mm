@@ -7,16 +7,16 @@
 
 - (id)itemProvider
 {
-  v2 = [a1 attachment];
-  v3 = [v2 synapseData];
+  attachment = [self attachment];
+  synapseData = [attachment synapseData];
 
-  if (![v3 length])
+  if (![synapseData length])
   {
     goto LABEL_10;
   }
 
   v12 = 0;
-  v4 = [objc_alloc(MEMORY[0x1E69D53F8]) initWithData:v3 error:&v12];
+  v4 = [objc_alloc(MEMORY[0x1E69D53F8]) initWithData:synapseData error:&v12];
   v5 = v12;
   if (v5)
   {
@@ -30,8 +30,8 @@
   if (v4)
   {
     v7 = [objc_alloc(MEMORY[0x1E696ACA0]) initWithObject:v4];
-    v8 = [a1 attachment];
-    v9 = [v8 URL];
+    attachment2 = [self attachment];
+    v9 = [attachment2 URL];
 
     if (v9)
     {
@@ -42,7 +42,7 @@
   else
   {
 LABEL_10:
-    v11.receiver = a1;
+    v11.receiver = self;
     v11.super_class = &off_1F5067C38;
     v7 = objc_msgSendSuper2(&v11, sel_itemProvider);
   }
@@ -54,7 +54,7 @@ LABEL_10:
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1D4171000, a2, OS_LOG_TYPE_ERROR, "Encountered error while trying to deserialize synapse content item: %@", &v2, 0xCu);
 }
 

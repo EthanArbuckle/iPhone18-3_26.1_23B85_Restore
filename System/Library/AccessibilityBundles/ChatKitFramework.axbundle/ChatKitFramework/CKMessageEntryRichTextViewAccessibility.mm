@@ -1,5 +1,5 @@
 @interface CKMessageEntryRichTextViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilitySupportsActivateAction;
 - (BOOL)accessibilityActivate;
 - (id)_accessibilitySupplementaryFooterViews;
@@ -11,43 +11,43 @@
 - (unint64_t)accessibilityTraits;
 - (void)_accessibilityUpdateMentionsIfNeeded;
 - (void)_accessibilityUpdateTextEffectsIfNeeded;
-- (void)paste:(id)a3;
-- (void)setAttributedText:(id)a3;
+- (void)paste:(id)paste;
+- (void)setAttributedText:(id)text;
 @end
 
 @implementation CKMessageEntryRichTextViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKMessageEntryView"];
-  [v3 validateClass:@"CKMessageEntryTextView" isKindOfClass:@"UITextView"];
-  [v3 validateClass:@"CKMessageEntryRichTextView" isKindOfClass:@"CKMessageEntryTextView"];
-  [v3 validateClass:@"CKMessageEntryRichTextView" hasInstanceMethod:@"paste:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"CKMessageEntryTextView" hasInstanceMethod:@"hideCaret" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CKMessageEntryView" hasInstanceMethod:@"contentClipView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UITextView" hasInstanceMethod:@"attributedText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UITextView" hasInstanceMethod:@"setAttributedText:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"UITextView" hasInstanceMethod:@"selectedRange" withFullSignature:{"{_NSRange=QQ}", 0}];
-  [v3 validateClass:@"ChatKit.CKLinkPreviewTextAttachment"];
-  [v3 validateClass:@"ChatKit.CKLinkPreviewTextAttachment" hasSwiftField:@"viewProvider" withSwiftType:"Optional<CKLinkPreviewTextAttachmentViewProvider>"];
-  [v3 validateClass:@"ChatKit.CKLinkPreviewTextAttachmentViewProvider" hasSwiftField:@"providedView" withSwiftType:"CKEmbeddedRichLinkView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKMessageEntryView"];
+  [validationsCopy validateClass:@"CKMessageEntryTextView" isKindOfClass:@"UITextView"];
+  [validationsCopy validateClass:@"CKMessageEntryRichTextView" isKindOfClass:@"CKMessageEntryTextView"];
+  [validationsCopy validateClass:@"CKMessageEntryRichTextView" hasInstanceMethod:@"paste:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"CKMessageEntryTextView" hasInstanceMethod:@"hideCaret" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CKMessageEntryView" hasInstanceMethod:@"contentClipView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UITextView" hasInstanceMethod:@"attributedText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UITextView" hasInstanceMethod:@"setAttributedText:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"UITextView" hasInstanceMethod:@"selectedRange" withFullSignature:{"{_NSRange=QQ}", 0}];
+  [validationsCopy validateClass:@"ChatKit.CKLinkPreviewTextAttachment"];
+  [validationsCopy validateClass:@"ChatKit.CKLinkPreviewTextAttachment" hasSwiftField:@"viewProvider" withSwiftType:"Optional<CKLinkPreviewTextAttachmentViewProvider>"];
+  [validationsCopy validateClass:@"ChatKit.CKLinkPreviewTextAttachmentViewProvider" hasSwiftField:@"providedView" withSwiftType:"CKEmbeddedRichLinkView"];
 }
 
 - (id)accessibilityCustomRotors
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v18.receiver = self;
   v18.super_class = CKMessageEntryRichTextViewAccessibility;
-  v4 = [(CKMessageEntryRichTextViewAccessibility *)&v18 accessibilityCustomRotors];
-  [v3 axSafelyAddObjectsFromArray:v4];
+  accessibilityCustomRotors = [(CKMessageEntryRichTextViewAccessibility *)&v18 accessibilityCustomRotors];
+  [array axSafelyAddObjectsFromArray:accessibilityCustomRotors];
 
-  v5 = [(CKMessageEntryRichTextViewAccessibility *)self _axMentionRotor];
-  v6 = [(CKMessageEntryRichTextViewAccessibility *)self _axTextEffectRotor];
-  v7 = v6;
-  if (v5)
+  _axMentionRotor = [(CKMessageEntryRichTextViewAccessibility *)self _axMentionRotor];
+  _axTextEffectRotor = [(CKMessageEntryRichTextViewAccessibility *)self _axTextEffectRotor];
+  v7 = _axTextEffectRotor;
+  if (_axMentionRotor)
   {
-    if (v6)
+    if (_axTextEffectRotor)
     {
       goto LABEL_6;
     }
@@ -63,9 +63,9 @@
     v15[2] = __68__CKMessageEntryRichTextViewAccessibility_accessibilityCustomRotors__block_invoke;
     v15[3] = &unk_29F2B0B10;
     objc_copyWeak(&v16, &location);
-    v5 = [v8 initWithName:v9 itemSearchBlock:v15];
+    _axMentionRotor = [v8 initWithName:v9 itemSearchBlock:v15];
 
-    [(CKMessageEntryRichTextViewAccessibility *)self _setAXMentionRotor:v5];
+    [(CKMessageEntryRichTextViewAccessibility *)self _setAXMentionRotor:_axMentionRotor];
     objc_destroyWeak(&v16);
     objc_destroyWeak(&location);
     if (v7)
@@ -88,10 +88,10 @@
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
 LABEL_6:
-  [v3 axSafelyAddObject:v5];
-  [v3 axSafelyAddObject:v7];
+  [array axSafelyAddObject:_axMentionRotor];
+  [array axSafelyAddObject:v7];
 
-  return v3;
+  return array;
 }
 
 id __68__CKMessageEntryRichTextViewAccessibility_accessibilityCustomRotors__block_invoke(uint64_t a1, void *a2)
@@ -202,13 +202,13 @@ LABEL_11:
 {
   v23 = *MEMORY[0x29EDCA608];
   [(CKMessageEntryRichTextViewAccessibility *)self _accessibilityUpdateTextEffectsIfNeeded];
-  v3 = [(CKMessageEntryRichTextViewAccessibility *)self _axTextEffectMentionElements];
+  _axTextEffectMentionElements = [(CKMessageEntryRichTextViewAccessibility *)self _axTextEffectMentionElements];
   v4 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = v3;
+  obj = _axTextEffectMentionElements;
   v5 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
@@ -226,10 +226,10 @@ LABEL_11:
         v9 = *(*(&v18 + 1) + 8 * i);
         v10 = MEMORY[0x29EDB8058];
         v11 = accessibilityLocalizedString(@"texteffects.rotor.name");
-        v12 = [v9 accessibilityLabel];
-        v13 = [v9 accessibilityValue];
+        accessibilityLabel = [v9 accessibilityLabel];
+        accessibilityValue = [v9 accessibilityValue];
         v14 = __UIAXStringForVariables();
-        v15 = [v10 customContentWithLabel:v11 value:{v14, v13, @"__AXStringForVariablesSentinel"}];
+        v15 = [v10 customContentWithLabel:v11 value:{v14, accessibilityValue, @"__AXStringForVariablesSentinel"}];
         [v4 axSafelyAddObject:v15];
       }
 
@@ -246,17 +246,17 @@ LABEL_11:
 {
   v24.receiver = self;
   v24.super_class = CKMessageEntryRichTextViewAccessibility;
-  v3 = [(CKMessageEntryRichTextViewAccessibility *)&v24 accessibilityLabel];
+  accessibilityLabel = [(CKMessageEntryRichTextViewAccessibility *)&v24 accessibilityLabel];
   [(CKMessageEntryRichTextViewAccessibility *)self _accessibilityUpdateMentionsIfNeeded];
   [(CKMessageEntryRichTextViewAccessibility *)self _accessibilityUpdateTextEffectsIfNeeded];
-  v4 = [(CKMessageEntryRichTextViewAccessibility *)self _axConfirmedMentionElements];
-  if ([v4 count])
+  _axConfirmedMentionElements = [(CKMessageEntryRichTextViewAccessibility *)self _axConfirmedMentionElements];
+  if ([_axConfirmedMentionElements count])
   {
     v5 = MEMORY[0x29EDBA0F8];
     v6 = accessibilityLocalizedString(@"mentions.count");
-    v7 = [v5 localizedStringWithFormat:v6, objc_msgSend(v4, "count")];
+    v7 = [v5 localizedStringWithFormat:v6, objc_msgSend(_axConfirmedMentionElements, "count")];
 
-    v20 = MEMORY[0x29C2D0370](v4);
+    v20 = MEMORY[0x29C2D0370](_axConfirmedMentionElements);
     v22 = @"__AXStringForVariablesSentinel";
     v8 = __UIAXStringForVariables();
   }
@@ -305,7 +305,7 @@ LABEL_11:
 {
   v6.receiver = self;
   v6.super_class = CKMessageEntryRichTextViewAccessibility;
-  v3 = [(CKMessageEntryRichTextViewAccessibility *)&v6 accessibilityTraits];
+  accessibilityTraits = [(CKMessageEntryRichTextViewAccessibility *)&v6 accessibilityTraits];
   if ([(CKMessageEntryRichTextViewAccessibility *)self safeBoolForKey:@"hideCaret"])
   {
     v4 = ~*MEMORY[0x29EDC7528];
@@ -316,10 +316,10 @@ LABEL_11:
     v4 = -1;
   }
 
-  return v4 & v3;
+  return v4 & accessibilityTraits;
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
   v28[1] = *MEMORY[0x29EDCA608];
   v24.receiver = self;
@@ -327,24 +327,24 @@ LABEL_11:
   [(CKMessageEntryRichTextViewAccessibility *)&v24 setAttributedText:?];
   [(CKMessageEntryRichTextViewAccessibility *)self _setAXMentionRotor:0];
   [(CKMessageEntryRichTextViewAccessibility *)self _setAXTextEffectRotor:0];
-  v5 = [(CKMessageEntryRichTextViewAccessibility *)self _axPossibleMentionElements];
-  v6 = [v5 count];
+  _axPossibleMentionElements = [(CKMessageEntryRichTextViewAccessibility *)self _axPossibleMentionElements];
+  v6 = [_axPossibleMentionElements count];
 
-  v7 = [(CKMessageEntryRichTextViewAccessibility *)self _axConfirmedMentionElements];
-  v8 = [v7 count];
+  _axConfirmedMentionElements = [(CKMessageEntryRichTextViewAccessibility *)self _axConfirmedMentionElements];
+  v8 = [_axConfirmedMentionElements count];
 
-  v9 = [(CKMessageEntryRichTextViewAccessibility *)self _axTextEffectMentionElements];
-  v10 = [v9 count];
+  _axTextEffectMentionElements = [(CKMessageEntryRichTextViewAccessibility *)self _axTextEffectMentionElements];
+  v10 = [_axTextEffectMentionElements count];
 
   [(CKMessageEntryRichTextViewAccessibility *)self _axSetPossibleMentionElements:0];
   [(CKMessageEntryRichTextViewAccessibility *)self _axSetConfirmedMentionElements:0];
   [(CKMessageEntryRichTextViewAccessibility *)self _axSetTextEffectMentionElements:0];
   [(CKMessageEntryRichTextViewAccessibility *)self _accessibilityUpdateMentionsIfNeeded];
-  v11 = [(CKMessageEntryRichTextViewAccessibility *)self _axPossibleMentionElements];
-  v12 = [v11 count];
+  _axPossibleMentionElements2 = [(CKMessageEntryRichTextViewAccessibility *)self _axPossibleMentionElements];
+  v12 = [_axPossibleMentionElements2 count];
 
-  v13 = [(CKMessageEntryRichTextViewAccessibility *)self _axConfirmedMentionElements];
-  v14 = [v13 count];
+  _axConfirmedMentionElements2 = [(CKMessageEntryRichTextViewAccessibility *)self _axConfirmedMentionElements];
+  v14 = [_axConfirmedMentionElements2 count];
 
   if (v6 != v12 || v8 != v14)
   {
@@ -354,7 +354,7 @@ LABEL_11:
     v16 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v28 forKeys:&v27 count:1];
     UIAccessibilityPostNotification(v15, v16);
 
-    if (a3)
+    if (text)
     {
       if (v8 != v14)
       {
@@ -379,8 +379,8 @@ LABEL_11:
   if (v10)
   {
     [(CKMessageEntryRichTextViewAccessibility *)self _accessibilityUpdateTextEffectsIfNeeded];
-    v20 = [(CKMessageEntryRichTextViewAccessibility *)self _axTextEffectMentionElements];
-    v21 = [v20 count];
+    _axTextEffectMentionElements2 = [(CKMessageEntryRichTextViewAccessibility *)self _axTextEffectMentionElements];
+    v21 = [_axTextEffectMentionElements2 count];
 
     if (v10 != v21)
     {
@@ -393,11 +393,11 @@ LABEL_11:
   }
 }
 
-- (void)paste:(id)a3
+- (void)paste:(id)paste
 {
   v4.receiver = self;
   v4.super_class = CKMessageEntryRichTextViewAccessibility;
-  [(CKMessageEntryRichTextViewAccessibility *)&v4 paste:a3];
+  [(CKMessageEntryRichTextViewAccessibility *)&v4 paste:paste];
   [(CKMessageEntryRichTextViewAccessibility *)self _accessibilityPostPasteboardTextForOperation:*MEMORY[0x29EDBDC50]];
 }
 
@@ -405,9 +405,9 @@ LABEL_11:
 {
   v2 = [(CKMessageEntryRichTextViewAccessibility *)self _accessibilityFindAncestor:&__block_literal_global_4 startWithSelf:0];
   v3 = [v2 safeValueForKey:@"contentClipView"];
-  v4 = [v3 accessibilityPath];
+  accessibilityPath = [v3 accessibilityPath];
 
-  return v4;
+  return accessibilityPath;
 }
 
 uint64_t __60__CKMessageEntryRichTextViewAccessibility_accessibilityPath__block_invoke(uint64_t a1, void *a2)
@@ -422,9 +422,9 @@ uint64_t __60__CKMessageEntryRichTextViewAccessibility_accessibilityPath__block_
 - (id)_axMentionElements
 {
   v3 = MEMORY[0x29EDB8D80];
-  v4 = [(CKMessageEntryRichTextViewAccessibility *)self _axPossibleMentionElements];
-  v5 = [(CKMessageEntryRichTextViewAccessibility *)self _axConfirmedMentionElements];
-  v6 = [v3 axArrayWithPossiblyNilArrays:{2, v4, v5}];
+  _axPossibleMentionElements = [(CKMessageEntryRichTextViewAccessibility *)self _axPossibleMentionElements];
+  _axConfirmedMentionElements = [(CKMessageEntryRichTextViewAccessibility *)self _axConfirmedMentionElements];
+  v6 = [v3 axArrayWithPossiblyNilArrays:{2, _axPossibleMentionElements, _axConfirmedMentionElements}];
 
   return v6;
 }
@@ -437,17 +437,17 @@ uint64_t __60__CKMessageEntryRichTextViewAccessibility_accessibilityPath__block_
 
   objc_opt_class();
   v5 = __UIAccessibilityCastAsClass();
-  v6 = [(CKMessageEntryRichTextViewAccessibility *)self _axPossibleMentionElements];
+  _axPossibleMentionElements = [(CKMessageEntryRichTextViewAccessibility *)self _axPossibleMentionElements];
 
-  if (!v6)
+  if (!_axPossibleMentionElements)
   {
     v7 = _AXCKPossibleMentions(v5);
     [(CKMessageEntryRichTextViewAccessibility *)self _axSetPossibleMentionElements:v7];
   }
 
-  v8 = [(CKMessageEntryRichTextViewAccessibility *)self _axConfirmedMentionElements];
+  _axConfirmedMentionElements = [(CKMessageEntryRichTextViewAccessibility *)self _axConfirmedMentionElements];
 
-  if (!v8)
+  if (!_axConfirmedMentionElements)
   {
     v9 = _AXCKConfirmedMentions(v5, v4);
     [(CKMessageEntryRichTextViewAccessibility *)self _axSetConfirmedMentionElements:v9];
@@ -458,16 +458,16 @@ uint64_t __60__CKMessageEntryRichTextViewAccessibility_accessibilityPath__block_
 {
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
-  v4 = [v3 attributedText];
-  v5 = [(CKMessageEntryRichTextViewAccessibility *)self _axAttributedText];
-  v6 = [v4 isEqualToAttributedString:v5];
+  attributedText = [v3 attributedText];
+  _axAttributedText = [(CKMessageEntryRichTextViewAccessibility *)self _axAttributedText];
+  v6 = [attributedText isEqualToAttributedString:_axAttributedText];
 
   if ((v6 & 1) == 0)
   {
     v7 = _AXCKTextEffectMentions(v3);
     [(CKMessageEntryRichTextViewAccessibility *)self _axSetTextEffectMentionElements:v7];
 
-    [(CKMessageEntryRichTextViewAccessibility *)self _axSetAttributedText:v4];
+    [(CKMessageEntryRichTextViewAccessibility *)self _axSetAttributedText:attributedText];
   }
 }
 
@@ -499,9 +499,9 @@ uint64_t __60__CKMessageEntryRichTextViewAccessibility_accessibilityPath__block_
     v8 = 0;
     objc_opt_class();
     v4 = __UIAccessibilityCastAsClass();
-    v5 = [v4 isFirstResponder];
+    isFirstResponder = [v4 isFirstResponder];
 
-    if (v5)
+    if (isFirstResponder)
     {
       return 1;
     }
@@ -519,13 +519,13 @@ uint64_t __60__CKMessageEntryRichTextViewAccessibility_accessibilityPath__block_
   v3 = [(CKMessageEntryRichTextViewAccessibility *)self safeValueForKey:@"attributedText"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v6 = [v4 length];
   v9[0] = MEMORY[0x29EDCA5F8];
   v9[1] = 3221225472;
   v9[2] = __81__CKMessageEntryRichTextViewAccessibility__accessibilitySupplementaryFooterViews__block_invoke;
   v9[3] = &unk_29F2B0D58;
-  v7 = v5;
+  v7 = array;
   v10 = v7;
   [v4 enumerateAttributesInRange:0 options:v6 usingBlock:{0, v9}];
 

@@ -1,14 +1,14 @@
 @interface PLProcessExitAggregator
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation PLProcessExitAggregator
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setLabelIdx:{-[PLProcessExitAggregator labelIdx](self, "labelIdx")}];
   [v4 setLastTTR:{-[PLProcessExitAggregator lastTTR](self, "lastTTR")}];
   [v4 setExitReasonNamespace:{-[PLProcessExitAggregator exitReasonNamespace](self, "exitReasonNamespace")}];
@@ -16,13 +16,13 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && (v5 = -[PLProcessExitAggregator labelIdx](self, "labelIdx"), v5 == objc_msgSend(v4, "labelIdx")) && (v6 = -[PLProcessExitAggregator lastTTR](self, "lastTTR"), v6 == objc_msgSend(v4, "lastTTR")) && (v7 = -[PLProcessExitAggregator exitReasonNamespace](self, "exitReasonNamespace"), v7 == objc_msgSend(v4, "exitReasonNamespace")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && (v5 = -[PLProcessExitAggregator labelIdx](self, "labelIdx"), v5 == objc_msgSend(equalCopy, "labelIdx")) && (v6 = -[PLProcessExitAggregator lastTTR](self, "lastTTR"), v6 == objc_msgSend(equalCopy, "lastTTR")) && (v7 = -[PLProcessExitAggregator exitReasonNamespace](self, "exitReasonNamespace"), v7 == objc_msgSend(equalCopy, "exitReasonNamespace")))
   {
-    v8 = [(PLProcessExitAggregator *)self exitReasonCode];
-    v9 = v8 == [v4 exitReasonCode];
+    exitReasonCode = [(PLProcessExitAggregator *)self exitReasonCode];
+    v9 = exitReasonCode == [equalCopy exitReasonCode];
   }
 
   else

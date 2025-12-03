@@ -1,12 +1,12 @@
 @interface SensorExchangeHelper
 + (id)sharedInstance;
 - (SensorExchangeHelper)init;
-- (smcExchangeSensorGroupInfo)getSensorGroupForSMCKeyString:(__CFString *)a3;
+- (smcExchangeSensorGroupInfo)getSensorGroupForSMCKeyString:(__CFString *)string;
 - (void)forceSensorExchangeDataToSMC;
-- (void)registerCLTMSensorIndex:(int)a3 forSMCKey:(__CFString *)a4 atSMCIndex:(int)a5;
+- (void)registerCLTMSensorIndex:(int)index forSMCKey:(__CFString *)key atSMCIndex:(int)cIndex;
 - (void)sendSensorExchangeDataToSMC;
 - (void)updateAllSensorExchangeData;
-- (void)writeSMCExchangeDataForGroup:(smcExchangeSensorGroupInfo *)a3 withData:(void *)a4;
+- (void)writeSMCExchangeDataForGroup:(smcExchangeSensorGroupInfo *)group withData:(void *)data;
 @end
 
 @implementation SensorExchangeHelper
@@ -371,19 +371,19 @@ LABEL_18:
   return v3;
 }
 
-- (void)writeSMCExchangeDataForGroup:(smcExchangeSensorGroupInfo *)a3 withData:(void *)a4
+- (void)writeSMCExchangeDataForGroup:(smcExchangeSensorGroupInfo *)group withData:(void *)data
 {
   smcPort = self->smcPort;
   if (smcPort)
   {
-    if (a3->SensorExchangeUpdateNeeded)
+    if (group->SensorExchangeUpdateNeeded)
     {
       if (byte_1000AB2F8 == 1)
       {
         v8 = qword_1000AB718;
         if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_DEFAULT))
         {
-          sensorExchangeKeyStr = a3->sensorExchangeKeyStr;
+          sensorExchangeKeyStr = group->sensorExchangeKeyStr;
           *buf = 138412290;
           *&v34 = sensorExchangeKeyStr;
           _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "<Notice> Writing sensor data to SMC key %@", buf, 0xCu);
@@ -391,8 +391,8 @@ LABEL_18:
         }
       }
 
-      sensorExchangeKeyValue = a3->sensorExchangeKeyValue;
-      sensorExchangeKeySize = a3->sensorExchangeKeySize;
+      sensorExchangeKeyValue = group->sensorExchangeKeyValue;
+      sensorExchangeKeySize = group->sensorExchangeKeySize;
       v15 = 168;
       v34 = 0u;
       v35 = 0u;
@@ -418,7 +418,7 @@ LABEL_18:
       DWORD2(v35) = sensorExchangeKeySize;
       if (sensorExchangeKeySize)
       {
-        memcpy(&v36[12], a4, sensorExchangeKeySize);
+        memcpy(&v36[12], data, sensorExchangeKeySize);
       }
 
       v12 = IOConnectCallStructMethod(smcPort, 2u, buf, 0xA8uLL, outputStruct, &v15);
@@ -454,8 +454,8 @@ LABEL_12:
       }
 
 LABEL_14:
-      a3->SensorExchangeUpdateNeeded = 0;
-      ++a3->data.BYTES.p1[2];
+      group->SensorExchangeUpdateNeeded = 0;
+      ++group->data.BYTES.p1[2];
     }
   }
 
@@ -465,23 +465,23 @@ LABEL_14:
   }
 }
 
-- (smcExchangeSensorGroupInfo)getSensorGroupForSMCKeyString:(__CFString *)a3
+- (smcExchangeSensorGroupInfo)getSensorGroupForSMCKeyString:(__CFString *)string
 {
   p_cameraSensors = &self->cameraSensors;
-  if (CFStringCompare(a3, self->cameraSensors.sensorExchangeKeyStr, 0))
+  if (CFStringCompare(string, self->cameraSensors.sensorExchangeKeyStr, 0))
   {
-    if (CFStringCompare(a3, self->aopSensors.sensorExchangeKeyStr, 0))
+    if (CFStringCompare(string, self->aopSensors.sensorExchangeKeyStr, 0))
     {
-      if (CFStringCompare(a3, self->basebandSensors.sensorExchangeKeyStr, 0))
+      if (CFStringCompare(string, self->basebandSensors.sensorExchangeKeyStr, 0))
       {
-        if (CFStringCompare(a3, self->displaySensors.sensorExchangeKeyStr, 0))
+        if (CFStringCompare(string, self->displaySensors.sensorExchangeKeyStr, 0))
         {
-          if (CFStringCompare(a3, self->miscSensors.sensorExchangeKeyStr, 0))
+          if (CFStringCompare(string, self->miscSensors.sensorExchangeKeyStr, 0))
           {
-            if (CFStringCompare(a3, self->misc2Sensors.sensorExchangeKeyStr, 0))
+            if (CFStringCompare(string, self->misc2Sensors.sensorExchangeKeyStr, 0))
             {
               p_cameraSensors = &self->strapSensors;
-              if (CFStringCompare(a3, self->strapSensors.sensorExchangeKeyStr, 0))
+              if (CFStringCompare(string, self->strapSensors.sensorExchangeKeyStr, 0))
               {
                 return 0;
               }
@@ -520,12 +520,12 @@ LABEL_14:
   return p_cameraSensors;
 }
 
-- (void)registerCLTMSensorIndex:(int)a3 forSMCKey:(__CFString *)a4 atSMCIndex:(int)a5
+- (void)registerCLTMSensorIndex:(int)index forSMCKey:(__CFString *)key atSMCIndex:(int)cIndex
 {
-  v8 = [(SensorExchangeHelper *)self getSensorGroupForSMCKeyString:a4];
+  v8 = [(SensorExchangeHelper *)self getSensorGroupForSMCKeyString:key];
   if (v8)
   {
-    if ((a5 | a3) < 0)
+    if ((cIndex | index) < 0)
     {
       if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
       {
@@ -536,9 +536,9 @@ LABEL_14:
     else
     {
       v9 = v8;
-      if (CFStringCompare(a4, v8->sensorExchangeKeyStr, 0) == kCFCompareEqualTo)
+      if (CFStringCompare(key, v8->sensorExchangeKeyStr, 0) == kCFCompareEqualTo)
       {
-        if (v9->numberOfSensors > a5)
+        if (v9->numberOfSensors > cIndex)
         {
           if (byte_1000AB2F8 == 1)
           {
@@ -546,14 +546,14 @@ LABEL_14:
             if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_DEFAULT))
             {
               v12 = 67109376;
-              v13 = a3;
+              indexCopy2 = index;
               v14 = 1024;
-              LODWORD(v15) = a5;
+              LODWORD(keyCopy) = cIndex;
               _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "<Notice> Assigning CLTM sensor index %d to SMC sensor index: %d", &v12, 0xEu);
             }
           }
 
-          v9->sensorIndexLUT[a5] = a3;
+          v9->sensorIndexLUT[cIndex] = index;
           return;
         }
 
@@ -567,11 +567,11 @@ LABEL_14:
       if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
       {
         v12 = 67109634;
-        v13 = a3;
+        indexCopy2 = index;
         v14 = 2112;
-        v15 = a4;
+        keyCopy = key;
         v16 = 1024;
-        v17 = a5;
+        cIndexCopy = cIndex;
         _os_log_error_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "<Error> Unable to assign CLTM index:%d to any SMC sensor group for key:%@ and index:%d", &v12, 0x18u);
       }
     }

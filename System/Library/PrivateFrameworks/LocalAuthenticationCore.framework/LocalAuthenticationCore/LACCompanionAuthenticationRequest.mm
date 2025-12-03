@@ -4,7 +4,7 @@
 - (LACEvaluationRequest)evaluationRequest;
 - (NSData)acmContextData;
 - (unsigned)identifier;
-- (void)setIsFallbackAvailable:(BOOL)a3;
+- (void)setIsFallbackAvailable:(BOOL)available;
 @end
 
 @implementation LACCompanionAuthenticationRequest
@@ -35,20 +35,20 @@
   return *(self + v3);
 }
 
-- (void)setIsFallbackAvailable:(BOOL)a3
+- (void)setIsFallbackAvailable:(BOOL)available
 {
   v5 = OBJC_IVAR___LACCompanionAuthenticationRequest_isFallbackAvailable;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = available;
 }
 
 - (unsigned)identifier
 {
-  v2 = self;
-  v3 = [(LACEvaluationRequest *)[(LACCompanionAuthenticationRequest *)v2 evaluationRequest] identifier];
+  selfCopy = self;
+  identifier = [(LACEvaluationRequest *)[(LACCompanionAuthenticationRequest *)selfCopy evaluationRequest] identifier];
 
   swift_unknownObjectRelease();
-  return v3;
+  return identifier;
 }
 
 - (LACCompanionAuthenticationRequest)init

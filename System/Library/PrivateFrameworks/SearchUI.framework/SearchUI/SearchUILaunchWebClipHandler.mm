@@ -1,18 +1,18 @@
 @interface SearchUILaunchWebClipHandler
-+ (id)fallbackCommandForRowModel:(id)a3 environment:(id)a4;
-- (void)performCommand:(id)a3 triggerEvent:(unint64_t)a4 environment:(id)a5;
++ (id)fallbackCommandForRowModel:(id)model environment:(id)environment;
+- (void)performCommand:(id)command triggerEvent:(unint64_t)event environment:(id)environment;
 @end
 
 @implementation SearchUILaunchWebClipHandler
 
-+ (id)fallbackCommandForRowModel:(id)a3 environment:(id)a4
++ (id)fallbackCommandForRowModel:(id)model environment:(id)environment
 {
-  v4 = [a3 identifyingResult];
-  if ([v4 isLocalApplicationResult] && (objc_msgSend(v4, "applicationBundleIdentifier"), v5 = objc_claimAutoreleasedReturnValue(), +[SearchUIUtilities bundleIdentifierForApp:](SearchUIUtilities, "bundleIdentifierForApp:", 0), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "isEqualToString:", v6), v6, v5, v7))
+  identifyingResult = [model identifyingResult];
+  if ([identifyingResult isLocalApplicationResult] && (objc_msgSend(identifyingResult, "applicationBundleIdentifier"), v5 = objc_claimAutoreleasedReturnValue(), +[SearchUIUtilities bundleIdentifierForApp:](SearchUIUtilities, "bundleIdentifierForApp:", 0), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "isEqualToString:", v6), v6, v5, v7))
   {
     v8 = objc_opt_new();
-    v9 = [v4 identifier];
-    [v8 setClipIdentifier:v9];
+    identifier = [identifyingResult identifier];
+    [v8 setClipIdentifier:identifier];
   }
 
   else
@@ -23,11 +23,11 @@
   return v8;
 }
 
-- (void)performCommand:(id)a3 triggerEvent:(unint64_t)a4 environment:(id)a5
+- (void)performCommand:(id)command triggerEvent:(unint64_t)event environment:(id)environment
 {
   v5 = MEMORY[0x1E69D4320];
-  v6 = [a3 clipIdentifier];
-  [v5 launchWebClipWithIdentifier:v6 origin:2];
+  clipIdentifier = [command clipIdentifier];
+  [v5 launchWebClipWithIdentifier:clipIdentifier origin:2];
 }
 
 @end

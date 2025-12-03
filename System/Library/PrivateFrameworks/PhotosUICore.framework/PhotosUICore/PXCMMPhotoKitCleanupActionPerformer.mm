@@ -1,38 +1,38 @@
 @interface PXCMMPhotoKitCleanupActionPerformer
-- (void)_activateSuggestion:(id)a3 completionHandler:(id)a4;
+- (void)_activateSuggestion:(id)suggestion completionHandler:(id)handler;
 - (void)performBackgroundTask;
 @end
 
 @implementation PXCMMPhotoKitCleanupActionPerformer
 
-- (void)_activateSuggestion:(id)a3 completionHandler:(id)a4
+- (void)_activateSuggestion:(id)suggestion completionHandler:(id)handler
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  suggestionCopy = suggestion;
+  handlerCopy = handler;
   v7 = PLSharingGetLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v17 = v5;
+    v17 = suggestionCopy;
     _os_log_impl(&dword_1A3C1C000, v7, OS_LOG_TYPE_DEFAULT, "Will mark suggestion as active: %@", buf, 0xCu);
   }
 
-  v8 = [v5 photoLibrary];
+  photoLibrary = [suggestionCopy photoLibrary];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __77__PXCMMPhotoKitCleanupActionPerformer__activateSuggestion_completionHandler___block_invoke;
   v14[3] = &unk_1E774C648;
-  v15 = v5;
+  v15 = suggestionCopy;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __77__PXCMMPhotoKitCleanupActionPerformer__activateSuggestion_completionHandler___block_invoke_2;
   v11[3] = &unk_1E774BD88;
   v12 = v15;
-  v13 = v6;
-  v9 = v6;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
   v10 = v15;
-  [v8 performChanges:v14 completionHandler:v11];
+  [photoLibrary performChanges:v14 completionHandler:v11];
 }
 
 void __77__PXCMMPhotoKitCleanupActionPerformer__activateSuggestion_completionHandler___block_invoke(uint64_t a1)
@@ -82,14 +82,14 @@ LABEL_6:
 
 - (void)performBackgroundTask
 {
-  v3 = [(PXCMMActionPerformer *)self session];
-  v4 = [v3 viewModel];
-  v5 = [v4 shareURL];
+  session = [(PXCMMActionPerformer *)self session];
+  viewModel = [session viewModel];
+  shareURL = [viewModel shareURL];
 
-  if (v5)
+  if (shareURL)
   {
-    v6 = [v3 viewModel];
-    [v6 performChanges:&__block_literal_global_14954];
+    viewModel2 = [session viewModel];
+    [viewModel2 performChanges:&__block_literal_global_14954];
 
     v32[0] = 0;
     v32[1] = v32;
@@ -118,15 +118,15 @@ LABEL_6:
     block[1] = 3221225472;
     block[2] = __60__PXCMMPhotoKitCleanupActionPerformer_performBackgroundTask__block_invoke_188;
     block[3] = &unk_1E773AD98;
-    v18 = v5;
+    v18 = shareURL;
     v20 = v32;
     v21 = buf;
     v9 = v7;
     v19 = v9;
     dispatch_async(v8, block);
 
-    v10 = [v3 suggestion];
-    if (v10)
+    suggestion = [session suggestion];
+    if (suggestion)
     {
       dispatch_group_enter(v9);
       v13[0] = MEMORY[0x1E69E9820];
@@ -136,7 +136,7 @@ LABEL_6:
       v15 = v30;
       v16 = v22;
       v14 = v9;
-      [(PXCMMPhotoKitCleanupActionPerformer *)self _activateSuggestion:v10 completionHandler:v13];
+      [(PXCMMPhotoKitCleanupActionPerformer *)self _activateSuggestion:suggestion completionHandler:v13];
     }
 
     v12[0] = MEMORY[0x1E69E9820];

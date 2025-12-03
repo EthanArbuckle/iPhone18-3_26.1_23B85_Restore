@@ -1,40 +1,40 @@
 @interface PKApplicationMessageContentView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (double)_layoutWithContext:(double)a3 bounds:(double)a4;
-- (double)_prepareViewForReuse:(int)a3 type:(double)a4 state:(double)a5;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (uint64_t)initWithWidth:(void *)a1;
-- (void)_updateForTraitCollection:(uint64_t)a1;
-- (void)_updateSubviewsAnimated:(uint64_t)a1;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (double)_layoutWithContext:(double)context bounds:(double)bounds;
+- (double)_prepareViewForReuse:(int)reuse type:(double)type state:(double)state;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (uint64_t)initWithWidth:(void *)width;
+- (void)_updateForTraitCollection:(uint64_t)collection;
+- (void)_updateSubviewsAnimated:(uint64_t)animated;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)performBatchUpdates:(uint64_t)a3 animated:;
-- (void)setBlurRadius:(void *)a3 animated:(double)a4 withCompletion:;
-- (void)setContent:(int)a3 animated:;
-- (void)setLayoutMargins:(UIEdgeInsets)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)performBatchUpdates:(uint64_t)updates animated:;
+- (void)setBlurRadius:(void *)radius animated:(double)animated withCompletion:;
+- (void)setContent:(int)content animated:;
+- (void)setLayoutMargins:(UIEdgeInsets)margins;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PKApplicationMessageContentView
 
-- (uint64_t)initWithWidth:(void *)a1
+- (uint64_t)initWithWidth:(void *)width
 {
-  if (!a1)
+  if (!width)
   {
     return 0;
   }
 
   v3 = *MEMORY[0x1E695EFF8];
   v4 = *(MEMORY[0x1E695EFF8] + 8);
-  v46.receiver = a1;
+  v46.receiver = width;
   v46.super_class = PKApplicationMessageContentView;
   v5 = objc_msgSendSuper2(&v46, sel_initWithFrame_, v3, v4, a2, 0.0);
   v6 = v5;
   if (v5)
   {
     [v5 pkui_setMaskType:3];
-    v7 = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
-    [v6 setBackgroundColor:v7];
+    secondarySystemGroupedBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
+    [v6 setBackgroundColor:secondarySystemGroupedBackgroundColor];
 
     [v6 setMaximumContentSizeCategory:*MEMORY[0x1E69DDC38]];
     [v6 setInsetsLayoutMarginsFromSafeArea:0];
@@ -50,8 +50,8 @@
     v13 = *(v6 + 488);
     *(v6 + 488) = Label_0;
 
-    v14 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    v15 = CreateLabel_0(3, v14);
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    v15 = CreateLabel_0(3, secondaryLabelColor);
     v16 = *(v6 + 496);
     *(v6 + 496) = v15;
 
@@ -60,13 +60,13 @@
     *(v6 + 464) = v17;
 
     [*(v6 + 464) addSubview:*(v6 + 472)];
-    v19 = [*(v6 + 464) layer];
-    [v19 setMasksToBounds:1];
-    [v19 setCornerCurve:*MEMORY[0x1E69796E8]];
+    layer = [*(v6 + 464) layer];
+    [layer setMasksToBounds:1];
+    [layer setCornerCurve:*MEMORY[0x1E69796E8]];
     v20 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.21];
-    [v19 setBorderColor:{objc_msgSend(v20, "CGColor")}];
+    [layer setBorderColor:{objc_msgSend(v20, "CGColor")}];
 
-    [v19 setBorderWidth:PKUIPixelLength()];
+    [layer setBorderWidth:PKUIPixelLength()];
     v21 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
     v22 = *(v6 + 480);
     *(v6 + 480) = v21;
@@ -78,12 +78,12 @@
     [v24 setImage:v25];
 
     v26 = *(v6 + 480);
-    v27 = [MEMORY[0x1E69DC888] whiteColor];
-    [v26 setTintColor:v27];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [v26 setTintColor:whiteColor];
 
     v28 = *(v6 + 480);
-    v29 = [MEMORY[0x1E69DC888] redColor];
-    [v28 setBackgroundColor:v29];
+    redColor = [MEMORY[0x1E69DC888] redColor];
+    [v28 setBackgroundColor:redColor];
 
     [*(v6 + 480) setClipsToBounds:1];
     [*(v6 + 480) pkui_setCornerRadius:0 animated:6.0];
@@ -102,12 +102,12 @@
     [*(v6 + 416) addSubview:*(v6 + 488)];
     [*(v6 + 416) addSubview:*(v6 + 496)];
     [v6 addSubview:*(v6 + 416)];
-    v32 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
-    [v32 setPreferredSymbolConfigurationForImage:0];
-    v33 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-    [v32 setBaseForegroundColor:v33];
+    plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+    [plainButtonConfiguration setPreferredSymbolConfigurationForImage:0];
+    tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+    [plainButtonConfiguration setBaseForegroundColor:tertiaryLabelColor];
 
-    [v32 setContentInsets:{*MEMORY[0x1E69DC5C0], *(MEMORY[0x1E69DC5C0] + 8), *(MEMORY[0x1E69DC5C0] + 16), *(MEMORY[0x1E69DC5C0] + 24)}];
+    [plainButtonConfiguration setContentInsets:{*MEMORY[0x1E69DC5C0], *(MEMORY[0x1E69DC5C0] + 8), *(MEMORY[0x1E69DC5C0] + 16), *(MEMORY[0x1E69DC5C0] + 24)}];
     objc_initWeak(&location, v6);
     v34 = MEMORY[0x1E69DC628];
     v43[0] = MEMORY[0x1E69E9820];
@@ -116,7 +116,7 @@
     v43[3] = &unk_1E8010A60;
     objc_copyWeak(&v44, &location);
     v35 = [v34 actionWithHandler:v43];
-    v36 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v32 primaryAction:v35];
+    v36 = [MEMORY[0x1E69DC738] buttonWithConfiguration:plainButtonConfiguration primaryAction:v35];
     v37 = *(v6 + 408);
     *(v6 + 408) = v36;
 
@@ -131,10 +131,10 @@
     [*(v6 + 408) _setTouchInsets:{-10.0, -10.0, -10.0, -10.0}];
     [*(v6 + 408) sizeToFit];
     [v6 addSubview:*(v6 + 408)];
-    v39 = [v6 traitCollection];
-    if (v39)
+    traitCollection = [v6 traitCollection];
+    if (traitCollection)
     {
-      [(PKApplicationMessageContentView *)v6 _updateForTraitCollection:v39];
+      [(PKApplicationMessageContentView *)v6 _updateForTraitCollection:traitCollection];
     }
 
     else
@@ -196,71 +196,71 @@ void __49__PKApplicationMessageContentView_initWithWidth___block_invoke_2(uint64
   [v5 setConfiguration:v17];
 }
 
-- (void)_updateForTraitCollection:(uint64_t)a1
+- (void)_updateForTraitCollection:(uint64_t)collection
 {
   v3 = a2;
-  if (a1)
+  if (collection)
   {
     v4 = *MEMORY[0x1E69DDCF8];
     v5 = *MEMORY[0x1E69DB8C8];
     v13 = v3;
     v6 = _PKFontForDesign(v3, *MEMORY[0x1E69DB8C8], *MEMORY[0x1E69DDCF8], 4098, 0, 0);
-    v7 = *(a1 + 552);
-    *(a1 + 552) = v6;
+    v7 = *(collection + 552);
+    *(collection + 552) = v6;
 
-    if (!*(a1 + 560))
+    if (!*(collection + 560))
     {
       v8 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:*MEMORY[0x1E69DDC70]];
       v9 = _PKFontForDesign(v8, v5, v4, 4098, 0, 0);
-      v10 = *(a1 + 560);
-      *(a1 + 560) = v9;
+      v10 = *(collection + 560);
+      *(collection + 560) = v9;
     }
 
     v11 = _PKFontForDesign(v13, v5, *MEMORY[0x1E69DDD80], 0x8000, 0, 0);
-    v12 = *(a1 + 568);
-    *(a1 + 568) = v11;
+    v12 = *(collection + 568);
+    *(collection + 568) = v11;
 
-    [*(a1 + 408) setNeedsUpdateConfiguration];
-    [(PKApplicationMessageContentView *)a1 _updateSubviewsAnimated:?];
-    [a1 setNeedsLayout];
+    [*(collection + 408) setNeedsUpdateConfiguration];
+    [(PKApplicationMessageContentView *)collection _updateSubviewsAnimated:?];
+    [collection setNeedsLayout];
     v3 = v13;
   }
 }
 
-- (void)_updateSubviewsAnimated:(uint64_t)a1
+- (void)_updateSubviewsAnimated:(uint64_t)animated
 {
-  if (!a1)
+  if (!animated)
   {
     return;
   }
 
-  if (*(a1 + 576) == 1)
+  if (*(animated + 576) == 1)
   {
-    *(a1 + 577) = 1;
+    *(animated + 577) = 1;
     return;
   }
 
   if (a2)
   {
-    PKUIViewLayoutIfNeeded(a1, 1, 0);
+    PKUIViewLayoutIfNeeded(animated, 1, 0);
   }
 
-  v3 = *(a1 + 504);
-  v4 = *(a1 + 512);
-  v5 = *(a1 + 520);
-  v6 = *(a1 + 528);
+  v3 = *(animated + 504);
+  v4 = *(animated + 512);
+  v5 = *(animated + 520);
+  v6 = *(animated + 528);
   __asm { FMOV            V1.2D, #16.0 }
 
-  *(a1 + 504) = xmmword_1BE0B8C20;
-  *(a1 + 520) = _Q1;
-  v12 = *(a1 + 536);
+  *(animated + 504) = xmmword_1BE0B8C20;
+  *(animated + 520) = _Q1;
+  v12 = *(animated + 536);
   v13 = [PKApplicationMessageContentView_State alloc];
-  v14 = *(a1 + 608);
-  v15 = *(a1 + 560);
-  v16 = *(a1 + 552);
-  v17 = *(a1 + 568);
-  v80 = *(a1 + 601);
-  v81 = *(a1 + 600);
+  v14 = *(animated + 608);
+  v15 = *(animated + 560);
+  v16 = *(animated + 552);
+  v17 = *(animated + 568);
+  v80 = *(animated + 601);
+  v81 = *(animated + 600);
   v18 = v14;
   v19 = v15;
   v20 = v16;
@@ -280,53 +280,53 @@ void __49__PKApplicationMessageContentView_initWithWidth___block_invoke_2(uint64
   v83 = v19;
   if ([v18 type])
   {
-    v22 = 0;
-    v23 = 0;
-    v24 = 0;
+    icon = 0;
+    body = 0;
+    parseEmphasisInBody = 0;
 LABEL_10:
-    v25 = &stru_1F3BD7330;
+    title = &stru_1F3BD7330;
     goto LABEL_13;
   }
 
-  v28 = [v18 contentTypeDefault];
-  v22 = [v28 icon];
-  v25 = [v28 title];
-  v23 = [v28 body];
-  v24 = [v28 parseEmphasisInBody];
+  contentTypeDefault = [v18 contentTypeDefault];
+  icon = [contentTypeDefault icon];
+  title = [contentTypeDefault title];
+  body = [contentTypeDefault body];
+  parseEmphasisInBody = [contentTypeDefault parseEmphasisInBody];
 
-  if (!v25)
+  if (!title)
   {
     goto LABEL_10;
   }
 
 LABEL_13:
-  v29 = [v22 image];
+  image = [icon image];
   v92[0] = 0;
-  objc_storeStrong(&v13->_icon, v22);
-  v30 = [PKApplicationMessageIconHelpers tintColorWithDescriptor:v29 hasTintColor:v92];
+  objc_storeStrong(&v13->_icon, icon);
+  v30 = [PKApplicationMessageIconHelpers tintColorWithDescriptor:image hasTintColor:v92];
   iconImageTintColor = v13->_iconImageTintColor;
   v13->_iconImageTintColor = v30;
 
   v32 = v92[0];
   v33 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:*MEMORY[0x1E69DDC70]];
-  v34 = [PKApplicationMessageIconHelpers imageWithDescriptor:v29 font:v83 hasTintColor:v32 traitCollection:v33 symbolScale:3];
+  v34 = [PKApplicationMessageIconHelpers imageWithDescriptor:image font:v83 hasTintColor:v32 traitCollection:v33 symbolScale:3];
   iconImage = v13->_iconImage;
   v13->_iconImage = v34;
 
-  AtrributedString = CreateAtrributedString(v25, v82);
+  AtrributedString = CreateAtrributedString(title, v82);
   title = v13->_title;
   v13->_title = AtrributedString;
 
-  if (v24 && v23)
+  if (parseEmphasisInBody && body)
   {
     v27 = v84;
-    v38 = PKAttributedStringByParsingEmphasisInString(v23, v84, 0);
+    v38 = PKAttributedStringByParsingEmphasisInString(body, v84, 0);
   }
 
   else
   {
     v27 = v84;
-    v38 = CreateAtrributedString(v23, v84);
+    v38 = CreateAtrributedString(body, v84);
   }
 
   v26 = a2;
@@ -359,8 +359,8 @@ LABEL_13:
   v19 = v83;
 LABEL_21:
 
-  v45 = *(a1 + 536);
-  *(a1 + 536) = v13;
+  v45 = *(animated + 536);
+  *(animated + 536) = v13;
 
   if (v12)
   {
@@ -372,7 +372,7 @@ LABEL_21:
     v46 = 0;
   }
 
-  v47 = *(a1 + 536);
+  v47 = *(animated + 536);
   if (v47)
   {
     v48 = *(v47 + 20);
@@ -388,55 +388,55 @@ LABEL_21:
   }
 
   v85 = v47;
-  v51 = *(a1 + 536);
+  v51 = *(animated + 536);
   if (v51)
   {
     v51 = v51[7];
   }
 
   v52 = v51;
-  v53 = *(a1 + 536);
+  v53 = *(animated + 536);
   if (v53)
   {
     v53 = v53[9];
   }
 
   v54 = v53;
-  v55 = *(a1 + 440);
-  v89 = *(a1 + 424);
+  v55 = *(animated + 440);
+  v89 = *(animated + 424);
   v90 = v55;
-  v91 = *(a1 + 456);
-  *(a1 + 432) = v3;
-  *(a1 + 440) = v4;
-  *(a1 + 448) = v5;
-  *(a1 + 456) = v6;
+  v91 = *(animated + 456);
+  *(animated + 432) = v3;
+  *(animated + 440) = v4;
+  *(animated + 448) = v5;
+  *(animated + 456) = v6;
   if (v26)
   {
     v56 = 0.0;
     if ((v46 & 0x100) != 0 && (PKEqualObjects() & 1) == 0)
     {
-      v56 = fmax([(PKApplicationMessageContentView *)a1 _prepareViewForReuse:0 type:v3 state:v4, v5, v6], 0.0);
+      v56 = fmax([(PKApplicationMessageContentView *)animated _prepareViewForReuse:0 type:v3 state:v4, v5, v6], 0.0);
     }
 
     if (!(((v46 & 0x100000000) == 0) | v50 & 1))
     {
-      v56 = fmax([(PKApplicationMessageContentView *)a1 _prepareViewForReuse:0 type:v3 state:v4, v5, v6], v56);
+      v56 = fmax([(PKApplicationMessageContentView *)animated _prepareViewForReuse:0 type:v3 state:v4, v5, v6], v56);
     }
 
     if ((v46 & 0x10000) != 0 && (PKEqualObjects() & 1) == 0)
     {
-      v56 = fmax([(PKApplicationMessageContentView *)a1 _prepareViewForReuse:1 type:v3 state:v4, v5, v6], v56);
+      v56 = fmax([(PKApplicationMessageContentView *)animated _prepareViewForReuse:1 type:v3 state:v4, v5, v6], v56);
     }
 
     if ((v46 & 0x1000000) != 0 && (PKEqualObjects() & 1) == 0)
     {
-      v56 = fmax([(PKApplicationMessageContentView *)a1 _prepareViewForReuse:1 type:v3 state:v4, v5, v6], v56);
+      v56 = fmax([(PKApplicationMessageContentView *)animated _prepareViewForReuse:1 type:v3 state:v4, v5, v6], v56);
     }
 
-    *(a1 + 424) = fmax(*(a1 + 424), v56 * 0.65);
+    *(animated + 424) = fmax(*(animated + 424), v56 * 0.65);
   }
 
-  v57 = *(a1 + 536);
+  v57 = *(animated + 536);
   if (v57)
   {
     v58 = *(v57 + 32);
@@ -447,8 +447,8 @@ LABEL_21:
     v58 = 0;
   }
 
-  [*(a1 + 472) setImage:v58];
-  v59 = *(a1 + 536);
+  [*(animated + 472) setImage:v58];
+  v59 = *(animated + 536);
   if (v59)
   {
     v60 = *(v59 + 40);
@@ -459,46 +459,46 @@ LABEL_21:
     v60 = 0;
   }
 
-  [*(a1 + 464) setTintColor:v60];
-  if ([*(a1 + 608) type])
+  [*(animated + 464) setTintColor:v60];
+  if ([*(animated + 608) type])
   {
     goto LABEL_53;
   }
 
   v61 = v12;
-  v62 = [*(a1 + 608) contentTypeDefault];
-  v63 = [v62 icon];
-  v64 = [v63 image];
-  v65 = [v64 type];
+  contentTypeDefault2 = [*(animated + 608) contentTypeDefault];
+  icon2 = [contentTypeDefault2 icon];
+  image2 = [icon2 image];
+  type = [image2 type];
 
-  if (!v65)
+  if (!type)
   {
-    [*(a1 + 464) setBackgroundColor:0];
+    [*(animated + 464) setBackgroundColor:0];
     goto LABEL_51;
   }
 
   v12 = v61;
-  if (v65 == 1)
+  if (type == 1)
   {
-    v66 = *(a1 + 464);
-    v67 = [MEMORY[0x1E69DC888] tertiarySystemGroupedBackgroundColor];
-    [v66 setBackgroundColor:v67];
+    v66 = *(animated + 464);
+    tertiarySystemGroupedBackgroundColor = [MEMORY[0x1E69DC888] tertiarySystemGroupedBackgroundColor];
+    [v66 setBackgroundColor:tertiarySystemGroupedBackgroundColor];
 
 LABEL_51:
     v12 = v61;
   }
 
-  [v63 style];
+  [icon2 style];
 
   v26 = a2;
 LABEL_53:
-  v68 = *(a1 + 488);
+  v68 = *(animated + 488);
   if (v68)
   {
     [v68 setAttributedText:v52];
   }
 
-  v69 = *(a1 + 496);
+  v69 = *(animated + 496);
   if (v69)
   {
     [v69 setAttributedText:v54];
@@ -509,13 +509,13 @@ LABEL_53:
   aBlock[2] = __59__PKApplicationMessageContentView__updateSubviewsAnimated___block_invoke_2;
   aBlock[3] = &unk_1E8022B28;
   v88 = v26;
-  aBlock[4] = a1;
+  aBlock[4] = animated;
   v70 = _Block_copy(aBlock);
   if (v26)
   {
-    v72 = [a1 _shouldReverseLayoutDirection];
-    [a1 bounds];
-    if (v72)
+    _shouldReverseLayoutDirection = [animated _shouldReverseLayoutDirection];
+    [animated bounds];
+    if (_shouldReverseLayoutDirection)
     {
       v77 = 0x200000101;
     }
@@ -525,20 +525,20 @@ LABEL_53:
       v77 = 0x200000001;
     }
 
-    v71.n128_f64[0] = [(PKApplicationMessageContentView *)a1 _layoutWithContext:v77 bounds:v73, v74, v75, v76];
+    v71.n128_f64[0] = [(PKApplicationMessageContentView *)animated _layoutWithContext:v77 bounds:v73, v74, v75, v76];
   }
 
-  v70[2](v70, *(a1 + 408), v49 & 1, v71);
-  (v70[2])(v70, *(a1 + 488), (v49 >> 16) & 1);
-  (v70[2])(v70, *(a1 + 496), (v49 >> 24) & 1);
-  (v70[2])(v70, *(a1 + 464), (v49 >> 8) & 1);
-  (v70[2])(v70, *(a1 + 480), v50);
-  [a1 setNeedsLayout];
-  PKUIViewLayoutIfNeeded(a1, 0, 0);
+  v70[2](v70, *(animated + 408), v49 & 1, v71);
+  (v70[2])(v70, *(animated + 488), (v49 >> 16) & 1);
+  (v70[2])(v70, *(animated + 496), (v49 >> 24) & 1);
+  (v70[2])(v70, *(animated + 464), (v49 >> 8) & 1);
+  (v70[2])(v70, *(animated + 480), v50);
+  [animated setNeedsLayout];
+  PKUIViewLayoutIfNeeded(animated, 0, 0);
   v78 = v90;
-  *(a1 + 424) = v89;
-  *(a1 + 440) = v78;
-  *(a1 + 456) = v91;
+  *(animated + 424) = v89;
+  *(animated + 440) = v78;
+  *(animated + 456) = v91;
 }
 
 - (void)dealloc
@@ -548,33 +548,33 @@ LABEL_53:
   [(PKApplicationMessageContentView *)&v2 dealloc];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = PKApplicationMessageContentView;
-  [(PKApplicationMessageContentView *)&v9 traitCollectionDidChange:v4];
-  v5 = [(PKApplicationMessageContentView *)self traitCollection];
-  if (!v4 || ([v4 preferredContentSizeCategory], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "preferredContentSizeCategory"), v7 = objc_claimAutoreleasedReturnValue(), v8 = UIContentSizeCategoryCompareToCategory(v6, v7), v7, v6, v8))
+  [(PKApplicationMessageContentView *)&v9 traitCollectionDidChange:changeCopy];
+  traitCollection = [(PKApplicationMessageContentView *)self traitCollection];
+  if (!changeCopy || ([changeCopy preferredContentSizeCategory], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(traitCollection, "preferredContentSizeCategory"), v7 = objc_claimAutoreleasedReturnValue(), v8 = UIContentSizeCategoryCompareToCategory(v6, v7), v7, v6, v8))
   {
-    [(PKApplicationMessageContentView *)self _updateForTraitCollection:v5];
+    [(PKApplicationMessageContentView *)self _updateForTraitCollection:traitCollection];
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  v4 = self;
+  selfCopy = self;
   v12.receiver = self;
   v12.super_class = PKApplicationMessageContentView;
-  v5 = [(PKApplicationMessageContentView *)&v12 hitTest:a4 withEvent:a3.x, a3.y];
-  if (!v5 || (WeakRetained = objc_loadWeakRetained(&v4->_delegate)) == 0 || (v7 = WeakRetained, v8 = objc_loadWeakRetained(&v4->_delegate), v9 = [v8 isApplicationMessageContentViewSwiped:v4], v8, v7, (v9 & 1) == 0))
+  v5 = [(PKApplicationMessageContentView *)&v12 hitTest:event withEvent:test.x, test.y];
+  if (!v5 || (WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate)) == 0 || (v7 = WeakRetained, v8 = objc_loadWeakRetained(&selfCopy->_delegate), v9 = [v8 isApplicationMessageContentViewSwiped:selfCopy], v8, v7, (v9 & 1) == 0))
   {
-    v4 = v5;
+    selfCopy = v5;
   }
 
-  v10 = v4;
+  v10 = selfCopy;
 
-  return v4;
+  return selfCopy;
 }
 
 - (void)layoutSubviews
@@ -583,10 +583,10 @@ LABEL_53:
   v10.super_class = PKApplicationMessageContentView;
   [(PKApplicationMessageContentView *)&v10 layoutSubviews];
   IsAnimated = PKCATrackedLayoutIsAnimated();
-  v4 = [(PKApplicationMessageContentView *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(PKApplicationMessageContentView *)self _shouldReverseLayoutDirection];
   [(PKApplicationMessageContentView *)self bounds];
   v9 = 0x100000000;
-  if (v4)
+  if (_shouldReverseLayoutDirection)
   {
     v9 = 0x100000100;
   }
@@ -594,22 +594,22 @@ LABEL_53:
   [(PKApplicationMessageContentView *)self _layoutWithContext:v5 bounds:v6, v7, v8];
 }
 
-- (double)_layoutWithContext:(double)a3 bounds:(double)a4
+- (double)_layoutWithContext:(double)context bounds:(double)bounds
 {
   v155 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
   v10 = a2 & 0xFFFFFFFF00000000;
   v11 = (a2 & 0xFFFFFFFF00000000) == 0x100000000;
-  [*(a1 + 408) sizeThatFits:{1.79769313e308, 1.79769313e308}];
-  v121 = a1;
-  v12 = [*(a1 + 408) imageView];
-  v13 = [v12 image];
+  [*(self + 408) sizeThatFits:{1.79769313e308, 1.79769313e308}];
+  selfCopy = self;
+  imageView = [*(self + 408) imageView];
+  image = [imageView image];
 
-  [v13 alignmentRectInsets];
+  [image alignmentRectInsets];
   r2.origin.y = a6;
   PKSizeAlignedInRect();
   v18 = v14;
@@ -618,10 +618,10 @@ LABEL_53:
   v21 = v17;
   if (v11)
   {
-    [*(v121 + 408) setFrame:{v14, v15, v16, v17}];
+    [*(selfCopy + 408) setFrame:{v14, v15, v16, v17}];
   }
 
-  v22 = *(v121 + 536);
+  v22 = *(selfCopy + 536);
   if (!v22 || (v23 = v21, v24 = v19, (*(v22 + 16) & 1) == 0))
   {
     v18 = *MEMORY[0x1E695F050];
@@ -632,27 +632,27 @@ LABEL_53:
 
   r2.origin.x = v18;
 
-  v25 = *(v121 + 504);
-  v26 = *(v121 + 512);
-  v28 = *(v121 + 520);
-  v27 = *(v121 + 528);
+  v25 = *(selfCopy + 504);
+  v26 = *(selfCopy + 512);
+  v28 = *(selfCopy + 520);
+  v27 = *(selfCopy + 528);
   if (v10 == 0x100000000)
   {
-    [v121 layoutMargins];
+    [selfCopy layoutMargins];
     v30 = fmax(v28, v29);
-    v31 = a3 + v26;
-    v32 = a4 + v25;
+    v31 = context + v26;
+    v32 = bounds + v25;
     v33 = a5 - (v26 + v27);
     v34 = r2.origin.y - (v25 + v30);
-    [*(v121 + 416) pkui_setFrame:a2 & 1 animated:{v31, a4 + v25, v33, v34}];
+    [*(selfCopy + 416) pkui_setFrame:a2 & 1 animated:{v31, bounds + v25, v33, v34}];
   }
 
   else
   {
-    v31 = a3 + v26;
+    v31 = context + v26;
     v33 = a5 - (v26 + v27);
     v35 = v25 + v28;
-    v32 = a4 + v25;
+    v32 = bounds + v25;
     v34 = r2.origin.y - v35;
   }
 
@@ -681,7 +681,7 @@ LABEL_53:
     v37 = 0x200000000;
   }
 
-  v38 = *(v121 + 536);
+  v38 = *(selfCopy + 536);
   x = v158.origin.x;
   if (v38)
   {
@@ -714,7 +714,7 @@ LABEL_53:
   v159.origin.y = 6.0;
   v159.size.height = v34;
   CGRectDivide(v159, &v139, &v144, 45.0, v37);
-  v40 = *(v121 + 536);
+  v40 = *(selfCopy + 536);
   v112 = v32;
   if (!v40)
   {
@@ -735,14 +735,14 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  v43 = [v41 style];
-  if (!v43)
+  style = [v41 style];
+  if (!style)
   {
     goto LABEL_24;
   }
 
   v44 = v34;
-  if (v43 == 1)
+  if (style == 1)
   {
     PKPassFrontFaceContentSize();
     PKSizeScaleAspectFit();
@@ -774,14 +774,14 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  [*(v121 + 464) pkui_setCornerRadius:a2 & BYTE1(v39) & 1 animated:v45];
-  [*(v121 + 464) pkui_setFrame:a2 & BYTE1(v39) & 1 animated:{r2.origin.x, v124, v123, r2.origin.y}];
-  [*(v121 + 464) frame];
+  [*(selfCopy + 464) pkui_setCornerRadius:a2 & BYTE1(v39) & 1 animated:v45];
+  [*(selfCopy + 464) pkui_setFrame:a2 & BYTE1(v39) & 1 animated:{r2.origin.x, v124, v123, r2.origin.y}];
+  [*(selfCopy + 464) frame];
   CGRectGetMaxX(v160);
-  [*(v121 + 464) frame];
+  [*(selfCopy + 464) frame];
   CGRectGetMinY(v161);
   UIRectCenteredAboutPoint();
-  [*(v121 + 480) pkui_setFrame:a2 & BYTE4(v39) & 1u animated:?];
+  [*(selfCopy + 480) pkui_setFrame:a2 & BYTE4(v39) & 1u animated:?];
   if ((v39 >> 8))
   {
     goto LABEL_29;
@@ -799,32 +799,32 @@ LABEL_30:
   v113 = v141[1].size.width;
   if (v36 == 1)
   {
-    [*(v121 + 464) bounds];
+    [*(selfCopy + 464) bounds];
     v58 = v57;
     v60 = v59;
     v62 = v61;
     v64 = v63;
-    v65 = [*(v121 + 472) image];
-    if (v65)
+    image2 = [*(selfCopy + 472) image];
+    if (image2)
     {
-      v66 = *(v121 + 536);
+      v66 = *(selfCopy + 536);
       if (v66)
       {
         v66 = v66[3];
       }
 
       v67 = v66;
-      v68 = [v67 image];
-      v69 = [v68 hasBackground];
+      image3 = [v67 image];
+      hasBackground = [image3 hasBackground];
 
-      if (v69)
+      if (hasBackground)
       {
-        [v65 pkui_alignmentSizeThatFills:{v62, v64}];
+        [image2 pkui_alignmentSizeThatFills:{v62, v64}];
       }
 
       else
       {
-        [v65 pkui_alignmentSizeThatFits:v62 maximumScale:{v64, 1.0}];
+        [image2 pkui_alignmentSizeThatFits:v62 maximumScale:{v64, 1.0}];
       }
 
       v70.n128_f64[0] = v152 + v58 + (v62 - v149) * 0.5;
@@ -839,7 +839,7 @@ LABEL_30:
       v64 = v78;
     }
 
-    [*(v121 + 472) pkui_setFrame:v52 & a2 animated:{v58, v60, v62, v64, *&v112}];
+    [*(selfCopy + 472) pkui_setFrame:v52 & a2 animated:{v58, v60, v62, v64, *&v112}];
 
     p_x = &v141->origin.x;
   }
@@ -890,21 +890,21 @@ LABEL_30:
   v133 = HIDWORD(a2) == 2;
   v134 = HIDWORD(a2) == 1;
   v132 = a2;
-  aBlock[4] = v121;
+  aBlock[4] = selfCopy;
   aBlock[5] = &v140;
   aBlock[6] = &v135;
   aBlock[7] = &v145;
   v118 = _Block_copy(aBlock);
-  v118[2](v118, *(v121 + 488), (v39 >> 16) & 1);
+  v118[2](v118, *(selfCopy + 488), (v39 >> 16) & 1);
   CGRectDivide(v141[1], v136 + 1, v141 + 1, 1.0, CGRectMinYEdge);
-  v118[2](v118, *(v121 + 496), (v39 >> 24) & 1);
+  v118[2](v118, *(selfCopy + 496), (v39 >> 24) & 1);
   if (v36 == 1)
   {
     v127 = 0u;
     v128 = 0u;
     r2.size = 0u;
     v126 = 0u;
-    v83 = *(v121 + 544);
+    v83 = *(selfCopy + 544);
     v84 = [v83 countByEnumeratingWithState:&r2.size objects:&v149 count:16];
     if (v84)
     {
@@ -1002,46 +1002,46 @@ LABEL_30:
   return a5;
 }
 
-- (void)setLayoutMargins:(UIEdgeInsets)a3
+- (void)setLayoutMargins:(UIEdgeInsets)margins
 {
   v4.receiver = self;
   v4.super_class = PKApplicationMessageContentView;
-  [(PKApplicationMessageContentView *)&v4 setLayoutMargins:a3.top, a3.left, a3.bottom, a3.right];
+  [(PKApplicationMessageContentView *)&v4 setLayoutMargins:margins.top, margins.left, margins.bottom, margins.right];
   [(PKApplicationMessageContentView *)self setNeedsLayout];
 }
 
-- (void)setBlurRadius:(void *)a3 animated:(double)a4 withCompletion:
+- (void)setBlurRadius:(void *)radius animated:(double)animated withCompletion:
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = v7;
-  if (!a1)
+  radiusCopy = radius;
+  v8 = radiusCopy;
+  if (!self)
   {
     goto LABEL_16;
   }
 
-  if (*(a1 + 592) == a4)
+  if (*(self + 592) == animated)
   {
-    if (v7)
+    if (radiusCopy)
     {
-      (*(v7 + 2))(v7, 1);
+      (*(radiusCopy + 2))(radiusCopy, 1);
     }
 
     goto LABEL_16;
   }
 
-  v9 = [a1 layer];
-  if (!*(a1 + 584))
+  layer = [self layer];
+  if (!*(self + 584))
   {
     v10 = objc_alloc(MEMORY[0x1E6979378]);
     v11 = [v10 initWithType:*MEMORY[0x1E6979928]];
-    v12 = *(a1 + 584);
-    *(a1 + 584) = v11;
+    v12 = *(self + 584);
+    *(self + 584) = v11;
 
-    [*(a1 + 584) setName:@"blur"];
-    v19[0] = *(a1 + 584);
+    [*(self + 584) setName:@"blur"];
+    v19[0] = *(self + 584);
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
-    [v9 setFilters:v13];
+    [layer setFilters:v13];
 
     if (!a2)
     {
@@ -1050,7 +1050,7 @@ LABEL_30:
 
 LABEL_9:
     v14 = [MEMORY[0x1E69B92B0] springAnimationWithKeyPath:@"filters.blur.inputRadius"];
-    [v14 pkui_updateForAdditiveAnimationFromScalar:*(a1 + 592) toScalar:a4];
+    [v14 pkui_updateForAdditiveAnimationFromScalar:*(self + 592) toScalar:animated];
     if (v8)
     {
       v17[0] = MEMORY[0x1E69E9820];
@@ -1061,7 +1061,7 @@ LABEL_9:
       [v14 pkui_setCompletionHandler:v17];
     }
 
-    v15 = [v9 pkui_addAdditiveAnimation:v14];
+    v15 = [layer pkui_addAdditiveAnimation:v14];
 
     goto LABEL_12;
   }
@@ -1072,9 +1072,9 @@ LABEL_9:
   }
 
 LABEL_12:
-  *(a1 + 592) = a4;
-  v16 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
-  [v9 setValue:v16 forKeyPath:@"filters.blur.inputRadius"];
+  *(self + 592) = animated;
+  v16 = [MEMORY[0x1E696AD98] numberWithDouble:animated];
+  [layer setValue:v16 forKeyPath:@"filters.blur.inputRadius"];
 
   if (v8 && (a2 & 1) == 0)
   {
@@ -1230,14 +1230,14 @@ LABEL_19:
 LABEL_22:
 }
 
-- (double)_prepareViewForReuse:(int)a3 type:(double)a4 state:(double)a5
+- (double)_prepareViewForReuse:(int)reuse type:(double)type state:(double)state
 {
   v13 = a2;
   v14 = v13;
-  if (a1)
+  if (self)
   {
-    v15 = [v13 superview];
-    if (v15)
+    superview = [v13 superview];
+    if (superview)
     {
       v16 = [v14 snapshotViewAfterScreenUpdates:0];
       if (v16)
@@ -1247,19 +1247,19 @@ LABEL_22:
         v20 = v19;
         v22 = v21;
         v24 = v23;
-        v25 = [v14 layer];
-        v26 = [v25 presentationLayer];
-        v27 = v26;
-        if (v26)
+        layer = [v14 layer];
+        presentationLayer = [layer presentationLayer];
+        v27 = presentationLayer;
+        if (presentationLayer)
         {
-          [v26 anchorPoint];
+          [presentationLayer anchorPoint];
           v29 = v28;
           v61 = v30;
           [v27 position];
-          v31 = a5;
+          stateCopy = state;
           v32 = a7;
           v34 = v33;
-          v62 = a4;
+          typeCopy = type;
           v35 = a6;
           v37 = v36;
           [v27 bounds];
@@ -1267,18 +1267,18 @@ LABEL_22:
           v24 = v39;
           v18 = v34 - v29 * v38;
           a7 = v32;
-          a5 = v31;
+          state = stateCopy;
           v20 = v37 - v61 * v39;
           a6 = v35;
-          a4 = v62;
+          type = typeCopy;
         }
 
         [v16 setFrame:{v18, v20, v22, v24}];
-        [v15 addSubview:v16];
-        v40 = [v16 layer];
-        [v40 setAllowsGroupOpacity:{objc_msgSend(v25, "allowsGroupOpacity")}];
-        v41 = [v25 compositingFilter];
-        [v40 setCompositingFilter:v41];
+        [superview addSubview:v16];
+        layer2 = [v16 layer];
+        [layer2 setAllowsGroupOpacity:{objc_msgSend(layer, "allowsGroupOpacity")}];
+        compositingFilter = [layer compositingFilter];
+        [layer2 setCompositingFilter:compositingFilter];
 
         v42 = [PKApplicationMessageContentView_SubviewSnapshot alloc];
         [v14 alignmentRectInsets];
@@ -1300,9 +1300,9 @@ LABEL_22:
             v53[4] = v46;
             v53[5] = v48;
             v53[6] = v50;
-            *(v53 + 2) = a3;
-            *(v53 + 7) = a4;
-            *(v53 + 8) = a5;
+            *(v53 + 2) = reuse;
+            *(v53 + 7) = type;
+            *(v53 + 8) = state;
             *(v53 + 9) = a6;
             *(v53 + 10) = a7;
           }
@@ -1315,7 +1315,7 @@ LABEL_22:
           v54 = 0;
         }
 
-        v55 = *(a1 + 544);
+        v55 = *(self + 544);
         [v55 addObject:v54];
         v65[0] = MEMORY[0x1E69E9820];
         v65[1] = 3221225472;
@@ -1359,14 +1359,14 @@ LABEL_22:
   return v58;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(PKApplicationMessageContentView *)self _shouldReverseLayoutDirection];
+  height = fits.height;
+  width = fits.width;
+  _shouldReverseLayoutDirection = [(PKApplicationMessageContentView *)self _shouldReverseLayoutDirection];
   v7 = *MEMORY[0x1E695EFF8];
   v8 = *(MEMORY[0x1E695EFF8] + 8);
-  if (v6)
+  if (_shouldReverseLayoutDirection)
   {
     v9 = 256;
   }
@@ -1376,43 +1376,43 @@ LABEL_22:
     v9 = 0;
   }
 
-  v10 = [(PKApplicationMessageContentView *)self _layoutWithContext:v9 bounds:v7, v8, width, height];
+  height = [(PKApplicationMessageContentView *)self _layoutWithContext:v9 bounds:v7, v8, width, height];
   result.height = v11;
-  result.width = v10;
+  result.width = height;
   return result;
 }
 
-- (void)performBatchUpdates:(uint64_t)a3 animated:
+- (void)performBatchUpdates:(uint64_t)updates animated:
 {
   v5 = a2;
-  if (a1 && v5)
+  if (self && v5)
   {
     v7 = v5;
-    if (a1[576] == 1)
+    if (self[576] == 1)
     {
       [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"PKApplicationMessageContentView recursive batch updates are not supported."];
       v5 = v7;
     }
 
-    if (a3)
+    if (updates)
     {
-      [a1 layoutIfNeeded];
+      [self layoutIfNeeded];
       v5 = v7;
     }
 
-    a1[576] = 1;
+    self[576] = 1;
     v5[2]();
-    a1[576] = 0;
-    v6 = a1[577];
-    a1[577] = 0;
+    self[576] = 0;
+    v6 = self[577];
+    self[577] = 0;
     if (v6 == 1)
     {
-      [(PKApplicationMessageContentView *)a1 _updateSubviewsAnimated:a3];
+      [(PKApplicationMessageContentView *)self _updateSubviewsAnimated:updates];
     }
 
     else
     {
-      PKUIViewLayoutIfNeeded(a1, a3, 0);
+      PKUIViewLayoutIfNeeded(self, updates, 0);
     }
 
     v5 = v7;
@@ -1459,19 +1459,19 @@ void __67__PKApplicationMessageContentView__prepareViewForReuse_type_state___blo
   [v2 clearHasBeenCommitted];
 }
 
-- (void)setContent:(int)a3 animated:
+- (void)setContent:(int)content animated:
 {
   v6 = a2;
-  if (a1 && *(a1 + 608) != v6)
+  if (self && *(self + 608) != v6)
   {
     v7 = v6;
-    if (a3 && (*(a1 + 576) & 1) == 0)
+    if (content && (*(self + 576) & 1) == 0)
     {
-      [a1 layoutIfNeeded];
+      [self layoutIfNeeded];
     }
 
-    objc_storeStrong((a1 + 608), a2);
-    [(PKApplicationMessageContentView *)a1 _updateSubviewsAnimated:a3];
+    objc_storeStrong((self + 608), a2);
+    [(PKApplicationMessageContentView *)self _updateSubviewsAnimated:content];
     v6 = v7;
   }
 }

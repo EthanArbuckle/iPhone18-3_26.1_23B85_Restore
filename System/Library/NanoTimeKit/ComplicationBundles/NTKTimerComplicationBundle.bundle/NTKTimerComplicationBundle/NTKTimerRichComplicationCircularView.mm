@@ -15,7 +15,7 @@
 
 - (int64_t)_backgroundFilterStyle
 {
-  v2 = [(NTKTimerRichComplicationCircularView *)self device];
+  device = [(NTKTimerRichComplicationCircularView *)self device];
   v3 = NTKShowGossamerUI();
 
   if (v3)
@@ -31,7 +31,7 @@
 
 - (int64_t)_foregroundFilterStyle
 {
-  v2 = [(NTKTimerRichComplicationCircularView *)self device];
+  device = [(NTKTimerRichComplicationCircularView *)self device];
   v3 = NTKShowGossamerUI();
 
   if (v3)

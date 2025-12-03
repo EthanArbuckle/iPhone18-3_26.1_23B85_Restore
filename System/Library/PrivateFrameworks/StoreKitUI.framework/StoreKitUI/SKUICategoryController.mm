@@ -1,37 +1,37 @@
 @interface SKUICategoryController
 - (NSOperationQueue)operationQueue;
-- (SKUICategoryController)initWithContentsController:(id)a3;
+- (SKUICategoryController)initWithContentsController:(id)controller;
 - (SKUICategoryControllerDelegate)delegate;
 - (UIBarButtonItem)categoryButton;
 - (UISegmentedControl)segmentedControl;
 - (id)_artworkLoader;
-- (id)_metricsLocationsWithIndex:(int64_t)a3;
+- (id)_metricsLocationsWithIndex:(int64_t)index;
 - (id)_rootMetricsLocations;
-- (id)_tableViewControllerWithCategory:(id)a3;
-- (id)metricsPageContextForCategoryTableView:(id)a3;
-- (void)_precacheArtworkForCategory:(id)a3;
-- (void)_recordClickEventWithCategory:(id)a3 index:(int64_t)a4;
+- (id)_tableViewControllerWithCategory:(id)category;
+- (id)metricsPageContextForCategoryTableView:(id)view;
+- (void)_precacheArtworkForCategory:(id)category;
+- (void)_recordClickEventWithCategory:(id)category index:(int64_t)index;
 - (void)_reloadSegmentedControl;
 - (void)_reloadSelectedSegment;
-- (void)_setResponse:(id)a3 error:(id)a4;
-- (void)buttonAction:(id)a3;
-- (void)categoryTableView:(id)a3 didSelectCategory:(id)a4;
+- (void)_setResponse:(id)response error:(id)error;
+- (void)buttonAction:(id)action;
+- (void)categoryTableView:(id)view didSelectCategory:(id)category;
 - (void)dealloc;
 - (void)dismiss;
-- (void)loadFromURL:(id)a3 withCompletionBlock:(id)a4;
-- (void)popoverControllerDidDismissPopover:(id)a3;
-- (void)segmentedControlAction:(id)a3;
-- (void)setCategory:(id)a3;
-- (void)setDefaultURL:(id)a3;
-- (void)setSegmentedControlLength:(int64_t)a3;
-- (void)setSelectedURL:(id)a3;
+- (void)loadFromURL:(id)l withCompletionBlock:(id)block;
+- (void)popoverControllerDidDismissPopover:(id)popover;
+- (void)segmentedControlAction:(id)action;
+- (void)setCategory:(id)category;
+- (void)setDefaultURL:(id)l;
+- (void)setSegmentedControlLength:(int64_t)length;
+- (void)setSelectedURL:(id)l;
 @end
 
 @implementation SKUICategoryController
 
-- (SKUICategoryController)initWithContentsController:(id)a3
+- (SKUICategoryController)initWithContentsController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUICategoryController initWithContentsController:];
@@ -43,7 +43,7 @@
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_contentsController, v4);
+    objc_storeWeak(&v5->_contentsController, controllerCopy);
   }
 
   return v6;
@@ -97,13 +97,13 @@
   self->_tableViewController = 0;
 }
 
-- (void)loadFromURL:(id)a3 withCompletionBlock:(id)a4
+- (void)loadFromURL:(id)l withCompletionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  blockCopy = block;
   [(SSVLoadURLOperation *)self->_loadOperation setOutputBlock:0];
   [(SSVLoadURLOperation *)self->_loadOperation cancel];
-  v8 = [objc_alloc(MEMORY[0x277D69CD8]) initWithURL:v6];
+  v8 = [objc_alloc(MEMORY[0x277D69CD8]) initWithURL:lCopy];
   loadOperation = self->_loadOperation;
   self->_loadOperation = v8;
 
@@ -122,11 +122,11 @@
   v17[2] = __58__SKUICategoryController_loadFromURL_withCompletionBlock___block_invoke;
   v17[3] = &unk_2781FFAE8;
   objc_copyWeak(&v19, &location);
-  v15 = v7;
+  v15 = blockCopy;
   v18 = v15;
   [(SSVLoadURLOperation *)v14 setOutputBlock:v17];
-  v16 = [(SKUICategoryController *)self operationQueue];
-  [v16 addOperation:self->_loadOperation];
+  operationQueue = [(SKUICategoryController *)self operationQueue];
+  [operationQueue addOperation:self->_loadOperation];
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(&location);
@@ -203,64 +203,64 @@ uint64_t __58__SKUICategoryController_loadFromURL_withCompletionBlock___block_in
   return segmentedControl;
 }
 
-- (void)setCategory:(id)a3
+- (void)setCategory:(id)category
 {
-  v5 = a3;
+  categoryCopy = category;
   p_rootCategory = &self->_rootCategory;
-  if (self->_rootCategory != v5)
+  if (self->_rootCategory != categoryCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_rootCategory, a3);
+    v7 = categoryCopy;
+    objc_storeStrong(p_rootCategory, category);
     [(SKUICategoryController *)self _precacheArtworkForCategory:self->_rootCategory];
     p_rootCategory = [(SKUICategoryController *)self _reloadSegmentedControl];
-    v5 = v7;
+    categoryCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](p_rootCategory, v5);
+  MEMORY[0x2821F96F8](p_rootCategory, categoryCopy);
 }
 
-- (void)setSegmentedControlLength:(int64_t)a3
+- (void)setSegmentedControlLength:(int64_t)length
 {
-  if (self->_segmentedControlLength != a3)
+  if (self->_segmentedControlLength != length)
   {
-    self->_segmentedControlLength = a3;
+    self->_segmentedControlLength = length;
     [(SKUICategoryController *)self _reloadSegmentedControl];
   }
 }
 
-- (void)setSelectedURL:(id)a3
+- (void)setSelectedURL:(id)l
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_selectedURL] & 1) == 0)
+  lCopy = l;
+  if (([lCopy isEqual:self->_selectedURL] & 1) == 0)
   {
-    objc_storeStrong(&self->_selectedURL, a3);
+    objc_storeStrong(&self->_selectedURL, l);
     [(SKUICategoryController *)self _reloadSelectedSegment];
   }
 }
 
-- (void)setDefaultURL:(id)a3
+- (void)setDefaultURL:(id)l
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_defaultURL] & 1) == 0)
+  lCopy = l;
+  if (([lCopy isEqual:self->_defaultURL] & 1) == 0)
   {
-    objc_storeStrong(&self->_defaultURL, a3);
+    objc_storeStrong(&self->_defaultURL, l);
     [(SKUICategoryController *)self _reloadSelectedSegment];
   }
 }
 
-- (void)buttonAction:(id)a3
+- (void)buttonAction:(id)action
 {
   [(SKUICategoryController *)self dismiss];
-  v26 = [(SKUICategoryController *)self _rootMetricsLocations];
+  _rootMetricsLocations = [(SKUICategoryController *)self _rootMetricsLocations];
   v4 = [(SKUICategoryController *)self _tableViewControllerWithCategory:self->_rootCategory];
   tableViewController = self->_tableViewController;
   self->_tableViewController = v4;
 
-  [(SKUICategoryTableViewController *)self->_tableViewController setMetricsLocations:v26];
-  v6 = [MEMORY[0x277D75418] currentDevice];
-  v7 = [v6 userInterfaceIdiom];
+  [(SKUICategoryTableViewController *)self->_tableViewController setMetricsLocations:_rootMetricsLocations];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v7 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v8 = objc_alloc(MEMORY[0x277D758A0]);
     v9 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:self->_tableViewController];
@@ -285,8 +285,8 @@ uint64_t __58__SKUICategoryController_loadFromURL_withCompletionBlock___block_in
       v16 = *MEMORY[0x277D6A4E8];
       while (1)
       {
-        v17 = [v15 children];
-        v18 = [v17 count];
+        children = [v15 children];
+        v18 = [children count];
 
         if (!v18)
         {
@@ -294,16 +294,16 @@ uint64_t __58__SKUICategoryController_loadFromURL_withCompletionBlock___block_in
         }
 
         v19 = [(SKUICategoryController *)self _tableViewControllerWithCategory:v15];
-        v20 = [(SKUICategory *)v13 children];
-        v21 = [v20 indexOfObjectIdenticalTo:v15];
+        children2 = [(SKUICategory *)v13 children];
+        v21 = [children2 indexOfObjectIdenticalTo:v15];
 
         if (v21 != 0x7FFFFFFFFFFFFFFFLL)
         {
           v22 = objc_alloc_init(MEMORY[0x277D69B90]);
           [v22 setLocationPosition:v21 + 1];
           [v22 setLocationType:v16];
-          [v26 insertObject:v22 atIndex:0];
-          [v19 setMetricsLocations:v26];
+          [_rootMetricsLocations insertObject:v22 atIndex:0];
+          [v19 setMetricsLocations:_rootMetricsLocations];
         }
 
         [v12 pushViewController:v19 animated:0];
@@ -326,11 +326,11 @@ uint64_t __58__SKUICategoryController_loadFromURL_withCompletionBlock___block_in
   }
 }
 
-- (void)segmentedControlAction:(id)a3
+- (void)segmentedControlAction:(id)action
 {
   [(SKUICategoryController *)self dismiss];
-  v4 = [(SKUISegmentedControl *)self->_segmentedControl selectedSegmentIndex];
-  v28 = [(NSArray *)self->_segmentedControlSegments objectAtIndex:v4];
+  selectedSegmentIndex = [(SKUISegmentedControl *)self->_segmentedControl selectedSegmentIndex];
+  v28 = [(NSArray *)self->_segmentedControlSegments objectAtIndex:selectedSegmentIndex];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   rootCategory = self->_rootCategory;
@@ -341,7 +341,7 @@ uint64_t __58__SKUICategoryController_loadFromURL_withCompletionBlock___block_in
     self->_tableViewController = v7;
 
     v9 = self->_tableViewController;
-    v10 = [(SKUICategoryController *)self _metricsLocationsWithIndex:v4];
+    v10 = [(SKUICategoryController *)self _metricsLocationsWithIndex:selectedSegmentIndex];
     [(SKUICategoryTableViewController *)v9 setMetricsLocations:v10];
 
     [(SKUICategoryTableViewController *)self->_tableViewController setNumberOfHiddenRows:[(NSArray *)self->_segmentedControlSegments count]- 1];
@@ -355,7 +355,7 @@ LABEL_6:
     [(UIPopoverController *)self->_popover _setPopoverBackgroundStyle:3];
     [(UIPopoverController *)self->_popover setDelegate:self];
     v21 = self->_popover;
-    [(SKUISegmentedControl *)self->_segmentedControl frameForSegmentAtIndex:v4];
+    [(SKUISegmentedControl *)self->_segmentedControl frameForSegmentAtIndex:selectedSegmentIndex];
     v22 = [(UIPopoverController *)v21 presentPopoverFromRect:self->_segmentedControl inView:1 permittedArrowDirections:1 animated:?];
 LABEL_7:
     v23 = v28;
@@ -377,8 +377,8 @@ LABEL_7:
 
   else
   {
-    v11 = [(SKUICategory *)v28 children];
-    v12 = [v11 count];
+    children = [(SKUICategory *)v28 children];
+    v12 = [children count];
 
     if (v12)
     {
@@ -387,7 +387,7 @@ LABEL_7:
       self->_tableViewController = v13;
 
       v15 = self->_tableViewController;
-      v16 = [(SKUICategoryController *)self _metricsLocationsWithIndex:v4];
+      v16 = [(SKUICategoryController *)self _metricsLocationsWithIndex:selectedSegmentIndex];
       [(SKUICategoryTableViewController *)v15 setMetricsLocations:v16];
 
       goto LABEL_6;
@@ -403,7 +403,7 @@ LABEL_7:
   v23 = v28;
   if ((v27 & 1) == 0)
   {
-    [(SKUICategoryController *)self _recordClickEventWithCategory:v28 index:v4];
+    [(SKUICategoryController *)self _recordClickEventWithCategory:v28 index:selectedSegmentIndex];
     v22 = [(SKUICategoryController *)self categoryTableView:0 didSelectCategory:v28];
     goto LABEL_7;
   }
@@ -413,16 +413,16 @@ LABEL_8:
   MEMORY[0x2821F96F8](v22, v23);
 }
 
-- (void)popoverControllerDidDismissPopover:(id)a3
+- (void)popoverControllerDidDismissPopover:(id)popover
 {
   [(SKUICategoryController *)self dismiss];
 
   [(SKUICategoryController *)self _reloadSelectedSegment];
 }
 
-- (void)categoryTableView:(id)a3 didSelectCategory:(id)a4
+- (void)categoryTableView:(id)view didSelectCategory:(id)category
 {
-  v8 = a4;
+  categoryCopy = category;
   [(SKUICategoryController *)self dismiss];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
@@ -430,11 +430,11 @@ LABEL_8:
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
-    [v7 categoryController:self didSelectCategory:v8];
+    [v7 categoryController:self didSelectCategory:categoryCopy];
   }
 }
 
-- (id)metricsPageContextForCategoryTableView:(id)a3
+- (id)metricsPageContextForCategoryTableView:(id)view
 {
   WeakRetained = objc_loadWeakRetained(&self->_contentsController);
   if (WeakRetained)
@@ -470,11 +470,11 @@ LABEL_8:
   return artworkLoader;
 }
 
-- (id)_metricsLocationsWithIndex:(int64_t)a3
+- (id)_metricsLocationsWithIndex:(int64_t)index
 {
   v8[2] = *MEMORY[0x277D85DE8];
   v4 = objc_alloc_init(MEMORY[0x277D69B90]);
-  [v4 setLocationPosition:a3];
+  [v4 setLocationPosition:index];
   [v4 setLocationType:*MEMORY[0x277D6A4E8]];
   v5 = objc_alloc_init(MEMORY[0x277D69B90]);
   [v5 setLocationPosition:0];
@@ -491,34 +491,34 @@ LABEL_8:
   if (self->_segmentedControl)
   {
     v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v4 = [(SKUICategory *)self->_rootCategory children];
-    v5 = [v4 objectEnumerator];
+    children = [(SKUICategory *)self->_rootCategory children];
+    objectEnumerator = [children objectEnumerator];
 
-    v6 = [(SKUICategory *)self->_rootCategory parentLabel];
+    parentLabel = [(SKUICategory *)self->_rootCategory parentLabel];
 
-    if (v6)
+    if (parentLabel)
     {
       [(NSArray *)v3 addObject:self->_rootCategory];
     }
 
-    v7 = [v5 nextObject];
-    if (v7)
+    nextObject = [objectEnumerator nextObject];
+    if (nextObject)
     {
-      v8 = v7;
+      nextObject2 = nextObject;
       while ([(NSArray *)v3 count]< self->_segmentedControlLength)
       {
-        [(NSArray *)v3 addObject:v8];
+        [(NSArray *)v3 addObject:nextObject2];
 
-        v8 = [v5 nextObject];
-        if (!v8)
+        nextObject2 = [objectEnumerator nextObject];
+        if (!nextObject2)
         {
           goto LABEL_10;
         }
       }
 
       [(NSArray *)v3 removeLastObject];
-      v9 = [MEMORY[0x277CBEB68] null];
-      [(NSArray *)v3 addObject:v9];
+      null = [MEMORY[0x277CBEB68] null];
+      [(NSArray *)v3 addObject:null];
     }
 
 LABEL_10:
@@ -526,7 +526,7 @@ LABEL_10:
     self->_segmentedControlSegments = v3;
     v11 = v3;
 
-    v12 = [(SKUISegmentedControl *)self->_segmentedControl selectedSegmentIndex];
+    selectedSegmentIndex = [(SKUISegmentedControl *)self->_segmentedControl selectedSegmentIndex];
     [(SKUISegmentedControl *)self->_segmentedControl removeAllSegments];
     v13 = self->_segmentedControlSegments;
     v14[0] = MEMORY[0x277D85DD0];
@@ -535,7 +535,7 @@ LABEL_10:
     v14[3] = &unk_2781FFB10;
     v14[4] = self;
     [(NSArray *)v13 enumerateObjectsUsingBlock:v14];
-    [(SKUISegmentedControl *)self->_segmentedControl setSelectedSegmentIndex:v12];
+    [(SKUISegmentedControl *)self->_segmentedControl setSelectedSegmentIndex:selectedSegmentIndex];
     [(SKUICategoryController *)self _reloadSelectedSegment];
   }
 }
@@ -577,18 +577,18 @@ void __49__SKUICategoryController__reloadSegmentedControl__block_invoke(uint64_t
   [*(*(a1 + 32) + 96) insertSegmentWithTitle:v6 atIndex:a3 animated:0];
 }
 
-- (void)_precacheArtworkForCategory:(id)a3
+- (void)_precacheArtworkForCategory:(id)category
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SKUICategoryController *)self _artworkLoader];
-  [v5 loadImageForCategory:v4 reason:-1];
-  v6 = [v4 children];
+  categoryCopy = category;
+  _artworkLoader = [(SKUICategoryController *)self _artworkLoader];
+  [_artworkLoader loadImageForCategory:categoryCopy reason:-1];
+  children = [categoryCopy children];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v7 = [children countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -600,23 +600,23 @@ void __49__SKUICategoryController__reloadSegmentedControl__block_invoke(uint64_t
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(children);
         }
 
         [(SKUICategoryController *)self _precacheArtworkForCategory:*(*(&v11 + 1) + 8 * v10++)];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [children countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)_recordClickEventWithCategory:(id)a3 index:(int64_t)a4
+- (void)_recordClickEventWithCategory:(id)category index:(int64_t)index
 {
-  v6 = a3;
+  categoryCopy = category;
   WeakRetained = objc_loadWeakRetained(&self->_contentsController);
   if (WeakRetained)
   {
@@ -634,9 +634,9 @@ void __49__SKUICategoryController__reloadSegmentedControl__block_invoke(uint64_t
   v12[2] = __62__SKUICategoryController__recordClickEventWithCategory_index___block_invoke;
   v12[3] = &unk_2781FFB38;
   v13 = v8;
-  v14 = v6;
-  v15 = a4;
-  v10 = v6;
+  v14 = categoryCopy;
+  indexCopy = index;
+  v10 = categoryCopy;
   v11 = v8;
   [(SKUIClientContext *)clientContext getDefaultMetricsControllerWithCompletionBlock:v12];
 }
@@ -689,13 +689,13 @@ void __62__SKUICategoryController__recordClickEventWithCategory_index___block_in
 
     if ((v5 & 1) == 0)
     {
-      v7 = [(SKUICategory *)self->_rootCategory children];
-      if ([v7 count])
+      children = [(SKUICategory *)self->_rootCategory children];
+      if ([children count])
       {
         v8 = 0;
         while (1)
         {
-          v9 = [v7 objectAtIndex:v8];
+          v9 = [children objectAtIndex:v8];
           v10 = [v9 containsURL:self->_selectedURL];
 
           if (v10)
@@ -703,21 +703,21 @@ void __62__SKUICategoryController__recordClickEventWithCategory_index___block_in
             break;
           }
 
-          if (++v8 >= [v7 count])
+          if (++v8 >= [children count])
           {
             goto LABEL_12;
           }
         }
 
         segmentedControlSegments = self->_segmentedControlSegments;
-        v14 = [v7 objectAtIndex:v8];
+        v14 = [children objectAtIndex:v8];
         v6 = [(NSArray *)segmentedControlSegments indexOfObject:v14];
 
         if (v6 == 0x7FFFFFFFFFFFFFFFLL)
         {
           v15 = self->_segmentedControlSegments;
-          v16 = [MEMORY[0x277CBEB68] null];
-          v6 = [(NSArray *)v15 indexOfObject:v16];
+          null = [MEMORY[0x277CBEB68] null];
+          v6 = [(NSArray *)v15 indexOfObject:null];
         }
       }
 
@@ -758,9 +758,9 @@ LABEL_14:
   return v3;
 }
 
-- (void)_setResponse:(id)a3 error:(id)a4
+- (void)_setResponse:(id)response error:(id)error
 {
-  v8 = a3;
+  responseCopy = response;
   [(SSVLoadURLOperation *)self->_loadOperation setOutputBlock:0];
   loadOperation = self->_loadOperation;
   self->_loadOperation = 0;
@@ -768,7 +768,7 @@ LABEL_14:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [[SKUICategory alloc] initWithCategoryDictionary:v8];
+    v6 = [[SKUICategory alloc] initWithCategoryDictionary:responseCopy];
     rootCategory = self->_rootCategory;
     self->_rootCategory = v6;
 
@@ -777,19 +777,19 @@ LABEL_14:
   }
 }
 
-- (id)_tableViewControllerWithCategory:(id)a3
+- (id)_tableViewControllerWithCategory:(id)category
 {
-  v4 = a3;
+  categoryCopy = category;
   v5 = objc_alloc_init(SKUICategoryTableViewController);
-  v6 = [(SKUICategoryController *)self _artworkLoader];
-  [(SKUICategoryTableViewController *)v5 setArtworkLoader:v6];
+  _artworkLoader = [(SKUICategoryController *)self _artworkLoader];
+  [(SKUICategoryTableViewController *)v5 setArtworkLoader:_artworkLoader];
 
   [(SKUICategoryTableViewController *)v5 setClientContext:self->_clientContext];
-  [(SKUICategoryTableViewController *)v5 setCategory:v4];
+  [(SKUICategoryTableViewController *)v5 setCategory:categoryCopy];
   [(SKUICategoryTableViewController *)v5 setPreferredContentSize:320.0, 472.0];
   [(SKUICategoryTableViewController *)v5 setSelectedURL:self->_selectedURL];
   [(SKUICategoryTableViewController *)v5 setDefaultURL:self->_defaultURL];
-  v7 = self->_rootCategory == v4;
+  v7 = self->_rootCategory == categoryCopy;
 
   [(SKUICategoryTableViewController *)v5 setRoot:v7];
   [(SKUICategoryTableViewController *)v5 setDelegate:self];

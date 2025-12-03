@@ -1,20 +1,20 @@
 @interface _DYSegment
-- (BOOL)withSegmentData:(id)a3;
+- (BOOL)withSegmentData:(id)data;
 - (NSString)name;
 - (_DYSegment)init;
 - (unint64_t)address;
 - (unint64_t)permissions;
 - (unint64_t)preferredLoadAddress;
 - (unint64_t)vmsize;
-- (void)getFastPathData:(_DYSegmentFastPathData *)a3;
+- (void)getFastPathData:(_DYSegmentFastPathData *)data;
 @end
 
 @implementation _DYSegment
 
 - (NSString)name
 {
-  v2 = self;
-  sub_1AE4E1B8C(v2, v3, v4, v5);
+  selfCopy = self;
+  sub_1AE4E1B8C(selfCopy, v3, v4, v5);
 
   v6 = sub_1AE4EAD30();
 
@@ -25,7 +25,7 @@
 {
   if (*(self + OBJC_IVAR____DYSegment_impl))
   {
-    v2 = self;
+    selfCopy = self;
 
     sub_1AE4CC184(v3);
 
@@ -45,7 +45,7 @@
 {
   if (*(self + OBJC_IVAR____DYSegment_impl))
   {
-    v2 = self;
+    selfCopy = self;
 
     sub_1AE4CC184(v3);
 
@@ -65,7 +65,7 @@
 {
   if (*(self + OBJC_IVAR____DYSegment_impl))
   {
-    v2 = self;
+    selfCopy = self;
 
     sub_1AE4CC184(v3);
 
@@ -85,7 +85,7 @@
 {
   if (*(self + OBJC_IVAR____DYSegment_impl))
   {
-    v2 = self;
+    selfCopy = self;
 
     sub_1AE4CC184(v3);
 
@@ -101,21 +101,21 @@
   return self;
 }
 
-- (void)getFastPathData:(_DYSegmentFastPathData *)a3
+- (void)getFastPathData:(_DYSegmentFastPathData *)data
 {
-  v4 = self;
-  sub_1AE4E1E28(a3);
+  selfCopy = self;
+  sub_1AE4E1E28(data);
 }
 
-- (BOOL)withSegmentData:(id)a3
+- (BOOL)withSegmentData:(id)data
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(data);
   v5 = v4;
   if (*(&self->super.isa + OBJC_IVAR____DYSegment_impl))
   {
     _Block_copy(v4);
     _Block_copy(v5);
-    v6 = self;
+    selfCopy = self;
 
     sub_1AE4CDFCC(v7, v5, &v9);
 

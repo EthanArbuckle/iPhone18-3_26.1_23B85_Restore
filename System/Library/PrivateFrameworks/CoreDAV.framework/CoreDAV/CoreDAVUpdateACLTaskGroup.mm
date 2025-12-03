@@ -1,25 +1,25 @@
 @interface CoreDAVUpdateACLTaskGroup
-- (CoreDAVUpdateACLTaskGroup)initWithAccountInfoProvider:(id)a3 aceItems:(id)a4 url:(id)a5 taskManager:(id)a6;
+- (CoreDAVUpdateACLTaskGroup)initWithAccountInfoProvider:(id)provider aceItems:(id)items url:(id)url taskManager:(id)manager;
 - (void)_startGetACL;
-- (void)_startSetACLWithAccessControlEntities:(id)a3;
-- (void)task:(id)a3 didFinishWithError:(id)a4;
+- (void)_startSetACLWithAccessControlEntities:(id)entities;
+- (void)task:(id)task didFinishWithError:(id)error;
 @end
 
 @implementation CoreDAVUpdateACLTaskGroup
 
-- (CoreDAVUpdateACLTaskGroup)initWithAccountInfoProvider:(id)a3 aceItems:(id)a4 url:(id)a5 taskManager:(id)a6
+- (CoreDAVUpdateACLTaskGroup)initWithAccountInfoProvider:(id)provider aceItems:(id)items url:(id)url taskManager:(id)manager
 {
-  v11 = a4;
-  v12 = a5;
+  itemsCopy = items;
+  urlCopy = url;
   v16.receiver = self;
   v16.super_class = CoreDAVUpdateACLTaskGroup;
-  v13 = [(CoreDAVTaskGroup *)&v16 initWithAccountInfoProvider:a3 taskManager:a6];
+  v13 = [(CoreDAVTaskGroup *)&v16 initWithAccountInfoProvider:provider taskManager:manager];
   v14 = v13;
   if (v13)
   {
     v13->_state = 0;
-    objc_storeStrong(&v13->_aceItems, a4);
-    objc_storeStrong(&v14->_url, a5);
+    objc_storeStrong(&v13->_aceItems, items);
+    objc_storeStrong(&v14->_url, url);
   }
 
   return v14;
@@ -35,29 +35,29 @@
 
   [(CoreDAVUpdateACLTaskGroup *)self setFetchTask:v6];
   outstandingTasks = self->super._outstandingTasks;
-  v8 = [(CoreDAVUpdateACLTaskGroup *)self fetchTask];
-  [(NSMutableSet *)outstandingTasks addObject:v8];
+  fetchTask = [(CoreDAVUpdateACLTaskGroup *)self fetchTask];
+  [(NSMutableSet *)outstandingTasks addObject:fetchTask];
 
   WeakRetained = objc_loadWeakRetained(&self->super._accountInfoProvider);
-  v10 = [(CoreDAVUpdateACLTaskGroup *)self fetchTask];
-  [v10 setAccountInfoProvider:WeakRetained];
+  fetchTask2 = [(CoreDAVUpdateACLTaskGroup *)self fetchTask];
+  [fetchTask2 setAccountInfoProvider:WeakRetained];
 
-  v11 = [(CoreDAVUpdateACLTaskGroup *)self fetchTask];
-  [v11 setDelegate:self];
+  fetchTask3 = [(CoreDAVUpdateACLTaskGroup *)self fetchTask];
+  [fetchTask3 setDelegate:self];
 
   v12 = objc_loadWeakRetained(&self->super._taskManager);
-  v13 = [(CoreDAVUpdateACLTaskGroup *)self fetchTask];
-  [v12 submitQueuedCoreDAVTask:v13];
+  fetchTask4 = [(CoreDAVUpdateACLTaskGroup *)self fetchTask];
+  [v12 submitQueuedCoreDAVTask:fetchTask4];
 
   [(CoreDAVUpdateACLTaskGroup *)self setState:1];
 }
 
-- (void)_startSetACLWithAccessControlEntities:(id)a3
+- (void)_startSetACLWithAccessControlEntities:(id)entities
 {
-  v4 = a3;
+  entitiesCopy = entities;
   v5 = [CoreDAVACLTask alloc];
   v6 = [(CoreDAVUpdateACLTaskGroup *)self url];
-  v9 = [(CoreDAVACLTask *)v5 initWithAccessControlEntities:v4 atURL:v6];
+  v9 = [(CoreDAVACLTask *)v5 initWithAccessControlEntities:entitiesCopy atURL:v6];
 
   [(NSMutableSet *)self->super._outstandingTasks addObject:v9];
   WeakRetained = objc_loadWeakRetained(&self->super._accountInfoProvider);
@@ -70,16 +70,16 @@
   [(CoreDAVUpdateACLTaskGroup *)self setState:2];
 }
 
-- (void)task:(id)a3 didFinishWithError:(id)a4
+- (void)task:(id)task didFinishWithError:(id)error
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CoreDAVUpdateACLTaskGroup *)self state];
-  if (v8 == 2)
+  taskCopy = task;
+  errorCopy = error;
+  state = [(CoreDAVUpdateACLTaskGroup *)self state];
+  if (state == 2)
   {
-    [(NSMutableSet *)self->super._outstandingTasks removeObject:v6];
-    if (v7)
+    [(NSMutableSet *)self->super._outstandingTasks removeObject:taskCopy];
+    if (errorCopy)
     {
       v13 = 6;
     }
@@ -89,47 +89,47 @@
       v13 = 4;
     }
 
-    v11 = self;
-    v12 = v7;
+    selfCopy2 = self;
+    v12 = errorCopy;
     goto LABEL_9;
   }
 
-  if (v8 == 1)
+  if (state == 1)
   {
     outstandingTasks = self->super._outstandingTasks;
-    v10 = [(CoreDAVUpdateACLTaskGroup *)self fetchTask];
-    [(NSMutableSet *)outstandingTasks removeObject:v10];
+    fetchTask = [(CoreDAVUpdateACLTaskGroup *)self fetchTask];
+    [(NSMutableSet *)outstandingTasks removeObject:fetchTask];
 
-    if (v7)
+    if (errorCopy)
     {
-      v11 = self;
-      v12 = v7;
+      selfCopy2 = self;
+      v12 = errorCopy;
       v13 = 5;
 LABEL_9:
-      [(CoreDAVUpdateACLTaskGroup *)v11 _finishWithError:v12 state:v13];
+      [(CoreDAVUpdateACLTaskGroup *)selfCopy2 _finishWithError:v12 state:v13];
       goto LABEL_10;
     }
 
-    v15 = [(CoreDAVUpdateACLTaskGroup *)self fetchTask];
-    v16 = [v15 successfulValueForNameSpace:@"DAV:" elementName:@"acl"];
+    fetchTask2 = [(CoreDAVUpdateACLTaskGroup *)self fetchTask];
+    v16 = [fetchTask2 successfulValueForNameSpace:@"DAV:" elementName:@"acl"];
 
     if (v16)
     {
-      v17 = [(CoreDAVUpdateACLTaskGroup *)self aceItems];
-      v18 = [v16 notGrantedSubsetOfACEs:v17];
+      aceItems = [(CoreDAVUpdateACLTaskGroup *)self aceItems];
+      v18 = [v16 notGrantedSubsetOfACEs:aceItems];
 
       if ([v18 count])
       {
         v19 = MEMORY[0x277CBEB18];
-        v20 = [v18 allObjects];
-        v21 = [v19 arrayWithArray:v20];
+        allObjects = [v18 allObjects];
+        v21 = [v19 arrayWithArray:allObjects];
 
         v29 = 0u;
         v30 = 0u;
         v27 = 0u;
         v28 = 0u;
-        v22 = [v16 liveACEs];
-        v23 = [v22 countByEnumeratingWithState:&v27 objects:v31 count:16];
+        liveACEs = [v16 liveACEs];
+        v23 = [liveACEs countByEnumeratingWithState:&v27 objects:v31 count:16];
         if (v23)
         {
           v24 = v23;
@@ -140,13 +140,13 @@ LABEL_9:
             {
               if (*v28 != v25)
               {
-                objc_enumerationMutation(v22);
+                objc_enumerationMutation(liveACEs);
               }
 
               [v21 addObject:*(*(&v27 + 1) + 8 * i)];
             }
 
-            v24 = [v22 countByEnumeratingWithState:&v27 objects:v31 count:16];
+            v24 = [liveACEs countByEnumeratingWithState:&v27 objects:v31 count:16];
           }
 
           while (v24);

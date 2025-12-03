@@ -1,13 +1,13 @@
 @interface CKMomentSharePlaceholderAsset
 + (CKMomentSharePlaceholderAsset)sharedInstance;
 + (id)placeholderImage;
-- (CGRect)bestCropRectForAspectRatio:(double)a3;
+- (CGRect)bestCropRectForAspectRatio:(double)ratio;
 - (CGSize)size;
 - (CKMomentSharePlaceholderAsset)init;
 - (Class)defaultImageProviderClass;
 - (UIImage)placeholderImage;
 - (double)aspectRatio;
-- (int64_t)isContentEqualTo:(id)a3;
+- (int64_t)isContentEqualTo:(id)to;
 @end
 
 @implementation CKMomentSharePlaceholderAsset
@@ -44,14 +44,14 @@ void __47__CKMomentSharePlaceholderAsset_sharedInstance__block_invoke()
   objc_exception_throw(v2);
 }
 
-- (int64_t)isContentEqualTo:(id)a3
+- (int64_t)isContentEqualTo:(id)to
 {
-  if (!a3)
+  if (!to)
   {
     return 1;
   }
 
-  v3 = a3;
+  toCopy = to;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -93,7 +93,7 @@ void __49__CKMomentSharePlaceholderAsset_placeholderImage__block_invoke()
   return [v2 placeholderImage];
 }
 
-- (CGRect)bestCropRectForAspectRatio:(double)a3
+- (CGRect)bestCropRectForAspectRatio:(double)ratio
 {
   [(CKMomentSharePlaceholderAsset *)self size];
   PXRectWithAspectRatioFittingRect();
@@ -108,8 +108,8 @@ void __49__CKMomentSharePlaceholderAsset_placeholderImage__block_invoke()
 
 - (CGSize)size
 {
-  v2 = [(CKMomentSharePlaceholderAsset *)self placeholderImage];
-  [v2 size];
+  placeholderImage = [(CKMomentSharePlaceholderAsset *)self placeholderImage];
+  [placeholderImage size];
   v4 = v3;
   v6 = v5;
 

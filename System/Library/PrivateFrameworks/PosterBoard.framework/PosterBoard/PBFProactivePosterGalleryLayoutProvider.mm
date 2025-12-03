@@ -1,21 +1,21 @@
 @interface PBFProactivePosterGalleryLayoutProvider
-- (void)fetchGalleryLayoutWithCompletion:(id)a3;
-- (void)handlePosterDescriptorsDidChange:(id)a3 withCompletion:(id)a4;
+- (void)fetchGalleryLayoutWithCompletion:(id)completion;
+- (void)handlePosterDescriptorsDidChange:(id)change withCompletion:(id)completion;
 @end
 
 @implementation PBFProactivePosterGalleryLayoutProvider
 
-- (void)fetchGalleryLayoutWithCompletion:(id)a3
+- (void)fetchGalleryLayoutWithCompletion:(id)completion
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CEB530] sharedInstance];
+  completionCopy = completion;
+  mEMORY[0x277CEB530] = [MEMORY[0x277CEB530] sharedInstance];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __76__PBFProactivePosterGalleryLayoutProvider_fetchGalleryLayoutWithCompletion___block_invoke;
   v6[3] = &unk_2782C7D20;
-  v7 = v3;
-  v5 = v3;
-  [v4 fetchFaceGalleryConfigurationWithCompletion:v6];
+  v7 = completionCopy;
+  v5 = completionCopy;
+  [mEMORY[0x277CEB530] fetchFaceGalleryConfigurationWithCompletion:v6];
 }
 
 void __76__PBFProactivePosterGalleryLayoutProvider_fetchGalleryLayoutWithCompletion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -26,17 +26,17 @@ void __76__PBFProactivePosterGalleryLayoutProvider_fetchGalleryLayoutWithComplet
   (*(v4 + 16))(v4, v6, v5);
 }
 
-- (void)handlePosterDescriptorsDidChange:(id)a3 withCompletion:(id)a4
+- (void)handlePosterDescriptorsDidChange:(id)change withCompletion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  changeCopy = change;
+  completionCopy = completion;
   v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = v5;
+  v8 = changeCopy;
   v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v9)
   {
@@ -63,14 +63,14 @@ void __76__PBFProactivePosterGalleryLayoutProvider_fetchGalleryLayoutWithComplet
     while (v10);
   }
 
-  v16 = [MEMORY[0x277CEB530] sharedInstance];
+  mEMORY[0x277CEB530] = [MEMORY[0x277CEB530] sharedInstance];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __91__PBFProactivePosterGalleryLayoutProvider_handlePosterDescriptorsDidChange_withCompletion___block_invoke_2;
   v18[3] = &unk_2782C7D68;
-  v19 = v6;
-  v17 = v6;
-  [v16 posterBoardDidUpdateDescriptors:v7 completion:v18];
+  v19 = completionCopy;
+  v17 = completionCopy;
+  [mEMORY[0x277CEB530] posterBoardDidUpdateDescriptors:v7 completion:v18];
 }
 
 @end

@@ -1,61 +1,61 @@
 @interface RELiveElementCoordinator
-- (BOOL)elementDataSourceController:(id)a3 isElementVisible:(id)a4;
-- (RELiveElementCoordinator)initWithRelevanceEngine:(id)a3;
-- (double)_mostRecentRequestForAttention:(id)a3;
-- (float)rankingScoreForElement:(id)a3;
-- (id)_predictionForElement:(id)a3;
-- (id)createdDateForElement:(id)a3;
-- (id)elementForElementId:(id)a3;
-- (id)featureProviderForElement:(id)a3;
-- (id)featureProviderForElementAtPath:(id)a3;
-- (id)predictionForElementAtPath:(id)a3;
-- (id)rankingStartDateForElement:(id)a3;
-- (id)rankingTierForElement:(id)a3;
-- (void)_enumerateSectionsWithOptions:(unint64_t)a3 usingBlock:(id)a4;
-- (void)_queue_addElement:(id)a3 toSection:(id)a4;
-- (void)_queue_refreshElement:(id)a3;
+- (BOOL)elementDataSourceController:(id)controller isElementVisible:(id)visible;
+- (RELiveElementCoordinator)initWithRelevanceEngine:(id)engine;
+- (double)_mostRecentRequestForAttention:(id)attention;
+- (float)rankingScoreForElement:(id)element;
+- (id)_predictionForElement:(id)element;
+- (id)createdDateForElement:(id)element;
+- (id)elementForElementId:(id)id;
+- (id)featureProviderForElement:(id)element;
+- (id)featureProviderForElementAtPath:(id)path;
+- (id)predictionForElementAtPath:(id)path;
+- (id)rankingStartDateForElement:(id)element;
+- (id)rankingTierForElement:(id)element;
+- (void)_enumerateSectionsWithOptions:(unint64_t)options usingBlock:(id)block;
+- (void)_queue_addElement:(id)element toSection:(id)section;
+- (void)_queue_refreshElement:(id)element;
 - (void)_queue_reload;
-- (void)_queue_reloadElement:(id)a3;
-- (void)_queue_removeElement:(id)a3;
-- (void)_queue_scheduleContentUpdate:(BOOL)a3;
-- (void)addElement:(id)a3 toSection:(id)a4;
-- (void)dataSource:(id)a3 didBeginActivity:(id)a4;
-- (void)dataSource:(id)a3 didFinishActivity:(id)a4;
-- (void)dataSourceManager:(id)a3 didLoadDataSourceController:(id)a4;
-- (void)dataSourceManager:(id)a3 willUnloadDataSourceController:(id)a4;
-- (void)elementDataSourceController:(id)a3 didAddElement:(id)a4 toSection:(id)a5;
-- (void)elementDataSourceController:(id)a3 didRefreshElement:(id)a4;
-- (void)elementDataSourceController:(id)a3 didReloadElement:(id)a4;
-- (void)elementDataSourceController:(id)a3 didRemoveElement:(id)a4;
-- (void)elementDataSourceController:(id)a3 performBatchUpdates:(id)a4;
-- (void)relevanceEngine:(id)a3 didInsertElement:(id)a4 atPath:(id)a5;
-- (void)relevanceEngine:(id)a3 didMoveElement:(id)a4 fromPath:(id)a5 toPath:(id)a6;
-- (void)relevanceEngine:(id)a3 didRemoveElement:(id)a4 atPath:(id)a5;
-- (void)relevanceEngine:(id)a3 didUpdateRelevanceOfElement:(id)a4;
-- (void)removeElement:(id)a3;
+- (void)_queue_reloadElement:(id)element;
+- (void)_queue_removeElement:(id)element;
+- (void)_queue_scheduleContentUpdate:(BOOL)update;
+- (void)addElement:(id)element toSection:(id)section;
+- (void)dataSource:(id)source didBeginActivity:(id)activity;
+- (void)dataSource:(id)source didFinishActivity:(id)activity;
+- (void)dataSourceManager:(id)manager didLoadDataSourceController:(id)controller;
+- (void)dataSourceManager:(id)manager willUnloadDataSourceController:(id)controller;
+- (void)elementDataSourceController:(id)controller didAddElement:(id)element toSection:(id)section;
+- (void)elementDataSourceController:(id)controller didRefreshElement:(id)element;
+- (void)elementDataSourceController:(id)controller didReloadElement:(id)element;
+- (void)elementDataSourceController:(id)controller didRemoveElement:(id)element;
+- (void)elementDataSourceController:(id)controller performBatchUpdates:(id)updates;
+- (void)relevanceEngine:(id)engine didInsertElement:(id)element atPath:(id)path;
+- (void)relevanceEngine:(id)engine didMoveElement:(id)element fromPath:(id)path toPath:(id)toPath;
+- (void)relevanceEngine:(id)engine didRemoveElement:(id)element atPath:(id)path;
+- (void)relevanceEngine:(id)engine didUpdateRelevanceOfElement:(id)element;
+- (void)removeElement:(id)element;
 @end
 
 @implementation RELiveElementCoordinator
 
-- (RELiveElementCoordinator)initWithRelevanceEngine:(id)a3
+- (RELiveElementCoordinator)initWithRelevanceEngine:(id)engine
 {
-  v4 = a3;
+  engineCopy = engine;
   v39.receiver = self;
   v39.super_class = RELiveElementCoordinator;
-  v5 = [(REElementCoordinator *)&v39 initWithRelevanceEngine:v4];
+  v5 = [(REElementCoordinator *)&v39 initWithRelevanceEngine:engineCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [(RERelevanceEngineSubsystem *)v5 queue];
+    queue = [(RERelevanceEngineSubsystem *)v5 queue];
     controllerQueue = v6->_controllerQueue;
-    v6->_controllerQueue = v7;
+    v6->_controllerQueue = queue;
 
-    v9 = [v4 configuration];
-    v10 = [v9 observerQueue];
-    v11 = v10;
-    if (v10)
+    configuration = [engineCopy configuration];
+    observerQueue = [configuration observerQueue];
+    v11 = observerQueue;
+    if (observerQueue)
     {
-      v12 = v10;
+      v12 = observerQueue;
       callbackQueue = v6->_callbackQueue;
       v6->_callbackQueue = v12;
     }
@@ -82,28 +82,28 @@
     v6->_refreshedElements = v20;
 
     v6->_reloadImmediately = 1;
-    v22 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     elementIdElementMap = v6->_elementIdElementMap;
-    v6->_elementIdElementMap = v22;
+    v6->_elementIdElementMap = dictionary;
 
-    v24 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     elementIdDateRelevantMap = v6->_elementIdDateRelevantMap;
-    v6->_elementIdDateRelevantMap = v24;
+    v6->_elementIdDateRelevantMap = dictionary2;
 
-    v26 = [[REElementRelevanceEngine alloc] initWithRelevanceEngine:v4];
+    v26 = [[REElementRelevanceEngine alloc] initWithRelevanceEngine:engineCopy];
     relevanceEngine = v6->_relevanceEngine;
     v6->_relevanceEngine = v26;
 
     [(REElementRelevanceEngine *)v6->_relevanceEngine setDelegate:v6];
-    v28 = [v4 logger];
-    [v28 addLoggable:v6->_relevanceEngine];
+    logger = [engineCopy logger];
+    [logger addLoggable:v6->_relevanceEngine];
 
-    v29 = [v4 configuration];
-    v30 = [v29 wantsImmutableContent];
+    configuration2 = [engineCopy configuration];
+    wantsImmutableContent = [configuration2 wantsImmutableContent];
 
     objc_initWeak(&location, v6);
     v31 = v6->_controllerQueue;
-    if (v30)
+    if (wantsImmutableContent)
     {
       v32 = 0.0;
     }
@@ -154,17 +154,17 @@ void __52__RELiveElementCoordinator_initWithRelevanceEngine___block_invoke(uint6
   }
 }
 
-- (void)_enumerateSectionsWithOptions:(unint64_t)a3 usingBlock:(id)a4
+- (void)_enumerateSectionsWithOptions:(unint64_t)options usingBlock:(id)block
 {
-  v6 = a4;
-  v7 = [(RERelevanceEngineSubsystem *)self relevanceEngine];
+  blockCopy = block;
+  relevanceEngine = [(RERelevanceEngineSubsystem *)self relevanceEngine];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __69__RELiveElementCoordinator__enumerateSectionsWithOptions_usingBlock___block_invoke;
   v9[3] = &unk_2785FCCE8;
-  v10 = v6;
-  v8 = v6;
-  [v7 enumerateSectionDescriptorsWithOptions:a3 includeHistoric:1 usingBlock:v9];
+  v10 = blockCopy;
+  v8 = blockCopy;
+  [relevanceEngine enumerateSectionDescriptorsWithOptions:options includeHistoric:1 usingBlock:v9];
 }
 
 void __69__RELiveElementCoordinator__enumerateSectionsWithOptions_usingBlock___block_invoke(uint64_t a1, void *a2)
@@ -174,36 +174,36 @@ void __69__RELiveElementCoordinator__enumerateSectionsWithOptions_usingBlock___b
   (*(v2 + 16))(v2, v3);
 }
 
-- (void)dataSourceManager:(id)a3 didLoadDataSourceController:(id)a4
+- (void)dataSourceManager:(id)manager didLoadDataSourceController:(id)controller
 {
-  v5 = a4;
-  [v5 setDelegate:self];
-  v6 = [v5 dataSource];
-  [(RERelevanceEngineSubsystem *)self trackObject:v6];
+  controllerCopy = controller;
+  [controllerCopy setDelegate:self];
+  dataSource = [controllerCopy dataSource];
+  [(RERelevanceEngineSubsystem *)self trackObject:dataSource];
 
-  v7 = [v5 dataSource];
+  dataSource2 = [controllerCopy dataSource];
 
-  [v7 setActivityDelegate:self];
+  [dataSource2 setActivityDelegate:self];
 }
 
-- (void)dataSourceManager:(id)a3 willUnloadDataSourceController:(id)a4
+- (void)dataSourceManager:(id)manager willUnloadDataSourceController:(id)controller
 {
-  v5 = a4;
-  v6 = [v5 elementOperationQueue];
+  controllerCopy = controller;
+  elementOperationQueue = [controllerCopy elementOperationQueue];
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __77__RELiveElementCoordinator_dataSourceManager_willUnloadDataSourceController___block_invoke;
   v13 = &unk_2785F9AE0;
-  v14 = v5;
-  v15 = self;
-  v7 = v5;
-  dispatch_async(v6, &v10);
+  v14 = controllerCopy;
+  selfCopy = self;
+  v7 = controllerCopy;
+  dispatch_async(elementOperationQueue, &v10);
 
-  v8 = [v7 dataSource];
-  [v8 setActivityDelegate:0];
+  dataSource = [v7 dataSource];
+  [dataSource setActivityDelegate:0];
 
-  v9 = [v7 dataSource];
-  [(RERelevanceEngineSubsystem *)self withdrawObject:v9];
+  dataSource2 = [v7 dataSource];
+  [(RERelevanceEngineSubsystem *)self withdrawObject:dataSource2];
 }
 
 void __77__RELiveElementCoordinator_dataSourceManager_willUnloadDataSourceController___block_invoke(uint64_t a1)
@@ -258,40 +258,40 @@ void __77__RELiveElementCoordinator_dataSourceManager_willUnloadDataSourceContro
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addElement:(id)a3 toSection:(id)a4
+- (void)addElement:(id)element toSection:(id)section
 {
   controllerQueue = self->_controllerQueue;
-  v7 = a4;
-  v8 = a3;
+  sectionCopy = section;
+  elementCopy = element;
   dispatch_assert_queue_V2(controllerQueue);
-  [(RELiveElementCoordinator *)self _queue_addElement:v8 toSection:v7];
+  [(RELiveElementCoordinator *)self _queue_addElement:elementCopy toSection:sectionCopy];
 }
 
-- (void)removeElement:(id)a3
+- (void)removeElement:(id)element
 {
   controllerQueue = self->_controllerQueue;
-  v5 = a3;
+  elementCopy = element;
   dispatch_assert_queue_V2(controllerQueue);
-  [(RELiveElementCoordinator *)self _queue_removeElement:v5];
+  [(RELiveElementCoordinator *)self _queue_removeElement:elementCopy];
 }
 
-- (id)predictionForElementAtPath:(id)a3
+- (id)predictionForElementAtPath:(id)path
 {
-  v4 = [(REElementCoordinator *)self elementAtPath:a3];
+  v4 = [(REElementCoordinator *)self elementAtPath:path];
   v5 = [(RELiveElementCoordinator *)self _predictionForElement:v4];
 
   return v5;
 }
 
-- (double)_mostRecentRequestForAttention:(id)a3
+- (double)_mostRecentRequestForAttention:(id)attention
 {
   v23 = *MEMORY[0x277D85DE8];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v3 = [a3 relevanceProviders];
-  v4 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  relevanceProviders = [attention relevanceProviders];
+  v4 = [relevanceProviders countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v4)
   {
     v5 = v4;
@@ -303,7 +303,7 @@ void __77__RELiveElementCoordinator_dataSourceManager_willUnloadDataSourceContro
       {
         if (*v19 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(relevanceProviders);
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
@@ -311,19 +311,19 @@ void __77__RELiveElementCoordinator_dataSourceManager_willUnloadDataSourceContro
         if (objc_opt_isKindOfClass())
         {
           v10 = v9;
-          v11 = [v10 feature];
-          v12 = [v11 name];
-          v13 = [v12 isEqual:@"smartStackLiveActivityUpdateDate"];
+          feature = [v10 feature];
+          name = [feature name];
+          v13 = [name isEqual:@"smartStackLiveActivityUpdateDate"];
 
           if (v13)
           {
-            v14 = [v10 value];
-            v7 = fmax(v7, REDoubleValueForTaggedPointer(v14, v15));
+            value = [v10 value];
+            v7 = fmax(v7, REDoubleValueForTaggedPointer(value, v15));
           }
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v5 = [relevanceProviders countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v5);
@@ -338,9 +338,9 @@ void __77__RELiveElementCoordinator_dataSourceManager_willUnloadDataSourceContro
   return v7;
 }
 
-- (float)rankingScoreForElement:(id)a3
+- (float)rankingScoreForElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -351,9 +351,9 @@ void __77__RELiveElementCoordinator_dataSourceManager_willUnloadDataSourceContro
   block[2] = __51__RELiveElementCoordinator_rankingScoreForElement___block_invoke;
   block[3] = &unk_2785F9F58;
   block[4] = self;
-  v10 = v4;
+  v10 = elementCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = elementCopy;
   dispatch_sync(controllerQueue, block);
   v7 = v13[6];
 
@@ -434,9 +434,9 @@ void __51__RELiveElementCoordinator_rankingScoreForElement___block_invoke(uint64
   *(*(*(a1 + 48) + 8) + 24) = v20;
 }
 
-- (id)rankingTierForElement:(id)a3
+- (id)rankingTierForElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -448,10 +448,10 @@ void __51__RELiveElementCoordinator_rankingScoreForElement___block_invoke(uint64
   block[1] = 3221225472;
   block[2] = __50__RELiveElementCoordinator_rankingTierForElement___block_invoke;
   block[3] = &unk_2785FC2F0;
-  v10 = v4;
+  v10 = elementCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = elementCopy;
   dispatch_sync(controllerQueue, block);
   v7 = v13[5];
 
@@ -474,9 +474,9 @@ void __50__RELiveElementCoordinator_rankingTierForElement___block_invoke(void *a
   }
 }
 
-- (id)createdDateForElement:(id)a3
+- (id)createdDateForElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -488,10 +488,10 @@ void __50__RELiveElementCoordinator_rankingTierForElement___block_invoke(void *a
   block[1] = 3221225472;
   block[2] = __50__RELiveElementCoordinator_createdDateForElement___block_invoke;
   block[3] = &unk_2785FC2F0;
-  v10 = v4;
+  v10 = elementCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = elementCopy;
   dispatch_sync(controllerQueue, block);
   v7 = v13[5];
 
@@ -510,9 +510,9 @@ void __50__RELiveElementCoordinator_createdDateForElement___block_invoke(uint64_
   *(v4 + 40) = v3;
 }
 
-- (id)rankingStartDateForElement:(id)a3
+- (id)rankingStartDateForElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -524,10 +524,10 @@ void __50__RELiveElementCoordinator_createdDateForElement___block_invoke(uint64_
   block[1] = 3221225472;
   block[2] = __55__RELiveElementCoordinator_rankingStartDateForElement___block_invoke;
   block[3] = &unk_2785FC2F0;
-  v10 = v4;
+  v10 = elementCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = elementCopy;
   dispatch_sync(controllerQueue, block);
   v7 = v13[5];
 
@@ -550,9 +550,9 @@ void __55__RELiveElementCoordinator_rankingStartDateForElement___block_invoke(vo
   }
 }
 
-- (id)featureProviderForElement:(id)a3
+- (id)featureProviderForElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -564,10 +564,10 @@ void __55__RELiveElementCoordinator_rankingStartDateForElement___block_invoke(vo
   block[1] = 3221225472;
   block[2] = __54__RELiveElementCoordinator_featureProviderForElement___block_invoke;
   block[3] = &unk_2785FC2F0;
-  v10 = v4;
+  v10 = elementCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = elementCopy;
   dispatch_sync(controllerQueue, block);
   v7 = v13[5];
 
@@ -586,17 +586,17 @@ uint64_t __54__RELiveElementCoordinator_featureProviderForElement___block_invoke
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (id)featureProviderForElementAtPath:(id)a3
+- (id)featureProviderForElementAtPath:(id)path
 {
-  v4 = [(REElementCoordinator *)self elementAtPath:a3];
+  v4 = [(REElementCoordinator *)self elementAtPath:path];
   v5 = [(RELiveElementCoordinator *)self featureProviderForElement:v4];
 
   return v5;
 }
 
-- (id)_predictionForElement:(id)a3
+- (id)_predictionForElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -608,10 +608,10 @@ uint64_t __54__RELiveElementCoordinator_featureProviderForElement___block_invoke
   block[1] = 3221225472;
   block[2] = __50__RELiveElementCoordinator__predictionForElement___block_invoke;
   block[3] = &unk_2785FC2F0;
-  v10 = v4;
+  v10 = elementCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = elementCopy;
   dispatch_sync(controllerQueue, block);
   v7 = v13[5];
 
@@ -630,19 +630,19 @@ uint64_t __50__RELiveElementCoordinator__predictionForElement___block_invoke(voi
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (void)elementDataSourceController:(id)a3 performBatchUpdates:(id)a4
+- (void)elementDataSourceController:(id)controller performBatchUpdates:(id)updates
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  updatesCopy = updates;
   controllerQueue = self->_controllerQueue;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __76__RELiveElementCoordinator_elementDataSourceController_performBatchUpdates___block_invoke;
   v11[3] = &unk_2785F9A40;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = controllerCopy;
+  v13 = updatesCopy;
+  v9 = updatesCopy;
+  v10 = controllerCopy;
   dispatch_async(controllerQueue, v11);
 }
 
@@ -682,45 +682,45 @@ void __76__RELiveElementCoordinator_elementDataSourceController_performBatchUpda
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)elementDataSourceController:(id)a3 didAddElement:(id)a4 toSection:(id)a5
+- (void)elementDataSourceController:(id)controller didAddElement:(id)element toSection:(id)section
 {
   controllerQueue = self->_controllerQueue;
-  v8 = a5;
-  v9 = a4;
+  sectionCopy = section;
+  elementCopy = element;
   dispatch_assert_queue_V2(controllerQueue);
-  [(RELiveElementCoordinator *)self _queue_addElement:v9 toSection:v8];
+  [(RELiveElementCoordinator *)self _queue_addElement:elementCopy toSection:sectionCopy];
 }
 
-- (void)elementDataSourceController:(id)a3 didReloadElement:(id)a4
+- (void)elementDataSourceController:(id)controller didReloadElement:(id)element
 {
   controllerQueue = self->_controllerQueue;
-  v6 = a4;
+  elementCopy = element;
   dispatch_assert_queue_V2(controllerQueue);
-  [(RELiveElementCoordinator *)self _queue_reloadElement:v6];
+  [(RELiveElementCoordinator *)self _queue_reloadElement:elementCopy];
 }
 
-- (void)elementDataSourceController:(id)a3 didRemoveElement:(id)a4
+- (void)elementDataSourceController:(id)controller didRemoveElement:(id)element
 {
   controllerQueue = self->_controllerQueue;
-  v6 = a4;
+  elementCopy = element;
   dispatch_assert_queue_V2(controllerQueue);
-  [(RELiveElementCoordinator *)self _queue_removeElement:v6];
+  [(RELiveElementCoordinator *)self _queue_removeElement:elementCopy];
 }
 
-- (void)elementDataSourceController:(id)a3 didRefreshElement:(id)a4
+- (void)elementDataSourceController:(id)controller didRefreshElement:(id)element
 {
   controllerQueue = self->_controllerQueue;
-  v6 = a4;
+  elementCopy = element;
   dispatch_assert_queue_V2(controllerQueue);
-  [(RELiveElementCoordinator *)self _queue_refreshElement:v6];
+  [(RELiveElementCoordinator *)self _queue_refreshElement:elementCopy];
 }
 
-- (BOOL)elementDataSourceController:(id)a3 isElementVisible:(id)a4
+- (BOOL)elementDataSourceController:(id)controller isElementVisible:(id)visible
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(REElementCoordinator *)self pathForElement:v7];
-  v9 = [(RERelevanceEngineSubsystem *)self relevanceEngine];
+  controllerCopy = controller;
+  visibleCopy = visible;
+  v8 = [(REElementCoordinator *)self pathForElement:visibleCopy];
+  relevanceEngine = [(RERelevanceEngineSubsystem *)self relevanceEngine];
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -729,7 +729,7 @@ void __76__RELiveElementCoordinator_elementDataSourceController_performBatchUpda
   v13[1] = 3221225472;
   v13[2] = __73__RELiveElementCoordinator_elementDataSourceController_isElementVisible___block_invoke;
   v13[3] = &unk_2785FCD10;
-  v10 = v9;
+  v10 = relevanceEngine;
   v14 = v10;
   v11 = v8;
   v15 = v11;
@@ -753,49 +753,49 @@ uint64_t __73__RELiveElementCoordinator_elementDataSourceController_isElementVis
   return result;
 }
 
-- (void)dataSource:(id)a3 didBeginActivity:(id)a4
+- (void)dataSource:(id)source didBeginActivity:(id)activity
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  activityCopy = activity;
   v8 = RELogForDomain(7);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543618;
-    v11 = v7;
+    v11 = activityCopy;
     v12 = 2114;
-    v13 = v6;
+    v13 = sourceCopy;
     _os_log_impl(&dword_22859F000, v8, OS_LOG_TYPE_DEFAULT, "[LEC]: Start processing %{public}@ activity from data source %{public}@", &v10, 0x16u);
   }
 
-  [(RERelevanceEngineSubsystem *)self beginActivity:v7 forObject:v6];
+  [(RERelevanceEngineSubsystem *)self beginActivity:activityCopy forObject:sourceCopy];
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dataSource:(id)a3 didFinishActivity:(id)a4
+- (void)dataSource:(id)source didFinishActivity:(id)activity
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  [(RERelevanceEngineSubsystem *)self endActivity:v7 forObject:v6];
+  sourceCopy = source;
+  activityCopy = activity;
+  [(RERelevanceEngineSubsystem *)self endActivity:activityCopy forObject:sourceCopy];
   v8 = RELogForDomain(7);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543618;
-    v11 = v7;
+    v11 = activityCopy;
     v12 = 2114;
-    v13 = v6;
+    v13 = sourceCopy;
     _os_log_impl(&dword_22859F000, v8, OS_LOG_TYPE_DEFAULT, "[LEC]: Finish processing %{public}@ activity from data source %{public}@", &v10, 0x16u);
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_addElement:(id)a3 toSection:(id)a4
+- (void)_queue_addElement:(id)element toSection:(id)section
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  elementCopy = element;
+  sectionCopy = section;
   dispatch_assert_queue_V2(self->_controllerQueue);
   if (_fetchedInternalBuildOnceToken_6 != -1)
   {
@@ -804,39 +804,39 @@ uint64_t __73__RELiveElementCoordinator_elementDataSourceController_isElementVis
 
   if (_isInternalDevice_6 == 1)
   {
-    v8 = [v6 identifier];
+    identifier = [elementCopy identifier];
 
-    if (!v8)
+    if (!identifier)
     {
-      [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Reproduced rdar://107396589: Attempted to add element to section %@ without an identifier: %@", v7, v6}];
+      [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Reproduced rdar://107396589: Attempted to add element to section %@ without an identifier: %@", sectionCopy, elementCopy}];
     }
   }
 
   v19 = @"elementId";
-  v9 = [v6 identifier];
-  v20[0] = v9;
+  identifier2 = [elementCopy identifier];
+  v20[0] = identifier2;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:&v19 count:1];
   [RESignposts traceEvent:1 withMetadata:v10];
 
   v11 = RELogForDomain(7);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    [RELiveElementCoordinator _queue_addElement:v6 toSection:?];
+    [RELiveElementCoordinator _queue_addElement:elementCopy toSection:?];
   }
 
   refreshedElements = self->_refreshedElements;
-  v13 = [v6 identifier];
-  [(NSMutableSet *)refreshedElements removeObject:v13];
+  identifier3 = [elementCopy identifier];
+  [(NSMutableSet *)refreshedElements removeObject:identifier3];
 
   remainingInsertOperations = self->_remainingInsertOperations;
-  v15 = [v6 identifier];
-  [(NSCountedSet *)remainingInsertOperations addObject:v15];
+  identifier4 = [elementCopy identifier];
+  [(NSCountedSet *)remainingInsertOperations addObject:identifier4];
 
   elementIdElementMap = self->_elementIdElementMap;
-  v17 = [v6 identifier];
-  [(NSMutableDictionary *)elementIdElementMap setObject:v6 forKey:v17];
+  identifier5 = [elementCopy identifier];
+  [(NSMutableDictionary *)elementIdElementMap setObject:elementCopy forKey:identifier5];
 
-  [(REElementRelevanceEngine *)self->_relevanceEngine addElement:v6 section:v7];
+  [(REElementRelevanceEngine *)self->_relevanceEngine addElement:elementCopy section:sectionCopy];
   v18 = *MEMORY[0x277D85DE8];
 }
 
@@ -847,12 +847,12 @@ uint64_t __56__RELiveElementCoordinator__queue_addElement_toSection___block_invo
   return result;
 }
 
-- (void)_queue_reloadElement:(id)a3
+- (void)_queue_reloadElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   elementIdElementMap = self->_elementIdElementMap;
-  v6 = [v4 identifier];
-  v7 = [(NSMutableDictionary *)elementIdElementMap objectForKeyedSubscript:v6];
+  identifier = [elementCopy identifier];
+  v7 = [(NSMutableDictionary *)elementIdElementMap objectForKeyedSubscript:identifier];
 
   dispatch_assert_queue_V2(self->_controllerQueue);
   if (v7)
@@ -864,46 +864,46 @@ uint64_t __56__RELiveElementCoordinator__queue_addElement_toSection___block_invo
 
     if (_isInternalDevice_6 == 1)
     {
-      v8 = [v4 identifier];
+      identifier2 = [elementCopy identifier];
 
-      if (!v8)
+      if (!identifier2)
       {
-        [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Reproduced rdar://107396589: Attempted to reload element without an identifier: %@", v4}];
+        [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Reproduced rdar://107396589: Attempted to reload element without an identifier: %@", elementCopy}];
       }
     }
 
     v9 = RELogForDomain(7);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      [RELiveElementCoordinator _queue_reloadElement:v4];
+      [RELiveElementCoordinator _queue_reloadElement:elementCopy];
     }
 
     v10 = self->_elementIdElementMap;
-    v11 = [v4 identifier];
-    [(NSMutableDictionary *)v10 setObject:v4 forKey:v11];
+    identifier3 = [elementCopy identifier];
+    [(NSMutableDictionary *)v10 setObject:elementCopy forKey:identifier3];
 
     v12 = MEMORY[0x277CBEB98];
-    v13 = [v7 relevanceProviders];
-    v14 = [v12 setWithArray:v13];
+    relevanceProviders = [v7 relevanceProviders];
+    v14 = [v12 setWithArray:relevanceProviders];
 
     v15 = MEMORY[0x277CBEB98];
-    v16 = [v4 relevanceProviders];
-    v17 = [v15 setWithArray:v16];
+    relevanceProviders2 = [elementCopy relevanceProviders];
+    v17 = [v15 setWithArray:relevanceProviders2];
 
     if (([v14 isEqualToSet:v17]& 1) == 0)
     {
-      [(REElementRelevanceEngine *)self->_relevanceEngine reloadElement:v7 withElement:v4];
+      [(REElementRelevanceEngine *)self->_relevanceEngine reloadElement:v7 withElement:elementCopy];
     }
 
     relevanceEngine = self->_relevanceEngine;
-    v19 = [v4 identifier];
-    v20 = [(REElementRelevanceEngine *)relevanceEngine pathForElement:v19];
+    identifier4 = [elementCopy identifier];
+    v20 = [(REElementRelevanceEngine *)relevanceEngine pathForElement:identifier4];
 
     if (v20)
     {
       refreshedElements = self->_refreshedElements;
-      v22 = [v4 identifier];
-      [(NSMutableSet *)refreshedElements removeObject:v22];
+      identifier5 = [elementCopy identifier];
+      [(NSMutableSet *)refreshedElements removeObject:identifier5];
 
       [(RELiveElementCoordinator *)self _queue_scheduleContentUpdate:1];
     }
@@ -913,7 +913,7 @@ uint64_t __56__RELiveElementCoordinator__queue_addElement_toSection___block_invo
       v23 = RELogForDomain(7);
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
       {
-        [RELiveElementCoordinator _queue_reloadElement:v4];
+        [RELiveElementCoordinator _queue_reloadElement:elementCopy];
       }
     }
   }
@@ -935,9 +935,9 @@ uint64_t __49__RELiveElementCoordinator__queue_reloadElement___block_invoke()
   return result;
 }
 
-- (void)_queue_refreshElement:(id)a3
+- (void)_queue_refreshElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   dispatch_assert_queue_V2(self->_controllerQueue);
   if (_fetchedInternalBuildOnceToken_6 != -1)
   {
@@ -946,27 +946,27 @@ uint64_t __49__RELiveElementCoordinator__queue_reloadElement___block_invoke()
 
   if (_isInternalDevice_6 == 1)
   {
-    v5 = [v4 identifier];
+    identifier = [elementCopy identifier];
 
-    if (!v5)
+    if (!identifier)
     {
-      [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Reproduced rdar://107396589: Attempted to refresh element without an identifier: %@", v4}];
+      [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Reproduced rdar://107396589: Attempted to refresh element without an identifier: %@", elementCopy}];
     }
   }
 
   elementIdElementMap = self->_elementIdElementMap;
-  v7 = [v4 identifier];
-  [(NSMutableDictionary *)elementIdElementMap setObject:v4 forKey:v7];
+  identifier2 = [elementCopy identifier];
+  [(NSMutableDictionary *)elementIdElementMap setObject:elementCopy forKey:identifier2];
 
   relevanceEngine = self->_relevanceEngine;
-  v9 = [v4 identifier];
-  v10 = [(REElementRelevanceEngine *)relevanceEngine pathForElement:v9];
+  identifier3 = [elementCopy identifier];
+  v10 = [(REElementRelevanceEngine *)relevanceEngine pathForElement:identifier3];
 
   if (v10)
   {
     refreshedElements = self->_refreshedElements;
-    v12 = [v4 identifier];
-    [(NSMutableSet *)refreshedElements addObject:v12];
+    identifier4 = [elementCopy identifier];
+    [(NSMutableSet *)refreshedElements addObject:identifier4];
 
     [(RELiveElementCoordinator *)self _queue_scheduleContentUpdate:0];
   }
@@ -976,7 +976,7 @@ uint64_t __49__RELiveElementCoordinator__queue_reloadElement___block_invoke()
     v13 = RELogForDomain(7);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
-      [RELiveElementCoordinator _queue_refreshElement:v4];
+      [RELiveElementCoordinator _queue_refreshElement:elementCopy];
     }
   }
 }
@@ -988,10 +988,10 @@ uint64_t __50__RELiveElementCoordinator__queue_refreshElement___block_invoke()
   return result;
 }
 
-- (void)_queue_removeElement:(id)a3
+- (void)_queue_removeElement:(id)element
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  elementCopy = element;
   dispatch_assert_queue_V2(self->_controllerQueue);
   if (_fetchedInternalBuildOnceToken_6 != -1)
   {
@@ -1000,41 +1000,41 @@ uint64_t __50__RELiveElementCoordinator__queue_refreshElement___block_invoke()
 
   if (_isInternalDevice_6 == 1)
   {
-    v5 = [v4 identifier];
+    identifier = [elementCopy identifier];
 
-    if (!v5)
+    if (!identifier)
     {
-      [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Reproduced rdar://107396589: Attempted to remove element without an identifier: %@", v4}];
+      [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Reproduced rdar://107396589: Attempted to remove element without an identifier: %@", elementCopy}];
     }
   }
 
   v18 = @"elementId";
-  v6 = [v4 identifier];
-  v19[0] = v6;
+  identifier2 = [elementCopy identifier];
+  v19[0] = identifier2;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:&v18 count:1];
   [RESignposts traceEvent:2 withMetadata:v7];
 
   v8 = RELogForDomain(7);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [RELiveElementCoordinator _queue_removeElement:v4];
+    [RELiveElementCoordinator _queue_removeElement:elementCopy];
   }
 
   refreshedElements = self->_refreshedElements;
-  v10 = [v4 identifier];
-  [(NSMutableSet *)refreshedElements removeObject:v10];
+  identifier3 = [elementCopy identifier];
+  [(NSMutableSet *)refreshedElements removeObject:identifier3];
 
   remainingRemoveOperations = self->_remainingRemoveOperations;
-  v12 = [v4 identifier];
-  [(NSCountedSet *)remainingRemoveOperations removeObject:v12];
+  identifier4 = [elementCopy identifier];
+  [(NSCountedSet *)remainingRemoveOperations removeObject:identifier4];
 
   relevanceEngine = self->_relevanceEngine;
-  v14 = [v4 identifier];
-  [(REElementRelevanceEngine *)relevanceEngine removeElement:v14];
+  identifier5 = [elementCopy identifier];
+  [(REElementRelevanceEngine *)relevanceEngine removeElement:identifier5];
 
   elementIdElementMap = self->_elementIdElementMap;
-  v16 = [v4 identifier];
-  [(NSMutableDictionary *)elementIdElementMap removeObjectForKey:v16];
+  identifier6 = [elementCopy identifier];
+  [(NSMutableDictionary *)elementIdElementMap removeObjectForKey:identifier6];
 
   v17 = *MEMORY[0x277D85DE8];
 }
@@ -1057,8 +1057,8 @@ LABEL_11:
     self->_reloadImmediately = 0;
     v6 = [(NSMutableSet *)self->_refreshedElements copy];
     [(NSMutableSet *)self->_refreshedElements removeAllObjects];
-    v7 = [(REElementRelevanceEngine *)self->_relevanceEngine sections];
-    v8 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v7, "count")}];
+    sections = [(REElementRelevanceEngine *)self->_relevanceEngine sections];
+    v8 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(sections, "count")}];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __41__RELiveElementCoordinator__queue_reload__block_invoke;
@@ -1385,12 +1385,12 @@ void __41__RELiveElementCoordinator__queue_reload__block_invoke_8(uint64_t a1, u
   }
 }
 
-- (void)_queue_scheduleContentUpdate:(BOOL)a3
+- (void)_queue_scheduleContentUpdate:(BOOL)update
 {
   [(RERelevanceEngineSubsystem *)self beginActivity:@"RERelevanceEngineSubsystemLoadingActivity" forObject:self];
   ++self->_scheduleCount;
   [(REUpNextScheduler *)self->_scheduler schedule];
-  if (a3 || RETrainingSimulationIsCurrentlyActive())
+  if (update || RETrainingSimulationIsCurrentlyActive())
   {
     self->_reloadImmediately = 1;
     scheduler = self->_scheduler;
@@ -1399,12 +1399,12 @@ void __41__RELiveElementCoordinator__queue_reload__block_invoke_8(uint64_t a1, u
   }
 }
 
-- (void)relevanceEngine:(id)a3 didInsertElement:(id)a4 atPath:(id)a5
+- (void)relevanceEngine:(id)engine didInsertElement:(id)element atPath:(id)path
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  elementCopy = element;
   dispatch_assert_queue_V2(self->_controllerQueue);
-  v7 = [(NSMutableDictionary *)self->_elementIdElementMap objectForKey:v6];
+  v7 = [(NSMutableDictionary *)self->_elementIdElementMap objectForKey:elementCopy];
   v8 = RELogForDomain(7);
   v9 = v8;
   if (v7)
@@ -1414,15 +1414,15 @@ void __41__RELiveElementCoordinator__queue_reload__block_invoke_8(uint64_t a1, u
       v15 = 136315394;
       v16 = "[RELiveElementCoordinator relevanceEngine:didInsertElement:atPath:]";
       v17 = 2112;
-      v18 = v6;
+      v18 = elementCopy;
       _os_log_impl(&dword_22859F000, v9, OS_LOG_TYPE_DEFAULT, "[LEC]: %s: %@", &v15, 0x16u);
     }
 
     elementIdDateRelevantMap = self->_elementIdDateRelevantMap;
     v11 = [MEMORY[0x277CBEAA8] now];
     v12 = REElementByRemovingNamespacedIdentifier(v7);
-    v13 = [v12 identifier];
-    [(NSMutableDictionary *)elementIdDateRelevantMap setObject:v11 forKey:v13];
+    identifier = [v12 identifier];
+    [(NSMutableDictionary *)elementIdDateRelevantMap setObject:v11 forKey:identifier];
 
     [(RELiveElementCoordinator *)self _queue_scheduleContentUpdate:0];
   }
@@ -1438,12 +1438,12 @@ void __41__RELiveElementCoordinator__queue_reload__block_invoke_8(uint64_t a1, u
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)relevanceEngine:(id)a3 didRemoveElement:(id)a4 atPath:(id)a5
+- (void)relevanceEngine:(id)engine didRemoveElement:(id)element atPath:(id)path
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  elementCopy = element;
   dispatch_assert_queue_V2(self->_controllerQueue);
-  v7 = [(NSMutableDictionary *)self->_elementIdElementMap objectForKey:v6];
+  v7 = [(NSMutableDictionary *)self->_elementIdElementMap objectForKey:elementCopy];
   v8 = RELogForDomain(7);
   v9 = v8;
   if (v7)
@@ -1453,14 +1453,14 @@ void __41__RELiveElementCoordinator__queue_reload__block_invoke_8(uint64_t a1, u
       v14 = 136315394;
       v15 = "[RELiveElementCoordinator relevanceEngine:didRemoveElement:atPath:]";
       v16 = 2112;
-      v17 = v6;
+      v17 = elementCopy;
       _os_log_impl(&dword_22859F000, v9, OS_LOG_TYPE_DEFAULT, "[LEC]: %s: %@", &v14, 0x16u);
     }
 
     elementIdDateRelevantMap = self->_elementIdDateRelevantMap;
     v11 = REElementByRemovingNamespacedIdentifier(v7);
-    v12 = [v11 identifier];
-    [(NSMutableDictionary *)elementIdDateRelevantMap removeObjectForKey:v12];
+    identifier = [v11 identifier];
+    [(NSMutableDictionary *)elementIdDateRelevantMap removeObjectForKey:identifier];
 
     [(RELiveElementCoordinator *)self _queue_scheduleContentUpdate:0];
   }
@@ -1476,11 +1476,11 @@ void __41__RELiveElementCoordinator__queue_reload__block_invoke_8(uint64_t a1, u
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)relevanceEngine:(id)a3 didMoveElement:(id)a4 fromPath:(id)a5 toPath:(id)a6
+- (void)relevanceEngine:(id)engine didMoveElement:(id)element fromPath:(id)path toPath:(id)toPath
 {
-  v7 = a4;
+  elementCopy = element;
   dispatch_assert_queue_V2(self->_controllerQueue);
-  v8 = [(NSMutableDictionary *)self->_elementIdElementMap objectForKey:v7];
+  v8 = [(NSMutableDictionary *)self->_elementIdElementMap objectForKey:elementCopy];
   if (v8)
   {
     [(RELiveElementCoordinator *)self _queue_scheduleContentUpdate:0];
@@ -1496,23 +1496,23 @@ void __41__RELiveElementCoordinator__queue_reload__block_invoke_8(uint64_t a1, u
   }
 }
 
-- (void)relevanceEngine:(id)a3 didUpdateRelevanceOfElement:(id)a4
+- (void)relevanceEngine:(id)engine didUpdateRelevanceOfElement:(id)element
 {
-  v5 = a4;
+  elementCopy = element;
   dispatch_assert_queue_V2(self->_controllerQueue);
-  v6 = [(NSMutableDictionary *)self->_elementIdElementMap objectForKey:v5];
+  v6 = [(NSMutableDictionary *)self->_elementIdElementMap objectForKey:elementCopy];
   if (v6)
   {
-    v7 = [(RERelevanceEngineSubsystem *)self relevanceEngine];
+    relevanceEngine = [(RERelevanceEngineSubsystem *)self relevanceEngine];
     callbackQueue = self->_callbackQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __72__RELiveElementCoordinator_relevanceEngine_didUpdateRelevanceOfElement___block_invoke;
     block[3] = &unk_2785FB070;
     block[4] = self;
-    v11 = v7;
+    v11 = relevanceEngine;
     v12 = v6;
-    v9 = v7;
+    v9 = relevanceEngine;
     dispatch_async(callbackQueue, block);
   }
 
@@ -1538,12 +1538,12 @@ void __72__RELiveElementCoordinator_relevanceEngine_didUpdateRelevanceOfElement_
   [v2 enumerateObservers:v3];
 }
 
-- (id)elementForElementId:(id)a3
+- (id)elementForElementId:(id)id
 {
   controllerQueue = self->_controllerQueue;
-  v5 = a3;
+  idCopy = id;
   dispatch_assert_queue_V2(controllerQueue);
-  v6 = [(NSMutableDictionary *)self->_elementIdElementMap objectForKeyedSubscript:v5];
+  v6 = [(NSMutableDictionary *)self->_elementIdElementMap objectForKeyedSubscript:idCopy];
 
   return v6;
 }

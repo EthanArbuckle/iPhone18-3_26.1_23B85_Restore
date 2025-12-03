@@ -1,7 +1,7 @@
 @interface BMDKEventCodec
-+ (id)codecWithVersion:(unsigned int)a3;
++ (id)codecWithVersion:(unsigned int)version;
 - (BMDKEventCodec)init;
-- (id)encodeAsProtoData:(id)a3;
+- (id)encodeAsProtoData:(id)data;
 @end
 
 @implementation BMDKEventCodec
@@ -19,15 +19,15 @@
   return result;
 }
 
-+ (id)codecWithVersion:(unsigned int)a3
++ (id)codecWithVersion:(unsigned int)version
 {
-  if (a3 == 2)
+  if (version == 2)
   {
     v4 = _BMDKEventCodec_DKPREvent;
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (version == 1)
   {
     v4 = _BMDKEventCodec_BMPBDKEvent;
 LABEL_5:
@@ -38,7 +38,7 @@ LABEL_5:
   v6 = __biome_log_for_category();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    [(BMDKEventCodec *)a3 codecWithVersion:v6];
+    [(BMDKEventCodec *)version codecWithVersion:v6];
   }
 
   v5 = 0;
@@ -47,12 +47,12 @@ LABEL_9:
   return v5;
 }
 
-- (id)encodeAsProtoData:(id)a3
+- (id)encodeAsProtoData:(id)data
 {
-  v3 = [(BMDKEventCodec *)self encodeAsProto:a3];
-  v4 = [v3 data];
+  v3 = [(BMDKEventCodec *)self encodeAsProto:data];
+  data = [v3 data];
 
-  return v4;
+  return data;
 }
 
 @end

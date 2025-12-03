@@ -1,17 +1,17 @@
 @interface PKAccountSupportTopicExplanationCollectionViewCell
-- (CGSize)_layoutWithBounds:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)_layoutWithBounds:(CGRect)bounds;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setExplanationContent:(id)a3;
+- (void)setExplanationContent:(id)content;
 @end
 
 @implementation PKAccountSupportTopicExplanationCollectionViewCell
 
-- (void)setExplanationContent:(id)a3
+- (void)setExplanationContent:(id)content
 {
-  v4 = a3;
-  v30 = [(PKAccountSupportTopicExplanationCollectionViewCell *)self contentView];
+  contentCopy = content;
+  contentView = [(PKAccountSupportTopicExplanationCollectionViewCell *)self contentView];
   if (!self->_primaryLabel)
   {
     v5 = objc_alloc_init(MEMORY[0x1E69DCC10]);
@@ -24,10 +24,10 @@
     [(UILabel *)v7 setFont:v8];
 
     v9 = self->_primaryLabel;
-    v10 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v9 setTextColor:v10];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v9 setTextColor:labelColor];
 
-    [v30 addSubview:self->_primaryLabel];
+    [contentView addSubview:self->_primaryLabel];
   }
 
   if (!self->_secondaryLabel)
@@ -42,10 +42,10 @@
     [(UILabel *)v13 setFont:v14];
 
     v15 = self->_secondaryLabel;
-    v16 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v15 setTextColor:v16];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v15 setTextColor:secondaryLabelColor];
 
-    [v30 addSubview:self->_secondaryLabel];
+    [contentView addSubview:self->_secondaryLabel];
   }
 
   if (!self->_iconImageView)
@@ -56,34 +56,34 @@
 
     [(UIImageView *)self->_iconImageView setContentMode:1];
     v19 = self->_iconImageView;
-    v20 = [MEMORY[0x1E69DC888] labelColor];
-    [(UIImageView *)v19 setTintColor:v20];
+    labelColor2 = [MEMORY[0x1E69DC888] labelColor];
+    [(UIImageView *)v19 setTintColor:labelColor2];
 
-    [v30 addSubview:self->_iconImageView];
+    [contentView addSubview:self->_iconImageView];
   }
 
-  v21 = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
-  [v30 setBackgroundColor:v21];
+  secondarySystemGroupedBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
+  [contentView setBackgroundColor:secondarySystemGroupedBackgroundColor];
 
   v22 = self->_primaryLabel;
-  v23 = [v4 title];
-  [(UILabel *)v22 setText:v23];
+  title = [contentCopy title];
+  [(UILabel *)v22 setText:title];
 
   v24 = self->_secondaryLabel;
-  v25 = [v4 subtitle];
-  [(UILabel *)v24 setText:v25];
+  subtitle = [contentCopy subtitle];
+  [(UILabel *)v24 setText:subtitle];
 
   v26 = self->_iconImageView;
   v27 = MEMORY[0x1E69DCAB8];
-  v28 = [v4 systemImageName];
+  systemImageName = [contentCopy systemImageName];
 
-  v29 = [v27 systemImageNamed:v28];
+  v29 = [v27 systemImageNamed:systemImageName];
   [(UIImageView *)v26 setImage:v29];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PKAccountSupportTopicExplanationCollectionViewCell *)self _layoutWithBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, a3.height];
+  [(PKAccountSupportTopicExplanationCollectionViewCell *)self _layoutWithBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -94,8 +94,8 @@
   v4.receiver = self;
   v4.super_class = PKAccountSupportTopicExplanationCollectionViewCell;
   [(PKAccountSupportTopicExplanationCollectionViewCell *)&v4 layoutSubviews];
-  v3 = [(PKAccountSupportTopicExplanationCollectionViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(PKAccountSupportTopicExplanationCollectionViewCell *)self contentView];
+  [contentView bounds];
   [(PKAccountSupportTopicExplanationCollectionViewCell *)self _layoutWithBounds:?];
 }
 
@@ -109,12 +109,12 @@
   [(UIImageView *)self->_iconImageView setImage:0];
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3
+- (CGSize)_layoutWithBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   if ([(PKAccountSupportTopicExplanationCollectionViewCell *)self _shouldReverseLayoutDirection])
   {
     v8 = CGRectMaxXEdge;
@@ -133,9 +133,9 @@
   remainder.origin.y = v10;
   remainder.size.width = width + -32.0;
   remainder.size.height = height + -40.0;
-  v12 = [(UIImageView *)self->_iconImageView image];
+  image = [(UIImageView *)self->_iconImageView image];
 
-  if (v12)
+  if (image)
   {
     PKContentAlignmentMake();
     v13 = [(UILabel *)self->_primaryLabel font:0];
@@ -158,8 +158,8 @@
     v15 = 0.0;
   }
 
-  v17 = [(UILabel *)self->_primaryLabel text];
-  v18 = [v17 length];
+  text = [(UILabel *)self->_primaryLabel text];
+  v18 = [text length];
 
   if (v18)
   {
@@ -174,8 +174,8 @@
     v15 = fmax(v20, v15);
   }
 
-  v22 = [(UILabel *)self->_secondaryLabel text];
-  v23 = [v22 length];
+  text2 = [(UILabel *)self->_secondaryLabel text];
+  v23 = [text2 length];
 
   if (v23)
   {
@@ -206,8 +206,8 @@
   if (v15 > 0.0)
   {
     v27 = v15 + 20.0;
-    v28 = [(UILabel *)self->_secondaryLabel text];
-    v29 = [v28 length];
+    text3 = [(UILabel *)self->_secondaryLabel text];
+    v29 = [text3 length];
 
     if (v29)
     {

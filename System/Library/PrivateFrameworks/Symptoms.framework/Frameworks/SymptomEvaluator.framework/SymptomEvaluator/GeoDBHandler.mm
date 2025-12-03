@@ -1,21 +1,21 @@
 @interface GeoDBHandler
-+ (id)configureClass:(id)a3;
++ (id)configureClass:(id)class;
 + (id)sharedInstance;
-- (BOOL)noteSymptom:(id)a3;
-- (BOOL)processSymptom:(id)a3;
+- (BOOL)noteSymptom:(id)symptom;
+- (BOOL)processSymptom:(id)symptom;
 - (GeoDBHandler)init;
-- (id)coordinatesToGeoHashWithLength:(unint64_t)a3 latitude:(double)a4 longitude:(double)a5;
+- (id)coordinatesToGeoHashWithLength:(unint64_t)length latitude:(double)latitude longitude:(double)longitude;
 - (id)fetchEstimatedISOCountryCode;
-- (int)read:(id)a3 returnedValues:(id)a4;
-- (int64_t)nwInterfaceTypeFromAPSDInterface:(unint64_t)a3;
+- (int)read:(id)read returnedValues:(id)values;
+- (int64_t)nwInterfaceTypeFromAPSDInterface:(unint64_t)interface;
 - (void)_administrativeDisable;
 - (void)_administrativeEnable;
 - (void)completeInitialization;
 - (void)dealloc;
-- (void)donateBiomeEventForEdgeSelectionWithPrefix:(id)a3 interfaceType:(id)a4 radioType:(id)a5 radioBand:(id)a6 latitude:(double)a7 longitude:(double)a8 reply:(id)a9;
-- (void)donateBiomeEventForEdgeSelectionWithPrefixComplete:(id)a3 error:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)processSymptomForInterfaceType:(int64_t)a3;
+- (void)donateBiomeEventForEdgeSelectionWithPrefix:(id)prefix interfaceType:(id)type radioType:(id)radioType radioBand:(id)band latitude:(double)latitude longitude:(double)longitude reply:(id)reply;
+- (void)donateBiomeEventForEdgeSelectionWithPrefixComplete:(id)complete error:(id)error;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)processSymptomForInterfaceType:(int64_t)type;
 @end
 
 @implementation GeoDBHandler
@@ -36,9 +36,9 @@
     v2->_adminState = 2;
     v2->_adminStateSettled = 0;
     v6 = +[SystemSettingsRelay defaultRelay];
-    v7 = [v6 geoIPTrackingFeatureFlagEnabled];
+    geoIPTrackingFeatureFlagEnabled = [v6 geoIPTrackingFeatureFlagEnabled];
 
-    if (v7)
+    if (geoIPTrackingFeatureFlagEnabled)
     {
       [(GeoDBHandler *)v2 _administrativeEnable];
     }
@@ -48,14 +48,14 @@
       [(GeoDBHandler *)v2 _administrativeDisable];
     }
 
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;
     v35[2] = __20__GeoDBHandler_init__block_invoke;
     v35[3] = &unk_27898A690;
     v9 = v2;
     v36 = v9;
-    v10 = [v8 addObserverForName:@"stateRelay" object:0 queue:0 usingBlock:v35];
+    v10 = [defaultCenter addObserverForName:@"stateRelay" object:0 queue:0 usingBlock:v35];
     relayReadyObserver = v9->_relayReadyObserver;
     v9->_relayReadyObserver = v10;
 
@@ -65,7 +65,7 @@
     v33[3] = &unk_27898A690;
     v12 = v9;
     v34 = v12;
-    v13 = [v8 addObserverForName:@"kNotificationNewConnectivityEpochCell" object:0 queue:0 usingBlock:v33];
+    v13 = [defaultCenter addObserverForName:@"kNotificationNewConnectivityEpochCell" object:0 queue:0 usingBlock:v33];
     cellEpochObserver = v12->_cellEpochObserver;
     v12->_cellEpochObserver = v13;
 
@@ -75,7 +75,7 @@
     v31[3] = &unk_27898A690;
     v15 = v12;
     v32 = v15;
-    v16 = [v8 addObserverForName:@"kNotificationNewConnectivityEpochWiFi" object:0 queue:0 usingBlock:v31];
+    v16 = [defaultCenter addObserverForName:@"kNotificationNewConnectivityEpochWiFi" object:0 queue:0 usingBlock:v31];
     wifiEpochObserver = v15->_wifiEpochObserver;
     v15->_wifiEpochObserver = v16;
 
@@ -85,7 +85,7 @@
     v29 = &unk_27898A690;
     v18 = v15;
     v30 = v18;
-    v19 = [v8 addObserverForName:@"kNotificationNewConnectivityEpochWired" object:0 queue:0 usingBlock:&v26];
+    v19 = [defaultCenter addObserverForName:@"kNotificationNewConnectivityEpochWired" object:0 queue:0 usingBlock:&v26];
     wiredEpochObserver = v18->_wiredEpochObserver;
     v18->_wiredEpochObserver = v19;
 
@@ -373,11 +373,11 @@ void __38__GeoDBHandler_completeInitialization__block_invoke(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  v4 = v3;
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  v4 = defaultCenter;
   if (self->_relayReadyObserver)
   {
-    [v3 removeObserver:?];
+    [defaultCenter removeObserver:?];
   }
 
   if (self->_wifiEpochObserver)
@@ -403,39 +403,39 @@ void __38__GeoDBHandler_completeInitialization__block_invoke(uint64_t a1)
   [(GeoDBHandler *)&v6 dealloc];
 }
 
-- (int64_t)nwInterfaceTypeFromAPSDInterface:(unint64_t)a3
+- (int64_t)nwInterfaceTypeFromAPSDInterface:(unint64_t)interface
 {
-  if (a3 > 2)
+  if (interface > 2)
   {
     return 0;
   }
 
   else
   {
-    return qword_2328171E8[a3];
+    return qword_2328171E8[interface];
   }
 }
 
-- (BOOL)processSymptom:(id)a3
+- (BOOL)processSymptom:(id)symptom
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  symptomCopy = symptom;
   v5 = netepochsLogHandle;
   if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v40 = v4;
+    v40 = symptomCopy;
     _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_DEFAULT, "GeoIP: Processing symptom: %@", buf, 0xCu);
   }
 
-  v6 = [v4 eventKey];
-  v7 = [v4 eventData];
-  if (v7)
+  eventKey = [symptomCopy eventKey];
+  eventData = [symptomCopy eventData];
+  if (eventData)
   {
-    v8 = v7;
-    if (*(v7 + 4))
+    v8 = eventData;
+    if (*(eventData + 4))
     {
-      v16 = *(v7 + 24);
+      v16 = *(eventData + 24);
       v17 = [(GeoDBHandler *)self nwInterfaceTypeFromAPSDInterface:v16];
       if (!v17)
       {
@@ -446,7 +446,7 @@ void __38__GeoDBHandler_completeInitialization__block_invoke(uint64_t a1)
         }
 
         *buf = 138412546;
-        v40 = v6;
+        v40 = eventKey;
         v41 = 2048;
         v42 = v16;
         v10 = "GeoIP: Incoming %@ symptom has unsupported interface %llu, dropping";
@@ -464,14 +464,14 @@ void __38__GeoDBHandler_completeInitialization__block_invoke(uint64_t a1)
         }
 
         *buf = 138412290;
-        v40 = v6;
+        v40 = eventKey;
         v10 = "GeoIP: Incoming %@ symptom has missing additional qualifier, dropping";
         goto LABEL_7;
       }
 
       v19 = v17;
-      v20 = [v4 eventQualifiers];
-      v21 = [v20 objectForKeyedSubscript:@"0"];
+      eventQualifiers = [symptomCopy eventQualifiers];
+      v21 = [eventQualifiers objectForKeyedSubscript:@"0"];
 
       if (!v21 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
@@ -481,7 +481,7 @@ void __38__GeoDBHandler_completeInitialization__block_invoke(uint64_t a1)
           v26 = v25;
           v27 = objc_opt_class();
           *buf = 138412546;
-          v40 = v6;
+          v40 = eventKey;
           v41 = 2112;
           v42 = v27;
           v28 = v27;
@@ -629,7 +629,7 @@ LABEL_50:
   if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v40 = v6;
+    v40 = eventKey;
     v10 = "GeoIP: Incoming %@ symptom has missing qualifier, dropping";
 LABEL_7:
     v11 = v9;
@@ -646,13 +646,13 @@ LABEL_10:
   return v13;
 }
 
-- (void)processSymptomForInterfaceType:(int64_t)a3
+- (void)processSymptomForInterfaceType:(int64_t)type
 {
   v50 = *MEMORY[0x277D85DE8];
   if (self->_isDnUOptedIn)
   {
     v5 = 0.0;
-    switch(a3)
+    switch(type)
     {
       case 3:
         p_lastDonatedWiredIPPrefix = &self->_lastDonatedWiredIPPrefix;
@@ -736,7 +736,7 @@ LABEL_34:
                   *(&self->super.isa + v15) = v25;
 
                   locationRelay = self->_locationRelay;
-                  v28 = [(GeoDBHandler *)self queue];
+                  queue = [(GeoDBHandler *)self queue];
                   v34[0] = MEMORY[0x277D85DD0];
                   v34[1] = 3221225472;
                   v34[2] = __47__GeoDBHandler_processSymptomForInterfaceType___block_invoke;
@@ -751,7 +751,7 @@ LABEL_34:
                   v29 = v14;
                   v30 = v13;
                   v31 = v12;
-                  [(LocationStateRelay *)locationRelay fetchCurrentLocationLOIOnQueue:v28 desiredAccuracy:v34 reply:1000.0];
+                  [(LocationStateRelay *)locationRelay fetchCurrentLocationLOIOnQueue:queue desiredAccuracy:v34 reply:1000.0];
 
 LABEL_38:
                   goto LABEL_39;
@@ -780,7 +780,7 @@ LABEL_38:
       v46 = 1024;
       v47 = 600;
       v48 = 2048;
-      v49 = a3;
+      typeCopy = type;
       _os_log_impl(&dword_23255B000, v32, OS_LOG_TYPE_DEBUG, "GeoIP: Skip Biome donation as relays/epochs not ready, or conditions not met, stored: %{private}@, lastDonated: %{private}@, elapsed/threshold: %f/%d sec, interfaceType: %ld", buf, 0x30u);
     }
 
@@ -900,18 +900,18 @@ LABEL_15:
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)donateBiomeEventForEdgeSelectionWithPrefixComplete:(id)a3 error:(id)a4
+- (void)donateBiomeEventForEdgeSelectionWithPrefixComplete:(id)complete error:(id)error
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  completeCopy = complete;
+  errorCopy = error;
   v7 = netepochsLogHandle;
-  if (v6)
+  if (errorCopy)
   {
     if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_ERROR))
     {
       v13 = 138412290;
-      v14 = v6;
+      v14 = errorCopy;
       v8 = "GeoIP: Biome event donation for EdgeSelection failed with error: %@";
       v9 = v7;
       v10 = OS_LOG_TYPE_ERROR;
@@ -934,28 +934,28 @@ LABEL_6:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)coordinatesToGeoHashWithLength:(unint64_t)a3 latitude:(double)a4 longitude:(double)a5
+- (id)coordinatesToGeoHashWithLength:(unint64_t)length latitude:(double)latitude longitude:(double)longitude
 {
   v36[2] = *MEMORY[0x277D85DE8];
   v10 = netepochsLogHandle;
   if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v28 = 134218496;
-    v29 = a4;
+    latitudeCopy2 = latitude;
     v30 = 2048;
-    v31 = a5;
+    longitudeCopy2 = longitude;
     v32 = 2048;
-    v33 = a3;
+    lengthCopy3 = length;
     _os_log_impl(&dword_23255B000, v10, OS_LOG_TYPE_DEFAULT, "GeoIP: Computing geohash for latitude: %f, longitude: %f, hashLength: %zu", &v28, 0x20u);
   }
 
-  if (a3 >= 0xD)
+  if (length >= 0xD)
   {
     [GeoDBHandler coordinatesToGeoHashWithLength:a2 latitude:self longitude:?];
   }
 
   v11 = 0;
-  v12 = 1 << (5 * a3 - 1);
+  v12 = 1 << (5 * length - 1);
   v13 = 180.0;
   v14 = -180.0;
   v15 = 90.0;
@@ -963,7 +963,7 @@ LABEL_6:
   do
   {
     v17 = v14 + (v13 - v14) * 0.5;
-    if (v17 <= a5)
+    if (v17 <= longitude)
     {
       v18 = v12;
     }
@@ -979,7 +979,7 @@ LABEL_6:
       break;
     }
 
-    if (v17 > a5)
+    if (v17 > longitude)
     {
       v13 = v14 + (v13 - v14) * 0.5;
     }
@@ -990,7 +990,7 @@ LABEL_6:
     }
 
     v19 = v12 >> 1;
-    if (v16 + (v15 - v16) * 0.5 <= a4)
+    if (v16 + (v15 - v16) * 0.5 <= latitude)
     {
       v16 = v16 + (v15 - v16) * 0.5;
     }
@@ -1008,19 +1008,19 @@ LABEL_6:
 
   while (v20);
   memset(v36, 0, 13);
-  if (a3)
+  if (length)
   {
-    v21 = 5 * a3 - 5;
+    v21 = 5 * length - 5;
     v22 = v36;
-    v23 = a3;
+    lengthCopy2 = length;
     do
     {
       *v22++ = geoHashBase32Map[(v11 >> v21) & 0x1F];
       v21 -= 5;
-      --v23;
+      --lengthCopy2;
     }
 
-    while (v23);
+    while (lengthCopy2);
   }
 
   v24 = [objc_alloc(MEMORY[0x277CCACA8]) initWithUTF8String:v36];
@@ -1028,11 +1028,11 @@ LABEL_6:
   if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v28 = 134218754;
-    v29 = a4;
+    latitudeCopy2 = latitude;
     v30 = 2048;
-    v31 = a5;
+    longitudeCopy2 = longitude;
     v32 = 2048;
-    v33 = a3;
+    lengthCopy3 = length;
     v34 = 2112;
     v35 = v24;
     _os_log_impl(&dword_23255B000, v25, OS_LOG_TYPE_DEFAULT, "GeoIP: Computed geohash for latitude: %f, longitude: %f, hashLength: %zu, geohash: %@", &v28, 0x2Au);
@@ -1049,45 +1049,45 @@ LABEL_6:
   if (dlopen("/System/Library/PrivateFrameworks/RegulatoryDomain.framework/RegulatoryDomain", 6))
   {
     Class = objc_getClass("RDEstimate");
-    v3 = [(objc_class *)Class currentEstimates];
-    v4 = v3;
-    if (v3 && [v3 count])
+    currentEstimates = [(objc_class *)Class currentEstimates];
+    v4 = currentEstimates;
+    if (currentEstimates && [currentEstimates count])
     {
       v5 = [v4 objectAtIndexedSubscript:0];
-      v6 = [v5 countryCode];
+      countryCode = [v5 countryCode];
       v7 = netepochsLogHandle;
       if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
       {
         v17 = 138412546;
-        v18 = v6;
+        v18 = countryCode;
         v19 = 2112;
         v20 = v4;
         _os_log_impl(&dword_23255B000, v7, OS_LOG_TYPE_DEFAULT, "GeoIP: Current bestEstimate: %@, currentEstimates: %@", &v17, 0x16u);
       }
 
-      v8 = v6;
+      v8 = countryCode;
 
 LABEL_12:
       goto LABEL_17;
     }
 
-    v9 = [(objc_class *)Class lastKnownEstimates];
-    v10 = v9;
-    if (v9 && [v9 count])
+    lastKnownEstimates = [(objc_class *)Class lastKnownEstimates];
+    v10 = lastKnownEstimates;
+    if (lastKnownEstimates && [lastKnownEstimates count])
     {
       v11 = [v10 objectAtIndexedSubscript:0];
-      v12 = [v11 countryCode];
+      countryCode2 = [v11 countryCode];
       v13 = netepochsLogHandle;
       if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
       {
         v17 = 138412546;
-        v18 = v12;
+        v18 = countryCode2;
         v19 = 2112;
         v20 = v10;
         _os_log_impl(&dword_23255B000, v13, OS_LOG_TYPE_DEFAULT, "GeoIP: Last known bestEstimate: %@, lastKnownEstimates: %@", &v17, 0x16u);
       }
 
-      v8 = v12;
+      v8 = countryCode2;
 
       goto LABEL_12;
     }
@@ -1110,58 +1110,58 @@ LABEL_17:
   return v8;
 }
 
-- (void)donateBiomeEventForEdgeSelectionWithPrefix:(id)a3 interfaceType:(id)a4 radioType:(id)a5 radioBand:(id)a6 latitude:(double)a7 longitude:(double)a8 reply:(id)a9
+- (void)donateBiomeEventForEdgeSelectionWithPrefix:(id)prefix interfaceType:(id)type radioType:(id)radioType radioBand:(id)band latitude:(double)latitude longitude:(double)longitude reply:(id)reply
 {
   v90 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a9;
-  if (v16)
+  prefixCopy = prefix;
+  typeCopy = type;
+  radioTypeCopy = radioType;
+  bandCopy = band;
+  replyCopy = reply;
+  if (prefixCopy)
   {
-    v21 = [MEMORY[0x277CBEBB0] localTimeZone];
-    v22 = [v21 name];
+    localTimeZone = [MEMORY[0x277CBEBB0] localTimeZone];
+    name = [localTimeZone name];
 
-    if (!v22 || ![v22 length])
+    if (!name || ![name length])
     {
       v39 = netepochsLogHandle;
       if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_ERROR))
       {
         LODWORD(buf) = 138412290;
-        *(&buf + 4) = v22;
+        *(&buf + 4) = name;
         _os_log_impl(&dword_23255B000, v39, OS_LOG_TYPE_ERROR, "GeoIP: Missing localTimeZone: %@, return", &buf, 0xCu);
       }
 
-      if (!v20)
+      if (!replyCopy)
       {
         goto LABEL_40;
       }
 
       v25 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:22 userInfo:0];
-      v20[2](v20, 0, v25);
+      replyCopy[2](replyCopy, 0, v25);
       goto LABEL_39;
     }
 
-    v23 = [v16 componentsSeparatedByString:@"/"];
+    v23 = [prefixCopy componentsSeparatedByString:@"/"];
     v24 = v23;
     if (v23 && [v23 count] == 2)
     {
       v25 = [v24 objectAtIndex:0];
       v26 = [v24 objectAtIndex:1];
-      v27 = [v26 integerValue];
+      integerValue = [v26 integerValue];
       v28 = 6;
-      if (v27 < 25)
+      if (integerValue < 25)
       {
         v28 = 4;
       }
 
       v71 = v28;
-      v74 = v27;
+      v74 = integerValue;
 
       if (v25 && [v25 length])
       {
-        v29 = [(GeoDBHandler *)self coordinatesToGeoHashWithLength:3 latitude:a7 longitude:a8];
+        v29 = [(GeoDBHandler *)self coordinatesToGeoHashWithLength:3 latitude:latitude longitude:longitude];
         v30 = v29;
         if (!v29 || ![v29 length])
         {
@@ -1173,10 +1173,10 @@ LABEL_17:
             _os_log_impl(&dword_23255B000, v44, OS_LOG_TYPE_ERROR, "GeoIP: Missing geohash: %@, return", &buf, 0xCu);
           }
 
-          if (v20)
+          if (replyCopy)
           {
             v45 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:22 userInfo:0];
-            v20[2](v20, 0, v45);
+            replyCopy[2](replyCopy, 0, v45);
           }
 
           goto LABEL_37;
@@ -1207,7 +1207,7 @@ LABEL_17:
         }
 
         v30 = v70;
-        v69 = [[v68 alloc] initWithLatitude:a7 longitude:a8];
+        v69 = [[v68 alloc] initWithLatitude:latitude longitude:longitude];
         loga = objc_alloc_init(v32);
         v34 = dispatch_group_create();
         dispatch_group_enter(v34);
@@ -1238,17 +1238,17 @@ LABEL_17:
             _os_log_impl(&dword_23255B000, v75, OS_LOG_TYPE_DEFAULT, "GeoIP: Timed out waiting for reverse geocoding, error: %ld", v81, 0xCu);
           }
 
-          if (!v20)
+          if (!replyCopy)
           {
-            v64 = 0;
-            v65 = 0;
+            locality = 0;
+            iSOcountryCode = 0;
             goto LABEL_66;
           }
 
           v38 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:60 userInfo:0];
-          v20[2](v20, 0, v38);
-          v64 = 0;
-          v65 = 0;
+          replyCopy[2](replyCopy, 0, v38);
+          locality = 0;
+          iSOcountryCode = 0;
 LABEL_21:
 
 LABEL_66:
@@ -1257,47 +1257,47 @@ LABEL_66:
           goto LABEL_37;
         }
 
-        v64 = [v46 locality];
-        v65 = [*(*(&buf + 1) + 40) ISOcountryCode];
+        locality = [v46 locality];
+        iSOcountryCode = [*(*(&buf + 1) + 40) ISOcountryCode];
         v47 = netepochsLogHandle;
         if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
         {
           *v81 = 138478083;
-          v82 = v64;
+          v82 = locality;
           v83 = 2113;
-          v84 = v65;
+          v84 = iSOcountryCode;
           _os_log_impl(&dword_23255B000, v47, OS_LOG_TYPE_DEFAULT, "GeoIP: Reverse geocoding city: %{private}@, countryCode: %{private}@", v81, 0x16u);
         }
 
-        if (!v65 || ![v65 length] || !v64 || !objc_msgSend(v64, "length"))
+        if (!iSOcountryCode || ![iSOcountryCode length] || !locality || !objc_msgSend(locality, "length"))
         {
           v54 = netepochsLogHandle;
           if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_ERROR))
           {
             *v81 = 138412546;
-            v82 = v65;
+            v82 = iSOcountryCode;
             v83 = 2112;
-            v84 = v64;
+            v84 = locality;
             _os_log_impl(&dword_23255B000, v54, OS_LOG_TYPE_ERROR, "GeoIP: Missing isoCountryCode: %@ or city: %@, return", v81, 0x16u);
           }
 
-          if (!v20)
+          if (!replyCopy)
           {
             goto LABEL_66;
           }
 
           v38 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:22 userInfo:0];
-          v20[2](v20, 0, v38);
+          replyCopy[2](replyCopy, 0, v38);
           goto LABEL_21;
         }
 
-        v62 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@-%@", v70, v64];
+        v62 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@-%@", v70, locality];
         if (dlopen("/System/Library/PrivateFrameworks/BiomeLibrary.framework/BiomeLibrary", 6))
         {
           v60 = objc_alloc(objc_getClass("BMDeviceEdgeSelection"));
           v72 = [MEMORY[0x277CCABB0] numberWithInteger:v71];
           v48 = [MEMORY[0x277CCABB0] numberWithInteger:v74];
-          v76 = [v60 initWithPublicIPPrefix:v25 addressFamily:v72 prefixLength:v48 interfaceType:v17 radioType:v18 radioBand:v19 country:v65 timeZone:v22 geohash:v62];
+          v76 = [v60 initWithPublicIPPrefix:v25 addressFamily:v72 prefixLength:v48 interfaceType:typeCopy radioType:radioTypeCopy radioBand:bandCopy country:iSOcountryCode timeZone:name geohash:v62];
 
           v49 = __softlink__BiomeLibrary();
           v73 = v49;
@@ -1309,8 +1309,8 @@ LABEL_66:
             v61 = v50;
             if (v50 && !v51)
             {
-              v59 = [v50 source];
-              [v59 sendEvent:v76];
+              source = [v50 source];
+              [source sendEvent:v76];
               v52 = netepochsLogHandle;
               if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
               {
@@ -1319,9 +1319,9 @@ LABEL_66:
                 _os_log_impl(&dword_23255B000, v52, OS_LOG_TYPE_DEFAULT, "GeoIP: Donated Biome event to stream Device.Networking.EdgeSelection: %{private}@", v81, 0xCu);
               }
 
-              if (v20)
+              if (replyCopy)
               {
-                v20[2](v20, 0, 0);
+                replyCopy[2](replyCopy, 0, 0);
               }
 
               v30 = v70;
@@ -1362,7 +1362,7 @@ LABEL_66:
           }
         }
 
-        if (!v20)
+        if (!replyCopy)
         {
 LABEL_82:
           v38 = v62;
@@ -1370,7 +1370,7 @@ LABEL_82:
         }
 
         v53 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:45 userInfo:0];
-        v20[2](v20, 0, v53);
+        replyCopy[2](replyCopy, 0, v53);
 LABEL_81:
 
         goto LABEL_82;
@@ -1383,7 +1383,7 @@ LABEL_81:
       if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_ERROR))
       {
         LODWORD(buf) = 138412290;
-        *(&buf + 4) = v16;
+        *(&buf + 4) = prefixCopy;
         _os_log_impl(&dword_23255B000, v41, OS_LOG_TYPE_ERROR, "GeoIP: malformed prefix: %@", &buf, 0xCu);
       }
 
@@ -1397,13 +1397,13 @@ LABEL_81:
       _os_log_impl(&dword_23255B000, v42, OS_LOG_TYPE_ERROR, "GeoIP: final check on prefix failed, return", &buf, 2u);
     }
 
-    if (!v20)
+    if (!replyCopy)
     {
       goto LABEL_38;
     }
 
     v30 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:22 userInfo:0];
-    v20[2](v20, 0, v30);
+    replyCopy[2](replyCopy, 0, v30);
 LABEL_37:
 
 LABEL_38:
@@ -1419,10 +1419,10 @@ LABEL_39:
     _os_log_impl(&dword_23255B000, v40, OS_LOG_TYPE_ERROR, "GeoIP: prefix is nil, return", &buf, 2u);
   }
 
-  if (v20)
+  if (replyCopy)
   {
-    v22 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:22 userInfo:0];
-    v20[2](v20, 0, v22);
+    name = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:22 userInfo:0];
+    replyCopy[2](replyCopy, 0, name);
 LABEL_40:
   }
 
@@ -1458,14 +1458,14 @@ void __118__GeoDBHandler_donateBiomeEventForEdgeSelectionWithPrefix_interfaceTyp
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  if ([(__CFString *)v8 isEqualToString:@"diagnosticsAndUsageEnabled"])
+  pathCopy = path;
+  changeCopy = change;
+  if ([(__CFString *)pathCopy isEqualToString:@"diagnosticsAndUsageEnabled"])
   {
-    v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+    v10 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       self->_isDnUOptedIn = [v10 BOOLValue];
@@ -1497,7 +1497,7 @@ void __118__GeoDBHandler_donateBiomeEventForEdgeSelectionWithPrefix_interfaceTyp
         v15 = objc_opt_class();
         v16 = NSStringFromClass(v15);
         v18 = 138412802;
-        v19 = v8;
+        v19 = pathCopy;
         v20 = 2112;
         v21 = v10;
         v22 = 2112;
@@ -1550,7 +1550,7 @@ void __118__GeoDBHandler_donateBiomeEventForEdgeSelectionWithPrefix_interfaceTyp
   block[1] = 3221225472;
   block[2] = __30__GeoDBHandler_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_pred_48 != -1)
   {
     dispatch_once(&sharedInstance_pred_48, block);
@@ -1573,35 +1573,35 @@ void __30__GeoDBHandler_sharedInstance__block_invoke(uint64_t a1)
   [ConfigurationHandler setConfigurationObject:v3 forName:v5];
 }
 
-+ (id)configureClass:(id)a3
++ (id)configureClass:(id)class
 {
-  v3 = a3;
+  classCopy = class;
   v4 = +[GeoDBHandler sharedInstance];
-  [v4 configureInstance:v3];
+  [v4 configureInstance:classCopy];
 
   return v4;
 }
 
-- (int)read:(id)a3 returnedValues:(id)a4
+- (int)read:(id)read returnedValues:(id)values
 {
-  v4 = a4;
+  valuesCopy = values;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 setObject:v6 forKey:@"GENERIC_CONFIG_TARGET"];
+  [valuesCopy setObject:v6 forKey:@"GENERIC_CONFIG_TARGET"];
 
   return 0;
 }
 
-- (BOOL)noteSymptom:(id)a3
+- (BOOL)noteSymptom:(id)symptom
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  symptomCopy = symptom;
+  v5 = symptomCopy;
   if (self->_isDnUOptedIn)
   {
-    v6 = [v4 eventKey];
+    eventKey = [symptomCopy eventKey];
     v7 = [SymptomStore keyFromSymptomName:@"com.apple.apsd.public-ip"];
-    v8 = [v6 isEqualToString:v7];
+    v8 = [eventKey isEqualToString:v7];
 
     if (v8)
     {
@@ -1615,7 +1615,7 @@ void __30__GeoDBHandler_sharedInstance__block_invoke(uint64_t a1)
           {
             v15 = self->_adminState;
             *buf = 138412546;
-            v27 = v6;
+            v27 = eventKey;
             v28 = 1024;
             v29 = v15;
             _os_log_impl(&dword_23255B000, v14, OS_LOG_TYPE_ERROR, "GeoIP: Received %@ symptom when admin state is %d", buf, 0x12u);
@@ -1624,15 +1624,15 @@ void __30__GeoDBHandler_sharedInstance__block_invoke(uint64_t a1)
           goto LABEL_13;
         }
 
-        v10 = [(GeoDBHandler *)self queue];
+        queue = [(GeoDBHandler *)self queue];
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __28__GeoDBHandler_noteSymptom___block_invoke;
         block[3] = &unk_27898A328;
-        v23 = v6;
-        v24 = self;
+        v23 = eventKey;
+        selfCopy = self;
         v25 = v5;
-        dispatch_async(v10, block);
+        dispatch_async(queue, block);
 
         v11 = v23;
         goto LABEL_10;
@@ -1640,15 +1640,15 @@ void __30__GeoDBHandler_sharedInstance__block_invoke(uint64_t a1)
 
       if (!self->_adminStateSettled)
       {
-        v13 = [(GeoDBHandler *)self queue];
+        queue2 = [(GeoDBHandler *)self queue];
         v18[0] = MEMORY[0x277D85DD0];
         v18[1] = 3221225472;
         v18[2] = __28__GeoDBHandler_noteSymptom___block_invoke_76;
         v18[3] = &unk_27898A328;
-        v19 = v6;
-        v20 = self;
+        v19 = eventKey;
+        selfCopy2 = self;
         v21 = v5;
-        dispatch_async(v13, v18);
+        dispatch_async(queue2, v18);
 
         v11 = v19;
 LABEL_10:

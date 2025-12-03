@@ -1,44 +1,44 @@
 @interface SXQuickLookAssembly
-- (void)loadInRegistry:(id)a3;
+- (void)loadInRegistry:(id)registry;
 @end
 
 @implementation SXQuickLookAssembly
 
-- (void)loadInRegistry:(id)a3
+- (void)loadInRegistry:(id)registry
 {
-  v3 = a3;
-  v4 = [v3 publicContainer];
-  v5 = [v4 registerProtocol:&unk_1F5415230 factory:&__block_literal_global_31];
+  registryCopy = registry;
+  publicContainer = [registryCopy publicContainer];
+  v5 = [publicContainer registerProtocol:&unk_1F5415230 factory:&__block_literal_global_31];
 
-  v6 = [v3 publicContainer];
-  v7 = [v6 registerProtocol:&unk_1F5426260 factory:&__block_literal_global_50];
+  publicContainer2 = [registryCopy publicContainer];
+  v7 = [publicContainer2 registerProtocol:&unk_1F5426260 factory:&__block_literal_global_50];
 
-  v8 = [v3 privateContainer];
-  v9 = [v8 registerClass:objc_opt_class() factory:&__block_literal_global_55_5];
+  privateContainer = [registryCopy privateContainer];
+  v9 = [privateContainer registerClass:objc_opt_class() factory:&__block_literal_global_55_5];
 
-  v10 = [v3 privateContainer];
-  v11 = [v10 registerProtocol:&unk_1F53A7F48 factory:&__block_literal_global_72];
+  privateContainer2 = [registryCopy privateContainer];
+  v11 = [privateContainer2 registerProtocol:&unk_1F53A7F48 factory:&__block_literal_global_72];
 
-  v12 = [v3 privateContainer];
-  v13 = [v12 registerClass:objc_opt_class() factory:&__block_literal_global_76_0];
+  privateContainer3 = [registryCopy privateContainer];
+  v13 = [privateContainer3 registerClass:objc_opt_class() factory:&__block_literal_global_76_0];
   v14 = [v13 withConfiguration:&__block_literal_global_88];
 
-  v15 = [v3 privateContainer];
-  v16 = [v15 registerProtocol:&unk_1F54262E0 factory:&__block_literal_global_91];
+  privateContainer4 = [registryCopy privateContainer];
+  v16 = [privateContainer4 registerProtocol:&unk_1F54262E0 factory:&__block_literal_global_91];
   v17 = [v16 withConfiguration:&__block_literal_global_100];
 
-  v18 = [v3 privateContainer];
-  v19 = [v18 registerProtocol:&unk_1F53C5D08 factory:&__block_literal_global_103];
+  privateContainer5 = [registryCopy privateContainer];
+  v19 = [privateContainer5 registerProtocol:&unk_1F53C5D08 factory:&__block_literal_global_103];
 
-  v20 = [v3 privateContainer];
-  v21 = [v20 registerProtocol:&unk_1F5410BD8 factory:&__block_literal_global_107];
+  privateContainer6 = [registryCopy privateContainer];
+  v21 = [privateContainer6 registerProtocol:&unk_1F5410BD8 factory:&__block_literal_global_107];
 
-  v22 = [v3 privateContainer];
-  v23 = [v22 registerProtocol:&unk_1F54292B0 factory:&__block_literal_global_111_0];
+  privateContainer7 = [registryCopy privateContainer];
+  v23 = [privateContainer7 registerProtocol:&unk_1F54292B0 factory:&__block_literal_global_111_0];
 
-  v25 = [v3 privateContainer];
+  privateContainer8 = [registryCopy privateContainer];
 
-  v24 = [v25 registerProtocol:&unk_1F53C09B8 factory:&__block_literal_global_118_0];
+  v24 = [privateContainer8 registerProtocol:&unk_1F53C09B8 factory:&__block_literal_global_118_0];
 }
 
 SXQuickLookModule *__38__SXQuickLookAssembly_loadInRegistry___block_invoke(uint64_t a1, void *a2)

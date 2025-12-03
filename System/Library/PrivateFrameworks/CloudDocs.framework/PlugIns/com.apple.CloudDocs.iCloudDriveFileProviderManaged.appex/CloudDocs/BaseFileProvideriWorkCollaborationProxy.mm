@@ -1,35 +1,35 @@
 @interface BaseFileProvideriWorkCollaborationProxy
-- (BaseFileProvideriWorkCollaborationProxy)initWithItemIdentifier:(id)a3 operationQueue:(id)a4;
-- (id)fetchCollaborationTokenWithCompletionHandler:(id)a3;
-- (id)fetchFolderSharingStateWithCompletionHandler:(id)a3;
-- (id)fetchLatestRevisionWithCompletionHandler:(id)a3;
-- (id)fetchSharedFolderInfoWithCompletionHandler:(id)a3;
-- (id)newProgressWithCancellationHandler:(id)a3;
-- (id)refreshSharingStateWithCompletionHandler:(id)a3;
-- (void)calculateCollaborationVersionWithCompletionHandler:(id)a3;
-- (void)fetchAccountIdentifierWithCompletionHandler:(id)a3;
+- (BaseFileProvideriWorkCollaborationProxy)initWithItemIdentifier:(id)identifier operationQueue:(id)queue;
+- (id)fetchCollaborationTokenWithCompletionHandler:(id)handler;
+- (id)fetchFolderSharingStateWithCompletionHandler:(id)handler;
+- (id)fetchLatestRevisionWithCompletionHandler:(id)handler;
+- (id)fetchSharedFolderInfoWithCompletionHandler:(id)handler;
+- (id)newProgressWithCancellationHandler:(id)handler;
+- (id)refreshSharingStateWithCompletionHandler:(id)handler;
+- (void)calculateCollaborationVersionWithCompletionHandler:(id)handler;
+- (void)fetchAccountIdentifierWithCompletionHandler:(id)handler;
 @end
 
 @implementation BaseFileProvideriWorkCollaborationProxy
 
-- (BaseFileProvideriWorkCollaborationProxy)initWithItemIdentifier:(id)a3 operationQueue:(id)a4
+- (BaseFileProvideriWorkCollaborationProxy)initWithItemIdentifier:(id)identifier operationQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = BaseFileProvideriWorkCollaborationProxy;
   v9 = [(BaseFileProvideriWorkCollaborationProxy *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_itemIdentifier, a3);
-    objc_storeStrong(&v10->_operationQueue, a4);
+    objc_storeStrong(&v9->_itemIdentifier, identifier);
+    objc_storeStrong(&v10->_operationQueue, queue);
   }
 
   return v10;
 }
 
-- (id)fetchCollaborationTokenWithCompletionHandler:(id)a3
+- (id)fetchCollaborationTokenWithCompletionHandler:(id)handler
 {
   v3 = brc_bread_crumbs();
   v4 = brc_default_log();
@@ -41,7 +41,7 @@
   return 0;
 }
 
-- (id)fetchLatestRevisionWithCompletionHandler:(id)a3
+- (id)fetchLatestRevisionWithCompletionHandler:(id)handler
 {
   v3 = brc_bread_crumbs();
   v4 = brc_default_log();
@@ -53,16 +53,16 @@
   return 0;
 }
 
-- (id)refreshSharingStateWithCompletionHandler:(id)a3
+- (id)refreshSharingStateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = self->_itemIdentifier;
   v6 = +[BRDaemonConnection defaultConnection];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100017B3C;
   v17[3] = &unk_100044598;
-  v7 = v4;
+  v7 = handlerCopy;
   v18 = v7;
   v8 = [v6 remoteObjectProxyWithErrorHandler:v17];
 
@@ -81,15 +81,15 @@
   return v12;
 }
 
-- (id)fetchFolderSharingStateWithCompletionHandler:(id)a3
+- (id)fetchFolderSharingStateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[BRDaemonConnection defaultConnection];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100017E10;
   v13[3] = &unk_100044598;
-  v6 = v4;
+  v6 = handlerCopy;
   v14 = v6;
   v7 = [v5 remoteObjectProxyWithErrorHandler:v13];
 
@@ -105,15 +105,15 @@
   return 0;
 }
 
-- (id)fetchSharedFolderInfoWithCompletionHandler:(id)a3
+- (id)fetchSharedFolderInfoWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[BRDaemonConnection defaultConnection];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100017F74;
   v13[3] = &unk_100044598;
-  v6 = v4;
+  v6 = handlerCopy;
   v14 = v6;
   v7 = [v5 remoteObjectProxyWithErrorHandler:v13];
 
@@ -129,21 +129,21 @@
   return 0;
 }
 
-- (id)newProgressWithCancellationHandler:(id)a3
+- (id)newProgressWithCancellationHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = [NSProgress progressWithTotalUnitCount:0];
-  [v4 setCancellationHandler:v3];
+  [v4 setCancellationHandler:handlerCopy];
 
   return v4;
 }
 
-- (void)fetchAccountIdentifierWithCompletionHandler:(id)a3
+- (void)fetchAccountIdentifierWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = +[ACAccountStore defaultStore];
-  v5 = [v4 br_accountForCurrentPersona];
-  v6 = [v5 identifier];
+  br_accountForCurrentPersona = [v4 br_accountForCurrentPersona];
+  identifier = [br_accountForCurrentPersona identifier];
   v7 = brc_bread_crumbs();
   v8 = brc_default_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -151,39 +151,39 @@
     sub_100028080();
   }
 
-  if (v6)
+  if (identifier)
   {
-    v3[2](v3, v6, 0);
+    handlerCopy[2](handlerCopy, identifier, 0);
   }
 
   else
   {
     v9 = +[NSError brc_errorLoggedOut];
-    (v3)[2](v3, 0, v9);
+    (handlerCopy)[2](handlerCopy, 0, v9);
   }
 }
 
-- (void)calculateCollaborationVersionWithCompletionHandler:(id)a3
+- (void)calculateCollaborationVersionWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v5 = +[BRDaemonConnection defaultConnection];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_100018254;
     v11[3] = &unk_100044598;
-    v6 = v4;
+    v6 = handlerCopy;
     v12 = v6;
     v7 = [v5 remoteObjectProxyWithErrorHandler:v11];
 
-    v8 = [(BaseFileProvideriWorkCollaborationProxy *)self itemIdentifier];
+    itemIdentifier = [(BaseFileProvideriWorkCollaborationProxy *)self itemIdentifier];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_10001826C;
     v9[3] = &unk_1000445C0;
     v10 = v6;
-    [v7 calculateSignatureForItemIdentifier:v8 reply:v9];
+    [v7 calculateSignatureForItemIdentifier:itemIdentifier reply:v9];
   }
 }
 

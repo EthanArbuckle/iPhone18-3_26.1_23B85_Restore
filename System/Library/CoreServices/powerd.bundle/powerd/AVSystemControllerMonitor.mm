@@ -1,9 +1,9 @@
 @interface AVSystemControllerMonitor
 - (AVSystemControllerMonitor)init;
-- (AVSystemControllerMonitor)initWithBlock:(id)a3;
-- (BOOL)subscribe:(id)a3;
-- (void)notificationDispatch:(BOOL)a3;
-- (void)notificationHandler:(id)a3;
+- (AVSystemControllerMonitor)initWithBlock:(id)block;
+- (BOOL)subscribe:(id)subscribe;
+- (void)notificationDispatch:(BOOL)dispatch;
+- (void)notificationHandler:(id)handler;
 - (void)setupAVSystemController;
 @end
 
@@ -31,21 +31,21 @@
   return v5;
 }
 
-- (AVSystemControllerMonitor)initWithBlock:(id)a3
+- (AVSystemControllerMonitor)initWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(AVSystemControllerMonitor *)self init];
   v6 = v5;
   if (v5)
   {
-    [(AVSystemControllerMonitor *)v5 subscribe:v4];
+    [(AVSystemControllerMonitor *)v5 subscribe:blockCopy];
     v7 = v6;
   }
 
   return v6;
 }
 
-- (void)notificationDispatch:(BOOL)a3
+- (void)notificationDispatch:(BOOL)dispatch
 {
   v8 = 0u;
   v9 = 0u;
@@ -79,19 +79,19 @@
   }
 }
 
-- (void)notificationHandler:(id)a3
+- (void)notificationHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (os_log_type_enabled(qword_1000AB980, OS_LOG_TYPE_DEBUG))
   {
     sub_100068534();
   }
 
-  v5 = [v4 userInfo];
-  v6 = v5;
-  if (v5)
+  userInfo = [handlerCopy userInfo];
+  v6 = userInfo;
+  if (userInfo)
   {
-    v7 = [v5 objectForKey:AVSystemController_WombatEnabledDidChangeNotificationParameter];
+    v7 = [userInfo objectForKey:AVSystemController_WombatEnabledDidChangeNotificationParameter];
     v8 = v7;
     if (v7)
     {
@@ -160,14 +160,14 @@
   }
 }
 
-- (BOOL)subscribe:(id)a3
+- (BOOL)subscribe:(id)subscribe
 {
   subscribers = self->_subscribers;
-  v5 = a3;
-  v6 = objc_retainBlock(v5);
+  subscribeCopy = subscribe;
+  v6 = objc_retainBlock(subscribeCopy);
   [(NSMutableArray *)subscribers addObject:v6];
 
-  (*(v5 + 2))(v5, [(AVSystemControllerMonitor *)self wombatActive]);
+  (*(subscribeCopy + 2))(subscribeCopy, [(AVSystemControllerMonitor *)self wombatActive]);
   return 1;
 }
 

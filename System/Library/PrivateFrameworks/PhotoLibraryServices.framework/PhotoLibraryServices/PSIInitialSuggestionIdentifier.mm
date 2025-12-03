@@ -1,6 +1,6 @@
 @interface PSIInitialSuggestionIdentifier
-- (PSIInitialSuggestionIdentifier)initWithDictionary:(id)a3;
-- (PSIInitialSuggestionIdentifier)initWithSuggestionTemplateKey:(id)a3 firstGroupId:(unint64_t)a4 secondGroupId:(unint64_t)a5;
+- (PSIInitialSuggestionIdentifier)initWithDictionary:(id)dictionary;
+- (PSIInitialSuggestionIdentifier)initWithSuggestionTemplateKey:(id)key firstGroupId:(unint64_t)id secondGroupId:(unint64_t)groupId;
 - (id)dictionary;
 @end
 
@@ -23,33 +23,33 @@
   return v6;
 }
 
-- (PSIInitialSuggestionIdentifier)initWithDictionary:(id)a3
+- (PSIInitialSuggestionIdentifier)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"suggestionTemplateKey"];
-  v6 = [v4 objectForKeyedSubscript:@"firstGroupId"];
-  v7 = [v6 integerValue];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"suggestionTemplateKey"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"firstGroupId"];
+  integerValue = [v6 integerValue];
 
-  v8 = [v4 objectForKeyedSubscript:@"secondGroupId"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"secondGroupId"];
 
-  v9 = [v8 integerValue];
-  v10 = [(PSIInitialSuggestionIdentifier *)self initWithSuggestionTemplateKey:v5 firstGroupId:v7 secondGroupId:v9];
+  integerValue2 = [v8 integerValue];
+  v10 = [(PSIInitialSuggestionIdentifier *)self initWithSuggestionTemplateKey:v5 firstGroupId:integerValue secondGroupId:integerValue2];
 
   return v10;
 }
 
-- (PSIInitialSuggestionIdentifier)initWithSuggestionTemplateKey:(id)a3 firstGroupId:(unint64_t)a4 secondGroupId:(unint64_t)a5
+- (PSIInitialSuggestionIdentifier)initWithSuggestionTemplateKey:(id)key firstGroupId:(unint64_t)id secondGroupId:(unint64_t)groupId
 {
-  v9 = a3;
+  keyCopy = key;
   v14.receiver = self;
   v14.super_class = PSIInitialSuggestionIdentifier;
   v10 = [(PSIInitialSuggestionIdentifier *)&v14 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_suggestionTemplateKey, a3);
-    v11->_firstGroupId = a4;
-    v11->_secondGroupId = a5;
+    objc_storeStrong(&v10->_suggestionTemplateKey, key);
+    v11->_firstGroupId = id;
+    v11->_secondGroupId = groupId;
     v12 = v11;
   }
 

@@ -1,20 +1,20 @@
 @interface RTRadarUtilities
-+ (void)createRadarWithTitle:(id)a3 description:(id)a4;
-+ (void)promptUserToCreateRadarForAssertionIdentifier:(id)a3 alertMessage:(id)a4 radarTitle:(id)a5 radarDescription:(id)a6 handler:(id)a7;
++ (void)createRadarWithTitle:(id)title description:(id)description;
++ (void)promptUserToCreateRadarForAssertionIdentifier:(id)identifier alertMessage:(id)message radarTitle:(id)title radarDescription:(id)description handler:(id)handler;
 @end
 
 @implementation RTRadarUtilities
 
-+ (void)promptUserToCreateRadarForAssertionIdentifier:(id)a3 alertMessage:(id)a4 radarTitle:(id)a5 radarDescription:(id)a6 handler:(id)a7
++ (void)promptUserToCreateRadarForAssertionIdentifier:(id)identifier alertMessage:(id)message radarTitle:(id)title radarDescription:(id)description handler:(id)handler
 {
   v73 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = v15;
-  if (!v11)
+  identifierCopy = identifier;
+  messageCopy = message;
+  titleCopy = title;
+  descriptionCopy = description;
+  handlerCopy = handler;
+  v16 = handlerCopy;
+  if (!identifierCopy)
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -29,7 +29,7 @@ LABEL_18:
     goto LABEL_62;
   }
 
-  if (!v13)
+  if (!titleCopy)
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -42,7 +42,7 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if (!v14)
+  if (!descriptionCopy)
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -55,7 +55,7 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if (!v15)
+  if (!handlerCopy)
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -73,10 +73,10 @@ LABEL_18:
   {
     v18 = objc_opt_new();
     v19 = [v18 objectForKey:@"DisabledAssertAlerts"];
-    v20 = [v19 objectForKey:v11];
-    v21 = [v20 BOOLValue];
+    v20 = [v19 objectForKey:identifierCopy];
+    bOOLValue = [v20 BOOLValue];
 
-    if (v21)
+    if (bOOLValue)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
@@ -84,7 +84,7 @@ LABEL_18:
         if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v70 = v11;
+          v70 = identifierCopy;
           v23 = "Suppressing alert for assertion identifier, %@, because defaults key was set.";
 LABEL_26:
           _os_log_impl(&dword_2304B3000, v22, OS_LOG_TYPE_INFO, v23, buf, 0xCu);
@@ -108,7 +108,7 @@ LABEL_26:
         if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v70 = v11;
+          v70 = identifierCopy;
           v23 = "Suppressing alert for assertion identifier, %@, because an alert is already showing.";
           goto LABEL_26;
         }
@@ -124,15 +124,15 @@ LABEL_61:
 
     v61 = v19;
     v62 = [v18 objectForKey:@"RecentAssertAlerts"];
-    v27 = [v62 objectForKey:v11];
-    v28 = [MEMORY[0x277CBEAA8] date];
-    v64 = v28;
+    v27 = [v62 objectForKey:identifierCopy];
+    date = [MEMORY[0x277CBEAA8] date];
+    v64 = date;
     v65 = v27;
     if (v27)
     {
-      v29 = v28;
-      v30 = [MEMORY[0x277CBEA80] currentCalendar];
-      v31 = [v30 isDate:v27 inSameDayAsDate:v29];
+      v29 = date;
+      currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+      v31 = [currentCalendar isDate:v27 inSameDayAsDate:v29];
 
       v32 = v65;
       if (v31)
@@ -150,7 +150,7 @@ LABEL_58:
         if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
         {
           *buf = 138412546;
-          v70 = v11;
+          v70 = identifierCopy;
           v71 = 2112;
           v72 = v65;
           _os_log_impl(&dword_2304B3000, log, OS_LOG_TYPE_INFO, "Suppressing alert for assertion identifier, %@, because it was recently shown (on %@).", buf, 0x16u);
@@ -170,9 +170,9 @@ LABEL_57:
       if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v70 = v11;
+        v70 = identifierCopy;
         v71 = 2112;
-        v72 = v12;
+        v72 = messageCopy;
         _os_log_impl(&dword_2304B3000, v33, OS_LOG_TYPE_INFO, "Showing alert for assertion identifier, %@, to file a bug with message: %@.", buf, 0x16u);
       }
     }
@@ -181,9 +181,9 @@ LABEL_57:
     v67[0] = *MEMORY[0x277CBF188];
     v67[1] = v34;
     v35 = @"You discovered a bug in CoreRoutine. Please file a radar.";
-    if (v12)
+    if (messageCopy)
     {
-      v35 = v12;
+      v35 = messageCopy;
     }
 
     v68[0] = @"CoreRoutine Bug!";
@@ -207,7 +207,7 @@ LABEL_57:
     }
 
     v38 = v37;
-    [v37 setObject:v64 forKey:v11];
+    [v37 setObject:v64 forKey:identifierCopy];
     v60 = v38;
     [v18 setObject:v38 forKey:@"RecentAssertAlerts"];
     error = 0;
@@ -242,12 +242,12 @@ LABEL_57:
       {
         source = RunLoopSource;
         v49 = objc_opt_new();
-        [v49 setObject:v11 forKey:@"assertionIdentifier"];
-        [v49 setObject:v13 forKey:@"radarTitle"];
+        [v49 setObject:identifierCopy forKey:@"assertionIdentifier"];
+        [v49 setObject:titleCopy forKey:@"radarTitle"];
         v57 = v49;
         cfa = v47;
         v50 = v49;
-        [v49 setObject:v14 forKeyedSubscript:@"radarDescription"];
+        [v49 setObject:descriptionCopy forKeyedSubscript:@"radarDescription"];
         v51 = [v16 copy];
         [v50 setObject:v51 forKey:@"handler"];
 
@@ -319,7 +319,7 @@ LABEL_56:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v70 = v11;
+      v70 = identifierCopy;
       _os_log_impl(&dword_2304B3000, v18, OS_LOG_TYPE_INFO, "Suppressing alert for assertion identifier, %@, because we're not on an internal build.", buf, 0xCu);
     }
 
@@ -329,43 +329,43 @@ LABEL_56:
 LABEL_62:
 }
 
-+ (void)createRadarWithTitle:(id)a3 description:(id)a4
++ (void)createRadarWithTitle:(id)title description:(id)description
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  titleCopy = title;
+  descriptionCopy = description;
   v7 = objc_opt_new();
   if ([v7 internalInstall])
   {
     v8 = objc_opt_new();
     [v8 setScheme:@"tap-to-radar"];
     [v8 setHost:@"new"];
-    v9 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v10 = [objc_alloc(MEMORY[0x277CCAD18]) initWithName:@"ComponentID" value:@"527926"];
-    [v9 addObject:v10];
+    [array addObject:v10];
 
     v11 = [objc_alloc(MEMORY[0x277CCAD18]) initWithName:@"ComponentName" value:@"CoreRoutine"];
-    [v9 addObject:v11];
+    [array addObject:v11];
 
     v12 = [objc_alloc(MEMORY[0x277CCAD18]) initWithName:@"ComponentVersion" value:@"All"];
-    [v9 addObject:v12];
+    [array addObject:v12];
 
     v13 = [objc_alloc(MEMORY[0x277CCAD18]) initWithName:@"ExtensionIdentifiers" value:{@"com.apple.CoreRoutine.RTDiagnosticExtension, com.apple.DiagnosticExtensions.Syslog, com.apple.DiagnosticExtensions.CrashLogs"}];
-    [v9 addObject:v13];
+    [array addObject:v13];
 
-    if ([v5 length])
+    if ([titleCopy length])
     {
-      v14 = [objc_alloc(MEMORY[0x277CCAD18]) initWithName:@"Title" value:v5];
-      [v9 addObject:v14];
+      v14 = [objc_alloc(MEMORY[0x277CCAD18]) initWithName:@"Title" value:titleCopy];
+      [array addObject:v14];
     }
 
-    v15 = [objc_alloc(MEMORY[0x277CCAD18]) initWithName:@"Description" value:v6];
-    [v9 addObject:v15];
+    v15 = [objc_alloc(MEMORY[0x277CCAD18]) initWithName:@"Description" value:descriptionCopy];
+    [array addObject:v15];
 
-    [v8 setQueryItems:v9];
-    v16 = [MEMORY[0x277CC1E80] defaultWorkspace];
+    [v8 setQueryItems:array];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
     v17 = [v8 URL];
-    [v16 openURL:v17 configuration:0 completionHandler:0];
+    [defaultWorkspace openURL:v17 configuration:0 completionHandler:0];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {

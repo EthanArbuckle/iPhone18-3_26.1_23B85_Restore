@@ -11,11 +11,11 @@
 - (HKQuantity)quantity
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 wattUnit];
-  v6 = *(&v4->super.isa + OBJC_IVAR___WOFunctionalThresholdPower_functionalThresholdPower);
+  selfCopy = self;
+  wattUnit = [v3 wattUnit];
+  v6 = *(&selfCopy->super.isa + OBJC_IVAR___WOFunctionalThresholdPower_functionalThresholdPower);
   sub_22594();
-  v8 = [objc_opt_self() quantityWithUnit:v5 doubleValue:v7];
+  v8 = [objc_opt_self() quantityWithUnit:wattUnit doubleValue:v7];
 
   return v8;
 }
@@ -23,7 +23,7 @@
 - (BOOL)isAvailable
 {
   v2 = *(&self->super.isa + OBJC_IVAR___WOFunctionalThresholdPower_functionalThresholdPower);
-  v3 = self;
+  selfCopy = self;
   LOBYTE(v2) = sub_22564();
 
   return v2 & 1;
@@ -37,7 +37,7 @@
   __chkstk_darwin();
   v7 = &v12 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   v8 = *(&self->super.isa + OBJC_IVAR___WOFunctionalThresholdPower_functionalThresholdPower);
-  v9 = self;
+  selfCopy = self;
   sub_22574();
 
   v10.super.isa = sub_22224().super.isa;
@@ -49,7 +49,7 @@
 - (double)value
 {
   v2 = *(&self->super.isa + OBJC_IVAR___WOFunctionalThresholdPower_functionalThresholdPower);
-  v3 = self;
+  selfCopy = self;
   sub_22594();
   v5 = v4;
 

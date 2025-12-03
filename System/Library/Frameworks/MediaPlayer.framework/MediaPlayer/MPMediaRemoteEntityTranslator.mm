@@ -1,15 +1,15 @@
 @interface MPMediaRemoteEntityTranslator
 + (void)buildSchemaIfNeeded;
-- (id)sectionObjectForPropertySet:(id)a3 contentItem:(id)a4 context:(id)a5;
-- (void)_mapPropertyKey:(uint64_t)a3 toKeyPath:;
-- (void)mapAnimatedArtworkPropertyKey:(id)a3;
-- (void)mapArtworkPropertyKey:(id)a3;
-- (void)mapIdentifierCreationBlock:(id)a3;
-- (void)mapPropertyKey:(id)a3 toDeviceSpecificUserInfoKey:(id)a4;
-- (void)mapPropertyKey:(id)a3 toMPContentItemSelector:(SEL)a4;
-- (void)mapPropertyKey:(id)a3 toUserInfoKey:(id)a4;
-- (void)mapPropertyKey:(id)a3 toValueTransformer:(id)a4;
-- (void)mapRelationshipKey:(id)a3 toModelClass:(Class)a4;
+- (id)sectionObjectForPropertySet:(id)set contentItem:(id)item context:(id)context;
+- (void)_mapPropertyKey:(uint64_t)key toKeyPath:;
+- (void)mapAnimatedArtworkPropertyKey:(id)key;
+- (void)mapArtworkPropertyKey:(id)key;
+- (void)mapIdentifierCreationBlock:(id)block;
+- (void)mapPropertyKey:(id)key toDeviceSpecificUserInfoKey:(id)infoKey;
+- (void)mapPropertyKey:(id)key toMPContentItemSelector:(SEL)selector;
+- (void)mapPropertyKey:(id)key toUserInfoKey:(id)infoKey;
+- (void)mapPropertyKey:(id)key toValueTransformer:(id)transformer;
+- (void)mapRelationshipKey:(id)key toModelClass:(Class)class;
 @end
 
 @implementation MPMediaRemoteEntityTranslator
@@ -303,49 +303,49 @@ void __52__MPMediaRemoteEntityTranslator_buildSchemaIfNeeded__block_invoke()
   [v22 mapPropertyKey:@"MPModelPropertyPodcastChapterPlayable" toMPContentItemSelector:sel_isPlayable];
 }
 
-- (void)mapRelationshipKey:(id)a3 toModelClass:(Class)a4
+- (void)mapRelationshipKey:(id)key toModelClass:(Class)class
 {
-  v6 = a3;
-  v7 = [[_MPBaseEntityRelationshipTranslator alloc] initWithRelatedMPModelClass:a4];
-  [MPBaseEntityTranslator mapRelationshipKey:v6 ofModelClass:v7 toRelationshipTranslator:?];
+  keyCopy = key;
+  v7 = [[_MPBaseEntityRelationshipTranslator alloc] initWithRelatedMPModelClass:class];
+  [MPBaseEntityTranslator mapRelationshipKey:keyCopy ofModelClass:v7 toRelationshipTranslator:?];
 }
 
-- (void)mapPropertyKey:(id)a3 toValueTransformer:(id)a4
+- (void)mapPropertyKey:(id)key toValueTransformer:(id)transformer
 {
-  v6 = a3;
-  v7 = [_MPMediaRemoteEntityPropertyTranslator translatorWithBlock:a4];
-  [(MPBaseEntityTranslator *)&self->super.super.isa mapPropertyKey:v6 toPropertyTranslator:v7];
+  keyCopy = key;
+  v7 = [_MPMediaRemoteEntityPropertyTranslator translatorWithBlock:transformer];
+  [(MPBaseEntityTranslator *)&self->super.super.isa mapPropertyKey:keyCopy toPropertyTranslator:v7];
 }
 
-- (void)mapPropertyKey:(id)a3 toDeviceSpecificUserInfoKey:(id)a4
+- (void)mapPropertyKey:(id)key toDeviceSpecificUserInfoKey:(id)infoKey
 {
-  v6 = a3;
-  v7 = [@"deviceSpecificUserInfo." stringByAppendingString:a4];
-  [(MPMediaRemoteEntityTranslator *)&self->super.super.isa _mapPropertyKey:v6 toKeyPath:v7];
+  keyCopy = key;
+  v7 = [@"deviceSpecificUserInfo." stringByAppendingString:infoKey];
+  [(MPMediaRemoteEntityTranslator *)&self->super.super.isa _mapPropertyKey:keyCopy toKeyPath:v7];
 }
 
-- (void)_mapPropertyKey:(uint64_t)a3 toKeyPath:
+- (void)_mapPropertyKey:(uint64_t)key toKeyPath:
 {
-  if (a1)
+  if (self)
   {
     v5 = a2;
-    v6 = [_MPMediaRemoteEntityPropertyTranslator translatorWithKeyPath:a3];
-    [(MPBaseEntityTranslator *)a1 mapPropertyKey:v5 toPropertyTranslator:v6];
+    v6 = [_MPMediaRemoteEntityPropertyTranslator translatorWithKeyPath:key];
+    [(MPBaseEntityTranslator *)self mapPropertyKey:v5 toPropertyTranslator:v6];
   }
 }
 
-- (void)mapPropertyKey:(id)a3 toUserInfoKey:(id)a4
+- (void)mapPropertyKey:(id)key toUserInfoKey:(id)infoKey
 {
-  v6 = a3;
-  v7 = [@"userInfo." stringByAppendingString:a4];
-  [(MPMediaRemoteEntityTranslator *)&self->super.super.isa _mapPropertyKey:v6 toKeyPath:v7];
+  keyCopy = key;
+  v7 = [@"userInfo." stringByAppendingString:infoKey];
+  [(MPMediaRemoteEntityTranslator *)&self->super.super.isa _mapPropertyKey:keyCopy toKeyPath:v7];
 }
 
-- (void)mapAnimatedArtworkPropertyKey:(id)a3
+- (void)mapAnimatedArtworkPropertyKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [_MPMediaRemoteEntityPropertyTranslator translatorWithBlock:&__block_literal_global_83];
-  [(MPBaseEntityTranslator *)&self->super.super.isa mapPropertyKey:v4 toPropertyTranslator:v5];
+  [(MPBaseEntityTranslator *)&self->super.super.isa mapPropertyKey:keyCopy toPropertyTranslator:v5];
 }
 
 id __63__MPMediaRemoteEntityTranslator_mapAnimatedArtworkPropertyKey___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -417,11 +417,11 @@ LABEL_8:
   return v6;
 }
 
-- (void)mapArtworkPropertyKey:(id)a3
+- (void)mapArtworkPropertyKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [_MPMediaRemoteEntityPropertyTranslator translatorWithBlock:&__block_literal_global_81];
-  [(MPBaseEntityTranslator *)&self->super.super.isa mapPropertyKey:v4 toPropertyTranslator:v5];
+  [(MPBaseEntityTranslator *)&self->super.super.isa mapPropertyKey:keyCopy toPropertyTranslator:v5];
 }
 
 id __55__MPMediaRemoteEntityTranslator_mapArtworkPropertyKey___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -433,23 +433,23 @@ id __55__MPMediaRemoteEntityTranslator_mapArtworkPropertyKey___block_invoke(uint
   return v6;
 }
 
-- (void)mapPropertyKey:(id)a3 toMPContentItemSelector:(SEL)a4
+- (void)mapPropertyKey:(id)key toMPContentItemSelector:(SEL)selector
 {
-  v6 = a3;
-  v7 = NSStringFromSelector(a4);
-  [(MPMediaRemoteEntityTranslator *)&self->super.super.isa _mapPropertyKey:v6 toKeyPath:v7];
+  keyCopy = key;
+  v7 = NSStringFromSelector(selector);
+  [(MPMediaRemoteEntityTranslator *)&self->super.super.isa _mapPropertyKey:keyCopy toKeyPath:v7];
 }
 
-- (void)mapIdentifierCreationBlock:(id)a3
+- (void)mapIdentifierCreationBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __60__MPMediaRemoteEntityTranslator_mapIdentifierCreationBlock___block_invoke;
   v7[3] = &unk_1E767E188;
   v7[4] = self;
-  v8 = v4;
-  v5 = v4;
+  v8 = blockCopy;
+  v5 = blockCopy;
   v6 = [_MPMediaRemoteEntityPropertyTranslator translatorWithBlock:v7];
   [(MPBaseEntityTranslator *)&self->super.super.isa mapIdentifiersToPropertyTranslator:v6];
 }
@@ -472,13 +472,13 @@ MPIdentifierSet *__60__MPMediaRemoteEntityTranslator_mapIdentifierCreationBlock_
   return v8;
 }
 
-- (id)sectionObjectForPropertySet:(id)a3 contentItem:(id)a4 context:(id)a5
+- (id)sectionObjectForPropertySet:(id)set contentItem:(id)item context:(id)context
 {
   v36[2] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = v8;
-  v11 = a3;
+  itemCopy = item;
+  contextCopy = context;
+  v10 = itemCopy;
+  setCopy = set;
   if (self)
   {
     if ([v10 mediaType] == 2)
@@ -489,8 +489,8 @@ MPIdentifierSet *__60__MPMediaRemoteEntityTranslator_mapIdentifierCreationBlock_
 
     else
     {
-      v14 = [v10 collectionInfo];
-      v15 = [v14 objectForKeyedSubscript:@"_MPNowPlayingCollectionInfoKeyCollectionType"];
+      collectionInfo = [v10 collectionInfo];
+      v15 = [collectionInfo objectForKeyedSubscript:@"_MPNowPlayingCollectionInfoKeyCollectionType"];
       v36[0] = @"_MPNowPlayingCollectionInfoCollectionTypePlaylist";
       v36[1] = @"_MPNowPlayingCollectionInfoCollectionTypePlaylistFolder";
       v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:2];
@@ -531,29 +531,29 @@ LABEL_18:
       }
     }
 
-    v19 = [v11 relationships];
-    v20 = [v19 objectForKeyedSubscript:v12];
+    relationships = [setCopy relationships];
+    v20 = [relationships objectForKeyedSubscript:v12];
 
     if (v20)
     {
-      v32 = self;
-      v33 = v9;
-      v31 = v11;
-      v21 = [v11 relationships];
-      v14 = [v21 objectForKeyedSubscript:v12];
+      selfCopy = self;
+      v33 = contextCopy;
+      v31 = setCopy;
+      relationships2 = [setCopy relationships];
+      collectionInfo = [relationships2 objectForKeyedSubscript:v12];
 
       v15 = +[MPModelGenericObject requiredStoreLibraryPersonalizationProperties];
       v22 = [MPPropertySet alloc];
       v34 = v12;
-      v23 = [v15 relationships];
-      v24 = [v23 objectForKeyedSubscript:v12];
+      relationships3 = [v15 relationships];
+      v24 = [relationships3 objectForKeyedSubscript:v12];
       v25 = v24;
       if (!v24)
       {
         v25 = +[MPPropertySet emptyPropertySet];
       }
 
-      v26 = [v14 propertySetByCombiningWithPropertySet:v25];
+      v26 = [collectionInfo propertySetByCombiningWithPropertySet:v25];
       v35 = v26;
       v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v35 forKeys:&v34 count:1];
       v28 = [(MPPropertySet *)v22 initWithProperties:0 relationships:v27];
@@ -562,9 +562,9 @@ LABEL_18:
       {
       }
 
-      self = v32;
-      v9 = v33;
-      v11 = v31;
+      self = selfCopy;
+      contextCopy = v33;
+      setCopy = v31;
       goto LABEL_17;
     }
 
@@ -576,7 +576,7 @@ LABEL_20:
 
   if (v28)
   {
-    v29 = [(MPMediaRemoteEntityTranslator *)self objectForPropertySet:v28 contentItem:v10 context:v9];
+    v29 = [(MPMediaRemoteEntityTranslator *)self objectForPropertySet:v28 contentItem:v10 context:contextCopy];
   }
 
   else

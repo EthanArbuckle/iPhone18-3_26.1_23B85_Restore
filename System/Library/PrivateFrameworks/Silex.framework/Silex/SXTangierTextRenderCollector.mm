@@ -1,95 +1,95 @@
 @interface SXTangierTextRenderCollector
-- (BOOL)tangierTextRepAllowsSelection:(id)a3;
-- (SXTangierTextRenderCollector)initWithSearchManager:(id)a3;
-- (id)componentIdentifierForFlowLayout:(id)a3;
-- (id)flowLayoutForComponentIdentifier:(id)a3;
-- (id)getAllItemsWithICC:(id)a3;
-- (id)infoForStorage:(id)a3 selection:(id)a4;
-- (id)itemWithIdentifier:(id)a3 storage:(id)a4 directLayerHost:(id)a5 inItems:(id)a6;
-- (id)searchWithContext:(id)a3 icc:(id)a4;
-- (void)addTextStorage:(id)a3 withLayout:(id)a4 forNamedFlow:(id)a5 directLayerHostView:(id)a6 selectable:(BOOL)a7 componentIdentifier:(id)a8;
-- (void)buildFlowsAndUpdateInfosWithICC:(id)a3;
-- (void)buildFlowsAndUpdateInfosWithICC:(id)a3 updateBlock:(id)a4;
-- (void)reloadWithICC:(id)a3;
-- (void)storeItem:(id)a3 forFlowName:(id)a4;
+- (BOOL)tangierTextRepAllowsSelection:(id)selection;
+- (SXTangierTextRenderCollector)initWithSearchManager:(id)manager;
+- (id)componentIdentifierForFlowLayout:(id)layout;
+- (id)flowLayoutForComponentIdentifier:(id)identifier;
+- (id)getAllItemsWithICC:(id)c;
+- (id)infoForStorage:(id)storage selection:(id)selection;
+- (id)itemWithIdentifier:(id)identifier storage:(id)storage directLayerHost:(id)host inItems:(id)items;
+- (id)searchWithContext:(id)context icc:(id)icc;
+- (void)addTextStorage:(id)storage withLayout:(id)layout forNamedFlow:(id)flow directLayerHostView:(id)view selectable:(BOOL)selectable componentIdentifier:(id)identifier;
+- (void)buildFlowsAndUpdateInfosWithICC:(id)c;
+- (void)buildFlowsAndUpdateInfosWithICC:(id)c updateBlock:(id)block;
+- (void)reloadWithICC:(id)c;
+- (void)storeItem:(id)item forFlowName:(id)name;
 @end
 
 @implementation SXTangierTextRenderCollector
 
-- (SXTangierTextRenderCollector)initWithSearchManager:(id)a3
+- (SXTangierTextRenderCollector)initWithSearchManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v12.receiver = self;
   v12.super_class = SXTangierTextRenderCollector;
   v6 = [(SXTangierTextRenderCollector *)&v12 init];
   if (v6)
   {
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     flows = v6->_flows;
-    v6->_flows = v7;
+    v6->_flows = dictionary;
 
-    v9 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     layoutsByComponentIdentifier = v6->_layoutsByComponentIdentifier;
-    v6->_layoutsByComponentIdentifier = v9;
+    v6->_layoutsByComponentIdentifier = dictionary2;
 
-    objc_storeStrong(&v6->_searchManager, a3);
+    objc_storeStrong(&v6->_searchManager, manager);
   }
 
   return v6;
 }
 
-- (void)addTextStorage:(id)a3 withLayout:(id)a4 forNamedFlow:(id)a5 directLayerHostView:(id)a6 selectable:(BOOL)a7 componentIdentifier:(id)a8
+- (void)addTextStorage:(id)storage withLayout:(id)layout forNamedFlow:(id)flow directLayerHostView:(id)view selectable:(BOOL)selectable componentIdentifier:(id)identifier
 {
-  v32 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a8;
-  v18 = [(SXTangierTextRenderCollector *)self previousFlows];
-  v19 = [v18 objectForKey:v15];
-  v20 = [(SXTangierTextRenderCollector *)self itemWithIdentifier:v17 storage:v32 directLayerHost:v16 inItems:v19];
+  storageCopy = storage;
+  layoutCopy = layout;
+  flowCopy = flow;
+  viewCopy = view;
+  identifierCopy = identifier;
+  previousFlows = [(SXTangierTextRenderCollector *)self previousFlows];
+  v19 = [previousFlows objectForKey:flowCopy];
+  v20 = [(SXTangierTextRenderCollector *)self itemWithIdentifier:identifierCopy storage:storageCopy directLayerHost:viewCopy inItems:v19];
 
   if (v20)
   {
-    [(SXTangierTextRenderCollectorItem *)v20 updateWithLayout:v14];
-    v21 = [v32 range];
-    v22 = [v32 characterStyleAtCharIndex:v21 effectiveRange:0];
-    v23 = [v32 paragraphStyleAtCharIndex:v21 effectiveRange:0];
-    v24 = [(SXTangierTextRenderCollectorItem *)v20 storage];
-    v25 = [(SXTangierTextRenderCollectorItem *)v20 storage];
-    v26 = [v25 range];
-    [v24 setCharacterStyle:v22 range:v26 undoTransaction:{v27, 0}];
+    [(SXTangierTextRenderCollectorItem *)v20 updateWithLayout:layoutCopy];
+    range = [storageCopy range];
+    v22 = [storageCopy characterStyleAtCharIndex:range effectiveRange:0];
+    v23 = [storageCopy paragraphStyleAtCharIndex:range effectiveRange:0];
+    storage = [(SXTangierTextRenderCollectorItem *)v20 storage];
+    storage2 = [(SXTangierTextRenderCollectorItem *)v20 storage];
+    range2 = [storage2 range];
+    [storage setCharacterStyle:v22 range:range2 undoTransaction:{v27, 0}];
 
-    v28 = [(SXTangierTextRenderCollectorItem *)v20 storage];
-    v29 = [(SXTangierTextRenderCollectorItem *)v20 storage];
-    v30 = [v29 range];
-    [v28 setParagraphStyle:v23 forCharRange:v30 undoTransaction:{v31, 0}];
+    storage3 = [(SXTangierTextRenderCollectorItem *)v20 storage];
+    storage4 = [(SXTangierTextRenderCollectorItem *)v20 storage];
+    range3 = [storage4 range];
+    [storage3 setParagraphStyle:v23 forCharRange:range3 undoTransaction:{v31, 0}];
   }
 
   else
   {
-    v20 = [[SXTangierTextRenderCollectorItem alloc] initWithStorage:v32 layout:v14 directLayerHost:v16 selectable:a7 componentIdentifier:v17];
+    v20 = [[SXTangierTextRenderCollectorItem alloc] initWithStorage:storageCopy layout:layoutCopy directLayerHost:viewCopy selectable:selectable componentIdentifier:identifierCopy];
   }
 
-  [(SXTangierTextRenderCollector *)self storeItem:v20 forFlowName:v15];
+  [(SXTangierTextRenderCollector *)self storeItem:v20 forFlowName:flowCopy];
 }
 
-- (id)itemWithIdentifier:(id)a3 storage:(id)a4 directLayerHost:(id)a5 inItems:(id)a6
+- (id)itemWithIdentifier:(id)identifier storage:(id)storage directLayerHost:(id)host inItems:(id)items
 {
   v39 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v31 = v10;
-  v13 = [v10 length];
+  identifierCopy = identifier;
+  storageCopy = storage;
+  hostCopy = host;
+  itemsCopy = items;
+  v31 = storageCopy;
+  v13 = [storageCopy length];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v14 = v12;
+  v14 = itemsCopy;
   v15 = [v14 countByEnumeratingWithState:&v34 objects:v38 count:16];
-  v30 = v11;
+  v30 = hostCopy;
   if (!v15)
   {
     goto LABEL_16;
@@ -98,7 +98,7 @@
   v16 = v15;
   v17 = *v35;
   v28 = v14;
-  v29 = v9;
+  v29 = identifierCopy;
   v33 = v13;
   do
   {
@@ -110,20 +110,20 @@
       }
 
       v19 = *(*(&v34 + 1) + 8 * i);
-      v20 = [(SXTangierTextRenderCollectorItem *)v19 directLayerHost];
-      if (v20 != v11)
+      directLayerHost = [(SXTangierTextRenderCollectorItem *)v19 directLayerHost];
+      if (directLayerHost != hostCopy)
       {
         goto LABEL_13;
       }
 
-      v21 = [(SXTangierTextRenderCollectorItem *)v19 storage];
-      if ([v21 length] != v13)
+      storage = [(SXTangierTextRenderCollectorItem *)v19 storage];
+      if ([storage length] != v13)
       {
         goto LABEL_12;
       }
 
-      v22 = [(SXTangierTextRenderCollectorItem *)v19 componentIdentifier];
-      if (([v22 isEqualToString:v9] & 1) == 0)
+      componentIdentifier = [(SXTangierTextRenderCollectorItem *)v19 componentIdentifier];
+      if (([componentIdentifier isEqualToString:identifierCopy] & 1) == 0)
       {
 
         v13 = v33;
@@ -133,13 +133,13 @@ LABEL_13:
         continue;
       }
 
-      v23 = [(SXTangierTextRenderCollectorItem *)v19 storage];
-      v24 = [v23 string];
-      v25 = [v31 string];
-      v32 = [v24 isEqualToString:v25];
+      storage2 = [(SXTangierTextRenderCollectorItem *)v19 storage];
+      string = [storage2 string];
+      string2 = [v31 string];
+      v32 = [string isEqualToString:string2];
 
-      v11 = v30;
-      v9 = v29;
+      hostCopy = v30;
+      identifierCopy = v29;
 
       v14 = v28;
       v13 = v33;
@@ -161,44 +161,44 @@ LABEL_17:
   return v26;
 }
 
-- (void)buildFlowsAndUpdateInfosWithICC:(id)a3 updateBlock:(id)a4
+- (void)buildFlowsAndUpdateInfosWithICC:(id)c updateBlock:(id)block
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(SXTangierTextRenderCollector *)self flows];
-  v8 = [v7 copy];
+  cCopy = c;
+  blockCopy = block;
+  flows = [(SXTangierTextRenderCollector *)self flows];
+  v8 = [flows copy];
   [(SXTangierTextRenderCollector *)self setPreviousFlows:v8];
 
-  v9 = [(SXTangierTextRenderCollector *)self flows];
-  [v9 removeAllObjects];
+  flows2 = [(SXTangierTextRenderCollector *)self flows];
+  [flows2 removeAllObjects];
 
-  v10 = [(SXTangierTextRenderCollector *)self layoutsByComponentIdentifier];
-  [v10 removeAllObjects];
+  layoutsByComponentIdentifier = [(SXTangierTextRenderCollector *)self layoutsByComponentIdentifier];
+  [layoutsByComponentIdentifier removeAllObjects];
 
-  if (v6)
+  if (blockCopy)
   {
-    v6[2](v6);
+    blockCopy[2](blockCopy);
   }
 
-  [(SXTangierTextRenderCollector *)self buildFlowsAndUpdateInfosWithICC:v11];
+  [(SXTangierTextRenderCollector *)self buildFlowsAndUpdateInfosWithICC:cCopy];
   [(SXTangierTextRenderCollector *)self setPreviousFlows:0];
 }
 
-- (void)buildFlowsAndUpdateInfosWithICC:(id)a3
+- (void)buildFlowsAndUpdateInfosWithICC:(id)c
 {
-  v4 = a3;
+  cCopy = c;
   v5 = objc_opt_new();
-  v6 = [(SXTangierTextRenderCollector *)self flows];
+  flows = [(SXTangierTextRenderCollector *)self flows];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __64__SXTangierTextRenderCollector_buildFlowsAndUpdateInfosWithICC___block_invoke;
   v9[3] = &unk_1E85018B8;
   v10 = v5;
-  v11 = v4;
-  v12 = self;
-  v7 = v4;
+  v11 = cCopy;
+  selfCopy = self;
+  v7 = cCopy;
   v8 = v5;
-  [v6 enumerateKeysAndObjectsUsingBlock:v9];
+  [flows enumerateKeysAndObjectsUsingBlock:v9];
 
   [v7 setInfosToDisplay:v8];
   [v7 invalidateReps];
@@ -308,18 +308,18 @@ void __64__SXTangierTextRenderCollector_buildFlowsAndUpdateInfosWithICC___block_
   }
 }
 
-- (id)infoForStorage:(id)a3 selection:(id)a4
+- (id)infoForStorage:(id)storage selection:(id)selection
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  storageCopy = storage;
+  selectionCopy = selection;
   objc_opt_class();
   v8 = TSUDynamicCast();
-  v9 = [(SXTangierTextRenderCollector *)self flows];
-  v10 = [v8 flowName];
-  v11 = [v9 objectForKey:v10];
+  flows = [(SXTangierTextRenderCollector *)self flows];
+  flowName = [v8 flowName];
+  v11 = [flows objectForKey:flowName];
 
-  v12 = [v7 range];
+  range = [selectionCopy range];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -340,10 +340,10 @@ void __64__SXTangierTextRenderCollector_buildFlowsAndUpdateInfosWithICC___block_
         }
 
         v18 = *(*(&v24 + 1) + 8 * i);
-        v19 = [(SXTangierTextRenderCollectorItem *)v18 flowRange];
-        if (v12 >= v19 && v12 - v19 < v20)
+        flowRange = [(SXTangierTextRenderCollectorItem *)v18 flowRange];
+        if (range >= flowRange && range - flowRange < v20)
         {
-          v22 = [(SXTangierTextRenderCollectorItem *)v18 flowInfo];
+          flowInfo = [(SXTangierTextRenderCollectorItem *)v18 flowInfo];
           goto LABEL_14;
         }
       }
@@ -354,19 +354,19 @@ void __64__SXTangierTextRenderCollector_buildFlowsAndUpdateInfosWithICC___block_
     while (v15);
   }
 
-  v22 = 0;
+  flowInfo = 0;
 LABEL_14:
 
-  return v22;
+  return flowInfo;
 }
 
-- (id)flowLayoutForComponentIdentifier:(id)a3
+- (id)flowLayoutForComponentIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
-    v4 = a3;
-    v5 = [(SXTangierTextRenderCollector *)self layoutsByComponentIdentifier];
-    v6 = [v5 objectForKey:v4];
+    identifierCopy = identifier;
+    layoutsByComponentIdentifier = [(SXTangierTextRenderCollector *)self layoutsByComponentIdentifier];
+    v6 = [layoutsByComponentIdentifier objectForKey:identifierCopy];
   }
 
   else
@@ -377,30 +377,30 @@ LABEL_14:
   return v6;
 }
 
-- (id)componentIdentifierForFlowLayout:(id)a3
+- (id)componentIdentifierForFlowLayout:(id)layout
 {
-  v4 = a3;
-  v5 = [(SXTangierTextRenderCollector *)self layoutsByComponentIdentifier];
+  layoutCopy = layout;
+  layoutsByComponentIdentifier = [(SXTangierTextRenderCollector *)self layoutsByComponentIdentifier];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __65__SXTangierTextRenderCollector_componentIdentifierForFlowLayout___block_invoke;
   v10[3] = &unk_1E85018E0;
-  v11 = v4;
-  v6 = v4;
-  v7 = [v5 keysOfEntriesPassingTest:v10];
-  v8 = [v7 anyObject];
+  v11 = layoutCopy;
+  v6 = layoutCopy;
+  v7 = [layoutsByComponentIdentifier keysOfEntriesPassingTest:v10];
+  anyObject = [v7 anyObject];
 
-  return v8;
+  return anyObject;
 }
 
-- (BOOL)tangierTextRepAllowsSelection:(id)a3
+- (BOOL)tangierTextRepAllowsSelection:(id)selection
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SXTangierTextRenderCollector *)self flows];
-  v6 = [v4 storage];
-  v7 = [v6 flowName];
-  v8 = [v5 objectForKey:v7];
+  selectionCopy = selection;
+  flows = [(SXTangierTextRenderCollector *)self flows];
+  storage = [selectionCopy storage];
+  flowName = [storage flowName];
+  v8 = [flows objectForKey:flowName];
 
   v19 = 0u;
   v20 = 0u;
@@ -421,10 +421,10 @@ LABEL_14:
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
-        v14 = [(SXTangierTextRenderCollectorItem *)v13 flowInfo];
-        v15 = [v4 info];
+        flowInfo = [(SXTangierTextRenderCollectorItem *)v13 flowInfo];
+        info = [selectionCopy info];
 
-        if (v14 == v15)
+        if (flowInfo == info)
         {
           LOBYTE(v10) = [(SXTangierTextRenderCollectorItem *)v13 selectable];
           goto LABEL_11;
@@ -446,36 +446,36 @@ LABEL_11:
   return v10;
 }
 
-- (void)storeItem:(id)a3 forFlowName:(id)a4
+- (void)storeItem:(id)item forFlowName:(id)name
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(SXTangierTextRenderCollector *)self flows];
-  v8 = [v7 objectForKey:v6];
+  itemCopy = item;
+  nameCopy = name;
+  flows = [(SXTangierTextRenderCollector *)self flows];
+  array = [flows objectForKey:nameCopy];
 
-  if (!v8)
+  if (!array)
   {
-    v8 = [MEMORY[0x1E695DF70] array];
-    v9 = [(SXTangierTextRenderCollector *)self flows];
-    [v9 setObject:v8 forKey:v6];
+    array = [MEMORY[0x1E695DF70] array];
+    flows2 = [(SXTangierTextRenderCollector *)self flows];
+    [flows2 setObject:array forKey:nameCopy];
   }
 
-  [v8 addObject:v10];
+  [array addObject:itemCopy];
 }
 
-- (id)getAllItemsWithICC:(id)a3
+- (id)getAllItemsWithICC:(id)c
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  cCopy = c;
+  array = [MEMORY[0x1E695DF70] array];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = [(SXTangierTextRenderCollector *)self flows];
-  v7 = [v6 allKeys];
+  flows = [(SXTangierTextRenderCollector *)self flows];
+  allKeys = [flows allKeys];
 
-  v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v8 = [allKeys countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v8)
   {
     v9 = v8;
@@ -486,17 +486,17 @@ LABEL_11:
       {
         if (*v22 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allKeys);
         }
 
         v12 = *(*(&v21 + 1) + 8 * i);
-        v13 = [(SXTangierTextRenderCollector *)self flows];
-        v14 = [v13 objectForKeyedSubscript:v12];
+        flows2 = [(SXTangierTextRenderCollector *)self flows];
+        v14 = [flows2 objectForKeyedSubscript:v12];
 
-        [v5 addObjectsFromArray:v14];
+        [array addObjectsFromArray:v14];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v9 = [allKeys countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v9);
@@ -506,9 +506,9 @@ LABEL_11:
   v19[1] = 3221225472;
   v19[2] = __51__SXTangierTextRenderCollector_getAllItemsWithICC___block_invoke;
   v19[3] = &unk_1E8501908;
-  v20 = v4;
-  v15 = v4;
-  v16 = [v5 sortedArrayUsingComparator:v19];
+  v20 = cCopy;
+  v15 = cCopy;
+  v16 = [array sortedArrayUsingComparator:v19];
   v17 = [v16 copy];
 
   return v17;
@@ -542,19 +542,19 @@ uint64_t __51__SXTangierTextRenderCollector_getAllItemsWithICC___block_invoke(ui
   return v15;
 }
 
-- (id)searchWithContext:(id)a3 icc:(id)a4
+- (id)searchWithContext:(id)context icc:(id)icc
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 action];
-  if (v9 > 1)
+  contextCopy = context;
+  iccCopy = icc;
+  action = [contextCopy action];
+  if (action > 1)
   {
-    if (v9 != 2)
+    if (action != 2)
     {
-      if (v9 == 3)
+      if (action == 3)
       {
-        v10 = [(SXTangierTextRenderCollector *)self searchManager];
-        [v10 clearSearchHighlights:v8];
+        searchManager = [(SXTangierTextRenderCollector *)self searchManager];
+        [searchManager clearSearchHighlights:iccCopy];
 
         v4 = [[SXSearchResults alloc] initWithTotal:0 index:0];
       }
@@ -563,22 +563,22 @@ uint64_t __51__SXTangierTextRenderCollector_getAllItemsWithICC___block_invoke(ui
     }
 
 LABEL_8:
-    v11 = [(SXTangierTextRenderCollector *)self searchManager];
-    v4 = [v11 moveHighlightWithContext:v7 icc:v8];
+    searchManager2 = [(SXTangierTextRenderCollector *)self searchManager];
+    v4 = [searchManager2 moveHighlightWithContext:contextCopy icc:iccCopy];
 
     goto LABEL_10;
   }
 
-  if (!v9)
+  if (!action)
   {
-    v12 = [(SXTangierTextRenderCollector *)self searchManager];
-    v13 = [(SXTangierTextRenderCollector *)self getAllItemsWithICC:v8];
-    v4 = [v12 searchItems:v13 withContext:v7 icc:v8];
+    searchManager3 = [(SXTangierTextRenderCollector *)self searchManager];
+    v13 = [(SXTangierTextRenderCollector *)self getAllItemsWithICC:iccCopy];
+    v4 = [searchManager3 searchItems:v13 withContext:contextCopy icc:iccCopy];
 
     goto LABEL_10;
   }
 
-  if (v9 == 1)
+  if (action == 1)
   {
     goto LABEL_8;
   }
@@ -588,12 +588,12 @@ LABEL_10:
   return v4;
 }
 
-- (void)reloadWithICC:(id)a3
+- (void)reloadWithICC:(id)c
 {
-  v4 = a3;
-  v6 = [(SXTangierTextRenderCollector *)self searchManager];
-  v5 = [(SXTangierTextRenderCollector *)self getAllItemsWithICC:v4];
-  [v6 reloadWithItems:v5 icc:v4];
+  cCopy = c;
+  searchManager = [(SXTangierTextRenderCollector *)self searchManager];
+  v5 = [(SXTangierTextRenderCollector *)self getAllItemsWithICC:cCopy];
+  [searchManager reloadWithItems:v5 icc:cCopy];
 }
 
 @end

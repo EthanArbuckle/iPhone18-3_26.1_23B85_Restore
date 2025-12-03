@@ -1,40 +1,40 @@
 @interface LNRequiredCapabilityMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isFeatureFlagCapability;
 - (BOOL)isMobileGestaltCapability;
-- (LNRequiredCapabilityMetadata)initWithCoder:(id)a3;
-- (LNRequiredCapabilityMetadata)initWithDomain:(id)a3 key:(id)a4 value:(BOOL)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (LNRequiredCapabilityMetadata)initWithCoder:(id)coder;
+- (LNRequiredCapabilityMetadata)initWithDomain:(id)domain key:(id)key value:(BOOL)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNRequiredCapabilityMetadata
 
 - (BOOL)isFeatureFlagCapability
 {
-  v2 = [(LNRequiredCapabilityMetadata *)self domain];
-  v3 = [v2 isEqualToString:@"FeatureFlag"];
+  domain = [(LNRequiredCapabilityMetadata *)self domain];
+  v3 = [domain isEqualToString:@"FeatureFlag"];
 
   return v3;
 }
 
 - (BOOL)isMobileGestaltCapability
 {
-  v2 = [(LNRequiredCapabilityMetadata *)self domain];
-  v3 = [v2 isEqualToString:@"MobileGestalt"];
+  domain = [(LNRequiredCapabilityMetadata *)self domain];
+  v3 = [domain isEqualToString:@"MobileGestalt"];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v12) = 0;
@@ -43,10 +43,10 @@ LABEL_22:
       goto LABEL_23;
     }
 
-    v7 = [(LNRequiredCapabilityMetadata *)self domain];
-    v8 = [(LNRequiredCapabilityMetadata *)v6 domain];
-    v9 = v7;
-    v10 = v8;
+    domain = [(LNRequiredCapabilityMetadata *)self domain];
+    domain2 = [(LNRequiredCapabilityMetadata *)v6 domain];
+    v9 = domain;
+    v10 = domain2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -99,8 +99,8 @@ LABEL_21:
       }
     }
 
-    v19 = [(LNRequiredCapabilityMetadata *)self value];
-    v12 = v19 ^ [(LNRequiredCapabilityMetadata *)v6 value]^ 1;
+    value = [(LNRequiredCapabilityMetadata *)self value];
+    v12 = value ^ [(LNRequiredCapabilityMetadata *)v6 value]^ 1;
 LABEL_20:
 
     goto LABEL_21;
@@ -114,13 +114,13 @@ LABEL_23:
 
 - (unint64_t)hash
 {
-  v3 = [(LNRequiredCapabilityMetadata *)self domain];
-  v4 = [v3 hash];
+  domain = [(LNRequiredCapabilityMetadata *)self domain];
+  v4 = [domain hash];
   v5 = [(LNRequiredCapabilityMetadata *)self key];
   v6 = [v5 hash] ^ v4;
-  v7 = [(LNRequiredCapabilityMetadata *)self value];
+  value = [(LNRequiredCapabilityMetadata *)self value];
 
-  return v6 ^ v7;
+  return v6 ^ value;
 }
 
 - (id)description
@@ -128,54 +128,54 @@ LABEL_23:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNRequiredCapabilityMetadata *)self domain];
+  domain = [(LNRequiredCapabilityMetadata *)self domain];
   v7 = [(LNRequiredCapabilityMetadata *)self key];
-  v8 = [v3 stringWithFormat:@"<%@: %p, domain: %@, key: %@, value: %i>", v5, self, v6, v7, -[LNRequiredCapabilityMetadata value](self, "value")];
+  v8 = [v3 stringWithFormat:@"<%@: %p, domain: %@, key: %@, value: %i>", v5, self, domain, v7, -[LNRequiredCapabilityMetadata value](self, "value")];
 
   return v8;
 }
 
-- (LNRequiredCapabilityMetadata)initWithCoder:(id)a3
+- (LNRequiredCapabilityMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"domain"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"key"];
-  v7 = [v4 decodeBoolForKey:@"value"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"domain"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"key"];
+  v7 = [coderCopy decodeBoolForKey:@"value"];
 
   v8 = [(LNRequiredCapabilityMetadata *)self initWithDomain:v5 key:v6 value:v7];
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(LNRequiredCapabilityMetadata *)self domain];
-  [v6 encodeObject:v4 forKey:@"domain"];
+  coderCopy = coder;
+  domain = [(LNRequiredCapabilityMetadata *)self domain];
+  [coderCopy encodeObject:domain forKey:@"domain"];
 
   v5 = [(LNRequiredCapabilityMetadata *)self key];
-  [v6 encodeObject:v5 forKey:@"key"];
+  [coderCopy encodeObject:v5 forKey:@"key"];
 
-  [v6 encodeBool:-[LNRequiredCapabilityMetadata value](self forKey:{"value"), @"value"}];
+  [coderCopy encodeBool:-[LNRequiredCapabilityMetadata value](self forKey:{"value"), @"value"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(LNRequiredCapabilityMetadata *)self domain];
+  domain = [(LNRequiredCapabilityMetadata *)self domain];
   v6 = [(LNRequiredCapabilityMetadata *)self key];
-  v7 = [v4 initWithDomain:v5 key:v6 value:{-[LNRequiredCapabilityMetadata value](self, "value")}];
+  v7 = [v4 initWithDomain:domain key:v6 value:{-[LNRequiredCapabilityMetadata value](self, "value")}];
 
   return v7;
 }
 
-- (LNRequiredCapabilityMetadata)initWithDomain:(id)a3 key:(id)a4 value:(BOOL)a5
+- (LNRequiredCapabilityMetadata)initWithDomain:(id)domain key:(id)key value:(BOOL)value
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (v9)
+  domainCopy = domain;
+  keyCopy = key;
+  v11 = keyCopy;
+  if (domainCopy)
   {
-    if (v10)
+    if (keyCopy)
     {
       goto LABEL_3;
     }
@@ -183,8 +183,8 @@ LABEL_23:
 
   else
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"LNRequiredCapabilityMetadata.m" lineNumber:17 description:{@"Invalid parameter not satisfying: %@", @"domain"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNRequiredCapabilityMetadata.m" lineNumber:17 description:{@"Invalid parameter not satisfying: %@", @"domain"}];
 
     if (v11)
     {
@@ -192,8 +192,8 @@ LABEL_23:
     }
   }
 
-  v20 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v20 handleFailureInMethod:a2 object:self file:@"LNRequiredCapabilityMetadata.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"key"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNRequiredCapabilityMetadata.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"key"}];
 
 LABEL_3:
   v21.receiver = self;
@@ -201,7 +201,7 @@ LABEL_3:
   v12 = [(LNRequiredCapabilityMetadata *)&v21 init];
   if (v12)
   {
-    v13 = [v9 copy];
+    v13 = [domainCopy copy];
     domain = v12->_domain;
     v12->_domain = v13;
 
@@ -209,7 +209,7 @@ LABEL_3:
     key = v12->_key;
     v12->_key = v15;
 
-    v12->_value = a5;
+    v12->_value = value;
     v17 = v12;
   }
 

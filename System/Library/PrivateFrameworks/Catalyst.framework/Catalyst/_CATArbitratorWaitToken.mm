@@ -1,6 +1,6 @@
 @interface _CATArbitratorWaitToken
-- (BOOL)whenStateIs:(int)a3 atomicallySwapWith:(int)a4;
-- (_CATArbitratorWaitToken)initWithDelegateQueue:(id)a3 completionBlock:(id)a4;
+- (BOOL)whenStateIs:(int)is atomicallySwapWith:(int)with;
+- (_CATArbitratorWaitToken)initWithDelegateQueue:(id)queue completionBlock:(id)block;
 - (void)cancel;
 - (void)performCompletionBlock;
 - (void)resume;
@@ -8,14 +8,14 @@
 
 @implementation _CATArbitratorWaitToken
 
-- (_CATArbitratorWaitToken)initWithDelegateQueue:(id)a3 completionBlock:(id)a4
+- (_CATArbitratorWaitToken)initWithDelegateQueue:(id)queue completionBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  queueCopy = queue;
+  blockCopy = block;
+  v9 = blockCopy;
+  if (queueCopy)
   {
-    if (v8)
+    if (blockCopy)
     {
       goto LABEL_3;
     }
@@ -41,7 +41,7 @@ LABEL_3:
     mTokenByKey = v10->mTokenByKey;
     v10->mTokenByKey = v11;
 
-    objc_storeStrong(&v10->mDelegateQueue, a3);
+    objc_storeStrong(&v10->mDelegateQueue, queue);
     v13 = MEMORY[0x245D2F510](v9);
     mCompletionBlock = v10->mCompletionBlock;
     v10->mCompletionBlock = v13;
@@ -61,9 +61,9 @@ LABEL_3:
   v5[2] = 0x3032000000;
   v5[3] = __Block_byref_object_copy_;
   v5[4] = __Block_byref_object_dispose_;
-  v6 = self;
-  mDelegateQueue = v6->mDelegateQueue;
-  mGroup = v6->mGroup;
+  selfCopy = self;
+  mDelegateQueue = selfCopy->mDelegateQueue;
+  mGroup = selfCopy->mGroup;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __33___CATArbitratorWaitToken_resume__block_invoke;
@@ -93,8 +93,8 @@ LABEL_3:
   {
     if ([(_CATArbitratorWaitToken *)self whenStateIs:1 atomicallySwapWith:2])
     {
-      v7 = [(NSMutableDictionary *)self->mTokenByKey allValues];
-      [v7 makeObjectsPerformSelector:sel_invalidate];
+      allValues = [(NSMutableDictionary *)self->mTokenByKey allValues];
+      [allValues makeObjectsPerformSelector:sel_invalidate];
     }
 
     v6 = 0;
@@ -119,16 +119,16 @@ LABEL_3:
 {
   if ([(_CATArbitratorWaitToken *)self whenStateIs:0 atomicallySwapWith:1])
   {
-    v3 = [(NSMutableDictionary *)self->mTokenByKey allValues];
-    [v3 makeObjectsPerformSelector:sel_cancel];
+    allValues = [(NSMutableDictionary *)self->mTokenByKey allValues];
+    [allValues makeObjectsPerformSelector:sel_cancel];
   }
 }
 
-- (BOOL)whenStateIs:(int)a3 atomicallySwapWith:(int)a4
+- (BOOL)whenStateIs:(int)is atomicallySwapWith:(int)with
 {
-  v4 = a3;
-  atomic_compare_exchange_strong(&self->mState, &v4, a4);
-  return v4 == a3;
+  isCopy = is;
+  atomic_compare_exchange_strong(&self->mState, &isCopy, with);
+  return isCopy == is;
 }
 
 - (void)initWithDelegateQueue:completionBlock:.cold.1()

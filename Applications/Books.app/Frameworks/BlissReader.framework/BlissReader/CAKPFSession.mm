@@ -1,7 +1,7 @@
 @interface CAKPFSession
 - (BOOL)decrementCurrentEventIndex;
 - (BOOL)incrementCurrentEventIndex;
-- (CAKPFSession)initWithKPFDocument:(id)a3 showLayer:(id)a4;
+- (CAKPFSession)initWithKPFDocument:(id)document showLayer:(id)layer;
 - (KPFEvent)currentEvent;
 - (KPFEvent)nextEvent;
 - (MTLDevice)metalDevice;
@@ -11,25 +11,25 @@
 - (unint64_t)visibleEventIndex;
 - (void)dealloc;
 - (void)layoutIfNeeded;
-- (void)setEventIndex:(unint64_t)a3 skipBreadCrumb:(BOOL)a4;
-- (void)setPlaybackStatus:(int)a3;
+- (void)setEventIndex:(unint64_t)index skipBreadCrumb:(BOOL)crumb;
+- (void)setPlaybackStatus:(int)status;
 - (void)tearDown;
 @end
 
 @implementation CAKPFSession
 
-- (CAKPFSession)initWithKPFDocument:(id)a3 showLayer:(id)a4
+- (CAKPFSession)initWithKPFDocument:(id)document showLayer:(id)layer
 {
   v11.receiver = self;
   v11.super_class = CAKPFSession;
   v6 = [(CAKPFSession *)&v11 init];
   if (v6)
   {
-    v7 = a4;
-    v6->mShowLayer = v7;
-    [(CALayer *)v7 setMasksToBounds:1];
+    layerCopy = layer;
+    v6->mShowLayer = layerCopy;
+    [(CALayer *)layerCopy setMasksToBounds:1];
     [(CALayer *)v6->mShowLayer setEdgeAntialiasingMask:0];
-    v6->mKPFDocument = a3;
+    v6->mKPFDocument = document;
     v6->mPlaybackState = 1;
     v6->mBreadCrumbTrail = objc_alloc_init(NSMutableArray);
     v6->mAnimationRegistry = objc_alloc_init(KPFAnimationRegistry);
@@ -135,15 +135,15 @@
   result = self->mNextEvent;
   if (!result)
   {
-    v4 = [(CAKPFSession *)self nextEventIndexAfterCurrent];
-    if (v4 == -1)
+    nextEventIndexAfterCurrent = [(CAKPFSession *)self nextEventIndexAfterCurrent];
+    if (nextEventIndexAfterCurrent == -1)
     {
       return self->mNextEvent;
     }
 
     else
     {
-      result = [self->mKPFDocument newEventAtIndex:v4];
+      result = [self->mKPFDocument newEventAtIndex:nextEventIndexAfterCurrent];
       self->mNextEvent = result;
     }
   }
@@ -153,16 +153,16 @@
 
 - (BOOL)incrementCurrentEventIndex
 {
-  v3 = [(CAKPFSession *)self nextEventIndexAfterCurrent];
-  if (v3 != -1)
+  nextEventIndexAfterCurrent = [(CAKPFSession *)self nextEventIndexAfterCurrent];
+  if (nextEventIndexAfterCurrent != -1)
   {
     v4 = [self->mKPFDocument slideIndexForEventIndex:self->mCurrentEventIndex];
     [(KPFEvent *)self->mCurrentEvent tearDown];
 
-    v5 = [self->mKPFDocument newEventAtIndex:v3];
-    self->mCurrentEventIndex = v3;
+    v5 = [self->mKPFDocument newEventAtIndex:nextEventIndexAfterCurrent];
+    self->mCurrentEventIndex = nextEventIndexAfterCurrent;
     self->mCurrentEvent = v5;
-    if (v4 != [self->mKPFDocument slideIndexForEventIndex:v3])
+    if (v4 != [self->mKPFDocument slideIndexForEventIndex:nextEventIndexAfterCurrent])
     {
       [(NSMutableArray *)self->mBreadCrumbTrail addObject:[NSNumber numberWithUnsignedInteger:v4]];
     }
@@ -170,7 +170,7 @@
     self->mNextEvent = 0;
   }
 
-  return v3 != -1;
+  return nextEventIndexAfterCurrent != -1;
 }
 
 - (BOOL)decrementCurrentEventIndex
@@ -179,10 +179,10 @@
   mCurrentEventIndex = self->mCurrentEventIndex;
   if (!mCurrentEventIndex)
   {
-    v5 = [self->mKPFDocument isLooping];
-    if (!v5)
+    isLooping = [self->mKPFDocument isLooping];
+    if (!isLooping)
     {
-      return v5;
+      return isLooping;
     }
 
     mCurrentEventIndex = [self->mKPFDocument eventCount];
@@ -198,8 +198,8 @@
 
   self->mCurrentEvent = 0;
   self->mNextEvent = 0;
-  LOBYTE(v5) = 1;
-  return v5;
+  LOBYTE(isLooping) = 1;
+  return isLooping;
 }
 
 - (KPFEvent)currentEvent
@@ -214,9 +214,9 @@
   return result;
 }
 
-- (void)setEventIndex:(unint64_t)a3 skipBreadCrumb:(BOOL)a4
+- (void)setEventIndex:(unint64_t)index skipBreadCrumb:(BOOL)crumb
 {
-  if ([self->mKPFDocument eventCount]> a3)
+  if ([self->mKPFDocument eventCount]> index)
   {
     v7 = [self->mKPFDocument slideIndexForEventIndex:self->mCurrentEventIndex];
     if (self->mPlaybackStatus == 4)
@@ -225,9 +225,9 @@
       v7 = [self->mKPFDocument slideIndexForEventIndex:[(CAKPFSession *)self nextEventIndexAfterCurrent]];
     }
 
-    self->mCurrentEventIndex = a3;
-    v8 = [self->mKPFDocument slideIndexForEventIndex:a3];
-    if (!a4 && v7 != v8)
+    self->mCurrentEventIndex = index;
+    v8 = [self->mKPFDocument slideIndexForEventIndex:index];
+    if (!crumb && v7 != v8)
     {
       [(NSMutableArray *)self->mBreadCrumbTrail addObject:[NSNumber numberWithUnsignedInteger:v7]];
     }
@@ -239,16 +239,16 @@
   }
 }
 
-- (void)setPlaybackStatus:(int)a3
+- (void)setPlaybackStatus:(int)status
 {
-  self->mPlaybackStatus = a3;
+  self->mPlaybackStatus = status;
   if (self->mIsDebuggingEnabled)
   {
     +[CATransaction begin];
     [CATransaction setDisableActions:1];
-    if ((a3 - 3) >= 2)
+    if ((status - 3) >= 2)
     {
-      if (a3 == 2)
+      if (status == 2)
       {
         v6 = +[TSUColor orangeColor];
         v7 = @"Playback status: Preparing...";

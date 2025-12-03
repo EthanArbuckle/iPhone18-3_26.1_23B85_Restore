@@ -86,13 +86,13 @@
     v11[1] = *&off_1E7119AF0;
     v11[2] = xmmword_1E7119B00;
     v11[3] = *&off_1E7119B10;
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     for (i = 0; i != 16; ++i)
     {
       v7 = qword_18A680990[i];
       if ((v7 & v4) != 0)
       {
-        [v5 addObject:*(v11 + i * 8)];
+        [array addObject:*(v11 + i * 8)];
         v4 &= ~v7;
       }
     }
@@ -100,10 +100,10 @@
     if (v4)
     {
       v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<Unknown: %lu>", v4];
-      [v5 addObject:v8];
+      [array addObject:v8];
     }
 
-    v3 = [v5 componentsJoinedByString:@" | "];
+    v3 = [array componentsJoinedByString:@" | "];
 
     for (j = 120; j != -8; j -= 8)
     {
@@ -115,90 +115,90 @@
 
 - (id)_ui_conciseDescription
 {
-  v2 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"<NSDateComponents: %p>", a1];
-  v3 = [a1 calendar];
-  if (v3)
+  v2 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"<NSDateComponents: %p>", self];
+  calendar = [self calendar];
+  if (calendar)
   {
   }
 
   else
   {
-    v4 = [a1 timeZone];
+    timeZone = [self timeZone];
 
-    if (!v4)
+    if (!timeZone)
     {
       goto LABEL_5;
     }
   }
 
-  v5 = [a1 calendar];
-  v6 = [a1 timeZone];
-  [v2 appendFormat:@"\nCalendar: %@ / Time Zone: %@", v5, v6];
+  calendar2 = [self calendar];
+  timeZone2 = [self timeZone];
+  [v2 appendFormat:@"\nCalendar: %@ / Time Zone: %@", calendar2, timeZone2];
 
 LABEL_5:
-  if ([a1 era] != 0x7FFFFFFFFFFFFFFFLL)
+  if ([self era] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v2 appendFormat:@"\n Era: %ld", objc_msgSend(a1, "era")];
+    [v2 appendFormat:@"\n Era: %ld", objc_msgSend(self, "era")];
   }
 
-  if ([a1 year] != 0x7FFFFFFFFFFFFFFFLL)
+  if ([self year] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v2 appendFormat:@"\n Year: %ld", objc_msgSend(a1, "year")];
+    [v2 appendFormat:@"\n Year: %ld", objc_msgSend(self, "year")];
   }
 
-  if ([a1 month] != 0x7FFFFFFFFFFFFFFFLL)
+  if ([self month] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v2 appendFormat:@"\n Month: %ld", objc_msgSend(a1, "month")];
+    [v2 appendFormat:@"\n Month: %ld", objc_msgSend(self, "month")];
   }
 
-  if ([a1 day] != 0x7FFFFFFFFFFFFFFFLL)
+  if ([self day] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v2 appendFormat:@"\n Day: %ld", objc_msgSend(a1, "day")];
+    [v2 appendFormat:@"\n Day: %ld", objc_msgSend(self, "day")];
   }
 
-  if ([a1 hour] != 0x7FFFFFFFFFFFFFFFLL)
+  if ([self hour] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v2 appendFormat:@"\n Hour: %ld", objc_msgSend(a1, "hour")];
+    [v2 appendFormat:@"\n Hour: %ld", objc_msgSend(self, "hour")];
   }
 
-  if ([a1 minute] != 0x7FFFFFFFFFFFFFFFLL)
+  if ([self minute] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v2 appendFormat:@"\n Minute: %ld", objc_msgSend(a1, "minute")];
+    [v2 appendFormat:@"\n Minute: %ld", objc_msgSend(self, "minute")];
   }
 
-  if ([a1 second] != 0x7FFFFFFFFFFFFFFFLL)
+  if ([self second] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v2 appendFormat:@"\n Second: %ld", objc_msgSend(a1, "second")];
+    [v2 appendFormat:@"\n Second: %ld", objc_msgSend(self, "second")];
   }
 
-  if ([a1 weekOfMonth] != 0x7FFFFFFFFFFFFFFFLL)
+  if ([self weekOfMonth] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v2 appendFormat:@"\n Week of Month: %ld", objc_msgSend(a1, "weekOfMonth")];
+    [v2 appendFormat:@"\n Week of Month: %ld", objc_msgSend(self, "weekOfMonth")];
   }
 
-  if ([a1 weekOfYear] != 0x7FFFFFFFFFFFFFFFLL)
+  if ([self weekOfYear] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v2 appendFormat:@"\n Week of Year: %ld", objc_msgSend(a1, "weekOfYear")];
+    [v2 appendFormat:@"\n Week of Year: %ld", objc_msgSend(self, "weekOfYear")];
   }
 
-  if ([a1 yearForWeekOfYear] != 0x7FFFFFFFFFFFFFFFLL)
+  if ([self yearForWeekOfYear] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v2 appendFormat:@"\n Year for Week of Year: %ld", objc_msgSend(a1, "yearForWeekOfYear")];
+    [v2 appendFormat:@"\n Year for Week of Year: %ld", objc_msgSend(self, "yearForWeekOfYear")];
   }
 
-  if ([a1 weekday] != 0x7FFFFFFFFFFFFFFFLL)
+  if ([self weekday] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v2 appendFormat:@"\n Weekday: %ld", objc_msgSend(a1, "weekday")];
+    [v2 appendFormat:@"\n Weekday: %ld", objc_msgSend(self, "weekday")];
   }
 
-  if ([a1 weekdayOrdinal] != 0x7FFFFFFFFFFFFFFFLL)
+  if ([self weekdayOrdinal] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v2 appendFormat:@"\n Weekday Ordinal: %ld", objc_msgSend(a1, "weekdayOrdinal")];
+    [v2 appendFormat:@"\n Weekday Ordinal: %ld", objc_msgSend(self, "weekdayOrdinal")];
   }
 
-  if ([a1 quarter] != 0x7FFFFFFFFFFFFFFFLL)
+  if ([self quarter] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v2 appendFormat:@"\n Quarter: %ld", objc_msgSend(a1, "quarter")];
+    [v2 appendFormat:@"\n Quarter: %ld", objc_msgSend(self, "quarter")];
   }
 
   return v2;
@@ -213,11 +213,11 @@ LABEL_5:
       switch(a3)
       {
         case 256:
-          return [a1 week];
+          return [self week];
         case 512:
-          return [a1 weekday];
+          return [self weekday];
         case 1024:
-          return [a1 weekdayOrdinal];
+          return [self weekdayOrdinal];
       }
     }
 
@@ -225,12 +225,12 @@ LABEL_5:
     {
       if (a3 == 0x2000)
       {
-        return [a1 weekOfYear];
+        return [self weekOfYear];
       }
 
       if (a3 == 0x4000)
       {
-        return [a1 yearForWeekOfYear];
+        return [self yearForWeekOfYear];
       }
     }
 
@@ -238,12 +238,12 @@ LABEL_5:
     {
       if (a3 == 2048)
       {
-        return [a1 quarter];
+        return [self quarter];
       }
 
       if (a3 == 4096)
       {
-        return [a1 weekOfMonth];
+        return [self weekOfMonth];
       }
     }
   }
@@ -253,11 +253,11 @@ LABEL_5:
     switch(a3)
     {
       case 2:
-        return [a1 era];
+        return [self era];
       case 4:
-        return [a1 year];
+        return [self year];
       case 8:
-        return [a1 month];
+        return [self month];
     }
   }
 
@@ -265,12 +265,12 @@ LABEL_5:
   {
     if (a3 == 64)
     {
-      return [a1 minute];
+      return [self minute];
     }
 
     if (a3 == 128)
     {
-      return [a1 second];
+      return [self second];
     }
   }
 
@@ -278,12 +278,12 @@ LABEL_5:
   {
     if (a3 == 16)
     {
-      return [a1 day];
+      return [self day];
     }
 
     if (a3 == 32)
     {
-      return [a1 hour];
+      return [self hour];
     }
   }
 
@@ -299,11 +299,11 @@ LABEL_5:
       switch(a4)
       {
         case 256:
-          return [a1 setWeek:?];
+          return [self setWeek:?];
         case 512:
-          return [a1 setWeekday:?];
+          return [self setWeekday:?];
         case 1024:
-          return [a1 setWeekdayOrdinal:?];
+          return [self setWeekdayOrdinal:?];
       }
     }
 
@@ -311,23 +311,23 @@ LABEL_5:
     {
       if (a4 == 0x2000)
       {
-        return [a1 setWeekOfYear:?];
+        return [self setWeekOfYear:?];
       }
 
       else if (a4 == 0x4000)
       {
-        return [a1 setYearForWeekOfYear:?];
+        return [self setYearForWeekOfYear:?];
       }
     }
 
     else if (a4 == 2048)
     {
-      return [a1 setQuarter:?];
+      return [self setQuarter:?];
     }
 
     else if (a4 == 4096)
     {
-      return [a1 setWeekOfMonth:?];
+      return [self setWeekOfMonth:?];
     }
   }
 
@@ -336,11 +336,11 @@ LABEL_5:
     switch(a4)
     {
       case 2:
-        return [a1 setEra:?];
+        return [self setEra:?];
       case 4:
-        return [a1 setYear:?];
+        return [self setYear:?];
       case 8:
-        return [a1 setMonth:?];
+        return [self setMonth:?];
     }
   }
 
@@ -348,26 +348,26 @@ LABEL_5:
   {
     if (a4 == 64)
     {
-      return [a1 setMinute:?];
+      return [self setMinute:?];
     }
 
     else if (a4 == 128)
     {
-      return [a1 setSecond:?];
+      return [self setSecond:?];
     }
   }
 
   else if (a4 == 16)
   {
-    return [a1 setDay:?];
+    return [self setDay:?];
   }
 
   else if (a4 == 32)
   {
-    return [a1 setHour:?];
+    return [self setHour:?];
   }
 
-  return a1;
+  return self;
 }
 
 - (void)_ui_setComponents:()NSCalendarUnit
@@ -380,7 +380,7 @@ LABEL_5:
     v6 = qword_18A680A10[v5];
     if ([v4 _ui_valueForComponent:v6] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [a1 _ui_setValue:objc_msgSend(v11 forComponent:{"_ui_valueForComponent:", v6), v6}];
+      [self _ui_setValue:objc_msgSend(v11 forComponent:{"_ui_valueForComponent:", v6), v6}];
     }
 
     ++v5;
@@ -388,20 +388,20 @@ LABEL_5:
   }
 
   while (v5 != 14);
-  v7 = [v11 calendar];
+  calendar = [v11 calendar];
 
-  if (v7)
+  if (calendar)
   {
-    v8 = [v11 calendar];
-    [a1 setCalendar:v8];
+    calendar2 = [v11 calendar];
+    [self setCalendar:calendar2];
   }
 
-  v9 = [v11 timeZone];
+  timeZone = [v11 timeZone];
 
-  if (v9)
+  if (timeZone)
   {
-    v10 = [v11 timeZone];
-    [a1 setTimeZone:v10];
+    timeZone2 = [v11 timeZone];
+    [self setTimeZone:timeZone2];
   }
 }
 

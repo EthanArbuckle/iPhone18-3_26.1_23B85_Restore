@@ -1,33 +1,33 @@
 @interface PLSandboxedURL
-- (PLSandboxedURL)initWithCoder:(id)a3;
-- (PLSandboxedURL)initWithURL:(id)a3 sandboxExtensionToken:(id)a4 consume:(BOOL)a5;
-- (id)initFileURLWithPath:(id)a3 sandboxExtensionToken:(id)a4 consume:(BOOL)a5;
+- (PLSandboxedURL)initWithCoder:(id)coder;
+- (PLSandboxedURL)initWithURL:(id)l sandboxExtensionToken:(id)token consume:(BOOL)consume;
+- (id)initFileURLWithPath:(id)path sandboxExtensionToken:(id)token consume:(BOOL)consume;
 - (void)_commonPLSandboxedURLInitialize;
-- (void)_initSandboxExtensionToken:(id)a3 consume:(BOOL)a4;
+- (void)_initSandboxExtensionToken:(id)token consume:(BOOL)consume;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PLSandboxedURL
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PLSandboxedURL;
-  v4 = a3;
-  [(PLSandboxedURL *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_sandboxExtensionToken forKey:{@"sandboxExtensionToken", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(PLSandboxedURL *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_sandboxExtensionToken forKey:{@"sandboxExtensionToken", v5.receiver, v5.super_class}];
 }
 
-- (PLSandboxedURL)initWithCoder:(id)a3
+- (PLSandboxedURL)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sandboxExtensionToken"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sandboxExtensionToken"];
   [(PLSandboxedURL *)self _initSandboxExtensionToken:v5 consume:1];
 
   v8.receiver = self;
   v8.super_class = PLSandboxedURL;
-  v6 = [(PLSandboxedURL *)&v8 initWithCoder:v4];
+  v6 = [(PLSandboxedURL *)&v8 initWithCoder:coderCopy];
 
   return v6;
 }
@@ -53,62 +53,62 @@
   }
 }
 
-- (id)initFileURLWithPath:(id)a3 sandboxExtensionToken:(id)a4 consume:(BOOL)a5
+- (id)initFileURLWithPath:(id)path sandboxExtensionToken:(id)token consume:(BOOL)consume
 {
-  if (a3)
+  if (path)
   {
-    v6 = a5;
-    v8 = a3;
-    [(PLSandboxedURL *)self _initSandboxExtensionToken:a4 consume:v6];
+    consumeCopy = consume;
+    pathCopy = path;
+    [(PLSandboxedURL *)self _initSandboxExtensionToken:token consume:consumeCopy];
     v12.receiver = self;
     v12.super_class = PLSandboxedURL;
-    v9 = [(PLSandboxedURL *)&v12 initFileURLWithPath:v8];
+    v9 = [(PLSandboxedURL *)&v12 initFileURLWithPath:pathCopy];
 
     self = v9;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (PLSandboxedURL)initWithURL:(id)a3 sandboxExtensionToken:(id)a4 consume:(BOOL)a5
+- (PLSandboxedURL)initWithURL:(id)l sandboxExtensionToken:(id)token consume:(BOOL)consume
 {
-  if (a3)
+  if (l)
   {
-    v6 = a5;
-    v8 = a3;
-    [(PLSandboxedURL *)self _initSandboxExtensionToken:a4 consume:v6];
-    v9 = [v8 absoluteString];
+    consumeCopy = consume;
+    lCopy = l;
+    [(PLSandboxedURL *)self _initSandboxExtensionToken:token consume:consumeCopy];
+    absoluteString = [lCopy absoluteString];
 
     v13.receiver = self;
     v13.super_class = PLSandboxedURL;
-    v10 = [(PLSandboxedURL *)&v13 initWithString:v9];
+    v10 = [(PLSandboxedURL *)&v13 initWithString:absoluteString];
 
     self = v10;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (void)_initSandboxExtensionToken:(id)a3 consume:(BOOL)a4
+- (void)_initSandboxExtensionToken:(id)token consume:(BOOL)consume
 {
-  v4 = a4;
-  v6 = [a3 copy];
+  consumeCopy = consume;
+  v6 = [token copy];
   sandboxExtensionToken = self->_sandboxExtensionToken;
   self->_sandboxExtensionToken = v6;
 
-  if (v4)
+  if (consumeCopy)
   {
 
     [(PLSandboxedURL *)self _commonPLSandboxedURLInitialize];

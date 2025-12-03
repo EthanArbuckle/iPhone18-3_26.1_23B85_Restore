@@ -1,5 +1,5 @@
 @interface _SVXDeviceSetupContextMutation
-- (_SVXDeviceSetupContextMutation)initWithBaseModel:(id)a3;
+- (_SVXDeviceSetupContextMutation)initWithBaseModel:(id)model;
 - (id)generate;
 @end
 
@@ -31,49 +31,49 @@
       if ((*&self->_mutationFlags & 4) != 0)
       {
 LABEL_8:
-        v7 = self->_options;
+        options = self->_options;
 LABEL_11:
-        v8 = v7;
+        v8 = options;
         if ((*&self->_mutationFlags & 8) != 0)
         {
-          v9 = self->_flowScene;
+          flowScene = self->_flowScene;
         }
 
         else
         {
-          v9 = [(SVXDeviceSetupContext *)self->_baseModel flowScene];
+          flowScene = [(SVXDeviceSetupContext *)self->_baseModel flowScene];
         }
 
-        v10 = v9;
+        v10 = flowScene;
         if ((*&self->_mutationFlags & 0x10) != 0)
         {
-          v11 = self->_beginDate;
+          beginDate = self->_beginDate;
         }
 
         else
         {
-          v11 = [(SVXDeviceSetupContext *)self->_baseModel beginDate];
+          beginDate = [(SVXDeviceSetupContext *)self->_baseModel beginDate];
         }
 
-        v12 = v11;
+        v12 = beginDate;
         if ((*&self->_mutationFlags & 0x20) != 0)
         {
-          v13 = self->_endDate;
+          endDate = self->_endDate;
         }
 
         else
         {
-          v13 = [(SVXDeviceSetupContext *)self->_baseModel endDate];
+          endDate = [(SVXDeviceSetupContext *)self->_baseModel endDate];
         }
 
-        v14 = v13;
-        v5 = [[SVXDeviceSetupContext alloc] initWithTimestamp:timestamp options:v8 flowScene:v10 beginDate:v12 endDate:v13];
+        v14 = endDate;
+        v5 = [[SVXDeviceSetupContext alloc] initWithTimestamp:timestamp options:v8 flowScene:v10 beginDate:v12 endDate:endDate];
 
         goto LABEL_21;
       }
     }
 
-    v7 = [(SVXDeviceSetupContext *)self->_baseModel options];
+    options = [(SVXDeviceSetupContext *)self->_baseModel options];
     goto LABEL_11;
   }
 
@@ -85,16 +85,16 @@ LABEL_21:
   return v5;
 }
 
-- (_SVXDeviceSetupContextMutation)initWithBaseModel:(id)a3
+- (_SVXDeviceSetupContextMutation)initWithBaseModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = _SVXDeviceSetupContextMutation;
   v6 = [(_SVXDeviceSetupContextMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_baseModel, a3);
+    objc_storeStrong(&v6->_baseModel, model);
   }
 
   return v7;

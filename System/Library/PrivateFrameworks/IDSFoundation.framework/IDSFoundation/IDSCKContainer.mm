@@ -1,6 +1,6 @@
 @interface IDSCKContainer
 + (Class)__class;
-+ (IDSCKContainer)containerWithIdentifier:(id)a3;
++ (IDSCKContainer)containerWithIdentifier:(id)identifier;
 @end
 
 @implementation IDSCKContainer
@@ -17,10 +17,10 @@
   return v3;
 }
 
-+ (IDSCKContainer)containerWithIdentifier:(id)a3
++ (IDSCKContainer)containerWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [CUTWeakLinkClass() containerWithIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [CUTWeakLinkClass() containerWithIdentifier:identifierCopy];
 
   return v4;
 }

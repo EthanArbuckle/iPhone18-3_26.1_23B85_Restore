@@ -4,14 +4,14 @@
 - (NSNumber)numberValue;
 - (id)descriptionExtras;
 - (id)formattedValue;
-- (void)setNumberValue:(id)a3;
+- (void)setNumberValue:(id)value;
 @end
 
 @implementation CAFNumberCharacteristic
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFNumberCharacteristic;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -19,10 +19,10 @@
 - (NSNumber)numberValue
 {
   objc_opt_class();
-  v3 = [(CAFCharacteristic *)self value];
-  if (v3 && (objc_opt_isKindOfClass() & 1) != 0)
+  value = [(CAFCharacteristic *)self value];
+  if (value && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v4 = v3;
+    v4 = value;
   }
 
   else
@@ -33,30 +33,30 @@
   return v4;
 }
 
-- (void)setNumberValue:(id)a3
+- (void)setNumberValue:(id)value
 {
-  v4 = a3;
-  v5 = [(CAFNumberCharacteristic *)self range];
-  v6 = [v5 isInRange:v4];
+  valueCopy = value;
+  range = [(CAFNumberCharacteristic *)self range];
+  v6 = [range isInRange:valueCopy];
 
   if (v6)
   {
-    v7 = [(CAFNumberCharacteristic *)self range];
-    v8 = [v7 valueRoundedToNearestStepValue:v4];
+    range2 = [(CAFNumberCharacteristic *)self range];
+    v8 = [range2 valueRoundedToNearestStepValue:valueCopy];
     [(CAFCharacteristic *)self setValue:v8];
   }
 
   else
   {
     v9 = MEMORY[0x277CCA9B8];
-    v10 = [(CAFNumberCharacteristic *)self range];
-    v11 = [v9 CAF_outOfRangeErrorForValue:v4 range:v10];
+    range3 = [(CAFNumberCharacteristic *)self range];
+    v11 = [v9 CAF_outOfRangeErrorForValue:valueCopy range:range3];
     [(CAFCharacteristic *)self setError:v11];
 
-    v7 = CAFGeneralLogging();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    range2 = CAFGeneralLogging();
+    if (os_log_type_enabled(range2, OS_LOG_TYPE_ERROR))
     {
-      [(CAFNumberCharacteristic *)self setNumberValue:v4, v7];
+      [(CAFNumberCharacteristic *)self setNumberValue:valueCopy, range2];
     }
   }
 }
@@ -67,8 +67,8 @@
   if (!range)
   {
     v4 = [CAFRange alloc];
-    v5 = [(CAFCharacteristic *)self metaData];
-    v6 = [(CAFRange *)v4 initWithMetaData:v5];
+    metaData = [(CAFCharacteristic *)self metaData];
+    v6 = [(CAFRange *)v4 initWithMetaData:metaData];
     v7 = self->_range;
     self->_range = v6;
 
@@ -80,12 +80,12 @@
 
 - (id)formattedValue
 {
-  v3 = [(CAFCharacteristic *)self value];
-  if (v3)
+  value = [(CAFCharacteristic *)self value];
+  if (value)
   {
     v4 = MEMORY[0x277CCACA8];
-    v5 = [(CAFNumberCharacteristic *)self numberValue];
-    v6 = [v4 stringWithFormat:@"%@", v5];
+    numberValue = [(CAFNumberCharacteristic *)self numberValue];
+    v6 = [v4 stringWithFormat:@"%@", numberValue];
   }
 
   else
@@ -99,8 +99,8 @@
 - (id)descriptionExtras
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(CAFNumberCharacteristic *)self range];
-  v4 = [v3 description];
+  range = [(CAFNumberCharacteristic *)self range];
+  v4 = [range description];
   v5 = [v2 stringWithFormat:@"range=%@", v4];
 
   return v5;

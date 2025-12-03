@@ -1,59 +1,59 @@
 @interface PGFeatureExtractorAssetPhotoLibrary
-- (PGFeatureExtractorAssetPhotoLibrary)initWithPhotoLibraryFeatureExtractor:(id)a3;
+- (PGFeatureExtractorAssetPhotoLibrary)initWithPhotoLibraryFeatureExtractor:(id)extractor;
 - (id)featureNames;
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4;
+- (id)floatVectorWithEntity:(id)entity error:(id *)error;
 - (id)name;
 - (int64_t)featureLength;
 @end
 
 @implementation PGFeatureExtractorAssetPhotoLibrary
 
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4
+- (id)floatVectorWithEntity:(id)entity error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PGFeatureExtractorAssetPhotoLibrary *)self photoLibraryFeatureExtractor];
-  v8 = [v6 photoLibrary];
+  entityCopy = entity;
+  photoLibraryFeatureExtractor = [(PGFeatureExtractorAssetPhotoLibrary *)self photoLibraryFeatureExtractor];
+  photoLibrary = [entityCopy photoLibrary];
 
-  v9 = [v7 floatVectorWithEntity:v8 error:a4];
+  v9 = [photoLibraryFeatureExtractor floatVectorWithEntity:photoLibrary error:error];
 
   return v9;
 }
 
 - (int64_t)featureLength
 {
-  v2 = [(PGFeatureExtractorAssetPhotoLibrary *)self photoLibraryFeatureExtractor];
-  v3 = [v2 featureNames];
-  v4 = [v3 count];
+  photoLibraryFeatureExtractor = [(PGFeatureExtractorAssetPhotoLibrary *)self photoLibraryFeatureExtractor];
+  featureNames = [photoLibraryFeatureExtractor featureNames];
+  v4 = [featureNames count];
 
   return v4;
 }
 
 - (id)featureNames
 {
-  v2 = [(PGFeatureExtractorAssetPhotoLibrary *)self photoLibraryFeatureExtractor];
-  v3 = [v2 featureNames];
+  photoLibraryFeatureExtractor = [(PGFeatureExtractorAssetPhotoLibrary *)self photoLibraryFeatureExtractor];
+  featureNames = [photoLibraryFeatureExtractor featureNames];
 
-  return v3;
+  return featureNames;
 }
 
 - (id)name
 {
-  v2 = [(PGFeatureExtractorAssetPhotoLibrary *)self photoLibraryFeatureExtractor];
-  v3 = [v2 name];
+  photoLibraryFeatureExtractor = [(PGFeatureExtractorAssetPhotoLibrary *)self photoLibraryFeatureExtractor];
+  name = [photoLibraryFeatureExtractor name];
 
-  return v3;
+  return name;
 }
 
-- (PGFeatureExtractorAssetPhotoLibrary)initWithPhotoLibraryFeatureExtractor:(id)a3
+- (PGFeatureExtractorAssetPhotoLibrary)initWithPhotoLibraryFeatureExtractor:(id)extractor
 {
-  v5 = a3;
+  extractorCopy = extractor;
   v9.receiver = self;
   v9.super_class = PGFeatureExtractorAssetPhotoLibrary;
   v6 = [(PGFeatureExtractorAssetPhotoLibrary *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_photoLibraryFeatureExtractor, a3);
+    objc_storeStrong(&v6->_photoLibraryFeatureExtractor, extractor);
   }
 
   return v7;

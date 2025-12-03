@@ -1,13 +1,13 @@
 @interface _SFDimmingButton
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (NSNumber)tapTargetSideMargin;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
 - (void)_updateBackgroundColor;
 - (void)_updateImageAlpha;
 - (void)layoutSubviews;
-- (void)setDimmableBackgroundColor:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setTapTargetSideMargin:(id)a3;
+- (void)setDimmableBackgroundColor:(id)color;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setTapTargetSideMargin:(id)margin;
 @end
 
 @implementation _SFDimmingButton
@@ -17,13 +17,13 @@
   p_highlightedImageAlpha = &self->_highlightedImageAlpha;
   if (self->_highlightedImageAlpha != 0.0 || self->_normalImageAlpha != 0.0)
   {
-    v4 = [(_SFDimmingButton *)self imageView];
+    imageView = [(_SFDimmingButton *)self imageView];
     if (([(_SFDimmingButton *)self isHighlighted]& 1) == 0)
     {
       p_highlightedImageAlpha = &self->_normalImageAlpha;
     }
 
-    [v4 setAlpha:*p_highlightedImageAlpha];
+    [imageView setAlpha:*p_highlightedImageAlpha];
   }
 }
 
@@ -35,17 +35,17 @@
   [(_SFDimmingButton *)self _updateImageAlpha];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  v5 = [(_SFDimmingButton *)self isHighlighted];
+  highlightedCopy = highlighted;
+  isHighlighted = [(_SFDimmingButton *)self isHighlighted];
   v8.receiver = self;
   v8.super_class = _SFDimmingButton;
-  [(_SFDimmingButton *)&v8 setHighlighted:v3];
-  if (v5 != v3)
+  [(_SFDimmingButton *)&v8 setHighlighted:highlightedCopy];
+  if (isHighlighted != highlightedCopy)
   {
     highlightAnimationDuration = 0.0;
-    if (!v3)
+    if (!highlightedCopy)
     {
       highlightAnimationDuration = self->_highlightAnimationDuration;
     }
@@ -59,18 +59,18 @@
   }
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
   if (!self->_tapTargetSideMargins)
   {
-    v26 = self;
-    v23 = &v26;
+    selfCopy = self;
+    v23 = &selfCopy;
 LABEL_10:
     v23[1] = _SFDimmingButton;
-    v22 = objc_msgSendSuper2(v23, sel_pointInside_withEvent_, v7, x, y, v25);
+    v22 = objc_msgSendSuper2(v23, sel_pointInside_withEvent_, eventCopy, x, y, selfCopy2);
     goto LABEL_11;
   }
 
@@ -103,8 +103,8 @@ LABEL_10:
   v27.y = y;
   if (!CGRectContainsPoint(v29, v27))
   {
-    v25 = self;
-    v23 = &v25;
+    selfCopy2 = self;
+    v23 = &selfCopy2;
     goto LABEL_10;
   }
 
@@ -114,19 +114,19 @@ LABEL_11:
   return v22;
 }
 
-- (void)setDimmableBackgroundColor:(id)a3
+- (void)setDimmableBackgroundColor:(id)color
 {
-  v5 = a3;
-  if (self->_dimmableBackgroundColor != v5)
+  colorCopy = color;
+  if (self->_dimmableBackgroundColor != colorCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_dimmableBackgroundColor, a3);
-    v6 = [(UIColor *)v8 sf_darkenedColor];
+    v8 = colorCopy;
+    objc_storeStrong(&self->_dimmableBackgroundColor, color);
+    sf_darkenedColor = [(UIColor *)v8 sf_darkenedColor];
     cachedDimmedBackgroundColor = self->_cachedDimmedBackgroundColor;
-    self->_cachedDimmedBackgroundColor = v6;
+    self->_cachedDimmedBackgroundColor = sf_darkenedColor;
 
     [(_SFDimmingButton *)self _updateBackgroundColor];
-    v5 = v8;
+    colorCopy = v8;
   }
 }
 
@@ -146,14 +146,14 @@ LABEL_11:
   }
 }
 
-- (void)setTapTargetSideMargin:(id)a3
+- (void)setTapTargetSideMargin:(id)margin
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  marginCopy = margin;
+  v5 = marginCopy;
+  if (marginCopy)
   {
     v6 = MEMORY[0x1E696B098];
-    [v4 floatValue];
+    [marginCopy floatValue];
     v8 = v7;
     [v5 floatValue];
     *v11 = v8;
@@ -182,11 +182,11 @@ LABEL_11:
   return tapTargetSideMargins;
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
   v8.receiver = self;
   v8.super_class = _SFDimmingButton;
-  v5 = [(_SFDimmingButton *)&v8 contextMenuInteraction:a3 configurationForMenuAtLocation:a4.x, a4.y];
+  v5 = [(_SFDimmingButton *)&v8 contextMenuInteraction:interaction configurationForMenuAtLocation:location.x, location.y];
   v6 = v5;
   if (self->_alwaysUsesUIMenuOrdering)
   {

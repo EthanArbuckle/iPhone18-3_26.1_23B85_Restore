@@ -1,7 +1,7 @@
 @interface AATimestampGranularityFactory
 + (AATimestampGranularityFactory)shared;
 - (AATimestampGranularityFactory)init;
-- (AATimestampGranularityFactory)initWithName:(id)a3;
+- (AATimestampGranularityFactory)initWithName:(id)name;
 @end
 
 @implementation AATimestampGranularityFactory
@@ -18,10 +18,10 @@
   return v3;
 }
 
-- (AATimestampGranularityFactory)initWithName:(id)a3
+- (AATimestampGranularityFactory)initWithName:(id)name
 {
   sub_1B6AB92E0();
-  v4 = self;
+  selfCopy = self;
   v5 = _s12AppAnalytics34BridgedTimestampGranularityFactoryC04makedE0yAA0cdE0OSSF_0();
 
   return v5;

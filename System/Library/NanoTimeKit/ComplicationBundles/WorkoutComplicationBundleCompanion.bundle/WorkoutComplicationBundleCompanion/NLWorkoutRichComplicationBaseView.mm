@@ -1,32 +1,32 @@
 @interface NLWorkoutRichComplicationBaseView
 - (CLKMonochromeFilterProvider)filterProvider;
-- (NLWorkoutRichComplicationBaseView)initWithFrame:(CGRect)a3;
-- (id)initFullColorImageViewWithDevice:(id)a3;
+- (NLWorkoutRichComplicationBaseView)initWithFrame:(CGRect)frame;
+- (id)initFullColorImageViewWithDevice:(id)device;
 - (id)noActiveWorkoutImage;
 - (id)noActiveWorkoutImageName;
 - (int64_t)_filterStyle;
-- (void)configureWithImageProvider:(id)a3 reason:(int64_t)a4;
+- (void)configureWithImageProvider:(id)provider reason:(int64_t)reason;
 - (void)layoutSubviews;
-- (void)setFilterProvider:(id)a3;
-- (void)transitionToMonochromeWithFraction:(double)a3;
+- (void)setFilterProvider:(id)provider;
+- (void)transitionToMonochromeWithFraction:(double)fraction;
 - (void)updateMonochromeColor;
 @end
 
 @implementation NLWorkoutRichComplicationBaseView
 
-- (NLWorkoutRichComplicationBaseView)initWithFrame:(CGRect)a3
+- (NLWorkoutRichComplicationBaseView)initWithFrame:(CGRect)frame
 {
-  v13 = a3;
+  frameCopy = frame;
   v11 = a2;
   v12 = 0;
   v10.receiver = self;
   v10.super_class = NLWorkoutRichComplicationBaseView;
-  v12 = [(NLWorkoutRichComplicationBaseView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v12 = [(NLWorkoutRichComplicationBaseView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   objc_storeStrong(&v12, v12);
   if (v12)
   {
     v7 = [CLKUIColoringImageView alloc];
-    v8 = [(NLWorkoutRichComplicationBaseView *)v12 noActiveWorkoutImage];
+    noActiveWorkoutImage = [(NLWorkoutRichComplicationBaseView *)v12 noActiveWorkoutImage];
     v3 = [v7 initWithImage:?];
     staticImageView = v12->_staticImageView;
     v12->_staticImageView = v3;
@@ -46,14 +46,14 @@
 
 - (void)layoutSubviews
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
   v4.receiver = self;
   v4.super_class = NLWorkoutRichComplicationBaseView;
   [(NLWorkoutRichComplicationBaseView *)&v4 layoutSubviews];
-  [(NLWorkoutRichComplicationBaseView *)v6 bounds];
+  [(NLWorkoutRichComplicationBaseView *)selfCopy bounds];
   CLKRectGetCenter();
-  [(CLKUIColoringImageView *)v6->_staticImageView setCenter:v2, v3];
+  [(CLKUIColoringImageView *)selfCopy->_staticImageView setCenter:v2, v3];
 }
 
 - (id)noActiveWorkoutImageName
@@ -71,41 +71,41 @@
   return 0;
 }
 
-- (id)initFullColorImageViewWithDevice:(id)a3
+- (id)initFullColorImageViewWithDevice:(id)device
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v7;
-  v7 = 0;
-  v7 = [(NLWorkoutRichComplicationBaseView *)v3 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
-  objc_storeStrong(&v7, v7);
-  v5 = v7;
+  objc_storeStrong(location, device);
+  v3 = selfCopy;
+  selfCopy = 0;
+  selfCopy = [(NLWorkoutRichComplicationBaseView *)v3 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
+  objc_storeStrong(&selfCopy, selfCopy);
+  v5 = selfCopy;
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v7, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
-- (void)configureWithImageProvider:(id)a3 reason:(int64_t)a4
+- (void)configureWithImageProvider:(id)provider reason:(int64_t)reason
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v11[1] = a4;
+  objc_storeStrong(location, provider);
+  v11[1] = reason;
   v11[0] = [location[0] metadata];
   v6 = [v11[0] objectForKeyedSubscript:@"NLWorkoutComplicationMetadataHasActiveWorkoutKey"];
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
   v8 = [v11[0] objectForKeyedSubscript:@"NLWorkoutComplicationMetadataActiveWorkoutIsPausedKey"];
-  v9 = [v8 BOOLValue];
+  bOOLValue2 = [v8 BOOLValue];
 
   v10 = 0;
-  if (v7)
+  if (bOOLValue)
   {
     v4 = 2;
-    if ((v9 & 1) == 0)
+    if ((bOOLValue2 & 1) == 0)
     {
       v4 = 1;
     }
@@ -113,30 +113,30 @@
     v10 = v4;
   }
 
-  if (v10 != v13->_state)
+  if (v10 != selfCopy->_state)
   {
-    v13->_state = v10;
-    [(NLWorkoutRichComplicationBaseView *)v13 _updateUI];
+    selfCopy->_state = v10;
+    [(NLWorkoutRichComplicationBaseView *)selfCopy _updateUI];
   }
 
   objc_storeStrong(v11, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)setFilterProvider:(id)a3
+- (void)setFilterProvider:(id)provider
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeWeak(&v4->_filterProvider, location[0]);
+  objc_storeStrong(location, provider);
+  objc_storeWeak(&selfCopy->_filterProvider, location[0]);
   objc_storeStrong(location, 0);
 }
 
 - (int64_t)_filterStyle
 {
-  v4 = [(NLWorkoutRichComplicationBaseView *)self filterProvider];
-  v3 = [(CLKMonochromeFilterProvider *)v4 device];
+  filterProvider = [(NLWorkoutRichComplicationBaseView *)self filterProvider];
+  device = [(CLKMonochromeFilterProvider *)filterProvider device];
   v5 = NTKShowGossamerUI();
 
   if (v5)
@@ -150,18 +150,18 @@
   }
 }
 
-- (void)transitionToMonochromeWithFraction:(double)a3
+- (void)transitionToMonochromeWithFraction:(double)fraction
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
-  v6 = a3;
-  v4 = [(NLWorkoutRichComplicationBaseView *)self filterProvider];
-  location = [(CLKMonochromeFilterProvider *)v4 filtersForView:v8 style:[(NLWorkoutRichComplicationBaseView *)v8 _filterStyle] fraction:v6];
+  fractionCopy = fraction;
+  filterProvider = [(NLWorkoutRichComplicationBaseView *)self filterProvider];
+  location = [(CLKMonochromeFilterProvider *)filterProvider filtersForView:selfCopy style:[(NLWorkoutRichComplicationBaseView *)selfCopy _filterStyle] fraction:fractionCopy];
 
   if (location)
   {
-    v3 = [(NLWorkoutRichComplicationBaseView *)v8 layer];
-    [v3 setFilters:location];
+    layer = [(NLWorkoutRichComplicationBaseView *)selfCopy layer];
+    [layer setFilters:location];
   }
 
   objc_storeStrong(&location, 0);
@@ -169,15 +169,15 @@
 
 - (void)updateMonochromeColor
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
-  v3 = [(NLWorkoutRichComplicationBaseView *)self filterProvider];
-  location[0] = [(CLKMonochromeFilterProvider *)v3 filtersForView:v5 style:[(NLWorkoutRichComplicationBaseView *)v5 _filterStyle]];
+  filterProvider = [(NLWorkoutRichComplicationBaseView *)self filterProvider];
+  location[0] = [(CLKMonochromeFilterProvider *)filterProvider filtersForView:selfCopy style:[(NLWorkoutRichComplicationBaseView *)selfCopy _filterStyle]];
 
   if (location[0])
   {
-    v2 = [(NLWorkoutRichComplicationBaseView *)v5 layer];
-    [v2 setFilters:location[0]];
+    layer = [(NLWorkoutRichComplicationBaseView *)selfCopy layer];
+    [layer setFilters:location[0]];
   }
 
   objc_storeStrong(location, 0);

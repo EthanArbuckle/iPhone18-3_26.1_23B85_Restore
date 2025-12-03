@@ -1,19 +1,19 @@
 @interface AMSUIWebOpenFamilyCircleAction
-- (AMSUIWebOpenFamilyCircleAction)initWithJSObject:(id)a3 context:(id)a4;
+- (AMSUIWebOpenFamilyCircleAction)initWithJSObject:(id)object context:(id)context;
 - (id)runAction;
 @end
 
 @implementation AMSUIWebOpenFamilyCircleAction
 
-- (AMSUIWebOpenFamilyCircleAction)initWithJSObject:(id)a3 context:(id)a4
+- (AMSUIWebOpenFamilyCircleAction)initWithJSObject:(id)object context:(id)context
 {
-  v6 = a3;
+  objectCopy = object;
   v12.receiver = self;
   v12.super_class = AMSUIWebOpenFamilyCircleAction;
-  v7 = [(AMSUIWebAction *)&v12 initWithJSObject:v6 context:a4];
+  v7 = [(AMSUIWebAction *)&v12 initWithJSObject:objectCopy context:context];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"clientName"];
+    v8 = [objectCopy objectForKeyedSubscript:@"clientName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -37,16 +37,16 @@
   v49 = *MEMORY[0x1E69E9840];
   v35.receiver = self;
   v35.super_class = AMSUIWebOpenFamilyCircleAction;
-  v3 = [(AMSUIWebAction *)&v35 runAction];
+  runAction = [(AMSUIWebAction *)&v35 runAction];
   v4 = objc_alloc_init(MEMORY[0x1E698CAD0]);
-  v5 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-  if (!v5)
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v5 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
     v8 = AMSLogKey();
@@ -54,7 +54,7 @@
     *&buf[4] = v7;
     *&buf[12] = 2114;
     *&buf[14] = v8;
-    _os_log_impl(&dword_1BB036000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Starting to open family circle", buf, 0x16u);
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Starting to open family circle", buf, 0x16u);
   }
 
   v36 = 0;
@@ -103,12 +103,12 @@
   }
 
   v15 = [v11 initWithEventType:*v12];
-  v16 = [(AMSUIWebOpenFamilyCircleAction *)self clientName];
-  [v15 setClientName:v16];
+  clientName = [(AMSUIWebOpenFamilyCircleAction *)self clientName];
+  [v15 setClientName:clientName];
 
-  v17 = [(AMSUIWebAction *)self context];
-  v18 = [v17 flowController];
-  v19 = [v18 currentContainer];
+  context = [(AMSUIWebAction *)self context];
+  flowController = [context flowController];
+  currentContainer = [flowController currentContainer];
 
   *buf = 0;
   *&buf[8] = buf;
@@ -133,7 +133,7 @@
 
   v21 = v20;
   _Block_object_dispose(&v41, 8);
-  v48 = [[v20 alloc] initWithPresenter:v19];
+  v48 = [[v20 alloc] initWithPresenter:currentContainer];
   v22 = AMSLogKey();
   v23 = *(*&buf[8] + 40);
   v30[0] = MEMORY[0x1E69E9820];
@@ -143,7 +143,7 @@
   v24 = v22;
   v34 = buf;
   v31 = v24;
-  v32 = self;
+  selfCopy = self;
   v25 = v4;
   v33 = v25;
   [v23 performWithContext:v15 completion:v30];

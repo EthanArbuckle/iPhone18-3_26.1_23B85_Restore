@@ -1,5 +1,5 @@
 @interface YearMonthTransitionMonthView
-- (CGRect)_adjustFrame:(CGRect)a3;
+- (CGRect)_adjustFrame:(CGRect)frame;
 - (CGRect)monthFrame;
 - (CGRect)monthFrameInMonthView;
 - (CGRect)monthLabelFrame;
@@ -33,12 +33,12 @@
   return result;
 }
 
-- (CGRect)_adjustFrame:(CGRect)a3
+- (CGRect)_adjustFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   +[YearMonthTransitionView _monthHeaderHeight];
   v8 = y + v7 + -8.0;
   v9 = height - v7 + -4.0;
@@ -53,11 +53,11 @@
 
 - (CGRect)monthLabelFrame
 {
-  v3 = [(YearMonthTransitionMonthView *)self weekViews];
-  v4 = [v3 objectAtIndex:0];
+  weekViews = [(YearMonthTransitionMonthView *)self weekViews];
+  v4 = [weekViews objectAtIndex:0];
 
-  v5 = [(YearMonthTransitionMonthView *)self monthLabel];
-  [v5 frame];
+  monthLabel = [(YearMonthTransitionMonthView *)self monthLabel];
+  [monthLabel frame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -82,18 +82,18 @@
 
 - (NSString)monthLabelText
 {
-  v2 = [(YearMonthTransitionMonthView *)self monthLabel];
-  v3 = [v2 text];
+  monthLabel = [(YearMonthTransitionMonthView *)self monthLabel];
+  text = [monthLabel text];
 
-  return v3;
+  return text;
 }
 
 - (UIColor)monthLabelColor
 {
-  v2 = [(YearMonthTransitionMonthView *)self monthLabel];
-  v3 = [v2 textColor];
+  monthLabel = [(YearMonthTransitionMonthView *)self monthLabel];
+  textColor = [monthLabel textColor];
 
-  return v3;
+  return textColor;
 }
 
 @end

@@ -1,10 +1,10 @@
 @interface TUIAnimationGroupRenderModelCollection
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation TUIAnimationGroupRenderModelCollection
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[TUIAnimationGroupRenderModelCollection allocWithZone:?]];
   if (v4)

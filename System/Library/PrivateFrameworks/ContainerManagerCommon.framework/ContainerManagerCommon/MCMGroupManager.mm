@@ -1,10 +1,10 @@
 @interface MCMGroupManager
 + (id)defaultManager;
-- (MCMGroupManager)initWithUserIdentityCache:(id)a3;
+- (MCMGroupManager)initWithUserIdentityCache:(id)cache;
 - (MCMUserIdentityCache)userIdentityCache;
-- (id)groupContainerIdentifiersForOwnerIdentifier:(id)a3 groupContainerClass:(unint64_t)a4 codeSignInfo:(id)a5 withError:(id *)a6;
-- (void)_cleanupUnreferencedGroupContainersForUserIdentity:(id)a3 containerClass:(unint64_t)a4 referenceCounts:(id)a5 context:(id)a6;
-- (void)reconcileGroupContainersForContainerClass:(unint64_t)a3 context:(id)a4;
+- (id)groupContainerIdentifiersForOwnerIdentifier:(id)identifier groupContainerClass:(unint64_t)class codeSignInfo:(id)info withError:(id *)error;
+- (void)_cleanupUnreferencedGroupContainersForUserIdentity:(id)identity containerClass:(unint64_t)class referenceCounts:(id)counts context:(id)context;
+- (void)reconcileGroupContainersForContainerClass:(unint64_t)class context:(id)context;
 @end
 
 @implementation MCMGroupManager
@@ -16,7 +16,7 @@
   v5[1] = 3221225472;
   v5[2] = __33__MCMGroupManager_defaultManager__block_invoke;
   v5[3] = &__block_descriptor_40_e5_v8__0l;
-  v5[4] = a1;
+  v5[4] = self;
   if (defaultManager_onceToken_9443 != -1)
   {
     dispatch_once(&defaultManager_onceToken_9443, v5);
@@ -36,16 +36,16 @@
   return result;
 }
 
-- (id)groupContainerIdentifiersForOwnerIdentifier:(id)a3 groupContainerClass:(unint64_t)a4 codeSignInfo:(id)a5 withError:(id *)a6
+- (id)groupContainerIdentifiersForOwnerIdentifier:(id)identifier groupContainerClass:(unint64_t)class codeSignInfo:(id)info withError:(id *)error
 {
   v30 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  v11 = [v10 identifier];
-  v12 = [v9 isEqualToString:v11];
+  identifierCopy = identifier;
+  infoCopy = info;
+  identifier = [infoCopy identifier];
+  v12 = [identifierCopy isEqualToString:identifier];
 
   objc_opt_class();
-  v13 = v9;
+  v13 = identifierCopy;
   if (objc_opt_isKindOfClass())
   {
     v14 = v13;
@@ -58,25 +58,25 @@
 
   if (v14)
   {
-    if (((v10 != 0) & v12) != 0)
+    if (((infoCopy != 0) & v12) != 0)
     {
-      v15 = [v10 entitlements];
-      v16 = v15;
-      if (a4 == 13)
+      entitlements = [infoCopy entitlements];
+      v16 = entitlements;
+      if (class == 13)
       {
-        [v15 systemGroupIdentifiers];
+        [entitlements systemGroupIdentifiers];
       }
 
       else
       {
-        [v15 appGroupIdentifiers];
+        [entitlements appGroupIdentifiers];
       }
       v19 = ;
     }
 
     else
     {
-      if (a4 == 13)
+      if (class == 13)
       {
         [gCodeSigningMapping systemGroupIdentifiersForIdentifier:v13];
       }
@@ -140,11 +140,11 @@ LABEL_23:
   }
 
   v20 = 0;
-  if (a6 && v18)
+  if (error && v18)
   {
     v23 = v18;
     v20 = 0;
-    *a6 = v18;
+    *error = v18;
   }
 
 LABEL_30:
@@ -154,24 +154,24 @@ LABEL_30:
   return v20;
 }
 
-- (void)_cleanupUnreferencedGroupContainersForUserIdentity:(id)a3 containerClass:(unint64_t)a4 referenceCounts:(id)a5 context:(id)a6
+- (void)_cleanupUnreferencedGroupContainersForUserIdentity:(id)identity containerClass:(unint64_t)class referenceCounts:(id)counts context:(id)context
 {
   v56 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  identityCopy = identity;
+  countsCopy = counts;
+  contextCopy = context;
   v43 = objc_opt_new();
-  v12 = [v11 containerCache];
-  v42 = v9;
-  v13 = [MEMORY[0x1E695DFD8] setWithObject:v9];
+  containerCache = [contextCopy containerCache];
+  v42 = identityCopy;
+  v13 = [MEMORY[0x1E695DFD8] setWithObject:identityCopy];
   v44 = 0;
-  v14 = [v12 entriesForUserIdentities:v13 contentClass:a4 transient:0 error:&v44];
+  v14 = [containerCache entriesForUserIdentities:v13 contentClass:class transient:0 error:&v44];
   v15 = v44;
 
   if (v14)
   {
     v40 = v15;
-    v41 = v11;
+    v41 = contextCopy;
     v54 = 0u;
     v55 = 0u;
     v52 = 0u;
@@ -194,9 +194,9 @@ LABEL_30:
             objc_enumerationMutation(v16);
           }
 
-          v22 = [*(*(&v52 + 1) + 8 * v21) metadataMinimal];
-          v23 = [v22 identifier];
-          v24 = [v10 countForObject:v23];
+          metadataMinimal = [*(*(&v52 + 1) + 8 * v21) metadataMinimal];
+          identifier = [metadataMinimal identifier];
+          v24 = [countsCopy countForObject:identifier];
           if (v24)
           {
             v25 = v24;
@@ -204,7 +204,7 @@ LABEL_30:
             if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543618;
-              v46 = v23;
+              v46 = identifier;
               v47 = 2048;
               v48 = v25;
               _os_log_impl(&dword_1DF2C3000, v26, OS_LOG_TYPE_DEFAULT, "Reference count for [%{public}@] is %lu", buf, 0x16u);
@@ -213,20 +213,20 @@ LABEL_30:
 
           else
           {
-            v27 = [v22 containerIdentity];
-            [v18 addObject:v27];
+            containerIdentity = [metadataMinimal containerIdentity];
+            [v18 addObject:containerIdentity];
 
             v26 = container_log_handle_for_category();
             if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
             {
-              v28 = [v42 shortDescription];
-              v29 = [v22 containerPath];
+              shortDescription = [v42 shortDescription];
+              containerPath = [metadataMinimal containerPath];
               *buf = 138412802;
-              v46 = v23;
+              v46 = identifier;
               v47 = 2112;
-              v48 = v28;
+              v48 = shortDescription;
               v49 = 2112;
-              v50 = v29;
+              v50 = containerPath;
               _os_log_error_impl(&dword_1DF2C3000, v26, OS_LOG_TYPE_ERROR, "Removing group container [%@] for %@ at %@", buf, 0x20u);
 
               v18 = v43;
@@ -247,22 +247,22 @@ LABEL_30:
     v31 = objc_alloc_init(MCMResultPromise);
     if ([v30 count])
     {
-      v32 = [v30 allObjects];
-      v11 = v41;
-      v33 = [MCMCommandOperationDelete commandForOperationDeleteWithContainerIdentities:v32 removeAllCodeSignInfo:0 context:v41 resultPromise:v31];
+      allObjects = [v30 allObjects];
+      contextCopy = v41;
+      v33 = [MCMCommandOperationDelete commandForOperationDeleteWithContainerIdentities:allObjects removeAllCodeSignInfo:0 context:v41 resultPromise:v31];
 
       [v33 execute];
-      v34 = [(MCMResultPromise *)v31 result];
-      v35 = [v34 error];
+      result = [(MCMResultPromise *)v31 result];
+      error = [result error];
 
       v14 = v39;
-      if (v35)
+      if (error)
       {
         v36 = container_log_handle_for_category();
         if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v46 = v35;
+          v46 = error;
           _os_log_error_impl(&dword_1DF2C3000, v36, OS_LOG_TYPE_ERROR, "Failed to destroy group container(s) during reconciliation; error = %@", buf, 0xCu);
         }
       }
@@ -273,7 +273,7 @@ LABEL_30:
     else
     {
       v15 = v40;
-      v11 = v41;
+      contextCopy = v41;
       v14 = v39;
     }
   }
@@ -283,9 +283,9 @@ LABEL_30:
     v31 = container_log_handle_for_category();
     if (os_log_type_enabled(&v31->super, OS_LOG_TYPE_ERROR))
     {
-      v37 = [v42 shortDescription];
+      shortDescription2 = [v42 shortDescription];
       *buf = 138412546;
-      v46 = v37;
+      v46 = shortDescription2;
       v47 = 2112;
       v48 = v15;
       _os_log_error_impl(&dword_1DF2C3000, &v31->super, OS_LOG_TYPE_ERROR, "Failed to fetch group container list for %@: %@", buf, 0x16u);
@@ -295,16 +295,16 @@ LABEL_30:
   v38 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reconcileGroupContainersForContainerClass:(unint64_t)a3 context:(id)a4
+- (void)reconcileGroupContainersForContainerClass:(unint64_t)class context:(id)context
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [gCodeSigningMapping copyReferenceCountSetForContainerClass:a3];
+  contextCopy = context;
+  v7 = [gCodeSigningMapping copyReferenceCountSetForContainerClass:class];
   if (v7)
   {
-    if (a3 == 7)
+    if (class == 7)
     {
-      v11 = [(MCMGroupManager *)self userIdentityCache];
+      userIdentityCache = [(MCMGroupManager *)self userIdentityCache];
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __69__MCMGroupManager_reconcileGroupContainersForContainerClass_context___block_invoke;
@@ -312,16 +312,16 @@ LABEL_30:
       v13[4] = self;
       v16 = 7;
       v14 = v7;
-      v15 = v6;
-      [v11 forEachAccessibleUserIdentitySynchronouslyExecuteBlock:v13];
+      v15 = contextCopy;
+      [userIdentityCache forEachAccessibleUserIdentitySynchronouslyExecuteBlock:v13];
     }
 
-    else if (a3 == 13)
+    else if (class == 13)
     {
-      v8 = [(MCMGroupManager *)self userIdentityCache];
-      v9 = [v8 globalSystemUserIdentity];
+      userIdentityCache2 = [(MCMGroupManager *)self userIdentityCache];
+      globalSystemUserIdentity = [userIdentityCache2 globalSystemUserIdentity];
 
-      [(MCMGroupManager *)self _cleanupUnreferencedGroupContainersForUserIdentity:v9 containerClass:13 referenceCounts:v7 context:v6];
+      [(MCMGroupManager *)self _cleanupUnreferencedGroupContainersForUserIdentity:globalSystemUserIdentity containerClass:13 referenceCounts:v7 context:contextCopy];
     }
   }
 
@@ -331,7 +331,7 @@ LABEL_30:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v18 = a3;
+      classCopy = class;
       _os_log_error_impl(&dword_1DF2C3000, v10, OS_LOG_TYPE_ERROR, "Failed to get reference count information for group type: %llu", buf, 0xCu);
     }
   }
@@ -354,17 +354,17 @@ void __69__MCMGroupManager_reconcileGroupContainersForContainerClass_context___b
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (MCMGroupManager)initWithUserIdentityCache:(id)a3
+- (MCMGroupManager)initWithUserIdentityCache:(id)cache
 {
   v11 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  cacheCopy = cache;
   v10.receiver = self;
   v10.super_class = MCMGroupManager;
   v6 = [(MCMGroupManager *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_userIdentityCache, a3);
+    objc_storeStrong(&v6->_userIdentityCache, cache);
   }
 
   v8 = *MEMORY[0x1E69E9840];

@@ -1,33 +1,33 @@
 @interface AMUIInlineAuthenticationViewController
 - (AMAuthenticationHandling)authenticationHandler;
-- (AMUIInlineAuthenticationViewController)initWithUnlockDestination:(id)a3;
+- (AMUIInlineAuthenticationViewController)initWithUnlockDestination:(id)destination;
 - (AMUIInlineAuthenticationViewControllerDelegate)delegate;
 - (BOOL)_shouldSkipBiometricPresentation;
 - (BOOL)_wantsBioUnlockBlocked;
 - (id)_unlockReason;
 - (void)_handlePasscodeButtonAction;
 - (void)_reset;
-- (void)_setDateTimeLayerHidden:(BOOL)a3;
+- (void)_setDateTimeLayerHidden:(BOOL)hidden;
 - (void)_setUpBiometricAuthenticationTimeout;
 - (void)dealloc;
-- (void)passcodeLockViewStateChange:(id)a3;
-- (void)setDateProvider:(id)a3;
+- (void)passcodeLockViewStateChange:(id)change;
+- (void)setDateProvider:(id)provider;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation AMUIInlineAuthenticationViewController
 
-- (AMUIInlineAuthenticationViewController)initWithUnlockDestination:(id)a3
+- (AMUIInlineAuthenticationViewController)initWithUnlockDestination:(id)destination
 {
-  v5 = a3;
+  destinationCopy = destination;
   v9.receiver = self;
   v9.super_class = AMUIInlineAuthenticationViewController;
   v6 = [(AMUIInlineAuthenticationViewController *)&v9 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_unlockDestination, a3);
+    objc_storeStrong(&v6->_unlockDestination, destination);
   }
 
   return v7;
@@ -36,18 +36,18 @@
 - (void)dealloc
 {
   [(NSTimer *)self->_biometricAuthenticationTimer invalidate];
-  v3 = [(AMUIInlineAuthenticationViewController *)self delegate];
-  [v3 authenticationViewController:self didSetBiometricAuthenticationDisabled:0];
+  delegate = [(AMUIInlineAuthenticationViewController *)self delegate];
+  [delegate authenticationViewController:self didSetBiometricAuthenticationDisabled:0];
 
   v4.receiver = self;
   v4.super_class = AMUIInlineAuthenticationViewController;
   [(AMUIInlineAuthenticationViewController *)&v4 dealloc];
 }
 
-- (void)setDateProvider:(id)a3
+- (void)setDateProvider:(id)provider
 {
-  objc_storeStrong(&self->_dateProvider, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_dateProvider, provider);
+  providerCopy = provider;
   [(AMUIDateTimeDataLayerViewController *)self->_dateTimeLayerViewController setDateProvider:self->_dateProvider];
 }
 
@@ -70,9 +70,9 @@
   [(MTMaterialView *)self->_materialView setOverrideUserInterfaceStyle:2];
   [(MTMaterialView *)self->_materialView setFrame:*&v4, *&v6, *&v8, *&v10];
   [val addSubview:self->_materialView];
-  v13 = [MEMORY[0x277D67D18] passcodeLockViewForUsersCurrentStyle];
+  passcodeLockViewForUsersCurrentStyle = [MEMORY[0x277D67D18] passcodeLockViewForUsersCurrentStyle];
   passcodeView = self->_passcodeView;
-  self->_passcodeView = v13;
+  self->_passcodeView = passcodeLockViewForUsersCurrentStyle;
 
   [(SBUIPasscodeLockView *)self->_passcodeView setDelegate:self];
   [(SBUIPasscodeLockView *)self->_passcodeView setUnlockDestination:self->_unlockDestination];
@@ -82,17 +82,17 @@
   [(SBUIPasscodeLockView *)self->_passcodeView setShowsProudLock:SBUIIsSystemApertureEnabled() ^ 1];
   [(SBUIPasscodeLockView *)self->_passcodeView setShowsLockIconForFaceID:1];
   v15 = self->_passcodeView;
-  v16 = [(AMUIInlineAuthenticationViewController *)self _unlockReason];
-  [(SBUIPasscodeLockView *)v15 setOverridePasscodeButtonTitle:v16];
+  _unlockReason = [(AMUIInlineAuthenticationViewController *)self _unlockReason];
+  [(SBUIPasscodeLockView *)v15 setOverridePasscodeButtonTitle:_unlockReason];
 
   [(SBUIPasscodeLockView *)self->_passcodeView setAlwaysShowPasscodeButtonForFaceIDMatchFailure:1];
   v17 = self->_passcodeView;
-  v18 = [(AMUIInlineAuthenticationViewController *)self _unlockReason];
-  [(SBUIPasscodeLockView *)v17 setOverrideFaceIDReason:v18];
+  _unlockReason2 = [(AMUIInlineAuthenticationViewController *)self _unlockReason];
+  [(SBUIPasscodeLockView *)v17 setOverrideFaceIDReason:_unlockReason2];
 
   v19 = self->_passcodeView;
-  v20 = [MEMORY[0x277D75348] clearColor];
-  [(SBUIPasscodeLockView *)v19 setCustomBackgroundColor:v20];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(SBUIPasscodeLockView *)v19 setCustomBackgroundColor:clearColor];
 
   [val addSubview:self->_passcodeView];
   if (([(SBUIPasscodeLockView *)self->_passcodeView canPeformBiometricAuthentication]& 1) == 0)
@@ -111,25 +111,25 @@
     [(AMUIPasscodeButton *)v24 setFont:v27];
 
     v28 = self->_passcodeButton;
-    v29 = [(AMUIInlineAuthenticationViewController *)self _unlockReason];
-    [(AMUIPasscodeButton *)v28 setTitle:v29];
+    _unlockReason3 = [(AMUIInlineAuthenticationViewController *)self _unlockReason];
+    [(AMUIPasscodeButton *)v28 setTitle:_unlockReason3];
 
     [(AMUIPasscodeButton *)self->_passcodeButton addTarget:self action:sel__handlePasscodeButtonAction forControlEvents:64];
     [(AMUIPasscodeButton *)self->_passcodeButton setTranslatesAutoresizingMaskIntoConstraints:0];
     [val addSubview:self->_passcodeButton];
-    v30 = [(AMUIPasscodeButton *)self->_passcodeButton widthAnchor];
-    v31 = [v30 constraintEqualToConstant:225.0];
+    widthAnchor = [(AMUIPasscodeButton *)self->_passcodeButton widthAnchor];
+    v31 = [widthAnchor constraintEqualToConstant:225.0];
 
     LODWORD(v32) = 1132068864;
     [v31 setPriority:v32];
     v46 = MEMORY[0x277CCAAD0];
-    v33 = [(AMUIPasscodeButton *)self->_passcodeButton centerYAnchor];
-    v34 = [val centerYAnchor];
-    v35 = [v33 constraintEqualToAnchor:v34];
+    centerYAnchor = [(AMUIPasscodeButton *)self->_passcodeButton centerYAnchor];
+    centerYAnchor2 = [val centerYAnchor];
+    v35 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v55[0] = v35;
-    v36 = [(AMUIPasscodeButton *)self->_passcodeButton centerXAnchor];
-    v37 = [val centerXAnchor];
-    v38 = [v36 constraintEqualToAnchor:v37];
+    centerXAnchor = [(AMUIPasscodeButton *)self->_passcodeButton centerXAnchor];
+    centerXAnchor2 = [val centerXAnchor];
+    v38 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v55[1] = v38;
     v55[2] = v31;
     v39 = [MEMORY[0x277CBEA60] arrayWithObjects:v55 count:3];
@@ -142,8 +142,8 @@
 
   [(AMUIDateTimeDataLayerViewController *)self->_dateTimeLayerViewController setChromeOrientationPolicy:2];
   [(AMUIDateTimeDataLayerViewController *)self->_dateTimeLayerViewController setDateProvider:self->_dateProvider];
-  v42 = [(AMUIDateTimeDataLayerViewController *)self->_dateTimeLayerViewController view];
-  objc_initWeak(&location, v42);
+  view = [(AMUIDateTimeDataLayerViewController *)self->_dateTimeLayerViewController view];
+  objc_initWeak(&location, view);
 
   objc_initWeak(&from, val);
   v43 = self->_dateTimeLayerViewController;
@@ -189,8 +189,8 @@ void __53__AMUIInlineAuthenticationViewController_viewDidLoad__block_invoke(uint
   v12.receiver = self;
   v12.super_class = AMUIInlineAuthenticationViewController;
   [(AMUIInlineAuthenticationViewController *)&v12 viewDidLayoutSubviews];
-  v3 = [(AMUIInlineAuthenticationViewController *)self view];
-  [v3 bounds];
+  view = [(AMUIInlineAuthenticationViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -200,11 +200,11 @@ void __53__AMUIInlineAuthenticationViewController_viewDidLoad__block_invoke(uint
   [(SBUIPasscodeLockView *)self->_passcodeView setFrame:v5, v7, v9, v11];
 }
 
-- (void)passcodeLockViewStateChange:(id)a3
+- (void)passcodeLockViewStateChange:(id)change
 {
-  v4 = [a3 passcodeLockViewState] == 1;
-  v5 = [(AMUIInlineAuthenticationViewController *)self delegate];
-  [v5 authenticationViewController:self setDidSetPasscodeVisible:v4];
+  v4 = [change passcodeLockViewState] == 1;
+  delegate = [(AMUIInlineAuthenticationViewController *)self delegate];
+  [delegate authenticationViewController:self setDidSetPasscodeVisible:v4];
 
   [(SBUIPasscodeLockView *)self->_passcodeView setShowsCancelButton:v4];
 
@@ -245,17 +245,17 @@ void __62__AMUIInlineAuthenticationViewController__setPasscodeVisible___block_in
   }
 }
 
-- (void)_setDateTimeLayerHidden:(BOOL)a3
+- (void)_setDateTimeLayerHidden:(BOOL)hidden
 {
-  v4 = [(AMUIDateTimeDataLayerViewController *)self->_dateTimeLayerViewController view];
+  view = [(AMUIDateTimeDataLayerViewController *)self->_dateTimeLayerViewController view];
   v5 = MEMORY[0x277D75D18];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __66__AMUIInlineAuthenticationViewController__setDateTimeLayerHidden___block_invoke;
   v7[3] = &unk_278C76298;
-  v8 = v4;
-  v9 = a3;
-  v6 = v4;
+  v8 = view;
+  hiddenCopy = hidden;
+  v6 = view;
   [v5 animateWithDuration:0 delay:v7 options:0 animations:0.3 completion:0.0];
 }
 
@@ -273,14 +273,14 @@ uint64_t __66__AMUIInlineAuthenticationViewController__setDateTimeLayerHidden___
 
 - (void)_reset
 {
-  v3 = [(AMUIInlineAuthenticationViewController *)self _wantsBioUnlockBlocked];
-  v4 = [(SBUIPasscodeLockView *)self->_passcodeView canPeformBiometricAuthentication];
-  [(AMUIInlineAuthenticationViewController *)self _setBiometricAuthenticationDisabled:v3];
+  _wantsBioUnlockBlocked = [(AMUIInlineAuthenticationViewController *)self _wantsBioUnlockBlocked];
+  canPeformBiometricAuthentication = [(SBUIPasscodeLockView *)self->_passcodeView canPeformBiometricAuthentication];
+  [(AMUIInlineAuthenticationViewController *)self _setBiometricAuthenticationDisabled:_wantsBioUnlockBlocked];
   [(SBUIPasscodeLockView *)self->_passcodeView setPasscodeLockViewState:0 animated:1];
   [(SBUIPasscodeLockView *)self->_passcodeView setShowsProudLock:0];
   [(SBUIPasscodeLockView *)self->_passcodeView reset];
   [(AMUIInlineAuthenticationViewController *)self _setDateTimeLayerHidden:0];
-  if ((v4 & 1) == 0)
+  if ((canPeformBiometricAuthentication & 1) == 0)
   {
 
     [(AMUIInlineAuthenticationViewController *)self _setPasscodeVisible:0];
@@ -321,11 +321,11 @@ uint64_t __66__AMUIInlineAuthenticationViewController__setDateTimeLayerHidden___
 
 - (BOOL)_wantsBioUnlockBlocked
 {
-  v2 = self;
-  v3 = [(AMUIInlineAuthenticationViewController *)self delegate];
-  LOBYTE(v2) = [v3 authenticationViewControllerWantsBiometricAuthenticationBlocked:v2];
+  selfCopy = self;
+  delegate = [(AMUIInlineAuthenticationViewController *)self delegate];
+  LOBYTE(selfCopy) = [delegate authenticationViewControllerWantsBiometricAuthenticationBlocked:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)_setUpBiometricAuthenticationTimeout

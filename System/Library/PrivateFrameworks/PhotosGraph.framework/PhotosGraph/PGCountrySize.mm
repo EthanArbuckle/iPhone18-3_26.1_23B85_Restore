@@ -1,19 +1,19 @@
 @interface PGCountrySize
-+ (BOOL)isLargeCountry:(id)a3;
++ (BOOL)isLargeCountry:(id)country;
 @end
 
 @implementation PGCountrySize
 
-+ (BOOL)isLargeCountry:(id)a3
++ (BOOL)isLargeCountry:(id)country
 {
   v3 = isLargeCountry__onceToken;
-  v4 = a3;
+  countryCopy = country;
   if (v3 != -1)
   {
     dispatch_once(&isLargeCountry__onceToken, &__block_literal_global_29417);
   }
 
-  v5 = [isLargeCountry__largeCountries containsObject:v4];
+  v5 = [isLargeCountry__largeCountries containsObject:countryCopy];
 
   return v5;
 }

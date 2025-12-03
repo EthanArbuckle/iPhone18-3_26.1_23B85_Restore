@@ -1,44 +1,44 @@
 @interface _UIWindowSceneActivationIdentifier
-+ (id)identifierWithLocation:(CGPoint)a3 inView:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)identifierWithLocation:(CGPoint)location inView:(id)view;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)location;
 - (UIView)view;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation _UIWindowSceneActivationIdentifier
 
-+ (id)identifierWithLocation:(CGPoint)a3 inView:(id)a4
++ (id)identifierWithLocation:(CGPoint)location inView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = a4;
+  y = location.y;
+  x = location.x;
+  viewCopy = view;
   v7 = objc_opt_new();
   *(v7 + 16) = x;
   *(v7 + 24) = y;
-  objc_storeWeak((v7 + 8), v6);
+  objc_storeWeak((v7 + 8), viewCopy);
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   v4 = objc_opt_new();
   [(_UIWindowSceneActivationIdentifier *)self location];
   *(v4 + 16) = v5;
   *(v4 + 24) = v6;
-  v7 = [(_UIWindowSceneActivationIdentifier *)self view];
-  objc_storeWeak((v4 + 8), v7);
+  view = [(_UIWindowSceneActivationIdentifier *)self view];
+  objc_storeWeak((v4 + 8), view);
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -48,10 +48,10 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(_UIWindowSceneActivationIdentifier *)v5 view];
-      v7 = [(_UIWindowSceneActivationIdentifier *)self view];
-      if (v6 == v7)
+      v5 = equalCopy;
+      view = [(_UIWindowSceneActivationIdentifier *)v5 view];
+      view2 = [(_UIWindowSceneActivationIdentifier *)self view];
+      if (view == view2)
       {
         [(_UIWindowSceneActivationIdentifier *)v5 location];
         v10 = v9;
@@ -81,8 +81,8 @@
   v4 = v3;
   [(_UIWindowSceneActivationIdentifier *)self location];
   v6 = v5 ^ v4;
-  v7 = [(_UIWindowSceneActivationIdentifier *)self view];
-  v8 = [v7 hash];
+  view = [(_UIWindowSceneActivationIdentifier *)self view];
+  v8 = [view hash];
 
   return v8 ^ v6;
 }

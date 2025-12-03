@@ -3,18 +3,18 @@
 + (id)defaultGroupedFooterConfiguration;
 + (id)defaultGroupedHeaderConfiguration;
 + (id)defaultHeaderConfiguration;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDirectionalEdgeInsets)directionalLayoutMargins;
 - (NSString)description;
-- (_UIBasicHeaderFooterContentViewConfiguration)initWithCoder:(id)a3;
-- (id)_initWithTextLabel:(uint64_t)a3 isHeader:(int)a4 resetsVerticalLayoutMargins:(void *)a5 traitCollection:;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_UIBasicHeaderFooterContentViewConfiguration)initWithCoder:(id)coder;
+- (id)_initWithTextLabel:(uint64_t)label isHeader:(int)header resetsVerticalLayoutMargins:(void *)margins traitCollection:;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)createContentView;
-- (id)updatedConfigurationForState:(unint64_t)a3 traitCollection:(id)a4;
-- (uint64_t)_isEqualToConfigurationQuick:(uint64_t)a1;
-- (void)_configureForResetsVerticalLayoutMargins:(uint64_t)a3 isHeader:(void *)a4 withTraitCollection:;
-- (void)applyToContentView:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)updatedConfigurationForState:(unint64_t)state traitCollection:(id)collection;
+- (uint64_t)_isEqualToConfigurationQuick:(uint64_t)quick;
+- (void)_configureForResetsVerticalLayoutMargins:(uint64_t)margins isHeader:(void *)header withTraitCollection:;
+- (void)applyToContentView:(id)view;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIBasicHeaderFooterContentViewConfiguration
@@ -34,24 +34,24 @@
   return v4;
 }
 
-- (id)_initWithTextLabel:(uint64_t)a3 isHeader:(int)a4 resetsVerticalLayoutMargins:(void *)a5 traitCollection:
+- (id)_initWithTextLabel:(uint64_t)label isHeader:(int)header resetsVerticalLayoutMargins:(void *)margins traitCollection:
 {
   v10 = a2;
-  v11 = a5;
-  if (a1)
+  marginsCopy = margins;
+  if (self)
   {
-    v14.receiver = a1;
+    v14.receiver = self;
     v14.super_class = _UIBasicHeaderFooterContentViewConfiguration;
     v12 = objc_msgSendSuper2(&v14, sel_init);
-    a1 = v12;
+    self = v12;
     if (v12)
     {
       objc_storeStrong(v12 + 4, a2);
-      [(_UIBasicHeaderFooterContentViewConfiguration *)a1 _configureForResetsVerticalLayoutMargins:a4 isHeader:a3 withTraitCollection:v11];
+      [(_UIBasicHeaderFooterContentViewConfiguration *)self _configureForResetsVerticalLayoutMargins:header isHeader:label withTraitCollection:marginsCopy];
     }
   }
 
-  return a1;
+  return self;
 }
 
 + (id)defaultFooterConfiguration
@@ -99,12 +99,12 @@
   return v4;
 }
 
-- (id)updatedConfigurationForState:(unint64_t)a3 traitCollection:(id)a4
+- (id)updatedConfigurationForState:(unint64_t)state traitCollection:(id)collection
 {
-  v5 = a4;
+  collectionCopy = collection;
   v6 = [(_UIBasicHeaderFooterContentViewConfiguration *)self copy];
   defaultStyle = self->_defaultStyle;
-  v8 = v5;
+  v8 = collectionCopy;
   v9 = objc_opt_self();
   v10 = v8;
   if (!v8)
@@ -116,19 +116,19 @@
   {
     if (defaultStyle == 2)
     {
-      v11 = [v9 defaultGroupedHeaderConfiguration];
+      defaultGroupedHeaderConfiguration = [v9 defaultGroupedHeaderConfiguration];
       goto LABEL_13;
     }
 
     if (defaultStyle == 3)
     {
-      v11 = [v9 defaultGroupedFooterConfiguration];
+      defaultGroupedHeaderConfiguration = [v9 defaultGroupedFooterConfiguration];
       goto LABEL_13;
     }
 
 LABEL_10:
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:sel__defaultConfigurationForStyle_state_traitCollection_ object:v9 file:@"_UIBasicHeaderFooterContentView.m" lineNumber:160 description:{@"Unknown style: %ld", defaultStyle}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:sel__defaultConfigurationForStyle_state_traitCollection_ object:v9 file:@"_UIBasicHeaderFooterContentView.m" lineNumber:160 description:{@"Unknown style: %ld", defaultStyle}];
 
     v13 = 0;
     goto LABEL_14;
@@ -136,7 +136,7 @@ LABEL_10:
 
   if (!defaultStyle)
   {
-    v11 = [v9 defaultHeaderConfiguration];
+    defaultGroupedHeaderConfiguration = [v9 defaultHeaderConfiguration];
     goto LABEL_13;
   }
 
@@ -145,14 +145,14 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v11 = [v9 defaultFooterConfiguration];
+  defaultGroupedHeaderConfiguration = [v9 defaultFooterConfiguration];
 LABEL_13:
-  v13 = v11;
+  v13 = defaultGroupedHeaderConfiguration;
 LABEL_14:
 
-  v14 = [v6 textLabel];
-  v15 = [v13 textLabel];
-  [(_UIContentViewLabelConfiguration *)v14 _applyPropertiesFromDefaultConfiguration:v15];
+  textLabel = [v6 textLabel];
+  textLabel2 = [v13 textLabel];
+  [(_UIContentViewLabelConfiguration *)textLabel _applyPropertiesFromDefaultConfiguration:textLabel2];
 
   configurationFlags = self->_configurationFlags;
   if (configurationFlags)
@@ -211,26 +211,26 @@ LABEL_22:
   return v6;
 }
 
-- (void)_configureForResetsVerticalLayoutMargins:(uint64_t)a3 isHeader:(void *)a4 withTraitCollection:
+- (void)_configureForResetsVerticalLayoutMargins:(uint64_t)margins isHeader:(void *)header withTraitCollection:
 {
-  v7 = a4;
-  if (a1)
+  headerCopy = header;
+  if (self)
   {
-    if (!v7)
+    if (!headerCopy)
     {
-      v7 = +[UITraitCollection _fallbackTraitCollection];
+      headerCopy = +[UITraitCollection _fallbackTraitCollection];
     }
 
-    v20 = v7;
-    v8 = _UITableConstantsForTraitCollection(v7);
-    [v8 defaultHeaderFooterLayoutMarginsForTableViewStyle:a2 ^ 1u isHeader:a3 isFirstSection:0];
+    v20 = headerCopy;
+    v8 = _UITableConstantsForTraitCollection(headerCopy);
+    [v8 defaultHeaderFooterLayoutMarginsForTableViewStyle:a2 ^ 1u isHeader:margins isFirstSection:0];
     v10 = v9;
     v12 = v11;
     v14 = v13;
     v16 = v15;
 
-    v17 = [v20 layoutDirection];
-    if (v17 == 1)
+    layoutDirection = [v20 layoutDirection];
+    if (layoutDirection == 1)
     {
       v18 = v16;
     }
@@ -240,7 +240,7 @@ LABEL_22:
       v18 = v12;
     }
 
-    if (v17 == 1)
+    if (layoutDirection == 1)
     {
       v19 = v12;
     }
@@ -250,43 +250,43 @@ LABEL_22:
       v19 = v16;
     }
 
-    *(a1 + 40) = v10;
-    *(a1 + 48) = v18;
-    *(a1 + 56) = v14;
-    *(a1 + 64) = v19;
-    *(a1 + 16) = 1;
+    *(self + 40) = v10;
+    *(self + 48) = v18;
+    *(self + 56) = v14;
+    *(self + 64) = v19;
+    *(self + 16) = 1;
   }
 
   else
   {
-    v20 = v7;
+    v20 = headerCopy;
   }
 }
 
-- (_UIBasicHeaderFooterContentViewConfiguration)initWithCoder:(id)a3
+- (_UIBasicHeaderFooterContentViewConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = _UIBasicHeaderFooterContentViewConfiguration;
   v5 = [(_UIBasicHeaderFooterContentViewConfiguration *)&v16 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"textLabel"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"textLabel"];
     textLabel = v5->_textLabel;
     v5->_textLabel = v6;
 
-    v5->_axesPreservingSuperviewLayoutMargins = [v4 decodeIntegerForKey:@"axesPreservingSuperviewLayoutMargins"];
-    [v4 decodeDirectionalEdgeInsetsForKey:@"directionalLayoutMargins"];
+    v5->_axesPreservingSuperviewLayoutMargins = [coderCopy decodeIntegerForKey:@"axesPreservingSuperviewLayoutMargins"];
+    [coderCopy decodeDirectionalEdgeInsetsForKey:@"directionalLayoutMargins"];
     v5->_directionalLayoutMargins.top = v8;
     v5->_directionalLayoutMargins.leading = v9;
     v5->_directionalLayoutMargins.bottom = v10;
     v5->_directionalLayoutMargins.trailing = v11;
-    v5->_defaultStyle = [v4 decodeIntegerForKey:@"defaultStyle"];
+    v5->_defaultStyle = [coderCopy decodeIntegerForKey:@"defaultStyle"];
     v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"axesPreservingSuperviewLayoutMargins"];
-    *&v5->_configurationFlags = *&v5->_configurationFlags & 0xFE | [v4 decodeBoolForKey:v12];
+    *&v5->_configurationFlags = *&v5->_configurationFlags & 0xFE | [coderCopy decodeBoolForKey:v12];
 
     v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"directionalLayoutMargins"];
-    if ([v4 decodeBoolForKey:v13])
+    if ([coderCopy decodeBoolForKey:v13])
     {
       v14 = 2;
     }
@@ -302,21 +302,21 @@ LABEL_22:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   textLabel = self->_textLabel;
-  v5 = a3;
-  [v5 encodeObject:textLabel forKey:@"textLabel"];
-  [v5 encodeInteger:self->_axesPreservingSuperviewLayoutMargins forKey:@"axesPreservingSuperviewLayoutMargins"];
-  [v5 encodeDirectionalEdgeInsets:@"directionalLayoutMargins" forKey:{self->_directionalLayoutMargins.top, self->_directionalLayoutMargins.leading, self->_directionalLayoutMargins.bottom, self->_directionalLayoutMargins.trailing}];
-  [v5 encodeInteger:self->_defaultStyle forKey:@"defaultStyle"];
+  coderCopy = coder;
+  [coderCopy encodeObject:textLabel forKey:@"textLabel"];
+  [coderCopy encodeInteger:self->_axesPreservingSuperviewLayoutMargins forKey:@"axesPreservingSuperviewLayoutMargins"];
+  [coderCopy encodeDirectionalEdgeInsets:@"directionalLayoutMargins" forKey:{self->_directionalLayoutMargins.top, self->_directionalLayoutMargins.leading, self->_directionalLayoutMargins.bottom, self->_directionalLayoutMargins.trailing}];
+  [coderCopy encodeInteger:self->_defaultStyle forKey:@"defaultStyle"];
   configurationFlags = self->_configurationFlags;
   v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"axesPreservingSuperviewLayoutMargins"];
-  [v5 encodeBool:configurationFlags & 1 forKey:v7];
+  [coderCopy encodeBool:configurationFlags & 1 forKey:v7];
 
   v8 = (*&self->_configurationFlags >> 1) & 1;
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasCustomized-%@", @"directionalLayoutMargins"];
-  [v5 encodeBool:v8 forKey:v9];
+  [coderCopy encodeBool:v8 forKey:v9];
 }
 
 - (id)createContentView
@@ -326,22 +326,22 @@ LABEL_22:
   return v2;
 }
 
-- (void)applyToContentView:(id)a3
+- (void)applyToContentView:(id)view
 {
-  v6 = a3;
+  viewCopy = view;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"_UIBasicHeaderFooterContentView.m" lineNumber:247 description:{@"Unable to apply %@ to content view %@", self, v6}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIBasicHeaderFooterContentView.m" lineNumber:247 description:{@"Unable to apply %@ to content view %@", self, viewCopy}];
   }
 
-  [v6 setConfiguration:self];
+  [viewCopy setConfiguration:self];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v4)
   {
     v5 = [(_UIContentViewLabelConfiguration *)self->_textLabel copy];
@@ -359,16 +359,16 @@ LABEL_22:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     LOBYTE(self) = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     v7 = v6;
@@ -394,29 +394,29 @@ LABEL_22:
   return self & 1;
 }
 
-- (uint64_t)_isEqualToConfigurationQuick:(uint64_t)a1
+- (uint64_t)_isEqualToConfigurationQuick:(uint64_t)quick
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (quick)
   {
-    if (v3 == a1)
+    if (v3 == quick)
     {
-      LOBYTE(a1) = 1;
+      LOBYTE(quick) = 1;
     }
 
-    else if (*(a1 + 24) == v3[3] && [(_UIContentViewLabelConfiguration *)*(a1 + 32) _isEqualToConfigurationQuick:?]&& *(a1 + 16) == v4[2])
+    else if (*(quick + 24) == v3[3] && [(_UIContentViewLabelConfiguration *)*(quick + 32) _isEqualToConfigurationQuick:?]&& *(quick + 16) == v4[2])
     {
-      LOBYTE(a1) = vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*(a1 + 40), *(v4 + 5)), vceqq_f64(*(a1 + 56), *(v4 + 7)))));
+      LOBYTE(quick) = vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*(quick + 40), *(v4 + 5)), vceqq_f64(*(quick + 56), *(v4 + 7)))));
     }
 
     else
     {
-      LOBYTE(a1) = 0;
+      LOBYTE(quick) = 0;
     }
   }
 
-  return a1 & 1;
+  return quick & 1;
 }
 
 - (NSString)description
@@ -426,9 +426,9 @@ LABEL_22:
   defaultStyle = self->_defaultStyle;
   if (defaultStyle >= 4)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *_UIBasicHeaderFooterContentViewConfigurationStyleToString(_UIBasicHeaderFooterContentViewConfigurationStyle)"];
-    [v7 handleFailureInFunction:v8 file:@"_UIBasicHeaderFooterContentView.m" lineNumber:36 description:{@"Unknown style: %ld", defaultStyle}];
+    [currentHandler handleFailureInFunction:v8 file:@"_UIBasicHeaderFooterContentView.m" lineNumber:36 description:{@"Unknown style: %ld", defaultStyle}];
 
     v6 = 0;
   }
@@ -444,8 +444,8 @@ LABEL_22:
   if ([(_UIContentViewLabelConfiguration *)self->_textLabel _hasText])
   {
     v10 = MEMORY[0x1E696AEC0];
-    v11 = [(_UIContentViewLabelConfiguration *)self->_textLabel _shortDescription];
-    v12 = [v10 stringWithFormat:@"textLabel = %@", v11];
+    _shortDescription = [(_UIContentViewLabelConfiguration *)self->_textLabel _shortDescription];
+    v12 = [v10 stringWithFormat:@"textLabel = %@", _shortDescription];
     [v3 addObject:v12];
   }
 

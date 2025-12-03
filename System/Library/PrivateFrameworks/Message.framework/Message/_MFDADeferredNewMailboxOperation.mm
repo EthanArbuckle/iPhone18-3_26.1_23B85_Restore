@@ -1,33 +1,33 @@
 @interface _MFDADeferredNewMailboxOperation
-- (_MFDADeferredNewMailboxOperation)initWithCoder:(id)a3;
+- (_MFDADeferredNewMailboxOperation)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _MFDADeferredNewMailboxOperation
 
-- (_MFDADeferredNewMailboxOperation)initWithCoder:(id)a3
+- (_MFDADeferredNewMailboxOperation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = _MFDADeferredNewMailboxOperation;
   v5 = [(_MFDADeferredNewMailboxOperation *)&v13 init];
   if (v5)
   {
-    if (([v4 allowsKeyedCoding] & 1) == 0)
+    if (([coderCopy allowsKeyedCoding] & 1) == 0)
     {
       __assert_rtn("[_MFDADeferredNewMailboxOperation initWithCoder:]", "MFMailMessageLibraryLocalActionsTablesMigrationStep.m", 762, "[aDecoder allowsKeyedCoding] && aDecoder must allow keyed coding");
     }
 
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DisplayName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DisplayName"];
     displayName = v5->_displayName;
     v5->_displayName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ParentFolderID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ParentFolderID"];
     parentFolderID = v5->_parentFolderID;
     v5->_parentFolderID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"TemporaryFolderID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"TemporaryFolderID"];
     temporaryFolderID = v5->_temporaryFolderID;
     v5->_temporaryFolderID = v10;
   }
@@ -35,17 +35,17 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  if (([v4 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     __assert_rtn("[_MFDADeferredNewMailboxOperation encodeWithCoder:]", "MFMailMessageLibraryLocalActionsTablesMigrationStep.m", 773, "[aCoder allowsKeyedCoding] && aCoder must allow keyed coding");
   }
 
-  [v4 encodeObject:self->_displayName forKey:@"DisplayName"];
-  [v4 encodeObject:self->_parentFolderID forKey:@"ParentFolderID"];
-  [v4 encodeObject:self->_temporaryFolderID forKey:@"TemporaryFolderID"];
+  [coderCopy encodeObject:self->_displayName forKey:@"DisplayName"];
+  [coderCopy encodeObject:self->_parentFolderID forKey:@"ParentFolderID"];
+  [coderCopy encodeObject:self->_temporaryFolderID forKey:@"TemporaryFolderID"];
 }
 
 - (id)description

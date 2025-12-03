@@ -1,16 +1,16 @@
 @interface CAStateTransitionElement
-+ (void)CAMLParserStartElement:(id)a3;
++ (void)CAMLParserStartElement:(id)element;
 - (CAStateTransitionElement)init;
-- (CAStateTransitionElement)initWithCoder:(id)a3;
+- (CAStateTransitionElement)initWithCoder:(id)coder;
 - (double)beginTime;
 - (double)duration;
-- (id)CAMLTypeForKey:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)CAMLTypeForKey:(id)key;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
-- (void)CAMLParser:(id)a3 setValue:(id)a4 forKey:(id)a5;
+- (void)CAMLParser:(id)parser setValue:(id)value forKey:(id)key;
 - (void)dealloc;
-- (void)encodeWithCAMLWriter:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCAMLWriter:(id)writer;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CAStateTransitionElement
@@ -41,7 +41,7 @@
   return [v3 stringWithFormat:@"<CAStateTransitionElement target=<%@: %p> key=%@ %@>", v4, objc_loadWeak(&self->_target), self->_key, self->_animation];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(CAStateTransitionElement);
   [(CAStateTransitionElement *)v4 setEnabled:self->_enabled];
@@ -51,7 +51,7 @@
   return v4;
 }
 
-- (CAStateTransitionElement)initWithCoder:(id)a3
+- (CAStateTransitionElement)initWithCoder:(id)coder
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
@@ -59,24 +59,24 @@
   v4 = [(CAStateTransitionElement *)&v8 init];
   if (v4)
   {
-    v5 = [a3 decodeObjectOfClasses:objc_msgSend(MEMORY[0x1E696AB10] forKey:{"CA_supportedClasses"), @"target"}];
+    v5 = [coder decodeObjectOfClasses:objc_msgSend(MEMORY[0x1E696AB10] forKey:{"CA_supportedClasses"), @"target"}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       objc_storeWeak(&v4->_target, v5);
     }
 
-    v6 = [a3 decodeObjectOfClasses:objc_msgSend(MEMORY[0x1E696AB10] forKey:{"CA_supportedClasses"), @"animation"}];
+    v6 = [coder decodeObjectOfClasses:objc_msgSend(MEMORY[0x1E696AB10] forKey:{"CA_supportedClasses"), @"animation"}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v4->_animation = v6;
     }
 
-    v4->_key = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"key", "copy"}];
-    if ([a3 containsValueForKey:@"enabled"])
+    v4->_key = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"key", "copy"}];
+    if ([coder containsValueForKey:@"enabled"])
     {
-      v4->_enabled = [a3 decodeBoolForKey:@"enabled"];
+      v4->_enabled = [coder decodeBoolForKey:@"enabled"];
     }
 
     else
@@ -88,33 +88,33 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   if (objc_loadWeak(&self->_target))
   {
-    [a3 encodeConditionalObject:objc_loadWeak(&self->_target) forKey:@"target"];
+    [coder encodeConditionalObject:objc_loadWeak(&self->_target) forKey:@"target"];
   }
 
   animation = self->_animation;
   if (animation)
   {
-    [a3 encodeObject:animation forKey:@"animation"];
+    [coder encodeObject:animation forKey:@"animation"];
   }
 
   key = self->_key;
   if (key)
   {
-    [a3 encodeObject:key forKey:@"key"];
+    [coder encodeObject:key forKey:@"key"];
   }
 
   if (!self->_enabled)
   {
 
-    [a3 encodeBool:0 forKey:@"enabled"];
+    [coder encodeBool:0 forKey:@"enabled"];
   }
 }
 
-- (id)CAMLTypeForKey:(id)a3
+- (id)CAMLTypeForKey:(id)key
 {
   v4 = [CAStateTransitionElement CAMLTypeForKey:]::dict;
   if (![CAStateTransitionElement CAMLTypeForKey:]::dict)
@@ -123,48 +123,48 @@
     [CAStateTransitionElement CAMLTypeForKey:]::dict = v4;
   }
 
-  return [v4 objectForKey:a3];
+  return [v4 objectForKey:key];
 }
 
-- (void)encodeWithCAMLWriter:(id)a3
+- (void)encodeWithCAMLWriter:(id)writer
 {
   if (!self->_enabled)
   {
-    [a3 setElementAttribute:@"false" forKey:@"enabled"];
+    [writer setElementAttribute:@"false" forKey:@"enabled"];
   }
 
   key = self->_key;
   if (key)
   {
-    [a3 setElementAttribute:key forKey:@"key"];
+    [writer setElementAttribute:key forKey:@"key"];
   }
 
   if (objc_loadWeak(&self->_target))
   {
-    [a3 beginPropertyElement:@"target"];
-    [a3 encodeObject:objc_loadWeak(&self->_target)];
-    [a3 endElement];
+    [writer beginPropertyElement:@"target"];
+    [writer encodeObject:objc_loadWeak(&self->_target)];
+    [writer endElement];
   }
 
   if (self->_animation)
   {
-    [a3 beginPropertyElement:@"animation"];
-    [a3 encodeObject:self->_animation];
+    [writer beginPropertyElement:@"animation"];
+    [writer encodeObject:self->_animation];
 
-    [a3 endElement];
+    [writer endElement];
   }
 }
 
-- (void)CAMLParser:(id)a3 setValue:(id)a4 forKey:(id)a5
+- (void)CAMLParser:(id)parser setValue:(id)value forKey:(id)key
 {
-  v5 = a5;
-  if ([a5 isEqualToString:@"targetId"])
+  keyCopy = key;
+  if ([key isEqualToString:@"targetId"])
   {
-    a4 = [a3 objectById:a4];
-    v5 = @"target";
+    value = [parser objectById:value];
+    keyCopy = @"target";
   }
 
-  [(CAStateTransitionElement *)self setValue:a4 forKey:v5];
+  [(CAStateTransitionElement *)self setValue:value forKey:keyCopy];
 }
 
 - (double)duration
@@ -191,10 +191,10 @@
   return result;
 }
 
-+ (void)CAMLParserStartElement:(id)a3
++ (void)CAMLParserStartElement:(id)element
 {
-  v4 = objc_alloc_init(a1);
-  [a3 setElementValue:v4];
+  v4 = objc_alloc_init(self);
+  [element setElementValue:v4];
 }
 
 @end

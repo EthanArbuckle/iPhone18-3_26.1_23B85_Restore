@@ -56,7 +56,7 @@ void __46__NTKFastFaceSwitchingSettings_sharedInstance__block_invoke()
 {
   v13 = *MEMORY[0x277D85DE8];
   v3 = [objc_alloc(MEMORY[0x277D2BA58]) initWithDomain:@"com.apple.NanoTimeKit.face"];
-  v4 = [v3 synchronize];
+  synchronize = [v3 synchronize];
   v8 = 0;
   v5 = [v3 BOOLForKey:@"FaceSupportFastSwitching" keyExistsAndHasValidFormat:&v8];
   self->_fastFaceSwitchingEnabled = v8 & v5;
@@ -81,8 +81,8 @@ void __46__NTKFastFaceSwitchingSettings_sharedInstance__block_invoke()
 
 - (void)_notifyClientsOfChange
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 postNotificationName:@"NTKFastFaceSwitchingEnabledChanged" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"NTKFastFaceSwitchingEnabledChanged" object:self];
 }
 
 @end

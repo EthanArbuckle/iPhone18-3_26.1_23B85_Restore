@@ -1,6 +1,6 @@
 @interface ALSOcclusionStats
 - (ALSOcclusionStats)init;
-- (void)recordOcclusionByProx:(BOOL)a3 andByTouch:(BOOL)a4;
+- (void)recordOcclusionByProx:(BOOL)prox andByTouch:(BOOL)touch;
 - (void)reset;
 @end
 
@@ -8,17 +8,17 @@
 
 - (ALSOcclusionStats)init
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v3.receiver = self;
   v3.super_class = ALSOcclusionStats;
-  v5 = [(ALSOcclusionStats *)&v3 init];
-  if (v5)
+  selfCopy = [(ALSOcclusionStats *)&v3 init];
+  if (selfCopy)
   {
-    [(ALSOcclusionStats *)v5 reset];
+    [(ALSOcclusionStats *)selfCopy reset];
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (void)reset
@@ -29,19 +29,19 @@
   self->_none = 0;
 }
 
-- (void)recordOcclusionByProx:(BOOL)a3 andByTouch:(BOOL)a4
+- (void)recordOcclusionByProx:(BOOL)prox andByTouch:(BOOL)touch
 {
-  if (a4 && a3)
+  if (touch && prox)
   {
     ++self->_touchAndProx;
   }
 
-  else if (a3)
+  else if (prox)
   {
     ++self->_prox;
   }
 
-  else if (a4)
+  else if (touch)
   {
     ++self->_touch;
   }

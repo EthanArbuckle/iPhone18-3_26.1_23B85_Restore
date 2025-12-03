@@ -1,35 +1,35 @@
 @interface MapsFindMyLocationHandle
 - (_TtC4Maps24MapsFindMyLocationHandle)init;
-- (_TtC4Maps24MapsFindMyLocationHandle)initWithHandle:(id)a3 location:(id)a4;
+- (_TtC4Maps24MapsFindMyLocationHandle)initWithHandle:(id)handle location:(id)location;
 - (id)title;
-- (void)setLocation:(id)a3;
+- (void)setLocation:(id)location;
 @end
 
 @implementation MapsFindMyLocationHandle
 
-- (void)setLocation:(id)a3
+- (void)setLocation:(id)location
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC4Maps24MapsFindMyLocationHandle_location);
-  *(&self->super.isa + OBJC_IVAR____TtC4Maps24MapsFindMyLocationHandle_location) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC4Maps24MapsFindMyLocationHandle_location) = location;
+  locationCopy = location;
 }
 
-- (_TtC4Maps24MapsFindMyLocationHandle)initWithHandle:(id)a3 location:(id)a4
+- (_TtC4Maps24MapsFindMyLocationHandle)initWithHandle:(id)handle location:(id)location
 {
   v6 = OBJC_IVAR____TtC4Maps24MapsFindMyLocationHandle_location;
   *(&self->super.isa + OBJC_IVAR____TtC4Maps24MapsFindMyLocationHandle_location) = 0;
-  *(&self->super.isa + OBJC_IVAR____TtC4Maps24MapsFindMyLocationHandle_handle) = a3;
-  *(&self->super.isa + v6) = a4;
+  *(&self->super.isa + OBJC_IVAR____TtC4Maps24MapsFindMyLocationHandle_handle) = handle;
+  *(&self->super.isa + v6) = location;
   v10.receiver = self;
   v10.super_class = type metadata accessor for MapsFindMyLocationHandle();
-  v7 = a3;
-  v8 = a4;
+  handleCopy = handle;
+  locationCopy = location;
   return [(MapsFindMyLocationHandle *)&v10 init];
 }
 
 - (id)title
 {
-  v2 = self;
+  selfCopy = self;
   Handle.prettyName.getter();
   if (!v3)
   {

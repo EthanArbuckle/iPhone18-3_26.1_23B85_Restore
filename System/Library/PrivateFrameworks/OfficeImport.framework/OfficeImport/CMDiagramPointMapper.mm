@@ -1,33 +1,33 @@
 @interface CMDiagramPointMapper
-- (CMDiagramPointMapper)initWithPoint:(id)a3 drawingContext:(id)a4 orientedBounds:(id)a5 parent:(id)a6;
+- (CMDiagramPointMapper)initWithPoint:(id)point drawingContext:(id)context orientedBounds:(id)bounds parent:(id)parent;
 - (float)defaultFontSize;
-- (id)baseTextListStyleWithBounds:(id)a3 isCentered:(BOOL)a4;
+- (id)baseTextListStyleWithBounds:(id)bounds isCentered:(BOOL)centered;
 - (id)diagram;
 - (id)fill;
 - (id)plainText;
 - (id)presentationName;
-- (id)presentationWithName:(id)a3;
+- (id)presentationWithName:(id)name;
 - (id)shapeStyle;
 - (id)stroke;
 - (id)styleMatrix;
-- (id)transformForPresentationWithName:(id)a3;
+- (id)transformForPresentationWithName:(id)name;
 - (void)applyDiagramStyleToShapeProperties;
-- (void)mapAt:(id)a3 withState:(id)a4;
-- (void)mapChildrenTextAt:(id)a3 style:(id)a4 level:(int)a5 withState:(id)a6;
-- (void)mapPointTextAt:(id)a3 style:(id)a4 level:(int)a5 withState:(id)a6;
-- (void)mapSiblingTextAt:(id)a3 style:(id)a4 level:(int)a5 withState:(id)a6;
-- (void)mapStyledRectangle:(CGRect)a3 at:(id)a4 withState:(id)a5;
-- (void)mapTextAt:(id)a3 withBounds:(id)a4 isCentered:(BOOL)a5 includeChildren:(BOOL)a6 withState:(id)a7;
+- (void)mapAt:(id)at withState:(id)state;
+- (void)mapChildrenTextAt:(id)at style:(id)style level:(int)level withState:(id)state;
+- (void)mapPointTextAt:(id)at style:(id)style level:(int)level withState:(id)state;
+- (void)mapSiblingTextAt:(id)at style:(id)style level:(int)level withState:(id)state;
+- (void)mapStyledRectangle:(CGRect)rectangle at:(id)at withState:(id)state;
+- (void)mapTextAt:(id)at withBounds:(id)bounds isCentered:(BOOL)centered includeChildren:(BOOL)children withState:(id)state;
 @end
 
 @implementation CMDiagramPointMapper
 
 - (id)plainText
 {
-  v2 = [(ODDPoint *)self->mPoint text];
-  v3 = [v2 plainText];
+  text = [(ODDPoint *)self->mPoint text];
+  plainText = [text plainText];
 
-  return v3;
+  return plainText;
 }
 
 - (void)applyDiagramStyleToShapeProperties
@@ -35,54 +35,54 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(CMDiagramPointMapper *)self shapeStyle];
-    v3 = [(CMDiagramPointMapper *)self styleMatrix];
-    v4 = [(ODDPoint *)self->mPoint shapeProperties];
-    [v5 applyToGraphicProperties:v4 styleMatrix:v3];
+    shapeStyle = [(CMDiagramPointMapper *)self shapeStyle];
+    styleMatrix = [(CMDiagramPointMapper *)self styleMatrix];
+    shapeProperties = [(ODDPoint *)self->mPoint shapeProperties];
+    [shapeStyle applyToGraphicProperties:shapeProperties styleMatrix:styleMatrix];
   }
 }
 
 - (id)shapeStyle
 {
-  v3 = [(CMDiagramPointMapper *)self diagram];
-  v4 = [v3 styleDefinition];
+  diagram = [(CMDiagramPointMapper *)self diagram];
+  styleDefinition = [diagram styleDefinition];
 
-  v5 = [(CMDiagramPointMapper *)self presentationName];
-  v6 = [(CMDiagramPointMapper *)self presentationWithName:v5];
+  presentationName = [(CMDiagramPointMapper *)self presentationName];
+  v6 = [(CMDiagramPointMapper *)self presentationWithName:presentationName];
 
-  v7 = [v6 propertySet];
-  v8 = [v7 presentationStyleLabel];
+  propertySet = [v6 propertySet];
+  presentationStyleLabel = [propertySet presentationStyleLabel];
 
-  v9 = [v4 labelForName:v8];
-  v10 = [v9 shapeStyle];
+  v9 = [styleDefinition labelForName:presentationStyleLabel];
+  shapeStyle = [v9 shapeStyle];
 
-  if (v10)
+  if (shapeStyle)
   {
-    v11 = [(CMDiagramPointMapper *)self diagram];
-    v12 = [v11 colorTransform];
-    v13 = [v12 labelForName:v8];
+    diagram2 = [(CMDiagramPointMapper *)self diagram];
+    colorTransform = [diagram2 colorTransform];
+    v13 = [colorTransform labelForName:presentationStyleLabel];
 
-    v14 = [v6 propertySet];
-    v15 = [v14 presentationStyleIndex];
+    propertySet2 = [v6 propertySet];
+    presentationStyleIndex = [propertySet2 presentationStyleIndex];
 
     if (v13)
     {
-      v16 = [v10 copy];
+      v16 = [shapeStyle copy];
 
-      v10 = v16;
-      [v13 applyToShapeStyle:v16 index:v15 count:0 state:0];
+      shapeStyle = v16;
+      [v13 applyToShapeStyle:v16 index:presentationStyleIndex count:0 state:0];
     }
   }
 
-  return v10;
+  return shapeStyle;
 }
 
 - (id)diagram
 {
-  v2 = [(CMMapper *)self parent];
-  if (v2)
+  parent = [(CMMapper *)self parent];
+  if (parent)
   {
-    v3 = v2;
+    v3 = parent;
     while (1)
     {
       objc_opt_class();
@@ -91,26 +91,26 @@
         break;
       }
 
-      v4 = [v3 parent];
+      parent2 = [v3 parent];
 
-      v3 = v4;
-      if (!v4)
+      v3 = parent2;
+      if (!parent2)
       {
         goto LABEL_8;
       }
     }
 
-    v4 = [v3 diagram];
+    parent2 = [v3 diagram];
   }
 
   else
   {
-    v4 = 0;
+    parent2 = 0;
   }
 
 LABEL_8:
 
-  return v4;
+  return parent2;
 }
 
 - (id)presentationName
@@ -123,14 +123,14 @@ LABEL_8:
 
   else
   {
-    v4 = [(ODDPoint *)self->mPoint type];
+    type = [(ODDPoint *)self->mPoint type];
     v5 = @"node0";
-    if (v4 == 2)
+    if (type == 2)
     {
       v5 = @"node1";
     }
 
-    if (v4)
+    if (type)
     {
       v3 = v5;
     }
@@ -146,31 +146,31 @@ LABEL_8:
 
 - (id)styleMatrix
 {
-  v2 = [(CMMapper *)self parent];
-  if (v2)
+  parent = [(CMMapper *)self parent];
+  if (parent)
   {
-    v3 = v2;
+    v3 = parent;
     while ((objc_opt_respondsToSelector() & 1) == 0)
     {
-      v4 = [v3 parent];
+      parent2 = [v3 parent];
 
-      v3 = v4;
-      if (!v4)
+      v3 = parent2;
+      if (!parent2)
       {
         goto LABEL_5;
       }
     }
 
-    v5 = [v3 styleMatrix];
+    styleMatrix = [v3 styleMatrix];
   }
 
   else
   {
 LABEL_5:
-    v5 = 0;
+    styleMatrix = 0;
   }
 
-  return v5;
+  return styleMatrix;
 }
 
 - (id)fill
@@ -178,16 +178,16 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [(ODDPoint *)self->mPoint shapeProperties];
-    v4 = [v3 fill];
+    shapeProperties = [(ODDPoint *)self->mPoint shapeProperties];
+    fill = [shapeProperties fill];
   }
 
   else
   {
-    v4 = 0;
+    fill = 0;
   }
 
-  return v4;
+  return fill;
 }
 
 - (id)stroke
@@ -195,23 +195,23 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [(ODDPoint *)self->mPoint shapeProperties];
-    v4 = [v3 stroke];
+    shapeProperties = [(ODDPoint *)self->mPoint shapeProperties];
+    stroke = [shapeProperties stroke];
   }
 
   else
   {
-    v4 = 0;
+    stroke = 0;
   }
 
-  return v4;
+  return stroke;
 }
 
 - (float)defaultFontSize
 {
-  v2 = [(CMMapper *)self parent];
+  parent = [(CMMapper *)self parent];
   v3 = 0.0;
-  if (v2)
+  if (parent)
   {
     while (1)
     {
@@ -221,16 +221,16 @@ LABEL_5:
         break;
       }
 
-      v4 = [v2 parent];
+      v2Parent = [parent parent];
 
-      v2 = v4;
-      if (!v4)
+      parent = v2Parent;
+      if (!v2Parent)
       {
         goto LABEL_6;
       }
     }
 
-    [v2 defaultFontSize];
+    [parent defaultFontSize];
     v3 = v5;
   }
 
@@ -239,20 +239,20 @@ LABEL_6:
   return v3;
 }
 
-- (CMDiagramPointMapper)initWithPoint:(id)a3 drawingContext:(id)a4 orientedBounds:(id)a5 parent:(id)a6
+- (CMDiagramPointMapper)initWithPoint:(id)point drawingContext:(id)context orientedBounds:(id)bounds parent:(id)parent
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  pointCopy = point;
+  contextCopy = context;
+  boundsCopy = bounds;
   v18.receiver = self;
   v18.super_class = CMDiagramPointMapper;
-  v14 = [(CMMapper *)&v18 initWithParent:a6];
+  v14 = [(CMMapper *)&v18 initWithParent:parent];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->mPoint, a3);
-    objc_storeStrong(&v15->mDrawingContext, a4);
-    objc_storeStrong(&v15->mOrientedBounds, a5);
+    objc_storeStrong(&v14->mPoint, point);
+    objc_storeStrong(&v15->mDrawingContext, context);
+    objc_storeStrong(&v15->mOrientedBounds, bounds);
     mPresentationName = v15->mPresentationName;
     v15->mPresentationName = 0;
   }
@@ -260,14 +260,14 @@ LABEL_6:
   return v15;
 }
 
-- (void)mapAt:(id)a3 withState:(id)a4
+- (void)mapAt:(id)at withState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CMDiagramPointMapper *)self transformPresentationName];
-  if (v8)
+  atCopy = at;
+  stateCopy = state;
+  transformPresentationName = [(CMDiagramPointMapper *)self transformPresentationName];
+  if (transformPresentationName)
   {
-    v9 = [(CMDiagramPointMapper *)self transformForPresentationWithName:v8];
+    v9 = [(CMDiagramPointMapper *)self transformForPresentationWithName:transformPresentationName];
     v10 = [CMShapeUtils transformedBoundsWithBounds:self->mOrientedBounds transform:v9];
   }
 
@@ -280,66 +280,66 @@ LABEL_6:
   [(CMDiagramPointMapper *)self renderShapeAsBackgroundInBounds:v10];
   v11 = [OIXMLElement elementWithType:3];
   [(OADOrientedBounds *)v10 bounds];
-  [(CMDiagramPointMapper *)self mapStyledRectangle:v11 at:v7 withState:?];
-  [v6 addChild:v11];
+  [(CMDiagramPointMapper *)self mapStyledRectangle:v11 at:stateCopy withState:?];
+  [atCopy addChild:v11];
   v12 = v11;
 
   [CMDiagramPointMapper mapTextAt:"mapTextAt:withBounds:isCentered:includeChildren:withState:" withBounds:? isCentered:? includeChildren:? withState:?];
   [CMDiagramPointMapper mapChlidrenAt:"mapChlidrenAt:withState:" withState:?];
 }
 
-- (void)mapStyledRectangle:(CGRect)a3 at:(id)a4 withState:(id)a5
+- (void)mapStyledRectangle:(CGRect)rectangle at:(id)at withState:(id)state
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
-  v12 = a5;
+  height = rectangle.size.height;
+  width = rectangle.size.width;
+  y = rectangle.origin.y;
+  x = rectangle.origin.x;
+  atCopy = at;
+  stateCopy = state;
   v13 = objc_alloc_init(CMDrawableStyle);
   [(CMDrawableStyle *)v13 addPositionProperties:x, y, width, height];
   [(CMDiagramPointMapper *)self applyDiagramStyleToShapeProperties];
-  v14 = [(CMDiagramPointMapper *)self fill];
-  v15 = [CMColorProperty nsColorFromOADFill:v14 state:v12];
+  fill = [(CMDiagramPointMapper *)self fill];
+  v15 = [CMColorProperty nsColorFromOADFill:fill state:stateCopy];
 
   [(CMStyle *)v13 appendPropertyForName:0x286F07DF0 color:v15];
-  v16 = [(CMDiagramPointMapper *)self stroke];
+  stroke = [(CMDiagramPointMapper *)self stroke];
   v17 = [CMBordersProperty alloc];
-  [(CMBordersProperty *)v17 setFromOadStroke:v16 atLocation:0 state:v12];
-  v18 = [(CMBordersProperty *)v17 cssString];
-  [(CMStyle *)v13 appendPropertyString:v18];
+  [(CMBordersProperty *)v17 setFromOadStroke:stroke atLocation:0 state:stateCopy];
+  cssString = [(CMBordersProperty *)v17 cssString];
+  [(CMStyle *)v13 appendPropertyString:cssString];
 
   v19.receiver = self;
   v19.super_class = CMDiagramPointMapper;
-  [(CMMapper *)&v19 addStyleUsingGlobalCacheTo:v11 style:v13];
+  [(CMMapper *)&v19 addStyleUsingGlobalCacheTo:atCopy style:v13];
 }
 
-- (id)presentationWithName:(id)a3
+- (id)presentationWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(ODDPoint *)self->mPoint presentations];
-    v6 = v5;
-    if (v5 && [v5 count])
+    presentations = [(ODDPoint *)self->mPoint presentations];
+    v6 = presentations;
+    if (presentations && [presentations count])
     {
-      if (v4)
+      if (nameCopy)
       {
-        v7 = [v6 objectEnumerator];
+        objectEnumerator = [v6 objectEnumerator];
         while (1)
         {
-          v8 = [v7 nextObject];
-          v9 = v8;
-          if (!v8)
+          nextObject = [objectEnumerator nextObject];
+          v9 = nextObject;
+          if (!nextObject)
           {
 
             goto LABEL_12;
           }
 
-          v10 = [v8 propertySet];
-          v11 = [v10 presentationName];
-          v12 = [v4 isEqualToString:v11];
+          propertySet = [nextObject propertySet];
+          presentationName = [propertySet presentationName];
+          v12 = [nameCopy isEqualToString:presentationName];
 
           if (v12)
           {
@@ -369,120 +369,120 @@ LABEL_12:
   return v9;
 }
 
-- (void)mapTextAt:(id)a3 withBounds:(id)a4 isCentered:(BOOL)a5 includeChildren:(BOOL)a6 withState:(id)a7
+- (void)mapTextAt:(id)at withBounds:(id)bounds isCentered:(BOOL)centered includeChildren:(BOOL)children withState:(id)state
 {
-  v8 = a5;
-  v11 = a3;
-  v12 = a4;
-  v13 = a7;
-  v14 = [(CMDiagramPointMapper *)self baseTextListStyleWithBounds:v12 isCentered:v8];
-  if (v8)
+  centeredCopy = centered;
+  atCopy = at;
+  boundsCopy = bounds;
+  stateCopy = state;
+  v14 = [(CMDiagramPointMapper *)self baseTextListStyleWithBounds:boundsCopy isCentered:centeredCopy];
+  if (centeredCopy)
   {
     v18 = [OIXMLElement elementWithType:3];
-    [v11 addChild:v18];
+    [atCopy addChild:v18];
     v15 = v18;
 
     v16 = objc_alloc_init(CMStyle);
     [(CMStyle *)v16 appendPropertyForName:0x286F08050 stringValue:@"table"];
-    [v12 bounds];
+    [boundsCopy bounds];
     [(CMStyle *)v16 appendSizeInfoFromRect:?];
     v20.receiver = self;
     v20.super_class = CMDiagramPointMapper;
     [(CMMapper *)&v20 addStyleUsingGlobalCacheTo:v15 style:v16];
-    v11 = [OIXMLElement elementWithType:3];
+    atCopy = [OIXMLElement elementWithType:3];
     v17 = objc_alloc_init(CMStyle);
     [(CMStyle *)v17 appendPropertyForName:0x286F08050 stringValue:@"table-cell"];
     [(CMStyle *)v17 appendPropertyForName:0x286F077D0 stringValue:0x286EF7150];
     v19.receiver = self;
     v19.super_class = CMDiagramPointMapper;
-    [(CMMapper *)&v19 addStyleUsingGlobalCacheTo:v11 style:v17];
-    [v15 addChild:v11];
+    [(CMMapper *)&v19 addStyleUsingGlobalCacheTo:atCopy style:v17];
+    [v15 addChild:atCopy];
   }
 
-  [(CMDiagramPointMapper *)self mapPointTextAt:v11 style:v14 level:0 withState:v13];
+  [(CMDiagramPointMapper *)self mapPointTextAt:atCopy style:v14 level:0 withState:stateCopy];
 }
 
-- (void)mapChildrenTextAt:(id)a3 style:(id)a4 level:(int)a5 withState:(id)a6
+- (void)mapChildrenTextAt:(id)at style:(id)style level:(int)level withState:(id)state
 {
-  v7 = *&a5;
-  v17 = a3;
-  v10 = a4;
-  v11 = a6;
-  [(CMDiagramPointMapper *)self mapPointTextAt:v17 style:v10 level:v7 withState:v11];
-  v12 = [(ODDPoint *)self->mPoint children];
-  v13 = [v12 count];
+  v7 = *&level;
+  atCopy = at;
+  styleCopy = style;
+  stateCopy = state;
+  [(CMDiagramPointMapper *)self mapPointTextAt:atCopy style:styleCopy level:v7 withState:stateCopy];
+  children = [(ODDPoint *)self->mPoint children];
+  v13 = [children count];
   if (v13)
   {
     for (i = 0; i != v13; ++i)
     {
-      v15 = [v12 objectAtIndex:i];
+      v15 = [children objectAtIndex:i];
       v16 = [[CMDiagramPointMapper alloc] initWithPoint:v15 drawingContext:self->mDrawingContext orientedBounds:self->mOrientedBounds parent:self];
-      [(CMDiagramPointMapper *)v16 mapChildrenTextAt:v17 style:v10 level:(v7 + 1) withState:v11];
+      [(CMDiagramPointMapper *)v16 mapChildrenTextAt:atCopy style:styleCopy level:(v7 + 1) withState:stateCopy];
     }
   }
 }
 
-- (void)mapSiblingTextAt:(id)a3 style:(id)a4 level:(int)a5 withState:(id)a6
+- (void)mapSiblingTextAt:(id)at style:(id)style level:(int)level withState:(id)state
 {
-  v7 = *&a5;
-  v18 = a3;
-  v10 = a4;
-  v17 = a6;
-  [(CMDiagramPointMapper *)self mapPointTextAt:v18 style:v10 level:v7 withState:?];
-  v11 = [(ODDPoint *)self->mPoint parent];
-  v12 = [v11 children];
+  v7 = *&level;
+  atCopy = at;
+  styleCopy = style;
+  stateCopy = state;
+  [(CMDiagramPointMapper *)self mapPointTextAt:atCopy style:styleCopy level:v7 withState:?];
+  parent = [(ODDPoint *)self->mPoint parent];
+  children = [parent children];
 
-  v13 = [v12 count];
+  v13 = [children count];
   if (v13 >= 2)
   {
     for (i = 1; i != v13; ++i)
     {
-      v15 = [v12 objectAtIndex:i];
+      v15 = [children objectAtIndex:i];
       v16 = [[CMDiagramPointMapper alloc] initWithPoint:v15 drawingContext:self->mDrawingContext orientedBounds:self->mOrientedBounds parent:self];
-      [(CMDiagramPointMapper *)v16 mapChildrenTextAt:v18 style:v10 level:v7 withState:v17];
+      [(CMDiagramPointMapper *)v16 mapChildrenTextAt:atCopy style:styleCopy level:v7 withState:stateCopy];
     }
   }
 }
 
-- (id)transformForPresentationWithName:(id)a3
+- (id)transformForPresentationWithName:(id)name
 {
-  v4 = [(CMDiagramPointMapper *)self presentationWithName:a3];
-  v5 = [v4 propertySet];
-  [v5 customScaleX];
+  v4 = [(CMDiagramPointMapper *)self presentationWithName:name];
+  propertySet = [v4 propertySet];
+  [propertySet customScaleX];
   v7 = v6;
 
-  v8 = [v4 propertySet];
-  [v8 customScaleY];
+  propertySet2 = [v4 propertySet];
+  [propertySet2 customScaleY];
   v10 = v9;
 
-  v11 = [MEMORY[0x277CCA878] transform];
-  [v11 scaleXBy:v7 yBy:v10];
-  v12 = [v4 propertySet];
-  [v12 customOffsetX];
+  transform = [MEMORY[0x277CCA878] transform];
+  [transform scaleXBy:v7 yBy:v10];
+  propertySet3 = [v4 propertySet];
+  [propertySet3 customOffsetX];
   v14 = v13;
   [(OADOrientedBounds *)self->mOrientedBounds bounds];
   Width = CGRectGetWidth(v23);
 
-  v16 = [v4 propertySet];
-  [v16 customOffsetY];
+  propertySet4 = [v4 propertySet];
+  [propertySet4 customOffsetY];
   v18 = v17;
   [(OADOrientedBounds *)self->mOrientedBounds bounds];
   v19 = v14 * Width;
   v20 = v18 * CGRectGetHeight(v24);
 
-  [v11 translateXBy:v19 yBy:v20];
+  [transform translateXBy:v19 yBy:v20];
 
-  return v11;
+  return transform;
 }
 
-- (id)baseTextListStyleWithBounds:(id)a3 isCentered:(BOOL)a4
+- (id)baseTextListStyleWithBounds:(id)bounds isCentered:(BOOL)centered
 {
-  v4 = a4;
+  centeredCopy = centered;
   v6 = objc_alloc_init(OADTextListStyle);
   [(CMDiagramPointMapper *)self defaultFontSize];
   v8 = v7;
   v9 = 0;
-  if (v4)
+  if (centeredCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -518,39 +518,39 @@ LABEL_12:
   return v6;
 }
 
-- (void)mapPointTextAt:(id)a3 style:(id)a4 level:(int)a5 withState:(id)a6
+- (void)mapPointTextAt:(id)at style:(id)style level:(int)level withState:(id)state
 {
-  v7 = *&a5;
-  v23 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [(ODDPoint *)self->mPoint text];
-  if (v12)
+  v7 = *&level;
+  atCopy = at;
+  styleCopy = style;
+  stateCopy = state;
+  text = [(ODDPoint *)self->mPoint text];
+  if (text)
   {
-    v22 = [(CMDiagramPointMapper *)self shapeStyle];
-    [v22 applyToTextBody:v12];
-    v13 = [v12 paragraphCount];
-    if (v13)
+    shapeStyle = [(CMDiagramPointMapper *)self shapeStyle];
+    [shapeStyle applyToTextBody:text];
+    paragraphCount = [text paragraphCount];
+    if (paragraphCount)
     {
-      for (i = 0; i != v13; ++i)
+      for (i = 0; i != paragraphCount; ++i)
       {
-        v15 = [v12 paragraphAtIndex:i];
-        v16 = [v15 properties];
-        [v16 setLevel:v7];
-        v17 = [v10 propertiesForListLevel:{objc_msgSend(v16, "level")}];
-        [v16 setParent:v17];
+        v15 = [text paragraphAtIndex:i];
+        properties = [v15 properties];
+        [properties setLevel:v7];
+        v17 = [styleCopy propertiesForListLevel:{objc_msgSend(properties, "level")}];
+        [properties setParent:v17];
       }
     }
 
     v18 = objc_alloc_init(PMState);
-    [(CMState *)v18 copyFromCMStateWithoutComponents:v11];
-    if (v13)
+    [(CMState *)v18 copyFromCMStateWithoutComponents:stateCopy];
+    if (paragraphCount)
     {
-      for (j = 0; j != v13; ++j)
+      for (j = 0; j != paragraphCount; ++j)
       {
-        v20 = [v12 paragraphAtIndex:j];
+        v20 = [text paragraphAtIndex:j];
         v21 = [[PMParagraphMapper alloc] initWithOadParagraph:v20 parent:self];
-        [(PMParagraphMapper *)v21 mapAt:v23 withState:v18 isFirstParagraph:j == 0];
+        [(PMParagraphMapper *)v21 mapAt:atCopy withState:v18 isFirstParagraph:j == 0];
       }
     }
   }

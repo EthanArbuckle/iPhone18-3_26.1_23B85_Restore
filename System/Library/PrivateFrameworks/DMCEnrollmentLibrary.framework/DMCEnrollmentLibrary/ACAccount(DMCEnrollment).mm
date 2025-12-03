@@ -6,28 +6,28 @@
 
 - (uint64_t)dmc_isUnremovableRemotelyManagedAccount
 {
-  v1 = [a1 dmc_remoteManagementAccount];
-  v2 = v1;
-  if (!v1)
+  dmc_remoteManagementAccount = [self dmc_remoteManagementAccount];
+  v2 = dmc_remoteManagementAccount;
+  if (!dmc_remoteManagementAccount)
   {
     goto LABEL_5;
   }
 
-  v3 = [v1 dmc_managementProfileIdentifier];
-  v4 = [v3 length];
+  dmc_managementProfileIdentifier = [dmc_remoteManagementAccount dmc_managementProfileIdentifier];
+  v4 = [dmc_managementProfileIdentifier length];
 
   if (!v4)
   {
     goto LABEL_5;
   }
 
-  v5 = [MEMORY[0x277D24648] sharedConfiguration];
-  v6 = [v5 isProfileLocked];
+  mEMORY[0x277D24648] = [MEMORY[0x277D24648] sharedConfiguration];
+  isProfileLocked = [mEMORY[0x277D24648] isProfileLocked];
 
-  if (v6)
+  if (isProfileLocked)
   {
-    v7 = [MEMORY[0x277D24640] sharedConfiguration];
-    v8 = [v7 isProvisionallyEnrolled] ^ 1;
+    mEMORY[0x277D24640] = [MEMORY[0x277D24640] sharedConfiguration];
+    v8 = [mEMORY[0x277D24640] isProvisionallyEnrolled] ^ 1;
   }
 
   else

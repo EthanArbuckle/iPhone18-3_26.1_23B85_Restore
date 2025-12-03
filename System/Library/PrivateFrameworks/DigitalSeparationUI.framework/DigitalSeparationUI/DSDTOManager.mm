@@ -1,6 +1,6 @@
 @interface DSDTOManager
-+ (BOOL)shouldShowPlatterForRatchetState:(id)a3;
-+ (void)isRatchetActiveWithCompletion:(id)a3;
++ (BOOL)shouldShowPlatterForRatchetState:(id)state;
++ (void)isRatchetActiveWithCompletion:(id)completion;
 + (void)protectUserLocationOnWebDuringDTO;
 @end
 
@@ -30,10 +30,10 @@
 
   v5 = v4;
   _Block_object_dispose(&v9, 8);
-  v6 = [v4 sharedInstance];
+  sharedInstance = [v4 sharedInstance];
   if (objc_opt_respondsToSelector())
   {
-    [v6 disableLocationDisplayWithCompletion:&__block_literal_global_5];
+    [sharedInstance disableLocationDisplayWithCompletion:&__block_literal_global_5];
   }
 
   else
@@ -65,17 +65,17 @@ void __49__DSDTOManager_protectUserLocationOnWebDuringDTO__block_invoke(uint64_t
   }
 }
 
-+ (void)isRatchetActiveWithCompletion:(id)a3
++ (void)isRatchetActiveWithCompletion:(id)completion
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CD47B0] sharedInstance];
+  completionCopy = completion;
+  mEMORY[0x277CD47B0] = [MEMORY[0x277CD47B0] sharedInstance];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __46__DSDTOManager_isRatchetActiveWithCompletion___block_invoke;
   v6[3] = &unk_278F755E8;
-  v7 = v3;
-  v5 = v3;
-  [v4 stateWithCompletion:v6];
+  v7 = completionCopy;
+  v5 = completionCopy;
+  [mEMORY[0x277CD47B0] stateWithCompletion:v6];
 }
 
 void __46__DSDTOManager_isRatchetActiveWithCompletion___block_invoke(uint64_t a1, void *a2)
@@ -96,12 +96,12 @@ void __46__DSDTOManager_isRatchetActiveWithCompletion___block_invoke(uint64_t a1
   (*(v4 + 16))(v4, v5);
 }
 
-+ (BOOL)shouldShowPlatterForRatchetState:(id)a3
++ (BOOL)shouldShowPlatterForRatchetState:(id)state
 {
-  v3 = a3;
-  if ([v3 rawValue])
+  stateCopy = state;
+  if ([stateCopy rawValue])
   {
-    v4 = [v3 rawValue] == 1;
+    v4 = [stateCopy rawValue] == 1;
   }
 
   else

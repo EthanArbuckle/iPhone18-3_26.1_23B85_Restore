@@ -1,32 +1,32 @@
 @interface ATXScoreNormalizationModel
-- (ATXScoreNormalizationModel)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)normalizeScore:(id)a3;
-- (void)addScore:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ATXScoreNormalizationModel)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)normalizeScore:(id)score;
+- (void)addScore:(id)score;
+- (void)encodeWithCoder:(id)coder;
 - (void)getStateReadyForNormalization;
 - (void)resetBuffer;
 @end
 
 @implementation ATXScoreNormalizationModel
 
-- (void)addScore:(id)a3
+- (void)addScore:(id)score
 {
-  v4 = a3;
-  v5 = [(ATXScoreNormalizationModel *)self bufferHead];
-  v6 = [(ATXScoreNormalizationModel *)self circularBuffer];
-  v7 = [v6 count];
+  scoreCopy = score;
+  bufferHead = [(ATXScoreNormalizationModel *)self bufferHead];
+  circularBuffer = [(ATXScoreNormalizationModel *)self circularBuffer];
+  v7 = [circularBuffer count];
 
-  v8 = [(ATXScoreNormalizationModel *)self circularBuffer];
-  v9 = v8;
-  if (v7 <= v5)
+  circularBuffer2 = [(ATXScoreNormalizationModel *)self circularBuffer];
+  v9 = circularBuffer2;
+  if (v7 <= bufferHead)
   {
-    [v8 addObject:v4];
+    [circularBuffer2 addObject:scoreCopy];
   }
 
   else
   {
-    [v8 replaceObjectAtIndex:-[ATXScoreNormalizationModel bufferHead](self withObject:{"bufferHead"), v4}];
+    [circularBuffer2 replaceObjectAtIndex:-[ATXScoreNormalizationModel bufferHead](self withObject:{"bufferHead"), scoreCopy}];
   }
 
   [(ATXScoreNormalizationModel *)self setBufferHead:(([(ATXScoreNormalizationModel *)self bufferHead]+ 1) % [(ATXScoreNormalizationModel *)self bufferSize])];
@@ -42,11 +42,11 @@
   [(ATXScoreNormalizationModel *)self setBufferHead:0];
 }
 
-- (id)normalizeScore:(id)a3
+- (id)normalizeScore:(id)score
 {
-  v4 = a3;
-  v5 = [(ATXScoreNormalizationModel *)self circularBuffer];
-  v6 = [v5 count];
+  scoreCopy = score;
+  circularBuffer = [(ATXScoreNormalizationModel *)self circularBuffer];
+  v6 = [circularBuffer count];
 
   if (v6)
   {
@@ -55,19 +55,19 @@
       [(ATXScoreNormalizationModel *)self getStateReadyForNormalization];
     }
 
-    v7 = [(ATXScoreNormalizationModel *)self circularBuffer];
-    v8 = [v7 count];
+    circularBuffer2 = [(ATXScoreNormalizationModel *)self circularBuffer];
+    v8 = [circularBuffer2 count];
 
     v9 = 0;
     if (v8)
     {
       do
       {
-        v10 = [(ATXScoreNormalizationModel *)self circularBuffer];
-        v11 = [v10 objectAtIndexedSubscript:v9];
+        circularBuffer3 = [(ATXScoreNormalizationModel *)self circularBuffer];
+        v11 = [circularBuffer3 objectAtIndexedSubscript:v9];
         [v11 doubleValue];
         v13 = v12;
-        [v4 doubleValue];
+        [scoreCopy doubleValue];
         v15 = v14;
 
         if (v13 > v15)
@@ -76,8 +76,8 @@
         }
 
         ++v9;
-        v16 = [(ATXScoreNormalizationModel *)self circularBuffer];
-        v17 = [v16 count];
+        circularBuffer4 = [(ATXScoreNormalizationModel *)self circularBuffer];
+        v17 = [circularBuffer4 count];
       }
 
       while (v17 > v9);
@@ -89,8 +89,8 @@
       v18 = 0.0;
     }
 
-    v20 = [(ATXScoreNormalizationModel *)self circularBuffer];
-    v21 = [v20 count] - 1;
+    circularBuffer5 = [(ATXScoreNormalizationModel *)self circularBuffer];
+    v21 = [circularBuffer5 count] - 1;
 
     if (v21 == v9)
     {
@@ -100,8 +100,8 @@
     else
     {
       v22 = MEMORY[0x1E696AD98];
-      v23 = [(ATXScoreNormalizationModel *)self circularBuffer];
-      v19 = [v22 numberWithDouble:{v18 / objc_msgSend(v23, "count") * 100.0}];
+      circularBuffer6 = [(ATXScoreNormalizationModel *)self circularBuffer];
+      v19 = [v22 numberWithDouble:{v18 / objc_msgSend(circularBuffer6, "count") * 100.0}];
     }
   }
 
@@ -116,15 +116,15 @@
 - (void)getStateReadyForNormalization
 {
   v5 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"self" ascending:1];
-  v3 = [(ATXScoreNormalizationModel *)self circularBuffer];
+  circularBuffer = [(ATXScoreNormalizationModel *)self circularBuffer];
   v4 = [MEMORY[0x1E695DEC8] arrayWithObject:v5];
-  [v3 sortUsingDescriptors:v4];
+  [circularBuffer sortUsingDescriptors:v4];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSMutableArray *)self->_circularBuffer copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSMutableArray *)self->_circularBuffer copyWithZone:zone];
   [v5 setCircularBuffer:v6];
 
   [v5 setIsBufferSorted:self->_isBufferSorted];
@@ -133,27 +133,27 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(ATXScoreNormalizationModel *)self circularBuffer];
-  [v5 encodeObject:v4 forKey:@"circularBuffer"];
+  coderCopy = coder;
+  circularBuffer = [(ATXScoreNormalizationModel *)self circularBuffer];
+  [coderCopy encodeObject:circularBuffer forKey:@"circularBuffer"];
 
-  [v5 encodeBool:-[ATXScoreNormalizationModel isBufferSorted](self forKey:{"isBufferSorted"), @"isBufferSorted"}];
-  [v5 encodeInt64:-[ATXScoreNormalizationModel bufferSize](self forKey:{"bufferSize"), @"bufferSize"}];
-  [v5 encodeInt64:-[ATXScoreNormalizationModel bufferHead](self forKey:{"bufferHead"), @"bufferHead"}];
+  [coderCopy encodeBool:-[ATXScoreNormalizationModel isBufferSorted](self forKey:{"isBufferSorted"), @"isBufferSorted"}];
+  [coderCopy encodeInt64:-[ATXScoreNormalizationModel bufferSize](self forKey:{"bufferSize"), @"bufferSize"}];
+  [coderCopy encodeInt64:-[ATXScoreNormalizationModel bufferHead](self forKey:{"bufferHead"), @"bufferHead"}];
 }
 
-- (ATXScoreNormalizationModel)initWithCoder:(id)a3
+- (ATXScoreNormalizationModel)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"circularBuffer"];
-  v9 = [v5 decodeBoolForKey:@"isBufferSorted"];
-  v10 = [v5 decodeInt32ForKey:@"bufferSize"];
-  v11 = [v5 decodeInt32ForKey:@"bufferHead"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"circularBuffer"];
+  v9 = [coderCopy decodeBoolForKey:@"isBufferSorted"];
+  v10 = [coderCopy decodeInt32ForKey:@"bufferSize"];
+  v11 = [coderCopy decodeInt32ForKey:@"bufferHead"];
 
   v12 = [ATXScoreNormalizationParameters alloc];
   v13 = [MEMORY[0x1E696AD98] numberWithInt:v10];

@@ -1,18 +1,18 @@
 @interface SKUILockupComponent
 - (BOOL)_needsItemData;
-- (SKUILockupComponent)initWithCustomPageContext:(id)a3;
-- (SKUILockupComponent)initWithItem:(id)a3 style:(SKUILockupStyle *)a4;
-- (SKUILockupComponent)initWithItemIdentifier:(int64_t)a3 style:(SKUILockupStyle *)a4;
-- (SKUILockupComponent)initWithViewElement:(id)a3;
-- (void)_setItem:(id)a3;
-- (void)_setLockupStyle:(SKUILockupStyle *)a3;
+- (SKUILockupComponent)initWithCustomPageContext:(id)context;
+- (SKUILockupComponent)initWithItem:(id)item style:(SKUILockupStyle *)style;
+- (SKUILockupComponent)initWithItemIdentifier:(int64_t)identifier style:(SKUILockupStyle *)style;
+- (SKUILockupComponent)initWithViewElement:(id)element;
+- (void)_setItem:(id)item;
+- (void)_setLockupStyle:(SKUILockupStyle *)style;
 @end
 
 @implementation SKUILockupComponent
 
-- (SKUILockupComponent)initWithCustomPageContext:(id)a3
+- (SKUILockupComponent)initWithCustomPageContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -27,27 +27,27 @@
 
   v27.receiver = self;
   v27.super_class = SKUILockupComponent;
-  v13 = [(SKUIPageComponent *)&v27 initWithCustomPageContext:v4];
+  v13 = [(SKUIPageComponent *)&v27 initWithCustomPageContext:contextCopy];
   if (v13)
   {
-    v14 = [v4 componentDictionary];
-    v15 = [v14 objectForKey:@"adamId"];
+    componentDictionary = [contextCopy componentDictionary];
+    v15 = [componentDictionary objectForKey:@"adamId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v16 = [v4 itemForItemIdentifier:v15];
+      v16 = [contextCopy itemForItemIdentifier:v15];
       item = v13->_item;
       v13->_item = v16;
 
       v13->_itemIdentifier = [v15 longLongValue];
     }
 
-    v18 = [v14 objectForKey:@"editorial"];
+    v18 = [componentDictionary objectForKey:@"editorial"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v19 = [v4 copy];
+      v19 = [contextCopy copy];
       [v19 setComponentDictionary:v18];
       v20 = [[SKUIEditorialComponent alloc] initWithCustomPageContext:v19];
       editorial = v13->_editorial;
@@ -56,12 +56,12 @@
       if ([(SKUIEditorialComponent *)v13->_editorial _usesLockupTitle])
       {
         v22 = v13->_editorial;
-        v23 = [(SKUIItem *)v13->_item title];
-        [(SKUIEditorialComponent *)v22 _setTitleText:v23];
+        title = [(SKUIItem *)v13->_item title];
+        [(SKUIEditorialComponent *)v22 _setTitleText:title];
       }
     }
 
-    SKUILockupStyleForDictionary(v14, v4, &v25);
+    SKUILockupStyleForDictionary(componentDictionary, contextCopy, &v25);
     *&v13->_lockupStyle.artworkSize = v25;
     v13->_lockupStyle.visibleFields = v26;
   }
@@ -69,7 +69,7 @@
   return v13;
 }
 
-- (SKUILockupComponent)initWithItemIdentifier:(int64_t)a3 style:(SKUILockupStyle *)a4
+- (SKUILockupComponent)initWithItemIdentifier:(int64_t)identifier style:(SKUILockupStyle *)style
 {
   if (os_variant_has_internal_content())
   {
@@ -88,18 +88,18 @@
   result = [(SKUILockupComponent *)&v17 init];
   if (result)
   {
-    result->_itemIdentifier = a3;
-    v16 = *&a4->artworkSize;
-    result->_lockupStyle.visibleFields = a4->visibleFields;
+    result->_itemIdentifier = identifier;
+    v16 = *&style->artworkSize;
+    result->_lockupStyle.visibleFields = style->visibleFields;
     *&result->_lockupStyle.artworkSize = v16;
   }
 
   return result;
 }
 
-- (SKUILockupComponent)initWithItem:(id)a3 style:(SKUILockupStyle *)a4
+- (SKUILockupComponent)initWithItem:(id)item style:(SKUILockupStyle *)style
 {
-  v7 = a3;
+  itemCopy = item;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -117,19 +117,19 @@
   v16 = [(SKUILockupComponent *)&v19 init];
   if (v16)
   {
-    v16->_itemIdentifier = [v7 itemIdentifier];
-    objc_storeStrong(&v16->_item, a3);
-    visibleFields = a4->visibleFields;
-    *&v16->_lockupStyle.artworkSize = *&a4->artworkSize;
+    v16->_itemIdentifier = [itemCopy itemIdentifier];
+    objc_storeStrong(&v16->_item, item);
+    visibleFields = style->visibleFields;
+    *&v16->_lockupStyle.artworkSize = *&style->artworkSize;
     v16->_lockupStyle.visibleFields = visibleFields;
   }
 
   return v16;
 }
 
-- (SKUILockupComponent)initWithViewElement:(id)a3
+- (SKUILockupComponent)initWithViewElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -144,18 +144,18 @@
 
   v15.receiver = self;
   v15.super_class = SKUILockupComponent;
-  v13 = [(SKUIPageComponent *)&v15 initWithViewElement:v4];
+  v13 = [(SKUIPageComponent *)&v15 initWithViewElement:elementCopy];
 
   return v13;
 }
 
 - (BOOL)_needsItemData
 {
-  v2 = [(SKUIItem *)self->_item artworksProvider];
-  v3 = v2;
-  if (v2)
+  artworksProvider = [(SKUIItem *)self->_item artworksProvider];
+  v3 = artworksProvider;
+  if (artworksProvider)
   {
-    v4 = [v2 hasArtwork] ^ 1;
+    v4 = [artworksProvider hasArtwork] ^ 1;
   }
 
   else
@@ -166,33 +166,33 @@
   return v4;
 }
 
-- (void)_setItem:(id)a3
+- (void)_setItem:(id)item
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_item != v5)
+  itemCopy = item;
+  v6 = itemCopy;
+  if (self->_item != itemCopy)
   {
-    v9 = v5;
-    objc_storeStrong(&self->_item, a3);
-    v5 = [(SKUIEditorialComponent *)self->_editorial _usesLockupTitle];
+    v9 = itemCopy;
+    objc_storeStrong(&self->_item, item);
+    itemCopy = [(SKUIEditorialComponent *)self->_editorial _usesLockupTitle];
     v6 = v9;
-    if (v5)
+    if (itemCopy)
     {
       editorial = self->_editorial;
-      v8 = [(SKUIItem *)self->_item title];
-      [(SKUIEditorialComponent *)editorial _setTitleText:v8];
+      title = [(SKUIItem *)self->_item title];
+      [(SKUIEditorialComponent *)editorial _setTitleText:title];
 
       v6 = v9;
     }
   }
 
-  MEMORY[0x2821F96F8](v5, v6);
+  MEMORY[0x2821F96F8](itemCopy, v6);
 }
 
-- (void)_setLockupStyle:(SKUILockupStyle *)a3
+- (void)_setLockupStyle:(SKUILockupStyle *)style
 {
-  visibleFields = a3->visibleFields;
-  *&self->_lockupStyle.artworkSize = *&a3->artworkSize;
+  visibleFields = style->visibleFields;
+  *&self->_lockupStyle.artworkSize = *&style->artworkSize;
   self->_lockupStyle.visibleFields = visibleFields;
 }
 

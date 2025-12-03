@@ -1,13 +1,13 @@
 @interface SUServerConfigurationManager
 + (id)sharedInstance;
-- (BOOL)_queue_didNumberValueChange:(id)a3 oldConfig:(id)a4 newConfig:(id)a5 valueRemoved:(BOOL *)a6;
-- (BOOL)_queue_didValueChange:(id)a3 oldConfig:(id)a4 newConfig:(id)a5 type:(unint64_t)a6 valueRemoved:(BOOL *)a7;
+- (BOOL)_queue_didNumberValueChange:(id)change oldConfig:(id)config newConfig:(id)newConfig valueRemoved:(BOOL *)removed;
+- (BOOL)_queue_didValueChange:(id)change oldConfig:(id)config newConfig:(id)newConfig type:(unint64_t)type valueRemoved:(BOOL *)removed;
 - (BOOL)defaultToOldInactivityPredictor;
 - (NSNumber)softwareUpdateAutoScanInterval;
 - (SUServerConfigurationManager)init;
-- (void)addListener:(id)a3;
-- (void)coreConfigServerSettingsUpdated:(id)a3 error:(id)a4;
-- (void)removeListener:(id)a3;
+- (void)addListener:(id)listener;
+- (void)coreConfigServerSettingsUpdated:(id)updated error:(id)error;
+- (void)removeListener:(id)listener;
 @end
 
 @implementation SUServerConfigurationManager
@@ -24,9 +24,9 @@
     stateQueue = v2->_stateQueue;
     v2->_stateQueue = v4;
 
-    v6 = [MEMORY[0x277D64168] sharedServerSettings];
+    mEMORY[0x277D64168] = [MEMORY[0x277D64168] sharedServerSettings];
     suCoreServerConfig = v2->_suCoreServerConfig;
-    v2->_suCoreServerConfig = v6;
+    v2->_suCoreServerConfig = mEMORY[0x277D64168];
 
     v8 = *MEMORY[0x277D64558];
     [(SUCoreConfigServer *)v2->_suCoreServerConfig listenForConfigChanges:v2 withName:*MEMORY[0x277D64558]];
@@ -34,9 +34,9 @@
     projectConfig = v2->_projectConfig;
     v2->_projectConfig = v9;
 
-    v11 = [(SUCoreConfig *)v2->_projectConfig getConfig];
+    getConfig = [(SUCoreConfig *)v2->_projectConfig getConfig];
     config = v2->_config;
-    v2->_config = v11;
+    v2->_config = getConfig;
 
     v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
     listeners = v2->_listeners;
@@ -65,9 +65,9 @@ uint64_t __46__SUServerConfigurationManager_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)addListener:(id)a3
+- (void)addListener:(id)listener
 {
-  v4 = a3;
+  listenerCopy = listener;
   dispatch_assert_queue_not_V2(self->_stateQueue);
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
@@ -75,14 +75,14 @@ uint64_t __46__SUServerConfigurationManager_sharedInstance__block_invoke()
   v7[2] = __44__SUServerConfigurationManager_addListener___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = listenerCopy;
+  v6 = listenerCopy;
   dispatch_sync(stateQueue, v7);
 }
 
-- (void)removeListener:(id)a3
+- (void)removeListener:(id)listener
 {
-  v4 = a3;
+  listenerCopy = listener;
   dispatch_assert_queue_not_V2(self->_stateQueue);
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
@@ -90,8 +90,8 @@ uint64_t __46__SUServerConfigurationManager_sharedInstance__block_invoke()
   v7[2] = __47__SUServerConfigurationManager_removeListener___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = listenerCopy;
+  v6 = listenerCopy;
   dispatch_sync(stateQueue, v7);
 }
 
@@ -130,23 +130,23 @@ uint64_t __62__SUServerConfigurationManager_softwareUpdateAutoScanInterval__bloc
 
 - (BOOL)defaultToOldInactivityPredictor
 {
-  v2 = self;
+  selfCopy = self;
   dispatch_assert_queue_not_V2(self->_stateQueue);
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  stateQueue = v2->_stateQueue;
+  stateQueue = selfCopy->_stateQueue;
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __63__SUServerConfigurationManager_defaultToOldInactivityPredictor__block_invoke;
   v5[3] = &unk_279CAA858;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
   dispatch_sync(stateQueue, v5);
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __63__SUServerConfigurationManager_defaultToOldInactivityPredictor__block_invoke(uint64_t a1)
@@ -155,36 +155,36 @@ void __63__SUServerConfigurationManager_defaultToOldInactivityPredictor__block_i
   *(*(*(a1 + 40) + 8) + 24) = v2 != 0;
 }
 
-- (BOOL)_queue_didValueChange:(id)a3 oldConfig:(id)a4 newConfig:(id)a5 type:(unint64_t)a6 valueRemoved:(BOOL *)a7
+- (BOOL)_queue_didValueChange:(id)change oldConfig:(id)config newConfig:(id)newConfig type:(unint64_t)type valueRemoved:(BOOL *)removed
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  changeCopy = change;
+  configCopy = config;
+  newConfigCopy = newConfig;
   dispatch_assert_queue_V2(self->_stateQueue);
-  if (a6)
+  if (type)
   {
-    SULogInfo(@"Unknown SUServerConfigValueType %lu", v15, v16, v17, v18, v19, v20, v21, a6);
+    SULogInfo(@"Unknown SUServerConfigValueType %lu", v15, v16, v17, v18, v19, v20, v21, type);
     v22 = 0;
   }
 
   else
   {
-    v22 = [(SUServerConfigurationManager *)self _queue_didNumberValueChange:v12 oldConfig:v13 newConfig:v14 valueRemoved:a7];
+    v22 = [(SUServerConfigurationManager *)self _queue_didNumberValueChange:changeCopy oldConfig:configCopy newConfig:newConfigCopy valueRemoved:removed];
   }
 
   return v22;
 }
 
-- (BOOL)_queue_didNumberValueChange:(id)a3 oldConfig:(id)a4 newConfig:(id)a5 valueRemoved:(BOOL *)a6
+- (BOOL)_queue_didNumberValueChange:(id)change oldConfig:(id)config newConfig:(id)newConfig valueRemoved:(BOOL *)removed
 {
   stateQueue = self->_stateQueue;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  newConfigCopy = newConfig;
+  configCopy = config;
+  changeCopy = change;
   dispatch_assert_queue_V2(stateQueue);
-  v13 = [v11 objectForKeyedSubscript:v12];
+  v13 = [configCopy objectForKeyedSubscript:changeCopy];
 
-  v14 = [v10 objectForKeyedSubscript:v12];
+  v14 = [newConfigCopy objectForKeyedSubscript:changeCopy];
 
   if (!v13 || v14)
   {
@@ -201,26 +201,26 @@ void __63__SUServerConfigurationManager_defaultToOldInactivityPredictor__block_i
   else
   {
     v15 = 1;
-    if (a6)
+    if (removed)
     {
-      *a6 = 1;
+      *removed = 1;
     }
   }
 
   return v15;
 }
 
-- (void)coreConfigServerSettingsUpdated:(id)a3 error:(id)a4
+- (void)coreConfigServerSettingsUpdated:(id)updated error:(id)error
 {
-  v5 = a3;
+  updatedCopy = updated;
   stateQueue = self->_stateQueue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __70__SUServerConfigurationManager_coreConfigServerSettingsUpdated_error___block_invoke;
   v8[3] = &unk_279CAA7C0;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = updatedCopy;
+  selfCopy = self;
+  v7 = updatedCopy;
   dispatch_async(stateQueue, v8);
 }
 

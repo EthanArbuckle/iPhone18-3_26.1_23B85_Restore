@@ -1,19 +1,19 @@
 @interface PASetTorch
-- (PASetTorch)initWithDictionary:(id)a3;
+- (PASetTorch)initWithDictionary:(id)dictionary;
 - (void)_performQueuedRequests;
-- (void)_performWithCompletion:(id)a3;
+- (void)_performWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)performWithCompletion:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation PASetTorch
 
-- (PASetTorch)initWithDictionary:(id)a3
+- (PASetTorch)initWithDictionary:(id)dictionary
 {
   v10.receiver = self;
   v10.super_class = PASetTorch;
-  v3 = [(PASetTorch *)&v10 initWithDictionary:a3];
+  v3 = [(PASetTorch *)&v10 initWithDictionary:dictionary];
   if (v3)
   {
     v4 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_UTILITY, 0);
@@ -51,24 +51,24 @@
   [(PASetTorch *)&v3 dealloc];
 }
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   flashlightQueue = self->_flashlightQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_5EBC;
   v7[3] = &unk_10598;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(flashlightQueue, v7);
 }
 
-- (void)_performWithCompletion:(id)a3
+- (void)_performWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PASetTorch *)self dryRun];
+  completionCopy = completion;
+  dryRun = [(PASetTorch *)self dryRun];
   v6 = AFGetFlashlightLevel();
   v7 = v6;
   if (v6)
@@ -84,21 +84,21 @@
 
   if ((+[AVFlashlight hasFlashlight]& 1) == 0)
   {
-    v10 = objc_alloc_init(SACommandFailed);
-    [v10 setReason:@"Device does not support Flashlight"];
+    value = objc_alloc_init(SACommandFailed);
+    [value setReason:@"Device does not support Flashlight"];
     v11 = &SASettingPropertyUnsupportedByDeviceErrorCode;
     goto LABEL_8;
   }
 
   if ([(AVFlashlight *)self->_flashlight isOverheated])
   {
-    v10 = objc_alloc_init(SACommandFailed);
-    [v10 setReason:@"Flashlight is overheated"];
+    value = objc_alloc_init(SACommandFailed);
+    [value setReason:@"Flashlight is overheated"];
     v11 = &SASettingTorchOverHeatErrorCode;
 LABEL_8:
-    [v10 setErrorCode:*v11];
-    v12 = v10;
-    LODWORD(v10) = 0;
+    [value setErrorCode:*v11];
+    v12 = value;
+    LODWORD(value) = 0;
     v13 = @"OFF";
     v14 = v12;
     goto LABEL_9;
@@ -106,8 +106,8 @@ LABEL_8:
 
   if (([(AVFlashlight *)self->_flashlight isAvailable]& 1) == 0)
   {
-    v10 = objc_alloc_init(SACommandFailed);
-    [v10 setReason:@"Flashlight is temporarily unavailable"];
+    value = objc_alloc_init(SACommandFailed);
+    [value setReason:@"Flashlight is temporarily unavailable"];
     v11 = &SASettingTorchUnavailableErrorCode;
     goto LABEL_8;
   }
@@ -116,15 +116,15 @@ LABEL_8:
   v21 = v20;
   if ([(PASetTorch *)self toggle])
   {
-    v10 = v21 == 0.0;
-    if ((v5 & 1) == 0)
+    value = v21 == 0.0;
+    if ((dryRun & 1) == 0)
     {
       goto LABEL_21;
     }
 
 LABEL_25:
     v24 = 0;
-    if ((((v21 != 0.0) ^ v10) & 1) == 0)
+    if ((((v21 != 0.0) ^ value) & 1) == 0)
     {
       goto LABEL_37;
     }
@@ -132,15 +132,15 @@ LABEL_25:
     goto LABEL_38;
   }
 
-  v10 = [(PASetTorch *)self value];
-  if (v5)
+  value = [(PASetTorch *)self value];
+  if (dryRun)
   {
     goto LABEL_25;
   }
 
 LABEL_21:
   flashlight = self->_flashlight;
-  if (v10)
+  if (value)
   {
     v33 = 0;
     *&v22 = v9;
@@ -160,7 +160,7 @@ LABEL_21:
   }
 
   [(AVFlashlight *)self->_flashlight flashlightLevel];
-  v10 = v25 > 0.0;
+  value = v25 > 0.0;
   if ((v21 != 0.0) == v25 > 0.0)
   {
     if (!v24)
@@ -209,7 +209,7 @@ LABEL_37:
 
 LABEL_38:
   v30 = objc_alloc_init(SASettingBooleanEntity);
-  [v30 setValue:v10];
+  [v30 setValue:value];
   v31 = [NSNumber numberWithBool:v21 != 0.0];
   [v30 setPreviousValue:v31];
 
@@ -235,13 +235,13 @@ LABEL_9:
   {
     *buf = 138413314;
     v16 = @"Set";
-    if (v5)
+    if (dryRun)
     {
       v16 = @"Dry Run";
     }
 
     v17 = @"ON";
-    if (!v10)
+    if (!value)
     {
       v17 = @"OFF";
     }
@@ -253,7 +253,7 @@ LABEL_9:
     v39 = v17;
     v18 = v9;
     v40 = 2048;
-    if (!v10)
+    if (!value)
     {
       v18 = 0.0;
     }
@@ -264,16 +264,16 @@ LABEL_9:
     _os_log_impl(&dword_0, v15, OS_LOG_TYPE_DEFAULT, "########## PSSetTorch (%@ / prev: %@ / value: %@ / level: %f / %@)", buf, 0x34u);
   }
 
-  v19 = [v14 dictionary];
-  v4[2](v4, v19);
+  dictionary = [v14 dictionary];
+  completionCopy[2](completionCopy, dictionary);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (([v10 isEqualToString:@"flashlightLevel"] & 1) != 0 || (objc_msgSend(v10, "isEqualToString:", @"available") & 1) != 0 || objc_msgSend(v10, "isEqualToString:", @"overheated"))
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (([pathCopy isEqualToString:@"flashlightLevel"] & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"available") & 1) != 0 || objc_msgSend(pathCopy, "isEqualToString:", @"overheated"))
   {
     flashlightQueue = self->_flashlightQueue;
     block[0] = _NSConcreteStackBlock;
@@ -288,7 +288,7 @@ LABEL_9:
   {
     v14.receiver = self;
     v14.super_class = PASetTorch;
-    [(PASetTorch *)&v14 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(PASetTorch *)&v14 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 

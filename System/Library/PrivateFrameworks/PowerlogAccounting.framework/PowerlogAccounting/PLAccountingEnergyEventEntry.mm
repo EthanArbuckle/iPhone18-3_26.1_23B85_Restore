@@ -1,7 +1,7 @@
 @interface PLAccountingEnergyEventEntry
 + (id)entryKey;
 + (void)load;
-- (PLAccountingEnergyEventEntry)initWithNodeID:(id)a3 withEnergy:(double)a4 withRange:(id)a5 withEntryDate:(id)a6;
+- (PLAccountingEnergyEventEntry)initWithNodeID:(id)d withEnergy:(double)energy withRange:(id)range withEntryDate:(id)date;
 - (PLAccountingRange)range;
 - (double)energy;
 @end
@@ -10,32 +10,32 @@
 
 - (PLAccountingRange)range
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  range = v2->_range;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  range = selfCopy->_range;
   if (!range)
   {
-    v4 = [(PLEntry *)v2 objectForKeyedSubscript:*MEMORY[0x277D3F3A0]];
+    v4 = [(PLEntry *)selfCopy objectForKeyedSubscript:*MEMORY[0x277D3F3A0]];
     [v4 doubleValue];
     v6 = v5;
 
-    v7 = [(PLEntry *)v2 objectForKeyedSubscript:*MEMORY[0x277D3F360]];
+    v7 = [(PLEntry *)selfCopy objectForKeyedSubscript:*MEMORY[0x277D3F360]];
     [v7 doubleValue];
     v9 = v8;
 
-    v10 = [(PLEntry *)v2 entryDate];
-    v11 = [v10 dateByAddingTimeInterval:v6 / 1000.0];
-    v12 = [(PLEntry *)v2 entryDate];
-    v13 = [v12 dateByAddingTimeInterval:v9 / 1000.0];
+    entryDate = [(PLEntry *)selfCopy entryDate];
+    v11 = [entryDate dateByAddingTimeInterval:v6 / 1000.0];
+    entryDate2 = [(PLEntry *)selfCopy entryDate];
+    v13 = [entryDate2 dateByAddingTimeInterval:v9 / 1000.0];
     v14 = [PLAccountingRange rangeWithStartDate:v11 withEndDate:v13];
-    v15 = v2->_range;
-    v2->_range = v14;
+    v15 = selfCopy->_range;
+    selfCopy->_range = v14;
 
-    range = v2->_range;
+    range = selfCopy->_range;
   }
 
   v16 = range;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v16;
 }
@@ -51,7 +51,7 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLAccountingEnergyEventEntry;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -75,59 +75,59 @@ uint64_t __40__PLAccountingEnergyEventEntry_entryKey__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (PLAccountingEnergyEventEntry)initWithNodeID:(id)a3 withEnergy:(double)a4 withRange:(id)a5 withEntryDate:(id)a6
+- (PLAccountingEnergyEventEntry)initWithNodeID:(id)d withEnergy:(double)energy withRange:(id)range withEntryDate:(id)date
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v10 intValue];
-  v14 = 0;
-  if (v11 && v13 >= 1)
+  dCopy = d;
+  rangeCopy = range;
+  dateCopy = date;
+  intValue = [dCopy intValue];
+  selfCopy = 0;
+  if (rangeCopy && intValue >= 1)
   {
-    v15 = [objc_opt_class() entryKey];
-    if (v12)
+    entryKey = [objc_opt_class() entryKey];
+    if (dateCopy)
     {
       v31.receiver = self;
       v31.super_class = PLAccountingEnergyEventEntry;
-      v16 = [(PLEntry *)&v31 initWithEntryKey:v15 withDate:v12];
+      v16 = [(PLEntry *)&v31 initWithEntryKey:entryKey withDate:dateCopy];
     }
 
     else
     {
       v30.receiver = self;
       v30.super_class = PLAccountingEnergyEventEntry;
-      v16 = [(PLEntry *)&v30 initWithEntryKey:v15];
+      v16 = [(PLEntry *)&v30 initWithEntryKey:entryKey];
     }
 
     p_isa = &v16->super.super.isa;
 
     if (p_isa)
     {
-      objc_storeStrong(p_isa + 8, a5);
-      [p_isa setObject:v10 forKeyedSubscript:*MEMORY[0x277D3F370]];
-      v18 = [MEMORY[0x277CCABB0] numberWithLong:llround(a4 * 1000.0)];
+      objc_storeStrong(p_isa + 8, range);
+      [p_isa setObject:dCopy forKeyedSubscript:*MEMORY[0x277D3F370]];
+      v18 = [MEMORY[0x277CCABB0] numberWithLong:llround(energy * 1000.0)];
       [p_isa setObject:v18 forKeyedSubscript:*MEMORY[0x277D3F368]];
 
       v19 = MEMORY[0x277CCABB0];
-      v20 = [v11 startDate];
-      v21 = [p_isa entryDate];
-      [v20 timeIntervalSinceDate:v21];
+      startDate = [rangeCopy startDate];
+      entryDate = [p_isa entryDate];
+      [startDate timeIntervalSinceDate:entryDate];
       v23 = [v19 numberWithDouble:v22 * 1000.0];
       [p_isa setObject:v23 forKeyedSubscript:*MEMORY[0x277D3F3A0]];
 
       v24 = MEMORY[0x277CCABB0];
-      v25 = [v11 endDate];
-      v26 = [p_isa entryDate];
-      [v25 timeIntervalSinceDate:v26];
+      endDate = [rangeCopy endDate];
+      entryDate2 = [p_isa entryDate];
+      [endDate timeIntervalSinceDate:entryDate2];
       v28 = [v24 numberWithDouble:v27 * 1000.0];
       [p_isa setObject:v28 forKeyedSubscript:*MEMORY[0x277D3F360]];
     }
 
     self = p_isa;
-    v14 = self;
+    selfCopy = self;
   }
 
-  return v14;
+  return selfCopy;
 }
 
 @end

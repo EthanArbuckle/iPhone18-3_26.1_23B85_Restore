@@ -3,17 +3,17 @@
 + (id)getIAPayloadKeyWritingToolsUI;
 + (id)getIAPayloadValueWritingToolsUIAffordance;
 + (id)getIASignalWritingToolsPanelRequested;
-+ (void)sendSignal:(id)a3 toChannel:(id)a4 withPayload:(id)a5;
-+ (void)sendWritingToolsSignal:(id)a3 payload:(id)a4;
++ (void)sendSignal:(id)signal toChannel:(id)channel withPayload:(id)payload;
++ (void)sendWritingToolsSignal:(id)signal payload:(id)payload;
 @end
 
 @implementation WTInputAnalytics
 
-+ (void)sendSignal:(id)a3 toChannel:(id)a4 withPayload:(id)a5
++ (void)sendSignal:(id)signal toChannel:(id)channel withPayload:(id)payload
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  signalCopy = signal;
+  channelCopy = channel;
+  payloadCopy = payload;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2050000000;
@@ -31,7 +31,7 @@
   _Block_object_dispose(&v13, 8);
   if (v10)
   {
-    [v10 sendSignal:v7 toChannel:v8 withPayload:v9];
+    [v10 sendSignal:signalCopy toChannel:channelCopy withPayload:payloadCopy];
   }
 
   else
@@ -44,12 +44,12 @@
   }
 }
 
-+ (void)sendWritingToolsSignal:(id)a3 payload:(id)a4
++ (void)sendWritingToolsSignal:(id)signal payload:(id)payload
 {
-  v5 = a4;
-  v6 = a3;
+  payloadCopy = payload;
+  signalCopy = signal;
   v7 = +[WTInputAnalytics getIAChannelWritingTools];
-  [WTInputAnalytics sendSignal:v6 toChannel:v7 withPayload:v5];
+  [WTInputAnalytics sendSignal:signalCopy toChannel:v7 withPayload:payloadCopy];
 }
 
 + (id)getIAChannelWritingTools

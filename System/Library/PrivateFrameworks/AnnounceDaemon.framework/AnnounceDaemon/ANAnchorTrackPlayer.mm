@@ -1,15 +1,15 @@
 @interface ANAnchorTrackPlayer
-- (void)handleInterruptionDelay:(double)a3;
-- (void)playInternalWithCompletionHandler:(id)a3;
-- (void)setStartTime:(id *)a3;
+- (void)handleInterruptionDelay:(double)delay;
+- (void)playInternalWithCompletionHandler:(id)handler;
+- (void)setStartTime:(id *)time;
 @end
 
 @implementation ANAnchorTrackPlayer
 
-- (void)playInternalWithCompletionHandler:(id)a3
+- (void)playInternalWithCompletionHandler:(id)handler
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [(ANTrackPlayer *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -19,7 +19,7 @@
   }
 
   objc_initWeak(buf, self);
-  v6 = [(ANTrackPlayer *)self queuePlayer];
+  queuePlayer = [(ANTrackPlayer *)self queuePlayer];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __57__ANAnchorTrackPlayer_playInternalWithCompletionHandler___block_invoke;
@@ -27,10 +27,10 @@
   objc_copyWeak(&v12, buf);
   v10[4] = self;
   v13 = 1065353216;
-  v7 = v4;
+  v7 = handlerCopy;
   v11 = v7;
   LODWORD(v8) = 1.0;
-  [v6 prerollAtRate:v10 completionHandler:v8];
+  [queuePlayer prerollAtRate:v10 completionHandler:v8];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(buf);
@@ -161,7 +161,7 @@ void __57__ANAnchorTrackPlayer_playInternalWithCompletionHandler___block_invoke(
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleInterruptionDelay:(double)a3
+- (void)handleInterruptionDelay:(double)delay
 {
   v27 = *MEMORY[0x277D85DE8];
   v5 = [(ANTrackPlayer *)self log];
@@ -170,7 +170,7 @@ void __57__ANAnchorTrackPlayer_playInternalWithCompletionHandler___block_invoke(
     *buf = 136315394;
     *&buf[4] = "[ANAnchorTrackPlayer handleInterruptionDelay:]";
     *&buf[12] = 2048;
-    *&buf[14] = a3;
+    *&buf[14] = delay;
     _os_log_impl(&dword_23F525000, v5, OS_LOG_TYPE_DEFAULT, "%s: amountOfTimeInterrupted %f", buf, 0x16u);
   }
 
@@ -178,8 +178,8 @@ void __57__ANAnchorTrackPlayer_playInternalWithCompletionHandler___block_invoke(
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = [(ANTrackPlayer *)self playerItems];
-  v7 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  playerItems = [(ANTrackPlayer *)self playerItems];
+  v7 = [playerItems countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v7)
   {
     v8 = v7;
@@ -190,27 +190,27 @@ void __57__ANAnchorTrackPlayer_playInternalWithCompletionHandler___block_invoke(
       {
         if (*v22 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(playerItems);
         }
 
         v11 = *(*(&v21 + 1) + 8 * i);
-        v12 = [v11 playerItem];
-        v13 = [(ANTrackPlayer *)self queuePlayer];
-        v14 = [v13 currentItem];
+        playerItem = [v11 playerItem];
+        queuePlayer = [(ANTrackPlayer *)self queuePlayer];
+        currentItem = [queuePlayer currentItem];
 
-        if (v12 == v14)
+        if (playerItem == currentItem)
         {
-          v15 = [v11 trackType];
-          v16 = [(ANTrackPlayer *)self queuePlayer];
-          v17 = v16;
-          if (v15)
+          trackType = [v11 trackType];
+          queuePlayer2 = [(ANTrackPlayer *)self queuePlayer];
+          v17 = queuePlayer2;
+          if (trackType)
           {
-            [v16 advanceToNextItem];
+            [queuePlayer2 advanceToNextItem];
           }
 
           else
           {
-            v18 = [v16 currentItem];
+            currentItem2 = [queuePlayer2 currentItem];
             v20[0] = MEMORY[0x277D85DD0];
             v20[1] = 3221225472;
             v20[2] = __47__ANAnchorTrackPlayer_handleInterruptionDelay___block_invoke;
@@ -218,14 +218,14 @@ void __57__ANAnchorTrackPlayer_playInternalWithCompletionHandler___block_invoke(
             v20[4] = self;
             *buf = *MEMORY[0x277CC08F0];
             *&buf[16] = *(MEMORY[0x277CC08F0] + 16);
-            [v18 seekToTime:buf completionHandler:v20];
+            [currentItem2 seekToTime:buf completionHandler:v20];
           }
 
           goto LABEL_16;
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v8 = [playerItems countByEnumeratingWithState:&v21 objects:v26 count:16];
       if (v8)
       {
         continue;
@@ -262,10 +262,10 @@ void __47__ANAnchorTrackPlayer_handleInterruptionDelay___block_invoke(uint64_t a
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setStartTime:(id *)a3
+- (void)setStartTime:(id *)time
 {
-  var3 = a3->var3;
-  *&self->_startTime.value = *&a3->var0;
+  var3 = time->var3;
+  *&self->_startTime.value = *&time->var0;
   self->_startTime.epoch = var3;
 }
 

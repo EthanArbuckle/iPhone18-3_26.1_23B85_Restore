@@ -4,9 +4,9 @@
 - (NSString)modeDescription;
 - (float)relativeVolume;
 - (int64_t)renderingMode;
-- (void)activateAudioSessionWithCompletion:(id)a3;
-- (void)resetWithReason:(id)a3;
-- (void)setRelativeVolume:(float)a3;
+- (void)activateAudioSessionWithCompletion:(id)completion;
+- (void)resetWithReason:(id)reason;
+- (void)setRelativeVolume:(float)volume;
 @end
 
 @implementation PlaybackStackController
@@ -21,11 +21,11 @@
   return v2;
 }
 
-- (void)resetWithReason:(id)a3
+- (void)resetWithReason:(id)reason
 {
-  v3 = a3;
+  reasonCopy = reason;
 
-  sub_1C5DD71A8(v3);
+  sub_1C5DD71A8(reasonCopy);
 }
 
 - (int64_t)renderingMode
@@ -36,9 +36,9 @@
   return v2;
 }
 
-- (void)activateAudioSessionWithCompletion:(id)a3
+- (void)activateAudioSessionWithCompletion:(id)completion
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(completion);
   v4 = swift_allocObject();
   *(v4 + 16) = v3;
 
@@ -64,10 +64,10 @@
   return v3;
 }
 
-- (void)setRelativeVolume:(float)a3
+- (void)setRelativeVolume:(float)volume
 {
 
-  sub_1C5DD81EC(a3);
+  sub_1C5DD81EC(volume);
 }
 
 - (BOOL)isMuted

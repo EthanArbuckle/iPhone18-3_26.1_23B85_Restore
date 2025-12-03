@@ -2,7 +2,7 @@
 - ($0AC6E346AE4835514AAA8AC86D8F4844)size;
 - ($41299696D20B6C925B74A5D5E4D5CC87)bounds;
 - (NUMaskProperties)init;
-- (NUMaskProperties)initWithDensity:(double)a3 bounds:(id *)a4 size:(id)a5;
+- (NUMaskProperties)initWithDensity:(double)density bounds:(id *)bounds size:(id)size;
 @end
 
 @implementation NUMaskProperties
@@ -24,16 +24,16 @@
   return self;
 }
 
-- (NUMaskProperties)initWithDensity:(double)a3 bounds:(id *)a4 size:(id)a5
+- (NUMaskProperties)initWithDensity:(double)density bounds:(id *)bounds size:(id)size
 {
-  var1 = a5.var1;
-  var0 = a5.var0;
+  var1 = size.var1;
+  var0 = size.var0;
   v11.receiver = self;
   v11.super_class = NUMaskProperties;
   result = [(NUMaskProperties *)&v11 init];
-  result->_density = a3;
-  v10 = a4->var1;
-  result->_bounds.origin = a4->var0;
+  result->_density = density;
+  v10 = bounds->var1;
+  result->_bounds.origin = bounds->var0;
   result->_bounds.size = v10;
   result->_size.width = var0;
   result->_size.height = var1;
@@ -86,8 +86,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -103,8 +103,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;

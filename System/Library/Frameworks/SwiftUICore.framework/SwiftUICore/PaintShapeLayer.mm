@@ -1,8 +1,8 @@
 @interface PaintShapeLayer
 - (_TtC7SwiftUIP33_E19F490D25D5E0EC8A24903AF958E34115PaintShapeLayer)init;
-- (_TtC7SwiftUIP33_E19F490D25D5E0EC8A24903AF958E34115PaintShapeLayer)initWithCoder:(id)a3;
-- (_TtC7SwiftUIP33_E19F490D25D5E0EC8A24903AF958E34115PaintShapeLayer)initWithLayer:(id)a3;
-- (void)drawInContext:(CGContext *)a3;
+- (_TtC7SwiftUIP33_E19F490D25D5E0EC8A24903AF958E34115PaintShapeLayer)initWithCoder:(id)coder;
+- (_TtC7SwiftUIP33_E19F490D25D5E0EC8A24903AF958E34115PaintShapeLayer)initWithLayer:(id)layer;
+- (void)drawInContext:(CGContext *)context;
 @end
 
 @implementation PaintShapeLayer
@@ -27,7 +27,7 @@
   return [(PaintShapeLayer *)&v8 init];
 }
 
-- (_TtC7SwiftUIP33_E19F490D25D5E0EC8A24903AF958E34115PaintShapeLayer)initWithCoder:(id)a3
+- (_TtC7SwiftUIP33_E19F490D25D5E0EC8A24903AF958E34115PaintShapeLayer)initWithCoder:(id)coder
 {
   swift_getObjectType();
   v4 = self + OBJC_IVAR____TtC7SwiftUIP33_E19F490D25D5E0EC8A24903AF958E34115PaintShapeLayer_path;
@@ -46,7 +46,7 @@
   return 0;
 }
 
-- (_TtC7SwiftUIP33_E19F490D25D5E0EC8A24903AF958E34115PaintShapeLayer)initWithLayer:(id)a3
+- (_TtC7SwiftUIP33_E19F490D25D5E0EC8A24903AF958E34115PaintShapeLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   _bridgeAnyObjectToAny(_:)();
@@ -54,13 +54,13 @@
   return PaintShapeLayer.init(layer:)(v4);
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
-  v4 = self;
-  v5 = a3;
+  selfCopy = self;
+  contextCopy = context;
   EnvironmentValues.init()(&v7);
   v6 = v7;
-  specialized static GraphicsContext.renderingTo(cgContext:environment:deviceScale:content:)(v5, &v6, 0, 1, v4);
+  specialized static GraphicsContext.renderingTo(cgContext:environment:deviceScale:content:)(contextCopy, &v6, 0, 1, selfCopy);
 }
 
 @end

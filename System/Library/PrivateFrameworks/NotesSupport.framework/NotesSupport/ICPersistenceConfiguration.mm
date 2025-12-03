@@ -7,16 +7,16 @@
 
 - (NSManagedObjectContext)modernBackgroundContext
 {
-  v2 = [(ICPersistenceConfiguration *)self makeModernBackgroundContext];
-  v3 = v2[2]();
+  makeModernBackgroundContext = [(ICPersistenceConfiguration *)self makeModernBackgroundContext];
+  v3 = makeModernBackgroundContext[2]();
 
   return v3;
 }
 
 - (NSManagedObjectContext)legacyBackgroundContext
 {
-  v2 = [(ICPersistenceConfiguration *)self makeLegacyBackgroundContext];
-  v3 = v2[2]();
+  makeLegacyBackgroundContext = [(ICPersistenceConfiguration *)self makeLegacyBackgroundContext];
+  v3 = makeLegacyBackgroundContext[2]();
 
   return v3;
 }

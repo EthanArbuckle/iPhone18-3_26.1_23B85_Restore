@@ -1,29 +1,29 @@
 @interface SiriUICardSnippetView
 - (BOOL)isHint;
 - (BOOL)isLoading;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SiriUICardSnippetView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SiriUICardSnippetView)initWithFrame:(CGRect)frame;
 - (SiriUICardSnippetViewDataSource)dataSource;
 - (SiriUICardSnippetViewDelegate)delegate;
 - (SiriUISnippetViewController)backingViewController;
-- (void)_sashViewRecognizedTapGestureWithGestureRecognizer:(id)a3;
+- (void)_sashViewRecognizedTapGestureWithGestureRecognizer:(id)recognizer;
 - (void)layoutSubviews;
 - (void)prepareForDrillInAnimation;
-- (void)prepareForPopAnimationOfType:(int64_t)a3;
-- (void)setCardView:(id)a3;
-- (void)setDataSource:(id)a3;
-- (void)setIsInAmbient:(BOOL)a3;
-- (void)setIsInAmbientInteractivity:(BOOL)a3;
+- (void)prepareForPopAnimationOfType:(int64_t)type;
+- (void)setCardView:(id)view;
+- (void)setDataSource:(id)source;
+- (void)setIsInAmbient:(BOOL)ambient;
+- (void)setIsInAmbientInteractivity:(BOOL)interactivity;
 @end
 
 @implementation SiriUICardSnippetView
 
-- (SiriUICardSnippetView)initWithFrame:(CGRect)a3
+- (SiriUICardSnippetView)initWithFrame:(CGRect)frame
 {
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  Height = CGRectGetHeight(a3);
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  Height = CGRectGetHeight(frame);
   if (Height >= 44.0)
   {
     v8 = Height;
@@ -63,20 +63,20 @@
   return v12;
 }
 
-- (void)setIsInAmbient:(BOOL)a3
+- (void)setIsInAmbient:(BOOL)ambient
 {
-  if (self->_isInAmbient != a3)
+  if (self->_isInAmbient != ambient)
   {
-    self->_isInAmbient = a3;
+    self->_isInAmbient = ambient;
     [(SiriUICardSnippetView *)self setNeedsLayout];
   }
 }
 
-- (void)setIsInAmbientInteractivity:(BOOL)a3
+- (void)setIsInAmbientInteractivity:(BOOL)interactivity
 {
-  if (self->_isInAmbientInteractivity != a3)
+  if (self->_isInAmbientInteractivity != interactivity)
   {
-    self->_isInAmbientInteractivity = a3;
+    self->_isInAmbientInteractivity = interactivity;
     [(SiriUICardSnippetView *)self setNeedsLayout];
   }
 }
@@ -117,11 +117,11 @@
   [(UIView *)self->_cardView setFrame:0.0, v11, Width, Height + v14];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   v14 = *MEMORY[0x277D85DE8];
-  v5 = [(SiriUICardSnippetView *)self dataSource:a3.width];
+  v5 = [(SiriUICardSnippetView *)self dataSource:fits.width];
   [v5 preferredContentHeight];
   v7 = 0.0;
   if (self->_shouldClipTopOfCard)
@@ -151,31 +151,31 @@
   return result;
 }
 
-- (void)setCardView:(id)a3
+- (void)setCardView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   cardView = self->_cardView;
-  if (cardView != v5)
+  if (cardView != viewCopy)
   {
-    v9 = v5;
+    v9 = viewCopy;
     [(UIView *)cardView removeFromSuperview];
-    objc_storeStrong(&self->_cardView, a3);
+    objc_storeStrong(&self->_cardView, view);
     [(UIView *)self->_cardView setAccessibilityIdentifier:@"SiriUICardViewAccessibilityIdentifier"];
     [(SiriUICardSnippetView *)self addSubview:v9];
     [(SiriUICardSnippetView *)self setNeedsLayout];
-    v7 = [(UIView *)self->_cardView backgroundColor];
+    backgroundColor = [(UIView *)self->_cardView backgroundColor];
     backgroundColor = self->_backgroundColor;
-    self->_backgroundColor = v7;
+    self->_backgroundColor = backgroundColor;
 
-    v5 = v9;
+    viewCopy = v9;
   }
 
-  MEMORY[0x2821F96F8](cardView, v5);
+  MEMORY[0x2821F96F8](cardView, viewCopy);
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  obj = a3;
+  obj = source;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
 
   v5 = obj;
@@ -191,15 +191,15 @@
 {
   v16 = *MEMORY[0x277D85DE8];
   cardView = self->_cardView;
-  v4 = [MEMORY[0x277D75348] clearColor];
-  [(UIView *)cardView setBackgroundColor:v4];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(UIView *)cardView setBackgroundColor:clearColor];
 
-  v5 = [(UIView *)self->_cardView subviews];
+  subviews = [(UIView *)self->_cardView subviews];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v6 = [subviews countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -211,7 +211,7 @@
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(subviews);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
@@ -226,23 +226,23 @@
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [subviews countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)prepareForPopAnimationOfType:(int64_t)a3
+- (void)prepareForPopAnimationOfType:(int64_t)type
 {
   v15 = *MEMORY[0x277D85DE8];
   [(UIView *)self->_cardView setBackgroundColor:self->_backgroundColor];
-  v4 = [(UIView *)self->_cardView subviews];
+  subviews = [(UIView *)self->_cardView subviews];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [subviews countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -254,7 +254,7 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subviews);
         }
 
         v9 = *(*(&v10 + 1) + 8 * v8);
@@ -269,7 +269,7 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [subviews countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -278,24 +278,24 @@
 
 - (BOOL)isLoading
 {
-  v2 = [(SiriUICardSnippetView *)self backingViewController];
-  v3 = [v2 isLoading];
+  backingViewController = [(SiriUICardSnippetView *)self backingViewController];
+  isLoading = [backingViewController isLoading];
 
-  return v3;
+  return isLoading;
 }
 
 - (BOOL)isHint
 {
-  v2 = [(SiriUICardSnippetView *)self backingViewController];
-  v3 = [v2 isHint];
+  backingViewController = [(SiriUICardSnippetView *)self backingViewController];
+  isHint = [backingViewController isHint];
 
-  return v3;
+  return isHint;
 }
 
-- (void)_sashViewRecognizedTapGestureWithGestureRecognizer:(id)a3
+- (void)_sashViewRecognizedTapGestureWithGestureRecognizer:(id)recognizer
 {
-  v4 = [(SiriUICardSnippetView *)self delegate];
-  [v4 cardSnippetViewSashWasTapped:self];
+  delegate = [(SiriUICardSnippetView *)self delegate];
+  [delegate cardSnippetViewSashWasTapped:self];
 }
 
 - (SiriUISnippetViewController)backingViewController

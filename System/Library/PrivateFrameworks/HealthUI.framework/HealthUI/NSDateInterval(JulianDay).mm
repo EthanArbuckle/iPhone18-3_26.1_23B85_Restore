@@ -9,12 +9,12 @@
   v7 = a5;
   v8 = a4;
   v9 = a3;
-  v10 = [v9 startDate];
-  v11 = [v10 hk_dayIndexWithCalendar:v8];
+  startDate = [v9 startDate];
+  v11 = [startDate hk_dayIndexWithCalendar:v8];
 
-  v12 = [v9 endDate];
+  endDate = [v9 endDate];
 
-  v13 = [v12 hk_dayIndexWithCalendar:v8];
+  v13 = [endDate hk_dayIndexWithCalendar:v8];
   if (v11 == v13)
   {
     v14 = 0;

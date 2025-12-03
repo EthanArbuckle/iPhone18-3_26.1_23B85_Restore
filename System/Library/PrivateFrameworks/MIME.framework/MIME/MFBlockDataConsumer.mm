@@ -1,25 +1,25 @@
 @interface MFBlockDataConsumer
-- (MFBlockDataConsumer)initWithAppendHandler:(id)a3 doneHandler:(id)a4;
-- (int64_t)appendData:(id)a3;
+- (MFBlockDataConsumer)initWithAppendHandler:(id)handler doneHandler:(id)doneHandler;
+- (int64_t)appendData:(id)data;
 - (void)done;
 @end
 
 @implementation MFBlockDataConsumer
 
-- (MFBlockDataConsumer)initWithAppendHandler:(id)a3 doneHandler:(id)a4
+- (MFBlockDataConsumer)initWithAppendHandler:(id)handler doneHandler:(id)doneHandler
 {
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  doneHandlerCopy = doneHandler;
   v14.receiver = self;
   v14.super_class = MFBlockDataConsumer;
   v8 = [(MFBlockDataConsumer *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [handlerCopy copy];
     appendHandler = v8->_appendHandler;
     v8->_appendHandler = v9;
 
-    v11 = [v7 copy];
+    v11 = [doneHandlerCopy copy];
     doneHandler = v8->_doneHandler;
     v8->_doneHandler = v11;
   }
@@ -27,18 +27,18 @@
   return v8;
 }
 
-- (int64_t)appendData:(id)a3
+- (int64_t)appendData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   appendHandler = self->_appendHandler;
   if (appendHandler)
   {
-    v6 = appendHandler[2](appendHandler, v4);
+    v6 = appendHandler[2](appendHandler, dataCopy);
   }
 
   else
   {
-    v6 = [v4 length];
+    v6 = [dataCopy length];
   }
 
   v7 = v6;

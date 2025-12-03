@@ -1,6 +1,6 @@
 @interface UIPDFPopupAnnotationView
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation UIPDFPopupAnnotationView
@@ -12,13 +12,13 @@
   [(UIView *)&v3 dealloc];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  if ([(UIPDFPageView *)[(UIPDFAnnotationController *)[[(UIPDFAnnotationView *)self annotation:a3.origin.x] annotationController] pageView] showAnnotations])
+  if ([(UIPDFPageView *)[(UIPDFAnnotationController *)[[(UIPDFAnnotationView *)self annotation:rect.origin.x] annotationController] pageView] showAnnotations])
   {
-    v4 = [[(UIPDFAnnotationView *)self annotation] parent];
+    parent = [[(UIPDFAnnotationView *)self annotation] parent];
     image = self->_image;
-    if (image || (v6 = [objc_msgSend(v4 "annotationController")], self->_image = v6, v7 = v6, (image = self->_image) != 0))
+    if (image || (v6 = [objc_msgSend(parent "annotationController")], self->_image = v6, v7 = v6, (image = self->_image) != 0))
     {
       [(UIImage *)image size];
       v9 = v8;
@@ -53,9 +53,9 @@
         v21 = ContextStack[3 * (*ContextStack - 1) + 1];
       }
 
-      v22 = [v4 color];
+      color = [parent color];
       CGContextSaveGState(v21);
-      CGContextSetFillColorWithColor(v21, v22);
+      CGContextSetFillColorWithColor(v21, color);
       [(UIView *)self bounds];
       CGContextFillRect(v21, v30);
       CGContextSetStrokeColorWithColor(v21, [+[UIColor CGColor] blackColor];

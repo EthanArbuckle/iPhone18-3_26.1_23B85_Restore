@@ -1,5 +1,5 @@
 @interface WFActionDidRunTestingEvent
-- (WFActionDidRunTestingEvent)initWithAction:(id)a3 output:(id)a4 error:(id)a5;
+- (WFActionDidRunTestingEvent)initWithAction:(id)action output:(id)output error:(id)error;
 - (id)description;
 @end
 
@@ -24,18 +24,18 @@
   return v9;
 }
 
-- (WFActionDidRunTestingEvent)initWithAction:(id)a3 output:(id)a4 error:(id)a5
+- (WFActionDidRunTestingEvent)initWithAction:(id)action output:(id)output error:(id)error
 {
-  v9 = a4;
-  v10 = a5;
+  outputCopy = output;
+  errorCopy = error;
   v15.receiver = self;
   v15.super_class = WFActionDidRunTestingEvent;
-  v11 = [(WFActionTestingEvent *)&v15 initWithAction:a3];
+  v11 = [(WFActionTestingEvent *)&v15 initWithAction:action];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_output, a4);
-    objc_storeStrong(&v12->_error, a5);
+    objc_storeStrong(&v11->_output, output);
+    objc_storeStrong(&v12->_error, error);
     v13 = v12;
   }
 

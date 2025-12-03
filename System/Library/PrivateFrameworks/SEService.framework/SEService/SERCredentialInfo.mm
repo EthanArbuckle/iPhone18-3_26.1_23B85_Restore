@@ -1,6 +1,6 @@
 @interface SERCredentialInfo
 - (_TtC9SEService17SERCredentialInfo)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SERCredentialInfo
@@ -12,11 +12,11 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  SERCredentialInfo.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  SERCredentialInfo.encode(with:)(coderCopy);
 }
 
 @end

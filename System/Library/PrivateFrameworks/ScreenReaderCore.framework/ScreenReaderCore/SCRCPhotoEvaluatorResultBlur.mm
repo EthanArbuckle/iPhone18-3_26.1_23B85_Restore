@@ -1,11 +1,11 @@
 @interface SCRCPhotoEvaluatorResultBlur
-- (SCRCPhotoEvaluatorResultBlur)initWithBlurLevel:(double)a3;
+- (SCRCPhotoEvaluatorResultBlur)initWithBlurLevel:(double)level;
 - (id)humanReadableResult;
 @end
 
 @implementation SCRCPhotoEvaluatorResultBlur
 
-- (SCRCPhotoEvaluatorResultBlur)initWithBlurLevel:(double)a3
+- (SCRCPhotoEvaluatorResultBlur)initWithBlurLevel:(double)level
 {
   v8.receiver = self;
   v8.super_class = SCRCPhotoEvaluatorResultBlur;
@@ -13,7 +13,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_blurLevel = a3;
+    v4->_blurLevel = level;
     v6 = v4;
   }
 

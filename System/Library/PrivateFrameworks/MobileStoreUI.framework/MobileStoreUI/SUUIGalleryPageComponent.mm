@@ -1,40 +1,40 @@
 @interface SUUIGalleryPageComponent
-- (SUUIGalleryPageComponent)initWithCustomPageContext:(id)a3;
+- (SUUIGalleryPageComponent)initWithCustomPageContext:(id)context;
 @end
 
 @implementation SUUIGalleryPageComponent
 
-- (SUUIGalleryPageComponent)initWithCustomPageContext:(id)a3
+- (SUUIGalleryPageComponent)initWithCustomPageContext:(id)context
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v31.receiver = self;
   v31.super_class = SUUIGalleryPageComponent;
-  v5 = [(SUUIPageComponent *)&v31 initWithCustomPageContext:v4];
+  v5 = [(SUUIPageComponent *)&v31 initWithCustomPageContext:contextCopy];
   if (v5)
   {
-    v6 = [v4 componentDictionary];
-    v7 = [v6 objectForKey:@"cycleInterval"];
+    componentDictionary = [contextCopy componentDictionary];
+    v7 = [componentDictionary objectForKey:@"cycleInterval"];
     if (objc_opt_respondsToSelector())
     {
       [v7 floatValue];
       v5->_cycleInterval = v8;
     }
 
-    v9 = [v6 objectForKey:@"hidesPageIndicator"];
+    v9 = [componentDictionary objectForKey:@"hidesPageIndicator"];
 
     if (objc_opt_respondsToSelector())
     {
       v5->_hidesPageIndicator = [v9 BOOLValue];
     }
 
-    v10 = [v6 objectForKey:@"children"];
+    v10 = [componentDictionary objectForKey:@"children"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v24 = v9;
-      v25 = v6;
-      v11 = [v4 copy];
+      v25 = componentDictionary;
+      v11 = [contextCopy copy];
       v26 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v27 = 0u;
       v28 = 0u;
@@ -85,7 +85,7 @@
       v5->_childComponents = v20;
 
       v9 = v24;
-      v6 = v25;
+      componentDictionary = v25;
       v10 = v23;
     }
   }

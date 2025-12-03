@@ -1,13 +1,13 @@
 @interface SBSmartCoverService
-- (SBSmartCoverService)initWithInitialState:(int64_t)a3;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
-- (void)setWantsSmartCoverStateChanges:(id)a3;
-- (void)smartCoverStateDidChange:(int64_t)a3;
+- (SBSmartCoverService)initWithInitialState:(int64_t)state;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
+- (void)setWantsSmartCoverStateChanges:(id)changes;
+- (void)smartCoverStateDidChange:(int64_t)change;
 @end
 
 @implementation SBSmartCoverService
 
-- (SBSmartCoverService)initWithInitialState:(int64_t)a3
+- (SBSmartCoverService)initWithInitialState:(int64_t)state
 {
   v17.receiver = self;
   v17.super_class = SBSmartCoverService;
@@ -15,7 +15,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_lastSmartCoverState = a3;
+    v4->_lastSmartCoverState = state;
     v6 = [MEMORY[0x277CBEB58] set];
     connections = v5->_connections;
     v5->_connections = v6;
@@ -49,12 +49,12 @@ void __44__SBSmartCoverService_initWithInitialState___block_invoke(uint64_t a1, 
   [v3 setDelegate:*(a1 + 32)];
 }
 
-- (void)smartCoverStateDidChange:(int64_t)a3
+- (void)smartCoverStateDidChange:(int64_t)change
 {
   v16 = *MEMORY[0x277D85DE8];
-  if (self->_lastSmartCoverState != a3)
+  if (self->_lastSmartCoverState != change)
   {
-    self->_lastSmartCoverState = a3;
+    self->_lastSmartCoverState = change;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
@@ -75,9 +75,9 @@ void __44__SBSmartCoverService_initWithInitialState___block_invoke(uint64_t a1, 
             objc_enumerationMutation(v4);
           }
 
-          v9 = [*(*(&v11 + 1) + 8 * v8) remoteTarget];
-          v10 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-          [v9 observeSmartCoverStateDidChange:v10];
+          remoteTarget = [*(*(&v11 + 1) + 8 * v8) remoteTarget];
+          v10 = [MEMORY[0x277CCABB0] numberWithInteger:change];
+          [remoteTarget observeSmartCoverStateDidChange:v10];
 
           ++v8;
         }
@@ -91,11 +91,11 @@ void __44__SBSmartCoverService_initWithInitialState___block_invoke(uint64_t a1, 
   }
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
-  v6 = a4;
-  v7 = [v6 remoteProcess];
-  v8 = [v7 hasEntitlement:@"com.apple.springboard.smartCoverObserving"];
+  connectionCopy = connection;
+  remoteProcess = [connectionCopy remoteProcess];
+  v8 = [remoteProcess hasEntitlement:@"com.apple.springboard.smartCoverObserving"];
 
   if (v8)
   {
@@ -103,11 +103,11 @@ void __44__SBSmartCoverService_initWithInitialState___block_invoke(uint64_t a1, 
     v12 = 3221225472;
     v13 = __65__SBSmartCoverService_listener_didReceiveConnection_withContext___block_invoke;
     v14 = &unk_2783B2168;
-    v15 = self;
-    v9 = v6;
+    selfCopy = self;
+    v9 = connectionCopy;
     v16 = v9;
     [v9 configureConnection:&v11];
-    [(NSMutableSet *)self->_connections addObject:v9, v11, v12, v13, v14, v15];
+    [(NSMutableSet *)self->_connections addObject:v9, v11, v12, v13, v14, selfCopy];
     [v9 activate];
   }
 
@@ -119,7 +119,7 @@ void __44__SBSmartCoverService_initWithInitialState___block_invoke(uint64_t a1, 
       [SBSmartCoverService listener:v10 didReceiveConnection:? withContext:?];
     }
 
-    [v6 invalidate];
+    [connectionCopy invalidate];
   }
 }
 
@@ -163,32 +163,32 @@ void __65__SBSmartCoverService_listener_didReceiveConnection_withContext___block
   [*(*(a1 + 40) + 16) removeObject:v3];
 }
 
-- (void)setWantsSmartCoverStateChanges:(id)a3
+- (void)setWantsSmartCoverStateChanges:(id)changes
 {
   v17 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CF3280];
-  v5 = a3;
-  v6 = [v4 currentContext];
-  v7 = [v5 BOOLValue];
+  changesCopy = changes;
+  currentContext = [v4 currentContext];
+  bOOLValue = [changesCopy BOOLValue];
 
-  v8 = [(NSMutableSet *)self->_observingConnections containsObject:v6];
-  if (v7)
+  v8 = [(NSMutableSet *)self->_observingConnections containsObject:currentContext];
+  if (bOOLValue)
   {
     if ((v8 & 1) == 0)
     {
       v9 = SBLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [v6 remoteProcess];
+        remoteProcess = [currentContext remoteProcess];
         v15 = 138543362;
-        v16 = v10;
+        v16 = remoteProcess;
         _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "SBSmartCoverService: observer added: %{public}@", &v15, 0xCu);
       }
 
-      [(NSMutableSet *)self->_observingConnections addObject:v6];
-      v11 = [v6 remoteTarget];
+      [(NSMutableSet *)self->_observingConnections addObject:currentContext];
+      remoteTarget = [currentContext remoteTarget];
       v12 = [MEMORY[0x277CCABB0] numberWithInteger:self->_lastSmartCoverState];
-      [v11 observeSmartCoverStateDidChange:v12];
+      [remoteTarget observeSmartCoverStateDidChange:v12];
     }
   }
 
@@ -197,13 +197,13 @@ void __65__SBSmartCoverService_listener_didReceiveConnection_withContext___block
     v13 = SBLogCommon();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v6 remoteProcess];
+      remoteProcess2 = [currentContext remoteProcess];
       v15 = 138543362;
-      v16 = v14;
+      v16 = remoteProcess2;
       _os_log_impl(&dword_21ED4E000, v13, OS_LOG_TYPE_DEFAULT, "SBSmartCoverService: observer removed: %{public}@", &v15, 0xCu);
     }
 
-    [(NSMutableSet *)self->_observingConnections removeObject:v6];
+    [(NSMutableSet *)self->_observingConnections removeObject:currentContext];
   }
 }
 

@@ -16,14 +16,14 @@
     v8[3] = &unk_1E774A0E0;
     v11 = v7;
     v9 = v6;
-    v10 = a1;
-    [a1 performBatchUpdates:v8 completion:0];
+    selfCopy = self;
+    [self performBatchUpdates:v8 completion:0];
   }
 
   else
   {
     v7[2](v7);
-    [a1 reloadData];
+    [self reloadData];
   }
 }
 

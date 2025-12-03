@@ -1,8 +1,8 @@
 @interface NWPrivilegedHelper
 - (BOOL)startXPCListener;
-- (NWPrivilegedHelper)initWithQueue:(id)a3;
-- (void)handleRequest:(id)a3 onConnection:(id)a4;
-- (void)registerHandlerFunction:(void *)a3 type:(int)a4 allowedEntitlementGroup:(id)a5;
+- (NWPrivilegedHelper)initWithQueue:(id)queue;
+- (void)handleRequest:(id)request onConnection:(id)connection;
+- (void)registerHandlerFunction:(void *)function type:(int)type allowedEntitlementGroup:(id)group;
 - (void)registerHelperFunctions;
 - (void)startThrottlePolicyEventListener;
 @end
@@ -228,23 +228,23 @@ LABEL_26:
 LABEL_46:
 }
 
-- (void)handleRequest:(id)a3 onConnection:(id)a4
+- (void)handleRequest:(id)request onConnection:(id)connection
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [[NWPHContext alloc] initWithRequest:v6 onConnection:v7];
+  requestCopy = request;
+  connectionCopy = connection;
+  v8 = [[NWPHContext alloc] initWithRequest:requestCopy onConnection:connectionCopy];
   if (v8)
   {
-    uint64 = xpc_dictionary_get_uint64(v6, networkd_privileged_key_type);
-    v10 = [(NWPrivilegedHelper *)self handlers];
+    uint64 = xpc_dictionary_get_uint64(requestCopy, networkd_privileged_key_type);
+    handlers = [(NWPrivilegedHelper *)self handlers];
     v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:uint64];
-    v12 = [v10 objectForKeyedSubscript:v11];
+    v12 = [handlers objectForKeyedSubscript:v11];
 
     if (v12)
     {
-      v13 = [v12 allowedEntitlementGroup];
-      v14 = connectionMatchesEntitlementGroup(v7, v13);
+      allowedEntitlementGroup = [v12 allowedEntitlementGroup];
+      v14 = connectionMatchesEntitlementGroup(connectionCopy, allowedEntitlementGroup);
 
       pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
       networkd_settings_init();
@@ -365,18 +365,18 @@ LABEL_46:
       v22 = -1003;
     }
 
-    v25 = [(NWPHContext *)v8 reply];
-    xpc_dictionary_set_int64(v25, networkd_privileged_key_result, v22);
+    reply = [(NWPHContext *)v8 reply];
+    xpc_dictionary_set_int64(reply, networkd_privileged_key_result, v22);
 
-    v26 = [(NWPHContext *)v8 reply];
-    xpc_connection_send_message(v7, v26);
+    reply2 = [(NWPHContext *)v8 reply];
+    xpc_connection_send_message(connectionCopy, reply2);
   }
 }
 
-- (NWPrivilegedHelper)initWithQueue:(id)a3
+- (NWPrivilegedHelper)initWithQueue:(id)queue
 {
   v43 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  queueCopy = queue;
   if ((gIsHelper & 1) == 0)
   {
     gIsHelper = 1;
@@ -391,9 +391,9 @@ LABEL_46:
   v6 = v5;
   if (v5)
   {
-    if (v4)
+    if (queueCopy)
     {
-      [(NWPrivilegedHelper *)v5 setQueue:v4];
+      [(NWPrivilegedHelper *)v5 setQueue:queueCopy];
     }
 
     else
@@ -402,26 +402,26 @@ LABEL_46:
       [(NWPrivilegedHelper *)v6 setQueue:v7];
     }
 
-    v8 = [(NWPrivilegedHelper *)v6 queue];
+    queue = [(NWPrivilegedHelper *)v6 queue];
     v9 = +[ManagedNetworkSettings sharedMNS];
-    [v9 setQueue:v8];
+    [v9 setQueue:queue];
 
-    v10 = [MEMORY[0x1E695DF90] dictionary];
-    [(NWPrivilegedHelper *)v6 setHandlers:v10];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [(NWPrivilegedHelper *)v6 setHandlers:dictionary];
 
     v11 = [MEMORY[0x1E695DFA8] set];
     [(NWPrivilegedHelper *)v6 setAllKnownEntitlementSet:v11];
 
     [(NWPrivilegedHelper *)v6 registerHelperFunctions];
-    v12 = [MEMORY[0x1E695DF70] array];
-    [(NWPrivilegedHelper *)v6 setAllKnownEntitlementGroup:v12];
+    array = [MEMORY[0x1E695DF70] array];
+    [(NWPrivilegedHelper *)v6 setAllKnownEntitlementGroup:array];
 
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v13 = [(NWPrivilegedHelper *)v6 allKnownEntitlementSet];
-    v14 = [v13 countByEnumeratingWithState:&v30 objects:v38 count:16];
+    allKnownEntitlementSet = [(NWPrivilegedHelper *)v6 allKnownEntitlementSet];
+    v14 = [allKnownEntitlementSet countByEnumeratingWithState:&v30 objects:v38 count:16];
     if (v14)
     {
       v15 = v14;
@@ -432,17 +432,17 @@ LABEL_46:
         {
           if (*v31 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(allKnownEntitlementSet);
           }
 
           v18 = *(*(&v30 + 1) + 8 * i);
-          v19 = [(NWPrivilegedHelper *)v6 allKnownEntitlementGroup];
+          allKnownEntitlementGroup = [(NWPrivilegedHelper *)v6 allKnownEntitlementGroup];
           v37 = v18;
           v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v37 count:1];
-          [v19 addObject:v20];
+          [allKnownEntitlementGroup addObject:v20];
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v30 objects:v38 count:16];
+        v15 = [allKnownEntitlementSet countByEnumeratingWithState:&v30 objects:v38 count:16];
       }
 
       while (v15);
@@ -544,8 +544,8 @@ LABEL_16:
 
 - (void)startThrottlePolicyEventListener
 {
-  v2 = [(NWPrivilegedHelper *)self queue];
-  xpc_set_event_stream_handler("com.apple.notifyd.matching", v2, &__block_literal_global_45674);
+  queue = [(NWPrivilegedHelper *)self queue];
+  xpc_set_event_stream_handler("com.apple.notifyd.matching", queue, &__block_literal_global_45674);
 }
 
 void __54__NWPrivilegedHelper_startThrottlePolicyEventListener__block_invoke(uint64_t a1, void *a2)
@@ -864,13 +864,13 @@ LABEL_48:
 {
   v36 = *MEMORY[0x1E69E9840];
   v3 = networkd_privileged_service;
-  v4 = [(NWPrivilegedHelper *)self queue];
-  mach_service = xpc_connection_create_mach_service(v3, v4, 1uLL);
+  queue = [(NWPrivilegedHelper *)self queue];
+  mach_service = xpc_connection_create_mach_service(v3, queue, 1uLL);
   [(NWPrivilegedHelper *)self setListener:mach_service];
 
-  v6 = [(NWPrivilegedHelper *)self listener];
+  listener = [(NWPrivilegedHelper *)self listener];
 
-  if (!v6)
+  if (!listener)
   {
     pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
     networkd_settings_init();
@@ -958,24 +958,24 @@ LABEL_48:
     goto LABEL_23;
   }
 
-  v7 = [(NWPrivilegedHelper *)self listener];
-  Class = object_getClass(v7);
+  listener2 = [(NWPrivilegedHelper *)self listener];
+  Class = object_getClass(listener2);
   v9 = MEMORY[0x1E69E9E68];
 
   if (Class == v9)
   {
     objc_initWeak(buf, self);
-    v16 = [(NWPrivilegedHelper *)self listener];
+    listener3 = [(NWPrivilegedHelper *)self listener];
     handler[0] = MEMORY[0x1E69E9820];
     handler[1] = 3221225472;
     handler[2] = __38__NWPrivilegedHelper_startXPCListener__block_invoke;
     handler[3] = &unk_1E6A33348;
     objc_copyWeak(&v27, buf);
     handler[4] = self;
-    xpc_connection_set_event_handler(v16, handler);
+    xpc_connection_set_event_handler(listener3, handler);
 
-    v17 = [(NWPrivilegedHelper *)self listener];
-    xpc_connection_resume(v17);
+    listener4 = [(NWPrivilegedHelper *)self listener];
+    xpc_connection_resume(listener4);
 
     objc_destroyWeak(&v27);
     objc_destroyWeak(buf);
@@ -1480,12 +1480,12 @@ LABEL_51:
   [(NWPrivilegedHelper *)self registerHandlerFunction:handleRunProbes type:21 allowedEntitlementGroup:v46];
 }
 
-- (void)registerHandlerFunction:(void *)a3 type:(int)a4 allowedEntitlementGroup:(id)a5
+- (void)registerHandlerFunction:(void *)function type:(int)type allowedEntitlementGroup:(id)group
 {
-  v5 = *&a4;
+  v5 = *&type;
   v108 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  if (!a3)
+  groupCopy = group;
+  if (!function)
   {
     pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
     networkd_settings_init();
@@ -1503,7 +1503,7 @@ LABEL_51:
         pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
         networkd_settings_init();
         v18 = gLogObj;
-        v19 = type;
+        typeCopy2 = type;
         if (!os_log_type_enabled(v18, type))
         {
           goto LABEL_50;
@@ -1514,7 +1514,7 @@ LABEL_51:
         v20 = "%{public}s called with null handlerFunction";
 LABEL_48:
         v50 = v18;
-        v51 = v19;
+        v51 = typeCopy2;
         goto LABEL_49;
       }
 
@@ -1523,7 +1523,7 @@ LABEL_48:
         pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
         networkd_settings_init();
         v18 = gLogObj;
-        v19 = type;
+        typeCopy2 = type;
         if (!os_log_type_enabled(v18, type))
         {
           goto LABEL_50;
@@ -1539,7 +1539,7 @@ LABEL_48:
       pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
       networkd_settings_init();
       v18 = gLogObj;
-      v22 = type;
+      typeCopy3 = type;
       v23 = os_log_type_enabled(v18, type);
       if (!backtrace_string)
       {
@@ -1561,7 +1561,7 @@ LABEL_51:
         v99 = "[NWPrivilegedHelper registerHandlerFunction:type:allowedEntitlementGroup:]";
         v20 = "%{public}s called with null handlerFunction, no backtrace";
         v50 = v18;
-        v51 = v22;
+        v51 = typeCopy3;
 LABEL_49:
         _os_log_impl(&dword_181A37000, v50, v51, v20, buf, 0xCu);
         goto LABEL_50;
@@ -1573,7 +1573,7 @@ LABEL_49:
         v99 = "[NWPrivilegedHelper registerHandlerFunction:type:allowedEntitlementGroup:]";
         v100 = 2082;
         *v101 = backtrace_string;
-        _os_log_impl(&dword_181A37000, v18, v22, "%{public}s called with null handlerFunction, dumping backtrace:%{public}s", buf, 0x16u);
+        _os_log_impl(&dword_181A37000, v18, typeCopy3, "%{public}s called with null handlerFunction, dumping backtrace:%{public}s", buf, 0x16u);
       }
 
       free(backtrace_string);
@@ -1587,15 +1587,15 @@ LABEL_49:
     goto LABEL_51;
   }
 
-  v9 = [[NWPHHandler alloc] initWithHandlerFunction:a3 allowedEntitlementGroup:v8];
+  v9 = [[NWPHHandler alloc] initWithHandlerFunction:function allowedEntitlementGroup:groupCopy];
   if (!v9)
   {
     goto LABEL_131;
   }
 
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v5];
-  v11 = [(NWPrivilegedHelper *)self handlers];
-  v12 = [v11 objectForKeyedSubscript:v10];
+  handlers = [(NWPrivilegedHelper *)self handlers];
+  v12 = [handlers objectForKeyedSubscript:v10];
 
   v86 = v10;
   v87 = v9;
@@ -1632,7 +1632,7 @@ LABEL_49:
         pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
         networkd_settings_init();
         v41 = gLogObj;
-        v42 = type;
+        typeCopy11 = type;
         if (os_log_type_enabled(v41, type))
         {
           if (v14 > 0x14)
@@ -1663,7 +1663,7 @@ LABEL_49:
         pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
         networkd_settings_init();
         v41 = gLogObj;
-        v42 = type;
+        typeCopy11 = type;
         if (os_log_type_enabled(v41, type))
         {
           if (v14 > 0x14)
@@ -1689,12 +1689,12 @@ LABEL_49:
         goto LABEL_126;
       }
 
-      v44 = v8;
+      v44 = groupCopy;
       v45 = __nw_create_backtrace_string();
       pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
       networkd_settings_init();
       v46 = gLogObj;
-      v47 = type;
+      typeCopy6 = type;
       v48 = os_log_type_enabled(v46, type);
       if (v45)
       {
@@ -1718,16 +1718,16 @@ LABEL_49:
           *&v101[6] = v49;
           v102 = 2082;
           v103 = v45;
-          _os_log_impl(&dword_181A37000, v46, v47, "%{public}s Trying to reregister handler for type [%u] %{public}s, dumping backtrace:%{public}s", buf, 0x26u);
+          _os_log_impl(&dword_181A37000, v46, typeCopy6, "%{public}s Trying to reregister handler for type [%u] %{public}s, dumping backtrace:%{public}s", buf, 0x26u);
         }
 
         free(v45);
-        v8 = v44;
+        groupCopy = v44;
       }
 
       else
       {
-        v8 = v44;
+        groupCopy = v44;
         if (v48)
         {
           if (v14 > 0x14)
@@ -1746,7 +1746,7 @@ LABEL_49:
           *v101 = v5;
           *&v101[4] = 2082;
           *&v101[6] = v76;
-          _os_log_impl(&dword_181A37000, v46, v47, "%{public}s Trying to reregister handler for type [%u] %{public}s, no backtrace", buf, 0x1Cu);
+          _os_log_impl(&dword_181A37000, v46, typeCopy6, "%{public}s Trying to reregister handler for type [%u] %{public}s, no backtrace", buf, 0x1Cu);
         }
       }
     }
@@ -1758,7 +1758,7 @@ LABEL_49:
   v95 = 0u;
   v92 = 0u;
   v93 = 0u;
-  v24 = v8;
+  v24 = groupCopy;
   v25 = [v24 countByEnumeratingWithState:&v92 objects:v107 count:16];
   if (!v25)
   {
@@ -1769,7 +1769,7 @@ LABEL_49:
   v26 = v25;
   v27 = 0;
   v28 = *v93;
-  v84 = v8;
+  v84 = groupCopy;
   v85 = v24;
   v82 = *v93;
   do
@@ -1842,7 +1842,7 @@ LABEL_49:
                 pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
                 networkd_settings_init();
                 v60 = gLogObj;
-                v61 = type;
+                typeCopy9 = type;
                 if (os_log_type_enabled(v60, type))
                 {
                   if (v53 > 0x14)
@@ -1876,7 +1876,7 @@ LABEL_49:
                 pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
                 networkd_settings_init();
                 v64 = gLogObj;
-                v65 = type;
+                typeCopy8 = type;
                 v66 = os_log_type_enabled(v64, type);
                 if (v63)
                 {
@@ -1902,7 +1902,7 @@ LABEL_49:
                     v103 = v36;
                     v104 = 2082;
                     v105 = v63;
-                    _os_log_impl(&dword_181A37000, v64, v65, "%{public}s Refusing to register handler for type [%u] %{public}s with invalid entitlement %{public}@, dumping backtrace:%{public}s", buf, 0x30u);
+                    _os_log_impl(&dword_181A37000, v64, typeCopy8, "%{public}s Refusing to register handler for type [%u] %{public}s with invalid entitlement %{public}@, dumping backtrace:%{public}s", buf, 0x30u);
                   }
 
                   free(v63);
@@ -1930,7 +1930,7 @@ LABEL_49:
                     *&v101[6] = v80;
                     v102 = 2114;
                     v103 = v36;
-                    _os_log_impl(&dword_181A37000, v64, v65, "%{public}s Refusing to register handler for type [%u] %{public}s with invalid entitlement %{public}@, no backtrace", buf, 0x26u);
+                    _os_log_impl(&dword_181A37000, v64, typeCopy8, "%{public}s Refusing to register handler for type [%u] %{public}s with invalid entitlement %{public}@, no backtrace", buf, 0x26u);
                   }
                 }
               }
@@ -1940,7 +1940,7 @@ LABEL_49:
                 pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
                 networkd_settings_init();
                 v60 = gLogObj;
-                v61 = type;
+                typeCopy9 = type;
                 if (os_log_type_enabled(v60, type))
                 {
                   if (v53 > 0x14)
@@ -1963,7 +1963,7 @@ LABEL_49:
                   v103 = v36;
                   v79 = "%{public}s Refusing to register handler for type [%u] %{public}s with invalid entitlement %{public}@, backtrace limit exceeded";
 LABEL_112:
-                  _os_log_impl(&dword_181A37000, v60, v61, v79, buf, 0x26u);
+                  _os_log_impl(&dword_181A37000, v60, typeCopy9, v79, buf, 0x26u);
                 }
 
 LABEL_113:
@@ -1975,12 +1975,12 @@ LABEL_113:
               free(v59);
             }
 
-            v8 = v84;
+            groupCopy = v84;
             goto LABEL_129;
           }
 
-          v37 = [(NWPrivilegedHelper *)self allKnownEntitlementSet];
-          [v37 addObject:v36];
+          allKnownEntitlementSet = [(NWPrivilegedHelper *)self allKnownEntitlementSet];
+          [allKnownEntitlementSet addObject:v36];
         }
 
         v33 = [v31 countByEnumeratingWithState:&v88 objects:v106 count:16];
@@ -1993,7 +1993,7 @@ LABEL_113:
       }
 
       v27 = 1;
-      v8 = v84;
+      groupCopy = v84;
       v28 = v82;
       v26 = v83;
 LABEL_31:
@@ -2010,10 +2010,10 @@ LABEL_31:
 
   if (v27)
   {
-    v38 = [(NWPrivilegedHelper *)self handlers];
+    handlers2 = [(NWPrivilegedHelper *)self handlers];
     v39 = v86;
     v9 = v87;
-    [v38 setObject:v87 forKeyedSubscript:v86];
+    [handlers2 setObject:v87 forKeyedSubscript:v86];
 
     goto LABEL_130;
   }
@@ -2059,7 +2059,7 @@ LABEL_127:
     pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
     networkd_settings_init();
     v41 = gLogObj;
-    v42 = type;
+    typeCopy11 = type;
     if (os_log_type_enabled(v41, type))
     {
       if (v57 > 0x14)
@@ -2088,7 +2088,7 @@ LABEL_127:
   if (v96 != 1)
   {
     v41 = __nwlog_obj();
-    v42 = type;
+    typeCopy11 = type;
     if (os_log_type_enabled(v41, type))
     {
       if (v57 > 0x14)
@@ -2109,7 +2109,7 @@ LABEL_127:
       *&v101[6] = v78;
       v68 = "%{public}s Refusing to register handler for type [%u] %{public}s without any entitlement, backtrace limit exceeded";
 LABEL_125:
-      _os_log_impl(&dword_181A37000, v41, v42, v68, buf, 0x1Cu);
+      _os_log_impl(&dword_181A37000, v41, typeCopy11, v68, buf, 0x1Cu);
     }
 
 LABEL_126:
@@ -2117,10 +2117,10 @@ LABEL_126:
     goto LABEL_127;
   }
 
-  v70 = v8;
+  v70 = groupCopy;
   v71 = __nw_create_backtrace_string();
   v72 = __nwlog_obj();
-  v73 = type;
+  typeCopy12 = type;
   v74 = os_log_type_enabled(v72, type);
   if (v71)
   {
@@ -2144,11 +2144,11 @@ LABEL_126:
       *&v101[6] = v75;
       v102 = 2082;
       v103 = v71;
-      _os_log_impl(&dword_181A37000, v72, v73, "%{public}s Refusing to register handler for type [%u] %{public}s without any entitlement, dumping backtrace:%{public}s", buf, 0x26u);
+      _os_log_impl(&dword_181A37000, v72, typeCopy12, "%{public}s Refusing to register handler for type [%u] %{public}s without any entitlement, dumping backtrace:%{public}s", buf, 0x26u);
     }
 
     free(v71);
-    v8 = v70;
+    groupCopy = v70;
     if (!v40)
     {
       goto LABEL_129;
@@ -2157,7 +2157,7 @@ LABEL_126:
 
   else
   {
-    v8 = v70;
+    groupCopy = v70;
     if (v74)
     {
       if (v57 > 0x14)
@@ -2176,7 +2176,7 @@ LABEL_126:
       *v101 = v5;
       *&v101[4] = 2082;
       *&v101[6] = v81;
-      _os_log_impl(&dword_181A37000, v72, v73, "%{public}s Refusing to register handler for type [%u] %{public}s without any entitlement, no backtrace", buf, 0x1Cu);
+      _os_log_impl(&dword_181A37000, v72, typeCopy12, "%{public}s Refusing to register handler for type [%u] %{public}s without any entitlement, no backtrace", buf, 0x1Cu);
     }
 
     if (!v40)

@@ -1,51 +1,51 @@
 @interface HMVendorDataStore
 + (id)logCategory;
 - (HMVendorDataStore)init;
-- (HMVendorDataStore)initWithContext:(id)a3;
-- (void)fetchVendorModelEntryForManufacturer:(id)a3 model:(id)a4 completion:(id)a5;
-- (void)fetchVendorModelEntryForProductData:(id)a3 completion:(id)a4;
+- (HMVendorDataStore)initWithContext:(id)context;
+- (void)fetchVendorModelEntryForManufacturer:(id)manufacturer model:(id)model completion:(id)completion;
+- (void)fetchVendorModelEntryForProductData:(id)data completion:(id)completion;
 @end
 
 @implementation HMVendorDataStore
 
-- (HMVendorDataStore)initWithContext:(id)a3
+- (HMVendorDataStore)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v6 = [(HMVendorDataStore *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_context, a3);
+    objc_storeStrong(&v6->_context, context);
   }
 
   return v7;
 }
 
-- (void)fetchVendorModelEntryForProductData:(id)a3 completion:(id)a4
+- (void)fetchVendorModelEntryForProductData:(id)data completion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMVendorDataStore *)self context];
-  if (v8)
+  dataCopy = data;
+  completionCopy = completion;
+  context = [(HMVendorDataStore *)self context];
+  if (context)
   {
-    v9 = [MEMORY[0x1E695DF90] dictionary];
-    [v9 setObject:v6 forKeyedSubscript:@"kProductDataKey"];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary setObject:dataCopy forKeyedSubscript:@"kProductDataKey"];
     v10 = objc_alloc(MEMORY[0x1E69A2A00]);
-    v11 = [(HMVendorDataStore *)self uuid];
-    v12 = [v10 initWithTarget:v11];
+    uuid = [(HMVendorDataStore *)self uuid];
+    v12 = [v10 initWithTarget:uuid];
 
-    v13 = [MEMORY[0x1E69A2A10] messageWithName:@"kFetchVendorModelEntryForProductDataRequestKey" destination:v12 payload:v9];
+    v13 = [MEMORY[0x1E69A2A10] messageWithName:@"kFetchVendorModelEntryForProductDataRequestKey" destination:v12 payload:dictionary];
     objc_initWeak(location, self);
     v20 = MEMORY[0x1E69E9820];
     v21 = 3221225472;
     v22 = __68__HMVendorDataStore_fetchVendorModelEntryForProductData_completion___block_invoke;
     v23 = &unk_1E754CFF8;
     objc_copyWeak(&v25, location);
-    v24 = v7;
+    v24 = completionCopy;
     [v13 setResponseHandler:&v20];
-    v14 = [v8 messageDispatcher];
-    [v14 sendMessage:v13];
+    messageDispatcher = [context messageDispatcher];
+    [messageDispatcher sendMessage:v13];
 
     objc_destroyWeak(&v25);
     objc_destroyWeak(location);
@@ -54,7 +54,7 @@
   else
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -170,27 +170,27 @@ LABEL_21:
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchVendorModelEntryForManufacturer:(id)a3 model:(id)a4 completion:(id)a5
+- (void)fetchVendorModelEntryForManufacturer:(id)manufacturer model:(id)model completion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HMVendorDataStore *)self context];
-  if (v11)
+  manufacturerCopy = manufacturer;
+  modelCopy = model;
+  completionCopy = completion;
+  context = [(HMVendorDataStore *)self context];
+  if (context)
   {
-    v12 = [MEMORY[0x1E695DF90] dictionary];
-    [v12 setObject:v8 forKeyedSubscript:@"kManufacturerKey"];
-    if (v9)
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary setObject:manufacturerCopy forKeyedSubscript:@"kManufacturerKey"];
+    if (modelCopy)
     {
-      [v12 setObject:v9 forKeyedSubscript:@"kModelKey"];
+      [dictionary setObject:modelCopy forKeyedSubscript:@"kModelKey"];
     }
 
     v13 = objc_alloc(MEMORY[0x1E69A2A00]);
-    v14 = [(HMVendorDataStore *)self uuid];
-    v15 = [v13 initWithTarget:v14];
+    uuid = [(HMVendorDataStore *)self uuid];
+    v15 = [v13 initWithTarget:uuid];
 
-    v16 = [MEMORY[0x1E69A2A10] messageWithName:@"kFetchVendorModelEntryForManufacturerRequestKey" destination:v15 payload:v12];
+    v16 = [MEMORY[0x1E69A2A10] messageWithName:@"kFetchVendorModelEntryForManufacturerRequestKey" destination:v15 payload:dictionary];
     objc_initWeak(location, self);
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
@@ -198,10 +198,10 @@ LABEL_21:
     v23[3] = &unk_1E754D058;
     v23[4] = self;
     objc_copyWeak(&v25, location);
-    v24 = v10;
+    v24 = completionCopy;
     [v16 setResponseHandler:v23];
-    v17 = [v11 messageDispatcher];
-    [v17 sendMessage:v16];
+    messageDispatcher = [context messageDispatcher];
+    [messageDispatcher sendMessage:v16];
 
     objc_destroyWeak(&v25);
     objc_destroyWeak(location);
@@ -210,7 +210,7 @@ LABEL_21:
   else
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {

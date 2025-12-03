@@ -1,7 +1,7 @@
 @interface DOCResizingBackgroundView
 - (CGSize)intrinsicContentSize;
-- (_TtC26DocumentManagerExecutablesP33_8D051EE7059755ECA4C153AED851D97625DOCResizingBackgroundView)initWithCoder:(id)a3;
-- (_TtC26DocumentManagerExecutablesP33_8D051EE7059755ECA4C153AED851D97625DOCResizingBackgroundView)initWithFrame:(CGRect)a3;
+- (_TtC26DocumentManagerExecutablesP33_8D051EE7059755ECA4C153AED851D97625DOCResizingBackgroundView)initWithCoder:(id)coder;
+- (_TtC26DocumentManagerExecutablesP33_8D051EE7059755ECA4C153AED851D97625DOCResizingBackgroundView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation DOCResizingBackgroundView
@@ -15,12 +15,12 @@
   return result;
 }
 
-- (_TtC26DocumentManagerExecutablesP33_8D051EE7059755ECA4C153AED851D97625DOCResizingBackgroundView)initWithFrame:(CGRect)a3
+- (_TtC26DocumentManagerExecutablesP33_8D051EE7059755ECA4C153AED851D97625DOCResizingBackgroundView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutablesP33_8D051EE7059755ECA4C153AED851D97625DOCResizingBackgroundView_preferredHeight) = 0;
   v10.receiver = self;
@@ -28,14 +28,14 @@
   return [(DOCResizingBackgroundView *)&v10 initWithFrame:x, y, width, height];
 }
 
-- (_TtC26DocumentManagerExecutablesP33_8D051EE7059755ECA4C153AED851D97625DOCResizingBackgroundView)initWithCoder:(id)a3
+- (_TtC26DocumentManagerExecutablesP33_8D051EE7059755ECA4C153AED851D97625DOCResizingBackgroundView)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutablesP33_8D051EE7059755ECA4C153AED851D97625DOCResizingBackgroundView_preferredHeight) = 0;
   v9.receiver = self;
   v9.super_class = ObjectType;
-  v6 = a3;
-  v7 = [(DOCResizingBackgroundView *)&v9 initWithCoder:v6];
+  coderCopy = coder;
+  v7 = [(DOCResizingBackgroundView *)&v9 initWithCoder:coderCopy];
 
   if (v7)
   {

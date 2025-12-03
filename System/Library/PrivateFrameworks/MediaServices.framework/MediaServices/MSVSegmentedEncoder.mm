@@ -1,22 +1,22 @@
 @interface MSVSegmentedEncoder
-- (MSVSegmentedEncoder)initWithCodingPackage:(id)a3 userInfo:(id)a4;
-- (id)_coderForKey:(id)a3;
+- (MSVSegmentedEncoder)initWithCodingPackage:(id)package userInfo:(id)info;
+- (id)_coderForKey:(id)key;
 - (id)msv_userInfo;
-- (void)encodeBytes:(const char *)a3 length:(unint64_t)a4 forKey:(id)a5;
-- (void)encodeDouble:(double)a3 forKey:(id)a4;
-- (void)encodeFloat:(float)a3 forKey:(id)a4;
-- (void)encodeInt64:(int64_t)a3 forKey:(id)a4;
-- (void)encodeObject:(id)a3 forKey:(id)a4;
-- (void)encodeRootObject:(id)a3;
+- (void)encodeBytes:(const char *)bytes length:(unint64_t)length forKey:(id)key;
+- (void)encodeDouble:(double)double forKey:(id)key;
+- (void)encodeFloat:(float)float forKey:(id)key;
+- (void)encodeInt64:(int64_t)int64 forKey:(id)key;
+- (void)encodeObject:(id)object forKey:(id)key;
+- (void)encodeRootObject:(id)object;
 - (void)finishEncoding;
-- (void)msv_setUserInfo:(id)a3;
+- (void)msv_setUserInfo:(id)info;
 @end
 
 @implementation MSVSegmentedEncoder
 
-- (id)_coderForKey:(id)a3
+- (id)_coderForKey:(id)key
 {
-  v4 = [(MSVSegmentedCoding *)self->_rootObject segmentForCodingKey:a3];
+  v4 = [(MSVSegmentedCoding *)self->_rootObject segmentForCodingKey:key];
   v5 = [(NSMutableDictionary *)self->_subcoders objectForKeyedSubscript:v4];
   if (!v5)
   {
@@ -32,10 +32,10 @@
   return v5;
 }
 
-- (void)msv_setUserInfo:(id)a3
+- (void)msv_setUserInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  infoCopy = info;
+  v5 = [infoCopy copy];
   userInfo = self->_userInfo;
   self->_userInfo = v5;
 
@@ -44,8 +44,8 @@
   v9[1] = 3221225472;
   v9[2] = __39__MSVSegmentedEncoder_msv_setUserInfo___block_invoke;
   v9[3] = &unk_1E79824F8;
-  v10 = v4;
-  v8 = v4;
+  v10 = infoCopy;
+  v8 = infoCopy;
   [(NSMutableDictionary *)subcoders enumerateKeysAndObjectsUsingBlock:v9];
 }
 
@@ -62,56 +62,56 @@
   }
 }
 
-- (void)encodeBytes:(const char *)a3 length:(unint64_t)a4 forKey:(id)a5
+- (void)encodeBytes:(const char *)bytes length:(unint64_t)length forKey:(id)key
 {
-  v8 = a5;
-  v9 = [(MSVSegmentedEncoder *)self _coderForKey:v8];
-  [v9 encodeBytes:a3 length:a4 forKey:v8];
+  keyCopy = key;
+  v9 = [(MSVSegmentedEncoder *)self _coderForKey:keyCopy];
+  [v9 encodeBytes:bytes length:length forKey:keyCopy];
 }
 
-- (void)encodeDouble:(double)a3 forKey:(id)a4
+- (void)encodeDouble:(double)double forKey:(id)key
 {
-  v6 = a4;
-  v7 = [(MSVSegmentedEncoder *)self _coderForKey:v6];
-  [v7 encodeDouble:v6 forKey:a3];
+  keyCopy = key;
+  v7 = [(MSVSegmentedEncoder *)self _coderForKey:keyCopy];
+  [v7 encodeDouble:keyCopy forKey:double];
 }
 
-- (void)encodeFloat:(float)a3 forKey:(id)a4
+- (void)encodeFloat:(float)float forKey:(id)key
 {
-  v6 = a4;
-  v8 = [(MSVSegmentedEncoder *)self _coderForKey:v6];
-  *&v7 = a3;
-  [v8 encodeFloat:v6 forKey:v7];
+  keyCopy = key;
+  v8 = [(MSVSegmentedEncoder *)self _coderForKey:keyCopy];
+  *&v7 = float;
+  [v8 encodeFloat:keyCopy forKey:v7];
 }
 
-- (void)encodeInt64:(int64_t)a3 forKey:(id)a4
+- (void)encodeInt64:(int64_t)int64 forKey:(id)key
 {
-  v6 = a4;
-  v7 = [(MSVSegmentedEncoder *)self _coderForKey:v6];
-  [v7 encodeInt64:a3 forKey:v6];
+  keyCopy = key;
+  v7 = [(MSVSegmentedEncoder *)self _coderForKey:keyCopy];
+  [v7 encodeInt64:int64 forKey:keyCopy];
 }
 
-- (void)encodeObject:(id)a3 forKey:(id)a4
+- (void)encodeObject:(id)object forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MSVSegmentedEncoder *)self _coderForKey:v6];
-  [v8 encodeObject:v7 forKey:v6];
+  keyCopy = key;
+  objectCopy = object;
+  v8 = [(MSVSegmentedEncoder *)self _coderForKey:keyCopy];
+  [v8 encodeObject:objectCopy forKey:keyCopy];
 }
 
-- (void)encodeRootObject:(id)a3
+- (void)encodeRootObject:(id)object
 {
-  v5 = a3;
-  if (![v5 conformsToProtocol:&unk_1F216E288] || (objc_msgSend(objc_opt_class(), "supportsSecureCoding") & 1) == 0)
+  objectCopy = object;
+  if (![objectCopy conformsToProtocol:&unk_1F216E288] || (objc_msgSend(objc_opt_class(), "supportsSecureCoding") & 1) == 0)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"MSVSegmentedEncoder.m" lineNumber:64 description:@"Root objects must support segmented and secure coding."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MSVSegmentedEncoder.m" lineNumber:64 description:@"Root objects must support segmented and secure coding."];
   }
 
   [(MSVSegmentedCodingPackage *)self->_package setArchivedClass:objc_opt_class()];
   rootObject = self->_rootObject;
-  self->_rootObject = v5;
-  v7 = v5;
+  self->_rootObject = objectCopy;
+  v7 = objectCopy;
 
   [v7 encodeWithCoder:self];
 
@@ -128,16 +128,16 @@
   }
 }
 
-- (MSVSegmentedEncoder)initWithCodingPackage:(id)a3 userInfo:(id)a4
+- (MSVSegmentedEncoder)initWithCodingPackage:(id)package userInfo:(id)info
 {
-  v7 = a3;
-  v8 = a4;
+  packageCopy = package;
+  infoCopy = info;
   v16.receiver = self;
   v16.super_class = MSVSegmentedEncoder;
   v9 = [(MSVSegmentedEncoder *)&v16 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [infoCopy copy];
     v11 = v10;
     if (v10)
     {
@@ -151,10 +151,10 @@
 
     objc_storeStrong(&v9->_userInfo, v12);
 
-    objc_storeStrong(&v9->_package, a3);
-    v13 = [MEMORY[0x1E695DF90] dictionary];
+    objc_storeStrong(&v9->_package, package);
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     subcoders = v9->_subcoders;
-    v9->_subcoders = v13;
+    v9->_subcoders = dictionary;
   }
 
   return v9;

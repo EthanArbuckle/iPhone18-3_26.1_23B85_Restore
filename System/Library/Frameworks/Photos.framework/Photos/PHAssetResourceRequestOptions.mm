@@ -1,11 +1,11 @@
 @interface PHAssetResourceRequestOptions
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setDownloadIntent:(int64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setDownloadIntent:(int64_t)intent;
 @end
 
 @implementation PHAssetResourceRequestOptions
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(PHAssetResourceRequestOptions);
   [(PHAssetResourceRequestOptions *)v4 setNetworkAccessAllowed:self->_networkAccessAllowed];
@@ -19,10 +19,10 @@
   return v4;
 }
 
-- (void)setDownloadIntent:(int64_t)a3
+- (void)setDownloadIntent:(int64_t)intent
 {
-  self->_downloadIntent = a3;
-  if (a3 == 6)
+  self->_downloadIntent = intent;
+  if (intent == 6)
   {
     self->_pruneAfterAvailableOnLowDisk = 1;
   }

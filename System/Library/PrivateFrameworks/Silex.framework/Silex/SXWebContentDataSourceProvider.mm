@@ -1,41 +1,41 @@
 @interface SXWebContentDataSourceProvider
-- (SXWebContentDataSourceProvider)initWithDOMObjectProvider:(id)a3 resourceDataSourceProvider:(id)a4;
-- (id)dataSourcesForReferences:(id)a3;
+- (SXWebContentDataSourceProvider)initWithDOMObjectProvider:(id)provider resourceDataSourceProvider:(id)sourceProvider;
+- (id)dataSourcesForReferences:(id)references;
 @end
 
 @implementation SXWebContentDataSourceProvider
 
-- (SXWebContentDataSourceProvider)initWithDOMObjectProvider:(id)a3 resourceDataSourceProvider:(id)a4
+- (SXWebContentDataSourceProvider)initWithDOMObjectProvider:(id)provider resourceDataSourceProvider:(id)sourceProvider
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  sourceProviderCopy = sourceProvider;
   v12.receiver = self;
   v12.super_class = SXWebContentDataSourceProvider;
   v9 = [(SXWebContentDataSourceProvider *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_DOMObjectProvider, a3);
-    objc_storeStrong(&v10->_resourceDataSourceProvider, a4);
+    objc_storeStrong(&v9->_DOMObjectProvider, provider);
+    objc_storeStrong(&v10->_resourceDataSourceProvider, sourceProvider);
   }
 
   return v10;
 }
 
-- (id)dataSourcesForReferences:(id)a3
+- (id)dataSourcesForReferences:(id)references
 {
-  v4 = a3;
-  if ([v4 count])
+  referencesCopy = references;
+  if ([referencesCopy count])
   {
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v9 = MEMORY[0x1E69E9820];
     v10 = 3221225472;
     v11 = __59__SXWebContentDataSourceProvider_dataSourcesForReferences___block_invoke;
     v12 = &unk_1E8501C50;
-    v13 = self;
-    v6 = v5;
+    selfCopy = self;
+    v6 = dictionary;
     v14 = v6;
-    [v4 enumerateKeysAndObjectsUsingBlock:&v9];
+    [referencesCopy enumerateKeysAndObjectsUsingBlock:&v9];
   }
 
   else

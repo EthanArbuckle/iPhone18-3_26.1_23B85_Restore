@@ -228,101 +228,101 @@
   v88.receiver = self;
   v88.super_class = NCUNUIKitPrototypeSettings;
   [(PTSettings *)&v88 setDefaultValues];
-  v3 = [(NCUNUIKitPrototypeSettings *)self listAnimationSettings];
-  [v3 setDefaultValues];
+  listAnimationSettings = [(NCUNUIKitPrototypeSettings *)self listAnimationSettings];
+  [listAnimationSettings setDefaultValues];
 
   [(NCUNUIKitPrototypeSettings *)self setBriefIconPositionMilestone:0.168];
   [(NCUNUIKitPrototypeSettings *)self setBriefIconScaleMilestone:0.337];
   [(NCUNUIKitPrototypeSettings *)self setBriefGrabberMilestone:0.85];
   [(NCUNUIKitPrototypeSettings *)self setBriefTextPositionMilestone:0.015];
-  v4 = [(NCUNUIKitPrototypeSettings *)self briefIconPositionSettings];
-  [v4 setDefaultValues];
+  briefIconPositionSettings = [(NCUNUIKitPrototypeSettings *)self briefIconPositionSettings];
+  [briefIconPositionSettings setDefaultValues];
 
-  v5 = [(NCUNUIKitPrototypeSettings *)self briefIconPositionSettings];
-  [v5 setDampingRatio:?];
+  briefIconPositionSettings2 = [(NCUNUIKitPrototypeSettings *)self briefIconPositionSettings];
+  [briefIconPositionSettings2 setDampingRatio:?];
 
-  v6 = [(NCUNUIKitPrototypeSettings *)self briefIconPositionSettings];
-  [v6 setResponse:0.702481473];
+  briefIconPositionSettings3 = [(NCUNUIKitPrototypeSettings *)self briefIconPositionSettings];
+  [briefIconPositionSettings3 setResponse:0.702481473];
 
-  v7 = [(NCUNUIKitPrototypeSettings *)self briefIconPositionSettings];
+  briefIconPositionSettings4 = [(NCUNUIKitPrototypeSettings *)self briefIconPositionSettings];
   v89 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v7 setFrameRateRange:2621441 highFrameRateReason:{*&v89.minimum, *&v89.maximum, *&v89.preferred}];
+  [briefIconPositionSettings4 setFrameRateRange:2621441 highFrameRateReason:{*&v89.minimum, *&v89.maximum, *&v89.preferred}];
 
-  v8 = [(NCUNUIKitPrototypeSettings *)self briefIconScaleSettings];
-  [v8 setDefaultValues];
+  briefIconScaleSettings = [(NCUNUIKitPrototypeSettings *)self briefIconScaleSettings];
+  [briefIconScaleSettings setDefaultValues];
 
-  v9 = [(NCUNUIKitPrototypeSettings *)self briefIconScaleSettings];
-  [v9 setDampingRatio:0.9];
+  briefIconScaleSettings2 = [(NCUNUIKitPrototypeSettings *)self briefIconScaleSettings];
+  [briefIconScaleSettings2 setDampingRatio:0.9];
 
-  v10 = [(NCUNUIKitPrototypeSettings *)self briefIconScaleSettings];
-  [v10 setResponse:1.0];
+  briefIconScaleSettings3 = [(NCUNUIKitPrototypeSettings *)self briefIconScaleSettings];
+  [briefIconScaleSettings3 setResponse:1.0];
 
-  v11 = [(NCUNUIKitPrototypeSettings *)self briefIconScaleSettings];
+  briefIconScaleSettings4 = [(NCUNUIKitPrototypeSettings *)self briefIconScaleSettings];
   v90 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v11 setFrameRateRange:2621441 highFrameRateReason:{*&v90.minimum, *&v90.maximum, *&v90.preferred}];
+  [briefIconScaleSettings4 setFrameRateRange:2621441 highFrameRateReason:{*&v90.minimum, *&v90.maximum, *&v90.preferred}];
 
-  v12 = [(NCUNUIKitPrototypeSettings *)self briefIconOpacitySettings];
-  [v12 setDefaultValues];
+  briefIconOpacitySettings = [(NCUNUIKitPrototypeSettings *)self briefIconOpacitySettings];
+  [briefIconOpacitySettings setDefaultValues];
 
-  v13 = [(NCUNUIKitPrototypeSettings *)self briefIconOpacitySettings];
-  [v13 setDampingRatio:1.02062073];
+  briefIconOpacitySettings2 = [(NCUNUIKitPrototypeSettings *)self briefIconOpacitySettings];
+  [briefIconOpacitySettings2 setDampingRatio:1.02062073];
 
-  v14 = [(NCUNUIKitPrototypeSettings *)self briefIconOpacitySettings];
-  [v14 setResponse:0.513019932];
+  briefIconOpacitySettings3 = [(NCUNUIKitPrototypeSettings *)self briefIconOpacitySettings];
+  [briefIconOpacitySettings3 setResponse:0.513019932];
 
-  v15 = [(NCUNUIKitPrototypeSettings *)self briefIconOpacitySettings];
+  briefIconOpacitySettings4 = [(NCUNUIKitPrototypeSettings *)self briefIconOpacitySettings];
   v91 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v15 setFrameRateRange:2621441 highFrameRateReason:{*&v91.minimum, *&v91.maximum, *&v91.preferred}];
+  [briefIconOpacitySettings4 setFrameRateRange:2621441 highFrameRateReason:{*&v91.minimum, *&v91.maximum, *&v91.preferred}];
 
-  v16 = [(NCUNUIKitPrototypeSettings *)self briefGrabberSettings];
-  [v16 setDefaultCriticallyDampedValues];
+  briefGrabberSettings = [(NCUNUIKitPrototypeSettings *)self briefGrabberSettings];
+  [briefGrabberSettings setDefaultCriticallyDampedValues];
 
-  v17 = [(NCUNUIKitPrototypeSettings *)self briefGrabberSettings];
-  [v17 response];
-  [v17 setResponse:v18 + v18];
+  briefGrabberSettings2 = [(NCUNUIKitPrototypeSettings *)self briefGrabberSettings];
+  [briefGrabberSettings2 response];
+  [briefGrabberSettings2 setResponse:v18 + v18];
 
-  v19 = [(NCUNUIKitPrototypeSettings *)self briefGrabberSettings];
+  briefGrabberSettings3 = [(NCUNUIKitPrototypeSettings *)self briefGrabberSettings];
   v92 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v19 setFrameRateRange:2621441 highFrameRateReason:{*&v92.minimum, *&v92.maximum, *&v92.preferred}];
+  [briefGrabberSettings3 setFrameRateRange:2621441 highFrameRateReason:{*&v92.minimum, *&v92.maximum, *&v92.preferred}];
 
-  v20 = [(NCUNUIKitPrototypeSettings *)self briefTextPositionSettings];
-  [v20 setDefaultValues];
+  briefTextPositionSettings = [(NCUNUIKitPrototypeSettings *)self briefTextPositionSettings];
+  [briefTextPositionSettings setDefaultValues];
 
-  v21 = [(NCUNUIKitPrototypeSettings *)self briefTextPositionSettings];
-  [v21 setDampingRatio:0.8];
+  briefTextPositionSettings2 = [(NCUNUIKitPrototypeSettings *)self briefTextPositionSettings];
+  [briefTextPositionSettings2 setDampingRatio:0.8];
 
-  v22 = [(NCUNUIKitPrototypeSettings *)self briefTextPositionSettings];
-  [v22 setResponse:0.9];
+  briefTextPositionSettings3 = [(NCUNUIKitPrototypeSettings *)self briefTextPositionSettings];
+  [briefTextPositionSettings3 setResponse:0.9];
 
-  v23 = [(NCUNUIKitPrototypeSettings *)self briefTextPositionSettings];
+  briefTextPositionSettings4 = [(NCUNUIKitPrototypeSettings *)self briefTextPositionSettings];
   v93 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v23 setFrameRateRange:2621441 highFrameRateReason:{*&v93.minimum, *&v93.maximum, *&v93.preferred}];
+  [briefTextPositionSettings4 setFrameRateRange:2621441 highFrameRateReason:{*&v93.minimum, *&v93.maximum, *&v93.preferred}];
 
-  v24 = [(NCUNUIKitPrototypeSettings *)self briefTextOpacitySettings];
-  [v24 setDefaultValues];
+  briefTextOpacitySettings = [(NCUNUIKitPrototypeSettings *)self briefTextOpacitySettings];
+  [briefTextOpacitySettings setDefaultValues];
 
-  v25 = [(NCUNUIKitPrototypeSettings *)self briefTextOpacitySettings];
-  [v25 setDampingRatio:1.02062073];
+  briefTextOpacitySettings2 = [(NCUNUIKitPrototypeSettings *)self briefTextOpacitySettings];
+  [briefTextOpacitySettings2 setDampingRatio:1.02062073];
 
-  v26 = [(NCUNUIKitPrototypeSettings *)self briefTextOpacitySettings];
-  [v26 setResponse:0.513019932];
+  briefTextOpacitySettings3 = [(NCUNUIKitPrototypeSettings *)self briefTextOpacitySettings];
+  [briefTextOpacitySettings3 setResponse:0.513019932];
 
-  v27 = [(NCUNUIKitPrototypeSettings *)self briefTextOpacitySettings];
+  briefTextOpacitySettings4 = [(NCUNUIKitPrototypeSettings *)self briefTextOpacitySettings];
   v94 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v27 setFrameRateRange:2621441 highFrameRateReason:{*&v94.minimum, *&v94.maximum, *&v94.preferred}];
+  [briefTextOpacitySettings4 setFrameRateRange:2621441 highFrameRateReason:{*&v94.minimum, *&v94.maximum, *&v94.preferred}];
 
-  v28 = [(NCUNUIKitPrototypeSettings *)self briefBackgroundSettings];
-  [v28 setDefaultValues];
+  briefBackgroundSettings = [(NCUNUIKitPrototypeSettings *)self briefBackgroundSettings];
+  [briefBackgroundSettings setDefaultValues];
 
-  v29 = [(NCUNUIKitPrototypeSettings *)self briefBackgroundSettings];
-  [v29 setDampingRatio:0.9];
+  briefBackgroundSettings2 = [(NCUNUIKitPrototypeSettings *)self briefBackgroundSettings];
+  [briefBackgroundSettings2 setDampingRatio:0.9];
 
-  v30 = [(NCUNUIKitPrototypeSettings *)self briefBackgroundSettings];
-  [v30 setResponse:0.5];
+  briefBackgroundSettings3 = [(NCUNUIKitPrototypeSettings *)self briefBackgroundSettings];
+  [briefBackgroundSettings3 setResponse:0.5];
 
-  v31 = [(NCUNUIKitPrototypeSettings *)self briefBackgroundSettings];
+  briefBackgroundSettings4 = [(NCUNUIKitPrototypeSettings *)self briefBackgroundSettings];
   v95 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v31 setFrameRateRange:2621441 highFrameRateReason:{*&v95.minimum, *&v95.maximum, *&v95.preferred}];
+  [briefBackgroundSettings4 setFrameRateRange:2621441 highFrameRateReason:{*&v95.minimum, *&v95.maximum, *&v95.preferred}];
 
   [(NCUNUIKitPrototypeSettings *)self setDetailStageTransitionDelay:1.0];
   [(NCUNUIKitPrototypeSettings *)self setDetailStageTransitionMaxAttempts:4];
@@ -331,187 +331,187 @@
   [(NCUNUIKitPrototypeSettings *)self setDetailIconPositionMilestone:0.185];
   [(NCUNUIKitPrototypeSettings *)self setDetailTextMilestone:0.85];
   [(NCUNUIKitPrototypeSettings *)self setDetailSecondaryTextMilestone:0.7];
-  v32 = [(NCUNUIKitPrototypeSettings *)self detailOutgoingTextPositionSettings];
-  [v32 setDefaultValues];
+  detailOutgoingTextPositionSettings = [(NCUNUIKitPrototypeSettings *)self detailOutgoingTextPositionSettings];
+  [detailOutgoingTextPositionSettings setDefaultValues];
 
-  v33 = [(NCUNUIKitPrototypeSettings *)self detailOutgoingTextPositionSettings];
-  [v33 setDampingRatio:1.021];
+  detailOutgoingTextPositionSettings2 = [(NCUNUIKitPrototypeSettings *)self detailOutgoingTextPositionSettings];
+  [detailOutgoingTextPositionSettings2 setDampingRatio:1.021];
 
-  v34 = [(NCUNUIKitPrototypeSettings *)self detailOutgoingTextPositionSettings];
-  [v34 setResponse:0.9];
+  detailOutgoingTextPositionSettings3 = [(NCUNUIKitPrototypeSettings *)self detailOutgoingTextPositionSettings];
+  [detailOutgoingTextPositionSettings3 setResponse:0.9];
 
-  v35 = [(NCUNUIKitPrototypeSettings *)self detailOutgoingTextPositionSettings];
+  detailOutgoingTextPositionSettings4 = [(NCUNUIKitPrototypeSettings *)self detailOutgoingTextPositionSettings];
   v96 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v35 setFrameRateRange:2621441 highFrameRateReason:{*&v96.minimum, *&v96.maximum, *&v96.preferred}];
+  [detailOutgoingTextPositionSettings4 setFrameRateRange:2621441 highFrameRateReason:{*&v96.minimum, *&v96.maximum, *&v96.preferred}];
 
-  v36 = [(NCUNUIKitPrototypeSettings *)self detailOutgoingTextOpacitySettings];
-  [v36 setDefaultValues];
+  detailOutgoingTextOpacitySettings = [(NCUNUIKitPrototypeSettings *)self detailOutgoingTextOpacitySettings];
+  [detailOutgoingTextOpacitySettings setDefaultValues];
 
-  v37 = [(NCUNUIKitPrototypeSettings *)self detailOutgoingTextOpacitySettings];
-  [v37 setDampingRatio:0.8];
+  detailOutgoingTextOpacitySettings2 = [(NCUNUIKitPrototypeSettings *)self detailOutgoingTextOpacitySettings];
+  [detailOutgoingTextOpacitySettings2 setDampingRatio:0.8];
 
-  v38 = [(NCUNUIKitPrototypeSettings *)self detailOutgoingTextOpacitySettings];
-  [v38 setResponse:0.257];
+  detailOutgoingTextOpacitySettings3 = [(NCUNUIKitPrototypeSettings *)self detailOutgoingTextOpacitySettings];
+  [detailOutgoingTextOpacitySettings3 setResponse:0.257];
 
-  v39 = [(NCUNUIKitPrototypeSettings *)self detailOutgoingTextOpacitySettings];
+  detailOutgoingTextOpacitySettings4 = [(NCUNUIKitPrototypeSettings *)self detailOutgoingTextOpacitySettings];
   v97 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v39 setFrameRateRange:2621441 highFrameRateReason:{*&v97.minimum, *&v97.maximum, *&v97.preferred}];
+  [detailOutgoingTextOpacitySettings4 setFrameRateRange:2621441 highFrameRateReason:{*&v97.minimum, *&v97.maximum, *&v97.preferred}];
 
-  v40 = [(NCUNUIKitPrototypeSettings *)self detailIconScaleSettings];
-  [v40 setDefaultValues];
+  detailIconScaleSettings = [(NCUNUIKitPrototypeSettings *)self detailIconScaleSettings];
+  [detailIconScaleSettings setDefaultValues];
 
-  v41 = [(NCUNUIKitPrototypeSettings *)self detailIconScaleSettings];
-  [v41 setDampingRatio:0.782623792];
+  detailIconScaleSettings2 = [(NCUNUIKitPrototypeSettings *)self detailIconScaleSettings];
+  [detailIconScaleSettings2 setDampingRatio:0.782623792];
 
-  v42 = [(NCUNUIKitPrototypeSettings *)self detailIconScaleSettings];
-  [v42 setResponse:0.702481473];
+  detailIconScaleSettings3 = [(NCUNUIKitPrototypeSettings *)self detailIconScaleSettings];
+  [detailIconScaleSettings3 setResponse:0.702481473];
 
-  v43 = [(NCUNUIKitPrototypeSettings *)self detailIconScaleSettings];
+  detailIconScaleSettings4 = [(NCUNUIKitPrototypeSettings *)self detailIconScaleSettings];
   v98 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v43 setFrameRateRange:2621441 highFrameRateReason:{*&v98.minimum, *&v98.maximum, *&v98.preferred}];
+  [detailIconScaleSettings4 setFrameRateRange:2621441 highFrameRateReason:{*&v98.minimum, *&v98.maximum, *&v98.preferred}];
 
-  v44 = [(NCUNUIKitPrototypeSettings *)self detailIconPositionSettings];
-  [v44 setDefaultValues];
+  detailIconPositionSettings = [(NCUNUIKitPrototypeSettings *)self detailIconPositionSettings];
+  [detailIconPositionSettings setDefaultValues];
 
-  v45 = [(NCUNUIKitPrototypeSettings *)self detailIconPositionSettings];
-  [v45 setDampingRatio:1.11803399];
+  detailIconPositionSettings2 = [(NCUNUIKitPrototypeSettings *)self detailIconPositionSettings];
+  [detailIconPositionSettings2 setDampingRatio:1.11803399];
 
-  v46 = [(NCUNUIKitPrototypeSettings *)self detailIconPositionSettings];
-  [v46 setResponse:0.702481473];
+  detailIconPositionSettings3 = [(NCUNUIKitPrototypeSettings *)self detailIconPositionSettings];
+  [detailIconPositionSettings3 setResponse:0.702481473];
 
-  v47 = [(NCUNUIKitPrototypeSettings *)self detailIconPositionSettings];
+  detailIconPositionSettings4 = [(NCUNUIKitPrototypeSettings *)self detailIconPositionSettings];
   v99 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v47 setFrameRateRange:2621441 highFrameRateReason:{*&v99.minimum, *&v99.maximum, *&v99.preferred}];
+  [detailIconPositionSettings4 setFrameRateRange:2621441 highFrameRateReason:{*&v99.minimum, *&v99.maximum, *&v99.preferred}];
 
-  v48 = [(NCUNUIKitPrototypeSettings *)self detailTextPositionSettings];
-  [v48 setDefaultValues];
+  detailTextPositionSettings = [(NCUNUIKitPrototypeSettings *)self detailTextPositionSettings];
+  [detailTextPositionSettings setDefaultValues];
 
-  v49 = [(NCUNUIKitPrototypeSettings *)self detailTextPositionSettings];
-  [v49 setDampingRatio:1.0];
+  detailTextPositionSettings2 = [(NCUNUIKitPrototypeSettings *)self detailTextPositionSettings];
+  [detailTextPositionSettings2 setDampingRatio:1.0];
 
-  v50 = [(NCUNUIKitPrototypeSettings *)self detailTextPositionSettings];
-  [v50 setResponse:1.2];
+  detailTextPositionSettings3 = [(NCUNUIKitPrototypeSettings *)self detailTextPositionSettings];
+  [detailTextPositionSettings3 setResponse:1.2];
 
-  v51 = [(NCUNUIKitPrototypeSettings *)self detailTextPositionSettings];
+  detailTextPositionSettings4 = [(NCUNUIKitPrototypeSettings *)self detailTextPositionSettings];
   v100 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v51 setFrameRateRange:2621441 highFrameRateReason:{*&v100.minimum, *&v100.maximum, *&v100.preferred}];
+  [detailTextPositionSettings4 setFrameRateRange:2621441 highFrameRateReason:{*&v100.minimum, *&v100.maximum, *&v100.preferred}];
 
-  v52 = [(NCUNUIKitPrototypeSettings *)self detailTextOpacitySettings];
-  [v52 setDefaultValues];
+  detailTextOpacitySettings = [(NCUNUIKitPrototypeSettings *)self detailTextOpacitySettings];
+  [detailTextOpacitySettings setDefaultValues];
 
-  v53 = [(NCUNUIKitPrototypeSettings *)self detailTextOpacitySettings];
-  [v53 setDampingRatio:0.9];
+  detailTextOpacitySettings2 = [(NCUNUIKitPrototypeSettings *)self detailTextOpacitySettings];
+  [detailTextOpacitySettings2 setDampingRatio:0.9];
 
-  v54 = [(NCUNUIKitPrototypeSettings *)self detailTextOpacitySettings];
-  [v54 setResponse:0.95];
+  detailTextOpacitySettings3 = [(NCUNUIKitPrototypeSettings *)self detailTextOpacitySettings];
+  [detailTextOpacitySettings3 setResponse:0.95];
 
-  v55 = [(NCUNUIKitPrototypeSettings *)self detailTextOpacitySettings];
+  detailTextOpacitySettings4 = [(NCUNUIKitPrototypeSettings *)self detailTextOpacitySettings];
   v101 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v55 setFrameRateRange:2621441 highFrameRateReason:{*&v101.minimum, *&v101.maximum, *&v101.preferred}];
+  [detailTextOpacitySettings4 setFrameRateRange:2621441 highFrameRateReason:{*&v101.minimum, *&v101.maximum, *&v101.preferred}];
 
-  v56 = [(NCUNUIKitPrototypeSettings *)self detailBackgroundSettings];
-  [v56 setDefaultValues];
+  detailBackgroundSettings = [(NCUNUIKitPrototypeSettings *)self detailBackgroundSettings];
+  [detailBackgroundSettings setDefaultValues];
 
-  v57 = [(NCUNUIKitPrototypeSettings *)self detailBackgroundSettings];
-  [v57 setDampingRatio:1.02062073];
+  detailBackgroundSettings2 = [(NCUNUIKitPrototypeSettings *)self detailBackgroundSettings];
+  [detailBackgroundSettings2 setDampingRatio:1.02062073];
 
-  v58 = [(NCUNUIKitPrototypeSettings *)self detailBackgroundSettings];
-  [v58 setResponse:0.513019932];
+  detailBackgroundSettings3 = [(NCUNUIKitPrototypeSettings *)self detailBackgroundSettings];
+  [detailBackgroundSettings3 setResponse:0.513019932];
 
-  v59 = [(NCUNUIKitPrototypeSettings *)self detailBackgroundSettings];
+  detailBackgroundSettings4 = [(NCUNUIKitPrototypeSettings *)self detailBackgroundSettings];
   v102 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v59 setFrameRateRange:2621441 highFrameRateReason:{*&v102.minimum, *&v102.maximum, *&v102.preferred}];
+  [detailBackgroundSettings4 setFrameRateRange:2621441 highFrameRateReason:{*&v102.minimum, *&v102.maximum, *&v102.preferred}];
 
-  v60 = [(NCUNUIKitPrototypeSettings *)self dismissIconOpacitySettings];
-  [v60 setDefaultValues];
+  dismissIconOpacitySettings = [(NCUNUIKitPrototypeSettings *)self dismissIconOpacitySettings];
+  [dismissIconOpacitySettings setDefaultValues];
 
-  v61 = [(NCUNUIKitPrototypeSettings *)self dismissIconOpacitySettings];
-  [v61 setDampingRatio:2.04124145];
+  dismissIconOpacitySettings2 = [(NCUNUIKitPrototypeSettings *)self dismissIconOpacitySettings];
+  [dismissIconOpacitySettings2 setDampingRatio:2.04124145];
 
-  v62 = [(NCUNUIKitPrototypeSettings *)self dismissIconOpacitySettings];
-  [v62 setResponse:0.256509966];
+  dismissIconOpacitySettings3 = [(NCUNUIKitPrototypeSettings *)self dismissIconOpacitySettings];
+  [dismissIconOpacitySettings3 setResponse:0.256509966];
 
-  v63 = [(NCUNUIKitPrototypeSettings *)self dismissIconOpacitySettings];
+  dismissIconOpacitySettings4 = [(NCUNUIKitPrototypeSettings *)self dismissIconOpacitySettings];
   v103 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v63 setFrameRateRange:2621441 highFrameRateReason:{*&v103.minimum, *&v103.maximum, *&v103.preferred}];
+  [dismissIconOpacitySettings4 setFrameRateRange:2621441 highFrameRateReason:{*&v103.minimum, *&v103.maximum, *&v103.preferred}];
 
-  v64 = [(NCUNUIKitPrototypeSettings *)self dismissTextOpacitySettings];
-  [v64 setDefaultValues];
+  dismissTextOpacitySettings = [(NCUNUIKitPrototypeSettings *)self dismissTextOpacitySettings];
+  [dismissTextOpacitySettings setDefaultValues];
 
-  v65 = [(NCUNUIKitPrototypeSettings *)self dismissTextOpacitySettings];
-  [v65 setDampingRatio:1.02062073];
+  dismissTextOpacitySettings2 = [(NCUNUIKitPrototypeSettings *)self dismissTextOpacitySettings];
+  [dismissTextOpacitySettings2 setDampingRatio:1.02062073];
 
-  v66 = [(NCUNUIKitPrototypeSettings *)self dismissTextOpacitySettings];
-  [v66 setResponse:0.513019932];
+  dismissTextOpacitySettings3 = [(NCUNUIKitPrototypeSettings *)self dismissTextOpacitySettings];
+  [dismissTextOpacitySettings3 setResponse:0.513019932];
 
-  v67 = [(NCUNUIKitPrototypeSettings *)self dismissTextOpacitySettings];
+  dismissTextOpacitySettings4 = [(NCUNUIKitPrototypeSettings *)self dismissTextOpacitySettings];
   v104 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v67 setFrameRateRange:2621441 highFrameRateReason:{*&v104.minimum, *&v104.maximum, *&v104.preferred}];
+  [dismissTextOpacitySettings4 setFrameRateRange:2621441 highFrameRateReason:{*&v104.minimum, *&v104.maximum, *&v104.preferred}];
 
-  v68 = [(NCUNUIKitPrototypeSettings *)self dismissTextPositionSettings];
-  [v68 setDefaultValues];
+  dismissTextPositionSettings = [(NCUNUIKitPrototypeSettings *)self dismissTextPositionSettings];
+  [dismissTextPositionSettings setDefaultValues];
 
-  v69 = [(NCUNUIKitPrototypeSettings *)self dismissTextPositionSettings];
-  [v69 setDampingRatio:1.5];
+  dismissTextPositionSettings2 = [(NCUNUIKitPrototypeSettings *)self dismissTextPositionSettings];
+  [dismissTextPositionSettings2 setDampingRatio:1.5];
 
-  v70 = [(NCUNUIKitPrototypeSettings *)self dismissTextPositionSettings];
-  [v70 setResponse:1.2];
+  dismissTextPositionSettings3 = [(NCUNUIKitPrototypeSettings *)self dismissTextPositionSettings];
+  [dismissTextPositionSettings3 setResponse:1.2];
 
-  v71 = [(NCUNUIKitPrototypeSettings *)self dismissTextPositionSettings];
+  dismissTextPositionSettings4 = [(NCUNUIKitPrototypeSettings *)self dismissTextPositionSettings];
   v105 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v71 setFrameRateRange:2621441 highFrameRateReason:{*&v105.minimum, *&v105.maximum, *&v105.preferred}];
+  [dismissTextPositionSettings4 setFrameRateRange:2621441 highFrameRateReason:{*&v105.minimum, *&v105.maximum, *&v105.preferred}];
 
-  v72 = [(NCUNUIKitPrototypeSettings *)self dismissBackgroundSettings];
-  [v72 setDefaultValues];
+  dismissBackgroundSettings = [(NCUNUIKitPrototypeSettings *)self dismissBackgroundSettings];
+  [dismissBackgroundSettings setDefaultValues];
 
-  v73 = [(NCUNUIKitPrototypeSettings *)self dismissBackgroundSettings];
-  [v73 setDampingRatio:1.0];
+  dismissBackgroundSettings2 = [(NCUNUIKitPrototypeSettings *)self dismissBackgroundSettings];
+  [dismissBackgroundSettings2 setDampingRatio:1.0];
 
-  v74 = [(NCUNUIKitPrototypeSettings *)self dismissBackgroundSettings];
-  [v74 setResponse:0.85];
+  dismissBackgroundSettings3 = [(NCUNUIKitPrototypeSettings *)self dismissBackgroundSettings];
+  [dismissBackgroundSettings3 setResponse:0.85];
 
-  v75 = [(NCUNUIKitPrototypeSettings *)self dismissBackgroundSettings];
+  dismissBackgroundSettings4 = [(NCUNUIKitPrototypeSettings *)self dismissBackgroundSettings];
   v106 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v75 setFrameRateRange:2621441 highFrameRateReason:{*&v106.minimum, *&v106.maximum, *&v106.preferred}];
+  [dismissBackgroundSettings4 setFrameRateRange:2621441 highFrameRateReason:{*&v106.minimum, *&v106.maximum, *&v106.preferred}];
 
-  v76 = [(NCUNUIKitPrototypeSettings *)self interactiveDismissalTrackingSettings];
-  [v76 setDefaultValues];
+  interactiveDismissalTrackingSettings = [(NCUNUIKitPrototypeSettings *)self interactiveDismissalTrackingSettings];
+  [interactiveDismissalTrackingSettings setDefaultValues];
 
-  v77 = [(NCUNUIKitPrototypeSettings *)self interactiveDismissalTrackingSettings];
-  [v77 setDampingRatio:0.85];
+  interactiveDismissalTrackingSettings2 = [(NCUNUIKitPrototypeSettings *)self interactiveDismissalTrackingSettings];
+  [interactiveDismissalTrackingSettings2 setDampingRatio:0.85];
 
-  v78 = [(NCUNUIKitPrototypeSettings *)self interactiveDismissalTrackingSettings];
-  [v78 setResponse:0.36];
+  interactiveDismissalTrackingSettings3 = [(NCUNUIKitPrototypeSettings *)self interactiveDismissalTrackingSettings];
+  [interactiveDismissalTrackingSettings3 setResponse:0.36];
 
-  v79 = [(NCUNUIKitPrototypeSettings *)self interactiveDismissalTrackingSettings];
+  interactiveDismissalTrackingSettings4 = [(NCUNUIKitPrototypeSettings *)self interactiveDismissalTrackingSettings];
   v107 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v79 setFrameRateRange:2621441 highFrameRateReason:{*&v107.minimum, *&v107.maximum, *&v107.preferred}];
+  [interactiveDismissalTrackingSettings4 setFrameRateRange:2621441 highFrameRateReason:{*&v107.minimum, *&v107.maximum, *&v107.preferred}];
 
-  v80 = [(NCUNUIKitPrototypeSettings *)self interactiveDismissalAutomaticSettings];
-  [v80 setDefaultValues];
+  interactiveDismissalAutomaticSettings = [(NCUNUIKitPrototypeSettings *)self interactiveDismissalAutomaticSettings];
+  [interactiveDismissalAutomaticSettings setDefaultValues];
 
-  v81 = [(NCUNUIKitPrototypeSettings *)self interactiveDismissalAutomaticSettings];
-  [v81 setDampingRatio:0.85];
+  interactiveDismissalAutomaticSettings2 = [(NCUNUIKitPrototypeSettings *)self interactiveDismissalAutomaticSettings];
+  [interactiveDismissalAutomaticSettings2 setDampingRatio:0.85];
 
-  v82 = [(NCUNUIKitPrototypeSettings *)self interactiveDismissalAutomaticSettings];
-  [v82 setResponse:0.4];
+  interactiveDismissalAutomaticSettings3 = [(NCUNUIKitPrototypeSettings *)self interactiveDismissalAutomaticSettings];
+  [interactiveDismissalAutomaticSettings3 setResponse:0.4];
 
-  v83 = [(NCUNUIKitPrototypeSettings *)self interactiveDismissalAutomaticSettings];
+  interactiveDismissalAutomaticSettings4 = [(NCUNUIKitPrototypeSettings *)self interactiveDismissalAutomaticSettings];
   v108 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v83 setFrameRateRange:2621441 highFrameRateReason:{*&v108.minimum, *&v108.maximum, *&v108.preferred}];
+  [interactiveDismissalAutomaticSettings4 setFrameRateRange:2621441 highFrameRateReason:{*&v108.minimum, *&v108.maximum, *&v108.preferred}];
 
-  v84 = [(NCUNUIKitPrototypeSettings *)self interactiveDismissalBackgoundSettings];
-  [v84 setDefaultValues];
+  interactiveDismissalBackgoundSettings = [(NCUNUIKitPrototypeSettings *)self interactiveDismissalBackgoundSettings];
+  [interactiveDismissalBackgoundSettings setDefaultValues];
 
-  v85 = [(NCUNUIKitPrototypeSettings *)self interactiveDismissalBackgoundSettings];
-  [v85 setDampingRatio:1.0];
+  interactiveDismissalBackgoundSettings2 = [(NCUNUIKitPrototypeSettings *)self interactiveDismissalBackgoundSettings];
+  [interactiveDismissalBackgoundSettings2 setDampingRatio:1.0];
 
-  v86 = [(NCUNUIKitPrototypeSettings *)self interactiveDismissalBackgoundSettings];
-  [v86 setResponse:0.85];
+  interactiveDismissalBackgoundSettings3 = [(NCUNUIKitPrototypeSettings *)self interactiveDismissalBackgoundSettings];
+  [interactiveDismissalBackgoundSettings3 setResponse:0.85];
 
-  v87 = [(NCUNUIKitPrototypeSettings *)self interactiveDismissalBackgoundSettings];
+  interactiveDismissalBackgoundSettings4 = [(NCUNUIKitPrototypeSettings *)self interactiveDismissalBackgoundSettings];
   v109 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v87 setFrameRateRange:2621441 highFrameRateReason:{*&v109.minimum, *&v109.maximum, *&v109.preferred}];
+  [interactiveDismissalBackgoundSettings4 setFrameRateRange:2621441 highFrameRateReason:{*&v109.minimum, *&v109.maximum, *&v109.preferred}];
 
   [(NCUNUIKitPrototypeSettings *)self setInteractiveDismissalThreshold:0.2];
   [(NCUNUIKitPrototypeSettings *)self setInteractiveDismissalRubberbandingInset:0.05];

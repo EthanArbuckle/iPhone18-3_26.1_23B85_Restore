@@ -2,8 +2,8 @@
 - (BOOL)_initializeBlock;
 - (BOOL)_resetBuffer;
 - (TSPCryptoComponentWriteChannel)init;
-- (TSPCryptoComponentWriteChannel)initWithWriteChannel:(id)a3 encryptionInfo:(id)a4 bufferSize:(unint64_t)a5;
-- (void)_writeData:(id)a3 isDecryptedData:(BOOL)a4;
+- (TSPCryptoComponentWriteChannel)initWithWriteChannel:(id)channel encryptionInfo:(id)info bufferSize:(unint64_t)size;
+- (void)_writeData:(id)data isDecryptedData:(BOOL)decryptedData;
 - (void)close;
 - (void)dealloc;
 @end
@@ -44,17 +44,17 @@
   objc_exception_throw(v7);
 }
 
-- (TSPCryptoComponentWriteChannel)initWithWriteChannel:(id)a3 encryptionInfo:(id)a4 bufferSize:(unint64_t)a5
+- (TSPCryptoComponentWriteChannel)initWithWriteChannel:(id)channel encryptionInfo:(id)info bufferSize:(unint64_t)size
 {
-  v9 = a3;
-  v10 = a4;
+  channelCopy = channel;
+  infoCopy = info;
   v27.receiver = self;
   v27.super_class = TSPCryptoComponentWriteChannel;
   v11 = [(TSPCryptoComponentWriteChannel *)&v27 init];
   v12 = v11;
   if (v11)
   {
-    if (!v9)
+    if (!channelCopy)
     {
       +[TSUAssertionHandler _atomicIncrementAssertCount];
       if (TSUAssertCat_init_token != -1)
@@ -74,8 +74,8 @@
       +[TSUAssertionHandler logBacktraceThrottled];
     }
 
-    objc_storeStrong(&v11->_writeChannel, a3);
-    if (!v10)
+    objc_storeStrong(&v11->_writeChannel, channel);
+    if (!infoCopy)
     {
       +[TSUAssertionHandler _atomicIncrementAssertCount];
       if (TSUAssertCat_init_token != -1)
@@ -95,26 +95,26 @@
       +[TSUAssertionHandler logBacktraceThrottled];
     }
 
-    objc_storeStrong(&v11->_encryptionInfo, a4);
+    objc_storeStrong(&v11->_encryptionInfo, info);
     [(TSPMutableCryptoInfo *)v11->_encryptionInfo reset];
-    v17 = 144;
-    if (a5 > 0x90)
+    sizeCopy = 144;
+    if (size > 0x90)
     {
-      v17 = a5;
+      sizeCopy = size;
     }
 
-    v11->_bufferSize = v17;
+    v11->_bufferSize = sizeCopy;
     v18 = +[NSProcessInfo processInfo];
-    v19 = [v18 physicalMemory];
+    physicalMemory = [v18 physicalMemory];
 
-    if (v19 / 0x64 / v11->_bufferSize <= 0x20)
+    if (physicalMemory / 0x64 / v11->_bufferSize <= 0x20)
     {
       v20 = 32;
     }
 
     else
     {
-      v20 = v19 / 0x64 / v11->_bufferSize;
+      v20 = physicalMemory / 0x64 / v11->_bufferSize;
     }
 
     v21 = dispatch_semaphore_create(v20);
@@ -123,12 +123,12 @@
 
     if (v11->_writeChannel)
     {
-      v23 = [(TSPMutableCryptoInfo *)v11->_encryptionInfo cryptoKey];
-      if (v23 && [(TSPCryptoComponentWriteChannel *)v11 _resetBuffer])
+      cryptoKey = [(TSPMutableCryptoInfo *)v11->_encryptionInfo cryptoKey];
+      if (cryptoKey && [(TSPCryptoComponentWriteChannel *)v11 _resetBuffer])
       {
-        v24 = [(TSPCryptoComponentWriteChannel *)v11 _initializeBlock];
+        _initializeBlock = [(TSPCryptoComponentWriteChannel *)v11 _initializeBlock];
 
-        if (v24)
+        if (_initializeBlock)
         {
           goto LABEL_26;
         }
@@ -203,7 +203,7 @@ LABEL_26:
 
 - (BOOL)_initializeBlock
 {
-  v3 = [(TSPMutableCryptoInfo *)self->_encryptionInfo cryptoKey];
+  cryptoKey = [(TSPMutableCryptoInfo *)self->_encryptionInfo cryptoKey];
   v4 = malloc_type_malloc(0x10uLL, 0x100004077774924uLL);
   if (!v4 || SecRandomCopyBytes(kSecRandomDefault, 0x10uLL, v4))
   {
@@ -232,7 +232,7 @@ LABEL_8:
     goto LABEL_16;
   }
 
-  v7 = CCCryptorCreate(0, 0, 1u, [v3 keyData], objc_msgSend(v3, "keyLength"), v4, &self->_cryptor);
+  v7 = CCCryptorCreate(0, 0, 1u, [cryptoKey keyData], objc_msgSend(cryptoKey, "keyLength"), v4, &self->_cryptor);
   if (v7 || !self->_cryptor)
   {
     v8 = +[TSUAssertionHandler _atomicIncrementAssertCount];
@@ -279,8 +279,8 @@ LABEL_8:
     *&self->_ccHmacContext.ctx[8] = 0u;
     *&self->_ccHmacContext.ctx[12] = 0u;
     *&self->_ccHmacContext.ctx[4] = 0u;
-    v12 = [v3 passphrase];
-    v13 = [v12 cStringUsingEncoding:4];
+    passphrase = [cryptoKey passphrase];
+    v13 = [passphrase cStringUsingEncoding:4];
 
     if (v13)
     {
@@ -361,15 +361,15 @@ LABEL_17:
   [(TSPCryptoComponentWriteChannel *)&v4 dealloc];
 }
 
-- (void)_writeData:(id)a3 isDecryptedData:(BOOL)a4
+- (void)_writeData:(id)data isDecryptedData:(BOOL)decryptedData
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10001438C;
   v4[3] = &unk_1001C6120;
   v4[4] = self;
-  v5 = a4;
-  dispatch_data_apply(a3, v4);
+  decryptedDataCopy = decryptedData;
+  dispatch_data_apply(data, v4);
 }
 
 - (void)close

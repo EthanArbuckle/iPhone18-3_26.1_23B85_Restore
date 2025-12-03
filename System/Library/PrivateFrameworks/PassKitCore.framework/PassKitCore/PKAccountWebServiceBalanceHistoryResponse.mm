@@ -1,25 +1,25 @@
 @interface PKAccountWebServiceBalanceHistoryResponse
-- (PKAccountWebServiceBalanceHistoryResponse)initWithData:(id)a3;
+- (PKAccountWebServiceBalanceHistoryResponse)initWithData:(id)data;
 @end
 
 @implementation PKAccountWebServiceBalanceHistoryResponse
 
-- (PKAccountWebServiceBalanceHistoryResponse)initWithData:(id)a3
+- (PKAccountWebServiceBalanceHistoryResponse)initWithData:(id)data
 {
   v28 = *MEMORY[0x1E69E9840];
   v26.receiver = self;
   v26.super_class = PKAccountWebServiceBalanceHistoryResponse;
-  v3 = [(PKWebServiceResponse *)&v26 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v26 initWithData:data];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKWebServiceResponse *)v3 JSONObject];
+    jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v21 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v20 = v5;
-      v6 = v5;
+      v20 = jSONObject;
+      v6 = jSONObject;
       v22 = 0u;
       v23 = 0u;
       v24 = 0u;
@@ -73,7 +73,7 @@
       balances = v4->_balances;
       v4->_balances = v17;
 
-      v5 = v20;
+      jSONObject = v20;
     }
   }
 

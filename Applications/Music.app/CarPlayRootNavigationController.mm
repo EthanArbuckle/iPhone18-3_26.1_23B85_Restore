@@ -1,10 +1,10 @@
 @interface CarPlayRootNavigationController
-- (_TtC5Music31CarPlayRootNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4;
-- (_TtC5Music31CarPlayRootNavigationController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC5Music31CarPlayRootNavigationController)initWithRootViewController:(id)a3;
-- (void)MCD_pushNowPlayingViewControllerAnimated:(BOOL)a3;
-- (void)MCD_pushNowPlayingViewControllerAnimated:(BOOL)a3 fromViewController:(id)a4;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
+- (_TtC5Music31CarPlayRootNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass;
+- (_TtC5Music31CarPlayRootNavigationController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC5Music31CarPlayRootNavigationController)initWithRootViewController:(id)controller;
+- (void)MCD_pushNowPlayingViewControllerAnimated:(BOOL)animated;
+- (void)MCD_pushNowPlayingViewControllerAnimated:(BOOL)animated fromViewController:(id)controller;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
 - (void)nowPlayingButtonAction;
 - (void)searchButtonAction;
 - (void)viewDidLoad;
@@ -14,13 +14,13 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001D46CC();
 }
 
 - (void)nowPlayingButtonAction
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001D3268(0, 1);
 }
 
@@ -28,48 +28,48 @@
 {
   v3 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC5Music31CarPlayRootNavigationController_siriActionSource);
   v4 = objc_opt_self();
-  v5 = self;
+  selfCopy = self;
   v6 = String._bridgeToObjectiveC()();
   v7 = [v4 musicSearchDirectActionWithAppBundleId:v6];
 
   [v3 activateWithContext:v7];
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_1001D6D4C(v8);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  selfCopy = self;
+  sub_1001D6D4C(viewControllerCopy);
 }
 
-- (void)MCD_pushNowPlayingViewControllerAnimated:(BOOL)a3
+- (void)MCD_pushNowPlayingViewControllerAnimated:(BOOL)animated
 {
-  v4 = self;
-  sub_1001D3268(0, a3);
+  selfCopy = self;
+  sub_1001D3268(0, animated);
 }
 
-- (void)MCD_pushNowPlayingViewControllerAnimated:(BOOL)a3 fromViewController:(id)a4
+- (void)MCD_pushNowPlayingViewControllerAnimated:(BOOL)animated fromViewController:(id)controller
 {
-  v5 = self;
-  sub_1001D3268(0, a3);
+  selfCopy = self;
+  sub_1001D3268(0, animated);
 }
 
-- (_TtC5Music31CarPlayRootNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4
-{
-  result = _swift_stdlib_reportUnimplementedInitializer();
-  __break(1u);
-  return result;
-}
-
-- (_TtC5Music31CarPlayRootNavigationController)initWithRootViewController:(id)a3
+- (_TtC5Music31CarPlayRootNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC5Music31CarPlayRootNavigationController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC5Music31CarPlayRootNavigationController)initWithRootViewController:(id)controller
+{
+  result = _swift_stdlib_reportUnimplementedInitializer();
+  __break(1u);
+  return result;
+}
+
+- (_TtC5Music31CarPlayRootNavigationController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

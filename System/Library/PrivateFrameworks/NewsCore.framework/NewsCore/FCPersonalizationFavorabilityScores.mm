@@ -1,29 +1,29 @@
 @interface FCPersonalizationFavorabilityScores
-- (FCPersonalizationFavorabilityScores)initWithCoder:(id)a3;
-- (FCPersonalizationFavorabilityScores)initWithPBFavorabilityScores:(id)a3;
-- (id)scoreForTagID:(id)a3;
+- (FCPersonalizationFavorabilityScores)initWithCoder:(id)coder;
+- (FCPersonalizationFavorabilityScores)initWithPBFavorabilityScores:(id)scores;
+- (id)scoreForTagID:(id)d;
 - (unint64_t)count;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FCPersonalizationFavorabilityScores
 
-- (FCPersonalizationFavorabilityScores)initWithPBFavorabilityScores:(id)a3
+- (FCPersonalizationFavorabilityScores)initWithPBFavorabilityScores:(id)scores
 {
-  v5 = a3;
+  scoresCopy = scores;
   v14.receiver = self;
   v14.super_class = FCPersonalizationFavorabilityScores;
   v6 = [(FCPersonalizationFavorabilityScores *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pbFavorabilityScores, a3);
+    objc_storeStrong(&v6->_pbFavorabilityScores, scores);
     v8 = MEMORY[0x1E695DF20];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __68__FCPersonalizationFavorabilityScores_initWithPBFavorabilityScores___block_invoke;
     v12[3] = &unk_1E7C36EC8;
-    v13 = v5;
+    v13 = scoresCopy;
     v9 = [v8 fc_dictionary:v12];
     tagIDToScores = v7->_tagIDToScores;
     v7->_tagIDToScores = v9;
@@ -59,22 +59,22 @@ void __68__FCPersonalizationFavorabilityScores_initWithPBFavorabilityScores___bl
 
 - (unint64_t)count
 {
-  v2 = [(FCPersonalizationFavorabilityScores *)self tagIDToScores];
-  v3 = [v2 count];
+  tagIDToScores = [(FCPersonalizationFavorabilityScores *)self tagIDToScores];
+  v3 = [tagIDToScores count];
 
   return v3;
 }
 
-- (id)scoreForTagID:(id)a3
+- (id)scoreForTagID:(id)d
 {
-  v4 = a3;
-  v5 = [(FCPersonalizationFavorabilityScores *)self tagIDToScores];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dCopy = d;
+  tagIDToScores = [(FCPersonalizationFavorabilityScores *)self tagIDToScores];
+  v6 = [tagIDToScores objectForKeyedSubscript:dCopy];
 
   if (v6)
   {
-    v7 = [(FCPersonalizationFavorabilityScores *)self tagIDToScores];
-    v8 = [v7 objectForKeyedSubscript:v4];
+    tagIDToScores2 = [(FCPersonalizationFavorabilityScores *)self tagIDToScores];
+    v8 = [tagIDToScores2 objectForKeyedSubscript:dCopy];
   }
 
   else
@@ -85,21 +85,21 @@ void __68__FCPersonalizationFavorabilityScores_initWithPBFavorabilityScores___bl
   return v8;
 }
 
-- (FCPersonalizationFavorabilityScores)initWithCoder:(id)a3
+- (FCPersonalizationFavorabilityScores)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"favorabilityScores"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"favorabilityScores"];
 
   v6 = [(FCPersonalizationFavorabilityScores *)self initWithPBFavorabilityScores:v5];
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   pbFavorabilityScores = self->_pbFavorabilityScores;
   if (pbFavorabilityScores)
   {
-    [a3 encodeObject:pbFavorabilityScores forKey:@"favorabilityScores"];
+    [coder encodeObject:pbFavorabilityScores forKey:@"favorabilityScores"];
   }
 }
 

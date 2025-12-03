@@ -1,39 +1,39 @@
 @interface TLTransliteratorCandidate
-+ (id)createWithCompositeTransliteratorCandidate:(const void *)a3;
-- (BOOL)isEqual:(id)a3;
-- (TLTransliteratorCandidate)initWithInputWord:(id)a3 transliteratedWord:(id)a4 lmScore:(double)a5 seq2seqScore:(double)a6 isExtensionCandidate:(BOOL)a7 type:(int64_t)a8;
++ (id)createWithCompositeTransliteratorCandidate:(const void *)candidate;
+- (BOOL)isEqual:(id)equal;
+- (TLTransliteratorCandidate)initWithInputWord:(id)word transliteratedWord:(id)transliteratedWord lmScore:(double)score seq2seqScore:(double)seq2seqScore isExtensionCandidate:(BOOL)candidate type:(int64_t)type;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation TLTransliteratorCandidate
 
-+ (id)createWithCompositeTransliteratorCandidate:(const void *)a3
++ (id)createWithCompositeTransliteratorCandidate:(const void *)candidate
 {
-  v4 = *(a3 + 23);
+  v4 = *(candidate + 23);
   if (v4 >= 0)
   {
-    v5 = a3;
+    candidateCopy = candidate;
   }
 
   else
   {
-    v5 = *a3;
+    candidateCopy = *candidate;
   }
 
-  if (v5)
+  if (candidateCopy)
   {
     if (v4 >= 0)
     {
-      v6 = *(a3 + 23);
+      v6 = *(candidate + 23);
     }
 
     else
     {
-      v6 = *(a3 + 1);
+      v6 = *(candidate + 1);
     }
 
-    v21 = CFStringCreateWithBytes(0, v5, v6, 0x8000100u, 0);
+    v21 = CFStringCreateWithBytes(0, candidateCopy, v6, 0x8000100u, 0);
     if (!v21)
     {
       exception = __cxa_allocate_exception(0x10uLL);
@@ -47,27 +47,27 @@
     v21 = 0;
   }
 
-  v8 = *(a3 + 47);
+  v8 = *(candidate + 47);
   if (v8 >= 0)
   {
-    v9 = a3 + 24;
+    v9 = candidate + 24;
   }
 
   else
   {
-    v9 = *(a3 + 3);
+    v9 = *(candidate + 3);
   }
 
   if (v9)
   {
     if (v8 >= 0)
     {
-      v10 = *(a3 + 47);
+      v10 = *(candidate + 47);
     }
 
     else
     {
-      v10 = *(a3 + 4);
+      v10 = *(candidate + 4);
     }
 
     cf = CFStringCreateWithBytes(0, v9, v10, 0x8000100u, 0);
@@ -85,10 +85,10 @@
   }
 
   v12 = [TLTransliteratorCandidate alloc];
-  v13 = *(a3 + 6);
-  v14 = *(a3 + 7);
-  v15 = *(a3 + 72);
-  v16 = *(a3 + 8);
+  v13 = *(candidate + 6);
+  v14 = *(candidate + 7);
+  v15 = *(candidate + 72);
+  v16 = *(candidate + 8);
   v17 = v21;
   v18 = [(TLTransliteratorCandidate *)v12 initWithInputWord:v17 transliteratedWord:cf lmScore:v15 seq2seqScore:v16 isExtensionCandidate:v13 type:v14];
 
@@ -105,27 +105,27 @@
   return v18;
 }
 
-- (TLTransliteratorCandidate)initWithInputWord:(id)a3 transliteratedWord:(id)a4 lmScore:(double)a5 seq2seqScore:(double)a6 isExtensionCandidate:(BOOL)a7 type:(int64_t)a8
+- (TLTransliteratorCandidate)initWithInputWord:(id)word transliteratedWord:(id)transliteratedWord lmScore:(double)score seq2seqScore:(double)seq2seqScore isExtensionCandidate:(BOOL)candidate type:(int64_t)type
 {
-  v14 = a3;
-  v15 = a4;
+  wordCopy = word;
+  transliteratedWordCopy = transliteratedWord;
   v22.receiver = self;
   v22.super_class = TLTransliteratorCandidate;
   v16 = [(TLTransliteratorCandidate *)&v22 init];
   if (v16)
   {
-    v17 = [v14 copy];
+    v17 = [wordCopy copy];
     inputWord = v16->_inputWord;
     v16->_inputWord = v17;
 
-    v19 = [v15 copy];
+    v19 = [transliteratedWordCopy copy];
     transliteratedWord = v16->_transliteratedWord;
     v16->_transliteratedWord = v19;
 
-    v16->_lmScore = a5;
-    v16->_seq2seqScore = a6;
-    v16->_isExtensionCandidate = a7;
-    v16->_type = a8;
+    v16->_lmScore = score;
+    v16->_seq2seqScore = seq2seqScore;
+    v16->_isExtensionCandidate = candidate;
+    v16->_type = type;
   }
 
   return v16;
@@ -143,23 +143,23 @@
   v7 = [v6 numberWithDouble:?];
   v8 = [v7 hash];
 
-  v9 = [(TLTransliteratorCandidate *)self inputWord];
-  v10 = [v9 hash];
+  inputWord = [(TLTransliteratorCandidate *)self inputWord];
+  v10 = [inputWord hash];
 
-  v11 = [(TLTransliteratorCandidate *)self transliteratedWord];
+  transliteratedWord = [(TLTransliteratorCandidate *)self transliteratedWord];
   v12 = v8 ^ v5;
-  v13 = v10 ^ [v11 hash];
+  v13 = v10 ^ [transliteratedWord hash];
 
   return v12 ^ v13 ^ [(TLTransliteratorCandidate *)self type];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -170,16 +170,16 @@
   v6 = v5;
   if (v6 && (-[TLTransliteratorCandidate lmScore](self, "lmScore"), v8 = v7, [v6 lmScore], v8 == v9) && (-[TLTransliteratorCandidate seq2seqScore](self, "seq2seqScore"), v11 = v10, objc_msgSend(v6, "seq2seqScore"), v11 == v12))
   {
-    v13 = [(TLTransliteratorCandidate *)self inputWord];
-    v14 = [v6 inputWord];
-    if ([v13 isEqualToString:v14])
+    inputWord = [(TLTransliteratorCandidate *)self inputWord];
+    inputWord2 = [v6 inputWord];
+    if ([inputWord isEqualToString:inputWord2])
     {
-      v15 = [(TLTransliteratorCandidate *)self transliteratedWord];
-      v16 = [v6 transliteratedWord];
-      if ([v15 isEqualToString:v16] && (v17 = -[TLTransliteratorCandidate isExtensionCandidate](self, "isExtensionCandidate"), v17 == objc_msgSend(v6, "isExtensionCandidate")))
+      transliteratedWord = [(TLTransliteratorCandidate *)self transliteratedWord];
+      transliteratedWord2 = [v6 transliteratedWord];
+      if ([transliteratedWord isEqualToString:transliteratedWord2] && (v17 = -[TLTransliteratorCandidate isExtensionCandidate](self, "isExtensionCandidate"), v17 == objc_msgSend(v6, "isExtensionCandidate")))
       {
-        v19 = [(TLTransliteratorCandidate *)self type];
-        v18 = v19 == [v6 type];
+        type = [(TLTransliteratorCandidate *)self type];
+        v18 = type == [v6 type];
       }
 
       else
@@ -206,11 +206,11 @@
 {
   v17[6] = *MEMORY[0x277D85DE8];
   v16[0] = @"Input Word";
-  v3 = [(TLTransliteratorCandidate *)self inputWord];
-  v17[0] = v3;
+  inputWord = [(TLTransliteratorCandidate *)self inputWord];
+  v17[0] = inputWord;
   v16[1] = @"Transliterated Word";
-  v4 = [(TLTransliteratorCandidate *)self transliteratedWord];
-  v17[1] = v4;
+  transliteratedWord = [(TLTransliteratorCandidate *)self transliteratedWord];
+  v17[1] = transliteratedWord;
   v16[2] = @"LM Score";
   v5 = MEMORY[0x277CCABB0];
   [(TLTransliteratorCandidate *)self lmScore];
@@ -222,9 +222,9 @@
   v8 = [v7 numberWithDouble:?];
   v17[3] = v8;
   v16[4] = @"Is Extension Candidate";
-  v9 = [(TLTransliteratorCandidate *)self isExtensionCandidate];
+  isExtensionCandidate = [(TLTransliteratorCandidate *)self isExtensionCandidate];
   v10 = @"NO";
-  if (v9)
+  if (isExtensionCandidate)
   {
     v10 = @"YES";
   }

@@ -1,38 +1,38 @@
 @interface TSClockManager
 + (id)clockManager;
-+ (id)diagnosticDescriptionForClockIdentifier:(unint64_t)a3 withIndent:(id)a4;
-+ (id)diagnosticDescriptionForInfo:(id)a3 withIndent:(id)a4;
++ (id)diagnosticDescriptionForClockIdentifier:(unint64_t)identifier withIndent:(id)indent;
++ (id)diagnosticDescriptionForInfo:(id)info withIndent:(id)indent;
 + (id)diagnosticInfo;
-+ (id)diagnosticInfoForClockIdentifier:(unint64_t)a3;
-+ (id)frameworkClassNameForDaemonClassName:(id)a3;
++ (id)diagnosticInfoForClockIdentifier:(unint64_t)identifier;
++ (id)frameworkClassNameForDaemonClassName:(id)name;
 + (id)sharedClockManager;
-+ (id)sharedClockManagerSyncWithTimeout:(unint64_t)a3;
++ (id)sharedClockManagerSyncWithTimeout:(unint64_t)timeout;
 + (void)initialize;
-- (BOOL)getConnectionForClockWithClockIdentifier:(unint64_t)a3 daemonClockClassName:(id *)a4 endpoint:(id *)a5;
-- (BOOL)getConnectionForPortWithClockIdentifier:(unint64_t)a3 portNumber:(unsigned __int16)a4 daemonPortClassName:(id *)a5 endpoint:(id *)a6;
+- (BOOL)getConnectionForClockWithClockIdentifier:(unint64_t)identifier daemonClockClassName:(id *)name endpoint:(id *)endpoint;
+- (BOOL)getConnectionForPortWithClockIdentifier:(unint64_t)identifier portNumber:(unsigned __int16)number daemonPortClassName:(id *)name endpoint:(id *)endpoint;
 - (TSClockManager)init;
 - (id)availableClockIdentifiers;
-- (id)clockWithClockIdentifier:(unint64_t)a3;
-- (unint64_t)machAbsoluteNanosecondsToTicks:(unint64_t)a3;
-- (unint64_t)machAbsoluteTicksToNanoseconds:(unint64_t)a3;
-- (void)addClient:(id)a3;
+- (id)clockWithClockIdentifier:(unint64_t)identifier;
+- (unint64_t)machAbsoluteNanosecondsToTicks:(unint64_t)ticks;
+- (unint64_t)machAbsoluteTicksToNanoseconds:(unint64_t)nanoseconds;
+- (void)addClient:(id)client;
 - (void)init;
 - (void)interruptedClockManager;
-- (void)removeClient:(id)a3;
+- (void)removeClient:(id)client;
 @end
 
 @implementation TSClockManager
 
-+ (id)frameworkClassNameForDaemonClassName:(id)a3
++ (id)frameworkClassNameForDaemonClassName:(id)name
 {
-  v3 = [a3 stringByReplacingOccurrencesOfString:@"_TSF_TSD" withString:@"TS"];
+  v3 = [name stringByReplacingOccurrencesOfString:@"_TSF_TSD" withString:@"TS"];
 
   return v3;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     _sharedClockManagerLock = 0;
   }
@@ -44,9 +44,9 @@
   v3 = _sharedClockManager;
   if (!_sharedClockManager)
   {
-    v4 = [a1 clockManager];
+    clockManager = [self clockManager];
     v5 = _sharedClockManager;
-    _sharedClockManager = v4;
+    _sharedClockManager = clockManager;
 
     v3 = _sharedClockManager;
   }
@@ -57,7 +57,7 @@
   return v6;
 }
 
-+ (id)sharedClockManagerSyncWithTimeout:(unint64_t)a3
++ (id)sharedClockManagerSyncWithTimeout:(unint64_t)timeout
 {
   v5 = dispatch_semaphore_create(0);
   v11[0] = MEMORY[0x277D85DD0];
@@ -66,8 +66,8 @@
   v11[3] = &unk_279DBD658;
   v6 = v5;
   v12 = v6;
-  [a1 notifyWhenClockManagerIsAvailable:v11];
-  v7 = dispatch_time(0, 1000000 * a3);
+  [self notifyWhenClockManagerIsAvailable:v11];
+  v7 = dispatch_time(0, 1000000 * timeout);
   if (dispatch_semaphore_wait(v6, v7))
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -76,15 +76,15 @@
       _os_log_impl(&dword_26F080000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Failed to find clock manager within the timeout period.\n", v10, 2u);
     }
 
-    v8 = 0;
+    sharedClockManager = 0;
   }
 
   else
   {
-    v8 = [a1 sharedClockManager];
+    sharedClockManager = [self sharedClockManager];
   }
 
-  return v8;
+  return sharedClockManager;
 }
 
 + (id)clockManager
@@ -120,9 +120,9 @@
   if (v2)
   {
     v2->_clientLock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
+    weakObjectsPointerArray = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
     clients = v3->_clients;
-    v3->_clients = v4;
+    v3->_clients = weakObjectsPointerArray;
 
     mach_timebase_info(&v3->_timebaseInfo);
     v6 = objc_alloc_init(_TSF_TSDClockManager);
@@ -139,8 +139,8 @@
         {
           objc_storeStrong(&v3->_translationClockDC, v9);
           v10 = [TSTranslationClock alloc];
-          v11 = [(TSDCTranslationClock *)v9 translationClock];
-          v12 = [(TSTranslationClock *)v10 initWithTranslationClock:v11];
+          translationClock = [(TSDCTranslationClock *)v9 translationClock];
+          v12 = [(TSTranslationClock *)v10 initWithTranslationClock:translationClock];
           translationClock = v3->_translationClock;
           v3->_translationClock = v12;
 
@@ -176,28 +176,28 @@ LABEL_7:
 
 - (id)availableClockIdentifiers
 {
-  v2 = [(_TSF_TSDClockManager *)self->_impl availableClockIdentifiers];
+  availableClockIdentifiers = [(_TSF_TSDClockManager *)self->_impl availableClockIdentifiers];
 
-  return v2;
+  return availableClockIdentifiers;
 }
 
-- (id)clockWithClockIdentifier:(unint64_t)a3
+- (id)clockWithClockIdentifier:(unint64_t)identifier
 {
-  if ([(TSClockManager *)self timeSyncTimeClockIdentifier]== a3)
+  if ([(TSClockManager *)self timeSyncTimeClockIdentifier]== identifier)
   {
-    v5 = [(TSClockManager *)self timeSyncClock];
+    timeSyncClock = [(TSClockManager *)self timeSyncClock];
 LABEL_5:
-    v6 = v5;
+    v6 = timeSyncClock;
     goto LABEL_11;
   }
 
-  if ([(TSClockManager *)self translationClockIdentifier]== a3)
+  if ([(TSClockManager *)self translationClockIdentifier]== identifier)
   {
-    v5 = [(TSClockManager *)self translationClock];
+    timeSyncClock = [(TSClockManager *)self translationClock];
     goto LABEL_5;
   }
 
-  v7 = [TSDCKernelClock clockWithIdentifier:a3];
+  v7 = [TSDCKernelClock clockWithIdentifier:identifier];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -222,89 +222,89 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)getConnectionForClockWithClockIdentifier:(unint64_t)a3 daemonClockClassName:(id *)a4 endpoint:(id *)a5
+- (BOOL)getConnectionForClockWithClockIdentifier:(unint64_t)identifier daemonClockClassName:(id *)name endpoint:(id *)endpoint
 {
-  *a4 = 0;
-  *a5 = 0;
+  *name = 0;
+  *endpoint = 0;
   return 0;
 }
 
-- (BOOL)getConnectionForPortWithClockIdentifier:(unint64_t)a3 portNumber:(unsigned __int16)a4 daemonPortClassName:(id *)a5 endpoint:(id *)a6
+- (BOOL)getConnectionForPortWithClockIdentifier:(unint64_t)identifier portNumber:(unsigned __int16)number daemonPortClassName:(id *)name endpoint:(id *)endpoint
 {
-  *a5 = 0;
-  *a6 = 0;
+  *name = 0;
+  *endpoint = 0;
   return 0;
 }
 
-- (unint64_t)machAbsoluteTicksToNanoseconds:(unint64_t)a3
+- (unint64_t)machAbsoluteTicksToNanoseconds:(unint64_t)nanoseconds
 {
   numer = self->_timebaseInfo.numer;
   if (numer != self->_timebaseInfo.denom)
   {
     v10[4] = v3;
     v10[5] = v4;
-    *&v9 = IOTS_uint64mul(a3, numer);
+    *&v9 = IOTS_uint64mul(nanoseconds, numer);
     *(&v9 + 1) = v7;
     v10[0] = self->_timebaseInfo.denom;
     v10[1] = 0;
     return IOTS_U128::operator/(&v9, v10);
   }
 
-  return a3;
+  return nanoseconds;
 }
 
-- (unint64_t)machAbsoluteNanosecondsToTicks:(unint64_t)a3
+- (unint64_t)machAbsoluteNanosecondsToTicks:(unint64_t)ticks
 {
   denom = self->_timebaseInfo.denom;
   if (self->_timebaseInfo.numer != denom)
   {
     v10[4] = v3;
     v10[5] = v4;
-    *&v9 = IOTS_uint64mul(a3, denom);
+    *&v9 = IOTS_uint64mul(ticks, denom);
     *(&v9 + 1) = v7;
     v10[0] = self->_timebaseInfo.numer;
     v10[1] = 0;
     return IOTS_U128::operator/(&v9, v10);
   }
 
-  return a3;
+  return ticks;
 }
 
-+ (id)diagnosticDescriptionForInfo:(id)a3 withIndent:(id)a4
++ (id)diagnosticDescriptionForInfo:(id)info withIndent:(id)indent
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CCAB68] string];
-  v8 = [v5 objectForKeyedSubscript:@"ClassName"];
-  [v7 appendFormat:@"%@+%@\n", v6, v8];
+  infoCopy = info;
+  indentCopy = indent;
+  string = [MEMORY[0x277CCAB68] string];
+  v8 = [infoCopy objectForKeyedSubscript:@"ClassName"];
+  [string appendFormat:@"%@+%@\n", indentCopy, v8];
 
-  [v7 appendFormat:@"%@    TimeSyncTime Clock Identifier: ", v6];
-  v9 = [v5 objectForKeyedSubscript:@"TimeSyncTimeClockID"];
+  [string appendFormat:@"%@    TimeSyncTime Clock Identifier: ", indentCopy];
+  v9 = [infoCopy objectForKeyedSubscript:@"TimeSyncTimeClockID"];
   v10 = v9;
   if (v9)
   {
-    [v7 appendFormat:@"0x%016llx\n", objc_msgSend(v9, "unsignedLongLongValue")];
+    [string appendFormat:@"0x%016llx\n", objc_msgSend(v9, "unsignedLongLongValue")];
   }
 
   else
   {
-    [v7 appendString:@"Could not read property\n"];
+    [string appendString:@"Could not read property\n"];
   }
 
-  [v7 appendFormat:@"%@    TimeSyncTime CoreAudio Clock Domain: ", v6];
-  v11 = [v5 objectForKeyedSubscript:@"TimeSyncTimeCoreAudioClockDomain"];
+  [string appendFormat:@"%@    TimeSyncTime CoreAudio Clock Domain: ", indentCopy];
+  v11 = [infoCopy objectForKeyedSubscript:@"TimeSyncTimeCoreAudioClockDomain"];
 
   if (v11)
   {
-    [v7 appendFormat:@"0x%08x\n", objc_msgSend(v11, "unsignedIntValue")];
+    [string appendFormat:@"0x%08x\n", objc_msgSend(v11, "unsignedIntValue")];
   }
 
   else
   {
-    [v7 appendString:@"Could not read property\n"];
+    [string appendString:@"Could not read property\n"];
   }
 
-  return v7;
+  return string;
 }
 
 + (id)diagnosticInfo
@@ -314,17 +314,17 @@ LABEL_11:
   return v2;
 }
 
-+ (id)diagnosticDescriptionForClockIdentifier:(unint64_t)a3 withIndent:(id)a4
++ (id)diagnosticDescriptionForClockIdentifier:(unint64_t)identifier withIndent:(id)indent
 {
-  v6 = a4;
+  indentCopy = indent;
   v13 = 0;
-  v7 = [_TSF_TSDClockManager diagnosticInfoForClockIdentifier:a3 daemonClassName:&v13];
+  v7 = [_TSF_TSDClockManager diagnosticInfoForClockIdentifier:identifier daemonClassName:&v13];
   v8 = v13;
-  v9 = [a1 frameworkClassNameForDaemonClassName:v8];
+  v9 = [self frameworkClassNameForDaemonClassName:v8];
   v10 = v9;
   if (v9)
   {
-    [NSClassFromString(v9) diagnosticDescriptionForInfo:v7 withIndent:v6];
+    [NSClassFromString(v9) diagnosticDescriptionForInfo:v7 withIndent:indentCopy];
   }
 
   else
@@ -336,17 +336,17 @@ LABEL_11:
   return v11;
 }
 
-+ (id)diagnosticInfoForClockIdentifier:(unint64_t)a3
++ (id)diagnosticInfoForClockIdentifier:(unint64_t)identifier
 {
-  v3 = [_TSF_TSDClockManager diagnosticInfoForClockIdentifier:a3 daemonClassName:0];
+  v3 = [_TSF_TSDClockManager diagnosticInfoForClockIdentifier:identifier daemonClassName:0];
 
   return v3;
 }
 
-- (void)addClient:(id)a3
+- (void)addClient:(id)client
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  clientCopy = client;
   os_unfair_lock_lock(&self->_clientLock);
   [(NSPointerArray *)self->_clients compact];
   v12 = 0u;
@@ -368,7 +368,7 @@ LABEL_11:
           objc_enumerationMutation(v5);
         }
 
-        if (*(*(&v10 + 1) + 8 * v8) == v4)
+        if (*(*(&v10 + 1) + 8 * v8) == clientCopy)
         {
 
           goto LABEL_11;
@@ -388,17 +388,17 @@ LABEL_11:
     }
   }
 
-  [(NSPointerArray *)self->_clients addPointer:v4, v10];
+  [(NSPointerArray *)self->_clients addPointer:clientCopy, v10];
 LABEL_11:
   os_unfair_lock_unlock(&self->_clientLock);
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeClient:(id)a3
+- (void)removeClient:(id)client
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  clientCopy = client;
   os_unfair_lock_lock(&self->_clientLock);
   [(NSPointerArray *)self->_clients compact];
   v14 = 0u;
@@ -423,7 +423,7 @@ LABEL_11:
           objc_enumerationMutation(v5);
         }
 
-        if (*(*(&v12 + 1) + 8 * v9) == v4)
+        if (*(*(&v12 + 1) + 8 * v9) == clientCopy)
         {
 
           [(NSPointerArray *)self->_clients removePointerAtIndex:v10, v12];
@@ -533,7 +533,7 @@ void __41__TSClockManager_interruptedClockManager__block_invoke(uint64_t a1)
   }
 
   *a3 = 0;
-  *a2 = a1;
+  *a2 = self;
   v11 = *MEMORY[0x277D85DE8];
 }
 

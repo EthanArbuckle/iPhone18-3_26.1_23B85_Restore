@@ -1,12 +1,12 @@
 @interface RMModelAccountGoogleDeclaration
 + (NSSet)allowedPayloadKeys;
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3 userIdentityAssetReference:(id)a4;
-+ (id)buildWithIdentifier:(id)a3 visibleName:(id)a4 userIdentityAssetReference:(id)a5;
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier userIdentityAssetReference:(id)reference;
++ (id)buildWithIdentifier:(id)identifier visibleName:(id)name userIdentityAssetReference:(id)reference;
 + (id)supportedOS;
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
 - (id)assetReferences;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializePayloadWithType:(signed __int16)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializePayloadWithType:(signed __int16)type;
 @end
 
 @implementation RMModelAccountGoogleDeclaration
@@ -49,52 +49,52 @@ void __50__RMModelAccountGoogleDeclaration_assetReferences__block_invoke()
   v3 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)buildWithIdentifier:(id)a3 visibleName:(id)a4 userIdentityAssetReference:(id)a5
++ (id)buildWithIdentifier:(id)identifier visibleName:(id)name userIdentityAssetReference:(id)reference
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
+  identifierCopy = identifier;
+  referenceCopy = reference;
+  nameCopy = name;
   v10 = objc_opt_new();
   [v10 setDeclarationType:@"com.apple.configuration.account.google"];
-  if (v7)
+  if (identifierCopy)
   {
-    [v10 setDeclarationIdentifier:v7];
+    [v10 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v11 = [MEMORY[0x277CCAD78] UUID];
-    v12 = [v11 UUIDString];
-    [v10 setDeclarationIdentifier:v12];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v10 setDeclarationIdentifier:uUIDString];
   }
 
-  [v10 setPayloadVisibleName:v9];
+  [v10 setPayloadVisibleName:nameCopy];
 
-  [v10 setPayloadUserIdentityAssetReference:v8];
+  [v10 setPayloadUserIdentityAssetReference:referenceCopy];
   [v10 updateServerToken];
 
   return v10;
 }
 
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3 userIdentityAssetReference:(id)a4
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier userIdentityAssetReference:(id)reference
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  referenceCopy = reference;
   v7 = objc_opt_new();
   [v7 setDeclarationType:@"com.apple.configuration.account.google"];
-  if (v5)
+  if (identifierCopy)
   {
-    [v7 setDeclarationIdentifier:v5];
+    [v7 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v8 = [MEMORY[0x277CCAD78] UUID];
-    v9 = [v8 UUIDString];
-    [v7 setDeclarationIdentifier:v9];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v7 setDeclarationIdentifier:uUIDString];
   }
 
-  [v7 setPayloadUserIdentityAssetReference:v6];
+  [v7 setPayloadUserIdentityAssetReference:referenceCopy];
 
   [v7 updateServerToken];
 
@@ -139,12 +139,12 @@ void __50__RMModelAccountGoogleDeclaration_assetReferences__block_invoke()
   return v11;
 }
 
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v7 = a3;
+  dictionaryCopy = dictionary;
   v8 = MEMORY[0x277CBEB58];
-  v9 = [v7 allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [dictionaryCopy allKeys];
+  v10 = [v8 setWithArray:allKeys];
 
   v11 = +[RMModelAccountGoogleDeclaration allowedPayloadKeys];
   [v10 minusSet:v11];
@@ -153,33 +153,33 @@ void __50__RMModelAccountGoogleDeclaration_assetReferences__block_invoke()
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v12];
 
   v13 = 0;
-  if ([(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"VisibleName" forKeyPath:@"payloadVisibleName" isRequired:0 defaultValue:0 error:a5])
+  if ([(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"VisibleName" forKeyPath:@"payloadVisibleName" isRequired:0 defaultValue:0 error:error])
   {
-    v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"UserIdentityAssetReference" forKeyPath:@"payloadUserIdentityAssetReference" isRequired:1 defaultValue:0 error:a5];
+    v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"UserIdentityAssetReference" forKeyPath:@"payloadUserIdentityAssetReference" isRequired:1 defaultValue:0 error:error];
   }
 
   return v13;
 }
 
-- (id)serializePayloadWithType:(signed __int16)a3
+- (id)serializePayloadWithType:(signed __int16)type
 {
   v4 = objc_opt_new();
-  v5 = [(RMModelAccountGoogleDeclaration *)self payloadVisibleName];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"VisibleName" value:v5 isRequired:0 defaultValue:0];
+  payloadVisibleName = [(RMModelAccountGoogleDeclaration *)self payloadVisibleName];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"VisibleName" value:payloadVisibleName isRequired:0 defaultValue:0];
 
-  v6 = [(RMModelAccountGoogleDeclaration *)self payloadUserIdentityAssetReference];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"UserIdentityAssetReference" value:v6 isRequired:1 defaultValue:0];
+  payloadUserIdentityAssetReference = [(RMModelAccountGoogleDeclaration *)self payloadUserIdentityAssetReference];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"UserIdentityAssetReference" value:payloadUserIdentityAssetReference isRequired:1 defaultValue:0];
 
   v7 = [v4 copy];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = RMModelAccountGoogleDeclaration;
-  v4 = [(RMModelDeclarationBase *)&v10 copyWithZone:a3];
+  v4 = [(RMModelDeclarationBase *)&v10 copyWithZone:zone];
   v5 = [(NSString *)self->_payloadVisibleName copy];
   v6 = v4[6];
   v4[6] = v5;

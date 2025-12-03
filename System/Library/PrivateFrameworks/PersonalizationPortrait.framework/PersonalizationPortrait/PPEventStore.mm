@@ -1,14 +1,14 @@
 @interface PPEventStore
-- (BOOL)interactionSummaryMetricsError:(id *)a3 block:(id)a4;
-- (BOOL)iterEventNameRecordsForClient:(id)a3 error:(id *)a4 block:(id)a5;
-- (BOOL)iterScoredEventsWithQuery:(id)a3 error:(id *)a4 block:(id)a5;
-- (BOOL)loadEventNameRecordsAndMonitorChangesWithDelegate:(id)a3 error:(id *)a4;
-- (BOOL)sendRTCLogsWithError:(id *)a3;
+- (BOOL)interactionSummaryMetricsError:(id *)error block:(id)block;
+- (BOOL)iterEventNameRecordsForClient:(id)client error:(id *)error block:(id)block;
+- (BOOL)iterScoredEventsWithQuery:(id)query error:(id *)error block:(id)block;
+- (BOOL)loadEventNameRecordsAndMonitorChangesWithDelegate:(id)delegate error:(id *)error;
+- (BOOL)sendRTCLogsWithError:(id *)error;
 - (PPEventStore)init;
-- (id)forwardingTargetForSelector:(SEL)a3;
-- (void)_loadEventNameRecordsWithDelegate:(id)a3;
-- (void)_sendChangesToDelegates:(id)a3;
-- (void)registerFeedback:(id)a3 completion:(id)a4;
+- (id)forwardingTargetForSelector:(SEL)selector;
+- (void)_loadEventNameRecordsWithDelegate:(id)delegate;
+- (void)_sendChangesToDelegates:(id)delegates;
+- (void)registerFeedback:(id)feedback completion:(id)completion;
 @end
 
 @implementation PPEventStore
@@ -32,7 +32,7 @@
   return v2;
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
   clientFeedbackHelper = self->_clientFeedbackHelper;
   if (objc_opt_respondsToSelector())
@@ -48,29 +48,29 @@
   return v5;
 }
 
-- (void)registerFeedback:(id)a3 completion:(id)a4
+- (void)registerFeedback:(id)feedback completion:(id)completion
 {
-  v7 = a4;
-  v8 = a3;
-  if ([v8 isMapped])
+  completionCopy = completion;
+  feedbackCopy = feedback;
+  if ([feedbackCopy isMapped])
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PPEventStore.m" lineNumber:282 description:@"You cannot send mapped feedback on events. Please use PPFeedback to create the feedback for events."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PPEventStore.m" lineNumber:282 description:@"You cannot send mapped feedback on events. Please use PPFeedback to create the feedback for events."];
   }
 
-  v9 = [(PPEventStore *)self clientIdentifier];
-  v10 = [v9 length];
+  clientIdentifier = [(PPEventStore *)self clientIdentifier];
+  v10 = [clientIdentifier length];
 
   if (!v10)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v16 = objc_opt_class();
     v17 = NSStringFromClass(v16);
-    [v15 handleFailureInMethod:a2 object:self file:@"PPEventStore.m" lineNumber:283 description:{@"The clientIdentifier property must be set on the %@ in order to send feedback.", v17}];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PPEventStore.m" lineNumber:283 description:{@"The clientIdentifier property must be set on the %@ in order to send feedback.", v17}];
   }
 
-  v11 = [(PPEventStore *)self clientIdentifier];
-  [v8 setClientIdentifier:v11];
+  clientIdentifier2 = [(PPEventStore *)self clientIdentifier];
+  [feedbackCopy setClientIdentifier:clientIdentifier2];
 
   v12 = +[PPEventClient sharedInstance];
   v18[0] = MEMORY[0x1E69E9820];
@@ -78,9 +78,9 @@
   v18[2] = __44__PPEventStore_registerFeedback_completion___block_invoke;
   v18[3] = &unk_1E77F7D98;
   v18[4] = self;
-  v19 = v7;
-  v13 = v7;
-  [v12 registerFeedback:v8 completion:v18];
+  v19 = completionCopy;
+  v13 = completionCopy;
+  [v12 registerFeedback:feedbackCopy completion:v18];
 }
 
 void __44__PPEventStore_registerFeedback_completion___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -108,27 +108,27 @@ void __44__PPEventStore_registerFeedback_completion___block_invoke(uint64_t a1, 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)sendRTCLogsWithError:(id *)a3
+- (BOOL)sendRTCLogsWithError:(id *)error
 {
   v4 = +[PPEventClient sharedInstance];
-  LOBYTE(a3) = [v4 sendRTCLogsWithError:a3];
+  LOBYTE(error) = [v4 sendRTCLogsWithError:error];
 
-  return a3;
+  return error;
 }
 
-- (BOOL)interactionSummaryMetricsError:(id *)a3 block:(id)a4
+- (BOOL)interactionSummaryMetricsError:(id *)error block:(id)block
 {
-  v5 = a4;
+  blockCopy = block;
   v6 = +[PPEventClient sharedInstance];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __53__PPEventStore_interactionSummaryMetricsError_block___block_invoke;
   v9[3] = &unk_1E77F7D70;
-  v10 = v5;
-  v7 = v5;
-  LOBYTE(a3) = [v6 interactionSummaryMetricsWithError:a3 handleBatch:v9];
+  v10 = blockCopy;
+  v7 = blockCopy;
+  LOBYTE(error) = [v6 interactionSummaryMetricsWithError:error handleBatch:v9];
 
-  return a3;
+  return error;
 }
 
 void __53__PPEventStore_interactionSummaryMetricsError_block___block_invoke(uint64_t a1, void *a2, _BYTE *a3)
@@ -181,20 +181,20 @@ LABEL_4:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)iterScoredEventsWithQuery:(id)a3 error:(id *)a4 block:(id)a5
+- (BOOL)iterScoredEventsWithQuery:(id)query error:(id *)error block:(id)block
 {
-  v7 = a5;
-  v8 = a3;
+  blockCopy = block;
+  queryCopy = query;
   v9 = +[PPEventClient sharedInstance];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __54__PPEventStore_iterScoredEventsWithQuery_error_block___block_invoke;
   v12[3] = &unk_1E77F7D70;
-  v13 = v7;
-  v10 = v7;
-  LOBYTE(a4) = [v9 scoredEventsWithQuery:v8 error:a4 handleBatch:v12];
+  v13 = blockCopy;
+  v10 = blockCopy;
+  LOBYTE(error) = [v9 scoredEventsWithQuery:queryCopy error:error handleBatch:v12];
 
-  return a4;
+  return error;
 }
 
 void __54__PPEventStore_iterScoredEventsWithQuery_error_block___block_invoke(uint64_t a1, void *a2, _BYTE *a3)
@@ -309,18 +309,18 @@ LABEL_6:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)loadEventNameRecordsAndMonitorChangesWithDelegate:(id)a3 error:(id *)a4
+- (BOOL)loadEventNameRecordsAndMonitorChangesWithDelegate:(id)delegate error:(id *)error
 {
-  v5 = a3;
+  delegateCopy = delegate;
   objc_initWeak(&location, self);
   monitoringHelper = self->_monitoringHelper;
-  v7 = [(PPEventStore *)self _recordGenerator];
+  _recordGenerator = [(PPEventStore *)self _recordGenerator];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __72__PPEventStore_loadEventNameRecordsAndMonitorChangesWithDelegate_error___block_invoke;
   v9[3] = &unk_1E77F7970;
   objc_copyWeak(&v10, &location);
-  LOBYTE(monitoringHelper) = [(PPRecordMonitoringHelper *)monitoringHelper loadRecordsAndMonitorChangesWithDelegate:v5 recordGenerator:v7 notificationRegistrationBlock:v9];
+  LOBYTE(monitoringHelper) = [(PPRecordMonitoringHelper *)monitoringHelper loadRecordsAndMonitorChangesWithDelegate:delegateCopy recordGenerator:_recordGenerator notificationRegistrationBlock:v9];
   objc_destroyWeak(&v10);
 
   objc_destroyWeak(&location);
@@ -375,26 +375,26 @@ uint64_t __72__PPEventStore_loadEventNameRecordsAndMonitorChangesWithDelegate_er
   return result;
 }
 
-- (void)_loadEventNameRecordsWithDelegate:(id)a3
+- (void)_loadEventNameRecordsWithDelegate:(id)delegate
 {
   monitoringHelper = self->_monitoringHelper;
-  v5 = a3;
-  v6 = [(PPEventStore *)self _recordGenerator];
-  [(PPRecordMonitoringHelper *)monitoringHelper loadRecordsWithDelegate:v5 recordGenerator:v6];
+  delegateCopy = delegate;
+  _recordGenerator = [(PPEventStore *)self _recordGenerator];
+  [(PPRecordMonitoringHelper *)monitoringHelper loadRecordsWithDelegate:delegateCopy recordGenerator:_recordGenerator];
 }
 
-- (void)_sendChangesToDelegates:(id)a3
+- (void)_sendChangesToDelegates:(id)delegates
 {
-  v4 = a3;
+  delegatesCopy = delegates;
   monitoringHelper = self->_monitoringHelper;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __40__PPEventStore__sendChangesToDelegates___block_invoke;
   v8[3] = &unk_1E77F6DF0;
-  v9 = v4;
-  v6 = v4;
-  v7 = [(PPEventStore *)self _recordGenerator];
-  [(PPRecordMonitoringHelper *)monitoringHelper sendChangesToDelegatesWithChangeGenerator:v8 recordGenerator:v7];
+  v9 = delegatesCopy;
+  v6 = delegatesCopy;
+  _recordGenerator = [(PPEventStore *)self _recordGenerator];
+  [(PPRecordMonitoringHelper *)monitoringHelper sendChangesToDelegatesWithChangeGenerator:v8 recordGenerator:_recordGenerator];
 }
 
 id __40__PPEventStore__sendChangesToDelegates___block_invoke(uint64_t a1, void *a2, _BYTE *a3)
@@ -496,20 +496,20 @@ uint64_t __32__PPEventStore__recordGenerator__block_invoke_15(uint64_t result, u
   return result;
 }
 
-- (BOOL)iterEventNameRecordsForClient:(id)a3 error:(id *)a4 block:(id)a5
+- (BOOL)iterEventNameRecordsForClient:(id)client error:(id *)error block:(id)block
 {
-  v7 = a5;
-  v8 = a3;
+  blockCopy = block;
+  clientCopy = client;
   v9 = +[PPEventClient sharedInstance];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __58__PPEventStore_iterEventNameRecordsForClient_error_block___block_invoke;
   v12[3] = &unk_1E77F7D70;
-  v13 = v7;
-  v10 = v7;
-  LOBYTE(a4) = [v9 eventNameRecordsForClient:v8 error:a4 handleBatch:v12];
+  v13 = blockCopy;
+  v10 = blockCopy;
+  LOBYTE(error) = [v9 eventNameRecordsForClient:clientCopy error:error handleBatch:v12];
 
-  return a4;
+  return error;
 }
 
 void __58__PPEventStore_iterEventNameRecordsForClient_error_block___block_invoke(uint64_t a1, void *a2, _BYTE *a3)

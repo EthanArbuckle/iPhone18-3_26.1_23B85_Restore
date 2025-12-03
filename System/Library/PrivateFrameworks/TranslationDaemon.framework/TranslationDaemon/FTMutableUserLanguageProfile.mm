@@ -1,10 +1,10 @@
 @interface FTMutableUserLanguageProfile
 - (FTMutableUserLanguageProfile)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)profile_blob:(id)a3;
-- (void)setProfile_blob:(id)a3;
-- (void)setProfile_blob_version:(id)a3;
-- (void)setProfile_checksum:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)profile_blob:(id)profile_blob;
+- (void)setProfile_blob:(id)profile_blob;
+- (void)setProfile_blob_version:(id)profile_blob_version;
+- (void)setProfile_checksum:(id)profile_checksum;
 @end
 
 @implementation FTMutableUserLanguageProfile
@@ -16,17 +16,17 @@
   v2 = [(FTMutableUserLanguageProfile *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v2->super._storage;
-    v2->super._storage = v3;
+    v2->super._storage = dictionary;
   }
 
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSMutableDictionary *)self->super._storage copy];
   v6 = v4[1];
   v4[1] = v5;
@@ -34,30 +34,30 @@
   return v4;
 }
 
-- (void)setProfile_blob:(id)a3
+- (void)setProfile_blob:(id)profile_blob
 {
-  v4 = [a3 copy];
+  v4 = [profile_blob copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)profile_blob:(id)a3
+- (void)profile_blob:(id)profile_blob
 {
-  v7 = a3;
-  v4 = [(FTMutableUserLanguageProfile *)self profile_blob];
-  v5 = [v4 bytes];
-  v6 = [(FTMutableUserLanguageProfile *)self profile_blob];
-  v7[2](v7, v5, [v6 length]);
+  profile_blobCopy = profile_blob;
+  profile_blob = [(FTMutableUserLanguageProfile *)self profile_blob];
+  bytes = [profile_blob bytes];
+  profile_blob2 = [(FTMutableUserLanguageProfile *)self profile_blob];
+  profile_blobCopy[2](profile_blobCopy, bytes, [profile_blob2 length]);
 }
 
-- (void)setProfile_blob_version:(id)a3
+- (void)setProfile_blob_version:(id)profile_blob_version
 {
-  v4 = [a3 copy];
+  v4 = [profile_blob_version copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)setProfile_checksum:(id)a3
+- (void)setProfile_checksum:(id)profile_checksum
 {
-  v4 = [a3 copy];
+  v4 = [profile_checksum copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 

@@ -1,20 +1,20 @@
 @interface _LTHotfixManager
 + (_LTHotfixManager)shared;
-+ (void)_enableTestFixture:(BOOL)a3;
++ (void)_enableTestFixture:(BOOL)fixture;
 + (void)initialize;
 - (_LTHotfixManager)init;
-- (id)_CDNURL:(id)a3;
-- (id)_versionedHotfixDirectoryNameFromBasePath:(id)a3;
-- (void)_decompressArchive:(id)a3 to:(id)a4 error:(id *)a5;
-- (void)_downloadHotfix:(id)a3 completion:(id)a4;
-- (void)_downloadMappingPlist:(id)a3;
-- (void)_downloadWithURL:(id)a3 completion:(id)a4;
-- (void)_replaceHotfix:(int64_t)a3 completion:(id)a4;
-- (void)_updateHotfixInternal:(id)a3;
-- (void)deleteHotfix:(id)a3;
-- (void)refreshHotfix:(id)a3;
-- (void)setHotfixURL:(id)a3;
-- (void)updateHotfix:(id)a3;
+- (id)_CDNURL:(id)l;
+- (id)_versionedHotfixDirectoryNameFromBasePath:(id)path;
+- (void)_decompressArchive:(id)archive to:(id)to error:(id *)error;
+- (void)_downloadHotfix:(id)hotfix completion:(id)completion;
+- (void)_downloadMappingPlist:(id)plist;
+- (void)_downloadWithURL:(id)l completion:(id)completion;
+- (void)_replaceHotfix:(int64_t)hotfix completion:(id)completion;
+- (void)_updateHotfixInternal:(id)internal;
+- (void)deleteHotfix:(id)hotfix;
+- (void)refreshHotfix:(id)hotfix;
+- (void)setHotfixURL:(id)l;
+- (void)updateHotfix:(id)hotfix;
 @end
 
 @implementation _LTHotfixManager
@@ -33,7 +33,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v4 = +[_LTDAssetService assetDirectoryURL];
     v2 = [v4 URLByAppendingPathComponent:@"Hotfix"];
@@ -42,20 +42,20 @@
   }
 }
 
-+ (void)_enableTestFixture:(BOOL)a3
++ (void)_enableTestFixture:(BOOL)fixture
 {
-  if (a3)
+  if (fixture)
   {
-    v3 = [MEMORY[0x277CCAA00] defaultManager];
-    v6 = [v3 temporaryDirectory];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    temporaryDirectory = [defaultManager temporaryDirectory];
   }
 
   else
   {
-    v6 = +[_LTDAssetService assetDirectoryURL];
+    temporaryDirectory = +[_LTDAssetService assetDirectoryURL];
   }
 
-  v4 = [v6 URLByAppendingPathComponent:@"Hotfix"];
+  v4 = [temporaryDirectory URLByAppendingPathComponent:@"Hotfix"];
   v5 = hotfixBasePath;
   hotfixBasePath = v4;
 }
@@ -71,8 +71,8 @@
     queue = v2->_queue;
     v2->_queue = v3;
 
-    v5 = [hotfixBasePath path];
-    v6 = [(_LTHotfixManager *)v2 _versionedHotfixDirectoryNameFromBasePath:v5];
+    path = [hotfixBasePath path];
+    v6 = [(_LTHotfixManager *)v2 _versionedHotfixDirectoryNameFromBasePath:path];
 
     if (v6)
     {
@@ -86,21 +86,21 @@
   return v2;
 }
 
-- (void)setHotfixURL:(id)a3
+- (void)setHotfixURL:(id)l
 {
-  v4 = a3;
-  if (v4)
+  lCopy = l;
+  if (lCopy)
   {
-    v5 = [MEMORY[0x277CCAA00] defaultManager];
-    v6 = [v4 path];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path = [lCopy path];
     v17 = 0;
-    v7 = [v5 contentsOfDirectoryAtPath:v6 error:&v17];
+    v7 = [defaultManager contentsOfDirectoryAtPath:path error:&v17];
     v8 = v17;
 
-    v9 = [v4 URLByAppendingPathComponent:@"mt-quasar-config.json"];
+    v9 = [lCopy URLByAppendingPathComponent:@"mt-quasar-config.json"];
     if (!v8 && [v7 count] && (objc_msgSend(MEMORY[0x277CCAA00], "defaultManager"), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "path"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v13, "fileExistsAtPath:", v14), v14, v13, (v15 & 1) != 0))
     {
-      v16 = v4;
+      v16 = lCopy;
       hotfixURL = self->_hotfixURL;
       self->_hotfixURL = v16;
     }
@@ -110,7 +110,7 @@
       v10 = _LTOSLogHotfix();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        [(_LTHotfixManager *)v10 setHotfixURL:v4, v8];
+        [(_LTHotfixManager *)v10 setHotfixURL:lCopy, v8];
       }
 
       hotfixURL = self->_hotfixURL;
@@ -125,9 +125,9 @@
   }
 }
 
-- (void)refreshHotfix:(id)a3
+- (void)refreshHotfix:(id)hotfix
 {
-  v4 = a3;
+  hotfixCopy = hotfix;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -135,22 +135,22 @@
   block[2] = __34___LTHotfixManager_refreshHotfix___block_invoke;
   block[3] = &unk_2789B5F18;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = hotfixCopy;
+  v6 = hotfixCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)_replaceHotfix:(int64_t)a3 completion:(id)a4
+- (void)_replaceHotfix:(int64_t)hotfix completion:(id)completion
 {
   v6 = hotfixBasePath;
-  v7 = a4;
-  v8 = [v6 path];
-  v9 = [v8 stringByAppendingString:@"-rollback"];
-  v10 = [MEMORY[0x277CCAA00] defaultManager];
-  switch(a3)
+  completionCopy = completion;
+  path = [v6 path];
+  v9 = [path stringByAppendingString:@"-rollback"];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  switch(hotfix)
   {
     case 3:
       v17 = _LTOSLogHotfix();
@@ -159,18 +159,18 @@
         [_LTHotfixManager _replaceHotfix:completion:];
       }
 
-      if (![v10 fileExistsAtPath:v8])
+      if (![defaultManager fileExistsAtPath:path])
       {
         goto LABEL_29;
       }
 
-      if (![v10 fileExistsAtPath:v9])
+      if (![defaultManager fileExistsAtPath:v9])
       {
         goto LABEL_29;
       }
 
       v23 = 0;
-      [v10 removeItemAtPath:v9 error:&v23];
+      [defaultManager removeItemAtPath:v9 error:&v23];
       v12 = v23;
       if (!v12)
       {
@@ -185,22 +185,22 @@
         [_LTHotfixManager _replaceHotfix:completion:];
       }
 
-      if (![v10 fileExistsAtPath:v8] || (v25 = 0, objc_msgSend(v10, "removeItemAtPath:error:", v8, &v25), (v12 = v25) == 0))
+      if (![defaultManager fileExistsAtPath:path] || (v25 = 0, objc_msgSend(defaultManager, "removeItemAtPath:error:", path, &v25), (v12 = v25) == 0))
       {
-        if (![v10 fileExistsAtPath:v9])
+        if (![defaultManager fileExistsAtPath:v9])
         {
           goto LABEL_29;
         }
 
         v24 = 0;
-        [v10 moveItemAtPath:v9 toPath:v8 error:&v24];
+        [defaultManager moveItemAtPath:v9 toPath:path error:&v24];
         v12 = v24;
         if (!v12)
         {
-          v14 = [(_LTHotfixManager *)self _versionedHotfixDirectoryNameFromBasePath:v8];
+          v14 = [(_LTHotfixManager *)self _versionedHotfixDirectoryNameFromBasePath:path];
           if (v14)
           {
-            v15 = [MEMORY[0x277CBEBC0] fileURLWithPath:v8];
+            v15 = [MEMORY[0x277CBEBC0] fileURLWithPath:path];
             v16 = [v15 URLByAppendingPathComponent:v14];
             [(_LTHotfixManager *)self setHotfixURL:v16];
           }
@@ -226,15 +226,15 @@
         [_LTHotfixManager _replaceHotfix:completion:];
       }
 
-      if (![v10 fileExistsAtPath:v8])
+      if (![defaultManager fileExistsAtPath:path])
       {
         goto LABEL_29;
       }
 
-      if (![v10 fileExistsAtPath:v9] || (v27 = 0, objc_msgSend(v10, "removeItemAtPath:error:", v9, &v27), (v12 = v27) == 0))
+      if (![defaultManager fileExistsAtPath:v9] || (v27 = 0, objc_msgSend(defaultManager, "removeItemAtPath:error:", v9, &v27), (v12 = v27) == 0))
       {
         v26 = 0;
-        [v10 moveItemAtPath:v8 toPath:v9 error:&v26];
+        [defaultManager moveItemAtPath:path toPath:v9 error:&v26];
         v12 = v26;
         if (!v12)
         {
@@ -265,26 +265,26 @@ LABEL_29:
   }
 
 LABEL_32:
-  v7[2](v7, v18);
+  completionCopy[2](completionCopy, v18);
 }
 
-- (void)updateHotfix:(id)a3
+- (void)updateHotfix:(id)hotfix
 {
-  v4 = a3;
+  hotfixCopy = hotfix;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __33___LTHotfixManager_updateHotfix___block_invoke;
   v7[3] = &unk_2789B6B60;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = hotfixCopy;
+  v6 = hotfixCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_updateHotfixInternal:(id)a3
+- (void)_updateHotfixInternal:(id)internal
 {
-  v4 = a3;
+  internalCopy = internal;
   dispatch_assert_queue_V2(self->_queue);
   [(_LTHotfixManager *)self setHotfixURL:0];
   objc_initWeak(&location, self);
@@ -293,7 +293,7 @@ LABEL_32:
   v6[2] = __42___LTHotfixManager__updateHotfixInternal___block_invoke;
   v6[3] = &unk_2789B6B88;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = internalCopy;
   v7 = v5;
   [(_LTHotfixManager *)self _downloadMappingPlist:v6];
 
@@ -301,58 +301,58 @@ LABEL_32:
   objc_destroyWeak(&location);
 }
 
-- (void)deleteHotfix:(id)a3
+- (void)deleteHotfix:(id)hotfix
 {
-  v4 = a3;
+  hotfixCopy = hotfix;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __33___LTHotfixManager_deleteHotfix___block_invoke;
   v7[3] = &unk_2789B6B60;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = hotfixCopy;
+  v6 = hotfixCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_downloadWithURL:(id)a3 completion:(id)a4
+- (void)_downloadWithURL:(id)l completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  completionCopy = completion;
   v7 = _LTOSLogHotfix();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v21 = v5;
+    v21 = lCopy;
     _os_log_impl(&dword_232E53000, v7, OS_LOG_TYPE_INFO, "Downloading hotfix from URL: %{public}@", buf, 0xCu);
   }
 
-  v8 = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
-  [v8 set_sourceApplicationBundleIdentifier:@"com.apple.Translate"];
-  [v8 setAllowsCellularAccess:1];
-  v9 = [MEMORY[0x277CCAD30] sessionWithConfiguration:v8];
+  defaultSessionConfiguration = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
+  [defaultSessionConfiguration set_sourceApplicationBundleIdentifier:@"com.apple.Translate"];
+  [defaultSessionConfiguration setAllowsCellularAccess:1];
+  v9 = [MEMORY[0x277CCAD30] sessionWithConfiguration:defaultSessionConfiguration];
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __48___LTHotfixManager__downloadWithURL_completion___block_invoke;
   v17 = &unk_2789B6BB0;
-  v18 = v5;
-  v19 = v6;
-  v10 = v6;
-  v11 = v5;
+  v18 = lCopy;
+  v19 = completionCopy;
+  v10 = completionCopy;
+  v11 = lCopy;
   v12 = [v9 dataTaskWithURL:v11 completionHandler:&v14];
   [v12 resume];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_CDNURL:(id)a3
+- (id)_CDNURL:(id)l
 {
-  if (a3)
+  if (l)
   {
-    v3 = a3;
+    lCopy = l;
     v4 = _LTPreferencesHotfixEndpointURL();
-    v5 = [v4 URLByAppendingPathComponent:v3];
+    v5 = [v4 URLByAppendingPathComponent:lCopy];
   }
 
   else
@@ -363,34 +363,34 @@ LABEL_32:
   return v5;
 }
 
-- (void)_downloadMappingPlist:(id)a3
+- (void)_downloadMappingPlist:(id)plist
 {
-  v4 = a3;
+  plistCopy = plist;
   v5 = [(_LTHotfixManager *)self _CDNURL:@"mapping-info-plist"];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42___LTHotfixManager__downloadMappingPlist___block_invoke;
   v7[3] = &unk_2789B6BD8;
-  v8 = v4;
-  v6 = v4;
+  v8 = plistCopy;
+  v6 = plistCopy;
   [(_LTHotfixManager *)self _downloadWithURL:v5 completion:v7];
 }
 
-- (void)_downloadHotfix:(id)a3 completion:(id)a4
+- (void)_downloadHotfix:(id)hotfix completion:(id)completion
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v25 = a4;
+  hotfixCopy = hotfix;
+  completionCopy = completion;
   v7 = _LTOSLogHotfix();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v36 = v6;
+    v36 = hotfixCopy;
     _os_log_impl(&dword_232E53000, v7, OS_LOG_TYPE_INFO, "Select hotfix: %@", buf, 0xCu);
   }
 
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
-  v9 = [v6 objectForKeyedSubscript:@"FormatVersion"];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v9 = [hotfixCopy objectForKeyedSubscript:@"FormatVersion"];
   if (v9)
   {
     objc_opt_class();
@@ -412,7 +412,7 @@ LABEL_32:
 
   v26 = v10;
 
-  v11 = [v6 objectForKeyedSubscript:@"HotfixAssetVersion"];
+  v11 = [hotfixCopy objectForKeyedSubscript:@"HotfixAssetVersion"];
   if (v11)
   {
     objc_opt_class();
@@ -437,8 +437,8 @@ LABEL_32:
   v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", v26, v13];
   v15 = [hotfixBasePath URLByAppendingPathComponent:v14];
   v16 = [v15 URLByAppendingPathComponent:@"mt-quasar-config.json"];
-  v17 = [v16 path];
-  v18 = [v8 fileExistsAtPath:v17];
+  path = [v16 path];
+  v18 = [defaultManager fileExistsAtPath:path];
 
   if (v18)
   {
@@ -449,13 +449,13 @@ LABEL_32:
     block[3] = &unk_2789B6C00;
     block[4] = self;
     v33 = v15;
-    v34 = v25;
+    v34 = completionCopy;
     dispatch_async(queue, block);
   }
 
   else
   {
-    v20 = [v6 objectForKeyedSubscript:@"HotfixAssetName"];
+    v20 = [hotfixCopy objectForKeyedSubscript:@"HotfixAssetName"];
     if (v20)
     {
       objc_opt_class();
@@ -484,8 +484,8 @@ LABEL_32:
     v27[2] = __47___LTHotfixManager__downloadHotfix_completion___block_invoke_67;
     v27[3] = &unk_2789B6C50;
     objc_copyWeak(&v31, buf);
-    v30 = v25;
-    v28 = v8;
+    v30 = completionCopy;
+    v28 = defaultManager;
     v29 = v15;
     [(_LTHotfixManager *)self _downloadWithURL:v23 completion:v27];
 
@@ -496,11 +496,11 @@ LABEL_32:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_decompressArchive:(id)a3 to:(id)a4 error:(id *)a5
+- (void)_decompressArchive:(id)archive to:(id)to error:(id *)error
 {
   v36[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  archiveCopy = archive;
+  toCopy = to;
   archive_read_new();
   if (archive_read_support_filter_all())
   {
@@ -518,8 +518,8 @@ LABEL_32:
     v12 = v36;
     v13 = &v35;
 LABEL_15:
-    v18 = [v11 dictionaryWithObjects:v12 forKeys:v13 count:1];
-    *a5 = [v10 errorWithDomain:@"LTDHotfixManagerError" code:1 userInfo:v18];
+    path = [v11 dictionaryWithObjects:v12 forKeys:v13 count:1];
+    *error = [v10 errorWithDomain:@"LTDHotfixManagerError" code:1 userInfo:path];
     goto LABEL_16;
   }
 
@@ -549,8 +549,8 @@ LABEL_15:
     _os_log_impl(&dword_232E53000, v16, OS_LOG_TYPE_INFO, "Start extracting archive", buf, 2u);
   }
 
-  [v7 bytes];
-  [v7 length];
+  [archiveCopy bytes];
+  [archiveCopy length];
   if (archive_read_open_memory())
   {
     v17 = _LTOSLogHotfix();
@@ -569,7 +569,7 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v18 = [v8 path];
+  path = [toCopy path];
   if (archive_read_next_header())
   {
 LABEL_18:
@@ -578,7 +578,7 @@ LABEL_18:
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v30 = v8;
+      v30 = toCopy;
       _os_log_impl(&dword_232E53000, v20, OS_LOG_TYPE_INFO, "Finished extracting archive to: %{public}@", buf, 0xCu);
     }
   }
@@ -588,7 +588,7 @@ LABEL_18:
     while (1)
     {
       v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:archive_entry_pathname()];
-      v22 = [v18 stringByAppendingPathComponent:v21];
+      v22 = [path stringByAppendingPathComponent:v21];
 
       v23 = _LTOSLogHotfix();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
@@ -622,7 +622,7 @@ LABEL_18:
     v27 = *MEMORY[0x277CCA450];
     v28 = @"Unable to extract file";
     v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
-    *a5 = [v25 errorWithDomain:@"LTDHotfixManagerError" code:1 userInfo:v26];
+    *error = [v25 errorWithDomain:@"LTDHotfixManagerError" code:1 userInfo:v26];
   }
 
 LABEL_16:
@@ -630,12 +630,12 @@ LABEL_16:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_versionedHotfixDirectoryNameFromBasePath:(id)a3
+- (id)_versionedHotfixDirectoryNameFromBasePath:(id)path
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  pathCopy = path;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v10 = 0;
-  v5 = [v4 contentsOfDirectoryAtPath:v3 error:&v10];
+  v5 = [defaultManager contentsOfDirectoryAtPath:pathCopy error:&v10];
   v6 = v10;
 
   if (v6)
@@ -647,9 +647,9 @@ LABEL_16:
     }
   }
 
-  v8 = [v5 firstObject];
+  firstObject = [v5 firstObject];
 
-  return v8;
+  return firstObject;
 }
 
 - (void)setHotfixURL:(uint64_t)a3 .cold.1(void *a1, void *a2, uint64_t a3)

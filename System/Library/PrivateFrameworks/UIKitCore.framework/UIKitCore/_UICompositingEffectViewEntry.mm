@@ -1,35 +1,35 @@
 @interface _UICompositingEffectViewEntry
-- (BOOL)isSameTypeOfEffect:(id)a3;
+- (BOOL)isSameTypeOfEffect:(id)effect;
 - (id)description;
-- (void)addEffectToView:(id)a3;
-- (void)removeEffectFromView:(id)a3;
+- (void)addEffectToView:(id)view;
+- (void)removeEffectFromView:(id)view;
 @end
 
 @implementation _UICompositingEffectViewEntry
 
-- (void)addEffectToView:(id)a3
+- (void)addEffectToView:(id)view
 {
   filterType = self->_filterType;
-  v4 = [a3 layer];
-  [v4 setCompositingFilter:filterType];
+  layer = [view layer];
+  [layer setCompositingFilter:filterType];
 }
 
-- (void)removeEffectFromView:(id)a3
+- (void)removeEffectFromView:(id)view
 {
-  v3 = [a3 layer];
-  [v3 setCompositingFilter:0];
+  layer = [view layer];
+  [layer setCompositingFilter:0];
 }
 
-- (BOOL)isSameTypeOfEffect:(id)a3
+- (BOOL)isSameTypeOfEffect:(id)effect
 {
-  v4 = a3;
+  effectCopy = effect;
   v9.receiver = self;
   v9.super_class = _UICompositingEffectViewEntry;
-  if ([(_UIVisualEffectViewEntry *)&v9 isSameTypeOfEffect:v4])
+  if ([(_UIVisualEffectViewEntry *)&v9 isSameTypeOfEffect:effectCopy])
   {
     filterType = self->_filterType;
-    v6 = [v4 filterType];
-    v7 = [(NSString *)filterType isEqualToString:v6];
+    filterType = [effectCopy filterType];
+    v7 = [(NSString *)filterType isEqualToString:filterType];
   }
 
   else

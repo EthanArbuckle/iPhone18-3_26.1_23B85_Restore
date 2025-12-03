@@ -1,40 +1,40 @@
 @interface TUAudioFrequencyController
-+ (float)normalizedPowerLevelForPowerSpectrum:(id)a3;
-+ (float)rawPowerLevelForPowerSpectrum:(id)a3;
-+ (id)normalizedSpectrumForPowerSpectrum:(id)a3;
-- (TUAudioFrequencyController)initWithDelegate:(id)a3 queue:(id)a4 binCount:(int64_t)a5;
++ (float)normalizedPowerLevelForPowerSpectrum:(id)spectrum;
++ (float)rawPowerLevelForPowerSpectrum:(id)spectrum;
++ (id)normalizedSpectrumForPowerSpectrum:(id)spectrum;
+- (TUAudioFrequencyController)initWithDelegate:(id)delegate queue:(id)queue binCount:(int64_t)count;
 - (TUAudioFrequencyControllerDelegate)delegate;
-- (void)audioPowerSpectrumMeter:(id)a3 didUpdateAudioPowerSpectrums:(id)a4;
-- (void)meterServerDidDisconnect:(id)a3;
-- (void)registerCellularPowerSpectrum:(int64_t)a3;
-- (void)registerParticipantPowerSpectrum:(int64_t)a3;
-- (void)unregisterCellularPowerSpectrum:(int64_t)a3;
-- (void)unregisterParticipantPowerSpectrum:(int64_t)a3;
+- (void)audioPowerSpectrumMeter:(id)meter didUpdateAudioPowerSpectrums:(id)spectrums;
+- (void)meterServerDidDisconnect:(id)disconnect;
+- (void)registerCellularPowerSpectrum:(int64_t)spectrum;
+- (void)registerParticipantPowerSpectrum:(int64_t)spectrum;
+- (void)unregisterCellularPowerSpectrum:(int64_t)spectrum;
+- (void)unregisterParticipantPowerSpectrum:(int64_t)spectrum;
 @end
 
 @implementation TUAudioFrequencyController
 
-- (TUAudioFrequencyController)initWithDelegate:(id)a3 queue:(id)a4 binCount:(int64_t)a5
+- (TUAudioFrequencyController)initWithDelegate:(id)delegate queue:(id)queue binCount:(int64_t)count
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  countCopy = count;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v22.receiver = self;
   v22.super_class = TUAudioFrequencyController;
   v10 = [(TUAudioFrequencyController *)&v22 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_queue, a4);
-    objc_storeWeak(&v11->_delegate, v8);
+    objc_storeStrong(&v10->_queue, queue);
+    objc_storeWeak(&v11->_delegate, delegateCopy);
     v12 = objc_alloc(CUTWeakLinkClass());
-    v13 = [(TUAudioFrequencyController *)v11 queue];
+    queue = [(TUAudioFrequencyController *)v11 queue];
     v18 = 0;
     v17 = 0;
-    v19 = v5;
+    v19 = countCopy;
     v20 = 0;
     v21 = 0x3FB1111111111111;
-    v14 = [v12 initWithConfig:&v17 delegate:v11 queue:v13];
+    v14 = [v12 initWithConfig:&v17 delegate:v11 queue:queue];
     powerSpectrumMeter = v11->_powerSpectrumMeter;
     v11->_powerSpectrumMeter = v14;
   }
@@ -42,32 +42,32 @@
   return v11;
 }
 
-- (void)registerParticipantPowerSpectrum:(int64_t)a3
+- (void)registerParticipantPowerSpectrum:(int64_t)spectrum
 {
-  v4 = [(TUAudioFrequencyController *)self powerSpectrumMeter];
-  [v4 registerPowerSpectrumForStreamToken:a3];
+  powerSpectrumMeter = [(TUAudioFrequencyController *)self powerSpectrumMeter];
+  [powerSpectrumMeter registerPowerSpectrumForStreamToken:spectrum];
 }
 
-- (void)unregisterParticipantPowerSpectrum:(int64_t)a3
+- (void)unregisterParticipantPowerSpectrum:(int64_t)spectrum
 {
-  v4 = [(TUAudioFrequencyController *)self powerSpectrumMeter];
-  [v4 unregisterPowerSpectrumForStreamToken:a3];
+  powerSpectrumMeter = [(TUAudioFrequencyController *)self powerSpectrumMeter];
+  [powerSpectrumMeter unregisterPowerSpectrumForStreamToken:spectrum];
 }
 
-- (void)registerCellularPowerSpectrum:(int64_t)a3
+- (void)registerCellularPowerSpectrum:(int64_t)spectrum
 {
   v18 = *MEMORY[0x1E69E9840];
   v5 = [(TUAudioFrequencyController *)self _avcTapTypeForTUTapType:?];
-  v6 = [(TUAudioFrequencyController *)self powerSpectrumMeter];
+  powerSpectrumMeter = [(TUAudioFrequencyController *)self powerSpectrumMeter];
   v11 = 0;
-  v7 = [v6 registerPowerSpectrumForCellularTapType:v5 error:&v11];
+  v7 = [powerSpectrumMeter registerPowerSpectrumForCellularTapType:v5 error:&v11];
   v8 = v11;
 
   v9 = TUDefaultLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218498;
-    v13 = a3;
+    spectrumCopy = spectrum;
     v14 = 1024;
     v15 = v7;
     v16 = 2112;
@@ -78,20 +78,20 @@
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)unregisterCellularPowerSpectrum:(int64_t)a3
+- (void)unregisterCellularPowerSpectrum:(int64_t)spectrum
 {
   v18 = *MEMORY[0x1E69E9840];
   v5 = [(TUAudioFrequencyController *)self _avcTapTypeForTUTapType:?];
-  v6 = [(TUAudioFrequencyController *)self powerSpectrumMeter];
+  powerSpectrumMeter = [(TUAudioFrequencyController *)self powerSpectrumMeter];
   v11 = 0;
-  v7 = [v6 unregisterPowerSpectrumForCellularTapType:v5 error:&v11];
+  v7 = [powerSpectrumMeter unregisterPowerSpectrumForCellularTapType:v5 error:&v11];
   v8 = v11;
 
   v9 = TUDefaultLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218498;
-    v13 = a3;
+    spectrumCopy = spectrum;
     v14 = 1024;
     v15 = v7;
     v16 = 2112;
@@ -102,9 +102,9 @@
   v10 = *MEMORY[0x1E69E9840];
 }
 
-+ (float)normalizedPowerLevelForPowerSpectrum:(id)a3
++ (float)normalizedPowerLevelForPowerSpectrum:(id)spectrum
 {
-  [a1 rawPowerLevelForPowerSpectrum:a3];
+  [self rawPowerLevelForPowerSpectrum:spectrum];
   v4 = -40.0;
   if (v3 <= -40.0)
   {
@@ -118,31 +118,31 @@
   return (v4 + 90.0) / 50.0;
 }
 
-+ (float)rawPowerLevelForPowerSpectrum:(id)a3
++ (float)rawPowerLevelForPowerSpectrum:(id)spectrum
 {
-  v3 = [a3 channels];
-  v4 = [v3 firstObject];
-  v5 = [v4 bins];
-  v6 = [v5 firstObject];
-  [v6 powerLevel];
+  channels = [spectrum channels];
+  firstObject = [channels firstObject];
+  bins = [firstObject bins];
+  firstObject2 = [bins firstObject];
+  [firstObject2 powerLevel];
   v8 = v7;
 
   return v8;
 }
 
-+ (id)normalizedSpectrumForPowerSpectrum:(id)a3
++ (id)normalizedSpectrumForPowerSpectrum:(id)spectrum
 {
-  v3 = [a3 channels];
-  v4 = [v3 firstObject];
-  v5 = [v4 bins];
+  channels = [spectrum channels];
+  firstObject = [channels firstObject];
+  bins = [firstObject bins];
 
-  v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v5, "count")}];
-  if ([v5 count])
+  v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(bins, "count")}];
+  if ([bins count])
   {
     v7 = 0;
     do
     {
-      v8 = [v5 objectAtIndexedSubscript:v7];
+      v8 = [bins objectAtIndexedSubscript:v7];
       [v8 powerLevel];
       v10 = v9;
 
@@ -163,28 +163,28 @@
       ++v7;
     }
 
-    while (v7 < [v5 count]);
+    while (v7 < [bins count]);
   }
 
   return v6;
 }
 
-- (void)audioPowerSpectrumMeter:(id)a3 didUpdateAudioPowerSpectrums:(id)a4
+- (void)audioPowerSpectrumMeter:(id)meter didUpdateAudioPowerSpectrums:(id)spectrums
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(TUAudioFrequencyController *)self queue];
-  dispatch_assert_queue_V2(v6);
+  spectrumsCopy = spectrums;
+  queue = [(TUAudioFrequencyController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v7 = [(TUAudioFrequencyController *)self delegate];
-  if (v5 && (objc_opt_respondsToSelector() & 1) != 0)
+  delegate = [(TUAudioFrequencyController *)self delegate];
+  if (spectrumsCopy && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v29 = v5;
-    v8 = v5;
+    v29 = spectrumsCopy;
+    v8 = spectrumsCopy;
     v9 = [v8 countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v9)
     {
@@ -206,9 +206,9 @@
           [v13 normalizedPowerLevelForPowerSpectrum:v14];
           v16 = v15;
 
-          v17 = [v12 integerValue];
+          integerValue = [v12 integerValue];
           LODWORD(v18) = v16;
-          [v7 frequencyController:self audioPowerChanged:v17 forParticipantWithStreamToken:v18];
+          [delegate frequencyController:self audioPowerChanged:integerValue forParticipantWithStreamToken:v18];
           if (objc_opt_respondsToSelector())
           {
             v19 = objc_opt_class();
@@ -216,9 +216,9 @@
             [v19 rawPowerLevelForPowerSpectrum:v20];
             v22 = v21;
 
-            v23 = [v12 integerValue];
+            integerValue2 = [v12 integerValue];
             LODWORD(v24) = v22;
-            [v7 frequencyController:self rawValueForAudioPowerChanged:v23 forParticipantWithStreamToken:v24];
+            [delegate frequencyController:self rawValueForAudioPowerChanged:integerValue2 forParticipantWithStreamToken:v24];
           }
 
           if (objc_opt_respondsToSelector())
@@ -227,7 +227,7 @@
             v26 = [v8 objectForKeyedSubscript:v12];
             v27 = [v25 normalizedSpectrumForPowerSpectrum:v26];
 
-            [v7 frequencyController:self spectrumChanged:v27 forParticipantWithStreamToken:{objc_msgSend(v12, "integerValue")}];
+            [delegate frequencyController:self spectrumChanged:v27 forParticipantWithStreamToken:{objc_msgSend(v12, "integerValue")}];
           }
 
           ++v11;
@@ -240,22 +240,22 @@
       while (v10);
     }
 
-    v5 = v29;
+    spectrumsCopy = v29;
   }
 
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)meterServerDidDisconnect:(id)a3
+- (void)meterServerDidDisconnect:(id)disconnect
 {
-  v4 = a3;
-  v5 = [(TUAudioFrequencyController *)self queue];
-  dispatch_assert_queue_V2(v5);
+  disconnectCopy = disconnect;
+  queue = [(TUAudioFrequencyController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = TUDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    [(TUAudioFrequencyController *)v4 meterServerDidDisconnect:v6];
+    [(TUAudioFrequencyController *)disconnectCopy meterServerDidDisconnect:v6];
   }
 }
 

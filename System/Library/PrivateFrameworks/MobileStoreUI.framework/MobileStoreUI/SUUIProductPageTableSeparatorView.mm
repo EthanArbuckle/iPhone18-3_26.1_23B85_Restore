@@ -9,8 +9,8 @@
   [(SUUIProductPageTableSeparatorView *)self bounds];
   v4 = v3;
   v6 = v5;
-  v7 = [MEMORY[0x277D759A0] mainScreen];
-  [v7 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v9 = 1.0 / v8;
 
   v10 = v6 - v9;

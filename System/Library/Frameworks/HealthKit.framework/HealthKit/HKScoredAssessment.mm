@@ -1,22 +1,22 @@
 @interface HKScoredAssessment
-+ (id)assessmentWithDate:(id)a3 type:(id)a4 score:(int64_t)a5 metadata:(id)a6 config:(id)a7;
-- (BOOL)isEquivalent:(id)a3;
-- (HKScoredAssessment)initWithCoder:(id)a3;
++ (id)assessmentWithDate:(id)date type:(id)type score:(int64_t)score metadata:(id)metadata config:(id)config;
+- (BOOL)isEquivalent:(id)equivalent;
+- (HKScoredAssessment)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKScoredAssessment
 
-+ (id)assessmentWithDate:(id)a3 type:(id)a4 score:(int64_t)a5 metadata:(id)a6 config:(id)a7
++ (id)assessmentWithDate:(id)date type:(id)type score:(int64_t)score metadata:(id)metadata config:(id)config
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a4;
-  v15 = a3;
-  if ([v13 count])
+  configCopy = config;
+  metadataCopy = metadata;
+  typeCopy = type;
+  dateCopy = date;
+  if ([metadataCopy count])
   {
-    v16 = v13;
+    v16 = metadataCopy;
   }
 
   else
@@ -28,12 +28,12 @@
   v21[1] = 3221225472;
   v21[2] = __68__HKScoredAssessment_assessmentWithDate_type_score_metadata_config___block_invoke;
   v21[3] = &unk_1E73852B8;
-  v22 = v12;
-  v23 = a5;
-  v20.receiver = a1;
+  v22 = configCopy;
+  scoreCopy = score;
+  v20.receiver = self;
   v20.super_class = &OBJC_METACLASS___HKScoredAssessment;
-  v17 = v12;
-  v18 = objc_msgSendSuper2(&v20, sel__newSampleFromDatesWithType_startDate_endDate_device_metadata_config_, v14, v15, v15, 0, v16, v21);
+  v17 = configCopy;
+  v18 = objc_msgSendSuper2(&v20, sel__newSampleFromDatesWithType_startDate_endDate_device_metadata_config_, typeCopy, dateCopy, dateCopy, 0, v16, v21);
 
   return v18;
 }
@@ -50,14 +50,14 @@ uint64_t __68__HKScoredAssessment_assessmentWithDate_type_score_metadata_config_
   return result;
 }
 
-- (BOOL)isEquivalent:(id)a3
+- (BOOL)isEquivalent:(id)equivalent
 {
-  v4 = a3;
+  equivalentCopy = equivalent;
   v7.receiver = self;
   v7.super_class = HKScoredAssessment;
-  if ([(HKSample *)&v7 isEquivalent:v4])
+  if ([(HKSample *)&v7 isEquivalent:equivalentCopy])
   {
-    v5 = self->_score == v4[12];
+    v5 = self->_score == equivalentCopy[12];
   }
 
   else
@@ -72,31 +72,31 @@ uint64_t __68__HKScoredAssessment_assessmentWithDate_type_score_metadata_config_
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(HKSample *)self sampleType];
-  v6 = [(HKSample *)self startDate];
-  v7 = [v3 stringWithFormat:@"<%@:%p type: %@, date: %@, score: %ld>", v4, self, v5, v6, -[HKScoredAssessment score](self, "score")];
+  sampleType = [(HKSample *)self sampleType];
+  startDate = [(HKSample *)self startDate];
+  v7 = [v3 stringWithFormat:@"<%@:%p type: %@, date: %@, score: %ld>", v4, self, sampleType, startDate, -[HKScoredAssessment score](self, "score")];
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = HKScoredAssessment;
-  v4 = a3;
-  [(HKSample *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_score forKey:{@"Score", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(HKSample *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_score forKey:{@"Score", v5.receiver, v5.super_class}];
 }
 
-- (HKScoredAssessment)initWithCoder:(id)a3
+- (HKScoredAssessment)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = HKScoredAssessment;
-  v5 = [(HKSample *)&v7 initWithCoder:v4];
+  v5 = [(HKSample *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_score = [v4 decodeIntegerForKey:@"Score"];
+    v5->_score = [coderCopy decodeIntegerForKey:@"Score"];
   }
 
   return v5;

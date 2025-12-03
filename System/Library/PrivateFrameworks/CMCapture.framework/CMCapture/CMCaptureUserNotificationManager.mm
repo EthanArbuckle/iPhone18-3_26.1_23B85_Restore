@@ -8,14 +8,14 @@
 - (NSNumber)response;
 - (id)cancelNotification;
 - (id)showNotification;
-- (id)waitForResponseUntilTimeout:(double)a3;
-- (unint64_t)_beginNotification:(id)a3;
+- (id)waitForResponseUntilTimeout:(double)timeout;
+- (unint64_t)_beginNotification:(id)notification;
 - (unint64_t)flags;
 - (void)_endNotification;
-- (void)asyncResponse:(id)a3 block:(id)a4;
+- (void)asyncResponse:(id)response block:(id)block;
 - (void)dealloc;
-- (void)setNotificationFlags:(unint64_t)a3 andDictionary:(id)a4;
-- (void)setResponse:(id)a3;
+- (void)setNotificationFlags:(unint64_t)flags andDictionary:(id)dictionary;
+- (void)setResponse:(id)response;
 @end
 
 @implementation CMCaptureUserNotificationManager
@@ -96,15 +96,15 @@ id __58__CMCaptureUserNotificationManager_notificationDictionary__block_invoke(u
   return result;
 }
 
-- (void)setNotificationFlags:(unint64_t)a3 andDictionary:(id)a4
+- (void)setNotificationFlags:(unint64_t)flags andDictionary:(id)dictionary
 {
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __71__CMCaptureUserNotificationManager_setNotificationFlags_andDictionary___block_invoke;
   block[3] = &unk_1E798FE50;
-  block[5] = a4;
-  block[6] = a3;
+  block[5] = dictionary;
+  block[6] = flags;
   block[4] = self;
   dispatch_sync(queue, block);
 }
@@ -149,14 +149,14 @@ void *__71__CMCaptureUserNotificationManager_setNotificationFlags_andDictionary_
   return v3;
 }
 
-- (void)setResponse:(id)a3
+- (void)setResponse:(id)response
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __48__CMCaptureUserNotificationManager_setResponse___block_invoke;
   v4[3] = &unk_1E798F898;
-  v4[4] = a3;
+  v4[4] = response;
   v4[5] = self;
   dispatch_sync(queue, v4);
 }
@@ -182,46 +182,46 @@ void __48__CMCaptureUserNotificationManager_setResponse___block_invoke(uint64_t 
 
 - (BOOL)responseWasDefault
 {
-  v2 = [(CMCaptureUserNotificationManager *)self response];
-  if (v2)
+  response = [(CMCaptureUserNotificationManager *)self response];
+  if (response)
   {
-    LOBYTE(v2) = ([(NSNumber *)v2 unsignedLongValue]& 3) == 0;
+    LOBYTE(response) = ([(NSNumber *)response unsignedLongValue]& 3) == 0;
   }
 
-  return v2;
+  return response;
 }
 
 - (BOOL)responseWasAlternate
 {
-  v2 = [(CMCaptureUserNotificationManager *)self response];
-  if (v2)
+  response = [(CMCaptureUserNotificationManager *)self response];
+  if (response)
   {
-    LOBYTE(v2) = ([(NSNumber *)v2 unsignedLongValue]& 3) == 1;
+    LOBYTE(response) = ([(NSNumber *)response unsignedLongValue]& 3) == 1;
   }
 
-  return v2;
+  return response;
 }
 
 - (BOOL)responseWasOther
 {
-  v2 = [(CMCaptureUserNotificationManager *)self response];
-  if (v2)
+  response = [(CMCaptureUserNotificationManager *)self response];
+  if (response)
   {
-    LOBYTE(v2) = ([(NSNumber *)v2 unsignedLongValue]& 3) == 2;
+    LOBYTE(response) = ([(NSNumber *)response unsignedLongValue]& 3) == 2;
   }
 
-  return v2;
+  return response;
 }
 
 - (BOOL)responseWasCancelled
 {
-  v2 = [(CMCaptureUserNotificationManager *)self response];
-  if (v2)
+  response = [(CMCaptureUserNotificationManager *)self response];
+  if (response)
   {
-    LOBYTE(v2) = (~[(NSNumber *)v2 unsignedLongValue]& 3) == 0;
+    LOBYTE(response) = (~[(NSNumber *)response unsignedLongValue]& 3) == 0;
   }
 
-  return v2;
+  return response;
 }
 
 - (id)showNotification
@@ -338,16 +338,16 @@ id __54__CMCaptureUserNotificationManager_cancelNotification__block_invoke(uint6
   return result;
 }
 
-- (id)waitForResponseUntilTimeout:(double)a3
+- (id)waitForResponseUntilTimeout:(double)timeout
 {
-  if (a3 == 0.0)
+  if (timeout == 0.0)
   {
     v4 = -1;
   }
 
   else
   {
-    v4 = dispatch_time(0, (a3 * 1000000000.0));
+    v4 = dispatch_time(0, (timeout * 1000000000.0));
   }
 
   dispatch_group_wait(self->_responseGroup, v4);
@@ -355,7 +355,7 @@ id __54__CMCaptureUserNotificationManager_cancelNotification__block_invoke(uint6
   return [(CMCaptureUserNotificationManager *)self response];
 }
 
-- (void)asyncResponse:(id)a3 block:(id)a4
+- (void)asyncResponse:(id)response block:(id)block
 {
   queue = self->_queue;
   responseGroup = self->_responseGroup;
@@ -364,8 +364,8 @@ id __54__CMCaptureUserNotificationManager_cancelNotification__block_invoke(uint6
   block[2] = __56__CMCaptureUserNotificationManager_asyncResponse_block___block_invoke;
   block[3] = &unk_1E7998200;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = response;
+  block[6] = block;
   dispatch_group_notify(responseGroup, queue, block);
 }
 
@@ -389,11 +389,11 @@ void __56__CMCaptureUserNotificationManager_asyncResponse_block___block_invoke_2
   v2 = *(a1 + 32);
 }
 
-- (unint64_t)_beginNotification:(id)a3
+- (unint64_t)_beginNotification:(id)notification
 {
-  if (a3 && !self->_notification)
+  if (notification && !self->_notification)
   {
-    self->_notification = a3;
+    self->_notification = notification;
     dispatch_group_enter(self->_responseGroup);
   }
 

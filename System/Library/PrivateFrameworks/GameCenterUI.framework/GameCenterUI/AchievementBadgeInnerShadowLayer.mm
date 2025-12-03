@@ -1,11 +1,11 @@
 @interface AchievementBadgeInnerShadowLayer
-- (_TtC12GameCenterUI32AchievementBadgeInnerShadowLayer)initWithLayer:(id)a3;
-- (void)drawInContext:(CGContext *)a3;
+- (_TtC12GameCenterUI32AchievementBadgeInnerShadowLayer)initWithLayer:(id)layer;
+- (void)drawInContext:(CGContext *)context;
 @end
 
 @implementation AchievementBadgeInnerShadowLayer
 
-- (_TtC12GameCenterUI32AchievementBadgeInnerShadowLayer)initWithLayer:(id)a3
+- (_TtC12GameCenterUI32AchievementBadgeInnerShadowLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_24E3487A8();
@@ -13,11 +13,11 @@
   return sub_24DFC39B4(v4);
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
-  v4 = a3;
-  v5 = self;
-  sub_24DFC3B00(v4);
+  contextCopy = context;
+  selfCopy = self;
+  sub_24DFC3B00(contextCopy);
 }
 
 @end

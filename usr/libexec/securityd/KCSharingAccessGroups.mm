@@ -1,18 +1,18 @@
 @interface KCSharingAccessGroups
-- (BOOL)isEqual:(id)a3;
-- (BOOL)recordHasKnownFields:(id)a3;
-- (BOOL)recordIsFullyDecoded:(id)a3;
-- (BOOL)recordTypeIsKnown:(id)a3;
-- (BOOL)remoteItemProtoIsFullyDecoded:(id)a3;
-- (KCSharingAccessGroups)initWithEntryAccessGroup:(id)a3 entrySchemaVersion:(int64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)recordHasKnownFields:(id)fields;
+- (BOOL)recordIsFullyDecoded:(id)decoded;
+- (BOOL)recordTypeIsKnown:(id)known;
+- (BOOL)remoteItemProtoIsFullyDecoded:(id)decoded;
+- (KCSharingAccessGroups)initWithEntryAccessGroup:(id)group entrySchemaVersion:(int64_t)version;
 - (unint64_t)hash;
 @end
 
 @implementation KCSharingAccessGroups
 
-- (BOOL)remoteItemProtoIsFullyDecoded:(id)a3
+- (BOOL)remoteItemProtoIsFullyDecoded:(id)decoded
 {
-  v4 = a3;
+  decodedCopy = decoded;
   if ([(KCSharingAccessGroups *)self entrySchemaVersion]< 1)
   {
     v6 = 0;
@@ -20,26 +20,26 @@
 
   else
   {
-    v5 = [v4 unknownFields];
-    if (v5)
+    unknownFields = [decodedCopy unknownFields];
+    if (unknownFields)
     {
       v6 = 0;
     }
 
     else
     {
-      v7 = [v4 privateKey];
-      v8 = [v7 unknownFields];
-      if (v8)
+      privateKey = [decodedCopy privateKey];
+      unknownFields2 = [privateKey unknownFields];
+      if (unknownFields2)
       {
         v6 = 0;
       }
 
       else
       {
-        v9 = [v4 internetPassword];
-        v10 = [v9 unknownFields];
-        v6 = v10 == 0;
+        internetPassword = [decodedCopy internetPassword];
+        unknownFields3 = [internetPassword unknownFields];
+        v6 = unknownFields3 == 0;
       }
     }
   }
@@ -47,13 +47,13 @@
   return v6;
 }
 
-- (BOOL)recordIsFullyDecoded:(id)a3
+- (BOOL)recordIsFullyDecoded:(id)decoded
 {
-  v4 = a3;
-  v5 = [v4 recordType];
-  if ([(KCSharingAccessGroups *)self recordTypeIsKnown:v5])
+  decodedCopy = decoded;
+  recordType = [decodedCopy recordType];
+  if ([(KCSharingAccessGroups *)self recordTypeIsKnown:recordType])
   {
-    v6 = [(KCSharingAccessGroups *)self recordHasKnownFields:v4];
+    v6 = [(KCSharingAccessGroups *)self recordHasKnownFields:decodedCopy];
   }
 
   else
@@ -64,11 +64,11 @@
   return v6;
 }
 
-- (BOOL)recordHasKnownFields:(id)a3
+- (BOOL)recordHasKnownFields:(id)fields
 {
-  v4 = a3;
-  v5 = [v4 allKeys];
-  v6 = [NSMutableSet setWithArray:v5];
+  fieldsCopy = fields;
+  allKeys = [fieldsCopy allKeys];
+  v6 = [NSMutableSet setWithArray:allKeys];
 
   if ([(KCSharingAccessGroups *)self entrySchemaVersion]>= 1)
   {
@@ -77,8 +77,8 @@
       dispatch_once(&qword_10039DB58, &stru_100333C88);
     }
 
-    v7 = [v4 recordType];
-    v8 = [v7 isEqual:@"item"];
+    recordType = [fieldsCopy recordType];
+    v8 = [recordType isEqual:@"item"];
 
     if (v8)
     {
@@ -87,8 +87,8 @@
 
     else
     {
-      v9 = [v4 recordType];
-      v10 = [v9 isEqual:CKRecordTypeShare];
+      recordType2 = [fieldsCopy recordType];
+      v10 = [recordType2 isEqual:CKRecordTypeShare];
 
       if (v10)
       {
@@ -102,44 +102,44 @@
   return v11;
 }
 
-- (BOOL)recordTypeIsKnown:(id)a3
+- (BOOL)recordTypeIsKnown:(id)known
 {
-  v4 = a3;
+  knownCopy = known;
   if ([(KCSharingAccessGroups *)self entrySchemaVersion]< 1)
   {
     v5 = 0;
   }
 
-  else if ([v4 isEqual:@"item"])
+  else if ([knownCopy isEqual:@"item"])
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [v4 isEqual:CKRecordTypeShare];
+    v5 = [knownCopy isEqual:CKRecordTypeShare];
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
 
-  else if ([(KCSharingAccessGroups *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(KCSharingAccessGroups *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(KCSharingAccessGroups *)self entryAccessGroup];
-    v7 = [(KCSharingAccessGroups *)v5 entryAccessGroup];
-    if ([v6 isEqualToString:v7])
+    v5 = equalCopy;
+    entryAccessGroup = [(KCSharingAccessGroups *)self entryAccessGroup];
+    entryAccessGroup2 = [(KCSharingAccessGroups *)v5 entryAccessGroup];
+    if ([entryAccessGroup isEqualToString:entryAccessGroup2])
     {
-      v8 = [(KCSharingAccessGroups *)self entrySchemaVersion];
-      v9 = v8 == [(KCSharingAccessGroups *)v5 entrySchemaVersion];
+      entrySchemaVersion = [(KCSharingAccessGroups *)self entrySchemaVersion];
+      v9 = entrySchemaVersion == [(KCSharingAccessGroups *)v5 entrySchemaVersion];
     }
 
     else
@@ -158,25 +158,25 @@
 
 - (unint64_t)hash
 {
-  v3 = [(KCSharingAccessGroups *)self entryAccessGroup];
-  v4 = [v3 hash];
+  entryAccessGroup = [(KCSharingAccessGroups *)self entryAccessGroup];
+  v4 = [entryAccessGroup hash];
 
   return [(KCSharingAccessGroups *)self entrySchemaVersion]- v4 + 32 * v4;
 }
 
-- (KCSharingAccessGroups)initWithEntryAccessGroup:(id)a3 entrySchemaVersion:(int64_t)a4
+- (KCSharingAccessGroups)initWithEntryAccessGroup:(id)group entrySchemaVersion:(int64_t)version
 {
-  v6 = a3;
+  groupCopy = group;
   v11.receiver = self;
   v11.super_class = KCSharingAccessGroups;
   v7 = [(KCSharingAccessGroups *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [groupCopy copy];
     entryAccessGroup = v7->_entryAccessGroup;
     v7->_entryAccessGroup = v8;
 
-    v7->_entrySchemaVersion = a4;
+    v7->_entrySchemaVersion = version;
   }
 
   return v7;

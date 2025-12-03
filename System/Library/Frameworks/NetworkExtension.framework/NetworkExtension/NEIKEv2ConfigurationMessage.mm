@@ -1,13 +1,13 @@
 @interface NEIKEv2ConfigurationMessage
-- (NEIKEv2ConfigurationMessage)initWithWithAttributes:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NEIKEv2ConfigurationMessage)initWithWithAttributes:(id)attributes;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation NEIKEv2ConfigurationMessage
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (self)
   {
@@ -48,16 +48,16 @@ LABEL_4:
   return v5;
 }
 
-- (NEIKEv2ConfigurationMessage)initWithWithAttributes:(id)a3
+- (NEIKEv2ConfigurationMessage)initWithWithAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v12.receiver = self;
   v12.super_class = NEIKEv2ConfigurationMessage;
   v5 = [(NEIKEv2ConfigurationMessage *)&v12 init];
   v7 = v5;
   if (v5)
   {
-    objc_setProperty_atomic(v5, v6, v4, 16);
+    objc_setProperty_atomic(v5, v6, attributesCopy, 16);
     v8 = v7;
   }
 

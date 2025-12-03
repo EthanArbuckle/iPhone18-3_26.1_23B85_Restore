@@ -1,11 +1,11 @@
 @interface PXUbiquitousKeyValueStoreValueAccessor
 + (id)_defaultQueue;
 - (PXUbiquitousKeyValueStoreValueAccessor)init;
-- (PXUbiquitousKeyValueStoreValueAccessor)initWithUbiquitousKeyValueStore:(id)a3 key:(id)a4 defaultValueFuture:(id)a5 valueFilter:(id)a6 changeHandler:(id)a7;
-- (id)_currentValueLoadIfNeeded:(BOOL)a3;
+- (PXUbiquitousKeyValueStoreValueAccessor)initWithUbiquitousKeyValueStore:(id)store key:(id)key defaultValueFuture:(id)future valueFilter:(id)filter changeHandler:(id)handler;
+- (id)_currentValueLoadIfNeeded:(BOOL)needed;
 - (id)description;
-- (void)_keyValueStoreDidChangeExternally:(id)a3;
-- (void)_setCurrentValue:(id)a3 updateUbiquitousKeyValueStore:(BOOL)a4 notifyChange:(BOOL)a5;
+- (void)_keyValueStoreDidChangeExternally:(id)externally;
+- (void)_setCurrentValue:(id)value updateUbiquitousKeyValueStore:(BOOL)store notifyChange:(BOOL)change;
 - (void)_storeQueue_handleLoadValueAsync;
 - (void)loadValueAsyncIfNeeded;
 @end
@@ -30,7 +30,7 @@ void __55__PXUbiquitousKeyValueStoreValueAccessor__defaultQueue__block_invoke(ui
   block[1] = 3221225472;
   block[2] = __55__PXUbiquitousKeyValueStoreValueAccessor__defaultQueue__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_defaultQueue_onceToken != -1)
   {
     dispatch_once(&_defaultQueue_onceToken, block);
@@ -43,18 +43,18 @@ void __55__PXUbiquitousKeyValueStoreValueAccessor__defaultQueue__block_invoke(ui
 
 - (void)loadValueAsyncIfNeeded
 {
-  v3 = [(PXUbiquitousKeyValueStoreValueAccessor *)self currentValueIfLoaded];
+  currentValueIfLoaded = [(PXUbiquitousKeyValueStoreValueAccessor *)self currentValueIfLoaded];
 
-  if (!v3)
+  if (!currentValueIfLoaded)
   {
-    v4 = self;
-    v5 = [(PXUbiquitousKeyValueStoreValueAccessor *)v4 storeQueue];
+    selfCopy = self;
+    storeQueue = [(PXUbiquitousKeyValueStoreValueAccessor *)selfCopy storeQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __64__PXUbiquitousKeyValueStoreValueAccessor_loadValueAsyncIfNeeded__block_invoke;
     block[3] = &unk_1E774C648;
-    block[4] = v4;
-    dispatch_async(v5, block);
+    block[4] = selfCopy;
+    dispatch_async(storeQueue, block);
   }
 }
 
@@ -88,16 +88,16 @@ void __74__PXUbiquitousKeyValueStoreValueAccessor__storeQueue_handleLoadValueAsy
   return v7;
 }
 
-- (void)_keyValueStoreDidChangeExternally:(id)a3
+- (void)_keyValueStoreDidChangeExternally:(id)externally
 {
-  v4 = [a3 userInfo];
-  v8 = [v4 objectForKeyedSubscript:*MEMORY[0x1E696A9E0]];
+  userInfo = [externally userInfo];
+  v8 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696A9E0]];
 
   v5 = [(PXUbiquitousKeyValueStoreValueAccessor *)self key];
   if ([v8 containsObject:v5])
   {
-    v6 = [(PXUbiquitousKeyValueStoreValueAccessor *)self ubiquitousKeyValueStore];
-    v7 = [v6 objectForKey:v5];
+    ubiquitousKeyValueStore = [(PXUbiquitousKeyValueStoreValueAccessor *)self ubiquitousKeyValueStore];
+    v7 = [ubiquitousKeyValueStore objectForKey:v5];
     if (v7)
     {
       [(PXUbiquitousKeyValueStoreValueAccessor *)self _setCurrentValue:v7 updateUbiquitousKeyValueStore:0 notifyChange:1];
@@ -105,50 +105,50 @@ void __74__PXUbiquitousKeyValueStoreValueAccessor__storeQueue_handleLoadValueAsy
 
     else
     {
-      NSLog(&cfstr_UnexpectedlyRe_0.isa, v6, v5);
+      NSLog(&cfstr_UnexpectedlyRe_0.isa, ubiquitousKeyValueStore, v5);
     }
   }
 }
 
-- (void)_setCurrentValue:(id)a3 updateUbiquitousKeyValueStore:(BOOL)a4 notifyChange:(BOOL)a5
+- (void)_setCurrentValue:(id)value updateUbiquitousKeyValueStore:(BOOL)store notifyChange:(BOOL)change
 {
-  v5 = a5;
-  v6 = a4;
-  v9 = a3;
-  if (!v9)
+  changeCopy = change;
+  storeCopy = store;
+  valueCopy = value;
+  if (!valueCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PXUbiquitousKeyValueStoreValueAccessor.m" lineNumber:111 description:{@"Invalid parameter not satisfying: %@", @"currentValue != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXUbiquitousKeyValueStoreValueAccessor.m" lineNumber:111 description:{@"Invalid parameter not satisfying: %@", @"currentValue != nil"}];
   }
 
-  v10 = self;
-  objc_sync_enter(v10);
-  v11 = [(PXUbiquitousKeyValueStoreValueAccessor *)v10 cachedValue];
-  if (v11 && !(*(v10->_valueFilter + 2))())
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cachedValue = [(PXUbiquitousKeyValueStoreValueAccessor *)selfCopy cachedValue];
+  if (cachedValue && !(*(selfCopy->_valueFilter + 2))())
   {
 
-    objc_sync_exit(v10);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    [(PXUbiquitousKeyValueStoreValueAccessor *)v10 setCachedValue:v9];
-    if (v6)
+    [(PXUbiquitousKeyValueStoreValueAccessor *)selfCopy setCachedValue:valueCopy];
+    if (storeCopy)
     {
-      v12 = [(PXUbiquitousKeyValueStoreValueAccessor *)v10 storeQueue];
+      storeQueue = [(PXUbiquitousKeyValueStoreValueAccessor *)selfCopy storeQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __102__PXUbiquitousKeyValueStoreValueAccessor__setCurrentValue_updateUbiquitousKeyValueStore_notifyChange___block_invoke;
       block[3] = &unk_1E774C620;
-      block[4] = v10;
-      v15 = v9;
-      dispatch_async(v12, block);
+      block[4] = selfCopy;
+      v15 = valueCopy;
+      dispatch_async(storeQueue, block);
     }
 
-    objc_sync_exit(v10);
-    if (v5)
+    objc_sync_exit(selfCopy);
+    if (changeCopy)
     {
-      v9;
+      valueCopy;
       px_dispatch_on_main_queue();
     }
   }
@@ -162,85 +162,85 @@ void __102__PXUbiquitousKeyValueStoreValueAccessor__setCurrentValue_updateUbiqui
   [v4 setObject:v2 forKey:v3];
 }
 
-- (id)_currentValueLoadIfNeeded:(BOOL)a3
+- (id)_currentValueLoadIfNeeded:(BOOL)needed
 {
-  v3 = a3;
-  v6 = [(PXUbiquitousKeyValueStoreValueAccessor *)self cachedValue];
-  if (!v6 && v3)
+  neededCopy = needed;
+  cachedValue = [(PXUbiquitousKeyValueStoreValueAccessor *)self cachedValue];
+  if (!cachedValue && neededCopy)
   {
-    v7 = self;
-    objc_sync_enter(v7);
-    v8 = [(PXUbiquitousKeyValueStoreValueAccessor *)v7 cachedValue];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    cachedValue2 = [(PXUbiquitousKeyValueStoreValueAccessor *)selfCopy cachedValue];
 
-    if (!v8)
+    if (!cachedValue2)
     {
-      v9 = [(PXUbiquitousKeyValueStoreValueAccessor *)v7 ubiquitousKeyValueStore];
-      v10 = [(PXUbiquitousKeyValueStoreValueAccessor *)v7 key];
-      v11 = [v9 objectForKey:v10];
-      [(PXUbiquitousKeyValueStoreValueAccessor *)v7 setCachedValue:v11];
+      ubiquitousKeyValueStore = [(PXUbiquitousKeyValueStoreValueAccessor *)selfCopy ubiquitousKeyValueStore];
+      v10 = [(PXUbiquitousKeyValueStoreValueAccessor *)selfCopy key];
+      v11 = [ubiquitousKeyValueStore objectForKey:v10];
+      [(PXUbiquitousKeyValueStoreValueAccessor *)selfCopy setCachedValue:v11];
 
-      v12 = [(PXUbiquitousKeyValueStoreValueAccessor *)v7 cachedValue];
+      cachedValue3 = [(PXUbiquitousKeyValueStoreValueAccessor *)selfCopy cachedValue];
 
-      if (!v12)
+      if (!cachedValue3)
       {
-        v13 = (*(v7->_defaultValueFuture + 2))();
-        [(PXUbiquitousKeyValueStoreValueAccessor *)v7 _setCurrentValue:v13 updateUbiquitousKeyValueStore:1 notifyChange:0];
-        defaultValueFuture = v7->_defaultValueFuture;
-        v7->_defaultValueFuture = 0;
+        v13 = (*(selfCopy->_defaultValueFuture + 2))();
+        [(PXUbiquitousKeyValueStoreValueAccessor *)selfCopy _setCurrentValue:v13 updateUbiquitousKeyValueStore:1 notifyChange:0];
+        defaultValueFuture = selfCopy->_defaultValueFuture;
+        selfCopy->_defaultValueFuture = 0;
       }
 
-      v15 = [(PXUbiquitousKeyValueStoreValueAccessor *)v7 cachedValue];
+      cachedValue4 = [(PXUbiquitousKeyValueStoreValueAccessor *)selfCopy cachedValue];
 
-      if (!v15)
+      if (!cachedValue4)
       {
-        v17 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v17 handleFailureInMethod:a2 object:v7 file:@"PXUbiquitousKeyValueStoreValueAccessor.m" lineNumber:97 description:{@"Invalid parameter not satisfying: %@", @"self.cachedValue != nil"}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"PXUbiquitousKeyValueStoreValueAccessor.m" lineNumber:97 description:{@"Invalid parameter not satisfying: %@", @"self.cachedValue != nil"}];
       }
     }
 
-    v6 = [(PXUbiquitousKeyValueStoreValueAccessor *)v7 cachedValue];
-    objc_sync_exit(v7);
+    cachedValue = [(PXUbiquitousKeyValueStoreValueAccessor *)selfCopy cachedValue];
+    objc_sync_exit(selfCopy);
   }
 
-  return v6;
+  return cachedValue;
 }
 
-- (PXUbiquitousKeyValueStoreValueAccessor)initWithUbiquitousKeyValueStore:(id)a3 key:(id)a4 defaultValueFuture:(id)a5 valueFilter:(id)a6 changeHandler:(id)a7
+- (PXUbiquitousKeyValueStoreValueAccessor)initWithUbiquitousKeyValueStore:(id)store key:(id)key defaultValueFuture:(id)future valueFilter:(id)filter changeHandler:(id)handler
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  storeCopy = store;
+  keyCopy = key;
+  futureCopy = future;
+  filterCopy = filter;
+  handlerCopy = handler;
   v32.receiver = self;
   v32.super_class = PXUbiquitousKeyValueStoreValueAccessor;
   v18 = [(PXUbiquitousKeyValueStoreValueAccessor *)&v32 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_ubiquitousKeyValueStore, a3);
-    v20 = [v14 copy];
+    objc_storeStrong(&v18->_ubiquitousKeyValueStore, store);
+    v20 = [keyCopy copy];
     key = v19->_key;
     v19->_key = v20;
 
-    v22 = [v15 copy];
+    v22 = [futureCopy copy];
     defaultValueFuture = v19->_defaultValueFuture;
     v19->_defaultValueFuture = v22;
 
-    v24 = [v16 copy];
+    v24 = [filterCopy copy];
     valueFilter = v19->_valueFilter;
     v19->_valueFilter = v24;
 
-    v26 = [v17 copy];
+    v26 = [handlerCopy copy];
     changeHandler = v19->_changeHandler;
     v19->_changeHandler = v26;
 
-    v28 = [objc_opt_class() _defaultQueue];
+    _defaultQueue = [objc_opt_class() _defaultQueue];
     storeQueue = v19->_storeQueue;
-    v19->_storeQueue = v28;
+    v19->_storeQueue = _defaultQueue;
 
-    v30 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v30 addObserver:v19 selector:sel__keyValueStoreDidChangeExternally_ name:*MEMORY[0x1E696A9E8] object:v19->_ubiquitousKeyValueStore];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v19 selector:sel__keyValueStoreDidChangeExternally_ name:*MEMORY[0x1E696A9E8] object:v19->_ubiquitousKeyValueStore];
   }
 
   return v19;
@@ -248,8 +248,8 @@ void __102__PXUbiquitousKeyValueStoreValueAccessor__setCurrentValue_updateUbiqui
 
 - (PXUbiquitousKeyValueStoreValueAccessor)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXUbiquitousKeyValueStoreValueAccessor.m" lineNumber:26 description:{@"%s is not available as initializer", "-[PXUbiquitousKeyValueStoreValueAccessor init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXUbiquitousKeyValueStoreValueAccessor.m" lineNumber:26 description:{@"%s is not available as initializer", "-[PXUbiquitousKeyValueStoreValueAccessor init]"}];
 
   abort();
 }

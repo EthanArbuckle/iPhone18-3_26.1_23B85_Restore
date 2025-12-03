@@ -1,33 +1,33 @@
 @interface NESMURLFilterSession
-- (BOOL)handleAgentClientConnection:(id)a3 WithMessage:(id)a4;
+- (BOOL)handleAgentClientConnection:(id)connection WithMessage:(id)message;
 - (BOOL)handleSleep;
-- (BOOL)handleUpdateConfiguration:(id)a3;
-- (BOOL)hasProviderWithBundleIdentifier:(id)a3;
-- (BOOL)isStopAllowed:(id)a3;
-- (BOOL)pluginDidRequestUpdatePrefilter:(id)a3;
-- (NESMURLFilterSession)initWithConfiguration:(id)a3 andServer:(id)a4;
+- (BOOL)handleUpdateConfiguration:(id)configuration;
+- (BOOL)hasProviderWithBundleIdentifier:(id)identifier;
+- (BOOL)isStopAllowed:(id)allowed;
+- (BOOL)pluginDidRequestUpdatePrefilter:(id)prefilter;
+- (NESMURLFilterSession)initWithConfiguration:(id)configuration andServer:(id)server;
 - (id)copyExtendedStatus;
 - (id)pluginType;
-- (void)handleFetchServerParamsMessage:(id)a3;
-- (void)handleGetInfoMessage:(id)a3 withType:(int)a4;
+- (void)handleFetchServerParamsMessage:(id)message;
+- (void)handleGetInfoMessage:(id)message withType:(int)type;
 - (void)handleInstalledAppsChanged;
-- (void)handleNetworkDetectionNotification:(int)a3;
-- (void)handleResetCacheMessage:(id)a3;
-- (void)handleStartMessage:(id)a3;
+- (void)handleNetworkDetectionNotification:(int)notification;
+- (void)handleResetCacheMessage:(id)message;
+- (void)handleStartMessage:(id)message;
 - (void)handleUserLogin;
 - (void)handleWakeup;
 - (void)invalidate;
-- (void)plugin:(id)a3 didSetStatus:(int64_t)a4 andError:(int64_t)a5;
-- (void)plugin:(id)a3 didStartWithPID:(int)a4 error:(id)a5;
-- (void)pluginDidAcknowledgeSleep:(id)a3;
-- (void)pluginDidDispose:(id)a3;
-- (void)pluginDidRequestAgentClientServer:(id)a3;
+- (void)plugin:(id)plugin didSetStatus:(int64_t)status andError:(int64_t)error;
+- (void)plugin:(id)plugin didStartWithPID:(int)d error:(id)error;
+- (void)pluginDidAcknowledgeSleep:(id)sleep;
+- (void)pluginDidDispose:(id)dispose;
+- (void)pluginDidRequestAgentClientServer:(id)server;
 - (void)uninstall;
 @end
 
 @implementation NESMURLFilterSession
 
-- (void)handleResetCacheMessage:(id)a3
+- (void)handleResetCacheMessage:(id)message
 {
   v4 = ne_log_obj();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -55,7 +55,7 @@
   }
 }
 
-- (void)handleFetchServerParamsMessage:(id)a3
+- (void)handleFetchServerParamsMessage:(id)message
 {
   v4 = ne_log_obj();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -83,16 +83,16 @@
   }
 }
 
-- (void)handleGetInfoMessage:(id)a3 withType:(int)a4
+- (void)handleGetInfoMessage:(id)message withType:(int)type
 {
-  xdict = a3;
+  xdict = message;
   reply = xpc_dictionary_create_reply(xdict);
-  if (a4 == 2)
+  if (type == 2)
   {
-    v7 = [(NESMURLFilterSession *)self copyExtendedStatus];
-    if (v7)
+    copyExtendedStatus = [(NESMURLFilterSession *)self copyExtendedStatus];
+    if (copyExtendedStatus)
     {
-      v8 = v7;
+      v8 = copyExtendedStatus;
       v9 = _CFXPCCreateXPCObjectFromCFObject();
       xpc_dictionary_set_value(reply, "SessionInfo", v9);
     }
@@ -107,8 +107,8 @@
   v3 = [NSMutableDictionary alloc];
   v18.receiver = self;
   v18.super_class = NESMURLFilterSession;
-  v4 = [(NESMSession *)&v18 copyExtendedStatus];
-  v5 = [v3 initWithDictionary:v4];
+  copyExtendedStatus = [(NESMSession *)&v18 copyExtendedStatus];
+  v5 = [v3 initWithDictionary:copyExtendedStatus];
 
   if (self)
   {
@@ -129,11 +129,11 @@
   v9 = [NSNumber numberWithInt:[(NESMSession *)self SCNCStatus]];
   [v5 setObject:v9 forKeyedSubscript:@"Status"];
 
-  v10 = [(NESMSession *)self lastDisconnectError];
-  if (v10)
+  lastDisconnectError = [(NESMSession *)self lastDisconnectError];
+  if (lastDisconnectError)
   {
     v17 = 0;
-    v11 = [NSKeyedArchiver archivedDataWithRootObject:v10 requiringSecureCoding:1 error:&v17];
+    v11 = [NSKeyedArchiver archivedDataWithRootObject:lastDisconnectError requiringSecureCoding:1 error:&v17];
     v12 = v17;
     if (v11)
     {
@@ -152,20 +152,20 @@
     }
   }
 
-  v14 = [(NESMSession *)self lastStatusChangeTime];
+  lastStatusChangeTime = [(NESMSession *)self lastStatusChangeTime];
 
-  if (v14)
+  if (lastStatusChangeTime)
   {
-    v15 = [(NESMSession *)self lastStatusChangeTime];
-    [v5 setObject:v15 forKeyedSubscript:@"LastStatusChangeTime"];
+    lastStatusChangeTime2 = [(NESMSession *)self lastStatusChangeTime];
+    [v5 setObject:lastStatusChangeTime2 forKeyedSubscript:@"LastStatusChangeTime"];
   }
 
   return v5;
 }
 
-- (BOOL)isStopAllowed:(id)a3
+- (BOOL)isStopAllowed:(id)allowed
 {
-  v3 = xpc_dictionary_get_remote_connection(a3);
+  v3 = xpc_dictionary_get_remote_connection(allowed);
   if (v3)
   {
     v4 = xpc_connection_copy_entitlement_value();
@@ -182,13 +182,13 @@
 
 - (void)handleUserLogin
 {
-  v3 = [(NESMSession *)self queue];
+  queue = [(NESMSession *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10006BCA4;
   block[3] = &unk_1000EB1C0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)invalidate
@@ -203,56 +203,56 @@
 
 - (id)pluginType
 {
-  v2 = [(NESMSession *)self configuration];
-  v3 = [v2 urlFilter];
-  v4 = [v3 appBundleIdentifier];
+  configuration = [(NESMSession *)self configuration];
+  urlFilter = [configuration urlFilter];
+  appBundleIdentifier = [urlFilter appBundleIdentifier];
 
-  return v4;
+  return appBundleIdentifier;
 }
 
-- (BOOL)handleUpdateConfiguration:(id)a3
+- (BOOL)handleUpdateConfiguration:(id)configuration
 {
-  v4 = a3;
-  if (!v4)
+  configurationCopy = configuration;
+  if (!configurationCopy)
   {
     [(NESMSession *)self setConfiguration:0];
     [(NESMSession *)self setConfigurationSignature:0];
     goto LABEL_14;
   }
 
-  v5 = [(NESMSession *)self configuration];
-  v6 = [v5 urlFilter];
-  v7 = [v6 shouldFailClosed];
+  configuration = [(NESMSession *)self configuration];
+  urlFilter = [configuration urlFilter];
+  shouldFailClosed = [urlFilter shouldFailClosed];
 
   v28.receiver = self;
   v28.super_class = NESMURLFilterSession;
-  if (![(NESMSession *)&v28 handleUpdateConfiguration:v4])
+  if (![(NESMSession *)&v28 handleUpdateConfiguration:configurationCopy])
   {
 LABEL_14:
     v22 = 0;
     goto LABEL_25;
   }
 
-  v8 = [(NESMSession *)self configuration];
-  v9 = [v8 urlFilter];
-  v10 = [v9 isEnabled];
+  configuration2 = [(NESMSession *)self configuration];
+  urlFilter2 = [configuration2 urlFilter];
+  isEnabled = [urlFilter2 isEnabled];
 
-  if (v10)
+  if (isEnabled)
   {
     v12 = self ? objc_getProperty(self, v11, 384, 1) : 0;
     [v12 handleUpdateConfiguration];
-    v13 = [(NESMSession *)self configuration];
-    v14 = [v13 urlFilter];
-    v15 = [v14 shouldFailClosed];
+    configuration3 = [(NESMSession *)self configuration];
+    urlFilter3 = [configuration3 urlFilter];
+    shouldFailClosed2 = [urlFilter3 shouldFailClosed];
 
-    if (v7 != v15)
+    if (shouldFailClosed != shouldFailClosed2)
     {
-      v16 = [(NESMSession *)self configuration];
-      v17 = [v16 urlFilter];
-      v18 = [v17 shouldFailClosed];
+      configuration4 = [(NESMSession *)self configuration];
+      urlFilter4 = [configuration4 urlFilter];
+      shouldFailClosed3 = [urlFilter4 shouldFailClosed];
       if (self)
       {
-        v19 = v18;
+        v19 = shouldFailClosed3;
         v20 = dword_1000FCDF4;
         if (dword_1000FCDF4 != -1)
         {
@@ -266,7 +266,7 @@ LABEL_14:
           if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412802;
-            v31 = self;
+            selfCopy2 = self;
             v32 = 2080;
             v33 = "[NESMURLFilterSession postFilterFailClosedChange:]";
             v34 = 2080;
@@ -295,7 +295,7 @@ LABEL_17:
             if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
             {
               *buf = 138413314;
-              v31 = self;
+              selfCopy2 = self;
               v32 = 2080;
               v33 = "[NESMURLFilterSession postFilterFailClosedChange:]";
               v34 = 2048;
@@ -315,7 +315,7 @@ LABEL_17:
             if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 134218242;
-              v31 = v23;
+              selfCopy2 = v23;
               v32 = 2080;
               v33 = "com.apple.private.restrict-post.nesessionmanager.url-filter-fail-closed";
               _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Posted to <shouldFailClosed=%llu> to %s", buf, 0x16u);
@@ -339,45 +339,45 @@ LABEL_25:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v4 = 138412290;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%@: uninstalled", &v4, 0xCu);
   }
 }
 
-- (BOOL)handleAgentClientConnection:(id)a3 WithMessage:(id)a4
+- (BOOL)handleAgentClientConnection:(id)connection WithMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  int64 = xpc_dictionary_get_int64(v7, "command");
+  connectionCopy = connection;
+  messageCopy = message;
+  int64 = xpc_dictionary_get_int64(messageCopy, "command");
   if (int64 == 1)
   {
-    v9 = [(NESMSession *)self queue];
+    queue = [(NESMSession *)self queue];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_10006C2BC;
     v11[3] = &unk_1000EA778;
     v14 = 1;
     v11[4] = self;
-    v12 = v6;
-    v13 = v7;
-    dispatch_async(v9, v11);
+    v12 = connectionCopy;
+    v13 = messageCopy;
+    dispatch_async(queue, v11);
   }
 
   return int64 == 1;
 }
 
-- (void)pluginDidAcknowledgeSleep:(id)a3
+- (void)pluginDidAcknowledgeSleep:(id)sleep
 {
-  v4 = [(NESMSession *)self server];
-  sub_100059ED4(v4, v3);
+  server = [(NESMSession *)self server];
+  sub_100059ED4(server, v3);
 }
 
-- (void)plugin:(id)a3 didSetStatus:(int64_t)a4 andError:(int64_t)a5
+- (void)plugin:(id)plugin didSetStatus:(int64_t)status andError:(int64_t)error
 {
-  v15 = a3;
-  if (a5)
+  pluginCopy = plugin;
+  if (error)
   {
-    v9 = [[NSError alloc] initWithDomain:@"NEAgentURLFilterErrorDomain" code:a5 userInfo:0];
+    v9 = [[NSError alloc] initWithDomain:@"NEAgentURLFilterErrorDomain" code:error userInfo:0];
   }
 
   else
@@ -385,9 +385,9 @@ LABEL_25:
     v9 = 0;
   }
 
-  if (a4 > 1)
+  if (status > 1)
   {
-    if (a4 == 2)
+    if (status == 2)
     {
       if (self)
       {
@@ -399,13 +399,13 @@ LABEL_25:
         Property = 0;
       }
 
-      [Property handlePluginStatusDidChangeToRunning:v15];
+      [Property handlePluginStatusDidChangeToRunning:pluginCopy];
       goto LABEL_26;
     }
 
-    if (a4 != 3)
+    if (status != 3)
     {
-      if (a4 == 4)
+      if (status == 4)
       {
         if (self)
         {
@@ -417,7 +417,7 @@ LABEL_25:
           v10 = 0;
         }
 
-        [v10 handlePluginStatusDidChangeToUpdating:v15];
+        [v10 handlePluginStatusDidChangeToUpdating:pluginCopy];
       }
 
       goto LABEL_26;
@@ -433,13 +433,13 @@ LABEL_25:
       v13 = 0;
     }
 
-    [v13 handlePlugin:v15 statusDidChangeToStoppingWithError:a5];
+    [v13 handlePlugin:pluginCopy statusDidChangeToStoppingWithError:error];
 LABEL_25:
     [(NESMSession *)self setLastDisconnectError:v9];
     goto LABEL_26;
   }
 
-  if (!a4)
+  if (!status)
   {
     if (self)
     {
@@ -451,11 +451,11 @@ LABEL_25:
       v14 = 0;
     }
 
-    [v14 handlePlugin:v15 statusDidChangeToIdleWithError:a5];
+    [v14 handlePlugin:pluginCopy statusDidChangeToIdleWithError:error];
     goto LABEL_25;
   }
 
-  if (a4 == 1)
+  if (status == 1)
   {
     if (self)
     {
@@ -467,37 +467,37 @@ LABEL_25:
       v11 = 0;
     }
 
-    [v11 handlePluginStatusDidChangeToStarting:v15];
+    [v11 handlePluginStatusDidChangeToStarting:pluginCopy];
   }
 
 LABEL_26:
 }
 
-- (void)plugin:(id)a3 didStartWithPID:(int)a4 error:(id)a5
+- (void)plugin:(id)plugin didStartWithPID:(int)d error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
+  pluginCopy = plugin;
+  errorCopy = error;
   v10 = ne_log_obj();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-  if (!a4 || v9)
+  if (!d || errorCopy)
   {
     if (v11)
     {
       v22 = 138412546;
-      v23 = self;
+      selfCopy2 = self;
       v24 = 2112;
-      v25 = v9;
+      v25 = errorCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%@: Failed to start with error: %@", &v22, 0x16u);
     }
 
-    if (v9)
+    if (errorCopy)
     {
-      v16 = [v9 domain];
-      if ([v16 isEqualToString:@"NEAgentErrorDomain"])
+      domain = [errorCopy domain];
+      if ([domain isEqualToString:@"NEAgentErrorDomain"])
       {
-        v17 = [v9 code];
+        code = [errorCopy code];
 
-        if (v17 == 2)
+        if (code == 2)
         {
           [(NESMSession *)self setLastStopReason:6];
           if (self)
@@ -510,7 +510,7 @@ LABEL_26:
             Property = 0;
           }
 
-          v20 = v8;
+          v20 = pluginCopy;
           v21 = 0;
 LABEL_21:
           [Property handlePlugin:v20 statusDidChangeToIdleWithError:v21];
@@ -533,7 +533,7 @@ LABEL_21:
       Property = 0;
     }
 
-    v20 = v8;
+    v20 = pluginCopy;
     v21 = 1;
     goto LABEL_21;
   }
@@ -541,34 +541,34 @@ LABEL_21:
   if (v11)
   {
     v22 = 138412802;
-    v23 = self;
+    selfCopy2 = self;
     v24 = 2112;
-    v25 = v8;
+    v25 = pluginCopy;
     v26 = 1024;
-    v27 = a4;
+    dCopy = d;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%@: Plugin %@ started with pid %d", &v22, 0x1Cu);
   }
 
-  v12 = v8;
+  v12 = pluginCopy;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (v12 && (isKindOfClass & 1) != 0)
   {
     [v12 setStatus:1 error:0];
-    v14 = [v12 remotePluginObject];
-    [v14 startURLFilter];
+    remotePluginObject = [v12 remotePluginObject];
+    [remotePluginObject startURLFilter];
   }
 
 LABEL_22:
 }
 
-- (BOOL)pluginDidRequestUpdatePrefilter:(id)a3
+- (BOOL)pluginDidRequestUpdatePrefilter:(id)prefilter
 {
   v4 = ne_log_obj();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v35 = self;
+    selfCopy4 = self;
     v36 = 2080;
     v37 = "[NESMURLFilterSession pluginDidRequestUpdatePrefilter:]";
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "%@: %s - enter", buf, 0x16u);
@@ -589,7 +589,7 @@ LABEL_22:
           v12 = __error();
           v13 = strerror(*v12);
           *buf = 138413314;
-          v35 = self;
+          selfCopy4 = self;
           v36 = 2080;
           v37 = "[NESMURLFilterSession pluginDidRequestUpdatePrefilter:]";
           v38 = 2112;
@@ -605,14 +605,14 @@ LABEL_22:
       else
       {
         v14 = [NSString alloc];
-        v15 = [(NESMSession *)self configuration];
-        v16 = [v15 urlFilter];
-        v17 = [v16 appBundleIdentifier];
-        v8 = [v14 initWithFormat:@"%@%@", @"/private/var/db/urlPrefilter/com.apple.networkextension.url-prefilter-data.", v17];
+        configuration = [(NESMSession *)self configuration];
+        urlFilter = [configuration urlFilter];
+        appBundleIdentifier = [urlFilter appBundleIdentifier];
+        v8 = [v14 initWithFormat:@"%@%@", @"/private/var/db/urlPrefilter/com.apple.networkextension.url-prefilter-data.", appBundleIdentifier];
 
         v19 = [objc_getProperty(self v18];
-        v20 = [v8 UTF8String];
-        rename(v19, v20, v21);
+        uTF8String = [v8 UTF8String];
+        rename(v19, uTF8String, v21);
         if (!v23)
         {
           objc_setProperty_atomic(self, v22, v8, 368);
@@ -622,7 +622,7 @@ LABEL_22:
           {
             v29 = objc_getProperty(self, v28, 368, 1);
             *buf = 138412802;
-            v35 = self;
+            selfCopy4 = self;
             v36 = 2080;
             v37 = "[NESMURLFilterSession pluginDidRequestUpdatePrefilter:]";
             v38 = 2112;
@@ -643,7 +643,7 @@ LABEL_22:
           v32 = __error();
           v33 = strerror(*v32);
           *buf = 138413314;
-          v35 = self;
+          selfCopy4 = self;
           v36 = 2080;
           v37 = "[NESMURLFilterSession pluginDidRequestUpdatePrefilter:]";
           v38 = 2112;
@@ -668,7 +668,7 @@ LABEL_14:
   return self;
 }
 
-- (void)pluginDidRequestAgentClientServer:(id)a3
+- (void)pluginDidRequestAgentClientServer:(id)server
 {
   if (self)
   {
@@ -676,9 +676,9 @@ LABEL_14:
   }
 }
 
-- (void)pluginDidDispose:(id)a3
+- (void)pluginDidDispose:(id)dispose
 {
-  v6 = a3;
+  disposeCopy = dispose;
   if (self)
   {
     Property = objc_getProperty(self, v4, 384, 1);
@@ -689,33 +689,33 @@ LABEL_14:
     Property = 0;
   }
 
-  [Property handlePluginDisposeComplete:v6];
+  [Property handlePluginDisposeComplete:disposeCopy];
 }
 
 - (void)handleInstalledAppsChanged
 {
-  v3 = [(NESMSession *)self queue];
+  queue = [(NESMSession *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10006D760;
   block[3] = &unk_1000EB1C0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
-- (void)handleNetworkDetectionNotification:(int)a3
+- (void)handleNetworkDetectionNotification:(int)notification
 {
-  if ((a3 & 0xFFFFFFFB) == 1)
+  if ((notification & 0xFFFFFFFB) == 1)
   {
     block[7] = v3;
     block[8] = v4;
-    v6 = [(NESMSession *)self queue];
+    queue = [(NESMSession *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10006D8A8;
     block[3] = &unk_1000EB1C0;
     block[4] = self;
-    dispatch_async(v6, block);
+    dispatch_async(queue, block);
   }
 }
 
@@ -741,17 +741,17 @@ LABEL_14:
   return [(NESMURLFilterSession *)self handleSleep];
 }
 
-- (void)handleStartMessage:(id)a3
+- (void)handleStartMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   if (self)
   {
     self->_externallyStopped = 0;
-    objc_setProperty_atomic(self, v4, v5, 416);
+    objc_setProperty_atomic(self, v4, messageCopy, 416);
     sub_10006D9D8(self, 0);
     v35.receiver = self;
     v35.super_class = NESMURLFilterSession;
-    [(NESMSession *)&v35 handleStartMessage:v5];
+    [(NESMSession *)&v35 handleStartMessage:messageCopy];
     objc_setProperty_atomic(self, v6, 0, 360);
   }
 
@@ -759,10 +759,10 @@ LABEL_14:
   {
     v35.receiver = 0;
     v35.super_class = NESMURLFilterSession;
-    [(NESMSession *)&v35 handleStartMessage:v5];
+    [(NESMSession *)&v35 handleStartMessage:messageCopy];
   }
 
-  v7 = xpc_dictionary_get_value(v5, "SessionOptions");
+  v7 = xpc_dictionary_get_value(messageCopy, "SessionOptions");
   v9 = v7;
   if (!v7 || xpc_get_type(v7) != &_xpc_type_dictionary || !xpc_dictionary_get_BOOL(v9, "test-agent"))
   {
@@ -775,11 +775,11 @@ LABEL_14:
 LABEL_15:
     Property = objc_getProperty(self, v8, 384, 1);
 LABEL_16:
-    [Property handleStartMessage:v5];
+    [Property handleStartMessage:messageCopy];
     goto LABEL_17;
   }
 
-  v10 = xpc_dictionary_get_remote_connection(v5);
+  v10 = xpc_dictionary_get_remote_connection(messageCopy);
   if (!v10)
   {
     goto LABEL_10;
@@ -810,25 +810,25 @@ LABEL_16:
         if (v22 && xpc_get_type(v22) == &_xpc_type_endpoint)
         {
           v24 = [NETestAgent alloc];
-          v25 = [(NESMSession *)self configuration];
-          v26 = [v25 pluginType];
-          v27 = sub_100075628(&v24->super.super.isa, v26, 4, v5);
+          configuration = [(NESMSession *)self configuration];
+          pluginType = [configuration pluginType];
+          v27 = sub_100075628(&v24->super.super.isa, pluginType, 4, messageCopy);
 
           if (v27)
           {
             v28 = [NEURLFilterPlugin alloc];
-            v29 = [(NESMSession *)self queue];
-            v30 = [(NEPlugin *)v28 initWithAgent:v27 delegateQueue:v29 andDelegate:self];
+            queue = [(NESMSession *)self queue];
+            v30 = [(NEPlugin *)v28 initWithAgent:v27 delegateQueue:queue andDelegate:self];
             objc_setProperty_atomic(self, v31, v30, 408);
           }
 
           else
           {
-            v29 = ne_log_obj();
-            if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
+            queue = ne_log_obj();
+            if (os_log_type_enabled(queue, OS_LOG_TYPE_ERROR))
             {
               *buf = 0;
-              _os_log_error_impl(&_mh_execute_header, v29, OS_LOG_TYPE_ERROR, "Failed to create a test agent", buf, 2u);
+              _os_log_error_impl(&_mh_execute_header, queue, OS_LOG_TYPE_ERROR, "Failed to create a test agent", buf, 2u);
             }
           }
         }
@@ -879,21 +879,21 @@ LABEL_11:
     v15 = 0;
   }
 
-  [v15 handleStartMessage:v5];
+  [v15 handleStartMessage:messageCopy];
 
 LABEL_17:
 }
 
-- (BOOL)hasProviderWithBundleIdentifier:(id)a3
+- (BOOL)hasProviderWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NESMSession *)self configuration];
-  v6 = [v5 urlFilter];
-  v7 = [v6 controlProviderBundleIdentifier];
+  identifierCopy = identifier;
+  configuration = [(NESMSession *)self configuration];
+  urlFilter = [configuration urlFilter];
+  controlProviderBundleIdentifier = [urlFilter controlProviderBundleIdentifier];
 
-  if (v7)
+  if (controlProviderBundleIdentifier)
   {
-    v8 = [v4 isEqualToString:v7];
+    v8 = [identifierCopy isEqualToString:controlProviderBundleIdentifier];
   }
 
   else
@@ -904,11 +904,11 @@ LABEL_17:
   return v8;
 }
 
-- (NESMURLFilterSession)initWithConfiguration:(id)a3 andServer:(id)a4
+- (NESMURLFilterSession)initWithConfiguration:(id)configuration andServer:(id)server
 {
   v5.receiver = self;
   v5.super_class = NESMURLFilterSession;
-  result = [(NESMSession *)&v5 initWithConfiguration:a3 andServer:a4];
+  result = [(NESMSession *)&v5 initWithConfiguration:configuration andServer:server];
   if (result)
   {
     result->_state = 0;

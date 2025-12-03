@@ -1,26 +1,26 @@
 @interface PGHighlightsTitleSpecFactory
-+ (id)orderedHighlightTitleSpecTypesForMeaningLabel:(id)a3;
++ (id)orderedHighlightTitleSpecTypesForMeaningLabel:(id)label;
 + (id)specPoolForAOILocation;
 + (id)specPoolForBusinessItem;
 + (id)specPoolForPublicEvent;
 + (id)specPoolForPublicEventWithBusiness;
-+ (id)specPoolsForBirthdayIncludingLocationIfPossible:(BOOL)a3 allowAllCities:(BOOL)a4;
-+ (id)titleSpecForGenericLocation:(BOOL)a3;
-+ (id)titleSpecForHolidayEventIncludingLocationIfPossible:(BOOL)a3;
++ (id)specPoolsForBirthdayIncludingLocationIfPossible:(BOOL)possible allowAllCities:(BOOL)cities;
++ (id)titleSpecForGenericLocation:(BOOL)location;
++ (id)titleSpecForHolidayEventIncludingLocationIfPossible:(BOOL)possible;
 @end
 
 @implementation PGHighlightsTitleSpecFactory
 
-+ (id)orderedHighlightTitleSpecTypesForMeaningLabel:(id)a3
++ (id)orderedHighlightTitleSpecTypesForMeaningLabel:(id)label
 {
   v3 = orderedHighlightTitleSpecTypesForMeaningLabel__onceToken;
-  v4 = a3;
+  labelCopy = label;
   if (v3 != -1)
   {
     dispatch_once(&orderedHighlightTitleSpecTypesForMeaningLabel__onceToken, &__block_literal_global_34243);
   }
 
-  v5 = [orderedHighlightTitleSpecTypesForMeaningLabel__specTypesByMeaningLabel objectForKeyedSubscript:v4];
+  v5 = [orderedHighlightTitleSpecTypesForMeaningLabel__specTypesByMeaningLabel objectForKeyedSubscript:labelCopy];
 
   return v5;
 }
@@ -90,15 +90,15 @@ void __78__PGHighlightsTitleSpecFactory_orderedHighlightTitleSpecTypesForMeaning
   v3 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)titleSpecForHolidayEventIncludingLocationIfPossible:(BOOL)a3
++ (id)titleSpecForHolidayEventIncludingLocationIfPossible:(BOOL)possible
 {
-  v3 = a3;
+  possibleCopy = possible;
   v16[2] = *MEMORY[0x277D85DE8];
   v4 = [PGTitleSpecTimeArgument argumentWithTimeType:3];
   v5 = [PGTitleSpec alloc];
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v7 = v6;
-  if (v3)
+  if (possibleCopy)
   {
     v8 = [v6 localizedStringForKey:@"PGLocalizedHolidayLocation %@ holidayEventName %@" value:@"PGLocalizedHolidayLocation %@ holidayEventName %@" table:@"Localizable"];
     v9 = [(PGTitleSpec *)v5 initWithFormat:v8 titleCategory:0];
@@ -125,10 +125,10 @@ void __78__PGHighlightsTitleSpecFactory_orderedHighlightTitleSpecTypesForMeaning
   return v9;
 }
 
-+ (id)specPoolsForBirthdayIncludingLocationIfPossible:(BOOL)a3 allowAllCities:(BOOL)a4
++ (id)specPoolsForBirthdayIncludingLocationIfPossible:(BOOL)possible allowAllCities:(BOOL)cities
 {
-  v43 = a4;
-  v45 = a3;
+  citiesCopy = cities;
+  possibleCopy = possible;
   v59[2] = *MEMORY[0x277D85DE8];
   v5 = [PGTitleSpecPeopleArgument argumentWithPeopleType:4];
   v6 = [PGTitleSpecTimeArgument argumentWithTimeType:0];
@@ -161,12 +161,12 @@ void __78__PGHighlightsTitleSpecFactory_orderedHighlightTitleSpecTypesForMeaning
   v20 = [MEMORY[0x277CBEA60] arrayWithObjects:&v56 count:1];
   v48 = [PGTitleSpecPool poolWithSpecs:v20];
 
-  v21 = [a1 titleSpecForGenericLocation:v43];
+  v21 = [self titleSpecForGenericLocation:citiesCopy];
   v55 = v21;
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:&v55 count:1];
   v23 = [PGTitleSpecPool poolWithSpecs:v22];
 
-  if (v45)
+  if (possibleCopy)
   {
     v42 = v21;
     v24 = [PGTitleSpec alloc];
@@ -246,12 +246,12 @@ void __78__PGHighlightsTitleSpecFactory_orderedHighlightTitleSpecTypesForMeaning
   return v6;
 }
 
-+ (id)titleSpecForGenericLocation:(BOOL)a3
++ (id)titleSpecForGenericLocation:(BOOL)location
 {
-  v3 = a3;
+  locationCopy = location;
   v10[1] = *MEMORY[0x277D85DE8];
   v4 = [[PGTitleSpec alloc] initWithFormat:@"%@" titleCategory:4];
-  if (v3)
+  if (locationCopy)
   {
     v5 = 481;
   }

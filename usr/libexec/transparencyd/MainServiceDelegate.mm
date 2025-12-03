@@ -1,17 +1,17 @@
 @interface MainServiceDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation MainServiceDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [v5 valueForEntitlement:@"application-identifier"];
-  v7 = [v5 valueForEntitlement:@"com.apple.transparency.kt"];
-  v8 = [v7 BOOLValue];
+  connectionCopy = connection;
+  v6 = [connectionCopy valueForEntitlement:@"application-identifier"];
+  v7 = [connectionCopy valueForEntitlement:@"com.apple.transparency.kt"];
+  bOOLValue = [v7 BOOLValue];
 
-  if (v8)
+  if (bOOLValue)
   {
     if (qword_10038BE00 != -1)
     {
@@ -25,18 +25,18 @@
       v16 = 138412546;
       *v17 = v6;
       *&v17[8] = 1024;
-      *&v17[10] = [v5 processIdentifier];
+      *&v17[10] = [connectionCopy processIdentifier];
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "transparency accepting new connection from: %@[%d]", &v16, 0x12u);
     }
 
-    v11 = [(MainServiceDelegate *)self xpcQueue];
-    [v5 _setQueue:v11];
+    xpcQueue = [(MainServiceDelegate *)self xpcQueue];
+    [connectionCopy _setQueue:xpcQueue];
 
     v12 = +[TransparencyXPCInterface interface];
-    [v5 setExportedInterface:v12];
+    [connectionCopy setExportedInterface:v12];
 
-    [v5 setExportedObject:self->_daemonContext];
-    [v5 resume];
+    [connectionCopy setExportedObject:self->_daemonContext];
+    [connectionCopy resume];
   }
 
   else
@@ -51,14 +51,14 @@
     {
       v14 = v13;
       v16 = 67109378;
-      *v17 = [v5 processIdentifier];
+      *v17 = [connectionCopy processIdentifier];
       *&v17[4] = 2112;
       *&v17[6] = v6;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "transparency rejecting client %d/[%@] due to lack of entitlement", &v16, 0x12u);
     }
   }
 
-  return v8;
+  return bOOLValue;
 }
 
 @end

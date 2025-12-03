@@ -1,48 +1,48 @@
 @interface GlyphSearchConfiguration.ContentView
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)searchBarCancelButtonClicked:(id)a3;
-- (void)searchBarSearchButtonClicked:(id)a3;
-- (void)searchBarTextDidBeginEditing:(id)a3;
-- (void)searchBarTextDidEndEditing:(id)a3;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)searchBarCancelButtonClicked:(id)clicked;
+- (void)searchBarSearchButtonClicked:(id)clicked;
+- (void)searchBarTextDidBeginEditing:(id)editing;
+- (void)searchBarTextDidEndEditing:(id)editing;
 @end
 
 @implementation GlyphSearchConfiguration.ContentView
 
-- (void)searchBarTextDidBeginEditing:(id)a3
+- (void)searchBarTextDidBeginEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
-  sub_27491AED4(v4, 1);
+  editingCopy = editing;
+  selfCopy = self;
+  sub_27491AED4(editingCopy, 1);
 }
 
-- (void)searchBarTextDidEndEditing:(id)a3
+- (void)searchBarTextDidEndEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
-  sub_27491AED4(v4, 0);
+  editingCopy = editing;
+  selfCopy = self;
+  sub_27491AED4(editingCopy, 0);
 }
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
   v6 = _sSo32WFShortcutConcerningReportReasona10WorkflowUIE2idSSvg_0();
   v8 = v7;
-  v9 = a3;
-  v10 = self;
-  sub_27491AFAC(v10, v6, v8);
+  barCopy = bar;
+  selfCopy = self;
+  sub_27491AFAC(selfCopy, v6, v8);
 }
 
-- (void)searchBarCancelButtonClicked:(id)a3
+- (void)searchBarCancelButtonClicked:(id)clicked
 {
-  v4 = a3;
-  v5 = self;
-  sub_27491B158(v4);
+  clickedCopy = clicked;
+  selfCopy = self;
+  sub_27491B158(clickedCopy);
 }
 
-- (void)searchBarSearchButtonClicked:(id)a3
+- (void)searchBarSearchButtonClicked:(id)clicked
 {
-  v4 = a3;
-  v5 = self;
-  sub_27484568C(v4);
+  clickedCopy = clicked;
+  selfCopy = self;
+  sub_27484568C(clickedCopy);
 }
 
 @end

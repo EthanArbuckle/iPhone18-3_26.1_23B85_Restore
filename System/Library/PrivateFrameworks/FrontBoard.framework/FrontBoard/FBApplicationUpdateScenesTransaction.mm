@@ -1,36 +1,36 @@
 @interface FBApplicationUpdateScenesTransaction
-- (BOOL)_shouldFailForChildTransaction:(id)a3;
+- (BOOL)_shouldFailForChildTransaction:(id)transaction;
 - (FBApplicationProcess)process;
 - (FBApplicationUpdateScenesTransaction)init;
-- (FBApplicationUpdateScenesTransaction)initWithApplicationBundleID:(id)a3 executionContextProvider:(id)a4;
-- (FBApplicationUpdateScenesTransaction)initWithClientIdentity:(id)a3 executionContextProvider:(id)a4;
-- (FBApplicationUpdateScenesTransaction)initWithProcessIdentity:(id)a3 executionContextProvider:(id)a4;
+- (FBApplicationUpdateScenesTransaction)initWithApplicationBundleID:(id)d executionContextProvider:(id)provider;
+- (FBApplicationUpdateScenesTransaction)initWithClientIdentity:(id)identity executionContextProvider:(id)provider;
+- (FBApplicationUpdateScenesTransaction)initWithProcessIdentity:(id)identity executionContextProvider:(id)provider;
 - (NSString)bundleID;
 - (id)_customizedDescriptionProperties;
-- (void)_childTransactionDidComplete:(id)a3;
-- (void)_childTransactionDidFinishWork:(id)a3;
+- (void)_childTransactionDidComplete:(id)complete;
+- (void)_childTransactionDidFinishWork:(id)work;
 - (void)_didComplete;
-- (void)_didRemoveChildTransaction:(id)a3;
-- (void)_didSatisfyMilestone:(id)a3;
+- (void)_didRemoveChildTransaction:(id)transaction;
+- (void)_didSatisfyMilestone:(id)milestone;
 - (void)_executeProcessLaunchIfAppropriate;
 - (void)_executeSceneUpdatesIfAppropriate;
-- (void)_updateSceneWithIdentity:(id)a3 parameters:(id)a4 transitionContext:(id)a5;
-- (void)_willAddChildTransaction:(id)a3;
+- (void)_updateSceneWithIdentity:(id)identity parameters:(id)parameters transitionContext:(id)context;
+- (void)_willAddChildTransaction:(id)transaction;
 - (void)_willBegin;
-- (void)_willFailWithReason:(id)a3;
-- (void)_willInterruptWithReason:(id)a3;
-- (void)add:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)remove:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)setWaitsForSceneCommits:(BOOL)a3;
-- (void)transaction:(id)a3 didLaunchProcess:(id)a4;
-- (void)transaction:(id)a3 willLaunchProcess:(id)a4;
-- (void)updateSceneTransactionDidCommitUpdate:(id)a3;
-- (void)updateSceneTransactionDidCreateScene:(id)a3;
-- (void)updateSceneTransactionWillCommitUpdate:(id)a3;
-- (void)updateSceneTransactionWillUpdateScene:(id)a3;
-- (void)updateSceneWithIdentifier:(id)a3 parameters:(id)a4 transitionContext:(id)a5;
+- (void)_willFailWithReason:(id)reason;
+- (void)_willInterruptWithReason:(id)reason;
+- (void)add:(id)add;
+- (void)addObserver:(id)observer;
+- (void)remove:(id)remove;
+- (void)removeObserver:(id)observer;
+- (void)setWaitsForSceneCommits:(BOOL)commits;
+- (void)transaction:(id)transaction didLaunchProcess:(id)process;
+- (void)transaction:(id)transaction willLaunchProcess:(id)process;
+- (void)updateSceneTransactionDidCommitUpdate:(id)update;
+- (void)updateSceneTransactionDidCreateScene:(id)scene;
+- (void)updateSceneTransactionWillCommitUpdate:(id)update;
+- (void)updateSceneTransactionWillUpdateScene:(id)scene;
+- (void)updateSceneWithIdentifier:(id)identifier parameters:(id)parameters transitionContext:(id)context;
 @end
 
 @implementation FBApplicationUpdateScenesTransaction
@@ -40,10 +40,10 @@
   v19 = *MEMORY[0x1E69E9840];
   if (self->_processLaunched)
   {
-    v3 = [(FBApplicationProcessLaunchTransaction *)self->_processLaunchTransaction process];
-    if (v3)
+    process = [(FBApplicationProcessLaunchTransaction *)self->_processLaunchTransaction process];
+    if (process)
     {
-      v4 = v3;
+      v4 = process;
       v5 = [(NSMutableArray *)self->_pendingUpdateTransactions count];
 
       if (v5)
@@ -166,7 +166,7 @@
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"FBApplicationUpdateScenesTransaction.m";
     v17 = 1024;
@@ -182,38 +182,38 @@
   return result;
 }
 
-- (FBApplicationUpdateScenesTransaction)initWithApplicationBundleID:(id)a3 executionContextProvider:(id)a4
+- (FBApplicationUpdateScenesTransaction)initWithApplicationBundleID:(id)d executionContextProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  dCopy = d;
+  providerCopy = provider;
+  if (!dCopy)
   {
     [FBApplicationUpdateScenesTransaction initWithApplicationBundleID:a2 executionContextProvider:?];
   }
 
-  v9 = v8;
-  v10 = [MEMORY[0x1E69C75F0] identityForEmbeddedApplicationIdentifier:v7];
+  v9 = providerCopy;
+  v10 = [MEMORY[0x1E69C75F0] identityForEmbeddedApplicationIdentifier:dCopy];
   v11 = [(FBApplicationUpdateScenesTransaction *)self initWithProcessIdentity:v10 executionContextProvider:v9];
 
   return v11;
 }
 
-- (FBApplicationUpdateScenesTransaction)initWithClientIdentity:(id)a3 executionContextProvider:(id)a4
+- (FBApplicationUpdateScenesTransaction)initWithClientIdentity:(id)identity executionContextProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  identityCopy = identity;
+  providerCopy = provider;
+  if (!identityCopy)
   {
     [FBApplicationUpdateScenesTransaction initWithClientIdentity:a2 executionContextProvider:?];
   }
 
-  v9 = v8;
+  v9 = providerCopy;
   v29.receiver = self;
   v29.super_class = FBApplicationUpdateScenesTransaction;
   v10 = [(FBSynchronizedTransactionGroup *)&v29 init];
   if (v10)
   {
-    v11 = [v7 copy];
+    v11 = [identityCopy copy];
     clientIdentity = v10->_clientIdentity;
     v10->_clientIdentity = v11;
 
@@ -226,13 +226,13 @@
     pendingUpdateTransactions = v10->_pendingUpdateTransactions;
     v10->_pendingUpdateTransactions = v15;
 
-    v17 = [v7 processIdentity];
-    if (!v17)
+    processIdentity = [identityCopy processIdentity];
+    if (!processIdentity)
     {
       [FBApplicationUpdateScenesTransaction initWithClientIdentity:a2 executionContextProvider:v10];
     }
 
-    v18 = v17;
+    v18 = processIdentity;
     objc_initWeak(&location, v10);
     v19 = [FBApplicationProcessLaunchTransaction alloc];
     v24[0] = MEMORY[0x1E69E9820];
@@ -282,28 +282,28 @@ id __88__FBApplicationUpdateScenesTransaction_initWithClientIdentity_executionCo
   return v10;
 }
 
-- (FBApplicationUpdateScenesTransaction)initWithProcessIdentity:(id)a3 executionContextProvider:(id)a4
+- (FBApplicationUpdateScenesTransaction)initWithProcessIdentity:(id)identity executionContextProvider:(id)provider
 {
   v6 = MEMORY[0x1E699FBD8];
-  v7 = a4;
-  v8 = [v6 identityForProcessIdentity:a3];
-  v9 = [(FBApplicationUpdateScenesTransaction *)self initWithClientIdentity:v8 executionContextProvider:v7];
+  providerCopy = provider;
+  v8 = [v6 identityForProcessIdentity:identity];
+  v9 = [(FBApplicationUpdateScenesTransaction *)self initWithClientIdentity:v8 executionContextProvider:providerCopy];
 
   return v9;
 }
 
 - (NSString)bundleID
 {
-  v2 = [(FBSSceneClientIdentity *)self->_clientIdentity processIdentity];
-  v3 = [v2 embeddedApplicationIdentifier];
+  processIdentity = [(FBSSceneClientIdentity *)self->_clientIdentity processIdentity];
+  embeddedApplicationIdentifier = [processIdentity embeddedApplicationIdentifier];
 
-  return v3;
+  return embeddedApplicationIdentifier;
 }
 
-- (void)setWaitsForSceneCommits:(BOOL)a3
+- (void)setWaitsForSceneCommits:(BOOL)commits
 {
   v15 = *MEMORY[0x1E69E9840];
-  self->_waitsForSceneCommits = a3;
+  self->_waitsForSceneCommits = commits;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -339,29 +339,29 @@ id __88__FBApplicationUpdateScenesTransaction_initWithClientIdentity_executionCo
 
 - (FBApplicationProcess)process
 {
-  v3 = [(FBApplicationUpdateScenesTransaction *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(FBApplicationUpdateScenesTransaction *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   processLaunchTransaction = self->_processLaunchTransaction;
 
   return [(FBApplicationProcessLaunchTransaction *)processLaunchTransaction process];
 }
 
-- (void)updateSceneWithIdentifier:(id)a3 parameters:(id)a4 transitionContext:(id)a5
+- (void)updateSceneWithIdentifier:(id)identifier parameters:(id)parameters transitionContext:(id)context
 {
   v8 = MEMORY[0x1E699FC10];
-  v9 = a5;
-  v10 = a4;
-  v11 = [v8 identityForIdentifier:a3];
-  [(FBApplicationUpdateScenesTransaction *)self _updateSceneWithIdentity:v11 parameters:v10 transitionContext:v9];
+  contextCopy = context;
+  parametersCopy = parameters;
+  v11 = [v8 identityForIdentifier:identifier];
+  [(FBApplicationUpdateScenesTransaction *)self _updateSceneWithIdentity:v11 parameters:parametersCopy transitionContext:contextCopy];
 }
 
-- (void)_updateSceneWithIdentity:(id)a3 parameters:(id)a4 transitionContext:(id)a5
+- (void)_updateSceneWithIdentity:(id)identity parameters:(id)parameters transitionContext:(id)context
 {
-  v17 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v9;
+  identityCopy = identity;
+  parametersCopy = parameters;
+  contextCopy = context;
+  v11 = parametersCopy;
   NSClassFromString(&cfstr_Fbssceneparame.isa);
   if (!v11)
   {
@@ -373,9 +373,9 @@ id __88__FBApplicationUpdateScenesTransaction_initWithClientIdentity_executionCo
     [FBApplicationUpdateScenesTransaction _updateSceneWithIdentity:a2 parameters:? transitionContext:?];
   }
 
-  v12 = [v11 specification];
+  specification = [v11 specification];
   NSClassFromString(&cfstr_Fbsscenespecif.isa);
-  if (!v12)
+  if (!specification)
   {
     [FBApplicationUpdateScenesTransaction _updateSceneWithIdentity:a2 parameters:? transitionContext:?];
   }
@@ -387,86 +387,86 @@ id __88__FBApplicationUpdateScenesTransaction_initWithClientIdentity_executionCo
 
   if (([(FBApplicationUpdateScenesTransaction *)self isRunning]& 1) == 0 && ([(FBApplicationUpdateScenesTransaction *)self isComplete]& 1) == 0)
   {
-    v13 = [(FBApplicationUpdateScenesTransaction *)self queue];
-    dispatch_assert_queue_V2(v13);
+    queue = [(FBApplicationUpdateScenesTransaction *)self queue];
+    dispatch_assert_queue_V2(queue);
 
-    v14 = [MEMORY[0x1E699FB50] definition];
-    [v14 setIdentity:v17];
-    [v14 setClientIdentity:self->_clientIdentity];
-    v15 = [v11 specification];
-    [v14 setSpecification:v15];
+    definition = [MEMORY[0x1E699FB50] definition];
+    [definition setIdentity:identityCopy];
+    [definition setClientIdentity:self->_clientIdentity];
+    specification2 = [v11 specification];
+    [definition setSpecification:specification2];
 
-    v16 = [[FBUpdateSceneTransaction alloc] initWithSceneDefinition:v14 parameters:v11 transitionContext:v10];
+    v16 = [[FBUpdateSceneTransaction alloc] initWithSceneDefinition:definition parameters:v11 transitionContext:contextCopy];
     [(NSMutableArray *)self->_pendingUpdateTransactions addObject:v16];
     [(FBApplicationUpdateScenesTransaction *)self _executeSceneUpdatesIfAppropriate];
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   v3.receiver = self;
   v3.super_class = FBApplicationUpdateScenesTransaction;
-  [(FBApplicationUpdateScenesTransaction *)&v3 addObserver:a3];
+  [(FBApplicationUpdateScenesTransaction *)&v3 addObserver:observer];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   v3.receiver = self;
   v3.super_class = FBApplicationUpdateScenesTransaction;
-  [(FBApplicationUpdateScenesTransaction *)&v3 removeObserver:a3];
+  [(FBApplicationUpdateScenesTransaction *)&v3 removeObserver:observer];
 }
 
-- (void)add:(id)a3
+- (void)add:(id)add
 {
   v3.receiver = self;
   v3.super_class = FBApplicationUpdateScenesTransaction;
-  [(FBApplicationUpdateScenesTransaction *)&v3 addObserver:a3];
+  [(FBApplicationUpdateScenesTransaction *)&v3 addObserver:add];
 }
 
-- (void)remove:(id)a3
+- (void)remove:(id)remove
 {
   v3.receiver = self;
   v3.super_class = FBApplicationUpdateScenesTransaction;
-  [(FBApplicationUpdateScenesTransaction *)&v3 removeObserver:a3];
+  [(FBApplicationUpdateScenesTransaction *)&v3 removeObserver:remove];
 }
 
-- (void)_willAddChildTransaction:(id)a3
+- (void)_willAddChildTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   v5.receiver = self;
   v5.super_class = FBApplicationUpdateScenesTransaction;
-  [(FBApplicationUpdateScenesTransaction *)&v5 _willAddChildTransaction:v4];
+  [(FBApplicationUpdateScenesTransaction *)&v5 _willAddChildTransaction:transactionCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(NSMutableArray *)self->_updateSceneTransactions addObject:v4];
+    [(NSMutableArray *)self->_updateSceneTransactions addObject:transactionCopy];
   }
 }
 
-- (void)_didRemoveChildTransaction:(id)a3
+- (void)_didRemoveChildTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   v5.receiver = self;
   v5.super_class = FBApplicationUpdateScenesTransaction;
-  [(FBApplicationUpdateScenesTransaction *)&v5 _didRemoveChildTransaction:v4];
+  [(FBApplicationUpdateScenesTransaction *)&v5 _didRemoveChildTransaction:transactionCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v4 removeObserver:self];
-    [(NSMutableArray *)self->_updateSceneTransactions removeObject:v4];
+    [transactionCopy removeObserver:self];
+    [(NSMutableArray *)self->_updateSceneTransactions removeObject:transactionCopy];
   }
 }
 
-- (BOOL)_shouldFailForChildTransaction:(id)a3
+- (BOOL)_shouldFailForChildTransaction:(id)transaction
 {
-  if (self->_processLaunchTransaction == a3)
+  if (self->_processLaunchTransaction == transaction)
   {
     isKindOfClass = 1;
   }
 
   else
   {
-    v3 = a3;
+    transactionCopy = transaction;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -474,12 +474,12 @@ id __88__FBApplicationUpdateScenesTransaction_initWithClientIdentity_executionCo
   return isKindOfClass & 1;
 }
 
-- (void)_willInterruptWithReason:(id)a3
+- (void)_willInterruptWithReason:(id)reason
 {
   v16 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
   v14.super_class = FBApplicationUpdateScenesTransaction;
-  [(FBApplicationUpdateScenesTransaction *)&v14 _willInterruptWithReason:a3];
+  [(FBApplicationUpdateScenesTransaction *)&v14 _willInterruptWithReason:reason];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
@@ -513,12 +513,12 @@ id __88__FBApplicationUpdateScenesTransaction_initWithClientIdentity_executionCo
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_willFailWithReason:(id)a3
+- (void)_willFailWithReason:(id)reason
 {
   v16 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
   v14.super_class = FBApplicationUpdateScenesTransaction;
-  [(FBApplicationUpdateScenesTransaction *)&v14 _willFailWithReason:a3];
+  [(FBApplicationUpdateScenesTransaction *)&v14 _willFailWithReason:reason];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
@@ -554,49 +554,49 @@ id __88__FBApplicationUpdateScenesTransaction_initWithClientIdentity_executionCo
 
 - (id)_customizedDescriptionProperties
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  [v3 setObject:self->_clientIdentity forKey:@"ClientIdentity"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:self->_clientIdentity forKey:@"ClientIdentity"];
   waitsForSceneCommits = self->_waitsForSceneCommits;
   v5 = NSStringFromBOOL();
-  [v3 setObject:v5 forKey:@"Waits for scene commits"];
+  [dictionary setObject:v5 forKey:@"Waits for scene commits"];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)_childTransactionDidComplete:(id)a3
+- (void)_childTransactionDidComplete:(id)complete
 {
   v4.receiver = self;
   v4.super_class = FBApplicationUpdateScenesTransaction;
-  [(FBSynchronizedTransactionGroup *)&v4 _childTransactionDidComplete:a3];
+  [(FBSynchronizedTransactionGroup *)&v4 _childTransactionDidComplete:complete];
   [(FBApplicationUpdateScenesTransaction *)self _executeProcessLaunchIfAppropriate];
 }
 
-- (void)_childTransactionDidFinishWork:(id)a3
+- (void)_childTransactionDidFinishWork:(id)work
 {
   v4.receiver = self;
   v4.super_class = FBApplicationUpdateScenesTransaction;
-  [(FBApplicationUpdateScenesTransaction *)&v4 _childTransactionDidFinishWork:a3];
+  [(FBApplicationUpdateScenesTransaction *)&v4 _childTransactionDidFinishWork:work];
   [(FBApplicationUpdateScenesTransaction *)self _executeProcessLaunchIfAppropriate];
 }
 
-- (void)_didSatisfyMilestone:(id)a3
+- (void)_didSatisfyMilestone:(id)milestone
 {
   v4.receiver = self;
   v4.super_class = FBApplicationUpdateScenesTransaction;
-  [(FBApplicationUpdateScenesTransaction *)&v4 _didSatisfyMilestone:a3];
+  [(FBApplicationUpdateScenesTransaction *)&v4 _didSatisfyMilestone:milestone];
   [(FBApplicationUpdateScenesTransaction *)self _executeProcessLaunchIfAppropriate];
 }
 
-- (void)transaction:(id)a3 willLaunchProcess:(id)a4
+- (void)transaction:(id)transaction willLaunchProcess:(id)process
 {
-  v5 = a4;
+  processCopy = process;
   v7 = MEMORY[0x1E69E9820];
   v8 = 3221225472;
   v9 = __70__FBApplicationUpdateScenesTransaction_transaction_willLaunchProcess___block_invoke;
   v10 = &unk_1E783B808;
-  v11 = self;
-  v12 = v5;
-  v6 = v5;
+  selfCopy = self;
+  v12 = processCopy;
+  v6 = processCopy;
   [(FBApplicationUpdateScenesTransaction *)self _enumerateObserversWithBlock:&v7];
   self->_processLaunched = 1;
   [(FBApplicationUpdateScenesTransaction *)self _executeSceneUpdatesIfAppropriate:v7];
@@ -611,16 +611,16 @@ void __70__FBApplicationUpdateScenesTransaction_transaction_willLaunchProcess___
   }
 }
 
-- (void)transaction:(id)a3 didLaunchProcess:(id)a4
+- (void)transaction:(id)transaction didLaunchProcess:(id)process
 {
-  v5 = a4;
+  processCopy = process;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __69__FBApplicationUpdateScenesTransaction_transaction_didLaunchProcess___block_invoke;
   v7[3] = &unk_1E783B808;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = processCopy;
+  v6 = processCopy;
   [(FBApplicationUpdateScenesTransaction *)self _enumerateObserversWithBlock:v7];
 }
 
@@ -633,16 +633,16 @@ void __69__FBApplicationUpdateScenesTransaction_transaction_didLaunchProcess___b
   }
 }
 
-- (void)updateSceneTransactionDidCreateScene:(id)a3
+- (void)updateSceneTransactionDidCreateScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __77__FBApplicationUpdateScenesTransaction_updateSceneTransactionDidCreateScene___block_invoke;
   v6[3] = &unk_1E783B808;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = sceneCopy;
+  v5 = sceneCopy;
   [(FBApplicationUpdateScenesTransaction *)self _enumerateObserversWithBlock:v6];
 }
 
@@ -657,16 +657,16 @@ void __77__FBApplicationUpdateScenesTransaction_updateSceneTransactionDidCreateS
   }
 }
 
-- (void)updateSceneTransactionWillUpdateScene:(id)a3
+- (void)updateSceneTransactionWillUpdateScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __78__FBApplicationUpdateScenesTransaction_updateSceneTransactionWillUpdateScene___block_invoke;
   v6[3] = &unk_1E783B808;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = sceneCopy;
+  v5 = sceneCopy;
   [(FBApplicationUpdateScenesTransaction *)self _enumerateObserversWithBlock:v6];
 }
 
@@ -681,19 +681,19 @@ void __78__FBApplicationUpdateScenesTransaction_updateSceneTransactionWillUpdate
   }
 }
 
-- (void)updateSceneTransactionWillCommitUpdate:(id)a3
+- (void)updateSceneTransactionWillCommitUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [v4 scene];
-  [(FBApplicationUpdateScenesTransaction *)self _noteWillCommitUpdateForScene:v5];
+  updateCopy = update;
+  scene = [updateCopy scene];
+  [(FBApplicationUpdateScenesTransaction *)self _noteWillCommitUpdateForScene:scene];
 
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __79__FBApplicationUpdateScenesTransaction_updateSceneTransactionWillCommitUpdate___block_invoke;
   v7[3] = &unk_1E783B808;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = updateCopy;
+  v6 = updateCopy;
   [(FBApplicationUpdateScenesTransaction *)self _enumerateObserversWithBlock:v7];
 }
 
@@ -708,19 +708,19 @@ void __79__FBApplicationUpdateScenesTransaction_updateSceneTransactionWillCommit
   }
 }
 
-- (void)updateSceneTransactionDidCommitUpdate:(id)a3
+- (void)updateSceneTransactionDidCommitUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [v4 scene];
-  [(FBApplicationUpdateScenesTransaction *)self _noteDidCommitUpdateForScene:v5];
+  updateCopy = update;
+  scene = [updateCopy scene];
+  [(FBApplicationUpdateScenesTransaction *)self _noteDidCommitUpdateForScene:scene];
 
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __78__FBApplicationUpdateScenesTransaction_updateSceneTransactionDidCommitUpdate___block_invoke;
   v7[3] = &unk_1E783B808;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = updateCopy;
+  v6 = updateCopy;
   [(FBApplicationUpdateScenesTransaction *)self _enumerateObserversWithBlock:v7];
 }
 

@@ -1,23 +1,23 @@
 @interface Tailspin
-+ (void)collectTailspinToFile:(id)a3 minTimestamp:(unint64_t)a4 completion:(id)a5;
++ (void)collectTailspinToFile:(id)file minTimestamp:(unint64_t)timestamp completion:(id)completion;
 @end
 
 @implementation Tailspin
 
-+ (void)collectTailspinToFile:(id)a3 minTimestamp:(unint64_t)a4 completion:(id)a5
++ (void)collectTailspinToFile:(id)file minTimestamp:(unint64_t)timestamp completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
+  fileCopy = file;
+  completionCopy = completion;
   v9 = dispatch_get_global_queue(9, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __58__Tailspin_collectTailspinToFile_minTimestamp_completion___block_invoke;
   block[3] = &unk_1E7AF3A10;
-  v14 = v8;
-  v15 = a4;
-  v13 = v7;
-  v10 = v8;
-  v11 = v7;
+  v14 = completionCopy;
+  timestampCopy = timestamp;
+  v13 = fileCopy;
+  v10 = completionCopy;
+  v11 = fileCopy;
   dispatch_async(v9, block);
 }
 

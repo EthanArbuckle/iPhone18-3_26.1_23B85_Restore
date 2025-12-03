@@ -3,17 +3,17 @@
 - (PSSpecifier)appleIDSpecifier;
 - (PSSpecifier)mismatchedSpecifier;
 - (PSSpecifier)unavailableProgramNoticeSpecifier;
-- (id)_specifierForBetaProgram:(id)a3 rowIdentifier:(id)a4;
+- (id)_specifierForBetaProgram:(id)program rowIdentifier:(id)identifier;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)presentAuthKitController;
 - (void)presentAuthenticationDialog;
-- (void)setMismatchedSpecifier:(id)a3;
+- (void)setMismatchedSpecifier:(id)specifier;
 - (void)setupProgramListSpecifiers;
 - (void)setupProgramsGroupSpecifier;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updateFooter;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -21,30 +21,30 @@
 
 - (void)viewDidLoad
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
   v5.receiver = self;
   v5.super_class = SUSUISoftwareUpdateBetaUpdatesController;
   [(SUSUISoftwareUpdateBetaUpdatesController *)&v5 viewDidLoad];
-  [(SUSUISoftwareUpdateBetaUpdatesController *)v7 setIsBusy:0];
+  [(SUSUISoftwareUpdateBetaUpdatesController *)selfCopy setIsBusy:0];
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v3 = [v4 localizedStringForKey:@"GET_BETA_UPDATES" value:&stru_287B79370 table:@"Software Update"];
-  v2 = [(SUSUISoftwareUpdateBetaUpdatesController *)v7 navigationItem];
-  [v2 setTitle:v3];
-  MEMORY[0x277D82BD8](v2);
+  navigationItem = [(SUSUISoftwareUpdateBetaUpdatesController *)selfCopy navigationItem];
+  [navigationItem setTitle:v3];
+  MEMORY[0x277D82BD8](navigationItem);
   MEMORY[0x277D82BD8](v3);
   MEMORY[0x277D82BD8](v4);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = SUSUISoftwareUpdateBetaUpdatesController;
-  [(SUSUISoftwareUpdateBetaUpdatesController *)&v6 viewDidAppear:a3];
-  v3 = v9;
+  [(SUSUISoftwareUpdateBetaUpdatesController *)&v6 viewDidAppear:appear];
+  v3 = selfCopy;
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v4 = [v5 localizedStringForKey:@"GET_BETA_UPDATES" value:&stru_287B79370 table:@"Software Update"];
   [PSListController addNavigationEventForSystemSettings:v3 andRelativeLinkToSoftwareUpdate:"addNavigationEventForSystemSettings:andRelativeLinkToSoftwareUpdate:"];
@@ -54,74 +54,74 @@
 
 - (id)specifiers
 {
-  v28 = self;
+  selfCopy = self;
   v27 = a2;
   if (*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FC48]))
   {
-    for (i = 0; i < [*(&v28->super.super.super.super.super.isa + *MEMORY[0x277D3FC48]) count]; ++i)
+    for (i = 0; i < [*(&selfCopy->super.super.super.super.super.isa + *MEMORY[0x277D3FC48]) count]; ++i)
     {
-      v21 = [*(&v28->super.super.super.super.super.isa + *MEMORY[0x277D3FC48]) objectAtIndexedSubscript:i];
-      v20 = [MEMORY[0x277CCABB0] numberWithInt:{-[SUSUISoftwareUpdateBetaUpdatesController isBusy](v28, "isBusy") ^ 1}];
+      v21 = [*(&selfCopy->super.super.super.super.super.isa + *MEMORY[0x277D3FC48]) objectAtIndexedSubscript:i];
+      v20 = [MEMORY[0x277CCABB0] numberWithInt:{-[SUSUISoftwareUpdateBetaUpdatesController isBusy](selfCopy, "isBusy") ^ 1}];
       v2 = *MEMORY[0x277D3FF38];
       [v21 setProperty:? forKey:?];
       MEMORY[0x277D82BD8](v20);
       MEMORY[0x277D82BD8](v21);
     }
 
-    v29 = MEMORY[0x277D82BE0](*(&v28->super.super.super.super.super.isa + *MEMORY[0x277D3FC48]));
+    v29 = MEMORY[0x277D82BE0](*(&selfCopy->super.super.super.super.super.isa + *MEMORY[0x277D3FC48]));
   }
 
   else
   {
-    [(SUSUISoftwareUpdateBetaUpdatesController *)v28 setupProgramsGroupSpecifier];
-    [(SUSUISoftwareUpdateBetaUpdatesController *)v28 setupProgramListSpecifiers];
-    [(SUSUISoftwareUpdateBetaUpdatesController *)v28 updateFooter];
+    [(SUSUISoftwareUpdateBetaUpdatesController *)selfCopy setupProgramsGroupSpecifier];
+    [(SUSUISoftwareUpdateBetaUpdatesController *)selfCopy setupProgramListSpecifiers];
+    [(SUSUISoftwareUpdateBetaUpdatesController *)selfCopy updateFooter];
     v25 = [MEMORY[0x277CBEB18] arrayWithCapacity:6];
-    v15 = [(SUSUISoftwareUpdateBetaUpdatesController *)v28 programsGroup];
+    programsGroup = [(SUSUISoftwareUpdateBetaUpdatesController *)selfCopy programsGroup];
     [v25 addObject:?];
-    MEMORY[0x277D82BD8](v15);
-    v16 = [(SUSUISoftwareUpdateBetaUpdatesController *)v28 programsList];
+    MEMORY[0x277D82BD8](programsGroup);
+    programsList = [(SUSUISoftwareUpdateBetaUpdatesController *)selfCopy programsList];
     [v25 addObjectsFromArray:?];
-    MEMORY[0x277D82BD8](v16);
-    v17 = [(SUSUISoftwareUpdateBetaUpdatesController *)v28 appleIDGroupSpecifier];
+    MEMORY[0x277D82BD8](programsList);
+    appleIDGroupSpecifier = [(SUSUISoftwareUpdateBetaUpdatesController *)selfCopy appleIDGroupSpecifier];
     [v25 addObject:?];
-    MEMORY[0x277D82BD8](v17);
-    v18 = [(SUSUISoftwareUpdateBetaUpdatesController *)v28 mismatchedSpecifier];
+    MEMORY[0x277D82BD8](appleIDGroupSpecifier);
+    mismatchedSpecifier = [(SUSUISoftwareUpdateBetaUpdatesController *)selfCopy mismatchedSpecifier];
     v23 = 0;
     v19 = 1;
-    if (!v18)
+    if (!mismatchedSpecifier)
     {
-      v24 = [(SUSUISoftwareUpdateBetaUpdatesController *)v28 updateController];
+      updateController = [(SUSUISoftwareUpdateBetaUpdatesController *)selfCopy updateController];
       v23 = 1;
-      v19 = [v24 betaUpdatesHasInstallationRestriction] != 0;
+      v19 = [updateController betaUpdatesHasInstallationRestriction] != 0;
     }
 
     if (v23)
     {
-      MEMORY[0x277D82BD8](v24);
+      MEMORY[0x277D82BD8](updateController);
     }
 
-    MEMORY[0x277D82BD8](v18);
+    MEMORY[0x277D82BD8](mismatchedSpecifier);
     if (v19)
     {
-      v14 = [(SUSUISoftwareUpdateBetaUpdatesController *)v28 unavailableProgramNoticeSpecifier];
+      unavailableProgramNoticeSpecifier = [(SUSUISoftwareUpdateBetaUpdatesController *)selfCopy unavailableProgramNoticeSpecifier];
       [v25 addObject:?];
-      MEMORY[0x277D82BD8](v14);
+      MEMORY[0x277D82BD8](unavailableProgramNoticeSpecifier);
     }
 
-    v13 = [(SUSUISoftwareUpdateBetaUpdatesController *)v28 appleIDSpecifier];
-    MEMORY[0x277D82BD8](v13);
-    if (v13)
+    appleIDSpecifier = [(SUSUISoftwareUpdateBetaUpdatesController *)selfCopy appleIDSpecifier];
+    MEMORY[0x277D82BD8](appleIDSpecifier);
+    if (appleIDSpecifier)
     {
-      v12 = [(SUSUISoftwareUpdateBetaUpdatesController *)v28 appleIDSpecifier];
+      appleIDSpecifier2 = [(SUSUISoftwareUpdateBetaUpdatesController *)selfCopy appleIDSpecifier];
       [v25 addObject:?];
-      MEMORY[0x277D82BD8](v12);
+      MEMORY[0x277D82BD8](appleIDSpecifier2);
     }
 
     for (j = 0; j < [v25 count]; ++j)
     {
       v11 = [v25 objectAtIndexedSubscript:j];
-      v10 = [MEMORY[0x277CCABB0] numberWithInt:{-[SUSUISoftwareUpdateBetaUpdatesController isBusy](v28, "isBusy") ^ 1}];
+      v10 = [MEMORY[0x277CCABB0] numberWithInt:{-[SUSUISoftwareUpdateBetaUpdatesController isBusy](selfCopy, "isBusy") ^ 1}];
       v3 = *MEMORY[0x277D3FF38];
       [v11 setProperty:? forKey:?];
       MEMORY[0x277D82BD8](v10);
@@ -130,11 +130,11 @@
 
     v4 = [MEMORY[0x277CBEA60] arrayWithArray:v25];
     v9 = MEMORY[0x277D3FC48];
-    v5 = (v28 + *MEMORY[0x277D3FC48]);
+    v5 = (selfCopy + *MEMORY[0x277D3FC48]);
     v6 = *v5;
     *v5 = v4;
     MEMORY[0x277D82BD8](v6);
-    v29 = MEMORY[0x277D82BE0](*(&v28->super.super.super.super.super.isa + *v9));
+    v29 = MEMORY[0x277D82BE0](*(&selfCopy->super.super.super.super.super.isa + *v9));
     objc_storeStrong(&v25, 0);
   }
 
@@ -143,15 +143,15 @@
   return v7;
 }
 
-- (void)setMismatchedSpecifier:(id)a3
+- (void)setMismatchedSpecifier:(id)specifier
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeWeak(&v4->_mismatchedSpecifier, location[0]);
-  objc_storeStrong(&v4->_appleIDSpecifier, 0);
-  objc_storeStrong(&v4->_appleIDGroupSpecifier, 0);
+  objc_storeStrong(location, specifier);
+  objc_storeWeak(&selfCopy->_mismatchedSpecifier, location[0]);
+  objc_storeStrong(&selfCopy->_appleIDSpecifier, 0);
+  objc_storeStrong(&selfCopy->_appleIDGroupSpecifier, 0);
   objc_storeStrong(location, 0);
 }
 
@@ -172,31 +172,31 @@
 
 - (PSSpecifier)unavailableProgramNoticeSpecifier
 {
-  v38 = self;
+  selfCopy = self;
   v37[1] = a2;
   if (self->_unavailableProgramNoticeSpecifier)
   {
-    v39 = MEMORY[0x277D82BE0](v38->_unavailableProgramNoticeSpecifier);
+    v39 = MEMORY[0x277D82BE0](selfCopy->_unavailableProgramNoticeSpecifier);
   }
 
   else
   {
     v2 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:&stru_287B79370 target:0 set:0 get:0 detail:0 cell:4 edit:0];
     v30 = 0x2803D8000uLL;
-    unavailableProgramNoticeSpecifier = v38->_unavailableProgramNoticeSpecifier;
-    v38->_unavailableProgramNoticeSpecifier = v2;
+    unavailableProgramNoticeSpecifier = selfCopy->_unavailableProgramNoticeSpecifier;
+    selfCopy->_unavailableProgramNoticeSpecifier = v2;
     MEMORY[0x277D82BD8](unavailableProgramNoticeSpecifier);
-    v31 = *(&v38->super.super.super.super.super.isa + *(v30 + 1996));
+    v31 = *(&selfCopy->super.super.super.super.super.isa + *(v30 + 1996));
     [v31 setProperty:objc_opt_class() forKey:*MEMORY[0x277D3FE58]];
-    v32 = [(SUSUISoftwareUpdateBetaUpdatesController *)v38 updateController];
-    v37[0] = [v32 betaUpdatesAppleID];
-    MEMORY[0x277D82BD8](v32);
+    updateController = [(SUSUISoftwareUpdateBetaUpdatesController *)selfCopy updateController];
+    v37[0] = [updateController betaUpdatesAppleID];
+    MEMORY[0x277D82BD8](updateController);
     v36 = 0;
-    v33 = [(SUSUISoftwareUpdateBetaUpdatesController *)v38 updateController];
-    v34 = [v33 betaUpdatesHasInstallationRestriction];
-    MEMORY[0x277D82BD8](v33);
-    v35 = v34;
-    if (v34 == 2)
+    updateController2 = [(SUSUISoftwareUpdateBetaUpdatesController *)selfCopy updateController];
+    betaUpdatesHasInstallationRestriction = [updateController2 betaUpdatesHasInstallationRestriction];
+    MEMORY[0x277D82BD8](updateController2);
+    v35 = betaUpdatesHasInstallationRestriction;
+    if (betaUpdatesHasInstallationRestriction == 2)
     {
       v28 = MEMORY[0x277CCA8D8];
       v29 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -247,13 +247,13 @@
     }
 
     v15 = 0x2803D8000uLL;
-    v12 = v38->_unavailableProgramNoticeSpecifier;
+    v12 = selfCopy->_unavailableProgramNoticeSpecifier;
     location = &v36;
     [(PSSpecifier *)v12 setProperty:v36 forKey:*MEMORY[0x277D40160]];
-    [*(&v38->super.super.super.super.super.isa + *(v15 + 1996)) setProperty:&unk_287B85588 forKey:*MEMORY[0x277D3FD68]];
-    [*(&v38->super.super.super.super.super.isa + *(v15 + 1996)) setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FD80]];
-    [*(&v38->super.super.super.super.super.isa + *(v15 + 1996)) setProperty:@"BETA_PROGRAMS_NOTICE" forKey:*MEMORY[0x277D3FFB8]];
-    v39 = MEMORY[0x277D82BE0](*(&v38->super.super.super.super.super.isa + *(v15 + 1996)));
+    [*(&selfCopy->super.super.super.super.super.isa + *(v15 + 1996)) setProperty:&unk_287B85588 forKey:*MEMORY[0x277D3FD68]];
+    [*(&selfCopy->super.super.super.super.super.isa + *(v15 + 1996)) setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FD80]];
+    [*(&selfCopy->super.super.super.super.super.isa + *(v15 + 1996)) setProperty:@"BETA_PROGRAMS_NOTICE" forKey:*MEMORY[0x277D3FFB8]];
+    v39 = MEMORY[0x277D82BE0](*(&selfCopy->super.super.super.super.super.isa + *(v15 + 1996)));
     obj = 0;
     objc_storeStrong(location, 0);
     objc_storeStrong(v37, obj);
@@ -278,11 +278,11 @@
 
   else
   {
-    v40 = [v42[1] updateController];
-    v41 = [v40 betaUpdatesHasInstallationRestriction];
-    MEMORY[0x277D82BD8](v40);
-    v60 = v41;
-    if (v41)
+    updateController = [v42[1] updateController];
+    betaUpdatesHasInstallationRestriction = [updateController betaUpdatesHasInstallationRestriction];
+    MEMORY[0x277D82BD8](updateController);
+    v60 = betaUpdatesHasInstallationRestriction;
+    if (betaUpdatesHasInstallationRestriction)
     {
       location = _SUSUILoggingFacility();
       v58 = OS_LOG_TYPE_DEFAULT;
@@ -301,13 +301,13 @@
 
     else
     {
-      v35 = [v42[1] updateController];
-      v57 = [v35 betaUpdatesAppleID];
-      MEMORY[0x277D82BD8](v35);
+      updateController2 = [v42[1] updateController];
+      betaUpdatesAppleID = [updateController2 betaUpdatesAppleID];
+      MEMORY[0x277D82BD8](updateController2);
       v56 = 0;
-      v36 = [v42[1] mismatchedSpecifier];
-      MEMORY[0x277D82BD8](v36);
-      if (v36)
+      mismatchedSpecifier = [v42[1] mismatchedSpecifier];
+      MEMORY[0x277D82BD8](mismatchedSpecifier);
+      if (mismatchedSpecifier)
       {
         v54 = 0;
         v52 = 0;
@@ -315,7 +315,7 @@
         v48 = 0;
         v46 = 0;
         v44 = 0;
-        if (v57)
+        if (betaUpdatesAppleID)
         {
           v32 = MEMORY[0x277CCACA8];
           v31 = MEMORY[0x277CCA8D8];
@@ -375,13 +375,13 @@
         }
       }
 
-      else if (v57)
+      else if (betaUpdatesAppleID)
       {
         v25 = MEMORY[0x277CCACA8];
         v24 = MEMORY[0x277CCA8D8];
         v27 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v26 = [v27 localizedStringForKey:@"BETA_UPDATES_APPLE_ACCOUNT_PREFIX" value:&stru_287B79370 table:@"Software Update"];
-        v2 = [v25 stringWithFormat:v57];
+        v2 = [v25 stringWithFormat:betaUpdatesAppleID];
         v3 = v56;
         v56 = v2;
         MEMORY[0x277D82BD8](v3);
@@ -420,7 +420,7 @@
       v13 = v18;
       v42[2] = v12;
       objc_storeStrong(v13, v11);
-      objc_storeStrong(&v57, v19);
+      objc_storeStrong(&betaUpdatesAppleID, v19);
     }
   }
 
@@ -433,22 +433,22 @@
 
 - (void)setupProgramsGroupSpecifier
 {
-  v4 = [(SUSUISoftwareUpdateBetaUpdatesController *)self programsGroup];
-  MEMORY[0x277D82BD8](v4);
-  if (!v4)
+  programsGroup = [(SUSUISoftwareUpdateBetaUpdatesController *)self programsGroup];
+  MEMORY[0x277D82BD8](programsGroup);
+  if (!programsGroup)
   {
     v2 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"BETA_PROGRAMS_LIST_GROUP"];
     [(SUSUISoftwareUpdateBetaUpdatesController *)self setProgramsGroup:?];
     MEMORY[0x277D82BD8](v2);
-    v3 = [(SUSUISoftwareUpdateBetaUpdatesController *)self programsGroup];
-    [(PSSpecifier *)v3 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FFE8]];
-    MEMORY[0x277D82BD8](v3);
+    programsGroup2 = [(SUSUISoftwareUpdateBetaUpdatesController *)self programsGroup];
+    [(PSSpecifier *)programsGroup2 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FFE8]];
+    MEMORY[0x277D82BD8](programsGroup2);
   }
 }
 
 - (void)updateFooter
 {
-  v23 = self;
+  selfCopy = self;
   v22[1] = a2;
   v6 = MEMORY[0x277CCACA8];
   v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -469,37 +469,37 @@
   v21.length = v2;
   MEMORY[0x277D82BD8](v13);
   MEMORY[0x277D82BD8](v14);
-  v16 = [(SUSUISoftwareUpdateBetaUpdatesController *)v23 programsGroup];
+  programsGroup = [(SUSUISoftwareUpdateBetaUpdatesController *)selfCopy programsGroup];
   v3 = objc_opt_class();
   v15 = NSStringFromClass(v3);
   v4 = *MEMORY[0x277D3FF48];
-  [PSSpecifier setProperty:v16 forKey:"setProperty:forKey:"];
+  [PSSpecifier setProperty:programsGroup forKey:"setProperty:forKey:"];
   MEMORY[0x277D82BD8](v15);
-  MEMORY[0x277D82BD8](v16);
-  v17 = [(SUSUISoftwareUpdateBetaUpdatesController *)v23 programsGroup];
-  [(PSSpecifier *)v17 setProperty:v22[0] forKey:*MEMORY[0x277D3FF70]];
-  MEMORY[0x277D82BD8](v17);
-  v19 = [(SUSUISoftwareUpdateBetaUpdatesController *)v23 programsGroup];
+  MEMORY[0x277D82BD8](programsGroup);
+  programsGroup2 = [(SUSUISoftwareUpdateBetaUpdatesController *)selfCopy programsGroup];
+  [(PSSpecifier *)programsGroup2 setProperty:v22[0] forKey:*MEMORY[0x277D3FF70]];
+  MEMORY[0x277D82BD8](programsGroup2);
+  programsGroup3 = [(SUSUISoftwareUpdateBetaUpdatesController *)selfCopy programsGroup];
   v18 = NSStringFromRange(v21);
   v5 = *MEMORY[0x277D3FF58];
-  [PSSpecifier setProperty:v19 forKey:"setProperty:forKey:"];
+  [PSSpecifier setProperty:programsGroup3 forKey:"setProperty:forKey:"];
   MEMORY[0x277D82BD8](v18);
-  MEMORY[0x277D82BD8](v19);
-  v20 = [(SUSUISoftwareUpdateBetaUpdatesController *)v23 programsGroup];
-  [(PSSpecifier *)v20 setProperty:@"https://beta.apple.com/" forKey:*MEMORY[0x277D3FF78]];
-  MEMORY[0x277D82BD8](v20);
+  MEMORY[0x277D82BD8](programsGroup3);
+  programsGroup4 = [(SUSUISoftwareUpdateBetaUpdatesController *)selfCopy programsGroup];
+  [(PSSpecifier *)programsGroup4 setProperty:@"https://beta.apple.com/" forKey:*MEMORY[0x277D3FF78]];
+  MEMORY[0x277D82BD8](programsGroup4);
   objc_storeStrong(v22, 0);
 }
 
 - (void)setupProgramListSpecifiers
 {
   v53 = *MEMORY[0x277D85DE8];
-  v49 = self;
+  selfCopy = self;
   v48[1] = a2;
   [(SUSUISoftwareUpdateBetaUpdatesController *)self setMismatchedSpecifier:?];
-  v23 = [(SUSUISoftwareUpdateBetaUpdatesController *)v49 updateController];
-  v48[0] = [v23 availableBetaPrograms];
-  MEMORY[0x277D82BD8](v23);
+  updateController = [(SUSUISoftwareUpdateBetaUpdatesController *)selfCopy updateController];
+  v48[0] = [updateController availableBetaPrograms];
+  MEMORY[0x277D82BD8](updateController);
   v47 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v48[0], "count") + 2}];
   v24 = MEMORY[0x277D3FAD8];
   v26 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -508,29 +508,29 @@
   MEMORY[0x277D82BD8](v25);
   MEMORY[0x277D82BD8](v26);
   [v46 setProperty:@"BETA_PROGRAMS_OFF_SELECTION" forKey:*MEMORY[0x277D3FFB8]];
-  v27 = [(SUSUISoftwareUpdateBetaUpdatesController *)v49 updateController];
-  v45 = [v27 enrolledBetaProgram];
-  MEMORY[0x277D82BD8](v27);
-  v28 = [(SUSUISoftwareUpdateBetaUpdatesController *)v49 updateController];
-  v29 = [v28 enrolledBetaProgram];
-  MEMORY[0x277D82BD8](v29);
-  MEMORY[0x277D82BD8](v28);
-  if (!v29)
+  updateController2 = [(SUSUISoftwareUpdateBetaUpdatesController *)selfCopy updateController];
+  enrolledBetaProgram = [updateController2 enrolledBetaProgram];
+  MEMORY[0x277D82BD8](updateController2);
+  updateController3 = [(SUSUISoftwareUpdateBetaUpdatesController *)selfCopy updateController];
+  enrolledBetaProgram2 = [updateController3 enrolledBetaProgram];
+  MEMORY[0x277D82BD8](enrolledBetaProgram2);
+  MEMORY[0x277D82BD8](updateController3);
+  if (!enrolledBetaProgram2)
   {
-    v22 = [(SUSUISoftwareUpdateBetaUpdatesController *)v49 programsGroup];
-    [(PSSpecifier *)v22 setProperty:v46 forKey:*MEMORY[0x277D40090]];
-    MEMORY[0x277D82BD8](v22);
+    programsGroup = [(SUSUISoftwareUpdateBetaUpdatesController *)selfCopy programsGroup];
+    [(PSSpecifier *)programsGroup setProperty:v46 forKey:*MEMORY[0x277D40090]];
+    MEMORY[0x277D82BD8](programsGroup);
   }
 
   [v47 addObject:v46];
   v43 = 0;
   v41 = 0;
   LOBYTE(v21) = 0;
-  if (v45)
+  if (enrolledBetaProgram)
   {
     v44 = [v48[0] valueForKey:@"programID"];
     v43 = 1;
-    v42 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v45, "programID")}];
+    v42 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(enrolledBetaProgram, "programID")}];
     v41 = 1;
     v21 = [v44 containsObject:?] ^ 1;
   }
@@ -547,20 +547,20 @@
 
   if (v21)
   {
-    v40 = [(SUSUISoftwareUpdateBetaUpdatesController *)v49 _specifierForBetaProgram:v45 rowIdentifier:@"BETA_PROGRAMS_UNAVAILABLE_PROGRAM"];
+    v40 = [(SUSUISoftwareUpdateBetaUpdatesController *)selfCopy _specifierForBetaProgram:enrolledBetaProgram rowIdentifier:@"BETA_PROGRAMS_UNAVAILABLE_PROGRAM"];
     [v47 addObject:v40];
-    v20 = [(SUSUISoftwareUpdateBetaUpdatesController *)v49 programsGroup];
-    [(PSSpecifier *)v20 setProperty:v40 forKey:*MEMORY[0x277D40090]];
-    MEMORY[0x277D82BD8](v20);
-    [(SUSUISoftwareUpdateBetaUpdatesController *)v49 setMismatchedSpecifier:v40];
+    programsGroup2 = [(SUSUISoftwareUpdateBetaUpdatesController *)selfCopy programsGroup];
+    [(PSSpecifier *)programsGroup2 setProperty:v40 forKey:*MEMORY[0x277D40090]];
+    MEMORY[0x277D82BD8](programsGroup2);
+    [(SUSUISoftwareUpdateBetaUpdatesController *)selfCopy setMismatchedSpecifier:v40];
     objc_storeStrong(&v40, 0);
   }
 
-  v18 = [(SUSUISoftwareUpdateBetaUpdatesController *)v49 updateController];
-  v19 = [v18 betaUpdatesHasInstallationRestriction];
-  MEMORY[0x277D82BD8](v18);
-  v39 = v19;
-  v38 = v19 == 0;
+  updateController4 = [(SUSUISoftwareUpdateBetaUpdatesController *)selfCopy updateController];
+  betaUpdatesHasInstallationRestriction = [updateController4 betaUpdatesHasInstallationRestriction];
+  MEMORY[0x277D82BD8](updateController4);
+  v39 = betaUpdatesHasInstallationRestriction;
+  v38 = betaUpdatesHasInstallationRestriction == 0;
   oslog = _SUSUILoggingFacility();
   type = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -593,18 +593,18 @@
       }
 
       v34 = *(__b[1] + 8 * v11);
-      v8 = [v34 title];
-      MEMORY[0x277D82BD8](v8);
-      if (v8)
+      title = [v34 title];
+      MEMORY[0x277D82BD8](title);
+      if (title)
       {
-        v7 = [v45 programID];
-        v32 = v7 == [v34 programID];
-        v31 = [(SUSUISoftwareUpdateBetaUpdatesController *)v49 _specifierForBetaProgram:v34 rowIdentifier:0];
+        programID = [enrolledBetaProgram programID];
+        v32 = programID == [v34 programID];
+        v31 = [(SUSUISoftwareUpdateBetaUpdatesController *)selfCopy _specifierForBetaProgram:v34 rowIdentifier:0];
         if (v32)
         {
-          v6 = [(SUSUISoftwareUpdateBetaUpdatesController *)v49 programsGroup];
-          [(PSSpecifier *)v6 setProperty:v31 forKey:*MEMORY[0x277D40090]];
-          MEMORY[0x277D82BD8](v6);
+          programsGroup3 = [(SUSUISoftwareUpdateBetaUpdatesController *)selfCopy programsGroup];
+          [(PSSpecifier *)programsGroup3 setProperty:v31 forKey:*MEMORY[0x277D40090]];
+          MEMORY[0x277D82BD8](programsGroup3);
           [v47 addObject:v31];
         }
 
@@ -619,10 +619,10 @@
           if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
           {
             v4 = v30;
-            v5 = [v34 title];
-            if (v5)
+            title2 = [v34 title];
+            if (title2)
             {
-              v3 = v5;
+              v3 = title2;
             }
 
             else
@@ -632,7 +632,7 @@
 
             __os_log_helper_16_2_2_8_32_8_66(v50, "[SUSUISoftwareUpdateBetaUpdatesController setupProgramListSpecifiers]", v3);
             _os_log_impl(&dword_26AC94000, v4, OS_LOG_TYPE_DEFAULT, "%s: Skipping adding %{public}@ to program list", v50, 0x16u);
-            MEMORY[0x277D82BD8](v5);
+            MEMORY[0x277D82BD8](title2);
           }
 
           objc_storeStrong(&v30, 0);
@@ -656,27 +656,27 @@
 
   MEMORY[0x277D82BD8](obj);
   v2 = [MEMORY[0x277CBEA60] arrayWithArray:v47];
-  [(SUSUISoftwareUpdateBetaUpdatesController *)v49 setProgramsList:?];
+  [(SUSUISoftwareUpdateBetaUpdatesController *)selfCopy setProgramsList:?];
   MEMORY[0x277D82BD8](v2);
-  objc_storeStrong(&v45, 0);
+  objc_storeStrong(&enrolledBetaProgram, 0);
   objc_storeStrong(&v46, 0);
   objc_storeStrong(&v47, 0);
   objc_storeStrong(v48, 0);
   *MEMORY[0x277D85DE8];
 }
 
-- (id)_specifierForBetaProgram:(id)a3 rowIdentifier:(id)a4
+- (id)_specifierForBetaProgram:(id)program rowIdentifier:(id)identifier
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, program);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, identifier);
   v8 = MEMORY[0x277D3FAD8];
-  v9 = [location[0] title];
+  title = [location[0] title];
   v11 = [v8 preferenceSpecifierNamed:0 target:? set:? get:? detail:? cell:? edit:?];
-  MEMORY[0x277D82BD8](v9);
+  MEMORY[0x277D82BD8](title);
   if (v12)
   {
     [v11 setProperty:v12 forKey:*MEMORY[0x277D3FFB8]];
@@ -685,11 +685,11 @@
   else
   {
     v6 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(location[0], "programID")}];
-    v10 = [v6 stringValue];
+    stringValue = [v6 stringValue];
     MEMORY[0x277D82BD8](v6);
     [v11 setUserInfo:location[0]];
-    [v11 setProperty:v10 forKey:*MEMORY[0x277D3FFB8]];
-    objc_storeStrong(&v10, 0);
+    [v11 setProperty:stringValue forKey:*MEMORY[0x277D3FFB8]];
+    objc_storeStrong(&stringValue, 0);
   }
 
   [v11 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FD80]];
@@ -701,19 +701,19 @@
   return v5;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v59 = *MEMORY[0x277D85DE8];
-  v55 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v53 = 0;
-  objc_storeStrong(&v53, a4);
-  v52.receiver = v55;
+  objc_storeStrong(&v53, path);
+  v52.receiver = selfCopy;
   v52.super_class = SUSUISoftwareUpdateBetaUpdatesController;
   [(SUSUISoftwareUpdateBetaUpdatesController *)&v52 tableView:location[0] didSelectRowAtIndexPath:v53];
-  v51 = [(SUSUISoftwareUpdateBetaUpdatesController *)v55 specifierAtIndexPath:v53];
+  v51 = [(SUSUISoftwareUpdateBetaUpdatesController *)selfCopy specifierAtIndexPath:v53];
   v50 = [v51 propertyForKey:*MEMORY[0x277D3FFB8]];
   if ([v50 isEqualToString:@"BETA_PROGRAMS_OFF_SELECTION"])
   {
@@ -726,16 +726,16 @@
     }
 
     objc_storeStrong(&v49, 0);
-    v18 = MEMORY[0x277D82BE0](v55);
+    v18 = MEMORY[0x277D82BE0](selfCopy);
     objc_sync_enter(v18);
-    if ([(SUSUISoftwareUpdateBetaUpdatesController *)v55 isBusy])
+    if ([(SUSUISoftwareUpdateBetaUpdatesController *)selfCopy isBusy])
     {
       v47 = 1;
     }
 
     else
     {
-      [(SUSUISoftwareUpdateBetaUpdatesController *)v55 setIsBusy:1];
+      [(SUSUISoftwareUpdateBetaUpdatesController *)selfCopy setIsBusy:1];
       v47 = 0;
     }
 
@@ -743,19 +743,19 @@
     MEMORY[0x277D82BD8](v18);
     if (!v47)
     {
-      [(SUSUISoftwareUpdateBetaUpdatesController *)v55 reloadSpecifiers];
-      v17 = [(SUSUISoftwareUpdateBetaUpdatesController *)v55 updateController];
+      [(SUSUISoftwareUpdateBetaUpdatesController *)selfCopy reloadSpecifiers];
+      updateController = [(SUSUISoftwareUpdateBetaUpdatesController *)selfCopy updateController];
       v41 = MEMORY[0x277D85DD0];
       v42 = -1073741824;
       v43 = 0;
       v44 = __78__SUSUISoftwareUpdateBetaUpdatesController_tableView_didSelectRowAtIndexPath___block_invoke;
       v45 = &unk_279CB98E8;
-      v46 = MEMORY[0x277D82BE0](v55);
-      [v17 unenrollFromBetaProgramsWithCompletion:&v41];
-      MEMORY[0x277D82BD8](v17);
-      v16 = [(SUSUISoftwareUpdateBetaUpdatesController *)v55 programsGroup];
-      [(PSSpecifier *)v16 setProperty:v51 forKey:*MEMORY[0x277D40090]];
-      MEMORY[0x277D82BD8](v16);
+      v46 = MEMORY[0x277D82BE0](selfCopy);
+      [updateController unenrollFromBetaProgramsWithCompletion:&v41];
+      MEMORY[0x277D82BD8](updateController);
+      programsGroup = [(SUSUISoftwareUpdateBetaUpdatesController *)selfCopy programsGroup];
+      [(PSSpecifier *)programsGroup setProperty:v51 forKey:*MEMORY[0x277D40090]];
+      MEMORY[0x277D82BD8](programsGroup);
       objc_storeStrong(&v46, 0);
 LABEL_41:
       v47 = 0;
@@ -775,44 +775,44 @@ LABEL_41:
       }
 
       objc_storeStrong(&v40, 0);
-      v14 = [(SUSUISoftwareUpdateBetaUpdatesController *)v55 mismatchedSpecifier];
+      mismatchedSpecifier = [(SUSUISoftwareUpdateBetaUpdatesController *)selfCopy mismatchedSpecifier];
       v37 = 0;
       v35 = 0;
       v15 = 1;
-      if (!v14)
+      if (!mismatchedSpecifier)
       {
-        v38 = [MEMORY[0x277D4D310] sharedManager];
+        mEMORY[0x277D4D310] = [MEMORY[0x277D4D310] sharedManager];
         v37 = 1;
-        v36 = [v38 seedingAppleIDUsernameForCurrentDevice];
+        seedingAppleIDUsernameForCurrentDevice = [mEMORY[0x277D4D310] seedingAppleIDUsernameForCurrentDevice];
         v35 = 1;
-        v15 = v36 == 0;
+        v15 = seedingAppleIDUsernameForCurrentDevice == 0;
       }
 
       if (v35)
       {
-        MEMORY[0x277D82BD8](v36);
+        MEMORY[0x277D82BD8](seedingAppleIDUsernameForCurrentDevice);
       }
 
       if (v37)
       {
-        MEMORY[0x277D82BD8](v38);
+        MEMORY[0x277D82BD8](mEMORY[0x277D4D310]);
       }
 
-      MEMORY[0x277D82BD8](v14);
+      MEMORY[0x277D82BD8](mismatchedSpecifier);
       if (v15)
       {
-        [(SUSUISoftwareUpdateBetaUpdatesController *)v55 presentAuthKitController];
+        [(SUSUISoftwareUpdateBetaUpdatesController *)selfCopy presentAuthKitController];
       }
 
       else
       {
-        [(SUSUISoftwareUpdateBetaUpdatesController *)v55 presentAuthenticationDialog];
+        [(SUSUISoftwareUpdateBetaUpdatesController *)selfCopy presentAuthenticationDialog];
       }
 
       goto LABEL_41;
     }
 
-    v13 = [v51 userInfo];
+    userInfo = [v51 userInfo];
     objc_opt_class();
     LOBYTE(v12) = 0;
     if (objc_opt_isKindOfClass())
@@ -820,44 +820,44 @@ LABEL_41:
       v12 = [v50 isEqualToString:@"BETA_PROGRAMS_UNAVAILABLE_PROGRAM"] ^ 1;
     }
 
-    MEMORY[0x277D82BD8](v13);
+    MEMORY[0x277D82BD8](userInfo);
     if ((v12 & 1) == 0)
     {
       goto LABEL_41;
     }
 
-    v34 = [v51 userInfo];
-    v11 = [(SUSUISoftwareUpdateBetaUpdatesController *)v55 updateController];
-    v9 = [v11 enrolledBetaProgram];
+    userInfo2 = [v51 userInfo];
+    updateController2 = [(SUSUISoftwareUpdateBetaUpdatesController *)selfCopy updateController];
+    enrolledBetaProgram = [updateController2 enrolledBetaProgram];
     v32 = 0;
     v30 = 0;
     v10 = 0;
-    if (v9)
+    if (enrolledBetaProgram)
     {
       v10 = 0;
-      if (v34)
+      if (userInfo2)
       {
-        v33 = [(SUSUISoftwareUpdateBetaUpdatesController *)v55 updateController];
+        updateController3 = [(SUSUISoftwareUpdateBetaUpdatesController *)selfCopy updateController];
         v32 = 1;
-        v31 = [v33 enrolledBetaProgram];
+        enrolledBetaProgram2 = [updateController3 enrolledBetaProgram];
         v30 = 1;
-        v8 = [v31 programID];
-        v10 = v8 == [v34 programID];
+        programID = [enrolledBetaProgram2 programID];
+        v10 = programID == [userInfo2 programID];
       }
     }
 
     if (v30)
     {
-      MEMORY[0x277D82BD8](v31);
+      MEMORY[0x277D82BD8](enrolledBetaProgram2);
     }
 
     if (v32)
     {
-      MEMORY[0x277D82BD8](v33);
+      MEMORY[0x277D82BD8](updateController3);
     }
 
-    MEMORY[0x277D82BD8](v9);
-    MEMORY[0x277D82BD8](v11);
+    MEMORY[0x277D82BD8](enrolledBetaProgram);
+    MEMORY[0x277D82BD8](updateController2);
     if (v10)
     {
       v47 = 1;
@@ -865,16 +865,16 @@ LABEL_41:
 
     else
     {
-      v7 = MEMORY[0x277D82BE0](v55);
+      v7 = MEMORY[0x277D82BE0](selfCopy);
       objc_sync_enter(v7);
-      if ([(SUSUISoftwareUpdateBetaUpdatesController *)v55 isBusy])
+      if ([(SUSUISoftwareUpdateBetaUpdatesController *)selfCopy isBusy])
       {
         v47 = 1;
       }
 
       else
       {
-        [(SUSUISoftwareUpdateBetaUpdatesController *)v55 setIsBusy:1];
+        [(SUSUISoftwareUpdateBetaUpdatesController *)selfCopy setIsBusy:1];
         v47 = 0;
       }
 
@@ -882,29 +882,29 @@ LABEL_41:
       MEMORY[0x277D82BD8](v7);
       if (!v47)
       {
-        [(SUSUISoftwareUpdateBetaUpdatesController *)v55 reloadSpecifiers];
+        [(SUSUISoftwareUpdateBetaUpdatesController *)selfCopy reloadSpecifiers];
         oslog = _SUSUILoggingFacility();
         v28 = OS_LOG_TYPE_DEFAULT;
         if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
         {
-          __os_log_helper_16_2_2_8_32_8_0(v56, "-[SUSUISoftwareUpdateBetaUpdatesController tableView:didSelectRowAtIndexPath:]", [v34 programID]);
+          __os_log_helper_16_2_2_8_32_8_0(v56, "-[SUSUISoftwareUpdateBetaUpdatesController tableView:didSelectRowAtIndexPath:]", [userInfo2 programID]);
           _os_log_impl(&dword_26AC94000, oslog, v28, "%s: Enrolling in program %ld", v56, 0x16u);
         }
 
         objc_storeStrong(&oslog, 0);
-        v6 = [(SUSUISoftwareUpdateBetaUpdatesController *)v55 updateController];
-        v4 = v34;
-        v5 = v55;
+        updateController4 = [(SUSUISoftwareUpdateBetaUpdatesController *)selfCopy updateController];
+        v4 = userInfo2;
+        v5 = selfCopy;
         v20 = MEMORY[0x277D85DD0];
         v21 = -1073741824;
         v22 = 0;
         v23 = __78__SUSUISoftwareUpdateBetaUpdatesController_tableView_didSelectRowAtIndexPath___block_invoke_370;
         v24 = &unk_279CB9820;
-        v25 = MEMORY[0x277D82BE0](v34);
-        v26 = MEMORY[0x277D82BE0](v55);
+        v25 = MEMORY[0x277D82BE0](userInfo2);
+        v26 = MEMORY[0x277D82BE0](selfCopy);
         v27 = MEMORY[0x277D82BE0](v51);
-        [v6 setBetaProgramFromUI:v4 forViewController:v5 withCompletion:&v20];
-        MEMORY[0x277D82BD8](v6);
+        [updateController4 setBetaProgramFromUI:v4 forViewController:v5 withCompletion:&v20];
+        MEMORY[0x277D82BD8](updateController4);
         objc_storeStrong(&v27, 0);
         objc_storeStrong(&v26, 0);
         objc_storeStrong(&v25, 0);
@@ -912,7 +912,7 @@ LABEL_41:
       }
     }
 
-    objc_storeStrong(&v34, 0);
+    objc_storeStrong(&userInfo2, 0);
     if (!v47)
     {
       goto LABEL_41;
@@ -990,38 +990,38 @@ void __78__SUSUISoftwareUpdateBetaUpdatesController_tableView_didSelectRowAtInde
   *MEMORY[0x277D85DE8];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v19 = 0;
-  objc_storeStrong(&v19, a4);
-  v17.receiver = v21;
+  objc_storeStrong(&v19, path);
+  v17.receiver = selfCopy;
   v17.super_class = SUSUISoftwareUpdateBetaUpdatesController;
   v18 = [(SUSUISoftwareUpdateBetaUpdatesController *)&v17 tableView:location[0] cellForRowAtIndexPath:v19];
-  v16 = [(SUSUISoftwareUpdateBetaUpdatesController *)v21 specifierAtIndexPath:v19];
+  v16 = [(SUSUISoftwareUpdateBetaUpdatesController *)selfCopy specifierAtIndexPath:v19];
   v15 = [v16 propertyForKey:*MEMORY[0x277D3FFB8]];
   if ([v15 isEqualToString:@"BETA_PROGRAMS_NOTICE"])
   {
     v14 = MEMORY[0x277D82BE0](v18);
-    v6 = [v14 detailTextLabel];
-    [v6 setNumberOfLines:0];
-    MEMORY[0x277D82BD8](v6);
-    v10 = [v14 imageView];
+    detailTextLabel = [v14 detailTextLabel];
+    [detailTextLabel setNumberOfLines:0];
+    MEMORY[0x277D82BD8](detailTextLabel);
+    imageView = [v14 imageView];
     v7 = MEMORY[0x277D755B8];
     v9 = [MEMORY[0x277D755D0] configurationWithScale:3];
     v8 = [v7 systemImageNamed:@"exclamationmark.triangle.fill" withConfiguration:?];
-    [v10 setImage:?];
+    [imageView setImage:?];
     MEMORY[0x277D82BD8](v8);
     MEMORY[0x277D82BD8](v9);
-    MEMORY[0x277D82BD8](v10);
-    v12 = [v14 imageView];
-    v11 = [MEMORY[0x277D75348] systemYellowColor];
-    [v12 setTintColor:?];
-    MEMORY[0x277D82BD8](v11);
-    MEMORY[0x277D82BD8](v12);
+    MEMORY[0x277D82BD8](imageView);
+    imageView2 = [v14 imageView];
+    systemYellowColor = [MEMORY[0x277D75348] systemYellowColor];
+    [imageView2 setTintColor:?];
+    MEMORY[0x277D82BD8](systemYellowColor);
+    MEMORY[0x277D82BD8](imageView2);
     objc_storeStrong(&v14, 0);
   }
 
@@ -1037,23 +1037,23 @@ void __78__SUSUISoftwareUpdateBetaUpdatesController_tableView_didSelectRowAtInde
 
 - (void)presentAuthenticationDialog
 {
-  v70 = self;
+  selfCopy = self;
   location[1] = a2;
   objc_initWeak(location, self);
-  v38 = [MEMORY[0x277D4D310] sharedManager];
-  v68 = [v38 seedingAppleIDUsernameForCurrentDevice];
-  MEMORY[0x277D82BD8](v38);
-  v36 = [MEMORY[0x277D4D310] sharedManager];
-  v37 = [v36 isCurrentDeviceUsingSeedingAppleID];
-  MEMORY[0x277D82BD8](v36);
-  v67 = v37;
+  mEMORY[0x277D4D310] = [MEMORY[0x277D4D310] sharedManager];
+  seedingAppleIDUsernameForCurrentDevice = [mEMORY[0x277D4D310] seedingAppleIDUsernameForCurrentDevice];
+  MEMORY[0x277D82BD8](mEMORY[0x277D4D310]);
+  mEMORY[0x277D4D310]2 = [MEMORY[0x277D4D310] sharedManager];
+  isCurrentDeviceUsingSeedingAppleID = [mEMORY[0x277D4D310]2 isCurrentDeviceUsingSeedingAppleID];
+  MEMORY[0x277D82BD8](mEMORY[0x277D4D310]2);
+  v67 = isCurrentDeviceUsingSeedingAppleID;
   v66 = 0;
-  if (v68)
+  if (seedingAppleIDUsernameForCurrentDevice)
   {
     v32 = MEMORY[0x277CCACA8];
     v31 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v30 = [v31 localizedStringForKey:@"BETA_UPDATES_APPLE_ACCOUNT_AUTHENTICATION_ALERT_MESSAGE" value:&stru_287B79370 table:@"Software Update"];
-    v4 = [v32 stringWithFormat:v68];
+    v4 = [v32 stringWithFormat:seedingAppleIDUsernameForCurrentDevice];
     v5 = v66;
     v66 = v4;
     MEMORY[0x277D82BD8](v5);
@@ -1104,22 +1104,22 @@ void __78__SUSUISoftwareUpdateBetaUpdatesController_tableView_didSelectRowAtInde
   MEMORY[0x277D82BD8](v21);
   if (v67)
   {
-    v17 = [MEMORY[0x277D4D310] sharedManager];
-    v57 = [v17 deviceAppleIDUsernameForCurrentDevice];
-    MEMORY[0x277D82BD8](v17);
+    mEMORY[0x277D4D310]3 = [MEMORY[0x277D4D310] sharedManager];
+    deviceAppleIDUsernameForCurrentDevice = [mEMORY[0x277D4D310]3 deviceAppleIDUsernameForCurrentDevice];
+    MEMORY[0x277D82BD8](mEMORY[0x277D4D310]3);
     v54 = 0;
     v52 = 0;
     v50 = 0;
     v48 = 0;
     v46 = 0;
-    if (v57)
+    if (deviceAppleIDUsernameForCurrentDevice)
     {
       v16 = MEMORY[0x277CCACA8];
       v55 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v54 = 1;
       v53 = [v55 localizedStringForKey:@"BETA_UPDATES_SIGN_OUT_APPLE_ACCOUNT" value:&stru_287B79370 table:@"Software Update"];
       v52 = 1;
-      v51 = [v16 stringWithFormat:v57];
+      v51 = [v16 stringWithFormat:deviceAppleIDUsernameForCurrentDevice];
       v50 = 1;
       v6 = MEMORY[0x277D82BE0](v51);
     }
@@ -1168,14 +1168,14 @@ void __78__SUSUISoftwareUpdateBetaUpdatesController_tableView_didSelectRowAtInde
     v42 = __71__SUSUISoftwareUpdateBetaUpdatesController_presentAuthenticationDialog__block_invoke_400;
     v43 = &unk_279CBB3C8;
     objc_copyWeak(&v45, location);
-    v44 = MEMORY[0x277D82BE0](v70);
+    v44 = MEMORY[0x277D82BE0](selfCopy);
     v12 = [v15 actionWithTitle:v14 style:0 handler:&v39];
     [v13 addAction:?];
     MEMORY[0x277D82BD8](v12);
     objc_storeStrong(&v44, 0);
     objc_destroyWeak(&v45);
     objc_storeStrong(&v56, 0);
-    objc_storeStrong(&v57, 0);
+    objc_storeStrong(&deviceAppleIDUsernameForCurrentDevice, 0);
   }
 
   v10 = v65;
@@ -1187,11 +1187,11 @@ void __78__SUSUISoftwareUpdateBetaUpdatesController_tableView_didSelectRowAtInde
   MEMORY[0x277D82BD8](v7);
   MEMORY[0x277D82BD8](v8);
   MEMORY[0x277D82BD8](v9);
-  [(SUSUISoftwareUpdateBetaUpdatesController *)v70 presentViewController:v65 animated:1 completion:0];
+  [(SUSUISoftwareUpdateBetaUpdatesController *)selfCopy presentViewController:v65 animated:1 completion:0];
   objc_destroyWeak(&v64);
   objc_storeStrong(&v65, 0);
   objc_storeStrong(&v66, 0);
-  objc_storeStrong(&v68, 0);
+  objc_storeStrong(&seedingAppleIDUsernameForCurrentDevice, 0);
   objc_destroyWeak(location);
 }
 
@@ -1309,13 +1309,13 @@ void __71__SUSUISoftwareUpdateBetaUpdatesController_presentAuthenticationDialog_
 
 - (void)presentAuthKitController
 {
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   objc_initWeak(location, self);
   v21 = objc_alloc_init(MEMORY[0x277CF0380]);
   [v21 setShouldAllowAppleIDCreation:0];
   [v21 setAuthenticationType:2];
-  [v21 setPresentingViewController:v23];
+  [v21 setPresentingViewController:selfCopy];
   [v21 setIsEphemeral:0];
   v12 = MEMORY[0x277CCACA8];
   v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -1343,7 +1343,7 @@ void __71__SUSUISoftwareUpdateBetaUpdatesController_presentAuthenticationDialog_
   v16 = __68__SUSUISoftwareUpdateBetaUpdatesController_presentAuthKitController__block_invoke;
   v17 = &unk_279CBB3F0;
   objc_copyWeak(&v19, location);
-  v18 = MEMORY[0x277D82BE0](v23);
+  v18 = MEMORY[0x277D82BE0](selfCopy);
   [v3 authenticateWithContext:v2 completion:&v13];
   objc_storeStrong(&v18, 0);
   objc_destroyWeak(&v19);

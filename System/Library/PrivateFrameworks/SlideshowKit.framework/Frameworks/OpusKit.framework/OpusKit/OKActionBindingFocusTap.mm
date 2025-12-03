@@ -1,15 +1,15 @@
 @interface OKActionBindingFocusTap
 + (id)supportedSettings;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)ownsGestureRecognizer:(id)a3;
-- (BOOL)performAction:(id)a3;
-- (BOOL)respondsToAction:(id)a3 isTouchCountAgnostic:(BOOL)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)ownsGestureRecognizer:(id)recognizer;
+- (BOOL)performAction:(id)action;
+- (BOOL)respondsToAction:(id)action isTouchCountAgnostic:(BOOL)agnostic;
 - (OKActionBindingFocusTap)init;
-- (OKActionBindingFocusTap)initWithSettings:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (OKActionBindingFocusTap)initWithSettings:(id)settings;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)handleTap:(id)a3;
-- (void)loadForResponder:(id)a3 scope:(unint64_t)a4;
+- (void)handleTap:(id)tap;
+- (void)loadForResponder:(id)responder scope:(unint64_t)scope;
 - (void)unload;
 @end
 
@@ -30,26 +30,26 @@
   return result;
 }
 
-- (OKActionBindingFocusTap)initWithSettings:(id)a3
+- (OKActionBindingFocusTap)initWithSettings:(id)settings
 {
   v9.receiver = self;
   v9.super_class = OKActionBindingFocusTap;
   v4 = [(OKActionBindingTap *)&v9 initWithSettings:?];
   if (v4)
   {
-    v5 = [a3 objectForKey:@"mode"];
+    v5 = [settings objectForKey:@"mode"];
     if (v5)
     {
       v4->_mode = [v5 unsignedIntegerValue];
     }
 
-    v6 = [a3 objectForKey:@"focusInEnabled"];
+    v6 = [settings objectForKey:@"focusInEnabled"];
     if (v6)
     {
       v4->_focusInEnabled = [v6 BOOLValue];
     }
 
-    v7 = [a3 objectForKey:@"focusOutEnabled"];
+    v7 = [settings objectForKey:@"focusOutEnabled"];
     if (v7)
     {
       v4->_focusOutEnabled = [v7 BOOLValue];
@@ -66,11 +66,11 @@
   [(OKActionBindingTap *)&v2 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = OKActionBindingFocusTap;
-  v4 = [(OKActionBindingTap *)&v7 copyWithZone:a3];
+  v4 = [(OKActionBindingTap *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -85,7 +85,7 @@
 + (id)supportedSettings
 {
   v13[3] = *MEMORY[0x277D85DE8];
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___OKActionBindingFocusTap;
   v2 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:{objc_msgSendSuper2(&v5, sel_supportedSettings)}];
   v12[0] = @"mode";
@@ -113,11 +113,11 @@
   return v2;
 }
 
-- (void)loadForResponder:(id)a3 scope:(unint64_t)a4
+- (void)loadForResponder:(id)responder scope:(unint64_t)scope
 {
   v4.receiver = self;
   v4.super_class = OKActionBindingFocusTap;
-  [(OKActionBindingTap *)&v4 loadForResponder:a3 scope:a4];
+  [(OKActionBindingTap *)&v4 loadForResponder:responder scope:scope];
 }
 
 - (void)unload
@@ -127,37 +127,37 @@
   [(OKActionBindingTap *)&v2 unload];
 }
 
-- (BOOL)respondsToAction:(id)a3 isTouchCountAgnostic:(BOOL)a4
+- (BOOL)respondsToAction:(id)action isTouchCountAgnostic:(BOOL)agnostic
 {
   v5.receiver = self;
   v5.super_class = OKActionBindingFocusTap;
-  return [(OKActionBindingTap *)&v5 respondsToAction:a3 isTouchCountAgnostic:a4];
+  return [(OKActionBindingTap *)&v5 respondsToAction:action isTouchCountAgnostic:agnostic];
 }
 
-- (BOOL)ownsGestureRecognizer:(id)a3
+- (BOOL)ownsGestureRecognizer:(id)recognizer
 {
   v4.receiver = self;
   v4.super_class = OKActionBindingFocusTap;
-  return [(OKActionBindingTap *)&v4 ownsGestureRecognizer:a3];
+  return [(OKActionBindingTap *)&v4 ownsGestureRecognizer:recognizer];
 }
 
-- (BOOL)performAction:(id)a3
+- (BOOL)performAction:(id)action
 {
-  v4 = [(OKActionResponder *)[(OKActionBindingProxy *)self actionResponder] canPerformAction:a3];
+  v4 = [(OKActionResponder *)[(OKActionBindingProxy *)self actionResponder] canPerformAction:action];
   if (v4)
   {
-    v5 = [(OKActionResponder *)[(OKActionBindingProxy *)self actionResponder] actionView];
+    actionView = [(OKActionResponder *)[(OKActionBindingProxy *)self actionResponder] actionView];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if ([v5 presentationMode] == 1 && self->_focusInEnabled)
+      if ([actionView presentationMode] == 1 && self->_focusInEnabled)
       {
-        [v5 focus:self->_mode duration:0 completion:0.25];
+        [actionView focus:self->_mode duration:0 completion:0.25];
       }
 
-      else if ([v5 presentationMode] == 2 && self->_focusOutEnabled)
+      else if ([actionView presentationMode] == 2 && self->_focusOutEnabled)
       {
-        [v5 unfocus:0 completion:0.25];
+        [actionView unfocus:0 completion:0.25];
       }
 
       LOBYTE(v4) = 1;
@@ -172,25 +172,25 @@
   return v4;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  [a3 view];
+  [recognizer view];
   objc_opt_class();
   return (objc_opt_isKindOfClass() & 1) != 0 && ([(OKActionResponder *)[(OKActionBindingProxy *)self actionResponder] interactivityEnabled]& 1) != 0;
 }
 
-- (void)handleTap:(id)a3
+- (void)handleTap:(id)tap
 {
-  if ([a3 state] == 3)
+  if ([tap state] == 3)
   {
-    if ((v5 = [a3 view], objc_msgSend(v5, "presentationMode") == 1) && self->_focusInEnabled || objc_msgSend(v5, "presentationMode") == 2 && self->_focusOutEnabled)
+    if ((v5 = [tap view], objc_msgSend(v5, "presentationMode") == 1) && self->_focusInEnabled || objc_msgSend(v5, "presentationMode") == 2 && self->_focusOutEnabled)
     {
-      [(OKActionBindingProxy *)self locationForActionFromGesture:a3];
+      [(OKActionBindingProxy *)self locationForActionFromGesture:tap];
       v7 = v6;
       v9 = v8;
-      v10 = [a3 numberOfTapsRequired];
-      v11 = [a3 numberOfTouches];
-      v12 = +[OKActionTap tapActionWithLocation:tapCount:touchCount:context:](OKActionTap, "tapActionWithLocation:tapCount:touchCount:context:", v10, v11, [MEMORY[0x277CBEB38] dictionary], v7, v9);
+      numberOfTapsRequired = [tap numberOfTapsRequired];
+      numberOfTouches = [tap numberOfTouches];
+      v12 = +[OKActionTap tapActionWithLocation:tapCount:touchCount:context:](OKActionTap, "tapActionWithLocation:tapCount:touchCount:context:", numberOfTapsRequired, numberOfTouches, [MEMORY[0x277CBEB38] dictionary], v7, v9);
 
       [(OKActionBindingFocusTap *)self performAction:v12];
     }

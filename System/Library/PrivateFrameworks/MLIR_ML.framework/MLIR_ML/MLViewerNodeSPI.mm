@@ -1,31 +1,31 @@
 @interface MLViewerNodeSPI
-- (MLViewerNodeSPI)initWithCoder:(id)a3;
-- (MLViewerNodeSPI)initWithJSONDictionary:(id)a3;
-- (MLViewerNodeSPI)initWithType:(id)a3 inputs:(id)a4 outputs:(id)a5 properties:(id)a6 regions:(id)a7;
+- (MLViewerNodeSPI)initWithCoder:(id)coder;
+- (MLViewerNodeSPI)initWithJSONDictionary:(id)dictionary;
+- (MLViewerNodeSPI)initWithType:(id)type inputs:(id)inputs outputs:(id)outputs properties:(id)properties regions:(id)regions;
 - (id)jsonDictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MLViewerNodeSPI
 
-- (MLViewerNodeSPI)initWithType:(id)a3 inputs:(id)a4 outputs:(id)a5 properties:(id)a6 regions:(id)a7
+- (MLViewerNodeSPI)initWithType:(id)type inputs:(id)inputs outputs:(id)outputs properties:(id)properties regions:(id)regions
 {
-  v22 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  typeCopy = type;
+  inputsCopy = inputs;
+  outputsCopy = outputs;
+  propertiesCopy = properties;
+  regionsCopy = regions;
   v23.receiver = self;
   v23.super_class = MLViewerNodeSPI;
   v17 = [(MLViewerNodeSPI *)&v23 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_type, a3);
-    objc_storeStrong(&v18->_inputs, a4);
-    objc_storeStrong(&v18->_outputs, a5);
-    objc_storeStrong(&v18->_properties, a6);
-    objc_storeStrong(&v18->_regions, a7);
+    objc_storeStrong(&v17->_type, type);
+    objc_storeStrong(&v18->_inputs, inputs);
+    objc_storeStrong(&v18->_outputs, outputs);
+    objc_storeStrong(&v18->_properties, properties);
+    objc_storeStrong(&v18->_regions, regions);
     location = v18->_location;
     v18->_location = &stru_2868A7958;
 
@@ -36,22 +36,22 @@
   return v18;
 }
 
-- (MLViewerNodeSPI)initWithJSONDictionary:(id)a3
+- (MLViewerNodeSPI)initWithJSONDictionary:(id)dictionary
 {
   v78 = *MEMORY[0x277D85DE8];
-  v51 = a3;
+  dictionaryCopy = dictionary;
   v73.receiver = self;
   v73.super_class = MLViewerNodeSPI;
   v4 = [(MLViewerNodeSPI *)&v73 init];
   v50 = v4;
   if (v4)
   {
-    v5 = [v51 objectForKey:@"type"];
+    v5 = [dictionaryCopy objectForKey:@"type"];
     type = v4->_type;
     v4->_type = v5;
 
     v56 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    [v51 objectForKey:@"inputs"];
+    [dictionaryCopy objectForKey:@"inputs"];
     v71 = 0u;
     v72 = 0u;
     v69 = 0u;
@@ -84,7 +84,7 @@
     v50->_inputs = v11;
 
     v55 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    [v51 objectForKey:@"outputs"];
+    [dictionaryCopy objectForKey:@"outputs"];
     v67 = 0u;
     v68 = 0u;
     v65 = 0u;
@@ -117,7 +117,7 @@
     v50->_outputs = v17;
 
     v19 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    [v51 objectForKey:@"properties"];
+    [dictionaryCopy objectForKey:@"properties"];
     v63 = 0u;
     v64 = 0u;
     v61 = 0u;
@@ -207,7 +207,7 @@ LABEL_32:
     v50->_properties = v35;
 
     v37 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    [v51 objectForKey:@"regions"];
+    [dictionaryCopy objectForKey:@"regions"];
     v59 = 0u;
     v60 = 0u;
     v57 = 0u;
@@ -239,11 +239,11 @@ LABEL_32:
     regions = v50->_regions;
     v50->_regions = v43;
 
-    v45 = [v51 objectForKey:@"location"];
+    v45 = [dictionaryCopy objectForKey:@"location"];
     location = v50->_location;
     v50->_location = v45;
 
-    v47 = [v51 objectForKey:@"anecValidationMessage"];
+    v47 = [dictionaryCopy objectForKey:@"anecValidationMessage"];
     anecValidationMessage = v50->_anecValidationMessage;
     v50->_anecValidationMessage = v47;
   }
@@ -259,8 +259,8 @@ LABEL_32:
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v4 = [(MLViewerNodeSPI *)self inputs];
-  v5 = [v4 countByEnumeratingWithState:&v44 objects:v53 count:16];
+  inputs = [(MLViewerNodeSPI *)self inputs];
+  v5 = [inputs countByEnumeratingWithState:&v44 objects:v53 count:16];
   if (v5)
   {
     v6 = *v45;
@@ -270,14 +270,14 @@ LABEL_32:
       {
         if (*v45 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(inputs);
         }
 
-        v8 = [*(*(&v44 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v8];
+        jsonDictionary = [*(*(&v44 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v44 objects:v53 count:16];
+      v5 = [inputs countByEnumeratingWithState:&v44 objects:v53 count:16];
     }
 
     while (v5);
@@ -288,8 +288,8 @@ LABEL_32:
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v10 = [(MLViewerNodeSPI *)self outputs];
-  v11 = [v10 countByEnumeratingWithState:&v40 objects:v52 count:16];
+  outputs = [(MLViewerNodeSPI *)self outputs];
+  v11 = [outputs countByEnumeratingWithState:&v40 objects:v52 count:16];
   if (v11)
   {
     v12 = *v41;
@@ -299,14 +299,14 @@ LABEL_32:
       {
         if (*v41 != v12)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(outputs);
         }
 
-        v14 = [*(*(&v40 + 1) + 8 * j) jsonDictionary];
-        [v9 addObject:v14];
+        jsonDictionary2 = [*(*(&v40 + 1) + 8 * j) jsonDictionary];
+        [v9 addObject:jsonDictionary2];
       }
 
-      v11 = [v10 countByEnumeratingWithState:&v40 objects:v52 count:16];
+      v11 = [outputs countByEnumeratingWithState:&v40 objects:v52 count:16];
     }
 
     while (v11);
@@ -317,8 +317,8 @@ LABEL_32:
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v16 = [(MLViewerNodeSPI *)self properties];
-  v17 = [v16 countByEnumeratingWithState:&v36 objects:v51 count:16];
+  properties = [(MLViewerNodeSPI *)self properties];
+  v17 = [properties countByEnumeratingWithState:&v36 objects:v51 count:16];
   if (v17)
   {
     v18 = *v37;
@@ -328,14 +328,14 @@ LABEL_32:
       {
         if (*v37 != v18)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(properties);
         }
 
-        v20 = [*(*(&v36 + 1) + 8 * k) jsonDictionary];
-        [v15 addObject:v20];
+        jsonDictionary3 = [*(*(&v36 + 1) + 8 * k) jsonDictionary];
+        [v15 addObject:jsonDictionary3];
       }
 
-      v17 = [v16 countByEnumeratingWithState:&v36 objects:v51 count:16];
+      v17 = [properties countByEnumeratingWithState:&v36 objects:v51 count:16];
     }
 
     while (v17);
@@ -346,8 +346,8 @@ LABEL_32:
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v22 = [(MLViewerNodeSPI *)self regions];
-  v23 = [v22 countByEnumeratingWithState:&v32 objects:v50 count:16];
+  regions = [(MLViewerNodeSPI *)self regions];
+  v23 = [regions countByEnumeratingWithState:&v32 objects:v50 count:16];
   if (v23)
   {
     v24 = *v33;
@@ -357,22 +357,22 @@ LABEL_32:
       {
         if (*v33 != v24)
         {
-          objc_enumerationMutation(v22);
+          objc_enumerationMutation(regions);
         }
 
-        v26 = [*(*(&v32 + 1) + 8 * m) jsonDictionary];
-        [v21 addObject:v26];
+        jsonDictionary4 = [*(*(&v32 + 1) + 8 * m) jsonDictionary];
+        [v21 addObject:jsonDictionary4];
       }
 
-      v23 = [v22 countByEnumeratingWithState:&v32 objects:v50 count:16];
+      v23 = [regions countByEnumeratingWithState:&v32 objects:v50 count:16];
     }
 
     while (v23);
   }
 
   v48[0] = @"type";
-  v27 = [(MLViewerNodeSPI *)self type];
-  v49[0] = v27;
+  type = [(MLViewerNodeSPI *)self type];
+  v49[0] = type;
   v49[1] = v3;
   v48[1] = @"inputs";
   v48[2] = @"outputs";
@@ -382,25 +382,25 @@ LABEL_32:
   v48[4] = @"regions";
   v49[4] = v21;
   v48[5] = @"location";
-  v28 = [(MLViewerNodeSPI *)self location];
-  v49[5] = v28;
+  location = [(MLViewerNodeSPI *)self location];
+  v49[5] = location;
   v48[6] = @"anecValidationMessage";
-  v29 = [(MLViewerNodeSPI *)self anecValidationMessage];
-  v49[6] = v29;
+  anecValidationMessage = [(MLViewerNodeSPI *)self anecValidationMessage];
+  v49[6] = anecValidationMessage;
   v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v49 forKeys:v48 count:7];
 
   return v30;
 }
 
-- (MLViewerNodeSPI)initWithCoder:(id)a3
+- (MLViewerNodeSPI)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v28.receiver = self;
   v28.super_class = MLViewerNodeSPI;
   v5 = [(MLViewerNodeSPI *)&v28 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
     type = v5->_type;
     v5->_type = v6;
 
@@ -410,7 +410,7 @@ LABEL_32:
     }
 
     v8 = allowedClasses(void)::allowedClasses;
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"inputs"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"inputs"];
     inputs = v5->_inputs;
     v5->_inputs = v9;
 
@@ -420,7 +420,7 @@ LABEL_32:
     }
 
     v11 = allowedClasses(void)::allowedClasses;
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"outputs"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"outputs"];
     outputs = v5->_outputs;
     v5->_outputs = v12;
 
@@ -430,7 +430,7 @@ LABEL_32:
     }
 
     v14 = allowedClasses(void)::allowedClasses;
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"properties"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"properties"];
     properties = v5->_properties;
     v5->_properties = v15;
 
@@ -440,19 +440,19 @@ LABEL_32:
     }
 
     v17 = allowedClasses(void)::allowedClasses;
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"regions"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"regions"];
     regions = v5->_regions;
     v5->_regions = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedDescription"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedDescription"];
     localizedDescription = v5->_localizedDescription;
     v5->_localizedDescription = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"location"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"location"];
     location = v5->_location;
     v5->_location = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"anecValidationMessage"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"anecValidationMessage"];
     anecValidationMessage = v5->_anecValidationMessage;
     v5->_anecValidationMessage = v24;
 
@@ -462,32 +462,32 @@ LABEL_32:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v12 = a3;
-  v4 = [(MLViewerNodeSPI *)self type];
-  [v12 encodeObject:v4 forKey:@"type"];
+  coderCopy = coder;
+  type = [(MLViewerNodeSPI *)self type];
+  [coderCopy encodeObject:type forKey:@"type"];
 
-  v5 = [(MLViewerNodeSPI *)self inputs];
-  [v12 encodeObject:v5 forKey:@"inputs"];
+  inputs = [(MLViewerNodeSPI *)self inputs];
+  [coderCopy encodeObject:inputs forKey:@"inputs"];
 
-  v6 = [(MLViewerNodeSPI *)self outputs];
-  [v12 encodeObject:v6 forKey:@"outputs"];
+  outputs = [(MLViewerNodeSPI *)self outputs];
+  [coderCopy encodeObject:outputs forKey:@"outputs"];
 
-  v7 = [(MLViewerNodeSPI *)self properties];
-  [v12 encodeObject:v7 forKey:@"properties"];
+  properties = [(MLViewerNodeSPI *)self properties];
+  [coderCopy encodeObject:properties forKey:@"properties"];
 
-  v8 = [(MLViewerNodeSPI *)self regions];
-  [v12 encodeObject:v8 forKey:@"regions"];
+  regions = [(MLViewerNodeSPI *)self regions];
+  [coderCopy encodeObject:regions forKey:@"regions"];
 
-  v9 = [(MLViewerNodeSPI *)self localizedDescription];
-  [v12 encodeObject:v9 forKey:@"localizedDescription"];
+  localizedDescription = [(MLViewerNodeSPI *)self localizedDescription];
+  [coderCopy encodeObject:localizedDescription forKey:@"localizedDescription"];
 
-  v10 = [(MLViewerNodeSPI *)self location];
-  [v12 encodeObject:v10 forKey:@"location"];
+  location = [(MLViewerNodeSPI *)self location];
+  [coderCopy encodeObject:location forKey:@"location"];
 
-  v11 = [(MLViewerNodeSPI *)self anecValidationMessage];
-  [v12 encodeObject:v11 forKey:@"anecValidationMessage"];
+  anecValidationMessage = [(MLViewerNodeSPI *)self anecValidationMessage];
+  [coderCopy encodeObject:anecValidationMessage forKey:@"anecValidationMessage"];
 }
 
 @end

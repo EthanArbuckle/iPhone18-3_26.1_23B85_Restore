@@ -1,16 +1,16 @@
 @interface CPSAlternateRoutesScrollView
 - (UIEdgeInsets)_tableContentInset;
-- (void)setAccessoryView:(id)a3 atEdge:(int64_t)a4;
+- (void)setAccessoryView:(id)view atEdge:(int64_t)edge;
 @end
 
 @implementation CPSAlternateRoutesScrollView
 
-- (void)setAccessoryView:(id)a3 atEdge:(int64_t)a4
+- (void)setAccessoryView:(id)view atEdge:(int64_t)edge
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   objc_storeStrong(location, 0);
 }
 

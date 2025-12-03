@@ -1,10 +1,10 @@
 @interface AWFaceDetectAttentionEvent
-- (AWFaceDetectAttentionEvent)initWithCoder:(id)a3;
-- (AWFaceDetectAttentionEvent)initWithTimestamp:(double)a3 tagIndex:(unint64_t)a4 faceMetadata:(AWFaceDetectMetadata *)a5;
+- (AWFaceDetectAttentionEvent)initWithCoder:(id)coder;
+- (AWFaceDetectAttentionEvent)initWithTimestamp:(double)timestamp tagIndex:(unint64_t)index faceMetadata:(AWFaceDetectMetadata *)metadata;
 - (CGRect)faceBounds;
-- (id)describeMotionData:(id)a3;
+- (id)describeMotionData:(id)data;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)validateMask;
 @end
 
@@ -51,28 +51,28 @@
   v16 = [(AWFaceDetectAttentionEvent *)self describeMotionData:self->_motionData];
   v17 = getMotionEventTypeDescription(self->_motionResult);
   faceDetectionScore = self->_faceDetectionScore;
-  v19 = [(AWAttentionEvent *)self tagIndex];
+  tagIndex = [(AWAttentionEvent *)self tagIndex];
   v20 = [(AWAttentionEvent *)self tag];
-  v21 = tagDescription(v19, v20);
+  v21 = tagDescription(tagIndex, v20);
   v22 = [v24 stringWithFormat:@"<%@: %p> (timestamp: %13.5f metadataValid %u pitch %13.5f yaw %13.5f roll %13.5f orientation %@ distance %13.5f faceState: %@ metadataType: %@ motionData: %@ motionResult: %@ faceDetectionScore: %13.5f %@)", v4, self, v6, metadataValid, *&pitch, *&yaw, *&roll, v11, *&distance, v13, v15, v16, v17, *&faceDetectionScore, v21];
 
   return v22;
 }
 
-- (id)describeMotionData:(id)a3
+- (id)describeMotionData:(id)data
 {
   v13 = *MEMORY[0x1E69E9840];
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = a3;
-  if ([v3 countByEnumeratingWithState:&v8 objects:v12 count:16])
+  dataCopy = data;
+  if ([dataCopy countByEnumeratingWithState:&v8 objects:v12 count:16])
   {
     *v9;
     *v9;
     [**(&v8 + 1) floatValue];
-    v4 = [v3 valueForKey:@"description"];
+    v4 = [dataCopy valueForKey:@"description"];
     v5 = [v4 componentsJoinedByString:{@", "}];
   }
 
@@ -86,26 +86,26 @@
   return v5;
 }
 
-- (AWFaceDetectAttentionEvent)initWithTimestamp:(double)a3 tagIndex:(unint64_t)a4 faceMetadata:(AWFaceDetectMetadata *)a5
+- (AWFaceDetectAttentionEvent)initWithTimestamp:(double)timestamp tagIndex:(unint64_t)index faceMetadata:(AWFaceDetectMetadata *)metadata
 {
   v15.receiver = self;
   v15.super_class = AWFaceDetectAttentionEvent;
-  v6 = [(AWAttentionEvent *)&v15 initWithTimestamp:a4 tagIndex:128 eventMask:a3];
+  v6 = [(AWAttentionEvent *)&v15 initWithTimestamp:index tagIndex:128 eventMask:timestamp];
   v7 = v6;
-  if (a5 && v6)
+  if (metadata && v6)
   {
-    v6->_metadataValid = a5->var0;
-    v6->_pitch = a5->var1;
-    v6->_yaw = a5->var2;
-    v6->_roll = a5->var3;
-    v6->_orientation = a5->var4;
-    v6->_distance = a5->var5;
-    v6->_faceState = a5->var6;
-    v6->_metadataType = a5->var7;
+    v6->_metadataValid = metadata->var0;
+    v6->_pitch = metadata->var1;
+    v6->_yaw = metadata->var2;
+    v6->_roll = metadata->var3;
+    v6->_orientation = metadata->var4;
+    v6->_distance = metadata->var5;
+    v6->_faceState = metadata->var6;
+    v6->_metadataType = metadata->var7;
     v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:16];
     for (i = 0; i != 16; ++i)
     {
-      *&v9 = a5->var8[i];
+      *&v9 = metadata->var8[i];
       v11 = [MEMORY[0x1E696AD98] numberWithFloat:v9];
       [v8 addObject:v11];
     }
@@ -115,8 +115,8 @@
     motionData = v7->_motionData;
     v7->_motionData = v12;
 
-    v7->_motionResult = a5->var9;
-    v7->_faceDetectionScore = a5->var10;
+    v7->_motionResult = metadata->var9;
+    v7->_faceDetectionScore = metadata->var10;
   }
 
   return v7;
@@ -130,22 +130,22 @@
   }
 }
 
-- (AWFaceDetectAttentionEvent)initWithCoder:(id)a3
+- (AWFaceDetectAttentionEvent)initWithCoder:(id)coder
 {
   v69[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v49 = 0;
-  v5 = decodeDouble(v4, &v49, @"timestamp");
-  v48 = decodeUInt64(v4, &v49, @"metadataValid");
-  v6 = decodeDouble(v4, &v49, @"pitch");
-  v7 = decodeDouble(v4, &v49, @"yaw");
-  v8 = decodeDouble(v4, &v49, @"roll");
-  v47 = decodeUInt64(v4, &v49, @"orientation");
-  v9 = decodeDouble(v4, &v49, @"distance");
-  v46 = decodeUInt64(v4, &v49, @"faceState");
-  v45 = decodeUInt64(v4, &v49, @"metadataType");
-  v10 = decodeUInt64(v4, &v49, @"tagIndex");
-  v11 = v4;
+  v5 = decodeDouble(coderCopy, &v49, @"timestamp");
+  v48 = decodeUInt64(coderCopy, &v49, @"metadataValid");
+  v6 = decodeDouble(coderCopy, &v49, @"pitch");
+  v7 = decodeDouble(coderCopy, &v49, @"yaw");
+  v8 = decodeDouble(coderCopy, &v49, @"roll");
+  v47 = decodeUInt64(coderCopy, &v49, @"orientation");
+  v9 = decodeDouble(coderCopy, &v49, @"distance");
+  v46 = decodeUInt64(coderCopy, &v49, @"faceState");
+  v45 = decodeUInt64(coderCopy, &v49, @"metadataType");
+  v10 = decodeUInt64(coderCopy, &v49, @"tagIndex");
+  v11 = coderCopy;
   v12 = @"motionData";
   v13 = MEMORY[0x1E695DFD8];
   v69[0] = objc_opt_class();
@@ -203,7 +203,7 @@ LABEL_15:
   }
 
   v43 = v10;
-  v44 = self;
+  selfCopy = self;
   v52 = 0u;
   v53 = 0u;
   v50 = 0u;
@@ -229,7 +229,7 @@ LABEL_15:
         {
 
           v10 = v43;
-          self = v44;
+          self = selfCopy;
           v17 = 0x1EDC16000uLL;
           goto LABEL_15;
         }
@@ -247,7 +247,7 @@ LABEL_15:
 
   v24 = v18;
   v10 = v43;
-  self = v44;
+  self = selfCopy;
   v17 = 0x1EDC16000;
 LABEL_19:
 
@@ -320,25 +320,25 @@ LABEL_19:
   return v30;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   [(AWAttentionEvent *)self timestamp];
-  [v5 encodeDouble:@"timestamp" forKey:?];
-  [v5 encodeBool:self->_metadataValid forKey:@"metadataValid"];
-  [v5 encodeDouble:@"pitch" forKey:self->_pitch];
-  [v5 encodeDouble:@"yaw" forKey:self->_yaw];
-  [v5 encodeDouble:@"roll" forKey:self->_roll];
-  [v5 encodeInteger:self->_orientation forKey:@"orientation"];
-  [v5 encodeDouble:@"distance" forKey:self->_distance];
-  [v5 encodeDouble:@"faceState" forKey:self->_faceState];
+  [coderCopy encodeDouble:@"timestamp" forKey:?];
+  [coderCopy encodeBool:self->_metadataValid forKey:@"metadataValid"];
+  [coderCopy encodeDouble:@"pitch" forKey:self->_pitch];
+  [coderCopy encodeDouble:@"yaw" forKey:self->_yaw];
+  [coderCopy encodeDouble:@"roll" forKey:self->_roll];
+  [coderCopy encodeInteger:self->_orientation forKey:@"orientation"];
+  [coderCopy encodeDouble:@"distance" forKey:self->_distance];
+  [coderCopy encodeDouble:@"faceState" forKey:self->_faceState];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[AWAttentionEvent tagIndex](self, "tagIndex")}];
-  [v5 encodeObject:v4 forKey:@"tagIndex"];
+  [coderCopy encodeObject:v4 forKey:@"tagIndex"];
 
-  [v5 encodeDouble:@"metadataType" forKey:self->_metadataType];
-  [v5 encodeObject:self->_motionData forKey:@"motionData"];
-  [v5 encodeInt64:self->_motionResult forKey:@"motionResult"];
-  [v5 encodeDouble:@"faceDetectionScore" forKey:self->_faceDetectionScore];
+  [coderCopy encodeDouble:@"metadataType" forKey:self->_metadataType];
+  [coderCopy encodeObject:self->_motionData forKey:@"motionData"];
+  [coderCopy encodeInt64:self->_motionResult forKey:@"motionResult"];
+  [coderCopy encodeDouble:@"faceDetectionScore" forKey:self->_faceDetectionScore];
 }
 
 @end

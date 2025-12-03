@@ -1,22 +1,22 @@
 @interface KMIntentVocabularyMultiDatasetBridge
 - (KMIntentVocabularyMultiDatasetBridge)init;
-- (KMIntentVocabularyMultiDatasetBridge)initWithStoreManager:(id)a3 authorization:(id)a4;
-- (void)enumerateAllDatasets:(unint64_t *)a3 usingBlock:(id)a4;
+- (KMIntentVocabularyMultiDatasetBridge)initWithStoreManager:(id)manager authorization:(id)authorization;
+- (void)enumerateAllDatasets:(unint64_t *)datasets usingBlock:(id)block;
 @end
 
 @implementation KMIntentVocabularyMultiDatasetBridge
 
-- (void)enumerateAllDatasets:(unint64_t *)a3 usingBlock:(id)a4
+- (void)enumerateAllDatasets:(unint64_t *)datasets usingBlock:(id)block
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v25 = [(KMIntentVocabularyStoreManager *)self->_storeManager savedCustomVocabularyOverviewDictionary];
-  v7 = [v25 allKeys];
+  blockCopy = block;
+  savedCustomVocabularyOverviewDictionary = [(KMIntentVocabularyStoreManager *)self->_storeManager savedCustomVocabularyOverviewDictionary];
+  allKeys = [savedCustomVocabularyOverviewDictionary allKeys];
   v8 = KMLogContextCore;
   if (os_log_type_enabled(KMLogContextCore, OS_LOG_TYPE_INFO))
   {
     v9 = v8;
-    v10 = [v7 componentsJoinedByString:{@", "}];
+    v10 = [allKeys componentsJoinedByString:{@", "}];
     *buf = 136315394;
     v41 = "[KMIntentVocabularyMultiDatasetBridge enumerateAllDatasets:usingBlock:]";
     v42 = 2112;
@@ -24,12 +24,12 @@
     _os_log_impl(&dword_2559DF000, v9, OS_LOG_TYPE_INFO, "%s Enumerating Intents Custom Vocabulary from all available apps=[%@]", buf, 0x16u);
   }
 
-  *a3 = [v7 count];
+  *datasets = [allKeys count];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = v7;
+  obj = allKeys;
   v26 = [obj countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (v26)
   {
@@ -46,7 +46,7 @@
 
         v12 = *(*(&v34 + 1) + 8 * v11);
         v13 = objc_autoreleasePoolPush();
-        v14 = [(KMIntentVocabularyStoreManager *)self->_storeManager resolveIntentSlotsForApp:v12 fromAllAppsOverview:v25];
+        v14 = [(KMIntentVocabularyStoreManager *)self->_storeManager resolveIntentSlotsForApp:v12 fromAllAppsOverview:savedCustomVocabularyOverviewDictionary];
         if ([v14 count])
         {
           v28 = v13;
@@ -74,7 +74,7 @@
                 v20 = [[KMIntentVocabularyDatasetBridge alloc] initWithAppId:v12 intentSlot:*(*(&v30 + 1) + 8 * i) storeManager:self->_storeManager authorization:self->_authorization itemMapper:self->_itemMapper];
                 if (v20)
                 {
-                  v6[2](v6, v20);
+                  blockCopy[2](blockCopy, v20);
                 }
               }
 
@@ -116,11 +116,11 @@
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (KMIntentVocabularyMultiDatasetBridge)initWithStoreManager:(id)a3 authorization:(id)a4
+- (KMIntentVocabularyMultiDatasetBridge)initWithStoreManager:(id)manager authorization:(id)authorization
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  authorizationCopy = authorization;
   v19.receiver = self;
   v19.super_class = KMIntentVocabularyMultiDatasetBridge;
   v9 = [(KMIntentVocabularyMultiDatasetBridge *)&v19 init];
@@ -130,8 +130,8 @@
     goto LABEL_6;
   }
 
-  objc_storeStrong(&v9->_storeManager, a3);
-  objc_storeStrong(&v10->_authorization, a4);
+  objc_storeStrong(&v9->_storeManager, manager);
+  objc_storeStrong(&v10->_authorization, authorization);
   if (!v10->_storeManager || !v10->_authorization)
   {
 LABEL_10:

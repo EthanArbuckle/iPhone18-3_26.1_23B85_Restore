@@ -1,5 +1,5 @@
 @interface CacheKey
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_TtC5JetUIP33_925E47A64C9969C34ACE8A7AFC4CB7868CacheKey)init;
 - (int64_t)hash;
 @end
@@ -9,19 +9,19 @@
 - (int64_t)hash
 {
   sub_1BAD9DB48();
-  v3 = self;
+  selfCopy = self;
   FontUseCase.hash(into:)();
   v4 = sub_1BAD9DB88();
-  v5 = [*(&v3->super.isa + OBJC_IVAR____TtC5JetUIP33_925E47A64C9969C34ACE8A7AFC4CB7868CacheKey_traitCollection) hash];
+  v5 = [*(&selfCopy->super.isa + OBJC_IVAR____TtC5JetUIP33_925E47A64C9969C34ACE8A7AFC4CB7868CacheKey_traitCollection) hash];
 
   return v5 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1BAD9D628();
     swift_unknownObjectRelease();
@@ -30,7 +30,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_1BAD10D34(v8);

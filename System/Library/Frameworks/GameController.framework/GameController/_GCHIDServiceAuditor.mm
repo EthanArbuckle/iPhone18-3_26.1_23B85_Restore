@@ -1,5 +1,5 @@
 @interface _GCHIDServiceAuditor
-- (_GCHIDServiceAuditor)initWithServiceInfo:(id)a3;
+- (_GCHIDServiceAuditor)initWithServiceInfo:(id)info;
 - (id)serviceInfo;
 - (id)state;
 - (uint64_t)noteHIDEventPublished:(uint64_t)result;
@@ -8,14 +8,14 @@
 
 @implementation _GCHIDServiceAuditor
 
-- (_GCHIDServiceAuditor)initWithServiceInfo:(id)a3
+- (_GCHIDServiceAuditor)initWithServiceInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v8.receiver = self;
   v8.super_class = _GCHIDServiceAuditor;
   v5 = [(_GCHIDServiceAuditor *)&v8 init];
   serviceInfo = v5->_serviceInfo;
-  v5->_serviceInfo = v4;
+  v5->_serviceInfo = infoCopy;
 
   return v5;
 }
@@ -47,13 +47,13 @@
 
 - (id)state
 {
-  if (a1)
+  if (self)
   {
     v2 = objc_opt_new();
     v3 = objc_opt_new();
     for (i = 24; i != 64; i += 8)
     {
-      if (*(a1 + i))
+      if (*(self + i))
       {
         v5 = [MEMORY[0x1E695DF00] gc_dateWithMachAbsoluteTime:?];
         if (v5)
@@ -63,10 +63,10 @@
       }
     }
 
-    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:*(a1 + 16)];
+    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:*(self + 16)];
     [v2 setObject:v6 forKeyedSubscript:@"PublishedEventCount"];
 
-    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:*(a1 + 8)];
+    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:*(self + 8)];
     [v2 setObject:v7 forKeyedSubscript:@"ReceivedEventCount"];
 
     [v2 setObject:v3 forKeyedSubscript:@"LatestReceivedEventTimes"];

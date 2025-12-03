@@ -1,15 +1,15 @@
 @interface QuoteDetailColumnAccessibilityElement
 - (NSArray)accessibilityElements;
 - (_TtC8StocksUI37QuoteDetailColumnAccessibilityElement)init;
-- (_TtC8StocksUI37QuoteDetailColumnAccessibilityElement)initWithAccessibilityContainer:(id)a3;
-- (void)setAccessibilityElements:(id)a3;
+- (_TtC8StocksUI37QuoteDetailColumnAccessibilityElement)initWithAccessibilityContainer:(id)container;
+- (void)setAccessibilityElements:(id)elements;
 @end
 
 @implementation QuoteDetailColumnAccessibilityElement
 
 - (NSArray)accessibilityElements
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_22069AB40();
 
   if (v3)
@@ -25,27 +25,27 @@
   return v4;
 }
 
-- (void)setAccessibilityElements:(id)a3
+- (void)setAccessibilityElements:(id)elements
 {
   ObjectType = swift_getObjectType();
-  if (a3)
+  if (elements)
   {
     sub_2208916EC();
-    v6 = self;
-    a3 = sub_2208916DC();
+    selfCopy = self;
+    elements = sub_2208916DC();
   }
 
   else
   {
-    v7 = self;
+    selfCopy2 = self;
   }
 
   v8.receiver = self;
   v8.super_class = ObjectType;
-  [(QuoteDetailColumnAccessibilityElement *)&v8 setAccessibilityElements:a3];
+  [(QuoteDetailColumnAccessibilityElement *)&v8 setAccessibilityElements:elements];
 }
 
-- (_TtC8StocksUI37QuoteDetailColumnAccessibilityElement)initWithAccessibilityContainer:(id)a3
+- (_TtC8StocksUI37QuoteDetailColumnAccessibilityElement)initWithAccessibilityContainer:(id)container
 {
   ObjectType = swift_getObjectType();
   swift_unknownObjectRetain();

@@ -1,6 +1,6 @@
 @interface SLODLDConfigDecoder
 - (BOOL)isSPMModelMmapable;
-- (SLODLDConfigDecoder)initWithConfigFile:(id)a3;
+- (SLODLDConfigDecoder)initWithConfigFile:(id)file;
 - (id)getBertModelOutputNodes;
 - (id)getOdldModelBnnsIrWeightFile;
 - (id)getRegexMapConfig;
@@ -43,8 +43,8 @@
 - (id)getOdldModelBnnsIrWeightFile
 {
   v3 = [MEMORY[0x277D01778] getOdldValueForKey:@"BnnsIrWeightFile" categoryKey:*MEMORY[0x277D01AE0] configDict:self->_dictionary];
-  v4 = [(SLODLDConfigDecoder *)self getBertModelFile];
-  if ([v4 hasSuffix:*MEMORY[0x277D01588]] && (objc_msgSend(v3, "objectForKeyedSubscript:", @"BnnsIrWeightFile"), v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  getBertModelFile = [(SLODLDConfigDecoder *)self getBertModelFile];
+  if ([getBertModelFile hasSuffix:*MEMORY[0x277D01588]] && (objc_msgSend(v3, "objectForKeyedSubscript:", @"BnnsIrWeightFile"), v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
     resourcePath = self->_resourcePath;
     v7 = [v3 objectForKeyedSubscript:@"BnnsIrWeightFile"];
@@ -149,10 +149,10 @@
   return v3;
 }
 
-- (SLODLDConfigDecoder)initWithConfigFile:(id)a3
+- (SLODLDConfigDecoder)initWithConfigFile:(id)file
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fileCopy = file;
   v24.receiver = self;
   v24.super_class = SLODLDConfigDecoder;
   v5 = [(SLODLDConfigDecoder *)&v24 init];
@@ -163,7 +163,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v6 = [MEMORY[0x277D01778] decodeJsonFromFile:v4];
+  v6 = [MEMORY[0x277D01778] decodeJsonFromFile:fileCopy];
   v7 = v6;
   if (v6)
   {
@@ -172,9 +172,9 @@ LABEL_12:
     if (v8)
     {
 LABEL_9:
-      v15 = [v4 stringByDeletingLastPathComponent];
+      stringByDeletingLastPathComponent = [fileCopy stringByDeletingLastPathComponent];
       resourcePath = v5->_resourcePath;
-      v5->_resourcePath = v15;
+      v5->_resourcePath = stringByDeletingLastPathComponent;
 
       v17 = SLLogContextFacilityCoreSpeech;
       if (os_log_type_enabled(SLLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -211,11 +211,11 @@ LABEL_9:
   if (os_log_type_enabled(SLLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
   {
     v22 = v13;
-    v23 = [v12 localizedDescription];
+    localizedDescription = [v12 localizedDescription];
     *buf = 136315394;
     v26 = "[SLODLDConfigDecoder initWithConfigFile:]";
     v27 = 2112;
-    v28 = v23;
+    v28 = localizedDescription;
     _os_log_error_impl(&dword_26754E000, v22, OS_LOG_TYPE_ERROR, "%s %@", buf, 0x16u);
   }
 

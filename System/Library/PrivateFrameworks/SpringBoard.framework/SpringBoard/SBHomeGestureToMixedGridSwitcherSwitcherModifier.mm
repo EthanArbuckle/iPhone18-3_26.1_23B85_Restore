@@ -1,54 +1,54 @@
 @interface SBHomeGestureToMixedGridSwitcherSwitcherModifier
-- (CGPoint)contentOffsetForIndex:(unint64_t)a3 alignment:(int64_t)a4;
-- (CGRect)frameForIndex:(unint64_t)a3;
-- (SBHomeGestureToMixedGridSwitcherSwitcherModifier)initWithTransitionID:(id)a3 mixedGridModifier:(id)a4 selectedAppLayout:(id)a5 startingEnvironmentMode:(int64_t)a6 liftOfVelocity:(CGPoint)a7 liftOffTranslation:(CGPoint)a8 floatingAppLayout:(id)a9 floatingConfiguration:(int64_t)a10;
-- (double)scaleForIndex:(unint64_t)a3;
+- (CGPoint)contentOffsetForIndex:(unint64_t)index alignment:(int64_t)alignment;
+- (CGRect)frameForIndex:(unint64_t)index;
+- (SBHomeGestureToMixedGridSwitcherSwitcherModifier)initWithTransitionID:(id)d mixedGridModifier:(id)modifier selectedAppLayout:(id)layout startingEnvironmentMode:(int64_t)mode liftOfVelocity:(CGPoint)velocity liftOffTranslation:(CGPoint)translation floatingAppLayout:(id)appLayout floatingConfiguration:(int64_t)self0;
+- (double)scaleForIndex:(unint64_t)index;
 - (id)_appLayoutToScrollTo;
-- (id)_firstFloatingAppLayout:(id)a3;
-- (id)responseForProposedChildResponse:(id)a3 childModifier:(id)a4 event:(id)a5;
+- (id)_firstFloatingAppLayout:(id)layout;
+- (id)responseForProposedChildResponse:(id)response childModifier:(id)modifier event:(id)event;
 - (id)visibleAppLayouts;
-- (void)_performBlockWhileSimulatingPostPresentationScrollViewContentOffset:(id)a3;
+- (void)_performBlockWhileSimulatingPostPresentationScrollViewContentOffset:(id)offset;
 @end
 
 @implementation SBHomeGestureToMixedGridSwitcherSwitcherModifier
 
-- (SBHomeGestureToMixedGridSwitcherSwitcherModifier)initWithTransitionID:(id)a3 mixedGridModifier:(id)a4 selectedAppLayout:(id)a5 startingEnvironmentMode:(int64_t)a6 liftOfVelocity:(CGPoint)a7 liftOffTranslation:(CGPoint)a8 floatingAppLayout:(id)a9 floatingConfiguration:(int64_t)a10
+- (SBHomeGestureToMixedGridSwitcherSwitcherModifier)initWithTransitionID:(id)d mixedGridModifier:(id)modifier selectedAppLayout:(id)layout startingEnvironmentMode:(int64_t)mode liftOfVelocity:(CGPoint)velocity liftOffTranslation:(CGPoint)translation floatingAppLayout:(id)appLayout floatingConfiguration:(int64_t)self0
 {
-  y = a8.y;
-  x = a8.x;
-  v14 = a7.y;
-  v15 = a7.x;
-  v20 = a3;
-  v21 = a4;
-  v22 = a5;
-  v23 = a9;
+  y = translation.y;
+  x = translation.x;
+  v14 = velocity.y;
+  v15 = velocity.x;
+  dCopy = d;
+  modifierCopy = modifier;
+  layoutCopy = layout;
+  appLayoutCopy = appLayout;
   v33.receiver = self;
   v33.super_class = SBHomeGestureToMixedGridSwitcherSwitcherModifier;
-  v24 = [(SBTransitionSwitcherModifier *)&v33 initWithTransitionID:v20];
+  v24 = [(SBTransitionSwitcherModifier *)&v33 initWithTransitionID:dCopy];
   v25 = v24;
   if (v24)
   {
-    objc_storeStrong(&v24->_mixedGridModifier, a4);
-    objc_storeStrong(&v25->_appLayout, a5);
-    v25->_startingEnvironmentMode = a6;
+    objc_storeStrong(&v24->_mixedGridModifier, modifier);
+    objc_storeStrong(&v25->_appLayout, layout);
+    v25->_startingEnvironmentMode = mode;
     v25->_liftOffVelocity.x = v15;
     v25->_liftOffVelocity.y = v14;
     v25->_liftOffTranslation.x = x;
     v25->_liftOffTranslation.y = y;
     v25->_hidEventSenderID = 0;
-    v26 = [[SBHomeGestureToSwitcherSwitcherModifier alloc] initWithTransitionID:v20 multitaskingModifier:v21 selectedAppLayout:v22 startingEnvironmentMode:a6 liftOffVelocity:1 liftOffTranslation:0 adjustAppLayoutsBeforeTransition:v15 keepSelectedAppLayoutAsTopMostElement:v14, x, y];
+    v26 = [[SBHomeGestureToSwitcherSwitcherModifier alloc] initWithTransitionID:dCopy multitaskingModifier:modifierCopy selectedAppLayout:layoutCopy startingEnvironmentMode:mode liftOffVelocity:1 liftOffTranslation:0 adjustAppLayoutsBeforeTransition:v15 keepSelectedAppLayoutAsTopMostElement:v14, x, y];
     homeGestureModifier = v25->_homeGestureModifier;
     v25->_homeGestureModifier = v26;
 
     [(SBChainableModifier *)v25 addChildModifier:v25->_homeGestureModifier];
     v28 = [SBRouteToMixedGridSwitcherModifier alloc];
-    v29 = [(SBHomeGestureToMixedGridSwitcherSwitcherModifier *)v25 _newMixedGridModifier];
-    v30 = [(SBRouteToMixedGridSwitcherModifier *)v28 initWithTransitionID:v20 mixedGridModifier:v29];
+    _newMixedGridModifier = [(SBHomeGestureToMixedGridSwitcherSwitcherModifier *)v25 _newMixedGridModifier];
+    v30 = [(SBRouteToMixedGridSwitcherModifier *)v28 initWithTransitionID:dCopy mixedGridModifier:_newMixedGridModifier];
 
     [(SBChainableModifier *)v25 addChildModifier:v30];
-    if (v23)
+    if (appLayoutCopy)
     {
-      v31 = [[SBRelocateFloatingAppLayoutSwitcherModifier alloc] initWithTransitionID:v20 floatingAppLayout:v23 floatingConfiguration:a10 direction:1 mixedGridModifier:v21];
+      v31 = [[SBRelocateFloatingAppLayoutSwitcherModifier alloc] initWithTransitionID:dCopy floatingAppLayout:appLayoutCopy floatingConfiguration:configuration direction:1 mixedGridModifier:modifierCopy];
       [(SBChainableModifier *)v25 addChildModifier:v31];
     }
   }
@@ -56,11 +56,11 @@
   return v25;
 }
 
-- (id)responseForProposedChildResponse:(id)a3 childModifier:(id)a4 event:(id)a5
+- (id)responseForProposedChildResponse:(id)response childModifier:(id)modifier event:(id)event
 {
   v11.receiver = self;
   v11.super_class = SBHomeGestureToMixedGridSwitcherSwitcherModifier;
-  v6 = [(SBChainableModifier *)&v11 responseForProposedChildResponse:a3 childModifier:a4 event:a5];
+  v6 = [(SBChainableModifier *)&v11 responseForProposedChildResponse:response childModifier:modifier event:event];
   if (v6)
   {
     v7 = v6;
@@ -105,7 +105,7 @@ id __105__SBHomeGestureToMixedGridSwitcherSwitcherModifier_responseForProposedCh
   return v3;
 }
 
-- (CGPoint)contentOffsetForIndex:(unint64_t)a3 alignment:(int64_t)a4
+- (CGPoint)contentOffsetForIndex:(unint64_t)index alignment:(int64_t)alignment
 {
   v10 = 0;
   v11 = &v10;
@@ -117,8 +117,8 @@ id __105__SBHomeGestureToMixedGridSwitcherSwitcherModifier_responseForProposedCh
   v9[1] = 3221225472;
   v9[2] = __84__SBHomeGestureToMixedGridSwitcherSwitcherModifier_contentOffsetForIndex_alignment___block_invoke;
   v9[3] = &unk_2783AC7C8;
-  v9[6] = a3;
-  v9[7] = a4;
+  v9[6] = index;
+  v9[7] = alignment;
   v9[4] = self;
   v9[5] = &v10;
   [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:mixedGridModifier usingBlock:v9];
@@ -145,7 +145,7 @@ uint64_t __84__SBHomeGestureToMixedGridSwitcherSwitcherModifier_contentOffsetFor
   return result;
 }
 
-- (CGRect)frameForIndex:(unint64_t)a3
+- (CGRect)frameForIndex:(unint64_t)index
 {
   v30 = 0;
   v31 = &v30;
@@ -154,10 +154,10 @@ uint64_t __84__SBHomeGestureToMixedGridSwitcherSwitcherModifier_contentOffsetFor
   v5 = *(MEMORY[0x277CBF3A0] + 16);
   v34 = *MEMORY[0x277CBF3A0];
   v35 = v5;
-  v6 = [(SBHomeGestureToMixedGridSwitcherSwitcherModifier *)self appLayouts];
-  v7 = [(SBSwitcherModifier *)self indexOfFirstMainAppLayoutFromAppLayouts:v6];
+  appLayouts = [(SBHomeGestureToMixedGridSwitcherSwitcherModifier *)self appLayouts];
+  v7 = [(SBSwitcherModifier *)self indexOfFirstMainAppLayoutFromAppLayouts:appLayouts];
 
-  if ([(SBTransitionSwitcherModifier *)self transitionPhase]== 1 && v7 > a3)
+  if ([(SBTransitionSwitcherModifier *)self transitionPhase]== 1 && v7 > index)
   {
     v26 = 0;
     v27 = &v26;
@@ -171,11 +171,11 @@ uint64_t __84__SBHomeGestureToMixedGridSwitcherSwitcherModifier_contentOffsetFor
     v25[4] = self;
     v25[5] = &v30;
     v25[6] = &v26;
-    v25[7] = a3;
+    v25[7] = index;
     [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:mixedGridModifier usingBlock:v25];
-    v9 = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
+    userInterfaceLayoutDirection = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
     v10 = v27[3];
-    if (v9 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v10 = -v10;
     }
@@ -192,7 +192,7 @@ uint64_t __84__SBHomeGestureToMixedGridSwitcherSwitcherModifier_contentOffsetFor
   {
     v24.receiver = self;
     v24.super_class = SBHomeGestureToMixedGridSwitcherSwitcherModifier;
-    [(SBHomeGestureToMixedGridSwitcherSwitcherModifier *)&v24 frameForIndex:a3];
+    [(SBHomeGestureToMixedGridSwitcherSwitcherModifier *)&v24 frameForIndex:index];
     v11 = v15;
     v12 = v16;
     v13 = v17;
@@ -229,10 +229,10 @@ uint64_t __66__SBHomeGestureToMixedGridSwitcherSwitcherModifier_frameForIndex___
   return result;
 }
 
-- (double)scaleForIndex:(unint64_t)a3
+- (double)scaleForIndex:(unint64_t)index
 {
-  v5 = [(SBHomeGestureToMixedGridSwitcherSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBHomeGestureToMixedGridSwitcherSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if ([v6 environment] == 2)
   {
@@ -247,7 +247,7 @@ uint64_t __66__SBHomeGestureToMixedGridSwitcherSwitcherModifier_frameForIndex___
     v12[3] = &unk_2783AA618;
     v12[4] = self;
     v12[5] = &v13;
-    v12[6] = a3;
+    v12[6] = index;
     [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:mixedGridModifier usingBlock:v12];
     v8 = v14[3];
     _Block_object_dispose(&v13, 8);
@@ -257,7 +257,7 @@ uint64_t __66__SBHomeGestureToMixedGridSwitcherSwitcherModifier_frameForIndex___
   {
     v11.receiver = self;
     v11.super_class = SBHomeGestureToMixedGridSwitcherSwitcherModifier;
-    [(SBHomeGestureToMixedGridSwitcherSwitcherModifier *)&v11 scaleForIndex:a3];
+    [(SBHomeGestureToMixedGridSwitcherSwitcherModifier *)&v11 scaleForIndex:index];
     v8 = v9;
   }
 
@@ -289,7 +289,7 @@ uint64_t __66__SBHomeGestureToMixedGridSwitcherSwitcherModifier_scaleForIndex___
     v7[4] = self;
     v7[5] = &v8;
     [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:mixedGridModifier usingBlock:v7];
-    v4 = v9[5];
+    visibleAppLayouts = v9[5];
     _Block_object_dispose(&v8, 8);
   }
 
@@ -297,10 +297,10 @@ uint64_t __66__SBHomeGestureToMixedGridSwitcherSwitcherModifier_scaleForIndex___
   {
     v6.receiver = self;
     v6.super_class = SBHomeGestureToMixedGridSwitcherSwitcherModifier;
-    v4 = [(SBHomeGestureToMixedGridSwitcherSwitcherModifier *)&v6 visibleAppLayouts];
+    visibleAppLayouts = [(SBHomeGestureToMixedGridSwitcherSwitcherModifier *)&v6 visibleAppLayouts];
   }
 
-  return v4;
+  return visibleAppLayouts;
 }
 
 void __69__SBHomeGestureToMixedGridSwitcherSwitcherModifier_visibleAppLayouts__block_invoke(uint64_t a1)
@@ -313,22 +313,22 @@ void __69__SBHomeGestureToMixedGridSwitcherSwitcherModifier_visibleAppLayouts__b
 
 - (id)_appLayoutToScrollTo
 {
-  v3 = [(SBHomeGestureToMixedGridSwitcherSwitcherModifier *)self appLayouts];
-  v4 = [(SBTransitionSwitcherModifier *)self adjustedAppLayoutsForAppLayouts:v3];
+  appLayouts = [(SBHomeGestureToMixedGridSwitcherSwitcherModifier *)self appLayouts];
+  v4 = [(SBTransitionSwitcherModifier *)self adjustedAppLayoutsForAppLayouts:appLayouts];
 
   v5 = [(SBHomeGestureToMixedGridSwitcherSwitcherModifier *)self _firstFloatingAppLayout:v4];
   v6 = v5;
   if (v5)
   {
-    v7 = v5;
+    firstObject = v5;
   }
 
   else
   {
-    v7 = [v4 firstObject];
+    firstObject = [v4 firstObject];
   }
 
-  v8 = v7;
+  v8 = firstObject;
   if (self->_appLayout)
   {
     v17 = 0;
@@ -357,7 +357,7 @@ void __69__SBHomeGestureToMixedGridSwitcherSwitcherModifier_visibleAppLayouts__b
 
   else
   {
-    v11 = v7;
+    v11 = firstObject;
   }
 
   v12 = v11;
@@ -387,15 +387,15 @@ uint64_t __72__SBHomeGestureToMixedGridSwitcherSwitcherModifier__appLayoutToScro
   return result;
 }
 
-- (id)_firstFloatingAppLayout:(id)a3
+- (id)_firstFloatingAppLayout:(id)layout
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  layoutCopy = layout;
+  v4 = [layoutCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -409,7 +409,7 @@ uint64_t __72__SBHomeGestureToMixedGridSwitcherSwitcherModifier__appLayoutToScro
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(layoutCopy);
         }
 
         v10 = *(*(&v12 + 1) + 8 * v8);
@@ -426,7 +426,7 @@ uint64_t __72__SBHomeGestureToMixedGridSwitcherSwitcherModifier__appLayoutToScro
       }
 
       while (v5 != v8);
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [layoutCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v5)
       {
         continue;
@@ -446,33 +446,33 @@ LABEL_12:
   return v6;
 }
 
-- (void)_performBlockWhileSimulatingPostPresentationScrollViewContentOffset:(id)a3
+- (void)_performBlockWhileSimulatingPostPresentationScrollViewContentOffset:(id)offset
 {
-  v4 = a3;
-  v5 = [(SBHomeGestureToMixedGridSwitcherSwitcherModifier *)self appLayouts];
-  v6 = [(SBTransitionSwitcherModifier *)self adjustedAppLayoutsForAppLayouts:v5];
+  offsetCopy = offset;
+  appLayouts = [(SBHomeGestureToMixedGridSwitcherSwitcherModifier *)self appLayouts];
+  v6 = [(SBTransitionSwitcherModifier *)self adjustedAppLayoutsForAppLayouts:appLayouts];
 
   v7 = [(SBHomeGestureToMixedGridSwitcherSwitcherModifier *)self _firstFloatingAppLayout:v6];
   v8 = v7;
   if (v7)
   {
-    v9 = v7;
+    firstObject = v7;
   }
 
   else
   {
-    v9 = [v6 firstObject];
+    firstObject = [v6 firstObject];
   }
 
-  v10 = v9;
-  -[SBHomeGestureToMixedGridSwitcherSwitcherModifier contentOffsetForIndex:alignment:](self, "contentOffsetForIndex:alignment:", [v6 indexOfObject:v9], 3);
+  v10 = firstObject;
+  -[SBHomeGestureToMixedGridSwitcherSwitcherModifier contentOffsetForIndex:alignment:](self, "contentOffsetForIndex:alignment:", [v6 indexOfObject:firstObject], 3);
   v13 = [[SBOverrideScrollViewContentOffsetSwitcherModifier alloc] initWithScrollViewContentOffset:v11, v12];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __120__SBHomeGestureToMixedGridSwitcherSwitcherModifier__performBlockWhileSimulatingPostPresentationScrollViewContentOffset___block_invoke;
   v15[3] = &unk_2783A9348;
-  v16 = v4;
-  v14 = v4;
+  v16 = offsetCopy;
+  v14 = offsetCopy;
   [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:v13 usingBlock:v15];
 }
 

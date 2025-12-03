@@ -1,23 +1,23 @@
 @interface TIDictionaryLookup
-- (TIDictionaryLookup)initWithSourceLocale:(id)a3 targetLocale:(id)a4;
-- (id)translationForString:(id)a3;
-- (id)translationsForStrings:(id)a3;
+- (TIDictionaryLookup)initWithSourceLocale:(id)locale targetLocale:(id)targetLocale;
+- (id)translationForString:(id)string;
+- (id)translationsForStrings:(id)strings;
 @end
 
 @implementation TIDictionaryLookup
 
-- (id)translationsForStrings:(id)a3
+- (id)translationsForStrings:(id)strings
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  stringsCopy = strings;
+  if ([stringsCopy count])
   {
-    v5 = [MEMORY[0x277CBEB40] orderedSetWithCapacity:{objc_msgSend(v4, "count")}];
+    v5 = [MEMORY[0x277CBEB40] orderedSetWithCapacity:{objc_msgSend(stringsCopy, "count")}];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = v4;
+    v6 = stringsCopy;
     v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
@@ -45,29 +45,29 @@
       while (v8);
     }
 
-    v12 = [v5 array];
+    array = [v5 array];
   }
 
   else
   {
-    v12 = 0;
+    array = 0;
   }
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return array;
 }
 
-- (id)translationForString:(id)a3
+- (id)translationForString:(id)string
 {
-  v4 = a3;
-  if ([v4 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
-    v5 = [(TIDictionaryLookup *)self sourceLocale];
-    v6 = [v4 lowercaseStringWithLocale:v5];
+    sourceLocale = [(TIDictionaryLookup *)self sourceLocale];
+    v6 = [stringCopy lowercaseStringWithLocale:sourceLocale];
 
-    v7 = [(TIDictionaryLookup *)self translationPairs];
-    v8 = [v7 objectForKeyedSubscript:v6];
+    translationPairs = [(TIDictionaryLookup *)self translationPairs];
+    v8 = [translationPairs objectForKeyedSubscript:v6];
   }
 
   else
@@ -78,17 +78,17 @@
   return v8;
 }
 
-- (TIDictionaryLookup)initWithSourceLocale:(id)a3 targetLocale:(id)a4
+- (TIDictionaryLookup)initWithSourceLocale:(id)locale targetLocale:(id)targetLocale
 {
-  v6 = a3;
-  v7 = a4;
+  localeCopy = locale;
+  targetLocaleCopy = targetLocale;
   v8 = MEMORY[0x277CBEAF8];
-  v9 = [v6 languageIdentifier];
-  v10 = [v8 baseLanguageFromLanguage:v9];
+  languageIdentifier = [localeCopy languageIdentifier];
+  v10 = [v8 baseLanguageFromLanguage:languageIdentifier];
 
   v11 = MEMORY[0x277CBEAF8];
-  v12 = [v7 languageIdentifier];
-  v13 = [v11 baseLanguageFromLanguage:v12];
+  languageIdentifier2 = [targetLocaleCopy languageIdentifier];
+  v13 = [v11 baseLanguageFromLanguage:languageIdentifier2];
 
   v14 = [@"Dictionary_" stringByAppendingFormat:@"%@-%@", v10, v13];
   v15 = TIGetDictionaryData();
@@ -101,21 +101,21 @@
     v17 = v16;
     if (v16)
     {
-      [(TIDictionaryLookup *)v16 setSourceLocale:v6];
-      [(TIDictionaryLookup *)v17 setTargetLocale:v7];
+      [(TIDictionaryLookup *)v16 setSourceLocale:localeCopy];
+      [(TIDictionaryLookup *)v17 setTargetLocale:targetLocaleCopy];
       [(TIDictionaryLookup *)v17 setTranslationPairs:v15];
     }
 
     self = v17;
-    v18 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v18 = 0;
+    selfCopy = 0;
   }
 
-  return v18;
+  return selfCopy;
 }
 
 @end

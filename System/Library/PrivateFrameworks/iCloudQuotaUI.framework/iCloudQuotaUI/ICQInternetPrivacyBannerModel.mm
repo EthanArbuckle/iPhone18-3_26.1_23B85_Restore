@@ -1,81 +1,81 @@
 @interface ICQInternetPrivacyBannerModel
-- (BOOL)isEqual:(id)a3;
-- (ICQInternetPrivacyBannerModel)initWithTitle:(id)a3 message:(id)a4 buttonTitle:(id)a5 status:(unint64_t)a6 networkName:(id)a7;
+- (BOOL)isEqual:(id)equal;
+- (ICQInternetPrivacyBannerModel)initWithTitle:(id)title message:(id)message buttonTitle:(id)buttonTitle status:(unint64_t)status networkName:(id)name;
 @end
 
 @implementation ICQInternetPrivacyBannerModel
 
-- (ICQInternetPrivacyBannerModel)initWithTitle:(id)a3 message:(id)a4 buttonTitle:(id)a5 status:(unint64_t)a6 networkName:(id)a7
+- (ICQInternetPrivacyBannerModel)initWithTitle:(id)title message:(id)message buttonTitle:(id)buttonTitle status:(unint64_t)status networkName:(id)name
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
+  titleCopy = title;
+  messageCopy = message;
+  buttonTitleCopy = buttonTitle;
+  nameCopy = name;
   v20.receiver = self;
   v20.super_class = ICQInternetPrivacyBannerModel;
   v17 = [(ICQInternetPrivacyBannerModel *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_title, a3);
-    objc_storeStrong(&v18->_message, a4);
-    objc_storeStrong(&v18->_buttonTitle, a5);
-    v18->_status = a6;
-    objc_storeStrong(&v18->_networkName, a7);
+    objc_storeStrong(&v17->_title, title);
+    objc_storeStrong(&v18->_message, message);
+    objc_storeStrong(&v18->_buttonTitle, buttonTitle);
+    v18->_status = status;
+    objc_storeStrong(&v18->_networkName, name);
   }
 
   return v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(ICQInternetPrivacyBannerModel *)self buttonTitle];
+    v5 = equalCopy;
+    buttonTitle = [(ICQInternetPrivacyBannerModel *)self buttonTitle];
 
-    if (v6)
+    if (buttonTitle)
     {
-      v7 = [(ICQInternetPrivacyBannerModel *)self buttonTitle];
-      v8 = [v5 buttonTitle];
-      v9 = [v7 isEqualToString:v8];
+      buttonTitle2 = [(ICQInternetPrivacyBannerModel *)self buttonTitle];
+      buttonTitle3 = [v5 buttonTitle];
+      v9 = [buttonTitle2 isEqualToString:buttonTitle3];
     }
 
     else
     {
-      v7 = [v5 buttonTitle];
-      v9 = v7 == 0;
+      buttonTitle2 = [v5 buttonTitle];
+      v9 = buttonTitle2 == 0;
     }
 
-    v11 = [(ICQInternetPrivacyBannerModel *)self networkName];
+    networkName = [(ICQInternetPrivacyBannerModel *)self networkName];
 
-    if (v11)
+    if (networkName)
     {
-      v12 = [(ICQInternetPrivacyBannerModel *)self networkName];
-      v13 = [v5 networkName];
-      v14 = [v12 isEqual:v13];
+      networkName2 = [(ICQInternetPrivacyBannerModel *)self networkName];
+      networkName3 = [v5 networkName];
+      v14 = [networkName2 isEqual:networkName3];
     }
 
     else
     {
-      v12 = [v5 networkName];
-      v14 = v12 == 0;
+      networkName2 = [v5 networkName];
+      v14 = networkName2 == 0;
     }
 
     if ((v9 & v14) == 1)
     {
-      v15 = [(ICQInternetPrivacyBannerModel *)self title];
-      v16 = [v5 title];
-      if ([v15 isEqualToString:v16])
+      title = [(ICQInternetPrivacyBannerModel *)self title];
+      title2 = [v5 title];
+      if ([title isEqualToString:title2])
       {
-        v17 = [(ICQInternetPrivacyBannerModel *)self message];
-        v18 = [v5 message];
-        if ([v17 isEqualToString:v18])
+        message = [(ICQInternetPrivacyBannerModel *)self message];
+        message2 = [v5 message];
+        if ([message isEqualToString:message2])
         {
-          v19 = [(ICQInternetPrivacyBannerModel *)self status];
-          v10 = v19 == [v5 status];
+          status = [(ICQInternetPrivacyBannerModel *)self status];
+          v10 = status == [v5 status];
         }
 
         else

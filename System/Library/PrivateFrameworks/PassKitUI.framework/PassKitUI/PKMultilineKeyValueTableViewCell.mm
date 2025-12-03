@@ -1,20 +1,20 @@
 @interface PKMultilineKeyValueTableViewCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKMultilineKeyValueTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKMultilineKeyValueTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
 @end
 
 @implementation PKMultilineKeyValueTableViewCell
 
-- (PKMultilineKeyValueTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PKMultilineKeyValueTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v19.receiver = self;
   v19.super_class = PKMultilineKeyValueTableViewCell;
-  v4 = [(PKMultilineKeyValueTableViewCell *)&v19 initWithStyle:1 reuseIdentifier:a4];
+  v4 = [(PKMultilineKeyValueTableViewCell *)&v19 initWithStyle:1 reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [(PKMultilineKeyValueTableViewCell *)v4 _shouldReverseLayoutDirection];
+    _shouldReverseLayoutDirection = [(PKMultilineKeyValueTableViewCell *)v4 _shouldReverseLayoutDirection];
     v7 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
     v8 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     keyLabel = v5->_keyLabel;
@@ -22,10 +22,10 @@
 
     [(UILabel *)v5->_keyLabel setNumberOfLines:1];
     v10 = v5->_keyLabel;
-    v11 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v10 setTextColor:v11];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v10 setTextColor:labelColor];
 
-    if (v6)
+    if (_shouldReverseLayoutDirection)
     {
       v12 = 2;
     }
@@ -35,7 +35,7 @@
       v12 = 0;
     }
 
-    if (v6)
+    if (_shouldReverseLayoutDirection)
     {
       v13 = 0;
     }
@@ -54,8 +54,8 @@
 
     [(UILabel *)v5->_valueLabel setNumberOfLines:0];
     v16 = v5->_valueLabel;
-    v17 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v16 setTextColor:v17];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v16 setTextColor:secondaryLabelColor];
 
     [(UILabel *)v5->_valueLabel setTextAlignment:v13];
     [(UILabel *)v5->_valueLabel setFont:v7];
@@ -70,8 +70,8 @@
   v24.receiver = self;
   v24.super_class = PKMultilineKeyValueTableViewCell;
   [(PKMultilineKeyValueTableViewCell *)&v24 layoutSubviews];
-  v3 = [(PKMultilineKeyValueTableViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(PKMultilineKeyValueTableViewCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -112,10 +112,10 @@
   [(UILabel *)self->_valueLabel setFrame:remainder.origin.x, remainder.origin.y, remainder.size.width, remainder.size.height];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(PKMultilineKeyValueTableViewCell *)self layoutMargins:a3.width];
+  width = fits.width;
+  [(PKMultilineKeyValueTableViewCell *)self layoutMargins:fits.width];
   v7 = width - v5 - v6;
   [(UILabel *)self->_keyLabel systemLayoutSizeFittingSize:v7, 0.0];
   v9 = v8;

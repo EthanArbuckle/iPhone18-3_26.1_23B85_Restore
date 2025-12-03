@@ -1,52 +1,52 @@
 @interface PDDPStateChangeParticipants
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addRecipientGroups:(id)a3;
-- (void)addRecipientPersonIds:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addRecipientGroups:(id)groups;
+- (void)addRecipientPersonIds:(id)ids;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPStateChangeParticipants
 
-- (void)addRecipientPersonIds:(id)a3
+- (void)addRecipientPersonIds:(id)ids
 {
-  v4 = a3;
+  idsCopy = ids;
   recipientPersonIds = self->_recipientPersonIds;
-  v8 = v4;
+  v8 = idsCopy;
   if (!recipientPersonIds)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_recipientPersonIds;
     self->_recipientPersonIds = v6;
 
-    v4 = v8;
+    idsCopy = v8;
     recipientPersonIds = self->_recipientPersonIds;
   }
 
-  [(NSMutableArray *)recipientPersonIds addObject:v4];
+  [(NSMutableArray *)recipientPersonIds addObject:idsCopy];
 }
 
-- (void)addRecipientGroups:(id)a3
+- (void)addRecipientGroups:(id)groups
 {
-  v4 = a3;
+  groupsCopy = groups;
   recipientGroups = self->_recipientGroups;
-  v8 = v4;
+  v8 = groupsCopy;
   if (!recipientGroups)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_recipientGroups;
     self->_recipientGroups = v6;
 
-    v4 = v8;
+    groupsCopy = v8;
     recipientGroups = self->_recipientGroups;
   }
 
-  [(NSMutableArray *)recipientGroups addObject:v4];
+  [(NSMutableArray *)recipientGroups addObject:groupsCopy];
 }
 
 - (id)description
@@ -54,8 +54,8 @@
   v7.receiver = self;
   v7.super_class = PDDPStateChangeParticipants;
   v3 = [(PDDPStateChangeParticipants *)&v7 description];
-  v4 = [(PDDPStateChangeParticipants *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPStateChangeParticipants *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -98,8 +98,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -120,9 +120,9 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_senderPersonId)
   {
     PBDataWriterWriteStringField();
@@ -198,54 +198,54 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   if (self->_senderPersonId)
   {
-    [v12 setSenderPersonId:?];
+    [toCopy setSenderPersonId:?];
   }
 
   if ([(PDDPStateChangeParticipants *)self recipientPersonIdsCount])
   {
-    [v12 clearRecipientPersonIds];
-    v4 = [(PDDPStateChangeParticipants *)self recipientPersonIdsCount];
-    if (v4)
+    [toCopy clearRecipientPersonIds];
+    recipientPersonIdsCount = [(PDDPStateChangeParticipants *)self recipientPersonIdsCount];
+    if (recipientPersonIdsCount)
     {
-      v5 = v4;
+      v5 = recipientPersonIdsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(PDDPStateChangeParticipants *)self recipientPersonIdsAtIndex:i];
-        [v12 addRecipientPersonIds:v7];
+        [toCopy addRecipientPersonIds:v7];
       }
     }
   }
 
   if ([(PDDPStateChangeParticipants *)self recipientGroupsCount])
   {
-    [v12 clearRecipientGroups];
-    v8 = [(PDDPStateChangeParticipants *)self recipientGroupsCount];
-    if (v8)
+    [toCopy clearRecipientGroups];
+    recipientGroupsCount = [(PDDPStateChangeParticipants *)self recipientGroupsCount];
+    if (recipientGroupsCount)
     {
-      v9 = v8;
+      v9 = recipientGroupsCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(PDDPStateChangeParticipants *)self recipientGroupsAtIndex:j];
-        [v12 addRecipientGroups:v11];
+        [toCopy addRecipientGroups:v11];
       }
     }
   }
 
   if (self->_recipientPersonId)
   {
-    [v12 setRecipientPersonId:?];
+    [toCopy setRecipientPersonId:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_senderPersonId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_senderPersonId copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
@@ -269,7 +269,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v27 + 1) + 8 * v12) copyWithZone:a3];
+        v13 = [*(*(&v27 + 1) + 8 * v12) copyWithZone:zone];
         [v5 addRecipientPersonIds:v13];
 
         v12 = v12 + 1;
@@ -302,7 +302,7 @@
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v23 + 1) + 8 * v18) copyWithZone:{a3, v23}];
+        v19 = [*(*(&v23 + 1) + 8 * v18) copyWithZone:{zone, v23}];
         [v5 addRecipientGroups:v19];
 
         v18 = v18 + 1;
@@ -315,20 +315,20 @@
     while (v16);
   }
 
-  v20 = [(NSString *)self->_recipientPersonId copyWithZone:a3];
+  v20 = [(NSString *)self->_recipientPersonId copyWithZone:zone];
   v21 = v5[2];
   v5[2] = v20;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((senderPersonId = self->_senderPersonId, !(senderPersonId | v4[4])) || -[NSString isEqual:](senderPersonId, "isEqual:")) && ((recipientPersonIds = self->_recipientPersonIds, !(recipientPersonIds | v4[3])) || -[NSMutableArray isEqual:](recipientPersonIds, "isEqual:")) && ((recipientGroups = self->_recipientGroups, !(recipientGroups | v4[1])) || -[NSMutableArray isEqual:](recipientGroups, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((senderPersonId = self->_senderPersonId, !(senderPersonId | equalCopy[4])) || -[NSString isEqual:](senderPersonId, "isEqual:")) && ((recipientPersonIds = self->_recipientPersonIds, !(recipientPersonIds | equalCopy[3])) || -[NSMutableArray isEqual:](recipientPersonIds, "isEqual:")) && ((recipientGroups = self->_recipientGroups, !(recipientGroups | equalCopy[1])) || -[NSMutableArray isEqual:](recipientGroups, "isEqual:")))
   {
     recipientPersonId = self->_recipientPersonId;
-    if (recipientPersonId | v4[2])
+    if (recipientPersonId | equalCopy[2])
     {
       v9 = [(NSString *)recipientPersonId isEqual:?];
     }
@@ -355,10 +355,10 @@
   return v4 ^ v5 ^ [(NSString *)self->_recipientPersonId hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 4))
+  fromCopy = from;
+  if (*(fromCopy + 4))
   {
     [(PDDPStateChangeParticipants *)self setSenderPersonId:?];
   }
@@ -367,7 +367,7 @@
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = *(v4 + 3);
+  v5 = *(fromCopy + 3);
   v6 = [v5 countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v6)
   {
@@ -395,7 +395,7 @@
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v10 = *(v4 + 1);
+  v10 = *(fromCopy + 1);
   v11 = [v10 countByEnumeratingWithState:&v15 objects:v23 count:16];
   if (v11)
   {
@@ -419,7 +419,7 @@
     while (v12);
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(PDDPStateChangeParticipants *)self setRecipientPersonId:?];
   }

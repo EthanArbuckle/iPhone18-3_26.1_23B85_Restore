@@ -7,16 +7,16 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFTrailingButtonTypeCharacteristic;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
 - (id)formattedValue
 {
-  v2 = [(CAFTrailingButtonTypeCharacteristic *)self trailingButtonTypeValue];
+  trailingButtonTypeValue = [(CAFTrailingButtonTypeCharacteristic *)self trailingButtonTypeValue];
 
-  return NSStringFromTrailingButtonType(v2);
+  return NSStringFromTrailingButtonType(trailingButtonTypeValue);
 }
 
 @end

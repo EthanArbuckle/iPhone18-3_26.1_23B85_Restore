@@ -1,30 +1,30 @@
 @interface PTDRootModuleController
-- (PTDRootModuleController)initWithDomainServer:(id)a3 editingServer:(id)a4;
+- (PTDRootModuleController)initWithDomainServer:(id)server editingServer:(id)editingServer;
 - (PTModule)module;
 - (PTUIClient)delegate;
 - (id)_hardwareEventSection;
 - (id)_killSection;
 - (id)_volumeSection;
 - (id)_volumeSliderRow;
-- (void)_avServerConnectionDiedNotification:(id)a3;
+- (void)_avServerConnectionDiedNotification:(id)notification;
 - (void)_sendKillSpringBoard;
 - (void)_subscribeToAVSystemControllerNotifications;
 @end
 
 @implementation PTDRootModuleController
 
-- (PTDRootModuleController)initWithDomainServer:(id)a3 editingServer:(id)a4
+- (PTDRootModuleController)initWithDomainServer:(id)server editingServer:(id)editingServer
 {
-  v7 = a3;
-  v8 = a4;
+  serverCopy = server;
+  editingServerCopy = editingServer;
   v17.receiver = self;
   v17.super_class = PTDRootModuleController;
   v9 = [(PTDRootModuleController *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_domainServer, a3);
-    objc_storeStrong(&v10->_editingServer, a4);
+    objc_storeStrong(&v9->_domainServer, server);
+    objc_storeStrong(&v10->_editingServer, editingServer);
     Serial = BSDispatchQueueCreateSerial();
     avQueue = v10->_avQueue;
     v10->_avQueue = Serial;
@@ -46,14 +46,14 @@
 - (PTModule)module
 {
   v3 = +[NSMutableArray array];
-  v4 = [(PTDRootModuleController *)self _volumeSection];
-  [v3 addObject:v4];
+  _volumeSection = [(PTDRootModuleController *)self _volumeSection];
+  [v3 addObject:_volumeSection];
 
-  v5 = [(PTDRootModuleController *)self _hardwareEventSection];
-  [v3 addObject:v5];
+  _hardwareEventSection = [(PTDRootModuleController *)self _hardwareEventSection];
+  [v3 addObject:_hardwareEventSection];
 
-  v23 = [(PTUIEditingServer *)self->_editingServer testRecipeSelectionModule];
-  v6 = [PTModule submoduleWithModule:v23];
+  testRecipeSelectionModule = [(PTUIEditingServer *)self->_editingServer testRecipeSelectionModule];
+  v6 = [PTModule submoduleWithModule:testRecipeSelectionModule];
   [v3 addObject:v6];
 
   objc_initWeak(&location, self);
@@ -77,16 +77,16 @@
   v15 = [PTModule submoduleWithModule:v14];
   [v3 addObject:v15];
 
-  v16 = [(PTUIEditingServer *)self->_editingServer settingsEditingModule];
-  v17 = [PTModule submoduleWithModule:v16];
+  settingsEditingModule = [(PTUIEditingServer *)self->_editingServer settingsEditingModule];
+  v17 = [PTModule submoduleWithModule:settingsEditingModule];
   [v3 addObject:v17];
 
   v18 = [PTModule moduleWithSettings:self->_prototypingSettings];
   v19 = [PTModule submoduleWithModule:v18];
   [v3 addObject:v19];
 
-  v20 = [(PTDRootModuleController *)self _killSection];
-  [v3 addObject:v20];
+  _killSection = [(PTDRootModuleController *)self _killSection];
+  [v3 addObject:_killSection];
 
   v21 = [PTModule moduleWithTitle:@"Prototyping" contents:v3];
 
@@ -98,8 +98,8 @@
 
 - (id)_volumeSection
 {
-  v2 = [(PTDRootModuleController *)self _volumeSliderRow];
-  v6 = v2;
+  _volumeSliderRow = [(PTDRootModuleController *)self _volumeSliderRow];
+  v6 = _volumeSliderRow;
   v3 = [NSArray arrayWithObjects:&v6 count:1];
   v4 = [PTModule sectionWithRows:v3];
 
@@ -117,7 +117,7 @@
   return v2;
 }
 
-- (void)_avServerConnectionDiedNotification:(id)a3
+- (void)_avServerConnectionDiedNotification:(id)notification
 {
   v4 = PTLogObjectForTopic();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))

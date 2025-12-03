@@ -1,7 +1,7 @@
 @interface SISceneUnderstandingAlgorithm
 + (CGSize)outputResolution;
-- (SISceneUnderstandingAlgorithm)initWithInputResolution:(CGSize)a3 andComputeEngine:(int64_t)a4;
-- (void)runWithInput:(__CVBuffer *)a3 output:(__IOSurface *)a4 confidenceOutput:(__IOSurface *)a5 normalsOutput:(__IOSurface *)a6 orientation:(int64_t)a7;
+- (SISceneUnderstandingAlgorithm)initWithInputResolution:(CGSize)resolution andComputeEngine:(int64_t)engine;
+- (void)runWithInput:(__CVBuffer *)input output:(__IOSurface *)output confidenceOutput:(__IOSurface *)confidenceOutput normalsOutput:(__IOSurface *)normalsOutput orientation:(int64_t)orientation;
 @end
 
 @implementation SISceneUnderstandingAlgorithm
@@ -14,12 +14,12 @@
   return result;
 }
 
-- (SISceneUnderstandingAlgorithm)initWithInputResolution:(CGSize)a3 andComputeEngine:(int64_t)a4
+- (SISceneUnderstandingAlgorithm)initWithInputResolution:(CGSize)resolution andComputeEngine:(int64_t)engine
 {
   v15.receiver = self;
   v15.super_class = SISceneUnderstandingAlgorithm;
-  v5 = [(SISceneUnderstandingAlgorithm *)&v15 init:a3.width];
-  if (v5 && (v6 = [[SISceneUnderstanding alloc] initWithComputeEngine:a4], segmentation = v5->_segmentation, v5->_segmentation = v6, segmentation, v5->_segmentation))
+  v5 = [(SISceneUnderstandingAlgorithm *)&v15 init:resolution.width];
+  if (v5 && (v6 = [[SISceneUnderstanding alloc] initWithComputeEngine:engine], segmentation = v5->_segmentation, v5->_segmentation = v6, segmentation, v5->_segmentation))
   {
     v8 = [[SISceneUnderstandingResult alloc] initWithModel:v5->_segmentation];
     v9 = v5->_result;
@@ -42,11 +42,11 @@
   return v13;
 }
 
-- (void)runWithInput:(__CVBuffer *)a3 output:(__IOSurface *)a4 confidenceOutput:(__IOSurface *)a5 normalsOutput:(__IOSurface *)a6 orientation:(int64_t)a7
+- (void)runWithInput:(__CVBuffer *)input output:(__IOSurface *)output confidenceOutput:(__IOSurface *)confidenceOutput normalsOutput:(__IOSurface *)normalsOutput orientation:(int64_t)orientation
 {
   v27 = *MEMORY[0x277D85DE8];
   kdebug_trace();
-  v13 = [(SIVideoToolboxScaler *)self->_scalerOne createScaledImage:a3];
+  v13 = [(SIVideoToolboxScaler *)self->_scalerOne createScaledImage:input];
   v14 = [(SISceneUnderstanding *)self->_segmentation evaluateImage:v13 results:self->_result];
   CVPixelBufferRelease(v13);
   kdebug_trace();
@@ -66,7 +66,7 @@
   else
   {
     pixelBufferOut = 0;
-    if (CVPixelBufferCreateWithIOSurface(0, a4, 0, &pixelBufferOut))
+    if (CVPixelBufferCreateWithIOSurface(0, output, 0, &pixelBufferOut))
     {
       v16 = __SceneIntelligenceLogSharedInstance();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -85,7 +85,7 @@
     }
 
     texture = 0;
-    if (CVPixelBufferCreateWithIOSurface(0, a5, 0, &texture))
+    if (CVPixelBufferCreateWithIOSurface(0, confidenceOutput, 0, &texture))
     {
       v17 = __SceneIntelligenceLogSharedInstance();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -104,7 +104,7 @@
     }
 
     v20 = 0;
-    if (CVPixelBufferCreateWithIOSurface(0, a6, 0, &v20))
+    if (CVPixelBufferCreateWithIOSurface(0, normalsOutput, 0, &v20))
     {
       v18 = __SceneIntelligenceLogSharedInstance();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -119,7 +119,7 @@
 
     else
     {
-      [(SISceneUnderstandingResult *)self->_result writeNormals:v20 orientation:a7];
+      [(SISceneUnderstandingResult *)self->_result writeNormals:v20 orientation:orientation];
     }
 
     CVPixelBufferRelease(pixelBufferOut);

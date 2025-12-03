@@ -1,39 +1,39 @@
 @interface CAMOverlayClientMonitor
 - (CAMOverlayClientMonitorDelegate)delegate;
-- (void)beginMonitoringScene:(id)a3 delegate:(id)a4;
-- (void)clientMonitor:(id)a3 requestingSceneUpdatedWithInfo:(id)a4;
+- (void)beginMonitoringScene:(id)scene delegate:(id)delegate;
+- (void)clientMonitor:(id)monitor requestingSceneUpdatedWithInfo:(id)info;
 - (void)endMonitoring;
 @end
 
 @implementation CAMOverlayClientMonitor
 
-- (void)beginMonitoringScene:(id)a3 delegate:(id)a4
+- (void)beginMonitoringScene:(id)scene delegate:(id)delegate
 {
-  v6 = a3;
-  [(CAMOverlayClientMonitor *)self setDelegate:a4];
-  v7 = [v6 _FBSScene];
+  sceneCopy = scene;
+  [(CAMOverlayClientMonitor *)self setDelegate:delegate];
+  _FBSScene = [sceneCopy _FBSScene];
 
-  v8 = [v7 cameraOverlaySceneClientMonitor];
-  [(CAMOverlayClientMonitor *)self setUnderlyingMonitor:v8];
+  cameraOverlaySceneClientMonitor = [_FBSScene cameraOverlaySceneClientMonitor];
+  [(CAMOverlayClientMonitor *)self setUnderlyingMonitor:cameraOverlaySceneClientMonitor];
 
-  v9 = [(CAMOverlayClientMonitor *)self underlyingMonitor];
-  [v9 addObserver:self];
+  underlyingMonitor = [(CAMOverlayClientMonitor *)self underlyingMonitor];
+  [underlyingMonitor addObserver:self];
 }
 
 - (void)endMonitoring
 {
   [(CAMOverlayClientMonitor *)self setDelegate:0];
-  v3 = [(CAMOverlayClientMonitor *)self underlyingMonitor];
-  [v3 removeObserver:self];
+  underlyingMonitor = [(CAMOverlayClientMonitor *)self underlyingMonitor];
+  [underlyingMonitor removeObserver:self];
 
   [(CAMOverlayClientMonitor *)self setUnderlyingMonitor:0];
 }
 
-- (void)clientMonitor:(id)a3 requestingSceneUpdatedWithInfo:(id)a4
+- (void)clientMonitor:(id)monitor requestingSceneUpdatedWithInfo:(id)info
 {
-  v6 = [a4 overlayRequestingProcessAuditToken];
-  v5 = [(CAMOverlayClientMonitor *)self delegate];
-  [v5 clientMonitor:self didUpdateWithAuditToken:v6];
+  overlayRequestingProcessAuditToken = [info overlayRequestingProcessAuditToken];
+  delegate = [(CAMOverlayClientMonitor *)self delegate];
+  [delegate clientMonitor:self didUpdateWithAuditToken:overlayRequestingProcessAuditToken];
 }
 
 - (CAMOverlayClientMonitorDelegate)delegate

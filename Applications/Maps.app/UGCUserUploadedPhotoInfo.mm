@@ -1,6 +1,6 @@
 @interface UGCUserUploadedPhotoInfo
 - (CGSize)size;
-- (UGCUserUploadedPhotoInfo)initWithURL:(id)a3 size:(CGSize)a4;
+- (UGCUserUploadedPhotoInfo)initWithURL:(id)l size:(CGSize)size;
 @end
 
 @implementation UGCUserUploadedPhotoInfo
@@ -14,11 +14,11 @@
   return result;
 }
 
-- (UGCUserUploadedPhotoInfo)initWithURL:(id)a3 size:(CGSize)a4
+- (UGCUserUploadedPhotoInfo)initWithURL:(id)l size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a3;
+  height = size.height;
+  width = size.width;
+  lCopy = l;
   v12.receiver = self;
   v12.super_class = UGCUserUploadedPhotoInfo;
   v9 = [(UGCUserUploadedPhotoInfo *)&v12 init];
@@ -27,7 +27,7 @@
   {
     v9->_size.width = width;
     v9->_size.height = height;
-    objc_storeStrong(&v9->_url, a3);
+    objc_storeStrong(&v9->_url, l);
   }
 
   return v10;

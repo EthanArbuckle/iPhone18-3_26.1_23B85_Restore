@@ -1,55 +1,55 @@
 @interface TSCESpillOwner
-+ (TSCECellRef)spillChangedPrecedentForTableUID:(SEL)a3 spillOrigin:(const TSKUIDStruct *)a4;
-- (TSCESpillOwner)initWithArchive:(const void *)a3 unarchiver:(id)a4 forBaseTableUID:(const TSKUIDStruct *)a5;
-- (TSCESpillOwner)initWithBaseTableUID:(const TSKUIDStruct *)a3;
-- (TSCESpillOwner)initWithBaseTableUID:(const TSKUIDStruct *)a3 ownerUID:(const TSKUIDStruct *)a4;
++ (TSCECellRef)spillChangedPrecedentForTableUID:(SEL)d spillOrigin:(const TSKUIDStruct *)origin;
+- (TSCESpillOwner)initWithArchive:(const void *)archive unarchiver:(id)unarchiver forBaseTableUID:(const TSKUIDStruct *)d;
+- (TSCESpillOwner)initWithBaseTableUID:(const TSKUIDStruct *)d;
+- (TSCESpillOwner)initWithBaseTableUID:(const TSKUIDStruct *)d ownerUID:(const TSKUIDStruct *)iD;
 - (TSKUIDStruct)baseTableUID;
 - (TSKUIDStruct)formulaOwnerUID;
 - (TSKUIDStruct)ownerUID;
-- (int)registerWithCalcEngine:(id)a3;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)setBaseTableUID:(TSKUIDStruct)a3;
-- (void)setCalcEngine:(id)a3;
+- (int)registerWithCalcEngine:(id)engine;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)setBaseTableUID:(TSKUIDStruct)d;
+- (void)setCalcEngine:(id)engine;
 - (void)unregisterFromCalcEngine;
 @end
 
 @implementation TSCESpillOwner
 
-- (TSCESpillOwner)initWithBaseTableUID:(const TSKUIDStruct *)a3 ownerUID:(const TSKUIDStruct *)a4
+- (TSCESpillOwner)initWithBaseTableUID:(const TSKUIDStruct *)d ownerUID:(const TSKUIDStruct *)iD
 {
   v7.receiver = self;
   v7.super_class = TSCESpillOwner;
   result = [(TSCESpillOwner *)&v7 init];
   if (result)
   {
-    result->_baseTableUID = *a3;
-    result->_ownerUID = *a4;
+    result->_baseTableUID = *d;
+    result->_ownerUID = *iD;
   }
 
   return result;
 }
 
-- (void)setBaseTableUID:(TSKUIDStruct)a3
+- (void)setBaseTableUID:(TSKUIDStruct)d
 {
-  v6 = a3;
-  self->_baseTableUID = a3;
-  self->_ownerUID._lower = sub_2212C4930(&v6, 0xC, a3._lower, a3._upper, v3);
+  dCopy = d;
+  self->_baseTableUID = d;
+  self->_ownerUID._lower = sub_2212C4930(&dCopy, 0xC, d._lower, d._upper, v3);
   self->_ownerUID._upper = v5;
 }
 
-- (TSCESpillOwner)initWithBaseTableUID:(const TSKUIDStruct *)a3
+- (TSCESpillOwner)initWithBaseTableUID:(const TSKUIDStruct *)d
 {
-  v10[0] = sub_2212C4930(a3, 0xC, a3, v3, v4);
+  v10[0] = sub_2212C4930(d, 0xC, d, v3, v4);
   v10[1] = v7;
-  return objc_msgSend_initWithBaseTableUID_ownerUID_(self, v7, a3, v10, v8);
+  return objc_msgSend_initWithBaseTableUID_ownerUID_(self, v7, d, v10, v8);
 }
 
-- (void)setCalcEngine:(id)a3
+- (void)setCalcEngine:(id)engine
 {
-  v8 = a3;
+  engineCopy = engine;
   if (!self->_calcEngine)
   {
-    objc_storeStrong(&self->_calcEngine, a3);
+    objc_storeStrong(&self->_calcEngine, engine);
     objc_msgSend_registerWithCalcEngine_(self, v5, self->_calcEngine, v6, v7);
   }
 }
@@ -63,20 +63,20 @@
   return result;
 }
 
-+ (TSCECellRef)spillChangedPrecedentForTableUID:(SEL)a3 spillOrigin:(const TSKUIDStruct *)a4
++ (TSCECellRef)spillChangedPrecedentForTableUID:(SEL)d spillOrigin:(const TSKUIDStruct *)origin
 {
-  result = sub_2212C4930(a4, 0xC, a4, a5, v5);
+  result = sub_2212C4930(origin, 0xC, origin, a5, v5);
   retstr->coordinate = *a5;
   retstr->_tableUID._lower = result;
   retstr->_tableUID._upper = v9;
   return result;
 }
 
-- (TSCESpillOwner)initWithArchive:(const void *)a3 unarchiver:(id)a4 forBaseTableUID:(const TSKUIDStruct *)a5
+- (TSCESpillOwner)initWithArchive:(const void *)archive unarchiver:(id)unarchiver forBaseTableUID:(const TSKUIDStruct *)d
 {
-  if (*(a3 + 3))
+  if (*(archive + 3))
   {
-    v7 = *(a3 + 3);
+    v7 = *(archive + 3);
   }
 
   else
@@ -86,38 +86,38 @@
 
   v11[0] = TSKUIDStruct::loadFromMessage(v7, a2);
   v11[1] = v8;
-  return objc_msgSend_initWithBaseTableUID_ownerUID_(self, v8, a5, v11, v9);
+  return objc_msgSend_initWithBaseTableUID_ownerUID_(self, v8, d, v11, v9);
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v8 = a4;
-  *(a3 + 4) |= 1u;
-  v6 = *(a3 + 3);
+  archiverCopy = archiver;
+  *(archive + 4) |= 1u;
+  v6 = *(archive + 3);
   if (!v6)
   {
-    v7 = *(a3 + 1);
+    v7 = *(archive + 1);
     if (v7)
     {
       v7 = *(v7 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v6 = MEMORY[0x223DA0360](v7);
-    *(a3 + 3) = v6;
+    *(archive + 3) = v6;
   }
 
   TSKUIDStruct::saveToMessage(&self->_ownerUID, v6);
 }
 
-- (int)registerWithCalcEngine:(id)a3
+- (int)registerWithCalcEngine:(id)engine
 {
-  v4 = self;
-  objc_storeStrong(&self->_calcEngine, a3);
-  v5 = a3;
+  selfCopy = self;
+  objc_storeStrong(&self->_calcEngine, engine);
+  engineCopy = engine;
   v8 = 12;
-  LODWORD(v4) = objc_msgSend_registerOwnerWithOwnerUID_owner_referenceResolver_baseOwnerUID_ownerKind_(v4->_calcEngine, v6, v4->_ownerUID._lower, v4->_ownerUID._upper, v4, 0, v4->_baseTableUID._lower, v4->_baseTableUID._upper, v8);
+  LODWORD(selfCopy) = objc_msgSend_registerOwnerWithOwnerUID_owner_referenceResolver_baseOwnerUID_ownerKind_(selfCopy->_calcEngine, v6, selfCopy->_ownerUID._lower, selfCopy->_ownerUID._upper, selfCopy, 0, selfCopy->_baseTableUID._lower, selfCopy->_baseTableUID._upper, v8);
 
-  return v4;
+  return selfCopy;
 }
 
 - (void)unregisterFromCalcEngine

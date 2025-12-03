@@ -2,11 +2,11 @@
 + (NSURL)projectFolder;
 - (NSString)debugDescription;
 - (VFXRemotePreviewPlayerPeer)init;
-- (VFXRemotePreviewPlayerPeer)initWithDelegate:(id)a3;
+- (VFXRemotePreviewPlayerPeer)initWithDelegate:(id)delegate;
 - (VFXStatisticsProvider)rendererStatisticsProvider;
 - (void)connectToStudio;
-- (void)openPackageWithUrl:(id)a3;
-- (void)setRendererStatisticsProvider:(id)a3;
+- (void)openPackageWithUrl:(id)url;
+- (void)setRendererStatisticsProvider:(id)provider;
 @end
 
 @implementation VFXRemotePreviewPlayerPeer
@@ -18,16 +18,16 @@
   return Strong;
 }
 
-- (void)setRendererStatisticsProvider:(id)a3
+- (void)setRendererStatisticsProvider:(id)provider
 {
   swift_unknownObjectWeakAssign();
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1AF864148();
   swift_unknownObjectRelease();
 }
 
-- (VFXRemotePreviewPlayerPeer)initWithDelegate:(id)a3
+- (VFXRemotePreviewPlayerPeer)initWithDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
   v3 = sub_1AF868F78();
@@ -37,7 +37,7 @@
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   sub_1AF8646FC();
 
   v3 = sub_1AFDFCEC8();
@@ -47,7 +47,7 @@
 
 - (void)connectToStudio
 {
-  v2 = self;
+  selfCopy = self;
   sub_1AF864834();
 }
 
@@ -71,14 +71,14 @@
   return result;
 }
 
-- (void)openPackageWithUrl:(id)a3
+- (void)openPackageWithUrl:(id)url
 {
   v4 = sub_1AFDFC128();
   v5 = *(v4 - 8);
   MEMORY[0x1EEE9AC00](v4, v6);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1AFDFC0B8();
-  v9 = self;
+  selfCopy = self;
   RemotePreviewPlayerPeer.openPackage(url:)(v8);
 
   (*(v5 + 8))(v8, v4);

@@ -1,19 +1,19 @@
 @interface IDSKTOptInOutRequest
-- (IDSKTOptInOutRequest)initWithCoder:(id)a3;
+- (IDSKTOptInOutRequest)initWithCoder:(id)coder;
 @end
 
 @implementation IDSKTOptInOutRequest
 
-- (IDSKTOptInOutRequest)initWithCoder:(id)a3
+- (IDSKTOptInOutRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = IDSKTOptInOutRequest;
   v5 = [(IDSKTOptInOutRequest *)&v10 init];
   if (v5)
   {
     v6 = objc_opt_class();
-    v7 = [v4 decodeDictionaryWithKeysOfClass:v6 objectsOfClass:objc_opt_class() forKey:@"ReqAppToOptInStatusDataKey"];
+    v7 = [coderCopy decodeDictionaryWithKeysOfClass:v6 objectsOfClass:objc_opt_class() forKey:@"ReqAppToOptInStatusDataKey"];
     applicationsToOptInStatusData = v5->_applicationsToOptInStatusData;
     v5->_applicationsToOptInStatusData = v7;
   }

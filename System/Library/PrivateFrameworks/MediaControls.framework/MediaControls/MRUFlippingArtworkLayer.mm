@@ -1,35 +1,35 @@
 @interface MRUFlippingArtworkLayer
 - ($39264E51B7BBB828B9E6209281CB03F6)nextState;
 - ($39264E51B7BBB828B9E6209281CB03F6)state;
-- (BOOL)isLayerForStateGlowing:(id *)a3;
+- (BOOL)isLayerForStateGlowing:(id *)glowing;
 - (MRUFlippingArtworkLayer)init;
-- (id)glowLayerForState:(id *)a3;
-- (id)imageLayerForState:(id *)a3;
-- (id)makeAnimation:(id)a3 fromValue:(id)a4 toValue:(id)a5 duration:(double)a6;
+- (id)glowLayerForState:(id *)state;
+- (id)imageLayerForState:(id *)state;
+- (id)makeAnimation:(id)animation fromValue:(id)value toValue:(id)toValue duration:(double)duration;
 - (id)makeBlurFilter;
 - (id)makeDynamicIslandLegibilityFilter;
 - (id)makeLegibilityLayer;
-- (id)makeSpringAnimation:(id)a3 fromValue:(id)a4 toValue:(id)a5;
-- (id)placeholderLayerForState:(id *)a3;
-- (void)animateGlowForState:(id *)a3 reverse:(BOOL)a4;
-- (void)setArtworkCornerRadius:(double)a3;
-- (void)setArtworkStyle:(int64_t)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setContentsScale:(double)a3;
-- (void)setImage:(CGImage *)a3 toLayer:(id)a4;
-- (void)setImageToCurrentLayer:(CGImage *)a3 animated:(BOOL)a4;
-- (void)setPlaceholderImage:(CGImage *)a3;
-- (void)setPlaceholderImageTintColor:(CGColor *)a3;
-- (void)setPlaying:(BOOL)a3;
-- (void)setState:(id *)a3;
-- (void)setState:(id *)a3 transitionDirection:(int64_t)a4;
-- (void)transitionToImage:(CGImage *)a3 transitionDirection:(int64_t)a4;
+- (id)makeSpringAnimation:(id)animation fromValue:(id)value toValue:(id)toValue;
+- (id)placeholderLayerForState:(id *)state;
+- (void)animateGlowForState:(id *)state reverse:(BOOL)reverse;
+- (void)setArtworkCornerRadius:(double)radius;
+- (void)setArtworkStyle:(int64_t)style;
+- (void)setBounds:(CGRect)bounds;
+- (void)setContentsScale:(double)scale;
+- (void)setImage:(CGImage *)image toLayer:(id)layer;
+- (void)setImageToCurrentLayer:(CGImage *)layer animated:(BOOL)animated;
+- (void)setPlaceholderImage:(CGImage *)image;
+- (void)setPlaceholderImageTintColor:(CGColor *)color;
+- (void)setPlaying:(BOOL)playing;
+- (void)setState:(id *)state;
+- (void)setState:(id *)state transitionDirection:(int64_t)direction;
+- (void)transitionToImage:(CGImage *)image transitionDirection:(int64_t)direction;
 - (void)updateArtworkStyle;
-- (void)updateGlowForState:(id *)a3 reverse:(BOOL)a4 animated:(BOOL)a5;
+- (void)updateGlowForState:(id *)state reverse:(BOOL)reverse animated:(BOOL)animated;
 - (void)updateOpacity;
 - (void)updatePlaceholderFrame;
 - (void)updateScale;
-- (void)updateStateWithPreviousState:(id *)a3 transitionDirection:(int64_t)a4;
+- (void)updateStateWithPreviousState:(id *)state transitionDirection:(int64_t)direction;
 @end
 
 @implementation MRUFlippingArtworkLayer
@@ -66,17 +66,17 @@
     v10 = objc_alloc_init(MEMORY[0x1E6979398]);
     [*(v2 + 14) setMask:v10];
 
-    v11 = [*(v2 + 14) mask];
+    mask = [*(v2 + 14) mask];
     LODWORD(v12) = 1061997773;
-    [v11 setOpacity:v12];
+    [mask setOpacity:v12];
 
     [*(v2 + 12) addSublayer:*(v2 + 14)];
-    v13 = [MEMORY[0x1E6979398] layer];
+    layer = [MEMORY[0x1E6979398] layer];
     v14 = *(v2 + 16);
-    *(v2 + 16) = v13;
+    *(v2 + 16) = layer;
 
-    v15 = [MEMORY[0x1E69DC888] whiteColor];
-    [*(v2 + 16) setBackgroundColor:{objc_msgSend(v15, "CGColor")}];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [*(v2 + 16) setBackgroundColor:{objc_msgSend(whiteColor, "CGColor")}];
 
     [*(v2 + 16) setOpacity:0.0];
     v16 = *MEMORY[0x1E6979CF8];
@@ -104,28 +104,28 @@
     v22 = objc_alloc_init(MEMORY[0x1E6979398]);
     [*(v2 + 15) setMask:v22];
 
-    v23 = [*(v2 + 15) mask];
+    mask2 = [*(v2 + 15) mask];
     LODWORD(v24) = 1061997773;
-    [v23 setOpacity:v24];
+    [mask2 setOpacity:v24];
 
     [*(v2 + 13) addSublayer:*(v2 + 15)];
-    v25 = [MEMORY[0x1E6979398] layer];
+    layer2 = [MEMORY[0x1E6979398] layer];
     v26 = *(v2 + 17);
-    *(v2 + 17) = v25;
+    *(v2 + 17) = layer2;
 
-    v27 = [MEMORY[0x1E69DC888] whiteColor];
-    [*(v2 + 17) setBackgroundColor:{objc_msgSend(v27, "CGColor")}];
+    whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+    [*(v2 + 17) setBackgroundColor:{objc_msgSend(whiteColor2, "CGColor")}];
 
     [*(v2 + 17) setOpacity:0.0];
     [*(v2 + 17) setCompositingFilter:v16];
     [*(v2 + 13) addSublayer:*(v2 + 17)];
-    v28 = [v2 makeBlurFilter];
+    makeBlurFilter = [v2 makeBlurFilter];
     v29 = *(v2 + 20);
-    *(v2 + 20) = v28;
+    *(v2 + 20) = makeBlurFilter;
 
-    v30 = [v2 makeBlurFilter];
+    makeBlurFilter2 = [v2 makeBlurFilter];
     v31 = *(v2 + 21);
-    *(v2 + 21) = v30;
+    *(v2 + 21) = makeBlurFilter2;
 
     v45[0] = *(v2 + 20);
     v32 = [MEMORY[0x1E695DEC8] arrayWithObjects:v45 count:1];
@@ -155,12 +155,12 @@
   return v2;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v8.receiver = self;
   v8.super_class = MRUFlippingArtworkLayer;
   [(MRUFlippingArtworkLayer *)&v8 setBounds:?];
@@ -174,45 +174,45 @@
   [(MRUFlippingArtworkLayer *)self updatePlaceholderFrame];
 }
 
-- (void)setContentsScale:(double)a3
+- (void)setContentsScale:(double)scale
 {
   v5.receiver = self;
   v5.super_class = MRUFlippingArtworkLayer;
   [(MRUFlippingArtworkLayer *)&v5 setContentsScale:?];
-  [(CALayer *)self->_frontLayer setContentsScale:a3];
-  [(CALayer *)self->_backLayer setContentsScale:a3];
+  [(CALayer *)self->_frontLayer setContentsScale:scale];
+  [(CALayer *)self->_backLayer setContentsScale:scale];
 }
 
-- (void)setPlaying:(BOOL)a3
+- (void)setPlaying:(BOOL)playing
 {
-  if (self->_playing != a3)
+  if (self->_playing != playing)
   {
-    self->_playing = a3;
+    self->_playing = playing;
     [(MRUFlippingArtworkLayer *)self updateScale];
 
     [(MRUFlippingArtworkLayer *)self updateOpacity];
   }
 }
 
-- (void)setArtworkCornerRadius:(double)a3
+- (void)setArtworkCornerRadius:(double)radius
 {
-  self->_artworkCornerRadius = a3;
+  self->_artworkCornerRadius = radius;
   [(CALayer *)self->_frontLayer setCornerRadius:?];
   backLayer = self->_backLayer;
 
-  [(CALayer *)backLayer setCornerRadius:a3];
+  [(CALayer *)backLayer setCornerRadius:radius];
 }
 
-- (void)setImageToCurrentLayer:(CGImage *)a3 animated:(BOOL)a4
+- (void)setImageToCurrentLayer:(CGImage *)layer animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v17 = *MEMORY[0x1E69E9840];
   v7 = MCLogCategoryDefault();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     [(MRUFlippingArtworkLayer *)self state];
     *buf = 134218242;
-    v14 = a3;
+    layerCopy = layer;
     v15 = 2112;
     v16 = v12;
     _os_log_impl(&dword_1A20FC000, v7, OS_LOG_TYPE_DEBUG, "[FlippingArtwork].Layer setImageToCurrentLayer:<%p> currentState:%@", buf, 0x16u);
@@ -230,14 +230,14 @@
     v8 = 0;
   }
 
-  [(MRUFlippingArtworkLayer *)self setImage:a3 toLayer:v8];
+  [(MRUFlippingArtworkLayer *)self setImage:layer toLayer:v8];
   [(MRUFlippingArtworkLayer *)self state];
   if (self)
   {
     if ([(MRUFlippingArtworkLayer *)self isLayerForStateGlowing:v10])
     {
       [(MRUFlippingArtworkLayer *)self state];
-      [(MRUFlippingArtworkLayer *)self updateGlowForState:&v9 reverse:a3 == 0 animated:v4];
+      [(MRUFlippingArtworkLayer *)self updateGlowForState:&v9 reverse:layer == 0 animated:animatedCopy];
     }
   }
 
@@ -246,7 +246,7 @@
   }
 }
 
-- (void)transitionToImage:(CGImage *)a3 transitionDirection:(int64_t)a4
+- (void)transitionToImage:(CGImage *)image transitionDirection:(int64_t)direction
 {
   v37 = *MEMORY[0x1E69E9840];
   memset(v28, 0, sizeof(v28));
@@ -255,9 +255,9 @@
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     [(MRUFlippingArtworkLayer *)self state];
-    v8 = MRUFlippingArtworkTransitionDirectionDescription(a4);
+    v8 = MRUFlippingArtworkTransitionDirectionDescription(direction);
     *buf = 134218754;
-    v30 = a3;
+    imageCopy = image;
     v31 = 2112;
     v32 = v27;
     v33 = 2112;
@@ -284,7 +284,7 @@
     v10 = 0;
   }
 
-  [(MRUFlippingArtworkLayer *)self setImage:a3 toLayer:v10];
+  [(MRUFlippingArtworkLayer *)self setImage:image toLayer:v10];
   v11 = *&v28[0];
   v17 = v11;
   v18 = *(v28 + 8);
@@ -293,13 +293,13 @@
   v21 = *(&v28[3] + 1);
   if (self)
   {
-    [(MRUFlippingArtworkLayer *)self animateGlowForState:&v17 reverse:a3 == 0];
+    [(MRUFlippingArtworkLayer *)self animateGlowForState:&v17 reverse:image == 0];
     v12 = *&v28[0];
     v13 = *(v28 + 8);
     v14 = *(&v28[1] + 8);
     v15 = *(&v28[2] + 8);
     v16 = *(&v28[3] + 1);
-    [(MRUFlippingArtworkLayer *)self setState:&v12 transitionDirection:a4];
+    [(MRUFlippingArtworkLayer *)self setState:&v12 transitionDirection:direction];
   }
 
   else
@@ -313,10 +313,10 @@
   }
 }
 
-- (void)setPlaceholderImage:(CGImage *)a3
+- (void)setPlaceholderImage:(CGImage *)image
 {
-  self->_placeholderImage = a3;
-  v5 = a3 == 0;
+  self->_placeholderImage = image;
+  v5 = image == 0;
   p_state = &self->_state;
   v15 = self->_state.identifier;
   v16 = *&p_state->frontLayerAlpha;
@@ -329,11 +329,11 @@
   [MEMORY[0x1E6979518] setValue:*MEMORY[0x1E695E4D0] forKey:*MEMORY[0x1E697A020]];
   [(MRUFlippingArtworkLayer *)self updatePlaceholderFrame];
   [MEMORY[0x1E6979518] commit];
-  v8 = a3;
-  v9 = [v7 mask];
-  [v9 setContents:v8];
+  imageCopy = image;
+  mask = [v7 mask];
+  [mask setContents:imageCopy];
 
-  if (a3)
+  if (image)
   {
     v10 = p_state->identifier;
     v11 = *&p_state->frontLayerAlpha;
@@ -366,25 +366,25 @@
     v7 = v6;
     v9 = v8;
     v11 = v10;
-    v12 = [v3 mask];
-    [v12 setFrame:{v5, v7, v9, v11}];
+    mask = [v3 mask];
+    [mask setFrame:{v5, v7, v9, v11}];
   }
 }
 
-- (void)setPlaceholderImageTintColor:(CGColor *)a3
+- (void)setPlaceholderImageTintColor:(CGColor *)color
 {
-  self->_placeholderImageTintColor = a3;
+  self->_placeholderImageTintColor = color;
   [(CALayer *)self->_frontPlaceholderLayer setBackgroundColor:?];
   backPlaceholderLayer = self->_backPlaceholderLayer;
 
-  [(CALayer *)backPlaceholderLayer setBackgroundColor:a3];
+  [(CALayer *)backPlaceholderLayer setBackgroundColor:color];
 }
 
-- (void)setArtworkStyle:(int64_t)a3
+- (void)setArtworkStyle:(int64_t)style
 {
-  if (self->_artworkStyle != a3)
+  if (self->_artworkStyle != style)
   {
-    self->_artworkStyle = a3;
+    self->_artworkStyle = style;
     [(MRUFlippingArtworkLayer *)self updateArtworkStyle];
   }
 }
@@ -409,13 +409,13 @@
 
   else if (!frontLegibilityLayer)
   {
-    v5 = [(MRUFlippingArtworkLayer *)self makeLegibilityLayer];
+    makeLegibilityLayer = [(MRUFlippingArtworkLayer *)self makeLegibilityLayer];
     v6 = self->_frontLegibilityLayer;
-    self->_frontLegibilityLayer = v5;
+    self->_frontLegibilityLayer = makeLegibilityLayer;
 
-    v7 = [(MRUFlippingArtworkLayer *)self makeLegibilityLayer];
+    makeLegibilityLayer2 = [(MRUFlippingArtworkLayer *)self makeLegibilityLayer];
     v8 = self->_backLegibilityLayer;
-    self->_backLegibilityLayer = v7;
+    self->_backLegibilityLayer = makeLegibilityLayer2;
 
     [(CALayer *)self->_frontLayer addSublayer:self->_frontLegibilityLayer];
     [(CALayer *)self->_backLayer addSublayer:self->_backLegibilityLayer];
@@ -424,14 +424,14 @@
   [(MRUFlippingArtworkLayer *)self updatePlaceholderFrame];
 }
 
-- (void)setState:(id *)a3
+- (void)setState:(id *)state
 {
-  v5 = a3->var0;
+  v5 = state->var0;
   v6 = v5;
-  v7 = *&a3->var1;
-  v8 = *&a3->var3;
-  v9 = *&a3->var5;
-  var7 = a3->var7;
+  v7 = *&state->var1;
+  v8 = *&state->var3;
+  v9 = *&state->var5;
+  var7 = state->var7;
   if (self)
   {
     [(MRUFlippingArtworkLayer *)self setState:&v6 transitionDirection:0];
@@ -442,14 +442,14 @@
   }
 }
 
-- (void)setState:(id *)a3 transitionDirection:(int64_t)a4
+- (void)setState:(id *)state transitionDirection:(int64_t)direction
 {
   v23 = *MEMORY[0x1E69E9840];
   v7 = MCLogCategoryDefault();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    var0 = a3->var0;
-    v9 = MRUFlippingArtworkTransitionDirectionDescription(a4);
+    var0 = state->var0;
+    v9 = MRUFlippingArtworkTransitionDirectionDescription(direction);
     *buf = 138412546;
     *&buf[4] = var0;
     *&buf[12] = 2112;
@@ -457,7 +457,7 @@
     _os_log_impl(&dword_1A20FC000, v7, OS_LOG_TYPE_DEBUG, "[FlippingArtwork].Layer setState:%@ transitionDirection:%@", buf, 0x16u);
   }
 
-  if (![(NSString *)self->_state.identifier isEqualToString:a3->var0])
+  if (![(NSString *)self->_state.identifier isEqualToString:state->var0])
   {
     v10 = self->_state.identifier;
     v11 = *&self->_state.frontLayerBlurRadius;
@@ -465,11 +465,11 @@
     *&buf[16] = v11;
     v21 = *&self->_state.backLayerBlurRadius;
     yRotation = self->_state.yRotation;
-    objc_storeStrong(&self->_state.identifier, a3->var0);
-    v12 = *&a3->var1;
-    v13 = *&a3->var3;
-    v14 = *&a3->var5;
-    self->_state.yRotation = a3->var7;
+    objc_storeStrong(&self->_state.identifier, state->var0);
+    v12 = *&state->var1;
+    v13 = *&state->var3;
+    v14 = *&state->var5;
+    self->_state.yRotation = state->var7;
     *&self->_state.backLayerBlurRadius = v14;
     *&self->_state.frontLayerBlurRadius = v13;
     *&self->_state.frontLayerAlpha = v12;
@@ -478,15 +478,15 @@
     v17 = *&buf[16];
     v18 = v21;
     v19 = yRotation;
-    [(MRUFlippingArtworkLayer *)self updateStateWithPreviousState:&v15 transitionDirection:a4];
+    [(MRUFlippingArtworkLayer *)self updateStateWithPreviousState:&v15 transitionDirection:direction];
   }
 }
 
-- (void)setImage:(CGImage *)a3 toLayer:(id)a4
+- (void)setImage:(CGImage *)image toLayer:(id)layer
 {
-  v5 = a4;
-  [v5 setContents:a3];
-  if (a3)
+  layerCopy = layer;
+  [layerCopy setContents:image];
+  if (image)
   {
     [MEMORY[0x1E69DC888] clearColor];
   }
@@ -497,21 +497,21 @@
   }
   v7 = ;
   v6 = v7;
-  [v5 setBackgroundColor:{objc_msgSend(v7, "CGColor")}];
+  [layerCopy setBackgroundColor:{objc_msgSend(v7, "CGColor")}];
 }
 
-- (void)animateGlowForState:(id *)a3 reverse:(BOOL)a4
+- (void)animateGlowForState:(id *)state reverse:(BOOL)reverse
 {
-  v4 = a4;
-  v7 = a3->var0;
+  reverseCopy = reverse;
+  v7 = state->var0;
   v8 = v7;
-  v9 = *&a3->var1;
-  v10 = *&a3->var3;
-  v11 = *&a3->var5;
-  var7 = a3->var7;
+  v9 = *&state->var1;
+  v10 = *&state->var3;
+  v11 = *&state->var5;
+  var7 = state->var7;
   if (self)
   {
-    [(MRUFlippingArtworkLayer *)self updateGlowForState:&v8 reverse:v4 animated:1];
+    [(MRUFlippingArtworkLayer *)self updateGlowForState:&v8 reverse:reverseCopy animated:1];
   }
 
   else
@@ -519,30 +519,30 @@
   }
 }
 
-- (void)updateGlowForState:(id *)a3 reverse:(BOOL)a4 animated:(BOOL)a5
+- (void)updateGlowForState:(id *)state reverse:(BOOL)reverse animated:(BOOL)animated
 {
-  v5 = a5;
-  v6 = a4;
+  animatedCopy = animated;
+  reverseCopy = reverse;
   v30 = *MEMORY[0x1E69E9840];
   v9 = MCLogCategoryDefault();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    var0 = a3->var0;
+    var0 = state->var0;
     *buf = 138412802;
     v25 = var0;
     v26 = 1024;
-    v27 = v6;
+    v27 = reverseCopy;
     v28 = 1024;
-    v29 = v5;
+    v29 = animatedCopy;
     _os_log_impl(&dword_1A20FC000, v9, OS_LOG_TYPE_DEBUG, "[FlippingArtwork].Layer updateGlowForState %@ reverse:%{BOOL}u animated:%{BOOL}u", buf, 0x18u);
   }
 
-  v11 = a3->var0;
+  v11 = state->var0;
   v19 = v11;
-  v20 = *&a3->var1;
-  v21 = *&a3->var3;
-  v22 = *&a3->var5;
-  var7 = a3->var7;
+  v20 = *&state->var1;
+  v21 = *&state->var3;
+  v22 = *&state->var5;
+  var7 = state->var7;
   if (self)
   {
     v12 = [(MRUFlippingArtworkLayer *)self glowLayerForState:&v19];
@@ -555,7 +555,7 @@
   }
 
   HIDWORD(v13) = 0;
-  if (v6)
+  if (reverseCopy)
   {
     v14 = 0.5;
   }
@@ -567,10 +567,10 @@
 
   *&v13 = v14;
   [v12 setOpacity:{v13, v19, v20, v21, v22, *&var7}];
-  if (v5)
+  if (animatedCopy)
   {
     v15 = 0.5;
-    if (v6)
+    if (reverseCopy)
     {
       v15 = 0.0;
     }
@@ -583,14 +583,14 @@
   }
 }
 
-- (BOOL)isLayerForStateGlowing:(id *)a3
+- (BOOL)isLayerForStateGlowing:(id *)glowing
 {
-  v5 = a3->var0;
+  v5 = glowing->var0;
   v9 = v5;
-  v10 = *&a3->var1;
-  v11 = *&a3->var3;
-  v12 = *&a3->var5;
-  var7 = a3->var7;
+  v10 = *&glowing->var1;
+  v11 = *&glowing->var3;
+  v12 = *&glowing->var5;
+  var7 = glowing->var7;
   if (self)
   {
     self = [(MRUFlippingArtworkLayer *)self glowLayerForState:&v9];
@@ -606,7 +606,7 @@
   return v7;
 }
 
-- (void)updateStateWithPreviousState:(id *)a3 transitionDirection:(int64_t)a4
+- (void)updateStateWithPreviousState:(id *)state transitionDirection:(int64_t)direction
 {
   v7 = [(CATransformLayer *)self->_rotatorLayer valueForKeyPath:@"transform.rotation.y"];
   yRotation = self->_state.yRotation;
@@ -639,7 +639,7 @@
     v28 = *&v27.m41;
     v29 = *&v27.m43;
     [(CATransformLayer *)self->_rotatorLayer setTransform:&v27];
-    v16 = [MEMORY[0x1E696AD98] numberWithDouble:{MRUFlippingArtworkTransitionDirectionFromValue(a4, yRotation)}];
+    v16 = [MEMORY[0x1E696AD98] numberWithDouble:{MRUFlippingArtworkTransitionDirectionFromValue(direction, yRotation)}];
     v17 = [MEMORY[0x1E696AD98] numberWithDouble:yRotation];
     v18 = [(MRUFlippingArtworkLayer *)self makeSpringAnimation:@"transform.rotation.y" fromValue:v16 toValue:v17];
 
@@ -648,11 +648,11 @@
     [(CATransformLayer *)self->_rotatorLayer addAnimation:v18 forKey:0];
   }
 
-  v20 = [MEMORY[0x1E696AD98] numberWithDouble:a3->var3];
+  v20 = [MEMORY[0x1E696AD98] numberWithDouble:state->var3];
   v21 = [MEMORY[0x1E696AD98] numberWithDouble:self->_state.frontLayerBlurRadius];
   v22 = [(MRUFlippingArtworkLayer *)self makeAnimation:@"filters.gaussianBlur.inputRadius" fromValue:v20 toValue:v21 duration:0.5];
 
-  v23 = [MEMORY[0x1E696AD98] numberWithDouble:a3->var5];
+  v23 = [MEMORY[0x1E696AD98] numberWithDouble:state->var5];
   v24 = [MEMORY[0x1E696AD98] numberWithDouble:self->_state.backLayerBlurRadius];
   v25 = [(MRUFlippingArtworkLayer *)self makeAnimation:@"filters.gaussianBlur.inputRadius" fromValue:v23 toValue:v24 duration:0.5];
 
@@ -696,9 +696,9 @@
   }
 }
 
-- (id)imageLayerForState:(id *)a3
+- (id)imageLayerForState:(id *)state
 {
-  if ([a3->var0 isEqualToString:@"Front"])
+  if ([state->var0 isEqualToString:@"Front"])
   {
     [(MRUFlippingArtworkLayer *)self frontLayer];
   }
@@ -712,9 +712,9 @@
   return v5;
 }
 
-- (id)placeholderLayerForState:(id *)a3
+- (id)placeholderLayerForState:(id *)state
 {
-  if ([a3->var0 isEqualToString:@"Front"])
+  if ([state->var0 isEqualToString:@"Front"])
   {
     [(MRUFlippingArtworkLayer *)self frontPlaceholderLayer];
   }
@@ -728,9 +728,9 @@
   return v5;
 }
 
-- (id)glowLayerForState:(id *)a3
+- (id)glowLayerForState:(id *)state
 {
-  if ([a3->var0 isEqualToString:@"Front"])
+  if ([state->var0 isEqualToString:@"Front"])
   {
     [(MRUFlippingArtworkLayer *)self frontGlowLayer];
   }
@@ -784,11 +784,11 @@
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E6979398]);
-  v4 = [MEMORY[0x1E69DC888] redColor];
-  [v3 setBackgroundColor:{objc_msgSend(v4, "CGColor")}];
+  redColor = [MEMORY[0x1E69DC888] redColor];
+  [v3 setBackgroundColor:{objc_msgSend(redColor, "CGColor")}];
 
-  v5 = [(MRUFlippingArtworkLayer *)self makeDynamicIslandLegibilityFilter];
-  v8[0] = v5;
+  makeDynamicIslandLegibilityFilter = [(MRUFlippingArtworkLayer *)self makeDynamicIslandLegibilityFilter];
+  v8[0] = makeDynamicIslandLegibilityFilter;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
   [v3 setFilters:v6];
 
@@ -818,20 +818,20 @@
   return v3;
 }
 
-- (id)makeSpringAnimation:(id)a3 fromValue:(id)a4 toValue:(id)a5
+- (id)makeSpringAnimation:(id)animation fromValue:(id)value toValue:(id)toValue
 {
   v7 = MEMORY[0x1E69794A8];
-  v8 = a5;
-  v9 = a4;
-  v10 = [v7 animationWithKeyPath:a3];
+  toValueCopy = toValue;
+  valueCopy = value;
+  v10 = [v7 animationWithKeyPath:animation];
   [v10 setMass:1.25];
   [v10 setDamping:25.0];
   [v10 setStiffness:300.0];
   [v10 setInitialVelocity:0.0];
   [v10 setFillMode:*MEMORY[0x1E69797E8]];
-  [v10 setFromValue:v9];
+  [v10 setFromValue:valueCopy];
 
-  [v10 setToValue:v8];
+  [v10 setToValue:toValueCopy];
   [v10 settlingDuration];
   [v10 setDuration:?];
   [v10 setRemovedOnCompletion:0];
@@ -839,17 +839,17 @@
   return v10;
 }
 
-- (id)makeAnimation:(id)a3 fromValue:(id)a4 toValue:(id)a5 duration:(double)a6
+- (id)makeAnimation:(id)animation fromValue:(id)value toValue:(id)toValue duration:(double)duration
 {
   v9 = MEMORY[0x1E6979318];
-  v10 = a5;
-  v11 = a4;
-  v12 = [v9 animationWithKeyPath:a3];
-  [v12 setDuration:a6];
+  toValueCopy = toValue;
+  valueCopy = value;
+  v12 = [v9 animationWithKeyPath:animation];
+  [v12 setDuration:duration];
   [v12 setFillMode:*MEMORY[0x1E69797E8]];
-  [v12 setFromValue:v11];
+  [v12 setFromValue:valueCopy];
 
-  [v12 setToValue:v10];
+  [v12 setToValue:toValueCopy];
 
   return v12;
 }

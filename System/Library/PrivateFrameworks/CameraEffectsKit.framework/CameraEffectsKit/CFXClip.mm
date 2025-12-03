@@ -1,22 +1,22 @@
 @interface CFXClip
-+ (BOOL)cfx_writeProxyImageToURL:(id)a3 fromImageAtURL:(id)a4 maximumImageDimension:(unint64_t)a5 outColorSpace:(id *)a6;
++ (BOOL)cfx_writeProxyImageToURL:(id)l fromImageAtURL:(id)rL maximumImageDimension:(unint64_t)dimension outColorSpace:(id *)space;
 + (id)createCaptureClip;
 + (id)defaultClip;
-+ (void)cfx_createStillClipPreviewWithLocalURL:(id)a3 maximumImageDimension:(unint64_t)a4 effectStack:(id)a5 completionHandler:(id)a6;
-+ (void)cfx_createVideoClipWithLocalURL:(id)a3 effectStack:(id)a4 completionHandler:(id)a5;
-+ (void)createClipWithLocalURL:(id)a3 effectStack:(id)a4 isVideo:(BOOL)a5 maximumImageDimension:(unint64_t)a6 completionHandler:(id)a7;
++ (void)cfx_createStillClipPreviewWithLocalURL:(id)l maximumImageDimension:(unint64_t)dimension effectStack:(id)stack completionHandler:(id)handler;
++ (void)cfx_createVideoClipWithLocalURL:(id)l effectStack:(id)stack completionHandler:(id)handler;
++ (void)createClipWithLocalURL:(id)l effectStack:(id)stack isVideo:(BOOL)video maximumImageDimension:(unint64_t)dimension completionHandler:(id)handler;
 - (BOOL)cfx_isAssetInTrash;
 - (BOOL)cfx_isAssetMissing;
-- (BOOL)cfx_removeAllEffectsOfType:(int)a3;
+- (BOOL)cfx_removeAllEffectsOfType:(int)type;
 - (BOOL)hasMetadataAsset;
-- (BOOL)hasPlayableEffectOfType:(int)a3;
+- (BOOL)hasPlayableEffectOfType:(int)type;
 - (BOOL)isAssetLoaded;
 - (BOOL)isAssetUnavailable;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CFXClip)init;
-- (CFXClip)initWithMediaItem:(id)a3;
-- (CGRect)playableRectInOutputSize:(CGSize)a3;
-- (CGRect)rectFromNormalizedPlayableRect:(CGRect)a3 inOutputSize:(CGSize)a4;
+- (CFXClip)initWithMediaItem:(id)item;
+- (CGRect)playableRectInOutputSize:(CGSize)size;
+- (CGRect)rectFromNormalizedPlayableRect:(CGRect)rect inOutputSize:(CGSize)size;
 - (CGSize)mediaSize;
 - (CGSize)playableMediaSizeWithTransform;
 - (JFXMediaReaderCreationAVAssetTrackAttributes)arMetadataReaderAssetTrackAttributes;
@@ -25,28 +25,28 @@
 - (NSMutableArray)filters;
 - (NSMutableArray)overlays;
 - (NSString)description;
-- (double)playableScaleInOutputSize:(CGSize)a3;
+- (double)playableScaleInOutputSize:(CGSize)size;
 - (id)cfx_clipType;
-- (id)cfx_effectsOfType:(int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)cfx_effectsOfType:(int)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)effectStack;
-- (id)effectStackExcludingType:(int)a3;
-- (id)effectsOfType:(int)a3;
-- (id)stringForMediaType:(int64_t)a3;
+- (id)effectStackExcludingType:(int)type;
+- (id)effectsOfType:(int)type;
+- (id)stringForMediaType:(int64_t)type;
 - (int)playableMediaContentMode;
 - (int64_t)mediaInterfaceOrientationForDisplay;
 - (int64_t)mediaType;
 - (int64_t)playableAspectRatio;
-- (void)addEffectStack:(id)a3;
-- (void)cfx_addEffect:(id)a3;
+- (void)addEffectStack:(id)stack;
+- (void)cfx_addEffect:(id)effect;
 - (void)dealloc;
 - (void)removeAllEffects;
-- (void)removeEffect:(id)a3;
-- (void)setDuration:(int)a3;
-- (void)setMediaInterfaceOrientationForDisplay:(int64_t)a3;
-- (void)setMediaItem:(id)a3;
-- (void)setPresentationTime:(int)a3;
-- (void)setTransformAnimation:(id)a3;
+- (void)removeEffect:(id)effect;
+- (void)setDuration:(int)duration;
+- (void)setMediaInterfaceOrientationForDisplay:(int64_t)display;
+- (void)setMediaItem:(id)item;
+- (void)setPresentationTime:(int)time;
+- (void)setTransformAnimation:(id)animation;
 - (void)updateTransformPresentationTimeRange;
 @end
 
@@ -86,41 +86,41 @@
   return v3;
 }
 
-- (CFXClip)initWithMediaItem:(id)a3
+- (CFXClip)initWithMediaItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v6 = [(CFXClip *)self init];
   if (v6)
   {
-    v7 = [MEMORY[0x277CCAD78] UUID];
-    v8 = [v7 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     uuid = v6->_uuid;
-    v6->_uuid = v8;
+    v6->_uuid = uUIDString;
 
-    objc_storeStrong(&v6->_mediaItem, a3);
+    objc_storeStrong(&v6->_mediaItem, item);
   }
 
   return v6;
 }
 
-- (id)stringForMediaType:(int64_t)a3
+- (id)stringForMediaType:(int64_t)type
 {
-  if (a3 > 5)
+  if (type > 5)
   {
     return @"What MediaType ? please update stringForMediaType if you added new type";
   }
 
   else
   {
-    return off_278D7AAA0[a3];
+    return off_278D7AAA0[type];
   }
 }
 
 - (id)cfx_clipType
 {
-  v3 = [(CFXClip *)self mediaType];
+  mediaType = [(CFXClip *)self mediaType];
 
-  return [(CFXClip *)self stringForMediaType:v3];
+  return [(CFXClip *)self stringForMediaType:mediaType];
 }
 
 - (NSString)description
@@ -133,19 +133,19 @@
   uuid = self->_uuid;
   presentationTime = self->_presentationTime;
   duration = self->_duration;
-  v8 = [(CFXClip *)self cfx_clipType];
+  cfx_clipType = [(CFXClip *)self cfx_clipType];
   mediaStartOffset = self->_mediaStartOffset;
-  v10 = [(CFXClip *)self metadataURL];
-  v11 = [v4 stringWithFormat:@"\r\tuuid: %@\r\tpresentationTime: %d\r\tduration: %d\r\tMediaType: %@\r\tmediaStartOffset: %d\r\tmetadata url: %@\r\tMedia: %@", uuid, presentationTime, duration, v8, mediaStartOffset, v10, self->_mediaItem];
+  metadataURL = [(CFXClip *)self metadataURL];
+  v11 = [v4 stringWithFormat:@"\r\tuuid: %@\r\tpresentationTime: %d\r\tduration: %d\r\tMediaType: %@\r\tmediaStartOffset: %d\r\tmetadata url: %@\r\tMedia: %@", uuid, presentationTime, duration, cfx_clipType, mediaStartOffset, metadataURL, self->_mediaItem];
   v12 = [v3 stringByAppendingString:v11];
 
   v52 = 0u;
   v53 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v41 = self;
-  v13 = [(CFXClip *)self filters];
-  v14 = [v13 countByEnumeratingWithState:&v50 objects:v57 count:16];
+  selfCopy = self;
+  filters = [(CFXClip *)self filters];
+  v14 = [filters countByEnumeratingWithState:&v50 objects:v57 count:16];
   if (v14)
   {
     v15 = v14;
@@ -158,7 +158,7 @@
       {
         if (*v51 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(filters);
         }
 
         v19 = MEMORY[0x277CCACA8];
@@ -171,7 +171,7 @@
       }
 
       while (v15 != v17);
-      v15 = [v13 countByEnumeratingWithState:&v50 objects:v57 count:16];
+      v15 = [filters countByEnumeratingWithState:&v50 objects:v57 count:16];
     }
 
     while (v15);
@@ -181,8 +181,8 @@
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v22 = [(CFXClip *)v41 overlays];
-  v23 = [v22 countByEnumeratingWithState:&v46 objects:v56 count:16];
+  overlays = [(CFXClip *)selfCopy overlays];
+  v23 = [overlays countByEnumeratingWithState:&v46 objects:v56 count:16];
   if (v23)
   {
     v24 = v23;
@@ -195,7 +195,7 @@
       {
         if (*v47 != v25)
         {
-          objc_enumerationMutation(v22);
+          objc_enumerationMutation(overlays);
         }
 
         v28 = MEMORY[0x277CCACA8];
@@ -208,7 +208,7 @@
       }
 
       while (v24 != v26);
-      v24 = [v22 countByEnumeratingWithState:&v46 objects:v56 count:16];
+      v24 = [overlays countByEnumeratingWithState:&v46 objects:v56 count:16];
     }
 
     while (v24);
@@ -218,8 +218,8 @@
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v31 = [(CFXClip *)v41 animojis];
-  v32 = [v31 countByEnumeratingWithState:&v42 objects:v55 count:16];
+  animojis = [(CFXClip *)selfCopy animojis];
+  v32 = [animojis countByEnumeratingWithState:&v42 objects:v55 count:16];
   if (v32)
   {
     v33 = v32;
@@ -232,7 +232,7 @@
       {
         if (*v43 != v34)
         {
-          objc_enumerationMutation(v31);
+          objc_enumerationMutation(animojis);
         }
 
         v37 = MEMORY[0x277CCACA8];
@@ -245,7 +245,7 @@
       }
 
       while (v33 != v35);
-      v33 = [v31 countByEnumeratingWithState:&v42 objects:v55 count:16];
+      v33 = [animojis countByEnumeratingWithState:&v42 objects:v55 count:16];
     }
 
     while (v33);
@@ -254,34 +254,34 @@
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v33 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [MEMORY[0x277CCAD78] UUID];
-  v7 = [v6 UUIDString];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
   v8 = *(v5 + 24);
-  *(v5 + 24) = v7;
+  *(v5 + 24) = uUIDString;
 
   *(v5 + 8) = self->_presentationTime;
   *(v5 + 12) = self->_duration;
   *(v5 + 16) = self->_mediaStartOffset;
-  v9 = [(JFXMediaItem *)self->_mediaItem copyWithZone:a3];
+  v9 = [(JFXMediaItem *)self->_mediaItem copyWithZone:zone];
   v10 = *(v5 + 32);
   *(v5 + 32) = v9;
 
   objc_storeStrong((v5 + 40), self->_metadataURL);
-  v11 = [(NSMutableArray *)self->_filters mutableDeepCopy];
+  mutableDeepCopy = [(NSMutableArray *)self->_filters mutableDeepCopy];
   v12 = *(v5 + 72);
-  *(v5 + 72) = v11;
+  *(v5 + 72) = mutableDeepCopy;
 
-  v13 = [(NSMutableArray *)self->_overlays mutableDeepCopy];
+  mutableDeepCopy2 = [(NSMutableArray *)self->_overlays mutableDeepCopy];
   v14 = *(v5 + 80);
-  *(v5 + 80) = v13;
+  *(v5 + 80) = mutableDeepCopy2;
 
-  v15 = [(NSMutableArray *)self->_animojis mutableDeepCopy];
+  mutableDeepCopy3 = [(NSMutableArray *)self->_animojis mutableDeepCopy];
   v16 = *(v5 + 88);
-  *(v5 + 88) = v15;
+  *(v5 + 88) = mutableDeepCopy3;
 
   v17 = [(NSData *)self->_originalAnimojiDataRepresentation copy];
   v18 = *(v5 + 48);
@@ -291,8 +291,8 @@
   if (self->_transformAnimation)
   {
     v19 = objc_alloc(MEMORY[0x277D416B0]);
-    v20 = [(PVTransformAnimation *)self->_transformAnimation animationData];
-    v21 = [v20 copy];
+    animationData = [(PVTransformAnimation *)self->_transformAnimation animationData];
+    v21 = [animationData copy];
     v22 = [v19 initWithAnimation:v21];
     v23 = *(v5 + 64);
     *(v5 + 64) = v22;
@@ -313,22 +313,22 @@
   v25 = JFXLog_DebugClip();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
   {
-    v26 = [(CFXClip *)self uuid];
-    v27 = [v5 uuid];
+    uuid = [(CFXClip *)self uuid];
+    uuid2 = [v5 uuid];
     v29 = 138412546;
-    v30 = v26;
+    v30 = uuid;
     v31 = 2112;
-    v32 = v27;
+    v32 = uuid2;
     _os_log_impl(&dword_242A3B000, v25, OS_LOG_TYPE_DEFAULT, "[CFXClip copyWithZone:] %@ -> %@", &v29, 0x16u);
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -338,11 +338,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(CFXClip *)self uuid];
-      v7 = [(CFXClip *)v5 uuid];
+      v5 = equalCopy;
+      uuid = [(CFXClip *)self uuid];
+      uuid2 = [(CFXClip *)v5 uuid];
 
-      v8 = [v6 isEqualToString:v7];
+      v8 = [uuid isEqualToString:uuid2];
     }
 
     else
@@ -360,9 +360,9 @@
   v3 = JFXLog_DebugClip();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(CFXClip *)self uuid];
+    uuid = [(CFXClip *)self uuid];
     *buf = 138412290;
-    v7 = v4;
+    v7 = uuid;
     _os_log_impl(&dword_242A3B000, v3, OS_LOG_TYPE_DEFAULT, "[CFXClip dealloc] %@", buf, 0xCu);
   }
 
@@ -374,30 +374,30 @@
 + (id)defaultClip
 {
   v2 = objc_alloc_init(CFXClip);
-  v3 = [MEMORY[0x277CCAD78] UUID];
-  v4 = [v3 UUIDString];
-  [(CFXClip *)v2 setUuid:v4];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  [(CFXClip *)v2 setUuid:uUIDString];
 
   return v2;
 }
 
-+ (void)cfx_createVideoClipWithLocalURL:(id)a3 effectStack:(id)a4 completionHandler:(id)a5
++ (void)cfx_createVideoClipWithLocalURL:(id)l effectStack:(id)stack completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
+  stackCopy = stack;
+  handlerCopy = handler;
+  lCopy = l;
   v10 = +[CFXClip defaultClip];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __73__CFXClip_cfx_createVideoClipWithLocalURL_effectStack_completionHandler___block_invoke;
   v14[3] = &unk_278D7A9E0;
   v15 = v10;
-  v16 = v7;
-  v17 = v8;
-  v11 = v8;
-  v12 = v7;
+  v16 = stackCopy;
+  v17 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = stackCopy;
   v13 = v10;
-  [JFXVideoMediaItem videoMediaItemWithLocalURL:v9 delegate:0 completionHandler:v14];
+  [JFXVideoMediaItem videoMediaItemWithLocalURL:lCopy delegate:0 completionHandler:v14];
 }
 
 void __73__CFXClip_cfx_createVideoClipWithLocalURL_effectStack_completionHandler___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -412,21 +412,21 @@ void __73__CFXClip_cfx_createVideoClipWithLocalURL_effectStack_completionHandler
   (*(*(a1 + 48) + 16))();
 }
 
-+ (void)cfx_createStillClipPreviewWithLocalURL:(id)a3 maximumImageDimension:(unint64_t)a4 effectStack:(id)a5 completionHandler:(id)a6
++ (void)cfx_createStillClipPreviewWithLocalURL:(id)l maximumImageDimension:(unint64_t)dimension effectStack:(id)stack completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = v10;
+  lCopy = l;
+  stackCopy = stack;
+  handlerCopy = handler;
+  v13 = lCopy;
   v14 = v13;
-  if (a4)
+  if (dimension)
   {
-    v15 = [v13 URLByDeletingLastPathComponent];
-    v16 = [v15 URLByAppendingPathComponent:@"proxyImage.jpg"];
+    uRLByDeletingLastPathComponent = [v13 URLByDeletingLastPathComponent];
+    v16 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:@"proxyImage.jpg"];
 
     v27 = 0;
-    [a1 cfx_writeProxyImageToURL:v16 fromImageAtURL:v14 maximumImageDimension:a4 outColorSpace:&v27];
-    a4 = v27;
+    [self cfx_writeProxyImageToURL:v16 fromImageAtURL:v14 maximumImageDimension:dimension outColorSpace:&v27];
+    dimension = v27;
   }
 
   else
@@ -439,14 +439,14 @@ void __73__CFXClip_cfx_createVideoClipWithLocalURL_effectStack_completionHandler
   v22[1] = 3221225472;
   v22[2] = __102__CFXClip_cfx_createStillClipPreviewWithLocalURL_maximumImageDimension_effectStack_completionHandler___block_invoke;
   v22[3] = &unk_278D7AA08;
-  v23 = a4;
+  dimensionCopy = dimension;
   v24 = v17;
-  v25 = v11;
-  v26 = v12;
-  v18 = v12;
-  v19 = v11;
+  v25 = stackCopy;
+  v26 = handlerCopy;
+  v18 = handlerCopy;
+  v19 = stackCopy;
   v20 = v17;
-  v21 = a4;
+  dimensionCopy2 = dimension;
   [JFXStillMediaItem stillMediaItemWithLocalURL:v16 delegate:0 completionHandler:v22];
 }
 
@@ -463,11 +463,11 @@ void __102__CFXClip_cfx_createStillClipPreviewWithLocalURL_maximumImageDimension
   (*(*(a1 + 56) + 16))();
 }
 
-+ (BOOL)cfx_writeProxyImageToURL:(id)a3 fromImageAtURL:(id)a4 maximumImageDimension:(unint64_t)a5 outColorSpace:(id *)a6
++ (BOOL)cfx_writeProxyImageToURL:(id)l fromImageAtURL:(id)rL maximumImageDimension:(unint64_t)dimension outColorSpace:(id *)space
 {
   v25[2] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = CGImageSourceCreateWithURL(a4, 0);
+  lCopy = l;
+  v10 = CGImageSourceCreateWithURL(rL, 0);
   if (!v10)
   {
     goto LABEL_10;
@@ -488,11 +488,11 @@ LABEL_10:
   if (ColorSpace)
   {
     v15 = [MEMORY[0x277D415E0] jfx_getColorSpaceFromCGColorSpace:ColorSpace];
-    *a6 = v15;
+    *space = v15;
   }
 
   v16 = CGImageSourceCopyMetadataAtIndex(v11, 0, 0);
-  v17 = CGImageDestinationCreateWithURL(v9, *MEMORY[0x277CE5D90], 1uLL, 0);
+  v17 = CGImageDestinationCreateWithURL(lCopy, *MEMORY[0x277CE5D90], 1uLL, 0);
   if (!v17)
   {
     v22 = 0;
@@ -509,7 +509,7 @@ LABEL_10:
   v24[0] = *MEMORY[0x277CD2D48];
   v24[1] = v19;
   v25[0] = &unk_28556D7D8;
-  v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
+  v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:dimension];
   v25[1] = v20;
   v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:2];
 
@@ -531,20 +531,20 @@ LABEL_11:
   return v22;
 }
 
-+ (void)createClipWithLocalURL:(id)a3 effectStack:(id)a4 isVideo:(BOOL)a5 maximumImageDimension:(unint64_t)a6 completionHandler:(id)a7
++ (void)createClipWithLocalURL:(id)l effectStack:(id)stack isVideo:(BOOL)video maximumImageDimension:(unint64_t)dimension completionHandler:(id)handler
 {
-  v8 = a5;
-  v11 = a7;
-  v12 = v11;
-  if (v8)
+  videoCopy = video;
+  handlerCopy = handler;
+  v12 = handlerCopy;
+  if (videoCopy)
   {
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __94__CFXClip_createClipWithLocalURL_effectStack_isVideo_maximumImageDimension_completionHandler___block_invoke;
     v16[3] = &unk_278D7AA30;
     v13 = &v17;
-    v17 = v11;
-    [CFXClip cfx_createVideoClipWithLocalURL:a3 effectStack:a4 completionHandler:v16];
+    v17 = handlerCopy;
+    [CFXClip cfx_createVideoClipWithLocalURL:l effectStack:stack completionHandler:v16];
   }
 
   else
@@ -554,8 +554,8 @@ LABEL_11:
     v14[2] = __94__CFXClip_createClipWithLocalURL_effectStack_isVideo_maximumImageDimension_completionHandler___block_invoke_2;
     v14[3] = &unk_278D7AA30;
     v13 = &v15;
-    v15 = v11;
-    [CFXClip cfx_createStillClipPreviewWithLocalURL:a3 maximumImageDimension:a6 effectStack:a4 completionHandler:v14];
+    v15 = handlerCopy;
+    [CFXClip cfx_createStillClipPreviewWithLocalURL:l maximumImageDimension:dimension effectStack:stack completionHandler:v14];
   }
 }
 
@@ -569,9 +569,9 @@ LABEL_11:
   v5 = JFXLog_DebugClip();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(CFXClip *)v4 uuid];
+    uuid = [(CFXClip *)v4 uuid];
     v8 = 138412290;
-    v9 = v6;
+    v9 = uuid;
     _os_log_impl(&dword_242A3B000, v5, OS_LOG_TYPE_DEFAULT, "[CFXClip createCaptureClip] %@", &v8, 0xCu);
   }
 
@@ -590,16 +590,16 @@ LABEL_11:
 
 - (BOOL)cfx_isAssetMissing
 {
-  v2 = [(CFXClip *)self mediaItem];
-  v3 = [v2 mediaState] == 2;
+  mediaItem = [(CFXClip *)self mediaItem];
+  v3 = [mediaItem mediaState] == 2;
 
   return v3;
 }
 
 - (BOOL)cfx_isAssetInTrash
 {
-  v2 = [(CFXClip *)self mediaItem];
-  v3 = [v2 mediaState] == 3;
+  mediaItem = [(CFXClip *)self mediaItem];
+  v3 = [mediaItem mediaState] == 3;
 
   return v3;
 }
@@ -610,9 +610,9 @@ LABEL_11:
   if (self->_transformAnimation)
   {
     v3 = +[CFXMediaSettings sharedInstance];
-    v4 = [v3 timeScale];
+    timeScale = [v3 timeScale];
 
-    v5 = v4 ? v4 : 30;
+    v5 = timeScale ? timeScale : 30;
     presentationTime = self->_presentationTime;
     memset(&v19, 0, sizeof(v19));
     CMTimeMake(&start.start, [(CFXClip *)self transformInitialStartOffset]+ presentationTime - [(CFXClip *)self mediaStartOffset], v5);
@@ -665,28 +665,28 @@ LABEL_11:
   }
 }
 
-- (void)setDuration:(int)a3
+- (void)setDuration:(int)duration
 {
-  if (self->_duration != a3)
+  if (self->_duration != duration)
   {
-    self->_duration = a3;
+    self->_duration = duration;
     [(CFXClip *)self updateTransformPresentationTimeRange];
   }
 }
 
-- (void)setPresentationTime:(int)a3
+- (void)setPresentationTime:(int)time
 {
-  if (self->_presentationTime != a3)
+  if (self->_presentationTime != time)
   {
-    self->_presentationTime = a3;
+    self->_presentationTime = time;
     [(CFXClip *)self updateTransformPresentationTimeRange];
   }
 }
 
 - (BOOL)isAssetLoaded
 {
-  v2 = [(CFXClip *)self mediaItem];
-  v3 = [v2 mediaLoadState] == 1;
+  mediaItem = [(CFXClip *)self mediaItem];
+  v3 = [mediaItem mediaLoadState] == 1;
 
   return v3;
 }
@@ -738,27 +738,27 @@ LABEL_11:
 
 - (int64_t)mediaType
 {
-  v2 = [(CFXClip *)self mediaItem];
-  v3 = [v2 mediaType];
+  mediaItem = [(CFXClip *)self mediaItem];
+  mediaType = [mediaItem mediaType];
 
-  return v3;
+  return mediaType;
 }
 
-- (void)setMediaItem:(id)a3
+- (void)setMediaItem:(id)item
 {
-  objc_storeStrong(&self->_mediaItem, a3);
-  v5 = a3;
-  v6 = [v5 durationAt30fps];
+  objc_storeStrong(&self->_mediaItem, item);
+  itemCopy = item;
+  durationAt30fps = [itemCopy durationAt30fps];
 
-  self->_duration = v6;
+  self->_duration = durationAt30fps;
 }
 
 - (CGSize)mediaSize
 {
   if ([(CFXClip *)self mediaType]== 2)
   {
-    v3 = [(CFXClip *)self mediaItem];
-    [v3 sizeForQuality:0];
+    mediaItem = [(CFXClip *)self mediaItem];
+    [mediaItem sizeForQuality:0];
   }
 
   else
@@ -770,8 +770,8 @@ LABEL_11:
       goto LABEL_7;
     }
 
-    v3 = [(CFXClip *)self mediaItem];
-    [v3 naturalSizeWithTransform];
+    mediaItem = [(CFXClip *)self mediaItem];
+    [mediaItem naturalSizeWithTransform];
   }
 
   v6 = v4;
@@ -787,24 +787,24 @@ LABEL_7:
 
 - (int64_t)mediaInterfaceOrientationForDisplay
 {
-  v2 = [(CFXClip *)self mediaItem];
-  v3 = [v2 interfaceOrientationForDisplay];
+  mediaItem = [(CFXClip *)self mediaItem];
+  interfaceOrientationForDisplay = [mediaItem interfaceOrientationForDisplay];
 
-  return v3;
+  return interfaceOrientationForDisplay;
 }
 
-- (void)setMediaInterfaceOrientationForDisplay:(int64_t)a3
+- (void)setMediaInterfaceOrientationForDisplay:(int64_t)display
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = [(CFXClip *)self mediaItem];
-  [v5 setInterfaceOrientationForDisplay:a3];
+  mediaItem = [(CFXClip *)self mediaItem];
+  [mediaItem setInterfaceOrientationForDisplay:display];
 
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = [(CFXClip *)self animojis];
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  animojis = [(CFXClip *)self animojis];
+  v7 = [animojis countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -816,32 +816,32 @@ LABEL_7:
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(animojis);
         }
 
-        [*(*(&v11 + 1) + 8 * v10++) setCaptureInterfaceOrientation:a3];
+        [*(*(&v11 + 1) + 8 * v10++) setCaptureInterfaceOrientation:display];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [animojis countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)setTransformAnimation:(id)a3
+- (void)setTransformAnimation:(id)animation
 {
-  objc_storeStrong(&self->_transformAnimation, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_transformAnimation, animation);
+  animationCopy = animation;
   [(PVTransformAnimation *)self->_transformAnimation setAspectRatio:multiplierForAspectRatio([(CFXClip *)self playableAspectRatio])];
 
   [(CFXClip *)self updateTransformPresentationTimeRange];
 }
 
-- (id)cfx_effectsOfType:(int)a3
+- (id)cfx_effectsOfType:(int)type
 {
-  switch(a3)
+  switch(type)
   {
     case 1:
       v4 = 72;
@@ -862,14 +862,14 @@ LABEL_7:
   return v5;
 }
 
-- (void)cfx_addEffect:(id)a3
+- (void)cfx_addEffect:(id)effect
 {
-  v15 = a3;
-  v4 = [v15 type];
-  if (v4 == 7)
+  effectCopy = effect;
+  type = [effectCopy type];
+  if (type == 7)
   {
-    v11 = [(CFXClip *)self animojis];
-    v12 = [v11 containsObject:v15];
+    animojis = [(CFXClip *)self animojis];
+    v12 = [animojis containsObject:effectCopy];
 
     if (v12)
     {
@@ -878,76 +878,76 @@ LABEL_7:
 
     if ([(CFXClip *)self mediaInterfaceOrientationForDisplay])
     {
-      v13 = [(CFXClip *)self mediaInterfaceOrientationForDisplay];
+      mediaInterfaceOrientationForDisplay = [(CFXClip *)self mediaInterfaceOrientationForDisplay];
     }
 
     else
     {
-      v13 = +[JFXOrientationMonitor deviceInterfaceOrientation];
+      mediaInterfaceOrientationForDisplay = +[JFXOrientationMonitor deviceInterfaceOrientation];
     }
 
-    [v15 setCaptureInterfaceOrientation:v13];
-    v14 = [(CFXClip *)self animojis];
-    v10 = v15;
-    v5 = v14;
+    [effectCopy setCaptureInterfaceOrientation:mediaInterfaceOrientationForDisplay];
+    animojis2 = [(CFXClip *)self animojis];
+    v10 = effectCopy;
+    filters = animojis2;
   }
 
   else
   {
-    if (v4 == 2)
+    if (type == 2)
     {
-      v8 = [(CFXClip *)self overlays];
-      v9 = [v8 containsObject:v15];
+      overlays = [(CFXClip *)self overlays];
+      v9 = [overlays containsObject:effectCopy];
 
       if (v9)
       {
         goto LABEL_17;
       }
 
-      v7 = [(CFXClip *)self overlays];
+      overlays2 = [(CFXClip *)self overlays];
     }
 
     else
     {
-      if (v4 != 1)
+      if (type != 1)
       {
         goto LABEL_17;
       }
 
-      v5 = [(CFXClip *)self filters];
-      if ([v5 containsObject:v15])
+      filters = [(CFXClip *)self filters];
+      if ([filters containsObject:effectCopy])
       {
         goto LABEL_16;
       }
 
-      v6 = [(CFXClip *)self mediaType];
+      mediaType = [(CFXClip *)self mediaType];
 
-      if (v6 == 3)
+      if (mediaType == 3)
       {
         goto LABEL_17;
       }
 
-      v7 = [(CFXClip *)self filters];
+      overlays2 = [(CFXClip *)self filters];
     }
 
-    v5 = v7;
-    v10 = v15;
+    filters = overlays2;
+    v10 = effectCopy;
   }
 
-  [v5 addObject:v10];
+  [filters addObject:v10];
 LABEL_16:
 
 LABEL_17:
 }
 
-- (void)addEffectStack:(id)a3
+- (void)addEffectStack:(id)stack
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __26__CFXClip_addEffectStack___block_invoke;
   v3[3] = &unk_278D7AA58;
   v3[4] = self;
-  [a3 enumerateObjectsUsingBlock:v3];
+  [stack enumerateObjectsUsingBlock:v3];
 }
 
 void __26__CFXClip_addEffectStack___block_invoke(uint64_t a1, void *a2)
@@ -957,44 +957,44 @@ void __26__CFXClip_addEffectStack___block_invoke(uint64_t a1, void *a2)
   [v2 cfx_addEffect:v3];
 }
 
-- (void)removeEffect:(id)a3
+- (void)removeEffect:(id)effect
 {
-  v13 = a3;
-  v4 = [v13 type];
-  switch(v4)
+  effectCopy = effect;
+  type = [effectCopy type];
+  switch(type)
   {
     case 7:
-      v10 = [(CFXClip *)self animojis];
-      v11 = [v10 containsObject:v13];
+      animojis = [(CFXClip *)self animojis];
+      v11 = [animojis containsObject:effectCopy];
 
       if (!v11)
       {
         break;
       }
 
-      v7 = [(CFXClip *)self animojis];
+      animojis2 = [(CFXClip *)self animojis];
       goto LABEL_10;
     case 2:
-      v8 = [(CFXClip *)self overlays];
-      v9 = [v8 containsObject:v13];
+      overlays = [(CFXClip *)self overlays];
+      v9 = [overlays containsObject:effectCopy];
 
       if (!v9)
       {
         break;
       }
 
-      v7 = [(CFXClip *)self overlays];
+      animojis2 = [(CFXClip *)self overlays];
       goto LABEL_10;
     case 1:
-      v5 = [(CFXClip *)self filters];
-      v6 = [v5 containsObject:v13];
+      filters = [(CFXClip *)self filters];
+      v6 = [filters containsObject:effectCopy];
 
       if (v6)
       {
-        v7 = [(CFXClip *)self filters];
+        animojis2 = [(CFXClip *)self filters];
 LABEL_10:
-        v12 = v7;
-        [v7 removeObject:v13];
+        v12 = animojis2;
+        [animojis2 removeObject:effectCopy];
       }
 
       break;
@@ -1009,9 +1009,9 @@ LABEL_10:
   }
 }
 
-- (BOOL)cfx_removeAllEffectsOfType:(int)a3
+- (BOOL)cfx_removeAllEffectsOfType:(int)type
 {
-  v3 = [(CFXClip *)self cfx_effectsOfType:*&a3];
+  v3 = [(CFXClip *)self cfx_effectsOfType:*&type];
   v4 = [v3 count];
   if (v4)
   {
@@ -1021,9 +1021,9 @@ LABEL_10:
   return v4 != 0;
 }
 
-- (id)effectsOfType:(int)a3
+- (id)effectsOfType:(int)type
 {
-  v3 = [(CFXClip *)self cfx_effectsOfType:*&a3];
+  v3 = [(CFXClip *)self cfx_effectsOfType:*&type];
   v4 = [v3 copy];
 
   return v4;
@@ -1044,10 +1044,10 @@ LABEL_10:
   return v3;
 }
 
-- (id)effectStackExcludingType:(int)a3
+- (id)effectStackExcludingType:(int)type
 {
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if (a3 == 1 || (-[CFXClip effectsOfType:](self, "effectsOfType:", 1), v6 = objc_claimAutoreleasedReturnValue(), [v5 addObjectsFromArray:v6], v6, a3 != 2))
+  if (type == 1 || (-[CFXClip effectsOfType:](self, "effectsOfType:", 1), v6 = objc_claimAutoreleasedReturnValue(), [v5 addObjectsFromArray:v6], v6, type != 2))
   {
     v7 = [(CFXClip *)self effectsOfType:2];
     [v5 addObjectsFromArray:v7];
@@ -1056,9 +1056,9 @@ LABEL_10:
   return v5;
 }
 
-- (BOOL)hasPlayableEffectOfType:(int)a3
+- (BOOL)hasPlayableEffectOfType:(int)type
 {
-  if (a3 == 7)
+  if (type == 7)
   {
     [(CFXClip *)self cfx_effectsOfType:?];
   }
@@ -1082,14 +1082,14 @@ LABEL_10:
   return v5;
 }
 
-- (CGRect)playableRectInOutputSize:(CGSize)a3
+- (CGRect)playableRectInOutputSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(CFXClip *)self playableAspectRatio];
-  v7 = [(CFXClip *)self playableAspectRatioPreservationMode];
+  height = size.height;
+  width = size.width;
+  playableAspectRatio = [(CFXClip *)self playableAspectRatio];
+  playableAspectRatioPreservationMode = [(CFXClip *)self playableAspectRatioPreservationMode];
 
-  v8 = rectWithAspectRatioAndPreservationModeInRectWithSize(v6, v7, width, height);
+  v8 = rectWithAspectRatioAndPreservationModeInRectWithSize(playableAspectRatio, playableAspectRatioPreservationMode, width, height);
   result.size.height = v11;
   result.size.width = v10;
   result.origin.y = v9;
@@ -1097,10 +1097,10 @@ LABEL_10:
   return result;
 }
 
-- (double)playableScaleInOutputSize:(CGSize)a3
+- (double)playableScaleInOutputSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = PVViewContentModeFromAspectRatioPreservationMode([(CFXClip *)self playableAspectRatioPreservationMode]);
   v7 = multiplierForAspectRatio([(CFXClip *)self playableAspectRatio]);
   v8 = 1.0;
@@ -1180,13 +1180,13 @@ LABEL_15:
   }
 }
 
-- (CGRect)rectFromNormalizedPlayableRect:(CGRect)a3 inOutputSize:(CGSize)a4
+- (CGRect)rectFromNormalizedPlayableRect:(CGRect)rect inOutputSize:(CGSize)size
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  [(CFXClip *)self playableRectInOutputSize:a4.width, a4.height];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  [(CFXClip *)self playableRectInOutputSize:size.width, size.height];
   v9 = x * v8;
   v11 = y * v10;
   v12 = width * v8;
@@ -1202,23 +1202,23 @@ LABEL_15:
 
 - (CGSize)playableMediaSizeWithTransform
 {
-  v3 = [(CFXClip *)self mediaType];
-  if (v3 == 2)
+  mediaType = [(CFXClip *)self mediaType];
+  if (mediaType == 2)
   {
-    v4 = [(CFXClip *)self mediaItem];
-    [v4 sizeForQuality:0];
+    mediaItem = [(CFXClip *)self mediaItem];
+    [mediaItem sizeForQuality:0];
   }
 
-  else if (v3 == 1)
+  else if (mediaType == 1)
   {
-    v4 = [(CFXClip *)self mediaItem];
-    [v4 naturalSizeWithTransform];
+    mediaItem = [(CFXClip *)self mediaItem];
+    [mediaItem naturalSizeWithTransform];
   }
 
   else
   {
-    v4 = +[CFXMediaSettings sharedInstance];
-    [v4 frameSize];
+    mediaItem = +[CFXMediaSettings sharedInstance];
+    [mediaItem frameSize];
   }
 
   v7 = v5;
@@ -1233,21 +1233,21 @@ LABEL_15:
 
 - (int)playableMediaContentMode
 {
-  v2 = [(CFXClip *)self mediaItem];
-  v3 = [v2 playableMediaContentMode];
+  mediaItem = [(CFXClip *)self mediaItem];
+  playableMediaContentMode = [mediaItem playableMediaContentMode];
 
-  return v3;
+  return playableMediaContentMode;
 }
 
 - (BOOL)hasMetadataAsset
 {
-  v2 = [(CFXClip *)self metadataURL];
+  metadataURL = [(CFXClip *)self metadataURL];
   v6 = 0;
-  if (v2)
+  if (metadataURL)
   {
-    v3 = [MEMORY[0x277CCAA00] defaultManager];
-    v4 = [v2 path];
-    v5 = [v3 fileExistsAtPath:v4];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path = [metadataURL path];
+    v5 = [defaultManager fileExistsAtPath:path];
 
     if (v5)
     {
@@ -1263,12 +1263,12 @@ LABEL_15:
   v11[1] = *MEMORY[0x277D85DE8];
   if ([(CFXClip *)self hasMetadataAsset])
   {
-    v3 = [(CFXClip *)self metadataURL];
+    metadataURL = [(CFXClip *)self metadataURL];
     v4 = MEMORY[0x277CE6650];
     v10 = *MEMORY[0x277CE6240];
     v11[0] = MEMORY[0x277CBEC38];
     v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-    v6 = [v4 URLAssetWithURL:v3 options:v5];
+    v6 = [v4 URLAssetWithURL:metadataURL options:v5];
 
     v7 = [JFXVideoWriter META_ARMetadataTrackForAsset:v6];
     if (v7)
@@ -1295,12 +1295,12 @@ LABEL_15:
   v23[1] = *MEMORY[0x277D85DE8];
   if ([(CFXClip *)self hasMetadataAsset])
   {
-    v3 = [(CFXClip *)self metadataURL];
+    metadataURL = [(CFXClip *)self metadataURL];
     v4 = MEMORY[0x277CE6650];
     v22 = *MEMORY[0x277CE6240];
     v23[0] = MEMORY[0x277CBEC38];
     v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-    v6 = [v4 URLAssetWithURL:v3 options:v5];
+    v6 = [v4 URLAssetWithURL:metadataURL options:v5];
 
     v16 = 0;
     v17 = &v16;

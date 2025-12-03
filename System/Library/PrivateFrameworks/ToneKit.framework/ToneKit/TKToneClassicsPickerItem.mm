@@ -1,21 +1,21 @@
 @interface TKToneClassicsPickerItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (TKTonePickerItem)parentItem;
 - (unint64_t)hash;
-- (void)_appendDescriptionOfAttributesToString:(id)a3;
+- (void)_appendDescriptionOfAttributesToString:(id)string;
 @end
 
 @implementation TKToneClassicsPickerItem
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D71F68] sharedCapabilitiesManager];
-  v6 = [v5 supportsReflectionRemixes];
+  equalCopy = equal;
+  mEMORY[0x277D71F68] = [MEMORY[0x277D71F68] sharedCapabilitiesManager];
+  supportsReflectionRemixes = [mEMORY[0x277D71F68] supportsReflectionRemixes];
 
-  if (v6)
+  if (supportsReflectionRemixes)
   {
-    if (self == v4)
+    if (self == equalCopy)
     {
       v14 = 1;
     }
@@ -25,7 +25,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = v4;
+        v7 = equalCopy;
         v16.receiver = self;
         v16.super_class = TKToneClassicsPickerItem;
         if ([(TKTonePickerItem *)&v16 isEqual:v7])
@@ -77,7 +77,7 @@ LABEL_17:
   {
     v17.receiver = self;
     v17.super_class = TKToneClassicsPickerItem;
-    v14 = [(TKTonePickerItem *)&v17 isEqual:v4];
+    v14 = [(TKTonePickerItem *)&v17 isEqual:equalCopy];
   }
 
 LABEL_19:
@@ -87,10 +87,10 @@ LABEL_19:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277D71F68] sharedCapabilitiesManager];
-  v4 = [v3 supportsReflectionRemixes];
+  mEMORY[0x277D71F68] = [MEMORY[0x277D71F68] sharedCapabilitiesManager];
+  supportsReflectionRemixes = [mEMORY[0x277D71F68] supportsReflectionRemixes];
 
-  if (v4)
+  if (supportsReflectionRemixes)
   {
     v9.receiver = self;
     v9.super_class = TKToneClassicsPickerItem;
@@ -109,13 +109,13 @@ LABEL_19:
   }
 }
 
-- (void)_appendDescriptionOfAttributesToString:(id)a3
+- (void)_appendDescriptionOfAttributesToString:(id)string
 {
   v5.receiver = self;
   v5.super_class = TKToneClassicsPickerItem;
-  v4 = a3;
-  [(TKTonePickerItem *)&v5 _appendDescriptionOfAttributesToString:v4];
-  [(TKPickerItem *)self _appendDescriptionOfAttributeNamed:@"classicToneIndex" withIntegerValue:[(TKToneClassicsPickerItem *)self classicToneIndex:v5.receiver] toString:v4];
+  stringCopy = string;
+  [(TKTonePickerItem *)&v5 _appendDescriptionOfAttributesToString:stringCopy];
+  [(TKPickerItem *)self _appendDescriptionOfAttributeNamed:@"classicToneIndex" withIntegerValue:[(TKToneClassicsPickerItem *)self classicToneIndex:v5.receiver] toString:stringCopy];
 }
 
 - (TKTonePickerItem)parentItem

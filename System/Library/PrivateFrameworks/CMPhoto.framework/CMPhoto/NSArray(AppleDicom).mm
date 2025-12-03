@@ -11,7 +11,7 @@
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = a1;
+  obj = self;
   v1 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (!v1)
   {
@@ -22,8 +22,8 @@
   v20 = 0;
   v2 = 0;
   v18 = 0;
-  v19 = 0;
-  v17 = 0;
+  longLongValue = 0;
+  unsignedLongLongValue = 0;
   v3 = 0;
   v4 = 0;
   v5 = *v23;
@@ -52,14 +52,14 @@
 
         else
         {
-          if ([v7 longLongValue] < v19)
+          if ([v7 longLongValue] < longLongValue)
           {
-            v19 = [v7 longLongValue];
+            longLongValue = [v7 longLongValue];
           }
 
-          if ([v7 unsignedLongLongValue] > v17)
+          if ([v7 unsignedLongLongValue] > unsignedLongLongValue)
           {
-            v17 = [v7 unsignedLongLongValue];
+            unsignedLongLongValue = [v7 unsignedLongLongValue];
           }
 
           v2 = 0;
@@ -102,18 +102,18 @@
       goto LABEL_47;
     }
 
-    if ((v19 & 0x8000000000000000) != 0)
+    if ((longLongValue & 0x8000000000000000) != 0)
     {
-      if (v19 < 0xFFFFFFFFFFFF8000 || v17 >= 0x8000)
+      if (longLongValue < 0xFFFFFFFFFFFF8000 || unsignedLongLongValue >= 0x8000)
       {
-        if (v17 >> 31)
+        if (unsignedLongLongValue >> 31)
         {
           v15 = 0;
         }
 
         else
         {
-          v15 = v19 > 0xFFFFFFFF7FFFFFFFLL;
+          v15 = longLongValue > 0xFFFFFFFF7FFFFFFFLL;
         }
 
         if (v15)
@@ -135,9 +135,9 @@
       goto LABEL_47;
     }
 
-    if (v17 >= 0x10000)
+    if (unsignedLongLongValue >= 0x10000)
     {
-      if (HIDWORD(v17))
+      if (HIDWORD(unsignedLongLongValue))
       {
         v13 = @"UV";
       }

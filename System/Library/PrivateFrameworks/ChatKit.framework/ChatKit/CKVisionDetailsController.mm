@@ -1,33 +1,33 @@
 @interface CKVisionDetailsController
 - (BOOL)shouldShowKTSection;
-- (CKVisionDetailsController)initWithConversation:(id)a3 context:(int64_t)a4;
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4;
-- (id)reuseIdentifierForCellInSection:(unint64_t)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (CKVisionDetailsController)initWithConversation:(id)conversation context:(int64_t)context;
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section;
+- (id)reuseIdentifierForCellInSection:(unint64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 @end
 
 @implementation CKVisionDetailsController
 
-- (CKVisionDetailsController)initWithConversation:(id)a3 context:(int64_t)a4
+- (CKVisionDetailsController)initWithConversation:(id)conversation context:(int64_t)context
 {
   v8.receiver = self;
   v8.super_class = CKVisionDetailsController;
-  v5 = [(CKDetailsController *)&v8 initWithConversation:a3];
+  v5 = [(CKDetailsController *)&v8 initWithConversation:conversation];
   v6 = v5;
   if (v5)
   {
-    [(CKVisionDetailsController *)v5 setContext:a4];
+    [(CKVisionDetailsController *)v5 setContext:context];
   }
 
   return v6;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   v8.receiver = self;
   v8.super_class = CKVisionDetailsController;
-  v6 = [(CKDetailsController *)&v8 tableView:a3 numberOfRowsInSection:?];
-  if (a4 <= 0xC && ((1 << a4) & 0x1A00) != 0 && [(CKVisionDetailsController *)self context]== 1)
+  v6 = [(CKDetailsController *)&v8 tableView:view numberOfRowsInSection:?];
+  if (section <= 0xC && ((1 << section) & 0x1A00) != 0 && [(CKVisionDetailsController *)self context]== 1)
   {
     return 0;
   }
@@ -35,14 +35,14 @@
   return v6;
 }
 
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section
 {
-  v6 = a3;
-  if ([(CKVisionDetailsController *)self tableView:v6 numberOfRowsInSection:a4])
+  viewCopy = view;
+  if ([(CKVisionDetailsController *)self tableView:viewCopy numberOfRowsInSection:section])
   {
     v10.receiver = self;
     v10.super_class = CKVisionDetailsController;
-    [(CKDetailsController *)&v10 tableView:v6 heightForFooterInSection:a4];
+    [(CKDetailsController *)&v10 tableView:viewCopy heightForFooterInSection:section];
     v8 = v7;
   }
 
@@ -54,11 +54,11 @@
   return v8;
 }
 
-- (id)reuseIdentifierForCellInSection:(unint64_t)a3
+- (id)reuseIdentifierForCellInSection:(unint64_t)section
 {
   v5.receiver = self;
   v5.super_class = CKVisionDetailsController;
-  v3 = [(CKDetailsController *)&v5 reuseIdentifierForCellInSection:a3];
+  v3 = [(CKDetailsController *)&v5 reuseIdentifierForCellInSection:section];
 
   return v3;
 }

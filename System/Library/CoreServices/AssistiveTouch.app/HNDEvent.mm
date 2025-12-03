@@ -9,15 +9,15 @@
 - (double)deltaY;
 - (int)type;
 - (int64_t)buttonNumber;
-- (void)setButtonNumber:(int64_t)a3;
-- (void)setDeltaX:(double)a3;
-- (void)setDeltaY:(double)a3;
-- (void)setIsEyeTrackingEvent:(BOOL)a3;
-- (void)setIsGamepadEvent:(BOOL)a3;
-- (void)setIsHeadTrackingEvent:(BOOL)a3;
-- (void)setIsVirtualTrackpadEvent:(BOOL)a3;
-- (void)setLocation:(CGPoint)a3;
-- (void)setType:(int)a3;
+- (void)setButtonNumber:(int64_t)number;
+- (void)setDeltaX:(double)x;
+- (void)setDeltaY:(double)y;
+- (void)setIsEyeTrackingEvent:(BOOL)event;
+- (void)setIsGamepadEvent:(BOOL)event;
+- (void)setIsHeadTrackingEvent:(BOOL)event;
+- (void)setIsVirtualTrackpadEvent:(BOOL)event;
+- (void)setLocation:(CGPoint)location;
+- (void)setType:(int)type;
 @end
 
 @implementation HNDEvent
@@ -29,11 +29,11 @@
   return *(self + v3);
 }
 
-- (void)setType:(int)a3
+- (void)setType:(int)type
 {
   v5 = OBJC_IVAR___HNDEvent_type;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = type;
 }
 
 - (CGPoint)location
@@ -47,10 +47,10 @@
   return result;
 }
 
-- (void)setLocation:(CGPoint)a3
+- (void)setLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   v5 = (self + OBJC_IVAR___HNDEvent_location);
   swift_beginAccess();
   *v5 = x;
@@ -64,11 +64,11 @@
   return *(self + v3);
 }
 
-- (void)setDeltaX:(double)a3
+- (void)setDeltaX:(double)x
 {
   v5 = OBJC_IVAR___HNDEvent_deltaX;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = x;
 }
 
 - (double)deltaY
@@ -78,11 +78,11 @@
   return *(self + v3);
 }
 
-- (void)setDeltaY:(double)a3
+- (void)setDeltaY:(double)y
 {
   v5 = OBJC_IVAR___HNDEvent_deltaY;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = y;
 }
 
 - (int64_t)buttonNumber
@@ -92,11 +92,11 @@
   return *(self + v3);
 }
 
-- (void)setButtonNumber:(int64_t)a3
+- (void)setButtonNumber:(int64_t)number
 {
   v5 = OBJC_IVAR___HNDEvent_buttonNumber;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = number;
 }
 
 - (BOOL)isEyeTrackingEvent
@@ -106,11 +106,11 @@
   return *(self + v3);
 }
 
-- (void)setIsEyeTrackingEvent:(BOOL)a3
+- (void)setIsEyeTrackingEvent:(BOOL)event
 {
   v5 = OBJC_IVAR___HNDEvent_isEyeTrackingEvent;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = event;
 }
 
 - (BOOL)isVirtualTrackpadEvent
@@ -120,11 +120,11 @@
   return *(self + v3);
 }
 
-- (void)setIsVirtualTrackpadEvent:(BOOL)a3
+- (void)setIsVirtualTrackpadEvent:(BOOL)event
 {
   v5 = OBJC_IVAR___HNDEvent_isVirtualTrackpadEvent;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = event;
 }
 
 - (BOOL)isHeadTrackingEvent
@@ -134,11 +134,11 @@
   return *(self + v3);
 }
 
-- (void)setIsHeadTrackingEvent:(BOOL)a3
+- (void)setIsHeadTrackingEvent:(BOOL)event
 {
   v5 = OBJC_IVAR___HNDEvent_isHeadTrackingEvent;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = event;
 }
 
 - (BOOL)isGamepadEvent
@@ -148,16 +148,16 @@
   return *(self + v3);
 }
 
-- (void)setIsGamepadEvent:(BOOL)a3
+- (void)setIsGamepadEvent:(BOOL)event
 {
   v5 = OBJC_IVAR___HNDEvent_isGamepadEvent;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = event;
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_100112148();
 
   v3 = String._bridgeToObjectiveC()();

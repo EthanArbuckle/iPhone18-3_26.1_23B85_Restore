@@ -1,19 +1,19 @@
 @interface UIWebDateTimePopoverViewController
-- (UIWebDateTimePopoverViewController)initWithDOMHTMLInputElement:(id)a3 datePickerMode:(int64_t)a4;
+- (UIWebDateTimePopoverViewController)initWithDOMHTMLInputElement:(id)element datePickerMode:(int64_t)mode;
 - (void)dealloc;
 - (void)loadView;
 @end
 
 @implementation UIWebDateTimePopoverViewController
 
-- (UIWebDateTimePopoverViewController)initWithDOMHTMLInputElement:(id)a3 datePickerMode:(int64_t)a4
+- (UIWebDateTimePopoverViewController)initWithDOMHTMLInputElement:(id)element datePickerMode:(int64_t)mode
 {
   v8.receiver = self;
   v8.super_class = UIWebDateTimePopoverViewController;
   v6 = [(UIViewController *)&v8 init];
   if (v6)
   {
-    [(UIWebDateTimePopoverViewController *)v6 set_innerWebDateTimeControl:[[UIWebDefaultDateTimePicker alloc] initWithDOMHTMLInputElement:a3 datePickerMode:a4]];
+    [(UIWebDateTimePopoverViewController *)v6 set_innerWebDateTimeControl:[[UIWebDefaultDateTimePicker alloc] initWithDOMHTMLInputElement:element datePickerMode:mode]];
   }
 
   return v6;
@@ -29,9 +29,9 @@
 
 - (void)loadView
 {
-  v3 = [(UIWebFormControl *)self->_innerWebDateTimeControl controlView];
+  controlView = [(UIWebFormControl *)self->_innerWebDateTimeControl controlView];
 
-  [(UIViewController *)self setView:v3];
+  [(UIViewController *)self setView:controlView];
 }
 
 @end

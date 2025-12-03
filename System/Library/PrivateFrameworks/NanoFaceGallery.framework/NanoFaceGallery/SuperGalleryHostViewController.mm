@@ -1,12 +1,12 @@
 @interface SuperGalleryHostViewController
-- (_TtC15NanoFaceGalleryP33_9873E3ADB7C49D3A487978D73361BB5230SuperGalleryHostViewController)initWithCoder:(id)a3;
-- (_TtC15NanoFaceGalleryP33_9873E3ADB7C49D3A487978D73361BB5230SuperGalleryHostViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC15NanoFaceGalleryP33_9873E3ADB7C49D3A487978D73361BB5230SuperGalleryHostViewController)initWithCoder:(id)coder;
+- (_TtC15NanoFaceGalleryP33_9873E3ADB7C49D3A487978D73361BB5230SuperGalleryHostViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
 @implementation SuperGalleryHostViewController
 
-- (_TtC15NanoFaceGalleryP33_9873E3ADB7C49D3A487978D73361BB5230SuperGalleryHostViewController)initWithCoder:(id)a3
+- (_TtC15NanoFaceGalleryP33_9873E3ADB7C49D3A487978D73361BB5230SuperGalleryHostViewController)initWithCoder:(id)coder
 {
   sub_25B0E3900();
   sub_25B0E38F0();
@@ -34,12 +34,12 @@
 
   v4.receiver = self;
   v4.super_class = type metadata accessor for SuperGalleryHostViewController();
-  v3 = self;
+  selfCopy = self;
   [(SuperGalleryHostViewController *)&v4 viewDidLoad];
   sub_25B0479B8();
 }
 
-- (_TtC15NanoFaceGalleryP33_9873E3ADB7C49D3A487978D73361BB5230SuperGalleryHostViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15NanoFaceGalleryP33_9873E3ADB7C49D3A487978D73361BB5230SuperGalleryHostViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   sub_25B0E3900();
   sub_25B0E38F0();

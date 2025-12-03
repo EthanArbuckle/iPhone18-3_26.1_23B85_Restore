@@ -1,9 +1,9 @@
 @interface OctagonStateTransitionWatcher
 - (id)description;
-- (id)initNamed:(id)a3 stateMachine:(id)a4 path:(id)a5 initialRequest:(id)a6;
-- (void)onqueueHandleStartTimeout:(id)a3;
-- (void)onqueueHandleTransition:(id)a3;
-- (void)onqueueProcessTransition:(id)a3;
+- (id)initNamed:(id)named stateMachine:(id)machine path:(id)path initialRequest:(id)request;
+- (void)onqueueHandleStartTimeout:(id)timeout;
+- (void)onqueueHandleTransition:(id)transition;
+- (void)onqueueProcessTransition:(id)transition;
 - (void)onqueueStartFinishOperation;
 @end
 
@@ -11,44 +11,44 @@
 
 - (void)onqueueStartFinishOperation
 {
-  v3 = [(OctagonStateTransitionWatcher *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(OctagonStateTransitionWatcher *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   [(OctagonStateTransitionWatcher *)self setTimeoutCanOccur:0];
-  v4 = [(OctagonStateTransitionWatcher *)self operationQueue];
-  v5 = [(OctagonStateTransitionWatcher *)self result];
-  [v4 addOperation:v5];
+  operationQueue = [(OctagonStateTransitionWatcher *)self operationQueue];
+  result = [(OctagonStateTransitionWatcher *)self result];
+  [operationQueue addOperation:result];
 
   [(OctagonStateTransitionWatcher *)self setActive:0];
 
   [(OctagonStateTransitionWatcher *)self setCompleted:1];
 }
 
-- (void)onqueueProcessTransition:(id)a3
+- (void)onqueueProcessTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [(OctagonStateTransitionWatcher *)self queue];
-  dispatch_assert_queue_V2(v5);
+  transitionCopy = transition;
+  queue = [(OctagonStateTransitionWatcher *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(OctagonStateTransitionWatcher *)self remainingPath];
-  if (v6)
+  remainingPath = [(OctagonStateTransitionWatcher *)self remainingPath];
+  if (remainingPath)
   {
-    v7 = v6;
-    v8 = [(OctagonStateTransitionWatcher *)self completed];
+    v7 = remainingPath;
+    completed = [(OctagonStateTransitionWatcher *)self completed];
 
-    if ((v8 & 1) == 0)
+    if ((completed & 1) == 0)
     {
-      v9 = [(OctagonStateTransitionWatcher *)self remainingPath];
-      v10 = [v4 nextState];
-      v11 = [v9 nextStep:v10];
+      remainingPath2 = [(OctagonStateTransitionWatcher *)self remainingPath];
+      nextState = [transitionCopy nextState];
+      v11 = [remainingPath2 nextStep:nextState];
 
       if (v11)
       {
         [(OctagonStateTransitionWatcher *)self setRemainingPath:v11];
-        v12 = [(OctagonStateTransitionWatcher *)self remainingPath];
-        v13 = [v12 successState];
+        remainingPath3 = [(OctagonStateTransitionWatcher *)self remainingPath];
+        successState = [remainingPath3 successState];
 
-        if (v13)
+        if (successState)
         {
           [(OctagonStateTransitionWatcher *)self onqueueStartFinishOperation];
         }
@@ -56,63 +56,63 @@
 
       else
       {
-        v14 = [v4 error];
+        error = [transitionCopy error];
 
-        if (v14)
+        if (error)
         {
-          v15 = [v4 error];
-          v16 = [(OctagonStateTransitionWatcher *)self result];
-          [v16 setError:v15];
+          error2 = [transitionCopy error];
+          result = [(OctagonStateTransitionWatcher *)self result];
+          [result setError:error2];
         }
 
         else
         {
-          v17 = [(OctagonStateTransitionWatcher *)self stateNumberMap];
-          v18 = [v4 nextState];
-          v15 = [v17 objectForKeyedSubscript:v18];
+          stateNumberMap = [(OctagonStateTransitionWatcher *)self stateNumberMap];
+          nextState2 = [transitionCopy nextState];
+          error2 = [stateNumberMap objectForKeyedSubscript:nextState2];
 
           v19 = &swift_errorRelease_ptr;
-          if (v15)
+          if (error2)
           {
-            v20 = [(OctagonStateTransitionWatcher *)self unexpectedStateErrorDomain];
-            v21 = [v15 integerValue];
-            v22 = [v4 nextState];
-            v23 = [NSString stringWithFormat:@"unexpected state '%@'", v22];
-            v16 = [NSError errorWithDomain:v20 code:v21 description:v23];
+            unexpectedStateErrorDomain = [(OctagonStateTransitionWatcher *)self unexpectedStateErrorDomain];
+            integerValue = [error2 integerValue];
+            nextState3 = [transitionCopy nextState];
+            v23 = [NSString stringWithFormat:@"unexpected state '%@'", nextState3];
+            result = [NSError errorWithDomain:unexpectedStateErrorDomain code:integerValue description:v23];
 
             v19 = &swift_errorRelease_ptr;
           }
 
           else
           {
-            v16 = 0;
+            result = 0;
           }
 
           v24 = v19[313];
-          v25 = [v4 nextState];
-          v26 = [(OctagonStateTransitionWatcher *)self remainingPath];
-          v27 = [NSString stringWithFormat:@"state became %@, was expecting %@", v25, v26];
-          v28 = [v24 errorWithDomain:@"com.apple.security.octagon" code:30 description:v27 underlying:v16];
-          v29 = [(OctagonStateTransitionWatcher *)self result];
-          [v29 setError:v28];
+          nextState4 = [transitionCopy nextState];
+          remainingPath4 = [(OctagonStateTransitionWatcher *)self remainingPath];
+          v27 = [NSString stringWithFormat:@"state became %@, was expecting %@", nextState4, remainingPath4];
+          v28 = [v24 errorWithDomain:@"com.apple.security.octagon" code:30 description:v27 underlying:result];
+          result2 = [(OctagonStateTransitionWatcher *)self result];
+          [result2 setError:v28];
         }
 
         v30 = +[CKKSAnalytics logger];
-        v38 = [(OctagonStateTransitionWatcher *)self result];
-        v31 = [v38 error];
+        result3 = [(OctagonStateTransitionWatcher *)self result];
+        error3 = [result3 error];
         v39[0] = @"name";
-        v32 = [(OctagonStateTransitionWatcher *)self name];
-        v40[0] = v32;
+        name = [(OctagonStateTransitionWatcher *)self name];
+        v40[0] = name;
         v39[1] = @"intended";
-        v33 = [(OctagonStateTransitionWatcher *)self remainingPath];
-        v34 = [v33 followStates];
-        v35 = [v34 allKeys];
-        v40[1] = v35;
+        remainingPath5 = [(OctagonStateTransitionWatcher *)self remainingPath];
+        followStates = [remainingPath5 followStates];
+        allKeys = [followStates allKeys];
+        v40[1] = allKeys;
         v39[2] = @"became";
-        v36 = [v4 nextState];
-        v40[2] = v36;
+        nextState5 = [transitionCopy nextState];
+        v40[2] = nextState5;
         v37 = [NSDictionary dictionaryWithObjects:v40 forKeys:v39 count:3];
-        [v30 logUnrecoverableError:v31 forEvent:@"OctagonEventStateTransition" withAttributes:v37];
+        [v30 logUnrecoverableError:error3 forEvent:@"OctagonEventStateTransition" withAttributes:v37];
 
         [(OctagonStateTransitionWatcher *)self onqueueStartFinishOperation];
         v11 = 0;
@@ -121,47 +121,47 @@
   }
 }
 
-- (void)onqueueHandleStartTimeout:(id)a3
+- (void)onqueueHandleStartTimeout:(id)timeout
 {
-  v10 = a3;
-  v4 = [(OctagonStateTransitionWatcher *)self queue];
-  dispatch_assert_queue_V2(v4);
+  timeoutCopy = timeout;
+  queue = [(OctagonStateTransitionWatcher *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if ([(OctagonStateTransitionWatcher *)self timeoutCanOccur])
   {
     [(OctagonStateTransitionWatcher *)self setTimeoutCanOccur:0];
-    v5 = [(OctagonStateTransitionWatcher *)self name];
-    v6 = [(OctagonStateTransitionWatcher *)self remainingPath];
-    v7 = [NSString stringWithFormat:@"Operation(%@) timed out waiting to start for [%@]", v5, v6];
+    name = [(OctagonStateTransitionWatcher *)self name];
+    remainingPath = [(OctagonStateTransitionWatcher *)self remainingPath];
+    v7 = [NSString stringWithFormat:@"Operation(%@) timed out waiting to start for [%@]", name, remainingPath];
 
-    v8 = [NSError errorWithDomain:@"CKKSResultOperationError" code:3 description:v7 underlying:v10];
-    v9 = [(OctagonStateTransitionWatcher *)self result];
-    [v9 setError:v8];
+    v8 = [NSError errorWithDomain:@"CKKSResultOperationError" code:3 description:v7 underlying:timeoutCopy];
+    result = [(OctagonStateTransitionWatcher *)self result];
+    [result setError:v8];
 
     [(OctagonStateTransitionWatcher *)self onqueueStartFinishOperation];
   }
 }
 
-- (void)onqueueHandleTransition:(id)a3
+- (void)onqueueHandleTransition:(id)transition
 {
-  v12 = a3;
-  v4 = [(OctagonStateTransitionWatcher *)self queue];
-  dispatch_assert_queue_V2(v4);
+  transitionCopy = transition;
+  queue = [(OctagonStateTransitionWatcher *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v5 = [(OctagonStateTransitionWatcher *)self remainingPath];
-  if (v5)
+  remainingPath = [(OctagonStateTransitionWatcher *)self remainingPath];
+  if (remainingPath)
   {
-    v6 = v5;
-    v7 = [(OctagonStateTransitionWatcher *)self completed];
+    v6 = remainingPath;
+    completed = [(OctagonStateTransitionWatcher *)self completed];
 
-    if ((v7 & 1) == 0)
+    if ((completed & 1) == 0)
     {
       if (![(OctagonStateTransitionWatcher *)self active])
       {
-        v8 = [v12 nextState];
-        v9 = [(OctagonStateTransitionWatcher *)self intendedPath];
-        v10 = [v9 initialState];
-        v11 = [v8 isEqualToString:v10];
+        nextState = [transitionCopy nextState];
+        intendedPath = [(OctagonStateTransitionWatcher *)self intendedPath];
+        initialState = [intendedPath initialState];
+        v11 = [nextState isEqualToString:initialState];
 
         if (!v11)
         {
@@ -171,7 +171,7 @@
         [(OctagonStateTransitionWatcher *)self setActive:1];
       }
 
-      [(OctagonStateTransitionWatcher *)self onqueueProcessTransition:v12];
+      [(OctagonStateTransitionWatcher *)self onqueueProcessTransition:transitionCopy];
     }
   }
 
@@ -180,34 +180,34 @@ LABEL_7:
 
 - (id)description
 {
-  v3 = [(OctagonStateTransitionWatcher *)self name];
-  v4 = [(OctagonStateTransitionWatcher *)self remainingPath];
-  v5 = [(OctagonStateTransitionWatcher *)self result];
-  v6 = [NSString stringWithFormat:@"<OctagonStateTransitionWatcher(%@): remaining: %@, result: %@>", v3, v4, v5];
+  name = [(OctagonStateTransitionWatcher *)self name];
+  remainingPath = [(OctagonStateTransitionWatcher *)self remainingPath];
+  result = [(OctagonStateTransitionWatcher *)self result];
+  v6 = [NSString stringWithFormat:@"<OctagonStateTransitionWatcher(%@): remaining: %@, result: %@>", name, remainingPath, result];
 
   return v6;
 }
 
-- (id)initNamed:(id)a3 stateMachine:(id)a4 path:(id)a5 initialRequest:(id)a6
+- (id)initNamed:(id)named stateMachine:(id)machine path:(id)path initialRequest:(id)request
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  namedCopy = named;
+  machineCopy = machine;
+  pathCopy = path;
+  requestCopy = request;
   v31.receiver = self;
   v31.super_class = OctagonStateTransitionWatcher;
   v15 = [(OctagonStateTransitionWatcher *)&v31 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_name, a3);
-    objc_storeStrong(&v16->_intendedPath, a5);
-    v17 = [v13 asPathStep];
+    objc_storeStrong(&v15->_name, named);
+    objc_storeStrong(&v16->_intendedPath, path);
+    asPathStep = [pathCopy asPathStep];
     remainingPath = v16->_remainingPath;
-    v16->_remainingPath = v17;
+    v16->_remainingPath = asPathStep;
 
-    v19 = [NSString stringWithFormat:@"watcher-%@", v11];
-    v20 = [CKKSResultOperation named:v19 withBlock:&stru_100337730];
+    namedCopy = [NSString stringWithFormat:@"watcher-%@", namedCopy];
+    v20 = [CKKSResultOperation named:namedCopy withBlock:&stru_100337730];
     v21 = v16->_result;
     v16->_result = v20;
 
@@ -215,20 +215,20 @@ LABEL_7:
     operationQueue = v16->_operationQueue;
     v16->_operationQueue = v22;
 
-    v24 = [v12 queue];
+    queue = [machineCopy queue];
     queue = v16->_queue;
-    v16->_queue = v24;
+    v16->_queue = queue;
 
-    v26 = [v12 stateNumberMap];
+    stateNumberMap = [machineCopy stateNumberMap];
     stateNumberMap = v16->_stateNumberMap;
-    v16->_stateNumberMap = v26;
+    v16->_stateNumberMap = stateNumberMap;
 
-    v28 = [v12 unexpectedStateErrorDomain];
+    unexpectedStateErrorDomain = [machineCopy unexpectedStateErrorDomain];
     unexpectedStateErrorDomain = v16->_unexpectedStateErrorDomain;
-    v16->_unexpectedStateErrorDomain = v28;
+    v16->_unexpectedStateErrorDomain = unexpectedStateErrorDomain;
 
     v16->_timeoutCanOccur = 1;
-    objc_storeStrong(&v16->_initialRequest, a6);
+    objc_storeStrong(&v16->_initialRequest, request);
     *&v16->_active = 0;
   }
 

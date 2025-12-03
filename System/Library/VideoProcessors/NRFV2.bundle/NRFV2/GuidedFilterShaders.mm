@@ -1,13 +1,13 @@
 @interface GuidedFilterShaders
-- (GuidedFilterShaders)initWithMetalContext:(id)a3;
+- (GuidedFilterShaders)initWithMetalContext:(id)context;
 @end
 
 @implementation GuidedFilterShaders
 
-- (GuidedFilterShaders)initWithMetalContext:(id)a3
+- (GuidedFilterShaders)initWithMetalContext:(id)context
 {
-  v4 = a3;
-  if (!v4)
+  contextCopy = context;
+  if (!contextCopy)
   {
     sub_2958CB2AC(self);
 LABEL_14:
@@ -24,7 +24,7 @@ LABEL_14:
     goto LABEL_7;
   }
 
-  v7 = objc_msgSend_computePipelineStateFor_constants_(v4, v5, @"gfDownsampleGuide", 0);
+  v7 = objc_msgSend_computePipelineStateFor_constants_(contextCopy, v5, @"gfDownsampleGuide", 0);
   gfDownsampleGuide = v6->_gfDownsampleGuide;
   v6->_gfDownsampleGuide = v7;
 
@@ -34,7 +34,7 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v10 = objc_msgSend_computePipelineStateFor_constants_(v4, v9, @"gfCalculateCoefficients", 0);
+  v10 = objc_msgSend_computePipelineStateFor_constants_(contextCopy, v9, @"gfCalculateCoefficients", 0);
   gfCalculateCoefficients = v6->_gfCalculateCoefficients;
   v6->_gfCalculateCoefficients = v10;
 
@@ -44,7 +44,7 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v13 = objc_msgSend_computePipelineStateFor_constants_(v4, v12, @"gfFilterCoefficients", 0);
+  v13 = objc_msgSend_computePipelineStateFor_constants_(contextCopy, v12, @"gfFilterCoefficients", 0);
   gfFilterCoefficients = v6->_gfFilterCoefficients;
   v6->_gfFilterCoefficients = v13;
 
@@ -54,7 +54,7 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v16 = objc_msgSend_computePipelineStateFor_constants_(v4, v15, @"gfApplyCoefficients", 0);
+  v16 = objc_msgSend_computePipelineStateFor_constants_(contextCopy, v15, @"gfApplyCoefficients", 0);
   gfApplyCoefficients = v6->_gfApplyCoefficients;
   v6->_gfApplyCoefficients = v16;
 

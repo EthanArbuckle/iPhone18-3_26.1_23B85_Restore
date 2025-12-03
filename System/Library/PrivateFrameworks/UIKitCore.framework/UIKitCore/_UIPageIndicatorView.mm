@@ -8,11 +8,11 @@
 - (CGSize)_adjustedExpandedModeSize;
 - (CGSize)defaultModeSize;
 - (CGSize)expandedModeSize;
-- (CGSize)sizeForImage:(id)a3 traits:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeForImage:(id)image traits:(id)traits;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIEdgeInsets)_currentImageContentInsets;
-- (_UIPageIndicatorView)initWithCoder:(id)a3;
-- (_UIPageIndicatorView)initWithFrame:(CGRect)a3;
+- (_UIPageIndicatorView)initWithCoder:(id)coder;
+- (_UIPageIndicatorView)initWithFrame:(CGRect)frame;
 - (double)currentExpandProgress;
 - (id)debugDescription;
 - (int64_t)_transitionDirection;
@@ -24,26 +24,26 @@
 - (void)invalidate;
 - (void)layoutSubviews;
 - (void)prepare;
-- (void)setActive:(BOOL)a3;
-- (void)setActiveImage:(id)a3;
-- (void)setActiveIndicatorColor:(id)a3;
-- (void)setActiveVibrantColorMatrix:(CAColorMatrix *)a3;
-- (void)setContentTransform:(CGAffineTransform *)a3;
-- (void)setCurrentProgress:(float)a3;
-- (void)setImage:(id)a3;
-- (void)setImageDisplayScaleFactor:(double)a3;
-- (void)setIndicatorColor:(id)a3;
-- (void)setMode:(int64_t)a3 direction:(int64_t)a4;
-- (void)setSupportsExpandedIndicator:(BOOL)a3;
-- (void)setVibrantColorMatrix:(CAColorMatrix *)a3;
+- (void)setActive:(BOOL)active;
+- (void)setActiveImage:(id)image;
+- (void)setActiveIndicatorColor:(id)color;
+- (void)setActiveVibrantColorMatrix:(CAColorMatrix *)matrix;
+- (void)setContentTransform:(CGAffineTransform *)transform;
+- (void)setCurrentProgress:(float)progress;
+- (void)setImage:(id)image;
+- (void)setImageDisplayScaleFactor:(double)factor;
+- (void)setIndicatorColor:(id)color;
+- (void)setMode:(int64_t)mode direction:(int64_t)direction;
+- (void)setSupportsExpandedIndicator:(BOOL)indicator;
+- (void)setVibrantColorMatrix:(CAColorMatrix *)matrix;
 @end
 
 @implementation _UIPageIndicatorView
 
 - (double)currentExpandProgress
 {
-  v2 = [(_UIPageIndicatorView *)self expandProgress];
-  [v2 presentationValue];
+  expandProgress = [(_UIPageIndicatorView *)self expandProgress];
+  [expandProgress presentationValue];
   v4 = fmax(fmin(v3, 1.0), 0.0);
 
   return v4;
@@ -62,28 +62,28 @@
   {
     v3 = 0;
 LABEL_4:
-    v4 = [(_UIPageIndicatorView *)self image];
+    image = [(_UIPageIndicatorView *)self image];
     v5 = 0;
     v6 = 0;
     v7 = 1;
     goto LABEL_5;
   }
 
-  v12 = [(_UIPageIndicatorView *)self activeImage];
-  if (!v12)
+  activeImage = [(_UIPageIndicatorView *)self activeImage];
+  if (!activeImage)
   {
     v3 = 1;
     goto LABEL_4;
   }
 
-  v5 = v12;
-  v4 = [(_UIPageIndicatorView *)self activeImage];
+  v5 = activeImage;
+  image = [(_UIPageIndicatorView *)self activeImage];
   v7 = 0;
   v3 = 1;
   v6 = 1;
 LABEL_5:
-  v8 = [(_UIPageIndicatorView *)self imageView];
-  [v8 setImage:v4];
+  imageView = [(_UIPageIndicatorView *)self imageView];
+  [imageView setImage:image];
 
   if (!v7)
   {
@@ -112,19 +112,19 @@ LABEL_7:
   {
 LABEL_8:
 
-    v9 = [(_UIPageIndicatorView *)self activeIndicatorColor];
+    activeIndicatorColor = [(_UIPageIndicatorView *)self activeIndicatorColor];
     goto LABEL_12;
   }
 
 LABEL_11:
-  v9 = [(_UIPageIndicatorView *)self indicatorColor];
+  activeIndicatorColor = [(_UIPageIndicatorView *)self indicatorColor];
 LABEL_12:
-  v10 = v9;
-  v11 = [(_UIPageIndicatorView *)self imageView];
-  [v11 setTintColor:v10];
+  v10 = activeIndicatorColor;
+  imageView2 = [(_UIPageIndicatorView *)self imageView];
+  [imageView2 setTintColor:v10];
 
-  v13 = [(_UIPageIndicatorView *)self imageView];
-  [v13 setNeedsLayout];
+  imageView3 = [(_UIPageIndicatorView *)self imageView];
+  [imageView3 setNeedsLayout];
 }
 
 - (CAColorMatrix)activeVibrantColorMatrix
@@ -141,18 +141,18 @@ LABEL_12:
 
 - (void)_updateProgressBar
 {
-  v3 = [(_UIPageIndicatorView *)self indicatorColor];
-  v4 = [(_UIPageIndicatorView *)self progressView];
-  v5 = [v4 backgroundView];
-  [v5 setBackgroundColor:v3];
+  indicatorColor = [(_UIPageIndicatorView *)self indicatorColor];
+  progressView = [(_UIPageIndicatorView *)self progressView];
+  backgroundView = [progressView backgroundView];
+  [backgroundView setBackgroundColor:indicatorColor];
 
-  v6 = [(_UIPageIndicatorView *)self activeIndicatorColor];
-  v7 = [(_UIPageIndicatorView *)self progressView];
-  v8 = [v7 filledView];
-  [v8 setBackgroundColor:v6];
+  activeIndicatorColor = [(_UIPageIndicatorView *)self activeIndicatorColor];
+  progressView2 = [(_UIPageIndicatorView *)self progressView];
+  filledView = [progressView2 filledView];
+  [filledView setBackgroundColor:activeIndicatorColor];
 
-  v9 = [(_UIPageIndicatorView *)self progressView];
-  [v9 setNeedsLayout];
+  progressView3 = [(_UIPageIndicatorView *)self progressView];
+  [progressView3 setNeedsLayout];
 }
 
 - (void)_updateVibrantColorMatrix
@@ -187,9 +187,9 @@ LABEL_12:
   v16[1] = v4;
   if (_UICAColorMatrixIsEqualToCAColorMatrix(&v17, v16, 0.0))
   {
-    v5 = [(_UIPageIndicatorView *)self imageView];
-    v6 = [v5 layer];
-    [v6 setFilters:0];
+    imageView = [(_UIPageIndicatorView *)self imageView];
+    layer = [imageView layer];
+    [layer setFilters:0];
   }
 
   else
@@ -199,25 +199,25 @@ LABEL_12:
     v21 = v26;
     v17 = v22;
     v18 = v23;
-    v5 = [MEMORY[0x1E696B098] valueWithCAColorMatrix:&v17];
-    v7 = [(_UIPageIndicatorView *)self imageView];
-    v8 = [v7 layer];
-    v9 = [v8 filters];
-    v10 = [v9 count];
+    imageView = [MEMORY[0x1E696B098] valueWithCAColorMatrix:&v17];
+    imageView2 = [(_UIPageIndicatorView *)self imageView];
+    layer2 = [imageView2 layer];
+    filters = [layer2 filters];
+    v10 = [filters count];
 
     if (!v10)
     {
       v11 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979D78]];
       v27[0] = v11;
       v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:1];
-      v13 = [(_UIPageIndicatorView *)self imageView];
-      v14 = [v13 layer];
-      [v14 setFilters:v12];
+      imageView3 = [(_UIPageIndicatorView *)self imageView];
+      layer3 = [imageView3 layer];
+      [layer3 setFilters:v12];
     }
 
-    v6 = [(_UIPageIndicatorView *)self imageView];
-    v15 = [v6 layer];
-    [v15 setValue:v5 forKeyPath:@"filters.vibrantColorMatrix.inputColorMatrix"];
+    layer = [(_UIPageIndicatorView *)self imageView];
+    v6Layer = [layer layer];
+    [v6Layer setValue:imageView forKeyPath:@"filters.vibrantColorMatrix.inputColorMatrix"];
   }
 }
 
@@ -229,38 +229,38 @@ LABEL_12:
     v4 = v3;
     if ([(_UIPageIndicatorView *)self _isDefaultSymbolImage])
     {
-      v5 = [(_UIPageIndicatorView *)self imageView];
-      [v5 setHidden:v4 != 0.0];
+      imageView = [(_UIPageIndicatorView *)self imageView];
+      [imageView setHidden:v4 != 0.0];
 
-      v6 = [(_UIPageIndicatorView *)self imageView];
-      [v6 setAlpha:1.0];
+      imageView2 = [(_UIPageIndicatorView *)self imageView];
+      [imageView2 setAlpha:1.0];
 
-      v7 = [(_UIPageIndicatorView *)self progressView];
-      [v7 setHidden:v4 == 0.0];
+      progressView = [(_UIPageIndicatorView *)self progressView];
+      [progressView setHidden:v4 == 0.0];
 
-      v8 = [(_UIPageIndicatorView *)self progressView];
-      [v8 setAlpha:1.0];
+      progressView2 = [(_UIPageIndicatorView *)self progressView];
+      [progressView2 setAlpha:1.0];
 
-      v9 = [(_UIPageIndicatorView *)self progressView];
-      v10 = [v9 backgroundView];
-      [v10 setAlpha:1.0];
+      progressView3 = [(_UIPageIndicatorView *)self progressView];
+      backgroundView = [progressView3 backgroundView];
+      [backgroundView setAlpha:1.0];
 
       p_active = &self->_active;
     }
 
     else
     {
-      v12 = [(_UIPageIndicatorView *)self imageView];
-      [v12 setHidden:0];
+      imageView3 = [(_UIPageIndicatorView *)self imageView];
+      [imageView3 setHidden:0];
 
-      v13 = [(_UIPageIndicatorView *)self imageView];
-      [v13 setAlpha:1.0 - v4];
+      imageView4 = [(_UIPageIndicatorView *)self imageView];
+      [imageView4 setAlpha:1.0 - v4];
 
-      v14 = [(_UIPageIndicatorView *)self progressView];
-      [v14 setHidden:0];
+      progressView4 = [(_UIPageIndicatorView *)self progressView];
+      [progressView4 setHidden:0];
 
-      v15 = [(_UIPageIndicatorView *)self progressView];
-      [v15 setAlpha:v4];
+      progressView5 = [(_UIPageIndicatorView *)self progressView];
+      [progressView5 setAlpha:v4];
 
       p_active = &self->_active;
       if (self->_active)
@@ -273,9 +273,9 @@ LABEL_12:
         v16 = 1.0;
       }
 
-      v17 = [(_UIPageIndicatorView *)self progressView];
-      v18 = [v17 backgroundView];
-      [v18 setAlpha:v16];
+      progressView6 = [(_UIPageIndicatorView *)self progressView];
+      backgroundView2 = [progressView6 backgroundView];
+      [backgroundView2 setAlpha:v16];
     }
 
     if (*p_active)
@@ -283,9 +283,9 @@ LABEL_12:
       v4 = 1.0;
     }
 
-    v20 = [(_UIPageIndicatorView *)self progressView];
-    v19 = [v20 filledView];
-    [v19 setAlpha:v4];
+    progressView7 = [(_UIPageIndicatorView *)self progressView];
+    filledView = [progressView7 filledView];
+    [filledView setAlpha:v4];
   }
 }
 
@@ -325,8 +325,8 @@ LABEL_12:
 
   [(UIViewFloatAnimatableProperty *)self->_expandProgress setValue:0.0];
   objc_initWeak(&location, self);
-  v14 = [(_UIPageIndicatorView *)self expandProgress];
-  v19[0] = v14;
+  expandProgress = [(_UIPageIndicatorView *)self expandProgress];
+  v19[0] = expandProgress;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
@@ -351,35 +351,35 @@ LABEL_12:
   v10 = v9;
   [(_UIPageIndicatorView *)self _currentImageContentInsets];
   [(UIView *)self->_progressView setFrame:v4 + v14, v6 + v11, v8 - (v14 + v12), v10 - (v11 + v13)];
-  v15 = [(_UIPageIndicatorView *)self _transitionDirection];
-  v16 = [(_UIPageIndicatorView *)self image];
-  [(_UIPageIndicatorView *)self sizeForImage:v16 traits:0];
+  _transitionDirection = [(_UIPageIndicatorView *)self _transitionDirection];
+  image = [(_UIPageIndicatorView *)self image];
+  [(_UIPageIndicatorView *)self sizeForImage:image traits:0];
   v18 = v17;
   v20 = v19;
 
   v21 = *MEMORY[0x1E695EFF8];
   v22 = *(MEMORY[0x1E695EFF8] + 8);
-  v23 = [(_UIPageIndicatorView *)self direction];
+  direction = [(_UIPageIndicatorView *)self direction];
   v24 = v21;
   v25 = v22;
-  if (v23 <= 1)
+  if (direction <= 1)
   {
-    if (v23)
+    if (direction)
     {
-      if (v23 != 1)
+      if (direction != 1)
       {
         goto LABEL_14;
       }
 
       v24 = v21;
       v25 = v22;
-      if (v15 != 2)
+      if (_transitionDirection != 2)
       {
         goto LABEL_14;
       }
     }
 
-    else if (v15 != 1)
+    else if (_transitionDirection != 1)
     {
       goto LABEL_14;
     }
@@ -393,9 +393,9 @@ LABEL_12:
     goto LABEL_14;
   }
 
-  if (v23 == 2)
+  if (direction == 2)
   {
-    if (v15 != 1)
+    if (_transitionDirection != 1)
     {
       goto LABEL_14;
     }
@@ -410,11 +410,11 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (v23 == 3)
+  if (direction == 3)
   {
     v24 = v21;
     v25 = v22;
-    if (v15 == 2)
+    if (_transitionDirection == 2)
     {
       goto LABEL_13;
     }
@@ -440,11 +440,11 @@ LABEL_14:
 
 - (BOOL)_hasOngoingExpandTransition
 {
-  v3 = [(_UIPageIndicatorView *)self expandProgress];
-  [v3 value];
+  expandProgress = [(_UIPageIndicatorView *)self expandProgress];
+  [expandProgress value];
   v5 = v4;
-  v6 = [(_UIPageIndicatorView *)self expandProgress];
-  [v6 presentationValue];
+  expandProgress2 = [(_UIPageIndicatorView *)self expandProgress];
+  [expandProgress2 presentationValue];
   v8 = v5 != v7;
 
   return v8;
@@ -452,9 +452,9 @@ LABEL_14:
 
 - (UIEdgeInsets)_currentImageContentInsets
 {
-  v2 = [(_UIPageIndicatorView *)self imageView];
-  v3 = [v2 _currentImage];
-  [v3 contentInsets];
+  imageView = [(_UIPageIndicatorView *)self imageView];
+  _currentImage = [imageView _currentImage];
+  [_currentImage contentInsets];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -483,11 +483,11 @@ LABEL_14:
   return self;
 }
 
-- (_UIPageIndicatorView)initWithFrame:(CGRect)a3
+- (_UIPageIndicatorView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _UIPageIndicatorView;
-  v3 = [(UIView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -497,11 +497,11 @@ LABEL_14:
   return v4;
 }
 
-- (_UIPageIndicatorView)initWithCoder:(id)a3
+- (_UIPageIndicatorView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = _UIPageIndicatorView;
-  v3 = [(UIView *)&v6 initWithCoder:a3];
+  v3 = [(UIView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -525,29 +525,29 @@ LABEL_14:
   return result;
 }
 
-- (void)setContentTransform:(CGAffineTransform *)a3
+- (void)setContentTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->c;
-  v4[0] = *&a3->a;
+  v3 = *&transform->c;
+  v4[0] = *&transform->a;
   v4[1] = v3;
-  v4[2] = *&a3->tx;
+  v4[2] = *&transform->tx;
   [(UIView *)self->_imageView setTransform:v4];
 }
 
-- (void)setImageDisplayScaleFactor:(double)a3
+- (void)setImageDisplayScaleFactor:(double)factor
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  if (a3 <= 0.0)
+  if (factor <= 0.0)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"_UIPageIndicatorView.m" lineNumber:135 description:{@"imageDisplayScaleFactor (%f) must be greater than 0.", *&a3}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIPageIndicatorView.m" lineNumber:135 description:{@"imageDisplayScaleFactor (%f) must be greater than 0.", *&factor}];
   }
 
-  if (self->_imageDisplayScaleFactor != a3)
+  if (self->_imageDisplayScaleFactor != factor)
   {
-    self->_imageDisplayScaleFactor = a3;
+    self->_imageDisplayScaleFactor = factor;
     displayScaleTraitChangeRegistration = self->_displayScaleTraitChangeRegistration;
-    if (fabs(a3 + -1.0) >= 2.22044605e-16)
+    if (fabs(factor + -1.0) >= 2.22044605e-16)
     {
       if (!displayScaleTraitChangeRegistration)
       {
@@ -570,20 +570,20 @@ LABEL_14:
         self->_displayScaleTraitChangeRegistration = 0;
       }
 
-      v12 = [(UIView *)self->_imageView traitOverrides];
-      [v12 removeTrait:objc_opt_class()];
+      traitOverrides = [(UIView *)self->_imageView traitOverrides];
+      [traitOverrides removeTrait:objc_opt_class()];
     }
   }
 }
 
-- (void)setSupportsExpandedIndicator:(BOOL)a3
+- (void)setSupportsExpandedIndicator:(BOOL)indicator
 {
-  if (self->_supportsExpandedIndicator != a3)
+  if (self->_supportsExpandedIndicator != indicator)
   {
-    v3 = a3;
-    self->_supportsExpandedIndicator = a3;
+    indicatorCopy = indicator;
+    self->_supportsExpandedIndicator = indicator;
     [(UIImageView *)self->_imageView _setSuppressPixelAlignment:?];
-    if (v3)
+    if (indicatorCopy)
     {
       v5 = [_UIPageIndicatorProgressView alloc];
       v6 = [(_UIPageIndicatorProgressView *)v5 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -603,27 +603,27 @@ LABEL_14:
       v8 = self->_progressView;
       self->_progressView = 0;
 
-      v9 = [(_UIPageIndicatorView *)self imageView];
-      [v9 setHidden:0];
+      imageView = [(_UIPageIndicatorView *)self imageView];
+      [imageView setHidden:0];
 
-      v10 = [(_UIPageIndicatorView *)self imageView];
-      [v10 setAlpha:1.0];
+      imageView2 = [(_UIPageIndicatorView *)self imageView];
+      [imageView2 setAlpha:1.0];
     }
   }
 }
 
-- (void)setMode:(int64_t)a3 direction:(int64_t)a4
+- (void)setMode:(int64_t)mode direction:(int64_t)direction
 {
-  if (self->_mode != a3)
+  if (self->_mode != mode)
   {
     v15 = v7;
     v16 = v6;
     v17 = v4;
     v18 = v5;
-    self->_mode = a3;
-    self->_offsetDirection = a4;
+    self->_mode = mode;
+    self->_offsetDirection = direction;
     v9 = 0.0;
-    if (a3 == 1)
+    if (mode == 1)
     {
       v9 = 1.0;
       if (![(_UIPageIndicatorView *)self supportsExpandedIndicator])
@@ -650,8 +650,8 @@ LABEL_14:
       }
     }
 
-    v10 = [(_UIPageIndicatorView *)self expandProgress];
-    [v10 setValue:v9];
+    expandProgress = [(_UIPageIndicatorView *)self expandProgress];
+    [expandProgress setValue:v9];
 
     [(_UIPageIndicatorView *)self _updateImage];
     [(_UIPageIndicatorView *)self _updateProgressBar];
@@ -659,37 +659,37 @@ LABEL_14:
   }
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v5 = a3;
-  if (self->_image != v5)
+  imageCopy = image;
+  if (self->_image != imageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_image, a3);
+    v6 = imageCopy;
+    objc_storeStrong(&self->_image, image);
     [(_UIPageIndicatorView *)self _updateImage];
     [(_UIPageIndicatorView *)self _updateIndicatorExpandProgress];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 
-- (void)setActiveImage:(id)a3
+- (void)setActiveImage:(id)image
 {
-  v5 = a3;
-  if (self->_activeImage != v5)
+  imageCopy = image;
+  if (self->_activeImage != imageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_activeImage, a3);
+    v6 = imageCopy;
+    objc_storeStrong(&self->_activeImage, image);
     [(_UIPageIndicatorView *)self _updateImage];
     [(_UIPageIndicatorView *)self _updateIndicatorExpandProgress];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    self->_active = a3;
+    self->_active = active;
     [(_UIPageIndicatorView *)self _updateImage];
     [(_UIPageIndicatorView *)self _updateProgressBar];
     [(_UIPageIndicatorView *)self _updateVibrantColorMatrix];
@@ -698,33 +698,33 @@ LABEL_14:
   }
 }
 
-- (void)setIndicatorColor:(id)a3
+- (void)setIndicatorColor:(id)color
 {
-  v5 = a3;
-  if (self->_indicatorColor != v5)
+  colorCopy = color;
+  if (self->_indicatorColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_indicatorColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_indicatorColor, color);
     [(_UIPageIndicatorView *)self _updateImage];
     [(_UIPageIndicatorView *)self _updateProgressBar];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setActiveIndicatorColor:(id)a3
+- (void)setActiveIndicatorColor:(id)color
 {
-  v5 = a3;
-  if (self->_activeIndicatorColor != v5)
+  colorCopy = color;
+  if (self->_activeIndicatorColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_activeIndicatorColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_activeIndicatorColor, color);
     [(_UIPageIndicatorView *)self _updateImage];
     [(_UIPageIndicatorView *)self _updateProgressBar];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setVibrantColorMatrix:(CAColorMatrix *)a3
+- (void)setVibrantColorMatrix:(CAColorMatrix *)matrix
 {
   p_vibrantColorMatrix = &self->_vibrantColorMatrix;
   v6 = *&self->_vibrantColorMatrix.m33;
@@ -734,20 +734,20 @@ LABEL_14:
   v7 = *&self->_vibrantColorMatrix.m15;
   v14[0] = *&self->_vibrantColorMatrix.m11;
   v14[1] = v7;
-  v8 = *&a3->m33;
-  v13[2] = *&a3->m24;
+  v8 = *&matrix->m33;
+  v13[2] = *&matrix->m24;
   v13[3] = v8;
-  v13[4] = *&a3->m42;
-  v9 = *&a3->m15;
-  v13[0] = *&a3->m11;
+  v13[4] = *&matrix->m42;
+  v9 = *&matrix->m15;
+  v13[0] = *&matrix->m11;
   v13[1] = v9;
   if (!_UICAColorMatrixIsEqualToCAColorMatrix(v14, v13, 0.0))
   {
-    *&p_vibrantColorMatrix->m11 = *&a3->m11;
-    v10 = *&a3->m15;
-    v11 = *&a3->m24;
-    v12 = *&a3->m42;
-    *&p_vibrantColorMatrix->m33 = *&a3->m33;
+    *&p_vibrantColorMatrix->m11 = *&matrix->m11;
+    v10 = *&matrix->m15;
+    v11 = *&matrix->m24;
+    v12 = *&matrix->m42;
+    *&p_vibrantColorMatrix->m33 = *&matrix->m33;
     *&p_vibrantColorMatrix->m42 = v12;
     *&p_vibrantColorMatrix->m15 = v10;
     *&p_vibrantColorMatrix->m24 = v11;
@@ -755,7 +755,7 @@ LABEL_14:
   }
 }
 
-- (void)setActiveVibrantColorMatrix:(CAColorMatrix *)a3
+- (void)setActiveVibrantColorMatrix:(CAColorMatrix *)matrix
 {
   p_activeVibrantColorMatrix = &self->_activeVibrantColorMatrix;
   v6 = *&self->_activeVibrantColorMatrix.m33;
@@ -765,20 +765,20 @@ LABEL_14:
   v7 = *&self->_activeVibrantColorMatrix.m15;
   v14[0] = *&self->_activeVibrantColorMatrix.m11;
   v14[1] = v7;
-  v8 = *&a3->m33;
-  v13[2] = *&a3->m24;
+  v8 = *&matrix->m33;
+  v13[2] = *&matrix->m24;
   v13[3] = v8;
-  v13[4] = *&a3->m42;
-  v9 = *&a3->m15;
-  v13[0] = *&a3->m11;
+  v13[4] = *&matrix->m42;
+  v9 = *&matrix->m15;
+  v13[0] = *&matrix->m11;
   v13[1] = v9;
   if (!_UICAColorMatrixIsEqualToCAColorMatrix(v14, v13, 0.0))
   {
-    *&p_activeVibrantColorMatrix->m11 = *&a3->m11;
-    v10 = *&a3->m15;
-    v11 = *&a3->m24;
-    v12 = *&a3->m42;
-    *&p_activeVibrantColorMatrix->m33 = *&a3->m33;
+    *&p_activeVibrantColorMatrix->m11 = *&matrix->m11;
+    v10 = *&matrix->m15;
+    v11 = *&matrix->m24;
+    v12 = *&matrix->m42;
+    *&p_activeVibrantColorMatrix->m33 = *&matrix->m33;
     *&p_activeVibrantColorMatrix->m42 = v12;
     *&p_activeVibrantColorMatrix->m15 = v10;
     *&p_activeVibrantColorMatrix->m24 = v11;
@@ -786,22 +786,22 @@ LABEL_14:
   }
 }
 
-- (void)setCurrentProgress:(float)a3
+- (void)setCurrentProgress:(float)progress
 {
-  if (self->_currentProgress != a3)
+  if (self->_currentProgress != progress)
   {
-    self->_currentProgress = a3;
-    v4 = [(_UIPageIndicatorView *)self progressView];
-    [v4 setNeedsLayout];
+    self->_currentProgress = progress;
+    progressView = [(_UIPageIndicatorView *)self progressView];
+    [progressView setNeedsLayout];
   }
 }
 
-- (CGSize)sizeForImage:(id)a3 traits:(id)a4
+- (CGSize)sizeForImage:(id)image traits:(id)traits
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_UIPageIndicatorView *)self imageView];
-  [v8 sizeForImage:v7 traits:v6];
+  traitsCopy = traits;
+  imageCopy = image;
+  imageView = [(_UIPageIndicatorView *)self imageView];
+  [imageView sizeForImage:imageCopy traits:traitsCopy];
   v10 = v9;
   v12 = v11;
 
@@ -812,12 +812,12 @@ LABEL_14:
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(_UIPageIndicatorView *)self imageView];
-  [v5 sizeThatFits:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  imageView = [(_UIPageIndicatorView *)self imageView];
+  [imageView sizeThatFits:{width, height}];
   v7 = v6;
   v9 = v8;
 
@@ -833,7 +833,7 @@ LABEL_14:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   page = self->_page;
-  v6 = [(_UIPageIndicatorView *)self isInvalidated];
+  isInvalidated = [(_UIPageIndicatorView *)self isInvalidated];
   [(UIView *)self center];
   v8 = v7;
   [(UIView *)self bounds];
@@ -842,21 +842,21 @@ LABEL_14:
   v11 = NSStringFromCGSize(v17);
   [(UIView *)self transform];
   v12 = NSStringFromCGAffineTransform(&transform);
-  v13 = [v3 stringWithFormat:@"<%@: %p>, page = %ld, invalidated = %d, position = %.2f, size = %@, transform = %@", v4, self, page, v6, v8, v11, v12];
+  v13 = [v3 stringWithFormat:@"<%@: %p>, page = %ld, invalidated = %d, position = %.2f, size = %@, transform = %@", v4, self, page, isInvalidated, v8, v11, v12];
 
   return v13;
 }
 
 - (void)_updateImageDisplayScaleOverride
 {
-  v3 = [(UIView *)self traitCollection];
-  [v3 displayScale];
+  traitCollection = [(UIView *)self traitCollection];
+  [traitCollection displayScale];
   v5 = v4;
   [(_UIPageIndicatorView *)self imageDisplayScaleFactor];
   v7 = ceil(v5 * v6);
 
-  v8 = [(UIView *)self->_imageView traitOverrides];
-  [v8 setDisplayScale:v7];
+  traitOverrides = [(UIView *)self->_imageView traitOverrides];
+  [traitOverrides setDisplayScale:v7];
 }
 
 - (CGSize)_adjustedDefaultModeSize
@@ -889,11 +889,11 @@ LABEL_14:
 
 - (BOOL)_isDefaultSymbolImage
 {
-  v3 = [(_UIPageIndicatorView *)self image];
-  if ([v3 isSymbolImage])
+  image = [(_UIPageIndicatorView *)self image];
+  if ([image isSymbolImage])
   {
-    v4 = [(_UIPageIndicatorView *)self image];
-    v5 = _UIImageName(v4);
+    image2 = [(_UIPageIndicatorView *)self image];
+    v5 = _UIImageName(image2);
     v6 = v5;
     if (v5 == @"circlebadge.fill")
     {

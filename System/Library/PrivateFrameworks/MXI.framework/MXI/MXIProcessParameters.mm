@@ -1,6 +1,6 @@
 @interface MXIProcessParameters
 - (MXIProcessParameters)init;
-- (__n128)setProjection:(__n128)a3;
+- (__n128)setProjection:(__n128)projection;
 @end
 
 @implementation MXIProcessParameters
@@ -20,10 +20,10 @@
   return v7;
 }
 
-- (__n128)setProjection:(__n128)a3
+- (__n128)setProjection:(__n128)projection
 {
   result[1] = a2;
-  result[2] = a3;
+  result[2] = projection;
   result[3] = a4;
   result[4] = a5;
   return result;

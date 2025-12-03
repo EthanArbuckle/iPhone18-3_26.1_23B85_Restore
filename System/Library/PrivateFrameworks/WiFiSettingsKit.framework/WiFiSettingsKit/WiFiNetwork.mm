@@ -1,23 +1,23 @@
 @interface WiFiNetwork
-- (BOOL)isEqual:(id)a3;
-- (WiFiNetwork)initWithNetworkInfo:(id)a3 cwfNetworkProfiles:(id)a4;
-- (WiFiNetwork)initWithSSID:(id)a3 securityType:(int64_t)a4 rssi:(int64_t)a5 macAddress:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (WiFiNetwork)initWithNetworkInfo:(id)info cwfNetworkProfiles:(id)profiles;
+- (WiFiNetwork)initWithSSID:(id)d securityType:(int64_t)type rssi:(int64_t)rssi macAddress:(id)address;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation WiFiNetwork
 
-- (WiFiNetwork)initWithNetworkInfo:(id)a3 cwfNetworkProfiles:(id)a4
+- (WiFiNetwork)initWithNetworkInfo:(id)info cwfNetworkProfiles:(id)profiles
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  profilesCopy = profiles;
   v12.receiver = self;
   v12.super_class = WiFiNetwork;
   v8 = [(WiFiNetwork *)&v12 init];
   if (v8)
   {
-    v9 = [[WiFiNetwork_Swift alloc] initWithNetworkInfo:v6 cwfNetworkProfiles:v7];
+    v9 = [[WiFiNetwork_Swift alloc] initWithNetworkInfo:infoCopy cwfNetworkProfiles:profilesCopy];
     wifiNetworkSwift = v8->_wifiNetworkSwift;
     v8->_wifiNetworkSwift = v9;
   }
@@ -25,16 +25,16 @@
   return v8;
 }
 
-- (WiFiNetwork)initWithSSID:(id)a3 securityType:(int64_t)a4 rssi:(int64_t)a5 macAddress:(id)a6
+- (WiFiNetwork)initWithSSID:(id)d securityType:(int64_t)type rssi:(int64_t)rssi macAddress:(id)address
 {
-  v10 = a3;
-  v11 = a6;
+  dCopy = d;
+  addressCopy = address;
   v16.receiver = self;
   v16.super_class = WiFiNetwork;
   v12 = [(WiFiNetwork *)&v16 init];
   if (v12)
   {
-    v13 = [[WiFiNetwork_Swift alloc] initWithSSID:v10 securityType:a4 rssi:v11 macAddress:a5];
+    v13 = [[WiFiNetwork_Swift alloc] initWithSSID:dCopy securityType:type rssi:addressCopy macAddress:rssi];
     wifiNetworkSwift = v12->_wifiNetworkSwift;
     v12->_wifiNetworkSwift = v13;
   }
@@ -44,25 +44,25 @@
 
 - (id)description
 {
-  v2 = [(WiFiNetwork *)self wifiNetworkSwift];
-  v3 = [v2 description];
+  wifiNetworkSwift = [(WiFiNetwork *)self wifiNetworkSwift];
+  v3 = [wifiNetworkSwift description];
 
   return v3;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(WiFiNetwork *)self wifiNetworkSwift];
-  v3 = [v2 hash];
+  wifiNetworkSwift = [(WiFiNetwork *)self wifiNetworkSwift];
+  v3 = [wifiNetworkSwift hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(WiFiNetwork *)self wifiNetworkSwift];
-  v6 = [v5 isEqual:v4];
+  equalCopy = equal;
+  wifiNetworkSwift = [(WiFiNetwork *)self wifiNetworkSwift];
+  v6 = [wifiNetworkSwift isEqual:equalCopy];
 
   return v6;
 }

@@ -1,22 +1,22 @@
 @interface SUUICountLimitViewElement
-- (SUUICountLimitViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (id)applyUpdatesWithElement:(id)a3;
+- (SUUICountLimitViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (id)applyUpdatesWithElement:(id)element;
 @end
 
 @implementation SUUICountLimitViewElement
 
-- (SUUICountLimitViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUICountLimitViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
+  elementCopy = element;
   v15.receiver = self;
   v15.super_class = SUUICountLimitViewElement;
-  v9 = [(SUUIViewElement *)&v15 initWithDOMElement:v8 parent:a4 elementFactory:a5];
+  v9 = [(SUUIViewElement *)&v15 initWithDOMElement:elementCopy parent:parent elementFactory:factory];
   if (v9)
   {
-    v10 = [v8 getAttribute:@"value"];
+    v10 = [elementCopy getAttribute:@"value"];
     v9->_limitValue = [v10 integerValue];
 
-    v11 = [v8 getAttribute:@"entityType"];
+    v11 = [elementCopy getAttribute:@"entityType"];
     if ([v11 length])
     {
       v12 = [v11 copy];
@@ -28,18 +28,18 @@
   return v9;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v11.receiver = self;
   v11.super_class = SUUICountLimitViewElement;
-  v5 = [(SUUIViewElement *)&v11 applyUpdatesWithElement:v4];
+  v5 = [(SUUIViewElement *)&v11 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self && v5 == self)
+  if (elementCopy != self && v5 == self)
   {
-    self->_limitValue = [(SUUICountLimitViewElement *)v4 limitValue];
-    v7 = [(SUUICountLimitViewElement *)v4 entityTypeString];
-    v8 = [v7 copy];
+    self->_limitValue = [(SUUICountLimitViewElement *)elementCopy limitValue];
+    entityTypeString = [(SUUICountLimitViewElement *)elementCopy entityTypeString];
+    v8 = [entityTypeString copy];
     entityTypeString = self->_entityTypeString;
     self->_entityTypeString = v8;
   }

@@ -2,9 +2,9 @@
 - (NSString)description;
 - (PGMusicCurationRecentlyUsedSongs)init;
 - (id)allEntries;
-- (void)addSongIDs:(id)a3 date:(id)a4;
-- (void)addWithSongIDDateMap:(id)a3;
-- (void)appendWithOtherRecentlyUsed:(id)a3;
+- (void)addSongIDs:(id)ds date:(id)date;
+- (void)addWithSongIDDateMap:(id)map;
+- (void)appendWithOtherRecentlyUsed:(id)used;
 @end
 
 @implementation PGMusicCurationRecentlyUsedSongs
@@ -31,15 +31,15 @@
   return [(PGMusicCurationRecentlyUsedSongs *)&v5 init];
 }
 
-- (void)addWithSongIDDateMap:(id)a3
+- (void)addWithSongIDDateMap:(id)map
 {
   sub_22F73F690();
   v4 = sub_22F740CA0();
-  v5 = self;
+  selfCopy = self;
   RecentlyUsedSongs.add(songIDDateMap:)(v4);
 }
 
-- (void)addSongIDs:(id)a3 date:(id)a4
+- (void)addSongIDs:(id)ds date:(id)date
 {
   v5 = sub_22F73F690();
   v6 = *(v5 - 8);
@@ -48,7 +48,7 @@
   v9 = &v14[-((v8 + 15) & 0xFFFFFFFFFFFFFFF0)];
   v10 = sub_22F741180();
   sub_22F73F640();
-  v11 = self;
+  selfCopy = self;
   v12 = sub_22F15001C(MEMORY[0x277D84F90], &unk_27DAB0F80, &unk_22F771380);
   v15 = v9;
   v13 = sub_22F141AB4(v12, sub_22F1534D4, v14, v10);
@@ -58,20 +58,20 @@
   (*(v6 + 8))(v9, v5);
 }
 
-- (void)appendWithOtherRecentlyUsed:(id)a3
+- (void)appendWithOtherRecentlyUsed:(id)used
 {
   v5 = OBJC_IVAR___PGMusicCurationRecentlyUsedSongs_mostRecentlyUsedSongIDDateMap;
   swift_beginAccess();
-  v6 = *(a3 + v5);
-  v7 = a3;
-  v8 = self;
+  v6 = *(used + v5);
+  usedCopy = used;
+  selfCopy = self;
 
   RecentlyUsedSongs.append(from:)(v9);
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   RecentlyUsedSongs.description.getter();
 
   v3 = sub_22F740DF0();

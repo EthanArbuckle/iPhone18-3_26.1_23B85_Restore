@@ -1,47 +1,47 @@
 @interface TimedAppEndpoint
-- (BOOL)isEqual:(id)a3;
-- (TimedAppEndpoint)initWithCoder:(id)a3;
-- (TimedAppEndpoint)initWithEndpointName:(id)a3 type:(unint64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (TimedAppEndpoint)initWithCoder:(id)coder;
+- (TimedAppEndpoint)initWithEndpointName:(id)name type:(unint64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TimedAppEndpoint
 
-- (TimedAppEndpoint)initWithCoder:(id)a3
+- (TimedAppEndpoint)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = TimedAppEndpoint;
   v5 = [(TimedAppEndpoint *)&v10 init];
   if (v5)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v7;
 
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
     objc_autoreleasePoolPop(v6);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
-  v5 = [(TimedAppEndpoint *)self name];
-  [v6 encodeObject:v5 forKey:@"name"];
+  name = [(TimedAppEndpoint *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  [v6 encodeInteger:-[TimedAppEndpoint type](self forKey:{"type"), @"type"}];
+  [coderCopy encodeInteger:-[TimedAppEndpoint type](self forKey:{"type"), @"type"}];
   objc_autoreleasePoolPop(v4);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(TimedAppEndpoint);
   objc_storeStrong(&v4->_name, self->_name);
@@ -49,17 +49,17 @@
   return v4;
 }
 
-- (TimedAppEndpoint)initWithEndpointName:(id)a3 type:(unint64_t)a4
+- (TimedAppEndpoint)initWithEndpointName:(id)name type:(unint64_t)type
 {
-  v7 = a3;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = TimedAppEndpoint;
   v8 = [(TimedAppEndpoint *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_name, a3);
-    v9->_type = a4;
+    objc_storeStrong(&v8->_name, name);
+    v9->_type = type;
   }
 
   return v9;
@@ -68,16 +68,16 @@
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
-  v4 = [(TimedAppEndpoint *)self name];
-  v5 = [v3 initWithFormat:@"%@-%lu", v4, -[TimedAppEndpoint type](self, "type")];
+  name = [(TimedAppEndpoint *)self name];
+  v5 = [v3 initWithFormat:@"%@-%lu", name, -[TimedAppEndpoint type](self, "type")];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -87,11 +87,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(TimedAppEndpoint *)self name];
-      v7 = [(TimedAppEndpoint *)v5 name];
+      v5 = equalCopy;
+      name = [(TimedAppEndpoint *)self name];
+      name2 = [(TimedAppEndpoint *)v5 name];
 
-      v8 = [v6 isEqualToString:v7];
+      v8 = [name isEqualToString:name2];
     }
 
     else
@@ -106,8 +106,8 @@
 - (unint64_t)hash
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
-  v4 = [(TimedAppEndpoint *)self name];
-  v5 = [v3 initWithFormat:@"%@", v4];
+  name = [(TimedAppEndpoint *)self name];
+  v5 = [v3 initWithFormat:@"%@", name];
 
   v6 = [v5 hash];
   return v6;

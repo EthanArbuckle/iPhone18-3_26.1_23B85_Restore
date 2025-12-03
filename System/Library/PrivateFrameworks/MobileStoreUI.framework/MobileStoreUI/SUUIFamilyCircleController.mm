@@ -1,11 +1,11 @@
 @interface SUUIFamilyCircleController
 + (id)sharedController;
 - (SUUIFamilyCircleController)init;
-- (id)profilePictureForFamilyMember:(id)a3;
-- (void)_accountStoreDidChange:(id)a3;
-- (void)_reloadDataWithPromptStyle:(int64_t)a3;
-- (void)_setITunesFamily:(id)a3 error:(id)a4 iCloudFamily:(id)a5 error:(id)a6;
-- (void)_setProfilePicture:(id)a3 forMember:(id)a4;
+- (id)profilePictureForFamilyMember:(id)member;
+- (void)_accountStoreDidChange:(id)change;
+- (void)_reloadDataWithPromptStyle:(int64_t)style;
+- (void)_setITunesFamily:(id)family error:(id)error iCloudFamily:(id)cloudFamily error:(id)a6;
+- (void)_setProfilePicture:(id)picture forMember:(id)member;
 - (void)dealloc;
 - (void)reloadData;
 @end
@@ -40,10 +40,10 @@ uint64_t __46__SUUIFamilyCircleController_sharedController__block_invoke()
   v2 = [(SUUIFamilyCircleController *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v4 = *MEMORY[0x277D69D70];
-    v5 = [MEMORY[0x277D69A20] defaultStore];
-    [v3 addObserver:v2 selector:sel__accountStoreDidChange_ name:v4 object:v5];
+    defaultStore = [MEMORY[0x277D69A20] defaultStore];
+    [defaultCenter addObserver:v2 selector:sel__accountStoreDidChange_ name:v4 object:defaultStore];
 
     v6 = objc_alloc_init(MEMORY[0x277CBEA78]);
     imageCache = v2->_imageCache;
@@ -57,10 +57,10 @@ uint64_t __46__SUUIFamilyCircleController_sharedController__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v4 = *MEMORY[0x277D69D70];
-  v5 = [MEMORY[0x277D69A20] defaultStore];
-  [v3 removeObserver:self name:v4 object:v5];
+  defaultStore = [MEMORY[0x277D69A20] defaultStore];
+  [defaultCenter removeObserver:self name:v4 object:defaultStore];
 
   v6.receiver = self;
   v6.super_class = SUUIFamilyCircleController;
@@ -76,16 +76,16 @@ uint64_t __46__SUUIFamilyCircleController_sharedController__block_invoke()
   }
 }
 
-- (id)profilePictureForFamilyMember:(id)a3
+- (id)profilePictureForFamilyMember:(id)member
 {
   imageCache = self->_imageCache;
-  v4 = [a3 iCloudIdentifier];
-  v5 = [(NSCache *)imageCache objectForKey:v4];
+  iCloudIdentifier = [member iCloudIdentifier];
+  v5 = [(NSCache *)imageCache objectForKey:iCloudIdentifier];
 
   return v5;
 }
 
-- (void)_accountStoreDidChange:(id)a3
+- (void)_accountStoreDidChange:(id)change
 {
   v4 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x277D85DD0];
@@ -109,24 +109,24 @@ void __53__SUUIFamilyCircleController__accountStoreDidChange___block_invoke(uint
   }
 }
 
-- (void)_reloadDataWithPromptStyle:(int64_t)a3
+- (void)_reloadDataWithPromptStyle:(int64_t)style
 {
-  v5 = [MEMORY[0x277D69A20] defaultStore];
-  v6 = [v5 activeAccount];
-  v7 = [v6 uniqueIdentifier];
-  [(SUUIFamilyCircleController *)self setLastAccountID:v7];
+  defaultStore = [MEMORY[0x277D69A20] defaultStore];
+  activeAccount = [defaultStore activeAccount];
+  uniqueIdentifier = [activeAccount uniqueIdentifier];
+  [(SUUIFamilyCircleController *)self setLastAccountID:uniqueIdentifier];
 
-  [(SUUIFamilyCircleController *)self setReloadPromptStyle:a3];
+  [(SUUIFamilyCircleController *)self setReloadPromptStyle:style];
   objc_initWeak(&location, self);
-  v8 = [(SUUIClientContext *)self->_clientContext URLBag];
+  uRLBag = [(SUUIClientContext *)self->_clientContext URLBag];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __57__SUUIFamilyCircleController__reloadDataWithPromptStyle___block_invoke;
   v9[3] = &unk_2798FC3A8;
-  v10[1] = a3;
+  v10[1] = style;
   v9[4] = self;
   objc_copyWeak(v10, &location);
-  [v8 loadValueForKey:@"shared-purchases-enabled" completionBlock:v9];
+  [uRLBag loadValueForKey:@"shared-purchases-enabled" completionBlock:v9];
 
   objc_destroyWeak(v10);
   objc_destroyWeak(&location);
@@ -283,23 +283,23 @@ void __57__SUUIFamilyCircleController__reloadDataWithPromptStyle___block_invoke_
   [WeakRetained _setITunesFamily:0 error:0 iCloudFamily:0 error:0];
 }
 
-- (void)_setITunesFamily:(id)a3 error:(id)a4 iCloudFamily:(id)a5 error:(id)a6
+- (void)_setITunesFamily:(id)family error:(id)error iCloudFamily:(id)cloudFamily error:(id)a6
 {
   v30 = *MEMORY[0x277D85DE8];
-  v21 = a3;
-  v20 = a5;
+  familyCopy = family;
+  cloudFamilyCopy = cloudFamily;
   self->_hasLoaded = 1;
-  objc_storeStrong(&self->_iTunesFamily, a3);
-  objc_storeStrong(&self->_iCloudFamily, a5);
-  v9 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v9 postNotificationName:@"SUUIFamilyCircleDidChangeNotification" object:self];
+  objc_storeStrong(&self->_iTunesFamily, family);
+  objc_storeStrong(&self->_iCloudFamily, cloudFamily);
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"SUUIFamilyCircleDidChangeNotification" object:self];
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v10 = [(SSFamilyCircle *)self->_iTunesFamily familyMembers];
-  v11 = [v10 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  familyMembers = [(SSFamilyCircle *)self->_iTunesFamily familyMembers];
+  v11 = [familyMembers countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v11)
   {
     v12 = v11;
@@ -310,13 +310,13 @@ void __57__SUUIFamilyCircleController__reloadDataWithPromptStyle___block_invoke_
       {
         if (*v26 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(familyMembers);
         }
 
         v15 = *(*(&v25 + 1) + 8 * i);
         imageCache = self->_imageCache;
-        v17 = [v15 iCloudIdentifier];
-        v18 = [(NSCache *)imageCache objectForKey:v17];
+        iCloudIdentifier = [v15 iCloudIdentifier];
+        v18 = [(NSCache *)imageCache objectForKey:iCloudIdentifier];
 
         if (!v18)
         {
@@ -335,7 +335,7 @@ void __57__SUUIFamilyCircleController__reloadDataWithPromptStyle___block_invoke_
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v12 = [familyMembers countByEnumeratingWithState:&v25 objects:v29 count:16];
     }
 
     while (v12);
@@ -370,15 +370,15 @@ void __72__SUUIFamilyCircleController__setITunesFamily_error_iCloudFamily_error_
   [WeakRetained _setProfilePicture:*(a1 + 32) forMember:*(a1 + 40)];
 }
 
-- (void)_setProfilePicture:(id)a3 forMember:(id)a4
+- (void)_setProfilePicture:(id)picture forMember:(id)member
 {
   imageCache = self->_imageCache;
-  v7 = a3;
-  v8 = [a4 iCloudIdentifier];
-  [(NSCache *)imageCache setObject:v7 forKey:v8];
+  pictureCopy = picture;
+  iCloudIdentifier = [member iCloudIdentifier];
+  [(NSCache *)imageCache setObject:pictureCopy forKey:iCloudIdentifier];
 
-  v9 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v9 postNotificationName:@"SUUIFamilyCircleProfilePictureDidChangeNotification" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"SUUIFamilyCircleProfilePictureDidChangeNotification" object:self];
 }
 
 @end

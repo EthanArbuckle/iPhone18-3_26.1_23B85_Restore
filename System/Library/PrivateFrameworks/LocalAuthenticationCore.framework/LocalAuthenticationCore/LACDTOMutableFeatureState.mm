@@ -1,6 +1,6 @@
 @interface LACDTOMutableFeatureState
 + (id)nullInstance;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 @end
 
@@ -77,8 +77,8 @@
   v15 = [v13 stringWithFormat:@"isStrictModeEnabled: %@", v14];
   v25[3] = v15;
   v16 = MEMORY[0x1E696AEC0];
-  v17 = [(LACDTOMutableFeatureState *)self requirements];
-  v18 = [v16 stringWithFormat:@"requirements: %@", v17];
+  requirements = [(LACDTOMutableFeatureState *)self requirements];
+  v18 = [v16 stringWithFormat:@"requirements: %@", requirements];
   v25[4] = v18;
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:5];
   v20 = [v19 componentsJoinedByString:@" "];;
@@ -89,28 +89,28 @@
   return v21;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(LACDTOMutableFeatureState *)self isSupported];
-    if (v6 == [v5 isSupported] && (v7 = -[LACDTOMutableFeatureState isAvailable](self, "isAvailable"), v7 == objc_msgSend(v5, "isAvailable")) && (v8 = -[LACDTOMutableFeatureState isEnabled](self, "isEnabled"), v8 == objc_msgSend(v5, "isEnabled")) && (v9 = -[LACDTOMutableFeatureState isStrictModeEnabled](self, "isStrictModeEnabled"), v9 == objc_msgSend(v5, "isStrictModeEnabled")))
+    v5 = equalCopy;
+    isSupported = [(LACDTOMutableFeatureState *)self isSupported];
+    if (isSupported == [v5 isSupported] && (v7 = -[LACDTOMutableFeatureState isAvailable](self, "isAvailable"), v7 == objc_msgSend(v5, "isAvailable")) && (v8 = -[LACDTOMutableFeatureState isEnabled](self, "isEnabled"), v8 == objc_msgSend(v5, "isEnabled")) && (v9 = -[LACDTOMutableFeatureState isStrictModeEnabled](self, "isStrictModeEnabled"), v9 == objc_msgSend(v5, "isStrictModeEnabled")))
     {
-      v12 = [(LACDTOMutableFeatureState *)self requirements];
-      v13 = [v5 requirements];
-      if (v12 == v13)
+      requirements = [(LACDTOMutableFeatureState *)self requirements];
+      requirements2 = [v5 requirements];
+      if (requirements == requirements2)
       {
         v10 = 1;
       }
 
       else
       {
-        v14 = [(LACDTOMutableFeatureState *)self requirements];
-        v15 = [v5 requirements];
-        v10 = [v14 isEqual:v15];
+        requirements3 = [(LACDTOMutableFeatureState *)self requirements];
+        requirements4 = [v5 requirements];
+        v10 = [requirements3 isEqual:requirements4];
       }
     }
 

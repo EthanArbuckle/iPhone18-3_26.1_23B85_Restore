@@ -1,12 +1,12 @@
 @interface SLDCollaborationNoticeService
 + (id)sharedService;
-- (BOOL)_connShouldUnrestrictHighlightLookup:(id)a3;
-- (id)_applicationIdentifierForConnection:(id)a3;
-- (id)_handlesForAttributionIdentifiers:(id)a3 appID:(id)a4;
-- (void)_send:(id)a3 forAttributionIdentifiers:(id)a4 reply:(id)a5;
-- (void)_sendClearNoticesTransmission:(id)a3 forAttributionIdentifiers:(id)a4 reply:(id)a5;
-- (void)sendClearNoticesFor:(id)a3 forAttributionIdentifiers:(id)a4 reply:(id)a5;
-- (void)sendHighlightEventData:(id)a3 eventType:(int64_t)a4 forAttributionIdentifiers:(id)a5 reply:(id)a6;
+- (BOOL)_connShouldUnrestrictHighlightLookup:(id)lookup;
+- (id)_applicationIdentifierForConnection:(id)connection;
+- (id)_handlesForAttributionIdentifiers:(id)identifiers appID:(id)d;
+- (void)_send:(id)_send forAttributionIdentifiers:(id)identifiers reply:(id)reply;
+- (void)_sendClearNoticesTransmission:(id)transmission forAttributionIdentifiers:(id)identifiers reply:(id)reply;
+- (void)sendClearNoticesFor:(id)for forAttributionIdentifiers:(id)identifiers reply:(id)reply;
+- (void)sendHighlightEventData:(id)data eventType:(int64_t)type forAttributionIdentifiers:(id)identifiers reply:(id)reply;
 @end
 
 @implementation SLDCollaborationNoticeService
@@ -32,48 +32,48 @@ uint64_t __46__SLDCollaborationNoticeService_sharedService__block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-- (void)sendClearNoticesFor:(id)a3 forAttributionIdentifiers:(id)a4 reply:(id)a5
+- (void)sendClearNoticesFor:(id)for forAttributionIdentifiers:(id)identifiers reply:(id)reply
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  replyCopy = reply;
+  identifiersCopy = identifiers;
+  forCopy = for;
   v11 = objc_alloc(getIMCollaborationClearTransmissionClass());
-  v12 = [MEMORY[0x277CBEAA8] date];
-  v13 = [MEMORY[0x277CCAD78] UUID];
-  v14 = [v13 UUIDString];
-  v15 = [v11 initWithCollaborationId:v10 date:v12 guidString:v14];
+  date = [MEMORY[0x277CBEAA8] date];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v15 = [v11 initWithCollaborationId:forCopy date:date guidString:uUIDString];
 
-  [(SLDCollaborationNoticeService *)self _sendClearNoticesTransmission:v15 forAttributionIdentifiers:v9 reply:v8];
+  [(SLDCollaborationNoticeService *)self _sendClearNoticesTransmission:v15 forAttributionIdentifiers:identifiersCopy reply:replyCopy];
 }
 
-- (void)sendHighlightEventData:(id)a3 eventType:(int64_t)a4 forAttributionIdentifiers:(id)a5 reply:(id)a6
+- (void)sendHighlightEventData:(id)data eventType:(int64_t)type forAttributionIdentifiers:(id)identifiers reply:(id)reply
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
+  replyCopy = reply;
+  identifiersCopy = identifiers;
+  dataCopy = data;
   v13 = objc_alloc(getIMCollaborationNoticeTransmissionClass());
-  v14 = [MEMORY[0x277CCAD78] UUID];
-  v15 = [v14 UUIDString];
-  v16 = [MEMORY[0x277CBEAA8] date];
-  v17 = [v13 initWithEventData:v12 eventType:a4 guidString:v15 date:v16];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  date = [MEMORY[0x277CBEAA8] date];
+  v17 = [v13 initWithEventData:dataCopy eventType:type guidString:uUIDString date:date];
 
-  [(SLDCollaborationNoticeService *)self _send:v17 forAttributionIdentifiers:v11 reply:v10];
+  [(SLDCollaborationNoticeService *)self _send:v17 forAttributionIdentifiers:identifiersCopy reply:replyCopy];
 }
 
-- (void)_sendClearNoticesTransmission:(id)a3 forAttributionIdentifiers:(id)a4 reply:(id)a5
+- (void)_sendClearNoticesTransmission:(id)transmission forAttributionIdentifiers:(id)identifiers reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x277CCAE80] currentConnection];
-  if ([(SLDCollaborationNoticeService *)self _connShouldUnrestrictHighlightLookup:v11])
+  transmissionCopy = transmission;
+  identifiersCopy = identifiers;
+  replyCopy = reply;
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+  if ([(SLDCollaborationNoticeService *)self _connShouldUnrestrictHighlightLookup:currentConnection])
   {
     v12 = @"accessibility";
   }
 
   else
   {
-    v12 = [(SLDCollaborationNoticeService *)self _applicationIdentifierForConnection:v11];
+    v12 = [(SLDCollaborationNoticeService *)self _applicationIdentifierForConnection:currentConnection];
   }
 
   if (!getIMCollaborationNoticeDispatcherClass() || !getIMCollaborationClearTransmissionClass() || ([getIMCollaborationClearTransmissionClass() instancesRespondToSelector:sel_initWithCollaborationId_date_guidString_] & 1) == 0)
@@ -84,10 +84,10 @@ uint64_t __46__SLDCollaborationNoticeService_sharedService__block_invoke()
       [SLDCollaborationNoticeService _sendClearNoticesTransmission:forAttributionIdentifiers:reply:];
     }
 
-    v10[2](v10, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
-  v14 = [(SLDCollaborationNoticeService *)self _handlesForAttributionIdentifiers:v9 appID:v12];
+  v14 = [(SLDCollaborationNoticeService *)self _handlesForAttributionIdentifiers:identifiersCopy appID:v12];
   if (!v14)
   {
     v15 = SLDaemonLogHandle();
@@ -109,7 +109,7 @@ uint64_t __46__SLDCollaborationNoticeService_sharedService__block_invoke()
 
 LABEL_17:
 
-    v10[2](v10, 0);
+    replyCopy[2](replyCopy, 0);
     goto LABEL_18;
   }
 
@@ -118,10 +118,10 @@ LABEL_17:
   block[2] = __95__SLDCollaborationNoticeService__sendClearNoticesTransmission_forAttributionIdentifiers_reply___block_invoke;
   block[3] = &unk_278927298;
   block[4] = self;
-  v17 = v8;
+  v17 = transmissionCopy;
   v18 = v14;
   dispatch_async(MEMORY[0x277D85CD0], block);
-  v10[2](v10, 1);
+  replyCopy[2](replyCopy, 1);
 
 LABEL_18:
 }
@@ -192,20 +192,20 @@ void __95__SLDCollaborationNoticeService__sendClearNoticesTransmission_forAttrib
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_send:(id)a3 forAttributionIdentifiers:(id)a4 reply:(id)a5
+- (void)_send:(id)_send forAttributionIdentifiers:(id)identifiers reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x277CCAE80] currentConnection];
-  if ([(SLDCollaborationNoticeService *)self _connShouldUnrestrictHighlightLookup:v11])
+  _sendCopy = _send;
+  identifiersCopy = identifiers;
+  replyCopy = reply;
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+  if ([(SLDCollaborationNoticeService *)self _connShouldUnrestrictHighlightLookup:currentConnection])
   {
     v12 = @"accessibility";
   }
 
   else
   {
-    v12 = [(SLDCollaborationNoticeService *)self _applicationIdentifierForConnection:v11];
+    v12 = [(SLDCollaborationNoticeService *)self _applicationIdentifierForConnection:currentConnection];
   }
 
   if (!getIMCollaborationNoticeDispatcherClass() || !getIMCollaborationNoticeTransmissionClass() || ([getIMCollaborationNoticeTransmissionClass() instancesRespondToSelector:sel_initWithEventData_eventType_guidString_date_] & 1) == 0)
@@ -216,11 +216,11 @@ void __95__SLDCollaborationNoticeService__sendClearNoticesTransmission_forAttrib
       [SLDCollaborationNoticeService _send:forAttributionIdentifiers:reply:];
     }
 
-    v10[2](v10, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   v14 = MEMORY[0x277CBEB98];
-  v15 = [(SLDCollaborationNoticeService *)self _handlesForAttributionIdentifiers:v9 appID:v12];
+  v15 = [(SLDCollaborationNoticeService *)self _handlesForAttributionIdentifiers:identifiersCopy appID:v12];
   v16 = [v14 setWithArray:v15];
 
   if (!v16)
@@ -244,7 +244,7 @@ void __95__SLDCollaborationNoticeService__sendClearNoticesTransmission_forAttrib
 
 LABEL_17:
 
-    v10[2](v10, 0);
+    replyCopy[2](replyCopy, 0);
     goto LABEL_18;
   }
 
@@ -253,10 +253,10 @@ LABEL_17:
   block[2] = __71__SLDCollaborationNoticeService__send_forAttributionIdentifiers_reply___block_invoke;
   block[3] = &unk_278927298;
   block[4] = self;
-  v19 = v8;
+  v19 = _sendCopy;
   v20 = v16;
   dispatch_async(MEMORY[0x277D85CD0], block);
-  v10[2](v10, 1);
+  replyCopy[2](replyCopy, 1);
 
 LABEL_18:
 }
@@ -327,18 +327,18 @@ void __71__SLDCollaborationNoticeService__send_forAttributionIdentifiers_reply__
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_handlesForAttributionIdentifiers:(id)a3 appID:(id)a4
+- (id)_handlesForAttributionIdentifiers:(id)identifiers appID:(id)d
 {
   v35 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v22 = a4;
-  v24 = [[SLHighlightCenter alloc] initWithAppIdentifier:v22];
-  v6 = [MEMORY[0x277CBEB18] array];
+  identifiersCopy = identifiers;
+  dCopy = d;
+  v24 = [[SLHighlightCenter alloc] initWithAppIdentifier:dCopy];
+  array = [MEMORY[0x277CBEB18] array];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = v5;
+  obj = identifiersCopy;
   v7 = [obj countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v7)
   {
@@ -361,8 +361,8 @@ void __71__SLDCollaborationNoticeService__send_forAttributionIdentifiers_reply__
           v28 = 0u;
           v25 = 0u;
           v26 = 0u;
-          v13 = [v11 relatedPersons];
-          v14 = [v13 countByEnumeratingWithState:&v25 objects:v33 count:16];
+          relatedPersons = [v11 relatedPersons];
+          v14 = [relatedPersons countByEnumeratingWithState:&v25 objects:v33 count:16];
           if (v14)
           {
             v15 = v14;
@@ -373,14 +373,14 @@ void __71__SLDCollaborationNoticeService__send_forAttributionIdentifiers_reply__
               {
                 if (*v26 != v16)
                 {
-                  objc_enumerationMutation(v13);
+                  objc_enumerationMutation(relatedPersons);
                 }
 
-                v18 = [*(*(&v25 + 1) + 8 * j) handle];
-                [v6 addObject:v18];
+                handle = [*(*(&v25 + 1) + 8 * j) handle];
+                [array addObject:handle];
               }
 
-              v15 = [v13 countByEnumeratingWithState:&v25 objects:v33 count:16];
+              v15 = [relatedPersons countByEnumeratingWithState:&v25 objects:v33 count:16];
             }
 
             while (v15);
@@ -394,18 +394,18 @@ void __71__SLDCollaborationNoticeService__send_forAttributionIdentifiers_reply__
     while (v8);
   }
 
-  v19 = [v6 copy];
+  v19 = [array copy];
   v20 = *MEMORY[0x277D85DE8];
 
   return v19;
 }
 
-- (BOOL)_connShouldUnrestrictHighlightLookup:(id)a3
+- (BOOL)_connShouldUnrestrictHighlightLookup:(id)lookup
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lookupCopy = lookup;
   v5 = MEMORY[0x277D46F48];
-  v6 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v4, "processIdentifier")}];
+  v6 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(lookupCopy, "processIdentifier")}];
   v15 = 0;
   v7 = [v5 handleForIdentifier:v6 error:&v15];
   v8 = v15;
@@ -422,16 +422,16 @@ void __71__SLDCollaborationNoticeService__send_forAttributionIdentifiers_reply__
 
   if (v9)
   {
-    v10 = SLDaemonLogHandle();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    bundle = SLDaemonLogHandle();
+    if (os_log_type_enabled(bundle, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218498;
-      v17 = self;
+      selfCopy = self;
       v18 = 2112;
-      v19 = v4;
+      v19 = lookupCopy;
       v20 = 2112;
       v21 = v8;
-      _os_log_error_impl(&dword_231772000, v10, OS_LOG_TYPE_ERROR, "[SLDCollaborationNoticeService: %p] failed to look up a process handle for: %@ error: %@", buf, 0x20u);
+      _os_log_error_impl(&dword_231772000, bundle, OS_LOG_TYPE_ERROR, "[SLDCollaborationNoticeService: %p] failed to look up a process handle for: %@ error: %@", buf, 0x20u);
     }
 
     v12 = 0;
@@ -439,23 +439,23 @@ void __71__SLDCollaborationNoticeService__send_forAttributionIdentifiers_reply__
 
   else
   {
-    v10 = [v7 bundle];
-    v11 = [v10 identifier];
-    v12 = [v11 isEqualToString:@"com.apple.SafariBookmarksSyncAgent"];
+    bundle = [v7 bundle];
+    identifier = [bundle identifier];
+    v12 = [identifier isEqualToString:@"com.apple.SafariBookmarksSyncAgent"];
   }
 
   v13 = *MEMORY[0x277D85DE8];
   return v12;
 }
 
-- (id)_applicationIdentifierForConnection:(id)a3
+- (id)_applicationIdentifierForConnection:(id)connection
 {
-  v4 = a3;
-  v5 = v4;
+  connectionCopy = connection;
+  v5 = connectionCopy;
   v6 = MEMORY[0x277CC1E90];
-  if (v4)
+  if (connectionCopy)
   {
-    [v4 auditToken];
+    [connectionCopy auditToken];
   }
 
   else
@@ -466,9 +466,9 @@ void __71__SLDCollaborationNoticeService__send_forAttributionIdentifiers_reply__
   v13 = 0;
   v7 = [v6 bundleRecordForAuditToken:v14 error:&v13];
   v8 = v13;
-  v9 = [v7 applicationIdentifier];
+  applicationIdentifier = [v7 applicationIdentifier];
 
-  if (!v9)
+  if (!applicationIdentifier)
   {
     v10 = SLDaemonLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -477,9 +477,9 @@ void __71__SLDCollaborationNoticeService__send_forAttributionIdentifiers_reply__
     }
   }
 
-  v11 = [v7 applicationIdentifier];
+  applicationIdentifier2 = [v7 applicationIdentifier];
 
-  return v11;
+  return applicationIdentifier2;
 }
 
 - (void)_sendClearNoticesTransmission:forAttributionIdentifiers:reply:.cold.1()

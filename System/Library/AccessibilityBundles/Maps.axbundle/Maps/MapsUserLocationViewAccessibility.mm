@@ -1,9 +1,9 @@
 @interface MapsUserLocationViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)accessibilityZoomInAtPoint:(CGPoint)a3;
-- (BOOL)accessibilityZoomOutAtPoint:(CGPoint)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)accessibilityZoomInAtPoint:(CGPoint)point;
+- (BOOL)accessibilityZoomOutAtPoint:(CGPoint)point;
 - (BOOL)isAccessibilityElement;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 - (id)_accessibilityMapSmartDescriptionDictionary;
 - (id)_axVLFElements;
 - (id)accessibilityElements;
@@ -17,41 +17,41 @@
 
 @implementation MapsUserLocationViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MapsUserLocationView" isKindOfClass:@"MKAnnotationView"];
-  [v3 validateClass:@"MapsUserLocationView" hasInstanceMethod:@"isVLFBannerVisible" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MapsUserLocationView" hasInstanceMethod:@"vlfPuckModeCircleView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MapsUserLocationView" hasInstanceVariable:@"_vlfPuckModeCircleView" withType:"VLFPuckModeCircleView"];
-  [v3 validateClass:@"MapsUserLocationView" hasInstanceMethod:@"isVLFPuckVisible" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MapsUserLocationView" isKindOfClass:@"_MKPuckAnnotationView"];
-  [v3 validateClass:@"_MKPuckAnnotationView" hasInstanceMethod:@"lastLocation" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"_MKPuckAnnotationView" hasInstanceVariable:@"_hasValidHeading" withType:"BOOL"];
-  [v3 validateClass:@"_MKPuckAnnotationView" hasInstanceMethod:@"heading" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"VLFPuckModeCircleView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"MKMapView" hasInstanceMethod:@"_distanceFromPoint:toPoint:fromView:withPrecision:" withFullSignature:{"d", "{CGPoint=dd}", "{CGPoint=dd}", "@", "q", 0}];
-  [v3 validateClass:@"MKMapView" hasInstanceMethod:@"_mapLayer" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MKMapView" hasInstanceMethod:@"presentationYaw" withFullSignature:{"d", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MapsUserLocationView" isKindOfClass:@"MKAnnotationView"];
+  [validationsCopy validateClass:@"MapsUserLocationView" hasInstanceMethod:@"isVLFBannerVisible" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MapsUserLocationView" hasInstanceMethod:@"vlfPuckModeCircleView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MapsUserLocationView" hasInstanceVariable:@"_vlfPuckModeCircleView" withType:"VLFPuckModeCircleView"];
+  [validationsCopy validateClass:@"MapsUserLocationView" hasInstanceMethod:@"isVLFPuckVisible" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MapsUserLocationView" isKindOfClass:@"_MKPuckAnnotationView"];
+  [validationsCopy validateClass:@"_MKPuckAnnotationView" hasInstanceMethod:@"lastLocation" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"_MKPuckAnnotationView" hasInstanceVariable:@"_hasValidHeading" withType:"BOOL"];
+  [validationsCopy validateClass:@"_MKPuckAnnotationView" hasInstanceMethod:@"heading" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"VLFPuckModeCircleView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"MKMapView" hasInstanceMethod:@"_distanceFromPoint:toPoint:fromView:withPrecision:" withFullSignature:{"d", "{CGPoint=dd}", "{CGPoint=dd}", "@", "q", 0}];
+  [validationsCopy validateClass:@"MKMapView" hasInstanceMethod:@"_mapLayer" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MKMapView" hasInstanceMethod:@"presentationYaw" withFullSignature:{"d", 0}];
 }
 
 - (void)_axAnnotatePuck
 {
-  v3 = [(MapsUserLocationViewAccessibility *)self _axPuck];
-  [v3 setIsAccessibilityElement:1];
+  _axPuck = [(MapsUserLocationViewAccessibility *)self _axPuck];
+  [_axPuck setIsAccessibilityElement:1];
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x29EDCA5F8];
   v6[1] = 3221225472;
   v6[2] = __52__MapsUserLocationViewAccessibility__axAnnotatePuck__block_invoke;
   v6[3] = &unk_29F2CC418;
   objc_copyWeak(&v7, &location);
-  [v3 _setAccessibilityLabelBlock:v6];
+  [_axPuck _setAccessibilityLabelBlock:v6];
   v4[0] = MEMORY[0x29EDCA5F8];
   v4[1] = 3221225472;
   v4[2] = __52__MapsUserLocationViewAccessibility__axAnnotatePuck__block_invoke_2;
   v4[3] = &unk_29F2CC4E0;
   objc_copyWeak(&v5, &location);
-  [v3 _setAccessibilityTraitsBlock:v4];
+  [_axPuck _setAccessibilityTraitsBlock:v4];
   objc_destroyWeak(&v5);
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -97,49 +97,49 @@ uint64_t __52__MapsUserLocationViewAccessibility__axAnnotatePuck__block_invoke_2
 {
   if ([(MapsUserLocationViewAccessibility *)self _axIsShowingVLFUI])
   {
-    v3 = AXMapsLocString(@"REFINE_MY_LOCATION");
+    accessibilityLabel = AXMapsLocString(@"REFINE_MY_LOCATION");
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = MapsUserLocationViewAccessibility;
-    v3 = [(MapsUserLocationViewAccessibility *)&v5 accessibilityLabel];
+    accessibilityLabel = [(MapsUserLocationViewAccessibility *)&v5 accessibilityLabel];
   }
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityHint
 {
   if ([(MapsUserLocationViewAccessibility *)self _axIsShowingVLFUI])
   {
-    v3 = 0;
+    accessibilityHint = 0;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = MapsUserLocationViewAccessibility;
-    v3 = [(MapsUserLocationViewAccessibility *)&v5 accessibilityHint];
+    accessibilityHint = [(MapsUserLocationViewAccessibility *)&v5 accessibilityHint];
   }
 
-  return v3;
+  return accessibilityHint;
 }
 
 - (unint64_t)accessibilityTraits
 {
   v7.receiver = self;
   v7.super_class = MapsUserLocationViewAccessibility;
-  v3 = [(MapsUserLocationViewAccessibility *)&v7 accessibilityTraits];
-  v4 = [(MapsUserLocationViewAccessibility *)self _axIsShowingVLFUI];
+  accessibilityTraits = [(MapsUserLocationViewAccessibility *)&v7 accessibilityTraits];
+  _axIsShowingVLFUI = [(MapsUserLocationViewAccessibility *)self _axIsShowingVLFUI];
   v5 = *MEMORY[0x29EDC7F70];
-  if (!v4)
+  if (!_axIsShowingVLFUI)
   {
     v5 = 0;
   }
 
-  return v5 | v3;
+  return v5 | accessibilityTraits;
 }
 
 - (id)_axVLFElements
@@ -147,9 +147,9 @@ uint64_t __52__MapsUserLocationViewAccessibility__axAnnotatePuck__block_invoke_2
   v12[2] = *MEMORY[0x29EDCA608];
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
-  v4 = [v3 _calloutView];
+  _calloutView = [v3 _calloutView];
 
-  if (!v4)
+  if (!_calloutView)
   {
     v5 = AXLogAppAccessibility();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
@@ -158,14 +158,14 @@ uint64_t __52__MapsUserLocationViewAccessibility__axAnnotatePuck__block_invoke_2
     }
   }
 
-  v6 = [(MapsUserLocationViewAccessibility *)self _axPuck];
-  v7 = v6;
-  if (v6)
+  _axPuck = [(MapsUserLocationViewAccessibility *)self _axPuck];
+  v7 = _axPuck;
+  if (_axPuck)
   {
-    if (v4)
+    if (_calloutView)
     {
-      v12[0] = v6;
-      v12[1] = v4;
+      v12[0] = _axPuck;
+      v12[1] = _calloutView;
       v8 = [MEMORY[0x29EDB8D80] arrayWithObjects:v12 count:2];
       goto LABEL_12;
     }
@@ -190,26 +190,26 @@ LABEL_12:
 
 - (id)accessibilityElements
 {
-  if (![(MapsUserLocationViewAccessibility *)self _axIsShowingVLFCallout]|| ([(MapsUserLocationViewAccessibility *)self _axVLFElements], (v3 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (![(MapsUserLocationViewAccessibility *)self _axIsShowingVLFCallout]|| ([(MapsUserLocationViewAccessibility *)self _axVLFElements], (accessibilityElements = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v5.receiver = self;
     v5.super_class = MapsUserLocationViewAccessibility;
-    v3 = [(MapsUserLocationViewAccessibility *)&v5 accessibilityElements];
+    accessibilityElements = [(MapsUserLocationViewAccessibility *)&v5 accessibilityElements];
   }
 
-  return v3;
+  return accessibilityElements;
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v27 = *MEMORY[0x29EDCA608];
-  v7 = a4;
+  eventCopy = event;
   if ([(MapsUserLocationViewAccessibility *)self _axIsShowingVLFCallout])
   {
-    v8 = [(MapsUserLocationViewAccessibility *)self _axVLFElements];
-    if (v8)
+    _axVLFElements = [(MapsUserLocationViewAccessibility *)self _axVLFElements];
+    if (_axVLFElements)
     {
       v25 = 0;
       objc_opt_class();
@@ -218,7 +218,7 @@ LABEL_12:
       v22 = 0u;
       v23 = 0u;
       v24 = 0u;
-      v10 = v8;
+      v10 = _axVLFElements;
       v11 = [v10 countByEnumeratingWithState:&v21 objects:v26 count:16];
       if (v11)
       {
@@ -235,7 +235,7 @@ LABEL_12:
 
             v15 = *(*(&v21 + 1) + 8 * i);
             [v15 convertPoint:v9 fromView:{x, y}];
-            v16 = [v15 _accessibilityHitTest:v7 withEvent:?];
+            v16 = [v15 _accessibilityHitTest:eventCopy withEvent:?];
             if (v16)
             {
               v17 = v16;
@@ -258,7 +258,7 @@ LABEL_12:
 
   v20.receiver = self;
   v20.super_class = MapsUserLocationViewAccessibility;
-  v17 = [(MapsUserLocationViewAccessibility *)&v20 _accessibilityHitTest:v7 withEvent:x, y];
+  v17 = [(MapsUserLocationViewAccessibility *)&v20 _accessibilityHitTest:eventCopy withEvent:x, y];
 LABEL_14:
 
   v18 = *MEMORY[0x29EDCA608];
@@ -270,10 +270,10 @@ LABEL_14:
 {
   v5.receiver = self;
   v5.super_class = MapsUserLocationViewAccessibility;
-  v3 = [(MapsUserLocationViewAccessibility *)&v5 vlfPuckModeCircleView];
+  vlfPuckModeCircleView = [(MapsUserLocationViewAccessibility *)&v5 vlfPuckModeCircleView];
   [(MapsUserLocationViewAccessibility *)self _axAnnotatePuck];
 
-  return v3;
+  return vlfPuckModeCircleView;
 }
 
 - (id)_accessibilityMapSmartDescriptionDictionary
@@ -300,10 +300,10 @@ LABEL_14:
       }
     }
 
-    v12 = [MEMORY[0x29EDB8DE0] currentLocale];
-    v13 = [v12 _navigation_distanceUsesMetricSystem];
+    currentLocale = [MEMORY[0x29EDB8DE0] currentLocale];
+    _navigation_distanceUsesMetricSystem = [currentLocale _navigation_distanceUsesMetricSystem];
 
-    if (v13)
+    if (_navigation_distanceUsesMetricSystem)
     {
       v14 = @"POI_DISTANCE_KM";
     }
@@ -348,10 +348,10 @@ LABEL_14:
   return v3;
 }
 
-- (BOOL)accessibilityZoomInAtPoint:(CGPoint)a3
+- (BOOL)accessibilityZoomInAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v13 = 0;
   v6 = [(MapsUserLocationViewAccessibility *)self safeValueForKey:@"_mapView"];
   v7 = __UIAccessibilitySafeClass();
@@ -374,10 +374,10 @@ LABEL_14:
   return v10;
 }
 
-- (BOOL)accessibilityZoomOutAtPoint:(CGPoint)a3
+- (BOOL)accessibilityZoomOutAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v13 = 0;
   v6 = [(MapsUserLocationViewAccessibility *)self safeValueForKey:@"_mapView"];
   v7 = __UIAccessibilitySafeClass();

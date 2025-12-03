@@ -23,8 +23,8 @@
 
 - (id)entryPointUrl
 {
-  v2 = [(WebBundleConfiguration *)self entryPointUrlBase];
-  v3 = [v2 URLByAppendingPathComponent:@"index.html"];
+  entryPointUrlBase = [(WebBundleConfiguration *)self entryPointUrlBase];
+  v3 = [entryPointUrlBase URLByAppendingPathComponent:@"index.html"];
 
   return v3;
 }

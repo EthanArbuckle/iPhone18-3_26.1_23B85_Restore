@@ -1,40 +1,40 @@
 @interface AccessoryKeystore
-- (BOOL)deleteAllPeripheralIdentifiers:(id *)a3;
-- (BOOL)deletePeripheralIdentifierForAccessoryIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)establishRelationshipBetweenAccessoryAndControllerKey:(id)a3 error:(id *)a4;
-- (BOOL)getControllerPublicKey:(id *)a3 secretKey:(id *)a4 username:(id *)a5 allowCreation:(BOOL)a6 forAccessory:(id)a7 error:(id *)a8;
-- (BOOL)isAccessoryAssociatedWithControllerKey:(id)a3 controllerID:(id *)a4;
-- (BOOL)removeAccessoryKeyForName:(id)a3 error:(id *)a4;
-- (BOOL)removeAllAccessoryKeys:(id *)a3;
-- (BOOL)removeControllerKeyPairForIdentifier:(id)a3 leaveTombstone:(BOOL)a4 error:(id *)a5;
-- (BOOL)removeControllerKeyPairLeaveTombstone:(BOOL)a3 error:(id *)a4;
-- (BOOL)removeControllerKeyPairWithError:(id *)a3;
-- (BOOL)saveLocalPairingIdentity:(id)a3 syncable:(BOOL)a4 error:(id *)a5;
-- (BOOL)savePeripheralIdentifier:(id)a3 forAccessoryIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)savePublicKey:(id)a3 forAccessoryName:(id)a4 error:(id *)a5;
-- (BOOL)updateActiveControllerPairingIdentifier:(id)a3;
-- (BOOL)updatePeripheralIdentifier:(id)a3 forAccessoryIdentifier:(id)a4 protocolVersion:(unint64_t)a5 previousVersion:(unint64_t *)a6 resumeSessionID:(unint64_t)a7 error:(id *)a8;
+- (BOOL)deleteAllPeripheralIdentifiers:(id *)identifiers;
+- (BOOL)deletePeripheralIdentifierForAccessoryIdentifier:(id)identifier error:(id *)error;
+- (BOOL)establishRelationshipBetweenAccessoryAndControllerKey:(id)key error:(id *)error;
+- (BOOL)getControllerPublicKey:(id *)key secretKey:(id *)secretKey username:(id *)username allowCreation:(BOOL)creation forAccessory:(id)accessory error:(id *)error;
+- (BOOL)isAccessoryAssociatedWithControllerKey:(id)key controllerID:(id *)d;
+- (BOOL)removeAccessoryKeyForName:(id)name error:(id *)error;
+- (BOOL)removeAllAccessoryKeys:(id *)keys;
+- (BOOL)removeControllerKeyPairForIdentifier:(id)identifier leaveTombstone:(BOOL)tombstone error:(id *)error;
+- (BOOL)removeControllerKeyPairLeaveTombstone:(BOOL)tombstone error:(id *)error;
+- (BOOL)removeControllerKeyPairWithError:(id *)error;
+- (BOOL)saveLocalPairingIdentity:(id)identity syncable:(BOOL)syncable error:(id *)error;
+- (BOOL)savePeripheralIdentifier:(id)identifier forAccessoryIdentifier:(id)accessoryIdentifier error:(id *)error;
+- (BOOL)savePublicKey:(id)key forAccessoryName:(id)name error:(id *)error;
+- (BOOL)updateActiveControllerPairingIdentifier:(id)identifier;
+- (BOOL)updatePeripheralIdentifier:(id)identifier forAccessoryIdentifier:(id)accessoryIdentifier protocolVersion:(unint64_t)version previousVersion:(unint64_t *)previousVersion resumeSessionID:(unint64_t)d error:(id *)error;
 - (NSString)activeControllerPairingIdentifier;
-- (id)getAssociatedControllerKeyForAccessory:(id)a3;
-- (id)readControllerPairingKeyForAccessory:(id)a3 error:(id *)a4;
-- (id)readPeripheralIdentifierForAccessoryIdentifier:(id)a3 protocolVersion:(unint64_t *)a4 resumeSessionID:(unint64_t *)a5 error:(id *)a6;
-- (id)readPublicKeyForAccessoryName:(id)a3 registeredWithHomeKit:(BOOL *)a4 error:(id *)a5;
+- (id)getAssociatedControllerKeyForAccessory:(id)accessory;
+- (id)readControllerPairingKeyForAccessory:(id)accessory error:(id *)error;
+- (id)readPeripheralIdentifierForAccessoryIdentifier:(id)identifier protocolVersion:(unint64_t *)version resumeSessionID:(unint64_t *)d error:(id *)error;
+- (id)readPublicKeyForAccessoryName:(id)name registeredWithHomeKit:(BOOL *)kit error:(id *)error;
 @end
 
 @implementation AccessoryKeystore
 
-- (BOOL)saveLocalPairingIdentity:(id)a3 syncable:(BOOL)a4 error:(id *)a5
+- (BOOL)saveLocalPairingIdentity:(id)identity syncable:(BOOL)syncable error:(id *)error
 {
-  v7 = a3;
-  v8 = self;
-  sub_10017D4B0(a3);
+  identityCopy = identity;
+  selfCopy = self;
+  sub_10017D4B0(identity);
 
   return 1;
 }
 
-- (BOOL)getControllerPublicKey:(id *)a3 secretKey:(id *)a4 username:(id *)a5 allowCreation:(BOOL)a6 forAccessory:(id)a7 error:(id *)a8
+- (BOOL)getControllerPublicKey:(id *)key secretKey:(id *)secretKey username:(id *)username allowCreation:(BOOL)creation forAccessory:(id)accessory error:(id *)error
 {
-  if (a7)
+  if (accessory)
   {
     v13 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v15 = v14;
@@ -46,22 +46,22 @@
     v15 = 0;
   }
 
-  v16 = self;
-  sub_10017905C(a3, a4, a5, a6, v13, v15);
+  selfCopy = self;
+  sub_10017905C(key, secretKey, username, creation, v13, v15);
 
   return 1;
 }
 
-- (BOOL)updateActiveControllerPairingIdentifier:(id)a3
+- (BOOL)updateActiveControllerPairingIdentifier:(id)identifier
 {
-  if (a3 && (v3 = self, self = static String._unconditionallyBridgeFromObjectiveC(_:)(), v4))
+  if (identifier && (v3 = self, self = static String._unconditionallyBridgeFromObjectiveC(_:)(), v4))
   {
-    v5 = self;
+    selfCopy = self;
     v6 = v4;
     v7 = (v3 + OBJC_IVAR____TtC14dockaccessoryd17AccessoryKeystore__activeController);
     v8 = *(&v3->super.isa + OBJC_IVAR____TtC14dockaccessoryd17AccessoryKeystore__activeController);
     v9 = *&v3->keyGroup[OBJC_IVAR____TtC14dockaccessoryd17AccessoryKeystore__activeController];
-    v10 = v8 == v5 && v4 == v9;
+    v10 = v8 == selfCopy && v4 == v9;
     if (v10 || (_stringCompareWithSmolCheck(_:_:expecting:)() & 1) != 0)
     {
 
@@ -70,7 +70,7 @@
 
     else
     {
-      *v7 = v5;
+      *v7 = selfCopy;
       v7[1] = v6;
 
       LOBYTE(self) = 1;
@@ -95,25 +95,25 @@
   return v4;
 }
 
-- (BOOL)removeControllerKeyPairWithError:(id *)a3
+- (BOOL)removeControllerKeyPairWithError:(id *)error
 {
-  v3 = self;
+  selfCopy = self;
   sub_100178478(0, 0);
 
   return 1;
 }
 
-- (BOOL)removeControllerKeyPairLeaveTombstone:(BOOL)a3 error:(id *)a4
+- (BOOL)removeControllerKeyPairLeaveTombstone:(BOOL)tombstone error:(id *)error
 {
-  v4 = self;
+  selfCopy = self;
   sub_100178478(0, 0);
 
   return 1;
 }
 
-- (BOOL)removeControllerKeyPairForIdentifier:(id)a3 leaveTombstone:(BOOL)a4 error:(id *)a5
+- (BOOL)removeControllerKeyPairForIdentifier:(id)identifier leaveTombstone:(BOOL)tombstone error:(id *)error
 {
-  if (a3)
+  if (identifier)
   {
     v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v8 = v7;
@@ -125,19 +125,19 @@
     v8 = 0;
   }
 
-  v9 = self;
+  selfCopy = self;
   sub_100178478(v6, v8);
 
   return 1;
 }
 
-- (id)readControllerPairingKeyForAccessory:(id)a3 error:(id *)a4
+- (id)readControllerPairingKeyForAccessory:(id)accessory error:(id *)error
 {
-  if (a3)
+  if (accessory)
   {
     v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v8 = v7;
-    v9 = self;
+    selfCopy = self;
     sub_100177B54(v6, v8, 0);
     v11 = v10;
 
@@ -152,13 +152,13 @@
     swift_allocError();
     *v14 = 2;
     swift_willThrow();
-    if (a4)
+    if (error)
     {
       v12 = _convertErrorToNSError(_:)();
 
       v13 = v12;
       v16 = 0;
-      *a4 = v12;
+      *error = v12;
     }
 
     else
@@ -171,9 +171,9 @@
   return v16;
 }
 
-- (id)readPublicKeyForAccessoryName:(id)a3 registeredWithHomeKit:(BOOL *)a4 error:(id *)a5
+- (id)readPublicKeyForAccessoryName:(id)name registeredWithHomeKit:(BOOL *)kit error:(id *)error
 {
-  if (a3)
+  if (name)
   {
     v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v8 = v7;
@@ -185,7 +185,7 @@
     v8 = 0;
   }
 
-  v9 = self;
+  selfCopy = self;
   v10 = sub_10017DA48(v6, v8);
   v12 = v11;
 
@@ -195,15 +195,15 @@
   return v13.super.isa;
 }
 
-- (BOOL)savePublicKey:(id)a3 forAccessoryName:(id)a4 error:(id *)a5
+- (BOOL)savePublicKey:(id)key forAccessoryName:(id)name error:(id *)error
 {
-  v6 = a3;
-  if (!a3)
+  keyCopy = key;
+  if (!key)
   {
-    v16 = a4;
-    v17 = self;
+    nameCopy = name;
+    selfCopy = self;
     v12 = 0xF000000000000000;
-    if (a4)
+    if (name)
     {
       goto LABEL_3;
     }
@@ -214,13 +214,13 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v8 = a4;
-  v9 = self;
-  v10 = v6;
-  v6 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
+  nameCopy2 = name;
+  selfCopy2 = self;
+  v10 = keyCopy;
+  keyCopy = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v12 = v11;
 
-  if (!a4)
+  if (!name)
   {
     goto LABEL_5;
   }
@@ -230,24 +230,24 @@ LABEL_3:
   v15 = v14;
 
 LABEL_6:
-  sub_1001796F4(v6, v12, v13, v15);
+  sub_1001796F4(keyCopy, v12, v13, v15);
 
-  sub_1000A452C(v6, v12);
+  sub_1000A452C(keyCopy, v12);
   return 1;
 }
 
-- (BOOL)establishRelationshipBetweenAccessoryAndControllerKey:(id)a3 error:(id *)a4
+- (BOOL)establishRelationshipBetweenAccessoryAndControllerKey:(id)key error:(id *)error
 {
-  v6 = a3;
-  v7 = self;
-  sub_100179980(a3);
+  keyCopy = key;
+  selfCopy = self;
+  sub_100179980(key);
 
   return 1;
 }
 
-- (BOOL)isAccessoryAssociatedWithControllerKey:(id)a3 controllerID:(id *)a4
+- (BOOL)isAccessoryAssociatedWithControllerKey:(id)key controllerID:(id *)d
 {
-  if (a3)
+  if (key)
   {
     v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v8 = v7;
@@ -259,15 +259,15 @@ LABEL_6:
     v8 = 0;
   }
 
-  v9 = self;
-  v10 = sub_100179C94(v6, v8, a4);
+  selfCopy = self;
+  v10 = sub_100179C94(v6, v8, d);
 
   return v10 & 1;
 }
 
-- (BOOL)removeAccessoryKeyForName:(id)a3 error:(id *)a4
+- (BOOL)removeAccessoryKeyForName:(id)name error:(id *)error
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -279,21 +279,21 @@ LABEL_6:
     v7 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   sub_1001780D0(v5, v7);
 
   return 1;
 }
 
-- (BOOL)removeAllAccessoryKeys:(id *)a3
+- (BOOL)removeAllAccessoryKeys:(id *)keys
 {
-  v3 = self;
+  selfCopy = self;
   sub_1001780D0(0, 0);
 
   return 1;
 }
 
-- (BOOL)savePeripheralIdentifier:(id)a3 forAccessoryIdentifier:(id)a4 error:(id *)a5
+- (BOOL)savePeripheralIdentifier:(id)identifier forAccessoryIdentifier:(id)accessoryIdentifier error:(id *)error
 {
   v8 = type metadata accessor for UUID();
   v9 = *(v8 - 8);
@@ -304,7 +304,7 @@ LABEL_6:
   v14 = *(*(v13 - 8) + 64);
   __chkstk_darwin(v13 - 8);
   v16 = &v21[-v15];
-  if (a3)
+  if (identifier)
   {
     static UUID._unconditionallyBridgeFromObjectiveC(_:)();
     (*(v9 + 32))(v16, v12, v8);
@@ -316,9 +316,9 @@ LABEL_6:
     (*(v9 + 56))(v16, 1, 1, v8);
   }
 
-  if (a4)
+  if (accessoryIdentifier)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    accessoryIdentifier = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v18 = v17;
   }
 
@@ -327,16 +327,16 @@ LABEL_6:
     v18 = 0;
   }
 
-  v19 = self;
-  sub_100179F78(v16, a4, v18);
+  selfCopy = self;
+  sub_100179F78(v16, accessoryIdentifier, v18);
   sub_100095C84(v16, &qword_1002A7AF0, &qword_10023C9D0);
 
   return 1;
 }
 
-- (BOOL)deletePeripheralIdentifierForAccessoryIdentifier:(id)a3 error:(id *)a4
+- (BOOL)deletePeripheralIdentifierForAccessoryIdentifier:(id)identifier error:(id *)error
 {
-  if (a3)
+  if (identifier)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -348,27 +348,27 @@ LABEL_6:
     v7 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   sub_10017A924(v5, v7);
 
   return 1;
 }
 
-- (BOOL)deleteAllPeripheralIdentifiers:(id *)a3
+- (BOOL)deleteAllPeripheralIdentifiers:(id *)identifiers
 {
-  v3 = self;
+  selfCopy = self;
   sub_10017ABD8();
 
   return 1;
 }
 
-- (id)getAssociatedControllerKeyForAccessory:(id)a3
+- (id)getAssociatedControllerKeyForAccessory:(id)accessory
 {
-  if (a3)
+  if (accessory)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
-    v8 = self;
+    selfCopy = self;
     sub_100177B54(v5, v7, 0);
     v11 = v10;
 
@@ -385,16 +385,16 @@ LABEL_6:
   return v13;
 }
 
-- (id)readPeripheralIdentifierForAccessoryIdentifier:(id)a3 protocolVersion:(unint64_t *)a4 resumeSessionID:(unint64_t *)a5 error:(id *)a6
+- (id)readPeripheralIdentifierForAccessoryIdentifier:(id)identifier protocolVersion:(unint64_t *)version resumeSessionID:(unint64_t *)d error:(id *)error
 {
   v8 = type metadata accessor for UUID();
   v9 = *(v8 - 8);
   v10 = *(v9 + 64);
   __chkstk_darwin(v8);
   v12 = &v18 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
-  if (a3)
+  if (identifier)
   {
-    a3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    identifier = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v14 = v13;
   }
 
@@ -403,8 +403,8 @@ LABEL_6:
     v14 = 0;
   }
 
-  v15 = self;
-  sub_10017AF58(a3, v14, v12);
+  selfCopy = self;
+  sub_10017AF58(identifier, v14, v12);
 
   v16.super.isa = UUID._bridgeToObjectiveC()().super.isa;
   (*(v9 + 8))(v12, v8);
@@ -412,7 +412,7 @@ LABEL_6:
   return v16.super.isa;
 }
 
-- (BOOL)updatePeripheralIdentifier:(id)a3 forAccessoryIdentifier:(id)a4 protocolVersion:(unint64_t)a5 previousVersion:(unint64_t *)a6 resumeSessionID:(unint64_t)a7 error:(id *)a8
+- (BOOL)updatePeripheralIdentifier:(id)identifier forAccessoryIdentifier:(id)accessoryIdentifier protocolVersion:(unint64_t)version previousVersion:(unint64_t *)previousVersion resumeSessionID:(unint64_t)d error:(id *)error
 {
   v13 = type metadata accessor for UUID();
   v14 = *(v13 - 8);
@@ -423,7 +423,7 @@ LABEL_6:
   v19 = *(*(v18 - 8) + 64);
   __chkstk_darwin(v18 - 8);
   v21 = &v26[-v20];
-  if (a3)
+  if (identifier)
   {
     static UUID._unconditionallyBridgeFromObjectiveC(_:)();
     (*(v14 + 32))(v21, v17, v13);
@@ -435,10 +435,10 @@ LABEL_6:
     (*(v14 + 56))(v21, 1, 1, v13);
   }
 
-  if (a4)
+  if (accessoryIdentifier)
   {
     v22 = static String._unconditionallyBridgeFromObjectiveC(_:)();
-    a4 = v23;
+    accessoryIdentifier = v23;
   }
 
   else
@@ -446,8 +446,8 @@ LABEL_6:
     v22 = 0;
   }
 
-  v24 = self;
-  sub_10017DBCC(v21, v22, a4, a5, a7);
+  selfCopy = self;
+  sub_10017DBCC(v21, v22, accessoryIdentifier, version, d);
   sub_100095C84(v21, &qword_1002A7AF0, &qword_10023C9D0);
 
   return 1;

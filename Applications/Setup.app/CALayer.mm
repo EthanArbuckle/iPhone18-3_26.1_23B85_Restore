@@ -1,17 +1,17 @@
 @interface CALayer
-+ (id)buddy_layerForPackageWithData:(id)a3 geometryFlipped:(BOOL)a4 scale:(double)a5;
++ (id)buddy_layerForPackageWithData:(id)data geometryFlipped:(BOOL)flipped scale:(double)scale;
 @end
 
 @implementation CALayer
 
-+ (id)buddy_layerForPackageWithData:(id)a3 geometryFlipped:(BOOL)a4 scale:(double)a5
++ (id)buddy_layerForPackageWithData:(id)data geometryFlipped:(BOOL)flipped scale:(double)scale
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v21 = a4;
-  v20 = a5;
+  objc_storeStrong(location, data);
+  flippedCopy = flipped;
+  scaleCopy = scale;
   v19 = 0;
   v17 = 0;
   v7 = [CAPackage packageWithData:location[0] type:kCAPackageTypeArchive options:0 error:&v17];
@@ -30,21 +30,21 @@
     objc_storeStrong(&v16, 0);
   }
 
-  v8 = v21;
-  v9 = [v18 rootLayer];
-  [v9 setGeometryFlipped:v8];
+  v8 = flippedCopy;
+  rootLayer = [v18 rootLayer];
+  [rootLayer setGeometryFlipped:v8];
 
-  CATransform3DMakeScale(&v14, 1.0 / v20, 1.0 / v20, 1.0);
-  v10 = [v18 rootLayer];
+  CATransform3DMakeScale(&v14, 1.0 / scaleCopy, 1.0 / scaleCopy, 1.0);
+  rootLayer2 = [v18 rootLayer];
   v13 = v14;
-  [v10 setTransform:&v13];
+  [rootLayer2 setTransform:&v13];
 
-  v11 = [v18 rootLayer];
+  rootLayer3 = [v18 rootLayer];
   objc_storeStrong(&v18, 0);
   objc_storeStrong(&v19, 0);
   objc_storeStrong(location, 0);
 
-  return v11;
+  return rootLayer3;
 }
 
 @end

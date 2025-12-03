@@ -1,16 +1,16 @@
 @interface BMAccessibilitySoundDetection
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMAccessibilitySoundDetection)initWithAbsoluteTimestamp:(id)a3 soundDetectionType:(id)a4 name:(id)a5;
-- (BMAccessibilitySoundDetection)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMAccessibilitySoundDetection)initWithAbsoluteTimestamp:(id)timestamp soundDetectionType:(id)type name:(id)name;
+- (BMAccessibilitySoundDetection)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)absoluteTimestamp;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMAccessibilitySoundDetection
@@ -31,25 +31,25 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMAccessibilitySoundDetection *)self absoluteTimestamp];
-    v7 = [v5 absoluteTimestamp];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    absoluteTimestamp = [(BMAccessibilitySoundDetection *)self absoluteTimestamp];
+    absoluteTimestamp2 = [v5 absoluteTimestamp];
+    v8 = absoluteTimestamp2;
+    if (absoluteTimestamp == absoluteTimestamp2)
     {
     }
 
     else
     {
-      v9 = [(BMAccessibilitySoundDetection *)self absoluteTimestamp];
-      v10 = [v5 absoluteTimestamp];
-      v11 = [v9 isEqual:v10];
+      absoluteTimestamp3 = [(BMAccessibilitySoundDetection *)self absoluteTimestamp];
+      absoluteTimestamp4 = [v5 absoluteTimestamp];
+      v11 = [absoluteTimestamp3 isEqual:absoluteTimestamp4];
 
       if (!v11)
       {
@@ -57,18 +57,18 @@
       }
     }
 
-    v13 = [(BMAccessibilitySoundDetection *)self soundDetectionType];
-    v14 = [v5 soundDetectionType];
-    v15 = v14;
-    if (v13 == v14)
+    soundDetectionType = [(BMAccessibilitySoundDetection *)self soundDetectionType];
+    soundDetectionType2 = [v5 soundDetectionType];
+    v15 = soundDetectionType2;
+    if (soundDetectionType == soundDetectionType2)
     {
     }
 
     else
     {
-      v16 = [(BMAccessibilitySoundDetection *)self soundDetectionType];
-      v17 = [v5 soundDetectionType];
-      v18 = [v16 isEqual:v17];
+      soundDetectionType3 = [(BMAccessibilitySoundDetection *)self soundDetectionType];
+      soundDetectionType4 = [v5 soundDetectionType];
+      v18 = [soundDetectionType3 isEqual:soundDetectionType4];
 
       if (!v18)
       {
@@ -80,18 +80,18 @@ LABEL_15:
       }
     }
 
-    v19 = [(BMAccessibilitySoundDetection *)self name];
-    v20 = [v5 name];
-    if (v19 == v20)
+    name = [(BMAccessibilitySoundDetection *)self name];
+    name2 = [v5 name];
+    if (name == name2)
     {
       v12 = 1;
     }
 
     else
     {
-      v21 = [(BMAccessibilitySoundDetection *)self name];
-      v22 = [v5 name];
-      v12 = [v21 isEqual:v22];
+      name3 = [(BMAccessibilitySoundDetection *)self name];
+      name4 = [v5 name];
+      v12 = [name3 isEqual:name4];
     }
 
     goto LABEL_15;
@@ -123,12 +123,12 @@ LABEL_16:
 - (id)jsonDictionary
 {
   v16[3] = *MEMORY[0x1E69E9840];
-  v3 = [(BMAccessibilitySoundDetection *)self absoluteTimestamp];
-  if (v3)
+  absoluteTimestamp = [(BMAccessibilitySoundDetection *)self absoluteTimestamp];
+  if (absoluteTimestamp)
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(BMAccessibilitySoundDetection *)self absoluteTimestamp];
-    [v5 timeIntervalSinceReferenceDate];
+    absoluteTimestamp2 = [(BMAccessibilitySoundDetection *)self absoluteTimestamp];
+    [absoluteTimestamp2 timeIntervalSinceReferenceDate];
     v6 = [v4 numberWithDouble:?];
   }
 
@@ -137,36 +137,36 @@ LABEL_16:
     v6 = 0;
   }
 
-  v7 = [(BMAccessibilitySoundDetection *)self soundDetectionType];
-  v8 = [(BMAccessibilitySoundDetection *)self name];
+  soundDetectionType = [(BMAccessibilitySoundDetection *)self soundDetectionType];
+  name = [(BMAccessibilitySoundDetection *)self name];
   v15[0] = @"absoluteTimestamp";
-  v9 = v6;
+  null = v6;
   if (!v6)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16[0] = v9;
+  v16[0] = null;
   v15[1] = @"soundDetectionType";
-  v10 = v7;
-  if (!v7)
+  null2 = soundDetectionType;
+  if (!soundDetectionType)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16[1] = v10;
+  v16[1] = null2;
   v15[2] = @"name";
-  v11 = v8;
-  if (!v8)
+  null3 = name;
+  if (!name)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16[2] = v11;
+  v16[2] = null3;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:3];
-  if (v8)
+  if (name)
   {
-    if (v7)
+    if (soundDetectionType)
     {
       goto LABEL_12;
     }
@@ -181,7 +181,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (!v7)
+  if (!soundDetectionType)
   {
     goto LABEL_17;
   }
@@ -200,25 +200,25 @@ LABEL_13:
   return v12;
 }
 
-- (BMAccessibilitySoundDetection)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMAccessibilitySoundDetection)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v37[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"absoluteTimestamp"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"absoluteTimestamp"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_9:
-    v16 = [v6 objectForKeyedSubscript:@"soundDetectionType"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"soundDetectionType"];
     if (v16 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v17 = 0;
-          v20 = 0;
+          selfCopy = 0;
           goto LABEL_17;
         }
 
@@ -230,8 +230,8 @@ LABEL_9:
         v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v35 forKeys:&v34 count:1];
         v24 = [v30 initWithDomain:v23 code:2 userInfo:v18];
         v17 = 0;
-        v20 = 0;
-        *a4 = v24;
+        selfCopy = 0;
+        *error = v24;
         goto LABEL_16;
       }
 
@@ -243,13 +243,13 @@ LABEL_9:
       v17 = 0;
     }
 
-    v18 = [v6 objectForKeyedSubscript:@"name"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"name"];
     if (v18 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a4)
+        if (error)
         {
           v31 = objc_alloc(MEMORY[0x1E696ABC0]);
           v29 = *MEMORY[0x1E698F240];
@@ -257,11 +257,11 @@ LABEL_9:
           v25 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"name"];
           v33 = v25;
           v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v33 forKeys:&v32 count:1];
-          *a4 = [v31 initWithDomain:v29 code:2 userInfo:v26];
+          *error = [v31 initWithDomain:v29 code:2 userInfo:v26];
         }
 
         v19 = 0;
-        v20 = 0;
+        selfCopy = 0;
         goto LABEL_16;
       }
 
@@ -274,7 +274,7 @@ LABEL_9:
     }
 
     self = [(BMAccessibilitySoundDetection *)self initWithAbsoluteTimestamp:v8 soundDetectionType:v17 name:v19];
-    v20 = self;
+    selfCopy = self;
 LABEL_16:
 
     goto LABEL_17;
@@ -311,10 +311,10 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
-    v20 = 0;
+    selfCopy = 0;
     goto LABEL_18;
   }
 
@@ -325,51 +325,51 @@ LABEL_6:
   v37[0] = v17;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v37 forKeys:&v36 count:1];
   v8 = 0;
-  v20 = 0;
-  *a4 = [v27 initWithDomain:v28 code:2 userInfo:v16];
+  selfCopy = 0;
+  *error = [v27 initWithDomain:v28 code:2 userInfo:v16];
 LABEL_17:
 
 LABEL_18:
   v21 = *MEMORY[0x1E69E9840];
-  return v20;
+  return selfCopy;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMAccessibilitySoundDetection *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_hasRaw_absoluteTimestamp)
   {
     raw_absoluteTimestamp = self->_raw_absoluteTimestamp;
     PBDataWriterWriteDoubleField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_soundDetectionType)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_name)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v25.receiver = self;
   v25.super_class = BMAccessibilitySoundDetection;
   v5 = [(BMEventBase *)&v25 init];
@@ -378,12 +378,12 @@ LABEL_18:
     goto LABEL_34;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -394,18 +394,18 @@ LABEL_18:
       while (1)
       {
         LOBYTE(v26) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v26 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v26 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (LOBYTE(v26) & 0x7F) << v7;
@@ -422,9 +422,9 @@ LABEL_18:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -444,18 +444,18 @@ LABEL_16:
           {
             v5->_hasRaw_absoluteTimestamp = 1;
             v26 = 0.0;
-            v16 = [v4 position] + 8;
-            if (v16 >= [v4 position] && (v17 = objc_msgSend(v4, "position") + 8, v17 <= objc_msgSend(v4, "length")))
+            v16 = [fromCopy position] + 8;
+            if (v16 >= [fromCopy position] && (v17 = objc_msgSend(fromCopy, "position") + 8, v17 <= objc_msgSend(fromCopy, "length")))
             {
-              v21 = [v4 data];
-              [v21 getBytes:&v26 range:{objc_msgSend(v4, "position"), 8}];
+              data2 = [fromCopy data];
+              [data2 getBytes:&v26 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v5->_raw_absoluteTimestamp = v26;
@@ -477,13 +477,13 @@ LABEL_16:
       *(&v5->super.super.isa + v19) = v18;
 
 LABEL_31:
-      v22 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v22 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_33:
     v23 = 0;
@@ -501,29 +501,29 @@ LABEL_34:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMAccessibilitySoundDetection *)self absoluteTimestamp];
-  v5 = [(BMAccessibilitySoundDetection *)self soundDetectionType];
-  v6 = [(BMAccessibilitySoundDetection *)self name];
-  v7 = [v3 initWithFormat:@"BMAccessibilitySoundDetection with absoluteTimestamp: %@, soundDetectionType: %@, name: %@", v4, v5, v6];
+  absoluteTimestamp = [(BMAccessibilitySoundDetection *)self absoluteTimestamp];
+  soundDetectionType = [(BMAccessibilitySoundDetection *)self soundDetectionType];
+  name = [(BMAccessibilitySoundDetection *)self name];
+  v7 = [v3 initWithFormat:@"BMAccessibilitySoundDetection with absoluteTimestamp: %@, soundDetectionType: %@, name: %@", absoluteTimestamp, soundDetectionType, name];
 
   return v7;
 }
 
-- (BMAccessibilitySoundDetection)initWithAbsoluteTimestamp:(id)a3 soundDetectionType:(id)a4 name:(id)a5
+- (BMAccessibilitySoundDetection)initWithAbsoluteTimestamp:(id)timestamp soundDetectionType:(id)type name:(id)name
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  timestampCopy = timestamp;
+  typeCopy = type;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = BMAccessibilitySoundDetection;
   v11 = [(BMEventBase *)&v14 init];
   if (v11)
   {
     v11->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v8)
+    if (timestampCopy)
     {
       v11->_hasRaw_absoluteTimestamp = 1;
-      [v8 timeIntervalSinceReferenceDate];
+      [timestampCopy timeIntervalSinceReferenceDate];
     }
 
     else
@@ -533,8 +533,8 @@ LABEL_34:
     }
 
     v11->_raw_absoluteTimestamp = v12;
-    objc_storeStrong(&v11->_soundDetectionType, a4);
-    objc_storeStrong(&v11->_name, a5);
+    objc_storeStrong(&v11->_soundDetectionType, type);
+    objc_storeStrong(&v11->_name, name);
   }
 
   return v11;
@@ -555,13 +555,13 @@ LABEL_34:
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4 == 1)
+  if (version == 1)
   {
     v4 = MEMORY[0x1E69C65B8];
-    v5 = a3;
-    v6 = [[v4 alloc] initWithData:v5];
+    dataCopy = data;
+    v6 = [[v4 alloc] initWithData:dataCopy];
 
     v7 = [[BMAccessibilitySoundDetection alloc] initByReadFrom:v6];
     v8 = v7;

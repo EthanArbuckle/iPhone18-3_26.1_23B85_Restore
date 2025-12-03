@@ -1,65 +1,65 @@
 @interface CPActivityAuthorizationManager
-+ (id)notificationDisplayInformationForAudioPolicyManager:(id)a3 activity:(id)a4 conversation:(id)a5;
++ (id)notificationDisplayInformationForAudioPolicyManager:(id)manager activity:(id)activity conversation:(id)conversation;
 - (CPActivityAuthorizationManager)init;
 - (TUNeighborhoodActivityConduit)neighborhoodActivityConduit;
-- (void)conversationManager:(id)a3 conversationChanged:(id)a4;
-- (void)requestAuthorizationForApplicationLaunchWithActivity:(id)a3 completionHandler:(id)a4;
-- (void)requestAuthorizationForApplicationWithBundleIdentifier:(id)a3 preparing:(BOOL)a4 overrides:(id)a5 currentScreenShareAttributes:(id)a6 completionHandler:(id)a7;
-- (void)setAuthorization:(BOOL)a3 forBundleIdentifier:(id)a4;
-- (void)setNeighborhoodActivityConduit:(id)a3;
+- (void)conversationManager:(id)manager conversationChanged:(id)changed;
+- (void)requestAuthorizationForApplicationLaunchWithActivity:(id)activity completionHandler:(id)handler;
+- (void)requestAuthorizationForApplicationWithBundleIdentifier:(id)identifier preparing:(BOOL)preparing overrides:(id)overrides currentScreenShareAttributes:(id)attributes completionHandler:(id)handler;
+- (void)setAuthorization:(BOOL)authorization forBundleIdentifier:(id)identifier;
+- (void)setNeighborhoodActivityConduit:(id)conduit;
 @end
 
 @implementation CPActivityAuthorizationManager
 
 - (TUNeighborhoodActivityConduit)neighborhoodActivityConduit
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ActivityAuthorizationManager.neighborhoodActivityConduit.getter();
 
   return v3;
 }
 
-- (void)setNeighborhoodActivityConduit:(id)a3
+- (void)setNeighborhoodActivityConduit:(id)conduit
 {
   v4 = *(&self->super.isa + OBJC_IVAR___CPActivityAuthorizationManager____lazy_storage___neighborhoodActivityConduit);
-  *(&self->super.isa + OBJC_IVAR___CPActivityAuthorizationManager____lazy_storage___neighborhoodActivityConduit) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR___CPActivityAuthorizationManager____lazy_storage___neighborhoodActivityConduit) = conduit;
+  conduitCopy = conduit;
 }
 
-- (void)requestAuthorizationForApplicationWithBundleIdentifier:(id)a3 preparing:(BOOL)a4 overrides:(id)a5 currentScreenShareAttributes:(id)a6 completionHandler:(id)a7
+- (void)requestAuthorizationForApplicationWithBundleIdentifier:(id)identifier preparing:(BOOL)preparing overrides:(id)overrides currentScreenShareAttributes:(id)attributes completionHandler:(id)handler
 {
-  v9 = a4;
-  v11 = _Block_copy(a7);
+  preparingCopy = preparing;
+  v11 = _Block_copy(handler);
   v12 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v14 = v13;
   _Block_copy(v11);
-  v15 = a5;
+  overridesCopy = overrides;
   swift_unknownObjectRetain();
-  v16 = self;
-  specialized ActivityAuthorizationManager.requestAuthorizationForApplication(withBundleIdentifier:preparing:overrides:currentScreenShareAttributes:completionHandler:)(v12, v14, v9, a5, a6, v16, v11);
+  selfCopy = self;
+  specialized ActivityAuthorizationManager.requestAuthorizationForApplication(withBundleIdentifier:preparing:overrides:currentScreenShareAttributes:completionHandler:)(v12, v14, preparingCopy, overrides, attributes, selfCopy, v11);
   _Block_release(v11);
   _Block_release(v11);
 
   swift_unknownObjectRelease();
 }
 
-- (void)requestAuthorizationForApplicationLaunchWithActivity:(id)a3 completionHandler:(id)a4
+- (void)requestAuthorizationForApplicationLaunchWithActivity:(id)activity completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  specialized ActivityAuthorizationManager.requestAuthorizationForApplicationLaunch(withActivity:completionHandler:)(v7, v8, v6);
+  activityCopy = activity;
+  selfCopy = self;
+  specialized ActivityAuthorizationManager.requestAuthorizationForApplicationLaunch(withActivity:completionHandler:)(activityCopy, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }
 
-+ (id)notificationDisplayInformationForAudioPolicyManager:(id)a3 activity:(id)a4 conversation:(id)a5
++ (id)notificationDisplayInformationForAudioPolicyManager:(id)manager activity:(id)activity conversation:(id)conversation
 {
   swift_unknownObjectRetain();
-  v8 = a4;
-  v9 = a5;
-  specialized static ActivityAuthorizationManager.notificationDisplayInformation(audioRoutePolicyManager:activity:conversation:)(a3, v8, a5);
+  activityCopy = activity;
+  conversationCopy = conversation;
+  specialized static ActivityAuthorizationManager.notificationDisplayInformation(audioRoutePolicyManager:activity:conversation:)(manager, activityCopy, conversation);
   swift_unknownObjectRelease();
 
   v10.super.isa = Dictionary._bridgeToObjectiveC()().super.isa;
@@ -67,14 +67,14 @@
   return v10.super.isa;
 }
 
-- (void)setAuthorization:(BOOL)a3 forBundleIdentifier:(id)a4
+- (void)setAuthorization:(BOOL)authorization forBundleIdentifier:(id)identifier
 {
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
-  v9 = self;
+  selfCopy = self;
   v10._countAndFlagsBits = v6;
   v10._object = v8;
-  ActivityAuthorizationManager.setAuthorization(_:for:)(a3, v10);
+  ActivityAuthorizationManager.setAuthorization(_:for:)(authorization, v10);
 }
 
 - (CPActivityAuthorizationManager)init
@@ -84,12 +84,12 @@
   return result;
 }
 
-- (void)conversationManager:(id)a3 conversationChanged:(id)a4
+- (void)conversationManager:(id)manager conversationChanged:(id)changed
 {
   swift_unknownObjectRetain();
-  v6 = a4;
-  v7 = self;
-  specialized ActivityAuthorizationManager.conversationManager(_:conversationChanged:)(v6);
+  changedCopy = changed;
+  selfCopy = self;
+  specialized ActivityAuthorizationManager.conversationManager(_:conversationChanged:)(changedCopy);
   swift_unknownObjectRelease();
 }
 

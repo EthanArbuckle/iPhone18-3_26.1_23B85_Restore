@@ -1,35 +1,35 @@
 @interface NETSchemaNETDebugSessionConnectionSnapshotCaptured
-- (BOOL)isEqual:(id)a3;
-- (NETSchemaNETDebugSessionConnectionSnapshotCaptured)initWithDictionary:(id)a3;
-- (NETSchemaNETDebugSessionConnectionSnapshotCaptured)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NETSchemaNETDebugSessionConnectionSnapshotCaptured)initWithDictionary:(id)dictionary;
+- (NETSchemaNETDebugSessionConnectionSnapshotCaptured)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addNetworkInterfaces:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addNetworkInterfaces:(id)interfaces;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NETSchemaNETDebugSessionConnectionSnapshotCaptured
 
-- (NETSchemaNETDebugSessionConnectionSnapshotCaptured)initWithDictionary:(id)a3
+- (NETSchemaNETDebugSessionConnectionSnapshotCaptured)initWithDictionary:(id)dictionary
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v29.receiver = self;
   v29.super_class = NETSchemaNETDebugSessionConnectionSnapshotCaptured;
   v5 = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)&v29 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"sequenceNumber"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"sequenceNumber"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NETSchemaNETDebugSessionConnectionSnapshotCaptured setSequenceNumber:](v5, "setSequenceNumber:", [v6 unsignedIntValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"network"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"network"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -37,7 +37,7 @@
       [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)v5 setNetwork:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"networkInterfaces"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"networkInterfaces"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -80,7 +80,7 @@
       v7 = v23;
     }
 
-    v17 = [v4 objectForKeyedSubscript:{@"pingInfo", v23, v24, v25}];
+    v17 = [dictionaryCopy objectForKeyedSubscript:{@"pingInfo", v23, v24, v25}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -88,7 +88,7 @@
       [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)v5 setPingInfo:v18];
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"quality"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"quality"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -102,30 +102,30 @@
   return v5;
 }
 
-- (NETSchemaNETDebugSessionConnectionSnapshotCaptured)initWithJSON:(id)a3
+- (NETSchemaNETDebugSessionConnectionSnapshotCaptured)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -139,26 +139,26 @@
 - (id)dictionaryRepresentation
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_network)
   {
-    v4 = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self network];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    network = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self network];
+    dictionaryRepresentation = [network dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"network"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"network"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"network"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"network"];
     }
   }
 
   if ([(NSArray *)self->_networkInterfaces count])
   {
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
@@ -178,16 +178,16 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v23 + 1) + 8 * i) dictionaryRepresentation];
-          if (v13)
+          dictionaryRepresentation2 = [*(*(&v23 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v7 addObject:v13];
+            [array addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v14 = [MEMORY[0x1E695DFB0] null];
-            [v7 addObject:v14];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null2];
           }
         }
 
@@ -197,50 +197,50 @@
       while (v10);
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"networkInterfaces"];
+    [dictionary setObject:array forKeyedSubscript:@"networkInterfaces"];
   }
 
   if (self->_pingInfo)
   {
-    v15 = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self pingInfo];
-    v16 = [v15 dictionaryRepresentation];
-    if (v16)
+    pingInfo = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self pingInfo];
+    dictionaryRepresentation3 = [pingInfo dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v16 forKeyedSubscript:@"pingInfo"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"pingInfo"];
     }
 
     else
     {
-      v17 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v17 forKeyedSubscript:@"pingInfo"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"pingInfo"];
     }
   }
 
   if (self->_quality)
   {
-    v18 = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self quality];
-    v19 = [v18 dictionaryRepresentation];
-    if (v19)
+    quality = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self quality];
+    dictionaryRepresentation4 = [quality dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v19 forKeyedSubscript:@"quality"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"quality"];
     }
 
     else
     {
-      v20 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v20 forKeyedSubscript:@"quality"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"quality"];
     }
   }
 
   if (*&self->_has)
   {
     v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[NETSchemaNETDebugSessionConnectionSnapshotCaptured sequenceNumber](self, "sequenceNumber")}];
-    [v3 setObject:v21 forKeyedSubscript:@"sequenceNumber"];
+    [dictionary setObject:v21 forKeyedSubscript:@"sequenceNumber"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v23];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v23];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -261,15 +261,15 @@
   return v6 ^ [(NETSchemaNETDebugSessionConnectionQuality *)self->_quality hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_25;
   }
 
-  if ((*&self->_has & 1) != (v4[48] & 1))
+  if ((*&self->_has & 1) != (equalCopy[48] & 1))
   {
     goto LABEL_25;
   }
@@ -277,26 +277,26 @@
   if (*&self->_has)
   {
     sequenceNumber = self->_sequenceNumber;
-    if (sequenceNumber != [v4 sequenceNumber])
+    if (sequenceNumber != [equalCopy sequenceNumber])
     {
       goto LABEL_25;
     }
   }
 
-  v6 = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self network];
-  v7 = [v4 network];
-  if ((v6 != 0) == (v7 == 0))
+  network = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self network];
+  network2 = [equalCopy network];
+  if ((network != 0) == (network2 == 0))
   {
     goto LABEL_24;
   }
 
-  v8 = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self network];
-  if (v8)
+  network3 = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self network];
+  if (network3)
   {
-    v9 = v8;
-    v10 = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self network];
-    v11 = [v4 network];
-    v12 = [v10 isEqual:v11];
+    v9 = network3;
+    network4 = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self network];
+    network5 = [equalCopy network];
+    v12 = [network4 isEqual:network5];
 
     if (!v12)
     {
@@ -308,20 +308,20 @@
   {
   }
 
-  v6 = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self networkInterfaces];
-  v7 = [v4 networkInterfaces];
-  if ((v6 != 0) == (v7 == 0))
+  network = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self networkInterfaces];
+  network2 = [equalCopy networkInterfaces];
+  if ((network != 0) == (network2 == 0))
   {
     goto LABEL_24;
   }
 
-  v13 = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self networkInterfaces];
-  if (v13)
+  networkInterfaces = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self networkInterfaces];
+  if (networkInterfaces)
   {
-    v14 = v13;
-    v15 = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self networkInterfaces];
-    v16 = [v4 networkInterfaces];
-    v17 = [v15 isEqual:v16];
+    v14 = networkInterfaces;
+    networkInterfaces2 = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self networkInterfaces];
+    networkInterfaces3 = [equalCopy networkInterfaces];
+    v17 = [networkInterfaces2 isEqual:networkInterfaces3];
 
     if (!v17)
     {
@@ -333,20 +333,20 @@
   {
   }
 
-  v6 = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self pingInfo];
-  v7 = [v4 pingInfo];
-  if ((v6 != 0) == (v7 == 0))
+  network = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self pingInfo];
+  network2 = [equalCopy pingInfo];
+  if ((network != 0) == (network2 == 0))
   {
     goto LABEL_24;
   }
 
-  v18 = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self pingInfo];
-  if (v18)
+  pingInfo = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self pingInfo];
+  if (pingInfo)
   {
-    v19 = v18;
-    v20 = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self pingInfo];
-    v21 = [v4 pingInfo];
-    v22 = [v20 isEqual:v21];
+    v19 = pingInfo;
+    pingInfo2 = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self pingInfo];
+    pingInfo3 = [equalCopy pingInfo];
+    v22 = [pingInfo2 isEqual:pingInfo3];
 
     if (!v22)
     {
@@ -358,12 +358,12 @@
   {
   }
 
-  v6 = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self quality];
-  v7 = [v4 quality];
-  if ((v6 != 0) != (v7 == 0))
+  network = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self quality];
+  network2 = [equalCopy quality];
+  if ((network != 0) != (network2 == 0))
   {
-    v23 = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self quality];
-    if (!v23)
+    quality = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self quality];
+    if (!quality)
     {
 
 LABEL_28:
@@ -371,10 +371,10 @@ LABEL_28:
       goto LABEL_26;
     }
 
-    v24 = v23;
-    v25 = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self quality];
-    v26 = [v4 quality];
-    v27 = [v25 isEqual:v26];
+    v24 = quality;
+    quality2 = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self quality];
+    quality3 = [equalCopy quality];
+    v27 = [quality2 isEqual:quality3];
 
     if (v27)
     {
@@ -394,20 +394,20 @@ LABEL_26:
   return v28;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteUint32Field();
   }
 
-  v5 = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self network];
+  network = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self network];
 
-  if (v5)
+  if (network)
   {
-    v6 = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self network];
+    network2 = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self network];
     PBDataWriterWriteSubmessage();
   }
 
@@ -442,74 +442,74 @@ LABEL_26:
     while (v9);
   }
 
-  v12 = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self pingInfo];
+  pingInfo = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self pingInfo];
 
-  if (v12)
+  if (pingInfo)
   {
-    v13 = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self pingInfo];
+    pingInfo2 = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self pingInfo];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self quality];
+  quality = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self quality];
 
-  if (v14)
+  if (quality)
   {
-    v15 = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self quality];
+    quality2 = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self quality];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (void)addNetworkInterfaces:(id)a3
+- (void)addNetworkInterfaces:(id)interfaces
 {
-  v4 = a3;
+  interfacesCopy = interfaces;
   networkInterfaces = self->_networkInterfaces;
-  v8 = v4;
+  v8 = interfacesCopy;
   if (!networkInterfaces)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_networkInterfaces;
-    self->_networkInterfaces = v6;
+    self->_networkInterfaces = array;
 
-    v4 = v8;
+    interfacesCopy = v8;
     networkInterfaces = self->_networkInterfaces;
   }
 
-  [(NSArray *)networkInterfaces addObject:v4];
+  [(NSArray *)networkInterfaces addObject:interfacesCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v18.receiver = self;
   v18.super_class = NETSchemaNETDebugSessionConnectionSnapshotCaptured;
-  v5 = [(SISchemaInstrumentationMessage *)&v18 applySensitiveConditionsPolicy:v4];
-  v6 = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self network];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v18 applySensitiveConditionsPolicy:policyCopy];
+  network = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self network];
+  v7 = [network applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self deleteNetwork];
   }
 
-  v9 = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self networkInterfaces];
-  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v9 underConditions:v4];
+  networkInterfaces = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self networkInterfaces];
+  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:networkInterfaces underConditions:policyCopy];
   [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self setNetworkInterfaces:v10];
 
-  v11 = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self pingInfo];
-  v12 = [v11 applySensitiveConditionsPolicy:v4];
-  v13 = [v12 suppressMessage];
+  pingInfo = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self pingInfo];
+  v12 = [pingInfo applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v12 suppressMessage];
 
-  if (v13)
+  if (suppressMessage2)
   {
     [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self deletePingInfo];
   }
 
-  v14 = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self quality];
-  v15 = [v14 applySensitiveConditionsPolicy:v4];
-  v16 = [v15 suppressMessage];
+  quality = [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self quality];
+  v15 = [quality applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v15 suppressMessage];
 
-  if (v16)
+  if (suppressMessage3)
   {
     [(NETSchemaNETDebugSessionConnectionSnapshotCaptured *)self deleteQuality];
   }

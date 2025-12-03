@@ -8,18 +8,18 @@
 
 - (void)_cnui_applyContactStyle
 {
-  v2 = [a1 _cnui_contactStyle];
-  [a1 _cnui_applyCommonContactStyle:v2];
-  [a1 _cnui_applySelectedBackgroundViewStyle:v2];
+  _cnui_contactStyle = [self _cnui_contactStyle];
+  [self _cnui_applyCommonContactStyle:_cnui_contactStyle];
+  [self _cnui_applySelectedBackgroundViewStyle:_cnui_contactStyle];
 }
 
 - (void)_cnui_applySelectedBackgroundViewStyle:()CNContactStyle
 {
   v15 = a3;
-  v4 = [v15 selectedCellBackgroundColor];
+  selectedCellBackgroundColor = [v15 selectedCellBackgroundColor];
 
-  v5 = [a1 selectedBackgroundView];
-  if (!v4)
+  selectedBackgroundView = [self selectedBackgroundView];
+  if (!selectedCellBackgroundColor)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -29,36 +29,36 @@
       goto LABEL_9;
     }
 
-    v13 = [objc_alloc(MEMORY[0x1E69D91C8]) initWithProminence:3];
-    [a1 setSelectedBackgroundView:v13];
+    layer2 = [objc_alloc(MEMORY[0x1E69D91C8]) initWithProminence:3];
+    [self setSelectedBackgroundView:layer2];
     goto LABEL_8;
   }
 
-  v6 = [v5 isMemberOfClass:objc_opt_class()];
+  v6 = [selectedBackgroundView isMemberOfClass:objc_opt_class()];
 
   if ((v6 & 1) == 0)
   {
     v7 = objc_alloc_init(MEMORY[0x1E69DD250]);
-    [a1 setSelectedBackgroundView:v7];
+    [self setSelectedBackgroundView:v7];
   }
 
-  v8 = [a1 selectedBackgroundView];
-  [v8 setAutoresizingMask:18];
+  selectedBackgroundView2 = [self selectedBackgroundView];
+  [selectedBackgroundView2 setAutoresizingMask:18];
 
-  v9 = [v15 selectedCellBackgroundColor];
-  v10 = [a1 selectedBackgroundView];
-  [v10 setBackgroundColor:v9];
+  selectedCellBackgroundColor2 = [v15 selectedCellBackgroundColor];
+  selectedBackgroundView3 = [self selectedBackgroundView];
+  [selectedBackgroundView3 setBackgroundColor:selectedCellBackgroundColor2];
 
   if ([v15 blurSupported])
   {
-    v11 = [a1 selectedBackgroundView];
-    [v11 _setDrawsAsBackdropOverlayWithBlendMode:3];
+    selectedBackgroundView4 = [self selectedBackgroundView];
+    [selectedBackgroundView4 _setDrawsAsBackdropOverlayWithBlendMode:3];
 
-    v12 = [a1 layer];
-    [v12 setAllowsGroupOpacity:0];
+    layer = [self layer];
+    [layer setAllowsGroupOpacity:0];
 
-    v13 = [a1 layer];
-    [v13 setAllowsGroupBlending:0];
+    layer2 = [self layer];
+    [layer2 setAllowsGroupBlending:0];
 LABEL_8:
   }
 
@@ -68,66 +68,66 @@ LABEL_9:
 - (void)_cnui_applyCommonContactStyle:()CNContactStyle
 {
   v26 = a3;
-  v4 = [v26 backgroundColor];
+  backgroundColor = [v26 backgroundColor];
 
-  if (v4)
+  if (backgroundColor)
   {
-    v5 = [a1 backgroundView];
-    v6 = [v5 isMemberOfClass:objc_opt_class()];
+    backgroundView = [self backgroundView];
+    v6 = [backgroundView isMemberOfClass:objc_opt_class()];
 
     if ((v6 & 1) == 0)
     {
       v7 = objc_alloc_init(MEMORY[0x1E69DD250]);
-      [a1 setBackgroundView:v7];
+      [self setBackgroundView:v7];
     }
 
-    v8 = [v26 backgroundColor];
-    v9 = [a1 backgroundView];
-    [v9 setBackgroundColor:v8];
+    backgroundColor2 = [v26 backgroundColor];
+    backgroundView2 = [self backgroundView];
+    [backgroundView2 setBackgroundColor:backgroundColor2];
   }
 
   if (([v26 usesOpaqueBackground] & 1) == 0)
   {
-    v10 = [a1 backgroundView];
-    v11 = [v10 isMemberOfClass:objc_opt_class()];
+    backgroundView3 = [self backgroundView];
+    v11 = [backgroundView3 isMemberOfClass:objc_opt_class()];
 
     if ((v11 & 1) == 0)
     {
       v12 = [objc_alloc(MEMORY[0x1E69D91C8]) initWithProminence:3];
-      [a1 setBackgroundView:v12];
+      [self setBackgroundView:v12];
     }
 
-    [a1 setBackgroundColor:0];
+    [self setBackgroundColor:0];
   }
 
-  v13 = [v26 textColor];
+  textColor = [v26 textColor];
 
-  if (v13)
+  if (textColor)
   {
-    v14 = [v26 textColor];
-    v15 = [a1 textLabel];
-    [v15 setTextColor:v14];
+    textColor2 = [v26 textColor];
+    textLabel = [self textLabel];
+    [textLabel setTextColor:textColor2];
   }
 
-  v16 = [v26 highlightedTextColor];
+  highlightedTextColor = [v26 highlightedTextColor];
 
-  if (v16)
+  if (highlightedTextColor)
   {
-    v17 = [v26 highlightedTextColor];
-    v18 = [a1 textLabel];
-    [v18 setHighlightedTextColor:v17];
+    highlightedTextColor2 = [v26 highlightedTextColor];
+    textLabel2 = [self textLabel];
+    [textLabel2 setHighlightedTextColor:highlightedTextColor2];
   }
 
-  [a1 setOpaque:{objc_msgSend(v26, "usesOpaqueBackground")}];
-  v19 = [a1 textLabel];
-  v20 = [MEMORY[0x1E69DB878] ab_preferredContentSizeCategoryIsAccessibilityCategory];
+  [self setOpaque:{objc_msgSend(v26, "usesOpaqueBackground")}];
+  textLabel3 = [self textLabel];
+  ab_preferredContentSizeCategoryIsAccessibilityCategory = [MEMORY[0x1E69DB878] ab_preferredContentSizeCategoryIsAccessibilityCategory];
   v21 = 0.0;
-  if (v20)
+  if (ab_preferredContentSizeCategoryIsAccessibilityCategory)
   {
     *&v21 = 0.25;
   }
 
-  [v19 _setHyphenationFactor:v21];
+  [textLabel3 _setHyphenationFactor:v21];
 
   [v26 separatorInset];
   v23.f64[1] = v22;
@@ -135,7 +135,7 @@ LABEL_9:
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v23, *MEMORY[0x1E69DDCE0]), vceqq_f64(v25, *(MEMORY[0x1E69DDCE0] + 16))))) & 1) == 0)
   {
     [v26 separatorInset];
-    [a1 setSeparatorInset:?];
+    [self setSeparatorInset:?];
   }
 }
 

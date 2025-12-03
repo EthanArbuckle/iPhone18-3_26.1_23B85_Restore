@@ -1,30 +1,30 @@
 @interface HMBModelFieldOptionExternalRecordField
-- (HMBModelFieldOptionExternalRecordField)initWithExternalRecordField:(id)a3 encrypted:(BOOL)a4;
-- (void)applyTo:(id)a3;
+- (HMBModelFieldOptionExternalRecordField)initWithExternalRecordField:(id)field encrypted:(BOOL)encrypted;
+- (void)applyTo:(id)to;
 @end
 
 @implementation HMBModelFieldOptionExternalRecordField
 
-- (void)applyTo:(id)a3
+- (void)applyTo:(id)to
 {
-  v5 = a3;
-  v4 = [(HMBModelFieldOptionExternalRecordField *)self fieldName];
-  [v5 setExternalRecordField:v4];
+  toCopy = to;
+  fieldName = [(HMBModelFieldOptionExternalRecordField *)self fieldName];
+  [toCopy setExternalRecordField:fieldName];
 
-  [v5 setEncrypted:{-[HMBModelFieldOptionExternalRecordField encrypted](self, "encrypted")}];
+  [toCopy setEncrypted:{-[HMBModelFieldOptionExternalRecordField encrypted](self, "encrypted")}];
 }
 
-- (HMBModelFieldOptionExternalRecordField)initWithExternalRecordField:(id)a3 encrypted:(BOOL)a4
+- (HMBModelFieldOptionExternalRecordField)initWithExternalRecordField:(id)field encrypted:(BOOL)encrypted
 {
-  v7 = a3;
+  fieldCopy = field;
   v11.receiver = self;
   v11.super_class = HMBModelFieldOptionExternalRecordField;
   v8 = [(HMBModelFieldOptionExternalRecordField *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_fieldName, a3);
-    v9->_encrypted = a4;
+    objc_storeStrong(&v8->_fieldName, field);
+    v9->_encrypted = encrypted;
   }
 
   return v9;

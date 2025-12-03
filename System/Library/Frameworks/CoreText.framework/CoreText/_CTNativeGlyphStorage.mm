@@ -1,23 +1,23 @@
 @interface _CTNativeGlyphStorage
-+ (id)newWithCount:(int64_t)a3 capacity:(int64_t)a4;
-- (CGPoint)originAtIndex:(int64_t)a3;
-- (_CTNativeGlyphStorage)initWithCount:(int64_t)a3 capacity:(int64_t)a4;
++ (id)newWithCount:(int64_t)count capacity:(int64_t)capacity;
+- (CGPoint)originAtIndex:(int64_t)index;
+- (_CTNativeGlyphStorage)initWithCount:(int64_t)count capacity:(int64_t)capacity;
 - (_CTNativeGlyphStorage)retain;
 - (const)allocatedAdvances;
-- (id)copyWithRange:(id)a3;
-- (int64_t)attachmentCountAtIndex:(int64_t)a3;
+- (id)copyWithRange:(id)range;
+- (int64_t)attachmentCountAtIndex:(int64_t)index;
 - (void)dealloc;
-- (void)initGlyphStackWithCapacity:(int64_t)a3;
-- (void)insertGlyphsAtRange:(id)a3;
-- (void)moveGlyphsFromRange:(id)a3 toIndex:(int64_t)a4;
-- (void)popGlyphAtIndex:(int64_t)a3;
-- (void)puntStringIndicesInRange:(id)a3 by:(int64_t)a4;
-- (void)pushGlyphAtIndex:(int64_t)a3;
+- (void)initGlyphStackWithCapacity:(int64_t)capacity;
+- (void)insertGlyphsAtRange:(id)range;
+- (void)moveGlyphsFromRange:(id)range toIndex:(int64_t)index;
+- (void)popGlyphAtIndex:(int64_t)index;
+- (void)puntStringIndicesInRange:(id)range by:(int64_t)by;
+- (void)pushGlyphAtIndex:(int64_t)index;
 - (void)release;
-- (void)setAdvance:(CGSize)a3 atIndex:(int64_t)a4;
-- (void)setAttachmentCount:(int64_t)a3 atIndex:(int64_t)a4;
-- (void)setOrigin:(CGPoint)a3 atIndex:(int64_t)a4;
-- (void)swapGlyphsAtIndex:(int64_t)a3 withIndex:(int64_t)a4;
+- (void)setAdvance:(CGSize)advance atIndex:(int64_t)index;
+- (void)setAttachmentCount:(int64_t)count atIndex:(int64_t)index;
+- (void)setOrigin:(CGPoint)origin atIndex:(int64_t)index;
+- (void)swapGlyphsAtIndex:(int64_t)index withIndex:(int64_t)withIndex;
 @end
 
 @implementation _CTNativeGlyphStorage
@@ -90,11 +90,11 @@ LABEL_6:
   os_unfair_lock_unlock(&_MergedGlobals_13);
 }
 
-+ (id)newWithCount:(int64_t)a3 capacity:(int64_t)a4
++ (id)newWithCount:(int64_t)count capacity:(int64_t)capacity
 {
-  if (a4 > 16)
+  if (capacity > 16)
   {
-    v11 = [a1 alloc];
+    v11 = [self alloc];
   }
 
   else
@@ -105,7 +105,7 @@ LABEL_6:
     {
       qword_1ED567788 = 0;
       os_unfair_lock_unlock(&_MergedGlobals_13);
-      v7[1] = a3;
+      v7[1] = count;
       v7[11] = 16;
       v8 = v7[12];
       v7[3] = v8;
@@ -139,7 +139,7 @@ LABEL_6:
     }
 
     os_unfair_lock_unlock(&_MergedGlobals_13);
-    Instance = class_createInstance(a1, 0x160uLL);
+    Instance = class_createInstance(self, 0x160uLL);
     v13 = Instance;
     if (Instance)
     {
@@ -149,14 +149,14 @@ LABEL_6:
     v11 = v13;
   }
 
-  return [v11 initWithCount:a3 capacity:a4];
+  return [v11 initWithCount:count capacity:capacity];
 }
 
-- (_CTNativeGlyphStorage)initWithCount:(int64_t)a3 capacity:(int64_t)a4
+- (_CTNativeGlyphStorage)initWithCount:(int64_t)count capacity:(int64_t)capacity
 {
   v14.receiver = self;
   v14.super_class = _CTNativeGlyphStorage;
-  v5 = [(_CTGlyphStorage *)&v14 initWithCount:a3];
+  v5 = [(_CTGlyphStorage *)&v14 initWithCount:count];
   v6 = v5;
   if (v5)
   {
@@ -195,8 +195,8 @@ LABEL_6:
 
     else
     {
-      v5->_capacity = a4;
-      v10 = malloc_type_calloc(1uLL, 22 * a4, 0x1000040BDFB0063uLL);
+      v5->_capacity = capacity;
+      v10 = malloc_type_calloc(1uLL, 22 * capacity, 0x1000040BDFB0063uLL);
       v6->super._advanceWidths = v10;
       if (!v10)
       {
@@ -204,11 +204,11 @@ LABEL_6:
         return 0;
       }
 
-      v11 = &v10[a4];
-      v12 = &v11[a4];
+      v11 = &v10[capacity];
+      v12 = &v11[capacity];
       v6->super._props = v12;
       v6->super._stringIndices = v11;
-      v9 = &v12[a4];
+      v9 = &v12[capacity];
     }
 
     v6->super._glyphs = v9;
@@ -217,10 +217,10 @@ LABEL_6:
   return v6;
 }
 
-- (id)copyWithRange:(id)a3
+- (id)copyWithRange:(id)range
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   v6 = [objc_opt_class() newWithCount:var1 capacity:var1];
   v7 = v6;
   if (v6)
@@ -306,12 +306,12 @@ LABEL_6:
   return result;
 }
 
-- (int64_t)attachmentCountAtIndex:(int64_t)a3
+- (int64_t)attachmentCountAtIndex:(int64_t)index
 {
   attachCounts = self->_attachCounts;
   if (attachCounts)
   {
-    return attachCounts[a3];
+    return attachCounts[index];
   }
 
   else
@@ -320,10 +320,10 @@ LABEL_6:
   }
 }
 
-- (void)setAttachmentCount:(int64_t)a3 atIndex:(int64_t)a4
+- (void)setAttachmentCount:(int64_t)count atIndex:(int64_t)index
 {
   attachCounts = self->_attachCounts;
-  if (a3 && !attachCounts)
+  if (count && !attachCounts)
   {
     attachCounts = malloc_type_calloc(self->_capacity, 8uLL, 0x100004000313F17uLL);
     self->_attachCounts = attachCounts;
@@ -331,16 +331,16 @@ LABEL_6:
 
   if (attachCounts)
   {
-    attachCounts[a4] = a3;
+    attachCounts[index] = count;
   }
 }
 
-- (CGPoint)originAtIndex:(int64_t)a3
+- (CGPoint)originAtIndex:(int64_t)index
 {
   origins = self->_origins;
   if (origins)
   {
-    p_x = &origins[a3].x;
+    p_x = &origins[index].x;
   }
 
   else
@@ -355,29 +355,29 @@ LABEL_6:
   return result;
 }
 
-- (void)setOrigin:(CGPoint)a3 atIndex:(int64_t)a4
+- (void)setOrigin:(CGPoint)origin atIndex:(int64_t)index
 {
-  y = a3.y;
-  x = a3.x;
+  y = origin.y;
+  x = origin.x;
   origins = self->_origins;
-  if (origins || (a3.x == *MEMORY[0x1E695EFF8] ? (v10 = a3.y == *(MEMORY[0x1E695EFF8] + 8)) : (v10 = 0), !v10 && (origins = malloc_type_calloc(self->_capacity, 0x10uLL, 0x1000040451B5BE8uLL), (self->_origins = origins) != 0)))
+  if (origins || (origin.x == *MEMORY[0x1E695EFF8] ? (v10 = origin.y == *(MEMORY[0x1E695EFF8] + 8)) : (v10 = 0), !v10 && (origins = malloc_type_calloc(self->_capacity, 0x10uLL, 0x1000040451B5BE8uLL), (self->_origins = origins) != 0)))
   {
-    p_x = &origins[a4].x;
+    p_x = &origins[index].x;
     *p_x = x;
     p_x[1] = y;
   }
 }
 
-- (void)setAdvance:(CGSize)a3 atIndex:(int64_t)a4
+- (void)setAdvance:(CGSize)advance atIndex:(int64_t)index
 {
-  height = a3.height;
-  width = a3.width;
+  height = advance.height;
+  width = advance.width;
   advances = self->super._advances;
-  if (advances || a3.height != 0.0)
+  if (advances || advance.height != 0.0)
   {
     if (advances || ([(_CTNativeGlyphStorage *)self allocatedAdvances], (advances = self->super._advances) != 0))
     {
-      p_width = &advances[a4].width;
+      p_width = &advances[index].width;
       *p_width = width;
       p_width[1] = height;
     }
@@ -385,19 +385,19 @@ LABEL_6:
 
   else
   {
-    self->super._advanceWidths[a4] = a3.width;
+    self->super._advanceWidths[index] = advance.width;
   }
 }
 
-- (void)puntStringIndicesInRange:(id)a3 by:(int64_t)a4
+- (void)puntStringIndicesInRange:(id)range by:(int64_t)by
 {
-  if (a3.var1)
+  if (range.var1)
   {
-    v4 = &self->super._stringIndices[a3.var0];
-    v5 = 8 * a3.var1;
+    v4 = &self->super._stringIndices[range.var0];
+    v5 = 8 * range.var1;
     do
     {
-      *v4++ += a4;
+      *v4++ += by;
       v5 -= 8;
     }
 
@@ -405,21 +405,21 @@ LABEL_6:
   }
 }
 
-- (void)insertGlyphsAtRange:(id)a3
+- (void)insertGlyphsAtRange:(id)range
 {
-  var0 = a3.var0;
+  var0 = range.var0;
   count = self->super._count;
-  var1 = a3.var1;
-  v6 = count + a3.var1;
+  var1 = range.var1;
+  v6 = count + range.var1;
   capacity = self->_capacity;
-  if (capacity >= count + a3.var1)
+  if (capacity >= count + range.var1)
   {
     goto LABEL_25;
   }
 
   if (2 * capacity <= v6)
   {
-    v8 = count + a3.var1;
+    v8 = count + range.var1;
   }
 
   else
@@ -572,62 +572,62 @@ LABEL_25:
   }
 }
 
-- (void)swapGlyphsAtIndex:(int64_t)a3 withIndex:(int64_t)a4
+- (void)swapGlyphsAtIndex:(int64_t)index withIndex:(int64_t)withIndex
 {
   glyphs = self->super._glyphs;
-  v5 = glyphs[a3];
-  glyphs[a3] = glyphs[a4];
-  glyphs[a4] = v5;
+  v5 = glyphs[index];
+  glyphs[index] = glyphs[withIndex];
+  glyphs[withIndex] = v5;
   advances = self->super._advances;
   if (advances)
   {
-    v7 = advances[a3];
-    advances[a3] = advances[a4];
-    advances[a4] = v7;
+    v7 = advances[index];
+    advances[index] = advances[withIndex];
+    advances[withIndex] = v7;
   }
 
   else
   {
     advanceWidths = self->super._advanceWidths;
-    v9 = advanceWidths[a3];
-    advanceWidths[a3] = advanceWidths[a4];
-    advanceWidths[a4] = v9;
+    v9 = advanceWidths[index];
+    advanceWidths[index] = advanceWidths[withIndex];
+    advanceWidths[withIndex] = v9;
   }
 
   props = self->super._props;
   stringIndices = self->super._stringIndices;
-  v12 = props[a3];
-  props[a3] = props[a4];
-  props[a4] = v12;
-  v13 = stringIndices[a3];
-  stringIndices[a3] = stringIndices[a4];
-  stringIndices[a4] = v13;
+  v12 = props[index];
+  props[index] = props[withIndex];
+  props[withIndex] = v12;
+  v13 = stringIndices[index];
+  stringIndices[index] = stringIndices[withIndex];
+  stringIndices[withIndex] = v13;
   attachCounts = self->_attachCounts;
   if (attachCounts)
   {
-    v15 = attachCounts[a3];
-    attachCounts[a3] = attachCounts[a4];
-    attachCounts[a4] = v15;
+    v15 = attachCounts[index];
+    attachCounts[index] = attachCounts[withIndex];
+    attachCounts[withIndex] = v15;
   }
 
   origins = self->_origins;
   if (origins)
   {
-    v17 = origins[a3];
-    origins[a3] = origins[a4];
-    origins[a4] = v17;
+    v17 = origins[index];
+    origins[index] = origins[withIndex];
+    origins[withIndex] = v17;
   }
 }
 
-- (void)moveGlyphsFromRange:(id)a3 toIndex:(int64_t)a4
+- (void)moveGlyphsFromRange:(id)range toIndex:(int64_t)index
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  memmove(&self->super._glyphs[a4], &self->super._glyphs[a3.var0], 2 * a3.var1);
+  var1 = range.var1;
+  var0 = range.var0;
+  memmove(&self->super._glyphs[index], &self->super._glyphs[range.var0], 2 * range.var1);
   advances = self->super._advances;
   if (advances)
   {
-    v9 = &advances[a4];
+    v9 = &advances[index];
     v10 = &advances[var0];
     v11 = 16 * var1;
   }
@@ -635,31 +635,31 @@ LABEL_25:
   else
   {
     advanceWidths = self->super._advanceWidths;
-    v9 = &advanceWidths[a4];
+    v9 = &advanceWidths[index];
     v10 = &advanceWidths[var0];
     v11 = 8 * var1;
   }
 
   memmove(v9, v10, v11);
-  memmove(&self->super._props[a4], &self->super._props[var0], 4 * var1);
-  memmove(&self->super._stringIndices[a4], &self->super._stringIndices[var0], 8 * var1);
+  memmove(&self->super._props[index], &self->super._props[var0], 4 * var1);
+  memmove(&self->super._stringIndices[index], &self->super._stringIndices[var0], 8 * var1);
   attachCounts = self->_attachCounts;
   if (attachCounts)
   {
-    memmove(&attachCounts[a4], &attachCounts[var0], 8 * var1);
+    memmove(&attachCounts[index], &attachCounts[var0], 8 * var1);
   }
 
   origins = self->_origins;
   if (origins)
   {
 
-    memmove(&origins[a4], &origins[var0], 16 * var1);
+    memmove(&origins[index], &origins[var0], 16 * var1);
   }
 }
 
-- (void)initGlyphStackWithCapacity:(int64_t)a3
+- (void)initGlyphStackWithCapacity:(int64_t)capacity
 {
-  if ((a3 - 1) >> 58 || (v4 = (a3 - 1) << 6, v5 = __CFADD__(v4, 80), v6 = v4 + 80, v5))
+  if ((capacity - 1) >> 58 || (v4 = (capacity - 1) << 6, v5 = __CFADD__(v4, 80), v6 = v4 + 80, v5))
   {
     free(self->_stack);
     self->_stack = 0;
@@ -673,18 +673,18 @@ LABEL_25:
     goto LABEL_9;
   }
 
-  if (stack->var0 < a3)
+  if (stack->var0 < capacity)
   {
     stack = reallocf(stack, v6);
 LABEL_9:
     self->_stack = stack;
-    stack->var0 = a3;
+    stack->var0 = capacity;
   }
 
   stack->var1 = 0;
 }
 
-- (void)pushGlyphAtIndex:(int64_t)a3
+- (void)pushGlyphAtIndex:(int64_t)index
 {
   stack = self->_stack;
   if (stack)
@@ -693,25 +693,25 @@ LABEL_9:
     if (var1 < stack->var0)
     {
       v7 = stack + 64 * var1;
-      *(v7 + 8) = self->super._glyphs[a3];
+      *(v7 + 8) = self->super._glyphs[index];
       v8 = v7 + 16;
       advances = self->super._advances;
       if (advances)
       {
-        *(v8 + 8) = advances[a3];
+        *(v8 + 8) = advances[index];
       }
 
       else
       {
-        *(v8 + 1) = *&self->super._advanceWidths[a3];
+        *(v8 + 1) = *&self->super._advanceWidths[index];
         *(v8 + 2) = 0;
       }
 
       stringIndices = self->super._stringIndices;
-      *(v8 + 6) = self->super._props[a3];
-      *(v8 + 4) = stringIndices[a3];
-      *(v8 + 5) = [(_CTNativeGlyphStorage *)self attachmentCountAtIndex:a3];
-      [(_CTNativeGlyphStorage *)self originAtIndex:a3];
+      *(v8 + 6) = self->super._props[index];
+      *(v8 + 4) = stringIndices[index];
+      *(v8 + 5) = [(_CTNativeGlyphStorage *)self attachmentCountAtIndex:index];
+      [(_CTNativeGlyphStorage *)self originAtIndex:index];
       *(v8 + 6) = v11;
       *(v8 + 7) = v12;
       ++self->_stack->var1;
@@ -719,7 +719,7 @@ LABEL_9:
   }
 }
 
-- (void)popGlyphAtIndex:(int64_t)a3
+- (void)popGlyphAtIndex:(int64_t)index
 {
   stack = self->_stack;
   if (stack)
@@ -730,17 +730,17 @@ LABEL_9:
     if (!v6)
     {
       v10 = stack + 64 * v7;
-      self->super._glyphs[a3] = *(v10 + 8);
+      self->super._glyphs[index] = *(v10 + 8);
       stringIndices = self->super._stringIndices;
-      self->super._props[a3] = *(v10 + 10);
+      self->super._props[index] = *(v10 + 10);
       stack->var1 = v7;
-      stringIndices[a3] = *(v10 + 6);
+      stringIndices[index] = *(v10 + 6);
       [(_CTNativeGlyphStorage *)self setAdvance:*(v10 + 3) atIndex:*(v10 + 4)];
-      [(_CTNativeGlyphStorage *)self setAttachmentCount:*(v10 + 7) atIndex:a3];
+      [(_CTNativeGlyphStorage *)self setAttachmentCount:*(v10 + 7) atIndex:index];
       v12 = *(v10 + 8);
       v13 = *(v10 + 9);
 
-      [(_CTNativeGlyphStorage *)self setOrigin:a3 atIndex:v12, v13];
+      [(_CTNativeGlyphStorage *)self setOrigin:index atIndex:v12, v13];
     }
   }
 }

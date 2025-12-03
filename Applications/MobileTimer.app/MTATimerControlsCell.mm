@@ -1,21 +1,21 @@
 @interface MTATimerControlsCell
 - (BOOL)edited;
-- (MTATimerControlsCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (MTATimerControlsCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (unint64_t)timerViewStyle;
 - (void)localSetup;
-- (void)setDelegate:(id)a3;
-- (void)setDuration:(double)a3;
-- (void)setTimerToneName:(id)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setDuration:(double)duration;
+- (void)setTimerToneName:(id)name;
 - (void)setupLayoutConstraints;
 @end
 
 @implementation MTATimerControlsCell
 
-- (MTATimerControlsCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (MTATimerControlsCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = MTATimerControlsCell;
-  v4 = [(MTATimerControlsCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(MTATimerControlsCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -31,12 +31,12 @@
   v3 = [[MTATimerControlsView alloc] initWithDelegate:0 style:[(MTATimerControlsCell *)self timerViewStyle] timerControlState:0];
   [(MTATimerControlsCell *)self setControlsView:v3];
 
-  v4 = [(MTATimerControlsCell *)self controlsView];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  controlsView = [(MTATimerControlsCell *)self controlsView];
+  [controlsView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v5 = [(MTATimerControlsCell *)self contentView];
-  v6 = [(MTATimerControlsCell *)self controlsView];
-  [v5 addSubview:v6];
+  contentView = [(MTATimerControlsCell *)self contentView];
+  controlsView2 = [(MTATimerControlsCell *)self controlsView];
+  [contentView addSubview:controlsView2];
 
   v7 = +[UIColor clearColor];
   [(MTATimerControlsCell *)self setBackgroundColor:v7];
@@ -45,36 +45,36 @@
 - (void)setupLayoutConstraints
 {
   v27 = objc_opt_new();
-  v3 = [(MTATimerControlsCell *)self controlsView];
-  v4 = [v3 leadingAnchor];
-  v5 = [(MTATimerControlsCell *)self contentView];
-  v6 = [v5 safeAreaLayoutGuide];
-  v7 = [v6 leadingAnchor];
-  v8 = [v4 constraintEqualToAnchor:v7];
+  controlsView = [(MTATimerControlsCell *)self controlsView];
+  leadingAnchor = [controlsView leadingAnchor];
+  contentView = [(MTATimerControlsCell *)self contentView];
+  safeAreaLayoutGuide = [contentView safeAreaLayoutGuide];
+  leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+  v8 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v27 addObject:v8];
 
-  v9 = [(MTATimerControlsCell *)self controlsView];
-  v10 = [v9 trailingAnchor];
-  v11 = [(MTATimerControlsCell *)self contentView];
-  v12 = [v11 safeAreaLayoutGuide];
-  v13 = [v12 trailingAnchor];
-  v14 = [v10 constraintEqualToAnchor:v13];
+  controlsView2 = [(MTATimerControlsCell *)self controlsView];
+  trailingAnchor = [controlsView2 trailingAnchor];
+  contentView2 = [(MTATimerControlsCell *)self contentView];
+  safeAreaLayoutGuide2 = [contentView2 safeAreaLayoutGuide];
+  trailingAnchor2 = [safeAreaLayoutGuide2 trailingAnchor];
+  v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v27 addObject:v14];
 
-  v15 = [(MTATimerControlsCell *)self controlsView];
-  v16 = [v15 topAnchor];
-  v17 = [(MTATimerControlsCell *)self contentView];
-  v18 = [v17 safeAreaLayoutGuide];
-  v19 = [v18 topAnchor];
-  v20 = [v16 constraintEqualToAnchor:v19];
+  controlsView3 = [(MTATimerControlsCell *)self controlsView];
+  topAnchor = [controlsView3 topAnchor];
+  contentView3 = [(MTATimerControlsCell *)self contentView];
+  safeAreaLayoutGuide3 = [contentView3 safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide3 topAnchor];
+  v20 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v27 addObject:v20];
 
-  v21 = [(MTATimerControlsCell *)self controlsView];
-  v22 = [v21 bottomAnchor];
-  v23 = [(MTATimerControlsCell *)self contentView];
-  v24 = [v23 safeAreaLayoutGuide];
-  v25 = [v24 bottomAnchor];
-  v26 = [v22 constraintEqualToAnchor:v25];
+  controlsView4 = [(MTATimerControlsCell *)self controlsView];
+  bottomAnchor = [controlsView4 bottomAnchor];
+  contentView4 = [(MTATimerControlsCell *)self contentView];
+  safeAreaLayoutGuide4 = [contentView4 safeAreaLayoutGuide];
+  bottomAnchor2 = [safeAreaLayoutGuide4 bottomAnchor];
+  v26 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v27 addObject:v26];
 
   [NSLayoutConstraint activateConstraints:v27];
@@ -82,18 +82,18 @@
 
 - (BOOL)edited
 {
-  v2 = [(MTATimerControlsCell *)self controlsView];
-  v3 = [v2 edited];
+  controlsView = [(MTATimerControlsCell *)self controlsView];
+  edited = [controlsView edited];
 
-  return v3;
+  return edited;
 }
 
 - (unint64_t)timerViewStyle
 {
-  v2 = [(MTATimerControlsCell *)self traitCollection];
-  v3 = [v2 horizontalSizeClass];
+  traitCollection = [(MTATimerControlsCell *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  if (v3 == 1)
+  if (horizontalSizeClass == 1)
   {
     return 1;
   }
@@ -104,24 +104,24 @@
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(MTATimerControlsCell *)self controlsView];
-  [v5 setControlsViewDelegate:v4];
+  delegateCopy = delegate;
+  controlsView = [(MTATimerControlsCell *)self controlsView];
+  [controlsView setControlsViewDelegate:delegateCopy];
 }
 
-- (void)setDuration:(double)a3
+- (void)setDuration:(double)duration
 {
-  v4 = [(MTATimerControlsCell *)self controlsView];
-  [v4 setCountDownDuration:a3];
+  controlsView = [(MTATimerControlsCell *)self controlsView];
+  [controlsView setCountDownDuration:duration];
 }
 
-- (void)setTimerToneName:(id)a3
+- (void)setTimerToneName:(id)name
 {
-  v4 = a3;
-  v5 = [(MTATimerControlsCell *)self controlsView];
-  [v5 setTimerToneName:v4];
+  nameCopy = name;
+  controlsView = [(MTATimerControlsCell *)self controlsView];
+  [controlsView setTimerToneName:nameCopy];
 }
 
 @end

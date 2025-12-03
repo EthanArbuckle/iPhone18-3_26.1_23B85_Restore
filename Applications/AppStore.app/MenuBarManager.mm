@@ -8,14 +8,14 @@
 
 - (void)storeAccountsDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_100685AAC();
 }
 
 - (void)rebuildMenu
 {
-  v2 = [objc_opt_self() mainSystem];
-  [v2 setNeedsRebuild];
+  mainSystem = [objc_opt_self() mainSystem];
+  [mainSystem setNeedsRebuild];
 }
 
 - (_TtC8AppStore14MenuBarManager)init

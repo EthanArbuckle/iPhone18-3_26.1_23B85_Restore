@@ -1,15 +1,15 @@
 @interface VKNavigationPuck
 - ($F24F406B2B787EFB06265DBA3D28CBD5)presentationCoordinate;
 - (VKEdgeInsets)annotationTrackingEdgeInsets;
-- (VKNavigationPuck)initWithAnimationRunner:(AnimationRunner *)a3;
+- (VKNavigationPuck)initWithAnimationRunner:(AnimationRunner *)runner;
 - (void)dealloc;
-- (void)runAnimation:(id)a3;
-- (void)setAnimatingToCoordinate:(BOOL)a3;
-- (void)setAnnotation:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setPresentationCoordinate:(id)a3;
-- (void)setStale:(BOOL)a3;
-- (void)setTracking:(BOOL)a3;
+- (void)runAnimation:(id)animation;
+- (void)setAnimatingToCoordinate:(BOOL)coordinate;
+- (void)setAnnotation:(id)annotation;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setPresentationCoordinate:(id)coordinate;
+- (void)setStale:(BOOL)stale;
+- (void)setTracking:(BOOL)tracking;
 @end
 
 @implementation VKNavigationPuck
@@ -32,9 +32,9 @@
   return result;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v9 = *MEMORY[0x1E69E9840];
   navigationPuck = self->_navigationPuck;
   if (GEOGetVectorKitVKDefaultLog_onceToken != -1)
@@ -46,7 +46,7 @@
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = "false";
-    if (v3)
+    if (enabledCopy)
     {
       v6 = "true";
     }
@@ -56,17 +56,17 @@
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "NavigationPuck set enabled: %s", &v7, 0xCu);
   }
 
-  navigationPuck[48] = v3;
+  navigationPuck[48] = enabledCopy;
 }
 
-- (void)setAnimatingToCoordinate:(BOOL)a3
+- (void)setAnimatingToCoordinate:(BOOL)coordinate
 {
-  if (self->_animatingToCoordinate != a3)
+  if (self->_animatingToCoordinate != coordinate)
   {
-    v3 = a3;
+    coordinateCopy = coordinate;
     [(VKNavigationPuck *)self presentationCoordinate];
-    self->_animatingToCoordinate = v3;
-    if (v3)
+    self->_animatingToCoordinate = coordinateCopy;
+    if (coordinateCopy)
     {
       navigationPuck = self->_navigationPuck;
       v5.f64[1] = v6;
@@ -76,14 +76,14 @@
   }
 }
 
-- (void)setTracking:(BOOL)a3
+- (void)setTracking:(BOOL)tracking
 {
-  if (self->_tracking != a3)
+  if (self->_tracking != tracking)
   {
-    v3 = a3;
+    trackingCopy = tracking;
     [(VKNavigationPuck *)self presentationCoordinate];
-    self->_tracking = v3;
-    if (v3)
+    self->_tracking = trackingCopy;
+    if (trackingCopy)
     {
       navigationPuck = self->_navigationPuck;
       v5.f64[1] = v6;
@@ -93,21 +93,21 @@
   }
 }
 
-- (void)setPresentationCoordinate:(id)a3
+- (void)setPresentationCoordinate:(id)coordinate
 {
   navigationPuck = self->_navigationPuck;
-  var1 = a3.var1;
-  *(navigationPuck + 8) = vmulq_f64(a3, vdupq_n_s64(0x3F91DF46A2529D39uLL));
+  var1 = coordinate.var1;
+  *(navigationPuck + 8) = vmulq_f64(coordinate, vdupq_n_s64(0x3F91DF46A2529D39uLL));
   *(navigationPuck + 3) = 0;
 }
 
-- (void)setAnnotation:(id)a3
+- (void)setAnnotation:(id)annotation
 {
-  v5 = a3;
-  if (self->_annotation != v5)
+  annotationCopy = annotation;
+  if (self->_annotation != annotationCopy)
   {
-    v11 = v5;
-    objc_storeStrong(&self->_annotation, a3);
+    v11 = annotationCopy;
+    objc_storeStrong(&self->_annotation, annotation);
     navigationPuck = self->_navigationPuck;
     [(VKAnnotation *)self->_annotation coordinate];
     v10 = v7;
@@ -116,17 +116,17 @@
     v8.f64[1] = v9;
     *(navigationPuck + 8) = vmulq_f64(v8, vdupq_n_s64(0x3F91DF46A2529D39uLL));
     *(navigationPuck + 3) = 0;
-    v5 = v11;
+    annotationCopy = v11;
   }
 }
 
-- (void)setStale:(BOOL)a3
+- (void)setStale:(BOOL)stale
 {
-  if (self->_stale != a3)
+  if (self->_stale != stale)
   {
     v10 = v4;
     v11 = v3;
-    if (a3)
+    if (stale)
     {
       v9 = 4004;
     }
@@ -137,17 +137,17 @@
     }
 
     [MEMORY[0x1E69A1598] captureUserAction:v9 target:505 value:{0, v10, v11, v5, v6}];
-    self->_stale = a3;
+    self->_stale = stale;
   }
 }
 
-- (void)runAnimation:(id)a3
+- (void)runAnimation:(id)animation
 {
-  v5 = a3;
+  animationCopy = animation;
   animationRunner = self->_animationRunner;
   if (animationRunner)
   {
-    md::AnimationRunner::runAnimation(animationRunner, v5);
+    md::AnimationRunner::runAnimation(animationRunner, animationCopy);
   }
 }
 
@@ -177,14 +177,14 @@
   [(VKNavigationPuck *)&v4 dealloc];
 }
 
-- (VKNavigationPuck)initWithAnimationRunner:(AnimationRunner *)a3
+- (VKNavigationPuck)initWithAnimationRunner:(AnimationRunner *)runner
 {
   v6.receiver = self;
   v6.super_class = VKNavigationPuck;
   v4 = [(VKNavigationPuck *)&v6 init];
   if (v4)
   {
-    v4->_animationRunner = a3;
+    v4->_animationRunner = runner;
     v4->_stale = 1;
     operator new();
   }

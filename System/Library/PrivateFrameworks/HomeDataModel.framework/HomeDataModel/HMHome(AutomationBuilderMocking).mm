@@ -7,7 +7,7 @@
 
 - (id)hdm_newEventTriggerBuilderWithName:()AutomationBuilderMocking events:
 {
-  v4 = [a1 newEventTriggerBuilderWithName:a3 events:a4 predicate:0];
+  v4 = [self newEventTriggerBuilderWithName:a3 events:a4 predicate:0];
 
   return v4;
 }
@@ -21,7 +21,7 @@
   v8[3] = &unk_1E83EFC48;
   v9 = v6;
   v7 = v6;
-  [a1 addEventTriggerFromBuilder:a3 completionHandler:v8];
+  [self addEventTriggerFromBuilder:a3 completionHandler:v8];
 }
 
 @end

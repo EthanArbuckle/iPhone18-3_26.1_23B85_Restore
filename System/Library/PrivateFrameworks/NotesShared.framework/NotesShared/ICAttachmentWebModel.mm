@@ -1,6 +1,6 @@
 @interface ICAttachmentWebModel
 - (BOOL)showThumbnailInNoteList;
-- (id)attributesForSharingHTMLWithTagName:(id *)a3 textContent:(id *)a4;
+- (id)attributesForSharingHTMLWithTagName:(id *)name textContent:(id *)content;
 - (id)searchableTextContent;
 @end
 
@@ -8,14 +8,14 @@
 
 - (BOOL)showThumbnailInNoteList
 {
-  v3 = [(ICAttachmentModel *)self attachment];
-  v4 = [v3 previewImages];
-  v5 = [v4 count];
+  attachment = [(ICAttachmentModel *)self attachment];
+  previewImages = [attachment previewImages];
+  v5 = [previewImages count];
 
   if (v5)
   {
-    v6 = [(ICAttachmentModel *)self attachment];
-    v7 = [v6 URL];
+    attachment2 = [(ICAttachmentModel *)self attachment];
+    v7 = [attachment2 URL];
 
     if ([v7 ic_isMapURL] & 1) != 0 || (objc_msgSend(v7, "ic_isiTunesURL"))
     {
@@ -38,34 +38,34 @@
 
 - (id)searchableTextContent
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v11.receiver = self;
   v11.super_class = ICAttachmentWebModel;
-  v4 = [(ICAttachmentModel *)&v11 searchableTextContent];
-  [v3 ic_addNonNilObject:v4];
+  searchableTextContent = [(ICAttachmentModel *)&v11 searchableTextContent];
+  [array ic_addNonNilObject:searchableTextContent];
 
-  v5 = [(ICAttachmentModel *)self attachment];
-  v6 = [v5 title];
-  [v3 ic_addNonNilObject:v6];
+  attachment = [(ICAttachmentModel *)self attachment];
+  title = [attachment title];
+  [array ic_addNonNilObject:title];
 
-  v7 = [(ICAttachmentModel *)self attachment];
-  v8 = [v7 quotedText];
-  [v3 ic_addNonNilObject:v8];
+  attachment2 = [(ICAttachmentModel *)self attachment];
+  quotedText = [attachment2 quotedText];
+  [array ic_addNonNilObject:quotedText];
 
-  v9 = [v3 componentsJoinedByString:@" "];
+  v9 = [array componentsJoinedByString:@" "];
 
   return v9;
 }
 
-- (id)attributesForSharingHTMLWithTagName:(id *)a3 textContent:(id *)a4
+- (id)attributesForSharingHTMLWithTagName:(id *)name textContent:(id *)content
 {
-  v6 = [(ICAttachmentModel *)self attachment];
-  v7 = [v6 urlString];
+  attachment = [(ICAttachmentModel *)self attachment];
+  urlString = [attachment urlString];
 
-  *a3 = @"a";
-  v8 = v7;
-  *a4 = v7;
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"href=%@", v7];
+  *name = @"a";
+  v8 = urlString;
+  *content = urlString;
+  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"href=%@", urlString];
 
   return v9;
 }

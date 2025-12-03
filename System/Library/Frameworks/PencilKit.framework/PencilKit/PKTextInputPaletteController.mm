@@ -7,21 +7,21 @@
 - (BOOL)isPaletteVisible;
 - (CGRect)editingOverlayContainerSceneBounds;
 - (PKTextInputPaletteController)init;
-- (PKTextInputPaletteController)initWithTextInputSettings:(id)a3;
+- (PKTextInputPaletteController)initWithTextInputSettings:(id)settings;
 - (PKTextInputPaletteControllerDelegate)delegate;
 - (UIWindowScene)windowScene;
 - (id)_paletteControllerContainerView;
-- (id)paletteTapToRadarCommandConfiguration:(id)a3;
+- (id)paletteTapToRadarCommandConfiguration:(id)configuration;
 - (void)_peformPaletteVisibilityUpdate;
-- (void)_setWritingStateActive:(BOOL)a3;
-- (void)_setupPaletteControllerIfNeededWithView:(id)a3 wantsPaletteVisible:(BOOL)a4;
+- (void)_setWritingStateActive:(BOOL)active;
+- (void)_setupPaletteControllerIfNeededWithView:(id)view wantsPaletteVisible:(BOOL)visible;
 - (void)dealloc;
-- (void)editingOverlayContainerDidChangeToSceneBounds:(CGRect)a3;
-- (void)floatingKeyboardControllerWillHide:(id)a3;
-- (void)floatingKeyboardControllerWillShow:(id)a3;
-- (void)paletteControllerFloatingKeyboardWillHide:(id)a3;
-- (void)paletteControllerFloatingKeyboardWillShow:(id)a3;
-- (void)setEditingOverlayContainerSceneBounds:(CGRect)a3;
+- (void)editingOverlayContainerDidChangeToSceneBounds:(CGRect)bounds;
+- (void)floatingKeyboardControllerWillHide:(id)hide;
+- (void)floatingKeyboardControllerWillShow:(id)show;
+- (void)paletteControllerFloatingKeyboardWillHide:(id)hide;
+- (void)paletteControllerFloatingKeyboardWillShow:(id)show;
+- (void)setEditingOverlayContainerSceneBounds:(CGRect)bounds;
 - (void)updateFirstResponderVisibility;
 @end
 
@@ -35,16 +35,16 @@
   return v4;
 }
 
-- (PKTextInputPaletteController)initWithTextInputSettings:(id)a3
+- (PKTextInputPaletteController)initWithTextInputSettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   v19.receiver = self;
   v19.super_class = PKTextInputPaletteController;
   v6 = [(PKTextInputPaletteController *)&v19 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->__textInputSettings, a3);
+    objc_storeStrong(&v6->__textInputSettings, settings);
     v8 = objc_alloc_init(PKTextInputWindowFirstResponderController);
     windowFirstResponderController = v7->__windowFirstResponderController;
     v7->__windowFirstResponderController = v8;
@@ -55,15 +55,15 @@
     v7->__floatingKeyboardController = v10;
 
     [(PKPaletteFloatingKeyboardController *)v7->__floatingKeyboardController setDelegate:v7];
-    v12 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v12 bounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen bounds];
     v7->_editingOverlayContainerSceneBounds.origin.x = v13;
     v7->_editingOverlayContainerSceneBounds.origin.y = v14;
     v7->_editingOverlayContainerSceneBounds.size.width = v15;
     v7->_editingOverlayContainerSceneBounds.size.height = v16;
 
-    v17 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v17 addObserver:v7 selector:sel__recognitionLocaleIdentifierDidChange_ name:@"PKTextInputSettingsRecognitionLocaleIdentifierDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__recognitionLocaleIdentifierDidChange_ name:@"PKTextInputSettingsRecognitionLocaleIdentifierDidChangeNotification" object:0];
   }
 
   return v7;
@@ -71,21 +71,21 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"PKTextInputSettingsRecognitionLocaleIdentifierDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"PKTextInputSettingsRecognitionLocaleIdentifierDidChangeNotification" object:0];
 
   v4.receiver = self;
   v4.super_class = PKTextInputPaletteController;
   [(PKTextInputPaletteController *)&v4 dealloc];
 }
 
-- (void)setEditingOverlayContainerSceneBounds:(CGRect)a3
+- (void)setEditingOverlayContainerSceneBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!CGRectEqualToRect(self->_editingOverlayContainerSceneBounds, a3))
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  if (!CGRectEqualToRect(self->_editingOverlayContainerSceneBounds, bounds))
   {
     self->_editingOverlayContainerSceneBounds.origin.x = x;
     self->_editingOverlayContainerSceneBounds.origin.y = y;
@@ -96,13 +96,13 @@
   }
 }
 
-- (void)_setWritingStateActive:(BOOL)a3
+- (void)_setWritingStateActive:(BOOL)active
 {
   writingStateActive = self->__writingStateActive;
-  if (writingStateActive != a3)
+  if (writingStateActive != active)
   {
-    self->__writingStateActive = a3;
-    if (writingStateActive || !a3)
+    self->__writingStateActive = active;
+    if (writingStateActive || !active)
     {
       [(PKTextInputPaletteController *)self _updatePaletteVisibility];
     }
@@ -116,18 +116,18 @@
 
 - (UIWindowScene)windowScene
 {
-  v3 = [(PKTextInputPaletteController *)self delegate];
-  v4 = [v3 paletteControllerContainerView:self];
-  v5 = [v4 window];
-  v6 = [v5 windowScene];
+  delegate = [(PKTextInputPaletteController *)self delegate];
+  v4 = [delegate paletteControllerContainerView:self];
+  window = [v4 window];
+  windowScene = [window windowScene];
 
-  return v6;
+  return windowScene;
 }
 
 - (id)_paletteControllerContainerView
 {
-  v3 = [(PKTextInputPaletteController *)self delegate];
-  v4 = [v3 paletteControllerContainerView:self];
+  delegate = [(PKTextInputPaletteController *)self delegate];
+  v4 = [delegate paletteControllerContainerView:self];
 
   return v4;
 }
@@ -139,55 +139,55 @@
     return 0;
   }
 
-  v4 = [(PKTextInputPaletteController *)self _textInputSettings];
-  v5 = [v4 isScribbleActive];
+  _textInputSettings = [(PKTextInputPaletteController *)self _textInputSettings];
+  isScribbleActive = [_textInputSettings isScribbleActive];
 
-  v6 = [(PKTextInputPaletteController *)self _textInputSettings];
-  LOBYTE(v4) = [v6 UCBPaletteEnabled];
+  _textInputSettings2 = [(PKTextInputPaletteController *)self _textInputSettings];
+  LOBYTE(_textInputSettings) = [_textInputSettings2 UCBPaletteEnabled];
 
-  return v5 & v4;
+  return isScribbleActive & _textInputSettings;
 }
 
 - (void)updateFirstResponderVisibility
 {
-  v4 = [(PKTextInputPaletteController *)self _windowFirstResponderController];
-  v3 = [(PKTextInputPaletteController *)self windowScene];
-  [v4 updateFirstResponderFromWindowScene:v3 sendDelegateCallback:1];
+  _windowFirstResponderController = [(PKTextInputPaletteController *)self _windowFirstResponderController];
+  windowScene = [(PKTextInputPaletteController *)self windowScene];
+  [_windowFirstResponderController updateFirstResponderFromWindowScene:windowScene sendDelegateCallback:1];
 }
 
 - (BOOL)isPaletteVisible
 {
-  v2 = [(PKTextInputPaletteController *)self _paletteController];
-  v3 = [v2 isPaletteVisible];
+  _paletteController = [(PKTextInputPaletteController *)self _paletteController];
+  isPaletteVisible = [_paletteController isPaletteVisible];
 
-  return v3;
+  return isPaletteVisible;
 }
 
 - (BOOL)_isFirstResponderEditableTextInputWithPencilTextInputSource
 {
-  v2 = [(PKTextInputPaletteController *)self _windowFirstResponderController];
-  v3 = [v2 firstResponder];
-  v4 = [v3 isEditableTextInputWithPencilTextInputSource];
+  _windowFirstResponderController = [(PKTextInputPaletteController *)self _windowFirstResponderController];
+  firstResponder = [_windowFirstResponderController firstResponder];
+  isEditableTextInputWithPencilTextInputSource = [firstResponder isEditableTextInputWithPencilTextInputSource];
 
-  return v4;
+  return isEditableTextInputWithPencilTextInputSource;
 }
 
 - (BOOL)_isFirstResponderVisible
 {
-  v2 = [(PKTextInputPaletteController *)self _windowFirstResponderController];
-  v3 = [v2 firstResponder];
-  v4 = [v3 isVisible];
+  _windowFirstResponderController = [(PKTextInputPaletteController *)self _windowFirstResponderController];
+  firstResponder = [_windowFirstResponderController firstResponder];
+  isVisible = [firstResponder isVisible];
 
-  return v4;
+  return isVisible;
 }
 
 - (BOOL)_isFirstResponderInputAssistantEnabled
 {
-  v2 = [(PKTextInputPaletteController *)self _windowFirstResponderController];
-  v3 = [v2 firstResponder];
-  v4 = [v3 disableInputAssistant];
+  _windowFirstResponderController = [(PKTextInputPaletteController *)self _windowFirstResponderController];
+  firstResponder = [_windowFirstResponderController firstResponder];
+  disableInputAssistant = [firstResponder disableInputAssistant];
 
-  return v4 ^ 1;
+  return disableInputAssistant ^ 1;
 }
 
 - (BOOL)_shouldPaletteBeVisible
@@ -197,17 +197,17 @@
     return 0;
   }
 
-  v3 = [(PKTextInputPaletteController *)self windowScene];
-  v4 = [v3 _isKeyWindowScene];
+  windowScene = [(PKTextInputPaletteController *)self windowScene];
+  _isKeyWindowScene = [windowScene _isKeyWindowScene];
 
-  return v4;
+  return _isKeyWindowScene;
 }
 
 - (void)_peformPaletteVisibilityUpdate
 {
-  v3 = [(PKTextInputPaletteController *)self _shouldPaletteBeVisible];
-  v4 = [(PKTextInputPaletteController *)self _paletteController];
-  v5 = v3 ^ [v4 isPaletteVisible];
+  _shouldPaletteBeVisible = [(PKTextInputPaletteController *)self _shouldPaletteBeVisible];
+  _paletteController = [(PKTextInputPaletteController *)self _paletteController];
+  v5 = _shouldPaletteBeVisible ^ [_paletteController isPaletteVisible];
 
   if (v5 == 1)
   {
@@ -226,23 +226,23 @@
     }
   }
 
-  v8 = [(PKTextInputPaletteController *)self _paletteControllerContainerView];
-  [(PKTextInputPaletteController *)self _setupPaletteControllerIfNeededWithView:v8 wantsPaletteVisible:v3];
-  v9 = [(PKTextInputPaletteController *)self _windowFirstResponderController];
-  v10 = [v9 firstResponder];
-  v11 = [(PKTextInputPaletteController *)self _paletteController];
-  [v11 setFirstResponder:v10];
+  _paletteControllerContainerView = [(PKTextInputPaletteController *)self _paletteControllerContainerView];
+  [(PKTextInputPaletteController *)self _setupPaletteControllerIfNeededWithView:_paletteControllerContainerView wantsPaletteVisible:_shouldPaletteBeVisible];
+  _windowFirstResponderController = [(PKTextInputPaletteController *)self _windowFirstResponderController];
+  firstResponder = [_windowFirstResponderController firstResponder];
+  _paletteController2 = [(PKTextInputPaletteController *)self _paletteController];
+  [_paletteController2 setFirstResponder:firstResponder];
 
   [(PKTextInputPaletteController *)self editingOverlayContainerSceneBounds];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [(PKTextInputPaletteController *)self _paletteController];
-  [v20 setAdjustedWindowSceneBounds:{v13, v15, v17, v19}];
+  _paletteController3 = [(PKTextInputPaletteController *)self _paletteController];
+  [_paletteController3 setAdjustedWindowSceneBounds:{v13, v15, v17, v19}];
 
-  v21 = [(PKTextInputPaletteController *)self _paletteController];
-  [v21 setPaletteVisible:v3 animated:1 completion:0];
+  _paletteController4 = [(PKTextInputPaletteController *)self _paletteController];
+  [_paletteController4 setPaletteVisible:_shouldPaletteBeVisible animated:1 completion:0];
 
   if (v5)
   {
@@ -262,12 +262,12 @@
   }
 }
 
-- (void)_setupPaletteControllerIfNeededWithView:(id)a3 wantsPaletteVisible:(BOOL)a4
+- (void)_setupPaletteControllerIfNeededWithView:(id)view wantsPaletteVisible:(BOOL)visible
 {
-  v4 = a4;
+  visibleCopy = visible;
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6 && v4)
+  viewCopy = view;
+  if (!viewCopy && visibleCopy)
   {
     v7 = os_log_create("com.apple.pencilkit", "PencilTextInput");
     if (os_log_type_enabled(&v7->super, OS_LOG_TYPE_ERROR))
@@ -281,18 +281,18 @@ LABEL_32:
     goto LABEL_33;
   }
 
-  v8 = [(PKTextInputPaletteController *)self _paletteController];
-  if (!v6 || v8)
+  _paletteController = [(PKTextInputPaletteController *)self _paletteController];
+  if (!viewCopy || _paletteController)
   {
   }
 
-  else if (v4)
+  else if (visibleCopy)
   {
     v9 = os_log_create("com.apple.pencilkit", "PencilTextInput");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
       v24 = 138412290;
-      v25 = v6;
+      v25 = viewCopy;
       _os_log_debug_impl(&dword_1C7CCA000, v9, OS_LOG_TYPE_DEBUG, "Creating new palette controller to install in view: %@", &v24, 0xCu);
     }
 
@@ -313,11 +313,11 @@ LABEL_32:
     v12 = objc_alloc_init(PKPaletteController);
     [(PKTextInputPaletteController *)self set_paletteController:v12];
 
-    v13 = [(PKTextInputPaletteController *)self _paletteController];
-    [v13 setDelegate:self];
+    _paletteController2 = [(PKTextInputPaletteController *)self _paletteController];
+    [_paletteController2 setDelegate:self];
 
-    v14 = [(PKTextInputPaletteController *)self _paletteController];
-    [v14 installInView:v6];
+    _paletteController3 = [(PKTextInputPaletteController *)self _paletteController];
+    [_paletteController3 installInView:viewCopy];
 
     v15 = _PKSignpostLog();
     if (os_signpost_enabled(v15))
@@ -334,15 +334,15 @@ LABEL_32:
     }
 
     v7 = [[PKPaletteTapToRadarCommand alloc] initWithDelegate:self];
-    v17 = [(PKTextInputPaletteController *)self _paletteController];
-    [v17 setTapToRadarCommand:v7];
+    _paletteController4 = [(PKTextInputPaletteController *)self _paletteController];
+    [_paletteController4 setTapToRadarCommand:v7];
 
     goto LABEL_32;
   }
 
-  v18 = [(PKTextInputPaletteController *)self _paletteController];
+  _paletteController5 = [(PKTextInputPaletteController *)self _paletteController];
 
-  if (!v6 && v18)
+  if (!viewCopy && _paletteController5)
   {
     v19 = os_log_create("com.apple.pencilkit", "PencilTextInput");
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -365,8 +365,8 @@ LABEL_32:
       _os_log_impl(&dword_1C7CCA000, v21, OS_LOG_TYPE_INFO, "BEGIN TextInputPaletteTearDown", &v24, 2u);
     }
 
-    v22 = [(PKTextInputPaletteController *)self _paletteController];
-    [v22 tearDown];
+    _paletteController6 = [(PKTextInputPaletteController *)self _paletteController];
+    [_paletteController6 tearDown];
 
     [(PKTextInputPaletteController *)self set_paletteController:0];
     v23 = _PKSignpostLog();
@@ -389,22 +389,22 @@ LABEL_32:
 LABEL_33:
 }
 
-- (void)editingOverlayContainerDidChangeToSceneBounds:(CGRect)a3
+- (void)editingOverlayContainerDidChangeToSceneBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(PKTextInputPaletteController *)self _paletteController];
-  v7 = [v8 tapToRadarCommand];
-  [v7 editingOverlayContainerDidChangeToSceneBounds:{x, y, width, height}];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  _paletteController = [(PKTextInputPaletteController *)self _paletteController];
+  tapToRadarCommand = [_paletteController tapToRadarCommand];
+  [tapToRadarCommand editingOverlayContainerDidChangeToSceneBounds:{x, y, width, height}];
 }
 
-- (id)paletteTapToRadarCommandConfiguration:(id)a3
+- (id)paletteTapToRadarCommandConfiguration:(id)configuration
 {
   v4 = objc_alloc_init(PKPaletteTapToRadarConfiguration);
-  v5 = [(PKTextInputPaletteController *)self delegate];
-  v6 = [v5 paletteControllerDebugSharpenerLog:self];
+  delegate = [(PKTextInputPaletteController *)self delegate];
+  v6 = [delegate paletteControllerDebugSharpenerLog:self];
 
   if ([v6 hasContent])
   {
@@ -417,50 +417,50 @@ LABEL_33:
   }
 
   [(PKPaletteTapToRadarConfiguration *)v4 setDebugSharpenerLog:v7];
-  v8 = [(PKTextInputPaletteController *)self _paletteControllerContainerView];
-  v9 = [v8 window];
-  v10 = [v9 rootViewController];
-  v11 = [v10 childViewControllers];
-  v12 = [v11 firstObject];
-  [(PKPaletteTapToRadarConfiguration *)v4 setPresentationViewController:v12];
+  _paletteControllerContainerView = [(PKTextInputPaletteController *)self _paletteControllerContainerView];
+  window = [_paletteControllerContainerView window];
+  rootViewController = [window rootViewController];
+  childViewControllers = [rootViewController childViewControllers];
+  firstObject = [childViewControllers firstObject];
+  [(PKPaletteTapToRadarConfiguration *)v4 setPresentationViewController:firstObject];
 
   return v4;
 }
 
-- (void)paletteControllerFloatingKeyboardWillHide:(id)a3
+- (void)paletteControllerFloatingKeyboardWillHide:(id)hide
 {
-  v4 = [(PKTextInputPaletteController *)self delegate];
-  [v4 textInputPaletteControllerFloatingKeyboardWillHide:self];
+  delegate = [(PKTextInputPaletteController *)self delegate];
+  [delegate textInputPaletteControllerFloatingKeyboardWillHide:self];
 
-  v5 = [(PKTextInputPaletteController *)self _windowFirstResponderController];
-  [v5 setPaletteFloatingMode:0];
+  _windowFirstResponderController = [(PKTextInputPaletteController *)self _windowFirstResponderController];
+  [_windowFirstResponderController setPaletteFloatingMode:0];
 }
 
-- (void)paletteControllerFloatingKeyboardWillShow:(id)a3
+- (void)paletteControllerFloatingKeyboardWillShow:(id)show
 {
-  v4 = [(PKTextInputPaletteController *)self _windowFirstResponderController];
-  [v4 setPaletteFloatingMode:1];
+  _windowFirstResponderController = [(PKTextInputPaletteController *)self _windowFirstResponderController];
+  [_windowFirstResponderController setPaletteFloatingMode:1];
 
-  v5 = [(PKTextInputPaletteController *)self delegate];
-  [v5 textInputPaletteControllerFloatingKeyboardWillShow:self];
+  delegate = [(PKTextInputPaletteController *)self delegate];
+  [delegate textInputPaletteControllerFloatingKeyboardWillShow:self];
 }
 
-- (void)floatingKeyboardControllerWillShow:(id)a3
+- (void)floatingKeyboardControllerWillShow:(id)show
 {
-  v4 = [(PKTextInputPaletteController *)self delegate];
-  [v4 textInputPaletteControllerFloatingKeyboardWillHide:self];
+  delegate = [(PKTextInputPaletteController *)self delegate];
+  [delegate textInputPaletteControllerFloatingKeyboardWillHide:self];
 
-  v5 = [(PKTextInputPaletteController *)self _windowFirstResponderController];
-  [v5 setPaletteFloatingMode:0];
+  _windowFirstResponderController = [(PKTextInputPaletteController *)self _windowFirstResponderController];
+  [_windowFirstResponderController setPaletteFloatingMode:0];
 }
 
-- (void)floatingKeyboardControllerWillHide:(id)a3
+- (void)floatingKeyboardControllerWillHide:(id)hide
 {
-  v4 = [(PKTextInputPaletteController *)self _windowFirstResponderController];
-  [v4 setPaletteFloatingMode:1];
+  _windowFirstResponderController = [(PKTextInputPaletteController *)self _windowFirstResponderController];
+  [_windowFirstResponderController setPaletteFloatingMode:1];
 
-  v5 = [(PKTextInputPaletteController *)self delegate];
-  [v5 textInputPaletteControllerFloatingKeyboardWillShow:self];
+  delegate = [(PKTextInputPaletteController *)self delegate];
+  [delegate textInputPaletteControllerFloatingKeyboardWillShow:self];
 }
 
 - (PKTextInputPaletteControllerDelegate)delegate

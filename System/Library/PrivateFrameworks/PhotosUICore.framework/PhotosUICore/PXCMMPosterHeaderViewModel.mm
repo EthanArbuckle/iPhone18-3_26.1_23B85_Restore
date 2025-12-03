@@ -1,67 +1,67 @@
 @interface PXCMMPosterHeaderViewModel
 - (PXCMMPosterHeaderViewModel)init;
-- (void)performChanges:(id)a3;
-- (void)setAsset:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setMediaProvider:(id)a3;
-- (void)setShowStatusCheckmark:(BOOL)a3;
-- (void)setStatusString:(id)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)performChanges:(id)changes;
+- (void)setAsset:(id)asset;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setMediaProvider:(id)provider;
+- (void)setShowStatusCheckmark:(BOOL)checkmark;
+- (void)setStatusString:(id)string;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTitle:(id)title;
 @end
 
 @implementation PXCMMPosterHeaderViewModel
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  if (self->_highlighted != a3)
+  if (self->_highlighted != highlighted)
   {
-    self->_highlighted = a3;
+    self->_highlighted = highlighted;
     [(PXCMMPosterHeaderViewModel *)self signalChange:64];
   }
 }
 
-- (void)setMediaProvider:(id)a3
+- (void)setMediaProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_mediaProvider != v5)
+  providerCopy = provider;
+  if (self->_mediaProvider != providerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_mediaProvider, a3);
+    v6 = providerCopy;
+    objc_storeStrong(&self->_mediaProvider, provider);
     [(PXCMMPosterHeaderViewModel *)self signalChange:32];
-    v5 = v6;
+    providerCopy = v6;
   }
 }
 
-- (void)setAsset:(id)a3
+- (void)setAsset:(id)asset
 {
-  v5 = a3;
-  if (self->_asset != v5)
+  assetCopy = asset;
+  if (self->_asset != assetCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_asset, a3);
+    v6 = assetCopy;
+    objc_storeStrong(&self->_asset, asset);
     [(PXCMMPosterHeaderViewModel *)self signalChange:16];
-    v5 = v6;
+    assetCopy = v6;
   }
 }
 
-- (void)setShowStatusCheckmark:(BOOL)a3
+- (void)setShowStatusCheckmark:(BOOL)checkmark
 {
-  if (self->_showStatusCheckmark != a3)
+  if (self->_showStatusCheckmark != checkmark)
   {
-    self->_showStatusCheckmark = a3;
+    self->_showStatusCheckmark = checkmark;
     [(PXCMMPosterHeaderViewModel *)self signalChange:8];
   }
 }
 
-- (void)setStatusString:(id)a3
+- (void)setStatusString:(id)string
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_statusString != v4)
+  stringCopy = string;
+  v5 = stringCopy;
+  if (self->_statusString != stringCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)v4 isEqualToString:?];
+    v9 = stringCopy;
+    v6 = [(NSString *)stringCopy isEqualToString:?];
     v5 = v9;
     if (!v6)
     {
@@ -75,22 +75,22 @@
   }
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v5 = a3;
-  if (!v5)
+  subtitleCopy = subtitle;
+  if (!subtitleCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXCMMPosterHeaderViewModel.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"subtitle"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMPosterHeaderViewModel.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"subtitle"}];
 
-    v5 = 0;
+    subtitleCopy = 0;
   }
 
-  if (self->_subtitle != v5)
+  if (self->_subtitle != subtitleCopy)
   {
-    v10 = v5;
-    v6 = [(NSString *)v5 isEqualToString:?];
-    v5 = v10;
+    v10 = subtitleCopy;
+    v6 = [(NSString *)subtitleCopy isEqualToString:?];
+    subtitleCopy = v10;
     if (!v6)
     {
       v7 = [(NSString *)v10 copy];
@@ -98,27 +98,27 @@
       self->_subtitle = v7;
 
       [(PXCMMPosterHeaderViewModel *)self signalChange:2];
-      v5 = v10;
+      subtitleCopy = v10;
     }
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v5 = a3;
-  if (!v5)
+  titleCopy = title;
+  if (!titleCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXCMMPosterHeaderViewModel.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"title"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMPosterHeaderViewModel.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"title"}];
 
-    v5 = 0;
+    titleCopy = 0;
   }
 
-  if (self->_title != v5)
+  if (self->_title != titleCopy)
   {
-    v10 = v5;
-    v6 = [(NSString *)v5 isEqualToString:?];
-    v5 = v10;
+    v10 = titleCopy;
+    v6 = [(NSString *)titleCopy isEqualToString:?];
+    titleCopy = v10;
     if (!v6)
     {
       v7 = [(NSString *)v10 copy];
@@ -126,16 +126,16 @@
       self->_title = v7;
 
       [(PXCMMPosterHeaderViewModel *)self signalChange:1];
-      v5 = v10;
+      titleCopy = v10;
     }
   }
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = PXCMMPosterHeaderViewModel;
-  [(PXCMMPosterHeaderViewModel *)&v3 performChanges:a3];
+  [(PXCMMPosterHeaderViewModel *)&v3 performChanges:changes];
 }
 
 - (PXCMMPosterHeaderViewModel)init

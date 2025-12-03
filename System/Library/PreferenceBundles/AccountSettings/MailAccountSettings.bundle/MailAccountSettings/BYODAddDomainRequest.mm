@@ -1,27 +1,27 @@
 @interface BYODAddDomainRequest
-- (BYODAddDomainRequest)initWithAccount:(id)a3 accountStore:(id)a4 domain:(id)a5 familyFlow:(BOOL)a6 hasEmail:(BOOL)a7;
+- (BYODAddDomainRequest)initWithAccount:(id)account accountStore:(id)store domain:(id)domain familyFlow:(BOOL)flow hasEmail:(BOOL)email;
 - (id)bodyDictionary;
 - (id)urlString;
-- (void)performRequestWithCallback:(id)a3;
+- (void)performRequestWithCallback:(id)callback;
 @end
 
 @implementation BYODAddDomainRequest
 
-- (BYODAddDomainRequest)initWithAccount:(id)a3 accountStore:(id)a4 domain:(id)a5 familyFlow:(BOOL)a6 hasEmail:(BOOL)a7
+- (BYODAddDomainRequest)initWithAccount:(id)account accountStore:(id)store domain:(id)domain familyFlow:(BOOL)flow hasEmail:(BOOL)email
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = [(BYODAddDomainRequest *)self urlString];
+  accountCopy = account;
+  storeCopy = store;
+  domainCopy = domain;
+  urlString = [(BYODAddDomainRequest *)self urlString];
   v18.receiver = self;
   v18.super_class = BYODAddDomainRequest;
-  v16 = [(BYODRequest *)&v18 initWithURLString:v15 accountStore:v13 appleAccount:v12 httpRequestType:@"POST" requestBody:0 httpHeader:0];
+  v16 = [(BYODRequest *)&v18 initWithURLString:urlString accountStore:storeCopy appleAccount:accountCopy httpRequestType:@"POST" requestBody:0 httpHeader:0];
 
   if (v16)
   {
-    objc_storeStrong(&_domainName, a5);
-    _isFamilyFlow = a6;
-    _hasEmail = a7;
+    objc_storeStrong(&_domainName, domain);
+    _isFamilyFlow = flow;
+    _hasEmail = email;
   }
 
   return v16;
@@ -29,21 +29,21 @@
 
 - (id)urlString
 {
-  v2 = [(BYODRequest *)self iCloudAppleAccount];
-  v3 = [v2 propertiesForDataclass:@"com.apple.Dataclass.PremiumMailSettings"];
+  iCloudAppleAccount = [(BYODRequest *)self iCloudAppleAccount];
+  v3 = [iCloudAppleAccount propertiesForDataclass:@"com.apple.Dataclass.PremiumMailSettings"];
   v4 = [v3 objectForKeyedSubscript:@"addCustomDomainURL"];
 
   return v4;
 }
 
-- (void)performRequestWithCallback:(id)a3
+- (void)performRequestWithCallback:(id)callback
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_599A8;
   v5[3] = &unk_B97F0;
-  v6 = a3;
-  v4 = v6;
+  callbackCopy = callback;
+  v4 = callbackCopy;
   [(BYODRequest *)self performRequestWithHandler:v5];
 }
 

@@ -1,24 +1,24 @@
 @interface BKDisplayRenderOverlayPersistenceCoordinator
 + (BKDisplayRenderOverlayPersistenceCoordinator)sharedInstance;
 - (BKDisplayRenderOverlayPersistenceCoordinator)init;
-- (BOOL)destroyOverlay:(id)a3;
-- (BOOL)saveOverlay:(id)a3;
-- (id)_fileNameForOverlay:(id)a3;
-- (id)_filePathForOverlay:(id)a3;
+- (BOOL)destroyOverlay:(id)overlay;
+- (BOOL)saveOverlay:(id)overlay;
+- (id)_fileNameForOverlay:(id)overlay;
+- (id)_filePathForOverlay:(id)overlay;
 - (id)rebuildPersistentOverlays;
 @end
 
 @implementation BKDisplayRenderOverlayPersistenceCoordinator
 
-- (id)_fileNameForOverlay:(id)a3
+- (id)_fileNameForOverlay:(id)overlay
 {
-  v3 = a3;
-  v4 = [v3 descriptor];
-  v5 = [v4 displayUUID];
-  v6 = v5;
-  if (v5)
+  overlayCopy = overlay;
+  descriptor = [overlayCopy descriptor];
+  displayUUID = [descriptor displayUUID];
+  v6 = displayUUID;
+  if (displayUUID)
   {
-    v7 = v5;
+    v7 = displayUUID;
   }
 
   else
@@ -26,16 +26,16 @@
     v7 = @"main";
   }
 
-  v8 = [v3 name];
+  name = [overlayCopy name];
 
-  v9 = [NSString stringWithFormat:@"%@|%@", v7, v8];
+  v9 = [NSString stringWithFormat:@"%@|%@", v7, name];
 
   return v9;
 }
 
-- (id)_filePathForOverlay:(id)a3
+- (id)_filePathForOverlay:(id)overlay
 {
-  v4 = [(BKDisplayRenderOverlayPersistenceCoordinator *)self _fileNameForOverlay:a3];
+  v4 = [(BKDisplayRenderOverlayPersistenceCoordinator *)self _fileNameForOverlay:overlay];
   rootPersistencePath = self->_rootPersistencePath;
   v6 = [v4 stringByAppendingPathExtension:@"libitmap"];
   v7 = [(NSString *)rootPersistencePath stringByAppendingPathComponent:v6];
@@ -43,9 +43,9 @@
   return v7;
 }
 
-- (BOOL)destroyOverlay:(id)a3
+- (BOOL)destroyOverlay:(id)overlay
 {
-  v3 = [(BKDisplayRenderOverlayPersistenceCoordinator *)self _filePathForOverlay:a3];
+  v3 = [(BKDisplayRenderOverlayPersistenceCoordinator *)self _filePathForOverlay:overlay];
   if (v3)
   {
     v4 = +[NSFileManager defaultManager];
@@ -60,25 +60,25 @@
   return v5;
 }
 
-- (BOOL)saveOverlay:(id)a3
+- (BOOL)saveOverlay:(id)overlay
 {
-  v4 = a3;
-  if (v4)
+  overlayCopy = overlay;
+  if (overlayCopy)
   {
     v5 = BKLogDisplay();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      v33 = [v4 name];
+      name = [overlayCopy name];
       *buf = 138543362;
-      v41 = v33;
+      v41 = name;
       _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[BKDisplayRenderOverlayPersistenceCoordinator] Persisting overlay: %{public}@", buf, 0xCu);
     }
 
-    v6 = [v4 _persistenceData];
-    v7 = [v6 bs_secureEncoded];
+    _persistenceData = [overlayCopy _persistenceData];
+    bs_secureEncoded = [_persistenceData bs_secureEncoded];
 
-    v8 = [(BKDisplayRenderOverlayPersistenceCoordinator *)self _fileNameForOverlay:v4];
-    v36 = [(BKDisplayRenderOverlayPersistenceCoordinator *)self _filePathForOverlay:v4];
+    v8 = [(BKDisplayRenderOverlayPersistenceCoordinator *)self _fileNameForOverlay:overlayCopy];
+    v36 = [(BKDisplayRenderOverlayPersistenceCoordinator *)self _filePathForOverlay:overlayCopy];
     v9 = +[NSFileManager defaultManager];
     v48 = NSFilePosixPermissions;
     v49 = &off_100107BB0;
@@ -151,7 +151,7 @@ LABEL_34:
     }
 
     v26 = v36;
-    if ([v9 createFileAtPath:v25 contents:v7 attributes:v22])
+    if ([v9 createFileAtPath:v25 contents:bs_secureEncoded attributes:v22])
     {
       v37 = v12;
       v27 = [v9 moveItemAtPath:v25 toPath:v36 error:&v37];
@@ -225,7 +225,7 @@ LABEL_35:
 {
   v23 = +[NSMutableArray array];
   v3 = +[NSFileManager defaultManager];
-  v24 = self;
+  selfCopy = self;
   v4 = [v3 enumeratorAtPath:self->_rootPersistencePath];
 
   v29 = 0u;
@@ -252,7 +252,7 @@ LABEL_35:
         v10 = *(*(&v27 + 1) + 8 * i);
         if ([v10 hasSuffix:{@"libitmap", v22}])
         {
-          v11 = [(NSString *)v24->_rootPersistencePath stringByAppendingPathComponent:v10];
+          v11 = [(NSString *)selfCopy->_rootPersistencePath stringByAppendingPathComponent:v10];
           v12 = [NSData alloc];
           v26 = 0;
           v13 = [v12 initWithContentsOfFile:v11 options:8 error:&v26];
@@ -260,14 +260,14 @@ LABEL_35:
           v15 = +[_BKDisplayRenderOverlayPersistenceData classesRequiredToDecode];
           v16 = [_BKDisplayRenderOverlayPersistenceData bs_secureDecodedFromData:v13 withAdditionalClasses:v15];
 
-          v17 = [v16 overlayType];
-          if (v17 <= 4)
+          overlayType = [v16 overlayType];
+          if (overlayType <= 4)
           {
-            v18 = *(&off_1000FB8E0)[v17];
-            v17 = objc_opt_class();
+            v18 = *(&off_1000FB8E0)[overlayType];
+            overlayType = objc_opt_class();
           }
 
-          v19 = [[v17 alloc] _initWithPersistenceData:v16];
+          v19 = [[overlayType alloc] _initWithPersistenceData:v16];
           if (v19)
           {
             v20 = BKLogDisplay();

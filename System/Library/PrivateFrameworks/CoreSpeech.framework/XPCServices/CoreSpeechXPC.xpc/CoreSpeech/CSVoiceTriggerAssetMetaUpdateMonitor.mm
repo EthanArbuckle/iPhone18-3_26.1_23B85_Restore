@@ -3,20 +3,20 @@
 - (CSVoiceTriggerAssetMetaUpdateMonitor)init;
 - (const)_asssetMetaUpdatedKey;
 - (void)_didReceiveNewVoiceTriggerAssetMetaData;
-- (void)_notifyObserver:(id)a3;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_notifyObserver:(id)observer;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
 @end
 
 @implementation CSVoiceTriggerAssetMetaUpdateMonitor
 
-- (void)_notifyObserver:(id)a3
+- (void)_notifyObserver:(id)observer
 {
-  v4 = a3;
-  [(CSVoiceTriggerAssetMetaUpdateMonitor *)self notifyObserver:v4];
+  observerCopy = observer;
+  [(CSVoiceTriggerAssetMetaUpdateMonitor *)self notifyObserver:observerCopy];
   if (objc_opt_respondsToSelector())
   {
-    [v4 CSVoiceTriggerAssetMetaUpdateMonitor:self didReceiveNewVoiceTriggerAssetMetaData:1];
+    [observerCopy CSVoiceTriggerAssetMetaUpdateMonitor:self didReceiveNewVoiceTriggerAssetMetaData:1];
   }
 }
 
@@ -89,9 +89,9 @@
   }
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   if (self->_notifyToken == -1)
   {
     handler[0] = _NSConcreteStackBlock;
@@ -99,7 +99,7 @@
     handler[2] = sub_10000F68C;
     handler[3] = &unk_10001CAE0;
     handler[4] = self;
-    notify_register_dispatch([(CSVoiceTriggerAssetMetaUpdateMonitor *)self _asssetMetaUpdatedKey], &self->_notifyToken, v4, handler);
+    notify_register_dispatch([(CSVoiceTriggerAssetMetaUpdateMonitor *)self _asssetMetaUpdatedKey], &self->_notifyToken, queueCopy, handler);
     v5 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
     {
@@ -118,7 +118,7 @@
       v9[2] = sub_10000F694;
       v9[3] = &unk_10001CAE0;
       v9[4] = self;
-      notify_register_dispatch("com.apple.MobileAsset.VoiceTriggerAssetsMac.ma.cached-metadata-updated", &self->_gibraltarMacNotifyToken, v4, v9);
+      notify_register_dispatch("com.apple.MobileAsset.VoiceTriggerAssetsMac.ma.cached-metadata-updated", &self->_gibraltarMacNotifyToken, queueCopy, v9);
       v6 = CSLogContextFacilityCoreSpeech;
       if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
       {
@@ -136,7 +136,7 @@
     v8[2] = sub_10000F69C;
     v8[3] = &unk_10001CAE0;
     v8[4] = self;
-    notify_register_dispatch("com.apple.MobileAsset.VoiceTriggerAssetsStudioDisplay.ma.cached-metadata-updated", &self->_darwinNotifyToken, v4, v8);
+    notify_register_dispatch("com.apple.MobileAsset.VoiceTriggerAssetsStudioDisplay.ma.cached-metadata-updated", &self->_darwinNotifyToken, queueCopy, v8);
     v7 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
     {

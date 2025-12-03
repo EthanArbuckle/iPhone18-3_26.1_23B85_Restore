@@ -1,27 +1,27 @@
 @interface AVGlassLayoutView
-- (AVGlassLayoutView)initWithFrame:(CGRect)a3;
+- (AVGlassLayoutView)initWithFrame:(CGRect)frame;
 - (BOOL)hasVisibleArrangedSubview;
 - (BOOL)isCollapsedOrExcluded;
 - (CGSize)extrinsicContentSize;
 - (NSString)debugDescription;
-- (double)layoutHeightThatFitsRowsStartingWithRow:(unint64_t)a3;
-- (id)_includedItemsFromSubviews:(id)a3 inStackLayout:(id)a4 thatFitSize:(CGSize)a5;
-- (id)prioritizedSizeThatFitsSize:(CGSize)a3;
+- (double)layoutHeightThatFitsRowsStartingWithRow:(unint64_t)row;
+- (id)_includedItemsFromSubviews:(id)subviews inStackLayout:(id)layout thatFitSize:(CGSize)size;
+- (id)prioritizedSizeThatFitsSize:(CGSize)size;
 - (void)_applyShapeStyle;
-- (void)_insertArrangedSubview:(id)a3 atIndex:(unint64_t)a4;
-- (void)_removeArrangedSubview:(id)a3;
+- (void)_insertArrangedSubview:(id)subview atIndex:(unint64_t)index;
+- (void)_removeArrangedSubview:(id)subview;
 - (void)_updateStackLayoutIfNeeded;
 - (void)layoutSubviews;
 - (void)reevaluateHiddenStateOfAllItems;
-- (void)setArrangedSubviews:(id)a3;
-- (void)setCollapsed:(BOOL)a3;
-- (void)setContentLayoutMargins:(NSDirectionalEdgeInsets)a3;
-- (void)setDebugIdentifier:(id)a3;
-- (void)setHasFullScreenAppearance:(BOOL)a3;
-- (void)setIncluded:(BOOL)a3;
+- (void)setArrangedSubviews:(id)subviews;
+- (void)setCollapsed:(BOOL)collapsed;
+- (void)setContentLayoutMargins:(NSDirectionalEdgeInsets)margins;
+- (void)setDebugIdentifier:(id)identifier;
+- (void)setHasFullScreenAppearance:(BOOL)appearance;
+- (void)setIncluded:(BOOL)included;
 - (void)setNeedsLayout;
-- (void)setRowSpacing:(double)a3 afterRow:(unint64_t)a4;
-- (void)setShapeStyle:(unint64_t)a3;
+- (void)setRowSpacing:(double)spacing afterRow:(unint64_t)row;
+- (void)setShapeStyle:(unint64_t)style;
 @end
 
 @implementation AVGlassLayoutView
@@ -35,29 +35,29 @@
   return result;
 }
 
-- (void)setHasFullScreenAppearance:(BOOL)a3
+- (void)setHasFullScreenAppearance:(BOOL)appearance
 {
-  if (self->_hasFullScreenAppearance != a3)
+  if (self->_hasFullScreenAppearance != appearance)
   {
-    self->_hasFullScreenAppearance = a3;
-    [(AVGlassBackedView *)self setSubdued:!a3];
+    self->_hasFullScreenAppearance = appearance;
+    [(AVGlassBackedView *)self setSubdued:!appearance];
   }
 }
 
-- (void)setIncluded:(BOOL)a3
+- (void)setIncluded:(BOOL)included
 {
-  if (self->_included != a3)
+  if (self->_included != included)
   {
-    self->_included = a3;
+    self->_included = included;
     [(UIView *)self avkit_reevaluateHiddenStateOfItem:self];
   }
 }
 
-- (void)setCollapsed:(BOOL)a3
+- (void)setCollapsed:(BOOL)collapsed
 {
-  if (self->_collapsed != a3)
+  if (self->_collapsed != collapsed)
   {
-    self->_collapsed = a3;
+    self->_collapsed = collapsed;
     [(UIView *)self avkit_reevaluateHiddenStateOfItem:self];
   }
 }
@@ -72,19 +72,19 @@
   return [(AVGlassLayoutView *)self isRemoved];
 }
 
-- (id)_includedItemsFromSubviews:(id)a3 inStackLayout:(id)a4 thatFitSize:(CGSize)a5
+- (id)_includedItemsFromSubviews:(id)subviews inStackLayout:(id)layout thatFitSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
+  height = size.height;
+  width = size.width;
   v69 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 itemsThatFitSize:{width, height}];
+  subviewsCopy = subviews;
+  layoutCopy = layout;
+  v10 = [layoutCopy itemsThatFitSize:{width, height}];
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
-  v11 = v8;
+  v11 = subviewsCopy;
   v12 = [v11 countByEnumeratingWithState:&v61 objects:v68 count:16];
   if (v12)
   {
@@ -100,14 +100,14 @@
           objc_enumerationMutation(v11);
         }
 
-        v17 = [*(*(&v61 + 1) + 8 * i) layoutAttributes];
-        if ([v17 canSubstituteOtherAttributes])
+        layoutAttributes = [*(*(&v61 + 1) + 8 * i) layoutAttributes];
+        if ([layoutAttributes canSubstituteOtherAttributes])
         {
           v44 = v14;
-          v47 = v9;
+          v47 = layoutCopy;
 
-          v19 = [MEMORY[0x1E695DF70] array];
-          v20 = [MEMORY[0x1E695DF70] array];
+          array = [MEMORY[0x1E695DF70] array];
+          array2 = [MEMORY[0x1E695DF70] array];
           v56 = 0u;
           v57 = 0u;
           v58 = 0u;
@@ -129,20 +129,20 @@
                   objc_enumerationMutation(v21);
                 }
 
-                v27 = [*(*(&v56 + 1) + 8 * j) layoutAttributes];
-                if (([v10 containsObject:v27] & 1) == 0 && objc_msgSend(v27, "isIncluded"))
+                layoutAttributes2 = [*(*(&v56 + 1) + 8 * j) layoutAttributes];
+                if (([v10 containsObject:layoutAttributes2] & 1) == 0 && objc_msgSend(layoutAttributes2, "isIncluded"))
                 {
-                  [v19 addObject:v27];
+                  [array addObject:layoutAttributes2];
                 }
 
-                if ([v10 containsObject:v27] && objc_msgSend(v27, "isIncluded") && objc_msgSend(v27, "canOverflowToAuxiliaryMenu"))
+                if ([v10 containsObject:layoutAttributes2] && objc_msgSend(layoutAttributes2, "isIncluded") && objc_msgSend(layoutAttributes2, "canOverflowToAuxiliaryMenu"))
                 {
-                  [v20 addObject:v27];
+                  [array2 addObject:layoutAttributes2];
                 }
 
-                if ([v27 canSubstituteOtherAttributes])
+                if ([layoutAttributes2 canSubstituteOtherAttributes])
                 {
-                  v28 = v27;
+                  v28 = layoutAttributes2;
 
                   v24 = v28;
                 }
@@ -159,12 +159,12 @@
             v24 = 0;
           }
 
-          v29 = [MEMORY[0x1E695DF70] array];
+          array3 = [MEMORY[0x1E695DF70] array];
           v52 = 0u;
           v53 = 0u;
           v54 = 0u;
           v55 = 0u;
-          v18 = v19;
+          v18 = array;
           v30 = [v18 countByEnumeratingWithState:&v52 objects:v66 count:16];
           if (v30)
           {
@@ -182,7 +182,7 @@
                 v34 = *(*(&v52 + 1) + 8 * k);
                 if ([v34 canOverflowToAuxiliaryMenu])
                 {
-                  [v29 addObject:v34];
+                  [array3 addObject:v34];
                 }
               }
 
@@ -192,7 +192,7 @@
             while (v31);
           }
 
-          v35 = ([v29 count] != 0) | v44;
+          v35 = ([array3 count] != 0) | v44;
           if (v35)
           {
             v45 = v35;
@@ -200,7 +200,7 @@
             v51 = 0u;
             v48 = 0u;
             v49 = 0u;
-            v36 = v20;
+            v36 = array2;
             v37 = [v36 countByEnumeratingWithState:&v48 objects:v65 count:16];
             if (v37)
             {
@@ -232,7 +232,7 @@
           }
 
           [v24 setIncluded:v35 & 1];
-          v9 = v47;
+          layoutCopy = v47;
           v42 = [v47 itemsThatFitSize:{width, height}];
 
           v10 = v42;
@@ -240,9 +240,9 @@
           goto LABEL_54;
         }
 
-        if ([v17 canOnlyAppearInControlOverflowMenu])
+        if ([layoutAttributes canOnlyAppearInControlOverflowMenu])
         {
-          v14 |= [v17 isIncluded];
+          v14 |= [layoutAttributes isIncluded];
         }
       }
 
@@ -277,30 +277,30 @@ LABEL_54:
   return v10;
 }
 
-- (void)_removeArrangedSubview:(id)a3
+- (void)_removeArrangedSubview:(id)subview
 {
-  v7 = a3;
-  v4 = [(AVGlassLayoutView *)self flattenedArrangedSubviewsInLayoutOrder];
-  v5 = [v4 indexOfObject:v7];
+  subviewCopy = subview;
+  flattenedArrangedSubviewsInLayoutOrder = [(AVGlassLayoutView *)self flattenedArrangedSubviewsInLayoutOrder];
+  v5 = [flattenedArrangedSubviewsInLayoutOrder indexOfObject:subviewCopy];
 
   if (v5 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = [(AVGlassLayoutView *)self flattenedArrangedSubviewsInLayoutOrder];
-    [v6 removeObjectAtIndex:v5];
+    flattenedArrangedSubviewsInLayoutOrder2 = [(AVGlassLayoutView *)self flattenedArrangedSubviewsInLayoutOrder];
+    [flattenedArrangedSubviewsInLayoutOrder2 removeObjectAtIndex:v5];
 
-    [v7 removeFromSuperview];
+    [subviewCopy removeFromSuperview];
     [(AVGlassLayoutView *)self setStackLayoutNeedsUpdate:1];
     [(AVGlassLayoutView *)self setNeedsLayout];
   }
 }
 
-- (void)_insertArrangedSubview:(id)a3 atIndex:(unint64_t)a4
+- (void)_insertArrangedSubview:(id)subview atIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [(AVGlassLayoutView *)self flattenedArrangedSubviewsInLayoutOrder];
-  [v7 insertObject:v6 atIndex:a4];
+  subviewCopy = subview;
+  flattenedArrangedSubviewsInLayoutOrder = [(AVGlassLayoutView *)self flattenedArrangedSubviewsInLayoutOrder];
+  [flattenedArrangedSubviewsInLayoutOrder insertObject:subviewCopy atIndex:index];
 
-  [(AVGlassLayoutView *)self insertSubview:v6 atIndex:a4];
+  [(AVGlassLayoutView *)self insertSubview:subviewCopy atIndex:index];
   [(AVGlassLayoutView *)self setStackLayoutNeedsUpdate:1];
 
   [(AVGlassLayoutView *)self setNeedsLayout];
@@ -308,12 +308,12 @@ LABEL_54:
 
 - (void)_applyShapeStyle
 {
-  v3 = [MEMORY[0x1E69DCEB0] avkit_mainScreen];
-  v4 = [v3 traitCollection];
-  v5 = [v4 userInterfaceIdiom];
+  avkit_mainScreen = [MEMORY[0x1E69DCEB0] avkit_mainScreen];
+  traitCollection = [avkit_mainScreen traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  v6 = [(AVGlassLayoutView *)self shapeStyle];
-  switch(v6)
+  shapeStyle = [(AVGlassLayoutView *)self shapeStyle];
+  switch(shapeStyle)
   {
     case 3uLL:
       [(AVGlassLayoutView *)self bounds];
@@ -334,7 +334,7 @@ LABEL_14:
       v10 = Height * 0.5;
       break;
     case 0uLL:
-      if (v5 == 5)
+      if (userInterfaceIdiom == 5)
       {
         v7 = 0.77;
       }
@@ -361,14 +361,14 @@ LABEL_14:
 
   v13 = MEMORY[0x1E69796E0];
 LABEL_17:
-  v14 = [(AVGlassLayoutView *)self layer];
-  [v14 setCornerRadius:v10];
+  layer = [(AVGlassLayoutView *)self layer];
+  [layer setCornerRadius:v10];
 
-  v15 = [(AVGlassLayoutView *)self layer];
-  [v15 setMaskedCorners:15];
+  layer2 = [(AVGlassLayoutView *)self layer];
+  [layer2 setMaskedCorners:15];
 
-  v16 = [(AVGlassLayoutView *)self layer];
-  [v16 setCornerCurve:*v13];
+  layer3 = [(AVGlassLayoutView *)self layer];
+  [layer3 setCornerCurve:*v13];
 }
 
 - (void)_updateStackLayoutIfNeeded
@@ -377,8 +377,8 @@ LABEL_17:
   if ([(AVGlassLayoutView *)self stackLayoutNeedsUpdate])
   {
     v3 = MEMORY[0x1E695DF70];
-    v4 = [(AVGlassLayoutView *)self arrangedSubviews];
-    v26 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+    arrangedSubviews = [(AVGlassLayoutView *)self arrangedSubviews];
+    v26 = [v3 arrayWithCapacity:{objc_msgSend(arrangedSubviews, "count")}];
 
     v42 = 0u;
     v43 = 0u;
@@ -431,26 +431,26 @@ LABEL_17:
           [v7 enumerateObjectsWithOptions:v8 usingBlock:v27];
           [v29[5] setNextAttributesInLayoutOrder:0];
           v9 = [v7 sortedArrayUsingComparator:&__block_literal_global_12023];
-          v10 = [v9 firstObject];
-          v11 = [v10 layoutAttributes];
+          firstObject = [v9 firstObject];
+          layoutAttributes = [firstObject layoutAttributes];
 
           for (i = 1; i < [v7 count]; ++i)
           {
             v13 = [v9 objectAtIndexedSubscript:i];
-            v14 = [v13 layoutAttributes];
-            [v11 setNextAttributesInPriorityOrder:v14];
+            layoutAttributes2 = [v13 layoutAttributes];
+            [layoutAttributes setNextAttributesInPriorityOrder:layoutAttributes2];
 
-            v15 = [v13 layoutAttributes];
+            layoutAttributes3 = [v13 layoutAttributes];
 
-            v11 = v15;
+            layoutAttributes = layoutAttributes3;
           }
 
-          [v11 setNextAttributesInPriorityOrder:0];
+          [layoutAttributes setNextAttributesInPriorityOrder:0];
           v16 = [AVLayoutViewRowHead alloc];
           v17 = v35[5];
-          v18 = [v9 firstObject];
-          v19 = [v18 layoutAttributes];
-          v20 = [(AVLayoutViewRowHead *)v16 initWithFirstAttributesInLayoutOrder:v17 firstAttributesInPriorityOrder:v19];
+          firstObject2 = [v9 firstObject];
+          layoutAttributes4 = [firstObject2 layoutAttributes];
+          v20 = [(AVLayoutViewRowHead *)v16 initWithFirstAttributesInLayoutOrder:v17 firstAttributesInPriorityOrder:layoutAttributes4];
 
           [v26 addObject:v20];
           _Block_object_dispose(&v28, 8);
@@ -469,9 +469,9 @@ LABEL_17:
     v21 = [[AVCustomStackLayout alloc] initWithLayoutRowHeads:v26];
     [(AVGlassLayoutView *)self setCurrentStackLayout:v21];
 
-    v22 = [(AVGlassLayoutView *)self debugIdentifier];
-    v23 = [(AVGlassLayoutView *)self currentStackLayout];
-    [v23 setDebugIdentifier:v22];
+    debugIdentifier = [(AVGlassLayoutView *)self debugIdentifier];
+    currentStackLayout = [(AVGlassLayoutView *)self currentStackLayout];
+    [currentStackLayout setDebugIdentifier:debugIdentifier];
 
     [(AVGlassLayoutView *)self setStackLayoutNeedsUpdate:0];
   }
@@ -532,8 +532,8 @@ uint64_t __47__AVGlassLayoutView__updateStackLayoutIfNeeded__block_invoke_2(uint
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(AVGlassLayoutView *)self debugIdentifier];
-  v6 = [v3 stringWithFormat:@"<%@: %p> - %@", v4, self, v5];
+  debugIdentifier = [(AVGlassLayoutView *)self debugIdentifier];
+  v6 = [v3 stringWithFormat:@"<%@: %p> - %@", v4, self, debugIdentifier];
 
   return v6;
 }
@@ -545,8 +545,8 @@ uint64_t __47__AVGlassLayoutView__updateStackLayoutIfNeeded__block_invoke_2(uint
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(AVGlassLayoutView *)self flattenedArrangedSubviewsInLayoutOrder];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  flattenedArrangedSubviewsInLayoutOrder = [(AVGlassLayoutView *)self flattenedArrangedSubviewsInLayoutOrder];
+  v3 = [flattenedArrangedSubviewsInLayoutOrder countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -558,7 +558,7 @@ uint64_t __47__AVGlassLayoutView__updateStackLayoutIfNeeded__block_invoke_2(uint
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(flattenedArrangedSubviewsInLayoutOrder);
         }
 
         [*(*(&v7 + 1) + 8 * v6) avkit_reevaluateHiddenStateOfItem:*(*(&v7 + 1) + 8 * v6)];
@@ -566,28 +566,28 @@ uint64_t __47__AVGlassLayoutView__updateStackLayoutIfNeeded__block_invoke_2(uint
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [flattenedArrangedSubviewsInLayoutOrder countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
   }
 }
 
-- (void)setDebugIdentifier:(id)a3
+- (void)setDebugIdentifier:(id)identifier
 {
-  v6 = a3;
+  identifierCopy = identifier;
   if (![(NSString *)self->_debugIdentifier isEqualToString:?])
   {
-    objc_storeStrong(&self->_debugIdentifier, a3);
-    v5 = [(AVGlassLayoutView *)self currentStackLayout];
-    [v5 setDebugIdentifier:v6];
+    objc_storeStrong(&self->_debugIdentifier, identifier);
+    currentStackLayout = [(AVGlassLayoutView *)self currentStackLayout];
+    [currentStackLayout setDebugIdentifier:identifierCopy];
   }
 }
 
-- (void)setRowSpacing:(double)a3 afterRow:(unint64_t)a4
+- (void)setRowSpacing:(double)spacing afterRow:(unint64_t)row
 {
-  v6 = [(AVGlassLayoutView *)self currentStackLayout];
-  [v6 setRowSpacing:a4 afterRow:a3];
+  currentStackLayout = [(AVGlassLayoutView *)self currentStackLayout];
+  [currentStackLayout setRowSpacing:row afterRow:spacing];
 }
 
 - (BOOL)hasVisibleArrangedSubview
@@ -597,8 +597,8 @@ uint64_t __47__AVGlassLayoutView__updateStackLayoutIfNeeded__block_invoke_2(uint
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(AVGlassLayoutView *)self flattenedArrangedSubviewsInLayoutOrder];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  flattenedArrangedSubviewsInLayoutOrder = [(AVGlassLayoutView *)self flattenedArrangedSubviewsInLayoutOrder];
+  v3 = [flattenedArrangedSubviewsInLayoutOrder countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -608,7 +608,7 @@ uint64_t __47__AVGlassLayoutView__updateStackLayoutIfNeeded__block_invoke_2(uint
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(flattenedArrangedSubviewsInLayoutOrder);
         }
 
         v6 = *(*(&v8 + 1) + 8 * i);
@@ -619,7 +619,7 @@ uint64_t __47__AVGlassLayoutView__updateStackLayoutIfNeeded__block_invoke_2(uint
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [flattenedArrangedSubviewsInLayoutOrder countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -634,33 +634,33 @@ LABEL_12:
   return v3;
 }
 
-- (void)setContentLayoutMargins:(NSDirectionalEdgeInsets)a3
+- (void)setContentLayoutMargins:(NSDirectionalEdgeInsets)margins
 {
-  [(AVGlassLayoutView *)self setDirectionalLayoutMargins:a3.top, a3.leading, a3.bottom, a3.trailing];
+  [(AVGlassLayoutView *)self setDirectionalLayoutMargins:margins.top, margins.leading, margins.bottom, margins.trailing];
 
   [(AVGlassLayoutView *)self setNeedsLayout];
 }
 
-- (void)setShapeStyle:(unint64_t)a3
+- (void)setShapeStyle:(unint64_t)style
 {
-  if (self->_shapeStyle != a3)
+  if (self->_shapeStyle != style)
   {
-    self->_shapeStyle = a3;
+    self->_shapeStyle = style;
     [(AVGlassLayoutView *)self _applyShapeStyle];
   }
 }
 
-- (void)setArrangedSubviews:(id)a3
+- (void)setArrangedSubviews:(id)subviews
 {
   v43 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_arrangedSubviews, a3);
+  subviewsCopy = subviews;
+  objc_storeStrong(&self->_arrangedSubviews, subviews);
   v6 = MEMORY[0x1E695DFD8];
-  v7 = [(AVGlassLayoutView *)self flattenedArrangedSubviewsInLayoutOrder];
-  v8 = [v6 setWithArray:v7];
+  flattenedArrangedSubviewsInLayoutOrder = [(AVGlassLayoutView *)self flattenedArrangedSubviewsInLayoutOrder];
+  v8 = [v6 setWithArray:flattenedArrangedSubviewsInLayoutOrder];
 
   v25 = v8;
-  v27 = self;
+  selfCopy = self;
   if ([(AVGlassLayoutView *)self effectiveUserInterfaceLayoutDirection]== 1)
   {
     v9 = 2 * ([(AVGlassLayoutView *)self semanticContentAttribute]!= 1);
@@ -671,12 +671,12 @@ LABEL_12:
     v9 = 0;
   }
 
-  v10 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v11 = v5;
+  v11 = subviewsCopy;
   v12 = [v11 countByEnumeratingWithState:&v37 objects:v42 count:16];
   if (v12)
   {
@@ -696,7 +696,7 @@ LABEL_12:
         v35[1] = 3221225472;
         v35[2] = __41__AVGlassLayoutView_setArrangedSubviews___block_invoke;
         v35[3] = &unk_1E7209EF8;
-        v36 = v10;
+        v36 = array;
         [v16 enumerateObjectsWithOptions:v9 usingBlock:v35];
       }
 
@@ -706,7 +706,7 @@ LABEL_12:
     while (v13);
   }
 
-  v17 = [MEMORY[0x1E695DFD8] setWithArray:v10];
+  v17 = [MEMORY[0x1E695DFD8] setWithArray:array];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
@@ -729,7 +729,7 @@ LABEL_12:
         v23 = *(*(&v31 + 1) + 8 * j);
         if (([v17 containsObject:v23] & 1) == 0)
         {
-          [(AVGlassLayoutView *)v27 _removeArrangedSubview:v23];
+          [(AVGlassLayoutView *)selfCopy _removeArrangedSubview:v23];
         }
       }
 
@@ -744,9 +744,9 @@ LABEL_12:
   v28[2] = __41__AVGlassLayoutView_setArrangedSubviews___block_invoke_2;
   v28[3] = &unk_1E7209F20;
   v29 = v18;
-  v30 = v27;
+  v30 = selfCopy;
   v24 = v18;
-  [v10 enumerateObjectsUsingBlock:v28];
+  [array enumerateObjectsUsingBlock:v28];
 }
 
 void __41__AVGlassLayoutView_setArrangedSubviews___block_invoke_2(uint64_t a1, void *a2, uint64_t a3)
@@ -780,10 +780,10 @@ LABEL_5:
   [(AVGlassLayoutView *)self setLayoutDirty:1];
 }
 
-- (double)layoutHeightThatFitsRowsStartingWithRow:(unint64_t)a3
+- (double)layoutHeightThatFitsRowsStartingWithRow:(unint64_t)row
 {
-  v5 = [(AVGlassLayoutView *)self currentStackLayout];
-  [v5 layoutHeightThatFitsRowsStartingWithRow:a3];
+  currentStackLayout = [(AVGlassLayoutView *)self currentStackLayout];
+  [currentStackLayout layoutHeightThatFitsRowsStartingWithRow:row];
   v7 = v6;
   [(AVGlassLayoutView *)self contentLayoutMargins];
   v9 = v7 + v8;
@@ -791,13 +791,13 @@ LABEL_5:
   return v9;
 }
 
-- (id)prioritizedSizeThatFitsSize:(CGSize)a3
+- (id)prioritizedSizeThatFitsSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(AVGlassLayoutView *)self _updateStackLayoutIfNeeded];
-  v6 = [(AVGlassLayoutView *)self currentStackLayout];
-  v7 = [v6 prioritizedSizeThatFitsSize:{width, height}];
+  currentStackLayout = [(AVGlassLayoutView *)self currentStackLayout];
+  v7 = [currentStackLayout prioritizedSizeThatFitsSize:{width, height}];
 
   return v7;
 }
@@ -822,16 +822,16 @@ LABEL_5:
     [(AVGlassLayoutView *)self effectiveUserInterfaceLayoutDirection];
     v15 = v4 - (v14 + v10);
     v16 = v6 - (v8 + v12);
-    v17 = [(AVGlassLayoutView *)self flattenedArrangedSubviewsInLayoutOrder];
-    v18 = [(AVGlassLayoutView *)self currentStackLayout];
-    v19 = [(AVGlassLayoutView *)self _includedItemsFromSubviews:v17 inStackLayout:v18 thatFitSize:v15, v16];
+    flattenedArrangedSubviewsInLayoutOrder = [(AVGlassLayoutView *)self flattenedArrangedSubviewsInLayoutOrder];
+    currentStackLayout = [(AVGlassLayoutView *)self currentStackLayout];
+    v19 = [(AVGlassLayoutView *)self _includedItemsFromSubviews:flattenedArrangedSubviewsInLayoutOrder inStackLayout:currentStackLayout thatFitSize:v15, v16];
 
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v20 = [(AVGlassLayoutView *)self flattenedArrangedSubviewsInLayoutOrder];
-    v21 = [v20 countByEnumeratingWithState:&v30 objects:v35 count:16];
+    flattenedArrangedSubviewsInLayoutOrder2 = [(AVGlassLayoutView *)self flattenedArrangedSubviewsInLayoutOrder];
+    v21 = [flattenedArrangedSubviewsInLayoutOrder2 countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v21)
     {
       v22 = v21;
@@ -842,23 +842,23 @@ LABEL_5:
         {
           if (*v31 != v23)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(flattenedArrangedSubviewsInLayoutOrder2);
           }
 
           v25 = *(*(&v30 + 1) + 8 * i);
-          v26 = [v25 layoutAttributes];
-          [v26 setCollapsed:{objc_msgSend(v19, "containsObject:", v26) ^ 1}];
+          layoutAttributes = [v25 layoutAttributes];
+          [layoutAttributes setCollapsed:{objc_msgSend(v19, "containsObject:", layoutAttributes) ^ 1}];
           [v25 layoutAttributesDidChange];
         }
 
-        v22 = [v20 countByEnumeratingWithState:&v30 objects:v35 count:16];
+        v22 = [flattenedArrangedSubviewsInLayoutOrder2 countByEnumeratingWithState:&v30 objects:v35 count:16];
       }
 
       while (v22);
     }
 
-    v27 = [(AVGlassLayoutView *)self currentStackLayout];
-    v28 = [v27 layoutFramesInBoundingSize:{v15, v16}];
+    currentStackLayout2 = [(AVGlassLayoutView *)self currentStackLayout];
+    v28 = [currentStackLayout2 layoutFramesInBoundingSize:{v15, v16}];
 
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
@@ -922,19 +922,19 @@ void __35__AVGlassLayoutView_layoutSubviews__block_invoke(uint64_t a1, void *a2,
   }
 }
 
-- (AVGlassLayoutView)initWithFrame:(CGRect)a3
+- (AVGlassLayoutView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = AVGlassLayoutView;
-  v3 = [(AVGlassBackedView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AVGlassBackedView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     v3->_collapsed = 0;
     v3->_included = 1;
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     flattenedArrangedSubviewsInLayoutOrder = v4->_flattenedArrangedSubviewsInLayoutOrder;
-    v4->_flattenedArrangedSubviewsInLayoutOrder = v5;
+    v4->_flattenedArrangedSubviewsInLayoutOrder = array;
 
     v7 = objc_alloc_init(AVCustomStackLayout);
     currentStackLayout = v4->_currentStackLayout;

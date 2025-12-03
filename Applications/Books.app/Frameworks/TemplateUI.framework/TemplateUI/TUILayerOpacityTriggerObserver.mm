@@ -2,10 +2,10 @@
 - (NSDictionary)opacityTriggers;
 - (TUITriggerStateManager)manager;
 - (_TtC10TemplateUI30TUILayerOpacityTriggerObserver)init;
-- (_TtC10TemplateUI30TUILayerOpacityTriggerObserver)initWithLayer:(id)a3 opacityTriggers:(id)a4;
+- (_TtC10TemplateUI30TUILayerOpacityTriggerObserver)initWithLayer:(id)layer opacityTriggers:(id)triggers;
 - (void)dealloc;
-- (void)setManager:(id)a3;
-- (void)triggerStateManager:(id)a3 triggersDidChangeValues:(id)a4;
+- (void)setManager:(id)manager;
+- (void)triggerStateManager:(id)manager triggersDidChangeValues:(id)values;
 @end
 
 @implementation TUILayerOpacityTriggerObserver
@@ -28,17 +28,17 @@
   return Strong;
 }
 
-- (void)setManager:(id)a3
+- (void)setManager:(id)manager
 {
-  v4 = a3;
-  v5 = self;
+  managerCopy = manager;
+  selfCopy = self;
   sub_198584();
   swift_beginAccess();
   swift_unknownObjectWeakAssign();
   sub_1977E8();
 }
 
-- (_TtC10TemplateUI30TUILayerOpacityTriggerObserver)initWithLayer:(id)a3 opacityTriggers:(id)a4
+- (_TtC10TemplateUI30TUILayerOpacityTriggerObserver)initWithLayer:(id)layer opacityTriggers:(id)triggers
 {
   type metadata accessor for TUITriggerName(0);
   sub_1989AC();
@@ -54,22 +54,22 @@
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   sub_198584();
-  v3.receiver = v2;
+  v3.receiver = selfCopy;
   v3.super_class = type metadata accessor for TUILayerOpacityTriggerObserver();
   [(TUILayerOpacityTriggerObserver *)&v3 dealloc];
 }
 
-- (void)triggerStateManager:(id)a3 triggersDidChangeValues:(id)a4
+- (void)triggerStateManager:(id)manager triggersDidChangeValues:(id)values
 {
   type metadata accessor for TUITriggerName(0);
   sub_198960();
   sub_1989AC();
   v6 = sub_19C4D8();
-  v7 = a3;
-  v8 = self;
-  sub_197EDC(v7, v6);
+  managerCopy = manager;
+  selfCopy = self;
+  sub_197EDC(managerCopy, v6);
 }
 
 - (_TtC10TemplateUI30TUILayerOpacityTriggerObserver)init

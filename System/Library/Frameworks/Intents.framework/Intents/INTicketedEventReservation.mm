@@ -1,10 +1,10 @@
 @interface INTicketedEventReservation
-- (BOOL)isEqual:(id)a3;
-- (INTicketedEventReservation)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INTicketedEventReservation)initWithCoder:(id)coder;
 - (INTicketedEventReservation)initWithItemReference:(INSpeakableString *)itemReference reservationNumber:(NSString *)reservationNumber bookingTime:(NSDate *)bookingTime reservationStatus:(INReservationStatus)reservationStatus reservationHolderName:(NSString *)reservationHolderName actions:(NSArray *)actions URL:(NSURL *)URL reservedSeat:(INSeat *)reservedSeat event:(INTicketedEvent *)event;
 - (id)_dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INTicketedEventReservation
@@ -14,27 +14,27 @@
   v14[2] = *MEMORY[0x1E69E9840];
   v12.receiver = self;
   v12.super_class = INTicketedEventReservation;
-  v3 = [(INReservation *)&v12 _dictionaryRepresentation];
-  v4 = [v3 mutableCopy];
+  _dictionaryRepresentation = [(INReservation *)&v12 _dictionaryRepresentation];
+  v4 = [_dictionaryRepresentation mutableCopy];
 
   v13[0] = @"event";
   event = self->_event;
-  v6 = event;
+  null = event;
   if (!event)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v13[1] = @"reservedSeat";
-  v14[0] = v6;
+  v14[0] = null;
   reservedSeat = self->_reservedSeat;
-  v8 = reservedSeat;
+  null2 = reservedSeat;
   if (!reservedSeat)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v14[1] = v8;
+  v14[1] = null2;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:2];
   [v4 addEntriesFromDictionary:v9];
 
@@ -61,38 +61,38 @@ LABEL_7:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = INTicketedEventReservation;
-  v4 = a3;
-  [(INReservation *)&v9 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(INReservation *)&v9 encodeWithCoder:coderCopy];
   event = self->_event;
   v6 = NSStringFromSelector(sel_event);
-  [v4 encodeObject:event forKey:{v6, v9.receiver, v9.super_class}];
+  [coderCopy encodeObject:event forKey:{v6, v9.receiver, v9.super_class}];
 
   reservedSeat = self->_reservedSeat;
   v8 = NSStringFromSelector(sel_reservedSeat);
-  [v4 encodeObject:reservedSeat forKey:v8];
+  [coderCopy encodeObject:reservedSeat forKey:v8];
 }
 
-- (INTicketedEventReservation)initWithCoder:(id)a3
+- (INTicketedEventReservation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = INTicketedEventReservation;
-  v5 = [(INReservation *)&v15 initWithCoder:v4];
+  v5 = [(INReservation *)&v15 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_event);
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     event = v5->_event;
     v5->_event = v8;
 
     v10 = objc_opt_class();
     v11 = NSStringFromSelector(sel_reservedSeat);
-    v12 = [v4 decodeObjectOfClass:v10 forKey:v11];
+    v12 = [coderCopy decodeObjectOfClass:v10 forKey:v11];
     reservedSeat = v5->_reservedSeat;
     v5->_reservedSeat = v12;
   }
@@ -100,10 +100,10 @@ LABEL_7:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -111,9 +111,9 @@ LABEL_7:
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (v10.receiver = self, v10.super_class = INTicketedEventReservation, [(INReservation *)&v10 isEqual:v4]))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (v10.receiver = self, v10.super_class = INTicketedEventReservation, [(INReservation *)&v10 isEqual:equalCopy]))
     {
-      v5 = v4;
+      v5 = equalCopy;
       event = self->_event;
       v8 = 0;
       if (event == v5->_event || [(INTicketedEvent *)event isEqual:?])

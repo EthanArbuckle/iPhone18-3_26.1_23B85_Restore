@@ -1,41 +1,41 @@
 @interface HUQuickControlCollectionViewController
 - (HULayoutAnchorProviding)preferredFrameLayoutGuide;
-- (HUQuickControlCollectionViewController)initWithItemManager:(id)a3;
-- (HUQuickControlCollectionViewController)initWithItemManager:(id)a3 collectionViewLayout:(id)a4;
+- (HUQuickControlCollectionViewController)initWithItemManager:(id)manager;
+- (HUQuickControlCollectionViewController)initWithItemManager:(id)manager collectionViewLayout:(id)layout;
 - (HUQuickControlContentCharacteristicWritingDelegate)characteristicWritingDelegate;
 - (HUQuickControlContentHosting)quickControlHost;
 - (NSSet)affectedCharacteristics;
 - (id)_allContentViewControllers;
 - (id)_allViewControllers;
-- (id)_controlItemsForItem:(id)a3;
-- (id)_createCellContainerForViewController:(id)a3 forItem:(id)a4;
-- (id)_viewControllerForItem:(id)a3;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (id)intrinsicSizeDescriptorForItemAtIndexPath:(id)a3 itemSize:(unint64_t)a4;
-- (id)overrideValueForCharacteristic:(id)a3;
+- (id)_controlItemsForItem:(id)item;
+- (id)_createCellContainerForViewController:(id)controller forItem:(id)item;
+- (id)_viewControllerForItem:(id)item;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (id)intrinsicSizeDescriptorForItemAtIndexPath:(id)path itemSize:(unint64_t)size;
+- (id)overrideValueForCharacteristic:(id)characteristic;
 - (id)viewForTouchContinuation;
-- (unint64_t)_determineReachabilityForIndexPath:(id)a3;
-- (unint64_t)_titlePositionForItem:(id)a3;
-- (void)_fetchReachabilityStateForMediaAccessory:(id)a3 accessType:(unint64_t)a4 itemSectionIdentifier:(id)a5;
-- (void)_handleCoordinationReachableStatusChanged:(id)a3;
-- (void)_propagateInteractiveContentStateForChildViewControllers:(id)a3;
+- (unint64_t)_determineReachabilityForIndexPath:(id)path;
+- (unint64_t)_titlePositionForItem:(id)item;
+- (void)_fetchReachabilityStateForMediaAccessory:(id)accessory accessType:(unint64_t)type itemSectionIdentifier:(id)identifier;
+- (void)_handleCoordinationReachableStatusChanged:(id)changed;
+- (void)_propagateInteractiveContentStateForChildViewControllers:(id)controllers;
 - (void)_reconfigureLayoutOptions;
-- (void)_setReachabilityForHeaderForIdentifier:(id)a3 to:(BOOL)a4;
-- (void)accessoryDidUpdateControllable:(id)a3;
-- (void)configureCell:(id)a3 forItem:(id)a4;
-- (void)diffableDataItemManager:(id)a3 didUpdateItems:(id)a4 addItems:(id)a5 removeItems:(id)a6;
+- (void)_setReachabilityForHeaderForIdentifier:(id)identifier to:(BOOL)to;
+- (void)accessoryDidUpdateControllable:(id)controllable;
+- (void)configureCell:(id)cell forItem:(id)item;
+- (void)diffableDataItemManager:(id)manager didUpdateItems:(id)items addItems:(id)addItems removeItems:(id)removeItems;
 - (void)invalidateContentViewLayout;
-- (void)itemManager:(id)a3 didRemoveItem:(id)a4 atIndexPath:(id)a5;
-- (void)itemManager:(id)a3 didUpdateResultsForItem:(id)a4 atIndexPath:(id)a5;
+- (void)itemManager:(id)manager didRemoveItem:(id)item atIndexPath:(id)path;
+- (void)itemManager:(id)manager didUpdateResultsForItem:(id)item atIndexPath:(id)path;
 - (void)loadView;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)setCharacteristicWritingDelegate:(id)a3;
-- (void)setDisableItemUpdatesForOverrideCharacteristicValueChanges:(BOOL)a3;
-- (void)setLayoutOptions:(id)a3;
-- (void)setQuickControlHost:(id)a3;
-- (void)setUserInteractionEnabled:(BOOL)a3;
-- (void)shouldHideQuickControlHeaderButton:(BOOL)a3 forSectionIdentifier:(id)a4;
-- (void)shouldHideQuickControlHeaderText:(BOOL)a3 forSectionIdentifier:(id)a4;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)setCharacteristicWritingDelegate:(id)delegate;
+- (void)setDisableItemUpdatesForOverrideCharacteristicValueChanges:(BOOL)changes;
+- (void)setLayoutOptions:(id)options;
+- (void)setQuickControlHost:(id)host;
+- (void)setUserInteractionEnabled:(BOOL)enabled;
+- (void)shouldHideQuickControlHeaderButton:(BOOL)button forSectionIdentifier:(id)identifier;
+- (void)shouldHideQuickControlHeaderText:(BOOL)text forSectionIdentifier:(id)identifier;
 - (void)viewDidLoad;
 - (void)viewLayoutMarginsDidChange;
 - (void)viewWillDismiss;
@@ -43,36 +43,36 @@
 
 @implementation HUQuickControlCollectionViewController
 
-- (HUQuickControlCollectionViewController)initWithItemManager:(id)a3
+- (HUQuickControlCollectionViewController)initWithItemManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v5 = objc_alloc_init(HUQuickControlCollectionViewLayout);
   v13.receiver = self;
   v13.super_class = HUQuickControlCollectionViewController;
-  v6 = [(HUItemCollectionViewController *)&v13 initWithItemManager:v4 collectionViewLayout:v5];
+  v6 = [(HUItemCollectionViewController *)&v13 initWithItemManager:managerCopy collectionViewLayout:v5];
   if (v6)
   {
-    v7 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     viewControllersKeyedByItem = v6->_viewControllersKeyedByItem;
-    v6->_viewControllersKeyedByItem = v7;
+    v6->_viewControllersKeyedByItem = weakToStrongObjectsMapTable;
 
-    v9 = [[HUQuickControlContentCharacteristicWritingUpdateAdapter alloc] initWithItemManager:v4];
+    v9 = [[HUQuickControlContentCharacteristicWritingUpdateAdapter alloc] initWithItemManager:managerCopy];
     characteristicWritingAdapter = v6->_characteristicWritingAdapter;
     v6->_characteristicWritingAdapter = v9;
 
     v6->_disableItemUpdatesForOverrideCharacteristicValueChanges = 0;
-    v11 = [MEMORY[0x277D146E8] sharedDispatcher];
-    [v11 addAccessoryObserver:v6];
+    mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+    [mEMORY[0x277D146E8] addAccessoryObserver:v6];
   }
 
   return v6;
 }
 
-- (HUQuickControlCollectionViewController)initWithItemManager:(id)a3 collectionViewLayout:(id)a4
+- (HUQuickControlCollectionViewController)initWithItemManager:(id)manager collectionViewLayout:(id)layout
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithItemManager_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HUQuickControlCollectionViewController.m" lineNumber:84 description:{@"%s is unavailable; use %@ instead", "-[HUQuickControlCollectionViewController initWithItemManager:collectionViewLayout:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUQuickControlCollectionViewController.m" lineNumber:84 description:{@"%s is unavailable; use %@ instead", "-[HUQuickControlCollectionViewController initWithItemManager:collectionViewLayout:]", v7}];
 
   return 0;
 }
@@ -83,28 +83,28 @@
   v19.super_class = HUQuickControlCollectionViewController;
   [(HUQuickControlCollectionViewController *)&v19 loadView];
   v3 = [HUQuickControlCollectionView alloc];
-  v4 = [(HUQuickControlCollectionViewController *)self collectionViewLayout];
-  v5 = [(HUQuickControlCollectionView *)v3 initWithFrame:v4 collectionViewLayout:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
+  collectionViewLayout = [(HUQuickControlCollectionViewController *)self collectionViewLayout];
+  v5 = [(HUQuickControlCollectionView *)v3 initWithFrame:collectionViewLayout collectionViewLayout:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   [(HUQuickControlCollectionViewController *)self setCollectionView:v5];
 
   v6 = [HUQuickControlGridLayoutManager alloc];
-  v7 = [(HUQuickControlCollectionViewController *)self collectionView];
-  v8 = [(HUItemCollectionViewController *)self itemManager];
-  v9 = [(HUQuickControlCollectionViewController *)self layoutOptions];
-  v10 = [(HUQuickControlGridLayoutManager *)v6 initWithCollectionView:v7 itemManager:v8 layoutOptions:v9];
-  v11 = [(HUQuickControlCollectionViewController *)self collectionViewLayout];
-  [v11 setLayoutManager:v10];
+  collectionView = [(HUQuickControlCollectionViewController *)self collectionView];
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  layoutOptions = [(HUQuickControlCollectionViewController *)self layoutOptions];
+  v10 = [(HUQuickControlGridLayoutManager *)v6 initWithCollectionView:collectionView itemManager:itemManager layoutOptions:layoutOptions];
+  collectionViewLayout2 = [(HUQuickControlCollectionViewController *)self collectionViewLayout];
+  [collectionViewLayout2 setLayoutManager:v10];
 
-  v12 = [(HUQuickControlCollectionViewController *)self collectionView];
-  v13 = [v12 heightAnchor];
-  v14 = [(HUQuickControlCollectionViewController *)self view];
-  [v14 frame];
-  v16 = [v13 constraintEqualToConstant:v15];
-  v17 = [(HUQuickControlCollectionViewController *)self collectionViewLayout];
-  [v17 setHeightConstraint:v16];
+  collectionView2 = [(HUQuickControlCollectionViewController *)self collectionView];
+  heightAnchor = [collectionView2 heightAnchor];
+  view = [(HUQuickControlCollectionViewController *)self view];
+  [view frame];
+  v16 = [heightAnchor constraintEqualToConstant:v15];
+  collectionViewLayout3 = [(HUQuickControlCollectionViewController *)self collectionViewLayout];
+  [collectionViewLayout3 setHeightConstraint:v16];
 
-  v18 = [(HUQuickControlCollectionViewController *)self collectionView];
-  [v18 registerClass:objc_opt_class() forSupplementaryViewOfKind:*MEMORY[0x277D767D8] withReuseIdentifier:@"HUQuickControlSectionHeaderViewReuseIdentifier"];
+  collectionView3 = [(HUQuickControlCollectionViewController *)self collectionView];
+  [collectionView3 registerClass:objc_opt_class() forSupplementaryViewOfKind:*MEMORY[0x277D767D8] withReuseIdentifier:@"HUQuickControlSectionHeaderViewReuseIdentifier"];
 }
 
 - (void)viewDidLoad
@@ -112,60 +112,60 @@
   v19.receiver = self;
   v19.super_class = HUQuickControlCollectionViewController;
   [(HUItemCollectionViewController *)&v19 viewDidLoad];
-  v5 = [MEMORY[0x277D14CE8] shouldUseControlCenterMaterials];
-  v6 = v5;
-  if (v5)
+  shouldUseControlCenterMaterials = [MEMORY[0x277D14CE8] shouldUseControlCenterMaterials];
+  v6 = shouldUseControlCenterMaterials;
+  if (shouldUseControlCenterMaterials)
   {
     [MEMORY[0x277D75348] clearColor];
   }
 
   else
   {
-    v2 = [(HUQuickControlCollectionViewController *)self view];
-    v3 = [v2 traitCollection];
-    +[HUQuickControlUtilities backgroundColorForUserInterfaceStyle:](HUQuickControlUtilities, "backgroundColorForUserInterfaceStyle:", [v3 userInterfaceStyle]);
+    view = [(HUQuickControlCollectionViewController *)self view];
+    traitCollection = [view traitCollection];
+    +[HUQuickControlUtilities backgroundColorForUserInterfaceStyle:](HUQuickControlUtilities, "backgroundColorForUserInterfaceStyle:", [traitCollection userInterfaceStyle]);
   }
   v7 = ;
-  v8 = [(HUQuickControlCollectionViewController *)self view];
-  [v8 setBackgroundColor:v7];
+  view2 = [(HUQuickControlCollectionViewController *)self view];
+  [view2 setBackgroundColor:v7];
 
   if ((v6 & 1) == 0)
   {
 
-    v7 = v2;
+    v7 = view;
   }
 
-  v9 = [(HUQuickControlCollectionViewController *)self collectionView];
-  [v9 setBackgroundColor:0];
+  collectionView = [(HUQuickControlCollectionViewController *)self collectionView];
+  [collectionView setBackgroundColor:0];
 
-  v10 = [(HUQuickControlCollectionViewController *)self collectionView];
-  [v10 setShowsHorizontalScrollIndicator:0];
+  collectionView2 = [(HUQuickControlCollectionViewController *)self collectionView];
+  [collectionView2 setShowsHorizontalScrollIndicator:0];
 
-  v11 = [(HUQuickControlCollectionViewController *)self collectionView];
-  [v11 setDelaysContentTouches:1];
+  collectionView3 = [(HUQuickControlCollectionViewController *)self collectionView];
+  [collectionView3 setDelaysContentTouches:1];
 
-  v12 = [(HUQuickControlCollectionViewController *)self view];
-  [v12 frame];
+  view3 = [(HUQuickControlCollectionViewController *)self view];
+  [view3 frame];
   v15 = [HUQuickControlCollectionViewControllerLayoutOptions defaultOptionsForViewSize:v13, v14];
   [(HUQuickControlCollectionViewController *)self setLayoutOptions:v15];
 
   [(HUQuickControlCollectionViewController *)self _reconfigureLayoutOptions];
   [(HUItemCollectionViewController *)self setWantsPreferredContentSize:1];
-  v16 = [(HUQuickControlCollectionViewController *)self collectionViewLayout];
-  v17 = [v16 heightConstraint];
-  [v17 setActive:1];
+  collectionViewLayout = [(HUQuickControlCollectionViewController *)self collectionViewLayout];
+  heightConstraint = [collectionViewLayout heightConstraint];
+  [heightConstraint setActive:1];
 
-  v18 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v18 addObserver:self selector:sel__handleCoordinationReachableStatusChanged_ name:*MEMORY[0x277D13830] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__handleCoordinationReachableStatusChanged_ name:*MEMORY[0x277D13830] object:0];
 }
 
 - (void)viewWillDismiss
 {
   objc_opt_class();
-  v3 = [(HUItemCollectionViewController *)self itemManager];
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = itemManager;
   }
 
   else
@@ -183,24 +183,24 @@
   v13.receiver = self;
   v13.super_class = HUQuickControlCollectionViewController;
   [(HUQuickControlCollectionViewController *)&v13 viewLayoutMarginsDidChange];
-  v3 = [(HUQuickControlCollectionViewController *)self view];
-  [v3 layoutMargins];
+  view = [(HUQuickControlCollectionViewController *)self view];
+  [view layoutMargins];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(HUQuickControlCollectionViewController *)self collectionViewLayout];
-  [v12 setContentInset:{v5, v7, v9, v11}];
+  collectionViewLayout = [(HUQuickControlCollectionViewController *)self collectionViewLayout];
+  [collectionViewLayout setContentInset:{v5, v7, v9, v11}];
 }
 
-- (void)setDisableItemUpdatesForOverrideCharacteristicValueChanges:(BOOL)a3
+- (void)setDisableItemUpdatesForOverrideCharacteristicValueChanges:(BOOL)changes
 {
-  if (self->_disableItemUpdatesForOverrideCharacteristicValueChanges != a3)
+  if (self->_disableItemUpdatesForOverrideCharacteristicValueChanges != changes)
   {
-    v4 = a3;
-    self->_disableItemUpdatesForOverrideCharacteristicValueChanges = a3;
-    v5 = [(HUQuickControlCollectionViewController *)self characteristicWritingAdapter];
-    [v5 setShouldIssueItemUpdatesOnCharacteristicOverrideValueChanges:!v4];
+    changesCopy = changes;
+    self->_disableItemUpdatesForOverrideCharacteristicValueChanges = changes;
+    characteristicWritingAdapter = [(HUQuickControlCollectionViewController *)self characteristicWritingAdapter];
+    [characteristicWritingAdapter setShouldIssueItemUpdatesOnCharacteristicOverrideValueChanges:!changesCopy];
   }
 }
 
@@ -209,35 +209,35 @@
   preferredFrameLayoutGuide = self->_preferredFrameLayoutGuide;
   if (preferredFrameLayoutGuide)
   {
-    v3 = preferredFrameLayoutGuide;
+    view = preferredFrameLayoutGuide;
   }
 
   else
   {
-    v3 = [(HUQuickControlCollectionViewController *)self view];
+    view = [(HUQuickControlCollectionViewController *)self view];
   }
 
-  return v3;
+  return view;
 }
 
-- (void)setLayoutOptions:(id)a3
+- (void)setLayoutOptions:(id)options
 {
-  v5 = a3;
-  v9 = v5;
-  if (!v5)
+  optionsCopy = options;
+  v9 = optionsCopy;
+  if (!optionsCopy)
   {
-    v3 = [(HUQuickControlCollectionViewController *)self view];
-    [v3 frame];
-    v5 = [HUQuickControlCollectionViewControllerLayoutOptions defaultOptionsForViewSize:v6, v7];
+    view = [(HUQuickControlCollectionViewController *)self view];
+    [view frame];
+    optionsCopy = [HUQuickControlCollectionViewControllerLayoutOptions defaultOptionsForViewSize:v6, v7];
   }
 
-  objc_storeStrong(&self->_layoutOptions, v5);
+  objc_storeStrong(&self->_layoutOptions, optionsCopy);
   if (!v9)
   {
   }
 
-  v8 = [(HUQuickControlCollectionViewController *)self collectionViewLayout];
-  [v8 setLayoutOptions:v9];
+  collectionViewLayout = [(HUQuickControlCollectionViewController *)self collectionViewLayout];
+  [collectionViewLayout setLayoutOptions:v9];
 
   if ([(HUQuickControlCollectionViewController *)self isViewLoaded])
   {
@@ -245,24 +245,24 @@
   }
 }
 
-- (void)configureCell:(id)a3 forItem:(id)a4
+- (void)configureCell:(id)cell forItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  cellCopy = cell;
+  itemCopy = item;
   v18.receiver = self;
   v18.super_class = HUQuickControlCollectionViewController;
-  [(HUItemCollectionViewController *)&v18 configureCell:v6 forItem:v7];
-  v8 = v6;
-  v9 = [(HUQuickControlCollectionViewController *)self _viewControllerForItem:v7];
+  [(HUItemCollectionViewController *)&v18 configureCell:cellCopy forItem:itemCopy];
+  v8 = cellCopy;
+  v9 = [(HUQuickControlCollectionViewController *)self _viewControllerForItem:itemCopy];
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __64__HUQuickControlCollectionViewController_configureCell_forItem___block_invoke;
   v15 = &unk_277DBD538;
-  v16 = self;
-  v17 = v7;
-  v10 = v7;
+  selfCopy = self;
+  v17 = itemCopy;
+  v10 = itemCopy;
   v11 = __64__HUQuickControlCollectionViewController_configureCell_forItem___block_invoke(&v12);
-  [v9 setTitle:{v11, v12, v13, v14, v15, v16}];
+  [v9 setTitle:{v11, v12, v13, v14, v15, selfCopy}];
 
   [v8 setViewController:v9];
 }
@@ -301,64 +301,64 @@ LABEL_7:
   return v6;
 }
 
-- (void)itemManager:(id)a3 didUpdateResultsForItem:(id)a4 atIndexPath:(id)a5
+- (void)itemManager:(id)manager didUpdateResultsForItem:(id)item atIndexPath:(id)path
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  managerCopy = manager;
+  itemCopy = item;
+  pathCopy = path;
   if ([+[HUQuickControlCollectionViewController superclass](HUQuickControlCollectionViewController "superclass")])
   {
     v16.receiver = self;
     v16.super_class = HUQuickControlCollectionViewController;
-    [(HUItemCollectionViewController *)&v16 itemManager:v9 didUpdateResultsForItem:v10 atIndexPath:v11];
+    [(HUItemCollectionViewController *)&v16 itemManager:managerCopy didUpdateResultsForItem:itemCopy atIndexPath:pathCopy];
   }
 
-  v12 = [(HUQuickControlCollectionViewController *)self viewControllersKeyedByItem];
-  v13 = [v12 objectForKey:v10];
-  v14 = [v13 contentViewController];
+  viewControllersKeyedByItem = [(HUQuickControlCollectionViewController *)self viewControllersKeyedByItem];
+  v13 = [viewControllersKeyedByItem objectForKey:itemCopy];
+  contentViewController = [v13 contentViewController];
 
-  v15 = [(HUQuickControlCollectionViewController *)self _controlItemsForItem:v10];
-  [v14 quickControlItemUpdater:self didUpdateResultsForControlItems:v15];
+  v15 = [(HUQuickControlCollectionViewController *)self _controlItemsForItem:itemCopy];
+  [contentViewController quickControlItemUpdater:self didUpdateResultsForControlItems:v15];
 }
 
-- (void)itemManager:(id)a3 didRemoveItem:(id)a4 atIndexPath:(id)a5
+- (void)itemManager:(id)manager didRemoveItem:(id)item atIndexPath:(id)path
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  managerCopy = manager;
+  itemCopy = item;
+  pathCopy = path;
   if ([+[HUQuickControlCollectionViewController superclass](HUQuickControlCollectionViewController "superclass")])
   {
     v13.receiver = self;
     v13.super_class = HUQuickControlCollectionViewController;
-    [(HUItemCollectionViewController *)&v13 itemManager:v9 didRemoveItem:v10 atIndexPath:v11];
+    [(HUItemCollectionViewController *)&v13 itemManager:managerCopy didRemoveItem:itemCopy atIndexPath:pathCopy];
   }
 
-  v12 = [(HUQuickControlCollectionViewController *)self viewControllersKeyedByItem];
-  [v12 removeObjectForKey:v10];
+  viewControllersKeyedByItem = [(HUQuickControlCollectionViewController *)self viewControllersKeyedByItem];
+  [viewControllersKeyedByItem removeObjectForKey:itemCopy];
 }
 
-- (void)diffableDataItemManager:(id)a3 didUpdateItems:(id)a4 addItems:(id)a5 removeItems:(id)a6
+- (void)diffableDataItemManager:(id)manager didUpdateItems:(id)items addItems:(id)addItems removeItems:(id)removeItems
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  managerCopy = manager;
+  itemsCopy = items;
+  addItemsCopy = addItems;
+  removeItemsCopy = removeItems;
   v19.receiver = self;
   v19.super_class = HUQuickControlCollectionViewController;
-  [(HUItemCollectionViewController *)&v19 diffableDataItemManager:v10 didUpdateItems:v11 addItems:v12 removeItems:v13];
+  [(HUItemCollectionViewController *)&v19 diffableDataItemManager:managerCopy didUpdateItems:itemsCopy addItems:addItemsCopy removeItems:removeItemsCopy];
   objc_initWeak(&location, self);
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __102__HUQuickControlCollectionViewController_diffableDataItemManager_didUpdateItems_addItems_removeItems___block_invoke;
   v16[3] = &unk_277DBBF90;
   objc_copyWeak(&v17, &location);
-  [v11 na_each:v16];
+  [itemsCopy na_each:v16];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __102__HUQuickControlCollectionViewController_diffableDataItemManager_didUpdateItems_addItems_removeItems___block_invoke_2;
   v14[3] = &unk_277DBBF90;
   objc_copyWeak(&v15, &location);
-  [v13 na_each:v14];
+  [removeItemsCopy na_each:v14];
   objc_destroyWeak(&v15);
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
@@ -385,18 +385,18 @@ void __102__HUQuickControlCollectionViewController_diffableDataItemManager_didUp
   [v4 removeObjectForKey:v3];
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
   v46 = *MEMORY[0x277D85DE8];
-  v6 = a5;
-  v7 = [(HUItemCollectionViewController *)self itemManager];
-  v8 = [v7 titleForSection:{objc_msgSend(v6, "section")}];
+  pathCopy = path;
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  v8 = [itemManager titleForSection:{objc_msgSend(pathCopy, "section")}];
 
-  v9 = [(HUQuickControlCollectionViewController *)self collectionView];
-  v10 = [v9 dequeueReusableSupplementaryViewOfKind:*MEMORY[0x277D767D8] withReuseIdentifier:@"HUQuickControlSectionHeaderViewReuseIdentifier" forIndexPath:v6];
+  collectionView = [(HUQuickControlCollectionViewController *)self collectionView];
+  v10 = [collectionView dequeueReusableSupplementaryViewOfKind:*MEMORY[0x277D767D8] withReuseIdentifier:@"HUQuickControlSectionHeaderViewReuseIdentifier" forIndexPath:pathCopy];
 
-  v11 = [(HUItemCollectionViewController *)self itemManager];
-  v12 = [v11 attributedTitleForSection:{objc_msgSend(v6, "section")}];
+  itemManager2 = [(HUItemCollectionViewController *)self itemManager];
+  v12 = [itemManager2 attributedTitleForSection:{objc_msgSend(pathCopy, "section")}];
 
   if (v12)
   {
@@ -407,17 +407,17 @@ void __102__HUQuickControlCollectionViewController_diffableDataItemManager_didUp
   {
     if (!v8)
     {
-      NSLog(&cfstr_AskedForHeader.isa, v6);
+      NSLog(&cfstr_AskedForHeader.isa, pathCopy);
     }
 
     [v10 setTitleText:v8];
   }
 
   objc_opt_class();
-  v13 = [(HUItemCollectionViewController *)self itemManager];
+  itemManager3 = [(HUItemCollectionViewController *)self itemManager];
   if (objc_opt_isKindOfClass())
   {
-    v14 = v13;
+    v14 = itemManager3;
   }
 
   else
@@ -431,21 +431,21 @@ void __102__HUQuickControlCollectionViewController_diffableDataItemManager_didUp
   {
     v36 = v12;
     v37 = v8;
-    v16 = [v15 itemSectionForSectionIndex:{objc_msgSend(v6, "section")}];
-    v17 = [v16 headerAccessoryButtonTitle];
-    [v10 setAccessoryButtonTitleText:v17];
+    v16 = [v15 itemSectionForSectionIndex:{objc_msgSend(pathCopy, "section")}];
+    headerAccessoryButtonTitle = [v16 headerAccessoryButtonTitle];
+    [v10 setAccessoryButtonTitleText:headerAccessoryButtonTitle];
 
-    v18 = [v16 headerAccessoryButtonDelegate];
+    headerAccessoryButtonDelegate = [v16 headerAccessoryButtonDelegate];
 
-    if (!v18)
+    if (!headerAccessoryButtonDelegate)
     {
-      v19 = [v16 items];
-      v20 = [v19 firstObject];
-      v21 = [(HUQuickControlCollectionViewController *)self _viewControllerForItem:v20];
-      v22 = [v21 contentViewController];
-      if ([v22 conformsToProtocol:&unk_2824F2098])
+      items = [v16 items];
+      firstObject = [items firstObject];
+      v21 = [(HUQuickControlCollectionViewController *)self _viewControllerForItem:firstObject];
+      contentViewController = [v21 contentViewController];
+      if ([contentViewController conformsToProtocol:&unk_2824F2098])
       {
-        v23 = v22;
+        v23 = contentViewController;
       }
 
       else
@@ -461,26 +461,26 @@ void __102__HUQuickControlCollectionViewController_diffableDataItemManager_didUp
         *buf = 136315906;
         v39 = "[HUQuickControlCollectionViewController collectionView:viewForSupplementaryElementOfKind:atIndexPath:]";
         v40 = 2112;
-        v41 = self;
+        selfCopy2 = self;
         v42 = 2112;
-        v43 = v6;
+        v43 = pathCopy;
         v44 = 2112;
         v45 = v16;
         _os_log_error_impl(&dword_20CEB6000, v24, OS_LOG_TYPE_ERROR, "%s(%@) headerAccessoryButtonDelegate should not be nil (indexPath = %@ / section = %@)", buf, 0x2Au);
       }
     }
 
-    v25 = [v16 headerAccessoryButtonDelegate];
-    [v10 setAccessoryButtonTarget:v25];
+    headerAccessoryButtonDelegate2 = [v16 headerAccessoryButtonDelegate];
+    [v10 setAccessoryButtonTarget:headerAccessoryButtonDelegate2];
 
     [v10 setItemSection:v16];
     [v10 setHideAccessoryButton:{objc_msgSend(v16, "hideAccessoryButton")}];
     [v10 setHideHeaderText:{objc_msgSend(v16, "hideHeaderText")}];
-    v26 = [(HUItemCollectionViewController *)self itemManager];
-    v27 = [v26 displayedItemAtIndexPath:v6];
+    itemManager4 = [(HUItemCollectionViewController *)self itemManager];
+    v27 = [itemManager4 displayedItemAtIndexPath:pathCopy];
 
-    v28 = [v27 latestResults];
-    v29 = [v28 objectForKeyedSubscript:*MEMORY[0x277D140E8]];
+    latestResults = [v27 latestResults];
+    v29 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D140E8]];
 
     if (v29)
     {
@@ -489,7 +489,7 @@ void __102__HUQuickControlCollectionViewController_diffableDataItemManager_didUp
 
     else
     {
-      v30 = [(HUQuickControlCollectionViewController *)self _determineReachabilityForIndexPath:v6];
+      v30 = [(HUQuickControlCollectionViewController *)self _determineReachabilityForIndexPath:pathCopy];
     }
 
     v31 = HFLogForCategory();
@@ -499,7 +499,7 @@ void __102__HUQuickControlCollectionViewController_diffableDataItemManager_didUp
       *buf = 136315650;
       v39 = "[HUQuickControlCollectionViewController collectionView:viewForSupplementaryElementOfKind:atIndexPath:]";
       v40 = 2112;
-      v41 = self;
+      selfCopy2 = self;
       v42 = 2112;
       v43 = v32;
       _os_log_impl(&dword_20CEB6000, v31, OS_LOG_TYPE_DEFAULT, "%s(%@) Setting  reachabilityState = %@ ", buf, 0x20u);
@@ -510,8 +510,8 @@ void __102__HUQuickControlCollectionViewController_diffableDataItemManager_didUp
     v8 = v37;
   }
 
-  v33 = [v15 allDisplayedItems];
-  v34 = [v33 count];
+  allDisplayedItems = [v15 allDisplayedItems];
+  v34 = [allDisplayedItems count];
 
   if (v34 == 1)
   {
@@ -521,18 +521,18 @@ void __102__HUQuickControlCollectionViewController_diffableDataItemManager_didUp
   return v10;
 }
 
-- (unint64_t)_determineReachabilityForIndexPath:(id)a3
+- (unint64_t)_determineReachabilityForIndexPath:(id)path
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HUItemCollectionViewController *)self itemManager];
-  v6 = [v5 displayedItemAtIndexPath:v4];
+  pathCopy = path;
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  v6 = [itemManager displayedItemAtIndexPath:pathCopy];
 
   objc_opt_class();
-  v7 = [(HUItemCollectionViewController *)self itemManager];
+  itemManager2 = [(HUItemCollectionViewController *)self itemManager];
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = itemManager2;
   }
 
   else
@@ -542,8 +542,8 @@ void __102__HUQuickControlCollectionViewController_diffableDataItemManager_didUp
 
   v9 = v8;
 
-  v10 = [v4 section];
-  v11 = [v9 itemSectionForSectionIndex:v10];
+  section = [pathCopy section];
+  v11 = [v9 itemSectionForSectionIndex:section];
   objc_opt_class();
   v12 = v6;
   if (objc_opt_isKindOfClass())
@@ -563,19 +563,19 @@ void __102__HUQuickControlCollectionViewController_diffableDataItemManager_didUp
     v15 = HFLogForCategory();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [v14 mediaProfileContainer];
+      mediaProfileContainer = [v14 mediaProfileContainer];
       v28 = 136315650;
       v29 = "[HUQuickControlCollectionViewController _determineReachabilityForIndexPath:]";
       v30 = 2112;
-      v31 = self;
+      selfCopy2 = self;
       v32 = 2112;
-      v33 = v16;
+      v33 = mediaProfileContainer;
       _os_log_impl(&dword_20CEB6000, v15, OS_LOG_TYPE_DEFAULT, "%s(%@) Fetching  reachability for MediaAccessory = %@ ", &v28, 0x20u);
     }
 
-    v17 = [v14 mediaProfileContainer];
-    v18 = [v11 identifier];
-    [(HUQuickControlCollectionViewController *)self _fetchReachabilityStateForMediaAccessory:v17 accessType:0 itemSectionIdentifier:v18];
+    mediaProfileContainer2 = [v14 mediaProfileContainer];
+    identifier = [v11 identifier];
+    [(HUQuickControlCollectionViewController *)self _fetchReachabilityStateForMediaAccessory:mediaProfileContainer2 accessType:0 itemSectionIdentifier:identifier];
 
     v19 = 1;
   }
@@ -601,10 +601,10 @@ void __102__HUQuickControlCollectionViewController_diffableDataItemManager_didUp
 
   if (v22)
   {
-    v23 = [v22 mediaProfileContainer];
-    v24 = [v11 identifier];
+    mediaProfileContainer3 = [v22 mediaProfileContainer];
+    identifier2 = [v11 identifier];
     v19 = 1;
-    [(HUQuickControlCollectionViewController *)self _fetchReachabilityStateForMediaAccessory:v23 accessType:1 itemSectionIdentifier:v24];
+    [(HUQuickControlCollectionViewController *)self _fetchReachabilityStateForMediaAccessory:mediaProfileContainer3 accessType:1 itemSectionIdentifier:identifier2];
   }
 
   v25 = HFLogForCategory();
@@ -614,7 +614,7 @@ void __102__HUQuickControlCollectionViewController_diffableDataItemManager_didUp
     v28 = 136315650;
     v29 = "[HUQuickControlCollectionViewController _determineReachabilityForIndexPath:]";
     v30 = 2112;
-    v31 = self;
+    selfCopy2 = self;
     v32 = 2112;
     v33 = v26;
     _os_log_impl(&dword_20CEB6000, v25, OS_LOG_TYPE_DEFAULT, "%s(%@) Returning reachabilityState = %@ ", &v28, 0x20u);
@@ -623,24 +623,24 @@ void __102__HUQuickControlCollectionViewController_diffableDataItemManager_didUp
   return v19;
 }
 
-- (void)_fetchReachabilityStateForMediaAccessory:(id)a3 accessType:(unint64_t)a4 itemSectionIdentifier:(id)a5
+- (void)_fetchReachabilityStateForMediaAccessory:(id)accessory accessType:(unint64_t)type itemSectionIdentifier:(id)identifier
 {
-  v8 = a5;
-  v9 = [a3 accessories];
-  v10 = [v9 anyObject];
-  if (!v10)
+  identifierCopy = identifier;
+  accessories = [accessory accessories];
+  anyObject = [accessories anyObject];
+  if (!anyObject)
   {
     NSLog(&cfstr_AccessoryCanTB.isa);
   }
 
-  v11 = [HUAlarmsAndTimersAccessUtility canAccess:v10 for:a4 withManager:0];
+  v11 = [HUAlarmsAndTimersAccessUtility canAccess:anyObject for:type withManager:0];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __116__HUQuickControlCollectionViewController__fetchReachabilityStateForMediaAccessory_accessType_itemSectionIdentifier___block_invoke;
   v14[3] = &unk_277DBD4E0;
   v14[4] = self;
-  v15 = v8;
-  v12 = v8;
+  v15 = identifierCopy;
+  v12 = identifierCopy;
   v13 = [v11 flatMap:v14];
 }
 
@@ -670,18 +670,18 @@ id __116__HUQuickControlCollectionViewController__fetchReachabilityStateForMedia
   return v7;
 }
 
-- (void)_setReachabilityForHeaderForIdentifier:(id)a3 to:(BOOL)a4
+- (void)_setReachabilityForHeaderForIdentifier:(id)identifier to:(BOOL)to
 {
-  v4 = a4;
+  toCopy = to;
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(HUQuickControlCollectionViewController *)self collectionView];
-  v8 = [v7 visibleSupplementaryViewsOfKind:*MEMORY[0x277D767D8]];
+  identifierCopy = identifier;
+  collectionView = [(HUQuickControlCollectionViewController *)self collectionView];
+  v8 = [collectionView visibleSupplementaryViewsOfKind:*MEMORY[0x277D767D8]];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __84__HUQuickControlCollectionViewController__setReachabilityForHeaderForIdentifier_to___block_invoke;
   v15[3] = &unk_277DBD560;
-  v9 = v6;
+  v9 = identifierCopy;
   v16 = v9;
   v10 = [v8 na_firstObjectPassingTest:v15];
 
@@ -693,14 +693,14 @@ id __116__HUQuickControlCollectionViewController__fetchReachabilityStateForMedia
       *buf = 136315650;
       v18 = "[HUQuickControlCollectionViewController _setReachabilityForHeaderForIdentifier:to:]";
       v19 = 2112;
-      v20 = self;
+      selfCopy2 = self;
       v21 = 2112;
       v22 = v9;
       _os_log_error_impl(&dword_20CEB6000, v11, OS_LOG_TYPE_ERROR, "%s(%@) Could not find section %@", buf, 0x20u);
     }
   }
 
-  if (v4)
+  if (toCopy)
   {
     v12 = 2;
   }
@@ -717,7 +717,7 @@ id __116__HUQuickControlCollectionViewController__fetchReachabilityStateForMedia
     *buf = 136315650;
     v18 = "[HUQuickControlCollectionViewController _setReachabilityForHeaderForIdentifier:to:]";
     v19 = 2112;
-    v20 = self;
+    selfCopy2 = self;
     v21 = 2112;
     v22 = v14;
     _os_log_impl(&dword_20CEB6000, v13, OS_LOG_TYPE_DEFAULT, "%s(%@) Setting  reachabilityState = %@ ", buf, 0x20u);
@@ -750,39 +750,39 @@ uint64_t __84__HUQuickControlCollectionViewController__setReachabilityForHeaderF
   return v9;
 }
 
-- (void)_handleCoordinationReachableStatusChanged:(id)a3
+- (void)_handleCoordinationReachableStatusChanged:(id)changed
 {
-  v14 = a3;
-  v4 = [v14 userInfo];
+  changedCopy = changed;
+  userInfo = [changedCopy userInfo];
   v5 = *MEMORY[0x277D13828];
-  v6 = [v4 objectForKey:*MEMORY[0x277D13828]];
+  v6 = [userInfo objectForKey:*MEMORY[0x277D13828]];
   if (v6)
   {
     v7 = v6;
-    v8 = [v14 userInfo];
+    userInfo2 = [changedCopy userInfo];
     v9 = *MEMORY[0x277D13820];
-    v10 = [v8 objectForKey:*MEMORY[0x277D13820]];
+    v10 = [userInfo2 objectForKey:*MEMORY[0x277D13820]];
 
     if (!v10)
     {
       goto LABEL_5;
     }
 
-    v4 = [v14 userInfo];
-    v11 = [v4 objectForKey:v5];
-    v12 = [v14 userInfo];
-    v13 = [v12 objectForKey:v9];
+    userInfo = [changedCopy userInfo];
+    v11 = [userInfo objectForKey:v5];
+    userInfo3 = [changedCopy userInfo];
+    v13 = [userInfo3 objectForKey:v9];
     -[HUQuickControlCollectionViewController _setReachabilityForHeaderForIdentifier:to:](self, "_setReachabilityForHeaderForIdentifier:to:", v11, [v13 BOOLValue]);
   }
 
 LABEL_5:
 }
 
-- (id)_controlItemsForItem:(id)a3
+- (id)_controlItemsForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
-  v5 = v4;
+  v5 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -802,8 +802,8 @@ LABEL_5:
 
   else
   {
-    v9 = [(HUItemCollectionViewController *)self itemManager];
-    v8 = [v9 childItemsForItem:v5 ofClass:objc_opt_class()];
+    itemManager = [(HUItemCollectionViewController *)self itemManager];
+    v8 = [itemManager childItemsForItem:v5 ofClass:objc_opt_class()];
   }
 
   return v8;
@@ -811,14 +811,14 @@ LABEL_5:
 
 - (void)_reconfigureLayoutOptions
 {
-  v3 = [(HUQuickControlCollectionViewController *)self viewControllersKeyedByItem];
-  v4 = [v3 keyEnumerator];
+  viewControllersKeyedByItem = [(HUQuickControlCollectionViewController *)self viewControllersKeyedByItem];
+  keyEnumerator = [viewControllersKeyedByItem keyEnumerator];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __67__HUQuickControlCollectionViewController__reconfigureLayoutOptions__block_invoke;
   v5[3] = &unk_277DBAF68;
   v5[4] = self;
-  [v4 na_each:v5];
+  [keyEnumerator na_each:v5];
 }
 
 void __67__HUQuickControlCollectionViewController__reconfigureLayoutOptions__block_invoke(uint64_t a1, void *a2)
@@ -832,40 +832,40 @@ void __67__HUQuickControlCollectionViewController__reconfigureLayoutOptions__blo
   [v7 setTitlePosition:v6];
 }
 
-- (unint64_t)_titlePositionForItem:(id)a3
+- (unint64_t)_titlePositionForItem:(id)item
 {
-  v3 = [(HUQuickControlCollectionViewController *)self layoutOptions];
-  v4 = [v3 titlePosition];
+  layoutOptions = [(HUQuickControlCollectionViewController *)self layoutOptions];
+  titlePosition = [layoutOptions titlePosition];
 
-  return v4;
+  return titlePosition;
 }
 
-- (id)_viewControllerForItem:(id)a3
+- (id)_viewControllerForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUQuickControlCollectionViewController *)self viewControllersKeyedByItem];
-  v6 = [v5 objectForKey:v4];
+  itemCopy = item;
+  viewControllersKeyedByItem = [(HUQuickControlCollectionViewController *)self viewControllersKeyedByItem];
+  v6 = [viewControllersKeyedByItem objectForKey:itemCopy];
 
   if (!v6)
   {
-    v7 = [(HUItemCollectionViewController *)self itemManager];
+    itemManager = [(HUItemCollectionViewController *)self itemManager];
     v8 = objc_opt_respondsToSelector();
 
-    if ((v8 & 1) != 0 && (-[HUItemCollectionViewController itemManager](self, "itemManager"), v9 = objc_claimAutoreleasedReturnValue(), [v9 quickControlContextForItem:v4], v10 = objc_claimAutoreleasedReturnValue(), v9, v10))
+    if ((v8 & 1) != 0 && (-[HUItemCollectionViewController itemManager](self, "itemManager"), v9 = objc_claimAutoreleasedReturnValue(), [v9 quickControlContextForItem:itemCopy], v10 = objc_claimAutoreleasedReturnValue(), v9, v10))
     {
       v11 = objc_alloc([v10 quickControlClass]);
-      v12 = [v10 controlItems];
-      v13 = [v10 home];
-      v14 = [v10 itemUpdater];
-      v15 = [v11 initWithControlItems:v12 home:v13 itemUpdater:v14 controlOrientation:objc_msgSend(v10 preferredControl:{"controlOrientation"), objc_msgSend(v10, "preferredControl")}];
+      controlItems = [v10 controlItems];
+      home = [v10 home];
+      itemUpdater = [v10 itemUpdater];
+      v15 = [v11 initWithControlItems:controlItems home:home itemUpdater:itemUpdater controlOrientation:objc_msgSend(v10 preferredControl:{"controlOrientation"), objc_msgSend(v10, "preferredControl")}];
 
       [v15 setPreferredControl:{objc_msgSend(v10, "preferredControl")}];
       [v15 setControlOrientation:{objc_msgSend(v10, "controlOrientation")}];
-      v16 = [(HUItemCollectionViewController *)self itemManager];
-      v17 = [v16 indexPathForItem:v4];
+      itemManager2 = [(HUItemCollectionViewController *)self itemManager];
+      v17 = [itemManager2 indexPathForItem:itemCopy];
 
-      v18 = [(HUItemCollectionViewController *)self itemManager];
-      v19 = [v18 itemSectionForSectionIndex:{objc_msgSend(v17, "section")}];
+      itemManager3 = [(HUItemCollectionViewController *)self itemManager];
+      v19 = [itemManager3 itemSectionForSectionIndex:{objc_msgSend(v17, "section")}];
 
       v20 = v15;
       if ([(HUQuickControlViewControllerConfiguration *)v20 conformsToProtocol:&unk_2824F2098])
@@ -881,50 +881,50 @@ void __67__HUQuickControlCollectionViewController__reconfigureLayoutOptions__blo
       v22 = v21;
 
       [v19 setHeaderAccessoryButtonDelegate:v22];
-      v6 = [(HUQuickControlCollectionViewController *)self _createCellContainerForViewController:v20 forItem:v4];
+      v6 = [(HUQuickControlCollectionViewController *)self _createCellContainerForViewController:v20 forItem:itemCopy];
     }
 
     else
     {
-      v23 = [(HUQuickControlCollectionViewController *)self _controlItemsForItem:v4];
+      v23 = [(HUQuickControlCollectionViewController *)self _controlItemsForItem:itemCopy];
       v24 = [HUQuickControlViewControllerConfiguration alloc];
-      v25 = [(HUItemCollectionViewController *)self itemManager];
-      v26 = [v25 home];
-      v27 = [(HUQuickControlViewControllerConfiguration *)v24 initWithHome:v26];
+      itemManager4 = [(HUItemCollectionViewController *)self itemManager];
+      home2 = [itemManager4 home];
+      v27 = [(HUQuickControlViewControllerConfiguration *)v24 initWithHome:home2];
 
       [(HUQuickControlViewControllerConfiguration *)v27 setItemUpdater:self];
       [(HUQuickControlViewControllerConfiguration *)v27 setCopyItems:0];
       v51 = v27;
       v52 = v23;
       v17 = [MEMORY[0x277D145C8] hu_preferredQuickControlGroupContextForControlItems:v23 configuration:v27];
-      v49 = [v17 primaryQuickControlContext];
-      v47 = objc_alloc([v49 quickControlClass]);
-      v48 = [v17 primaryQuickControlContext];
-      [v48 controlItems];
-      v28 = v50 = v4;
-      v29 = [v17 primaryQuickControlContext];
-      v30 = [v29 home];
-      v31 = [v17 primaryQuickControlContext];
-      v32 = [v31 itemUpdater];
-      v33 = [v17 primaryQuickControlContext];
-      v34 = [v33 controlOrientation];
-      v35 = [v17 primaryQuickControlContext];
-      v36 = [v47 initWithControlItems:v28 home:v30 itemUpdater:v32 controlOrientation:v34 preferredControl:{objc_msgSend(v35, "preferredControl")}];
+      primaryQuickControlContext = [v17 primaryQuickControlContext];
+      v47 = objc_alloc([primaryQuickControlContext quickControlClass]);
+      primaryQuickControlContext2 = [v17 primaryQuickControlContext];
+      [primaryQuickControlContext2 controlItems];
+      v28 = v50 = itemCopy;
+      primaryQuickControlContext3 = [v17 primaryQuickControlContext];
+      home3 = [primaryQuickControlContext3 home];
+      primaryQuickControlContext4 = [v17 primaryQuickControlContext];
+      itemUpdater2 = [primaryQuickControlContext4 itemUpdater];
+      primaryQuickControlContext5 = [v17 primaryQuickControlContext];
+      controlOrientation = [primaryQuickControlContext5 controlOrientation];
+      primaryQuickControlContext6 = [v17 primaryQuickControlContext];
+      v36 = [v47 initWithControlItems:v28 home:home3 itemUpdater:itemUpdater2 controlOrientation:controlOrientation preferredControl:{objc_msgSend(primaryQuickControlContext6, "preferredControl")}];
 
       v19 = v36;
-      v37 = [v17 primaryQuickControlContext];
-      [v19 setPreferredControl:{objc_msgSend(v37, "preferredControl")}];
+      primaryQuickControlContext7 = [v17 primaryQuickControlContext];
+      [v19 setPreferredControl:{objc_msgSend(primaryQuickControlContext7, "preferredControl")}];
 
-      v38 = [v17 primaryQuickControlContext];
-      [v19 setControlOrientation:{objc_msgSend(v38, "controlOrientation")}];
+      primaryQuickControlContext8 = [v17 primaryQuickControlContext];
+      [v19 setControlOrientation:{objc_msgSend(primaryQuickControlContext8, "controlOrientation")}];
 
       if (v19)
       {
-        v39 = [(HUItemCollectionViewController *)self itemManager];
-        v40 = [v39 indexPathForItem:v50];
+        itemManager5 = [(HUItemCollectionViewController *)self itemManager];
+        v40 = [itemManager5 indexPathForItem:v50];
 
-        v41 = [(HUItemCollectionViewController *)self itemManager];
-        v42 = [v41 itemSectionForSectionIndex:{objc_msgSend(v40, "section")}];
+        itemManager6 = [(HUItemCollectionViewController *)self itemManager];
+        v42 = [itemManager6 itemSectionForSectionIndex:{objc_msgSend(v40, "section")}];
 
         v43 = v19;
         if ([v43 conformsToProtocol:&unk_2824F2098])
@@ -942,13 +942,13 @@ void __67__HUQuickControlCollectionViewController__reconfigureLayoutOptions__blo
         [v42 setHeaderAccessoryButtonDelegate:v45];
         v6 = [(HUQuickControlCollectionViewController *)self _createCellContainerForViewController:v43 forItem:v50];
 
-        v4 = v50;
+        itemCopy = v50;
       }
 
       else
       {
         v6 = 0;
-        v4 = v50;
+        itemCopy = v50;
       }
 
       v20 = v51;
@@ -959,16 +959,16 @@ void __67__HUQuickControlCollectionViewController__reconfigureLayoutOptions__blo
   return v6;
 }
 
-- (id)_createCellContainerForViewController:(id)a3 forItem:(id)a4
+- (id)_createCellContainerForViewController:(id)controller forItem:(id)item
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[HUQuickControlCollectionViewCellContainerViewController alloc] initWithContentViewController:v7];
+  itemCopy = item;
+  controllerCopy = controller;
+  v8 = [[HUQuickControlCollectionViewCellContainerViewController alloc] initWithContentViewController:controllerCopy];
 
-  [(HUQuickControlCollectionViewCellContainerViewController *)v8 setTitlePosition:[(HUQuickControlCollectionViewController *)self _titlePositionForItem:v6]];
-  v9 = [(HUQuickControlCollectionViewController *)self viewControllersKeyedByItem];
-  [v9 setObject:v8 forKey:v6];
+  [(HUQuickControlCollectionViewCellContainerViewController *)v8 setTitlePosition:[(HUQuickControlCollectionViewController *)self _titlePositionForItem:itemCopy]];
+  viewControllersKeyedByItem = [(HUQuickControlCollectionViewController *)self viewControllersKeyedByItem];
+  [viewControllersKeyedByItem setObject:v8 forKey:itemCopy];
 
   v12[0] = v8;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
@@ -977,15 +977,15 @@ void __67__HUQuickControlCollectionViewController__reconfigureLayoutOptions__blo
   return v8;
 }
 
-- (void)_propagateInteractiveContentStateForChildViewControllers:(id)a3
+- (void)_propagateInteractiveContentStateForChildViewControllers:(id)controllers
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllersCopy = controllers;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [controllersCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -997,25 +997,25 @@ void __67__HUQuickControlCollectionViewController__reconfigureLayoutOptions__blo
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(controllersCopy);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * v8) contentViewController];
-        v10 = [(HUQuickControlCollectionViewController *)self characteristicWritingAdapter];
-        [v9 setCharacteristicWritingDelegate:v10];
+        contentViewController = [*(*(&v13 + 1) + 8 * v8) contentViewController];
+        characteristicWritingAdapter = [(HUQuickControlCollectionViewController *)self characteristicWritingAdapter];
+        [contentViewController setCharacteristicWritingDelegate:characteristicWritingAdapter];
 
-        v11 = [(HUQuickControlCollectionViewController *)self quickControlHost];
-        [v9 setQuickControlHost:v11];
+        quickControlHost = [(HUQuickControlCollectionViewController *)self quickControlHost];
+        [contentViewController setQuickControlHost:quickControlHost];
 
-        [v9 setUserInteractionEnabled:{-[HUQuickControlCollectionViewController isUserInteractionEnabled](self, "isUserInteractionEnabled")}];
-        v12 = [v9 childVCThatRequiresHelper];
-        [v12 setQuickControlContentHelper:self];
+        [contentViewController setUserInteractionEnabled:{-[HUQuickControlCollectionViewController isUserInteractionEnabled](self, "isUserInteractionEnabled")}];
+        childVCThatRequiresHelper = [contentViewController childVCThatRequiresHelper];
+        [childVCThatRequiresHelper setQuickControlContentHelper:self];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [controllersCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -1024,39 +1024,39 @@ void __67__HUQuickControlCollectionViewController__reconfigureLayoutOptions__blo
 
 - (id)_allViewControllers
 {
-  v2 = [(HUQuickControlCollectionViewController *)self viewControllersKeyedByItem];
-  v3 = [v2 objectEnumerator];
-  v4 = [v3 allObjects];
+  viewControllersKeyedByItem = [(HUQuickControlCollectionViewController *)self viewControllersKeyedByItem];
+  objectEnumerator = [viewControllersKeyedByItem objectEnumerator];
+  allObjects = [objectEnumerator allObjects];
 
-  return v4;
+  return allObjects;
 }
 
 - (id)_allContentViewControllers
 {
-  v2 = [(HUQuickControlCollectionViewController *)self _allViewControllers];
-  v3 = [v2 na_map:&__block_literal_global_118];
+  _allViewControllers = [(HUQuickControlCollectionViewController *)self _allViewControllers];
+  v3 = [_allViewControllers na_map:&__block_literal_global_118];
 
   return v3;
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
   v6.receiver = self;
   v6.super_class = HUQuickControlCollectionViewController;
-  [(HUQuickControlCollectionViewController *)&v6 preferredContentSizeDidChangeForChildContentContainer:a3];
-  v4 = [(HUQuickControlCollectionViewController *)self transitionCoordinator];
+  [(HUQuickControlCollectionViewController *)&v6 preferredContentSizeDidChangeForChildContentContainer:container];
+  transitionCoordinator = [(HUQuickControlCollectionViewController *)self transitionCoordinator];
 
-  if (!v4)
+  if (!transitionCoordinator)
   {
-    v5 = [(HUQuickControlCollectionViewController *)self collectionViewLayout];
-    [v5 invalidateLayout];
+    collectionViewLayout = [(HUQuickControlCollectionViewController *)self collectionViewLayout];
+    [collectionViewLayout invalidateLayout];
   }
 }
 
 - (id)viewForTouchContinuation
 {
-  v3 = [(HUItemCollectionViewController *)self itemManager];
-  v4 = [v3 displayedItemsInSection:0];
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  v4 = [itemManager displayedItemsInSection:0];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -1065,14 +1065,14 @@ void __67__HUQuickControlCollectionViewController__reconfigureLayoutOptions__blo
   v10[4] = self;
   v5 = [v4 na_map:v10];
   v6 = [v5 na_map:&__block_literal_global_114_0];
-  v7 = 0;
+  viewForTouchContinuation = 0;
   if ([v6 count] == 1)
   {
-    v8 = [v6 firstObject];
-    v7 = [v8 viewForTouchContinuation];
+    firstObject = [v6 firstObject];
+    viewForTouchContinuation = [firstObject viewForTouchContinuation];
   }
 
-  return v7;
+  return viewForTouchContinuation;
 }
 
 id __66__HUQuickControlCollectionViewController_viewForTouchContinuation__block_invoke(uint64_t a1, uint64_t a2)
@@ -1122,50 +1122,50 @@ id __66__HUQuickControlCollectionViewController_viewForTouchContinuation__block_
   return v7;
 }
 
-- (id)intrinsicSizeDescriptorForItemAtIndexPath:(id)a3 itemSize:(unint64_t)a4
+- (id)intrinsicSizeDescriptorForItemAtIndexPath:(id)path itemSize:(unint64_t)size
 {
-  v6 = a3;
-  v7 = [(HUItemCollectionViewController *)self itemManager];
-  v8 = [v7 displayedItemAtIndexPath:v6];
+  pathCopy = path;
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  v8 = [itemManager displayedItemAtIndexPath:pathCopy];
 
   v9 = [(HUQuickControlCollectionViewController *)self _viewControllerForItem:v8];
-  v10 = [v9 intrinsicSizeDescriptorForControlSize:{+[HUQuickControlViewControllerCollectionViewCell quickControlSizeForItemSize:](HUQuickControlViewControllerCollectionViewCell, "quickControlSizeForItemSize:", a4)}];
+  v10 = [v9 intrinsicSizeDescriptorForControlSize:{+[HUQuickControlViewControllerCollectionViewCell quickControlSizeForItemSize:](HUQuickControlViewControllerCollectionViewCell, "quickControlSizeForItemSize:", size)}];
 
   return v10;
 }
 
-- (void)setCharacteristicWritingDelegate:(id)a3
+- (void)setCharacteristicWritingDelegate:(id)delegate
 {
-  v4 = a3;
-  objc_storeWeak(&self->_characteristicWritingDelegate, v4);
-  v5 = [(HUQuickControlCollectionViewController *)self characteristicWritingAdapter];
-  [v5 setForwardingCharacteristicWritingDelegate:v4];
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_characteristicWritingDelegate, delegateCopy);
+  characteristicWritingAdapter = [(HUQuickControlCollectionViewController *)self characteristicWritingAdapter];
+  [characteristicWritingAdapter setForwardingCharacteristicWritingDelegate:delegateCopy];
 }
 
 - (void)invalidateContentViewLayout
 {
-  v2 = [(HUQuickControlCollectionViewController *)self collectionViewLayout];
-  [v2 invalidateLayout];
+  collectionViewLayout = [(HUQuickControlCollectionViewController *)self collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 }
 
-- (void)shouldHideQuickControlHeaderButton:(BOOL)a3 forSectionIdentifier:(id)a4
+- (void)shouldHideQuickControlHeaderButton:(BOOL)button forSectionIdentifier:(id)identifier
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(HUQuickControlCollectionViewController *)self collectionView];
-  v8 = [v7 visibleSupplementaryViewsOfKind:*MEMORY[0x277D767D8]];
+  buttonCopy = button;
+  identifierCopy = identifier;
+  collectionView = [(HUQuickControlCollectionViewController *)self collectionView];
+  v8 = [collectionView visibleSupplementaryViewsOfKind:*MEMORY[0x277D767D8]];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __98__HUQuickControlCollectionViewController_shouldHideQuickControlHeaderButton_forSectionIdentifier___block_invoke;
   v12[3] = &unk_277DBD560;
-  v13 = v6;
-  v9 = v6;
+  v13 = identifierCopy;
+  v9 = identifierCopy;
   v10 = [v8 na_firstObjectPassingTest:v12];
 
-  v11 = [v10 itemSection];
-  [v11 setHideAccessoryButton:v4];
+  itemSection = [v10 itemSection];
+  [itemSection setHideAccessoryButton:buttonCopy];
 
-  [v10 setHideAccessoryButton:v4];
+  [v10 setHideAccessoryButton:buttonCopy];
 }
 
 uint64_t __98__HUQuickControlCollectionViewController_shouldHideQuickControlHeaderButton_forSectionIdentifier___block_invoke(uint64_t a1, void *a2)
@@ -1192,24 +1192,24 @@ uint64_t __98__HUQuickControlCollectionViewController_shouldHideQuickControlHead
   return v9;
 }
 
-- (void)shouldHideQuickControlHeaderText:(BOOL)a3 forSectionIdentifier:(id)a4
+- (void)shouldHideQuickControlHeaderText:(BOOL)text forSectionIdentifier:(id)identifier
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(HUQuickControlCollectionViewController *)self collectionView];
-  v8 = [v7 visibleSupplementaryViewsOfKind:*MEMORY[0x277D767D8]];
+  textCopy = text;
+  identifierCopy = identifier;
+  collectionView = [(HUQuickControlCollectionViewController *)self collectionView];
+  v8 = [collectionView visibleSupplementaryViewsOfKind:*MEMORY[0x277D767D8]];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __96__HUQuickControlCollectionViewController_shouldHideQuickControlHeaderText_forSectionIdentifier___block_invoke;
   v12[3] = &unk_277DBD560;
-  v13 = v6;
-  v9 = v6;
+  v13 = identifierCopy;
+  v9 = identifierCopy;
   v10 = [v8 na_firstObjectPassingTest:v12];
 
-  v11 = [v10 itemSection];
-  [v11 setHideHeaderText:v4];
+  itemSection = [v10 itemSection];
+  [itemSection setHideHeaderText:textCopy];
 
-  [v10 setHideHeaderText:v4];
+  [v10 setHideHeaderText:textCopy];
 }
 
 uint64_t __96__HUQuickControlCollectionViewController_shouldHideQuickControlHeaderText_forSectionIdentifier___block_invoke(uint64_t a1, void *a2)
@@ -1236,41 +1236,41 @@ uint64_t __96__HUQuickControlCollectionViewController_shouldHideQuickControlHead
   return v9;
 }
 
-- (void)setQuickControlHost:(id)a3
+- (void)setQuickControlHost:(id)host
 {
-  objc_storeWeak(&self->_quickControlHost, a3);
-  v4 = [(HUQuickControlCollectionViewController *)self _allViewControllers];
-  [(HUQuickControlCollectionViewController *)self _propagateInteractiveContentStateForChildViewControllers:v4];
+  objc_storeWeak(&self->_quickControlHost, host);
+  _allViewControllers = [(HUQuickControlCollectionViewController *)self _allViewControllers];
+  [(HUQuickControlCollectionViewController *)self _propagateInteractiveContentStateForChildViewControllers:_allViewControllers];
 }
 
-- (void)setUserInteractionEnabled:(BOOL)a3
+- (void)setUserInteractionEnabled:(BOOL)enabled
 {
-  self->_userInteractionEnabled = a3;
-  v4 = [(HUQuickControlCollectionViewController *)self _allViewControllers];
-  [(HUQuickControlCollectionViewController *)self _propagateInteractiveContentStateForChildViewControllers:v4];
+  self->_userInteractionEnabled = enabled;
+  _allViewControllers = [(HUQuickControlCollectionViewController *)self _allViewControllers];
+  [(HUQuickControlCollectionViewController *)self _propagateInteractiveContentStateForChildViewControllers:_allViewControllers];
 }
 
 - (NSSet)affectedCharacteristics
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(HUQuickControlCollectionViewController *)self _allContentViewControllers];
-  v4 = [v2 setWithArray:v3];
+  _allContentViewControllers = [(HUQuickControlCollectionViewController *)self _allContentViewControllers];
+  v4 = [v2 setWithArray:_allContentViewControllers];
   v5 = [v4 na_flatMap:&__block_literal_global_121_0];
 
   return v5;
 }
 
-- (id)overrideValueForCharacteristic:(id)a3
+- (id)overrideValueForCharacteristic:(id)characteristic
 {
-  v4 = a3;
-  v5 = [(HUQuickControlCollectionViewController *)self _allContentViewControllers];
+  characteristicCopy = characteristic;
+  _allContentViewControllers = [(HUQuickControlCollectionViewController *)self _allContentViewControllers];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __73__HUQuickControlCollectionViewController_overrideValueForCharacteristic___block_invoke;
   v10[3] = &unk_277DBD610;
-  v11 = v4;
-  v6 = v4;
-  v7 = [v5 na_firstObjectPassingTest:v10];
+  v11 = characteristicCopy;
+  v6 = characteristicCopy;
+  v7 = [_allContentViewControllers na_firstObjectPassingTest:v10];
 
   v8 = [v7 overrideValueForCharacteristic:v6];
 
@@ -1285,13 +1285,13 @@ uint64_t __73__HUQuickControlCollectionViewController_overrideValueForCharacteri
   return v4;
 }
 
-- (void)accessoryDidUpdateControllable:(id)a3
+- (void)accessoryDidUpdateControllable:(id)controllable
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v21 = self;
-  v5 = [(HUQuickControlCollectionViewController *)self collectionView];
-  v6 = [v5 visibleSupplementaryViewsOfKind:*MEMORY[0x277D767D8]];
+  controllableCopy = controllable;
+  selfCopy = self;
+  collectionView = [(HUQuickControlCollectionViewController *)self collectionView];
+  v6 = [collectionView visibleSupplementaryViewsOfKind:*MEMORY[0x277D767D8]];
 
   v24 = 0u;
   v25 = 0u;
@@ -1327,11 +1327,11 @@ uint64_t __73__HUQuickControlCollectionViewController_overrideValueForCharacteri
 
         v15 = v14;
 
-        if (v15 && [v4 hf_isHomePod])
+        if (v15 && [controllableCopy hf_isHomePod])
         {
-          v16 = [v4 mediaProfile];
-          v17 = [v16 settings];
-          if ([v17 isControllable])
+          mediaProfile = [controllableCopy mediaProfile];
+          settings = [mediaProfile settings];
+          if ([settings isControllable])
           {
             v18 = 2;
           }
@@ -1348,9 +1348,9 @@ uint64_t __73__HUQuickControlCollectionViewController_overrideValueForCharacteri
             *buf = 136315906;
             v27 = "[HUQuickControlCollectionViewController accessoryDidUpdateControllable:]";
             v28 = 2112;
-            v29 = v21;
+            v29 = selfCopy;
             v30 = 2112;
-            v31 = v4;
+            v31 = controllableCopy;
             v32 = 2112;
             v33 = v20;
             _os_log_impl(&dword_20CEB6000, v19, OS_LOG_TYPE_DEFAULT, "%s(%@) accessory [%@]   reachabilityState = %@", buf, 0x2Au);

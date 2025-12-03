@@ -1,44 +1,44 @@
 @interface RMSubscriberStore
-+ (RMSubscriberStore)storeWithIdentifier:(id)a3 scope:(int64_t)a4 completionHandler:(id)a5;
-+ (void)storeForStoreDeclarationKeyString:(id)a3 scope:(int64_t)a4 completionHandler:(id)a5;
-+ (void)storesWithScope:(int64_t)a3 completionHandler:(id)a4;
-+ (void)subscribedStoreConfigurationsVisibleUIWithScope:(int64_t)a3 configurationTypes:(id)a4 completionHandler:(id)a5;
-+ (void)subscribedStoreDeclarationsWithScope:(int64_t)a3 configurationTypes:(id)a4 completionHandler:(id)a5;
-+ (void)unassignAssets:(id)a3 scope:(int64_t)a4 completionHandler:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToStore:(id)a3;
-- (BOOL)isValidStatusItem:(id)a3;
-- (id)_reasonsFromErrorWithFirstReason:(id)a3 error:(id)a4;
-- (void)_removeStatusForDeclarationIdentifier:(id)a3 declarationServerToken:(id)a4 completionHandler:(id)a5;
-- (void)_writeStatusForDeclaration:(id)a3 validity:(BOOL)a4 reasons:(id)a5 completionHandler:(id)a6;
-- (void)assetCannotBeDeserialized:(id)a3 error:(id)a4 completionHandler:(id)a5;
-- (void)assetCannotBeDownloaded:(id)a3 error:(id)a4 completionHandler:(id)a5;
-- (void)assetCannotBeVerified:(id)a3 error:(id)a4 completionHandler:(id)a5;
-- (void)assetEncounteredInternalError:(id)a3 error:(id)a4 completionHandler:(id)a5;
-- (void)certificatePersistentRefForAssetKey:(id)a3 completionHandler:(id)a4;
-- (void)certificateStatusWithCompletionHandler:(id)a3;
-- (void)configurationCannotBeDeserialized:(id)a3 error:(id)a4 completionHandler:(id)a5;
-- (void)configurationFailedAlreadyPresent:(id)a3 completionHandler:(id)a4;
-- (void)configurationFailedToApply:(id)a3 error:(id)a4 completionHandler:(id)a5;
-- (void)configurationIsInvalid:(id)a3 error:(id)a4 completionHandler:(id)a5;
-- (void)configurationNotSupported:(id)a3 error:(id)a4 completionHandler:(id)a5;
-- (void)publishStatus:(id)a3 completionHandler:(id)a4;
-- (void)resolveAsset:(id)a3 completionHandler:(id)a4;
++ (RMSubscriberStore)storeWithIdentifier:(id)identifier scope:(int64_t)scope completionHandler:(id)handler;
++ (void)storeForStoreDeclarationKeyString:(id)string scope:(int64_t)scope completionHandler:(id)handler;
++ (void)storesWithScope:(int64_t)scope completionHandler:(id)handler;
++ (void)subscribedStoreConfigurationsVisibleUIWithScope:(int64_t)scope configurationTypes:(id)types completionHandler:(id)handler;
++ (void)subscribedStoreDeclarationsWithScope:(int64_t)scope configurationTypes:(id)types completionHandler:(id)handler;
++ (void)unassignAssets:(id)assets scope:(int64_t)scope completionHandler:(id)handler;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToStore:(id)store;
+- (BOOL)isValidStatusItem:(id)item;
+- (id)_reasonsFromErrorWithFirstReason:(id)reason error:(id)error;
+- (void)_removeStatusForDeclarationIdentifier:(id)identifier declarationServerToken:(id)token completionHandler:(id)handler;
+- (void)_writeStatusForDeclaration:(id)declaration validity:(BOOL)validity reasons:(id)reasons completionHandler:(id)handler;
+- (void)assetCannotBeDeserialized:(id)deserialized error:(id)error completionHandler:(id)handler;
+- (void)assetCannotBeDownloaded:(id)downloaded error:(id)error completionHandler:(id)handler;
+- (void)assetCannotBeVerified:(id)verified error:(id)error completionHandler:(id)handler;
+- (void)assetEncounteredInternalError:(id)error error:(id)a4 completionHandler:(id)handler;
+- (void)certificatePersistentRefForAssetKey:(id)key completionHandler:(id)handler;
+- (void)certificateStatusWithCompletionHandler:(id)handler;
+- (void)configurationCannotBeDeserialized:(id)deserialized error:(id)error completionHandler:(id)handler;
+- (void)configurationFailedAlreadyPresent:(id)present completionHandler:(id)handler;
+- (void)configurationFailedToApply:(id)apply error:(id)error completionHandler:(id)handler;
+- (void)configurationIsInvalid:(id)invalid error:(id)error completionHandler:(id)handler;
+- (void)configurationNotSupported:(id)supported error:(id)error completionHandler:(id)handler;
+- (void)publishStatus:(id)status completionHandler:(id)handler;
+- (void)resolveAsset:(id)asset completionHandler:(id)handler;
 @end
 
 @implementation RMSubscriberStore
 
-+ (RMSubscriberStore)storeWithIdentifier:(id)a3 scope:(int64_t)a4 completionHandler:(id)a5
++ (RMSubscriberStore)storeWithIdentifier:(id)identifier scope:(int64_t)scope completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [RMStoreXPCProxy newConnectionWithScope:a4];
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  v9 = [RMStoreXPCProxy newConnectionWithScope:scope];
   [v9 resume];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __65__RMSubscriberStore_storeWithIdentifier_scope_completionHandler___block_invoke;
   v19[3] = &unk_279B05310;
-  v10 = v7;
+  v10 = handlerCopy;
   v20 = v10;
   v11 = [v9 remoteObjectProxyWithErrorHandler:v19];
   v12 = [RMStoreXPCConnection storeXPCConnection:v9];
@@ -50,7 +50,7 @@
   v18 = v10;
   v13 = v12;
   v14 = v10;
-  [v11 subscriberStoreWithIdentifier:v8 completionHandler:v16];
+  [v11 subscriberStoreWithIdentifier:identifierCopy completionHandler:v16];
 
   return result;
 }
@@ -95,16 +95,16 @@ void __65__RMSubscriberStore_storeWithIdentifier_scope_completionHandler___block
   v7();
 }
 
-+ (void)storesWithScope:(int64_t)a3 completionHandler:(id)a4
++ (void)storesWithScope:(int64_t)scope completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = [RMStoreXPCProxy newConnectionWithScope:a3];
+  handlerCopy = handler;
+  v6 = [RMStoreXPCProxy newConnectionWithScope:scope];
   [v6 resume];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __55__RMSubscriberStore_storesWithScope_completionHandler___block_invoke;
   v15[3] = &unk_279B05310;
-  v7 = v5;
+  v7 = handlerCopy;
   v16 = v7;
   v8 = [v6 remoteObjectProxyWithErrorHandler:v15];
   v9 = [RMStoreXPCConnection storeXPCConnection:v6];
@@ -189,15 +189,15 @@ void __55__RMSubscriberStore_storesWithScope_completionHandler___block_invoke_5(
   v13 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)storeForStoreDeclarationKeyString:(id)a3 scope:(int64_t)a4 completionHandler:(id)a5
++ (void)storeForStoreDeclarationKeyString:(id)string scope:(int64_t)scope completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [RMStoreDeclarationKey newDeclarationKey:v8];
+  stringCopy = string;
+  handlerCopy = handler;
+  v10 = [RMStoreDeclarationKey newDeclarationKey:stringCopy];
   if ([v10 isValid])
   {
-    v11 = [v10 storeIdentifier];
-    [a1 storeWithIdentifier:v11 scope:a4 completionHandler:v9];
+    storeIdentifier = [v10 storeIdentifier];
+    [self storeWithIdentifier:storeIdentifier scope:scope completionHandler:handlerCopy];
   }
 
   else
@@ -207,22 +207,22 @@ void __55__RMSubscriberStore_storesWithScope_completionHandler___block_invoke_5(
       +[RMSubscriberStore storeForStoreDeclarationKeyString:scope:completionHandler:];
     }
 
-    v12 = [MEMORY[0x277D45F40] createInternalError];
-    (*(v9 + 2))(v9, 0, v12);
+    createInternalError = [MEMORY[0x277D45F40] createInternalError];
+    (*(handlerCopy + 2))(handlerCopy, 0, createInternalError);
   }
 }
 
-+ (void)subscribedStoreDeclarationsWithScope:(int64_t)a3 configurationTypes:(id)a4 completionHandler:(id)a5
++ (void)subscribedStoreDeclarationsWithScope:(int64_t)scope configurationTypes:(id)types completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [RMStoreXPCProxy newConnectionWithScope:a3];
+  handlerCopy = handler;
+  typesCopy = types;
+  v9 = [RMStoreXPCProxy newConnectionWithScope:scope];
   [v9 resume];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __95__RMSubscriberStore_subscribedStoreDeclarationsWithScope_configurationTypes_completionHandler___block_invoke;
   v18[3] = &unk_279B05310;
-  v10 = v7;
+  v10 = handlerCopy;
   v19 = v10;
   v11 = [v9 remoteObjectProxyWithErrorHandler:v18];
   v12 = [RMStoreXPCConnection storeXPCConnection:v9];
@@ -234,7 +234,7 @@ void __55__RMSubscriberStore_storesWithScope_completionHandler___block_invoke_5(
   v17 = v10;
   v13 = v12;
   v14 = v10;
-  [v11 subscribedStoreDeclarationsWithTypes:v8 completionHandler:v15];
+  [v11 subscribedStoreDeclarationsWithTypes:typesCopy completionHandler:v15];
 }
 
 void __95__RMSubscriberStore_subscribedStoreDeclarationsWithScope_configurationTypes_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -308,17 +308,17 @@ void __95__RMSubscriberStore_subscribedStoreDeclarationsWithScope_configurationT
   v16 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)subscribedStoreConfigurationsVisibleUIWithScope:(int64_t)a3 configurationTypes:(id)a4 completionHandler:(id)a5
++ (void)subscribedStoreConfigurationsVisibleUIWithScope:(int64_t)scope configurationTypes:(id)types completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [RMStoreXPCProxy newConnectionWithScope:a3];
+  handlerCopy = handler;
+  typesCopy = types;
+  v9 = [RMStoreXPCProxy newConnectionWithScope:scope];
   [v9 resume];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __106__RMSubscriberStore_subscribedStoreConfigurationsVisibleUIWithScope_configurationTypes_completionHandler___block_invoke;
   v18[3] = &unk_279B05310;
-  v10 = v7;
+  v10 = handlerCopy;
   v19 = v10;
   v11 = [v9 remoteObjectProxyWithErrorHandler:v18];
   v12 = [RMStoreXPCConnection storeXPCConnection:v9];
@@ -330,7 +330,7 @@ void __95__RMSubscriberStore_subscribedStoreDeclarationsWithScope_configurationT
   v17 = v10;
   v13 = v12;
   v14 = v10;
-  [v11 subscribedStoreConfigurationsVisibleUIWithTypes:v8 completionHandler:v15];
+  [v11 subscribedStoreConfigurationsVisibleUIWithTypes:typesCopy completionHandler:v15];
 }
 
 void __106__RMSubscriberStore_subscribedStoreConfigurationsVisibleUIWithScope_configurationTypes_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -404,46 +404,46 @@ void __106__RMSubscriberStore_subscribedStoreConfigurationsVisibleUIWithScope_co
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)resolveAsset:(id)a3 completionHandler:(id)a4
+- (void)resolveAsset:(id)asset completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RMBaseStore *)self xpcConnection];
-  v9 = [v8 connection];
+  assetCopy = asset;
+  handlerCopy = handler;
+  xpcConnection = [(RMBaseStore *)self xpcConnection];
+  connection = [xpcConnection connection];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __52__RMSubscriberStore_resolveAsset_completionHandler___block_invoke;
   v19[3] = &unk_279B05310;
-  v10 = v7;
+  v10 = handlerCopy;
   v20 = v10;
-  v11 = [v9 remoteObjectProxyWithErrorHandler:v19];
+  v11 = [connection remoteObjectProxyWithErrorHandler:v19];
 
-  if ([v6 resolveAs] != 1)
+  if ([assetCopy resolveAs] != 1)
   {
 LABEL_6:
-    v15 = [(RMBaseStore *)self identifier];
+    identifier = [(RMBaseStore *)self identifier];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __52__RMSubscriberStore_resolveAsset_completionHandler___block_invoke_13;
     v17[3] = &unk_279B06030;
     v17[4] = self;
     v18 = v10;
-    [v11 resolveAsset:v6 storeIdentifier:v15 completionHandler:v17];
+    [v11 resolveAsset:assetCopy storeIdentifier:identifier completionHandler:v17];
 
-    v16 = v18;
+    createInternalError = v18;
     goto LABEL_7;
   }
 
   v12 = MEMORY[0x277D45F70];
-  v13 = [v6 downloadURL];
-  v14 = [v12 tokenForURL:v13];
+  downloadURL = [assetCopy downloadURL];
+  v14 = [v12 tokenForURL:downloadURL];
 
   if (v14)
   {
-    [v6 addExtensionToken:v14];
+    [assetCopy addExtensionToken:v14];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
-      [RMSubscriberStore resolveAsset:v6 completionHandler:?];
+      [RMSubscriberStore resolveAsset:assetCopy completionHandler:?];
     }
 
     goto LABEL_6;
@@ -454,8 +454,8 @@ LABEL_6:
     [RMSubscriberStore resolveAsset:completionHandler:];
   }
 
-  v16 = [MEMORY[0x277D45F40] createInternalError];
-  (*(v10 + 2))(v10, 0, v16);
+  createInternalError = [MEMORY[0x277D45F40] createInternalError];
+  (*(v10 + 2))(v10, 0, createInternalError);
 LABEL_7:
 }
 
@@ -499,17 +499,17 @@ void __52__RMSubscriberStore_resolveAsset_completionHandler___block_invoke_13(ui
   [*(a1 + 32) xpcConnection];
 }
 
-+ (void)unassignAssets:(id)a3 scope:(int64_t)a4 completionHandler:(id)a5
++ (void)unassignAssets:(id)assets scope:(int64_t)scope completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [RMStoreXPCProxy newConnectionWithScope:a4];
+  handlerCopy = handler;
+  assetsCopy = assets;
+  v9 = [RMStoreXPCProxy newConnectionWithScope:scope];
   [v9 resume];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __60__RMSubscriberStore_unassignAssets_scope_completionHandler___block_invoke;
   v17[3] = &unk_279B05310;
-  v10 = v7;
+  v10 = handlerCopy;
   v18 = v10;
   v11 = [v9 remoteObjectProxyWithErrorHandler:v17];
   v14[0] = MEMORY[0x277D85DD0];
@@ -520,7 +520,7 @@ void __52__RMSubscriberStore_resolveAsset_completionHandler___block_invoke_13(ui
   v16 = v10;
   v12 = v9;
   v13 = v10;
-  [v11 unassignAssets:v8 completionHandler:v14];
+  [v11 unassignAssets:assetsCopy completionHandler:v14];
 }
 
 void __60__RMSubscriberStore_unassignAssets_scope_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -554,128 +554,128 @@ void __60__RMSubscriberStore_unassignAssets_scope_completionHandler___block_invo
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)assetCannotBeDeserialized:(id)a3 error:(id)a4 completionHandler:(id)a5
+- (void)assetCannotBeDeserialized:(id)deserialized error:(id)error completionHandler:(id)handler
 {
   v8 = MEMORY[0x277D46048];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 reasonWithCode:@"Error.AssetCannotBeDeserialized" description:@"Asset cannot be deserialized" underlyingError:v10];
-  v13 = [(RMSubscriberStore *)self _reasonsFromErrorWithFirstReason:v12 error:v10];
+  handlerCopy = handler;
+  errorCopy = error;
+  deserializedCopy = deserialized;
+  v12 = [v8 reasonWithCode:@"Error.AssetCannotBeDeserialized" description:@"Asset cannot be deserialized" underlyingError:errorCopy];
+  v13 = [(RMSubscriberStore *)self _reasonsFromErrorWithFirstReason:v12 error:errorCopy];
 
-  [(RMSubscriberStore *)self _writeStatusForDeclaration:v11 validity:0 reasons:v13 completionHandler:v9];
+  [(RMSubscriberStore *)self _writeStatusForDeclaration:deserializedCopy validity:0 reasons:v13 completionHandler:handlerCopy];
 }
 
-- (void)assetCannotBeDownloaded:(id)a3 error:(id)a4 completionHandler:(id)a5
+- (void)assetCannotBeDownloaded:(id)downloaded error:(id)error completionHandler:(id)handler
 {
   v8 = MEMORY[0x277D46048];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 reasonWithCode:@"Error.AssetCannotBeDownloaded" description:@"Asset cannot be downloaded" underlyingError:v10];
-  v13 = [(RMSubscriberStore *)self _reasonsFromErrorWithFirstReason:v12 error:v10];
+  handlerCopy = handler;
+  errorCopy = error;
+  downloadedCopy = downloaded;
+  v12 = [v8 reasonWithCode:@"Error.AssetCannotBeDownloaded" description:@"Asset cannot be downloaded" underlyingError:errorCopy];
+  v13 = [(RMSubscriberStore *)self _reasonsFromErrorWithFirstReason:v12 error:errorCopy];
 
-  [(RMSubscriberStore *)self _writeStatusForDeclaration:v11 validity:0 reasons:v13 completionHandler:v9];
+  [(RMSubscriberStore *)self _writeStatusForDeclaration:downloadedCopy validity:0 reasons:v13 completionHandler:handlerCopy];
 }
 
-- (void)assetCannotBeVerified:(id)a3 error:(id)a4 completionHandler:(id)a5
+- (void)assetCannotBeVerified:(id)verified error:(id)error completionHandler:(id)handler
 {
   v8 = MEMORY[0x277D46048];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 reasonWithCode:@"Error.AssetCannotBeVerified" description:@"Asset cannot be verified" underlyingError:v10];
-  v13 = [(RMSubscriberStore *)self _reasonsFromErrorWithFirstReason:v12 error:v10];
+  handlerCopy = handler;
+  errorCopy = error;
+  verifiedCopy = verified;
+  v12 = [v8 reasonWithCode:@"Error.AssetCannotBeVerified" description:@"Asset cannot be verified" underlyingError:errorCopy];
+  v13 = [(RMSubscriberStore *)self _reasonsFromErrorWithFirstReason:v12 error:errorCopy];
 
-  [(RMSubscriberStore *)self _writeStatusForDeclaration:v11 validity:0 reasons:v13 completionHandler:v9];
+  [(RMSubscriberStore *)self _writeStatusForDeclaration:verifiedCopy validity:0 reasons:v13 completionHandler:handlerCopy];
 }
 
-- (void)assetEncounteredInternalError:(id)a3 error:(id)a4 completionHandler:(id)a5
+- (void)assetEncounteredInternalError:(id)error error:(id)a4 completionHandler:(id)handler
 {
   v8 = MEMORY[0x277D46048];
-  v9 = a5;
+  handlerCopy = handler;
   v10 = a4;
-  v11 = a3;
+  errorCopy = error;
   v12 = [v8 reasonWithCode:@"Error.AssetEncounteredInternalError" description:@"Asset encountered an internal error" underlyingError:v10];
   v13 = [(RMSubscriberStore *)self _reasonsFromErrorWithFirstReason:v12 error:v10];
 
-  [(RMSubscriberStore *)self _writeStatusForDeclaration:v11 validity:0 reasons:v13 completionHandler:v9];
+  [(RMSubscriberStore *)self _writeStatusForDeclaration:errorCopy validity:0 reasons:v13 completionHandler:handlerCopy];
 }
 
-- (void)configurationCannotBeDeserialized:(id)a3 error:(id)a4 completionHandler:(id)a5
+- (void)configurationCannotBeDeserialized:(id)deserialized error:(id)error completionHandler:(id)handler
 {
   v8 = MEMORY[0x277D46048];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 reasonWithCode:@"Error.ConfigurationCannotBeDeserialized" description:@"Configuration cannot be deserialized" underlyingError:v10];
-  v13 = [(RMSubscriberStore *)self _reasonsFromErrorWithFirstReason:v12 error:v10];
+  handlerCopy = handler;
+  errorCopy = error;
+  deserializedCopy = deserialized;
+  v12 = [v8 reasonWithCode:@"Error.ConfigurationCannotBeDeserialized" description:@"Configuration cannot be deserialized" underlyingError:errorCopy];
+  v13 = [(RMSubscriberStore *)self _reasonsFromErrorWithFirstReason:v12 error:errorCopy];
 
-  [(RMSubscriberStore *)self _writeStatusForDeclaration:v11 validity:0 reasons:v13 completionHandler:v9];
+  [(RMSubscriberStore *)self _writeStatusForDeclaration:deserializedCopy validity:0 reasons:v13 completionHandler:handlerCopy];
 }
 
-- (void)configurationFailedToApply:(id)a3 error:(id)a4 completionHandler:(id)a5
+- (void)configurationFailedToApply:(id)apply error:(id)error completionHandler:(id)handler
 {
   v8 = MEMORY[0x277D46048];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 reasonWithCode:@"Error.ConfigurationCannotBeApplied" description:@"Configuration cannot be applied" underlyingError:v10];
-  v13 = [(RMSubscriberStore *)self _reasonsFromErrorWithFirstReason:v12 error:v10];
+  handlerCopy = handler;
+  errorCopy = error;
+  applyCopy = apply;
+  v12 = [v8 reasonWithCode:@"Error.ConfigurationCannotBeApplied" description:@"Configuration cannot be applied" underlyingError:errorCopy];
+  v13 = [(RMSubscriberStore *)self _reasonsFromErrorWithFirstReason:v12 error:errorCopy];
 
-  [(RMSubscriberStore *)self _writeStatusForDeclaration:v11 validity:0 reasons:v13 completionHandler:v9];
+  [(RMSubscriberStore *)self _writeStatusForDeclaration:applyCopy validity:0 reasons:v13 completionHandler:handlerCopy];
 }
 
-- (void)configurationFailedAlreadyPresent:(id)a3 completionHandler:(id)a4
+- (void)configurationFailedAlreadyPresent:(id)present completionHandler:(id)handler
 {
   v6 = MEMORY[0x277D46048];
-  v7 = a4;
-  v8 = a3;
+  handlerCopy = handler;
+  presentCopy = present;
   v9 = [v6 reasonWithCode:@"Error.ConfigurationAlreadyPresent" description:@"Configuration cannot be applied as another is already present" underlyingError:0];
   v10 = [(RMSubscriberStore *)self _reasonsFromErrorWithFirstReason:v9 error:0];
 
-  [(RMSubscriberStore *)self _writeStatusForDeclaration:v8 validity:0 reasons:v10 completionHandler:v7];
+  [(RMSubscriberStore *)self _writeStatusForDeclaration:presentCopy validity:0 reasons:v10 completionHandler:handlerCopy];
 }
 
-- (void)configurationIsInvalid:(id)a3 error:(id)a4 completionHandler:(id)a5
+- (void)configurationIsInvalid:(id)invalid error:(id)error completionHandler:(id)handler
 {
   v8 = MEMORY[0x277D46048];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 reasonWithCode:@"Error.ConfigurationIsInvalid" description:@"Configuration is invalid" underlyingError:v10];
-  v13 = [(RMSubscriberStore *)self _reasonsFromErrorWithFirstReason:v12 error:v10];
+  handlerCopy = handler;
+  errorCopy = error;
+  invalidCopy = invalid;
+  v12 = [v8 reasonWithCode:@"Error.ConfigurationIsInvalid" description:@"Configuration is invalid" underlyingError:errorCopy];
+  v13 = [(RMSubscriberStore *)self _reasonsFromErrorWithFirstReason:v12 error:errorCopy];
 
-  [(RMSubscriberStore *)self _writeStatusForDeclaration:v11 validity:0 reasons:v13 completionHandler:v9];
+  [(RMSubscriberStore *)self _writeStatusForDeclaration:invalidCopy validity:0 reasons:v13 completionHandler:handlerCopy];
 }
 
-- (void)configurationNotSupported:(id)a3 error:(id)a4 completionHandler:(id)a5
+- (void)configurationNotSupported:(id)supported error:(id)error completionHandler:(id)handler
 {
   v8 = MEMORY[0x277D46048];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 reasonWithCode:@"Error.ConfigurationNotSupported" description:@"Configuration not supported" underlyingError:v10];
-  v13 = [(RMSubscriberStore *)self _reasonsFromErrorWithFirstReason:v12 error:v10];
+  handlerCopy = handler;
+  errorCopy = error;
+  supportedCopy = supported;
+  v12 = [v8 reasonWithCode:@"Error.ConfigurationNotSupported" description:@"Configuration not supported" underlyingError:errorCopy];
+  v13 = [(RMSubscriberStore *)self _reasonsFromErrorWithFirstReason:v12 error:errorCopy];
 
-  [(RMSubscriberStore *)self _writeStatusForDeclaration:v11 validity:0 reasons:v13 completionHandler:v9];
+  [(RMSubscriberStore *)self _writeStatusForDeclaration:supportedCopy validity:0 reasons:v13 completionHandler:handlerCopy];
 }
 
-- (void)certificatePersistentRefForAssetKey:(id)a3 completionHandler:(id)a4
+- (void)certificatePersistentRefForAssetKey:(id)key completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(RMBaseStore *)self xpcConnection];
-  v9 = [v8 connection];
+  handlerCopy = handler;
+  keyCopy = key;
+  xpcConnection = [(RMBaseStore *)self xpcConnection];
+  connection = [xpcConnection connection];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __75__RMSubscriberStore_certificatePersistentRefForAssetKey_completionHandler___block_invoke;
   v16[3] = &unk_279B05310;
-  v10 = v6;
+  v10 = handlerCopy;
   v17 = v10;
-  v11 = [v9 remoteObjectProxyWithErrorHandler:v16];
+  v11 = [connection remoteObjectProxyWithErrorHandler:v16];
 
-  v12 = [(RMBaseStore *)self identifier];
+  identifier = [(RMBaseStore *)self identifier];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __75__RMSubscriberStore_certificatePersistentRefForAssetKey_completionHandler___block_invoke_71;
@@ -683,7 +683,7 @@ void __60__RMSubscriberStore_unassignAssets_scope_completionHandler___block_invo
   v14[4] = self;
   v15 = v10;
   v13 = v10;
-  [v11 certificatePersistentRefForAssetKey:v7 storeIdentifier:v12 completionHandler:v14];
+  [v11 certificatePersistentRefForAssetKey:keyCopy storeIdentifier:identifier completionHandler:v14];
 }
 
 void __75__RMSubscriberStore_certificatePersistentRefForAssetKey_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -726,20 +726,20 @@ void __75__RMSubscriberStore_certificatePersistentRefForAssetKey_completionHandl
   [*(a1 + 32) xpcConnection];
 }
 
-- (void)certificateStatusWithCompletionHandler:(id)a3
+- (void)certificateStatusWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RMBaseStore *)self xpcConnection];
-  v6 = [v5 connection];
+  handlerCopy = handler;
+  xpcConnection = [(RMBaseStore *)self xpcConnection];
+  connection = [xpcConnection connection];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __60__RMSubscriberStore_certificateStatusWithCompletionHandler___block_invoke;
   v13[3] = &unk_279B05310;
-  v7 = v4;
+  v7 = handlerCopy;
   v14 = v7;
-  v8 = [v6 remoteObjectProxyWithErrorHandler:v13];
+  v8 = [connection remoteObjectProxyWithErrorHandler:v13];
 
-  v9 = [(RMBaseStore *)self identifier];
+  identifier = [(RMBaseStore *)self identifier];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __60__RMSubscriberStore_certificateStatusWithCompletionHandler___block_invoke_73;
@@ -747,7 +747,7 @@ void __75__RMSubscriberStore_certificatePersistentRefForAssetKey_completionHandl
   v11[4] = self;
   v12 = v7;
   v10 = v7;
-  [v8 certificateStatusWithStoreIdentifier:v9 completionHandler:v11];
+  [v8 certificateStatusWithStoreIdentifier:identifier completionHandler:v11];
 }
 
 void __60__RMSubscriberStore_certificateStatusWithCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -821,21 +821,21 @@ void __69__RMSubscriberStore_setConfigurationUI_visible_ui_completionHandler___b
   [*(a1 + 40) xpcConnection];
 }
 
-- (void)publishStatus:(id)a3 completionHandler:(id)a4
+- (void)publishStatus:(id)status completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(RMBaseStore *)self xpcConnection];
-  v9 = [v8 connection];
+  handlerCopy = handler;
+  statusCopy = status;
+  xpcConnection = [(RMBaseStore *)self xpcConnection];
+  connection = [xpcConnection connection];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __53__RMSubscriberStore_publishStatus_completionHandler___block_invoke;
   v16[3] = &unk_279B05310;
-  v10 = v6;
+  v10 = handlerCopy;
   v17 = v10;
-  v11 = [v9 remoteObjectProxyWithErrorHandler:v16];
+  v11 = [connection remoteObjectProxyWithErrorHandler:v16];
 
-  v12 = [(RMBaseStore *)self identifier];
+  identifier = [(RMBaseStore *)self identifier];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __53__RMSubscriberStore_publishStatus_completionHandler___block_invoke_76;
@@ -843,7 +843,7 @@ void __69__RMSubscriberStore_setConfigurationUI_visible_ui_completionHandler___b
   v14[4] = self;
   v15 = v10;
   v13 = v10;
-  [v11 publishStatusWithStoreIdentifier:v12 status:v7 completionHandler:v14];
+  [v11 publishStatusWithStoreIdentifier:identifier status:statusCopy completionHandler:v14];
 }
 
 void __53__RMSubscriberStore_publishStatus_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -877,30 +877,30 @@ void __53__RMSubscriberStore_publishStatus_completionHandler___block_invoke_76(u
   [*(a1 + 32) xpcConnection];
 }
 
-- (BOOL)isValidStatusItem:(id)a3
+- (BOOL)isValidStatusItem:(id)item
 {
   v4 = MEMORY[0x277D46038];
-  v5 = a3;
-  LOBYTE(self) = [v5 isSupportedForPlatform:objc_msgSend(v4 scope:"currentPlatform") enrollmentType:{-[RMBaseStore scope](self, "scope"), -[RMBaseStore type](self, "type")}];
+  itemCopy = item;
+  LOBYTE(self) = [itemCopy isSupportedForPlatform:objc_msgSend(v4 scope:"currentPlatform") enrollmentType:{-[RMBaseStore scope](self, "scope"), -[RMBaseStore type](self, "type")}];
 
   return self;
 }
 
-- (id)_reasonsFromErrorWithFirstReason:(id)a3 error:(id)a4
+- (id)_reasonsFromErrorWithFirstReason:(id)reason error:(id)error
 {
-  v5 = a3;
-  v6 = a4;
+  reasonCopy = reason;
+  errorCopy = error;
   v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:1];
   v8 = v7;
-  if (v5)
+  if (reasonCopy)
   {
-    [v7 addObject:v5];
+    [v7 addObject:reasonCopy];
   }
 
-  if (v6)
+  if (errorCopy)
   {
-    v9 = [v6 userInfo];
-    v10 = [v9 objectForKeyedSubscript:@"RMModelStatusReasons"];
+    userInfo = [errorCopy userInfo];
+    v10 = [userInfo objectForKeyedSubscript:@"RMModelStatusReasons"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -921,29 +921,29 @@ void __53__RMSubscriberStore_publishStatus_completionHandler___block_invoke_76(u
   return v8;
 }
 
-- (void)_writeStatusForDeclaration:(id)a3 validity:(BOOL)a4 reasons:(id)a5 completionHandler:(id)a6
+- (void)_writeStatusForDeclaration:(id)declaration validity:(BOOL)validity reasons:(id)reasons completionHandler:(id)handler
 {
-  v23 = a4;
-  v9 = a6;
-  v22 = a5;
-  v10 = a3;
-  v11 = [(RMBaseStore *)self xpcConnection];
-  v12 = [v11 connection];
+  validityCopy = validity;
+  handlerCopy = handler;
+  reasonsCopy = reasons;
+  declarationCopy = declaration;
+  xpcConnection = [(RMBaseStore *)self xpcConnection];
+  connection = [xpcConnection connection];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __83__RMSubscriberStore__writeStatusForDeclaration_validity_reasons_completionHandler___block_invoke;
   v26[3] = &unk_279B05310;
-  v13 = v9;
+  v13 = handlerCopy;
   v27 = v13;
-  v14 = [v12 remoteObjectProxyWithErrorHandler:v26];
+  v14 = [connection remoteObjectProxyWithErrorHandler:v26];
 
-  v15 = [(RMBaseStore *)self identifier];
-  v16 = [v10 declarationType];
-  v17 = [v10 declarationIdentifier];
-  v18 = [v10 declarationServerToken];
+  identifier = [(RMBaseStore *)self identifier];
+  declarationType = [declarationCopy declarationType];
+  declarationIdentifier = [declarationCopy declarationIdentifier];
+  declarationServerToken = [declarationCopy declarationServerToken];
 
-  v19 = [MEMORY[0x277CCA8D8] mainBundle];
-  v20 = [v19 bundleIdentifier];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __83__RMSubscriberStore__writeStatusForDeclaration_validity_reasons_completionHandler___block_invoke_81;
@@ -951,7 +951,7 @@ void __53__RMSubscriberStore_publishStatus_completionHandler___block_invoke_76(u
   v24[4] = self;
   v25 = v13;
   v21 = v13;
-  [v14 writeStatusWithStoreIdentifier:v15 declarationType:v16 declarationIdentifier:v17 declarationServerToken:v18 sourceIdentifier:v20 validity:v23 reasons:v22 completionHandler:v24];
+  [v14 writeStatusWithStoreIdentifier:identifier declarationType:declarationType declarationIdentifier:declarationIdentifier declarationServerToken:declarationServerToken sourceIdentifier:bundleIdentifier validity:validityCopy reasons:reasonsCopy completionHandler:v24];
 }
 
 void __83__RMSubscriberStore__writeStatusForDeclaration_validity_reasons_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -985,24 +985,24 @@ void __83__RMSubscriberStore__writeStatusForDeclaration_validity_reasons_complet
   [*(a1 + 32) xpcConnection];
 }
 
-- (void)_removeStatusForDeclarationIdentifier:(id)a3 declarationServerToken:(id)a4 completionHandler:(id)a5
+- (void)_removeStatusForDeclarationIdentifier:(id)identifier declarationServerToken:(id)token completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(RMBaseStore *)self xpcConnection];
-  v12 = [v11 connection];
+  handlerCopy = handler;
+  tokenCopy = token;
+  identifierCopy = identifier;
+  xpcConnection = [(RMBaseStore *)self xpcConnection];
+  connection = [xpcConnection connection];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __100__RMSubscriberStore__removeStatusForDeclarationIdentifier_declarationServerToken_completionHandler___block_invoke;
   v21[3] = &unk_279B05310;
-  v13 = v8;
+  v13 = handlerCopy;
   v22 = v13;
-  v14 = [v12 remoteObjectProxyWithErrorHandler:v21];
+  v14 = [connection remoteObjectProxyWithErrorHandler:v21];
 
-  v15 = [(RMBaseStore *)self identifier];
-  v16 = [MEMORY[0x277CCA8D8] mainBundle];
-  v17 = [v16 bundleIdentifier];
+  identifier = [(RMBaseStore *)self identifier];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __100__RMSubscriberStore__removeStatusForDeclarationIdentifier_declarationServerToken_completionHandler___block_invoke_82;
@@ -1010,7 +1010,7 @@ void __83__RMSubscriberStore__writeStatusForDeclaration_validity_reasons_complet
   v19[4] = self;
   v20 = v13;
   v18 = v13;
-  [v14 removeStatusWithStoreIdentifier:v15 declarationIdentifier:v10 declarationServerToken:v9 sourceIdentifier:v17 completionHandler:v19];
+  [v14 removeStatusWithStoreIdentifier:identifier declarationIdentifier:identifierCopy declarationServerToken:tokenCopy sourceIdentifier:bundleIdentifier completionHandler:v19];
 }
 
 void __100__RMSubscriberStore__removeStatusForDeclarationIdentifier_declarationServerToken_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1044,10 +1044,10 @@ void __100__RMSubscriberStore__removeStatusForDeclarationIdentifier_declarationS
   [*(a1 + 32) xpcConnection];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -1055,17 +1055,17 @@ void __100__RMSubscriberStore__removeStatusForDeclarationIdentifier_declarationS
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(RMSubscriberStore *)self isEqualToStore:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(RMSubscriberStore *)self isEqualToStore:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToStore:(id)a3
+- (BOOL)isEqualToStore:(id)store
 {
   v4.receiver = self;
   v4.super_class = RMSubscriberStore;
-  return [(RMBaseStore *)&v4 isEqualToStore:a3];
+  return [(RMBaseStore *)&v4 isEqualToStore:store];
 }
 
 + (void)storeForStoreDeclarationKeyString:scope:completionHandler:.cold.1()

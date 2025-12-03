@@ -6,13 +6,13 @@
 
 - (double)tf_estimatedFirstBaseline
 {
-  v2 = [a1 font];
-  if (v2)
+  font = [self font];
+  if (font)
   {
-    v3 = [a1 font];
-    [v3 tf_estimatedFirstBaseline];
+    font2 = [self font];
+    [font2 tf_estimatedFirstBaseline];
     v5 = v4;
-    [a1 textContainerInset];
+    [self textContainerInset];
     v7 = v5 + v6;
   }
 

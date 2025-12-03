@@ -1,96 +1,96 @@
 @interface EXPivotTable
-+ (id)edPivotTableFromXmlPivotTableElement:(_xmlNode *)a3 state:(id)a4;
-+ (int)edPivotAreaTypeFrom:(id)a3;
-+ (int)edPivotConditionalFormatScopeFrom:(id)a3;
-+ (int)edPivotConditionalFormatTypeFrom:(id)a3;
-+ (int)edPivotDatFieldFormatFrom:(id)a3;
-+ (int)edPivotFieldAxisFrom:(id)a3;
-+ (int)edPivotItemTypeFrom:(id)a3;
-+ (void)readConditionalFormatsFrom:(_xmlNode *)a3 toCollection:(id)a4 state:(id)a5;
-+ (void)readDataFieldsFrom:(_xmlNode *)a3 toCollection:(id)a4 state:(id)a5;
-+ (void)readFieldItemsFrom:(_xmlNode *)a3 toCollection:(id)a4 state:(id)a5;
-+ (void)readFieldsFrom:(_xmlNode *)a3 toCollection:(id)a4 state:(id)a5;
-+ (void)readItemsFrom:(_xmlNode *)a3 toCollection:(id)a4 state:(id)a5;
-+ (void)readLocationFrom:(_xmlNode *)a3 toPivotTable:(id)a4;
-+ (void)readPageFieldsFrom:(_xmlNode *)a3 toCollection:(id)a4 state:(id)a5;
-+ (void)readPivotAreaReferencesFrom:(_xmlNode *)a3 toCollection:(id)a4 state:(id)a5;
-+ (void)readPivotAreasFrom:(_xmlNode *)a3 toCollection:(id)a4 state:(id)a5;
-+ (void)readPivotFieldsFrom:(_xmlNode *)a3 toCollection:(id)a4 state:(id)a5;
-+ (void)readStyleInfoFrom:(_xmlNode *)a3 toPivotTable:(id)a4;
++ (id)edPivotTableFromXmlPivotTableElement:(_xmlNode *)element state:(id)state;
++ (int)edPivotAreaTypeFrom:(id)from;
++ (int)edPivotConditionalFormatScopeFrom:(id)from;
++ (int)edPivotConditionalFormatTypeFrom:(id)from;
++ (int)edPivotDatFieldFormatFrom:(id)from;
++ (int)edPivotFieldAxisFrom:(id)from;
++ (int)edPivotItemTypeFrom:(id)from;
++ (void)readConditionalFormatsFrom:(_xmlNode *)from toCollection:(id)collection state:(id)state;
++ (void)readDataFieldsFrom:(_xmlNode *)from toCollection:(id)collection state:(id)state;
++ (void)readFieldItemsFrom:(_xmlNode *)from toCollection:(id)collection state:(id)state;
++ (void)readFieldsFrom:(_xmlNode *)from toCollection:(id)collection state:(id)state;
++ (void)readItemsFrom:(_xmlNode *)from toCollection:(id)collection state:(id)state;
++ (void)readLocationFrom:(_xmlNode *)from toPivotTable:(id)table;
++ (void)readPageFieldsFrom:(_xmlNode *)from toCollection:(id)collection state:(id)state;
++ (void)readPivotAreaReferencesFrom:(_xmlNode *)from toCollection:(id)collection state:(id)state;
++ (void)readPivotAreasFrom:(_xmlNode *)from toCollection:(id)collection state:(id)state;
++ (void)readPivotFieldsFrom:(_xmlNode *)from toCollection:(id)collection state:(id)state;
++ (void)readStyleInfoFrom:(_xmlNode *)from toPivotTable:(id)table;
 @end
 
 @implementation EXPivotTable
 
-+ (id)edPivotTableFromXmlPivotTableElement:(_xmlNode *)a3 state:(id)a4
++ (id)edPivotTableFromXmlPivotTableElement:(_xmlNode *)element state:(id)state
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3)
+  stateCopy = state;
+  v7 = stateCopy;
+  if (element)
   {
-    v8 = [v6 resources];
-    v9 = [EDPivotTable pivotTableWithResources:v8];
+    resources = [stateCopy resources];
+    v9 = [EDPivotTable pivotTableWithResources:resources];
 
-    v10 = [v7 EXSpreadsheetMLNamespace];
-    [a1 readLocationFrom:OCXFindChild(a3 toPivotTable:{v10, "location"), v9}];
+    eXSpreadsheetMLNamespace = [v7 EXSpreadsheetMLNamespace];
+    [self readLocationFrom:OCXFindChild(element toPivotTable:{eXSpreadsheetMLNamespace, "location"), v9}];
 
-    v11 = [v7 EXSpreadsheetMLNamespace];
-    [a1 readStyleInfoFrom:OCXFindChild(a3 toPivotTable:{v11, "pivotTableStyleInfo"), v9}];
+    eXSpreadsheetMLNamespace2 = [v7 EXSpreadsheetMLNamespace];
+    [self readStyleInfoFrom:OCXFindChild(element toPivotTable:{eXSpreadsheetMLNamespace2, "pivotTableStyleInfo"), v9}];
 
-    v12 = [v7 EXSpreadsheetMLNamespace];
-    v13 = OCXFindChild(a3, v12, "pivotFields");
-    v14 = [v9 pivotFields];
-    [a1 readPivotFieldsFrom:v13 toCollection:v14 state:v7];
+    eXSpreadsheetMLNamespace3 = [v7 EXSpreadsheetMLNamespace];
+    v13 = OCXFindChild(element, eXSpreadsheetMLNamespace3, "pivotFields");
+    pivotFields = [v9 pivotFields];
+    [self readPivotFieldsFrom:v13 toCollection:pivotFields state:v7];
 
-    v15 = [v7 EXSpreadsheetMLNamespace];
-    v16 = OCXFindChild(a3, v15, "rowFields");
-    v17 = [v9 rowFields];
-    [a1 readFieldsFrom:v16 toCollection:v17 state:v7];
+    eXSpreadsheetMLNamespace4 = [v7 EXSpreadsheetMLNamespace];
+    v16 = OCXFindChild(element, eXSpreadsheetMLNamespace4, "rowFields");
+    rowFields = [v9 rowFields];
+    [self readFieldsFrom:v16 toCollection:rowFields state:v7];
 
-    v18 = [v7 EXSpreadsheetMLNamespace];
-    v19 = OCXFindChild(a3, v18, "rowItems");
-    v20 = [v9 rowItems];
-    [a1 readItemsFrom:v19 toCollection:v20 state:v7];
+    eXSpreadsheetMLNamespace5 = [v7 EXSpreadsheetMLNamespace];
+    v19 = OCXFindChild(element, eXSpreadsheetMLNamespace5, "rowItems");
+    rowItems = [v9 rowItems];
+    [self readItemsFrom:v19 toCollection:rowItems state:v7];
 
-    v21 = [v7 EXSpreadsheetMLNamespace];
-    v22 = OCXFindChild(a3, v21, "colFields");
-    v23 = [v9 columnFields];
-    [a1 readFieldsFrom:v22 toCollection:v23 state:v7];
+    eXSpreadsheetMLNamespace6 = [v7 EXSpreadsheetMLNamespace];
+    v22 = OCXFindChild(element, eXSpreadsheetMLNamespace6, "colFields");
+    columnFields = [v9 columnFields];
+    [self readFieldsFrom:v22 toCollection:columnFields state:v7];
 
-    v24 = [v7 EXSpreadsheetMLNamespace];
-    v25 = OCXFindChild(a3, v24, "colItems");
-    v26 = [v9 columnItems];
-    [a1 readItemsFrom:v25 toCollection:v26 state:v7];
+    eXSpreadsheetMLNamespace7 = [v7 EXSpreadsheetMLNamespace];
+    v25 = OCXFindChild(element, eXSpreadsheetMLNamespace7, "colItems");
+    columnItems = [v9 columnItems];
+    [self readItemsFrom:v25 toCollection:columnItems state:v7];
 
-    v27 = [v7 EXSpreadsheetMLNamespace];
-    v28 = OCXFindChild(a3, v27, "pageFields");
-    v29 = [v9 pageFields];
-    [a1 readPageFieldsFrom:v28 toCollection:v29 state:v7];
+    eXSpreadsheetMLNamespace8 = [v7 EXSpreadsheetMLNamespace];
+    v28 = OCXFindChild(element, eXSpreadsheetMLNamespace8, "pageFields");
+    pageFields = [v9 pageFields];
+    [self readPageFieldsFrom:v28 toCollection:pageFields state:v7];
 
-    v30 = [v7 EXSpreadsheetMLNamespace];
-    v31 = OCXFindChild(a3, v30, "dataFields");
-    v32 = [v9 dataFields];
-    [a1 readDataFieldsFrom:v31 toCollection:v32 state:v7];
+    eXSpreadsheetMLNamespace9 = [v7 EXSpreadsheetMLNamespace];
+    v31 = OCXFindChild(element, eXSpreadsheetMLNamespace9, "dataFields");
+    dataFields = [v9 dataFields];
+    [self readDataFieldsFrom:v31 toCollection:dataFields state:v7];
 
-    v33 = [v7 EXSpreadsheetMLNamespace];
-    v34 = OCXFindChild(a3, v33, "conditionalFormats");
-    v35 = [v9 conditionalFormats];
-    [a1 readConditionalFormatsFrom:v34 toCollection:v35 state:v7];
+    eXSpreadsheetMLNamespace10 = [v7 EXSpreadsheetMLNamespace];
+    v34 = OCXFindChild(element, eXSpreadsheetMLNamespace10, "conditionalFormats");
+    conditionalFormats = [v9 conditionalFormats];
+    [self readConditionalFormatsFrom:v34 toCollection:conditionalFormats state:v7];
 
-    v36 = [v7 EXSpreadsheetMLNamespace];
-    v37 = OCXFindChild(a3, v36, "pivotAreas");
-    v38 = [v9 pivotAreas];
-    [a1 readPivotAreasFrom:v37 toCollection:v38 state:v7];
+    eXSpreadsheetMLNamespace11 = [v7 EXSpreadsheetMLNamespace];
+    v37 = OCXFindChild(element, eXSpreadsheetMLNamespace11, "pivotAreas");
+    pivotAreas = [v9 pivotAreas];
+    [self readPivotAreasFrom:v37 toCollection:pivotAreas state:v7];
 
     v58 = 0;
-    LODWORD(v36) = CXOptionalStringAttribute(a3, CXNoNamespace, "colHeaderCaption", &v58);
+    LODWORD(eXSpreadsheetMLNamespace11) = CXOptionalStringAttribute(element, CXNoNamespace, "colHeaderCaption", &v58);
     v39 = v58;
-    if (v36)
+    if (eXSpreadsheetMLNamespace11)
     {
       [v9 setColumnHeaderCaption:v39];
     }
 
     v57 = v39;
-    v40 = CXOptionalStringAttribute(a3, CXNoNamespace, "rowHeaderCaption", &v57);
+    v40 = CXOptionalStringAttribute(element, CXNoNamespace, "rowHeaderCaption", &v57);
     v41 = v57;
 
     if (v40)
@@ -99,7 +99,7 @@
     }
 
     v56 = v41;
-    v42 = CXOptionalStringAttribute(a3, CXNoNamespace, "pageStyleName", &v56);
+    v42 = CXOptionalStringAttribute(element, CXNoNamespace, "pageStyleName", &v56);
     v43 = v56;
 
     if (v42)
@@ -108,7 +108,7 @@
     }
 
     v55 = v43;
-    v44 = CXOptionalStringAttribute(a3, CXNoNamespace, "pivotTableStyle", &v55);
+    v44 = CXOptionalStringAttribute(element, CXNoNamespace, "pivotTableStyle", &v55);
     v45 = v55;
 
     if (v44)
@@ -117,7 +117,7 @@
     }
 
     v54 = v45;
-    v46 = CXOptionalStringAttribute(a3, CXNoNamespace, "name", &v54);
+    v46 = CXOptionalStringAttribute(element, CXNoNamespace, "name", &v54);
     v47 = v54;
 
     if (v46)
@@ -126,170 +126,170 @@
     }
 
     v53 = 0;
-    if (CXOptionalBoolAttribute(a3, CXNoNamespace, "applyNumberFormats", &v53))
+    if (CXOptionalBoolAttribute(element, CXNoNamespace, "applyNumberFormats", &v53))
     {
       [v9 setApplyNumberFormats:v53];
     }
 
-    if (CXOptionalBoolAttribute(a3, CXNoNamespace, "applyBorderFormats", &v53))
+    if (CXOptionalBoolAttribute(element, CXNoNamespace, "applyBorderFormats", &v53))
     {
       [v9 setApplyBorderFormats:v53];
     }
 
-    if (CXOptionalBoolAttribute(a3, CXNoNamespace, "applyFontFormats", &v53))
+    if (CXOptionalBoolAttribute(element, CXNoNamespace, "applyFontFormats", &v53))
     {
       [v9 setApplyFontFormats:v53];
     }
 
-    if (CXOptionalBoolAttribute(a3, CXNoNamespace, "applyPatternFormats", &v53))
+    if (CXOptionalBoolAttribute(element, CXNoNamespace, "applyPatternFormats", &v53))
     {
       [v9 setApplyPatternFormats:v53];
     }
 
-    if (CXOptionalBoolAttribute(a3, CXNoNamespace, "applyAlignmentFormats", &v53))
+    if (CXOptionalBoolAttribute(element, CXNoNamespace, "applyAlignmentFormats", &v53))
     {
       [v9 setApplyAlignmentFormats:v53];
     }
 
-    if (CXOptionalBoolAttribute(a3, CXNoNamespace, "applyWidthHeightFormats", &v53))
+    if (CXOptionalBoolAttribute(element, CXNoNamespace, "applyWidthHeightFormats", &v53))
     {
       [v9 setApplyWidthHeightFormats:v53];
     }
 
-    if (CXOptionalBoolAttribute(a3, CXNoNamespace, "colGrandTotals", &v53))
+    if (CXOptionalBoolAttribute(element, CXNoNamespace, "colGrandTotals", &v53))
     {
       [v9 setColGrandTotals:v53];
     }
 
-    if (CXOptionalBoolAttribute(a3, CXNoNamespace, "useAutoFormatting", &v53))
+    if (CXOptionalBoolAttribute(element, CXNoNamespace, "useAutoFormatting", &v53))
     {
       [v9 setUseAutoFormatting:v53];
     }
 
-    if (CXOptionalBoolAttribute(a3, CXNoNamespace, "rowGrandTotals", &v53))
+    if (CXOptionalBoolAttribute(element, CXNoNamespace, "rowGrandTotals", &v53))
     {
       [v9 setRowGrandTotals:v53];
     }
 
-    if (CXOptionalBoolAttribute(a3, CXNoNamespace, "customListSort", &v53))
+    if (CXOptionalBoolAttribute(element, CXNoNamespace, "customListSort", &v53))
     {
       [v9 setCustomListSort:v53];
     }
 
-    if (CXOptionalBoolAttribute(a3, CXNoNamespace, "compactData", &v53))
+    if (CXOptionalBoolAttribute(element, CXNoNamespace, "compactData", &v53))
     {
       [v9 setCompactData:v53];
     }
 
-    if (CXOptionalBoolAttribute(a3, CXNoNamespace, "compact", &v53))
+    if (CXOptionalBoolAttribute(element, CXNoNamespace, "compact", &v53))
     {
       [v9 setCompact:v53];
     }
 
-    if (CXOptionalBoolAttribute(a3, CXNoNamespace, "dataCaption", &v53))
+    if (CXOptionalBoolAttribute(element, CXNoNamespace, "dataCaption", &v53))
     {
       [v9 setDataCaption:v53];
     }
 
-    if (CXOptionalBoolAttribute(a3, CXNoNamespace, "dataOnRows", &v53))
+    if (CXOptionalBoolAttribute(element, CXNoNamespace, "dataOnRows", &v53))
     {
       [v9 setDataOnRows:v53];
     }
 
-    if (CXOptionalBoolAttribute(a3, CXNoNamespace, "mergeItem", &v53))
+    if (CXOptionalBoolAttribute(element, CXNoNamespace, "mergeItem", &v53))
     {
       [v9 setMergeItem:v53];
     }
 
-    if (CXOptionalBoolAttribute(a3, CXNoNamespace, "disableFieldList", &v53))
+    if (CXOptionalBoolAttribute(element, CXNoNamespace, "disableFieldList", &v53))
     {
       [v9 setDisableFieldList:v53];
     }
 
-    if (CXOptionalBoolAttribute(a3, CXNoNamespace, "multipleFieldFilters", &v53))
+    if (CXOptionalBoolAttribute(element, CXNoNamespace, "multipleFieldFilters", &v53))
     {
       [v9 setMultipleFieldFilters:v53];
     }
 
-    if (CXOptionalBoolAttribute(a3, CXNoNamespace, "outline", &v53))
+    if (CXOptionalBoolAttribute(element, CXNoNamespace, "outline", &v53))
     {
       [v9 setOutline:v53];
     }
 
-    if (CXOptionalBoolAttribute(a3, CXNoNamespace, "outlineData", &v53))
+    if (CXOptionalBoolAttribute(element, CXNoNamespace, "outlineData", &v53))
     {
       [v9 setOutlineData:v53];
     }
 
-    if (CXOptionalBoolAttribute(a3, CXNoNamespace, "pageOverThenDown", &v53))
+    if (CXOptionalBoolAttribute(element, CXNoNamespace, "pageOverThenDown", &v53))
     {
       [v9 setPageOverThenDown:v53];
     }
 
-    if (CXOptionalBoolAttribute(a3, CXNoNamespace, "showCalcMbrs", &v53))
+    if (CXOptionalBoolAttribute(element, CXNoNamespace, "showCalcMbrs", &v53))
     {
       [v9 setShowCalcMbrs:v53];
     }
 
-    if (CXOptionalBoolAttribute(a3, CXNoNamespace, "showDataDropDown", &v53))
+    if (CXOptionalBoolAttribute(element, CXNoNamespace, "showDataDropDown", &v53))
     {
       [v9 setShowDataDropDown:v53];
     }
 
-    if (CXOptionalBoolAttribute(a3, CXNoNamespace, "showDropZones", &v53))
+    if (CXOptionalBoolAttribute(element, CXNoNamespace, "showDropZones", &v53))
     {
       [v9 setShowDropZones:v53];
     }
 
-    if (CXOptionalBoolAttribute(a3, CXNoNamespace, "showEmptyCol", &v53))
+    if (CXOptionalBoolAttribute(element, CXNoNamespace, "showEmptyCol", &v53))
     {
       [v9 setShowEmptyCol:v53];
     }
 
-    if (CXOptionalBoolAttribute(a3, CXNoNamespace, "showEmptyRow", &v53))
+    if (CXOptionalBoolAttribute(element, CXNoNamespace, "showEmptyRow", &v53))
     {
       [v9 setShowEmptyRow:v53];
     }
 
-    if (CXOptionalBoolAttribute(a3, CXNoNamespace, "showHeaders", &v53))
+    if (CXOptionalBoolAttribute(element, CXNoNamespace, "showHeaders", &v53))
     {
       [v9 setShowHeaders:v53];
     }
 
-    if (CXOptionalBoolAttribute(a3, CXNoNamespace, "showMemberPropertyTips", &v53))
+    if (CXOptionalBoolAttribute(element, CXNoNamespace, "showMemberPropertyTips", &v53))
     {
       [v9 setShowMemberPropertyTips:v53];
     }
 
-    if (CXOptionalBoolAttribute(a3, CXNoNamespace, "showMultipleLabel", &v53))
+    if (CXOptionalBoolAttribute(element, CXNoNamespace, "showMultipleLabel", &v53))
     {
       [v9 setShowMultipleLabel:v53];
     }
 
-    if (CXOptionalBoolAttribute(a3, CXNoNamespace, "showMissing", &v53))
+    if (CXOptionalBoolAttribute(element, CXNoNamespace, "showMissing", &v53))
     {
       [v9 setShowMissing:v53];
     }
 
-    if (CXOptionalBoolAttribute(a3, CXNoNamespace, "subtotalHiddenItems", &v53))
+    if (CXOptionalBoolAttribute(element, CXNoNamespace, "subtotalHiddenItems", &v53))
     {
       [v9 setSubtotalHiddenItems:v53];
     }
 
     v52 = -1;
-    if (CXOptionalLongAttribute(a3, CXNoNamespace, "pageWrap", &v52))
+    if (CXOptionalLongAttribute(element, CXNoNamespace, "pageWrap", &v52))
     {
       [v9 setPageWrap:v52];
     }
 
     v51 = -1;
-    if (CXOptionalLongAttribute(a3, CXNoNamespace, "autoFormatId", &v51))
+    if (CXOptionalLongAttribute(element, CXNoNamespace, "autoFormatId", &v51))
     {
       [v9 setAutoFormatId:v51];
     }
 
     v50 = -1;
-    if (CXOptionalLongAttribute(a3, CXNoNamespace, "dataPosition", &v50))
+    if (CXOptionalLongAttribute(element, CXNoNamespace, "dataPosition", &v50))
     {
       [v9 setDataPosition:v50];
     }
@@ -305,106 +305,106 @@
   return v48;
 }
 
-+ (void)readStyleInfoFrom:(_xmlNode *)a3 toPivotTable:(id)a4
++ (void)readStyleInfoFrom:(_xmlNode *)from toPivotTable:(id)table
 {
-  v5 = a4;
-  if (a3)
+  tableCopy = table;
+  if (from)
   {
     v13 = 0;
-    v6 = CXOptionalStringAttribute(a3, CXNoNamespace, "name", &v13);
+    v6 = CXOptionalStringAttribute(from, CXNoNamespace, "name", &v13);
     v7 = v13;
     if (v6)
     {
-      [v5 setStyleName:v7];
+      [tableCopy setStyleName:v7];
     }
 
     v12 = 0;
-    if (CXOptionalBoolAttribute(a3, CXNoNamespace, "showLastColumn", &v12))
+    if (CXOptionalBoolAttribute(from, CXNoNamespace, "showLastColumn", &v12))
     {
-      [v5 setShowLastColumn:v12];
+      [tableCopy setShowLastColumn:v12];
     }
 
     v11 = 0;
-    if (CXOptionalBoolAttribute(a3, CXNoNamespace, "showRowStripes", &v11))
+    if (CXOptionalBoolAttribute(from, CXNoNamespace, "showRowStripes", &v11))
     {
-      [v5 setShowRowStripes:v11];
+      [tableCopy setShowRowStripes:v11];
     }
 
     v10 = 0;
-    if (CXOptionalBoolAttribute(a3, CXNoNamespace, "showColStripes", &v10))
+    if (CXOptionalBoolAttribute(from, CXNoNamespace, "showColStripes", &v10))
     {
-      [v5 setShowColumnStripes:v10];
+      [tableCopy setShowColumnStripes:v10];
     }
 
     v9 = 0;
-    if (CXOptionalBoolAttribute(a3, CXNoNamespace, "showRowHeaders", &v9))
+    if (CXOptionalBoolAttribute(from, CXNoNamespace, "showRowHeaders", &v9))
     {
-      [v5 setShowRowHeaders:v9];
+      [tableCopy setShowRowHeaders:v9];
     }
 
     v8 = 0;
-    if (CXOptionalBoolAttribute(a3, CXNoNamespace, "showColHeaders", &v8))
+    if (CXOptionalBoolAttribute(from, CXNoNamespace, "showColHeaders", &v8))
     {
-      [v5 setShowColumnHeaders:v8];
+      [tableCopy setShowColumnHeaders:v8];
     }
   }
 }
 
-+ (void)readLocationFrom:(_xmlNode *)a3 toPivotTable:(id)a4
++ (void)readLocationFrom:(_xmlNode *)from toPivotTable:(id)table
 {
-  v5 = a4;
-  if (a3)
+  tableCopy = table;
+  if (from)
   {
     v14 = 0;
-    v6 = CXOptionalStringAttribute(a3, CXNoNamespace, "ref", &v14);
+    v6 = CXOptionalStringAttribute(from, CXNoNamespace, "ref", &v14);
     v7 = v14;
     if (v6)
     {
       v8 = [EXReference edReferenceFromXmlReference:v7];
-      [v5 setPivotTableRange:v8];
+      [tableCopy setPivotTableRange:v8];
     }
 
     v13 = -1;
-    if (CXOptionalLongAttribute(a3, CXNoNamespace, "firstHeaderRow", &v13))
+    if (CXOptionalLongAttribute(from, CXNoNamespace, "firstHeaderRow", &v13))
     {
-      [v5 setFirstHeaderRow:v13];
+      [tableCopy setFirstHeaderRow:v13];
     }
 
     v12 = -1;
-    if (CXOptionalLongAttribute(a3, CXNoNamespace, "firstDataRow", &v12))
+    if (CXOptionalLongAttribute(from, CXNoNamespace, "firstDataRow", &v12))
     {
-      [v5 setFirstDataRow:v12];
+      [tableCopy setFirstDataRow:v12];
     }
 
     v11 = -1;
-    if (CXOptionalLongAttribute(a3, CXNoNamespace, "firstDataCol", &v11))
+    if (CXOptionalLongAttribute(from, CXNoNamespace, "firstDataCol", &v11))
     {
-      [v5 setFirstDataColumn:v11];
+      [tableCopy setFirstDataColumn:v11];
     }
 
     v10 = -1;
-    if (CXOptionalLongAttribute(a3, CXNoNamespace, "rowPageCount", &v10))
+    if (CXOptionalLongAttribute(from, CXNoNamespace, "rowPageCount", &v10))
     {
-      [v5 setRowPageCount:v10];
+      [tableCopy setRowPageCount:v10];
     }
 
     v9 = -1;
-    if (CXOptionalLongAttribute(a3, CXNoNamespace, "colPageCount", &v9))
+    if (CXOptionalLongAttribute(from, CXNoNamespace, "colPageCount", &v9))
     {
-      [v5 setColumnPageCount:v9];
+      [tableCopy setColumnPageCount:v9];
     }
   }
 }
 
-+ (void)readFieldsFrom:(_xmlNode *)a3 toCollection:(id)a4 state:(id)a5
++ (void)readFieldsFrom:(_xmlNode *)from toCollection:(id)collection state:(id)state
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = v8;
-  if (a3)
+  collectionCopy = collection;
+  stateCopy = state;
+  v9 = stateCopy;
+  if (from)
   {
-    v10 = [v8 EXSpreadsheetMLNamespace];
-    Child = OCXFindChild(a3, v10, "field");
+    eXSpreadsheetMLNamespace = [stateCopy EXSpreadsheetMLNamespace];
+    Child = OCXFindChild(from, eXSpreadsheetMLNamespace, "field");
 
     while (Child)
     {
@@ -412,25 +412,25 @@
       if (CXOptionalLongAttribute(Child, CXNoNamespace, "x", &v14))
       {
         v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v14];
-        [v7 addObject:v12];
+        [collectionCopy addObject:v12];
       }
 
-      v13 = [v9 EXSpreadsheetMLNamespace];
-      Child = OCXFindNextChild(Child, v13, "field");
+      eXSpreadsheetMLNamespace2 = [v9 EXSpreadsheetMLNamespace];
+      Child = OCXFindNextChild(Child, eXSpreadsheetMLNamespace2, "field");
     }
   }
 }
 
-+ (void)readItemsFrom:(_xmlNode *)a3 toCollection:(id)a4 state:(id)a5
++ (void)readItemsFrom:(_xmlNode *)from toCollection:(id)collection state:(id)state
 {
-  v19 = a1;
-  v20 = a4;
-  v7 = a5;
-  v8 = v7;
-  if (a3)
+  selfCopy = self;
+  collectionCopy = collection;
+  stateCopy = state;
+  v8 = stateCopy;
+  if (from)
   {
-    v9 = [v7 EXSpreadsheetMLNamespace];
-    Child = OCXFindChild(a3, v9, "i");
+    eXSpreadsheetMLNamespace = [stateCopy EXSpreadsheetMLNamespace];
+    Child = OCXFindChild(from, eXSpreadsheetMLNamespace, "i");
 
     while (Child)
     {
@@ -445,10 +445,10 @@
       v21 = v11;
       CXOptionalStringAttribute(Child, CXNoNamespace, "t", &v23);
       v12 = v23;
-      [v11 setType:{objc_msgSend(v19, "edPivotItemTypeFrom:", v12)}];
-      v13 = [v11 itemIndexes];
-      v14 = [v8 EXSpreadsheetMLNamespace];
-      for (i = OCXFindChild(Child, v14, "x"); ; i = OCXFindNextChild(v16, v14, "x"))
+      [v11 setType:{objc_msgSend(selfCopy, "edPivotItemTypeFrom:", v12)}];
+      itemIndexes = [v11 itemIndexes];
+      eXSpreadsheetMLNamespace2 = [v8 EXSpreadsheetMLNamespace];
+      for (i = OCXFindChild(Child, eXSpreadsheetMLNamespace2, "x"); ; i = OCXFindNextChild(v16, eXSpreadsheetMLNamespace2, "x"))
       {
         v16 = i;
 
@@ -460,27 +460,27 @@
         v22 = 0;
         CXOptionalLongAttribute(v16, CXNoNamespace, "v", &v22);
         v17 = [MEMORY[0x277CCABB0] numberWithLong:v22];
-        [v13 addObject:v17];
+        [itemIndexes addObject:v17];
 
-        v14 = [v8 EXSpreadsheetMLNamespace];
+        eXSpreadsheetMLNamespace2 = [v8 EXSpreadsheetMLNamespace];
       }
 
-      [v20 addObject:v21];
-      v18 = [v8 EXSpreadsheetMLNamespace];
-      Child = OCXFindNextChild(Child, v18, "i");
+      [collectionCopy addObject:v21];
+      eXSpreadsheetMLNamespace3 = [v8 EXSpreadsheetMLNamespace];
+      Child = OCXFindNextChild(Child, eXSpreadsheetMLNamespace3, "i");
     }
   }
 }
 
-+ (void)readPivotFieldsFrom:(_xmlNode *)a3 toCollection:(id)a4 state:(id)a5
++ (void)readPivotFieldsFrom:(_xmlNode *)from toCollection:(id)collection state:(id)state
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (a3)
+  collectionCopy = collection;
+  stateCopy = state;
+  v10 = stateCopy;
+  if (from)
   {
-    v11 = [v9 EXSpreadsheetMLNamespace];
-    Child = OCXFindChild(a3, v11, "pivotField");
+    eXSpreadsheetMLNamespace = [stateCopy EXSpreadsheetMLNamespace];
+    Child = OCXFindChild(from, eXSpreadsheetMLNamespace, "pivotField");
 
     while (Child)
     {
@@ -491,7 +491,7 @@
       v26 = 0;
       CXOptionalStringAttribute(Child, CXNoNamespace, "axis", &v26);
       v14 = v26;
-      [v13 setAxis:{objc_msgSend(a1, "edPivotFieldAxisFrom:", v14)}];
+      [v13 setAxis:{objc_msgSend(self, "edPivotFieldAxisFrom:", v14)}];
       v25 = 0;
       CXOptionalBoolAttribute(Child, CXNoNamespace, "compact", &v25);
       [v13 setCompact:v25];
@@ -513,28 +513,28 @@
       v19 = 0;
       CXOptionalBoolAttribute(Child, CXNoNamespace, "subtotalTop", &v19);
       [v13 setSubtotalTop:v19];
-      v15 = [v10 EXSpreadsheetMLNamespace];
-      v16 = OCXFindChild(Child, v15, "items");
+      eXSpreadsheetMLNamespace2 = [v10 EXSpreadsheetMLNamespace];
+      v16 = OCXFindChild(Child, eXSpreadsheetMLNamespace2, "items");
 
-      v17 = [v13 pivotFieldItems];
-      [a1 readFieldItemsFrom:v16 toCollection:v17 state:v10];
+      pivotFieldItems = [v13 pivotFieldItems];
+      [self readFieldItemsFrom:v16 toCollection:pivotFieldItems state:v10];
 
-      [v8 addObject:v13];
-      v18 = [v10 EXSpreadsheetMLNamespace];
-      Child = OCXFindNextChild(Child, v18, "pivotField");
+      [collectionCopy addObject:v13];
+      eXSpreadsheetMLNamespace3 = [v10 EXSpreadsheetMLNamespace];
+      Child = OCXFindNextChild(Child, eXSpreadsheetMLNamespace3, "pivotField");
     }
   }
 }
 
-+ (void)readFieldItemsFrom:(_xmlNode *)a3 toCollection:(id)a4 state:(id)a5
++ (void)readFieldItemsFrom:(_xmlNode *)from toCollection:(id)collection state:(id)state
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (a3)
+  collectionCopy = collection;
+  stateCopy = state;
+  v10 = stateCopy;
+  if (from)
   {
-    v11 = [v9 EXSpreadsheetMLNamespace];
-    Child = OCXFindChild(a3, v11, "item");
+    eXSpreadsheetMLNamespace = [stateCopy EXSpreadsheetMLNamespace];
+    Child = OCXFindChild(from, eXSpreadsheetMLNamespace, "item");
 
     while (Child)
     {
@@ -563,23 +563,23 @@
       v16 = 0;
       CXOptionalStringAttribute(Child, CXNoNamespace, "t", &v16);
       v14 = v16;
-      [v13 setType:{objc_msgSend(a1, "edPivotItemTypeFrom:", v14)}];
-      [v8 addObject:v13];
-      v15 = [v10 EXSpreadsheetMLNamespace];
-      Child = OCXFindNextChild(Child, v15, "item");
+      [v13 setType:{objc_msgSend(self, "edPivotItemTypeFrom:", v14)}];
+      [collectionCopy addObject:v13];
+      eXSpreadsheetMLNamespace2 = [v10 EXSpreadsheetMLNamespace];
+      Child = OCXFindNextChild(Child, eXSpreadsheetMLNamespace2, "item");
     }
   }
 }
 
-+ (void)readDataFieldsFrom:(_xmlNode *)a3 toCollection:(id)a4 state:(id)a5
++ (void)readDataFieldsFrom:(_xmlNode *)from toCollection:(id)collection state:(id)state
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (a3)
+  collectionCopy = collection;
+  stateCopy = state;
+  v10 = stateCopy;
+  if (from)
   {
-    v11 = [v9 EXSpreadsheetMLNamespace];
-    Child = OCXFindChild(a3, v11, "dataField");
+    eXSpreadsheetMLNamespace = [stateCopy EXSpreadsheetMLNamespace];
+    Child = OCXFindChild(from, eXSpreadsheetMLNamespace, "dataField");
 
     while (Child)
     {
@@ -603,23 +603,23 @@
       v17 = 0;
       CXOptionalStringAttribute(Child, CXNoNamespace, "showDataAs", &v17);
       v15 = v17;
-      [v13 setShowDataAs:{objc_msgSend(a1, "edPivotDatFieldFormatFrom:", v15)}];
-      [v8 addObject:v13];
-      v16 = [v10 EXSpreadsheetMLNamespace];
-      Child = OCXFindNextChild(Child, v16, "dataField");
+      [v13 setShowDataAs:{objc_msgSend(self, "edPivotDatFieldFormatFrom:", v15)}];
+      [collectionCopy addObject:v13];
+      eXSpreadsheetMLNamespace2 = [v10 EXSpreadsheetMLNamespace];
+      Child = OCXFindNextChild(Child, eXSpreadsheetMLNamespace2, "dataField");
     }
   }
 }
 
-+ (void)readConditionalFormatsFrom:(_xmlNode *)a3 toCollection:(id)a4 state:(id)a5
++ (void)readConditionalFormatsFrom:(_xmlNode *)from toCollection:(id)collection state:(id)state
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (a3)
+  collectionCopy = collection;
+  stateCopy = state;
+  v10 = stateCopy;
+  if (from)
   {
-    v11 = [v9 EXSpreadsheetMLNamespace];
-    Child = OCXFindChild(a3, v11, "conditionalFormat");
+    eXSpreadsheetMLNamespace = [stateCopy EXSpreadsheetMLNamespace];
+    Child = OCXFindChild(from, eXSpreadsheetMLNamespace, "conditionalFormat");
 
     while (Child)
     {
@@ -630,33 +630,33 @@
       v21 = 0;
       CXOptionalStringAttribute(Child, CXNoNamespace, "type", &v21);
       v14 = v21;
-      [v13 setType:{objc_msgSend(a1, "edPivotConditionalFormatTypeFrom:", v14)}];
+      [v13 setType:{objc_msgSend(self, "edPivotConditionalFormatTypeFrom:", v14)}];
       v20 = 0;
       CXOptionalStringAttribute(Child, CXNoNamespace, "scope", &v20);
       v15 = v20;
-      [v13 setScope:{objc_msgSend(a1, "edPivotConditionalFormatScopeFrom:", v15)}];
-      v16 = [v10 EXSpreadsheetMLNamespace];
-      v17 = OCXFindChild(Child, v16, "pivotAreas");
+      [v13 setScope:{objc_msgSend(self, "edPivotConditionalFormatScopeFrom:", v15)}];
+      eXSpreadsheetMLNamespace2 = [v10 EXSpreadsheetMLNamespace];
+      v17 = OCXFindChild(Child, eXSpreadsheetMLNamespace2, "pivotAreas");
 
-      v18 = [v13 pivotAreas];
-      [a1 readPivotAreasFrom:v17 toCollection:v18 state:v10];
+      pivotAreas = [v13 pivotAreas];
+      [self readPivotAreasFrom:v17 toCollection:pivotAreas state:v10];
 
-      [v8 addObject:v13];
-      v19 = [v10 EXSpreadsheetMLNamespace];
-      Child = OCXFindNextChild(Child, v19, "conditionalFormat");
+      [collectionCopy addObject:v13];
+      eXSpreadsheetMLNamespace3 = [v10 EXSpreadsheetMLNamespace];
+      Child = OCXFindNextChild(Child, eXSpreadsheetMLNamespace3, "conditionalFormat");
     }
   }
 }
 
-+ (void)readPivotAreasFrom:(_xmlNode *)a3 toCollection:(id)a4 state:(id)a5
++ (void)readPivotAreasFrom:(_xmlNode *)from toCollection:(id)collection state:(id)state
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (a3)
+  collectionCopy = collection;
+  stateCopy = state;
+  v10 = stateCopy;
+  if (from)
   {
-    v11 = [v9 EXSpreadsheetMLNamespace];
-    Child = OCXFindChild(a3, v11, "pivotArea");
+    eXSpreadsheetMLNamespace = [stateCopy EXSpreadsheetMLNamespace];
+    Child = OCXFindChild(from, eXSpreadsheetMLNamespace, "pivotArea");
 
     while (Child)
     {
@@ -673,70 +673,70 @@
       v22 = 0;
       CXOptionalStringAttribute(Child, CXNoNamespace, "type", &v22);
       v14 = v22;
-      [v13 setType:{objc_msgSend(a1, "edPivotAreaTypeFrom:", v14)}];
+      [v13 setType:{objc_msgSend(self, "edPivotAreaTypeFrom:", v14)}];
       v21 = 0;
       CXOptionalStringAttribute(Child, CXNoNamespace, "offset", &v21);
       v15 = v21;
       v16 = [EXReference edReferenceFromXmlReference:v15];
       [v13 setOffset:v16];
 
-      v17 = [v10 EXSpreadsheetMLNamespace];
-      v18 = OCXFindChild(Child, v17, "references");
+      eXSpreadsheetMLNamespace2 = [v10 EXSpreadsheetMLNamespace];
+      v18 = OCXFindChild(Child, eXSpreadsheetMLNamespace2, "references");
 
-      v19 = [v13 references];
-      [a1 readPivotAreaReferencesFrom:v18 toCollection:v19 state:v10];
+      references = [v13 references];
+      [self readPivotAreaReferencesFrom:v18 toCollection:references state:v10];
 
-      [v8 addObject:v13];
-      v20 = [v10 EXSpreadsheetMLNamespace];
-      Child = OCXFindNextChild(Child, v20, "pivotArea");
+      [collectionCopy addObject:v13];
+      eXSpreadsheetMLNamespace3 = [v10 EXSpreadsheetMLNamespace];
+      Child = OCXFindNextChild(Child, eXSpreadsheetMLNamespace3, "pivotArea");
     }
   }
 }
 
-+ (void)readPivotAreaReferencesFrom:(_xmlNode *)a3 toCollection:(id)a4 state:(id)a5
++ (void)readPivotAreaReferencesFrom:(_xmlNode *)from toCollection:(id)collection state:(id)state
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = v8;
-  if (a3)
+  collectionCopy = collection;
+  stateCopy = state;
+  v9 = stateCopy;
+  if (from)
   {
-    v10 = [v8 EXSpreadsheetMLNamespace];
-    Child = OCXFindChild(a3, v10, "reference");
+    eXSpreadsheetMLNamespace = [stateCopy EXSpreadsheetMLNamespace];
+    Child = OCXFindChild(from, eXSpreadsheetMLNamespace, "reference");
 
     while (Child)
     {
       v12 = +[EDPivotAreaReference pivotAreaReference];
       v18 = -1;
-      CXOptionalLongAttribute(a3, CXNoNamespace, "fieldId", &v18);
+      CXOptionalLongAttribute(from, CXNoNamespace, "fieldId", &v18);
       [v12 setFieldId:v18];
       v17 = -1;
-      CXOptionalLongAttribute(a3, CXNoNamespace, "count", &v17);
+      CXOptionalLongAttribute(from, CXNoNamespace, "count", &v17);
       [v12 setCount:v17];
       v16 = 0;
-      CXOptionalBoolAttribute(a3, CXNoNamespace, "byPosition", &v16);
+      CXOptionalBoolAttribute(from, CXNoNamespace, "byPosition", &v16);
       [v12 setByPosition:v16];
       v15 = 0;
-      CXOptionalBoolAttribute(a3, CXNoNamespace, "relative", &v15);
+      CXOptionalBoolAttribute(from, CXNoNamespace, "relative", &v15);
       [v12 setRelative:v15];
       v14 = 0;
-      CXOptionalBoolAttribute(a3, CXNoNamespace, "selected", &v14);
+      CXOptionalBoolAttribute(from, CXNoNamespace, "selected", &v14);
       [v12 setSelected:v14];
-      [v7 addObject:v12];
-      v13 = [v9 EXSpreadsheetMLNamespace];
-      Child = OCXFindNextChild(Child, v13, "reference");
+      [collectionCopy addObject:v12];
+      eXSpreadsheetMLNamespace2 = [v9 EXSpreadsheetMLNamespace];
+      Child = OCXFindNextChild(Child, eXSpreadsheetMLNamespace2, "reference");
     }
   }
 }
 
-+ (void)readPageFieldsFrom:(_xmlNode *)a3 toCollection:(id)a4 state:(id)a5
++ (void)readPageFieldsFrom:(_xmlNode *)from toCollection:(id)collection state:(id)state
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = v8;
-  if (a3)
+  collectionCopy = collection;
+  stateCopy = state;
+  v9 = stateCopy;
+  if (from)
   {
-    v10 = [v8 EXSpreadsheetMLNamespace];
-    Child = OCXFindChild(a3, v10, "pageField");
+    eXSpreadsheetMLNamespace = [stateCopy EXSpreadsheetMLNamespace];
+    Child = OCXFindChild(from, eXSpreadsheetMLNamespace, "pageField");
 
     while (Child)
     {
@@ -752,23 +752,23 @@
       CXOptionalStringAttribute(Child, CXNoNamespace, "cap", &v16);
       v14 = v16;
       [v12 setCap:v14];
-      [v7 addObject:v12];
-      v15 = [v9 EXSpreadsheetMLNamespace];
-      Child = OCXFindNextChild(Child, v15, "pageField");
+      [collectionCopy addObject:v12];
+      eXSpreadsheetMLNamespace2 = [v9 EXSpreadsheetMLNamespace];
+      Child = OCXFindNextChild(Child, eXSpreadsheetMLNamespace2, "pageField");
     }
   }
 }
 
-+ (int)edPivotItemTypeFrom:(id)a3
++ (int)edPivotItemTypeFrom:(id)from
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  fromCopy = from;
+  v4 = fromCopy;
+  if (!fromCopy)
   {
     goto LABEL_11;
   }
 
-  if (([v3 isEqualToString:@"avg"] & 1) == 0)
+  if (([fromCopy isEqualToString:@"avg"] & 1) == 0)
   {
     if ([v4 isEqualToString:@"blank"])
     {
@@ -862,16 +862,16 @@ LABEL_12:
   return v5;
 }
 
-+ (int)edPivotFieldAxisFrom:(id)a3
++ (int)edPivotFieldAxisFrom:(id)from
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  fromCopy = from;
+  v4 = fromCopy;
+  if (!fromCopy)
   {
     goto LABEL_8;
   }
 
-  if (([v3 isEqualToString:@"axisCol"] & 1) == 0)
+  if (([fromCopy isEqualToString:@"axisCol"] & 1) == 0)
   {
     if ([v4 isEqualToString:@"axisPage"])
     {
@@ -896,16 +896,16 @@ LABEL_9:
   return v5;
 }
 
-+ (int)edPivotDatFieldFormatFrom:(id)a3
++ (int)edPivotDatFieldFormatFrom:(id)from
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  fromCopy = from;
+  v4 = fromCopy;
+  if (!fromCopy)
   {
     goto LABEL_20;
   }
 
-  if (([v3 isEqualToString:@"difference"] & 1) == 0)
+  if (([fromCopy isEqualToString:@"difference"] & 1) == 0)
   {
     if ([v4 isEqualToString:@"index"])
     {
@@ -966,16 +966,16 @@ LABEL_21:
   return v5;
 }
 
-+ (int)edPivotConditionalFormatTypeFrom:(id)a3
++ (int)edPivotConditionalFormatTypeFrom:(id)from
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  fromCopy = from;
+  v4 = fromCopy;
+  if (!fromCopy)
   {
     goto LABEL_10;
   }
 
-  if (([v3 isEqualToString:@"all"] & 1) == 0)
+  if (([fromCopy isEqualToString:@"all"] & 1) == 0)
   {
     if ([v4 isEqualToString:@"column"])
     {
@@ -1006,16 +1006,16 @@ LABEL_11:
   return v5;
 }
 
-+ (int)edPivotConditionalFormatScopeFrom:(id)a3
++ (int)edPivotConditionalFormatScopeFrom:(id)from
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  fromCopy = from;
+  v4 = fromCopy;
+  if (!fromCopy)
   {
     goto LABEL_8;
   }
 
-  if (([v3 isEqualToString:@"data"] & 1) == 0)
+  if (([fromCopy isEqualToString:@"data"] & 1) == 0)
   {
     if ([v4 isEqualToString:@"field"])
     {
@@ -1040,16 +1040,16 @@ LABEL_9:
   return v5;
 }
 
-+ (int)edPivotAreaTypeFrom:(id)a3
++ (int)edPivotAreaTypeFrom:(id)from
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  fromCopy = from;
+  v4 = fromCopy;
+  if (!fromCopy)
   {
     goto LABEL_9;
   }
 
-  if (([v3 isEqualToString:@"all"] & 1) == 0)
+  if (([fromCopy isEqualToString:@"all"] & 1) == 0)
   {
     if ([v4 isEqualToString:@"button"])
     {

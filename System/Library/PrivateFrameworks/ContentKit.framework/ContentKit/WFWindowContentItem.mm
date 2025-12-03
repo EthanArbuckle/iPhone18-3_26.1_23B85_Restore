@@ -1,24 +1,24 @@
 @interface WFWindowContentItem
 + (id)contentCategories;
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (id)localizedPluralTypeDescriptionWithContext:(id)context;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)outputTypes;
 + (id)ownedTypes;
 + (id)propertyBuilders;
 + (id)stringConversionBehavior;
-+ (void)runQuery:(id)a3 withItems:(id)a4 permissionRequestor:(id)a5 completionHandler:(id)a6;
-- (BOOL)getListAltText:(id)a3;
-- (BOOL)getListSubtitle:(id)a3;
-- (BOOL)getListThumbnail:(id)a3 forSize:(CGSize)a4;
++ (void)runQuery:(id)query withItems:(id)items permissionRequestor:(id)requestor completionHandler:(id)handler;
+- (BOOL)getListAltText:(id)text;
+- (BOOL)getListSubtitle:(id)subtitle;
+- (BOOL)getListThumbnail:(id)thumbnail forSize:(CGSize)size;
 - (WFWindow)window;
 - (id)app;
-- (id)defaultSourceForRepresentation:(id)a3;
-- (id)generateObjectRepresentationForClass:(Class)a3 options:(id)a4 error:(id *)a5;
+- (id)defaultSourceForRepresentation:(id)representation;
+- (id)generateObjectRepresentationForClass:(Class)class options:(id)options error:(id *)error;
 @end
 
 @implementation WFWindowContentItem
 
-- (id)defaultSourceForRepresentation:(id)a3
+- (id)defaultSourceForRepresentation:(id)representation
 {
   v3 = +[WFContentLocation windowsLocation];
   v4 = [WFContentAttributionSet attributionSetWithOrigin:v3 disclosureLevel:0];
@@ -26,29 +26,29 @@
   return v4;
 }
 
-- (id)generateObjectRepresentationForClass:(Class)a3 options:(id)a4 error:(id *)a5
+- (id)generateObjectRepresentationForClass:(Class)class options:(id)options error:(id *)error
 {
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
-    v8 = [(WFWindowContentItem *)self app];
-    v7 = [WFObjectRepresentation object:v8];
+    image = [(WFWindowContentItem *)self app];
+    v7 = [WFObjectRepresentation object:image];
   }
 
   else
   {
-    if (objc_opt_class() != a3)
+    if (objc_opt_class() != class)
     {
       v7 = 0;
       goto LABEL_9;
     }
 
-    v9 = [(WFWindowContentItem *)self window];
-    v8 = [v9 image];
+    window = [(WFWindowContentItem *)self window];
+    image = [window image];
 
-    if (v8)
+    if (image)
     {
-      v10 = [(WFContentItem *)self name];
-      v7 = [WFObjectRepresentation object:v8 named:v10];
+      name = [(WFContentItem *)self name];
+      v7 = [WFObjectRepresentation object:image named:name];
     }
 
     else
@@ -65,19 +65,19 @@ LABEL_9:
 - (id)app
 {
   v3 = objc_alloc(MEMORY[0x277CD3A58]);
-  v4 = [(WFWindowContentItem *)self window];
-  v5 = [v4 bundleIdentifier];
-  v6 = [v3 initWithBundleIdentifier:v5];
+  window = [(WFWindowContentItem *)self window];
+  bundleIdentifier = [window bundleIdentifier];
+  v6 = [v3 initWithBundleIdentifier:bundleIdentifier];
 
-  v7 = [MEMORY[0x277CD3A88] sharedResolver];
-  v8 = [v7 resolvedAppMatchingDescriptor:v6];
+  mEMORY[0x277CD3A88] = [MEMORY[0x277CD3A88] sharedResolver];
+  v8 = [mEMORY[0x277CD3A88] resolvedAppMatchingDescriptor:v6];
 
   if (v8)
   {
     v9 = [WFApp alloc];
-    v10 = [v8 bundleIdentifier];
-    v11 = [v8 localizedName];
-    v12 = [(WFApp *)v9 initWithBundleIdentifier:v10 localizedName:v11];
+    bundleIdentifier2 = [v8 bundleIdentifier];
+    localizedName = [v8 localizedName];
+    v12 = [(WFApp *)v9 initWithBundleIdentifier:bundleIdentifier2 localizedName:localizedName];
   }
 
   else
@@ -95,20 +95,20 @@ LABEL_9:
   return [(WFContentItem *)self objectForClass:v3];
 }
 
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3
++ (id)localizedPluralTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Windows", @"Windows");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Window", @"Window");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -144,29 +144,29 @@ LABEL_9:
 
 + (id)stringConversionBehavior
 {
-  v2 = [a1 propertyForName:@"Name"];
+  v2 = [self propertyForName:@"Name"];
   v3 = [WFContentItemStringConversionBehavior accessingProperty:v2];
 
   return v3;
 }
 
-+ (void)runQuery:(id)a3 withItems:(id)a4 permissionRequestor:(id)a5 completionHandler:(id)a6
++ (void)runQuery:(id)query withItems:(id)items permissionRequestor:(id)requestor completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (![v11 count])
+  queryCopy = query;
+  itemsCopy = items;
+  requestorCopy = requestor;
+  handlerCopy = handler;
+  if (![itemsCopy count])
   {
     v14 = +[WFWindow allWindows];
     v15 = [v14 if_map:&__block_literal_global_229];
 
-    v11 = v15;
+    itemsCopy = v15;
   }
 
-  v16.receiver = a1;
+  v16.receiver = self;
   v16.super_class = &OBJC_METACLASS___WFWindowContentItem;
-  objc_msgSendSuper2(&v16, sel_runQuery_withItems_permissionRequestor_completionHandler_, v10, v11, v12, v13);
+  objc_msgSendSuper2(&v16, sel_runQuery_withItems_permissionRequestor_completionHandler_, queryCopy, itemsCopy, requestorCopy, handlerCopy);
 }
 
 + (id)propertyBuilders
@@ -266,33 +266,33 @@ void __39__WFWindowContentItem_propertyBuilders__block_invoke(uint64_t a1, void 
   (a4)[2](v6, v7);
 }
 
-- (BOOL)getListAltText:(id)a3
+- (BOOL)getListAltText:(id)text
 {
-  v4 = a3;
-  v5 = [(WFWindowContentItem *)self window];
+  textCopy = text;
+  window = [(WFWindowContentItem *)self window];
   v6 = MEMORY[0x277CCACA8];
-  [v5 size];
+  [window size];
   v8 = v7;
-  [v5 size];
+  [window size];
   v10 = [v6 stringWithFormat:@"%lu×%lu", v8, v9];
-  if (v4)
+  if (textCopy)
   {
-    v4[2](v4, v10);
+    textCopy[2](textCopy, v10);
   }
 
   return 1;
 }
 
-- (BOOL)getListThumbnail:(id)a3 forSize:(CGSize)a4
+- (BOOL)getListThumbnail:(id)thumbnail forSize:(CGSize)size
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  thumbnailCopy = thumbnail;
   v6 = MEMORY[0x277D79FC8];
-  v7 = [(WFWindowContentItem *)self window];
-  v8 = [v7 bundleIdentifier];
-  v9 = [v6 applicationIconImageForBundleIdentifier:v8];
+  window = [(WFWindowContentItem *)self window];
+  bundleIdentifier = [window bundleIdentifier];
+  v9 = [v6 applicationIconImageForBundleIdentifier:bundleIdentifier];
 
-  if (v5)
+  if (thumbnailCopy)
   {
     if (v9)
     {
@@ -300,7 +300,7 @@ void __39__WFWindowContentItem_propertyBuilders__block_invoke(uint64_t a1, void 
       v14[0] = &unk_282F7A2E8;
       v10 = 1;
       v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1];
-      v5[2](v5, v9, v11);
+      thumbnailCopy[2](thumbnailCopy, v9, v11);
     }
 
     else
@@ -317,14 +317,14 @@ void __39__WFWindowContentItem_propertyBuilders__block_invoke(uint64_t a1, void 
   return v10;
 }
 
-- (BOOL)getListSubtitle:(id)a3
+- (BOOL)getListSubtitle:(id)subtitle
 {
-  if (a3)
+  if (subtitle)
   {
-    v5 = a3;
-    v6 = [(WFWindowContentItem *)self window];
-    v7 = [v6 applicationName];
-    (*(a3 + 2))(v5, v7);
+    subtitleCopy = subtitle;
+    window = [(WFWindowContentItem *)self window];
+    applicationName = [window applicationName];
+    (*(subtitle + 2))(subtitleCopy, applicationName);
   }
 
   return 1;

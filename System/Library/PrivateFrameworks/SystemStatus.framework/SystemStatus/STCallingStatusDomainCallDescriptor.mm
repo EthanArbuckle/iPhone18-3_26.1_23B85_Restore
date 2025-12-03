@@ -1,85 +1,85 @@
 @interface STCallingStatusDomainCallDescriptor
-+ (id)audioCallDescriptorWithState:(unint64_t)a3;
-+ (id)copresenceCallDescriptorWithActivityType:(unint64_t)a3;
-+ (id)videoCallDescriptorWithState:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (STCallingStatusDomainCallDescriptor)initWithCallType:(unint64_t)a3 callState:(unint64_t)a4 copresenceActivityType:(unint64_t)a5;
-- (STCallingStatusDomainCallDescriptor)initWithCallType:(unint64_t)a3 callState:(unint64_t)a4 copresenceActivityType:(unint64_t)a5 callProviderAttribution:(id)a6;
-- (STCallingStatusDomainCallDescriptor)initWithCoder:(id)a3;
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
++ (id)audioCallDescriptorWithState:(unint64_t)state;
++ (id)copresenceCallDescriptorWithActivityType:(unint64_t)type;
++ (id)videoCallDescriptorWithState:(unint64_t)state;
+- (BOOL)isEqual:(id)equal;
+- (STCallingStatusDomainCallDescriptor)initWithCallType:(unint64_t)type callState:(unint64_t)state copresenceActivityType:(unint64_t)activityType;
+- (STCallingStatusDomainCallDescriptor)initWithCallType:(unint64_t)type callState:(unint64_t)state copresenceActivityType:(unint64_t)activityType callProviderAttribution:(id)attribution;
+- (STCallingStatusDomainCallDescriptor)initWithCoder:(id)coder;
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STCallingStatusDomainCallDescriptor
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [v3 appendUnsignedInteger:{-[STCallingStatusDomainCallDescriptor callType](self, "callType")}];
-  v5 = [v3 appendUnsignedInteger:{-[STCallingStatusDomainCallDescriptor callState](self, "callState")}];
-  v6 = [v3 appendUnsignedInteger:{-[STCallingStatusDomainCallDescriptor copresenceActivityType](self, "copresenceActivityType")}];
-  v7 = [(STCallingStatusDomainCallDescriptor *)self callProviderAttribution];
-  v8 = [v3 appendObject:v7];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = [builder appendUnsignedInteger:{-[STCallingStatusDomainCallDescriptor callType](self, "callType")}];
+  v5 = [builder appendUnsignedInteger:{-[STCallingStatusDomainCallDescriptor callState](self, "callState")}];
+  v6 = [builder appendUnsignedInteger:{-[STCallingStatusDomainCallDescriptor copresenceActivityType](self, "copresenceActivityType")}];
+  callProviderAttribution = [(STCallingStatusDomainCallDescriptor *)self callProviderAttribution];
+  v8 = [builder appendObject:callProviderAttribution];
 
-  v9 = [v3 hash];
+  v9 = [builder hash];
   return v9;
 }
 
-+ (id)audioCallDescriptorWithState:(unint64_t)a3
++ (id)audioCallDescriptorWithState:(unint64_t)state
 {
-  v3 = [[STCallingStatusDomainCallDescriptor alloc] initWithCallType:0 callState:a3 copresenceActivityType:0];
+  v3 = [[STCallingStatusDomainCallDescriptor alloc] initWithCallType:0 callState:state copresenceActivityType:0];
 
   return v3;
 }
 
-+ (id)videoCallDescriptorWithState:(unint64_t)a3
++ (id)videoCallDescriptorWithState:(unint64_t)state
 {
-  v3 = [[STCallingStatusDomainCallDescriptor alloc] initWithCallType:1 callState:a3 copresenceActivityType:0];
+  v3 = [[STCallingStatusDomainCallDescriptor alloc] initWithCallType:1 callState:state copresenceActivityType:0];
 
   return v3;
 }
 
-+ (id)copresenceCallDescriptorWithActivityType:(unint64_t)a3
++ (id)copresenceCallDescriptorWithActivityType:(unint64_t)type
 {
-  v3 = [[STCallingStatusDomainCallDescriptor alloc] initWithCallType:2 callState:0 copresenceActivityType:a3];
+  v3 = [[STCallingStatusDomainCallDescriptor alloc] initWithCallType:2 callState:0 copresenceActivityType:type];
 
   return v3;
 }
 
-- (STCallingStatusDomainCallDescriptor)initWithCallType:(unint64_t)a3 callState:(unint64_t)a4 copresenceActivityType:(unint64_t)a5
+- (STCallingStatusDomainCallDescriptor)initWithCallType:(unint64_t)type callState:(unint64_t)state copresenceActivityType:(unint64_t)activityType
 {
   v25 = *MEMORY[0x1E69E9840];
-  v9 = a3 - 1;
-  if (a3 > 1)
+  v9 = type - 1;
+  if (type > 1)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
-      if (a4 > 6)
+      if (state > 6)
       {
         goto LABEL_17;
       }
 
-      v10 = 1 << a4;
+      v10 = 1 << state;
       v11 = 92;
     }
 
     else
     {
-      if (a3 != 3)
+      if (type != 3)
       {
         goto LABEL_15;
       }
 
-      if (a4 > 6)
+      if (state > 6)
       {
         goto LABEL_17;
       }
 
-      v10 = 1 << a4;
+      v10 = 1 << state;
       v11 = 90;
     }
 
@@ -92,9 +92,9 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (!a3)
+  if (!type)
   {
-    if (a4 != 2)
+    if (state != 2)
     {
       goto LABEL_17;
     }
@@ -102,14 +102,14 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
-    if (a4 > 6)
+    if (state > 6)
     {
       goto LABEL_17;
     }
 
-    v10 = 1 << a4;
+    v10 = 1 << state;
     v11 = 84;
     goto LABEL_14;
   }
@@ -118,14 +118,14 @@ LABEL_15:
   v12 = STSystemStatusLogCallingDomain();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
-    if (a4 - 1 > 5)
+    if (state - 1 > 5)
     {
       v18 = @"active";
     }
 
     else
     {
-      v18 = off_1E85DE378[a4 - 1];
+      v18 = off_1E85DE378[state - 1];
     }
 
     if (v9 > 2)
@@ -152,10 +152,10 @@ LABEL_17:
   v14 = v13;
   if (v13)
   {
-    v13->_callType = a3;
-    v13->_callState = a4;
+    v13->_callType = type;
+    v13->_callState = state;
     callProviderAttribution = v13->_callProviderAttribution;
-    v13->_copresenceActivityType = a5;
+    v13->_copresenceActivityType = activityType;
     v13->_callProviderAttribution = 0;
   }
 
@@ -163,13 +163,13 @@ LABEL_17:
   return v14;
 }
 
-- (STCallingStatusDomainCallDescriptor)initWithCallType:(unint64_t)a3 callState:(unint64_t)a4 copresenceActivityType:(unint64_t)a5 callProviderAttribution:(id)a6
+- (STCallingStatusDomainCallDescriptor)initWithCallType:(unint64_t)type callState:(unint64_t)state copresenceActivityType:(unint64_t)activityType callProviderAttribution:(id)attribution
 {
-  v10 = a6;
-  v11 = [(STCallingStatusDomainCallDescriptor *)self initWithCallType:a3 callState:a4 copresenceActivityType:a5];
+  attributionCopy = attribution;
+  v11 = [(STCallingStatusDomainCallDescriptor *)self initWithCallType:type callState:state copresenceActivityType:activityType];
   if (v11)
   {
-    v12 = [v10 copy];
+    v12 = [attributionCopy copy];
     callProviderAttribution = v11->_callProviderAttribution;
     v11->_callProviderAttribution = v12;
   }
@@ -177,81 +177,81 @@ LABEL_17:
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
-  v6 = [(STCallingStatusDomainCallDescriptor *)self callType];
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
+  callType = [(STCallingStatusDomainCallDescriptor *)self callType];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __47__STCallingStatusDomainCallDescriptor_isEqual___block_invoke;
   v28[3] = &unk_1E85DE2F8;
-  v7 = v4;
+  v7 = equalCopy;
   v29 = v7;
-  v8 = [v5 appendUnsignedInteger:v6 counterpart:v28];
-  v9 = [(STCallingStatusDomainCallDescriptor *)self callState];
+  v8 = [v5 appendUnsignedInteger:callType counterpart:v28];
+  callState = [(STCallingStatusDomainCallDescriptor *)self callState];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __47__STCallingStatusDomainCallDescriptor_isEqual___block_invoke_2;
   v26[3] = &unk_1E85DE2F8;
   v10 = v7;
   v27 = v10;
-  v11 = [v5 appendUnsignedInteger:v9 counterpart:v26];
-  v12 = [(STCallingStatusDomainCallDescriptor *)self copresenceActivityType];
+  v11 = [v5 appendUnsignedInteger:callState counterpart:v26];
+  copresenceActivityType = [(STCallingStatusDomainCallDescriptor *)self copresenceActivityType];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __47__STCallingStatusDomainCallDescriptor_isEqual___block_invoke_3;
   v24[3] = &unk_1E85DE2F8;
   v13 = v10;
   v25 = v13;
-  v14 = [v5 appendUnsignedInteger:v12 counterpart:v24];
-  v15 = [(STCallingStatusDomainCallDescriptor *)self callProviderAttribution];
+  v14 = [v5 appendUnsignedInteger:copresenceActivityType counterpart:v24];
+  callProviderAttribution = [(STCallingStatusDomainCallDescriptor *)self callProviderAttribution];
   v19 = MEMORY[0x1E69E9820];
   v20 = 3221225472;
   v21 = __47__STCallingStatusDomainCallDescriptor_isEqual___block_invoke_4;
   v22 = &unk_1E85DDCD8;
   v23 = v13;
   v16 = v13;
-  v17 = [v5 appendObject:v15 counterpart:&v19];
+  v17 = [v5 appendObject:callProviderAttribution counterpart:&v19];
 
-  LOBYTE(v15) = [v5 isEqual];
-  return v15;
+  LOBYTE(callProviderAttribution) = [v5 isEqual];
+  return callProviderAttribution;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(STCallingStatusDomainCallDescriptor *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STCallingStatusDomainCallDescriptor *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STCallingStatusDomainCallDescriptor *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STCallingStatusDomainCallDescriptor *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STCallingStatusDomainCallDescriptor *)self _descriptionBuilderWithMultilinePrefix:a3 forDebug:1];
-  v4 = [v3 build];
+  v3 = [(STCallingStatusDomainCallDescriptor *)self _descriptionBuilderWithMultilinePrefix:prefix forDebug:1];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:
 {
-  if (a1)
+  if (self)
   {
     v5 = a2;
-    v6 = [a1 succinctDescriptionBuilder];
-    [v6 setUseDebugDescription:a3];
-    [v6 setActiveMultilinePrefix:v5];
+    succinctDescriptionBuilder = [self succinctDescriptionBuilder];
+    [succinctDescriptionBuilder setUseDebugDescription:prefix];
+    [succinctDescriptionBuilder setActiveMultilinePrefix:v5];
 
-    v7 = [a1 callType] - 1;
+    v7 = [self callType] - 1;
     if (v7 > 2)
     {
       v8 = @"audio";
@@ -262,8 +262,8 @@ LABEL_17:
       v8 = off_1E85DE360[v7];
     }
 
-    [v6 appendString:v8 withName:@"callType"];
-    v9 = [a1 callState] - 1;
+    [succinctDescriptionBuilder appendString:v8 withName:@"callType"];
+    v9 = [self callState] - 1;
     if (v9 > 5)
     {
       v10 = @"active";
@@ -274,8 +274,8 @@ LABEL_17:
       v10 = off_1E85DE378[v9];
     }
 
-    [v6 appendString:v10 withName:@"callState"];
-    v11 = [a1 copresenceActivityType] - 1;
+    [succinctDescriptionBuilder appendString:v10 withName:@"callState"];
+    v11 = [self copresenceActivityType] - 1;
     if (v11 > 4)
     {
       v12 = @"none";
@@ -286,37 +286,37 @@ LABEL_17:
       v12 = off_1E85DE3A8[v11];
     }
 
-    [v6 appendString:v12 withName:@"copresenceActivityType"];
-    v13 = [a1 callProviderAttribution];
-    v14 = [v13 description];
-    [v6 appendString:v14 withName:@"callProviderAttribution"];
+    [succinctDescriptionBuilder appendString:v12 withName:@"copresenceActivityType"];
+    callProviderAttribution = [self callProviderAttribution];
+    v14 = [callProviderAttribution description];
+    [succinctDescriptionBuilder appendString:v14 withName:@"callProviderAttribution"];
   }
 
   else
   {
-    v6 = 0;
+    succinctDescriptionBuilder = 0;
   }
 
-  return v6;
+  return succinctDescriptionBuilder;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[STCallingStatusDomainCallDescriptor callType](self forKey:{"callType"), @"callType"}];
-  [v4 encodeInteger:-[STCallingStatusDomainCallDescriptor callState](self forKey:{"callState"), @"callState"}];
-  [v4 encodeInteger:-[STCallingStatusDomainCallDescriptor copresenceActivityType](self forKey:{"copresenceActivityType"), @"copresenceActivityType"}];
-  v5 = [(STCallingStatusDomainCallDescriptor *)self callProviderAttribution];
-  [v4 encodeObject:v5 forKey:@"callProviderAttribution"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[STCallingStatusDomainCallDescriptor callType](self forKey:{"callType"), @"callType"}];
+  [coderCopy encodeInteger:-[STCallingStatusDomainCallDescriptor callState](self forKey:{"callState"), @"callState"}];
+  [coderCopy encodeInteger:-[STCallingStatusDomainCallDescriptor copresenceActivityType](self forKey:{"copresenceActivityType"), @"copresenceActivityType"}];
+  callProviderAttribution = [(STCallingStatusDomainCallDescriptor *)self callProviderAttribution];
+  [coderCopy encodeObject:callProviderAttribution forKey:@"callProviderAttribution"];
 }
 
-- (STCallingStatusDomainCallDescriptor)initWithCoder:(id)a3
+- (STCallingStatusDomainCallDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"callType"];
-  v6 = [v4 decodeIntegerForKey:@"callState"];
-  v7 = [v4 decodeIntegerForKey:@"copresenceActivityType"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"callProviderAttribution"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"callType"];
+  v6 = [coderCopy decodeIntegerForKey:@"callState"];
+  v7 = [coderCopy decodeIntegerForKey:@"copresenceActivityType"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"callProviderAttribution"];
 
   v9 = [(STCallingStatusDomainCallDescriptor *)self initWithCallType:v5 callState:v6 copresenceActivityType:v7 callProviderAttribution:v8];
   return v9;

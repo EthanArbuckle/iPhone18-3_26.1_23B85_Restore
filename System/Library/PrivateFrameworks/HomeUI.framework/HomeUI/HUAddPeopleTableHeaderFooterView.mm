@@ -1,43 +1,43 @@
 @interface HUAddPeopleTableHeaderFooterView
-- (HUAddPeopleTableHeaderFooterView)initWithReuseIdentifier:(id)a3;
+- (HUAddPeopleTableHeaderFooterView)initWithReuseIdentifier:(id)identifier;
 - (UIView)bottomBorder;
 - (UIView)topBorder;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setNeedsBottomBorder:(BOOL)a3;
-- (void)setNeedsTopBorder:(BOOL)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setNeedsBottomBorder:(BOOL)border;
+- (void)setNeedsTopBorder:(BOOL)border;
 @end
 
 @implementation HUAddPeopleTableHeaderFooterView
 
-- (HUAddPeopleTableHeaderFooterView)initWithReuseIdentifier:(id)a3
+- (HUAddPeopleTableHeaderFooterView)initWithReuseIdentifier:(id)identifier
 {
   v15.receiver = self;
   v15.super_class = HUAddPeopleTableHeaderFooterView;
-  v3 = [(HUAddPeopleTableHeaderFooterView *)&v15 initWithReuseIdentifier:a3];
+  v3 = [(HUAddPeopleTableHeaderFooterView *)&v15 initWithReuseIdentifier:identifier];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277D75D18]);
     v5 = [v4 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
     [(HUAddPeopleTableHeaderFooterView *)v3 setBackgroundView:v5];
 
-    v6 = [(HUAddPeopleTableHeaderFooterView *)v3 backgroundView];
-    v7 = [(HUAddPeopleTableHeaderFooterView *)v3 topBorder];
-    [v6 addSubview:v7];
+    backgroundView = [(HUAddPeopleTableHeaderFooterView *)v3 backgroundView];
+    topBorder = [(HUAddPeopleTableHeaderFooterView *)v3 topBorder];
+    [backgroundView addSubview:topBorder];
 
-    v8 = [(HUAddPeopleTableHeaderFooterView *)v3 backgroundView];
-    v9 = [(HUAddPeopleTableHeaderFooterView *)v3 bottomBorder];
-    [v8 addSubview:v9];
+    backgroundView2 = [(HUAddPeopleTableHeaderFooterView *)v3 backgroundView];
+    bottomBorder = [(HUAddPeopleTableHeaderFooterView *)v3 bottomBorder];
+    [backgroundView2 addSubview:bottomBorder];
 
-    v10 = [(HUAddPeopleTableHeaderFooterView *)v3 bottomBorder];
-    [v10 setHidden:1];
+    bottomBorder2 = [(HUAddPeopleTableHeaderFooterView *)v3 bottomBorder];
+    [bottomBorder2 setHidden:1];
 
-    v11 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [(HUAddPeopleTableHeaderFooterView *)v3 setBackgroundColor:v11];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [(HUAddPeopleTableHeaderFooterView *)v3 setBackgroundColor:systemBackgroundColor];
 
-    v12 = [(HUAddPeopleTableHeaderFooterView *)v3 textLabel];
-    v13 = [MEMORY[0x277D75348] systemGrayColor];
-    [v12 setTextColor:v13];
+    textLabel = [(HUAddPeopleTableHeaderFooterView *)v3 textLabel];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+    [textLabel setTextColor:systemGrayColor];
 
     [(HUAddPeopleTableHeaderFooterView *)v3 setNeedsBottomBorder:1];
   }
@@ -63,8 +63,8 @@
       v4 = 1024.0;
     }
 
-    v5 = [MEMORY[0x277D759A0] mainScreen];
-    [v5 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v7 = 1.0 / v6;
 
     [(UIView *)self->_bottomBorder setFrame:0.0, 0.0, v4, v7];
@@ -83,49 +83,49 @@
       v9 = 1024.0;
     }
 
-    v10 = [MEMORY[0x277D759A0] mainScreen];
-    [v10 scale];
+    mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen2 scale];
     v12 = 1.0 / v11;
 
     [(UIView *)self->_topBorder setFrame:0.0, 0.0, v9, v12];
   }
 
-  v13 = [(HUAddPeopleTableHeaderFooterView *)self bottomBorder];
-  [v13 frame];
+  bottomBorder = [(HUAddPeopleTableHeaderFooterView *)self bottomBorder];
+  [bottomBorder frame];
   v15 = v14;
   v17 = v16;
   v19 = v18;
 
   [(HUAddPeopleTableHeaderFooterView *)self frame];
   v21 = v20 - v19;
-  v22 = [(HUAddPeopleTableHeaderFooterView *)self bottomBorder];
-  [v22 setFrame:{v15, v21, v17, v19}];
+  bottomBorder2 = [(HUAddPeopleTableHeaderFooterView *)self bottomBorder];
+  [bottomBorder2 setFrame:{v15, v21, v17, v19}];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v6.receiver = self;
   v6.super_class = HUAddPeopleTableHeaderFooterView;
-  v4 = a3;
-  [(HUAddPeopleTableHeaderFooterView *)&v6 setBackgroundColor:v4];
+  colorCopy = color;
+  [(HUAddPeopleTableHeaderFooterView *)&v6 setBackgroundColor:colorCopy];
   v5 = [(HUAddPeopleTableHeaderFooterView *)self backgroundView:v6.receiver];
-  [v5 setBackgroundColor:v4];
+  [v5 setBackgroundColor:colorCopy];
 }
 
-- (void)setNeedsTopBorder:(BOOL)a3
+- (void)setNeedsTopBorder:(BOOL)border
 {
-  v3 = a3;
-  self->_needsTopBorder = a3;
-  v4 = [(HUAddPeopleTableHeaderFooterView *)self topBorder];
-  [v4 setHidden:!v3];
+  borderCopy = border;
+  self->_needsTopBorder = border;
+  topBorder = [(HUAddPeopleTableHeaderFooterView *)self topBorder];
+  [topBorder setHidden:!borderCopy];
 }
 
-- (void)setNeedsBottomBorder:(BOOL)a3
+- (void)setNeedsBottomBorder:(BOOL)border
 {
-  v3 = a3;
-  self->_needsBottomBorder = a3;
-  v4 = [(HUAddPeopleTableHeaderFooterView *)self bottomBorder];
-  [v4 setHidden:!v3];
+  borderCopy = border;
+  self->_needsBottomBorder = border;
+  bottomBorder = [(HUAddPeopleTableHeaderFooterView *)self bottomBorder];
+  [bottomBorder setHidden:!borderCopy];
 }
 
 - (UIView)topBorder

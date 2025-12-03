@@ -1,22 +1,22 @@
 @interface PQLResultSet
-- (BOOL)checkSuccessWithError:(id *)a3;
-- (BOOL)enumerateWithError:(id *)a3 block:(id)a4;
+- (BOOL)checkSuccessWithError:(id *)error;
+- (BOOL)enumerateWithError:(id *)error block:(id)block;
 - (id)_expandedSQL;
 @end
 
 @implementation PQLResultSet
 
-- (BOOL)checkSuccessWithError:(id *)a3
+- (BOOL)checkSuccessWithError:(id *)error
 {
-  v5 = [(PQLResultSet *)self error];
-  if (v5)
+  error = [(PQLResultSet *)self error];
+  if (error)
   {
     if (MBIsInternalInstall())
     {
-      v6 = [(PQLResultSet *)self _expandedSQL];
-      v7 = [v5 _errorWithSQL:v6];
+      _expandedSQL = [(PQLResultSet *)self _expandedSQL];
+      v7 = [error _errorWithSQL:_expandedSQL];
 
-      if (!a3)
+      if (!error)
       {
         goto LABEL_8;
       }
@@ -24,12 +24,12 @@
       goto LABEL_7;
     }
 
-    v7 = v5;
-    if (a3)
+    v7 = error;
+    if (error)
     {
 LABEL_7:
       v8 = v7;
-      *a3 = v7;
+      *error = v7;
     }
   }
 
@@ -40,26 +40,26 @@ LABEL_7:
 
 LABEL_8:
 
-  return v5 == 0;
+  return error == 0;
 }
 
-- (BOOL)enumerateWithError:(id *)a3 block:(id)a4
+- (BOOL)enumerateWithError:(id *)error block:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = 0;
   while ([(PQLResultSet *)self next])
   {
     v8 = objc_autoreleasePoolPush();
     v17 = v7;
-    v9 = v6[2](v6, self, &v17);
-    v10 = v17;
+    v9 = blockCopy[2](blockCopy, self, &v17);
+    excludingNotFound = v17;
 
     objc_autoreleasePoolPop(v8);
-    v7 = v10;
+    v7 = excludingNotFound;
     if ((v9 & 1) == 0)
     {
       [(PQLResultSet *)self close];
-      if (v10)
+      if (excludingNotFound)
       {
         goto LABEL_8;
       }
@@ -68,17 +68,17 @@ LABEL_8:
     }
   }
 
-  v10 = v7;
+  excludingNotFound = v7;
   if (v7)
   {
     goto LABEL_8;
   }
 
 LABEL_7:
-  v11 = [(PQLResultSet *)self error];
-  v10 = [v11 excludingNotFound];
+  error = [(PQLResultSet *)self error];
+  excludingNotFound = [error excludingNotFound];
 
-  if (!v10)
+  if (!excludingNotFound)
   {
     v13 = 0;
     v15 = 1;
@@ -86,14 +86,14 @@ LABEL_7:
   }
 
 LABEL_8:
-  v12 = [(PQLResultSet *)self _expandedSQL];
-  v13 = [v10 _errorWithSQL:v12];
+  _expandedSQL = [(PQLResultSet *)self _expandedSQL];
+  v13 = [excludingNotFound _errorWithSQL:_expandedSQL];
 
-  if (a3)
+  if (error)
   {
     v14 = v13;
     v15 = 0;
-    *a3 = v13;
+    *error = v13;
   }
 
   else
@@ -108,10 +108,10 @@ LABEL_12:
 
 - (id)_expandedSQL
 {
-  v2 = [(PQLResultSet *)self stmt];
-  if (v2)
+  stmt = [(PQLResultSet *)self stmt];
+  if (stmt)
   {
-    v3 = sqlite3_expanded_sql(v2);
+    v3 = sqlite3_expanded_sql(stmt);
     v4 = [NSString stringWithUTF8String:v3];
     free(v3);
   }

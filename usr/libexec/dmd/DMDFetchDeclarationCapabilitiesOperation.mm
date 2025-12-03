@@ -1,7 +1,7 @@
 @interface DMDFetchDeclarationCapabilitiesOperation
-+ (BOOL)validateRequest:(id)a3 error:(id *)a4;
++ (BOOL)validateRequest:(id)request error:(id *)error;
 + (id)whitelistedClassesForRequest;
-- (void)runWithRequest:(id)a3;
+- (void)runWithRequest:(id)request;
 - (void)waitUntilFinished;
 @end
 
@@ -21,14 +21,14 @@
   return [NSSet setWithObject:v2];
 }
 
-+ (BOOL)validateRequest:(id)a3 error:(id *)a4
++ (BOOL)validateRequest:(id)request error:(id *)error
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___DMDFetchDeclarationCapabilitiesOperation;
-  return objc_msgSendSuper2(&v5, "validateRequest:error:", a3, a4);
+  return objc_msgSendSuper2(&v5, "validateRequest:error:", request, error);
 }
 
-- (void)runWithRequest:(id)a3
+- (void)runWithRequest:(id)request
 {
   v11 = objc_opt_new();
   v4 = +[DMDConfigurationCapabilities supportedCommandTypes];

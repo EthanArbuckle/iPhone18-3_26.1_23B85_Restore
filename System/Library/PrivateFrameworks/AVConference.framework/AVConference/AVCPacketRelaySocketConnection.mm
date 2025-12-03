@@ -1,18 +1,18 @@
 @interface AVCPacketRelaySocketConnection
-- (AVCPacketRelaySocketConnection)initWithSocket:(unsigned __int16)a3 remoteAddress:(id)a4 packetFilter:(id)a5;
-- (BOOL)sendData:(const void *)a3 size:(unsigned int)a4 error:(id *)a5;
+- (AVCPacketRelaySocketConnection)initWithSocket:(unsigned __int16)socket remoteAddress:(id)address packetFilter:(id)filter;
+- (BOOL)sendData:(const void *)data size:(unsigned int)size error:(id *)error;
 - (int)start;
 - (int)stop;
 - (void)dealloc;
-- (void)receiveDataOnSocket:(unsigned __int16)a3;
+- (void)receiveDataOnSocket:(unsigned __int16)socket;
 - (void)start;
 @end
 
 @implementation AVCPacketRelaySocketConnection
 
-- (AVCPacketRelaySocketConnection)initWithSocket:(unsigned __int16)a3 remoteAddress:(id)a4 packetFilter:(id)a5
+- (AVCPacketRelaySocketConnection)initWithSocket:(unsigned __int16)socket remoteAddress:(id)address packetFilter:(id)filter
 {
-  v7 = a3;
+  socketCopy = socket;
   v19 = *MEMORY[0x1E69E9840];
   v17.receiver = self;
   v17.super_class = AVCPacketRelaySocketConnection;
@@ -23,11 +23,11 @@
     return v9;
   }
 
-  v8->_unixSocket = v7;
+  v8->_unixSocket = socketCopy;
   v8->_remoteIPPortLength = 16;
-  if (a4)
+  if (address)
   {
-    if (![objc_msgSend(a4 "ip")])
+    if (![objc_msgSend(address "ip")])
     {
       v15 = 2150236161;
       if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -42,7 +42,7 @@
       goto LABEL_24;
     }
 
-    if (!getpeername(v7, &v9->_remoteIPPort, &v9->_remoteIPPortLength))
+    if (!getpeername(socketCopy, &v9->_remoteIPPort, &v9->_remoteIPPortLength))
     {
       v15 = 2150236161;
       if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -62,8 +62,8 @@
     *(&v10 + 1) = 0xAAAAAAAAAAAAAAAALL;
     *buf = v10;
     *&buf[16] = v10;
-    [objc_msgSend(a4 "ip")];
-    [a4 port];
+    [objc_msgSend(address "ip")];
+    [address port];
     MakeIPPORT();
     if (buf[0])
     {
@@ -80,7 +80,7 @@
 
   else
   {
-    if (getpeername(v7, &v8->_remoteIPPort, &v8->_remoteIPPortLength) == -1)
+    if (getpeername(socketCopy, &v8->_remoteIPPort, &v8->_remoteIPPortLength) == -1)
     {
       v15 = 2150236161;
       if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -99,7 +99,7 @@
   }
 
   v9->_type = 1;
-  [(AVCPacketRelaySocketConnection *)v9 setPacketFilter:a5];
+  [(AVCPacketRelaySocketConnection *)v9 setPacketFilter:filter];
   v11 = malloc_type_malloc(0x5C0uLL, 0x99C8FA2BuLL);
   v9->dataBuffer = v11;
   if (!v11)
@@ -200,12 +200,12 @@ LABEL_24:
   return 0;
 }
 
-- (void)receiveDataOnSocket:(unsigned __int16)a3
+- (void)receiveDataOnSocket:(unsigned __int16)socket
 {
   v29 = *MEMORY[0x1E69E9840];
   if (self->_isConnectedSocket)
   {
-    v4 = recv(a3, self->dataBuffer, 0x5C0uLL, 0);
+    v4 = recv(socket, self->dataBuffer, 0x5C0uLL, 0);
   }
 
   else
@@ -213,7 +213,7 @@ LABEL_24:
     *&v28.sa_len = 0xAAAAAAAAAAAAAAAALL;
     *&v28.sa_data[6] = 0xAAAAAAAAAAAAAAAALL;
     v15 = 16;
-    v4 = recvfrom(a3, self->dataBuffer, 0x5C0uLL, 0, &v28, &v15);
+    v4 = recvfrom(socket, self->dataBuffer, 0x5C0uLL, 0, &v28, &v15);
     v27 = 0;
     v26 = 0u;
     v25 = 0u;
@@ -308,20 +308,20 @@ LABEL_24:
   }
 }
 
-- (BOOL)sendData:(const void *)a3 size:(unsigned int)a4 error:(id *)a5
+- (BOOL)sendData:(const void *)data size:(unsigned int)size error:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
   p_unixSocket = &self->_unixSocket;
   unixSocket = self->_unixSocket;
-  v10 = a4;
+  sizeCopy = size;
   if (*(p_unixSocket + 4) == 1)
   {
-    v11 = send(unixSocket, a3, a4, 0);
+    v11 = send(unixSocket, data, size, 0);
   }
 
   else
   {
-    v11 = sendto(unixSocket, a3, a4, 0, &self->_remoteIPPort, self->_remoteIPPortLength);
+    v11 = sendto(unixSocket, data, size, 0, &self->_remoteIPPort, self->_remoteIPPortLength);
   }
 
   v12 = v11;
@@ -335,7 +335,7 @@ LABEL_24:
         if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
         {
           [AVCPacketRelaySocketConnection sendData:size:error:];
-          if (!a5)
+          if (!error)
           {
             return 0;
           }
@@ -354,7 +354,7 @@ LABEL_23:
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
       {
         [AVCPacketRelaySocketConnection sendData:size:error:];
-        if (a5)
+        if (error)
         {
           goto LABEL_23;
         }
@@ -363,7 +363,7 @@ LABEL_23:
       }
     }
 
-    if (a5)
+    if (error)
     {
       goto LABEL_23;
     }
@@ -372,7 +372,7 @@ LABEL_23:
   }
 
   ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
-  if (v12 < v10)
+  if (v12 < sizeCopy)
   {
     if (ErrorLogLevelForModule >= 3 && (v14 = VRTraceErrorLogLevelToCSTR(), v15 = *MEMORY[0x1E6986650], os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR)))
     {
@@ -385,15 +385,15 @@ LABEL_23:
       v29 = 2048;
       v30 = v12;
       v31 = 1024;
-      v32 = a4;
+      sizeCopy2 = size;
       _os_log_error_impl(&dword_1DB56E000, v15, OS_LOG_TYPE_ERROR, " [%s] %s:%d AVCPacketRelaySocketConnection: sent %zu bytes < %u total bytes", &v23, 0x2Cu);
-      if (a5)
+      if (error)
       {
         goto LABEL_9;
       }
     }
 
-    else if (a5)
+    else if (error)
     {
 LABEL_9:
       v16 = MEMORY[0x1E696ABC0];
@@ -401,7 +401,7 @@ LABEL_9:
 LABEL_24:
       v21 = [v16 errorWithDomain:@"AVCPacketRelayErrorDomain" code:v17 userInfo:0];
       result = 0;
-      *a5 = v21;
+      *error = v21;
       return result;
     }
 

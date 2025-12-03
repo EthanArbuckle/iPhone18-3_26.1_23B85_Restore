@@ -1,20 +1,20 @@
 @interface MPSGraphCompilationDescriptor
-+ (MPSGraphCompilationDescriptor)descriptorWithDictionary:(id)a3;
-- (BOOL)isEqualForModuleTo:(id)a3;
-- (BOOL)isEqualTo:(id)a3;
++ (MPSGraphCompilationDescriptor)descriptorWithDictionary:(id)dictionary;
+- (BOOL)isEqualForModuleTo:(id)to;
+- (BOOL)isEqualTo:(id)to;
 - (MPSGraphCompilationDescriptor)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)toDictionary;
-- (vector<mlir::NamedAttribute,)getNamedAttrArray:(MPSGraphCompilationDescriptor *)self deviceDescriptor:(SEL)a3;
-- (void)enableLayoutConversion:(BOOL)a3 dataChannelsLast:(BOOL)a4 weightsChannelsLast:(BOOL)a5;
-- (void)setAllowedComputeDevices:(unint64_t)a3;
-- (void)setEnableANECValidationWorkflow:(BOOL)a3;
-- (void)setEnableMLIRDiagnostics:(BOOL)a3;
-- (void)setEnableParallelEncode:(BOOL)a3;
-- (void)setEnableShapeEquivalence:(BOOL)a3;
+- (vector<mlir::NamedAttribute,)getNamedAttrArray:(MPSGraphCompilationDescriptor *)self deviceDescriptor:(SEL)descriptor;
+- (void)enableLayoutConversion:(BOOL)conversion dataChannelsLast:(BOOL)last weightsChannelsLast:(BOOL)channelsLast;
+- (void)setAllowedComputeDevices:(unint64_t)devices;
+- (void)setEnableANECValidationWorkflow:(BOOL)workflow;
+- (void)setEnableMLIRDiagnostics:(BOOL)diagnostics;
+- (void)setEnableParallelEncode:(BOOL)encode;
+- (void)setEnableShapeEquivalence:(BOOL)equivalence;
 - (void)setOptimizationLevel:(MPSGraphOptimization)optimizationLevel;
 - (void)setOptimizationProfile:(MPSGraphOptimizationProfile)optimizationProfile;
-- (void)setPreferredDevice:(unint64_t)a3;
+- (void)setPreferredDevice:(unint64_t)device;
 @end
 
 @implementation MPSGraphCompilationDescriptor
@@ -79,7 +79,7 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [MPSGraphCompilationDescriptor alloc];
   [(MPSGraphCompilationDescriptor *)v4 setCompilerOptions:self->_compilerOptions];
@@ -108,14 +108,14 @@
   return v4;
 }
 
-- (BOOL)isEqualForModuleTo:(id)a3
+- (BOOL)isEqualForModuleTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   compilerOptions = self->_compilerOptions;
-  if (compilerOptions == [v4 compilerOptions] && (aneCompilerSpatialSplitting = self->_aneCompilerSpatialSplitting, aneCompilerSpatialSplitting == objc_msgSend(v4, "aneCompilerSpatialSplitting")) && (optimizationProfile = self->_optimizationProfile, optimizationProfile == objc_msgSend(v4, "optimizationProfile")) && (optimizationLevel = self->_optimizationLevel, optimizationLevel == objc_msgSend(v4, "optimizationLevel")) && (printANEPlacementAnalysis = self->_printANEPlacementAnalysis, printANEPlacementAnalysis == objc_msgSend(v4, "printANEPlacementAnalysis")) && (preferredDevice = self->_preferredDevice, preferredDevice == objc_msgSend(v4, "preferredDevice")) && (allowedComputeDevices = self->_allowedComputeDevices, allowedComputeDevices == objc_msgSend(v4, "allowedComputeDevices")) && (enableANEFWToFWSignal = self->_enableANEFWToFWSignal, enableANEFWToFWSignal == objc_msgSend(v4, "enableANEFWToFWSignal")) && (enableANELateLatch = self->_enableANELateLatch, enableANELateLatch == objc_msgSend(v4, "enableANELateLatch")) && (enableANECHWRankPromotion = self->_enableANECHWRankPromotion, enableANECHWRankPromotion == objc_msgSend(v4, "enableANECHWRankPromotion")) && (enableParallelEncode = self->_enableParallelEncode, enableParallelEncode == objc_msgSend(v4, "enableParallelEncode")) && (!self->_enableParallelEncode || (maximumNumberOfParallelEncodingRegions = self->_maximumNumberOfParallelEncodingRegions, maximumNumberOfParallelEncodingRegions == objc_msgSend(v4, "maximumNumberOfParallelEncodingRegions")) && (minimumNumberOfOpsInParallelRegion = self->_minimumNumberOfOpsInParallelRegion, minimumNumberOfOpsInParallelRegion == objc_msgSend(v4, "minimumNumberOfOpsInParallelRegion"))))
+  if (compilerOptions == [toCopy compilerOptions] && (aneCompilerSpatialSplitting = self->_aneCompilerSpatialSplitting, aneCompilerSpatialSplitting == objc_msgSend(toCopy, "aneCompilerSpatialSplitting")) && (optimizationProfile = self->_optimizationProfile, optimizationProfile == objc_msgSend(toCopy, "optimizationProfile")) && (optimizationLevel = self->_optimizationLevel, optimizationLevel == objc_msgSend(toCopy, "optimizationLevel")) && (printANEPlacementAnalysis = self->_printANEPlacementAnalysis, printANEPlacementAnalysis == objc_msgSend(toCopy, "printANEPlacementAnalysis")) && (preferredDevice = self->_preferredDevice, preferredDevice == objc_msgSend(toCopy, "preferredDevice")) && (allowedComputeDevices = self->_allowedComputeDevices, allowedComputeDevices == objc_msgSend(toCopy, "allowedComputeDevices")) && (enableANEFWToFWSignal = self->_enableANEFWToFWSignal, enableANEFWToFWSignal == objc_msgSend(toCopy, "enableANEFWToFWSignal")) && (enableANELateLatch = self->_enableANELateLatch, enableANELateLatch == objc_msgSend(toCopy, "enableANELateLatch")) && (enableANECHWRankPromotion = self->_enableANECHWRankPromotion, enableANECHWRankPromotion == objc_msgSend(toCopy, "enableANECHWRankPromotion")) && (enableParallelEncode = self->_enableParallelEncode, enableParallelEncode == objc_msgSend(toCopy, "enableParallelEncode")) && (!self->_enableParallelEncode || (maximumNumberOfParallelEncodingRegions = self->_maximumNumberOfParallelEncodingRegions, maximumNumberOfParallelEncodingRegions == objc_msgSend(toCopy, "maximumNumberOfParallelEncodingRegions")) && (minimumNumberOfOpsInParallelRegion = self->_minimumNumberOfOpsInParallelRegion, minimumNumberOfOpsInParallelRegion == objc_msgSend(toCopy, "minimumNumberOfOpsInParallelRegion"))))
   {
     enableANECValidationWorkflow = self->_enableANECValidationWorkflow;
-    LOBYTE(enableANECValidationWorkflow) = enableANECValidationWorkflow == [v4 enableANECValidationWorkflow];
+    LOBYTE(enableANECValidationWorkflow) = enableANECValidationWorkflow == [toCopy enableANECValidationWorkflow];
 
     return enableANECValidationWorkflow;
   }
@@ -127,13 +127,13 @@
   }
 }
 
-- (BOOL)isEqualTo:(id)a3
+- (BOOL)isEqualTo:(id)to
 {
-  v4 = a3;
-  if (-[MPSGraphCompilationDescriptor isEqualForModuleTo:](self, "isEqualForModuleTo:", v4) && (waitForCompilationCompletion = self->_waitForCompilationCompletion, waitForCompilationCompletion == [v4 waitForCompilationCompletion]) && (compilationCompletionHandler = self->_compilationCompletionHandler, objc_msgSend(v4, "compilationCompletionHandler"), v7 = objc_claimAutoreleasedReturnValue(), v7, compilationCompletionHandler == v7) && (callables = self->_callables, objc_msgSend(v4, "callables"), v9 = objc_claimAutoreleasedReturnValue(), v9, callables == v9) && (constantData = self->_constantData, objc_msgSend(v4, "constantData"), v11 = objc_claimAutoreleasedReturnValue(), v11, constantData == v11) && (enableMLIRDiagnostics = self->_enableMLIRDiagnostics, enableMLIRDiagnostics == objc_msgSend(v4, "enableMLIRDiagnostics")))
+  toCopy = to;
+  if (-[MPSGraphCompilationDescriptor isEqualForModuleTo:](self, "isEqualForModuleTo:", toCopy) && (waitForCompilationCompletion = self->_waitForCompilationCompletion, waitForCompilationCompletion == [toCopy waitForCompilationCompletion]) && (compilationCompletionHandler = self->_compilationCompletionHandler, objc_msgSend(toCopy, "compilationCompletionHandler"), v7 = objc_claimAutoreleasedReturnValue(), v7, compilationCompletionHandler == v7) && (callables = self->_callables, objc_msgSend(toCopy, "callables"), v9 = objc_claimAutoreleasedReturnValue(), v9, callables == v9) && (constantData = self->_constantData, objc_msgSend(toCopy, "constantData"), v11 = objc_claimAutoreleasedReturnValue(), v11, constantData == v11) && (enableMLIRDiagnostics = self->_enableMLIRDiagnostics, enableMLIRDiagnostics == objc_msgSend(toCopy, "enableMLIRDiagnostics")))
   {
     enableShapeEquivalence = self->_enableShapeEquivalence;
-    v14 = enableShapeEquivalence == [v4 enableShapeEquivalence];
+    v14 = enableShapeEquivalence == [toCopy enableShapeEquivalence];
   }
 
   else
@@ -142,9 +142,9 @@
   }
 
   entryFunctionName = self->_entryFunctionName;
-  v16 = [v4 entryFunctionName];
+  entryFunctionName = [toCopy entryFunctionName];
 
-  if (entryFunctionName != v16)
+  if (entryFunctionName != entryFunctionName)
   {
     if (!v14)
     {
@@ -152,8 +152,8 @@
     }
 
     v17 = self->_entryFunctionName;
-    v18 = [v4 entryFunctionName];
-    LOBYTE(v17) = [(NSString *)v17 isEqual:v18];
+    entryFunctionName2 = [toCopy entryFunctionName];
+    LOBYTE(v17) = [(NSString *)v17 isEqual:entryFunctionName2];
 
     if ((v17 & 1) == 0)
     {
@@ -162,7 +162,7 @@
 
 LABEL_14:
     enableCompileResourcesForPackage = self->_enableCompileResourcesForPackage;
-    v19 = enableCompileResourcesForPackage == [v4 enableCompileResourcesForPackage];
+    v19 = enableCompileResourcesForPackage == [toCopy enableCompileResourcesForPackage];
     goto LABEL_15;
   }
 
@@ -249,72 +249,72 @@ LABEL_15:
   return v14;
 }
 
-+ (MPSGraphCompilationDescriptor)descriptorWithDictionary:(id)a3
++ (MPSGraphCompilationDescriptor)descriptorWithDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_opt_new();
-  v5 = [v3 objectForKeyedSubscript:@"compilerOptions"];
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"compilerOptions"];
   *(v4 + 72) = [v5 unsignedIntegerValue];
 
-  v6 = [v3 objectForKeyedSubscript:@"reducedPrecisionFastMath"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"reducedPrecisionFastMath"];
   *(v4 + 64) = [v6 unsignedIntegerValue];
 
-  v7 = [v3 objectForKeyedSubscript:@"aneCompilerSpatialSplitting"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"aneCompilerSpatialSplitting"];
   *(v4 + 80) = [v7 unsignedIntegerValue];
 
-  v8 = [v3 objectForKeyedSubscript:@"optimizationProfile"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"optimizationProfile"];
   *(v4 + 48) = [v8 unsignedIntegerValue];
 
-  v9 = [v3 objectForKeyedSubscript:@"optimizationLevel"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"optimizationLevel"];
   *(v4 + 24) = [v9 unsignedIntegerValue];
 
-  v10 = [v3 objectForKeyedSubscript:@"printANEPlacementAnalysis"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"printANEPlacementAnalysis"];
   *(v4 + 12) = [v10 BOOLValue];
 
-  v11 = [v3 objectForKeyedSubscript:@"preferredDevice"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"preferredDevice"];
   *(v4 + 88) = [v11 unsignedIntegerValue];
 
-  v12 = [v3 objectForKeyedSubscript:@"allowedComputeDevices"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"allowedComputeDevices"];
   *(v4 + 96) = [v12 unsignedIntegerValue];
 
-  v13 = [v3 objectForKeyedSubscript:@"enableANEFWToFWSignal"];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"enableANEFWToFWSignal"];
   *(v4 + 9) = [v13 BOOLValue];
 
-  v14 = [v3 objectForKeyedSubscript:@"enableANELateLatch"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"enableANELateLatch"];
   *(v4 + 10) = [v14 BOOLValue];
 
-  v15 = [v3 objectForKeyedSubscript:@"enableANECHWRankPromotion"];
+  v15 = [dictionaryCopy objectForKeyedSubscript:@"enableANECHWRankPromotion"];
   *(v4 + 11) = [v15 BOOLValue];
 
-  v16 = [v3 objectForKeyedSubscript:@"entryFunctionName"];
+  v16 = [dictionaryCopy objectForKeyedSubscript:@"entryFunctionName"];
   v17 = *(v4 + 104);
   *(v4 + 104) = v16;
 
-  v18 = [v3 objectForKeyedSubscript:@"enableParallelEncode"];
+  v18 = [dictionaryCopy objectForKeyedSubscript:@"enableParallelEncode"];
   *(v4 + 13) = [v18 BOOLValue];
 
-  v19 = [v3 objectForKeyedSubscript:@"maximumNumberOfParallelEncodingRegions"];
+  v19 = [dictionaryCopy objectForKeyedSubscript:@"maximumNumberOfParallelEncodingRegions"];
   *(v4 + 120) = [v19 unsignedIntegerValue];
 
-  v20 = [v3 objectForKeyedSubscript:@"minimumNumberOfOpsInParallelRegion"];
+  v20 = [dictionaryCopy objectForKeyedSubscript:@"minimumNumberOfOpsInParallelRegion"];
   *(v4 + 128) = [v20 unsignedIntegerValue];
 
-  v21 = [v3 objectForKeyedSubscript:@"enableMLIRDiagnostics"];
+  v21 = [dictionaryCopy objectForKeyedSubscript:@"enableMLIRDiagnostics"];
   *(v4 + 14) = [v21 BOOLValue];
 
-  v22 = [v3 objectForKeyedSubscript:@"enableShapeEquivalence"];
+  v22 = [dictionaryCopy objectForKeyedSubscript:@"enableShapeEquivalence"];
   *(v4 + 15) = [v22 BOOLValue];
 
-  v23 = [v3 objectForKeyedSubscript:@"enableANECValidationWorkflow"];
+  v23 = [dictionaryCopy objectForKeyedSubscript:@"enableANECValidationWorkflow"];
   *(v4 + 16) = [v23 BOOLValue];
 
-  v24 = [v3 objectForKeyedSubscript:@"enableCompileResourcesForPackage"];
+  v24 = [dictionaryCopy objectForKeyedSubscript:@"enableCompileResourcesForPackage"];
   *(v4 + 17) = [v24 BOOLValue];
 
   return v4;
 }
 
-- (vector<mlir::NamedAttribute,)getNamedAttrArray:(MPSGraphCompilationDescriptor *)self deviceDescriptor:(SEL)a3
+- (vector<mlir::NamedAttribute,)getNamedAttrArray:(MPSGraphCompilationDescriptor *)self deviceDescriptor:(SEL)descriptor
 {
   v8 = a5;
   retstr->var1 = 0;
@@ -399,12 +399,12 @@ LABEL_15:
       v84[0] = "mps.deviceArchitecture";
       v85 = 259;
       v41 = mlir::StringAttr::get(a4, v84);
-      v42 = [v8 architecture];
-      v43 = [v42 UTF8String];
+      architecture = [v8 architecture];
+      uTF8String = [architecture UTF8String];
       v82 = 257;
-      if (*v43)
+      if (*uTF8String)
       {
-        *&v81[0] = v43;
+        *&v81[0] = uTF8String;
         v44 = 3;
       }
 
@@ -499,12 +499,12 @@ LABEL_15:
     v84[0] = "mps.entryFunctionName";
     v85 = 259;
     v76 = mlir::StringAttr::get(a4, v84);
-    v77 = [(NSString *)self->_entryFunctionName UTF8String];
+    uTF8String2 = [(NSString *)self->_entryFunctionName UTF8String];
     v78 = 1;
     HIBYTE(v82) = 1;
-    if (*v77)
+    if (*uTF8String2)
     {
-      *&v81[0] = v77;
+      *&v81[0] = uTF8String2;
       v78 = 3;
     }
 
@@ -538,11 +538,11 @@ LABEL_15:
   self->_compilerOptions = v3;
 }
 
-- (void)setEnableParallelEncode:(BOOL)a3
+- (void)setEnableParallelEncode:(BOOL)encode
 {
-  self->_enableParallelEncode = a3;
+  self->_enableParallelEncode = encode;
   v3 = 2048;
-  if (!a3)
+  if (!encode)
   {
     v3 = 0;
   }
@@ -550,11 +550,11 @@ LABEL_15:
   self->_compilerOptions = self->_compilerOptions & 0xFFFFFFFFFFFFF7FFLL | v3;
 }
 
-- (void)setEnableMLIRDiagnostics:(BOOL)a3
+- (void)setEnableMLIRDiagnostics:(BOOL)diagnostics
 {
-  self->_enableMLIRDiagnostics = a3;
+  self->_enableMLIRDiagnostics = diagnostics;
   v3 = 4096;
-  if (!a3)
+  if (!diagnostics)
   {
     v3 = 0;
   }
@@ -562,11 +562,11 @@ LABEL_15:
   self->_compilerOptions = self->_compilerOptions & 0xFFFFFFFFFFFFEFFFLL | v3;
 }
 
-- (void)setEnableShapeEquivalence:(BOOL)a3
+- (void)setEnableShapeEquivalence:(BOOL)equivalence
 {
-  self->_enableShapeEquivalence = a3;
+  self->_enableShapeEquivalence = equivalence;
   v3 = 0x2000;
-  if (!a3)
+  if (!equivalence)
   {
     v3 = 0;
   }
@@ -574,11 +574,11 @@ LABEL_15:
   self->_compilerOptions = self->_compilerOptions & 0xFFFFFFFFFFFFDFFFLL | v3;
 }
 
-- (void)setEnableANECValidationWorkflow:(BOOL)a3
+- (void)setEnableANECValidationWorkflow:(BOOL)workflow
 {
-  self->_enableANECValidationWorkflow = a3;
+  self->_enableANECValidationWorkflow = workflow;
   v3 = 0x8000;
-  if (!a3)
+  if (!workflow)
   {
     v3 = 0;
   }
@@ -601,15 +601,15 @@ LABEL_15:
   }
 }
 
-- (void)setAllowedComputeDevices:(unint64_t)a3
+- (void)setAllowedComputeDevices:(unint64_t)devices
 {
-  if (a3 > 3)
+  if (devices > 3)
   {
-    if (a3 > 5)
+    if (devices > 5)
     {
-      if (a3 != 6)
+      if (devices != 6)
       {
-        if (a3 != 7)
+        if (devices != 7)
         {
           return;
         }
@@ -627,7 +627,7 @@ LABEL_15:
       return;
     }
 
-    if (a3 == 4)
+    if (devices == 4)
     {
       if (MTLReportFailureTypeEnabled())
       {
@@ -644,11 +644,11 @@ LABEL_14:
     return;
   }
 
-  if (a3 <= 1)
+  if (devices <= 1)
   {
-    if (a3)
+    if (devices)
     {
-      if (a3 != 1)
+      if (devices != 1)
       {
         return;
       }
@@ -668,7 +668,7 @@ LABEL_19:
     return;
   }
 
-  if (a3 != 2)
+  if (devices != 2)
   {
     v3 = 3;
     goto LABEL_14;
@@ -681,15 +681,15 @@ LABEL_19:
   }
 }
 
-- (void)setPreferredDevice:(unint64_t)a3
+- (void)setPreferredDevice:(unint64_t)device
 {
-  if (a3 <= 3)
+  if (device <= 3)
   {
-    if (a3 <= 1)
+    if (device <= 1)
     {
-      if (a3)
+      if (device)
       {
-        if (a3 == 1)
+        if (device == 1)
         {
           self->_preferredDevice = 1;
         }
@@ -703,7 +703,7 @@ LABEL_19:
       return;
     }
 
-    if (a3 == 2)
+    if (device == 2)
     {
       self->_preferredDevice = 2;
       return;
@@ -719,9 +719,9 @@ LABEL_11:
     return;
   }
 
-  if (a3 <= 5)
+  if (device <= 5)
   {
-    if (a3 == 4)
+    if (device == 4)
     {
       self->_preferredDevice = 4;
       return;
@@ -735,7 +735,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if (a3 == 6)
+  if (device == 6)
   {
     if (!MTLReportFailureTypeEnabled())
     {
@@ -745,29 +745,29 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if (a3 == 7 && MTLReportFailureTypeEnabled())
+  if (device == 7 && MTLReportFailureTypeEnabled())
   {
 
     goto LABEL_11;
   }
 }
 
-- (void)enableLayoutConversion:(BOOL)a3 dataChannelsLast:(BOOL)a4 weightsChannelsLast:(BOOL)a5
+- (void)enableLayoutConversion:(BOOL)conversion dataChannelsLast:(BOOL)last weightsChannelsLast:(BOOL)channelsLast
 {
   v5 = 1;
-  if (a4)
+  if (last)
   {
     v5 = 2;
   }
 
   v6 = 2;
-  if (!a5)
+  if (!channelsLast)
   {
     v6 = 0;
   }
 
   v7 = v6 + v5;
-  if (!a3)
+  if (!conversion)
   {
     v7 = 0;
   }

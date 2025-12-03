@@ -1,13 +1,13 @@
 @interface SMSendValidityUtilitiesInternal
-+ (id)sendValidityAlertMessageFor:(int64_t)a3;
++ (id)sendValidityAlertMessageFor:(int64_t)for;
 - (SMSendValidityUtilitiesInternal)init;
 @end
 
 @implementation SMSendValidityUtilitiesInternal
 
-+ (id)sendValidityAlertMessageFor:(int64_t)a3
++ (id)sendValidityAlertMessageFor:(int64_t)for
 {
-  static SendValidity.sendValidity(from:)(a3, &v5);
+  static SendValidity.sendValidity(from:)(for, &v5);
   SendValidity.alertErrorMessage.getter();
   v3 = sub_2645D397C();
 

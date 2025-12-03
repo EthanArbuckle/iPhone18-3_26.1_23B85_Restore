@@ -1,41 +1,41 @@
 @interface VCPMADImageEmbeddingTask
-+ (id)embeddingShapeForType:(int64_t)a3;
-+ (id)taskWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5;
-+ (int64_t)bridgeEmbeddingTypeForRequest:(int64_t)a3;
-- (VCPMADImageEmbeddingTask)initWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5;
++ (id)embeddingShapeForType:(int64_t)type;
++ (id)taskWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload;
++ (int64_t)bridgeEmbeddingTypeForRequest:(int64_t)request;
+- (VCPMADImageEmbeddingTask)initWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload;
 - (int)run;
 @end
 
 @implementation VCPMADImageEmbeddingTask
 
-- (VCPMADImageEmbeddingTask)initWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5
+- (VCPMADImageEmbeddingTask)initWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  requestCopy = request;
+  assetCopy = asset;
+  payloadCopy = payload;
   v15.receiver = self;
   v15.super_class = VCPMADImageEmbeddingTask;
   v12 = [(VCPMADImageEmbeddingTask *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_request, a3);
-    objc_storeStrong(&v13->_imageAsset, a4);
-    objc_storeStrong(&v13->_signpostPayload, a5);
+    objc_storeStrong(&v12->_request, request);
+    objc_storeStrong(&v13->_imageAsset, asset);
+    objc_storeStrong(&v13->_signpostPayload, payload);
   }
 
   return v13;
 }
 
-+ (id)taskWithRequest:(id)a3 imageAsset:(id)a4 andSignpostPayload:(id)a5
++ (id)taskWithRequest:(id)request imageAsset:(id)asset andSignpostPayload:(id)payload
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 isMemberOfClass:objc_opt_class()])
+  requestCopy = request;
+  assetCopy = asset;
+  payloadCopy = payload;
+  if ([requestCopy isMemberOfClass:objc_opt_class()])
   {
-    v11 = [[a1 alloc] initWithRequest:v8 imageAsset:v9 andSignpostPayload:v10];
+    v11 = [[self alloc] initWithRequest:requestCopy imageAsset:assetCopy andSignpostPayload:payloadCopy];
   }
 
   else
@@ -59,41 +59,41 @@
   return v11;
 }
 
-+ (id)embeddingShapeForType:(int64_t)a3
++ (id)embeddingShapeForType:(int64_t)type
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (a3 < 5)
+  if (type < 5)
   {
-    return qword_1E834D2A8[a3];
+    return qword_1E834D2A8[type];
   }
 
   if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v5 = 134217984;
-    v6 = a3;
+    typeCopy = type;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "VCPMADImageEmbeddingTask - MADEmbeddingRequestType %lu not supported", &v5, 0xCu);
   }
 
   return 0;
 }
 
-+ (int64_t)bridgeEmbeddingTypeForRequest:(int64_t)a3
++ (int64_t)bridgeEmbeddingTypeForRequest:(int64_t)request
 {
-  v3 = a3;
+  requestCopy = request;
   v7 = *MEMORY[0x1E69E9840];
-  if (a3 >= 5)
+  if (request >= 5)
   {
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v5 = 134217984;
-      v6 = v3;
+      v6 = requestCopy;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "VCPMADImageEmbeddingTask - MADEmbeddingRequestType %lu not supported", &v5, 0xCu);
     }
 
     return 0;
   }
 
-  return v3;
+  return requestCopy;
 }
 
 - (int)run
@@ -115,9 +115,9 @@
   {
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      v5 = [(MADImageEmbeddingRequest *)self->_request embeddingRequestType];
+      embeddingRequestType = [(MADImageEmbeddingRequest *)self->_request embeddingRequestType];
       *buf = 134217984;
-      v85 = v5;
+      v85 = embeddingRequestType;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "VCPMADImageEmbeddingTask - MADEmbeddingRequestType %lu not supported", buf, 0xCu);
     }
 
@@ -139,14 +139,14 @@
 
   if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
-    v12 = [(MADImageEmbeddingRequest *)self->_request version];
+    version = [(MADImageEmbeddingRequest *)self->_request version];
     *buf = 67109120;
-    LODWORD(v85) = v12;
+    LODWORD(v85) = version;
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "VCPMADImageEmbeddingTask with embedding version %d", buf, 8u);
   }
 
-  v13 = [v8 imageBackbone];
-  v14 = v13 == 0;
+  imageBackbone = [v8 imageBackbone];
+  v14 = imageBackbone == 0;
 
   if (!v14)
   {
@@ -184,17 +184,17 @@
       _os_signpost_emit_with_name_impl(&dword_1C9B70000, v28, OS_SIGNPOST_INTERVAL_BEGIN, v26, "VCPMADImageEmbeddingTask_requestEmbedding", "%@", buf, 0xCu);
     }
 
-    v30 = [(MADImageEmbeddingRequest *)self->_request bypassNormalizaton];
-    v31 = [v8 imageBackbone];
-    [v31 setBypassNormalizaton:v30];
+    bypassNormalizaton = [(MADImageEmbeddingRequest *)self->_request bypassNormalizaton];
+    imageBackbone2 = [v8 imageBackbone];
+    [imageBackbone2 setBypassNormalizaton:bypassNormalizaton];
 
     v32 = [objc_opt_class() bridgeEmbeddingTypeForRequest:{-[MADImageEmbeddingRequest embeddingRequestType](self->_request, "embeddingRequestType")}];
-    v33 = [v8 imageBackbone];
-    [v33 setBridgeEmbeddingType:v32];
+    imageBackbone3 = [v8 imageBackbone];
+    [imageBackbone3 setBridgeEmbeddingType:v32];
 
-    v34 = [v8 imageBackbone];
+    imageBackbone4 = [v8 imageBackbone];
     v66 = 0;
-    LODWORD(v32) = [v34 analyzePixelBuffer:v68 flags:0 results:&v66 cancel:&__block_literal_global_18];
+    LODWORD(v32) = [imageBackbone4 analyzePixelBuffer:v68 flags:0 results:&v66 cancel:&__block_literal_global_18];
     v17 = v66;
 
     if (v32)
@@ -294,8 +294,8 @@
     if (v50)
     {
       v63 = [objc_alloc(MEMORY[0x1E69AE318]) initWithVersion:-[MADImageEmbeddingRequest version](self->_request data:"version") type:v50 shape:{1, v64}];
-      v51 = [v63 embedding];
-      v52 = v51 == 0;
+      embedding = [v63 embedding];
+      v52 = embedding == 0;
 
       v53 = self->_request;
       if (!v52)

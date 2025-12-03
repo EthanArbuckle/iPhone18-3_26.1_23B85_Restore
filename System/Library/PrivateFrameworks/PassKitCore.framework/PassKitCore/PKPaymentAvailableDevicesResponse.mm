@@ -1,15 +1,15 @@
 @interface PKPaymentAvailableDevicesResponse
-- (PKPaymentAvailableDevicesResponse)initWithData:(id)a3;
+- (PKPaymentAvailableDevicesResponse)initWithData:(id)data;
 @end
 
 @implementation PKPaymentAvailableDevicesResponse
 
-- (PKPaymentAvailableDevicesResponse)initWithData:(id)a3
+- (PKPaymentAvailableDevicesResponse)initWithData:(id)data
 {
   v35 = *MEMORY[0x1E69E9840];
   v32.receiver = self;
   v32.super_class = PKPaymentAvailableDevicesResponse;
-  v3 = [(PKWebServiceResponse *)&v32 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v32 initWithData:data];
   if (v3)
   {
     v23 = objc_alloc_init(MEMORY[0x1E695DF90]);

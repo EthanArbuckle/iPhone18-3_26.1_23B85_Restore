@@ -1,20 +1,20 @@
 @interface TSCH3DTextureMipmapper
-+ (BOOL)p_generateMipmapsBuffer:(id)a3 level0Buffer:(id)a4 skipFirstLevel:(BOOL)a5;
-+ (DataBuffer2DDimension)p_mapDimensionWithBuffer:(SEL)a3 skipFirstLevel:(id)a4;
-+ (id)mipmapsWithBuffer:(id)a3 skipFirstLevel:(BOOL)a4;
++ (BOOL)p_generateMipmapsBuffer:(id)buffer level0Buffer:(id)level0Buffer skipFirstLevel:(BOOL)level;
++ (DataBuffer2DDimension)p_mapDimensionWithBuffer:(SEL)buffer skipFirstLevel:(id)level;
++ (id)mipmapsWithBuffer:(id)buffer skipFirstLevel:(BOOL)level;
 @end
 
 @implementation TSCH3DTextureMipmapper
 
-+ (id)mipmapsWithBuffer:(id)a3 skipFirstLevel:(BOOL)a4
++ (id)mipmapsWithBuffer:(id)buffer skipFirstLevel:(BOOL)level
 {
-  v4 = a4;
-  v6 = a3;
-  objc_msgSend_p_mapDimensionWithBuffer_skipFirstLevel_(a1, v7, v8, v9, v10, v6, v4);
+  levelCopy = level;
+  bufferCopy = buffer;
+  objc_msgSend_p_mapDimensionWithBuffer_skipFirstLevel_(self, v7, v8, v9, v10, bufferCopy, levelCopy);
   v11 = objc_opt_class();
   v16 = objc_msgSend_bufferWithCapacityDimension_(v11, v12, v13, v14, v15, v27);
   objc_msgSend_fillCapacity(v16, v17, v18, v19, v20);
-  if (objc_msgSend_p_generateMipmapsBuffer_level0Buffer_skipFirstLevel_(a1, v21, v22, v23, v24, v16, v6, v4))
+  if (objc_msgSend_p_generateMipmapsBuffer_level0Buffer_skipFirstLevel_(self, v21, v22, v23, v24, v16, bufferCopy, levelCopy))
   {
     v25 = v16;
   }
@@ -27,14 +27,14 @@
   return v25;
 }
 
-+ (DataBuffer2DDimension)p_mapDimensionWithBuffer:(SEL)a3 skipFirstLevel:(id)a4
++ (DataBuffer2DDimension)p_mapDimensionWithBuffer:(SEL)buffer skipFirstLevel:(id)level
 {
   v5 = a5;
-  v7 = a4;
-  v12 = v7;
-  if (v7)
+  levelCopy = level;
+  v12 = levelCopy;
+  if (levelCopy)
   {
-    objc_msgSend_dimension(v7, v8, v9, v10, v11);
+    objc_msgSend_dimension(levelCopy, v8, v9, v10, v11);
     if (v35)
     {
       v17 = MEMORY[0x277D81150];
@@ -59,13 +59,13 @@
   return result;
 }
 
-+ (BOOL)p_generateMipmapsBuffer:(id)a3 level0Buffer:(id)a4 skipFirstLevel:(BOOL)a5
++ (BOOL)p_generateMipmapsBuffer:(id)buffer level0Buffer:(id)level0Buffer skipFirstLevel:(BOOL)level
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
-  v13 = objc_msgSend_data(v8, v9, v10, v11, v12);
-  v18 = objc_msgSend_mutableData(v7, v14, v15, v16, v17);
+  levelCopy = level;
+  bufferCopy = buffer;
+  level0BufferCopy = level0Buffer;
+  v13 = objc_msgSend_data(level0BufferCopy, v9, v10, v11, v12);
+  v18 = objc_msgSend_mutableData(bufferCopy, v14, v15, v16, v17);
   v23 = v18;
   if (v13)
   {
@@ -80,9 +80,9 @@
   v25 = !v24;
   if (!v24)
   {
-    if (v8)
+    if (level0BufferCopy)
     {
-      objc_msgSend_dimension(v8, v19, v20, v21, v22);
+      objc_msgSend_dimension(level0BufferCopy, v19, v20, v21, v22);
     }
 
     else
@@ -91,9 +91,9 @@
       v32 = 0;
     }
 
-    v26 = v5 - 1;
-    v27 = v5;
-    if (!v5)
+    v26 = levelCopy - 1;
+    v27 = levelCopy;
+    if (!levelCopy)
     {
       goto LABEL_14;
     }

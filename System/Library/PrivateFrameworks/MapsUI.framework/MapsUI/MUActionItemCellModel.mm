@@ -1,6 +1,6 @@
 @interface MUActionItemCellModel
 - (BOOL)isEnabled;
-- (MUActionItemCellModel)initWithActionItem:(id)a3;
+- (MUActionItemCellModel)initWithActionItem:(id)item;
 - (MUDynamicButtonCellModelChangeDelegate)changeDelegate;
 - (NSString)symbolName;
 - (NSString)titleString;
@@ -8,7 +8,7 @@
 - (int64_t)actionStyle;
 - (void)_registerObserver;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation MUActionItemCellModel
@@ -29,22 +29,22 @@
   [(MUActionItemCellModel *)&v3 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (([v10 isEqualToString:@"enabled"] & 1) != 0 || objc_msgSend(v10, "isEqualToString:", @"selected"))
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (([pathCopy isEqualToString:@"enabled"] & 1) != 0 || objc_msgSend(pathCopy, "isEqualToString:", @"selected"))
   {
-    v13 = [(MUActionItemCellModel *)self changeDelegate];
-    [v13 dynamicButtonCellModelDidChange:self];
+    changeDelegate = [(MUActionItemCellModel *)self changeDelegate];
+    [changeDelegate dynamicButtonCellModelDidChange:self];
   }
 
   else
   {
     v14.receiver = self;
     v14.super_class = MUActionItemCellModel;
-    [(MUActionItemCellModel *)&v14 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(MUActionItemCellModel *)&v14 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
@@ -58,24 +58,24 @@
 
 - (int64_t)actionStyle
 {
-  v2 = [(MUActionItemCellModel *)self _resolvedActionItem];
-  v3 = [v2 isDestructiveForDisplayStyle:0];
+  _resolvedActionItem = [(MUActionItemCellModel *)self _resolvedActionItem];
+  v3 = [_resolvedActionItem isDestructiveForDisplayStyle:0];
 
   return v3;
 }
 
 - (BOOL)isEnabled
 {
-  v2 = [(MUActionItemCellModel *)self _resolvedActionItem];
-  v3 = [v2 enabled];
+  _resolvedActionItem = [(MUActionItemCellModel *)self _resolvedActionItem];
+  enabled = [_resolvedActionItem enabled];
 
-  return v3;
+  return enabled;
 }
 
 - (id)accessibilityIdentifierForAction
 {
-  v2 = [(MKPlaceCardActionItem *)self->_actionItem resolvedActionItem];
-  [v2 type];
+  resolvedActionItem = [(MKPlaceCardActionItem *)self->_actionItem resolvedActionItem];
+  [resolvedActionItem type];
   v3 = MKPlaceCardActionTypeAsString();
 
   return v3;
@@ -83,30 +83,30 @@
 
 - (NSString)titleString
 {
-  v2 = [(MUActionItemCellModel *)self _resolvedActionItem];
-  v3 = [v2 titleForDisplayStyle:0];
+  _resolvedActionItem = [(MUActionItemCellModel *)self _resolvedActionItem];
+  v3 = [_resolvedActionItem titleForDisplayStyle:0];
 
   return v3;
 }
 
 - (NSString)symbolName
 {
-  v2 = [(MUActionItemCellModel *)self _resolvedActionItem];
-  v3 = [v2 symbolForDisplayStyle:0];
+  _resolvedActionItem = [(MUActionItemCellModel *)self _resolvedActionItem];
+  v3 = [_resolvedActionItem symbolForDisplayStyle:0];
 
   return v3;
 }
 
-- (MUActionItemCellModel)initWithActionItem:(id)a3
+- (MUActionItemCellModel)initWithActionItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = MUActionItemCellModel;
   v6 = [(MUActionItemCellModel *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_actionItem, a3);
+    objc_storeStrong(&v6->_actionItem, item);
     [(MUActionItemCellModel *)v7 _registerObserver];
   }
 

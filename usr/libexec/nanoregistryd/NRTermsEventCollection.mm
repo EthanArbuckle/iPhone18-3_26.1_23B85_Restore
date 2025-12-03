@@ -1,11 +1,11 @@
 @interface NRTermsEventCollection
-- (BOOL)_termsEvent:(id)a3 isNewerVersionOfTermsEvent:(id)a4;
+- (BOOL)_termsEvent:(id)event isNewerVersionOfTermsEvent:(id)termsEvent;
 - (NRTermsEventCollection)init;
-- (NRTermsEventCollection)initWithCoder:(id)a3;
+- (NRTermsEventCollection)initWithCoder:(id)coder;
 - (id)description;
-- (void)_removeDuplicatesOfTermsEvent:(id)a3;
-- (void)addObject:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_removeDuplicatesOfTermsEvent:(id)event;
+- (void)addObject:(id)object;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NRTermsEventCollection
@@ -66,35 +66,35 @@
   return v2;
 }
 
-- (NRTermsEventCollection)initWithCoder:(id)a3
+- (NRTermsEventCollection)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(NRTermsEventCollection *)self init];
   if (v5)
   {
     v6 = objc_opt_class();
     v7 = [NSSet setWithObjects:v6, objc_opt_class(), 0];
-    v8 = [v4 decodeObjectOfClasses:v7 forKey:@"events"];
+    v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"events"];
     events = v5->_events;
     v5->_events = v8;
 
-    v5->_termsTextCleared = [v4 decodeBoolForKey:@"termsTextCleared"];
+    v5->_termsTextCleared = [coderCopy decodeBoolForKey:@"termsTextCleared"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   events = self->_events;
-  v5 = a3;
-  [v5 encodeObject:events forKey:@"events"];
-  [v5 encodeBool:self->_termsTextCleared forKey:@"termsTextCleared"];
+  coderCopy = coder;
+  [coderCopy encodeObject:events forKey:@"events"];
+  [coderCopy encodeBool:self->_termsTextCleared forKey:@"termsTextCleared"];
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v5 = nr_daemon_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -108,127 +108,127 @@
     }
   }
 
-  v8 = [v4 termsDigest];
+  termsDigest = [objectCopy termsDigest];
 
-  if (!v8)
+  if (!termsDigest)
   {
     v9 = objc_opt_class();
-    v10 = [v4 termsText];
-    v11 = [v9 digestFromData:v10];
-    [v4 setTermsDigest:v11];
+    termsText = [objectCopy termsText];
+    v11 = [v9 digestFromData:termsText];
+    [objectCopy setTermsDigest:v11];
   }
 
-  [v4 saveEventTextToFileIfNeeded];
-  [(NRTermsEventCollection *)self _removeDuplicatesOfTermsEvent:v4];
-  [(NSMutableArray *)self->_events addObject:v4];
+  [objectCopy saveEventTextToFileIfNeeded];
+  [(NRTermsEventCollection *)self _removeDuplicatesOfTermsEvent:objectCopy];
+  [(NSMutableArray *)self->_events addObject:objectCopy];
   self->_dirty = 1;
 }
 
-- (void)_removeDuplicatesOfTermsEvent:(id)a3
+- (void)_removeDuplicatesOfTermsEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = +[NSMutableIndexSet indexSet];
-  v6 = [(NRTermsEventCollection *)self events];
+  events = [(NRTermsEventCollection *)self events];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000A8D60;
   v10[3] = &unk_100178968;
   v10[4] = self;
-  v11 = v4;
+  v11 = eventCopy;
   v12 = v5;
   v7 = v5;
-  v8 = v4;
-  [v6 enumerateObjectsUsingBlock:v10];
+  v8 = eventCopy;
+  [events enumerateObjectsUsingBlock:v10];
 
-  v9 = [(NRTermsEventCollection *)self events];
-  [v9 removeObjectsAtIndexes:v7];
+  events2 = [(NRTermsEventCollection *)self events];
+  [events2 removeObjectsAtIndexes:v7];
 }
 
-- (BOOL)_termsEvent:(id)a3 isNewerVersionOfTermsEvent:(id)a4
+- (BOOL)_termsEvent:(id)event isNewerVersionOfTermsEvent:(id)termsEvent
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 displayDeviceName];
-  v8 = [v5 displayDeviceName];
-  v9 = [v7 isEqualToString:v8];
+  eventCopy = event;
+  termsEventCopy = termsEvent;
+  displayDeviceName = [termsEventCopy displayDeviceName];
+  displayDeviceName2 = [eventCopy displayDeviceName];
+  v9 = [displayDeviceName isEqualToString:displayDeviceName2];
 
   if (!v9)
   {
     goto LABEL_16;
   }
 
-  v10 = [v6 displayDeviceSerialNumber];
-  v11 = [v5 displayDeviceSerialNumber];
-  v12 = [v10 isEqualToString:v11];
+  displayDeviceSerialNumber = [termsEventCopy displayDeviceSerialNumber];
+  displayDeviceSerialNumber2 = [eventCopy displayDeviceSerialNumber];
+  v12 = [displayDeviceSerialNumber isEqualToString:displayDeviceSerialNumber2];
 
   if (!v12)
   {
     goto LABEL_16;
   }
 
-  v13 = [v6 acknowledgedDeviceName];
-  v14 = [v5 acknowledgedDeviceName];
-  v15 = [v13 isEqualToString:v14];
+  acknowledgedDeviceName = [termsEventCopy acknowledgedDeviceName];
+  acknowledgedDeviceName2 = [eventCopy acknowledgedDeviceName];
+  v15 = [acknowledgedDeviceName isEqualToString:acknowledgedDeviceName2];
 
   if (!v15)
   {
     goto LABEL_16;
   }
 
-  v16 = [v6 acknowledgedDeviceSerialNumber];
-  v17 = [v5 acknowledgedDeviceSerialNumber];
-  v18 = [v16 isEqualToString:v17];
+  acknowledgedDeviceSerialNumber = [termsEventCopy acknowledgedDeviceSerialNumber];
+  acknowledgedDeviceSerialNumber2 = [eventCopy acknowledgedDeviceSerialNumber];
+  v18 = [acknowledgedDeviceSerialNumber isEqualToString:acknowledgedDeviceSerialNumber2];
 
   if (!v18)
   {
     goto LABEL_16;
   }
 
-  v19 = [v6 documentationID];
-  v20 = [v5 documentationID];
-  v21 = [v19 isEqualToString:v20];
+  documentationID = [termsEventCopy documentationID];
+  documentationID2 = [eventCopy documentationID];
+  v21 = [documentationID isEqualToString:documentationID2];
 
   if (!v21)
   {
     goto LABEL_16;
   }
 
-  v22 = [v6 loggingProcessName];
-  v23 = [v5 loggingProcessName];
-  v24 = [v22 isEqualToString:v23];
+  loggingProcessName = [termsEventCopy loggingProcessName];
+  loggingProcessName2 = [eventCopy loggingProcessName];
+  v24 = [loggingProcessName isEqualToString:loggingProcessName2];
 
   if (!v24)
   {
     goto LABEL_16;
   }
 
-  v25 = [v6 eventType];
-  if (v25 != [v5 eventType])
+  eventType = [termsEventCopy eventType];
+  if (eventType != [eventCopy eventType])
   {
     goto LABEL_16;
   }
 
-  v26 = [v6 presentationLocation];
-  if (v26 != [v5 presentationLocation])
+  presentationLocation = [termsEventCopy presentationLocation];
+  if (presentationLocation != [eventCopy presentationLocation])
   {
     goto LABEL_16;
   }
 
-  v27 = [v6 presentationReason];
-  if (v27)
+  presentationReason = [termsEventCopy presentationReason];
+  if (presentationReason)
   {
 
     goto LABEL_12;
   }
 
-  v28 = [v5 presentationReason];
+  presentationReason2 = [eventCopy presentationReason];
 
-  if (v28)
+  if (presentationReason2)
   {
 LABEL_12:
-    v29 = [v6 presentationReason];
-    v30 = [v5 presentationReason];
-    v31 = [v29 isEqualToString:v30];
+    presentationReason3 = [termsEventCopy presentationReason];
+    presentationReason4 = [eventCopy presentationReason];
+    v31 = [presentationReason3 isEqualToString:presentationReason4];
 
     if (v31)
     {
@@ -241,19 +241,19 @@ LABEL_16:
   }
 
 LABEL_13:
-  v32 = [v6 termsDigest];
+  termsDigest = [termsEventCopy termsDigest];
 
-  if (!v32)
+  if (!termsDigest)
   {
     v33 = objc_opt_class();
-    v34 = [v6 termsText];
-    v35 = [v33 digestFromData:v34];
-    [v6 setTermsDigest:v35];
+    termsText = [termsEventCopy termsText];
+    v35 = [v33 digestFromData:termsText];
+    [termsEventCopy setTermsDigest:v35];
   }
 
-  v36 = [v6 termsDigest];
-  v37 = [v5 termsDigest];
-  v38 = [v36 isEqualToString:v37];
+  termsDigest2 = [termsEventCopy termsDigest];
+  termsDigest3 = [eventCopy termsDigest];
+  v38 = [termsDigest2 isEqualToString:termsDigest3];
 
 LABEL_17:
   return v38;

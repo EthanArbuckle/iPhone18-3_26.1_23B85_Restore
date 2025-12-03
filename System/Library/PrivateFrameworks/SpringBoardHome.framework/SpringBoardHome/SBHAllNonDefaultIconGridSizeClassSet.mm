@@ -1,15 +1,15 @@
 @interface SBHAllNonDefaultIconGridSizeClassSet
-- (BOOL)containsGridSizeClass:(id)a3;
-- (id)allGridSizeClassesInDomain:(id)a3;
+- (BOOL)containsGridSizeClass:(id)class;
+- (id)allGridSizeClassesInDomain:(id)domain;
 @end
 
 @implementation SBHAllNonDefaultIconGridSizeClassSet
 
-- (BOOL)containsGridSizeClass:(id)a3
+- (BOOL)containsGridSizeClass:(id)class
 {
-  if (a3)
+  if (class)
   {
-    return [a3 isEqualToString:@"SBHIconGridSizeClassDefault"] ^ 1;
+    return [class isEqualToString:@"SBHIconGridSizeClassDefault"] ^ 1;
   }
 
   else
@@ -18,12 +18,12 @@
   }
 }
 
-- (id)allGridSizeClassesInDomain:(id)a3
+- (id)allGridSizeClassesInDomain:(id)domain
 {
-  v3 = [a3 allNonDefaultGridSizeClasses];
-  v4 = [v3 allGridSizeClasses];
+  allNonDefaultGridSizeClasses = [domain allNonDefaultGridSizeClasses];
+  allGridSizeClasses = [allNonDefaultGridSizeClasses allGridSizeClasses];
 
-  return v4;
+  return allGridSizeClasses;
 }
 
 @end

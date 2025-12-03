@@ -1,24 +1,24 @@
 @interface MenuContaineeViewController
-- (MenuContaineeViewController)initWithContentView:(id)a3;
-- (MenuContaineeViewController)initWithContentViewController:(id)a3;
+- (MenuContaineeViewController)initWithContentView:(id)view;
+- (MenuContaineeViewController)initWithContentViewController:(id)controller;
 - (id)keyCommands;
 - (void)dealloc;
-- (void)escapePressed:(id)a3;
+- (void)escapePressed:(id)pressed;
 - (void)loadView;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)returnPressed:(id)a3;
-- (void)setTrackedScrollview:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)returnPressed:(id)pressed;
+- (void)setTrackedScrollview:(id)scrollview;
 - (void)viewDidLoad;
 @end
 
 @implementation MenuContaineeViewController
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a6 == &unk_10195E198 && ![(NSDictionary *)self->_change isEqualToDictionary:v12])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (context == &unk_10195E198 && ![(NSDictionary *)self->_change isEqualToDictionary:changeCopy])
   {
     if (qword_10195E1A8 != -1)
     {
@@ -29,43 +29,43 @@
     if (os_log_type_enabled(qword_10195E1A0, OS_LOG_TYPE_INFO))
     {
       v19 = 138412802;
-      v20 = v10;
+      v20 = pathCopy;
       v21 = 2112;
-      v22 = v11;
+      v22 = objectCopy;
       v23 = 2112;
-      v24 = v12;
+      v24 = changeCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "keyPath - %@, object - %@, change - %@", &v19, 0x20u);
     }
 
-    objc_storeStrong(&self->_change, a5);
-    v14 = [v12 objectForKeyedSubscript:NSKeyValueChangeNewKey];
+    objc_storeStrong(&self->_change, change);
+    v14 = [changeCopy objectForKeyedSubscript:NSKeyValueChangeNewKey];
     [v14 CGSizeValue];
     v16 = v15;
 
     v17 = fmax(self->contentInsets.top + self->contentInsets.bottom + v16, 60.0);
-    v18 = [(MenuContaineeViewController *)self view];
-    [v18 setOverriddenIntrinsicHeight:v17];
-    [v18 invalidateIntrinsicContentSize];
+    view = [(MenuContaineeViewController *)self view];
+    [view setOverriddenIntrinsicHeight:v17];
+    [view invalidateIntrinsicContentSize];
   }
 }
 
-- (void)setTrackedScrollview:(id)a3
+- (void)setTrackedScrollview:(id)scrollview
 {
-  v5 = a3;
+  scrollviewCopy = scrollview;
   trackedScrollview = self->_trackedScrollview;
-  if (trackedScrollview != v5)
+  if (trackedScrollview != scrollviewCopy)
   {
-    v13 = v5;
+    v13 = scrollviewCopy;
     [(UIScrollView *)trackedScrollview removeObserver:self forKeyPath:@"contentSize"];
-    objc_storeStrong(&self->_trackedScrollview, a3);
+    objc_storeStrong(&self->_trackedScrollview, scrollview);
     [(UIScrollView *)self->_trackedScrollview addObserver:self forKeyPath:@"contentSize" options:1 context:&unk_10195E198];
     v7 = sub_10000FA08(self->_trackedScrollview);
-    v5 = v13;
+    scrollviewCopy = v13;
     if (v7 == 5)
     {
       p_contentInsets = &self->contentInsets;
       [(UIScrollView *)v13 adjustedContentInset];
-      v5 = v13;
+      scrollviewCopy = v13;
       p_contentInsets->top = v9;
       p_contentInsets->left = v10;
       p_contentInsets->bottom = v11;
@@ -74,48 +74,48 @@
   }
 }
 
-- (void)returnPressed:(id)a3
+- (void)returnPressed:(id)pressed
 {
-  v4 = [(MenuContaineeViewController *)self trackedScrollview];
+  trackedScrollview = [(MenuContaineeViewController *)self trackedScrollview];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [(MenuContaineeViewController *)self trackedScrollview];
-    v7 = [v6 indexPathForSelectedRow];
+    trackedScrollview2 = [(MenuContaineeViewController *)self trackedScrollview];
+    indexPathForSelectedRow = [trackedScrollview2 indexPathForSelectedRow];
 
-    if (v7)
+    if (indexPathForSelectedRow)
     {
-      v8 = [v6 delegate];
-      v9 = [v6 indexPathForSelectedRow];
-      [v8 tableView:v6 didSelectRowAtIndexPath:v9];
+      delegate = [trackedScrollview2 delegate];
+      indexPathForSelectedRow2 = [trackedScrollview2 indexPathForSelectedRow];
+      [delegate tableView:trackedScrollview2 didSelectRowAtIndexPath:indexPathForSelectedRow2];
     }
   }
 
-  v10 = [(MenuContaineeViewController *)self trackedScrollview];
+  trackedScrollview3 = [(MenuContaineeViewController *)self trackedScrollview];
   objc_opt_class();
   v11 = objc_opt_isKindOfClass();
 
   if (v11)
   {
-    v16 = [(MenuContaineeViewController *)self trackedScrollview];
-    v12 = [v16 indexPathsForSelectedItems];
+    trackedScrollview4 = [(MenuContaineeViewController *)self trackedScrollview];
+    indexPathsForSelectedItems = [trackedScrollview4 indexPathsForSelectedItems];
 
-    if (v12)
+    if (indexPathsForSelectedItems)
     {
-      v13 = [v16 delegate];
-      v14 = [v16 indexPathsForSelectedItems];
-      v15 = [v14 firstObject];
-      [v13 collectionView:v16 didSelectItemAtIndexPath:v15];
+      delegate2 = [trackedScrollview4 delegate];
+      indexPathsForSelectedItems2 = [trackedScrollview4 indexPathsForSelectedItems];
+      firstObject = [indexPathsForSelectedItems2 firstObject];
+      [delegate2 collectionView:trackedScrollview4 didSelectItemAtIndexPath:firstObject];
     }
   }
 }
 
-- (void)escapePressed:(id)a3
+- (void)escapePressed:(id)pressed
 {
-  v3 = [(ContaineeViewController *)self macMenuPresentationController];
-  [v3 dismissAnimated:1 completion:0];
+  macMenuPresentationController = [(ContaineeViewController *)self macMenuPresentationController];
+  [macMenuPresentationController dismissAnimated:1 completion:0];
 }
 
 - (id)keyCommands
@@ -136,40 +136,40 @@
   v11.receiver = self;
   v11.super_class = MenuContaineeViewController;
   [(ContaineeViewController *)&v11 viewDidLoad];
-  v3 = [(MenuContaineeViewController *)self view];
+  view = [(MenuContaineeViewController *)self view];
   if (self->_contentViewController)
   {
     [(MenuContaineeViewController *)self addChildViewController:?];
-    v4 = [(UIViewController *)self->_contentViewController view];
+    view2 = [(UIViewController *)self->_contentViewController view];
     [(UIViewController *)self->_contentViewController didMoveToParentViewController:self];
   }
 
   else
   {
-    v4 = self->_contentView;
+    view2 = self->_contentView;
   }
 
-  [(UIView *)v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v3 bounds];
-  [(UIView *)v4 setFrame:?];
-  v5 = [v3 contentView];
-  [v5 addSubview:v4];
+  [(UIView *)view2 setTranslatesAutoresizingMaskIntoConstraints:0];
+  [view bounds];
+  [(UIView *)view2 setFrame:?];
+  contentView = [view contentView];
+  [contentView addSubview:view2];
 
   v6 = objc_alloc_init(NSMutableArray);
-  v7 = [v3 contentView];
+  contentView2 = [view contentView];
   LODWORD(v8) = 1148846080;
-  v9 = [(UIView *)v4 _maps_constraintsEqualToEdgesOfView:v7 priority:v8];
-  v10 = [v9 allConstraints];
-  [v6 addObjectsFromArray:v10];
+  v9 = [(UIView *)view2 _maps_constraintsEqualToEdgesOfView:contentView2 priority:v8];
+  allConstraints = [v9 allConstraints];
+  [v6 addObjectsFromArray:allConstraints];
 
   [NSLayoutConstraint activateConstraints:v6];
 }
 
 - (void)loadView
 {
-  v3 = [[CardView alloc] initWithThickBlur];
-  [(CardView *)v3 setLayoutStyle:6];
-  [(MenuContaineeViewController *)self setView:v3];
+  initWithThickBlur = [[CardView alloc] initWithThickBlur];
+  [(CardView *)initWithThickBlur setLayoutStyle:6];
+  [(MenuContaineeViewController *)self setView:initWithThickBlur];
 }
 
 - (void)dealloc
@@ -180,16 +180,16 @@
   [(MenuContaineeViewController *)&v3 dealloc];
 }
 
-- (MenuContaineeViewController)initWithContentViewController:(id)a3
+- (MenuContaineeViewController)initWithContentViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v10.receiver = self;
   v10.super_class = MenuContaineeViewController;
   v6 = [(MenuContaineeViewController *)&v10 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contentViewController, a3);
+    objc_storeStrong(&v6->_contentViewController, controller);
     [(ContaineeViewController *)v7 setPreferredPresentationStyle:4];
     v8 = *&UIEdgeInsetsZero.bottom;
     *&v7->contentInsets.top = *&UIEdgeInsetsZero.top;
@@ -199,16 +199,16 @@
   return v7;
 }
 
-- (MenuContaineeViewController)initWithContentView:(id)a3
+- (MenuContaineeViewController)initWithContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v10.receiver = self;
   v10.super_class = MenuContaineeViewController;
   v6 = [(MenuContaineeViewController *)&v10 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contentView, a3);
+    objc_storeStrong(&v6->_contentView, view);
     [(ContaineeViewController *)v7 setPreferredPresentationStyle:4];
     v8 = *&UIEdgeInsetsZero.bottom;
     *&v7->contentInsets.top = *&UIEdgeInsetsZero.top;

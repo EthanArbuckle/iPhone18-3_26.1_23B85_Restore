@@ -1,6 +1,6 @@
 @interface CRLUSDZPlayPauseKnobTracker
 - (_TtC8Freeform27CRLUSDZPlayPauseKnobTracker)init;
-- (_TtC8Freeform27CRLUSDZPlayPauseKnobTracker)initWithRep:(id)a3 knob:(id)a4;
+- (_TtC8Freeform27CRLUSDZPlayPauseKnobTracker)initWithRep:(id)rep knob:(id)knob;
 - (void)beginMovingKnob;
 - (void)endMovingKnob;
 @end
@@ -9,17 +9,17 @@
 
 - (void)beginMovingKnob
 {
-  v2 = self;
+  selfCopy = self;
   sub_100A7B780();
 }
 
 - (void)endMovingKnob
 {
-  v2 = self;
+  selfCopy = self;
   sub_100A7B860();
 }
 
-- (_TtC8Freeform27CRLUSDZPlayPauseKnobTracker)initWithRep:(id)a3 knob:(id)a4
+- (_TtC8Freeform27CRLUSDZPlayPauseKnobTracker)initWithRep:(id)rep knob:(id)knob
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

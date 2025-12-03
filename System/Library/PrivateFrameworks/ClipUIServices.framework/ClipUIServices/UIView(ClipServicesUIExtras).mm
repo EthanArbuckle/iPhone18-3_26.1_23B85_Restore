@@ -11,7 +11,7 @@
 + (id)cps_viewWithBackgroundColor:()ClipServicesUIExtras cornerRadius:
 {
   v6 = a4;
-  v7 = objc_alloc_init(a1);
+  v7 = objc_alloc_init(self);
   [v7 _setContinuousCornerRadius:a2];
   [v7 setBackgroundColor:v6];
 
@@ -32,25 +32,25 @@
     v3 = 0.5;
   }
 
-  v5[4] = a1;
+  v5[4] = self;
   v6 = a3;
   return [MEMORY[0x277D75D18] animateWithDuration:50659328 delay:v5 options:0 animations:v3 completion:0.0];
 }
 
 - (uint64_t)cps_sizeToFitWithinSize:()ClipServicesUIExtras
 {
-  [a1 sizeThatFits:?];
-  [a1 transform];
+  [self sizeThatFits:?];
+  [self transform];
   if (CGAffineTransformIsIdentity(&v3))
   {
-    [a1 frame];
-    return [a1 setFrame:?];
+    [self frame];
+    return [self setFrame:?];
   }
 
   else
   {
-    [a1 bounds];
-    return [a1 setBounds:?];
+    [self bounds];
+    return [self setBounds:?];
   }
 }
 
@@ -58,7 +58,7 @@
 {
   v36 = a5;
   v7 = a4;
-  [a1 bounds];
+  [self bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -108,14 +108,14 @@
   v0 = [MEMORY[0x277D75210] effectWithStyle:8];
   v1 = [MEMORY[0x277D75D00] effectForBlurEffect:v0 style:7];
   v2 = [objc_alloc(MEMORY[0x277D75D68]) initWithEffect:v1];
-  v3 = [MEMORY[0x277D75348] whiteColor];
-  v4 = [v2 contentView];
-  [v4 setBackgroundColor:v3];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  contentView = [v2 contentView];
+  [contentView setBackgroundColor:whiteColor];
 
-  v5 = [v2 heightAnchor];
-  v6 = [MEMORY[0x277D759A0] mainScreen];
-  [v6 scale];
-  v8 = [v5 constraintEqualToConstant:1.0 / v7];
+  heightAnchor = [v2 heightAnchor];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
+  v8 = [heightAnchor constraintEqualToConstant:1.0 / v7];
   [v8 setActive:1];
 
   return v2;

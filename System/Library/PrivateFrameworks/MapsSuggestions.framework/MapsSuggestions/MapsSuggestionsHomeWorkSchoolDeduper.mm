@@ -1,16 +1,16 @@
 @interface MapsSuggestionsHomeWorkSchoolDeduper
-- (BOOL)dedupeByEnrichingEntry:(id)a3 withEntry:(id)a4;
+- (BOOL)dedupeByEnrichingEntry:(id)entry withEntry:(id)withEntry;
 @end
 
 @implementation MapsSuggestionsHomeWorkSchoolDeduper
 
-- (BOOL)dedupeByEnrichingEntry:(id)a3 withEntry:(id)a4
+- (BOOL)dedupeByEnrichingEntry:(id)entry withEntry:(id)withEntry
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  entryCopy = entry;
+  withEntryCopy = withEntry;
+  v7 = withEntryCopy;
+  if (!entryCopy)
   {
     v17 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -33,7 +33,7 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if (!v6)
+  if (!withEntryCopy)
   {
     v17 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -53,52 +53,52 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  if ([v5 hasMultipleWaypointsLeft] & 1) != 0 || (objc_msgSend(v7, "hasMultipleWaypointsLeft"))
+  if ([entryCopy hasMultipleWaypointsLeft] & 1) != 0 || (objc_msgSend(v7, "hasMultipleWaypointsLeft"))
   {
     goto LABEL_21;
   }
 
-  v8 = [v7 type];
-  LOBYTE(v9) = 0;
-  if (v8 > 0x13 || ((1 << v8) & 0x80006) == 0)
+  type = [v7 type];
+  LOBYTE(geoMapItem) = 0;
+  if (type > 0x13 || ((1 << type) & 0x80006) == 0)
   {
     goto LABEL_22;
   }
 
-  v10 = [v5 type];
-  if (v10 != [v7 type])
+  type2 = [entryCopy type];
+  if (type2 != [v7 type])
   {
     goto LABEL_21;
   }
 
-  v9 = [v5 geoMapItem];
-  if (!v9)
+  geoMapItem = [entryCopy geoMapItem];
+  if (!geoMapItem)
   {
     goto LABEL_22;
   }
 
-  v11 = [v7 geoMapItem];
+  geoMapItem2 = [v7 geoMapItem];
 
-  if (!v11 || (*v24 = 0, (MapsSuggestionsDistanceBetweenEntries(v5, v7, v24) & 1) == 0) && (v12 = *v24, GEOConfigGetDouble(), v12 > v13))
+  if (!geoMapItem2 || (*v24 = 0, (MapsSuggestionsDistanceBetweenEntries(entryCopy, v7, v24) & 1) == 0) && (v12 = *v24, GEOConfigGetDouble(), v12 > v13))
   {
 LABEL_21:
-    LOBYTE(v9) = 0;
+    LOBYTE(geoMapItem) = 0;
     goto LABEL_22;
   }
 
-  v14 = [v5 geoMapItem];
-  v15 = [v7 geoMapItem];
-  v16 = MapsSuggestionsMapItemsAreEqual(v14, v15, 0, 0, 0);
+  geoMapItem3 = [entryCopy geoMapItem];
+  geoMapItem4 = [v7 geoMapItem];
+  v16 = MapsSuggestionsMapItemsAreEqual(geoMapItem3, geoMapItem4, 0, 0, 0);
 
   if (v16)
   {
     goto LABEL_13;
   }
 
-  v20 = [v5 geoMapItem];
+  geoMapItem5 = [entryCopy geoMapItem];
   v17 = MapsSuggestionsMapItemShortAddress();
 
-  v21 = [v7 geoMapItem];
+  geoMapItem6 = [v7 geoMapItem];
   v22 = MapsSuggestionsMapItemShortAddress();
 
   if (!v17 || !v22)
@@ -115,15 +115,15 @@ LABEL_21:
   }
 
 LABEL_13:
-  LOBYTE(v9) = 1;
-  if ((MapsSuggestionsMergeAsShortcut(v5, v7) & 1) == 0)
+  LOBYTE(geoMapItem) = 1;
+  if ((MapsSuggestionsMergeAsShortcut(entryCopy, v7) & 1) == 0)
   {
-    [v5 mergeFromSuggestionEntry:v7 behavior:1];
+    [entryCopy mergeFromSuggestionEntry:v7 behavior:1];
   }
 
 LABEL_22:
 
-  return v9;
+  return geoMapItem;
 }
 
 @end

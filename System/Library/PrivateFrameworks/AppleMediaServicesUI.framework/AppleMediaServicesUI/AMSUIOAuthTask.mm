@@ -1,52 +1,52 @@
 @interface AMSUIOAuthTask
-- (AMSUIOAuthTask)initWithOAuthURL:(id)a3 customScheme:(id)a4 presentingViewController:(id)a5;
-- (AMSUIOAuthTask)initWithOAuthURL:(id)a3 host:(id)a4 path:(id)a5 presentingViewController:(id)a6;
+- (AMSUIOAuthTask)initWithOAuthURL:(id)l customScheme:(id)scheme presentingViewController:(id)controller;
+- (AMSUIOAuthTask)initWithOAuthURL:(id)l host:(id)host path:(id)path presentingViewController:(id)controller;
 - (id)performTask;
-- (id)presentationAnchorForWebAuthenticationSession:(id)a3;
+- (id)presentationAnchorForWebAuthenticationSession:(id)session;
 @end
 
 @implementation AMSUIOAuthTask
 
-- (AMSUIOAuthTask)initWithOAuthURL:(id)a3 customScheme:(id)a4 presentingViewController:(id)a5
+- (AMSUIOAuthTask)initWithOAuthURL:(id)l customScheme:(id)scheme presentingViewController:(id)controller
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  lCopy = l;
+  schemeCopy = scheme;
+  controllerCopy = controller;
   v17.receiver = self;
   v17.super_class = AMSUIOAuthTask;
   v12 = [(AMSTask *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_oAuthURL, a3);
-    v14 = [getASWebAuthenticationSessionCallbackClass() callbackWithCustomScheme:v10];
+    objc_storeStrong(&v12->_oAuthURL, l);
+    v14 = [getASWebAuthenticationSessionCallbackClass() callbackWithCustomScheme:schemeCopy];
     callback = v13->_callback;
     v13->_callback = v14;
 
-    objc_storeStrong(&v13->_presentingViewController, a5);
+    objc_storeStrong(&v13->_presentingViewController, controller);
   }
 
   return v13;
 }
 
-- (AMSUIOAuthTask)initWithOAuthURL:(id)a3 host:(id)a4 path:(id)a5 presentingViewController:(id)a6
+- (AMSUIOAuthTask)initWithOAuthURL:(id)l host:(id)host path:(id)path presentingViewController:(id)controller
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  lCopy = l;
+  hostCopy = host;
+  pathCopy = path;
+  controllerCopy = controller;
   v20.receiver = self;
   v20.super_class = AMSUIOAuthTask;
   v15 = [(AMSTask *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_oAuthURL, a3);
-    v17 = [getASWebAuthenticationSessionCallbackClass() callbackWithHTTPSHost:v12 path:v13];
+    objc_storeStrong(&v15->_oAuthURL, l);
+    v17 = [getASWebAuthenticationSessionCallbackClass() callbackWithHTTPSHost:hostCopy path:pathCopy];
     callback = v16->_callback;
     v16->_callback = v17;
 
-    objc_storeStrong(&v16->_presentingViewController, a6);
+    objc_storeStrong(&v16->_presentingViewController, controller);
   }
 
   return v16;
@@ -74,10 +74,10 @@
   v5 = v4;
   _Block_object_dispose(&v17, 8);
   v6 = [v4 alloc];
-  v7 = [(AMSUIOAuthTask *)self oAuthURL];
-  v8 = [(AMSUIOAuthTask *)self callback];
-  v9 = [v3 completionHandlerAdapter];
-  v10 = [v6 initWithURL:v7 callback:v8 completionHandler:v9];
+  oAuthURL = [(AMSUIOAuthTask *)self oAuthURL];
+  callback = [(AMSUIOAuthTask *)self callback];
+  completionHandlerAdapter = [v3 completionHandlerAdapter];
+  v10 = [v6 initWithURL:oAuthURL callback:callback completionHandler:completionHandlerAdapter];
 
   [v10 setPresentationContextProvider:self];
   [v10 setPrefersEphemeralWebBrowserSession:1];
@@ -187,13 +187,13 @@ void __29__AMSUIOAuthTask_performTask__block_invoke_2(uint64_t a1, void *a2, voi
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (id)presentationAnchorForWebAuthenticationSession:(id)a3
+- (id)presentationAnchorForWebAuthenticationSession:(id)session
 {
-  v3 = [(AMSUIOAuthTask *)self presentingViewController];
-  v4 = [v3 view];
-  v5 = [v4 window];
+  presentingViewController = [(AMSUIOAuthTask *)self presentingViewController];
+  view = [presentingViewController view];
+  window = [view window];
 
-  return v5;
+  return window;
 }
 
 @end

@@ -1,55 +1,55 @@
 @interface BPSKnowledgeStorePublisher
 - (BOOL)completed;
-- (BPSKnowledgeStorePublisher)initWithEventQuery:(id)a3 knowledgeStore:(id)a4;
+- (BPSKnowledgeStorePublisher)initWithEventQuery:(id)query knowledgeStore:(id)store;
 - (id)_updateCachedQueryResults;
 - (id)nextEvent;
-- (id)startWithSubscriber:(id)a3;
+- (id)startWithSubscriber:(id)subscriber;
 - (void)reset;
-- (void)subscribe:(id)a3;
+- (void)subscribe:(id)subscribe;
 @end
 
 @implementation BPSKnowledgeStorePublisher
 
-- (BPSKnowledgeStorePublisher)initWithEventQuery:(id)a3 knowledgeStore:(id)a4
+- (BPSKnowledgeStorePublisher)initWithEventQuery:(id)query knowledgeStore:(id)store
 {
-  v7 = a3;
-  v8 = a4;
+  queryCopy = query;
+  storeCopy = store;
   v12.receiver = self;
   v12.super_class = BPSKnowledgeStorePublisher;
   v9 = [(BPSKnowledgeStorePublisher *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_query, a3);
-    objc_storeStrong(&v10->_store, a4);
+    objc_storeStrong(&v9->_query, query);
+    objc_storeStrong(&v10->_store, store);
   }
 
   return v10;
 }
 
-- (void)subscribe:(id)a3
+- (void)subscribe:(id)subscribe
 {
-  v4 = a3;
+  subscribeCopy = subscribe;
   v5 = [_BPSInnerKnowledgeSubscription alloc];
-  v6 = [(BPSKnowledgeStorePublisher *)self query];
-  v7 = [(BPSKnowledgeStorePublisher *)self store];
-  v8 = [(_BPSInnerKnowledgeSubscription *)v5 initWithQuery:v6 downstream:v4 store:v7];
+  query = [(BPSKnowledgeStorePublisher *)self query];
+  store = [(BPSKnowledgeStorePublisher *)self store];
+  v8 = [(_BPSInnerKnowledgeSubscription *)v5 initWithQuery:query downstream:subscribeCopy store:store];
 
-  [v4 receiveSubscription:v8];
+  [subscribeCopy receiveSubscription:v8];
 }
 
-- (id)startWithSubscriber:(id)a3
+- (id)startWithSubscriber:(id)subscriber
 {
-  v4 = [(BPSKnowledgeStorePublisher *)self query];
-  if ([v4 limit])
+  query = [(BPSKnowledgeStorePublisher *)self query];
+  if ([query limit])
   {
-    v5 = [(BPSKnowledgeStorePublisher *)self query];
-    v6 = [v5 limit];
+    query2 = [(BPSKnowledgeStorePublisher *)self query];
+    limit = [query2 limit];
 
-    if ((v6 & 0x8000000000000000) == 0)
+    if ((limit & 0x8000000000000000) == 0)
     {
-      v7 = [(BPSKnowledgeStorePublisher *)self query];
-      -[BPSKnowledgeStorePublisher setRemaining:](self, "setRemaining:", [v7 limit]);
+      query3 = [(BPSKnowledgeStorePublisher *)self query];
+      -[BPSKnowledgeStorePublisher setRemaining:](self, "setRemaining:", [query3 limit]);
 
       goto LABEL_6;
     }
@@ -67,8 +67,8 @@ LABEL_6:
 
 - (id)_updateCachedQueryResults
 {
-  v3 = [(BPSKnowledgeStorePublisher *)self results];
-  if ([v3 count])
+  results = [(BPSKnowledgeStorePublisher *)self results];
+  if ([results count])
   {
 
 LABEL_3:
@@ -76,21 +76,21 @@ LABEL_3:
     goto LABEL_11;
   }
 
-  v5 = [(BPSKnowledgeStorePublisher *)self remaining];
+  remaining = [(BPSKnowledgeStorePublisher *)self remaining];
 
-  if (v5 < 1)
+  if (remaining < 1)
   {
     goto LABEL_3;
   }
 
-  v6 = [(BPSKnowledgeStorePublisher *)self remaining];
-  v7 = [(BPSKnowledgeStorePublisher *)self query];
-  [v7 setLimit:v6];
+  remaining2 = [(BPSKnowledgeStorePublisher *)self remaining];
+  query = [(BPSKnowledgeStorePublisher *)self query];
+  [query setLimit:remaining2];
 
-  v8 = [(BPSKnowledgeStorePublisher *)self store];
-  v9 = [(BPSKnowledgeStorePublisher *)self query];
+  store = [(BPSKnowledgeStorePublisher *)self store];
+  query2 = [(BPSKnowledgeStorePublisher *)self query];
   v16 = 0;
-  v10 = [v8 executeQuery:v9 error:&v16];
+  v10 = [store executeQuery:query2 error:&v16];
   v4 = v16;
 
   if ([(BPSKnowledgeStorePublisher *)self remaining]!= 0x7FFFFFFFFFFFFFFFLL)
@@ -98,8 +98,8 @@ LABEL_3:
     -[BPSKnowledgeStorePublisher setRemaining:](self, "setRemaining:", -[BPSKnowledgeStorePublisher remaining](self, "remaining") - [v10 count]);
   }
 
-  v11 = [(BPSKnowledgeStorePublisher *)self query];
-  [v11 setOffset:{objc_msgSend(v11, "offset") + objc_msgSend(v10, "count")}];
+  query3 = [(BPSKnowledgeStorePublisher *)self query];
+  [query3 setOffset:{objc_msgSend(query3, "offset") + objc_msgSend(v10, "count")}];
 
   if (v4)
   {
@@ -123,17 +123,17 @@ LABEL_11:
 
 - (id)nextEvent
 {
-  v3 = [(BPSKnowledgeStorePublisher *)self _updateCachedQueryResults];
-  v4 = [(BPSKnowledgeStorePublisher *)self results];
-  v5 = [v4 count];
+  _updateCachedQueryResults = [(BPSKnowledgeStorePublisher *)self _updateCachedQueryResults];
+  results = [(BPSKnowledgeStorePublisher *)self results];
+  v5 = [results count];
 
   if (v5)
   {
-    v6 = [(BPSKnowledgeStorePublisher *)self results];
-    v7 = [v6 objectAtIndex:0];
+    results2 = [(BPSKnowledgeStorePublisher *)self results];
+    v7 = [results2 objectAtIndex:0];
 
-    v8 = [(BPSKnowledgeStorePublisher *)self results];
-    [v8 removeObjectAtIndex:0];
+    results3 = [(BPSKnowledgeStorePublisher *)self results];
+    [results3 removeObjectAtIndex:0];
   }
 
   else
@@ -146,8 +146,8 @@ LABEL_11:
 
 - (BOOL)completed
 {
-  v2 = [(BPSKnowledgeStorePublisher *)self results];
-  v3 = [v2 count] == 0;
+  results = [(BPSKnowledgeStorePublisher *)self results];
+  v3 = [results count] == 0;
 
   return v3;
 }

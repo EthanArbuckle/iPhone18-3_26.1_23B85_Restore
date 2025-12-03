@@ -1,7 +1,7 @@
 @interface AVCaptionRenderer
 - (AVCaptionRenderer)init;
 - (BOOL)setupFigCaptionClient;
-- (BOOL)synchronizeWithCurrentAccessibilityPreferencesWithCompletionHandler:(id)a3;
+- (BOOL)synchronizeWithCurrentAccessibilityPreferencesWithCompletionHandler:(id)handler;
 - (CGRect)bounds;
 - (NSArray)captionSceneChangesInRange:(CMTimeRange *)consideredTimeRange;
 - (NSArray)captions;
@@ -9,7 +9,7 @@
 - (int)buildFigCaptionArrayFromAVCaptionArrayAndSubmitToRenderSession;
 - (void)dealloc;
 - (void)setCaptions:(NSArray *)captions;
-- (void)setDefaultStyles:(id)a3;
+- (void)setDefaultStyles:(id)styles;
 - (void)teardownFigCaptionClient;
 @end
 
@@ -96,7 +96,7 @@
   return result;
 }
 
-- (BOOL)synchronizeWithCurrentAccessibilityPreferencesWithCompletionHandler:(id)a3
+- (BOOL)synchronizeWithCurrentAccessibilityPreferencesWithCompletionHandler:(id)handler
 {
   if (self->_internal->_captionClient)
   {
@@ -105,7 +105,7 @@
     {
       v5 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v4 userInfo:0];
       v6 = 0;
-      if (!a3)
+      if (!handler)
       {
         return v6;
       }
@@ -116,18 +116,18 @@
 
   v5 = 0;
   v6 = 1;
-  if (a3)
+  if (handler)
   {
 LABEL_6:
-    (*(a3 + 2))(a3, v5);
+    (*(handler + 2))(handler, v5);
   }
 
   return v6;
 }
 
-- (void)setDefaultStyles:(id)a3
+- (void)setDefaultStyles:(id)styles
 {
-  if (a3)
+  if (styles)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -137,20 +137,20 @@ LABEL_6:
 
     internal = self->_internal;
     p_internal = &self->_internal;
-    internal->_defaultStyles = a3;
-    v7 = [a3 textMarkupAttributes];
+    internal->_defaultStyles = styles;
+    textMarkupAttributes = [styles textMarkupAttributes];
   }
 
   else
   {
-    v7 = 0;
+    textMarkupAttributes = 0;
     p_internal = &self->_internal;
     self->_internal->_defaultStyles = 0;
   }
 
   captionClient = (*p_internal)->_captionClient;
 
-  MEMORY[0x1EEDCD298](captionClient, v7);
+  MEMORY[0x1EEDCD298](captionClient, textMarkupAttributes);
 }
 
 - (id)description

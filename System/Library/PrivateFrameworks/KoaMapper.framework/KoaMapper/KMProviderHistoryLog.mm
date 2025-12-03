@@ -1,10 +1,10 @@
 @interface KMProviderHistoryLog
-- (BOOL)recordChangesAcceptedWithVersion:(unint64_t)a3 historyToken:(id)a4;
+- (BOOL)recordChangesAcceptedWithVersion:(unint64_t)version historyToken:(id)token;
 - (BOOL)recordDonationStartTime;
-- (KMProviderHistoryLog)initWithDirectory:(id)a3 originAppId:(id)a4;
+- (KMProviderHistoryLog)initWithDirectory:(id)directory originAppId:(id)id;
 - (id)_recordDonationEndTime;
-- (id)_recordHistoryToken:(id)a3;
-- (id)_recordVersion:(unint64_t)a3;
+- (id)_recordHistoryToken:(id)token;
+- (id)_recordVersion:(unint64_t)version;
 - (id)getDonationEndTime;
 - (id)getDonationStartTime;
 - (id)getHistoryToken;
@@ -13,9 +13,9 @@
 
 @implementation KMProviderHistoryLog
 
-- (BOOL)recordChangesAcceptedWithVersion:(unint64_t)a3 historyToken:(id)a4
+- (BOOL)recordChangesAcceptedWithVersion:(unint64_t)version historyToken:(id)token
 {
-  v6 = a4;
+  tokenCopy = token;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -26,10 +26,10 @@
   v10[2] = __70__KMProviderHistoryLog_recordChangesAcceptedWithVersion_historyToken___block_invoke;
   v10[3] = &unk_279805B30;
   v10[4] = self;
-  v11 = v6;
+  v11 = tokenCopy;
   v12 = &v14;
-  v13 = a3;
-  v8 = v6;
+  versionCopy = version;
+  v8 = tokenCopy;
   dispatch_sync(v7, v10);
 
   LOBYTE(self) = *(v15 + 24);
@@ -68,14 +68,14 @@ void __70__KMProviderHistoryLog_recordChangesAcceptedWithVersion_historyToken___
   return v3;
 }
 
-- (id)_recordHistoryToken:(id)a3
+- (id)_recordHistoryToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v5 = [(KVDictionaryLog *)self->_log mutableDictionaryForKey:@"historyToken" error:0];
   v6 = v5;
-  if (v4)
+  if (tokenCopy)
   {
-    [v5 setObject:v4 forKey:self->_originAppId];
+    [v5 setObject:tokenCopy forKey:self->_originAppId];
   }
 
   else
@@ -86,10 +86,10 @@ void __70__KMProviderHistoryLog_recordChangesAcceptedWithVersion_historyToken___
   return v6;
 }
 
-- (id)_recordVersion:(unint64_t)a3
+- (id)_recordVersion:(unint64_t)version
 {
   v5 = [(KVDictionaryLog *)self->_log mutableDictionaryForKey:@"version" error:0];
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:version];
   [v5 setObject:v6 forKey:self->_originAppId];
 
   return v5;
@@ -248,10 +248,10 @@ void __39__KMProviderHistoryLog_getHistoryToken__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (KMProviderHistoryLog)initWithDirectory:(id)a3 originAppId:(id)a4
+- (KMProviderHistoryLog)initWithDirectory:(id)directory originAppId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
+  directoryCopy = directory;
+  idCopy = id;
   v21.receiver = self;
   v21.super_class = KMProviderHistoryLog;
   v8 = [(KMProviderHistoryLog *)&v21 init];
@@ -269,11 +269,11 @@ void __39__KMProviderHistoryLog_getHistoryToken__block_invoke(uint64_t a1)
     v12[2] = __54__KMProviderHistoryLog_initWithDirectory_originAppId___block_invoke;
     v12[3] = &unk_279805B08;
     v14 = &v15;
-    v13 = v6;
+    v13 = directoryCopy;
     dispatch_sync(v9, v12);
 
     objc_storeStrong(&v8->_log, v16[5]);
-    if (!v8->_log || (objc_storeStrong(&v8->_originAppId, a4), !v8->_originAppId))
+    if (!v8->_log || (objc_storeStrong(&v8->_originAppId, id), !v8->_originAppId))
     {
 
       _Block_object_dispose(&v15, 8);

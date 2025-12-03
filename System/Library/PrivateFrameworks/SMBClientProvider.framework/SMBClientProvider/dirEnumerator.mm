@@ -1,23 +1,23 @@
 @interface dirEnumerator
-- (dirEnumerator)initWithNode:(id)a3;
+- (dirEnumerator)initWithNode:(id)node;
 - (int)closeEnumeration;
-- (int)fillDirEntry:(char *)a3 withBufLen:(unint64_t)a4 DirEntry:(id)a5 IsReadDirAttr:(BOOL)a6 retBytesWritten:(unsigned int *)a7;
+- (int)fillDirEntry:(char *)entry withBufLen:(unint64_t)len DirEntry:(id)dirEntry IsReadDirAttr:(BOOL)attr retBytesWritten:(unsigned int *)written;
 - (int)openEnumeration;
-- (int)resetCurrentIndex:(unint64_t)a3;
+- (int)resetCurrentIndex:(unint64_t)index;
 - (int)restart_dir_enum;
 - (int)skipAnEntry;
 - (smbNode)dnp;
 - (void)close_dir_enum;
-- (void)getEntriesInBuffer:(char *)a3 BufferLen:(unint64_t)a4 CookieIn:(unint64_t)a5 VerifyIn:(unint64_t)a6 IsReadDirAttr:(BOOL)a7 CompletionHandler:(id)a8;
-- (void)processNextEntry:(unsigned int)a3 inbufPtr:(char *)a4 prevEntry:(void *)a5 inbufRemain:(unint64_t)a6 bytesFilled:(unsigned int)a7 IsReadDirAttr:(BOOL)a8 CompletionHandler:(id)a9;
+- (void)getEntriesInBuffer:(char *)buffer BufferLen:(unint64_t)len CookieIn:(unint64_t)in VerifyIn:(unint64_t)verifyIn IsReadDirAttr:(BOOL)attr CompletionHandler:(id)handler;
+- (void)processNextEntry:(unsigned int)entry inbufPtr:(char *)ptr prevEntry:(void *)prevEntry inbufRemain:(unint64_t)remain bytesFilled:(unsigned int)filled IsReadDirAttr:(BOOL)attr CompletionHandler:(id)handler;
 - (void)resetAfterReconnect;
 @end
 
 @implementation dirEnumerator
 
-- (dirEnumerator)initWithNode:(id)a3
+- (dirEnumerator)initWithNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   v13.receiver = self;
   v13.super_class = dirEnumerator;
   v5 = [(dirEnumerator *)&v13 init];
@@ -30,7 +30,7 @@
     tmpDent = v6->_tmpDent;
     v6->_tmpDent = 0;
 
-    objc_storeWeak(&v6->_dnp, v4);
+    objc_storeWeak(&v6->_dnp, nodeCopy);
     dentObjSave = v6->_dentObjSave;
     v6->_dentObjSave = 0;
 
@@ -62,7 +62,7 @@
   v17 = 0x2020000000;
   v18 = 0;
   dispatch_group_enter(v3);
-  v4 = [(dirEnumerator *)self deObj];
+  deObj = [(dirEnumerator *)self deObj];
   v9 = _NSConcreteStackBlock;
   v10 = 3221225472;
   v11 = sub_1000023DC;
@@ -70,7 +70,7 @@
   v14 = &v15;
   v5 = v3;
   v13 = v5;
-  [smb_subr enumDirClose:v4 CompletionHandler:&v9];
+  [smb_subr enumDirClose:deObj CompletionHandler:&v9];
 
   dispatch_group_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
   v6 = [(dirEnumerator *)self dentObjSave:v9];
@@ -96,9 +96,9 @@
   v15 = 0;
   v3 = dispatch_group_create();
   *(v13 + 6) = 0;
-  v4 = [(dirEnumerator *)self dentObjSave];
+  dentObjSave = [(dirEnumerator *)self dentObjSave];
 
-  if (v4)
+  if (dentObjSave)
   {
     [(dirEnumerator *)self setDentObjSave:0];
   }
@@ -135,8 +135,8 @@
 
     else
     {
-      v4 = [(dirEnumerator *)self openEnumeration];
-      if (v4 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+      openEnumeration = [(dirEnumerator *)self openEnumeration];
+      if (openEnumeration && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
         sub_10004BADC();
       }
@@ -146,14 +146,14 @@
   else
   {
     [(dirEnumerator *)self closeEnumeration];
-    v4 = [(dirEnumerator *)self openEnumeration];
-    if (v4 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+    openEnumeration = [(dirEnumerator *)self openEnumeration];
+    if (openEnumeration && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
       sub_10004BA58();
     }
   }
 
-  return v4;
+  return openEnumeration;
 }
 
 - (void)close_dir_enum
@@ -174,14 +174,14 @@
   entryIndex = self->_entryIndex;
   if (entryIndex > 1)
   {
-    v6 = [(dirEnumerator *)self tmpDent];
+    tmpDent = [(dirEnumerator *)self tmpDent];
 
-    if (v6 || (v7 = objc_alloc_init(SMBDirEntry), [(dirEnumerator *)self setTmpDent:v7], v7, [(dirEnumerator *)self tmpDent], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
+    if (tmpDent || (v7 = objc_alloc_init(SMBDirEntry), [(dirEnumerator *)self setTmpDent:v7], v7, [(dirEnumerator *)self tmpDent], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
     {
       v9 = dispatch_group_create();
       dispatch_group_enter(v9);
-      v10 = [(dirEnumerator *)self deObj];
-      v11 = [(dirEnumerator *)self tmpDent];
+      deObj = [(dirEnumerator *)self deObj];
+      tmpDent2 = [(dirEnumerator *)self tmpDent];
       v14[0] = _NSConcreteStackBlock;
       v14[1] = 3221225472;
       v14[2] = sub_100002880;
@@ -190,7 +190,7 @@
       v14[4] = self;
       v12 = v9;
       v15 = v12;
-      [smb_subr enumDirNext:v10 DirEnt:v11 CompletionHandler:v14];
+      [smb_subr enumDirNext:deObj DirEnt:tmpDent2 CompletionHandler:v14];
 
       dispatch_group_wait(v12, 0xFFFFFFFFFFFFFFFFLL);
       v4 = *(v18 + 6);
@@ -218,24 +218,24 @@
   return v4;
 }
 
-- (int)resetCurrentIndex:(unint64_t)a3
+- (int)resetCurrentIndex:(unint64_t)index
 {
   WeakRetained = objc_loadWeakRetained(&self->_dnp);
-  if (self->_entryIndex <= a3 || (v6 = [(dirEnumerator *)self restart_dir_enum]) == 0)
+  if (self->_entryIndex <= index || (v6 = [(dirEnumerator *)self restart_dir_enum]) == 0)
   {
     do
     {
-      if (self->_entryIndex == a3)
+      if (self->_entryIndex == index)
       {
         v7 = 0;
         goto LABEL_11;
       }
 
-      v10 = [(dirEnumerator *)self skipAnEntry];
+      skipAnEntry = [(dirEnumerator *)self skipAnEntry];
     }
 
-    while (!v10);
-    v7 = v10;
+    while (!skipAnEntry);
+    v7 = skipAnEntry;
     v11 = &_os_log_default;
     if (!os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
@@ -244,21 +244,21 @@
 
     if (WeakRetained)
     {
-      v9 = [WeakRetained name];
+      name = [WeakRetained name];
     }
 
     else
     {
-      v9 = @"nil";
+      name = @"nil";
     }
 
     entryIndex = self->_entryIndex;
     v16 = 138413058;
-    v17 = v9;
+    v17 = name;
     v18 = 2048;
     v19 = entryIndex;
     v20 = 2048;
-    v21 = a3;
+    indexCopy2 = index;
     v22 = 1024;
     v23 = v7;
     v14 = "resetCurrentIndex: dnp: %@, entryIndex: %llu, requestedIndex: %llu, skipAnEntry error: %d\n";
@@ -271,21 +271,21 @@
   {
     if (WeakRetained)
     {
-      v9 = [WeakRetained name];
+      name = [WeakRetained name];
     }
 
     else
     {
-      v9 = @"nil";
+      name = @"nil";
     }
 
     v15 = self->_entryIndex;
     v16 = 138413058;
-    v17 = v9;
+    v17 = name;
     v18 = 2048;
     v19 = v15;
     v20 = 2048;
-    v21 = a3;
+    indexCopy2 = index;
     v22 = 1024;
     v23 = v7;
     v14 = "resetCurrentIndex: dnp: %@, entryIndex: %llu, requestedIndex: %llu, restart_dir_enum error: %d\n";
@@ -302,14 +302,14 @@ LABEL_11:
   return v7;
 }
 
-- (int)fillDirEntry:(char *)a3 withBufLen:(unint64_t)a4 DirEntry:(id)a5 IsReadDirAttr:(BOOL)a6 retBytesWritten:(unsigned int *)a7
+- (int)fillDirEntry:(char *)entry withBufLen:(unint64_t)len DirEntry:(id)dirEntry IsReadDirAttr:(BOOL)attr retBytesWritten:(unsigned int *)written
 {
-  v8 = a6;
-  v12 = a5;
-  v13 = v12;
-  if (v12)
+  attrCopy = attr;
+  dirEntryCopy = dirEntry;
+  v13 = dirEntryCopy;
+  if (dirEntryCopy)
   {
-    [v12 attributes];
+    [dirEntryCopy attributes];
     if (DWORD2(v95) == 1)
     {
       v14 = 1;
@@ -391,14 +391,14 @@ LABEL_11:
   v14 = 0;
   v15 = 0;
 LABEL_12:
-  v16 = [v13 name];
-  v17 = [v16 UTF8String];
+  name = [v13 name];
+  uTF8String = [name UTF8String];
 
-  v18 = strnlen(v17, 0xFFuLL);
+  v18 = strnlen(uTF8String, 0xFFuLL);
   v19 = v18;
-  if (v8)
+  if (attrCopy)
   {
-    if (a4 <= 0xC7)
+    if (len <= 0xC7)
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
       {
@@ -408,9 +408,9 @@ LABEL_12:
       goto LABEL_22;
     }
 
-    *(a3 + 5) = 200;
+    *(entry + 5) = 200;
     v20 = (v18 & 0xFFF8) + 208;
-    if ((v20 & 0xFFF8u) > a4)
+    if ((v20 & 0xFFF8u) > len)
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
       {
@@ -420,10 +420,10 @@ LABEL_12:
       goto LABEL_22;
     }
 
-    *a3 = self->_entryIndex + 1;
-    *(a3 + 4) = v20;
-    *(a3 + 6) = v18;
-    *(a3 + 3) = 0;
+    *entry = self->_entryIndex + 1;
+    *(entry + 4) = v20;
+    *(entry + 6) = v18;
+    *(entry + 3) = 0;
     if (v13)
     {
       [v13 attributes];
@@ -437,8 +437,8 @@ LABEL_12:
 
     if ((v14 | v23) == 1)
     {
-      *(a3 + 10) = v15;
-      *(a3 + 3) |= 1uLL;
+      *(entry + 10) = v15;
+      *(entry + 3) |= 1uLL;
     }
 
     if (v13)
@@ -455,49 +455,49 @@ LABEL_12:
         v25 = 448;
       }
 
-      *(a3 + 11) = v25;
-      *(a3 + 3) |= 2uLL;
+      *(entry + 11) = v25;
+      *(entry + 3) |= 2uLL;
       [v13 attributes];
-      *(a3 + 8) = v53;
-      *(a3 + 3) |= 0x40uLL;
+      *(entry + 8) = v53;
+      *(entry + 3) |= 0x40uLL;
       [v13 attributes];
-      *(a3 + 9) = v52;
-      *(a3 + 3) |= 0x80uLL;
+      *(entry + 9) = v52;
+      *(entry + 3) |= 0x80uLL;
       [v13 attributes];
-      *(a3 + 10) = v51;
-      *(a3 + 3) |= 0x100uLL;
+      *(entry + 10) = v51;
+      *(entry + 3) |= 0x100uLL;
       [v13 attributes];
-      *(a3 + 6) = v50;
-      *(a3 + 3) |= 0x400uLL;
+      *(entry + 6) = v50;
+      *(entry + 3) |= 0x400uLL;
       [v13 attributes];
-      *(a3 + 7) = v49;
-      *(a3 + 3) |= 0x800uLL;
+      *(entry + 7) = v49;
+      *(entry + 3) |= 0x800uLL;
       [v13 attributes];
-      v27 = *(a3 + 3);
+      v27 = *(entry + 3);
     }
 
     else
     {
-      *(a3 + 11) = 448;
-      v26 = *(a3 + 3);
-      *(a3 + 3) = v26 | 2;
-      *(a3 + 8) = 0;
-      *(a3 + 9) = 0;
-      *(a3 + 10) = 0;
-      *(a3 + 6) = 0u;
-      *(a3 + 7) = 0u;
+      *(entry + 11) = 448;
+      v26 = *(entry + 3);
+      *(entry + 3) = v26 | 2;
+      *(entry + 8) = 0;
+      *(entry + 9) = 0;
+      *(entry + 10) = 0;
+      *(entry + 6) = 0u;
+      *(entry + 7) = 0u;
       v27 = v26 | 0xDC2;
       v48 = 0u;
     }
 
-    *(a3 + 8) = v48;
-    *(a3 + 3) = v27 | 0x1000;
-    memcpy(&a3[*(a3 + 5)], v17, v19);
-    a3[*(a3 + 5) + v19] = 0;
-    *(a3 + 15) = 0;
+    *(entry + 8) = v48;
+    *(entry + 3) = v27 | 0x1000;
+    memcpy(&entry[*(entry + 5)], uTF8String, v19);
+    entry[*(entry + 5) + v19] = 0;
+    *(entry + 15) = 0;
     if (!v13 || ([v13 attributes], v47 != 2) && (objc_msgSend(v13, "attributes"), (v46 & 0x20) == 0))
     {
-      *(a3 + 15) |= 0x10000u;
+      *(entry + 15) |= 0x10000u;
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_dnp);
@@ -531,10 +531,10 @@ LABEL_12:
     if (!v13)
     {
 LABEL_56:
-      *(a3 + 3) |= 0x20uLL;
+      *(entry + 3) |= 0x20uLL;
 LABEL_57:
       v22 = 0;
-      *a7 = v20;
+      *written = v20;
       goto LABEL_58;
     }
 
@@ -545,7 +545,7 @@ LABEL_49:
       [v13 attributes];
       if ((v43 & 2) != 0)
       {
-        *(a3 + 15) |= 0x8000u;
+        *(entry + 15) |= 0x8000u;
       }
 
       [v13 attributes];
@@ -557,7 +557,7 @@ LABEL_49:
           [v13 attributes];
           if ((v40 & 0x40) != 0 || ([v13 attributes], (v39 & 0x12) != 0))
           {
-            *(a3 + 15) |= 0x40000000u;
+            *(entry + 15) |= 0x40000000u;
           }
         }
       }
@@ -569,13 +569,13 @@ LABEL_47:
     [v13 attributes];
     if (v44)
     {
-      *(a3 + 15) |= 2u;
+      *(entry + 15) |= 2u;
     }
 
     goto LABEL_49;
   }
 
-  if (((v18 + 29) & 0xFFF8uLL) <= a4)
+  if (((v18 + 29) & 0xFFF8uLL) <= len)
   {
     v20 = (v18 + 29) & 0xFFF8;
     if (v13)
@@ -589,13 +589,13 @@ LABEL_47:
       v21 = 0;
     }
 
-    *a3 = v21;
-    *(a3 + 1) = self->_entryIndex + 1;
-    *(a3 + 8) = v20;
-    *(a3 + 9) = v19;
-    a3[20] = v15;
-    v24 = a3 + 21;
-    memcpy(v24, v17, v19);
+    *entry = v21;
+    *(entry + 1) = self->_entryIndex + 1;
+    *(entry + 8) = v20;
+    *(entry + 9) = v19;
+    entry[20] = v15;
+    v24 = entry + 21;
+    memcpy(v24, uTF8String, v19);
     v24[v19] = 0;
     goto LABEL_57;
   }
@@ -607,43 +607,43 @@ LABEL_58:
   return v22;
 }
 
-- (void)getEntriesInBuffer:(char *)a3 BufferLen:(unint64_t)a4 CookieIn:(unint64_t)a5 VerifyIn:(unint64_t)a6 IsReadDirAttr:(BOOL)a7 CompletionHandler:(id)a8
+- (void)getEntriesInBuffer:(char *)buffer BufferLen:(unint64_t)len CookieIn:(unint64_t)in VerifyIn:(unint64_t)verifyIn IsReadDirAttr:(BOOL)attr CompletionHandler:(id)handler
 {
-  v14 = a8;
-  v15 = [(dirEnumerator *)self dirEnumerationSyncQueue];
+  handlerCopy = handler;
+  dirEnumerationSyncQueue = [(dirEnumerator *)self dirEnumerationSyncQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100003B40;
   block[3] = &unk_10008C7E0;
-  v19 = a3;
-  v20 = a4;
-  v21 = a5;
-  v22 = a6;
-  v23 = a7;
+  bufferCopy = buffer;
+  lenCopy = len;
+  inCopy = in;
+  verifyInCopy = verifyIn;
+  attrCopy = attr;
   block[4] = self;
-  v18 = v14;
-  v16 = v14;
-  dispatch_async(v15, block);
+  v18 = handlerCopy;
+  v16 = handlerCopy;
+  dispatch_async(dirEnumerationSyncQueue, block);
 }
 
-- (void)processNextEntry:(unsigned int)a3 inbufPtr:(char *)a4 prevEntry:(void *)a5 inbufRemain:(unint64_t)a6 bytesFilled:(unsigned int)a7 IsReadDirAttr:(BOOL)a8 CompletionHandler:(id)a9
+- (void)processNextEntry:(unsigned int)entry inbufPtr:(char *)ptr prevEntry:(void *)prevEntry inbufRemain:(unint64_t)remain bytesFilled:(unsigned int)filled IsReadDirAttr:(BOOL)attr CompletionHandler:(id)handler
 {
-  v16 = a9;
-  v17 = [(dirEnumerator *)self dirEnumerationSyncQueue];
+  handlerCopy = handler;
+  dirEnumerationSyncQueue = [(dirEnumerator *)self dirEnumerationSyncQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100003F60;
   block[3] = &unk_10008C7E0;
-  v26 = a8;
+  attrCopy = attr;
   block[4] = self;
-  v20 = v16;
-  v24 = a3;
-  v25 = a7;
-  v21 = a5;
-  v22 = a4;
-  v23 = a6;
-  v18 = v16;
-  dispatch_async(v17, block);
+  v20 = handlerCopy;
+  entryCopy = entry;
+  filledCopy = filled;
+  prevEntryCopy = prevEntry;
+  ptrCopy = ptr;
+  remainCopy = remain;
+  v18 = handlerCopy;
+  dispatch_async(dirEnumerationSyncQueue, block);
 }
 
 - (smbNode)dnp

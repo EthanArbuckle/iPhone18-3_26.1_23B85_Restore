@@ -1,28 +1,28 @@
 @interface WBSCloudHistoryVisit
 - (NSDictionary)dictionaryRepresentation;
-- (WBSCloudHistoryVisit)initWithCoder:(id)a3;
-- (WBSCloudHistoryVisit)initWithDictionary:(id)a3;
-- (WBSCloudHistoryVisit)initWithVisitIdentifier:(id)a3 title:(id)a4 loadSuccessful:(BOOL)a5 httpNonGet:(BOOL)a6 redirectSourceVisitIdentifier:(id)a7 redirectDestinationVisitIdentifier:(id)a8;
+- (WBSCloudHistoryVisit)initWithCoder:(id)coder;
+- (WBSCloudHistoryVisit)initWithDictionary:(id)dictionary;
+- (WBSCloudHistoryVisit)initWithVisitIdentifier:(id)identifier title:(id)title loadSuccessful:(BOOL)successful httpNonGet:(BOOL)get redirectSourceVisitIdentifier:(id)visitIdentifier redirectDestinationVisitIdentifier:(id)destinationVisitIdentifier;
 - (WBSCloudHistoryVisit)redirectDestinationVisit;
 - (WBSCloudHistoryVisit)redirectSourceVisit;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WBSCloudHistoryVisit
 
-- (WBSCloudHistoryVisit)initWithDictionary:(id)a3
+- (WBSCloudHistoryVisit)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v29.receiver = self;
   v29.super_class = WBSCloudHistoryVisit;
   v5 = [(WBSCloudHistoryVisit *)&v29 init];
   if (v5)
   {
-    v6 = [v4 safari_stringForKey:@"URL"];
+    v6 = [dictionaryCopy safari_stringForKey:@"URL"];
     if ([v6 length])
     {
-      v7 = [v4 safari_numberForKey:@"VisitTime"];
+      v7 = [dictionaryCopy safari_numberForKey:@"VisitTime"];
       [v7 doubleValue];
       v9 = v8;
 
@@ -30,17 +30,17 @@
       visitIdentifier = v5->_visitIdentifier;
       v5->_visitIdentifier = v10;
 
-      v12 = [v4 safari_stringForKey:@"Title"];
+      v12 = [dictionaryCopy safari_stringForKey:@"Title"];
       v13 = [v12 copy];
       title = v5->_title;
       v5->_title = v13;
 
-      v5->_loadSuccessful = [v4 safari_BOOLForKey:@"LoadSuccessful"];
-      v5->_httpNonGet = [v4 safari_BOOLForKey:@"HTTPNonGet"];
-      v15 = [v4 safari_stringForKey:@"RedirectSourceURL"];
+      v5->_loadSuccessful = [dictionaryCopy safari_BOOLForKey:@"LoadSuccessful"];
+      v5->_httpNonGet = [dictionaryCopy safari_BOOLForKey:@"HTTPNonGet"];
+      v15 = [dictionaryCopy safari_stringForKey:@"RedirectSourceURL"];
       if (v15)
       {
-        v16 = [v4 safari_numberForKey:@"RedirectSourceVisitTime"];
+        v16 = [dictionaryCopy safari_numberForKey:@"RedirectSourceVisitTime"];
         [v16 doubleValue];
         v18 = v17;
 
@@ -49,10 +49,10 @@
         v5->_redirectSourceVisitIdentifier = v19;
       }
 
-      v21 = [v4 safari_stringForKey:@"RedirectDestinationURL"];
+      v21 = [dictionaryCopy safari_stringForKey:@"RedirectDestinationURL"];
       if (v21)
       {
-        v22 = [v4 safari_numberForKey:@"RedirectDestinationVisitTime"];
+        v22 = [dictionaryCopy safari_numberForKey:@"RedirectDestinationVisitTime"];
         [v22 doubleValue];
         v24 = v23;
 
@@ -78,25 +78,25 @@
   return v27;
 }
 
-- (WBSCloudHistoryVisit)initWithVisitIdentifier:(id)a3 title:(id)a4 loadSuccessful:(BOOL)a5 httpNonGet:(BOOL)a6 redirectSourceVisitIdentifier:(id)a7 redirectDestinationVisitIdentifier:(id)a8
+- (WBSCloudHistoryVisit)initWithVisitIdentifier:(id)identifier title:(id)title loadSuccessful:(BOOL)successful httpNonGet:(BOOL)get redirectSourceVisitIdentifier:(id)visitIdentifier redirectDestinationVisitIdentifier:(id)destinationVisitIdentifier
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a7;
-  v16 = a8;
+  identifierCopy = identifier;
+  titleCopy = title;
+  visitIdentifierCopy = visitIdentifier;
+  destinationVisitIdentifierCopy = destinationVisitIdentifier;
   v23.receiver = self;
   v23.super_class = WBSCloudHistoryVisit;
   v17 = [(WBSCloudHistoryVisit *)&v23 init];
   v18 = v17;
   v19 = 0;
-  if (v13 && v17)
+  if (identifierCopy && v17)
   {
-    objc_storeStrong(&v17->_visitIdentifier, a3);
-    objc_storeStrong(&v18->_title, a4);
-    v18->_loadSuccessful = a5;
-    v18->_httpNonGet = a6;
-    objc_storeStrong(&v18->_redirectSourceVisitIdentifier, a7);
-    objc_storeStrong(&v18->_redirectDestinationVisitIdentifier, a8);
+    objc_storeStrong(&v17->_visitIdentifier, identifier);
+    objc_storeStrong(&v18->_title, title);
+    v18->_loadSuccessful = successful;
+    v18->_httpNonGet = get;
+    objc_storeStrong(&v18->_redirectSourceVisitIdentifier, visitIdentifier);
+    objc_storeStrong(&v18->_redirectDestinationVisitIdentifier, destinationVisitIdentifier);
     v19 = v18;
   }
 
@@ -105,53 +105,53 @@
 
 - (NSDictionary)dictionaryRepresentation
 {
-  v3 = [(WBSHistoryVisitIdentifier *)self->_visitIdentifier urlString];
+  urlString = [(WBSHistoryVisitIdentifier *)self->_visitIdentifier urlString];
 
-  if (v3)
+  if (urlString)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
-    v4 = [(WBSHistoryVisitIdentifier *)self->_visitIdentifier urlString];
-    [v3 setObject:v4 forKeyedSubscript:@"URL"];
+    urlString = [MEMORY[0x1E695DF90] dictionary];
+    urlString2 = [(WBSHistoryVisitIdentifier *)self->_visitIdentifier urlString];
+    [urlString setObject:urlString2 forKeyedSubscript:@"URL"];
 
     v5 = MEMORY[0x1E696AD98];
     [(WBSHistoryVisitIdentifier *)self->_visitIdentifier visitTime];
     v6 = [v5 numberWithDouble:?];
-    [v3 setObject:v6 forKeyedSubscript:@"VisitTime"];
+    [urlString setObject:v6 forKeyedSubscript:@"VisitTime"];
 
     title = self->_title;
     if (title)
     {
-      [v3 setObject:title forKeyedSubscript:@"Title"];
+      [urlString setObject:title forKeyedSubscript:@"Title"];
     }
 
     v8 = [MEMORY[0x1E696AD98] numberWithBool:self->_loadSuccessful];
-    [v3 setObject:v8 forKeyedSubscript:@"LoadSuccessful"];
+    [urlString setObject:v8 forKeyedSubscript:@"LoadSuccessful"];
 
     v9 = [MEMORY[0x1E696AD98] numberWithBool:self->_httpNonGet];
-    [v3 setObject:v9 forKeyedSubscript:@"HTTPNonGet"];
+    [urlString setObject:v9 forKeyedSubscript:@"HTTPNonGet"];
 
-    v10 = [(WBSHistoryVisitIdentifier *)self->_redirectSourceVisitIdentifier urlString];
-    if (v10)
+    urlString3 = [(WBSHistoryVisitIdentifier *)self->_redirectSourceVisitIdentifier urlString];
+    if (urlString3)
     {
-      [v3 setObject:v10 forKeyedSubscript:@"RedirectSourceURL"];
+      [urlString setObject:urlString3 forKeyedSubscript:@"RedirectSourceURL"];
       v11 = MEMORY[0x1E696AD98];
       [(WBSHistoryVisitIdentifier *)self->_redirectSourceVisitIdentifier visitTime];
       v12 = [v11 numberWithDouble:?];
-      [v3 setObject:v12 forKeyedSubscript:@"RedirectSourceVisitTime"];
+      [urlString setObject:v12 forKeyedSubscript:@"RedirectSourceVisitTime"];
     }
 
-    v13 = [(WBSHistoryVisitIdentifier *)self->_redirectDestinationVisitIdentifier urlString];
-    if (v13)
+    urlString4 = [(WBSHistoryVisitIdentifier *)self->_redirectDestinationVisitIdentifier urlString];
+    if (urlString4)
     {
-      [v3 setObject:v13 forKeyedSubscript:@"RedirectDestinationURL"];
+      [urlString setObject:urlString4 forKeyedSubscript:@"RedirectDestinationURL"];
       v14 = MEMORY[0x1E696AD98];
       [(WBSHistoryVisitIdentifier *)self->_redirectDestinationVisitIdentifier visitTime];
       v15 = [v14 numberWithDouble:?];
-      [v3 setObject:v15 forKeyedSubscript:@"RedirectDestinationVisitTime"];
+      [urlString setObject:v15 forKeyedSubscript:@"RedirectDestinationVisitTime"];
     }
   }
 
-  return v3;
+  return urlString;
 }
 
 - (id)description
@@ -159,36 +159,36 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WBSHistoryVisitIdentifier *)self->_visitIdentifier urlString];
+  urlString = [(WBSHistoryVisitIdentifier *)self->_visitIdentifier urlString];
   [(WBSHistoryVisitIdentifier *)self->_visitIdentifier visitTime];
   v8 = v7;
   title = self->_title;
-  v10 = [(WBSHistoryVisitIdentifier *)self->_redirectSourceVisitIdentifier urlString];
-  v11 = [(WBSHistoryVisitIdentifier *)self->_redirectDestinationVisitIdentifier urlString];
-  v12 = [v3 stringWithFormat:@"<%@: %p urlString = %@; visitTime = %lf; title = %@; redirectSourceURLString = %@; _redirectDestinationURLString = %@>", v5, self, v6, v8, title, v10, v11];;
+  urlString2 = [(WBSHistoryVisitIdentifier *)self->_redirectSourceVisitIdentifier urlString];
+  urlString3 = [(WBSHistoryVisitIdentifier *)self->_redirectDestinationVisitIdentifier urlString];
+  v12 = [v3 stringWithFormat:@"<%@: %p urlString = %@; visitTime = %lf; title = %@; redirectSourceURLString = %@; _redirectDestinationURLString = %@>", v5, self, urlString, v8, title, urlString2, urlString3];;
 
   return v12;
 }
 
-- (WBSCloudHistoryVisit)initWithCoder:(id)a3
+- (WBSCloudHistoryVisit)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = WBSCloudHistoryVisit;
   v5 = [(WBSCloudHistoryVisit *)&v16 init];
-  if (v5 && ([v4 decodeObjectOfClass:objc_opt_class() forKey:@"URL"], v6 = objc_claimAutoreleasedReturnValue(), visitIdentifier = v5->_visitIdentifier, v5->_visitIdentifier = v6, visitIdentifier, v5->_visitIdentifier))
+  if (v5 && ([coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"URL"], v6 = objc_claimAutoreleasedReturnValue(), visitIdentifier = v5->_visitIdentifier, v5->_visitIdentifier = v6, visitIdentifier, v5->_visitIdentifier))
   {
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Title"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Title"];
     title = v5->_title;
     v5->_title = v8;
 
-    v5->_loadSuccessful = [v4 decodeBoolForKey:@"LoadSuccessful"];
-    v5->_httpNonGet = [v4 decodeBoolForKey:@"HTTPNonGet"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RedirectSourceURL"];
+    v5->_loadSuccessful = [coderCopy decodeBoolForKey:@"LoadSuccessful"];
+    v5->_httpNonGet = [coderCopy decodeBoolForKey:@"HTTPNonGet"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RedirectSourceURL"];
     redirectSourceVisitIdentifier = v5->_redirectSourceVisitIdentifier;
     v5->_redirectSourceVisitIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RedirectDestinationURL"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RedirectDestinationURL"];
     redirectDestinationVisitIdentifier = v5->_redirectDestinationVisitIdentifier;
     v5->_redirectDestinationVisitIdentifier = v12;
 
@@ -203,16 +203,16 @@
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   visitIdentifier = self->_visitIdentifier;
-  v5 = a3;
-  [v5 encodeObject:visitIdentifier forKey:@"URL"];
-  [v5 encodeObject:self->_title forKey:@"Title"];
-  [v5 encodeBool:self->_loadSuccessful forKey:@"LoadSuccessful"];
-  [v5 encodeBool:self->_httpNonGet forKey:@"HTTPNonGet"];
-  [v5 encodeObject:self->_redirectSourceVisitIdentifier forKey:@"RedirectSourceURL"];
-  [v5 encodeObject:self->_redirectDestinationVisitIdentifier forKey:@"RedirectDestinationURL"];
+  coderCopy = coder;
+  [coderCopy encodeObject:visitIdentifier forKey:@"URL"];
+  [coderCopy encodeObject:self->_title forKey:@"Title"];
+  [coderCopy encodeBool:self->_loadSuccessful forKey:@"LoadSuccessful"];
+  [coderCopy encodeBool:self->_httpNonGet forKey:@"HTTPNonGet"];
+  [coderCopy encodeObject:self->_redirectSourceVisitIdentifier forKey:@"RedirectSourceURL"];
+  [coderCopy encodeObject:self->_redirectDestinationVisitIdentifier forKey:@"RedirectDestinationURL"];
 }
 
 - (WBSCloudHistoryVisit)redirectSourceVisit

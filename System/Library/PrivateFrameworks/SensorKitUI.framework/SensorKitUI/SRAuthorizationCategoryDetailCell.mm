@@ -1,55 +1,55 @@
 @interface SRAuthorizationCategoryDetailCell
-- (SRAuthorizationCategoryDetailCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 titleFont:(id)a5 bodyFont:(id)a6 fontColor:(id)a7 OBKStyle:(BOOL)a8;
-- (id)addBulletStackViewForTitleLabel:(id)a3 count:(int64_t)a4;
+- (SRAuthorizationCategoryDetailCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier titleFont:(id)font bodyFont:(id)bodyFont fontColor:(id)color OBKStyle:(BOOL)kStyle;
+- (id)addBulletStackViewForTitleLabel:(id)label count:(int64_t)count;
 - (id)dynamicHeightLabel;
-- (id)stackViewForSubviews:(id)a3 spacing:(double)a4;
+- (id)stackViewForSubviews:(id)subviews spacing:(double)spacing;
 - (void)dealloc;
-- (void)setNumberOfCollectedLabels:(int64_t)a3;
-- (void)setNumberOfNotCollectedLabels:(int64_t)a3;
-- (void)setNumberOfWhatIsSharedLabels:(int64_t)a3;
-- (void)setNumberOfWhenSharedLabels:(int64_t)a3;
-- (void)setShowAppUsage:(BOOL)a3;
+- (void)setNumberOfCollectedLabels:(int64_t)labels;
+- (void)setNumberOfNotCollectedLabels:(int64_t)labels;
+- (void)setNumberOfWhatIsSharedLabels:(int64_t)labels;
+- (void)setNumberOfWhenSharedLabels:(int64_t)labels;
+- (void)setShowAppUsage:(BOOL)usage;
 @end
 
 @implementation SRAuthorizationCategoryDetailCell
 
-- (SRAuthorizationCategoryDetailCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 titleFont:(id)a5 bodyFont:(id)a6 fontColor:(id)a7 OBKStyle:(BOOL)a8
+- (SRAuthorizationCategoryDetailCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier titleFont:(id)font bodyFont:(id)bodyFont fontColor:(id)color OBKStyle:(BOOL)kStyle
 {
   v29[2] = *MEMORY[0x277D85DE8];
   v25.receiver = self;
   v25.super_class = SRAuthorizationCategoryDetailCell;
-  v12 = [(SRAuthorizationCategoryDetailCell *)&v25 initWithStyle:a3 reuseIdentifier:a4];
+  v12 = [(SRAuthorizationCategoryDetailCell *)&v25 initWithStyle:style reuseIdentifier:identifier];
   v13 = v12;
   if (v12)
   {
     [(SRAuthorizationCategoryDetailCell *)v12 setSelectionStyle:0];
-    v13->_titleFont = a5;
-    v13->_bodyFont = a6;
-    v13->_fontColor = a7;
-    v13->_OBKStyle = a8;
+    v13->_titleFont = font;
+    v13->_bodyFont = bodyFont;
+    v13->_fontColor = color;
+    v13->_OBKStyle = kStyle;
     v13->_categorySubTitleLabel = [(SRAuthorizationCategoryDetailCell *)v13 dynamicHeightLabel];
     -[UILabel setFont:](v13->_categorySubTitleLabel, "setFont:", [MEMORY[0x277D74300] fontWithDescriptor:objc_msgSend(objc_msgSend(MEMORY[0x277D74310] size:{"preferredFontDescriptorWithTextStyle:", *MEMORY[0x277D76968]), "fontDescriptorWithSymbolicTraits:", 2), 0.0}]);
     -[UILabel setTextColor:](v13->_categorySubTitleLabel, "setTextColor:", [MEMORY[0x277D75348] secondaryLabelColor]);
     v13->_categoryTitleLabel = [(SRAuthorizationCategoryDetailCell *)v13 dynamicHeightLabel];
     -[UILabel setFont:](v13->_categoryTitleLabel, "setFont:", [MEMORY[0x277D74300] fontWithDescriptor:objc_msgSend(objc_msgSend(MEMORY[0x277D74310] size:{"preferredFontDescriptorWithTextStyle:", *MEMORY[0x277D769A8]), "fontDescriptorWithSymbolicTraits:", 2), 0.0}]);
-    v14 = [(SRAuthorizationCategoryDetailCell *)v13 dynamicHeightLabel];
-    v13->_appUsageTitleLabel = v14;
-    [(UILabel *)v14 setFont:v13->_titleFont];
-    v15 = [(SRAuthorizationCategoryDetailCell *)v13 dynamicHeightLabel];
-    v13->_appUsageBodyLabel = v15;
-    [(UILabel *)v15 setFont:v13->_bodyFont];
-    v16 = [(SRAuthorizationCategoryDetailCell *)v13 dynamicHeightLabel];
-    v13->_collectedTitleLabel = v16;
-    [(UILabel *)v16 setFont:v13->_titleFont];
-    v17 = [(SRAuthorizationCategoryDetailCell *)v13 dynamicHeightLabel];
-    v13->_notCollectedTitleLabel = v17;
-    [(UILabel *)v17 setFont:v13->_titleFont];
-    v18 = [(SRAuthorizationCategoryDetailCell *)v13 dynamicHeightLabel];
-    v13->_whenSharedTitleLabel = v18;
-    [(UILabel *)v18 setFont:v13->_titleFont];
-    v19 = [(SRAuthorizationCategoryDetailCell *)v13 dynamicHeightLabel];
-    v13->_whatIsSharedTitleLabel = v19;
-    [(UILabel *)v19 setFont:v13->_titleFont];
+    dynamicHeightLabel = [(SRAuthorizationCategoryDetailCell *)v13 dynamicHeightLabel];
+    v13->_appUsageTitleLabel = dynamicHeightLabel;
+    [(UILabel *)dynamicHeightLabel setFont:v13->_titleFont];
+    dynamicHeightLabel2 = [(SRAuthorizationCategoryDetailCell *)v13 dynamicHeightLabel];
+    v13->_appUsageBodyLabel = dynamicHeightLabel2;
+    [(UILabel *)dynamicHeightLabel2 setFont:v13->_bodyFont];
+    dynamicHeightLabel3 = [(SRAuthorizationCategoryDetailCell *)v13 dynamicHeightLabel];
+    v13->_collectedTitleLabel = dynamicHeightLabel3;
+    [(UILabel *)dynamicHeightLabel3 setFont:v13->_titleFont];
+    dynamicHeightLabel4 = [(SRAuthorizationCategoryDetailCell *)v13 dynamicHeightLabel];
+    v13->_notCollectedTitleLabel = dynamicHeightLabel4;
+    [(UILabel *)dynamicHeightLabel4 setFont:v13->_titleFont];
+    dynamicHeightLabel5 = [(SRAuthorizationCategoryDetailCell *)v13 dynamicHeightLabel];
+    v13->_whenSharedTitleLabel = dynamicHeightLabel5;
+    [(UILabel *)dynamicHeightLabel5 setFont:v13->_titleFont];
+    dynamicHeightLabel6 = [(SRAuthorizationCategoryDetailCell *)v13 dynamicHeightLabel];
+    v13->_whatIsSharedTitleLabel = dynamicHeightLabel6;
+    [(UILabel *)dynamicHeightLabel6 setFont:v13->_titleFont];
     v29[0] = v13->_appUsageTitleLabel;
     v29[1] = v13->_appUsageBodyLabel;
     v20 = -[SRAuthorizationCategoryDetailCell stackViewForSubviews:spacing:](v13, "stackViewForSubviews:spacing:", [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:2], 6.0);
@@ -116,58 +116,58 @@
   return v3;
 }
 
-- (id)stackViewForSubviews:(id)a3 spacing:(double)a4
+- (id)stackViewForSubviews:(id)subviews spacing:(double)spacing
 {
-  v5 = [objc_alloc(MEMORY[0x277D75A68]) initWithArrangedSubviews:a3];
+  v5 = [objc_alloc(MEMORY[0x277D75A68]) initWithArrangedSubviews:subviews];
   [v5 setAxis:1];
-  [v5 setSpacing:a4];
+  [v5 setSpacing:spacing];
   [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
   return v5;
 }
 
-- (id)addBulletStackViewForTitleLabel:(id)a3 count:(int64_t)a4
+- (id)addBulletStackViewForTitleLabel:(id)label count:(int64_t)count
 {
-  v4 = a4;
+  countCopy = count;
   v30[1] = *MEMORY[0x277D85DE8];
-  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:a4];
-  v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:v4 + 1];
-  [v8 addObject:a3];
-  if (v4 >= 1)
+  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:count];
+  v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:countCopy + 1];
+  [v8 addObject:label];
+  if (countCopy >= 1)
   {
     v9 = *MEMORY[0x277D740A8];
     do
     {
       if ([(SRAuthorizationCategoryDetailCell *)self OBKStyle])
       {
-        v10 = [MEMORY[0x277D755B8] skui_bulletImage];
-        v11 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v10];
-        [v11 setContentMode:1];
-        v12 = [v11 widthAnchor];
-        [v10 size];
-        v14 = v12;
+        skui_bulletImage = [MEMORY[0x277D755B8] skui_bulletImage];
+        dynamicHeightLabel = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:skui_bulletImage];
+        [dynamicHeightLabel setContentMode:1];
+        widthAnchor = [dynamicHeightLabel widthAnchor];
+        [skui_bulletImage size];
+        widthAnchor2 = widthAnchor;
       }
 
       else
       {
-        v11 = [(SRAuthorizationCategoryDetailCell *)self dynamicHeightLabel];
-        [v11 setText:@"•"];
-        [v11 setFont:{-[SRAuthorizationCategoryDetailCell bodyFont](self, "bodyFont")}];
-        v15 = [v11 text];
+        dynamicHeightLabel = [(SRAuthorizationCategoryDetailCell *)self dynamicHeightLabel];
+        [dynamicHeightLabel setText:@"•"];
+        [dynamicHeightLabel setFont:{-[SRAuthorizationCategoryDetailCell bodyFont](self, "bodyFont")}];
+        text = [dynamicHeightLabel text];
         v29 = v9;
-        v30[0] = [v11 font];
-        [v15 sizeWithAttributes:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v30, &v29, 1)}];
+        v30[0] = [dynamicHeightLabel font];
+        [text sizeWithAttributes:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v30, &v29, 1)}];
         v17 = v16;
-        v14 = [v11 widthAnchor];
+        widthAnchor2 = [dynamicHeightLabel widthAnchor];
         v13 = v17;
       }
 
-      [objc_msgSend(v14 constraintEqualToConstant:{v13), "setActive:", 1}];
-      v18 = [(SRAuthorizationCategoryDetailCell *)self dynamicHeightLabel];
-      [v18 setFont:{-[SRAuthorizationCategoryDetailCell bodyFont](self, "bodyFont")}];
-      [v7 addObject:v18];
+      [objc_msgSend(widthAnchor2 constraintEqualToConstant:{v13), "setActive:", 1}];
+      dynamicHeightLabel2 = [(SRAuthorizationCategoryDetailCell *)self dynamicHeightLabel];
+      [dynamicHeightLabel2 setFont:{-[SRAuthorizationCategoryDetailCell bodyFont](self, "bodyFont")}];
+      [v7 addObject:dynamicHeightLabel2];
       v19 = objc_alloc(MEMORY[0x277D75A68]);
-      v28[0] = v11;
-      v28[1] = v18;
+      v28[0] = dynamicHeightLabel;
+      v28[1] = dynamicHeightLabel2;
       v20 = [v19 initWithArrangedSubviews:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", v28, 2)}];
       [v20 layoutMargins];
       [v20 setLayoutMargins:?];
@@ -191,16 +191,16 @@
       }
 
       [v8 addObject:v20];
-      --v4;
+      --countCopy;
     }
 
-    while (v4);
+    while (countCopy);
   }
 
-  v22 = [(SRAuthorizationCategoryDetailCell *)self OBKStyle];
+  oBKStyle = [(SRAuthorizationCategoryDetailCell *)self OBKStyle];
   v23 = 10.0;
   v24 = 16.0;
-  if (v22)
+  if (oBKStyle)
   {
     v23 = 16.0;
   }
@@ -218,43 +218,43 @@
   return v7;
 }
 
-- (void)setShowAppUsage:(BOOL)a3
+- (void)setShowAppUsage:(BOOL)usage
 {
-  v3 = a3;
-  self->_showAppUsage = a3;
-  v4 = [(SRAuthorizationCategoryDetailCell *)self appUsageStack];
+  usageCopy = usage;
+  self->_showAppUsage = usage;
+  appUsageStack = [(SRAuthorizationCategoryDetailCell *)self appUsageStack];
 
-  [(UIStackView *)v4 setHidden:!v3];
+  [(UIStackView *)appUsageStack setHidden:!usageCopy];
 }
 
-- (void)setNumberOfCollectedLabels:(int64_t)a3
+- (void)setNumberOfCollectedLabels:(int64_t)labels
 {
-  self->_numberOfCollectedLabels = a3;
-  v4 = [(SRAuthorizationCategoryDetailCell *)self addBulletStackViewForTitleLabel:[(SRAuthorizationCategoryDetailCell *)self collectedTitleLabel] count:a3];
+  self->_numberOfCollectedLabels = labels;
+  v4 = [(SRAuthorizationCategoryDetailCell *)self addBulletStackViewForTitleLabel:[(SRAuthorizationCategoryDetailCell *)self collectedTitleLabel] count:labels];
 
   [(SRAuthorizationCategoryDetailCell *)self setCollectedLabels:v4];
 }
 
-- (void)setNumberOfNotCollectedLabels:(int64_t)a3
+- (void)setNumberOfNotCollectedLabels:(int64_t)labels
 {
-  self->_numberOfNotCollectedLabels = a3;
-  v4 = [(SRAuthorizationCategoryDetailCell *)self addBulletStackViewForTitleLabel:[(SRAuthorizationCategoryDetailCell *)self notCollectedTitleLabel] count:a3];
+  self->_numberOfNotCollectedLabels = labels;
+  v4 = [(SRAuthorizationCategoryDetailCell *)self addBulletStackViewForTitleLabel:[(SRAuthorizationCategoryDetailCell *)self notCollectedTitleLabel] count:labels];
 
   [(SRAuthorizationCategoryDetailCell *)self setNotCollectedLabels:v4];
 }
 
-- (void)setNumberOfWhenSharedLabels:(int64_t)a3
+- (void)setNumberOfWhenSharedLabels:(int64_t)labels
 {
-  self->_numberOfWhenSharedLabels = a3;
-  v4 = [(SRAuthorizationCategoryDetailCell *)self addBulletStackViewForTitleLabel:[(SRAuthorizationCategoryDetailCell *)self whenSharedTitleLabel] count:a3];
+  self->_numberOfWhenSharedLabels = labels;
+  v4 = [(SRAuthorizationCategoryDetailCell *)self addBulletStackViewForTitleLabel:[(SRAuthorizationCategoryDetailCell *)self whenSharedTitleLabel] count:labels];
 
   [(SRAuthorizationCategoryDetailCell *)self setWhenSharedLabels:v4];
 }
 
-- (void)setNumberOfWhatIsSharedLabels:(int64_t)a3
+- (void)setNumberOfWhatIsSharedLabels:(int64_t)labels
 {
-  self->_numberOfWhatIsSharedLabels = a3;
-  v4 = [(SRAuthorizationCategoryDetailCell *)self addBulletStackViewForTitleLabel:[(SRAuthorizationCategoryDetailCell *)self whatIsSharedTitleLabel] count:a3];
+  self->_numberOfWhatIsSharedLabels = labels;
+  v4 = [(SRAuthorizationCategoryDetailCell *)self addBulletStackViewForTitleLabel:[(SRAuthorizationCategoryDetailCell *)self whatIsSharedTitleLabel] count:labels];
 
   [(SRAuthorizationCategoryDetailCell *)self setWhatIsSharedLabels:v4];
 }

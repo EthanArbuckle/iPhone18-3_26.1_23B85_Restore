@@ -1,20 +1,20 @@
 @interface DDMatchFlightNumber
-- (DDMatchFlightNumber)initWithDDScannerResult:(id)a3;
+- (DDMatchFlightNumber)initWithDDScannerResult:(id)result;
 @end
 
 @implementation DDMatchFlightNumber
 
-- (DDMatchFlightNumber)initWithDDScannerResult:(id)a3
+- (DDMatchFlightNumber)initWithDDScannerResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v14.receiver = self;
   v14.super_class = DDMatchFlightNumber;
-  v5 = [(DDMatch *)&v14 initWithDDScannerResult:v4];
+  v5 = [(DDMatch *)&v14 initWithDDScannerResult:resultCopy];
   if (v5)
   {
     v12 = 0;
     v13 = 0;
-    v6 = [v4 getFlightNumber:&v13 airline:&v12];
+    v6 = [resultCopy getFlightNumber:&v13 airline:&v12];
     v7 = v13;
     v8 = v13;
     v9 = v12;

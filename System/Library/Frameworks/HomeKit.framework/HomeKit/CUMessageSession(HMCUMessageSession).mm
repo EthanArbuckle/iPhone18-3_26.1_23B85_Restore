@@ -23,7 +23,7 @@
   v15[3] = &unk_1E7548CB8;
   v16 = v8;
   v13 = v8;
-  [a1 sendRequestID:@"HMDSS.cu.rq" options:0 request:v12 responseHandler:v15];
+  [self sendRequestID:@"HMDSS.cu.rq" options:0 request:v12 responseHandler:v15];
 
   v14 = *MEMORY[0x1E69E9840];
 }

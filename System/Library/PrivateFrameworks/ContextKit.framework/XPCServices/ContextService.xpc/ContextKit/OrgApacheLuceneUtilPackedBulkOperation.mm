@@ -1,45 +1,45 @@
 @interface OrgApacheLuceneUtilPackedBulkOperation
 + (void)initialize;
-- (int)computeIterationsWithInt:(int)a3 withInt:(int)a4;
-- (int)writeLongWithLong:(int64_t)a3 withByteArray:(id)a4 withInt:(int)a5;
+- (int)computeIterationsWithInt:(int)int withInt:(int)withInt;
+- (int)writeLongWithLong:(int64_t)long withByteArray:(id)array withInt:(int)int;
 @end
 
 @implementation OrgApacheLuceneUtilPackedBulkOperation
 
-- (int)writeLongWithLong:(int64_t)a3 withByteArray:(id)a4 withInt:(int)a5
+- (int)writeLongWithLong:(int64_t)long withByteArray:(id)array withInt:(int)int
 {
-  if (!a4)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
   for (i = 56; i != -8; i -= 8)
   {
-    v6 = a5;
-    v7 = *(a4 + 2);
-    if (a5 < 0 || a5 >= v7)
+    intCopy = int;
+    v7 = *(array + 2);
+    if (int < 0 || int >= v7)
     {
-      IOSArray_throwOutOfBoundsWithMsg(v7, a5);
+      IOSArray_throwOutOfBoundsWithMsg(v7, int);
     }
 
-    *(a4 + a5++ + 12) = a3 >> i;
+    *(array + int++ + 12) = long >> i;
   }
 
-  return v6 + 1;
+  return intCopy + 1;
 }
 
-- (int)computeIterationsWithInt:(int)a3 withInt:(int)a4
+- (int)computeIterationsWithInt:(int)int withInt:(int)withInt
 {
-  v7 = [(OrgApacheLuceneUtilPackedBulkOperation *)self byteBlockCount];
-  v8 = a4 / (v7 + 8 * [(OrgApacheLuceneUtilPackedBulkOperation *)self byteValueCount]);
+  byteBlockCount = [(OrgApacheLuceneUtilPackedBulkOperation *)self byteBlockCount];
+  v8 = withInt / (byteBlockCount + 8 * [(OrgApacheLuceneUtilPackedBulkOperation *)self byteValueCount]);
   if (!v8)
   {
     return 1;
   }
 
-  if (([(OrgApacheLuceneUtilPackedBulkOperation *)self byteValueCount]* (v8 - 1)) >= a3)
+  if (([(OrgApacheLuceneUtilPackedBulkOperation *)self byteValueCount]* (v8 - 1)) >= int)
   {
-    v9 = JavaLangMath_ceilWithDouble_(a3 / [(OrgApacheLuceneUtilPackedBulkOperation *)self byteValueCount]);
+    v9 = JavaLangMath_ceilWithDouble_(int / [(OrgApacheLuceneUtilPackedBulkOperation *)self byteValueCount]);
     if (v9 < 0.0)
     {
       v10 = 0x80000000;
@@ -66,7 +66,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v14[0] = new_OrgApacheLuceneUtilPackedBulkOperationPacked1_init();
     v14[1] = new_OrgApacheLuceneUtilPackedBulkOperationPacked2_init();

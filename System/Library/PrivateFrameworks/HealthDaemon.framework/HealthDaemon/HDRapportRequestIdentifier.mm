@@ -1,21 +1,21 @@
 @interface HDRapportRequestIdentifier
-- (HDRapportRequestIdentifier)initWithSchemaIdentifier:(int64_t)a3 name:(id)a4;
+- (HDRapportRequestIdentifier)initWithSchemaIdentifier:(int64_t)identifier name:(id)name;
 - (id)description;
 @end
 
 @implementation HDRapportRequestIdentifier
 
-- (HDRapportRequestIdentifier)initWithSchemaIdentifier:(int64_t)a3 name:(id)a4
+- (HDRapportRequestIdentifier)initWithSchemaIdentifier:(int64_t)identifier name:(id)name
 {
-  v6 = a4;
+  nameCopy = name;
   v12.receiver = self;
   v12.super_class = HDRapportRequestIdentifier;
   v7 = [(HDRapportRequestIdentifier *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_schemaIdentifier = a3;
-    v9 = [v6 copy];
+    v7->_schemaIdentifier = identifier;
+    v9 = [nameCopy copy];
     name = v8->_name;
     v8->_name = v9;
   }

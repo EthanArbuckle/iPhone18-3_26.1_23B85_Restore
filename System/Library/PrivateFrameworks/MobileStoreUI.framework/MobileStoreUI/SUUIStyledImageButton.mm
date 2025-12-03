@@ -1,23 +1,23 @@
 @interface SUUIStyledImageButton
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGRect)hitRect;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SUUIStyledImageButton)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SUUIStyledImageButton)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)bigHitInsets;
 - (UIEdgeInsets)hitRectInsets;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (void)setBackgroundColor:(id)color;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 @end
 
 @implementation SUUIStyledImageButton
 
-- (SUUIStyledImageButton)initWithFrame:(CGRect)a3
+- (SUUIStyledImageButton)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = SUUIStyledImageButton;
-  v3 = [(SUUIStyledImageButton *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUIStyledImageButton *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [SUUIImageView alloc];
@@ -42,32 +42,32 @@
   return v3;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   self->_didInitialHighlightForTouch = 0;
   v4.receiver = self;
   v4.super_class = SUUIStyledImageButton;
-  [(SUUIStyledImageButton *)&v4 touchesBegan:a3 withEvent:a4];
+  [(SUUIStyledImageButton *)&v4 touchesBegan:began withEvent:event];
 }
 
 - (CGRect)hitRect
 {
   if (self->_useBigHitTarget)
   {
-    v16 = self;
+    selfCopy = self;
     v3 = &OBJC_IVAR___SUUIStyledImageButton__bigHitInsets;
-    v4 = &v16;
+    v4 = &selfCopy;
   }
 
   else
   {
-    v15 = self;
+    selfCopy2 = self;
     v3 = &OBJC_IVAR___SUUIStyledImageButton__hitRectInsets;
-    v4 = &v15;
+    v4 = &selfCopy2;
   }
 
   v4[1] = SUUIStyledImageButton;
-  objc_msgSendSuper2(v4, sel_hitRect, v15);
+  objc_msgSendSuper2(v4, sel_hitRect, selfCopy2);
   v5 = (self + *v3);
   v6 = v5[1];
   v8 = v7 + v6;
@@ -96,10 +96,10 @@
   [(SUUIImageView *)additionalImageView setFrame:v8, CGRectGetMidY(v11) - v6 * 0.5, v4, v6];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(SUUIStyledImageButton *)self hitRect];
   v10 = x;
   v11 = y;
@@ -107,30 +107,30 @@
   return CGRectContainsPoint(*&v6, *&v10);
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   imageView = self->_imageView;
-  v5 = a3;
-  [(SUUIImageView *)imageView setBackgroundColor:v5];
+  colorCopy = color;
+  [(SUUIImageView *)imageView setBackgroundColor:colorCopy];
   additionalImageView = self->_additionalImageView;
-  v7 = [MEMORY[0x277D75348] clearColor];
-  [(SUUIImageView *)additionalImageView setBackgroundColor:v7];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(SUUIImageView *)additionalImageView setBackgroundColor:clearColor];
 
   v8.receiver = self;
   v8.super_class = SUUIStyledImageButton;
-  [(SUUIStyledImageButton *)&v8 setBackgroundColor:v5];
+  [(SUUIStyledImageButton *)&v8 setBackgroundColor:colorCopy];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  if ([(SUUIStyledImageButton *)self isHighlighted]!= a3)
+  highlightedCopy = highlighted;
+  if ([(SUUIStyledImageButton *)self isHighlighted]!= highlighted)
   {
     v7.receiver = self;
     v7.super_class = SUUIStyledImageButton;
-    [(SUUIStyledImageButton *)&v7 setHighlighted:v3];
+    [(SUUIStyledImageButton *)&v7 setHighlighted:highlightedCopy];
     v5 = 1.0;
-    if (v3 && (v5 = 0.2, !self->_didInitialHighlightForTouch))
+    if (highlightedCopy && (v5 = 0.2, !self->_didInitialHighlightForTouch))
     {
       [(SUUIStyledImageButton *)self setAlpha:0.2, 0.2];
       self->_didInitialHighlightForTouch = 1;
@@ -149,9 +149,9 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(SUUIImageView *)self->_imageView sizeThatFits:a3.width, a3.height];
+  [(SUUIImageView *)self->_imageView sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;

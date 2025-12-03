@@ -1,14 +1,14 @@
 @interface RegWarpHelperShaders
-- (RegWarpHelperShaders)initWithMetalContext:(id)a3;
+- (RegWarpHelperShaders)initWithMetalContext:(id)context;
 @end
 
 @implementation RegWarpHelperShaders
 
-- (RegWarpHelperShaders)initWithMetalContext:(id)a3
+- (RegWarpHelperShaders)initWithMetalContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v17 = 0;
-  if (!v4)
+  if (!contextCopy)
   {
     FigDebugAssert3();
     v16 = 0;
@@ -31,7 +31,7 @@ LABEL_10:
     goto LABEL_5;
   }
 
-  v7 = objc_msgSend_computePipelineStateFor_constants_fault_(v4, v5, @"rwppDownsampleAndConvert10To8", 0, &v17);
+  v7 = objc_msgSend_computePipelineStateFor_constants_fault_(contextCopy, v5, @"rwppDownsampleAndConvert10To8", 0, &v17);
   downsampleAndConvert10To8 = v6->_downsampleAndConvert10To8;
   v6->_downsampleAndConvert10To8 = v7;
 
@@ -41,7 +41,7 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v10 = objc_msgSend_computePipelineStateFor_constants_fault_(v4, v9, @"downsampleRGBToLuma", 0, &v17);
+  v10 = objc_msgSend_computePipelineStateFor_constants_fault_(contextCopy, v9, @"downsampleRGBToLuma", 0, &v17);
   downsampleRGBToLuma = v6->_downsampleRGBToLuma;
   v6->_downsampleRGBToLuma = v10;
 

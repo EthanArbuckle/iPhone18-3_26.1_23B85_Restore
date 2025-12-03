@@ -1,6 +1,6 @@
 @interface MTRElectricalPowerMeasurementClusterHarmonicMeasurementStruct
 - (MTRElectricalPowerMeasurementClusterHarmonicMeasurementStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRElectricalPowerMeasurementClusterHarmonicMeasurementStruct);
-  v5 = [(MTRElectricalPowerMeasurementClusterHarmonicMeasurementStruct *)self order];
-  [(MTRElectricalPowerMeasurementClusterHarmonicMeasurementStruct *)v4 setOrder:v5];
+  order = [(MTRElectricalPowerMeasurementClusterHarmonicMeasurementStruct *)self order];
+  [(MTRElectricalPowerMeasurementClusterHarmonicMeasurementStruct *)v4 setOrder:order];
 
-  v6 = [(MTRElectricalPowerMeasurementClusterHarmonicMeasurementStruct *)self measurement];
-  [(MTRElectricalPowerMeasurementClusterHarmonicMeasurementStruct *)v4 setMeasurement:v6];
+  measurement = [(MTRElectricalPowerMeasurementClusterHarmonicMeasurementStruct *)self measurement];
+  [(MTRElectricalPowerMeasurementClusterHarmonicMeasurementStruct *)v4 setMeasurement:measurement];
 
   return v4;
 }

@@ -1,25 +1,25 @@
 @interface BSServiceFeatureFlag
 - (BOOL)isEnabled;
-- (BSServiceFeatureFlag)initWithDomain:(id)a3 featureName:(id)a4;
+- (BSServiceFeatureFlag)initWithDomain:(id)domain featureName:(id)name;
 - (id)description;
 @end
 
 @implementation BSServiceFeatureFlag
 
-- (BSServiceFeatureFlag)initWithDomain:(id)a3 featureName:(id)a4
+- (BSServiceFeatureFlag)initWithDomain:(id)domain featureName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  domainCopy = domain;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = BSServiceFeatureFlag;
   v8 = [(BSServiceFeatureFlag *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [domainCopy copy];
     domain = v8->_domain;
     v8->_domain = v9;
 
-    v11 = [v7 copy];
+    v11 = [nameCopy copy];
     featureName = v8->_featureName;
     v8->_featureName = v11;
   }
@@ -50,9 +50,9 @@
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
   [v3 appendString:self->_domain withName:@"domain"];
   [v3 appendString:self->_featureName withName:@"featureName"];
-  v4 = [v3 build];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 @end

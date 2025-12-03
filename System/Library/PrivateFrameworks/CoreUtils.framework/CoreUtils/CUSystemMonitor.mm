@@ -48,7 +48,7 @@
 - (unsigned)netFlags;
 - (unsigned)systemUIFlags;
 - (unsigned)wifiFlags;
-- (void)activateWithCompletion:(id)a3;
+- (void)activateWithCompletion:(id)completion;
 - (void)invalidate;
 @end
 
@@ -998,17 +998,17 @@ void __29__CUSystemMonitor_invalidate__block_invoke(uint64_t a1, uint64_t a2, ui
   }
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __42__CUSystemMonitor_activateWithCompletion___block_invoke;
   v7[3] = &unk_1E73A49A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 

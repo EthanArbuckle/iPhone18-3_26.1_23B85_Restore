@@ -1,32 +1,32 @@
 @interface _UISceneUserActivityBSActionsHandler
-- (id)_launchOptionsFromActions:(id)a3 forFBSScene:(id)a4 uiSceneSession:(id)a5 transitionContext:(id)a6;
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6;
+- (id)_launchOptionsFromActions:(id)actions forFBSScene:(id)scene uiSceneSession:(id)session transitionContext:(id)context;
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context;
 @end
 
 @implementation _UISceneUserActivityBSActionsHandler
 
-- (id)_launchOptionsFromActions:(id)a3 forFBSScene:(id)a4 uiSceneSession:(id)a5 transitionContext:(id)a6
+- (id)_launchOptionsFromActions:(id)actions forFBSScene:(id)scene uiSceneSession:(id)session transitionContext:(id)context
 {
   v42 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  actionsCopy = actions;
+  sceneCopy = scene;
+  sessionCopy = session;
+  contextCopy = context;
   v13 = objc_alloc_init(_UISceneConnectionOptionsContext);
-  [(_UISceneConnectionOptionsContext *)v13 setUnprocessedActions:v9];
+  [(_UISceneConnectionOptionsContext *)v13 setUnprocessedActions:actionsCopy];
   v33 = v13;
   [(_UISceneConnectionOptionsContext *)v13 setLaunchOptionsDictionary:MEMORY[0x1E695E0F8]];
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v14 = v9;
+  v14 = actionsCopy;
   v15 = [v14 countByEnumeratingWithState:&v35 objects:v41 count:16];
   if (v15)
   {
     v16 = v15;
-    v31 = v11;
-    v32 = v10;
+    v31 = sessionCopy;
+    v32 = sceneCopy;
     v34 = 0;
     v17 = 0;
     v18 = *v36;
@@ -42,10 +42,10 @@
         v20 = *(*(&v35 + 1) + 8 * i);
         if ([v20 UIActionType] == 6)
         {
-          if ([v12 isUISubclass])
+          if ([contextCopy isUISubclass])
           {
-            v21 = [v12 payload];
-            v22 = [v21 objectForKeyedSubscript:@"UIApplicationLaunchOptionsSourceApplicationKey"];
+            payload = [contextCopy payload];
+            v22 = [payload objectForKeyedSubscript:@"UIApplicationLaunchOptionsSourceApplicationKey"];
           }
 
           else
@@ -53,8 +53,8 @@
             v22 = 0;
           }
 
-          v23 = [v12 originatingProcess];
-          v24 = [_UISceneUserActivityManager _activityContinuationDictionaryWithAction:v20 sourceApplication:v22 originatingProcess:v23];
+          originatingProcess = [contextCopy originatingProcess];
+          v24 = [_UISceneUserActivityManager _activityContinuationDictionaryWithAction:v20 sourceApplication:v22 originatingProcess:originatingProcess];
 
           if (v24)
           {
@@ -102,13 +102,13 @@
       [(_UISceneConnectionOptionsContext *)v33 setUnprocessedActions:v28];
 
       v29 = v34;
-      v11 = v31;
-      v10 = v32;
+      sessionCopy = v31;
+      sceneCopy = v32;
       goto LABEL_26;
     }
 
-    v11 = v31;
-    v10 = v32;
+    sessionCopy = v31;
+    sceneCopy = v32;
   }
 
   else
@@ -124,17 +124,17 @@ LABEL_26:
   return v33;
 }
 
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context
 {
   v38 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v10;
+  actionsCopy = actions;
+  sceneCopy = scene;
+  iSceneCopy = iScene;
+  contextCopy = context;
+  v14 = actionsCopy;
   if (!self->_sceneUserActivityManager)
   {
-    v15 = [_UISceneUserActivityManager _userActivityManagerForScene:v12];
+    v15 = [_UISceneUserActivityManager _userActivityManagerForScene:iSceneCopy];
     sceneUserActivityManager = self->_sceneUserActivityManager;
     self->_sceneUserActivityManager = v15;
   }
@@ -165,10 +165,10 @@ LABEL_26:
       v23 = *(*(&v33 + 1) + 8 * i);
       if ([v23 UIActionType] == 6)
       {
-        if ([v13 isUISubclass])
+        if ([contextCopy isUISubclass])
         {
-          v24 = [v13 payload];
-          v25 = [v24 objectForKeyedSubscript:@"UIApplicationLaunchOptionsSourceApplicationKey"];
+          payload = [contextCopy payload];
+          v25 = [payload objectForKeyedSubscript:@"UIApplicationLaunchOptionsSourceApplicationKey"];
         }
 
         else
@@ -176,8 +176,8 @@ LABEL_26:
           v25 = 0;
         }
 
-        v26 = [v13 originatingProcess];
-        v27 = [_UISceneUserActivityManager _activityContinuationDictionaryWithAction:v23 sourceApplication:v25 originatingProcess:v26];
+        originatingProcess = [contextCopy originatingProcess];
+        v27 = [_UISceneUserActivityManager _activityContinuationDictionaryWithAction:v23 sourceApplication:v25 originatingProcess:originatingProcess];
 
         if (!v27)
         {
@@ -197,17 +197,17 @@ LABEL_21:
             goto LABEL_22;
           }
 
-          v29 = [(_UISceneUserActivityManager *)v28 _activityContinuationManager];
-          v30 = [v12 activationState] == 2;
+          _activityContinuationManager = [(_UISceneUserActivityManager *)v28 _activityContinuationManager];
+          isSuspended = [iSceneCopy activationState] == 2;
         }
 
         else
         {
-          v29 = [UIApp _getActivityContinuationManager];
-          v30 = [UIApp isSuspended];
+          _activityContinuationManager = [UIApp _getActivityContinuationManager];
+          isSuspended = [UIApp isSuspended];
         }
 
-        [v29 handleActivityContinuation:v27 isSuspended:v30];
+        [_activityContinuationManager handleActivityContinuation:v27 isSuspended:isSuspended];
 
         goto LABEL_21;
       }

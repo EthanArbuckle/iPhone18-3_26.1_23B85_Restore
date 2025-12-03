@@ -7,16 +7,16 @@
 
 - (BOOL)isAMOSCommittedIdentifier
 {
-  if (![a1 isAMOSIdentifier])
+  if (![self isAMOSIdentifier])
   {
     return 0;
   }
 
-  v2 = [a1 query];
-  if (v2)
+  query = [self query];
+  if (query)
   {
-    v3 = [a1 query];
-    [v3 rangeOfString:@"committed=yes"];
+    query2 = [self query];
+    [query2 rangeOfString:@"committed=yes"];
     v5 = v4 != 0;
   }
 
@@ -30,11 +30,11 @@
 
 - (BOOL)isAMOSIdentifier
 {
-  v1 = [a1 scheme];
-  v2 = v1;
-  if (v1)
+  scheme = [self scheme];
+  v2 = scheme;
+  if (scheme)
   {
-    v3 = [v1 caseInsensitiveCompare:@"amos"] == 0;
+    v3 = [scheme caseInsensitiveCompare:@"amos"] == 0;
   }
 
   else

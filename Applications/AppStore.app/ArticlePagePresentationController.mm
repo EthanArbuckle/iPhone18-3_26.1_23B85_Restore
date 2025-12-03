@@ -1,24 +1,24 @@
 @interface ArticlePagePresentationController
 - (CGRect)frameOfPresentedViewInContainerView;
-- (_TtC8AppStore33ArticlePagePresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4;
-- (void)_observeScrollViewDidScroll:(id)a3;
+- (_TtC8AppStore33ArticlePagePresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController;
+- (void)_observeScrollViewDidScroll:(id)scroll;
 - (void)containerViewWillLayoutSubviews;
-- (void)dismissTapDidChange:(id)a3;
-- (void)dismissalTransitionDidEnd:(BOOL)a3;
+- (void)dismissTapDidChange:(id)change;
+- (void)dismissalTransitionDidEnd:(BOOL)end;
 - (void)dismissalTransitionWillBegin;
-- (void)edgePanDidChange:(id)a3;
-- (void)presentationTransitionDidEnd:(BOOL)a3;
+- (void)edgePanDidChange:(id)change;
+- (void)presentationTransitionDidEnd:(BOOL)end;
 - (void)presentationTransitionWillBegin;
-- (void)scrollPanDidChange:(id)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)scrollPanDidChange:(id)change;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation ArticlePagePresentationController
 
 - (CGRect)frameOfPresentedViewInContainerView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1006D2210();
   v4 = v3;
   v6 = v5;
@@ -36,97 +36,97 @@
   return result;
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
-  v6 = a3;
+  collectionCopy = collection;
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_1006D27A8(v6, a4);
+  selfCopy = self;
+  sub_1006D27A8(collectionCopy, coordinator);
 
   swift_unknownObjectRelease();
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  sub_1006D2B38(a4, width, height);
+  selfCopy = self;
+  sub_1006D2B38(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
 - (void)containerViewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1006D2CEC();
 }
 
 - (void)presentationTransitionWillBegin
 {
-  v2 = self;
+  selfCopy = self;
   sub_1006D2E34();
 }
 
-- (void)presentationTransitionDidEnd:(BOOL)a3
+- (void)presentationTransitionDidEnd:(BOOL)end
 {
-  v4 = self;
-  sub_1006D3444(a3);
+  selfCopy = self;
+  sub_1006D3444(end);
 }
 
 - (void)dismissalTransitionWillBegin
 {
-  v2 = self;
+  selfCopy = self;
   sub_1006D365C();
 }
 
-- (void)dismissalTransitionDidEnd:(BOOL)a3
+- (void)dismissalTransitionDidEnd:(BOOL)end
 {
-  if (a3)
+  if (end)
   {
     v3 = *(&self->super.super.isa + OBJC_IVAR____TtC8AppStore33ArticlePagePresentationController_overlayTintView);
-    v4 = self;
+    selfCopy = self;
     [v3 removeFromSuperview];
-    [*(&v4->super.super.isa + OBJC_IVAR____TtC8AppStore33ArticlePagePresentationController_overlayBlurView) removeFromSuperview];
+    [*(&selfCopy->super.super.isa + OBJC_IVAR____TtC8AppStore33ArticlePagePresentationController_overlayBlurView) removeFromSuperview];
   }
 }
 
-- (void)dismissTapDidChange:(id)a3
+- (void)dismissTapDidChange:(id)change
 {
-  v4 = a3;
-  v6 = self;
-  if ([v4 state] == 3)
+  changeCopy = change;
+  selfCopy = self;
+  if ([changeCopy state] == 3)
   {
-    v5 = [(ArticlePagePresentationController *)v6 presentedViewController];
-    [v5 dismissViewControllerAnimated:1 completion:0];
+    presentedViewController = [(ArticlePagePresentationController *)selfCopy presentedViewController];
+    [presentedViewController dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (void)edgePanDidChange:(id)a3
+- (void)edgePanDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_1006D3E14(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1006D3E14(changeCopy);
 }
 
-- (void)scrollPanDidChange:(id)a3
+- (void)scrollPanDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_1006D4274(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1006D4274(changeCopy);
 }
 
-- (void)_observeScrollViewDidScroll:(id)a3
+- (void)_observeScrollViewDidScroll:(id)scroll
 {
   if (*(&self->super.super.isa + OBJC_IVAR____TtC8AppStore33ArticlePagePresentationController_isScrollDismissActive) == 1)
   {
-    if (a3)
+    if (scroll)
     {
-      v5 = a3;
-      v6 = self;
-      [v5 adjustedContentInset];
-      [v5 contentOffset];
-      [v5 setContentOffset:?];
+      scrollCopy = scroll;
+      selfCopy = self;
+      [scrollCopy adjustedContentInset];
+      [scrollCopy contentOffset];
+      [scrollCopy setContentOffset:?];
     }
 
     else
@@ -136,7 +136,7 @@
   }
 }
 
-- (_TtC8AppStore33ArticlePagePresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4
+- (_TtC8AppStore33ArticlePagePresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

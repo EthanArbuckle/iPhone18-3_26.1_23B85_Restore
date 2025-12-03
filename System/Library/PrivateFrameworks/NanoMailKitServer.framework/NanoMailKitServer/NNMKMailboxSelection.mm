@@ -1,79 +1,79 @@
 @interface NNMKMailboxSelection
-+ (id)mailboxChangesApplyingSelection:(id)a3 previousSelection:(id)a4;
-+ (unint64_t)firstFilterTypeFromTypes:(unint64_t)a3;
-- (BOOL)containsMailboxFilter:(id)a3;
++ (id)mailboxChangesApplyingSelection:(id)selection previousSelection:(id)previousSelection;
++ (unint64_t)firstFilterTypeFromTypes:(unint64_t)types;
+- (BOOL)containsMailboxFilter:(id)filter;
 - (BOOL)hasAggregateMailboxesForAllMessagesOnly;
 - (BOOL)hasSingleMailboxSelectionOnly;
-- (BOOL)isEqual:(id)a3;
-- (NNMKMailboxSelection)initWithAccounts:(id)a3;
-- (NNMKMailboxSelection)initWithCoder:(id)a3;
-- (NNMKMailboxSelection)initWithMailboxes:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NNMKMailboxSelection)initWithAccounts:(id)accounts;
+- (NNMKMailboxSelection)initWithCoder:(id)coder;
+- (NNMKMailboxSelection)initWithMailboxes:(id)mailboxes;
 - (NSArray)allMailboxesSyncEnabled;
 - (NSMutableDictionary)allMailboxesSyncEnabledById;
 - (NSSet)aggregatedMailboxesId;
 - (NSSet)mailboxesWithAllMessagesSyncEnabledIds;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)mailboxWithId:(id)a3;
-- (void)_setupWithAccounts:(id)a3;
-- (void)_setupWithMailboxes:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)mailboxWithId:(id)id;
+- (void)_setupWithAccounts:(id)accounts;
+- (void)_setupWithMailboxes:(id)mailboxes;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NNMKMailboxSelection
 
-- (NNMKMailboxSelection)initWithAccounts:(id)a3
+- (NNMKMailboxSelection)initWithAccounts:(id)accounts
 {
-  v4 = a3;
+  accountsCopy = accounts;
   v8.receiver = self;
   v8.super_class = NNMKMailboxSelection;
   v5 = [(NNMKMailboxSelection *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(NNMKMailboxSelection *)v5 _setupWithAccounts:v4];
+    [(NNMKMailboxSelection *)v5 _setupWithAccounts:accountsCopy];
   }
 
   return v6;
 }
 
-- (NNMKMailboxSelection)initWithMailboxes:(id)a3
+- (NNMKMailboxSelection)initWithMailboxes:(id)mailboxes
 {
-  v4 = a3;
+  mailboxesCopy = mailboxes;
   v8.receiver = self;
   v8.super_class = NNMKMailboxSelection;
   v5 = [(NNMKMailboxSelection *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(NNMKMailboxSelection *)v5 _setupWithMailboxes:v4];
+    [(NNMKMailboxSelection *)v5 _setupWithMailboxes:mailboxesCopy];
   }
 
   return v6;
 }
 
-- (NNMKMailboxSelection)initWithCoder:(id)a3
+- (NNMKMailboxSelection)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = NNMKMailboxSelection;
   v5 = [(NNMKMailboxSelection *)&v18 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyInboxesFilterTypes"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyInboxesFilterTypes"];
     v5->_aggregatedMailboxesFilterTypes = [v6 unsignedIntegerValue];
 
     v7 = MEMORY[0x277CBEB98];
     v8 = objc_opt_class();
     v9 = [v7 setWithObjects:{v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"kNSCodingKeyMailboxesWithAllMessagesSyncEnabled"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"kNSCodingKeyMailboxesWithAllMessagesSyncEnabled"];
     mailboxesWithAllMessagesSyncEnabled = v5->_mailboxesWithAllMessagesSyncEnabled;
     v5->_mailboxesWithAllMessagesSyncEnabled = v10;
 
     v12 = MEMORY[0x277CBEB98];
     v13 = objc_opt_class();
     v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"kNSCodingKeyInboxes"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"kNSCodingKeyInboxes"];
     aggregatedMailboxes = v5->_aggregatedMailboxes;
     v5->_aggregatedMailboxes = v15;
   }
@@ -81,39 +81,39 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [NNMKMailboxSelection alloc];
-  v5 = [(NNMKMailboxSelection *)self allMailboxesSyncEnabled];
-  v6 = [(NNMKMailboxSelection *)v4 initWithMailboxes:v5];
+  allMailboxesSyncEnabled = [(NNMKMailboxSelection *)self allMailboxesSyncEnabled];
+  v6 = [(NNMKMailboxSelection *)v4 initWithMailboxes:allMailboxesSyncEnabled];
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCABB0];
   aggregatedMailboxesFilterTypes = self->_aggregatedMailboxesFilterTypes;
-  v7 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithUnsignedInteger:aggregatedMailboxesFilterTypes];
-  [v7 encodeObject:v6 forKey:@"kNSCodingKeyInboxesFilterTypes"];
+  [coderCopy encodeObject:v6 forKey:@"kNSCodingKeyInboxesFilterTypes"];
 
-  [v7 encodeObject:self->_mailboxesWithAllMessagesSyncEnabled forKey:@"kNSCodingKeyMailboxesWithAllMessagesSyncEnabled"];
-  [v7 encodeObject:self->_aggregatedMailboxes forKey:@"kNSCodingKeyInboxes"];
+  [coderCopy encodeObject:self->_mailboxesWithAllMessagesSyncEnabled forKey:@"kNSCodingKeyMailboxesWithAllMessagesSyncEnabled"];
+  [coderCopy encodeObject:self->_aggregatedMailboxes forKey:@"kNSCodingKeyInboxes"];
 }
 
-- (void)_setupWithMailboxes:(id)a3
+- (void)_setupWithMailboxes:(id)mailboxes
 {
-  v24 = self;
+  selfCopy = self;
   v31 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  mailboxesCopy = mailboxes;
   v25 = [MEMORY[0x277CBEB58] set];
   v4 = [MEMORY[0x277CBEB58] set];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v5 = v3;
+  v5 = mailboxesCopy;
   v6 = [v5 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v6)
   {
@@ -143,10 +143,10 @@
           if ([v13 type] == 1 && ((objc_msgSend(v13, "syncEnabled") & 1) != 0 || objc_msgSend(v13, "syncRequested")))
           {
             ++v10;
-            v15 = [v13 filterType];
+            filterType = [v13 filterType];
             v16 = [v13 hasFilterType:1];
             v9 += v16;
-            v8 |= v15 ^ v16;
+            v8 |= filterType ^ v16;
           }
 
           if ([v13 hasFilterType:1])
@@ -172,43 +172,43 @@
 
   if ([v4 count] < 2)
   {
-    v18 = v24;
+    v18 = selfCopy;
   }
 
   else
   {
-    v18 = v24;
+    v18 = selfCopy;
     if ([v4 count] == v10)
     {
       v8 |= [v4 count] == v9;
     }
   }
 
-  v19 = [v25 allObjects];
+  allObjects = [v25 allObjects];
   mailboxesWithAllMessagesSyncEnabled = v18->_mailboxesWithAllMessagesSyncEnabled;
-  v18->_mailboxesWithAllMessagesSyncEnabled = v19;
+  v18->_mailboxesWithAllMessagesSyncEnabled = allObjects;
 
   v18->_aggregatedMailboxesFilterTypes = v8;
   if (v8)
   {
-    v21 = [v4 allObjects];
+    allObjects2 = [v4 allObjects];
     aggregatedMailboxes = v18->_aggregatedMailboxes;
-    v18->_aggregatedMailboxes = v21;
+    v18->_aggregatedMailboxes = allObjects2;
   }
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setupWithAccounts:(id)a3
+- (void)_setupWithAccounts:(id)accounts
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  accountsCopy = accounts;
+  array = [MEMORY[0x277CBEB18] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = accountsCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -224,8 +224,8 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * v10) mailboxes];
-        [v5 addObjectsFromArray:v11];
+        mailboxes = [*(*(&v13 + 1) + 8 * v10) mailboxes];
+        [array addObjectsFromArray:mailboxes];
 
         ++v10;
       }
@@ -237,7 +237,7 @@
     while (v8);
   }
 
-  [(NNMKMailboxSelection *)self _setupWithMailboxes:v5];
+  [(NNMKMailboxSelection *)self _setupWithMailboxes:array];
   v12 = *MEMORY[0x277D85DE8];
 }
 
@@ -271,8 +271,8 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v15 + 1) + 8 * v9) mailboxId];
-        [(NSSet *)v4 addObject:v10];
+        mailboxId = [*(*(&v15 + 1) + 8 * v9) mailboxId];
+        [(NSSet *)v4 addObject:mailboxId];
 
         ++v9;
       }
@@ -334,8 +334,8 @@ LABEL_10:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v15 + 1) + 8 * v9) mailboxId];
-        [(NSSet *)v4 addObject:v10];
+        mailboxId = [*(*(&v15 + 1) + 8 * v9) mailboxId];
+        [(NSSet *)v4 addObject:mailboxId];
 
         ++v9;
       }
@@ -369,19 +369,19 @@ LABEL_10:
 
 - (NSArray)allMailboxesSyncEnabled
 {
-  v2 = [(NNMKMailboxSelection *)self allMailboxesSyncEnabledById];
-  v3 = [v2 allValues];
+  allMailboxesSyncEnabledById = [(NNMKMailboxSelection *)self allMailboxesSyncEnabledById];
+  allValues = [allMailboxesSyncEnabledById allValues];
 
-  return v3;
+  return allValues;
 }
 
 - (BOOL)hasSingleMailboxSelectionOnly
 {
-  v3 = [(NNMKMailboxSelection *)self mailboxesWithAllMessagesSyncEnabled];
-  if ([v3 count] == 1)
+  mailboxesWithAllMessagesSyncEnabled = [(NNMKMailboxSelection *)self mailboxesWithAllMessagesSyncEnabled];
+  if ([mailboxesWithAllMessagesSyncEnabled count] == 1)
   {
-    v4 = [(NNMKMailboxSelection *)self aggregatedMailboxes];
-    v5 = [v4 count] == 0;
+    aggregatedMailboxes = [(NNMKMailboxSelection *)self aggregatedMailboxes];
+    v5 = [aggregatedMailboxes count] == 0;
   }
 
   else
@@ -395,8 +395,8 @@ LABEL_10:
 - (BOOL)hasAggregateMailboxesForAllMessagesOnly
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = [(NNMKMailboxSelection *)self aggregatedMailboxes];
-  if ([v3 count] < 2)
+  aggregatedMailboxes = [(NNMKMailboxSelection *)self aggregatedMailboxes];
+  if ([aggregatedMailboxes count] < 2)
   {
   }
 
@@ -410,8 +410,8 @@ LABEL_10:
       v26 = 0u;
       v23 = 0u;
       v24 = 0u;
-      v5 = [(NNMKMailboxSelection *)self mailboxesWithAllMessagesSyncEnabled];
-      v6 = [v5 countByEnumeratingWithState:&v23 objects:v28 count:16];
+      mailboxesWithAllMessagesSyncEnabled = [(NNMKMailboxSelection *)self mailboxesWithAllMessagesSyncEnabled];
+      v6 = [mailboxesWithAllMessagesSyncEnabled countByEnumeratingWithState:&v23 objects:v28 count:16];
       if (v6)
       {
         v7 = v6;
@@ -422,7 +422,7 @@ LABEL_5:
         {
           if (*v24 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(mailboxesWithAllMessagesSyncEnabled);
           }
 
           if ([*(*(&v23 + 1) + 8 * v9) type] != 1)
@@ -432,7 +432,7 @@ LABEL_5:
 
           if (v7 == ++v9)
           {
-            v7 = [v5 countByEnumeratingWithState:&v23 objects:v28 count:16];
+            v7 = [mailboxesWithAllMessagesSyncEnabled countByEnumeratingWithState:&v23 objects:v28 count:16];
             if (v7)
             {
               goto LABEL_5;
@@ -451,8 +451,8 @@ LABEL_26:
     }
   }
 
-  v10 = [(NNMKMailboxSelection *)self aggregatedMailboxes];
-  if ([v10 count] == 1)
+  aggregatedMailboxes2 = [(NNMKMailboxSelection *)self aggregatedMailboxes];
+  if ([aggregatedMailboxes2 count] == 1)
   {
     v11 = self->_aggregatedMailboxesFilterTypes;
 
@@ -462,8 +462,8 @@ LABEL_26:
       v22 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v5 = [(NNMKMailboxSelection *)self mailboxesWithAllMessagesSyncEnabled];
-      v12 = [v5 countByEnumeratingWithState:&v19 objects:v27 count:16];
+      mailboxesWithAllMessagesSyncEnabled = [(NNMKMailboxSelection *)self mailboxesWithAllMessagesSyncEnabled];
+      v12 = [mailboxesWithAllMessagesSyncEnabled countByEnumeratingWithState:&v19 objects:v27 count:16];
       if (v12)
       {
         v13 = v12;
@@ -474,7 +474,7 @@ LABEL_17:
         {
           if (*v20 != v14)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(mailboxesWithAllMessagesSyncEnabled);
           }
 
           if ([*(*(&v19 + 1) + 8 * v15) type] != 1)
@@ -484,7 +484,7 @@ LABEL_17:
 
           if (v13 == ++v15)
           {
-            v13 = [v5 countByEnumeratingWithState:&v19 objects:v27 count:16];
+            v13 = [mailboxesWithAllMessagesSyncEnabled countByEnumeratingWithState:&v19 objects:v27 count:16];
             if (v13)
             {
               goto LABEL_17;
@@ -513,21 +513,21 @@ LABEL_28:
   return v16;
 }
 
-- (BOOL)containsMailboxFilter:(id)a3
+- (BOOL)containsMailboxFilter:(id)filter
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 mailboxIds];
-  if ([v5 count] == 1)
+  filterCopy = filter;
+  mailboxIds = [filterCopy mailboxIds];
+  if ([mailboxIds count] == 1)
   {
-    v6 = [v4 isFilteredByType];
+    isFilteredByType = [filterCopy isFilteredByType];
 
-    if ((v6 & 1) == 0)
+    if ((isFilteredByType & 1) == 0)
     {
-      v7 = [(NNMKMailboxSelection *)self mailboxesWithAllMessagesSyncEnabledIds];
-      v8 = [v4 mailboxIds];
-      v9 = [v8 firstObject];
-      LOBYTE(v10) = [v7 containsObject:v9];
+      mailboxesWithAllMessagesSyncEnabledIds = [(NNMKMailboxSelection *)self mailboxesWithAllMessagesSyncEnabledIds];
+      mailboxIds2 = [filterCopy mailboxIds];
+      firstObject = [mailboxIds2 firstObject];
+      LOBYTE(v10) = [mailboxesWithAllMessagesSyncEnabledIds containsObject:firstObject];
 
       goto LABEL_16;
     }
@@ -537,13 +537,13 @@ LABEL_28:
   {
   }
 
-  v10 = -[NNMKMailboxSelection isMailboxFilterEnabled:](self, "isMailboxFilterEnabled:", [v4 mailboxType]);
+  v10 = -[NNMKMailboxSelection isMailboxFilterEnabled:](self, "isMailboxFilterEnabled:", [filterCopy mailboxType]);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v11 = [v4 mailboxIds];
-  v12 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  mailboxIds3 = [filterCopy mailboxIds];
+  v12 = [mailboxIds3 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v12)
   {
     v13 = v12;
@@ -554,12 +554,12 @@ LABEL_28:
       {
         if (*v21 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(mailboxIds3);
         }
 
         v16 = *(*(&v20 + 1) + 8 * i);
-        v17 = [(NNMKMailboxSelection *)self aggregatedMailboxesId];
-        v10 &= [v17 containsObject:v16];
+        aggregatedMailboxesId = [(NNMKMailboxSelection *)self aggregatedMailboxesId];
+        v10 &= [aggregatedMailboxesId containsObject:v16];
 
         if (v10 != 1)
         {
@@ -568,7 +568,7 @@ LABEL_28:
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v13 = [mailboxIds3 countByEnumeratingWithState:&v20 objects:v24 count:16];
       v10 = 1;
       if (v13)
       {
@@ -586,7 +586,7 @@ LABEL_16:
   return v10;
 }
 
-+ (unint64_t)firstFilterTypeFromTypes:(unint64_t)a3
++ (unint64_t)firstFilterTypeFromTypes:(unint64_t)types
 {
   v14 = *MEMORY[0x277D85DE8];
   v9 = 0u;
@@ -608,7 +608,7 @@ LABEL_3:
       }
 
       result = [*(*(&v9 + 1) + 8 * v7) unsignedIntegerValue];
-      if ((result & a3) != 0)
+      if ((result & types) != 0)
       {
         break;
       }
@@ -640,13 +640,13 @@ LABEL_3:
     goto LABEL_10;
   }
 
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(NNMKMailboxSelection *)self mailboxesWithAllMessagesSyncEnabled];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  mailboxesWithAllMessagesSyncEnabled = [(NNMKMailboxSelection *)self mailboxesWithAllMessagesSyncEnabled];
+  v6 = [mailboxesWithAllMessagesSyncEnabled countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -657,78 +657,78 @@ LABEL_3:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(mailboxesWithAllMessagesSyncEnabled);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v10 mailboxId];
-        [(NSMutableDictionary *)v4 setObject:v10 forKeyedSubscript:v11];
+        mailboxId = [v10 mailboxId];
+        [(NSMutableDictionary *)dictionary setObject:v10 forKeyedSubscript:mailboxId];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [mailboxesWithAllMessagesSyncEnabled countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v7);
   }
 
   v12 = self->_allMailboxesSyncEnabledById;
-  self->_allMailboxesSyncEnabledById = v4;
+  self->_allMailboxesSyncEnabledById = dictionary;
 
   allMailboxesSyncEnabledById = self->_allMailboxesSyncEnabledById;
   if (allMailboxesSyncEnabledById)
   {
 LABEL_10:
-    v13 = allMailboxesSyncEnabledById;
+    dictionary2 = allMailboxesSyncEnabledById;
   }
 
   else
   {
-    v13 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   }
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v13;
+  return dictionary2;
 }
 
-- (id)mailboxWithId:(id)a3
+- (id)mailboxWithId:(id)id
 {
-  v4 = a3;
-  v5 = [(NNMKMailboxSelection *)self allMailboxesSyncEnabledById];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  idCopy = id;
+  allMailboxesSyncEnabledById = [(NNMKMailboxSelection *)self allMailboxesSyncEnabledById];
+  v6 = [allMailboxesSyncEnabledById objectForKeyedSubscript:idCopy];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_14;
   }
 
-  v5 = [(NNMKMailboxSelection *)self allMailboxesSyncEnabled];
-  v6 = [v5 count];
-  v7 = [v4 allMailboxesSyncEnabled];
-  v8 = [v7 count];
+  allMailboxesSyncEnabled = [(NNMKMailboxSelection *)self allMailboxesSyncEnabled];
+  v6 = [allMailboxesSyncEnabled count];
+  allMailboxesSyncEnabled2 = [equalCopy allMailboxesSyncEnabled];
+  v8 = [allMailboxesSyncEnabled2 count];
 
   if (v6 != v8)
   {
     goto LABEL_14;
   }
 
-  v9 = [(NNMKMailboxSelection *)self aggregatedMailboxesFilterTypes];
-  if (v9 == [v4 aggregatedMailboxesFilterTypes])
+  aggregatedMailboxesFilterTypes = [(NNMKMailboxSelection *)self aggregatedMailboxesFilterTypes];
+  if (aggregatedMailboxesFilterTypes == [equalCopy aggregatedMailboxesFilterTypes])
   {
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v10 = [(NNMKMailboxSelection *)self allMailboxesSyncEnabled];
-    v11 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    allMailboxesSyncEnabled3 = [(NNMKMailboxSelection *)self allMailboxesSyncEnabled];
+    v11 = [allMailboxesSyncEnabled3 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v11)
     {
       v12 = v11;
@@ -739,13 +739,13 @@ LABEL_10:
         {
           if (*v24 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(allMailboxesSyncEnabled3);
           }
 
           v15 = *(*(&v23 + 1) + 8 * i);
-          v16 = [v4 allMailboxesSyncEnabledById];
-          v17 = [v15 mailboxId];
-          v18 = [v16 objectForKeyedSubscript:v17];
+          allMailboxesSyncEnabledById = [equalCopy allMailboxesSyncEnabledById];
+          mailboxId = [v15 mailboxId];
+          v18 = [allMailboxesSyncEnabledById objectForKeyedSubscript:mailboxId];
 
           if (!v18 || (v19 = [v18 filterType], v19 != objc_msgSend(v15, "filterType")))
           {
@@ -755,7 +755,7 @@ LABEL_10:
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v12 = [allMailboxesSyncEnabled3 countByEnumeratingWithState:&v23 objects:v27 count:16];
         v20 = 1;
         if (v12)
         {
@@ -792,8 +792,8 @@ LABEL_14:
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v4 = [(NNMKMailboxSelection *)self mailboxesWithAllMessagesSyncEnabledIds];
-  v5 = [v4 countByEnumeratingWithState:&v20 objects:v25 count:16];
+  mailboxesWithAllMessagesSyncEnabledIds = [(NNMKMailboxSelection *)self mailboxesWithAllMessagesSyncEnabledIds];
+  v5 = [mailboxesWithAllMessagesSyncEnabledIds countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v5)
   {
     v6 = v5;
@@ -804,13 +804,13 @@ LABEL_14:
       {
         if (*v21 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(mailboxesWithAllMessagesSyncEnabledIds);
         }
 
         [v3 appendFormat:@"%@, ", *(*(&v20 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v20 objects:v25 count:16];
+      v6 = [mailboxesWithAllMessagesSyncEnabledIds countByEnumeratingWithState:&v20 objects:v25 count:16];
     }
 
     while (v6);
@@ -822,8 +822,8 @@ LABEL_14:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v9 = [(NNMKMailboxSelection *)self aggregatedMailboxesId];
-  v10 = [v9 countByEnumeratingWithState:&v16 objects:v24 count:16];
+  aggregatedMailboxesId = [(NNMKMailboxSelection *)self aggregatedMailboxesId];
+  v10 = [aggregatedMailboxesId countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v10)
   {
     v11 = v10;
@@ -834,13 +834,13 @@ LABEL_14:
       {
         if (*v17 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(aggregatedMailboxesId);
         }
 
         [v3 appendFormat:@"%@, ", *(*(&v16 + 1) + 8 * j)];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v16 objects:v24 count:16];
+      v11 = [aggregatedMailboxesId countByEnumeratingWithState:&v16 objects:v24 count:16];
     }
 
     while (v11);
@@ -889,24 +889,24 @@ LABEL_14:
   return v3;
 }
 
-+ (id)mailboxChangesApplyingSelection:(id)a3 previousSelection:(id)a4
++ (id)mailboxChangesApplyingSelection:(id)selection previousSelection:(id)previousSelection
 {
   v33 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  selectionCopy = selection;
+  previousSelectionCopy = previousSelection;
   v7 = objc_opt_new();
   v8 = objc_opt_new();
-  v26 = v6;
-  v9 = [v6 allMailboxesSyncEnabledById];
+  v26 = previousSelectionCopy;
+  allMailboxesSyncEnabledById = [previousSelectionCopy allMailboxesSyncEnabledById];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v27 = v5;
-  v10 = [v5 allMailboxesSyncEnabledById];
-  v11 = [v10 allValues];
+  v27 = selectionCopy;
+  allMailboxesSyncEnabledById2 = [selectionCopy allMailboxesSyncEnabledById];
+  allValues = [allMailboxesSyncEnabledById2 allValues];
 
-  v12 = [v11 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  v12 = [allValues countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v12)
   {
     v13 = v12;
@@ -917,12 +917,12 @@ LABEL_14:
       {
         if (*v29 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(allValues);
         }
 
         v16 = *(*(&v28 + 1) + 8 * i);
-        v17 = [v16 mailboxId];
-        v18 = [v9 objectForKeyedSubscript:v17];
+        mailboxId = [v16 mailboxId];
+        v18 = [allMailboxesSyncEnabledById objectForKeyedSubscript:mailboxId];
 
         if (!v18)
         {
@@ -932,8 +932,8 @@ LABEL_12:
           goto LABEL_13;
         }
 
-        v19 = [v16 mailboxId];
-        [v9 removeObjectForKey:v19];
+        mailboxId2 = [v16 mailboxId];
+        [allMailboxesSyncEnabledById removeObjectForKey:mailboxId2];
 
         if (([v16 isEqual:v18] & 1) == 0)
         {
@@ -949,7 +949,7 @@ LABEL_12:
 LABEL_13:
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v13 = [allValues countByEnumeratingWithState:&v28 objects:v32 count:16];
     }
 
     while (v13);
@@ -958,8 +958,8 @@ LABEL_13:
   v22 = objc_opt_new();
   [v22 setMailboxesToUpdate:v7];
   [v22 setMailboxesToReSync:v8];
-  v23 = [v9 allValues];
-  [v22 setMailboxesToDisableSync:v23];
+  allValues2 = [allMailboxesSyncEnabledById allValues];
+  [v22 setMailboxesToDisableSync:allValues2];
 
   v24 = *MEMORY[0x277D85DE8];
 

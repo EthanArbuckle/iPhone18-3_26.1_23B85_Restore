@@ -1,24 +1,24 @@
 @interface MURealTimeEVChargerUtility
-+ (id)evPlugIconWithConfiguration:(id)a3;
-+ (id)getRealTimeChargerInfoWithGarage:(id)a3 charger:(id)a4;
++ (id)evPlugIconWithConfiguration:(id)configuration;
++ (id)getRealTimeChargerInfoWithGarage:(id)garage charger:(id)charger;
 - (MURealTimeEVChargerUtility)init;
 @end
 
 @implementation MURealTimeEVChargerUtility
 
-+ (id)evPlugIconWithConfiguration:(id)a3
++ (id)evPlugIconWithConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = _s6MapsUI24RealTimeEVChargerUtilityC10evPlugIcon13configurationSo7UIImageCSgSo0K13ConfigurationC_tFZ_0(v3);
+  configurationCopy = configuration;
+  v4 = _s6MapsUI24RealTimeEVChargerUtilityC10evPlugIcon13configurationSo7UIImageCSgSo0K13ConfigurationC_tFZ_0(configurationCopy);
 
   return v4;
 }
 
-+ (id)getRealTimeChargerInfoWithGarage:(id)a3 charger:(id)a4
++ (id)getRealTimeChargerInfoWithGarage:(id)garage charger:(id)charger
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = _s6MapsUI24RealTimeEVChargerUtilityC03getcD11ChargerInfo6garage7chargerSo06MURealdE0CSo15VGVirtualGarageCSg_So24GEOEVChargerAvailabilityCtFZ_0(a3, v7);
+  garageCopy = garage;
+  chargerCopy = charger;
+  v8 = _s6MapsUI24RealTimeEVChargerUtilityC03getcD11ChargerInfo6garage7chargerSo06MURealdE0CSo15VGVirtualGarageCSg_So24GEOEVChargerAvailabilityCtFZ_0(garage, chargerCopy);
 
   return v8;
 }

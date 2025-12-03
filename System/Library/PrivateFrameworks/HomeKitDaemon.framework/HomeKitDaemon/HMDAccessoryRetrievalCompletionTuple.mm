@@ -1,11 +1,11 @@
 @interface HMDAccessoryRetrievalCompletionTuple
 - (HMDAccessory)accessory;
-- (HMDAccessoryRetrievalCompletionTuple)initWithHome:(id)a3 accessory:(id)a4 linkType:(int64_t)a5;
+- (HMDAccessoryRetrievalCompletionTuple)initWithHome:(id)home accessory:(id)accessory linkType:(int64_t)type;
 - (HMDHome)home;
-- (void)addCompletion:(id)a3;
+- (void)addCompletion:(id)completion;
 - (void)start;
 - (void)stop;
-- (void)timerDidFire:(id)a3;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDAccessoryRetrievalCompletionTuple
@@ -24,41 +24,41 @@
   return WeakRetained;
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessoryRetrievalCompletionTuple *)self home];
-  v6 = v5;
-  if (v5)
+  fireCopy = fire;
+  home = [(HMDAccessoryRetrievalCompletionTuple *)self home];
+  v6 = home;
+  if (home)
   {
-    v7 = [v5 workQueue];
-    dispatch_assert_queue_V2(v7);
+    workQueue = [home workQueue];
+    dispatch_assert_queue_V2(workQueue);
 
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v11 = HMFGetLogIdentifier();
-      v12 = [(HMDAccessoryRetrievalCompletionTuple *)v9 accessory];
-      v13 = [v12 shortDescription];
-      v14 = [(HMDAccessoryRetrievalCompletionTuple *)v9 linkType];
-      if (v14 > 2)
+      accessory = [(HMDAccessoryRetrievalCompletionTuple *)selfCopy accessory];
+      shortDescription = [accessory shortDescription];
+      linkType = [(HMDAccessoryRetrievalCompletionTuple *)selfCopy linkType];
+      if (linkType > 2)
       {
         v15 = @"Undefined";
       }
 
       else
       {
-        v15 = off_2786768F0[v14];
+        v15 = off_2786768F0[linkType];
       }
 
       v20 = v15;
       v25 = 138543874;
       v26 = v11;
       v27 = 2112;
-      v28 = v13;
+      v28 = shortDescription;
       v29 = 2112;
       v30 = v20;
       _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Accessory retrieval timed out for accessory %@/%@", &v25, 0x20u);
@@ -66,15 +66,15 @@
 
     objc_autoreleasePoolPop(v8);
     v21 = [MEMORY[0x277CCA9B8] hmErrorWithCode:100];
-    v22 = [(HMDAccessoryRetrievalCompletionTuple *)v9 accessory];
-    v23 = [v22 identifier];
-    [v6 _notifyRetrievalError:v21 accessoryServer:v23 linkType:-[HMDAccessoryRetrievalCompletionTuple linkType](v9 accessoryOperationBlock:{"linkType"), 0}];
+    accessory2 = [(HMDAccessoryRetrievalCompletionTuple *)selfCopy accessory];
+    identifier = [accessory2 identifier];
+    [v6 _notifyRetrievalError:v21 accessoryServer:identifier linkType:-[HMDAccessoryRetrievalCompletionTuple linkType](selfCopy accessoryOperationBlock:{"linkType"), 0}];
   }
 
   else
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy2 = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -92,83 +92,83 @@
 
 - (void)stop
 {
-  v3 = [(HMDAccessoryRetrievalCompletionTuple *)self home];
-  v4 = [v3 workQueue];
-  dispatch_assert_queue_V2(v4);
+  home = [(HMDAccessoryRetrievalCompletionTuple *)self home];
+  workQueue = [home workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v5 = [(HMDAccessoryRetrievalCompletionTuple *)self timer];
-  [v5 cancel];
+  timer = [(HMDAccessoryRetrievalCompletionTuple *)self timer];
+  [timer cancel];
 
   [(HMDAccessoryRetrievalCompletionTuple *)self setTimer:0];
 }
 
 - (void)start
 {
-  v11 = [(HMDAccessoryRetrievalCompletionTuple *)self home];
-  v3 = [v11 workQueue];
-  dispatch_assert_queue_V2(v3);
+  home = [(HMDAccessoryRetrievalCompletionTuple *)self home];
+  workQueue = [home workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDAccessoryRetrievalCompletionTuple *)self timer];
+  timer = [(HMDAccessoryRetrievalCompletionTuple *)self timer];
 
-  if (!v4)
+  if (!timer)
   {
     v5 = objc_alloc(MEMORY[0x277D0F920]);
     [(HMDAccessoryRetrievalCompletionTuple *)self retrievalTimeout];
     v6 = [v5 initWithTimeInterval:0 options:?];
     [(HMDAccessoryRetrievalCompletionTuple *)self setTimer:v6];
 
-    v7 = [v11 workQueue];
-    v8 = [(HMDAccessoryRetrievalCompletionTuple *)self timer];
-    [v8 setDelegateQueue:v7];
+    workQueue2 = [home workQueue];
+    timer2 = [(HMDAccessoryRetrievalCompletionTuple *)self timer];
+    [timer2 setDelegateQueue:workQueue2];
 
-    v9 = [(HMDAccessoryRetrievalCompletionTuple *)self timer];
-    [v9 setDelegate:self];
+    timer3 = [(HMDAccessoryRetrievalCompletionTuple *)self timer];
+    [timer3 setDelegate:self];
 
-    v10 = [(HMDAccessoryRetrievalCompletionTuple *)self timer];
-    [v10 resume];
+    timer4 = [(HMDAccessoryRetrievalCompletionTuple *)self timer];
+    [timer4 resume];
   }
 }
 
-- (void)addCompletion:(id)a3
+- (void)addCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HMDAccessoryRetrievalCompletionTuple *)self home];
-  v6 = [v5 workQueue];
-  dispatch_assert_queue_V2(v6);
+  completionCopy = completion;
+  home = [(HMDAccessoryRetrievalCompletionTuple *)self home];
+  workQueue = [home workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v8 = [(HMDAccessoryRetrievalCompletionTuple *)self completions];
-  v7 = _Block_copy(v4);
+  completions = [(HMDAccessoryRetrievalCompletionTuple *)self completions];
+  v7 = _Block_copy(completionCopy);
 
-  [v8 addObject:v7];
+  [completions addObject:v7];
 }
 
-- (HMDAccessoryRetrievalCompletionTuple)initWithHome:(id)a3 accessory:(id)a4 linkType:(int64_t)a5
+- (HMDAccessoryRetrievalCompletionTuple)initWithHome:(id)home accessory:(id)accessory linkType:(int64_t)type
 {
-  v8 = a3;
-  v9 = a4;
+  homeCopy = home;
+  accessoryCopy = accessory;
   v17.receiver = self;
   v17.super_class = HMDAccessoryRetrievalCompletionTuple;
   v10 = [(HMDAccessoryRetrievalCompletionTuple *)&v17 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_home, v8);
-    objc_storeWeak(&v11->_accessory, v9);
-    v11->_linkType = a5;
-    v12 = [MEMORY[0x277CBEB18] array];
+    objc_storeWeak(&v10->_home, homeCopy);
+    objc_storeWeak(&v11->_accessory, accessoryCopy);
+    v11->_linkType = type;
+    array = [MEMORY[0x277CBEB18] array];
     completions = v11->_completions;
-    v11->_completions = v12;
+    v11->_completions = array;
 
-    if (a5 == 2)
+    if (type == 2)
     {
       v14 = 60.0;
     }
 
     else
     {
-      v15 = [v9 isSuspendCapable];
+      isSuspendCapable = [accessoryCopy isSuspendCapable];
       v14 = 60.0;
-      if (!v15)
+      if (!isSuspendCapable)
       {
         v14 = 30.0;
       }

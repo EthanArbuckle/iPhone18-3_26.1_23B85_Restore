@@ -1,14 +1,14 @@
 @interface _UIContentViewEditingConfiguration
-- (BOOL)isEqual:(id)a3;
-- (_UIContentViewEditingConfiguration)initWithDidEndHandler:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_UIContentViewEditingConfiguration)initWithDidEndHandler:(id)handler;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation _UIContentViewEditingConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v4)
   {
     v5 = [self->_shouldBeginHandler copy];
@@ -34,13 +34,13 @@
   return v4;
 }
 
-- (_UIContentViewEditingConfiguration)initWithDidEndHandler:(id)a3
+- (_UIContentViewEditingConfiguration)initWithDidEndHandler:(id)handler
 {
-  v5 = a3;
-  if (!v5)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"_UIContentViewEditingConfiguration.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"endHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIContentViewEditingConfiguration.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"endHandler"}];
   }
 
   v11.receiver = self;
@@ -48,7 +48,7 @@
   v6 = [(_UIContentViewEditingConfiguration *)&v11 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [handlerCopy copy];
     didEndHandler = v6->_didEndHandler;
     v6->_didEndHandler = v7;
 
@@ -58,16 +58,16 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     LOBYTE(self) = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     if (self)

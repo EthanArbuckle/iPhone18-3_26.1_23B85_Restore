@@ -1,25 +1,25 @@
 @interface MHSchemaMHAcousticFalseTriggerMitigationStarted
-- (BOOL)isEqual:(id)a3;
-- (MHSchemaMHAcousticFalseTriggerMitigationStarted)initWithDictionary:(id)a3;
-- (MHSchemaMHAcousticFalseTriggerMitigationStarted)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MHSchemaMHAcousticFalseTriggerMitigationStarted)initWithDictionary:(id)dictionary;
+- (MHSchemaMHAcousticFalseTriggerMitigationStarted)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MHSchemaMHAcousticFalseTriggerMitigationStarted
 
-- (MHSchemaMHAcousticFalseTriggerMitigationStarted)initWithDictionary:(id)a3
+- (MHSchemaMHAcousticFalseTriggerMitigationStarted)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = MHSchemaMHAcousticFalseTriggerMitigationStarted;
   v5 = [(MHSchemaMHAcousticFalseTriggerMitigationStarted *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"modelVersion"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"modelVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       [(MHSchemaMHAcousticFalseTriggerMitigationStarted *)v5 setModelVersion:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"mitigationType"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"mitigationType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,30 +40,30 @@
   return v5;
 }
 
-- (MHSchemaMHAcousticFalseTriggerMitigationStarted)initWithJSON:(id)a3
+- (MHSchemaMHAcousticFalseTriggerMitigationStarted)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(MHSchemaMHAcousticFalseTriggerMitigationStarted *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(MHSchemaMHAcousticFalseTriggerMitigationStarted *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(MHSchemaMHAcousticFalseTriggerMitigationStarted *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -76,17 +76,17 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
-    v4 = [(MHSchemaMHAcousticFalseTriggerMitigationStarted *)self mitigationType];
+    mitigationType = [(MHSchemaMHAcousticFalseTriggerMitigationStarted *)self mitigationType];
     v5 = @"MHACOUSTICFALSETRIGGERMITIGATOR_TYPE_UNKNOWN";
-    if (v4 == 1)
+    if (mitigationType == 1)
     {
       v5 = @"MHACOUSTICFALSETRIGGERMITIGATOR_TYPE_VOICETRIGGER";
     }
 
-    if (v4 == 2)
+    if (mitigationType == 2)
     {
       v6 = @"MHACOUSTICFALSETRIGGERMITIGATOR_TYPE_CONTINUOUS_CONVERSATION";
     }
@@ -96,19 +96,19 @@
       v6 = v5;
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"mitigationType"];
+    [dictionary setObject:v6 forKeyedSubscript:@"mitigationType"];
   }
 
   if (self->_modelVersion)
   {
-    v7 = [(MHSchemaMHAcousticFalseTriggerMitigationStarted *)self modelVersion];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"modelVersion"];
+    modelVersion = [(MHSchemaMHAcousticFalseTriggerMitigationStarted *)self modelVersion];
+    v8 = [modelVersion copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"modelVersion"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -127,18 +127,18 @@
   return v4 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(MHSchemaMHAcousticFalseTriggerMitigationStarted *)self modelVersion];
-  v6 = [v4 modelVersion];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  modelVersion = [(MHSchemaMHAcousticFalseTriggerMitigationStarted *)self modelVersion];
+  modelVersion2 = [equalCopy modelVersion];
+  v7 = modelVersion2;
+  if ((modelVersion != 0) == (modelVersion2 == 0))
   {
 
 LABEL_12:
@@ -146,13 +146,13 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v8 = [(MHSchemaMHAcousticFalseTriggerMitigationStarted *)self modelVersion];
-  if (v8)
+  modelVersion3 = [(MHSchemaMHAcousticFalseTriggerMitigationStarted *)self modelVersion];
+  if (modelVersion3)
   {
-    v9 = v8;
-    v10 = [(MHSchemaMHAcousticFalseTriggerMitigationStarted *)self modelVersion];
-    v11 = [v4 modelVersion];
-    v12 = [v10 isEqual:v11];
+    v9 = modelVersion3;
+    modelVersion4 = [(MHSchemaMHAcousticFalseTriggerMitigationStarted *)self modelVersion];
+    modelVersion5 = [equalCopy modelVersion];
+    v12 = [modelVersion4 isEqual:modelVersion5];
 
     if (!v12)
     {
@@ -164,7 +164,7 @@ LABEL_12:
   {
   }
 
-  if ((*&self->_has & 1) != (v4[20] & 1))
+  if ((*&self->_has & 1) != (equalCopy[20] & 1))
   {
     goto LABEL_12;
   }
@@ -172,7 +172,7 @@ LABEL_12:
   if (*&self->_has)
   {
     mitigationType = self->_mitigationType;
-    if (mitigationType != [v4 mitigationType])
+    if (mitigationType != [equalCopy mitigationType])
     {
       goto LABEL_12;
     }
@@ -184,12 +184,12 @@ LABEL_13:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
-  v4 = [(MHSchemaMHAcousticFalseTriggerMitigationStarted *)self modelVersion];
+  toCopy = to;
+  modelVersion = [(MHSchemaMHAcousticFalseTriggerMitigationStarted *)self modelVersion];
 
-  if (v4)
+  if (modelVersion)
   {
     PBDataWriterWriteStringField();
   }

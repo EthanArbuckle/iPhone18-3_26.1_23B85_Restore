@@ -1,19 +1,19 @@
 @interface ICDMusicUserSocialProfileRequestContext
-- (BOOL)isEqual:(id)a3;
-- (ICDMusicUserSocialProfileRequestContext)initWithStoreRequestContext:(id)a3 subscriptionStatus:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (ICDMusicUserSocialProfileRequestContext)initWithStoreRequestContext:(id)context subscriptionStatus:(id)status;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation ICDMusicUserSocialProfileRequestContext
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [v4 cacheKey];
-    v6 = [(ICDMusicUserSocialProfileRequestContext *)self cacheKey];
-    v7 = [v5 isEqualToString:v6];
+    cacheKey = [equalCopy cacheKey];
+    cacheKey2 = [(ICDMusicUserSocialProfileRequestContext *)self cacheKey];
+    v7 = [cacheKey isEqualToString:cacheKey2];
   }
 
   else
@@ -24,36 +24,36 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [ICDMusicUserSocialProfileRequestContext allocWithZone:a3];
+  v4 = [ICDMusicUserSocialProfileRequestContext allocWithZone:zone];
   storeRequestContext = self->_storeRequestContext;
   subscriptionStatus = self->_subscriptionStatus;
 
   return [(ICDMusicUserSocialProfileRequestContext *)v4 initWithStoreRequestContext:storeRequestContext subscriptionStatus:subscriptionStatus];
 }
 
-- (ICDMusicUserSocialProfileRequestContext)initWithStoreRequestContext:(id)a3 subscriptionStatus:(id)a4
+- (ICDMusicUserSocialProfileRequestContext)initWithStoreRequestContext:(id)context subscriptionStatus:(id)status
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  statusCopy = status;
   v197.receiver = self;
   v197.super_class = ICDMusicUserSocialProfileRequestContext;
   v8 = [(ICDMusicUserSocialProfileRequestContext *)&v197 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [contextCopy copy];
     storeRequestContext = v8->_storeRequestContext;
     v8->_storeRequestContext = v9;
 
-    objc_storeStrong(&v8->_subscriptionStatus, a4);
-    v196 = [(ICStoreRequestContext *)v8->_storeRequestContext identity];
-    v11 = [v196 accountDSID];
+    objc_storeStrong(&v8->_subscriptionStatus, status);
+    identity = [(ICStoreRequestContext *)v8->_storeRequestContext identity];
+    accountDSID = [identity accountDSID];
     memset(&v199, 0, sizeof(v199));
     v198 = 4001;
     CC_SHA1_Init(&v199);
-    v12 = v11;
-    v13 = [v12 UTF8String];
+    v12 = accountDSID;
+    uTF8String = [v12 UTF8String];
     v14 = [v12 length];
     v15 = v14;
     v16 = ICPushNotificationMessage_ptr;
@@ -64,13 +64,13 @@
         switch(v198)
         {
           case 4001:
-            CC_SHA1_Update(&v199, v13, v14);
+            CC_SHA1_Update(&v199, uTF8String, v14);
             break;
           case 4256:
-            CC_SHA256_Update(&v199, v13, v14);
+            CC_SHA256_Update(&v199, uTF8String, v14);
             break;
           case 4512:
-            CC_SHA512_Update(&v199, v13, v14);
+            CC_SHA512_Update(&v199, uTF8String, v14);
             break;
         }
 
@@ -81,13 +81,13 @@
       {
         if (v198 == 4000)
         {
-          CC_MD5_Update(&v199, v13, v14);
+          CC_MD5_Update(&v199, uTF8String, v14);
         }
 
         goto LABEL_98;
       }
 
-      if (!v13)
+      if (!uTF8String)
       {
         goto LABEL_98;
       }
@@ -95,26 +95,26 @@
       v199.count[0] += v14;
       if (v14 + LODWORD(v199.hash[7]) <= 0x1F)
       {
-        memcpy(&v199.wbuf[-5] + LODWORD(v199.hash[7]), v13, v14);
+        memcpy(&v199.wbuf[-5] + LODWORD(v199.hash[7]), uTF8String, v14);
         v56 = LODWORD(v199.hash[7]) + v15;
 LABEL_72:
         LODWORD(v199.hash[7]) = v56;
         goto LABEL_98;
       }
 
-      v69 = &v13[v14];
+      v69 = &uTF8String[v14];
       if (LODWORD(v199.hash[7]))
       {
-        memcpy(&v199.wbuf[-5] + LODWORD(v199.hash[7]), v13, (32 - LODWORD(v199.hash[7])));
+        memcpy(&v199.wbuf[-5] + LODWORD(v199.hash[7]), uTF8String, (32 - LODWORD(v199.hash[7])));
         v199.count[1] = 0x9E3779B185EBCA87 * __ROR8__(v199.count[1] - 0x3D4D51C2D82B14B1 * v199.hash[3], 33);
         v199.hash[0] = 0x9E3779B185EBCA87 * __ROR8__(v199.hash[0] - 0x3D4D51C2D82B14B1 * v199.hash[4], 33);
         v199.hash[1] = 0x9E3779B185EBCA87 * __ROR8__(v199.hash[1] - 0x3D4D51C2D82B14B1 * v199.hash[5], 33);
         v199.hash[2] = 0x9E3779B185EBCA87 * __ROR8__(v199.hash[2] - 0x3D4D51C2D82B14B1 * v199.hash[6], 33);
-        v13 += (32 - LODWORD(v199.hash[7]));
+        uTF8String += (32 - LODWORD(v199.hash[7]));
         LODWORD(v199.hash[7]) = 0;
       }
 
-      if ((v13 + 32) <= v69)
+      if ((uTF8String + 32) <= v69)
       {
         v70 = v199.count[1];
         v72 = v199.hash[1];
@@ -122,14 +122,14 @@ LABEL_72:
         v71 = v199.hash[2];
         do
         {
-          v70 = 0x9E3779B185EBCA87 * __ROR8__(v70 - 0x3D4D51C2D82B14B1 * *v13, 33);
-          v73 = 0x9E3779B185EBCA87 * __ROR8__(v73 - 0x3D4D51C2D82B14B1 * *(v13 + 1), 33);
-          v72 = 0x9E3779B185EBCA87 * __ROR8__(v72 - 0x3D4D51C2D82B14B1 * *(v13 + 2), 33);
-          v71 = 0x9E3779B185EBCA87 * __ROR8__(v71 - 0x3D4D51C2D82B14B1 * *(v13 + 3), 33);
-          v13 += 32;
+          v70 = 0x9E3779B185EBCA87 * __ROR8__(v70 - 0x3D4D51C2D82B14B1 * *uTF8String, 33);
+          v73 = 0x9E3779B185EBCA87 * __ROR8__(v73 - 0x3D4D51C2D82B14B1 * *(uTF8String + 1), 33);
+          v72 = 0x9E3779B185EBCA87 * __ROR8__(v72 - 0x3D4D51C2D82B14B1 * *(uTF8String + 2), 33);
+          v71 = 0x9E3779B185EBCA87 * __ROR8__(v71 - 0x3D4D51C2D82B14B1 * *(uTF8String + 3), 33);
+          uTF8String += 32;
         }
 
-        while (v13 <= v69 - 32);
+        while (uTF8String <= v69 - 32);
         v199.count[1] = v70;
         v199.hash[0] = v73;
         v199.hash[1] = v72;
@@ -137,9 +137,9 @@ LABEL_72:
       }
 
       v16 = ICPushNotificationMessage_ptr;
-      if (v13 < v69)
+      if (uTF8String < v69)
       {
-        v56 = v69 - v13;
+        v56 = v69 - uTF8String;
         __memcpy_chk();
         goto LABEL_72;
       }
@@ -416,9 +416,9 @@ LABEL_192:
           v188 = v16[88];
           v189 = v8->_hashedDSID;
           v190 = [NSNumber numberWithInteger:[(ICMusicSubscriptionStatus *)v8->_subscriptionStatus statusType]];
-          v191 = [v188 stringWithFormat:@"%@-%@", v189, v190];
+          v190 = [v188 stringWithFormat:@"%@-%@", v189, v190];
           cacheKey = v8->_cacheKey;
-          v8->_cacheKey = v191;
+          v8->_cacheKey = v190;
 
           goto LABEL_193;
         }
@@ -632,7 +632,7 @@ LABEL_20:
             v46 = v15;
             do
             {
-              v47 = *v13++;
+              v47 = *uTF8String++;
               v45 |= v47 << v44;
               v44 += 8;
               --v46;
@@ -665,7 +665,7 @@ LABEL_20:
         }
 
         v22 = 8 * v19;
-        v23 = v13;
+        v23 = uTF8String;
         v24 = v199.hash[2] & 0xFFFFFFFFFFFFFFLL;
         do
         {
@@ -685,7 +685,7 @@ LABEL_20:
         v199.hash[1] = v30;
         v199.count[0] = v29 ^ v24;
         v199.count[1] = v31 ^ __ROR8__(v26, 47);
-        v13 += v20;
+        uTF8String += v20;
         v199.hash[2] = (v20 + v17) << 56;
         v15 = v21;
       }
@@ -698,8 +698,8 @@ LABEL_20:
         v35 = v199.hash[0];
         do
         {
-          v36 = *v13;
-          v13 += 8;
+          v36 = *uTF8String;
+          uTF8String += 8;
           v37 = v34 ^ v36;
           v38 = v33 + v32;
           v39 = v38 ^ __ROR8__(v32, 51);
@@ -728,7 +728,7 @@ LABEL_20:
 
     if (v198 != 2000)
     {
-      if (v198 != 3000 || !v13)
+      if (v198 != 3000 || !uTF8String)
       {
         goto LABEL_98;
       }
@@ -738,10 +738,10 @@ LABEL_20:
       HIDWORD(v199.count[0]) |= v50;
       if (v14 + LODWORD(v199.hash[3]) > 0xF)
       {
-        v61 = &v13[v14];
+        v61 = &uTF8String[v14];
         if (LODWORD(v199.hash[3]))
         {
-          memcpy(&v199.wbuf[-7] + LODWORD(v199.hash[3]), v13, (16 - LODWORD(v199.hash[3])));
+          memcpy(&v199.wbuf[-7] + LODWORD(v199.hash[3]), uTF8String, (16 - LODWORD(v199.hash[3])));
           HIDWORD(v62) = LODWORD(v199.count[1]) - 2048144777 * LODWORD(v199.hash[1]);
           LODWORD(v62) = HIDWORD(v62);
           v63 = -1640531535 * (v62 >> 19);
@@ -754,12 +754,12 @@ LABEL_20:
           LODWORD(v199.hash[0]) = -1640531535 * (v62 >> 19);
           HIDWORD(v62) = HIDWORD(v199.hash[0]) - 2048144777 * HIDWORD(v199.hash[2]);
           LODWORD(v62) = HIDWORD(v62);
-          v13 += (16 - LODWORD(v199.hash[3]));
+          uTF8String += (16 - LODWORD(v199.hash[3]));
           HIDWORD(v199.hash[0]) = -1640531535 * (v62 >> 19);
           LODWORD(v199.hash[3]) = 0;
         }
 
-        if (v13 <= v61 - 16)
+        if (uTF8String <= v61 - 16)
         {
           v64 = v199.count[1];
           v65 = HIDWORD(v199.count[1]);
@@ -767,39 +767,39 @@ LABEL_20:
           v67 = HIDWORD(v199.hash[0]);
           do
           {
-            HIDWORD(v68) = v64 - 2048144777 * *v13;
+            HIDWORD(v68) = v64 - 2048144777 * *uTF8String;
             LODWORD(v68) = HIDWORD(v68);
             v64 = -1640531535 * (v68 >> 19);
-            HIDWORD(v68) = v65 - 2048144777 * *(v13 + 1);
+            HIDWORD(v68) = v65 - 2048144777 * *(uTF8String + 1);
             LODWORD(v68) = HIDWORD(v68);
             v65 = -1640531535 * (v68 >> 19);
-            HIDWORD(v68) = v66 - 2048144777 * *(v13 + 2);
+            HIDWORD(v68) = v66 - 2048144777 * *(uTF8String + 2);
             LODWORD(v68) = HIDWORD(v68);
             v66 = -1640531535 * (v68 >> 19);
-            HIDWORD(v68) = v67 - 2048144777 * *(v13 + 3);
+            HIDWORD(v68) = v67 - 2048144777 * *(uTF8String + 3);
             LODWORD(v68) = HIDWORD(v68);
             v67 = -1640531535 * (v68 >> 19);
-            v13 += 16;
+            uTF8String += 16;
           }
 
-          while (v13 <= v61 - 16);
+          while (uTF8String <= v61 - 16);
           v199.count[1] = __PAIR64__(v65, v64);
           v199.hash[0] = __PAIR64__(v67, v66);
         }
 
         v16 = ICPushNotificationMessage_ptr;
-        if (v13 >= v61)
+        if (uTF8String >= v61)
         {
           goto LABEL_98;
         }
 
-        v51 = v61 - v13;
+        v51 = v61 - uTF8String;
         __memcpy_chk();
       }
 
       else
       {
-        memcpy(&v199.wbuf[-7] + LODWORD(v199.hash[3]), v13, v14);
+        memcpy(&v199.wbuf[-7] + LODWORD(v199.hash[3]), uTF8String, v14);
         v51 = LODWORD(v199.hash[3]) + v15;
       }
 
@@ -822,18 +822,18 @@ LABEL_97:
 
         if (v14 == 1)
         {
-          v55[16] = *v13;
+          v55[16] = *uTF8String;
           goto LABEL_97;
         }
 
 LABEL_81:
-        memcpy(v55 + 16, v13, v14);
+        memcpy(v55 + 16, uTF8String, v14);
         goto LABEL_97;
       }
 
       if (v14 == 2)
       {
-        v74 = *v13;
+        v74 = *uTF8String;
       }
 
       else
@@ -843,8 +843,8 @@ LABEL_81:
           goto LABEL_81;
         }
 
-        v74 = *v13;
-        v55[18] = v13[2];
+        v74 = *uTF8String;
+        v55[18] = uTF8String[2];
       }
 
       *(v55 + 8) = v74;
@@ -865,7 +865,7 @@ LABEL_81:
           LOBYTE(v59) = v199.count[1];
           v57 = HIBYTE(LOWORD(v199.count[1]));
           LOBYTE(v60) = BYTE2(v199.count[1]);
-          v75 = *v13;
+          v75 = *uTF8String;
         }
 
         goto LABEL_87;
@@ -873,23 +873,23 @@ LABEL_81:
 
       LOBYTE(v59) = v199.count[1];
       v57 = HIBYTE(LOWORD(v199.count[1]));
-      v60 = *v13;
+      v60 = *uTF8String;
     }
 
     else
     {
       if (!BYTE3(v199.count[1]))
       {
-        v59 = *v13;
-        v57 = *v13 >> 8;
-        v60 = HIWORD(*v13);
-        v75 = HIBYTE(*v13);
+        v59 = *uTF8String;
+        v57 = *uTF8String >> 8;
+        v60 = HIWORD(*uTF8String);
+        v75 = HIBYTE(*uTF8String);
         goto LABEL_87;
       }
 
       LOBYTE(v59) = v199.count[1];
-      LOBYTE(v57) = *v13;
-      v60 = *(v13 + 1);
+      LOBYTE(v57) = *uTF8String;
+      v60 = *(uTF8String + 1);
     }
 
     v75 = v60 >> 8;
@@ -900,8 +900,8 @@ LABEL_87:
     LODWORD(v78) = HIDWORD(v78);
     v79 = 5 * (v78 >> 19) - 430675100;
     LODWORD(v199.count[0]) = v79;
-    v80 = &v13[-BYTE3(v199.count[1]) + 4];
-    v81 = &v13[v58 - BYTE3(v199.count[1])];
+    v80 = &uTF8String[-BYTE3(v199.count[1]) + 4];
+    v81 = &uTF8String[v58 - BYTE3(v199.count[1])];
     while (v80 < v81)
     {
       v82 = *v80;

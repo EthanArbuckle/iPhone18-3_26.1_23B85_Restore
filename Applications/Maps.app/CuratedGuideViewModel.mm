@@ -1,5 +1,5 @@
 @interface CuratedGuideViewModel
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)guideNumberOfPlaces;
 - (NSString)guideSubtitle;
 - (NSString)guideTitle;
@@ -8,40 +8,40 @@
 - (double)guideBrickWidth;
 - (double)width;
 - (int64_t)hash;
-- (void)setMetrics:(id)a3;
-- (void)setWidth:(double)a3;
+- (void)setMetrics:(id)metrics;
+- (void)setWidth:(double)width;
 @end
 
 @implementation CuratedGuideViewModel
 
-- (void)setMetrics:(id)a3
+- (void)setMetrics:(id)metrics
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC4Maps21CuratedGuideViewModel_metrics);
-  *(&self->super.isa + OBJC_IVAR____TtC4Maps21CuratedGuideViewModel_metrics) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC4Maps21CuratedGuideViewModel_metrics) = metrics;
+  metricsCopy = metrics;
 }
 
 - (double)width
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   static Published.subscript.getter();
 
   return v5;
 }
 
-- (void)setWidth:(double)a3
+- (void)setWidth:(double)width
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v4 = self;
+  selfCopy = self;
   static Published.subscript.setter();
 }
 
 - (NSString)guideNumberOfPlaces
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002B3C98();
 
   v3 = String._bridgeToObjectiveC()();
@@ -52,20 +52,20 @@
 - (NSString)guideTitle
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC4Maps21CuratedGuideViewModel_placeCollection);
-  v3 = self;
-  v4 = [v2 collectionTitle];
-  if (!v4)
+  selfCopy = self;
+  collectionTitle = [v2 collectionTitle];
+  if (!collectionTitle)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
-    v4 = String._bridgeToObjectiveC()();
+    collectionTitle = String._bridgeToObjectiveC()();
   }
 
-  return v4;
+  return collectionTitle;
 }
 
 - (NSString)guideSubtitle
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002B3F0C();
   v4 = v3;
 
@@ -84,7 +84,7 @@
 
 - (double)guideBrickWidth
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1002B4098();
 
   return v3;
@@ -92,17 +92,17 @@
 
 - (double)guideBrickHeight
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1002B419C();
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -111,7 +111,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_1002B4258(v8);
@@ -122,7 +122,7 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = NSObject.hashValue.getter();
 
   return v3;

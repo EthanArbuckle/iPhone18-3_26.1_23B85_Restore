@@ -1,17 +1,17 @@
 @interface MUStatistics
-+ (void)logFileTypeOpened:(id)a3 byProcess:(id)a4;
-+ (void)logFileTypeSaved:(id)a3 byProcess:(id)a4;
++ (void)logFileTypeOpened:(id)opened byProcess:(id)process;
++ (void)logFileTypeSaved:(id)saved byProcess:(id)process;
 @end
 
 @implementation MUStatistics
 
-+ (void)logFileTypeOpened:(id)a3 byProcess:(id)a4
++ (void)logFileTypeOpened:(id)opened byProcess:(id)process
 {
-  v5 = a4;
-  v6 = a3;
-  if ([(__CFString *)v6 length])
+  processCopy = process;
+  openedCopy = opened;
+  if ([(__CFString *)openedCopy length])
   {
-    v7 = v6;
+    v7 = openedCopy;
   }
 
   else
@@ -21,9 +21,9 @@
 
   v8 = v7;
 
-  if ([(__CFString *)v5 length])
+  if ([(__CFString *)processCopy length])
   {
-    v9 = v5;
+    v9 = processCopy;
   }
 
   else
@@ -54,13 +54,13 @@ id __44__MUStatistics_logFileTypeOpened_byProcess___block_invoke(uint64_t a1)
   return v2;
 }
 
-+ (void)logFileTypeSaved:(id)a3 byProcess:(id)a4
++ (void)logFileTypeSaved:(id)saved byProcess:(id)process
 {
-  v5 = a4;
-  v6 = a3;
-  if ([(__CFString *)v6 length])
+  processCopy = process;
+  savedCopy = saved;
+  if ([(__CFString *)savedCopy length])
   {
-    v7 = v6;
+    v7 = savedCopy;
   }
 
   else
@@ -70,9 +70,9 @@ id __44__MUStatistics_logFileTypeOpened_byProcess___block_invoke(uint64_t a1)
 
   v8 = v7;
 
-  if ([(__CFString *)v5 length])
+  if ([(__CFString *)processCopy length])
   {
-    v9 = v5;
+    v9 = processCopy;
   }
 
   else

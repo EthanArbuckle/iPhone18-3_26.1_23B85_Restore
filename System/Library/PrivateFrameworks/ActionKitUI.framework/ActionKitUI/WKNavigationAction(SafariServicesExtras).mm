@@ -6,24 +6,24 @@
 
 - (uint64_t)_wk_shouldAskAboutInsecureFormSubmission
 {
-  if ([a1 navigationType] != 1)
+  if ([self navigationType] != 1)
   {
     return 0;
   }
 
-  v2 = [a1 request];
-  v3 = [v2 HTTPMethod];
-  v4 = [v3 isEqualToString:@"GET"];
+  request = [self request];
+  hTTPMethod = [request HTTPMethod];
+  v4 = [hTTPMethod isEqualToString:@"GET"];
 
   if (v4)
   {
     return 0;
   }
 
-  v6 = [a1 request];
-  v7 = [v6 URL];
-  v8 = [v7 scheme];
-  v9 = [v8 isEqualToString:@"http"];
+  request2 = [self request];
+  v7 = [request2 URL];
+  scheme = [v7 scheme];
+  v9 = [scheme isEqualToString:@"http"];
 
   return v9;
 }

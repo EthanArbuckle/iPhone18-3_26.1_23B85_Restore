@@ -1,5 +1,5 @@
 @interface BKLibraryBookshelfLibraryCollectionViewConfiguration
-- (BKLibraryBookshelfLibraryCollectionViewConfiguration)initWithCollection:(id)a3;
+- (BKLibraryBookshelfLibraryCollectionViewConfiguration)initWithCollection:(id)collection;
 - (BOOL)supportsReadingListsButton;
 - (id)sortControlConfig;
 - (id)viewDescription;
@@ -8,25 +8,25 @@
 
 @implementation BKLibraryBookshelfLibraryCollectionViewConfiguration
 
-- (BKLibraryBookshelfLibraryCollectionViewConfiguration)initWithCollection:(id)a3
+- (BKLibraryBookshelfLibraryCollectionViewConfiguration)initWithCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   v15.receiver = self;
   v15.super_class = BKLibraryBookshelfLibraryCollectionViewConfiguration;
   v5 = [(BKLibraryBookshelfLibraryCollectionViewConfiguration *)&v15 init];
   v6 = v5;
   if (v5)
   {
-    [(BKLibraryBookshelfLibraryBaseViewConfiguration *)v5 setCollection:v4];
-    v7 = [v4 collectionID];
-    [(BKLibraryBookshelfLibraryBaseViewConfiguration *)v6 setCollectionID:v7];
+    [(BKLibraryBookshelfLibraryBaseViewConfiguration *)v5 setCollection:collectionCopy];
+    collectionID = [collectionCopy collectionID];
+    [(BKLibraryBookshelfLibraryBaseViewConfiguration *)v6 setCollectionID:collectionID];
 
     v8 = +[BKLibraryManager defaultManager];
-    v9 = [v8 collectionController];
+    collectionController = [v8 collectionController];
     v10 = kBKCollectionDefaultAll;
     v11 = +[BKLibraryManager defaultManager];
-    v12 = [v11 uiChildContext];
-    v13 = [v9 mutableCollectionWithCollectionID:v10 inManagedObjectContext:v12 error:0];
+    uiChildContext = [v11 uiChildContext];
+    v13 = [collectionController mutableCollectionWithCollectionID:v10 inManagedObjectContext:uiChildContext error:0];
 
     -[BKLibraryBookshelfLibraryBaseViewConfiguration setInitialViewMode:](v6, "setInitialViewMode:", [v13 resolvedViewMode]);
   }
@@ -41,51 +41,51 @@
     return 0;
   }
 
-  v4 = [(BKLibraryBookshelfLibraryBaseViewConfiguration *)self collection];
-  v5 = [v4 collectionID];
-  v6 = [v5 isEqualToString:kBKCollectionDefaultAll];
+  collection = [(BKLibraryBookshelfLibraryBaseViewConfiguration *)self collection];
+  collectionID = [collection collectionID];
+  v6 = [collectionID isEqualToString:kBKCollectionDefaultAll];
 
   return v6;
 }
 
 - (id)viewTitle
 {
-  v2 = [(BKLibraryBookshelfLibraryBaseViewConfiguration *)self collection];
-  v3 = [v2 title];
+  collection = [(BKLibraryBookshelfLibraryBaseViewConfiguration *)self collection];
+  title = [collection title];
 
-  return v3;
+  return title;
 }
 
 - (id)viewDescription
 {
-  v3 = [(BKLibraryBookshelfLibraryBaseViewConfiguration *)self collection];
-  if ([v3 isDefaultCollection])
+  collection = [(BKLibraryBookshelfLibraryBaseViewConfiguration *)self collection];
+  if ([collection isDefaultCollection])
   {
-    v4 = 0;
+    details = 0;
   }
 
   else
   {
-    v5 = [(BKLibraryBookshelfLibraryBaseViewConfiguration *)self collection];
-    v4 = [v5 details];
+    collection2 = [(BKLibraryBookshelfLibraryBaseViewConfiguration *)self collection];
+    details = [collection2 details];
   }
 
-  return v4;
+  return details;
 }
 
 - (id)sortControlConfig
 {
-  v3 = [(BKLibraryBookshelfLibraryBaseViewConfiguration *)self collectionID];
-  v36 = [BKLibraryManager predicateForCollectionMembersInCollectionID:v3 hideUnownedItems:0 allowExplicit:1];
+  collectionID = [(BKLibraryBookshelfLibraryBaseViewConfiguration *)self collectionID];
+  v36 = [BKLibraryManager predicateForCollectionMembersInCollectionID:collectionID hideUnownedItems:0 allowExplicit:1];
 
-  v4 = [(BKLibraryBookshelfLibraryBaseViewConfiguration *)self collectionID];
-  v35 = [BKLibraryManager predicateForCollectionMembersInCollectionID:v4 hideUnownedItems:0 allowExplicit:0];
+  collectionID2 = [(BKLibraryBookshelfLibraryBaseViewConfiguration *)self collectionID];
+  v35 = [BKLibraryManager predicateForCollectionMembersInCollectionID:collectionID2 hideUnownedItems:0 allowExplicit:0];
 
-  v5 = [(BKLibraryBookshelfLibraryBaseViewConfiguration *)self collectionID];
-  v6 = [BKLibraryManager predicateForAssetsInCollectionID:v5 allowExplicit:1];
+  collectionID3 = [(BKLibraryBookshelfLibraryBaseViewConfiguration *)self collectionID];
+  v6 = [BKLibraryManager predicateForAssetsInCollectionID:collectionID3 allowExplicit:1];
 
-  v7 = [(BKLibraryBookshelfLibraryBaseViewConfiguration *)self collectionID];
-  v8 = [BKLibraryManager predicateForAssetsInCollectionID:v7 allowExplicit:0];
+  collectionID4 = [(BKLibraryBookshelfLibraryBaseViewConfiguration *)self collectionID];
+  v8 = [BKLibraryManager predicateForAssetsInCollectionID:collectionID4 allowExplicit:0];
 
   v9 = [NSSortDescriptor sortDescriptorWithKey:@"sortTitle" ascending:1 selector:"localizedStandardCompare:"];
   v38 = [NSSortDescriptor sortDescriptorWithKey:@"sortAuthor" ascending:1 selector:"localizedStandardCompare:"];

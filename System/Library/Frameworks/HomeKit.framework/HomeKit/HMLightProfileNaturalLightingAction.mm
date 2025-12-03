@@ -1,19 +1,19 @@
 @interface HMLightProfileNaturalLightingAction
-+ (id)actionWithProtoBuf:(id)a3 home:(id)a4;
-- (BOOL)_handleUpdates:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)actionWithProtoBuf:(id)buf home:(id)home;
+- (BOOL)_handleUpdates:(id)updates;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isNaturalLightingEnabled;
-- (BOOL)mergeFromNewObject:(id)a3;
+- (BOOL)mergeFromNewObject:(id)object;
 - (HMLightProfile)lightProfile;
 - (HMLightProfileNaturalLightingAction)init;
-- (HMLightProfileNaturalLightingAction)initWithCoder:(id)a3;
-- (HMLightProfileNaturalLightingAction)initWithDictionary:(id)a3 home:(id)a4;
-- (HMLightProfileNaturalLightingAction)initWithUUID:(id)a3;
-- (_BYTE)initWithLightProfile:(char)a3 naturalLightingEnabled:(void *)a4 uuid:;
+- (HMLightProfileNaturalLightingAction)initWithCoder:(id)coder;
+- (HMLightProfileNaturalLightingAction)initWithDictionary:(id)dictionary home:(id)home;
+- (HMLightProfileNaturalLightingAction)initWithUUID:(id)d;
+- (_BYTE)initWithLightProfile:(char)profile naturalLightingEnabled:(void *)enabled uuid:;
 - (id)_serializeForAdd;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)encodeAsProtoBuf;
-- (void)__configureWithContext:(id)a3 actionSet:(id)a4;
+- (void)__configureWithContext:(id)context actionSet:(id)set;
 @end
 
 @implementation HMLightProfileNaturalLightingAction
@@ -35,7 +35,7 @@
   return naturalLightingEnabled;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   os_unfair_lock_lock_with_options();
   v4 = [[HMLightProfileNaturalLightingAction alloc] initWithLightProfile:self->_naturalLightingEnabled naturalLightingEnabled:0 uuid:?];
@@ -43,17 +43,17 @@
   return v4;
 }
 
-- (_BYTE)initWithLightProfile:(char)a3 naturalLightingEnabled:(void *)a4 uuid:
+- (_BYTE)initWithLightProfile:(char)profile naturalLightingEnabled:(void *)enabled uuid:
 {
   v8 = a2;
-  v9 = a4;
-  if (!a1)
+  enabledCopy = enabled;
+  if (!self)
   {
     goto LABEL_8;
   }
 
-  v10 = [v8 profileUniqueIdentifier];
-  if (!v10)
+  profileUniqueIdentifier = [v8 profileUniqueIdentifier];
+  if (!profileUniqueIdentifier)
   {
     _HMFPreconditionFailure();
 LABEL_8:
@@ -61,15 +61,15 @@ LABEL_8:
     goto LABEL_6;
   }
 
-  v11 = v10;
-  v16.receiver = a1;
+  v11 = profileUniqueIdentifier;
+  v16.receiver = self;
   v16.super_class = HMLightProfileNaturalLightingAction;
-  v12 = objc_msgSendSuper2(&v16, sel_initWithUUID_, v9);
+  v12 = objc_msgSendSuper2(&v16, sel_initWithUUID_, enabledCopy);
   v13 = v12;
   if (v12)
   {
     objc_storeStrong(v12 + 7, a2);
-    v13[52] = a3;
+    v13[52] = profile;
   }
 
   v14 = v13;
@@ -78,10 +78,10 @@ LABEL_6:
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -91,7 +91,7 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -103,9 +103,9 @@ LABEL_6:
     v7 = v6;
     if (v6 && (v8 = [(HMLightProfileNaturalLightingAction *)v6 isNaturalLightingEnabled], v8 == [(HMLightProfileNaturalLightingAction *)self isNaturalLightingEnabled]))
     {
-      v10 = [(HMLightProfileNaturalLightingAction *)v7 lightProfile];
-      v11 = [(HMLightProfileNaturalLightingAction *)self lightProfile];
-      v9 = [v10 isEqual:v11];
+      lightProfile = [(HMLightProfileNaturalLightingAction *)v7 lightProfile];
+      lightProfile2 = [(HMLightProfileNaturalLightingAction *)self lightProfile];
+      v9 = [lightProfile isEqual:lightProfile2];
     }
 
     else
@@ -117,19 +117,19 @@ LABEL_6:
   return v9;
 }
 
-- (HMLightProfileNaturalLightingAction)initWithCoder:(id)a3
+- (HMLightProfileNaturalLightingAction)initWithCoder:(id)coder
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = HMLightProfileNaturalLightingAction;
-  v5 = [(HMAction *)&v18 initWithCoder:v4];
+  v5 = [(HMAction *)&v18 initWithCoder:coderCopy];
   if (!v5)
   {
     goto LABEL_4;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hmlp.lp"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hmlp.lp"];
   if (v6)
   {
     v7 = v6;
@@ -137,7 +137,7 @@ LABEL_6:
     lightProfile = v5->_lightProfile;
     v5->_lightProfile = v8;
 
-    v5->_naturalLightingEnabled = [v4 decodeBoolForKey:@"hmlp.nle"];
+    v5->_naturalLightingEnabled = [coderCopy decodeBoolForKey:@"hmlp.nle"];
 LABEL_4:
     v10 = v5;
     goto LABEL_8;
@@ -165,13 +165,13 @@ LABEL_8:
   return v10;
 }
 
-- (BOOL)mergeFromNewObject:(id)a3
+- (BOOL)mergeFromNewObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = objectCopy;
   }
 
   else
@@ -183,13 +183,13 @@ LABEL_8:
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 isNaturalLightingEnabled];
+    isNaturalLightingEnabled = [v6 isNaturalLightingEnabled];
     os_unfair_lock_lock_with_options();
     naturalLightingEnabled = self->_naturalLightingEnabled;
-    v10 = naturalLightingEnabled != v8;
-    if (naturalLightingEnabled != v8)
+    v10 = naturalLightingEnabled != isNaturalLightingEnabled;
+    if (naturalLightingEnabled != isNaturalLightingEnabled)
     {
-      self->_naturalLightingEnabled = v8;
+      self->_naturalLightingEnabled = isNaturalLightingEnabled;
     }
 
     os_unfair_lock_unlock(&self->_lock);
@@ -206,17 +206,17 @@ LABEL_8:
 - (id)encodeAsProtoBuf
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [(HMLightProfileNaturalLightingAction *)self lightProfile];
-  if (v3)
+  lightProfile = [(HMLightProfileNaturalLightingAction *)self lightProfile];
+  if (lightProfile)
   {
     v4 = objc_alloc_init(HMPBNaturalLightingAction);
-    v5 = [(HMAction *)self uuid];
-    v6 = [v5 hm_convertToData];
-    [(HMPBNaturalLightingAction *)v4 setUuid:v6];
+    uuid = [(HMAction *)self uuid];
+    hm_convertToData = [uuid hm_convertToData];
+    [(HMPBNaturalLightingAction *)v4 setUuid:hm_convertToData];
 
-    v7 = [v3 profileUniqueIdentifier];
-    v8 = [v7 hm_convertToData];
-    [(HMPBNaturalLightingAction *)v4 setLightProfileUUID:v8];
+    profileUniqueIdentifier = [lightProfile profileUniqueIdentifier];
+    hm_convertToData2 = [profileUniqueIdentifier hm_convertToData];
+    [(HMPBNaturalLightingAction *)v4 setLightProfileUUID:hm_convertToData2];
 
     [(HMPBNaturalLightingAction *)v4 setNaturalLightingEnabled:[(HMLightProfileNaturalLightingAction *)self isNaturalLightingEnabled]];
     v9 = objc_alloc_init(HMPBActionContainer);
@@ -227,7 +227,7 @@ LABEL_8:
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -235,7 +235,7 @@ LABEL_8:
       v16 = 138543874;
       v17 = v13;
       v18 = 2112;
-      v19 = v11;
+      v19 = selfCopy;
       v20 = 2112;
       v21 = 0;
       _os_log_impl(&dword_19BB39000, v12, OS_LOG_TYPE_ERROR, "%{public}@Failed encode action as protobuf, light profile is invalid %@:%@", &v16, 0x20u);
@@ -250,27 +250,27 @@ LABEL_8:
   return v9;
 }
 
-- (void)__configureWithContext:(id)a3 actionSet:(id)a4
+- (void)__configureWithContext:(id)context actionSet:(id)set
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  setCopy = set;
   v12.receiver = self;
   v12.super_class = HMLightProfileNaturalLightingAction;
-  [(HMAction *)&v12 __configureWithContext:v6 actionSet:v7];
-  v8 = [v7 home];
+  [(HMAction *)&v12 __configureWithContext:contextCopy actionSet:setCopy];
+  home = [setCopy home];
   os_unfair_lock_lock_with_options();
-  v9 = [(HMAccessoryProfile *)self->_lightProfile profileUniqueIdentifier];
-  v10 = [v8 lightProfileWithProfileUUID:v9];
+  profileUniqueIdentifier = [(HMAccessoryProfile *)self->_lightProfile profileUniqueIdentifier];
+  v10 = [home lightProfileWithProfileUUID:profileUniqueIdentifier];
   lightProfile = self->_lightProfile;
   self->_lightProfile = v10;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (BOOL)_handleUpdates:(id)a3
+- (BOOL)_handleUpdates:(id)updates
 {
-  v4 = a3;
-  v5 = [v4 hmf_numberForKey:@"hmlp.nle"];
+  updatesCopy = updates;
+  v5 = [updatesCopy hmf_numberForKey:@"hmlp.nle"];
   if (v5)
   {
     os_unfair_lock_lock_with_options();
@@ -285,36 +285,36 @@ LABEL_8:
 {
   v11.receiver = self;
   v11.super_class = HMLightProfileNaturalLightingAction;
-  v3 = [(HMAction *)&v11 _serializeForAdd];
-  v4 = [v3 mutableCopy];
+  _serializeForAdd = [(HMAction *)&v11 _serializeForAdd];
+  v4 = [_serializeForAdd mutableCopy];
 
   v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[HMLightProfileNaturalLightingAction isNaturalLightingEnabled](self, "isNaturalLightingEnabled")}];
   [v4 setObject:v5 forKeyedSubscript:@"hmlp.nle"];
 
-  v6 = [(HMLightProfileNaturalLightingAction *)self lightProfile];
-  v7 = [v6 profileUniqueIdentifier];
-  v8 = [v7 UUIDString];
-  [v4 setObject:v8 forKeyedSubscript:@"hmlp.uuid"];
+  lightProfile = [(HMLightProfileNaturalLightingAction *)self lightProfile];
+  profileUniqueIdentifier = [lightProfile profileUniqueIdentifier];
+  uUIDString = [profileUniqueIdentifier UUIDString];
+  [v4 setObject:uUIDString forKeyedSubscript:@"hmlp.uuid"];
 
   v9 = [v4 copy];
 
   return v9;
 }
 
-- (HMLightProfileNaturalLightingAction)initWithDictionary:(id)a3 home:(id)a4
+- (HMLightProfileNaturalLightingAction)initWithDictionary:(id)dictionary home:(id)home
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  homeCopy = home;
   v25.receiver = self;
   v25.super_class = HMLightProfileNaturalLightingAction;
-  v8 = [(HMAction *)&v25 initWithDictionary:v6 home:v7];
+  v8 = [(HMAction *)&v25 initWithDictionary:dictionaryCopy home:homeCopy];
   if (!v8)
   {
     goto LABEL_5;
   }
 
-  v9 = [v6 hmf_UUIDForKey:@"hmlp.uuid"];
+  v9 = [dictionaryCopy hmf_UUIDForKey:@"hmlp.uuid"];
   if (!v9)
   {
     v13 = objc_autoreleasePoolPush();
@@ -342,7 +342,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v10 = [v7 lightProfileWithProfileUUID:v9];
+  v10 = [homeCopy lightProfileWithProfileUUID:v9];
   lightProfile = v8->_lightProfile;
   v8->_lightProfile = v10;
 
@@ -370,7 +370,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v8->_naturalLightingEnabled = [v6 hmf_BOOLForKey:@"hmlp.nle"];
+  v8->_naturalLightingEnabled = [dictionaryCopy hmf_BOOLForKey:@"hmlp.nle"];
 
 LABEL_5:
   v12 = v8;
@@ -380,9 +380,9 @@ LABEL_12:
   return v12;
 }
 
-- (HMLightProfileNaturalLightingAction)initWithUUID:(id)a3
+- (HMLightProfileNaturalLightingAction)initWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
   v7 = MEMORY[0x1E696AEC0];
@@ -407,27 +407,27 @@ LABEL_12:
   objc_exception_throw(v7);
 }
 
-+ (id)actionWithProtoBuf:(id)a3 home:(id)a4
++ (id)actionWithProtoBuf:(id)buf home:(id)home
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  bufCopy = buf;
+  homeCopy = home;
   v7 = MEMORY[0x1E696AFB0];
-  v8 = [v5 uuid];
-  v9 = [v7 hmf_UUIDWithBytesAsData:v8];
+  uuid = [bufCopy uuid];
+  v9 = [v7 hmf_UUIDWithBytesAsData:uuid];
 
   if (v9)
   {
     v10 = MEMORY[0x1E696AFB0];
-    v11 = [v5 lightProfileUUID];
-    v12 = [v10 hmf_UUIDWithBytesAsData:v11];
+    lightProfileUUID = [bufCopy lightProfileUUID];
+    v12 = [v10 hmf_UUIDWithBytesAsData:lightProfileUUID];
 
     if (v12)
     {
-      v13 = [v6 lightProfileWithProfileUUID:v12];
+      v13 = [homeCopy lightProfileWithProfileUUID:v12];
       if (v13)
       {
-        v14 = -[HMLightProfileNaturalLightingAction initWithLightProfile:naturalLightingEnabled:uuid:]([HMLightProfileNaturalLightingAction alloc], v13, [v5 naturalLightingEnabled], v9);
+        v14 = -[HMLightProfileNaturalLightingAction initWithLightProfile:naturalLightingEnabled:uuid:]([HMLightProfileNaturalLightingAction alloc], v13, [bufCopy naturalLightingEnabled], v9);
       }
 
       else
@@ -440,7 +440,7 @@ LABEL_12:
           v26 = 138543874;
           v27 = v23;
           v28 = 2112;
-          v29 = v5;
+          v29 = bufCopy;
           v30 = 2112;
           v31 = v12;
           _os_log_impl(&dword_19BB39000, v22, OS_LOG_TYPE_ERROR, "%{public}@Failed to create natural lighting action from protobuf, light profile with UUID does not exist %@:%@", &v26, 0x20u);
@@ -461,7 +461,7 @@ LABEL_12:
         v26 = 138543874;
         v27 = v20;
         v28 = 2112;
-        v29 = v5;
+        v29 = bufCopy;
         v30 = 2112;
         v31 = 0;
         _os_log_impl(&dword_19BB39000, v19, OS_LOG_TYPE_ERROR, "%{public}@Failed to create natural lighting action from protobuf, invalid light profile uuid %@:%@", &v26, 0x20u);
@@ -482,7 +482,7 @@ LABEL_12:
       v26 = 138543874;
       v27 = v17;
       v28 = 2112;
-      v29 = v5;
+      v29 = bufCopy;
       v30 = 2112;
       v31 = 0;
       _os_log_impl(&dword_19BB39000, v16, OS_LOG_TYPE_ERROR, "%{public}@Failed to create natural lighting action from protobuf, invalid uuid %@:%@", &v26, 0x20u);

@@ -1,13 +1,13 @@
 @interface TSCH3DChartStackedColumnSceneObject
-- (void)sortElements:(id *)a3 pipeline:(id)a4;
+- (void)sortElements:(id *)elements pipeline:(id)pipeline;
 @end
 
 @implementation TSCH3DChartStackedColumnSceneObject
 
-- (void)sortElements:(id *)a3 pipeline:(id)a4
+- (void)sortElements:(id *)elements pipeline:(id)pipeline
 {
-  v290 = a4;
-  v10 = objc_msgSend_scene(v290, v6, v7, v8, v9);
+  pipelineCopy = pipeline;
+  v10 = objc_msgSend_scene(pipelineCopy, v6, v7, v8, v9);
   v15 = objc_msgSend_nonNilAccessorWithScene_(TSCH3DChartScenePropertyAccessor, v11, v12, v13, v14, v10);
 
   v288 = v15;
@@ -22,7 +22,7 @@
     v306 = 0;
   }
 
-  objc_msgSend_processor(v290, v16, v17, v18, v19);
+  objc_msgSend_processor(pipelineCopy, v16, v17, v18, v19);
   v296 = 1065353216;
   v298 = 0;
   v297 = 0;
@@ -37,8 +37,8 @@
   v24 = objc_opt_class();
   isHorizontalChart = objc_msgSend_isHorizontalChart(v24, v25, v26, v27, v28);
   v30 = v306;
-  v286 = self;
-  v289 = v290;
+  selfCopy = self;
+  v289 = pipelineCopy;
   v36 = objc_msgSend_processor(v289, v31, v32, v33, v34);
   v292 = v36;
   if (!v36)
@@ -54,8 +54,8 @@
   v55 = objc_msgSend_scene(v289, v35, v37, v38, v39);
   v294 = objc_msgSend_nonNilAccessorWithScene_(TSCH3DChartScenePropertyAccessor, v56, v57, v58, v59, v55);
 
-  v285 = a3;
-  v60 = *a3;
+  elementsCopy = elements;
+  v60 = *elements;
   __src = 0;
   v316 = 0;
   v317 = 0;
@@ -559,7 +559,7 @@ LABEL_86:
   }
 
   v284 = v240;
-  *v285 = v240;
+  *elementsCopy = v240;
 
   if (__src)
   {

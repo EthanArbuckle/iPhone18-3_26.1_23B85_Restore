@@ -1,32 +1,32 @@
 @interface RBProcessCPUMinimumLimits
-- (BOOL)isEqual:(id)a3;
-- (RBProcessCPUMinimumLimits)initWithPercentage:(unint64_t)a3 duration:(unint64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (RBProcessCPUMinimumLimits)initWithPercentage:(unint64_t)percentage duration:(unint64_t)duration;
 - (id)description;
-- (id)unionLimit:(id)a3;
+- (id)unionLimit:(id)limit;
 - (unint64_t)hash;
 @end
 
 @implementation RBProcessCPUMinimumLimits
 
-- (RBProcessCPUMinimumLimits)initWithPercentage:(unint64_t)a3 duration:(unint64_t)a4
+- (RBProcessCPUMinimumLimits)initWithPercentage:(unint64_t)percentage duration:(unint64_t)duration
 {
   v7.receiver = self;
   v7.super_class = RBProcessCPUMinimumLimits;
   result = [(RBProcessCPUMinimumLimits *)&v7 init];
   if (result)
   {
-    result->_percentage = a3;
-    result->_duration = a4;
+    result->_percentage = percentage;
+    result->_duration = duration;
   }
 
   return result;
 }
 
-- (id)unionLimit:(id)a3
+- (id)unionLimit:(id)limit
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && v4 != self && ((duration = self->_duration, v7 = [(RBProcessCPUMinimumLimits *)v4 duration], percentage = self->_percentage, v9 = [(RBProcessCPUMinimumLimits *)v5 percentage], v9 > percentage) || v7 > duration))
+  limitCopy = limit;
+  v5 = limitCopy;
+  if (limitCopy && limitCopy != self && ((duration = self->_duration, v7 = [(RBProcessCPUMinimumLimits *)limitCopy duration], percentage = self->_percentage, v9 = [(RBProcessCPUMinimumLimits *)v5 percentage], v9 > percentage) || v7 > duration))
   {
     if (v9 <= percentage)
     {
@@ -43,27 +43,27 @@
       v7 = duration;
     }
 
-    v10 = [[RBProcessCPUMinimumLimits alloc] initWithPercentage:v11 duration:v7];
+    selfCopy = [[RBProcessCPUMinimumLimits alloc] initWithPercentage:v11 duration:v7];
   }
 
   else
   {
-    v10 = self;
+    selfCopy = self;
   }
 
-  v12 = v10;
+  v12 = selfCopy;
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
+  equalCopy = equal;
+  v5 = equalCopy;
   v7 = 1;
-  if (self != v4)
+  if (self != equalCopy)
   {
-    if (!v4 || (v6 = objc_opt_class(), v6 == objc_opt_class()) && (self->_percentage != v5->_percentage || self->_duration != v5->_duration))
+    if (!equalCopy || (v6 = objc_opt_class(), v6 == objc_opt_class()) && (self->_percentage != v5->_percentage || self->_duration != v5->_duration))
     {
       v7 = 0;
     }

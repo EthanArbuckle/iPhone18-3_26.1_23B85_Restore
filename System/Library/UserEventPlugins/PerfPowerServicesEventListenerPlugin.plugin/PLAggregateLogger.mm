@@ -2,15 +2,15 @@
 - (BOOL)getCurrentDisplayState;
 - (BOOL)getCurrentLPMState;
 - (PLAggregateLogger)init;
-- (int)binSessionLength:(int64_t)a3;
+- (int)binSessionLength:(int64_t)length;
 - (void)dealloc;
-- (void)handleAODMode:(id)a3;
-- (void)handleBatteryStatus:(id)a3;
+- (void)handleAODMode:(id)mode;
+- (void)handleBatteryStatus:(id)status;
 - (void)handleDayChange;
-- (void)handleEvent:(unsigned int)a3 withStatus:(BOOL)a4;
-- (void)handleLPMEvent:(id)a3 withAggdKeys:(id)a4 withAggregateState:(id)a5;
-- (void)handleLPMStatus:(id)a3;
-- (void)handleWake:(id)a3;
+- (void)handleEvent:(unsigned int)event withStatus:(BOOL)status;
+- (void)handleLPMEvent:(id)event withAggdKeys:(id)keys withAggregateState:(id)state;
+- (void)handleLPMStatus:(id)status;
+- (void)handleWake:(id)wake;
 - (void)queryBatteryStatsAtBoot;
 @end
 
@@ -294,12 +294,12 @@
   return result;
 }
 
-- (void)handleEvent:(unsigned int)a3 withStatus:(BOOL)a4
+- (void)handleEvent:(unsigned int)event withStatus:(BOOL)status
 {
-  v4 = a4;
+  statusCopy = status;
   objc_sync_enter(self);
   v7 = objc_autoreleasePoolPush();
-  v8 = [(PLAggregateLogger *)self currentState];
+  currentState = [(PLAggregateLogger *)self currentState];
   context = v7;
   if (+[PLPowerEventListener hasBaseband])
   {
@@ -311,7 +311,7 @@
     v9 = 15;
   }
 
-  v116 = [(NSMutableArray *)self->baseStates objectAtIndex:v9 & v8];
+  v116 = [(NSMutableArray *)self->baseStates objectAtIndex:v9 & currentState];
   v10 = +[NSDate date];
   [(NSDate *)v10 timeIntervalSince1970];
   v12 = 0.0;
@@ -324,7 +324,7 @@
   if (v11 != self->lastTime)
   {
     v19 = objc_opt_new();
-    v20 = [v19 voltage];
+    voltage = [v19 voltage];
     if ([v19 gasGaugeEnabled])
     {
       [v19 currentCapacity];
@@ -378,14 +378,14 @@
     }
 
     v112 = v35;
-    v36 = [(PLAggregateLogger *)self isCharging];
-    v37 = v20 / 1000.0;
+    isCharging = [(PLAggregateLogger *)self isCharging];
+    v37 = voltage / 1000.0;
     v38 = (v37 + lastVoltage) * 0.5;
     v39 = v117 - lastCurrentCapacityRaw;
     v40 = v38 * (*&obj - lastCurrentCapacity);
     v16 = v38 * (v119 - lastCurrentCapacityAbsolute);
     v41 = v38 * v39;
-    if (v36 && [(PLAggregateLogger *)self isPlugged])
+    if (isCharging && [(PLAggregateLogger *)self isPlugged])
     {
       if (v40 < 0.0)
       {
@@ -487,7 +487,7 @@
     v15 = v38 * v112;
     v14 = v38 * (v114 - lastChargeAccum);
     self->lastTime = v48;
-    if (a3 == 4)
+    if (event == 4)
     {
       [v19 currentCapacity];
       v50 = v49;
@@ -513,7 +513,7 @@
     [v116 setTime:+[NSNumber numberWithDouble:](NSNumber energy:"numberWithDouble:" energyAbsolute:v12) energyAbsoluteNet:+[NSNumber numberWithDouble:](NSNumber energyPassedChargeNet:"numberWithDouble:" energyChargeAccumNet:-v18) energyRaw:{+[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", -v17), +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", -v16), +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", v15), +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", v14), +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", -v13)}];
   }
 
-  obja = [(PLAggregateLogger *)self currentState]& ~(1 << a3) | (v4 << a3);
+  obja = [(PLAggregateLogger *)self currentState]& ~(1 << event) | (statusCopy << event);
   if (obja == -[PLAggregateLogger currentState](self, "currentState") || ([v116 incrementCount], v167 = 0u, v168 = 0u, v165 = 0u, v166 = 0u, compositeStates = self->compositeStates, (v55 = -[NSMutableDictionary countByEnumeratingWithState:objects:count:](compositeStates, "countByEnumeratingWithState:objects:count:", &v165, v172, 16)) == 0))
   {
     LOBYTE(v118) = 0;
@@ -566,7 +566,7 @@
     v71 = v70;
     [objc_msgSend(v116 "energyRaw")];
     v73 = v72;
-    v74 = [(PLAggregateLogger *)self currentState];
+    currentState2 = [(PLAggregateLogger *)self currentState];
     v75 = llround(v61);
     v76 = llround(v63);
     v77 = llround(v65);
@@ -574,7 +574,7 @@
     v79 = llround(v69);
     v80 = llround(v71);
     v81 = llround(v73);
-    if (v75 || v76 || v77 || v78 || v79 || v80 || v81 || v74 != obja)
+    if (v75 || v76 || v77 || v78 || v79 || v80 || v81 || currentState2 != obja)
     {
       v151 = _NSConcreteStackBlock;
       v152 = 3221225472;
@@ -586,8 +586,8 @@
       v160 = v79;
       v161 = v80;
       v162 = v81;
-      v164 = v74 != obja;
-      v155 = self;
+      v164 = currentState2 != obja;
+      selfCopy = self;
       v156 = v75;
       v163 = obja;
       AnalyticsSendEventLazy();
@@ -600,12 +600,12 @@
   v150 = 0u;
   v147 = 0u;
   v148 = 0u;
-  v83 = [(NSMutableDictionary *)self->compositeStates allKeys];
-  v84 = [v83 countByEnumeratingWithState:&v147 objects:v171 count:16];
+  allKeys = [(NSMutableDictionary *)self->compositeStates allKeys];
+  v84 = [allKeys countByEnumeratingWithState:&v147 objects:v171 count:16];
   if (v84)
   {
     v85 = *v148;
-    objb = v83;
+    objb = allKeys;
     do
     {
       for (j = 0; j != v84; j = j + 1)
@@ -728,8 +728,8 @@
   v127 = 0u;
   v124 = 0u;
   v125 = 0u;
-  v108 = [(NSMutableDictionary *)self->compositeStates allValues];
-  v109 = [v108 countByEnumeratingWithState:&v124 objects:v169 count:16];
+  allValues = [(NSMutableDictionary *)self->compositeStates allValues];
+  v109 = [allValues countByEnumeratingWithState:&v124 objects:v169 count:16];
   if (v109)
   {
     v110 = *v125;
@@ -739,13 +739,13 @@
       {
         if (*v125 != v110)
         {
-          objc_enumerationMutation(v108);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v124 + 1) + 8 * m) resetStats];
       }
 
-      v109 = [v108 countByEnumeratingWithState:&v124 objects:v169 count:16];
+      v109 = [allValues countByEnumeratingWithState:&v124 objects:v169 count:16];
     }
 
     while (v109);
@@ -755,31 +755,31 @@
   objc_sync_exit(self);
 }
 
-- (void)handleLPMEvent:(id)a3 withAggdKeys:(id)a4 withAggregateState:(id)a5
+- (void)handleLPMEvent:(id)event withAggdKeys:(id)keys withAggregateState:(id)state
 {
-  if ([a3 isEqualToString:@"unplugged_lpm_on"] && -[PLAggregateLogger isLPMOn](self, "isLPMOn"))
+  if ([event isEqualToString:@"unplugged_lpm_on"] && -[PLAggregateLogger isLPMOn](self, "isLPMOn"))
   {
-    [objc_msgSend(a5 "energy")];
-    [a4 setObject:+[NSNumber numberWithLong:](NSNumber forKeyedSubscript:{"numberWithLong:", llround(v9)), +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.power.state.%@.energy", @"unplugged_lpm_on_24hr"}];
-    [objc_msgSend(a5 "energyAbsolute")];
-    [a4 setObject:+[NSNumber numberWithLong:](NSNumber forKeyedSubscript:{"numberWithLong:", llround(v10)), +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.power.state.%@.energyAbsolute", @"unplugged_lpm_on_24hr"}];
-    [objc_msgSend(a5 "energyRaw")];
-    [a4 setObject:+[NSNumber numberWithLong:](NSNumber forKeyedSubscript:{"numberWithLong:", llround(v11)), +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.power.state.%@.energyRaw", @"unplugged_lpm_on_24hr"}];
-    [a4 setObject:&off_13AE0 forKeyedSubscript:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.power.state.%@.energy", @"unplugged_lpm_off_24hr"}];
-    [a4 setObject:&off_13AE0 forKeyedSubscript:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.power.state.%@.energyAbsolute", @"unplugged_lpm_off_24hr"}];
-    [a4 setObject:&off_13AE0 forKeyedSubscript:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.power.state.%@.energyRaw", @"unplugged_lpm_off_24hr"}];
-    [a4 setObject:+[NSNumber numberWithLong:](NSNumber forKeyedSubscript:{"numberWithLong:", objc_msgSend(objc_msgSend(a5, "energyAbsoluteNet"), "longValue")), +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.power.state.%@.energyAbsoluteNet", @"unplugged_lpm_on_24hr"}];
-    [a4 setObject:+[NSNumber numberWithLong:](NSNumber forKeyedSubscript:{"numberWithLong:", objc_msgSend(objc_msgSend(a5, "energyPassedChargeNet"), "longValue")), +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.power.state.%@.energyPassedChargeNet", @"unplugged_lpm_on_24hr"}];
-    [a4 setObject:+[NSNumber numberWithLong:](NSNumber forKeyedSubscript:{"numberWithLong:", objc_msgSend(objc_msgSend(a5, "energyChargeAccumNet"), "longValue")), +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.power.state.%@.energyChargeAccumNet", @"unplugged_lpm_on_24hr"}];
-    [a4 setObject:&off_13AE0 forKeyedSubscript:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.power.state.%@.energyAbsoluteNet", @"unplugged_lpm_off_24hr"}];
-    [a4 setObject:&off_13AE0 forKeyedSubscript:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.power.state.%@.energyPassedChargeNet", @"unplugged_lpm_off_24hr"}];
-    [a4 setObject:&off_13AE0 forKeyedSubscript:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.power.state.%@.energyChargeAccumNet", @"unplugged_lpm_off_24hr"}];
+    [objc_msgSend(state "energy")];
+    [keys setObject:+[NSNumber numberWithLong:](NSNumber forKeyedSubscript:{"numberWithLong:", llround(v9)), +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.power.state.%@.energy", @"unplugged_lpm_on_24hr"}];
+    [objc_msgSend(state "energyAbsolute")];
+    [keys setObject:+[NSNumber numberWithLong:](NSNumber forKeyedSubscript:{"numberWithLong:", llround(v10)), +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.power.state.%@.energyAbsolute", @"unplugged_lpm_on_24hr"}];
+    [objc_msgSend(state "energyRaw")];
+    [keys setObject:+[NSNumber numberWithLong:](NSNumber forKeyedSubscript:{"numberWithLong:", llround(v11)), +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.power.state.%@.energyRaw", @"unplugged_lpm_on_24hr"}];
+    [keys setObject:&off_13AE0 forKeyedSubscript:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.power.state.%@.energy", @"unplugged_lpm_off_24hr"}];
+    [keys setObject:&off_13AE0 forKeyedSubscript:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.power.state.%@.energyAbsolute", @"unplugged_lpm_off_24hr"}];
+    [keys setObject:&off_13AE0 forKeyedSubscript:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.power.state.%@.energyRaw", @"unplugged_lpm_off_24hr"}];
+    [keys setObject:+[NSNumber numberWithLong:](NSNumber forKeyedSubscript:{"numberWithLong:", objc_msgSend(objc_msgSend(state, "energyAbsoluteNet"), "longValue")), +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.power.state.%@.energyAbsoluteNet", @"unplugged_lpm_on_24hr"}];
+    [keys setObject:+[NSNumber numberWithLong:](NSNumber forKeyedSubscript:{"numberWithLong:", objc_msgSend(objc_msgSend(state, "energyPassedChargeNet"), "longValue")), +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.power.state.%@.energyPassedChargeNet", @"unplugged_lpm_on_24hr"}];
+    [keys setObject:+[NSNumber numberWithLong:](NSNumber forKeyedSubscript:{"numberWithLong:", objc_msgSend(objc_msgSend(state, "energyChargeAccumNet"), "longValue")), +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.power.state.%@.energyChargeAccumNet", @"unplugged_lpm_on_24hr"}];
+    [keys setObject:&off_13AE0 forKeyedSubscript:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.power.state.%@.energyAbsoluteNet", @"unplugged_lpm_off_24hr"}];
+    [keys setObject:&off_13AE0 forKeyedSubscript:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.power.state.%@.energyPassedChargeNet", @"unplugged_lpm_off_24hr"}];
+    [keys setObject:&off_13AE0 forKeyedSubscript:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.power.state.%@.energyChargeAccumNet", @"unplugged_lpm_off_24hr"}];
     if ([(PLAggregateLogger *)self lastLPMStatus])
     {
       return;
     }
 
-    [a4 setObject:&off_13A80 forKeyedSubscript:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.power.state.%d.LPM.enable", self->currentBatteryLevel)}];
+    [keys setObject:&off_13A80 forKeyedSubscript:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.power.state.%d.LPM.enable", self->currentBatteryLevel)}];
     if (!_os_feature_enabled_impl())
     {
       v13 = 1;
@@ -794,28 +794,28 @@
     goto LABEL_11;
   }
 
-  if ([a3 isEqualToString:@"unplugged_lpm_off"])
+  if ([event isEqualToString:@"unplugged_lpm_off"])
   {
     if (![(PLAggregateLogger *)self isLPMOn])
     {
-      [objc_msgSend(a5 "energy")];
-      [a4 setObject:+[NSNumber numberWithLong:](NSNumber forKeyedSubscript:{"numberWithLong:", llround(v15)), +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.power.state.%@.energy", @"unplugged_lpm_off_24hr"}];
-      [objc_msgSend(a5 "energyAbsolute")];
-      [a4 setObject:+[NSNumber numberWithLong:](NSNumber forKeyedSubscript:{"numberWithLong:", llround(v16)), +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.power.state.%@.energyAbsolute", @"unplugged_lpm_off_24hr"}];
-      [objc_msgSend(a5 "energyRaw")];
-      [a4 setObject:+[NSNumber numberWithLong:](NSNumber forKeyedSubscript:{"numberWithLong:", llround(v17)), +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.power.state.%@.energyRaw", @"unplugged_lpm_off_24hr"}];
-      [a4 setObject:&off_13AE0 forKeyedSubscript:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.power.state.%@.energy", @"unplugged_lpm_on_24hr"}];
-      [a4 setObject:&off_13AE0 forKeyedSubscript:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.power.state.%@.energyAbsolute", @"unplugged_lpm_on_24hr"}];
-      [a4 setObject:&off_13AE0 forKeyedSubscript:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.power.state.%@.energyRaw", @"unplugged_lpm_on_24hr"}];
-      [a4 setObject:+[NSNumber numberWithLong:](NSNumber forKeyedSubscript:{"numberWithLong:", objc_msgSend(objc_msgSend(a5, "energyAbsoluteNet"), "longValue")), +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.power.state.%@.energyAbsoluteNet", @"unplugged_lpm_off_24hr"}];
-      [a4 setObject:+[NSNumber numberWithLong:](NSNumber forKeyedSubscript:{"numberWithLong:", objc_msgSend(objc_msgSend(a5, "energyPassedChargeNet"), "longValue")), +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.power.state.%@.energyPassedChargeNet", @"unplugged_lpm_off_24hr"}];
-      [a4 setObject:+[NSNumber numberWithLong:](NSNumber forKeyedSubscript:{"numberWithLong:", objc_msgSend(objc_msgSend(a5, "energyChargeAccumNet"), "longValue")), +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.power.state.%@.energyChargeAccumNet", @"unplugged_lpm_off_24hr"}];
-      [a4 setObject:&off_13AE0 forKeyedSubscript:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.power.state.%@.energyAbsoluteNet", @"unplugged_lpm_on_24hr"}];
-      [a4 setObject:&off_13AE0 forKeyedSubscript:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.power.state.%@.energyPassedChargeNet", @"unplugged_lpm_on_24hr"}];
-      [a4 setObject:&off_13AE0 forKeyedSubscript:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.power.state.%@.energyChargeAccumNet", @"unplugged_lpm_on_24hr"}];
+      [objc_msgSend(state "energy")];
+      [keys setObject:+[NSNumber numberWithLong:](NSNumber forKeyedSubscript:{"numberWithLong:", llround(v15)), +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.power.state.%@.energy", @"unplugged_lpm_off_24hr"}];
+      [objc_msgSend(state "energyAbsolute")];
+      [keys setObject:+[NSNumber numberWithLong:](NSNumber forKeyedSubscript:{"numberWithLong:", llround(v16)), +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.power.state.%@.energyAbsolute", @"unplugged_lpm_off_24hr"}];
+      [objc_msgSend(state "energyRaw")];
+      [keys setObject:+[NSNumber numberWithLong:](NSNumber forKeyedSubscript:{"numberWithLong:", llround(v17)), +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.power.state.%@.energyRaw", @"unplugged_lpm_off_24hr"}];
+      [keys setObject:&off_13AE0 forKeyedSubscript:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.power.state.%@.energy", @"unplugged_lpm_on_24hr"}];
+      [keys setObject:&off_13AE0 forKeyedSubscript:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.power.state.%@.energyAbsolute", @"unplugged_lpm_on_24hr"}];
+      [keys setObject:&off_13AE0 forKeyedSubscript:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.power.state.%@.energyRaw", @"unplugged_lpm_on_24hr"}];
+      [keys setObject:+[NSNumber numberWithLong:](NSNumber forKeyedSubscript:{"numberWithLong:", objc_msgSend(objc_msgSend(state, "energyAbsoluteNet"), "longValue")), +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.power.state.%@.energyAbsoluteNet", @"unplugged_lpm_off_24hr"}];
+      [keys setObject:+[NSNumber numberWithLong:](NSNumber forKeyedSubscript:{"numberWithLong:", objc_msgSend(objc_msgSend(state, "energyPassedChargeNet"), "longValue")), +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.power.state.%@.energyPassedChargeNet", @"unplugged_lpm_off_24hr"}];
+      [keys setObject:+[NSNumber numberWithLong:](NSNumber forKeyedSubscript:{"numberWithLong:", objc_msgSend(objc_msgSend(state, "energyChargeAccumNet"), "longValue")), +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.power.state.%@.energyChargeAccumNet", @"unplugged_lpm_off_24hr"}];
+      [keys setObject:&off_13AE0 forKeyedSubscript:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.power.state.%@.energyAbsoluteNet", @"unplugged_lpm_on_24hr"}];
+      [keys setObject:&off_13AE0 forKeyedSubscript:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.power.state.%@.energyPassedChargeNet", @"unplugged_lpm_on_24hr"}];
+      [keys setObject:&off_13AE0 forKeyedSubscript:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.power.state.%@.energyChargeAccumNet", @"unplugged_lpm_on_24hr"}];
       if ([(PLAggregateLogger *)self lastLPMStatus])
       {
-        [a4 setObject:&off_13A80 forKeyedSubscript:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.power.state.%d.LPM.disable", self->currentBatteryLevel)}];
+        [keys setObject:&off_13A80 forKeyedSubscript:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.power.state.%d.LPM.disable", self->currentBatteryLevel)}];
         v13 = 0;
         if (!_os_feature_enabled_impl())
         {
@@ -839,11 +839,11 @@ LABEL_11:
   }
 }
 
-- (void)handleWake:(id)a3
+- (void)handleWake:(id)wake
 {
   context = objc_autoreleasePoolPush();
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:PLDeviceDidWakeSystemReasonKey];
+  userInfo = [wake userInfo];
+  v5 = [userInfo objectForKey:PLDeviceDidWakeSystemReasonKey];
   v6 = +[NSMutableDictionary dictionary];
   v17 = 0u;
   v18 = 0u;
@@ -958,38 +958,38 @@ LABEL_11:
   objc_autoreleasePoolPop(context);
 }
 
-- (void)handleBatteryStatus:(id)a3
+- (void)handleBatteryStatus:(id)status
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:PLBatteryStatusPropertiesKey];
+  userInfo = [status userInfo];
+  v5 = [userInfo objectForKeyedSubscript:PLBatteryStatusPropertiesKey];
   -[PLAggregateLogger handleEvent:withStatus:](self, "handleEvent:withStatus:", 0, [v5 isPluggedIn]);
-  v6 = [v5 isCharging];
+  isCharging = [v5 isCharging];
 
-  [(PLAggregateLogger *)self handleEvent:3 withStatus:v6];
+  [(PLAggregateLogger *)self handleEvent:3 withStatus:isCharging];
 }
 
-- (void)handleLPMStatus:(id)a3
+- (void)handleLPMStatus:(id)status
 {
-  v4 = [a3 userInfo];
-  v5 = [objc_msgSend(objc_msgSend(v4 objectForKeyedSubscript:{PLLPMStatusDidChangeNotification), "objectForKey:", @"value", "intValue"}] == 1;
+  userInfo = [status userInfo];
+  v5 = [objc_msgSend(objc_msgSend(userInfo objectForKeyedSubscript:{PLLPMStatusDidChangeNotification), "objectForKey:", @"value", "intValue"}] == 1;
 
   [(PLAggregateLogger *)self handleEvent:4 withStatus:v5];
 }
 
-- (void)handleAODMode:(id)a3
+- (void)handleAODMode:(id)mode
 {
   if (!+[PLPowerEventListener hasAOD])
   {
     return;
   }
 
-  v5 = [a3 userInfo];
-  v6 = [objc_msgSend(objc_msgSend(v5 objectForKeyedSubscript:{PLAODModeNotification), "objectForKey:", @"value", "intValue"}];
+  userInfo = [mode userInfo];
+  v6 = [objc_msgSend(objc_msgSend(userInfo objectForKeyedSubscript:{PLAODModeNotification), "objectForKey:", @"value", "intValue"}];
   if (v6 > 1)
   {
     if (v6 == 2 || v6 == 3)
     {
-      v7 = self;
+      selfCopy2 = self;
       v8 = 1;
       goto LABEL_8;
     }
@@ -997,11 +997,11 @@ LABEL_11:
 
   else if (v6 <= 1)
   {
-    v7 = self;
+    selfCopy2 = self;
     v8 = 0;
 LABEL_8:
 
-    [(PLAggregateLogger *)v7 handleEvent:2 withStatus:v8];
+    [(PLAggregateLogger *)selfCopy2 handleEvent:2 withStatus:v8];
     return;
   }
 
@@ -1047,99 +1047,99 @@ LABEL_8:
   dispatch_after(v3, &_dispatch_main_q, block);
 }
 
-- (int)binSessionLength:(int64_t)a3
+- (int)binSessionLength:(int64_t)length
 {
-  if (a3 < 1)
+  if (length < 1)
   {
     return 1;
   }
 
-  if (a3 < 5)
+  if (length < 5)
   {
     return 2;
   }
 
-  if (a3 < 0xA)
+  if (length < 0xA)
   {
     return 3;
   }
 
-  if (a3 < 0x1E)
+  if (length < 0x1E)
   {
     return 4;
   }
 
-  if (a3 < 0x3C)
+  if (length < 0x3C)
   {
     return 5;
   }
 
-  if (a3 < 0x78)
+  if (length < 0x78)
   {
     return 6;
   }
 
-  if (a3 < 0xB4)
+  if (length < 0xB4)
   {
     return 7;
   }
 
-  if (a3 < 0xF0)
+  if (length < 0xF0)
   {
     return 8;
   }
 
-  if (a3 < 0x12C)
+  if (length < 0x12C)
   {
     return 9;
   }
 
-  if (a3 < 0x168)
+  if (length < 0x168)
   {
     return 10;
   }
 
-  if (a3 < 0x1A4)
+  if (length < 0x1A4)
   {
     return 11;
   }
 
-  if (a3 < 0x1E0)
+  if (length < 0x1E0)
   {
     return 12;
   }
 
-  if (a3 < 0x21C)
+  if (length < 0x21C)
   {
     return 13;
   }
 
-  if (a3 < 0x258)
+  if (length < 0x258)
   {
     return 14;
   }
 
-  if (a3 < 0x384)
+  if (length < 0x384)
   {
     return 15;
   }
 
-  if (a3 < 0x4B0)
+  if (length < 0x4B0)
   {
     return 16;
   }
 
-  if (a3 < 0x708)
+  if (length < 0x708)
   {
     return 17;
   }
 
-  if (a3 < 0xA8C)
+  if (length < 0xA8C)
   {
     return 18;
   }
 
-  if (a3 < 0xE10)
+  if (length < 0xE10)
   {
     return 19;
   }

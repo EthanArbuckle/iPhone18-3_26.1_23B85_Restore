@@ -1,26 +1,26 @@
 @interface TVFloatingContentCell
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
-- (_TtC9SeymourUI21TVFloatingContentCell)initWithCoder:(id)a3;
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
+- (_TtC9SeymourUI21TVFloatingContentCell)initWithCoder:(id)coder;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation TVFloatingContentCell
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9 = *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC9SeymourUI21TVFloatingContentCell_floatingView);
-  v10 = self;
-  v11 = [v9 contentView];
-  if (v11)
+  selfCopy = self;
+  contentView = [v9 contentView];
+  if (contentView)
   {
-    v16 = v11;
-    *&v14 = a4;
-    *&v15 = a5;
-    [v11 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:{v14, v15}];
+    v16 = contentView;
+    *&v14 = priority;
+    *&v15 = fittingPriority;
+    [contentView systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:{v14, v15}];
     v18 = v17;
     v20 = v19;
 
@@ -38,22 +38,22 @@
   return result;
 }
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
   v4 = *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC9SeymourUI21TVFloatingContentCell_floatingView);
-  v5 = a3;
-  v6 = self;
+  attributesCopy = attributes;
+  selfCopy = self;
   result = [v4 contentView];
   if (result)
   {
     v8 = result;
-    [v5 size];
+    [attributesCopy size];
     [v8 systemLayoutSizeFittingSize_];
 
-    [v5 frame];
-    [v5 setFrame_];
+    [attributesCopy frame];
+    [attributesCopy setFrame_];
 
-    return v5;
+    return attributesCopy;
   }
 
   else
@@ -64,7 +64,7 @@
   return result;
 }
 
-- (_TtC9SeymourUI21TVFloatingContentCell)initWithCoder:(id)a3
+- (_TtC9SeymourUI21TVFloatingContentCell)initWithCoder:(id)coder
 {
   result = sub_20C13DE24();
   __break(1u);
@@ -73,15 +73,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_20BA98E90();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_20BA990F8(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_20BA990F8(change);
 }
 
 @end

@@ -1,31 +1,31 @@
 @interface HMIVideoAnalyzerEventPerson
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)boundingBox;
 - (CGRect)boundingBoxForTracker;
-- (HMIVideoAnalyzerEventPerson)initWithCoder:(id)a3;
-- (HMIVideoAnalyzerEventPerson)initWithConfidence:(id)a3 boundingBox:(CGRect)a4;
-- (HMIVideoAnalyzerEventPerson)initWithConfidence:(id)a3 boundingBox:(CGRect)a4 face:(id)a5;
-- (HMIVideoAnalyzerEventPerson)initWithConfidence:(id)a3 boundingBox:(CGRect)a4 face:(id)a5 torso:(id)a6;
-- (HMIVideoAnalyzerEventPerson)initWithFaceEvent:(id)a3;
-- (HMIVideoAnalyzerEventPerson)initWithFaceEvent:(id)a3 torso:(id)a4;
-- (HMIVideoAnalyzerEventPerson)initWithTorsoEvent:(id)a3;
+- (HMIVideoAnalyzerEventPerson)initWithCoder:(id)coder;
+- (HMIVideoAnalyzerEventPerson)initWithConfidence:(id)confidence boundingBox:(CGRect)box;
+- (HMIVideoAnalyzerEventPerson)initWithConfidence:(id)confidence boundingBox:(CGRect)box face:(id)face;
+- (HMIVideoAnalyzerEventPerson)initWithConfidence:(id)confidence boundingBox:(CGRect)box face:(id)face torso:(id)torso;
+- (HMIVideoAnalyzerEventPerson)initWithFaceEvent:(id)event;
+- (HMIVideoAnalyzerEventPerson)initWithFaceEvent:(id)event torso:(id)torso;
+- (HMIVideoAnalyzerEventPerson)initWithTorsoEvent:(id)event;
 - (NSUUID)sessionEntityUUID;
 - (id)allEvents;
 - (id)attributeDescriptions;
 - (id)confidence;
-- (id)copyWithFaceEvent:(id)a3 torso:(id)a4;
+- (id)copyWithFaceEvent:(id)event torso:(id)torso;
 - (id)shortDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMIVideoAnalyzerEventPerson
 
-- (HMIVideoAnalyzerEventPerson)initWithConfidence:(id)a3 boundingBox:(CGRect)a4
+- (HMIVideoAnalyzerEventPerson)initWithConfidence:(id)confidence boundingBox:(CGRect)box
 {
   v9.receiver = self;
   v9.super_class = HMIVideoAnalyzerEventPerson;
-  v4 = [(HMIVideoAnalyzerEvent *)&v9 initWithConfidence:a3 boundingBox:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  v4 = [(HMIVideoAnalyzerEvent *)&v9 initWithConfidence:confidence boundingBox:box.origin.x, box.origin.y, box.size.width, box.size.height];
   v5 = v4;
   if (v4)
   {
@@ -41,20 +41,20 @@
   return v5;
 }
 
-- (HMIVideoAnalyzerEventPerson)initWithConfidence:(id)a3 boundingBox:(CGRect)a4 face:(id)a5
+- (HMIVideoAnalyzerEventPerson)initWithConfidence:(id)confidence boundingBox:(CGRect)box face:(id)face
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v12 = a5;
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  faceCopy = face;
   v17.receiver = self;
   v17.super_class = HMIVideoAnalyzerEventPerson;
-  v13 = [(HMIVideoAnalyzerEvent *)&v17 initWithConfidence:a3 boundingBox:x, y, width, height];
-  v14 = v13;
-  if (v13)
+  height = [(HMIVideoAnalyzerEvent *)&v17 initWithConfidence:confidence boundingBox:x, y, width, height];
+  v14 = height;
+  if (height)
   {
-    objc_storeStrong(&v13->_face, a5);
+    objc_storeStrong(&height->_face, face);
     torso = v14->_torso;
     v14->_torso = 0;
 
@@ -64,31 +64,31 @@
   return v14;
 }
 
-- (HMIVideoAnalyzerEventPerson)initWithConfidence:(id)a3 boundingBox:(CGRect)a4 face:(id)a5 torso:(id)a6
+- (HMIVideoAnalyzerEventPerson)initWithConfidence:(id)confidence boundingBox:(CGRect)box face:(id)face torso:(id)torso
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v14 = a5;
-  v15 = a6;
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  faceCopy = face;
+  torsoCopy = torso;
   v19.receiver = self;
   v19.super_class = HMIVideoAnalyzerEventPerson;
-  v16 = [(HMIVideoAnalyzerEvent *)&v19 initWithConfidence:a3 boundingBox:0 userInfo:x, y, width, height];
-  v17 = v16;
-  if (v16)
+  height = [(HMIVideoAnalyzerEvent *)&v19 initWithConfidence:confidence boundingBox:0 userInfo:x, y, width, height];
+  v17 = height;
+  if (height)
   {
-    objc_storeStrong(&v16->_face, a5);
-    objc_storeStrong(&v17->_torso, a6);
+    objc_storeStrong(&height->_face, face);
+    objc_storeStrong(&v17->_torso, torso);
     v17->_isBoundingBoxEstimated = 0;
   }
 
   return v17;
 }
 
-- (HMIVideoAnalyzerEventPerson)initWithFaceEvent:(id)a3
+- (HMIVideoAnalyzerEventPerson)initWithFaceEvent:(id)event
 {
-  v5 = a3;
+  eventCopy = event;
   v6 = [[HMIConfidence alloc] initWithValue:&unk_284075630 levelThresholds:0.0];
   v11.receiver = self;
   v11.super_class = HMIVideoAnalyzerEventPerson;
@@ -96,7 +96,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_face, a3);
+    objc_storeStrong(&v7->_face, event);
     torso = v8->_torso;
     v8->_torso = 0;
 
@@ -106,9 +106,9 @@
   return v8;
 }
 
-- (HMIVideoAnalyzerEventPerson)initWithTorsoEvent:(id)a3
+- (HMIVideoAnalyzerEventPerson)initWithTorsoEvent:(id)event
 {
-  v5 = a3;
+  eventCopy = event;
   v6 = [[HMIConfidence alloc] initWithValue:&unk_284075648 levelThresholds:0.0];
   v11.receiver = self;
   v11.super_class = HMIVideoAnalyzerEventPerson;
@@ -119,17 +119,17 @@
     face = v7->_face;
     v7->_face = 0;
 
-    objc_storeStrong(&v8->_torso, a3);
+    objc_storeStrong(&v8->_torso, event);
     v8->_isBoundingBoxEstimated = 1;
   }
 
   return v8;
 }
 
-- (HMIVideoAnalyzerEventPerson)initWithFaceEvent:(id)a3 torso:(id)a4
+- (HMIVideoAnalyzerEventPerson)initWithFaceEvent:(id)event torso:(id)torso
 {
-  v7 = a3;
-  v8 = a4;
+  eventCopy = event;
+  torsoCopy = torso;
   v9 = [[HMIConfidence alloc] initWithValue:&unk_284075660 levelThresholds:0.0];
   v13.receiver = self;
   v13.super_class = HMIVideoAnalyzerEventPerson;
@@ -137,59 +137,59 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_face, a3);
-    objc_storeStrong(&v11->_torso, a4);
+    objc_storeStrong(&v10->_face, event);
+    objc_storeStrong(&v11->_torso, torso);
     v11->_isBoundingBoxEstimated = 1;
   }
 
   return v11;
 }
 
-- (id)copyWithFaceEvent:(id)a3 torso:(id)a4
+- (id)copyWithFaceEvent:(id)event torso:(id)torso
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  torsoCopy = torso;
   if ([(HMIVideoAnalyzerEventPerson *)self hasEstimatedBoundingBox])
   {
-    if (v6 && v7)
+    if (eventCopy && torsoCopy)
     {
-      v8 = [[HMIVideoAnalyzerEventPerson alloc] initWithFaceEvent:v6 torso:v7];
+      v8 = [[HMIVideoAnalyzerEventPerson alloc] initWithFaceEvent:eventCopy torso:torsoCopy];
 LABEL_13:
       v11 = v8;
       goto LABEL_14;
     }
 
-    if (v6 && !v7)
+    if (eventCopy && !torsoCopy)
     {
-      v8 = [[HMIVideoAnalyzerEventPerson alloc] initWithFaceEvent:v6];
+      v8 = [[HMIVideoAnalyzerEventPerson alloc] initWithFaceEvent:eventCopy];
       goto LABEL_13;
     }
 
     v12 = [HMIVideoAnalyzerEventPerson alloc];
     v13 = v12;
-    if (!v6 && v7)
+    if (!eventCopy && torsoCopy)
     {
-      v8 = [(HMIVideoAnalyzerEventPerson *)v12 initWithTorsoEvent:v7];
+      v8 = [(HMIVideoAnalyzerEventPerson *)v12 initWithTorsoEvent:torsoCopy];
       goto LABEL_13;
     }
 
-    v10 = [(HMIVideoAnalyzerEventPerson *)self confidence];
+    confidence = [(HMIVideoAnalyzerEventPerson *)self confidence];
     [(HMIVideoAnalyzerEventPerson *)self boundingBox];
     v16 = v15;
     v18 = v17;
     v20 = v19;
     v22 = v21;
-    v23 = [(HMIVideoAnalyzerEventPerson *)self face];
-    v24 = [(HMIVideoAnalyzerEventPerson *)self torso];
-    v11 = [(HMIVideoAnalyzerEventPerson *)v13 initWithConfidence:v10 boundingBox:v23 face:v24 torso:v16, v18, v20, v22];
+    face = [(HMIVideoAnalyzerEventPerson *)self face];
+    torso = [(HMIVideoAnalyzerEventPerson *)self torso];
+    v11 = [(HMIVideoAnalyzerEventPerson *)v13 initWithConfidence:confidence boundingBox:face face:torso torso:v16, v18, v20, v22];
   }
 
   else
   {
     v9 = [HMIVideoAnalyzerEventPerson alloc];
-    v10 = [(HMIVideoAnalyzerEventPerson *)self confidence];
+    confidence = [(HMIVideoAnalyzerEventPerson *)self confidence];
     [(HMIVideoAnalyzerEventPerson *)self boundingBox];
-    v11 = [(HMIVideoAnalyzerEventPerson *)v9 initWithConfidence:v10 boundingBox:v6 face:v7 torso:?];
+    v11 = [(HMIVideoAnalyzerEventPerson *)v9 initWithConfidence:confidence boundingBox:eventCopy face:torsoCopy torso:?];
   }
 
 LABEL_14:
@@ -199,20 +199,20 @@ LABEL_14:
 - (id)allEvents
 {
   v3 = [MEMORY[0x277CBEB18] arrayWithObject:self];
-  v4 = [(HMIVideoAnalyzerEventPerson *)self face];
+  face = [(HMIVideoAnalyzerEventPerson *)self face];
 
-  if (v4)
+  if (face)
   {
-    v5 = [(HMIVideoAnalyzerEventPerson *)self face];
-    [v3 addObject:v5];
+    face2 = [(HMIVideoAnalyzerEventPerson *)self face];
+    [v3 addObject:face2];
   }
 
-  v6 = [(HMIVideoAnalyzerEventPerson *)self torso];
+  torso = [(HMIVideoAnalyzerEventPerson *)self torso];
 
-  if (v6)
+  if (torso)
   {
-    v7 = [(HMIVideoAnalyzerEventPerson *)self torso];
-    [v3 addObject:v7];
+    torso2 = [(HMIVideoAnalyzerEventPerson *)self torso];
+    [v3 addObject:torso2];
   }
 
   v8 = [v3 copy];
@@ -224,7 +224,7 @@ LABEL_14:
 {
   if ([(HMIVideoAnalyzerEventPerson *)self hasEstimatedBoundingBox]&& ([(HMIVideoAnalyzerEventPerson *)self torso], v3 = objc_claimAutoreleasedReturnValue(), v3, v3))
   {
-    v4 = [(HMIVideoAnalyzerEventPerson *)self torso];
+    torso = [(HMIVideoAnalyzerEventPerson *)self torso];
   }
 
   else
@@ -241,11 +241,11 @@ LABEL_14:
       goto LABEL_9;
     }
 
-    v4 = [(HMIVideoAnalyzerEventPerson *)self face];
+    torso = [(HMIVideoAnalyzerEventPerson *)self face];
   }
 
-  v6 = v4;
-  [v4 boundingBox];
+  v6 = torso;
+  [torso boundingBox];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -267,8 +267,8 @@ LABEL_9:
 {
   if ([(HMIVideoAnalyzerEventPerson *)self hasEstimatedBoundingBox]&& ([(HMIVideoAnalyzerEventPerson *)self torso], v3 = objc_claimAutoreleasedReturnValue(), v3, v3))
   {
-    v4 = [(HMIVideoAnalyzerEventPerson *)self torso];
-    [v4 boundingBox];
+    torso = [(HMIVideoAnalyzerEventPerson *)self torso];
+    [torso boundingBox];
     x = v5;
     y = v7;
     width = v9;
@@ -277,17 +277,17 @@ LABEL_9:
 
   else if ([(HMIVideoAnalyzerEventPerson *)self hasEstimatedBoundingBox]&& ([(HMIVideoAnalyzerEventPerson *)self face], v13 = objc_claimAutoreleasedReturnValue(), v13, v13))
   {
-    v14 = [(HMIVideoAnalyzerEventPerson *)self face];
-    [v14 boundingBox];
+    face = [(HMIVideoAnalyzerEventPerson *)self face];
+    [face boundingBox];
     v16 = v15;
     v18 = v17;
     v20 = v19;
     v22 = v21;
-    v23 = [(HMIVideoAnalyzerEventPerson *)self face];
-    [v23 boundingBox];
+    face2 = [(HMIVideoAnalyzerEventPerson *)self face];
+    [face2 boundingBox];
     v24 = CGRectGetWidth(v36) * -0.5;
-    v25 = [(HMIVideoAnalyzerEventPerson *)self face];
-    [v25 boundingBox];
+    face3 = [(HMIVideoAnalyzerEventPerson *)self face];
+    [face3 boundingBox];
     v26 = CGRectGetHeight(v37) * -0.5;
     v38.origin.x = v16;
     v38.origin.y = v18;
@@ -326,14 +326,14 @@ LABEL_9:
 {
   if ([(HMIVideoAnalyzerEventPerson *)self hasEstimatedBoundingBox])
   {
-    v3 = [(HMIVideoAnalyzerEventPerson *)self torso];
+    torso = [(HMIVideoAnalyzerEventPerson *)self torso];
 
-    if (v3)
+    if (torso)
     {
-      v4 = [(HMIVideoAnalyzerEventPerson *)self torso];
+      torso2 = [(HMIVideoAnalyzerEventPerson *)self torso];
 LABEL_7:
-      v6 = v4;
-      v7 = [v4 confidence];
+      v6 = torso2;
+      confidence = [torso2 confidence];
 
       goto LABEL_9;
     }
@@ -341,42 +341,42 @@ LABEL_7:
 
   if ([(HMIVideoAnalyzerEventPerson *)self hasEstimatedBoundingBox])
   {
-    v5 = [(HMIVideoAnalyzerEventPerson *)self face];
+    face = [(HMIVideoAnalyzerEventPerson *)self face];
 
-    if (v5)
+    if (face)
     {
-      v4 = [(HMIVideoAnalyzerEventPerson *)self face];
+      torso2 = [(HMIVideoAnalyzerEventPerson *)self face];
       goto LABEL_7;
     }
   }
 
   v9.receiver = self;
   v9.super_class = HMIVideoAnalyzerEventPerson;
-  v7 = [(HMIVideoAnalyzerEvent *)&v9 confidence];
+  confidence = [(HMIVideoAnalyzerEvent *)&v9 confidence];
 LABEL_9:
 
-  return v7;
+  return confidence;
 }
 
 - (NSUUID)sessionEntityUUID
 {
-  v3 = [(HMIVideoAnalyzerEventPerson *)self face];
-  if (!v3 || (v4 = v3, -[HMIVideoAnalyzerEventPerson face](self, "face"), v5 = objc_claimAutoreleasedReturnValue(), [v5 sessionEntityUUID], v6 = objc_claimAutoreleasedReturnValue(), v5, v4, !v6))
+  face = [(HMIVideoAnalyzerEventPerson *)self face];
+  if (!face || (v4 = face, -[HMIVideoAnalyzerEventPerson face](self, "face"), v5 = objc_claimAutoreleasedReturnValue(), [v5 sessionEntityUUID], sessionEntityUUID = objc_claimAutoreleasedReturnValue(), v5, v4, !sessionEntityUUID))
   {
-    v7 = [(HMIVideoAnalyzerEventPerson *)self torso];
-    if (v7)
+    torso = [(HMIVideoAnalyzerEventPerson *)self torso];
+    if (torso)
     {
-      v8 = [(HMIVideoAnalyzerEventPerson *)self torso];
-      v6 = [v8 sessionEntityUUID];
+      torso2 = [(HMIVideoAnalyzerEventPerson *)self torso];
+      sessionEntityUUID = [torso2 sessionEntityUUID];
     }
 
     else
     {
-      v6 = 0;
+      sessionEntityUUID = 0;
     }
   }
 
-  return v6;
+  return sessionEntityUUID;
 }
 
 - (id)attributeDescriptions
@@ -384,67 +384,67 @@ LABEL_9:
   v17[3] = *MEMORY[0x277D85DE8];
   v16.receiver = self;
   v16.super_class = HMIVideoAnalyzerEventPerson;
-  v3 = [(HMIVideoAnalyzerEvent *)&v16 attributeDescriptions];
+  attributeDescriptions = [(HMIVideoAnalyzerEvent *)&v16 attributeDescriptions];
   v4 = objc_alloc(MEMORY[0x277D0F778]);
   v5 = [MEMORY[0x277CCABB0] numberWithBool:{-[HMIVideoAnalyzerEventPerson hasEstimatedBoundingBox](self, "hasEstimatedBoundingBox")}];
   v6 = [v4 initWithName:@"Is Bounding Box & Confidence Estimated" value:v5];
   v17[0] = v6;
   v7 = objc_alloc(MEMORY[0x277D0F778]);
-  v8 = [(HMIVideoAnalyzerEventPerson *)self face];
-  v9 = [v7 initWithName:@"Face" value:v8];
+  face = [(HMIVideoAnalyzerEventPerson *)self face];
+  v9 = [v7 initWithName:@"Face" value:face];
   v17[1] = v9;
   v10 = objc_alloc(MEMORY[0x277D0F778]);
-  v11 = [(HMIVideoAnalyzerEventPerson *)self torso];
-  v12 = [v10 initWithName:@"Torso" value:v11];
+  torso = [(HMIVideoAnalyzerEventPerson *)self torso];
+  v12 = [v10 initWithName:@"Torso" value:torso];
   v17[2] = v12;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:3];
-  v14 = [v3 arrayByAddingObjectsFromArray:v13];
+  v14 = [attributeDescriptions arrayByAddingObjectsFromArray:v13];
 
   return v14;
 }
 
 - (id)shortDescription
 {
-  v3 = [(HMIVideoAnalyzerEventPerson *)self face];
-  if (v3)
+  face = [(HMIVideoAnalyzerEventPerson *)self face];
+  if (face)
   {
-    v4 = [(HMIVideoAnalyzerEventPerson *)self face];
-    v5 = [v4 shortDescription];
+    face2 = [(HMIVideoAnalyzerEventPerson *)self face];
+    shortDescription = [face2 shortDescription];
   }
 
   else
   {
-    v5 = &stru_284057FB8;
+    shortDescription = &stru_284057FB8;
   }
 
-  v6 = [(HMIVideoAnalyzerEventPerson *)self torso];
-  if (v6)
+  torso = [(HMIVideoAnalyzerEventPerson *)self torso];
+  if (torso)
   {
-    v7 = [(HMIVideoAnalyzerEventPerson *)self torso];
-    v8 = [v7 shortDescription];
+    torso2 = [(HMIVideoAnalyzerEventPerson *)self torso];
+    shortDescription2 = [torso2 shortDescription];
   }
 
   else
   {
-    v8 = &stru_284057FB8;
+    shortDescription2 = &stru_284057FB8;
   }
 
   v9 = MEMORY[0x277CCACA8];
   v13.receiver = self;
   v13.super_class = HMIVideoAnalyzerEventPerson;
-  v10 = [(HMIVideoAnalyzerEvent *)&v13 shortDescription];
-  v11 = [v9 stringWithFormat:@"%@ %@ %@", v10, v5, v8];
+  shortDescription3 = [(HMIVideoAnalyzerEvent *)&v13 shortDescription];
+  v11 = [v9 stringWithFormat:@"%@ %@ %@", shortDescription3, shortDescription, shortDescription2];
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -455,8 +455,8 @@ LABEL_9:
   v6 = v5;
   if (v6 && (v7 = -[HMIVideoAnalyzerEventPerson hasEstimatedBoundingBox](self, "hasEstimatedBoundingBox"), v7 == [v6 hasEstimatedBoundingBox]) && (v15.receiver = self, v15.super_class = HMIVideoAnalyzerEventPerson, -[HMIVideoAnalyzerEvent isEqual:](&v15, sel_isEqual_, v6)) && (-[HMIVideoAnalyzerEventPerson face](self, "face"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "face"), v9 = objc_claimAutoreleasedReturnValue(), v10 = HMFEqualObjects(), v9, v8, v10))
   {
-    v11 = [(HMIVideoAnalyzerEventPerson *)self torso];
-    v12 = [v6 torso];
+    torso = [(HMIVideoAnalyzerEventPerson *)self torso];
+    torso2 = [v6 torso];
     v13 = HMFEqualObjects();
   }
 
@@ -470,36 +470,36 @@ LABEL_9:
 
 - (unint64_t)hash
 {
-  v3 = [(HMIVideoAnalyzerEventPerson *)self hasEstimatedBoundingBox];
+  hasEstimatedBoundingBox = [(HMIVideoAnalyzerEventPerson *)self hasEstimatedBoundingBox];
   v5.receiver = self;
   v5.super_class = HMIVideoAnalyzerEventPerson;
-  return [(HMIVideoAnalyzerEvent *)&v5 hash]^ v3;
+  return [(HMIVideoAnalyzerEvent *)&v5 hash]^ hasEstimatedBoundingBox;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = HMIVideoAnalyzerEventPerson;
-  v4 = a3;
-  [(HMIVideoAnalyzerEvent *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(HMIVideoAnalyzerEvent *)&v7 encodeWithCoder:coderCopy];
   v5 = [(HMIVideoAnalyzerEventPerson *)self face:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"HMIVAEP.f"];
+  [coderCopy encodeObject:v5 forKey:@"HMIVAEP.f"];
 
-  v6 = [(HMIVideoAnalyzerEventPerson *)self torso];
-  [v4 encodeObject:v6 forKey:@"HMIVAEP.t"];
+  torso = [(HMIVideoAnalyzerEventPerson *)self torso];
+  [coderCopy encodeObject:torso forKey:@"HMIVAEP.t"];
 
-  [v4 encodeBool:-[HMIVideoAnalyzerEventPerson hasEstimatedBoundingBox](self forKey:{"hasEstimatedBoundingBox"), @"HMIVAEP.ibbe"}];
+  [coderCopy encodeBool:-[HMIVideoAnalyzerEventPerson hasEstimatedBoundingBox](self forKey:{"hasEstimatedBoundingBox"), @"HMIVAEP.ibbe"}];
 }
 
-- (HMIVideoAnalyzerEventPerson)initWithCoder:(id)a3
+- (HMIVideoAnalyzerEventPerson)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [[HMIVideoAnalyzerEvent alloc] initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [[HMIVideoAnalyzerEvent alloc] initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMIVAEP.f"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMIVAEP.t"];
-    if ([v4 decodeBoolForKey:@"HMIVAEP.ibbe"])
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMIVAEP.f"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMIVAEP.t"];
+    if ([coderCopy decodeBoolForKey:@"HMIVAEP.ibbe"])
     {
       if (v6 && v7)
       {
@@ -508,7 +508,7 @@ LABEL_11:
         self = v8;
 LABEL_13:
 
-        v9 = self;
+        selfCopy = self;
         goto LABEL_14;
       }
 
@@ -525,17 +525,17 @@ LABEL_13:
       }
     }
 
-    v10 = [(HMIVideoAnalyzerEvent *)v5 confidence];
+    confidence = [(HMIVideoAnalyzerEvent *)v5 confidence];
     [(HMIVideoAnalyzerEvent *)v5 boundingBox];
-    self = [(HMIVideoAnalyzerEventPerson *)self initWithConfidence:v10 boundingBox:v6 face:v7 torso:?];
+    self = [(HMIVideoAnalyzerEventPerson *)self initWithConfidence:confidence boundingBox:v6 face:v7 torso:?];
 
     goto LABEL_13;
   }
 
-  v9 = 0;
+  selfCopy = 0;
 LABEL_14:
 
-  return v9;
+  return selfCopy;
 }
 
 @end

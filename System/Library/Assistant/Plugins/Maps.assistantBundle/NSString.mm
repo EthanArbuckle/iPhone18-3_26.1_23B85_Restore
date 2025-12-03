@@ -1,6 +1,6 @@
 @interface NSString
 + (id)_ma_openTableDisplayName;
-- (id)_maps_prefixMatchesForSearchString:(id)a3;
+- (id)_maps_prefixMatchesForSearchString:(id)string;
 @end
 
 @implementation NSString
@@ -13,20 +13,20 @@
   return v3;
 }
 
-- (id)_maps_prefixMatchesForSearchString:(id)a3
+- (id)_maps_prefixMatchesForSearchString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = +[NSMutableArray array];
   v6 = objc_autoreleasePoolPush();
   v7 = +[NSMutableArray array];
-  v8 = [v4 length];
+  v8 = [stringCopy length];
   v44[0] = _NSConcreteStackBlock;
   v44[1] = 3221225472;
   v44[2] = sub_82F4;
   v44[3] = &unk_349A0;
   v9 = v7;
   v45 = v9;
-  [v4 enumerateSubstringsInRange:0 options:v8 usingBlock:{1027, v44}];
+  [stringCopy enumerateSubstringsInRange:0 options:v8 usingBlock:{1027, v44}];
   v10 = +[NSMutableArray array];
   v11 = [(NSString *)self length];
   v42[0] = _NSConcreteStackBlock;
@@ -47,7 +47,7 @@
     v31 = v5;
     v32 = *v39;
     context = v6;
-    v28 = v4;
+    v28 = stringCopy;
     v30 = v12;
     while (1)
     {
@@ -84,7 +84,7 @@ LABEL_8:
         v20 = *(*(&v34 + 1) + 8 * v19);
         v21 = [v20 objectAtIndexedSubscript:0];
         v22 = [v20 objectAtIndexedSubscript:1];
-        v23 = [v22 rangeValue];
+        rangeValue = [v22 rangeValue];
 
         if (![v21 localizedStandardRangeOfString:v14])
         {
@@ -103,7 +103,7 @@ LABEL_8:
         }
       }
 
-      v24 = +[NSValue valueWithRange:](NSValue, "valueWithRange:", v23, [v14 length]);
+      v24 = +[NSValue valueWithRange:](NSValue, "valueWithRange:", rangeValue, [v14 length]);
       v5 = v31;
       [v31 addObject:v24];
 
@@ -116,7 +116,7 @@ LABEL_8:
       }
 
       v6 = context;
-      v4 = v28;
+      stringCopy = v28;
       v33 = [obj countByEnumeratingWithState:&v38 objects:v47 count:16];
       if (!v33)
       {
@@ -128,7 +128,7 @@ LABEL_18:
 
     objc_autoreleasePoolPop(context);
     v25 = 0;
-    v4 = v28;
+    stringCopy = v28;
     v5 = v31;
   }
 

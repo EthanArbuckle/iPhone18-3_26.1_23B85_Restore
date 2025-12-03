@@ -1,12 +1,12 @@
 @interface CarSearchResultsModeController
 - ($F99D9A4FB75BC57F3386B8DC8EE08D7A)mapControlsConfiguration;
-- (BOOL)_contentNeedsRefreshingForUpdatedLocation:(id)a3;
+- (BOOL)_contentNeedsRefreshingForUpdatedLocation:(id)location;
 - (BrowseManager)browseManager;
-- (CarSearchResultsModeController)initWithCategory:(id)a3;
-- (CarSearchResultsModeController)initWithCollection:(id)a3;
-- (CarSearchResultsModeController)initWithSearchInfo:(id)a3;
-- (CarSearchResultsModeController)initWithSearchResults:(id)a3;
-- (CarSearchResultsModeController)initWithSearchSession:(id)a3;
+- (CarSearchResultsModeController)initWithCategory:(id)category;
+- (CarSearchResultsModeController)initWithCollection:(id)collection;
+- (CarSearchResultsModeController)initWithSearchInfo:(id)info;
+- (CarSearchResultsModeController)initWithSearchResults:(id)results;
+- (CarSearchResultsModeController)initWithSearchSession:(id)session;
 - (ChromeViewController)chromeViewController;
 - (NSArray)carFocusOrderSequences;
 - (NSArray)preferredCarFocusEnvironments;
@@ -14,31 +14,31 @@
 - (id)personalizedItemSources;
 - (void)_captureCurrentViewport;
 - (void)_fetchCategoryResults;
-- (void)_highlightSearchResult:(id)a3;
-- (void)_reloadContentIfNeededForUpdatedLocation:(id)a3;
+- (void)_highlightSearchResult:(id)result;
+- (void)_reloadContentIfNeededForUpdatedLocation:(id)location;
 - (void)_resetUserInteractionState;
 - (void)_setup;
-- (void)_setupForCuratedCollection:(id)a3;
-- (void)_setupForUserCollection:(id)a3;
+- (void)_setupForCuratedCollection:(id)collection;
+- (void)_setupForUserCollection:(id)collection;
 - (void)_trackInteractionIfViewportChanged;
 - (void)_userDidInteractWithMap;
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)carCardViewCloseButtonTapped:(id)a3;
-- (void)configureCard:(id)a3 forKey:(id)a4;
-- (void)didResolveCollection:(id)a3 resolverInfo:(id)a4;
-- (void)locationManagerUpdatedLocation:(id)a3;
-- (void)resignTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)searchResultsCard:(id)a3 didFocusResult:(id)a4;
-- (void)searchResultsCard:(id)a3 didSelectResult:(id)a4;
-- (void)searchResultsCard:(id)a3 didUpdateVisibleResults:(id)a4;
-- (void)searchSessionDidChangeSearchFieldItem:(id)a3;
-- (void)searchSessionDidChangeSearchResults:(id)a3;
-- (void)searchSessionDidFail:(id)a3;
-- (void)searchSessionDidInvalidate:(id)a3 reason:(unint64_t)a4;
-- (void)setCardTitle:(id)a3;
-- (void)setSearchInfo:(id)a3;
-- (void)setSearchResults:(id)a3;
-- (void)setSearchSession:(id)a3;
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)carCardViewCloseButtonTapped:(id)tapped;
+- (void)configureCard:(id)card forKey:(id)key;
+- (void)didResolveCollection:(id)collection resolverInfo:(id)info;
+- (void)locationManagerUpdatedLocation:(id)location;
+- (void)resignTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)searchResultsCard:(id)card didFocusResult:(id)result;
+- (void)searchResultsCard:(id)card didSelectResult:(id)result;
+- (void)searchResultsCard:(id)card didUpdateVisibleResults:(id)results;
+- (void)searchSessionDidChangeSearchFieldItem:(id)item;
+- (void)searchSessionDidChangeSearchResults:(id)results;
+- (void)searchSessionDidFail:(id)fail;
+- (void)searchSessionDidInvalidate:(id)invalidate reason:(unint64_t)reason;
+- (void)setCardTitle:(id)title;
+- (void)setSearchInfo:(id)info;
+- (void)setSearchResults:(id)results;
+- (void)setSearchSession:(id)session;
 @end
 
 @implementation CarSearchResultsModeController
@@ -50,28 +50,28 @@
   return WeakRetained;
 }
 
-- (void)locationManagerUpdatedLocation:(id)a3
+- (void)locationManagerUpdatedLocation:(id)location
 {
-  v7 = a3;
-  v4 = [v7 lastLocation];
-  v5 = [(CarSearchResultsModeController *)self _contentNeedsRefreshingForUpdatedLocation:v4];
+  locationCopy = location;
+  lastLocation = [locationCopy lastLocation];
+  v5 = [(CarSearchResultsModeController *)self _contentNeedsRefreshingForUpdatedLocation:lastLocation];
 
   if (v5)
   {
-    v6 = [v7 lastLocation];
-    [(CarSearchResultsModeController *)self _reloadContentIfNeededForUpdatedLocation:v6];
+    lastLocation2 = [locationCopy lastLocation];
+    [(CarSearchResultsModeController *)self _reloadContentIfNeededForUpdatedLocation:lastLocation2];
   }
 }
 
-- (BOOL)_contentNeedsRefreshingForUpdatedLocation:(id)a3
+- (BOOL)_contentNeedsRefreshingForUpdatedLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(CarSearchResultsModeController *)self category];
-  if (v5)
+  locationCopy = location;
+  category = [(CarSearchResultsModeController *)self category];
+  if (category)
   {
     if (self->_lastFetchedFromLocation)
     {
-      [v4 distanceFromLocation:?];
+      [locationCopy distanceFromLocation:?];
       v7 = v6 > 1000.0;
     }
 
@@ -89,19 +89,19 @@
   return v7;
 }
 
-- (void)_reloadContentIfNeededForUpdatedLocation:(id)a3
+- (void)_reloadContentIfNeededForUpdatedLocation:(id)location
 {
-  v9 = a3;
-  v5 = [(CarSearchResultsModeController *)self category];
-  if (v5)
+  locationCopy = location;
+  category = [(CarSearchResultsModeController *)self category];
+  if (category)
   {
-    v6 = v5;
-    v7 = [(CarSearchResultsModeController *)self searchSession];
-    v8 = [v7 isLoading];
+    v6 = category;
+    searchSession = [(CarSearchResultsModeController *)self searchSession];
+    isLoading = [searchSession isLoading];
 
-    if ((v8 & 1) == 0)
+    if ((isLoading & 1) == 0)
     {
-      objc_storeStrong(&self->_lastFetchedFromLocation, a3);
+      objc_storeStrong(&self->_lastFetchedFromLocation, location);
       [(CarSearchResultsModeController *)self _fetchCategoryResults];
     }
   }
@@ -112,9 +112,9 @@
   p_viewportBeforeResigning = &self->_viewportBeforeResigning;
   if (self->_viewportBeforeResigning.origin.x != MKMapRectNull.origin.x || self->_viewportBeforeResigning.origin.y != MKMapRectNull.origin.y)
   {
-    v5 = [(CarSearchResultsModeController *)self chromeViewController];
-    v6 = [v5 mapView];
-    [v6 visibleMapRect];
+    chromeViewController = [(CarSearchResultsModeController *)self chromeViewController];
+    mapView = [chromeViewController mapView];
+    [mapView visibleMapRect];
     v8 = v7;
     v10 = v9;
     v12 = v11;
@@ -134,9 +134,9 @@
 
 - (void)_captureCurrentViewport
 {
-  v8 = [(CarSearchResultsModeController *)self chromeViewController];
-  v3 = [v8 mapView];
-  [v3 visibleMapRect];
+  chromeViewController = [(CarSearchResultsModeController *)self chromeViewController];
+  mapView = [chromeViewController mapView];
+  [mapView visibleMapRect];
   self->_viewportBeforeResigning.origin.x = v4;
   self->_viewportBeforeResigning.origin.y = v5;
   self->_viewportBeforeResigning.size.width = v6;
@@ -156,32 +156,32 @@ LABEL_9:
       lastFramedIndexPaths = self->_lastFramedIndexPaths;
       self->_lastFramedIndexPaths = 0;
 
-      v11 = [(CarSearchResultsModeController *)self chromeViewController];
-      [v11 setNeedsUpdateComponent:@"mapcontrols" animated:1];
+      chromeViewController = [(CarSearchResultsModeController *)self chromeViewController];
+      [chromeViewController setNeedsUpdateComponent:@"mapcontrols" animated:1];
 
       return;
     }
 
-    v4 = self;
+    selfCopy = self;
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(CarSearchResultsModeController *)v4 performSelector:"accessibilityIdentifier"];
+      v7 = [(CarSearchResultsModeController *)selfCopy performSelector:"accessibilityIdentifier"];
       v8 = v7;
       if (v7 && ![v7 isEqualToString:v6])
       {
-        v9 = [NSString stringWithFormat:@"%@<%p, %@>", v6, v4, v8];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v6, selfCopy, v8];
 
         goto LABEL_8;
       }
     }
 
-    v9 = [NSString stringWithFormat:@"%@<%p>", v6, v4];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v6, selfCopy];
 LABEL_8:
 
     *buf = 138543362;
-    v13 = v9;
+    v13 = selfCopy;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}@] Clearing user interacted state, will allow camera updates", buf, 0xCu);
 
     goto LABEL_9;
@@ -198,32 +198,32 @@ LABEL_8:
 LABEL_9:
 
       self->_userInteractedWithMap = 1;
-      v10 = [(CarSearchResultsModeController *)self chromeViewController];
-      [v10 setNeedsUpdateComponent:@"mapcontrols" animated:1];
+      chromeViewController = [(CarSearchResultsModeController *)self chromeViewController];
+      [chromeViewController setNeedsUpdateComponent:@"mapcontrols" animated:1];
 
       return;
     }
 
-    v4 = self;
+    selfCopy = self;
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(CarSearchResultsModeController *)v4 performSelector:"accessibilityIdentifier"];
+      v7 = [(CarSearchResultsModeController *)selfCopy performSelector:"accessibilityIdentifier"];
       v8 = v7;
       if (v7 && ![v7 isEqualToString:v6])
       {
-        v9 = [NSString stringWithFormat:@"%@<%p, %@>", v6, v4, v8];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v6, selfCopy, v8];
 
         goto LABEL_8;
       }
     }
 
-    v9 = [NSString stringWithFormat:@"%@<%p>", v6, v4];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v6, selfCopy];
 LABEL_8:
 
     *buf = 138543362;
-    v12 = v9;
+    v12 = selfCopy;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}@] User started interacting with map, will suppress camera updates", buf, 0xCu);
 
     goto LABEL_9;
@@ -241,12 +241,12 @@ LABEL_8:
 
 - (NSArray)preferredCarFocusEnvironments
 {
-  v3 = [(CarSearchResultsModeController *)self searchResultsCard];
+  searchResultsCard = [(CarSearchResultsModeController *)self searchResultsCard];
 
-  if (v3)
+  if (searchResultsCard)
   {
-    v4 = [(CarSearchResultsModeController *)self searchResultsCard];
-    v5 = [CarFocusOrderEnvironment environmentWithFocusEnvironment:v4];
+    searchResultsCard2 = [(CarSearchResultsModeController *)self searchResultsCard];
+    v5 = [CarFocusOrderEnvironment environmentWithFocusEnvironment:searchResultsCard2];
     v8 = v5;
     v6 = [NSArray arrayWithObjects:&v8 count:1];
   }
@@ -259,33 +259,33 @@ LABEL_8:
   return v6;
 }
 
-- (void)didResolveCollection:(id)a3 resolverInfo:(id)a4
+- (void)didResolveCollection:(id)collection resolverInfo:(id)info
 {
-  v6 = a4;
-  v7 = [a3 collectionTitle];
-  [(CarSearchResultsModeController *)self setCardTitle:v7];
+  infoCopy = info;
+  collectionTitle = [collection collectionTitle];
+  [(CarSearchResultsModeController *)self setCardTitle:collectionTitle];
 
-  v8 = [v6 collectionItems];
+  collectionItems = [infoCopy collectionItems];
 
-  v9 = sub_100021DB0(v8, &stru_101628430);
+  v9 = sub_100021DB0(collectionItems, &stru_101628430);
 
   [(CarSearchResultsModeController *)self setSearchResults:v9];
 }
 
-- (void)searchSessionDidInvalidate:(id)a3 reason:(unint64_t)a4
+- (void)searchSessionDidInvalidate:(id)invalidate reason:(unint64_t)reason
 {
   searchSession = self->_searchSession;
-  if (searchSession == a3)
+  if (searchSession == invalidate)
   {
     self->_searchSession = 0;
 
-    if (a4 != 1)
+    if (reason != 1)
     {
       v7 = sub_1007563B0();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
         v9 = 138412290;
-        v10 = self;
+        selfCopy = self;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "will pop the top context: %@", &v9, 0xCu);
       }
 
@@ -295,53 +295,53 @@ LABEL_8:
   }
 }
 
-- (void)searchSessionDidFail:(id)a3
+- (void)searchSessionDidFail:(id)fail
 {
-  v4 = a3;
+  failCopy = fail;
   [(CarSearchResultsModeController *)self setSearchInfo:0];
   searchResultsCard = self->_searchResultsCard;
-  v6 = [v4 lastError];
+  lastError = [failCopy lastError];
 
-  [(CarSearchResultsCardViewController *)searchResultsCard setError:v6];
+  [(CarSearchResultsCardViewController *)searchResultsCard setError:lastError];
 }
 
-- (void)searchSessionDidChangeSearchResults:(id)a3
+- (void)searchSessionDidChangeSearchResults:(id)results
 {
-  v9 = a3;
-  v4 = [(CarSearchResultsModeController *)self category];
+  resultsCopy = results;
+  category = [(CarSearchResultsModeController *)self category];
 
-  if (v4)
+  if (category)
   {
     v5 = +[MKLocationManager sharedLocationManager];
-    v6 = [v5 lastLocation];
+    lastLocation = [v5 lastLocation];
     lastFetchedFromLocation = self->_lastFetchedFromLocation;
-    self->_lastFetchedFromLocation = v6;
+    self->_lastFetchedFromLocation = lastLocation;
   }
 
-  v8 = [v9 currentResultsSearchInfo];
-  [(CarSearchResultsModeController *)self setSearchInfo:v8];
+  currentResultsSearchInfo = [resultsCopy currentResultsSearchInfo];
+  [(CarSearchResultsModeController *)self setSearchInfo:currentResultsSearchInfo];
 }
 
-- (void)searchSessionDidChangeSearchFieldItem:(id)a3
+- (void)searchSessionDidChangeSearchFieldItem:(id)item
 {
-  v7 = [(SearchSession *)self->_searchSession searchInfo];
-  v4 = [v7 headerDisplayName];
-  if (v4)
+  searchInfo = [(SearchSession *)self->_searchSession searchInfo];
+  headerDisplayName = [searchInfo headerDisplayName];
+  if (headerDisplayName)
   {
-    [(CarSearchResultsModeController *)self setCardTitle:v4];
+    [(CarSearchResultsModeController *)self setCardTitle:headerDisplayName];
   }
 
   else
   {
-    v5 = [(SearchSession *)self->_searchSession searchFieldItem];
-    v6 = [v5 searchString];
-    [(CarSearchResultsModeController *)self setCardTitle:v6];
+    searchFieldItem = [(SearchSession *)self->_searchSession searchFieldItem];
+    searchString = [searchFieldItem searchString];
+    [(CarSearchResultsModeController *)self setCardTitle:searchString];
   }
 }
 
-- (void)searchResultsCard:(id)a3 didUpdateVisibleResults:(id)a4
+- (void)searchResultsCard:(id)card didUpdateVisibleResults:(id)results
 {
-  v5 = a4;
+  resultsCopy = results;
   self->_updatingVisibleResults = 1;
   objc_initWeak(&location, self);
   v6 = dispatch_time(0, 300000000);
@@ -350,72 +350,72 @@ LABEL_8:
   block[2] = sub_100756C38;
   block[3] = &unk_101661340;
   objc_copyWeak(&v10, &location);
-  v9 = v5;
-  v7 = v5;
+  v9 = resultsCopy;
+  v7 = resultsCopy;
   dispatch_after(v6, &_dispatch_main_q, block);
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
 }
 
-- (void)searchResultsCard:(id)a3 didFocusResult:(id)a4
+- (void)searchResultsCard:(id)card didFocusResult:(id)result
 {
-  v5 = a4;
+  resultCopy = result;
   v6 = sub_1007563B0();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 mapItem];
-    v8 = [v7 name];
+    mapItem = [resultCopy mapItem];
+    name = [mapItem name];
     v9 = 138412290;
-    v10 = v8;
+    v10 = name;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "CarChromeModeCoordinator will focus search result for mapItem: %@", &v9, 0xCu);
   }
 
-  [(CarSearchResultsModeController *)self _highlightSearchResult:v5];
+  [(CarSearchResultsModeController *)self _highlightSearchResult:resultCopy];
 }
 
-- (void)searchResultsCard:(id)a3 didSelectResult:(id)a4
+- (void)searchResultsCard:(id)card didSelectResult:(id)result
 {
-  v4 = a4;
+  resultCopy = result;
   v5 = sub_1007563B0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 mapItem];
-    v7 = [v6 name];
+    mapItem = [resultCopy mapItem];
+    name = [mapItem name];
     v9 = 138412290;
-    v10 = v7;
+    v10 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "CarChromeModeCoordinator will present place card for mapItem: %@", &v9, 0xCu);
   }
 
   v8 = +[CarChromeModeCoordinator sharedInstance];
-  [v8 displayPlaceCardWithSearchResult:v4];
+  [v8 displayPlaceCardWithSearchResult:resultCopy];
 }
 
-- (void)_highlightSearchResult:(id)a3
+- (void)_highlightSearchResult:(id)result
 {
-  v4 = a3;
-  v5 = [(CarSearchResultsModeController *)self chromeViewController];
-  v6 = [v5 mapView];
-  objc_initWeak(&location, v6);
+  resultCopy = result;
+  chromeViewController = [(CarSearchResultsModeController *)self chromeViewController];
+  mapView = [chromeViewController mapView];
+  objc_initWeak(&location, mapView);
 
-  if (v4)
+  if (resultCopy)
   {
-    if ([(NSArray *)self->_searchResults containsObject:v4])
+    if ([(NSArray *)self->_searchResults containsObject:resultCopy])
     {
       v7 = [PersonalizedMapItemKey alloc];
-      v8 = [v4 mapItem];
-      v9 = [(PersonalizedMapItemKey *)v7 initWithMapItem:v8];
+      mapItem = [resultCopy mapItem];
+      v9 = [(PersonalizedMapItemKey *)v7 initWithMapItem:mapItem];
 
-      v10 = [(CarSearchResultsModeController *)self chromeViewController];
-      v11 = [v10 customPOIsController];
+      chromeViewController2 = [(CarSearchResultsModeController *)self chromeViewController];
+      customPOIsController = [chromeViewController2 customPOIsController];
 
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_100757148;
       v12[3] = &unk_101660180;
       objc_copyWeak(&v14, &location);
-      v13 = v4;
-      [v11 customFeatureForKey:v9 completion:v12];
+      v13 = resultCopy;
+      [customPOIsController customFeatureForKey:v9 completion:v12];
 
       objc_destroyWeak(&v14);
     }
@@ -442,14 +442,14 @@ LABEL_8:
 
 - (void)_fetchCategoryResults
 {
-  v3 = [(CarSearchResultsModeController *)self category];
+  category = [(CarSearchResultsModeController *)self category];
 
-  if (v3)
+  if (category)
   {
-    v4 = [(CarSearchResultsModeController *)self searchSession];
-    v5 = [v4 isLoading];
+    searchSession = [(CarSearchResultsModeController *)self searchSession];
+    isLoading = [searchSession isLoading];
 
-    if (v5)
+    if (isLoading)
     {
       v6 = sub_1007563B0();
       if (os_log_type_enabled(&v6->super, OS_LOG_TYPE_ERROR))
@@ -485,24 +485,24 @@ LABEL_8:
 
       if (v11)
       {
-        v12 = [(CarSearchResultsModeController *)self category];
-        v13 = [v12 name];
+        category2 = [(CarSearchResultsModeController *)self category];
+        name = [category2 name];
         v20 = 138412290;
-        v21 = v13;
+        v21 = name;
         _os_log_impl(&_mh_execute_header, &v6->super, OS_LOG_TYPE_INFO, "Started fetching results for category: %@. Creating new searchSesssion.", &v20, 0xCu);
       }
 
       v6 = [[SearchSession alloc] initWithOrigin:1];
       v14 = +[CarDisplayController sharedInstance];
-      v15 = [v14 chromeViewController];
-      v16 = [v15 currentTraits];
+      chromeViewController = [v14 chromeViewController];
+      currentTraits = [chromeViewController currentTraits];
 
-      [(SearchSession *)v6 setTraits:v16];
+      [(SearchSession *)v6 setTraits:currentTraits];
       [(SearchSession *)v6 setSource:6];
       [(CarSearchResultsModeController *)self setSearchSession:v6];
-      v17 = [(CarSearchResultsModeController *)self category];
-      v18 = [v17 category];
-      v19 = [SearchFieldItem searchFieldItemWithObject:v18];
+      category3 = [(CarSearchResultsModeController *)self category];
+      v17Category = [category3 category];
+      v19 = [SearchFieldItem searchFieldItemWithObject:v17Category];
 
       [(CarSearchResultsCardViewController *)self->_searchResultsCard setLoading];
       [(SearchSession *)v6 startSearch:v19];
@@ -523,48 +523,48 @@ LABEL_8:
 LABEL_15:
 }
 
-- (void)carCardViewCloseButtonTapped:(id)a3
+- (void)carCardViewCloseButtonTapped:(id)tapped
 {
   v4 = sub_1007563B0();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [(CarSearchResultsModeController *)self searchSession];
+    searchSession = [(CarSearchResultsModeController *)self searchSession];
     v8 = 138412546;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
-    v11 = v5;
+    v11 = searchSession;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Close button tapped to close the top context. Top Context : %@ Search Session: %@", &v8, 0x16u);
   }
 
-  v6 = [(CarSearchResultsModeController *)self searchSession];
+  searchSession2 = [(CarSearchResultsModeController *)self searchSession];
 
-  if (v6)
+  if (searchSession2)
   {
-    v7 = [(CarSearchResultsModeController *)self searchSession];
-    [v7 invalidate];
+    searchSession3 = [(CarSearchResultsModeController *)self searchSession];
+    [searchSession3 invalidate];
   }
 
   else
   {
-    v7 = +[CarChromeModeCoordinator sharedInstance];
-    [v7 popFromContext:self];
+    searchSession3 = +[CarChromeModeCoordinator sharedInstance];
+    [searchSession3 popFromContext:self];
   }
 }
 
-- (void)resignTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)resignTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100757688;
   v4[3] = &unk_101661B18;
   v4[4] = self;
-  [a4 addPreparation:v4];
+  [animation addPreparation:v4];
 }
 
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  animationCopy = animation;
   v9[0] = 0;
   v9[1] = v9;
   v9[2] = 0x2020000000;
@@ -575,21 +575,21 @@ LABEL_15:
   v8[3] = &unk_101661600;
   v8[4] = self;
   v8[5] = v9;
-  [v7 addPreparation:v8];
+  [animationCopy addPreparation:v8];
   _Block_object_dispose(v9, 8);
 }
 
 - (id)personalizedItemSources
 {
-  v3 = [(CarSearchResultsModeController *)self chromeViewController];
-  v4 = [v3 searchPinsManager];
+  chromeViewController = [(CarSearchResultsModeController *)self chromeViewController];
+  searchPinsManager = [chromeViewController searchPinsManager];
 
-  if (v4)
+  if (searchPinsManager)
   {
-    v5 = [(CarSearchResultsModeController *)self chromeViewController];
-    v6 = [v5 searchPinsManager];
-    v7 = [v6 searchResultsItemSource];
-    v10 = v7;
+    chromeViewController2 = [(CarSearchResultsModeController *)self chromeViewController];
+    searchPinsManager2 = [chromeViewController2 searchPinsManager];
+    searchResultsItemSource = [searchPinsManager2 searchResultsItemSource];
+    v10 = searchResultsItemSource;
     v8 = [NSArray arrayWithObjects:&v10 count:1];
   }
 
@@ -601,22 +601,22 @@ LABEL_15:
   return v8;
 }
 
-- (void)configureCard:(id)a3 forKey:(id)a4
+- (void)configureCard:(id)card forKey:(id)key
 {
-  v22 = a3;
-  if (![a4 isEqualToString:@"primary"])
+  cardCopy = card;
+  if (![key isEqualToString:@"primary"])
   {
     goto LABEL_32;
   }
 
-  v7 = [(CarSearchResultsModeController *)self cardTitle];
-  if (v7)
+  cardTitle = [(CarSearchResultsModeController *)self cardTitle];
+  if (cardTitle)
   {
-    v4 = [(CarSearchResultsModeController *)self cardTitle];
-    if ([v4 length])
+    cardTitle2 = [(CarSearchResultsModeController *)self cardTitle];
+    if ([cardTitle2 length])
     {
-      v8 = [(CarSearchResultsModeController *)self cardTitle];
-      [v22 setTitle:v8];
+      cardTitle3 = [(CarSearchResultsModeController *)self cardTitle];
+      [cardCopy setTitle:cardTitle3];
 
 LABEL_6:
       goto LABEL_7;
@@ -625,16 +625,16 @@ LABEL_6:
 
   v9 = +[NSBundle mainBundle];
   v10 = [v9 localizedStringForKey:@"CarPlay_Search_Title" value:@"localized string not found" table:0];
-  [v22 setTitle:v10];
+  [cardCopy setTitle:v10];
 
-  if (v7)
+  if (cardTitle)
   {
     goto LABEL_6;
   }
 
 LABEL_7:
 
-  [v22 setContent:self->_searchResultsCard];
+  [cardCopy setContent:self->_searchResultsCard];
   v11 = objc_alloc_init(CarCardLayout);
   [(CarCardLayout *)v11 setEdgePosition:0];
   [(CarCardLayout *)v11 setCornerPosition:4];
@@ -649,11 +649,11 @@ LABEL_7:
   [(CarCardLayout *)v11 setMargins:*&qword_10193E338, *&qword_10193E338, *&qword_10193E338, *&qword_10193E338];
   [(CarCardLayout *)v11 setFlipForRightHandDrive:1];
   v14 = v11;
-  v15 = [(CarCardLayout *)v14 primaryAxis];
-  v16 = [(CarCardLayout *)v14 cornerPosition];
-  if (v15 == 1)
+  primaryAxis = [(CarCardLayout *)v14 primaryAxis];
+  cornerPosition = [(CarCardLayout *)v14 cornerPosition];
+  if (primaryAxis == 1)
   {
-    if (v16 == 4 || [(CarCardLayout *)v14 cornerPosition]== 1 || [(CarCardLayout *)v14 edgePosition]== 2)
+    if (cornerPosition == 4 || [(CarCardLayout *)v14 cornerPosition]== 1 || [(CarCardLayout *)v14 edgePosition]== 2)
     {
       v17 = 8;
     }
@@ -678,7 +678,7 @@ LABEL_7:
 
   else
   {
-    v18 = v16 == 4 || [(CarCardLayout *)v14 cornerPosition]== 8 || [(CarCardLayout *)v14 edgePosition]== 4;
+    v18 = cornerPosition == 4 || [(CarCardLayout *)v14 cornerPosition]== 8 || [(CarCardLayout *)v14 edgePosition]== 4;
     if ([(CarCardLayout *)v14 cornerPosition]== 1 || [(CarCardLayout *)v14 cornerPosition]== 2 || [(CarCardLayout *)v14 edgePosition]== 1)
     {
       v18 |= 4uLL;
@@ -697,13 +697,13 @@ LABEL_7:
 
   [(CarCardLayout *)v14 setEdgesAffectingMapInsets:v18];
   [(CarCardLayout *)v14 setHorizontallyCenterMapInsets:0];
-  [v22 setLayout:v14];
+  [cardCopy setLayout:v14];
 
-  [v22 setAccessoryType:1];
-  v19 = [(CarSearchResultsModeController *)self chromeViewController];
-  v20 = [v19 overlayController];
-  v21 = [v20 overlayContentView];
-  [v21 setAccessibilityViewIsModal:1];
+  [cardCopy setAccessoryType:1];
+  chromeViewController = [(CarSearchResultsModeController *)self chromeViewController];
+  overlayController = [chromeViewController overlayController];
+  overlayContentView = [overlayController overlayContentView];
+  [overlayContentView setAccessibilityViewIsModal:1];
 
 LABEL_32:
 }
@@ -730,68 +730,68 @@ LABEL_32:
   return self;
 }
 
-- (void)setCardTitle:(id)a3
+- (void)setCardTitle:(id)title
 {
-  v5 = a3;
-  if (self->_cardTitle != v5)
+  titleCopy = title;
+  if (self->_cardTitle != titleCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_cardTitle, a3);
-    v6 = [(CarSearchResultsModeController *)self chromeViewController];
-    [v6 updateCardsForContext:self animated:0];
+    v7 = titleCopy;
+    objc_storeStrong(&self->_cardTitle, title);
+    chromeViewController = [(CarSearchResultsModeController *)self chromeViewController];
+    [chromeViewController updateCardsForContext:self animated:0];
 
-    v5 = v7;
+    titleCopy = v7;
   }
 }
 
-- (void)setSearchInfo:(id)a3
+- (void)setSearchInfo:(id)info
 {
-  v5 = a3;
-  if (self->_searchInfo != v5)
+  infoCopy = info;
+  if (self->_searchInfo != infoCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_searchInfo, a3);
-    v6 = [(SearchInfo *)self->_searchInfo results];
-    [(CarSearchResultsModeController *)self setSearchResults:v6];
+    v7 = infoCopy;
+    objc_storeStrong(&self->_searchInfo, info);
+    results = [(SearchInfo *)self->_searchInfo results];
+    [(CarSearchResultsModeController *)self setSearchResults:results];
 
-    v5 = v7;
+    infoCopy = v7;
   }
 }
 
-- (void)setSearchResults:(id)a3
+- (void)setSearchResults:(id)results
 {
-  v9 = a3;
-  if (([v9 isEqualToArray:self->_searchResults] & 1) == 0)
+  resultsCopy = results;
+  if (([resultsCopy isEqualToArray:self->_searchResults] & 1) == 0)
   {
-    objc_storeStrong(&self->_fullSearchResults, a3);
-    v5 = [v9 carShortenedArray];
+    objc_storeStrong(&self->_fullSearchResults, results);
+    carShortenedArray = [resultsCopy carShortenedArray];
     searchResults = self->_searchResults;
-    self->_searchResults = v5;
+    self->_searchResults = carShortenedArray;
 
-    v7 = [(CarSearchResultsModeController *)self chromeViewController];
-    v8 = [v7 searchPinsManager];
-    [v8 setSearchPins:self->_searchResults selectedPin:0 animated:0];
+    chromeViewController = [(CarSearchResultsModeController *)self chromeViewController];
+    searchPinsManager = [chromeViewController searchPinsManager];
+    [searchPinsManager setSearchPins:self->_searchResults selectedPin:0 animated:0];
 
     [(CarSearchResultsCardViewController *)self->_searchResultsCard setSearchResults:self->_searchResults searchAlongRoute:0];
   }
 }
 
-- (void)setSearchSession:(id)a3
+- (void)setSearchSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   searchSession = self->_searchSession;
-  if (searchSession != v5)
+  if (searchSession != sessionCopy)
   {
-    v15 = v5;
+    v15 = sessionCopy;
     [(SearchSession *)searchSession unregisterObserver:self];
-    objc_storeStrong(&self->_searchSession, a3);
+    objc_storeStrong(&self->_searchSession, session);
     [(SearchSession *)self->_searchSession registerObserver:self];
-    v7 = [(SearchSession *)self->_searchSession searchInfo];
-    v8 = [v7 headerDisplayName];
-    v9 = v8;
-    if (v8)
+    searchInfo = [(SearchSession *)self->_searchSession searchInfo];
+    headerDisplayName = [searchInfo headerDisplayName];
+    v9 = headerDisplayName;
+    if (headerDisplayName)
     {
-      v10 = v8;
+      v10 = headerDisplayName;
       cardTitle = self->_cardTitle;
       self->_cardTitle = v10;
     }
@@ -799,15 +799,15 @@ LABEL_32:
     else
     {
       cardTitle = [(SearchSession *)self->_searchSession searchFieldItem];
-      v12 = [cardTitle searchString];
+      searchString = [cardTitle searchString];
       v13 = self->_cardTitle;
-      self->_cardTitle = v12;
+      self->_cardTitle = searchString;
     }
 
-    v14 = [(SearchSession *)self->_searchSession searchInfo];
-    [(CarSearchResultsModeController *)self setSearchInfo:v14];
+    searchInfo2 = [(SearchSession *)self->_searchSession searchInfo];
+    [(CarSearchResultsModeController *)self setSearchInfo:searchInfo2];
 
-    v5 = v15;
+    sessionCopy = v15;
   }
 }
 
@@ -821,14 +821,14 @@ LABEL_32:
     self->_browseManager = v4;
 
     [(BrowseManager *)self->_browseManager readCategoriesFromDiskIfNeeded];
-    v6 = [(CarSearchResultsModeController *)self category];
+    category = [(CarSearchResultsModeController *)self category];
 
     browseManager = self->_browseManager;
-    if (!v6)
+    if (!category)
     {
-      v7 = [(BrowseManager *)browseManager cachedCategories];
-      v8 = [v7 lastObject];
-      [(CarSearchResultsModeController *)self setCategory:v8];
+      cachedCategories = [(BrowseManager *)browseManager cachedCategories];
+      lastObject = [cachedCategories lastObject];
+      [(CarSearchResultsModeController *)self setCategory:lastObject];
 
       browseManager = self->_browseManager;
     }
@@ -850,24 +850,24 @@ LABEL_32:
   }
 
   v6 = +[CarDisplayController sharedInstance];
-  v7 = [v6 chromeViewController];
-  v8 = [v7 currentTraits];
-  [(BrowseManager *)self->_browseManager setTraits:v8];
+  chromeViewController = [v6 chromeViewController];
+  currentTraits = [chromeViewController currentTraits];
+  [(BrowseManager *)self->_browseManager setTraits:currentTraits];
 
   lastFetchedFromLocation = self->_lastFetchedFromLocation;
   self->_lastFetchedFromLocation = 0;
 }
 
-- (void)_setupForCuratedCollection:(id)a3
+- (void)_setupForCuratedCollection:(id)collection
 {
-  v9 = a3;
-  v4 = [v9 curatedCollectionIdentifier];
+  collectionCopy = collection;
+  curatedCollectionIdentifier = [collectionCopy curatedCollectionIdentifier];
 
-  if (v4)
+  if (curatedCollectionIdentifier)
   {
     v5 = [CuratedCollectionResolver alloc];
-    v6 = [v9 curatedCollectionIdentifier];
-    v7 = [(CuratedCollectionResolver *)v5 initWithCuratedCollectionIdentifier:v6 delegate:self];
+    curatedCollectionIdentifier2 = [collectionCopy curatedCollectionIdentifier];
+    v7 = [(CuratedCollectionResolver *)v5 initWithCuratedCollectionIdentifier:curatedCollectionIdentifier2 delegate:self];
     curatedCollectionResolver = self->_curatedCollectionResolver;
     self->_curatedCollectionResolver = v7;
   }
@@ -875,18 +875,18 @@ LABEL_32:
   [(CuratedCollectionResolver *)self->_curatedCollectionResolver resolveCollection];
 }
 
-- (void)_setupForUserCollection:(id)a3
+- (void)_setupForUserCollection:(id)collection
 {
-  v3 = a3;
-  [v3 setSortType:1];
-  v18 = v3;
-  v4 = [v3 content];
-  v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count]);
+  collectionCopy = collection;
+  [collectionCopy setSortType:1];
+  v18 = collectionCopy;
+  content = [collectionCopy content];
+  v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [content count]);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = v4;
+  v6 = content;
   v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
@@ -937,31 +937,31 @@ LABEL_32:
   [(CarSearchResultsModeController *)self setSearchResults:v16];
 }
 
-- (CarSearchResultsModeController)initWithCollection:(id)a3
+- (CarSearchResultsModeController)initWithCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   v9.receiver = self;
   v9.super_class = CarSearchResultsModeController;
   v5 = [(CarSearchResultsModeController *)&v9 init];
   if (v5)
   {
-    if ([v4 handlerType] == 4)
+    if ([collectionCopy handlerType] == 4)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [(CarSearchResultsModeController *)v5 _setupForCuratedCollection:v4];
+        [(CarSearchResultsModeController *)v5 _setupForCuratedCollection:collectionCopy];
       }
     }
 
     else
     {
-      [(CarSearchResultsModeController *)v5 _setupForUserCollection:v4];
+      [(CarSearchResultsModeController *)v5 _setupForUserCollection:collectionCopy];
     }
 
-    v6 = [v4 title];
+    title = [collectionCopy title];
     cardTitle = v5->_cardTitle;
-    v5->_cardTitle = v6;
+    v5->_cardTitle = title;
 
     [(CarSearchResultsModeController *)v5 _setup];
   }
@@ -969,19 +969,19 @@ LABEL_32:
   return v5;
 }
 
-- (CarSearchResultsModeController)initWithCategory:(id)a3
+- (CarSearchResultsModeController)initWithCategory:(id)category
 {
-  v5 = a3;
+  categoryCopy = category;
   v11.receiver = self;
   v11.super_class = CarSearchResultsModeController;
   v6 = [(CarSearchResultsModeController *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_category, a3);
-    v8 = [v5 name];
+    objc_storeStrong(&v6->_category, category);
+    name = [categoryCopy name];
     cardTitle = v7->_cardTitle;
-    v7->_cardTitle = v8;
+    v7->_cardTitle = name;
 
     [(CarSearchResultsModeController *)v7 _setup];
   }
@@ -989,48 +989,48 @@ LABEL_32:
   return v7;
 }
 
-- (CarSearchResultsModeController)initWithSearchResults:(id)a3
+- (CarSearchResultsModeController)initWithSearchResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   v8.receiver = self;
   v8.super_class = CarSearchResultsModeController;
   v5 = [(CarSearchResultsModeController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(CarSearchResultsModeController *)v5 setSearchResults:v4];
+    [(CarSearchResultsModeController *)v5 setSearchResults:resultsCopy];
     [(CarSearchResultsModeController *)v6 _setup];
   }
 
   return v6;
 }
 
-- (CarSearchResultsModeController)initWithSearchInfo:(id)a3
+- (CarSearchResultsModeController)initWithSearchInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v8.receiver = self;
   v8.super_class = CarSearchResultsModeController;
   v5 = [(CarSearchResultsModeController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(CarSearchResultsModeController *)v5 setSearchInfo:v4];
+    [(CarSearchResultsModeController *)v5 setSearchInfo:infoCopy];
     [(CarSearchResultsModeController *)v6 _setup];
   }
 
   return v6;
 }
 
-- (CarSearchResultsModeController)initWithSearchSession:(id)a3
+- (CarSearchResultsModeController)initWithSearchSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v8.receiver = self;
   v8.super_class = CarSearchResultsModeController;
   v5 = [(CarSearchResultsModeController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(CarSearchResultsModeController *)v5 setSearchSession:v4];
+    [(CarSearchResultsModeController *)v5 setSearchSession:sessionCopy];
     [(CarSearchResultsModeController *)v6 _setup];
   }
 

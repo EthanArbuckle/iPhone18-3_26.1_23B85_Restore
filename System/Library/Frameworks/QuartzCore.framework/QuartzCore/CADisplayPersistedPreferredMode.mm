@@ -1,21 +1,21 @@
 @interface CADisplayPersistedPreferredMode
-- (CADisplayPersistedPreferredMode)initWithCoder:(id)a3;
+- (CADisplayPersistedPreferredMode)initWithCoder:(id)coder;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CADisplayPersistedPreferredMode
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_uuid forKey:@"uuid"];
+  [coder encodeObject:self->_uuid forKey:@"uuid"];
   mode = self->_mode;
 
-  [a3 encodeObject:mode forKey:@"mode"];
+  [coder encodeObject:mode forKey:@"mode"];
 }
 
-- (CADisplayPersistedPreferredMode)initWithCoder:(id)a3
+- (CADisplayPersistedPreferredMode)initWithCoder:(id)coder
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
@@ -23,13 +23,13 @@
   v4 = [(CADisplayPersistedPreferredMode *)&v6 init];
   if (v4)
   {
-    v4->_uuid = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+    v4->_uuid = [coder decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
     if (mode_dictionary_classes(void)::once != -1)
     {
       dispatch_once(&mode_dictionary_classes(void)::once, &__block_literal_global_138);
     }
 
-    v4->_mode = [a3 decodeObjectOfClasses:mode_dictionary_classes(void)::set forKey:@"mode"];
+    v4->_mode = [coder decodeObjectOfClasses:mode_dictionary_classes(void)::set forKey:@"mode"];
   }
 
   return v4;
@@ -37,12 +37,12 @@
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
-  [v3 appendFormat:@"<%@:%p; ", NSStringFromClass(v4), self];
-  [v3 appendFormat:@"uuid: %@, mode: %@", self->_uuid, self->_mode];
-  [v3 appendString:@">"];
-  return v3;
+  [string appendFormat:@"<%@:%p; ", NSStringFromClass(v4), self];
+  [string appendFormat:@"uuid: %@, mode: %@", self->_uuid, self->_mode];
+  [string appendString:@">"];
+  return string;
 }
 
 - (void)dealloc

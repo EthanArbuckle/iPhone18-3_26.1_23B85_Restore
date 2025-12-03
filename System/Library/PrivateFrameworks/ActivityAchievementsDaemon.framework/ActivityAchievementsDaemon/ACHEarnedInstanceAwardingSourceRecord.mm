@@ -1,34 +1,34 @@
 @interface ACHEarnedInstanceAwardingSourceRecord
-- (ACHEarnedInstanceAwardingSourceRecord)initWithSource:(id)a3 earnedInstanceStore:(id)a4 dataStore:(id)a5 registrationDate:(id)a6;
+- (ACHEarnedInstanceAwardingSourceRecord)initWithSource:(id)source earnedInstanceStore:(id)store dataStore:(id)dataStore registrationDate:(id)date;
 - (NSArray)dataStorePropertyKeys;
 - (NSDateInterval)lastCompletedEvaluationInterval;
 - (NSDateInterval)lastScheduledEvaluationInterval;
 - (NSDictionary)dataStoreProperties;
 - (NSString)description;
 - (NSString)uniqueName;
-- (void)addEvaluationOperationWithDateInterval:(id)a3 evaluationBlock:(id)a4 completion:(id)a5;
-- (void)dataStoreDidClearAllProperties:(id)a3 completion:(id)a4;
-- (void)setDataStoreProperties:(id)a3;
+- (void)addEvaluationOperationWithDateInterval:(id)interval evaluationBlock:(id)block completion:(id)completion;
+- (void)dataStoreDidClearAllProperties:(id)properties completion:(id)completion;
+- (void)setDataStoreProperties:(id)properties;
 @end
 
 @implementation ACHEarnedInstanceAwardingSourceRecord
 
-- (ACHEarnedInstanceAwardingSourceRecord)initWithSource:(id)a3 earnedInstanceStore:(id)a4 dataStore:(id)a5 registrationDate:(id)a6
+- (ACHEarnedInstanceAwardingSourceRecord)initWithSource:(id)source earnedInstanceStore:(id)store dataStore:(id)dataStore registrationDate:(id)date
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  sourceCopy = source;
+  storeCopy = store;
+  dataStoreCopy = dataStore;
+  dateCopy = date;
   v24.receiver = self;
   v24.super_class = ACHEarnedInstanceAwardingSourceRecord;
   v15 = [(ACHEarnedInstanceAwardingSourceRecord *)&v24 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_source, a3);
-    objc_storeWeak(&v16->_earnedInstanceStore, v12);
-    objc_storeWeak(&v16->_dataStore, v13);
-    objc_storeStrong(&v16->_registrationDate, a6);
+    objc_storeStrong(&v15->_source, source);
+    objc_storeWeak(&v16->_earnedInstanceStore, storeCopy);
+    objc_storeWeak(&v16->_dataStore, dataStoreCopy);
+    objc_storeStrong(&v16->_registrationDate, date);
     v17 = HKCreateSerialDispatchQueue();
     internalQueue = v16->_internalQueue;
     v16->_internalQueue = v17;
@@ -93,14 +93,14 @@
   return v3;
 }
 
-- (void)addEvaluationOperationWithDateInterval:(id)a3 evaluationBlock:(id)a4 completion:(id)a5
+- (void)addEvaluationOperationWithDateInterval:(id)interval evaluationBlock:(id)block completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  blockCopy = block;
+  completionCopy = completion;
   internalQueue = self->_internalQueue;
-  v11 = a3;
+  intervalCopy = interval;
   dispatch_assert_queue_not_V2(internalQueue);
-  v12 = ACHEvaluationDateIntervalFor(v11);
+  v12 = ACHEvaluationDateIntervalFor(intervalCopy);
 
   v13 = self->_internalQueue;
   v17[0] = MEMORY[0x277D85DD0];
@@ -109,10 +109,10 @@
   v17[3] = &unk_2784918F8;
   v17[4] = self;
   v18 = v12;
-  v19 = v8;
-  v20 = v9;
-  v14 = v9;
-  v15 = v8;
+  v19 = blockCopy;
+  v20 = completionCopy;
+  v14 = completionCopy;
+  v15 = blockCopy;
   v16 = v12;
   dispatch_sync(v13, v17);
 }
@@ -367,8 +367,8 @@ void __107__ACHEarnedInstanceAwardingSourceRecord_addEvaluationOperationWithDate
 - (NSString)uniqueName
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(ACHEarnedInstanceAwarding *)self->_source uniqueName];
-  v4 = [v2 stringWithFormat:@"%@-SourceRecord", v3];
+  uniqueName = [(ACHEarnedInstanceAwarding *)self->_source uniqueName];
+  v4 = [v2 stringWithFormat:@"%@-SourceRecord", uniqueName];
 
   return v4;
 }
@@ -441,17 +441,17 @@ void __60__ACHEarnedInstanceAwardingSourceRecord_dataStoreProperties__block_invo
   }
 }
 
-- (void)setDataStoreProperties:(id)a3
+- (void)setDataStoreProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__ACHEarnedInstanceAwardingSourceRecord_setDataStoreProperties___block_invoke;
   v7[3] = &unk_278490898;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = propertiesCopy;
+  selfCopy = self;
+  v6 = propertiesCopy;
   dispatch_sync(internalQueue, v7);
 }
 
@@ -478,17 +478,17 @@ void __64__ACHEarnedInstanceAwardingSourceRecord_setDataStoreProperties___block_
   }
 }
 
-- (void)dataStoreDidClearAllProperties:(id)a3 completion:(id)a4
+- (void)dataStoreDidClearAllProperties:(id)properties completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   internalQueue = self->_internalQueue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __83__ACHEarnedInstanceAwardingSourceRecord_dataStoreDidClearAllProperties_completion___block_invoke;
   v8[3] = &unk_278491948;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_async(internalQueue, v8);
 }
 
@@ -519,8 +519,8 @@ uint64_t __83__ACHEarnedInstanceAwardingSourceRecord_dataStoreDidClearAllPropert
   v8.receiver = self;
   v8.super_class = ACHEarnedInstanceAwardingSourceRecord;
   v4 = [(ACHEarnedInstanceAwardingSourceRecord *)&v8 description];
-  v5 = [(ACHEarnedInstanceAwarding *)self->_source uniqueName];
-  v6 = [v3 stringWithFormat:@"%@ <\n            uniqueName:%@\n            registrationDate:%@\n            lastScheduledEvaluationInterval:%@\n            lastCompletedEvaluationInterval:%@\n            >", v4, v5, self->_registrationDate, self->_lastScheduledEvaluationInterval, self->_lastCompletedEvaluationInterval];
+  uniqueName = [(ACHEarnedInstanceAwarding *)self->_source uniqueName];
+  v6 = [v3 stringWithFormat:@"%@ <\n            uniqueName:%@\n            registrationDate:%@\n            lastScheduledEvaluationInterval:%@\n            lastCompletedEvaluationInterval:%@\n            >", v4, uniqueName, self->_registrationDate, self->_lastScheduledEvaluationInterval, self->_lastCompletedEvaluationInterval];
 
   return v6;
 }

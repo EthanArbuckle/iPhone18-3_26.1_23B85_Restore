@@ -1,33 +1,33 @@
 @interface AXBaseSettings
-- (BOOL)BOOLValueForPreferenceKey:(id)a3 defaultValue:(BOOL)a4;
+- (BOOL)BOOLValueForPreferenceKey:(id)key defaultValue:(BOOL)value;
 - (BOOL)forceNewSettingsUsage;
-- (BOOL)hasExistingValueForPreferenceWithSelector:(SEL)a3;
-- (double)doubleValueForPreferenceKey:(id)a3 defaultValue:(double)a4;
-- (float)floatValueForPreferenceKey:(id)a3 defaultValue:(float)a4;
-- (id)forwardingTargetForSelector:(SEL)a3;
-- (id)notificationNameForPreferenceKey:(id)a3;
-- (id)objectValueForPreferenceKey:(id)a3 ofClass:(Class)a4 defaultValue:(id)a5;
-- (id)valueForPreferenceKey:(id)a3;
-- (id)valueForUndefinedKey:(id)a3;
-- (int64_t)integerValueForPreferenceKey:(id)a3 defaultValue:(int64_t)a4;
-- (void)clearExistingValueForPreferenceWithSelector:(SEL)a3;
-- (void)postNotificationForPreferenceKey:(id)a3;
-- (void)registerUpdateBlock:(id)a3 forPreferenceKey:(id)a4 withListener:(id)a5;
-- (void)registerUpdateBlock:(id)a3 forRetrieveSelector:(SEL)a4 withListener:(id)a5;
-- (void)setForceNewSettingsUsage:(BOOL)a3;
-- (void)unregisterUpdateBlockForPreferenceKey:(id)a3 withListenerID:(id)a4;
-- (void)unregisterUpdateBlockForRetrieveSelector:(SEL)a3 withListenerID:(id)a4;
+- (BOOL)hasExistingValueForPreferenceWithSelector:(SEL)selector;
+- (double)doubleValueForPreferenceKey:(id)key defaultValue:(double)value;
+- (float)floatValueForPreferenceKey:(id)key defaultValue:(float)value;
+- (id)forwardingTargetForSelector:(SEL)selector;
+- (id)notificationNameForPreferenceKey:(id)key;
+- (id)objectValueForPreferenceKey:(id)key ofClass:(Class)class defaultValue:(id)value;
+- (id)valueForPreferenceKey:(id)key;
+- (id)valueForUndefinedKey:(id)key;
+- (int64_t)integerValueForPreferenceKey:(id)key defaultValue:(int64_t)value;
+- (void)clearExistingValueForPreferenceWithSelector:(SEL)selector;
+- (void)postNotificationForPreferenceKey:(id)key;
+- (void)registerUpdateBlock:(id)block forPreferenceKey:(id)key withListener:(id)listener;
+- (void)registerUpdateBlock:(id)block forRetrieveSelector:(SEL)selector withListener:(id)listener;
+- (void)setForceNewSettingsUsage:(BOOL)usage;
+- (void)unregisterUpdateBlockForPreferenceKey:(id)key withListenerID:(id)d;
+- (void)unregisterUpdateBlockForRetrieveSelector:(SEL)selector withListenerID:(id)d;
 @end
 
 @implementation AXBaseSettings
 
-- (id)objectValueForPreferenceKey:(id)a3 ofClass:(Class)a4 defaultValue:(id)a5
+- (id)objectValueForPreferenceKey:(id)key ofClass:(Class)class defaultValue:(id)value
 {
   v7 = sub_19166B748();
   v9 = v8;
-  if (a5)
+  if (value)
   {
-    v10 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_19166BFC8();
     swift_unknownObjectRelease();
@@ -36,7 +36,7 @@
   else
   {
     memset(v20, 0, sizeof(v20));
-    v11 = self;
+    selfCopy2 = self;
   }
 
   swift_getObjCClassMetadata();
@@ -72,11 +72,11 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (id)valueForPreferenceKey:(id)a3
+- (id)valueForPreferenceKey:(id)key
 {
   v4 = sub_19166B748();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   AXBaseSettings.value(forPreferenceKey:)(v4, v6, v16);
 
   v8 = v17;
@@ -101,10 +101,10 @@
   return v14;
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
-  v4 = self;
-  AXBaseSettings.forwardingTarget(for:)(a3, v13);
+  selfCopy = self;
+  AXBaseSettings.forwardingTarget(for:)(selector, v13);
 
   v5 = v14;
   if (v14)
@@ -128,14 +128,14 @@
   return v11;
 }
 
-- (BOOL)BOOLValueForPreferenceKey:(id)a3 defaultValue:(BOOL)a4
+- (BOOL)BOOLValueForPreferenceKey:(id)key defaultValue:(BOOL)value
 {
   v6 = sub_19166B748();
   v8 = v7;
-  v9 = self;
+  selfCopy = self;
   v10._countAndFlagsBits = v6;
   v10._object = v8;
-  v11 = AXBaseSettings.BOOLValue(forPreferenceKey:defaultValue:)(v10, a4);
+  v11 = AXBaseSettings.BOOLValue(forPreferenceKey:defaultValue:)(v10, value);
 
   return v11;
 }
@@ -241,64 +241,64 @@ void __50__AXBaseSettings_Legacy__registerForNotification___block_invoke_2(uint6
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setForceNewSettingsUsage:(BOOL)a3
+- (void)setForceNewSettingsUsage:(BOOL)usage
 {
   v5 = OBJC_IVAR___AXBaseSettings_forceNewSettingsUsage;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = usage;
 }
 
-- (int64_t)integerValueForPreferenceKey:(id)a3 defaultValue:(int64_t)a4
+- (int64_t)integerValueForPreferenceKey:(id)key defaultValue:(int64_t)value
 {
   v6 = sub_19166B748();
   v8 = v7;
-  v9 = self;
+  selfCopy = self;
   v10._countAndFlagsBits = v6;
   v10._object = v8;
-  v11 = AXBaseSettings.integerValue(forPreferenceKey:defaultValue:)(v10, a4);
+  v11 = AXBaseSettings.integerValue(forPreferenceKey:defaultValue:)(v10, value);
 
   return v11;
 }
 
-- (double)doubleValueForPreferenceKey:(id)a3 defaultValue:(double)a4
+- (double)doubleValueForPreferenceKey:(id)key defaultValue:(double)value
 {
   v6 = sub_19166B748();
   v8 = v7;
-  v9 = self;
+  selfCopy = self;
   v10._countAndFlagsBits = v6;
   v10._object = v8;
-  v11 = AXBaseSettings.doubleValue(forPreferenceKey:defaultValue:)(v10, a4);
+  v11 = AXBaseSettings.doubleValue(forPreferenceKey:defaultValue:)(v10, value);
 
   return v11;
 }
 
-- (float)floatValueForPreferenceKey:(id)a3 defaultValue:(float)a4
+- (float)floatValueForPreferenceKey:(id)key defaultValue:(float)value
 {
   v6 = sub_19166B748();
   v8 = v7;
-  v9 = self;
+  selfCopy = self;
   v10._countAndFlagsBits = v6;
   v10._object = v8;
-  v11 = AXBaseSettings.floatValue(forPreferenceKey:defaultValue:)(v10, a4);
+  v11 = AXBaseSettings.floatValue(forPreferenceKey:defaultValue:)(v10, value);
 
   return v11;
 }
 
-- (BOOL)hasExistingValueForPreferenceWithSelector:(SEL)a3
+- (BOOL)hasExistingValueForPreferenceWithSelector:(SEL)selector
 {
-  v4 = self;
-  LOBYTE(a3) = AXBaseSettings.hasExistingValueForPreference(with:)(a3);
+  selfCopy = self;
+  LOBYTE(selector) = AXBaseSettings.hasExistingValueForPreference(with:)(selector);
 
-  return a3 & 1;
+  return selector & 1;
 }
 
-- (void)clearExistingValueForPreferenceWithSelector:(SEL)a3
+- (void)clearExistingValueForPreferenceWithSelector:(SEL)selector
 {
-  v4 = self;
-  AXBaseSettings.clearExistingValueForPreference(with:)(a3);
+  selfCopy = self;
+  AXBaseSettings.clearExistingValueForPreference(with:)(selector);
 }
 
-- (id)notificationNameForPreferenceKey:(id)a3
+- (id)notificationNameForPreferenceKey:(id)key
 {
   v3 = sub_19166B748();
   MEMORY[0x193AFC710](v3);
@@ -308,16 +308,16 @@ void __50__AXBaseSettings_Legacy__registerForNotification___block_invoke_2(uint6
   return v4;
 }
 
-- (void)registerUpdateBlock:(id)a3 forPreferenceKey:(id)a4 withListener:(id)a5
+- (void)registerUpdateBlock:(id)block forPreferenceKey:(id)key withListener:(id)listener
 {
-  v7 = _Block_copy(a3);
+  v7 = _Block_copy(block);
   v8 = swift_allocObject();
   *(v8 + 16) = v7;
   v9 = sub_19166B748();
   v11 = v10;
-  if (a5)
+  if (listener)
   {
-    v12 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_19166BFC8();
     swift_unknownObjectRelease();
@@ -326,7 +326,7 @@ void __50__AXBaseSettings_Legacy__registerForNotification___block_invoke_2(uint6
   else
   {
     memset(v14, 0, sizeof(v14));
-    v13 = self;
+    selfCopy2 = self;
   }
 
   AXBaseSettings.registerUpdate(_:forPreferenceKey:withListener:)(sub_19165E188, v8, v9, v11, v14);
@@ -334,25 +334,25 @@ void __50__AXBaseSettings_Legacy__registerForNotification___block_invoke_2(uint6
   sub_19159E780(v14, &unk_1EADB0270, &unk_191672C20);
 }
 
-- (void)unregisterUpdateBlockForPreferenceKey:(id)a3 withListenerID:(id)a4
+- (void)unregisterUpdateBlockForPreferenceKey:(id)key withListenerID:(id)d
 {
   v6 = sub_19166B748();
   v8 = v7;
-  v9 = a4;
-  v10 = self;
+  dCopy = d;
+  selfCopy = self;
   v11._countAndFlagsBits = v6;
   v11._object = v8;
-  AXBaseSettings.unregisterUpdateBlock(forPreferenceKey:withListenerID:)(v11, v9);
+  AXBaseSettings.unregisterUpdateBlock(forPreferenceKey:withListenerID:)(v11, dCopy);
 }
 
-- (void)registerUpdateBlock:(id)a3 forRetrieveSelector:(SEL)a4 withListener:(id)a5
+- (void)registerUpdateBlock:(id)block forRetrieveSelector:(SEL)selector withListener:(id)listener
 {
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(block);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
-  if (a5)
+  if (listener)
   {
-    v10 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_19166BFC8();
     swift_unknownObjectRelease();
@@ -361,22 +361,22 @@ void __50__AXBaseSettings_Legacy__registerForNotification___block_invoke_2(uint6
   else
   {
     memset(v12, 0, sizeof(v12));
-    v11 = self;
+    selfCopy2 = self;
   }
 
-  AXBaseSettings.registerUpdate(_:forRetrieveSelector:withListener:)(sub_19165DF28, v9, a4, v12);
+  AXBaseSettings.registerUpdate(_:forRetrieveSelector:withListener:)(sub_19165DF28, v9, selector, v12);
 
   sub_19159E780(v12, &unk_1EADB0270, &unk_191672C20);
 }
 
-- (void)unregisterUpdateBlockForRetrieveSelector:(SEL)a3 withListenerID:(id)a4
+- (void)unregisterUpdateBlockForRetrieveSelector:(SEL)selector withListenerID:(id)d
 {
-  v6 = a4;
-  v7 = self;
-  AXBaseSettings.unregisterUpdateBlock(forRetrieveSelector:withListenerID:)(a3, v6);
+  dCopy = d;
+  selfCopy = self;
+  AXBaseSettings.unregisterUpdateBlock(forRetrieveSelector:withListenerID:)(selector, dCopy);
 }
 
-- (void)postNotificationForPreferenceKey:(id)a3
+- (void)postNotificationForPreferenceKey:(id)key
 {
   v3 = sub_19166B748();
   MEMORY[0x193AFC710](v3);
@@ -386,18 +386,18 @@ void __50__AXBaseSettings_Legacy__registerForNotification___block_invoke_2(uint6
   notify_post((v4 + 32));
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
   v5 = sub_19166B748();
   v7 = v6;
-  v8 = a3;
-  v9 = self;
+  keyCopy = key;
+  selfCopy = self;
   v10 = AXBaseSettings.target(forKVOKey:)(v5, v7);
 
-  v11 = [v10 valueForKey_];
+  valueForKey_ = [v10 valueForKey_];
 
   swift_unknownObjectRelease();
-  if (v11)
+  if (valueForKey_)
   {
     sub_19166BFC8();
     swift_unknownObjectRelease();

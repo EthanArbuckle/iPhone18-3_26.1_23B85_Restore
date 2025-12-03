@@ -2,18 +2,18 @@
 - (Box<double,)_bounds;
 - (CGColor)fillColor;
 - (CGColor)strokeColor;
-- (VKVectorOverlayCircle)initWithMapRect:(id)a3 lineWidth:(double)a4 fillColor:(CGColor *)a5 strokeColor:(CGColor *)a6 alpha:(double)a7;
+- (VKVectorOverlayCircle)initWithMapRect:(id)rect lineWidth:(double)width fillColor:(CGColor *)color strokeColor:(CGColor *)strokeColor alpha:(double)alpha;
 - (double)alpha;
 - (double)lineWidth;
 - (id).cxx_construct;
 - (shared_ptr<md::CircleOverlayRenderable>)_renderable;
 - (void)_updateStyleColor;
 - (void)dealloc;
-- (void)setAlpha:(double)a3;
-- (void)setBlendMode:(int64_t)a3;
-- (void)setFillColor:(CGColor *)a3;
-- (void)setLineWidth:(double)a3;
-- (void)setStrokeColor:(CGColor *)a3;
+- (void)setAlpha:(double)alpha;
+- (void)setBlendMode:(int64_t)mode;
+- (void)setFillColor:(CGColor *)color;
+- (void)setLineWidth:(double)width;
+- (void)setStrokeColor:(CGColor *)color;
 @end
 
 @implementation VKVectorOverlayCircle
@@ -56,18 +56,18 @@
   return result;
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
   os_unfair_lock_lock(&self->_propertiesLock._lock);
   alpha = self->_alpha;
-  self->_alpha = a3;
+  self->_alpha = alpha;
   ptr = self->_style.__ptr_;
   os_unfair_lock_lock(ptr + 11);
-  v7 = a3;
-  *(ptr + 9) = v7;
+  alphaCopy = alpha;
+  *(ptr + 9) = alphaCopy;
   os_unfair_lock_unlock(ptr + 11);
-  v8 = vabdd_f64(a3, alpha);
-  if (v8 > fabs(alpha + a3) * 2.22044605e-14 && v8 >= 2.22507386e-308)
+  v8 = vabdd_f64(alpha, alpha);
+  if (v8 > fabs(alpha + alpha) * 2.22044605e-14 && v8 >= 2.22507386e-308)
   {
     WeakRetained = objc_loadWeakRetained(&self->super._delegate);
     [WeakRetained vectorOverlayNeedsDisplay:self needsFullInvalidate:0];
@@ -84,12 +84,12 @@
   return alpha;
 }
 
-- (void)setStrokeColor:(CGColor *)a3
+- (void)setStrokeColor:(CGColor *)color
 {
   os_unfair_lock_lock(&self->_propertiesLock._lock);
-  v5 = CGColorEqualToColor(a3, self->_strokeColor);
+  v5 = CGColorEqualToColor(color, self->_strokeColor);
   CGColorRelease(self->_strokeColor);
-  self->_strokeColor = CGColorRetain(a3);
+  self->_strokeColor = CGColorRetain(color);
   [(VKVectorOverlayCircle *)self _updateStyleColor];
   if (!v5)
   {
@@ -108,12 +108,12 @@
   return strokeColor;
 }
 
-- (void)setFillColor:(CGColor *)a3
+- (void)setFillColor:(CGColor *)color
 {
   os_unfair_lock_lock(&self->_propertiesLock._lock);
-  v5 = CGColorEqualToColor(a3, self->_fillColor);
+  v5 = CGColorEqualToColor(color, self->_fillColor);
   CGColorRelease(self->_fillColor);
-  self->_fillColor = CGColorRetain(a3);
+  self->_fillColor = CGColorRetain(color);
   [(VKVectorOverlayCircle *)self _updateStyleColor];
   if (!v5)
   {
@@ -132,18 +132,18 @@
   return fillColor;
 }
 
-- (void)setLineWidth:(double)a3
+- (void)setLineWidth:(double)width
 {
   os_unfair_lock_lock(&self->_propertiesLock._lock);
   lineWidth = self->_lineWidth;
-  self->_lineWidth = a3;
+  self->_lineWidth = width;
   ptr = self->_style.__ptr_;
   os_unfair_lock_lock(ptr + 11);
-  v7 = a3;
-  *ptr = v7;
+  widthCopy = width;
+  *ptr = widthCopy;
   os_unfair_lock_unlock(ptr + 11);
-  v8 = vabdd_f64(a3, lineWidth);
-  if (v8 > fabs(lineWidth + a3) * 2.22044605e-14 && v8 >= 2.22507386e-308)
+  v8 = vabdd_f64(width, lineWidth);
+  if (v8 > fabs(lineWidth + width) * 2.22044605e-14 && v8 >= 2.22507386e-308)
   {
     WeakRetained = objc_loadWeakRetained(&self->super._delegate);
     [WeakRetained vectorOverlayNeedsDisplay:self needsFullInvalidate:0];
@@ -175,19 +175,19 @@
   os_unfair_lock_unlock(v5 + 11);
 }
 
-- (void)setBlendMode:(int64_t)a3
+- (void)setBlendMode:(int64_t)mode
 {
   v6.receiver = self;
   v6.super_class = VKVectorOverlayCircle;
   [(VKVectorOverlayData *)&v6 setBlendMode:?];
   ptr = self->_style.__ptr_;
-  if ((a3 - 1) >= 0x11)
+  if ((mode - 1) >= 0x11)
   {
-    LODWORD(a3) = 0;
+    LODWORD(mode) = 0;
   }
 
   os_unfair_lock_lock(ptr + 11);
-  ptr[10]._os_unfair_lock_opaque = a3;
+  ptr[10]._os_unfair_lock_opaque = mode;
   os_unfair_lock_unlock(ptr + 11);
 }
 
@@ -200,7 +200,7 @@
   [(VKVectorOverlayCircle *)&v3 dealloc];
 }
 
-- (VKVectorOverlayCircle)initWithMapRect:(id)a3 lineWidth:(double)a4 fillColor:(CGColor *)a5 strokeColor:(CGColor *)a6 alpha:(double)a7
+- (VKVectorOverlayCircle)initWithMapRect:(id)rect lineWidth:(double)width fillColor:(CGColor *)color strokeColor:(CGColor *)strokeColor alpha:(double)alpha
 {
   v14.receiver = self;
   v14.super_class = VKVectorOverlayCircle;
@@ -208,10 +208,10 @@
   v12 = v11;
   if (v11)
   {
-    v11->_lineWidth = a4;
-    v11->_fillColor = CGColorRetain(a5);
-    v12->_strokeColor = CGColorRetain(a6);
-    v12->_alpha = a7;
+    v11->_lineWidth = width;
+    v11->_fillColor = CGColorRetain(color);
+    v12->_strokeColor = CGColorRetain(strokeColor);
+    v12->_alpha = alpha;
     operator new();
   }
 

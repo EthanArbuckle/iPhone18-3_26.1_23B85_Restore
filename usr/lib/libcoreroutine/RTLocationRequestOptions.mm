@@ -1,25 +1,25 @@
 @interface RTLocationRequestOptions
-- (RTLocationRequestOptions)initWithDesiredAccuracy:(double)a3 horizontalAccuracy:(double)a4 maxAge:(double)a5 yieldLastLocation:(BOOL)a6 timeout:(double)a7 fallback:(BOOL)a8 fallbackHorizontalAccuracy:(double)a9 fallbackMaxAge:(double)a10;
+- (RTLocationRequestOptions)initWithDesiredAccuracy:(double)accuracy horizontalAccuracy:(double)horizontalAccuracy maxAge:(double)age yieldLastLocation:(BOOL)location timeout:(double)timeout fallback:(BOOL)fallback fallbackHorizontalAccuracy:(double)fallbackHorizontalAccuracy fallbackMaxAge:(double)self0;
 - (id)description;
 @end
 
 @implementation RTLocationRequestOptions
 
-- (RTLocationRequestOptions)initWithDesiredAccuracy:(double)a3 horizontalAccuracy:(double)a4 maxAge:(double)a5 yieldLastLocation:(BOOL)a6 timeout:(double)a7 fallback:(BOOL)a8 fallbackHorizontalAccuracy:(double)a9 fallbackMaxAge:(double)a10
+- (RTLocationRequestOptions)initWithDesiredAccuracy:(double)accuracy horizontalAccuracy:(double)horizontalAccuracy maxAge:(double)age yieldLastLocation:(BOOL)location timeout:(double)timeout fallback:(BOOL)fallback fallbackHorizontalAccuracy:(double)fallbackHorizontalAccuracy fallbackMaxAge:(double)self0
 {
   v19.receiver = self;
   v19.super_class = RTLocationRequestOptions;
   result = [(RTLocationRequestOptions *)&v19 init];
   if (result)
   {
-    result->_desiredAccuracy = a3;
-    result->_horizontalAccuracy = a4;
-    result->_yieldLastLocation = a6;
-    result->_fallback = a8;
-    result->_maxAge = a5;
-    result->_fallbackHorizontalAccuracy = a9;
-    result->_fallbackMaxAge = a10;
-    result->_timeout = a7;
+    result->_desiredAccuracy = accuracy;
+    result->_horizontalAccuracy = horizontalAccuracy;
+    result->_yieldLastLocation = location;
+    result->_fallback = fallback;
+    result->_maxAge = age;
+    result->_fallbackHorizontalAccuracy = fallbackHorizontalAccuracy;
+    result->_fallbackMaxAge = maxAge;
+    result->_timeout = timeout;
   }
 
   return result;

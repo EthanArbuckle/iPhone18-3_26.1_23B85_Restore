@@ -1,16 +1,16 @@
 @interface CKOperationGroupSystemImposedInfoConfiguration
-- (BOOL)isEqual:(id)a3;
-- (CKOperationGroupSystemImposedInfoConfiguration)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CKOperationGroupSystemImposedInfoConfiguration)initWithCoder:(id)coder;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKOperationGroupSystemImposedInfoConfiguration
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v13) = 1;
   }
@@ -20,7 +20,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       isUplink = objc_msgSend_isUplink(v5, v6, v7);
       if (isUplink == objc_msgSend_isUplink(self, v9, v10))
       {
@@ -58,28 +58,28 @@
   return v6 | objc_msgSend_allowsCellularAccess(self, v4, v5);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v13 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
   isUplink = objc_msgSend_isUplink(self, v5, v6);
-  objc_msgSend_encodeBool_forKey_(v13, v8, isUplink, @"IsUplink");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v8, isUplink, @"IsUplink");
   v11 = objc_msgSend_allowsCellularAccess(self, v9, v10);
-  objc_msgSend_encodeBool_forKey_(v13, v12, v11, @"AllowsCellularAccess");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v12, v11, @"AllowsCellularAccess");
   objc_autoreleasePoolPop(v4);
 }
 
-- (CKOperationGroupSystemImposedInfoConfiguration)initWithCoder:(id)a3
+- (CKOperationGroupSystemImposedInfoConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = CKOperationGroupSystemImposedInfoConfiguration;
   v5 = [(CKOperationGroupSystemImposedInfoConfiguration *)&v10 init];
   if (v5)
   {
     v6 = objc_autoreleasePoolPush();
-    v5->_isUplink = objc_msgSend_decodeBoolForKey_(v4, v7, @"IsUplink");
-    v5->_allowsCellularAccess = objc_msgSend_decodeBoolForKey_(v4, v8, @"AllowsCellularAccess");
+    v5->_isUplink = objc_msgSend_decodeBoolForKey_(coderCopy, v7, @"IsUplink");
+    v5->_allowsCellularAccess = objc_msgSend_decodeBoolForKey_(coderCopy, v8, @"AllowsCellularAccess");
     objc_autoreleasePoolPop(v6);
   }
 

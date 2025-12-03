@@ -1,24 +1,24 @@
 @interface HIDTimeSync
-+ (id)timeSyncFromHIDDevice:(id)a3;
-+ (id)timeSyncFromHIDEventService:(id)a3;
-+ (id)timeSyncFromHIDServiceClient:(id)a3;
-+ (id)timeSyncFromProtocol:(unint64_t)a3;
-+ (unsigned)findDeviceForServiceID:(unint64_t)a3;
-- (BOOL)registerPropertyNotification:(unsigned int)a3;
-- (BOOL)setProviderProperty:(id)a3 forKey:(id)a4;
++ (id)timeSyncFromHIDDevice:(id)device;
++ (id)timeSyncFromHIDEventService:(id)service;
++ (id)timeSyncFromHIDServiceClient:(id)client;
++ (id)timeSyncFromProtocol:(unint64_t)protocol;
++ (unsigned)findDeviceForServiceID:(unint64_t)d;
+- (BOOL)registerPropertyNotification:(unsigned int)notification;
+- (BOOL)setProviderProperty:(id)property forKey:(id)key;
 - (HIDTimeSync)init;
-- (id)dataFromSyncedTime:(unint64_t)a3 error:(id *)a4;
+- (id)dataFromSyncedTime:(unint64_t)time error:(id *)error;
 - (id)initInternal;
 - (id)properties;
-- (unint64_t)syncedTimeFromData:(id)a3 error:(id *)a4;
+- (unint64_t)syncedTimeFromData:(id)data error:(id *)error;
 - (unsigned)findDevice;
 - (void)activate;
 - (void)cancel;
 - (void)dealloc;
-- (void)handlePropertyUpdate:(id)a3;
-- (void)setCancelHandler:(id)a3;
-- (void)setDispatchQueue:(id)a3;
-- (void)setEventHandler:(id)a3;
+- (void)handlePropertyUpdate:(id)update;
+- (void)setCancelHandler:(id)handler;
+- (void)setDispatchQueue:(id)queue;
+- (void)setEventHandler:(id)handler;
 @end
 
 @implementation HIDTimeSync
@@ -37,9 +37,9 @@
   return [(HIDTimeSync *)&v3 init];
 }
 
-+ (id)timeSyncFromProtocol:(unint64_t)a3
++ (id)timeSyncFromProtocol:(unint64_t)protocol
 {
-  if (a3 == 2)
+  if (protocol == 2)
   {
     v3 = objc_alloc_init(HIDBasicTimeSync);
     if (!v3)
@@ -50,7 +50,7 @@
     goto LABEL_6;
   }
 
-  if (a3 != 1)
+  if (protocol != 1)
   {
     v3 = 0;
     goto LABEL_8;
@@ -69,10 +69,10 @@ LABEL_8:
   return v3;
 }
 
-+ (id)timeSyncFromHIDDevice:(id)a3
++ (id)timeSyncFromHIDDevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 propertyForKey:@"HIDTimeSyncProtocol"];
+  deviceCopy = device;
+  v5 = [deviceCopy propertyForKey:@"HIDTimeSyncProtocol"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -80,7 +80,7 @@ LABEL_8:
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong((v6 + 16), a3);
+      objc_storeStrong((v6 + 16), device);
       v8 = v7;
     }
   }
@@ -93,10 +93,10 @@ LABEL_8:
   return v7;
 }
 
-+ (id)timeSyncFromHIDEventService:(id)a3
++ (id)timeSyncFromHIDEventService:(id)service
 {
-  v4 = a3;
-  v5 = [v4 propertyForKey:@"HIDTimeSyncProtocol"];
+  serviceCopy = service;
+  v5 = [serviceCopy propertyForKey:@"HIDTimeSyncProtocol"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -104,7 +104,7 @@ LABEL_8:
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong((v6 + 24), a3);
+      objc_storeStrong((v6 + 24), service);
       v8 = v7;
     }
   }
@@ -117,15 +117,15 @@ LABEL_8:
   return v7;
 }
 
-+ (id)timeSyncFromHIDServiceClient:(id)a3
++ (id)timeSyncFromHIDServiceClient:(id)client
 {
-  v4 = a3;
-  v5 = [v4 propertyForKey:@"HIDTimeSyncProtocol"];
+  clientCopy = client;
+  v5 = [clientCopy propertyForKey:@"HIDTimeSyncProtocol"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v6 = +[HIDTimeSync timeSyncFromProtocol:](HIDTimeSync, "timeSyncFromProtocol:", [v5 unsignedIntegerValue]);
-    objc_storeStrong(v6 + 4, a3);
+    objc_storeStrong(v6 + 4, client);
     v7 = v6;
   }
 
@@ -137,48 +137,48 @@ LABEL_8:
   return v7;
 }
 
-- (void)setEventHandler:(id)a3
+- (void)setEventHandler:(id)handler
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   if (atomic_load(&self->_state))
   {
     [(HIDTimeSync *)&self->_state setEventHandler:v11];
   }
 
-  v9 = v4;
-  v6 = _Block_copy(v4);
+  v9 = handlerCopy;
+  v6 = _Block_copy(handlerCopy);
   eventHandler = self->_eventHandler;
   self->_eventHandler = v6;
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDispatchQueue:(id)a3
+- (void)setDispatchQueue:(id)queue
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  queueCopy = queue;
   if (atomic_load(&self->_state))
   {
     [(HIDTimeSync *)&self->_state setEventHandler:v9];
   }
 
   queue = self->_queue;
-  self->_queue = v4;
+  self->_queue = queueCopy;
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setCancelHandler:(id)a3
+- (void)setCancelHandler:(id)handler
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   if (atomic_load(&self->_state))
   {
     [(HIDTimeSync *)&self->_state setEventHandler:v11];
   }
 
-  v9 = v4;
-  v6 = _Block_copy(v4);
+  v9 = handlerCopy;
+  v6 = _Block_copy(handlerCopy);
   cancelHandler = self->_cancelHandler;
   self->_cancelHandler = v6;
 
@@ -187,7 +187,7 @@ LABEL_8:
 
 - (void)activate
 {
-  OUTLINED_FUNCTION_5(a1, a2);
+  OUTLINED_FUNCTION_5(self, a2);
   OUTLINED_FUNCTION_4();
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_0_0();
@@ -204,7 +204,7 @@ void __23__HIDTimeSync_activate__block_invoke(uint64_t a1)
 
 - (void)cancel
 {
-  OUTLINED_FUNCTION_1_0(a1, a2, a3);
+  OUTLINED_FUNCTION_1_0(self, a2, a3);
   OUTLINED_FUNCTION_4();
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_0_0();
@@ -221,7 +221,7 @@ uint64_t __21__HIDTimeSync_cancel__block_invoke(uint64_t a1)
 
 - (void)dealloc
 {
-  *a1 = 0;
+  *self = 0;
   a2[3] = 0u;
   a2[4] = 0u;
   a2[1] = 0u;
@@ -230,7 +230,7 @@ uint64_t __21__HIDTimeSync_cancel__block_invoke(uint64_t a1)
   os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
   atomic_load(a3);
   _os_log_send_and_compose_impl();
-  v5 = *a1;
+  v5 = *self;
   _os_crash_msg();
   __break(1u);
 }
@@ -239,9 +239,9 @@ uint64_t __21__HIDTimeSync_cancel__block_invoke(uint64_t a1)
 {
   if (self->_device)
   {
-    v2 = [(HIDDevice *)self->_device service];
-    IOObjectRetain(v2);
-    return v2;
+    service = [(HIDDevice *)self->_device service];
+    IOObjectRetain(service);
+    return service;
   }
 
   if (self->_client)
@@ -258,15 +258,15 @@ uint64_t __21__HIDTimeSync_cancel__block_invoke(uint64_t a1)
     }
   }
 
-  v5 = [(HIDServiceClient *)client serviceID];
+  serviceID = [(HIDServiceClient *)client serviceID];
 
-  return [HIDTimeSync findDeviceForServiceID:v5];
+  return [HIDTimeSync findDeviceForServiceID:serviceID];
 }
 
-+ (unsigned)findDeviceForServiceID:(unint64_t)a3
++ (unsigned)findDeviceForServiceID:(unint64_t)d
 {
   iterator = 0;
-  v4 = IORegistryEntryIDMatching(a3);
+  v4 = IORegistryEntryIDMatching(d);
   if (!v4)
   {
     +[HIDTimeSync findDeviceForServiceID:];
@@ -286,7 +286,7 @@ uint64_t __21__HIDTimeSync_cancel__block_invoke(uint64_t a1)
     v9 = _IOHIDLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [(HIDTimeSync *)a3 findDeviceForServiceID:v9];
+      [(HIDTimeSync *)d findDeviceForServiceID:v9];
     }
   }
 
@@ -313,7 +313,7 @@ LABEL_8:
     v9 = _IOHIDLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [(HIDTimeSync *)a3 findDeviceForServiceID:v9];
+      [(HIDTimeSync *)d findDeviceForServiceID:v9];
     }
   }
 
@@ -328,14 +328,14 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)registerPropertyNotification:(unsigned int)a3
+- (BOOL)registerPropertyNotification:(unsigned int)notification
 {
   v5 = IONotificationPortCreate(*MEMORY[0x277CD2898]);
   self->_propertyPort = v5;
-  v6 = [(HIDTimeSync *)self queue];
-  IONotificationPortSetDispatchQueue(v5, v6);
+  queue = [(HIDTimeSync *)self queue];
+  IONotificationPortSetDispatchQueue(v5, queue);
 
-  v7 = IOServiceAddInterestNotification(self->_propertyPort, a3, "IOGeneralInterest", HIDTimeSyncPropertyHandler, self, &self->_propertyNotify);
+  v7 = IOServiceAddInterestNotification(self->_propertyPort, notification, "IOGeneralInterest", HIDTimeSyncPropertyHandler, self, &self->_propertyNotify);
   if (v7)
   {
     v8 = _IOHIDLog();
@@ -348,22 +348,22 @@ LABEL_11:
   return v7 == 0;
 }
 
-- (void)handlePropertyUpdate:(id)a3
+- (void)handlePropertyUpdate:(id)update
 {
-  v3 = a3;
+  updateCopy = update;
   _os_crash();
   __break(1u);
 }
 
-- (unint64_t)syncedTimeFromData:(id)a3 error:(id *)a4
+- (unint64_t)syncedTimeFromData:(id)data error:(id *)error
 {
-  v4 = a3;
+  dataCopy = data;
   result = _os_crash();
   __break(1u);
   return result;
 }
 
-- (id)dataFromSyncedTime:(unint64_t)a3 error:(id *)a4
+- (id)dataFromSyncedTime:(unint64_t)time error:(id *)error
 {
   result = _os_crash();
   __break(1u);
@@ -429,17 +429,17 @@ LABEL_13:
   return v7;
 }
 
-- (BOOL)setProviderProperty:(id)a3 forKey:(id)a4
+- (BOOL)setProviderProperty:(id)property forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HIDTimeSync *)self findDevice];
-  if (v8)
+  propertyCopy = property;
+  keyCopy = key;
+  findDevice = [(HIDTimeSync *)self findDevice];
+  if (findDevice)
   {
-    v9 = v8;
-    v10 = [objc_alloc(MEMORY[0x277CD2850]) initWithService:v8];
+    v9 = findDevice;
+    v10 = [objc_alloc(MEMORY[0x277CD2850]) initWithService:findDevice];
     [v10 open];
-    v11 = [v10 setProperty:v6 forKey:v7];
+    v11 = [v10 setProperty:propertyCopy forKey:keyCopy];
     [v10 close];
     IOObjectRelease(v9);
   }

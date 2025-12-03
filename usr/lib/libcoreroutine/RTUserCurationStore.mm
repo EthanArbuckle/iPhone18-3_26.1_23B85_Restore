@@ -1,26 +1,26 @@
 @interface RTUserCurationStore
-- (RTUserCurationStore)initWithPersistenceManager:(id)a3;
-- (id)fetchRequestFromOptions:(id)a3 offset:(unint64_t)a4 error:(id *)a5;
-- (void)_fetchStoredUserCurationWithIdentifier:(id)a3 handler:(id)a4;
-- (void)_fetchStoredUserCurationsWithOptions:(id)a3 handler:(id)a4;
-- (void)_purgeUserCurationsPredating:(id)a3 handler:(id)a4;
-- (void)_storeUserCuration:(id)a3 handler:(id)a4;
-- (void)_updateUserCuration:(id)a3 handler:(id)a4;
-- (void)fetchStoredUserCurationWithIdentifier:(id)a3 handler:(id)a4;
-- (void)fetchStoredUserCurationsWithOptions:(id)a3 handler:(id)a4;
-- (void)purgeUserCurationsPredating:(id)a3 handler:(id)a4;
-- (void)storeUserCuration:(id)a3 handler:(id)a4;
-- (void)updateUserCuration:(id)a3 handler:(id)a4;
+- (RTUserCurationStore)initWithPersistenceManager:(id)manager;
+- (id)fetchRequestFromOptions:(id)options offset:(unint64_t)offset error:(id *)error;
+- (void)_fetchStoredUserCurationWithIdentifier:(id)identifier handler:(id)handler;
+- (void)_fetchStoredUserCurationsWithOptions:(id)options handler:(id)handler;
+- (void)_purgeUserCurationsPredating:(id)predating handler:(id)handler;
+- (void)_storeUserCuration:(id)curation handler:(id)handler;
+- (void)_updateUserCuration:(id)curation handler:(id)handler;
+- (void)fetchStoredUserCurationWithIdentifier:(id)identifier handler:(id)handler;
+- (void)fetchStoredUserCurationsWithOptions:(id)options handler:(id)handler;
+- (void)purgeUserCurationsPredating:(id)predating handler:(id)handler;
+- (void)storeUserCuration:(id)curation handler:(id)handler;
+- (void)updateUserCuration:(id)curation handler:(id)handler;
 @end
 
 @implementation RTUserCurationStore
 
-- (RTUserCurationStore)initWithPersistenceManager:(id)a3
+- (RTUserCurationStore)initWithPersistenceManager:(id)manager
 {
   v15 = *MEMORY[0x277D85DE8];
   v10.receiver = self;
   v10.super_class = RTUserCurationStore;
-  v4 = [(RTStore *)&v10 initWithPersistenceManager:a3];
+  v4 = [(RTStore *)&v10 initWithPersistenceManager:manager];
   if (v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityUserCuration);
@@ -40,38 +40,38 @@
   return v4;
 }
 
-- (void)fetchStoredUserCurationWithIdentifier:(id)a3 handler:(id)a4
+- (void)fetchStoredUserCurationWithIdentifier:(id)identifier handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __69__RTUserCurationStore_fetchStoredUserCurationWithIdentifier_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = identifierCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = identifierCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_fetchStoredUserCurationWithIdentifier:(id)a3 handler:(id)a4
+- (void)_fetchStoredUserCurationWithIdentifier:(id)identifier handler:(id)handler
 {
   v27 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  v9 = handlerCopy;
+  if (identifierCopy)
   {
-    if (v8)
+    if (handlerCopy)
     {
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = __70__RTUserCurationStore__fetchStoredUserCurationWithIdentifier_handler___block_invoke;
       v17[3] = &unk_2788C4FB0;
-      v18 = v7;
+      v18 = identifierCopy;
       v20 = a2;
       v19 = v9;
       v15[0] = MEMORY[0x277D85DD0];
@@ -166,35 +166,35 @@ void __70__RTUserCurationStore__fetchStoredUserCurationWithIdentifier_handler___
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchStoredUserCurationsWithOptions:(id)a3 handler:(id)a4
+- (void)fetchStoredUserCurationsWithOptions:(id)options handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  optionsCopy = options;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __67__RTUserCurationStore_fetchStoredUserCurationsWithOptions_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = optionsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = optionsCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_fetchStoredUserCurationsWithOptions:(id)a3 handler:(id)a4
+- (void)_fetchStoredUserCurationsWithOptions:(id)options handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __68__RTUserCurationStore__fetchStoredUserCurationsWithOptions_handler___block_invoke;
     aBlock[3] = &unk_2788C4FB0;
-    v14 = v7;
-    v9 = v8;
+    v14 = optionsCopy;
+    v9 = handlerCopy;
     v15 = v9;
     v16 = a2;
     v10 = _Block_copy(aBlock);
@@ -429,100 +429,100 @@ void __68__RTUserCurationStore__fetchStoredUserCurationsWithOptions_handler___bl
 LABEL_33:
 }
 
-- (void)_storeUserCuration:(id)a3 handler:(id)a4
+- (void)_storeUserCuration:(id)curation handler:(id)handler
 {
   v11 = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  curationCopy = curation;
   v6 = MEMORY[0x277CBEA60];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 arrayWithObjects:&v10 count:1];
+  handlerCopy = handler;
+  curationCopy2 = curation;
+  v9 = [v6 arrayWithObjects:&curationCopy count:1];
 
-  [(RTStore *)self storeWritableObjects:v9 handler:v7, v10, v11];
+  [(RTStore *)self storeWritableObjects:v9 handler:handlerCopy, curationCopy, v11];
 }
 
-- (void)storeUserCuration:(id)a3 handler:(id)a4
+- (void)storeUserCuration:(id)curation handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  curationCopy = curation;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__RTUserCurationStore_storeUserCuration_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = curationCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = curationCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_updateUserCuration:(id)a3 handler:(id)a4
+- (void)_updateUserCuration:(id)curation handler:(id)handler
 {
   v11 = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  curationCopy = curation;
   v6 = MEMORY[0x277CBEA60];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 arrayWithObjects:&v10 count:1];
+  handlerCopy = handler;
+  curationCopy2 = curation;
+  v9 = [v6 arrayWithObjects:&curationCopy count:1];
 
-  [(RTStore *)self updateWritableObjects:v9 handler:v7, v10, v11];
+  [(RTStore *)self updateWritableObjects:v9 handler:handlerCopy, curationCopy, v11];
 }
 
-- (void)updateUserCuration:(id)a3 handler:(id)a4
+- (void)updateUserCuration:(id)curation handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  curationCopy = curation;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__RTUserCurationStore_updateUserCuration_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = curationCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = curationCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)purgeUserCurationsPredating:(id)a3 handler:(id)a4
+- (void)purgeUserCurationsPredating:(id)predating handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  predatingCopy = predating;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__RTUserCurationStore_purgeUserCurationsPredating_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = predatingCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = predatingCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_purgeUserCurationsPredating:(id)a3 handler:(id)a4
+- (void)_purgeUserCurationsPredating:(id)predating handler:(id)handler
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v6)
+  predatingCopy = predating;
+  if (predatingCopy)
   {
     v15 = @"submissionDate";
-    v7 = a4;
+    handlerCopy = handler;
     v14 = objc_opt_class();
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:&v14 count:1];
     v16 = v8;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v16 forKeys:&v15 count:1];
 
-    [(RTStore *)self purgePredating:v6 predicateMappings:v9 handler:v7];
+    [(RTStore *)self purgePredating:predatingCopy predicateMappings:v9 handler:handlerCopy];
   }
 
   else
   {
-    v10 = a4;
+    handlerCopy2 = handler;
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -538,12 +538,12 @@ LABEL_33:
     v17 = *MEMORY[0x277CCA450];
     v18 = @"requires a valid date.";
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v18 forKeys:&v17 count:1];
-    v7 = [v12 errorWithDomain:v13 code:7 userInfo:v9];
-    v10[2](v10, v7);
+    handlerCopy = [v12 errorWithDomain:v13 code:7 userInfo:v9];
+    handlerCopy2[2](handlerCopy2, handlerCopy);
   }
 }
 
-- (id)fetchRequestFromOptions:(id)a3 offset:(unint64_t)a4 error:(id *)a5
+- (id)fetchRequestFromOptions:(id)options offset:(unint64_t)offset error:(id *)error
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277CCA9B8];
@@ -553,10 +553,10 @@ LABEL_33:
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
   v9 = [v6 errorWithDomain:v7 code:7 userInfo:v8];
 
-  if (a5)
+  if (error)
   {
     v10 = v9;
-    *a5 = v9;
+    *error = v9;
   }
 
   return 0;

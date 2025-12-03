@@ -1,9 +1,9 @@
 @interface HealthWorkoutSession
 - (_TtC13SeymourClient20HealthWorkoutSession)init;
-- (void)workoutBuilder:(id)a3 didCollectDataOfTypes:(id)a4;
-- (void)workoutBuilder:(id)a3 didEndActivity:(id)a4;
-- (void)workoutSession:(id)a3 didChangeToState:(int64_t)a4 fromState:(int64_t)a5 date:(id)a6;
-- (void)workoutSession:(id)a3 didFailWithError:(id)a4;
+- (void)workoutBuilder:(id)builder didCollectDataOfTypes:(id)types;
+- (void)workoutBuilder:(id)builder didEndActivity:(id)activity;
+- (void)workoutSession:(id)session didChangeToState:(int64_t)state fromState:(int64_t)fromState date:(id)date;
+- (void)workoutSession:(id)session didFailWithError:(id)error;
 @end
 
 @implementation HealthWorkoutSession
@@ -15,24 +15,24 @@
   return result;
 }
 
-- (void)workoutBuilder:(id)a3 didCollectDataOfTypes:(id)a4
+- (void)workoutBuilder:(id)builder didCollectDataOfTypes:(id)types
 {
   sub_1B4DD8804(0, &qword_1EDB6DA90, 0x1E696C3D0);
   sub_1B4F243D8();
   v6 = sub_1B4F68504();
-  v7 = a3;
-  v8 = self;
-  HealthWorkoutSession.workoutBuilder(_:didCollectDataOf:)(v7, v6);
+  builderCopy = builder;
+  selfCopy = self;
+  HealthWorkoutSession.workoutBuilder(_:didCollectDataOf:)(builderCopy, v6);
 }
 
-- (void)workoutBuilder:(id)a3 didEndActivity:(id)a4
+- (void)workoutBuilder:(id)builder didEndActivity:(id)activity
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EB8F7040, &qword_1B4F71150);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8, v7);
   v9 = &v17 - v8;
   v10 = qword_1EDB6DFA8;
-  v11 = self;
+  selfCopy = self;
   if (v10 != -1)
   {
     swift_once();
@@ -50,11 +50,11 @@
   v16 = swift_allocObject();
   v16[2] = 0;
   v16[3] = 0;
-  v16[4] = v11;
+  v16[4] = selfCopy;
   sub_1B4E4E620(0, 0, v9, &unk_1B4F7C468, v16);
 }
 
-- (void)workoutSession:(id)a3 didChangeToState:(int64_t)a4 fromState:(int64_t)a5 date:(id)a6
+- (void)workoutSession:(id)session didChangeToState:(int64_t)state fromState:(int64_t)fromState date:(id)date
 {
   v8 = sub_1B4F64964();
   v9 = *(v8 - 8);
@@ -62,19 +62,19 @@
   MEMORY[0x1EEE9AC00](v8, v11);
   v13 = &v16 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1B4F64934();
-  v14 = a3;
-  v15 = self;
+  sessionCopy = session;
+  selfCopy = self;
   sub_1B4F245DC();
 
   (*(v9 + 8))(v13, v8);
 }
 
-- (void)workoutSession:(id)a3 didFailWithError:(id)a4
+- (void)workoutSession:(id)session didFailWithError:(id)error
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
-  sub_1B4F24818(v8);
+  sessionCopy = session;
+  errorCopy = error;
+  selfCopy = self;
+  sub_1B4F24818(errorCopy);
 }
 
 @end

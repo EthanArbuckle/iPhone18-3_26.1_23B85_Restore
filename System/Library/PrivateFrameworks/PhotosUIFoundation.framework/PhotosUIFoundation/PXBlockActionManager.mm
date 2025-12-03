@@ -1,33 +1,33 @@
 @interface PXBlockActionManager
-- (BOOL)canPerformActionType:(id)a3;
-- (BOOL)supportsActionType:(id)a3;
+- (BOOL)canPerformActionType:(id)type;
+- (BOOL)supportsActionType:(id)type;
 - (PXBlockActionManager)init;
-- (id)_defaultStandardActionForConfiguration:(id)a3 handler:(id)a4;
-- (id)actionPerformerForActionType:(id)a3;
-- (id)standardActionForActionType:(id)a3;
-- (void)_executeActionType:(id)a3 action:(id)a4;
-- (void)registerActionForType:(id)a3 handler:(id)a4;
-- (void)registerActionForType:(id)a3 title:(id)a4 image:(id)a5 handler:(id)a6;
-- (void)registerActionWithConfiguration:(id)a3 forType:(id)a4;
+- (id)_defaultStandardActionForConfiguration:(id)configuration handler:(id)handler;
+- (id)actionPerformerForActionType:(id)type;
+- (id)standardActionForActionType:(id)type;
+- (void)_executeActionType:(id)type action:(id)action;
+- (void)registerActionForType:(id)type handler:(id)handler;
+- (void)registerActionForType:(id)type title:(id)title image:(id)image handler:(id)handler;
+- (void)registerActionWithConfiguration:(id)configuration forType:(id)type;
 @end
 
 @implementation PXBlockActionManager
 
-- (id)_defaultStandardActionForConfiguration:(id)a3 handler:(id)a4
+- (id)_defaultStandardActionForConfiguration:(id)configuration handler:(id)handler
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v6 = MEMORY[0x1E69DC628];
-  v7 = a4;
-  v8 = [v5 actionName];
-  v9 = [v5 image];
-  v10 = [v6 actionWithTitle:v8 image:v9 identifier:0 handler:v7];
+  handlerCopy = handler;
+  actionName = [configurationCopy actionName];
+  image = [configurationCopy image];
+  v10 = [v6 actionWithTitle:actionName image:image identifier:0 handler:handlerCopy];
 
-  if ([v5 isDestructive])
+  if ([configurationCopy isDestructive])
   {
     [v10 setAttributes:{objc_msgSend(v10, "attributes") | 2}];
   }
 
-  if ([v5 isSelected])
+  if ([configurationCopy isSelected])
   {
     [v10 setState:1];
   }
@@ -35,13 +35,13 @@
   return v10;
 }
 
-- (id)standardActionForActionType:(id)a3
+- (id)standardActionForActionType:(id)type
 {
-  v4 = a3;
-  if ([(PXBlockActionManager *)self canPerformActionType:v4])
+  typeCopy = type;
+  if ([(PXBlockActionManager *)self canPerformActionType:typeCopy])
   {
-    v5 = [(PXBlockActionManager *)self registeredActions];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    registeredActions = [(PXBlockActionManager *)self registeredActions];
+    v6 = [registeredActions objectForKeyedSubscript:typeCopy];
 
     objc_initWeak(&location, self);
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -49,13 +49,13 @@
     aBlock[2] = __52__PXBlockActionManager_standardActionForActionType___block_invoke;
     aBlock[3] = &unk_1E7BB57E0;
     objc_copyWeak(&v14, &location);
-    v13 = v4;
+    v13 = typeCopy;
     v7 = _Block_copy(aBlock);
-    v8 = [v6 menuElementConstructor];
-    v9 = v8;
-    if (v8)
+    menuElementConstructor = [v6 menuElementConstructor];
+    v9 = menuElementConstructor;
+    if (menuElementConstructor)
     {
-      (*(v8 + 16))(v8, v7);
+      (*(menuElementConstructor + 16))(menuElementConstructor, v7);
     }
 
     else
@@ -83,15 +83,15 @@ void __52__PXBlockActionManager_standardActionForActionType___block_invoke(uint6
   [WeakRetained _executeActionType:*(a1 + 32) action:v3];
 }
 
-- (id)actionPerformerForActionType:(id)a3
+- (id)actionPerformerForActionType:(id)type
 {
-  v4 = a3;
-  if ([(PXBlockActionManager *)self canPerformActionType:v4])
+  typeCopy = type;
+  if ([(PXBlockActionManager *)self canPerformActionType:typeCopy])
   {
-    v5 = [(PXBlockActionManager *)self registeredActions];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    registeredActions = [(PXBlockActionManager *)self registeredActions];
+    v6 = [registeredActions objectForKeyedSubscript:typeCopy];
 
-    v7 = [[PXBlockActionPerformer alloc] initWithActionType:v4 configuration:v6];
+    v7 = [[PXBlockActionPerformer alloc] initWithActionType:typeCopy configuration:v6];
   }
 
   else
@@ -102,30 +102,30 @@ void __52__PXBlockActionManager_standardActionForActionType___block_invoke(uint6
   return v7;
 }
 
-- (BOOL)supportsActionType:(id)a3
+- (BOOL)supportsActionType:(id)type
 {
-  v4 = a3;
-  v5 = [(PXBlockActionManager *)self registeredActions];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  typeCopy = type;
+  registeredActions = [(PXBlockActionManager *)self registeredActions];
+  v6 = [registeredActions objectForKeyedSubscript:typeCopy];
 
   return v6 != 0;
 }
 
-- (BOOL)canPerformActionType:(id)a3
+- (BOOL)canPerformActionType:(id)type
 {
-  v4 = a3;
-  if ([(PXActionManager *)self isActionTypeAllowed:v4])
+  typeCopy = type;
+  if ([(PXActionManager *)self isActionTypeAllowed:typeCopy])
   {
-    v5 = [(PXBlockActionManager *)self registeredActions];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    registeredActions = [(PXBlockActionManager *)self registeredActions];
+    v6 = [registeredActions objectForKeyedSubscript:typeCopy];
 
     if (v6)
     {
-      v7 = [v6 canPerformBlock];
-      v8 = v7;
-      if (v7)
+      canPerformBlock = [v6 canPerformBlock];
+      v8 = canPerformBlock;
+      if (canPerformBlock)
       {
-        v9 = (*(v7 + 16))(v7, self);
+        v9 = (*(canPerformBlock + 16))(canPerformBlock, self);
       }
 
       else
@@ -148,46 +148,46 @@ void __52__PXBlockActionManager_standardActionForActionType___block_invoke(uint6
   return v9;
 }
 
-- (void)_executeActionType:(id)a3 action:(id)a4
+- (void)_executeActionType:(id)type action:(id)action
 {
-  v6 = a4;
-  v7 = [(PXBlockActionManager *)self actionPerformerForActionType:a3];
-  [v7 setSender:v6];
+  actionCopy = action;
+  v7 = [(PXBlockActionManager *)self actionPerformerForActionType:type];
+  [v7 setSender:actionCopy];
 
   [v7 performActionWithCompletionHandler:0];
 }
 
-- (void)registerActionForType:(id)a3 title:(id)a4 image:(id)a5 handler:(id)a6
+- (void)registerActionForType:(id)type title:(id)title image:(id)image handler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v15 = [[PXBlockActionConfiguration alloc] initWithBlock:v10];
+  handlerCopy = handler;
+  imageCopy = image;
+  titleCopy = title;
+  typeCopy = type;
+  v15 = [[PXBlockActionConfiguration alloc] initWithBlock:handlerCopy];
 
-  [(PXBlockActionConfiguration *)v15 setActionName:v12];
-  [(PXBlockActionConfiguration *)v15 setImage:v11];
+  [(PXBlockActionConfiguration *)v15 setActionName:titleCopy];
+  [(PXBlockActionConfiguration *)v15 setImage:imageCopy];
 
-  v14 = [(PXBlockActionManager *)self registeredActions];
-  [v14 setObject:v15 forKeyedSubscript:v13];
+  registeredActions = [(PXBlockActionManager *)self registeredActions];
+  [registeredActions setObject:v15 forKeyedSubscript:typeCopy];
 }
 
-- (void)registerActionForType:(id)a3 handler:(id)a4
+- (void)registerActionForType:(id)type handler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [[PXBlockActionConfiguration alloc] initWithBlock:v6];
+  handlerCopy = handler;
+  typeCopy = type;
+  v9 = [[PXBlockActionConfiguration alloc] initWithBlock:handlerCopy];
 
-  v8 = [(PXBlockActionManager *)self registeredActions];
-  [v8 setObject:v9 forKeyedSubscript:v7];
+  registeredActions = [(PXBlockActionManager *)self registeredActions];
+  [registeredActions setObject:v9 forKeyedSubscript:typeCopy];
 }
 
-- (void)registerActionWithConfiguration:(id)a3 forType:(id)a4
+- (void)registerActionWithConfiguration:(id)configuration forType:(id)type
 {
-  v6 = a4;
-  v8 = [a3 copy];
-  v7 = [(PXBlockActionManager *)self registeredActions];
-  [v7 setObject:v8 forKeyedSubscript:v6];
+  typeCopy = type;
+  v8 = [configuration copy];
+  registeredActions = [(PXBlockActionManager *)self registeredActions];
+  [registeredActions setObject:v8 forKeyedSubscript:typeCopy];
 }
 
 - (PXBlockActionManager)init
@@ -197,9 +197,9 @@ void __52__PXBlockActionManager_standardActionForActionType___block_invoke(uint6
   v2 = [(PXBlockActionManager *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     registeredActions = v2->_registeredActions;
-    v2->_registeredActions = v3;
+    v2->_registeredActions = dictionary;
   }
 
   return v2;

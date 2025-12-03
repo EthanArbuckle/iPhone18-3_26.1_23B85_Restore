@@ -1,9 +1,9 @@
 @interface HKWorkoutBuilder
-+ (double)_elapsedTimeAtDate:(id)a3 startDate:(id)a4 endDate:(id)a5 sortedEvents:(id)a6;
-+ (id)_constructionStateMachineForBuilderConfiguration:(id)a3 builderIdentifier:(id)a4;
++ (double)_elapsedTimeAtDate:(id)date startDate:(id)startDate endDate:(id)endDate sortedEvents:(id)events;
++ (id)_constructionStateMachineForBuilderConfiguration:(id)configuration builderIdentifier:(id)identifier;
 + (id)clientInterface;
 + (id)serverInterface;
-+ (int64_t)_collectionStateAtDate:(id)a3 startDate:(id)a4 endDate:(id)a5 sortedEvents:(id)a6;
++ (int64_t)_collectionStateAtDate:(id)date startDate:(id)startDate endDate:(id)endDate sortedEvents:(id)events;
 - (BOOL)_lock_canAddMetadataInCurrentState;
 - (BOOL)isCurrentlyRunning;
 - (HKDevice)device;
@@ -11,8 +11,8 @@
 - (HKStatistics)statisticsForType:(HKQuantityType *)quantityType;
 - (HKWorkoutBuilder)init;
 - (HKWorkoutBuilder)initWithHealthStore:(HKHealthStore *)healthStore configuration:(HKWorkoutConfiguration *)configuration device:(HKDevice *)device;
-- (HKWorkoutBuilder)initWithHealthStore:(id)a3 builderConfiguration:(id)a4 builderIdentifier:(id)a5;
-- (HKWorkoutBuilder)initWithHealthStore:(id)a3 configuration:(id)a4 goalType:(unint64_t)a5 goal:(id)a6 device:(id)a7;
+- (HKWorkoutBuilder)initWithHealthStore:(id)store builderConfiguration:(id)configuration builderIdentifier:(id)identifier;
+- (HKWorkoutBuilder)initWithHealthStore:(id)store configuration:(id)configuration goalType:(unint64_t)type goal:(id)goal device:(id)device;
 - (HKWorkoutBuilderConfiguration)configuration;
 - (NSArray)workoutActivities;
 - (NSArray)workoutEvents;
@@ -24,84 +24,84 @@
 - (NSTimeInterval)elapsedTimeAtDate:(NSDate *)date;
 - (double)_currentElapsedTime;
 - (id)_currentSnapshot;
-- (id)_lock_endDateForSnapshotWithStartDate:(id)a3;
-- (id)_lock_eventsBetweenStartDate:(id)a3 endDate:(id)a4;
-- (id)_lock_seriesBuilderWithIdentifier:(id)a3 type:(id)a4;
+- (id)_lock_endDateForSnapshotWithStartDate:(id)date;
+- (id)_lock_eventsBetweenStartDate:(id)date endDate:(id)endDate;
+- (id)_lock_seriesBuilderWithIdentifier:(id)identifier type:(id)type;
 - (id)_lock_startDateForSnapshot;
 - (void)_lock_freezeSeriesBuilders;
 - (void)_lock_markRecoveryRequired;
-- (void)_lock_updateDevice:(id)a3;
+- (void)_lock_updateDevice:(id)device;
 - (void)_lock_updateElapsedTimeCache;
 - (void)_pushCurrentTargetState;
-- (void)_queue_addMetadata:(id)a3 completion:(id)a4;
-- (void)_queue_addSamples:(id)a3 completion:(id)a4;
-- (void)_queue_addWorkoutActivity:(id)a3 completion:(id)a4;
-- (void)_queue_addWorkoutEvents:(id)a3 completion:(id)a4;
-- (void)_queue_beginCollectionWithStartDate:(id)a3 completion:(id)a4;
-- (void)_queue_endCollectionWithEndDate:(id)a3 completion:(id)a4;
-- (void)_queue_finishWorkoutWithCompletion:(id)a3;
-- (void)_queue_removeMetadata:(id)a3 completion:(id)a4;
-- (void)_queue_setStatisticsComputationMethod:(int64_t)a3 forType:(id)a4;
-- (void)_queue_setStatisticsMergeStrategy:(unint64_t)a3 forType:(id)a4;
-- (void)_queue_updateActivityWithUUID:(id)a3 addMetadata:(id)a4 completion:(id)a5;
-- (void)_queue_updateActivityWithUUID:(id)a3 endDate:(id)a4 completion:(id)a5;
-- (void)_recoverWithCompletion:(id)a3;
-- (void)_removeMetadata:(id)a3 completion:(id)a4;
-- (void)_restoreRecoveredSeriesBuildersWithCompletion:(id)a3;
-- (void)_setDevice:(id)a3;
-- (void)_setStatisticsComputationMethod:(int64_t)a3 forType:(id)a4;
-- (void)_setStatisticsMergeStrategy:(unint64_t)a3 forType:(id)a4;
+- (void)_queue_addMetadata:(id)metadata completion:(id)completion;
+- (void)_queue_addSamples:(id)samples completion:(id)completion;
+- (void)_queue_addWorkoutActivity:(id)activity completion:(id)completion;
+- (void)_queue_addWorkoutEvents:(id)events completion:(id)completion;
+- (void)_queue_beginCollectionWithStartDate:(id)date completion:(id)completion;
+- (void)_queue_endCollectionWithEndDate:(id)date completion:(id)completion;
+- (void)_queue_finishWorkoutWithCompletion:(id)completion;
+- (void)_queue_removeMetadata:(id)metadata completion:(id)completion;
+- (void)_queue_setStatisticsComputationMethod:(int64_t)method forType:(id)type;
+- (void)_queue_setStatisticsMergeStrategy:(unint64_t)strategy forType:(id)type;
+- (void)_queue_updateActivityWithUUID:(id)d addMetadata:(id)metadata completion:(id)completion;
+- (void)_queue_updateActivityWithUUID:(id)d endDate:(id)date completion:(id)completion;
+- (void)_recoverWithCompletion:(id)completion;
+- (void)_removeMetadata:(id)metadata completion:(id)completion;
+- (void)_restoreRecoveredSeriesBuildersWithCompletion:(id)completion;
+- (void)_setDevice:(id)device;
+- (void)_setStatisticsComputationMethod:(int64_t)method forType:(id)type;
+- (void)_setStatisticsMergeStrategy:(unint64_t)strategy forType:(id)type;
 - (void)addMetadata:(NSDictionary *)metadata completion:(void *)completion;
 - (void)addSamples:(NSArray *)samples completion:(void *)completion;
 - (void)addWorkoutActivity:(HKWorkoutActivity *)workoutActivity completion:(void *)completion;
 - (void)addWorkoutEvents:(NSArray *)workoutEvents completion:(void *)completion;
 - (void)beginCollectionWithStartDate:(NSDate *)startDate completion:(void *)completion;
-- (void)clientRemote_didBeginActivity:(id)a3;
-- (void)clientRemote_didChangeElapsedTimeBasisWithStartDate:(id)a3 endDate:(id)a4;
-- (void)clientRemote_didEndActivity:(id)a3;
-- (void)clientRemote_didFailWithError:(id)a3;
+- (void)clientRemote_didBeginActivity:(id)activity;
+- (void)clientRemote_didChangeElapsedTimeBasisWithStartDate:(id)date endDate:(id)endDate;
+- (void)clientRemote_didEndActivity:(id)activity;
+- (void)clientRemote_didFailWithError:(id)error;
 - (void)clientRemote_didFinishRecovery;
-- (void)clientRemote_didRecoverSeriesBuilders:(id)a3;
-- (void)clientRemote_didUpdateActivities:(id)a3;
-- (void)clientRemote_didUpdateEvents:(id)a3;
-- (void)clientRemote_didUpdateMetadata:(id)a3;
-- (void)clientRemote_didUpdateStatistics:(id)a3;
-- (void)clientRemote_finishedWorkout:(id)a3;
-- (void)clientRemote_stateDidChange:(int64_t)a3 startDate:(id)a4 endDate:(id)a5;
+- (void)clientRemote_didRecoverSeriesBuilders:(id)builders;
+- (void)clientRemote_didUpdateActivities:(id)activities;
+- (void)clientRemote_didUpdateEvents:(id)events;
+- (void)clientRemote_didUpdateMetadata:(id)metadata;
+- (void)clientRemote_didUpdateStatistics:(id)statistics;
+- (void)clientRemote_finishedWorkout:(id)workout;
+- (void)clientRemote_stateDidChange:(int64_t)change startDate:(id)date endDate:(id)endDate;
 - (void)clientRemote_unitTestDidFinishFinalizing;
 - (void)connectionInterrupted;
-- (void)currentZonesForType:(id)a3 completion:(id)a4;
+- (void)currentZonesForType:(id)type completion:(id)completion;
 - (void)discardWorkout;
 - (void)endCollectionWithEndDate:(NSDate *)endDate completion:(void *)completion;
 - (void)finishWorkoutWithCompletion:(void *)completion;
-- (void)stateMachine:(id)a3 didEnterState:(id)a4 date:(id)a5 error:(id)a6;
-- (void)stateMachine:(id)a3 didTransition:(id)a4 fromState:(id)a5 toState:(id)a6 date:(id)a7 error:(id)a8;
-- (void)unitTest_setDidFinishFinalizingHandler:(id)a3;
-- (void)unitTest_setFailureHandler:(id)a3;
-- (void)unitTest_setRecoveryFinishedHandler:(id)a3;
-- (void)unitTest_setServerStateChangeHandler:(id)a3;
+- (void)stateMachine:(id)machine didEnterState:(id)state date:(id)date error:(id)error;
+- (void)stateMachine:(id)machine didTransition:(id)transition fromState:(id)state toState:(id)toState date:(id)date error:(id)error;
+- (void)unitTest_setDidFinishFinalizingHandler:(id)handler;
+- (void)unitTest_setFailureHandler:(id)handler;
+- (void)unitTest_setRecoveryFinishedHandler:(id)handler;
+- (void)unitTest_setServerStateChangeHandler:(id)handler;
 - (void)updateActivityWithUUID:(NSUUID *)UUID addMedatata:(NSDictionary *)metadata completion:(void *)completion;
 - (void)updateActivityWithUUID:(NSUUID *)UUID endDate:(NSDate *)endDate completion:(void *)completion;
 @end
 
 @implementation HKWorkoutBuilder
 
-+ (id)_constructionStateMachineForBuilderConfiguration:(id)a3 builderIdentifier:(id)a4
++ (id)_constructionStateMachineForBuilderConfiguration:(id)configuration builderIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [a3 associatedSessionUUID];
-  v8 = v7;
-  if (v7)
+  identifierCopy = identifier;
+  associatedSessionUUID = [configuration associatedSessionUUID];
+  v8 = associatedSessionUUID;
+  if (associatedSessionUUID)
   {
-    v9 = v7;
+    v9 = associatedSessionUUID;
   }
 
   else
   {
-    v9 = v6;
+    v9 = identifierCopy;
   }
 
-  v10 = [HKStateMachine nameForOwner:a1 UUID:v9 tag:0];
+  v10 = [HKStateMachine nameForOwner:self UUID:v9 tag:0];
 
   v11 = [[HKStateMachine alloc] initWithName:v10];
   v12 = [(HKStateMachine *)v11 addStateWithIndex:0 label:@"NotStarted"];
@@ -149,48 +149,48 @@
   [(HKWorkoutBuilderConfiguration *)v11 setDevice:v8];
 
   [(HKWorkoutBuilderConfiguration *)v11 setWorkoutConfiguration:v9];
-  v12 = [MEMORY[0x1E696AFB0] UUID];
-  v13 = [(HKWorkoutBuilder *)self initWithHealthStore:v10 builderConfiguration:v11 builderIdentifier:v12];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v13 = [(HKWorkoutBuilder *)self initWithHealthStore:v10 builderConfiguration:v11 builderIdentifier:uUID];
 
   return v13;
 }
 
-- (HKWorkoutBuilder)initWithHealthStore:(id)a3 configuration:(id)a4 goalType:(unint64_t)a5 goal:(id)a6 device:(id)a7
+- (HKWorkoutBuilder)initWithHealthStore:(id)store configuration:(id)configuration goalType:(unint64_t)type goal:(id)goal device:(id)device
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a4;
-  v15 = a3;
+  deviceCopy = device;
+  goalCopy = goal;
+  configurationCopy = configuration;
+  storeCopy = store;
   v16 = objc_alloc_init(HKWorkoutBuilderConfiguration);
-  [(HKWorkoutBuilderConfiguration *)v16 setDevice:v12];
+  [(HKWorkoutBuilderConfiguration *)v16 setDevice:deviceCopy];
 
-  [(HKWorkoutBuilderConfiguration *)v16 setWorkoutConfiguration:v14];
-  [(HKWorkoutBuilderConfiguration *)v16 setGoalType:a5];
-  [(HKWorkoutBuilderConfiguration *)v16 setGoal:v13];
+  [(HKWorkoutBuilderConfiguration *)v16 setWorkoutConfiguration:configurationCopy];
+  [(HKWorkoutBuilderConfiguration *)v16 setGoalType:type];
+  [(HKWorkoutBuilderConfiguration *)v16 setGoal:goalCopy];
 
-  v17 = [MEMORY[0x1E696AFB0] UUID];
-  v18 = [(HKWorkoutBuilder *)self initWithHealthStore:v15 builderConfiguration:v16 builderIdentifier:v17];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v18 = [(HKWorkoutBuilder *)self initWithHealthStore:storeCopy builderConfiguration:v16 builderIdentifier:uUID];
 
   return v18;
 }
 
-- (HKWorkoutBuilder)initWithHealthStore:(id)a3 builderConfiguration:(id)a4 builderIdentifier:(id)a5
+- (HKWorkoutBuilder)initWithHealthStore:(id)store builderConfiguration:(id)configuration builderIdentifier:(id)identifier
 {
   v39 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  storeCopy = store;
+  configurationCopy = configuration;
+  identifierCopy = identifier;
   v36.receiver = self;
   v36.super_class = HKWorkoutBuilder;
   v12 = [(HKWorkoutBuilder *)&v36 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_healthStore, a3);
-    objc_storeStrong(&v13->_identifier, a5);
-    objc_storeStrong(&v13->_builderConfiguration, a4);
-    v14 = [v10 workoutConfiguration];
-    v15 = [v14 copy];
+    objc_storeStrong(&v12->_healthStore, store);
+    objc_storeStrong(&v13->_identifier, identifier);
+    objc_storeStrong(&v13->_builderConfiguration, configuration);
+    workoutConfiguration = [configurationCopy workoutConfiguration];
+    v15 = [workoutConfiguration copy];
     workoutConfiguration = v13->_workoutConfiguration;
     v13->_workoutConfiguration = v15;
 
@@ -222,7 +222,7 @@
     v13->_retryableOperation = v27;
 
     v13->_lock_serverConstructionState = 0;
-    v29 = [objc_opt_class() _constructionStateMachineForBuilderConfiguration:v10 builderIdentifier:v11];
+    v29 = [objc_opt_class() _constructionStateMachineForBuilderConfiguration:configurationCopy builderIdentifier:identifierCopy];
     lock_constructionStateMachine = v13->_lock_constructionStateMachine;
     v13->_lock_constructionStateMachine = v29;
 
@@ -230,11 +230,11 @@
     os_unfair_lock_lock(&v13->_lock);
     [(HKStateMachine *)v13->_lock_constructionStateMachine enterAtState:0];
     os_unfair_lock_unlock(&v13->_lock);
-    v31 = [[HKTaskServerProxyProvider alloc] initWithHealthStore:v9 taskIdentifier:@"HKWorkoutBuilderServerIdentifier" exportedObject:v13 taskUUID:v11];
+    v31 = [[HKTaskServerProxyProvider alloc] initWithHealthStore:storeCopy taskIdentifier:@"HKWorkoutBuilderServerIdentifier" exportedObject:v13 taskUUID:identifierCopy];
     proxyProvider = v13->_proxyProvider;
     v13->_proxyProvider = v31;
 
-    [(HKTaskServerProxyProvider *)v13->_proxyProvider setTaskConfiguration:v10];
+    [(HKTaskServerProxyProvider *)v13->_proxyProvider setTaskConfiguration:configurationCopy];
     _HKInitializeLogging();
     v33 = HKLogWorkouts;
     if (os_log_type_enabled(HKLogWorkouts, OS_LOG_TYPE_DEFAULT))
@@ -251,52 +251,52 @@
 
 - (NSString)description
 {
-  v3 = [(HKWorkoutBuilderConfiguration *)self->_builderConfiguration associatedSessionUUID];
+  associatedSessionUUID = [(HKWorkoutBuilderConfiguration *)self->_builderConfiguration associatedSessionUUID];
 
   v4 = MEMORY[0x1E696AEC0];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  v7 = [(NSUUID *)self->_identifier hk_shortRepresentation];
-  v8 = v7;
-  if (v3)
+  hk_shortRepresentation = [(NSUUID *)self->_identifier hk_shortRepresentation];
+  v8 = hk_shortRepresentation;
+  if (associatedSessionUUID)
   {
-    v9 = [(HKWorkoutBuilderConfiguration *)self->_builderConfiguration associatedSessionUUID];
-    v10 = [v9 hk_shortRepresentation];
-    v11 = [v4 stringWithFormat:@"%@_%@ [%@]", v6, v8, v10];
+    associatedSessionUUID2 = [(HKWorkoutBuilderConfiguration *)self->_builderConfiguration associatedSessionUUID];
+    hk_shortRepresentation2 = [associatedSessionUUID2 hk_shortRepresentation];
+    v11 = [v4 stringWithFormat:@"%@_%@ [%@]", v6, v8, hk_shortRepresentation2];
   }
 
   else
   {
-    v11 = [v4 stringWithFormat:@"%@_%@", v6, v7];
+    v11 = [v4 stringWithFormat:@"%@_%@", v6, hk_shortRepresentation];
   }
 
   return v11;
 }
 
-+ (int64_t)_collectionStateAtDate:(id)a3 startDate:(id)a4 endDate:(id)a5 sortedEvents:(id)a6
++ (int64_t)_collectionStateAtDate:(id)date startDate:(id)startDate endDate:(id)endDate sortedEvents:(id)events
 {
   v34 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (v10 && ([v9 hk_isBeforeDate:v10] & 1) == 0)
+  dateCopy = date;
+  startDateCopy = startDate;
+  endDateCopy = endDate;
+  eventsCopy = events;
+  if (startDateCopy && ([dateCopy hk_isBeforeDate:startDateCopy] & 1) == 0)
   {
-    if (v11 && ([v11 hk_isBeforeOrEqualToDate:v9] & 1) != 0)
+    if (endDateCopy && ([endDateCopy hk_isBeforeOrEqualToDate:dateCopy] & 1) != 0)
     {
       v13 = 3;
     }
 
     else
     {
-      v27 = v11;
-      v28 = v10;
+      v27 = endDateCopy;
+      v28 = startDateCopy;
       v31 = 0u;
       v32 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v26 = v12;
-      v14 = v12;
+      v26 = eventsCopy;
+      v14 = eventsCopy;
       v15 = [v14 countByEnumeratingWithState:&v29 objects:v33 count:16];
       if (v15)
       {
@@ -313,22 +313,22 @@ LABEL_9:
           }
 
           v19 = *(*(&v29 + 1) + 8 * v18);
-          v20 = [v19 dateInterval];
-          v21 = [v20 startDate];
-          v22 = [v21 hk_isAfterDate:v9];
+          dateInterval = [v19 dateInterval];
+          startDate = [dateInterval startDate];
+          v22 = [startDate hk_isAfterDate:dateCopy];
 
           if (v22)
           {
             break;
           }
 
-          v23 = [v19 type];
-          if (v23 == 2)
+          type = [v19 type];
+          if (type == 2)
           {
             v13 = 1;
           }
 
-          else if (v23 == 1)
+          else if (type == 1)
           {
             v13 = 2;
           }
@@ -351,9 +351,9 @@ LABEL_9:
         v13 = 1;
       }
 
-      v11 = v27;
-      v10 = v28;
-      v12 = v26;
+      endDateCopy = v27;
+      startDateCopy = v28;
+      eventsCopy = v26;
     }
   }
 
@@ -366,33 +366,33 @@ LABEL_9:
   return v13;
 }
 
-+ (double)_elapsedTimeAtDate:(id)a3 startDate:(id)a4 endDate:(id)a5 sortedEvents:(id)a6
++ (double)_elapsedTimeAtDate:(id)date startDate:(id)startDate endDate:(id)endDate sortedEvents:(id)events
 {
   v44 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  dateCopy = date;
+  startDateCopy = startDate;
+  endDateCopy = endDate;
+  eventsCopy = events;
   v13 = 0.0;
-  if (!v10 || ([v10 hk_isAfterOrEqualToDate:v9] & 1) != 0)
+  if (!startDateCopy || ([startDateCopy hk_isAfterOrEqualToDate:dateCopy] & 1) != 0)
   {
     goto LABEL_29;
   }
 
-  if (v11)
+  if (endDateCopy)
   {
-    v14 = HKDateMin(v9, v11);
+    v14 = HKDateMin(dateCopy, endDateCopy);
 
-    v9 = v14;
+    dateCopy = v14;
   }
 
-  [v10 timeIntervalSinceReferenceDate];
+  [startDateCopy timeIntervalSinceReferenceDate];
   v16 = v15;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v17 = v12;
+  v17 = eventsCopy;
   v18 = [v17 countByEnumeratingWithState:&v35 objects:v43 count:16];
   if (!v18)
   {
@@ -401,8 +401,8 @@ LABEL_9:
   }
 
   v19 = v18;
-  v33 = v12;
-  v34 = v11;
+  v33 = eventsCopy;
+  v34 = endDateCopy;
   v20 = *v36;
   v21 = 1;
   while (2)
@@ -415,19 +415,19 @@ LABEL_9:
       }
 
       v23 = *(*(&v35 + 1) + 8 * i);
-      v24 = [v23 dateInterval];
-      v25 = [v24 startDate];
+      dateInterval = [v23 dateInterval];
+      startDate = [dateInterval startDate];
 
-      if ([v25 hk_isBeforeDate:v10])
+      if ([startDate hk_isBeforeDate:startDateCopy])
       {
         _HKInitializeLogging();
         v28 = HKLogWorkouts;
         if (os_log_type_enabled(HKLogWorkouts, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543618;
-          v40 = v25;
+          v40 = startDate;
           v41 = 2114;
-          v42 = v10;
+          v42 = startDateCopy;
           v29 = "Event start date: %{public}@ is before workout start date: %{public}@";
 LABEL_25:
           _os_log_impl(&dword_19197B000, v28, OS_LOG_TYPE_DEFAULT, v29, buf, 0x16u);
@@ -438,16 +438,16 @@ LABEL_26:
         goto LABEL_27;
       }
 
-      if ([v25 hk_isAfterDate:v9])
+      if ([startDate hk_isAfterDate:dateCopy])
       {
         _HKInitializeLogging();
         v28 = HKLogWorkouts;
         if (os_log_type_enabled(HKLogWorkouts, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543618;
-          v40 = v25;
+          v40 = startDate;
           v41 = 2114;
-          v42 = v9;
+          v42 = dateCopy;
           v29 = "Event start date: %{public}@ is in future for date: %{public}@";
           goto LABEL_25;
         }
@@ -457,7 +457,7 @@ LABEL_26:
 
       if ((([v23 type] == 1) & v21) == 1)
       {
-        [v25 timeIntervalSinceReferenceDate];
+        [startDate timeIntervalSinceReferenceDate];
         v21 = 0;
         v13 = v13 + v26 - v16;
         v16 = 0.0;
@@ -465,7 +465,7 @@ LABEL_26:
 
       if ([v23 type] == 2 && (v21 & 1) == 0)
       {
-        [v25 timeIntervalSinceReferenceDate];
+        [startDate timeIntervalSinceReferenceDate];
         v16 = v27;
         v21 = 1;
       }
@@ -482,12 +482,12 @@ LABEL_26:
 
 LABEL_27:
 
-  v12 = v33;
-  v11 = v34;
+  eventsCopy = v33;
+  endDateCopy = v34;
   if (v21)
   {
 LABEL_28:
-    [v9 timeIntervalSinceReferenceDate];
+    [dateCopy timeIntervalSinceReferenceDate];
     v13 = v13 + v30 - v16;
   }
 
@@ -500,10 +500,10 @@ LABEL_29:
 - (HKDevice)device
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HKWorkoutBuilderConfiguration *)self->_builderConfiguration device];
+  device = [(HKWorkoutBuilderConfiguration *)self->_builderConfiguration device];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return device;
 }
 
 - (void)beginCollectionWithStartDate:(NSDate *)startDate completion:(void *)completion
@@ -822,8 +822,8 @@ void __50__HKWorkoutBuilder_addWorkoutActivity_completion___block_invoke(uint64_
 - (NSArray)workoutActivities
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSMutableDictionary *)self->_lock_activitiesPerUUID allValues];
-  v4 = [v3 sortedArrayUsingComparator:&__block_literal_global];
+  allValues = [(NSMutableDictionary *)self->_lock_activitiesPerUUID allValues];
+  v4 = [allValues sortedArrayUsingComparator:&__block_literal_global];
 
   os_unfair_lock_unlock(&self->_lock);
 
@@ -1121,21 +1121,21 @@ void __34__HKWorkoutBuilder_discardWorkout__block_invoke_73(uint64_t a1, char a2
   lock_workoutStartDate = self->_lock_workoutStartDate;
   if (lock_workoutStartDate)
   {
-    v3 = lock_workoutStartDate;
+    startDate = lock_workoutStartDate;
   }
 
   else
   {
-    v5 = [(NSArray *)self->_lock_workoutEvents firstObject];
-    v6 = [v5 dateInterval];
-    v3 = [v6 startDate];
+    firstObject = [(NSArray *)self->_lock_workoutEvents firstObject];
+    dateInterval = [firstObject dateInterval];
+    startDate = [dateInterval startDate];
 
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = [(NSMutableDictionary *)self->_lock_statisticsByType allValues];
-    v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    allValues = [(NSMutableDictionary *)self->_lock_statisticsByType allValues];
+    v8 = [allValues countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v8)
     {
       v9 = v8;
@@ -1143,23 +1143,23 @@ void __34__HKWorkoutBuilder_discardWorkout__block_invoke_73(uint64_t a1, char a2
       do
       {
         v11 = 0;
-        v12 = v3;
+        v12 = startDate;
         do
         {
           if (*v17 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allValues);
           }
 
-          v13 = [*(*(&v16 + 1) + 8 * v11) startDate];
-          v3 = HKDateMin(v12, v13);
+          startDate2 = [*(*(&v16 + 1) + 8 * v11) startDate];
+          startDate = HKDateMin(v12, startDate2);
 
           ++v11;
-          v12 = v3;
+          v12 = startDate;
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v9 = [allValues countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v9);
@@ -1168,13 +1168,13 @@ void __34__HKWorkoutBuilder_discardWorkout__block_invoke_73(uint64_t a1, char a2
 
   v14 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return startDate;
 }
 
-- (id)_lock_endDateForSnapshotWithStartDate:(id)a3
+- (id)_lock_endDateForSnapshotWithStartDate:(id)date
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dateCopy = date;
   lock_workoutEndDate = self->_lock_workoutEndDate;
   if (lock_workoutEndDate)
   {
@@ -1183,13 +1183,13 @@ void __34__HKWorkoutBuilder_discardWorkout__block_invoke_73(uint64_t a1, char a2
 
   else
   {
-    v7 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v8 = [(NSMutableDictionary *)self->_lock_statisticsByType allValues];
-    v9 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    allValues = [(NSMutableDictionary *)self->_lock_statisticsByType allValues];
+    v9 = [allValues countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v9)
     {
       v10 = v9;
@@ -1197,38 +1197,38 @@ void __34__HKWorkoutBuilder_discardWorkout__block_invoke_73(uint64_t a1, char a2
       do
       {
         v12 = 0;
-        v13 = v7;
+        v13 = date;
         do
         {
           if (*v24 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(allValues);
           }
 
-          v14 = [*(*(&v23 + 1) + 8 * v12) endDate];
-          v7 = HKDateMax(v13, v14);
+          endDate = [*(*(&v23 + 1) + 8 * v12) endDate];
+          date = HKDateMax(v13, endDate);
 
           ++v12;
-          v13 = v7;
+          v13 = date;
         }
 
         while (v10 != v12);
-        v10 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v10 = [allValues countByEnumeratingWithState:&v23 objects:v27 count:16];
       }
 
       while (v10);
     }
 
-    v15 = [(NSArray *)self->_lock_workoutEvents lastObject];
-    v16 = [v15 dateInterval];
-    v17 = [v16 endDate];
-    v6 = HKDateMax(v7, v17);
+    lastObject = [(NSArray *)self->_lock_workoutEvents lastObject];
+    dateInterval = [lastObject dateInterval];
+    endDate2 = [dateInterval endDate];
+    v6 = HKDateMax(date, endDate2);
 
     v18 = +[(HKObjectType *)HKSampleType];
     if ([v18 isMaximumDurationRestricted])
     {
       [v18 maximumAllowedDuration];
-      v19 = [v4 dateByAddingTimeInterval:?];
+      v19 = [dateCopy dateByAddingTimeInterval:?];
       v20 = HKDateMin(v6, v19);
 
       v6 = v20;
@@ -1240,19 +1240,19 @@ void __34__HKWorkoutBuilder_discardWorkout__block_invoke_73(uint64_t a1, char a2
   return v6;
 }
 
-- (id)_lock_eventsBetweenStartDate:(id)a3 endDate:(id)a4
+- (id)_lock_eventsBetweenStartDate:(id)date endDate:(id)endDate
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  endDateCopy = endDate;
   lock_workoutEvents = self->_lock_workoutEvents;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __57__HKWorkoutBuilder__lock_eventsBetweenStartDate_endDate___block_invoke;
   v13[3] = &unk_1E73767A8;
-  v14 = v6;
-  v15 = v7;
-  v9 = v7;
-  v10 = v6;
+  v14 = dateCopy;
+  v15 = endDateCopy;
+  v9 = endDateCopy;
+  v10 = dateCopy;
   v11 = [(NSArray *)lock_workoutEvents hk_filter:v13];
 
   return v11;
@@ -1281,25 +1281,25 @@ uint64_t __57__HKWorkoutBuilder__lock_eventsBetweenStartDate_endDate___block_inv
 - (id)_currentSnapshot
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HKWorkoutBuilder *)self _lock_startDateForSnapshot];
-  if (v3)
+  _lock_startDateForSnapshot = [(HKWorkoutBuilder *)self _lock_startDateForSnapshot];
+  if (_lock_startDateForSnapshot)
   {
-    v4 = [(HKWorkoutBuilderConfiguration *)self->_builderConfiguration workoutConfiguration];
-    v18 = [v4 activityType];
+    workoutConfiguration = [(HKWorkoutBuilderConfiguration *)self->_builderConfiguration workoutConfiguration];
+    activityType = [workoutConfiguration activityType];
 
     v17 = [(NSDictionary *)self->_lock_metadata mutableCopy];
-    v5 = [(HKTaskServerProxyProvider *)self->_proxyProvider taskUUID];
-    v6 = [v5 UUIDString];
-    [v17 setObject:v6 forKeyedSubscript:@"_HKPrivateWorkoutBuilderSnapshotMetadataFinalWorkoutUUIDStringKey"];
+    taskUUID = [(HKTaskServerProxyProvider *)self->_proxyProvider taskUUID];
+    uUIDString = [taskUUID UUIDString];
+    [v17 setObject:uUIDString forKeyedSubscript:@"_HKPrivateWorkoutBuilderSnapshotMetadataFinalWorkoutUUIDStringKey"];
 
-    v7 = [(HKWorkoutBuilder *)self _lock_endDateForSnapshotWithStartDate:v3];
-    v16 = [(HKWorkoutBuilder *)self _lock_eventsBetweenStartDate:v3 endDate:v7];
-    v8 = [(NSMutableDictionary *)self->_lock_activitiesPerUUID allValues];
+    v7 = [(HKWorkoutBuilder *)self _lock_endDateForSnapshotWithStartDate:_lock_startDateForSnapshot];
+    v16 = [(HKWorkoutBuilder *)self _lock_eventsBetweenStartDate:_lock_startDateForSnapshot endDate:v7];
+    allValues = [(NSMutableDictionary *)self->_lock_activitiesPerUUID allValues];
     lock_statisticsByType = self->_lock_statisticsByType;
-    v10 = [(HKWorkoutBuilderConfiguration *)self->_builderConfiguration goalType];
-    v11 = [(HKWorkoutBuilderConfiguration *)self->_builderConfiguration goal];
-    v12 = [(HKWorkoutBuilderConfiguration *)self->_builderConfiguration device];
-    v13 = [HKWorkout _workoutWithActivityType:v18 startDate:v3 endDate:v7 workoutEvents:v16 workoutActivities:v8 duration:lock_statisticsByType statistics:0.0 goalType:v10 goal:v11 device:v12 metadata:v17];
+    goalType = [(HKWorkoutBuilderConfiguration *)self->_builderConfiguration goalType];
+    goal = [(HKWorkoutBuilderConfiguration *)self->_builderConfiguration goal];
+    device = [(HKWorkoutBuilderConfiguration *)self->_builderConfiguration device];
+    v13 = [HKWorkout _workoutWithActivityType:activityType startDate:_lock_startDateForSnapshot endDate:v7 workoutEvents:v16 workoutActivities:allValues duration:lock_statisticsByType statistics:0.0 goalType:goalType goal:goal device:device metadata:v17];
 
     os_unfair_lock_unlock(&self->_lock);
     v14 = v13;
@@ -1314,57 +1314,57 @@ uint64_t __57__HKWorkoutBuilder__lock_eventsBetweenStartDate_endDate___block_inv
   return v14;
 }
 
-- (void)_setDevice:(id)a3
+- (void)_setDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   os_unfair_lock_lock(&self->_lock);
-  [(HKWorkoutBuilder *)self _lock_updateDevice:v4];
+  [(HKWorkoutBuilder *)self _lock_updateDevice:deviceCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_setStatisticsMergeStrategy:(unint64_t)a3 forType:(id)a4
+- (void)_setStatisticsMergeStrategy:(unint64_t)strategy forType:(id)type
 {
-  v6 = a4;
+  typeCopy = type;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __56__HKWorkoutBuilder__setStatisticsMergeStrategy_forType___block_invoke;
   block[3] = &unk_1E73767D0;
-  v10 = v6;
-  v11 = a3;
+  v10 = typeCopy;
+  strategyCopy = strategy;
   block[4] = self;
-  v8 = v6;
+  v8 = typeCopy;
   dispatch_async(queue, block);
 }
 
-- (void)_setStatisticsComputationMethod:(int64_t)a3 forType:(id)a4
+- (void)_setStatisticsComputationMethod:(int64_t)method forType:(id)type
 {
-  v6 = a4;
+  typeCopy = type;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __60__HKWorkoutBuilder__setStatisticsComputationMethod_forType___block_invoke;
   block[3] = &unk_1E73767D0;
-  v10 = v6;
-  v11 = a3;
+  v10 = typeCopy;
+  methodCopy = method;
   block[4] = self;
-  v8 = v6;
+  v8 = typeCopy;
   dispatch_async(queue, block);
 }
 
-- (void)_removeMetadata:(id)a3 completion:(id)a4
+- (void)_removeMetadata:(id)metadata completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  metadataCopy = metadata;
+  completionCopy = completion;
+  if (completionCopy)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __47__HKWorkoutBuilder__removeMetadata_completion___block_invoke;
     aBlock[3] = &unk_1E73766A0;
     aBlock[4] = self;
-    v16 = v7;
+    v16 = completionCopy;
     v8 = _Block_copy(aBlock);
   }
 
@@ -1379,10 +1379,10 @@ uint64_t __57__HKWorkoutBuilder__lock_eventsBetweenStartDate_endDate___block_inv
   block[2] = __47__HKWorkoutBuilder__removeMetadata_completion___block_invoke_3;
   block[3] = &unk_1E73766C8;
   block[4] = self;
-  v13 = v6;
+  v13 = metadataCopy;
   v14 = v8;
   v10 = v8;
-  v11 = v6;
+  v11 = metadataCopy;
   dispatch_async(queue, block);
 }
 
@@ -1402,17 +1402,17 @@ void __47__HKWorkoutBuilder__removeMetadata_completion___block_invoke(uint64_t a
   dispatch_async(v6, block);
 }
 
-- (void)currentZonesForType:(id)a3 completion:(id)a4
+- (void)currentZonesForType:(id)type completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  completionCopy = completion;
   proxyProvider = self->_proxyProvider;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __51__HKWorkoutBuilder_currentZonesForType_completion___block_invoke;
   v13[3] = &unk_1E73767F8;
-  v14 = v6;
-  v15 = v7;
+  v14 = typeCopy;
+  v15 = completionCopy;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __51__HKWorkoutBuilder_currentZonesForType_completion___block_invoke_2;
@@ -1420,7 +1420,7 @@ void __47__HKWorkoutBuilder__removeMetadata_completion___block_invoke(uint64_t a
   v11[4] = self;
   v12 = v15;
   v9 = v15;
-  v10 = v6;
+  v10 = typeCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v13 errorHandler:v11];
 }
 
@@ -1436,26 +1436,26 @@ void __51__HKWorkoutBuilder_currentZonesForType_completion___block_invoke_2(uint
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)stateMachine:(id)a3 didEnterState:(id)a4 date:(id)a5 error:(id)a6
+- (void)stateMachine:(id)machine didEnterState:(id)state date:(id)date error:(id)error
 {
-  v8 = a5;
-  v9 = a4;
+  dateCopy = date;
+  stateCopy = state;
   os_unfair_lock_assert_owner(&self->_lock);
-  v10 = [v9 index];
+  index = [stateCopy index];
 
-  if (v10 > 2)
+  if (index > 2)
   {
-    if (v10 == 3 || v10 == 4)
+    if (index == 3 || index == 4)
     {
       [(HKWorkoutBuilder *)self _lock_freezeSeriesBuilders];
     }
   }
 
-  else if (v10 == 1)
+  else if (index == 1)
   {
-    if (v8)
+    if (dateCopy)
     {
-      v13 = [v8 copy];
+      v13 = [dateCopy copy];
       lock_workoutStartDate = self->_lock_workoutStartDate;
       self->_lock_workoutStartDate = v13;
     }
@@ -1470,11 +1470,11 @@ void __51__HKWorkoutBuilder_currentZonesForType_completion___block_invoke_2(uint
     }
   }
 
-  else if (v10 == 2)
+  else if (index == 2)
   {
-    if (v8)
+    if (dateCopy)
     {
-      v11 = [v8 copy];
+      v11 = [dateCopy copy];
       lock_workoutEndDate = self->_lock_workoutEndDate;
       self->_lock_workoutEndDate = v11;
     }
@@ -1490,23 +1490,23 @@ void __51__HKWorkoutBuilder_currentZonesForType_completion___block_invoke_2(uint
   }
 }
 
-- (void)stateMachine:(id)a3 didTransition:(id)a4 fromState:(id)a5 toState:(id)a6 date:(id)a7 error:(id)a8
+- (void)stateMachine:(id)machine didTransition:(id)transition fromState:(id)state toState:(id)toState date:(id)date error:(id)error
 {
   v17 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a6;
+  transitionCopy = transition;
+  toStateCopy = toState;
   os_unfair_lock_assert_owner(&self->_lock);
   _HKInitializeLogging();
   v12 = HKLogWorkouts;
   v13 = os_log_type_enabled(HKLogWorkouts, OS_LOG_TYPE_DEFAULT);
-  if (v10)
+  if (transitionCopy)
   {
     if (v13)
     {
       *v16 = 138543618;
       *&v16[4] = self;
       *&v16[12] = 2114;
-      *&v16[14] = v10;
+      *&v16[14] = transitionCopy;
       v14 = "%{public}@: (#w0) %{public}@.";
 LABEL_6:
       _os_log_impl(&dword_19197B000, v12, OS_LOG_TYPE_DEFAULT, v14, v16, 0x16u);
@@ -1518,7 +1518,7 @@ LABEL_6:
     *v16 = 138543618;
     *&v16[4] = self;
     *&v16[12] = 2114;
-    *&v16[14] = v11;
+    *&v16[14] = toStateCopy;
     v14 = "%{public}@: (#w0) Enter at %{public}@.";
     goto LABEL_6;
   }
@@ -1604,12 +1604,12 @@ void __43__HKWorkoutBuilder__pushCurrentTargetState__block_invoke_82(uint64_t a1
   }
 }
 
-- (void)_queue_beginCollectionWithStartDate:(id)a3 completion:(id)a4
+- (void)_queue_beginCollectionWithStartDate:(id)date completion:(id)completion
 {
   v19 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  dateCopy = date;
+  completionCopy = completion;
+  if (dateCopy)
   {
     os_unfair_lock_lock(&self->_lock);
     _HKInitializeLogging();
@@ -1617,7 +1617,7 @@ void __43__HKWorkoutBuilder__pushCurrentTargetState__block_invoke_82(uint64_t a1
     if (os_log_type_enabled(HKLogWorkouts, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v18 = self;
+      selfCopy = self;
       _os_log_impl(&dword_19197B000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: Enqueuing begin collection event", buf, 0xCu);
     }
 
@@ -1626,10 +1626,10 @@ void __43__HKWorkoutBuilder__pushCurrentTargetState__block_invoke_82(uint64_t a1
     v13[1] = 3221225472;
     v13[2] = __67__HKWorkoutBuilder__queue_beginCollectionWithStartDate_completion___block_invoke;
     v13[3] = &unk_1E73768C0;
-    v15 = v8;
+    v15 = completionCopy;
     v16 = a2;
     v13[4] = self;
-    v14 = v7;
+    v14 = dateCopy;
     [(HKStateMachine *)lock_constructionStateMachine enqueueEvent:100 date:v14 error:0 completion:v13];
     os_unfair_lock_unlock(&self->_lock);
   }
@@ -1637,7 +1637,7 @@ void __43__HKWorkoutBuilder__pushCurrentTargetState__block_invoke_82(uint64_t a1
   else
   {
     v11 = [MEMORY[0x1E696ABC0] hk_errorForInvalidArgument:@"@" class:objc_opt_class() selector:a2 format:@"startDate cannot be nil"];
-    (*(v8 + 2))(v8, 0, v11);
+    (*(completionCopy + 2))(completionCopy, 0, v11);
   }
 
   v12 = *MEMORY[0x1E69E9840];
@@ -1671,15 +1671,15 @@ void __67__HKWorkoutBuilder__queue_beginCollectionWithStartDate_completion___blo
   }
 }
 
-- (void)_queue_endCollectionWithEndDate:(id)a3 completion:(id)a4
+- (void)_queue_endCollectionWithEndDate:(id)date completion:(id)completion
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  dateCopy = date;
+  completionCopy = completion;
+  if (!dateCopy)
   {
     v11 = [MEMORY[0x1E696ABC0] hk_errorForInvalidArgument:@"@" class:objc_opt_class() selector:a2 format:@"endDate cannot be nil"];
-    v8[2](v8, 0, v11);
+    completionCopy[2](completionCopy, 0, v11);
 
     goto LABEL_11;
   }
@@ -1692,13 +1692,13 @@ void __67__HKWorkoutBuilder__queue_beginCollectionWithStartDate_completion___blo
     v14 = @"cannot set endDate without a startDate";
 LABEL_10:
     v15 = [v12 hk_errorForInvalidArgument:@"@" class:v13 selector:a2 format:v14];
-    v8[2](v8, 0, v15);
+    completionCopy[2](completionCopy, 0, v15);
 
     os_unfair_lock_unlock(&self->_lock);
     goto LABEL_11;
   }
 
-  if (([v7 hk_isAfterDate:?] & 1) == 0)
+  if (([dateCopy hk_isAfterDate:?] & 1) == 0)
   {
     v12 = MEMORY[0x1E696ABC0];
     v13 = objc_opt_class();
@@ -1711,7 +1711,7 @@ LABEL_10:
   if (os_log_type_enabled(HKLogWorkouts, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v22 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19197B000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: Enqueuing end collection", buf, 0xCu);
   }
 
@@ -1720,10 +1720,10 @@ LABEL_10:
   v17[1] = 3221225472;
   v17[2] = __63__HKWorkoutBuilder__queue_endCollectionWithEndDate_completion___block_invoke;
   v17[3] = &unk_1E73768C0;
-  v19 = v8;
+  v19 = completionCopy;
   v20 = a2;
   v17[4] = self;
-  v18 = v7;
+  v18 = dateCopy;
   [(HKStateMachine *)lock_constructionStateMachine enqueueEvent:101 date:v18 error:0 completion:v17];
   os_unfair_lock_unlock(&self->_lock);
 
@@ -1759,17 +1759,17 @@ void __63__HKWorkoutBuilder__queue_endCollectionWithEndDate_completion___block_i
   }
 }
 
-- (void)_queue_finishWorkoutWithCompletion:(id)a3
+- (void)_queue_finishWorkoutWithCompletion:(id)completion
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_lock);
   _HKInitializeLogging();
   v6 = HKLogWorkouts;
   if (os_log_type_enabled(HKLogWorkouts, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v14 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19197B000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: Enqueing finish workout", buf, 0xCu);
   }
 
@@ -1779,9 +1779,9 @@ void __63__HKWorkoutBuilder__queue_endCollectionWithEndDate_completion___block_i
   v10[2] = __55__HKWorkoutBuilder__queue_finishWorkoutWithCompletion___block_invoke;
   v10[3] = &unk_1E73768E8;
   v10[4] = self;
-  v11 = v5;
+  v11 = completionCopy;
   v12 = a2;
-  v8 = v5;
+  v8 = completionCopy;
   [(HKStateMachine *)lock_constructionStateMachine enqueueEvent:102 date:0 error:0 completion:v10];
   os_unfair_lock_unlock(&self->_lock);
 
@@ -1809,12 +1809,12 @@ uint64_t __55__HKWorkoutBuilder__queue_finishWorkoutWithCompletion___block_invok
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_queue_addSamples:(id)a3 completion:(id)a4
+- (void)_queue_addSamples:(id)samples completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  samplesCopy = samples;
+  completionCopy = completion;
   v16 = 0;
-  v8 = [HKWorkout _validateObjects:v6 forClass:objc_opt_class() error:&v16];
+  v8 = [HKWorkout _validateObjects:samplesCopy forClass:objc_opt_class() error:&v16];
   v9 = v16;
   if (v8)
   {
@@ -1824,18 +1824,18 @@ uint64_t __55__HKWorkoutBuilder__queue_finishWorkoutWithCompletion___block_invok
     v14[2] = __49__HKWorkoutBuilder__queue_addSamples_completion___block_invoke;
     v14[3] = &unk_1E7376988;
     v14[4] = self;
-    v15 = v6;
+    v15 = samplesCopy;
     v11 = v9;
-    [(HKRetryableOperation *)retryableOperation _queue_performRetryableOperation:v14 completion:v7];
+    [(HKRetryableOperation *)retryableOperation _queue_performRetryableOperation:v14 completion:completionCopy];
 
-    v7 = v11;
+    completionCopy = v11;
   }
 
   else
   {
-    v12 = v7[2];
+    v12 = completionCopy[2];
     v13 = v16;
-    v12(v7, 0, v13);
+    v12(completionCopy, 0, v13);
   }
 }
 
@@ -1882,12 +1882,12 @@ void __49__HKWorkoutBuilder__queue_addSamples_completion___block_invoke_2(uint64
   }
 }
 
-- (void)_queue_addWorkoutEvents:(id)a3 completion:(id)a4
+- (void)_queue_addWorkoutEvents:(id)events completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  eventsCopy = events;
+  completionCopy = completion;
   v16 = 0;
-  v8 = [HKWorkout _validateObjects:v6 forClass:objc_opt_class() error:&v16];
+  v8 = [HKWorkout _validateObjects:eventsCopy forClass:objc_opt_class() error:&v16];
   v9 = v16;
   if (v8)
   {
@@ -1897,18 +1897,18 @@ void __49__HKWorkoutBuilder__queue_addSamples_completion___block_invoke_2(uint64
     v14[2] = __55__HKWorkoutBuilder__queue_addWorkoutEvents_completion___block_invoke;
     v14[3] = &unk_1E7376988;
     v14[4] = self;
-    v15 = v6;
+    v15 = eventsCopy;
     v11 = v9;
-    [(HKRetryableOperation *)retryableOperation _queue_performRetryableOperation:v14 completion:v7];
+    [(HKRetryableOperation *)retryableOperation _queue_performRetryableOperation:v14 completion:completionCopy];
 
-    v7 = v11;
+    completionCopy = v11;
   }
 
   else
   {
-    v12 = v7[2];
+    v12 = completionCopy[2];
     v13 = v16;
-    v12(v7, 0, v13);
+    v12(completionCopy, 0, v13);
   }
 }
 
@@ -1953,39 +1953,39 @@ void __55__HKWorkoutBuilder__queue_addWorkoutEvents_completion___block_invoke_2(
 - (BOOL)_lock_canAddMetadataInCurrentState
 {
   os_unfair_lock_assert_owner(&self->_lock);
-  v3 = [(HKStateMachine *)self->_lock_constructionStateMachine currentState];
-  if ([v3 index] == 4)
+  currentState = [(HKStateMachine *)self->_lock_constructionStateMachine currentState];
+  if ([currentState index] == 4)
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(HKStateMachine *)self->_lock_constructionStateMachine currentState];
-    v4 = [v5 index] != 3;
+    currentState2 = [(HKStateMachine *)self->_lock_constructionStateMachine currentState];
+    v4 = [currentState2 index] != 3;
   }
 
   return v4;
 }
 
-- (void)_queue_addMetadata:(id)a3 completion:(id)a4
+- (void)_queue_addMetadata:(id)metadata completion:(id)completion
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  metadataCopy = metadata;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_lock);
-  if ([(HKWorkoutBuilder *)self _lock_canAddMetadataInCurrentState]&& checkWhetherAllMetadataAlreadyExists(v6, self->_lock_metadata))
+  if ([(HKWorkoutBuilder *)self _lock_canAddMetadataInCurrentState]&& checkWhetherAllMetadataAlreadyExists(metadataCopy, self->_lock_metadata))
   {
     _HKInitializeLogging();
     v8 = HKLogWorkouts;
     if (os_log_type_enabled(HKLogWorkouts, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v14 = self;
+      selfCopy = self;
       _os_log_impl(&dword_19197B000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: (#w1) Metadata update was elided as all requested metadata already existed.", buf, 0xCu);
     }
 
-    v7[2](v7, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
     os_unfair_lock_unlock(&self->_lock);
   }
 
@@ -1998,8 +1998,8 @@ void __55__HKWorkoutBuilder__queue_addWorkoutEvents_completion___block_invoke_2(
     v11[2] = __50__HKWorkoutBuilder__queue_addMetadata_completion___block_invoke;
     v11[3] = &unk_1E7376988;
     v11[4] = self;
-    v12 = v6;
-    [(HKRetryableOperation *)retryableOperation _queue_performRetryableOperation:v11 completion:v7];
+    v12 = metadataCopy;
+    [(HKRetryableOperation *)retryableOperation _queue_performRetryableOperation:v11 completion:completionCopy];
   }
 
   v10 = *MEMORY[0x1E69E9840];
@@ -2043,18 +2043,18 @@ void __50__HKWorkoutBuilder__queue_addMetadata_completion___block_invoke_2(uint6
   [a2 remote_addMetadata:v3 completion:v4];
 }
 
-- (void)_queue_removeMetadata:(id)a3 completion:(id)a4
+- (void)_queue_removeMetadata:(id)metadata completion:(id)completion
 {
-  v6 = a3;
+  metadataCopy = metadata;
   retryableOperation = self->_retryableOperation;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __53__HKWorkoutBuilder__queue_removeMetadata_completion___block_invoke;
   v9[3] = &unk_1E7376988;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
-  [(HKRetryableOperation *)retryableOperation _queue_performRetryableOperation:v9 completion:a4];
+  v10 = metadataCopy;
+  v8 = metadataCopy;
+  [(HKRetryableOperation *)retryableOperation _queue_performRetryableOperation:v9 completion:completion];
 }
 
 void __53__HKWorkoutBuilder__queue_removeMetadata_completion___block_invoke(uint64_t a1, void *a2)
@@ -2095,16 +2095,16 @@ void __53__HKWorkoutBuilder__queue_removeMetadata_completion___block_invoke_2(ui
   [a2 remote_removeMetadata:v3 completion:v4];
 }
 
-- (void)_queue_addWorkoutActivity:(id)a3 completion:(id)a4
+- (void)_queue_addWorkoutActivity:(id)activity completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  activityCopy = activity;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_lock);
   currentActivity = self->_currentActivity;
   if (currentActivity && ([(HKWorkoutActivity *)currentActivity endDate], v9 = objc_claimAutoreleasedReturnValue(), v9, !v9))
   {
     v11 = [MEMORY[0x1E696ABC0] hk_error:3 description:@"Cannot add new activity before ending current activity."];
-    v7[2](v7, 0, v11);
+    completionCopy[2](completionCopy, 0, v11);
     os_unfair_lock_unlock(&self->_lock);
   }
 
@@ -2117,8 +2117,8 @@ void __53__HKWorkoutBuilder__queue_removeMetadata_completion___block_invoke_2(ui
     v12[2] = __57__HKWorkoutBuilder__queue_addWorkoutActivity_completion___block_invoke;
     v12[3] = &unk_1E7376988;
     v12[4] = self;
-    v13 = v6;
-    [(HKRetryableOperation *)retryableOperation _queue_performRetryableOperation:v12 completion:v7];
+    v13 = activityCopy;
+    [(HKRetryableOperation *)retryableOperation _queue_performRetryableOperation:v12 completion:completionCopy];
   }
 }
 
@@ -2160,21 +2160,21 @@ void __57__HKWorkoutBuilder__queue_addWorkoutActivity_completion___block_invoke_
   [a2 remote_addWorkoutActivity:v3 completion:v4];
 }
 
-- (void)_queue_updateActivityWithUUID:(id)a3 endDate:(id)a4 completion:(id)a5
+- (void)_queue_updateActivityWithUUID:(id)d endDate:(id)date completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  dateCopy = date;
   retryableOperation = self->_retryableOperation;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __69__HKWorkoutBuilder__queue_updateActivityWithUUID_endDate_completion___block_invoke;
   v13[3] = &unk_1E73769D8;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
-  [(HKRetryableOperation *)retryableOperation _queue_performRetryableOperation:v13 completion:a5];
+  v14 = dCopy;
+  v15 = dateCopy;
+  v11 = dateCopy;
+  v12 = dCopy;
+  [(HKRetryableOperation *)retryableOperation _queue_performRetryableOperation:v13 completion:completion];
 }
 
 void __69__HKWorkoutBuilder__queue_updateActivityWithUUID_endDate_completion___block_invoke(id *a1, void *a2)
@@ -2217,27 +2217,27 @@ void __69__HKWorkoutBuilder__queue_updateActivityWithUUID_endDate_completion___b
   [a2 remote_updateActivityWithUUID:v3 endDate:v4 completion:v5];
 }
 
-- (void)_queue_updateActivityWithUUID:(id)a3 addMetadata:(id)a4 completion:(id)a5
+- (void)_queue_updateActivityWithUUID:(id)d addMetadata:(id)metadata completion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  metadataCopy = metadata;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_lock);
-  v11 = [(NSMutableDictionary *)self->_lock_activitiesPerUUID objectForKeyedSubscript:v8];
-  v12 = [v11 metadata];
-  if ([(HKWorkoutBuilder *)self _lock_canAddMetadataInCurrentState]&& checkWhetherAllMetadataAlreadyExists(v9, v12))
+  v11 = [(NSMutableDictionary *)self->_lock_activitiesPerUUID objectForKeyedSubscript:dCopy];
+  metadata = [v11 metadata];
+  if ([(HKWorkoutBuilder *)self _lock_canAddMetadataInCurrentState]&& checkWhetherAllMetadataAlreadyExists(metadataCopy, metadata))
   {
     _HKInitializeLogging();
     v13 = HKLogWorkouts;
     if (os_log_type_enabled(HKLogWorkouts, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v20 = self;
+      selfCopy = self;
       _os_log_impl(&dword_19197B000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: (#w1) Activity metadata update was elided as all requested metadata already existed.", buf, 0xCu);
     }
 
-    v10[2](v10, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
     os_unfair_lock_unlock(&self->_lock);
   }
 
@@ -2250,9 +2250,9 @@ void __69__HKWorkoutBuilder__queue_updateActivityWithUUID_endDate_completion___b
     v16[2] = __73__HKWorkoutBuilder__queue_updateActivityWithUUID_addMetadata_completion___block_invoke;
     v16[3] = &unk_1E73769D8;
     v16[4] = self;
-    v17 = v8;
-    v18 = v9;
-    [(HKRetryableOperation *)retryableOperation _queue_performRetryableOperation:v16 completion:v10];
+    v17 = dCopy;
+    v18 = metadataCopy;
+    [(HKRetryableOperation *)retryableOperation _queue_performRetryableOperation:v16 completion:completionCopy];
   }
 
   v15 = *MEMORY[0x1E69E9840];
@@ -2298,27 +2298,27 @@ void __73__HKWorkoutBuilder__queue_updateActivityWithUUID_addMetadata_completion
   [a2 remote_updateActivityWithUUID:v3 addMetadata:v4 completion:v5];
 }
 
-- (id)_lock_seriesBuilderWithIdentifier:(id)a3 type:(id)a4
+- (id)_lock_seriesBuilderWithIdentifier:(id)identifier type:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  typeCopy = type;
   os_unfair_lock_assert_owner(&self->_lock);
-  v8 = [(NSMutableDictionary *)self->_lock_seriesBuilders objectForKeyedSubscript:v7];
+  v8 = [(NSMutableDictionary *)self->_lock_seriesBuilders objectForKeyedSubscript:typeCopy];
   if (!v8)
   {
     v9 = +[HKSeriesType workoutRouteType];
-    v10 = [v7 isEqual:v9];
+    v10 = [typeCopy isEqual:v9];
 
     if (v10)
     {
       v11 = [HKWorkoutRouteBuilder alloc];
       healthStore = self->_healthStore;
-      v13 = [(HKWorkoutBuilderConfiguration *)self->_builderConfiguration device];
-      v8 = [(HKWorkoutRouteBuilder *)v11 initWithHealthStore:healthStore identifier:v6 device:v13 workoutBuilderID:self->_identifier];
+      device = [(HKWorkoutBuilderConfiguration *)self->_builderConfiguration device];
+      v8 = [(HKWorkoutRouteBuilder *)v11 initWithHealthStore:healthStore identifier:identifierCopy device:device workoutBuilderID:self->_identifier];
 
       if (v8)
       {
-        [(NSMutableDictionary *)self->_lock_seriesBuilders setObject:v8 forKey:v7];
+        [(NSMutableDictionary *)self->_lock_seriesBuilders setObject:v8 forKey:typeCopy];
       }
     }
 
@@ -2335,10 +2335,10 @@ void __73__HKWorkoutBuilder__queue_updateActivityWithUUID_addMetadata_completion
 {
   v30 = *MEMORY[0x1E69E9840];
   os_unfair_lock_assert_owner(&self->_lock);
-  v3 = [MEMORY[0x1E695DF00] date];
-  if ([HKWorkoutBuilder _collectionStateAtDate:v3 startDate:self->_lock_workoutStartDate endDate:self->_lock_workoutEndDate sortedEvents:self->_lock_workoutEvents]== 1)
+  date = [MEMORY[0x1E695DF00] date];
+  if ([HKWorkoutBuilder _collectionStateAtDate:date startDate:self->_lock_workoutStartDate endDate:self->_lock_workoutEndDate sortedEvents:self->_lock_workoutEvents]== 1)
   {
-    [v3 timeIntervalSinceReferenceDate];
+    [date timeIntervalSinceReferenceDate];
     v5 = 1;
   }
 
@@ -2350,7 +2350,7 @@ void __73__HKWorkoutBuilder__queue_updateActivityWithUUID_addMetadata_completion
 
   self->_lock_lastResumeTimestamp = v4;
   self->_lock_currentlyRunning = v5;
-  [HKWorkoutBuilder _elapsedTimeAtDate:v3 startDate:self->_lock_workoutStartDate endDate:self->_lock_workoutEndDate sortedEvents:self->_lock_workoutEvents];
+  [HKWorkoutBuilder _elapsedTimeAtDate:date startDate:self->_lock_workoutStartDate endDate:self->_lock_workoutEndDate sortedEvents:self->_lock_workoutEvents];
   self->_lock_accumulatedElapsedTime = v6;
   lock_workoutStartDate = self->_lock_workoutStartDate;
   _HKInitializeLogging();
@@ -2374,7 +2374,7 @@ void __73__HKWorkoutBuilder__queue_updateActivityWithUUID_addMetadata_completion
       }
 
       v20 = 138544386;
-      v21 = self;
+      selfCopy2 = self;
       v22 = 2114;
       if (lock_currentlyRunning)
       {
@@ -2400,7 +2400,7 @@ void __73__HKWorkoutBuilder__queue_updateActivityWithUUID_addMetadata_completion
   else if (v9)
   {
     v20 = 138543362;
-    v21 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_19197B000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: (#w0) Elapsed time cache updated but workout has not yet started.", &v20, 0xCu);
   }
 
@@ -2415,8 +2415,8 @@ void __73__HKWorkoutBuilder__queue_updateActivityWithUUID_addMetadata_completion
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(NSMutableDictionary *)self->_lock_seriesBuilders allValues];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allValues = [(NSMutableDictionary *)self->_lock_seriesBuilders allValues];
+  v4 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2428,7 +2428,7 @@ void __73__HKWorkoutBuilder__queue_updateActivityWithUUID_addMetadata_completion
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         v8 = *(*(&v11 + 1) + 8 * v7);
@@ -2442,7 +2442,7 @@ void __73__HKWorkoutBuilder__queue_updateActivityWithUUID_addMetadata_completion
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -2473,19 +2473,19 @@ void __46__HKWorkoutBuilder__lock_freezeSeriesBuilders__block_invoke(uint64_t a1
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_lock_updateDevice:(id)a3
+- (void)_lock_updateDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   os_unfair_lock_assert_owner(&self->_lock);
-  [(HKWorkoutBuilderConfiguration *)self->_builderConfiguration setDevice:v4];
+  [(HKWorkoutBuilderConfiguration *)self->_builderConfiguration setDevice:deviceCopy];
   [(HKTaskServerProxyProvider *)self->_proxyProvider setTaskConfiguration:self->_builderConfiguration];
   proxyProvider = self->_proxyProvider;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __39__HKWorkoutBuilder__lock_updateDevice___block_invoke;
   v7[3] = &unk_1E7376870;
-  v8 = v4;
-  v6 = v4;
+  v8 = deviceCopy;
+  v6 = deviceCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v7 errorHandler:&__block_literal_global_125];
 }
 
@@ -2499,17 +2499,17 @@ void __39__HKWorkoutBuilder__lock_updateDevice___block_invoke_2(uint64_t a1, voi
   }
 }
 
-- (void)_queue_setStatisticsMergeStrategy:(unint64_t)a3 forType:(id)a4
+- (void)_queue_setStatisticsMergeStrategy:(unint64_t)strategy forType:(id)type
 {
-  v6 = a4;
+  typeCopy = type;
   proxyProvider = self->_proxyProvider;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __62__HKWorkoutBuilder__queue_setStatisticsMergeStrategy_forType___block_invoke;
   v9[3] = &unk_1E7376A48;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = typeCopy;
+  strategyCopy = strategy;
+  v8 = typeCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v9 errorHandler:&__block_literal_global_127];
 }
 
@@ -2523,17 +2523,17 @@ void __62__HKWorkoutBuilder__queue_setStatisticsMergeStrategy_forType___block_in
   }
 }
 
-- (void)_queue_setStatisticsComputationMethod:(int64_t)a3 forType:(id)a4
+- (void)_queue_setStatisticsComputationMethod:(int64_t)method forType:(id)type
 {
-  v6 = a4;
+  typeCopy = type;
   proxyProvider = self->_proxyProvider;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __66__HKWorkoutBuilder__queue_setStatisticsComputationMethod_forType___block_invoke;
   v9[3] = &unk_1E7376A48;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = typeCopy;
+  methodCopy = method;
+  v8 = typeCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v9 errorHandler:&__block_literal_global_129];
 }
 
@@ -2560,22 +2560,22 @@ void __66__HKWorkoutBuilder__queue_setStatisticsComputationMethod_forType___bloc
   }
 }
 
-- (void)clientRemote_didUpdateStatistics:(id)a3
+- (void)clientRemote_didUpdateStatistics:(id)statistics
 {
   v43 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  statisticsCopy = statistics;
   os_unfair_lock_lock(&self->_lock);
   [(HKWorkoutBuilder *)self _lock_markRecoveryRequired];
   lock_statisticsByType = self->_lock_statisticsByType;
-  v6 = [v4 workoutStatistics];
-  [(NSMutableDictionary *)lock_statisticsByType addEntriesFromDictionary:v6];
+  workoutStatistics = [statisticsCopy workoutStatistics];
+  [(NSMutableDictionary *)lock_statisticsByType addEntriesFromDictionary:workoutStatistics];
 
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v27 = v4;
-  obj = [v4 activitiesStatistics];
+  v27 = statisticsCopy;
+  obj = [statisticsCopy activitiesStatistics];
   v28 = [obj countByEnumeratingWithState:&v33 objects:v42 count:16];
   if (v28)
   {
@@ -2591,8 +2591,8 @@ void __66__HKWorkoutBuilder__queue_setStatisticsComputationMethod_forType___bloc
         }
 
         v8 = *(*(&v33 + 1) + 8 * v7);
-        v9 = [v27 activitiesStatistics];
-        v10 = [v9 objectForKeyedSubscript:v8];
+        activitiesStatistics = [v27 activitiesStatistics];
+        v10 = [activitiesStatistics objectForKeyedSubscript:v8];
 
         v31 = 0u;
         v32 = 0u;
@@ -2644,11 +2644,11 @@ void __66__HKWorkoutBuilder__queue_setStatisticsComputationMethod_forType___bloc
   if (os_log_type_enabled(HKLogWorkouts, OS_LOG_TYPE_DEFAULT))
   {
     v20 = v19;
-    v21 = [v27 allTypes];
-    v22 = [v21 allObjects];
-    v23 = [v22 componentsJoinedByString:{@", "}];
+    allTypes = [v27 allTypes];
+    allObjects = [allTypes allObjects];
+    v23 = [allObjects componentsJoinedByString:{@", "}];
     *buf = 138543618;
-    v38 = self;
+    selfCopy = self;
     v39 = 2114;
     v40 = v23;
     _os_log_impl(&dword_19197B000, v20, OS_LOG_TYPE_DEFAULT, "%{public}@: (#w1) Updated statistics for types: %{public}@", buf, 0x16u);
@@ -2659,19 +2659,19 @@ void __66__HKWorkoutBuilder__queue_setStatisticsComputationMethod_forType___bloc
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)clientRemote_didUpdateMetadata:(id)a3
+- (void)clientRemote_didUpdateMetadata:(id)metadata
 {
   v10 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  metadataCopy = metadata;
   os_unfair_lock_lock(&self->_lock);
   [(HKWorkoutBuilder *)self _lock_markRecoveryRequired];
-  objc_storeStrong(&self->_lock_metadata, a3);
+  objc_storeStrong(&self->_lock_metadata, metadata);
   _HKInitializeLogging();
   v6 = HKLogWorkouts;
   if (os_log_type_enabled(HKLogWorkouts, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19197B000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: (#w1) Server updated metadata.", &v8, 0xCu);
   }
 
@@ -2680,10 +2680,10 @@ void __66__HKWorkoutBuilder__queue_setStatisticsComputationMethod_forType___bloc
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)clientRemote_didUpdateEvents:(id)a3
+- (void)clientRemote_didUpdateEvents:(id)events
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  eventsCopy = events;
   os_unfair_lock_lock(&self->_lock);
   [(HKWorkoutBuilder *)self _lock_markRecoveryRequired];
   v9[0] = MEMORY[0x1E69E9820];
@@ -2691,14 +2691,14 @@ void __66__HKWorkoutBuilder__queue_setStatisticsComputationMethod_forType___bloc
   v9[2] = __49__HKWorkoutBuilder_clientRemote_didUpdateEvents___block_invoke;
   v9[3] = &unk_1E7376A70;
   v9[4] = self;
-  v6 = [v5 hk_filter:v9];
-  objc_storeStrong(&self->_lock_workoutEvents, a3);
+  v6 = [eventsCopy hk_filter:v9];
+  objc_storeStrong(&self->_lock_workoutEvents, events);
   _HKInitializeLogging();
   v7 = HKLogWorkouts;
   if (os_log_type_enabled(HKLogWorkouts, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19197B000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: (#w1) Server added events.", buf, 0xCu);
   }
 
@@ -2708,19 +2708,19 @@ void __66__HKWorkoutBuilder__queue_setStatisticsComputationMethod_forType___bloc
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)clientRemote_didUpdateActivities:(id)a3
+- (void)clientRemote_didUpdateActivities:(id)activities
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  activitiesCopy = activities;
   os_unfair_lock_lock(&self->_lock);
-  v29 = self;
+  selfCopy = self;
   [(HKWorkoutBuilder *)self _lock_markRecoveryRequired];
-  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(activitiesCopy, "count")}];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v4;
+  obj = activitiesCopy;
   v6 = [obj countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v6)
   {
@@ -2737,25 +2737,25 @@ void __66__HKWorkoutBuilder__queue_setStatisticsComputationMethod_forType___bloc
         }
 
         v11 = *(*(&v30 + 1) + 8 * i);
-        lock_activitiesPerUUID = v29->_lock_activitiesPerUUID;
-        v13 = [v11 UUID];
-        v14 = [(NSMutableDictionary *)lock_activitiesPerUUID objectForKeyedSubscript:v13];
+        lock_activitiesPerUUID = selfCopy->_lock_activitiesPerUUID;
+        uUID = [v11 UUID];
+        v14 = [(NSMutableDictionary *)lock_activitiesPerUUID objectForKeyedSubscript:uUID];
 
-        v15 = [v14 allStatistics];
-        v16 = [v15 count];
+        allStatistics = [v14 allStatistics];
+        v16 = [allStatistics count];
 
         if (v16)
         {
-          v17 = [v14 allStatistics];
-          [v11 _setAllStatistics:v17];
+          allStatistics2 = [v14 allStatistics];
+          [v11 _setAllStatistics:allStatistics2];
         }
 
-        v18 = [v11 UUID];
-        [(NSMutableDictionary *)v5 setObject:v11 forKeyedSubscript:v18];
+        uUID2 = [v11 UUID];
+        [(NSMutableDictionary *)v5 setObject:v11 forKeyedSubscript:uUID2];
 
-        v19 = [(HKWorkoutActivity *)v8 startDate];
-        v20 = [v11 startDate];
-        v21 = [v19 hk_isAfterOrEqualToDate:v20];
+        startDate = [(HKWorkoutActivity *)v8 startDate];
+        startDate2 = [v11 startDate];
+        v21 = [startDate hk_isAfterOrEqualToDate:startDate2];
 
         if ((v21 & 1) == 0)
         {
@@ -2776,48 +2776,48 @@ void __66__HKWorkoutBuilder__queue_setStatisticsComputationMethod_forType___bloc
     v8 = 0;
   }
 
-  v23 = v29->_lock_activitiesPerUUID;
-  v29->_lock_activitiesPerUUID = v5;
+  v23 = selfCopy->_lock_activitiesPerUUID;
+  selfCopy->_lock_activitiesPerUUID = v5;
   v24 = v5;
 
-  currentActivity = v29->_currentActivity;
-  v29->_currentActivity = v8;
+  currentActivity = selfCopy->_currentActivity;
+  selfCopy->_currentActivity = v8;
   v26 = v8;
 
-  os_unfair_lock_unlock(&v29->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (void)clientRemote_didBeginActivity:(id)a3
+- (void)clientRemote_didBeginActivity:(id)activity
 {
-  v10 = a3;
+  activityCopy = activity;
   os_unfair_lock_lock(&self->_lock);
   lock_activitiesPerUUID = self->_lock_activitiesPerUUID;
-  v6 = [v10 UUID];
-  v7 = [(NSMutableDictionary *)lock_activitiesPerUUID objectForKeyedSubscript:v6];
+  uUID = [activityCopy UUID];
+  v7 = [(NSMutableDictionary *)lock_activitiesPerUUID objectForKeyedSubscript:uUID];
 
   if (!v7)
   {
     v8 = self->_lock_activitiesPerUUID;
-    v9 = [v10 UUID];
-    [(NSMutableDictionary *)v8 setObject:v10 forKeyedSubscript:v9];
+    uUID2 = [activityCopy UUID];
+    [(NSMutableDictionary *)v8 setObject:activityCopy forKeyedSubscript:uUID2];
 
-    objc_storeStrong(&self->_currentActivity, a3);
+    objc_storeStrong(&self->_currentActivity, activity);
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)clientRemote_didEndActivity:(id)a3
+- (void)clientRemote_didEndActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   os_unfair_lock_lock(&self->_lock);
   lock_activitiesPerUUID = self->_lock_activitiesPerUUID;
-  v6 = [v4 UUID];
-  v7 = [(NSMutableDictionary *)lock_activitiesPerUUID objectForKeyedSubscript:v6];
-  v8 = [v4 endDate];
+  uUID = [activityCopy UUID];
+  v7 = [(NSMutableDictionary *)lock_activitiesPerUUID objectForKeyedSubscript:uUID];
+  endDate = [activityCopy endDate];
 
-  [v7 _setEndDate:v8];
+  [v7 _setEndDate:endDate];
   currentActivity = self->_currentActivity;
   self->_currentActivity = 0;
 
@@ -2826,37 +2826,37 @@ void __66__HKWorkoutBuilder__queue_setStatisticsComputationMethod_forType___bloc
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)clientRemote_didChangeElapsedTimeBasisWithStartDate:(id)a3 endDate:(id)a4
+- (void)clientRemote_didChangeElapsedTimeBasisWithStartDate:(id)date endDate:(id)endDate
 {
-  v8 = a3;
-  v7 = a4;
+  dateCopy = date;
+  endDateCopy = endDate;
   os_unfair_lock_lock(&self->_lock);
   [(HKWorkoutBuilder *)self _lock_markRecoveryRequired];
-  if (v8)
+  if (dateCopy)
   {
-    objc_storeStrong(&self->_lock_workoutStartDate, a3);
+    objc_storeStrong(&self->_lock_workoutStartDate, date);
   }
 
-  if (v7)
+  if (endDateCopy)
   {
-    objc_storeStrong(&self->_lock_workoutEndDate, a4);
+    objc_storeStrong(&self->_lock_workoutEndDate, endDate);
   }
 
   [(HKWorkoutBuilder *)self _lock_updateElapsedTimeCache];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)clientRemote_didRecoverSeriesBuilders:(id)a3
+- (void)clientRemote_didRecoverSeriesBuilders:(id)builders
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  buildersCopy = builders;
   os_unfair_lock_lock(&self->_lock);
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allKeys = [buildersCopy allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2867,15 +2867,15 @@ void __66__HKWorkoutBuilder__queue_setStatisticsComputationMethod_forType___bloc
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v4 objectForKeyedSubscript:v10];
+        v11 = [buildersCopy objectForKeyedSubscript:v10];
         v12 = [(HKWorkoutBuilder *)self _lock_seriesBuilderWithIdentifier:v10 type:v11];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -2898,11 +2898,11 @@ void __66__HKWorkoutBuilder__queue_setStatisticsComputationMethod_forType___bloc
   }
 }
 
-- (void)clientRemote_stateDidChange:(int64_t)a3 startDate:(id)a4 endDate:(id)a5
+- (void)clientRemote_stateDidChange:(int64_t)change startDate:(id)date endDate:(id)endDate
 {
   v43 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  dateCopy = date;
+  endDateCopy = endDate;
   os_unfair_lock_lock(&self->_lock);
   [(HKWorkoutBuilder *)self _lock_markRecoveryRequired];
   _HKInitializeLogging();
@@ -2913,29 +2913,29 @@ void __66__HKWorkoutBuilder__queue_setStatisticsComputationMethod_forType___bloc
     v12 = v10;
     v13 = HKWorkoutBuilderConstructionStateToString(lock_serverConstructionState);
     *buf = 138543618;
-    v40 = self;
+    selfCopy = self;
     v41 = 2114;
     v42 = v13;
     _os_log_impl(&dword_19197B000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: Server state updated to %{public}@", buf, 0x16u);
   }
 
-  self->_lock_serverConstructionState = a3;
+  self->_lock_serverConstructionState = change;
   if (!self->_lock_workoutStartDate)
   {
-    v14 = [v8 copy];
+    v14 = [dateCopy copy];
     lock_workoutStartDate = self->_lock_workoutStartDate;
     self->_lock_workoutStartDate = v14;
   }
 
   if (!self->_lock_workoutEndDate)
   {
-    v16 = [v9 copy];
+    v16 = [endDateCopy copy];
     lock_workoutEndDate = self->_lock_workoutEndDate;
     self->_lock_workoutEndDate = v16;
   }
 
   [(HKStateMachine *)self->_lock_constructionStateMachine enqueueEvent:self->_lock_serverConstructionState date:0 error:0 completion:&__block_literal_global_134];
-  if (a3 == 2)
+  if (change == 2)
   {
     v18 = _Block_copy(self->_endCollectionCompletionHandler);
     if (v18)
@@ -2943,7 +2943,7 @@ void __66__HKWorkoutBuilder__queue_setStatisticsComputationMethod_forType___bloc
       endCollectionCompletionHandler = self->_endCollectionCompletionHandler;
       self->_endCollectionCompletionHandler = 0;
 
-      v20 = [(HKHealthStore *)self->_healthStore clientQueue];
+      clientQueue = [(HKHealthStore *)self->_healthStore clientQueue];
       v29 = MEMORY[0x1E69E9820];
       v30 = 3221225472;
       v31 = __66__HKWorkoutBuilder_clientRemote_stateDidChange_startDate_endDate___block_invoke_3;
@@ -2958,7 +2958,7 @@ void __66__HKWorkoutBuilder__queue_setStatisticsComputationMethod_forType___bloc
 
   else
   {
-    if (a3 != 1)
+    if (change != 1)
     {
       goto LABEL_15;
     }
@@ -2969,7 +2969,7 @@ void __66__HKWorkoutBuilder__queue_setStatisticsComputationMethod_forType___bloc
       beginCollectionCompletionHandler = self->_beginCollectionCompletionHandler;
       self->_beginCollectionCompletionHandler = 0;
 
-      v20 = [(HKHealthStore *)self->_healthStore clientQueue];
+      clientQueue = [(HKHealthStore *)self->_healthStore clientQueue];
       v34 = MEMORY[0x1E69E9820];
       v35 = 3221225472;
       v36 = __66__HKWorkoutBuilder_clientRemote_stateDidChange_startDate_endDate___block_invoke_2;
@@ -2979,16 +2979,16 @@ void __66__HKWorkoutBuilder__queue_setStatisticsComputationMethod_forType___bloc
       v38 = v18;
       v22 = &v34;
 LABEL_13:
-      dispatch_async(v20, v22);
+      dispatch_async(clientQueue, v22);
     }
   }
 
 LABEL_15:
   v24 = self->_lock_serverConstructionState;
   v25 = [(HKStateMachine *)self->_lock_constructionStateMachine currentState:v29];
-  v26 = [v25 index];
+  index = [v25 index];
 
-  if (v24 != v26)
+  if (v24 != index)
   {
     [(HKWorkoutBuilder *)self _pushCurrentTargetState];
   }
@@ -2997,15 +2997,15 @@ LABEL_15:
   os_unfair_lock_unlock(&self->_lock);
   if (v27)
   {
-    v27[2](v27, self, a3);
+    v27[2](v27, self, change);
   }
 
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)clientRemote_finishedWorkout:(id)a3
+- (void)clientRemote_finishedWorkout:(id)workout
 {
-  v4 = a3;
+  workoutCopy = workout;
   os_unfair_lock_lock(&self->_lock);
   if ((HKIsUnitTesting() & 1) == 0)
   {
@@ -3020,20 +3020,20 @@ LABEL_15:
   os_unfair_lock_unlock(&self->_lock);
   if (v6)
   {
-    v8 = [(HKHealthStore *)self->_healthStore clientQueue];
+    clientQueue = [(HKHealthStore *)self->_healthStore clientQueue];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __49__HKWorkoutBuilder_clientRemote_finishedWorkout___block_invoke;
     v9[3] = &unk_1E7376AC0;
     v11 = v6;
-    v10 = v4;
-    dispatch_async(v8, v9);
+    v10 = workoutCopy;
+    dispatch_async(clientQueue, v9);
   }
 }
 
-- (void)clientRemote_didFailWithError:(id)a3
+- (void)clientRemote_didFailWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   os_unfair_lock_lock(&self->_lock);
   if ((HKIsUnitTesting() & 1) == 0)
   {
@@ -3047,14 +3047,14 @@ LABEL_15:
     beginCollectionCompletionHandler = self->_beginCollectionCompletionHandler;
     self->_beginCollectionCompletionHandler = 0;
 
-    v8 = [(HKHealthStore *)self->_healthStore clientQueue];
+    clientQueue = [(HKHealthStore *)self->_healthStore clientQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __50__HKWorkoutBuilder_clientRemote_didFailWithError___block_invoke;
     block[3] = &unk_1E7376AC0;
     v29 = v6;
-    v28 = v4;
-    dispatch_async(v8, block);
+    v28 = errorCopy;
+    dispatch_async(clientQueue, block);
   }
 
   v9 = _Block_copy(self->_endCollectionCompletionHandler);
@@ -3063,14 +3063,14 @@ LABEL_15:
     endCollectionCompletionHandler = self->_endCollectionCompletionHandler;
     self->_endCollectionCompletionHandler = 0;
 
-    v11 = [(HKHealthStore *)self->_healthStore clientQueue];
+    clientQueue2 = [(HKHealthStore *)self->_healthStore clientQueue];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __50__HKWorkoutBuilder_clientRemote_didFailWithError___block_invoke_2;
     v24[3] = &unk_1E7376AC0;
     v26 = v9;
-    v25 = v4;
-    dispatch_async(v11, v24);
+    v25 = errorCopy;
+    dispatch_async(clientQueue2, v24);
   }
 
   v12 = _Block_copy(self->_finishWorkoutCompletionHandler);
@@ -3079,14 +3079,14 @@ LABEL_15:
     finishWorkoutCompletionHandler = self->_finishWorkoutCompletionHandler;
     self->_finishWorkoutCompletionHandler = 0;
 
-    v14 = [(HKHealthStore *)self->_healthStore clientQueue];
+    clientQueue3 = [(HKHealthStore *)self->_healthStore clientQueue];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __50__HKWorkoutBuilder_clientRemote_didFailWithError___block_invoke_3;
     v21[3] = &unk_1E7376AC0;
     v23 = v12;
-    v22 = v4;
-    dispatch_async(v14, v21);
+    v22 = errorCopy;
+    dispatch_async(clientQueue3, v21);
   }
 
   v15 = _Block_copy(self->_unitTest_failureHandler);
@@ -3095,15 +3095,15 @@ LABEL_15:
     unitTest_failureHandler = self->_unitTest_failureHandler;
     self->_unitTest_failureHandler = 0;
 
-    v17 = [(HKHealthStore *)self->_healthStore clientQueue];
+    clientQueue4 = [(HKHealthStore *)self->_healthStore clientQueue];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __50__HKWorkoutBuilder_clientRemote_didFailWithError___block_invoke_4;
     v18[3] = &unk_1E7376618;
     v20 = v15;
     v18[4] = self;
-    v19 = v4;
-    dispatch_async(v17, v18);
+    v19 = errorCopy;
+    dispatch_async(clientQueue4, v18);
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -3146,8 +3146,8 @@ void __60__HKWorkoutBuilder_clientRemote_unitTestDidFinishFinalizing__block_invo
 + (id)clientInterface
 {
   v2 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F068A7E0];
-  v3 = [MEMORY[0x1E695DF20] hk_secureCodingClasses];
-  [v2 setClasses:v3 forSelector:sel_clientRemote_didUpdateMetadata_ argumentIndex:0 ofReply:0];
+  hk_secureCodingClasses = [MEMORY[0x1E695DF20] hk_secureCodingClasses];
+  [v2 setClasses:hk_secureCodingClasses forSelector:sel_clientRemote_didUpdateMetadata_ argumentIndex:0 ofReply:0];
 
   v4 = [v2 hk_setArrayOfClass:objc_opt_class() forSelector:sel_clientRemote_didUpdateEvents_ argumentIndex:0 ofReply:0];
   v5 = MEMORY[0x1E695DFD8];
@@ -3167,11 +3167,11 @@ void __60__HKWorkoutBuilder_clientRemote_unitTestDidFinishFinalizing__block_invo
   v4 = [v2 hk_setArrayOfClass:objc_opt_class() forSelector:sel_remote_removeDataSourcesWithIdentifiers_ argumentIndex:0 ofReply:0];
   v5 = [v2 hk_setArrayOfClass:objc_opt_class() forSelector:sel_remote_addSamples_completion_ argumentIndex:0 ofReply:0];
   v6 = [v2 hk_setArrayOfClass:objc_opt_class() forSelector:sel_remote_addWorkoutEvents_completion_ argumentIndex:0 ofReply:0];
-  v7 = [MEMORY[0x1E695DF20] hk_secureCodingClasses];
-  [v2 setClasses:v7 forSelector:sel_remote_addMetadata_completion_ argumentIndex:0 ofReply:0];
+  hk_secureCodingClasses = [MEMORY[0x1E695DF20] hk_secureCodingClasses];
+  [v2 setClasses:hk_secureCodingClasses forSelector:sel_remote_addMetadata_completion_ argumentIndex:0 ofReply:0];
 
-  v8 = [MEMORY[0x1E695DF20] hk_secureCodingClasses];
-  [v2 setClasses:v8 forSelector:sel_remote_updateActivityWithUUID_addMetadata_completion_ argumentIndex:1 ofReply:0];
+  hk_secureCodingClasses2 = [MEMORY[0x1E695DF20] hk_secureCodingClasses];
+  [v2 setClasses:hk_secureCodingClasses2 forSelector:sel_remote_updateActivityWithUUID_addMetadata_completion_ argumentIndex:1 ofReply:0];
 
   return v2;
 }
@@ -3243,34 +3243,34 @@ void __41__HKWorkoutBuilder_connectionInterrupted__block_invoke_254(uint64_t a1,
 
 - (HKWorkoutBuilderConfiguration)configuration
 {
-  v2 = [(HKTaskServerProxyProvider *)self->_proxyProvider taskConfiguration];
-  v3 = [v2 copy];
+  taskConfiguration = [(HKTaskServerProxyProvider *)self->_proxyProvider taskConfiguration];
+  v3 = [taskConfiguration copy];
 
   return v3;
 }
 
-- (void)_recoverWithCompletion:(id)a3
+- (void)_recoverWithCompletion:(id)completion
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   _HKInitializeLogging();
   v5 = HKLogWorkouts;
   if (os_log_type_enabled(HKLogWorkouts, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19197B000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: (#w0) Beginning client recovery.", buf, 0xCu);
   }
 
-  if (v4)
+  if (completionCopy)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __43__HKWorkoutBuilder__recoverWithCompletion___block_invoke;
     aBlock[3] = &unk_1E73766A0;
     aBlock[4] = self;
-    v14 = v4;
-    v4 = _Block_copy(aBlock);
+    v14 = completionCopy;
+    completionCopy = _Block_copy(aBlock);
   }
 
   proxyProvider = self->_proxyProvider;
@@ -3279,7 +3279,7 @@ void __41__HKWorkoutBuilder_connectionInterrupted__block_invoke_254(uint64_t a1,
   v11[2] = __43__HKWorkoutBuilder__recoverWithCompletion___block_invoke_3;
   v11[3] = &unk_1E73767F8;
   v11[4] = self;
-  v12 = v4;
+  v12 = completionCopy;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __43__HKWorkoutBuilder__recoverWithCompletion___block_invoke_255;
@@ -3352,10 +3352,10 @@ void __43__HKWorkoutBuilder__recoverWithCompletion___block_invoke_255(uint64_t a
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_restoreRecoveredSeriesBuildersWithCompletion:(id)a3
+- (void)_restoreRecoveredSeriesBuildersWithCompletion:(id)completion
 {
   v27 = *MEMORY[0x1E69E9840];
-  v13 = a3;
+  completionCopy = completion;
   v4 = dispatch_group_create();
   v24[0] = 0;
   v24[1] = v24;
@@ -3366,8 +3366,8 @@ void __43__HKWorkoutBuilder__recoverWithCompletion___block_invoke_255(uint64_t a
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [(NSMutableDictionary *)self->_lock_seriesBuilders allValues];
-  v6 = [v5 countByEnumeratingWithState:&v20 objects:v26 count:16];
+  allValues = [(NSMutableDictionary *)self->_lock_seriesBuilders allValues];
+  v6 = [allValues countByEnumeratingWithState:&v20 objects:v26 count:16];
   if (v6)
   {
     v7 = *v21;
@@ -3377,7 +3377,7 @@ void __43__HKWorkoutBuilder__recoverWithCompletion___block_invoke_255(uint64_t a
       {
         if (*v21 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v20 + 1) + 8 * i);
@@ -3391,7 +3391,7 @@ void __43__HKWorkoutBuilder__recoverWithCompletion___block_invoke_255(uint64_t a
         [v9 recoverWithCompletion:v17];
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v20 objects:v26 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v20 objects:v26 count:16];
     }
 
     while (v6);
@@ -3403,9 +3403,9 @@ void __43__HKWorkoutBuilder__recoverWithCompletion___block_invoke_255(uint64_t a
   block[1] = 3221225472;
   block[2] = __66__HKWorkoutBuilder__restoreRecoveredSeriesBuildersWithCompletion___block_invoke_2;
   block[3] = &unk_1E7376B38;
-  v15 = v13;
+  v15 = completionCopy;
   v16 = v24;
-  v11 = v13;
+  v11 = completionCopy;
   dispatch_group_notify(v4, queue, block);
 
   _Block_object_dispose(v24, 8);
@@ -3447,11 +3447,11 @@ void __66__HKWorkoutBuilder__restoreRecoveredSeriesBuildersWithCompletion___bloc
   }
 }
 
-- (void)unitTest_setServerStateChangeHandler:(id)a3
+- (void)unitTest_setServerStateChangeHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [v4 copy];
+  v5 = [handlerCopy copy];
 
   unitTest_serverStateChangedHandler = self->_unitTest_serverStateChangedHandler;
   self->_unitTest_serverStateChangedHandler = v5;
@@ -3459,11 +3459,11 @@ void __66__HKWorkoutBuilder__restoreRecoveredSeriesBuildersWithCompletion___bloc
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)unitTest_setRecoveryFinishedHandler:(id)a3
+- (void)unitTest_setRecoveryFinishedHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [v4 copy];
+  v5 = [handlerCopy copy];
 
   unitTest_recoveryFinishedHandler = self->_unitTest_recoveryFinishedHandler;
   self->_unitTest_recoveryFinishedHandler = v5;
@@ -3471,11 +3471,11 @@ void __66__HKWorkoutBuilder__restoreRecoveredSeriesBuildersWithCompletion___bloc
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)unitTest_setFailureHandler:(id)a3
+- (void)unitTest_setFailureHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [v4 copy];
+  v5 = [handlerCopy copy];
 
   unitTest_failureHandler = self->_unitTest_failureHandler;
   self->_unitTest_failureHandler = v5;
@@ -3483,11 +3483,11 @@ void __66__HKWorkoutBuilder__restoreRecoveredSeriesBuildersWithCompletion___bloc
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)unitTest_setDidFinishFinalizingHandler:(id)a3
+- (void)unitTest_setDidFinishFinalizingHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [v4 copy];
+  v5 = [handlerCopy copy];
 
   unitTest_didFinishFinalizing = self->_unitTest_didFinishFinalizing;
   self->_unitTest_didFinishFinalizing = v5;

@@ -1,5 +1,5 @@
 @interface OTPrepareOperation
-- (OTPrepareOperation)initWithDependencies:(id)a3 intendedState:(id)a4 errorState:(id)a5 deviceInfo:(id)a6 policyOverride:(id)a7 accountSettings:(id)a8 epoch:(unint64_t)a9;
+- (OTPrepareOperation)initWithDependencies:(id)dependencies intendedState:(id)state errorState:(id)errorState deviceInfo:(id)info policyOverride:(id)override accountSettings:(id)settings epoch:(unint64_t)epoch;
 - (void)groupStart;
 @end
 
@@ -15,46 +15,46 @@
   }
 
   v94[0] = kSecurityRTCFieldAccountIsW;
-  v4 = [(OTPrepareOperation *)self deps];
-  v5 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v4 accountIsW]);
+  deps = [(OTPrepareOperation *)self deps];
+  v5 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [deps accountIsW]);
   v95[0] = v5;
   v94[1] = kSecurityRTCFieldAccountIsG;
-  v6 = [(OTPrepareOperation *)self deps];
-  v7 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v6 accountIsG]);
+  deps2 = [(OTPrepareOperation *)self deps];
+  v7 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [deps2 accountIsG]);
   v95[1] = v7;
   v78 = [NSDictionary dictionaryWithObjects:v95 forKeys:v94 count:2];
 
   v8 = [AAFAnalyticsEventSecurity alloc];
-  v9 = [(OTPrepareOperation *)self deps];
-  v10 = [v9 activeAccount];
-  v11 = [v10 altDSID];
-  v12 = [(OTPrepareOperation *)self deps];
-  v13 = [v12 flowID];
-  v14 = [(OTPrepareOperation *)self deps];
-  v15 = [v14 deviceSessionID];
-  v16 = [(OTPrepareOperation *)self deps];
-  LOBYTE(v60) = [v16 permittedToSendMetrics];
-  v76 = [v8 initWithKeychainCircleMetrics:v78 altDSID:v11 flowID:v13 deviceSessionID:v15 eventName:kSecurityRTCEventNamePrepareIdentityInTPH testsAreEnabled:0 canSendMetrics:v60 category:kSecurityRTCEventCategoryAccountDataAccessRecovery];
+  deps3 = [(OTPrepareOperation *)self deps];
+  activeAccount = [deps3 activeAccount];
+  altDSID = [activeAccount altDSID];
+  deps4 = [(OTPrepareOperation *)self deps];
+  flowID = [deps4 flowID];
+  deps5 = [(OTPrepareOperation *)self deps];
+  deviceSessionID = [deps5 deviceSessionID];
+  deps6 = [(OTPrepareOperation *)self deps];
+  LOBYTE(v60) = [deps6 permittedToSendMetrics];
+  v76 = [v8 initWithKeychainCircleMetrics:v78 altDSID:altDSID flowID:flowID deviceSessionID:deviceSessionID eventName:kSecurityRTCEventNamePrepareIdentityInTPH testsAreEnabled:0 canSendMetrics:v60 category:kSecurityRTCEventCategoryAccountDataAccessRecovery];
 
   v17 = objc_alloc_init(NSOperation);
   [(OTPrepareOperation *)self setFinishedOp:v17];
 
-  v18 = [(OTPrepareOperation *)self finishedOp];
-  [(CKKSGroupOperation *)self dependOnBeforeGroupFinished:v18];
+  finishedOp = [(OTPrepareOperation *)self finishedOp];
+  [(CKKSGroupOperation *)self dependOnBeforeGroupFinished:finishedOp];
 
-  v19 = [(OTPrepareOperation *)self deps];
-  v20 = [v19 activeAccount];
-  v77 = [v20 altDSID];
+  deps7 = [(OTPrepareOperation *)self deps];
+  activeAccount2 = [deps7 activeAccount];
+  altDSID2 = [activeAccount2 altDSID];
 
-  if (v77)
+  if (altDSID2)
   {
-    v75 = v77;
+    error = altDSID2;
     objc_initWeak(&location, self);
-    v21 = [(OTPrepareOperation *)self deps];
-    v22 = [v21 sosAdapter];
-    v23 = [v22 sosEnabled];
+    deps8 = [(OTPrepareOperation *)self deps];
+    sosAdapter = [deps8 sosAdapter];
+    sosEnabled = [sosAdapter sosEnabled];
 
-    if (!v23)
+    if (!sosEnabled)
     {
       v73 = 0;
       v67 = 0;
@@ -65,8 +65,8 @@ LABEL_32:
       v89 = sub_1000FCF5C;
       v90 = sub_1000FCF6C;
       v91 = 0;
-      v43 = [(OTPrepareOperation *)self deps];
-      v44 = [v43 stateHolder];
+      deps9 = [(OTPrepareOperation *)self deps];
+      stateHolder = [deps9 stateHolder];
       v82 = 0;
       v83[0] = _NSConcreteStackBlock;
       v83[1] = 3221225472;
@@ -74,7 +74,7 @@ LABEL_32:
       v83[3] = &unk_100336F48;
       v83[4] = self;
       v83[5] = &buf;
-      v45 = [v44 persistAccountChanges:v83 error:&v82];
+      v45 = [stateHolder persistAccountChanges:v83 error:&v82];
       v74 = v82;
 
       if (v74)
@@ -101,32 +101,32 @@ LABEL_32:
       v48 = sub_100006274("octagon");
       if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
       {
-        v49 = [(OTPrepareOperation *)self accountSettings];
+        accountSettings = [(OTPrepareOperation *)self accountSettings];
         *v86 = 138412290;
-        *&v86[4] = v49;
+        *&v86[4] = accountSettings;
         _os_log_impl(&_mh_execute_header, v48, OS_LOG_TYPE_DEFAULT, "preparing identity with %@", v86, 0xCu);
       }
 
-      v72 = [(OTPrepareOperation *)self deps];
-      v66 = [v72 cuttlefishXPCWrapper];
-      v71 = [(OTPrepareOperation *)self deps];
-      v65 = [v71 activeAccount];
-      v62 = [(OTPrepareOperation *)self epoch];
-      v70 = [(OTPrepareOperation *)self deviceInfo];
-      v64 = [v70 machineID];
+      deps10 = [(OTPrepareOperation *)self deps];
+      cuttlefishXPCWrapper = [deps10 cuttlefishXPCWrapper];
+      deps11 = [(OTPrepareOperation *)self deps];
+      activeAccount3 = [deps11 activeAccount];
+      epoch = [(OTPrepareOperation *)self epoch];
+      deviceInfo = [(OTPrepareOperation *)self deviceInfo];
+      machineID = [deviceInfo machineID];
       v69 = +[NSUUID UUID];
-      v63 = [v69 UUIDString];
-      v68 = [(OTPrepareOperation *)self deviceInfo];
-      v50 = [v68 modelID];
-      v51 = [(OTPrepareOperation *)self deviceInfo];
-      v52 = [v51 deviceName];
-      v53 = [(OTPrepareOperation *)self deviceInfo];
-      v54 = [v53 serialNumber];
-      v55 = [(OTPrepareOperation *)self deviceInfo];
-      v56 = [v55 osVersion];
-      v57 = [(OTPrepareOperation *)self policyOverride];
+      uUIDString = [v69 UUIDString];
+      deviceInfo2 = [(OTPrepareOperation *)self deviceInfo];
+      modelID = [deviceInfo2 modelID];
+      deviceInfo3 = [(OTPrepareOperation *)self deviceInfo];
+      deviceName = [deviceInfo3 deviceName];
+      deviceInfo4 = [(OTPrepareOperation *)self deviceInfo];
+      serialNumber = [deviceInfo4 serialNumber];
+      deviceInfo5 = [(OTPrepareOperation *)self deviceInfo];
+      osVersion = [deviceInfo5 osVersion];
+      policyOverride = [(OTPrepareOperation *)self policyOverride];
       v58 = *(*(&buf + 1) + 40);
-      v59 = [(OTPrepareOperation *)self accountSettings];
+      accountSettings2 = [(OTPrepareOperation *)self accountSettings];
       v79[0] = _NSConcreteStackBlock;
       v79[1] = 3221225472;
       v79[2] = sub_1000FD010;
@@ -134,7 +134,7 @@ LABEL_32:
       objc_copyWeak(&v81, &location);
       v80 = v76;
       LODWORD(v61) = 3;
-      [v66 prepareWithSpecificUser:v65 epoch:v62 machineID:v64 bottleSalt:v75 bottleID:v63 modelID:v50 deviceName:v52 serialNumber:v54 osVersion:v56 policyVersion:v57 policySecrets:0 syncUserControllableViews:v61 secureElementIdentity:v58 setting:v59 signingPrivKeyPersistentRef:v67 encPrivKeyPersistentRef:v73 reply:v79];
+      [cuttlefishXPCWrapper prepareWithSpecificUser:activeAccount3 epoch:epoch machineID:machineID bottleSalt:error bottleID:uUIDString modelID:modelID deviceName:deviceName serialNumber:serialNumber osVersion:osVersion policyVersion:policyOverride policySecrets:0 syncUserControllableViews:v61 secureElementIdentity:v58 setting:accountSettings2 signingPrivKeyPersistentRef:v67 encPrivKeyPersistentRef:v73 reply:v79];
 
       objc_destroyWeak(&v81);
       _Block_object_dispose(&buf, 8);
@@ -150,10 +150,10 @@ LABEL_32:
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Investigating use of Octagon keys from SOS identity", &buf, 2u);
     }
 
-    v25 = [(OTPrepareOperation *)self deps];
-    v26 = [v25 sosAdapter];
+    deps12 = [(OTPrepareOperation *)self deps];
+    sosAdapter2 = [deps12 sosAdapter];
     v84 = 0;
-    v27 = [v26 currentSOSSelf:&v84];
+    v27 = [sosAdapter2 currentSOSSelf:&v84];
     v28 = v84;
 
     if (!v27 || v28)
@@ -170,8 +170,8 @@ LABEL_32:
     else
     {
       *&buf = 0;
-      v29 = [v27 signingKey];
-      [v29 _secKey];
+      signingKey = [v27 signingKey];
+      [signingKey _secKey];
       v30 = SecKeyCopyPersistentRef();
 
       if (v30 || !buf)
@@ -188,8 +188,8 @@ LABEL_32:
       else
       {
         *v86 = 0;
-        v31 = [v27 encryptionKey];
-        [v31 _secKey];
+        encryptionKey = [v27 encryptionKey];
+        [encryptionKey _secKey];
         v32 = SecKeyCopyPersistentRef();
 
         if (!v32)
@@ -236,45 +236,45 @@ LABEL_31:
   v33 = sub_100006274("authkit");
   if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
   {
-    v34 = [(OTPrepareOperation *)self deps];
-    v35 = [v34 activeAccount];
+    deps13 = [(OTPrepareOperation *)self deps];
+    activeAccount4 = [deps13 activeAccount];
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v35;
+    *(&buf + 4) = activeAccount4;
     _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "No configured altDSID: %@", &buf, 0xCu);
   }
 
   v36 = [NSError errorWithDomain:@"com.apple.security.octagon" code:59 description:@"No altDSID configured"];
   [(CKKSResultOperation *)self setError:v36];
 
-  v37 = [(OTPrepareOperation *)self finishedOp];
-  [(CKKSGroupOperation *)self runBeforeGroupFinished:v37];
+  finishedOp2 = [(OTPrepareOperation *)self finishedOp];
+  [(CKKSGroupOperation *)self runBeforeGroupFinished:finishedOp2];
 
-  v75 = [(CKKSResultOperation *)self error];
-  [v76 sendMetricWithResult:0 error:v75];
+  error = [(CKKSResultOperation *)self error];
+  [v76 sendMetricWithResult:0 error:error];
 LABEL_42:
 }
 
-- (OTPrepareOperation)initWithDependencies:(id)a3 intendedState:(id)a4 errorState:(id)a5 deviceInfo:(id)a6 policyOverride:(id)a7 accountSettings:(id)a8 epoch:(unint64_t)a9
+- (OTPrepareOperation)initWithDependencies:(id)dependencies intendedState:(id)state errorState:(id)errorState deviceInfo:(id)info policyOverride:(id)override accountSettings:(id)settings epoch:(unint64_t)epoch
 {
-  v16 = a3;
-  v17 = a4;
-  v24 = a5;
-  v23 = a6;
-  v22 = a7;
-  v18 = a8;
+  dependenciesCopy = dependencies;
+  stateCopy = state;
+  errorStateCopy = errorState;
+  infoCopy = info;
+  overrideCopy = override;
+  settingsCopy = settings;
   v25.receiver = self;
   v25.super_class = OTPrepareOperation;
   v19 = [(CKKSGroupOperation *)&v25 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_deps, a3);
-    objc_storeStrong(&v20->_deviceInfo, a6);
-    v20->_epoch = a9;
-    objc_storeStrong(&v20->_intendedState, a4);
-    objc_storeStrong(&v20->_nextState, a5);
-    objc_storeStrong(&v20->_policyOverride, a7);
-    objc_storeStrong(&v20->_accountSettings, a8);
+    objc_storeStrong(&v19->_deps, dependencies);
+    objc_storeStrong(&v20->_deviceInfo, info);
+    v20->_epoch = epoch;
+    objc_storeStrong(&v20->_intendedState, state);
+    objc_storeStrong(&v20->_nextState, errorState);
+    objc_storeStrong(&v20->_policyOverride, override);
+    objc_storeStrong(&v20->_accountSettings, settings);
   }
 
   return v20;

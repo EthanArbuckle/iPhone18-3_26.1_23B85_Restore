@@ -1,7 +1,7 @@
 @interface PLTestService
 + (void)load;
 - (PLTestService)init;
-- (id)presubmissionTest_testEPLMode:(id)a3 withParam:(id)a4;
+- (id)presubmissionTest_testEPLMode:(id)mode withParam:(id)param;
 - (void)initOperatorDependancies;
 @end
 
@@ -9,7 +9,7 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLTestService;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -19,7 +19,7 @@
   v18 = *MEMORY[0x277D85DE8];
   if ([MEMORY[0x277D3F208] isHomePod])
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -45,9 +45,9 @@
         v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"PLTestService initialized"];
         v7 = MEMORY[0x277D3F178];
         v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLTestService.m"];
-        v9 = [v8 lastPathComponent];
+        lastPathComponent = [v8 lastPathComponent];
         v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLTestService init]"];
-        [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:32];
+        [v7 logMessage:v6 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:32];
 
         v11 = PLLogCommon();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -60,11 +60,11 @@
     }
 
     self = v4;
-    v3 = self;
+    selfCopy = self;
   }
 
   v12 = *MEMORY[0x277D85DE8];
-  return v3;
+  return selfCopy;
 }
 
 uint64_t __21__PLTestService_init__block_invoke(uint64_t a1)
@@ -233,11 +233,11 @@ uint64_t __41__PLTestService_initOperatorDependancies__block_invoke_56(uint64_t 
   return result;
 }
 
-- (id)presubmissionTest_testEPLMode:(id)a3 withParam:(id)a4
+- (id)presubmissionTest_testEPLMode:(id)mode withParam:(id)param
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  modeCopy = mode;
+  paramCopy = param;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v7 = objc_opt_class();
@@ -253,28 +253,28 @@ uint64_t __41__PLTestService_initOperatorDependancies__block_invoke_56(uint64_t 
 
     if (byte_2811F7DE3 == 1)
     {
-      v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"presubmissionTest_testEPLMode with param=%@", v6];
+      paramCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"presubmissionTest_testEPLMode with param=%@", paramCopy];
       v9 = MEMORY[0x277D3F178];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLTestService.m"];
-      v11 = [v10 lastPathComponent];
+      lastPathComponent = [v10 lastPathComponent];
       v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLTestService presubmissionTest_testEPLMode:withParam:]"];
-      [v9 logMessage:v8 fromFile:v11 fromFunction:v12 fromLineNumber:62];
+      [v9 logMessage:paramCopy fromFile:lastPathComponent fromFunction:v12 fromLineNumber:62];
 
       v13 = PLLogCommon();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v31 = v8;
+        v31 = paramCopy;
         _os_log_debug_impl(&dword_21A4C6000, v13, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
     }
   }
 
-  v14 = [MEMORY[0x277D3F180] eplEnabled];
-  if (v6)
+  eplEnabled = [MEMORY[0x277D3F180] eplEnabled];
+  if (paramCopy)
   {
-    v15 = v14;
-    if ([v6 isEqualToString:@"ENABLE"])
+    v15 = eplEnabled;
+    if ([paramCopy isEqualToString:@"ENABLE"])
     {
       v16 = @"FAIL";
       v17 = @"PASS";
@@ -282,7 +282,7 @@ uint64_t __41__PLTestService_initOperatorDependancies__block_invoke_56(uint64_t 
 
     else
     {
-      if (![v6 isEqualToString:@"DISABLE"])
+      if (![paramCopy isEqualToString:@"DISABLE"])
       {
         goto LABEL_17;
       }
@@ -301,7 +301,7 @@ uint64_t __41__PLTestService_initOperatorDependancies__block_invoke_56(uint64_t 
       v18 = v16;
     }
 
-    [v5 setObject:v18 forKeyedSubscript:v6];
+    [modeCopy setObject:v18 forKeyedSubscript:paramCopy];
   }
 
 LABEL_17:
@@ -320,18 +320,18 @@ LABEL_17:
 
     if (byte_2811F7DE4 == 1)
     {
-      v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"presubmissionTest_testEPLMode with result=%@", v5];
+      modeCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"presubmissionTest_testEPLMode with result=%@", modeCopy];
       v21 = MEMORY[0x277D3F178];
       v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLTestService.m"];
-      v23 = [v22 lastPathComponent];
+      lastPathComponent2 = [v22 lastPathComponent];
       v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLTestService presubmissionTest_testEPLMode:withParam:]"];
-      [v21 logMessage:v20 fromFile:v23 fromFunction:v24 fromLineNumber:74];
+      [v21 logMessage:modeCopy fromFile:lastPathComponent2 fromFunction:v24 fromLineNumber:74];
 
       v25 = PLLogCommon();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v31 = v20;
+        v31 = modeCopy;
         _os_log_debug_impl(&dword_21A4C6000, v25, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
     }
@@ -339,7 +339,7 @@ LABEL_17:
 
   v26 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return modeCopy;
 }
 
 uint64_t __57__PLTestService_presubmissionTest_testEPLMode_withParam___block_invoke(uint64_t a1)

@@ -11,7 +11,7 @@
   v9[1] = 3221225472;
   v9[2] = __37__UIImage_Weather__wa_imageWithSize___block_invoke;
   v9[3] = &unk_279E69360;
-  v9[4] = a1;
+  v9[4] = self;
   *&v9[5] = a2;
   *&v9[6] = a3;
   v7 = [v6 imageWithActions:v9];

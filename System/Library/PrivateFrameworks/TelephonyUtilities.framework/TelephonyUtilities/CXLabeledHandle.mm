@@ -6,14 +6,14 @@
 
 - (TULabeledHandle)tuLabeledHandle
 {
-  v3 = [(CXLabeledHandle *)self handle];
-  v4 = [v3 tuHandle];
+  handle = [(CXLabeledHandle *)self handle];
+  tuHandle = [handle tuHandle];
 
-  if (v4)
+  if (tuHandle)
   {
     v5 = [TULabeledHandle alloc];
-    v6 = [(CXLabeledHandle *)self label];
-    v7 = [v5 initWithHandle:v4 label:v6 isSuggested:0];
+    label = [(CXLabeledHandle *)self label];
+    v7 = [v5 initWithHandle:tuHandle label:label isSuggested:0];
   }
 
   else

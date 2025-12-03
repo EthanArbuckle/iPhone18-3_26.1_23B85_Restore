@@ -1,25 +1,25 @@
 @interface PGSpecialPOIResolver
-+ (BOOL)specialPOIContainsCoordinate:(CLLocationCoordinate2D)a3;
-+ (BOOL)specialPOINameIsInString:(id)a3;
++ (BOOL)specialPOIContainsCoordinate:(CLLocationCoordinate2D)coordinate;
++ (BOOL)specialPOINameIsInString:(id)string;
 + (id)_nameBySpecialPOI;
 + (id)_regionsBySpecialPOI;
-+ (unint64_t)specialPOIsContainingCoordinate:(CLLocationCoordinate2D)a3;
-+ (unint64_t)specialPOIsWithNameInString:(id)a3;
++ (unint64_t)specialPOIsContainingCoordinate:(CLLocationCoordinate2D)coordinate;
++ (unint64_t)specialPOIsWithNameInString:(id)string;
 - (BOOL)anyMomentHasPOIAmusementPark;
-- (PGSpecialPOIResolver)initWithMomentNodes:(id)a3;
-- (unint64_t)_numberOfMomentsInRegions:(id)a3 containingAOIName:(id)a4;
-- (unint64_t)_numberOfMomentsMatchingSpecialPOI:(unint64_t)a3;
+- (PGSpecialPOIResolver)initWithMomentNodes:(id)nodes;
+- (unint64_t)_numberOfMomentsInRegions:(id)regions containingAOIName:(id)name;
+- (unint64_t)_numberOfMomentsMatchingSpecialPOI:(unint64_t)i;
 - (unint64_t)specialPOIsInAnyMoment;
-- (unint64_t)specialPOIsWithMomentRatio:(double)a3;
+- (unint64_t)specialPOIsWithMomentRatio:(double)ratio;
 @end
 
 @implementation PGSpecialPOIResolver
 
-- (unint64_t)_numberOfMomentsInRegions:(id)a3 containingAOIName:(id)a4
+- (unint64_t)_numberOfMomentsInRegions:(id)regions containingAOIName:(id)name
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  regionsCopy = regions;
+  nameCopy = name;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -43,16 +43,16 @@
           objc_enumerationMutation(obj);
         }
 
-        v11 = [*(*(&v21 + 1) + 8 * v10) collection];
-        v12 = [v11 addressNodes];
+        collection = [*(*(&v21 + 1) + 8 * v10) collection];
+        addressNodes = [collection addressNodes];
         v17[0] = MEMORY[0x277D85DD0];
         v17[1] = 3221225472;
         v17[2] = __68__PGSpecialPOIResolver__numberOfMomentsInRegions_containingAOIName___block_invoke;
         v17[3] = &unk_278888148;
-        v18 = v7;
-        v19 = v6;
+        v18 = nameCopy;
+        v19 = regionsCopy;
         v20 = &v25;
-        [v12 enumerateNodesUsingBlock:v17];
+        [addressNodes enumerateNodesUsingBlock:v17];
 
         ++v10;
       }
@@ -149,9 +149,9 @@ void __68__PGSpecialPOIResolver__numberOfMomentsInRegions_containingAOIName___bl
   }
 }
 
-- (unint64_t)_numberOfMomentsMatchingSpecialPOI:(unint64_t)a3
+- (unint64_t)_numberOfMomentsMatchingSpecialPOI:(unint64_t)i
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:i];
   v5 = [(NSMutableDictionary *)self->_countBySpecialPOI objectForKeyedSubscript:v4];
   if (!v5)
   {
@@ -165,9 +165,9 @@ void __68__PGSpecialPOIResolver__numberOfMomentsInRegions_containingAOIName___bl
     [(NSMutableDictionary *)self->_countBySpecialPOI setObject:v5 forKeyedSubscript:v4];
   }
 
-  v10 = [v5 unsignedIntegerValue];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  return v10;
+  return unsignedIntegerValue;
 }
 
 - (BOOL)anyMomentHasPOIAmusementPark
@@ -180,13 +180,13 @@ void __68__PGSpecialPOIResolver__numberOfMomentsInRegions_containingAOIName___bl
   return [(PGSpecialPOIResolver *)self anyMomentContainsSpecialPOI:2];
 }
 
-- (unint64_t)specialPOIsWithMomentRatio:(double)a3
+- (unint64_t)specialPOIsWithMomentRatio:(double)ratio
 {
   v5 = 0;
   v6 = 1;
   do
   {
-    if ([(PGSpecialPOIResolver *)self momentsContainSpecialPOI:v6 withMomentRatio:a3])
+    if ([(PGSpecialPOIResolver *)self momentsContainSpecialPOI:v6 withMomentRatio:ratio])
     {
       v7 = v6;
     }
@@ -230,16 +230,16 @@ void __68__PGSpecialPOIResolver__numberOfMomentsInRegions_containingAOIName___bl
   return v3;
 }
 
-- (PGSpecialPOIResolver)initWithMomentNodes:(id)a3
+- (PGSpecialPOIResolver)initWithMomentNodes:(id)nodes
 {
-  v5 = a3;
+  nodesCopy = nodes;
   v9.receiver = self;
   v9.super_class = PGSpecialPOIResolver;
   v6 = [(PGSpecialPOIResolver *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_momentNodes, a3);
+    objc_storeStrong(&v6->_momentNodes, nodes);
   }
 
   return v7;
@@ -333,22 +333,22 @@ void __44__PGSpecialPOIResolver__regionsBySpecialPOI__block_invoke()
   v28 = *MEMORY[0x277D85DE8];
 }
 
-+ (unint64_t)specialPOIsWithNameInString:(id)a3
++ (unint64_t)specialPOIsWithNameInString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v5 = [a1 _nameBySpecialPOI];
+  _nameBySpecialPOI = [self _nameBySpecialPOI];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __52__PGSpecialPOIResolver_specialPOIsWithNameInString___block_invoke;
   v9[3] = &unk_2788880F8;
-  v6 = v4;
+  v6 = stringCopy;
   v10 = v6;
   v11 = &v12;
-  [v5 enumerateKeysAndObjectsUsingBlock:v9];
+  [_nameBySpecialPOI enumerateKeysAndObjectsUsingBlock:v9];
 
   v7 = v13[3];
   _Block_object_dispose(&v12, 8);
@@ -365,18 +365,18 @@ void __52__PGSpecialPOIResolver_specialPOIsWithNameInString___block_invoke(uint6
   }
 }
 
-+ (BOOL)specialPOINameIsInString:(id)a3
++ (BOOL)specialPOINameIsInString:(id)string
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stringCopy = string;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [a1 _nameBySpecialPOI];
-  v6 = [v5 allValues];
+  _nameBySpecialPOI = [self _nameBySpecialPOI];
+  allValues = [_nameBySpecialPOI allValues];
 
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v7 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = *v13;
@@ -386,17 +386,17 @@ void __52__PGSpecialPOIResolver_specialPOIsWithNameInString___block_invoke(uint6
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
-        if ([v4 containsString:*(*(&v12 + 1) + 8 * i)])
+        if ([stringCopy containsString:*(*(&v12 + 1) + 8 * i)])
         {
           LOBYTE(v7) = 1;
           goto LABEL_11;
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v7)
       {
         continue;
@@ -412,15 +412,15 @@ LABEL_11:
   return v7;
 }
 
-+ (unint64_t)specialPOIsContainingCoordinate:(CLLocationCoordinate2D)a3
++ (unint64_t)specialPOIsContainingCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v5 = [a1 _regionsBySpecialPOI];
+  _regionsBySpecialPOI = [self _regionsBySpecialPOI];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __56__PGSpecialPOIResolver_specialPOIsContainingCoordinate___block_invoke;
@@ -428,7 +428,7 @@ LABEL_11:
   *&v8[5] = latitude;
   *&v8[6] = longitude;
   v8[4] = &v9;
-  [v5 enumerateKeysAndObjectsUsingBlock:v8];
+  [_regionsBySpecialPOI enumerateKeysAndObjectsUsingBlock:v8];
 
   v6 = v10[3];
   _Block_object_dispose(&v9, 8);
@@ -480,19 +480,19 @@ LABEL_11:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)specialPOIContainsCoordinate:(CLLocationCoordinate2D)a3
++ (BOOL)specialPOIContainsCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   v30 = *MEMORY[0x277D85DE8];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v5 = [a1 _regionsBySpecialPOI];
-  v6 = [v5 allValues];
+  _regionsBySpecialPOI = [self _regionsBySpecialPOI];
+  allValues = [_regionsBySpecialPOI allValues];
 
-  v7 = [v6 countByEnumeratingWithState:&v24 objects:v29 count:16];
+  v7 = [allValues countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v7)
   {
     v8 = v7;
@@ -503,7 +503,7 @@ LABEL_11:
       {
         if (*v25 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
         v11 = *(*(&v24 + 1) + 8 * i);
@@ -545,7 +545,7 @@ LABEL_11:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v24 objects:v29 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v24 objects:v29 count:16];
       v17 = 0;
     }
 

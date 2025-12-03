@@ -1,23 +1,23 @@
 @interface SKUITracklistHeaderCollectionViewCell
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5;
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeForHeaderTitleLabel:(id)a3;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-+ (id)_attributedStringForLabel:(id)a3 context:(id)a4;
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (SKUITracklistHeaderCollectionViewCell)initWithFrame:(CGRect)a3;
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeForHeaderTitleLabel:(id)label;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
++ (id)_attributedStringForLabel:(id)label context:(id)context;
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context;
+- (SKUITracklistHeaderCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context;
 @end
 
 @implementation SKUITracklistHeaderCollectionViewCell
 
-- (SKUITracklistHeaderCollectionViewCell)initWithFrame:(CGRect)a3
+- (SKUITracklistHeaderCollectionViewCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -32,42 +32,42 @@
 
   v30.receiver = self;
   v30.super_class = SKUITracklistHeaderCollectionViewCell;
-  v16 = [(SKUIViewReuseCollectionViewCell *)&v30 initWithFrame:x, y, width, height];
-  if (v16)
+  height = [(SKUIViewReuseCollectionViewCell *)&v30 initWithFrame:x, y, width, height];
+  if (height)
   {
     v17 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    columnViews = v16->_columnViews;
-    v16->_columnViews = v17;
+    columnViews = height->_columnViews;
+    height->_columnViews = v17;
 
     v19 = objc_alloc_init(MEMORY[0x277D75D18]);
-    bottomSeparatorView = v16->_bottomSeparatorView;
-    v16->_bottomSeparatorView = v19;
+    bottomSeparatorView = height->_bottomSeparatorView;
+    height->_bottomSeparatorView = v19;
 
-    v21 = v16->_bottomSeparatorView;
+    v21 = height->_bottomSeparatorView;
     v22 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.2];
     [(UIView *)v21 setBackgroundColor:v22];
 
-    v23 = [(SKUITracklistHeaderCollectionViewCell *)v16 contentView];
-    [v23 addSubview:v16->_bottomSeparatorView];
+    contentView = [(SKUITracklistHeaderCollectionViewCell *)height contentView];
+    [contentView addSubview:height->_bottomSeparatorView];
 
     v24 = objc_alloc_init(MEMORY[0x277D75D18]);
-    topSeparatorView = v16->_topSeparatorView;
-    v16->_topSeparatorView = v24;
+    topSeparatorView = height->_topSeparatorView;
+    height->_topSeparatorView = v24;
 
-    v26 = v16->_topSeparatorView;
+    v26 = height->_topSeparatorView;
     v27 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.2];
     [(UIView *)v26 setBackgroundColor:v27];
 
-    v28 = [(SKUITracklistHeaderCollectionViewCell *)v16 contentView];
-    [v28 addSubview:v16->_topSeparatorView];
+    contentView2 = [(SKUITracklistHeaderCollectionViewCell *)height contentView];
+    [contentView2 addSubview:height->_topSeparatorView];
   }
 
-  return v16;
+  return height;
 }
 
-+ (CGSize)sizeForHeaderTitleLabel:(id)a3
++ (CGSize)sizeForHeaderTitleLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -80,7 +80,7 @@
     }
   }
 
-  v13 = [a1 _attributedStringForLabel:v4 context:0];
+  v13 = [self _attributedStringForLabel:labelCopy context:0];
   [v13 size];
   v15 = v14;
   v17 = v16;
@@ -92,7 +92,7 @@
   return result;
 }
 
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context
 {
   if (os_variant_has_internal_content())
   {
@@ -109,7 +109,7 @@
   return 0;
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
   if (os_variant_has_internal_content())
   {
@@ -130,10 +130,10 @@
   return result;
 }
 
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context
 {
-  v7 = a5;
-  v8 = a3;
+  contextCopy = context;
+  elementCopy = element;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -146,18 +146,18 @@
     }
   }
 
-  v17 = [v7 aggregateValueForKey:0x282806108];
-  v18 = [v7 labelLayoutCache];
+  v17 = [contextCopy aggregateValueForKey:0x282806108];
+  labelLayoutCache = [contextCopy labelLayoutCache];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __83__SKUITracklistHeaderCollectionViewCell_requestLayoutForViewElement_width_context___block_invoke;
   v21[3] = &unk_278200730;
-  v23 = v18;
-  v24 = a1;
-  v22 = v7;
-  v19 = v18;
-  v20 = v7;
-  [v17 enumerateColumnsForHeader:v8 usingBlock:v21];
+  v23 = labelLayoutCache;
+  selfCopy = self;
+  v22 = contextCopy;
+  v19 = labelLayoutCache;
+  v20 = contextCopy;
+  [v17 enumerateColumnsForHeader:elementCopy usingBlock:v21];
 }
 
 void __83__SKUITracklistHeaderCollectionViewCell_requestLayoutForViewElement_width_context___block_invoke(void *a1, void *a2, void *a3)
@@ -174,10 +174,10 @@ void __83__SKUITracklistHeaderCollectionViewCell_requestLayoutForViewElement_wid
   [v9 requestLayoutForLabel:v7 attributedString:v12 width:v11];
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
-  v7 = a4;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -195,17 +195,17 @@ void __83__SKUITracklistHeaderCollectionViewCell_requestLayoutForViewElement_wid
   v29 = 0x3010000000;
   v30 = &unk_215F8ACD7;
   v32 = *(MEMORY[0x277CBF3A8] + 8);
-  v31 = a3;
-  v17 = [v8 aggregateValueForKey:0x282806108];
-  v18 = [v8 labelLayoutCache];
+  widthCopy = width;
+  v17 = [contextCopy aggregateValueForKey:0x282806108];
+  labelLayoutCache = [contextCopy labelLayoutCache];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __79__SKUITracklistHeaderCollectionViewCell_sizeThatFitsWidth_viewElement_context___block_invoke;
   v24[3] = &unk_278200758;
-  v19 = v18;
+  v19 = labelLayoutCache;
   v25 = v19;
   v26 = &v27;
-  [v17 enumerateColumnsForHeader:v7 usingBlock:v24];
+  [v17 enumerateColumnsForHeader:elementCopy usingBlock:v24];
   v20 = v28[4];
   v21 = v28[5] + 6.0;
   v28[5] = v21;
@@ -236,22 +236,22 @@ void __79__SKUITracklistHeaderCollectionViewCell_sizeThatFitsWidth_viewElement_c
   *(v9 + 40) = v10;
 }
 
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [v8 aggregateValueForKey:0x282806108];
+  elementCopy = element;
+  contextCopy = context;
+  v9 = [contextCopy aggregateValueForKey:0x282806108];
   columnData = self->_columnData;
   self->_columnData = v9;
 
   [(NSMutableDictionary *)self->_columnViews removeAllObjects];
-  v11 = [v7 style];
-  v12 = [v11 ikBorderColor];
-  v13 = [v12 color];
+  style = [elementCopy style];
+  ikBorderColor = [style ikBorderColor];
+  color = [ikBorderColor color];
 
-  if (v13)
+  if (color)
   {
-    v14 = v13;
+    v14 = color;
   }
 
   else
@@ -267,10 +267,10 @@ void __79__SKUITracklistHeaderCollectionViewCell_sizeThatFitsWidth_viewElement_c
   v18[2] = __77__SKUITracklistHeaderCollectionViewCell_reloadWithViewElement_width_context___block_invoke;
   v18[3] = &unk_2781F8450;
   v18[4] = self;
-  v19 = v7;
-  v20 = v8;
-  v16 = v8;
-  v17 = v7;
+  v19 = elementCopy;
+  v20 = contextCopy;
+  v16 = contextCopy;
+  v17 = elementCopy;
   [(SKUIViewReuseCollectionViewCell *)self modifyUsingBlock:v18];
 }
 
@@ -312,8 +312,8 @@ void __77__SKUITracklistHeaderCollectionViewCell_reloadWithViewElement_width_con
   v34.receiver = self;
   v34.super_class = SKUITracklistHeaderCollectionViewCell;
   [(SKUICollectionViewCell *)&v34 layoutSubviews];
-  v3 = [(SKUITracklistHeaderCollectionViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(SKUITracklistHeaderCollectionViewCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -321,15 +321,15 @@ void __77__SKUITracklistHeaderCollectionViewCell_reloadWithViewElement_width_con
 
   [(SKUITracklistColumnData *)self->_columnData interColumnSpacing];
   v13 = v12;
-  v14 = [(SKUITracklistHeaderCollectionViewCell *)self contentView];
-  v15 = [v14 effectiveUserInterfaceLayoutDirection];
+  contentView2 = [(SKUITracklistHeaderCollectionViewCell *)self contentView];
+  effectiveUserInterfaceLayoutDirection = [contentView2 effectiveUserInterfaceLayoutDirection];
 
   v33[0] = 0;
   v33[1] = v33;
   v33[2] = 0x2020000000;
   [(SKUITracklistColumnData *)self->_columnData leftEdgeInset];
   v33[3] = v16;
-  v17 = [(SKUITracklistColumnData *)self->_columnData columns];
+  columns = [(SKUITracklistColumnData *)self->_columnData columns];
   v21 = MEMORY[0x277D85DD0];
   v22 = 3221225472;
   v23 = __55__SKUITracklistHeaderCollectionViewCell_layoutSubviews__block_invoke;
@@ -338,14 +338,14 @@ void __77__SKUITracklistHeaderCollectionViewCell_reloadWithViewElement_width_con
   v28 = v7;
   v29 = v9;
   v30 = v11;
-  v25 = self;
+  selfCopy = self;
   v26 = v33;
-  v32 = v15 == 1;
+  v32 = effectiveUserInterfaceLayoutDirection == 1;
   v31 = v13;
-  [v17 enumerateObjectsUsingBlock:&v21];
+  [columns enumerateObjectsUsingBlock:&v21];
 
-  v18 = [MEMORY[0x277D759A0] mainScreen];
-  [v18 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v20 = 1.0 / v19;
 
   [(UIView *)self->_bottomSeparatorView setFrame:0.0, v11 - v20, v9, v20];
@@ -413,16 +413,16 @@ LABEL_14:
   *(*(*(a1 + 40) + 8) + 24) = v8 + *(a1 + 80) + *(*(*(a1 + 40) + 8) + 24);
 }
 
-+ (id)_attributedStringForLabel:(id)a3 context:(id)a4
++ (id)_attributedStringForLabel:(id)label context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 style];
-  v8 = SKUIViewElementFontWithStyle(v7);
+  labelCopy = label;
+  contextCopy = context;
+  style = [labelCopy style];
+  v8 = SKUIViewElementFontWithStyle(style);
   if (!v8)
   {
-    v9 = [v6 clientContext];
-    v10 = SKUIUserInterfaceIdiom(v9);
+    clientContext = [contextCopy clientContext];
+    v10 = SKUIUserInterfaceIdiom(clientContext);
 
     v11 = 10.0;
     if (v10 == 1)
@@ -433,16 +433,16 @@ LABEL_14:
     v8 = [MEMORY[0x277D74300] systemFontOfSize:v11];
   }
 
-  v12 = [v6 tintColor];
-  v13 = SKUIViewElementPlainColorWithStyle(v7, v12);
+  tintColor = [contextCopy tintColor];
+  v13 = SKUIViewElementPlainColorWithStyle(style, tintColor);
 
   if (!v13)
   {
     v13 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.6];
   }
 
-  v14 = [v5 text];
-  v15 = [v14 attributedStringWithDefaultFont:v8 foregroundColor:v13 style:v7];
+  text = [labelCopy text];
+  v15 = [text attributedStringWithDefaultFont:v8 foregroundColor:v13 style:style];
 
   return v15;
 }

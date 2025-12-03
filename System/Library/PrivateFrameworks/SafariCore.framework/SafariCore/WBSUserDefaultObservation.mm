@@ -1,40 +1,40 @@
 @interface WBSUserDefaultObservation
-- (WBSUserDefaultObservation)initWithUserDefaults:(id)a3 keys:(id)a4 queue:(id)a5 notifyForInitialValue:(BOOL)a6 handler:(id)a7;
+- (WBSUserDefaultObservation)initWithUserDefaults:(id)defaults keys:(id)keys queue:(id)queue notifyForInitialValue:(BOOL)value handler:(id)handler;
 - (void)dealloc;
 - (void)invalidate;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation WBSUserDefaultObservation
 
-- (WBSUserDefaultObservation)initWithUserDefaults:(id)a3 keys:(id)a4 queue:(id)a5 notifyForInitialValue:(BOOL)a6 handler:(id)a7
+- (WBSUserDefaultObservation)initWithUserDefaults:(id)defaults keys:(id)keys queue:(id)queue notifyForInitialValue:(BOOL)value handler:(id)handler
 {
-  v8 = a6;
+  valueCopy = value;
   v39 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
+  defaultsCopy = defaults;
+  keysCopy = keys;
+  queueCopy = queue;
+  handlerCopy = handler;
   v37.receiver = self;
   v37.super_class = WBSUserDefaultObservation;
   v17 = [(WBSUserDefaultObservation *)&v37 init];
   v18 = v17;
   if (v17)
   {
-    v32 = v15;
-    objc_storeStrong(&v17->_defaults, a3);
-    v19 = [v16 copy];
+    v32 = queueCopy;
+    objc_storeStrong(&v17->_defaults, defaults);
+    v19 = [handlerCopy copy];
     handler = v18->_handler;
     v18->_handler = v19;
 
-    v21 = [v14 copy];
+    v21 = [keysCopy copy];
     keys = v18->_keys;
     v18->_keys = v21;
 
-    objc_storeStrong(&v18->_queue, a5);
+    objc_storeStrong(&v18->_queue, queue);
     v35 = 0u;
     v36 = 0u;
-    if (v8)
+    if (valueCopy)
     {
       v23 = 7;
     }
@@ -46,7 +46,7 @@
 
     v33 = 0uLL;
     v34 = 0uLL;
-    v24 = v14;
+    v24 = keysCopy;
     v25 = [v24 countByEnumeratingWithState:&v33 objects:v38 count:16];
     if (v25)
     {
@@ -61,7 +61,7 @@
             objc_enumerationMutation(v24);
           }
 
-          [v13 addObserver:v18 forKeyPath:*(*(&v33 + 1) + 8 * i) options:v23 context:kvoContext];
+          [defaultsCopy addObserver:v18 forKeyPath:*(*(&v33 + 1) + 8 * i) options:v23 context:kvoContext];
         }
 
         v26 = [v24 countByEnumeratingWithState:&v33 objects:v38 count:16];
@@ -71,7 +71,7 @@
     }
 
     v29 = v18;
-    v15 = v32;
+    queueCopy = v32;
   }
 
   v30 = *MEMORY[0x1E69E9840];
@@ -86,17 +86,17 @@
   [(WBSUserDefaultObservation *)&v3 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  if (kvoContext == a6)
+  pathCopy = path;
+  if (kvoContext == context)
   {
     v12 = *MEMORY[0x1E696A500];
-    v13 = a5;
-    v11 = [v13 objectForKeyedSubscript:v12];
-    v14 = [v13 objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
+    changeCopy = change;
+    changeCopy2 = [changeCopy objectForKeyedSubscript:v12];
+    v14 = [changeCopy objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
 
-    if (v11 | v14 && ([v11 isEqual:v14] & 1) == 0)
+    if (changeCopy2 | v14 && ([changeCopy2 isEqual:v14] & 1) == 0)
     {
       queue = self->_queue;
       if (queue)
@@ -106,7 +106,7 @@
         v17[2] = __76__WBSUserDefaultObservation_observeValueForKeyPath_ofObject_change_context___block_invoke;
         v17[3] = &unk_1E7CF1708;
         v17[4] = self;
-        v18 = v10;
+        v18 = pathCopy;
         dispatch_async(queue, v17);
       }
 
@@ -122,8 +122,8 @@
   {
     v19.receiver = self;
     v19.super_class = WBSUserDefaultObservation;
-    v11 = a5;
-    [(WBSUserDefaultObservation *)&v19 observeValueForKeyPath:v10 ofObject:a4 change:v11 context:a6];
+    changeCopy2 = change;
+    [(WBSUserDefaultObservation *)&v19 observeValueForKeyPath:pathCopy ofObject:object change:changeCopy2 context:context];
   }
 }
 

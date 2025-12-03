@@ -1,15 +1,15 @@
 @interface AVTPreset
-+ (AVTPreset)presetWithCategory:(int64_t)a3 identifier:(id)a4;
-+ (id)availablePresetsForCategory:(int64_t)a3;
-+ (unint64_t)editableColorCountForCategory:(int64_t)a3;
++ (AVTPreset)presetWithCategory:(int64_t)category identifier:(id)identifier;
++ (id)availablePresetsForCategory:(int64_t)category;
++ (unint64_t)editableColorCountForCategory:(int64_t)category;
 - (id)cache;
 - (id)description;
 - (id)newComponent;
-- (void)enumerateAssetSpecificVariantDependenciesOfKind:(unint64_t)a3 block:(id)a4;
-- (void)enumeratePresetDependencies:(id)a3;
-- (void)enumeratePresetSpecificPresetDependencies:(id)a3;
-- (void)enumerateVariantDependenciesOfKind:(unint64_t)a3 block:(id)a4;
-- (void)enumerateVisibilityDependencies:(id)a3;
+- (void)enumerateAssetSpecificVariantDependenciesOfKind:(unint64_t)kind block:(id)block;
+- (void)enumeratePresetDependencies:(id)dependencies;
+- (void)enumeratePresetSpecificPresetDependencies:(id)dependencies;
+- (void)enumerateVariantDependenciesOfKind:(unint64_t)kind block:(id)block;
+- (void)enumerateVisibilityDependencies:(id)dependencies;
 - (void)rebuildSpecializationSettings;
 @end
 
@@ -25,23 +25,23 @@
   return v6;
 }
 
-+ (id)availablePresetsForCategory:(int64_t)a3
++ (id)availablePresetsForCategory:(int64_t)category
 {
   if (AVTPresetLoadPresetsIfNeeded_onceToken != -1)
   {
     +[AVTPreset availablePresetsForCategory:];
   }
 
-  v4 = gPresets[a3];
+  v4 = gPresets[category];
 
   return v4;
 }
 
-+ (AVTPreset)presetWithCategory:(int64_t)a3 identifier:(id)a4
++ (AVTPreset)presetWithCategory:(int64_t)category identifier:(id)identifier
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  [a1 availablePresetsForCategory:a3];
+  identifierCopy = identifier;
+  [self availablePresetsForCategory:category];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -60,8 +60,8 @@
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 identifier];
-        v13 = [v12 isEqualToString:v6];
+        identifier = [v11 identifier];
+        v13 = [identifier isEqualToString:identifierCopy];
 
         if (v13)
         {
@@ -107,10 +107,10 @@ LABEL_11:
   return [(AVTComponent *)v4 initWithType:v3 assets:assets morphVariant:morphVariant imageVariant:imageVariant materialVariant:materialVariant morphVariantIntensity:v9 bodyPoseVariantIntensity:v10 textureAssetPresence:v11];
 }
 
-- (void)enumeratePresetDependencies:(id)a3
+- (void)enumeratePresetDependencies:(id)dependencies
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dependenciesCopy = dependencies;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -134,7 +134,7 @@ LABEL_11:
         v10 = *(*(&v13 + 1) + 8 * v9);
         if (v10 && *(v10 + 24))
         {
-          (*(v4 + 2))(v4, *(v10 + 16), *(v10 + 24));
+          (*(dependenciesCopy + 2))(dependenciesCopy, *(v10 + 16), *(v10 + 24));
         }
 
         ++v9;
@@ -151,10 +151,10 @@ LABEL_11:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enumerateVisibilityDependencies:(id)a3
+- (void)enumerateVisibilityDependencies:(id)dependencies
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dependenciesCopy = dependencies;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -178,7 +178,7 @@ LABEL_11:
         v10 = *(*(&v13 + 1) + 8 * v9);
         if (v10 && *(v10 + 56))
         {
-          (*(v4 + 2))(v4, *(v10 + 16), *(v10 + 56));
+          (*(dependenciesCopy + 2))(dependenciesCopy, *(v10 + 16), *(v10 + 56));
         }
 
         ++v9;
@@ -195,10 +195,10 @@ LABEL_11:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enumerateVariantDependenciesOfKind:(unint64_t)a3 block:(id)a4
+- (void)enumerateVariantDependenciesOfKind:(unint64_t)kind block:(id)block
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  blockCopy = block;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -220,16 +220,16 @@ LABEL_11:
         }
 
         v12 = *(*(&v15 + 1) + 8 * v11);
-        switch(a3)
+        switch(kind)
         {
           case 2uLL:
-            [(AVTPreset *)v12 enumerateVariantDependenciesOfKind:v6 block:?];
+            [(AVTPreset *)v12 enumerateVariantDependenciesOfKind:blockCopy block:?];
             break;
           case 1uLL:
-            [(AVTPreset *)v12 enumerateVariantDependenciesOfKind:v6 block:?];
+            [(AVTPreset *)v12 enumerateVariantDependenciesOfKind:blockCopy block:?];
             break;
           case 0uLL:
-            [(AVTPreset *)v12 enumerateVariantDependenciesOfKind:v6 block:?];
+            [(AVTPreset *)v12 enumerateVariantDependenciesOfKind:blockCopy block:?];
             break;
         }
 
@@ -247,16 +247,16 @@ LABEL_11:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enumeratePresetSpecificPresetDependencies:(id)a3
+- (void)enumeratePresetSpecificPresetDependencies:(id)dependencies
 {
-  v4 = a3;
+  dependenciesCopy = dependencies;
   presetSpecificPresetDependencies = self->_presetSpecificPresetDependencies;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __55__AVTPreset_enumeratePresetSpecificPresetDependencies___block_invoke;
   v7[3] = &unk_1E7F482F8;
-  v8 = v4;
-  v6 = v4;
+  v8 = dependenciesCopy;
+  v6 = dependenciesCopy;
   [(NSDictionary *)presetSpecificPresetDependencies enumerateKeysAndObjectsUsingBlock:v7];
 }
 
@@ -282,19 +282,19 @@ void __55__AVTPreset_enumeratePresetSpecificPresetDependencies___block_invoke_2(
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)enumerateAssetSpecificVariantDependenciesOfKind:(unint64_t)a3 block:(id)a4
+- (void)enumerateAssetSpecificVariantDependenciesOfKind:(unint64_t)kind block:(id)block
 {
   v26[3] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  blockCopy = block;
   v26[0] = self->_assetSpecificMorphVariantDependencies;
   v26[1] = self->_assetSpecificImageVariantDependencies;
   v26[2] = self->_assetSpecificMaterialVariantDependencies;
-  v7 = v26[a3];
+  v7 = v26[kind];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __67__AVTPreset_enumerateAssetSpecificVariantDependenciesOfKind_block___block_invoke;
   v23[3] = &unk_1E7F482F8;
-  v8 = v6;
+  v8 = blockCopy;
   v24 = v8;
   [v7 enumerateKeysAndObjectsUsingBlock:v23];
   v21 = 0u;
@@ -322,7 +322,7 @@ void __55__AVTPreset_enumeratePresetSpecificPresetDependencies___block_invoke_2(
         v17[2] = __67__AVTPreset_enumerateAssetSpecificVariantDependenciesOfKind_block___block_invoke_3;
         v17[3] = &unk_1E7F49748;
         v18 = v8;
-        [v14 enumerateVariantDependenciesOfKind:a3 block:v17];
+        [v14 enumerateVariantDependenciesOfKind:kind block:v17];
       }
 
       v11 = [(NSArray *)v9 countByEnumeratingWithState:&v19 objects:v25 count:16];
@@ -351,10 +351,10 @@ void __67__AVTPreset_enumerateAssetSpecificVariantDependenciesOfKind_block___blo
   [v5 enumerateKeysAndObjectsUsingBlock:v7];
 }
 
-+ (unint64_t)editableColorCountForCategory:(int64_t)a3
++ (unint64_t)editableColorCountForCategory:(int64_t)category
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [a1 availablePresetsForCategory:a3];
+  v3 = [self availablePresetsForCategory:category];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -374,10 +374,10 @@ void __67__AVTPreset_enumerateAssetSpecificVariantDependenciesOfKind_block___blo
           objc_enumerationMutation(v3);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) editableColorCount];
-        if (v6 <= v9)
+        editableColorCount = [*(*(&v12 + 1) + 8 * i) editableColorCount];
+        if (v6 <= editableColorCount)
         {
-          v6 = v9;
+          v6 = editableColorCount;
         }
       }
 
@@ -401,7 +401,7 @@ void __67__AVTPreset_enumerateAssetSpecificVariantDependenciesOfKind_block___blo
   v16 = *MEMORY[0x1E69E9840];
   if (self->_assets)
   {
-    v3 = objc_alloc_init(AVTAssetResourceCache);
+    null = objc_alloc_init(AVTAssetResourceCache);
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
@@ -422,7 +422,7 @@ void __67__AVTPreset_enumerateAssetSpecificVariantDependenciesOfKind_block___blo
             objc_enumerationMutation(v4);
           }
 
-          [(AVTAssetResourceCache *)v3 resourceForAsset:*(*(&v11 + 1) + 8 * v8), v11];
+          [(AVTAssetResourceCache *)null resourceForAsset:*(*(&v11 + 1) + 8 * v8), v11];
 
           ++v8;
         }
@@ -437,11 +437,11 @@ void __67__AVTPreset_enumerateAssetSpecificVariantDependenciesOfKind_block___blo
 
   else
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v9 = *MEMORY[0x1E69E9840];
-  return v3;
+  return null;
 }
 
 - (void)rebuildSpecializationSettings
@@ -471,8 +471,8 @@ void __67__AVTPreset_enumerateAssetSpecificVariantDependenciesOfKind_block___blo
         }
 
         v9 = self->_specializationSettings;
-        v10 = [*(*(&v14 + 1) + 8 * v8) specializationSettings];
-        v11 = AVTMergeSpecializationSettings(v9, v10);
+        specializationSettings = [*(*(&v14 + 1) + 8 * v8) specializationSettings];
+        v11 = AVTMergeSpecializationSettings(v9, specializationSettings);
         v12 = self->_specializationSettings;
         self->_specializationSettings = v11;
 

@@ -1,15 +1,15 @@
 @interface OSTransactionStore
 + (id)globalStore;
-+ (void)holdKeepAliveTransaction:(id)a3 whilePerformingBlock:(id)a4;
-+ (void)releaseKeepAliveTransaction:(id)a3;
-+ (void)takeKeepAliveTransaction:(id)a3;
++ (void)holdKeepAliveTransaction:(id)transaction whilePerformingBlock:(id)block;
++ (void)releaseKeepAliveTransaction:(id)transaction;
++ (void)takeKeepAliveTransaction:(id)transaction;
 - (NSCountedSet)activeTransactions;
-- (OSTransactionStore)initWithHoldTime:(double)a3;
+- (OSTransactionStore)initWithHoldTime:(double)time;
 - (unint64_t)transactionCount;
 - (void)dealloc;
-- (void)holdKeepAliveTransaction:(id)a3 whilePerformingBlock:(id)a4;
-- (void)releaseKeepAliveTransaction:(id)a3;
-- (void)takeKeepAliveTransaction:(id)a3;
+- (void)holdKeepAliveTransaction:(id)transaction whilePerformingBlock:(id)block;
+- (void)releaseKeepAliveTransaction:(id)transaction;
+- (void)takeKeepAliveTransaction:(id)transaction;
 @end
 
 @implementation OSTransactionStore
@@ -26,7 +26,7 @@
   return v3;
 }
 
-- (OSTransactionStore)initWithHoldTime:(double)a3
+- (OSTransactionStore)initWithHoldTime:(double)time
 {
   v14.receiver = self;
   v14.super_class = OSTransactionStore;
@@ -38,7 +38,7 @@
     dispatchQueue = v4->_dispatchQueue;
     v4->_dispatchQueue = v6;
 
-    v4->_holdTime = (a3 * 1000000000.0);
+    v4->_holdTime = (time * 1000000000.0);
     v8 = objc_alloc_init(NSCountedSet);
     transactionCount = v4->_transactionCount;
     v4->_transactionCount = v8;
@@ -103,56 +103,56 @@
   return v3;
 }
 
-+ (void)holdKeepAliveTransaction:(id)a3 whilePerformingBlock:(id)a4
++ (void)holdKeepAliveTransaction:(id)transaction whilePerformingBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 globalStore];
-  [v8 holdKeepAliveTransaction:v7 whilePerformingBlock:v6];
+  blockCopy = block;
+  transactionCopy = transaction;
+  globalStore = [self globalStore];
+  [globalStore holdKeepAliveTransaction:transactionCopy whilePerformingBlock:blockCopy];
 }
 
-+ (void)takeKeepAliveTransaction:(id)a3
++ (void)takeKeepAliveTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = [a1 globalStore];
-  [v5 takeKeepAliveTransaction:v4];
+  transactionCopy = transaction;
+  globalStore = [self globalStore];
+  [globalStore takeKeepAliveTransaction:transactionCopy];
 }
 
-+ (void)releaseKeepAliveTransaction:(id)a3
++ (void)releaseKeepAliveTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = [a1 globalStore];
-  [v5 releaseKeepAliveTransaction:v4];
+  transactionCopy = transaction;
+  globalStore = [self globalStore];
+  [globalStore releaseKeepAliveTransaction:transactionCopy];
 }
 
-- (void)holdKeepAliveTransaction:(id)a3 whilePerformingBlock:(id)a4
+- (void)holdKeepAliveTransaction:(id)transaction whilePerformingBlock:(id)block
 {
-  v8 = a3;
-  v6 = a4;
-  [(OSTransactionStore *)self takeKeepAliveTransaction:v8];
+  transactionCopy = transaction;
+  blockCopy = block;
+  [(OSTransactionStore *)self takeKeepAliveTransaction:transactionCopy];
   v7 = objc_autoreleasePoolPush();
-  v6[2](v6);
+  blockCopy[2](blockCopy);
   objc_autoreleasePoolPop(v7);
-  [(OSTransactionStore *)self releaseKeepAliveTransaction:v8];
+  [(OSTransactionStore *)self releaseKeepAliveTransaction:transactionCopy];
 }
 
-- (void)takeKeepAliveTransaction:(id)a3
+- (void)takeKeepAliveTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000573CC;
   v7[3] = &unk_10037F868;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = transactionCopy;
+  v6 = transactionCopy;
   dispatch_sync(dispatchQueue, v7);
 }
 
-- (void)releaseKeepAliveTransaction:(id)a3
+- (void)releaseKeepAliveTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   v5 = dispatch_time(0, self->_holdTime);
   dispatchQueue = self->_dispatchQueue;
   v8[0] = _NSConcreteStackBlock;
@@ -160,8 +160,8 @@
   v8[2] = sub_1000575EC;
   v8[3] = &unk_10037F868;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = transactionCopy;
+  v7 = transactionCopy;
   dispatch_after(v5, dispatchQueue, v8);
 }
 

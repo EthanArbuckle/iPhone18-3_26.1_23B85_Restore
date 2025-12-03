@@ -1,82 +1,82 @@
 @interface NTKActivityDigitalFaceView
 + (id)_newRingsQuad;
 - ($070E75FE9C89E6C9B32F698ACB560C0E)_layoutConstants;
-- (CGPoint)_ringCenterForLayout:(RingLayout *)a3;
-- (CGRect)_relativeKeylineFrameForCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (CGPoint)_ringCenterForLayout:(RingLayout *)layout;
+- (CGRect)_relativeKeylineFrameForCustomEditMode:(int64_t)mode slot:(id)slot;
 - (CGRect)_timeViewBackgroundRect;
-- (NTKActivityDigitalFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
+- (NTKActivityDigitalFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
 - (double)_blinkerAndSecondsWidth;
-- (double)_rightTimeViewInsetForEditMode:(int64_t)a3;
-- (double)_ringAlphaForEditMode:(int64_t)a3;
-- (double)_timeAlphaForEditMode:(int64_t)a3;
+- (double)_rightTimeViewInsetForEditMode:(int64_t)mode;
+- (double)_ringAlphaForEditMode:(int64_t)mode;
+- (double)_timeAlphaForEditMode:(int64_t)mode;
 - (id)_additionalPrelaunchApplicationIdentifiers;
-- (id)_digitalTimeLabelStyleFromViewMode:(int64_t)a3 faceBounds:(CGRect)a4;
-- (id)_keylineViewForCustomEditMode:(int64_t)a3 slot:(id)a4;
-- (id)_labelFontMonospaced:(BOOL)a3;
+- (id)_digitalTimeLabelStyleFromViewMode:(int64_t)mode faceBounds:(CGRect)bounds;
+- (id)_keylineViewForCustomEditMode:(int64_t)mode slot:(id)slot;
+- (id)_labelFontMonospaced:(BOOL)monospaced;
 - (id)_newActivityLabelSubview;
-- (id)_newFaceViewFactoryForDevice:(id)a3;
-- (id)_swatchColorForColorOption:(id)a3;
-- (int64_t)_polygonIndexForAccuracy:(unint64_t)a3;
-- (unint64_t)_keylineLabelAlignmentForCustomEditMode:(int64_t)a3 slot:(id)a4;
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (id)_newFaceViewFactoryForDevice:(id)device;
+- (id)_swatchColorForColorOption:(id)option;
+- (int64_t)_polygonIndexForAccuracy:(unint64_t)accuracy;
+- (unint64_t)_keylineLabelAlignmentForCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_applyCurrentRingLayout;
 - (void)_applyDataMode;
 - (void)_applyFrozen;
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_applyShowsCanonicalContent;
 - (void)_applyShowsLockedUI;
 - (void)_applySlow;
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7;
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_cleanUpAfterDetailEditing;
 - (void)_cleanupAfterEditing;
 - (void)_configureForDetailEditing;
-- (void)_configureForEditMode:(int64_t)a3;
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
+- (void)_configureForEditMode:(int64_t)mode;
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
 - (void)_createActivityRelatedUIs;
 - (void)_createTimeViewIfNecessary;
-- (void)_enumerateActivityLabels:(id)a3;
-- (void)_launchButtonPressed:(id)a3;
+- (void)_enumerateActivityLabels:(id)labels;
+- (void)_launchButtonPressed:(id)pressed;
 - (void)_layoutForegroundContainerView;
 - (void)_loadSnapshotContentViews;
 - (void)_performWristRaiseAnimation;
 - (void)_prepareForEditing;
 - (void)_prepareWristRaiseAnimation;
 - (void)_removeActivityRelatedUIs;
-- (void)_setActivityViewsAlpha:(double)a3 animated:(BOOL)a4;
+- (void)_setActivityViewsAlpha:(double)alpha animated:(BOOL)animated;
 - (void)_unloadSnapshotContentViews;
-- (void)_updateActivityLabelColors:(BOOL)a3;
+- (void)_updateActivityLabelColors:(BOOL)colors;
 - (void)_updateCurrentRingLayoutIfNecessary;
 - (void)_updatePausedState;
 - (void)_updateTimeViewSecondsDisplayState;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setDataMode:(int64_t)a3;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
-- (void)setRightTimeViewInset:(double)a3;
-- (void)timeTravelDateEnteredOrExitedTimelineBounds:(BOOL)a3;
+- (void)setDataMode:(int64_t)mode;
+- (void)setOverrideDate:(id)date duration:(double)duration;
+- (void)setRightTimeViewInset:(double)inset;
+- (void)timeTravelDateEnteredOrExitedTimelineBounds:(BOOL)bounds;
 @end
 
 @implementation NTKActivityDigitalFaceView
 
-- (id)_newFaceViewFactoryForDevice:(id)a3
+- (id)_newFaceViewFactoryForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [[NTKActivityFaceViewFactory alloc] initForAnalog:0 richComplications:0 forDevice:v3];
+  deviceCopy = device;
+  v4 = [[NTKActivityFaceViewFactory alloc] initForAnalog:0 richComplications:0 forDevice:deviceCopy];
 
   return v4;
 }
 
-- (NTKActivityDigitalFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKActivityDigitalFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
-  v8 = a4;
+  deviceCopy = device;
   v15.receiver = self;
   v15.super_class = NTKActivityDigitalFaceView;
-  v9 = [(NTKActivityDigitalFaceView *)&v15 initWithFaceStyle:a3 forDevice:v8 clientIdentifier:a5];
+  v9 = [(NTKActivityDigitalFaceView *)&v15 initWithFaceStyle:style forDevice:deviceCopy clientIdentifier:identifier];
   v10 = v9;
   if (v9)
   {
-    v11 = [(NTKActivityDigitalFaceView *)v9 _newFaceViewFactoryForDevice:v8];
+    v11 = [(NTKActivityDigitalFaceView *)v9 _newFaceViewFactoryForDevice:deviceCopy];
     faceViewFactory = v10->_faceViewFactory;
     v10->_faceViewFactory = v11;
 
@@ -102,7 +102,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "Digital Face Destroyed: %@", buf, 0xCu);
   }
 
@@ -161,35 +161,35 @@
 
 - (void)_updatePausedState
 {
-  v3 = [(NTKActivityDigitalFaceView *)self dataMode];
-  v4 = [(NTKActivityDigitalFaceView *)self isFrozen];
+  dataMode = [(NTKActivityDigitalFaceView *)self dataMode];
+  isFrozen = [(NTKActivityDigitalFaceView *)self isFrozen];
   v5 = NTKIsScreenOn();
-  v6 = [(NTKRingsQuad *)self->_ringsQuad animating];
+  animating = [(NTKRingsQuad *)self->_ringsQuad animating];
   if ([(NTKActivityDigitalFaceView *)self editing])
   {
     ringsView = self->_ringsView;
-    v8 = v6 ^ 1;
+    v8 = animating ^ 1;
   }
 
   else
   {
     ringsView = self->_ringsView;
-    v8 = (v3 != &dword_0 + 1) | v4 & 1 | ((v5 & v6 & 1) == 0);
+    v8 = (dataMode != &dword_0 + 1) | isFrozen & 1 | ((v5 & animating & 1) == 0);
   }
 
   [(NTKRingsMetalQuadView *)ringsView setPaused:v8];
 }
 
-- (id)_digitalTimeLabelStyleFromViewMode:(int64_t)a3 faceBounds:(CGRect)a4
+- (id)_digitalTimeLabelStyleFromViewMode:(int64_t)mode faceBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v9 = [(NTKActivityDigitalFaceView *)self _labelFontMonospaced:0];
   [(NTKActivityDigitalFaceView *)self _layoutConstants];
-  v10 = [(NTKActivityDigitalFaceView *)self device];
-  v11 = [NTKDigitalTimeLabelStyle defaultStyleForBounds:0 withRightSideMargin:v9 applyAdvanceFudge:v10 withBaselineY:x withFont:y forDevice:width, height, 0.0, v13];
+  device = [(NTKActivityDigitalFaceView *)self device];
+  v11 = [NTKDigitalTimeLabelStyle defaultStyleForBounds:0 withRightSideMargin:v9 applyAdvanceFudge:device withBaselineY:x withFont:y forDevice:width, height, 0.0, v13];
 
   return v11;
 }
@@ -200,14 +200,14 @@
   v5.super_class = NTKActivityDigitalFaceView;
   [(NTKActivityDigitalFaceView *)&v5 _createTimeViewIfNecessary];
   showSeconds = self->_showSeconds;
-  v4 = [(NTKActivityDigitalFaceView *)self timeView];
-  [v4 setShowSeconds:showSeconds];
+  timeView = [(NTKActivityDigitalFaceView *)self timeView];
+  [timeView setShowSeconds:showSeconds];
 }
 
 - ($070E75FE9C89E6C9B32F698ACB560C0E)_layoutConstants
 {
-  v5 = [(NTKActivityDigitalFaceView *)self device];
-  sub_1034C(v5, retstr);
+  device = [(NTKActivityDigitalFaceView *)self device];
+  sub_1034C(device, retstr);
 
   return result;
 }
@@ -224,7 +224,7 @@
   v49.receiver = self;
   v49.super_class = NTKActivityDigitalFaceView;
   [(NTKActivityDigitalFaceView *)&v49 _layoutForegroundContainerView];
-  v3 = [(NTKActivityDigitalFaceView *)self device];
+  device = [(NTKActivityDigitalFaceView *)self device];
   [(NTKActivityDigitalFaceView *)self bounds];
   v5 = v4;
   v7 = v6;
@@ -271,7 +271,7 @@
   v19 = v28;
   v24 = xmmword_28F08;
   v25 = *(&v29 + 1) - v15;
-  v16 = v3;
+  v16 = device;
   v18 = v16;
   v26 = v12;
   v27 = v15;
@@ -294,10 +294,10 @@
   v3 = &v20;
   v4 = &v19;
   [(NTKActivityDigitalFaceView *)self _layoutConstants];
-  v5 = [(NTKActivityDigitalFaceView *)self timeScrubbing];
+  timeScrubbing = [(NTKActivityDigitalFaceView *)self timeScrubbing];
   v6 = +[NTKActivityFaceViewFactory userActiveEnergyIsCalories];
   v7 = (&v20 + 8);
-  if (!v5 || v6)
+  if (!timeScrubbing || v6)
   {
     moveStringMetricWidth = self->_moveStringMetricWidth;
     if (moveStringMetricWidth <= 4)
@@ -305,7 +305,7 @@
       v7 = &v18;
       v3 = &v17 + 1;
       v4 = (&v16 + 8);
-      v9 = moveStringMetricWidth == 4 ? 1 : v5;
+      v9 = moveStringMetricWidth == 4 ? 1 : timeScrubbing;
       if ((v9 & 1) == 0 && self->_exerciseStringMetricWidth <= 2)
       {
         v4 = &v14;
@@ -348,48 +348,48 @@
     tapToLaunchButton = self->_tapToLaunchButton;
     [(NTKRingsMetalQuadView *)self->_ringsView center];
     [(NTKFaceViewTapControl *)tapToLaunchButton setCenter:?];
-    v9 = [(NTKFaceViewTapControl *)self->_tapToLaunchButton highlightImageView];
+    highlightImageView = [(NTKFaceViewTapControl *)self->_tapToLaunchButton highlightImageView];
     [(NTKActivityDigitalFaceView *)self _layoutConstants];
-    v10 = [(NTKActivityDigitalFaceView *)self device];
+    device = [(NTKActivityDigitalFaceView *)self device];
     v11 = *&p_currentRingLayout->diameter;
     v24 = *&p_currentRingLayout->bottomEdgeInset;
     v25 = v11;
     interspacing = p_currentRingLayout->interspacing;
-    v12 = sub_C8FC(&v24, v10, v22);
-    [v9 setImage:v12];
+    v12 = sub_C8FC(&v24, device, v22);
+    [highlightImageView setImage:v12];
 
     *&v7 = p_currentRingLayout->diameter;
-    v13 = [(NTKRingsQuad *)self->_ringsQuad ringGroups];
-    v14 = [v13 objectAtIndexedSubscript:0];
+    ringGroups = [(NTKRingsQuad *)self->_ringsQuad ringGroups];
+    v14 = [ringGroups objectAtIndexedSubscript:0];
     LODWORD(v15) = LODWORD(v7);
     [v14 setGroupDiameter:v15];
 
     *&v7 = p_currentRingLayout->thickness;
-    v16 = [(NTKRingsQuad *)self->_ringsQuad ringGroups];
-    v17 = [v16 objectAtIndexedSubscript:0];
+    ringGroups2 = [(NTKRingsQuad *)self->_ringsQuad ringGroups];
+    v17 = [ringGroups2 objectAtIndexedSubscript:0];
     LODWORD(v18) = LODWORD(v7);
     [v17 setThickness:v18];
 
     *&v7 = p_currentRingLayout->interspacing;
-    v19 = [(NTKRingsQuad *)self->_ringsQuad ringGroups];
-    v20 = [v19 objectAtIndexedSubscript:0];
+    ringGroups3 = [(NTKRingsQuad *)self->_ringsQuad ringGroups];
+    v20 = [ringGroups3 objectAtIndexedSubscript:0];
     LODWORD(v21) = LODWORD(v7);
     [v20 setInterspacing:v21];
   }
 }
 
-- (CGPoint)_ringCenterForLayout:(RingLayout *)a3
+- (CGPoint)_ringCenterForLayout:(RingLayout *)layout
 {
-  v4 = a3->leftEdgeInset + a3->diameter * 0.5;
+  v4 = layout->leftEdgeInset + layout->diameter * 0.5;
   [(NTKActivityDigitalFaceView *)self bounds];
-  v6 = v5 - (a3->diameter * 0.5 + a3->bottomEdgeInset);
+  v6 = v5 - (layout->diameter * 0.5 + layout->bottomEdgeInset);
   v7 = v4;
   result.y = v6;
   result.x = v7;
   return result;
 }
 
-- (void)_launchButtonPressed:(id)a3
+- (void)_launchButtonPressed:(id)pressed
 {
   v4 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -399,7 +399,7 @@
     v16 = 138412546;
     v17 = v6;
     v18 = 1024;
-    v19 = [(NTKActivityDigitalFaceView *)self dataMode];
+    dataMode = [(NTKActivityDigitalFaceView *)self dataMode];
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "%@ launchButtonPressed action with data mode:%u", &v16, 0x12u);
   }
 
@@ -412,24 +412,24 @@
     v10 = v9;
     v12 = v11;
     v14 = v13;
-    v15 = [(NTKActivityDigitalFaceView *)self delegate];
-    [v15 faceViewRequestedLaunchFromRect:{v8, v10, v12, v14}];
+    delegate = [(NTKActivityDigitalFaceView *)self delegate];
+    [delegate faceViewRequestedLaunchFromRect:{v8, v10, v12, v14}];
   }
 }
 
-- (void)setDataMode:(int64_t)a3
+- (void)setDataMode:(int64_t)mode
 {
   v5.receiver = self;
   v5.super_class = NTKActivityDigitalFaceView;
   [(NTKActivityDigitalFaceView *)&v5 setDataMode:?];
   [(NTKFaceViewTapControl *)self->_tapToLaunchButton setHighlighted:0];
-  [(NTKFaceViewTapControl *)self->_tapToLaunchButton setUserInteractionEnabled:a3 == 1];
-  [(NTKActivityFaceViewFactory *)self->_faceViewFactory setDataMode:a3];
+  [(NTKFaceViewTapControl *)self->_tapToLaunchButton setUserInteractionEnabled:mode == 1];
+  [(NTKActivityFaceViewFactory *)self->_faceViewFactory setDataMode:mode];
 }
 
-- (id)_keylineViewForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (id)_keylineViewForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a3 == 11)
+  if (mode == 11)
   {
     NTKKeylineCornerRadiusLarge();
     v4 = NTKKeylineViewWithContinuousCurveCornerRadius();
@@ -439,15 +439,15 @@
   {
     v6.receiver = self;
     v6.super_class = NTKActivityDigitalFaceView;
-    v4 = [(NTKActivityDigitalFaceView *)&v6 _keylineViewForCustomEditMode:a3 slot:a4];
+    v4 = [(NTKActivityDigitalFaceView *)&v6 _keylineViewForCustomEditMode:mode slot:slot];
   }
 
   return v4;
 }
 
-- (unint64_t)_keylineLabelAlignmentForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (unint64_t)_keylineLabelAlignmentForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a3 == 11)
+  if (mode == 11)
   {
     return 161;
   }
@@ -456,20 +456,20 @@
   v9 = v5;
   v7.receiver = self;
   v7.super_class = NTKActivityDigitalFaceView;
-  return [(NTKActivityDigitalFaceView *)&v7 _keylineLabelAlignmentForCustomEditMode:a3 slot:a4];
+  return [(NTKActivityDigitalFaceView *)&v7 _keylineLabelAlignmentForCustomEditMode:mode slot:slot];
 }
 
-- (CGRect)_relativeKeylineFrameForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (CGRect)_relativeKeylineFrameForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a3 == 11)
+  if (mode == 11)
   {
     v5 = [(NTKActivityDigitalFaceView *)self timeView:11];
     [v5 frame];
     v7 = v6;
     [(NTKActivityDigitalFaceView *)self bounds];
     v9 = v8;
-    v10 = [(NTKActivityDigitalFaceView *)self timeView];
-    [v10 frame];
+    timeView = [(NTKActivityDigitalFaceView *)self timeView];
+    [timeView frame];
     v12 = v11;
 
     [(NTKActivityDigitalFaceView *)self _layoutConstants];
@@ -483,7 +483,7 @@
   {
     v17.receiver = self;
     v17.super_class = NTKActivityDigitalFaceView;
-    [(NTKActivityDigitalFaceView *)&v17 _relativeKeylineFrameForCustomEditMode:a3 slot:a4];
+    [(NTKActivityDigitalFaceView *)&v17 _relativeKeylineFrameForCustomEditMode:mode slot:slot];
   }
 
   result.size.height = v16;
@@ -495,8 +495,8 @@
 
 - (CGRect)_timeViewBackgroundRect
 {
-  v3 = [(NTKActivityDigitalFaceView *)self timeView];
-  [v3 frame];
+  timeView = [(NTKActivityDigitalFaceView *)self timeView];
+  [timeView frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -535,47 +535,47 @@
   return result;
 }
 
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
   [(NTKActivityDigitalFaceView *)self _ringAlphaForEditMode:?];
-  [(NTKActivityDigitalFaceView *)self _ringAlphaForEditMode:a5];
+  [(NTKActivityDigitalFaceView *)self _ringAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
   [(NTKActivityDigitalFaceView *)self _setActivityViewsAlpha:0 animated:?];
-  v8 = [(NTKActivityDigitalFaceView *)self timeView];
-  [(NTKActivityDigitalFaceView *)self _timeAlphaForEditMode:a4];
-  [(NTKActivityDigitalFaceView *)self _timeAlphaForEditMode:a5];
+  timeView = [(NTKActivityDigitalFaceView *)self timeView];
+  [(NTKActivityDigitalFaceView *)self _timeAlphaForEditMode:mode];
+  [(NTKActivityDigitalFaceView *)self _timeAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
-  [v8 setAlpha:?];
+  [timeView setAlpha:?];
 
-  [(NTKActivityDigitalFaceView *)self _rightTimeViewInsetForEditMode:a4];
-  [(NTKActivityDigitalFaceView *)self _rightTimeViewInsetForEditMode:a5];
+  [(NTKActivityDigitalFaceView *)self _rightTimeViewInsetForEditMode:mode];
+  [(NTKActivityDigitalFaceView *)self _rightTimeViewInsetForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
 
   [(NTKActivityDigitalFaceView *)self setRightTimeViewInset:?];
 }
 
-- (void)setRightTimeViewInset:(double)a3
+- (void)setRightTimeViewInset:(double)inset
 {
   rightTimeViewInset = self->_rightTimeViewInset;
   if ((CLKFloatEqualsFloat() & 1) == 0)
   {
     memset(&v9, 0, sizeof(v9));
-    CGAffineTransformMakeTranslation(&v9, -a3, 0.0);
+    CGAffineTransformMakeTranslation(&v9, -inset, 0.0);
     v8 = v9;
-    v6 = [(NTKActivityDigitalFaceView *)self timeView];
+    timeView = [(NTKActivityDigitalFaceView *)self timeView];
     v7 = v8;
-    [v6 setTransform:&v7];
+    [timeView setTransform:&v7];
 
-    self->_rightTimeViewInset = a3;
+    self->_rightTimeViewInset = inset;
   }
 }
 
-- (void)_configureForEditMode:(int64_t)a3
+- (void)_configureForEditMode:(int64_t)mode
 {
   v5.receiver = self;
   v5.super_class = NTKActivityDigitalFaceView;
   [(NTKActivityDigitalFaceView *)&v5 _configureForEditMode:?];
-  if (a3 == 11)
+  if (mode == 11)
   {
     [(NTKActivityDigitalFaceView *)self _configureForDetailEditing];
   }
@@ -600,15 +600,15 @@
     [(NTKPolygonCylinderView *)v5 setBackgroundColor:v6];
 
     [(NTKPolygonCylinderView *)self->_densityEditingPolygonView setClipsToBounds:1];
-    v7 = [(NTKActivityDigitalFaceView *)self timeView];
-    [v7 frame];
+    timeView = [(NTKActivityDigitalFaceView *)self timeView];
+    [timeView frame];
     v9 = v8;
     [(NTKActivityDigitalFaceView *)self bounds];
     v11 = v10;
     [(NTKActivityDigitalFaceView *)self _layoutConstants];
     v12 = v11 - v29;
-    v13 = [(NTKActivityDigitalFaceView *)self timeView];
-    [v13 frame];
+    timeView2 = [(NTKActivityDigitalFaceView *)self timeView];
+    [timeView2 frame];
     v15 = v14;
 
     v16 = self->_densityEditingPolygonView;
@@ -629,28 +629,28 @@
     [(NTKPolygonCylinderView *)v20 setView:v21 forSideAtIndex:1];
 
     [(NTKPolygonCylinderView *)self->_densityEditingPolygonView transitionToSideAtIndex:[(NTKActivityDigitalFaceView *)self showSeconds]^ 1];
-    v22 = [(NTKActivityDigitalFaceView *)self foregroundContainerView];
-    [v22 addSubview:self->_densityEditingPolygonView];
+    foregroundContainerView = [(NTKActivityDigitalFaceView *)self foregroundContainerView];
+    [foregroundContainerView addSubview:self->_densityEditingPolygonView];
 
-    v23 = [(NTKActivityDigitalFaceView *)self timeView];
-    [v23 setHidden:1];
+    timeView3 = [(NTKActivityDigitalFaceView *)self timeView];
+    [timeView3 setHidden:1];
   }
 }
 
 - (void)_cleanUpAfterDetailEditing
 {
-  v3 = [(NTKActivityDigitalFaceView *)self timeView];
-  [v3 setHidden:0];
+  timeView = [(NTKActivityDigitalFaceView *)self timeView];
+  [timeView setHidden:0];
 
   [(NTKPolygonCylinderView *)self->_densityEditingPolygonView removeFromSuperview];
   densityEditingPolygonView = self->_densityEditingPolygonView;
   self->_densityEditingPolygonView = 0;
 }
 
-- (double)_ringAlphaForEditMode:(int64_t)a3
+- (double)_ringAlphaForEditMode:(int64_t)mode
 {
   result = NTKEditModeDimmedAlpha;
-  if (!a3)
+  if (!mode)
   {
     return 1.0;
   }
@@ -658,10 +658,10 @@
   return result;
 }
 
-- (double)_timeAlphaForEditMode:(int64_t)a3
+- (double)_timeAlphaForEditMode:(int64_t)mode
 {
   result = NTKEditModeDimmedAlpha;
-  if (a3 != 1)
+  if (mode != 1)
   {
     return 1.0;
   }
@@ -669,10 +669,10 @@
   return result;
 }
 
-- (double)_rightTimeViewInsetForEditMode:(int64_t)a3
+- (double)_rightTimeViewInsetForEditMode:(int64_t)mode
 {
   result = 0.0;
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 0xA)
+  if ((mode & 0xFFFFFFFFFFFFFFFELL) == 0xA)
   {
     [(NTKActivityDigitalFaceView *)self _layoutConstants];
     return v4;
@@ -681,18 +681,18 @@
   return result;
 }
 
-- (void)_setActivityViewsAlpha:(double)a3 animated:(BOOL)a4
+- (void)_setActivityViewsAlpha:(double)alpha animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_D6E4;
   v14[3] = &unk_20820;
   v14[4] = self;
-  *&v14[5] = a3;
+  *&v14[5] = alpha;
   v7 = objc_retainBlock(v14);
   v8 = v7;
-  if (v4)
+  if (animatedCopy)
   {
     [UIView animateWithDuration:v7 animations:0.2];
     v13[0] = _NSConcreteStackBlock;
@@ -700,101 +700,101 @@
     v13[2] = sub_D768;
     v13[3] = &unk_20820;
     v13[4] = self;
-    *&v13[5] = a3;
+    *&v13[5] = alpha;
     [ARUIRingGroup animateWithDuration:v13 animations:0.2];
   }
 
   else
   {
     (v7[2])(v7);
-    v10 = [(NTKRingsQuad *)self->_ringsQuad ringGroups];
-    v11 = [v10 objectAtIndexedSubscript:0];
-    v9 = a3;
-    *&v12 = v9;
+    ringGroups = [(NTKRingsQuad *)self->_ringsQuad ringGroups];
+    v11 = [ringGroups objectAtIndexedSubscript:0];
+    alphaCopy = alpha;
+    *&v12 = alphaCopy;
     [v11 setOpacity:v12];
   }
 }
 
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v14 = a3;
-  v8 = a5;
-  if (a4 == 11)
+  optionCopy = option;
+  slotCopy = slot;
+  if (mode == 11)
   {
-    -[NTKActivityDigitalFaceView setShowSeconds:](self, "setShowSeconds:", [v14 accuracy] == 0);
+    -[NTKActivityDigitalFaceView setShowSeconds:](self, "setShowSeconds:", [optionCopy accuracy] == 0);
     [(NTKActivityDigitalFaceView *)self _relativeKeylineFrameForCustomEditMode:10 slot:0];
     [(UIView *)self->_timeLabelBackgroundView setFrame:?];
-    v11 = [(NTKActivityDigitalFaceView *)self delegate];
-    [v11 faceViewWantsCustomKeylineFramesReloadedForEditMode:10];
+    delegate = [(NTKActivityDigitalFaceView *)self delegate];
+    [delegate faceViewWantsCustomKeylineFramesReloadedForEditMode:10];
   }
 
   else
   {
-    if (a4 != 10)
+    if (mode != 10)
     {
       goto LABEL_6;
     }
 
-    v9 = [(NTKActivityDigitalFaceView *)self device];
-    v10 = [(NTKActivityDigitalFaceView *)self faceColorPalette];
-    v11 = [NTKFaceColorScheme colorSchemeForDevice:v9 withFaceColorPalette:v10 units:16];
+    device = [(NTKActivityDigitalFaceView *)self device];
+    faceColorPalette = [(NTKActivityDigitalFaceView *)self faceColorPalette];
+    delegate = [NTKFaceColorScheme colorSchemeForDevice:device withFaceColorPalette:faceColorPalette units:16];
 
-    v12 = [(NTKActivityDigitalFaceView *)self timeView];
-    v13 = [v11 shiftedForegroundColor];
-    [v12 setColor:v13];
+    timeView = [(NTKActivityDigitalFaceView *)self timeView];
+    shiftedForegroundColor = [delegate shiftedForegroundColor];
+    [timeView setColor:shiftedForegroundColor];
   }
 
 LABEL_6:
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  if (a6 == 11)
+  optionCopy = option;
+  toOptionCopy = toOption;
+  slotCopy = slot;
+  if (mode == 11)
   {
-    -[NTKPolygonCylinderView transitionToFraction:fromSideAtIndex:toSideAtIndex:](self->_densityEditingPolygonView, "transitionToFraction:fromSideAtIndex:toSideAtIndex:", -[NTKActivityDigitalFaceView _polygonIndexForAccuracy:](self, "_polygonIndexForAccuracy:", [v12 accuracy]), -[NTKActivityDigitalFaceView _polygonIndexForAccuracy:](self, "_polygonIndexForAccuracy:", objc_msgSend(v13, "accuracy")), a3);
+    -[NTKPolygonCylinderView transitionToFraction:fromSideAtIndex:toSideAtIndex:](self->_densityEditingPolygonView, "transitionToFraction:fromSideAtIndex:toSideAtIndex:", -[NTKActivityDigitalFaceView _polygonIndexForAccuracy:](self, "_polygonIndexForAccuracy:", [optionCopy accuracy]), -[NTKActivityDigitalFaceView _polygonIndexForAccuracy:](self, "_polygonIndexForAccuracy:", objc_msgSend(toOptionCopy, "accuracy")), fraction);
   }
 
-  else if (a6 == 10)
+  else if (mode == 10)
   {
     [(NTKActivityDigitalFaceView *)self _layoutConstants];
     CLKInterpolateBetweenFloatsClipped();
     v16 = v15;
-    v17 = [(NTKActivityDigitalFaceView *)self device];
-    v18 = [(NTKActivityDigitalFaceView *)self interpolatedColorPalette];
-    v19 = [v18 fromPalette];
-    v20 = [(NTKActivityDigitalFaceView *)self interpolatedColorPalette];
-    v21 = [v20 toPalette];
+    device = [(NTKActivityDigitalFaceView *)self device];
+    interpolatedColorPalette = [(NTKActivityDigitalFaceView *)self interpolatedColorPalette];
+    fromPalette = [interpolatedColorPalette fromPalette];
+    interpolatedColorPalette2 = [(NTKActivityDigitalFaceView *)self interpolatedColorPalette];
+    toPalette = [interpolatedColorPalette2 toPalette];
     LOBYTE(v28) = 0;
-    v22 = [NTKFaceColorScheme interpolationForDevice:v17 fromFaceColorPalette:v19 toFaceColorPalette:v21 fraction:16 units:16 brightenUnits:0 overrideColor:a3 alternateHighlight:v28];
+    v22 = [NTKFaceColorScheme interpolationForDevice:device fromFaceColorPalette:fromPalette toFaceColorPalette:toPalette fraction:16 units:16 brightenUnits:0 overrideColor:fraction alternateHighlight:v28];
 
-    v23 = [(NTKActivityDigitalFaceView *)self timeView];
-    v24 = [v22 shiftedForegroundColor];
-    [v23 setColor:v24];
+    timeView = [(NTKActivityDigitalFaceView *)self timeView];
+    shiftedForegroundColor = [v22 shiftedForegroundColor];
+    [timeView setColor:shiftedForegroundColor];
 
     timeLabelBackgroundView = self->_timeLabelBackgroundView;
-    v26 = [v22 shiftedForegroundColor];
-    v27 = [v26 colorWithAlphaComponent:v16];
+    shiftedForegroundColor2 = [v22 shiftedForegroundColor];
+    v27 = [shiftedForegroundColor2 colorWithAlphaComponent:v16];
     [(UIView *)timeLabelBackgroundView setBackgroundColor:v27];
   }
 }
 
-- (int64_t)_polygonIndexForAccuracy:(unint64_t)a3
+- (int64_t)_polygonIndexForAccuracy:(unint64_t)accuracy
 {
-  v4 = [(NTKActivityDigitalFaceView *)self device];
-  v5 = [NTKDigitalTimeAccuracyOption indexForAccuracy:a3 forDevice:v4];
+  device = [(NTKActivityDigitalFaceView *)self device];
+  v5 = [NTKDigitalTimeAccuracyOption indexForAccuracy:accuracy forDevice:device];
 
   return v5;
 }
 
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v27.receiver = self;
   v27.super_class = NTKActivityDigitalFaceView;
-  [(NTKActivityDigitalFaceView *)&v27 _applyRubberBandingFraction:a4 forCustomEditMode:a5 slot:?];
-  if (a4 == 11)
+  [(NTKActivityDigitalFaceView *)&v27 _applyRubberBandingFraction:mode forCustomEditMode:slot slot:?];
+  if (mode == 11)
   {
     NTKScaleForRubberBandingFraction();
     v20 = v19;
@@ -808,7 +808,7 @@ LABEL_6:
 
   else
   {
-    if (a4 == 10)
+    if (mode == 10)
     {
       NTKScaleForRubberBandingFraction();
       v14 = v13;
@@ -820,16 +820,16 @@ LABEL_6:
       v24 = v26;
       CGAffineTransformTranslate(&v25, &v24, -v16, 0.0);
       v26 = v25;
-      v17 = [(NTKActivityDigitalFaceView *)self timeView];
+      timeView = [(NTKActivityDigitalFaceView *)self timeView];
       v25 = v26;
-      [v17 setTransform:&v25];
+      [timeView setTransform:&v25];
 
-      v12 = [(NTKActivityDigitalFaceView *)self timeView];
+      timeView2 = [(NTKActivityDigitalFaceView *)self timeView];
     }
 
     else
     {
-      if (a4)
+      if (mode)
       {
         return;
       }
@@ -838,36 +838,36 @@ LABEL_6:
       v8 = v7;
       NTKAlphaForRubberBandingFraction();
       v10 = v9;
-      v11 = [(NTKActivityDigitalFaceView *)self foregroundContainerView];
+      foregroundContainerView = [(NTKActivityDigitalFaceView *)self foregroundContainerView];
       CGAffineTransformMakeScale(&v26, v8, v8);
-      [v11 setTransform:&v26];
+      [foregroundContainerView setTransform:&v26];
 
-      v12 = [(NTKActivityDigitalFaceView *)self foregroundContainerView];
+      timeView2 = [(NTKActivityDigitalFaceView *)self foregroundContainerView];
     }
 
-    v18 = v12;
-    [v12 setAlpha:v10];
+    v18 = timeView2;
+    [timeView2 setAlpha:v10];
   }
 }
 
-- (id)_swatchColorForColorOption:(id)a3
+- (id)_swatchColorForColorOption:(id)option
 {
-  v3 = a3;
+  optionCopy = option;
   v4 = [[NTKFaceColorPalette alloc] initWithFaceClass:objc_opt_class()];
-  v5 = [v3 pigmentEditOption];
+  pigmentEditOption = [optionCopy pigmentEditOption];
 
-  [v4 setPigmentEditOption:v5];
-  v6 = [v4 primaryShiftedColor];
+  [v4 setPigmentEditOption:pigmentEditOption];
+  primaryShiftedColor = [v4 primaryShiftedColor];
 
-  return v6;
+  return primaryShiftedColor;
 }
 
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v15.receiver = self;
   v15.super_class = NTKActivityDigitalFaceView;
-  [(NTKActivityDigitalFaceView *)&v15 _applyBreathingFraction:a4 forCustomEditMode:a5 slot:?];
-  if (a4 == 11)
+  [(NTKActivityDigitalFaceView *)&v15 _applyBreathingFraction:mode forCustomEditMode:slot slot:?];
+  if (mode == 11)
   {
     NTKLargeElementScaleForBreathingFraction();
     densityEditingPolygonView = self->_densityEditingPolygonView;
@@ -875,7 +875,7 @@ LABEL_6:
     [(NTKPolygonCylinderView *)densityEditingPolygonView setTransform:&v14];
   }
 
-  else if (a4 == 10)
+  else if (mode == 10)
   {
     NTKLargeElementScaleForBreathingFraction();
     memset(&v14, 0, sizeof(v14));
@@ -884,9 +884,9 @@ LABEL_6:
     v12 = v14;
     CGAffineTransformTranslate(&v13, &v12, -v8, 0.0);
     v14 = v13;
-    v9 = [(NTKActivityDigitalFaceView *)self timeView];
+    timeView = [(NTKActivityDigitalFaceView *)self timeView];
     v13 = v14;
-    [v9 setTransform:&v13];
+    [timeView setTransform:&v13];
   }
 }
 
@@ -910,8 +910,8 @@ LABEL_6:
   if (!self->_timeLabelBackgroundView)
   {
     v3 = [UIView alloc];
-    v4 = [(NTKActivityDigitalFaceView *)self timeView];
-    [v4 frame];
+    timeView = [(NTKActivityDigitalFaceView *)self timeView];
+    [timeView frame];
     v5 = [v3 initWithFrame:?];
     timeLabelBackgroundView = self->_timeLabelBackgroundView;
     self->_timeLabelBackgroundView = v5;
@@ -920,15 +920,15 @@ LABEL_6:
     v8 = +[UIColor clearColor];
     [(UIView *)v7 setBackgroundColor:v8];
 
-    v9 = [(UIView *)self->_timeLabelBackgroundView layer];
+    layer = [(UIView *)self->_timeLabelBackgroundView layer];
     NTKKeylineCornerRadiusLarge();
-    [v9 setCornerRadius:?];
+    [layer setCornerRadius:?];
 
-    v10 = [(NTKActivityDigitalFaceView *)self timeView];
-    v11 = [v10 superview];
+    timeView2 = [(NTKActivityDigitalFaceView *)self timeView];
+    superview = [timeView2 superview];
     v12 = self->_timeLabelBackgroundView;
-    v13 = [(NTKActivityDigitalFaceView *)self timeView];
-    [v11 insertSubview:v12 belowSubview:v13];
+    timeView3 = [(NTKActivityDigitalFaceView *)self timeView];
+    [superview insertSubview:v12 belowSubview:timeView3];
   }
 
   [(NTKActivityDigitalFaceView *)self _updatePausedState];
@@ -974,10 +974,10 @@ LABEL_6:
   [(NTKActivityFaceViewFactory *)self->_faceViewFactory performWristRaiseAnimation];
 }
 
-- (void)timeTravelDateEnteredOrExitedTimelineBounds:(BOOL)a3
+- (void)timeTravelDateEnteredOrExitedTimelineBounds:(BOOL)bounds
 {
   v3 = NTKEditModeDimmedAlpha;
-  if (a3)
+  if (bounds)
   {
     v3 = 1.0;
   }
@@ -985,47 +985,47 @@ LABEL_6:
   [(NTKActivityDigitalFaceView *)self _setActivityViewsAlpha:1 animated:v3];
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
-  v6 = a3;
+  dateCopy = date;
   v8.receiver = self;
   v8.super_class = NTKActivityDigitalFaceView;
-  [(NTKActivityDigitalFaceView *)&v8 setOverrideDate:v6 duration:a4];
+  [(NTKActivityDigitalFaceView *)&v8 setOverrideDate:dateCopy duration:duration];
   timeDensityEditingOverrideDate = self->_timeDensityEditingOverrideDate;
-  self->_timeDensityEditingOverrideDate = v6;
+  self->_timeDensityEditingOverrideDate = dateCopy;
 }
 
 - (void)_updateTimeViewSecondsDisplayState
 {
-  v8 = [(NTKActivityDigitalFaceView *)self timeView];
-  if (self->_showSeconds != [v8 showSeconds])
+  timeView = [(NTKActivityDigitalFaceView *)self timeView];
+  if (self->_showSeconds != [timeView showSeconds])
   {
-    [v8 removeFromSuperview];
-    v3 = [(NTKActivityDigitalFaceView *)self timeView];
-    v4 = [v3 color];
+    [timeView removeFromSuperview];
+    timeView2 = [(NTKActivityDigitalFaceView *)self timeView];
+    color = [timeView2 color];
 
     [(NTKActivityDigitalFaceView *)self setTimeView:0];
     [(NTKActivityDigitalFaceView *)self _createTimeViewIfNecessary];
-    v5 = [v8 isHidden];
-    v6 = [(NTKActivityDigitalFaceView *)self timeView];
-    [v6 setHidden:v5];
+    isHidden = [timeView isHidden];
+    timeView3 = [(NTKActivityDigitalFaceView *)self timeView];
+    [timeView3 setHidden:isHidden];
 
-    v7 = [(NTKActivityDigitalFaceView *)self timeView];
-    [v7 setColor:v4];
+    timeView4 = [(NTKActivityDigitalFaceView *)self timeView];
+    [timeView4 setColor:color];
 
     [(NTKActivityDigitalFaceView *)self layoutIfNeeded];
   }
 }
 
-- (void)_enumerateActivityLabels:(id)a3
+- (void)_enumerateActivityLabels:(id)labels
 {
   moveLabel = self->_moveLabel;
-  v5 = (a3 + 16);
-  v6 = *(a3 + 2);
-  v7 = a3;
+  v5 = (labels + 16);
+  v6 = *(labels + 2);
+  labelsCopy = labels;
   v6();
-  (*v5)(v7, self->_exerciseLabel, 1);
-  (*v5)(v7, self->_standLabel, 2);
+  (*v5)(labelsCopy, self->_exerciseLabel, 1);
+  (*v5)(labelsCopy, self->_standLabel, 2);
 }
 
 - (id)_newActivityLabelSubview
@@ -1038,8 +1038,8 @@ LABEL_6:
   [v3 setFont:v5];
 
   [v3 setTextAlignment:2];
-  v6 = [(NTKActivityDigitalFaceView *)self foregroundContainerView];
-  [v6 addSubview:v3];
+  foregroundContainerView = [(NTKActivityDigitalFaceView *)self foregroundContainerView];
+  [foregroundContainerView addSubview:v3];
 
   [v3 setNumberOfLines:1];
   return v3;
@@ -1055,22 +1055,22 @@ LABEL_6:
     ringsView = self->_ringsView;
     self->_ringsView = v4;
 
-    v6 = [objc_opt_class() _newRingsQuad];
+    _newRingsQuad = [objc_opt_class() _newRingsQuad];
     ringsQuad = self->_ringsQuad;
-    self->_ringsQuad = v6;
+    self->_ringsQuad = _newRingsQuad;
 
     [(NTKRingsQuad *)self->_ringsQuad setDelegate:self];
     [(NTKRingsMetalQuadView *)self->_ringsView setPaused:0];
     [(NTKRingsMetalQuadView *)self->_ringsView setPreferredFramesPerSecond:60];
     [(NTKRingsMetalQuadView *)self->_ringsView addQuad:self->_ringsQuad];
-    v8 = [(NTKActivityDigitalFaceView *)self foregroundContainerView];
-    [v8 addSubview:self->_ringsView];
+    foregroundContainerView = [(NTKActivityDigitalFaceView *)self foregroundContainerView];
+    [foregroundContainerView addSubview:self->_ringsView];
 
     [(NTKRingsMetalQuadView *)self->_ringsView setUserInteractionEnabled:0];
   }
 
-  v9 = [(NTKActivityDigitalFaceView *)self device];
-  sub_F7AC(v9, v9);
+  device = [(NTKActivityDigitalFaceView *)self device];
+  sub_F7AC(device, device);
 
   if (CLKSizeIsEmpty())
   {
@@ -1082,23 +1082,23 @@ LABEL_6:
 
   if (!self->_moveLabel)
   {
-    v13 = [(NTKActivityDigitalFaceView *)self _newActivityLabelSubview];
+    _newActivityLabelSubview = [(NTKActivityDigitalFaceView *)self _newActivityLabelSubview];
     moveLabel = self->_moveLabel;
-    self->_moveLabel = v13;
+    self->_moveLabel = _newActivityLabelSubview;
   }
 
   if (!self->_exerciseLabel)
   {
-    v15 = [(NTKActivityDigitalFaceView *)self _newActivityLabelSubview];
+    _newActivityLabelSubview2 = [(NTKActivityDigitalFaceView *)self _newActivityLabelSubview];
     exerciseLabel = self->_exerciseLabel;
-    self->_exerciseLabel = v15;
+    self->_exerciseLabel = _newActivityLabelSubview2;
   }
 
   if (!self->_standLabel)
   {
-    v17 = [(NTKActivityDigitalFaceView *)self _newActivityLabelSubview];
+    _newActivityLabelSubview3 = [(NTKActivityDigitalFaceView *)self _newActivityLabelSubview];
     standLabel = self->_standLabel;
-    self->_standLabel = v17;
+    self->_standLabel = _newActivityLabelSubview3;
   }
 
   if (!self->_tapToLaunchButton)
@@ -1108,19 +1108,19 @@ LABEL_6:
     self->_tapToLaunchButton = v19;
 
     [(NTKFaceViewTapControl *)self->_tapToLaunchButton addTarget:self action:"_launchButtonPressed:" forControlEvents:64];
-    v21 = [(NTKFaceViewTapControl *)self->_tapToLaunchButton highlightImageView];
+    highlightImageView = [(NTKFaceViewTapControl *)self->_tapToLaunchButton highlightImageView];
     [(NTKActivityDigitalFaceView *)self _layoutConstants];
     v22 = v29;
-    v23 = [(NTKActivityDigitalFaceView *)self device];
+    device2 = [(NTKActivityDigitalFaceView *)self device];
     v24 = *&self->_currentRingLayout.diameter;
     v27[0] = *&self->_currentRingLayout.bottomEdgeInset;
     v27[1] = v24;
     interspacing = self->_currentRingLayout.interspacing;
-    v25 = sub_C8FC(v27, v23, v22);
-    [v21 setImage:v25];
+    v25 = sub_C8FC(v27, device2, v22);
+    [highlightImageView setImage:v25];
 
-    v26 = [(NTKActivityDigitalFaceView *)self foregroundContainerView];
-    [v26 addSubview:self->_tapToLaunchButton];
+    foregroundContainerView2 = [(NTKActivityDigitalFaceView *)self foregroundContainerView];
+    [foregroundContainerView2 addSubview:self->_tapToLaunchButton];
   }
 
   [(NTKActivityDigitalFaceView *)self _updateActivityLabelColors:self->_lastPausedState];
@@ -1153,9 +1153,9 @@ LABEL_6:
   self->_tapToLaunchButton = 0;
 }
 
-- (void)_updateActivityLabelColors:(BOOL)a3
+- (void)_updateActivityLabelColors:(BOOL)colors
 {
-  if (a3)
+  if (colors)
   {
     v6 = NTKPausedNonGradientTextColor();
     v4 = NTKPausedNonGradientTextColor();
@@ -1176,15 +1176,15 @@ LABEL_6:
 
 - (double)_blinkerAndSecondsWidth
 {
-  v3 = [(NTKActivityDigitalFaceView *)self timeView];
-  v4 = [v3 text];
+  timeView = [(NTKActivityDigitalFaceView *)self timeView];
+  text = [timeView text];
 
-  if (fabs(self->_blinkerAndSecondsWidth) < 0.00000011920929 && [v4 length])
+  if (fabs(self->_blinkerAndSecondsWidth) < 0.00000011920929 && [text length])
   {
     v5 = +[NSCharacterSet punctuationCharacterSet];
-    v6 = [v4 rangeOfCharacterFromSet:v5 options:4];
+    v6 = [text rangeOfCharacterFromSet:v5 options:4];
 
-    v7 = [v4 substringWithRange:{v6, objc_msgSend(v4, "length") - v6}];
+    v7 = [text substringWithRange:{v6, objc_msgSend(text, "length") - v6}];
     v13 = NSFontAttributeName;
     v8 = [(NTKActivityDigitalFaceView *)self _labelFontMonospaced:1];
     v14 = v8;
@@ -1205,13 +1205,13 @@ LABEL_6:
   [v2 setTranslation:0.0];
   for (i = 0; i != 3; ++i)
   {
-    v4 = [v2 rings];
-    v5 = [v4 objectAtIndexedSubscript:i];
+    rings = [v2 rings];
+    v5 = [rings objectAtIndexedSubscript:i];
     [v5 setPercentage:0.0];
   }
 
-  v6 = [v2 rings];
-  sub_EB48(v6, 0);
+  rings2 = [v2 rings];
+  sub_EB48(rings2, 0);
 
   v7 = +[NTKActivityFaceViewFactory sharedRingsViewRenderer];
   v8 = [NTKRingsQuad alloc];
@@ -1230,22 +1230,22 @@ LABEL_6:
   return v3;
 }
 
-- (id)_labelFontMonospaced:(BOOL)a3
+- (id)_labelFontMonospaced:(BOOL)monospaced
 {
   [(NTKActivityDigitalFaceView *)self _layoutConstants];
   v4 = [CLKFont systemFontOfSize:CLKRoundedFontDesignName weight:v9 design:UIFontWeightMedium];
   v5 = v4;
-  if (a3)
+  if (monospaced)
   {
-    v6 = [v4 CLKFontWithMonospacedNumbers];
+    cLKFontWithMonospacedNumbers = [v4 CLKFontWithMonospacedNumbers];
   }
 
   else
   {
-    v6 = v4;
+    cLKFontWithMonospacedNumbers = v4;
   }
 
-  v7 = v6;
+  v7 = cLKFontWithMonospacedNumbers;
 
   return v7;
 }

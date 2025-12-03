@@ -1,6 +1,6 @@
 @interface VSMemoryMap
 - (BOOL)mmap;
-- (VSMemoryMap)initWithFilePath:(id)a3;
+- (VSMemoryMap)initWithFilePath:(id)path;
 - (void)dealloc;
 - (void)madvise;
 @end
@@ -35,8 +35,8 @@
 - (BOOL)mmap
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [(NSString *)self->_filePath UTF8String];
-  v4 = open(v3, 0);
+  uTF8String = [(NSString *)self->_filePath UTF8String];
+  v4 = open(uTF8String, 0);
   self->_fd = v4;
   if (v4 <= 0)
   {
@@ -46,7 +46,7 @@
       v16 = __error();
       v17 = strerror(*v16);
       v22.st_dev = 136315394;
-      *&v22.st_mode = v3;
+      *&v22.st_mode = uTF8String;
       WORD2(v22.st_ino) = 2080;
       *(&v22.st_ino + 6) = v17;
       v8 = "Unable to open file '%s', error: %s";
@@ -67,7 +67,7 @@
         v6 = __error();
         v7 = strerror(*v6);
         v18 = 136315394;
-        v19 = v3;
+        v19 = uTF8String;
         v20 = 2080;
         v21 = v7;
         v8 = "Unable to get size of file '%s', error: %s";
@@ -96,7 +96,7 @@ LABEL_14:
         v14 = __error();
         v15 = strerror(*v14);
         v18 = 136315394;
-        v19 = v3;
+        v19 = uTF8String;
         v20 = 2080;
         v21 = v15;
         v8 = "Unable to mmap '%s', error: %s";
@@ -153,14 +153,14 @@ LABEL_8:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (VSMemoryMap)initWithFilePath:(id)a3
+- (VSMemoryMap)initWithFilePath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v10.receiver = self;
   v10.super_class = VSMemoryMap;
   v6 = [(VSMemoryMap *)&v10 init];
   v7 = v6;
-  if (!v6 || (v6->_mappedData = 0, objc_storeStrong(&v6->_filePath, a3), v8 = 0, [(VSMemoryMap *)v7 mmap]))
+  if (!v6 || (v6->_mappedData = 0, objc_storeStrong(&v6->_filePath, path), v8 = 0, [(VSMemoryMap *)v7 mmap]))
   {
     v8 = v7;
   }

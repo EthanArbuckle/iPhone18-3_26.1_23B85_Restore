@@ -1,20 +1,20 @@
 @interface _SBAppSwitcherSnapshotImageCacheRequest
-- (_SBAppSwitcherSnapshotImageCacheRequest)initWithSequenceID:(unint64_t)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (_SBAppSwitcherSnapshotImageCacheRequest)initWithSequenceID:(unint64_t)d;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
 
 @implementation _SBAppSwitcherSnapshotImageCacheRequest
 
-- (_SBAppSwitcherSnapshotImageCacheRequest)initWithSequenceID:(unint64_t)a3
+- (_SBAppSwitcherSnapshotImageCacheRequest)initWithSequenceID:(unint64_t)d
 {
   v5.receiver = self;
   v5.super_class = _SBAppSwitcherSnapshotImageCacheRequest;
   result = [(_SBAppSwitcherSnapshotImageCacheRequest *)&v5 init];
   if (result)
   {
-    result->_sequenceID = a3;
+    result->_sequenceID = d;
   }
 
   return result;
@@ -22,21 +22,21 @@
 
 - (id)succinctDescription
 {
-  v2 = [(_SBAppSwitcherSnapshotImageCacheRequest *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(_SBAppSwitcherSnapshotImageCacheRequest *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(_SBAppSwitcherSnapshotImageCacheRequest *)self displayItem];
-  v5 = [v4 uniqueIdentifier];
-  v6 = [v3 appendObject:v5 withName:@"displayID"];
+  displayItem = [(_SBAppSwitcherSnapshotImageCacheRequest *)self displayItem];
+  uniqueIdentifier = [displayItem uniqueIdentifier];
+  v6 = [v3 appendObject:uniqueIdentifier withName:@"displayID"];
 
-  v7 = [(_SBAppSwitcherSnapshotImageCacheRequest *)self snapshot];
-  v8 = [v3 appendObject:v7 withName:@"snapshot"];
+  snapshot = [(_SBAppSwitcherSnapshotImageCacheRequest *)self snapshot];
+  v8 = [v3 appendObject:snapshot withName:@"snapshot"];
 
   v9 = [v3 appendUnsignedInteger:-[_SBAppSwitcherSnapshotImageCacheRequest sequenceID](self withName:{"sequenceID"), @"sequenceID"}];
   v10 = [v3 appendBool:-[_SBAppSwitcherSnapshotImageCacheRequest loadFullSizeSnapshot](self withName:{"loadFullSizeSnapshot"), @"loadFullSizeSnapshot"}];
@@ -44,12 +44,12 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_SBAppSwitcherSnapshotImageCacheRequest *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(_SBAppSwitcherSnapshotImageCacheRequest *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 @end

@@ -1,17 +1,17 @@
 @interface VUISidebandMediaEntityIdentifier
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (VUISidebandMediaEntityIdentifier)init;
-- (VUISidebandMediaEntityIdentifier)initWithManagedObjectID:(id)a3 mediaEntityType:(id)a4;
+- (VUISidebandMediaEntityIdentifier)initWithManagedObjectID:(id)d mediaEntityType:(id)type;
 - (unint64_t)hash;
 @end
 
 @implementation VUISidebandMediaEntityIdentifier
 
-- (VUISidebandMediaEntityIdentifier)initWithManagedObjectID:(id)a3 mediaEntityType:(id)a4
+- (VUISidebandMediaEntityIdentifier)initWithManagedObjectID:(id)d mediaEntityType:(id)type
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  dCopy = d;
+  typeCopy = type;
+  if (!dCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"The %@ parameter must not be nil.", @"managedObjectID"}];
   }
@@ -22,8 +22,8 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_managedObjectID, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_managedObjectID, d);
+    v11 = [typeCopy copy];
     mediaEntityType = v10->_mediaEntityType;
     v10->_mediaEntityType = v11;
   }
@@ -43,27 +43,27 @@
 
 - (unint64_t)hash
 {
-  v2 = [(VUISidebandMediaEntityIdentifier *)self managedObjectID];
-  v3 = [v2 hash];
+  managedObjectID = [(VUISidebandMediaEntityIdentifier *)self managedObjectID];
+  v3 = [managedObjectID hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [(VUISidebandMediaEntityIdentifier *)self managedObjectID];
-    v7 = [(VUISidebandMediaEntityIdentifier *)v5 managedObjectID];
-    v8 = v6;
-    v9 = v7;
+    managedObjectID = [(VUISidebandMediaEntityIdentifier *)self managedObjectID];
+    managedObjectID2 = [(VUISidebandMediaEntityIdentifier *)v5 managedObjectID];
+    v8 = managedObjectID;
+    v9 = managedObjectID2;
     v10 = v9;
     if (v8 == v9)
     {

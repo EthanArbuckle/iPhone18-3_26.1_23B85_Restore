@@ -1,11 +1,11 @@
 @interface BIABubbleOptionsViewController
-- (_TtC8Business30BIABubbleOptionsViewController)initWithCoder:(id)a3;
-- (_TtC8Business30BIABubbleOptionsViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC8Business30BIABubbleOptionsViewController)initWithCoder:(id)coder;
+- (_TtC8Business30BIABubbleOptionsViewController)initWithNibName:(id)name bundle:(id)bundle;
 @end
 
 @implementation BIABubbleOptionsViewController
 
-- (_TtC8Business30BIABubbleOptionsViewController)initWithCoder:(id)a3
+- (_TtC8Business30BIABubbleOptionsViewController)initWithCoder:(id)coder
 {
   v4 = sub_10000413C(&qword_1000F2250, &qword_1000B4CF0);
   v5 = *(v4 - 8);
@@ -25,7 +25,7 @@
   return result;
 }
 
-- (_TtC8Business30BIABubbleOptionsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8Business30BIABubbleOptionsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

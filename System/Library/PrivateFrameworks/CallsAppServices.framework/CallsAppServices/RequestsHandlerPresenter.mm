@@ -1,9 +1,9 @@
 @interface RequestsHandlerPresenter
 - (_TtC16CallsAppServices24RequestsHandlerPresenter)init;
-- (id)presentingViewControllerForAcceptedContactActionsManager:(id)a3 sourceView:(id *)a4 sourceRect:(CGRect *)a5;
-- (void)acceptedContactActionsManager:(id)a3 didCreateNewContact:(id)a4;
-- (void)acceptedContactActionsManager:(id)a3 didRecordRecentEvent:(id)a4;
-- (void)acceptedContactActionsManagerDidCancel:(id)a3;
+- (id)presentingViewControllerForAcceptedContactActionsManager:(id)manager sourceView:(id *)view sourceRect:(CGRect *)rect;
+- (void)acceptedContactActionsManager:(id)manager didCreateNewContact:(id)contact;
+- (void)acceptedContactActionsManager:(id)manager didRecordRecentEvent:(id)event;
+- (void)acceptedContactActionsManagerDidCancel:(id)cancel;
 @end
 
 @implementation RequestsHandlerPresenter
@@ -15,18 +15,18 @@
   return result;
 }
 
-- (id)presentingViewControllerForAcceptedContactActionsManager:(id)a3 sourceView:(id *)a4 sourceRect:(CGRect *)a5
+- (id)presentingViewControllerForAcceptedContactActionsManager:(id)manager sourceView:(id *)view sourceRect:(CGRect *)rect
 {
-  v5 = sub_1D336A144(a4);
+  v5 = sub_1D336A144(view);
 
   return v5;
 }
 
-- (void)acceptedContactActionsManager:(id)a3 didRecordRecentEvent:(id)a4
+- (void)acceptedContactActionsManager:(id)manager didRecordRecentEvent:(id)event
 {
-  if (a4)
+  if (event)
   {
-    v5 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1D33DED44();
     swift_unknownObjectRelease();
@@ -35,7 +35,7 @@
   else
   {
     memset(v13, 0, sizeof(v13));
-    v6 = self;
+    selfCopy2 = self;
   }
 
   v7 = (self + OBJC_IVAR____TtC16CallsAppServices24RequestsHandlerPresenter_actionCompletionHandler);
@@ -63,14 +63,14 @@
   }
 }
 
-- (void)acceptedContactActionsManager:(id)a3 didCreateNewContact:(id)a4
+- (void)acceptedContactActionsManager:(id)manager didCreateNewContact:(id)contact
 {
   v4 = (self + OBJC_IVAR____TtC16CallsAppServices24RequestsHandlerPresenter_actionCompletionHandler);
   v5 = *(&self->super.isa + OBJC_IVAR____TtC16CallsAppServices24RequestsHandlerPresenter_actionCompletionHandler);
   if (v5)
   {
     v6 = v4[1];
-    v7 = self;
+    selfCopy = self;
     sub_1D331FEDC(v5);
     v5(1);
     sub_1D331EEDC(v5);
@@ -79,19 +79,19 @@
     *v4 = 0;
     v4[1] = 0;
     sub_1D331EEDC(v8);
-    v10 = *(&v7->super.isa + OBJC_IVAR____TtC16CallsAppServices24RequestsHandlerPresenter_acceptedContactActionsManager);
-    *(&v7->super.isa + OBJC_IVAR____TtC16CallsAppServices24RequestsHandlerPresenter_acceptedContactActionsManager) = 0;
+    v10 = *(&selfCopy->super.isa + OBJC_IVAR____TtC16CallsAppServices24RequestsHandlerPresenter_acceptedContactActionsManager);
+    *(&selfCopy->super.isa + OBJC_IVAR____TtC16CallsAppServices24RequestsHandlerPresenter_acceptedContactActionsManager) = 0;
   }
 }
 
-- (void)acceptedContactActionsManagerDidCancel:(id)a3
+- (void)acceptedContactActionsManagerDidCancel:(id)cancel
 {
   v3 = (self + OBJC_IVAR____TtC16CallsAppServices24RequestsHandlerPresenter_actionCompletionHandler);
   v4 = *(&self->super.isa + OBJC_IVAR____TtC16CallsAppServices24RequestsHandlerPresenter_actionCompletionHandler);
   if (v4)
   {
     v5 = v3[1];
-    v6 = self;
+    selfCopy = self;
     sub_1D331FEDC(v4);
     v4(0);
     sub_1D331EEDC(v4);
@@ -100,8 +100,8 @@
     *v3 = 0;
     v3[1] = 0;
     sub_1D331EEDC(v7);
-    v9 = *(&v6->super.isa + OBJC_IVAR____TtC16CallsAppServices24RequestsHandlerPresenter_acceptedContactActionsManager);
-    *(&v6->super.isa + OBJC_IVAR____TtC16CallsAppServices24RequestsHandlerPresenter_acceptedContactActionsManager) = 0;
+    v9 = *(&selfCopy->super.isa + OBJC_IVAR____TtC16CallsAppServices24RequestsHandlerPresenter_acceptedContactActionsManager);
+    *(&selfCopy->super.isa + OBJC_IVAR____TtC16CallsAppServices24RequestsHandlerPresenter_acceptedContactActionsManager) = 0;
   }
 }
 

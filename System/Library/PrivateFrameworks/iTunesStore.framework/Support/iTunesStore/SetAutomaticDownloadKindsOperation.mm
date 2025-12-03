@@ -1,33 +1,33 @@
 @interface SetAutomaticDownloadKindsOperation
-- (BOOL)_postDownloadKinds:(id)a3 error:(id *)a4;
+- (BOOL)_postDownloadKinds:(id)kinds error:(id *)error;
 - (BOOL)runsOnlyIfKindsAreDirty;
 - (BOOL)shouldSuppressServerDialogs;
 - (NSSet)downloadKinds;
 - (NSSet)previousDownloadKinds;
 - (NSString)clientIdentifierHeader;
 - (SSAuthenticationContext)authenticationContext;
-- (SetAutomaticDownloadKindsOperation)initWithDownloadKinds:(id)a3;
+- (SetAutomaticDownloadKindsOperation)initWithDownloadKinds:(id)kinds;
 - (id)_copyFilteredDownloadKinds;
 - (void)_run;
 - (void)dealloc;
 - (void)run;
-- (void)setAuthenticationContext:(id)a3;
-- (void)setClientIdentifierHeader:(id)a3;
-- (void)setPreviousDownloadKinds:(id)a3;
-- (void)setRunsOnlyIfKindsAreDirty:(BOOL)a3;
-- (void)setShouldSuppressServerDialogs:(BOOL)a3;
+- (void)setAuthenticationContext:(id)context;
+- (void)setClientIdentifierHeader:(id)header;
+- (void)setPreviousDownloadKinds:(id)kinds;
+- (void)setRunsOnlyIfKindsAreDirty:(BOOL)dirty;
+- (void)setShouldSuppressServerDialogs:(BOOL)dialogs;
 @end
 
 @implementation SetAutomaticDownloadKindsOperation
 
-- (SetAutomaticDownloadKindsOperation)initWithDownloadKinds:(id)a3
+- (SetAutomaticDownloadKindsOperation)initWithDownloadKinds:(id)kinds
 {
   v6.receiver = self;
   v6.super_class = SetAutomaticDownloadKindsOperation;
   v4 = [(SetAutomaticDownloadKindsOperation *)&v6 init];
   if (v4)
   {
-    v4->_downloadKinds = [a3 copy];
+    v4->_downloadKinds = [kinds copy];
   }
 
   return v4;
@@ -79,57 +79,57 @@
   return runsOnlyIfKindsAreDirty;
 }
 
-- (void)setAuthenticationContext:(id)a3
+- (void)setAuthenticationContext:(id)context
 {
   [(SetAutomaticDownloadKindsOperation *)self lock];
   authenticationContext = self->_authenticationContext;
-  if (authenticationContext != a3)
+  if (authenticationContext != context)
   {
 
-    self->_authenticationContext = [a3 copy];
+    self->_authenticationContext = [context copy];
   }
 
   [(SetAutomaticDownloadKindsOperation *)self unlock];
 }
 
-- (void)setClientIdentifierHeader:(id)a3
+- (void)setClientIdentifierHeader:(id)header
 {
   [(SetAutomaticDownloadKindsOperation *)self lock];
   clientIdentifierHeader = self->_clientIdentifierHeader;
-  if (clientIdentifierHeader != a3)
+  if (clientIdentifierHeader != header)
   {
 
-    self->_clientIdentifierHeader = a3;
+    self->_clientIdentifierHeader = header;
   }
 
   [(SetAutomaticDownloadKindsOperation *)self unlock];
 }
 
-- (void)setPreviousDownloadKinds:(id)a3
+- (void)setPreviousDownloadKinds:(id)kinds
 {
   [(SetAutomaticDownloadKindsOperation *)self lock];
   previousDownloadKinds = self->_previousDownloadKinds;
-  if (previousDownloadKinds != a3)
+  if (previousDownloadKinds != kinds)
   {
 
-    self->_previousDownloadKinds = [a3 copy];
+    self->_previousDownloadKinds = [kinds copy];
   }
 
   [(SetAutomaticDownloadKindsOperation *)self unlock];
 }
 
-- (void)setRunsOnlyIfKindsAreDirty:(BOOL)a3
+- (void)setRunsOnlyIfKindsAreDirty:(BOOL)dirty
 {
   [(SetAutomaticDownloadKindsOperation *)self lock];
-  self->_runsOnlyIfKindsAreDirty = a3;
+  self->_runsOnlyIfKindsAreDirty = dirty;
 
   [(SetAutomaticDownloadKindsOperation *)self unlock];
 }
 
-- (void)setShouldSuppressServerDialogs:(BOOL)a3
+- (void)setShouldSuppressServerDialogs:(BOOL)dialogs
 {
   [(SetAutomaticDownloadKindsOperation *)self lock];
-  self->_shouldSuppressServerDialogs = a3;
+  self->_shouldSuppressServerDialogs = dialogs;
 
   [(SetAutomaticDownloadKindsOperation *)self unlock];
 }
@@ -152,15 +152,15 @@
       v3 = +[SSLogConfig sharedConfig];
     }
 
-    v4 = [v3 shouldLog];
+    shouldLog = [v3 shouldLog];
     if ([v3 shouldLogToDisk])
     {
-      v5 = v4 | 2;
+      v5 = shouldLog | 2;
     }
 
     else
     {
-      v5 = v4;
+      v5 = shouldLog;
     }
 
     if (!os_log_type_enabled([v3 OSLogObject], OS_LOG_TYPE_INFO))
@@ -217,15 +217,15 @@
       v7 = +[SSLogConfig sharedConfig];
     }
 
-    v8 = [v7 shouldLog];
+    shouldLog = [v7 shouldLog];
     if ([v7 shouldLogToDisk])
     {
-      v9 = v8 | 2;
+      v9 = shouldLog | 2;
     }
 
     else
     {
-      v9 = v8;
+      v9 = shouldLog;
     }
 
     if (!os_log_type_enabled([v7 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -262,14 +262,14 @@
   return v3;
 }
 
-- (BOOL)_postDownloadKinds:(id)a3 error:(id *)a4
+- (BOOL)_postDownloadKinds:(id)kinds error:(id *)error
 {
   v7 = objc_alloc_init(ISStoreURLOperation);
   [v7 setUseUserSpecificURLBag:1];
-  v8 = [(SetAutomaticDownloadKindsOperation *)self shouldSuppressServerDialogs];
+  shouldSuppressServerDialogs = [(SetAutomaticDownloadKindsOperation *)self shouldSuppressServerDialogs];
   v9 = objc_alloc_init(DaemonProtocolDataProvider);
-  [(DaemonProtocolDataProvider *)v9 setShouldProcessAuthenticationDialogs:v8 ^ 1];
-  [(DaemonProtocolDataProvider *)v9 setShouldProcessDialogs:v8 ^ 1];
+  [(DaemonProtocolDataProvider *)v9 setShouldProcessAuthenticationDialogs:shouldSuppressServerDialogs ^ 1];
+  [(DaemonProtocolDataProvider *)v9 setShouldProcessDialogs:shouldSuppressServerDialogs ^ 1];
   [v7 setDataProvider:v9];
   [(SetAutomaticDownloadKindsOperation *)self lock];
   [v7 setAuthenticationContext:self->_authenticationContext];
@@ -283,15 +283,15 @@
 
   [v10 setHTTPMethod:@"POST"];
   v11 = objc_alloc_init(NSMutableDictionary);
-  v12 = [+[ISDevice sharedInstance](ISDevice guid];
-  if (v12)
+  guid = [+[ISDevice sharedInstance](ISDevice guid];
+  if (guid)
   {
-    [v11 setObject:v12 forKey:@"guid"];
+    [v11 setObject:guid forKey:@"guid"];
   }
 
-  if (a3)
+  if (kinds)
   {
-    [v11 setObject:objc_msgSend(a3 forKey:{"allObjects"), @"media-types"}];
+    [v11 setObject:objc_msgSend(kinds forKey:{"allObjects"), @"media-types"}];
   }
 
   [v10 setRequestParameters:v11];
@@ -304,15 +304,15 @@
     v13 = +[SSLogConfig sharedConfig];
   }
 
-  v14 = [v13 shouldLog];
+  shouldLog = [v13 shouldLog];
   if ([v13 shouldLogToDisk])
   {
-    v15 = v14 | 2;
+    v15 = shouldLog | 2;
   }
 
   else
   {
-    v15 = v14;
+    v15 = shouldLog;
   }
 
   if (!os_log_type_enabled([v13 OSLogObject], OS_LOG_TYPE_INFO))
@@ -325,7 +325,7 @@
     v31 = 138412546;
     v32 = objc_opt_class();
     v33 = 2112;
-    v34 = a3;
+    kindsCopy = kinds;
     LODWORD(v29) = 22;
     v28 = &v31;
     v16 = _os_log_send_and_compose_impl();
@@ -356,15 +356,15 @@
         v20 = +[SSLogConfig sharedConfig];
       }
 
-      v21 = [v20 shouldLog];
+      shouldLog2 = [v20 shouldLog];
       if ([v20 shouldLogToDisk])
       {
-        v22 = v21 | 2;
+        v22 = shouldLog2 | 2;
       }
 
       else
       {
-        v22 = v21;
+        v22 = shouldLog2;
       }
 
       if (!os_log_type_enabled([v20 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -378,7 +378,7 @@
         v31 = 138412546;
         v32 = v23;
         v33 = 2112;
-        v34 = v19;
+        kindsCopy = v19;
         LODWORD(v29) = 22;
         v24 = _os_log_send_and_compose_impl();
         if (v24)
@@ -400,9 +400,9 @@
     v26 = 0;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v30;
+    *error = v30;
   }
 
   return v26;
@@ -411,8 +411,8 @@
 - (void)_run
 {
   v17 = 0;
-  v3 = [(SetAutomaticDownloadKindsOperation *)self _copyFilteredDownloadKinds];
-  v4 = [(SetAutomaticDownloadKindsOperation *)self _postDownloadKinds:v3 error:&v17];
+  _copyFilteredDownloadKinds = [(SetAutomaticDownloadKindsOperation *)self _copyFilteredDownloadKinds];
+  v4 = [(SetAutomaticDownloadKindsOperation *)self _postDownloadKinds:_copyFilteredDownloadKinds error:&v17];
   if (v4)
   {
     v5 = kITunesStoreDaemonDefaultsID;
@@ -422,25 +422,25 @@
 
   else if ([(SetAutomaticDownloadKindsOperation *)self _isFatalError:v17])
   {
-    v6 = [(SetAutomaticDownloadKindsOperation *)self previousDownloadKinds];
-    if (v6)
+    previousDownloadKinds = [(SetAutomaticDownloadKindsOperation *)self previousDownloadKinds];
+    if (previousDownloadKinds)
     {
-      v7 = v6;
+      v7 = previousDownloadKinds;
       v8 = +[SSLogConfig sharedDaemonConfig];
       if (!v8)
       {
         v8 = +[SSLogConfig sharedConfig];
       }
 
-      v9 = [v8 shouldLog];
+      shouldLog = [v8 shouldLog];
       if ([v8 shouldLogToDisk])
       {
-        v10 = v9 | 2;
+        v10 = shouldLog | 2;
       }
 
       else
       {
-        v10 = v9;
+        v10 = shouldLog;
       }
 
       if (!os_log_type_enabled([v8 OSLogObject], OS_LOG_TYPE_DEFAULT))

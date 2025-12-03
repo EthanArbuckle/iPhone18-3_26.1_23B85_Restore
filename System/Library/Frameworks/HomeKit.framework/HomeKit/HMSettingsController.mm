@@ -3,47 +3,47 @@
 - (BOOL)hasSettingGroups;
 - (BOOL)hasSettings;
 - (HMSettingGroup)rootGroup;
-- (HMSettingsController)initWithParentIdentifier:(id)a3 codingKey:(id)a4 messageHandler:(id)a5 settingsCreator:(id)a6;
-- (HMSettingsController)initWithParentIdentifier:(id)a3 homeUUID:(id)a4 codingKey:(id)a5;
+- (HMSettingsController)initWithParentIdentifier:(id)identifier codingKey:(id)key messageHandler:(id)handler settingsCreator:(id)creator;
+- (HMSettingsController)initWithParentIdentifier:(id)identifier homeUUID:(id)d codingKey:(id)key;
 - (HMSettingsDelegate)delegate;
 - (id)logIdentifier;
-- (id)settingForKeyPath:(id)a3;
-- (id)settingGroupForKeyPath:(id)a3;
-- (void)__notifyDelegateDidUpdateKeyPath:(id)a3;
+- (id)settingForKeyPath:(id)path;
+- (id)settingGroupForKeyPath:(id)path;
+- (void)__notifyDelegateDidUpdateKeyPath:(id)path;
 - (void)__notifyDelegateSettingsDidUpdate;
-- (void)configureWithContext:(id)a3;
-- (void)decodeWithCoder:(id)a3;
-- (void)mergeWith:(id)a3 settingsInitializedWasModified:(BOOL)a4;
+- (void)configureWithContext:(id)context;
+- (void)decodeWithCoder:(id)coder;
+- (void)mergeWith:(id)with settingsInitializedWasModified:(BOOL)modified;
 - (void)notifyDelegateOfUpdate;
-- (void)setDelegate:(id)a3;
-- (void)setRootGroup:(id)a3;
-- (void)setSetting:(id)a3 withGroupKeyPath:(id)a4;
-- (void)setSettingGroup:(id)a3 withParentGroupKeyPath:(id)a4;
-- (void)updateValueForSetting:(id)a3 value:(id)a4 completionHandler:(id)a5;
+- (void)setDelegate:(id)delegate;
+- (void)setRootGroup:(id)group;
+- (void)setSetting:(id)setting withGroupKeyPath:(id)path;
+- (void)setSettingGroup:(id)group withParentGroupKeyPath:(id)path;
+- (void)updateValueForSetting:(id)setting value:(id)value completionHandler:(id)handler;
 @end
 
 @implementation HMSettingsController
 
 - (id)logIdentifier
 {
-  v2 = [(HMSettingsController *)self parentIdentifier];
-  v3 = [v2 UUIDString];
+  parentIdentifier = [(HMSettingsController *)self parentIdentifier];
+  uUIDString = [parentIdentifier UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (void)__notifyDelegateDidUpdateKeyPath:(id)a3
+- (void)__notifyDelegateDidUpdateKeyPath:(id)path
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMSettingsController *)self context];
-  v6 = [v5 delegateCaller];
+  pathCopy = path;
+  context = [(HMSettingsController *)self context];
+  delegateCaller = [context delegateCaller];
 
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  if (delegateCaller)
   {
     if (v10)
     {
@@ -54,14 +54,14 @@
     }
 
     objc_autoreleasePoolPop(v7);
-    objc_initWeak(buf, v8);
+    objc_initWeak(buf, selfCopy);
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __57__HMSettingsController___notifyDelegateDidUpdateKeyPath___block_invoke;
     v14[3] = &unk_1E754D848;
     objc_copyWeak(&v16, buf);
-    v15 = v4;
-    [v6 invokeBlock:v14];
+    v15 = pathCopy;
+    [delegateCaller invokeBlock:v14];
 
     objc_destroyWeak(&v16);
     objc_destroyWeak(buf);
@@ -126,20 +126,20 @@ void __57__HMSettingsController___notifyDelegateDidUpdateKeyPath___block_invoke(
 - (void)__notifyDelegateSettingsDidUpdate
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(HMSettingsController *)self context];
-  v4 = [v3 delegateCaller];
-  if (v4)
+  context = [(HMSettingsController *)self context];
+  delegateCaller = [context delegateCaller];
+  if (delegateCaller)
   {
-    v5 = [(HMSettingsController *)self delegate];
+    delegate = [(HMSettingsController *)self delegate];
     objc_initWeak(location, self);
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __57__HMSettingsController___notifyDelegateSettingsDidUpdate__block_invoke;
     v12[3] = &unk_1E754D848;
     objc_copyWeak(&v14, location);
-    v6 = v5;
+    v6 = delegate;
     v13 = v6;
-    [v4 invokeBlock:v12];
+    [delegateCaller invokeBlock:v12];
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(location);
@@ -148,7 +148,7 @@ void __57__HMSettingsController___notifyDelegateDidUpdateKeyPath___block_invoke(
   else
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -156,7 +156,7 @@ void __57__HMSettingsController___notifyDelegateDidUpdateKeyPath___block_invoke(
       *location = 138543618;
       *&location[4] = v10;
       v16 = 2112;
-      v17 = v3;
+      v17 = context;
       _os_log_impl(&dword_19BB39000, v9, OS_LOG_TYPE_ERROR, "%{public}@Failed to notify clients of updated settings due to no delegate caller in context: %@", location, 0x16u);
     }
 
@@ -199,18 +199,18 @@ void __57__HMSettingsController___notifyDelegateSettingsDidUpdate__block_invoke(
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateValueForSetting:(id)a3 value:(id)a4 completionHandler:(id)a5
+- (void)updateValueForSetting:(id)setting value:(id)value completionHandler:(id)handler
 {
   v37 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HMSettingsController *)self context];
-  if (!v10)
+  settingCopy = setting;
+  valueCopy = value;
+  handlerCopy = handler;
+  context = [(HMSettingsController *)self context];
+  if (!handlerCopy)
   {
     v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMSettingsController updateValueForSetting:value:completionHandler:]", @"completionHandler"];
     v22 = objc_autoreleasePoolPush();
-    v23 = self;
+    selfCopy = self;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
@@ -227,28 +227,28 @@ void __57__HMSettingsController___notifyDelegateSettingsDidUpdate__block_invoke(
     objc_exception_throw(v26);
   }
 
-  v12 = v11;
-  if (v11)
+  v12 = context;
+  if (context)
   {
-    v13 = [v9 copy];
-    v14 = [v12 queue];
+    v13 = [valueCopy copy];
+    queue = [v12 queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __70__HMSettingsController_updateValueForSetting_value_completionHandler___block_invoke;
     block[3] = &unk_1E754D7A8;
-    v28 = v8;
-    v29 = self;
-    v32 = v10;
+    v28 = settingCopy;
+    selfCopy2 = self;
+    v32 = handlerCopy;
     v30 = v13;
-    v31 = v9;
+    v31 = valueCopy;
     v15 = v13;
-    dispatch_async(v14, block);
+    dispatch_async(queue, block);
   }
 
   else
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy3 = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -262,7 +262,7 @@ void __57__HMSettingsController___notifyDelegateSettingsDidUpdate__block_invoke(
 
     objc_autoreleasePoolPop(v16);
     v15 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (*(v10 + 2))(v10, v15);
+    (*(handlerCopy + 2))(handlerCopy, v15);
   }
 
   v20 = *MEMORY[0x1E69E9840];
@@ -402,49 +402,49 @@ void __70__HMSettingsController_updateValueForSetting_value_completionHandler___
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)configureWithContext:(id)a3
+- (void)configureWithContext:(id)context
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = HMFGetLogIdentifier();
-    v9 = [(HMSettingsController *)v6 settings];
-    v10 = [v9 longDescription];
+    settings = [(HMSettingsController *)selfCopy settings];
+    longDescription = [settings longDescription];
     v13 = 138543618;
     v14 = v8;
     v15 = 2112;
-    v16 = v10;
+    v16 = longDescription;
     _os_log_impl(&dword_19BB39000, v7, OS_LOG_TYPE_INFO, "%{public}@Configure with settings: %@", &v13, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  [(HMSettingsController *)v6 setContext:v4];
-  v11 = [(HMSettingsController *)v6 messageHandler];
-  [v11 configureWithContext:v4];
+  [(HMSettingsController *)selfCopy setContext:contextCopy];
+  messageHandler = [(HMSettingsController *)selfCopy messageHandler];
+  [messageHandler configureWithContext:contextCopy];
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)decodeWithCoder:(id)a3
+- (void)decodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
-  v6 = [(HMSettingsController *)self codingKey];
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  codingKey = [(HMSettingsController *)self codingKey];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:codingKey];
 
   [(HMSettingsController *)self setRootGroup:v7];
 }
 
 - (void)notifyDelegateOfUpdate
 {
-  v3 = [(HMSettingsController *)self context];
-  v4 = [v3 delegateCaller];
+  context = [(HMSettingsController *)self context];
+  delegateCaller = [context delegateCaller];
 
-  if (v4)
+  if (delegateCaller)
   {
     objc_initWeak(&location, self);
     v5[0] = MEMORY[0x1E69E9820];
@@ -452,7 +452,7 @@ void __70__HMSettingsController_updateValueForSetting_value_completionHandler___
     v5[2] = __46__HMSettingsController_notifyDelegateOfUpdate__block_invoke;
     v5[3] = &unk_1E754E540;
     objc_copyWeak(&v6, &location);
-    [v4 invokeBlock:v5];
+    [delegateCaller invokeBlock:v5];
     objc_destroyWeak(&v6);
     objc_destroyWeak(&location);
   }
@@ -486,15 +486,15 @@ void __46__HMSettingsController_notifyDelegateOfUpdate__block_invoke(uint64_t a1
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)mergeWith:(id)a3 settingsInitializedWasModified:(BOOL)a4
+- (void)mergeWith:(id)with settingsInitializedWasModified:(BOOL)modified
 {
-  v4 = a4;
+  modifiedCopy = modified;
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 rootGroup];
-  v8 = [(HMSettingsController *)self rootGroup];
-  v9 = [v8 identifier];
-  v10 = [v7 identifier];
+  withCopy = with;
+  rootGroup = [withCopy rootGroup];
+  rootGroup2 = [(HMSettingsController *)self rootGroup];
+  identifier = [rootGroup2 identifier];
+  identifier2 = [rootGroup identifier];
   v11 = HMFEqualObjects();
 
   if (v11)
@@ -503,20 +503,20 @@ void __46__HMSettingsController_notifyDelegateOfUpdate__block_invoke(uint64_t a1
     *&buf[8] = buf;
     *&buf[16] = 0x2020000000;
     v25 = 0;
-    v12 = [v6 rootGroup];
-    v13 = v12;
+    rootGroup3 = [withCopy rootGroup];
+    v13 = rootGroup3;
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __65__HMSettingsController_mergeWith_settingsInitializedWasModified___block_invoke_47;
     v22[3] = &unk_1E7547C40;
     v22[4] = self;
     v22[5] = buf;
-    if (v12)
+    if (rootGroup3)
     {
-      _PreorderTraverseGroupsWithBlock(v12, 0, v22);
+      _PreorderTraverseGroupsWithBlock(rootGroup3, 0, v22);
     }
 
-    if ((*(*&buf[8] + 24) & 1) != 0 || v4)
+    if ((*(*&buf[8] + 24) & 1) != 0 || modifiedCopy)
     {
       [(HMSettingsController *)self __notifyDelegateSettingsDidUpdate];
     }
@@ -527,32 +527,32 @@ void __46__HMSettingsController_notifyDelegateOfUpdate__block_invoke(uint64_t a1
   else
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       v17 = HMFGetLogIdentifier();
-      v18 = [v7 longDescription];
+      longDescription = [rootGroup longDescription];
       *buf = 138543618;
       *&buf[4] = v17;
       *&buf[12] = 2112;
-      *&buf[14] = v18;
+      *&buf[14] = longDescription;
       _os_log_impl(&dword_19BB39000, v16, OS_LOG_TYPE_INFO, "%{public}@Merging new root group: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v14);
-    [(HMSettingsController *)v15 setRootGroup:v7];
-    [(HMSettingsController *)v15 __notifyDelegateSettingsDidUpdate];
-    v19 = [v6 rootGroup];
-    v20 = v19;
+    [(HMSettingsController *)selfCopy setRootGroup:rootGroup];
+    [(HMSettingsController *)selfCopy __notifyDelegateSettingsDidUpdate];
+    rootGroup4 = [withCopy rootGroup];
+    v20 = rootGroup4;
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __65__HMSettingsController_mergeWith_settingsInitializedWasModified___block_invoke;
     v23[3] = &unk_1E7547BF0;
-    v23[4] = v15;
-    if (v19)
+    v23[4] = selfCopy;
+    if (rootGroup4)
     {
-      _PreorderTraverseGroupsWithBlock(v19, 0, v23);
+      _PreorderTraverseGroupsWithBlock(rootGroup4, 0, v23);
     }
   }
 
@@ -708,36 +708,36 @@ void __65__HMSettingsController_mergeWith_settingsInitializedWasModified___block
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)settingGroupForKeyPath:(id)a3
+- (id)settingGroupForKeyPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   os_unfair_lock_lock_with_options();
-  v5 = [(NSMapTable *)self->_groupsMap objectForKey:v4];
+  v5 = [(NSMapTable *)self->_groupsMap objectForKey:pathCopy];
   os_unfair_lock_unlock(&self->_lock);
 
   return v5;
 }
 
-- (void)setSettingGroup:(id)a3 withParentGroupKeyPath:(id)a4
+- (void)setSettingGroup:(id)group withParentGroupKeyPath:(id)path
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  groupCopy = group;
+  pathCopy = path;
+  if (!groupCopy)
   {
     _HMFPreconditionFailure();
   }
 
-  v8 = v7;
-  v9 = [(HMSettingsController *)self settingGroupForKeyPath:v7];
+  v8 = pathCopy;
+  v9 = [(HMSettingsController *)self settingGroupForKeyPath:pathCopy];
   v10 = v9;
   if (v9)
   {
-    [v9 addGroup:v6];
+    [v9 addGroup:groupCopy];
     os_unfair_lock_lock_with_options();
     groupsMap = self->_groupsMap;
-    v12 = [v6 keyPath];
-    [(NSMapTable *)groupsMap setObject:v6 forKey:v12];
+    keyPath = [groupCopy keyPath];
+    [(NSMapTable *)groupsMap setObject:groupCopy forKey:keyPath];
 
     os_unfair_lock_unlock(&self->_lock);
   }
@@ -745,7 +745,7 @@ void __65__HMSettingsController_mergeWith_settingsInitializedWasModified___block
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
@@ -755,7 +755,7 @@ void __65__HMSettingsController_mergeWith_settingsInitializedWasModified___block
       v20 = 2112;
       v21 = v8;
       v22 = 2112;
-      v23 = v6;
+      v23 = groupCopy;
       _os_log_impl(&dword_19BB39000, v15, OS_LOG_TYPE_INFO, "%{public}@Failed to get parent group with key path: %@ for setting group: %@", &v18, 0x20u);
     }
 
@@ -782,13 +782,13 @@ void __65__HMSettingsController_mergeWith_settingsInitializedWasModified___block
   return WeakRetained;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  delegateCopy = delegate;
   os_unfair_lock_lock_with_options();
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -796,55 +796,55 @@ void __65__HMSettingsController_mergeWith_settingsInitializedWasModified___block
     v10 = 138543618;
     v11 = v8;
     v12 = 2112;
-    v13 = v4;
+    v13 = delegateCopy;
     _os_log_impl(&dword_19BB39000, v7, OS_LOG_TYPE_INFO, "%{public}@Setting user settings delegate: %@", &v10, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  objc_storeWeak(&v6->_delegate, v4);
+  objc_storeWeak(&selfCopy->_delegate, delegateCopy);
   os_unfair_lock_unlock(&self->_lock);
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (id)settingForKeyPath:(id)a3
+- (id)settingForKeyPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   os_unfair_lock_lock_with_options();
-  v5 = [(NSMapTable *)self->_settingsMap objectForKey:v4];
+  v5 = [(NSMapTable *)self->_settingsMap objectForKey:pathCopy];
   os_unfair_lock_unlock(&self->_lock);
 
   return v5;
 }
 
-- (void)setSetting:(id)a3 withGroupKeyPath:(id)a4
+- (void)setSetting:(id)setting withGroupKeyPath:(id)path
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  settingCopy = setting;
+  pathCopy = path;
+  if (!settingCopy)
   {
     _HMFPreconditionFailure();
 LABEL_10:
     _HMFPreconditionFailure();
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = pathCopy;
+  if (!pathCopy)
   {
     goto LABEL_10;
   }
 
-  v9 = [(HMSettingsController *)self settingGroupForKeyPath:v7];
+  v9 = [(HMSettingsController *)self settingGroupForKeyPath:pathCopy];
   v10 = v9;
   if (v9)
   {
-    [v9 addSetting:v6];
-    [v6 setSettingManager:self];
+    [v9 addSetting:settingCopy];
+    [settingCopy setSettingManager:self];
     os_unfair_lock_lock_with_options();
     settingsMap = self->_settingsMap;
-    v12 = [v6 keyPath];
-    [(NSMapTable *)settingsMap setObject:v6 forKey:v12];
+    keyPath = [settingCopy keyPath];
+    [(NSMapTable *)settingsMap setObject:settingCopy forKey:keyPath];
 
     os_unfair_lock_unlock(&self->_lock);
   }
@@ -852,7 +852,7 @@ LABEL_10:
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
@@ -862,7 +862,7 @@ LABEL_10:
       v20 = 2112;
       v21 = v8;
       v22 = 2112;
-      v23 = v6;
+      v23 = settingCopy;
       _os_log_impl(&dword_19BB39000, v15, OS_LOG_TYPE_INFO, "%{public}@Failed to get group with key path: %@ for setting: %@", &v18, 0x20u);
     }
 
@@ -880,22 +880,22 @@ LABEL_10:
   return v3;
 }
 
-- (void)setRootGroup:(id)a3
+- (void)setRootGroup:(id)group
 {
-  v5 = a3;
+  groupCopy = group;
   os_unfair_lock_lock_with_options();
-  v6 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+  strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
   groupsMap = self->_groupsMap;
-  self->_groupsMap = v6;
+  self->_groupsMap = strongToWeakObjectsMapTable;
 
-  v8 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+  strongToWeakObjectsMapTable2 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
   settingsMap = self->_settingsMap;
-  self->_settingsMap = v8;
+  self->_settingsMap = strongToWeakObjectsMapTable2;
 
-  objc_storeStrong(&self->_rootGroup, a3);
+  objc_storeStrong(&self->_rootGroup, group);
   v10 = self->_groupsMap;
-  v11 = [v5 keyPath];
-  [(NSMapTable *)v10 setObject:v5 forKey:v11];
+  keyPath = [groupCopy keyPath];
+  [(NSMapTable *)v10 setObject:groupCopy forKey:keyPath];
 
   os_unfair_lock_unlock(&self->_lock);
   v12[0] = MEMORY[0x1E69E9820];
@@ -903,9 +903,9 @@ LABEL_10:
   v12[2] = __37__HMSettingsController_setRootGroup___block_invoke;
   v12[3] = &unk_1E7547BF0;
   v12[4] = self;
-  if (v5)
+  if (groupCopy)
   {
-    _PreorderTraverseGroupsWithBlock(v5, 0, v12);
+    _PreorderTraverseGroupsWithBlock(groupCopy, 0, v12);
   }
 }
 
@@ -946,15 +946,15 @@ void __37__HMSettingsController_setRootGroup___block_invoke_2(uint64_t a1, void 
   return v3;
 }
 
-- (HMSettingsController)initWithParentIdentifier:(id)a3 homeUUID:(id)a4 codingKey:(id)a5
+- (HMSettingsController)initWithParentIdentifier:(id)identifier homeUUID:(id)d codingKey:(id)key
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  keyCopy = key;
+  dCopy = d;
+  identifierCopy = identifier;
   v11 = [HMSettingsMessageHandler alloc];
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v12 = identifierCopy;
+  v13 = dCopy;
+  v14 = keyCopy;
   if (v11)
   {
     v24.receiver = v11;
@@ -982,12 +982,12 @@ void __37__HMSettingsController_setRootGroup___block_invoke_2(uint64_t a1, void 
   return v22;
 }
 
-- (HMSettingsController)initWithParentIdentifier:(id)a3 codingKey:(id)a4 messageHandler:(id)a5 settingsCreator:(id)a6
+- (HMSettingsController)initWithParentIdentifier:(id)identifier codingKey:(id)key messageHandler:(id)handler settingsCreator:(id)creator
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  identifierCopy = identifier;
+  keyCopy = key;
+  handlerCopy = handler;
+  creatorCopy = creator;
   v24.receiver = self;
   v24.super_class = HMSettingsController;
   v15 = [(HMSettingsController *)&v24 init];
@@ -995,18 +995,18 @@ void __37__HMSettingsController_setRootGroup___block_invoke_2(uint64_t a1, void 
   if (v15)
   {
     v15->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v15->_parentIdentifier, a3);
-    v17 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    objc_storeStrong(&v15->_parentIdentifier, identifier);
+    strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     groupsMap = v16->_groupsMap;
-    v16->_groupsMap = v17;
+    v16->_groupsMap = strongToWeakObjectsMapTable;
 
-    v19 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable2 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     settingsMap = v16->_settingsMap;
-    v16->_settingsMap = v19;
+    v16->_settingsMap = strongToWeakObjectsMapTable2;
 
-    objc_storeStrong(&v16->_messageHandler, a5);
-    objc_storeStrong(&v16->_codingKey, a4);
-    v21 = [v14 createSettingsWithOwner:v16];
+    objc_storeStrong(&v16->_messageHandler, handler);
+    objc_storeStrong(&v16->_codingKey, key);
+    v21 = [creatorCopy createSettingsWithOwner:v16];
     settings = v16->_settings;
     v16->_settings = v21;
   }

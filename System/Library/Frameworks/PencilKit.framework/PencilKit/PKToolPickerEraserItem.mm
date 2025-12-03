@@ -1,32 +1,32 @@
 @interface PKToolPickerEraserItem
-- (PKToolPickerEraserItem)initWithEraserType:(int64_t)a3 width:(double)a4;
+- (PKToolPickerEraserItem)initWithEraserType:(int64_t)type width:(double)width;
 - (double)width;
 - (id)_dictionaryRepresentation;
-- (id)_toolCopyWithWidth:(double)a3;
+- (id)_toolCopyWithWidth:(double)width;
 @end
 
 @implementation PKToolPickerEraserItem
 
 - (id)_dictionaryRepresentation
 {
-  v2 = [(PKToolPickerEraserItem *)self eraserTool];
-  v3 = [v2 ink];
-  v4 = [v3 dictionaryRepresentation];
+  eraserTool = [(PKToolPickerEraserItem *)self eraserTool];
+  v3 = [eraserTool ink];
+  dictionaryRepresentation = [v3 dictionaryRepresentation];
 
-  return v4;
+  return dictionaryRepresentation;
 }
 
-- (PKToolPickerEraserItem)initWithEraserType:(int64_t)a3 width:(double)a4
+- (PKToolPickerEraserItem)initWithEraserType:(int64_t)type width:(double)width
 {
   v7 = [PKEraserTool alloc];
-  if (a4 > 0.0)
+  if (width > 0.0)
   {
-    v8 = [(PKEraserTool *)v7 initWithEraserType:a3 width:a4];
+    v8 = [(PKEraserTool *)v7 initWithEraserType:type width:width];
   }
 
   else
   {
-    v8 = [(PKEraserTool *)v7 initWithEraserType:a3];
+    v8 = [(PKEraserTool *)v7 initWithEraserType:type];
   }
 
   v9 = v8;
@@ -39,18 +39,18 @@
 
 - (double)width
 {
-  v2 = [(PKToolPickerEraserItem *)self eraserTool];
-  [v2 width];
+  eraserTool = [(PKToolPickerEraserItem *)self eraserTool];
+  [eraserTool width];
   v4 = v3;
 
   return v4;
 }
 
-- (id)_toolCopyWithWidth:(double)a3
+- (id)_toolCopyWithWidth:(double)width
 {
   v5 = [PKEraserTool alloc];
-  v6 = [(PKToolPickerEraserItem *)self eraserTool];
-  v7 = -[PKEraserTool initWithEraserType:width:](v5, "initWithEraserType:width:", [v6 eraserType], a3);
+  eraserTool = [(PKToolPickerEraserItem *)self eraserTool];
+  v7 = -[PKEraserTool initWithEraserType:width:](v5, "initWithEraserType:width:", [eraserTool eraserType], width);
 
   return v7;
 }

@@ -1,7 +1,7 @@
 @interface MFUserActivityBrowseMailboxRoute
 + (OS_os_log)log;
-- (MFUserActivityBrowseMailboxRoute)initWithMailboxPickerController:(id)a3;
-- (id)browseMailboxForActivityPayload:(id)a3 activityType:(id)a4 scrollToMessage:(BOOL)a5;
+- (MFUserActivityBrowseMailboxRoute)initWithMailboxPickerController:(id)controller;
+- (id)browseMailboxForActivityPayload:(id)payload activityType:(id)type scrollToMessage:(BOOL)message;
 @end
 
 @implementation MFUserActivityBrowseMailboxRoute
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = sub_100232D90;
   block[3] = &unk_10064C4F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006DD758 != -1)
   {
     dispatch_once(&qword_1006DD758, block);
@@ -23,28 +23,28 @@
   return v2;
 }
 
-- (MFUserActivityBrowseMailboxRoute)initWithMailboxPickerController:(id)a3
+- (MFUserActivityBrowseMailboxRoute)initWithMailboxPickerController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = MFUserActivityBrowseMailboxRoute;
   v6 = [(MFUserActivityBrowseMailboxRoute *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mailboxPickerController, a3);
+    objc_storeStrong(&v6->_mailboxPickerController, controller);
   }
 
   return v7;
 }
 
-- (id)browseMailboxForActivityPayload:(id)a3 activityType:(id)a4 scrollToMessage:(BOOL)a5
+- (id)browseMailboxForActivityPayload:(id)payload activityType:(id)type scrollToMessage:(BOOL)message
 {
-  v37 = a5;
-  v41 = a3;
-  v38 = a4;
-  v7 = [v41 objectForKeyedSubscript:MSMailActivityHandoffBrowseMailboxKeyFocusedMessageID];
-  v49[0] = v38;
+  messageCopy = message;
+  payloadCopy = payload;
+  typeCopy = type;
+  v7 = [payloadCopy objectForKeyedSubscript:MSMailActivityHandoffBrowseMailboxKeyFocusedMessageID];
+  v49[0] = typeCopy;
   v48[0] = @"ceActivityType";
   v48[1] = @"ceActivityIsHandoff";
   v8 = [v7 length];
@@ -56,22 +56,22 @@
 
   v49[1] = v9;
   v40 = [NSDictionary dictionaryWithObjects:v49 forKeys:v48 count:2];
-  v10 = [v41 objectForKeyedSubscript:MSMailActivityHandoffBrowseMailboxKeySpecialMailboxType];
+  v10 = [payloadCopy objectForKeyedSubscript:MSMailActivityHandoffBrowseMailboxKeySpecialMailboxType];
   v39 = v10;
   if (v10)
   {
     if ([MSMailActivityHandoffBrowseMailboxSpecialMailboxTypeAllInboxes isEqualToString:v10])
     {
       v11 = [FavoriteItem itemForUnifiedMailboxWithType:7 selected:0];
-      v12 = [(MailboxPickerOutlineController *)self->_mailboxPickerController favoriteItemSelectionTarget];
-      [v12 selectCombinedMailboxWithType:7 item:v11 animated:0];
+      favoriteItemSelectionTarget = [(MailboxPickerOutlineController *)self->_mailboxPickerController favoriteItemSelectionTarget];
+      [favoriteItemSelectionTarget selectCombinedMailboxWithType:7 item:v11 animated:0];
     }
 
     else if ([MSMailActivityHandoffBrowseMailboxSpecialMailboxTypeVIP isEqualToString:v10])
     {
       v11 = [FavoriteItem itemForSharedMailboxWithType:1 selected:0];
-      v22 = [(MailboxPickerOutlineController *)self->_mailboxPickerController favoriteItemSelectionTarget];
-      [v22 selectCombinedInboxWithSourceType:1 item:v11 animated:0];
+      favoriteItemSelectionTarget2 = [(MailboxPickerOutlineController *)self->_mailboxPickerController favoriteItemSelectionTarget];
+      [favoriteItemSelectionTarget2 selectCombinedInboxWithSourceType:1 item:v11 animated:0];
     }
 
     else
@@ -85,19 +85,19 @@
     }
 
 LABEL_27:
-    v24 = 0;
-    if (v7 && v37)
+    pathComponents = 0;
+    if (v7 && messageCopy)
     {
       v30 = [NSURL URLWithString:v7];
-      v13 = [v30 mf_messageCriterion];
-      if (!v13)
+      mf_messageCriterion = [v30 mf_messageCriterion];
+      if (!mf_messageCriterion)
       {
-        v24 = [NSError mailHandoffErrorWithActivityContextInfo:v40 errorFormat:@"Couldn't generate criterion for message scroll position for handoff. URL: %@", v30];
+        pathComponents = [NSError mailHandoffErrorWithActivityContextInfo:v40 errorFormat:@"Couldn't generate criterion for message scroll position for handoff. URL: %@", v30];
         goto LABEL_33;
       }
 
       v36 = v30;
-      v24 = 0;
+      pathComponents = 0;
 LABEL_31:
 
       v30 = v36;
@@ -109,9 +109,9 @@ LABEL_33:
     goto LABEL_34;
   }
 
-  v35 = self;
-  v36 = [v41 objectForKeyedSubscript:MSMailActivityHandoffBrowseMailboxKeyRemoteMailboxURL];
-  v13 = [NSURL URLWithString:?];
+  selfCopy = self;
+  v36 = [payloadCopy objectForKeyedSubscript:MSMailActivityHandoffBrowseMailboxKeyRemoteMailboxURL];
+  mf_messageCriterion = [NSURL URLWithString:?];
   v44 = 0u;
   v45 = 0u;
   v42 = 0u;
@@ -133,8 +133,8 @@ LABEL_20:
       v28 = @"Wasn't able to resolve account for Browse Activity for siri shortcut. Got URL: %@";
     }
 
-    v29 = [NSString stringWithFormat:v28, v13];
-    v24 = [NSError mailHandoffErrorWithActivityContextInfo:v40 errorFormat:v29];
+    v29 = [NSString stringWithFormat:v28, mf_messageCriterion];
+    pathComponents = [NSError mailHandoffErrorWithActivityContextInfo:v40 errorFormat:v29];
 
     goto LABEL_31;
   }
@@ -150,9 +150,9 @@ LABEL_8:
     }
 
     v18 = *(*(&v42 + 1) + 8 * v17);
-    v19 = [v18 uniqueID];
-    v20 = [v13 host];
-    v21 = [v19 isEqualToString:v20];
+    uniqueID = [v18 uniqueID];
+    host = [mf_messageCriterion host];
+    v21 = [uniqueID isEqualToString:host];
 
     if (v21)
     {
@@ -181,29 +181,29 @@ LABEL_8:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v24 = [v13 pathComponents];
+    pathComponents = [mf_messageCriterion pathComponents];
     v25 = v23;
-    v26 = [v24 objectAtIndexedSubscript:2];
+    v26 = [pathComponents objectAtIndexedSubscript:2];
     v27 = [v25 mailboxForFolderID:v26];
   }
 
   else
   {
-    v24 = [v13 path];
-    if ([v24 length] >= 3 && objc_msgSend(v24, "characterAtIndex:", 0) == 47)
+    pathComponents = [mf_messageCriterion path];
+    if ([pathComponents length] >= 3 && objc_msgSend(pathComponents, "characterAtIndex:", 0) == 47)
     {
-      v32 = [v24 substringFromIndex:1];
+      v32 = [pathComponents substringFromIndex:1];
 
-      v24 = v32;
+      pathComponents = v32;
     }
 
-    v27 = [v23 mailboxUidForRelativePath:v24 create:0];
+    v27 = [v23 mailboxUidForRelativePath:pathComponents create:0];
   }
 
   if (v27)
   {
-    v33 = [(MailboxPickerOutlineController *)v35->_mailboxPickerController favoriteItemSelectionTarget];
-    [v33 selectMailbox:v27 item:0 animated:0];
+    favoriteItemSelectionTarget3 = [(MailboxPickerOutlineController *)selfCopy->_mailboxPickerController favoriteItemSelectionTarget];
+    [favoriteItemSelectionTarget3 selectMailbox:v27 item:0 animated:0];
   }
 
   else
@@ -218,8 +218,8 @@ LABEL_8:
       v34 = @"Wasn't able to resolve mailbox for Browse Activity for siri shortcut. Got URL: %@";
     }
 
-    v33 = [NSString stringWithFormat:v34, v13];
-    v24 = [NSError mailHandoffErrorWithActivityContextInfo:v40 errorFormat:v33];
+    favoriteItemSelectionTarget3 = [NSString stringWithFormat:v34, mf_messageCriterion];
+    pathComponents = [NSError mailHandoffErrorWithActivityContextInfo:v40 errorFormat:favoriteItemSelectionTarget3];
   }
 
   if (v27)
@@ -229,7 +229,7 @@ LABEL_8:
 
 LABEL_34:
 
-  return v24;
+  return pathComponents;
 }
 
 @end

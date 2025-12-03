@@ -1,29 +1,29 @@
 @interface IDSPhoneSubscription
-+ (id)CTSIMSFromPhoneSubscriptions:(id)a3;
-+ (id)phoneSubscriptionWithSIM:(id)a3;
-+ (id)phoneSubscriptionWithSubscriptionSlot:(int64_t)a3 andLabelID:(id)a4;
-+ (id)phoneSubscriptionsFromCTSIMs:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPhoneSubscription:(id)a3;
-- (IDSPhoneSubscription)initWithCoder:(id)a3;
-- (IDSPhoneSubscription)initWithSubscriptionSlot:(int64_t)a3 labelID:(id)a4;
-- (void)encodeWithCoder:(id)a3;
++ (id)CTSIMSFromPhoneSubscriptions:(id)subscriptions;
++ (id)phoneSubscriptionWithSIM:(id)m;
++ (id)phoneSubscriptionWithSubscriptionSlot:(int64_t)slot andLabelID:(id)d;
++ (id)phoneSubscriptionsFromCTSIMs:(id)ms;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPhoneSubscription:(id)subscription;
+- (IDSPhoneSubscription)initWithCoder:(id)coder;
+- (IDSPhoneSubscription)initWithSubscriptionSlot:(int64_t)slot labelID:(id)d;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSPhoneSubscription
 
-+ (id)CTSIMSFromPhoneSubscriptions:(id)a3
++ (id)CTSIMSFromPhoneSubscriptions:(id)subscriptions
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count])
+  subscriptionsCopy = subscriptions;
+  if ([subscriptionsCopy count])
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = v3;
+    v5 = subscriptionsCopy;
     v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
@@ -64,18 +64,18 @@
   return v11;
 }
 
-+ (id)phoneSubscriptionsFromCTSIMs:(id)a3
++ (id)phoneSubscriptionsFromCTSIMs:(id)ms
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count])
+  msCopy = ms;
+  if ([msCopy count])
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = v3;
+    v5 = msCopy;
     v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
@@ -116,19 +116,19 @@
   return v11;
 }
 
-+ (id)phoneSubscriptionWithSIM:(id)a3
++ (id)phoneSubscriptionWithSIM:(id)m
 {
-  if (a3)
+  if (m)
   {
-    v4 = a3;
-    v5 = [v4 slot];
+    mCopy = m;
+    slot = [mCopy slot];
     v6 = 1;
-    if (v5 == 1)
+    if (slot == 1)
     {
       v6 = 2;
     }
 
-    if (v5 == 2)
+    if (slot == 2)
     {
       v7 = 0;
     }
@@ -138,9 +138,9 @@
       v7 = v6;
     }
 
-    v8 = [v4 SIMIdentifier];
+    sIMIdentifier = [mCopy SIMIdentifier];
 
-    v9 = [a1 phoneSubscriptionWithSubscriptionSlot:v7 andLabelID:v8];
+    v9 = [self phoneSubscriptionWithSubscriptionSlot:v7 andLabelID:sIMIdentifier];
   }
 
   else
@@ -151,29 +151,29 @@
   return v9;
 }
 
-- (IDSPhoneSubscription)initWithSubscriptionSlot:(int64_t)a3 labelID:(id)a4
+- (IDSPhoneSubscription)initWithSubscriptionSlot:(int64_t)slot labelID:(id)d
 {
-  v7 = a4;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = IDSPhoneSubscription;
   v8 = [(IDSPhoneSubscription *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_subscriptionSlot = a3;
-    objc_storeStrong(&v8->_labelID, a4);
+    v8->_subscriptionSlot = slot;
+    objc_storeStrong(&v8->_labelID, d);
   }
 
   return v9;
 }
 
-+ (id)phoneSubscriptionWithSubscriptionSlot:(int64_t)a3 andLabelID:(id)a4
++ (id)phoneSubscriptionWithSubscriptionSlot:(int64_t)slot andLabelID:(id)d
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  dCopy = d;
+  v7 = dCopy;
+  if (dCopy)
   {
-    v8 = [v6 length] != 0;
+    v8 = [dCopy length] != 0;
   }
 
   else
@@ -182,18 +182,18 @@
   }
 
   v9 = 0;
-  if (a3 <= 2 && ((a3 - 1) < 2 || v8))
+  if (slot <= 2 && ((slot - 1) < 2 || v8))
   {
-    v9 = [[a1 alloc] initWithSubscriptionSlot:a3 labelID:v7];
+    v9 = [[self alloc] initWithSubscriptionSlot:slot labelID:v7];
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -201,19 +201,19 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(IDSPhoneSubscription *)self isEqualToPhoneSubscription:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(IDSPhoneSubscription *)self isEqualToPhoneSubscription:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToPhoneSubscription:(id)a3
+- (BOOL)isEqualToPhoneSubscription:(id)subscription
 {
-  v4 = a3;
-  if (self->_subscriptionSlot == v4[1])
+  subscriptionCopy = subscription;
+  if (self->_subscriptionSlot == subscriptionCopy[1])
   {
     labelID = self->_labelID;
-    if (labelID == v4[2])
+    if (labelID == subscriptionCopy[2])
     {
       v6 = 1;
     }
@@ -232,19 +232,19 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   subscriptionSlot = self->_subscriptionSlot;
-  v5 = a3;
-  [v5 encodeInteger:subscriptionSlot forKey:@"subSlot"];
-  [v5 encodeObject:self->_labelID forKey:@"subLableID"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:subscriptionSlot forKey:@"subSlot"];
+  [coderCopy encodeObject:self->_labelID forKey:@"subLableID"];
 }
 
-- (IDSPhoneSubscription)initWithCoder:(id)a3
+- (IDSPhoneSubscription)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"subSlot"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subLableID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"subSlot"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subLableID"];
 
   v7 = [(IDSPhoneSubscription *)self initWithSubscriptionSlot:v5 labelID:v6];
   return v7;

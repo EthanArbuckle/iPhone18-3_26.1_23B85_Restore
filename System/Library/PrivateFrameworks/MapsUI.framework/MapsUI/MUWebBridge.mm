@@ -1,18 +1,18 @@
 @interface MUWebBridge
-+ (id)URLByAddingConfiguration:(id)a3 toURL:(id)a4 additionalQueryItems:(id)a5;
++ (id)URLByAddingConfiguration:(id)configuration toURL:(id)l additionalQueryItems:(id)items;
 + (id)_operatingSystemVersion;
-- (MUWebBridge)initWithWebViewFactoryItem:(id)a3;
+- (MUWebBridge)initWithWebViewFactoryItem:(id)item;
 - (MUWebBridgeDelegate)delegate;
-- (void)_consumeCallbackHandlerWithNumber:(id)a3 result:(id)a4 errorMessage:(id)a5;
-- (void)_dispatchCall:(id)a3;
-- (void)_dispatchCallback:(id)a3;
+- (void)_consumeCallbackHandlerWithNumber:(id)number result:(id)result errorMessage:(id)message;
+- (void)_dispatchCall:(id)call;
+- (void)_dispatchCallback:(id)callback;
 - (void)_initializeConnection;
-- (void)_postMessage:(id)a3 completionHandler:(id)a4;
-- (void)_receiveMessage:(id)a3;
-- (void)addCallableMethod:(id)a3 handler:(id)a4;
-- (void)callMethod:(id)a3 arguments:(id)a4 callbackHandler:(id)a5;
+- (void)_postMessage:(id)message completionHandler:(id)handler;
+- (void)_receiveMessage:(id)message;
+- (void)addCallableMethod:(id)method handler:(id)handler;
+- (void)callMethod:(id)method arguments:(id)arguments callbackHandler:(id)handler;
 - (void)closeConnection;
-- (void)userContentController:(id)a3 didReceiveScriptMessage:(id)a4;
+- (void)userContentController:(id)controller didReceiveScriptMessage:(id)message;
 @end
 
 @implementation MUWebBridge
@@ -24,30 +24,30 @@
   return WeakRetained;
 }
 
-- (void)userContentController:(id)a3 didReceiveScriptMessage:(id)a4
+- (void)userContentController:(id)controller didReceiveScriptMessage:(id)message
 {
-  v8 = a4;
-  v5 = [v8 frameInfo];
-  v6 = [v5 isMainFrame];
+  messageCopy = message;
+  frameInfo = [messageCopy frameInfo];
+  isMainFrame = [frameInfo isMainFrame];
 
-  if (v6)
+  if (isMainFrame)
   {
-    v7 = [v8 body];
-    [(MUWebBridge *)self _receiveMessage:v7];
+    body = [messageCopy body];
+    [(MUWebBridge *)self _receiveMessage:body];
   }
 }
 
-- (void)_consumeCallbackHandlerWithNumber:(id)a3 result:(id)a4 errorMessage:(id)a5
+- (void)_consumeCallbackHandlerWithNumber:(id)number result:(id)result errorMessage:(id)message
 {
   v16 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(NSMutableDictionary *)self->_pendingCallbackHandlers objectForKeyedSubscript:v8];
+  numberCopy = number;
+  resultCopy = result;
+  messageCopy = message;
+  v11 = [(NSMutableDictionary *)self->_pendingCallbackHandlers objectForKeyedSubscript:numberCopy];
   if (v11)
   {
-    [(NSMutableDictionary *)self->_pendingCallbackHandlers removeObjectForKey:v8];
-    (v11)[2](v11, v9, v10);
+    [(NSMutableDictionary *)self->_pendingCallbackHandlers removeObjectForKey:numberCopy];
+    (v11)[2](v11, resultCopy, messageCopy);
   }
 
   else
@@ -56,7 +56,7 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v14 = 138412290;
-      v15 = v8;
+      v15 = numberCopy;
       _os_log_impl(&dword_1C5620000, v12, OS_LOG_TYPE_ERROR, "No matching callback handler found for callback %@", &v14, 0xCu);
     }
   }
@@ -64,27 +64,27 @@
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_dispatchCallback:(id)a3
+- (void)_dispatchCallback:(id)callback
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  callbackCopy = callback;
+  v5 = callbackCopy;
   if (self->_connectionState == 1)
   {
-    v6 = [v4 status];
-    if ([v6 isEqualToString:@"success"])
+    status = [callbackCopy status];
+    if ([status isEqualToString:@"success"])
     {
-      v7 = [v5 callNumber];
-      v8 = [v5 result];
-      v9 = self;
-      v10 = v7;
-      v11 = v8;
+      callNumber = [v5 callNumber];
+      result = [v5 result];
+      selfCopy2 = self;
+      v10 = callNumber;
+      v11 = result;
       v12 = 0;
     }
 
     else
     {
-      if (![v6 isEqualToString:@"error"])
+      if (![status isEqualToString:@"error"])
       {
         v13 = MUGetMUWebContentLog();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -97,15 +97,15 @@
         goto LABEL_10;
       }
 
-      v7 = [v5 callNumber];
-      v8 = [v5 errorMessage];
-      v9 = self;
-      v10 = v7;
+      callNumber = [v5 callNumber];
+      result = [v5 errorMessage];
+      selfCopy2 = self;
+      v10 = callNumber;
       v11 = 0;
-      v12 = v8;
+      v12 = result;
     }
 
-    [(MUWebBridge *)v9 _consumeCallbackHandlerWithNumber:v10 result:v11 errorMessage:v12];
+    [(MUWebBridge *)selfCopy2 _consumeCallbackHandlerWithNumber:v10 result:v11 errorMessage:v12];
 
 LABEL_10:
   }
@@ -113,10 +113,10 @@ LABEL_10:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_dispatchCall:(id)a3
+- (void)_dispatchCall:(id)call
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  callCopy = call;
+  v5 = [callCopy copy];
   [v5 setType:@"callback"];
   connectionState = self->_connectionState;
   if (connectionState == 2)
@@ -135,8 +135,8 @@ LABEL_14:
       goto LABEL_15;
     }
 
-    v7 = [v4 method];
-    v8 = [v7 isEqualToString:@"init"];
+    method = [callCopy method];
+    v8 = [method isEqualToString:@"init"];
 
     if (v8)
     {
@@ -152,8 +152,8 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v9 = [v4 method];
-  v10 = [v9 isEqualToString:@"init"];
+  method2 = [callCopy method];
+  v10 = [method2 isEqualToString:@"init"];
 
   if (v10)
   {
@@ -163,8 +163,8 @@ LABEL_13:
   }
 
   callHandlers = self->_callHandlers;
-  v13 = [v4 method];
-  v14 = [(NSMutableDictionary *)callHandlers objectForKeyedSubscript:v13];
+  method3 = [callCopy method];
+  v14 = [(NSMutableDictionary *)callHandlers objectForKeyedSubscript:method3];
 
   if (!v14)
   {
@@ -174,14 +174,14 @@ LABEL_13:
   }
 
   objc_initWeak(&location, self);
-  v15 = [v4 arguments];
+  arguments = [callCopy arguments];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __29__MUWebBridge__dispatchCall___block_invoke;
   v16[3] = &unk_1E82191A8;
   objc_copyWeak(&v18, &location);
   v17 = v5;
-  (v14)[2](v14, v15, v16);
+  (v14)[2](v14, arguments, v16);
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(&location);
@@ -250,43 +250,43 @@ void __29__MUWebBridge__dispatchCall___block_invoke_2(uint64_t a1, uint64_t a2, 
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_postMessage:(id)a3 completionHandler:(id)a4
+- (void)_postMessage:(id)message completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = MEMORY[0x1E696ACB0];
-  v8 = [a3 JSONObject];
+  jSONObject = [message JSONObject];
   v17 = 0;
-  v9 = [v7 dataWithJSONObject:v8 options:0 error:&v17];
+  v9 = [v7 dataWithJSONObject:jSONObject options:0 error:&v17];
   v10 = v17;
 
   if (v9)
   {
     v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v9 encoding:4];
     v12 = MEMORY[0x1E696AEC0];
-    v13 = [(MUWebViewFactoryItem *)self->_webViewFactoryItem bridgeConfiguration];
-    v14 = [v13 webControllerName];
-    v15 = [v12 stringWithFormat:@"window.%@.receiveMessage(%@)", v14, v11];
+    bridgeConfiguration = [(MUWebViewFactoryItem *)self->_webViewFactoryItem bridgeConfiguration];
+    webControllerName = [bridgeConfiguration webControllerName];
+    v15 = [v12 stringWithFormat:@"window.%@.receiveMessage(%@)", webControllerName, v11];
 
-    v16 = [(MUWebViewFactoryItem *)self->_webViewFactoryItem webView];
-    [v16 evaluateJavaScript:v15 completionHandler:v6];
+    webView = [(MUWebViewFactoryItem *)self->_webViewFactoryItem webView];
+    [webView evaluateJavaScript:v15 completionHandler:handlerCopy];
   }
 
   else
   {
-    v6[2](v6, 0, v10);
+    handlerCopy[2](handlerCopy, 0, v10);
   }
 }
 
-- (void)_receiveMessage:(id)a3
+- (void)_receiveMessage:(id)message
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  messageCopy = message;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = [[MUWebMessage alloc] initWithJSONObject:v4]) != 0)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = [[MUWebMessage alloc] initWithJSONObject:messageCopy]) != 0)
   {
     p_super = &v5->super;
-    v7 = [(MUWebMessage *)v5 type];
-    v8 = [v7 isEqualToString:@"call"];
+    type = [(MUWebMessage *)v5 type];
+    v8 = [type isEqualToString:@"call"];
 
     if (v8)
     {
@@ -295,8 +295,8 @@ void __29__MUWebBridge__dispatchCall___block_invoke_2(uint64_t a1, uint64_t a2, 
 
     else
     {
-      v10 = [p_super type];
-      v11 = [v10 isEqualToString:@"callback"];
+      type2 = [p_super type];
+      v11 = [type2 isEqualToString:@"callback"];
 
       if (v11)
       {
@@ -308,9 +308,9 @@ void __29__MUWebBridge__dispatchCall___block_invoke_2(uint64_t a1, uint64_t a2, 
         v12 = MUGetMUWebContentLog();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
         {
-          v13 = [p_super type];
+          type3 = [p_super type];
           v14 = 138412290;
-          v15 = v13;
+          v15 = type3;
           _os_log_impl(&dword_1C5620000, v12, OS_LOG_TYPE_ERROR, "Unknown message type: %@", &v14, 0xCu);
         }
       }
@@ -330,19 +330,19 @@ void __29__MUWebBridge__dispatchCall___block_invoke_2(uint64_t a1, uint64_t a2, 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addCallableMethod:(id)a3 handler:(id)a4
+- (void)addCallableMethod:(id)method handler:(id)handler
 {
-  v6 = a3;
-  v8 = [a4 copy];
+  methodCopy = method;
+  v8 = [handler copy];
   v7 = _Block_copy(v8);
-  [(NSMutableDictionary *)self->_callHandlers setObject:v7 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)self->_callHandlers setObject:v7 forKeyedSubscript:methodCopy];
 }
 
-- (void)callMethod:(id)a3 arguments:(id)a4 callbackHandler:(id)a5
+- (void)callMethod:(id)method arguments:(id)arguments callbackHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  defaultCallbackHandler = a5;
+  methodCopy = method;
+  argumentsCopy = arguments;
+  defaultCallbackHandler = handler;
   v11 = defaultCallbackHandler;
   if (self->_connectionState == 1)
   {
@@ -372,19 +372,19 @@ void __29__MUWebBridge__dispatchCall___block_invoke_2(uint64_t a1, uint64_t a2, 
 
       v16 = objc_alloc_init(MUWebMessage);
       [(MUWebMessage *)v16 setType:@"call"];
-      v17 = [(MUWebViewFactoryItem *)self->_webViewFactoryItem bridgeConfiguration];
-      v18 = [v17 nativeControllerName];
-      [(MUWebMessage *)v16 setCaller:v18];
+      bridgeConfiguration = [(MUWebViewFactoryItem *)self->_webViewFactoryItem bridgeConfiguration];
+      nativeControllerName = [bridgeConfiguration nativeControllerName];
+      [(MUWebMessage *)v16 setCaller:nativeControllerName];
 
-      v19 = [(MUWebViewFactoryItem *)self->_webViewFactoryItem bridgeConfiguration];
-      v20 = [v19 webControllerName];
-      [(MUWebMessage *)v16 setCallee:v20];
+      bridgeConfiguration2 = [(MUWebViewFactoryItem *)self->_webViewFactoryItem bridgeConfiguration];
+      webControllerName = [bridgeConfiguration2 webControllerName];
+      [(MUWebMessage *)v16 setCallee:webControllerName];
 
-      [(MUWebMessage *)v16 setMethod:v8];
+      [(MUWebMessage *)v16 setMethod:methodCopy];
       v21 = [MEMORY[0x1E696AD98] numberWithInteger:nextCallNumber];
       [(MUWebMessage *)v16 setCallNumber:v21];
 
-      [(MUWebMessage *)v16 setArguments:v9];
+      [(MUWebMessage *)v16 setArguments:argumentsCopy];
       objc_initWeak(location, self);
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
@@ -429,8 +429,8 @@ LABEL_6:
 - (void)closeConnection
 {
   self->_connectionState = 2;
-  v2 = [(MUWebViewFactoryItem *)self->_webViewFactoryItem messageHandlerProxy];
-  [v2 setTarget:0];
+  messageHandlerProxy = [(MUWebViewFactoryItem *)self->_webViewFactoryItem messageHandlerProxy];
+  [messageHandlerProxy setTarget:0];
 }
 
 - (void)_initializeConnection
@@ -438,31 +438,31 @@ LABEL_6:
   if (!self->_connectionState)
   {
     self->_connectionState = 1;
-    v4 = [(MUWebBridge *)self delegate];
-    [v4 webBridgeDidConnect:self];
+    delegate = [(MUWebBridge *)self delegate];
+    [delegate webBridgeDidConnect:self];
   }
 }
 
-- (MUWebBridge)initWithWebViewFactoryItem:(id)a3
+- (MUWebBridge)initWithWebViewFactoryItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v15.receiver = self;
   v15.super_class = MUWebBridge;
   v6 = [(MUWebBridge *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_webViewFactoryItem, a3);
-    v8 = [(MUWebViewFactoryItem *)v7->_webViewFactoryItem messageHandlerProxy];
-    [v8 setTarget:v7];
+    objc_storeStrong(&v6->_webViewFactoryItem, item);
+    messageHandlerProxy = [(MUWebViewFactoryItem *)v7->_webViewFactoryItem messageHandlerProxy];
+    [messageHandlerProxy setTarget:v7];
 
-    v9 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     callHandlers = v7->_callHandlers;
-    v7->_callHandlers = v9;
+    v7->_callHandlers = dictionary;
 
-    v11 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     pendingCallbackHandlers = v7->_pendingCallbackHandlers;
-    v7->_pendingCallbackHandlers = v11;
+    v7->_pendingCallbackHandlers = dictionary2;
 
     defaultCallbackHandler = v7->_defaultCallbackHandler;
     v7->_defaultCallbackHandler = &__block_literal_global_7489;
@@ -492,11 +492,11 @@ void __42__MUWebBridge_initWithWebViewFactoryItem___block_invoke(uint64_t a1, ui
 + (id)_operatingSystemVersion
 {
   v6 = 0uLL;
-  v2 = [MEMORY[0x1E696AE30] processInfo];
-  v3 = v2;
-  if (v2)
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  v3 = processInfo;
+  if (processInfo)
   {
-    [v2 operatingSystemVersion];
+    [processInfo operatingSystemVersion];
   }
 
   else
@@ -509,35 +509,35 @@ void __42__MUWebBridge_initWithWebViewFactoryItem___block_invoke(uint64_t a1, ui
   return v4;
 }
 
-+ (id)URLByAddingConfiguration:(id)a3 toURL:(id)a4 additionalQueryItems:(id)a5
++ (id)URLByAddingConfiguration:(id)configuration toURL:(id)l additionalQueryItems:(id)items
 {
-  v7 = a5;
+  itemsCopy = items;
   v8 = MEMORY[0x1E696AF20];
-  v9 = a3;
-  v10 = [v8 componentsWithURL:a4 resolvingAgainstBaseURL:0];
+  configurationCopy = configuration;
+  v10 = [v8 componentsWithURL:l resolvingAgainstBaseURL:0];
   v11 = MEMORY[0x1E695DF70];
-  v12 = [v10 queryItems];
-  v13 = [v11 arrayWithArray:v12];
+  queryItems = [v10 queryItems];
+  v13 = [v11 arrayWithArray:queryItems];
 
   v14 = MEMORY[0x1E696AF60];
-  v15 = [v9 bridgeVersion];
+  bridgeVersion = [configurationCopy bridgeVersion];
 
-  v16 = [v14 queryItemWithName:@"bridgeVersion" value:v15];
+  v16 = [v14 queryItemWithName:@"bridgeVersion" value:bridgeVersion];
   [v13 addObject:v16];
 
   v17 = MEMORY[0x1E696AF60];
-  v18 = [objc_opt_class() _operatingSystemName];
-  v19 = [v17 queryItemWithName:@"osName" value:v18];
+  _operatingSystemName = [objc_opt_class() _operatingSystemName];
+  v19 = [v17 queryItemWithName:@"osName" value:_operatingSystemName];
   [v13 addObject:v19];
 
   v20 = MEMORY[0x1E696AF60];
-  v21 = [objc_opt_class() _operatingSystemVersion];
-  v22 = [v20 queryItemWithName:@"osVersion" value:v21];
+  _operatingSystemVersion = [objc_opt_class() _operatingSystemVersion];
+  v22 = [v20 queryItemWithName:@"osVersion" value:_operatingSystemVersion];
   [v13 addObject:v22];
 
-  if ([v7 count])
+  if ([itemsCopy count])
   {
-    [v13 addObjectsFromArray:v7];
+    [v13 addObjectsFromArray:itemsCopy];
   }
 
   [v10 setQueryItems:v13];

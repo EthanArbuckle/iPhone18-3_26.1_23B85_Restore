@@ -1,15 +1,15 @@
 @interface RTAddressSubPremiseTransformer
-- (id)reverseTransformedValue:(id)a3;
-- (id)transformedValue:(id)a3;
+- (id)reverseTransformedValue:(id)value;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation RTAddressSubPremiseTransformer
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (!v3)
+  valueCopy = value;
+  if (!valueCopy)
   {
     goto LABEL_27;
   }
@@ -31,12 +31,12 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v22 = v3;
+    v22 = valueCopy;
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v5 = v3;
+    v5 = valueCopy;
     v6 = [v5 countByEnumeratingWithState:&v29 objects:v36 count:16];
     if (v6)
     {
@@ -115,13 +115,13 @@
 
           v17 = *(*(&v25 + 1) + 8 * i);
           v18 = objc_autoreleasePoolPush();
-          v19 = [v17 subPremise];
-          v20 = [v19 dataUsingEncoding:4];
+          subPremise = [v17 subPremise];
+          v20 = [subPremise dataUsingEncoding:4];
 
-          v24 = [v17 subPremiseType];
+          subPremiseType = [v17 subPremiseType];
           v23 = [v20 length] + 16;
           [v11 appendBytes:&v23 length:8];
-          [v11 appendBytes:&v24 length:8];
+          [v11 appendBytes:&subPremiseType length:8];
           [v11 appendData:v20];
 
           objc_autoreleasePoolPop(v18);
@@ -134,7 +134,7 @@
     }
 
 LABEL_29:
-    v3 = v22;
+    valueCopy = v22;
   }
 
   else
@@ -146,11 +146,11 @@ LABEL_27:
   return v11;
 }
 
-- (id)reverseTransformedValue:(id)a3
+- (id)reverseTransformedValue:(id)value
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (!v3)
+  valueCopy = value;
+  if (!valueCopy)
   {
     goto LABEL_14;
   }
@@ -172,7 +172,7 @@ LABEL_27:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v3;
+    v5 = valueCopy;
     *buf = 3735928559;
     *&buf[8] = 0u;
     v19 = 0u;

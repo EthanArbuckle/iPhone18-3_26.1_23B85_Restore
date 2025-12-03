@@ -1,35 +1,35 @@
 @interface HMRemoteEventRouterProtoServerDiagnosticInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsConnectionState:(id)a3;
-- (int)StringAsMode:(id)a3;
+- (int)StringAsConnectionState:(id)state;
+- (int)StringAsMode:(id)mode;
 - (int)connectionState;
 - (int)mode;
 - (unint64_t)hash;
-- (void)addConnectedClients:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasConnectionState:(BOOL)a3;
-- (void)setHasMode:(BOOL)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addConnectedClients:(id)clients;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasConnectionState:(BOOL)state;
+- (void)setHasMode:(BOOL)mode;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HMRemoteEventRouterProtoServerDiagnosticInfo
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 40);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 40);
   if ((v6 & 2) != 0)
   {
-    self->_version = *(v4 + 2);
+    self->_version = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v6 = *(v4 + 40);
+    v6 = *(fromCopy + 40);
     if ((v6 & 8) == 0)
     {
 LABEL_3:
@@ -42,14 +42,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 40) & 8) == 0)
+  else if ((*(fromCopy + 40) & 8) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_mode = *(v4 + 9);
+  self->_mode = *(fromCopy + 9);
   *&self->_has |= 8u;
-  v6 = *(v4 + 40);
+  v6 = *(fromCopy + 40);
   if ((v6 & 4) == 0)
   {
 LABEL_4:
@@ -62,12 +62,12 @@ LABEL_4:
   }
 
 LABEL_16:
-  self->_connectionState = *(v4 + 8);
+  self->_connectionState = *(fromCopy + 8);
   *&self->_has |= 4u;
-  if (*(v4 + 40))
+  if (*(fromCopy + 40))
   {
 LABEL_5:
-    self->_lastConnected = *(v4 + 1);
+    self->_lastConnected = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
@@ -76,7 +76,7 @@ LABEL_6:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = *(v4 + 3);
+  v7 = *(fromCopy + 3);
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
@@ -181,24 +181,24 @@ LABEL_5:
   return v9 ^ v8 ^ v10 ^ v14 ^ [(NSMutableArray *)self->_connectedClients hash:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_24;
   }
 
-  v5 = *(v4 + 40);
+  v5 = *(equalCopy + 40);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_version != *(v4 + 2))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_version != *(equalCopy + 2))
     {
       goto LABEL_24;
     }
   }
 
-  else if ((*(v4 + 40) & 2) != 0)
+  else if ((*(equalCopy + 40) & 2) != 0)
   {
 LABEL_24:
     v7 = 0;
@@ -207,45 +207,45 @@ LABEL_24:
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 40) & 8) == 0 || self->_mode != *(v4 + 9))
+    if ((*(equalCopy + 40) & 8) == 0 || self->_mode != *(equalCopy + 9))
     {
       goto LABEL_24;
     }
   }
 
-  else if ((*(v4 + 40) & 8) != 0)
+  else if ((*(equalCopy + 40) & 8) != 0)
   {
     goto LABEL_24;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 40) & 4) == 0 || self->_connectionState != *(v4 + 8))
+    if ((*(equalCopy + 40) & 4) == 0 || self->_connectionState != *(equalCopy + 8))
     {
       goto LABEL_24;
     }
   }
 
-  else if ((*(v4 + 40) & 4) != 0)
+  else if ((*(equalCopy + 40) & 4) != 0)
   {
     goto LABEL_24;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_lastConnected != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_lastConnected != *(equalCopy + 1))
     {
       goto LABEL_24;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
     goto LABEL_24;
   }
 
   connectedClients = self->_connectedClients;
-  if (connectedClients | *(v4 + 3))
+  if (connectedClients | *(equalCopy + 3))
   {
     v7 = [(NSMutableArray *)connectedClients isEqual:?];
   }
@@ -260,10 +260,10 @@ LABEL_25:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -332,7 +332,7 @@ LABEL_6:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * i) copyWithZone:{a3, v16}];
+        v13 = [*(*(&v16 + 1) + 8 * i) copyWithZone:{zone, v16}];
         [v6 addConnectedClients:v13];
       }
 
@@ -346,14 +346,14 @@ LABEL_6:
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[2] = self->_version;
-    *(v4 + 40) |= 2u;
+    toCopy[2] = self->_version;
+    *(toCopy + 40) |= 2u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -364,8 +364,8 @@ LABEL_3:
       }
 
 LABEL_15:
-      *(v4 + 8) = self->_connectionState;
-      *(v4 + 40) |= 4u;
+      *(toCopy + 8) = self->_connectionState;
+      *(toCopy + 40) |= 4u;
       if ((*&self->_has & 1) == 0)
       {
         goto LABEL_6;
@@ -380,8 +380,8 @@ LABEL_15:
     goto LABEL_3;
   }
 
-  *(v4 + 9) = self->_mode;
-  *(v4 + 40) |= 8u;
+  *(toCopy + 9) = self->_mode;
+  *(toCopy + 40) |= 8u;
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -392,19 +392,19 @@ LABEL_4:
   if (has)
   {
 LABEL_5:
-    v4[1] = *&self->_lastConnected;
-    *(v4 + 40) |= 1u;
+    toCopy[1] = *&self->_lastConnected;
+    *(toCopy + 40) |= 1u;
   }
 
 LABEL_6:
-  v10 = v4;
+  v10 = toCopy;
   if ([(HMRemoteEventRouterProtoServerDiagnosticInfo *)self connectedClientsCount])
   {
     [v10 clearConnectedClients];
-    v6 = [(HMRemoteEventRouterProtoServerDiagnosticInfo *)self connectedClientsCount];
-    if (v6)
+    connectedClientsCount = [(HMRemoteEventRouterProtoServerDiagnosticInfo *)self connectedClientsCount];
+    if (connectedClientsCount)
     {
-      v7 = v6;
+      v7 = connectedClientsCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(HMRemoteEventRouterProtoServerDiagnosticInfo *)self connectedClientsAtIndex:i];
@@ -414,10 +414,10 @@ LABEL_6:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -501,12 +501,12 @@ LABEL_6:
 - (id)dictionaryRepresentation
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v15 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_version];
-    [v3 setObject:v15 forKey:@"version"];
+    [dictionary setObject:v15 forKey:@"version"];
 
     has = self->_has;
     if ((has & 8) == 0)
@@ -537,7 +537,7 @@ LABEL_3:
     v17 = off_1E754B9D0[mode];
   }
 
-  [v3 setObject:v17 forKey:@"mode"];
+  [dictionary setObject:v17 forKey:@"mode"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -563,13 +563,13 @@ LABEL_23:
     v19 = off_1E754B9E8[connectionState];
   }
 
-  [v3 setObject:v19 forKey:@"connectionState"];
+  [dictionary setObject:v19 forKey:@"connectionState"];
 
   if (*&self->_has)
   {
 LABEL_5:
     v5 = [MEMORY[0x1E696AD98] numberWithDouble:self->_lastConnected];
-    [v3 setObject:v5 forKey:@"lastConnected"];
+    [dictionary setObject:v5 forKey:@"lastConnected"];
   }
 
 LABEL_6:
@@ -595,8 +595,8 @@ LABEL_6:
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -605,12 +605,12 @@ LABEL_6:
       while (v9);
     }
 
-    [v3 setObject:v6 forKey:@"connectedClients"];
+    [dictionary setObject:v6 forKey:@"connectedClients"];
   }
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -619,44 +619,44 @@ LABEL_6:
   v8.receiver = self;
   v8.super_class = HMRemoteEventRouterProtoServerDiagnosticInfo;
   v4 = [(HMRemoteEventRouterProtoServerDiagnosticInfo *)&v8 description];
-  v5 = [(HMRemoteEventRouterProtoServerDiagnosticInfo *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HMRemoteEventRouterProtoServerDiagnosticInfo *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addConnectedClients:(id)a3
+- (void)addConnectedClients:(id)clients
 {
-  v4 = a3;
+  clientsCopy = clients;
   connectedClients = self->_connectedClients;
-  v8 = v4;
+  v8 = clientsCopy;
   if (!connectedClients)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_connectedClients;
     self->_connectedClients = v6;
 
-    v4 = v8;
+    clientsCopy = v8;
     connectedClients = self->_connectedClients;
   }
 
-  [(NSMutableArray *)connectedClients addObject:v4];
+  [(NSMutableArray *)connectedClients addObject:clientsCopy];
 }
 
-- (int)StringAsConnectionState:(id)a3
+- (int)StringAsConnectionState:(id)state
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  stateCopy = state;
+  if ([stateCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Connected"])
+  else if ([stateCopy isEqualToString:@"Connected"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Disconnected"])
+  else if ([stateCopy isEqualToString:@"Disconnected"])
   {
     v4 = 2;
   }
@@ -669,9 +669,9 @@ LABEL_6:
   return v4;
 }
 
-- (void)setHasConnectionState:(BOOL)a3
+- (void)setHasConnectionState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 4;
   }
@@ -697,20 +697,20 @@ LABEL_6:
   }
 }
 
-- (int)StringAsMode:(id)a3
+- (int)StringAsMode:(id)mode
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  modeCopy = mode;
+  if ([modeCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Primary"])
+  else if ([modeCopy isEqualToString:@"Primary"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Resident"])
+  else if ([modeCopy isEqualToString:@"Resident"])
   {
     v4 = 2;
   }
@@ -723,9 +723,9 @@ LABEL_6:
   return v4;
 }
 
-- (void)setHasMode:(BOOL)a3
+- (void)setHasMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 8;
   }
@@ -751,9 +751,9 @@ LABEL_6:
   }
 }
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 2;
   }

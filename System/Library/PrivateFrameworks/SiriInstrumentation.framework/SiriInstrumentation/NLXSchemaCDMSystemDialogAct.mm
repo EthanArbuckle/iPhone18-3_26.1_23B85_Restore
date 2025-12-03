@@ -1,7 +1,7 @@
 @interface NLXSchemaCDMSystemDialogAct
-- (BOOL)isEqual:(id)a3;
-- (NLXSchemaCDMSystemDialogAct)initWithDictionary:(id)a3;
-- (NLXSchemaCDMSystemDialogAct)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NLXSchemaCDMSystemDialogAct)initWithDictionary:(id)dictionary;
+- (NLXSchemaCDMSystemDialogAct)initWithJSON:(id)n;
 - (NLXSchemaCDMSystemGaveOptions)gaveOptions;
 - (NLXSchemaCDMSystemInformed)informed;
 - (NLXSchemaCDMSystemOffered)offered;
@@ -9,7 +9,7 @@
 - (NLXSchemaCDMSystemReportedFailure)reportedFailure;
 - (NLXSchemaCDMSystemReportedSuccess)reportedSuccess;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
@@ -19,26 +19,26 @@
 - (void)deletePrompted;
 - (void)deleteReportedFailure;
 - (void)deleteReportedSuccess;
-- (void)setGaveOptions:(id)a3;
-- (void)setInformed:(id)a3;
-- (void)setOffered:(id)a3;
-- (void)setPrompted:(id)a3;
-- (void)setReportedFailure:(id)a3;
-- (void)setReportedSuccess:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setGaveOptions:(id)options;
+- (void)setInformed:(id)informed;
+- (void)setOffered:(id)offered;
+- (void)setPrompted:(id)prompted;
+- (void)setReportedFailure:(id)failure;
+- (void)setReportedSuccess:(id)success;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NLXSchemaCDMSystemDialogAct
 
-- (NLXSchemaCDMSystemDialogAct)initWithDictionary:(id)a3
+- (NLXSchemaCDMSystemDialogAct)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v25.receiver = self;
   v25.super_class = NLXSchemaCDMSystemDialogAct;
   v5 = [(NLXSchemaCDMSystemDialogAct *)&v25 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"id"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"id"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -47,7 +47,7 @@
     }
 
     v24 = v6;
-    v8 = [v4 objectForKeyedSubscript:@"linkId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"linkId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -55,7 +55,7 @@
       [(NLXSchemaCDMSystemDialogAct *)v5 setLinkId:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"prompted"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"prompted"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -63,7 +63,7 @@
       [(NLXSchemaCDMSystemDialogAct *)v5 setPrompted:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"offered"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"offered"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -71,7 +71,7 @@
       [(NLXSchemaCDMSystemDialogAct *)v5 setOffered:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"gaveOptions"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"gaveOptions"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -79,7 +79,7 @@
       [(NLXSchemaCDMSystemDialogAct *)v5 setGaveOptions:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"informed"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"informed"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -87,7 +87,7 @@
       [(NLXSchemaCDMSystemDialogAct *)v5 setInformed:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"reportedSuccess"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"reportedSuccess"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -95,7 +95,7 @@
       [(NLXSchemaCDMSystemDialogAct *)v5 setReportedSuccess:v19];
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"reportedFailure"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"reportedFailure"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -109,30 +109,30 @@
   return v5;
 }
 
-- (NLXSchemaCDMSystemDialogAct)initWithJSON:(id)a3
+- (NLXSchemaCDMSystemDialogAct)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NLXSchemaCDMSystemDialogAct *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NLXSchemaCDMSystemDialogAct *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NLXSchemaCDMSystemDialogAct *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -145,138 +145,138 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_gaveOptions)
   {
-    v4 = [(NLXSchemaCDMSystemDialogAct *)self gaveOptions];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    gaveOptions = [(NLXSchemaCDMSystemDialogAct *)self gaveOptions];
+    dictionaryRepresentation = [gaveOptions dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"gaveOptions"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"gaveOptions"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"gaveOptions"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"gaveOptions"];
     }
   }
 
   if (self->_id)
   {
     v7 = [(NLXSchemaCDMSystemDialogAct *)self id];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    dictionaryRepresentation2 = [v7 dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"id"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"id"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"id"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"id"];
     }
   }
 
   if (self->_informed)
   {
-    v10 = [(NLXSchemaCDMSystemDialogAct *)self informed];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    informed = [(NLXSchemaCDMSystemDialogAct *)self informed];
+    dictionaryRepresentation3 = [informed dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"informed"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"informed"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"informed"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"informed"];
     }
   }
 
   if (self->_linkId)
   {
-    v13 = [(NLXSchemaCDMSystemDialogAct *)self linkId];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    linkId = [(NLXSchemaCDMSystemDialogAct *)self linkId];
+    dictionaryRepresentation4 = [linkId dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"linkId"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"linkId"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"linkId"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"linkId"];
     }
   }
 
   if (self->_offered)
   {
-    v16 = [(NLXSchemaCDMSystemDialogAct *)self offered];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    offered = [(NLXSchemaCDMSystemDialogAct *)self offered];
+    dictionaryRepresentation5 = [offered dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"offered"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"offered"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"offered"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"offered"];
     }
   }
 
   if (self->_prompted)
   {
-    v19 = [(NLXSchemaCDMSystemDialogAct *)self prompted];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    prompted = [(NLXSchemaCDMSystemDialogAct *)self prompted];
+    dictionaryRepresentation6 = [prompted dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"prompted"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"prompted"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"prompted"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"prompted"];
     }
   }
 
   if (self->_reportedFailure)
   {
-    v22 = [(NLXSchemaCDMSystemDialogAct *)self reportedFailure];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    reportedFailure = [(NLXSchemaCDMSystemDialogAct *)self reportedFailure];
+    dictionaryRepresentation7 = [reportedFailure dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"reportedFailure"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"reportedFailure"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"reportedFailure"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"reportedFailure"];
     }
   }
 
   if (self->_reportedSuccess)
   {
-    v25 = [(NLXSchemaCDMSystemDialogAct *)self reportedSuccess];
-    v26 = [v25 dictionaryRepresentation];
-    if (v26)
+    reportedSuccess = [(NLXSchemaCDMSystemDialogAct *)self reportedSuccess];
+    dictionaryRepresentation8 = [reportedSuccess dictionaryRepresentation];
+    if (dictionaryRepresentation8)
     {
-      [v3 setObject:v26 forKeyedSubscript:@"reportedSuccess"];
+      [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"reportedSuccess"];
     }
 
     else
     {
-      v27 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v27 forKeyedSubscript:@"reportedSuccess"];
+      null8 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null8 forKeyedSubscript:@"reportedSuccess"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -291,23 +291,23 @@
   return v9 ^ [(NLXSchemaCDMSystemReportedFailure *)self->_reportedFailure hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_43;
   }
 
   whichSystemdialogacttype = self->_whichSystemdialogacttype;
-  if (whichSystemdialogacttype != [v4 whichSystemdialogacttype])
+  if (whichSystemdialogacttype != [equalCopy whichSystemdialogacttype])
   {
     goto LABEL_43;
   }
 
-  v6 = [(NLXSchemaCDMSystemDialogAct *)self id];
-  v7 = [v4 id];
-  if ((v6 != 0) == (v7 == 0))
+  linkId = [(NLXSchemaCDMSystemDialogAct *)self id];
+  linkId2 = [equalCopy id];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_42;
   }
@@ -317,7 +317,7 @@
   {
     v9 = v8;
     v10 = [(NLXSchemaCDMSystemDialogAct *)self id];
-    v11 = [v4 id];
+    v11 = [equalCopy id];
     v12 = [v10 isEqual:v11];
 
     if (!v12)
@@ -330,20 +330,20 @@
   {
   }
 
-  v6 = [(NLXSchemaCDMSystemDialogAct *)self linkId];
-  v7 = [v4 linkId];
-  if ((v6 != 0) == (v7 == 0))
+  linkId = [(NLXSchemaCDMSystemDialogAct *)self linkId];
+  linkId2 = [equalCopy linkId];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_42;
   }
 
-  v13 = [(NLXSchemaCDMSystemDialogAct *)self linkId];
-  if (v13)
+  linkId3 = [(NLXSchemaCDMSystemDialogAct *)self linkId];
+  if (linkId3)
   {
-    v14 = v13;
-    v15 = [(NLXSchemaCDMSystemDialogAct *)self linkId];
-    v16 = [v4 linkId];
-    v17 = [v15 isEqual:v16];
+    v14 = linkId3;
+    linkId4 = [(NLXSchemaCDMSystemDialogAct *)self linkId];
+    linkId5 = [equalCopy linkId];
+    v17 = [linkId4 isEqual:linkId5];
 
     if (!v17)
     {
@@ -355,20 +355,20 @@
   {
   }
 
-  v6 = [(NLXSchemaCDMSystemDialogAct *)self prompted];
-  v7 = [v4 prompted];
-  if ((v6 != 0) == (v7 == 0))
+  linkId = [(NLXSchemaCDMSystemDialogAct *)self prompted];
+  linkId2 = [equalCopy prompted];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_42;
   }
 
-  v18 = [(NLXSchemaCDMSystemDialogAct *)self prompted];
-  if (v18)
+  prompted = [(NLXSchemaCDMSystemDialogAct *)self prompted];
+  if (prompted)
   {
-    v19 = v18;
-    v20 = [(NLXSchemaCDMSystemDialogAct *)self prompted];
-    v21 = [v4 prompted];
-    v22 = [v20 isEqual:v21];
+    v19 = prompted;
+    prompted2 = [(NLXSchemaCDMSystemDialogAct *)self prompted];
+    prompted3 = [equalCopy prompted];
+    v22 = [prompted2 isEqual:prompted3];
 
     if (!v22)
     {
@@ -380,20 +380,20 @@
   {
   }
 
-  v6 = [(NLXSchemaCDMSystemDialogAct *)self offered];
-  v7 = [v4 offered];
-  if ((v6 != 0) == (v7 == 0))
+  linkId = [(NLXSchemaCDMSystemDialogAct *)self offered];
+  linkId2 = [equalCopy offered];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_42;
   }
 
-  v23 = [(NLXSchemaCDMSystemDialogAct *)self offered];
-  if (v23)
+  offered = [(NLXSchemaCDMSystemDialogAct *)self offered];
+  if (offered)
   {
-    v24 = v23;
-    v25 = [(NLXSchemaCDMSystemDialogAct *)self offered];
-    v26 = [v4 offered];
-    v27 = [v25 isEqual:v26];
+    v24 = offered;
+    offered2 = [(NLXSchemaCDMSystemDialogAct *)self offered];
+    offered3 = [equalCopy offered];
+    v27 = [offered2 isEqual:offered3];
 
     if (!v27)
     {
@@ -405,20 +405,20 @@
   {
   }
 
-  v6 = [(NLXSchemaCDMSystemDialogAct *)self gaveOptions];
-  v7 = [v4 gaveOptions];
-  if ((v6 != 0) == (v7 == 0))
+  linkId = [(NLXSchemaCDMSystemDialogAct *)self gaveOptions];
+  linkId2 = [equalCopy gaveOptions];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_42;
   }
 
-  v28 = [(NLXSchemaCDMSystemDialogAct *)self gaveOptions];
-  if (v28)
+  gaveOptions = [(NLXSchemaCDMSystemDialogAct *)self gaveOptions];
+  if (gaveOptions)
   {
-    v29 = v28;
-    v30 = [(NLXSchemaCDMSystemDialogAct *)self gaveOptions];
-    v31 = [v4 gaveOptions];
-    v32 = [v30 isEqual:v31];
+    v29 = gaveOptions;
+    gaveOptions2 = [(NLXSchemaCDMSystemDialogAct *)self gaveOptions];
+    gaveOptions3 = [equalCopy gaveOptions];
+    v32 = [gaveOptions2 isEqual:gaveOptions3];
 
     if (!v32)
     {
@@ -430,20 +430,20 @@
   {
   }
 
-  v6 = [(NLXSchemaCDMSystemDialogAct *)self informed];
-  v7 = [v4 informed];
-  if ((v6 != 0) == (v7 == 0))
+  linkId = [(NLXSchemaCDMSystemDialogAct *)self informed];
+  linkId2 = [equalCopy informed];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_42;
   }
 
-  v33 = [(NLXSchemaCDMSystemDialogAct *)self informed];
-  if (v33)
+  informed = [(NLXSchemaCDMSystemDialogAct *)self informed];
+  if (informed)
   {
-    v34 = v33;
-    v35 = [(NLXSchemaCDMSystemDialogAct *)self informed];
-    v36 = [v4 informed];
-    v37 = [v35 isEqual:v36];
+    v34 = informed;
+    informed2 = [(NLXSchemaCDMSystemDialogAct *)self informed];
+    informed3 = [equalCopy informed];
+    v37 = [informed2 isEqual:informed3];
 
     if (!v37)
     {
@@ -455,20 +455,20 @@
   {
   }
 
-  v6 = [(NLXSchemaCDMSystemDialogAct *)self reportedSuccess];
-  v7 = [v4 reportedSuccess];
-  if ((v6 != 0) == (v7 == 0))
+  linkId = [(NLXSchemaCDMSystemDialogAct *)self reportedSuccess];
+  linkId2 = [equalCopy reportedSuccess];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_42;
   }
 
-  v38 = [(NLXSchemaCDMSystemDialogAct *)self reportedSuccess];
-  if (v38)
+  reportedSuccess = [(NLXSchemaCDMSystemDialogAct *)self reportedSuccess];
+  if (reportedSuccess)
   {
-    v39 = v38;
-    v40 = [(NLXSchemaCDMSystemDialogAct *)self reportedSuccess];
-    v41 = [v4 reportedSuccess];
-    v42 = [v40 isEqual:v41];
+    v39 = reportedSuccess;
+    reportedSuccess2 = [(NLXSchemaCDMSystemDialogAct *)self reportedSuccess];
+    reportedSuccess3 = [equalCopy reportedSuccess];
+    v42 = [reportedSuccess2 isEqual:reportedSuccess3];
 
     if (!v42)
     {
@@ -480,12 +480,12 @@
   {
   }
 
-  v6 = [(NLXSchemaCDMSystemDialogAct *)self reportedFailure];
-  v7 = [v4 reportedFailure];
-  if ((v6 != 0) != (v7 == 0))
+  linkId = [(NLXSchemaCDMSystemDialogAct *)self reportedFailure];
+  linkId2 = [equalCopy reportedFailure];
+  if ((linkId != 0) != (linkId2 == 0))
   {
-    v43 = [(NLXSchemaCDMSystemDialogAct *)self reportedFailure];
-    if (!v43)
+    reportedFailure = [(NLXSchemaCDMSystemDialogAct *)self reportedFailure];
+    if (!reportedFailure)
     {
 
 LABEL_46:
@@ -493,10 +493,10 @@ LABEL_46:
       goto LABEL_44;
     }
 
-    v44 = v43;
-    v45 = [(NLXSchemaCDMSystemDialogAct *)self reportedFailure];
-    v46 = [v4 reportedFailure];
-    v47 = [v45 isEqual:v46];
+    v44 = reportedFailure;
+    reportedFailure2 = [(NLXSchemaCDMSystemDialogAct *)self reportedFailure];
+    reportedFailure3 = [equalCopy reportedFailure];
+    v47 = [reportedFailure2 isEqual:reportedFailure3];
 
     if (v47)
     {
@@ -516,9 +516,9 @@ LABEL_44:
   return v48;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v21 = a3;
+  toCopy = to;
   v4 = [(NLXSchemaCDMSystemDialogAct *)self id];
 
   if (v4)
@@ -527,63 +527,63 @@ LABEL_44:
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(NLXSchemaCDMSystemDialogAct *)self linkId];
+  linkId = [(NLXSchemaCDMSystemDialogAct *)self linkId];
 
-  if (v6)
+  if (linkId)
   {
-    v7 = [(NLXSchemaCDMSystemDialogAct *)self linkId];
+    linkId2 = [(NLXSchemaCDMSystemDialogAct *)self linkId];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(NLXSchemaCDMSystemDialogAct *)self prompted];
+  prompted = [(NLXSchemaCDMSystemDialogAct *)self prompted];
 
-  if (v8)
+  if (prompted)
   {
-    v9 = [(NLXSchemaCDMSystemDialogAct *)self prompted];
+    prompted2 = [(NLXSchemaCDMSystemDialogAct *)self prompted];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(NLXSchemaCDMSystemDialogAct *)self offered];
+  offered = [(NLXSchemaCDMSystemDialogAct *)self offered];
 
-  if (v10)
+  if (offered)
   {
-    v11 = [(NLXSchemaCDMSystemDialogAct *)self offered];
+    offered2 = [(NLXSchemaCDMSystemDialogAct *)self offered];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(NLXSchemaCDMSystemDialogAct *)self gaveOptions];
+  gaveOptions = [(NLXSchemaCDMSystemDialogAct *)self gaveOptions];
 
-  if (v12)
+  if (gaveOptions)
   {
-    v13 = [(NLXSchemaCDMSystemDialogAct *)self gaveOptions];
+    gaveOptions2 = [(NLXSchemaCDMSystemDialogAct *)self gaveOptions];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(NLXSchemaCDMSystemDialogAct *)self informed];
+  informed = [(NLXSchemaCDMSystemDialogAct *)self informed];
 
-  if (v14)
+  if (informed)
   {
-    v15 = [(NLXSchemaCDMSystemDialogAct *)self informed];
+    informed2 = [(NLXSchemaCDMSystemDialogAct *)self informed];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(NLXSchemaCDMSystemDialogAct *)self reportedSuccess];
+  reportedSuccess = [(NLXSchemaCDMSystemDialogAct *)self reportedSuccess];
 
-  if (v16)
+  if (reportedSuccess)
   {
-    v17 = [(NLXSchemaCDMSystemDialogAct *)self reportedSuccess];
+    reportedSuccess2 = [(NLXSchemaCDMSystemDialogAct *)self reportedSuccess];
     PBDataWriterWriteSubmessage();
   }
 
-  v18 = [(NLXSchemaCDMSystemDialogAct *)self reportedFailure];
+  reportedFailure = [(NLXSchemaCDMSystemDialogAct *)self reportedFailure];
 
-  v19 = v21;
-  if (v18)
+  v19 = toCopy;
+  if (reportedFailure)
   {
-    v20 = [(NLXSchemaCDMSystemDialogAct *)self reportedFailure];
+    reportedFailure2 = [(NLXSchemaCDMSystemDialogAct *)self reportedFailure];
     PBDataWriterWriteSubmessage();
 
-    v19 = v21;
+    v19 = toCopy;
   }
 }
 
@@ -612,9 +612,9 @@ LABEL_44:
   return v3;
 }
 
-- (void)setReportedFailure:(id)a3
+- (void)setReportedFailure:(id)failure
 {
-  v4 = a3;
+  failureCopy = failure;
   prompted = self->_prompted;
   self->_prompted = 0;
 
@@ -630,9 +630,9 @@ LABEL_44:
   reportedSuccess = self->_reportedSuccess;
   self->_reportedSuccess = 0;
 
-  self->_whichSystemdialogacttype = 8 * (v4 != 0);
+  self->_whichSystemdialogacttype = 8 * (failureCopy != 0);
   reportedFailure = self->_reportedFailure;
-  self->_reportedFailure = v4;
+  self->_reportedFailure = failureCopy;
 }
 
 - (void)deleteReportedSuccess
@@ -660,9 +660,9 @@ LABEL_44:
   return v3;
 }
 
-- (void)setReportedSuccess:(id)a3
+- (void)setReportedSuccess:(id)success
 {
-  v4 = a3;
+  successCopy = success;
   prompted = self->_prompted;
   self->_prompted = 0;
 
@@ -679,14 +679,14 @@ LABEL_44:
   self->_reportedFailure = 0;
 
   v10 = 7;
-  if (!v4)
+  if (!successCopy)
   {
     v10 = 0;
   }
 
   self->_whichSystemdialogacttype = v10;
   reportedSuccess = self->_reportedSuccess;
-  self->_reportedSuccess = v4;
+  self->_reportedSuccess = successCopy;
 }
 
 - (void)deleteInformed
@@ -714,9 +714,9 @@ LABEL_44:
   return v3;
 }
 
-- (void)setInformed:(id)a3
+- (void)setInformed:(id)informed
 {
-  v4 = a3;
+  informedCopy = informed;
   prompted = self->_prompted;
   self->_prompted = 0;
 
@@ -733,14 +733,14 @@ LABEL_44:
   self->_reportedFailure = 0;
 
   v10 = 6;
-  if (!v4)
+  if (!informedCopy)
   {
     v10 = 0;
   }
 
   self->_whichSystemdialogacttype = v10;
   informed = self->_informed;
-  self->_informed = v4;
+  self->_informed = informedCopy;
 }
 
 - (void)deleteGaveOptions
@@ -768,9 +768,9 @@ LABEL_44:
   return v3;
 }
 
-- (void)setGaveOptions:(id)a3
+- (void)setGaveOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   prompted = self->_prompted;
   self->_prompted = 0;
 
@@ -787,14 +787,14 @@ LABEL_44:
   self->_reportedFailure = 0;
 
   v10 = 5;
-  if (!v4)
+  if (!optionsCopy)
   {
     v10 = 0;
   }
 
   self->_whichSystemdialogacttype = v10;
   gaveOptions = self->_gaveOptions;
-  self->_gaveOptions = v4;
+  self->_gaveOptions = optionsCopy;
 }
 
 - (void)deleteOffered
@@ -822,9 +822,9 @@ LABEL_44:
   return v3;
 }
 
-- (void)setOffered:(id)a3
+- (void)setOffered:(id)offered
 {
-  v4 = a3;
+  offeredCopy = offered;
   prompted = self->_prompted;
   self->_prompted = 0;
 
@@ -840,9 +840,9 @@ LABEL_44:
   reportedFailure = self->_reportedFailure;
   self->_reportedFailure = 0;
 
-  self->_whichSystemdialogacttype = 4 * (v4 != 0);
+  self->_whichSystemdialogacttype = 4 * (offeredCopy != 0);
   offered = self->_offered;
-  self->_offered = v4;
+  self->_offered = offeredCopy;
 }
 
 - (void)deletePrompted
@@ -870,9 +870,9 @@ LABEL_44:
   return v3;
 }
 
-- (void)setPrompted:(id)a3
+- (void)setPrompted:(id)prompted
 {
-  v4 = a3;
+  promptedCopy = prompted;
   offered = self->_offered;
   self->_offered = 0;
 
@@ -889,90 +889,90 @@ LABEL_44:
   self->_reportedFailure = 0;
 
   v10 = 3;
-  if (!v4)
+  if (!promptedCopy)
   {
     v10 = 0;
   }
 
   self->_whichSystemdialogacttype = v10;
   prompted = self->_prompted;
-  self->_prompted = v4;
+  self->_prompted = promptedCopy;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v31.receiver = self;
   v31.super_class = NLXSchemaCDMSystemDialogAct;
-  v5 = [(SISchemaInstrumentationMessage *)&v31 applySensitiveConditionsPolicy:v4];
+  v5 = [(SISchemaInstrumentationMessage *)&v31 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(NLXSchemaCDMSystemDialogAct *)self id];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(NLXSchemaCDMSystemDialogAct *)self deleteId];
   }
 
-  v9 = [(NLXSchemaCDMSystemDialogAct *)self linkId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  linkId = [(NLXSchemaCDMSystemDialogAct *)self linkId];
+  v10 = [linkId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(NLXSchemaCDMSystemDialogAct *)self deleteLinkId];
   }
 
-  v12 = [(NLXSchemaCDMSystemDialogAct *)self prompted];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  prompted = [(NLXSchemaCDMSystemDialogAct *)self prompted];
+  v13 = [prompted applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(NLXSchemaCDMSystemDialogAct *)self deletePrompted];
   }
 
-  v15 = [(NLXSchemaCDMSystemDialogAct *)self offered];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  offered = [(NLXSchemaCDMSystemDialogAct *)self offered];
+  v16 = [offered applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(NLXSchemaCDMSystemDialogAct *)self deleteOffered];
   }
 
-  v18 = [(NLXSchemaCDMSystemDialogAct *)self gaveOptions];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  gaveOptions = [(NLXSchemaCDMSystemDialogAct *)self gaveOptions];
+  v19 = [gaveOptions applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(NLXSchemaCDMSystemDialogAct *)self deleteGaveOptions];
   }
 
-  v21 = [(NLXSchemaCDMSystemDialogAct *)self informed];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  informed = [(NLXSchemaCDMSystemDialogAct *)self informed];
+  v22 = [informed applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(NLXSchemaCDMSystemDialogAct *)self deleteInformed];
   }
 
-  v24 = [(NLXSchemaCDMSystemDialogAct *)self reportedSuccess];
-  v25 = [v24 applySensitiveConditionsPolicy:v4];
-  v26 = [v25 suppressMessage];
+  reportedSuccess = [(NLXSchemaCDMSystemDialogAct *)self reportedSuccess];
+  v25 = [reportedSuccess applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v25 suppressMessage];
 
-  if (v26)
+  if (suppressMessage7)
   {
     [(NLXSchemaCDMSystemDialogAct *)self deleteReportedSuccess];
   }
 
-  v27 = [(NLXSchemaCDMSystemDialogAct *)self reportedFailure];
-  v28 = [v27 applySensitiveConditionsPolicy:v4];
-  v29 = [v28 suppressMessage];
+  reportedFailure = [(NLXSchemaCDMSystemDialogAct *)self reportedFailure];
+  v28 = [reportedFailure applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage8 = [v28 suppressMessage];
 
-  if (v29)
+  if (suppressMessage8)
   {
     [(NLXSchemaCDMSystemDialogAct *)self deleteReportedFailure];
   }

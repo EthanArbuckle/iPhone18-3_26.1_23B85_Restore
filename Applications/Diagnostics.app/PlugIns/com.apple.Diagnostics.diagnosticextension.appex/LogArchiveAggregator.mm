@@ -1,25 +1,25 @@
 @interface LogArchiveAggregator
-+ (void)_addAWDLogFilesToArchive:(id *)a3;
-+ (void)_addCrashLogFilesToArchive:(id *)a3;
-+ (void)_addEnhancedLoggingStateFilesToArchive:(id *)a3;
-+ (void)_addFiles:(id)a3 archive:(id *)a4 lastPathComponent:(id)a5;
-+ (void)_addLaunchdLogFilesToArchive:(id *)a3;
-+ (void)_addMobileGeneralLogFilesToArchive:(id *)a3;
-+ (void)_addPowerLogFilesToArchive:(id *)a3;
-+ (void)_addRootGeneralLogFilesToArchive:(id *)a3;
-+ (void)addLogTypes:(unint64_t)a3 archive:(id *)a4 prefix:(id)a5;
++ (void)_addAWDLogFilesToArchive:(id *)archive;
++ (void)_addCrashLogFilesToArchive:(id *)archive;
++ (void)_addEnhancedLoggingStateFilesToArchive:(id *)archive;
++ (void)_addFiles:(id)files archive:(id *)archive lastPathComponent:(id)component;
++ (void)_addLaunchdLogFilesToArchive:(id *)archive;
++ (void)_addMobileGeneralLogFilesToArchive:(id *)archive;
++ (void)_addPowerLogFilesToArchive:(id *)archive;
++ (void)_addRootGeneralLogFilesToArchive:(id *)archive;
++ (void)addLogTypes:(unint64_t)types archive:(id *)archive prefix:(id)prefix;
 @end
 
 @implementation LogArchiveAggregator
 
-+ (void)addLogTypes:(unint64_t)a3 archive:(id *)a4 prefix:(id)a5
++ (void)addLogTypes:(unint64_t)types archive:(id *)archive prefix:(id)prefix
 {
-  v6 = a3;
-  v7 = a5;
-  v9 = v7;
-  if (v7)
+  typesCopy = types;
+  prefixCopy = prefix;
+  v9 = prefixCopy;
+  if (prefixCopy)
   {
-    v8 = v7;
+    v8 = prefixCopy;
   }
 
   else
@@ -28,13 +28,13 @@
   }
 
   objc_storeStrong(&qword_100008300, v8);
-  if ((v6 & 2) != 0)
+  if ((typesCopy & 2) != 0)
   {
-    [LogArchiveAggregator _addRootGeneralLogFilesToArchive:a4];
-    if ((v6 & 4) == 0)
+    [LogArchiveAggregator _addRootGeneralLogFilesToArchive:archive];
+    if ((typesCopy & 4) == 0)
     {
 LABEL_6:
-      if ((v6 & 8) == 0)
+      if ((typesCopy & 8) == 0)
       {
         goto LABEL_7;
       }
@@ -43,16 +43,16 @@ LABEL_6:
     }
   }
 
-  else if ((v6 & 4) == 0)
+  else if ((typesCopy & 4) == 0)
   {
     goto LABEL_6;
   }
 
-  [LogArchiveAggregator _addMobileGeneralLogFilesToArchive:a4];
-  if ((v6 & 8) == 0)
+  [LogArchiveAggregator _addMobileGeneralLogFilesToArchive:archive];
+  if ((typesCopy & 8) == 0)
   {
 LABEL_7:
-    if ((v6 & 0x10) == 0)
+    if ((typesCopy & 0x10) == 0)
     {
       goto LABEL_8;
     }
@@ -61,11 +61,11 @@ LABEL_7:
   }
 
 LABEL_17:
-  [LogArchiveAggregator _addAWDLogFilesToArchive:a4];
-  if ((v6 & 0x10) == 0)
+  [LogArchiveAggregator _addAWDLogFilesToArchive:archive];
+  if ((typesCopy & 0x10) == 0)
   {
 LABEL_8:
-    if ((v6 & 0x20) == 0)
+    if ((typesCopy & 0x20) == 0)
     {
       goto LABEL_9;
     }
@@ -74,11 +74,11 @@ LABEL_8:
   }
 
 LABEL_18:
-  [LogArchiveAggregator _addCrashLogFilesToArchive:a4];
-  if ((v6 & 0x20) == 0)
+  [LogArchiveAggregator _addCrashLogFilesToArchive:archive];
+  if ((typesCopy & 0x20) == 0)
   {
 LABEL_9:
-    if ((v6 & 0x40) == 0)
+    if ((typesCopy & 0x40) == 0)
     {
       goto LABEL_10;
     }
@@ -87,11 +87,11 @@ LABEL_9:
   }
 
 LABEL_19:
-  [LogArchiveAggregator _addLaunchdLogFilesToArchive:a4];
-  if ((v6 & 0x40) == 0)
+  [LogArchiveAggregator _addLaunchdLogFilesToArchive:archive];
+  if ((typesCopy & 0x40) == 0)
   {
 LABEL_10:
-    if ((v6 & 0x80) == 0)
+    if ((typesCopy & 0x80) == 0)
     {
       goto LABEL_12;
     }
@@ -100,17 +100,17 @@ LABEL_10:
   }
 
 LABEL_20:
-  [LogArchiveAggregator _addPowerLogFilesToArchive:a4];
-  if (v6 < 0)
+  [LogArchiveAggregator _addPowerLogFilesToArchive:archive];
+  if (typesCopy < 0)
   {
 LABEL_11:
-    [LogArchiveAggregator _addEnhancedLoggingStateFilesToArchive:a4];
+    [LogArchiveAggregator _addEnhancedLoggingStateFilesToArchive:archive];
   }
 
 LABEL_12:
 }
 
-+ (void)_addRootGeneralLogFilesToArchive:(id *)a3
++ (void)_addRootGeneralLogFilesToArchive:(id *)archive
 {
   v9 = +[NSMutableArray array];
   v4 = +[NSFileManager defaultManager];
@@ -120,10 +120,10 @@ LABEL_12:
   v8 = [v7 filteredArrayUsingPredicate:v6];
   [v9 addObjectsFromArray:v8];
 
-  [LogArchiveAggregator _addFiles:v9 archive:a3 lastPathComponent:@"root"];
+  [LogArchiveAggregator _addFiles:v9 archive:archive lastPathComponent:@"root"];
 }
 
-+ (void)_addMobileGeneralLogFilesToArchive:(id *)a3
++ (void)_addMobileGeneralLogFilesToArchive:(id *)archive
 {
   v9 = +[NSMutableArray array];
   v4 = +[NSFileManager defaultManager];
@@ -133,18 +133,18 @@ LABEL_12:
   v8 = [v7 filteredArrayUsingPredicate:v6];
   [v9 addObjectsFromArray:v8];
 
-  [LogArchiveAggregator _addFiles:v9 archive:a3 lastPathComponent:@"mobile"];
+  [LogArchiveAggregator _addFiles:v9 archive:archive lastPathComponent:@"mobile"];
 }
 
-+ (void)_addAWDLogFilesToArchive:(id *)a3
++ (void)_addAWDLogFilesToArchive:(id *)archive
 {
   v4 = [NSURL fileURLWithPath:@"/private/var/wireless/awdd"];
   v6 = v4;
   v5 = [NSArray arrayWithObjects:&v6 count:1];
-  [LogArchiveAggregator _addFiles:v5 archive:a3 lastPathComponent:@"AWD"];
+  [LogArchiveAggregator _addFiles:v5 archive:archive lastPathComponent:@"AWD"];
 }
 
-+ (void)_addCrashLogFilesToArchive:(id *)a3
++ (void)_addCrashLogFilesToArchive:(id *)archive
 {
   v19 = +[NSFileManager defaultManager];
   v3 = +[NSMutableArray array];
@@ -221,18 +221,18 @@ LABEL_12:
   v16 = [NSPredicate predicateWithFormat:v13];
   v17 = [v15 filteredArrayUsingPredicate:v16];
 
-  [LogArchiveAggregator _addFiles:v17 archive:a3 lastPathComponent:0];
+  [LogArchiveAggregator _addFiles:v17 archive:archive lastPathComponent:0];
 }
 
-+ (void)_addLaunchdLogFilesToArchive:(id *)a3
++ (void)_addLaunchdLogFilesToArchive:(id *)archive
 {
   v6 = +[NSFileManager defaultManager];
   v4 = [NSURL fileURLWithPath:@"/private/var/log/com.apple.xpc.launchd"];
   v5 = [v6 contentsOfDirectoryAtURL:v4 includingPropertiesForKeys:&__NSArray0__struct options:1 error:0];
-  [LogArchiveAggregator _addFiles:v5 archive:a3 lastPathComponent:@"launchd"];
+  [LogArchiveAggregator _addFiles:v5 archive:archive lastPathComponent:@"launchd"];
 }
 
-+ (void)_addPowerLogFilesToArchive:(id *)a3
++ (void)_addPowerLogFilesToArchive:(id *)archive
 {
   v16 = 0;
   v4 = container_system_group_path_for_identifier();
@@ -251,7 +251,7 @@ LABEL_12:
     v8 = [NSURL fileURLWithPath:v7];
     v17 = v8;
     v9 = [NSArray arrayWithObjects:&v17 count:1];
-    [LogArchiveAggregator _addFiles:v9 archive:a3 lastPathComponent:@"powerlog"];
+    [LogArchiveAggregator _addFiles:v9 archive:archive lastPathComponent:@"powerlog"];
   }
 
   else
@@ -264,28 +264,28 @@ LABEL_12:
   }
 }
 
-+ (void)_addEnhancedLoggingStateFilesToArchive:(id *)a3
++ (void)_addEnhancedLoggingStateFilesToArchive:(id *)archive
 {
   v4 = +[ELSManager sharedManager];
-  v5 = [v4 snapshot];
-  v6 = [v5 JSONObject];
+  snapshot = [v4 snapshot];
+  jSONObject = [snapshot JSONObject];
 
-  if (v6)
+  if (jSONObject)
   {
     v7 = NSTemporaryDirectory();
     v8 = [NSURL fileURLWithPath:v7];
     v9 = [v8 URLByAppendingPathComponent:@"enhanced-logging-state.json"];
 
     v10 = +[NSFileManager defaultManager];
-    v11 = [v9 path];
-    v12 = [v10 fileExistsAtPath:v11];
+    path = [v9 path];
+    v12 = [v10 fileExistsAtPath:path];
 
     if (v12)
     {
       v13 = +[NSFileManager defaultManager];
-      v14 = [v9 path];
+      path2 = [v9 path];
       v32 = 0;
-      [v13 removeItemAtPath:v14 error:&v32];
+      [v13 removeItemAtPath:path2 error:&v32];
       v15 = v32;
 
       if (v15)
@@ -304,7 +304,7 @@ LABEL_12:
     }
 
     v31 = v15;
-    [v6 writeToURL:v9 options:1 error:&v31];
+    [jSONObject writeToURL:v9 options:1 error:&v31];
     v23 = v31;
 
     if (v23)
@@ -320,7 +320,7 @@ LABEL_12:
     {
       v33 = v9;
       v24 = [NSArray arrayWithObjects:&v33 count:1];
-      [LogArchiveAggregator _addFiles:v24 archive:a3 lastPathComponent:0];
+      [LogArchiveAggregator _addFiles:v24 archive:archive lastPathComponent:0];
     }
   }
 
@@ -334,15 +334,15 @@ LABEL_12:
   }
 }
 
-+ (void)_addFiles:(id)a3 archive:(id *)a4 lastPathComponent:(id)a5
++ (void)_addFiles:(id)files archive:(id *)archive lastPathComponent:(id)component
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = v8;
+  filesCopy = files;
+  componentCopy = component;
+  v9 = componentCopy;
   v10 = &stru_1000042B8;
-  if (v8)
+  if (componentCopy)
   {
-    v10 = v8;
+    v10 = componentCopy;
   }
 
   v11 = v10;
@@ -351,7 +351,7 @@ LABEL_12:
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v13 = v7;
+  v13 = filesCopy;
   v14 = [v13 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v14)
   {
@@ -367,7 +367,7 @@ LABEL_12:
           objc_enumerationMutation(v13);
         }
 
-        [*a4 addURL:*(*(&v18 + 1) + 8 * v17) prefix:v12 error:{0, v18}];
+        [*archive addURL:*(*(&v18 + 1) + 8 * v17) prefix:v12 error:{0, v18}];
         v17 = v17 + 1;
       }
 

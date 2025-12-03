@@ -1,7 +1,7 @@
 @interface CIFilter
 + (BOOL)exchangeImplementationsForClass;
-+ (BOOL)wrapClassIfNeeded:(Class)a3;
-+ (CGImageMetadata)_imageMetadataFromFilters:(id)a3 inputImageExtent:(CGRect)a4;
++ (BOOL)wrapClassIfNeeded:(Class)needed;
++ (CGImageMetadata)_imageMetadataFromFilters:(id)filters inputImageExtent:(CGRect)extent;
 + (CIFilter)CMYKHalftone;
 + (CIFilter)KMeansFilter;
 + (CIFilter)LabDeltaE;
@@ -96,10 +96,10 @@
 + (CIFilter)filterWithImageURL:(NSURL *)url options:(NSDictionary *)options;
 + (CIFilter)filterWithName:(NSString *)name keysAndValues:(id)key0;
 + (CIFilter)filterWithName:(NSString *)name withInputParameters:(NSDictionary *)params;
-+ (CIFilter)filterWithName:(id)a3 compatibilityVersion:(int)a4;
-+ (CIFilter)filterWithName:(id)a3 compatibilityVersion:(int)a4 keysAndValues:(id)a5;
-+ (CIFilter)filterWithName:(id)a3 setDefaults:(BOOL)a4;
-+ (CIFilter)filterWithString:(id)a3;
++ (CIFilter)filterWithName:(id)name compatibilityVersion:(int)version;
++ (CIFilter)filterWithName:(id)name compatibilityVersion:(int)version keysAndValues:(id)values;
++ (CIFilter)filterWithName:(id)name setDefaults:(BOOL)defaults;
++ (CIFilter)filterWithString:(id)string;
 + (CIFilter)flashTransitionFilter;
 + (CIFilter)fourfoldReflectedTileFilter;
 + (CIFilter)fourfoldRotatedTileFilter;
@@ -229,67 +229,67 @@
 + (NSString)localizedNameForCategory:(NSString *)category;
 + (NSString)localizedNameForFilterName:(NSString *)filterName;
 + (NSURL)localizedReferenceDocumentationForFilterName:(NSString *)filterName;
-+ (id)_filterArrayFromImageMetadata:(CGImageMetadata *)a3 inputImageExtent:(CGRect)a4;
-+ (id)_filterArrayFromProperties:(id)a3;
-+ (id)_filterArrayFromProperties:(id)a3 inputImageExtent:(CGRect)a4;
-+ (id)_propertyArrayFromFilters:(id)a3 inputImageExtent:(CGRect)a4;
-+ (id)allCategories:(BOOL)a3;
++ (id)_filterArrayFromImageMetadata:(CGImageMetadata *)metadata inputImageExtent:(CGRect)extent;
++ (id)_filterArrayFromProperties:(id)properties;
++ (id)_filterArrayFromProperties:(id)properties inputImageExtent:(CGRect)extent;
++ (id)_propertyArrayFromFilters:(id)filters inputImageExtent:(CGRect)extent;
++ (id)allCategories:(BOOL)categories;
 + (id)areaAlphaWeightedHistogramFilter;
 + (id)areaAverageMaximumRedFilter;
 + (id)areaBoundsRedFilter;
 + (id)blurredRoundedRectangleGeneratorFilter;
 + (id)distanceGradientFromRedMaskFilter;
-+ (id)filterName:(id)a3 append:(id)a4 arguments:(id)a5;
-+ (id)filterName:(id)a3 prepend:(id)a4 imageName:(id)a5 arguments:(id)a6;
-+ (id)filterName:(id)a3 replacement:(id)a4 arguments:(id)a5;
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3;
++ (id)filterName:(id)name append:(id)append arguments:(id)arguments;
++ (id)filterName:(id)name prepend:(id)prepend imageName:(id)imageName arguments:(id)arguments;
++ (id)filterName:(id)name replacement:(id)replacement arguments:(id)arguments;
++ (id)keyPathsForValuesAffectingValueForKey:(id)key;
 + (id)maximumScaleTransformFilter;
-+ (id)metalFilterWithName:(id)a3;
-+ (id)metalFilterWithName:(id)a3 withInputParameters:(id)a4;
-+ (id)prewarmedFilterFromString:(id)a3;
++ (id)metalFilterWithName:(id)name;
++ (id)metalFilterWithName:(id)name withInputParameters:(id)parameters;
++ (id)prewarmedFilterFromString:(id)string;
 + (id)roundedQRCodeGeneratorFilter;
 + (id)signedDistanceGradientFromRedMaskFilter;
 + (id)systemToneMapFilter;
 + (id)toneMapHeadroomFilter;
-+ (int)getMinMaxSimulatedApertureFrom:(__CFData *)a3 minValue:(float *)a4 maxValue:(float *)a5 version:(int *)a6;
++ (int)getMinMaxSimulatedApertureFrom:(__CFData *)from minValue:(float *)value maxValue:(float *)maxValue version:(int *)version;
 + (int)maxSDOFRenderingVersionSupported;
-+ (void)addFilterToSkip:(id)a3;
++ (void)addFilterToSkip:(id)skip;
 + (void)clearCache;
 + (void)registerFilterName:(NSString *)name constructor:(id)anObject classAttributes:(NSDictionary *)attributes;
-+ (void)unregisterFilterName:(id)a3;
-- (BOOL)_filterClassInCategory:(id)a3;
-- (BOOL)verifyPrewarmedFilter:(id)a3;
-- (CIFilter)initWithCoder:(id)a3;
++ (void)unregisterFilterName:(id)name;
+- (BOOL)_filterClassInCategory:(id)category;
+- (BOOL)verifyPrewarmedFilter:(id)filter;
+- (CIFilter)initWithCoder:(id)coder;
 - (CIImage)apply:(CIKernel *)k;
 - (CIImage)apply:(CIKernel *)k arguments:(NSArray *)args options:(NSDictionary *)dict;
 - (NSArray)inputKeys;
 - (NSArray)outputKeys;
 - (NSDictionary)attributes;
 - (NSString)name;
-- (id)_append:(id)a3 image:(id)a4;
-- (id)_appendSingleFilterTo:(id)a3 filterAndSettings:(id)a4;
-- (id)_copyFilterWithZone:(_NSZone *)a3;
+- (id)_append:(id)_append image:(id)image;
+- (id)_appendSingleFilterTo:(id)to filterAndSettings:(id)settings;
+- (id)_copyFilterWithZone:(_NSZone *)zone;
 - (id)_serializedXMPString;
-- (id)apply:(id)a3 image:(id)a4 arguments:(id)a5 inSpace:(CGColorSpace *)a6;
-- (id)apply:(id)a3 image:(id)a4 arguments:(id)a5 inoutSpace:(CGColorSpace *)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)apply:(id)apply image:(id)image arguments:(id)arguments inSpace:(CGColorSpace *)space;
+- (id)apply:(id)apply image:(id)image arguments:(id)arguments inoutSpace:(CGColorSpace *)space;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)debugQuickLookObject;
 - (id)description;
-- (id)outputImageCatchAll:(unsigned int)a3;
+- (id)outputImageCatchAll:(unsigned int)all;
 - (id)prewarmingString;
-- (id)valueForUndefinedKey:(id)a3;
+- (id)valueForUndefinedKey:(id)key;
 - (int)compatibilityVersion;
 - (unint64_t)hash;
-- (void)_crashed_when_dealloc_called_setValue_nil_forKey_probably_because_the_subclass_already_released_it:(id)a3 className:(const char *)a4 overridesDealloc:(BOOL)a5;
-- (void)_prepend:(id)a3;
-- (void)_prependSingleFilter:(id)a3;
+- (void)_crashed_when_dealloc_called_setValue_nil_forKey_probably_because_the_subclass_already_released_it:(id)key_probably_because_the_subclass_already_released_it className:(const char *)name overridesDealloc:(BOOL)dealloc;
+- (void)_prepend:(id)_prepend;
+- (void)_prependSingleFilter:(id)filter;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setDefaults;
 - (void)setIdentity;
-- (void)setUserInfo:(id)a3;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
+- (void)setUserInfo:(id)info;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
 @end
 
 @implementation CIFilter
@@ -302,8 +302,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(CIFilter *)self inputKeys];
-  v5 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  inputKeys = [(CIFilter *)self inputKeys];
+  v5 = [(NSArray *)inputKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -314,7 +314,7 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(inputKeys);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -325,7 +325,7 @@
         }
       }
 
-      v6 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [(NSArray *)inputKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -342,19 +342,19 @@
 - (void)dealloc
 {
   v3 = [CIFilterClassInfo classInfoForClass:objc_opt_class()];
-  v4 = [v3 inputKeys];
-  v5 = [v3 inputClasses];
+  inputKeys = [v3 inputKeys];
+  inputClasses = [v3 inputClasses];
   v6 = [objc_msgSend(objc_opt_class() "description")];
   v7 = NSSelectorFromString(&cfstr_Dealloc.isa);
   v8 = [objc_opt_class() instanceMethodForSelector:v7];
   v9 = [CIFilter instanceMethodForSelector:v7];
-  if ([v4 count])
+  if ([inputKeys count])
   {
     v10 = 0;
     do
     {
-      v11 = [v4 objectAtIndexedSubscript:v10];
-      v12 = [v5 objectAtIndexedSubscript:v10];
+      v11 = [inputKeys objectAtIndexedSubscript:v10];
+      v12 = [inputClasses objectAtIndexedSubscript:v10];
       if ([v12 length] && (objc_msgSend(v12, "isEqualToString:", @"__WrappedNSNumber") & 1) == 0)
       {
         [(CIFilter *)self _crashed_when_dealloc_called_setValue_nil_forKey_probably_because_the_subclass_already_released_it:v11 className:v6 overridesDealloc:v8 != v9];
@@ -363,7 +363,7 @@
       ++v10;
     }
 
-    while (v10 < [v4 count]);
+    while (v10 < [inputKeys count]);
   }
 
   v13.receiver = self;
@@ -374,15 +374,15 @@
 - (id)prewarmingString
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = objc_opt_class();
-  [v3 setObject:NSStringFromClass(v4) forKeyedSubscript:@"FILTERNAME"];
+  [dictionary setObject:NSStringFromClass(v4) forKeyedSubscript:@"FILTERNAME"];
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v5 = [(CIFilter *)self inputKeys];
-  v6 = [(NSArray *)v5 countByEnumeratingWithState:&v28 objects:v34 count:16];
+  inputKeys = [(CIFilter *)self inputKeys];
+  v6 = [(NSArray *)inputKeys countByEnumeratingWithState:&v28 objects:v34 count:16];
   if (!v6)
   {
     goto LABEL_21;
@@ -396,7 +396,7 @@
     {
       if (*v29 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(inputKeys);
       }
 
       v10 = *(*(&v28 + 1) + 8 * i);
@@ -426,7 +426,7 @@
             v16 = AVCameraCalibrationDataDictionary(v12);
 LABEL_15:
             v17 = v16;
-            v18 = v3;
+            v18 = dictionary;
           }
 
           else
@@ -443,7 +443,7 @@ LABEL_15:
               return 0;
             }
 
-            v18 = v3;
+            v18 = dictionary;
             v17 = v12;
           }
 
@@ -464,12 +464,12 @@ LABEL_15:
         }
 
         v15 = XMPData;
-        [v3 setObject:XMPData forKeyedSubscript:v10];
+        [dictionary setObject:XMPData forKeyedSubscript:v10];
         CFRelease(v15);
       }
     }
 
-    v7 = [(NSArray *)v5 countByEnumeratingWithState:&v28 objects:v34 count:16];
+    v7 = [(NSArray *)inputKeys countByEnumeratingWithState:&v28 objects:v34 count:16];
     if (v7)
     {
       continue;
@@ -480,7 +480,7 @@ LABEL_15:
 
 LABEL_21:
   v27 = 0;
-  v20 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:objc_msgSend(MEMORY[0x1E695DF20] requiringSecureCoding:"dictionaryWithDictionary:" error:{v3), 0, &v27}];
+  v20 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:objc_msgSend(MEMORY[0x1E695DF20] requiringSecureCoding:"dictionaryWithDictionary:" error:{dictionary), 0, &v27}];
   if (v27)
   {
     v21 = ci_logger_filter();
@@ -507,13 +507,13 @@ LABEL_21:
   return 0;
 }
 
-+ (id)prewarmedFilterFromString:(id)a3
++ (id)prewarmedFilterFromString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v60 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (string)
   {
-    v4 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:a3 options:1];
+    v4 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:string options:1];
     if (!v4)
     {
       return 0;
@@ -584,13 +584,13 @@ LABEL_21:
       return 0;
     }
 
-    v3 = v21;
-    v22 = [(CIFilter *)v21 inputKeys];
+    stringCopy = v21;
+    inputKeys = [(CIFilter *)v21 inputKeys];
     v50 = 0u;
     v51 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v23 = [(NSArray *)v22 countByEnumeratingWithState:&v50 objects:v59 count:16];
+    v23 = [(NSArray *)inputKeys countByEnumeratingWithState:&v50 objects:v59 count:16];
     if (v23)
     {
       v24 = v23;
@@ -603,7 +603,7 @@ LABEL_21:
         {
           if (*v51 != v25)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(inputKeys);
           }
 
           v27 = *(*(&v50 + 1) + 8 * v26);
@@ -626,7 +626,7 @@ LABEL_21:
               }
 
               v31 = v30;
-              [v3 setValue:v30 forKey:@"inputAuxDataMetadata"];
+              [stringCopy setValue:v30 forKey:@"inputAuxDataMetadata"];
               CFRelease(v31);
             }
 
@@ -645,7 +645,7 @@ LABEL_21:
               }
 
               v33 = v32;
-              [v3 setValue:v32 forKey:@"inputCalibrationData"];
+              [stringCopy setValue:v32 forKey:@"inputCalibrationData"];
             }
 
             else
@@ -659,13 +659,13 @@ LABEL_21:
                 }
 
                 [-[__CFData objectForKeyedSubscript:](v29 objectForKeyedSubscript:{@"extent", "CGRectValue"}];
-                [v3 setValue:-[CIImage imageByInsertingIntermediate:](-[CIImage imageByCroppingToRect:](+[CIImage imageWithColor:](CIImage forKey:{"imageWithColor:", +[CIColor whiteColor](CIColor, "whiteColor")), "imageByCroppingToRect:", v36, v37, v38, v39), "imageByInsertingIntermediate:", 0), v27}];
+                [stringCopy setValue:-[CIImage imageByInsertingIntermediate:](-[CIImage imageByCroppingToRect:](+[CIImage imageWithColor:](CIImage forKey:{"imageWithColor:", +[CIColor whiteColor](CIColor, "whiteColor")), "imageByCroppingToRect:", v36, v37, v38, v39), "imageByInsertingIntermediate:", 0), v27}];
                 v24 = v49;
               }
 
               else
               {
-                [v3 setValue:v29 forKey:v27];
+                [stringCopy setValue:v29 forKey:v27];
               }
             }
           }
@@ -688,7 +688,7 @@ LABEL_21:
         }
 
         while (v24 != v26);
-        v24 = [(NSArray *)v22 countByEnumeratingWithState:&v50 objects:v59 count:16];
+        v24 = [(NSArray *)inputKeys countByEnumeratingWithState:&v50 objects:v59 count:16];
         if (v24)
         {
           continue;
@@ -699,14 +699,14 @@ LABEL_21:
     }
   }
 
-  return v3;
+  return stringCopy;
 }
 
-- (BOOL)verifyPrewarmedFilter:(id)a3
+- (BOOL)verifyPrewarmedFilter:(id)filter
 {
   v171 = *MEMORY[0x1E69E9840];
   obj = [(CIFilter *)self inputKeys];
-  if (!a3)
+  if (!filter)
   {
     goto LABEL_88;
   }
@@ -720,7 +720,7 @@ LABEL_21:
     return v8;
   }
 
-  v154 = a3;
+  filterCopy = filter;
   v136 = NSSelectorFromString(&cfstr_Isequalto.isa);
   v158 = 0u;
   v159 = 0u;
@@ -757,7 +757,7 @@ LABEL_5:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = [v154 valueForKey:v12];
+      v14 = [filterCopy valueForKey:v12];
       [v13 extent];
       v16 = v15;
       v18 = v17;
@@ -783,7 +783,7 @@ LABEL_5:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v27 = [v154 valueForKey:v12];
+      v27 = [filterCopy valueForKey:v12];
       [v13 floatValue];
       v29 = v28;
       [v27 floatValue];
@@ -823,7 +823,7 @@ LABEL_5:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v75 = [v154 valueForKey:v12];
+      v75 = [filterCopy valueForKey:v12];
       v76 = [v13 count];
       if (v76 != [v75 count])
       {
@@ -902,9 +902,9 @@ LABEL_67:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v81 = [v154 valueForKey:v12];
-        v82 = [v13 numberOfComponents];
-        if (v82 != [v13 numberOfComponents])
+        v81 = [filterCopy valueForKey:v12];
+        numberOfComponents = [v13 numberOfComponents];
+        if (numberOfComponents != [v13 numberOfComponents])
         {
           v105 = ci_logger_filter();
           v8 = os_log_type_enabled(v105, OS_LOG_TYPE_ERROR);
@@ -931,16 +931,16 @@ LABEL_70:
           goto LABEL_71;
         }
 
-        v83 = [v13 components];
-        v84 = [v81 components];
+        components = [v13 components];
+        components2 = [v81 components];
         if ([v13 numberOfComponents])
         {
           *&v85 = 0.0;
-          while (vabdd_f64(*v83, *v84) <= 0.0000999999975)
+          while (vabdd_f64(*components, *components2) <= 0.0000999999975)
           {
             ++v85;
-            ++v84;
-            ++v83;
+            ++components2;
+            ++components;
             if (v85 >= [v13 numberOfComponents])
             {
               goto LABEL_27;
@@ -955,8 +955,8 @@ LABEL_70:
           }
 
           v100 = [objc_opt_class() description];
-          v101 = *v83;
-          v102 = *v84;
+          v101 = *components;
+          v102 = *components2;
           *v164 = 138544386;
           *&v164[4] = v100;
           *&v164[12] = 2114;
@@ -978,10 +978,10 @@ LABEL_70:
         if (TypeID == CFGetTypeID(v13))
         {
           XMPData = CGImageMetadataCreateXMPData(v13, 0);
-          v88 = CGImageMetadataCreateXMPData([v154 valueForKey:v12], 0);
+          v88 = CGImageMetadataCreateXMPData([filterCopy valueForKey:v12], 0);
           if (([(__CFData *)XMPData isEqualToData:v88]& 1) == 0)
           {
-            v89 = [v154 valueForKey:v12];
+            v89 = [filterCopy valueForKey:v12];
             *v164 = 0;
             *&v164[8] = v164;
             *&v164[16] = 0x2020000000;
@@ -1026,7 +1026,7 @@ LABEL_70:
         v91 = CGColorSpaceGetTypeID();
         if (v91 == CFGetTypeID(v13))
         {
-          [v154 valueForKey:v12];
+          [filterCopy valueForKey:v12];
           if ((CGColorSpaceEqualToColorSpace() & 1) == 0)
           {
             v126 = ci_logger_filter();
@@ -1067,7 +1067,7 @@ LABEL_88:
             goto LABEL_100;
           }
 
-          v92 = [v154 valueForKey:v12];
+          v92 = [filterCopy valueForKey:v12];
           if (!v92)
           {
             v130 = ci_logger_filter();
@@ -1134,7 +1134,7 @@ LABEL_27:
     }
   }
 
-  v31 = [v154 valueForKey:v12];
+  v31 = [filterCopy valueForKey:v12];
   v32 = AVCameraCalibrationDataDictionary(v13);
   v33 = AVCameraCalibrationDataDictionary(v31);
   if ([v32 isEqualToDictionary:v33])
@@ -1490,12 +1490,12 @@ LABEL_59:
 - (unint64_t)hash
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(CIFilter *)self inputKeys];
+  inputKeys = [(CIFilter *)self inputKeys];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(NSArray *)v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v4 = [(NSArray *)inputKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (!v4)
   {
     return 0;
@@ -1510,54 +1510,54 @@ LABEL_59:
     {
       if (*v11 != v7)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(inputKeys);
       }
 
       v6 = [-[CIFilter valueForKey:](self valueForKey:{*(*(&v10 + 1) + 8 * i)), "hash"}] + 33 * v6;
     }
 
-    v5 = [(NSArray *)v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    v5 = [(NSArray *)inputKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
   }
 
   while (v5);
   return v6;
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
-  if ([a4 isEqualToString:@"__inputVersion"])
+  if ([key isEqualToString:@"__inputVersion"])
   {
     v7 = self->_priv[0];
     if (v7)
     {
     }
 
-    self->_priv[0] = [a3 copy];
+    self->_priv[0] = [value copy];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = CIFilter;
-    [(CIFilter *)&v8 setValue:a3 forUndefinedKey:a4];
+    [(CIFilter *)&v8 setValue:value forUndefinedKey:key];
   }
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
-  if ([a3 isEqualToString:@"__inputVersion"])
+  if ([key isEqualToString:@"__inputVersion"])
   {
     return self->_priv[0];
   }
 
   v6.receiver = self;
   v6.super_class = CIFilter;
-  return [(CIFilter *)&v6 valueForUndefinedKey:a3];
+  return [(CIFilter *)&v6 valueForUndefinedKey:key];
 }
 
-- (void)_crashed_when_dealloc_called_setValue_nil_forKey_probably_because_the_subclass_already_released_it:(id)a3 className:(const char *)a4 overridesDealloc:(BOOL)a5
+- (void)_crashed_when_dealloc_called_setValue_nil_forKey_probably_because_the_subclass_already_released_it:(id)key_probably_because_the_subclass_already_released_it className:(const char *)name overridesDealloc:(BOOL)dealloc
 {
-  v5 = a5;
+  deallocCopy = dealloc;
   v44 = *MEMORY[0x1E69E9840];
   v42 = 0u;
   v43 = 0u;
@@ -1591,17 +1591,17 @@ LABEL_59:
   v15 = 0u;
   *__str = 0u;
   v13 = 0u;
-  v9 = [a3 UTF8String];
+  uTF8String = [key_probably_because_the_subclass_already_released_it UTF8String];
   v10 = "";
-  if (v5)
+  if (deallocCopy)
   {
     v10 = " (e.g. in its dealloc method)";
   }
 
-  snprintf(__str, 0x200uLL, "Crashed in [CIFilter dealloc] releasing the value of %s for %s.\nIf a CIFilter subclass releases an ivar%s, it must be set to nil afterwards.\n", v9, a4, v10);
+  snprintf(__str, 0x200uLL, "Crashed in [CIFilter dealloc] releasing the value of %s for %s.\nIf a CIFilter subclass releases an ivar%s, it must be set to nil afterwards.\n", uTF8String, name, v10);
   qword_1ED7C3F80 = __str;
   v11 = objc_autoreleasePoolPush();
-  [(CIFilter *)self setValue:0 forKey:a3];
+  [(CIFilter *)self setValue:0 forKey:key_probably_because_the_subclass_already_released_it];
   objc_autoreleasePoolPop(v11);
   qword_1ED7C3F80 = 0;
 }
@@ -1620,9 +1620,9 @@ LABEL_59:
   return [CIFilterClassAttributes classAttributesForClass:v2];
 }
 
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3
++ (id)keyPathsForValuesAffectingValueForKey:(id)key
 {
-  if ([a3 isEqualToString:@"outputImage"])
+  if ([key isEqualToString:@"outputImage"])
   {
     v5 = MEMORY[0x1E695DFD8];
     v6 = [+[CIFilterClassInfo classInfoForClass:](CIFilterClassInfo classInfoForClass:{objc_opt_class()), "inputKeys"}];
@@ -1632,23 +1632,23 @@ LABEL_59:
 
   else
   {
-    v8.receiver = a1;
+    v8.receiver = self;
     v8.super_class = &OBJC_METACLASS___CIFilter;
-    return objc_msgSendSuper2(&v8, sel_keyPathsForValuesAffectingValueForKey_, a3);
+    return objc_msgSendSuper2(&v8, sel_keyPathsForValuesAffectingValueForKey_, key);
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v41[18] = *MEMORY[0x1E69E9840];
-  if ([a3 allowsKeyedCoding])
+  if ([coder allowsKeyedCoding])
   {
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v4 = [(CIFilter *)self inputKeys];
-    v5 = [(NSArray *)v4 countByEnumeratingWithState:&v25 objects:v38 count:16];
+    inputKeys = [(CIFilter *)self inputKeys];
+    v5 = [(NSArray *)inputKeys countByEnumeratingWithState:&v25 objects:v38 count:16];
     if (v5)
     {
       v6 = v5;
@@ -1659,7 +1659,7 @@ LABEL_59:
         {
           if (*v26 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(inputKeys);
           }
 
           v9 = *(*(&v25 + 1) + 8 * i);
@@ -1799,12 +1799,12 @@ LABEL_27:
             }
 
 LABEL_26:
-            [a3 encodeObject:v11 forKey:v15];
+            [coder encodeObject:v11 forKey:v15];
             goto LABEL_27;
           }
         }
 
-        v6 = [(NSArray *)v4 countByEnumeratingWithState:&v25 objects:v38 count:16];
+        v6 = [(NSArray *)inputKeys countByEnumeratingWithState:&v25 objects:v38 count:16];
       }
 
       while (v6);
@@ -1818,13 +1818,13 @@ LABEL_26:
     v21 = self->_priv[4];
     if (v21)
     {
-      [a3 encodeObject:v21 forKey:@"CIName"];
+      [coder encodeObject:v21 forKey:@"CIName"];
     }
 
     v22 = [(CIFilter *)self valueForKey:@"__inputVersion"];
     if (v22)
     {
-      [a3 encodeObject:v22 forKey:@"CIVersion"];
+      [coder encodeObject:v22 forKey:@"CIVersion"];
     }
   }
 
@@ -1848,10 +1848,10 @@ void __28__CIFilter_encodeWithCoder___block_invoke()
   }
 }
 
-- (CIFilter)initWithCoder:(id)a3
+- (CIFilter)initWithCoder:(id)coder
 {
   v95 = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
 
     return 0;
@@ -1906,7 +1906,7 @@ void __28__CIFilter_encodeWithCoder___block_invoke()
 
       v22 = *(*(&v74 + 1) + 8 * v21);
       v23 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"CICS_%@", v22];
-      v24 = [a3 decodeObjectOfClasses:v16 forKey:v23];
+      v24 = [coder decodeObjectOfClasses:v16 forKey:v23];
 
       if (v24)
       {
@@ -2041,7 +2041,7 @@ LABEL_27:
       }
 
       v26 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"CI_%@", v22];
-      v27 = [a3 decodeObjectOfClasses:v71 forKey:v26];
+      v27 = [coder decodeObjectOfClasses:v71 forKey:v26];
       if (v27)
       {
         [(CIFilter *)v69 setValue:v27 forKey:v22];
@@ -2058,17 +2058,17 @@ LABEL_30:
 
   while (v64);
 LABEL_34:
-  if ([a3 containsValueForKey:@"CIUserInfo"] && -[CIFilter initWithCoder:]::onceToken != -1)
+  if ([coder containsValueForKey:@"CIUserInfo"] && -[CIFilter initWithCoder:]::onceToken != -1)
   {
     [CIFilter initWithCoder:];
   }
 
-  if ([a3 containsValueForKey:@"CIName"])
+  if ([coder containsValueForKey:@"CIName"])
   {
-    v69->_priv[4] = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"CIName"];
+    v69->_priv[4] = [coder decodeObjectOfClass:objc_opt_class() forKey:@"CIName"];
   }
 
-  v65 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"CIVersion"];
+  v65 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"CIVersion"];
   if (v65)
   {
     [(CIFilter *)v69 setValue:v65 forKey:@"__inputVersion"];
@@ -2089,23 +2089,23 @@ void __26__CIFilter_initWithCoder___block_invoke()
   }
 }
 
-- (id)_copyFilterWithZone:(_NSZone *)a3
+- (id)_copyFilterWithZone:(_NSZone *)zone
 {
-  v3 = [objc_opt_class() allocWithZone:a3];
+  v3 = [objc_opt_class() allocWithZone:zone];
 
   return [v3 init];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = [(CIFilter *)self _copyFilterWithZone:a3];
+  v4 = [(CIFilter *)self _copyFilterWithZone:zone];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(CIFilter *)self inputKeys];
-  v6 = [(NSArray *)v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  inputKeys = [(CIFilter *)self inputKeys];
+  v6 = [(NSArray *)inputKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2116,7 +2116,7 @@ void __26__CIFilter_initWithCoder___block_invoke()
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(inputKeys);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
@@ -2127,7 +2127,7 @@ void __26__CIFilter_initWithCoder___block_invoke()
         }
       }
 
-      v7 = [(NSArray *)v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [(NSArray *)inputKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
@@ -2258,8 +2258,8 @@ uint64_t __28__CIFilter_debugDescription__block_invoke(uint64_t a1, FILE *a2)
 - (id)debugQuickLookObject
 {
   v43 = *MEMORY[0x1E69E9840];
-  v3 = [(CIFilter *)self attributes];
-  v4 = [(NSDictionary *)v3 objectForKeyedSubscript:@"CIAttributeFilterCategories"];
+  attributes = [(CIFilter *)self attributes];
+  v4 = [(NSDictionary *)attributes objectForKeyedSubscript:@"CIAttributeFilterCategories"];
   v5 = objc_alloc_init(MEMORY[0x1E696AD40]);
   v6 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithMarkdownString:objc_msgSend(MEMORY[0x1E696AEC0] options:"stringWithFormat:" baseURL:@"**%@**" error:{objc_msgSend(objc_opt_class(), "description")), 0, 0, 0}];
   [(NSMutableAttributedString *)v5 appendAttributedString:v6];
@@ -2330,7 +2330,7 @@ uint64_t __28__CIFilter_debugDescription__block_invoke(uint64_t a1, FILE *a2)
         }
 
         v17 = *(*(&v33 + 1) + 8 * j);
-        v18 = [(NSDictionary *)v3 objectForKeyedSubscript:v17];
+        v18 = [(NSDictionary *)attributes objectForKeyedSubscript:v17];
         appendAttrStr(v5, &stru_1F1045A78.isa);
         appendAttrStrCode(v5, v17);
         v19 = [v18 objectForKeyedSubscript:@"CIAttributeClass"];
@@ -2410,7 +2410,7 @@ uint64_t __28__CIFilter_debugDescription__block_invoke(uint64_t a1, FILE *a2)
   width = extent.size.width;
   y = extent.origin.y;
   x = extent.origin.x;
-  if (!-[NSArray count](filters, "count") || ![objc_msgSend(a1 _propertyArrayFromFilters:filters inputImageExtent:{x, y, width, height), "count"}])
+  if (!-[NSArray count](filters, "count") || ![objc_msgSend(self _propertyArrayFromFilters:filters inputImageExtent:{x, y, width, height), "count"}])
   {
     return 0;
   }
@@ -2450,7 +2450,7 @@ uint64_t __28__CIFilter_debugDescription__block_invoke(uint64_t a1, FILE *a2)
   v11 = v10;
   if (CFArrayGetCount(v10))
   {
-    v12 = [a1 _filterArrayFromProperties:v11 inputImageExtent:{x, y, width, height}];
+    v12 = [self _filterArrayFromProperties:v11 inputImageExtent:{x, y, width, height}];
   }
 
   else
@@ -2547,12 +2547,12 @@ LABEL_17:
 
 LABEL_22:
   v47 = [(NSDictionary *)dict objectForKey:@"user_info"];
-  v48 = [(CIKernel *)k ROISelector];
+  rOISelector = [(CIKernel *)k ROISelector];
   v49 = NSSelectorFromString(&cfstr_RegionofDestre.isa);
   v50 = NSSelectorFromString(&cfstr_RegionofDestre_0.isa);
-  if (objc_opt_respondsToSelector() & 1) != 0 || (v48 = v49, (objc_opt_respondsToSelector()) || (v48 = v50, (objc_opt_respondsToSelector()))
+  if (objc_opt_respondsToSelector() & 1) != 0 || (rOISelector = v49, (objc_opt_respondsToSelector()) || (rOISelector = v50, (objc_opt_respondsToSelector()))
   {
-    v51 = [(CIFilter *)self methodForSelector:v48];
+    v51 = [(CIFilter *)self methodForSelector:rOISelector];
   }
 
   else
@@ -2692,8 +2692,8 @@ void __36__CIFilter_apply_arguments_options___block_invoke_128(uint64_t a1, uint
   v26 = *MEMORY[0x1E69E9840];
   if (k && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = [MEMORY[0x1E695DF70] array];
-    v6 = [MEMORY[0x1E695DF90] dictionary];
+    array = [MEMORY[0x1E695DF70] array];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     va_copy(v19, va);
     v8 = v27;
     if (v27)
@@ -2743,7 +2743,7 @@ void __36__CIFilter_apply_arguments_options___block_invoke_128(uint64_t a1, uint
           }
         }
 
-        [v5 addObject:{v8, v18}];
+        [array addObject:{v8, v18}];
         v9 = 0;
 LABEL_18:
         v13 = va_arg(v19, void);
@@ -2751,14 +2751,14 @@ LABEL_18:
         ++v10;
         if (!v13)
         {
-          return [(CIFilter *)self apply:k arguments:v5 options:v6, v18];
+          return [(CIFilter *)self apply:k arguments:array options:dictionary, v18];
         }
       }
 
       v11 = va_arg(v19, void);
       if (v11)
       {
-        [v6 setValue:v11 forKey:v8];
+        [dictionary setValue:v11 forKey:v8];
       }
 
       else
@@ -2782,7 +2782,7 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    return [(CIFilter *)self apply:k arguments:v5 options:v6, v18];
+    return [(CIFilter *)self apply:k arguments:array options:dictionary, v18];
   }
 
   else
@@ -2818,23 +2818,23 @@ LABEL_17:
   +[CIFilterClassInfo clearCache];
 }
 
-- (BOOL)_filterClassInCategory:(id)a3
+- (BOOL)_filterClassInCategory:(id)category
 {
   v4 = [CIFilterClassCategories classCategoriesForClass:objc_opt_class()];
 
-  return [v4 containsObject:a3];
+  return [v4 containsObject:category];
 }
 
 - (void)setIdentity
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(CIFilter *)self attributes];
+  attributes = [(CIFilter *)self attributes];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(CIFilter *)self inputKeys];
-  v5 = [(NSArray *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  inputKeys = [(CIFilter *)self inputKeys];
+  v5 = [(NSArray *)inputKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2845,11 +2845,11 @@ LABEL_17:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(inputKeys);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        v10 = [(NSDictionary *)v3 objectForKey:v9];
+        v10 = [(NSDictionary *)attributes objectForKey:v9];
         v11 = [v10 valueForKey:@"CIAttributeIdentity"];
         if (!v11)
         {
@@ -2863,26 +2863,26 @@ LABEL_17:
         [(CIFilter *)self setValue:v11 forKey:v9];
       }
 
-      v6 = [(NSArray *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [(NSArray *)inputKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)setUserInfo:(id)a3
+- (void)setUserInfo:(id)info
 {
   v4 = self->_priv[3];
-  if (v4 != a3)
+  if (v4 != info)
   {
     v6 = v4;
-    self->_priv[3] = a3;
+    self->_priv[3] = info;
   }
 }
 
-+ (CIFilter)filterWithString:(id)a3
++ (CIFilter)filterWithString:(id)string
 {
-  v3 = [a3 componentsSeparatedByString:{@", "}];
+  v3 = [string componentsSeparatedByString:{@", "}];
   if (![v3 count])
   {
     return 0;
@@ -2970,13 +2970,13 @@ LABEL_19:
     return 0;
   }
 
-  v3 = [(CIFilter *)self name];
+  name = [(CIFilter *)self name];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v4 = [(CIFilter *)self inputKeys];
-  v5 = [(NSArray *)v4 countByEnumeratingWithState:&v23 objects:v33 count:16];
+  inputKeys = [(CIFilter *)self inputKeys];
+  v5 = [(NSArray *)inputKeys countByEnumeratingWithState:&v23 objects:v33 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2987,7 +2987,7 @@ LABEL_4:
     {
       if (*v24 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(inputKeys);
       }
 
       v9 = *(*(&v23 + 1) + 8 * v8);
@@ -3002,7 +3002,7 @@ LABEL_4:
       {
         v11 = MEMORY[0x1E696AEC0];
         v12 = [v9 substringFromIndex:5];
-        v13 = [v10 stringValue];
+        stringValue = [v10 stringValue];
       }
 
       else
@@ -3015,7 +3015,7 @@ LABEL_4:
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) != 0 && [v10 length] && (objc_msgSend(v10, "rangeOfString:", @","), !v16))
           {
-            v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@, %@=%s", v3, objc_msgSend(v9, "substringFromIndex:", 5), objc_msgSend(v10, "UTF8String")];
+            v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@, %@=%s", name, objc_msgSend(v9, "substringFromIndex:", 5), objc_msgSend(v10, "UTF8String")];
           }
 
           else
@@ -3025,10 +3025,10 @@ LABEL_4:
               v18 = ci_logger_api();
               if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
               {
-                v20 = [(CIFilter *)self name];
+                name2 = [(CIFilter *)self name];
                 v21 = [objc_opt_class() description];
                 *buf = 138543874;
-                v28 = v20;
+                v28 = name2;
                 v29 = 2114;
                 v30 = v9;
                 v31 = 2114;
@@ -3039,51 +3039,51 @@ LABEL_4:
               return 0;
             }
 
-            v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@, %@=nil", v3, objc_msgSend(v9, "substringFromIndex:", 5), v22];
+            v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@, %@=nil", name, objc_msgSend(v9, "substringFromIndex:", 5), v22];
           }
 
           goto LABEL_18;
         }
 
         v12 = [v9 substringFromIndex:5];
-        v13 = [v10 stringRepresentation];
+        stringValue = [v10 stringRepresentation];
       }
 
-      v15 = [v11 stringWithFormat:@"%@, %@=%@", v3, v12, v13];
+      v15 = [v11 stringWithFormat:@"%@, %@=%@", name, v12, stringValue];
 LABEL_18:
-      v3 = v15;
+      name = v15;
 LABEL_19:
       if (v6 == ++v8)
       {
-        v17 = [(NSArray *)v4 countByEnumeratingWithState:&v23 objects:v33 count:16];
+        v17 = [(NSArray *)inputKeys countByEnumeratingWithState:&v23 objects:v33 count:16];
         v6 = v17;
         if (v17)
         {
           goto LABEL_4;
         }
 
-        return v3;
+        return name;
       }
     }
   }
 
-  return v3;
+  return name;
 }
 
-+ (id)_propertyArrayFromFilters:(id)a3 inputImageExtent:(CGRect)a4
++ (id)_propertyArrayFromFilters:(id)filters inputImageExtent:(CGRect)extent
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = extent.size.height;
+  width = extent.size.width;
+  y = extent.origin.y;
+  x = extent.origin.x;
   v80 = *MEMORY[0x1E69E9840];
-  v64 = [MEMORY[0x1E695DF70] array];
-  obj = a3;
+  array = [MEMORY[0x1E695DF70] array];
+  obj = filters;
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
   v76 = 0u;
-  v9 = [a3 countByEnumeratingWithState:&v73 objects:v79 count:16];
+  v9 = [filters countByEnumeratingWithState:&v73 objects:v79 count:16];
   if (v9)
   {
     v10 = v9;
@@ -3119,10 +3119,10 @@ LABEL_19:
           }
 
           v13 += v20;
-          v21 = [v17 _outputProperties];
-          if (v21)
+          _outputProperties = [v17 _outputProperties];
+          if (_outputProperties)
           {
-            [v64 addObjectsFromArray:v21];
+            [array addObjectsFromArray:_outputProperties];
           }
         }
       }
@@ -3267,11 +3267,11 @@ LABEL_19:
     v78[4] = metadataPropertyWithDouble(fmax(fmin(v40 / width, 1.0), 0.0));
     v78[5] = metadataPropertyWithBool();
     v78[6] = metadataPropertyWithBool();
-    [v64 addObjectsFromArray:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v78, 7)}];
+    [array addObjectsFromArray:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v78, 7)}];
   }
 
 LABEL_54:
-  v55 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
@@ -3290,10 +3290,10 @@ LABEL_54:
           objc_enumerationMutation(obj);
         }
 
-        v60 = [*(*(&v66 + 1) + 8 * j) _serializedXMPString];
-        if (v60)
+        _serializedXMPString = [*(*(&v66 + 1) + 8 * j) _serializedXMPString];
+        if (_serializedXMPString)
         {
-          [v55 addObject:v60];
+          [array2 addObject:_serializedXMPString];
         }
       }
 
@@ -3303,20 +3303,20 @@ LABEL_54:
     while (v57);
   }
 
-  if ([v55 count])
+  if ([array2 count])
   {
-    [v64 addObject:{metadataPropertyWithArray(@"http://ns.apple.com/adjustment-settings/1.0/", @"aas", @"Filters", v55)}];
+    [array addObject:{metadataPropertyWithArray(@"http://ns.apple.com/adjustment-settings/1.0/", @"aas", @"Filters", array2)}];
   }
 
-  return v64;
+  return array;
 }
 
-+ (id)_filterArrayFromProperties:(id)a3 inputImageExtent:(CGRect)a4
++ (id)_filterArrayFromProperties:(id)properties inputImageExtent:(CGRect)extent
 {
-  height = a4.size.height;
-  width = a4.size.width;
+  height = extent.size.height;
+  width = extent.size.width;
   v65 = *MEMORY[0x1E69E9840];
-  v6 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
@@ -3346,11 +3346,11 @@ LABEL_54:
           {
             if ([(objc_class *)v15 conformsToProtocol:&unk_1F108B858])
             {
-              v16 = [[v15 alloc] _initFromProperties:a3];
+              v16 = [[v15 alloc] _initFromProperties:properties];
               if (v16)
               {
                 v17 = v16;
-                [v6 addObject:v16];
+                [array addObject:v16];
                 if ([(NSString *)v13 isEqual:@"CIAffineTransform"])
                 {
                   v10 = v17;
@@ -3388,34 +3388,34 @@ LABEL_54:
   {
     v19 = [CIFilter filterWithName:@"CIAffineTransform"];
     v20 = [CIFilter filterWithName:@"CICrop"];
-    if (metadataPropertyArrayGetBool(a3, @"http://ns.adobe.com/camera-raw-settings/1.0/", @"HasCrop", &v52 + 1))
+    if (metadataPropertyArrayGetBool(properties, @"http://ns.adobe.com/camera-raw-settings/1.0/", @"HasCrop", &v52 + 1))
     {
-      if (metadataPropertyArrayGetBool(a3, @"http://ns.adobe.com/camera-raw-settings/1.0/", @"AlreadyApplied", &v52) && HIBYTE(v52) == 1 && (v52 & 1) == 0)
+      if (metadataPropertyArrayGetBool(properties, @"http://ns.adobe.com/camera-raw-settings/1.0/", @"AlreadyApplied", &v52) && HIBYTE(v52) == 1 && (v52 & 1) == 0)
       {
         v63[0] = v19;
         v63[1] = v20;
-        [v6 addObjectsFromArray:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v63, 2)}];
-        if ((metadataPropertyArrayGetDouble(a3, @"http://ns.adobe.com/camera-raw-settings/1.0/", @"CropTop", &v55) & 1) == 0)
+        [array addObjectsFromArray:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v63, 2)}];
+        if ((metadataPropertyArrayGetDouble(properties, @"http://ns.adobe.com/camera-raw-settings/1.0/", @"CropTop", &v55) & 1) == 0)
         {
           v55 = 0.0;
         }
 
-        if ((metadataPropertyArrayGetDouble(a3, @"http://ns.adobe.com/camera-raw-settings/1.0/", @"CropBottom", &v54) & 1) == 0)
+        if ((metadataPropertyArrayGetDouble(properties, @"http://ns.adobe.com/camera-raw-settings/1.0/", @"CropBottom", &v54) & 1) == 0)
         {
           v54 = 1.0;
         }
 
-        if ((metadataPropertyArrayGetDouble(a3, @"http://ns.adobe.com/camera-raw-settings/1.0/", @"CropLeft", &v57) & 1) == 0)
+        if ((metadataPropertyArrayGetDouble(properties, @"http://ns.adobe.com/camera-raw-settings/1.0/", @"CropLeft", &v57) & 1) == 0)
         {
           v57 = 0.0;
         }
 
-        if ((metadataPropertyArrayGetDouble(a3, @"http://ns.adobe.com/camera-raw-settings/1.0/", @"CropRight", &v56) & 1) == 0)
+        if ((metadataPropertyArrayGetDouble(properties, @"http://ns.adobe.com/camera-raw-settings/1.0/", @"CropRight", &v56) & 1) == 0)
         {
           v56 = 1.0;
         }
 
-        if (metadataPropertyArrayGetDouble(a3, @"http://ns.adobe.com/camera-raw-settings/1.0/", @"CropAngle", &v53))
+        if (metadataPropertyArrayGetDouble(properties, @"http://ns.adobe.com/camera-raw-settings/1.0/", @"CropAngle", &v53))
         {
           v21 = v53 * -0.0174532925;
         }
@@ -3490,7 +3490,7 @@ LABEL_54:
         v41 = [CIFilter filterWithString:*(*(&v44 + 1) + 8 * j)];
         if (v41)
         {
-          [v6 addObject:v41];
+          [array addObject:v41];
         }
       }
 
@@ -3500,12 +3500,12 @@ LABEL_54:
     while (v38);
   }
 
-  return v6;
+  return array;
 }
 
-+ (CGImageMetadata)_imageMetadataFromFilters:(id)a3 inputImageExtent:(CGRect)a4
++ (CGImageMetadata)_imageMetadataFromFilters:(id)filters inputImageExtent:(CGRect)extent
 {
-  result = [CIFilter _propertyArrayFromFilters:a3 inputImageExtent:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  result = [CIFilter _propertyArrayFromFilters:filters inputImageExtent:extent.origin.x, extent.origin.y, extent.size.width, extent.size.height];
   if (result)
   {
 
@@ -3515,25 +3515,25 @@ LABEL_54:
   return result;
 }
 
-+ (id)_filterArrayFromImageMetadata:(CGImageMetadata *)a3 inputImageExtent:(CGRect)a4
++ (id)_filterArrayFromImageMetadata:(CGImageMetadata *)metadata inputImageExtent:(CGRect)extent
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = extent.size.height;
+  width = extent.size.width;
+  y = extent.origin.y;
+  x = extent.origin.x;
   result = CGImageMetadataCreateMetadataProperties();
   if (result)
   {
     v9 = result;
-    v10 = [CIFilter _filterArrayFromProperties:result inputImageExtent:x, y, width, height];
+    height = [CIFilter _filterArrayFromProperties:result inputImageExtent:x, y, width, height];
     CFRelease(v9);
-    return v10;
+    return height;
   }
 
   return result;
 }
 
-+ (id)_filterArrayFromProperties:(id)a3
++ (id)_filterArrayFromProperties:(id)properties
 {
   v3 = ci_logger_api();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -25884,7 +25884,7 @@ LABEL_6:
   return v3 != 89;
 }
 
-+ (BOOL)wrapClassIfNeeded:(Class)a3
++ (BOOL)wrapClassIfNeeded:(Class)needed
 {
   if (enableFilterInterposing_onceToken != -1)
   {
@@ -25901,7 +25901,7 @@ LABEL_6:
     +[CIFilter(Interposer) wrapClassIfNeeded:];
   }
 
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(objc_msgSend(MEMORY[0x1E696B098], "valueWithPointer:", a3), "hash")}];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(objc_msgSend(MEMORY[0x1E696B098], "valueWithPointer:", needed), "hash")}];
   v5 = wrappedClasses;
   objc_sync_enter(wrappedClasses);
   LOBYTE(v4) = [wrappedClasses containsObject:v4];
@@ -25911,7 +25911,7 @@ LABEL_6:
     return 1;
   }
 
-  return [(objc_class *)a3 exchangeImplementationsForClass];
+  return [(objc_class *)needed exchangeImplementationsForClass];
 }
 
 id __42__CIFilter_Interposer__wrapClassIfNeeded___block_invoke()
@@ -25930,14 +25930,14 @@ id __42__CIFilter_Interposer__wrapClassIfNeeded___block_invoke()
   return result;
 }
 
-- (void)_prependSingleFilter:(id)a3
+- (void)_prependSingleFilter:(id)filter
 {
   v23 = *MEMORY[0x1E69E9840];
-  if (a3 && [a3 count] == 3)
+  if (filter && [filter count] == 3)
   {
-    v5 = [a3 objectAtIndexedSubscript:0];
-    v6 = [a3 objectAtIndexedSubscript:1];
-    v7 = [a3 objectAtIndexedSubscript:2];
+    v5 = [filter objectAtIndexedSubscript:0];
+    v6 = [filter objectAtIndexedSubscript:1];
+    v7 = [filter objectAtIndexedSubscript:2];
     if ([(NSArray *)[(CIFilter *)self inputKeys] containsObject:v6])
     {
       if (v5 && v7)
@@ -26000,12 +26000,12 @@ id __42__CIFilter_Interposer__wrapClassIfNeeded___block_invoke()
   }
 }
 
-- (void)_prepend:(id)a3
+- (void)_prepend:(id)_prepend
 {
   v15 = *MEMORY[0x1E69E9840];
   v5 = prependFilters;
   objc_sync_enter(prependFilters);
-  v6 = [prependFilters objectForKey:a3];
+  v6 = [prependFilters objectForKey:_prepend];
   objc_sync_exit(v5);
   v10 = 0u;
   v11 = 0u;
@@ -26036,29 +26036,29 @@ id __42__CIFilter_Interposer__wrapClassIfNeeded___block_invoke()
   }
 }
 
-- (id)_appendSingleFilterTo:(id)a3 filterAndSettings:(id)a4
+- (id)_appendSingleFilterTo:(id)to filterAndSettings:(id)settings
 {
-  if (!a4)
+  if (!settings)
   {
-    return a3;
+    return to;
   }
 
-  if ([a4 count] != 2)
+  if ([settings count] != 2)
   {
-    return a3;
+    return to;
   }
 
-  v7 = [a4 objectAtIndexedSubscript:0];
-  v8 = [a4 objectAtIndexedSubscript:1];
+  v7 = [settings objectAtIndexedSubscript:0];
+  v8 = [settings objectAtIndexedSubscript:1];
   if (!v7)
   {
-    return a3;
+    return to;
   }
 
   v9 = v8;
   if (!v8)
   {
-    return a3;
+    return to;
   }
 
   v10 = [CIFilter filterWithName:v7];
@@ -26066,7 +26066,7 @@ id __42__CIFilter_Interposer__wrapClassIfNeeded___block_invoke()
   [(CIFilter *)v10 setValuesForKeysWithDictionary:v9];
   if ([(NSArray *)[(CIFilter *)v10 inputKeys] containsObject:@"inputImage"])
   {
-    [(CIFilter *)v10 setValue:a3 forKey:@"inputImage"];
+    [(CIFilter *)v10 setValue:to forKey:@"inputImage"];
   }
 
   if ([(NSArray *)[(CIFilter *)v10 inputKeys] containsObject:@"inputOriginalFilter"])
@@ -26077,12 +26077,12 @@ id __42__CIFilter_Interposer__wrapClassIfNeeded___block_invoke()
   return [(CIFilter *)v10 outputImage];
 }
 
-- (id)_append:(id)a3 image:(id)a4
+- (id)_append:(id)_append image:(id)image
 {
   v18 = *MEMORY[0x1E69E9840];
   v7 = appendFilters;
   objc_sync_enter(appendFilters);
-  v8 = [appendFilters objectForKey:a3];
+  v8 = [appendFilters objectForKey:_append];
   objc_sync_exit(v7);
   v13 = 0u;
   v14 = 0u;
@@ -26102,7 +26102,7 @@ id __42__CIFilter_Interposer__wrapClassIfNeeded___block_invoke()
           objc_enumerationMutation(v8);
         }
 
-        a4 = [(CIFilter *)self _appendSingleFilterTo:a4 filterAndSettings:*(*(&v13 + 1) + 8 * v11++)];
+        image = [(CIFilter *)self _appendSingleFilterTo:image filterAndSettings:*(*(&v13 + 1) + 8 * v11++)];
       }
 
       while (v9 != v11);
@@ -26112,12 +26112,12 @@ id __42__CIFilter_Interposer__wrapClassIfNeeded___block_invoke()
     while (v9);
   }
 
-  return a4;
+  return image;
 }
 
-- (id)outputImageCatchAll:(unsigned int)a3
+- (id)outputImageCatchAll:(unsigned int)all
 {
-  v3 = *&a3;
+  v3 = *&all;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(objc_msgSend(MEMORY[0x1E696B098], "valueWithPointer:", objc_opt_class()), "hash")}];
@@ -26138,7 +26138,7 @@ id __42__CIFilter_Interposer__wrapClassIfNeeded___block_invoke()
   else
   {
     [(CIFilter *)self _prepend:v6];
-    v10 = -[CIFilter performSelector:](self, "performSelector:", NSSelectorFromString([MEMORY[0x1E696AEC0] stringWithFormat:@"wrappedOutputImage%d", v3]));
+    outputImage = -[CIFilter performSelector:](self, "performSelector:", NSSelectorFromString([MEMORY[0x1E696AEC0] stringWithFormat:@"wrappedOutputImage%d", v3]));
     v11 = replacementFilters;
     objc_sync_enter(replacementFilters);
     v12 = [replacementFilters objectForKeyedSubscript:v6];
@@ -26152,91 +26152,91 @@ id __42__CIFilter_Interposer__wrapClassIfNeeded___block_invoke()
         {
           v14 = v13;
           -[objc_object setValuesForKeysWithDictionary:](v13, "setValuesForKeysWithDictionary:", [v12 objectAtIndexedSubscript:1]);
-          [(objc_object *)v14 setValue:v10 forKey:@"inputOutputImage"];
-          v10 = [(objc_object *)v14 outputImage];
+          [(objc_object *)v14 setValue:outputImage forKey:@"inputOutputImage"];
+          outputImage = [(objc_object *)v14 outputImage];
         }
       }
     }
 
-    return [(CIFilter *)self _append:v6 image:v10];
+    return [(CIFilter *)self _append:v6 image:outputImage];
   }
 
   return result;
 }
 
-+ (id)filterName:(id)a3 append:(id)a4 arguments:(id)a5
++ (id)filterName:(id)name append:(id)append arguments:(id)arguments
 {
-  if (![a1 wrapClassIfNeeded:NSClassFromString(a3)])
+  if (![self wrapClassIfNeeded:NSClassFromString(name)])
   {
     return 0;
   }
 
-  if (a5)
+  if (arguments)
   {
-    v8 = a5;
+    argumentsCopy = arguments;
   }
 
   else
   {
-    v8 = MEMORY[0x1E695E0F8];
+    argumentsCopy = MEMORY[0x1E695E0F8];
   }
 
-  v9 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v8];
-  v10 = [MEMORY[0x1E695DF70] arrayWithObjects:{a4, v9, 0}];
+  v9 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:argumentsCopy];
+  v10 = [MEMORY[0x1E695DF70] arrayWithObjects:{append, v9, 0}];
   v11 = appendFilters;
   objc_sync_enter(appendFilters);
-  v12 = [appendFilters valueForKey:a3];
-  if (!v12)
+  array = [appendFilters valueForKey:name];
+  if (!array)
   {
-    v12 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
   }
 
-  [v12 addObject:v10];
-  [appendFilters setValue:v12 forKey:a3];
+  [array addObject:v10];
+  [appendFilters setValue:array forKey:name];
   objc_sync_exit(v11);
   return v9;
 }
 
-+ (id)filterName:(id)a3 prepend:(id)a4 imageName:(id)a5 arguments:(id)a6
++ (id)filterName:(id)name prepend:(id)prepend imageName:(id)imageName arguments:(id)arguments
 {
-  if (![a1 wrapClassIfNeeded:NSClassFromString(a3)])
+  if (![self wrapClassIfNeeded:NSClassFromString(name)])
   {
     return 0;
   }
 
-  if (a6)
+  if (arguments)
   {
-    v10 = a6;
+    argumentsCopy = arguments;
   }
 
   else
   {
-    v10 = MEMORY[0x1E695E0F8];
+    argumentsCopy = MEMORY[0x1E695E0F8];
   }
 
-  v11 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v10];
-  v12 = [MEMORY[0x1E695DF70] arrayWithObjects:{a4, a5, v11, 0}];
+  v11 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:argumentsCopy];
+  v12 = [MEMORY[0x1E695DF70] arrayWithObjects:{prepend, imageName, v11, 0}];
   v13 = prependFilters;
   objc_sync_enter(prependFilters);
-  v14 = [prependFilters valueForKey:a3];
-  if (!v14)
+  array = [prependFilters valueForKey:name];
+  if (!array)
   {
-    v14 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
   }
 
-  [v14 addObject:v12];
-  [prependFilters setValue:v14 forKey:a3];
+  [array addObject:v12];
+  [prependFilters setValue:array forKey:name];
   objc_sync_exit(v13);
   return v11;
 }
 
-+ (void)addFilterToSkip:(id)a3
++ (void)addFilterToSkip:(id)skip
 {
-  v4 = NSClassFromString(a3);
+  v4 = NSClassFromString(skip);
   if (v4)
   {
     v5 = v4;
-    if ([a1 wrapClassIfNeeded:v4])
+    if ([self wrapClassIfNeeded:v4])
     {
       v6 = filtersToSkip;
       objc_sync_enter(filtersToSkip);
@@ -26247,14 +26247,14 @@ id __42__CIFilter_Interposer__wrapClassIfNeeded___block_invoke()
   }
 }
 
-+ (id)filterName:(id)a3 replacement:(id)a4 arguments:(id)a5
++ (id)filterName:(id)name replacement:(id)replacement arguments:(id)arguments
 {
-  if (![a1 wrapClassIfNeeded:NSClassFromString(a3)])
+  if (![self wrapClassIfNeeded:NSClassFromString(name)])
   {
     return 0;
   }
 
-  v8 = [CIFilter filterWithName:a4 withInputParameters:a5];
+  v8 = [CIFilter filterWithName:replacement withInputParameters:arguments];
   if (!v8)
   {
     return 0;
@@ -26266,11 +26266,11 @@ id __42__CIFilter_Interposer__wrapClassIfNeeded___block_invoke()
     replacementFilters = [MEMORY[0x1E695DF90] dictionary];
   }
 
-  v10 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:a5];
+  v10 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:arguments];
   v11 = replacementFilters;
   objc_sync_enter(replacementFilters);
   v12 = [MEMORY[0x1E695DF70] arrayWithObjects:{v9, v10, 0}];
-  [replacementFilters setObject:v12 forKeyedSubscript:a3];
+  [replacementFilters setObject:v12 forKeyedSubscript:name];
   objc_sync_exit(v11);
   return v10;
 }
@@ -26368,7 +26368,7 @@ id __42__CIFilter_Interposer__wrapClassIfNeeded___block_invoke()
     category = [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:1];
   }
 
-  return [a1 filterNamesInCategories:category];
+  return [self filterNamesInCategories:category];
 }
 
 + (NSArray)filterNamesInCategories:(NSArray *)categories
@@ -26376,7 +26376,7 @@ id __42__CIFilter_Interposer__wrapClassIfNeeded___block_invoke()
   v22 = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E695DFD8] setWithArray:categories];
   v4 = [v3 containsObject:?];
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -26399,7 +26399,7 @@ id __42__CIFilter_Interposer__wrapClassIfNeeded___block_invoke()
         v11 = [MEMORY[0x1E695DFD8] setWithArray:{+[CIFilterClassCategories classCategoriesForClass:](CIFilterClassCategories, "classCategoriesForClass:", NSClassFromString(v10))}];
         if ([v3 isSubsetOfSet:v11] && ((v4 & 1) != 0 || (objc_msgSend(v11, "containsObject:", @"CICategoryApplePrivate") & 1) == 0))
         {
-          [v5 addObject:v10];
+          [array addObject:v10];
         }
       }
 
@@ -26415,7 +26415,7 @@ id __42__CIFilter_Interposer__wrapClassIfNeeded___block_invoke()
   v15[3] = &unk_1E75C2AC8;
   v16 = v4;
   v15[4] = v3;
-  v15[5] = v5;
+  v15[5] = array;
   register_more_builtins(v15);
   v12 = filterRegistryIsolationQueue();
   block[0] = MEMORY[0x1E69E9820];
@@ -26423,9 +26423,9 @@ id __42__CIFilter_Interposer__wrapClassIfNeeded___block_invoke()
   block[2] = __54__CIFilter_CIFilterRegistry__filterNamesInCategories___block_invoke_2;
   block[3] = &unk_1E75C20F8;
   block[4] = v3;
-  block[5] = v5;
+  block[5] = array;
   dispatch_sync(v12, block);
-  return [v5 sortedArrayUsingSelector:sel_caseInsensitiveCompare_];
+  return [array sortedArrayUsingSelector:sel_caseInsensitiveCompare_];
 }
 
 uint64_t __54__CIFilter_CIFilterRegistry__filterNamesInCategories___block_invoke(uint64_t a1, NSString *aClassName)
@@ -26521,15 +26521,15 @@ uint64_t __54__CIFilter_CIFilterRegistry__filterNamesInCategories___block_invoke
           }
         }
 
-        v13 = [(NSDictionary *)attributes mutableCopy];
-        if (!v13)
+        dictionary = [(NSDictionary *)attributes mutableCopy];
+        if (!dictionary)
         {
-          v13 = [MEMORY[0x1E695DF90] dictionary];
+          dictionary = [MEMORY[0x1E695DF90] dictionary];
         }
 
         if (anObject)
         {
-          [v13 setObject:anObject forKey:kCIConstructorKey];
+          [dictionary setObject:anObject forKey:kCIConstructorKey];
         }
 
         v14 = filterRegistryIsolationQueue();
@@ -26537,7 +26537,7 @@ uint64_t __54__CIFilter_CIFilterRegistry__filterNamesInCategories___block_invoke
         block[1] = 3221225472;
         block[2] = __77__CIFilter_CIFilterRegistry__registerFilterName_constructor_classAttributes___block_invoke;
         block[3] = &unk_1E75C20F8;
-        block[4] = v13;
+        block[4] = dictionary;
         block[5] = name;
         dispatch_sync(v14, block);
         v15 = [MEMORY[0x1E696AD80] notificationWithName:kCIFilterAddedNotification object:name];
@@ -26629,9 +26629,9 @@ uint64_t __77__CIFilter_CIFilterRegistry__registerFilterName_constructor_classAt
   return [v3 valueForKey:@"CIAttributeReferenceDocumentation"];
 }
 
-+ (CIFilter)filterWithName:(id)a3 setDefaults:(BOOL)a4
++ (CIFilter)filterWithName:(id)name setDefaults:(BOOL)defaults
 {
-  v4 = a4;
+  defaultsCopy = defaults;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3052000000;
@@ -26643,7 +26643,7 @@ uint64_t __77__CIFilter_CIFilterRegistry__registerFilterName_constructor_classAt
   v13[1] = 3221225472;
   v13[2] = __64__CIFilter_CIFilterRegistryPrivate__filterWithName_setDefaults___block_invoke;
   v13[3] = &unk_1E75C2AF0;
-  v13[4] = a3;
+  v13[4] = name;
   v13[5] = &v14;
   dispatch_sync(v6, v13);
   if (v15[5])
@@ -26652,7 +26652,7 @@ uint64_t __77__CIFilter_CIFilterRegistry__registerFilterName_constructor_classAt
     v8 = [v15[5] methodForSelector:v7];
     if (v8 != [CIFilter methodForSelector:v7])
     {
-      v9 = [v15[5] filterWithName:a3];
+      v9 = [v15[5] filterWithName:name];
       if (!v9)
       {
         goto LABEL_15;
@@ -26662,7 +26662,7 @@ uint64_t __77__CIFilter_CIFilterRegistry__registerFilterName_constructor_classAt
     }
   }
 
-  v10 = NSClassFromString(a3);
+  v10 = NSClassFromString(name);
   if (v10)
   {
     if ([(objc_class *)v10 isSubclassOfClass:objc_opt_class()])
@@ -26671,7 +26671,7 @@ uint64_t __77__CIFilter_CIFilterRegistry__registerFilterName_constructor_classAt
       if (v9)
       {
 LABEL_11:
-        if (!v4)
+        if (!defaultsCopy)
         {
           goto LABEL_15;
         }
@@ -26681,9 +26681,9 @@ LABEL_11:
     }
   }
 
-  if (classNameIsSystemFilter(a3))
+  if (classNameIsSystemFilter(name))
   {
-    v11 = NSClassFromString(a3);
+    v11 = NSClassFromString(name);
     if (v11)
     {
       v9 = objc_alloc_init(v11);
@@ -26692,7 +26692,7 @@ LABEL_11:
   }
 
   v9 = 0;
-  if (v4)
+  if (defaultsCopy)
   {
 LABEL_14:
     [(CIFilter *)v9 setDefaults];
@@ -26726,10 +26726,10 @@ void *__64__CIFilter_CIFilterRegistryPrivate__filterWithName_setDefaults___block
   return [v2 intValue];
 }
 
-+ (CIFilter)filterWithName:(id)a3 compatibilityVersion:(int)a4
++ (CIFilter)filterWithName:(id)name compatibilityVersion:(int)version
 {
-  v4 = *&a4;
-  v5 = [a1 filterWithName:a3];
+  v4 = *&version;
+  v5 = [self filterWithName:name];
   if (v4 != -1)
   {
     -[CIFilter setValue:forKey:](v5, "setValue:forKey:", [MEMORY[0x1E696AD98] numberWithInt:v4], @"__inputVersion");
@@ -26738,10 +26738,10 @@ void *__64__CIFilter_CIFilterRegistryPrivate__filterWithName_setDefaults___block
   return v5;
 }
 
-+ (CIFilter)filterWithName:(id)a3 compatibilityVersion:(int)a4 keysAndValues:(id)a5
++ (CIFilter)filterWithName:(id)name compatibilityVersion:(int)version keysAndValues:(id)values
 {
-  v6 = *&a4;
-  v7 = [CIFilter filterWithName:a3];
+  v6 = *&version;
+  v7 = [CIFilter filterWithName:name];
   if (v6 != -1)
   {
     -[CIFilter setValue:forKey:](v7, "setValue:forKey:", [MEMORY[0x1E696AD98] numberWithInt:v6], @"__inputVersion");
@@ -26750,14 +26750,14 @@ void *__64__CIFilter_CIFilterRegistryPrivate__filterWithName_setDefaults___block
   if (v7)
   {
     v10 = &v11;
-    if (a5)
+    if (values)
     {
       do
       {
-        [(CIFilter *)v7 setValue:*v10 forKey:a5];
+        [(CIFilter *)v7 setValue:*v10 forKey:values];
         v8 = (v10 + 1);
         v10 += 2;
-        a5 = *v8;
+        values = *v8;
       }
 
       while (*v8);
@@ -26767,10 +26767,10 @@ void *__64__CIFilter_CIFilterRegistryPrivate__filterWithName_setDefaults___block
   return v7;
 }
 
-+ (id)allCategories:(BOOL)a3
++ (id)allCategories:(BOOL)categories
 {
   v36 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (categories)
   {
     v21 = @"CICategoryGeometryAdjustment";
     v22 = @"CICategoryDistortionEffect";
@@ -26816,16 +26816,16 @@ void *__64__CIFilter_CIFilterRegistryPrivate__filterWithName_setDefaults___block
   return [v3 arrayWithObjects:v4 count:{v5, v7, v8, v9, v10, v11, v12, v13, v14, v15, v16, v17, v18, v19, v20, v21, v22, v23, v24, v25, v26, v27, v28, v29, v30, v31, v32, v33, v34, v35, v36}];
 }
 
-+ (void)unregisterFilterName:(id)a3
++ (void)unregisterFilterName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v4 = filterRegistryIsolationQueue();
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __58__CIFilter_CIFilterRegistryPrivate__unregisterFilterName___block_invoke;
     block[3] = &unk_1E75C2AA0;
-    block[4] = a3;
+    block[4] = name;
     dispatch_sync(v4, block);
   }
 
@@ -26865,89 +26865,89 @@ uint64_t __58__CIFilter_CIFilterRegistryPrivate__unregisterFilterName___block_in
   }
 }
 
-- (id)apply:(id)a3 image:(id)a4 arguments:(id)a5 inoutSpace:(CGColorSpace *)a6
+- (id)apply:(id)apply image:(id)image arguments:(id)arguments inoutSpace:(CGColorSpace *)space
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  if (!a4)
+  if (!image)
   {
     return 0;
   }
 
-  v8 = a4;
+  imageCopy = image;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    NSLog(&cfstr_KernelShouldBe.isa, [a3 name]);
+    NSLog(&cfstr_KernelShouldBe.isa, [apply name]);
     return 0;
   }
 
-  if (a6)
+  if (space)
   {
-    v8 = [v8 imageByColorMatchingWorkingSpaceToColorSpace:a6];
+    imageCopy = [imageCopy imageByColorMatchingWorkingSpaceToColorSpace:space];
   }
 
-  v12[0] = v8;
-  v10 = [objc_msgSend(MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:{1), "arrayByAddingObjectsFromArray:", a5}];
-  [v8 extent];
-  result = [a3 applyWithExtent:v10 arguments:?];
-  if (a6)
+  v12[0] = imageCopy;
+  v10 = [objc_msgSend(MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:{1), "arrayByAddingObjectsFromArray:", arguments}];
+  [imageCopy extent];
+  result = [apply applyWithExtent:v10 arguments:?];
+  if (space)
   {
-    return [result imageByColorMatchingColorSpaceToWorkingSpace:a6];
+    return [result imageByColorMatchingColorSpaceToWorkingSpace:space];
   }
 
   return result;
 }
 
-- (id)apply:(id)a3 image:(id)a4 arguments:(id)a5 inSpace:(CGColorSpace *)a6
+- (id)apply:(id)apply image:(id)image arguments:(id)arguments inSpace:(CGColorSpace *)space
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  if (!a4)
+  if (!image)
   {
     return 0;
   }
 
-  v8 = a4;
+  imageCopy = image;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    NSLog(&cfstr_KernelShouldBe.isa, [a3 name]);
+    NSLog(&cfstr_KernelShouldBe.isa, [apply name]);
     return 0;
   }
 
-  if (a6)
+  if (space)
   {
-    v8 = [v8 imageByColorMatchingWorkingSpaceToColorSpace:a6];
+    imageCopy = [imageCopy imageByColorMatchingWorkingSpaceToColorSpace:space];
   }
 
-  v12[0] = v8;
-  v10 = [objc_msgSend(MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:{1), "arrayByAddingObjectsFromArray:", a5}];
-  [v8 extent];
-  return [a3 applyWithExtent:v10 arguments:?];
+  v12[0] = imageCopy;
+  v10 = [objc_msgSend(MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:{1), "arrayByAddingObjectsFromArray:", arguments}];
+  [imageCopy extent];
+  return [apply applyWithExtent:v10 arguments:?];
 }
 
-+ (id)metalFilterWithName:(id)a3 withInputParameters:(id)a4
++ (id)metalFilterWithName:(id)name withInputParameters:(id)parameters
 {
-  if (a4)
+  if (parameters)
   {
-    v5 = a4;
+    parametersCopy = parameters;
   }
 
   else
   {
-    v5 = MEMORY[0x1E695E0F8];
+    parametersCopy = MEMORY[0x1E695E0F8];
   }
 
-  v6 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v5];
-  [v6 setObject:a3 forKeyedSubscript:@"inputFilterName"];
+  v6 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:parametersCopy];
+  [v6 setObject:name forKeyedSubscript:@"inputFilterName"];
 
   return [CIFilter filterWithName:@"CIMetalWrapper" withInputParameters:v6];
 }
 
-+ (id)metalFilterWithName:(id)a3
++ (id)metalFilterWithName:(id)name
 {
   v5[1] = *MEMORY[0x1E69E9840];
   v4 = @"inputFilterName";
-  v5[0] = a3;
+  v5[0] = name;
   return +[CIFilter filterWithName:withInputParameters:](CIFilter, "filterWithName:withInputParameters:", @"CIMetalWrapper", [MEMORY[0x1E695DF20] dictionaryWithObjects:v5 forKeys:&v4 count:1]);
 }
 
@@ -26972,28 +26972,28 @@ uint64_t __58__CIFilter_CIFilterRegistryPrivate__unregisterFilterName___block_in
   return v6(v4, v3);
 }
 
-+ (int)getMinMaxSimulatedApertureFrom:(__CFData *)a3 minValue:(float *)a4 maxValue:(float *)a5 version:(int *)a6
++ (int)getMinMaxSimulatedApertureFrom:(__CFData *)from minValue:(float *)value maxValue:(float *)maxValue version:(int *)version
 {
   v6 = -1;
-  if (!a4)
+  if (!value)
   {
     return v6;
   }
 
-  if (!a5)
+  if (!maxValue)
   {
     return v6;
   }
 
-  if (!a6)
+  if (!version)
   {
     return v6;
   }
 
-  *a4 = 0.0;
-  *a5 = 0.0;
-  *a6 = 0;
-  if (!a3)
+  *value = 0.0;
+  *maxValue = 0.0;
+  *version = 0;
+  if (!from)
   {
     return v6;
   }
@@ -27023,31 +27023,31 @@ uint64_t __58__CIFilter_CIFilterRegistryPrivate__unregisterFilterName___block_in
   v36 = 0u;
   v37 = 0u;
   memset(v35, 0, sizeof(v35));
-  if ([(__CFData *)a3 length]< 0xC)
+  if ([(__CFData *)from length]< 0xC)
   {
     return 1;
   }
 
-  [(__CFData *)a3 getBytes:v33 length:12];
+  [(__CFData *)from getBytes:v33 length:12];
   v11 = v34;
-  *a6 = v34;
+  *version = v34;
   switch(v11)
   {
     case 3:
-      v12 = FigDepthBlurEffectRenderingParametersV3FromCFData(a3, v35);
+      v12 = FigDepthBlurEffectRenderingParametersV3FromCFData(from, v35);
       break;
     case 2:
-      v12 = FigDepthBlurEffectRenderingParametersV2FromCFData(a3, v35, &v32);
+      v12 = FigDepthBlurEffectRenderingParametersV2FromCFData(from, v35, &v32);
       break;
     case 1:
-      v12 = FigDepthBlurEffectRenderingParametersV1FromCFData(a3, v35);
+      v12 = FigDepthBlurEffectRenderingParametersV1FromCFData(from, v35);
       break;
     default:
       goto LABEL_17;
   }
 
   v6 = v12;
-  v11 = *a6;
+  v11 = *version;
   if (v12)
   {
     goto LABEL_18;
@@ -27056,8 +27056,8 @@ uint64_t __58__CIFilter_CIFilterRegistryPrivate__unregisterFilterName___block_in
   if (v11 == 3 || v11 == 2)
   {
     v6 = 0;
-    *a4 = *(&v36 + 1);
-    *a5 = *(&v46 + 3);
+    *value = *(&v36 + 1);
+    *maxValue = *(&v46 + 3);
     return v6;
   }
 
@@ -27080,7 +27080,7 @@ LABEL_18:
           if (objc_opt_respondsToSelector())
           {
             v18 = envCCSDOFMetadataClass();
-            v19 = v17(v18, v15, a3);
+            v19 = v17(v18, v15, from);
             if (v19)
             {
               v20 = v19;
@@ -27096,7 +27096,7 @@ LABEL_18:
                   if (objc_opt_respondsToSelector())
                   {
                     v25 = envCCSDOFMetadataClass();
-                    *a4 = v24(v25, v22, v20);
+                    *value = v24(v25, v22, v20);
                   }
                 }
               }
@@ -27113,12 +27113,12 @@ LABEL_18:
                   if (objc_opt_respondsToSelector())
                   {
                     v30 = envCCSDOFMetadataClass();
-                    *a5 = v29(v30, v27, v20);
+                    *maxValue = v29(v30, v27, v20);
                   }
                 }
               }
 
-              v6 = *a4 <= 0.0 || *a5 <= 0.0;
+              v6 = *value <= 0.0 || *maxValue <= 0.0;
               free(v20);
             }
           }
@@ -27131,7 +27131,7 @@ LABEL_18:
       v13 = ci_logger_render();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
-        [CIFilter(PrivateDepthUtilities) getMinMaxSimulatedApertureFrom:a6 minValue:v13 maxValue:? version:?];
+        [CIFilter(PrivateDepthUtilities) getMinMaxSimulatedApertureFrom:version minValue:v13 maxValue:? version:?];
       }
 
       return 3;

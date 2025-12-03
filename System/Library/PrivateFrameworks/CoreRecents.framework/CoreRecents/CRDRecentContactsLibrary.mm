@@ -1,12 +1,12 @@
 @interface CRDRecentContactsLibrary
 + (id)os_log;
-- (CRDRecentContactsLibrary)initWithClient:(id)a3;
-- (void)countRecentsUsingQuery:(id)a3 completion:(id)a4;
-- (void)postNotificationIfNecessaryForUpdatedDomain:(id)a3;
-- (void)recentContactsWithIDs:(id)a3 completion:(id)a4;
-- (void)recordContactEvents:(id)a3 domain:(id)a4 sendingAddress:(id)a5 source:(id)a6 completion:(id)a7;
-- (void)removeRecentContactsWithRecentIDs:(id)a3 syncKeys:(id)a4 domain:(id)a5 completion:(id)a6;
-- (void)searchRecentsUsingQuery:(id)a3 completion:(id)a4;
+- (CRDRecentContactsLibrary)initWithClient:(id)client;
+- (void)countRecentsUsingQuery:(id)query completion:(id)completion;
+- (void)postNotificationIfNecessaryForUpdatedDomain:(id)domain;
+- (void)recentContactsWithIDs:(id)ds completion:(id)completion;
+- (void)recordContactEvents:(id)events domain:(id)domain sendingAddress:(id)address source:(id)source completion:(id)completion;
+- (void)removeRecentContactsWithRecentIDs:(id)ds syncKeys:(id)keys domain:(id)domain completion:(id)completion;
+- (void)searchRecentsUsingQuery:(id)query completion:(id)completion;
 @end
 
 @implementation CRDRecentContactsLibrary
@@ -23,19 +23,19 @@
   return v3;
 }
 
-- (CRDRecentContactsLibrary)initWithClient:(id)a3
+- (CRDRecentContactsLibrary)initWithClient:(id)client
 {
-  v5 = a3;
+  clientCopy = client;
   v12.receiver = self;
   v12.super_class = CRDRecentContactsLibrary;
   v6 = [(CRDRecentContactsLibrary *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_client, a3);
-    v8 = [v5 library];
+    objc_storeStrong(&v6->_client, client);
+    library = [clientCopy library];
     library = v7->_library;
-    v7->_library = v8;
+    v7->_library = library;
 
     v10 = v7;
   }
@@ -43,19 +43,19 @@
   return v7;
 }
 
-- (void)searchRecentsUsingQuery:(id)a3 completion:(id)a4
+- (void)searchRecentsUsingQuery:(id)query completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  queryCopy = query;
+  completionCopy = completion;
   v8 = +[CRDRecentContactsLibrary os_log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 uuid];
-    v10 = [(CRDClient *)self->_client bundleIdentifier];
+    uuid = [queryCopy uuid];
+    bundleIdentifier = [(CRDClient *)self->_client bundleIdentifier];
     *buf = 138543618;
-    v27 = v9;
+    v27 = uuid;
     v28 = 2114;
-    v29 = v10;
+    v29 = bundleIdentifier;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Will execute query %{public}@ for %{public}@", buf, 0x16u);
   }
 
@@ -67,11 +67,11 @@
 
     library = self->_library;
     v25 = 0;
-    v15 = [(_CRRecentsLibrary *)library copyRecentsForQuery:v6 error:&v25];
+    v15 = [(_CRRecentsLibrary *)library copyRecentsForQuery:queryCopy error:&v25];
     v16 = v25;
     if (v15)
     {
-      v7[2](v7, v15, 0);
+      completionCopy[2](completionCopy, v15, 0);
       v17 = +[CNTimeProvider defaultProvider];
       [v17 timestamp];
       v19 = v18;
@@ -80,9 +80,9 @@
       v21 = +[CRDRecentContactsLibrary os_log];
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
-        v22 = [v6 uuid];
+        uuid2 = [queryCopy uuid];
         *buf = 138543618;
-        v27 = v22;
+        v27 = uuid2;
         v28 = 2114;
         v29 = v20;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Did execute query %{public}@ (%{public}@)", buf, 0x16u);
@@ -94,10 +94,10 @@
       v24 = +[CRDRecentContactsLibrary os_log];
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
-        sub_100018808(v6, v16, v24);
+        sub_100018808(queryCopy, v16, v24);
       }
 
-      (v7)[2](v7, 0, v16);
+      (completionCopy)[2](completionCopy, 0, v16);
     }
   }
 
@@ -110,23 +110,23 @@
     }
 
     v16 = [NSError errorWithDomain:CRRecentContactsErrorDomain code:4 userInfo:0];
-    (v7)[2](v7, 0, v16);
+    (completionCopy)[2](completionCopy, 0, v16);
   }
 }
 
-- (void)countRecentsUsingQuery:(id)a3 completion:(id)a4
+- (void)countRecentsUsingQuery:(id)query completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  queryCopy = query;
+  completionCopy = completion;
   v8 = +[CRDRecentContactsLibrary os_log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 uuid];
-    v10 = [(CRDClient *)self->_client bundleIdentifier];
+    uuid = [queryCopy uuid];
+    bundleIdentifier = [(CRDClient *)self->_client bundleIdentifier];
     *buf = 138543618;
-    v26 = v9;
+    v26 = uuid;
     v27 = 2114;
-    v28 = v10;
+    v28 = bundleIdentifier;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Will count recents for query %{public}@ for %{public}@", buf, 0x16u);
   }
 
@@ -138,9 +138,9 @@
 
     library = self->_library;
     v24 = 0;
-    v15 = [(_CRRecentsLibrary *)library countOfRecentsForQuery:v6 error:&v24];
+    v15 = [(_CRRecentsLibrary *)library countOfRecentsForQuery:queryCopy error:&v24];
     v16 = v24;
-    v7[2](v7, v15, v16);
+    completionCopy[2](completionCopy, v15, v16);
     v17 = +[CNTimeProvider defaultProvider];
     [v17 timestamp];
     v19 = v18;
@@ -149,9 +149,9 @@
     v21 = +[CRDRecentContactsLibrary os_log];
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [v6 uuid];
+      uuid2 = [queryCopy uuid];
       *buf = 138543874;
-      v26 = v22;
+      v26 = uuid2;
       v27 = 2114;
       v28 = v20;
       v29 = 2112;
@@ -169,31 +169,31 @@
     }
 
     v16 = [NSError errorWithDomain:CRRecentContactsErrorDomain code:4 userInfo:0];
-    v7[2](v7, 0, v16);
+    completionCopy[2](completionCopy, 0, v16);
   }
 }
 
-- (void)recordContactEvents:(id)a3 domain:(id)a4 sendingAddress:(id)a5 source:(id)a6 completion:(id)a7
+- (void)recordContactEvents:(id)events domain:(id)domain sendingAddress:(id)address source:(id)source completion:(id)completion
 {
   library = self->_library;
-  v13 = a7;
-  v14 = a4;
-  [(_CRRecentsLibrary *)library recordContactEvents:a3 recentsDomain:v14 sendingAddress:a5 source:a6];
-  v13[2](v13, 0);
+  completionCopy = completion;
+  domainCopy = domain;
+  [(_CRRecentsLibrary *)library recordContactEvents:events recentsDomain:domainCopy sendingAddress:address source:source];
+  completionCopy[2](completionCopy, 0);
 
-  [(CRDRecentContactsLibrary *)self postNotificationIfNecessaryForUpdatedDomain:v14];
+  [(CRDRecentContactsLibrary *)self postNotificationIfNecessaryForUpdatedDomain:domainCopy];
 }
 
-- (void)removeRecentContactsWithRecentIDs:(id)a3 syncKeys:(id)a4 domain:(id)a5 completion:(id)a6
+- (void)removeRecentContactsWithRecentIDs:(id)ds syncKeys:(id)keys domain:(id)domain completion:(id)completion
 {
   library = self->_library;
   v16 = 0;
-  v11 = a6;
-  v12 = a5;
-  LODWORD(a4) = [(_CRRecentsLibrary *)library removeRecentContactsWithRecentIDs:a3 syncKeys:a4 domain:v12 removeInUbiquitousStore:1 error:&v16];
+  completionCopy = completion;
+  domainCopy = domain;
+  LODWORD(keys) = [(_CRRecentsLibrary *)library removeRecentContactsWithRecentIDs:ds syncKeys:keys domain:domainCopy removeInUbiquitousStore:1 error:&v16];
   v13 = v16;
   v14 = v13;
-  if (a4)
+  if (keys)
   {
     v15 = 0;
   }
@@ -203,22 +203,22 @@
     v15 = v13;
   }
 
-  (v11)[2](v11, v15);
+  (completionCopy)[2](completionCopy, v15);
 
-  [(CRDRecentContactsLibrary *)self postNotificationIfNecessaryForUpdatedDomain:v12];
+  [(CRDRecentContactsLibrary *)self postNotificationIfNecessaryForUpdatedDomain:domainCopy];
 }
 
-- (void)recentContactsWithIDs:(id)a3 completion:(id)a4
+- (void)recentContactsWithIDs:(id)ds completion:(id)completion
 {
   library = self->_library;
-  v6 = a4;
-  v7 = [(_CRRecentsLibrary *)library copyRecentContactsWithIDs:a3];
-  v6[2](v6, v7, 0);
+  completionCopy = completion;
+  v7 = [(_CRRecentsLibrary *)library copyRecentContactsWithIDs:ds];
+  completionCopy[2](completionCopy, v7, 0);
 }
 
-- (void)postNotificationIfNecessaryForUpdatedDomain:(id)a3
+- (void)postNotificationIfNecessaryForUpdatedDomain:(id)domain
 {
-  if ([a3 isEqualToString:CRRecentsDomainAcceptedIntroductions])
+  if ([domain isEqualToString:CRRecentsDomainAcceptedIntroductions])
   {
     if (qword_100034340 != -1)
     {

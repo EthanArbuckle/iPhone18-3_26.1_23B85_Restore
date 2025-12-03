@@ -1,14 +1,14 @@
 @interface PRLikenessCacheContext
-+ (id)contextWithCacheSize:(unint64_t)a3;
++ (id)contextWithCacheSize:(unint64_t)size;
 - (PRLikenessCacheContext)init;
 @end
 
 @implementation PRLikenessCacheContext
 
-+ (id)contextWithCacheSize:(unint64_t)a3
++ (id)contextWithCacheSize:(unint64_t)size
 {
-  v4 = objc_alloc_init(a1);
-  v4[2] = a3;
+  v4 = objc_alloc_init(self);
+  v4[2] = size;
 
   return v4;
 }

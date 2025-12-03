@@ -1,5 +1,5 @@
 @interface CLTOption
-- (BOOL)consumeArgument:(id)a3;
+- (BOOL)consumeArgument:(id)argument;
 - (CLTOption)init;
 - (NSArray)consumedOrDefaultArguments;
 - (NSNumber)numberValue;
@@ -42,8 +42,8 @@
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v5 = [(CLTOption *)self shorthands];
-    v6 = [v5 countByEnumeratingWithState:&v33 objects:v39 count:16];
+    shorthands = [(CLTOption *)self shorthands];
+    v6 = [shorthands countByEnumeratingWithState:&v33 objects:v39 count:16];
     if (v6)
     {
       v7 = v6;
@@ -54,7 +54,7 @@
         {
           if (*v34 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(shorthands);
           }
 
           v10 = *(*(&v33 + 1) + 8 * i);
@@ -70,7 +70,7 @@
           [v4 addObject:v11];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v33 objects:v39 count:16];
+        v7 = [shorthands countByEnumeratingWithState:&v33 objects:v39 count:16];
       }
 
       while (v7);
@@ -80,8 +80,8 @@
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v14 = [(CLTOption *)self longforms];
-    v15 = [v14 countByEnumeratingWithState:&v29 objects:v38 count:16];
+    longforms = [(CLTOption *)self longforms];
+    v15 = [longforms countByEnumeratingWithState:&v29 objects:v38 count:16];
     if (v15)
     {
       v16 = v15;
@@ -92,7 +92,7 @@
         {
           if (*v30 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(longforms);
           }
 
           v19 = *(*(&v29 + 1) + 8 * j);
@@ -106,7 +106,7 @@
           [v4 addObject:v21];
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v29 objects:v38 count:16];
+        v16 = [longforms countByEnumeratingWithState:&v29 objects:v38 count:16];
       }
 
       while (v16);
@@ -133,25 +133,25 @@
   return lefthandHelp;
 }
 
-- (BOOL)consumeArgument:(id)a3
+- (BOOL)consumeArgument:(id)argument
 {
-  v4 = a3;
-  v5 = [(CLTOption *)self maxConsumedArguments];
-  v6 = [(CLTOption *)self consumedArguments];
-  v7 = [v6 count];
+  argumentCopy = argument;
+  maxConsumedArguments = [(CLTOption *)self maxConsumedArguments];
+  consumedArguments = [(CLTOption *)self consumedArguments];
+  v7 = [consumedArguments count];
 
   v8 = 0;
-  if (v4 && v7 < v5)
+  if (argumentCopy && v7 < maxConsumedArguments)
   {
-    if ([v4 hasPrefix:@"-"] && (!self->_allowsNegativeNumbersAsArguments || objc_msgSend(v4, "length") < 2 || objc_msgSend(v4, "characterAtIndex:", 1) < 0x30 || objc_msgSend(v4, "characterAtIndex:", 1) > 0x39))
+    if ([argumentCopy hasPrefix:@"-"] && (!self->_allowsNegativeNumbersAsArguments || objc_msgSend(argumentCopy, "length") < 2 || objc_msgSend(argumentCopy, "characterAtIndex:", 1) < 0x30 || objc_msgSend(argumentCopy, "characterAtIndex:", 1) > 0x39))
     {
       v8 = 0;
     }
 
     else
     {
-      v9 = [(CLTOption *)self consumedArguments];
-      [v9 addObject:v4];
+      consumedArguments2 = [(CLTOption *)self consumedArguments];
+      [consumedArguments2 addObject:argumentCopy];
 
       v8 = 1;
     }
@@ -184,8 +184,8 @@
     v4 = 80;
   }
 
-  v5 = [*(&self->super.isa + v4) firstObject];
-  if (v5)
+  firstObject = [*(&self->super.isa + v4) firstObject];
+  if (firstObject)
   {
     v6 = numberValue_formatter;
     if (!numberValue_formatter)
@@ -201,7 +201,7 @@
       v6 = numberValue_formatter;
     }
 
-    v10 = [v6 numberFromString:v5];
+    v10 = [v6 numberFromString:firstObject];
   }
 
   else

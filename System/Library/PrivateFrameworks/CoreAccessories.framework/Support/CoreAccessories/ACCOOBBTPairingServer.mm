@@ -1,24 +1,24 @@
 @interface ACCOOBBTPairingServer
 + (id)sharedServer;
-- (ACCOOBBTPairingServer)initWithXPCServiceName:(id)a3 andFeatureNotification:(const char *)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)shouldAcceptXPCConnection:(id)a3;
-- (void)accessoryOOBBTPairingAttached:(id)a3 accInfoDict:(id)a4;
-- (void)accessoryOOBBTPairingBTAccessoryInfo:(id)a3 oobBtPairingUID:(id)a4 accessoryMacAddr:(id)a5 deviceClass:(unsigned int)a6;
-- (void)accessoryOOBBTPairingDetached:(id)a3;
+- (ACCOOBBTPairingServer)initWithXPCServiceName:(id)name andFeatureNotification:(const char *)notification;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)shouldAcceptXPCConnection:(id)connection;
+- (void)accessoryOOBBTPairingAttached:(id)attached accInfoDict:(id)dict;
+- (void)accessoryOOBBTPairingBTAccessoryInfo:(id)info oobBtPairingUID:(id)d accessoryMacAddr:(id)addr deviceClass:(unsigned int)class;
+- (void)accessoryOOBBTPairingDetached:(id)detached;
 - (void)dealloc;
-- (void)iterateAttachedConnectionsSync:(id)a3;
-- (void)notifyOfProvider:(id)a3 connection:(id)a4;
+- (void)iterateAttachedConnectionsSync:(id)sync;
+- (void)notifyOfProvider:(id)provider connection:(id)connection;
 @end
 
 @implementation ACCOOBBTPairingServer
 
-- (ACCOOBBTPairingServer)initWithXPCServiceName:(id)a3 andFeatureNotification:(const char *)a4
+- (ACCOOBBTPairingServer)initWithXPCServiceName:(id)name andFeatureNotification:(const char *)notification
 {
-  v6 = a3;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = ACCOOBBTPairingServer;
-  v7 = [(ACCFeatureServer *)&v14 initWithXPCServiceName:v6 andFeatureNotification:a4];
+  v7 = [(ACCFeatureServer *)&v14 initWithXPCServiceName:nameCopy andFeatureNotification:notification];
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 5;
@@ -48,9 +48,9 @@
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v16 = v6;
+    v16 = nameCopy;
     v17 = 2080;
-    v18 = a4;
+    notificationCopy = notification;
     v19 = 2112;
     v20 = v7;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "initWithXPCServiceName: serviceName='%@' notification='%s' self=%@", buf, 0x20u);
@@ -97,7 +97,7 @@
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "dealloc: self=%@", buf, 0xCu);
   }
 
@@ -109,15 +109,15 @@
   [(ACCFeatureServer *)&v7 dealloc];
 }
 
-- (void)iterateAttachedConnectionsSync:(id)a3
+- (void)iterateAttachedConnectionsSync:(id)sync
 {
-  v4 = a3;
+  syncCopy = sync;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(NSMutableDictionary *)self->_registeredAccessoryConnections allValues];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allValues = [(NSMutableDictionary *)self->_registeredAccessoryConnections allValues];
+  v6 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -128,13 +128,13 @@ LABEL_3:
     {
       if (*v14 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(allValues);
       }
 
       v10 = *(*(&v13 + 1) + 8 * v9);
       v12 = 1;
-      v11 = [v10 accessoryUID];
-      v4[2](v4, v11, &v12);
+      accessoryUID = [v10 accessoryUID];
+      syncCopy[2](syncCopy, accessoryUID, &v12);
 
       if (v12 != 1)
       {
@@ -143,7 +143,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v7 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -155,10 +155,10 @@ LABEL_3:
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 5;
@@ -194,26 +194,26 @@ LABEL_3:
   }
 
   v12 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___ACCOOBBTPairingXPCServerProtocol];
-  [v7 setExportedInterface:v12];
+  [connectionCopy setExportedInterface:v12];
 
-  v13 = [[ACCOOBBTPairingServerRemote alloc] initWithXPCConnection:v7];
-  [v7 setExportedObject:v13];
+  v13 = [[ACCOOBBTPairingServerRemote alloc] initWithXPCConnection:connectionCopy];
+  [connectionCopy setExportedObject:v13];
   v14 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___ACCOOBBTPairingXPCClientProtocol];
-  [v7 setRemoteObjectInterface:v14];
+  [connectionCopy setRemoteObjectInterface:v14];
 
   objc_initWeak(&location, self);
-  objc_initWeak(&from, v7);
+  objc_initWeak(&from, connectionCopy);
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = __60__ACCOOBBTPairingServer_listener_shouldAcceptNewConnection___block_invoke;
   v23[3] = &unk_100227718;
   objc_copyWeak(&v24, &from);
   objc_copyWeak(&v25, &location);
-  [v7 setInvalidationHandler:v23];
+  [connectionCopy setInvalidationHandler:v23];
   v15 = objc_alloc_init(_ACCOOBBTPairingProviderInfo);
-  [(_ACCOOBBTPairingProviderInfo *)v15 setConnection:v7];
+  [(_ACCOOBBTPairingProviderInfo *)v15 setConnection:connectionCopy];
   [(_ACCOOBBTPairingProviderInfo *)v15 setServerRemote:v13];
-  v16 = [v7 remoteObjectProxyWithErrorHandler:&__block_literal_global_14];
+  v16 = [connectionCopy remoteObjectProxyWithErrorHandler:&__block_literal_global_14];
   [(_ACCOOBBTPairingProviderInfo *)v15 setRemoteObject:v16];
 
   objc_storeStrong(&self->_oobBtPairingProviderInfo, v15);
@@ -241,7 +241,7 @@ LABEL_3:
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "providerInfo=%@", buf, 0xCu);
   }
 
-  [v7 resume];
+  [connectionCopy resume];
   v20 = dispatch_get_global_queue(0, 0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -438,14 +438,14 @@ void __60__ACCOOBBTPairingServer_listener_shouldAcceptNewConnection___block_invo
   }
 }
 
-- (BOOL)shouldAcceptXPCConnection:(id)a3
+- (BOOL)shouldAcceptXPCConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   oobBtPairingProviderInfo = self->_oobBtPairingProviderInfo;
   if (oobBtPairingProviderInfo)
   {
-    v6 = [(_ACCOOBBTPairingProviderInfo *)oobBtPairingProviderInfo connection];
-    v7 = [v6 isEqual:v4];
+    connection = [(_ACCOOBBTPairingProviderInfo *)oobBtPairingProviderInfo connection];
+    v7 = [connection isEqual:connectionCopy];
   }
 
   else
@@ -487,17 +487,17 @@ void __60__ACCOOBBTPairingServer_listener_shouldAcceptNewConnection___block_invo
     v14 = 2112;
     v15 = v11;
     v16 = 2112;
-    v17 = v4;
+    v17 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "OOBBTPairing server, shouldAcceptConnection=%d _oobBtPairingProviderInfo=%@ connection=%@", v13, 0x1Cu);
   }
 
   return v7;
 }
 
-- (void)accessoryOOBBTPairingAttached:(id)a3 accInfoDict:(id)a4
+- (void)accessoryOOBBTPairingAttached:(id)attached accInfoDict:(id)dict
 {
-  v6 = a3;
-  v7 = a4;
+  attachedCopy = attached;
+  dictCopy = dict;
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 5;
@@ -526,15 +526,15 @@ void __60__ACCOOBBTPairingServer_listener_shouldAcceptNewConnection___block_invo
 
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = platform_oobBtPairing_accessoryDictionaryForLogging(v7);
+    v11 = platform_oobBtPairing_accessoryDictionaryForLogging(dictCopy);
     v24 = 138412546;
-    v25 = v6;
+    v25 = attachedCopy;
     v26 = 2112;
     v27 = v11;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "OOBBTPairing server, accessoryOOBBTPairingAttached: %@, accInfoDict=%@", &v24, 0x16u);
   }
 
-  v12 = [(NSMutableDictionary *)self->_registeredAccessoryConnections objectForKey:v6];
+  v12 = [(NSMutableDictionary *)self->_registeredAccessoryConnections objectForKey:attachedCopy];
   if (gLogObjects && gNumLogObjects >= 5)
   {
     v13 = *(gLogObjects + 32);
@@ -555,7 +555,7 @@ void __60__ACCOOBBTPairingServer_listener_shouldAcceptNewConnection___block_invo
   {
     oobBtPairingProviderInfo = self->_oobBtPairingProviderInfo;
     v24 = 138412802;
-    v25 = v6;
+    v25 = attachedCopy;
     v26 = 2112;
     v27 = v12;
     v28 = 2112;
@@ -565,8 +565,8 @@ void __60__ACCOOBBTPairingServer_listener_shouldAcceptNewConnection___block_invo
 
   if (!v12)
   {
-    v12 = [[_ACCOOBBTPairingAccessoryInfo alloc] initWithUID:v6 accInfoDict:v7];
-    [(NSMutableDictionary *)self->_registeredAccessoryConnections setObject:v12 forKey:v6];
+    v12 = [[_ACCOOBBTPairingAccessoryInfo alloc] initWithUID:attachedCopy accInfoDict:dictCopy];
+    [(NSMutableDictionary *)self->_registeredAccessoryConnections setObject:v12 forKey:attachedCopy];
   }
 
   if (gLogObjects && gNumLogObjects >= 5)
@@ -589,7 +589,7 @@ void __60__ACCOOBBTPairingServer_listener_shouldAcceptNewConnection___block_invo
   {
     v23 = self->_oobBtPairingProviderInfo;
     v24 = 138412802;
-    v25 = v6;
+    v25 = attachedCopy;
     v26 = 2112;
     v27 = v12;
     v28 = 2112;
@@ -599,25 +599,25 @@ void __60__ACCOOBBTPairingServer_listener_shouldAcceptNewConnection___block_invo
 
   if (v12)
   {
-    v17 = [(_ACCOOBBTPairingProviderInfo *)self->_oobBtPairingProviderInfo remoteObject];
-    if (v17)
+    remoteObject = [(_ACCOOBBTPairingProviderInfo *)self->_oobBtPairingProviderInfo remoteObject];
+    if (remoteObject)
     {
-      v18 = v17;
-      v19 = [(_ACCOOBBTPairingProviderInfo *)self->_oobBtPairingProviderInfo remoteObject];
+      v18 = remoteObject;
+      remoteObject2 = [(_ACCOOBBTPairingProviderInfo *)self->_oobBtPairingProviderInfo remoteObject];
       v20 = objc_opt_respondsToSelector();
 
       if (v20)
       {
-        v21 = [(_ACCOOBBTPairingProviderInfo *)self->_oobBtPairingProviderInfo remoteObject];
-        [v21 accessoryOOBBTPairingAttached:v6 accInfoDict:v7];
+        remoteObject3 = [(_ACCOOBBTPairingProviderInfo *)self->_oobBtPairingProviderInfo remoteObject];
+        [remoteObject3 accessoryOOBBTPairingAttached:attachedCopy accInfoDict:dictCopy];
       }
     }
   }
 }
 
-- (void)accessoryOOBBTPairingDetached:(id)a3
+- (void)accessoryOOBBTPairingDetached:(id)detached
 {
-  v4 = a3;
+  detachedCopy = detached;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 5;
@@ -647,11 +647,11 @@ void __60__ACCOOBBTPairingServer_listener_shouldAcceptNewConnection___block_invo
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138412290;
-    v18 = v4;
+    v18 = detachedCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "OOBBTPairing server, accessoryOOBBTPairingDetached: %@", &v17, 0xCu);
   }
 
-  v8 = [(NSMutableDictionary *)self->_registeredAccessoryConnections objectForKey:v4];
+  v8 = [(NSMutableDictionary *)self->_registeredAccessoryConnections objectForKey:detachedCopy];
   if (gLogObjects && gNumLogObjects >= 5)
   {
     v9 = *(gLogObjects + 32);
@@ -672,7 +672,7 @@ void __60__ACCOOBBTPairingServer_listener_shouldAcceptNewConnection___block_invo
   {
     oobBtPairingProviderInfo = self->_oobBtPairingProviderInfo;
     v17 = 138412802;
-    v18 = v4;
+    v18 = detachedCopy;
     v19 = 2112;
     v20 = v8;
     v21 = 2112;
@@ -682,29 +682,29 @@ void __60__ACCOOBBTPairingServer_listener_shouldAcceptNewConnection___block_invo
 
   if (v8)
   {
-    [(NSMutableDictionary *)self->_registeredAccessoryConnections removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_registeredAccessoryConnections removeObjectForKey:detachedCopy];
   }
 
-  v11 = [(_ACCOOBBTPairingProviderInfo *)self->_oobBtPairingProviderInfo remoteObject];
-  if (v11)
+  remoteObject = [(_ACCOOBBTPairingProviderInfo *)self->_oobBtPairingProviderInfo remoteObject];
+  if (remoteObject)
   {
-    v12 = v11;
-    v13 = [(_ACCOOBBTPairingProviderInfo *)self->_oobBtPairingProviderInfo remoteObject];
+    v12 = remoteObject;
+    remoteObject2 = [(_ACCOOBBTPairingProviderInfo *)self->_oobBtPairingProviderInfo remoteObject];
     v14 = objc_opt_respondsToSelector();
 
     if (v14)
     {
-      v15 = [(_ACCOOBBTPairingProviderInfo *)self->_oobBtPairingProviderInfo remoteObject];
-      [v15 accessoryOOBBTPairingDetached:v4];
+      remoteObject3 = [(_ACCOOBBTPairingProviderInfo *)self->_oobBtPairingProviderInfo remoteObject];
+      [remoteObject3 accessoryOOBBTPairingDetached:detachedCopy];
     }
   }
 }
 
-- (void)accessoryOOBBTPairingBTAccessoryInfo:(id)a3 oobBtPairingUID:(id)a4 accessoryMacAddr:(id)a5 deviceClass:(unsigned int)a6
+- (void)accessoryOOBBTPairingBTAccessoryInfo:(id)info oobBtPairingUID:(id)d accessoryMacAddr:(id)addr deviceClass:(unsigned int)class
 {
-  v38 = a3;
-  v10 = a4;
-  v11 = a5;
+  infoCopy = info;
+  dCopy = d;
+  addrCopy = addr;
   if (gLogObjects)
   {
     v12 = gNumLogObjects < 5;
@@ -734,18 +734,18 @@ void __60__ACCOOBBTPairingServer_listener_shouldAcceptNewConnection___block_invo
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    v40 = v38;
+    v40 = infoCopy;
     v41 = 2112;
-    v42 = v10;
+    v42 = dCopy;
     v43 = 2112;
-    v44 = v11;
+    v44 = addrCopy;
     v45 = 1024;
-    v46 = a6;
+    classCopy2 = class;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "OOBBTPairing server, accessoryOOBBTPairingBTAccessoryInfo: %@, oobBtPairingUID=%@, accessoryMacAddr=%@, deviceClass=%xh", buf, 0x26u);
   }
 
-  v15 = self;
-  v16 = [(NSMutableDictionary *)self->_registeredAccessoryConnections objectForKey:v38];
+  selfCopy = self;
+  v16 = [(NSMutableDictionary *)self->_registeredAccessoryConnections objectForKey:infoCopy];
   v17 = v16;
   if (gLogObjects)
   {
@@ -758,7 +758,7 @@ void __60__ACCOOBBTPairingServer_listener_shouldAcceptNewConnection___block_invo
   }
 
   v19 = !v18;
-  v37 = v10;
+  v37 = dCopy;
   if (v16)
   {
     if (v19)
@@ -782,28 +782,28 @@ void __60__ACCOOBBTPairingServer_listener_shouldAcceptNewConnection___block_invo
       *buf = 136316162;
       v40 = "[ACCOOBBTPairingServer accessoryOOBBTPairingBTAccessoryInfo:oobBtPairingUID:accessoryMacAddr:deviceClass:]";
       v41 = 2112;
-      v42 = v38;
+      v42 = infoCopy;
       v43 = 2112;
-      v44 = v10;
+      v44 = dCopy;
       v45 = 1024;
-      v46 = a6;
+      classCopy2 = class;
       v47 = 2112;
-      v48 = v11;
+      v48 = addrCopy;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "OOBBTPairing server, %s: %@, oobBtPairingUID=%@, deviceClass=%xh, setting accessoryMacAddress to %@", buf, 0x30u);
     }
 
-    v36 = a6;
+    classCopy3 = class;
 
-    v23 = v11;
-    [v17 setAccessoryMacAddress:v11];
-    v24 = [(_ACCOOBBTPairingProviderInfo *)self->_oobBtPairingProviderInfo remoteObject];
-    if (v24)
+    v23 = addrCopy;
+    [v17 setAccessoryMacAddress:addrCopy];
+    remoteObject = [(_ACCOOBBTPairingProviderInfo *)self->_oobBtPairingProviderInfo remoteObject];
+    if (remoteObject)
     {
-      v25 = v24;
-      v26 = [(_ACCOOBBTPairingProviderInfo *)self->_oobBtPairingProviderInfo remoteObject];
+      v25 = remoteObject;
+      remoteObject2 = [(_ACCOOBBTPairingProviderInfo *)self->_oobBtPairingProviderInfo remoteObject];
       v27 = objc_opt_respondsToSelector();
 
-      self = v15;
+      self = selfCopy;
       if (v27)
       {
         if (gLogObjects && gNumLogObjects >= 5)
@@ -824,9 +824,9 @@ void __60__ACCOOBBTPairingServer_listener_shouldAcceptNewConnection___block_invo
 
         if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
         {
-          oobBtPairingProviderInfo = v15->_oobBtPairingProviderInfo;
+          oobBtPairingProviderInfo = selfCopy->_oobBtPairingProviderInfo;
           *buf = 138412802;
-          v40 = v38;
+          v40 = infoCopy;
           v41 = 2112;
           v42 = v17;
           v43 = 2112;
@@ -834,9 +834,9 @@ void __60__ACCOOBBTPairingServer_listener_shouldAcceptNewConnection___block_invo
           _os_log_debug_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEBUG, "OOBBTPairing server, accessoryOOBBTPairingBTAccessoryInfo: %@, accessory=%@ _oobBtPairingProviderInfo=%@", buf, 0x20u);
         }
 
-        v30 = [(_ACCOOBBTPairingProviderInfo *)v15->_oobBtPairingProviderInfo remoteObject];
-        v32 = v10;
-        [v30 accessoryOOBBTPairingBTAccessoryInfo:v38 oobBtPairingUID:v10 accessoryMacAddr:v11 deviceClass:v36];
+        remoteObject3 = [(_ACCOOBBTPairingProviderInfo *)selfCopy->_oobBtPairingProviderInfo remoteObject];
+        v32 = dCopy;
+        [remoteObject3 accessoryOOBBTPairingBTAccessoryInfo:infoCopy oobBtPairingUID:dCopy accessoryMacAddr:addrCopy deviceClass:classCopy3];
         goto LABEL_52;
       }
     }
@@ -860,16 +860,16 @@ void __60__ACCOOBBTPairingServer_listener_shouldAcceptNewConnection___block_invo
       v29 = &_os_log_default;
     }
 
-    v23 = v11;
+    v23 = addrCopy;
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      [ACCOOBBTPairingServer accessoryOOBBTPairingBTAccessoryInfo:v38 oobBtPairingUID:v21 accessoryMacAddr:? deviceClass:?];
+      [ACCOOBBTPairingServer accessoryOOBBTPairingBTAccessoryInfo:infoCopy oobBtPairingUID:v21 accessoryMacAddr:? deviceClass:?];
     }
   }
 
   if (gLogObjects && gNumLogObjects >= 5)
   {
-    v30 = *(gLogObjects + 32);
+    remoteObject3 = *(gLogObjects + 32);
   }
 
   else
@@ -879,30 +879,30 @@ void __60__ACCOOBBTPairingServer_listener_shouldAcceptNewConnection___block_invo
       platform_connectionInfo_configStreamGetCategories_cold_2();
     }
 
-    v30 = &_os_log_default;
+    remoteObject3 = &_os_log_default;
     v31 = &_os_log_default;
   }
 
   v32 = v37;
-  if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
+  if (os_log_type_enabled(remoteObject3, OS_LOG_TYPE_DEBUG))
   {
     v33 = self->_oobBtPairingProviderInfo;
     *buf = 138412802;
-    v40 = v38;
+    v40 = infoCopy;
     v41 = 2112;
     v42 = v17;
     v43 = 2112;
     v44 = v33;
-    _os_log_debug_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEBUG, "accessoryOOBBTPairingBTAccessoryInfoPairing server, accessoryOOBBTPairingDetached: %@, Invalid accessory=%@ _oobBtPairingProviderInfo=%@", buf, 0x20u);
+    _os_log_debug_impl(&_mh_execute_header, remoteObject3, OS_LOG_TYPE_DEBUG, "accessoryOOBBTPairingBTAccessoryInfoPairing server, accessoryOOBBTPairingDetached: %@, Invalid accessory=%@ _oobBtPairingProviderInfo=%@", buf, 0x20u);
   }
 
 LABEL_52:
 }
 
-- (void)notifyOfProvider:(id)a3 connection:(id)a4
+- (void)notifyOfProvider:(id)provider connection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  connectionCopy = connection;
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 5;
@@ -933,9 +933,9 @@ LABEL_52:
   {
     oobBtPairingProviderInfo = self->_oobBtPairingProviderInfo;
     v15 = 138412802;
-    v16 = v6;
+    v16 = providerCopy;
     v17 = 2112;
-    v18 = v7;
+    v18 = connectionCopy;
     v19 = 2112;
     v20 = oobBtPairingProviderInfo;
     _os_log_debug_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "OOBBTPairing server, notifyOfProvider: %@ connection: %@, _oobBtPairingProviderInfo=%@", &v15, 0x20u);
@@ -944,12 +944,12 @@ LABEL_52:
   v11 = self->_oobBtPairingProviderInfo;
   if (v11)
   {
-    v12 = [(_ACCOOBBTPairingProviderInfo *)v11 connection];
-    v13 = [v12 isEqual:v7];
+    connection = [(_ACCOOBBTPairingProviderInfo *)v11 connection];
+    v13 = [connection isEqual:connectionCopy];
 
     if (v13)
     {
-      [(_ACCOOBBTPairingProviderInfo *)self->_oobBtPairingProviderInfo setProviderUID:v6];
+      [(_ACCOOBBTPairingProviderInfo *)self->_oobBtPairingProviderInfo setProviderUID:providerCopy];
     }
   }
 }
@@ -960,7 +960,7 @@ LABEL_52:
   block[1] = 3221225472;
   block[2] = __37__ACCOOBBTPairingServer_sharedServer__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedServer_once_4 != -1)
   {
     dispatch_once(&sharedServer_once_4, block);

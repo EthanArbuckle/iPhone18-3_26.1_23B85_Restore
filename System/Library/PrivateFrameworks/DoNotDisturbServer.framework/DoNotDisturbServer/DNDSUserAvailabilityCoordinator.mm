@@ -1,43 +1,43 @@
 @interface DNDSUserAvailabilityCoordinator
-- (BOOL)_isLocalUserAvailableForAppId:(id)a3 modeIdentifier:(id)a4 withError:(id *)a5;
-- (BOOL)_isLocalUserAvailableForMessagesWithModeIdentifier:(id)a3 withError:(id *)a4;
-- (BOOL)_queue_didAppAvailabilityChangeForApplicationIdentifier:(id)a3 fromConfiguration:(id)a4 toConfiguration:(id)a5;
-- (BOOL)isLocalUserAvailableForApplicationIdentifier:(id)a3 withError:(id *)a4;
-- (BOOL)isTCCUserAvailabilityGrantedForBundleId:(id)a3;
-- (BOOL)userAvailabilityInActiveModeForContactHandle:(id)a3 withError:(id *)a4;
-- (DNDSUserAvailabilityCoordinator)initWithConfigurationProvider:(id)a3 stateProvider:(id)a4;
-- (DNDSUserAvailabilityCoordinator)initWithConfigurationProvider:(id)a3 stateProvider:(id)a4 userAvailabilityTCCProvider:(id)a5;
-- (id)_entitlementRecordForApplicationRecord:(id)a3;
-- (id)allowedModesForContactHandle:(id)a3 withError:(id *)a4;
-- (id)exceptionalModesForContactHandle:(id)a3 withError:(id *)a4;
-- (id)publishStatusKitAvailabilityReturningError:(id *)a3;
-- (id)silencedModesForContactHandle:(id)a3 withError:(id *)a4;
-- (void)_queue_notifyIntentExtensionsOfUserAvailability:(id)a3 applicationIdentifiers:(id)a4 completionHandler:(id)a5;
-- (void)_queue_notifyIntentExtensionsOfUserAvailability:(id)a3 availabilityOverride:(int64_t)a4 applicationIdentifiers:(id)a5 completionHandler:(id)a6;
-- (void)_queue_updateAvailabilityKit:(id)a3 fromConfiguration:(id)a4 toConfiguration:(id)a5 completionHandler:(id)a6;
-- (void)coordinateUserAvailability:(id)a3 fromConfiguration:(id)a4 toConfiguration:(id)a5 completionHandler:(id)a6;
-- (void)resumeUpdatingInvitationsForContacts:(id)a3 completionHandler:(id)a4;
-- (void)sendStatusKitInvitationsForContacts:(id)a3 forceAvailabilityPublish:(BOOL)a4 completionHandler:(id)a5;
-- (void)suspendWithOverrideSetting:(int64_t)a3 completionHandler:(id)a4;
+- (BOOL)_isLocalUserAvailableForAppId:(id)id modeIdentifier:(id)identifier withError:(id *)error;
+- (BOOL)_isLocalUserAvailableForMessagesWithModeIdentifier:(id)identifier withError:(id *)error;
+- (BOOL)_queue_didAppAvailabilityChangeForApplicationIdentifier:(id)identifier fromConfiguration:(id)configuration toConfiguration:(id)toConfiguration;
+- (BOOL)isLocalUserAvailableForApplicationIdentifier:(id)identifier withError:(id *)error;
+- (BOOL)isTCCUserAvailabilityGrantedForBundleId:(id)id;
+- (BOOL)userAvailabilityInActiveModeForContactHandle:(id)handle withError:(id *)error;
+- (DNDSUserAvailabilityCoordinator)initWithConfigurationProvider:(id)provider stateProvider:(id)stateProvider;
+- (DNDSUserAvailabilityCoordinator)initWithConfigurationProvider:(id)provider stateProvider:(id)stateProvider userAvailabilityTCCProvider:(id)cProvider;
+- (id)_entitlementRecordForApplicationRecord:(id)record;
+- (id)allowedModesForContactHandle:(id)handle withError:(id *)error;
+- (id)exceptionalModesForContactHandle:(id)handle withError:(id *)error;
+- (id)publishStatusKitAvailabilityReturningError:(id *)error;
+- (id)silencedModesForContactHandle:(id)handle withError:(id *)error;
+- (void)_queue_notifyIntentExtensionsOfUserAvailability:(id)availability applicationIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)_queue_notifyIntentExtensionsOfUserAvailability:(id)availability availabilityOverride:(int64_t)override applicationIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)_queue_updateAvailabilityKit:(id)kit fromConfiguration:(id)configuration toConfiguration:(id)toConfiguration completionHandler:(id)handler;
+- (void)coordinateUserAvailability:(id)availability fromConfiguration:(id)configuration toConfiguration:(id)toConfiguration completionHandler:(id)handler;
+- (void)resumeUpdatingInvitationsForContacts:(id)contacts completionHandler:(id)handler;
+- (void)sendStatusKitInvitationsForContacts:(id)contacts forceAvailabilityPublish:(BOOL)publish completionHandler:(id)handler;
+- (void)suspendWithOverrideSetting:(int64_t)setting completionHandler:(id)handler;
 @end
 
 @implementation DNDSUserAvailabilityCoordinator
 
-- (DNDSUserAvailabilityCoordinator)initWithConfigurationProvider:(id)a3 stateProvider:(id)a4
+- (DNDSUserAvailabilityCoordinator)initWithConfigurationProvider:(id)provider stateProvider:(id)stateProvider
 {
-  v6 = a4;
-  v7 = a3;
+  stateProviderCopy = stateProvider;
+  providerCopy = provider;
   v8 = objc_alloc_init(_DNDSUserAvailabilityTCCProvider);
-  v9 = [(DNDSUserAvailabilityCoordinator *)self initWithConfigurationProvider:v7 stateProvider:v6 userAvailabilityTCCProvider:v8];
+  v9 = [(DNDSUserAvailabilityCoordinator *)self initWithConfigurationProvider:providerCopy stateProvider:stateProviderCopy userAvailabilityTCCProvider:v8];
 
   return v9;
 }
 
-- (DNDSUserAvailabilityCoordinator)initWithConfigurationProvider:(id)a3 stateProvider:(id)a4 userAvailabilityTCCProvider:(id)a5
+- (DNDSUserAvailabilityCoordinator)initWithConfigurationProvider:(id)provider stateProvider:(id)stateProvider userAvailabilityTCCProvider:(id)cProvider
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  providerCopy = provider;
+  stateProviderCopy = stateProvider;
+  cProviderCopy = cProvider;
   v24.receiver = self;
   v24.super_class = DNDSUserAvailabilityCoordinator;
   v12 = [(DNDSUserAvailabilityCoordinator *)&v24 init];
@@ -45,9 +45,9 @@
   if (v12)
   {
     v12->_active = 0;
-    objc_storeStrong(&v12->_configurationProvider, a3);
-    objc_storeStrong(&v13->_stateProvider, a4);
-    objc_storeStrong(&v13->_tccProvider, a5);
+    objc_storeStrong(&v12->_configurationProvider, provider);
+    objc_storeStrong(&v13->_stateProvider, stateProvider);
+    objc_storeStrong(&v13->_tccProvider, cProvider);
     v14 = objc_alloc(MEMORY[0x277D68148]);
     v15 = [v14 initWithStatusTypeIdentifier:*MEMORY[0x277CF0478]];
     statusService = v13->_statusService;
@@ -67,10 +67,10 @@
   return v13;
 }
 
-- (void)resumeUpdatingInvitationsForContacts:(id)a3 completionHandler:(id)a4
+- (void)resumeUpdatingInvitationsForContacts:(id)contacts completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  contactsCopy = contacts;
+  handlerCopy = handler;
   v8 = DNDSLogAvailabilityProvider;
   if (self->_active)
   {
@@ -80,7 +80,7 @@
     }
 
     v9 = [[DNDSUserAvailabilityPublishResult alloc] initWithIdentifier:0 availability:0];
-    v7[2](v7, v9, 0);
+    handlerCopy[2](handlerCopy, v9, 0);
   }
 
   else
@@ -97,8 +97,8 @@
     v10[2] = __90__DNDSUserAvailabilityCoordinator_resumeUpdatingInvitationsForContacts_completionHandler___block_invoke;
     v10[3] = &unk_278F8A4F8;
     v10[4] = self;
-    v11 = v7;
-    [(DNDSUserAvailabilityCoordinator *)self sendStatusKitInvitationsForContacts:v6 forceAvailabilityPublish:1 completionHandler:v10];
+    v11 = handlerCopy;
+    [(DNDSUserAvailabilityCoordinator *)self sendStatusKitInvitationsForContacts:contactsCopy forceAvailabilityPublish:1 completionHandler:v10];
   }
 }
 
@@ -139,10 +139,10 @@ void __90__DNDSUserAvailabilityCoordinator_resumeUpdatingInvitationsForContacts_
   [v3 _queue_notifyIntentExtensionsOfUserAvailability:v4 applicationIdentifiers:0 completionHandler:v5];
 }
 
-- (void)suspendWithOverrideSetting:(int64_t)a3 completionHandler:(id)a4
+- (void)suspendWithOverrideSetting:(int64_t)setting completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = v6;
+  handlerCopy = handler;
+  v7 = handlerCopy;
   if (self->_active)
   {
     v9[0] = MEMORY[0x277D85DD0];
@@ -150,9 +150,9 @@ void __90__DNDSUserAvailabilityCoordinator_resumeUpdatingInvitationsForContacts_
     v9[2] = __80__DNDSUserAvailabilityCoordinator_suspendWithOverrideSetting_completionHandler___block_invoke;
     v9[3] = &unk_278F8A570;
     v9[4] = self;
-    v11 = a3;
-    v10 = v6;
-    [(DNDSUserAvailabilityCoordinator *)self _publishStatusKitCurrentAvailabilityForced:0 override:a3 completionHandler:v9];
+    settingCopy = setting;
+    v10 = handlerCopy;
+    [(DNDSUserAvailabilityCoordinator *)self _publishStatusKitCurrentAvailabilityForced:0 override:setting completionHandler:v9];
   }
 
   else
@@ -236,19 +236,19 @@ uint64_t __80__DNDSUserAvailabilityCoordinator_suspendWithOverrideSetting_comple
   return v3();
 }
 
-- (void)coordinateUserAvailability:(id)a3 fromConfiguration:(id)a4 toConfiguration:(id)a5 completionHandler:(id)a6
+- (void)coordinateUserAvailability:(id)availability fromConfiguration:(id)configuration toConfiguration:(id)toConfiguration completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
+  availabilityCopy = availability;
+  configurationCopy = configuration;
+  toConfigurationCopy = toConfiguration;
+  handlerCopy = handler;
+  v14 = handlerCopy;
   if (self->_active)
   {
-    if (!v11 || !v12)
+    if (!configurationCopy || !toConfigurationCopy)
     {
       v28 = 0;
-      if ((v11 == 0) == (v12 == 0))
+      if ((configurationCopy == 0) == (toConfigurationCopy == 0))
       {
 LABEL_21:
         v43 = DNDSLogStateProvider;
@@ -271,9 +271,9 @@ LABEL_15:
       block[2] = __114__DNDSUserAvailabilityCoordinator_coordinateUserAvailability_fromConfiguration_toConfiguration_completionHandler___block_invoke_24;
       block[3] = &unk_278F8A5E8;
       block[4] = self;
-      v54 = v10;
-      v55 = v11;
-      v56 = v12;
+      v54 = availabilityCopy;
+      v55 = configurationCopy;
+      v56 = toConfigurationCopy;
       v28 = v28;
       v57 = v28;
       v58 = v14;
@@ -282,27 +282,27 @@ LABEL_15:
       goto LABEL_24;
     }
 
-    v51 = v13;
-    v52 = v10;
-    v15 = [v12 mode];
-    v16 = [v11 mode];
-    v49 = [v15 isEqual:v16];
+    v51 = handlerCopy;
+    v52 = availabilityCopy;
+    mode = [toConfigurationCopy mode];
+    mode2 = [configurationCopy mode];
+    v49 = [mode isEqual:mode2];
 
-    [v12 impactsAvailability];
+    [toConfigurationCopy impactsAvailability];
     v46 = DNDResolvedImpactsAvailabilitySetting();
-    [v11 impactsAvailability];
+    [configurationCopy impactsAvailability];
     v45 = DNDResolvedImpactsAvailabilitySetting();
-    v17 = [v12 configuration];
-    v18 = [v17 allowedApplicationIdentifiers];
-    v19 = [v11 configuration];
-    v20 = [v19 allowedApplicationIdentifiers];
-    v21 = [v18 isEqual:v20];
+    configuration = [toConfigurationCopy configuration];
+    allowedApplicationIdentifiers = [configuration allowedApplicationIdentifiers];
+    configuration2 = [configurationCopy configuration];
+    allowedApplicationIdentifiers2 = [configuration2 allowedApplicationIdentifiers];
+    v21 = [allowedApplicationIdentifiers isEqual:allowedApplicationIdentifiers2];
 
-    v22 = [v12 configuration];
-    v23 = [v22 deniedApplicationIdentifiers];
-    v24 = [v11 configuration];
-    v25 = [v24 deniedApplicationIdentifiers];
-    v26 = [v23 isEqual:v25];
+    configuration3 = [toConfigurationCopy configuration];
+    deniedApplicationIdentifiers = [configuration3 deniedApplicationIdentifiers];
+    configuration4 = [configurationCopy configuration];
+    deniedApplicationIdentifiers2 = [configuration4 deniedApplicationIdentifiers];
+    v26 = [deniedApplicationIdentifiers isEqual:deniedApplicationIdentifiers2];
 
     v27 = v21 & v49 & v26 ^ 1;
     if (v46 != v45)
@@ -310,20 +310,20 @@ LABEL_15:
       v27 = 1;
     }
 
-    v50 = (v11 == 0) ^ (v12 == 0) | v27;
+    v50 = (configurationCopy == 0) ^ (toConfigurationCopy == 0) | v27;
     if (v21)
     {
       v28 = 0;
       if ((v26 & 1) == 0)
       {
 LABEL_8:
-        v47 = [v12 configuration];
-        v29 = [v47 deniedApplicationIdentifiers];
-        v30 = [v29 allObjects];
-        v31 = [v11 configuration];
-        v32 = [v31 deniedApplicationIdentifiers];
-        v33 = [v32 allObjects];
-        v34 = __114__DNDSUserAvailabilityCoordinator_coordinateUserAvailability_fromConfiguration_toConfiguration_completionHandler___block_invoke(v33, v30, v33);
+        configuration5 = [toConfigurationCopy configuration];
+        deniedApplicationIdentifiers3 = [configuration5 deniedApplicationIdentifiers];
+        allObjects = [deniedApplicationIdentifiers3 allObjects];
+        configuration6 = [configurationCopy configuration];
+        deniedApplicationIdentifiers4 = [configuration6 deniedApplicationIdentifiers];
+        allObjects2 = [deniedApplicationIdentifiers4 allObjects];
+        v34 = __114__DNDSUserAvailabilityCoordinator_coordinateUserAvailability_fromConfiguration_toConfiguration_completionHandler___block_invoke(allObjects2, allObjects, allObjects2);
 
         if (v34)
         {
@@ -342,7 +342,7 @@ LABEL_8:
 
         v14 = v51;
 
-        v10 = v52;
+        availabilityCopy = v52;
 LABEL_20:
         if ((v50 & 1) == 0)
         {
@@ -355,13 +355,13 @@ LABEL_20:
 
     else
     {
-      v48 = [v12 configuration];
-      v38 = [v48 allowedApplicationIdentifiers];
-      v39 = [v38 allKeys];
-      v40 = [v11 configuration];
-      v41 = [v40 allowedApplicationIdentifiers];
-      v42 = [v41 allKeys];
-      v28 = __114__DNDSUserAvailabilityCoordinator_coordinateUserAvailability_fromConfiguration_toConfiguration_completionHandler___block_invoke(v42, v39, v42);
+      configuration7 = [toConfigurationCopy configuration];
+      allowedApplicationIdentifiers3 = [configuration7 allowedApplicationIdentifiers];
+      allKeys = [allowedApplicationIdentifiers3 allKeys];
+      configuration8 = [configurationCopy configuration];
+      allowedApplicationIdentifiers4 = [configuration8 allowedApplicationIdentifiers];
+      allKeys2 = [allowedApplicationIdentifiers4 allKeys];
+      v28 = __114__DNDSUserAvailabilityCoordinator_coordinateUserAvailability_fromConfiguration_toConfiguration_completionHandler___block_invoke(allKeys2, allKeys, allKeys2);
 
       if ((v26 & 1) == 0)
       {
@@ -370,7 +370,7 @@ LABEL_20:
     }
 
     v14 = v51;
-    v10 = v52;
+    availabilityCopy = v52;
     goto LABEL_20;
   }
 
@@ -591,37 +591,37 @@ void __117__DNDSUserAvailabilityCoordinator_coordinateUserAvailabilityUpdateForA
   (*(v3 + 16))(v3, v4, a2);
 }
 
-- (void)_queue_updateAvailabilityKit:(id)a3 fromConfiguration:(id)a4 toConfiguration:(id)a5 completionHandler:(id)a6
+- (void)_queue_updateAvailabilityKit:(id)kit fromConfiguration:(id)configuration toConfiguration:(id)toConfiguration completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  kitCopy = kit;
+  configurationCopy = configuration;
+  toConfigurationCopy = toConfiguration;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_queue);
   v14 = [objc_alloc(MEMORY[0x277D058C8]) initWithBundleID:@"com.apple.MobileSMS" platform:1];
-  v15 = [v12 mode];
-  v16 = [v11 mode];
-  v53 = v13;
+  mode = [toConfigurationCopy mode];
+  mode2 = [configurationCopy mode];
+  v53 = handlerCopy;
   v54 = v14;
-  if (v15 == v16)
+  if (mode == mode2)
   {
     v23 = 0;
   }
 
   else
   {
-    v17 = v10;
-    v18 = self;
-    v19 = [v12 mode];
-    if (v19)
+    v17 = kitCopy;
+    selfCopy = self;
+    mode3 = [toConfigurationCopy mode];
+    if (mode3)
     {
       v50 = v17;
-      v20 = [v11 mode];
-      if (v20)
+      mode4 = [configurationCopy mode];
+      if (mode4)
       {
-        v21 = [v12 mode];
-        v22 = [v11 mode];
-        v23 = [v21 isEqual:v22] ^ 1;
+        mode5 = [toConfigurationCopy mode];
+        mode6 = [configurationCopy mode];
+        v23 = [mode5 isEqual:mode6] ^ 1;
       }
 
       else
@@ -638,64 +638,64 @@ void __117__DNDSUserAvailabilityCoordinator_coordinateUserAvailabilityUpdateForA
       v23 = 1;
     }
 
-    self = v18;
-    v10 = v17;
+    self = selfCopy;
+    kitCopy = v17;
   }
 
-  [v12 impactsAvailability];
+  [toConfigurationCopy impactsAvailability];
   v24 = DNDResolvedImpactsAvailabilitySetting();
-  [v11 impactsAvailability];
+  [configurationCopy impactsAvailability];
   if (v24 != DNDResolvedImpactsAvailabilitySetting())
   {
     v23 = 1;
   }
 
-  v25 = [v11 configuration];
-  v26 = [v12 configuration];
-  v27 = v23 | [(DNDSUserAvailabilityCoordinator *)self _queue_didAppAvailabilityChangeForApplicationIdentifier:v14 fromConfiguration:v25 toConfiguration:v26];
+  configuration = [configurationCopy configuration];
+  configuration2 = [toConfigurationCopy configuration];
+  v27 = v23 | [(DNDSUserAvailabilityCoordinator *)self _queue_didAppAvailabilityChangeForApplicationIdentifier:v14 fromConfiguration:configuration toConfiguration:configuration2];
 
   if (v27)
   {
-    v51 = [v10 source];
-    v28 = [v10 reason] != 1 && objc_msgSend(v10, "reason") != 4;
-    v32 = [v10 state];
-    v33 = [v32 startDate];
-    v34 = [v12 lastModified];
-    v35 = [v33 laterDate:v34];
+    source = [kitCopy source];
+    v28 = [kitCopy reason] != 1 && objc_msgSend(kitCopy, "reason") != 4;
+    state = [kitCopy state];
+    startDate = [state startDate];
+    lastModified = [toConfigurationCopy lastModified];
+    v35 = [startDate laterDate:lastModified];
 
-    v36 = [v12 mode];
-    [v12 impactsAvailability];
-    v52 = self;
-    v49 = v36;
+    mode7 = [toConfigurationCopy mode];
+    [toConfigurationCopy impactsAvailability];
+    selfCopy2 = self;
+    v49 = mode7;
     if (DNDResolvedImpactsAvailabilitySetting() == 2)
     {
-      v37 = [v36 modeIdentifier];
-      v38 = [(DNDSUserAvailabilityCoordinator *)self _isLocalUserAvailableForMessagesWithModeIdentifier:v37 withError:0];
+      modeIdentifier = [mode7 modeIdentifier];
+      v38 = [(DNDSUserAvailabilityCoordinator *)self _isLocalUserAvailableForMessagesWithModeIdentifier:modeIdentifier withError:0];
 
-      v39 = [v36 identifier];
-      v30 = [v39 UUIDString];
+      identifier = [mode7 identifier];
+      uUIDString = [identifier UUIDString];
     }
 
     else
     {
-      v30 = 0;
+      uUIDString = 0;
       v38 = 1;
     }
 
-    v40 = [v10 state];
-    if ([v40 isActive])
+    state2 = [kitCopy state];
+    if ([state2 isActive])
     {
       v48 = v38;
-      v41 = [v10 state];
-      [v41 activeModeIdentifier];
-      v42 = v11;
+      state3 = [kitCopy state];
+      [state3 activeModeIdentifier];
+      v42 = configurationCopy;
       v43 = v35;
       v45 = v44 = v28;
       v46 = [v45 length];
 
       v28 = v44;
       v35 = v43;
-      v11 = v42;
+      configurationCopy = v42;
 
       if (v46)
       {
@@ -707,7 +707,7 @@ LABEL_27:
         v56[3] = &unk_278F8A610;
         v31 = v53;
         v57 = v53;
-        [(DNDSUserAvailabilityCoordinator *)v52 _publishStatusKitAvailability:v47 activityIdentifier:v30 local:v51 == 1 scheduled:v28 date:v35 forced:0 completion:v56];
+        [(DNDSUserAvailabilityCoordinator *)selfCopy2 _publishStatusKitAvailability:v47 activityIdentifier:uUIDString local:source == 1 scheduled:v28 date:v35 forced:0 completion:v56];
 
         v14 = v54;
         goto LABEL_28;
@@ -718,7 +718,7 @@ LABEL_27:
     {
     }
 
-    v30 = 0;
+    uUIDString = 0;
     v47 = 1;
     goto LABEL_27;
   }
@@ -730,9 +730,9 @@ LABEL_27:
     _os_log_impl(&dword_24912E000, v29, OS_LOG_TYPE_INFO, "Ignoring request to publish StatusKit availability; from and to configurations are the same.", buf, 2u);
   }
 
-  v30 = [[DNDSUserAvailabilityPublishResult alloc] initWithIdentifier:0 availability:0];
+  uUIDString = [[DNDSUserAvailabilityPublishResult alloc] initWithIdentifier:0 availability:0];
   v31 = v53;
-  (v53)[2](v53, v30);
+  (v53)[2](v53, uUIDString);
 LABEL_28:
 }
 
@@ -762,47 +762,47 @@ void __116__DNDSUserAvailabilityCoordinator__queue_updateAvailabilityKit_fromCon
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_queue_didAppAvailabilityChangeForApplicationIdentifier:(id)a3 fromConfiguration:(id)a4 toConfiguration:(id)a5
+- (BOOL)_queue_didAppAvailabilityChangeForApplicationIdentifier:(id)identifier fromConfiguration:(id)configuration toConfiguration:(id)toConfiguration
 {
-  v8 = a3;
+  identifierCopy = identifier;
   queue = self->_queue;
-  v10 = a5;
-  v11 = a4;
+  toConfigurationCopy = toConfiguration;
+  configurationCopy = configuration;
   dispatch_assert_queue_V2(queue);
-  v12 = [v11 applicationConfigurationType];
-  v13 = [v8 bundleID];
-  v14 = [v11 exceptionForApplication:v13];
+  applicationConfigurationType = [configurationCopy applicationConfigurationType];
+  bundleID = [identifierCopy bundleID];
+  v14 = [configurationCopy exceptionForApplication:bundleID];
 
-  v15 = !(v12 | v14) || v12 == 1 && v14 != 1 || v12 == 2;
-  v16 = [v10 applicationConfigurationType];
-  v17 = [v8 bundleID];
-  v18 = [v10 exceptionForApplication:v17];
+  v15 = !(applicationConfigurationType | v14) || applicationConfigurationType == 1 && v14 != 1 || applicationConfigurationType == 2;
+  applicationConfigurationType2 = [toConfigurationCopy applicationConfigurationType];
+  bundleID2 = [identifierCopy bundleID];
+  v18 = [toConfigurationCopy exceptionForApplication:bundleID2];
 
-  v19 = !(v16 | v18) || v16 == 1 && v18 != 1 || v16 == 2;
+  v19 = !(applicationConfigurationType2 | v18) || applicationConfigurationType2 == 1 && v18 != 1 || applicationConfigurationType2 == 2;
   v20 = v15 != v19;
 
   return v20;
 }
 
-- (void)_queue_notifyIntentExtensionsOfUserAvailability:(id)a3 applicationIdentifiers:(id)a4 completionHandler:(id)a5
+- (void)_queue_notifyIntentExtensionsOfUserAvailability:(id)availability applicationIdentifiers:(id)identifiers completionHandler:(id)handler
 {
   queue = self->_queue;
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  handlerCopy = handler;
+  identifiersCopy = identifiers;
+  availabilityCopy = availability;
   dispatch_assert_queue_V2(queue);
-  [(DNDSUserAvailabilityCoordinator *)self _queue_notifyIntentExtensionsOfUserAvailability:v11 availabilityOverride:-1 applicationIdentifiers:v10 completionHandler:v9];
+  [(DNDSUserAvailabilityCoordinator *)self _queue_notifyIntentExtensionsOfUserAvailability:availabilityCopy availabilityOverride:-1 applicationIdentifiers:identifiersCopy completionHandler:handlerCopy];
 }
 
-- (void)_queue_notifyIntentExtensionsOfUserAvailability:(id)a3 availabilityOverride:(int64_t)a4 applicationIdentifiers:(id)a5 completionHandler:(id)a6
+- (void)_queue_notifyIntentExtensionsOfUserAvailability:(id)availability availabilityOverride:(int64_t)override applicationIdentifiers:(id)identifiers completionHandler:(id)handler
 {
   v64 = *MEMORY[0x277D85DE8];
-  v38 = a3;
-  v37 = a5;
-  v35 = a6;
+  availabilityCopy = availability;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_queue);
-  v41 = self;
-  v40 = [(DNDSUserAvailabilityTCCProviding *)self->_tccProvider userAvailabilityTCCApprovedBundleIds];
+  selfCopy = self;
+  userAvailabilityTCCApprovedBundleIds = [(DNDSUserAvailabilityTCCProviding *)self->_tccProvider userAvailabilityTCCApprovedBundleIds];
   v54 = 0u;
   v55 = 0u;
   v52 = 0u;
@@ -830,14 +830,14 @@ void __116__DNDSUserAvailabilityCoordinator__queue_updateAvailabilityKit_fromCon
       v11 = [MEMORY[0x277CD3A68] appInfoWithApplicationRecord:v10];
       v12 = objc_opt_class();
       v13 = NSStringFromClass(v12);
-      v14 = [v11 supportedIntentsByApp];
-      if ([v14 containsObject:v13])
+      supportedIntentsByApp = [v11 supportedIntentsByApp];
+      if ([supportedIntentsByApp containsObject:v13])
       {
         goto LABEL_23;
       }
 
-      v15 = [v11 supportedActionsByExtensions];
-      v16 = [v15 containsObject:v13];
+      supportedActionsByExtensions = [v11 supportedActionsByExtensions];
+      v16 = [supportedActionsByExtensions containsObject:v13];
 
       if (!v16)
       {
@@ -848,41 +848,41 @@ void __116__DNDSUserAvailabilityCoordinator__queue_updateAvailabilityKit_fromCon
       if (os_log_type_enabled(DNDSLogStateProvider, OS_LOG_TYPE_INFO))
       {
         v18 = v17;
-        v19 = [v10 bundleIdentifier];
+        bundleIdentifier = [v10 bundleIdentifier];
         LODWORD(buf) = 138543362;
-        *(&buf + 4) = v19;
+        *(&buf + 4) = bundleIdentifier;
         _os_log_impl(&dword_24912E000, v18, OS_LOG_TYPE_INFO, "Found intent extension for app: %{public}@", &buf, 0xCu);
       }
 
-      v20 = [v10 bundleIdentifier];
-      v21 = [v40 containsObject:v20];
+      bundleIdentifier2 = [v10 bundleIdentifier];
+      v21 = [userAvailabilityTCCApprovedBundleIds containsObject:bundleIdentifier2];
 
-      v14 = [(DNDSUserAvailabilityCoordinator *)v41 _entitlementRecordForApplicationRecord:v10];
-      v22 = [v14 entitlements];
-      v23 = [v22 objectForKey:@"com.apple.developer.usernotifications.communication" ofClass:objc_opt_class()];
-      v24 = [v23 BOOLValue];
+      supportedIntentsByApp = [(DNDSUserAvailabilityCoordinator *)selfCopy _entitlementRecordForApplicationRecord:v10];
+      entitlements = [supportedIntentsByApp entitlements];
+      v23 = [entitlements objectForKey:@"com.apple.developer.usernotifications.communication" ofClass:objc_opt_class()];
+      bOOLValue = [v23 BOOLValue];
 
-      v25 = [v10 bundleIdentifier];
+      bundleIdentifier3 = [v10 bundleIdentifier];
       *&buf = 0;
       *(&buf + 1) = &buf;
       v59 = 0x3032000000;
       v60 = __Block_byref_object_copy__3;
       v61 = __Block_byref_object_dispose__3;
-      v62 = [objc_alloc(MEMORY[0x277D058C8]) initWithBundleID:v25];
-      v26 = DNDGrantedUserNotificationsAuthorizationForBundleIdentifier(v25);
-      if ((v21 & v26 & v24) == 1)
+      v62 = [objc_alloc(MEMORY[0x277D058C8]) initWithBundleID:bundleIdentifier3];
+      v26 = DNDGrantedUserNotificationsAuthorizationForBundleIdentifier(bundleIdentifier3);
+      if ((v21 & v26 & bOOLValue) == 1)
       {
-        extensionLaunchQueue = v41->_extensionLaunchQueue;
+        extensionLaunchQueue = selfCopy->_extensionLaunchQueue;
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __145__DNDSUserAvailabilityCoordinator__queue_notifyIntentExtensionsOfUserAvailability_availabilityOverride_applicationIdentifiers_completionHandler___block_invoke;
         block[3] = &unk_278F8A6B0;
-        v28 = v37;
+        v28 = identifiersCopy;
         p_buf = &buf;
-        v51 = a4;
+        overrideCopy = override;
         v46 = v28;
-        v47 = v41;
-        v48 = v38;
+        v47 = selfCopy;
+        v48 = availabilityCopy;
         v49 = v10;
         dispatch_async(extensionLaunchQueue, block);
 
@@ -898,23 +898,23 @@ LABEL_21:
         v29 = DNDSLogStateProvider;
         if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
         {
-          v31 = [v10 bundleIdentifier];
+          bundleIdentifier4 = [v10 bundleIdentifier];
           *v56 = 138543362;
-          v57 = v31;
+          v57 = bundleIdentifier4;
           _os_log_impl(&dword_24912E000, v29, OS_LOG_TYPE_INFO, "App (%{public}@) does not have user availability TCC permission, not launching extension.", v56, 0xCu);
         }
 
         goto LABEL_21;
       }
 
-      if ((v24 & 1) == 0)
+      if ((bOOLValue & 1) == 0)
       {
         v29 = DNDSLogStateProvider;
         if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
         {
-          v32 = [v10 bundleIdentifier];
+          bundleIdentifier5 = [v10 bundleIdentifier];
           *v56 = 138543362;
-          v57 = v32;
+          v57 = bundleIdentifier5;
           _os_log_impl(&dword_24912E000, v29, OS_LOG_TYPE_INFO, "App (%{public}@) does not have UN Communication entitlement, not launching extension.", v56, 0xCu);
         }
 
@@ -926,9 +926,9 @@ LABEL_21:
         v29 = DNDSLogStateProvider;
         if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
         {
-          v30 = [v10 bundleIdentifier];
+          bundleIdentifier6 = [v10 bundleIdentifier];
           *v56 = 138543362;
-          v57 = v30;
+          v57 = bundleIdentifier6;
           _os_log_impl(&dword_24912E000, v29, OS_LOG_TYPE_INFO, "App (%{public}@) does not have UN authorization, not launching extension.", v56, 0xCu);
         }
 
@@ -955,7 +955,7 @@ LABEL_28:
     _os_log_impl(&dword_24912E000, v33, OS_LOG_TYPE_INFO, "Done dispatching launch blocks to _launchQueue", &buf, 2u);
   }
 
-  v35[2](v35, v39);
+  handlerCopy[2](handlerCopy, v39);
 
   v34 = *MEMORY[0x277D85DE8];
 }
@@ -1020,29 +1020,29 @@ void __145__DNDSUserAvailabilityCoordinator__queue_notifyIntentExtensionsOfUserA
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_entitlementRecordForApplicationRecord:(id)a3
+- (id)_entitlementRecordForApplicationRecord:(id)record
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CF0CA8] sharedInstance];
-  v5 = [v4 deviceClass];
+  recordCopy = record;
+  mEMORY[0x277CF0CA8] = [MEMORY[0x277CF0CA8] sharedInstance];
+  deviceClass = [mEMORY[0x277CF0CA8] deviceClass];
 
-  v6 = v3;
-  if (v5 == 4)
+  v6 = recordCopy;
+  if (deviceClass == 4)
   {
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    obj = [v3 applicationExtensionRecords];
+    obj = [recordCopy applicationExtensionRecords];
     v7 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
-    v19 = v3;
-    v6 = v3;
+    v19 = recordCopy;
+    v6 = recordCopy;
     if (v7)
     {
       v8 = v7;
       v9 = *v22;
-      v6 = v3;
+      v6 = recordCopy;
       do
       {
         for (i = 0; i != v8; ++i)
@@ -1053,8 +1053,8 @@ void __145__DNDSUserAvailabilityCoordinator__queue_notifyIntentExtensionsOfUserA
           }
 
           v11 = *(*(&v21 + 1) + 8 * i);
-          v12 = [v11 infoDictionary];
-          v13 = [v12 objectForKey:@"NSExtension" ofClass:objc_opt_class()];
+          infoDictionary = [v11 infoDictionary];
+          v13 = [infoDictionary objectForKey:@"NSExtension" ofClass:objc_opt_class()];
 
           v14 = [v13 objectForKey:@"NSExtensionPointIdentifier"];
           v15 = [v14 isEqualToString:@"com.apple.watchkit"];
@@ -1073,7 +1073,7 @@ void __145__DNDSUserAvailabilityCoordinator__queue_notifyIntentExtensionsOfUserA
       while (v8);
     }
 
-    v3 = v19;
+    recordCopy = v19;
   }
 
   v17 = *MEMORY[0x277D85DE8];
@@ -1081,10 +1081,10 @@ void __145__DNDSUserAvailabilityCoordinator__queue_notifyIntentExtensionsOfUserA
   return v6;
 }
 
-- (void)sendStatusKitInvitationsForContacts:(id)a3 forceAvailabilityPublish:(BOOL)a4 completionHandler:(id)a5
+- (void)sendStatusKitInvitationsForContacts:(id)contacts forceAvailabilityPublish:(BOOL)publish completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  contactsCopy = contacts;
+  handlerCopy = handler;
   if (self->_active)
   {
     objc_initWeak(&location, self->_statusService);
@@ -1098,11 +1098,11 @@ void __145__DNDSUserAvailabilityCoordinator__queue_notifyIntentExtensionsOfUserA
     v13[2] = __114__DNDSUserAvailabilityCoordinator_sendStatusKitInvitationsForContacts_forceAvailabilityPublish_completionHandler___block_invoke;
     v13[3] = &unk_278F8A750;
     objc_copyWeak(&v18, &location);
-    v14 = v8;
-    v15 = self;
+    v14 = contactsCopy;
+    selfCopy = self;
     v17 = buf;
-    v19 = a4;
-    v16 = v9;
+    publishCopy = publish;
+    v16 = handlerCopy;
     dispatch_async(queue, v13);
 
     objc_destroyWeak(&v18);
@@ -1119,10 +1119,10 @@ void __145__DNDSUserAvailabilityCoordinator__queue_notifyIntentExtensionsOfUserA
       _os_log_impl(&dword_24912E000, v11, OS_LOG_TYPE_INFO, "Skipping invitation send request because User Availability is disabled.", buf, 2u);
     }
 
-    if (v9)
+    if (handlerCopy)
     {
       v12 = [[DNDSUserAvailabilityPublishResult alloc] initWithIdentifier:0 availability:0];
-      (*(v9 + 2))(v9, v12, MEMORY[0x277CBEBF8]);
+      (*(handlerCopy + 2))(handlerCopy, v12, MEMORY[0x277CBEBF8]);
     }
   }
 }
@@ -1470,13 +1470,13 @@ void __114__DNDSUserAvailabilityCoordinator_sendStatusKitInvitationsForContacts_
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_isLocalUserAvailableForAppId:(id)a3 modeIdentifier:(id)a4 withError:(id *)a5
+- (BOOL)_isLocalUserAvailableForAppId:(id)id modeIdentifier:(id)identifier withError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  idCopy = id;
+  identifierCopy = identifier;
   configurationProvider = self->_configurationProvider;
   v25 = 0;
-  v11 = [(DNDSModeConfigurationProviding *)configurationProvider modeConfigurationForModeIdentifier:v9 withError:&v25];
+  v11 = [(DNDSModeConfigurationProviding *)configurationProvider modeConfigurationForModeIdentifier:identifierCopy withError:&v25];
   v12 = v25;
   v13 = v12;
   if (v11)
@@ -1491,16 +1491,16 @@ void __114__DNDSUserAvailabilityCoordinator_sendStatusKitInvitationsForContacts_
 
   if (v14)
   {
-    v17 = [v11 configuration];
-    v18 = [v17 applicationConfigurationType];
+    configuration = [v11 configuration];
+    applicationConfigurationType = [configuration applicationConfigurationType];
 
-    v19 = [v8 bundleID];
-    v20 = [v19 length];
+    bundleID = [idCopy bundleID];
+    v20 = [bundleID length];
 
     if (v20)
     {
-      v21 = [(DNDSModeConfigurationProviding *)self->_configurationProvider exceptionForApplicationIdentifier:v8 thread:0 forModeIdentifier:v9];
-      if (!(v18 | v21))
+      v21 = [(DNDSModeConfigurationProviding *)self->_configurationProvider exceptionForApplicationIdentifier:idCopy thread:0 forModeIdentifier:identifierCopy];
+      if (!(applicationConfigurationType | v21))
       {
         v15 = 1;
         goto LABEL_21;
@@ -1512,9 +1512,9 @@ void __114__DNDSUserAvailabilityCoordinator_sendStatusKitInvitationsForContacts_
       v21 = 2;
     }
 
-    v23 = v18 == 1 && v21 != 1;
+    v23 = applicationConfigurationType == 1 && v21 != 1;
     v15 = 1;
-    if (v18 != 2 && !v23)
+    if (applicationConfigurationType != 2 && !v23)
     {
       [v11 impactsAvailability];
       v15 = DNDResolvedImpactsAvailabilitySetting() != 2;
@@ -1524,10 +1524,10 @@ void __114__DNDSUserAvailabilityCoordinator_sendStatusKitInvitationsForContacts_
   else
   {
     v15 = 1;
-    if (a5 && v12)
+    if (error && v12)
     {
       v16 = v12;
-      *a5 = v13;
+      *error = v13;
     }
   }
 
@@ -1536,13 +1536,13 @@ LABEL_21:
   return v15;
 }
 
-- (BOOL)_isLocalUserAvailableForMessagesWithModeIdentifier:(id)a3 withError:(id *)a4
+- (BOOL)_isLocalUserAvailableForMessagesWithModeIdentifier:(id)identifier withError:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = [objc_alloc(MEMORY[0x277D058C8]) initWithBundleID:@"com.apple.MobileSMS" platform:1];
   configurationProvider = self->_configurationProvider;
   v23 = 0;
-  v9 = [(DNDSModeConfigurationProviding *)configurationProvider modeConfigurationForModeIdentifier:v6 withError:&v23];
+  v9 = [(DNDSModeConfigurationProviding *)configurationProvider modeConfigurationForModeIdentifier:identifierCopy withError:&v23];
   v10 = v23;
   v11 = v10;
   if (v9)
@@ -1557,37 +1557,37 @@ LABEL_21:
 
   if (v12)
   {
-    v15 = [v9 configuration];
-    v16 = [v15 applicationConfigurationType];
+    configuration = [v9 configuration];
+    applicationConfigurationType = [configuration applicationConfigurationType];
 
-    v17 = [(DNDSModeConfigurationProviding *)self->_configurationProvider exceptionForApplicationIdentifier:v7 thread:0 forModeIdentifier:v6];
-    v18 = [v9 configuration];
-    v19 = [v18 senderConfigurationType];
+    v17 = [(DNDSModeConfigurationProviding *)self->_configurationProvider exceptionForApplicationIdentifier:v7 thread:0 forModeIdentifier:identifierCopy];
+    configuration2 = [v9 configuration];
+    senderConfigurationType = [configuration2 senderConfigurationType];
 
-    if (!(v16 | v17))
+    if (!(applicationConfigurationType | v17))
     {
       goto LABEL_9;
     }
 
-    if (!v16 && v17 == 2)
+    if (!applicationConfigurationType && v17 == 2)
     {
       goto LABEL_12;
     }
 
-    if (v16 == 1 && v17 == 1)
+    if (applicationConfigurationType == 1 && v17 == 1)
     {
       [v9 impactsAvailability];
       v13 = DNDResolvedImpactsAvailabilitySetting() != 2;
       goto LABEL_18;
     }
 
-    v21 = v16 == 1 && v17 == 2;
+    v21 = applicationConfigurationType == 1 && v17 == 2;
     v22 = v21;
-    if (v16 == 2 || v22)
+    if (applicationConfigurationType == 2 || v22)
     {
 LABEL_12:
       [v9 impactsAvailability];
-      v13 = DNDResolvedImpactsAvailabilitySetting() != 2 || (v19 - 1) < 2;
+      v13 = DNDResolvedImpactsAvailabilitySetting() != 2 || (senderConfigurationType - 1) < 2;
     }
 
     else
@@ -1600,10 +1600,10 @@ LABEL_9:
   else
   {
     v13 = 1;
-    if (a4 && v10)
+    if (error && v10)
     {
       v14 = v10;
-      *a4 = v11;
+      *error = v11;
     }
   }
 
@@ -1612,14 +1612,14 @@ LABEL_18:
   return v13;
 }
 
-- (BOOL)isLocalUserAvailableForApplicationIdentifier:(id)a3 withError:(id *)a4
+- (BOOL)isLocalUserAvailableForApplicationIdentifier:(id)identifier withError:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   if (self->_active)
   {
-    v7 = [(DNDSStateProviding *)self->_stateProvider lastCalculatedState];
-    v8 = [v7 activeModeIdentifier];
-    v9 = [(DNDSUserAvailabilityCoordinator *)self _isLocalUserAvailableForAppId:v6 modeIdentifier:v8 withError:a4];
+    lastCalculatedState = [(DNDSStateProviding *)self->_stateProvider lastCalculatedState];
+    activeModeIdentifier = [lastCalculatedState activeModeIdentifier];
+    v9 = [(DNDSUserAvailabilityCoordinator *)self _isLocalUserAvailableForAppId:identifierCopy modeIdentifier:activeModeIdentifier withError:error];
   }
 
   else
@@ -1636,10 +1636,10 @@ LABEL_18:
   return v9;
 }
 
-- (BOOL)isTCCUserAvailabilityGrantedForBundleId:(id)a3
+- (BOOL)isTCCUserAvailabilityGrantedForBundleId:(id)id
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  idCopy = id;
   active = self->_active;
   v6 = DNDSLogAvailabilityProvider;
   v7 = os_log_type_enabled(DNDSLogAvailabilityProvider, OS_LOG_TYPE_INFO);
@@ -1663,11 +1663,11 @@ LABEL_11:
   if (v7)
   {
     v16 = 138543362;
-    v17 = v4;
+    v17 = idCopy;
     _os_log_impl(&dword_24912E000, v6, OS_LOG_TYPE_INFO, "Looking up User Availability permission for bundleId: %{public}@", &v16, 0xCu);
   }
 
-  if (![v4 length])
+  if (![idCopy length])
   {
     v13 = DNDSLogAvailabilityProvider;
     if (os_log_type_enabled(DNDSLogAvailabilityProvider, OS_LOG_TYPE_DEFAULT))
@@ -1682,21 +1682,21 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v8 = [(DNDSUserAvailabilityTCCProviding *)self->_tccProvider userAvailabilityTCCApprovedBundleIds];
-  v9 = [v8 containsObject:v4];
+  userAvailabilityTCCApprovedBundleIds = [(DNDSUserAvailabilityTCCProviding *)self->_tccProvider userAvailabilityTCCApprovedBundleIds];
+  v9 = [userAvailabilityTCCApprovedBundleIds containsObject:idCopy];
 
 LABEL_12:
   v14 = *MEMORY[0x277D85DE8];
   return v9;
 }
 
-- (id)allowedModesForContactHandle:(id)a3 withError:(id *)a4
+- (id)allowedModesForContactHandle:(id)handle withError:(id *)error
 {
-  v4 = [(DNDSUserAvailabilityCoordinator *)self exceptionalModesForContactHandle:a3 withError:a4];
-  v5 = [v4 allowed];
-  if ([v5 count])
+  v4 = [(DNDSUserAvailabilityCoordinator *)self exceptionalModesForContactHandle:handle withError:error];
+  allowed = [v4 allowed];
+  if ([allowed count])
   {
-    v6 = v5;
+    v6 = allowed;
   }
 
   else
@@ -1709,13 +1709,13 @@ LABEL_12:
   return v6;
 }
 
-- (id)silencedModesForContactHandle:(id)a3 withError:(id *)a4
+- (id)silencedModesForContactHandle:(id)handle withError:(id *)error
 {
-  v4 = [(DNDSUserAvailabilityCoordinator *)self exceptionalModesForContactHandle:a3 withError:a4];
-  v5 = [v4 silenced];
-  if ([v5 count])
+  v4 = [(DNDSUserAvailabilityCoordinator *)self exceptionalModesForContactHandle:handle withError:error];
+  silenced = [v4 silenced];
+  if ([silenced count])
   {
-    v6 = v5;
+    v6 = silenced;
   }
 
   else
@@ -1728,10 +1728,10 @@ LABEL_12:
   return v6;
 }
 
-- (id)exceptionalModesForContactHandle:(id)a3 withError:(id *)a4
+- (id)exceptionalModesForContactHandle:(id)handle withError:(id *)error
 {
   v43 = *MEMORY[0x277D85DE8];
-  v35 = a3;
+  handleCopy = handle;
   if (self->_active)
   {
     configurationProvider = self->_configurationProvider;
@@ -1741,11 +1741,11 @@ LABEL_12:
     v9 = v8;
     if (v8)
     {
-      if (a4)
+      if (error)
       {
         v10 = v8;
         v11 = 0;
-        *a4 = v9;
+        *error = v9;
       }
 
       else
@@ -1779,18 +1779,18 @@ LABEL_12:
             }
 
             v18 = *(*(&v36 + 1) + 8 * i);
-            v19 = [v18 configuration];
-            v20 = [v19 senderConfigurationType];
+            configuration = [v18 configuration];
+            senderConfigurationType = [configuration senderConfigurationType];
 
             v21 = self->_configurationProvider;
-            v22 = [v18 mode];
-            v23 = [v22 modeIdentifier];
-            v24 = [(DNDSModeConfigurationProviding *)v21 exceptionForContactHandle:v35 forModeIdentifier:v23];
+            mode = [v18 mode];
+            modeIdentifier = [mode modeIdentifier];
+            v24 = [(DNDSModeConfigurationProviding *)v21 exceptionForContactHandle:handleCopy forModeIdentifier:modeIdentifier];
 
             v25 = v13;
-            if (v20 | v24)
+            if (senderConfigurationType | v24)
             {
-              v26 = v20 == 1 && v24 == 1;
+              v26 = senderConfigurationType == 1 && v24 == 1;
               v25 = v33;
               if (!v26)
               {
@@ -1798,10 +1798,10 @@ LABEL_12:
               }
             }
 
-            v27 = [v18 mode];
-            v28 = [v27 identifier];
-            v29 = [v28 UUIDString];
-            [v25 addObject:v29];
+            mode2 = [v18 mode];
+            identifier = [mode2 identifier];
+            uUIDString = [identifier UUIDString];
+            [v25 addObject:uUIDString];
           }
 
           v15 = [obj countByEnumeratingWithState:&v36 objects:v42 count:16];
@@ -1810,7 +1810,7 @@ LABEL_12:
         while (v15);
       }
 
-      v11 = [[DNDSContentHandleExceptionalModesBox alloc] initWithContactHandle:v35 allowed:v13 silenced:v33];
+      v11 = [[DNDSContentHandleExceptionalModesBox alloc] initWithContactHandle:handleCopy allowed:v13 silenced:v33];
       v9 = 0;
       v7 = v32;
     }
@@ -1833,27 +1833,27 @@ LABEL_12:
   return v11;
 }
 
-- (BOOL)userAvailabilityInActiveModeForContactHandle:(id)a3 withError:(id *)a4
+- (BOOL)userAvailabilityInActiveModeForContactHandle:(id)handle withError:(id *)error
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  handleCopy = handle;
   if (self->_active)
   {
     if ([(DNDSUserAvailabilityCoordinator *)self _isTCCUserAvailabilityGrantedForMessages])
     {
-      v7 = [(DNDSStateProviding *)self->_stateProvider lastCalculatedState];
+      lastCalculatedState = [(DNDSStateProviding *)self->_stateProvider lastCalculatedState];
       configurationProvider = self->_configurationProvider;
-      v9 = [v7 activeModeIdentifier];
-      v10 = [(DNDSModeConfigurationProviding *)configurationProvider modeConfigurationForModeIdentifier:v9 withError:0];
-      v11 = [v10 configuration];
-      v12 = [v11 senderConfigurationType];
+      activeModeIdentifier = [lastCalculatedState activeModeIdentifier];
+      v10 = [(DNDSModeConfigurationProviding *)configurationProvider modeConfigurationForModeIdentifier:activeModeIdentifier withError:0];
+      configuration = [v10 configuration];
+      senderConfigurationType = [configuration senderConfigurationType];
 
       v13 = self->_configurationProvider;
-      v14 = [v7 activeModeIdentifier];
-      v15 = [(DNDSModeConfigurationProviding *)v13 exceptionForContactHandle:v6 forModeIdentifier:v14];
+      activeModeIdentifier2 = [lastCalculatedState activeModeIdentifier];
+      v15 = [(DNDSModeConfigurationProviding *)v13 exceptionForContactHandle:handleCopy forModeIdentifier:activeModeIdentifier2];
 
-      v18 = v12 == 1 && v15 != 1 || v12 == 2;
-      if (v12 | v15)
+      v18 = senderConfigurationType == 1 && v15 != 1 || senderConfigurationType == 2;
+      if (senderConfigurationType | v15)
       {
         v19 = v18;
       }
@@ -1869,13 +1869,13 @@ LABEL_12:
     if (os_log_type_enabled(DNDSLogAvailabilityProvider, OS_LOG_TYPE_ERROR))
     {
       [DNDSUserAvailabilityCoordinator userAvailabilityInActiveModeForContactHandle:withError:];
-      if (a4)
+      if (error)
       {
         goto LABEL_20;
       }
     }
 
-    else if (a4)
+    else if (error)
     {
 LABEL_20:
       v21 = MEMORY[0x277CCA9B8];
@@ -1884,7 +1884,7 @@ LABEL_20:
       v28[0] = @"Calling bundleId does not have permission to read user availability.";
       v19 = 1;
       v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:&v27 count:1];
-      *a4 = [v21 errorWithDomain:v22 code:1004 userInfo:v23];
+      *error = [v21 errorWithDomain:v22 code:1004 userInfo:v23];
 
       goto LABEL_23;
     }
@@ -1908,7 +1908,7 @@ LABEL_23:
   return v19;
 }
 
-- (id)publishStatusKitAvailabilityReturningError:(id *)a3
+- (id)publishStatusKitAvailabilityReturningError:(id *)error
 {
   v44[1] = *MEMORY[0x277D85DE8];
   if (self->_active)
@@ -1945,13 +1945,13 @@ LABEL_23:
     v7 = dispatch_time(0, 5000000000);
     if (dispatch_semaphore_wait(v6, v7))
     {
-      if (a3)
+      if (error)
       {
         v8 = MEMORY[0x277CCA9B8];
         v43 = *MEMORY[0x277CCA450];
         v44[0] = @"Call to [SKStatusPublishingService publishStatusRequest:completion:] timed out";
         v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v44 forKeys:&v43 count:{1, v17, v18, v19, v20}];
-        *a3 = [v8 errorWithDomain:*MEMORY[0x277D05840] code:1000 userInfo:v9];
+        *error = [v8 errorWithDomain:*MEMORY[0x277D05840] code:1000 userInfo:v9];
       }
 
       v10 = [DNDSUserAvailabilityPublishResult alloc];
@@ -1961,9 +1961,9 @@ LABEL_23:
 
     else
     {
-      if (a3)
+      if (error)
       {
-        *a3 = v26[5];
+        *error = v26[5];
       }
 
       v10 = [DNDSUserAvailabilityPublishResult alloc];

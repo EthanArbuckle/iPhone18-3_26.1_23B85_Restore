@@ -1,35 +1,35 @@
 @interface CLSGraph
-- (BOOL)containsVertex:(id)a3;
-- (BOOL)containsVertexWithVertexID:(id)a3;
-- (BOOL)hasEdgeFromVertex:(id)a3 toVertex:(id)a4;
-- (CLSGraph)initWithMemoryOptions:(unint64_t)a3;
+- (BOOL)containsVertex:(id)vertex;
+- (BOOL)containsVertexWithVertexID:(id)d;
+- (BOOL)hasEdgeFromVertex:(id)vertex toVertex:(id)toVertex;
+- (CLSGraph)initWithMemoryOptions:(unint64_t)options;
 - (CLSGraphVertex)anyVertex;
-- (id)inNeighboursOfVertex:(id)a3;
-- (id)neighboursOfVertex:(id)a3;
-- (id)outNeighboursOfVertex:(id)a3;
-- (unint64_t)_degreeOfVertex:(id)a3 inEdgeMap:(id)a4;
-- (unint64_t)degree:(id)a3;
+- (id)inNeighboursOfVertex:(id)vertex;
+- (id)neighboursOfVertex:(id)vertex;
+- (id)outNeighboursOfVertex:(id)vertex;
+- (unint64_t)_degreeOfVertex:(id)vertex inEdgeMap:(id)map;
+- (unint64_t)degree:(id)degree;
 - (unint64_t)edgeCount;
-- (void)_enumerateVerticesInEdges:(id)a3 skipingEdges:(id)a4 enumerationBlock:(id)a5;
-- (void)_removeEdgeFromVertexWithID:(id)a3 toVertexWithID:(id)a4;
-- (void)_traverseStartingAtVertex:(id)a3 previousVertex:(id)a4 visitedVertices:(id)a5 enumerationBlock:(id)a6;
-- (void)addEdgeFromVertex:(id)a3 toVertex:(id)a4;
-- (void)addVertex:(id)a3;
-- (void)enumerate:(id)a3;
-- (void)enumerateInNeighboursOfVertex:(id)a3 enumerationBlock:(id)a4;
-- (void)enumerateNeighboursOfVertex:(id)a3 enumerationBlock:(id)a4;
-- (void)enumerateOutNeighboursOfVertex:(id)a3 enumerationBlock:(id)a4;
-- (void)removeEdgeFromVertex:(id)a3 toVertex:(id)a4;
-- (void)removeSubtreeStartingAtVertex:(id)a3;
-- (void)removeVertex:(id)a3;
+- (void)_enumerateVerticesInEdges:(id)edges skipingEdges:(id)skipingEdges enumerationBlock:(id)block;
+- (void)_removeEdgeFromVertexWithID:(id)d toVertexWithID:(id)iD;
+- (void)_traverseStartingAtVertex:(id)vertex previousVertex:(id)previousVertex visitedVertices:(id)vertices enumerationBlock:(id)block;
+- (void)addEdgeFromVertex:(id)vertex toVertex:(id)toVertex;
+- (void)addVertex:(id)vertex;
+- (void)enumerate:(id)enumerate;
+- (void)enumerateInNeighboursOfVertex:(id)vertex enumerationBlock:(id)block;
+- (void)enumerateNeighboursOfVertex:(id)vertex enumerationBlock:(id)block;
+- (void)enumerateOutNeighboursOfVertex:(id)vertex enumerationBlock:(id)block;
+- (void)removeEdgeFromVertex:(id)vertex toVertex:(id)toVertex;
+- (void)removeSubtreeStartingAtVertex:(id)vertex;
+- (void)removeVertex:(id)vertex;
 - (void)reset;
-- (void)traverseStartingAtVertex:(id)a3 enumerationBlock:(id)a4;
-- (void)traverseVerticesPassingTest:(id)a3 enumerationBlock:(id)a4;
+- (void)traverseStartingAtVertex:(id)vertex enumerationBlock:(id)block;
+- (void)traverseVerticesPassingTest:(id)test enumerationBlock:(id)block;
 @end
 
 @implementation CLSGraph
 
-- (CLSGraph)initWithMemoryOptions:(unint64_t)a3
+- (CLSGraph)initWithMemoryOptions:(unint64_t)options
 {
   v19.receiver = self;
   v19.super_class = CLSGraph;
@@ -37,19 +37,19 @@
   v5 = v4;
   if (v4)
   {
-    v4->_options = a3;
+    v4->_options = options;
     v6 = objc_alloc(MEMORY[0x277CCAB00]);
-    v8 = objc_msgSend_initWithKeyOptions_valueOptions_capacity_(v6, v7, a3, v5->_options, 50);
+    v8 = objc_msgSend_initWithKeyOptions_valueOptions_capacity_(v6, v7, options, v5->_options, 50);
     verticesMap = v5->_verticesMap;
     v5->_verticesMap = v8;
 
     v10 = objc_alloc(MEMORY[0x277CCAB00]);
-    v12 = objc_msgSend_initWithKeyOptions_valueOptions_capacity_(v10, v11, a3, v5->_options, 50);
+    v12 = objc_msgSend_initWithKeyOptions_valueOptions_capacity_(v10, v11, options, v5->_options, 50);
     inEdgesMap = v5->_inEdgesMap;
     v5->_inEdgesMap = v12;
 
     v14 = objc_alloc(MEMORY[0x277CCAB00]);
-    v16 = objc_msgSend_initWithKeyOptions_valueOptions_capacity_(v14, v15, a3, v5->_options, 50);
+    v16 = objc_msgSend_initWithKeyOptions_valueOptions_capacity_(v14, v15, options, v5->_options, 50);
     outEdgesMap = v5->_outEdgesMap;
     v5->_outEdgesMap = v16;
   }
@@ -135,105 +135,105 @@
   return v8;
 }
 
-- (unint64_t)degree:(id)a3
+- (unint64_t)degree:(id)degree
 {
   inEdgesMap = self->_inEdgesMap;
-  v5 = a3;
-  v7 = objc_msgSend__degreeOfVertex_inEdgeMap_(self, v6, v5, inEdgesMap);
-  v9 = objc_msgSend__degreeOfVertex_inEdgeMap_(self, v8, v5, self->_outEdgesMap);
+  degreeCopy = degree;
+  v7 = objc_msgSend__degreeOfVertex_inEdgeMap_(self, v6, degreeCopy, inEdgesMap);
+  v9 = objc_msgSend__degreeOfVertex_inEdgeMap_(self, v8, degreeCopy, self->_outEdgesMap);
 
   return v9 + v7;
 }
 
-- (unint64_t)_degreeOfVertex:(id)a3 inEdgeMap:(id)a4
+- (unint64_t)_degreeOfVertex:(id)vertex inEdgeMap:(id)map
 {
-  v5 = a4;
-  v8 = objc_msgSend_vertexID(a3, v6, v7);
-  v10 = objc_msgSend_objectForKey_(v5, v9, v8);
+  mapCopy = map;
+  v8 = objc_msgSend_vertexID(vertex, v6, v7);
+  v10 = objc_msgSend_objectForKey_(mapCopy, v9, v8);
 
   v13 = objc_msgSend_count(v10, v11, v12);
   return v13;
 }
 
-- (BOOL)containsVertexWithVertexID:(id)a3
+- (BOOL)containsVertexWithVertexID:(id)d
 {
-  v3 = objc_msgSend_objectForKey_(self->_verticesMap, a2, a3);
+  v3 = objc_msgSend_objectForKey_(self->_verticesMap, a2, d);
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (BOOL)containsVertex:(id)a3
+- (BOOL)containsVertex:(id)vertex
 {
-  v4 = objc_msgSend_vertexID(a3, a2, a3);
+  v4 = objc_msgSend_vertexID(vertex, a2, vertex);
   LOBYTE(self) = objc_msgSend_containsVertexWithVertexID_(self, v5, v4);
 
   return self;
 }
 
-- (BOOL)hasEdgeFromVertex:(id)a3 toVertex:(id)a4
+- (BOOL)hasEdgeFromVertex:(id)vertex toVertex:(id)toVertex
 {
-  v6 = a4;
-  v9 = objc_msgSend_vertexID(a3, v7, v8);
+  toVertexCopy = toVertex;
+  v9 = objc_msgSend_vertexID(vertex, v7, v8);
   v11 = objc_msgSend_objectForKey_(self->_outEdgesMap, v10, v9);
-  v14 = objc_msgSend_vertexID(v6, v12, v13);
+  v14 = objc_msgSend_vertexID(toVertexCopy, v12, v13);
 
   LOBYTE(v9) = objc_msgSend_containsObject_(v11, v15, v14);
   return v9;
 }
 
-- (void)addVertex:(id)a3
+- (void)addVertex:(id)vertex
 {
-  v17 = a3;
-  v6 = objc_msgSend_vertexID(v17, v4, v5);
+  vertexCopy = vertex;
+  v6 = objc_msgSend_vertexID(vertexCopy, v4, v5);
   v8 = objc_msgSend_objectForKey_(self->_verticesMap, v7, v6);
-  if (v8 != v17)
+  if (v8 != vertexCopy)
   {
-    v9 = self;
-    objc_sync_enter(v9);
-    v12 = objc_msgSend_objectForKey_(v9->_inEdgesMap, v10, v6);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v12 = objc_msgSend_objectForKey_(selfCopy->_inEdgesMap, v10, v6);
     if (!v12)
     {
       v12 = objc_msgSend_hashTableWithOptions_(MEMORY[0x277CCAA50], v11, 0);
     }
 
-    objc_msgSend_setObject_forKey_(v9->_inEdgesMap, v11, v12, v6);
-    v15 = objc_msgSend_objectForKey_(v9->_outEdgesMap, v13, v6);
+    objc_msgSend_setObject_forKey_(selfCopy->_inEdgesMap, v11, v12, v6);
+    v15 = objc_msgSend_objectForKey_(selfCopy->_outEdgesMap, v13, v6);
     if (!v15)
     {
       v15 = objc_msgSend_hashTableWithOptions_(MEMORY[0x277CCAA50], v14, 0);
     }
 
-    objc_msgSend_setObject_forKey_(v9->_outEdgesMap, v14, v15, v6);
-    objc_msgSend_setObject_forKey_(self->_verticesMap, v16, v17, v6);
+    objc_msgSend_setObject_forKey_(selfCopy->_outEdgesMap, v14, v15, v6);
+    objc_msgSend_setObject_forKey_(self->_verticesMap, v16, vertexCopy, v6);
 
-    objc_sync_exit(v9);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (void)addEdgeFromVertex:(id)a3 toVertex:(id)a4
+- (void)addEdgeFromVertex:(id)vertex toVertex:(id)toVertex
 {
-  v22 = a3;
-  v6 = a4;
-  objc_msgSend_addVertex_(self, v7, v22);
-  objc_msgSend_addVertex_(self, v8, v6);
-  v11 = objc_msgSend_vertexID(v22, v9, v10);
-  v14 = objc_msgSend_vertexID(v6, v12, v13);
-  v15 = self;
-  objc_sync_enter(v15);
-  v17 = objc_msgSend_objectForKey_(v15->_outEdgesMap, v16, v11);
+  vertexCopy = vertex;
+  toVertexCopy = toVertex;
+  objc_msgSend_addVertex_(self, v7, vertexCopy);
+  objc_msgSend_addVertex_(self, v8, toVertexCopy);
+  v11 = objc_msgSend_vertexID(vertexCopy, v9, v10);
+  v14 = objc_msgSend_vertexID(toVertexCopy, v12, v13);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v17 = objc_msgSend_objectForKey_(selfCopy->_outEdgesMap, v16, v11);
   objc_msgSend_addObject_(v17, v18, v14);
-  v20 = objc_msgSend_objectForKey_(v15->_inEdgesMap, v19, v14);
+  v20 = objc_msgSend_objectForKey_(selfCopy->_inEdgesMap, v19, v14);
 
   objc_msgSend_addObject_(v20, v21, v11);
-  objc_sync_exit(v15);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeVertex:(id)a3
+- (void)removeVertex:(id)vertex
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v7 = objc_msgSend_vertexID(v4, v5, v6);
+  vertexCopy = vertex;
+  v7 = objc_msgSend_vertexID(vertexCopy, v5, v6);
   v9 = objc_msgSend_objectForKey_(self->_outEdgesMap, v8, v7);
   objc_msgSend_removeObjectForKey_(self->_outEdgesMap, v10, v7);
   v42 = 0u;
@@ -310,33 +310,33 @@
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeEdgeFromVertex:(id)a3 toVertex:(id)a4
+- (void)removeEdgeFromVertex:(id)vertex toVertex:(id)toVertex
 {
-  v6 = a4;
-  v13 = objc_msgSend_vertexID(a3, v7, v8);
-  v11 = objc_msgSend_vertexID(v6, v9, v10);
+  toVertexCopy = toVertex;
+  v13 = objc_msgSend_vertexID(vertex, v7, v8);
+  v11 = objc_msgSend_vertexID(toVertexCopy, v9, v10);
 
   objc_msgSend__removeEdgeFromVertexWithID_toVertexWithID_(self, v12, v13, v11);
 }
 
-- (void)_removeEdgeFromVertexWithID:(id)a3 toVertexWithID:(id)a4
+- (void)_removeEdgeFromVertexWithID:(id)d toVertexWithID:(id)iD
 {
   outEdgesMap = self->_outEdgesMap;
-  v7 = a4;
-  v8 = a3;
-  v10 = objc_msgSend_objectForKey_(outEdgesMap, v9, v8);
-  objc_msgSend_removeObject_(v10, v11, v7);
-  v14 = objc_msgSend_objectForKey_(self->_inEdgesMap, v12, v7);
+  iDCopy = iD;
+  dCopy = d;
+  v10 = objc_msgSend_objectForKey_(outEdgesMap, v9, dCopy);
+  objc_msgSend_removeObject_(v10, v11, iDCopy);
+  v14 = objc_msgSend_objectForKey_(self->_inEdgesMap, v12, iDCopy);
 
-  objc_msgSend_removeObject_(v14, v13, v8);
+  objc_msgSend_removeObject_(v14, v13, dCopy);
 }
 
-- (void)removeSubtreeStartingAtVertex:(id)a3
+- (void)removeSubtreeStartingAtVertex:(id)vertex
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v6 = objc_msgSend_outNeighboursOfVertex_(self, v5, v4);
-  objc_msgSend_removeVertex_(self, v7, v4);
+  vertexCopy = vertex;
+  v6 = objc_msgSend_outNeighboursOfVertex_(self, v5, vertexCopy);
+  objc_msgSend_removeVertex_(self, v7, vertexCopy);
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
@@ -372,9 +372,9 @@
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)neighboursOfVertex:(id)a3
+- (id)neighboursOfVertex:(id)vertex
 {
-  v4 = a3;
+  vertexCopy = vertex;
   v5 = objc_opt_new();
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -382,33 +382,33 @@
   v9[3] = &unk_278A17B38;
   v6 = v5;
   v10 = v6;
-  objc_msgSend_enumerateNeighboursOfVertex_enumerationBlock_(self, v7, v4, v9);
+  objc_msgSend_enumerateNeighboursOfVertex_enumerationBlock_(self, v7, vertexCopy, v9);
 
   return v6;
 }
 
-- (void)enumerateNeighboursOfVertex:(id)a3 enumerationBlock:(id)a4
+- (void)enumerateNeighboursOfVertex:(id)vertex enumerationBlock:(id)block
 {
-  v22 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  inEdgesMap = v7->_inEdgesMap;
-  v11 = objc_msgSend_vertexID(v22, v9, v10);
+  vertexCopy = vertex;
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  inEdgesMap = selfCopy->_inEdgesMap;
+  v11 = objc_msgSend_vertexID(vertexCopy, v9, v10);
   v13 = objc_msgSend_objectForKey_(inEdgesMap, v12, v11);
 
-  objc_msgSend__enumerateVerticesInEdges_skipingEdges_enumerationBlock_(v7, v14, v13, 0, v6);
-  outEdgesMap = v7->_outEdgesMap;
-  v18 = objc_msgSend_vertexID(v22, v16, v17);
+  objc_msgSend__enumerateVerticesInEdges_skipingEdges_enumerationBlock_(selfCopy, v14, v13, 0, blockCopy);
+  outEdgesMap = selfCopy->_outEdgesMap;
+  v18 = objc_msgSend_vertexID(vertexCopy, v16, v17);
   v20 = objc_msgSend_objectForKey_(outEdgesMap, v19, v18);
 
-  objc_msgSend__enumerateVerticesInEdges_skipingEdges_enumerationBlock_(v7, v21, v20, v13, v6);
-  objc_sync_exit(v7);
+  objc_msgSend__enumerateVerticesInEdges_skipingEdges_enumerationBlock_(selfCopy, v21, v20, v13, blockCopy);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)inNeighboursOfVertex:(id)a3
+- (id)inNeighboursOfVertex:(id)vertex
 {
-  v4 = a3;
+  vertexCopy = vertex;
   v5 = objc_opt_new();
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -416,28 +416,28 @@
   v9[3] = &unk_278A17B38;
   v6 = v5;
   v10 = v6;
-  objc_msgSend_enumerateInNeighboursOfVertex_enumerationBlock_(self, v7, v4, v9);
+  objc_msgSend_enumerateInNeighboursOfVertex_enumerationBlock_(self, v7, vertexCopy, v9);
 
   return v6;
 }
 
-- (void)enumerateInNeighboursOfVertex:(id)a3 enumerationBlock:(id)a4
+- (void)enumerateInNeighboursOfVertex:(id)vertex enumerationBlock:(id)block
 {
-  v15 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  inEdgesMap = v7->_inEdgesMap;
-  v11 = objc_msgSend_vertexID(v15, v9, v10);
+  vertexCopy = vertex;
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  inEdgesMap = selfCopy->_inEdgesMap;
+  v11 = objc_msgSend_vertexID(vertexCopy, v9, v10);
   v13 = objc_msgSend_objectForKey_(inEdgesMap, v12, v11);
 
-  objc_msgSend__enumerateVerticesInEdges_skipingEdges_enumerationBlock_(v7, v14, v13, 0, v6);
-  objc_sync_exit(v7);
+  objc_msgSend__enumerateVerticesInEdges_skipingEdges_enumerationBlock_(selfCopy, v14, v13, 0, blockCopy);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)outNeighboursOfVertex:(id)a3
+- (id)outNeighboursOfVertex:(id)vertex
 {
-  v4 = a3;
+  vertexCopy = vertex;
   v5 = objc_opt_new();
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -445,36 +445,36 @@
   v9[3] = &unk_278A17B38;
   v6 = v5;
   v10 = v6;
-  objc_msgSend_enumerateOutNeighboursOfVertex_enumerationBlock_(self, v7, v4, v9);
+  objc_msgSend_enumerateOutNeighboursOfVertex_enumerationBlock_(self, v7, vertexCopy, v9);
 
   return v6;
 }
 
-- (void)enumerateOutNeighboursOfVertex:(id)a3 enumerationBlock:(id)a4
+- (void)enumerateOutNeighboursOfVertex:(id)vertex enumerationBlock:(id)block
 {
-  v15 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  outEdgesMap = v7->_outEdgesMap;
-  v11 = objc_msgSend_vertexID(v15, v9, v10);
+  vertexCopy = vertex;
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  outEdgesMap = selfCopy->_outEdgesMap;
+  v11 = objc_msgSend_vertexID(vertexCopy, v9, v10);
   v13 = objc_msgSend_objectForKey_(outEdgesMap, v12, v11);
 
-  objc_msgSend__enumerateVerticesInEdges_skipingEdges_enumerationBlock_(v7, v14, v13, 0, v6);
-  objc_sync_exit(v7);
+  objc_msgSend__enumerateVerticesInEdges_skipingEdges_enumerationBlock_(selfCopy, v14, v13, 0, blockCopy);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_enumerateVerticesInEdges:(id)a3 skipingEdges:(id)a4 enumerationBlock:(id)a5
+- (void)_enumerateVerticesInEdges:(id)edges skipingEdges:(id)skipingEdges enumerationBlock:(id)block
 {
   v31 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  edgesCopy = edges;
+  skipingEdgesCopy = skipingEdges;
+  blockCopy = block;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v10 = v7;
+  v10 = edgesCopy;
   v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v10, v11, &v26, v30, 16);
   if (v12)
   {
@@ -491,11 +491,11 @@
 
         v16 = *(*(&v26 + 1) + 8 * i);
         v17 = objc_autoreleasePoolPush();
-        if ((objc_msgSend_containsObject_(v8, v18, v16) & 1) == 0)
+        if ((objc_msgSend_containsObject_(skipingEdgesCopy, v18, v16) & 1) == 0)
         {
           v20 = objc_msgSend_objectForKey_(self->_verticesMap, v19, v16);
           v25 = 0;
-          v9[2](v9, v20, &v25);
+          blockCopy[2](blockCopy, v20, &v25);
           v21 = v25;
 
           if (v21 == 1)
@@ -523,10 +523,10 @@ LABEL_12:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enumerate:(id)a3
+- (void)enumerate:(id)enumerate
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  enumerateCopy = enumerate;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -550,7 +550,7 @@ LABEL_3:
       v12 = objc_autoreleasePoolPush();
       v14 = objc_msgSend_objectForKey_(self->_verticesMap, v13, v11);
       v18 = 0;
-      v4[2](v4, v14, &v18);
+      enumerateCopy[2](enumerateCopy, v14, &v18);
       v15 = v18;
 
       objc_autoreleasePoolPop(v12);
@@ -575,11 +575,11 @@ LABEL_3:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)traverseVerticesPassingTest:(id)a3 enumerationBlock:(id)a4
+- (void)traverseVerticesPassingTest:(id)test enumerationBlock:(id)block
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v23 = a4;
+  testCopy = test;
+  blockCopy = block;
   v8 = objc_msgSend_hashTableWithOptions_(MEMORY[0x277CCAA50], v7, 517);
   v24 = 0u;
   v25 = 0u;
@@ -604,9 +604,9 @@ LABEL_3:
         v15 = *(*(&v24 + 1) + 8 * v14);
         v16 = objc_autoreleasePoolPush();
         v18 = objc_msgSend_objectForKey_(self->_verticesMap, v17, v15);
-        if ((objc_msgSend_containsObject_(v8, v19, v18) & 1) == 0 && v6[2](v6, v18))
+        if ((objc_msgSend_containsObject_(v8, v19, v18) & 1) == 0 && testCopy[2](testCopy, v18))
         {
-          objc_msgSend__traverseStartingAtVertex_previousVertex_visitedVertices_enumerationBlock_(self, v20, v18, 0, v8, v23);
+          objc_msgSend__traverseStartingAtVertex_previousVertex_visitedVertices_enumerationBlock_(self, v20, v18, 0, v8, blockCopy);
         }
 
         objc_autoreleasePoolPop(v16);
@@ -623,29 +623,29 @@ LABEL_3:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)traverseStartingAtVertex:(id)a3 enumerationBlock:(id)a4
+- (void)traverseStartingAtVertex:(id)vertex enumerationBlock:(id)block
 {
   v6 = MEMORY[0x277CCAA50];
-  v7 = a4;
-  v8 = a3;
+  blockCopy = block;
+  vertexCopy = vertex;
   v11 = objc_msgSend_hashTableWithOptions_(v6, v9, 517);
-  objc_msgSend__traverseStartingAtVertex_previousVertex_visitedVertices_enumerationBlock_(self, v10, v8, 0, v11, v7);
+  objc_msgSend__traverseStartingAtVertex_previousVertex_visitedVertices_enumerationBlock_(self, v10, vertexCopy, 0, v11, blockCopy);
 }
 
-- (void)_traverseStartingAtVertex:(id)a3 previousVertex:(id)a4 visitedVertices:(id)a5 enumerationBlock:(id)a6
+- (void)_traverseStartingAtVertex:(id)vertex previousVertex:(id)previousVertex visitedVertices:(id)vertices enumerationBlock:(id)block
 {
   v40 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  objc_msgSend_addObject_(v12, v14, v10);
+  vertexCopy = vertex;
+  previousVertexCopy = previousVertex;
+  verticesCopy = vertices;
+  blockCopy = block;
+  objc_msgSend_addObject_(verticesCopy, v14, vertexCopy);
   v38 = 0;
-  v13[2](v13, v10, v11, &v38);
+  blockCopy[2](blockCopy, vertexCopy, previousVertexCopy, &v38);
   if ((v38 & 1) == 0)
   {
-    v33 = v11;
-    v32 = objc_msgSend_vertexID(v10, v15, v16);
+    v33 = previousVertexCopy;
+    v32 = objc_msgSend_vertexID(vertexCopy, v15, v16);
     objc_msgSend_objectForKey_(self->_outEdgesMap, v17, v32);
     v34 = 0u;
     v35 = 0u;
@@ -668,9 +668,9 @@ LABEL_3:
           v24 = *(*(&v34 + 1) + 8 * i);
           v25 = objc_autoreleasePoolPush();
           v27 = objc_msgSend_objectForKey_(self->_verticesMap, v26, v24);
-          if ((objc_msgSend_containsObject_(v12, v28, v27) & 1) == 0)
+          if ((objc_msgSend_containsObject_(verticesCopy, v28, v27) & 1) == 0)
           {
-            objc_msgSend__traverseStartingAtVertex_previousVertex_visitedVertices_enumerationBlock_(self, v29, v27, v10, v12, v13);
+            objc_msgSend__traverseStartingAtVertex_previousVertex_visitedVertices_enumerationBlock_(self, v29, v27, vertexCopy, verticesCopy, blockCopy);
           }
 
           objc_autoreleasePoolPop(v25);
@@ -682,7 +682,7 @@ LABEL_3:
       while (v21);
     }
 
-    v11 = v33;
+    previousVertexCopy = v33;
   }
 
   v31 = *MEMORY[0x277D85DE8];

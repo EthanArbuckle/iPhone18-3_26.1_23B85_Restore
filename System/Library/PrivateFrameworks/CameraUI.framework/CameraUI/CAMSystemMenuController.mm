@@ -10,9 +10,9 @@
 - (UIMenu)flipCameraMenu;
 - (UIMenu)livePhotoModeMenu;
 - (UIMenu)timerMenu;
-- (id)valueForCommand:(id)a3;
-- (void)installCameraMenuCommandsWithBuilder:(id)a3;
-- (void)validateCameraMenuCommand:(id)a3;
+- (id)valueForCommand:(id)command;
+- (void)installCameraMenuCommandsWithBuilder:(id)builder;
+- (void)validateCameraMenuCommand:(id)command;
 @end
 
 @implementation CAMSystemMenuController
@@ -33,7 +33,7 @@
 
 - (UIMenu)captureMenu
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1A396B790();
 
   return v3;
@@ -41,7 +41,7 @@
 
 - (UIMenu)captureModeMenu
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1A396BA08();
 
   return v3;
@@ -84,11 +84,11 @@
 
 - (NSString)captureMenuOptionSymbolName
 {
-  v2 = self;
-  v3 = [(CAMSystemMenuController *)v2 menuControllerDelegate];
-  if (v3)
+  selfCopy = self;
+  menuControllerDelegate = [(CAMSystemMenuController *)selfCopy menuControllerDelegate];
+  if (menuControllerDelegate)
   {
-    CAMCaptureIsStillCaptureMode([(CAMSystemMenuControllerDelegate *)v3 currentCaptureMode]);
+    CAMCaptureIsStillCaptureMode([(CAMSystemMenuControllerDelegate *)menuControllerDelegate currentCaptureMode]);
     swift_unknownObjectRelease();
   }
 
@@ -97,26 +97,26 @@
   return v4;
 }
 
-- (void)installCameraMenuCommandsWithBuilder:(id)a3
+- (void)installCameraMenuCommandsWithBuilder:(id)builder
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1A396C3E8(a3);
+  selfCopy = self;
+  sub_1A396C3E8(builder);
   swift_unknownObjectRelease();
 }
 
-- (void)validateCameraMenuCommand:(id)a3
+- (void)validateCameraMenuCommand:(id)command
 {
-  v4 = a3;
-  v5 = self;
-  sub_1A396C8E4(v4);
+  commandCopy = command;
+  selfCopy = self;
+  sub_1A396C8E4(commandCopy);
 }
 
-- (id)valueForCommand:(id)a3
+- (id)valueForCommand:(id)command
 {
-  v4 = a3;
-  v5 = self;
-  sub_1A396D57C(v4, &v13);
+  commandCopy = command;
+  selfCopy = self;
+  sub_1A396D57C(commandCopy, &v13);
 
   v6 = v14;
   if (v14)

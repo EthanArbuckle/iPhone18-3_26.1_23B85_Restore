@@ -1,9 +1,9 @@
 @interface SBHIconLabelVisualConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SBHIconLabelVisualConfiguration)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 @end
 
@@ -23,7 +23,7 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_alloc_init(objc_opt_class());
   if (result)
@@ -37,10 +37,10 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -52,7 +52,7 @@
 
     if (isKindOfClass)
     {
-      v7 = v4;
+      v7 = equalCopy;
       v8 = self->_height == v7[3] && self->_baselineOffsetFromImage == v7[2] && self->_fontSize == v7[1] && self->_extraWidth == v7[4];
     }
 
@@ -67,33 +67,33 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBHIconLabelVisualConfiguration *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBHIconLabelVisualConfiguration *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBHIconLabelVisualConfiguration *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBHIconLabelVisualConfiguration *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBHIconLabelVisualConfiguration *)self succinctDescriptionBuilder];
+  succinctDescriptionBuilder = [(SBHIconLabelVisualConfiguration *)self succinctDescriptionBuilder];
   [(SBHIconLabelVisualConfiguration *)self fontSize];
-  v5 = [v4 appendFloat:@"fontSize" withName:?];
+  v5 = [succinctDescriptionBuilder appendFloat:@"fontSize" withName:?];
   [(SBHIconLabelVisualConfiguration *)self baselineOffsetFromImage];
-  v6 = [v4 appendFloat:@"baselineOffsetFromImage" withName:?];
+  v6 = [succinctDescriptionBuilder appendFloat:@"baselineOffsetFromImage" withName:?];
   [(SBHIconLabelVisualConfiguration *)self height];
-  v7 = [v4 appendFloat:@"height" withName:?];
+  v7 = [succinctDescriptionBuilder appendFloat:@"height" withName:?];
   [(SBHIconLabelVisualConfiguration *)self extraWidth];
-  v8 = [v4 appendFloat:@"extraWidth" withName:?];
+  v8 = [succinctDescriptionBuilder appendFloat:@"extraWidth" withName:?];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 @end

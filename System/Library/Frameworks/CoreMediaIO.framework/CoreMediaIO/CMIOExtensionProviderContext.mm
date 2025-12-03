@@ -1,50 +1,50 @@
 @interface CMIOExtensionProviderContext
-- (CMIOExtensionProviderContext)initWithConnection:(id)a3;
+- (CMIOExtensionProviderContext)initWithConnection:(id)connection;
 - (NSString)description;
 - (id)redactedDescription;
-- (void)availableDeviceProperties:(id)a3 message:(id)a4;
-- (void)availableDevicesChanged:(id)a3;
-- (void)availablePluginProperties:(id)a3 message:(id)a4;
-- (void)availableStreamProperties:(id)a3 message:(id)a4;
-- (void)availableStreamsChangedWithDeviceID:(id)a3 streamIDs:(id)a4;
-- (void)captureAsyncStillImage:(id)a3 message:(id)a4;
+- (void)availableDeviceProperties:(id)properties message:(id)message;
+- (void)availableDevicesChanged:(id)changed;
+- (void)availablePluginProperties:(id)properties message:(id)message;
+- (void)availableStreamProperties:(id)properties message:(id)message;
+- (void)availableStreamsChangedWithDeviceID:(id)d streamIDs:(id)ds;
+- (void)captureAsyncStillImage:(id)image message:(id)message;
 - (void)dealloc;
-- (void)devicePropertiesChangedWithDeviceID:(id)a3 propertyStates:(id)a4;
-- (void)devicePropertyStates:(id)a3 message:(id)a4;
-- (void)deviceStates:(id)a3 message:(id)a4;
-- (void)enqueueReactionEffect:(id)a3 message:(id)a4;
-- (void)handleClientMessageWithConnection:(id)a3 message:(id)a4;
+- (void)devicePropertiesChangedWithDeviceID:(id)d propertyStates:(id)states;
+- (void)devicePropertyStates:(id)states message:(id)message;
+- (void)deviceStates:(id)states message:(id)message;
+- (void)enqueueReactionEffect:(id)effect message:(id)message;
+- (void)handleClientMessageWithConnection:(id)connection message:(id)message;
 - (void)invalidate;
-- (void)pluginPropertiesChanged:(id)a3;
-- (void)pluginPropertyStatesForProperties:(id)a3 message:(id)a4;
-- (void)pluginStates:(id)a3 message:(id)a4;
-- (void)pullSampleBufferForStreamID:(id)a3 replyq:(id)a4 reply:(id)a5;
-- (void)receivedSampleWithStreamID:(id)a3 sample:(id)a4;
-- (void)setClientInfo:(id)a3 message:(id)a4;
-- (void)setDevicePropertyValues:(id)a3 message:(id)a4;
-- (void)setPluginPropertyValues:(id)a3 message:(id)a4;
-- (void)setStreamPropertyValues:(id)a3 message:(id)a4;
-- (void)startStream:(id)a3 message:(id)a4;
-- (void)stopStream:(id)a3 message:(id)a4;
-- (void)streamPropertiesChangedWithStreamID:(id)a3 propertyStates:(id)a4;
-- (void)streamPropertyStates:(id)a3 message:(id)a4;
-- (void)streamScheduledOutputChangedWithStreamID:(id)a3 scheduledOutput:(id)a4;
-- (void)updateNonStreamingProxyFrontedExtensionPIDs:(id)a3 message:(id)a4;
+- (void)pluginPropertiesChanged:(id)changed;
+- (void)pluginPropertyStatesForProperties:(id)properties message:(id)message;
+- (void)pluginStates:(id)states message:(id)message;
+- (void)pullSampleBufferForStreamID:(id)d replyq:(id)replyq reply:(id)reply;
+- (void)receivedSampleWithStreamID:(id)d sample:(id)sample;
+- (void)setClientInfo:(id)info message:(id)message;
+- (void)setDevicePropertyValues:(id)values message:(id)message;
+- (void)setPluginPropertyValues:(id)values message:(id)message;
+- (void)setStreamPropertyValues:(id)values message:(id)message;
+- (void)startStream:(id)stream message:(id)message;
+- (void)stopStream:(id)stream message:(id)message;
+- (void)streamPropertiesChangedWithStreamID:(id)d propertyStates:(id)states;
+- (void)streamPropertyStates:(id)states message:(id)message;
+- (void)streamScheduledOutputChangedWithStreamID:(id)d scheduledOutput:(id)output;
+- (void)updateNonStreamingProxyFrontedExtensionPIDs:(id)ds message:(id)message;
 @end
 
 @implementation CMIOExtensionProviderContext
 
-- (CMIOExtensionProviderContext)initWithConnection:(id)a3
+- (CMIOExtensionProviderContext)initWithConnection:(id)connection
 {
   v21 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (connection)
   {
     v19.receiver = self;
     v19.super_class = CMIOExtensionProviderContext;
     v4 = [(CMIOExtensionProviderContext *)&v19 init];
     if (v4)
     {
-      v4->_connection = a3;
+      v4->_connection = connection;
       v4->_transaction = os_transaction_create();
       v4->_clientSourcedByNonStreamingProxyFrontedExtension = 0;
       objc_initWeak(&location, v4);
@@ -53,12 +53,12 @@
       handler[2] = __51__CMIOExtensionProviderContext_initWithConnection___block_invoke;
       handler[3] = &unk_27885C1C0;
       objc_copyWeak(&v17, &location);
-      handler[4] = a3;
-      xpc_connection_set_event_handler(a3, handler);
-      xpc_connection_activate(a3);
+      handler[4] = connection;
+      xpc_connection_set_event_handler(connection, handler);
+      xpc_connection_activate(connection);
       xpc_connection_get_audit_token();
-      pid = xpc_connection_get_pid(a3);
-      v6 = [MEMORY[0x277CCAD78] UUID];
+      pid = xpc_connection_get_pid(connection);
+      uUID = [MEMORY[0x277CCAD78] UUID];
       if ([+[CMIOExtensionProviderServer internalDaemon] sharedServer]
       {
         memset(buf, 0, 32);
@@ -74,7 +74,7 @@
 
       v9 = [CMIOExtensionClient alloc];
       memset(buf, 0, 32);
-      v10 = [(CMIOExtensionClient *)v9 initWithPID:pid clientID:v6 auditToken:buf stAttribution:v7 isToProxy:0 isFromProxyExtensionManager:0];
+      v10 = [(CMIOExtensionClient *)v9 initWithPID:pid clientID:uUID auditToken:buf stAttribution:v7 isToProxy:0 isFromProxyExtensionManager:0];
       v4->_clientInfo = v10;
       [(CMIOExtensionClient *)v10 setMicrophoneAuthorizationStatus:v8];
       [(CMIOExtensionClient *)v4->_clientInfo setCameraAuthorizationStatus:v8];
@@ -179,7 +179,7 @@ void __51__CMIOExtensionProviderContext_initWithConnection___block_invoke(uint64
       v12 = 2080;
       v13 = "[CMIOExtensionProviderContext dealloc]";
       v14 = 2113;
-      v15 = self;
+      selfCopy = self;
       _os_log_impl(&dword_22EA08000, v4, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %{private}@", buf, 0x26u);
     }
   }
@@ -227,7 +227,7 @@ void __51__CMIOExtensionProviderContext_initWithConnection___block_invoke(uint64
       v11 = 2080;
       v12 = "[CMIOExtensionProviderContext invalidate]";
       v13 = 2113;
-      v14 = self;
+      selfCopy = self;
       _os_log_impl(&dword_22EA08000, v4, OS_LOG_TYPE_INFO, "%s:%d:%s %{private}@", &v7, 0x26u);
     }
   }
@@ -243,10 +243,10 @@ void __51__CMIOExtensionProviderContext_initWithConnection___block_invoke(uint64
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleClientMessageWithConnection:(id)a3 message:(id)a4
+- (void)handleClientMessageWithConnection:(id)connection message:(id)message
 {
   v28 = *MEMORY[0x277D85DE8];
-  uint64 = xpc_dictionary_get_uint64(a4, "MessageType");
+  uint64 = xpc_dictionary_get_uint64(message, "MessageType");
   v8 = CMIOLog();
   if (v8)
   {
@@ -254,8 +254,8 @@ void __51__CMIOExtensionProviderContext_initWithConnection___block_invoke(uint64
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v10 = CMIOFilename("/Library/Caches/com.apple.xbs/Sources/CoreMediaIO/Sources/Extensions/Sources/CMIOExtensionProviderContext.m");
-      pid = xpc_connection_get_pid(a3);
-      v12 = [(CMIOExtensionClient *)self->_clientInfo clientID];
+      pid = xpc_connection_get_pid(connection);
+      clientID = [(CMIOExtensionClient *)self->_clientInfo clientID];
       v16 = 136316419;
       v17 = v10;
       v18 = 1024;
@@ -265,7 +265,7 @@ void __51__CMIOExtensionProviderContext_initWithConnection___block_invoke(uint64
       v22 = 1025;
       v23 = pid;
       v24 = 2113;
-      v25 = v12;
+      v25 = clientID;
       v26 = 2048;
       v27 = uint64;
       _os_log_impl(&dword_22EA08000, v9, OS_LOG_TYPE_INFO, "%s:%d:%s [%{private}d] CID %{private}@ %lld", &v16, 0x36u);
@@ -275,40 +275,40 @@ void __51__CMIOExtensionProviderContext_initWithConnection___block_invoke(uint64
   switch(uint64)
   {
     case 1uLL:
-      [(CMIOExtensionProviderContext *)self pluginStates:a3 message:a4];
+      [(CMIOExtensionProviderContext *)self pluginStates:connection message:message];
       break;
     case 2uLL:
-      [(CMIOExtensionProviderContext *)self availablePluginProperties:a3 message:a4];
+      [(CMIOExtensionProviderContext *)self availablePluginProperties:connection message:message];
       break;
     case 3uLL:
-      [(CMIOExtensionProviderContext *)self pluginPropertyStatesForProperties:a3 message:a4];
+      [(CMIOExtensionProviderContext *)self pluginPropertyStatesForProperties:connection message:message];
       break;
     case 4uLL:
-      [(CMIOExtensionProviderContext *)self setPluginPropertyValues:a3 message:a4];
+      [(CMIOExtensionProviderContext *)self setPluginPropertyValues:connection message:message];
       break;
     case 5uLL:
-      [(CMIOExtensionProviderContext *)self setClientInfo:a3 message:a4];
+      [(CMIOExtensionProviderContext *)self setClientInfo:connection message:message];
       break;
     case 0xAuLL:
-      [(CMIOExtensionProviderContext *)self deviceStates:a3 message:a4];
+      [(CMIOExtensionProviderContext *)self deviceStates:connection message:message];
       break;
     case 0xBuLL:
-      [(CMIOExtensionProviderContext *)self availableDeviceProperties:a3 message:a4];
+      [(CMIOExtensionProviderContext *)self availableDeviceProperties:connection message:message];
       break;
     case 0xCuLL:
-      [(CMIOExtensionProviderContext *)self devicePropertyStates:a3 message:a4];
+      [(CMIOExtensionProviderContext *)self devicePropertyStates:connection message:message];
       break;
     case 0xDuLL:
-      [(CMIOExtensionProviderContext *)self setDevicePropertyValues:a3 message:a4];
+      [(CMIOExtensionProviderContext *)self setDevicePropertyValues:connection message:message];
       break;
     case 0x14uLL:
-      [(CMIOExtensionProviderContext *)self availableStreamProperties:a3 message:a4];
+      [(CMIOExtensionProviderContext *)self availableStreamProperties:connection message:message];
       break;
     case 0x15uLL:
-      [(CMIOExtensionProviderContext *)self streamPropertyStates:a3 message:a4];
+      [(CMIOExtensionProviderContext *)self streamPropertyStates:connection message:message];
       break;
     case 0x16uLL:
-      [(CMIOExtensionProviderContext *)self setStreamPropertyValues:a3 message:a4];
+      [(CMIOExtensionProviderContext *)self setStreamPropertyValues:connection message:message];
       break;
     case 0x17uLL:
       if (!self->_transaction)
@@ -316,29 +316,29 @@ void __51__CMIOExtensionProviderContext_initWithConnection___block_invoke(uint64
         self->_transaction = os_transaction_create();
       }
 
-      [(CMIOExtensionProviderContext *)self startStream:a3 message:a4];
+      [(CMIOExtensionProviderContext *)self startStream:connection message:message];
       break;
     case 0x18uLL:
-      [(CMIOExtensionProviderContext *)self stopStream:a3 message:a4];
+      [(CMIOExtensionProviderContext *)self stopStream:connection message:message];
 
       self->_transaction = 0;
       break;
     case 0x19uLL:
 
       self->_transaction = 0;
-      reply = xpc_dictionary_create_reply(a4);
+      reply = xpc_dictionary_create_reply(message);
       xpc_dictionary_set_int64(reply, "errorReturn", 0);
-      xpc_connection_send_message(a3, reply);
+      xpc_connection_send_message(connection, reply);
       xpc_release(reply);
       break;
     case 0x1AuLL:
-      [(CMIOExtensionProviderContext *)self captureAsyncStillImage:a3 message:a4];
+      [(CMIOExtensionProviderContext *)self captureAsyncStillImage:connection message:message];
       break;
     case 0x1BuLL:
-      [(CMIOExtensionProviderContext *)self updateNonStreamingProxyFrontedExtensionPIDs:a3 message:a4];
+      [(CMIOExtensionProviderContext *)self updateNonStreamingProxyFrontedExtensionPIDs:connection message:message];
       break;
     case 0x1CuLL:
-      [(CMIOExtensionProviderContext *)self enqueueReactionEffect:a3 message:a4];
+      [(CMIOExtensionProviderContext *)self enqueueReactionEffect:connection message:message];
       break;
     default:
       v13 = CMIOLog();
@@ -353,22 +353,22 @@ void __51__CMIOExtensionProviderContext_initWithConnection___block_invoke(uint64
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)availablePluginProperties:(id)a3 message:(id)a4
+- (void)availablePluginProperties:(id)properties message:(id)message
 {
-  reply = xpc_dictionary_create_reply(a4);
+  reply = xpc_dictionary_create_reply(message);
   if (reply)
   {
     v7 = reply;
     xpc_retain(reply);
     v8 = +[CMIOExtensionProvider sharedProvider];
-    v9 = [(CMIOExtensionClient *)self->_clientInfo clientID];
+    clientID = [(CMIOExtensionClient *)self->_clientInfo clientID];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __66__CMIOExtensionProviderContext_availablePluginProperties_message___block_invoke;
     v11[3] = &unk_27885C3C8;
     v11[4] = v7;
-    v11[5] = a3;
-    [v8 availablePluginPropertiesForClientID:v9 reply:v11];
+    v11[5] = properties;
+    [v8 availablePluginPropertiesForClientID:clientID reply:v11];
     xpc_release(v7);
   }
 
@@ -427,22 +427,22 @@ LABEL_14:
   xpc_release(*(a1 + 32));
 }
 
-- (void)pluginStates:(id)a3 message:(id)a4
+- (void)pluginStates:(id)states message:(id)message
 {
-  reply = xpc_dictionary_create_reply(a4);
+  reply = xpc_dictionary_create_reply(message);
   if (reply)
   {
     v7 = reply;
     xpc_retain(reply);
     v8 = +[CMIOExtensionProvider sharedProvider];
-    v9 = [(CMIOExtensionClient *)self->_clientInfo clientID];
+    clientID = [(CMIOExtensionClient *)self->_clientInfo clientID];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __53__CMIOExtensionProviderContext_pluginStates_message___block_invoke;
     v11[3] = &unk_27885C3F0;
     v11[4] = v7;
-    v11[5] = a3;
-    [v8 pluginStatesForClientID:v9 reply:v11];
+    v11[5] = states;
+    [v8 pluginStatesForClientID:clientID reply:v11];
     xpc_release(v7);
   }
 
@@ -630,14 +630,14 @@ LABEL_45:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)pluginPropertyStatesForProperties:(id)a3 message:(id)a4
+- (void)pluginPropertyStatesForProperties:(id)properties message:(id)message
 {
-  reply = xpc_dictionary_create_reply(a4);
+  reply = xpc_dictionary_create_reply(message);
   if (reply)
   {
     v8 = reply;
     cf = 0;
-    cmio_XPCMessageCopyCFArray(a4, "param1", &cf);
+    cmio_XPCMessageCopyCFArray(message, "param1", &cf);
     if (cf)
     {
       v9 = [MEMORY[0x277CBEB98] setWithArray:?];
@@ -651,14 +651,14 @@ LABEL_45:
 
     xpc_retain(v8);
     v11 = +[CMIOExtensionProvider sharedProvider];
-    v12 = [(CMIOExtensionClient *)self->_clientInfo clientID];
+    clientID = [(CMIOExtensionClient *)self->_clientInfo clientID];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __74__CMIOExtensionProviderContext_pluginPropertyStatesForProperties_message___block_invoke;
     v13[3] = &unk_27885C418;
     v13[4] = v8;
-    v13[5] = a3;
-    [v11 pluginPropertyStatesForClientID:v12 properties:v9 reply:v13];
+    v13[5] = properties;
+    [v11 pluginPropertyStatesForClientID:clientID properties:v9 reply:v13];
     xpc_release(v8);
   }
 
@@ -718,13 +718,13 @@ LABEL_15:
   xpc_release(*(a1 + 32));
 }
 
-- (void)setPluginPropertyValues:(id)a3 message:(id)a4
+- (void)setPluginPropertyValues:(id)values message:(id)message
 {
-  reply = xpc_dictionary_create_reply(a4);
+  reply = xpc_dictionary_create_reply(message);
   if (reply)
   {
     v8 = reply;
-    value = xpc_dictionary_get_value(a4, "param1");
+    value = xpc_dictionary_get_value(message, "param1");
     if (value)
     {
       v10 = [CMIOExtensionPropertyState copyPropertyStatesFromXPCDictionary:value];
@@ -740,20 +740,20 @@ LABEL_15:
         [v11 enumerateKeysAndObjectsUsingBlock:v19];
         xpc_retain(v8);
         v13 = +[CMIOExtensionProvider sharedProvider];
-        v14 = [(CMIOExtensionClient *)self->_clientInfo clientID];
+        clientID = [(CMIOExtensionClient *)self->_clientInfo clientID];
         v18[0] = MEMORY[0x277D85DD0];
         v18[1] = 3221225472;
         v18[2] = __64__CMIOExtensionProviderContext_setPluginPropertyValues_message___block_invoke_31;
         v18[3] = &unk_27885C440;
         v18[4] = v8;
-        v18[5] = a3;
-        [v13 setPluginPropertyValuesForClientID:v14 propertyValues:v12 reply:v18];
+        v18[5] = values;
+        [v13 setPluginPropertyValuesForClientID:clientID propertyValues:v12 reply:v18];
       }
 
       else
       {
         xpc_dictionary_set_int64(v8, "errorReturn", -5);
-        xpc_connection_send_message(a3, v8);
+        xpc_connection_send_message(values, v8);
         v17 = CMIOLog();
         if (v17)
         {
@@ -768,7 +768,7 @@ LABEL_15:
     else
     {
       xpc_dictionary_set_int64(v8, "errorReturn", -1);
-      xpc_connection_send_message(a3, v8);
+      xpc_connection_send_message(values, v8);
       v16 = CMIOLog();
       if (v16 && os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
@@ -823,14 +823,14 @@ void __64__CMIOExtensionProviderContext_setPluginPropertyValues_message___block_
   xpc_release(*(a1 + 32));
 }
 
-- (void)availableDeviceProperties:(id)a3 message:(id)a4
+- (void)availableDeviceProperties:(id)properties message:(id)message
 {
-  reply = xpc_dictionary_create_reply(a4);
+  reply = xpc_dictionary_create_reply(message);
   if (reply)
   {
     v8 = reply;
     cf = 0;
-    cmio_XPCMessageCopyCFString(a4, "param1", &cf);
+    cmio_XPCMessageCopyCFString(message, "param1", &cf);
     if (cf)
     {
       v9 = objc_alloc(MEMORY[0x277CCAD78]);
@@ -838,14 +838,14 @@ void __64__CMIOExtensionProviderContext_setPluginPropertyValues_message___block_
       CFRelease(cf);
       xpc_retain(v8);
       v11 = +[CMIOExtensionProvider sharedProvider];
-      v12 = [(CMIOExtensionClient *)self->_clientInfo clientID];
+      clientID = [(CMIOExtensionClient *)self->_clientInfo clientID];
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __66__CMIOExtensionProviderContext_availableDeviceProperties_message___block_invoke;
       v15[3] = &unk_27885C3C8;
       v15[4] = v8;
-      v15[5] = a3;
-      [v11 availableDevicePropertiesForClientID:v12 deviceID:v10 reply:v15];
+      v15[5] = properties;
+      [v11 availableDevicePropertiesForClientID:clientID deviceID:v10 reply:v15];
     }
 
     else
@@ -917,14 +917,14 @@ LABEL_14:
   xpc_release(*(a1 + 32));
 }
 
-- (void)deviceStates:(id)a3 message:(id)a4
+- (void)deviceStates:(id)states message:(id)message
 {
-  reply = xpc_dictionary_create_reply(a4);
+  reply = xpc_dictionary_create_reply(message);
   if (reply)
   {
     v8 = reply;
     cf = 0;
-    cmio_XPCMessageCopyCFString(a4, "param1", &cf);
+    cmio_XPCMessageCopyCFString(message, "param1", &cf);
     if (cf)
     {
       v9 = objc_alloc(MEMORY[0x277CCAD78]);
@@ -932,14 +932,14 @@ LABEL_14:
       CFRelease(cf);
       xpc_retain(v8);
       v11 = +[CMIOExtensionProvider sharedProvider];
-      v12 = [(CMIOExtensionClient *)self->_clientInfo clientID];
+      clientID = [(CMIOExtensionClient *)self->_clientInfo clientID];
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __53__CMIOExtensionProviderContext_deviceStates_message___block_invoke;
       v15[3] = &unk_27885C468;
       v15[4] = v8;
-      v15[5] = a3;
-      [v11 deviceStatesForClientID:v12 deviceID:v10 reply:v15];
+      v15[5] = states;
+      [v11 deviceStatesForClientID:clientID deviceID:v10 reply:v15];
     }
 
     else
@@ -1098,21 +1098,21 @@ LABEL_32:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)devicePropertyStates:(id)a3 message:(id)a4
+- (void)devicePropertyStates:(id)states message:(id)message
 {
-  reply = xpc_dictionary_create_reply(a4);
+  reply = xpc_dictionary_create_reply(message);
   if (reply)
   {
     v8 = reply;
     cf = 0;
-    cmio_XPCMessageCopyCFString(a4, "param1", &cf);
+    cmio_XPCMessageCopyCFString(message, "param1", &cf);
     if (cf)
     {
       v9 = objc_alloc(MEMORY[0x277CCAD78]);
       v10 = [v9 initWithUUIDString:cf];
       CFRelease(cf);
       v17 = 0;
-      cmio_XPCMessageCopyCFArray(a4, "param2", &v17);
+      cmio_XPCMessageCopyCFArray(message, "param2", &v17);
       if (v17)
       {
         v11 = [MEMORY[0x277CBEB98] setWithArray:?];
@@ -1126,14 +1126,14 @@ LABEL_32:
 
       xpc_retain(v8);
       v14 = +[CMIOExtensionProvider sharedProvider];
-      v15 = [(CMIOExtensionClient *)self->_clientInfo clientID];
+      clientID = [(CMIOExtensionClient *)self->_clientInfo clientID];
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __61__CMIOExtensionProviderContext_devicePropertyStates_message___block_invoke;
       v16[3] = &unk_27885C418;
       v16[4] = v8;
-      v16[5] = a3;
-      [v14 devicePropertyStatesForClientID:v15 deviceID:v10 properties:v11 reply:v16];
+      v16[5] = states;
+      [v14 devicePropertyStatesForClientID:clientID deviceID:v10 properties:v11 reply:v16];
     }
 
     else
@@ -1206,20 +1206,20 @@ LABEL_15:
   xpc_release(*(a1 + 32));
 }
 
-- (void)setDevicePropertyValues:(id)a3 message:(id)a4
+- (void)setDevicePropertyValues:(id)values message:(id)message
 {
-  reply = xpc_dictionary_create_reply(a4);
+  reply = xpc_dictionary_create_reply(message);
   if (reply)
   {
     v8 = reply;
     v23 = 0;
-    cmio_XPCMessageCopyCFString(a4, "param1", &v23);
+    cmio_XPCMessageCopyCFString(message, "param1", &v23);
     if (v23)
     {
       v9 = objc_alloc(MEMORY[0x277CCAD78]);
       v10 = [v9 initWithUUIDString:v23];
       CFRelease(v23);
-      value = xpc_dictionary_get_value(a4, "param2");
+      value = xpc_dictionary_get_value(message, "param2");
       if (value)
       {
         v12 = [CMIOExtensionPropertyState copyPropertyStatesFromXPCDictionary:value];
@@ -1235,20 +1235,20 @@ LABEL_15:
           [v13 enumerateKeysAndObjectsUsingBlock:v22];
           xpc_retain(v8);
           v15 = +[CMIOExtensionProvider sharedProvider];
-          v16 = [(CMIOExtensionClient *)self->_clientInfo clientID];
+          clientID = [(CMIOExtensionClient *)self->_clientInfo clientID];
           v21[0] = MEMORY[0x277D85DD0];
           v21[1] = 3221225472;
           v21[2] = __64__CMIOExtensionProviderContext_setDevicePropertyValues_message___block_invoke_34;
           v21[3] = &unk_27885C440;
           v21[4] = v8;
-          v21[5] = a3;
-          [v15 setDevicePropertyValuesForClientID:v16 deviceID:v10 propertyValues:v14 reply:v21];
+          v21[5] = values;
+          [v15 setDevicePropertyValuesForClientID:clientID deviceID:v10 propertyValues:v14 reply:v21];
         }
 
         else
         {
           xpc_dictionary_set_int64(v8, "errorReturn", -1);
-          xpc_connection_send_message(a3, v8);
+          xpc_connection_send_message(values, v8);
           v20 = CMIOLog();
           if (v20)
           {
@@ -1263,7 +1263,7 @@ LABEL_15:
       else
       {
         xpc_dictionary_set_int64(v8, "errorReturn", -1);
-        xpc_connection_send_message(a3, v8);
+        xpc_connection_send_message(values, v8);
         v19 = CMIOLog();
         if (v19 && os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
         {
@@ -1334,14 +1334,14 @@ void __64__CMIOExtensionProviderContext_setDevicePropertyValues_message___block_
   xpc_release(*(a1 + 32));
 }
 
-- (void)availableStreamProperties:(id)a3 message:(id)a4
+- (void)availableStreamProperties:(id)properties message:(id)message
 {
-  reply = xpc_dictionary_create_reply(a4);
+  reply = xpc_dictionary_create_reply(message);
   if (reply)
   {
     v8 = reply;
     cf = 0;
-    cmio_XPCMessageCopyCFString(a4, "param1", &cf);
+    cmio_XPCMessageCopyCFString(message, "param1", &cf);
     if (cf)
     {
       v9 = objc_alloc(MEMORY[0x277CCAD78]);
@@ -1349,14 +1349,14 @@ void __64__CMIOExtensionProviderContext_setDevicePropertyValues_message___block_
       CFRelease(cf);
       xpc_retain(v8);
       v11 = +[CMIOExtensionProvider sharedProvider];
-      v12 = [(CMIOExtensionClient *)self->_clientInfo clientID];
+      clientID = [(CMIOExtensionClient *)self->_clientInfo clientID];
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __66__CMIOExtensionProviderContext_availableStreamProperties_message___block_invoke;
       v15[3] = &unk_27885C3C8;
       v15[4] = v8;
-      v15[5] = a3;
-      [v11 availableStreamPropertiesForClientID:v12 streamID:v10 reply:v15];
+      v15[5] = properties;
+      [v11 availableStreamPropertiesForClientID:clientID streamID:v10 reply:v15];
     }
 
     else
@@ -1428,21 +1428,21 @@ LABEL_14:
   xpc_release(*(a1 + 32));
 }
 
-- (void)streamPropertyStates:(id)a3 message:(id)a4
+- (void)streamPropertyStates:(id)states message:(id)message
 {
-  reply = xpc_dictionary_create_reply(a4);
+  reply = xpc_dictionary_create_reply(message);
   if (reply)
   {
     v8 = reply;
     cf = 0;
-    cmio_XPCMessageCopyCFString(a4, "param1", &cf);
+    cmio_XPCMessageCopyCFString(message, "param1", &cf);
     if (cf)
     {
       v9 = objc_alloc(MEMORY[0x277CCAD78]);
       v10 = [v9 initWithUUIDString:cf];
       CFRelease(cf);
       v17 = 0;
-      cmio_XPCMessageCopyCFArray(a4, "param2", &v17);
+      cmio_XPCMessageCopyCFArray(message, "param2", &v17);
       if (v17)
       {
         v11 = [MEMORY[0x277CBEB98] setWithArray:?];
@@ -1456,14 +1456,14 @@ LABEL_14:
 
       xpc_retain(v8);
       v14 = +[CMIOExtensionProvider sharedProvider];
-      v15 = [(CMIOExtensionClient *)self->_clientInfo clientID];
+      clientID = [(CMIOExtensionClient *)self->_clientInfo clientID];
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __61__CMIOExtensionProviderContext_streamPropertyStates_message___block_invoke;
       v16[3] = &unk_27885C418;
       v16[4] = v8;
-      v16[5] = a3;
-      [v14 streamPropertyStatesForClientID:v15 streamID:v10 properties:v11 reply:v16];
+      v16[5] = states;
+      [v14 streamPropertyStatesForClientID:clientID streamID:v10 properties:v11 reply:v16];
     }
 
     else
@@ -1536,20 +1536,20 @@ LABEL_15:
   xpc_release(*(a1 + 32));
 }
 
-- (void)setStreamPropertyValues:(id)a3 message:(id)a4
+- (void)setStreamPropertyValues:(id)values message:(id)message
 {
-  reply = xpc_dictionary_create_reply(a4);
+  reply = xpc_dictionary_create_reply(message);
   if (reply)
   {
     v8 = reply;
     v23 = 0;
-    cmio_XPCMessageCopyCFString(a4, "param1", &v23);
+    cmio_XPCMessageCopyCFString(message, "param1", &v23);
     if (v23)
     {
       v9 = objc_alloc(MEMORY[0x277CCAD78]);
       v10 = [v9 initWithUUIDString:v23];
       CFRelease(v23);
-      value = xpc_dictionary_get_value(a4, "param2");
+      value = xpc_dictionary_get_value(message, "param2");
       if (value)
       {
         v12 = [CMIOExtensionPropertyState copyPropertyStatesFromXPCDictionary:value];
@@ -1565,20 +1565,20 @@ LABEL_15:
           [v13 enumerateKeysAndObjectsUsingBlock:v22];
           xpc_retain(v8);
           v15 = +[CMIOExtensionProvider sharedProvider];
-          v16 = [(CMIOExtensionClient *)self->_clientInfo clientID];
+          clientID = [(CMIOExtensionClient *)self->_clientInfo clientID];
           v21[0] = MEMORY[0x277D85DD0];
           v21[1] = 3221225472;
           v21[2] = __64__CMIOExtensionProviderContext_setStreamPropertyValues_message___block_invoke_35;
           v21[3] = &unk_27885C440;
           v21[4] = v8;
-          v21[5] = a3;
-          [v15 setStreamPropertyValuesForClientID:v16 streamID:v10 propertyValues:v14 reply:v21];
+          v21[5] = values;
+          [v15 setStreamPropertyValuesForClientID:clientID streamID:v10 propertyValues:v14 reply:v21];
         }
 
         else
         {
           xpc_dictionary_set_int64(v8, "errorReturn", -1);
-          xpc_connection_send_message(a3, v8);
+          xpc_connection_send_message(values, v8);
           v20 = CMIOLog();
           if (v20)
           {
@@ -1593,7 +1593,7 @@ LABEL_15:
       else
       {
         xpc_dictionary_set_int64(v8, "errorReturn", -1);
-        xpc_connection_send_message(a3, v8);
+        xpc_connection_send_message(values, v8);
         v19 = CMIOLog();
         if (v19 && os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
         {
@@ -1664,15 +1664,15 @@ void __64__CMIOExtensionProviderContext_setStreamPropertyValues_message___block_
   xpc_release(*(a1 + 32));
 }
 
-- (void)startStream:(id)a3 message:(id)a4
+- (void)startStream:(id)stream message:(id)message
 {
   v32 = *MEMORY[0x277D85DE8];
-  reply = xpc_dictionary_create_reply(a4);
+  reply = xpc_dictionary_create_reply(message);
   if (reply)
   {
     v8 = reply;
     cf = 0;
-    cmio_XPCMessageCopyCFString(a4, "param1", &cf);
+    cmio_XPCMessageCopyCFString(message, "param1", &cf);
     if (cf)
     {
       v9 = objc_alloc(MEMORY[0x277CCAD78]);
@@ -1713,14 +1713,14 @@ void __64__CMIOExtensionProviderContext_setStreamPropertyValues_message___block_
 
       xpc_retain(v8);
       v17 = +[CMIOExtensionProvider sharedProvider];
-      v18 = [(CMIOExtensionClient *)self->_clientInfo clientID];
+      clientID = [(CMIOExtensionClient *)self->_clientInfo clientID];
       v22[0] = MEMORY[0x277D85DD0];
       v22[1] = 3221225472;
       v22[2] = __52__CMIOExtensionProviderContext_startStream_message___block_invoke;
       v22[3] = &unk_27885C440;
       v22[4] = v8;
-      v22[5] = a3;
-      [v17 startStreamForClientID:v18 streamID:v10 reply:v22];
+      v22[5] = stream;
+      [v17 startStreamForClientID:clientID streamID:v10 reply:v22];
     }
 
     else
@@ -1775,15 +1775,15 @@ void __52__CMIOExtensionProviderContext_startStream_message___block_invoke(uint6
   xpc_release(*(a1 + 32));
 }
 
-- (void)stopStream:(id)a3 message:(id)a4
+- (void)stopStream:(id)stream message:(id)message
 {
   v30 = *MEMORY[0x277D85DE8];
-  reply = xpc_dictionary_create_reply(a4);
+  reply = xpc_dictionary_create_reply(message);
   if (reply)
   {
     v8 = reply;
     cf = 0;
-    cmio_XPCMessageCopyCFString(a4, "param1", &cf);
+    cmio_XPCMessageCopyCFString(message, "param1", &cf);
     if (cf)
     {
       v9 = objc_alloc(MEMORY[0x277CCAD78]);
@@ -1791,14 +1791,14 @@ void __52__CMIOExtensionProviderContext_startStream_message___block_invoke(uint6
       CFRelease(cf);
       xpc_retain(v8);
       v11 = +[CMIOExtensionProvider sharedProvider];
-      v12 = [(CMIOExtensionClient *)self->_clientInfo clientID];
+      clientID = [(CMIOExtensionClient *)self->_clientInfo clientID];
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = __51__CMIOExtensionProviderContext_stopStream_message___block_invoke;
       v20[3] = &unk_27885C440;
       v20[4] = v8;
-      v20[5] = a3;
-      [v11 stopStreamForClientID:v12 streamID:v10 reply:v20];
+      v20[5] = stream;
+      [v11 stopStreamForClientID:clientID streamID:v10 reply:v20];
       if (self->_voucher)
       {
         v13 = CMIOLog();
@@ -1877,14 +1877,14 @@ void __51__CMIOExtensionProviderContext_stopStream_message___block_invoke(uint64
   xpc_release(*(a1 + 32));
 }
 
-- (void)setClientInfo:(id)a3 message:(id)a4
+- (void)setClientInfo:(id)info message:(id)message
 {
   v33 = *MEMORY[0x277D85DE8];
-  reply = xpc_dictionary_create_reply(a4);
+  reply = xpc_dictionary_create_reply(message);
   if (reply)
   {
     v8 = reply;
-    value = xpc_dictionary_get_value(a4, "param1");
+    value = xpc_dictionary_get_value(message, "param1");
     if (value)
     {
       v10 = value;
@@ -1915,7 +1915,7 @@ void __51__CMIOExtensionProviderContext_stopStream_message___block_invoke(uint64
           if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
           {
             v16 = CMIOFilename("/Library/Caches/com.apple.xbs/Sources/CoreMediaIO/Sources/Extensions/Sources/CMIOExtensionProviderContext.m");
-            pid = xpc_connection_get_pid(a3);
+            pid = xpc_connection_get_pid(info);
             v18 = self->_clientInfo;
             v21 = 136316419;
             v22 = v16;
@@ -1926,7 +1926,7 @@ void __51__CMIOExtensionProviderContext_stopStream_message___block_invoke(uint64
             v27 = 1025;
             v28 = pid;
             v29 = 2112;
-            v30 = self;
+            selfCopy = self;
             v31 = 2112;
             v32 = v18;
             _os_log_error_impl(&dword_22EA08000, v15, OS_LOG_TYPE_ERROR, "%s:%d:%s [%{private}d] invalid connection for this message to %@ / %@", &v21, 0x36u);
@@ -1935,7 +1935,7 @@ void __51__CMIOExtensionProviderContext_stopStream_message___block_invoke(uint64
       }
 
       xpc_dictionary_set_int64(v8, "errorReturn", -1);
-      xpc_connection_send_message(a3, v8);
+      xpc_connection_send_message(info, v8);
       [+[CMIOExtensionProvider sharedProvider](CMIOExtensionProvider "sharedProvider")];
       [(CMIOExtensionProviderContext *)self invalidate];
       goto LABEL_17;
@@ -1943,7 +1943,7 @@ void __51__CMIOExtensionProviderContext_stopStream_message___block_invoke(uint64
 
 LABEL_6:
     xpc_dictionary_set_int64(v8, "errorReturn", 0);
-    xpc_connection_send_message(a3, v8);
+    xpc_connection_send_message(info, v8);
     [+[CMIOExtensionProvider sharedProvider](CMIOExtensionProvider "sharedProvider")];
 LABEL_17:
     xpc_release(v8);
@@ -1960,10 +1960,10 @@ LABEL_18:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)captureAsyncStillImage:(id)a3 message:(id)a4
+- (void)captureAsyncStillImage:(id)image message:(id)message
 {
   v20 = 0;
-  reply = xpc_dictionary_create_reply(a4);
+  reply = xpc_dictionary_create_reply(message);
   if (!reply)
   {
     v12 = CMIOLog();
@@ -1984,11 +1984,11 @@ LABEL_14:
   }
 
   cf = 0;
-  cmio_XPCMessageCopyCFString(a4, "param1", &cf);
+  cmio_XPCMessageCopyCFString(message, "param1", &cf);
   if (!cf)
   {
     xpc_dictionary_set_int64(reply, "errorReturn", -1);
-    xpc_connection_send_message(a3, reply);
+    xpc_connection_send_message(image, reply);
     v13 = CMIOLog();
     v9 = v13;
     if (!v13)
@@ -2008,15 +2008,15 @@ LABEL_14:
   v9 = [v8 initWithUUIDString:cf];
   CFRelease(cf);
   v18 = 0;
-  cmio_XPCMessageCopyCFNumber(a4, "param2", &v18);
+  cmio_XPCMessageCopyCFNumber(message, "param2", &v18);
   if (v18)
   {
-    v10 = [v18 longLongValue];
+    longLongValue = [v18 longLongValue];
     CFRelease(v18);
-    if (cmio_XPCMessageCopyCFDictionary(a4, "param3", &v20))
+    if (cmio_XPCMessageCopyCFDictionary(message, "param3", &v20))
     {
       xpc_dictionary_set_int64(reply, "errorReturn", -1);
-      xpc_connection_send_message(a3, reply);
+      xpc_connection_send_message(image, reply);
       v11 = CMIOLog();
       if (v11 && os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
@@ -2028,21 +2028,21 @@ LABEL_14:
     {
       xpc_retain(reply);
       v15 = +[CMIOExtensionProvider sharedProvider];
-      v16 = [(CMIOExtensionClient *)self->_clientInfo clientID];
+      clientID = [(CMIOExtensionClient *)self->_clientInfo clientID];
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = __63__CMIOExtensionProviderContext_captureAsyncStillImage_message___block_invoke;
       v17[3] = &unk_27885C490;
       v17[4] = reply;
-      v17[5] = a3;
-      [v15 captureAsyncStillImageForClientID:v16 streamID:v9 uniqueID:v10 options:v20 reply:v17];
+      v17[5] = image;
+      [v15 captureAsyncStillImageForClientID:clientID streamID:v9 uniqueID:longLongValue options:v20 reply:v17];
     }
   }
 
   else
   {
     xpc_dictionary_set_int64(reply, "errorReturn", -1);
-    xpc_connection_send_message(a3, reply);
+    xpc_connection_send_message(image, reply);
     v14 = CMIOLog();
     if (v14 && os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -2092,14 +2092,14 @@ void __63__CMIOExtensionProviderContext_captureAsyncStillImage_message___block_i
   xpc_release(*(a1 + 32));
 }
 
-- (void)updateNonStreamingProxyFrontedExtensionPIDs:(id)a3 message:(id)a4
+- (void)updateNonStreamingProxyFrontedExtensionPIDs:(id)ds message:(id)message
 {
   v25 = *MEMORY[0x277D85DE8];
   p_clientInfo = &self->_clientInfo;
   if ([(CMIOExtensionClient *)self->_clientInfo isFromProxyExtensionManager])
   {
     v14 = 0;
-    cmio_XPCMessageCopyCFArray(a4, "param1", &v14);
+    cmio_XPCMessageCopyCFArray(message, "param1", &v14);
     v6 = v14;
     v7 = CMIOLog();
     v8 = v7;
@@ -2144,24 +2144,24 @@ void __63__CMIOExtensionProviderContext_captureAsyncStillImage_message___block_i
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enqueueReactionEffect:(id)a3 message:(id)a4
+- (void)enqueueReactionEffect:(id)effect message:(id)message
 {
   v18 = 0;
-  reply = xpc_dictionary_create_reply(a4);
+  reply = xpc_dictionary_create_reply(message);
   if (reply)
   {
     v8 = reply;
     cf = 0;
-    cmio_XPCMessageCopyCFString(a4, "param1", &cf);
+    cmio_XPCMessageCopyCFString(message, "param1", &cf);
     if (cf)
     {
       v9 = objc_alloc(MEMORY[0x277CCAD78]);
       v10 = [v9 initWithUUIDString:cf];
       CFRelease(cf);
-      if (cmio_XPCMessageCopyCFString(a4, "param2", &v18))
+      if (cmio_XPCMessageCopyCFString(message, "param2", &v18))
       {
         xpc_dictionary_set_int64(v8, "errorReturn", -1);
-        xpc_connection_send_message(a3, v8);
+        xpc_connection_send_message(effect, v8);
         v11 = CMIOLog();
         if (v11)
         {
@@ -2176,21 +2176,21 @@ void __63__CMIOExtensionProviderContext_captureAsyncStillImage_message___block_i
       {
         xpc_retain(v8);
         v14 = +[CMIOExtensionProvider sharedProvider];
-        v15 = [(CMIOExtensionClient *)self->_clientInfo clientID];
+        clientID = [(CMIOExtensionClient *)self->_clientInfo clientID];
         v16[0] = MEMORY[0x277D85DD0];
         v16[1] = 3221225472;
         v16[2] = __62__CMIOExtensionProviderContext_enqueueReactionEffect_message___block_invoke;
         v16[3] = &unk_27885C440;
         v16[4] = v8;
-        v16[5] = a3;
-        [v14 enqueueReactionEffectForClientID:v15 streamID:v10 reactionType:v18 reply:v16];
+        v16[5] = effect;
+        [v14 enqueueReactionEffectForClientID:clientID streamID:v10 reactionType:v18 reply:v16];
       }
     }
 
     else
     {
       xpc_dictionary_set_int64(v8, "errorReturn", -1);
-      xpc_connection_send_message(a3, v8);
+      xpc_connection_send_message(effect, v8);
       v13 = CMIOLog();
       v10 = v13;
       if (v13)
@@ -2243,7 +2243,7 @@ void __62__CMIOExtensionProviderContext_enqueueReactionEffect_message___block_in
   xpc_release(*(a1 + 32));
 }
 
-- (void)pluginPropertiesChanged:(id)a3
+- (void)pluginPropertiesChanged:(id)changed
 {
   v22 = *MEMORY[0x277D85DE8];
   v5 = CMIOLogLevel(1);
@@ -2253,7 +2253,7 @@ void __62__CMIOExtensionProviderContext_enqueueReactionEffect_message___block_in
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v7 = CMIOFilename("/Library/Caches/com.apple.xbs/Sources/CoreMediaIO/Sources/Extensions/Sources/CMIOExtensionProviderContext.m");
-      v8 = [(CMIOExtensionClient *)self->_clientInfo clientID];
+      clientID = [(CMIOExtensionClient *)self->_clientInfo clientID];
       v14 = 136315907;
       v15 = v7;
       v16 = 1024;
@@ -2261,19 +2261,19 @@ void __62__CMIOExtensionProviderContext_enqueueReactionEffect_message___block_in
       v18 = 2080;
       v19 = "[CMIOExtensionProviderContext pluginPropertiesChanged:]";
       v20 = 2113;
-      v21 = v8;
+      v21 = clientID;
       _os_log_impl(&dword_22EA08000, v6, OS_LOG_TYPE_DEFAULT, "%s:%d:%s CID %{private}@", &v14, 0x26u);
     }
   }
 
   v9 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_uint64(v9, "MessageType", 3uLL);
-  if (!a3)
+  if (!changed)
   {
     goto LABEL_7;
   }
 
-  v10 = [CMIOExtensionPropertyState copyXPCDictionaryFromPropertyStates:a3];
+  v10 = [CMIOExtensionPropertyState copyXPCDictionaryFromPropertyStates:changed];
   if (v10)
   {
     v11 = v10;
@@ -2295,7 +2295,7 @@ LABEL_8:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)availableDevicesChanged:(id)a3
+- (void)availableDevicesChanged:(id)changed
 {
   v20 = *MEMORY[0x277D85DE8];
   v5 = CMIOLogLevel(1);
@@ -2305,7 +2305,7 @@ LABEL_8:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v7 = CMIOFilename("/Library/Caches/com.apple.xbs/Sources/CoreMediaIO/Sources/Extensions/Sources/CMIOExtensionProviderContext.m");
-      v8 = [(CMIOExtensionClient *)self->_clientInfo clientID];
+      clientID = [(CMIOExtensionClient *)self->_clientInfo clientID];
       v12 = 136315907;
       v13 = v7;
       v14 = 1024;
@@ -2313,14 +2313,14 @@ LABEL_8:
       v16 = 2080;
       v17 = "[CMIOExtensionProviderContext availableDevicesChanged:]";
       v18 = 2113;
-      v19 = v8;
+      v19 = clientID;
       _os_log_impl(&dword_22EA08000, v6, OS_LOG_TYPE_DEFAULT, "%s:%d:%s CID %{private}@", &v12, 0x26u);
     }
   }
 
   v9 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_uint64(v9, "MessageType", 1uLL);
-  if (a3 && cmio_XPCMessageSetCFArray(v9, "param1", a3))
+  if (changed && cmio_XPCMessageSetCFArray(v9, "param1", changed))
   {
     v10 = CMIOLog();
     if (v10 && os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -2338,7 +2338,7 @@ LABEL_8:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)devicePropertiesChangedWithDeviceID:(id)a3 propertyStates:(id)a4
+- (void)devicePropertiesChangedWithDeviceID:(id)d propertyStates:(id)states
 {
   v27 = *MEMORY[0x277D85DE8];
   v7 = CMIOLogLevel(1);
@@ -2348,7 +2348,7 @@ LABEL_8:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9 = CMIOFilename("/Library/Caches/com.apple.xbs/Sources/CoreMediaIO/Sources/Extensions/Sources/CMIOExtensionProviderContext.m");
-      v10 = [(CMIOExtensionClient *)self->_clientInfo clientID];
+      clientID = [(CMIOExtensionClient *)self->_clientInfo clientID];
       v17 = 136316163;
       v18 = v9;
       v19 = 1024;
@@ -2356,16 +2356,16 @@ LABEL_8:
       v21 = 2080;
       v22 = "[CMIOExtensionProviderContext devicePropertiesChangedWithDeviceID:propertyStates:]";
       v23 = 2113;
-      v24 = v10;
+      v24 = clientID;
       v25 = 2113;
-      v26 = a3;
+      dCopy = d;
       _os_log_impl(&dword_22EA08000, v8, OS_LOG_TYPE_DEFAULT, "%s:%d:%s CID %{private}@ DID %{private}@", &v17, 0x30u);
     }
   }
 
   v11 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_uint64(v11, "MessageType", 4uLL);
-  if (cmio_XPCMessageSetCFString(v11, "param1", a3))
+  if (cmio_XPCMessageSetCFString(v11, "param1", d))
   {
     v12 = CMIOLog();
     if (v12 && os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -2376,14 +2376,14 @@ LABEL_8:
     goto LABEL_12;
   }
 
-  if (!a4)
+  if (!states)
   {
 LABEL_11:
     xpc_connection_send_message(self->_connection, v11);
     goto LABEL_12;
   }
 
-  v13 = [CMIOExtensionPropertyState copyXPCDictionaryFromPropertyStates:a4];
+  v13 = [CMIOExtensionPropertyState copyXPCDictionaryFromPropertyStates:states];
   if (v13)
   {
     v14 = v13;
@@ -2403,7 +2403,7 @@ LABEL_12:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)availableStreamsChangedWithDeviceID:(id)a3 streamIDs:(id)a4
+- (void)availableStreamsChangedWithDeviceID:(id)d streamIDs:(id)ds
 {
   v25 = *MEMORY[0x277D85DE8];
   v7 = CMIOLogLevel(1);
@@ -2413,7 +2413,7 @@ LABEL_12:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9 = CMIOFilename("/Library/Caches/com.apple.xbs/Sources/CoreMediaIO/Sources/Extensions/Sources/CMIOExtensionProviderContext.m");
-      v10 = [(CMIOExtensionClient *)self->_clientInfo clientID];
+      clientID = [(CMIOExtensionClient *)self->_clientInfo clientID];
       v15 = 136316163;
       v16 = v9;
       v17 = 1024;
@@ -2421,16 +2421,16 @@ LABEL_12:
       v19 = 2080;
       v20 = "[CMIOExtensionProviderContext availableStreamsChangedWithDeviceID:streamIDs:]";
       v21 = 2113;
-      v22 = v10;
+      v22 = clientID;
       v23 = 2113;
-      v24 = a3;
+      dCopy = d;
       _os_log_impl(&dword_22EA08000, v8, OS_LOG_TYPE_DEFAULT, "%s:%d:%s CID %{private}@ DID %{private}@", &v15, 0x30u);
     }
   }
 
   v11 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_uint64(v11, "MessageType", 2uLL);
-  if (cmio_XPCMessageSetCFString(v11, "param1", a3))
+  if (cmio_XPCMessageSetCFString(v11, "param1", d))
   {
     v12 = CMIOLog();
     if (v12 && os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -2439,7 +2439,7 @@ LABEL_12:
     }
   }
 
-  else if (a4 && cmio_XPCMessageSetCFArray(v11, "param2", a4))
+  else if (ds && cmio_XPCMessageSetCFArray(v11, "param2", ds))
   {
     v13 = CMIOLog();
     if (v13 && os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -2457,7 +2457,7 @@ LABEL_12:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)streamPropertiesChangedWithStreamID:(id)a3 propertyStates:(id)a4
+- (void)streamPropertiesChangedWithStreamID:(id)d propertyStates:(id)states
 {
   v27 = *MEMORY[0x277D85DE8];
   v7 = CMIOLogLevel(1);
@@ -2467,7 +2467,7 @@ LABEL_12:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9 = CMIOFilename("/Library/Caches/com.apple.xbs/Sources/CoreMediaIO/Sources/Extensions/Sources/CMIOExtensionProviderContext.m");
-      v10 = [(CMIOExtensionClient *)self->_clientInfo clientID];
+      clientID = [(CMIOExtensionClient *)self->_clientInfo clientID];
       v17 = 136316163;
       v18 = v9;
       v19 = 1024;
@@ -2475,16 +2475,16 @@ LABEL_12:
       v21 = 2080;
       v22 = "[CMIOExtensionProviderContext streamPropertiesChangedWithStreamID:propertyStates:]";
       v23 = 2113;
-      v24 = v10;
+      v24 = clientID;
       v25 = 2112;
-      v26 = a3;
+      dCopy = d;
       _os_log_impl(&dword_22EA08000, v8, OS_LOG_TYPE_DEFAULT, "%s:%d:%s CID %{private}@ SID %@", &v17, 0x30u);
     }
   }
 
   v11 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_uint64(v11, "MessageType", 5uLL);
-  if (cmio_XPCMessageSetCFString(v11, "param1", a3))
+  if (cmio_XPCMessageSetCFString(v11, "param1", d))
   {
     v12 = CMIOLog();
     if (v12 && os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -2495,14 +2495,14 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  if (!a4)
+  if (!states)
   {
 LABEL_11:
     xpc_connection_send_message(self->_connection, v11);
     goto LABEL_12;
   }
 
-  v13 = [CMIOExtensionPropertyState copyXPCDictionaryFromPropertyStates:a4];
+  v13 = [CMIOExtensionPropertyState copyXPCDictionaryFromPropertyStates:states];
   if (v13)
   {
     v14 = v13;
@@ -2522,7 +2522,7 @@ LABEL_12:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)receivedSampleWithStreamID:(id)a3 sample:(id)a4
+- (void)receivedSampleWithStreamID:(id)d sample:(id)sample
 {
   v27 = *MEMORY[0x277D85DE8];
   v7 = CMIOLogLevel(3);
@@ -2532,7 +2532,7 @@ LABEL_12:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9 = CMIOFilename("/Library/Caches/com.apple.xbs/Sources/CoreMediaIO/Sources/Extensions/Sources/CMIOExtensionProviderContext.m");
-      v10 = [(CMIOExtensionClient *)self->_clientInfo clientID];
+      clientID = [(CMIOExtensionClient *)self->_clientInfo clientID];
       v17 = 136316163;
       v18 = v9;
       v19 = 1024;
@@ -2540,16 +2540,16 @@ LABEL_12:
       v21 = 2080;
       v22 = "[CMIOExtensionProviderContext receivedSampleWithStreamID:sample:]";
       v23 = 2113;
-      v24 = v10;
+      v24 = clientID;
       v25 = 2112;
-      v26 = a3;
+      dCopy = d;
       _os_log_impl(&dword_22EA08000, v8, OS_LOG_TYPE_DEFAULT, "%s:%d:%s CID %{private}@ SID %@", &v17, 0x30u);
     }
   }
 
   v11 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_uint64(v11, "MessageType", 7uLL);
-  if (cmio_XPCMessageSetCFString(v11, "param1", a3))
+  if (cmio_XPCMessageSetCFString(v11, "param1", d))
   {
     v12 = CMIOLog();
     if (v12 && os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -2560,19 +2560,19 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  if (!a4)
+  if (!sample)
   {
 LABEL_11:
     xpc_connection_send_message(self->_connection, v11);
     goto LABEL_12;
   }
 
-  xpc_dictionary_set_int64(v11, "param2", [a4 mediaType]);
-  v13 = [a4 copyXPCDictionary];
-  if (v13)
+  xpc_dictionary_set_int64(v11, "param2", [sample mediaType]);
+  copyXPCDictionary = [sample copyXPCDictionary];
+  if (copyXPCDictionary)
   {
-    v14 = v13;
-    xpc_dictionary_set_value(v11, "param3", v13);
+    v14 = copyXPCDictionary;
+    xpc_dictionary_set_value(v11, "param3", copyXPCDictionary);
     xpc_release(v14);
     goto LABEL_11;
   }
@@ -2588,7 +2588,7 @@ LABEL_12:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)pullSampleBufferForStreamID:(id)a3 replyq:(id)a4 reply:(id)a5
+- (void)pullSampleBufferForStreamID:(id)d replyq:(id)replyq reply:(id)reply
 {
   v28 = *MEMORY[0x277D85DE8];
   v9 = CMIOLogLevel(3);
@@ -2598,7 +2598,7 @@ LABEL_12:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v11 = CMIOFilename("/Library/Caches/com.apple.xbs/Sources/CoreMediaIO/Sources/Extensions/Sources/CMIOExtensionProviderContext.m");
-      v12 = [(CMIOExtensionClient *)self->_clientInfo clientID];
+      clientID = [(CMIOExtensionClient *)self->_clientInfo clientID];
       *buf = 136316163;
       v19 = v11;
       v20 = 1024;
@@ -2606,16 +2606,16 @@ LABEL_12:
       v22 = 2080;
       v23 = "[CMIOExtensionProviderContext pullSampleBufferForStreamID:replyq:reply:]";
       v24 = 2113;
-      v25 = v12;
+      v25 = clientID;
       v26 = 2112;
-      v27 = a3;
+      dCopy = d;
       _os_log_impl(&dword_22EA08000, v10, OS_LOG_TYPE_DEFAULT, "%s:%d:%s CID %{private}@ SID %@", buf, 0x30u);
     }
   }
 
   v13 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_uint64(v13, "MessageType", 8uLL);
-  if (cmio_XPCMessageSetCFString(v13, "param1", a3))
+  if (cmio_XPCMessageSetCFString(v13, "param1", d))
   {
     v14 = CMIOLog();
     if (v14 && os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -2623,7 +2623,7 @@ LABEL_12:
       [CMIOExtensionProviderContext pullSampleBufferForStreamID:replyq:reply:];
     }
 
-    (*(a5 + 2))(a5, 0, 0, [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-5 userInfo:0]);
+    (*(reply + 2))(reply, 0, 0, [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-5 userInfo:0]);
   }
 
   else
@@ -2633,8 +2633,8 @@ LABEL_12:
     handler[1] = 3221225472;
     handler[2] = __73__CMIOExtensionProviderContext_pullSampleBufferForStreamID_replyq_reply___block_invoke;
     handler[3] = &unk_27885C4B8;
-    handler[4] = a5;
-    xpc_connection_send_message_with_reply(connection, v13, a4, handler);
+    handler[4] = reply;
+    xpc_connection_send_message_with_reply(connection, v13, replyq, handler);
   }
 
   xpc_release(v13);
@@ -2709,7 +2709,7 @@ void __73__CMIOExtensionProviderContext_pullSampleBufferForStreamID_replyq_reply
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)streamScheduledOutputChangedWithStreamID:(id)a3 scheduledOutput:(id)a4
+- (void)streamScheduledOutputChangedWithStreamID:(id)d scheduledOutput:(id)output
 {
   v27 = *MEMORY[0x277D85DE8];
   v7 = CMIOLogLevel(2);
@@ -2719,7 +2719,7 @@ void __73__CMIOExtensionProviderContext_pullSampleBufferForStreamID_replyq_reply
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9 = CMIOFilename("/Library/Caches/com.apple.xbs/Sources/CoreMediaIO/Sources/Extensions/Sources/CMIOExtensionProviderContext.m");
-      v10 = [(CMIOExtensionClient *)self->_clientInfo clientID];
+      clientID = [(CMIOExtensionClient *)self->_clientInfo clientID];
       v17 = 136316163;
       v18 = v9;
       v19 = 1024;
@@ -2727,16 +2727,16 @@ void __73__CMIOExtensionProviderContext_pullSampleBufferForStreamID_replyq_reply
       v21 = 2080;
       v22 = "[CMIOExtensionProviderContext streamScheduledOutputChangedWithStreamID:scheduledOutput:]";
       v23 = 2113;
-      v24 = v10;
+      v24 = clientID;
       v25 = 2112;
-      v26 = a3;
+      dCopy = d;
       _os_log_impl(&dword_22EA08000, v8, OS_LOG_TYPE_DEFAULT, "%s:%d:%s CID %{private}@ SID %@", &v17, 0x30u);
     }
   }
 
   v11 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_uint64(v11, "MessageType", 9uLL);
-  if (cmio_XPCMessageSetCFString(v11, "param1", a3))
+  if (cmio_XPCMessageSetCFString(v11, "param1", d))
   {
     v12 = CMIOLog();
     if (v12 && os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -2747,18 +2747,18 @@ void __73__CMIOExtensionProviderContext_pullSampleBufferForStreamID_replyq_reply
     goto LABEL_12;
   }
 
-  if (!a4)
+  if (!output)
   {
 LABEL_11:
     xpc_connection_send_message(self->_connection, v11);
     goto LABEL_12;
   }
 
-  v13 = [a4 copyXPCDictionary];
-  if (v13)
+  copyXPCDictionary = [output copyXPCDictionary];
+  if (copyXPCDictionary)
   {
-    v14 = v13;
-    xpc_dictionary_set_value(v11, "param2", v13);
+    v14 = copyXPCDictionary;
+    xpc_dictionary_set_value(v11, "param2", copyXPCDictionary);
     xpc_release(v14);
     goto LABEL_11;
   }

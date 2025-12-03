@@ -1,19 +1,19 @@
 @interface COSRestoreTableViewCell
-- (COSRestoreTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (unsigned)_NRWatchVersionFromBackup:(id)a3;
+- (COSRestoreTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (unsigned)_NRWatchVersionFromBackup:(id)backup;
 - (void)layoutSubviews;
-- (void)setRestoreDetailsFromBackup:(id)a3;
-- (void)setRestoreDetailsFromDevice:(id)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)setRestoreDetailsFromBackup:(id)backup;
+- (void)setRestoreDetailsFromDevice:(id)device;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation COSRestoreTableViewCell
 
-- (COSRestoreTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (COSRestoreTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v76.receiver = self;
   v76.super_class = COSRestoreTableViewCell;
-  v4 = [(COSRestoreTableViewCell *)&v76 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(COSRestoreTableViewCell *)&v76 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = [[COSWatchView alloc] initWithStyle:3];
@@ -165,13 +165,13 @@
   return v4;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v6.receiver = self;
   v6.super_class = COSRestoreTableViewCell;
   [(COSRestoreTableViewCell *)&v6 setSelected:?];
-  if (v3)
+  if (selectedCopy)
   {
     v5 = 3;
   }
@@ -184,19 +184,19 @@
   [(COSRestoreTableViewCell *)self setAccessoryType:v5];
 }
 
-- (void)setRestoreDetailsFromBackup:(id)a3
+- (void)setRestoreDetailsFromBackup:(id)backup
 {
-  v4 = a3;
+  backupCopy = backup;
   deviceTitleLabel = self->_deviceTitleLabel;
-  v6 = [v4 name];
-  [(UILabel *)deviceTitleLabel setText:v6];
+  name = [backupCopy name];
+  [(UILabel *)deviceTitleLabel setText:name];
 
-  v41 = [v4 housingColor];
-  v7 = [v41 integerValue];
-  if (!v7 || (v8 = [PBBridgeWatchAttributeController _materialForCLHSValue:v7]) == 0)
+  housingColor = [backupCopy housingColor];
+  integerValue = [housingColor integerValue];
+  if (!integerValue || (integerValue2 = [PBBridgeWatchAttributeController _materialForCLHSValue:integerValue]) == 0)
   {
-    v9 = [v4 topEnclosureMaterial];
-    v8 = [v9 integerValue];
+    topEnclosureMaterial = [backupCopy topEnclosureMaterial];
+    integerValue2 = [topEnclosureMaterial integerValue];
   }
 
   deviceMaterialLabel = self->_deviceMaterialLabel;
@@ -204,7 +204,7 @@
   [(UILabel *)deviceMaterialLabel setText:v11];
 
   deviceCaseSizeLabel = self->_deviceCaseSizeLabel;
-  v13 = [v4 productType];
+  productType = [backupCopy productType];
   v14 = BPSLocalizedVariantSizeForProductType();
   [(UILabel *)deviceCaseSizeLabel setText:v14];
 
@@ -212,52 +212,52 @@
   [v15 setTimeStyle:1];
   [v15 setDateStyle:1];
   [v15 setDoesRelativeDateFormatting:1];
-  v16 = [v4 marketingVersion];
-  if (!v16)
+  marketingVersion = [backupCopy marketingVersion];
+  if (!marketingVersion)
   {
-    v16 = [v4 systemVersion];
+    marketingVersion = [backupCopy systemVersion];
   }
 
-  v17 = [v4 lastModificationDate];
-  v18 = [v15 stringFromDate:v17];
+  lastModificationDate = [backupCopy lastModificationDate];
+  v18 = [v15 stringFromDate:lastModificationDate];
 
   if (v18)
   {
     v19 = +[NSBundle mainBundle];
     v20 = [v19 localizedStringForKey:@"DATE_AND_OS_%@_%@" value:&stru_10026E598 table:@"Localizable"];
-    v21 = [NSString stringWithFormat:v20, v18, v16];
+    v21 = [NSString stringWithFormat:v20, v18, marketingVersion];
   }
 
   else
   {
-    v21 = v16;
+    v21 = marketingVersion;
   }
 
   v40 = v21;
   [(UILabel *)self->_deviceLastBackupDetailLabel setText:v21];
-  v22 = [v4 productType];
+  productType2 = [backupCopy productType];
   v23 = BPSVariantSizeForProductType();
 
-  [(COSWatchView *)self->_watchView overrideMaterial:v8 size:v23];
+  [(COSWatchView *)self->_watchView overrideMaterial:integerValue2 size:v23];
   [(UILabel *)self->_pairedStatusLabel setText:&stru_10026E598];
-  v24 = [v4 activeWatchFaceFileURL];
-  v25 = v24;
-  if (v24 && [v24 isFileURL])
+  activeWatchFaceFileURL = [backupCopy activeWatchFaceFileURL];
+  v25 = activeWatchFaceFileURL;
+  if (activeWatchFaceFileURL && [activeWatchFaceFileURL isFileURL])
   {
-    v26 = [v25 path];
+    path = [v25 path];
   }
 
   else
   {
-    v26 = 0;
+    path = 0;
   }
 
-  v27 = [v4 watchFaceData];
+  watchFaceData = [backupCopy watchFaceData];
 
-  if (v27)
+  if (watchFaceData)
   {
-    v28 = [v4 watchFaceData];
-    v29 = [UIImage imageWithData:v28];
+    watchFaceData2 = [backupCopy watchFaceData];
+    v29 = [UIImage imageWithData:watchFaceData2];
     [(COSWatchView *)self->_watchView setStaticSnapShot:v29];
 
     v30 = pbb_setupflow_log();
@@ -270,9 +270,9 @@
     v31 = "Setting up snapshot for backup with data from backup";
   }
 
-  else if (v26)
+  else if (path)
   {
-    [(COSWatchView *)self->_watchView setWatchFaceFilePath:v26];
+    [(COSWatchView *)self->_watchView setWatchFaceFilePath:path];
     v30 = pbb_setupflow_log();
     if (!os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
@@ -299,19 +299,19 @@
 LABEL_22:
 
   v32 = +[COSBackupManager sharedBackupManager];
-  v33 = [v32 minWatchOSVersion];
+  minWatchOSVersion = [v32 minWatchOSVersion];
   v34 = NRWatchOSVersion();
 
-  [(COSRestoreTableViewCell *)self _NRWatchVersionFromBackup:v4];
-  LOBYTE(v33) = NRVersionIsGreaterThanOrEqual();
+  [(COSRestoreTableViewCell *)self _NRWatchVersionFromBackup:backupCopy];
+  LOBYTE(minWatchOSVersion) = NRVersionIsGreaterThanOrEqual();
   v35 = pbb_setupflow_log();
   v36 = os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT);
-  if (v33)
+  if (minWatchOSVersion)
   {
     if (v36)
     {
       *buf = 138412546;
-      v43 = v16;
+      v43 = marketingVersion;
       v44 = 1024;
       v45 = v34;
       _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "found compatible backup: %@ - %u", buf, 0x12u);
@@ -323,7 +323,7 @@ LABEL_22:
     if (v36)
     {
       *buf = 138412546;
-      v43 = v16;
+      v43 = marketingVersion;
       v44 = 1024;
       v45 = v34;
       _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "found incompatible backup: %@ - %u", buf, 0x12u);
@@ -340,22 +340,22 @@ LABEL_22:
   [(COSRestoreTableViewCell *)self setNeedsLayout];
 }
 
-- (unsigned)_NRWatchVersionFromBackup:(id)a3
+- (unsigned)_NRWatchVersionFromBackup:(id)backup
 {
-  v3 = a3;
-  v4 = [v3 systemVersion];
-  v5 = [v3 productName];
+  backupCopy = backup;
+  systemVersion = [backupCopy systemVersion];
+  productName = [backupCopy productName];
 
-  if (!v5)
+  if (!productName)
   {
-    v6 = [v4 hasPrefix:@"8.2"];
+    v6 = [systemVersion hasPrefix:@"8.2"];
     v7 = @"Watch OS";
     if (v6)
     {
       v7 = @"iPhone OS";
     }
 
-    v5 = v7;
+    productName = v7;
   }
 
   v8 = NRWatchOSVersion();
@@ -363,14 +363,14 @@ LABEL_22:
   return v8;
 }
 
-- (void)setRestoreDetailsFromDevice:(id)a3
+- (void)setRestoreDetailsFromDevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 valueForProperty:NRDevicePropertyName];
-  v6 = [v4 valueForProperty:NRDevicePropertyProductType];
-  v7 = [v4 valueForProperty:NRDevicePropertySystemVersion];
-  v32 = [PBBridgeWatchAttributeController materialFromDevice:v4];
-  v8 = [v4 valueForProperty:NRDevicePropertyLastActiveDate];
+  deviceCopy = device;
+  v5 = [deviceCopy valueForProperty:NRDevicePropertyName];
+  v6 = [deviceCopy valueForProperty:NRDevicePropertyProductType];
+  v7 = [deviceCopy valueForProperty:NRDevicePropertySystemVersion];
+  v32 = [PBBridgeWatchAttributeController materialFromDevice:deviceCopy];
+  v8 = [deviceCopy valueForProperty:NRDevicePropertyLastActiveDate];
   v35 = v5;
   [(UILabel *)self->_deviceTitleLabel setText:v5];
   deviceMaterialLabel = self->_deviceMaterialLabel;
@@ -394,14 +394,14 @@ LABEL_22:
   v18 = v6;
   [(UILabel *)self->_deviceLastBackupDetailLabel setText:v17];
   [(COSWatchView *)self->_watchView overrideMaterial:v32 size:BPSVariantSizeForProductType()];
-  [(COSWatchView *)self->_watchView setAssociatedDevice:v4];
+  [(COSWatchView *)self->_watchView setAssociatedDevice:deviceCopy];
   pairedStatusLabel = self->_pairedStatusLabel;
   v20 = +[NSBundle mainBundle];
   v21 = [v20 localizedStringForKey:@"CURRENTLY_PAIRED_TITLE" value:&stru_10026E598 table:@"Localizable"];
   [(UILabel *)pairedStatusLabel setText:v21];
 
   v22 = +[COSBackupManager sharedBackupManager];
-  v23 = [v22 minWatchOSVersion];
+  minWatchOSVersion = [v22 minWatchOSVersion];
   v24 = NRWatchOSVersion();
 
   v25 = NRWatchOSVersionForRemoteDevice();
@@ -412,7 +412,7 @@ LABEL_22:
   {
     if (v27)
     {
-      v28 = [v4 valueForProperty:NRDevicePropertyPairingID];
+      v28 = [deviceCopy valueForProperty:NRDevicePropertyPairingID];
       *buf = 67109634;
       v37 = v25;
       v38 = 1024;
@@ -479,9 +479,9 @@ LABEL_22:
   [(COSWatchView *)self->_watchView sizeThatFits:CGSizeZero.width, CGSizeZero.height];
   v18 = v17;
   v20 = v19;
-  v21 = [(COSRestoreTableViewCell *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(COSRestoreTableViewCell *)self _shouldReverseLayoutDirection];
   v22 = v4 - v12 - v18;
-  if (!v21)
+  if (!_shouldReverseLayoutDirection)
   {
     v22 = v12;
   }
@@ -554,18 +554,18 @@ LABEL_22:
     v52 = pbb_setupflow_log();
     if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
     {
-      v53 = [(UILabel *)self->_deviceTitleLabel text];
-      v54 = [(UILabel *)self->_deviceMaterialLabel text];
-      v55 = [(UILabel *)self->_deviceCaseSizeLabel text];
-      v56 = [(UILabel *)self->_deviceLastBackupDetailLabel text];
+      text = [(UILabel *)self->_deviceTitleLabel text];
+      text2 = [(UILabel *)self->_deviceMaterialLabel text];
+      text3 = [(UILabel *)self->_deviceCaseSizeLabel text];
+      text4 = [(UILabel *)self->_deviceLastBackupDetailLabel text];
       *buf = 138413058;
-      *&buf[4] = v53;
+      *&buf[4] = text;
       *&buf[12] = 2112;
-      *&buf[14] = v54;
+      *&buf[14] = text2;
       *&buf[22] = 2112;
-      *&buf[24] = v55;
+      *&buf[24] = text3;
       LOWORD(v83) = 2112;
-      *(&v83 + 2) = v56;
+      *(&v83 + 2) = text4;
       _os_log_impl(&_mh_execute_header, v52, OS_LOG_TYPE_DEFAULT, "Back text group is too tall. %@ // %@ // %@ // %@", buf, 0x2Au);
     }
   }

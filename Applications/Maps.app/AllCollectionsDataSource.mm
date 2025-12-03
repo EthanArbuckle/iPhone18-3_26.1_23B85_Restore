@@ -1,29 +1,29 @@
 @interface AllCollectionsDataSource
-- (AllCollectionsDataSource)initWithCollectionView:(id)a3 usingCuratedCollections:(id)a4 usingPlaceCollectionIds:(id)a5 withResultFilters:(id)a6 sections:(id)a7 usingAPIController:(id)a8 withRoutingDelegate:(id)a9;
+- (AllCollectionsDataSource)initWithCollectionView:(id)view usingCuratedCollections:(id)collections usingPlaceCollectionIds:(id)ids withResultFilters:(id)filters sections:(id)sections usingAPIController:(id)controller withRoutingDelegate:(id)delegate;
 - (MKCollectionCarouselRoutingDelegate)routingDelegate;
-- (id)allCollectionsSectionOfType:(int64_t)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4 itemIdentifier:(id)a5;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (void)_dispatchOnManThread:(id)a3;
+- (id)allCollectionsSectionOfType:(int64_t)type;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path itemIdentifier:(id)identifier;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (void)_dispatchOnManThread:(id)thread;
 - (void)applySnapshot;
 - (void)clearGuidesFromSnapshot;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 willDisplaySupplementaryView:(id)a4 forElementKind:(id)a5 atIndexPath:(id)a6;
-- (void)curatedCollectionSyncManagerDidUpdateSyncedCollections:(id)a3;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplaySupplementaryView:(id)supplementaryView forElementKind:(id)kind atIndexPath:(id)path;
+- (void)curatedCollectionSyncManagerDidUpdateSyncedCollections:(id)collections;
 - (void)dealloc;
-- (void)didRouteToAddressFilter:(id)a3 atIndexPath:(id)a4;
-- (void)didRouteToKeywordFilter:(id)a3 atIndexPath:(id)a4;
+- (void)didRouteToAddressFilter:(id)filter atIndexPath:(id)path;
+- (void)didRouteToKeywordFilter:(id)filter atIndexPath:(id)path;
 - (void)didStartFetchingBatch;
 - (void)didTapTryAgainOnErrorView;
 - (void)dismissedCollections;
 - (void)displayAllCollectionsData;
 - (void)filterDataFetchStarted;
-- (void)prepareSnapshotUsingCollections:(id)a3;
+- (void)prepareSnapshotUsingCollections:(id)collections;
 - (void)presentFirstCollection;
-- (void)shouldConsumeBatch:(BOOL)a3 fetchedBatch:(id)a4;
-- (void)updateCollections:(id)a3 usingBatchIdentifiers:(id)a4;
-- (void)updateSnapshotUsingCollections:(id)a3;
+- (void)shouldConsumeBatch:(BOOL)batch fetchedBatch:(id)fetchedBatch;
+- (void)updateCollections:(id)collections usingBatchIdentifiers:(id)identifiers;
+- (void)updateSnapshotUsingCollections:(id)collections;
 @end
 
 @implementation AllCollectionsDataSource
@@ -37,26 +37,26 @@
 
 - (void)presentFirstCollection
 {
-  v3 = [(AllCollectionsDataSource *)self placeCollections];
-  v4 = [v3 count];
+  placeCollections = [(AllCollectionsDataSource *)self placeCollections];
+  v4 = [placeCollections count];
 
   if (v4)
   {
-    v7 = [(AllCollectionsDataSource *)self routingDelegate];
-    v5 = [(AllCollectionsDataSource *)self collectionsLogicController];
-    v6 = [v5 geoCollectionAtIndex:0];
-    [v7 routeToCuratedCollection:v6];
+    routingDelegate = [(AllCollectionsDataSource *)self routingDelegate];
+    collectionsLogicController = [(AllCollectionsDataSource *)self collectionsLogicController];
+    v6 = [collectionsLogicController geoCollectionAtIndex:0];
+    [routingDelegate routeToCuratedCollection:v6];
   }
 }
 
-- (void)curatedCollectionSyncManagerDidUpdateSyncedCollections:(id)a3
+- (void)curatedCollectionSyncManagerDidUpdateSyncedCollections:(id)collections
 {
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [(AllCollectionsDataSource *)self sections];
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v21 count:16];
+  sections = [(AllCollectionsDataSource *)self sections];
+  v5 = [sections countByEnumeratingWithState:&v16 objects:v21 count:16];
   if (v5)
   {
     v6 = v5;
@@ -67,7 +67,7 @@
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(sections);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
@@ -87,18 +87,18 @@
           v15 = 0;
         }
 
-        v10 = [(AllCollectionsDataSource *)self dataSource];
-        v11 = [v10 snapshot];
+        dataSource = [(AllCollectionsDataSource *)self dataSource];
+        snapshot = [dataSource snapshot];
 
         v20 = v9;
         v12 = [NSArray arrayWithObjects:&v20 count:1];
-        [v11 reloadSectionsWithIdentifiers:v12];
+        [snapshot reloadSectionsWithIdentifiers:v12];
 
-        v13 = [(AllCollectionsDataSource *)self dataSource];
-        [v13 applySnapshot:v11 animatingDifferences:0];
+        dataSource2 = [(AllCollectionsDataSource *)self dataSource];
+        [dataSource2 applySnapshot:snapshot animatingDifferences:0];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v21 count:16];
+      v6 = [sections countByEnumeratingWithState:&v16 objects:v21 count:16];
     }
 
     while (v6);
@@ -111,8 +111,8 @@
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v3 = [(AllCollectionsDataSource *)self sections];
-  v4 = [v3 countByEnumeratingWithState:&v26 objects:v31 count:16];
+  sections = [(AllCollectionsDataSource *)self sections];
+  v4 = [sections countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (!v4)
   {
 
@@ -131,7 +131,7 @@
     {
       if (*v27 != v8)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(sections);
       }
 
       v10 = *(*(&v26 + 1) + 8 * i);
@@ -168,7 +168,7 @@ LABEL_11:
 LABEL_12:
     }
 
-    v5 = [v3 countByEnumeratingWithState:&v26 objects:v31 count:16];
+    v5 = [sections countByEnumeratingWithState:&v26 objects:v31 count:16];
   }
 
   while (v5);
@@ -177,8 +177,8 @@ LABEL_12:
   {
     if (v6)
     {
-      v14 = [(AllCollectionsDataSource *)self snapshot];
-      v15 = [v14 itemIdentifiersInSectionWithIdentifier:v7];
+      snapshot = [(AllCollectionsDataSource *)self snapshot];
+      v15 = [snapshot itemIdentifiersInSectionWithIdentifier:v7];
       v16 = [v15 count];
 
       if (!v16)
@@ -190,11 +190,11 @@ LABEL_12:
           _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "[<-->] AllCollectionDateSource informed about batch load starting. Adding loading cell.", v21, 2u);
         }
 
-        v18 = [(AllCollectionsDataSource *)self snapshot];
+        snapshot2 = [(AllCollectionsDataSource *)self snapshot];
         v19 = +[MKCollectionBatchCell reuseIdentifier];
         v30 = v19;
         v20 = [NSArray arrayWithObjects:&v30 count:1];
-        [v18 appendItemsWithIdentifiers:v20 intoSectionWithIdentifier:v7];
+        [snapshot2 appendItemsWithIdentifiers:v20 intoSectionWithIdentifier:v7];
 
         [(AllCollectionsDataSource *)self displayAllCollectionsData];
       }
@@ -204,16 +204,16 @@ LABEL_12:
 LABEL_22:
 }
 
-- (void)shouldConsumeBatch:(BOOL)a3 fetchedBatch:(id)a4
+- (void)shouldConsumeBatch:(BOOL)batch fetchedBatch:(id)fetchedBatch
 {
-  v30 = a3;
-  v5 = a4;
+  batchCopy = batch;
+  fetchedBatchCopy = fetchedBatch;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v6 = [(AllCollectionsDataSource *)self sections];
-  v7 = [v6 countByEnumeratingWithState:&v35 objects:v41 count:16];
+  sections = [(AllCollectionsDataSource *)self sections];
+  v7 = [sections countByEnumeratingWithState:&v35 objects:v41 count:16];
   if (!v7)
   {
     v9 = 0;
@@ -231,7 +231,7 @@ LABEL_22:
     {
       if (*v36 != v11)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(sections);
       }
 
       v13 = *(*(&v35 + 1) + 8 * i);
@@ -268,7 +268,7 @@ LABEL_11:
 LABEL_12:
     }
 
-    v8 = [v6 countByEnumeratingWithState:&v35 objects:v41 count:16];
+    v8 = [sections countByEnumeratingWithState:&v35 objects:v41 count:16];
   }
 
   while (v8);
@@ -281,27 +281,27 @@ LABEL_17:
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "[<-->] AllCollectionDateSource informed about batch load complete. Removing loading cell.", buf, 2u);
   }
 
-  v18 = [(AllCollectionsDataSource *)self snapshot];
-  v19 = [(AllCollectionsDataSource *)self snapshot];
-  v20 = [v19 itemIdentifiersInSectionWithIdentifier:v10];
-  [v18 deleteItemsWithIdentifiers:v20];
+  snapshot = [(AllCollectionsDataSource *)self snapshot];
+  snapshot2 = [(AllCollectionsDataSource *)self snapshot];
+  v20 = [snapshot2 itemIdentifiersInSectionWithIdentifier:v10];
+  [snapshot deleteItemsWithIdentifiers:v20];
 
-  v21 = v5;
-  if (v30 && [v5 count])
+  v21 = fetchedBatchCopy;
+  if (batchCopy && [fetchedBatchCopy count])
   {
-    v22 = [(AllCollectionsDataSource *)self apiController];
-    v23 = [v22 placeCollectionsFromLastBatch];
+    apiController = [(AllCollectionsDataSource *)self apiController];
+    placeCollectionsFromLastBatch = [apiController placeCollectionsFromLastBatch];
 
-    v24 = [(AllCollectionsDataSource *)self collectionsLogicController];
-    [v24 appendBatchOfCollections:v23];
+    collectionsLogicController = [(AllCollectionsDataSource *)self collectionsLogicController];
+    [collectionsLogicController appendBatchOfCollections:placeCollectionsFromLastBatch];
 
-    v25 = [(AllCollectionsDataSource *)self snapshot];
-    [v25 appendItemsWithIdentifiers:v23 intoSectionWithIdentifier:v9];
+    snapshot3 = [(AllCollectionsDataSource *)self snapshot];
+    [snapshot3 appendItemsWithIdentifiers:placeCollectionsFromLastBatch intoSectionWithIdentifier:v9];
 
     v26 = sub_1007982D8();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
     {
-      v27 = [v23 count];
+      v27 = [placeCollectionsFromLastBatch count];
       *buf = 134217984;
       v40 = v27;
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEBUG, "[<-->] AllCollectionDateSource displaying %ld more collections.", buf, 0xCu);
@@ -312,7 +312,7 @@ LABEL_17:
 
   else
   {
-    if (![v5 count])
+    if (![fetchedBatchCopy count])
     {
       v28 = sub_1007982D8();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -333,100 +333,100 @@ LABEL_17:
   }
 }
 
-- (void)didRouteToAddressFilter:(id)a3 atIndexPath:(id)a4
+- (void)didRouteToAddressFilter:(id)filter atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AllCollectionsDataSource *)self apiController];
-  [v8 cancelFetchingAllCollections];
+  filterCopy = filter;
+  pathCopy = path;
+  apiController = [(AllCollectionsDataSource *)self apiController];
+  [apiController cancelFetchingAllCollections];
 
-  [(AllCollectionsDataSource *)self setSelectedFilterIndexPath:v7];
+  [(AllCollectionsDataSource *)self setSelectedFilterIndexPath:pathCopy];
   [(AllCollectionsDataSource *)self filterDataFetchStarted];
   objc_initWeak(&location, self);
-  v9 = [(AllCollectionsDataSource *)self apiController];
+  apiController2 = [(AllCollectionsDataSource *)self apiController];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100DAD044;
   v10[3] = &unk_101661B98;
   objc_copyWeak(&v11, &location);
-  [v9 fetchAllCollectionsViewForKeywordFilter:0 addressFilter:v6 onCompletion:v10];
+  [apiController2 fetchAllCollectionsViewForKeywordFilter:0 addressFilter:filterCopy onCompletion:v10];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
 }
 
-- (void)didRouteToKeywordFilter:(id)a3 atIndexPath:(id)a4
+- (void)didRouteToKeywordFilter:(id)filter atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AllCollectionsDataSource *)self apiController];
-  [v8 cancelFetchingAllCollections];
+  filterCopy = filter;
+  pathCopy = path;
+  apiController = [(AllCollectionsDataSource *)self apiController];
+  [apiController cancelFetchingAllCollections];
 
-  [(AllCollectionsDataSource *)self setSelectedFilterIndexPath:v7];
+  [(AllCollectionsDataSource *)self setSelectedFilterIndexPath:pathCopy];
   [(AllCollectionsDataSource *)self filterDataFetchStarted];
   objc_initWeak(&location, self);
-  v9 = [(AllCollectionsDataSource *)self apiController];
+  apiController2 = [(AllCollectionsDataSource *)self apiController];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100DAD2D8;
   v10[3] = &unk_101661B98;
   objc_copyWeak(&v11, &location);
-  [v9 fetchAllCollectionsViewForKeywordFilter:v6 addressFilter:0 onCompletion:v10];
+  [apiController2 fetchAllCollectionsViewForKeywordFilter:filterCopy addressFilter:0 onCompletion:v10];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v9 = a5;
-  v6 = [(AllCollectionsDataSource *)self collectionsLogicController];
-  v7 = [v6 sectionKindAtIndex:{objc_msgSend(v9, "section")}];
+  pathCopy = path;
+  collectionsLogicController = [(AllCollectionsDataSource *)self collectionsLogicController];
+  v7 = [collectionsLogicController sectionKindAtIndex:{objc_msgSend(pathCopy, "section")}];
 
   if (v7 != 1)
   {
-    v8 = [(AllCollectionsDataSource *)self collectionsLogicController];
-    [v8 willDisplayCellAtIndexpath:v9];
+    collectionsLogicController2 = [(AllCollectionsDataSource *)self collectionsLogicController];
+    [collectionsLogicController2 willDisplayCellAtIndexpath:pathCopy];
   }
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v9 = [(AllCollectionsDataSource *)self routingDelegate];
-  v6 = [(AllCollectionsDataSource *)self collectionsLogicController];
-  v7 = [v5 item];
+  pathCopy = path;
+  routingDelegate = [(AllCollectionsDataSource *)self routingDelegate];
+  collectionsLogicController = [(AllCollectionsDataSource *)self collectionsLogicController];
+  item = [pathCopy item];
 
-  v8 = [v6 geoCollectionAtIndex:v7];
-  [v9 routeToCuratedCollection:v8];
+  v8 = [collectionsLogicController geoCollectionAtIndex:item];
+  [routingDelegate routeToCuratedCollection:v8];
 }
 
 - (void)dismissedCollections
 {
-  v2 = [(AllCollectionsDataSource *)self collectionsLogicController];
-  [v2 dismissedCollections];
+  collectionsLogicController = [(AllCollectionsDataSource *)self collectionsLogicController];
+  [collectionsLogicController dismissedCollections];
 }
 
-- (void)updateCollections:(id)a3 usingBatchIdentifiers:(id)a4
+- (void)updateCollections:(id)collections usingBatchIdentifiers:(id)identifiers
 {
-  v6 = a4;
-  v10 = a3;
-  v7 = [(AllCollectionsDataSource *)self collectionsLogicController];
-  v8 = [(AllCollectionsDataSource *)self apiController];
-  v9 = [(AllCollectionsDataSource *)self apiController];
-  [v7 updateCollectionsWithoutPreparingSnapshot:v10 usingBatchedIdentifiers:v6 usingCollectionFetcher:v8 usingGuideConsumer:self usingBatchSize:{objc_msgSend(v9, "batchSize")}];
+  identifiersCopy = identifiers;
+  collectionsCopy = collections;
+  collectionsLogicController = [(AllCollectionsDataSource *)self collectionsLogicController];
+  apiController = [(AllCollectionsDataSource *)self apiController];
+  apiController2 = [(AllCollectionsDataSource *)self apiController];
+  [collectionsLogicController updateCollectionsWithoutPreparingSnapshot:collectionsCopy usingBatchedIdentifiers:identifiersCopy usingCollectionFetcher:apiController usingGuideConsumer:self usingBatchSize:{objc_msgSend(apiController2, "batchSize")}];
 
-  [(AllCollectionsDataSource *)self updateSnapshotUsingCollections:v10];
+  [(AllCollectionsDataSource *)self updateSnapshotUsingCollections:collectionsCopy];
 }
 
-- (void)collectionView:(id)a3 willDisplaySupplementaryView:(id)a4 forElementKind:(id)a5 atIndexPath:(id)a6
+- (void)collectionView:(id)view willDisplaySupplementaryView:(id)supplementaryView forElementKind:(id)kind atIndexPath:(id)path
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(AllCollectionsDataSource *)self sections];
-  v15 = [v14 objectAtIndex:{objc_msgSend(v13, "section")}];
+  viewCopy = view;
+  supplementaryViewCopy = supplementaryView;
+  kindCopy = kind;
+  pathCopy = path;
+  sections = [(AllCollectionsDataSource *)self sections];
+  v15 = [sections objectAtIndex:{objc_msgSend(pathCopy, "section")}];
 
   if (!v15)
   {
@@ -443,22 +443,22 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v16 = sub_10000FA08(v10);
+  v16 = sub_10000FA08(viewCopy);
 
-  if (v16 != 5 && v11)
+  if (v16 != 5 && supplementaryViewCopy)
   {
-    [v11 scrollToSelectedFilter];
+    [supplementaryViewCopy scrollToSelectedFilter];
   }
 
 LABEL_9:
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [(AllCollectionsDataSource *)self sections];
-  v10 = [v9 objectAtIndex:{objc_msgSend(v8, "section")}];
+  viewCopy = view;
+  pathCopy = path;
+  sections = [(AllCollectionsDataSource *)self sections];
+  v10 = [sections objectAtIndex:{objc_msgSend(pathCopy, "section")}];
 
   if (v10)
   {
@@ -466,62 +466,62 @@ LABEL_9:
 
     if (v29 == 1)
     {
-      v11 = sub_10000FA08(v7);
-      v12 = [(DataSource *)self collectionView];
+      v11 = sub_10000FA08(viewCopy);
+      collectionView = [(DataSource *)self collectionView];
       if (v11 == 5)
       {
         v13 = +[CollectionsFilterMenu reuseIdentifier];
-        v14 = [v12 dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:v13 forIndexPath:v8];
+        v14 = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:v13 forIndexPath:pathCopy];
         [(AllCollectionsDataSource *)self setFilterMenu:v14];
 
-        v15 = [(AllCollectionsDataSource *)self apiController];
-        v16 = [v15 allCollectionViewFilters];
+        apiController = [(AllCollectionsDataSource *)self apiController];
+        allCollectionViewFilters = [apiController allCollectionViewFilters];
 
-        v17 = [(AllCollectionsDataSource *)self filterMenu];
-        v18 = [(AllCollectionsDataSource *)self selectedFilterIndexPath];
-        v19 = [(AllCollectionsDataSource *)self apiController];
-        v20 = [v19 allCollectionViewIdentifiers];
-        [v17 configureForAllCollectionsWithRoutingDelegate:self withAllCollectionsResultFilters:v16 withSelectedFilterIndex:v18 selectedFilterResultsCount:{objc_msgSend(v20, "count")}];
+        filterMenu = [(AllCollectionsDataSource *)self filterMenu];
+        selectedFilterIndexPath = [(AllCollectionsDataSource *)self selectedFilterIndexPath];
+        apiController2 = [(AllCollectionsDataSource *)self apiController];
+        allCollectionViewIdentifiers = [apiController2 allCollectionViewIdentifiers];
+        [filterMenu configureForAllCollectionsWithRoutingDelegate:self withAllCollectionsResultFilters:allCollectionViewFilters withSelectedFilterIndex:selectedFilterIndexPath selectedFilterResultsCount:{objc_msgSend(allCollectionViewIdentifiers, "count")}];
 
-        v21 = [(AllCollectionsDataSource *)self filterMenu];
+        filterMenu2 = [(AllCollectionsDataSource *)self filterMenu];
       }
 
       else
       {
         v22 = +[CollectionsFilterCarouselView reuseIdentifier];
         v23 = +[CollectionsFilterCarouselView reuseIdentifier];
-        v21 = [v12 dequeueReusableSupplementaryViewOfKind:v22 withReuseIdentifier:v23 forIndexPath:v8];
+        filterMenu2 = [collectionView dequeueReusableSupplementaryViewOfKind:v22 withReuseIdentifier:v23 forIndexPath:pathCopy];
 
-        v24 = [(AllCollectionsDataSource *)self apiController];
-        v25 = [v24 allCollectionViewFilters];
+        apiController3 = [(AllCollectionsDataSource *)self apiController];
+        allCollectionViewFilters2 = [apiController3 allCollectionViewFilters];
 
-        v26 = [(AllCollectionsDataSource *)self selectedFilterIndexPath];
-        [v21 configureWithContext:1 withRoutingDelegate:self withAllCollectionsResultFilters:v25 withSelectedFilterIndex:v26];
+        selectedFilterIndexPath2 = [(AllCollectionsDataSource *)self selectedFilterIndexPath];
+        [filterMenu2 configureWithContext:1 withRoutingDelegate:self withAllCollectionsResultFilters:allCollectionViewFilters2 withSelectedFilterIndex:selectedFilterIndexPath2];
 
-        [v21 displayFilters];
+        [filterMenu2 displayFilters];
       }
     }
 
     else
     {
-      v21 = 0;
+      filterMenu2 = 0;
     }
   }
 
   else
   {
-    v21 = 0;
+    filterMenu2 = 0;
   }
 
-  return v21;
+  return filterMenu2;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4 itemIdentifier:(id)a5
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path itemIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(AllCollectionsDataSource *)self sections];
-  v10 = [v9 objectAtIndex:{objc_msgSend(v8, "section")}];
+  viewCopy = view;
+  pathCopy = path;
+  sections = [(AllCollectionsDataSource *)self sections];
+  v10 = [sections objectAtIndex:{objc_msgSend(pathCopy, "section")}];
 
   if (v10 && ([v10 configuration], v19, v20))
   {
@@ -530,7 +530,7 @@ LABEL_9:
     if (v18 == 1)
     {
       v11 = +[MKCollectionBatchCell reuseIdentifier];
-      v12 = [v7 dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:v8];
+      v12 = [viewCopy dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:pathCopy];
 
       [v12 startedLoadingBatch];
     }
@@ -544,10 +544,10 @@ LABEL_9:
   else
   {
     v13 = +[MKPlaceCollectionCell reuseIdentifier];
-    v12 = [v7 dequeueReusableCellWithReuseIdentifier:v13 forIndexPath:v8];
+    v12 = [viewCopy dequeueReusableCellWithReuseIdentifier:v13 forIndexPath:pathCopy];
 
-    v14 = [(AllCollectionsDataSource *)self collectionsLogicController];
-    v15 = [v14 collectionAtIndex:{objc_msgSend(v8, "item")}];
+    collectionsLogicController = [(AllCollectionsDataSource *)self collectionsLogicController];
+    v15 = [collectionsLogicController collectionAtIndex:{objc_msgSend(pathCopy, "item")}];
     [v12 configureWithModel:v15];
   }
 
@@ -556,21 +556,21 @@ LABEL_9:
 
 - (void)clearGuidesFromSnapshot
 {
-  v3 = [(AllCollectionsDataSource *)self dataSource];
-  v9 = [v3 snapshot];
+  dataSource = [(AllCollectionsDataSource *)self dataSource];
+  snapshot = [dataSource snapshot];
 
   v4 = [(AllCollectionsDataSource *)self allCollectionsSectionOfType:0];
-  v5 = [v9 itemIdentifiersInSectionWithIdentifier:v4];
+  v5 = [snapshot itemIdentifiersInSectionWithIdentifier:v4];
 
   v6 = [(AllCollectionsDataSource *)self allCollectionsSectionOfType:1];
-  v7 = [v9 itemIdentifiersInSectionWithIdentifier:v6];
+  v7 = [snapshot itemIdentifiersInSectionWithIdentifier:v6];
 
   if ([v5 count] || objc_msgSend(v7, "count"))
   {
-    [v9 deleteItemsWithIdentifiers:v5];
-    [v9 deleteItemsWithIdentifiers:v7];
-    v8 = [(AllCollectionsDataSource *)self dataSource];
-    [v8 applySnapshot:v9 animatingDifferences:0];
+    [snapshot deleteItemsWithIdentifiers:v5];
+    [snapshot deleteItemsWithIdentifiers:v7];
+    dataSource2 = [(AllCollectionsDataSource *)self dataSource];
+    [dataSource2 applySnapshot:snapshot animatingDifferences:0];
   }
 }
 
@@ -588,14 +588,14 @@ LABEL_9:
   objc_destroyWeak(&location);
 }
 
-- (id)allCollectionsSectionOfType:(int64_t)a3
+- (id)allCollectionsSectionOfType:(int64_t)type
 {
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(AllCollectionsDataSource *)self sections];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  sections = [(AllCollectionsDataSource *)self sections];
+  v5 = [sections countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -606,7 +606,7 @@ LABEL_9:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(sections);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
@@ -623,14 +623,14 @@ LABEL_9:
           v14 = 0;
         }
 
-        if (v10 == a3)
+        if (v10 == type)
         {
           v11 = v9;
           goto LABEL_14;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [sections countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v6)
       {
         continue;
@@ -648,28 +648,28 @@ LABEL_14:
 
 - (void)didTapTryAgainOnErrorView
 {
-  v3 = [(AllCollectionsDataSource *)self resultFilters];
-  v4 = [(AllCollectionsDataSource *)self selectedFilterIndexPath];
-  v8 = [v3 objectAtIndex:{objc_msgSend(v4, "item")}];
+  resultFilters = [(AllCollectionsDataSource *)self resultFilters];
+  selectedFilterIndexPath = [(AllCollectionsDataSource *)self selectedFilterIndexPath];
+  v8 = [resultFilters objectAtIndex:{objc_msgSend(selectedFilterIndexPath, "item")}];
 
-  v5 = [v8 filterType];
-  if (v5 == 2)
+  filterType = [v8 filterType];
+  if (filterType == 2)
   {
-    v6 = [v8 keywordFilter];
-    v7 = [(AllCollectionsDataSource *)self selectedFilterIndexPath];
-    [(AllCollectionsDataSource *)self didRouteToKeywordFilter:v6 atIndexPath:v7];
+    keywordFilter = [v8 keywordFilter];
+    selectedFilterIndexPath2 = [(AllCollectionsDataSource *)self selectedFilterIndexPath];
+    [(AllCollectionsDataSource *)self didRouteToKeywordFilter:keywordFilter atIndexPath:selectedFilterIndexPath2];
   }
 
   else
   {
-    if (v5 != 1)
+    if (filterType != 1)
     {
       goto LABEL_6;
     }
 
-    v6 = [v8 addressFilter];
-    v7 = [(AllCollectionsDataSource *)self selectedFilterIndexPath];
-    [(AllCollectionsDataSource *)self didRouteToAddressFilter:v6 atIndexPath:v7];
+    keywordFilter = [v8 addressFilter];
+    selectedFilterIndexPath2 = [(AllCollectionsDataSource *)self selectedFilterIndexPath];
+    [(AllCollectionsDataSource *)self didRouteToAddressFilter:keywordFilter atIndexPath:selectedFilterIndexPath2];
   }
 
 LABEL_6:
@@ -695,14 +695,14 @@ LABEL_6:
   objc_destroyWeak(buf);
 }
 
-- (void)_dispatchOnManThread:(id)a3
+- (void)_dispatchOnManThread:(id)thread
 {
-  v3 = a3;
-  if (v3)
+  threadCopy = thread;
+  if (threadCopy)
   {
     if (+[NSThread isMainThread])
     {
-      v3[2](v3);
+      threadCopy[2](threadCopy);
     }
 
     else
@@ -711,7 +711,7 @@ LABEL_6:
       block[1] = 3221225472;
       block[2] = sub_100DAE2B0;
       block[3] = &unk_101661760;
-      v5 = v3;
+      v5 = threadCopy;
       dispatch_async(&_dispatch_main_q, block);
     }
   }
@@ -725,27 +725,27 @@ LABEL_6:
 
 - (void)applySnapshot
 {
-  v4 = [(AllCollectionsDataSource *)self dataSource];
-  v3 = [(AllCollectionsDataSource *)self snapshot];
-  [v4 applySnapshot:v3 animatingDifferences:0];
+  dataSource = [(AllCollectionsDataSource *)self dataSource];
+  snapshot = [(AllCollectionsDataSource *)self snapshot];
+  [dataSource applySnapshot:snapshot animatingDifferences:0];
 }
 
-- (void)updateSnapshotUsingCollections:(id)a3
+- (void)updateSnapshotUsingCollections:(id)collections
 {
-  v4 = a3;
+  collectionsCopy = collections;
   v5 = objc_alloc_init(NSDiffableDataSourceSnapshot);
   [(AllCollectionsDataSource *)self setSnapshot:v5];
 
-  v6 = [(AllCollectionsDataSource *)self snapshot];
-  v7 = [(AllCollectionsDataSource *)self sections];
-  [v6 appendSectionsWithIdentifiers:v7];
+  snapshot = [(AllCollectionsDataSource *)self snapshot];
+  sections = [(AllCollectionsDataSource *)self sections];
+  [snapshot appendSectionsWithIdentifiers:sections];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [(AllCollectionsDataSource *)self sections];
-  v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  sections2 = [(AllCollectionsDataSource *)self sections];
+  v9 = [sections2 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
     v10 = v9;
@@ -756,7 +756,7 @@ LABEL_6:
       {
         if (*v18 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(sections2);
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
@@ -765,9 +765,9 @@ LABEL_6:
           v15 = 0u;
           v16 = 0u;
 LABEL_12:
-          [(AllCollectionsDataSource *)self setPlaceCollections:v4, v15, v16];
-          v14 = [(AllCollectionsDataSource *)self snapshot];
-          [v14 appendItemsWithIdentifiers:v4 intoSectionWithIdentifier:v13];
+          [(AllCollectionsDataSource *)self setPlaceCollections:collectionsCopy, v15, v16];
+          snapshot2 = [(AllCollectionsDataSource *)self snapshot];
+          [snapshot2 appendItemsWithIdentifiers:collectionsCopy intoSectionWithIdentifier:v13];
 
           goto LABEL_13;
         }
@@ -780,7 +780,7 @@ LABEL_12:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v10 = [sections2 countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v10)
       {
         continue;
@@ -793,22 +793,22 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)prepareSnapshotUsingCollections:(id)a3
+- (void)prepareSnapshotUsingCollections:(id)collections
 {
-  v4 = a3;
+  collectionsCopy = collections;
   v5 = objc_alloc_init(NSDiffableDataSourceSnapshot);
   [(AllCollectionsDataSource *)self setSnapshot:v5];
 
-  v6 = [(AllCollectionsDataSource *)self snapshot];
-  v7 = [(AllCollectionsDataSource *)self sections];
-  [v6 appendSectionsWithIdentifiers:v7];
+  snapshot = [(AllCollectionsDataSource *)self snapshot];
+  sections = [(AllCollectionsDataSource *)self sections];
+  [snapshot appendSectionsWithIdentifiers:sections];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [(AllCollectionsDataSource *)self sections];
-  v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  sections2 = [(AllCollectionsDataSource *)self sections];
+  v9 = [sections2 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
     v10 = v9;
@@ -819,7 +819,7 @@ LABEL_13:
       {
         if (*v18 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(sections2);
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
@@ -839,11 +839,11 @@ LABEL_13:
           v16 = 0;
         }
 
-        v14 = [(AllCollectionsDataSource *)self snapshot];
-        [v14 appendItemsWithIdentifiers:v4 intoSectionWithIdentifier:v13];
+        snapshot2 = [(AllCollectionsDataSource *)self snapshot];
+        [snapshot2 appendItemsWithIdentifiers:collectionsCopy intoSectionWithIdentifier:v13];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v10 = [sections2 countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v10);
@@ -860,26 +860,26 @@ LABEL_13:
   [(AllCollectionsDataSource *)&v4 dealloc];
 }
 
-- (AllCollectionsDataSource)initWithCollectionView:(id)a3 usingCuratedCollections:(id)a4 usingPlaceCollectionIds:(id)a5 withResultFilters:(id)a6 sections:(id)a7 usingAPIController:(id)a8 withRoutingDelegate:(id)a9
+- (AllCollectionsDataSource)initWithCollectionView:(id)view usingCuratedCollections:(id)collections usingPlaceCollectionIds:(id)ids withResultFilters:(id)filters sections:(id)sections usingAPIController:(id)controller withRoutingDelegate:(id)delegate
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v50 = a6;
-  v49 = a7;
-  v18 = a8;
-  v19 = a9;
+  viewCopy = view;
+  collectionsCopy = collections;
+  idsCopy = ids;
+  filtersCopy = filters;
+  sectionsCopy = sections;
+  controllerCopy = controller;
+  delegateCopy = delegate;
   v51.receiver = self;
   v51.super_class = AllCollectionsDataSource;
-  v20 = [(DataSource *)&v51 initWithCollectionView:v15 updateLocation:0];
+  v20 = [(DataSource *)&v51 initWithCollectionView:viewCopy updateLocation:0];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_placeCollections, a4);
-    objc_storeStrong(&v21->_resultFilters, a6);
-    objc_storeStrong(&v21->_sections, a7);
-    objc_storeStrong(&v21->_apiController, a8);
-    objc_storeWeak(&v21->_routingDelegate, v19);
+    objc_storeStrong(&v20->_placeCollections, collections);
+    objc_storeStrong(&v21->_resultFilters, filters);
+    objc_storeStrong(&v21->_sections, sections);
+    objc_storeStrong(&v21->_apiController, controller);
+    objc_storeWeak(&v21->_routingDelegate, delegateCopy);
     v22 = [NSIndexPath indexPathForItem:0 inSection:0];
     selectedFilterIndexPath = v21->_selectedFilterIndexPath;
     v21->_selectedFilterIndexPath = v22;
@@ -887,38 +887,38 @@ LABEL_13:
     v24 = +[CuratedCollectionSyncManager sharedManager];
     [v24 addObserver:v21];
 
-    v25 = [(DataSource *)v21 collectionView];
-    [v25 setDelegate:v21];
+    collectionView = [(DataSource *)v21 collectionView];
+    [collectionView setDelegate:v21];
 
-    v26 = [(DataSource *)v21 collectionView];
+    collectionView2 = [(DataSource *)v21 collectionView];
     v27 = objc_opt_class();
     v28 = +[MKPlaceCollectionCell reuseIdentifier];
-    [v26 registerClass:v27 forCellWithReuseIdentifier:v28];
+    [collectionView2 registerClass:v27 forCellWithReuseIdentifier:v28];
 
-    v29 = [(DataSource *)v21 collectionView];
+    collectionView3 = [(DataSource *)v21 collectionView];
     v30 = objc_opt_class();
     v31 = +[MKCollectionBatchCell reuseIdentifier];
-    [v29 registerClass:v30 forCellWithReuseIdentifier:v31];
+    [collectionView3 registerClass:v30 forCellWithReuseIdentifier:v31];
 
-    v32 = sub_10000FA08(v15);
-    v33 = [(DataSource *)v21 collectionView];
+    v32 = sub_10000FA08(viewCopy);
+    collectionView4 = [(DataSource *)v21 collectionView];
     v34 = objc_opt_class();
     if (v32 == 5)
     {
       v35 = +[CollectionsFilterMenu reuseIdentifier];
-      [v33 registerClass:v34 forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:v35];
+      [collectionView4 registerClass:v34 forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:v35];
     }
 
     else
     {
       v35 = +[CollectionsFilterCarouselView reuseIdentifier];
       v36 = +[CollectionsFilterCarouselView reuseIdentifier];
-      [v33 registerClass:v34 forSupplementaryViewOfKind:v35 withReuseIdentifier:v36];
+      [collectionView4 registerClass:v34 forSupplementaryViewOfKind:v35 withReuseIdentifier:v36];
     }
 
     v37 = [UICollectionViewDiffableDataSource alloc];
     v38 = sub_1007CDFC8(v21);
-    v39 = [v37 initWithCollectionView:v15 cellProvider:v38];
+    v39 = [v37 initWithCollectionView:viewCopy cellProvider:v38];
     dataSource = v21->_dataSource;
     v21->_dataSource = v39;
 
@@ -927,9 +927,9 @@ LABEL_13:
     [(UICollectionViewDiffableDataSource *)v41 setSupplementaryViewProvider:v42];
 
     v43 = [MKPlaceCollectionsLogicController alloc];
-    v44 = [(DataSource *)v21 collectionView];
+    collectionView5 = [(DataSource *)v21 collectionView];
     v45 = +[CuratedCollectionSyncManager sharedManager];
-    v46 = [v43 initWithCollectionView:v44 withPlaceCollections:v16 usingCollectionIds:v17 usingCollectionFetcher:v18 usingGuideConsumer:v21 usingSyncCoordinator:v45 inContext:5 usingBatchSize:{objc_msgSend(v18, "batchSize")}];
+    v46 = [v43 initWithCollectionView:collectionView5 withPlaceCollections:collectionsCopy usingCollectionIds:idsCopy usingCollectionFetcher:controllerCopy usingGuideConsumer:v21 usingSyncCoordinator:v45 inContext:5 usingBatchSize:{objc_msgSend(controllerCopy, "batchSize")}];
     collectionsLogicController = v21->_collectionsLogicController;
     v21->_collectionsLogicController = v46;
 

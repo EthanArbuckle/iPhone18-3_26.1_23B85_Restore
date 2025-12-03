@@ -1,12 +1,12 @@
 @interface TVCatalogModalityDetailViewController
 - (NSArray)preferredFocusEnvironments;
-- (_TtC9SeymourUI37TVCatalogModalityDetailViewController)initWithCoder:(id)a3;
-- (_TtC9SeymourUI37TVCatalogModalityDetailViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC9SeymourUI37TVCatalogModalityDetailViewController)initWithStyle:(int64_t)a3;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC9SeymourUI37TVCatalogModalityDetailViewController)initWithCoder:(id)coder;
+- (_TtC9SeymourUI37TVCatalogModalityDetailViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC9SeymourUI37TVCatalogModalityDetailViewController)initWithStyle:(int64_t)style;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation TVCatalogModalityDetailViewController
@@ -25,7 +25,7 @@
   return v6;
 }
 
-- (_TtC9SeymourUI37TVCatalogModalityDetailViewController)initWithCoder:(id)a3
+- (_TtC9SeymourUI37TVCatalogModalityDetailViewController)initWithCoder:(id)coder
 {
   result = sub_20C13DE24();
   __break(1u);
@@ -41,37 +41,37 @@
   [v2 showDetailViewController:*(*&v2[OBJC_IVAR____TtC9SeymourUI37TVCatalogModalityDetailViewController_coordinator] + qword_27C79C010) sender:{0, v3.receiver, v3.super_class}];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_20BED2540(a3);
+  selfCopy = self;
+  sub_20BED2540(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_20BED2828(a3);
+  selfCopy = self;
+  sub_20BED2828(disappear);
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
   v9.receiver = self;
   v9.super_class = type metadata accessor for TVCatalogModalityDetailViewController();
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  coordinatorCopy = coordinator;
   v8 = v9.receiver;
-  [(TVCatalogModalityDetailViewController *)&v9 didUpdateFocusInContext:v6 withAnimationCoordinator:v7];
-  sub_20BED0244(v6);
+  [(TVCatalogModalityDetailViewController *)&v9 didUpdateFocusInContext:contextCopy withAnimationCoordinator:coordinatorCopy];
+  sub_20BED0244(contextCopy);
 }
 
-- (_TtC9SeymourUI37TVCatalogModalityDetailViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9SeymourUI37TVCatalogModalityDetailViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC9SeymourUI37TVCatalogModalityDetailViewController)initWithStyle:(int64_t)a3
+- (_TtC9SeymourUI37TVCatalogModalityDetailViewController)initWithStyle:(int64_t)style
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

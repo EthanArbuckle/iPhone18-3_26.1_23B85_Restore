@@ -1,14 +1,14 @@
 @interface MIBOMWrapper
-+ (BOOL)_countFilesAndBytesInArchiveAtURL:(id)a3 withBOMCopier:(_BOMCopier *)a4 totalFiles:(unint64_t *)a5 totalUncompressedBytes:(unint64_t *)a6 error:(id *)a7;
-+ (BOOL)extractZipArchiveAtURL:(id)a3 toURL:(id)a4 withError:(id *)a5;
-+ (BOOL)extractZipArchiveAtURL:(id)a3 toURL:(id)a4 withError:(id *)a5 extractionProgressBlock:(id)a6;
++ (BOOL)_countFilesAndBytesInArchiveAtURL:(id)l withBOMCopier:(_BOMCopier *)copier totalFiles:(unint64_t *)files totalUncompressedBytes:(unint64_t *)bytes error:(id *)error;
++ (BOOL)extractZipArchiveAtURL:(id)l toURL:(id)rL withError:(id *)error;
++ (BOOL)extractZipArchiveAtURL:(id)l toURL:(id)rL withError:(id *)error extractionProgressBlock:(id)block;
 @end
 
 @implementation MIBOMWrapper
 
-+ (BOOL)_countFilesAndBytesInArchiveAtURL:(id)a3 withBOMCopier:(_BOMCopier *)a4 totalFiles:(unint64_t *)a5 totalUncompressedBytes:(unint64_t *)a6 error:(id *)a7
++ (BOOL)_countFilesAndBytesInArchiveAtURL:(id)l withBOMCopier:(_BOMCopier *)copier totalFiles:(unint64_t *)files totalUncompressedBytes:(unint64_t *)bytes error:(id *)error
 {
-  [a3 fileSystemRepresentation];
+  [l fileSystemRepresentation];
   v8 = BOMCopierCountFilesInArchive();
   v10 = v8;
   if (v8 == -1)
@@ -27,10 +27,10 @@
   }
 
   v11 = _CreateError("+[MIBOMWrapper _countFilesAndBytesInArchiveAtURL:withBOMCopier:totalFiles:totalUncompressedBytes:error:]", 149, @"MIInstallerErrorDomain", 4, 0, 0, @"Failed to count the files and bytes in archive : %d (%s)", v9, v10);
-  if (a7 && v11)
+  if (error && v11)
   {
     v11 = v11;
-    *a7 = v11;
+    *error = v11;
   }
 
 LABEL_9:
@@ -39,27 +39,27 @@ LABEL_9:
   return v13;
 }
 
-+ (BOOL)extractZipArchiveAtURL:(id)a3 toURL:(id)a4 withError:(id *)a5
++ (BOOL)extractZipArchiveAtURL:(id)l toURL:(id)rL withError:(id *)error
 {
-  v7 = a4;
-  v8 = a3;
-  LOBYTE(a5) = [objc_opt_class() extractZipArchiveAtURL:v8 toURL:v7 withError:a5 extractionProgressBlock:0];
+  rLCopy = rL;
+  lCopy = l;
+  LOBYTE(error) = [objc_opt_class() extractZipArchiveAtURL:lCopy toURL:rLCopy withError:error extractionProgressBlock:0];
 
-  return a5;
+  return error;
 }
 
-+ (BOOL)extractZipArchiveAtURL:(id)a3 toURL:(id)a4 withError:(id *)a5 extractionProgressBlock:(id)a6
++ (BOOL)extractZipArchiveAtURL:(id)l toURL:(id)rL withError:(id *)error extractionProgressBlock:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  lCopy = l;
+  rLCopy = rL;
+  blockCopy = block;
   v46 = 0u;
   v47 = 0u;
   v12 = objc_opt_new();
   v13 = v12;
-  if (a5)
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
   [v12 setObject:MEMORY[0x29EDB8EB0] forKeyedSubscript:@"extractPKZip"];
@@ -73,12 +73,12 @@ LABEL_9:
     BOMCopierSetFatalErrorHandler();
     BOMCopierSetFatalFileErrorHandler();
     BOMCopierSetUserData();
-    if (v11)
+    if (blockCopy)
     {
       v43 = 0;
       v44 = 0;
       v42 = 0;
-      v16 = [objc_opt_class() _countFilesAndBytesInArchiveAtURL:v9 withBOMCopier:v15 totalFiles:&v44 totalUncompressedBytes:&v43 error:&v42];
+      v16 = [objc_opt_class() _countFilesAndBytesInArchiveAtURL:lCopy withBOMCopier:v15 totalFiles:&v44 totalUncompressedBytes:&v43 error:&v42];
       v17 = v42;
       v18 = v43;
       if (v43)
@@ -95,16 +95,16 @@ LABEL_9:
       {
         if (!gLogHandle || *(gLogHandle + 44) >= 3)
         {
-          v20 = [v9 path];
+          path = [lCopy path];
           v40 = v44;
           v41 = v43;
-          v38 = v20;
+          path2 = path;
           MOLogWrite();
 
           v18 = v43;
         }
 
-        v21 = MEMORY[0x29C25D5D0](v11);
+        v21 = MEMORY[0x29C25D5D0](blockCopy);
         *(&v46 + 1) = v18;
         *&v47 = 0;
         v22 = MEMORY[0x29C25D5D0]();
@@ -119,17 +119,17 @@ LABEL_9:
       {
         if (!gLogHandle || *(gLogHandle + 44) >= 3)
         {
-          v38 = [v9 path];
+          path2 = [lCopy path];
           v40 = v17;
           MOLogWrite();
         }
 
-        v11[2](v11, -1.0);
+        blockCopy[2](blockCopy, -1.0);
       }
     }
 
-    v27 = v9;
-    v28 = v10;
+    v27 = lCopy;
+    v28 = rLCopy;
     v29 = v13;
     if (!v29)
     {
@@ -145,7 +145,7 @@ LABEL_9:
 
     if (v31 || BYTE4(v46) == 1)
     {
-      v32 = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:v46 userInfo:{0, v38, v40, v41}];
+      v32 = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:v46 userInfo:{0, path2, v40, v41}];
       v24 = _CreateAndLogError("+[MIBOMWrapper extractZipArchiveAtURL:toURL:withError:extractionProgressBlock:]", 223, @"MIInstallerErrorDomain", 5, v32, &unk_2A1DE86F0, @"Could not extract archive", v33, v39);
 
       v26 = 0;
@@ -165,7 +165,7 @@ LABEL_9:
 
   else
   {
-    v24 = _CreateAndLogError("+[MIBOMWrapper extractZipArchiveAtURL:toURL:withError:extractionProgressBlock:]", 189, @"MIInstallerErrorDomain", 5, 0, 0, @"Failed to create copier", v14, v38);
+    v24 = _CreateAndLogError("+[MIBOMWrapper extractZipArchiveAtURL:toURL:withError:extractionProgressBlock:]", 189, @"MIInstallerErrorDomain", 5, 0, 0, @"Failed to create copier", v14, path2);
     v25 = *(&v47 + 1);
     *(&v47 + 1) = 0;
 
@@ -177,7 +177,7 @@ LABEL_9:
     BomSys_free();
   }
 
-  if (a5)
+  if (error)
   {
     v35 = v26;
   }
@@ -190,7 +190,7 @@ LABEL_9:
   if ((v35 & 1) == 0)
   {
     v36 = v24;
-    *a5 = v24;
+    *error = v24;
   }
 
   return v26;

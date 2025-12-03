@@ -1,18 +1,18 @@
 @interface SLSheetVideoPreviewView
 - (CGSize)intrinsicContentSize;
-- (SLSheetVideoPreviewView)initWithFrame:(CGRect)a3;
+- (SLSheetVideoPreviewView)initWithFrame:(CGRect)frame;
 - (void)_applyConstraints;
-- (void)setVideoDuration:(double)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setVideoDuration:(double)duration;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation SLSheetVideoPreviewView
 
-- (SLSheetVideoPreviewView)initWithFrame:(CGRect)a3
+- (SLSheetVideoPreviewView)initWithFrame:(CGRect)frame
 {
   v31.receiver = self;
   v31.super_class = SLSheetVideoPreviewView;
-  v3 = [(SLSheetImagePreviewView *)&v31 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SLSheetImagePreviewView *)&v31 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -23,15 +23,15 @@
     v9 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithFrame:{0.0, 0.0, v6, v8}];
     [(SLSheetImagePreviewView *)v4 setImageView:v9];
 
-    v10 = [(SLSheetImagePreviewView *)v4 imageView];
-    [v10 setContentMode:2];
+    imageView = [(SLSheetImagePreviewView *)v4 imageView];
+    [imageView setContentMode:2];
 
-    v11 = [MEMORY[0x1E69DC888] clearColor];
-    v12 = [(SLSheetImagePreviewView *)v4 imageView];
-    [v12 setBackgroundColor:v11];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    imageView2 = [(SLSheetImagePreviewView *)v4 imageView];
+    [imageView2 setBackgroundColor:clearColor];
 
-    v13 = [(SLSheetImagePreviewView *)v4 imageView];
-    [(SLSheetVideoPreviewView *)v4 addSubview:v13];
+    imageView3 = [(SLSheetImagePreviewView *)v4 imageView];
+    [(SLSheetVideoPreviewView *)v4 addSubview:imageView3];
 
     v14 = objc_alloc(MEMORY[0x1E69DD250]);
     v15 = [v14 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
@@ -48,8 +48,8 @@
     videoGlyphView = v4->_videoGlyphView;
     v4->_videoGlyphView = v21;
 
-    v23 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIImageView *)v4->_videoGlyphView setTintColor:v23];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIImageView *)v4->_videoGlyphView setTintColor:whiteColor];
 
     v24 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{0.0, 0.0, 40.0, 22.0}];
     durationLabel = v4->_durationLabel;
@@ -61,8 +61,8 @@
     v28 = [v26 systemFontOfSize:?];
     [(UILabel *)v4->_durationLabel setFont:v28];
 
-    v29 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UILabel *)v4->_durationLabel setTextColor:v29];
+    whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+    [(UILabel *)v4->_durationLabel setTextColor:whiteColor2];
 
     [(UIView *)v4->_infoBar addSubview:v4->_videoGlyphView];
     [(UIView *)v4->_infoBar addSubview:v4->_durationLabel];
@@ -76,8 +76,8 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(SLSheetVideoPreviewView *)self traitCollection];
-  if ([v3 verticalSizeClass] == 1)
+  traitCollection = [(SLSheetVideoPreviewView *)self traitCollection];
+  if ([traitCollection verticalSizeClass] == 1)
   {
 
     v4 = 60.0;
@@ -86,16 +86,16 @@
 
   else
   {
-    v6 = [(SLSheetVideoPreviewView *)self traitCollection];
-    v7 = [v6 horizontalSizeClass];
+    traitCollection2 = [(SLSheetVideoPreviewView *)self traitCollection];
+    horizontalSizeClass = [traitCollection2 horizontalSizeClass];
 
     v4 = 60.0;
-    if (v7 != 1)
+    if (horizontalSizeClass != 1)
     {
       v4 = 61.0;
     }
 
-    v5 = dbl_1C23F4540[v7 == 1];
+    v5 = dbl_1C23F4540[horizontalSizeClass == 1];
   }
 
   result.height = v4;
@@ -103,34 +103,34 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v16.receiver = self;
   v16.super_class = SLSheetVideoPreviewView;
-  [(SLSheetImagePreviewView *)&v16 traitCollectionDidChange:v4];
-  v5 = [(SLSheetVideoPreviewView *)self traitCollection];
-  if ([v5 verticalSizeClass] == 1)
+  [(SLSheetImagePreviewView *)&v16 traitCollectionDidChange:changeCopy];
+  traitCollection = [(SLSheetVideoPreviewView *)self traitCollection];
+  if ([traitCollection verticalSizeClass] == 1)
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [(SLSheetVideoPreviewView *)self traitCollection];
-    v6 = [v7 horizontalSizeClass] == 1;
+    traitCollection2 = [(SLSheetVideoPreviewView *)self traitCollection];
+    v6 = [traitCollection2 horizontalSizeClass] == 1;
   }
 
-  v8 = [v4 verticalSizeClass] == 1 || objc_msgSend(v4, "horizontalSizeClass") == 1;
+  v8 = [changeCopy verticalSizeClass] == 1 || objc_msgSend(changeCopy, "horizontalSizeClass") == 1;
   if (v6 != v8)
   {
     [(SLSheetVideoPreviewView *)self invalidateIntrinsicContentSize];
   }
 
-  v9 = [(SLSheetVideoPreviewView *)self traitCollection];
-  v10 = [v9 preferredContentSizeCategory];
-  v11 = [v4 preferredContentSizeCategory];
-  v12 = [v10 isEqualToString:v11];
+  traitCollection3 = [(SLSheetVideoPreviewView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection3 preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
+  v12 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
   if ((v12 & 1) == 0)
   {
@@ -142,9 +142,9 @@
   }
 }
 
-- (void)setVideoDuration:(double)a3
+- (void)setVideoDuration:(double)duration
 {
-  if (a3 > 86400.0 || a3 < 0.0)
+  if (duration > 86400.0 || duration < 0.0)
   {
     durationLabel = self->_durationLabel;
 
@@ -153,7 +153,7 @@
 
   else
   {
-    v4 = llround(a3);
+    v4 = llround(duration);
     v5 = ((((34953 * (v4 % 3600)) >> 16) >> 5) + (((v4 % 3600 + ((-30583 * (v4 % 3600)) >> 16)) & 0x8000) >> 15));
     v6 = (v4 % 3600 - 60 * ((((34953 * (v4 % 3600)) >> 16) >> 5) + (((v4 % 3600 + ((-30583 * (v4 % 3600)) >> 16)) & 0x8000) >> 15)));
     if ((v4 + 3599) > 0x1C1E)

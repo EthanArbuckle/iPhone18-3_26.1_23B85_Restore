@@ -1,15 +1,15 @@
 @interface CKDAssetHandle
-+ (id)descriptionWithStatus:(int64_t)a3;
-- (BOOL)isEqualToAssetHandle:(id)a3 keys:(id)a4 optionalKeys:(id)a5 differencesDescription:(id *)a6;
++ (id)descriptionWithStatus:(int64_t)status;
+- (BOOL)isEqualToAssetHandle:(id)handle keys:(id)keys optionalKeys:(id)optionalKeys differencesDescription:(id *)description;
 - (BOOL)mayBeEvicted;
 - (BOOL)mayHaveAssetCacheManagedFile;
-- (CKDAssetHandle)initWithItemID:(id)a3 UUID:(id)a4 path:(id)a5;
-- (CKDAssetHandle)initWithPropertyDictionary:(id)a3;
+- (CKDAssetHandle)initWithItemID:(id)d UUID:(id)iD path:(id)path;
+- (CKDAssetHandle)initWithPropertyDictionary:(id)dictionary;
 - (NSNumber)usesMMCSVersion2;
 - (id)CKPropertiesDescription;
 - (id)dictionaryPropertyEncoding;
 - (id)statusDescription;
-- (void)setBoundaryKeyHashUsingBoundaryKey:(id)a3;
+- (void)setBoundaryKeyHashUsingBoundaryKey:(id)key;
 @end
 
 @implementation CKDAssetHandle
@@ -111,46 +111,46 @@
   return v3;
 }
 
-- (CKDAssetHandle)initWithPropertyDictionary:(id)a3
+- (CKDAssetHandle)initWithPropertyDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v8 = objc_msgSend_init(self, v5, v6);
   if (v8)
   {
-    v9 = objc_msgSend_objectForKeyedSubscript_(v4, v7, @"UUID");
+    v9 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v7, @"UUID");
     objc_msgSend_setUUID_(v8, v10, v9);
 
-    v12 = objc_msgSend_objectForKeyedSubscript_(v4, v11, @"itemID");
+    v12 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v11, @"itemID");
     objc_msgSend_setItemID_(v8, v13, v12);
 
-    v15 = objc_msgSend_objectForKeyedSubscript_(v4, v14, @"path");
+    v15 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v14, @"path");
     objc_msgSend_setPath_(v8, v16, v15);
 
-    v18 = objc_msgSend_objectForKeyedSubscript_(v4, v17, @"volumeIndex");
+    v18 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v17, @"volumeIndex");
     objc_msgSend_setVolumeIndex_(v8, v19, v18);
 
-    v21 = objc_msgSend_objectForKeyedSubscript_(v4, v20, @"fileID");
+    v21 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v20, @"fileID");
     objc_msgSend_setFileID_(v8, v22, v21);
 
-    v24 = objc_msgSend_objectForKeyedSubscript_(v4, v23, @"generationID");
+    v24 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v23, @"generationID");
     objc_msgSend_setGenerationID_(v8, v25, v24);
 
-    v27 = objc_msgSend_objectForKeyedSubscript_(v4, v26, @"lastUsedTime");
+    v27 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v26, @"lastUsedTime");
     objc_msgSend_setLastUsedTime_(v8, v28, v27);
 
-    v30 = objc_msgSend_objectForKeyedSubscript_(v4, v29, @"fileSignature");
+    v30 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v29, @"fileSignature");
     objc_msgSend_setFileSignature_(v8, v31, v30);
 
-    v33 = objc_msgSend_objectForKeyedSubscript_(v4, v32, @"status");
+    v33 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v32, @"status");
     objc_msgSend_setStatus_(v8, v34, v33);
 
-    v36 = objc_msgSend_objectForKeyedSubscript_(v4, v35, @"modTime");
+    v36 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v35, @"modTime");
     objc_msgSend_setModTime_(v8, v37, v36);
 
-    v39 = objc_msgSend_objectForKeyedSubscript_(v4, v38, @"fileSize");
+    v39 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v38, @"fileSize");
     objc_msgSend_setFileSize_(v8, v40, v39);
 
-    v42 = objc_msgSend_objectForKeyedSubscript_(v4, v41, @"chunkCount");
+    v42 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v41, @"chunkCount");
     objc_msgSend_setChunkCount_(v8, v43, v42);
 
     v46 = objc_msgSend_UUID(v8, v44, v45);
@@ -180,16 +180,16 @@
   return v8;
 }
 
-+ (id)descriptionWithStatus:(int64_t)a3
++ (id)descriptionWithStatus:(int64_t)status
 {
-  if (a3 > 8)
+  if (status > 8)
   {
     return @"UnDefInEd";
   }
 
   else
   {
-    return off_278546218[a3];
+    return off_278546218[status];
   }
 }
 
@@ -360,30 +360,30 @@
   return v11;
 }
 
-- (CKDAssetHandle)initWithItemID:(id)a3 UUID:(id)a4 path:(id)a5
+- (CKDAssetHandle)initWithItemID:(id)d UUID:(id)iD path:(id)path
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  pathCopy = path;
   v23.receiver = self;
   v23.super_class = CKDAssetHandle;
   v12 = [(CKDAssetHandle *)&v23 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_itemID, a3);
-    v16 = v10;
-    if (!v10)
+    objc_storeStrong(&v12->_itemID, d);
+    v16 = iDCopy;
+    if (!iDCopy)
     {
       v16 = objc_msgSend_UUID(MEMORY[0x277CCAD78], v14, v15);
     }
 
     objc_storeStrong(&v13->_UUID, v16);
-    if (!v10)
+    if (!iDCopy)
     {
     }
 
-    objc_storeStrong(&v13->_path, a5);
+    objc_storeStrong(&v13->_path, path);
     status = v13->_status;
     v13->_status = &unk_2838C81C0;
 
@@ -420,12 +420,12 @@
   return v12;
 }
 
-- (BOOL)isEqualToAssetHandle:(id)a3 keys:(id)a4 optionalKeys:(id)a5 differencesDescription:(id *)a6
+- (BOOL)isEqualToAssetHandle:(id)handle keys:(id)keys optionalKeys:(id)optionalKeys differencesDescription:(id *)description
 {
   v72 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v48 = a5;
+  handleCopy = handle;
+  keysCopy = keys;
+  optionalKeysCopy = optionalKeys;
   v66 = 0;
   v67 = &v66;
   v68 = 0x2020000000;
@@ -447,7 +447,7 @@
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  obj = v10;
+  obj = keysCopy;
   v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v12, &v55, v71, 16);
   if (v14)
   {
@@ -463,7 +463,7 @@
 
         v17 = *(*(&v55 + 1) + 8 * i);
         v18 = objc_msgSend_valueForKey_(self, v13, v17);
-        v20 = objc_msgSend_valueForKey_(v9, v19, v17);
+        v20 = objc_msgSend_valueForKey_(handleCopy, v19, v17);
         v21 = v18;
         v22 = v20;
         v24 = v22;
@@ -510,7 +510,7 @@ LABEL_15:
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v29 = v48;
+  v29 = optionalKeysCopy;
   v32 = objc_msgSend_countByEnumeratingWithState_objects_count_(v29, v30, &v51, v70, 16);
   if (v32)
   {
@@ -526,7 +526,7 @@ LABEL_15:
 
         v35 = *(*(&v51 + 1) + 8 * j);
         v36 = objc_msgSend_valueForKey_(self, v31, v35);
-        v38 = objc_msgSend_valueForKey_(v9, v37, v35);
+        v38 = objc_msgSend_valueForKey_(handleCopy, v37, v35);
         v40 = v38;
         if (v36)
         {
@@ -552,16 +552,16 @@ LABEL_15:
   }
 
   v44 = v67;
-  if (a6)
+  if (description)
   {
     if (v67[3])
     {
-      *a6 = 0;
+      *description = 0;
     }
 
     else
     {
-      *a6 = v61[5];
+      *description = v61[5];
       v44 = v67;
     }
   }
@@ -575,14 +575,14 @@ LABEL_15:
   return v45 & 1;
 }
 
-- (void)setBoundaryKeyHashUsingBoundaryKey:(id)a3
+- (void)setBoundaryKeyHashUsingBoundaryKey:(id)key
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  keyCopy = key;
+  v5 = keyCopy;
+  if (keyCopy)
   {
-    v6 = v4;
+    v6 = keyCopy;
     v9 = objc_msgSend_bytes(v6, v7, v8);
     v12 = objc_msgSend_length(v5, v10, v11);
     CC_SHA256(v9, v12, md);

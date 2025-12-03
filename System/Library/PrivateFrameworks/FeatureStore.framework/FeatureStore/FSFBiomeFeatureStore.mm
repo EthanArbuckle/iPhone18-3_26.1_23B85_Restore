@@ -1,9 +1,9 @@
 @interface FSFBiomeFeatureStore
 + (id)singletonInstance;
 - (BOOL)deleteAllStreams;
-- (BOOL)deleteStream:(id)a3;
+- (BOOL)deleteStream:(id)stream;
 - (FSFBiomeFeatureStore)init;
-- (id)getStream:(id)a3;
+- (id)getStream:(id)stream;
 @end
 
 @implementation FSFBiomeFeatureStore
@@ -16,7 +16,7 @@
     block[1] = 3221225472;
     block[2] = __41__FSFBiomeFeatureStore_singletonInstance__block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     if (singletonInstance_onceToken != -1)
     {
       dispatch_once(&singletonInstance_onceToken, block);
@@ -56,24 +56,24 @@ uint64_t __41__FSFBiomeFeatureStore_singletonInstance__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (id)getStream:(id)a3
+- (id)getStream:(id)stream
 {
-  v4 = a3;
-  v5 = [[FSFBiomeFeatureStoreStream alloc] initWithConfig:self->_config streamId:v4];
+  streamCopy = stream;
+  v5 = [[FSFBiomeFeatureStoreStream alloc] initWithConfig:self->_config streamId:streamCopy];
 
   return v5;
 }
 
-- (BOOL)deleteStream:(id)a3
+- (BOOL)deleteStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v5 = +[FSFUtils availableStreams];
-  v6 = [v5 containsObject:v4];
+  v6 = [v5 containsObject:streamCopy];
 
   if (v6)
   {
-    v7 = [[FSFBiomeFeatureStoreStream alloc] initWithConfig:self->_config streamId:v4];
-    v8 = [(FSFBiomeFeatureStoreStream *)v7 deleteCurrentStream];
+    v7 = [[FSFBiomeFeatureStoreStream alloc] initWithConfig:self->_config streamId:streamCopy];
+    deleteCurrentStream = [(FSFBiomeFeatureStoreStream *)v7 deleteCurrentStream];
   }
 
   else
@@ -83,10 +83,10 @@ uint64_t __41__FSFBiomeFeatureStore_singletonInstance__block_invoke(uint64_t a1)
       [FSFBiomeFeatureStore deleteStream:];
     }
 
-    v8 = 0;
+    deleteCurrentStream = 0;
   }
 
-  return v8;
+  return deleteCurrentStream;
 }
 
 - (BOOL)deleteAllStreams

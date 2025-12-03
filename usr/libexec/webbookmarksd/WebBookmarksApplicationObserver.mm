@@ -2,8 +2,8 @@
 + (id)sharedObserver;
 - (WebBookmarksApplicationObserver)init;
 - (void)_safariWasUninstalled;
-- (void)applicationsDidInstall:(id)a3;
-- (void)applicationsDidUninstall:(id)a3;
+- (void)applicationsDidInstall:(id)install;
+- (void)applicationsDidUninstall:(id)uninstall;
 - (void)databaseWasRebuilt;
 - (void)dealloc;
 @end
@@ -82,9 +82,9 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v8 = v7;
-      v9 = [v5 safari_privacyPreservingDescription];
+      safari_privacyPreservingDescription = [v5 safari_privacyPreservingDescription];
       *buf = 138543362;
-      v12 = v9;
+      v12 = safari_privacyPreservingDescription;
       _os_log_error_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "Failed to delete Safari directory %{public}@", buf, 0xCu);
     }
   }
@@ -98,14 +98,14 @@
   exit(0);
 }
 
-- (void)applicationsDidUninstall:(id)a3
+- (void)applicationsDidUninstall:(id)uninstall
 {
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  uninstallCopy = uninstall;
+  v5 = [uninstallCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -117,11 +117,11 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(uninstallCopy);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) bundleIdentifier];
-        v11 = [v10 isEqualToString:v8];
+        bundleIdentifier = [*(*(&v14 + 1) + 8 * i) bundleIdentifier];
+        v11 = [bundleIdentifier isEqualToString:v8];
 
         if (v11)
         {
@@ -137,7 +137,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [uninstallCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -172,14 +172,14 @@ LABEL_13:
   }
 }
 
-- (void)applicationsDidInstall:(id)a3
+- (void)applicationsDidInstall:(id)install
 {
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  installCopy = install;
+  v4 = [installCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -192,11 +192,11 @@ LABEL_13:
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(installCopy);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * v8) bundleIdentifier];
-        v10 = [v9 isEqualToString:v7];
+        bundleIdentifier = [*(*(&v13 + 1) + 8 * v8) bundleIdentifier];
+        v10 = [bundleIdentifier isEqualToString:v7];
 
         if (v10)
         {
@@ -214,7 +214,7 @@ LABEL_13:
       }
 
       while (v5 != v8);
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [installCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);

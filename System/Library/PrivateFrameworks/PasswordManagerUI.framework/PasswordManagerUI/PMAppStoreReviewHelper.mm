@@ -1,12 +1,12 @@
 @interface PMAppStoreReviewHelper
-- (void)attemptToRequestReview:(id)a3;
+- (void)attemptToRequestReview:(id)review;
 @end
 
 @implementation PMAppStoreReviewHelper
 
-- (void)attemptToRequestReview:(id)a3
+- (void)attemptToRequestReview:(id)review
 {
-  v3 = a3;
+  reviewCopy = review;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2050000000;
@@ -25,7 +25,7 @@
 
   v5 = v4;
   _Block_object_dispose(&v7, 8);
-  [v4 requestReviewInScene:v3];
+  [v4 requestReviewInScene:reviewCopy];
 }
 
 @end

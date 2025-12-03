@@ -1,26 +1,26 @@
 @interface WBSCoreAnalyticsExtensionsStatistics
-- (WBSCoreAnalyticsExtensionsStatistics)initWithExtensionsList:(id)a3 extractDeveloperIdentifier:(id)a4 extractComposedIdentifier:(id)a5 extensionTelemetryDataPredicate:(id)a6;
+- (WBSCoreAnalyticsExtensionsStatistics)initWithExtensionsList:(id)list extractDeveloperIdentifier:(id)identifier extractComposedIdentifier:(id)composedIdentifier extensionTelemetryDataPredicate:(id)predicate;
 @end
 
 @implementation WBSCoreAnalyticsExtensionsStatistics
 
-- (WBSCoreAnalyticsExtensionsStatistics)initWithExtensionsList:(id)a3 extractDeveloperIdentifier:(id)a4 extractComposedIdentifier:(id)a5 extensionTelemetryDataPredicate:(id)a6
+- (WBSCoreAnalyticsExtensionsStatistics)initWithExtensionsList:(id)list extractDeveloperIdentifier:(id)identifier extractComposedIdentifier:(id)composedIdentifier extensionTelemetryDataPredicate:(id)predicate
 {
   v34 = *MEMORY[0x1E69E9840];
-  v23 = a3;
-  v9 = a4;
-  v26 = a6;
+  listCopy = list;
+  identifierCopy = identifier;
+  predicateCopy = predicate;
   v32.receiver = self;
   v32.super_class = WBSCoreAnalyticsExtensionsStatistics;
   v27 = [(WBSCoreAnalyticsExtensionsStatistics *)&v32 init];
   if (v27)
   {
-    v25 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    obj = v23;
+    obj = listCopy;
     v10 = 0;
     v11 = 0;
     v12 = [obj countByEnumeratingWithState:&v28 objects:v33 count:16];
@@ -37,20 +37,20 @@
           }
 
           v15 = *(*(&v28 + 1) + 8 * i);
-          v16 = v9[2](v9, v15);
+          v16 = identifierCopy[2](identifierCopy, v15);
           if ([v16 length])
           {
-            v17 = v26[2](v26, v15);
-            v18 = [v17 enabled];
+            v17 = predicateCopy[2](predicateCopy, v15);
+            enabled = [v17 enabled];
             if (!v27->_hasExtensionThatCanOverrideNewTabPage && [v17 canOverrideNewTabPage])
             {
               v27->_hasExtensionThatCanOverrideNewTabPage = 1;
             }
 
-            [(NSArray *)v25 addObject:v17, v23];
+            [(NSArray *)array addObject:v17, listCopy];
 
-            v10 += v18;
-            v11 += v18 ^ 1;
+            v10 += enabled;
+            v11 += enabled ^ 1;
           }
         }
 
@@ -63,7 +63,7 @@
     v27->_enabledCount = v10;
     v27->_disabledCount = v11;
     telemetryDataForExtensions = v27->_telemetryDataForExtensions;
-    v27->_telemetryDataForExtensions = v25;
+    v27->_telemetryDataForExtensions = array;
 
     v20 = v27;
   }

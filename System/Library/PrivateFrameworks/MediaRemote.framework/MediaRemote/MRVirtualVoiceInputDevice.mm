@@ -1,40 +1,40 @@
 @interface MRVirtualVoiceInputDevice
-- (MRVirtualVoiceInputDevice)initWithData:(id)a3;
-- (MRVirtualVoiceInputDevice)initWithDeviceID:(unsigned int)a3;
+- (MRVirtualVoiceInputDevice)initWithData:(id)data;
+- (MRVirtualVoiceInputDevice)initWithDeviceID:(unsigned int)d;
 - (NSData)data;
 - (id)description;
 @end
 
 @implementation MRVirtualVoiceInputDevice
 
-- (MRVirtualVoiceInputDevice)initWithDeviceID:(unsigned int)a3
+- (MRVirtualVoiceInputDevice)initWithDeviceID:(unsigned int)d
 {
   v5.receiver = self;
   v5.super_class = MRVirtualVoiceInputDevice;
   result = [(MRVirtualVoiceInputDevice *)&v5 init];
   if (result)
   {
-    result->_deviceID = a3;
+    result->_deviceID = d;
     result->_recordingState = 2;
   }
 
   return result;
 }
 
-- (MRVirtualVoiceInputDevice)initWithData:(id)a3
+- (MRVirtualVoiceInputDevice)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v12.receiver = self;
   v12.super_class = MRVirtualVoiceInputDevice;
   v5 = [(MRVirtualVoiceInputDevice *)&v12 init];
   if (v5)
   {
-    v6 = [[_MRVoiceInputDevice alloc] initWithData:v4];
+    v6 = [[_MRVoiceInputDevice alloc] initWithData:dataCopy];
     v5->_deviceID = [(_MRVoiceInputDevice *)v6 deviceID];
     v5->_recordingState = [(_MRVoiceInputDevice *)v6 recordingState];
     v7 = [MRVirtualVoiceInputDeviceDescriptor alloc];
-    v8 = [(_MRVoiceInputDevice *)v6 descriptor];
-    v9 = [(MRVirtualVoiceInputDeviceDescriptor *)v7 initWithProtobuf:v8];
+    descriptor = [(_MRVoiceInputDevice *)v6 descriptor];
+    v9 = [(MRVirtualVoiceInputDeviceDescriptor *)v7 initWithProtobuf:descriptor];
     descriptor = v5->_descriptor;
     v5->_descriptor = v9;
   }
@@ -64,12 +64,12 @@
   v3 = objc_alloc_init(_MRVoiceInputDevice);
   [(_MRVoiceInputDevice *)v3 setDeviceID:self->_deviceID];
   [(_MRVoiceInputDevice *)v3 setRecordingState:self->_recordingState];
-  v4 = [(MRVirtualVoiceInputDeviceDescriptor *)self->_descriptor protobuf];
-  [(_MRVoiceInputDevice *)v3 setDescriptor:v4];
+  protobuf = [(MRVirtualVoiceInputDeviceDescriptor *)self->_descriptor protobuf];
+  [(_MRVoiceInputDevice *)v3 setDescriptor:protobuf];
 
-  v5 = [(_MRVoiceInputDevice *)v3 data];
+  data = [(_MRVoiceInputDevice *)v3 data];
 
-  return v5;
+  return data;
 }
 
 @end

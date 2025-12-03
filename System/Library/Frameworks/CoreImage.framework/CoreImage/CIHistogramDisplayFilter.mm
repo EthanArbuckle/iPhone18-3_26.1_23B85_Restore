@@ -84,11 +84,11 @@
     v9 = fmin(fmax(v7, 0.0), 1.0) * v8;
     [(NSNumber *)self->inputHighLimit doubleValue];
     v11 = fmin(fmax(v10, 0.0), 1.0) * v8;
-    v12 = [(CIHistogramDisplayFilter *)self _kernel];
+    _kernel = [(CIHistogramDisplayFilter *)self _kernel];
     *&v13 = v6;
     v14[1] = [MEMORY[0x1E696AD98] numberWithFloat:{v13, self->inputImage}];
     v14[2] = [CIVector vectorWithX:v9 Y:v11];
-    return [v12 applyWithExtent:&__block_literal_global_39 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v14, 3), 0.0, 0.0, v8, v6}];
+    return [_kernel applyWithExtent:&__block_literal_global_39 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v14, 3), 0.0, 0.0, v8, v6}];
   }
 
   return result;

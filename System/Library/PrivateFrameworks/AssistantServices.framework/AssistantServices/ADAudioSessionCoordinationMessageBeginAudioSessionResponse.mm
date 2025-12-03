@@ -1,36 +1,36 @@
 @interface ADAudioSessionCoordinationMessageBeginAudioSessionResponse
-+ (id)newWithBuilder:(id)a3;
-- (ADAudioSessionCoordinationMessageBeginAudioSessionResponse)initWithBuilder:(id)a3;
-- (ADAudioSessionCoordinationMessageBeginAudioSessionResponse)initWithDictionaryRepresentation:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (ADAudioSessionCoordinationMessageBeginAudioSessionResponse)initWithBuilder:(id)builder;
+- (ADAudioSessionCoordinationMessageBeginAudioSessionResponse)initWithDictionaryRepresentation:(id)representation;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
 @end
 
 @implementation ADAudioSessionCoordinationMessageBeginAudioSessionResponse
 
-- (ADAudioSessionCoordinationMessageBeginAudioSessionResponse)initWithDictionaryRepresentation:(id)a3
+- (ADAudioSessionCoordinationMessageBeginAudioSessionResponse)initWithDictionaryRepresentation:(id)representation
 {
-  if (a3)
+  if (representation)
   {
     self = [(ADAudioSessionCoordinationMessageBeginAudioSessionResponse *)self init];
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v4.receiver = self;
   v4.super_class = ADAudioSessionCoordinationMessageBeginAudioSessionResponse;
-  return [(ADAudioSessionCoordinationMessageBeginAudioSessionResponse *)&v4 isEqual:a3];
+  return [(ADAudioSessionCoordinationMessageBeginAudioSessionResponse *)&v4 isEqual:equal];
 }
 
 - (unint64_t)hash
@@ -40,7 +40,7 @@
   return [(ADAudioSessionCoordinationMessageBeginAudioSessionResponse *)&v3 hash];
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v5.receiver = self;
   v5.super_class = ADAudioSessionCoordinationMessageBeginAudioSessionResponse;
@@ -49,38 +49,38 @@
   return v3;
 }
 
-- (ADAudioSessionCoordinationMessageBeginAudioSessionResponse)initWithBuilder:(id)a3
+- (ADAudioSessionCoordinationMessageBeginAudioSessionResponse)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v9.receiver = self;
   v9.super_class = ADAudioSessionCoordinationMessageBeginAudioSessionResponse;
   v5 = [(ADAudioSessionCoordinationMessageBeginAudioSessionResponse *)&v9 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_ADAudioSessionCoordinationMessageBeginAudioSessionResponseMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     [(_ADAudioSessionCoordinationMessageBeginAudioSessionResponseMutation *)v7 isDirty];
   }
 
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_ADAudioSessionCoordinationMessageBeginAudioSessionResponseMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_ADAudioSessionCoordinationMessageBeginAudioSessionResponseMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(ADAudioSessionCoordinationMessageBeginAudioSessionResponse);

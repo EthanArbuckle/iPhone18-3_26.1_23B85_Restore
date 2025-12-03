@@ -18,7 +18,7 @@
 {
   v2 = _MTInternalVibrancyEffectStyleForPublicStyle();
 
-  return [a1 _widgetEffectForPrivateVibrancyStyle:v2];
+  return [self _widgetEffectForPrivateVibrancyStyle:v2];
 }
 
 @end

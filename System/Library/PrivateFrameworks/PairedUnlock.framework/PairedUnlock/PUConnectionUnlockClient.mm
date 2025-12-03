@@ -1,22 +1,22 @@
 @interface PUConnectionUnlockClient
 - (PUConnection)connection;
-- (PUConnectionUnlockClient)initWithConnection:(id)a3;
-- (void)didGetRemoteDeviceState:(id)a3 error:(id)a4;
+- (PUConnectionUnlockClient)initWithConnection:(id)connection;
+- (void)didGetRemoteDeviceState:(id)state error:(id)error;
 - (void)remoteDeviceDidUnlock;
 @end
 
 @implementation PUConnectionUnlockClient
 
-- (PUConnectionUnlockClient)initWithConnection:(id)a3
+- (PUConnectionUnlockClient)initWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v7.receiver = self;
   v7.super_class = PUConnectionUnlockClient;
   v5 = [(PUConnectionUnlockClient *)&v7 self];
 
   if (v5)
   {
-    objc_storeWeak(&v5->_connection, v4);
+    objc_storeWeak(&v5->_connection, connectionCopy);
   }
 
   return v5;
@@ -28,12 +28,12 @@
   [WeakRetained remoteDeviceDidUnlock];
 }
 
-- (void)didGetRemoteDeviceState:(id)a3 error:(id)a4
+- (void)didGetRemoteDeviceState:(id)state error:(id)error
 {
-  v6 = a4;
-  v7 = a3;
+  errorCopy = error;
+  stateCopy = state;
   WeakRetained = objc_loadWeakRetained(&self->_connection);
-  [WeakRetained didGetRemoteDeviceState:v7 error:v6];
+  [WeakRetained didGetRemoteDeviceState:stateCopy error:errorCopy];
 }
 
 - (PUConnection)connection

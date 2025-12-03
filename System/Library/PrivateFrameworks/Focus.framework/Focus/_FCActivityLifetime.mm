@@ -1,31 +1,31 @@
 @interface _FCActivityLifetime
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (_FCActivityLifetime)initWithLifetimeDetails:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_FCActivityLifetime)initWithLifetimeDetails:(id)details;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation _FCActivityLifetime
 
-- (_FCActivityLifetime)initWithLifetimeDetails:(id)a3
+- (_FCActivityLifetime)initWithLifetimeDetails:(id)details
 {
-  v5 = a3;
+  detailsCopy = details;
   v9.receiver = self;
   v9.super_class = _FCActivityLifetime;
   v6 = [(_FCActivityLifetime *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dndLifetimeDetails, a3);
+    objc_storeStrong(&v6->_dndLifetimeDetails, details);
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -36,7 +36,7 @@
     if (objc_opt_isKindOfClass())
     {
       dndLifetimeDetails = self->_dndLifetimeDetails;
-      v6 = v4->_dndLifetimeDetails;
+      v6 = equalCopy->_dndLifetimeDetails;
       v7 = BSEqualObjects();
     }
 
@@ -53,15 +53,15 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(_FCActivityLifetime *)self lifetimeIdentifier];
-  v6 = [(_FCActivityLifetime *)self lifetimeName];
-  v7 = [(_FCActivityLifetime *)self lifetimeMetadata];
-  v8 = [v3 stringWithFormat:@"<%@: %p lifetimeIdentifier: %@; lifetimeName: %@; lifetimeMetadata: %@>", v4, self, v5, v6, v7];;
+  lifetimeIdentifier = [(_FCActivityLifetime *)self lifetimeIdentifier];
+  lifetimeName = [(_FCActivityLifetime *)self lifetimeName];
+  lifetimeMetadata = [(_FCActivityLifetime *)self lifetimeMetadata];
+  v8 = [v3 stringWithFormat:@"<%@: %p lifetimeIdentifier: %@; lifetimeName: %@; lifetimeMetadata: %@>", v4, self, lifetimeIdentifier, lifetimeName, lifetimeMetadata];;
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   v5 = [(DNDLifetimeDetails *)self->_dndLifetimeDetails copy];

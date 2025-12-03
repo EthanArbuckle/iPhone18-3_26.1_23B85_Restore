@@ -1,13 +1,13 @@
 @interface ImageHeadingView
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
-- (_TtC8AppStore16ImageHeadingView)initWithCoder:(id)a3;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
+- (_TtC8AppStore16ImageHeadingView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation ImageHeadingView
 
-- (_TtC8AppStore16ImageHeadingView)initWithCoder:(id)a3
+- (_TtC8AppStore16ImageHeadingView)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC8AppStore16ImageHeadingView_metrics);
   v3[3] = &type metadata for Double;
@@ -20,21 +20,21 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1006DDB98();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_1006DE868(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1006DE868(change);
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   v6 = sub_1006DEC78();
   v8 = v7;
   v10 = v9;

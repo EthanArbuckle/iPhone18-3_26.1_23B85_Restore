@@ -1,13 +1,13 @@
 @interface IRStore
-- (BOOL)batchDeleteObjectsWithEntityName:(id)a3 byAndPredicates:(id)a4 sortDescriptors:(id)a5 andLimit:(unint64_t)a6;
-- (BOOL)batchUpdateObjectsWithEntityName:(id)a3 predicate:(id)a4 propertiesToUpdate:(id)a5;
+- (BOOL)batchDeleteObjectsWithEntityName:(id)name byAndPredicates:(id)predicates sortDescriptors:(id)descriptors andLimit:(unint64_t)limit;
+- (BOOL)batchUpdateObjectsWithEntityName:(id)name predicate:(id)predicate propertiesToUpdate:(id)update;
 - (BOOL)commitChangesToStore;
-- (IRStore)initWithPersistenceManager:(id)a3;
-- (id)countManagedObjectWithEntityName:(id)a3 byAndPredicates:(id)a4 sortDescriptors:(id)a5 andLimit:(unint64_t)a6;
-- (id)fetchManagedObjectWithEntityName:(id)a3 byAndPredicates:(id)a4 sortDescriptors:(id)a5 andLimit:(unint64_t)a6;
-- (id)fetchManagedObjectsWithEntityName:(id)a3 byAndPredicates:(id)a4 sortDescriptors:(id)a5 andLimit:(unint64_t)a6;
-- (id)fetchObjectWithEntityName:(id)a3 byAndPredicates:(id)a4 sortDescriptors:(id)a5 andLimit:(unint64_t)a6;
-- (id)fetchObjectsWithEntityName:(id)a3 byAndPredicates:(id)a4 sortDescriptors:(id)a5 andLimit:(unint64_t)a6;
+- (IRStore)initWithPersistenceManager:(id)manager;
+- (id)countManagedObjectWithEntityName:(id)name byAndPredicates:(id)predicates sortDescriptors:(id)descriptors andLimit:(unint64_t)limit;
+- (id)fetchManagedObjectWithEntityName:(id)name byAndPredicates:(id)predicates sortDescriptors:(id)descriptors andLimit:(unint64_t)limit;
+- (id)fetchManagedObjectsWithEntityName:(id)name byAndPredicates:(id)predicates sortDescriptors:(id)descriptors andLimit:(unint64_t)limit;
+- (id)fetchObjectWithEntityName:(id)name byAndPredicates:(id)predicates sortDescriptors:(id)descriptors andLimit:(unint64_t)limit;
+- (id)fetchObjectsWithEntityName:(id)name byAndPredicates:(id)predicates sortDescriptors:(id)descriptors andLimit:(unint64_t)limit;
 - (void)commitChangesToStore;
 @end
 
@@ -63,46 +63,46 @@ uint64_t __31__IRStore_commitChangesToStore__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (IRStore)initWithPersistenceManager:(id)a3
+- (IRStore)initWithPersistenceManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v11.receiver = self;
   v11.super_class = IRStore;
   v6 = [(IRStore *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_persistenceManager, a3);
-    v8 = [(IRPersistenceManager *)v7->_persistenceManager createManagedObjectContext];
+    objc_storeStrong(&v6->_persistenceManager, manager);
+    createManagedObjectContext = [(IRPersistenceManager *)v7->_persistenceManager createManagedObjectContext];
     managedObjectContext = v7->_managedObjectContext;
-    v7->_managedObjectContext = v8;
+    v7->_managedObjectContext = createManagedObjectContext;
   }
 
   return v7;
 }
 
-- (id)fetchObjectWithEntityName:(id)a3 byAndPredicates:(id)a4 sortDescriptors:(id)a5 andLimit:(unint64_t)a6
+- (id)fetchObjectWithEntityName:(id)name byAndPredicates:(id)predicates sortDescriptors:(id)descriptors andLimit:(unint64_t)limit
 {
-  v6 = [(IRStore *)self fetchObjectsWithEntityName:a3 byAndPredicates:a4 sortDescriptors:a5 andLimit:a6];
+  v6 = [(IRStore *)self fetchObjectsWithEntityName:name byAndPredicates:predicates sortDescriptors:descriptors andLimit:limit];
   if ([v6 count] == 1)
   {
-    v7 = [v6 firstObject];
+    firstObject = [v6 firstObject];
   }
 
   else
   {
-    v7 = 0;
+    firstObject = 0;
   }
 
-  return v7;
+  return firstObject;
 }
 
-- (id)fetchObjectsWithEntityName:(id)a3 byAndPredicates:(id)a4 sortDescriptors:(id)a5 andLimit:(unint64_t)a6
+- (id)fetchObjectsWithEntityName:(id)name byAndPredicates:(id)predicates sortDescriptors:(id)descriptors andLimit:(unint64_t)limit
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(IRStore *)self fetchManagedObjectsWithEntityName:v10 byAndPredicates:v11 sortDescriptors:v12 andLimit:a6];
+  nameCopy = name;
+  predicatesCopy = predicates;
+  descriptorsCopy = descriptors;
+  v13 = [(IRStore *)self fetchManagedObjectsWithEntityName:nameCopy byAndPredicates:predicatesCopy sortDescriptors:descriptorsCopy andLimit:limit];
   if (v13)
   {
     v25 = 0;
@@ -110,16 +110,16 @@ uint64_t __31__IRStore_commitChangesToStore__block_invoke(uint64_t a1)
     v27 = 0x3032000000;
     v28 = __Block_byref_object_copy__4;
     v29 = __Block_byref_object_dispose__4;
-    v30 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     managedObjectContext = self->_managedObjectContext;
     v17 = MEMORY[0x277D85DD0];
     v18 = 3221225472;
     v19 = __79__IRStore_fetchObjectsWithEntityName_byAndPredicates_sortDescriptors_andLimit___block_invoke;
     v20 = &unk_2797E1600;
     v21 = v13;
-    v23 = self;
+    selfCopy = self;
     v24 = &v25;
-    v22 = v10;
+    v22 = nameCopy;
     [(NSManagedObjectContext *)managedObjectContext performBlockAndWait:&v17];
     v15 = [v26[5] copy];
 
@@ -163,27 +163,27 @@ void __79__IRStore_fetchObjectsWithEntityName_byAndPredicates_sortDescriptors_an
   }
 }
 
-- (id)fetchManagedObjectWithEntityName:(id)a3 byAndPredicates:(id)a4 sortDescriptors:(id)a5 andLimit:(unint64_t)a6
+- (id)fetchManagedObjectWithEntityName:(id)name byAndPredicates:(id)predicates sortDescriptors:(id)descriptors andLimit:(unint64_t)limit
 {
-  v6 = [(IRStore *)self fetchManagedObjectsWithEntityName:a3 byAndPredicates:a4 sortDescriptors:a5 andLimit:a6];
+  v6 = [(IRStore *)self fetchManagedObjectsWithEntityName:name byAndPredicates:predicates sortDescriptors:descriptors andLimit:limit];
   if ([v6 count] == 1)
   {
-    v7 = [v6 firstObject];
+    firstObject = [v6 firstObject];
   }
 
   else
   {
-    v7 = 0;
+    firstObject = 0;
   }
 
-  return v7;
+  return firstObject;
 }
 
-- (id)fetchManagedObjectsWithEntityName:(id)a3 byAndPredicates:(id)a4 sortDescriptors:(id)a5 andLimit:(unint64_t)a6
+- (id)fetchManagedObjectsWithEntityName:(id)name byAndPredicates:(id)predicates sortDescriptors:(id)descriptors andLimit:(unint64_t)limit
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  nameCopy = name;
+  predicatesCopy = predicates;
+  descriptorsCopy = descriptors;
   v33 = 0;
   v34[0] = &v33;
   v34[1] = 0x3032000000;
@@ -201,15 +201,15 @@ void __79__IRStore_fetchObjectsWithEntityName_byAndPredicates_sortDescriptors_an
   v19[1] = 3221225472;
   v19[2] = __86__IRStore_fetchManagedObjectsWithEntityName_byAndPredicates_sortDescriptors_andLimit___block_invoke;
   v19[3] = &unk_2797E16E8;
-  v14 = v10;
+  v14 = nameCopy;
   v20 = v14;
-  v15 = v11;
+  v15 = predicatesCopy;
   v21 = v15;
-  v16 = v12;
+  v16 = descriptorsCopy;
   v25 = &v33;
-  v26 = a6;
+  limitCopy = limit;
   v22 = v16;
-  v23 = self;
+  selfCopy = self;
   v24 = &v27;
   [(NSManagedObjectContext *)managedObjectContext performBlockAndWait:v19];
   if (*(v34[0] + 40) && os_log_type_enabled(*MEMORY[0x277D21260], OS_LOG_TYPE_ERROR))
@@ -243,11 +243,11 @@ void __86__IRStore_fetchManagedObjectsWithEntityName_byAndPredicates_sortDescrip
   *(v7 + 40) = v6;
 }
 
-- (id)countManagedObjectWithEntityName:(id)a3 byAndPredicates:(id)a4 sortDescriptors:(id)a5 andLimit:(unint64_t)a6
+- (id)countManagedObjectWithEntityName:(id)name byAndPredicates:(id)predicates sortDescriptors:(id)descriptors andLimit:(unint64_t)limit
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  nameCopy = name;
+  predicatesCopy = predicates;
+  descriptorsCopy = descriptors;
   v31 = 0;
   v32[0] = &v31;
   v32[1] = 0x3032000000;
@@ -263,15 +263,15 @@ void __86__IRStore_fetchManagedObjectsWithEntityName_byAndPredicates_sortDescrip
   v19[1] = 3221225472;
   v19[2] = __85__IRStore_countManagedObjectWithEntityName_byAndPredicates_sortDescriptors_andLimit___block_invoke;
   v19[3] = &unk_2797E16E8;
-  v14 = v10;
+  v14 = nameCopy;
   v20 = v14;
-  v15 = v11;
+  v15 = predicatesCopy;
   v21 = v15;
-  v16 = v12;
+  v16 = descriptorsCopy;
   v25 = &v31;
-  v26 = a6;
+  limitCopy = limit;
   v22 = v16;
-  v23 = self;
+  selfCopy = self;
   v24 = &v27;
   [(NSManagedObjectContext *)managedObjectContext performBlockAndWait:v19];
   if (*(v32[0] + 40) && os_log_type_enabled(*MEMORY[0x277D21260], OS_LOG_TYPE_ERROR))
@@ -312,11 +312,11 @@ void __85__IRStore_countManagedObjectWithEntityName_byAndPredicates_sortDescript
   [*(a1[7] + 8) reset];
 }
 
-- (BOOL)batchDeleteObjectsWithEntityName:(id)a3 byAndPredicates:(id)a4 sortDescriptors:(id)a5 andLimit:(unint64_t)a6
+- (BOOL)batchDeleteObjectsWithEntityName:(id)name byAndPredicates:(id)predicates sortDescriptors:(id)descriptors andLimit:(unint64_t)limit
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  nameCopy = name;
+  predicatesCopy = predicates;
+  descriptorsCopy = descriptors;
   v26 = 0;
   v27[0] = &v26;
   v27[1] = 0x3032000000;
@@ -328,15 +328,15 @@ void __85__IRStore_countManagedObjectWithEntityName_byAndPredicates_sortDescript
   v19[1] = 3221225472;
   v19[2] = __85__IRStore_batchDeleteObjectsWithEntityName_byAndPredicates_sortDescriptors_andLimit___block_invoke;
   v19[3] = &unk_2797E1710;
-  v14 = v10;
+  v14 = nameCopy;
   v20 = v14;
-  v15 = v11;
+  v15 = predicatesCopy;
   v21 = v15;
-  v16 = v12;
+  v16 = descriptorsCopy;
   v22 = v16;
-  v23 = self;
+  selfCopy = self;
   v24 = &v26;
-  v25 = a6;
+  limitCopy = limit;
   [(NSManagedObjectContext *)managedObjectContext performBlockAndWait:v19];
   if (*(v27[0] + 40))
   {
@@ -374,11 +374,11 @@ void __85__IRStore_batchDeleteObjectsWithEntityName_byAndPredicates_sortDescript
   [*(a1[7] + 8) reset];
 }
 
-- (BOOL)batchUpdateObjectsWithEntityName:(id)a3 predicate:(id)a4 propertiesToUpdate:(id)a5
+- (BOOL)batchUpdateObjectsWithEntityName:(id)name predicate:(id)predicate propertiesToUpdate:(id)update
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  predicateCopy = predicate;
+  updateCopy = update;
   v23 = 0;
   v24[0] = &v23;
   v24[1] = 0x3032000000;
@@ -390,13 +390,13 @@ void __85__IRStore_batchDeleteObjectsWithEntityName_byAndPredicates_sortDescript
   v17[1] = 3221225472;
   v17[2] = __73__IRStore_batchUpdateObjectsWithEntityName_predicate_propertiesToUpdate___block_invoke;
   v17[3] = &unk_2797E1738;
-  v12 = v8;
+  v12 = nameCopy;
   v18 = v12;
-  v13 = v9;
+  v13 = predicateCopy;
   v19 = v13;
-  v14 = v10;
+  v14 = updateCopy;
   v20 = v14;
-  v21 = self;
+  selfCopy = self;
   v22 = &v23;
   [(NSManagedObjectContext *)managedObjectContext performBlockAndWait:v17];
   v15 = *(v24[0] + 40);
@@ -424,7 +424,7 @@ void __73__IRStore_batchUpdateObjectsWithEntityName_predicate_propertiesToUpdate
 
 - (void)commitChangesToStore
 {
-  OUTLINED_FUNCTION_0_4(a1, *MEMORY[0x277D85DE8]);
+  OUTLINED_FUNCTION_0_4(self, *MEMORY[0x277D85DE8]);
   OUTLINED_FUNCTION_2_0();
   OUTLINED_FUNCTION_0_3(&dword_25543D000, v1, v2, "#store, [ErrorId - Commit changes error] Could not save changes to store with error = %@", v3, v4, v5, v6, v8);
   v7 = *MEMORY[0x277D85DE8];

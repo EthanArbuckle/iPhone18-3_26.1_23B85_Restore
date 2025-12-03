@@ -1,33 +1,33 @@
 @interface STCommunicationClientAuthenticationSource
-- (STCommunicationClientAuthenticationSource)initWithAuthenticationSession:(id)a3;
-- (void)authenticateWithIdentifier:(id)a3 forced:(BOOL)a4 completionHandler:(id)a5;
+- (STCommunicationClientAuthenticationSource)initWithAuthenticationSession:(id)session;
+- (void)authenticateWithIdentifier:(id)identifier forced:(BOOL)forced completionHandler:(id)handler;
 @end
 
 @implementation STCommunicationClientAuthenticationSource
 
-- (STCommunicationClientAuthenticationSource)initWithAuthenticationSession:(id)a3
+- (STCommunicationClientAuthenticationSource)initWithAuthenticationSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v8.receiver = self;
   v8.super_class = STCommunicationClientAuthenticationSource;
   v5 = [(STCommunicationClientAuthenticationSource *)&v8 init];
   authenticationSession = v5->_authenticationSession;
-  v5->_authenticationSession = v4;
+  v5->_authenticationSession = sessionCopy;
 
   return v5;
 }
 
-- (void)authenticateWithIdentifier:(id)a3 forced:(BOOL)a4 completionHandler:(id)a5
+- (void)authenticateWithIdentifier:(id)identifier forced:(BOOL)forced completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v9 = objc_opt_new();
-  v10 = [(STCommunicationClientAuthenticationSource *)self authenticationSession];
-  v11 = [v10 hasAlreadyEnteredPINForSession];
+  authenticationSession = [(STCommunicationClientAuthenticationSource *)self authenticationSession];
+  hasAlreadyEnteredPINForSession = [authenticationSession hasAlreadyEnteredPINForSession];
 
-  if (v11)
+  if (hasAlreadyEnteredPINForSession)
   {
-    v8[2](v8, 1);
+    handlerCopy[2](handlerCopy, 1);
   }
 
   else
@@ -38,7 +38,7 @@
     v12[2] = __97__STCommunicationClientAuthenticationSource_authenticateWithIdentifier_forced_completionHandler___block_invoke;
     v12[3] = &unk_1E7CE71F0;
     objc_copyWeak(&v14, &location);
-    v13 = v8;
+    v13 = handlerCopy;
     [v9 authenticateForCommunicationConfigurationOverrideWithCompletionHandler:v12];
 
     objc_destroyWeak(&v14);

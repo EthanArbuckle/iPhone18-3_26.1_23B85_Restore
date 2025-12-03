@@ -1,13 +1,13 @@
 @interface DummyVoicemailMessageDetailViewControllerDelegate
 - (_TtC11MobilePhone49DummyVoicemailMessageDetailViewControllerDelegate)init;
-- (void)voicemailMessageDetailViewController:(id)a3 destructiveActionPerformedForMessage:(id)a4 completionBlock:(id)a5;
+- (void)voicemailMessageDetailViewController:(id)controller destructiveActionPerformedForMessage:(id)message completionBlock:(id)block;
 @end
 
 @implementation DummyVoicemailMessageDetailViewControllerDelegate
 
-- (void)voicemailMessageDetailViewController:(id)a3 destructiveActionPerformedForMessage:(id)a4 completionBlock:(id)a5
+- (void)voicemailMessageDetailViewController:(id)controller destructiveActionPerformedForMessage:(id)message completionBlock:(id)block
 {
-  v5 = _Block_copy(a5);
+  v5 = _Block_copy(block);
   v5[2]();
 
   _Block_release(v5);

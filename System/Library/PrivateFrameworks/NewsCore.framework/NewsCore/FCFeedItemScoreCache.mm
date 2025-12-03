@@ -1,22 +1,22 @@
 @interface FCFeedItemScoreCache
-- (FCFeedItemScoreCache)initWithFeedPersonalizer:(id)a3;
-- (id)scoreProfilesForFeedItems:(id)a3 configurationSet:(int64_t)a4;
-- (void)_accessScoreCacheForForConfigurationSet:(int64_t)a3 withBlock:(id)a4;
-- (void)addScoreProfiles:(id)a3 configurationSet:(int64_t)a4;
+- (FCFeedItemScoreCache)initWithFeedPersonalizer:(id)personalizer;
+- (id)scoreProfilesForFeedItems:(id)items configurationSet:(int64_t)set;
+- (void)_accessScoreCacheForForConfigurationSet:(int64_t)set withBlock:(id)block;
+- (void)addScoreProfiles:(id)profiles configurationSet:(int64_t)set;
 @end
 
 @implementation FCFeedItemScoreCache
 
-- (FCFeedItemScoreCache)initWithFeedPersonalizer:(id)a3
+- (FCFeedItemScoreCache)initWithFeedPersonalizer:(id)personalizer
 {
-  v5 = a3;
+  personalizerCopy = personalizer;
   v11.receiver = self;
   v11.super_class = FCFeedItemScoreCache;
   v6 = [(FCFeedItemScoreCache *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_feedPersonalizer, a3);
+    objc_storeStrong(&v6->_feedPersonalizer, personalizer);
     v8 = objc_opt_new();
     scoreProfilesByConfigurationSet = v7->_scoreProfilesByConfigurationSet;
     v7->_scoreProfilesByConfigurationSet = v8;
@@ -25,9 +25,9 @@
   return v7;
 }
 
-- (id)scoreProfilesForFeedItems:(id)a3 configurationSet:(int64_t)a4
+- (id)scoreProfilesForFeedItems:(id)items configurationSet:(int64_t)set
 {
-  v6 = a3;
+  itemsCopy = items;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -38,12 +38,12 @@
   v10[1] = 3221225472;
   v10[2] = __67__FCFeedItemScoreCache_scoreProfilesForFeedItems_configurationSet___block_invoke;
   v10[3] = &unk_1E7C478F8;
-  v7 = v6;
+  v7 = itemsCopy;
   v11 = v7;
-  v12 = self;
+  selfCopy = self;
   v13 = &v15;
-  v14 = a4;
-  [(FCFeedItemScoreCache *)self _accessScoreCacheForForConfigurationSet:a4 withBlock:v10];
+  setCopy = set;
+  [(FCFeedItemScoreCache *)self _accessScoreCacheForForConfigurationSet:set withBlock:v10];
   v8 = v16[5];
 
   _Block_object_dispose(&v15, 8);
@@ -143,30 +143,30 @@ BOOL __67__FCFeedItemScoreCache_scoreProfilesForFeedItems_configurationSet___blo
   return v3;
 }
 
-- (void)addScoreProfiles:(id)a3 configurationSet:(int64_t)a4
+- (void)addScoreProfiles:(id)profiles configurationSet:(int64_t)set
 {
-  v6 = a3;
+  profilesCopy = profiles;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __58__FCFeedItemScoreCache_addScoreProfiles_configurationSet___block_invoke;
   v8[3] = &unk_1E7C47920;
-  v9 = v6;
-  v7 = v6;
-  [(FCFeedItemScoreCache *)self _accessScoreCacheForForConfigurationSet:a4 withBlock:v8];
+  v9 = profilesCopy;
+  v7 = profilesCopy;
+  [(FCFeedItemScoreCache *)self _accessScoreCacheForForConfigurationSet:set withBlock:v8];
 }
 
-- (void)_accessScoreCacheForForConfigurationSet:(int64_t)a3 withBlock:(id)a4
+- (void)_accessScoreCacheForForConfigurationSet:(int64_t)set withBlock:(id)block
 {
-  v6 = a4;
-  v7 = [(FCFeedItemScoreCache *)self scoreProfilesByConfigurationSet];
+  blockCopy = block;
+  scoreProfilesByConfigurationSet = [(FCFeedItemScoreCache *)self scoreProfilesByConfigurationSet];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __74__FCFeedItemScoreCache__accessScoreCacheForForConfigurationSet_withBlock___block_invoke;
   v9[3] = &unk_1E7C47948;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
-  [v7 readWriteWithAccessor:v9];
+  v10 = blockCopy;
+  setCopy = set;
+  v8 = blockCopy;
+  [scoreProfilesByConfigurationSet readWriteWithAccessor:v9];
 }
 
 void __74__FCFeedItemScoreCache__accessScoreCacheForForConfigurationSet_withBlock___block_invoke(uint64_t a1, void *a2)

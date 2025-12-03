@@ -1,9 +1,9 @@
 @interface MTScheduledObject
-+ (id)scheduledObjectForScheduleable:(id)a3 trigger:(id)a4;
-+ (unint64_t)scheduledTypeForTriggerType:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToScheduledObject:(id)a3;
-- (MTScheduledObject)initWithScheduleable:(id)a3 trigger:(id)a4;
++ (id)scheduledObjectForScheduleable:(id)scheduleable trigger:(id)trigger;
++ (unint64_t)scheduledTypeForTriggerType:(unint64_t)type;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToScheduledObject:(id)object;
+- (MTScheduledObject)initWithScheduleable:(id)scheduleable trigger:(id)trigger;
 - (NSString)description;
 - (unint64_t)hash;
 - (unint64_t)type;
@@ -11,29 +11,29 @@
 
 @implementation MTScheduledObject
 
-+ (id)scheduledObjectForScheduleable:(id)a3 trigger:(id)a4
++ (id)scheduledObjectForScheduleable:(id)scheduleable trigger:(id)trigger
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithScheduleable:v7 trigger:v6];
+  triggerCopy = trigger;
+  scheduleableCopy = scheduleable;
+  v8 = [[self alloc] initWithScheduleable:scheduleableCopy trigger:triggerCopy];
 
   return v8;
 }
 
-- (MTScheduledObject)initWithScheduleable:(id)a3 trigger:(id)a4
+- (MTScheduledObject)initWithScheduleable:(id)scheduleable trigger:(id)trigger
 {
-  v6 = a3;
-  v7 = a4;
+  scheduleableCopy = scheduleable;
+  triggerCopy = trigger;
   v14.receiver = self;
   v14.super_class = MTScheduledObject;
   v8 = [(MTScheduledObject *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [scheduleableCopy copy];
     scheduleable = v8->_scheduleable;
     v8->_scheduleable = v9;
 
-    v11 = [v7 copy];
+    v11 = [triggerCopy copy];
     trigger = v8->_trigger;
     v8->_trigger = v11;
   }
@@ -44,22 +44,22 @@
 - (unint64_t)type
 {
   v3 = objc_opt_class();
-  v4 = [(MTScheduledObject *)self trigger];
-  v5 = [v3 scheduledTypeForTriggerType:{objc_msgSend(v4, "triggerType")}];
+  trigger = [(MTScheduledObject *)self trigger];
+  v5 = [v3 scheduledTypeForTriggerType:{objc_msgSend(trigger, "triggerType")}];
 
   return v5;
 }
 
-+ (unint64_t)scheduledTypeForTriggerType:(unint64_t)a3
++ (unint64_t)scheduledTypeForTriggerType:(unint64_t)type
 {
-  if (a3 - 2 > 6)
+  if (type - 2 > 6)
   {
     return 0;
   }
 
   else
   {
-    return qword_1B20B8908[a3 - 2];
+    return qword_1B20B8908[type - 2];
   }
 }
 
@@ -67,28 +67,28 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(MTScheduledObject *)self scheduleable];
-  v6 = [(MTScheduledObject *)self trigger];
-  v7 = [v3 stringWithFormat:@"<%@:%p %@, Trigger: %@>", v4, self, v5, v6];
+  scheduleable = [(MTScheduledObject *)self scheduleable];
+  trigger = [(MTScheduledObject *)self trigger];
+  v7 = [v3 stringWithFormat:@"<%@:%p %@, Trigger: %@>", v4, self, scheduleable, trigger];
 
   return v7;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(MTScheduledObject *)self scheduleable];
-  v4 = [v3 hash];
-  v5 = [(MTScheduledObject *)self trigger];
-  v6 = [v5 hash];
+  scheduleable = [(MTScheduledObject *)self scheduleable];
+  v4 = [scheduleable hash];
+  trigger = [(MTScheduledObject *)self trigger];
+  v6 = [trigger hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = v4;
+  v5 = equalCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -114,16 +114,16 @@
   return v8;
 }
 
-- (BOOL)isEqualToScheduledObject:(id)a3
+- (BOOL)isEqualToScheduledObject:(id)object
 {
-  v6 = a3;
-  v7 = [v6 scheduleable];
-  v8 = [(MTScheduledObject *)self scheduleable];
-  if (v7 != v8)
+  objectCopy = object;
+  scheduleable = [objectCopy scheduleable];
+  scheduleable2 = [(MTScheduledObject *)self scheduleable];
+  if (scheduleable != scheduleable2)
   {
-    v3 = [v6 scheduleable];
-    v4 = [(MTScheduledObject *)self scheduleable];
-    if (![v3 isEqual:v4])
+    scheduleable3 = [objectCopy scheduleable];
+    scheduleable4 = [(MTScheduledObject *)self scheduleable];
+    if (![scheduleable3 isEqual:scheduleable4])
     {
       v9 = 0;
 LABEL_8:
@@ -132,21 +132,21 @@ LABEL_8:
     }
   }
 
-  v10 = [v6 trigger];
-  v11 = [(MTScheduledObject *)self trigger];
-  if (v10 == v11)
+  trigger = [objectCopy trigger];
+  trigger2 = [(MTScheduledObject *)self trigger];
+  if (trigger == trigger2)
   {
     v9 = 1;
   }
 
   else
   {
-    v12 = [v6 trigger];
-    v13 = [(MTScheduledObject *)self trigger];
-    v9 = [v12 isEqual:v13];
+    trigger3 = [objectCopy trigger];
+    trigger4 = [(MTScheduledObject *)self trigger];
+    v9 = [trigger3 isEqual:trigger4];
   }
 
-  if (v7 != v8)
+  if (scheduleable != scheduleable2)
   {
     goto LABEL_8;
   }

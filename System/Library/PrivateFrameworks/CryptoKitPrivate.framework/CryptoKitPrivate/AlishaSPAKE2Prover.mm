@@ -1,7 +1,7 @@
 @interface AlishaSPAKE2Prover
 - (_TtC16CryptoKitPrivate18AlishaSPAKE2Prover)init;
 - (id)getX;
-- (id)processResponseWithY:(id)a3 M1:(id)a4;
+- (id)processResponseWithY:(id)y M1:(id)m1;
 @end
 
 @implementation AlishaSPAKE2Prover
@@ -13,12 +13,12 @@
   return v2;
 }
 
-- (id)processResponseWithY:(id)a3 M1:(id)a4
+- (id)processResponseWithY:(id)y M1:(id)m1
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_1C0D319C0(v6, v7);
+  yCopy = y;
+  m1Copy = m1;
+  selfCopy = self;
+  v9 = sub_1C0D319C0(yCopy, m1Copy);
 
   return v9;
 }

@@ -8,23 +8,23 @@
 {
   v18[8] = *MEMORY[0x277D85DE8];
   v17[0] = @"sessionUUID";
-  v3 = [(ATXDigestOnboardingAppSelectionMetrics *)self sessionUUID];
-  v4 = v3;
-  if (!v3)
+  sessionUUID = [(ATXDigestOnboardingAppSelectionMetrics *)self sessionUUID];
+  v4 = sessionUUID;
+  if (!sessionUUID)
   {
-    v3 = [MEMORY[0x277CBEB68] null];
+    sessionUUID = [MEMORY[0x277CBEB68] null];
   }
 
-  v18[0] = v3;
+  v18[0] = sessionUUID;
   v17[1] = @"bundleId";
-  v5 = [(ATXDigestOnboardingAppSelectionMetrics *)self bundleId];
-  v6 = v5;
-  if (!v5)
+  bundleId = [(ATXDigestOnboardingAppSelectionMetrics *)self bundleId];
+  null = bundleId;
+  if (!bundleId)
   {
-    v6 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v18[1] = v6;
+  v18[1] = null;
   v17[2] = @"basicNotifications";
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[ATXDigestOnboardingAppSelectionMetrics avgNumBasicNotifications](self, "avgNumBasicNotifications")}];
   v18[2] = v7;
@@ -45,7 +45,7 @@
   v18[7] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:8];
 
-  if (!v5)
+  if (!bundleId)
   {
   }
 

@@ -1,66 +1,66 @@
 @interface PKBarcodeStickerView
-+ (PKBarcodeQuietZone)_quietZoneForBarcode:(id)a3;
-+ (int64_t)validityStateForPass:(id)a3;
++ (PKBarcodeQuietZone)_quietZoneForBarcode:(id)barcode;
++ (int64_t)validityStateForPass:(id)pass;
 - (CGSize)desiredBarcodeSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKBarcodeStickerView)initWithBarcode:(id)a3 validityState:(int64_t)a4 passStyle:(int64_t)a5;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKBarcodeStickerView)initWithBarcode:(id)barcode validityState:(int64_t)state passStyle:(int64_t)style;
 - (id)barcodeImage;
-- (void)_generateMatteRect:(CGRect *)a3 barcodeRect:(CGRect *)a4 altContentRect:(CGRect *)a5 boundingSize:(CGSize)a6;
+- (void)_generateMatteRect:(CGRect *)rect barcodeRect:(CGRect *)barcodeRect altContentRect:(CGRect *)contentRect boundingSize:(CGSize)size;
 - (void)_setupAltImageView;
 - (void)_setupAltTextLabel;
 - (void)_updateDrawBarcode;
 - (void)_updateMatteViewHiding;
 - (void)_updateValidity;
 - (void)layoutSubviews;
-- (void)setAltImage:(id)a3;
-- (void)setAltTextFont:(id)a3;
-- (void)setAltTextInset:(double)a3;
-- (void)setDesiredBarcodeSize:(CGSize)a3;
-- (void)setMatteCornerRadius:(double)a3;
-- (void)setValidity:(int64_t)a3;
+- (void)setAltImage:(id)image;
+- (void)setAltTextFont:(id)font;
+- (void)setAltTextInset:(double)inset;
+- (void)setDesiredBarcodeSize:(CGSize)size;
+- (void)setMatteCornerRadius:(double)radius;
+- (void)setValidity:(int64_t)validity;
 @end
 
 @implementation PKBarcodeStickerView
 
-+ (int64_t)validityStateForPass:(id)a3
++ (int64_t)validityStateForPass:(id)pass
 {
-  v3 = a3;
-  if ([v3 isRevoked])
+  passCopy = pass;
+  if ([passCopy isRevoked])
   {
-    v4 = 3;
+    isExpired = 3;
   }
 
-  else if ([v3 isVoided])
+  else if ([passCopy isVoided])
   {
-    v4 = 2;
+    isExpired = 2;
   }
 
   else
   {
-    v4 = [v3 isExpired];
+    isExpired = [passCopy isExpired];
   }
 
-  return v4;
+  return isExpired;
 }
 
-+ (PKBarcodeQuietZone)_quietZoneForBarcode:(id)a3
++ (PKBarcodeQuietZone)_quietZoneForBarcode:(id)barcode
 {
-  v3 = [a3 format];
+  format = [barcode format];
   v4 = 5.0;
   v5 = 9.0;
-  if (v3 == 2)
+  if (format == 2)
   {
     v4 = 9.0;
   }
 
   v6 = 6.0;
-  if (v3 == 2)
+  if (format == 2)
   {
     v6 = 9.0;
   }
 
   v7 = 7.0;
-  if (v3 == 2)
+  if (format == 2)
   {
     v7 = 9.0;
   }
@@ -77,9 +77,9 @@
   return result;
 }
 
-- (PKBarcodeStickerView)initWithBarcode:(id)a3 validityState:(int64_t)a4 passStyle:(int64_t)a5
+- (PKBarcodeStickerView)initWithBarcode:(id)barcode validityState:(int64_t)state passStyle:(int64_t)style
 {
-  v9 = a3;
+  barcodeCopy = barcode;
   v23.receiver = self;
   v23.super_class = PKBarcodeStickerView;
   v10 = [(PKBarcodeStickerView *)&v23 initWithFrame:0.0, 0.0, 100.0, 100.0];
@@ -88,96 +88,96 @@
   {
     *(v10 + 872) = *MEMORY[0x1E695F060];
     v10[841] = 1;
-    objc_storeStrong(v10 + 93, a3);
-    v11->_passStyle = a5;
+    objc_storeStrong(v10 + 93, barcode);
+    v11->_passStyle = style;
     v12 = objc_alloc(MEMORY[0x1E69DD250]);
     v13 = [v12 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
     matteView = v11->_matteView;
     v11->_matteView = v13;
 
     v15 = v11->_matteView;
-    v16 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIView *)v15 setBackgroundColor:v16];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIView *)v15 setBackgroundColor:whiteColor];
 
     [(UIView *)v11->_matteView setUserInteractionEnabled:1];
-    v17 = [(UIView *)v11->_matteView layer];
-    [v17 setMaskedCorners:15];
+    layer = [(UIView *)v11->_matteView layer];
+    [layer setMaskedCorners:15];
 
-    v18 = [(UIView *)v11->_matteView layer];
-    [v18 setCornerCurve:*MEMORY[0x1E69796E8]];
+    layer2 = [(UIView *)v11->_matteView layer];
+    [layer2 setCornerCurve:*MEMORY[0x1E69796E8]];
 
-    v19 = [(UIView *)v11->_matteView layer];
-    [v19 setCornerRadius:4.5];
+    layer3 = [(UIView *)v11->_matteView layer];
+    [layer3 setCornerRadius:4.5];
 
-    v20 = [(UIView *)v11->_matteView layer];
-    [v20 setMasksToBounds:1];
+    layer4 = [(UIView *)v11->_matteView layer];
+    [layer4 setMasksToBounds:1];
 
     [(PKBarcodeStickerView *)v11 addSubview:v11->_matteView];
-    v21 = [v9 altText];
-    if (v21)
+    altText = [barcodeCopy altText];
+    if (altText)
     {
 
-      if (a5 != 10)
+      if (style != 10)
       {
         [(PKBarcodeStickerView *)v11 _setupAltTextLabel];
       }
     }
 
-    [(PKBarcodeStickerView *)v11 setValidity:a4];
+    [(PKBarcodeStickerView *)v11 setValidity:state];
     [(PKBarcodeStickerView *)v11 setAccessibilityIdentifier:*MEMORY[0x1E69B9510]];
   }
 
   return v11;
 }
 
-- (void)setValidity:(int64_t)a3
+- (void)setValidity:(int64_t)validity
 {
-  self->_validity = a3;
+  self->_validity = validity;
   [(PKBarcodeStickerView *)self _updateValidity];
 
   [(PKBarcodeStickerView *)self setNeedsLayout];
 }
 
-- (void)setMatteCornerRadius:(double)a3
+- (void)setMatteCornerRadius:(double)radius
 {
-  v5 = [(UIView *)self->_matteView layer];
-  [v5 cornerRadius];
+  layer = [(UIView *)self->_matteView layer];
+  [layer cornerRadius];
   v7 = v6;
 
-  if (v7 != a3)
+  if (v7 != radius)
   {
-    v8 = [(UIView *)self->_matteView layer];
-    [v8 setCornerRadius:a3];
+    layer2 = [(UIView *)self->_matteView layer];
+    [layer2 setCornerRadius:radius];
 
     [(PKBarcodeStickerView *)self setNeedsLayout];
   }
 }
 
-- (void)setAltTextFont:(id)a3
+- (void)setAltTextFont:(id)font
 {
-  [(UILabel *)self->_altTextLabel setFont:a3];
+  [(UILabel *)self->_altTextLabel setFont:font];
   self->_barcodeViewInvalidated = 1;
 
   [(PKBarcodeStickerView *)self setNeedsLayout];
 }
 
-- (void)setAltTextInset:(double)a3
+- (void)setAltTextInset:(double)inset
 {
-  self->_altContentInset = a3;
+  self->_altContentInset = inset;
   self->_barcodeViewInvalidated = 1;
   [(PKBarcodeStickerView *)self setNeedsLayout];
 }
 
-- (void)setAltImage:(id)a3
+- (void)setAltImage:(id)image
 {
-  v5 = a3;
-  if (self->_altImage != v5)
+  imageCopy = image;
+  if (self->_altImage != imageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_altImage, a3);
+    v6 = imageCopy;
+    objc_storeStrong(&self->_altImage, image);
     [(PKBarcodeStickerView *)self _setupAltImageView];
     [(PKBarcodeStickerView *)self setNeedsLayout];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 
@@ -227,8 +227,8 @@
     self->_altContentInset = 11.0;
     [(UILabel *)self->_altTextLabel setTextAlignment:1];
     v7 = self->_altTextLabel;
-    v8 = [MEMORY[0x1E69DC888] clearColor];
-    [(UILabel *)v7 setBackgroundColor:v8];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UILabel *)v7 setBackgroundColor:clearColor];
 
     [(UILabel *)self->_altTextLabel sizeToFit];
     [(UILabel *)self->_altTextLabel setUserInteractionEnabled:1];
@@ -249,8 +249,8 @@
     altTextLabel = self->_altTextLabel;
     if (self->_validity == 3)
     {
-      v4 = [MEMORY[0x1E69DC888] redColor];
-      [(UILabel *)altTextLabel setTextColor:v4];
+      redColor = [MEMORY[0x1E69DC888] redColor];
+      [(UILabel *)altTextLabel setTextColor:redColor];
 
       v5 = self->_altTextLabel;
       v6 = @"PASS_REVOKED";
@@ -265,7 +265,7 @@
       v6 = @"PASS_EXPIRED";
     }
 
-    v11 = PKLocalizedString(&v6->isa);
+    blackColor = PKLocalizedString(&v6->isa);
     [(UILabel *)v5 setText:?];
   }
 
@@ -273,27 +273,27 @@
   {
     [(UIImageView *)self->_barcodeView setAlpha:1.0];
     v7 = self->_altTextLabel;
-    v8 = [(PKBarcode *)self->_barcode altText];
-    [(UILabel *)v7 setText:v8];
+    altText = [(PKBarcode *)self->_barcode altText];
+    [(UILabel *)v7 setText:altText];
 
     [(PKBarcodeStickerView *)self _updateMatteViewHiding];
     v9 = self->_altTextLabel;
-    v11 = [MEMORY[0x1E69DC888] blackColor];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
     [(UILabel *)v9 setTextColor:?];
   }
 }
 
-- (void)setDesiredBarcodeSize:(CGSize)a3
+- (void)setDesiredBarcodeSize:(CGSize)size
 {
-  self->_desiredBarcodeSize = a3;
+  self->_desiredBarcodeSize = size;
   self->_barcodeViewInvalidated = 1;
   [(PKBarcodeStickerView *)self setNeedsLayout];
 }
 
-- (void)_generateMatteRect:(CGRect *)a3 barcodeRect:(CGRect *)a4 altContentRect:(CGRect *)a5 boundingSize:(CGSize)a6
+- (void)_generateMatteRect:(CGRect *)rect barcodeRect:(CGRect *)barcodeRect altContentRect:(CGRect *)contentRect boundingSize:(CGSize)size
 {
-  height = a6.height;
-  width = a6.width;
+  height = size.height;
+  width = size.width;
   [(PKBarcode *)self->_barcode sizeForPassStyle:self->_passStyle];
   v13 = v12;
   v15 = v14;
@@ -405,7 +405,7 @@ LABEL_28:
     v50 = v49;
   }
 
-  v51 = rect;
+  rectCopy = rect;
   v52 = v41 + rect + v37;
   if (v46 > 0.0)
   {
@@ -430,7 +430,7 @@ LABEL_28:
     v58 = v37;
     v60 = v53;
     v62 = floor((v54 - v46) * 0.5);
-    if (!a3)
+    if (!rect)
     {
       goto LABEL_44;
     }
@@ -442,39 +442,39 @@ LABEL_28:
   v58 = v37;
   v59 = v37;
   v60 = v53;
-  MaxY = CGRectGetMaxY(*(&v51 - 3));
+  MaxY = CGRectGetMaxY(*(&rectCopy - 3));
   v55 = 0.5;
   v62 = v64 + v63 + MaxY + -2.0;
-  if (a3)
+  if (rect)
   {
 LABEL_43:
-    a3->origin = *MEMORY[0x1E695EFF8];
-    a3->size.width = v50;
-    a3->size.height = v54;
+    rect->origin = *MEMORY[0x1E695EFF8];
+    rect->size.width = v50;
+    rect->size.height = v54;
   }
 
 LABEL_44:
-  if (a4)
+  if (barcodeRect)
   {
-    a4->origin.x = v56;
-    a4->origin.y = v58;
-    a4->size.width = v60;
-    a4->size.height = rect;
+    barcodeRect->origin.x = v56;
+    barcodeRect->origin.y = v58;
+    barcodeRect->size.width = v60;
+    barcodeRect->size.height = rect;
   }
 
-  if (a5)
+  if (contentRect)
   {
-    a5->origin.x = floor((v50 - v48) * v55);
-    a5->origin.y = v62;
-    a5->size.width = v48;
-    a5->size.height = v46;
+    contentRect->origin.x = floor((v50 - v48) * v55);
+    contentRect->origin.y = v62;
+    contentRect->size.width = v48;
+    contentRect->size.height = v46;
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(PKBarcodeStickerView *)self _updateDrawBarcode];
   v8 = 0u;
   v9 = 0u;
@@ -524,8 +524,8 @@ LABEL_44:
 {
   if ([(PKBarcode *)self->_barcode format])
   {
-    v3 = [(PKBarcodeStickerView *)self barcodeImage];
-    self->_drawBarcode = v3 != 0;
+    barcodeImage = [(PKBarcodeStickerView *)self barcodeImage];
+    self->_drawBarcode = barcodeImage != 0;
   }
 
   else
@@ -546,9 +546,9 @@ LABEL_44:
   barcodeImage = self->_barcodeImage;
   if (!barcodeImage)
   {
-    v4 = [(PKBarcode *)self->_barcode image];
+    image = [(PKBarcode *)self->_barcode image];
     v5 = self->_barcodeImage;
-    self->_barcodeImage = v4;
+    self->_barcodeImage = image;
 
     barcodeImage = self->_barcodeImage;
   }

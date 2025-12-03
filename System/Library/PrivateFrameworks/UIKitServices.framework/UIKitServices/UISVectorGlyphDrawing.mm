@@ -1,35 +1,35 @@
 @interface UISVectorGlyphDrawing
 - (CGRect)alignmentRect;
 - (CGSize)drawingSize;
-- (UISVectorGlyphDrawing)initWithVectorGlyph:(id)a3 tintColor:(CGColor *)a4;
+- (UISVectorGlyphDrawing)initWithVectorGlyph:(id)glyph tintColor:(CGColor *)color;
 - (void)dealloc;
-- (void)drawInContext:(CGContext *)a3 atPoint:(CGPoint)a4;
+- (void)drawInContext:(CGContext *)context atPoint:(CGPoint)point;
 @end
 
 @implementation UISVectorGlyphDrawing
 
-- (UISVectorGlyphDrawing)initWithVectorGlyph:(id)a3 tintColor:(CGColor *)a4
+- (UISVectorGlyphDrawing)initWithVectorGlyph:(id)glyph tintColor:(CGColor *)color
 {
-  v6 = a3;
+  glyphCopy = glyph;
   v24.receiver = self;
   v24.super_class = UISVectorGlyphDrawing;
   v7 = [(UISVectorGlyphDrawing *)&v24 init];
   if (v7)
   {
-    v7->_image = CGImageRetain([v6 image]);
-    v7->_tintColor = CGColorRetain(a4);
-    [v6 alignmentRect];
+    v7->_image = CGImageRetain([glyphCopy image]);
+    v7->_tintColor = CGColorRetain(color);
+    [glyphCopy alignmentRect];
     v7->_imageFrame.origin.x = v8;
     v7->_imageFrame.origin.y = v9;
     v7->_imageFrame.size.width = v10;
     v7->_imageFrame.size.height = v11;
-    [v6 contentBounds];
+    [glyphCopy contentBounds];
     v7->_size.width = v12;
     v7->_size.height = v13;
-    [v6 baselineOffset];
+    [glyphCopy baselineOffset];
     v15 = v14;
-    [v6 pointSize];
-    [v6 scale];
+    [glyphCopy pointSize];
+    [glyphCopy scale];
     v17 = v16;
     CTFontGetAscentForSystemFontOfSize();
     v19 = v18;
@@ -76,29 +76,29 @@
   return result;
 }
 
-- (void)drawInContext:(CGContext *)a3 atPoint:(CGPoint)a4
+- (void)drawInContext:(CGContext *)context atPoint:(CGPoint)point
 {
   height = self->_size.height;
   v8.a = 1.0;
   v8.b = 0.0;
   v8.c = 0.0;
   v8.d = -1.0;
-  v8.tx = a4.x;
-  v8.ty = a4.y + height;
-  CGContextConcatCTM(a3, &v8);
+  v8.tx = point.x;
+  v8.ty = point.y + height;
+  CGContextConcatCTM(context, &v8);
   if (self->_tintColor)
   {
-    CGContextBeginTransparencyLayerWithRect(a3, self->_imageFrame, 0);
+    CGContextBeginTransparencyLayerWithRect(context, self->_imageFrame, 0);
   }
 
-  CGContextDrawImage(a3, self->_imageFrame, self->_image);
+  CGContextDrawImage(context, self->_imageFrame, self->_image);
   tintColor = self->_tintColor;
   if (tintColor)
   {
-    CGContextSetFillColorWithColor(a3, tintColor);
-    CGContextSetBlendMode(a3, kCGBlendModeSourceIn);
-    CGContextFillRect(a3, self->_imageFrame);
-    CGContextEndTransparencyLayer(a3);
+    CGContextSetFillColorWithColor(context, tintColor);
+    CGContextSetBlendMode(context, kCGBlendModeSourceIn);
+    CGContextFillRect(context, self->_imageFrame);
+    CGContextEndTransparencyLayer(context);
   }
 }
 

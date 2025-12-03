@@ -1,14 +1,14 @@
 @interface WalkingSteadinessOnboardingCoordinator
 - (_TtC16HealthMobilityUI38WalkingSteadinessOnboardingCoordinator)init;
-- (void)presentationControllerWillDismiss:(id)a3;
+- (void)presentationControllerWillDismiss:(id)dismiss;
 @end
 
 @implementation WalkingSteadinessOnboardingCoordinator
 
-- (void)presentationControllerWillDismiss:(id)a3
+- (void)presentationControllerWillDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
+  dismissCopy = dismiss;
+  selfCopy = self;
   sub_25197F928();
 }
 

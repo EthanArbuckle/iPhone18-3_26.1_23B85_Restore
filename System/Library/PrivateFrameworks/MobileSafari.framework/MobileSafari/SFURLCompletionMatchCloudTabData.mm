@@ -1,19 +1,19 @@
 @interface SFURLCompletionMatchCloudTabData
-- (SFURLCompletionMatchCloudTabData)initWithCloudTabItem:(id)a3 device:(id)a4;
+- (SFURLCompletionMatchCloudTabData)initWithCloudTabItem:(id)item device:(id)device;
 - (WBSCloudTabProvider)device;
 @end
 
 @implementation SFURLCompletionMatchCloudTabData
 
-- (SFURLCompletionMatchCloudTabData)initWithCloudTabItem:(id)a3 device:(id)a4
+- (SFURLCompletionMatchCloudTabData)initWithCloudTabItem:(id)item device:(id)device
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 url];
-  v10 = [v9 absoluteString];
+  itemCopy = item;
+  deviceCopy = device;
+  v9 = [itemCopy url];
+  absoluteString = [v9 absoluteString];
 
-  v11 = [v7 title];
-  v12 = [objc_alloc(MEMORY[0x1E69E20F0]) initWithTitle:v11 address:v10 collectionType:0];
+  title = [itemCopy title];
+  v12 = [objc_alloc(MEMORY[0x1E69E20F0]) initWithTitle:title address:absoluteString collectionType:0];
   v19.receiver = self;
   v19.super_class = SFURLCompletionMatchCloudTabData;
   v13 = [(SFURLCompletionMatchBookmarkData *)&v19 initWithBookmark:v12];
@@ -21,12 +21,12 @@
   if (v13)
   {
     v13->_onlyContainsCloudTab = 1;
-    v15 = [v8 disambiguatedName];
+    disambiguatedName = [deviceCopy disambiguatedName];
     cloudTabDeviceName = v14->_cloudTabDeviceName;
-    v14->_cloudTabDeviceName = v15;
+    v14->_cloudTabDeviceName = disambiguatedName;
 
-    objc_storeWeak(&v14->_device, v8);
-    objc_storeStrong(&v14->_cloudTab, a3);
+    objc_storeWeak(&v14->_device, deviceCopy);
+    objc_storeStrong(&v14->_cloudTab, item);
     v17 = v14;
   }
 

@@ -1,20 +1,20 @@
 @interface VTKCompareResult
-- (VTKCompareResult)initWithComparisonImage:(id)a3 isSuccesfull:(BOOL)a4;
+- (VTKCompareResult)initWithComparisonImage:(id)image isSuccesfull:(BOOL)succesfull;
 @end
 
 @implementation VTKCompareResult
 
-- (VTKCompareResult)initWithComparisonImage:(id)a3 isSuccesfull:(BOOL)a4
+- (VTKCompareResult)initWithComparisonImage:(id)image isSuccesfull:(BOOL)succesfull
 {
-  v7 = a3;
+  imageCopy = image;
   v11.receiver = self;
   v11.super_class = VTKCompareResult;
   v8 = [(VTKCompareResult *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_comparisonImage, a3);
-    v9->_succesfull = a4;
+    objc_storeStrong(&v8->_comparisonImage, image);
+    v9->_succesfull = succesfull;
   }
 
   return v9;

@@ -1,5 +1,5 @@
 @interface OrgApacheLuceneIndexSegmentCoreReaders_TermVectorsLocal
-- (OrgApacheLuceneIndexSegmentCoreReaders_TermVectorsLocal)initWithOrgApacheLuceneIndexSegmentCoreReaders:(id)a3;
+- (OrgApacheLuceneIndexSegmentCoreReaders_TermVectorsLocal)initWithOrgApacheLuceneIndexSegmentCoreReaders:(id)readers;
 - (id)initialValue;
 - (void)__javaClone;
 @end
@@ -18,9 +18,9 @@
   return [v3 clone];
 }
 
-- (OrgApacheLuceneIndexSegmentCoreReaders_TermVectorsLocal)initWithOrgApacheLuceneIndexSegmentCoreReaders:(id)a3
+- (OrgApacheLuceneIndexSegmentCoreReaders_TermVectorsLocal)initWithOrgApacheLuceneIndexSegmentCoreReaders:(id)readers
 {
-  objc_storeWeak(&self->this$0_, a3);
+  objc_storeWeak(&self->this$0_, readers);
   OrgApacheLuceneUtilCloseableThreadLocal_init(&self->super.super.isa);
   return self;
 }

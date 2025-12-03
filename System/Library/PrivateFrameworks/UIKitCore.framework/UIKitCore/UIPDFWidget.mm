@@ -1,19 +1,19 @@
 @interface UIPDFWidget
-- (UIPDFWidget)initWithFrame:(CGRect)a3 withDocument:(id)a4;
-- (void)addedPageView:(int)a3;
+- (UIPDFWidget)initWithFrame:(CGRect)frame withDocument:(id)document;
+- (void)addedPageView:(int)view;
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 - (void)heartbeat;
-- (void)removedPageView:(int)a3;
+- (void)removedPageView:(int)view;
 @end
 
 @implementation UIPDFWidget
 
-- (UIPDFWidget)initWithFrame:(CGRect)a3 withDocument:(id)a4
+- (UIPDFWidget)initWithFrame:(CGRect)frame withDocument:(id)document
 {
   v11.receiver = self;
   v11.super_class = UIPDFWidget;
-  v5 = [(UIView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, 380.0, 120.0];
+  v5 = [(UIView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, 380.0, 120.0];
   if (v5)
   {
     [objc_msgSend(MEMORY[0x1E696AD88] "defaultCenter")];
@@ -33,11 +33,11 @@
     v5->renderJobsCount = 0;
     v5->totalPageCount = 0;
     v5->currentPageCount = 0;
-    v5->activeDocument = a4;
+    v5->activeDocument = document;
     v5->trackedPages = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v5->heartbeatTimer = [MEMORY[0x1E695DFF0] timerWithTimeInterval:v5 target:sel_heartbeat selector:0 userInfo:1 repeats:0.25];
-    v8 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    [v8 addTimer:v5->heartbeatTimer forMode:*MEMORY[0x1E695DA28]];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+    [mainRunLoop addTimer:v5->heartbeatTimer forMode:*MEMORY[0x1E695DA28]];
     v9 = [[UILabel alloc] initWithFrame:10.0, 30.0, 380.0, 120.0];
     v5->infoLabel = v9;
     -[UILabel setFont:](v9, "setFont:", [off_1E70ECC18 boldSystemFontOfSize:11.0]);
@@ -87,12 +87,12 @@
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v62 = *MEMORY[0x1E69E9840];
   ContextStack = GetContextStack(0);
   if (*ContextStack < 1)
@@ -356,11 +356,11 @@
   }
 }
 
-- (void)addedPageView:(int)a3
+- (void)addedPageView:(int)view
 {
   ++self->currentPageCount;
   ++self->totalPageCount;
-  v4 = [MEMORY[0x1E696AD98] numberWithInt:*&a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInt:*&view];
   if (([(NSMutableSet *)self->trackedPages containsObject:v4]& 1) == 0)
   {
     trackedPages = self->trackedPages;
@@ -369,10 +369,10 @@
   }
 }
 
-- (void)removedPageView:(int)a3
+- (void)removedPageView:(int)view
 {
   --self->currentPageCount;
-  v4 = [MEMORY[0x1E696AD98] numberWithInt:*&a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInt:*&view];
   if ([(NSMutableSet *)self->trackedPages containsObject:v4])
   {
     trackedPages = self->trackedPages;

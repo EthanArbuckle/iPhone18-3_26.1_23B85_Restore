@@ -1,30 +1,30 @@
 @interface DAAgent
-- (DAAgent)initWithAccount:(id)a3;
+- (DAAgent)initWithAccount:(id)account;
 - (DATrustHandler)trustHandler;
 - (id)stateString;
 - (int)preferredEventDaysToSync;
 - (int)preferredToDoDaysToSync;
-- (void)_reachabilityChanged:(id)a3;
-- (void)observeReachabilityWithBlock:(id)a3;
-- (void)requestAgentStopMonitoringWithCompletionBlock:(id)a3;
-- (void)saveXpcActivity:(id)a3;
+- (void)_reachabilityChanged:(id)changed;
+- (void)observeReachabilityWithBlock:(id)block;
+- (void)requestAgentStopMonitoringWithCompletionBlock:(id)block;
+- (void)saveXpcActivity:(id)activity;
 - (void)shutdown;
 - (void)stopObservingReachability;
 @end
 
 @implementation DAAgent
 
-- (DAAgent)initWithAccount:(id)a3
+- (DAAgent)initWithAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v8.receiver = self;
   v8.super_class = DAAgent;
   v5 = [(DAAgent *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(DAAgent *)v5 setAccount:v4];
-    [v4 addToCoreDAVLoggingDelegates];
+    [(DAAgent *)v5 setAccount:accountCopy];
+    [accountCopy addToCoreDAVLoggingDelegates];
   }
 
   return v6;
@@ -32,53 +32,53 @@
 
 - (DATrustHandler)trustHandler
 {
-  v2 = [(DAAgent *)self account];
-  v3 = [v2 trustHandler];
+  account = [(DAAgent *)self account];
+  trustHandler = [account trustHandler];
 
-  return v3;
+  return trustHandler;
 }
 
 - (id)stateString
 {
-  v2 = [(DAAgent *)self account];
-  v3 = [v2 stateString];
+  account = [(DAAgent *)self account];
+  stateString = [account stateString];
 
-  return v3;
+  return stateString;
 }
 
-- (void)_reachabilityChanged:(id)a3
+- (void)_reachabilityChanged:(id)changed
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changedCopy = changed;
   v5 = DALoggingwithCategory();
   v6 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v5, v6))
   {
     v15 = 138412290;
-    v16 = v4;
+    v16 = changedCopy;
     _os_log_impl(&dword_24A184000, v5, v6, "Reachability changed notification %@", &v15, 0xCu);
   }
 
-  v7 = [v4 name];
-  v8 = [v7 isEqualToString:*MEMORY[0x277CEC508]];
+  name = [changedCopy name];
+  v8 = [name isEqualToString:*MEMORY[0x277CEC508]];
 
   if (v8)
   {
-    v9 = [v4 userInfo];
-    v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277CEC510]];
-    v11 = [v10 BOOLValue];
+    userInfo = [changedCopy userInfo];
+    v10 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CEC510]];
+    bOOLValue = [v10 BOOLValue];
 
-    if (v11)
+    if (bOOLValue)
     {
       if ([(DAAgent *)self syncWhenReachable])
       {
-        v12 = [(DAAgent *)self networkReachableBlock];
+        networkReachableBlock = [(DAAgent *)self networkReachableBlock];
 
-        if (v12)
+        if (networkReachableBlock)
         {
           [(DAAgent *)self setSyncWhenReachable:0];
-          v13 = [(DAAgent *)self networkReachableBlock];
-          v13[2]();
+          networkReachableBlock2 = [(DAAgent *)self networkReachableBlock];
+          networkReachableBlock2[2]();
         }
       }
     }
@@ -87,60 +87,60 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)observeReachabilityWithBlock:(id)a3
+- (void)observeReachabilityWithBlock:(id)block
 {
-  [(DAAgent *)self setNetworkReachableBlock:a3];
-  v4 = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
-  [v4 addNetworkReachableObserver:self selector:sel__reachabilityChanged_];
+  [(DAAgent *)self setNetworkReachableBlock:block];
+  mEMORY[0x277CEC5B8] = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
+  [mEMORY[0x277CEC5B8] addNetworkReachableObserver:self selector:sel__reachabilityChanged_];
 }
 
 - (void)stopObservingReachability
 {
-  v3 = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
-  [v3 removeNetworkReachableObserver:self];
+  mEMORY[0x277CEC5B8] = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
+  [mEMORY[0x277CEC5B8] removeNetworkReachableObserver:self];
 
   [(DAAgent *)self setNetworkReachableBlock:0];
 }
 
-- (void)requestAgentStopMonitoringWithCompletionBlock:(id)a3
+- (void)requestAgentStopMonitoringWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(DAAgent *)self setIsMonitoring:0];
-  v4[2](v4, self);
+  blockCopy[2](blockCopy, self);
 }
 
 - (void)shutdown
 {
-  v3 = [(DAAgent *)self account];
-  [v3 shutdown];
+  account = [(DAAgent *)self account];
+  [account shutdown];
 
-  v4 = [(DAAgent *)self account];
-  [v4 removeFromCoreDAVLoggingDelegates];
+  account2 = [(DAAgent *)self account];
+  [account2 removeFromCoreDAVLoggingDelegates];
 
   [(DAAgent *)self setAccount:0];
 }
 
-- (void)saveXpcActivity:(id)a3
+- (void)saveXpcActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [(DAAgent *)self account];
-  [v5 saveXpcActivity:v4];
+  activityCopy = activity;
+  account = [(DAAgent *)self account];
+  [account saveXpcActivity:activityCopy];
 }
 
 - (int)preferredEventDaysToSync
 {
-  v2 = [MEMORY[0x277CF74E0] shared];
-  v3 = [v2 get_kCalPreferredDaysToSyncKey];
+  mEMORY[0x277CF74E0] = [MEMORY[0x277CF74E0] shared];
+  get_kCalPreferredDaysToSyncKey = [mEMORY[0x277CF74E0] get_kCalPreferredDaysToSyncKey];
 
-  return v3;
+  return get_kCalPreferredDaysToSyncKey;
 }
 
 - (int)preferredToDoDaysToSync
 {
-  v2 = [MEMORY[0x277CF74E0] shared];
-  v3 = [v2 get_kCalRemindersPreferredDaysToSyncKey];
+  mEMORY[0x277CF74E0] = [MEMORY[0x277CF74E0] shared];
+  get_kCalRemindersPreferredDaysToSyncKey = [mEMORY[0x277CF74E0] get_kCalRemindersPreferredDaysToSyncKey];
 
-  return v3;
+  return get_kCalRemindersPreferredDaysToSyncKey;
 }
 
 @end

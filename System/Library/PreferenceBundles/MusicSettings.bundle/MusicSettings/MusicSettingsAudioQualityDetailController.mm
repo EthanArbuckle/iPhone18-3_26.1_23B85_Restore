@@ -1,20 +1,20 @@
 @interface MusicSettingsAudioQualityDetailController
 - (id)itemsFromParent;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)listItemSelected:(id)a3;
-- (void)shouldSelectHiResLosslessCellular:(id)a3 completion:(id)a4;
-- (void)shouldSelectHiResLosslessDownload:(id)a3 completion:(id)a4;
-- (void)shouldSelectHiResLosslessWiFi:(id)a3 completion:(id)a4;
-- (void)shouldSelectHighQualityDownload:(id)a3 completion:(id)a4;
-- (void)shouldSelectLosslessCellular:(id)a3 completion:(id)a4;
-- (void)shouldSelectLosslessDownload:(id)a3 completion:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)listItemSelected:(id)selected;
+- (void)shouldSelectHiResLosslessCellular:(id)cellular completion:(id)completion;
+- (void)shouldSelectHiResLosslessDownload:(id)download completion:(id)completion;
+- (void)shouldSelectHiResLosslessWiFi:(id)fi completion:(id)completion;
+- (void)shouldSelectHighQualityDownload:(id)download completion:(id)completion;
+- (void)shouldSelectLosslessCellular:(id)cellular completion:(id)completion;
+- (void)shouldSelectLosslessDownload:(id)download completion:(id)completion;
 @end
 
 @implementation MusicSettingsAudioQualityDetailController
 
-- (void)shouldSelectLosslessCellular:(id)a3 completion:(id)a4
+- (void)shouldSelectLosslessCellular:(id)cellular completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = [NSBundle bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"LOSSLESS_CELLULAR_WARN_TITLE" value:&stru_25A88 table:@"MusicSettings"];
   v8 = [NSBundle bundleForClass:objc_opt_class()];
@@ -27,7 +27,7 @@
   v24[1] = 3221225472;
   v24[2] = sub_282C;
   v24[3] = &unk_24E58;
-  v13 = v5;
+  v13 = completionCopy;
   v25 = v13;
   v14 = [UIAlertAction actionWithTitle:v12 style:1 handler:v24];
   [v10 addAction:v14];
@@ -46,9 +46,9 @@
   [(MusicSettingsAudioQualityDetailController *)self presentViewController:v10 animated:1 completion:0];
 }
 
-- (void)shouldSelectHiResLosslessCellular:(id)a3 completion:(id)a4
+- (void)shouldSelectHiResLosslessCellular:(id)cellular completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = [NSBundle bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"HI_RES_LOSSLESS_CELLULAR_WARN_TITLE" value:&stru_25A88 table:@"MusicSettings"];
   v8 = [NSBundle bundleForClass:objc_opt_class()];
@@ -61,7 +61,7 @@
   v24[1] = 3221225472;
   v24[2] = sub_2B20;
   v24[3] = &unk_24E58;
-  v13 = v5;
+  v13 = completionCopy;
   v25 = v13;
   v14 = [UIAlertAction actionWithTitle:v12 style:1 handler:v24];
   [v10 addAction:v14];
@@ -80,9 +80,9 @@
   [(MusicSettingsAudioQualityDetailController *)self presentViewController:v10 animated:1 completion:0];
 }
 
-- (void)shouldSelectHiResLosslessWiFi:(id)a3 completion:(id)a4
+- (void)shouldSelectHiResLosslessWiFi:(id)fi completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = [NSBundle bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"HI_RES_LOSSLESS_DAC_REQUIRED_WARN_TITLE" value:&stru_25A88 table:@"MusicSettings"];
   v8 = [NSBundle bundleForClass:objc_opt_class()];
@@ -95,7 +95,7 @@
   v24[1] = 3221225472;
   v24[2] = sub_2E14;
   v24[3] = &unk_24E58;
-  v13 = v5;
+  v13 = completionCopy;
   v25 = v13;
   v14 = [UIAlertAction actionWithTitle:v12 style:1 handler:v24];
   [v10 addAction:v14];
@@ -114,26 +114,26 @@
   [(MusicSettingsAudioQualityDetailController *)self presentViewController:v10 animated:1 completion:0];
 }
 
-- (void)shouldSelectHighQualityDownload:(id)a3 completion:(id)a4
+- (void)shouldSelectHighQualityDownload:(id)download completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->PSListItemsController_opaque[OBJC_IVAR___PSViewController__parentController]);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_2EF0;
   v8[3] = &unk_24E80;
-  v9 = v5;
-  v7 = v5;
+  v9 = completionCopy;
+  v7 = completionCopy;
   [WeakRetained displayDowngradeAlertIfNeededWithCompletion:v8];
 }
 
-- (void)shouldSelectLosslessDownload:(id)a3 completion:(id)a4
+- (void)shouldSelectLosslessDownload:(id)download completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = +[MPNetworkObserver sharedNetworkObserver];
-  v7 = [v6 isMusicCellularDownloadingAllowed];
+  isMusicCellularDownloadingAllowed = [v6 isMusicCellularDownloadingAllowed];
 
-  if (v7)
+  if (isMusicCellularDownloadingAllowed)
   {
     v8 = [NSBundle bundleForClass:objc_opt_class()];
     v9 = [v8 localizedStringForKey:@"LOSSLESS_DOWNLOAD_CELLULAR_WARN_TITLE" value:&stru_25A88 table:@"MusicSettings"];
@@ -147,7 +147,7 @@
     v25[1] = 3221225472;
     v25[2] = sub_320C;
     v25[3] = &unk_24E58;
-    v15 = v5;
+    v15 = completionCopy;
     v26 = v15;
     v16 = [UIAlertAction actionWithTitle:v14 style:1 handler:v25];
     [v12 addAction:v16];
@@ -167,17 +167,17 @@
 
   else
   {
-    (*(v5 + 2))(v5, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 }
 
-- (void)shouldSelectHiResLosslessDownload:(id)a3 completion:(id)a4
+- (void)shouldSelectHiResLosslessDownload:(id)download completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = +[MPNetworkObserver sharedNetworkObserver];
-  v7 = [v6 isMusicCellularDownloadingAllowed];
+  isMusicCellularDownloadingAllowed = [v6 isMusicCellularDownloadingAllowed];
 
-  if (v7)
+  if (isMusicCellularDownloadingAllowed)
   {
     v8 = [NSBundle bundleForClass:objc_opt_class()];
     v9 = [v8 localizedStringForKey:@"HI_RES_LOSSLESS_DOWNLOAD_CELLULAR_WARN_TITLE" value:&stru_25A88 table:@"MusicSettings"];
@@ -191,7 +191,7 @@
     v25[1] = 3221225472;
     v25[2] = sub_353C;
     v25[3] = &unk_24E58;
-    v15 = v5;
+    v15 = completionCopy;
     v26 = v15;
     v16 = [UIAlertAction actionWithTitle:v14 style:1 handler:v25];
     [v12 addAction:v16];
@@ -211,33 +211,33 @@
 
   else
   {
-    (*(v5 + 2))(v5, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MusicSettingsAudioQualityDetailController *)self specifierAtIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(MusicSettingsAudioQualityDetailController *)self specifierAtIndexPath:pathCopy];
   v15.receiver = self;
   v15.super_class = MusicSettingsAudioQualityDetailController;
-  v9 = [(MusicSettingsAudioQualityDetailController *)&v15 tableView:v7 cellForRowAtIndexPath:v6];
+  v9 = [(MusicSettingsAudioQualityDetailController *)&v15 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
 
   v10 = [v8 propertyForKey:@"musicDetails"];
   v11 = [NSBundle bundleForClass:objc_opt_class()];
   v12 = [v11 localizedStringForKey:v10 value:&stru_25A88 table:@"MusicSettings"];
 
-  v13 = [v9 detailTextLabel];
-  [v13 setText:v12];
+  detailTextLabel = [v9 detailTextLabel];
+  [detailTextLabel setText:v12];
 
   return v9;
 }
 
-- (void)listItemSelected:(id)a3
+- (void)listItemSelected:(id)selected
 {
-  v4 = a3;
-  v5 = [(MusicSettingsAudioQualityDetailController *)self specifierAtIndexPath:v4];
+  selectedCopy = selected;
+  v5 = [(MusicSettingsAudioQualityDetailController *)self specifierAtIndexPath:selectedCopy];
   v6 = [v5 propertyForKey:@"cellObject"];
   if (([v6 isChecked] & 1) == 0)
   {
@@ -245,8 +245,8 @@
     v15[1] = 3221225472;
     v15[2] = sub_3850;
     v15[3] = &unk_24EA8;
-    v16 = v4;
-    v17 = self;
+    v16 = selectedCopy;
+    selfCopy = self;
     v7 = v5;
     v18 = v7;
     v8 = objc_retainBlock(v15);
@@ -275,21 +275,21 @@
 {
   v22.receiver = self;
   v22.super_class = MusicSettingsAudioQualityDetailController;
-  v3 = [(MusicSettingsAudioQualityDetailController *)&v22 itemsFromParent];
+  itemsFromParent = [(MusicSettingsAudioQualityDetailController *)&v22 itemsFromParent];
   v4 = OBJC_IVAR___PSViewController__specifier;
-  v5 = [*&self->PSListItemsController_opaque[OBJC_IVAR___PSViewController__specifier] properties];
-  v6 = [v5 objectForKeyedSubscript:MusicSettingsValidDetails];
+  properties = [*&self->PSListItemsController_opaque[OBJC_IVAR___PSViewController__specifier] properties];
+  v6 = [properties objectForKeyedSubscript:MusicSettingsValidDetails];
 
-  v7 = [*&self->PSListItemsController_opaque[v4] properties];
+  properties2 = [*&self->PSListItemsController_opaque[v4] properties];
   v21 = MusicSettingsShouldSelectAction;
-  v8 = [v7 objectForKeyedSubscript:?];
+  v8 = [properties2 objectForKeyedSubscript:?];
 
-  v9 = [*&self->PSListItemsController_opaque[v4] properties];
+  properties3 = [*&self->PSListItemsController_opaque[v4] properties];
   v10 = MusicSettingsDidSelectAction;
-  v11 = [v9 objectForKeyedSubscript:MusicSettingsDidSelectAction];
+  v11 = [properties3 objectForKeyedSubscript:MusicSettingsDidSelectAction];
 
-  v20 = v3;
-  v12 = [v3 subarrayWithRange:{1, objc_msgSend(v3, "count") - 1}];
+  v20 = itemsFromParent;
+  v12 = [itemsFromParent subarrayWithRange:{1, objc_msgSend(itemsFromParent, "count") - 1}];
   if ([v12 count])
   {
     v13 = 0;

@@ -19,7 +19,7 @@
   v18 = *MEMORY[0x1E69E9840];
   v4 = a3;
   v14 = -86;
-  if (![a1 fileExistsAtPath:v4 isDirectory:&v14] || (v14 & 1) == 0)
+  if (![self fileExistsAtPath:v4 isDirectory:&v14] || (v14 & 1) == 0)
   {
     v10 = 0;
     goto LABEL_12;
@@ -27,8 +27,8 @@
 
   memset(__b, 170, sizeof(__b));
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [MEMORY[0x1E696AF00] currentThread];
-  v7 = [v5 stringWithFormat:@"Mail-T%p.tmp.XXXXXX", v6];
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  v7 = [v5 stringWithFormat:@"Mail-T%p.tmp.XXXXXX", currentThread];
   v8 = [v4 stringByAppendingPathComponent:v7];
 
   if (([v8 getFileSystemRepresentation:__b maxLength:1025] & 1) == 0)
@@ -52,7 +52,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v10 = [a1 stringWithFileSystemRepresentation:v9 length:strlen(v9)];
+  v10 = [self stringWithFileSystemRepresentation:v9 length:strlen(v9)];
 LABEL_11:
 
 LABEL_12:
@@ -65,11 +65,11 @@ LABEL_12:
 {
   v4 = a3;
   v8 = 0;
-  if ([a1 fileExistsAtPath:v4 isDirectory:&v8])
+  if ([self fileExistsAtPath:v4 isDirectory:&v8])
   {
     if (v8 == 1)
     {
-      v5 = [a1 isWritableFileAtPath:v4];
+      v5 = [self isWritableFileAtPath:v4];
     }
 
     else
@@ -80,8 +80,8 @@ LABEL_12:
 
   else
   {
-    v6 = [v4 stringByDeletingLastPathComponent];
-    v5 = [a1 mf_canWriteToDirectoryAtPath:v6];
+    stringByDeletingLastPathComponent = [v4 stringByDeletingLastPathComponent];
+    v5 = [self mf_canWriteToDirectoryAtPath:stringByDeletingLastPathComponent];
   }
 
   return v5;
@@ -95,32 +95,32 @@ LABEL_12:
   v12 = NSTemporaryDirectory();
   v13 = [v11 fileURLWithPath:v12];
 
-  v14 = [MEMORY[0x1E696AFB0] UUID];
-  v15 = [v14 UUIDString];
-  v16 = [v13 URLByAppendingPathComponent:v15 isDirectory:1];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v16 = [v13 URLByAppendingPathComponent:uUIDString isDirectory:1];
 
-  v17 = [MEMORY[0x1E696AC08] defaultManager];
-  if ([v17 createDirectoryAtURL:v16 withIntermediateDirectories:1 attributes:0 error:a6])
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  if ([defaultManager createDirectoryAtURL:v16 withIntermediateDirectories:1 attributes:0 error:a6])
   {
     if (v10)
     {
-      v18 = v10;
+      lastPathComponent = v10;
     }
 
     else
     {
-      v18 = [v9 lastPathComponent];
+      lastPathComponent = [v9 lastPathComponent];
     }
 
-    v21 = v18;
-    v20 = [v16 URLByAppendingPathComponent:v18];
+    v21 = lastPathComponent;
+    v20 = [v16 URLByAppendingPathComponent:lastPathComponent];
 
     if (a4)
     {
       [v9 startAccessingSecurityScopedResource];
     }
 
-    v22 = [v17 copyItemAtURL:v9 toURL:v20 error:a6];
+    v22 = [defaultManager copyItemAtURL:v9 toURL:v20 error:a6];
     if (a4)
     {
       [v9 stopAccessingSecurityScopedResource];
@@ -159,15 +159,15 @@ LABEL_12:
   *&v11.st_size = v6;
   v11.st_mtimespec = v6;
   v11.st_ctimespec = v6;
-  v7 = [v5 fileSystemRepresentation];
+  fileSystemRepresentation = [v5 fileSystemRepresentation];
   if (a4)
   {
-    v8 = stat(v7, &v11);
+    v8 = stat(fileSystemRepresentation, &v11);
   }
 
   else
   {
-    v8 = lstat(v7, &v11);
+    v8 = lstat(fileSystemRepresentation, &v11);
   }
 
   if (v8)
@@ -186,7 +186,7 @@ LABEL_12:
 - (uint64_t)mf_sizeForDirectoryAtPath:()NSFileManagerAdditions error:
 {
   v6 = [MEMORY[0x1E695DFF8] fileURLWithPath:?];
-  v7 = [a1 mf_sizeForDirectoryAtURL:v6 error:a4];
+  v7 = [self mf_sizeForDirectoryAtURL:v6 error:a4];
 
   return v7;
 }
@@ -229,8 +229,8 @@ LABEL_12:
   v23 = *MEMORY[0x1E69E9840];
   v6 = a3;
   v7 = a4;
-  v8 = [a1 contentsOfDirectoryAtPath:v6 error:0];
-  v9 = [MEMORY[0x1E695DF70] array];
+  v8 = [self contentsOfDirectoryAtPath:v6 error:0];
+  array = [MEMORY[0x1E695DF70] array];
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
@@ -253,7 +253,7 @@ LABEL_12:
         if ([v14 hasPrefix:{v7, v18}])
         {
           v15 = [v6 stringByAppendingPathComponent:v14];
-          [v9 addObject:v15];
+          [array addObject:v15];
         }
       }
 
@@ -265,7 +265,7 @@ LABEL_12:
 
   v16 = *MEMORY[0x1E69E9840];
 
-  return v9;
+  return array;
 }
 
 - (uint64_t)mf_protectFileAtPath:()NSFileManagerAdditions withClass:error:
@@ -300,7 +300,7 @@ LABEL_12:
     }
 
     v12 = v10;
-    v11 = [a1 setAttributes:v10 ofItemAtPath:v8 error:a5];
+    v11 = [self setAttributes:v10 ofItemAtPath:v8 error:a5];
   }
 
   else
@@ -359,9 +359,9 @@ LABEL_12:
   v26[1] = *MEMORY[0x1E69E9840];
   v7 = a3;
   v8 = a4;
-  v9 = [(__CFString *)v8 fileSystemRepresentation];
-  v10 = [v7 UTF8String];
-  v11 = getxattr(v9, v10, 0, 0, 0, 0);
+  fileSystemRepresentation = [(__CFString *)v8 fileSystemRepresentation];
+  uTF8String = [v7 UTF8String];
+  v11 = getxattr(fileSystemRepresentation, uTF8String, 0, 0, 0, 0);
   if (v11 < 0)
   {
     if (a5)
@@ -392,7 +392,7 @@ LABEL_12:
   else
   {
     v12 = [MFMutableData dataWithCapacity:v11];
-    v13 = getxattr(v9, v10, [v12 mutableBytes], v11, 0, 0);
+    v13 = getxattr(fileSystemRepresentation, uTF8String, [v12 mutableBytes], v11, 0, 0);
     if (a5 && v13 != v11)
     {
       v14 = MEMORY[0x1E696ABC0];
@@ -429,7 +429,7 @@ LABEL_13:
   v25 = *MEMORY[0x1E695DAF0];
   v33[0] = *MEMORY[0x1E695DAF0];
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:1];
-  v7 = [a1 enumeratorAtURL:v22 includingPropertiesForKeys:v6 options:0 errorHandler:&__block_literal_global_10];
+  v7 = [self enumeratorAtURL:v22 includingPropertiesForKeys:v6 options:0 errorHandler:&__block_literal_global_10];
 
   v30 = 0u;
   v31 = 0u;
@@ -462,9 +462,9 @@ LABEL_13:
 
           if (v16 && ([v17 isEqualToString:v13] & 1) == 0)
           {
-            v18 = [v12 URLByStandardizingPath];
-            v19 = [v18 standardizedURL];
-            [v23 setObject:v13 forKeyedSubscript:v19];
+            uRLByStandardizingPath = [v12 URLByStandardizingPath];
+            standardizedURL = [uRLByStandardizingPath standardizedURL];
+            [v23 setObject:v13 forKeyedSubscript:standardizedURL];
           }
         }
 

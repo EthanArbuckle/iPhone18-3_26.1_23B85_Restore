@@ -1,14 +1,14 @@
 @interface MapsCustomRouteViewContainee
-- (MapsCustomRouteViewContainee)initWithContext:(id)a3;
+- (MapsCustomRouteViewContainee)initWithContext:(id)context;
 - (double)headerHeight;
-- (double)heightForLayout:(unint64_t)a3;
-- (void)_insertAppropriateCardStateForRoute:(id)a3;
+- (double)heightForLayout:(unint64_t)layout;
+- (void)_insertAppropriateCardStateForRoute:(id)route;
 - (void)_insertRouteCardIfNeeded;
-- (void)_updateRouteCardWithRoute:(id)a3;
+- (void)_updateRouteCardWithRoute:(id)route;
 - (void)didUpdateLayout;
-- (void)handleButtonTap:(int64_t)a3;
-- (void)headerViewTappedWithHeaderView:(id)a3;
-- (void)pressedLearnMoreURL:(id)a3;
+- (void)handleButtonTap:(int64_t)tap;
+- (void)headerViewTappedWithHeaderView:(id)view;
+- (void)pressedLearnMoreURL:(id)l;
 - (void)pressedNavigation;
 - (void)pressedOfflineDataManagement;
 - (void)pressedOfflineDownload;
@@ -17,50 +17,50 @@
 - (void)pressedStepping;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)willChangeLayout:(unint64_t)a3;
+- (void)willChangeLayout:(unint64_t)layout;
 @end
 
 @implementation MapsCustomRouteViewContainee
 
-- (void)_updateRouteCardWithRoute:(id)a3
+- (void)_updateRouteCardWithRoute:(id)route
 {
-  [(MapsCustomRouteCardView *)self->_cardView setRoute:a3];
-  v4 = [(ContaineeViewController *)self cardPresentationController];
-  [v4 updateHeightForCurrentLayout];
+  [(MapsCustomRouteCardView *)self->_cardView setRoute:route];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController updateHeightForCurrentLayout];
 }
 
 - (void)_insertRouteCardIfNeeded
 {
   v3 = self->_cardView;
   [(MapsCustomRouteCardView *)v3 setAlpha:1.0];
-  v4 = [(MapsCustomRouteCardView *)v3 superview];
+  superview = [(MapsCustomRouteCardView *)v3 superview];
 
-  if (!v4)
+  if (!superview)
   {
-    v5 = [(ContaineeViewController *)self contentView];
-    [v5 addSubview:v3];
+    contentView = [(ContaineeViewController *)self contentView];
+    [contentView addSubview:v3];
 
-    v6 = [(MapsCustomRouteCardView *)v3 bottomAnchor];
-    v7 = [(ContaineeViewController *)self contentView];
-    v8 = [v7 bottomAnchor];
-    v9 = [v6 constraintEqualToAnchor:v8 constant:-16.0];
+    bottomAnchor = [(MapsCustomRouteCardView *)v3 bottomAnchor];
+    contentView2 = [(ContaineeViewController *)self contentView];
+    bottomAnchor2 = [contentView2 bottomAnchor];
+    v9 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-16.0];
     bottomConstraint = self->_bottomConstraint;
     self->_bottomConstraint = v9;
 
-    v23 = [(MapsCustomRouteCardView *)v3 leadingAnchor];
-    v24 = [(ContaineeViewController *)self contentView];
-    v22 = [v24 leadingAnchor];
-    v21 = [v23 constraintEqualToAnchor:v22];
+    leadingAnchor = [(MapsCustomRouteCardView *)v3 leadingAnchor];
+    contentView3 = [(ContaineeViewController *)self contentView];
+    leadingAnchor2 = [contentView3 leadingAnchor];
+    v21 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v25[0] = v21;
-    v20 = [(MapsCustomRouteCardView *)v3 trailingAnchor];
-    v11 = [(ContaineeViewController *)self contentView];
-    v12 = [v11 trailingAnchor];
-    v13 = [v20 constraintEqualToAnchor:v12];
+    trailingAnchor = [(MapsCustomRouteCardView *)v3 trailingAnchor];
+    contentView4 = [(ContaineeViewController *)self contentView];
+    trailingAnchor2 = [contentView4 trailingAnchor];
+    v13 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v25[1] = v13;
-    v14 = [(MapsCustomRouteCardView *)v3 topAnchor];
-    v15 = [(ContaineeViewController *)self headerView];
-    v16 = [v15 bottomAnchor];
-    v17 = [v14 constraintEqualToAnchor:v16];
+    topAnchor = [(MapsCustomRouteCardView *)v3 topAnchor];
+    headerView = [(ContaineeViewController *)self headerView];
+    bottomAnchor3 = [headerView bottomAnchor];
+    v17 = [topAnchor constraintEqualToAnchor:bottomAnchor3];
     v18 = self->_bottomConstraint;
     v25[2] = v17;
     v25[3] = v18;
@@ -69,12 +69,12 @@
   }
 }
 
-- (void)_insertAppropriateCardStateForRoute:(id)a3
+- (void)_insertAppropriateCardStateForRoute:(id)route
 {
-  v4 = a3;
+  routeCopy = route;
   [(MapsCustomRouteViewContainee *)self loadViewIfNeeded];
   [(MapsCustomRouteViewContainee *)self _insertRouteCardIfNeeded];
-  [(MapsCustomRouteViewContainee *)self _updateRouteCardWithRoute:v4];
+  [(MapsCustomRouteViewContainee *)self _updateRouteCardWithRoute:routeCopy];
 }
 
 - (void)didUpdateLayout
@@ -87,17 +87,17 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)pressedLearnMoreURL:(id)a3
+- (void)pressedLearnMoreURL:(id)l
 {
-  v9 = a3;
-  v4 = [(MapsCustomRouteViewContainee *)self _maps_mapsSceneDelegate];
-  v5 = [v4 appCoordinator];
-  v6 = [v5 baseActionCoordinator];
+  lCopy = l;
+  _maps_mapsSceneDelegate = [(MapsCustomRouteViewContainee *)self _maps_mapsSceneDelegate];
+  appCoordinator = [_maps_mapsSceneDelegate appCoordinator];
+  baseActionCoordinator = [appCoordinator baseActionCoordinator];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = baseActionCoordinator;
   }
 
   else
@@ -107,19 +107,19 @@
 
   v8 = v7;
 
-  [v8 viewController:self openURL:v9];
+  [v8 viewController:self openURL:lCopy];
 }
 
 - (void)pressedOfflineDataManagement
 {
-  v3 = [(MapsCustomRouteViewContainee *)self _maps_mapsSceneDelegate];
-  v4 = [v3 appCoordinator];
-  v5 = [v4 baseActionCoordinator];
+  _maps_mapsSceneDelegate = [(MapsCustomRouteViewContainee *)self _maps_mapsSceneDelegate];
+  appCoordinator = [_maps_mapsSceneDelegate appCoordinator];
+  baseActionCoordinator = [appCoordinator baseActionCoordinator];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = baseActionCoordinator;
   }
 
   else
@@ -134,14 +134,14 @@
 
 - (void)pressedOfflineDownload
 {
-  v3 = [(MapsCustomRouteViewContainee *)self _maps_mapsSceneDelegate];
-  v4 = [v3 appCoordinator];
-  v5 = [v4 baseActionCoordinator];
+  _maps_mapsSceneDelegate = [(MapsCustomRouteViewContainee *)self _maps_mapsSceneDelegate];
+  appCoordinator = [_maps_mapsSceneDelegate appCoordinator];
+  baseActionCoordinator = [appCoordinator baseActionCoordinator];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = baseActionCoordinator;
   }
 
   else
@@ -152,28 +152,28 @@
   v7 = v6;
 
   WeakRetained = objc_loadWeakRetained(&self->_context);
-  v18 = [WeakRetained composedRoute];
+  composedRoute = [WeakRetained composedRoute];
 
-  v9 = [v18 userProvidedName];
-  if ([v9 length])
+  userProvidedName = [composedRoute userProvidedName];
+  if ([userProvidedName length])
   {
-    [v18 userProvidedName];
+    [composedRoute userProvidedName];
   }
 
   else
   {
-    [v18 name];
+    [composedRoute name];
   }
   v10 = ;
 
   v11 = objc_loadWeakRetained(&self->_context);
-  v12 = [v11 composedRoute];
-  v13 = [v12 boundingMapRegion];
-  v14 = [GEOMapRegion _maps_offlineDownloadRegionForRouteBounds:v13];
+  composedRoute2 = [v11 composedRoute];
+  boundingMapRegion = [composedRoute2 boundingMapRegion];
+  v14 = [GEOMapRegion _maps_offlineDownloadRegionForRouteBounds:boundingMapRegion];
   v15 = objc_loadWeakRetained(&self->_context);
-  v16 = [v15 composedRoute];
+  composedRoute3 = [v15 composedRoute];
   LOWORD(v17) = 256;
-  [v7 viewController:self showOfflineMapRegionSelectorForRegion:v14 name:v10 route:v16 muid:objc_msgSend(v18 shouldUseSessionlessAnalytics:"mapItemMuid") shouldShowDataManagementAfterDownload:0 shouldShowDataManagementAfterDownloadIfRegionDiffers:v17 dismissalBlock:0];
+  [v7 viewController:self showOfflineMapRegionSelectorForRegion:v14 name:v10 route:composedRoute3 muid:objc_msgSend(composedRoute shouldUseSessionlessAnalytics:"mapItemMuid") shouldShowDataManagementAfterDownload:0 shouldShowDataManagementAfterDownloadIfRegionDiffers:v17 dismissalBlock:0];
 }
 
 - (void)pressedSaveToLibrary
@@ -229,9 +229,9 @@
   objc_destroyWeak(&location);
 }
 
-- (void)handleButtonTap:(int64_t)a3
+- (void)handleButtonTap:(int64_t)tap
 {
-  if (a3 == 9)
+  if (tap == 9)
   {
     v5 = sub_1007989A4();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -245,7 +245,7 @@
     goto LABEL_9;
   }
 
-  if (a3 == 1)
+  if (tap == 1)
   {
     v4 = sub_1007989A4();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -285,10 +285,10 @@ LABEL_9:
   }
 }
 
-- (void)headerViewTappedWithHeaderView:(id)a3
+- (void)headerViewTappedWithHeaderView:(id)view
 {
-  v4 = [(ContaineeViewController *)self cardPresentationController];
-  if ([v4 containeeLayout] == 2)
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  if ([cardPresentationController containeeLayout] == 2)
   {
 
     v5 = 1;
@@ -296,10 +296,10 @@ LABEL_9:
 
   else
   {
-    v6 = [(ContaineeViewController *)self cardPresentationController];
-    v7 = [v6 containeeLayout];
+    cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+    containeeLayout = [cardPresentationController2 containeeLayout];
 
-    if (v7 == 3)
+    if (containeeLayout == 3)
     {
       v5 = 1;
     }
@@ -310,21 +310,21 @@ LABEL_9:
     }
   }
 
-  v8 = [(ContaineeViewController *)self cardPresentationController];
-  [v8 wantsLayout:v5];
+  cardPresentationController3 = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController3 wantsLayout:v5];
 }
 
-- (double)heightForLayout:(unint64_t)a3
+- (double)heightForLayout:(unint64_t)layout
 {
-  if (a3 - 2 >= 4)
+  if (layout - 2 >= 4)
   {
     v14 = -1.0;
-    if (a3 == 1)
+    if (layout == 1)
     {
       [(MapsCustomRouteViewContainee *)self headerHeight];
       v16 = v15;
-      v17 = [(ContaineeViewController *)self cardPresentationController];
-      [v17 bottomSafeOffset];
+      cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+      [cardPresentationController bottomSafeOffset];
       v14 = v18 + v16;
     }
   }
@@ -339,8 +339,8 @@ LABEL_9:
     LODWORD(v7) = 1112014848;
     [(MapsCustomRouteCardView *)cardView systemLayoutSizeFittingSize:v6 withHorizontalFittingPriority:UILayoutFittingCompressedSize.height verticalFittingPriority:v5, v7];
     v9 = v8;
-    v10 = [(ContaineeViewController *)self cardPresentationController];
-    [v10 bottomSafeOffset];
+    cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController2 bottomSafeOffset];
     v12 = v11;
 
     [(MapsCustomRouteViewContainee *)self headerHeight];
@@ -350,12 +350,12 @@ LABEL_9:
   return v14;
 }
 
-- (void)willChangeLayout:(unint64_t)a3
+- (void)willChangeLayout:(unint64_t)layout
 {
   v5.receiver = self;
   v5.super_class = MapsCustomRouteViewContainee;
   [(ContaineeViewController *)&v5 willChangeLayout:?];
-  [(NSLayoutConstraint *)self->_bottomConstraint setActive:a3 != 1];
+  [(NSLayoutConstraint *)self->_bottomConstraint setActive:layout != 1];
 }
 
 - (double)headerHeight
@@ -375,8 +375,8 @@ LABEL_9:
   v10.receiver = self;
   v10.super_class = MapsCustomRouteViewContainee;
   [(ContaineeViewController *)&v10 viewDidLayoutSubviews];
-  v3 = [(ContaineeViewController *)self contentView];
-  [v3 frame];
+  contentView = [(ContaineeViewController *)self contentView];
+  [contentView frame];
   v5 = v4;
 
   previousWidth = self->_previousWidth;
@@ -394,7 +394,7 @@ LABEL_9:
   v28.receiver = self;
   v28.super_class = MapsCustomRouteViewContainee;
   [(ContaineeViewController *)&v28 viewDidLoad];
-  v3 = [(ContaineeViewController *)self headerView];
+  headerView = [(ContaineeViewController *)self headerView];
   v4 = +[NSMutableArray array];
   if (GEOConfigGetBOOL() && +[MapsTapToRadarExtras shouldEnableTTRButton])
   {
@@ -403,16 +403,16 @@ LABEL_9:
 
   [v4 addObject:&off_1016EA130];
   v5 = [[_TtC4Maps22MapsSubtitleHeaderView alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
-  v6 = [(GEOComposedRoute *)self->_route userProvidedName];
-  if (v6)
+  userProvidedName = [(GEOComposedRoute *)self->_route userProvidedName];
+  if (userProvidedName)
   {
-    [(MapsSubtitleHeaderView *)v5 setTitle:v6];
+    [(MapsSubtitleHeaderView *)v5 setTitle:userProvidedName];
   }
 
   else
   {
-    v7 = [(GEOComposedRoute *)self->_route name];
-    [(MapsSubtitleHeaderView *)v5 setTitle:v7];
+    name = [(GEOComposedRoute *)self->_route name];
+    [(MapsSubtitleHeaderView *)v5 setTitle:name];
   }
 
   [(MapsSubtitleHeaderView *)v5 setTrailingButtons:v4];
@@ -425,7 +425,7 @@ LABEL_9:
   [(MapsSubtitleHeaderView *)self->_containerHeaderView setTranslatesAutoresizingMaskIntoConstraints:0];
   LODWORD(v9) = 1148846080;
   [(MapsSubtitleHeaderView *)self->_containerHeaderView setContentCompressionResistancePriority:1 forAxis:v9];
-  [v3 addSubview:self->_containerHeaderView];
+  [headerView addSubview:self->_containerHeaderView];
   v10 = objc_opt_new();
   cardView = self->_cardView;
   self->_cardView = v10;
@@ -433,22 +433,22 @@ LABEL_9:
   [(MapsCustomRouteCardView *)self->_cardView setDelegate:self];
   [(MapsCustomRouteCardView *)self->_cardView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(MapsCustomRouteViewContainee *)self _updateRouteCardWithRoute:self->_route];
-  v25 = [(MapsSubtitleHeaderView *)self->_containerHeaderView leadingAnchor];
-  v24 = [v3 leadingAnchor];
-  v23 = [v25 constraintEqualToAnchor:v24];
+  leadingAnchor = [(MapsSubtitleHeaderView *)self->_containerHeaderView leadingAnchor];
+  leadingAnchor2 = [headerView leadingAnchor];
+  v23 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v29[0] = v23;
-  v21 = [(MapsSubtitleHeaderView *)self->_containerHeaderView topAnchor];
-  v12 = [v3 topAnchor];
-  v13 = [v21 constraintEqualToAnchor:v12];
+  topAnchor = [(MapsSubtitleHeaderView *)self->_containerHeaderView topAnchor];
+  topAnchor2 = [headerView topAnchor];
+  v13 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v29[1] = v13;
-  v14 = [(MapsSubtitleHeaderView *)self->_containerHeaderView trailingAnchor];
-  v15 = [v3 trailingAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15];
+  trailingAnchor = [(MapsSubtitleHeaderView *)self->_containerHeaderView trailingAnchor];
+  trailingAnchor2 = [headerView trailingAnchor];
+  v16 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v29[2] = v16;
-  v17 = [(MapsSubtitleHeaderView *)self->_containerHeaderView bottomAnchor];
-  [v3 bottomAnchor];
-  v18 = v22 = v3;
-  v19 = [v17 constraintEqualToAnchor:v18];
+  bottomAnchor = [(MapsSubtitleHeaderView *)self->_containerHeaderView bottomAnchor];
+  [headerView bottomAnchor];
+  v18 = v22 = headerView;
+  v19 = [bottomAnchor constraintEqualToAnchor:v18];
   v29[3] = v19;
   v20 = [NSArray arrayWithObjects:v29 count:4];
   [NSLayoutConstraint activateConstraints:v20];
@@ -457,29 +457,29 @@ LABEL_9:
   [(MapsCustomRouteViewContainee *)self _insertAppropriateCardStateForRoute:self->_route];
 }
 
-- (MapsCustomRouteViewContainee)initWithContext:(id)a3
+- (MapsCustomRouteViewContainee)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v13.receiver = self;
   v13.super_class = MapsCustomRouteViewContainee;
   v5 = [(MapsCustomRouteViewContainee *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_context, v4);
-    v7 = [v4 composedRoute];
+    objc_storeWeak(&v5->_context, contextCopy);
+    composedRoute = [contextCopy composedRoute];
     route = v6->_route;
-    v6->_route = v7;
+    v6->_route = composedRoute;
 
     v6->_previousWidth = 1.79769313e308;
-    v9 = [(ContaineeViewController *)v6 cardPresentationController];
-    [v9 setAllowResizeInFloatingStyle:1];
+    cardPresentationController = [(ContaineeViewController *)v6 cardPresentationController];
+    [cardPresentationController setAllowResizeInFloatingStyle:1];
 
-    v10 = [(ContaineeViewController *)v6 cardPresentationController];
-    [v10 setDefaultContaineeLayout:2];
+    cardPresentationController2 = [(ContaineeViewController *)v6 cardPresentationController];
+    [cardPresentationController2 setDefaultContaineeLayout:2];
 
-    v11 = [(ContaineeViewController *)v6 cardPresentationController];
-    [v11 setTakesAvailableHeight:0];
+    cardPresentationController3 = [(ContaineeViewController *)v6 cardPresentationController];
+    [cardPresentationController3 setTakesAvailableHeight:0];
   }
 
   return v6;

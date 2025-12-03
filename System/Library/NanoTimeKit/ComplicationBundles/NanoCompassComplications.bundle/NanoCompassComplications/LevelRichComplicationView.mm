@@ -7,14 +7,14 @@
 - (id)_newFixedBubbleView;
 - (id)_newFixedOverlayView;
 - (id)_newFloatingBubbleView;
-- (id)initFullColorImageViewWithDevice:(id)a3;
-- (void)configureWithImageProvider:(id)a3 reason:(int64_t)a4;
+- (id)initFullColorImageViewWithDevice:(id)device;
+- (void)configureWithImageProvider:(id)provider reason:(int64_t)reason;
 - (void)layoutSubviews;
 @end
 
 @implementation LevelRichComplicationView
 
-- (id)initFullColorImageViewWithDevice:(id)a3
+- (id)initFullColorImageViewWithDevice:(id)device
 {
   v24.receiver = self;
   v24.super_class = LevelRichComplicationView;
@@ -80,10 +80,10 @@
   return floatingBubbleView;
 }
 
-- (void)configureWithImageProvider:(id)a3 reason:(int64_t)a4
+- (void)configureWithImageProvider:(id)provider reason:(int64_t)reason
 {
-  v54 = a3;
-  v8 = objc_msgSend_metadata(v54, v5, v6, v7);
+  providerCopy = provider;
+  v8 = objc_msgSend_metadata(providerCopy, v5, v6, v7);
   v11 = objc_msgSend_objectForKeyedSubscript_(v8, v9, @"incline", v10);
 
   v15 = objc_msgSend_null(MEMORY[0x277CBEB68], v12, v13, v14);
@@ -95,7 +95,7 @@
     v11 = 0;
   }
 
-  v22 = objc_msgSend_metadata(v54, v19, v20, v21);
+  v22 = objc_msgSend_metadata(providerCopy, v19, v20, v21);
   v25 = objc_msgSend_objectForKeyedSubscript_(v22, v23, @"nodata", v24);
   v29 = objc_msgSend_BOOLValue(v25, v26, v27, v28);
 

@@ -1,18 +1,18 @@
 @interface SUCoreDownloadCheckpoint
-- (SUCoreDownloadCheckpoint)initWithTimestamp:(double)a3 downloadedBytes:(int64_t)a4;
+- (SUCoreDownloadCheckpoint)initWithTimestamp:(double)timestamp downloadedBytes:(int64_t)bytes;
 @end
 
 @implementation SUCoreDownloadCheckpoint
 
-- (SUCoreDownloadCheckpoint)initWithTimestamp:(double)a3 downloadedBytes:(int64_t)a4
+- (SUCoreDownloadCheckpoint)initWithTimestamp:(double)timestamp downloadedBytes:(int64_t)bytes
 {
   v7.receiver = self;
   v7.super_class = SUCoreDownloadCheckpoint;
   result = [(SUCoreDownloadCheckpoint *)&v7 init];
   if (result)
   {
-    result->_timestamp = a3;
-    result->_downloadedBytes = a4;
+    result->_timestamp = timestamp;
+    result->_downloadedBytes = bytes;
   }
 
   return result;

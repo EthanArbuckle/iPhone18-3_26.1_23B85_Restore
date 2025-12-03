@@ -1,63 +1,63 @@
 @interface WFArticle
-+ (WFArticle)articleWithTitle:(id)a3 author:(id)a4 publishedDate:(id)a5 body:(id)a6 excerpt:(id)a7 numberOfWords:(unint64_t)a8 mainImageURL:(id)a9 URL:(id)a10;
-+ (id)mainImageURLFromHTML:(id)a3;
-+ (id)objectWithWFSerializedRepresentation:(id)a3;
-+ (id)summaryOfParagraph:(id)a3;
-+ (unint64_t)numberOfWordsInString:(id)a3;
-+ (void)fetchArticleFromURL:(id)a3 pageHTML:(id)a4 completionHandler:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (WFArticle)initWithCoder:(id)a3;
-- (WFArticle)initWithTitle:(id)a3 author:(id)a4 publishedDate:(id)a5 body:(id)a6 excerpt:(id)a7 numberOfWords:(unint64_t)a8 mainImageURL:(id)a9 URL:(id)a10;
++ (WFArticle)articleWithTitle:(id)title author:(id)author publishedDate:(id)date body:(id)body excerpt:(id)excerpt numberOfWords:(unint64_t)words mainImageURL:(id)l URL:(id)self0;
++ (id)mainImageURLFromHTML:(id)l;
++ (id)objectWithWFSerializedRepresentation:(id)representation;
++ (id)summaryOfParagraph:(id)paragraph;
++ (unint64_t)numberOfWordsInString:(id)string;
++ (void)fetchArticleFromURL:(id)l pageHTML:(id)mL completionHandler:(id)handler;
+- (BOOL)isEqual:(id)equal;
+- (WFArticle)initWithCoder:(id)coder;
+- (WFArticle)initWithTitle:(id)title author:(id)author publishedDate:(id)date body:(id)body excerpt:(id)excerpt numberOfWords:(unint64_t)words mainImageURL:(id)l URL:(id)self0;
 - (id)wfSerializedRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFArticle
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFArticle *)self title];
-  [v4 encodeObject:v5 forKey:@"title"];
+  coderCopy = coder;
+  title = [(WFArticle *)self title];
+  [coderCopy encodeObject:title forKey:@"title"];
 
-  v6 = [(WFArticle *)self author];
-  [v4 encodeObject:v6 forKey:@"author"];
+  author = [(WFArticle *)self author];
+  [coderCopy encodeObject:author forKey:@"author"];
 
-  v7 = [(WFArticle *)self publishedDate];
-  [v4 encodeObject:v7 forKey:@"publishedDate"];
+  publishedDate = [(WFArticle *)self publishedDate];
+  [coderCopy encodeObject:publishedDate forKey:@"publishedDate"];
 
-  v8 = [(WFArticle *)self body];
-  [v4 encodeObject:v8 forKey:@"body"];
+  body = [(WFArticle *)self body];
+  [coderCopy encodeObject:body forKey:@"body"];
 
-  v9 = [(WFArticle *)self excerpt];
-  [v4 encodeObject:v9 forKey:@"excerpt"];
+  excerpt = [(WFArticle *)self excerpt];
+  [coderCopy encodeObject:excerpt forKey:@"excerpt"];
 
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[WFArticle numberOfWords](self, "numberOfWords")}];
-  [v4 encodeObject:v10 forKey:@"numberOfWords"];
+  [coderCopy encodeObject:v10 forKey:@"numberOfWords"];
 
-  v11 = [(WFArticle *)self mainImageURL];
-  [v4 encodeObject:v11 forKey:@"mainImageURL"];
+  mainImageURL = [(WFArticle *)self mainImageURL];
+  [coderCopy encodeObject:mainImageURL forKey:@"mainImageURL"];
 
   v12 = [(WFArticle *)self URL];
-  [v4 encodeObject:v12 forKey:@"URL"];
+  [coderCopy encodeObject:v12 forKey:@"URL"];
 }
 
-- (WFArticle)initWithCoder:(id)a3
+- (WFArticle)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"author"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"publishedDate"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"body"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"excerpt"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"numberOfWords"];
-  v11 = [v10 unsignedIntegerValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"author"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"publishedDate"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"body"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"excerpt"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"numberOfWords"];
+  unsignedIntegerValue = [v10 unsignedIntegerValue];
 
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mainImageURL"];
-  v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"URL"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mainImageURL"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"URL"];
 
-  v14 = [(WFArticle *)self initWithTitle:v5 author:v6 publishedDate:v7 body:v8 excerpt:v9 numberOfWords:v11 mainImageURL:v12 URL:v13];
+  v14 = [(WFArticle *)self initWithTitle:v5 author:v6 publishedDate:v7 body:v8 excerpt:v9 numberOfWords:unsignedIntegerValue mainImageURL:v12 URL:v13];
   return v14;
 }
 
@@ -65,44 +65,44 @@
 {
   v24[1] = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
-  v4 = [(WFArticle *)self title];
+  title = [(WFArticle *)self title];
 
-  if (v4)
+  if (title)
   {
-    v5 = [(WFArticle *)self title];
-    [v3 setObject:v5 forKeyedSubscript:@"title"];
+    title2 = [(WFArticle *)self title];
+    [v3 setObject:title2 forKeyedSubscript:@"title"];
   }
 
-  v6 = [(WFArticle *)self author];
+  author = [(WFArticle *)self author];
 
-  if (v6)
+  if (author)
   {
-    v7 = [(WFArticle *)self author];
-    [v3 setObject:v7 forKeyedSubscript:@"author"];
+    author2 = [(WFArticle *)self author];
+    [v3 setObject:author2 forKeyedSubscript:@"author"];
   }
 
-  v8 = [(WFArticle *)self publishedDate];
+  publishedDate = [(WFArticle *)self publishedDate];
 
-  if (v8)
+  if (publishedDate)
   {
-    v9 = [(WFArticle *)self publishedDate];
-    [v3 setObject:v9 forKeyedSubscript:@"publishedDate"];
+    publishedDate2 = [(WFArticle *)self publishedDate];
+    [v3 setObject:publishedDate2 forKeyedSubscript:@"publishedDate"];
   }
 
-  v10 = [(WFArticle *)self body];
+  body = [(WFArticle *)self body];
 
-  if (v10)
+  if (body)
   {
-    v11 = [(WFArticle *)self body];
-    [v3 setObject:v11 forKeyedSubscript:@"body"];
+    body2 = [(WFArticle *)self body];
+    [v3 setObject:body2 forKeyedSubscript:@"body"];
   }
 
-  v12 = [(WFArticle *)self excerpt];
+  excerpt = [(WFArticle *)self excerpt];
 
-  if (v12)
+  if (excerpt)
   {
-    v13 = [(WFArticle *)self excerpt];
-    [v3 setObject:v13 forKeyedSubscript:@"excerpt"];
+    excerpt2 = [(WFArticle *)self excerpt];
+    [v3 setObject:excerpt2 forKeyedSubscript:@"excerpt"];
   }
 
   if ([(WFArticle *)self numberOfWords])
@@ -111,13 +111,13 @@
     [v3 setObject:v14 forKeyedSubscript:@"numberOfWords"];
   }
 
-  v15 = [(WFArticle *)self mainImageURL];
+  mainImageURL = [(WFArticle *)self mainImageURL];
 
-  if (v15)
+  if (mainImageURL)
   {
-    v16 = [(WFArticle *)self mainImageURL];
-    v17 = [v16 absoluteString];
-    [v3 setObject:v17 forKeyedSubscript:@"mainImageURL"];
+    mainImageURL2 = [(WFArticle *)self mainImageURL];
+    absoluteString = [mainImageURL2 absoluteString];
+    [v3 setObject:absoluteString forKeyedSubscript:@"mainImageURL"];
   }
 
   v18 = [(WFArticle *)self URL];
@@ -125,8 +125,8 @@
   if (v18)
   {
     v19 = [(WFArticle *)self URL];
-    v20 = [v19 absoluteString];
-    [v3 setObject:v20 forKeyedSubscript:@"URL"];
+    absoluteString2 = [v19 absoluteString];
+    [v3 setObject:absoluteString2 forKeyedSubscript:@"URL"];
   }
 
   v23 = @"link.contentkit.article";
@@ -140,16 +140,16 @@
 {
   v3 = [(WFArticle *)self URL];
   v4 = [v3 hash];
-  v5 = [(WFArticle *)self title];
-  v6 = [v5 hash];
+  title = [(WFArticle *)self title];
+  v6 = [title hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -159,99 +159,99 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(WFArticle *)self title];
-      v7 = [(WFArticle *)v5 title];
-      if (v6 == v7)
+      v5 = equalCopy;
+      title = [(WFArticle *)self title];
+      title2 = [(WFArticle *)v5 title];
+      if (title == title2)
       {
         v11 = 0;
       }
 
       else
       {
-        v8 = [(WFArticle *)self title];
-        v9 = [(WFArticle *)v5 title];
-        v10 = [v8 isEqualToString:v9];
+        title3 = [(WFArticle *)self title];
+        title4 = [(WFArticle *)v5 title];
+        v10 = [title3 isEqualToString:title4];
 
         v11 = v10 ^ 1;
       }
 
-      v13 = [(WFArticle *)self author];
-      v14 = [(WFArticle *)v5 author];
-      if (v13 == v14)
+      author = [(WFArticle *)self author];
+      author2 = [(WFArticle *)v5 author];
+      if (author == author2)
       {
         v51 = 0;
       }
 
       else
       {
-        v15 = [(WFArticle *)self author];
-        v16 = [(WFArticle *)v5 author];
-        v17 = [v15 isEqualToString:v16];
+        author3 = [(WFArticle *)self author];
+        author4 = [(WFArticle *)v5 author];
+        v17 = [author3 isEqualToString:author4];
 
         v51 = v17 ^ 1;
       }
 
-      v18 = [(WFArticle *)self publishedDate];
-      v19 = [(WFArticle *)v5 publishedDate];
-      if (v18 == v19)
+      publishedDate = [(WFArticle *)self publishedDate];
+      publishedDate2 = [(WFArticle *)v5 publishedDate];
+      if (publishedDate == publishedDate2)
       {
         v50 = 0;
       }
 
       else
       {
-        v20 = [(WFArticle *)self publishedDate];
-        v21 = [(WFArticle *)v5 publishedDate];
-        v22 = [v20 isEqualToDate:v21];
+        publishedDate3 = [(WFArticle *)self publishedDate];
+        publishedDate4 = [(WFArticle *)v5 publishedDate];
+        v22 = [publishedDate3 isEqualToDate:publishedDate4];
 
         v50 = v22 ^ 1;
       }
 
-      v23 = [(WFArticle *)self body];
-      v24 = [(WFArticle *)v5 body];
-      if (v23 == v24)
+      body = [(WFArticle *)self body];
+      body2 = [(WFArticle *)v5 body];
+      if (body == body2)
       {
         v49 = 0;
       }
 
       else
       {
-        v25 = [(WFArticle *)self body];
-        v26 = [(WFArticle *)v5 body];
-        v27 = [v25 isEqualToString:v26];
+        body3 = [(WFArticle *)self body];
+        body4 = [(WFArticle *)v5 body];
+        v27 = [body3 isEqualToString:body4];
 
         v49 = v27 ^ 1;
       }
 
-      v28 = [(WFArticle *)self excerpt];
-      v29 = [(WFArticle *)v5 excerpt];
-      if (v28 == v29)
+      excerpt = [(WFArticle *)self excerpt];
+      excerpt2 = [(WFArticle *)v5 excerpt];
+      if (excerpt == excerpt2)
       {
         v33 = 0;
       }
 
       else
       {
-        v30 = [(WFArticle *)self excerpt];
-        v31 = [(WFArticle *)v5 excerpt];
-        v32 = [v30 isEqualToString:v31];
+        excerpt3 = [(WFArticle *)self excerpt];
+        excerpt4 = [(WFArticle *)v5 excerpt];
+        v32 = [excerpt3 isEqualToString:excerpt4];
 
         v33 = v32 ^ 1;
       }
 
-      v34 = [(WFArticle *)self mainImageURL];
-      v35 = [(WFArticle *)v5 mainImageURL];
-      if (v34 == v35)
+      mainImageURL = [(WFArticle *)self mainImageURL];
+      mainImageURL2 = [(WFArticle *)v5 mainImageURL];
+      if (mainImageURL == mainImageURL2)
       {
         v38 = 1;
       }
 
       else
       {
-        v36 = [(WFArticle *)self mainImageURL];
-        v37 = [(WFArticle *)v5 mainImageURL];
-        v38 = [v36 isEqual:v37];
+        mainImageURL3 = [(WFArticle *)self mainImageURL];
+        mainImageURL4 = [(WFArticle *)v5 mainImageURL];
+        v38 = [mainImageURL3 isEqual:mainImageURL4];
       }
 
       v39 = [(WFArticle *)self URL];
@@ -282,8 +282,8 @@
 
       else
       {
-        v46 = [(WFArticle *)self numberOfWords];
-        v12 = (v46 == [(WFArticle *)v5 numberOfWords]) & v38 & v48;
+        numberOfWords = [(WFArticle *)self numberOfWords];
+        v12 = (numberOfWords == [(WFArticle *)v5 numberOfWords]) & v38 & v48;
       }
     }
 
@@ -296,46 +296,46 @@
   return v12;
 }
 
-- (WFArticle)initWithTitle:(id)a3 author:(id)a4 publishedDate:(id)a5 body:(id)a6 excerpt:(id)a7 numberOfWords:(unint64_t)a8 mainImageURL:(id)a9 URL:(id)a10
+- (WFArticle)initWithTitle:(id)title author:(id)author publishedDate:(id)date body:(id)body excerpt:(id)excerpt numberOfWords:(unint64_t)words mainImageURL:(id)l URL:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a9;
-  v22 = a10;
+  titleCopy = title;
+  authorCopy = author;
+  dateCopy = date;
+  bodyCopy = body;
+  excerptCopy = excerpt;
+  lCopy = l;
+  rLCopy = rL;
   v39.receiver = self;
   v39.super_class = WFArticle;
   v23 = [(WFArticle *)&v39 init];
   if (v23)
   {
-    v24 = [v16 copy];
+    v24 = [titleCopy copy];
     title = v23->_title;
     v23->_title = v24;
 
-    v26 = [v17 copy];
+    v26 = [authorCopy copy];
     author = v23->_author;
     v23->_author = v26;
 
-    v28 = [v18 copy];
+    v28 = [dateCopy copy];
     publishedDate = v23->_publishedDate;
     v23->_publishedDate = v28;
 
-    v30 = [v19 copy];
+    v30 = [bodyCopy copy];
     body = v23->_body;
     v23->_body = v30;
 
-    v32 = [v20 copy];
+    v32 = [excerptCopy copy];
     excerpt = v23->_excerpt;
     v23->_excerpt = v32;
 
-    v23->_numberOfWords = a8;
-    v34 = [v21 copy];
+    v23->_numberOfWords = words;
+    v34 = [lCopy copy];
     mainImageURL = v23->_mainImageURL;
     v23->_mainImageURL = v34;
 
-    v36 = [v22 copy];
+    v36 = [rLCopy copy];
     URL = v23->_URL;
     v23->_URL = v36;
   }
@@ -343,10 +343,10 @@
   return v23;
 }
 
-+ (id)objectWithWFSerializedRepresentation:(id)a3
++ (id)objectWithWFSerializedRepresentation:(id)representation
 {
-  v3 = a3;
-  v4 = [v3 wfObjectOfClass:objc_opt_class() forKey:@"link.contentkit.article"];
+  representationCopy = representation;
+  v4 = [representationCopy wfObjectOfClass:objc_opt_class() forKey:@"link.contentkit.article"];
 
   v19 = [v4 wfObjectOfClass:objc_opt_class() forKey:@"title"];
   v5 = [v4 wfObjectOfClass:objc_opt_class() forKey:@"author"];
@@ -354,7 +354,7 @@
   v7 = [v4 wfObjectOfClass:objc_opt_class() forKey:@"body"];
   v8 = [v4 wfObjectOfClass:objc_opt_class() forKey:@"excerpt"];
   v9 = [v4 wfObjectOfClass:objc_opt_class() forKey:@"numberOfWords"];
-  v10 = [v9 integerValue];
+  integerValue = [v9 integerValue];
 
   v11 = [v4 wfObjectOfClass:objc_opt_class() forKey:@"mainImageURL"];
   v12 = [v4 wfObjectOfClass:objc_opt_class() forKey:@"URL"];
@@ -375,7 +375,7 @@
     {
 LABEL_3:
       v15 = [MEMORY[0x277CBEBC0] URLWithString:v13];
-      v16 = [a1 articleWithTitle:v19 author:v5 publishedDate:v6 body:v7 excerpt:v8 numberOfWords:v10 mainImageURL:v14 URL:v15];
+      v16 = [self articleWithTitle:v19 author:v5 publishedDate:v6 body:v7 excerpt:v8 numberOfWords:integerValue mainImageURL:v14 URL:v15];
 
       if (!v11)
       {
@@ -386,7 +386,7 @@ LABEL_3:
     }
   }
 
-  v16 = [a1 articleWithTitle:v19 author:v5 publishedDate:v6 body:v7 excerpt:v8 numberOfWords:v10 mainImageURL:v14 URL:0];
+  v16 = [self articleWithTitle:v19 author:v5 publishedDate:v6 body:v7 excerpt:v8 numberOfWords:integerValue mainImageURL:v14 URL:0];
   if (v11)
   {
 LABEL_4:
@@ -397,23 +397,23 @@ LABEL_5:
   return v16;
 }
 
-+ (WFArticle)articleWithTitle:(id)a3 author:(id)a4 publishedDate:(id)a5 body:(id)a6 excerpt:(id)a7 numberOfWords:(unint64_t)a8 mainImageURL:(id)a9 URL:(id)a10
++ (WFArticle)articleWithTitle:(id)title author:(id)author publishedDate:(id)date body:(id)body excerpt:(id)excerpt numberOfWords:(unint64_t)words mainImageURL:(id)l URL:(id)self0
 {
-  v17 = a10;
-  v18 = a9;
-  v19 = a7;
-  v20 = a6;
-  v21 = a5;
-  v22 = a4;
-  v23 = a3;
-  v24 = [[a1 alloc] initWithTitle:v23 author:v22 publishedDate:v21 body:v20 excerpt:v19 numberOfWords:a8 mainImageURL:v18 URL:v17];
+  rLCopy = rL;
+  lCopy = l;
+  excerptCopy = excerpt;
+  bodyCopy = body;
+  dateCopy = date;
+  authorCopy = author;
+  titleCopy = title;
+  v24 = [[self alloc] initWithTitle:titleCopy author:authorCopy publishedDate:dateCopy body:bodyCopy excerpt:excerptCopy numberOfWords:words mainImageURL:lCopy URL:rLCopy];
 
   return v24;
 }
 
-+ (id)mainImageURLFromHTML:(id)a3
++ (id)mainImageURLFromHTML:(id)l
 {
-  v3 = [WFRichTextContentItem normalizedHTMLDocumentFromHTML:a3];
+  v3 = [WFRichTextContentItem normalizedHTMLDocumentFromHTML:l];
   v4 = [v3 dataUsingEncoding:4];
 
   Memory = htmlReadMemory([v4 bytes], objc_msgSend(v4, "length"), 0, 0, 2049);
@@ -476,22 +476,22 @@ LABEL_12:
   return v16;
 }
 
-+ (id)summaryOfParagraph:(id)a3
++ (id)summaryOfParagraph:(id)paragraph
 {
-  v3 = a3;
+  paragraphCopy = paragraph;
   v4 = objc_opt_new();
   v15[0] = 0;
   v15[1] = v15;
   v15[2] = 0x2020000000;
   v15[3] = 0;
-  v5 = [v3 length];
+  v5 = [paragraphCopy length];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __32__WFArticle_summaryOfParagraph___block_invoke;
   v11[3] = &unk_2783490C0;
   v6 = v4;
   v12 = v6;
-  v7 = v3;
+  v7 = paragraphCopy;
   v13 = v7;
   v14 = v15;
   [v7 enumerateSubstringsInRange:0 options:v5 usingBlock:{4, v11}];
@@ -518,48 +518,48 @@ void __32__WFArticle_summaryOfParagraph___block_invoke(uint64_t a1, uint64_t a2,
   }
 }
 
-+ (unint64_t)numberOfWordsInString:(id)a3
++ (unint64_t)numberOfWordsInString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v4 = [v3 length];
+  v4 = [stringCopy length];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __35__WFArticle_numberOfWordsInString___block_invoke;
   v7[3] = &unk_278349098;
   v7[4] = &v8;
-  [v3 enumerateSubstringsInRange:0 options:v4 usingBlock:{3, v7}];
+  [stringCopy enumerateSubstringsInRange:0 options:v4 usingBlock:{3, v7}];
   v5 = v9[3];
   _Block_object_dispose(&v8, 8);
 
   return v5;
 }
 
-+ (void)fetchArticleFromURL:(id)a3 pageHTML:(id)a4 completionHandler:(id)a5
++ (void)fetchArticleFromURL:(id)l pageHTML:(id)mL completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v11)
+  lCopy = l;
+  mLCopy = mL;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"WFArticle.m" lineNumber:84 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFArticle.m" lineNumber:84 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__WFArticle_fetchArticleFromURL_pageHTML_completionHandler___block_invoke;
   block[3] = &unk_278349070;
-  v19 = v11;
-  v20 = a1;
-  v17 = v10;
-  v18 = v9;
-  v12 = v9;
-  v13 = v10;
-  v14 = v11;
+  v19 = handlerCopy;
+  selfCopy = self;
+  v17 = mLCopy;
+  v18 = lCopy;
+  v12 = lCopy;
+  v13 = mLCopy;
+  v14 = handlerCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 

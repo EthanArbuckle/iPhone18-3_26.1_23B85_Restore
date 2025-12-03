@@ -1,5 +1,5 @@
 @interface UIProgressViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (CGRect)accessibilityFrame;
 - (id)accessibilityLabel;
@@ -9,21 +9,21 @@
 
 @implementation UIProgressViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v4 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   [location[0] validateClass:@"UIProgressView" hasInstanceMethod:@"_setProgress:" withFullSignature:{"v", "f", 0}];
   objc_storeStrong(v4, obj);
 }
 
 - (unint64_t)accessibilityTraits
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v3.receiver = self;
   v3.super_class = UIProgressViewAccessibility;
@@ -32,43 +32,43 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v5 = [(UIProgressViewAccessibility *)self isAccessibilityUserDefinedElement];
-  *&v2 = MEMORY[0x29EDC9740](v5).n128_u64[0];
-  if (!v5)
+  isAccessibilityUserDefinedElement = [(UIProgressViewAccessibility *)self isAccessibilityUserDefinedElement];
+  *&v2 = MEMORY[0x29EDC9740](isAccessibilityUserDefinedElement).n128_u64[0];
+  if (!isAccessibilityUserDefinedElement)
   {
     return ([(UIProgressViewAccessibility *)self _accessibilityViewIsVisible]& 1) != 0;
   }
 
-  v4 = [(UIProgressViewAccessibility *)self isAccessibilityUserDefinedElement];
-  v7 = [v4 BOOLValue] & 1;
-  MEMORY[0x29EDC9740](v4);
+  isAccessibilityUserDefinedElement2 = [(UIProgressViewAccessibility *)self isAccessibilityUserDefinedElement];
+  v7 = [isAccessibilityUserDefinedElement2 BOOLValue] & 1;
+  MEMORY[0x29EDC9740](isAccessibilityUserDefinedElement2);
   return v7;
 }
 
 - (id)accessibilityLabel
 {
-  v4 = [(UIProgressViewAccessibility *)self accessibilityUserDefinedLabel];
-  *&v2 = MEMORY[0x29EDC9740](v4).n128_u64[0];
-  if (v4)
+  accessibilityUserDefinedLabel = [(UIProgressViewAccessibility *)self accessibilityUserDefinedLabel];
+  *&v2 = MEMORY[0x29EDC9740](accessibilityUserDefinedLabel).n128_u64[0];
+  if (accessibilityUserDefinedLabel)
   {
-    v6 = [(UIProgressViewAccessibility *)self accessibilityUserDefinedLabel];
+    accessibilityUserDefinedLabel2 = [(UIProgressViewAccessibility *)self accessibilityUserDefinedLabel];
   }
 
   else
   {
-    v6 = accessibilityLocalizedString(@"progress.text");
+    accessibilityUserDefinedLabel2 = accessibilityLocalizedString(@"progress.text");
   }
 
-  return v6;
+  return accessibilityUserDefinedLabel2;
 }
 
 - (id)accessibilityValue
 {
-  v8 = [(UIProgressViewAccessibility *)self accessibilityUserDefinedValue];
-  *&v2 = MEMORY[0x29EDC9740](v8).n128_u64[0];
-  if (v8)
+  accessibilityUserDefinedValue = [(UIProgressViewAccessibility *)self accessibilityUserDefinedValue];
+  *&v2 = MEMORY[0x29EDC9740](accessibilityUserDefinedValue).n128_u64[0];
+  if (accessibilityUserDefinedValue)
   {
-    v10 = [(UIProgressViewAccessibility *)self accessibilityUserDefinedValue];
+    accessibilityUserDefinedValue2 = [(UIProgressViewAccessibility *)self accessibilityUserDefinedValue];
   }
 
   else
@@ -78,13 +78,13 @@
     v6 = [(UIProgressViewAccessibility *)self safeValueForKey:@"progress"];
     [v6 floatValue];
     v5 = AXFormatFloatWithPercentage();
-    v10 = [v4 stringWithFormat:v7, v5];
+    accessibilityUserDefinedValue2 = [v4 stringWithFormat:v7, v5];
     MEMORY[0x29EDC9740](v5);
     MEMORY[0x29EDC9740](v6);
     MEMORY[0x29EDC9740](v7);
   }
 
-  return v10;
+  return accessibilityUserDefinedValue2;
 }
 
 - (CGRect)accessibilityFrame

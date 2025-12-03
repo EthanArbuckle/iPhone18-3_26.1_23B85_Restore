@@ -6,8 +6,8 @@
 
 - (id)_intents_stringRepresentation
 {
-  v2 = [MEMORY[0x1E696B088] megaliters];
-  v3 = [a1 isEqual:v2];
+  megaliters = [MEMORY[0x1E696B088] megaliters];
+  v3 = [self isEqual:megaliters];
 
   if (v3)
   {
@@ -16,8 +16,8 @@
 
   else
   {
-    v5 = [MEMORY[0x1E696B088] kiloliters];
-    v6 = [a1 isEqual:v5];
+    kiloliters = [MEMORY[0x1E696B088] kiloliters];
+    v6 = [self isEqual:kiloliters];
 
     if (v6)
     {
@@ -26,8 +26,8 @@
 
     else
     {
-      v7 = [MEMORY[0x1E696B088] liters];
-      v8 = [a1 isEqual:v7];
+      liters = [MEMORY[0x1E696B088] liters];
+      v8 = [self isEqual:liters];
 
       if (v8)
       {
@@ -36,8 +36,8 @@
 
       else
       {
-        v9 = [MEMORY[0x1E696B088] deciliters];
-        v10 = [a1 isEqual:v9];
+        deciliters = [MEMORY[0x1E696B088] deciliters];
+        v10 = [self isEqual:deciliters];
 
         if (v10)
         {
@@ -46,8 +46,8 @@
 
         else
         {
-          v11 = [MEMORY[0x1E696B088] centiliters];
-          v12 = [a1 isEqual:v11];
+          centiliters = [MEMORY[0x1E696B088] centiliters];
+          v12 = [self isEqual:centiliters];
 
           if (v12)
           {
@@ -56,8 +56,8 @@
 
           else
           {
-            v13 = [MEMORY[0x1E696B088] milliliters];
-            v14 = [a1 isEqual:v13];
+            milliliters = [MEMORY[0x1E696B088] milliliters];
+            v14 = [self isEqual:milliliters];
 
             if (v14)
             {
@@ -66,8 +66,8 @@
 
             else
             {
-              v15 = [MEMORY[0x1E696B088] cubicKilometers];
-              v16 = [a1 isEqual:v15];
+              cubicKilometers = [MEMORY[0x1E696B088] cubicKilometers];
+              v16 = [self isEqual:cubicKilometers];
 
               if (v16)
               {
@@ -76,8 +76,8 @@
 
               else
               {
-                v17 = [MEMORY[0x1E696B088] cubicMeters];
-                v18 = [a1 isEqual:v17];
+                cubicMeters = [MEMORY[0x1E696B088] cubicMeters];
+                v18 = [self isEqual:cubicMeters];
 
                 if (v18)
                 {
@@ -86,8 +86,8 @@
 
                 else
                 {
-                  v19 = [MEMORY[0x1E696B088] cubicDecimeters];
-                  v20 = [a1 isEqual:v19];
+                  cubicDecimeters = [MEMORY[0x1E696B088] cubicDecimeters];
+                  v20 = [self isEqual:cubicDecimeters];
 
                   if (v20)
                   {
@@ -96,8 +96,8 @@
 
                   else
                   {
-                    v21 = [MEMORY[0x1E696B088] cubicCentimeters];
-                    v22 = [a1 isEqual:v21];
+                    cubicCentimeters = [MEMORY[0x1E696B088] cubicCentimeters];
+                    v22 = [self isEqual:cubicCentimeters];
 
                     if (v22)
                     {
@@ -106,8 +106,8 @@
 
                     else
                     {
-                      v23 = [MEMORY[0x1E696B088] cubicMillimeters];
-                      v24 = [a1 isEqual:v23];
+                      cubicMillimeters = [MEMORY[0x1E696B088] cubicMillimeters];
+                      v24 = [self isEqual:cubicMillimeters];
 
                       if (v24)
                       {
@@ -116,8 +116,8 @@
 
                       else
                       {
-                        v25 = [MEMORY[0x1E696B088] cubicInches];
-                        v26 = [a1 isEqual:v25];
+                        cubicInches = [MEMORY[0x1E696B088] cubicInches];
+                        v26 = [self isEqual:cubicInches];
 
                         if (v26)
                         {
@@ -126,8 +126,8 @@
 
                         else
                         {
-                          v27 = [MEMORY[0x1E696B088] cubicFeet];
-                          v28 = [a1 isEqual:v27];
+                          cubicFeet = [MEMORY[0x1E696B088] cubicFeet];
+                          v28 = [self isEqual:cubicFeet];
 
                           if (v28)
                           {
@@ -136,8 +136,8 @@
 
                           else
                           {
-                            v29 = [MEMORY[0x1E696B088] cubicYards];
-                            v30 = [a1 isEqual:v29];
+                            cubicYards = [MEMORY[0x1E696B088] cubicYards];
+                            v30 = [self isEqual:cubicYards];
 
                             if (v30)
                             {
@@ -146,8 +146,8 @@
 
                             else
                             {
-                              v31 = [MEMORY[0x1E696B088] cubicMiles];
-                              v32 = [a1 isEqual:v31];
+                              cubicMiles = [MEMORY[0x1E696B088] cubicMiles];
+                              v32 = [self isEqual:cubicMiles];
 
                               if (v32)
                               {
@@ -156,8 +156,8 @@
 
                               else
                               {
-                                v33 = [MEMORY[0x1E696B088] acreFeet];
-                                v34 = [a1 isEqual:v33];
+                                acreFeet = [MEMORY[0x1E696B088] acreFeet];
+                                v34 = [self isEqual:acreFeet];
 
                                 if (v34)
                                 {
@@ -166,8 +166,8 @@
 
                                 else
                                 {
-                                  v35 = [MEMORY[0x1E696B088] bushels];
-                                  v36 = [a1 isEqual:v35];
+                                  bushels = [MEMORY[0x1E696B088] bushels];
+                                  v36 = [self isEqual:bushels];
 
                                   if (v36)
                                   {
@@ -176,8 +176,8 @@
 
                                   else
                                   {
-                                    v37 = [MEMORY[0x1E696B088] teaspoons];
-                                    v38 = [a1 isEqual:v37];
+                                    teaspoons = [MEMORY[0x1E696B088] teaspoons];
+                                    v38 = [self isEqual:teaspoons];
 
                                     if (v38)
                                     {
@@ -186,8 +186,8 @@
 
                                     else
                                     {
-                                      v39 = [MEMORY[0x1E696B088] tablespoons];
-                                      v40 = [a1 isEqual:v39];
+                                      tablespoons = [MEMORY[0x1E696B088] tablespoons];
+                                      v40 = [self isEqual:tablespoons];
 
                                       if (v40)
                                       {
@@ -196,8 +196,8 @@
 
                                       else
                                       {
-                                        v41 = [MEMORY[0x1E696B088] fluidOunces];
-                                        v42 = [a1 isEqual:v41];
+                                        fluidOunces = [MEMORY[0x1E696B088] fluidOunces];
+                                        v42 = [self isEqual:fluidOunces];
 
                                         if (v42)
                                         {
@@ -206,8 +206,8 @@
 
                                         else
                                         {
-                                          v43 = [MEMORY[0x1E696B088] cups];
-                                          v44 = [a1 isEqual:v43];
+                                          cups = [MEMORY[0x1E696B088] cups];
+                                          v44 = [self isEqual:cups];
 
                                           if (v44)
                                           {
@@ -216,8 +216,8 @@
 
                                           else
                                           {
-                                            v45 = [MEMORY[0x1E696B088] pints];
-                                            v46 = [a1 isEqual:v45];
+                                            pints = [MEMORY[0x1E696B088] pints];
+                                            v46 = [self isEqual:pints];
 
                                             if (v46)
                                             {
@@ -226,8 +226,8 @@
 
                                             else
                                             {
-                                              v47 = [MEMORY[0x1E696B088] quarts];
-                                              v48 = [a1 isEqual:v47];
+                                              quarts = [MEMORY[0x1E696B088] quarts];
+                                              v48 = [self isEqual:quarts];
 
                                               if (v48)
                                               {
@@ -236,8 +236,8 @@
 
                                               else
                                               {
-                                                v49 = [MEMORY[0x1E696B088] gallons];
-                                                v50 = [a1 isEqual:v49];
+                                                gallons = [MEMORY[0x1E696B088] gallons];
+                                                v50 = [self isEqual:gallons];
 
                                                 if (v50)
                                                 {
@@ -246,8 +246,8 @@
 
                                                 else
                                                 {
-                                                  v51 = [MEMORY[0x1E696B088] imperialTeaspoons];
-                                                  v52 = [a1 isEqual:v51];
+                                                  imperialTeaspoons = [MEMORY[0x1E696B088] imperialTeaspoons];
+                                                  v52 = [self isEqual:imperialTeaspoons];
 
                                                   if (v52)
                                                   {
@@ -256,8 +256,8 @@
 
                                                   else
                                                   {
-                                                    v53 = [MEMORY[0x1E696B088] imperialTablespoons];
-                                                    v54 = [a1 isEqual:v53];
+                                                    imperialTablespoons = [MEMORY[0x1E696B088] imperialTablespoons];
+                                                    v54 = [self isEqual:imperialTablespoons];
 
                                                     if (v54)
                                                     {
@@ -266,8 +266,8 @@
 
                                                     else
                                                     {
-                                                      v55 = [MEMORY[0x1E696B088] imperialFluidOunces];
-                                                      v56 = [a1 isEqual:v55];
+                                                      imperialFluidOunces = [MEMORY[0x1E696B088] imperialFluidOunces];
+                                                      v56 = [self isEqual:imperialFluidOunces];
 
                                                       if (v56)
                                                       {
@@ -276,8 +276,8 @@
 
                                                       else
                                                       {
-                                                        v57 = [MEMORY[0x1E696B088] imperialPints];
-                                                        v58 = [a1 isEqual:v57];
+                                                        imperialPints = [MEMORY[0x1E696B088] imperialPints];
+                                                        v58 = [self isEqual:imperialPints];
 
                                                         if (v58)
                                                         {
@@ -286,8 +286,8 @@
 
                                                         else
                                                         {
-                                                          v59 = [MEMORY[0x1E696B088] imperialQuarts];
-                                                          v60 = [a1 isEqual:v59];
+                                                          imperialQuarts = [MEMORY[0x1E696B088] imperialQuarts];
+                                                          v60 = [self isEqual:imperialQuarts];
 
                                                           if (v60)
                                                           {
@@ -296,8 +296,8 @@
 
                                                           else
                                                           {
-                                                            v61 = [MEMORY[0x1E696B088] imperialGallons];
-                                                            v62 = [a1 isEqual:v61];
+                                                            imperialGallons = [MEMORY[0x1E696B088] imperialGallons];
+                                                            v62 = [self isEqual:imperialGallons];
 
                                                             if (v62)
                                                             {
@@ -306,14 +306,14 @@
 
                                                             else
                                                             {
-                                                              v63 = [MEMORY[0x1E696B088] metricCups];
-                                                              v64 = [a1 isEqual:v63];
+                                                              metricCups = [MEMORY[0x1E696B088] metricCups];
+                                                              v64 = [self isEqual:metricCups];
 
                                                               if ((v64 & 1) == 0)
                                                               {
                                                                 v67 = MEMORY[0x1E695DF30];
                                                                 v68 = *MEMORY[0x1E695D930];
-                                                                v69 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown unit %@", a1];
+                                                                v69 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown unit %@", self];
                                                                 v70 = [v67 exceptionWithName:v68 reason:v69 userInfo:0];
                                                                 v71 = v70;
 
@@ -352,9 +352,9 @@
     }
   }
 
-  v65 = [(__CFString *)v4 if_ASCIIStringByUppercasingFirstCharacter];
+  if_ASCIIStringByUppercasingFirstCharacter = [(__CFString *)v4 if_ASCIIStringByUppercasingFirstCharacter];
 
-  return v65;
+  return if_ASCIIStringByUppercasingFirstCharacter;
 }
 
 @end

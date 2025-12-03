@@ -1,25 +1,25 @@
 @interface GKContactsCacheUpdateBatchEndCommand
-- (void)addSyncedHandlesToIDSCache:(id)a3 withContext:(id)a4;
+- (void)addSyncedHandlesToIDSCache:(id)cache withContext:(id)context;
 @end
 
 @implementation GKContactsCacheUpdateBatchEndCommand
 
-- (void)addSyncedHandlesToIDSCache:(id)a3 withContext:(id)a4
+- (void)addSyncedHandlesToIDSCache:(id)cache withContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  cacheCopy = cache;
+  contextCopy = context;
+  if ([cacheCopy count])
   {
-    v22 = v6;
-    v7 = [GKCDIDSInfo _gkObjectsMatchingHandles:v5 withContext:v6];
+    v22 = contextCopy;
+    v7 = [GKCDIDSInfo _gkObjectsMatchingHandles:cacheCopy withContext:contextCopy];
     v8 = [v7 _gkMapDictionaryWithKeyPath:@"handle"];
 
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v21 = v5;
-    v9 = v5;
+    v21 = cacheCopy;
+    v9 = cacheCopy;
     v10 = [v9 countByEnumeratingWithState:&v23 objects:v28 count:16];
     if (v10)
     {
@@ -52,8 +52,8 @@
       while (v11);
     }
 
-    v5 = v21;
-    v6 = v22;
+    cacheCopy = v21;
+    contextCopy = v22;
   }
 
   else

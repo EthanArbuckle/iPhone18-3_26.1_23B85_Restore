@@ -1,26 +1,26 @@
 @interface APNSURLSessionDemultiplexer
-- (APNSURLSessionDemultiplexer)initWithConfiguration:(id)a3 forIdentifier:(id)a4 withMaximumRequestCount:(int64_t)a5 delegateQueue:(id)a6;
-- (id)dataTaskWithRequest:(id)a3 delegate:(id)a4 modes:(id)a5;
-- (id)taskInfoForTask:(id)a3;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7;
+- (APNSURLSessionDemultiplexer)initWithConfiguration:(id)configuration forIdentifier:(id)identifier withMaximumRequestCount:(int64_t)count delegateQueue:(id)queue;
+- (id)dataTaskWithRequest:(id)request delegate:(id)delegate modes:(id)modes;
+- (id)taskInfoForTask:(id)task;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler;
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler;
 - (void)dealloc;
-- (void)invalidateAndCancelSessionWithCompletionHandler:(id)a3;
+- (void)invalidateAndCancelSessionWithCompletionHandler:(id)handler;
 - (void)invalidateSession;
-- (void)removeTask:(id)a3;
+- (void)removeTask:(id)task;
 @end
 
 @implementation APNSURLSessionDemultiplexer
 
-- (APNSURLSessionDemultiplexer)initWithConfiguration:(id)a3 forIdentifier:(id)a4 withMaximumRequestCount:(int64_t)a5 delegateQueue:(id)a6
+- (APNSURLSessionDemultiplexer)initWithConfiguration:(id)configuration forIdentifier:(id)identifier withMaximumRequestCount:(int64_t)count delegateQueue:(id)queue
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  configurationCopy = configuration;
+  identifierCopy = identifier;
+  queueCopy = queue;
   v38.receiver = self;
   v38.super_class = APNSURLSessionDemultiplexer;
   v13 = [(APNSURLSessionDemultiplexer *)&v38 init];
@@ -31,11 +31,11 @@
     v19 = *(v13 + 9);
     *(v13 + 9) = v18;
 
-    v24 = objc_msgSend_copy(v10, v20, v21, v22, v23);
+    v24 = objc_msgSend_copy(configurationCopy, v20, v21, v22, v23);
     v25 = *(v13 + 5);
     *(v13 + 5) = v24;
 
-    v30 = objc_msgSend_copy(v11, v26, v27, v28, v29);
+    v30 = objc_msgSend_copy(identifierCopy, v26, v27, v28, v29);
     v31 = *(v13 + 3);
     *(v13 + 3) = v30;
 
@@ -45,8 +45,8 @@
 
     atomic_store(0, v13 + 1);
     *(v13 + 16) = 0;
-    *(v13 + 7) = a5;
-    v35 = objc_msgSend_sessionWithConfiguration_delegate_delegateQueue_(MEMORY[0x277CBABB8], v34, *(v13 + 5), v13, v12);
+    *(v13 + 7) = count;
+    v35 = objc_msgSend_sessionWithConfiguration_delegate_delegateQueue_(MEMORY[0x277CBABB8], v34, *(v13 + 5), v13, queueCopy);
     v36 = *(v13 + 6);
     *(v13 + 6) = v35;
   }
@@ -62,12 +62,12 @@
   [(APNSURLSessionDemultiplexer *)&v6 dealloc];
 }
 
-- (id)dataTaskWithRequest:(id)a3 delegate:(id)a4 modes:(id)a5
+- (id)dataTaskWithRequest:(id)request delegate:(id)delegate modes:(id)modes
 {
   v98 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  delegateCopy = delegate;
+  modesCopy = modes;
   if (objc_msgSend_sessionMarkedInvalid(self, v11, v12, v13, v14))
   {
     v19 = APLogForCategory();
@@ -93,19 +93,19 @@ LABEL_4:
   if (objc_msgSend_maximumRequestCount(self, v15, v16, v17, v18) < 1 || (v28 = objc_msgSend_requestCount(self, v24, v25, v26, v27), v28 < objc_msgSend_maximumRequestCount(self, v29, v30, v31, v32)))
   {
     atomic_fetch_add(&self->_requestCount, 1uLL);
-    if (!objc_msgSend_count(v10, v24, v25, v26, v27))
+    if (!objc_msgSend_count(modesCopy, v24, v25, v26, v27))
     {
       v91 = *MEMORY[0x277CBE640];
       v37 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v33, &v91, 1, v36);
 
-      v10 = v37;
+      modesCopy = v37;
     }
 
     v38 = objc_msgSend_session(self, v33, v34, v35, v36);
-    v23 = objc_msgSend_dataTaskWithRequest_(v38, v39, v8, v40, v41);
+    v23 = objc_msgSend_dataTaskWithRequest_(v38, v39, requestCopy, v40, v41);
 
     v42 = [APNSURLSessionTaskInfo alloc];
-    v19 = objc_msgSend_initWithTask_delegate_modes_(v42, v43, v23, v9, v10);
+    v19 = objc_msgSend_initWithTask_delegate_modes_(v42, v43, v23, delegateCopy, modesCopy);
     v48 = objc_msgSend_lock(self, v44, v45, v46, v47);
     objc_msgSend_lock(v48, v49, v50, v51, v52);
     v57 = objc_msgSend_taskInfoByTaskIdentifier(self, v53, v54, v55, v56);
@@ -150,11 +150,11 @@ LABEL_12:
   return v23;
 }
 
-- (void)removeTask:(id)a3
+- (void)removeTask:(id)task
 {
-  if (a3)
+  if (task)
   {
-    v6 = objc_msgSend_taskInfoForTask_(self, a2, a3, v3, v4);
+    v6 = objc_msgSend_taskInfoForTask_(self, a2, task, v3, v4);
     if (v6)
     {
       v47 = v6;
@@ -175,22 +175,22 @@ LABEL_12:
   }
 }
 
-- (void)invalidateAndCancelSessionWithCompletionHandler:(id)a3
+- (void)invalidateAndCancelSessionWithCompletionHandler:(id)handler
 {
-  v24 = a3;
+  handlerCopy = handler;
   objc_msgSend_setSessionMarkedInvalid_(self, v4, 1, v5, v6);
   v11 = objc_msgSend_session(self, v7, v8, v9, v10);
 
   if (v11)
   {
-    objc_msgSend_setSessionInvalidated_(self, v12, v24, v13, v14);
+    objc_msgSend_setSessionInvalidated_(self, v12, handlerCopy, v13, v14);
     v19 = objc_msgSend_session(self, v15, v16, v17, v18);
     objc_msgSend_invalidateAndCancel(v19, v20, v21, v22, v23);
   }
 
-  else if (v24)
+  else if (handlerCopy)
   {
-    v24[2]();
+    handlerCopy[2]();
   }
 }
 
@@ -201,14 +201,14 @@ LABEL_12:
   objc_msgSend_finishTasksAndInvalidate(v13, v9, v10, v11, v12);
 }
 
-- (id)taskInfoForTask:(id)a3
+- (id)taskInfoForTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   v9 = objc_msgSend_lock(self, v5, v6, v7, v8);
   objc_msgSend_lock(v9, v10, v11, v12, v13);
   v18 = objc_msgSend_taskInfoByTaskIdentifier(self, v14, v15, v16, v17);
   v19 = MEMORY[0x277CCABB0];
-  v24 = objc_msgSend_taskIdentifier(v4, v20, v21, v22, v23);
+  v24 = objc_msgSend_taskIdentifier(taskCopy, v20, v21, v22, v23);
 
   v28 = objc_msgSend_numberWithUnsignedInteger_(v19, v25, v24, v26, v27);
   v32 = objc_msgSend_objectForKeyedSubscript_(v18, v29, v28, v30, v31);
@@ -218,9 +218,9 @@ LABEL_12:
   return v32;
 }
 
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error
 {
-  objc_msgSend_setSession_(self, a2, 0, a4, v4);
+  objc_msgSend_setSession_(self, a2, 0, error, v4);
   objc_msgSend_setIdentifier_(self, v6, 0, v7, v8);
   objc_msgSend_setTaskInfoByTaskIdentifier_(self, v9, 0, v10, v11);
   v16 = objc_msgSend_sessionInvalidated(self, v12, v13, v14, v15);
@@ -234,13 +234,13 @@ LABEL_12:
   }
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v17 = objc_msgSend_taskInfoForTask_(self, v14, v11, v15, v16);
+  sessionCopy = session;
+  taskCopy = task;
+  responseCopy = response;
+  handlerCopy = handler;
+  v17 = objc_msgSend_taskInfoForTask_(self, v14, taskCopy, v15, v16);
   v22 = objc_msgSend_delegate(v17, v18, v19, v20, v21);
   v23 = objc_opt_respondsToSelector();
 
@@ -251,25 +251,25 @@ LABEL_12:
     v27[2] = sub_260F14F6C;
     v27[3] = &unk_279AC8BC8;
     v28 = v17;
-    v29 = v10;
-    v30 = v11;
-    v31 = v12;
-    v32 = v13;
+    v29 = sessionCopy;
+    v30 = taskCopy;
+    v31 = responseCopy;
+    v32 = handlerCopy;
     objc_msgSend_performBlock_(v28, v24, v27, v25, v26);
   }
 
   else
   {
-    (*(v13 + 2))(v13, 1);
+    (*(handlerCopy + 2))(handlerCopy, 1);
   }
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v14 = objc_msgSend_taskInfoForTask_(self, v11, v9, v12, v13);
+  sessionCopy = session;
+  taskCopy = task;
+  dataCopy = data;
+  v14 = objc_msgSend_taskInfoForTask_(self, v11, taskCopy, v12, v13);
   v19 = objc_msgSend_delegate(v14, v15, v16, v17, v18);
   v20 = objc_opt_respondsToSelector();
 
@@ -280,19 +280,19 @@ LABEL_12:
     v24[2] = sub_260F150F8;
     v24[3] = &unk_279AC8BF0;
     v25 = v14;
-    v26 = v8;
-    v27 = v9;
-    v28 = v10;
+    v26 = sessionCopy;
+    v27 = taskCopy;
+    v28 = dataCopy;
     objc_msgSend_performBlock_(v25, v21, v24, v22, v23);
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v14 = objc_msgSend_taskInfoForTask_(self, v11, v9, v12, v13);
+  sessionCopy = session;
+  taskCopy = task;
+  errorCopy = error;
+  v14 = objc_msgSend_taskInfoForTask_(self, v11, taskCopy, v12, v13);
   v19 = objc_msgSend_lock(self, v15, v16, v17, v18);
   objc_msgSend_lock(v19, v20, v21, v22, v23);
   v28 = objc_msgSend_taskInfoByTaskIdentifier(self, v24, v25, v26, v27);
@@ -313,9 +313,9 @@ LABEL_12:
     v63[2] = sub_260F15314;
     v63[3] = &unk_279AC8BF0;
     v64 = v14;
-    v65 = v8;
-    v66 = v9;
-    v67 = v10;
+    v65 = sessionCopy;
+    v66 = taskCopy;
+    v67 = errorCopy;
     objc_msgSend_performBlockAndWait_(v64, v60, v63, v61, v62);
   }
 
@@ -325,14 +325,14 @@ LABEL_12:
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v20 = objc_msgSend_taskInfoForTask_(self, v17, v13, v18, v19);
+  sessionCopy = session;
+  taskCopy = task;
+  redirectionCopy = redirection;
+  requestCopy = request;
+  handlerCopy = handler;
+  v20 = objc_msgSend_taskInfoForTask_(self, v17, taskCopy, v18, v19);
   v25 = objc_msgSend_delegate(v20, v21, v22, v23, v24);
   v26 = objc_opt_respondsToSelector();
 
@@ -343,33 +343,33 @@ LABEL_12:
     v30[2] = sub_260F154FC;
     v30[3] = &unk_279AC8C18;
     v31 = v20;
-    v32 = v12;
-    v33 = v13;
-    v34 = v14;
-    v35 = v15;
-    v36 = v16;
+    v32 = sessionCopy;
+    v33 = taskCopy;
+    v34 = redirectionCopy;
+    v35 = requestCopy;
+    v36 = handlerCopy;
     objc_msgSend_performBlock_(v31, v27, v30, v28, v29);
   }
 
   else
   {
-    (*(v16 + 2))(v16, v15);
+    (*(handlerCopy + 2))(handlerCopy, requestCopy);
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v18 = objc_msgSend_failureResponse(v12, v14, v15, v16, v17);
+  sessionCopy = session;
+  taskCopy = task;
+  challengeCopy = challenge;
+  handlerCopy = handler;
+  v18 = objc_msgSend_failureResponse(challengeCopy, v14, v15, v16, v17);
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v24 = objc_msgSend_failureResponse(v12, v20, v21, v22, v23);
+    v24 = objc_msgSend_failureResponse(challengeCopy, v20, v21, v22, v23);
     v29 = objc_msgSend_statusCode(v24, v25, v26, v27, v28);
 
     v30 = v29 != 407;
@@ -380,13 +380,13 @@ LABEL_12:
     v30 = 1;
   }
 
-  v31 = objc_msgSend_taskInfoForTask_(self, v20, v11, v22, v23);
+  v31 = objc_msgSend_taskInfoForTask_(self, v20, taskCopy, v22, v23);
   v36 = objc_msgSend_delegate(v31, v32, v33, v34, v35);
   v37 = objc_opt_respondsToSelector();
 
   if (v30 || (v37 & 1) == 0)
   {
-    v13[2](v13, 1, 0);
+    handlerCopy[2](handlerCopy, 1, 0);
   }
 
   else
@@ -396,10 +396,10 @@ LABEL_12:
     v41[2] = sub_260F15740;
     v41[3] = &unk_279AC8BC8;
     v42 = v31;
-    v43 = v10;
-    v44 = v11;
-    v45 = v12;
-    v46 = v13;
+    v43 = sessionCopy;
+    v44 = taskCopy;
+    v45 = challengeCopy;
+    v46 = handlerCopy;
     objc_msgSend_performBlock_(v42, v38, v41, v39, v40);
   }
 }

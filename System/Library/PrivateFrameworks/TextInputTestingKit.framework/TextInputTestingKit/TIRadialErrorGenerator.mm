@@ -1,13 +1,13 @@
 @interface TIRadialErrorGenerator
-- (CGPoint)randomBiasForKeyString:(id)a3 rect:(CGRect)a4;
-- (TIRadialErrorGenerator)initWithAttributes:(id)a3;
+- (CGPoint)randomBiasForKeyString:(id)string rect:(CGRect)rect;
+- (TIRadialErrorGenerator)initWithAttributes:(id)attributes;
 @end
 
 @implementation TIRadialErrorGenerator
 
-- (CGPoint)randomBiasForKeyString:(id)a3 rect:(CGRect)a4
+- (CGPoint)randomBiasForKeyString:(id)string rect:(CGRect)rect
 {
-  [(TIErrorGenerator *)self uniformRandomNumber:a3];
+  [(TIErrorGenerator *)self uniformRandomNumber:string];
   v6 = v5;
   letterErrorProbability = self->_letterErrorProbability;
   [(TIErrorGenerator *)self uniformRandomNumber];
@@ -37,12 +37,12 @@
   return result;
 }
 
-- (TIRadialErrorGenerator)initWithAttributes:(id)a3
+- (TIRadialErrorGenerator)initWithAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v19.receiver = self;
   v19.super_class = TIRadialErrorGenerator;
-  v5 = [(TIErrorGenerator *)&v19 initWithAttributes:v4];
+  v5 = [(TIErrorGenerator *)&v19 initWithAttributes:attributesCopy];
   v6 = v5;
   if (v5)
   {
@@ -51,44 +51,44 @@
     v5->_defaultDistanceMin = 0;
     v5->_letterDistanceMax = 0;
     v5->_letterDistanceMin = 0;
-    v7 = [v4 valueForKey:@"LETTER_ERROR_PROBABILITY"];
+    v7 = [attributesCopy valueForKey:@"LETTER_ERROR_PROBABILITY"];
 
     if (v7)
     {
-      v8 = [v4 objectForKey:@"LETTER_ERROR_PROBABILITY"];
+      v8 = [attributesCopy objectForKey:@"LETTER_ERROR_PROBABILITY"];
       [v8 doubleValue];
       v6->_letterErrorProbability = v9;
     }
 
-    v10 = [v4 valueForKey:@"DEFAULT_ERROR_RADIAL_MIN_DISTANCE"];
+    v10 = [attributesCopy valueForKey:@"DEFAULT_ERROR_RADIAL_MIN_DISTANCE"];
 
     if (v10)
     {
-      v11 = [v4 objectForKey:@"DEFAULT_ERROR_RADIAL_MIN_DISTANCE"];
+      v11 = [attributesCopy objectForKey:@"DEFAULT_ERROR_RADIAL_MIN_DISTANCE"];
       v6->_defaultDistanceMin = [v11 intValue];
     }
 
-    v12 = [v4 valueForKey:@"DEFAULT_ERROR_RADIAL_MAX_DISTANCE"];
+    v12 = [attributesCopy valueForKey:@"DEFAULT_ERROR_RADIAL_MAX_DISTANCE"];
 
     if (v12)
     {
-      v13 = [v4 objectForKey:@"DEFAULT_ERROR_RADIAL_MAX_DISTANCE"];
+      v13 = [attributesCopy objectForKey:@"DEFAULT_ERROR_RADIAL_MAX_DISTANCE"];
       v6->_defaultDistanceMax = [v13 intValue];
     }
 
-    v14 = [v4 valueForKey:@"LETTER_ERROR_RADIAL_MIN_DISTANCE"];
+    v14 = [attributesCopy valueForKey:@"LETTER_ERROR_RADIAL_MIN_DISTANCE"];
 
     if (v14)
     {
-      v15 = [v4 objectForKey:@"LETTER_ERROR_RADIAL_MIN_DISTANCE"];
+      v15 = [attributesCopy objectForKey:@"LETTER_ERROR_RADIAL_MIN_DISTANCE"];
       v6->_letterDistanceMin = [v15 intValue];
     }
 
-    v16 = [v4 valueForKey:@"LETTER_ERROR_RADIAL_MAX_DISTANCE"];
+    v16 = [attributesCopy valueForKey:@"LETTER_ERROR_RADIAL_MAX_DISTANCE"];
 
     if (v16)
     {
-      v17 = [v4 objectForKey:@"LETTER_ERROR_RADIAL_MAX_DISTANCE"];
+      v17 = [attributesCopy objectForKey:@"LETTER_ERROR_RADIAL_MAX_DISTANCE"];
       v6->_letterDistanceMax = [v17 intValue];
     }
   }

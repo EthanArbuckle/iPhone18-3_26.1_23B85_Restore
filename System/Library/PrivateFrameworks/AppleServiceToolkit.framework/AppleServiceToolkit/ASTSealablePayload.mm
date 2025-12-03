@@ -1,27 +1,27 @@
 @interface ASTSealablePayload
-- (ASTSealablePayload)initWithPayload:(id)a3 signature:(id)a4;
-- (BOOL)sealWithPayloadSigner:(id)a3 error:(id *)a4;
+- (ASTSealablePayload)initWithPayload:(id)payload signature:(id)signature;
+- (BOOL)sealWithPayloadSigner:(id)signer error:(id *)error;
 - (id)description;
 - (id)sealedDescription;
 @end
 
 @implementation ASTSealablePayload
 
-- (ASTSealablePayload)initWithPayload:(id)a3 signature:(id)a4
+- (ASTSealablePayload)initWithPayload:(id)payload signature:(id)signature
 {
-  v7 = a3;
-  v8 = a4;
+  payloadCopy = payload;
+  signatureCopy = signature;
   v14.receiver = self;
   v14.super_class = ASTSealablePayload;
   v9 = [(ASTSealablePayload *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_payload, a3);
-    if (v8)
+    objc_storeStrong(&v9->_payload, payload);
+    if (signatureCopy)
     {
-      objc_storeStrong(&v10->_signature, a4);
-      v11 = [v8 base64EncodedStringWithOptions:0];
+      objc_storeStrong(&v10->_signature, signature);
+      v11 = [signatureCopy base64EncodedStringWithOptions:0];
       base64Signature = v10->_base64Signature;
       v10->_base64Signature = v11;
     }
@@ -32,9 +32,9 @@
   return v10;
 }
 
-- (BOOL)sealWithPayloadSigner:(id)a3 error:(id *)a4
+- (BOOL)sealWithPayloadSigner:(id)signer error:(id *)error
 {
-  v6 = a3;
+  signerCopy = signer;
   if ([(ASTSealablePayload *)self isSealed])
   {
     v7 = 1;
@@ -42,31 +42,31 @@
 
   else
   {
-    v8 = [(ASTSealablePayload *)self generatePayload];
-    v9 = [ASTEncodingUtilities jsonSerializeObject:v8 error:a4];
+    generatePayload = [(ASTSealablePayload *)self generatePayload];
+    v9 = [ASTEncodingUtilities jsonSerializeObject:generatePayload error:error];
     [(ASTSealablePayload *)self setPayload:v9];
 
-    v10 = [(ASTSealablePayload *)self payload];
+    payload = [(ASTSealablePayload *)self payload];
 
-    v7 = v10 != 0;
-    if (v10)
+    v7 = payload != 0;
+    if (payload)
     {
-      if (v6)
+      if (signerCopy)
       {
-        v11 = [(ASTSealablePayload *)self payload];
-        v12 = v6[2](v6, v11, a4);
+        payload2 = [(ASTSealablePayload *)self payload];
+        v12 = signerCopy[2](signerCopy, payload2, error);
         [(ASTSealablePayload *)self setSignature:v12];
       }
 
       [(ASTSealablePayload *)self setSealed:1];
     }
 
-    v13 = [(ASTSealablePayload *)self signature];
+    signature = [(ASTSealablePayload *)self signature];
 
-    if (v13)
+    if (signature)
     {
-      v14 = [(ASTSealablePayload *)self signature];
-      v15 = [v14 base64EncodedStringWithOptions:0];
+      signature2 = [(ASTSealablePayload *)self signature];
+      v15 = [signature2 base64EncodedStringWithOptions:0];
       [(ASTSealablePayload *)self setBase64Signature:v15];
     }
   }
@@ -78,9 +78,9 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(ASTSealablePayload *)self signature];
-  v6 = [(ASTSealablePayload *)self payload];
-  v7 = [v3 stringWithFormat:@"<%@[Sealed], signature=%@, payload=%@>", v4, v5, v6];
+  signature = [(ASTSealablePayload *)self signature];
+  payload = [(ASTSealablePayload *)self payload];
+  v7 = [v3 stringWithFormat:@"<%@[Sealed], signature=%@, payload=%@>", v4, signature, payload];
 
   return v7;
 }
@@ -89,16 +89,16 @@
 {
   if ([(ASTSealablePayload *)self isSealed])
   {
-    v3 = [(ASTSealablePayload *)self sealedDescription];
+    sealedDescription = [(ASTSealablePayload *)self sealedDescription];
   }
 
   else
   {
-    v4 = [(ASTSealablePayload *)self generatePayload];
-    v3 = [v4 description];
+    generatePayload = [(ASTSealablePayload *)self generatePayload];
+    sealedDescription = [generatePayload description];
   }
 
-  return v3;
+  return sealedDescription;
 }
 
 @end

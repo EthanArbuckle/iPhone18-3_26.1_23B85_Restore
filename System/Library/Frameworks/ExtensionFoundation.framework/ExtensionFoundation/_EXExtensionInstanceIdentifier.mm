@@ -1,22 +1,22 @@
 @interface _EXExtensionInstanceIdentifier
 - (BOOL)isDefault;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (NSUUID)identifier;
 - (_EXExtensionInstanceIdentifier)init;
-- (_EXExtensionInstanceIdentifier)initWithCoder:(id)a3;
-- (_EXExtensionInstanceIdentifier)initWithIdentifier:(id)a3;
+- (_EXExtensionInstanceIdentifier)initWithCoder:(id)coder;
+- (_EXExtensionInstanceIdentifier)initWithIdentifier:(id)identifier;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _EXExtensionInstanceIdentifier
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -25,7 +25,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = _EXExtensionInstanceIdentifier.isEqual(_:)(v8);
@@ -34,13 +34,13 @@
   return v6 & 1;
 }
 
-- (_EXExtensionInstanceIdentifier)initWithIdentifier:(id)a3
+- (_EXExtensionInstanceIdentifier)initWithIdentifier:(id)identifier
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation4UUIDVSgMd, &_s10Foundation4UUIDVSgMR);
   v5 = *(*(v4 - 8) + 64);
   MEMORY[0x1EEE9AC00](v4 - 8);
   v7 = &v11 - v6;
-  if (a3)
+  if (identifier)
   {
     static UUID._unconditionallyBridgeFromObjectiveC(_:)();
     v8 = type metadata accessor for UUID();
@@ -58,7 +58,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   _StringGuts.grow(_:)(36);
 
   type metadata accessor for UUID();
@@ -73,16 +73,16 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v7 = self;
+  coderCopy = coder;
+  selfCopy = self;
   isa = UUID._bridgeToObjectiveC()().super.isa;
   v6 = MEMORY[0x1865F36D0](0x696669746E656469, 0xEA00000000007265);
-  [v4 encodeObject:isa forKey:v6];
+  [coderCopy encodeObject:isa forKey:v6];
 }
 
-- (_EXExtensionInstanceIdentifier)initWithCoder:(id)a3
+- (_EXExtensionInstanceIdentifier)initWithCoder:(id)coder
 {
   v5 = type metadata accessor for UUID();
   v6 = *(v5 - 8);
@@ -90,7 +90,7 @@
   MEMORY[0x1EEE9AC00](v5);
   v9 = &v15 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   type metadata accessor for NSDictionary(0, &lazy cache variable for type metadata for NSUUID, 0x1E696AFB0);
-  v10 = a3;
+  coderCopy = coder;
   result = NSCoder.decodeObject<A>(of:forKey:)();
   if (result)
   {
@@ -147,7 +147,7 @@
 {
   type metadata accessor for NSDictionary(0, &lazy cache variable for type metadata for NSObject, 0x1E69E58C0);
   v3 = one-time initialization token for _defaultInstanceIdentifier;
-  v4 = self;
+  selfCopy = self;
   if (v3 != -1)
   {
     swift_once();
@@ -160,7 +160,7 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = UUID.hashValue.getter();
 
   return v3;

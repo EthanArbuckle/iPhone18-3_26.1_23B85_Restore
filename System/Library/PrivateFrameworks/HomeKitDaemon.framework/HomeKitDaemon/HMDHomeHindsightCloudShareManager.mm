@@ -1,17 +1,17 @@
 @interface HMDHomeHindsightCloudShareManager
 + (id)logCategory;
-- (BOOL)manager:(id)a3 shouldGrantWriteAccessToUser:(id)a4;
-- (BOOL)manager:(id)a3 shouldShareWithUser:(id)a4;
-- (BOOL)zoneManager:(id)a3 shouldRequestShareInvitationFromUser:(id)a4;
+- (BOOL)manager:(id)manager shouldGrantWriteAccessToUser:(id)user;
+- (BOOL)manager:(id)manager shouldShareWithUser:(id)user;
+- (BOOL)zoneManager:(id)manager shouldRequestShareInvitationFromUser:(id)user;
 - (HMDHome)home;
-- (HMDHomeHindsightCloudShareManager)initWithHome:(id)a3 UUID:(id)a4 workQueue:(id)a5 dataSource:(id)a6 zoneManager:(id)a7;
-- (HMDHomeHindsightCloudShareManager)initWithHome:(id)a3 workQueue:(id)a4 dataSource:(id)a5;
+- (HMDHomeHindsightCloudShareManager)initWithHome:(id)home UUID:(id)d workQueue:(id)queue dataSource:(id)source zoneManager:(id)manager;
+- (HMDHomeHindsightCloudShareManager)initWithHome:(id)home workQueue:(id)queue dataSource:(id)source;
 - (void)_startZoneManager;
 - (void)_synchronize;
 - (void)configure;
 - (void)synchronize;
-- (void)zoneManagerDidCreateZone:(id)a3;
-- (void)zoneManagerDidStart:(id)a3;
+- (void)zoneManagerDidCreateZone:(id)zone;
+- (void)zoneManagerDidStart:(id)start;
 @end
 
 @implementation HMDHomeHindsightCloudShareManager
@@ -23,15 +23,15 @@
   return WeakRetained;
 }
 
-- (void)zoneManagerDidCreateZone:(id)a3
+- (void)zoneManagerDidCreateZone:(id)zone
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDHomeHindsightCloudShareManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  zoneCopy = zone;
+  workQueue = [(HMDHomeHindsightCloudShareManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -42,27 +42,27 @@
   }
 
   objc_autoreleasePoolPop(v6);
-  v10 = [(HMDHomeHindsightCloudShareManager *)v7 dataSource];
+  dataSource = [(HMDHomeHindsightCloudShareManager *)selfCopy dataSource];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(HMDHomeHindsightCloudShareManager *)v7 dataSource];
-    [v12 cloudShareManagerDidCreateZone:v7];
+    dataSource2 = [(HMDHomeHindsightCloudShareManager *)selfCopy dataSource];
+    [dataSource2 cloudShareManagerDidCreateZone:selfCopy];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)zoneManagerDidStart:(id)a3
+- (void)zoneManagerDidStart:(id)start
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDHomeHindsightCloudShareManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  startCopy = start;
+  workQueue = [(HMDHomeHindsightCloudShareManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -73,78 +73,78 @@
   }
 
   objc_autoreleasePoolPop(v6);
-  v10 = [v4 localZone];
-  [v10 startUp];
+  localZone = [startCopy localZone];
+  [localZone startUp];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)zoneManager:(id)a3 shouldRequestShareInvitationFromUser:(id)a4
+- (BOOL)zoneManager:(id)manager shouldRequestShareInvitationFromUser:(id)user
 {
-  v5 = a4;
-  v6 = [(HMDHomeHindsightCloudShareManager *)self workQueue];
-  dispatch_assert_queue_V2(v6);
+  userCopy = user;
+  workQueue = [(HMDHomeHindsightCloudShareManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  LOBYTE(v6) = [v5 isOwner];
-  return v6;
+  LOBYTE(workQueue) = [userCopy isOwner];
+  return workQueue;
 }
 
-- (BOOL)manager:(id)a3 shouldGrantWriteAccessToUser:(id)a4
+- (BOOL)manager:(id)manager shouldGrantWriteAccessToUser:(id)user
 {
-  v5 = a4;
-  v6 = [(HMDHomeHindsightCloudShareManager *)self workQueue];
-  dispatch_assert_queue_V2(v6);
+  userCopy = user;
+  workQueue = [(HMDHomeHindsightCloudShareManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v7 = [(HMDHomeHindsightCloudShareManager *)self dataSource];
-  LOBYTE(v6) = [v7 shouldGrantWriteAccessToUser:v5];
+  dataSource = [(HMDHomeHindsightCloudShareManager *)self dataSource];
+  LOBYTE(workQueue) = [dataSource shouldGrantWriteAccessToUser:userCopy];
 
-  return v6;
+  return workQueue;
 }
 
-- (BOOL)manager:(id)a3 shouldShareWithUser:(id)a4
+- (BOOL)manager:(id)manager shouldShareWithUser:(id)user
 {
-  v5 = a4;
-  v6 = [(HMDHomeHindsightCloudShareManager *)self workQueue];
-  dispatch_assert_queue_V2(v6);
+  userCopy = user;
+  workQueue = [(HMDHomeHindsightCloudShareManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v7 = [(HMDHomeHindsightCloudShareManager *)self dataSource];
-  LOBYTE(v6) = [v7 shouldShareWithUser:v5];
+  dataSource = [(HMDHomeHindsightCloudShareManager *)self dataSource];
+  LOBYTE(workQueue) = [dataSource shouldShareWithUser:userCopy];
 
-  return v6;
+  return workQueue;
 }
 
 - (void)_startZoneManager
 {
-  v3 = [(HMDHomeHindsightCloudShareManager *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDHomeHindsightCloudShareManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDHomeHindsightCloudShareManager *)self zoneManager];
-  v5 = [v4 defaultConfiguration];
-  v10 = [v5 mutableCopy];
+  zoneManager = [(HMDHomeHindsightCloudShareManager *)self zoneManager];
+  defaultConfiguration = [zoneManager defaultConfiguration];
+  v10 = [defaultConfiguration mutableCopy];
 
-  v6 = [(HMDHomeHindsightCloudShareManager *)self dataSource];
-  v7 = [(HMDHomeHindsightCloudShareManager *)self zoneManager];
-  v8 = [v7 home];
-  [v10 setShouldCreateZone:{objc_msgSend(v6, "shouldCreateZoneForHome:", v8)}];
+  dataSource = [(HMDHomeHindsightCloudShareManager *)self dataSource];
+  zoneManager2 = [(HMDHomeHindsightCloudShareManager *)self zoneManager];
+  home = [zoneManager2 home];
+  [v10 setShouldCreateZone:{objc_msgSend(dataSource, "shouldCreateZoneForHome:", home)}];
 
-  v9 = [(HMDHomeHindsightCloudShareManager *)self zoneManager];
-  [v9 startWithConfiguration:v10];
+  zoneManager3 = [(HMDHomeHindsightCloudShareManager *)self zoneManager];
+  [zoneManager3 startWithConfiguration:v10];
 }
 
 - (void)_synchronize
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDHomeHindsightCloudShareManager *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDHomeHindsightCloudShareManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDHomeHindsightCloudShareManager *)self zoneManager];
-  v5 = [v4 cloudZone];
+  zoneManager = [(HMDHomeHindsightCloudShareManager *)self zoneManager];
+  cloudZone = [zoneManager cloudZone];
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   v9 = v8;
-  if (v5)
+  if (cloudZone)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -156,17 +156,17 @@
 
     objc_autoreleasePoolPop(v6);
     v11 = [MEMORY[0x277D17108] optionsWithLabel:@"Synchronizing for hindsight cloud share manager"];
-    v12 = [v5 performCloudPullWithOptions:v11];
+    v12 = [cloudZone performCloudPullWithOptions:v11];
     v13 = MEMORY[0x277D2C938];
-    v14 = [(HMDHomeHindsightCloudShareManager *)v7 workQueue];
-    v15 = [v13 schedulerWithDispatchQueue:v14];
+    workQueue2 = [(HMDHomeHindsightCloudShareManager *)selfCopy workQueue];
+    v15 = [v13 schedulerWithDispatchQueue:workQueue2];
     v16 = [v12 reschedule:v15];
 
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __49__HMDHomeHindsightCloudShareManager__synchronize__block_invoke;
     v20[3] = &unk_278687CC0;
-    v20[4] = v7;
+    v20[4] = selfCopy;
     v17 = [v16 addCompletionBlock:v20];
   }
 
@@ -181,7 +181,7 @@
     }
 
     objc_autoreleasePoolPop(v6);
-    [(HMDHomeHindsightCloudShareManager *)v7 _startZoneManager];
+    [(HMDHomeHindsightCloudShareManager *)selfCopy _startZoneManager];
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -211,61 +211,61 @@ void __49__HMDHomeHindsightCloudShareManager__synchronize__block_invoke(uint64_t
 
 - (void)synchronize
 {
-  v3 = [(HMDHomeHindsightCloudShareManager *)self workQueue];
+  workQueue = [(HMDHomeHindsightCloudShareManager *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__HMDHomeHindsightCloudShareManager_synchronize__block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 - (void)configure
 {
-  v3 = [(HMDHomeHindsightCloudShareManager *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDHomeHindsightCloudShareManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDHomeHindsightCloudShareManager *)self zoneManager];
-  [v4 setDelegate:self];
+  zoneManager = [(HMDHomeHindsightCloudShareManager *)self zoneManager];
+  [zoneManager setDelegate:self];
 
-  v5 = [(HMDHomeHindsightCloudShareManager *)self zoneManager];
-  [v5 setDataSource:self];
+  zoneManager2 = [(HMDHomeHindsightCloudShareManager *)self zoneManager];
+  [zoneManager2 setDataSource:self];
 
-  v6 = [(HMDHomeHindsightCloudShareManager *)self zoneManager];
-  [v6 configure];
+  zoneManager3 = [(HMDHomeHindsightCloudShareManager *)self zoneManager];
+  [zoneManager3 configure];
 
   [(HMDHomeHindsightCloudShareManager *)self _startZoneManager];
 }
 
-- (HMDHomeHindsightCloudShareManager)initWithHome:(id)a3 UUID:(id)a4 workQueue:(id)a5 dataSource:(id)a6 zoneManager:(id)a7
+- (HMDHomeHindsightCloudShareManager)initWithHome:(id)home UUID:(id)d workQueue:(id)queue dataSource:(id)source zoneManager:(id)manager
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (!v12)
+  homeCopy = home;
+  dCopy = d;
+  queueCopy = queue;
+  sourceCopy = source;
+  managerCopy = manager;
+  if (!homeCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_9;
   }
 
-  if (!v13)
+  if (!dCopy)
   {
 LABEL_9:
     _HMFPreconditionFailure();
     goto LABEL_10;
   }
 
-  v17 = v16;
-  if (!v16)
+  v17 = managerCopy;
+  if (!managerCopy)
   {
 LABEL_10:
     _HMFPreconditionFailure();
     goto LABEL_11;
   }
 
-  if (!v14)
+  if (!queueCopy)
   {
 LABEL_11:
     v26 = _HMFPreconditionFailure();
@@ -277,54 +277,54 @@ LABEL_11:
   v18 = [(HMDHomeHindsightCloudShareManager *)&v31 init];
   if (v18)
   {
-    v19 = [v13 copy];
+    v19 = [dCopy copy];
     UUID = v18->_UUID;
     v18->_UUID = v19;
 
-    objc_storeStrong(&v18->_workQueue, a5);
-    objc_storeStrong(&v18->_zoneManager, a7);
+    objc_storeStrong(&v18->_workQueue, queue);
+    objc_storeStrong(&v18->_zoneManager, manager);
     v21 = MEMORY[0x277CCACA8];
-    v22 = [v17 zoneName];
-    v23 = [v21 stringWithFormat:@"%@/%@", v13, v22];
+    zoneName = [v17 zoneName];
+    v23 = [v21 stringWithFormat:@"%@/%@", dCopy, zoneName];
     logIdentifier = v18->_logIdentifier;
     v18->_logIdentifier = v23;
 
-    objc_storeWeak(&v18->_home, v12);
-    objc_storeStrong(&v18->_dataSource, a6);
+    objc_storeWeak(&v18->_home, homeCopy);
+    objc_storeStrong(&v18->_dataSource, source);
   }
 
   return v18;
 }
 
-- (HMDHomeHindsightCloudShareManager)initWithHome:(id)a3 workQueue:(id)a4 dataSource:(id)a5
+- (HMDHomeHindsightCloudShareManager)initWithHome:(id)home workQueue:(id)queue dataSource:(id)source
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  homeCopy = home;
+  queueCopy = queue;
+  sourceCopy = source;
+  if (homeCopy)
   {
-    if (v9)
+    if (queueCopy)
     {
-      v11 = v10;
-      v12 = [v10 zoneUUIDForHome:v8];
+      v11 = sourceCopy;
+      v12 = [sourceCopy zoneUUIDForHome:homeCopy];
       v13 = HMVConfigurationZoneNameForZoneUUID();
       v14 = [HMDDatabaseZoneManager alloc];
       v15 = +[HMDDatabase hindsightDatabase];
-      v16 = [(HMDDatabaseZoneManager *)v14 initWithDatabase:v15 zoneName:v13 home:v8 messageTargetUUID:v12 workQueue:v9];
+      v16 = [(HMDDatabaseZoneManager *)v14 initWithDatabase:v15 zoneName:v13 home:homeCopy messageTargetUUID:v12 workQueue:queueCopy];
 
-      v17 = [(HMDDatabaseZoneManager *)v16 defaultConfiguration];
-      v18 = [v17 mutableCopy];
+      defaultConfiguration = [(HMDDatabaseZoneManager *)v16 defaultConfiguration];
+      v18 = [defaultConfiguration mutableCopy];
 
-      [v18 setZoneOwner:{objc_msgSend(v8, "isOwnerUser")}];
-      v19 = [v11 minimumHomeKitVersion];
-      [v18 setMinimumHomeKitVersion:v19];
+      [v18 setZoneOwner:{objc_msgSend(homeCopy, "isOwnerUser")}];
+      minimumHomeKitVersion = [v11 minimumHomeKitVersion];
+      [v18 setMinimumHomeKitVersion:minimumHomeKitVersion];
 
       [v18 setShouldCreateZone:0];
       v20 = objc_alloc_init(MEMORY[0x277D170E8]);
       [v20 setShouldSkipCloudPulls:1];
       [v18 setCloudZoneConfiguration:v20];
       [(HMDDatabaseZoneManager *)v16 setDefaultConfiguration:v18];
-      v21 = [(HMDHomeHindsightCloudShareManager *)self initWithHome:v8 UUID:v12 workQueue:v9 dataSource:v11 zoneManager:v16];
+      v21 = [(HMDHomeHindsightCloudShareManager *)self initWithHome:homeCopy UUID:v12 workQueue:queueCopy dataSource:v11 zoneManager:v16];
 
       return v21;
     }

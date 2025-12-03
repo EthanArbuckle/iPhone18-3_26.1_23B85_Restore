@@ -1,26 +1,26 @@
 @interface HMIConfidence
-- (BOOL)isEqual:(id)a3;
-- (HMIConfidence)initWithCoder:(id)a3;
-- (HMIConfidence)initWithValue:(double)a3 levelThresholds:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (HMIConfidence)initWithCoder:(id)coder;
+- (HMIConfidence)initWithValue:(double)value levelThresholds:(id)thresholds;
 - (id)shortDescription;
 - (int64_t)level;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMIConfidence
 
-- (HMIConfidence)initWithValue:(double)a3 levelThresholds:(id)a4
+- (HMIConfidence)initWithValue:(double)value levelThresholds:(id)thresholds
 {
-  v7 = a4;
+  thresholdsCopy = thresholds;
   v11.receiver = self;
   v11.super_class = HMIConfidence;
   v8 = [(HMIConfidence *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_value = a3;
-    objc_storeStrong(&v8->_levelThresholds, a4);
+    v8->_value = value;
+    objc_storeStrong(&v8->_levelThresholds, thresholds);
   }
 
   return v9;
@@ -30,8 +30,8 @@
 {
   [(HMIConfidence *)self value];
   v4 = v3;
-  v5 = [(HMIConfidence *)self levelThresholds];
-  v6 = [v5 objectAtIndexedSubscript:1];
+  levelThresholds = [(HMIConfidence *)self levelThresholds];
+  v6 = [levelThresholds objectAtIndexedSubscript:1];
   [v6 doubleValue];
   v8 = v7;
 
@@ -42,8 +42,8 @@
 
   [(HMIConfidence *)self value];
   v10 = v9;
-  v11 = [(HMIConfidence *)self levelThresholds];
-  v12 = [v11 objectAtIndexedSubscript:0];
+  levelThresholds2 = [(HMIConfidence *)self levelThresholds];
+  v12 = [levelThresholds2 objectAtIndexedSubscript:0];
   [v12 doubleValue];
   v14 = v10 >= v13;
 
@@ -54,14 +54,14 @@
 {
   v2 = MEMORY[0x277CCACA8];
   value = self->_value;
-  v4 = [(HMIConfidence *)self level];
+  level = [(HMIConfidence *)self level];
   v5 = @"Low";
-  if (v4 == 1)
+  if (level == 1)
   {
     v5 = @"Medium";
   }
 
-  if (v4 == 2)
+  if (level == 2)
   {
     v6 = @"High";
   }
@@ -74,10 +74,10 @@
   return [v2 stringWithFormat:@"%.2f[%c]", *&value, -[__CFString characterAtIndex:](v6, "characterAtIndex:", 0)];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v13 = 1;
   }
@@ -87,13 +87,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       [(HMIConfidence *)self value];
       v7 = v6;
       [(HMIConfidence *)v5 value];
       v9 = v8;
-      v10 = [(HMIConfidence *)self levelThresholds];
-      v11 = [(HMIConfidence *)v5 levelThresholds];
+      levelThresholds = [(HMIConfidence *)self levelThresholds];
+      levelThresholds2 = [(HMIConfidence *)v5 levelThresholds];
 
       v12 = HMFEqualObjects();
       if (v7 == v9)
@@ -149,12 +149,12 @@
   }
 }
 
-- (HMIConfidence)initWithCoder:(id)a3
+- (HMIConfidence)initWithCoder:(id)coder
 {
   v15[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_value);
-  [v4 decodeDoubleForKey:v5];
+  [coderCopy decodeDoubleForKey:v5];
   v7 = v6;
 
   v8 = MEMORY[0x277CBEB98];
@@ -163,23 +163,23 @@
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:2];
   v10 = [v8 setWithArray:v9];
   v11 = NSStringFromSelector(sel_levelThresholds);
-  v12 = [v4 decodeObjectOfClasses:v10 forKey:v11];
+  v12 = [coderCopy decodeObjectOfClasses:v10 forKey:v11];
 
   v13 = [[HMIConfidence alloc] initWithValue:v12 levelThresholds:v7];
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(HMIConfidence *)self value];
   v6 = v5;
   v7 = NSStringFromSelector(sel_value);
-  [v4 encodeDouble:v7 forKey:v6];
+  [coderCopy encodeDouble:v7 forKey:v6];
 
-  v9 = [(HMIConfidence *)self levelThresholds];
+  levelThresholds = [(HMIConfidence *)self levelThresholds];
   v8 = NSStringFromSelector(sel_levelThresholds);
-  [v4 encodeObject:v9 forKey:v8];
+  [coderCopy encodeObject:levelThresholds forKey:v8];
 }
 
 @end

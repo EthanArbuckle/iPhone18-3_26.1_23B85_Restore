@@ -2,10 +2,10 @@
 - (CSDDaemon)init;
 - (NSString)debugDescription;
 - (id)_setUpTemporaryDirectory;
-- (void)_observeSignal:(int)a3 usingHandler:(id)a4;
+- (void)_observeSignal:(int)signal usingHandler:(id)handler;
 - (void)_setUpLanguageChangeListener;
 - (void)dealloc;
-- (void)propertiesDidChangeForConfiguration:(id)a3;
+- (void)propertiesDidChangeForConfiguration:(id)configuration;
 @end
 
 @implementation CSDDaemon
@@ -55,8 +55,8 @@
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [(CSDDaemon *)self signalHandlerDispatchSources];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  signalHandlerDispatchSources = [(CSDDaemon *)self signalHandlerDispatchSources];
+  v5 = [signalHandlerDispatchSources countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -68,7 +68,7 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(signalHandlerDispatchSources);
         }
 
         dispatch_source_cancel(*(*(&v10 + 1) + 8 * v8));
@@ -76,7 +76,7 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [signalHandlerDispatchSources countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -87,16 +87,16 @@
   [(CSDDaemon *)&v9 dealloc];
 }
 
-- (void)_observeSignal:(int)a3 usingHandler:(id)a4
+- (void)_observeSignal:(int)signal usingHandler:(id)handler
 {
-  v6 = a4;
-  signal(a3, 1);
-  v7 = [(CSDDaemon *)self queue];
-  source = dispatch_source_create(&_dispatch_source_type_signal, a3, 0, v7);
+  handlerCopy = handler;
+  signal(signal, 1);
+  queue = [(CSDDaemon *)self queue];
+  source = dispatch_source_create(&_dispatch_source_type_signal, signal, 0, queue);
 
-  dispatch_source_set_event_handler(source, v6);
-  v8 = [(CSDDaemon *)self signalHandlerDispatchSources];
-  [v8 addObject:source];
+  dispatch_source_set_event_handler(source, handlerCopy);
+  signalHandlerDispatchSources = [(CSDDaemon *)self signalHandlerDispatchSources];
+  [signalHandlerDispatchSources addObject:source];
 
   dispatch_resume(source);
 }
@@ -119,8 +119,8 @@
   v10 = [v9 debugDescription];
   [v3 appendFormat:@"%@\n", v10];
 
-  v11 = [(CSDDaemon *)self relayMessagingController];
-  v12 = [v11 debugDescription];
+  relayMessagingController = [(CSDDaemon *)self relayMessagingController];
+  v12 = [relayMessagingController debugDescription];
   [v3 appendFormat:@"%@\n", v12];
 
   return v3;
@@ -167,7 +167,7 @@ LABEL_13:
   return v2;
 }
 
-- (void)propertiesDidChangeForConfiguration:(id)a3
+- (void)propertiesDidChangeForConfiguration:(id)configuration
 {
   v4 = sub_100004778();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -176,8 +176,8 @@ LABEL_13:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "User configuration changed", v6, 2u);
   }
 
-  v5 = [(CSDDaemon *)self userConfiguration];
-  [v5 synchronize];
+  userConfiguration = [(CSDDaemon *)self userConfiguration];
+  [userConfiguration synchronize];
 }
 
 @end

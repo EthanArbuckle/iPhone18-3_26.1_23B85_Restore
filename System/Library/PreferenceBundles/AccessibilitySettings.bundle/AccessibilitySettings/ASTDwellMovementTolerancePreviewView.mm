@@ -1,19 +1,19 @@
 @interface ASTDwellMovementTolerancePreviewView
-- (ASTDwellMovementTolerancePreviewView)initWithSpecifier:(id)a3;
+- (ASTDwellMovementTolerancePreviewView)initWithSpecifier:(id)specifier;
 - (double)_movementToleranceRadius;
-- (double)preferredHeightForWidth:(double)a3;
+- (double)preferredHeightForWidth:(double)width;
 - (void)_updateCurrentAppearanceIfNeeded;
 - (void)didMoveToSuperview;
-- (void)drawCircleWithRadius:(double)a3;
+- (void)drawCircleWithRadius:(double)radius;
 - (void)layoutSubviews;
 - (void)setupPreview;
 @end
 
 @implementation ASTDwellMovementTolerancePreviewView
 
-- (ASTDwellMovementTolerancePreviewView)initWithSpecifier:(id)a3
+- (ASTDwellMovementTolerancePreviewView)initWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v17.receiver = self;
   v17.super_class = ASTDwellMovementTolerancePreviewView;
   v5 = [(ASTDwellMovementTolerancePreviewView *)&v17 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
@@ -21,12 +21,12 @@
   if (v5)
   {
     [(ASTDwellMovementTolerancePreviewView *)v5 setupPreview];
-    v7 = [v4 propertyForKey:@"DwellMovementToleranceClientType"];
+    v7 = [specifierCopy propertyForKey:@"DwellMovementToleranceClientType"];
 
     if (v7)
     {
       objc_initWeak(&location, v6);
-      v8 = [v4 propertyForKey:@"DwellMovementToleranceClientType"];
+      v8 = [specifierCopy propertyForKey:@"DwellMovementToleranceClientType"];
       v6->_clientType = [v8 unsignedIntegerValue];
 
       if (v6->_clientType == 1)
@@ -77,7 +77,7 @@ void __58__ASTDwellMovementTolerancePreviewView_initWithSpecifier___block_invoke
   [WeakRetained drawCircleWithRadius:?];
 }
 
-- (double)preferredHeightForWidth:(double)a3
+- (double)preferredHeightForWidth:(double)width
 {
   v4 = kAXSAssistiveTouchMouseDwellControlMovementToleranceMax;
   [(ASTDwellMovementTolerancePreviewView *)self layoutMargins];
@@ -88,15 +88,15 @@ void __58__ASTDwellMovementTolerancePreviewView_initWithSpecifier___block_invoke
 
 - (double)_movementToleranceRadius
 {
-  v3 = [(ASTDwellMovementTolerancePreviewView *)self clientType];
-  if (!v3)
+  clientType = [(ASTDwellMovementTolerancePreviewView *)self clientType];
+  if (!clientType)
   {
     v4 = +[AXSettings sharedInstance];
     [v4 assistiveTouchMouseDwellControlMovementToleranceRadius];
     goto LABEL_5;
   }
 
-  if (v3 == 1)
+  if (clientType == 1)
   {
     v4 = +[AXSettings sharedInstance];
     [v4 switchControlCameraPointPickerDwellMovementToleranceRadius];
@@ -112,9 +112,9 @@ LABEL_5:
   v4.receiver = self;
   v4.super_class = ASTDwellMovementTolerancePreviewView;
   [(ASTDwellMovementTolerancePreviewView *)&v4 didMoveToSuperview];
-  v3 = [(ASTDwellMovementTolerancePreviewView *)self superview];
+  superview = [(ASTDwellMovementTolerancePreviewView *)self superview];
 
-  if (v3)
+  if (superview)
   {
     [(ASTDwellMovementTolerancePreviewView *)self _movementToleranceRadius];
     [(ASTDwellMovementTolerancePreviewView *)self drawCircleWithRadius:?];
@@ -131,11 +131,11 @@ LABEL_5:
 
 - (void)_updateCurrentAppearanceIfNeeded
 {
-  v3 = [(ASTDwellMovementTolerancePreviewView *)self traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  traitCollection = [(ASTDwellMovementTolerancePreviewView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
   v5 = 1;
-  if (v4 == &dword_0 + 2)
+  if (userInterfaceStyle == &dword_0 + 2)
   {
     v5 = 2;
   }
@@ -165,17 +165,17 @@ LABEL_5:
   v8 = +[UIColor tertiaryLabelColor];
   -[CAShapeLayer setFillColor:](v7, "setFillColor:", [v8 CGColor]);
 
-  v9 = [(ASTDwellMovementTolerancePreviewView *)self layer];
-  [v9 addSublayer:self->_circleLayer];
+  layer = [(ASTDwellMovementTolerancePreviewView *)self layer];
+  [layer addSublayer:self->_circleLayer];
 }
 
-- (void)drawCircleWithRadius:(double)a3
+- (void)drawCircleWithRadius:(double)radius
 {
   [(ASTDwellMovementTolerancePreviewView *)self bounds];
   AX_CGRectGetCenter();
-  v6 = v5 - a3;
-  v8 = v7 - a3;
-  v9 = a3 + a3;
+  v6 = v5 - radius;
+  v8 = v7 - radius;
+  v9 = radius + radius;
   v13 = [CABasicAnimation animationWithKeyPath:@"path"];
   [v13 setFromValue:{-[CAShapeLayer path](self->_circleLayer, "path")}];
   v10 = [UIBezierPath bezierPathWithOvalInRect:v6, v8, v9, v9];

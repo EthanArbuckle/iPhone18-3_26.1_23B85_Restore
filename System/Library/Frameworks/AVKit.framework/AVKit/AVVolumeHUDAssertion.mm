@@ -1,7 +1,7 @@
 @interface AVVolumeHUDAssertion
-- (AVVolumeHUDAssertion)initWithSceneIdentifier:(id)a3 clientIdentifier:(id)a4;
+- (AVVolumeHUDAssertion)initWithSceneIdentifier:(id)identifier clientIdentifier:(id)clientIdentifier;
 - (AVVolumeHUDAssertionDelegate)delegate;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)volumeAudioCategory;
 - (UIWindowScene)windowSceneForVolumeDisplay;
 - (id)_systemController;
@@ -19,16 +19,16 @@
 
 - (id)_systemController
 {
-  v2 = [(AVVolumeHUDAssertion *)self delegate];
-  v3 = [v2 currentSystemController];
+  delegate = [(AVVolumeHUDAssertion *)self delegate];
+  currentSystemController = [delegate currentSystemController];
 
-  return v3;
+  return currentSystemController;
 }
 
 - (NSString)volumeAudioCategory
 {
-  v2 = [(AVVolumeHUDAssertion *)self _systemController];
-  v3 = [v2 volumeCategoryForAudioCategory:@"MediaPlayback"];
+  _systemController = [(AVVolumeHUDAssertion *)self _systemController];
+  v3 = [_systemController volumeCategoryForAudioCategory:@"MediaPlayback"];
 
   return v3;
 }
@@ -36,20 +36,20 @@
 - (UIWindowScene)windowSceneForVolumeDisplay
 {
   v2 = *MEMORY[0x1E69DDA98];
-  v3 = [(AVVolumeHUDAssertion *)self sceneIdentifier];
-  v4 = [v2 avkit_windowSceneWithSessionIdentifier:v3];
+  sceneIdentifier = [(AVVolumeHUDAssertion *)self sceneIdentifier];
+  v4 = [v2 avkit_windowSceneWithSessionIdentifier:sceneIdentifier];
 
   return v4;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(AVVolumeHUDAssertion *)self sceneIdentifier];
-  v4 = [(AVVolumeHUDAssertion *)self clientIdentifier];
-  v5 = v4;
-  if (v4)
+  sceneIdentifier = [(AVVolumeHUDAssertion *)self sceneIdentifier];
+  clientIdentifier = [(AVVolumeHUDAssertion *)self clientIdentifier];
+  v5 = clientIdentifier;
+  if (clientIdentifier)
   {
-    v6 = v4;
+    v6 = clientIdentifier;
   }
 
   else
@@ -57,7 +57,7 @@
     v6 = &stru_1EFED57D8;
   }
 
-  v7 = [v3 stringByAppendingString:v6];
+  v7 = [sceneIdentifier stringByAppendingString:v6];
   v8 = [v7 hash];
   v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[AVVolumeHUDAssertion prefersSystemVolumeHUDHidden](self, "prefersSystemVolumeHUDHidden")}];
   v10 = [v9 hash];
@@ -65,22 +65,22 @@
   return v10 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 clientIdentifier];
-    v6 = [(AVVolumeHUDAssertion *)self clientIdentifier];
-    if ([v5 isEqualToString:v6])
+    clientIdentifier = [equalCopy clientIdentifier];
+    clientIdentifier2 = [(AVVolumeHUDAssertion *)self clientIdentifier];
+    if ([clientIdentifier isEqualToString:clientIdentifier2])
     {
-      v7 = [v4 sceneIdentifier];
-      v8 = [(AVVolumeHUDAssertion *)self sceneIdentifier];
-      if ([v7 isEqualToString:v8])
+      sceneIdentifier = [equalCopy sceneIdentifier];
+      sceneIdentifier2 = [(AVVolumeHUDAssertion *)self sceneIdentifier];
+      if ([sceneIdentifier isEqualToString:sceneIdentifier2])
       {
-        v9 = [v4 prefersSystemVolumeHUDHidden];
-        v10 = v9 ^ [(AVVolumeHUDAssertion *)self prefersSystemVolumeHUDHidden]^ 1;
+        prefersSystemVolumeHUDHidden = [equalCopy prefersSystemVolumeHUDHidden];
+        v10 = prefersSystemVolumeHUDHidden ^ [(AVVolumeHUDAssertion *)self prefersSystemVolumeHUDHidden]^ 1;
       }
 
       else
@@ -103,18 +103,18 @@
   return v10;
 }
 
-- (AVVolumeHUDAssertion)initWithSceneIdentifier:(id)a3 clientIdentifier:(id)a4
+- (AVVolumeHUDAssertion)initWithSceneIdentifier:(id)identifier clientIdentifier:(id)clientIdentifier
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  clientIdentifierCopy = clientIdentifier;
   v12.receiver = self;
   v12.super_class = AVVolumeHUDAssertion;
   v9 = [(AVVolumeHUDAssertion *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_sceneIdentifier, a3);
-    objc_storeStrong(&v10->_clientIdentifier, a4);
+    objc_storeStrong(&v9->_sceneIdentifier, identifier);
+    objc_storeStrong(&v10->_clientIdentifier, clientIdentifier);
     v10->_prefersSystemVolumeHUDHidden = 0;
   }
 

@@ -1,10 +1,10 @@
 @interface ParmesanFacePreviewTitleSupplementaryView
-- (_TtC30NTKParmesanFaceBundleCompanion41ParmesanFacePreviewTitleSupplementaryView)initWithCoder:(id)a3;
+- (_TtC30NTKParmesanFaceBundleCompanion41ParmesanFacePreviewTitleSupplementaryView)initWithCoder:(id)coder;
 @end
 
 @implementation ParmesanFacePreviewTitleSupplementaryView
 
-- (_TtC30NTKParmesanFaceBundleCompanion41ParmesanFacePreviewTitleSupplementaryView)initWithCoder:(id)a3
+- (_TtC30NTKParmesanFaceBundleCompanion41ParmesanFacePreviewTitleSupplementaryView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC30NTKParmesanFaceBundleCompanion41ParmesanFacePreviewTitleSupplementaryView_titleLabel;
   *(&self->super.super.super.super.isa + v4) = [objc_allocWithZone(MEMORY[0x277D756B8]) init];

@@ -1,13 +1,13 @@
 @interface DEDEncryptorFactory
-+ (id)getEncryptorForExtensionIdentifier:(id)a3;
++ (id)getEncryptorForExtensionIdentifier:(id)identifier;
 @end
 
 @implementation DEDEncryptorFactory
 
-+ (id)getEncryptorForExtensionIdentifier:(id)a3
++ (id)getEncryptorForExtensionIdentifier:(id)identifier
 {
   v13[10] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_alloc(MEMORY[0x277CBEB98]);
   v13[0] = @"com.apple.DiagnosticExtensions.Cinnamon";
   v13[1] = @"com.apple.DiagnosticExtensions.sysdiagnose";
@@ -22,9 +22,9 @@
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:10];
   v6 = [v4 initWithArray:v5];
 
-  if ([v6 containsObject:v3])
+  if ([v6 containsObject:identifierCopy])
   {
-    v7 = [v3 isEqualToString:@"AppleEncryptedArchive"];
+    v7 = [identifierCopy isEqualToString:@"AppleEncryptedArchive"];
     v8 = off_278F64AF0;
     if (!v7)
     {

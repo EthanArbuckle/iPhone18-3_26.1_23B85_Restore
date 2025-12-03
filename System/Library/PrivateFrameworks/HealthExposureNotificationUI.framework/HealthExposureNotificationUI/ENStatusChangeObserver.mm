@@ -1,16 +1,16 @@
 @interface ENStatusChangeObserver
 - (BOOL)active;
 - (ENStatusChangeObserver)init;
-- (ENStatusChangeObserver)initWithAdapter:(id)a3 didChangeHandler:(id)a4;
+- (ENStatusChangeObserver)initWithAdapter:(id)adapter didChangeHandler:(id)handler;
 - (void)dealloc;
-- (void)setActive:(BOOL)a3;
+- (void)setActive:(BOOL)active;
 @end
 
 @implementation ENStatusChangeObserver
 
-- (ENStatusChangeObserver)initWithAdapter:(id)a3 didChangeHandler:(id)a4
+- (ENStatusChangeObserver)initWithAdapter:(id)adapter didChangeHandler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   v6 = swift_allocObject();
   *(v6 + 16) = v5;
   swift_unknownObjectWeakInit();
@@ -31,10 +31,10 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  v4 = self;
-  ENManagerAdapter.StatusChangeObserver.active.setter(a3);
+  selfCopy = self;
+  ENManagerAdapter.StatusChangeObserver.active.setter(active);
 }
 
 - (void)dealloc
@@ -44,7 +44,7 @@
   *(&self->super.isa + v3) = 0;
   v5.receiver = self;
   v5.super_class = type metadata accessor for ENManagerAdapter.StatusChangeObserver();
-  v4 = self;
+  selfCopy = self;
   [(ENStatusChangeObserver *)&v5 dealloc];
 }
 

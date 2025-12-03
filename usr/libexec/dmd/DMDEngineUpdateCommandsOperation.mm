@@ -1,24 +1,24 @@
 @interface DMDEngineUpdateCommandsOperation
-- (void)performDatabaseModificationOperationWithManagedObjectContext:(id)a3;
+- (void)performDatabaseModificationOperationWithManagedObjectContext:(id)context;
 @end
 
 @implementation DMDEngineUpdateCommandsOperation
 
-- (void)performDatabaseModificationOperationWithManagedObjectContext:(id)a3
+- (void)performDatabaseModificationOperationWithManagedObjectContext:(id)context
 {
-  v4 = a3;
-  v5 = [(DMDEngineUpdateCommandsOperation *)self request];
-  v6 = [v5 addCommands];
-  v7 = [(DMDEngineUpdateCommandsOperation *)self request];
-  v8 = [v7 organizationIdentifier];
+  contextCopy = context;
+  request = [(DMDEngineUpdateCommandsOperation *)self request];
+  addCommands = [request addCommands];
+  request2 = [(DMDEngineUpdateCommandsOperation *)self request];
+  organizationIdentifier = [request2 organizationIdentifier];
   v16 = 0;
-  v9 = [DMDCommandPayloadMetadata commandsWithPayloadDictionaries:v6 organizationIdentifier:v8 context:v4 error:&v16];
+  v9 = [DMDCommandPayloadMetadata commandsWithPayloadDictionaries:addCommands organizationIdentifier:organizationIdentifier context:contextCopy error:&v16];
   v10 = v16;
 
   if (v9)
   {
     v15 = v10;
-    v11 = [v4 save:&v15];
+    v11 = [contextCopy save:&v15];
     v12 = v15;
 
     if (v11)

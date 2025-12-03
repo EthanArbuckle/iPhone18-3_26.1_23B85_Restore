@@ -2,44 +2,44 @@
 - (BOOL)isSearching;
 - (MKLocalSearch)initWithPointsOfInterestRequest:(MKLocalPointsOfInterestRequest *)request;
 - (MKLocalSearch)initWithRequest:(MKLocalSearchRequest *)request;
-- (id)_ticketForSearchRequest:(id)a3;
-- (void)_handleMapItems:(id)a3 boundingRegion:(id)a4 error:(id)a5 withCompletionHandler:(id)a6;
-- (void)_startPointsOfInterestFetchWithCompletionHandler:(id)a3 queue:(id)a4;
-- (void)_startWithCompletionHandler:(id)a3 queue:(id)a4;
+- (id)_ticketForSearchRequest:(id)request;
+- (void)_handleMapItems:(id)items boundingRegion:(id)region error:(id)error withCompletionHandler:(id)handler;
+- (void)_startPointsOfInterestFetchWithCompletionHandler:(id)handler queue:(id)queue;
+- (void)_startWithCompletionHandler:(id)handler queue:(id)queue;
 - (void)cancel;
 - (void)startWithCompletionHandler:(MKLocalSearchCompletionHandler)completionHandler;
 @end
 
 @implementation MKLocalSearch
 
-- (void)_handleMapItems:(id)a3 boundingRegion:(id)a4 error:(id)a5 withCompletionHandler:(id)a6
+- (void)_handleMapItems:(id)items boundingRegion:(id)region error:(id)error withCompletionHandler:(id)handler
 {
-  v15 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  if (v11)
+  itemsCopy = items;
+  regionCopy = region;
+  errorCopy = error;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if (v10)
+    if (errorCopy)
     {
-      v12 = [v10 _mapkit_error];
+      _mapkit_error = [errorCopy _mapkit_error];
     }
 
     else
     {
-      if ([v15 count])
+      if ([itemsCopy count])
       {
-        v13 = [[MKLocalSearchResponse alloc] _initWithMapItems:v15 boundingRegion:v9];
-        v11[2](v11, v13, 0);
+        v13 = [[MKLocalSearchResponse alloc] _initWithMapItems:itemsCopy boundingRegion:regionCopy];
+        handlerCopy[2](handlerCopy, v13, 0);
         goto LABEL_7;
       }
 
       v14 = objc_alloc(MEMORY[0x1E696ABC0]);
-      v12 = [v14 initWithDomain:MKErrorDomain code:1 userInfo:0];
+      _mapkit_error = [v14 initWithDomain:MKErrorDomain code:1 userInfo:0];
     }
 
-    v13 = v12;
-    v11[2](v11, 0, v12);
+    v13 = _mapkit_error;
+    handlerCopy[2](handlerCopy, 0, _mapkit_error);
 LABEL_7:
   }
 }
@@ -65,15 +65,15 @@ LABEL_7:
   os_unfair_lock_unlock(&self->_stateLock);
 }
 
-- (void)_startPointsOfInterestFetchWithCompletionHandler:(id)a3 queue:(id)a4
+- (void)_startPointsOfInterestFetchWithCompletionHandler:(id)handler queue:(id)queue
 {
   v47[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  handlerCopy = handler;
+  queueCopy = queue;
+  v8 = queueCopy;
+  if (handlerCopy)
   {
-    if (!v7)
+    if (!queueCopy)
     {
       v9 = MEMORY[0x1E695DF30];
       v10 = *MEMORY[0x1E695D930];
@@ -82,10 +82,10 @@ LABEL_7:
       [v12 raise];
     }
 
-    v13 = [(MKLocalPointsOfInterestRequest *)self->_pointsOfInterestRequest pointOfInterestFilter];
-    v14 = [v13 _excludesAllCategories];
+    pointOfInterestFilter = [(MKLocalPointsOfInterestRequest *)self->_pointsOfInterestRequest pointOfInterestFilter];
+    _excludesAllCategories = [pointOfInterestFilter _excludesAllCategories];
 
-    if (v14)
+    if (_excludesAllCategories)
     {
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
@@ -105,7 +105,7 @@ LABEL_7:
       block[2] = __72__MKLocalSearch__startPointsOfInterestFetchWithCompletionHandler_queue___block_invoke;
       block[3] = &unk_1E76CDA20;
       v43 = v18;
-      v44 = v6;
+      v44 = handlerCopy;
       v19 = v18;
       dispatch_async(v8, block);
 
@@ -131,7 +131,7 @@ LABEL_7:
         v39[2] = __72__MKLocalSearch__startPointsOfInterestFetchWithCompletionHandler_queue___block_invoke_27;
         v39[3] = &unk_1E76CDA20;
         v40 = v22;
-        v41 = v6;
+        v41 = handlerCopy;
         v19 = v22;
         dispatch_async(v8, v39);
 
@@ -141,15 +141,15 @@ LABEL_7:
       else
       {
         self->_searching = 1;
-        v23 = [(MKLocalPointsOfInterestRequest *)self->_pointsOfInterestRequest _maxResultCount];
+        _maxResultCount = [(MKLocalPointsOfInterestRequest *)self->_pointsOfInterestRequest _maxResultCount];
         if ([(MKLocalPointsOfInterestRequest *)self->_pointsOfInterestRequest _createdFromRegion])
         {
           v24 = MEMORY[0x1E69A2200];
           [(MKLocalPointsOfInterestRequest *)self->_pointsOfInterestRequest region];
           v25 = [v24 _mapkit_mapRegionForCoordinateRegion:?];
-          v26 = +[MKMapService sharedService];
-          v27 = [(MKLocalPointsOfInterestRequest *)self->_pointsOfInterestRequest pointOfInterestFilter];
-          v28 = [v26 ticketForSpatialPlaceLookupWithMapRegion:v25 pointOfInterestFilter:v27 maxResultCount:v23];
+          pointOfInterestFilter3 = +[MKMapService sharedService];
+          pointOfInterestFilter2 = [(MKLocalPointsOfInterestRequest *)self->_pointsOfInterestRequest pointOfInterestFilter];
+          v28 = [pointOfInterestFilter3 ticketForSpatialPlaceLookupWithMapRegion:v25 pointOfInterestFilter:pointOfInterestFilter2 maxResultCount:_maxResultCount];
           spatialPlaceLookupTicket = self->_spatialPlaceLookupTicket;
           self->_spatialPlaceLookupTicket = v28;
         }
@@ -162,9 +162,9 @@ LABEL_7:
           v33 = v32;
           [(MKLocalPointsOfInterestRequest *)self->_pointsOfInterestRequest radius];
           v35 = v34;
-          v26 = [(MKLocalPointsOfInterestRequest *)self->_pointsOfInterestRequest pointOfInterestFilter];
-          v36 = [v25 ticketForSpatialPlaceLookupWithCenterCoordinate:v26 radius:v23 pointOfInterestFilter:v31 maxResultCount:{v33, v35}];
-          v27 = self->_spatialPlaceLookupTicket;
+          pointOfInterestFilter3 = [(MKLocalPointsOfInterestRequest *)self->_pointsOfInterestRequest pointOfInterestFilter];
+          v36 = [v25 ticketForSpatialPlaceLookupWithCenterCoordinate:pointOfInterestFilter3 radius:_maxResultCount pointOfInterestFilter:v31 maxResultCount:{v33, v35}];
+          pointOfInterestFilter2 = self->_spatialPlaceLookupTicket;
           self->_spatialPlaceLookupTicket = v36;
         }
 
@@ -175,7 +175,7 @@ LABEL_7:
         v37[2] = __72__MKLocalSearch__startPointsOfInterestFetchWithCompletionHandler_queue___block_invoke_2;
         v37[3] = &unk_1E76CA920;
         v37[4] = self;
-        v38 = v6;
+        v38 = handlerCopy;
         [(MKMapServiceSpatialPlaceLookupTicket *)v19 submitWithHandler:v37 queue:MEMORY[0x1E69E96A0]];
         v20 = v38;
       }
@@ -211,22 +211,22 @@ void __72__MKLocalSearch__startPointsOfInterestFetchWithCompletionHandler_queue_
   }
 }
 
-- (id)_ticketForSearchRequest:(id)a3
+- (id)_ticketForSearchRequest:(id)request
 {
-  v3 = a3;
-  v4 = [v3 _merchantParameters];
+  requestCopy = request;
+  _merchantParameters = [requestCopy _merchantParameters];
 
-  if (v4)
+  if (_merchantParameters)
   {
-    v5 = [v3 _merchantParameters];
-    v6 = [v5 transactionLocation];
+    _merchantParameters2 = [requestCopy _merchantParameters];
+    transactionLocation = [_merchantParameters2 transactionLocation];
 
-    if (v6)
+    if (transactionLocation)
     {
       v7 = objc_alloc(MEMORY[0x1E69A1E70]);
-      v8 = [v3 _merchantParameters];
-      v9 = [v8 transactionLocation];
-      v10 = [v7 initWithCLLocation:v9];
+      _merchantParameters3 = [requestCopy _merchantParameters];
+      transactionLocation2 = [_merchantParameters3 transactionLocation];
+      v10 = [v7 initWithCLLocation:transactionLocation2];
     }
 
     else
@@ -234,227 +234,227 @@ void __72__MKLocalSearch__startPointsOfInterestFetchWithCompletionHandler_queue_
       v10 = 0;
     }
 
-    v18 = [v3 _deviceLocation];
+    _deviceLocation = [requestCopy _deviceLocation];
 
     v87 = v10;
-    if (v18)
+    if (_deviceLocation)
     {
       v19 = +[MKMapService sharedService];
-      v20 = [v19 defaultTraits];
+      defaultTraits = [v19 defaultTraits];
 
       v21 = objc_alloc(MEMORY[0x1E69A1E70]);
-      v22 = [v3 _deviceLocation];
-      v23 = [v21 initWithCLLocation:v22];
-      [v20 setDeviceLocation:v23];
+      _deviceLocation2 = [requestCopy _deviceLocation];
+      v23 = [v21 initWithCLLocation:_deviceLocation2];
+      [defaultTraits setDeviceLocation:v23];
     }
 
     else
     {
-      v20 = 0;
+      defaultTraits = 0;
     }
 
-    v83 = v20;
+    v83 = defaultTraits;
     v88 = +[MKMapService sharedService];
-    v86 = [v3 _merchantParameters];
-    v81 = [v86 merchantCode];
-    v85 = [v3 _merchantParameters];
-    v24 = [v85 rawMerchantCode];
-    v84 = [v3 _merchantParameters];
-    v25 = [v84 industryCategory];
-    v82 = [v3 _merchantParameters];
-    v26 = [v82 industryCode];
-    v27 = [v3 _merchantParameters];
-    v28 = [v27 paymentNetwork];
-    v29 = [v3 _merchantParameters];
-    v30 = [v29 transactionDate];
-    v80 = v20;
-    v17 = v87;
-    v31 = v24;
-    v32 = [v88 ticketForMerchantCode:v81 rawMerchantCode:v24 industryCategory:v25 industryCode:v26 paymentNetwork:v28 transactionDate:v30 transactionLocation:v87 traits:v80];
+    _merchantParameters4 = [requestCopy _merchantParameters];
+    merchantCode = [_merchantParameters4 merchantCode];
+    _merchantParameters5 = [requestCopy _merchantParameters];
+    rawMerchantCode = [_merchantParameters5 rawMerchantCode];
+    _merchantParameters6 = [requestCopy _merchantParameters];
+    industryCategory = [_merchantParameters6 industryCategory];
+    _merchantParameters7 = [requestCopy _merchantParameters];
+    industryCode = [_merchantParameters7 industryCode];
+    _merchantParameters8 = [requestCopy _merchantParameters];
+    paymentNetwork = [_merchantParameters8 paymentNetwork];
+    _merchantParameters9 = [requestCopy _merchantParameters];
+    transactionDate = [_merchantParameters9 transactionDate];
+    v80 = defaultTraits;
+    defaultTraits3 = v87;
+    v31 = rawMerchantCode;
+    v32 = [v88 ticketForMerchantCode:merchantCode rawMerchantCode:rawMerchantCode industryCategory:industryCategory industryCode:industryCode paymentNetwork:paymentNetwork transactionDate:transactionDate transactionLocation:v87 traits:v80];
 
-    v33 = v83;
+    _phoneNumbers2 = v83;
     goto LABEL_20;
   }
 
-  v11 = [v3 _externalTransitLookupParameters];
+  _externalTransitLookupParameters = [requestCopy _externalTransitLookupParameters];
 
-  if (v11)
+  if (_externalTransitLookupParameters)
   {
-    v12 = [v3 _externalTransitLookupParameters];
-    v13 = [v12 transactionLocation];
+    _externalTransitLookupParameters2 = [requestCopy _externalTransitLookupParameters];
+    transactionLocation3 = [_externalTransitLookupParameters2 transactionLocation];
 
-    if (v13)
+    if (transactionLocation3)
     {
       v14 = objc_alloc(MEMORY[0x1E69A1E70]);
-      v15 = [v3 _externalTransitLookupParameters];
-      v16 = [v15 transactionLocation];
-      v17 = [v14 initWithCLLocation:v16];
+      _externalTransitLookupParameters3 = [requestCopy _externalTransitLookupParameters];
+      transactionLocation4 = [_externalTransitLookupParameters3 transactionLocation];
+      defaultTraits3 = [v14 initWithCLLocation:transactionLocation4];
     }
 
     else
     {
-      v17 = 0;
+      defaultTraits3 = 0;
     }
 
-    v37 = [v3 _deviceLocation];
+    _deviceLocation3 = [requestCopy _deviceLocation];
 
-    if (v37)
+    if (_deviceLocation3)
     {
       v38 = +[MKMapService sharedService];
-      v39 = [v38 defaultTraits];
+      defaultTraits2 = [v38 defaultTraits];
 
       v40 = objc_alloc(MEMORY[0x1E69A1E70]);
-      v41 = [v3 _deviceLocation];
-      v42 = [v40 initWithCLLocation:v41];
-      [v39 setDeviceLocation:v42];
+      _deviceLocation4 = [requestCopy _deviceLocation];
+      v42 = [v40 initWithCLLocation:_deviceLocation4];
+      [defaultTraits2 setDeviceLocation:v42];
     }
 
     else
     {
-      v39 = 0;
+      defaultTraits2 = 0;
     }
 
     v89 = +[MKMapService sharedService];
-    v43 = [v3 _externalTransitLookupParameters];
-    v44 = [v43 stationCodes];
-    v45 = [v3 _externalTransitLookupParameters];
-    v46 = [v45 sourceIdentifier];
-    v47 = [v3 _externalTransitLookupParameters];
-    v48 = [v47 transactionDate];
-    [v89 ticketForExternalTransitStationCodes:v44 sourceID:v46 transactionDate:v48 transactionLocation:v17 traits:v39];
-    v32 = v49 = v39;
+    _externalTransitLookupParameters4 = [requestCopy _externalTransitLookupParameters];
+    stationCodes = [_externalTransitLookupParameters4 stationCodes];
+    _externalTransitLookupParameters5 = [requestCopy _externalTransitLookupParameters];
+    sourceIdentifier = [_externalTransitLookupParameters5 sourceIdentifier];
+    _externalTransitLookupParameters6 = [requestCopy _externalTransitLookupParameters];
+    transactionDate2 = [_externalTransitLookupParameters6 transactionDate];
+    [v89 ticketForExternalTransitStationCodes:stationCodes sourceID:sourceIdentifier transactionDate:transactionDate2 transactionLocation:defaultTraits3 traits:defaultTraits2];
+    v32 = v49 = defaultTraits2;
 
-    v33 = v49;
+    _phoneNumbers2 = v49;
     goto LABEL_20;
   }
 
-  v34 = [v3 _phoneNumbers];
-  v35 = [v34 count];
+  _phoneNumbers = [requestCopy _phoneNumbers];
+  v35 = [_phoneNumbers count];
 
   if (v35)
   {
-    v17 = +[MKMapService sharedService];
-    v33 = [v3 _phoneNumbers];
-    v36 = [v17 ticketForPhoneNumbers:v33 allowCellularDataForLookup:objc_msgSend(v3 traits:{"_allowPhoneNumberLookupUsingCellular"), 0}];
+    defaultTraits3 = +[MKMapService sharedService];
+    _phoneNumbers2 = [requestCopy _phoneNumbers];
+    v36 = [defaultTraits3 ticketForPhoneNumbers:_phoneNumbers2 allowCellularDataForLookup:objc_msgSend(requestCopy traits:{"_allowPhoneNumberLookupUsingCellular"), 0}];
 LABEL_14:
     v32 = v36;
     goto LABEL_20;
   }
 
-  v51 = [v3 _muids];
-  v52 = [v51 count];
+  _muids = [requestCopy _muids];
+  v52 = [_muids count];
 
   if (v52)
   {
-    if ([v3 _hasRegion])
+    if ([requestCopy _hasRegion])
     {
       v53 = +[MKMapService sharedService];
-      v17 = [v53 defaultTraits];
+      defaultTraits3 = [v53 defaultTraits];
 
       v54 = MEMORY[0x1E69A2200];
-      [v3 region];
+      [requestCopy region];
       v55 = [v54 _mapkit_mapRegionForCoordinateRegion:?];
-      [v17 setMapRegion:v55];
+      [defaultTraits3 setMapRegion:v55];
     }
 
     else
     {
-      v17 = 0;
+      defaultTraits3 = 0;
     }
 
-    v33 = +[MKMapService sharedService];
-    v60 = [v3 _muids];
-    v32 = [v33 ticketForMUIDs:v60 resultProviderID:objc_msgSend(v3 contentProvider:"_resultProviderID") traits:{0, v17}];
+    _phoneNumbers2 = +[MKMapService sharedService];
+    _muids2 = [requestCopy _muids];
+    v32 = [_phoneNumbers2 ticketForMUIDs:_muids2 resultProviderID:objc_msgSend(requestCopy contentProvider:"_resultProviderID") traits:{0, defaultTraits3}];
   }
 
   else
   {
-    v56 = [v3 _canonicalSearchString];
-    if (v56)
+    _canonicalSearchString = [requestCopy _canonicalSearchString];
+    if (_canonicalSearchString)
     {
-      v57 = v56;
-      v58 = [v3 _canonicalSearchString];
-      v59 = [v58 length];
+      v57 = _canonicalSearchString;
+      _canonicalSearchString2 = [requestCopy _canonicalSearchString];
+      v59 = [_canonicalSearchString2 length];
 
       if (v59)
       {
-        v17 = +[MKMapService sharedService];
-        v33 = [v3 _canonicalSearchString];
-        v36 = [v17 ticketForCanonicalLocationSearchQueryString:v33 traits:0];
+        defaultTraits3 = +[MKMapService sharedService];
+        _phoneNumbers2 = [requestCopy _canonicalSearchString];
+        v36 = [defaultTraits3 ticketForCanonicalLocationSearchQueryString:_phoneNumbers2 traits:0];
         goto LABEL_14;
       }
     }
 
     v61 = +[MKMapService sharedService];
-    v17 = [v61 defaultTraits];
+    defaultTraits3 = [v61 defaultTraits];
 
-    if ([v3 _hasRegion])
+    if ([requestCopy _hasRegion])
     {
       v62 = MEMORY[0x1E69A2200];
-      [v3 region];
+      [requestCopy region];
       v63 = [v62 _mapkit_mapRegionForCoordinateRegion:?];
-      [v17 setMapRegion:v63];
+      [defaultTraits3 setMapRegion:v63];
     }
 
-    v64 = [v3 geoCompletionItem];
-    if (v64)
+    geoCompletionItem = [requestCopy geoCompletionItem];
+    if (geoCompletionItem)
     {
-      v65 = v64;
-      v66 = [v3 hasSentFeedbackForCompletion];
+      v65 = geoCompletionItem;
+      hasSentFeedbackForCompletion = [requestCopy hasSentFeedbackForCompletion];
 
-      if ((v66 & 1) == 0)
+      if ((hasSentFeedbackForCompletion & 1) == 0)
       {
-        [v3 setHasSentFeedbackForCompletion:1];
-        v67 = [v3 geoCompletionItem];
-        [v67 sendFeedback];
+        [requestCopy setHasSentFeedbackForCompletion:1];
+        geoCompletionItem2 = [requestCopy geoCompletionItem];
+        [geoCompletionItem2 sendFeedback];
       }
     }
 
-    v33 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:2];
-    v68 = [v3 pointOfInterestFilter];
-    v69 = [v68 _geoPOICategoryFilter];
+    _phoneNumbers2 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:2];
+    pointOfInterestFilter = [requestCopy pointOfInterestFilter];
+    _geoPOICategoryFilter = [pointOfInterestFilter _geoPOICategoryFilter];
 
-    if (v69)
+    if (_geoPOICategoryFilter)
     {
-      [v33 addObject:v69];
+      [_phoneNumbers2 addObject:_geoPOICategoryFilter];
     }
 
-    v70 = [v3 addressFilter];
+    addressFilter = [requestCopy addressFilter];
 
-    if (v70)
+    if (addressFilter)
     {
-      v71 = [v3 addressFilter];
-      v72 = [v71 _geoAddressFilter];
+      addressFilter2 = [requestCopy addressFilter];
+      _geoAddressFilter = [addressFilter2 _geoAddressFilter];
 
-      if (v72)
+      if (_geoAddressFilter)
       {
-        [v33 addObject:v72];
+        [_phoneNumbers2 addObject:_geoAddressFilter];
       }
     }
 
-    if ([v3 resultTypes])
+    if ([requestCopy resultTypes])
     {
-      v73 = [v3 resultTypes];
+      resultTypes = [requestCopy resultTypes];
       v74 = _MKLinkedOnOrAfterReleaseSet(3852);
-      if ((v73 & 2) != 0 && !v74)
+      if ((resultTypes & 2) != 0 && !v74)
       {
-        v73 |= 4uLL;
+        resultTypes |= 4uLL;
       }
 
-      v76 = [objc_alloc(MEMORY[0x1E69A2498]) initWithResultTypes:v73];
-      [v33 addObject:v76];
+      v76 = [objc_alloc(MEMORY[0x1E69A2498]) initWithResultTypes:resultTypes];
+      [_phoneNumbers2 addObject:v76];
     }
 
-    if ([v3 regionPriority] == 1)
+    if ([requestCopy regionPriority] == 1)
     {
       v77 = objc_alloc_init(MEMORY[0x1E69A25D0]);
-      [v33 addObject:v77];
+      [_phoneNumbers2 addObject:v77];
     }
 
-    v60 = +[MKMapService sharedService];
-    v78 = [v3 naturalLanguageQuery];
-    v79 = [v3 geoCompletionItem];
-    v32 = [v60 _mk_ticketForSearchQuery:v78 completionItem:v79 traits:v17 filters:v33];
+    _muids2 = +[MKMapService sharedService];
+    naturalLanguageQuery = [requestCopy naturalLanguageQuery];
+    geoCompletionItem3 = [requestCopy geoCompletionItem];
+    v32 = [_muids2 _mk_ticketForSearchQuery:naturalLanguageQuery completionItem:geoCompletionItem3 traits:defaultTraits3 filters:_phoneNumbers2];
   }
 
 LABEL_20:
@@ -462,17 +462,17 @@ LABEL_20:
   return v32;
 }
 
-- (void)_startWithCompletionHandler:(id)a3 queue:(id)a4
+- (void)_startWithCompletionHandler:(id)handler queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  handlerCopy = handler;
+  queueCopy = queue;
+  v8 = queueCopy;
+  if (!handlerCopy)
   {
     goto LABEL_13;
   }
 
-  if (!v7)
+  if (!queueCopy)
   {
     v9 = MEMORY[0x1E695DF30];
     v10 = *MEMORY[0x1E695D930];
@@ -491,8 +491,8 @@ LABEL_20:
     v16 = __51__MKLocalSearch__startWithCompletionHandler_queue___block_invoke_2;
     v21 = __51__MKLocalSearch__startWithCompletionHandler_queue___block_invoke_2;
     v22 = &unk_1E76CAA70;
-    v23 = self;
-    v25 = v6;
+    selfCopy = self;
+    v25 = handlerCopy;
     v24 = v8;
     v17 = v24;
     v18 = v20;
@@ -529,7 +529,7 @@ LABEL_12:
   block[2] = __51__MKLocalSearch__startWithCompletionHandler_queue___block_invoke;
   block[3] = &unk_1E76CDA20;
   v27 = v14;
-  v28 = v6;
+  v28 = handlerCopy;
   v15 = v14;
   dispatch_async(v8, block);
 

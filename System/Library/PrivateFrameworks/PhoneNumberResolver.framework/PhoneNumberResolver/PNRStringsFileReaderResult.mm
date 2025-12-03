@@ -1,52 +1,52 @@
 @interface PNRStringsFileReaderResult
-- (BOOL)isEqualTo:(id)a3;
+- (BOOL)isEqualTo:(id)to;
 - (BOOL)isPlaceHolderForEmpty;
-- (BOOL)shouldOrderCityFirstForLanguage:(id)a3 phoneNumberInCC:(id)a4;
-- (PNRStringsFileReaderResult)initWithCountry:(id)a3 region:(id)a4 city:(id)a5;
-- (id)aggregateStringWhileInCountry:(id)a3 forLanguage:(id)a4 ccOfNumber:(id)a5;
-- (id)separatorForLanguage:(id)a3;
+- (BOOL)shouldOrderCityFirstForLanguage:(id)language phoneNumberInCC:(id)c;
+- (PNRStringsFileReaderResult)initWithCountry:(id)country region:(id)region city:(id)city;
+- (id)aggregateStringWhileInCountry:(id)country forLanguage:(id)language ccOfNumber:(id)number;
+- (id)separatorForLanguage:(id)language;
 - (int64_t)score;
 @end
 
 @implementation PNRStringsFileReaderResult
 
-- (PNRStringsFileReaderResult)initWithCountry:(id)a3 region:(id)a4 city:(id)a5
+- (PNRStringsFileReaderResult)initWithCountry:(id)country region:(id)region city:(id)city
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  countryCopy = country;
+  regionCopy = region;
+  cityCopy = city;
   v15.receiver = self;
   v15.super_class = PNRStringsFileReaderResult;
   v12 = [(PNRStringsFileReaderResult *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_country, a3);
-    objc_storeStrong(&v13->_region, a4);
-    objc_storeStrong(&v13->_city, a5);
+    objc_storeStrong(&v12->_country, country);
+    objc_storeStrong(&v13->_region, region);
+    objc_storeStrong(&v13->_city, city);
   }
 
   return v13;
 }
 
-- (BOOL)isEqualTo:(id)a3
+- (BOOL)isEqualTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(PNRStringsFileReaderResult *)self country];
-    v7 = [v5 country];
-    if ([v6 isEqualToString:v7])
+    v5 = toCopy;
+    country = [(PNRStringsFileReaderResult *)self country];
+    country2 = [v5 country];
+    if ([country isEqualToString:country2])
     {
-      v8 = [(PNRStringsFileReaderResult *)self region];
-      v9 = [v5 region];
-      if ([v8 isEqualToString:v9])
+      region = [(PNRStringsFileReaderResult *)self region];
+      region2 = [v5 region];
+      if ([region isEqualToString:region2])
       {
-        v10 = [(PNRStringsFileReaderResult *)self city];
-        v11 = [v5 city];
-        v12 = [v10 isEqualToString:v11];
+        city = [(PNRStringsFileReaderResult *)self city];
+        city2 = [v5 city];
+        v12 = [city isEqualToString:city2];
       }
 
       else
@@ -71,9 +71,9 @@
 
 - (int64_t)score
 {
-  v3 = [(PNRStringsFileReaderResult *)self country];
+  country = [(PNRStringsFileReaderResult *)self country];
 
-  if (v3)
+  if (country)
   {
     v4 = 10;
   }
@@ -83,9 +83,9 @@
     v4 = 1;
   }
 
-  v5 = [(PNRStringsFileReaderResult *)self region];
+  region = [(PNRStringsFileReaderResult *)self region];
   v6 = 2 * v4;
-  if (v5)
+  if (region)
   {
     v4 *= 10;
   }
@@ -95,7 +95,7 @@
     v6 = 0;
   }
 
-  if (v3)
+  if (country)
   {
     v7 = v6 + 1;
   }
@@ -105,10 +105,10 @@
     v7 = v6;
   }
 
-  v8 = [(PNRStringsFileReaderResult *)self city];
+  city = [(PNRStringsFileReaderResult *)self city];
 
   v9 = 3 * v4;
-  if (!v8)
+  if (!city)
   {
     v9 = 0;
   }
@@ -116,10 +116,10 @@
   return v7 + v9;
 }
 
-- (id)separatorForLanguage:(id)a3
+- (id)separatorForLanguage:(id)language
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  languageCopy = language;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -139,7 +139,7 @@ LABEL_3:
         objc_enumerationMutation(&unk_28703B938);
       }
 
-      if ([*(*(&v11 + 1) + 8 * v8) isEqualToString:v3])
+      if ([*(*(&v11 + 1) + 8 * v8) isEqualToString:languageCopy])
       {
         break;
       }
@@ -167,10 +167,10 @@ LABEL_3:
   return v7;
 }
 
-- (BOOL)shouldOrderCityFirstForLanguage:(id)a3 phoneNumberInCC:(id)a4
+- (BOOL)shouldOrderCityFirstForLanguage:(id)language phoneNumberInCC:(id)c
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  languageCopy = language;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -189,7 +189,7 @@ LABEL_3:
           objc_enumerationMutation(&unk_28703B950);
         }
 
-        if ([*(*(&v12 + 1) + 8 * i) isEqualToString:v4])
+        if ([*(*(&v12 + 1) + 8 * i) isEqualToString:languageCopy])
         {
           v9 = 0;
           goto LABEL_11;
@@ -213,58 +213,58 @@ LABEL_11:
   return v9;
 }
 
-- (id)aggregateStringWhileInCountry:(id)a3 forLanguage:(id)a4 ccOfNumber:(id)a5
+- (id)aggregateStringWhileInCountry:(id)country forLanguage:(id)language ccOfNumber:(id)number
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(PNRStringsFileReaderResult *)self shouldOrderCityFirstForLanguage:v9 phoneNumberInCC:a5];
+  countryCopy = country;
+  languageCopy = language;
+  v10 = [(PNRStringsFileReaderResult *)self shouldOrderCityFirstForLanguage:languageCopy phoneNumberInCC:number];
   v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:3];
-  v12 = [(PNRStringsFileReaderResult *)self city];
-  if ([v12 length])
+  city = [(PNRStringsFileReaderResult *)self city];
+  if ([city length])
   {
-    v13 = [(PNRStringsFileReaderResult *)self region];
-    v14 = [(PNRStringsFileReaderResult *)self city];
-    v15 = [v13 isEqualToString:v14];
+    region = [(PNRStringsFileReaderResult *)self region];
+    city2 = [(PNRStringsFileReaderResult *)self city];
+    v15 = [region isEqualToString:city2];
 
     if (v15)
     {
       goto LABEL_5;
     }
 
-    v12 = [(PNRStringsFileReaderResult *)self city];
-    [v11 addObject:v12];
+    city = [(PNRStringsFileReaderResult *)self city];
+    [v11 addObject:city];
   }
 
 LABEL_5:
-  v16 = [(PNRStringsFileReaderResult *)self region];
-  v17 = [v16 length];
+  region2 = [(PNRStringsFileReaderResult *)self region];
+  v17 = [region2 length];
 
   if (v17)
   {
-    v18 = [(PNRStringsFileReaderResult *)self region];
+    region3 = [(PNRStringsFileReaderResult *)self region];
     if (v10)
     {
-      [v11 addObject:v18];
+      [v11 addObject:region3];
     }
 
     else
     {
-      [v11 insertObject:v18 atIndex:0];
+      [v11 insertObject:region3 atIndex:0];
     }
   }
 
-  v19 = [(PNRStringsFileReaderResult *)self country];
-  v20 = [v19 length];
+  country = [(PNRStringsFileReaderResult *)self country];
+  v20 = [country length];
 
   if (v20)
   {
-    v21 = [(PNRStringsFileReaderResult *)self country];
-    v22 = [v21 componentsSeparatedByString:@":"];
+    country2 = [(PNRStringsFileReaderResult *)self country];
+    v22 = [country2 componentsSeparatedByString:@":"];
 
     if ([v22 count] == 2)
     {
       v23 = [v22 objectAtIndexedSubscript:0];
-      if ([v8 caseInsensitiveCompare:v23] && (objc_msgSend(v23, "caseInsensitiveCompare:", @"CN") || objc_msgSend(v8, "caseInsensitiveCompare:", @"HK") && objc_msgSend(v8, "caseInsensitiveCompare:", @"MO")))
+      if ([countryCopy caseInsensitiveCompare:v23] && (objc_msgSend(v23, "caseInsensitiveCompare:", @"CN") || objc_msgSend(countryCopy, "caseInsensitiveCompare:", @"HK") && objc_msgSend(countryCopy, "caseInsensitiveCompare:", @"MO")))
       {
 
         v23 = [v22 objectAtIndexedSubscript:1];
@@ -281,7 +281,7 @@ LABEL_5:
     }
   }
 
-  v24 = [(PNRStringsFileReaderResult *)self separatorForLanguage:v9];
+  v24 = [(PNRStringsFileReaderResult *)self separatorForLanguage:languageCopy];
   v25 = [v11 componentsJoinedByString:v24];
 
   return v25;
@@ -289,14 +289,14 @@ LABEL_5:
 
 - (BOOL)isPlaceHolderForEmpty
 {
-  v3 = [(PNRStringsFileReaderResult *)self country];
-  if ([v3 isEqualToString:@":NONE"])
+  country = [(PNRStringsFileReaderResult *)self country];
+  if ([country isEqualToString:@":NONE"])
   {
-    v4 = [(PNRStringsFileReaderResult *)self region];
-    if ([v4 isEqualToString:@"NONE"])
+    region = [(PNRStringsFileReaderResult *)self region];
+    if ([region isEqualToString:@"NONE"])
     {
-      v5 = [(PNRStringsFileReaderResult *)self city];
-      v6 = [v5 isEqualToString:@"NONE"];
+      city = [(PNRStringsFileReaderResult *)self city];
+      v6 = [city isEqualToString:@"NONE"];
     }
 
     else

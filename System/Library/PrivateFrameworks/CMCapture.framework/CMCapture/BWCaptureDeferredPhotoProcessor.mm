@@ -1,23 +1,23 @@
 @interface BWCaptureDeferredPhotoProcessor
-- (BWCaptureDeferredPhotoProcessor)initWithFigCaptureDeferredPhotoProcessor:(OpaqueFigCaptureDeferredPhotoProcessor *)a3;
-- (uint64_t)_runImageCorruptionDetectionForJob:(__IOSurface *)a3 onEncodedSurface:(uint64_t)a4 surfaceSize:;
-- (void)_prepareToTerminateImmediatelyDueToError:(int)a3;
+- (BWCaptureDeferredPhotoProcessor)initWithFigCaptureDeferredPhotoProcessor:(OpaqueFigCaptureDeferredPhotoProcessor *)processor;
+- (uint64_t)_runImageCorruptionDetectionForJob:(__IOSurface *)job onEncodedSurface:(uint64_t)surface surfaceSize:;
+- (void)_prepareToTerminateImmediatelyDueToError:(int)error;
 - (void)dealloc;
-- (void)job:(id)a3 completedWithSampleBuffer:(opaqueCMSampleBuffer *)a4;
-- (void)job:(id)a3 failedWithError:(int)a4;
-- (void)request:(id)a3 failedWithError:(int)a4;
+- (void)job:(id)job completedWithSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (void)job:(id)job failedWithError:(int)error;
+- (void)request:(id)request failedWithError:(int)error;
 @end
 
 @implementation BWCaptureDeferredPhotoProcessor
 
-- (BWCaptureDeferredPhotoProcessor)initWithFigCaptureDeferredPhotoProcessor:(OpaqueFigCaptureDeferredPhotoProcessor *)a3
+- (BWCaptureDeferredPhotoProcessor)initWithFigCaptureDeferredPhotoProcessor:(OpaqueFigCaptureDeferredPhotoProcessor *)processor
 {
   v6.receiver = self;
   v6.super_class = BWCaptureDeferredPhotoProcessor;
   v4 = [(BWCaptureDeferredPhotoProcessor *)&v6 init];
   if (v4)
   {
-    v4->_weakDeferredPhotoProcessorReference = [FigWeakReference weakReferenceToObject:a3];
+    v4->_weakDeferredPhotoProcessorReference = [FigWeakReference weakReferenceToObject:processor];
   }
 
   return v4;
@@ -38,18 +38,18 @@ void __59__BWCaptureDeferredPhotoProcessor_request_failedWithError___block_invok
   }
 }
 
-- (void)job:(id)a3 failedWithError:(int)a4
+- (void)job:(id)job failedWithError:(int)error
 {
-  v4 = *&a4;
-  v6 = [a3 processorRequest];
+  v4 = *&error;
+  processorRequest = [job processorRequest];
 
-  [(BWCaptureDeferredPhotoProcessor *)self request:v6 failedWithError:v4];
+  [(BWCaptureDeferredPhotoProcessor *)self request:processorRequest failedWithError:v4];
 }
 
-- (void)request:(id)a3 failedWithError:(int)a4
+- (void)request:(id)request failedWithError:(int)error
 {
-  v4 = *&a4;
-  v6 = [(FigWeakReference *)self->_weakDeferredPhotoProcessorReference referencedObject];
+  v4 = *&error;
+  referencedObject = [(FigWeakReference *)self->_weakDeferredPhotoProcessorReference referencedObject];
   DerivedStorage = CMBaseObjectGetDerivedStorage();
   if (DerivedStorage)
   {
@@ -66,7 +66,7 @@ void __59__BWCaptureDeferredPhotoProcessor_request_failedWithError___block_invok
         fig_log_call_emit_and_clean_up_after_send_and_compose();
       }
 
-      [objc_msgSend(a3 container];
+      [objc_msgSend(request container];
       v10 = MEMORY[0x1E695FF58];
       if (*MEMORY[0x1E695FF58] == 1)
       {
@@ -75,16 +75,16 @@ void __59__BWCaptureDeferredPhotoProcessor_request_failedWithError___block_invok
       }
 
       v11 = objc_autoreleasePoolPush();
-      if (![a3 parent])
+      if (![request parent])
       {
         v16[0] = @"CaptureRequestIdentifier";
-        v17[0] = [a3 captureRequestIdentifier];
+        v17[0] = [request captureRequestIdentifier];
         v16[1] = @"PhotoIdentifiers";
-        v15 = [a3 photoIdentifier];
-        v17[1] = [MEMORY[0x1E695DEC8] arrayWithObjects:&v15 count:1];
+        photoIdentifier = [request photoIdentifier];
+        v17[1] = [MEMORY[0x1E695DEC8] arrayWithObjects:&photoIdentifier count:1];
         v16[2] = @"ErrorStatus";
         v17[2] = [MEMORY[0x1E696AD98] numberWithInt:v4];
-        captureDeferredPhotoProcessor_sendXPCNotificationWithPayload(v6, @"DidFinishProcessingPhotoProxy", [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:3]);
+        captureDeferredPhotoProcessor_sendXPCNotificationWithPayload(referencedObject, @"DidFinishProcessingPhotoProxy", [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:3]);
       }
 
       if ((v8[57] & 1) == 0)
@@ -93,10 +93,10 @@ void __59__BWCaptureDeferredPhotoProcessor_request_failedWithError___block_invok
         v14[1] = 3221225472;
         v14[2] = __59__BWCaptureDeferredPhotoProcessor_request_failedWithError___block_invoke;
         v14[3] = &unk_1E7991EF8;
-        v14[4] = a3;
+        v14[4] = request;
         v14[5] = v8;
-        v14[6] = v6;
-        captureDeferredPhotoProcessor_performBlockOnWorkerQueueAsync(v6, v14);
+        v14[6] = referencedObject;
+        captureDeferredPhotoProcessor_performBlockOnWorkerQueueAsync(referencedObject, v14);
       }
 
       objc_autoreleasePoolPop(v11);
@@ -108,14 +108,14 @@ void __59__BWCaptureDeferredPhotoProcessor_request_failedWithError___block_invok
   }
 }
 
-- (void)job:(id)a3 completedWithSampleBuffer:(opaqueCMSampleBuffer *)a4
+- (void)job:(id)job completedWithSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   if (dword_1ED843F90)
   {
     v121 = 0;
     v120 = 0;
     os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
-    v4 = 0;
+    outputMirroring = 0;
     os_log_type_enabled(os_log_and_send_and_compose_flags_and_os_log_type, OS_LOG_TYPE_DEFAULT);
     OUTLINED_FUNCTION_2_4();
     fig_log_call_emit_and_clean_up_after_send_and_compose();
@@ -134,115 +134,115 @@ void __59__BWCaptureDeferredPhotoProcessor_request_failedWithError___block_invok
 
     v11 = objc_autoreleasePoolPush();
     v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    if ([objc_msgSend(a3 "processorRequest")])
+    if ([objc_msgSend(job "processorRequest")])
     {
 
       goto LABEL_48;
     }
 
     memset(&v117, 0, sizeof(v117));
-    CMSampleBufferGetPresentationTimeStamp(&v117, a4);
+    CMSampleBufferGetPresentationTimeStamp(&v117, buffer);
     v13 = *MEMORY[0x1E695E480];
     v119[0] = v117;
     v14 = CMTimeCopyAsDictionary(v119, v13);
     if (v14)
     {
       v108 = v8;
-      v109 = self;
+      selfCopy = self;
       v113 = v11;
       v112 = v14;
       v107 = OUTLINED_FUNCTION_19_32(v14, @"PhotoManifest");
-      v15 = [v107 descriptorForSampleBuffer:a4];
+      v15 = [v107 descriptorForSampleBuffer:buffer];
       ShouldIncludeDiagnosticMetadata = FigCaptureMetadataUtilitiesShouldIncludeDiagnosticMetadata();
       v110 = ShouldIncludeDiagnosticMetadata != 0;
       self = OUTLINED_FUNCTION_19_32(ShouldIncludeDiagnosticMetadata, @"StillImageSettings");
-      v17 = [(BWCaptureDeferredPhotoProcessor *)self outputFileType];
-      v18 = [(BWCaptureDeferredPhotoProcessor *)self outputRotationDegrees];
-      v4 = [(BWCaptureDeferredPhotoProcessor *)self outputMirroring];
+      outputFileType = [(BWCaptureDeferredPhotoProcessor *)self outputFileType];
+      outputRotationDegrees = [(BWCaptureDeferredPhotoProcessor *)self outputRotationDegrees];
+      outputMirroring = [(BWCaptureDeferredPhotoProcessor *)self outputMirroring];
       v114 = v12;
-      v19 = [(BWCaptureDeferredPhotoProcessor *)self flashMode];
-      StillImageMetadataInSettingsForSampleBuffer = FigCaptureMetadataUtilitiesGetStillImageMetadataInSettingsForSampleBuffer(self, a4);
-      IrisAssetIdentifierForSettingsAndSampleBuffer = FigCaptureMetadataUtilitiesGetIrisAssetIdentifierForSettingsAndSampleBuffer(self, a4);
-      v22 = [(BWCaptureDeferredPhotoProcessor *)self imageGroupIdentifier];
-      v23 = [v15 time];
-      v24 = v19;
+      flashMode = [(BWCaptureDeferredPhotoProcessor *)self flashMode];
+      StillImageMetadataInSettingsForSampleBuffer = FigCaptureMetadataUtilitiesGetStillImageMetadataInSettingsForSampleBuffer(self, buffer);
+      IrisAssetIdentifierForSettingsAndSampleBuffer = FigCaptureMetadataUtilitiesGetIrisAssetIdentifierForSettingsAndSampleBuffer(self, buffer);
+      imageGroupIdentifier = [(BWCaptureDeferredPhotoProcessor *)self imageGroupIdentifier];
+      time = [v15 time];
+      v24 = flashMode;
       v12 = v114;
-      v25 = FigCaptureMetadataUtilitiesCreateMetadataAttachments(a4, v17, v18, v4, 1, 1, v24, v110, 1, 0, 1, 0, 0, 0, 0, StillImageMetadataInSettingsForSampleBuffer, IrisAssetIdentifierForSettingsAndSampleBuffer, v22, 0, v23, 0);
+      v25 = FigCaptureMetadataUtilitiesCreateMetadataAttachments(buffer, outputFileType, outputRotationDegrees, outputMirroring, 1, 1, v24, v110, 1, 0, 1, 0, 0, 0, 0, StillImageMetadataInSettingsForSampleBuffer, IrisAssetIdentifierForSettingsAndSampleBuffer, imageGroupIdentifier, 0, time, 0);
       [v114 setObject:v112 forKeyedSubscript:@"PresentationTimestamp"];
-      [v114 setObject:objc_msgSend(objc_msgSend(a3 forKeyedSubscript:{"processorRequest"), "captureRequestIdentifier"), @"CaptureRequestIdentifier"}];
+      [v114 setObject:objc_msgSend(objc_msgSend(job forKeyedSubscript:{"processorRequest"), "captureRequestIdentifier"), @"CaptureRequestIdentifier"}];
       [v114 setObject:objc_msgSend(v15 forKeyedSubscript:{"photoIdentifier"), @"PhotoIdentifier"}];
-      v26 = [v15 processingFlags];
-      if ((v26 & 0x10000) == 0)
+      processingFlags = [v15 processingFlags];
+      if ((processingFlags & 0x10000) == 0)
       {
-        v4 = OUTLINED_FUNCTION_19_32(v26, @"EncodedImageSurface");
-        v11 = [OUTLINED_FUNCTION_19_32(v4 @"EncodedImageSurfaceSize")];
-        v27 = [OUTLINED_FUNCTION_19_32(v11 @"EncodedImageCodecType")];
-        v28 = [OUTLINED_FUNCTION_19_32(v27 @"EncodedImageFileType")];
+        outputMirroring = OUTLINED_FUNCTION_19_32(processingFlags, @"EncodedImageSurface");
+        v11 = [OUTLINED_FUNCTION_19_32(outputMirroring @"EncodedImageSurfaceSize")];
+        rawOutputFormat = [OUTLINED_FUNCTION_19_32(v11 @"EncodedImageCodecType")];
+        v28 = [OUTLINED_FUNCTION_19_32(rawOutputFormat @"EncodedImageFileType")];
 LABEL_13:
-        if (v4)
+        if (outputMirroring)
         {
           if (v11)
           {
-            if (v27)
+            if (rawOutputFormat)
             {
               if (v28)
               {
                 if (v25)
                 {
-                  [v12 setObject:v4 forKeyedSubscript:@"Surface"];
+                  [v12 setObject:outputMirroring forKeyedSubscript:@"Surface"];
                   [v12 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedLong:", v11), @"SurfaceSize"}];
-                  [v12 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", v27), @"PhotoCodec"}];
+                  [v12 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", rawOutputFormat), @"PhotoCodec"}];
                   [v12 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", v28), @"PhotoFileType"}];
                   [v12 setObject:v25 forKeyedSubscript:@"Metadata"];
                   if ([(BWCaptureDeferredPhotoProcessor *)self depthDataDeliveryEnabled]&& ([(BWCaptureDeferredPhotoProcessor *)self embedsDepthDataInImage]& 1) == 0)
                   {
-                    fcdpp_copyAttachedMediaSurfaceDataFromSampleBufferIntoNotificationPayload(a4, @"Depth", *off_1E798D2B8, 0, v12, @"DepthDataSurface", @"DepthMetadata");
+                    fcdpp_copyAttachedMediaSurfaceDataFromSampleBufferIntoNotificationPayload(buffer, @"Depth", *off_1E798D2B8, 0, v12, @"DepthDataSurface", @"DepthMetadata");
                   }
 
                   if ([(BWCaptureDeferredPhotoProcessor *)self portraitEffectsMatteDeliveryEnabled])
                   {
-                    v37 = [(BWCaptureDeferredPhotoProcessor *)self embedsPortraitEffectsMatteInImage];
-                    if ((v37 & 1) == 0)
+                    embedsPortraitEffectsMatteInImage = [(BWCaptureDeferredPhotoProcessor *)self embedsPortraitEffectsMatteInImage];
+                    if ((embedsPortraitEffectsMatteInImage & 1) == 0)
                     {
-                      OUTLINED_FUNCTION_18_31(v37, 0x1F21AABB0, *off_1E798D2D8, v38, v39, @"PortraitEffectsMatteSurface", @"PortraitEffectsMatteMetadata");
+                      OUTLINED_FUNCTION_18_31(embedsPortraitEffectsMatteInImage, 0x1F21AABB0, *off_1E798D2D8, v38, v39, @"PortraitEffectsMatteSurface", @"PortraitEffectsMatteMetadata");
                     }
                   }
 
                   if (([(BWCaptureDeferredPhotoProcessor *)self embedsSemanticSegmentationMattesInImage]& 1) == 0)
                   {
-                    v40 = [(BWCaptureDeferredPhotoProcessor *)self enabledSemanticSegmentationMatteURNs];
-                    v41 = [v40 containsObject:*MEMORY[0x1E69917E0]];
+                    enabledSemanticSegmentationMatteURNs = [(BWCaptureDeferredPhotoProcessor *)self enabledSemanticSegmentationMatteURNs];
+                    v41 = [enabledSemanticSegmentationMatteURNs containsObject:*MEMORY[0x1E69917E0]];
                     if (v41)
                     {
                       OUTLINED_FUNCTION_18_31(v41, @"PersonSemanticsHair", *off_1E798D2E0, v42, v43, @"HairSegmentationMatteSurface", @"HairSegmentationMatteMetadata");
                     }
 
-                    v44 = [(BWCaptureDeferredPhotoProcessor *)self enabledSemanticSegmentationMatteURNs];
-                    v45 = [v44 containsObject:*MEMORY[0x1E69917E8]];
+                    enabledSemanticSegmentationMatteURNs2 = [(BWCaptureDeferredPhotoProcessor *)self enabledSemanticSegmentationMatteURNs];
+                    v45 = [enabledSemanticSegmentationMatteURNs2 containsObject:*MEMORY[0x1E69917E8]];
                     if (v45)
                     {
                       OUTLINED_FUNCTION_18_31(v45, @"PersonSemanticsSkin", *off_1E798D2E0, v46, v47, @"SkinSegmentationMatteSurface", @"SkinSegmentationMatteMetadata");
                     }
 
-                    v48 = [(BWCaptureDeferredPhotoProcessor *)self enabledSemanticSegmentationMatteURNs];
-                    v49 = [v48 containsObject:*MEMORY[0x1E69917F8]];
+                    enabledSemanticSegmentationMatteURNs3 = [(BWCaptureDeferredPhotoProcessor *)self enabledSemanticSegmentationMatteURNs];
+                    v49 = [enabledSemanticSegmentationMatteURNs3 containsObject:*MEMORY[0x1E69917F8]];
                     if (v49)
                     {
                       OUTLINED_FUNCTION_18_31(v49, @"PersonSemanticsTeeth", *off_1E798D2E0, v50, v51, @"TeethSegmentationMatteSurface", @"TeethSegmentationMatteMetadata");
                     }
 
-                    v52 = [(BWCaptureDeferredPhotoProcessor *)self enabledSemanticSegmentationMatteURNs];
-                    v53 = [v52 containsObject:*MEMORY[0x1E69917D8]];
+                    enabledSemanticSegmentationMatteURNs4 = [(BWCaptureDeferredPhotoProcessor *)self enabledSemanticSegmentationMatteURNs];
+                    v53 = [enabledSemanticSegmentationMatteURNs4 containsObject:*MEMORY[0x1E69917D8]];
                     if (v53)
                     {
                       OUTLINED_FUNCTION_18_31(v53, @"PersonSemanticsGlasses", *off_1E798D2E0, v54, v55, @"GlassesSegmentationMatteSurface", @"GlassesSegmentationMatteMetadata");
                     }
                   }
 
-                  v56 = [(BWCaptureDeferredPhotoProcessor *)self previewEnabled];
-                  if (v56)
+                  previewEnabled = [(BWCaptureDeferredPhotoProcessor *)self previewEnabled];
+                  if (previewEnabled)
                   {
-                    v57 = OUTLINED_FUNCTION_19_32(v56, @"PreviewSurface");
+                    v57 = OUTLINED_FUNCTION_19_32(previewEnabled, @"PreviewSurface");
                     if (!v57)
                     {
                       OUTLINED_FUNCTION_0();
@@ -290,7 +290,7 @@ LABEL_13:
                   }
 
                   [v12 setObject:OUTLINED_FUNCTION_19_32(objc_msgSend(v12 forKeyedSubscript:{"setObject:forKeyedSubscript:", 0, @"ThumbnailSurface", @"PhotoLibraryThumbnails", @"PhotoLibraryThumbnails"}];
-                  v60 = [(BWCaptureDeferredPhotoProcessor *)v109 _runImageCorruptionDetectionForJob:a3 onEncodedSurface:v4 surfaceSize:v11];
+                  v60 = [(BWCaptureDeferredPhotoProcessor *)selfCopy _runImageCorruptionDetectionForJob:job onEncodedSurface:outputMirroring surfaceSize:v11];
                   v10 = MEMORY[0x1E695FF58];
                   v11 = v113;
                   if (v60)
@@ -310,8 +310,8 @@ LABEL_13:
 LABEL_45:
                   if (v61)
                   {
-                    v63 = [a3 numberOfPhotosDelivered];
-                    if ([objc_msgSend(v61 "photoDescriptors")] == v63)
+                    numberOfPhotosDelivered = [job numberOfPhotosDelivered];
+                    if ([objc_msgSend(v61 "photoDescriptors")] == numberOfPhotosDelivered)
                     {
                       v116[0] = MEMORY[0x1E69E9820];
                       v116[1] = 3221225472;
@@ -451,10 +451,10 @@ LABEL_45:
         goto LABEL_78;
       }
 
-      v29 = OUTLINED_FUNCTION_19_32(v26, @"RawImageSurface");
+      v29 = OUTLINED_FUNCTION_19_32(processingFlags, @"RawImageSurface");
       v11 = [objc_msgSend(OUTLINED_FUNCTION_19_32(v29 @"RawImageAssetSizes")];
-      v27 = [(BWCaptureDeferredPhotoProcessor *)self rawOutputFormat];
-      v30 = [OUTLINED_FUNCTION_19_32(v27 @"RawImageFileType")];
+      rawOutputFormat = [(BWCaptureDeferredPhotoProcessor *)self rawOutputFormat];
+      v30 = [OUTLINED_FUNCTION_19_32(rawOutputFormat @"RawImageFileType")];
       v31 = v30;
       v32 = OUTLINED_FUNCTION_19_32(v30, @"RawDNGDictionary");
       if (v32)
@@ -466,7 +466,7 @@ LABEL_45:
         [(BWCaptureDeferredPhotoProcessor *)self rawOutputFileCodec];
         v35 = [v111 objectForKeyedSubscript:*off_1E798B1E0];
         v36 = v33;
-        v4 = v29;
+        outputMirroring = v29;
         v28 = v31;
         v12 = v114;
         v25 = BWCreateRawMetadataFromMetadata(v25, v36, 0x10000u, v35);
@@ -520,9 +520,9 @@ LABEL_45:
     FigCapturePleaseFileRadar(v80, v81, v82, v83, v84, v87, v85, v86, v105);
     v96 = 4294954516;
 LABEL_78:
-    free(v4);
+    free(outputMirroring);
 
-    [(BWCaptureDeferredPhotoProcessor *)self job:a3 failedWithError:v96];
+    [(BWCaptureDeferredPhotoProcessor *)self job:job failedWithError:v96];
 LABEL_48:
     objc_autoreleasePoolPop(v11);
     if (*v10 == 1)
@@ -533,7 +533,7 @@ LABEL_48:
   }
 }
 
-- (uint64_t)_runImageCorruptionDetectionForJob:(__IOSurface *)a3 onEncodedSurface:(uint64_t)a4 surfaceSize:
+- (uint64_t)_runImageCorruptionDetectionForJob:(__IOSurface *)job onEncodedSurface:(uint64_t)surface surfaceSize:
 {
   if (result)
   {
@@ -543,7 +543,7 @@ LABEL_48:
     {
       v7 = result;
       result = 0;
-      if (a3)
+      if (job)
       {
         if (*v7)
         {
@@ -556,9 +556,9 @@ LABEL_48:
             if ((v10 & 1) == 0 && !v8)
             {
               mach_absolute_time();
-              IOSurfaceLock(a3, 1u, 0);
-              [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:IOSurfaceGetBaseAddress(a3) length:a4 freeWhenDone:0];
-              IOSurfaceUnlock(a3, 1u, 0);
+              IOSurfaceLock(job, 1u, 0);
+              [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:IOSurfaceGetBaseAddress(job) length:surface freeWhenDone:0];
+              IOSurfaceUnlock(job, 1u, 0);
               CMPhotoDetectCorruptionForSource();
               if (dword_1ED843F90)
               {
@@ -598,9 +598,9 @@ LABEL_48:
   return result;
 }
 
-- (void)_prepareToTerminateImmediatelyDueToError:(int)a3
+- (void)_prepareToTerminateImmediatelyDueToError:(int)error
 {
-  v3 = *&a3;
+  v3 = *&error;
   [(FigWeakReference *)self->_weakDeferredPhotoProcessorReference referencedObject];
   DerivedStorage = CMBaseObjectGetDerivedStorage();
   if (DerivedStorage)

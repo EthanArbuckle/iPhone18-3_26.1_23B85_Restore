@@ -1,31 +1,31 @@
 @interface SKGEntity
-- (BOOL)isEqual:(id)a3;
-- (SKGEntity)initWithScore:(double)a3;
+- (BOOL)isEqual:(id)equal;
+- (SKGEntity)initWithScore:(double)score;
 - (id)description;
 @end
 
 @implementation SKGEntity
 
-- (SKGEntity)initWithScore:(double)a3
+- (SKGEntity)initWithScore:(double)score
 {
   v5.receiver = self;
   v5.super_class = SKGEntity;
   result = [(SKGEntity *)&v5 init];
   if (result)
   {
-    result->_score = a3;
+    result->_score = score;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     [(SKGEntity *)self score];
     v7 = v6;
     [v5 score];

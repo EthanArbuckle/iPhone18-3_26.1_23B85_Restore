@@ -1,6 +1,6 @@
 @interface PEGASUSSchemaPEGASUSServerEvent
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (PEGASUSSchemaPEGASUSAMPPersonalizationLoggingInfo)pegasusAmpPersonalizationLoggingInfo;
 - (PEGASUSSchemaPEGASUSAMPSafetyLoggingInfo)pegasusAmpSafetyLoggingInfo;
@@ -10,12 +10,12 @@
 - (PEGASUSSchemaPEGASUSRequestEndedTier1)pegasusRequestEndedTier1;
 - (PEGASUSSchemaPEGASUSRewrittenUtterancesReported)pegasusRewrittenUtterancesReported;
 - (PEGASUSSchemaPEGASUSRewrittenUtterancesReportedTier1)pegasusRewrittenUtterancesReportedTier1;
-- (PEGASUSSchemaPEGASUSServerEvent)initWithDictionary:(id)a3;
-- (PEGASUSSchemaPEGASUSServerEvent)initWithJSON:(id)a3;
+- (PEGASUSSchemaPEGASUSServerEvent)initWithDictionary:(id)dictionary;
+- (PEGASUSSchemaPEGASUSServerEvent)initWithJSON:(id)n;
 - (PEGASUSSchemaPEGASUSUtteranceUnderstandingReported)pegasusUtteranceUnderstandingReported;
 - (PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1)pegasusUtteranceUnderstandingReportedTier1;
 - (SISchemaInstrumentationMessage)innerEvent;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)getComponentId;
 - (id)qualifiedMessageName;
@@ -32,30 +32,30 @@
 - (void)deletePegasusRewrittenUtterancesReportedTier1;
 - (void)deletePegasusUtteranceUnderstandingReported;
 - (void)deletePegasusUtteranceUnderstandingReportedTier1;
-- (void)setPegasusAmpPersonalizationLoggingInfo:(id)a3;
-- (void)setPegasusAmpSafetyLoggingInfo:(id)a3;
-- (void)setPegasusAsrCorrectionInfo:(id)a3;
-- (void)setPegasusInfoDomainMultistepAndMultiturnExecutionReported:(id)a3;
-- (void)setPegasusRequestContext:(id)a3;
-- (void)setPegasusRequestEndedTier1:(id)a3;
-- (void)setPegasusRewrittenUtterancesReported:(id)a3;
-- (void)setPegasusRewrittenUtterancesReportedTier1:(id)a3;
-- (void)setPegasusUtteranceUnderstandingReported:(id)a3;
-- (void)setPegasusUtteranceUnderstandingReportedTier1:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setPegasusAmpPersonalizationLoggingInfo:(id)info;
+- (void)setPegasusAmpSafetyLoggingInfo:(id)info;
+- (void)setPegasusAsrCorrectionInfo:(id)info;
+- (void)setPegasusInfoDomainMultistepAndMultiturnExecutionReported:(id)reported;
+- (void)setPegasusRequestContext:(id)context;
+- (void)setPegasusRequestEndedTier1:(id)tier1;
+- (void)setPegasusRewrittenUtterancesReported:(id)reported;
+- (void)setPegasusRewrittenUtterancesReportedTier1:(id)tier1;
+- (void)setPegasusUtteranceUnderstandingReported:(id)reported;
+- (void)setPegasusUtteranceUnderstandingReportedTier1:(id)tier1;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PEGASUSSchemaPEGASUSServerEvent
 
-- (PEGASUSSchemaPEGASUSServerEvent)initWithDictionary:(id)a3
+- (PEGASUSSchemaPEGASUSServerEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v35.receiver = self;
   v35.super_class = PEGASUSSchemaPEGASUSServerEvent;
   v5 = [(PEGASUSSchemaPEGASUSServerEvent *)&v35 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"eventMetadata"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"eventMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -63,7 +63,7 @@
       [(PEGASUSSchemaPEGASUSServerEvent *)v5 setEventMetadata:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"pegasusRequestContext"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"pegasusRequestContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -71,7 +71,7 @@
       [(PEGASUSSchemaPEGASUSServerEvent *)v5 setPegasusRequestContext:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"pegasusRewrittenUtterancesReported"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"pegasusRewrittenUtterancesReported"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -79,7 +79,7 @@
       [(PEGASUSSchemaPEGASUSServerEvent *)v5 setPegasusRewrittenUtterancesReported:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"pegasusRewrittenUtterancesReportedTier1"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"pegasusRewrittenUtterancesReportedTier1"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -88,7 +88,7 @@
     }
 
     v32 = v12;
-    v14 = [v4 objectForKeyedSubscript:@"pegasusUtteranceUnderstandingReported"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"pegasusUtteranceUnderstandingReported"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -96,7 +96,7 @@
       [(PEGASUSSchemaPEGASUSServerEvent *)v5 setPegasusUtteranceUnderstandingReported:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:{@"pegasusUtteranceUnderstandingReportedTier1", v14}];
+    v16 = [dictionaryCopy objectForKeyedSubscript:{@"pegasusUtteranceUnderstandingReportedTier1", v14}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -104,7 +104,7 @@
       [(PEGASUSSchemaPEGASUSServerEvent *)v5 setPegasusUtteranceUnderstandingReportedTier1:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"pegasusRequestEndedTier1"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"pegasusRequestEndedTier1"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -114,7 +114,7 @@
 
     v33 = v10;
     v34 = v6;
-    v20 = [v4 objectForKeyedSubscript:@"pegasusInfoDomainMultistepAndMultiturnExecutionReported"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"pegasusInfoDomainMultistepAndMultiturnExecutionReported"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -123,7 +123,7 @@
     }
 
     v22 = v8;
-    v23 = [v4 objectForKeyedSubscript:@"pegasusAmpSafetyLoggingInfo"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"pegasusAmpSafetyLoggingInfo"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -131,7 +131,7 @@
       [(PEGASUSSchemaPEGASUSServerEvent *)v5 setPegasusAmpSafetyLoggingInfo:v24];
     }
 
-    v25 = [v4 objectForKeyedSubscript:@"pegasusAsrCorrectionInfo"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"pegasusAsrCorrectionInfo"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -139,7 +139,7 @@
       [(PEGASUSSchemaPEGASUSServerEvent *)v5 setPegasusAsrCorrectionInfo:v26];
     }
 
-    v27 = [v4 objectForKeyedSubscript:@"pegasusAmpPersonalizationLoggingInfo"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"pegasusAmpPersonalizationLoggingInfo"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -153,30 +153,30 @@
   return v5;
 }
 
-- (PEGASUSSchemaPEGASUSServerEvent)initWithJSON:(id)a3
+- (PEGASUSSchemaPEGASUSServerEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PEGASUSSchemaPEGASUSServerEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PEGASUSSchemaPEGASUSServerEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PEGASUSSchemaPEGASUSServerEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -189,186 +189,186 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_eventMetadata)
   {
-    v4 = [(PEGASUSSchemaPEGASUSServerEvent *)self eventMetadata];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    eventMetadata = [(PEGASUSSchemaPEGASUSServerEvent *)self eventMetadata];
+    dictionaryRepresentation = [eventMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"eventMetadata"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"eventMetadata"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"eventMetadata"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"eventMetadata"];
     }
   }
 
   if (self->_pegasusAmpPersonalizationLoggingInfo)
   {
-    v7 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusAmpPersonalizationLoggingInfo];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    pegasusAmpPersonalizationLoggingInfo = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusAmpPersonalizationLoggingInfo];
+    dictionaryRepresentation2 = [pegasusAmpPersonalizationLoggingInfo dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"pegasusAmpPersonalizationLoggingInfo"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"pegasusAmpPersonalizationLoggingInfo"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"pegasusAmpPersonalizationLoggingInfo"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"pegasusAmpPersonalizationLoggingInfo"];
     }
   }
 
   if (self->_pegasusAmpSafetyLoggingInfo)
   {
-    v10 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusAmpSafetyLoggingInfo];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    pegasusAmpSafetyLoggingInfo = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusAmpSafetyLoggingInfo];
+    dictionaryRepresentation3 = [pegasusAmpSafetyLoggingInfo dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"pegasusAmpSafetyLoggingInfo"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"pegasusAmpSafetyLoggingInfo"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"pegasusAmpSafetyLoggingInfo"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"pegasusAmpSafetyLoggingInfo"];
     }
   }
 
   if (self->_pegasusAsrCorrectionInfo)
   {
-    v13 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusAsrCorrectionInfo];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    pegasusAsrCorrectionInfo = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusAsrCorrectionInfo];
+    dictionaryRepresentation4 = [pegasusAsrCorrectionInfo dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"pegasusAsrCorrectionInfo"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"pegasusAsrCorrectionInfo"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"pegasusAsrCorrectionInfo"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"pegasusAsrCorrectionInfo"];
     }
   }
 
   if (self->_pegasusInfoDomainMultistepAndMultiturnExecutionReported)
   {
-    v16 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusInfoDomainMultistepAndMultiturnExecutionReported];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    pegasusInfoDomainMultistepAndMultiturnExecutionReported = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusInfoDomainMultistepAndMultiturnExecutionReported];
+    dictionaryRepresentation5 = [pegasusInfoDomainMultistepAndMultiturnExecutionReported dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"pegasusInfoDomainMultistepAndMultiturnExecutionReported"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"pegasusInfoDomainMultistepAndMultiturnExecutionReported"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"pegasusInfoDomainMultistepAndMultiturnExecutionReported"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"pegasusInfoDomainMultistepAndMultiturnExecutionReported"];
     }
   }
 
   if (self->_pegasusRequestContext)
   {
-    v19 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRequestContext];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    pegasusRequestContext = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRequestContext];
+    dictionaryRepresentation6 = [pegasusRequestContext dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"pegasusRequestContext"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"pegasusRequestContext"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"pegasusRequestContext"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"pegasusRequestContext"];
     }
   }
 
   if (self->_pegasusRequestEndedTier1)
   {
-    v22 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRequestEndedTier1];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    pegasusRequestEndedTier1 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRequestEndedTier1];
+    dictionaryRepresentation7 = [pegasusRequestEndedTier1 dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"pegasusRequestEndedTier1"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"pegasusRequestEndedTier1"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"pegasusRequestEndedTier1"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"pegasusRequestEndedTier1"];
     }
   }
 
   if (self->_pegasusRewrittenUtterancesReported)
   {
-    v25 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRewrittenUtterancesReported];
-    v26 = [v25 dictionaryRepresentation];
-    if (v26)
+    pegasusRewrittenUtterancesReported = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRewrittenUtterancesReported];
+    dictionaryRepresentation8 = [pegasusRewrittenUtterancesReported dictionaryRepresentation];
+    if (dictionaryRepresentation8)
     {
-      [v3 setObject:v26 forKeyedSubscript:@"pegasusRewrittenUtterancesReported"];
+      [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"pegasusRewrittenUtterancesReported"];
     }
 
     else
     {
-      v27 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v27 forKeyedSubscript:@"pegasusRewrittenUtterancesReported"];
+      null8 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null8 forKeyedSubscript:@"pegasusRewrittenUtterancesReported"];
     }
   }
 
   if (self->_pegasusRewrittenUtterancesReportedTier1)
   {
-    v28 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRewrittenUtterancesReportedTier1];
-    v29 = [v28 dictionaryRepresentation];
-    if (v29)
+    pegasusRewrittenUtterancesReportedTier1 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRewrittenUtterancesReportedTier1];
+    dictionaryRepresentation9 = [pegasusRewrittenUtterancesReportedTier1 dictionaryRepresentation];
+    if (dictionaryRepresentation9)
     {
-      [v3 setObject:v29 forKeyedSubscript:@"pegasusRewrittenUtterancesReportedTier1"];
+      [dictionary setObject:dictionaryRepresentation9 forKeyedSubscript:@"pegasusRewrittenUtterancesReportedTier1"];
     }
 
     else
     {
-      v30 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v30 forKeyedSubscript:@"pegasusRewrittenUtterancesReportedTier1"];
+      null9 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null9 forKeyedSubscript:@"pegasusRewrittenUtterancesReportedTier1"];
     }
   }
 
   if (self->_pegasusUtteranceUnderstandingReported)
   {
-    v31 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusUtteranceUnderstandingReported];
-    v32 = [v31 dictionaryRepresentation];
-    if (v32)
+    pegasusUtteranceUnderstandingReported = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusUtteranceUnderstandingReported];
+    dictionaryRepresentation10 = [pegasusUtteranceUnderstandingReported dictionaryRepresentation];
+    if (dictionaryRepresentation10)
     {
-      [v3 setObject:v32 forKeyedSubscript:@"pegasusUtteranceUnderstandingReported"];
+      [dictionary setObject:dictionaryRepresentation10 forKeyedSubscript:@"pegasusUtteranceUnderstandingReported"];
     }
 
     else
     {
-      v33 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v33 forKeyedSubscript:@"pegasusUtteranceUnderstandingReported"];
+      null10 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null10 forKeyedSubscript:@"pegasusUtteranceUnderstandingReported"];
     }
   }
 
   if (self->_pegasusUtteranceUnderstandingReportedTier1)
   {
-    v34 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusUtteranceUnderstandingReportedTier1];
-    v35 = [v34 dictionaryRepresentation];
-    if (v35)
+    pegasusUtteranceUnderstandingReportedTier1 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusUtteranceUnderstandingReportedTier1];
+    dictionaryRepresentation11 = [pegasusUtteranceUnderstandingReportedTier1 dictionaryRepresentation];
+    if (dictionaryRepresentation11)
     {
-      [v3 setObject:v35 forKeyedSubscript:@"pegasusUtteranceUnderstandingReportedTier1"];
+      [dictionary setObject:dictionaryRepresentation11 forKeyedSubscript:@"pegasusUtteranceUnderstandingReportedTier1"];
     }
 
     else
     {
-      v36 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v36 forKeyedSubscript:@"pegasusUtteranceUnderstandingReportedTier1"];
+      null11 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null11 forKeyedSubscript:@"pegasusUtteranceUnderstandingReportedTier1"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -386,34 +386,34 @@
   return v9 ^ v12 ^ [(PEGASUSSchemaPEGASUSAMPPersonalizationLoggingInfo *)self->_pegasusAmpPersonalizationLoggingInfo hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_58;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_58;
   }
 
-  v6 = [(PEGASUSSchemaPEGASUSServerEvent *)self eventMetadata];
-  v7 = [v4 eventMetadata];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PEGASUSSchemaPEGASUSServerEvent *)self eventMetadata];
+  eventMetadata2 = [equalCopy eventMetadata];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_57;
   }
 
-  v8 = [(PEGASUSSchemaPEGASUSServerEvent *)self eventMetadata];
-  if (v8)
+  eventMetadata3 = [(PEGASUSSchemaPEGASUSServerEvent *)self eventMetadata];
+  if (eventMetadata3)
   {
-    v9 = v8;
-    v10 = [(PEGASUSSchemaPEGASUSServerEvent *)self eventMetadata];
-    v11 = [v4 eventMetadata];
-    v12 = [v10 isEqual:v11];
+    v9 = eventMetadata3;
+    eventMetadata4 = [(PEGASUSSchemaPEGASUSServerEvent *)self eventMetadata];
+    eventMetadata5 = [equalCopy eventMetadata];
+    v12 = [eventMetadata4 isEqual:eventMetadata5];
 
     if (!v12)
     {
@@ -425,20 +425,20 @@
   {
   }
 
-  v6 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRequestContext];
-  v7 = [v4 pegasusRequestContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRequestContext];
+  eventMetadata2 = [equalCopy pegasusRequestContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_57;
   }
 
-  v13 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRequestContext];
-  if (v13)
+  pegasusRequestContext = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRequestContext];
+  if (pegasusRequestContext)
   {
-    v14 = v13;
-    v15 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRequestContext];
-    v16 = [v4 pegasusRequestContext];
-    v17 = [v15 isEqual:v16];
+    v14 = pegasusRequestContext;
+    pegasusRequestContext2 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRequestContext];
+    pegasusRequestContext3 = [equalCopy pegasusRequestContext];
+    v17 = [pegasusRequestContext2 isEqual:pegasusRequestContext3];
 
     if (!v17)
     {
@@ -450,20 +450,20 @@
   {
   }
 
-  v6 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRewrittenUtterancesReported];
-  v7 = [v4 pegasusRewrittenUtterancesReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRewrittenUtterancesReported];
+  eventMetadata2 = [equalCopy pegasusRewrittenUtterancesReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_57;
   }
 
-  v18 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRewrittenUtterancesReported];
-  if (v18)
+  pegasusRewrittenUtterancesReported = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRewrittenUtterancesReported];
+  if (pegasusRewrittenUtterancesReported)
   {
-    v19 = v18;
-    v20 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRewrittenUtterancesReported];
-    v21 = [v4 pegasusRewrittenUtterancesReported];
-    v22 = [v20 isEqual:v21];
+    v19 = pegasusRewrittenUtterancesReported;
+    pegasusRewrittenUtterancesReported2 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRewrittenUtterancesReported];
+    pegasusRewrittenUtterancesReported3 = [equalCopy pegasusRewrittenUtterancesReported];
+    v22 = [pegasusRewrittenUtterancesReported2 isEqual:pegasusRewrittenUtterancesReported3];
 
     if (!v22)
     {
@@ -475,20 +475,20 @@
   {
   }
 
-  v6 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRewrittenUtterancesReportedTier1];
-  v7 = [v4 pegasusRewrittenUtterancesReportedTier1];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRewrittenUtterancesReportedTier1];
+  eventMetadata2 = [equalCopy pegasusRewrittenUtterancesReportedTier1];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_57;
   }
 
-  v23 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRewrittenUtterancesReportedTier1];
-  if (v23)
+  pegasusRewrittenUtterancesReportedTier1 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRewrittenUtterancesReportedTier1];
+  if (pegasusRewrittenUtterancesReportedTier1)
   {
-    v24 = v23;
-    v25 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRewrittenUtterancesReportedTier1];
-    v26 = [v4 pegasusRewrittenUtterancesReportedTier1];
-    v27 = [v25 isEqual:v26];
+    v24 = pegasusRewrittenUtterancesReportedTier1;
+    pegasusRewrittenUtterancesReportedTier12 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRewrittenUtterancesReportedTier1];
+    pegasusRewrittenUtterancesReportedTier13 = [equalCopy pegasusRewrittenUtterancesReportedTier1];
+    v27 = [pegasusRewrittenUtterancesReportedTier12 isEqual:pegasusRewrittenUtterancesReportedTier13];
 
     if (!v27)
     {
@@ -500,20 +500,20 @@
   {
   }
 
-  v6 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusUtteranceUnderstandingReported];
-  v7 = [v4 pegasusUtteranceUnderstandingReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusUtteranceUnderstandingReported];
+  eventMetadata2 = [equalCopy pegasusUtteranceUnderstandingReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_57;
   }
 
-  v28 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusUtteranceUnderstandingReported];
-  if (v28)
+  pegasusUtteranceUnderstandingReported = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusUtteranceUnderstandingReported];
+  if (pegasusUtteranceUnderstandingReported)
   {
-    v29 = v28;
-    v30 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusUtteranceUnderstandingReported];
-    v31 = [v4 pegasusUtteranceUnderstandingReported];
-    v32 = [v30 isEqual:v31];
+    v29 = pegasusUtteranceUnderstandingReported;
+    pegasusUtteranceUnderstandingReported2 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusUtteranceUnderstandingReported];
+    pegasusUtteranceUnderstandingReported3 = [equalCopy pegasusUtteranceUnderstandingReported];
+    v32 = [pegasusUtteranceUnderstandingReported2 isEqual:pegasusUtteranceUnderstandingReported3];
 
     if (!v32)
     {
@@ -525,20 +525,20 @@
   {
   }
 
-  v6 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusUtteranceUnderstandingReportedTier1];
-  v7 = [v4 pegasusUtteranceUnderstandingReportedTier1];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusUtteranceUnderstandingReportedTier1];
+  eventMetadata2 = [equalCopy pegasusUtteranceUnderstandingReportedTier1];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_57;
   }
 
-  v33 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusUtteranceUnderstandingReportedTier1];
-  if (v33)
+  pegasusUtteranceUnderstandingReportedTier1 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusUtteranceUnderstandingReportedTier1];
+  if (pegasusUtteranceUnderstandingReportedTier1)
   {
-    v34 = v33;
-    v35 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusUtteranceUnderstandingReportedTier1];
-    v36 = [v4 pegasusUtteranceUnderstandingReportedTier1];
-    v37 = [v35 isEqual:v36];
+    v34 = pegasusUtteranceUnderstandingReportedTier1;
+    pegasusUtteranceUnderstandingReportedTier12 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusUtteranceUnderstandingReportedTier1];
+    pegasusUtteranceUnderstandingReportedTier13 = [equalCopy pegasusUtteranceUnderstandingReportedTier1];
+    v37 = [pegasusUtteranceUnderstandingReportedTier12 isEqual:pegasusUtteranceUnderstandingReportedTier13];
 
     if (!v37)
     {
@@ -550,20 +550,20 @@
   {
   }
 
-  v6 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRequestEndedTier1];
-  v7 = [v4 pegasusRequestEndedTier1];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRequestEndedTier1];
+  eventMetadata2 = [equalCopy pegasusRequestEndedTier1];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_57;
   }
 
-  v38 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRequestEndedTier1];
-  if (v38)
+  pegasusRequestEndedTier1 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRequestEndedTier1];
+  if (pegasusRequestEndedTier1)
   {
-    v39 = v38;
-    v40 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRequestEndedTier1];
-    v41 = [v4 pegasusRequestEndedTier1];
-    v42 = [v40 isEqual:v41];
+    v39 = pegasusRequestEndedTier1;
+    pegasusRequestEndedTier12 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRequestEndedTier1];
+    pegasusRequestEndedTier13 = [equalCopy pegasusRequestEndedTier1];
+    v42 = [pegasusRequestEndedTier12 isEqual:pegasusRequestEndedTier13];
 
     if (!v42)
     {
@@ -575,20 +575,20 @@
   {
   }
 
-  v6 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusInfoDomainMultistepAndMultiturnExecutionReported];
-  v7 = [v4 pegasusInfoDomainMultistepAndMultiturnExecutionReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusInfoDomainMultistepAndMultiturnExecutionReported];
+  eventMetadata2 = [equalCopy pegasusInfoDomainMultistepAndMultiturnExecutionReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_57;
   }
 
-  v43 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusInfoDomainMultistepAndMultiturnExecutionReported];
-  if (v43)
+  pegasusInfoDomainMultistepAndMultiturnExecutionReported = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusInfoDomainMultistepAndMultiturnExecutionReported];
+  if (pegasusInfoDomainMultistepAndMultiturnExecutionReported)
   {
-    v44 = v43;
-    v45 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusInfoDomainMultistepAndMultiturnExecutionReported];
-    v46 = [v4 pegasusInfoDomainMultistepAndMultiturnExecutionReported];
-    v47 = [v45 isEqual:v46];
+    v44 = pegasusInfoDomainMultistepAndMultiturnExecutionReported;
+    pegasusInfoDomainMultistepAndMultiturnExecutionReported2 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusInfoDomainMultistepAndMultiturnExecutionReported];
+    pegasusInfoDomainMultistepAndMultiturnExecutionReported3 = [equalCopy pegasusInfoDomainMultistepAndMultiturnExecutionReported];
+    v47 = [pegasusInfoDomainMultistepAndMultiturnExecutionReported2 isEqual:pegasusInfoDomainMultistepAndMultiturnExecutionReported3];
 
     if (!v47)
     {
@@ -600,20 +600,20 @@
   {
   }
 
-  v6 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusAmpSafetyLoggingInfo];
-  v7 = [v4 pegasusAmpSafetyLoggingInfo];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusAmpSafetyLoggingInfo];
+  eventMetadata2 = [equalCopy pegasusAmpSafetyLoggingInfo];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_57;
   }
 
-  v48 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusAmpSafetyLoggingInfo];
-  if (v48)
+  pegasusAmpSafetyLoggingInfo = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusAmpSafetyLoggingInfo];
+  if (pegasusAmpSafetyLoggingInfo)
   {
-    v49 = v48;
-    v50 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusAmpSafetyLoggingInfo];
-    v51 = [v4 pegasusAmpSafetyLoggingInfo];
-    v52 = [v50 isEqual:v51];
+    v49 = pegasusAmpSafetyLoggingInfo;
+    pegasusAmpSafetyLoggingInfo2 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusAmpSafetyLoggingInfo];
+    pegasusAmpSafetyLoggingInfo3 = [equalCopy pegasusAmpSafetyLoggingInfo];
+    v52 = [pegasusAmpSafetyLoggingInfo2 isEqual:pegasusAmpSafetyLoggingInfo3];
 
     if (!v52)
     {
@@ -625,20 +625,20 @@
   {
   }
 
-  v6 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusAsrCorrectionInfo];
-  v7 = [v4 pegasusAsrCorrectionInfo];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusAsrCorrectionInfo];
+  eventMetadata2 = [equalCopy pegasusAsrCorrectionInfo];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_57;
   }
 
-  v53 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusAsrCorrectionInfo];
-  if (v53)
+  pegasusAsrCorrectionInfo = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusAsrCorrectionInfo];
+  if (pegasusAsrCorrectionInfo)
   {
-    v54 = v53;
-    v55 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusAsrCorrectionInfo];
-    v56 = [v4 pegasusAsrCorrectionInfo];
-    v57 = [v55 isEqual:v56];
+    v54 = pegasusAsrCorrectionInfo;
+    pegasusAsrCorrectionInfo2 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusAsrCorrectionInfo];
+    pegasusAsrCorrectionInfo3 = [equalCopy pegasusAsrCorrectionInfo];
+    v57 = [pegasusAsrCorrectionInfo2 isEqual:pegasusAsrCorrectionInfo3];
 
     if (!v57)
     {
@@ -650,12 +650,12 @@
   {
   }
 
-  v6 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusAmpPersonalizationLoggingInfo];
-  v7 = [v4 pegasusAmpPersonalizationLoggingInfo];
-  if ((v6 != 0) != (v7 == 0))
+  eventMetadata = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusAmpPersonalizationLoggingInfo];
+  eventMetadata2 = [equalCopy pegasusAmpPersonalizationLoggingInfo];
+  if ((eventMetadata != 0) != (eventMetadata2 == 0))
   {
-    v58 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusAmpPersonalizationLoggingInfo];
-    if (!v58)
+    pegasusAmpPersonalizationLoggingInfo = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusAmpPersonalizationLoggingInfo];
+    if (!pegasusAmpPersonalizationLoggingInfo)
     {
 
 LABEL_61:
@@ -663,10 +663,10 @@ LABEL_61:
       goto LABEL_59;
     }
 
-    v59 = v58;
-    v60 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusAmpPersonalizationLoggingInfo];
-    v61 = [v4 pegasusAmpPersonalizationLoggingInfo];
-    v62 = [v60 isEqual:v61];
+    v59 = pegasusAmpPersonalizationLoggingInfo;
+    pegasusAmpPersonalizationLoggingInfo2 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusAmpPersonalizationLoggingInfo];
+    pegasusAmpPersonalizationLoggingInfo3 = [equalCopy pegasusAmpPersonalizationLoggingInfo];
+    v62 = [pegasusAmpPersonalizationLoggingInfo2 isEqual:pegasusAmpPersonalizationLoggingInfo3];
 
     if (v62)
     {
@@ -686,98 +686,98 @@ LABEL_59:
   return v63;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v27 = a3;
-  v4 = [(PEGASUSSchemaPEGASUSServerEvent *)self eventMetadata];
+  toCopy = to;
+  eventMetadata = [(PEGASUSSchemaPEGASUSServerEvent *)self eventMetadata];
 
-  if (v4)
+  if (eventMetadata)
   {
-    v5 = [(PEGASUSSchemaPEGASUSServerEvent *)self eventMetadata];
+    eventMetadata2 = [(PEGASUSSchemaPEGASUSServerEvent *)self eventMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRequestContext];
+  pegasusRequestContext = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRequestContext];
 
-  if (v6)
+  if (pegasusRequestContext)
   {
-    v7 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRequestContext];
+    pegasusRequestContext2 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRequestContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRewrittenUtterancesReported];
+  pegasusRewrittenUtterancesReported = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRewrittenUtterancesReported];
 
-  if (v8)
+  if (pegasusRewrittenUtterancesReported)
   {
-    v9 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRewrittenUtterancesReported];
+    pegasusRewrittenUtterancesReported2 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRewrittenUtterancesReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRewrittenUtterancesReportedTier1];
+  pegasusRewrittenUtterancesReportedTier1 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRewrittenUtterancesReportedTier1];
 
-  if (v10)
+  if (pegasusRewrittenUtterancesReportedTier1)
   {
-    v11 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRewrittenUtterancesReportedTier1];
+    pegasusRewrittenUtterancesReportedTier12 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRewrittenUtterancesReportedTier1];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusUtteranceUnderstandingReported];
+  pegasusUtteranceUnderstandingReported = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusUtteranceUnderstandingReported];
 
-  if (v12)
+  if (pegasusUtteranceUnderstandingReported)
   {
-    v13 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusUtteranceUnderstandingReported];
+    pegasusUtteranceUnderstandingReported2 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusUtteranceUnderstandingReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusUtteranceUnderstandingReportedTier1];
+  pegasusUtteranceUnderstandingReportedTier1 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusUtteranceUnderstandingReportedTier1];
 
-  if (v14)
+  if (pegasusUtteranceUnderstandingReportedTier1)
   {
-    v15 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusUtteranceUnderstandingReportedTier1];
+    pegasusUtteranceUnderstandingReportedTier12 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusUtteranceUnderstandingReportedTier1];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRequestEndedTier1];
+  pegasusRequestEndedTier1 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRequestEndedTier1];
 
-  if (v16)
+  if (pegasusRequestEndedTier1)
   {
-    v17 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRequestEndedTier1];
+    pegasusRequestEndedTier12 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRequestEndedTier1];
     PBDataWriterWriteSubmessage();
   }
 
-  v18 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusInfoDomainMultistepAndMultiturnExecutionReported];
+  pegasusInfoDomainMultistepAndMultiturnExecutionReported = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusInfoDomainMultistepAndMultiturnExecutionReported];
 
-  if (v18)
+  if (pegasusInfoDomainMultistepAndMultiturnExecutionReported)
   {
-    v19 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusInfoDomainMultistepAndMultiturnExecutionReported];
+    pegasusInfoDomainMultistepAndMultiturnExecutionReported2 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusInfoDomainMultistepAndMultiturnExecutionReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v20 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusAmpSafetyLoggingInfo];
+  pegasusAmpSafetyLoggingInfo = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusAmpSafetyLoggingInfo];
 
-  if (v20)
+  if (pegasusAmpSafetyLoggingInfo)
   {
-    v21 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusAmpSafetyLoggingInfo];
+    pegasusAmpSafetyLoggingInfo2 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusAmpSafetyLoggingInfo];
     PBDataWriterWriteSubmessage();
   }
 
-  v22 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusAsrCorrectionInfo];
+  pegasusAsrCorrectionInfo = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusAsrCorrectionInfo];
 
-  if (v22)
+  if (pegasusAsrCorrectionInfo)
   {
-    v23 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusAsrCorrectionInfo];
+    pegasusAsrCorrectionInfo2 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusAsrCorrectionInfo];
     PBDataWriterWriteSubmessage();
   }
 
-  v24 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusAmpPersonalizationLoggingInfo];
+  pegasusAmpPersonalizationLoggingInfo = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusAmpPersonalizationLoggingInfo];
 
-  v25 = v27;
-  if (v24)
+  v25 = toCopy;
+  if (pegasusAmpPersonalizationLoggingInfo)
   {
-    v26 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusAmpPersonalizationLoggingInfo];
+    pegasusAmpPersonalizationLoggingInfo2 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusAmpPersonalizationLoggingInfo];
     PBDataWriterWriteSubmessage();
 
-    v25 = v27;
+    v25 = toCopy;
   }
 }
 
@@ -806,9 +806,9 @@ LABEL_59:
   return v3;
 }
 
-- (void)setPegasusAmpPersonalizationLoggingInfo:(id)a3
+- (void)setPegasusAmpPersonalizationLoggingInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   pegasusRequestContext = self->_pegasusRequestContext;
   self->_pegasusRequestContext = 0;
 
@@ -837,14 +837,14 @@ LABEL_59:
   self->_pegasusAsrCorrectionInfo = 0;
 
   v14 = 110;
-  if (!v4)
+  if (!infoCopy)
   {
     v14 = 0;
   }
 
   self->_whichEvent_Type = v14;
   pegasusAmpPersonalizationLoggingInfo = self->_pegasusAmpPersonalizationLoggingInfo;
-  self->_pegasusAmpPersonalizationLoggingInfo = v4;
+  self->_pegasusAmpPersonalizationLoggingInfo = infoCopy;
 }
 
 - (void)deletePegasusAsrCorrectionInfo
@@ -872,9 +872,9 @@ LABEL_59:
   return v3;
 }
 
-- (void)setPegasusAsrCorrectionInfo:(id)a3
+- (void)setPegasusAsrCorrectionInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   pegasusRequestContext = self->_pegasusRequestContext;
   self->_pegasusRequestContext = 0;
 
@@ -903,14 +903,14 @@ LABEL_59:
   self->_pegasusAmpPersonalizationLoggingInfo = 0;
 
   v14 = 109;
-  if (!v4)
+  if (!infoCopy)
   {
     v14 = 0;
   }
 
   self->_whichEvent_Type = v14;
   pegasusAsrCorrectionInfo = self->_pegasusAsrCorrectionInfo;
-  self->_pegasusAsrCorrectionInfo = v4;
+  self->_pegasusAsrCorrectionInfo = infoCopy;
 }
 
 - (void)deletePegasusAmpSafetyLoggingInfo
@@ -938,9 +938,9 @@ LABEL_59:
   return v3;
 }
 
-- (void)setPegasusAmpSafetyLoggingInfo:(id)a3
+- (void)setPegasusAmpSafetyLoggingInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   pegasusRequestContext = self->_pegasusRequestContext;
   self->_pegasusRequestContext = 0;
 
@@ -969,14 +969,14 @@ LABEL_59:
   self->_pegasusAmpPersonalizationLoggingInfo = 0;
 
   v14 = 108;
-  if (!v4)
+  if (!infoCopy)
   {
     v14 = 0;
   }
 
   self->_whichEvent_Type = v14;
   pegasusAmpSafetyLoggingInfo = self->_pegasusAmpSafetyLoggingInfo;
-  self->_pegasusAmpSafetyLoggingInfo = v4;
+  self->_pegasusAmpSafetyLoggingInfo = infoCopy;
 }
 
 - (void)deletePegasusInfoDomainMultistepAndMultiturnExecutionReported
@@ -1004,9 +1004,9 @@ LABEL_59:
   return v3;
 }
 
-- (void)setPegasusInfoDomainMultistepAndMultiturnExecutionReported:(id)a3
+- (void)setPegasusInfoDomainMultistepAndMultiturnExecutionReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   pegasusRequestContext = self->_pegasusRequestContext;
   self->_pegasusRequestContext = 0;
 
@@ -1035,14 +1035,14 @@ LABEL_59:
   self->_pegasusAmpPersonalizationLoggingInfo = 0;
 
   v14 = 107;
-  if (!v4)
+  if (!reportedCopy)
   {
     v14 = 0;
   }
 
   self->_whichEvent_Type = v14;
   pegasusInfoDomainMultistepAndMultiturnExecutionReported = self->_pegasusInfoDomainMultistepAndMultiturnExecutionReported;
-  self->_pegasusInfoDomainMultistepAndMultiturnExecutionReported = v4;
+  self->_pegasusInfoDomainMultistepAndMultiturnExecutionReported = reportedCopy;
 }
 
 - (void)deletePegasusRequestEndedTier1
@@ -1070,9 +1070,9 @@ LABEL_59:
   return v3;
 }
 
-- (void)setPegasusRequestEndedTier1:(id)a3
+- (void)setPegasusRequestEndedTier1:(id)tier1
 {
-  v4 = a3;
+  tier1Copy = tier1;
   pegasusRequestContext = self->_pegasusRequestContext;
   self->_pegasusRequestContext = 0;
 
@@ -1101,14 +1101,14 @@ LABEL_59:
   self->_pegasusAmpPersonalizationLoggingInfo = 0;
 
   v14 = 106;
-  if (!v4)
+  if (!tier1Copy)
   {
     v14 = 0;
   }
 
   self->_whichEvent_Type = v14;
   pegasusRequestEndedTier1 = self->_pegasusRequestEndedTier1;
-  self->_pegasusRequestEndedTier1 = v4;
+  self->_pegasusRequestEndedTier1 = tier1Copy;
 }
 
 - (void)deletePegasusUtteranceUnderstandingReportedTier1
@@ -1136,9 +1136,9 @@ LABEL_59:
   return v3;
 }
 
-- (void)setPegasusUtteranceUnderstandingReportedTier1:(id)a3
+- (void)setPegasusUtteranceUnderstandingReportedTier1:(id)tier1
 {
-  v4 = a3;
+  tier1Copy = tier1;
   pegasusRequestContext = self->_pegasusRequestContext;
   self->_pegasusRequestContext = 0;
 
@@ -1167,14 +1167,14 @@ LABEL_59:
   self->_pegasusAmpPersonalizationLoggingInfo = 0;
 
   v14 = 105;
-  if (!v4)
+  if (!tier1Copy)
   {
     v14 = 0;
   }
 
   self->_whichEvent_Type = v14;
   pegasusUtteranceUnderstandingReportedTier1 = self->_pegasusUtteranceUnderstandingReportedTier1;
-  self->_pegasusUtteranceUnderstandingReportedTier1 = v4;
+  self->_pegasusUtteranceUnderstandingReportedTier1 = tier1Copy;
 }
 
 - (void)deletePegasusUtteranceUnderstandingReported
@@ -1202,9 +1202,9 @@ LABEL_59:
   return v3;
 }
 
-- (void)setPegasusUtteranceUnderstandingReported:(id)a3
+- (void)setPegasusUtteranceUnderstandingReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   pegasusRequestContext = self->_pegasusRequestContext;
   self->_pegasusRequestContext = 0;
 
@@ -1233,14 +1233,14 @@ LABEL_59:
   self->_pegasusAmpPersonalizationLoggingInfo = 0;
 
   v14 = 104;
-  if (!v4)
+  if (!reportedCopy)
   {
     v14 = 0;
   }
 
   self->_whichEvent_Type = v14;
   pegasusUtteranceUnderstandingReported = self->_pegasusUtteranceUnderstandingReported;
-  self->_pegasusUtteranceUnderstandingReported = v4;
+  self->_pegasusUtteranceUnderstandingReported = reportedCopy;
 }
 
 - (void)deletePegasusRewrittenUtterancesReportedTier1
@@ -1268,9 +1268,9 @@ LABEL_59:
   return v3;
 }
 
-- (void)setPegasusRewrittenUtterancesReportedTier1:(id)a3
+- (void)setPegasusRewrittenUtterancesReportedTier1:(id)tier1
 {
-  v4 = a3;
+  tier1Copy = tier1;
   pegasusRequestContext = self->_pegasusRequestContext;
   self->_pegasusRequestContext = 0;
 
@@ -1299,14 +1299,14 @@ LABEL_59:
   self->_pegasusAmpPersonalizationLoggingInfo = 0;
 
   v14 = 103;
-  if (!v4)
+  if (!tier1Copy)
   {
     v14 = 0;
   }
 
   self->_whichEvent_Type = v14;
   pegasusRewrittenUtterancesReportedTier1 = self->_pegasusRewrittenUtterancesReportedTier1;
-  self->_pegasusRewrittenUtterancesReportedTier1 = v4;
+  self->_pegasusRewrittenUtterancesReportedTier1 = tier1Copy;
 }
 
 - (void)deletePegasusRewrittenUtterancesReported
@@ -1334,9 +1334,9 @@ LABEL_59:
   return v3;
 }
 
-- (void)setPegasusRewrittenUtterancesReported:(id)a3
+- (void)setPegasusRewrittenUtterancesReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   pegasusRequestContext = self->_pegasusRequestContext;
   self->_pegasusRequestContext = 0;
 
@@ -1365,14 +1365,14 @@ LABEL_59:
   self->_pegasusAmpPersonalizationLoggingInfo = 0;
 
   v14 = 102;
-  if (!v4)
+  if (!reportedCopy)
   {
     v14 = 0;
   }
 
   self->_whichEvent_Type = v14;
   pegasusRewrittenUtterancesReported = self->_pegasusRewrittenUtterancesReported;
-  self->_pegasusRewrittenUtterancesReported = v4;
+  self->_pegasusRewrittenUtterancesReported = reportedCopy;
 }
 
 - (void)deletePegasusRequestContext
@@ -1400,9 +1400,9 @@ LABEL_59:
   return v3;
 }
 
-- (void)setPegasusRequestContext:(id)a3
+- (void)setPegasusRequestContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   pegasusRewrittenUtterancesReported = self->_pegasusRewrittenUtterancesReported;
   self->_pegasusRewrittenUtterancesReported = 0;
 
@@ -1431,37 +1431,37 @@ LABEL_59:
   self->_pegasusAmpPersonalizationLoggingInfo = 0;
 
   v14 = 101;
-  if (!v4)
+  if (!contextCopy)
   {
     v14 = 0;
   }
 
   self->_whichEvent_Type = v14;
   pegasusRequestContext = self->_pegasusRequestContext;
-  self->_pegasusRequestContext = v4;
+  self->_pegasusRequestContext = contextCopy;
 }
 
 - (id)qualifiedMessageName
 {
-  v2 = [(PEGASUSSchemaPEGASUSServerEvent *)self whichEvent_Type];
-  if (v2 - 101 > 9)
+  whichEvent_Type = [(PEGASUSSchemaPEGASUSServerEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 9)
   {
     return @"com.apple.aiml.siri.pegasus.PEGASUSServerEvent";
   }
 
   else
   {
-    return off_1E78DFCC0[v2 - 101];
+    return off_1E78DFCC0[whichEvent_Type - 101];
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v40.receiver = self;
   v40.super_class = PEGASUSSchemaPEGASUSServerEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v40 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v40 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(PEGASUSSchemaPEGASUSServerEvent *)self deletePegasusRewrittenUtterancesReportedTier1];
     [(PEGASUSSchemaPEGASUSServerEvent *)self deletePegasusUtteranceUnderstandingReportedTier1];
@@ -1469,7 +1469,7 @@ LABEL_59:
     [(PEGASUSSchemaPEGASUSServerEvent *)self deletePegasusAsrCorrectionInfo];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(PEGASUSSchemaPEGASUSServerEvent *)self deletePegasusRewrittenUtterancesReportedTier1];
     [(PEGASUSSchemaPEGASUSServerEvent *)self deletePegasusUtteranceUnderstandingReportedTier1];
@@ -1477,7 +1477,7 @@ LABEL_59:
     [(PEGASUSSchemaPEGASUSServerEvent *)self deletePegasusAsrCorrectionInfo];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(PEGASUSSchemaPEGASUSServerEvent *)self deletePegasusRewrittenUtterancesReportedTier1];
     [(PEGASUSSchemaPEGASUSServerEvent *)self deletePegasusUtteranceUnderstandingReportedTier1];
@@ -1485,7 +1485,7 @@ LABEL_59:
     [(PEGASUSSchemaPEGASUSServerEvent *)self deletePegasusAsrCorrectionInfo];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(PEGASUSSchemaPEGASUSServerEvent *)self deletePegasusRewrittenUtterancesReportedTier1];
     [(PEGASUSSchemaPEGASUSServerEvent *)self deletePegasusUtteranceUnderstandingReportedTier1];
@@ -1493,7 +1493,7 @@ LABEL_59:
     [(PEGASUSSchemaPEGASUSServerEvent *)self deletePegasusAsrCorrectionInfo];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(PEGASUSSchemaPEGASUSServerEvent *)self deletePegasusRewrittenUtterancesReportedTier1];
     [(PEGASUSSchemaPEGASUSServerEvent *)self deletePegasusUtteranceUnderstandingReportedTier1];
@@ -1501,101 +1501,101 @@ LABEL_59:
     [(PEGASUSSchemaPEGASUSServerEvent *)self deletePegasusAsrCorrectionInfo];
   }
 
-  v6 = [(PEGASUSSchemaPEGASUSServerEvent *)self eventMetadata];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  eventMetadata = [(PEGASUSSchemaPEGASUSServerEvent *)self eventMetadata];
+  v7 = [eventMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(PEGASUSSchemaPEGASUSServerEvent *)self deleteEventMetadata];
   }
 
-  v9 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRequestContext];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  pegasusRequestContext = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRequestContext];
+  v10 = [pegasusRequestContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(PEGASUSSchemaPEGASUSServerEvent *)self deletePegasusRequestContext];
   }
 
-  v12 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRewrittenUtterancesReported];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  pegasusRewrittenUtterancesReported = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRewrittenUtterancesReported];
+  v13 = [pegasusRewrittenUtterancesReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(PEGASUSSchemaPEGASUSServerEvent *)self deletePegasusRewrittenUtterancesReported];
   }
 
-  v15 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRewrittenUtterancesReportedTier1];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  pegasusRewrittenUtterancesReportedTier1 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRewrittenUtterancesReportedTier1];
+  v16 = [pegasusRewrittenUtterancesReportedTier1 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(PEGASUSSchemaPEGASUSServerEvent *)self deletePegasusRewrittenUtterancesReportedTier1];
   }
 
-  v18 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusUtteranceUnderstandingReported];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  pegasusUtteranceUnderstandingReported = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusUtteranceUnderstandingReported];
+  v19 = [pegasusUtteranceUnderstandingReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(PEGASUSSchemaPEGASUSServerEvent *)self deletePegasusUtteranceUnderstandingReported];
   }
 
-  v21 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusUtteranceUnderstandingReportedTier1];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  pegasusUtteranceUnderstandingReportedTier1 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusUtteranceUnderstandingReportedTier1];
+  v22 = [pegasusUtteranceUnderstandingReportedTier1 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(PEGASUSSchemaPEGASUSServerEvent *)self deletePegasusUtteranceUnderstandingReportedTier1];
   }
 
-  v24 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRequestEndedTier1];
-  v25 = [v24 applySensitiveConditionsPolicy:v4];
-  v26 = [v25 suppressMessage];
+  pegasusRequestEndedTier1 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusRequestEndedTier1];
+  v25 = [pegasusRequestEndedTier1 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v25 suppressMessage];
 
-  if (v26)
+  if (suppressMessage7)
   {
     [(PEGASUSSchemaPEGASUSServerEvent *)self deletePegasusRequestEndedTier1];
   }
 
-  v27 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusInfoDomainMultistepAndMultiturnExecutionReported];
-  v28 = [v27 applySensitiveConditionsPolicy:v4];
-  v29 = [v28 suppressMessage];
+  pegasusInfoDomainMultistepAndMultiturnExecutionReported = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusInfoDomainMultistepAndMultiturnExecutionReported];
+  v28 = [pegasusInfoDomainMultistepAndMultiturnExecutionReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage8 = [v28 suppressMessage];
 
-  if (v29)
+  if (suppressMessage8)
   {
     [(PEGASUSSchemaPEGASUSServerEvent *)self deletePegasusInfoDomainMultistepAndMultiturnExecutionReported];
   }
 
-  v30 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusAmpSafetyLoggingInfo];
-  v31 = [v30 applySensitiveConditionsPolicy:v4];
-  v32 = [v31 suppressMessage];
+  pegasusAmpSafetyLoggingInfo = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusAmpSafetyLoggingInfo];
+  v31 = [pegasusAmpSafetyLoggingInfo applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage9 = [v31 suppressMessage];
 
-  if (v32)
+  if (suppressMessage9)
   {
     [(PEGASUSSchemaPEGASUSServerEvent *)self deletePegasusAmpSafetyLoggingInfo];
   }
 
-  v33 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusAsrCorrectionInfo];
-  v34 = [v33 applySensitiveConditionsPolicy:v4];
-  v35 = [v34 suppressMessage];
+  pegasusAsrCorrectionInfo = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusAsrCorrectionInfo];
+  v34 = [pegasusAsrCorrectionInfo applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage10 = [v34 suppressMessage];
 
-  if (v35)
+  if (suppressMessage10)
   {
     [(PEGASUSSchemaPEGASUSServerEvent *)self deletePegasusAsrCorrectionInfo];
   }
 
-  v36 = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusAmpPersonalizationLoggingInfo];
-  v37 = [v36 applySensitiveConditionsPolicy:v4];
-  v38 = [v37 suppressMessage];
+  pegasusAmpPersonalizationLoggingInfo = [(PEGASUSSchemaPEGASUSServerEvent *)self pegasusAmpPersonalizationLoggingInfo];
+  v37 = [pegasusAmpPersonalizationLoggingInfo applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage11 = [v37 suppressMessage];
 
-  if (v38)
+  if (suppressMessage11)
   {
     [(PEGASUSSchemaPEGASUSServerEvent *)self deletePegasusAmpPersonalizationLoggingInfo];
   }
@@ -1613,98 +1613,98 @@ LABEL_59:
 
 - (int)componentName
 {
-  v2 = [(PEGASUSSchemaPEGASUSServerEvent *)self eventMetadata];
-  v3 = [v2 pegasusId];
+  eventMetadata = [(PEGASUSSchemaPEGASUSServerEvent *)self eventMetadata];
+  pegasusId = [eventMetadata pegasusId];
 
-  if (v3)
+  if (pegasusId)
   {
-    v4 = [v3 value];
-    if (v4)
+    value = [pegasusId value];
+    if (value)
     {
-      v5 = [v3 value];
-      v6 = [v5 length];
+      value2 = [pegasusId value];
+      v6 = [value2 length];
 
       if (v6)
       {
-        LODWORD(v4) = 24;
+        LODWORD(value) = 24;
       }
 
       else
       {
-        LODWORD(v4) = 0;
+        LODWORD(value) = 0;
       }
     }
   }
 
   else
   {
-    LODWORD(v4) = 0;
+    LODWORD(value) = 0;
   }
 
-  return v4;
+  return value;
 }
 
 - (id)getComponentId
 {
-  v2 = [(PEGASUSSchemaPEGASUSServerEvent *)self eventMetadata];
-  v3 = [v2 pegasusId];
+  eventMetadata = [(PEGASUSSchemaPEGASUSServerEvent *)self eventMetadata];
+  pegasusId = [eventMetadata pegasusId];
 
-  if (!v3)
+  if (!pegasusId)
   {
     goto LABEL_5;
   }
 
-  v4 = [v3 value];
-  if (!v4)
+  value = [pegasusId value];
+  if (!value)
   {
     goto LABEL_6;
   }
 
-  v5 = [v3 value];
-  v6 = [v5 length];
+  value2 = [pegasusId value];
+  v6 = [value2 length];
 
   if (v6)
   {
-    v4 = v3;
+    value = pegasusId;
   }
 
   else
   {
 LABEL_5:
-    v4 = 0;
+    value = 0;
   }
 
 LABEL_6:
 
-  return v4;
+  return value;
 }
 
 - (SISchemaInstrumentationMessage)innerEvent
 {
-  v3 = [(PEGASUSSchemaPEGASUSServerEvent *)self whichEvent_Type];
-  if (v3 - 101 > 9)
+  whichEvent_Type = [(PEGASUSSchemaPEGASUSServerEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 9)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *(&self->super.super.super.super.isa + *off_1E78EA8D8[v3 - 101]);
+    v4 = *(&self->super.super.super.super.isa + *off_1E78EA8D8[whichEvent_Type - 101]);
   }
 
   return v4;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
-  if (a3 - 101 > 9)
+  if (tag - 101 > 9)
   {
     return 0;
   }
 
   else
   {
-    return off_1E78EA928[a3 - 101];
+    return off_1E78EA928[tag - 101];
   }
 }
 

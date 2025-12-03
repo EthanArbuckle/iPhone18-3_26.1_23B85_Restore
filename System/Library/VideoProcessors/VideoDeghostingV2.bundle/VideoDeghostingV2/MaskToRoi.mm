@@ -1,13 +1,13 @@
 @interface MaskToRoi
-- (MaskToRoi)initWithMetalToolBox:(id)a3;
+- (MaskToRoi)initWithMetalToolBox:(id)box;
 - (void)dealloc;
 @end
 
 @implementation MaskToRoi
 
-- (MaskToRoi)initWithMetalToolBox:(id)a3
+- (MaskToRoi)initWithMetalToolBox:(id)box
 {
-  v4 = a3;
+  boxCopy = box;
   v11.receiver = self;
   v11.super_class = MaskToRoi;
   v5 = [(MaskToRoi *)&v11 init];
@@ -19,9 +19,9 @@ LABEL_10:
     goto LABEL_7;
   }
 
-  if (v4)
+  if (boxCopy)
   {
-    v6 = v4;
+    v6 = boxCopy;
   }
 
   else

@@ -1,7 +1,7 @@
 @interface SleepingWristTemperatureHelpTileAnalyticsEvent
 - (NSString)eventName;
-- (id)makeIHAGatedEventPayloadWithDataSource:(id)a3 error:(id *)a4;
-- (id)makeUnrestrictedEventPayloadWithDataSource:(id)a3 error:(id *)a4;
+- (id)makeIHAGatedEventPayloadWithDataSource:(id)source error:(id *)error;
+- (id)makeUnrestrictedEventPayloadWithDataSource:(id)source error:(id *)error;
 @end
 
 @implementation SleepingWristTemperatureHelpTileAnalyticsEvent
@@ -13,9 +13,9 @@
   return v2;
 }
 
-- (id)makeUnrestrictedEventPayloadWithDataSource:(id)a3 error:(id *)a4
+- (id)makeUnrestrictedEventPayloadWithDataSource:(id)source error:(id *)error
 {
-  v4 = a3;
+  sourceCopy = source;
 
   sub_29DEEDDE4();
 
@@ -24,11 +24,11 @@
   return v5;
 }
 
-- (id)makeIHAGatedEventPayloadWithDataSource:(id)a3 error:(id *)a4
+- (id)makeIHAGatedEventPayloadWithDataSource:(id)source error:(id *)error
 {
-  v4 = a3;
+  sourceCopy = source;
 
-  sub_29DEED69C(v4);
+  sub_29DEED69C(sourceCopy);
 
   v5 = sub_29E2C31F4();
 

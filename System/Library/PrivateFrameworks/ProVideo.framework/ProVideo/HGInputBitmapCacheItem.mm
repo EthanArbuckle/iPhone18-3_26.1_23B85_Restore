@@ -1,6 +1,6 @@
 @interface HGInputBitmapCacheItem
 - (CGSize)fullSize;
-- (HGInputBitmapCacheItem)initWithHGBitmap:(void *)a3 fullSize:(CGSize)a4 colorSpace:(id)a5 gainMap:(HGRef<HGBitmap>)a6;
+- (HGInputBitmapCacheItem)initWithHGBitmap:(void *)bitmap fullSize:(CGSize)size colorSpace:(id)space gainMap:(HGRef<HGBitmap>)map;
 - (HGRef<HGBitmap>)gainMap;
 - (id).cxx_construct;
 - (vector<HGRef<HGBitmap>,)bitmaps;
@@ -9,11 +9,11 @@
 
 @implementation HGInputBitmapCacheItem
 
-- (HGInputBitmapCacheItem)initWithHGBitmap:(void *)a3 fullSize:(CGSize)a4 colorSpace:(id)a5 gainMap:(HGRef<HGBitmap>)a6
+- (HGInputBitmapCacheItem)initWithHGBitmap:(void *)bitmap fullSize:(CGSize)size colorSpace:(id)space gainMap:(HGRef<HGBitmap>)map
 {
-  height = a4.height;
-  width = a4.width;
-  v12 = a5;
+  height = size.height;
+  width = size.width;
+  spaceCopy = space;
   v20.receiver = self;
   v20.super_class = HGInputBitmapCacheItem;
   v13 = [(HGInputBitmapCacheItem *)&v20 init];
@@ -22,22 +22,22 @@
   if (v13)
   {
     p_bitmaps = &v13->_bitmaps;
-    if (&v14->_bitmaps != a3)
+    if (&v14->_bitmaps != bitmap)
     {
-      std::vector<HGRef<HGBitmap>>::__assign_with_size[abi:ne200100]<HGRef<HGBitmap>*,HGRef<HGBitmap>*>(p_bitmaps, *a3, *(a3 + 1), (*(a3 + 1) - *a3) >> 3);
+      std::vector<HGRef<HGBitmap>>::__assign_with_size[abi:ne200100]<HGRef<HGBitmap>*,HGRef<HGBitmap>*>(p_bitmaps, *bitmap, *(bitmap + 1), (*(bitmap + 1) - *bitmap) >> 3);
     }
 
     v15->_fullSize.width = width;
     v15->_fullSize.height = height;
-    objc_storeStrong(&v14->_colorSpace, a5);
+    objc_storeStrong(&v14->_colorSpace, space);
     m_Obj = v15->_gainMap.m_Obj;
-    v18 = *a6.m_Obj;
-    if (m_Obj != *a6.m_Obj)
+    v18 = *map.m_Obj;
+    if (m_Obj != *map.m_Obj)
     {
       if (m_Obj)
       {
         (*(*m_Obj + 24))(v15->_gainMap.m_Obj);
-        v18 = *a6.m_Obj;
+        v18 = *map.m_Obj;
       }
 
       v15->_gainMap.m_Obj = v18;
@@ -55,9 +55,9 @@
 
 - (void)updateLastUsedTime
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   lastUsedTime = self->_lastUsedTime;
-  self->_lastUsedTime = v3;
+  self->_lastUsedTime = date;
 }
 
 - (vector<HGRef<HGBitmap>,)bitmaps

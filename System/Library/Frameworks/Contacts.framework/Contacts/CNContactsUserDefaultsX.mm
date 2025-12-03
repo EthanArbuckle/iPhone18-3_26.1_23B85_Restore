@@ -2,40 +2,40 @@
 - (BOOL)isShortNameFormatEnabled;
 - (BOOL)shortNameFormatPrefersNicknames;
 - (CNContactsUserDefaultsX)init;
-- (CNContactsUserDefaultsX)initWithFoundationUserDefaults:(id)a3;
+- (CNContactsUserDefaultsX)initWithFoundationUserDefaults:(id)defaults;
 - (id)countryCode;
 - (id)filteredGroupAndContainerIDs;
 - (int64_t)displayNameOrder;
 - (int64_t)newContactDisplayNameOrder;
 - (int64_t)shortNameFormat;
 - (int64_t)sortOrder;
-- (void)setDisplayNameOrder:(int64_t)a3;
-- (void)setFilteredGroupAndContainerIDs:(id)a3;
-- (void)setShortNameFormat:(int64_t)a3;
-- (void)setShortNameFormatEnabled:(BOOL)a3;
-- (void)setShortNameFormatPrefersNicknames:(BOOL)a3;
+- (void)setDisplayNameOrder:(int64_t)order;
+- (void)setFilteredGroupAndContainerIDs:(id)ds;
+- (void)setShortNameFormat:(int64_t)format;
+- (void)setShortNameFormatEnabled:(BOOL)enabled;
+- (void)setShortNameFormatPrefersNicknames:(BOOL)nicknames;
 @end
 
 @implementation CNContactsUserDefaultsX
 
 - (CNContactsUserDefaultsX)init
 {
-  v3 = [MEMORY[0x1E6996718] sharedDefaults];
-  v4 = [(CNContactsUserDefaultsX *)self initWithFoundationUserDefaults:v3];
+  mEMORY[0x1E6996718] = [MEMORY[0x1E6996718] sharedDefaults];
+  v4 = [(CNContactsUserDefaultsX *)self initWithFoundationUserDefaults:mEMORY[0x1E6996718]];
 
   return v4;
 }
 
-- (CNContactsUserDefaultsX)initWithFoundationUserDefaults:(id)a3
+- (CNContactsUserDefaultsX)initWithFoundationUserDefaults:(id)defaults
 {
-  v5 = a3;
+  defaultsCopy = defaults;
   v10.receiver = self;
   v10.super_class = CNContactsUserDefaultsX;
   v6 = [(CNContactsUserDefaults *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_foundationUserDefaults, a3);
+    objc_storeStrong(&v6->_foundationUserDefaults, defaults);
     v8 = v7;
   }
 
@@ -44,10 +44,10 @@
 
 - (int64_t)displayNameOrder
 {
-  v2 = [(CNContactsUserDefaultsX *)self foundationUserDefaults];
-  v3 = [v2 nameOrder];
+  foundationUserDefaults = [(CNContactsUserDefaultsX *)self foundationUserDefaults];
+  nameOrder = [foundationUserDefaults nameOrder];
 
-  if (v3 == 1)
+  if (nameOrder == 1)
   {
     return 2;
   }
@@ -58,16 +58,16 @@
   }
 }
 
-- (void)setDisplayNameOrder:(int64_t)a3
+- (void)setDisplayNameOrder:(int64_t)order
 {
-  if (a3 == 1)
+  if (order == 1)
   {
     v3 = 0;
   }
 
   else
   {
-    if (a3 != 2)
+    if (order != 2)
     {
       return;
     }
@@ -75,16 +75,16 @@
     v3 = 1;
   }
 
-  v4 = [(CNContactsUserDefaultsX *)self foundationUserDefaults];
-  [v4 setNameOrder:v3];
+  foundationUserDefaults = [(CNContactsUserDefaultsX *)self foundationUserDefaults];
+  [foundationUserDefaults setNameOrder:v3];
 }
 
 - (int64_t)newContactDisplayNameOrder
 {
-  v2 = [(CNContactsUserDefaultsX *)self foundationUserDefaults];
-  v3 = [v2 newContactNameOrder];
+  foundationUserDefaults = [(CNContactsUserDefaultsX *)self foundationUserDefaults];
+  newContactNameOrder = [foundationUserDefaults newContactNameOrder];
 
-  if (v3 == 1)
+  if (newContactNameOrder == 1)
   {
     return 2;
   }
@@ -97,10 +97,10 @@
 
 - (int64_t)sortOrder
 {
-  v2 = [(CNContactsUserDefaultsX *)self foundationUserDefaults];
-  v3 = [v2 sortOrder];
+  foundationUserDefaults = [(CNContactsUserDefaultsX *)self foundationUserDefaults];
+  sortOrder = [foundationUserDefaults sortOrder];
 
-  if (v3)
+  if (sortOrder)
   {
     return 3;
   }
@@ -113,25 +113,25 @@
 
 - (id)countryCode
 {
-  v2 = [(CNContactsUserDefaultsX *)self foundationUserDefaults];
-  v3 = [v2 countryCode];
+  foundationUserDefaults = [(CNContactsUserDefaultsX *)self foundationUserDefaults];
+  countryCode = [foundationUserDefaults countryCode];
 
-  return v3;
+  return countryCode;
 }
 
 - (int64_t)shortNameFormat
 {
-  v3 = [(CNContactsUserDefaultsX *)self foundationUserDefaults];
-  v4 = [v3 shortNameFormat];
+  foundationUserDefaults = [(CNContactsUserDefaultsX *)self foundationUserDefaults];
+  shortNameFormat = [foundationUserDefaults shortNameFormat];
 
-  v5 = [(CNContactsUserDefaultsX *)self isShortNameFormatEnabled];
-  v6 = v4 - 1;
-  if ((v4 - 1) >= 4)
+  isShortNameFormatEnabled = [(CNContactsUserDefaultsX *)self isShortNameFormatEnabled];
+  v6 = shortNameFormat - 1;
+  if ((shortNameFormat - 1) >= 4)
   {
     v6 = 4;
   }
 
-  if (v5)
+  if (isShortNameFormatEnabled)
   {
     return v6;
   }
@@ -142,13 +142,13 @@
   }
 }
 
-- (void)setShortNameFormat:(int64_t)a3
+- (void)setShortNameFormat:(int64_t)format
 {
-  if (a3 <= 1)
+  if (format <= 1)
   {
-    if (a3)
+    if (format)
     {
-      if (a3 != 1)
+      if (format != 1)
       {
         return;
       }
@@ -162,16 +162,16 @@
     }
   }
 
-  else if (a3 == 2)
+  else if (format == 2)
   {
     v4 = 3;
   }
 
   else
   {
-    if (a3 != 3)
+    if (format != 3)
     {
-      if (a3 == 4)
+      if (format == 4)
       {
 
         [(CNContactsUserDefaultsX *)self setShortNameFormatEnabled:0];
@@ -184,53 +184,53 @@
   }
 
   [(CNContactsUserDefaultsX *)self setShortNameFormatEnabled:1];
-  v5 = [(CNContactsUserDefaultsX *)self foundationUserDefaults];
-  [v5 setShortNameFormat:v4];
+  foundationUserDefaults = [(CNContactsUserDefaultsX *)self foundationUserDefaults];
+  [foundationUserDefaults setShortNameFormat:v4];
 }
 
 - (BOOL)isShortNameFormatEnabled
 {
-  v2 = [(CNContactsUserDefaultsX *)self foundationUserDefaults];
-  v3 = [v2 isShortNameFormatEnabled];
+  foundationUserDefaults = [(CNContactsUserDefaultsX *)self foundationUserDefaults];
+  isShortNameFormatEnabled = [foundationUserDefaults isShortNameFormatEnabled];
 
-  return v3;
+  return isShortNameFormatEnabled;
 }
 
-- (void)setShortNameFormatEnabled:(BOOL)a3
+- (void)setShortNameFormatEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(CNContactsUserDefaultsX *)self foundationUserDefaults];
-  [v4 setShortNameFormatEnabled:v3];
+  enabledCopy = enabled;
+  foundationUserDefaults = [(CNContactsUserDefaultsX *)self foundationUserDefaults];
+  [foundationUserDefaults setShortNameFormatEnabled:enabledCopy];
 }
 
 - (BOOL)shortNameFormatPrefersNicknames
 {
-  v2 = [(CNContactsUserDefaultsX *)self foundationUserDefaults];
-  v3 = [v2 preferNickname];
+  foundationUserDefaults = [(CNContactsUserDefaultsX *)self foundationUserDefaults];
+  preferNickname = [foundationUserDefaults preferNickname];
 
-  return v3;
+  return preferNickname;
 }
 
-- (void)setShortNameFormatPrefersNicknames:(BOOL)a3
+- (void)setShortNameFormatPrefersNicknames:(BOOL)nicknames
 {
-  v3 = a3;
-  v4 = [(CNContactsUserDefaultsX *)self foundationUserDefaults];
-  [v4 setPreferNickname:v3];
+  nicknamesCopy = nicknames;
+  foundationUserDefaults = [(CNContactsUserDefaultsX *)self foundationUserDefaults];
+  [foundationUserDefaults setPreferNickname:nicknamesCopy];
 }
 
 - (id)filteredGroupAndContainerIDs
 {
-  v2 = [(CNContactsUserDefaultsX *)self foundationUserDefaults];
-  v3 = [v2 filteredAccountsAndContainers];
+  foundationUserDefaults = [(CNContactsUserDefaultsX *)self foundationUserDefaults];
+  filteredAccountsAndContainers = [foundationUserDefaults filteredAccountsAndContainers];
 
-  return v3;
+  return filteredAccountsAndContainers;
 }
 
-- (void)setFilteredGroupAndContainerIDs:(id)a3
+- (void)setFilteredGroupAndContainerIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(CNContactsUserDefaultsX *)self foundationUserDefaults];
-  [v5 setFilteredAccountsAndContainers:v4];
+  dsCopy = ds;
+  foundationUserDefaults = [(CNContactsUserDefaultsX *)self foundationUserDefaults];
+  [foundationUserDefaults setFilteredAccountsAndContainers:dsCopy];
 }
 
 @end

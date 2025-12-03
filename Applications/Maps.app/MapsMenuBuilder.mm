@@ -14,20 +14,20 @@
 + (id)mapModeSubMenuCommands;
 + (id)performanceTestsMenu;
 + (id)preferencesMenuCommand;
-+ (id)sendToDeviceAndShareMenuWithSendToDeviceEnabled:(BOOL)a3;
++ (id)sendToDeviceAndShareMenuWithSendToDeviceEnabled:(BOOL)enabled;
 + (id)undoRedoMenu;
 + (id)userProfileMenu;
 + (id)visibleAttributesSubMenu;
 + (id)zoomSubMenu;
 + (id)zoomSubMenuCommands;
-+ (void)buildMenuWithBuilder:(id)a3 sendToDeviceEnabled:(BOOL)a4;
++ (void)buildMenuWithBuilder:(id)builder sendToDeviceEnabled:(BOOL)enabled;
 @end
 
 @implementation MapsMenuBuilder
 
-+ (id)sendToDeviceAndShareMenuWithSendToDeviceEnabled:(BOOL)a3
++ (id)sendToDeviceAndShareMenuWithSendToDeviceEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v4 = +[NSUserDefaults standardUserDefaults];
   v5 = [v4 BOOLForKey:@"MENU_SHARING_DISABLED_KEY"];
 
@@ -48,7 +48,7 @@
   v11 = +[NSBundle mainBundle];
   v12 = [v11 localizedStringForKey:@"[Menu] Send to Device" value:@"localized string not found" table:0];
 
-  if (v3 && [v10 count])
+  if (enabledCopy && [v10 count])
   {
     v13 = [v10 copy];
     v14 = [UIMenu menuWithTitle:v12 image:0 identifier:0 options:0 children:v13];
@@ -121,9 +121,9 @@
   v37 = 0u;
   v38 = 0u;
   v8 = +[CollectionManager sharedManager];
-  v9 = [v8 currentCollectionsForToolbarMenu];
+  currentCollectionsForToolbarMenu = [v8 currentCollectionsForToolbarMenu];
 
-  v10 = [v9 countByEnumeratingWithState:&v35 objects:v42 count:16];
+  v10 = [currentCollectionsForToolbarMenu countByEnumeratingWithState:&v35 objects:v42 count:16];
   if (v10)
   {
     v11 = v10;
@@ -134,23 +134,23 @@
       {
         if (*v36 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(currentCollectionsForToolbarMenu);
         }
 
         v14 = *(*(&v35 + 1) + 8 * i);
-        v15 = [v14 title];
+        title = [v14 title];
 
-        if (v15)
+        if (title)
         {
-          v16 = [v14 title];
-          v17 = [v14 identifier];
-          v18 = [UICommand commandWithTitle:v16 image:0 action:"presentAddToCollection:" propertyList:v17];
+          title2 = [v14 title];
+          identifier = [v14 identifier];
+          v18 = [UICommand commandWithTitle:title2 image:0 action:"presentAddToCollection:" propertyList:identifier];
 
           [v7 addObject:v18];
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v35 objects:v42 count:16];
+      v11 = [currentCollectionsForToolbarMenu countByEnumeratingWithState:&v35 objects:v42 count:16];
     }
 
     while (v11);
@@ -199,15 +199,15 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v9 BOOLValue];
+    bOOLValue = [v9 BOOLValue];
   }
 
   else
   {
-    v10 = 1;
+    bOOLValue = 1;
   }
 
-  [v7 setState:v10];
+  [v7 setState:bOOLValue];
   v11 = [UICommand commandWithTitle:@"Scrolling Opens Placecard" image:0 action:"toggleScrollingOpensPlacecard" propertyList:0];
   v12 = +[NSUserDefaults standardUserDefaults];
   [v11 setState:{objc_msgSend(v12, "BOOLForKey:", @"SCROLLING_OPENS_PLACECARD_KEY_ROTATED"}];
@@ -229,8 +229,8 @@
   {
     v25[0] = v4;
     v25[1] = v16;
-    v19 = [a1 performanceTestsMenu];
-    v25[2] = v19;
+    performanceTestsMenu = [self performanceTestsMenu];
+    v25[2] = performanceTestsMenu;
     v20 = [NSArray arrayWithObjects:v25 count:3];
     v21 = [UIMenu menuWithTitle:@"Debug" children:v20];
   }
@@ -239,8 +239,8 @@
   {
     v24[0] = v4;
     v24[1] = v16;
-    v19 = [NSArray arrayWithObjects:v24 count:2];
-    v21 = [UIMenu menuWithTitle:@"Debug" children:v19];
+    performanceTestsMenu = [NSArray arrayWithObjects:v24 count:2];
+    v21 = [UIMenu menuWithTitle:@"Debug" children:performanceTestsMenu];
   }
 
   return v21;
@@ -351,8 +351,8 @@
 
 + (id)zoomSubMenu
 {
-  v2 = [a1 zoomSubMenuCommands];
-  v3 = [UIMenu menuWithTitle:&stru_1016631F0 image:0 identifier:@"ZoomSubMenuIdentifier" options:1 children:v2];
+  zoomSubMenuCommands = [self zoomSubMenuCommands];
+  v3 = [UIMenu menuWithTitle:&stru_1016631F0 image:0 identifier:@"ZoomSubMenuIdentifier" options:1 children:zoomSubMenuCommands];
 
   return v3;
 }
@@ -404,8 +404,8 @@
 
 + (id)mapModeSubMenu
 {
-  v2 = [a1 mapModeSubMenuCommands];
-  v3 = [UIMenu menuWithTitle:&stru_1016631F0 image:0 identifier:@"MapModeSubMenuIdentifier" options:1 children:v2];
+  mapModeSubMenuCommands = [self mapModeSubMenuCommands];
+  v3 = [UIMenu menuWithTitle:&stru_1016631F0 image:0 identifier:@"MapModeSubMenuIdentifier" options:1 children:mapModeSubMenuCommands];
 
   return v3;
 }
@@ -493,7 +493,7 @@
 
 + (id)editMenu
 {
-  v2 = [a1 dropPinKeyCommand];
+  dropPinKeyCommand = [self dropPinKeyCommand];
   v3 = +[_TtC4Maps18LibraryUIUtilities isMyPlacesEnabled];
   v4 = +[NSBundle mainBundle];
   v5 = v4;
@@ -517,7 +517,7 @@
   v12 = [UIImage systemImageNamed:@"trash"];
   v13 = [UICommand commandWithTitle:v11 image:v12 action:"deleteStop" propertyList:0];
 
-  v17[0] = v2;
+  v17[0] = dropPinKeyCommand;
   v17[1] = v9;
   v17[2] = v13;
   v14 = [NSArray arrayWithObjects:v17 count:3];
@@ -551,8 +551,8 @@
 
 + (id)fileMenuEnd
 {
-  v2 = [a1 filePrintKeyCommand];
-  v6 = v2;
+  filePrintKeyCommand = [self filePrintKeyCommand];
+  v6 = filePrintKeyCommand;
   v3 = [NSArray arrayWithObjects:&v6 count:1];
   v4 = [UIMenu menuWithTitle:&stru_1016631F0 image:0 identifier:0 options:1 children:v3];
 
@@ -620,9 +620,9 @@
   }
 
   v15 = +[GEOPlatform sharedPlatform];
-  v16 = [v15 isInternalInstall];
+  isInternalInstall = [v15 isInternalInstall];
 
-  if (v16)
+  if (isInternalInstall)
   {
     v17 = [UIImage systemImageNamed:@"ant"];
     v18 = [UICommand commandWithTitle:@"File a Radar…" image:v17 action:"presentRadar" propertyList:0];
@@ -672,81 +672,81 @@
   return v5;
 }
 
-+ (void)buildMenuWithBuilder:(id)a3 sendToDeviceEnabled:(BOOL)a4
++ (void)buildMenuWithBuilder:(id)builder sendToDeviceEnabled:(BOOL)enabled
 {
-  v4 = a4;
-  v24 = a3;
+  enabledCopy = enabled;
+  builderCopy = builder;
   v5 = +[UIScreen mainScreen];
   v6 = sub_10000FA08(v5);
 
   if (v6 == 5)
   {
-    [v24 replaceChildrenOfMenuForIdentifier:UIMenuPreferences fromChildrenBlock:&stru_10162D7B8];
+    [builderCopy replaceChildrenOfMenuForIdentifier:UIMenuPreferences fromChildrenBlock:&stru_10162D7B8];
   }
 
   v7 = +[MapsMenuBuilder applicationMenu];
-  v8 = [v7 children];
-  v9 = [v8 count];
+  children = [v7 children];
+  v9 = [children count];
 
   if (v9)
   {
-    [v24 insertSiblingMenu:v7 afterMenuForIdentifier:UIMenuPreferences];
+    [builderCopy insertSiblingMenu:v7 afterMenuForIdentifier:UIMenuPreferences];
   }
 
   v10 = +[MapsMenuBuilder userProfileMenu];
-  [v24 insertSiblingMenu:v10 afterMenuForIdentifier:UIMenuPreferences];
+  [builderCopy insertSiblingMenu:v10 afterMenuForIdentifier:UIMenuPreferences];
 
-  [v24 removeMenuForIdentifier:UIMenuNewItem];
-  [v24 removeMenuForIdentifier:UIMenuOpenRecent];
-  [v24 removeMenuForIdentifier:UIMenuPrint];
+  [builderCopy removeMenuForIdentifier:UIMenuNewItem];
+  [builderCopy removeMenuForIdentifier:UIMenuOpenRecent];
+  [builderCopy removeMenuForIdentifier:UIMenuPrint];
   v11 = +[MapsMenuBuilder fileMenuStart];
-  [v24 insertChildMenu:v11 atStartOfMenuForIdentifier:UIMenuFile];
+  [builderCopy insertChildMenu:v11 atStartOfMenuForIdentifier:UIMenuFile];
 
-  v12 = [MapsMenuBuilder sendToDeviceAndShareMenuWithSendToDeviceEnabled:v4];
-  [v24 insertSiblingMenu:v12 afterMenuForIdentifier:UIMenuClose];
+  v12 = [MapsMenuBuilder sendToDeviceAndShareMenuWithSendToDeviceEnabled:enabledCopy];
+  [builderCopy insertSiblingMenu:v12 afterMenuForIdentifier:UIMenuClose];
 
   v13 = +[MapsMenuBuilder fileMenuEnd];
-  [v24 insertSiblingMenu:v13 afterMenuForIdentifier:@"SendToDeviceAndShareSubMenuIdentifier"];
+  [builderCopy insertSiblingMenu:v13 afterMenuForIdentifier:@"SendToDeviceAndShareSubMenuIdentifier"];
 
   v14 = +[MapsMenuBuilder editMenu];
-  [v24 insertSiblingMenu:v14 afterMenuForIdentifier:UIMenuStandardEdit];
+  [builderCopy insertSiblingMenu:v14 afterMenuForIdentifier:UIMenuStandardEdit];
 
   v15 = +[MapsMenuBuilder findSubMenu];
-  [v24 replaceMenuForIdentifier:UIMenuFind withMenu:v15];
+  [builderCopy replaceMenuForIdentifier:UIMenuFind withMenu:v15];
 
-  [v24 removeMenuForIdentifier:UIMenuSubstitutions];
-  [v24 removeMenuForIdentifier:UIMenuTransformations];
-  [v24 removeMenuForIdentifier:UIMenuUndoRedo];
+  [builderCopy removeMenuForIdentifier:UIMenuSubstitutions];
+  [builderCopy removeMenuForIdentifier:UIMenuTransformations];
+  [builderCopy removeMenuForIdentifier:UIMenuUndoRedo];
   v16 = +[MapsMenuBuilder undoRedoMenu];
-  [v24 insertChildMenu:v16 atStartOfMenuForIdentifier:UIMenuEdit];
+  [builderCopy insertChildMenu:v16 atStartOfMenuForIdentifier:UIMenuEdit];
 
-  [v24 removeMenuForIdentifier:UIMenuFormat];
-  [v24 removeMenuForIdentifier:UIMenuToolbar];
-  [v24 removeMenuForIdentifier:UIMenuTextSize];
+  [builderCopy removeMenuForIdentifier:UIMenuFormat];
+  [builderCopy removeMenuForIdentifier:UIMenuToolbar];
+  [builderCopy removeMenuForIdentifier:UIMenuTextSize];
   v17 = +[MapsMenuBuilder mapModeSubMenu];
-  [v24 insertChildMenu:v17 atStartOfMenuForIdentifier:UIMenuView];
+  [builderCopy insertChildMenu:v17 atStartOfMenuForIdentifier:UIMenuView];
 
   v18 = +[MapsMenuBuilder visibleAttributesSubMenu];
-  [v24 insertSiblingMenu:v18 afterMenuForIdentifier:@"MapModeSubMenuIdentifier"];
+  [builderCopy insertSiblingMenu:v18 afterMenuForIdentifier:@"MapModeSubMenuIdentifier"];
 
   v19 = +[MapsMenuBuilder zoomSubMenu];
-  [v24 insertSiblingMenu:v19 afterMenuForIdentifier:@"VisibleAttributesSubMenuIdentifier"];
+  [builderCopy insertSiblingMenu:v19 afterMenuForIdentifier:@"VisibleAttributesSubMenuIdentifier"];
 
   v20 = +[MapsMenuBuilder currentLocationSubMenu];
-  [v24 insertSiblingMenu:v20 afterMenuForIdentifier:@"ZoomSubMenuIdentifier"];
+  [builderCopy insertSiblingMenu:v20 afterMenuForIdentifier:@"ZoomSubMenuIdentifier"];
 
   v21 = +[UIScreen mainScreen];
   v22 = sub_10000FA08(v21);
 
   if (v22 == 1)
   {
-    [v24 removeMenuForIdentifier:UIMenuSidebar];
+    [builderCopy removeMenuForIdentifier:UIMenuSidebar];
   }
 
   if (sub_10078A958())
   {
     v23 = +[MapsMenuBuilder debugMenu];
-    [v24 insertSiblingMenu:v23 afterMenuForIdentifier:UIMenuHelp];
+    [builderCopy insertSiblingMenu:v23 afterMenuForIdentifier:UIMenuHelp];
   }
 }
 

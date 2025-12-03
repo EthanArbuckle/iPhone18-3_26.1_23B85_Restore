@@ -7,16 +7,16 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFBatteryConditioningStateCharacteristic;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
 - (id)formattedValue
 {
-  v2 = [(CAFBatteryConditioningStateCharacteristic *)self batteryConditioningStateValue];
+  batteryConditioningStateValue = [(CAFBatteryConditioningStateCharacteristic *)self batteryConditioningStateValue];
 
-  return NSStringFromBatteryConditioningState(v2);
+  return NSStringFromBatteryConditioningState(batteryConditioningStateValue);
 }
 
 @end

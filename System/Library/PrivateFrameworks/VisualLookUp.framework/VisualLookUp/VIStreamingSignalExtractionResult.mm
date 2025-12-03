@@ -1,21 +1,21 @@
 @interface VIStreamingSignalExtractionResult
-- (VIStreamingSignalExtractionResult)initWithImageRegion:(id)a3 payload:(id)a4;
+- (VIStreamingSignalExtractionResult)initWithImageRegion:(id)region payload:(id)payload;
 @end
 
 @implementation VIStreamingSignalExtractionResult
 
-- (VIStreamingSignalExtractionResult)initWithImageRegion:(id)a3 payload:(id)a4
+- (VIStreamingSignalExtractionResult)initWithImageRegion:(id)region payload:(id)payload
 {
-  v7 = a3;
-  v8 = a4;
+  regionCopy = region;
+  payloadCopy = payload;
   v12.receiver = self;
   v12.super_class = VIStreamingSignalExtractionResult;
   v9 = [(VIStreamingSignalExtractionResult *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_imageRegion, a3);
-    objc_storeStrong(&v10->_payload, a4);
+    objc_storeStrong(&v9->_imageRegion, region);
+    objc_storeStrong(&v10->_payload, payload);
   }
 
   return v10;

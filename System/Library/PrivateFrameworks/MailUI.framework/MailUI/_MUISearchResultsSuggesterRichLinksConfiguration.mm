@@ -2,8 +2,8 @@
 + (OS_os_log)log;
 - (NSArray)categories;
 - (NSArray)fetchAttributes;
-- (id)processSuggestionsResults:(id)a3 phraseManager:(id)a4 messageList:(id)a5;
-- (id)suggestionFilterQueryWithPhraseManager:(id)a3 senderFilterQuery:(id)a4;
+- (id)processSuggestionsResults:(id)results phraseManager:(id)manager messageList:(id)list;
+- (id)suggestionFilterQueryWithPhraseManager:(id)manager senderFilterQuery:(id)query;
 @end
 
 @implementation _MUISearchResultsSuggesterRichLinksConfiguration
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __55___MUISearchResultsSuggesterRichLinksConfiguration_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_17 != -1)
   {
     dispatch_once(&log_onceToken_17, block);
@@ -35,13 +35,13 @@
   return v3;
 }
 
-- (id)suggestionFilterQueryWithPhraseManager:(id)a3 senderFilterQuery:(id)a4
+- (id)suggestionFilterQueryWithPhraseManager:(id)manager senderFilterQuery:(id)query
 {
-  v5 = a4;
-  v6 = [a3 phrase];
-  if ([v6 length])
+  queryCopy = query;
+  phrase = [manager phrase];
+  if ([phrase length])
   {
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"'%@*'cdw", v6];
+    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"'%@*'cdw", phrase];
   }
 
   else
@@ -50,18 +50,18 @@
   }
 
   v8 = MEMORY[0x277CCACA8];
-  v9 = [MEMORY[0x277D070F8] idAttributeKey];
-  v10 = [v8 stringWithFormat:@"(%@ = %@)", v9, v7];
+  idAttributeKey = [MEMORY[0x277D070F8] idAttributeKey];
+  v10 = [v8 stringWithFormat:@"(%@ = %@)", idAttributeKey, v7];
 
   v11 = MEMORY[0x277CCACA8];
   v12 = +[MUISearchResultsSuggester dateQueryString];
   v13 = [v11 stringWithFormat:@"(%@) && (%@)", v10, v12];
 
-  if ([v5 length])
+  if ([queryCopy length])
   {
-    v14 = [v13 stringByAppendingFormat:@" && (%@)", v5];
+    queryCopy = [v13 stringByAppendingFormat:@" && (%@)", queryCopy];
 
-    v13 = v14;
+    v13 = queryCopy;
   }
 
   return v13;
@@ -79,12 +79,12 @@
   return v3;
 }
 
-- (id)processSuggestionsResults:(id)a3 phraseManager:(id)a4 messageList:(id)a5
+- (id)processSuggestionsResults:(id)results phraseManager:(id)manager messageList:(id)list
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MUISearchResultsSuggester suggestionResultsSortedByDate:v7];
+  resultsCopy = results;
+  managerCopy = manager;
+  listCopy = list;
+  v10 = [MUISearchResultsSuggester suggestionResultsSortedByDate:resultsCopy];
   v24[0] = 0;
   v24[1] = v24;
   v24[2] = 0x3032000000;
@@ -103,7 +103,7 @@
   v14[3] = &unk_27818B048;
   v16 = v24;
   v17 = &v18;
-  v11 = v9;
+  v11 = listCopy;
   v15 = v11;
   [v10 enumerateObjectsUsingBlock:v14];
   v12 = v19[5];

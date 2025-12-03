@@ -9,50 +9,50 @@
 - (void)mf_updateContentConfigurationWithBlock:()MessageUI
 {
   v9 = a3;
-  v4 = [a1 contentConfiguration];
-  v5 = [v4 copy];
+  contentConfiguration = [self contentConfiguration];
+  v5 = [contentConfiguration copy];
   v6 = v5;
   if (v5)
   {
-    v7 = v5;
+    defaultContentConfiguration = v5;
   }
 
   else
   {
-    v7 = [a1 defaultContentConfiguration];
+    defaultContentConfiguration = [self defaultContentConfiguration];
   }
 
-  v8 = v7;
+  v8 = defaultContentConfiguration;
 
   v9[2](v9, v8);
-  [a1 setContentConfiguration:v8];
+  [self setContentConfiguration:v8];
 }
 
 - (void)_mf_setBackgroundConfigurationColor:()MessageUI
 {
   v11 = a3;
-  v4 = [a1 backgroundConfiguration];
-  v5 = [v4 copy];
+  backgroundConfiguration = [self backgroundConfiguration];
+  v5 = [backgroundConfiguration copy];
   v6 = v5;
   if (v5)
   {
-    v7 = v5;
+    listGroupedCellConfiguration = v5;
   }
 
   else
   {
-    v7 = [MEMORY[0x1E69DC6E8] listGroupedCellConfiguration];
+    listGroupedCellConfiguration = [MEMORY[0x1E69DC6E8] listGroupedCellConfiguration];
   }
 
-  v8 = v7;
+  v8 = listGroupedCellConfiguration;
 
-  v9 = [v8 backgroundColor];
-  v10 = [v9 isEqual:v11];
+  backgroundColor = [v8 backgroundColor];
+  v10 = [backgroundColor isEqual:v11];
 
   if ((v10 & 1) == 0)
   {
     [v8 setBackgroundColor:v11];
-    [a1 setBackgroundConfiguration:v8];
+    [self setBackgroundConfiguration:v8];
   }
 }
 
@@ -60,19 +60,19 @@
 {
   if (a3)
   {
-    v4 = [MEMORY[0x1E69DC888] mailPopoverBackgroundCellColor];
+    mailPopoverBackgroundCellColor = [MEMORY[0x1E69DC888] mailPopoverBackgroundCellColor];
   }
 
   else
   {
-    v6 = [MEMORY[0x1E69DC6E8] listGroupedCellConfiguration];
-    v5 = [v6 backgroundColor];
+    listGroupedCellConfiguration = [MEMORY[0x1E69DC6E8] listGroupedCellConfiguration];
+    backgroundColor = [listGroupedCellConfiguration backgroundColor];
 
-    v4 = v5;
+    mailPopoverBackgroundCellColor = backgroundColor;
   }
 
-  v7 = v4;
-  [a1 _mf_setBackgroundConfigurationColor:v4];
+  v7 = mailPopoverBackgroundCellColor;
+  [self _mf_setBackgroundConfigurationColor:mailPopoverBackgroundCellColor];
 }
 
 @end

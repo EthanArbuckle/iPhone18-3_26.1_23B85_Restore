@@ -2,40 +2,40 @@
 - (BOOL)_reverifyUserConfigurationState;
 - (BuddyAwaitUserConfigurationController)awaitUserConfigurationController;
 - (void)dealloc;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation BuddyAwaitUserConfigurationViewController
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
-  v2 = [(BuddyAwaitUserConfigurationViewController *)self timer];
-  [(NSTimer *)v2 invalidate];
+  timer = [(BuddyAwaitUserConfigurationViewController *)self timer];
+  [(NSTimer *)timer invalidate];
 
-  [(BuddyAwaitUserConfigurationViewController *)v5 setTimer:0];
-  if (notify_is_valid_token(v5->_token))
+  [(BuddyAwaitUserConfigurationViewController *)selfCopy setTimer:0];
+  if (notify_is_valid_token(selfCopy->_token))
   {
-    notify_cancel(v5->_token);
+    notify_cancel(selfCopy->_token);
   }
 
-  v3.receiver = v5;
+  v3.receiver = selfCopy;
   v3.super_class = BuddyAwaitUserConfigurationViewController;
   [(BuddyAwaitUserConfigurationViewController *)&v3 dealloc];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v38 = self;
+  selfCopy = self;
   v37 = a2;
-  v36 = a3;
+  appearCopy = appear;
   v35.receiver = self;
   v35.super_class = BuddyAwaitUserConfigurationViewController;
-  [(BuddyAwaitUserConfigurationViewController *)&v35 viewDidAppear:a3];
-  if (![(BuddyAwaitUserConfigurationViewController *)v38 _reverifyUserConfigurationState])
+  [(BuddyAwaitUserConfigurationViewController *)&v35 viewDidAppear:appear];
+  if (![(BuddyAwaitUserConfigurationViewController *)selfCopy _reverifyUserConfigurationState])
   {
-    objc_initWeak(&location, v38);
+    objc_initWeak(&location, selfCopy);
     v27 = _NSConcreteStackBlock;
     v28 = -1073741824;
     v29 = 0;
@@ -43,9 +43,9 @@
     v31 = &unk_10032AF58;
     objc_copyWeak(&v32, &location);
     v33 = objc_retainBlock(&v27);
-    v3 = [DMCUserSettingsChangedNotification UTF8String];
-    p_token = &v38->_token;
-    v5 = v3;
+    uTF8String = [DMCUserSettingsChangedNotification UTF8String];
+    p_token = &selfCopy->_token;
+    v5 = uTF8String;
     v6 = &_dispatch_main_q;
     v7 = &_dispatch_main_q;
     handler = _NSConcreteStackBlock;
@@ -77,7 +77,7 @@
       v15 = &unk_10032BA70;
       v16 = v33;
       v10 = [NSTimer scheduledTimerWithTimeInterval:1 repeats:&v11 block:5.0];
-      [(BuddyAwaitUserConfigurationViewController *)v38 setTimer:v10];
+      [(BuddyAwaitUserConfigurationViewController *)selfCopy setTimer:v10];
 
       objc_storeStrong(&v16, 0);
     }
@@ -91,13 +91,13 @@
 
 - (BOOL)_reverifyUserConfigurationState
 {
-  v13 = self;
+  selfCopy = self;
   oslog[1] = a2;
-  v2 = [(BuddyAwaitUserConfigurationViewController *)self awaitUserConfigurationController];
-  v3 = [(BuddyAwaitUserConfigurationController *)v2 managedConfiguration];
-  v4 = [(MCProfileConnection *)v3 isAwaitingUserConfigured];
+  awaitUserConfigurationController = [(BuddyAwaitUserConfigurationViewController *)self awaitUserConfigurationController];
+  managedConfiguration = [(BuddyAwaitUserConfigurationController *)awaitUserConfigurationController managedConfiguration];
+  isAwaitingUserConfigured = [(MCProfileConnection *)managedConfiguration isAwaitingUserConfigured];
 
-  if (v4)
+  if (isAwaitingUserConfigured)
   {
     return 0;
   }
@@ -113,11 +113,11 @@
   }
 
   objc_storeStrong(oslog, 0);
-  v7 = [(BuddyAwaitUserConfigurationViewController *)v13 timer];
-  [(NSTimer *)v7 invalidate];
+  timer = [(BuddyAwaitUserConfigurationViewController *)selfCopy timer];
+  [(NSTimer *)timer invalidate];
 
-  v8 = [(BuddyAwaitUserConfigurationViewController *)v13 awaitUserConfigurationController];
-  [(BuddyAwaitUserConfigurationController *)v8 controllerDone];
+  awaitUserConfigurationController2 = [(BuddyAwaitUserConfigurationViewController *)selfCopy awaitUserConfigurationController];
+  [(BuddyAwaitUserConfigurationController *)awaitUserConfigurationController2 controllerDone];
 
   return 1;
 }

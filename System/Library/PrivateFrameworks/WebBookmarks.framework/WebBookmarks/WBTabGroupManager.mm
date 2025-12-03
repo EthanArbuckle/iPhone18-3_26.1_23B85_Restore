@@ -1,13 +1,13 @@
 @interface WBTabGroupManager
 + (id)ephemeralTabGroupManager;
-- (BOOL)_didLocallyCreateUnnamedTabGroup:(id)a3;
-- (BOOL)_needsInitialBlankTabInTabGroup:(id)a3;
+- (BOOL)_didLocallyCreateUnnamedTabGroup:(id)group;
+- (BOOL)_needsInitialBlankTabInTabGroup:(id)group;
 - (BOOL)_shouldBeginDevicePresenceReporting;
 - (BOOL)_shouldEndDevicePresenceReporting;
-- (BOOL)closeAllTabsOnDevice:(id)a3;
-- (BOOL)closeTab:(id)a3 onDevice:(id)a4;
+- (BOOL)closeAllTabsOnDevice:(id)device;
+- (BOOL)closeTab:(id)tab onDevice:(id)device;
 - (BOOL)hasMultipleProfiles;
-- (BOOL)isTab:(id)a3 childOfPinnedTabGroupOfNamedProfileOfUnnamedTabGroup:(id)a4;
+- (BOOL)isTab:(id)tab childOfPinnedTabGroupOfNamedProfileOfUnnamedTabGroup:(id)group;
 - (NSArray)allNamedTabGroupsUnsorted;
 - (NSArray)allSyncedTabGroupsExceptRemoteUnnamedTabGroups;
 - (NSArray)namedProfiles;
@@ -17,121 +17,121 @@
 - (NSSet)allProfileIdentifiers;
 - (NSSet)recentlyAddedTabGroupsAwaitingFirstStartPage;
 - (WBProfile)defaultProfile;
-- (WBTabGroupManager)initWithCollection:(id)a3;
+- (WBTabGroupManager)initWithCollection:(id)collection;
 - (id)_allSyncedTabGroupsExceptRemoteUnnamedTabGroups;
 - (id)_allTabGroupsUnsorted;
-- (id)_devicesForProfileWithIdentifier:(id)a3;
-- (id)_findLocalDeviceForProfileWithIdentifier:(id)a3;
-- (id)_findOrCreateLocalDeviceForProfileWithIdentifier:(id)a3;
-- (id)_generatePositionForDevice:(id)a3 afterDevice:(id)a4;
-- (id)_generatePositionForProfile:(id)a3 afterProfile:(id)a4;
-- (id)_generatePositionForTabGroup:(id)a3 afterTabGroup:(id)a4;
-- (id)_generatePositionForTabGroup:(id)a3 afterTabGroup:(id)a4 inTabGroups:(id)a5;
-- (id)_insertDevice:(id)a3 inProfile:(id)a4 completionHandler:(id)a5;
-- (id)_insertTabGroup:(id)a3 afterTabGroup:(id)a4 isMove:(BOOL)a5;
+- (id)_devicesForProfileWithIdentifier:(id)identifier;
+- (id)_findLocalDeviceForProfileWithIdentifier:(id)identifier;
+- (id)_findOrCreateLocalDeviceForProfileWithIdentifier:(id)identifier;
+- (id)_generatePositionForDevice:(id)device afterDevice:(id)afterDevice;
+- (id)_generatePositionForProfile:(id)profile afterProfile:(id)afterProfile;
+- (id)_generatePositionForTabGroup:(id)group afterTabGroup:(id)tabGroup;
+- (id)_generatePositionForTabGroup:(id)group afterTabGroup:(id)tabGroup inTabGroups:(id)groups;
+- (id)_insertDevice:(id)device inProfile:(id)profile completionHandler:(id)handler;
+- (id)_insertTabGroup:(id)group afterTabGroup:(id)tabGroup isMove:(BOOL)move;
 - (id)_namedProfiles;
-- (id)_performCRDTMergeAndMapTabsToParentIdentifiersWithProfilesByIdentifier:(id)a3 devicesByUUID:(id)a4 uninsertedSyncableTabsFromSyncableTabsByUUID:(id)a5;
+- (id)_performCRDTMergeAndMapTabsToParentIdentifiersWithProfilesByIdentifier:(id)identifier devicesByUUID:(id)d uninsertedSyncableTabsFromSyncableTabsByUUID:(id)iD;
 - (id)_profiles;
-- (id)_remoteDevicesForProfileWithIdentifier:(id)a3;
-- (id)_shareRecordIfNeededToBeginCollaborationForTabGroup:(id)a3;
-- (id)_shareRecordIfNeededToEndCollaborationForTabGroup:(id)a3;
-- (id)_tabCacheForTabGroup:(id)a3;
-- (id)_tabGroupAfterTabGroup:(id)a3 inTabGroups:(id)a4;
-- (id)_tabGroupCacheForTabGroup:(id)a3;
-- (id)_tabGroupWithUUID:(id)a3;
-- (id)_tabGroupsForProfileWithIdentifier:(id)a3;
-- (id)_tabGroupsWithTabsToBeClosedForProfilesWithIdentifiers:(id)a3;
-- (id)_tabWithUUID:(id)a3;
-- (id)_unnamedTabGroupsForDeviceWithUUID:(id)a3;
-- (id)_unnamedTabGroupsForProfileWithIdentifier:(id)a3;
+- (id)_remoteDevicesForProfileWithIdentifier:(id)identifier;
+- (id)_shareRecordIfNeededToBeginCollaborationForTabGroup:(id)group;
+- (id)_shareRecordIfNeededToEndCollaborationForTabGroup:(id)group;
+- (id)_tabCacheForTabGroup:(id)group;
+- (id)_tabGroupAfterTabGroup:(id)group inTabGroups:(id)groups;
+- (id)_tabGroupCacheForTabGroup:(id)group;
+- (id)_tabGroupWithUUID:(id)d;
+- (id)_tabGroupsForProfileWithIdentifier:(id)identifier;
+- (id)_tabGroupsWithTabsToBeClosedForProfilesWithIdentifiers:(id)identifiers;
+- (id)_tabWithUUID:(id)d;
+- (id)_unnamedTabGroupsForDeviceWithUUID:(id)d;
+- (id)_unnamedTabGroupsForProfileWithIdentifier:(id)identifier;
 - (id)_unsafeTabGroupUUIDsToCKShares;
-- (id)devicesForProfile:(id)a3;
-- (id)insertUnnamedTabGroup:(id)a3;
-- (id)namedTabGroupsForProfileWithIdentifier:(id)a3;
-- (id)positionGenerator:(id)a3 positionForRecordName:(id)a4;
-- (id)positionGenerator:(id)a3 recordNameOfBookmarksAfterRecordWithName:(id)a4;
-- (id)positionGenerator:(id)a3 recordNameOfBookmarksBeforeRecordWithName:(id)a4;
-- (id)profileWithIdentifier:(id)a3;
-- (id)profileWithServerID:(id)a3;
-- (id)shareRecordForTabGroup:(id)a3;
-- (id)syncedRemoteCloudTabDevicesForProfileWithIdentifier:(id)a3;
-- (id)tabGroupMatchingShare:(id)a3;
-- (id)tabGroupWithServerID:(id)a3;
-- (id)topScopedBookmarkListForTabGroup:(id)a3;
-- (id)unnamedTabGroupsForProfileWithIdentifier:(id)a3;
-- (id)updateProfileWithIdentifier:(id)a3 persist:(BOOL)a4 usingBlock:(id)a5 completionHandler:(id)a6;
+- (id)devicesForProfile:(id)profile;
+- (id)insertUnnamedTabGroup:(id)group;
+- (id)namedTabGroupsForProfileWithIdentifier:(id)identifier;
+- (id)positionGenerator:(id)generator positionForRecordName:(id)name;
+- (id)positionGenerator:(id)generator recordNameOfBookmarksAfterRecordWithName:(id)name;
+- (id)positionGenerator:(id)generator recordNameOfBookmarksBeforeRecordWithName:(id)name;
+- (id)profileWithIdentifier:(id)identifier;
+- (id)profileWithServerID:(id)d;
+- (id)shareRecordForTabGroup:(id)group;
+- (id)syncedRemoteCloudTabDevicesForProfileWithIdentifier:(id)identifier;
+- (id)tabGroupMatchingShare:(id)share;
+- (id)tabGroupWithServerID:(id)d;
+- (id)topScopedBookmarkListForTabGroup:(id)group;
+- (id)unnamedTabGroupsForProfileWithIdentifier:(id)identifier;
+- (id)updateProfileWithIdentifier:(id)identifier persist:(BOOL)persist usingBlock:(id)block completionHandler:(id)handler;
 - (int64_t)_nextInMemoryPositionChangeID;
-- (unint64_t)numberOfTabsToBeClosedForProfilesWithIdentifiers:(id)a3;
-- (void)_addTab:(id)a3 toParentIdentifierInTabsToParentIdentifiersDictionary:(id)a4;
-- (void)_addTabsInTabGroups:(id)a3 toParentIdentifierInTabsToParentIdentifiersDictionary:(id)a4;
+- (unint64_t)numberOfTabsToBeClosedForProfilesWithIdentifiers:(id)identifiers;
+- (void)_addTab:(id)tab toParentIdentifierInTabsToParentIdentifiersDictionary:(id)dictionary;
+- (void)_addTabsInTabGroups:(id)groups toParentIdentifierInTabsToParentIdentifiersDictionary:(id)dictionary;
 - (void)_beginDevicePresenceReportingIfNeeded;
-- (void)_cacheProfile:(id)a3;
-- (void)_cacheTabGroup:(id)a3 creatorDeviceUUID:(id)a4;
+- (void)_cacheProfile:(id)profile;
+- (void)_cacheTabGroup:(id)group creatorDeviceUUID:(id)d;
 - (void)_dequeueNextAcceptCloudKitShareMetadataIfNeeded;
-- (void)_didModifyUnnamedTabGroup:(id)a3;
-- (void)_didModifyUnnamedTabGroupInDeviceWithUUID:(id)a3;
-- (void)_didReceiveShare:(id)a3 forTabGroupUUID:(id)a4;
-- (void)_didRemoveProfiles:(id)a3 updateProfiles:(id)a4 previousProfiles:(id)a5 removeTabGroups:(id)a6 updateTabGroups:(id)a7 previousTabGroups:(id)a8;
+- (void)_didModifyUnnamedTabGroup:(id)group;
+- (void)_didModifyUnnamedTabGroupInDeviceWithUUID:(id)d;
+- (void)_didReceiveShare:(id)share forTabGroupUUID:(id)d;
+- (void)_didRemoveProfiles:(id)profiles updateProfiles:(id)updateProfiles previousProfiles:(id)previousProfiles removeTabGroups:(id)groups updateTabGroups:(id)tabGroups previousTabGroups:(id)previousTabGroups;
 - (void)_endDevicePresenceReportingIfNeeded;
 - (void)_loadDatabase;
-- (void)_mergeTabGroups:(id)a3;
-- (void)_movePresenceForParticipantToTabWithUUID:(id)a3;
-- (void)_notifyScopedBookmarkChangesInFolderWithID:(int)a3;
+- (void)_mergeTabGroups:(id)groups;
+- (void)_movePresenceForParticipantToTabWithUUID:(id)d;
+- (void)_notifyScopedBookmarkChangesInFolderWithID:(int)d;
 - (void)_notifySyncDidFinishedForScopedBookmarks;
-- (void)_reloadProfilesAndTabGroupsAndNotify:(BOOL)a3 withCompletionHandler:(id)a4;
-- (void)_reorderTabGroup:(id)a3 afterTabGroup:(id)a4;
-- (void)_sendAcceptanceResult:(int64_t)a3 forShareMetadata:(id)a4 toHandler:(id)a5;
-- (void)_tabGroupSyncDidFinish:(id)a3;
-- (void)_uncacheTab:(id)a3;
-- (void)_uncacheTabGroup:(id)a3;
-- (void)_updateDeviceNameIfNeededWithName:(id)a3;
-- (void)_updatePositionsForTabsInTabGroup:(id)a3;
-- (void)_updateTabGroupShares:(id)a3;
-- (void)_updateTabsAndCacheTabGroup:(id)a3 withTabsByParentIdentifiers:(id)a4 creatorDeviceUUID:(id)a5;
-- (void)_userDidAcceptTabGroupShareWithMetadata:(id)a3 inProfileWithIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)_willFlushDeletedTabs:(id)a3 inTabGroup:(id)a4;
-- (void)acceptTabGroupShareWithMetadata:(id)a3 handler:(id)a4;
-- (void)activeParticipantsDidUpdateInTabGroupWithUUID:(id)a3;
-- (void)activeParticipantsDidUpdateInTabWithUUID:(id)a3;
-- (void)appendProfile:(id)a3 completionHandler:(id)a4;
-- (void)beginParticipantPresenceReportingForTabGroupWithUUID:(id)a3;
-- (void)beginSharingTabGroupWithUUID:(id)a3 completionHandler:(id)a4;
-- (void)closeAllTabsInProfilesWithIdentifiers:(id)a3;
+- (void)_reloadProfilesAndTabGroupsAndNotify:(BOOL)notify withCompletionHandler:(id)handler;
+- (void)_reorderTabGroup:(id)group afterTabGroup:(id)tabGroup;
+- (void)_sendAcceptanceResult:(int64_t)result forShareMetadata:(id)metadata toHandler:(id)handler;
+- (void)_tabGroupSyncDidFinish:(id)finish;
+- (void)_uncacheTab:(id)tab;
+- (void)_uncacheTabGroup:(id)group;
+- (void)_updateDeviceNameIfNeededWithName:(id)name;
+- (void)_updatePositionsForTabsInTabGroup:(id)group;
+- (void)_updateTabGroupShares:(id)shares;
+- (void)_updateTabsAndCacheTabGroup:(id)group withTabsByParentIdentifiers:(id)identifiers creatorDeviceUUID:(id)d;
+- (void)_userDidAcceptTabGroupShareWithMetadata:(id)metadata inProfileWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)_willFlushDeletedTabs:(id)tabs inTabGroup:(id)group;
+- (void)acceptTabGroupShareWithMetadata:(id)metadata handler:(id)handler;
+- (void)activeParticipantsDidUpdateInTabGroupWithUUID:(id)d;
+- (void)activeParticipantsDidUpdateInTabWithUUID:(id)d;
+- (void)appendProfile:(id)profile completionHandler:(id)handler;
+- (void)beginParticipantPresenceReportingForTabGroupWithUUID:(id)d;
+- (void)beginSharingTabGroupWithUUID:(id)d completionHandler:(id)handler;
+- (void)closeAllTabsInProfilesWithIdentifiers:(id)identifiers;
 - (void)dealloc;
-- (void)deletePrivateWindowState:(id)a3;
-- (void)deleteScopedBookmarkWithUUID:(id)a3 notify:(BOOL)a4 completionHandler:(id)a5;
-- (void)deleteWindowStates:(id)a3 completionHandler:(id)a4;
+- (void)deletePrivateWindowState:(id)state;
+- (void)deleteScopedBookmarkWithUUID:(id)d notify:(BOOL)notify completionHandler:(id)handler;
+- (void)deleteWindowStates:(id)states completionHandler:(id)handler;
 - (void)disableDevicePresenceReporting;
-- (void)endParticipantPresenceReportingForTabGroupWithUUID:(id)a3;
-- (void)flushDeletedTabsInTabGroup:(id)a3;
-- (void)getActiveParticipantsInTab:(id)a3 completionHandler:(id)a4;
-- (void)getActiveParticipantsInTabGroup:(id)a3 completionHandler:(id)a4;
-- (void)getPresenceTabUUIDForParticipantIdentifier:(id)a3 inTabGroup:(id)a4 completionHandler:(id)a5;
-- (void)movePresenceForParticipantToTabWithUUID:(id)a3;
-- (void)moveProfile:(id)a3 afterProfile:(id)a4;
-- (void)moveTabGroup:(id)a3 afterTabGroup:(id)a4;
-- (void)moveTabGroup:(id)a3 toProfileWithIdentifier:(id)a4 afterTabGroup:(id)a5;
-- (void)moveTabs:(id)a3 toTabGroup:(id)a4 afterTab:(id)a5 withoutPersistingTabGroupsWithUUIDStrings:(id)a6;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)participantPresenceCoordinator:(id)a3 didUpdateActiveParticipants:(id)a4 inTabGroupWithIdentifier:(id)a5;
-- (void)participantPresenceCoordinator:(id)a3 didUpdateActiveParticipants:(id)a4 inTabWithIdentifier:(id)a5;
-- (void)registerPinnedTab:(id)a3;
-- (void)registerWindowState:(id)a3;
-- (void)reloadTabGroupsFromDatabaseWithCompletionHandler:(id)a3;
-- (void)removeProfile:(id)a3 completionHandler:(id)a4;
-- (void)removeTabGroup:(id)a3;
-- (void)reorderScopedBookmarkWithUUID:(id)a3 afterBookmarkWithUUID:(id)a4 notify:(BOOL)a5;
-- (void)saveWindowState:(id)a3 completionHandler:(id)a4;
-- (void)setShouldPrepareBackgroundTaskExpiration:(BOOL)a3;
-- (void)setSyncAgentProxy:(id)a3;
-- (void)shareDidUpdateForTabGroupWithUUID:(id)a3;
-- (void)syncDidFinishWithResult:(int64_t)a3;
-- (void)unregisterWindowState:(id)a3;
-- (void)updateScopedBookmarkWithUUID:(id)a3 title:(id)a4 address:(id)a5 notify:(BOOL)a6;
-- (void)updateTabGroupWithUUID:(id)a3 persist:(BOOL)a4 usingBlock:(id)a5;
-- (void)updateTabWithUUID:(id)a3 persist:(BOOL)a4 notify:(BOOL)a5 usingBlock:(id)a6;
-- (void)updateTabsInTabGroupWithUUID:(id)a3 options:(unint64_t)a4 usingBlock:(id)a5;
-- (void)waitForSetupWithCompletionHandler:(id)a3;
+- (void)endParticipantPresenceReportingForTabGroupWithUUID:(id)d;
+- (void)flushDeletedTabsInTabGroup:(id)group;
+- (void)getActiveParticipantsInTab:(id)tab completionHandler:(id)handler;
+- (void)getActiveParticipantsInTabGroup:(id)group completionHandler:(id)handler;
+- (void)getPresenceTabUUIDForParticipantIdentifier:(id)identifier inTabGroup:(id)group completionHandler:(id)handler;
+- (void)movePresenceForParticipantToTabWithUUID:(id)d;
+- (void)moveProfile:(id)profile afterProfile:(id)afterProfile;
+- (void)moveTabGroup:(id)group afterTabGroup:(id)tabGroup;
+- (void)moveTabGroup:(id)group toProfileWithIdentifier:(id)identifier afterTabGroup:(id)tabGroup;
+- (void)moveTabs:(id)tabs toTabGroup:(id)group afterTab:(id)tab withoutPersistingTabGroupsWithUUIDStrings:(id)strings;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)participantPresenceCoordinator:(id)coordinator didUpdateActiveParticipants:(id)participants inTabGroupWithIdentifier:(id)identifier;
+- (void)participantPresenceCoordinator:(id)coordinator didUpdateActiveParticipants:(id)participants inTabWithIdentifier:(id)identifier;
+- (void)registerPinnedTab:(id)tab;
+- (void)registerWindowState:(id)state;
+- (void)reloadTabGroupsFromDatabaseWithCompletionHandler:(id)handler;
+- (void)removeProfile:(id)profile completionHandler:(id)handler;
+- (void)removeTabGroup:(id)group;
+- (void)reorderScopedBookmarkWithUUID:(id)d afterBookmarkWithUUID:(id)iD notify:(BOOL)notify;
+- (void)saveWindowState:(id)state completionHandler:(id)handler;
+- (void)setShouldPrepareBackgroundTaskExpiration:(BOOL)expiration;
+- (void)setSyncAgentProxy:(id)proxy;
+- (void)shareDidUpdateForTabGroupWithUUID:(id)d;
+- (void)syncDidFinishWithResult:(int64_t)result;
+- (void)unregisterWindowState:(id)state;
+- (void)updateScopedBookmarkWithUUID:(id)d title:(id)title address:(id)address notify:(BOOL)notify;
+- (void)updateTabGroupWithUUID:(id)d persist:(BOOL)persist usingBlock:(id)block;
+- (void)updateTabWithUUID:(id)d persist:(BOOL)persist notify:(BOOL)notify usingBlock:(id)block;
+- (void)updateTabsInTabGroupWithUUID:(id)d options:(unint64_t)options usingBlock:(id)block;
+- (void)waitForSetupWithCompletionHandler:(id)handler;
 @end
 
 @implementation WBTabGroupManager
@@ -148,8 +148,8 @@
 
   os_unfair_lock_lock(&tabGroupsLock);
   os_unfair_lock_lock(&profilesLock);
-  v42 = [MEMORY[0x277CBEB38] dictionary];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   v55 = 0u;
   v56 = 0u;
   v53 = 0u;
@@ -169,16 +169,16 @@
         }
 
         v7 = *(*(&v53 + 1) + 8 * i);
-        v8 = [v7 identifier];
-        [(NSMutableDictionary *)v42 setObject:v7 forKeyedSubscript:v8];
+        identifier = [v7 identifier];
+        [(NSMutableDictionary *)dictionary setObject:v7 forKeyedSubscript:identifier];
 
         v9 = WBS_LOG_CHANNEL_PREFIXTabGroup();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
           v10 = v9;
-          v11 = [v7 privacyPreservingDescription];
+          privacyPreservingDescription = [v7 privacyPreservingDescription];
           LODWORD(buf) = 138543362;
-          *(&buf + 4) = v11;
+          *(&buf + 4) = privacyPreservingDescription;
           _os_log_impl(&dword_272C20000, v10, OS_LOG_TYPE_DEFAULT, "Loaded profile from database: %{public}@", &buf, 0xCu);
         }
 
@@ -186,8 +186,8 @@
         v52 = 0u;
         v49 = 0u;
         v50 = 0u;
-        v12 = [v7 devices];
-        v13 = [v12 countByEnumeratingWithState:&v49 objects:v63 count:16];
+        devices = [v7 devices];
+        v13 = [devices countByEnumeratingWithState:&v49 objects:v63 count:16];
         if (v13)
         {
           v14 = *v50;
@@ -197,15 +197,15 @@
             {
               if (*v50 != v14)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(devices);
               }
 
               v16 = *(*(&v49 + 1) + 8 * j);
-              v17 = [v16 uuid];
-              [(NSMutableDictionary *)v3 setObject:v16 forKeyedSubscript:v17];
+              uuid = [v16 uuid];
+              [(NSMutableDictionary *)dictionary2 setObject:v16 forKeyedSubscript:uuid];
             }
 
-            v13 = [v12 countByEnumeratingWithState:&v49 objects:v63 count:16];
+            v13 = [devices countByEnumeratingWithState:&v49 objects:v63 count:16];
           }
 
           while (v13);
@@ -219,7 +219,7 @@
   }
 
   v18 = *MEMORY[0x277D49BD8];
-  v19 = [(NSMutableDictionary *)v42 objectForKeyedSubscript:*MEMORY[0x277D49BD8]];
+  v19 = [(NSMutableDictionary *)dictionary objectForKeyedSubscript:*MEMORY[0x277D49BD8]];
   v20 = v19 == 0;
 
   if (v20)
@@ -231,8 +231,8 @@
       _os_log_impl(&dword_272C20000, v21, OS_LOG_TYPE_DEFAULT, "Default profile does not exist. Inserting one...", &buf, 2u);
     }
 
-    v22 = [(WBTabCollection *)self->_tabCollection mutableNamedTabGroupsInDefaultProfile];
-    v23 = [WBMutableProfile createDefaultProfileWithTabGroups:v22];
+    mutableNamedTabGroupsInDefaultProfile = [(WBTabCollection *)self->_tabCollection mutableNamedTabGroupsInDefaultProfile];
+    v23 = [WBMutableProfile createDefaultProfileWithTabGroups:mutableNamedTabGroupsInDefaultProfile];
 
     *&buf = 0;
     *(&buf + 1) = &buf;
@@ -245,11 +245,11 @@
     v48[2] = __34__WBTabGroupManager__loadDatabase__block_invoke;
     v48[3] = &unk_279E77640;
     v48[4] = &buf;
-    [(NSMutableDictionary *)v42 enumerateKeysAndObjectsUsingBlock:v48];
+    [(NSMutableDictionary *)dictionary enumerateKeysAndObjectsUsingBlock:v48];
     v24 = MEMORY[0x277D49E80];
     v25 = *(*(&buf + 1) + 40);
-    v26 = [(WBTabGroupManager *)self deviceIdentifier];
-    v27 = [v24 positionBetweenPosition:0 andPosition:v25 withDeviceIdentifier:v26 changeID:{-[WBTabGroupManager _nextInMemoryPositionChangeID](self, "_nextInMemoryPositionChangeID")}];
+    deviceIdentifier = [(WBTabGroupManager *)self deviceIdentifier];
+    v27 = [v24 positionBetweenPosition:0 andPosition:v25 withDeviceIdentifier:deviceIdentifier changeID:{-[WBTabGroupManager _nextInMemoryPositionChangeID](self, "_nextInMemoryPositionChangeID")}];
     [v23 setSyncPosition:v27];
 
     tabCollection = self->_tabCollection;
@@ -257,26 +257,26 @@
     v29 = [MEMORY[0x277CBEA60] arrayWithObjects:&v57 count:1];
     [(WBTabCollection *)tabCollection insertItemsIntoPlace:v29 inParentWithID:0 completionHandler:&__block_literal_global_24];
 
-    [(NSMutableDictionary *)v42 setObject:v23 forKeyedSubscript:v18];
+    [(NSMutableDictionary *)dictionary setObject:v23 forKeyedSubscript:v18];
     _Block_object_dispose(&buf, 8);
   }
 
   profilesByIdentifier = self->_profilesByIdentifier;
-  self->_profilesByIdentifier = v42;
-  v31 = v42;
+  self->_profilesByIdentifier = dictionary;
+  v31 = dictionary;
 
   devicesByUUID = self->_devicesByUUID;
-  self->_devicesByUUID = v3;
-  v33 = v3;
+  self->_devicesByUUID = dictionary2;
+  v33 = dictionary2;
 
-  v34 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary3 = [MEMORY[0x277CBEB38] dictionary];
   v35 = self->_profilesByIdentifier;
   v46[0] = MEMORY[0x277D85DD0];
   v46[1] = 3221225472;
   v46[2] = __34__WBTabGroupManager__loadDatabase__block_invoke_42;
   v46[3] = &unk_279E77690;
   v46[4] = self;
-  v36 = v34;
+  v36 = dictionary3;
   v47 = v36;
   [(NSMutableDictionary *)v35 enumerateKeysAndObjectsUsingBlock:v46];
   v37 = self->_devicesByUUID;
@@ -312,16 +312,16 @@
 - (NSArray)namedProfiles
 {
   os_unfair_lock_lock(&profilesLock);
-  v3 = [(WBTabGroupManager *)self _namedProfiles];
+  _namedProfiles = [(WBTabGroupManager *)self _namedProfiles];
   os_unfair_lock_unlock(&profilesLock);
 
-  return v3;
+  return _namedProfiles;
 }
 
 - (id)_namedProfiles
 {
-  v2 = [(WBTabGroupManager *)self _profiles];
-  v3 = [v2 safari_filterObjectsUsingBlock:&__block_literal_global_95];
+  _profiles = [(WBTabGroupManager *)self _profiles];
+  v3 = [_profiles safari_filterObjectsUsingBlock:&__block_literal_global_95];
 
   return v3;
 }
@@ -330,12 +330,12 @@
 {
   os_unfair_lock_assert_owner(&profilesLock);
   v3 = [(NSMutableDictionary *)self->_profilesByIdentifier objectForKeyedSubscript:*MEMORY[0x277D49BD8]];
-  v4 = [(NSMutableDictionary *)self->_profilesByIdentifier allValues];
-  v5 = [v4 mutableCopy];
+  allValues = [(NSMutableDictionary *)self->_profilesByIdentifier allValues];
+  v5 = [allValues mutableCopy];
 
   [v5 removeObject:v3];
-  v6 = [(WBTabGroupManager *)self _itemSyncPositionComparator];
-  [v5 sortUsingComparator:v6];
+  _itemSyncPositionComparator = [(WBTabGroupManager *)self _itemSyncPositionComparator];
+  [v5 sortUsingComparator:_itemSyncPositionComparator];
 
   [v5 insertObject:v3 atIndex:0];
   v7 = [v5 copy];
@@ -362,8 +362,8 @@ uint64_t __35__WBTabGroupManager__namedProfiles__block_invoke(uint64_t a1, void 
 
 - (NSSet)allNamedProfileIdentifiers
 {
-  v2 = [(WBTabGroupManager *)self namedProfiles];
-  v3 = [v2 safari_mapAndFilterObjectsUsingBlock:&__block_literal_global_92];
+  namedProfiles = [(WBTabGroupManager *)self namedProfiles];
+  v3 = [namedProfiles safari_mapAndFilterObjectsUsingBlock:&__block_literal_global_92];
 
   v4 = [MEMORY[0x277CBEB98] setWithArray:v3];
 
@@ -372,8 +372,8 @@ uint64_t __35__WBTabGroupManager__namedProfiles__block_invoke(uint64_t a1, void 
 
 - (NSSet)allProfileIdentifiers
 {
-  v2 = [(WBTabGroupManager *)self profiles];
-  v3 = [v2 safari_mapAndFilterObjectsUsingBlock:&__block_literal_global_90];
+  profiles = [(WBTabGroupManager *)self profiles];
+  v3 = [profiles safari_mapAndFilterObjectsUsingBlock:&__block_literal_global_90];
 
   v4 = [MEMORY[0x277CBEB98] setWithArray:v3];
 
@@ -383,30 +383,30 @@ uint64_t __35__WBTabGroupManager__namedProfiles__block_invoke(uint64_t a1, void 
 - (NSArray)profiles
 {
   os_unfair_lock_lock(&profilesLock);
-  v3 = [(WBTabGroupManager *)self _profiles];
+  _profiles = [(WBTabGroupManager *)self _profiles];
   os_unfair_lock_unlock(&profilesLock);
 
-  return v3;
+  return _profiles;
 }
 
 - (NSArray)allSyncedTabGroupsExceptRemoteUnnamedTabGroups
 {
   os_unfair_lock_lock(&tabGroupsLock);
-  v3 = [(WBTabGroupManager *)self _allSyncedTabGroupsExceptRemoteUnnamedTabGroups];
+  _allSyncedTabGroupsExceptRemoteUnnamedTabGroups = [(WBTabGroupManager *)self _allSyncedTabGroupsExceptRemoteUnnamedTabGroups];
   os_unfair_lock_unlock(&tabGroupsLock);
 
-  return v3;
+  return _allSyncedTabGroupsExceptRemoteUnnamedTabGroups;
 }
 
 - (id)_allSyncedTabGroupsExceptRemoteUnnamedTabGroups
 {
-  v3 = [(NSMutableDictionary *)self->_syncableTabGroupsByUUID allValues];
+  allValues = [(NSMutableDictionary *)self->_syncableTabGroupsByUUID allValues];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __68__WBTabGroupManager__allSyncedTabGroupsExceptRemoteUnnamedTabGroups__block_invoke;
   v7[3] = &unk_279E75120;
   v7[4] = self;
-  v4 = [v3 safari_filterObjectsUsingBlock:v7];
+  v4 = [allValues safari_filterObjectsUsingBlock:v7];
 
   v5 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:v4 copyItems:1];
 
@@ -491,24 +491,24 @@ uint64_t __35__WBTabGroupManager__namedProfiles__block_invoke(uint64_t a1, void 
   return v5;
 }
 
-- (WBTabGroupManager)initWithCollection:(id)a3
+- (WBTabGroupManager)initWithCollection:(id)collection
 {
-  v5 = a3;
+  collectionCopy = collection;
   v65.receiver = self;
   v65.super_class = WBTabGroupManager;
   v6 = [(WBTabGroupManager *)&v65 init];
   v7 = v6;
   v8 = 0;
-  if (v5 && v6)
+  if (collectionCopy && v6)
   {
-    objc_storeStrong(&v6->_tabCollection, a3);
-    v9 = [v5 configuration];
-    v10 = [v9 device];
+    objc_storeStrong(&v6->_tabCollection, collection);
+    configuration = [collectionCopy configuration];
+    device = [configuration device];
     device = v7->_device;
-    v7->_device = v10;
+    v7->_device = device;
 
-    v12 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v7->_enableSharedTabGroupsFastSyncPresence = [v12 BOOLForKey:@"EnableSharedTabGroupsFastSyncPresence"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v7->_enableSharedTabGroupsFastSyncPresence = [standardUserDefaults BOOLForKey:@"EnableSharedTabGroupsFastSyncPresence"];
 
     if (v7->_enableSharedTabGroupsFastSyncPresence)
     {
@@ -524,26 +524,26 @@ uint64_t __35__WBTabGroupManager__namedProfiles__block_invoke(uint64_t a1, void 
       tabGroupUUIDsToCKShares = v7->_tabGroupUUIDsToCKShares;
       v7->_tabGroupUUIDsToCKShares = MEMORY[0x277CBEC10];
 
-      v18 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       broadcastingTabGroupUUIDsToCKShare = v7->_broadcastingTabGroupUUIDsToCKShare;
-      v7->_broadcastingTabGroupUUIDsToCKShare = v18;
+      v7->_broadcastingTabGroupUUIDsToCKShare = dictionary;
     }
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v7, _tabGroupManagerProfilesChanged, @"com.apple.mobilesafari.TabGroupManagerProfilesDidChange", 0, 1024);
-    v21 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v7->_observers;
-    v7->_observers = v21;
+    v7->_observers = weakObjectsHashTable;
 
-    v23 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable2 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     cloudTabObservers = v7->_cloudTabObservers;
-    v7->_cloudTabObservers = v23;
+    v7->_cloudTabObservers = weakObjectsHashTable2;
 
     v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.WebBookmarks.WBTabGroupManager.%@.%p.%@", objc_opt_class(), v7, @"InternalQueue"];
-    v26 = [v25 UTF8String];
+    uTF8String = [v25 UTF8String];
     v27 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v28 = dispatch_get_global_queue(0, 0);
-    v29 = dispatch_queue_create_with_target_V2(v26, v27, v28);
+    v29 = dispatch_queue_create_with_target_V2(uTF8String, v27, v28);
     internalQueue = v7->_internalQueue;
     v7->_internalQueue = v29;
 
@@ -555,45 +555,45 @@ uint64_t __35__WBTabGroupManager__namedProfiles__block_invoke(uint64_t a1, void 
     recentlyAddedTabGroupsAwaitingFirstStartPage = v7->_recentlyAddedTabGroupsAwaitingFirstStartPage;
     v7->_recentlyAddedTabGroupsAwaitingFirstStartPage = v33;
 
-    v35 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     removedTabGroupsByUUID = v7->_removedTabGroupsByUUID;
-    v7->_removedTabGroupsByUUID = v35;
+    v7->_removedTabGroupsByUUID = dictionary2;
 
-    v37 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
     removedTabsByUUID = v7->_removedTabsByUUID;
-    v7->_removedTabsByUUID = v37;
+    v7->_removedTabsByUUID = dictionary3;
 
-    v39 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary4 = [MEMORY[0x277CBEB38] dictionary];
     localTabsByUUID = v7->_localTabsByUUID;
-    v7->_localTabsByUUID = v39;
+    v7->_localTabsByUUID = dictionary4;
 
-    v41 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary5 = [MEMORY[0x277CBEB38] dictionary];
     localTabGroupsByUUID = v7->_localTabGroupsByUUID;
-    v7->_localTabGroupsByUUID = v41;
+    v7->_localTabGroupsByUUID = dictionary5;
 
-    v43 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary6 = [MEMORY[0x277CBEB38] dictionary];
     syncableTabsByUUID = v7->_syncableTabsByUUID;
-    v7->_syncableTabsByUUID = v43;
+    v7->_syncableTabsByUUID = dictionary6;
 
-    v45 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary7 = [MEMORY[0x277CBEB38] dictionary];
     syncableTabGroupsByUUID = v7->_syncableTabGroupsByUUID;
-    v7->_syncableTabGroupsByUUID = v45;
+    v7->_syncableTabGroupsByUUID = dictionary7;
 
-    v47 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary8 = [MEMORY[0x277CBEB38] dictionary];
     profilesByIdentifier = v7->_profilesByIdentifier;
-    v7->_profilesByIdentifier = v47;
+    v7->_profilesByIdentifier = dictionary8;
 
-    v49 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary9 = [MEMORY[0x277CBEB38] dictionary];
     removedProfilesByIdentifier = v7->_removedProfilesByIdentifier;
-    v7->_removedProfilesByIdentifier = v49;
+    v7->_removedProfilesByIdentifier = dictionary9;
 
-    v51 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary10 = [MEMORY[0x277CBEB38] dictionary];
     devicesByUUID = v7->_devicesByUUID;
-    v7->_devicesByUUID = v51;
+    v7->_devicesByUUID = dictionary10;
 
-    v53 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary11 = [MEMORY[0x277CBEB38] dictionary];
     deviceUUIDByTabGroupUUID = v7->_deviceUUIDByTabGroupUUID;
-    v7->_deviceUUIDByTabGroupUUID = v53;
+    v7->_deviceUUIDByTabGroupUUID = dictionary11;
 
     v55 = [objc_alloc(MEMORY[0x277D4A018]) initWithProfileProvider:v7];
     profileDataManager = v7->_profileDataManager;
@@ -613,8 +613,8 @@ uint64_t __35__WBTabGroupManager__namedProfiles__block_invoke(uint64_t a1, void 
     [(WBTabGroupManager *)v59 _loadDatabase];
     [(WBSDevice *)v7->_device addObserver:v59 forKeyPath:@"userAssignedName" options:5 context:&deviceNameObserverContext];
     dispatch_async(MEMORY[0x277D85CD0], v60);
-    v61 = [MEMORY[0x277CCA9A0] defaultCenter];
-    [v61 addObserver:v59 selector:sel__tabGroupSyncDidFinish_ name:@"com.apple.SafariTabGroupSync.SyncDidFinish" object:0];
+    defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+    [defaultCenter addObserver:v59 selector:sel__tabGroupSyncDidFinish_ name:@"com.apple.SafariTabGroupSync.SyncDidFinish" object:0];
 
     v8 = v59;
   }
@@ -687,62 +687,62 @@ uint64_t __40__WBTabGroupManager_initWithCollection___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)setSyncAgentProxy:(id)a3
+- (void)setSyncAgentProxy:(id)proxy
 {
-  v5 = a3;
+  proxyCopy = proxy;
   syncAgentProxy = self->_syncAgentProxy;
-  if (syncAgentProxy != v5)
+  if (syncAgentProxy != proxyCopy)
   {
-    v7 = v5;
+    v7 = proxyCopy;
     [(WBTabGroupSyncAgentProtocol *)syncAgentProxy removeSyncObserver:self];
-    objc_storeStrong(&self->_syncAgentProxy, a3);
+    objc_storeStrong(&self->_syncAgentProxy, proxy);
     syncAgentProxy = [(WBTabGroupSyncAgentProtocol *)self->_syncAgentProxy addSyncObserver:self];
-    v5 = v7;
+    proxyCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](syncAgentProxy, v5);
+  MEMORY[0x2821F96F8](syncAgentProxy, proxyCopy);
 }
 
-- (void)setShouldPrepareBackgroundTaskExpiration:(BOOL)a3
+- (void)setShouldPrepareBackgroundTaskExpiration:(BOOL)expiration
 {
-  if (self->_shouldPrepareBackgroundTaskExpiration != a3)
+  if (self->_shouldPrepareBackgroundTaskExpiration != expiration)
   {
-    self->_shouldPrepareBackgroundTaskExpiration = a3;
+    self->_shouldPrepareBackgroundTaskExpiration = expiration;
     [(WBTabCollection *)self->_tabCollection setShouldPrepareBackgroundTaskExpiration:?];
   }
 }
 
-- (void)waitForSetupWithCompletionHandler:(id)a3
+- (void)waitForSetupWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (self->_didFinishSetup)
   {
-    if (!v4)
+    if (!handlerCopy)
     {
       goto LABEL_6;
     }
 
-    v7 = v4;
-    v4[2]();
+    v7 = handlerCopy;
+    handlerCopy[2]();
   }
 
   else
   {
-    v7 = v4;
+    v7 = handlerCopy;
     v5 = MEMORY[0x2743D6830]();
     setupCompletionHandler = self->_setupCompletionHandler;
     self->_setupCompletionHandler = v5;
   }
 
-  v4 = v7;
+  handlerCopy = v7;
 LABEL_6:
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == &deviceNameObserverContext)
+  if (context == &deviceNameObserverContext)
   {
-    v7 = [a5 objectForKeyedSubscript:{*MEMORY[0x277CCA2F0], a4}];
+    v7 = [change objectForKeyedSubscript:{*MEMORY[0x277CCA2F0], object}];
     os_unfair_lock_lock(&profilesLock);
     [(WBTabGroupManager *)self _updateDeviceNameIfNeededWithName:v7];
     os_unfair_lock_unlock(&profilesLock);
@@ -752,7 +752,7 @@ LABEL_6:
   {
     v8.receiver = self;
     v8.super_class = WBTabGroupManager;
-    [(WBTabGroupManager *)&v8 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(WBTabGroupManager *)&v8 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
@@ -876,13 +876,13 @@ void __34__WBTabGroupManager__loadDatabase__block_invoke_3(uint64_t a1, void *a2
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_reloadProfilesAndTabGroupsAndNotify:(BOOL)a3 withCompletionHandler:(id)a4
+- (void)_reloadProfilesAndTabGroupsAndNotify:(BOOL)notify withCompletionHandler:(id)handler
 {
-  v52 = a3;
+  notifyCopy = notify;
   v97 = *MEMORY[0x277D85DE8];
-  v50 = a4;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  v6 = [MEMORY[0x277CBEB38] dictionary];
+  handlerCopy = handler;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   v49 = [MEMORY[0x277CBEB58] set];
   v91 = 0u;
   v92 = 0u;
@@ -907,19 +907,19 @@ void __34__WBTabGroupManager__loadDatabase__block_invoke_3(uint64_t a1, void *a2
         }
 
         v11 = *(*(&v91 + 1) + 8 * v10);
-        v12 = [v11 identifier];
-        [v5 setObject:v11 forKeyedSubscript:v12];
+        identifier = [v11 identifier];
+        [dictionary setObject:v11 forKeyedSubscript:identifier];
 
         if (([v11 isDefault] & 1) == 0)
         {
-          v13 = v5;
-          v14 = self;
+          v13 = dictionary;
+          selfCopy = self;
           v89 = 0u;
           v90 = 0u;
           v87 = 0u;
           v88 = 0u;
-          v15 = [v11 devices];
-          v16 = [v15 countByEnumeratingWithState:&v87 objects:v95 count:16];
+          devices = [v11 devices];
+          v16 = [devices countByEnumeratingWithState:&v87 objects:v95 count:16];
           if (v16)
           {
             v17 = v16;
@@ -930,22 +930,22 @@ void __34__WBTabGroupManager__loadDatabase__block_invoke_3(uint64_t a1, void *a2
               {
                 if (*v88 != v18)
                 {
-                  objc_enumerationMutation(v15);
+                  objc_enumerationMutation(devices);
                 }
 
                 v20 = *(*(&v87 + 1) + 8 * i);
-                v21 = [v20 uuid];
-                [v6 setObject:v20 forKeyedSubscript:v21];
+                uuid = [v20 uuid];
+                [dictionary2 setObject:v20 forKeyedSubscript:uuid];
               }
 
-              v17 = [v15 countByEnumeratingWithState:&v87 objects:v95 count:16];
+              v17 = [devices countByEnumeratingWithState:&v87 objects:v95 count:16];
             }
 
             while (v17);
           }
 
-          self = v14;
-          v5 = v13;
+          self = selfCopy;
+          dictionary = v13;
           v9 = v53;
           v8 = v55;
         }
@@ -962,11 +962,11 @@ void __34__WBTabGroupManager__loadDatabase__block_invoke_3(uint64_t a1, void *a2
 
   os_unfair_lock_lock(&tabGroupsLock);
   os_unfair_lock_lock(&profilesLock);
-  v56 = [(WBTabGroupManager *)self _profiles];
-  v22 = [(NSMutableDictionary *)self->_removedProfilesByIdentifier allKeys];
-  [v5 removeObjectsForKeys:v22];
+  _profiles = [(WBTabGroupManager *)self _profiles];
+  allKeys = [(NSMutableDictionary *)self->_removedProfilesByIdentifier allKeys];
+  [dictionary removeObjectsForKeys:allKeys];
 
-  v23 = [(WBTabGroupManager *)self _performCRDTMergeAndMapTabsToParentIdentifiersWithProfilesByIdentifier:v5 devicesByUUID:v6 uninsertedSyncableTabsFromSyncableTabsByUUID:self->_syncableTabsByUUID];
+  v23 = [(WBTabGroupManager *)self _performCRDTMergeAndMapTabsToParentIdentifiersWithProfilesByIdentifier:dictionary devicesByUUID:dictionary2 uninsertedSyncableTabsFromSyncableTabsByUUID:self->_syncableTabsByUUID];
   v24 = [MEMORY[0x277CBEB58] set];
   v84[0] = MEMORY[0x277D85DD0];
   v84[1] = 3221225472;
@@ -977,7 +977,7 @@ void __34__WBTabGroupManager__loadDatabase__block_invoke_3(uint64_t a1, void *a2
   v85 = v25;
   v26 = v24;
   v86 = v26;
-  [v5 enumerateKeysAndObjectsUsingBlock:v84];
+  [dictionary enumerateKeysAndObjectsUsingBlock:v84];
   v81[0] = MEMORY[0x277D85DD0];
   v81[1] = 3221225472;
   v81[2] = __80__WBTabGroupManager__reloadProfilesAndTabGroupsAndNotify_withCompletionHandler___block_invoke_2;
@@ -987,7 +987,7 @@ void __34__WBTabGroupManager__loadDatabase__block_invoke_3(uint64_t a1, void *a2
   v82 = obja;
   v27 = v26;
   v83 = v27;
-  [v6 enumerateKeysAndObjectsUsingBlock:v81];
+  [dictionary2 enumerateKeysAndObjectsUsingBlock:v81];
   v28 = [MEMORY[0x277CBEB58] set];
   v29 = [(NSMutableDictionary *)self->_syncableTabGroupsByUUID copy];
   v76[0] = MEMORY[0x277D85DD0];
@@ -996,7 +996,7 @@ void __34__WBTabGroupManager__loadDatabase__block_invoke_3(uint64_t a1, void *a2
   v76[3] = &unk_279E77730;
   v30 = v27;
   v77 = v30;
-  v78 = self;
+  selfCopy2 = self;
   v31 = v49;
   v79 = v31;
   v32 = v28;
@@ -1004,33 +1004,33 @@ void __34__WBTabGroupManager__loadDatabase__block_invoke_3(uint64_t a1, void *a2
   [v29 enumerateKeysAndObjectsUsingBlock:v76];
 
   v33 = [MEMORY[0x277CBEB58] set];
-  v34 = self;
+  selfCopy3 = self;
   v35 = [(NSMutableDictionary *)self->_profilesByIdentifier copy];
   v72[0] = MEMORY[0x277D85DD0];
   v72[1] = 3221225472;
   v72[2] = __80__WBTabGroupManager__reloadProfilesAndTabGroupsAndNotify_withCompletionHandler___block_invoke_48;
   v72[3] = &unk_279E776E0;
-  v36 = v5;
+  v36 = dictionary;
   v73 = v36;
-  v74 = v34;
+  v74 = selfCopy3;
   v37 = v33;
   v75 = v37;
   [v35 enumerateKeysAndObjectsUsingBlock:v72];
 
-  v38 = [(NSMutableDictionary *)v34->_devicesByUUID copy];
+  v38 = [(NSMutableDictionary *)selfCopy3->_devicesByUUID copy];
   v68[0] = MEMORY[0x277D85DD0];
   v68[1] = 3221225472;
   v68[2] = __80__WBTabGroupManager__reloadProfilesAndTabGroupsAndNotify_withCompletionHandler___block_invoke_2_49;
   v68[3] = &unk_279E77708;
-  v54 = v6;
+  v54 = dictionary2;
   v69 = v54;
-  v70 = v34;
+  v70 = selfCopy3;
   v39 = v31;
   v71 = v39;
   [v38 enumerateKeysAndObjectsUsingBlock:v68];
 
-  v40 = [(WBTabGroupManager *)v34 _unsafeTabGroupUUIDsToCKShares];
-  objc_storeStrong(&v34->_insertedItemUUIDsThatWereMissingDuringReload, v49);
+  _unsafeTabGroupUUIDsToCKShares = [(WBTabGroupManager *)selfCopy3 _unsafeTabGroupUUIDsToCKShares];
+  objc_storeStrong(&selfCopy3->_insertedItemUUIDsThatWereMissingDuringReload, v49);
   v41 = [v39 count];
   os_unfair_lock_unlock(&profilesLock);
   os_unfair_lock_unlock(&tabGroupsLock);
@@ -1038,26 +1038,26 @@ void __34__WBTabGroupManager__loadDatabase__block_invoke_3(uint64_t a1, void *a2
   block[1] = 3221225472;
   block[2] = __80__WBTabGroupManager__reloadProfilesAndTabGroupsAndNotify_withCompletionHandler___block_invoke_3_50;
   block[3] = &unk_279E77758;
-  block[4] = v34;
-  v60 = v40;
-  v67 = v52;
+  block[4] = selfCopy3;
+  v60 = _unsafeTabGroupUUIDsToCKShares;
+  v67 = notifyCopy;
   v61 = v37;
   v62 = v36;
-  v63 = v56;
+  v63 = _profiles;
   v64 = v32;
   v65 = v30;
-  v66 = v50;
-  v51 = v50;
+  v66 = handlerCopy;
+  v51 = handlerCopy;
   v42 = v30;
   v43 = v32;
-  v44 = v56;
+  v44 = _profiles;
   v45 = v36;
   v46 = v37;
-  v47 = v40;
+  v47 = _unsafeTabGroupUUIDsToCKShares;
   dispatch_async(MEMORY[0x277D85CD0], block);
   if (v41)
   {
-    [(WBTabGroupManager *)v34 _reloadProfilesAndTabGroupsAndNotify:v52 withCompletionHandler:0];
+    [(WBTabGroupManager *)selfCopy3 _reloadProfilesAndTabGroupsAndNotify:notifyCopy withCompletionHandler:0];
   }
 
   v48 = *MEMORY[0x277D85DE8];
@@ -1339,14 +1339,14 @@ uint64_t __80__WBTabGroupManager__reloadProfilesAndTabGroupsAndNotify_withComple
   return result;
 }
 
-- (void)_mergeTabGroups:(id)a3
+- (void)_mergeTabGroups:(id)groups
 {
   v30 = *MEMORY[0x277D85DE8];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = a3;
+  obj = groups;
   v19 = [obj countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v19)
   {
@@ -1361,8 +1361,8 @@ uint64_t __80__WBTabGroupManager__reloadProfilesAndTabGroupsAndNotify_withComple
         }
 
         v5 = *(*(&v24 + 1) + 8 * i);
-        v6 = [v5 uuid];
-        v7 = [(WBTabGroupManager *)self _tabGroupWithUUID:v6];
+        uuid = [v5 uuid];
+        v7 = [(WBTabGroupManager *)self _tabGroupWithUUID:uuid];
 
         if (v7)
         {
@@ -1373,8 +1373,8 @@ uint64_t __80__WBTabGroupManager__reloadProfilesAndTabGroupsAndNotify_withComple
         v23 = 0u;
         v20 = 0u;
         v21 = 0u;
-        v8 = [v5 tabs];
-        v9 = [v8 countByEnumeratingWithState:&v20 objects:v28 count:16];
+        tabs = [v5 tabs];
+        v9 = [tabs countByEnumeratingWithState:&v20 objects:v28 count:16];
         if (v9)
         {
           v10 = v9;
@@ -1385,12 +1385,12 @@ uint64_t __80__WBTabGroupManager__reloadProfilesAndTabGroupsAndNotify_withComple
             {
               if (*v21 != v11)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(tabs);
               }
 
               v13 = *(*(&v20 + 1) + 8 * j);
-              v14 = [v13 uuid];
-              v15 = [(WBTabGroupManager *)self _tabWithUUID:v14];
+              uuid2 = [v13 uuid];
+              v15 = [(WBTabGroupManager *)self _tabWithUUID:uuid2];
 
               if (v15)
               {
@@ -1398,7 +1398,7 @@ uint64_t __80__WBTabGroupManager__reloadProfilesAndTabGroupsAndNotify_withComple
               }
             }
 
-            v10 = [v8 countByEnumeratingWithState:&v20 objects:v28 count:16];
+            v10 = [tabs countByEnumeratingWithState:&v20 objects:v28 count:16];
           }
 
           while (v10);
@@ -1414,22 +1414,22 @@ uint64_t __80__WBTabGroupManager__reloadProfilesAndTabGroupsAndNotify_withComple
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_performCRDTMergeAndMapTabsToParentIdentifiersWithProfilesByIdentifier:(id)a3 devicesByUUID:(id)a4 uninsertedSyncableTabsFromSyncableTabsByUUID:(id)a5
+- (id)_performCRDTMergeAndMapTabsToParentIdentifiersWithProfilesByIdentifier:(id)identifier devicesByUUID:(id)d uninsertedSyncableTabsFromSyncableTabsByUUID:(id)iD
 {
   v45 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  iDCopy = iD;
+  dCopy = d;
+  identifierCopy = identifier;
   os_unfair_lock_assert_owner(&profilesLock);
-  v11 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = 3221225472;
   v39[2] = __151__WBTabGroupManager__performCRDTMergeAndMapTabsToParentIdentifiersWithProfilesByIdentifier_devicesByUUID_uninsertedSyncableTabsFromSyncableTabsByUUID___block_invoke;
   v39[3] = &unk_279E77690;
   v39[4] = self;
-  v12 = v11;
+  v12 = dictionary;
   v40 = v12;
-  [v10 enumerateKeysAndObjectsUsingBlock:v39];
+  [identifierCopy enumerateKeysAndObjectsUsingBlock:v39];
 
   v37[0] = MEMORY[0x277D85DD0];
   v37[1] = 3221225472;
@@ -1438,27 +1438,27 @@ uint64_t __80__WBTabGroupManager__reloadProfilesAndTabGroupsAndNotify_withComple
   v37[4] = self;
   v13 = v12;
   v38 = v13;
-  [v9 enumerateKeysAndObjectsUsingBlock:v37];
+  [dCopy enumerateKeysAndObjectsUsingBlock:v37];
 
   v14 = MEMORY[0x277CBEB98];
-  v15 = [v13 allValues];
-  v16 = [v15 safari_flattenedArray];
-  v17 = [v16 safari_mapObjectsUsingBlock:&__block_literal_global_55];
+  allValues = [v13 allValues];
+  safari_flattenedArray = [allValues safari_flattenedArray];
+  v17 = [safari_flattenedArray safari_mapObjectsUsingBlock:&__block_literal_global_55];
   v18 = [v14 setWithArray:v17];
 
-  v19 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v29 = MEMORY[0x277D85DD0];
   v30 = 3221225472;
   v31 = __151__WBTabGroupManager__performCRDTMergeAndMapTabsToParentIdentifiersWithProfilesByIdentifier_devicesByUUID_uninsertedSyncableTabsFromSyncableTabsByUUID___block_invoke_3;
   v32 = &unk_279E777A8;
   v33 = v18;
-  v34 = self;
+  selfCopy = self;
   v35 = v13;
-  v20 = v19;
+  v20 = array;
   v36 = v20;
   v21 = v13;
   v22 = v18;
-  [v8 enumerateKeysAndObjectsUsingBlock:&v29];
+  [iDCopy enumerateKeysAndObjectsUsingBlock:&v29];
 
   if ([v20 count])
   {
@@ -1593,17 +1593,17 @@ void __151__WBTabGroupManager__performCRDTMergeAndMapTabsToParentIdentifiersWith
   }
 }
 
-- (void)_addTabsInTabGroups:(id)a3 toParentIdentifierInTabsToParentIdentifiersDictionary:(id)a4
+- (void)_addTabsInTabGroups:(id)groups toParentIdentifierInTabsToParentIdentifiersDictionary:(id)dictionary
 {
   v59 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB18] array];
+  groupsCopy = groups;
+  dictionaryCopy = dictionary;
+  array = [MEMORY[0x277CBEB18] array];
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  obj = v6;
+  obj = groupsCopy;
   v9 = [obj countByEnumeratingWithState:&v49 objects:v58 count:16];
   if (v9)
   {
@@ -1625,8 +1625,8 @@ void __151__WBTabGroupManager__performCRDTMergeAndMapTabsToParentIdentifiersWith
 
         v14 = *(*(&v49 + 1) + 8 * v13);
         removedTabGroupsByUUID = self->_removedTabGroupsByUUID;
-        v16 = [v14 uuid];
-        v17 = [(NSMutableDictionary *)removedTabGroupsByUUID objectForKeyedSubscript:v16];
+        uuid = [v14 uuid];
+        v17 = [(NSMutableDictionary *)removedTabGroupsByUUID objectForKeyedSubscript:uuid];
 
         v18 = WBS_LOG_CHANNEL_PREFIXTabGroup();
         v19 = os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT);
@@ -1635,13 +1635,13 @@ void __151__WBTabGroupManager__performCRDTMergeAndMapTabsToParentIdentifiersWith
           if (v19)
           {
             v20 = v18;
-            v21 = [v14 tabs];
-            v22 = [v21 count];
-            v23 = [v14 privacyPreservingDescription];
+            tabs = [v14 tabs];
+            v22 = [tabs count];
+            privacyPreservingDescription = [v14 privacyPreservingDescription];
             *buf = 134218242;
             v55 = v22;
             v56 = 2114;
-            v57 = v23;
+            v57 = privacyPreservingDescription;
             _os_log_impl(&dword_272C20000, v20, OS_LOG_TYPE_DEFAULT, "Did not cache %lu tabs in tab group %{public}@ because the tab group was removed", buf, 0x16u);
           }
         }
@@ -1652,9 +1652,9 @@ void __151__WBTabGroupManager__performCRDTMergeAndMapTabsToParentIdentifiersWith
           if (v19)
           {
             v24 = v18;
-            v25 = [v14 privacyPreservingDescription];
+            privacyPreservingDescription2 = [v14 privacyPreservingDescription];
             *buf = v40;
-            v55 = v25;
+            v55 = privacyPreservingDescription2;
             _os_log_impl(&dword_272C20000, v24, OS_LOG_TYPE_DEFAULT, "Add tabs in tab group to the parent identifier dictionary %{public}@", buf, 0xCu);
           }
 
@@ -1662,8 +1662,8 @@ void __151__WBTabGroupManager__performCRDTMergeAndMapTabsToParentIdentifiersWith
           v48 = 0u;
           v45 = 0u;
           v46 = 0u;
-          v26 = [v14 tabs];
-          v27 = [v26 countByEnumeratingWithState:&v45 objects:v53 count:16];
+          tabs2 = [v14 tabs];
+          v27 = [tabs2 countByEnumeratingWithState:&v45 objects:v53 count:16];
           if (v27)
           {
             v28 = v27;
@@ -1674,23 +1674,23 @@ void __151__WBTabGroupManager__performCRDTMergeAndMapTabsToParentIdentifiersWith
               {
                 if (*v46 != v29)
                 {
-                  objc_enumerationMutation(v26);
+                  objc_enumerationMutation(tabs2);
                 }
 
                 v31 = *(*(&v45 + 1) + 8 * i);
-                [(WBTabGroupManager *)self _addTab:v31 toParentIdentifierInTabsToParentIdentifiersDictionary:v7];
+                [(WBTabGroupManager *)self _addTab:v31 toParentIdentifierInTabsToParentIdentifiersDictionary:dictionaryCopy];
                 removedTabsByUUID = self->_removedTabsByUUID;
-                v33 = [v31 uuid];
-                v34 = [(NSMutableDictionary *)removedTabsByUUID objectForKeyedSubscript:v33];
+                uuid2 = [v31 uuid];
+                v34 = [(NSMutableDictionary *)removedTabsByUUID objectForKeyedSubscript:uuid2];
 
                 if (v34)
                 {
-                  v35 = [v31 uuid];
-                  [v8 addObject:v35];
+                  uuid3 = [v31 uuid];
+                  [array addObject:uuid3];
                 }
               }
 
-              v28 = [v26 countByEnumeratingWithState:&v45 objects:v53 count:16];
+              v28 = [tabs2 countByEnumeratingWithState:&v45 objects:v53 count:16];
             }
 
             while (v28);
@@ -1711,17 +1711,17 @@ void __151__WBTabGroupManager__performCRDTMergeAndMapTabsToParentIdentifiersWith
     while (v11);
   }
 
-  if ([v8 count])
+  if ([array count])
   {
     v36 = WBS_LOG_CHANNEL_PREFIXTabGroup();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
     {
       v37 = v36;
-      v38 = [v8 count];
+      v38 = [array count];
       *buf = 134218242;
       v55 = v38;
       v56 = 2114;
-      v57 = v8;
+      v57 = array;
       _os_log_impl(&dword_272C20000, v37, OS_LOG_TYPE_DEFAULT, "%lu tabs were filtered because they were removed. UUIDS:%{public}@", buf, 0x16u);
     }
   }
@@ -1729,31 +1729,31 @@ void __151__WBTabGroupManager__performCRDTMergeAndMapTabsToParentIdentifiersWith
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addTab:(id)a3 toParentIdentifierInTabsToParentIdentifiersDictionary:(id)a4
+- (void)_addTab:(id)tab toParentIdentifierInTabsToParentIdentifiersDictionary:(id)dictionary
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  tabCopy = tab;
+  dictionaryCopy = dictionary;
   removedTabsByUUID = self->_removedTabsByUUID;
-  v9 = [v6 uuid];
-  v10 = [(NSMutableDictionary *)removedTabsByUUID objectForKeyedSubscript:v9];
+  uuid = [tabCopy uuid];
+  v10 = [(NSMutableDictionary *)removedTabsByUUID objectForKeyedSubscript:uuid];
 
   if (!v10)
   {
-    if ([v6 parentIdentifier] == 0x7FFFFFFF || !objc_msgSend(v6, "parentIdentifier"))
+    if ([tabCopy parentIdentifier] == 0x7FFFFFFF || !objc_msgSend(tabCopy, "parentIdentifier"))
     {
-      v14 = [v6 tabGroupUUID];
+      tabGroupUUID = [tabCopy tabGroupUUID];
       v15 = 1;
     }
 
     else
     {
-      v14 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v6, "parentIdentifier")}];
+      tabGroupUUID = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(tabCopy, "parentIdentifier")}];
       v15 = 0;
     }
 
-    v16 = [v7 objectForKeyedSubscript:v14];
-    if (v16)
+    array = [dictionaryCopy objectForKeyedSubscript:tabGroupUUID];
+    if (array)
     {
       if (!v15)
       {
@@ -1763,12 +1763,12 @@ void __151__WBTabGroupManager__performCRDTMergeAndMapTabsToParentIdentifiersWith
 
     else
     {
-      v16 = [MEMORY[0x277CBEB18] array];
-      [v7 setObject:v16 forKeyedSubscript:v14];
+      array = [MEMORY[0x277CBEB18] array];
+      [dictionaryCopy setObject:array forKeyedSubscript:tabGroupUUID];
       if (!v15)
       {
 LABEL_14:
-        [v16 addObject:v6];
+        [array addObject:tabCopy];
 
         goto LABEL_15;
       }
@@ -1778,11 +1778,11 @@ LABEL_14:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       v18 = v17;
-      v19 = [v6 privacyPreservingDescription];
+      privacyPreservingDescription = [tabCopy privacyPreservingDescription];
       v21 = 138543618;
-      v22 = v19;
+      v22 = privacyPreservingDescription;
       v23 = 2114;
-      v24 = v14;
+      v24 = tabGroupUUID;
       _os_log_impl(&dword_272C20000, v18, OS_LOG_TYPE_DEFAULT, "Tab %{public}@ has invalid parent identifier and moved under %{public}@", &v21, 0x16u);
     }
 
@@ -1793,9 +1793,9 @@ LABEL_14:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = v11;
-    v13 = [v6 privacyPreservingDescription];
+    privacyPreservingDescription2 = [tabCopy privacyPreservingDescription];
     v21 = 138543362;
-    v22 = v13;
+    v22 = privacyPreservingDescription2;
     _os_log_impl(&dword_272C20000, v12, OS_LOG_TYPE_INFO, "Filtering tab %{public}@ because it was removed", &v21, 0xCu);
   }
 
@@ -1804,16 +1804,16 @@ LABEL_15:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateTabsAndCacheTabGroup:(id)a3 withTabsByParentIdentifiers:(id)a4 creatorDeviceUUID:(id)a5
+- (void)_updateTabsAndCacheTabGroup:(id)group withTabsByParentIdentifiers:(id)identifiers creatorDeviceUUID:(id)d
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  groupCopy = group;
   v9 = MEMORY[0x277CBEB18];
-  v10 = a5;
-  v11 = a4;
-  v12 = [v9 array];
-  v13 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v8, "identifier")}];
-  v14 = [v11 objectForKeyedSubscript:v13];
+  dCopy = d;
+  identifiersCopy = identifiers;
+  array = [v9 array];
+  v13 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(groupCopy, "identifier")}];
+  v14 = [identifiersCopy objectForKeyedSubscript:v13];
   v15 = v14;
   v16 = MEMORY[0x277CBEBF8];
   if (v14)
@@ -1826,10 +1826,10 @@ LABEL_15:
     v17 = MEMORY[0x277CBEBF8];
   }
 
-  [v12 addObjectsFromArray:v17];
+  [array addObjectsFromArray:v17];
 
-  v18 = [v8 uuid];
-  v19 = [v11 objectForKeyedSubscript:v18];
+  uuid = [groupCopy uuid];
+  v19 = [identifiersCopy objectForKeyedSubscript:uuid];
 
   if (v19)
   {
@@ -1841,35 +1841,35 @@ LABEL_15:
     v20 = v16;
   }
 
-  [v12 addObjectsFromArray:v20];
+  [array addObjectsFromArray:v20];
 
-  v21 = [(WBTabGroupManager *)self _itemSyncPositionComparator];
-  [v12 sortUsingComparator:v21];
+  _itemSyncPositionComparator = [(WBTabGroupManager *)self _itemSyncPositionComparator];
+  [array sortUsingComparator:_itemSyncPositionComparator];
 
-  if (![v12 count])
+  if (![array count])
   {
     v22 = WBS_LOG_CHANNEL_PREFIXTabGroup();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       v23 = v22;
-      v24 = [v8 privacyPreservingDescription];
+      privacyPreservingDescription = [groupCopy privacyPreservingDescription];
       v26 = 138543362;
-      v27 = v24;
+      v27 = privacyPreservingDescription;
       _os_log_impl(&dword_272C20000, v23, OS_LOG_TYPE_DEFAULT, "Updating tabGroup %{public}@ with an empty tab list", &v26, 0xCu);
     }
   }
 
-  [v8 setTabs:v12];
-  [(WBTabGroupManager *)self _cacheTabGroup:v8 creatorDeviceUUID:v10];
+  [groupCopy setTabs:array];
+  [(WBTabGroupManager *)self _cacheTabGroup:groupCopy creatorDeviceUUID:dCopy];
 
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_tabCacheForTabGroup:(id)a3
+- (id)_tabCacheForTabGroup:(id)group
 {
-  v4 = [a3 isSyncable];
+  isSyncable = [group isSyncable];
   v5 = 64;
-  if (v4)
+  if (isSyncable)
   {
     v5 = 80;
   }
@@ -1879,11 +1879,11 @@ LABEL_15:
   return v6;
 }
 
-- (id)_tabGroupCacheForTabGroup:(id)a3
+- (id)_tabGroupCacheForTabGroup:(id)group
 {
-  v4 = [a3 isSyncable];
+  isSyncable = [group isSyncable];
   v5 = 72;
-  if (v4)
+  if (isSyncable)
   {
     v5 = 88;
   }
@@ -1893,32 +1893,32 @@ LABEL_15:
   return v6;
 }
 
-- (void)_cacheTabGroup:(id)a3 creatorDeviceUUID:(id)a4
+- (void)_cacheTabGroup:(id)group creatorDeviceUUID:(id)d
 {
   v46 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v35 = a4;
-  v7 = [(WBTabGroupManager *)self _tabCacheForTabGroup:v6];
-  v8 = [(WBTabGroupManager *)self _tabGroupCacheForTabGroup:v6];
-  v9 = [v6 uuid];
-  v10 = [v8 objectForKeyedSubscript:v9];
-  v11 = [v10 allTabs];
+  groupCopy = group;
+  dCopy = d;
+  v7 = [(WBTabGroupManager *)self _tabCacheForTabGroup:groupCopy];
+  v8 = [(WBTabGroupManager *)self _tabGroupCacheForTabGroup:groupCopy];
+  uuid = [groupCopy uuid];
+  v10 = [v8 objectForKeyedSubscript:uuid];
+  allTabs = [v10 allTabs];
   v36 = v8;
-  if ([v11 count])
+  if ([allTabs count])
   {
-    v12 = [v6 uuid];
-    v13 = [v8 objectForKeyedSubscript:v12];
-    v14 = [v13 allTabs];
-    v34 = [v14 count];
-    v15 = [v6 allTabs];
-    v33 = [v15 count];
+    uuid2 = [groupCopy uuid];
+    v13 = [v8 objectForKeyedSubscript:uuid2];
+    allTabs2 = [v13 allTabs];
+    v34 = [allTabs2 count];
+    allTabs3 = [groupCopy allTabs];
+    v33 = [allTabs3 count];
 
     if (v34 != v33)
     {
       v16 = WBS_LOG_CHANNEL_PREFIXTabGroup();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
-        [(WBTabGroupManager *)v16 _cacheTabGroup:v6 creatorDeviceUUID:v36];
+        [(WBTabGroupManager *)v16 _cacheTabGroup:groupCopy creatorDeviceUUID:v36];
       }
     }
   }
@@ -1931,24 +1931,24 @@ LABEL_15:
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     v18 = v17;
-    v19 = [v6 privacyPreservingDescription];
-    v20 = [v6 allTabs];
+    privacyPreservingDescription = [groupCopy privacyPreservingDescription];
+    allTabs4 = [groupCopy allTabs];
     *buf = 138543618;
-    v43 = v19;
+    v43 = privacyPreservingDescription;
     v44 = 2050;
-    v45 = [v20 count];
+    v45 = [allTabs4 count];
     _os_log_impl(&dword_272C20000, v18, OS_LOG_TYPE_DEFAULT, "Saving tab group %{public}@ with %{public}lu tabs into the cache.", buf, 0x16u);
   }
 
-  v21 = [v6 uuid];
-  [v36 setObject:v6 forKeyedSubscript:v21];
+  uuid3 = [groupCopy uuid];
+  [v36 setObject:groupCopy forKeyedSubscript:uuid3];
 
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v22 = [v6 allTabs];
-  v23 = [v22 countByEnumeratingWithState:&v37 objects:v41 count:16];
+  allTabs5 = [groupCopy allTabs];
+  v23 = [allTabs5 countByEnumeratingWithState:&v37 objects:v41 count:16];
   if (v23)
   {
     v24 = v23;
@@ -1959,49 +1959,49 @@ LABEL_15:
       {
         if (*v38 != v25)
         {
-          objc_enumerationMutation(v22);
+          objc_enumerationMutation(allTabs5);
         }
 
         v27 = *(*(&v37 + 1) + 8 * i);
-        v28 = [v27 uuid];
-        [(NSMutableDictionary *)self->_localTabsByUUID setObject:0 forKeyedSubscript:v28];
-        [(NSMutableDictionary *)self->_syncableTabsByUUID setObject:0 forKeyedSubscript:v28];
-        [(NSMutableDictionary *)self->_removedTabsByUUID setObject:0 forKeyedSubscript:v28];
-        v29 = [v27 uuid];
-        [v7 setObject:v27 forKeyedSubscript:v29];
+        uuid4 = [v27 uuid];
+        [(NSMutableDictionary *)self->_localTabsByUUID setObject:0 forKeyedSubscript:uuid4];
+        [(NSMutableDictionary *)self->_syncableTabsByUUID setObject:0 forKeyedSubscript:uuid4];
+        [(NSMutableDictionary *)self->_removedTabsByUUID setObject:0 forKeyedSubscript:uuid4];
+        uuid5 = [v27 uuid];
+        [v7 setObject:v27 forKeyedSubscript:uuid5];
       }
 
-      v24 = [v22 countByEnumeratingWithState:&v37 objects:v41 count:16];
+      v24 = [allTabs5 countByEnumeratingWithState:&v37 objects:v41 count:16];
     }
 
     while (v24);
   }
 
-  if (v35)
+  if (dCopy)
   {
     deviceUUIDByTabGroupUUID = self->_deviceUUIDByTabGroupUUID;
-    v31 = [v6 uuid];
-    [(NSMutableDictionary *)deviceUUIDByTabGroupUUID setObject:v35 forKeyedSubscript:v31];
+    uuid6 = [groupCopy uuid];
+    [(NSMutableDictionary *)deviceUUIDByTabGroupUUID setObject:dCopy forKeyedSubscript:uuid6];
   }
 
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_uncacheTabGroup:(id)a3
+- (void)_uncacheTabGroup:(id)group
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WBTabGroupManager *)self _tabCacheForTabGroup:v4];
-  v6 = [(WBTabGroupManager *)self _tabGroupCacheForTabGroup:v4];
-  v7 = [v4 uuid];
-  [v6 setObject:0 forKeyedSubscript:v7];
+  groupCopy = group;
+  v5 = [(WBTabGroupManager *)self _tabCacheForTabGroup:groupCopy];
+  v6 = [(WBTabGroupManager *)self _tabGroupCacheForTabGroup:groupCopy];
+  uuid = [groupCopy uuid];
+  [v6 setObject:0 forKeyedSubscript:uuid];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [v4 allTabs];
-  v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  allTabs = [groupCopy allTabs];
+  v9 = [allTabs countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
     v10 = v9;
@@ -2013,17 +2013,17 @@ LABEL_15:
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allTabs);
         }
 
-        v13 = [*(*(&v15 + 1) + 8 * v12) uuid];
-        [v5 setObject:0 forKeyedSubscript:v13];
+        uuid2 = [*(*(&v15 + 1) + 8 * v12) uuid];
+        [v5 setObject:0 forKeyedSubscript:uuid2];
 
         ++v12;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [allTabs countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v10);
@@ -2032,23 +2032,23 @@ LABEL_15:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_uncacheTab:(id)a3
+- (void)_uncacheTab:(id)tab
 {
   localTabsByUUID = self->_localTabsByUUID;
-  v5 = a3;
-  v6 = [v5 uuid];
-  [(NSMutableDictionary *)localTabsByUUID setObject:0 forKeyedSubscript:v6];
+  tabCopy = tab;
+  uuid = [tabCopy uuid];
+  [(NSMutableDictionary *)localTabsByUUID setObject:0 forKeyedSubscript:uuid];
 
   syncableTabsByUUID = self->_syncableTabsByUUID;
-  v8 = [v5 uuid];
+  uuid2 = [tabCopy uuid];
 
-  [(NSMutableDictionary *)syncableTabsByUUID setObject:0 forKeyedSubscript:v8];
+  [(NSMutableDictionary *)syncableTabsByUUID setObject:0 forKeyedSubscript:uuid2];
 }
 
-- (id)_tabWithUUID:(id)a3
+- (id)_tabWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_localTabsByUUID objectForKeyedSubscript:v4];
+  dCopy = d;
+  v5 = [(NSMutableDictionary *)self->_localTabsByUUID objectForKeyedSubscript:dCopy];
   v6 = v5;
   if (v5)
   {
@@ -2057,7 +2057,7 @@ LABEL_15:
 
   else
   {
-    v8 = [(NSMutableDictionary *)self->_syncableTabsByUUID objectForKeyedSubscript:v4];
+    v8 = [(NSMutableDictionary *)self->_syncableTabsByUUID objectForKeyedSubscript:dCopy];
     v9 = v8;
     if (v8)
     {
@@ -2066,7 +2066,7 @@ LABEL_15:
 
     else
     {
-      v10 = [(NSMutableDictionary *)self->_removedTabsByUUID objectForKeyedSubscript:v4];
+      v10 = [(NSMutableDictionary *)self->_removedTabsByUUID objectForKeyedSubscript:dCopy];
     }
 
     v7 = v10;
@@ -2075,10 +2075,10 @@ LABEL_15:
   return v7;
 }
 
-- (id)_tabGroupWithUUID:(id)a3
+- (id)_tabGroupWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_localTabGroupsByUUID objectForKeyedSubscript:v4];
+  dCopy = d;
+  v5 = [(NSMutableDictionary *)self->_localTabGroupsByUUID objectForKeyedSubscript:dCopy];
   v6 = v5;
   if (v5)
   {
@@ -2087,7 +2087,7 @@ LABEL_15:
 
   else
   {
-    v7 = [(NSMutableDictionary *)self->_syncableTabGroupsByUUID objectForKeyedSubscript:v4];
+    v7 = [(NSMutableDictionary *)self->_syncableTabGroupsByUUID objectForKeyedSubscript:dCopy];
   }
 
   v8 = v7;
@@ -2103,77 +2103,77 @@ LABEL_15:
   return v2;
 }
 
-- (id)_generatePositionForTabGroup:(id)a3 afterTabGroup:(id)a4
+- (id)_generatePositionForTabGroup:(id)group afterTabGroup:(id)tabGroup
 {
-  v6 = a4;
-  v7 = a3;
-  if ([v7 isNamed])
+  tabGroupCopy = tabGroup;
+  groupCopy = group;
+  if ([groupCopy isNamed])
   {
-    v8 = [v7 profileIdentifier];
-    [(WBTabGroupManager *)self _tabGroupsForProfileWithIdentifier:v8];
+    profileIdentifier = [groupCopy profileIdentifier];
+    [(WBTabGroupManager *)self _tabGroupsForProfileWithIdentifier:profileIdentifier];
   }
 
   else
   {
-    v8 = [v7 deviceUUIDString];
-    [(WBTabGroupManager *)self _unnamedTabGroupsForDeviceWithUUID:v8];
+    profileIdentifier = [groupCopy deviceUUIDString];
+    [(WBTabGroupManager *)self _unnamedTabGroupsForDeviceWithUUID:profileIdentifier];
   }
   v9 = ;
 
-  v10 = [(WBTabGroupManager *)self _generatePositionForTabGroup:v7 afterTabGroup:v6 inTabGroups:v9];
+  v10 = [(WBTabGroupManager *)self _generatePositionForTabGroup:groupCopy afterTabGroup:tabGroupCopy inTabGroups:v9];
 
   return v10;
 }
 
-- (id)_generatePositionForTabGroup:(id)a3 afterTabGroup:(id)a4 inTabGroups:(id)a5
+- (id)_generatePositionForTabGroup:(id)group afterTabGroup:(id)tabGroup inTabGroups:(id)groups
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(WBTabGroupManager *)self _tabGroupAfterTabGroup:v9 inTabGroups:a5];
+  groupCopy = group;
+  tabGroupCopy = tabGroup;
+  v10 = [(WBTabGroupManager *)self _tabGroupAfterTabGroup:tabGroupCopy inTabGroups:groups];
   if ((WBSIsEqual() & 1) != 0 || WBSIsEqual())
   {
-    v11 = [v8 syncPosition];
+    syncPosition = [groupCopy syncPosition];
   }
 
   else
   {
     v12 = MEMORY[0x277D49E80];
-    v13 = [v9 syncPosition];
-    v14 = [v10 syncPosition];
-    v15 = [(WBTabGroupManager *)self deviceIdentifier];
-    v11 = [v12 positionBetweenPosition:v13 andPosition:v14 withDeviceIdentifier:v15 changeID:{-[WBTabGroupManager _nextInMemoryPositionChangeID](self, "_nextInMemoryPositionChangeID")}];
+    syncPosition2 = [tabGroupCopy syncPosition];
+    syncPosition3 = [v10 syncPosition];
+    deviceIdentifier = [(WBTabGroupManager *)self deviceIdentifier];
+    syncPosition = [v12 positionBetweenPosition:syncPosition2 andPosition:syncPosition3 withDeviceIdentifier:deviceIdentifier changeID:{-[WBTabGroupManager _nextInMemoryPositionChangeID](self, "_nextInMemoryPositionChangeID")}];
   }
 
-  return v11;
+  return syncPosition;
 }
 
-- (id)_tabGroupAfterTabGroup:(id)a3 inTabGroups:(id)a4
+- (id)_tabGroupAfterTabGroup:(id)group inTabGroups:(id)groups
 {
-  if (a3)
+  if (group)
   {
-    [a4 safari_objectAfter:?];
+    [groups safari_objectAfter:?];
   }
 
   else
   {
-    [a4 firstObject];
+    [groups firstObject];
   }
   v4 = ;
 
   return v4;
 }
 
-- (void)_updatePositionsForTabsInTabGroup:(id)a3
+- (void)_updatePositionsForTabsInTabGroup:(id)group
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isSyncable])
+  groupCopy = group;
+  if ([groupCopy isSyncable])
   {
-    v21 = [v4 tabs];
-    v5 = [v21 safari_filterObjectsUsingBlock:&__block_literal_global_60_0];
+    tabs = [groupCopy tabs];
+    v5 = [tabs safari_filterObjectsUsingBlock:&__block_literal_global_60_0];
     v6 = [v5 valueForKey:@"uuid"];
-    v7 = [v4 uuid];
-    v27 = v7;
+    uuid = [groupCopy uuid];
+    v27 = uuid;
     v20 = v6;
     v8 = [MEMORY[0x277CBEB98] setWithArray:v6];
     v28[0] = v8;
@@ -2201,8 +2201,8 @@ LABEL_15:
 
           v15 = *(*(&v22 + 1) + 8 * i);
           positionGenerator = self->_positionGenerator;
-          v17 = [v15 uuid];
-          v18 = [(WBSCRDTPositionGenerator *)positionGenerator positionForBookmarkWithRecordName:v17];
+          uuid2 = [v15 uuid];
+          v18 = [(WBSCRDTPositionGenerator *)positionGenerator positionForBookmarkWithRecordName:uuid2];
           [v15 setSyncPosition:v18];
         }
 
@@ -2232,50 +2232,50 @@ uint64_t __55__WBTabGroupManager__updatePositionsForTabsInTabGroup___block_invok
   return v3;
 }
 
-- (id)_generatePositionForProfile:(id)a3 afterProfile:(id)a4
+- (id)_generatePositionForProfile:(id)profile afterProfile:(id)afterProfile
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WBTabGroupManager *)self _namedProfiles];
-  v9 = v8;
-  if (v7)
+  profileCopy = profile;
+  afterProfileCopy = afterProfile;
+  _namedProfiles = [(WBTabGroupManager *)self _namedProfiles];
+  v9 = _namedProfiles;
+  if (afterProfileCopy)
   {
-    [v8 safari_objectAfter:v7];
+    [_namedProfiles safari_objectAfter:afterProfileCopy];
   }
 
   else
   {
-    [v8 firstObject];
+    [_namedProfiles firstObject];
   }
   v10 = ;
 
   if ((WBSIsEqual() & 1) != 0 || WBSIsEqual())
   {
-    v11 = [v6 syncPosition];
+    syncPosition = [profileCopy syncPosition];
   }
 
   else
   {
     v12 = MEMORY[0x277D49E80];
-    v13 = [v7 syncPosition];
-    v14 = [v10 syncPosition];
-    v15 = [(WBTabGroupManager *)self deviceIdentifier];
-    v11 = [v12 positionBetweenPosition:v13 andPosition:v14 withDeviceIdentifier:v15 changeID:{-[WBTabGroupManager _nextInMemoryPositionChangeID](self, "_nextInMemoryPositionChangeID")}];
+    syncPosition2 = [afterProfileCopy syncPosition];
+    syncPosition3 = [v10 syncPosition];
+    deviceIdentifier = [(WBTabGroupManager *)self deviceIdentifier];
+    syncPosition = [v12 positionBetweenPosition:syncPosition2 andPosition:syncPosition3 withDeviceIdentifier:deviceIdentifier changeID:{-[WBTabGroupManager _nextInMemoryPositionChangeID](self, "_nextInMemoryPositionChangeID")}];
   }
 
-  return v11;
+  return syncPosition;
 }
 
-- (id)_generatePositionForDevice:(id)a3 afterDevice:(id)a4
+- (id)_generatePositionForDevice:(id)device afterDevice:(id)afterDevice
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 profileIdentifier];
-  v9 = [(WBTabGroupManager *)self _devicesForProfileWithIdentifier:v8];
+  deviceCopy = device;
+  afterDeviceCopy = afterDevice;
+  profileIdentifier = [deviceCopy profileIdentifier];
+  v9 = [(WBTabGroupManager *)self _devicesForProfileWithIdentifier:profileIdentifier];
 
-  if (v7)
+  if (afterDeviceCopy)
   {
-    [v9 safari_objectAfter:v7];
+    [v9 safari_objectAfter:afterDeviceCopy];
   }
 
   else
@@ -2285,19 +2285,19 @@ uint64_t __55__WBTabGroupManager__updatePositionsForTabsInTabGroup___block_invok
   v10 = ;
   if ((WBSIsEqual() & 1) != 0 || WBSIsEqual())
   {
-    v11 = [v6 syncPosition];
+    syncPosition = [deviceCopy syncPosition];
   }
 
   else
   {
     v12 = MEMORY[0x277D49E80];
-    v13 = [v7 syncPosition];
-    v14 = [v10 syncPosition];
-    v15 = [(WBTabGroupManager *)self deviceIdentifier];
-    v11 = [v12 positionBetweenPosition:v13 andPosition:v14 withDeviceIdentifier:v15 changeID:{-[WBTabGroupManager _nextInMemoryPositionChangeID](self, "_nextInMemoryPositionChangeID")}];
+    syncPosition2 = [afterDeviceCopy syncPosition];
+    syncPosition3 = [v10 syncPosition];
+    deviceIdentifier = [(WBTabGroupManager *)self deviceIdentifier];
+    syncPosition = [v12 positionBetweenPosition:syncPosition2 andPosition:syncPosition3 withDeviceIdentifier:deviceIdentifier changeID:{-[WBTabGroupManager _nextInMemoryPositionChangeID](self, "_nextInMemoryPositionChangeID")}];
   }
 
-  return v11;
+  return syncPosition;
 }
 
 uint64_t __48__WBTabGroupManager__itemSyncPositionComparator__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -2363,62 +2363,62 @@ uint64_t __48__WBTabGroupManager__itemSyncPositionComparator__block_invoke(uint6
   return v11;
 }
 
-- (void)_cacheProfile:(id)a3
+- (void)_cacheProfile:(id)profile
 {
-  v4 = a3;
-  if (v4)
+  profileCopy = profile;
+  if (profileCopy)
   {
-    v7 = v4;
+    v7 = profileCopy;
     os_unfair_lock_lock(&profilesLock);
     profilesByIdentifier = self->_profilesByIdentifier;
-    v6 = [v7 identifier];
-    [(NSMutableDictionary *)profilesByIdentifier setObject:v7 forKeyedSubscript:v6];
+    identifier = [v7 identifier];
+    [(NSMutableDictionary *)profilesByIdentifier setObject:v7 forKeyedSubscript:identifier];
 
     os_unfair_lock_unlock(&profilesLock);
-    v4 = v7;
+    profileCopy = v7;
   }
 }
 
-- (void)registerWindowState:(id)a3
+- (void)registerWindowState:(id)state
 {
-  v4 = a3;
-  v5 = [v4 localTabGroup];
-  [(WBTabGroupManager *)self _cacheTabGroup:v5 creatorDeviceUUID:0];
+  stateCopy = state;
+  localTabGroup = [stateCopy localTabGroup];
+  [(WBTabGroupManager *)self _cacheTabGroup:localTabGroup creatorDeviceUUID:0];
 
-  v6 = [v4 privateTabGroup];
+  privateTabGroup = [stateCopy privateTabGroup];
 
-  [(WBTabGroupManager *)self _cacheTabGroup:v6 creatorDeviceUUID:0];
+  [(WBTabGroupManager *)self _cacheTabGroup:privateTabGroup creatorDeviceUUID:0];
 }
 
-- (void)unregisterWindowState:(id)a3
+- (void)unregisterWindowState:(id)state
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stateCopy = state;
   v5 = WBS_LOG_CHANNEL_PREFIXTabGroup();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [v4 localTabGroup];
-    v8 = [v7 privacyPreservingDescription];
+    localTabGroup = [stateCopy localTabGroup];
+    privacyPreservingDescription = [localTabGroup privacyPreservingDescription];
     v12 = 138543362;
-    v13 = v8;
+    v13 = privacyPreservingDescription;
     _os_log_impl(&dword_272C20000, v6, OS_LOG_TYPE_DEFAULT, "Unregistering window state with local tab group: %{public}@", &v12, 0xCu);
   }
 
-  v9 = [v4 localTabGroup];
-  [(WBTabGroupManager *)self _uncacheTabGroup:v9];
+  localTabGroup2 = [stateCopy localTabGroup];
+  [(WBTabGroupManager *)self _uncacheTabGroup:localTabGroup2];
 
-  v10 = [v4 privateTabGroup];
-  [(WBTabGroupManager *)self _uncacheTabGroup:v10];
+  privateTabGroup = [stateCopy privateTabGroup];
+  [(WBTabGroupManager *)self _uncacheTabGroup:privateTabGroup];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)saveWindowState:(id)a3 completionHandler:(id)a4
+- (void)saveWindowState:(id)state completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (saveWindowState_completionHandler__lastSavedWindowState && [saveWindowState_completionHandler__lastSavedWindowState isEqualToWindowState:v6])
+  stateCopy = state;
+  handlerCopy = handler;
+  if (saveWindowState_completionHandler__lastSavedWindowState && [saveWindowState_completionHandler__lastSavedWindowState isEqualToWindowState:stateCopy])
   {
     v8 = WBS_LOG_CHANNEL_PREFIXTabGroup();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -2427,9 +2427,9 @@ uint64_t __48__WBTabGroupManager__itemSyncPositionComparator__block_invoke(uint6
       _os_log_impl(&dword_272C20000, v8, OS_LOG_TYPE_INFO, "Skip saving current window state to database since it hasn't changed.", buf, 2u);
     }
 
-    if (v7)
+    if (handlerCopy)
     {
-      v7[2](v7, 1);
+      handlerCopy[2](handlerCopy, 1);
     }
   }
 
@@ -2440,8 +2440,8 @@ uint64_t __48__WBTabGroupManager__itemSyncPositionComparator__block_invoke(uint6
     v10[1] = 3221225472;
     v10[2] = __55__WBTabGroupManager_saveWindowState_completionHandler___block_invoke;
     v10[3] = &unk_279E77818;
-    v11 = v6;
-    v12 = v7;
+    v11 = stateCopy;
+    v12 = handlerCopy;
     [(WBTabCollection *)tabCollection saveWindowState:v11 completionHandler:v10];
   }
 }
@@ -2479,16 +2479,16 @@ uint64_t __55__WBTabGroupManager_saveWindowState_completionHandler___block_invok
   return result;
 }
 
-- (void)deleteWindowStates:(id)a3 completionHandler:(id)a4
+- (void)deleteWindowStates:(id)states completionHandler:(id)handler
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  statesCopy = states;
+  handlerCopy = handler;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v8 = [statesCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -2500,46 +2500,46 @@ uint64_t __55__WBTabGroupManager_saveWindowState_completionHandler___block_invok
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(statesCopy);
         }
 
         [(WBTabGroupManager *)self unregisterWindowState:*(*(&v13 + 1) + 8 * v11++)];
       }
 
       while (v9 != v11);
-      v9 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [statesCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v9);
   }
 
-  [(WBTabCollection *)self->_tabCollection deleteWindowStates:v6 completionHandler:v7];
+  [(WBTabCollection *)self->_tabCollection deleteWindowStates:statesCopy completionHandler:handlerCopy];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deletePrivateWindowState:(id)a3
+- (void)deletePrivateWindowState:(id)state
 {
-  v4 = a3;
-  if ([v4 isPrivateWindow])
+  stateCopy = state;
+  if ([stateCopy isPrivateWindow])
   {
-    v5 = [v4 localTabGroup];
-    v6 = [v5 uuid];
+    localTabGroup = [stateCopy localTabGroup];
+    uuid = [localTabGroup uuid];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __46__WBTabGroupManager_deletePrivateWindowState___block_invoke;
     v10[3] = &unk_279E751B8;
     v10[4] = self;
-    [(WBTabGroupManager *)self updateTabGroupWithUUID:v6 persist:0 usingBlock:v10];
+    [(WBTabGroupManager *)self updateTabGroupWithUUID:uuid persist:0 usingBlock:v10];
 
-    v7 = [v4 privateTabGroup];
-    v8 = [v7 uuid];
+    privateTabGroup = [stateCopy privateTabGroup];
+    uuid2 = [privateTabGroup uuid];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __46__WBTabGroupManager_deletePrivateWindowState___block_invoke_3;
     v9[3] = &unk_279E751B8;
     v9[4] = self;
-    [(WBTabGroupManager *)self updateTabGroupWithUUID:v8 persist:0 usingBlock:v9];
+    [(WBTabGroupManager *)self updateTabGroupWithUUID:uuid2 persist:0 usingBlock:v9];
   }
 }
 
@@ -2590,8 +2590,8 @@ id __46__WBTabGroupManager_deletePrivateWindowState___block_invoke_4(uint64_t a1
 - (id)_allTabGroupsUnsorted
 {
   v3 = objc_alloc(MEMORY[0x277CBEA60]);
-  v4 = [(NSMutableDictionary *)self->_syncableTabGroupsByUUID allValues];
-  v5 = [v3 initWithArray:v4 copyItems:1];
+  allValues = [(NSMutableDictionary *)self->_syncableTabGroupsByUUID allValues];
+  v5 = [v3 initWithArray:allValues copyItems:1];
 
   return v5;
 }
@@ -2615,10 +2615,10 @@ uint64_t __68__WBTabGroupManager__allSyncedTabGroupsExceptRemoteUnnamedTabGroups
 - (NSArray)allNamedTabGroupsUnsorted
 {
   os_unfair_lock_lock(&tabGroupsLock);
-  v3 = [(WBTabGroupManager *)self _allTabGroupsUnsorted];
+  _allTabGroupsUnsorted = [(WBTabGroupManager *)self _allTabGroupsUnsorted];
   os_unfair_lock_unlock(&tabGroupsLock);
 
-  return v3;
+  return _allTabGroupsUnsorted;
 }
 
 - (NSArray)namedTabGroupsInDefaultProfile
@@ -2630,38 +2630,38 @@ uint64_t __68__WBTabGroupManager__allSyncedTabGroupsExceptRemoteUnnamedTabGroups
   return v3;
 }
 
-- (id)namedTabGroupsForProfileWithIdentifier:(id)a3
+- (id)namedTabGroupsForProfileWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&tabGroupsLock);
-  v5 = [(WBTabGroupManager *)self _tabGroupsForProfileWithIdentifier:v4];
+  v5 = [(WBTabGroupManager *)self _tabGroupsForProfileWithIdentifier:identifierCopy];
 
   os_unfair_lock_unlock(&tabGroupsLock);
 
   return v5;
 }
 
-- (id)unnamedTabGroupsForProfileWithIdentifier:(id)a3
+- (id)unnamedTabGroupsForProfileWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&tabGroupsLock);
-  v5 = [(WBTabGroupManager *)self _unnamedTabGroupsForProfileWithIdentifier:v4];
+  v5 = [(WBTabGroupManager *)self _unnamedTabGroupsForProfileWithIdentifier:identifierCopy];
 
   os_unfair_lock_unlock(&tabGroupsLock);
 
   return v5;
 }
 
-- (id)tabGroupWithServerID:(id)a3
+- (id)tabGroupWithServerID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   syncableTabGroupsByUUID = self->_syncableTabGroupsByUUID;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __42__WBTabGroupManager_tabGroupWithServerID___block_invoke;
   v9[3] = &unk_279E77860;
-  v10 = v4;
-  v6 = v4;
+  v10 = dCopy;
+  v6 = dCopy;
   v7 = [(NSMutableDictionary *)syncableTabGroupsByUUID safari_valueOfEntryPassingTest:v9];
 
   return v7;
@@ -2676,25 +2676,25 @@ uint64_t __42__WBTabGroupManager_tabGroupWithServerID___block_invoke(uint64_t a1
   return v5;
 }
 
-- (id)_insertTabGroup:(id)a3 afterTabGroup:(id)a4 isMove:(BOOL)a5
+- (id)_insertTabGroup:(id)group afterTabGroup:(id)tabGroup isMove:(BOOL)move
 {
   v44 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  groupCopy = group;
+  tabGroupCopy = tabGroup;
   os_unfair_lock_lock(&tabGroupsLock);
-  v9 = [v7 mutableCopy];
-  v32 = v8;
-  v10 = [v8 uuid];
-  v11 = [(WBTabGroupManager *)self _tabGroupWithUUID:v10];
+  v9 = [groupCopy mutableCopy];
+  v32 = tabGroupCopy;
+  uuid = [tabGroupCopy uuid];
+  v11 = [(WBTabGroupManager *)self _tabGroupWithUUID:uuid];
 
   v31 = v11;
   v12 = [(WBTabGroupManager *)self _generatePositionForTabGroup:v9 afterTabGroup:v11];
   [v9 setSyncPosition:v12];
 
   [(WBTabGroupManager *)self _cacheTabGroup:v9 creatorDeviceUUID:0];
-  if ([v7 supportsTabGroupFavorites])
+  if ([groupCopy supportsTabGroupFavorites])
   {
-    [(NSMutableSet *)self->_recentlyAddedTabGroupsAwaitingFirstStartPage addObject:v7];
+    [(NSMutableSet *)self->_recentlyAddedTabGroupsAwaitingFirstStartPage addObject:groupCopy];
   }
 
   os_unfair_lock_unlock(&tabGroupsLock);
@@ -2734,16 +2734,16 @@ uint64_t __42__WBTabGroupManager_tabGroupWithServerID___block_invoke(uint64_t a1
   v33[1] = 3221225472;
   v33[2] = __58__WBTabGroupManager__insertTabGroup_afterTabGroup_isMove___block_invoke;
   v33[3] = &unk_279E77888;
-  v36 = a5;
+  moveCopy = move;
   v33[4] = self;
   v19 = v9;
   v34 = v19;
-  v20 = v7;
+  v20 = groupCopy;
   v35 = v20;
   v21 = MEMORY[0x2743D6830](v33);
   os_unfair_lock_lock(&profilesLock);
-  v22 = [v19 profileIdentifier];
-  v23 = [(WBTabGroupManager *)self profileWithIdentifier:v22];
+  profileIdentifier = [v19 profileIdentifier];
+  v23 = [(WBTabGroupManager *)self profileWithIdentifier:profileIdentifier];
 
   os_unfair_lock_unlock(&profilesLock);
   if (v23 && [v23 kind] && objc_msgSend(v20, "isNamed"))
@@ -2835,54 +2835,54 @@ void __58__WBTabGroupManager__insertTabGroup_afterTabGroup_isMove___block_invoke
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)moveTabGroup:(id)a3 afterTabGroup:(id)a4
+- (void)moveTabGroup:(id)group afterTabGroup:(id)tabGroup
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6 && ([v6 profileIdentifier], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "profileIdentifier"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "isEqualToString:", v9), v9, v8, !v10))
+  groupCopy = group;
+  tabGroupCopy = tabGroup;
+  v7 = tabGroupCopy;
+  if (tabGroupCopy && ([tabGroupCopy profileIdentifier], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(groupCopy, "profileIdentifier"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "isEqualToString:", v9), v9, v8, !v10))
   {
-    v11 = [v7 profileIdentifier];
-    [(WBTabGroupManager *)self moveTabGroup:v12 toProfileWithIdentifier:v11 afterTabGroup:v7];
+    profileIdentifier = [v7 profileIdentifier];
+    [(WBTabGroupManager *)self moveTabGroup:groupCopy toProfileWithIdentifier:profileIdentifier afterTabGroup:v7];
   }
 
   else
   {
-    [(WBTabGroupManager *)self _reorderTabGroup:v12 afterTabGroup:v7];
+    [(WBTabGroupManager *)self _reorderTabGroup:groupCopy afterTabGroup:v7];
   }
 }
 
-- (void)_reorderTabGroup:(id)a3 afterTabGroup:(id)a4
+- (void)_reorderTabGroup:(id)group afterTabGroup:(id)tabGroup
 {
   v45 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  groupCopy = group;
+  tabGroupCopy = tabGroup;
   v8 = WBS_LOG_CHANNEL_PREFIXTabGroup();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = v8;
-    v10 = [v6 privacyPreservingDescription];
-    v11 = [v7 privacyPreservingDescription];
+    privacyPreservingDescription = [groupCopy privacyPreservingDescription];
+    privacyPreservingDescription2 = [tabGroupCopy privacyPreservingDescription];
     *buf = 138543618;
-    v42 = v10;
+    v42 = privacyPreservingDescription;
     v43 = 2114;
-    v44 = v11;
+    v44 = privacyPreservingDescription2;
     _os_log_impl(&dword_272C20000, v9, OS_LOG_TYPE_INFO, "Moving tab group %{public}@ after tab group %{public}@", buf, 0x16u);
   }
 
   os_unfair_lock_lock(&tabGroupsLock);
-  v12 = [v6 uuid];
-  v13 = [(WBTabGroupManager *)self _tabGroupWithUUID:v12];
+  uuid = [groupCopy uuid];
+  v13 = [(WBTabGroupManager *)self _tabGroupWithUUID:uuid];
 
-  v14 = [v7 uuid];
-  v15 = [(WBTabGroupManager *)self _tabGroupWithUUID:v14];
+  uuid2 = [tabGroupCopy uuid];
+  v15 = [(WBTabGroupManager *)self _tabGroupWithUUID:uuid2];
 
   if (v13)
   {
-    v16 = [v6 profileIdentifier];
-    v17 = [(WBTabGroupManager *)self _tabGroupsForProfileWithIdentifier:v16];
+    profileIdentifier = [groupCopy profileIdentifier];
+    v17 = [(WBTabGroupManager *)self _tabGroupsForProfileWithIdentifier:profileIdentifier];
 
-    v18 = [(WBTabGroupManager *)self _tabGroupAfterTabGroup:v7 inTabGroups:v17];
+    v18 = [(WBTabGroupManager *)self _tabGroupAfterTabGroup:tabGroupCopy inTabGroups:v17];
     if ([v17 count] && !WBSIsEqual())
     {
       v32 = v18;
@@ -2942,9 +2942,9 @@ void __58__WBTabGroupManager__insertTabGroup_afterTabGroup_isMove___block_invoke
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
         v20 = v19;
-        v21 = [v6 privacyPreservingDescription];
+        privacyPreservingDescription3 = [groupCopy privacyPreservingDescription];
         *buf = 138543362;
-        v42 = v21;
+        v42 = privacyPreservingDescription3;
         _os_log_impl(&dword_272C20000, v20, OS_LOG_TYPE_INFO, "Not moving tab group %{public}@ because its position did not change.", buf, 0xCu);
       }
 
@@ -3021,28 +3021,28 @@ void __52__WBTabGroupManager__reorderTabGroup_afterTabGroup___block_invoke_2(uin
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)moveTabGroup:(id)a3 toProfileWithIdentifier:(id)a4 afterTabGroup:(id)a5
+- (void)moveTabGroup:(id)group toProfileWithIdentifier:(id)identifier afterTabGroup:(id)tabGroup
 {
-  v13 = a5;
-  v8 = a4;
-  v9 = a3;
+  tabGroupCopy = tabGroup;
+  identifierCopy = identifier;
+  groupCopy = group;
   os_unfair_lock_lock(&tabGroupsLock);
-  v10 = [v9 uuid];
+  uuid = [groupCopy uuid];
 
-  v11 = [(WBTabGroupManager *)self _tabGroupWithUUID:v10];
+  v11 = [(WBTabGroupManager *)self _tabGroupWithUUID:uuid];
 
-  [v11 setProfileIdentifier:v8];
+  [v11 setProfileIdentifier:identifierCopy];
   os_unfair_lock_unlock(&tabGroupsLock);
-  v12 = [(WBTabGroupManager *)self _insertTabGroup:v11 afterTabGroup:v13 isMove:1];
+  v12 = [(WBTabGroupManager *)self _insertTabGroup:v11 afterTabGroup:tabGroupCopy isMove:1];
 }
 
-- (void)removeTabGroup:(id)a3
+- (void)removeTabGroup:(id)group
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  groupCopy = group;
   os_unfair_lock_lock(&tabGroupsLock);
-  v5 = [v4 uuid];
-  v6 = [(WBTabGroupManager *)self _tabGroupWithUUID:v5];
+  uuid = [groupCopy uuid];
+  v6 = [(WBTabGroupManager *)self _tabGroupWithUUID:uuid];
 
   v7 = WBS_LOG_CHANNEL_PREFIXTabGroup();
   v8 = v7;
@@ -3051,17 +3051,17 @@ void __52__WBTabGroupManager__reorderTabGroup_afterTabGroup___block_invoke_2(uin
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9 = v8;
-      v10 = [v4 privacyPreservingDescription];
+      privacyPreservingDescription = [groupCopy privacyPreservingDescription];
       *buf = 138543362;
-      v44 = v10;
+      v44 = privacyPreservingDescription;
       _os_log_impl(&dword_272C20000, v9, OS_LOG_TYPE_DEFAULT, "Removing tab group %{public}@", buf, 0xCu);
     }
 
     [(WBTabGroupManager *)self _uncacheTabGroup:v6];
     removedTabGroupsByUUID = self->_removedTabGroupsByUUID;
-    v12 = [v6 uuid];
+    uuid2 = [v6 uuid];
     v29 = v6;
-    [(NSMutableDictionary *)removedTabGroupsByUUID setObject:v6 forKeyedSubscript:v12];
+    [(NSMutableDictionary *)removedTabGroupsByUUID setObject:v6 forKeyedSubscript:uuid2];
 
     os_unfair_lock_unlock(&tabGroupsLock);
     v38 = 0u;
@@ -3087,8 +3087,8 @@ void __52__WBTabGroupManager__reorderTabGroup_afterTabGroup___block_invoke_2(uin
           v18 = *(*(&v36 + 1) + 8 * v17);
           if (objc_opt_respondsToSelector())
           {
-            v19 = [v4 uuid];
-            [v18 tabGroupManager:self didRemoveTabGroupWithUUID:v19];
+            uuid3 = [groupCopy uuid];
+            [v18 tabGroupManager:self didRemoveTabGroupWithUUID:uuid3];
           }
 
           ++v17;
@@ -3237,26 +3237,26 @@ void __36__WBTabGroupManager_removeTabGroup___block_invoke_3(uint64_t a1)
   [v1 setObject:0 forKeyedSubscript:v2];
 }
 
-- (void)updateTabGroupWithUUID:(id)a3 persist:(BOOL)a4 usingBlock:(id)a5
+- (void)updateTabGroupWithUUID:(id)d persist:(BOOL)persist usingBlock:(id)block
 {
-  v6 = a4;
+  persistCopy = persist;
   v58 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  blockCopy = block;
   v10 = WBS_LOG_CHANNEL_PREFIXTabGroup();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v57 = v8;
+    v57 = dCopy;
     _os_log_impl(&dword_272C20000, v10, OS_LOG_TYPE_INFO, "Updating tab group with uuid %{public}@", buf, 0xCu);
   }
 
   os_unfair_lock_lock(&tabGroupsLock);
-  v11 = [(WBTabGroupManager *)self _tabGroupWithUUID:v8];
+  v11 = [(WBTabGroupManager *)self _tabGroupWithUUID:dCopy];
   if (v11)
   {
-    v36 = v6;
-    v37 = v8;
+    v36 = persistCopy;
+    v37 = dCopy;
     v51 = 0u;
     v52 = 0u;
     v49 = 0u;
@@ -3279,8 +3279,8 @@ void __36__WBTabGroupManager_removeTabGroup___block_invoke_3(uint64_t a1)
           v17 = *(*(&v49 + 1) + 8 * i);
           if (objc_opt_respondsToSelector())
           {
-            v18 = [v11 uuid];
-            [v17 tabGroupManager:self willPerformBlockUpdatesForTabGroupWithUUID:v18];
+            uuid = [v11 uuid];
+            [v17 tabGroupManager:self willPerformBlockUpdatesForTabGroupWithUUID:uuid];
           }
         }
 
@@ -3290,7 +3290,7 @@ void __36__WBTabGroupManager_removeTabGroup___block_invoke_3(uint64_t a1)
       while (v14);
     }
 
-    v9[2](v9, v11);
+    blockCopy[2](blockCopy, v11);
     [v11 updateLastSelectedTab];
     os_unfair_lock_unlock(&tabGroupsLock);
     v47 = 0u;
@@ -3315,8 +3315,8 @@ void __36__WBTabGroupManager_removeTabGroup___block_invoke_3(uint64_t a1)
           v24 = *(*(&v45 + 1) + 8 * j);
           if (objc_opt_respondsToSelector())
           {
-            v25 = [v11 uuid];
-            [v24 tabGroupManager:self didPerformBlockUpdatesForTabGroupWithUUID:v25];
+            uuid2 = [v11 uuid];
+            [v24 tabGroupManager:self didPerformBlockUpdatesForTabGroupWithUUID:uuid2];
           }
         }
 
@@ -3348,8 +3348,8 @@ void __36__WBTabGroupManager_removeTabGroup___block_invoke_3(uint64_t a1)
           v31 = *(*(&v41 + 1) + 8 * k);
           if (objc_opt_respondsToSelector())
           {
-            v32 = [v11 uuid];
-            [v31 tabGroupManager:self didUpdateTabGroupWithUUID:v32];
+            uuid3 = [v11 uuid];
+            [v31 tabGroupManager:self didUpdateTabGroupWithUUID:uuid3];
           }
         }
 
@@ -3359,7 +3359,7 @@ void __36__WBTabGroupManager_removeTabGroup___block_invoke_3(uint64_t a1)
       while (v28);
     }
 
-    v8 = v37;
+    dCopy = v37;
     if (v36)
     {
       tabCollection = self->_tabCollection;
@@ -3368,7 +3368,7 @@ void __36__WBTabGroupManager_removeTabGroup___block_invoke_3(uint64_t a1)
       v38[2] = __63__WBTabGroupManager_updateTabGroupWithUUID_persist_usingBlock___block_invoke;
       v38[3] = &unk_279E778B0;
       v39 = v11;
-      v40 = self;
+      selfCopy = self;
       [(WBTabCollection *)tabCollection saveItem:v39 completionHandler:v38];
     }
   }
@@ -3379,7 +3379,7 @@ void __36__WBTabGroupManager_removeTabGroup___block_invoke_3(uint64_t a1)
     if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v57 = v8;
+      v57 = dCopy;
       _os_log_impl(&dword_272C20000, v34, OS_LOG_TYPE_INFO, "Not updating tab group with uuid %{public}@ because it does not exist.", buf, 0xCu);
     }
 
@@ -3449,25 +3449,25 @@ void __63__WBTabGroupManager_updateTabGroupWithUUID_persist_usingBlock___block_i
 
 - (BOOL)hasMultipleProfiles
 {
-  v2 = [(WBTabGroupManager *)self profiles];
-  v3 = [v2 count] > 1;
+  profiles = [(WBTabGroupManager *)self profiles];
+  v3 = [profiles count] > 1;
 
   return v3;
 }
 
-- (id)_tabGroupsForProfileWithIdentifier:(id)a3
+- (id)_tabGroupsForProfileWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [v4 isEqual:*MEMORY[0x277D49BD8]];
-  v6 = [(NSMutableDictionary *)self->_syncableTabGroupsByUUID allValues];
+  identifierCopy = identifier;
+  v5 = [identifierCopy isEqual:*MEMORY[0x277D49BD8]];
+  allValues = [(NSMutableDictionary *)self->_syncableTabGroupsByUUID allValues];
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __56__WBTabGroupManager__tabGroupsForProfileWithIdentifier___block_invoke;
   v15 = &unk_279E77918;
-  v16 = v4;
+  v16 = identifierCopy;
   v17 = v5;
-  v7 = v4;
-  v8 = [v6 safari_filterObjectsUsingBlock:&v12];
+  v7 = identifierCopy;
+  v8 = [allValues safari_filterObjectsUsingBlock:&v12];
 
   v9 = [(WBTabGroupManager *)self _itemSyncPositionComparator:v12];
   v10 = [v8 sortedArrayUsingComparator:v9];
@@ -3506,19 +3506,19 @@ uint64_t __56__WBTabGroupManager__tabGroupsForProfileWithIdentifier___block_invo
   return v6;
 }
 
-- (id)_unnamedTabGroupsForProfileWithIdentifier:(id)a3
+- (id)_unnamedTabGroupsForProfileWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [v4 isEqual:*MEMORY[0x277D49BD8]];
-  v6 = [(NSMutableDictionary *)self->_syncableTabGroupsByUUID allValues];
+  identifierCopy = identifier;
+  v5 = [identifierCopy isEqual:*MEMORY[0x277D49BD8]];
+  allValues = [(NSMutableDictionary *)self->_syncableTabGroupsByUUID allValues];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __63__WBTabGroupManager__unnamedTabGroupsForProfileWithIdentifier___block_invoke;
   v10[3] = &unk_279E77918;
-  v11 = v4;
+  v11 = identifierCopy;
   v12 = v5;
-  v7 = v4;
-  v8 = [v6 safari_filterObjectsUsingBlock:v10];
+  v7 = identifierCopy;
+  v8 = [allValues safari_filterObjectsUsingBlock:v10];
 
   return v8;
 }
@@ -3554,20 +3554,20 @@ uint64_t __63__WBTabGroupManager__unnamedTabGroupsForProfileWithIdentifier___blo
   return v4;
 }
 
-- (id)_unnamedTabGroupsForDeviceWithUUID:(id)a3
+- (id)_unnamedTabGroupsForDeviceWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_syncableTabGroupsByUUID allValues];
+  dCopy = d;
+  allValues = [(NSMutableDictionary *)self->_syncableTabGroupsByUUID allValues];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __56__WBTabGroupManager__unnamedTabGroupsForDeviceWithUUID___block_invoke;
   v11[3] = &unk_279E77940;
-  v12 = v4;
-  v6 = v4;
-  v7 = [v5 safari_filterObjectsUsingBlock:v11];
+  v12 = dCopy;
+  v6 = dCopy;
+  v7 = [allValues safari_filterObjectsUsingBlock:v11];
 
-  v8 = [(WBTabGroupManager *)self _itemSyncPositionComparator];
-  v9 = [v7 sortedArrayUsingComparator:v8];
+  _itemSyncPositionComparator = [(WBTabGroupManager *)self _itemSyncPositionComparator];
+  v9 = [v7 sortedArrayUsingComparator:_itemSyncPositionComparator];
 
   return v9;
 }
@@ -3590,10 +3590,10 @@ uint64_t __56__WBTabGroupManager__unnamedTabGroupsForDeviceWithUUID___block_invo
   return v4;
 }
 
-- (id)profileWithIdentifier:(id)a3
+- (id)profileWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_profilesByIdentifier objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  v5 = [(NSMutableDictionary *)self->_profilesByIdentifier objectForKeyedSubscript:identifierCopy];
   v6 = v5;
   if (v5)
   {
@@ -3602,7 +3602,7 @@ uint64_t __56__WBTabGroupManager__unnamedTabGroupsForDeviceWithUUID___block_invo
 
   else
   {
-    v7 = [(NSMutableDictionary *)self->_removedProfilesByIdentifier objectForKeyedSubscript:v4];
+    v7 = [(NSMutableDictionary *)self->_removedProfilesByIdentifier objectForKeyedSubscript:identifierCopy];
   }
 
   v8 = v7;
@@ -3610,28 +3610,28 @@ uint64_t __56__WBTabGroupManager__unnamedTabGroupsForDeviceWithUUID___block_invo
   return v8;
 }
 
-- (void)appendProfile:(id)a3 completionHandler:(id)a4
+- (void)appendProfile:(id)profile completionHandler:(id)handler
 {
   v51 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v34 = a4;
+  profileCopy = profile;
+  handlerCopy = handler;
   os_unfair_lock_lock(&profilesLock);
-  v7 = [v6 mutableCopy];
-  v8 = [(WBTabGroupManager *)self _namedProfiles];
-  v9 = [v8 lastObject];
-  v10 = [(WBTabGroupManager *)self _generatePositionForProfile:v6 afterProfile:v9];
+  v7 = [profileCopy mutableCopy];
+  _namedProfiles = [(WBTabGroupManager *)self _namedProfiles];
+  lastObject = [_namedProfiles lastObject];
+  v10 = [(WBTabGroupManager *)self _generatePositionForProfile:profileCopy afterProfile:lastObject];
   [v7 setSyncPosition:v10];
 
   profilesByIdentifier = self->_profilesByIdentifier;
-  v12 = [v6 identifier];
-  [(NSMutableDictionary *)profilesByIdentifier setObject:v7 forKeyedSubscript:v12];
+  identifier = [profileCopy identifier];
+  [(NSMutableDictionary *)profilesByIdentifier setObject:v7 forKeyedSubscript:identifier];
 
   os_unfair_lock_unlock(&profilesLock);
   profileDataManager = self->_profileDataManager;
-  v14 = [v6 serverID];
-  v35 = v6;
-  v15 = [v6 identifier];
-  [(WBSProfileDataManager *)profileDataManager ensureProfileDirectoriesExistForProfileWithServerID:v14 profileIdentifier:v15];
+  serverID = [profileCopy serverID];
+  v35 = profileCopy;
+  identifier2 = [profileCopy identifier];
+  [(WBSProfileDataManager *)profileDataManager ensureProfileDirectoriesExistForProfileWithServerID:serverID profileIdentifier:identifier2];
 
   v46 = 0u;
   v47 = 0u;
@@ -3656,8 +3656,8 @@ uint64_t __56__WBTabGroupManager__unnamedTabGroupsForDeviceWithUUID___block_invo
         v21 = *(*(&v44 + 1) + 8 * v20);
         if (objc_opt_respondsToSelector())
         {
-          v22 = [v7 identifier];
-          [v21 tabGroupManager:self didInsertProfileWithIdentifier:v22];
+          identifier3 = [v7 identifier];
+          [v21 tabGroupManager:self didInsertProfileWithIdentifier:identifier3];
         }
 
         ++v20;
@@ -3713,11 +3713,11 @@ uint64_t __56__WBTabGroupManager__unnamedTabGroupsForDeviceWithUUID___block_invo
   v36[1] = 3221225472;
   v36[2] = __53__WBTabGroupManager_appendProfile_completionHandler___block_invoke;
   v36[3] = &unk_279E77990;
-  v38 = self;
-  v39 = v34;
+  selfCopy = self;
+  v39 = handlerCopy;
   v37 = v7;
   v31 = v7;
-  v32 = v34;
+  v32 = handlerCopy;
   [(WBTabCollection *)tabCollection insertItemsIntoPlace:v30 inParentWithID:0 completionHandler:v36];
 
   v33 = *MEMORY[0x277D85DE8];
@@ -3808,29 +3808,29 @@ void __53__WBTabGroupManager_appendProfile_completionHandler___block_invoke_3(ui
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)updateProfileWithIdentifier:(id)a3 persist:(BOOL)a4 usingBlock:(id)a5 completionHandler:(id)a6
+- (id)updateProfileWithIdentifier:(id)identifier persist:(BOOL)persist usingBlock:(id)block completionHandler:(id)handler
 {
   v46 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  identifierCopy = identifier;
+  blockCopy = block;
+  handlerCopy = handler;
   os_unfair_lock_lock(&profilesLock);
-  v13 = [(NSMutableDictionary *)self->_profilesByIdentifier objectForKeyedSubscript:v10];
+  v13 = [(NSMutableDictionary *)self->_profilesByIdentifier objectForKeyedSubscript:identifierCopy];
   v14 = v13;
   if (v13)
   {
-    v30 = a4;
-    v31 = v12;
-    v33 = v10;
+    persistCopy = persist;
+    v31 = handlerCopy;
+    v33 = identifierCopy;
     v34 = [v13 copy];
-    v32 = v11;
-    v11[2](v11, v14);
+    v32 = blockCopy;
+    blockCopy[2](blockCopy, v14);
     os_unfair_lock_unlock(&profilesLock);
     v41 = 0u;
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v15 = self;
+    selfCopy = self;
     v16 = [(NSHashTable *)self->_observers copy];
     v17 = [v16 countByEnumeratingWithState:&v39 objects:v43 count:16];
     if (v17)
@@ -3849,9 +3849,9 @@ void __53__WBTabGroupManager_appendProfile_completionHandler___block_invoke_3(ui
           v21 = *(*(&v39 + 1) + 8 * i);
           if (objc_opt_respondsToSelector())
           {
-            v22 = [v14 identifier];
+            identifier = [v14 identifier];
             v23 = [v14 differenceFromProfile:v34];
-            [v21 tabGroupManager:v15 didUpdateProfileWithIdentifier:v22 difference:v23];
+            [v21 tabGroupManager:selfCopy didUpdateProfileWithIdentifier:identifier difference:v23];
           }
         }
 
@@ -3861,31 +3861,31 @@ void __53__WBTabGroupManager_appendProfile_completionHandler___block_invoke_3(ui
       while (v18);
     }
 
-    if (v30)
+    if (persistCopy)
     {
-      tabCollection = v15->_tabCollection;
+      tabCollection = selfCopy->_tabCollection;
       v35[0] = MEMORY[0x277D85DD0];
       v35[1] = 3221225472;
       v35[2] = __86__WBTabGroupManager_updateProfileWithIdentifier_persist_usingBlock_completionHandler___block_invoke;
       v35[3] = &unk_279E77990;
-      v12 = v31;
+      handlerCopy = v31;
       v38 = v31;
       v25 = v14;
       v36 = v25;
-      v37 = v15;
+      v37 = selfCopy;
       [(WBTabCollection *)tabCollection saveItem:v25 completionHandler:v35];
       v26 = [v25 copy];
 
-      v11 = v32;
-      v10 = v33;
+      blockCopy = v32;
+      identifierCopy = v33;
     }
 
     else
     {
       v26 = [v14 copy];
-      v11 = v32;
-      v10 = v33;
-      v12 = v31;
+      blockCopy = v32;
+      identifierCopy = v33;
+      handlerCopy = v31;
     }
   }
 
@@ -3895,7 +3895,7 @@ void __53__WBTabGroupManager_appendProfile_completionHandler___block_invoke_3(ui
     if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v45 = v10;
+      v45 = identifierCopy;
       _os_log_impl(&dword_272C20000, v27, OS_LOG_TYPE_INFO, "Not updating profile with uuid %{public}@ because it does not exist.", buf, 0xCu);
     }
 
@@ -3977,15 +3977,15 @@ void __86__WBTabGroupManager_updateProfileWithIdentifier_persist_usingBlock_comp
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeProfile:(id)a3 completionHandler:(id)a4
+- (void)removeProfile:(id)profile completionHandler:(id)handler
 {
   v57 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  profileCopy = profile;
+  handlerCopy = handler;
   os_unfair_lock_lock(&profilesLock);
   profilesByIdentifier = self->_profilesByIdentifier;
-  v9 = [v6 identifier];
-  v10 = [(NSMutableDictionary *)profilesByIdentifier objectForKeyedSubscript:v9];
+  identifier = [profileCopy identifier];
+  v10 = [(NSMutableDictionary *)profilesByIdentifier objectForKeyedSubscript:identifier];
 
   v11 = WBS_LOG_CHANNEL_PREFIXTabGroup();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_INFO);
@@ -3994,21 +3994,21 @@ void __86__WBTabGroupManager_updateProfileWithIdentifier_persist_usingBlock_comp
     if (v12)
     {
       v13 = v11;
-      v14 = [v6 privacyPreservingDescription];
+      privacyPreservingDescription = [profileCopy privacyPreservingDescription];
       *buf = 138543362;
-      v56 = v14;
+      v56 = privacyPreservingDescription;
       _os_log_impl(&dword_272C20000, v13, OS_LOG_TYPE_INFO, "Removing profile %{public}@", buf, 0xCu);
     }
 
-    v39 = v7;
+    v39 = handlerCopy;
     v15 = self->_profilesByIdentifier;
-    v16 = [v6 identifier];
-    [(NSMutableDictionary *)v15 removeObjectForKey:v16];
+    identifier2 = [profileCopy identifier];
+    [(NSMutableDictionary *)v15 removeObjectForKey:identifier2];
 
     removedProfilesByIdentifier = self->_removedProfilesByIdentifier;
-    v18 = [v10 identifier];
+    identifier3 = [v10 identifier];
     v38 = v10;
-    [(NSMutableDictionary *)removedProfilesByIdentifier setObject:v10 forKeyedSubscript:v18];
+    [(NSMutableDictionary *)removedProfilesByIdentifier setObject:v10 forKeyedSubscript:identifier3];
 
     os_unfair_lock_unlock(&profilesLock);
     v50 = 0u;
@@ -4033,8 +4033,8 @@ void __86__WBTabGroupManager_updateProfileWithIdentifier_persist_usingBlock_comp
           v24 = *(*(&v48 + 1) + 8 * i);
           if (objc_opt_respondsToSelector())
           {
-            v25 = [v6 identifier];
-            [v24 tabGroupManager:self didRemoveProfileWithIdentifier:v25];
+            identifier4 = [profileCopy identifier];
+            [v24 tabGroupManager:self didRemoveProfileWithIdentifier:identifier4];
           }
         }
 
@@ -4089,10 +4089,10 @@ void __86__WBTabGroupManager_updateProfileWithIdentifier_persist_usingBlock_comp
     v40[1] = 3221225472;
     v40[2] = __53__WBTabGroupManager_removeProfile_completionHandler___block_invoke_2;
     v40[3] = &unk_279E77A00;
-    v7 = v39;
+    handlerCopy = v39;
     v43 = v39;
     v40[4] = self;
-    v41 = v6;
+    v41 = profileCopy;
     v42 = v38;
     [(WBTabCollection *)tabCollection deleteItems:v34 leaveTombstones:1 completionHandler:v40];
   }
@@ -4102,9 +4102,9 @@ void __86__WBTabGroupManager_updateProfileWithIdentifier_persist_usingBlock_comp
     if (v12)
     {
       v35 = v11;
-      v36 = [v6 privacyPreservingDescription];
+      privacyPreservingDescription2 = [profileCopy privacyPreservingDescription];
       *buf = 138543362;
-      v56 = v36;
+      v56 = privacyPreservingDescription2;
       _os_log_impl(&dword_272C20000, v35, OS_LOG_TYPE_INFO, "Not removing profile %{public}@ because it no longer exists", buf, 0xCu);
     }
 
@@ -4210,37 +4210,37 @@ void __53__WBTabGroupManager_removeProfile_completionHandler___block_invoke_5(ui
   [v1 setObject:0 forKeyedSubscript:v2];
 }
 
-- (void)moveProfile:(id)a3 afterProfile:(id)a4
+- (void)moveProfile:(id)profile afterProfile:(id)afterProfile
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  profileCopy = profile;
+  afterProfileCopy = afterProfile;
   v8 = WBS_LOG_CHANNEL_PREFIXTabGroup();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = v8;
-    v10 = [v6 privacyPreservingDescription];
-    v11 = [v7 privacyPreservingDescription];
+    privacyPreservingDescription = [profileCopy privacyPreservingDescription];
+    privacyPreservingDescription2 = [afterProfileCopy privacyPreservingDescription];
     *buf = 138543618;
-    v38 = v10;
+    v38 = privacyPreservingDescription;
     v39 = 2114;
-    v40 = v11;
+    v40 = privacyPreservingDescription2;
     _os_log_impl(&dword_272C20000, v9, OS_LOG_TYPE_INFO, "Moving profile %{public}@ after profile %{public}@", buf, 0x16u);
   }
 
   os_unfair_lock_lock(&profilesLock);
   profilesByIdentifier = self->_profilesByIdentifier;
-  v13 = [v6 identifier];
-  v14 = [(NSMutableDictionary *)profilesByIdentifier objectForKeyedSubscript:v13];
+  identifier = [profileCopy identifier];
+  v14 = [(NSMutableDictionary *)profilesByIdentifier objectForKeyedSubscript:identifier];
 
   v15 = self->_profilesByIdentifier;
-  v16 = [v7 identifier];
-  v17 = [(NSMutableDictionary *)v15 objectForKeyedSubscript:v16];
+  identifier2 = [afterProfileCopy identifier];
+  v17 = [(NSMutableDictionary *)v15 objectForKeyedSubscript:identifier2];
 
   if (v14)
   {
     v30 = v17;
-    v18 = [(WBTabGroupManager *)self _generatePositionForProfile:v6 afterProfile:v17];
+    v18 = [(WBTabGroupManager *)self _generatePositionForProfile:profileCopy afterProfile:v17];
     [v14 setSyncPosition:v18];
 
     os_unfair_lock_unlock(&profilesLock);
@@ -4292,9 +4292,9 @@ void __53__WBTabGroupManager_removeProfile_completionHandler___block_invoke_5(ui
     if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
     {
       v27 = v26;
-      v28 = [v6 privacyPreservingDescription];
+      privacyPreservingDescription3 = [profileCopy privacyPreservingDescription];
       *buf = 138543362;
-      v38 = v28;
+      v38 = privacyPreservingDescription3;
       _os_log_impl(&dword_272C20000, v27, OS_LOG_TYPE_INFO, "Not moving profile %{public}@ because it no longer exists", buf, 0xCu);
     }
 
@@ -4359,23 +4359,23 @@ void __46__WBTabGroupManager_moveProfile_afterProfile___block_invoke_2(uint64_t 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)insertUnnamedTabGroup:(id)a3
+- (id)insertUnnamedTabGroup:(id)group
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  groupCopy = group;
   os_unfair_lock_lock(&profilesLock);
-  v5 = [v4 mutableCopy];
+  v5 = [groupCopy mutableCopy];
 
-  v6 = [v5 profileIdentifier];
-  v7 = [(WBTabGroupManager *)self profileWithIdentifier:v6];
+  profileIdentifier = [v5 profileIdentifier];
+  v7 = [(WBTabGroupManager *)self profileWithIdentifier:profileIdentifier];
 
-  v8 = [v7 identifier];
-  v9 = [(WBTabGroupManager *)self _findOrCreateLocalDeviceForProfileWithIdentifier:v8];
+  identifier = [v7 identifier];
+  v9 = [(WBTabGroupManager *)self _findOrCreateLocalDeviceForProfileWithIdentifier:identifier];
 
-  v10 = [v9 uuid];
+  uuid = [v9 uuid];
   deviceUUIDByTabGroupUUID = self->_deviceUUIDByTabGroupUUID;
-  v12 = [v5 uuid];
-  [(NSMutableDictionary *)deviceUUIDByTabGroupUUID setObject:v10 forKeyedSubscript:v12];
+  uuid2 = [v5 uuid];
+  [(NSMutableDictionary *)deviceUUIDByTabGroupUUID setObject:uuid forKeyedSubscript:uuid2];
 
   os_unfair_lock_unlock(&profilesLock);
   v22[0] = MEMORY[0x277D85DD0];
@@ -4383,7 +4383,7 @@ void __46__WBTabGroupManager_moveProfile_afterProfile___block_invoke_2(uint64_t 
   v22[2] = __43__WBTabGroupManager_insertUnnamedTabGroup___block_invoke;
   v22[3] = &unk_279E75D50;
   v23 = v5;
-  v24 = self;
+  selfCopy = self;
   v25 = v9;
   v13 = v9;
   v14 = v5;
@@ -4476,16 +4476,16 @@ void __43__WBTabGroupManager_insertUnnamedTabGroup___block_invoke_3(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_tabGroupsWithTabsToBeClosedForProfilesWithIdentifiers:(id)a3
+- (id)_tabGroupsWithTabsToBeClosedForProfilesWithIdentifiers:(id)identifiers
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  identifiersCopy = identifiers;
+  array = [MEMORY[0x277CBEB18] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = identifiersCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -4512,7 +4512,7 @@ void __43__WBTabGroupManager_insertUnnamedTabGroup___block_invoke_3(uint64_t a1)
           [(WBTabGroupManager *)self _unnamedTabGroupsForProfileWithIdentifier:v12, v16];
         }
         v13 = ;
-        [v5 addObjectsFromArray:{v13, v16}];
+        [array addObjectsFromArray:{v13, v16}];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -4523,17 +4523,17 @@ void __43__WBTabGroupManager_insertUnnamedTabGroup___block_invoke_3(uint64_t a1)
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return array;
 }
 
-- (unint64_t)numberOfTabsToBeClosedForProfilesWithIdentifiers:(id)a3
+- (unint64_t)numberOfTabsToBeClosedForProfilesWithIdentifiers:(id)identifiers
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(WBTabGroupManager *)self _tabGroupsWithTabsToBeClosedForProfilesWithIdentifiers:a3, 0];
+  v3 = [(WBTabGroupManager *)self _tabGroupsWithTabsToBeClosedForProfilesWithIdentifiers:identifiers, 0];
   v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
@@ -4549,8 +4549,8 @@ void __43__WBTabGroupManager_insertUnnamedTabGroup___block_invoke_3(uint64_t a1)
           objc_enumerationMutation(v3);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) tabs];
-        v10 = [v9 safari_filterObjectsUsingBlock:&__block_literal_global_114];
+        tabs = [*(*(&v13 + 1) + 8 * i) tabs];
+        v10 = [tabs safari_filterObjectsUsingBlock:&__block_literal_global_114];
         v6 += [v10 count];
       }
 
@@ -4569,10 +4569,10 @@ void __43__WBTabGroupManager_insertUnnamedTabGroup___block_invoke_3(uint64_t a1)
   return v6;
 }
 
-- (void)closeAllTabsInProfilesWithIdentifiers:(id)a3
+- (void)closeAllTabsInProfilesWithIdentifiers:(id)identifiers
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = [(WBTabGroupManager *)self _tabGroupsWithTabsToBeClosedForProfilesWithIdentifiers:a3];
+  v4 = [(WBTabGroupManager *)self _tabGroupsWithTabsToBeClosedForProfilesWithIdentifiers:identifiers];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -4592,8 +4592,8 @@ void __43__WBTabGroupManager_insertUnnamedTabGroup___block_invoke_3(uint64_t a1)
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * v8) uuid];
-        [(WBTabGroupManager *)self updateTabsInTabGroupWithUUID:v9 persist:1 usingBlock:&__block_literal_global_116];
+        uuid = [*(*(&v11 + 1) + 8 * v8) uuid];
+        [(WBTabGroupManager *)self updateTabsInTabGroupWithUUID:uuid persist:1 usingBlock:&__block_literal_global_116];
 
         ++v8;
       }
@@ -4608,11 +4608,11 @@ void __43__WBTabGroupManager_insertUnnamedTabGroup___block_invoke_3(uint64_t a1)
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isTab:(id)a3 childOfPinnedTabGroupOfNamedProfileOfUnnamedTabGroup:(id)a4
+- (BOOL)isTab:(id)tab childOfPinnedTabGroupOfNamedProfileOfUnnamedTabGroup:(id)group
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isNamed] & 1) != 0 || (objc_msgSend(v7, "profileIdentifier"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isEqualToString:", *MEMORY[0x277D49BD8]), v8, (v9))
+  tabCopy = tab;
+  groupCopy = group;
+  if ([groupCopy isNamed] & 1) != 0 || (objc_msgSend(groupCopy, "profileIdentifier"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isEqualToString:", *MEMORY[0x277D49BD8]), v8, (v9))
   {
     v10 = 0;
   }
@@ -4620,26 +4620,26 @@ void __43__WBTabGroupManager_insertUnnamedTabGroup___block_invoke_3(uint64_t a1)
   else
   {
     tabCollection = self->_tabCollection;
-    v12 = [v7 profileIdentifier];
-    LODWORD(tabCollection) = [(WBTabCollection *)tabCollection pinnedTabsFolderIDForProfileWithIdentifier:v12];
+    profileIdentifier = [groupCopy profileIdentifier];
+    LODWORD(tabCollection) = [(WBTabCollection *)tabCollection pinnedTabsFolderIDForProfileWithIdentifier:profileIdentifier];
 
-    v10 = [v6 parentIdentifier] == tabCollection;
+    v10 = [tabCopy parentIdentifier] == tabCollection;
   }
 
   return v10;
 }
 
-- (id)profileWithServerID:(id)a3
+- (id)profileWithServerID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&profilesLock);
   profilesByIdentifier = self->_profilesByIdentifier;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __41__WBTabGroupManager_profileWithServerID___block_invoke;
   v9[3] = &unk_279E77A48;
-  v10 = v4;
-  v6 = v4;
+  v10 = dCopy;
+  v6 = dCopy;
   v7 = [(NSMutableDictionary *)profilesByIdentifier safari_valueOfEntryPassingTest:v9];
   os_unfair_lock_unlock(&profilesLock);
 
@@ -4655,30 +4655,30 @@ uint64_t __41__WBTabGroupManager_profileWithServerID___block_invoke(uint64_t a1,
   return v6;
 }
 
-- (id)syncedRemoteCloudTabDevicesForProfileWithIdentifier:(id)a3
+- (id)syncedRemoteCloudTabDevicesForProfileWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&profilesLock);
-  v5 = [(WBTabGroupManager *)self _remoteDevicesForProfileWithIdentifier:v4];
+  v5 = [(WBTabGroupManager *)self _remoteDevicesForProfileWithIdentifier:identifierCopy];
 
   os_unfair_lock_unlock(&profilesLock);
 
   return v5;
 }
 
-- (BOOL)closeTab:(id)a3 onDevice:(id)a4
+- (BOOL)closeTab:(id)tab onDevice:(id)device
 {
-  v5 = [a3 uuidString];
-  v6 = [(WBTabGroupManager *)self _tabWithUUID:v5];
+  uuidString = [tab uuidString];
+  v6 = [(WBTabGroupManager *)self _tabWithUUID:uuidString];
 
-  v7 = [v6 tabGroupUUID];
+  tabGroupUUID = [v6 tabGroupUUID];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __39__WBTabGroupManager_closeTab_onDevice___block_invoke;
   v10[3] = &unk_279E751B8;
   v11 = v6;
   v8 = v6;
-  [(WBTabGroupManager *)self updateTabsInTabGroupWithUUID:v7 persist:1 usingBlock:v10];
+  [(WBTabGroupManager *)self updateTabsInTabGroupWithUUID:tabGroupUUID persist:1 usingBlock:v10];
 
   return 1;
 }
@@ -4695,27 +4695,27 @@ void __39__WBTabGroupManager_closeTab_onDevice___block_invoke(uint64_t a1, void 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)closeAllTabsOnDevice:(id)a3
+- (BOOL)closeAllTabsOnDevice:(id)device
 {
-  v4 = [a3 tabs];
+  tabs = [device tabs];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __42__WBTabGroupManager_closeAllTabsOnDevice___block_invoke;
   v12[3] = &unk_279E77A70;
   v12[4] = self;
-  v5 = [v4 safari_mapObjectsUsingBlock:v12];
+  v5 = [tabs safari_mapObjectsUsingBlock:v12];
 
   v6 = [v5 count];
   if (v6)
   {
-    v7 = [v5 firstObject];
-    v8 = [v7 tabGroupUUID];
+    firstObject = [v5 firstObject];
+    tabGroupUUID = [firstObject tabGroupUUID];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __42__WBTabGroupManager_closeAllTabsOnDevice___block_invoke_2;
     v10[3] = &unk_279E751B8;
     v11 = v5;
-    [(WBTabGroupManager *)self updateTabsInTabGroupWithUUID:v8 persist:1 usingBlock:v10];
+    [(WBTabGroupManager *)self updateTabsInTabGroupWithUUID:tabGroupUUID persist:1 usingBlock:v10];
   }
 
   return v6 != 0;
@@ -4730,33 +4730,33 @@ id __42__WBTabGroupManager_closeAllTabsOnDevice___block_invoke(uint64_t a1, void
   return v4;
 }
 
-- (id)devicesForProfile:(id)a3
+- (id)devicesForProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   os_unfair_lock_lock(&profilesLock);
-  v5 = [v4 identifier];
+  identifier = [profileCopy identifier];
 
-  v6 = [(WBTabGroupManager *)self _devicesForProfileWithIdentifier:v5];
+  v6 = [(WBTabGroupManager *)self _devicesForProfileWithIdentifier:identifier];
 
   os_unfair_lock_unlock(&profilesLock);
 
   return v6;
 }
 
-- (id)_devicesForProfileWithIdentifier:(id)a3
+- (id)_devicesForProfileWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_devicesByUUID allValues];
+  identifierCopy = identifier;
+  allValues = [(NSMutableDictionary *)self->_devicesByUUID allValues];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __54__WBTabGroupManager__devicesForProfileWithIdentifier___block_invoke;
   v11[3] = &unk_279E77A98;
-  v12 = v4;
-  v6 = v4;
-  v7 = [v5 safari_filterObjectsUsingBlock:v11];
+  v12 = identifierCopy;
+  v6 = identifierCopy;
+  v7 = [allValues safari_filterObjectsUsingBlock:v11];
 
-  v8 = [(WBTabGroupManager *)self _itemSyncPositionComparator];
-  v9 = [v7 sortedArrayUsingComparator:v8];
+  _itemSyncPositionComparator = [(WBTabGroupManager *)self _itemSyncPositionComparator];
+  v9 = [v7 sortedArrayUsingComparator:_itemSyncPositionComparator];
 
   return v9;
 }
@@ -4770,20 +4770,20 @@ uint64_t __54__WBTabGroupManager__devicesForProfileWithIdentifier___block_invoke
   return v5;
 }
 
-- (id)_remoteDevicesForProfileWithIdentifier:(id)a3
+- (id)_remoteDevicesForProfileWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_devicesByUUID allValues];
+  identifierCopy = identifier;
+  allValues = [(NSMutableDictionary *)self->_devicesByUUID allValues];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __60__WBTabGroupManager__remoteDevicesForProfileWithIdentifier___block_invoke;
   v11[3] = &unk_279E77A98;
-  v12 = v4;
-  v6 = v4;
-  v7 = [v5 safari_filterObjectsUsingBlock:v11];
+  v12 = identifierCopy;
+  v6 = identifierCopy;
+  v7 = [allValues safari_filterObjectsUsingBlock:v11];
 
-  v8 = [(WBTabGroupManager *)self _itemSyncPositionComparator];
-  v9 = [v7 sortedArrayUsingComparator:v8];
+  _itemSyncPositionComparator = [(WBTabGroupManager *)self _itemSyncPositionComparator];
+  v9 = [v7 sortedArrayUsingComparator:_itemSyncPositionComparator];
 
   return v9;
 }
@@ -4816,35 +4816,35 @@ BOOL __60__WBTabGroupManager__remoteDevicesForProfileWithIdentifier___block_invo
   return v8;
 }
 
-- (id)_insertDevice:(id)a3 inProfile:(id)a4 completionHandler:(id)a5
+- (id)_insertDevice:(id)device inProfile:(id)profile completionHandler:(id)handler
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  deviceCopy = device;
+  handlerCopy = handler;
+  profileCopy = profile;
   os_unfair_lock_assert_owner(&profilesLock);
-  v11 = [(WBTabGroupManager *)self _generatePositionForDevice:v8 afterDevice:0];
-  [v8 setSyncPosition:v11];
+  v11 = [(WBTabGroupManager *)self _generatePositionForDevice:deviceCopy afterDevice:0];
+  [deviceCopy setSyncPosition:v11];
 
   devicesByUUID = self->_devicesByUUID;
-  v13 = [v8 uuid];
-  [(NSMutableDictionary *)devicesByUUID setObject:v8 forKeyedSubscript:v13];
+  uuid = [deviceCopy uuid];
+  [(NSMutableDictionary *)devicesByUUID setObject:deviceCopy forKeyedSubscript:uuid];
 
   tabCollection = self->_tabCollection;
-  v22[0] = v8;
+  v22[0] = deviceCopy;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:1];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __63__WBTabGroupManager__insertDevice_inProfile_completionHandler___block_invoke;
   v20[3] = &unk_279E77AC0;
   v20[4] = self;
-  v21 = v9;
-  v16 = v9;
-  [(WBTabCollection *)tabCollection insertItemsIntoPlace:v15 inParent:v10 completionHandler:v20];
+  v21 = handlerCopy;
+  v16 = handlerCopy;
+  [(WBTabCollection *)tabCollection insertItemsIntoPlace:v15 inParent:profileCopy completionHandler:v20];
 
-  v17 = v8;
+  v17 = deviceCopy;
   v18 = *MEMORY[0x277D85DE8];
-  return v8;
+  return deviceCopy;
 }
 
 void __63__WBTabGroupManager__insertDevice_inProfile_completionHandler___block_invoke(uint64_t a1, int a2)
@@ -4913,48 +4913,48 @@ void __63__WBTabGroupManager__insertDevice_inProfile_completionHandler___block_i
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_findOrCreateLocalDeviceForProfileWithIdentifier:(id)a3
+- (id)_findOrCreateLocalDeviceForProfileWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(WBTabGroupManager *)self _findLocalDeviceForProfileWithIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [(WBTabGroupManager *)self _findLocalDeviceForProfileWithIdentifier:identifierCopy];
   if (!v5)
   {
-    v6 = [(NSMutableDictionary *)self->_profilesByIdentifier objectForKeyedSubscript:v4];
+    v6 = [(NSMutableDictionary *)self->_profilesByIdentifier objectForKeyedSubscript:identifierCopy];
     lastLocalDeviceNameSaved = self->_lastLocalDeviceNameSaved;
-    v8 = [(WBSDevice *)self->_device userUniqueDeviceIdentifier];
-    v9 = [(WBTabGroupManager *)self deviceIdentifier];
-    v10 = [WBDeviceParameters localDeviceWithTitle:lastLocalDeviceNameSaved creationDeviceIdentifier:v8 deviceIdentifier:v9];
+    userUniqueDeviceIdentifier = [(WBSDevice *)self->_device userUniqueDeviceIdentifier];
+    deviceIdentifier = [(WBTabGroupManager *)self deviceIdentifier];
+    v10 = [WBDeviceParameters localDeviceWithTitle:lastLocalDeviceNameSaved creationDeviceIdentifier:userUniqueDeviceIdentifier deviceIdentifier:deviceIdentifier];
 
-    v11 = [(WBSDevice *)self->_device deviceTypeIdentifier];
-    [v10 setDeviceTypeIdentifier:v11];
+    deviceTypeIdentifier = [(WBSDevice *)self->_device deviceTypeIdentifier];
+    [v10 setDeviceTypeIdentifier:deviceTypeIdentifier];
 
-    v12 = [WBDevice deviceWithParameters:v10 unnamedTabGroups:MEMORY[0x277CBEBF8] profileIdentifier:v4];
+    v12 = [WBDevice deviceWithParameters:v10 unnamedTabGroups:MEMORY[0x277CBEBF8] profileIdentifier:identifierCopy];
     v5 = [(WBTabGroupManager *)self _insertDevice:v12 inProfile:v6 completionHandler:0];
   }
 
   return v5;
 }
 
-- (id)_findLocalDeviceForProfileWithIdentifier:(id)a3
+- (id)_findLocalDeviceForProfileWithIdentifier:(id)identifier
 {
-  v3 = [(WBTabGroupManager *)self _devicesForProfileWithIdentifier:a3];
+  v3 = [(WBTabGroupManager *)self _devicesForProfileWithIdentifier:identifier];
   v4 = [v3 safari_firstObjectPassingTest:&__block_literal_global_123];
 
   return v4;
 }
 
-- (void)_didModifyUnnamedTabGroup:(id)a3
+- (void)_didModifyUnnamedTabGroup:(id)group
 {
-  v4 = a3;
-  v5 = [v4 deviceUUIDString];
-  [(WBTabGroupManager *)self _didModifyUnnamedTabGroupInDeviceWithUUID:v5];
+  groupCopy = group;
+  deviceUUIDString = [groupCopy deviceUUIDString];
+  [(WBTabGroupManager *)self _didModifyUnnamedTabGroupInDeviceWithUUID:deviceUUIDString];
 
   os_unfair_lock_lock(&tabGroupsLock);
-  v6 = [v4 deviceUUIDString];
-  v7 = [(WBTabGroupManager *)self _unnamedTabGroupsForDeviceWithUUID:v6];
+  deviceUUIDString2 = [groupCopy deviceUUIDString];
+  v7 = [(WBTabGroupManager *)self _unnamedTabGroupsForDeviceWithUUID:deviceUUIDString2];
 
-  v8 = [v7 firstObject];
-  v9 = [v4 isEqual:v8];
+  firstObject = [v7 firstObject];
+  v9 = [groupCopy isEqual:firstObject];
 
   if (v9)
   {
@@ -4963,8 +4963,8 @@ void __63__WBTabGroupManager__insertDevice_inProfile_completionHandler___block_i
 
   else
   {
-    v10 = [(WBTabGroupManager *)self _generatePositionForTabGroup:v4 afterTabGroup:0];
-    [v4 setSyncPosition:v10];
+    v10 = [(WBTabGroupManager *)self _generatePositionForTabGroup:groupCopy afterTabGroup:0];
+    [groupCopy setSyncPosition:v10];
 
     os_unfair_lock_unlock(&tabGroupsLock);
     tabCollection = self->_tabCollection;
@@ -4973,7 +4973,7 @@ void __63__WBTabGroupManager__insertDevice_inProfile_completionHandler___block_i
     v12[2] = __47__WBTabGroupManager__didModifyUnnamedTabGroup___block_invoke;
     v12[3] = &unk_279E75238;
     v12[4] = self;
-    [(WBTabCollection *)tabCollection reorderItemIntoPlace:v4 completionHandler:v12];
+    [(WBTabCollection *)tabCollection reorderItemIntoPlace:groupCopy completionHandler:v12];
   }
 }
 
@@ -5032,17 +5032,17 @@ void __47__WBTabGroupManager__didModifyUnnamedTabGroup___block_invoke_2(uint64_t
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_didModifyUnnamedTabGroupInDeviceWithUUID:(id)a3
+- (void)_didModifyUnnamedTabGroupInDeviceWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&tabGroupsLock);
-  v5 = [(NSMutableDictionary *)self->_devicesByUUID objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_devicesByUUID objectForKeyedSubscript:dCopy];
 
-  v6 = [v5 profileIdentifier];
-  v7 = [(WBTabGroupManager *)self _devicesForProfileWithIdentifier:v6];
+  profileIdentifier = [v5 profileIdentifier];
+  v7 = [(WBTabGroupManager *)self _devicesForProfileWithIdentifier:profileIdentifier];
 
-  v8 = [v7 firstObject];
-  v9 = [v5 isEqual:v8];
+  firstObject = [v7 firstObject];
+  v9 = [v5 isEqual:firstObject];
 
   if (v9)
   {
@@ -5120,14 +5120,14 @@ void __63__WBTabGroupManager__didModifyUnnamedTabGroupInDeviceWithUUID___block_i
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateDeviceNameIfNeededWithName:(id)a3
+- (void)_updateDeviceNameIfNeededWithName:(id)name
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (![(NSString *)self->_lastLocalDeviceNameSaved isEqualToString:v5])
+  nameCopy = name;
+  if (![(NSString *)self->_lastLocalDeviceNameSaved isEqualToString:nameCopy])
   {
-    v6 = [(NSMutableDictionary *)self->_devicesByUUID allValues];
-    v7 = [v6 safari_filterObjectsUsingBlock:&__block_literal_global_125];
+    allValues = [(NSMutableDictionary *)self->_devicesByUUID allValues];
+    v7 = [allValues safari_filterObjectsUsingBlock:&__block_literal_global_125];
 
     v18 = 0u;
     v19 = 0u;
@@ -5149,7 +5149,7 @@ void __63__WBTabGroupManager__didModifyUnnamedTabGroupInDeviceWithUUID___block_i
             objc_enumerationMutation(v8);
           }
 
-          [*(*(&v16 + 1) + 8 * v12++) setTitle:v5];
+          [*(*(&v16 + 1) + 8 * v12++) setTitle:nameCopy];
         }
 
         while (v10 != v12);
@@ -5159,7 +5159,7 @@ void __63__WBTabGroupManager__didModifyUnnamedTabGroupInDeviceWithUUID___block_i
       while (v10);
     }
 
-    objc_storeStrong(&self->_lastLocalDeviceNameSaved, a3);
+    objc_storeStrong(&self->_lastLocalDeviceNameSaved, name);
     tabCollection = self->_tabCollection;
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
@@ -5227,11 +5227,11 @@ void __55__WBTabGroupManager__updateDeviceNameIfNeededWithName___block_invoke_3(
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_didLocallyCreateUnnamedTabGroup:(id)a3
+- (BOOL)_didLocallyCreateUnnamedTabGroup:(id)group
 {
   deviceUUIDByTabGroupUUID = self->_deviceUUIDByTabGroupUUID;
-  v5 = [a3 uuid];
-  v6 = [(NSMutableDictionary *)deviceUUIDByTabGroupUUID objectForKeyedSubscript:v5];
+  uuid = [group uuid];
+  v6 = [(NSMutableDictionary *)deviceUUIDByTabGroupUUID objectForKeyedSubscript:uuid];
 
   if (v6)
   {
@@ -5256,23 +5256,23 @@ void __55__WBTabGroupManager__updateDeviceNameIfNeededWithName___block_invoke_3(
   return v9;
 }
 
-- (void)updateTabWithUUID:(id)a3 persist:(BOOL)a4 notify:(BOOL)a5 usingBlock:(id)a6
+- (void)updateTabWithUUID:(id)d persist:(BOOL)persist notify:(BOOL)notify usingBlock:(id)block
 {
-  v7 = a5;
-  v8 = a4;
+  notifyCopy = notify;
+  persistCopy = persist;
   v46 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
+  dCopy = d;
+  blockCopy = block;
   v12 = WBS_LOG_CHANNEL_PREFIXTabGroup();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v45 = v10;
+    v45 = dCopy;
     _os_log_impl(&dword_272C20000, v12, OS_LOG_TYPE_INFO, "Updating tabs with uuid %{public}@", buf, 0xCu);
   }
 
   os_unfair_lock_lock(&tabGroupsLock);
-  v13 = [(WBTabGroupManager *)self _tabWithUUID:v10];
+  v13 = [(WBTabGroupManager *)self _tabWithUUID:dCopy];
   v14 = WBS_LOG_CHANNEL_PREFIXTabGroup();
   v15 = v14;
   if (v13)
@@ -5280,27 +5280,27 @@ void __55__WBTabGroupManager__updateDeviceNameIfNeededWithName___block_invoke_3(
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       v16 = v15;
-      v17 = [v13 privacyPreservingDescription];
+      privacyPreservingDescription = [v13 privacyPreservingDescription];
       *buf = 138543362;
-      v45 = v17;
+      v45 = privacyPreservingDescription;
       _os_log_impl(&dword_272C20000, v16, OS_LOG_TYPE_INFO, "Updating tab %{public}@", buf, 0xCu);
     }
 
-    v11[2](v11, v13);
-    v18 = [v13 tabGroupUUID];
-    v19 = [(WBTabGroupManager *)self _tabGroupWithUUID:v18];
+    blockCopy[2](blockCopy, v13);
+    tabGroupUUID = [v13 tabGroupUUID];
+    v19 = [(WBTabGroupManager *)self _tabGroupWithUUID:tabGroupUUID];
 
-    LODWORD(v18) = [v13 wasModified];
-    v20 = [v13 isSyncable];
+    LODWORD(tabGroupUUID) = [v13 wasModified];
+    isSyncable = [v13 isSyncable];
     os_unfair_lock_unlock(&tabGroupsLock);
-    if (v18)
+    if (tabGroupUUID)
     {
-      if (v7)
+      if (notifyCopy)
       {
-        v33 = v20;
+        v33 = isSyncable;
         v34 = v19;
-        v35 = v8;
-        v36 = v10;
+        v35 = persistCopy;
+        v36 = dCopy;
         v41 = 0u;
         v42 = 0u;
         v39 = 0u;
@@ -5323,8 +5323,8 @@ void __55__WBTabGroupManager__updateDeviceNameIfNeededWithName___block_invoke_3(
               v26 = *(*(&v39 + 1) + 8 * i);
               if (objc_opt_respondsToSelector())
               {
-                v27 = [v13 uuid];
-                [v26 tabGroupManager:self didUpdateTabWithUUID:v27 userDriven:1];
+                uuid = [v13 uuid];
+                [v26 tabGroupManager:self didUpdateTabWithUUID:uuid userDriven:1];
               }
             }
 
@@ -5334,32 +5334,32 @@ void __55__WBTabGroupManager__updateDeviceNameIfNeededWithName___block_invoke_3(
           while (v23);
         }
 
-        v10 = v36;
-        v8 = v35;
+        dCopy = v36;
+        persistCopy = v35;
         v19 = v34;
-        v20 = v33;
+        isSyncable = v33;
       }
 
-      if (v8)
+      if (persistCopy)
       {
         tabCollection = self->_tabCollection;
         v37[0] = MEMORY[0x277D85DD0];
         v37[1] = 3221225472;
         v37[2] = __65__WBTabGroupManager_updateTabWithUUID_persist_notify_usingBlock___block_invoke;
         v37[3] = &unk_279E77B08;
-        v38 = v20;
+        v38 = isSyncable;
         v37[4] = self;
         [(WBTabCollection *)tabCollection saveItem:v13 completionHandler:v37];
         [v13 markClean];
         if (([v19 isNamed] & 1) == 0)
         {
-          v29 = [v19 deviceUUIDString];
-          if (v29)
+          deviceUUIDString = [v19 deviceUUIDString];
+          if (deviceUUIDString)
           {
-            v30 = v29;
-            v31 = [MEMORY[0x277D49A08] isSafariProfilesEnabled];
+            v30 = deviceUUIDString;
+            isSafariProfilesEnabled = [MEMORY[0x277D49A08] isSafariProfilesEnabled];
 
-            if (v31)
+            if (isSafariProfilesEnabled)
             {
               [(WBTabGroupManager *)self _didModifyUnnamedTabGroup:v19];
             }
@@ -5439,34 +5439,34 @@ void __65__WBTabGroupManager_updateTabWithUUID_persist_notify_usingBlock___block
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)moveTabs:(id)a3 toTabGroup:(id)a4 afterTab:(id)a5 withoutPersistingTabGroupsWithUUIDStrings:(id)a6
+- (void)moveTabs:(id)tabs toTabGroup:(id)group afterTab:(id)tab withoutPersistingTabGroupsWithUUIDStrings:(id)strings
 {
   v75 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v45 = a4;
-  v42 = a5;
-  v43 = a6;
+  tabsCopy = tabs;
+  groupCopy = group;
+  tabCopy = tab;
+  stringsCopy = strings;
   v10 = WBS_LOG_CHANNEL_PREFIXTabGroup();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = v10;
-    v12 = [v9 count];
-    v13 = [v45 privacyPreservingDescription];
+    v12 = [tabsCopy count];
+    privacyPreservingDescription = [groupCopy privacyPreservingDescription];
     *buf = 134218242;
     v72 = v12;
     v73 = 2114;
-    v74 = v13;
+    v74 = privacyPreservingDescription;
     _os_log_impl(&dword_272C20000, v11, OS_LOG_TYPE_INFO, "Moving %zu tabs to tab group %{public}@", buf, 0x16u);
   }
 
   os_unfair_lock_lock(&reloadAfterSyncLock);
-  v44 = [MEMORY[0x277CBEB18] array];
-  v49 = [MEMORY[0x277CBEB38] dictionary];
+  array = [MEMORY[0x277CBEB18] array];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v67 = 0u;
   v68 = 0u;
   v65 = 0u;
   v66 = 0u;
-  obj = v9;
+  obj = tabsCopy;
   v48 = [obj countByEnumeratingWithState:&v65 objects:v70 count:16];
   if (v48)
   {
@@ -5482,28 +5482,28 @@ void __65__WBTabGroupManager_updateTabWithUUID_persist_notify_usingBlock___block
         }
 
         v14 = *(*(&v65 + 1) + 8 * v50);
-        v15 = [v14 tabGroupUUID];
-        v16 = v15 == 0;
+        tabGroupUUID = [v14 tabGroupUUID];
+        v16 = tabGroupUUID == 0;
 
         if (!v16)
         {
-          v17 = [v14 tabGroupUUID];
-          v18 = [v49 objectForKeyedSubscript:v17];
+          tabGroupUUID2 = [v14 tabGroupUUID];
+          v18 = [dictionary objectForKeyedSubscript:tabGroupUUID2];
           v19 = v18;
           if (v18)
           {
-            v20 = v18;
+            array2 = v18;
           }
 
           else
           {
-            v20 = [MEMORY[0x277CBEB18] array];
+            array2 = [MEMORY[0x277CBEB18] array];
           }
 
-          v25 = v20;
+          v25 = array2;
 
           [v25 addObject:v14];
-          [v49 setObject:v25 forKeyedSubscript:v17];
+          [dictionary setObject:v25 forKeyedSubscript:tabGroupUUID2];
 LABEL_26:
 
           goto LABEL_27;
@@ -5516,15 +5516,15 @@ LABEL_26:
           _os_log_impl(&dword_272C20000, v21, OS_LOG_TYPE_INFO, "Moving tab with no tab group", buf, 2u);
         }
 
-        v22 = [v14 isSyncable];
-        if (v22 != [v45 isSyncable])
+        isSyncable = [v14 isSyncable];
+        if (isSyncable != [groupCopy isSyncable])
         {
           v23 = [WBMutableTab alloc];
-          v24 = [v14 deviceIdentifier];
-          v17 = [(WBTab *)v23 initWithUUID:0 deviceIdentifier:v24];
+          deviceIdentifier = [v14 deviceIdentifier];
+          tabGroupUUID2 = [(WBTab *)v23 initWithUUID:0 deviceIdentifier:deviceIdentifier];
 
-          [(WBMutableTab *)v17 adoptAttributesFromTab:v14];
-          [v44 addObject:v17];
+          [(WBMutableTab *)tabGroupUUID2 adoptAttributesFromTab:v14];
+          [array addObject:tabGroupUUID2];
           v63 = 0u;
           v64 = 0u;
           v62 = 0u;
@@ -5546,9 +5546,9 @@ LABEL_26:
                 v29 = *(*(&v61 + 1) + 8 * i);
                 if (objc_opt_respondsToSelector())
                 {
-                  v30 = [v14 uuid];
-                  v31 = [(WBTab *)v17 uuid];
-                  [v29 tabGroupManager:self willReplaceTabWithUUID:v30 withTabWithUUID:v31];
+                  uuid = [v14 uuid];
+                  uuid2 = [(WBTab *)tabGroupUUID2 uuid];
+                  [v29 tabGroupManager:self willReplaceTabWithUUID:uuid withTabWithUUID:uuid2];
                 }
               }
 
@@ -5561,8 +5561,8 @@ LABEL_26:
           goto LABEL_26;
         }
 
-        v17 = [v14 mutableCopy];
-        [v44 addObject:v17];
+        tabGroupUUID2 = [v14 mutableCopy];
+        [array addObject:tabGroupUUID2];
 LABEL_27:
 
         ++v50;
@@ -5580,28 +5580,28 @@ LABEL_27:
   v56[1] = 3221225472;
   v56[2] = __92__WBTabGroupManager_moveTabs_toTabGroup_afterTab_withoutPersistingTabGroupsWithUUIDStrings___block_invoke;
   v56[3] = &unk_279E77B58;
-  v33 = v43;
+  v33 = stringsCopy;
   v57 = v33;
-  v34 = v45;
+  v34 = groupCopy;
   v58 = v34;
-  v59 = self;
-  v35 = v44;
+  selfCopy = self;
+  v35 = array;
   v60 = v35;
-  [v49 enumerateKeysAndObjectsUsingBlock:v56];
-  v36 = [v34 uuid];
-  v37 = [v33 containsObject:v36];
+  [dictionary enumerateKeysAndObjectsUsingBlock:v56];
+  uuid3 = [v34 uuid];
+  v37 = [v33 containsObject:uuid3];
 
-  v38 = [v34 uuid];
+  uuid4 = [v34 uuid];
   v52[0] = MEMORY[0x277D85DD0];
   v52[1] = 3221225472;
   v52[2] = __92__WBTabGroupManager_moveTabs_toTabGroup_afterTab_withoutPersistingTabGroupsWithUUIDStrings___block_invoke_3;
   v52[3] = &unk_279E77B80;
   v39 = v35;
   v53 = v39;
-  v54 = self;
-  v40 = v42;
+  selfCopy2 = self;
+  v40 = tabCopy;
   v55 = v40;
-  [(WBTabGroupManager *)self updateTabsInTabGroupWithUUID:v38 persist:v37 ^ 1u usingBlock:v52];
+  [(WBTabGroupManager *)self updateTabsInTabGroupWithUUID:uuid4 persist:v37 ^ 1u usingBlock:v52];
 
   os_unfair_lock_unlock(&reloadAfterSyncLock);
   v41 = *MEMORY[0x277D85DE8];
@@ -5716,54 +5716,54 @@ void __92__WBTabGroupManager_moveTabs_toTabGroup_afterTab_withoutPersistingTabGr
   [v5 insertTabs:v2 afterTab:v6];
 }
 
-- (BOOL)_needsInitialBlankTabInTabGroup:(id)a3
+- (BOOL)_needsInitialBlankTabInTabGroup:(id)group
 {
-  v3 = a3;
-  v4 = [v3 firstUnpinnedTab];
-  if (v4)
+  groupCopy = group;
+  firstUnpinnedTab = [groupCopy firstUnpinnedTab];
+  if (firstUnpinnedTab)
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [v3 pinnedStartPage];
-    v5 = v6 == 0;
+    pinnedStartPage = [groupCopy pinnedStartPage];
+    v5 = pinnedStartPage == 0;
   }
 
   return v5;
 }
 
-- (void)updateTabsInTabGroupWithUUID:(id)a3 options:(unint64_t)a4 usingBlock:(id)a5
+- (void)updateTabsInTabGroupWithUUID:(id)d options:(unint64_t)options usingBlock:(id)block
 {
-  v6 = a4;
+  optionsCopy = options;
   v90 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  blockCopy = block;
   v10 = WBS_LOG_CHANNEL_PREFIXTabGroup();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v89 = v8;
+    v89 = dCopy;
     _os_log_impl(&dword_272C20000, v10, OS_LOG_TYPE_INFO, "Updating tabs in tab group with uuid %{public}@", buf, 0xCu);
   }
 
   os_unfair_lock_lock(&tabGroupsLock);
-  v11 = [(WBTabGroupManager *)self _tabGroupWithUUID:v8];
+  v11 = [(WBTabGroupManager *)self _tabGroupWithUUID:dCopy];
   v12 = v11;
   if (v11)
   {
-    v13 = v6 & 4;
+    v13 = optionsCopy & 4;
     devicesByUUID = self->_devicesByUUID;
-    v15 = [v11 deviceUUIDString];
-    v16 = [(NSMutableDictionary *)devicesByUUID objectForKeyedSubscript:v15];
+    deviceUUIDString = [v11 deviceUUIDString];
+    v16 = [(NSMutableDictionary *)devicesByUUID objectForKeyedSubscript:deviceUUIDString];
 
-    v58 = [v16 isRemoteDevice];
-    v55 = v9;
-    v54 = v6;
+    isRemoteDevice = [v16 isRemoteDevice];
+    v55 = blockCopy;
+    v54 = optionsCopy;
     v56 = v13;
     v57 = v16;
-    if ((v6 & 4) == 0 && (v58 & 1) == 0)
+    if ((optionsCopy & 4) == 0 && (isRemoteDevice & 1) == 0)
     {
       v81 = 0u;
       v82 = 0u;
@@ -5787,8 +5787,8 @@ void __92__WBTabGroupManager_moveTabs_toTabGroup_afterTab_withoutPersistingTabGr
             v22 = *(*(&v79 + 1) + 8 * i);
             if (objc_opt_respondsToSelector())
             {
-              v23 = [v12 uuid];
-              [v22 tabGroupManager:self willPerformBlockUpdatesForTabGroupWithUUID:v23];
+              uuid = [v12 uuid];
+              [v22 tabGroupManager:self willPerformBlockUpdatesForTabGroupWithUUID:uuid];
             }
           }
 
@@ -5798,45 +5798,45 @@ void __92__WBTabGroupManager_moveTabs_toTabGroup_afterTab_withoutPersistingTabGr
         while (v19);
       }
 
-      v9 = v55;
+      blockCopy = v55;
       v13 = 0;
       v16 = v57;
     }
 
-    if (v9)
+    if (blockCopy)
     {
-      v9[2](v9, v12);
+      blockCopy[2](blockCopy, v12);
     }
 
-    if ((v6 & 2) == 0 && [(WBTabGroupManager *)self _needsInitialBlankTabInTabGroup:v12])
+    if ((optionsCopy & 2) == 0 && [(WBTabGroupManager *)self _needsInitialBlankTabInTabGroup:v12])
     {
-      v24 = [v12 deviceIdentifier];
-      v25 = [(WBTab *)WBMutableTab startPageTabWithDeviceIdentifier:v24];
+      deviceIdentifier = [v12 deviceIdentifier];
+      v25 = [(WBTab *)WBMutableTab startPageTabWithDeviceIdentifier:deviceIdentifier];
 
       v86 = v25;
       v26 = [MEMORY[0x277CBEA60] arrayWithObjects:&v86 count:1];
       [v12 appendTabs:v26];
 
-      v27 = [v25 uuid];
-      [v12 setLastSelectedTabUUID:v27];
+      uuid2 = [v25 uuid];
+      [v12 setLastSelectedTabUUID:uuid2];
     }
 
-    v28 = [v16 uuid];
-    [(WBTabGroupManager *)self _cacheTabGroup:v12 creatorDeviceUUID:v28];
+    uuid3 = [v16 uuid];
+    [(WBTabGroupManager *)self _cacheTabGroup:v12 creatorDeviceUUID:uuid3];
 
     [(WBTabGroupManager *)self _updatePositionsForTabsInTabGroup:v12];
-    v29 = [v12 deletedTabs];
-    [(WBTabGroupManager *)self _willFlushDeletedTabs:v29 inTabGroup:v12];
+    deletedTabs = [v12 deletedTabs];
+    [(WBTabGroupManager *)self _willFlushDeletedTabs:deletedTabs inTabGroup:v12];
     if ([MEMORY[0x277D49A08] isInternalInstall])
     {
-      v30 = [(WBTabGroupManager *)self _localTabGroups];
+      _localTabGroups = [(WBTabGroupManager *)self _localTabGroups];
       v76[0] = MEMORY[0x277D85DD0];
       v76[1] = 3221225472;
       v76[2] = __69__WBTabGroupManager_updateTabsInTabGroupWithUUID_options_usingBlock___block_invoke;
       v76[3] = &unk_279E77BA8;
-      v77 = v29;
-      v78 = self;
-      [v30 enumerateObjectsUsingBlock:v76];
+      v77 = deletedTabs;
+      selfCopy = self;
+      [_localTabGroups enumerateObjectsUsingBlock:v76];
     }
 
     os_unfair_lock_unlock(&tabGroupsLock);
@@ -5845,7 +5845,7 @@ void __92__WBTabGroupManager_moveTabs_toTabGroup_afterTab_withoutPersistingTabGr
       goto LABEL_58;
     }
 
-    if (v58)
+    if (isRemoteDevice)
     {
       v74 = 0u;
       v75 = 0u;
@@ -5860,7 +5860,7 @@ LABEL_57:
         v13 = v56;
         v16 = v57;
 LABEL_58:
-        if (v6)
+        if (optionsCopy)
         {
           tabCollection = self->_tabCollection;
           v60[0] = MEMORY[0x277D85DD0];
@@ -5868,7 +5868,7 @@ LABEL_58:
           v60[2] = __69__WBTabGroupManager_updateTabsInTabGroupWithUUID_options_usingBlock___block_invoke_2;
           v60[3] = &unk_279E75D00;
           v61 = v12;
-          v62 = self;
+          selfCopy2 = self;
           v63 = v13 >> 2;
           [(WBTabCollection *)tabCollection updateTabsInTabGroup:v61 completionHandler:v60];
         }
@@ -5877,7 +5877,7 @@ LABEL_58:
       }
 
       v33 = v32;
-      v59 = v29;
+      v59 = deletedTabs;
       v34 = *v73;
       do
       {
@@ -5891,8 +5891,8 @@ LABEL_58:
           v36 = *(*(&v72 + 1) + 8 * j);
           if (objc_opt_respondsToSelector())
           {
-            v37 = [v12 profileIdentifier];
-            [v36 cloudTabDeviceProvider:self didUpdateCloudTabsInProfileWithIdentifier:v37];
+            profileIdentifier = [v12 profileIdentifier];
+            [v36 cloudTabDeviceProvider:self didUpdateCloudTabsInProfileWithIdentifier:profileIdentifier];
           }
         }
 
@@ -5904,7 +5904,7 @@ LABEL_58:
 
     else
     {
-      v59 = v29;
+      v59 = deletedTabs;
       v70 = 0u;
       v71 = 0u;
       v69 = 0u;
@@ -5927,8 +5927,8 @@ LABEL_58:
             v44 = *(*(&v68 + 1) + 8 * k);
             if (objc_opt_respondsToSelector())
             {
-              v45 = [v12 uuid];
-              [v44 tabGroupManager:self didPerformBlockUpdatesForTabGroupWithUUID:v45];
+              uuid4 = [v12 uuid];
+              [v44 tabGroupManager:self didPerformBlockUpdatesForTabGroupWithUUID:uuid4];
             }
           }
 
@@ -5960,8 +5960,8 @@ LABEL_58:
             v50 = *(*(&v64 + 1) + 8 * m);
             if (objc_opt_respondsToSelector())
             {
-              v51 = [v12 uuid];
-              [v50 tabGroupManager:self didUpdateTabsInTabGroupWithUUID:v51];
+              uuid5 = [v12 uuid];
+              [v50 tabGroupManager:self didUpdateTabsInTabGroupWithUUID:uuid5];
             }
           }
 
@@ -5972,9 +5972,9 @@ LABEL_58:
       }
     }
 
-    v9 = v55;
-    v6 = v54;
-    v29 = v59;
+    blockCopy = v55;
+    optionsCopy = v54;
+    deletedTabs = v59;
     goto LABEL_57;
   }
 
@@ -6118,25 +6118,25 @@ void __69__WBTabGroupManager_updateTabsInTabGroupWithUUID_options_usingBlock___b
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)flushDeletedTabsInTabGroup:(id)a3
+- (void)flushDeletedTabsInTabGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   os_unfair_lock_assert_owner(&tabGroupsLock);
-  v5 = [v4 deletedTabs];
-  [(WBTabGroupManager *)self _willFlushDeletedTabs:v5 inTabGroup:v4];
-  [(WBTabCollection *)self->_tabCollection flushDeletedTabsInTabGroup:v4 completionHandler:0];
+  deletedTabs = [groupCopy deletedTabs];
+  [(WBTabGroupManager *)self _willFlushDeletedTabs:deletedTabs inTabGroup:groupCopy];
+  [(WBTabCollection *)self->_tabCollection flushDeletedTabsInTabGroup:groupCopy completionHandler:0];
 }
 
-- (void)_willFlushDeletedTabs:(id)a3 inTabGroup:(id)a4
+- (void)_willFlushDeletedTabs:(id)tabs inTabGroup:(id)group
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  tabsCopy = tabs;
   os_unfair_lock_assert_owner(&tabGroupsLock);
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v5;
+  v6 = tabsCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -6154,8 +6154,8 @@ void __69__WBTabGroupManager_updateTabsInTabGroupWithUUID_options_usingBlock___b
         v11 = *(*(&v15 + 1) + 8 * i);
         [(WBTabGroupManager *)self _uncacheTab:v11, v15];
         removedTabsByUUID = self->_removedTabsByUUID;
-        v13 = [v11 uuid];
-        [(NSMutableDictionary *)removedTabsByUUID setObject:v11 forKeyedSubscript:v13];
+        uuid = [v11 uuid];
+        [(NSMutableDictionary *)removedTabsByUUID setObject:v11 forKeyedSubscript:uuid];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -6167,61 +6167,61 @@ void __69__WBTabGroupManager_updateTabsInTabGroupWithUUID_options_usingBlock___b
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerPinnedTab:(id)a3
+- (void)registerPinnedTab:(id)tab
 {
-  v4 = a3;
+  tabCopy = tab;
   os_unfair_lock_lock(&tabGroupsLock);
-  v5 = [v4 mutableCopy];
+  v5 = [tabCopy mutableCopy];
   localTabsByUUID = self->_localTabsByUUID;
-  v7 = [v4 uuid];
+  uuid = [tabCopy uuid];
 
-  [(NSMutableDictionary *)localTabsByUUID setObject:v5 forKeyedSubscript:v7];
+  [(NSMutableDictionary *)localTabsByUUID setObject:v5 forKeyedSubscript:uuid];
 
   os_unfair_lock_unlock(&tabGroupsLock);
 }
 
-- (id)positionGenerator:(id)a3 positionForRecordName:(id)a4
+- (id)positionGenerator:(id)generator positionForRecordName:(id)name
 {
-  v4 = [(WBTabGroupManager *)self _tabWithUUID:a4];
-  v5 = [v4 syncPosition];
+  v4 = [(WBTabGroupManager *)self _tabWithUUID:name];
+  syncPosition = [v4 syncPosition];
 
-  return v5;
+  return syncPosition;
 }
 
-- (id)positionGenerator:(id)a3 recordNameOfBookmarksBeforeRecordWithName:(id)a4
+- (id)positionGenerator:(id)generator recordNameOfBookmarksBeforeRecordWithName:(id)name
 {
-  v5 = [(WBTabGroupManager *)self _tabWithUUID:a4];
-  v6 = [v5 tabGroupUUID];
-  v7 = [(WBTabGroupManager *)self _tabGroupWithUUID:v6];
+  v5 = [(WBTabGroupManager *)self _tabWithUUID:name];
+  tabGroupUUID = [v5 tabGroupUUID];
+  v7 = [(WBTabGroupManager *)self _tabGroupWithUUID:tabGroupUUID];
 
-  v8 = [v7 tabs];
-  v9 = [v8 safari_objectBefore:v5];
-  v10 = [v9 uuid];
+  tabs = [v7 tabs];
+  v9 = [tabs safari_objectBefore:v5];
+  uuid = [v9 uuid];
 
-  return v10;
+  return uuid;
 }
 
-- (id)positionGenerator:(id)a3 recordNameOfBookmarksAfterRecordWithName:(id)a4
+- (id)positionGenerator:(id)generator recordNameOfBookmarksAfterRecordWithName:(id)name
 {
-  v5 = [(WBTabGroupManager *)self _tabWithUUID:a4];
-  v6 = [v5 tabGroupUUID];
-  v7 = [(WBTabGroupManager *)self _tabGroupWithUUID:v6];
+  v5 = [(WBTabGroupManager *)self _tabWithUUID:name];
+  tabGroupUUID = [v5 tabGroupUUID];
+  v7 = [(WBTabGroupManager *)self _tabGroupWithUUID:tabGroupUUID];
 
-  v8 = [v7 tabs];
-  v9 = [v8 safari_objectAfter:v5];
-  v10 = [v9 uuid];
+  tabs = [v7 tabs];
+  v9 = [tabs safari_objectAfter:v5];
+  uuid = [v9 uuid];
 
-  return v10;
+  return uuid;
 }
 
-- (id)topScopedBookmarkListForTabGroup:(id)a3
+- (id)topScopedBookmarkListForTabGroup:(id)group
 {
   tabCollection = self->_tabCollection;
-  v5 = a3;
+  groupCopy = group;
   os_unfair_lock_lock(&tabGroupsLock);
-  v6 = [v5 uuid];
+  uuid = [groupCopy uuid];
 
-  v7 = [(WBTabGroupManager *)self tabGroupWithUUID:v6];
+  v7 = [(WBTabGroupManager *)self tabGroupWithUUID:uuid];
 
   os_unfair_lock_unlock(&tabGroupsLock);
   v8 = [(WBTabCollection *)tabCollection topScopedBookmarkListForTabGroup:v7];
@@ -6229,43 +6229,43 @@ void __69__WBTabGroupManager_updateTabsInTabGroupWithUUID_options_usingBlock___b
   return v8;
 }
 
-- (void)reorderScopedBookmarkWithUUID:(id)a3 afterBookmarkWithUUID:(id)a4 notify:(BOOL)a5
+- (void)reorderScopedBookmarkWithUUID:(id)d afterBookmarkWithUUID:(id)iD notify:(BOOL)notify
 {
-  v5 = a5;
+  notifyCopy = notify;
   v19 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = [(WBTabCollection *)self->_tabCollection scopedBookmarkWithUUID:a3];
+  iDCopy = iD;
+  v9 = [(WBTabCollection *)self->_tabCollection scopedBookmarkWithUUID:d];
   if (v9)
   {
-    v10 = [(WBTabCollection *)self->_tabCollection scopedBookmarkWithUUID:v8];
+    v10 = [(WBTabCollection *)self->_tabCollection scopedBookmarkWithUUID:iDCopy];
     v11 = v10;
-    if (!v8 || v10)
+    if (!iDCopy || v10)
     {
       if (![(WBTabCollection *)self->_tabCollection reorderItem:v9 afterItem:v10])
       {
         v12 = WBS_LOG_CHANNEL_PREFIXTabGroup();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
         {
-          v14 = [v9 identifier];
+          identifier = [v9 identifier];
           if (v11)
           {
-            v15 = [v11 identifier];
+            identifier2 = [v11 identifier];
           }
 
           else
           {
-            v15 = -1;
+            identifier2 = -1;
           }
 
           v16[0] = 67109376;
-          v16[1] = v14;
+          v16[1] = identifier;
           v17 = 1024;
-          v18 = v15;
+          v18 = identifier2;
           _os_log_error_impl(&dword_272C20000, v12, OS_LOG_TYPE_ERROR, "Failed to reorder scoped bookmark(%d) behind anchor(%d).", v16, 0xEu);
         }
       }
 
-      if (v5)
+      if (notifyCopy)
       {
         -[WBTabGroupManager _notifyScopedBookmarkChangesInFolderWithID:](self, "_notifyScopedBookmarkChangesInFolderWithID:", [v9 parentID]);
       }
@@ -6275,24 +6275,24 @@ void __69__WBTabGroupManager_updateTabsInTabGroupWithUUID_options_usingBlock___b
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateScopedBookmarkWithUUID:(id)a3 title:(id)a4 address:(id)a5 notify:(BOOL)a6
+- (void)updateScopedBookmarkWithUUID:(id)d title:(id)title address:(id)address notify:(BOOL)notify
 {
-  v6 = a6;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(WBTabCollection *)self->_tabCollection scopedBookmarkWithUUID:a3];
+  notifyCopy = notify;
+  titleCopy = title;
+  addressCopy = address;
+  v12 = [(WBTabCollection *)self->_tabCollection scopedBookmarkWithUUID:d];
   v13 = v12;
   if (v12)
   {
-    [v12 setTitle:v10];
-    [v13 setAddress:v11];
+    [v12 setTitle:titleCopy];
+    [v13 setAddress:addressCopy];
     if (![(WBTabCollection *)self->_tabCollection saveItem:v13])
     {
       v14 = WBS_LOG_CHANNEL_PREFIXTabGroup();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
         [WBTabGroupManager updateScopedBookmarkWithUUID:v14 title:? address:? notify:?];
-        if (!v6)
+        if (!notifyCopy)
         {
           goto LABEL_6;
         }
@@ -6301,7 +6301,7 @@ void __69__WBTabGroupManager_updateTabsInTabGroupWithUUID_options_usingBlock___b
       }
     }
 
-    if (v6)
+    if (notifyCopy)
     {
 LABEL_5:
       -[WBTabGroupManager _notifyScopedBookmarkChangesInFolderWithID:](self, "_notifyScopedBookmarkChangesInFolderWithID:", [v13 parentID]);
@@ -6311,16 +6311,16 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)deleteScopedBookmarkWithUUID:(id)a3 notify:(BOOL)a4 completionHandler:(id)a5
+- (void)deleteScopedBookmarkWithUUID:(id)d notify:(BOOL)notify completionHandler:(id)handler
 {
-  v5 = a4;
+  notifyCopy = notify;
   v17[1] = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = [(WBTabCollection *)self->_tabCollection scopedBookmarkWithUUID:a3];
+  handlerCopy = handler;
+  v9 = [(WBTabCollection *)self->_tabCollection scopedBookmarkWithUUID:d];
   v10 = v9;
   if (!v9)
   {
-    if (!v8)
+    if (!handlerCopy)
     {
       goto LABEL_12;
     }
@@ -6338,7 +6338,7 @@ LABEL_6:
     v14 = WBS_LOG_CHANNEL_PREFIXTabGroup();
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      if (!v8)
+      if (!handlerCopy)
       {
         goto LABEL_6;
       }
@@ -6347,21 +6347,21 @@ LABEL_6:
     }
 
     [WBTabGroupManager deleteScopedBookmarkWithUUID:v14 notify:? completionHandler:?];
-    if (v8)
+    if (handlerCopy)
     {
 LABEL_5:
-      v8[2](v8, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 
 LABEL_6:
-  if (v5)
+  if (notifyCopy)
   {
     -[WBTabGroupManager _notifyScopedBookmarkChangesInFolderWithID:](self, "_notifyScopedBookmarkChangesInFolderWithID:", [v10 parentID]);
   }
 
   v15 = !v13;
-  if (!v8)
+  if (!handlerCopy)
   {
     v15 = 1;
   }
@@ -6369,7 +6369,7 @@ LABEL_6:
   if ((v15 & 1) == 0)
   {
 LABEL_11:
-    v8[2](v8, 1);
+    handlerCopy[2](handlerCopy, 1);
   }
 
 LABEL_12:
@@ -6377,7 +6377,7 @@ LABEL_12:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_notifyScopedBookmarkChangesInFolderWithID:(int)a3
+- (void)_notifyScopedBookmarkChangesInFolderWithID:(int)d
 {
   v4 = [(WBTabCollection *)self->_tabCollection scopedBookmarkListWithID:?];
   v5 = v4;
@@ -6480,11 +6480,11 @@ void __64__WBTabGroupManager__notifyScopedBookmarkChangesInFolderWithID___block_
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)shareRecordForTabGroup:(id)a3
+- (id)shareRecordForTabGroup:(id)group
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 isSyncable])
+  groupCopy = group;
+  v5 = groupCopy;
+  if (groupCopy && [groupCopy isSyncable])
   {
     v6 = [(WBTabCollection *)self->_tabCollection shareRecordForTabGroup:v5];
   }
@@ -6497,20 +6497,20 @@ void __64__WBTabGroupManager__notifyScopedBookmarkChangesInFolderWithID___block_
   return v6;
 }
 
-- (void)acceptTabGroupShareWithMetadata:(id)a3 handler:(id)a4
+- (void)acceptTabGroupShareWithMetadata:(id)metadata handler:(id)handler
 {
   v65 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 safari_supportsSharedTabGroups])
+  metadataCopy = metadata;
+  handlerCopy = handler;
+  if ([metadataCopy safari_supportsSharedTabGroups])
   {
-    v8 = [v6 share];
-    v9 = [v8 recordID];
+    share = [metadataCopy share];
+    recordID = [share recordID];
     [(WBSPair *)self->_currentShareAcceptancePair second];
     v11 = v10 = self;
-    v12 = [v11 share];
-    v13 = [v12 recordID];
-    v14 = [v9 isEqual:v13];
+    share2 = [v11 share];
+    recordID2 = [share2 recordID];
+    v14 = [recordID isEqual:recordID2];
 
     v51 = v10;
     if (v14)
@@ -6519,31 +6519,31 @@ void __64__WBTabGroupManager__notifyScopedBookmarkChangesInFolderWithID___block_
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         v16 = v15;
-        v49 = [v8 recordID];
-        v47 = [v49 zoneID];
-        v17 = [v47 ckShortDescription];
-        v18 = [v8 objectForKeyedSubscript:*MEMORY[0x277CBC0A0]];
-        v19 = [v8 objectForKeyedSubscript:*MEMORY[0x277CBC098]];
-        v20 = [v6 ownerIdentity];
-        v21 = [v20 safari_handle];
+        recordID3 = [share recordID];
+        zoneID = [recordID3 zoneID];
+        ckShortDescription = [zoneID ckShortDescription];
+        v18 = [share objectForKeyedSubscript:*MEMORY[0x277CBC0A0]];
+        v19 = [share objectForKeyedSubscript:*MEMORY[0x277CBC098]];
+        ownerIdentity = [metadataCopy ownerIdentity];
+        safari_handle = [ownerIdentity safari_handle];
         *buf = 138544131;
-        v58 = v17;
+        v58 = ckShortDescription;
         v59 = 2114;
         v60 = v18;
         v61 = 2117;
         v62 = v19;
         v63 = 2117;
-        v64 = v21;
+        v64 = safari_handle;
         _os_log_impl(&dword_272C20000, v16, OS_LOG_TYPE_DEFAULT, "Ignoring accept CloudKit share metadata because it is already being processed, with zone %{public}@, type: %{public}@, title: %{sensitive}@, owner: %{sensitive}@", buf, 0x2Au);
       }
 
-      [(WBTabGroupManager *)v10 _sendAcceptanceResult:1 forShareMetadata:v6 toHandler:v7];
+      [(WBTabGroupManager *)v10 _sendAcceptanceResult:1 forShareMetadata:metadataCopy toHandler:handlerCopy];
     }
 
     else
     {
-      v48 = v7;
-      v50 = v6;
+      v48 = handlerCopy;
+      v50 = metadataCopy;
       v54 = 0u;
       v55 = 0u;
       v52 = 0u;
@@ -6564,38 +6564,38 @@ void __64__WBTabGroupManager__notifyScopedBookmarkChangesInFolderWithID___block_
             }
 
             v27 = *(*(&v52 + 1) + 8 * i);
-            v28 = [v8 recordID];
-            v29 = [v27 second];
-            v30 = [v29 share];
-            v31 = [v30 recordID];
-            v32 = [v28 isEqual:v31];
+            recordID4 = [share recordID];
+            second = [v27 second];
+            share3 = [second share];
+            recordID5 = [share3 recordID];
+            v32 = [recordID4 isEqual:recordID5];
 
             if (v32)
             {
               v37 = WBS_LOG_CHANNEL_PREFIXTabGroup();
-              v6 = v50;
+              metadataCopy = v50;
               if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
               {
                 v38 = v37;
-                v39 = [v8 recordID];
-                v46 = [v39 zoneID];
-                v40 = [v46 ckShortDescription];
-                v41 = [v8 objectForKeyedSubscript:*MEMORY[0x277CBC0A0]];
-                v42 = [v8 objectForKeyedSubscript:*MEMORY[0x277CBC098]];
-                v43 = [v50 ownerIdentity];
-                v44 = [v43 safari_handle];
+                recordID6 = [share recordID];
+                zoneID2 = [recordID6 zoneID];
+                ckShortDescription2 = [zoneID2 ckShortDescription];
+                v41 = [share objectForKeyedSubscript:*MEMORY[0x277CBC0A0]];
+                v42 = [share objectForKeyedSubscript:*MEMORY[0x277CBC098]];
+                ownerIdentity2 = [v50 ownerIdentity];
+                safari_handle2 = [ownerIdentity2 safari_handle];
                 *buf = 138544131;
-                v58 = v40;
+                v58 = ckShortDescription2;
                 v59 = 2114;
                 v60 = v41;
                 v61 = 2117;
                 v62 = v42;
                 v63 = 2117;
-                v64 = v44;
+                v64 = safari_handle2;
                 _os_log_impl(&dword_272C20000, v38, OS_LOG_TYPE_DEFAULT, "Ignoring accept CloudKit share metadata because it is already pending processing, with zone %{public}@, type: %{public}@, title: %{sensitive}@, owner: %{sensitive}@", buf, 0x2Au);
               }
 
-              v7 = v48;
+              handlerCopy = v48;
               [(WBTabGroupManager *)v51 _sendAcceptanceResult:1 forShareMetadata:v50 toHandler:v48];
 
               goto LABEL_21;
@@ -6615,15 +6615,15 @@ void __64__WBTabGroupManager__notifyScopedBookmarkChangesInFolderWithID___block_
       pendingShareAcceptancePairQueue = v51->_pendingShareAcceptancePairQueue;
       if (!pendingShareAcceptancePairQueue)
       {
-        v34 = [MEMORY[0x277CBEB18] array];
+        array = [MEMORY[0x277CBEB18] array];
         v35 = v51->_pendingShareAcceptancePairQueue;
-        v51->_pendingShareAcceptancePairQueue = v34;
+        v51->_pendingShareAcceptancePairQueue = array;
 
         pendingShareAcceptancePairQueue = v51->_pendingShareAcceptancePairQueue;
       }
 
-      v7 = v48;
-      v6 = v50;
+      handlerCopy = v48;
+      metadataCopy = v50;
       v36 = [objc_alloc(MEMORY[0x277D49A80]) initWithFirst:v48 second:v50];
       [(NSMutableArray *)pendingShareAcceptancePairQueue addObject:v36];
 
@@ -6635,7 +6635,7 @@ LABEL_21:
 
   else
   {
-    [(WBTabGroupManager *)self _sendAcceptanceResult:3 forShareMetadata:v6 toHandler:v7];
+    [(WBTabGroupManager *)self _sendAcceptanceResult:3 forShareMetadata:metadataCopy toHandler:handlerCopy];
   }
 
   v45 = *MEMORY[0x277D85DE8];
@@ -6647,14 +6647,14 @@ LABEL_21:
   p_currentShareAcceptancePair = &self->_currentShareAcceptancePair;
   if (!self->_currentShareAcceptancePair)
   {
-    v4 = [(NSMutableArray *)self->_pendingShareAcceptancePairQueue firstObject];
-    if (v4)
+    firstObject = [(NSMutableArray *)self->_pendingShareAcceptancePairQueue firstObject];
+    if (firstObject)
     {
       [(NSMutableArray *)self->_pendingShareAcceptancePairQueue removeObjectAtIndex:0];
-      objc_storeStrong(p_currentShareAcceptancePair, v4);
-      v5 = [v4 second];
-      v6 = [v5 share];
-      v7 = [(WBTabGroupManager *)self tabGroupMatchingShare:v6];
+      objc_storeStrong(p_currentShareAcceptancePair, firstObject);
+      second = [firstObject second];
+      share = [second share];
+      v7 = [(WBTabGroupManager *)self tabGroupMatchingShare:share];
 
       v8 = WBS_LOG_CHANNEL_PREFIXTabGroup();
       v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
@@ -6663,14 +6663,14 @@ LABEL_21:
         if (v9)
         {
           log = v8;
-          v33 = [v6 recordID];
-          v31 = [v33 zoneID];
-          [v31 ckShortDescription];
-          v11 = v10 = v6;
+          recordID = [share recordID];
+          zoneID = [recordID zoneID];
+          [zoneID ckShortDescription];
+          v11 = v10 = share;
           v12 = [v10 objectForKeyedSubscript:*MEMORY[0x277CBC0A0]];
           v13 = [v10 objectForKeyedSubscript:*MEMORY[0x277CBC098]];
-          v14 = [v5 ownerIdentity];
-          v15 = [v14 safari_handle];
+          ownerIdentity = [second ownerIdentity];
+          safari_handle = [ownerIdentity safari_handle];
           *buf = 138544131;
           v45 = v11;
           v46 = 2114;
@@ -6678,14 +6678,14 @@ LABEL_21:
           v48 = 2117;
           v49 = v13;
           v50 = 2117;
-          v51 = v15;
+          v51 = safari_handle;
           _os_log_impl(&dword_272C20000, log, OS_LOG_TYPE_DEFAULT, "Ignoring accept CloudKit share metadata because it was already accepted, with zone %{public}@, type: %{public}@, title: %{sensitive}@, owner: %{sensitive}@", buf, 0x2Au);
 
-          v6 = v10;
+          share = v10;
         }
 
-        v16 = [v4 first];
-        [(WBTabGroupManager *)self _sendAcceptanceResult:2 forShareMetadata:v5 toHandler:v16];
+        first = [firstObject first];
+        [(WBTabGroupManager *)self _sendAcceptanceResult:2 forShareMetadata:second toHandler:first];
 
         currentShareAcceptancePair = self->_currentShareAcceptancePair;
         self->_currentShareAcceptancePair = 0;
@@ -6698,21 +6698,21 @@ LABEL_21:
         if (v9)
         {
           loga = v8;
-          v34 = [v6 recordID];
-          v32 = [v34 zoneID];
-          v18 = [v32 ckShortDescription];
-          v19 = [v6 objectForKeyedSubscript:*MEMORY[0x277CBC0A0]];
-          v20 = [v6 objectForKeyedSubscript:*MEMORY[0x277CBC098]];
-          v21 = [v5 ownerIdentity];
-          v22 = [v21 safari_handle];
+          recordID2 = [share recordID];
+          zoneID2 = [recordID2 zoneID];
+          ckShortDescription = [zoneID2 ckShortDescription];
+          v19 = [share objectForKeyedSubscript:*MEMORY[0x277CBC0A0]];
+          v20 = [share objectForKeyedSubscript:*MEMORY[0x277CBC098]];
+          ownerIdentity2 = [second ownerIdentity];
+          safari_handle2 = [ownerIdentity2 safari_handle];
           *buf = 138544131;
-          v45 = v18;
+          v45 = ckShortDescription;
           v46 = 2114;
           v47 = v19;
           v48 = 2117;
           v49 = v20;
           v50 = 2117;
-          v51 = v22;
+          v51 = safari_handle2;
           _os_log_impl(&dword_272C20000, loga, OS_LOG_TYPE_DEFAULT, "Will accept CloudKit Share metadata with zone %{public}@, type: %{public}@, title: %{sensitive}@, owner: %{sensitive}@", buf, 0x2Au);
         }
 
@@ -6720,23 +6720,23 @@ LABEL_21:
         v40[1] = 3221225472;
         v40[2] = __68__WBTabGroupManager__dequeueNextAcceptCloudKitShareMetadataIfNeeded__block_invoke;
         v40[3] = &unk_279E77BD0;
-        v23 = v5;
+        v23 = second;
         v41 = v23;
-        v42 = self;
-        v24 = v4;
+        selfCopy = self;
+        v24 = firstObject;
         v43 = v24;
         v25 = MEMORY[0x2743D6830](v40);
-        v26 = [v24 first];
-        v27 = [(WBTabGroupManager *)self profiles];
-        if ([v27 count] >= 2 && (objc_opt_respondsToSelector() & 1) != 0)
+        first2 = [v24 first];
+        profiles = [(WBTabGroupManager *)self profiles];
+        if ([profiles count] >= 2 && (objc_opt_respondsToSelector() & 1) != 0)
         {
           v35[0] = MEMORY[0x277D85DD0];
           v35[1] = 3221225472;
           v35[2] = __68__WBTabGroupManager__dequeueNextAcceptCloudKitShareMetadataIfNeeded__block_invoke_148;
           v35[3] = &unk_279E77BF8;
           v35[4] = self;
-          v36 = v6;
-          v37 = v26;
+          v36 = share;
+          v37 = first2;
           v38 = v23;
           v39 = v25;
           [v37 tabGroupManager:self selectProfileIdentifierForShareMetadata:v38 completionHandler:v35];
@@ -6746,7 +6746,7 @@ LABEL_21:
         {
           if (objc_opt_respondsToSelector())
           {
-            [v26 tabGroupManager:self didBeginAcceptingTabGroupShareWithMetadata:v23];
+            [first2 tabGroupManager:self didBeginAcceptingTabGroupShareWithMetadata:v23];
           }
 
           [(WBTabGroupManager *)self _userDidAcceptTabGroupShareWithMetadata:v23 inProfileWithIdentifier:*MEMORY[0x277D49BD8] completionHandler:v25];
@@ -6882,32 +6882,32 @@ void __68__WBTabGroupManager__dequeueNextAcceptCloudKitShareMetadataIfNeeded__bl
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendAcceptanceResult:(int64_t)a3 forShareMetadata:(id)a4 toHandler:(id)a5
+- (void)_sendAcceptanceResult:(int64_t)result forShareMetadata:(id)metadata toHandler:(id)handler
 {
-  v9 = a4;
-  v8 = a5;
+  metadataCopy = metadata;
+  handlerCopy = handler;
   if (objc_opt_respondsToSelector())
   {
-    [v8 tabGroupManager:self didFinishAcceptingTabGroupShareWithMetadata:v9 result:a3];
+    [handlerCopy tabGroupManager:self didFinishAcceptingTabGroupShareWithMetadata:metadataCopy result:result];
   }
 }
 
-- (void)_userDidAcceptTabGroupShareWithMetadata:(id)a3 inProfileWithIdentifier:(id)a4 completionHandler:(id)a5
+- (void)_userDidAcceptTabGroupShareWithMetadata:(id)metadata inProfileWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  metadataCopy = metadata;
+  handlerCopy = handler;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __103__WBTabGroupManager__userDidAcceptTabGroupShareWithMetadata_inProfileWithIdentifier_completionHandler___block_invoke;
   v14[3] = &unk_279E77C48;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v10 = v9;
-  v11 = v8;
-  v12 = a4;
+  v15 = metadataCopy;
+  v16 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = metadataCopy;
+  identifierCopy = identifier;
   v13 = MEMORY[0x2743D6830](v14);
-  [(WBTabGroupSyncAgentProtocol *)self->_syncAgentProxy userDidAcceptTabGroupShareWithMetadata:v11 inProfileWithIdentifier:v12 completionHandler:v13];
+  [(WBTabGroupSyncAgentProtocol *)self->_syncAgentProxy userDidAcceptTabGroupShareWithMetadata:v11 inProfileWithIdentifier:identifierCopy completionHandler:v13];
 }
 
 void __103__WBTabGroupManager__userDidAcceptTabGroupShareWithMetadata_inProfileWithIdentifier_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -6987,20 +6987,20 @@ uint64_t __103__WBTabGroupManager__userDidAcceptTabGroupShareWithMetadata_inProf
   return result;
 }
 
-- (void)beginSharingTabGroupWithUUID:(id)a3 completionHandler:(id)a4
+- (void)beginSharingTabGroupWithUUID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   syncAgentProxy = self->_syncAgentProxy;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __68__WBTabGroupManager_beginSharingTabGroupWithUUID_completionHandler___block_invoke;
   v11[3] = &unk_279E77C48;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = dCopy;
   [(WBTabGroupSyncAgentProtocol *)syncAgentProxy beginSharingTabGroupWithUUID:v10 completionHandler:v11];
 }
 
@@ -7063,61 +7063,61 @@ uint64_t __68__WBTabGroupManager_beginSharingTabGroupWithUUID_completionHandler_
   return result;
 }
 
-- (id)tabGroupMatchingShare:(id)a3
+- (id)tabGroupMatchingShare:(id)share
 {
   tabCollection = self->_tabCollection;
-  v5 = a3;
-  v6 = [(WBTabGroupManager *)self allNamedTabGroupsUnsorted];
-  v7 = [(WBTabCollection *)tabCollection tabGroupMatchingShare:v5 inTabGroups:v6];
+  shareCopy = share;
+  allNamedTabGroupsUnsorted = [(WBTabGroupManager *)self allNamedTabGroupsUnsorted];
+  v7 = [(WBTabCollection *)tabCollection tabGroupMatchingShare:shareCopy inTabGroups:allNamedTabGroupsUnsorted];
 
   return v7;
 }
 
-- (void)getActiveParticipantsInTabGroup:(id)a3 completionHandler:(id)a4
+- (void)getActiveParticipantsInTabGroup:(id)group completionHandler:(id)handler
 {
   if (self->_enableSharedTabGroupsFastSyncPresence)
   {
     presenceCoordinator = self->_presenceCoordinator;
-    v7 = a4;
-    v12 = [a3 bookmark];
-    v8 = [v12 serverID];
-    [(WBParticipantPresenceCoordinator *)presenceCoordinator getActiveParticipantsInTabGroupWithIdentifier:v8 completionHandler:v7];
+    handlerCopy = handler;
+    bookmark = [group bookmark];
+    serverID = [bookmark serverID];
+    [(WBParticipantPresenceCoordinator *)presenceCoordinator getActiveParticipantsInTabGroupWithIdentifier:serverID completionHandler:handlerCopy];
   }
 
   else
   {
     v9 = MEMORY[0x277CBEB98];
     tabCollection = self->_tabCollection;
-    v11 = a4;
-    v12 = [(WBTabCollection *)tabCollection activeParticipantsInTabGroup:a3];
-    v8 = [v9 setWithArray:?];
-    (*(a4 + 2))(v11, v8);
+    handlerCopy2 = handler;
+    bookmark = [(WBTabCollection *)tabCollection activeParticipantsInTabGroup:group];
+    serverID = [v9 setWithArray:?];
+    (*(handler + 2))(handlerCopy2, serverID);
   }
 }
 
-- (void)getActiveParticipantsInTab:(id)a3 completionHandler:(id)a4
+- (void)getActiveParticipantsInTab:(id)tab completionHandler:(id)handler
 {
   if (self->_enableSharedTabGroupsFastSyncPresence)
   {
     presenceCoordinator = self->_presenceCoordinator;
-    v6 = a4;
-    v9 = [a3 bookmark];
-    v7 = [v9 serverID];
-    [(WBParticipantPresenceCoordinator *)presenceCoordinator getActiveParticipantsInTabWithIdentifier:v7 completionHandler:v6];
+    handlerCopy = handler;
+    handlerCopy2 = [tab bookmark];
+    serverID = [handlerCopy2 serverID];
+    [(WBParticipantPresenceCoordinator *)presenceCoordinator getActiveParticipantsInTabWithIdentifier:serverID completionHandler:handlerCopy];
   }
 
   else
   {
     tabCollection = self->_tabCollection;
-    v9 = a4;
-    [(WBTabCollection *)tabCollection getActiveParticipantsInTab:a3 completionHandler:?];
+    handlerCopy2 = handler;
+    [(WBTabCollection *)tabCollection getActiveParticipantsInTab:tab completionHandler:?];
   }
 }
 
-- (void)getPresenceTabUUIDForParticipantIdentifier:(id)a3 inTabGroup:(id)a4 completionHandler:(id)a5
+- (void)getPresenceTabUUIDForParticipantIdentifier:(id)identifier inTabGroup:(id)group completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  groupCopy = group;
+  handlerCopy = handler;
   if (self->_enableSharedTabGroupsFastSyncPresence)
   {
     presenceCoordinator = self->_presenceCoordinator;
@@ -7125,16 +7125,16 @@ uint64_t __68__WBTabGroupManager_beginSharingTabGroupWithUUID_completionHandler_
     v12[1] = 3221225472;
     v12[2] = __93__WBTabGroupManager_getPresenceTabUUIDForParticipantIdentifier_inTabGroup_completionHandler___block_invoke;
     v12[3] = &unk_279E77C70;
-    v13 = v8;
-    v14 = self;
-    v15 = v9;
-    [(WBParticipantPresenceCoordinator *)presenceCoordinator getCurrentLocationIdentifiersForParticipantIdentifier:a3 completionHandler:v12];
+    v13 = groupCopy;
+    selfCopy = self;
+    v15 = handlerCopy;
+    [(WBParticipantPresenceCoordinator *)presenceCoordinator getCurrentLocationIdentifiersForParticipantIdentifier:identifier completionHandler:v12];
   }
 
   else
   {
-    v11 = [(WBTabCollection *)self->_tabCollection presenceTabUUIDForParticipantIdentifier:a3 inTabGroup:v8];
-    (*(v9 + 2))(v9, v11);
+    v11 = [(WBTabCollection *)self->_tabCollection presenceTabUUIDForParticipantIdentifier:identifier inTabGroup:groupCopy];
+    (*(handlerCopy + 2))(handlerCopy, v11);
   }
 }
 
@@ -7160,16 +7160,16 @@ void __93__WBTabGroupManager_getPresenceTabUUIDForParticipantIdentifier_inTabGro
   }
 }
 
-- (void)movePresenceForParticipantToTabWithUUID:(id)a3
+- (void)movePresenceForParticipantToTabWithUUID:(id)d
 {
   if (self->_enableSharedTabGroupsFastSyncPresence)
   {
-    [(WBTabGroupManager *)self _movePresenceForParticipantToTabWithUUID:a3];
+    [(WBTabGroupManager *)self _movePresenceForParticipantToTabWithUUID:d];
   }
 
   else
   {
-    [(WBTabGroupSyncAgentProtocol *)self->_syncAgentProxy movePresenceForParticipantToTabWithUUID:a3];
+    [(WBTabGroupSyncAgentProtocol *)self->_syncAgentProxy movePresenceForParticipantToTabWithUUID:d];
   }
 }
 
@@ -7231,12 +7231,12 @@ uint64_t __51__WBTabGroupManager__unsafeTabGroupUUIDsToCKShares__block_invoke_2(
   return MEMORY[0x2821F96F8](v3, v5);
 }
 
-- (void)_updateTabGroupShares:(id)a3
+- (void)_updateTabGroupShares:(id)shares
 {
   v27 = *MEMORY[0x277D85DE8];
   if (self->_enableSharedTabGroupsFastSyncPresence)
   {
-    v4 = [a3 copy];
+    v4 = [shares copy];
     tabGroupUUIDsToCKShares = self->_tabGroupUUIDsToCKShares;
     self->_tabGroupUUIDsToCKShares = v4;
 
@@ -7275,9 +7275,9 @@ uint64_t __51__WBTabGroupManager__unsafeTabGroupUUIDsToCKShares__block_invoke_2(
           if (v11)
           {
             v12 = [(NSMutableDictionary *)self->_broadcastingTabGroupUUIDsToCKShare objectForKeyedSubscript:v10];
-            v13 = [v12 recordChangeTag];
-            v14 = [v11 recordChangeTag];
-            v15 = [v13 isEqualToString:v14];
+            recordChangeTag = [v12 recordChangeTag];
+            recordChangeTag2 = [v11 recordChangeTag];
+            v15 = [recordChangeTag isEqualToString:recordChangeTag2];
 
             if ((v15 & 1) == 0)
             {
@@ -7339,49 +7339,49 @@ void __43__WBTabGroupManager__updateTabGroupShares___block_invoke(uint64_t a1, v
   }
 }
 
-- (void)_didReceiveShare:(id)a3 forTabGroupUUID:(id)a4
+- (void)_didReceiveShare:(id)share forTabGroupUUID:(id)d
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6 && self->_enableSharedTabGroupsFastSyncPresence)
+  shareCopy = share;
+  dCopy = d;
+  if (shareCopy && self->_enableSharedTabGroupsFastSyncPresence)
   {
-    v8 = [(NSDictionary *)self->_tabGroupUUIDsToCKShares objectForKeyedSubscript:v7];
+    v8 = [(NSDictionary *)self->_tabGroupUUIDsToCKShares objectForKeyedSubscript:dCopy];
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 recordChangeTag];
-      v11 = [v6 recordChangeTag];
-      v12 = [v10 isEqualToString:v11];
+      recordChangeTag = [v8 recordChangeTag];
+      recordChangeTag2 = [shareCopy recordChangeTag];
+      v12 = [recordChangeTag isEqualToString:recordChangeTag2];
 
       if ((v12 & 1) == 0)
       {
-        [(NSMutableDictionary *)self->_broadcastingTabGroupUUIDsToCKShare setObject:v6 forKeyedSubscript:v7];
-        [(WBParticipantPresenceCoordinator *)self->_presenceCoordinator shareDidUpdate:v6];
+        [(NSMutableDictionary *)self->_broadcastingTabGroupUUIDsToCKShare setObject:shareCopy forKeyedSubscript:dCopy];
+        [(WBParticipantPresenceCoordinator *)self->_presenceCoordinator shareDidUpdate:shareCopy];
       }
     }
 
     else
     {
       tabGroupUUIDsToCKShares = self->_tabGroupUUIDsToCKShares;
-      v21 = v7;
-      v22[0] = v6;
+      v21 = dCopy;
+      v22[0] = shareCopy;
       v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:&v21 count:1];
       v15 = [(NSDictionary *)tabGroupUUIDsToCKShares safari_dictionaryByMergingWithDictionary:v14];
       v16 = self->_tabGroupUUIDsToCKShares;
       self->_tabGroupUUIDsToCKShares = v15;
 
-      if ([(NSCountedSet *)self->_activeTabGroupUUIDs containsObject:v7])
+      if ([(NSCountedSet *)self->_activeTabGroupUUIDs containsObject:dCopy])
       {
-        [(NSMutableDictionary *)self->_broadcastingTabGroupUUIDsToCKShare setObject:v6 forKeyedSubscript:v7];
-        [(WBParticipantPresenceCoordinator *)self->_presenceCoordinator beginCollaborationForShare:v6];
-        v17 = [(WBSPair *)self->_activeTabGroupAndTabUUIDPair first];
-        v18 = [v17 isEqualToString:v7];
+        [(NSMutableDictionary *)self->_broadcastingTabGroupUUIDsToCKShare setObject:shareCopy forKeyedSubscript:dCopy];
+        [(WBParticipantPresenceCoordinator *)self->_presenceCoordinator beginCollaborationForShare:shareCopy];
+        first = [(WBSPair *)self->_activeTabGroupAndTabUUIDPair first];
+        v18 = [first isEqualToString:dCopy];
 
         if (v18)
         {
-          v19 = [(WBSPair *)self->_activeTabGroupAndTabUUIDPair second];
-          [(WBTabGroupManager *)self _movePresenceForParticipantToTabWithUUID:v19];
+          second = [(WBSPair *)self->_activeTabGroupAndTabUUIDPair second];
+          [(WBTabGroupManager *)self _movePresenceForParticipantToTabWithUUID:second];
         }
       }
     }
@@ -7390,51 +7390,51 @@ void __43__WBTabGroupManager__updateTabGroupShares___block_invoke(uint64_t a1, v
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_movePresenceForParticipantToTabWithUUID:(id)a3
+- (void)_movePresenceForParticipantToTabWithUUID:(id)d
 {
-  v4 = a3;
-  v19 = [(WBTabGroupManager *)self tabWithUUID:v4];
-  v5 = [v19 tabGroupUUID];
-  v6 = [(WBTabGroupManager *)self tabGroupWithUUID:v5];
+  dCopy = d;
+  v19 = [(WBTabGroupManager *)self tabWithUUID:dCopy];
+  tabGroupUUID = [v19 tabGroupUUID];
+  v6 = [(WBTabGroupManager *)self tabGroupWithUUID:tabGroupUUID];
 
   v7 = objc_alloc(MEMORY[0x277D49A80]);
-  v8 = [v19 tabGroupUUID];
-  v9 = [v7 initWithFirst:v8 second:v4];
+  tabGroupUUID2 = [v19 tabGroupUUID];
+  v9 = [v7 initWithFirst:tabGroupUUID2 second:dCopy];
 
   activeTabGroupAndTabUUIDPair = self->_activeTabGroupAndTabUUIDPair;
   self->_activeTabGroupAndTabUUIDPair = v9;
 
   tabGroupUUIDsToCKShares = self->_tabGroupUUIDsToCKShares;
-  v12 = [v19 tabGroupUUID];
-  v13 = [(NSDictionary *)tabGroupUUIDsToCKShares objectForKeyedSubscript:v12];
+  tabGroupUUID3 = [v19 tabGroupUUID];
+  serverID = [(NSDictionary *)tabGroupUUIDsToCKShares objectForKeyedSubscript:tabGroupUUID3];
 
-  if (v13)
+  if (serverID)
   {
-    v14 = [v6 bookmark];
-    v13 = [v14 serverID];
+    bookmark = [v6 bookmark];
+    serverID = [bookmark serverID];
 
-    v15 = [v19 bookmark];
-    v16 = [v15 serverID];
+    bookmark2 = [v19 bookmark];
+    serverID2 = [bookmark2 serverID];
   }
 
   else
   {
-    v16 = 0;
+    serverID2 = 0;
   }
 
   presenceCoordinator = self->_presenceCoordinator;
-  v18 = [(WBTabGroupManager *)self deviceIdentifier];
-  [(WBParticipantPresenceCoordinator *)presenceCoordinator moveCurrentParticipantToTabIdentifier:v16 inTabGroupIdentifier:v13 withDeviceIdentifier:v18];
+  deviceIdentifier = [(WBTabGroupManager *)self deviceIdentifier];
+  [(WBParticipantPresenceCoordinator *)presenceCoordinator moveCurrentParticipantToTabIdentifier:serverID2 inTabGroupIdentifier:serverID withDeviceIdentifier:deviceIdentifier];
 }
 
-- (void)beginParticipantPresenceReportingForTabGroupWithUUID:(id)a3
+- (void)beginParticipantPresenceReportingForTabGroupWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
+  dCopy = d;
+  v5 = dCopy;
   if (self->_enableSharedTabGroupsFastSyncPresence)
   {
-    v8 = v4;
-    v6 = [(WBTabGroupManager *)self tabGroupWithUUID:v4];
+    v8 = dCopy;
+    v6 = [(WBTabGroupManager *)self tabGroupWithUUID:dCopy];
     if (v6)
     {
       [(NSCountedSet *)self->_activeTabGroupUUIDs addObject:v8];
@@ -7449,18 +7449,18 @@ void __43__WBTabGroupManager__updateTabGroupShares___block_invoke(uint64_t a1, v
     v5 = v8;
   }
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](dCopy, v5);
 }
 
-- (id)_shareRecordIfNeededToBeginCollaborationForTabGroup:(id)a3
+- (id)_shareRecordIfNeededToBeginCollaborationForTabGroup:(id)group
 {
   if (self->_enableSharedTabGroupsFastSyncPresence)
   {
-    v4 = [a3 uuid];
-    if ([(NSCountedSet *)self->_activeTabGroupUUIDs containsObject:v4]&& ([(NSMutableDictionary *)self->_broadcastingTabGroupUUIDsToCKShare objectForKeyedSubscript:v4], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
+    uuid = [group uuid];
+    if ([(NSCountedSet *)self->_activeTabGroupUUIDs containsObject:uuid]&& ([(NSMutableDictionary *)self->_broadcastingTabGroupUUIDsToCKShare objectForKeyedSubscript:uuid], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
     {
-      v6 = [(NSDictionary *)self->_tabGroupUUIDsToCKShares objectForKeyedSubscript:v4];
-      [(NSMutableDictionary *)self->_broadcastingTabGroupUUIDsToCKShare setObject:v6 forKeyedSubscript:v4];
+      v6 = [(NSDictionary *)self->_tabGroupUUIDsToCKShares objectForKeyedSubscript:uuid];
+      [(NSMutableDictionary *)self->_broadcastingTabGroupUUIDsToCKShare setObject:v6 forKeyedSubscript:uuid];
     }
 
     else
@@ -7477,14 +7477,14 @@ void __43__WBTabGroupManager__updateTabGroupShares___block_invoke(uint64_t a1, v
   return v6;
 }
 
-- (void)endParticipantPresenceReportingForTabGroupWithUUID:(id)a3
+- (void)endParticipantPresenceReportingForTabGroupWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
+  dCopy = d;
+  v5 = dCopy;
   if (self->_enableSharedTabGroupsFastSyncPresence)
   {
-    v8 = v4;
-    v6 = [(WBTabGroupManager *)self tabGroupWithUUID:v4];
+    v8 = dCopy;
+    v6 = [(WBTabGroupManager *)self tabGroupWithUUID:dCopy];
     if (v6)
     {
       [(NSCountedSet *)self->_activeTabGroupUUIDs removeObject:v8];
@@ -7499,16 +7499,16 @@ void __43__WBTabGroupManager__updateTabGroupShares___block_invoke(uint64_t a1, v
     v5 = v8;
   }
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](dCopy, v5);
 }
 
-- (id)_shareRecordIfNeededToEndCollaborationForTabGroup:(id)a3
+- (id)_shareRecordIfNeededToEndCollaborationForTabGroup:(id)group
 {
   if (self->_enableSharedTabGroupsFastSyncPresence)
   {
-    v4 = [a3 uuid];
-    v5 = [(NSMutableDictionary *)self->_broadcastingTabGroupUUIDsToCKShare objectForKeyedSubscript:v4];
-    if (v5 && ([(NSCountedSet *)self->_activeTabGroupUUIDs containsObject:v4]& 1) == 0)
+    uuid = [group uuid];
+    v5 = [(NSMutableDictionary *)self->_broadcastingTabGroupUUIDsToCKShare objectForKeyedSubscript:uuid];
+    if (v5 && ([(NSCountedSet *)self->_activeTabGroupUUIDs containsObject:uuid]& 1) == 0)
     {
       v6 = v5;
     }
@@ -7539,11 +7539,11 @@ void __43__WBTabGroupManager__updateTabGroupShares___block_invoke(uint64_t a1, v
   }
 }
 
-- (void)participantPresenceCoordinator:(id)a3 didUpdateActiveParticipants:(id)a4 inTabGroupWithIdentifier:(id)a5
+- (void)participantPresenceCoordinator:(id)coordinator didUpdateActiveParticipants:(id)participants inTabGroupWithIdentifier:(id)identifier
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = [(WBTabCollection *)self->_tabCollection tabGroupUUIDForServerID:a5];
+  participantsCopy = participants;
+  v8 = [(WBTabCollection *)self->_tabCollection tabGroupUUIDForServerID:identifier];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -7567,7 +7567,7 @@ void __43__WBTabGroupManager__updateTabGroupShares___block_invoke(uint64_t a1, v
         v14 = *(*(&v16 + 1) + 8 * v13);
         if (objc_opt_respondsToSelector())
         {
-          [v14 tabGroupManager:self didUpadateActiveParticipants:v7 inTabGroupWithUUID:v8];
+          [v14 tabGroupManager:self didUpadateActiveParticipants:participantsCopy inTabGroupWithUUID:v8];
         }
 
         ++v13;
@@ -7583,11 +7583,11 @@ void __43__WBTabGroupManager__updateTabGroupShares___block_invoke(uint64_t a1, v
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)participantPresenceCoordinator:(id)a3 didUpdateActiveParticipants:(id)a4 inTabWithIdentifier:(id)a5
+- (void)participantPresenceCoordinator:(id)coordinator didUpdateActiveParticipants:(id)participants inTabWithIdentifier:(id)identifier
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = [(WBTabCollection *)self->_tabCollection tabUUIDForServerID:a5];
+  participantsCopy = participants;
+  v8 = [(WBTabCollection *)self->_tabCollection tabUUIDForServerID:identifier];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -7611,7 +7611,7 @@ void __43__WBTabGroupManager__updateTabGroupShares___block_invoke(uint64_t a1, v
         v14 = *(*(&v16 + 1) + 8 * v13);
         if (objc_opt_respondsToSelector())
         {
-          [v14 tabGroupManager:self didUpadateActiveParticipants:v7 inTabWithUUID:v8];
+          [v14 tabGroupManager:self didUpadateActiveParticipants:participantsCopy inTabWithUUID:v8];
         }
 
         ++v13;
@@ -7627,25 +7627,25 @@ void __43__WBTabGroupManager__updateTabGroupShares___block_invoke(uint64_t a1, v
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)shareDidUpdateForTabGroupWithUUID:(id)a3
+- (void)shareDidUpdateForTabGroupWithUUID:(id)d
 {
   if (self->_enableSharedTabGroupsFastSyncPresence)
   {
-    v5 = a3;
-    v7 = [(WBTabGroupManager *)self tabGroupWithUUID:v5];
+    dCopy = d;
+    v7 = [(WBTabGroupManager *)self tabGroupWithUUID:dCopy];
     v6 = [(WBTabGroupManager *)self shareRecordForTabGroup:v7];
-    [(WBTabGroupManager *)self _didReceiveShare:v6 forTabGroupUUID:v5];
+    [(WBTabGroupManager *)self _didReceiveShare:v6 forTabGroupUUID:dCopy];
   }
 }
 
-- (void)activeParticipantsDidUpdateInTabGroupWithUUID:(id)a3
+- (void)activeParticipantsDidUpdateInTabGroupWithUUID:(id)d
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   if (!self->_enableSharedTabGroupsFastSyncPresence)
   {
     tabCollection = self->_tabCollection;
-    v6 = [(WBTabGroupManager *)self tabGroupWithUUID:v4];
+    v6 = [(WBTabGroupManager *)self tabGroupWithUUID:dCopy];
     v7 = [(WBTabCollection *)tabCollection activeParticipantsInTabGroup:v6];
 
     v18 = 0u;
@@ -7672,7 +7672,7 @@ void __43__WBTabGroupManager__updateTabGroupShares___block_invoke(uint64_t a1, v
           if (objc_opt_respondsToSelector())
           {
             v14 = [MEMORY[0x277CBEB98] setWithArray:v7];
-            [v13 tabGroupManager:self didUpadateActiveParticipants:v14 inTabGroupWithUUID:v4];
+            [v13 tabGroupManager:self didUpadateActiveParticipants:v14 inTabGroupWithUUID:dCopy];
           }
 
           ++v12;
@@ -7689,14 +7689,14 @@ void __43__WBTabGroupManager__updateTabGroupShares___block_invoke(uint64_t a1, v
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)activeParticipantsDidUpdateInTabWithUUID:(id)a3
+- (void)activeParticipantsDidUpdateInTabWithUUID:(id)d
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   if (!self->_enableSharedTabGroupsFastSyncPresence)
   {
     tabCollection = self->_tabCollection;
-    v6 = [(WBTabGroupManager *)self tabWithUUID:v4];
+    v6 = [(WBTabGroupManager *)self tabWithUUID:dCopy];
     v7 = [(WBTabCollection *)tabCollection activeParticipantsInTab:v6];
 
     v17 = 0u;
@@ -7722,7 +7722,7 @@ void __43__WBTabGroupManager__updateTabGroupShares___block_invoke(uint64_t a1, v
           v13 = *(*(&v15 + 1) + 8 * v12);
           if (objc_opt_respondsToSelector())
           {
-            [v13 tabGroupManager:self didUpadateActiveParticipants:v7 inTabWithUUID:v4];
+            [v13 tabGroupManager:self didUpadateActiveParticipants:v7 inTabWithUUID:dCopy];
           }
 
           ++v12;
@@ -7739,10 +7739,10 @@ void __43__WBTabGroupManager__updateTabGroupShares___block_invoke(uint64_t a1, v
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_tabGroupSyncDidFinish:(id)a3
+- (void)_tabGroupSyncDidFinish:(id)finish
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  finishCopy = finish;
   v5 = WBS_LOG_CHANNEL_PREFIXTabGroup();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -7750,13 +7750,13 @@ void __43__WBTabGroupManager__updateTabGroupShares___block_invoke(uint64_t a1, v
     _os_log_impl(&dword_272C20000, v5, OS_LOG_TYPE_INFO, "Tab group sync did finish", buf, 2u);
   }
 
-  v6 = [v4 userInfo];
-  v7 = [v6 safari_numberForKey:@"syncResult"];
+  userInfo = [finishCopy userInfo];
+  v7 = [userInfo safari_numberForKey:@"syncResult"];
 
-  v8 = [v7 integerValue];
+  integerValue = [v7 integerValue];
   if (v7)
   {
-    v9 = v8 == 0;
+    v9 = integerValue == 0;
   }
 
   else
@@ -7771,8 +7771,8 @@ void __43__WBTabGroupManager__updateTabGroupShares___block_invoke(uint64_t a1, v
 
   else
   {
-    v10 = v8;
-    v18 = v4;
+    v10 = integerValue;
+    v18 = finishCopy;
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
@@ -7809,15 +7809,15 @@ void __43__WBTabGroupManager__updateTabGroupShares___block_invoke(uint64_t a1, v
       while (v13);
     }
 
-    v4 = v18;
+    finishCopy = v18;
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncDidFinishWithResult:(int64_t)a3
+- (void)syncDidFinishWithResult:(int64_t)result
 {
-  if (!a3)
+  if (!result)
   {
     v6[6] = v3;
     v6[7] = v4;
@@ -7891,13 +7891,13 @@ void __45__WBTabGroupManager_syncDidFinishWithResult___block_invoke_2(uint64_t a
 
 - (void)_notifySyncDidFinishedForScopedBookmarks
 {
-  v3 = [(WBTabGroupManager *)self allSyncedTabGroupsExceptRemoteUnnamedTabGroups];
+  allSyncedTabGroupsExceptRemoteUnnamedTabGroups = [(WBTabGroupManager *)self allSyncedTabGroupsExceptRemoteUnnamedTabGroups];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __61__WBTabGroupManager__notifySyncDidFinishedForScopedBookmarks__block_invoke;
   v8[3] = &unk_279E77D08;
   v8[4] = self;
-  v4 = [v3 safari_mapAndFilterObjectsUsingBlock:v8];
+  v4 = [allSyncedTabGroupsExceptRemoteUnnamedTabGroups safari_mapAndFilterObjectsUsingBlock:v8];
 
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -7967,9 +7967,9 @@ void __61__WBTabGroupManager__notifySyncDidFinishedForScopedBookmarks__block_inv
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reloadTabGroupsFromDatabaseWithCompletionHandler:(id)a3
+- (void)reloadTabGroupsFromDatabaseWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = WBS_LOG_CHANNEL_PREFIXTabGroup();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -7979,7 +7979,7 @@ void __61__WBTabGroupManager__notifySyncDidFinishedForScopedBookmarks__block_inv
 
   if (self->_tabCollection)
   {
-    [(WBTabGroupManager *)self _reloadProfilesAndTabGroupsAndNotify:1 withCompletionHandler:v4];
+    [(WBTabGroupManager *)self _reloadProfilesAndTabGroupsAndNotify:1 withCompletionHandler:handlerCopy];
   }
 
   else
@@ -7992,20 +7992,20 @@ void __61__WBTabGroupManager__notifySyncDidFinishedForScopedBookmarks__block_inv
   }
 }
 
-- (void)_didRemoveProfiles:(id)a3 updateProfiles:(id)a4 previousProfiles:(id)a5 removeTabGroups:(id)a6 updateTabGroups:(id)a7 previousTabGroups:(id)a8
+- (void)_didRemoveProfiles:(id)profiles updateProfiles:(id)updateProfiles previousProfiles:(id)previousProfiles removeTabGroups:(id)groups updateTabGroups:(id)tabGroups previousTabGroups:(id)previousTabGroups
 {
   v203 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v104 = a4;
-  v95 = a5;
-  v100 = a6;
-  v102 = a7;
+  profilesCopy = profiles;
+  updateProfilesCopy = updateProfiles;
+  previousProfilesCopy = previousProfiles;
+  groupsCopy = groups;
+  tabGroupsCopy = tabGroups;
   v118 = [(NSHashTable *)self->_observers copy];
   v185 = 0u;
   v186 = 0u;
   v187 = 0u;
   v188 = 0u;
-  obj = v13;
+  obj = profilesCopy;
   v114 = [obj countByEnumeratingWithState:&v185 objects:v202 count:16];
   if (v114)
   {
@@ -8044,8 +8044,8 @@ void __61__WBTabGroupManager__notifySyncDidFinishedForScopedBookmarks__block_inv
               v21 = *(*(&v181 + 1) + 8 * i);
               if (objc_opt_respondsToSelector())
               {
-                v22 = [v15 identifier];
-                [v21 tabGroupManager:self didRemoveProfileWithIdentifier:v22];
+                identifier = [v15 identifier];
+                [v21 tabGroupManager:self didRemoveProfileWithIdentifier:identifier];
               }
             }
 
@@ -8060,7 +8060,7 @@ void __61__WBTabGroupManager__notifySyncDidFinishedForScopedBookmarks__block_inv
         v176[1] = 3221225472;
         v177 = __122__WBTabGroupManager__didRemoveProfiles_updateProfiles_previousProfiles_removeTabGroups_updateTabGroups_previousTabGroups___block_invoke;
         v178 = &unk_279E753F0;
-        v179 = self;
+        selfCopy = self;
         v180 = v15;
         os_unfair_lock_lock(&profilesLock);
         v177(v176);
@@ -8075,8 +8075,8 @@ void __61__WBTabGroupManager__notifySyncDidFinishedForScopedBookmarks__block_inv
     while (v114);
   }
 
-  v23 = [v104 allObjects];
-  v24 = [v95 differenceFromArray:v23 withOptions:4];
+  allObjects = [updateProfilesCopy allObjects];
+  v24 = [previousProfilesCopy differenceFromArray:allObjects withOptions:4];
 
   v94 = v24;
   if ([v24 hasChanges])
@@ -8115,14 +8115,14 @@ void __61__WBTabGroupManager__notifySyncDidFinishedForScopedBookmarks__block_inv
   }
 
   v31 = MEMORY[0x277CBEAC0];
-  v32 = [v95 valueForKey:@"identifier"];
-  v107 = [v31 dictionaryWithObjects:v95 forKeys:v32];
+  v32 = [previousProfilesCopy valueForKey:@"identifier"];
+  v107 = [v31 dictionaryWithObjects:previousProfilesCopy forKeys:v32];
 
   v170 = 0u;
   v171 = 0u;
   v168 = 0u;
   v169 = 0u;
-  v98 = v104;
+  v98 = updateProfilesCopy;
   v108 = [v98 countByEnumeratingWithState:&v168 objects:v199 count:16];
   if (v108)
   {
@@ -8161,11 +8161,11 @@ void __61__WBTabGroupManager__notifySyncDidFinishedForScopedBookmarks__block_inv
               v38 = *(*(&v164 + 1) + 8 * k);
               if (objc_opt_respondsToSelector())
               {
-                v39 = [v120 identifier];
-                v40 = [v120 identifier];
-                v41 = [v107 objectForKeyedSubscript:v40];
+                identifier2 = [v120 identifier];
+                identifier3 = [v120 identifier];
+                v41 = [v107 objectForKeyedSubscript:identifier3];
                 v42 = [v120 differenceFromProfile:v41];
-                [v38 tabGroupManager:self didUpdateProfileWithIdentifier:v39 difference:v42];
+                [v38 tabGroupManager:self didUpdateProfileWithIdentifier:identifier2 difference:v42];
               }
             }
 
@@ -8197,8 +8197,8 @@ void __61__WBTabGroupManager__notifySyncDidFinishedForScopedBookmarks__block_inv
               v48 = *(*(&v160 + 1) + 8 * m);
               if (objc_opt_respondsToSelector())
               {
-                v49 = [v120 identifier];
-                [v48 cloudTabDeviceProvider:self didUpdateCloudTabsInProfileWithIdentifier:v49];
+                identifier4 = [v120 identifier];
+                [v48 cloudTabDeviceProvider:self didUpdateCloudTabsInProfileWithIdentifier:identifier4];
               }
             }
 
@@ -8222,7 +8222,7 @@ void __61__WBTabGroupManager__notifySyncDidFinishedForScopedBookmarks__block_inv
   v159 = 0u;
   v156 = 0u;
   v157 = 0u;
-  v97 = v100;
+  v97 = groupsCopy;
   v116 = [v97 countByEnumeratingWithState:&v156 objects:v196 count:16];
   if (v116)
   {
@@ -8261,8 +8261,8 @@ void __61__WBTabGroupManager__notifySyncDidFinishedForScopedBookmarks__block_inv
               v57 = *(*(&v152 + 1) + 8 * n);
               if (objc_opt_respondsToSelector())
               {
-                v58 = [v51 uuid];
-                [v57 tabGroupManager:self didRemoveTabGroupWithUUID:v58];
+                uuid = [v51 uuid];
+                [v57 tabGroupManager:self didRemoveTabGroupWithUUID:uuid];
               }
             }
 
@@ -8276,7 +8276,7 @@ void __61__WBTabGroupManager__notifySyncDidFinishedForScopedBookmarks__block_inv
         v147[1] = 3221225472;
         v148 = __122__WBTabGroupManager__didRemoveProfiles_updateProfiles_previousProfiles_removeTabGroups_updateTabGroups_previousTabGroups___block_invoke_2;
         v149 = &unk_279E753F0;
-        v150 = self;
+        selfCopy2 = self;
         v151 = v51;
         os_unfair_lock_lock(&tabGroupsLock);
         v148(v147);
@@ -8295,7 +8295,7 @@ void __61__WBTabGroupManager__notifySyncDidFinishedForScopedBookmarks__block_inv
   v146 = 0u;
   v143 = 0u;
   v144 = 0u;
-  v96 = v102;
+  v96 = tabGroupsCopy;
   v103 = [v96 countByEnumeratingWithState:&v143 objects:v194 count:16];
   if (v103)
   {
@@ -8314,16 +8314,16 @@ void __61__WBTabGroupManager__notifySyncDidFinishedForScopedBookmarks__block_inv
         v60 = *(*(&v143 + 1) + 8 * v59);
         os_unfair_lock_lock(&tabGroupsLock);
         v117 = v60;
-        v61 = [v60 uuid];
-        v62 = [(WBTabGroupManager *)self _tabGroupWithUUID:v61];
-        v63 = [v62 tabs];
+        uuid2 = [v60 uuid];
+        v62 = [(WBTabGroupManager *)self _tabGroupWithUUID:uuid2];
+        tabs = [v62 tabs];
 
         os_unfair_lock_unlock(&tabGroupsLock);
         v141 = 0u;
         v142 = 0u;
         v139 = 0u;
         v140 = 0u;
-        v109 = v63;
+        v109 = tabs;
         v122 = [v109 countByEnumeratingWithState:&v139 objects:v193 count:16];
         if (v122)
         {
@@ -8360,8 +8360,8 @@ void __61__WBTabGroupManager__notifySyncDidFinishedForScopedBookmarks__block_inv
                     v71 = *(*(&v135 + 1) + 8 * jj);
                     if (objc_opt_respondsToSelector())
                     {
-                      v72 = [v65 uuid];
-                      [v71 tabGroupManager:self didUpdateTabWithUUID:v72 userDriven:0];
+                      uuid3 = [v65 uuid];
+                      [v71 tabGroupManager:self didUpdateTabWithUUID:uuid3 userDriven:0];
                     }
                   }
 
@@ -8400,8 +8400,8 @@ void __61__WBTabGroupManager__notifySyncDidFinishedForScopedBookmarks__block_inv
               v78 = *(*(&v131 + 1) + 8 * kk);
               if (objc_opt_respondsToSelector())
               {
-                v79 = [v117 uuid];
-                [v78 tabGroupManager:self didUpdateTabsInTabGroupWithUUID:v79];
+                uuid4 = [v117 uuid];
+                [v78 tabGroupManager:self didUpdateTabsInTabGroupWithUUID:uuid4];
               }
             }
 
@@ -8433,8 +8433,8 @@ void __61__WBTabGroupManager__notifySyncDidFinishedForScopedBookmarks__block_inv
               v85 = *(*(&v127 + 1) + 8 * mm);
               if (objc_opt_respondsToSelector())
               {
-                v86 = [v117 uuid];
-                [v85 tabGroupManager:self didUpdateTabGroupWithUUID:v86];
+                uuid5 = [v117 uuid];
+                [v85 tabGroupManager:self didUpdateTabGroupWithUUID:uuid5];
               }
             }
 

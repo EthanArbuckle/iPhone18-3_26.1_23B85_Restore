@@ -1,6 +1,6 @@
 @interface HMDSymptomContainer
 - (HMDAccessorySymptomsDelegate)delegate;
-- (HMDSymptomContainer)initWithIDSIdentifier:(id)a3;
+- (HMDSymptomContainer)initWithIDSIdentifier:(id)identifier;
 @end
 
 @implementation HMDSymptomContainer
@@ -12,19 +12,19 @@
   return WeakRetained;
 }
 
-- (HMDSymptomContainer)initWithIDSIdentifier:(id)a3
+- (HMDSymptomContainer)initWithIDSIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (v5)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v6 = v5;
+    v6 = identifierCopy;
     v12.receiver = self;
     v12.super_class = HMDSymptomContainer;
     v7 = [(HMDSymptomContainer *)&v12 init];
     v8 = v7;
     if (v7)
     {
-      objc_storeStrong(&v7->_idsIdentifier, a3);
+      objc_storeStrong(&v7->_idsIdentifier, identifier);
     }
 
     return v8;

@@ -2,16 +2,16 @@
 + (OS_dispatch_queue)preheatQueue;
 - (CGSize)masterThumbnailSize;
 - (NSArray)availableThumbnailSizes;
-- (id)thumbnailDataForAsset:(id)a3 targetSize:(CGSize)a4 onlyFromCache:(BOOL)a5 outDataSpec:(PXMediaProviderThumbnailDataSpec *)a6;
-- (int64_t)requestAnimatedImageForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (int64_t)requestCGImageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7;
-- (int64_t)requestImageDataForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (int64_t)requestImageURLForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (int64_t)requestLivePhotoForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7;
-- (int64_t)requestPlayerItemForVideo:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (int64_t)requestStreamForVideo:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (int64_t)requestURLForVideo:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (void)cancelImageRequest:(int64_t)a3;
+- (id)thumbnailDataForAsset:(id)asset targetSize:(CGSize)size onlyFromCache:(BOOL)cache outDataSpec:(PXMediaProviderThumbnailDataSpec *)spec;
+- (int64_t)requestAnimatedImageForAsset:(id)asset options:(id)options resultHandler:(id)handler;
+- (int64_t)requestCGImageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler;
+- (int64_t)requestImageDataForAsset:(id)asset options:(id)options resultHandler:(id)handler;
+- (int64_t)requestImageURLForAsset:(id)asset options:(id)options resultHandler:(id)handler;
+- (int64_t)requestLivePhotoForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler;
+- (int64_t)requestPlayerItemForVideo:(id)video options:(id)options resultHandler:(id)handler;
+- (int64_t)requestStreamForVideo:(id)video options:(id)options resultHandler:(id)handler;
+- (int64_t)requestURLForVideo:(id)video options:(id)options resultHandler:(id)handler;
+- (void)cancelImageRequest:(int64_t)request;
 @end
 
 @implementation PXMediaProvider
@@ -82,12 +82,12 @@ void __42__PXMediaProvider_availableThumbnailSizes__block_invoke(uint64_t a1, ui
   [v8 addObject:v9];
 }
 
-- (void)cancelImageRequest:(int64_t)a3
+- (void)cancelImageRequest:(int64_t)request
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  [v5 handleFailureInMethod:a2 object:self file:@"PXMediaProvider.m" lineNumber:99 description:{@"Method %s is a responsibility of subclass %@", "-[PXMediaProvider cancelImageRequest:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXMediaProvider.m" lineNumber:99 description:{@"Method %s is a responsibility of subclass %@", "-[PXMediaProvider cancelImageRequest:]", v7}];
 
   abort();
 }
@@ -101,117 +101,117 @@ void __42__PXMediaProvider_availableThumbnailSizes__block_invoke(uint64_t a1, ui
   return result;
 }
 
-- (id)thumbnailDataForAsset:(id)a3 targetSize:(CGSize)a4 onlyFromCache:(BOOL)a5 outDataSpec:(PXMediaProviderThumbnailDataSpec *)a6
+- (id)thumbnailDataForAsset:(id)asset targetSize:(CGSize)size onlyFromCache:(BOOL)cache outDataSpec:(PXMediaProviderThumbnailDataSpec *)spec
 {
-  v8 = a3;
-  v9 = [MEMORY[0x1E696AAA8] currentHandler];
+  assetCopy = asset;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
-  [v9 handleFailureInMethod:a2 object:self file:@"PXMediaProvider.m" lineNumber:65 description:{@"Method %s is a responsibility of subclass %@", "-[PXMediaProvider thumbnailDataForAsset:targetSize:onlyFromCache:outDataSpec:]", v11}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXMediaProvider.m" lineNumber:65 description:{@"Method %s is a responsibility of subclass %@", "-[PXMediaProvider thumbnailDataForAsset:targetSize:onlyFromCache:outDataSpec:]", v11}];
 
   abort();
 }
 
-- (int64_t)requestStreamForVideo:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int64_t)requestStreamForVideo:(id)video options:(id)options resultHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [MEMORY[0x1E696AAA8] currentHandler];
+  videoCopy = video;
+  optionsCopy = options;
+  handlerCopy = handler;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v13 = objc_opt_class();
   v14 = NSStringFromClass(v13);
-  [v12 handleFailureInMethod:a2 object:self file:@"PXMediaProvider.m" lineNumber:60 description:{@"Method %s is a responsibility of subclass %@", "-[PXMediaProvider requestStreamForVideo:options:resultHandler:]", v14}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXMediaProvider.m" lineNumber:60 description:{@"Method %s is a responsibility of subclass %@", "-[PXMediaProvider requestStreamForVideo:options:resultHandler:]", v14}];
 
   abort();
 }
 
-- (int64_t)requestURLForVideo:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int64_t)requestURLForVideo:(id)video options:(id)options resultHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [MEMORY[0x1E696AAA8] currentHandler];
+  videoCopy = video;
+  optionsCopy = options;
+  handlerCopy = handler;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v13 = objc_opt_class();
   v14 = NSStringFromClass(v13);
-  [v12 handleFailureInMethod:a2 object:self file:@"PXMediaProvider.m" lineNumber:55 description:{@"Method %s is a responsibility of subclass %@", "-[PXMediaProvider requestURLForVideo:options:resultHandler:]", v14}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXMediaProvider.m" lineNumber:55 description:{@"Method %s is a responsibility of subclass %@", "-[PXMediaProvider requestURLForVideo:options:resultHandler:]", v14}];
 
   abort();
 }
 
-- (int64_t)requestAnimatedImageForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int64_t)requestAnimatedImageForAsset:(id)asset options:(id)options resultHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [MEMORY[0x1E696AAA8] currentHandler];
+  assetCopy = asset;
+  optionsCopy = options;
+  handlerCopy = handler;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v13 = objc_opt_class();
   v14 = NSStringFromClass(v13);
-  [v12 handleFailureInMethod:a2 object:self file:@"PXMediaProvider.m" lineNumber:50 description:{@"Method %s is a responsibility of subclass %@", "-[PXMediaProvider requestAnimatedImageForAsset:options:resultHandler:]", v14}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXMediaProvider.m" lineNumber:50 description:{@"Method %s is a responsibility of subclass %@", "-[PXMediaProvider requestAnimatedImageForAsset:options:resultHandler:]", v14}];
 
   abort();
 }
 
-- (int64_t)requestLivePhotoForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7
+- (int64_t)requestLivePhotoForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a6;
-  v13 = a7;
-  v14 = [MEMORY[0x1E696AAA8] currentHandler];
+  assetCopy = asset;
+  optionsCopy = options;
+  handlerCopy = handler;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v15 = objc_opt_class();
   v16 = NSStringFromClass(v15);
-  [v14 handleFailureInMethod:a2 object:self file:@"PXMediaProvider.m" lineNumber:45 description:{@"Method %s is a responsibility of subclass %@", "-[PXMediaProvider requestLivePhotoForAsset:targetSize:contentMode:options:resultHandler:]", v16}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXMediaProvider.m" lineNumber:45 description:{@"Method %s is a responsibility of subclass %@", "-[PXMediaProvider requestLivePhotoForAsset:targetSize:contentMode:options:resultHandler:]", v16}];
 
   abort();
 }
 
-- (int64_t)requestPlayerItemForVideo:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int64_t)requestPlayerItemForVideo:(id)video options:(id)options resultHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [MEMORY[0x1E696AAA8] currentHandler];
+  videoCopy = video;
+  optionsCopy = options;
+  handlerCopy = handler;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v13 = objc_opt_class();
   v14 = NSStringFromClass(v13);
-  [v12 handleFailureInMethod:a2 object:self file:@"PXMediaProvider.m" lineNumber:40 description:{@"Method %s is a responsibility of subclass %@", "-[PXMediaProvider requestPlayerItemForVideo:options:resultHandler:]", v14}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXMediaProvider.m" lineNumber:40 description:{@"Method %s is a responsibility of subclass %@", "-[PXMediaProvider requestPlayerItemForVideo:options:resultHandler:]", v14}];
 
   abort();
 }
 
-- (int64_t)requestImageURLForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int64_t)requestImageURLForAsset:(id)asset options:(id)options resultHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [MEMORY[0x1E696AAA8] currentHandler];
+  assetCopy = asset;
+  optionsCopy = options;
+  handlerCopy = handler;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v13 = objc_opt_class();
   v14 = NSStringFromClass(v13);
-  [v12 handleFailureInMethod:a2 object:self file:@"PXMediaProvider.m" lineNumber:35 description:{@"Method %s is a responsibility of subclass %@", "-[PXMediaProvider requestImageURLForAsset:options:resultHandler:]", v14}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXMediaProvider.m" lineNumber:35 description:{@"Method %s is a responsibility of subclass %@", "-[PXMediaProvider requestImageURLForAsset:options:resultHandler:]", v14}];
 
   abort();
 }
 
-- (int64_t)requestImageDataForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int64_t)requestImageDataForAsset:(id)asset options:(id)options resultHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [MEMORY[0x1E696AAA8] currentHandler];
+  assetCopy = asset;
+  optionsCopy = options;
+  handlerCopy = handler;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v13 = objc_opt_class();
   v14 = NSStringFromClass(v13);
-  [v12 handleFailureInMethod:a2 object:self file:@"PXMediaProvider.m" lineNumber:30 description:{@"Method %s is a responsibility of subclass %@", "-[PXMediaProvider requestImageDataForAsset:options:resultHandler:]", v14}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXMediaProvider.m" lineNumber:30 description:{@"Method %s is a responsibility of subclass %@", "-[PXMediaProvider requestImageDataForAsset:options:resultHandler:]", v14}];
 
   abort();
 }
 
-- (int64_t)requestCGImageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7
+- (int64_t)requestCGImageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a6;
-  v13 = a7;
-  v14 = [MEMORY[0x1E696AAA8] currentHandler];
+  assetCopy = asset;
+  optionsCopy = options;
+  handlerCopy = handler;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v15 = objc_opt_class();
   v16 = NSStringFromClass(v15);
-  [v14 handleFailureInMethod:a2 object:self file:@"PXMediaProvider.m" lineNumber:25 description:{@"Method %s is a responsibility of subclass %@", "-[PXMediaProvider requestCGImageForAsset:targetSize:contentMode:options:resultHandler:]", v16}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXMediaProvider.m" lineNumber:25 description:{@"Method %s is a responsibility of subclass %@", "-[PXMediaProvider requestCGImageForAsset:targetSize:contentMode:options:resultHandler:]", v16}];
 
   abort();
 }

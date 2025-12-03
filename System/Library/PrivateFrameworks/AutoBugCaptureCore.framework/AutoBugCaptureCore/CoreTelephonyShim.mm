@@ -1,11 +1,11 @@
 @interface CoreTelephonyShim
 + (id)sharedInstance;
 - (CoreTelephonyShim)init;
-- (void)addDelegate:(id)a3;
-- (void)carrierBundleChange:(id)a3;
-- (void)currentDataSimChanged:(id)a3;
+- (void)addDelegate:(id)delegate;
+- (void)carrierBundleChange:(id)change;
+- (void)currentDataSimChanged:(id)changed;
 - (void)dealloc;
-- (void)removeDelegate:(id)a3;
+- (void)removeDelegate:(id)delegate;
 - (void)subscriptionInfoDidChange;
 @end
 
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = __35__CoreTelephonyShim_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -71,27 +71,27 @@ uint64_t __35__CoreTelephonyShim_sharedInstance__block_invoke(uint64_t a1)
   [(CoreTelephonyShim *)&v3 dealloc];
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v4 = self->_delegates;
   objc_sync_enter(v4);
-  if (v5)
+  if (delegateCopy)
   {
-    [(NSMutableSet *)self->_delegates addObject:v5];
+    [(NSMutableSet *)self->_delegates addObject:delegateCopy];
   }
 
   objc_sync_exit(v4);
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v4 = self->_delegates;
   objc_sync_enter(v4);
-  if (v5)
+  if (delegateCopy)
   {
-    [(NSMutableSet *)self->_delegates removeObject:v5];
+    [(NSMutableSet *)self->_delegates removeObject:delegateCopy];
   }
 
   objc_sync_exit(v4);
@@ -141,10 +141,10 @@ uint64_t __35__CoreTelephonyShim_sharedInstance__block_invoke(uint64_t a1)
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)currentDataSimChanged:(id)a3
+- (void)currentDataSimChanged:(id)changed
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changedCopy = changed;
   v5 = self->_delegates;
   objc_sync_enter(v5);
   v12 = 0u;
@@ -169,7 +169,7 @@ uint64_t __35__CoreTelephonyShim_sharedInstance__block_invoke(uint64_t a1)
         v10 = *(*(&v12 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 currentDataSimChanged:{v4, v12}];
+          [v10 currentDataSimChanged:{changedCopy, v12}];
         }
 
         ++v9;
@@ -186,10 +186,10 @@ uint64_t __35__CoreTelephonyShim_sharedInstance__block_invoke(uint64_t a1)
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)carrierBundleChange:(id)a3
+- (void)carrierBundleChange:(id)change
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v5 = self->_delegates;
   objc_sync_enter(v5);
   v12 = 0u;
@@ -214,7 +214,7 @@ uint64_t __35__CoreTelephonyShim_sharedInstance__block_invoke(uint64_t a1)
         v10 = *(*(&v12 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 carrierBundleChange:{v4, v12}];
+          [v10 carrierBundleChange:{changeCopy, v12}];
         }
 
         ++v9;

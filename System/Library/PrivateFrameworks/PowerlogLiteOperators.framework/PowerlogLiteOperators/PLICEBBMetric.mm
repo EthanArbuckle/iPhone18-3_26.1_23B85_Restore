@@ -1,13 +1,13 @@
 @interface PLICEBBMetric
 + (id)sharedInstance;
-- (BOOL)registerForNotifClient:(id)a3 andProfile:(id)a4;
-- (void)initializeDataStoreBBTS:(id)a3 triggerCnt:(id)a4 triggerId:(id)a5;
-- (void)initializeMetricsDictWithTS:(id)a3 triggerCnt:(id)a4 triggerId:(id)a5;
+- (BOOL)registerForNotifClient:(id)client andProfile:(id)profile;
+- (void)initializeDataStoreBBTS:(id)s triggerCnt:(id)cnt triggerId:(id)id;
+- (void)initializeMetricsDictWithTS:(id)s triggerCnt:(id)cnt triggerId:(id)id;
 - (void)initializeMetricsSim;
 - (void)modelProdMetricsNotify;
-- (void)modelSimMetricsNotify:(id)a3;
-- (void)queueAperiodicMetricId:(id)a3 payload:(id)a4 profileId:(id)a5;
-- (void)queuePeriodicMetricId:(id)a3 payload:(id)a4 forTrigger:(id)a5;
+- (void)modelSimMetricsNotify:(id)notify;
+- (void)queueAperiodicMetricId:(id)id payload:(id)payload profileId:(id)profileId;
+- (void)queuePeriodicMetricId:(id)id payload:(id)payload forTrigger:(id)trigger;
 @end
 
 @implementation PLICEBBMetric
@@ -18,7 +18,7 @@
   block[1] = 3221225472;
   block[2] = __31__PLICEBBMetric_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_2811F7900 != -1)
   {
     dispatch_once(&qword_2811F7900, block);
@@ -70,9 +70,9 @@ void *__31__PLICEBBMetric_sharedInstance__block_invoke(uint64_t a1)
     v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"*** error *** plist not found, cannot proceed"];
     v12 = MEMORY[0x277D3F178];
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/KICE/PLICEBBMetric.m"];
-    v14 = [v13 lastPathComponent];
+    lastPathComponent = [v13 lastPathComponent];
     v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLICEBBMetric initializeMetricsSim]"];
-    [v12 logMessage:v11 fromFile:v14 fromFunction:v15 fromLineNumber:64];
+    [v12 logMessage:v11 fromFile:lastPathComponent fromFunction:v15 fromLineNumber:64];
 
     v16 = PLLogCommon();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -95,16 +95,16 @@ void *__31__PLICEBBMetric_sharedInstance__block_invoke(uint64_t a1)
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)registerForNotifClient:(id)a3 andProfile:(id)a4
+- (BOOL)registerForNotifClient:(id)client andProfile:(id)profile
 {
   location[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  profileCopy = profile;
   v8 = [(NSDictionary *)self->_plistSimMetrics mutableCopy];
-  v9 = [v7 integerValue];
-  if (v9 <= 2)
+  integerValue = [profileCopy integerValue];
+  if (integerValue <= 2)
   {
-    if (v9 == 1)
+    if (integerValue == 1)
     {
       v11 = @"METRIC_SIM_LTE_TEST";
       v12 = 32;
@@ -113,7 +113,7 @@ void *__31__PLICEBBMetric_sharedInstance__block_invoke(uint64_t a1)
 
     else
     {
-      if (v9 != 2)
+      if (integerValue != 2)
       {
         goto LABEL_15;
       }
@@ -157,7 +157,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  switch(v9)
+  switch(integerValue)
   {
     case 3:
       v11 = @"METRIC_SIM_TDS_TEST";
@@ -185,9 +185,9 @@ LABEL_15:
   v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"*** error *** unsupported profile"];
   v28 = MEMORY[0x277D3F178];
   v29 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/KICE/PLICEBBMetric.m"];
-  v30 = [v29 lastPathComponent];
+  lastPathComponent = [v29 lastPathComponent];
   v31 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLICEBBMetric registerForNotifClient:andProfile:]"];
-  [v28 logMessage:v27 fromFile:v30 fromFunction:v31 fromLineNumber:134];
+  [v28 logMessage:v27 fromFile:lastPathComponent fromFunction:v31 fromLineNumber:134];
 
   v32 = PLLogCommon();
   if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
@@ -210,11 +210,11 @@ void __51__PLICEBBMetric_registerForNotifClient_andProfile___block_invoke(uint64
   [WeakRetained modelProdMetricsNotify];
 }
 
-- (void)queuePeriodicMetricId:(id)a3 payload:(id)a4 forTrigger:(id)a5
+- (void)queuePeriodicMetricId:(id)id payload:(id)payload forTrigger:(id)trigger
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  idCopy = id;
+  payloadCopy = payload;
+  triggerCopy = trigger;
   logAgent = self->_logAgent;
   if (!logAgent)
   {
@@ -234,9 +234,9 @@ LABEL_10:
     goto LABEL_7;
   }
 
-  v12 = [(PLAgent *)logAgent workQueue];
+  workQueue = [(PLAgent *)logAgent workQueue];
 
-  if (!v12)
+  if (!workQueue)
   {
     v14 = PLLogCommon();
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -249,16 +249,16 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v13 = [(PLAgent *)self->_logAgent workQueue];
+  workQueue2 = [(PLAgent *)self->_logAgent workQueue];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __58__PLICEBBMetric_queuePeriodicMetricId_payload_forTrigger___block_invoke;
   v16[3] = &unk_2782591A8;
-  v17 = v8;
-  v18 = self;
-  v19 = v10;
-  v20 = v9;
-  dispatch_async(v13, v16);
+  v17 = idCopy;
+  selfCopy = self;
+  v19 = triggerCopy;
+  v20 = payloadCopy;
+  dispatch_async(workQueue2, v16);
 
 LABEL_8:
 }
@@ -439,11 +439,11 @@ uint64_t __58__PLICEBBMetric_queuePeriodicMetricId_payload_forTrigger___block_in
   return result;
 }
 
-- (void)queueAperiodicMetricId:(id)a3 payload:(id)a4 profileId:(id)a5
+- (void)queueAperiodicMetricId:(id)id payload:(id)payload profileId:(id)profileId
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  idCopy = id;
+  payloadCopy = payload;
+  profileIdCopy = profileId;
   logAgent = self->_logAgent;
   if (!logAgent)
   {
@@ -463,9 +463,9 @@ LABEL_10:
     goto LABEL_7;
   }
 
-  v12 = [(PLAgent *)logAgent workQueue];
+  workQueue = [(PLAgent *)logAgent workQueue];
 
-  if (!v12)
+  if (!workQueue)
   {
     v14 = PLLogCommon();
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -478,16 +478,16 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v13 = [(PLAgent *)self->_logAgent workQueue];
+  workQueue2 = [(PLAgent *)self->_logAgent workQueue];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __58__PLICEBBMetric_queueAperiodicMetricId_payload_profileId___block_invoke;
   v16[3] = &unk_2782591A8;
-  v17 = v9;
-  v18 = self;
-  v19 = v8;
-  v20 = v10;
-  dispatch_async(v13, v16);
+  v17 = payloadCopy;
+  selfCopy = self;
+  v19 = idCopy;
+  v20 = profileIdCopy;
+  dispatch_async(workQueue2, v16);
 
 LABEL_8:
 }
@@ -630,18 +630,18 @@ uint64_t __58__PLICEBBMetric_queueAperiodicMetricId_payload_profileId___block_in
   return result;
 }
 
-- (void)modelSimMetricsNotify:(id)a3
+- (void)modelSimMetricsNotify:(id)notify
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notifyCopy = notify;
   if ([(NSString *)self->_notifyTitle isEqualToString:@"METRIC_PROD"])
   {
     v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"bad metrics channel, !TEST"];
     v6 = MEMORY[0x277D3F178];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/KICE/PLICEBBMetric.m"];
-    v8 = [v7 lastPathComponent];
+    lastPathComponent = [v7 lastPathComponent];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLICEBBMetric modelSimMetricsNotify:]"];
-    [v6 logMessage:v5 fromFile:v8 fromFunction:v9 fromLineNumber:388];
+    [v6 logMessage:v5 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:388];
 
     v10 = PLLogCommon();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -698,9 +698,9 @@ uint64_t __58__PLICEBBMetric_queueAperiodicMetricId_payload_profileId___block_in
 
       v10 = *(*(&v28 + 1) + 8 * i);
       v11 = [v10 objectForKeyedSubscript:@"metricId"];
-      v12 = [v11 intValue];
+      intValue = [v11 intValue];
 
-      if (v12 != 3985670)
+      if (intValue != 3985670)
       {
         v6 = v9;
         v13 = [v10 objectForKeyedSubscript:v9];
@@ -711,21 +711,21 @@ uint64_t __58__PLICEBBMetric_queueAperiodicMetricId_payload_profileId___block_in
         }
 
         v14 = [v10 objectForKeyedSubscript:v9];
-        v15 = [v14 intValue];
+        intValue2 = [v14 intValue];
 
-        if (v15 >= v7)
+        if (intValue2 >= v7)
         {
           v16 = v7;
         }
 
         else
         {
-          v16 = v15;
+          v16 = intValue2;
         }
 
         if (v7 == -1)
         {
-          v7 = v15;
+          v7 = intValue2;
         }
 
         else
@@ -733,19 +733,19 @@ uint64_t __58__PLICEBBMetric_queueAperiodicMetricId_payload_profileId___block_in
           v7 = v16;
         }
 
-        if (v15 <= v5)
+        if (intValue2 <= v5)
         {
           v17 = v5;
         }
 
         else
         {
-          v17 = v15;
+          v17 = intValue2;
         }
 
         if (v5 == -1)
         {
-          v5 = v15;
+          v5 = intValue2;
         }
 
         else
@@ -777,9 +777,9 @@ LABEL_25:
     v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"bad metrics channel: !PROD"];
     v20 = MEMORY[0x277D3F178];
     v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/KICE/PLICEBBMetric.m"];
-    v22 = [v21 lastPathComponent];
+    lastPathComponent = [v21 lastPathComponent];
     v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLICEBBMetric modelProdMetricsNotify]"];
-    [v20 logMessage:v19 fromFile:v22 fromFunction:v23 fromLineNumber:419];
+    [v20 logMessage:v19 fromFile:lastPathComponent fromFunction:v23 fromLineNumber:419];
 
     v24 = PLLogCommon();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
@@ -798,34 +798,34 @@ LABEL_25:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)initializeMetricsDictWithTS:(id)a3 triggerCnt:(id)a4 triggerId:(id)a5
+- (void)initializeMetricsDictWithTS:(id)s triggerCnt:(id)cnt triggerId:(id)id
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  idCopy = id;
+  cntCopy = cnt;
+  sCopy = s;
   v11 = objc_opt_new();
   prodMetrics = self->_prodMetrics;
   self->_prodMetrics = v11;
 
-  v15 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSince1970:{objc_msgSend(v10, "integerValue")}];
-  v13 = [v15 convertFromBasebandToMonotonic];
-  [(NSMutableDictionary *)self->_prodMetrics setObject:v13 forKeyedSubscript:@"timestamp"];
+  v15 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSince1970:{objc_msgSend(sCopy, "integerValue")}];
+  convertFromBasebandToMonotonic = [v15 convertFromBasebandToMonotonic];
+  [(NSMutableDictionary *)self->_prodMetrics setObject:convertFromBasebandToMonotonic forKeyedSubscript:@"timestamp"];
 
-  [(NSMutableDictionary *)self->_prodMetrics setObject:v10 forKeyedSubscript:@"bbtimestamp"];
+  [(NSMutableDictionary *)self->_prodMetrics setObject:sCopy forKeyedSubscript:@"bbtimestamp"];
   [(NSMutableDictionary *)self->_prodMetrics setObject:&unk_282C11718 forKeyedSubscript:@"duration"];
-  [(NSMutableDictionary *)self->_prodMetrics setObject:v9 forKeyedSubscript:@"seqnum"];
+  [(NSMutableDictionary *)self->_prodMetrics setObject:cntCopy forKeyedSubscript:@"seqnum"];
 
-  [(NSMutableDictionary *)self->_prodMetrics setObject:v8 forKeyedSubscript:@"triggerId"];
+  [(NSMutableDictionary *)self->_prodMetrics setObject:idCopy forKeyedSubscript:@"triggerId"];
   v14 = objc_opt_new();
   [(NSMutableDictionary *)self->_prodMetrics setObject:v14 forKeyedSubscript:@"arr"];
 }
 
-- (void)initializeDataStoreBBTS:(id)a3 triggerCnt:(id)a4 triggerId:(id)a5
+- (void)initializeDataStoreBBTS:(id)s triggerCnt:(id)cnt triggerId:(id)id
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[PLICEBBHardwareMessage alloc] initEntryWithBBTS:v10 triggerId:v8 seqnum:v9 payload:0 logAgent:self->_logAgent];
+  idCopy = id;
+  cntCopy = cnt;
+  sCopy = s;
+  v11 = [[PLICEBBHardwareMessage alloc] initEntryWithBBTS:sCopy triggerId:idCopy seqnum:cntCopy payload:0 logAgent:self->_logAgent];
 
   storeMetricsLogger = self->_storeMetricsLogger;
   self->_storeMetricsLogger = v11;

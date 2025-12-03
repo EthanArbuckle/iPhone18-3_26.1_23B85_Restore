@@ -1,23 +1,23 @@
 @interface HDClinicalContentAnalyticsItem
-- (HDClinicalContentAnalyticsItem)initWithSourceURL:(id)a3 medicalRecord:(id)a4;
+- (HDClinicalContentAnalyticsItem)initWithSourceURL:(id)l medicalRecord:(id)record;
 @end
 
 @implementation HDClinicalContentAnalyticsItem
 
-- (HDClinicalContentAnalyticsItem)initWithSourceURL:(id)a3 medicalRecord:(id)a4
+- (HDClinicalContentAnalyticsItem)initWithSourceURL:(id)l medicalRecord:(id)record
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  recordCopy = record;
   v14.receiver = self;
   v14.super_class = HDClinicalContentAnalyticsItem;
   v8 = [(HDClinicalContentAnalyticsItem *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [lCopy copy];
     sourceURL = v8->_sourceURL;
     v8->_sourceURL = v9;
 
-    v11 = [v7 copy];
+    v11 = [recordCopy copy];
     medicalRecord = v8->_medicalRecord;
     v8->_medicalRecord = v11;
   }

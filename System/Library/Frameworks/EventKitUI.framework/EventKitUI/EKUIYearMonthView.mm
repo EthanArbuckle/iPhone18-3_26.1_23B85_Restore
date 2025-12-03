@@ -1,18 +1,18 @@
 @interface EKUIYearMonthView
-+ (double)heightForInterfaceOrientation:(int64_t)a3 windowSize:(CGSize)a4 heightSizeClass:(int64_t)a5;
-- (BOOL)_pointIntersectsMonthName:(CGPoint)a3;
++ (double)heightForInterfaceOrientation:(int64_t)orientation windowSize:(CGSize)size heightSizeClass:(int64_t)class;
+- (BOOL)_pointIntersectsMonthName:(CGPoint)name;
 - (BOOL)_shouldUseRoundedRectInsteadOfCircle;
-- (BOOL)containsCalendarDate:(id)a3;
+- (BOOL)containsCalendarDate:(id)date;
 - (BOOL)isCurrentMonth;
-- (BOOL)pointIsAboveMonthNameBaseline:(CGPoint)a3;
+- (BOOL)pointIsAboveMonthNameBaseline:(CGPoint)baseline;
 - (BOOL)showWeekDayInitials;
 - (CGPoint)_monthNameOriginPoint;
 - (CGPoint)headerOrigin;
 - (CGRect)_monthNameFrame;
-- (CGRect)frameForGridOfDays:(BOOL)a3;
+- (CGRect)frameForGridOfDays:(BOOL)days;
 - (CGRect)frameForTodayHighlight;
-- (CGSize)roundedRectSizeForDayNumberString:(id)a3;
-- (EKUIYearMonthView)initWithCalendarDate:(id)a3 calendar:(id)a4;
+- (CGSize)roundedRectSizeForDayNumberString:(id)string;
+- (EKUIYearMonthView)initWithCalendarDate:(id)date calendar:(id)calendar;
 - (NSString)description;
 - (UIColor)dayColor;
 - (UIFont)dayNumberFont;
@@ -37,59 +37,59 @@
 - (double)yInset;
 - (double)ySpacing;
 - (id)_containerForPreview;
-- (id)_imageForDayNumber:(id)a3 size:(CGSize)a4 underlineThickness:(double)a5 forPreview:(BOOL)a6;
-- (id)_imageForMonthDays:(int64_t)a3 size:(CGSize)a4 underlineThickness:(double)a5;
-- (id)_imageForMonthName:(id)a3;
+- (id)_imageForDayNumber:(id)number size:(CGSize)size underlineThickness:(double)thickness forPreview:(BOOL)preview;
+- (id)_imageForMonthDays:(int64_t)days size:(CGSize)size underlineThickness:(double)thickness;
+- (id)_imageForMonthName:(id)name;
 - (id)_todayAttributes;
 - (id)_weekDayInitialsImage;
-- (id)calendarDateForPoint:(CGPoint)a3;
-- (id)monthNameForDate:(id)a3;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (int64_t)_dayIndexForPoint:(CGPoint)a3;
-- (void)_adjustHidingViewToFrame:(CGRect)a3;
-- (void)_drawDayNumber:(id)a3 size:(CGSize)a4 underlineThickness:(double)a5 atPoint:(CGPoint)a6;
-- (void)_drawMonthDays:(int64_t)a3 size:(CGSize)a4 underlineThickness:(double)a5 atPoint:(CGPoint)a6;
-- (void)_drawMonthName:(id)a3 atPoint:(CGPoint)a4;
-- (void)_drawWeekDayInitialsAtPoint:(CGPoint)a3;
-- (void)_getMetricsForDayIndex:(int64_t)a3 textFrame:(CGRect *)a4 circleFrame:(CGRect *)a5;
+- (id)calendarDateForPoint:(CGPoint)point;
+- (id)monthNameForDate:(id)date;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (int64_t)_dayIndexForPoint:(CGPoint)point;
+- (void)_adjustHidingViewToFrame:(CGRect)frame;
+- (void)_drawDayNumber:(id)number size:(CGSize)size underlineThickness:(double)thickness atPoint:(CGPoint)point;
+- (void)_drawMonthDays:(int64_t)days size:(CGSize)size underlineThickness:(double)thickness atPoint:(CGPoint)point;
+- (void)_drawMonthName:(id)name atPoint:(CGPoint)point;
+- (void)_drawWeekDayInitialsAtPoint:(CGPoint)point;
+- (void)_getMetricsForDayIndex:(int64_t)index textFrame:(CGRect *)frame circleFrame:(CGRect *)circleFrame;
 - (void)_reloadCachedValues;
 - (void)_setUpInteraction;
 - (void)_updateFirstOfMonthAndYearIndices;
 - (void)_updateToday;
 - (void)_warmImageCache;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 - (void)localeChanged;
-- (void)overlaySignificantDatesChangedInRange:(id)a3;
-- (void)pointerInteraction:(id)a3 willEnterRegion:(id)a4 animator:(id)a5;
-- (void)pointerInteraction:(id)a3 willExitRegion:(id)a4 animator:(id)a5;
+- (void)overlaySignificantDatesChangedInRange:(id)range;
+- (void)pointerInteraction:(id)interaction willEnterRegion:(id)region animator:(id)animator;
+- (void)pointerInteraction:(id)interaction willExitRegion:(id)region animator:(id)animator;
 - (void)pulseTodayCircle;
-- (void)setCalendarDate:(id)a3;
-- (void)setOverlaySignificantDatesProvider:(id)a3;
+- (void)setCalendarDate:(id)date;
+- (void)setOverlaySignificantDatesProvider:(id)provider;
 - (void)tintColorDidChange;
 @end
 
 @implementation EKUIYearMonthView
 
-- (EKUIYearMonthView)initWithCalendarDate:(id)a3 calendar:(id)a4
+- (EKUIYearMonthView)initWithCalendarDate:(id)date calendar:(id)calendar
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  calendarCopy = calendar;
   v16.receiver = self;
   v16.super_class = EKUIYearMonthView;
   v8 = [(EKUIYearMonthView *)&v16 init];
   if (v8)
   {
-    v9 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [(EKUIYearMonthView *)v8 setBackgroundColor:v9];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [(EKUIYearMonthView *)v8 setBackgroundColor:systemBackgroundColor];
 
-    objc_storeStrong(&v8->_calendar, a4);
-    v10 = [v6 calendarDateForMonth];
+    objc_storeStrong(&v8->_calendar, calendar);
+    calendarDateForMonth = [dateCopy calendarDateForMonth];
     calendarDate = v8->_calendarDate;
-    v8->_calendarDate = v10;
+    v8->_calendarDate = calendarDateForMonth;
 
-    v12 = [v6 calendarDateForEndOfMonth];
+    calendarDateForEndOfMonth = [dateCopy calendarDateForEndOfMonth];
     endCalendarDate = v8->_endCalendarDate;
-    v8->_endCalendarDate = v12;
+    v8->_endCalendarDate = calendarDateForEndOfMonth;
 
     [(EKUIYearMonthView *)v8 _reloadCachedValues];
     [(EKUIYearMonthView *)v8 setContentMode:3];
@@ -99,9 +99,9 @@
       [(EKUIYearMonthView *)v8 _setUpInteraction];
     }
 
-    v14 = [(EKUIYearMonthView *)v8 layer];
-    [v14 setValue:MEMORY[0x1E695E118] forKeyPath:@"separatedOptions.enableContext"];
-    [v14 setNeedsDisplay];
+    layer = [(EKUIYearMonthView *)v8 layer];
+    [layer setValue:MEMORY[0x1E695E118] forKeyPath:@"separatedOptions.enableContext"];
+    [layer setNeedsDisplay];
   }
 
   return v8;
@@ -113,13 +113,13 @@
   v8.receiver = self;
   v8.super_class = EKUIYearMonthView;
   v4 = [(EKUIYearMonthView *)&v8 description];
-  v5 = [(EKUIYearMonthView *)self calendarDate];
-  v6 = [v3 stringWithFormat:@"%@\n\tcalendarDate: [%@]\n\t_endCalendarDate: [%@]", v4, v5, self->_endCalendarDate];;
+  calendarDate = [(EKUIYearMonthView *)self calendarDate];
+  v6 = [v3 stringWithFormat:@"%@\n\tcalendarDate: [%@]\n\t_endCalendarDate: [%@]", v4, calendarDate, self->_endCalendarDate];;
 
   return v6;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   CurrentContext = UIGraphicsGetCurrentContext();
   if (CurrentContext)
@@ -137,8 +137,8 @@
         v7 = v7 - v11;
       }
 
-      v12 = [(EKUIYearMonthView *)self tintColor];
-      [v12 set];
+      tintColor = [(EKUIYearMonthView *)self tintColor];
+      [tintColor set];
 
       [v10 drawAtPoint:{v7, v9}];
     }
@@ -165,8 +165,8 @@
       v28 = x + v27;
       [(EKUIYearMonthView *)self weekDayInitialsAdjustTop];
       v30 = y + v29;
-      v31 = [(EKUIYearMonthView *)self _weekDayInitialsImage];
-      [v31 drawAtPoint:{v28, v30}];
+      _weekDayInitialsImage = [(EKUIYearMonthView *)self _weekDayInitialsImage];
+      [_weekDayInitialsImage drawAtPoint:{v28, v30}];
     }
 
     [(EKUIYearMonthView *)self daysXAdjustLeft];
@@ -191,13 +191,13 @@
       v41 = v33 + v37 * (daysInWeek + ~firstDayIndex);
     }
 
-    v43 = [objc_opt_class() _defaultTextColor];
-    [v43 set];
+    _defaultTextColor = [objc_opt_class() _defaultTextColor];
+    [_defaultTextColor set];
 
-    v44 = [(EKUIYearMonthView *)self calendarDate];
-    v45 = [v44 daysInMonth];
+    calendarDate = [(EKUIYearMonthView *)self calendarDate];
+    daysInMonth = [calendarDate daysInMonth];
 
-    v46 = self->_firstDayIndex + v45;
+    v46 = self->_firstDayIndex + daysInMonth;
     v47 = objc_alloc_init(MEMORY[0x1E69DC728]);
     [v47 moveToPoint:{0.0, v35}];
     [(EKUIYearMonthView *)self bounds];
@@ -242,7 +242,7 @@
     v64 = UIGraphicsGetCurrentContext();
     CGContextRestoreGState(v64);
     v65 = v101;
-    if (v45)
+    if (daysInMonth)
     {
       v66 = 0;
       v67 = daysInWeek - firstDayIndex;
@@ -290,8 +290,8 @@
           }
         }
 
-        v74 = [(EKUIYearMonthView *)self traitCollection];
-        v75 = EKUIUsesLargeTextYearView(v74);
+        traitCollection = [(EKUIYearMonthView *)self traitCollection];
+        v75 = EKUIUsesLargeTextYearView(traitCollection);
 
         if (v75)
         {
@@ -350,7 +350,7 @@
         ++v66;
       }
 
-      while (v45 != v66);
+      while (daysInMonth != v66);
     }
 
     if ((self->_todayIndex & 0x8000000000000000) == 0)
@@ -363,16 +363,16 @@
       {
         v90 = c;
         CGContextSaveGState(c);
-        v91 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.52];
+        tintColor2 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.52];
       }
 
       else
       {
-        v91 = [(EKUIYearMonthView *)self tintColor];
+        tintColor2 = [(EKUIYearMonthView *)self tintColor];
         v90 = c;
       }
 
-      [v91 set];
+      [tintColor2 set];
 
       if ([(EKUIYearMonthView *)self _shouldUseRoundedRectInsteadOfCircle])
       {
@@ -389,15 +389,15 @@
 
       if ([(EKUIYearMonthView *)self vibrant])
       {
-        v95 = [MEMORY[0x1E69DC888] whiteColor];
-        [v95 set];
+        whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+        [whiteColor set];
 
         CGContextSetBlendMode(v90, kCGBlendModeXOR);
       }
 
       v96 = CUIKLocalizedStringForInteger();
-      v97 = [(EKUIYearMonthView *)self _todayAttributes];
-      [v96 drawInRect:v97 withAttributes:{v103, v104}];
+      _todayAttributes = [(EKUIYearMonthView *)self _todayAttributes];
+      [v96 drawInRect:_todayAttributes withAttributes:{v103, v104}];
 
       if ([(EKUIYearMonthView *)self vibrant])
       {
@@ -412,49 +412,49 @@
   v4.receiver = self;
   v4.super_class = EKUIYearMonthView;
   [(EKUIYearMonthView *)&v4 tintColorDidChange];
-  v3 = [(EKUIYearMonthView *)self layer];
-  [v3 setNeedsDisplay];
+  layer = [(EKUIYearMonthView *)self layer];
+  [layer setNeedsDisplay];
 }
 
-- (BOOL)pointIsAboveMonthNameBaseline:(CGPoint)a3
+- (BOOL)pointIsAboveMonthNameBaseline:(CGPoint)baseline
 {
-  y = a3.y;
+  y = baseline.y;
   [(EKUIYearMonthView *)self _monthNameOriginPoint];
   v6 = v5;
-  v7 = [(EKUIYearMonthView *)self headerFont];
-  [v7 ascender];
+  headerFont = [(EKUIYearMonthView *)self headerFont];
+  [headerFont ascender];
   v9 = v8;
 
   return y <= v6 + v9;
 }
 
-- (void)setCalendarDate:(id)a3
+- (void)setCalendarDate:(id)date
 {
-  v4 = [a3 calendarDateForMonth];
-  if (self->_calendarDate != v4)
+  calendarDateForMonth = [date calendarDateForMonth];
+  if (self->_calendarDate != calendarDateForMonth)
   {
-    v7 = v4;
-    objc_storeStrong(&self->_calendarDate, v4);
-    v5 = [(EKCalendarDate *)v7 calendarDateForEndOfMonth];
+    v7 = calendarDateForMonth;
+    objc_storeStrong(&self->_calendarDate, calendarDateForMonth);
+    calendarDateForEndOfMonth = [(EKCalendarDate *)v7 calendarDateForEndOfMonth];
     endCalendarDate = self->_endCalendarDate;
-    self->_endCalendarDate = v5;
+    self->_endCalendarDate = calendarDateForEndOfMonth;
 
     [(EKUIYearMonthView *)self _reloadCachedValues];
-    v4 = v7;
+    calendarDateForMonth = v7;
   }
 }
 
-- (BOOL)containsCalendarDate:(id)a3
+- (BOOL)containsCalendarDate:(id)date
 {
-  v4 = a3;
-  v5 = [(EKUIYearMonthView *)self calendarDate];
-  v6 = [v5 compare:v4];
+  dateCopy = date;
+  calendarDate = [(EKUIYearMonthView *)self calendarDate];
+  v6 = [calendarDate compare:dateCopy];
 
-  v7 = v6 != 1 && [(EKCalendarDate *)self->_endCalendarDate compare:v4]!= -1;
+  v7 = v6 != 1 && [(EKCalendarDate *)self->_endCalendarDate compare:dateCopy]!= -1;
   return v7;
 }
 
-- (CGRect)frameForGridOfDays:(BOOL)a3
+- (CGRect)frameForGridOfDays:(BOOL)days
 {
   v3 = *MEMORY[0x1E695F058];
   v4 = *(MEMORY[0x1E695F058] + 8);
@@ -472,8 +472,8 @@
   [(EKUIYearMonthView *)self _monthNameOriginPoint];
   v4 = v3;
   v6 = v5 + 0.5;
-  v7 = [(EKUIYearMonthView *)self traitCollection];
-  v8 = EKUIUsesLargeTextYearView(v7);
+  traitCollection = [(EKUIYearMonthView *)self traitCollection];
+  v8 = EKUIUsesLargeTextYearView(traitCollection);
 
   if (v8)
   {
@@ -491,17 +491,17 @@
   return result;
 }
 
-- (void)_getMetricsForDayIndex:(int64_t)a3 textFrame:(CGRect *)a4 circleFrame:(CGRect *)a5
+- (void)_getMetricsForDayIndex:(int64_t)index textFrame:(CGRect *)frame circleFrame:(CGRect *)circleFrame
 {
-  v9 = [(EKUIYearMonthView *)self todayNumberFont];
-  [v9 capHeight];
+  todayNumberFont = [(EKUIYearMonthView *)self todayNumberFont];
+  [todayNumberFont capHeight];
   v11 = v10;
-  v12 = [(EKUIYearMonthView *)self dayNumberFont];
-  [v12 capHeight];
+  dayNumberFont = [(EKUIYearMonthView *)self dayNumberFont];
+  [dayNumberFont capHeight];
   CalRoundToScreenScale((v11 - v13) * 0.5);
   v15 = v14;
 
-  v16 = self->_firstDayIndex + a3;
+  v16 = self->_firstDayIndex + index;
   v17 = v16 / self->_daysInWeek;
   IsLeftToRight = CalTimeDirectionIsLeftToRight();
   daysInWeek = self->_daysInWeek;
@@ -541,7 +541,7 @@
 
   else
   {
-    if (a3 < 9)
+    if (index < 9)
     {
       [(EKUIYearMonthView *)self circleSize];
     }
@@ -560,23 +560,23 @@
   v44 = v33 + v43;
   if ([(EKUIYearMonthView *)self computeCircleFrameWithoutAdjustments])
   {
-    v45 = [(EKUIYearMonthView *)self todayNumberFont];
-    [v45 ascender];
+    todayNumberFont2 = [(EKUIYearMonthView *)self todayNumberFont];
+    [todayNumberFont2 ascender];
     v47 = v42 + v46;
-    v48 = [(EKUIYearMonthView *)self todayNumberFont];
-    [v48 capHeight];
+    todayNumberFont3 = [(EKUIYearMonthView *)self todayNumberFont];
+    [todayNumberFont3 capHeight];
     v50 = v47 - v49 * 0.5 - v40 * 0.5;
 
-    if (!a4)
+    if (!frame)
     {
       goto LABEL_17;
     }
 
 LABEL_16:
-    a4->origin.x = CalRoundRectToScreenScale(v33, v42, v32, v61);
-    a4->origin.y = v55;
-    a4->size.width = v56;
-    a4->size.height = v57;
+    frame->origin.x = CalRoundRectToScreenScale(v33, v42, v32, v61);
+    frame->origin.y = v55;
+    frame->size.width = v56;
+    frame->size.height = v57;
     goto LABEL_17;
   }
 
@@ -593,18 +593,18 @@ LABEL_16:
   v44 = v44 + v53;
   [(EKUIYearMonthView *)self todayTextYAdjustment];
   v42 = v42 + v54;
-  if (a4)
+  if (frame)
   {
     goto LABEL_16;
   }
 
 LABEL_17:
-  if (a5)
+  if (circleFrame)
   {
-    a5->origin.x = CalRoundRectToScreenScale(v44, v50, v38, v40);
-    a5->origin.y = v58;
-    a5->size.width = v59;
-    a5->size.height = v60;
+    circleFrame->origin.x = CalRoundRectToScreenScale(v44, v50, v38, v40);
+    circleFrame->origin.y = v58;
+    circleFrame->size.width = v59;
+    circleFrame->size.height = v60;
   }
 }
 
@@ -624,9 +624,9 @@ LABEL_17:
   }
   v4 = ;
   v13[0] = *MEMORY[0x1E69DB648];
-  v5 = [(EKUIYearMonthView *)self todayNumberFont];
+  todayNumberFont = [(EKUIYearMonthView *)self todayNumberFont];
   v6 = *MEMORY[0x1E69DB688];
-  v14[0] = v5;
+  v14[0] = todayNumberFont;
   v14[1] = v3;
   v7 = *MEMORY[0x1E69DB650];
   v13[1] = v6;
@@ -679,14 +679,14 @@ LABEL_17:
     }
 
     v8 = [MEMORY[0x1E696AD98] numberWithInteger:todayIndex + 1];
-    v9 = [v8 stringValue];
-    [(EKUITodayCirclePulseView *)v7 setString:v9];
+    stringValue = [v8 stringValue];
+    [(EKUITodayCirclePulseView *)v7 setString:stringValue];
 
-    v10 = [(EKUIYearMonthView *)self todayNumberFont];
-    [(EKUITodayCirclePulseView *)v7 setFont:v10];
+    todayNumberFont = [(EKUIYearMonthView *)self todayNumberFont];
+    [(EKUITodayCirclePulseView *)v7 setFont:todayNumberFont];
 
-    v11 = [(EKUIYearMonthView *)self _todayAttributes];
-    [(EKUITodayCirclePulseView *)v7 setAttributes:v11];
+    _todayAttributes = [(EKUIYearMonthView *)self _todayAttributes];
+    [(EKUITodayCirclePulseView *)v7 setAttributes:_todayAttributes];
 
     if ([(EKUIYearMonthView *)self _shouldUseRoundedRectInsteadOfCircle])
     {
@@ -739,8 +739,8 @@ LABEL_17:
 
 - (BOOL)_shouldUseRoundedRectInsteadOfCircle
 {
-  v2 = [(EKUIYearMonthView *)self traitCollection];
-  v4 = EKUIUsesRoundedRectsInsteadOfCircles(v2, v3);
+  traitCollection = [(EKUIYearMonthView *)self traitCollection];
+  v4 = EKUIUsesRoundedRectsInsteadOfCircles(traitCollection, v3);
 
   return v4;
 }
@@ -762,7 +762,7 @@ LABEL_17:
   return result;
 }
 
-- (CGSize)roundedRectSizeForDayNumberString:(id)a3
+- (CGSize)roundedRectSizeForDayNumberString:(id)string
 {
   [(EKUIYearMonthView *)self circleSize];
   v4 = v3;
@@ -778,9 +778,9 @@ LABEL_17:
   return [v2 _defaultTextColor];
 }
 
-- (id)calendarDateForPoint:(CGPoint)a3
+- (id)calendarDateForPoint:(CGPoint)point
 {
-  v4 = [(EKUIYearMonthView *)self _dayIndexForPoint:a3.x, a3.y];
+  v4 = [(EKUIYearMonthView *)self _dayIndexForPoint:point.x, point.y];
   if (v4 < 0 || (v5 = v4, -[EKUIYearMonthView calendarDate](self, "calendarDate"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 daysInMonth], v6, v5 >= v7))
   {
     v10 = 0;
@@ -788,18 +788,18 @@ LABEL_17:
 
   else
   {
-    v8 = [(EKUIYearMonthView *)self calendarDate];
-    v9 = [v8 calendarDateForMonth];
-    v10 = [v9 calendarDateByAddingDays:v5];
+    calendarDate = [(EKUIYearMonthView *)self calendarDate];
+    calendarDateForMonth = [calendarDate calendarDateForMonth];
+    v10 = [calendarDateForMonth calendarDateByAddingDays:v5];
   }
 
   return v10;
 }
 
-- (int64_t)_dayIndexForPoint:(CGPoint)a3
+- (int64_t)_dayIndexForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(EKUIYearMonthView *)self xInset];
   v7 = v6;
   [(EKUIYearMonthView *)self daysXAdjustLeft];
@@ -820,8 +820,8 @@ LABEL_17:
   v18 = ((y - v13) / v17);
   v19 = ((x - v14) / v16);
   firstDayIndex = self->_firstDayIndex;
-  v21 = [(EKUIYearMonthView *)self calendarDate];
-  v22 = ([v21 daysInMonth] + firstDayIndex) / self->_daysInWeek;
+  calendarDate = [(EKUIYearMonthView *)self calendarDate];
+  v22 = ([calendarDate daysInMonth] + firstDayIndex) / self->_daysInWeek;
 
   if (v22 >= v18)
   {
@@ -874,10 +874,10 @@ LABEL_17:
     }
   }
 
-  v30 = [(EKUIYearMonthView *)self calendarDate];
-  v31 = [v30 daysInMonth];
+  calendarDate2 = [(EKUIYearMonthView *)self calendarDate];
+  daysInMonth = [calendarDate2 daysInMonth];
 
-  if (v28 >= v31)
+  if (v28 >= daysInMonth)
   {
     return -1;
   }
@@ -927,10 +927,10 @@ LABEL_17:
   return result;
 }
 
-- (BOOL)_pointIntersectsMonthName:(CGPoint)a3
+- (BOOL)_pointIntersectsMonthName:(CGPoint)name
 {
-  y = a3.y;
-  x = a3.x;
+  y = name.y;
+  x = name.x;
   [(EKUIYearMonthView *)self _monthNameFrame];
   v9 = x;
   v10 = y;
@@ -938,12 +938,12 @@ LABEL_17:
   return CGRectContainsPoint(*&v5, *&v9);
 }
 
-- (void)_adjustHidingViewToFrame:(CGRect)a3
+- (void)_adjustHidingViewToFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   hidingView = self->_hidingView;
   if (!hidingView)
   {
@@ -951,8 +951,8 @@ LABEL_17:
     v10 = self->_hidingView;
     self->_hidingView = v9;
 
-    v11 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [(UIView *)self->_hidingView setBackgroundColor:v11];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [(UIView *)self->_hidingView setBackgroundColor:systemBackgroundColor];
 
     [(EKUIYearMonthView *)self addSubview:self->_hidingView];
     hidingView = self->_hidingView;
@@ -974,8 +974,8 @@ LABEL_17:
     previewContainerView = self->_previewContainerView;
     self->_previewContainerView = v4;
 
-    v6 = [MEMORY[0x1E69DC888] clearColor];
-    [(UIView *)self->_previewContainerView setBackgroundColor:v6];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UIView *)self->_previewContainerView setBackgroundColor:clearColor];
 
     [(UIView *)self->_previewContainerView setUserInteractionEnabled:0];
     [(EKUIYearMonthView *)self addSubview:self->_previewContainerView];
@@ -990,20 +990,20 @@ LABEL_17:
   return v7;
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  v6 = a4;
+  requestCopy = request;
   if ([(EKUIYearMonthView *)self shouldAddPreciseInteractivity])
   {
-    [v6 location];
+    [requestCopy location];
     v7 = [(EKUIYearMonthView *)self _dayIndexForPoint:?];
     if ((v7 & 0x8000000000000000) == 0)
     {
       v8 = v7;
-      v9 = [(EKUIYearMonthView *)self calendarDate];
-      v10 = [v9 daysInMonth];
+      calendarDate = [(EKUIYearMonthView *)self calendarDate];
+      daysInMonth = [calendarDate daysInMonth];
 
-      if (v8 < v10)
+      if (v8 < daysInMonth)
       {
         memset(v22, 0, sizeof(v22));
         v20 = 0u;
@@ -1021,7 +1021,7 @@ LABEL_7:
       }
     }
 
-    [v6 location];
+    [requestCopy location];
     if ([(EKUIYearMonthView *)self _pointIntersectsMonthName:?])
     {
       v17 = MEMORY[0x1E69DCDC0];
@@ -1038,19 +1038,19 @@ LABEL_9:
   return v18;
 }
 
-- (void)pointerInteraction:(id)a3 willEnterRegion:(id)a4 animator:(id)a5
+- (void)pointerInteraction:(id)interaction willEnterRegion:(id)region animator:(id)animator
 {
-  v6 = a4;
+  regionCopy = region;
   if ([(EKUIYearMonthView *)self shouldAddPreciseInteractivity])
   {
-    [v6 rect];
+    [regionCopy rect];
     [(EKUIYearMonthView *)self _adjustHidingViewToFrame:?];
   }
 }
 
-- (void)pointerInteraction:(id)a3 willExitRegion:(id)a4 animator:(id)a5
+- (void)pointerInteraction:(id)interaction willExitRegion:(id)region animator:(id)animator
 {
-  if ([(EKUIYearMonthView *)self shouldAddPreciseInteractivity:a3])
+  if ([(EKUIYearMonthView *)self shouldAddPreciseInteractivity:interaction])
   {
     hidingView = self->_hidingView;
 
@@ -1107,21 +1107,21 @@ LABEL_9:
   calendar = self->_calendar;
   self->_calendar = v3;
 
-  v5 = [(EKUIYearMonthView *)self calendarDate];
-  v16 = [v5 date];
+  calendarDate = [(EKUIYearMonthView *)self calendarDate];
+  date = [calendarDate date];
 
-  [(NSCalendar *)self->_calendar rangeOfUnit:512 inUnit:4096 forDate:v16];
+  [(NSCalendar *)self->_calendar rangeOfUnit:512 inUnit:4096 forDate:date];
   v7 = v6;
-  v8 = [(NSCalendar *)self->_calendar components:528 fromDate:v16];
+  v8 = [(NSCalendar *)self->_calendar components:528 fromDate:date];
   v9 = CUIKOneIndexedWeekStart();
-  v10 = [v8 weekday];
-  v11 = v7 - v9 + v10;
-  if (v10 > v9)
+  weekday = [v8 weekday];
+  v11 = v7 - v9 + weekday;
+  if (weekday > v9)
   {
-    v11 = v10 - v9;
+    v11 = weekday - v9;
   }
 
-  if (v10 == v9)
+  if (weekday == v9)
   {
     v11 = 0;
   }
@@ -1138,8 +1138,8 @@ LABEL_9:
     CUIKStringForMonth();
   }
   v12 = ;
-  v13 = [MEMORY[0x1E695DF58] currentLocale];
-  v14 = [v12 capitalizedStringWithLocale:v13];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v14 = [v12 capitalizedStringWithLocale:currentLocale];
 
   monthString = self->_monthString;
   self->_monthString = v14;
@@ -1153,29 +1153,29 @@ LABEL_9:
 - (void)_updateFirstOfMonthAndYearIndices
 {
   overlaySignificantDatesProvider = self->_overlaySignificantDatesProvider;
-  v4 = [(EKCalendarDate *)self->_calendarDate date];
-  v5 = [(EKUIOverlayCalendarSignificantDatesProvider *)overlaySignificantDatesProvider firstOfOverlayMonthsForCalendarMonth:v4];
+  date = [(EKCalendarDate *)self->_calendarDate date];
+  v5 = [(EKUIOverlayCalendarSignificantDatesProvider *)overlaySignificantDatesProvider firstOfOverlayMonthsForCalendarMonth:date];
   firstOfOverlayMonthIndices = self->_firstOfOverlayMonthIndices;
   self->_firstOfOverlayMonthIndices = v5;
 
   v7 = self->_overlaySignificantDatesProvider;
-  v8 = [(EKCalendarDate *)self->_calendarDate date];
-  v9 = [(EKUIOverlayCalendarSignificantDatesProvider *)v7 firstOfOverlayYearsForCalendarMonth:v8];
+  date2 = [(EKCalendarDate *)self->_calendarDate date];
+  v9 = [(EKUIOverlayCalendarSignificantDatesProvider *)v7 firstOfOverlayYearsForCalendarMonth:date2];
   firstOfOverlayYearIndices = self->_firstOfOverlayYearIndices;
   self->_firstOfOverlayYearIndices = v9;
 
   [(EKUIYearMonthView *)self setNeedsDisplay];
 }
 
-- (void)overlaySignificantDatesChangedInRange:(id)a3
+- (void)overlaySignificantDatesChangedInRange:(id)range
 {
-  v4 = a3;
-  v5 = v4;
+  rangeCopy = range;
+  v5 = rangeCopy;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
-  v11 = v4 == 0;
-  if (!v4 || ([v4 distinctRanges], v6 = objc_claimAutoreleasedReturnValue(), v7[0] = MEMORY[0x1E69E9820], v7[1] = 3221225472, v7[2] = __59__EKUIYearMonthView_overlaySignificantDatesChangedInRange___block_invoke, v7[3] = &unk_1E84408C8, v7[4] = self, v7[5] = &v8, objc_msgSend(v6, "enumerateObjectsUsingBlock:", v7), v6, (v9[3] & 1) != 0))
+  v11 = rangeCopy == 0;
+  if (!rangeCopy || ([rangeCopy distinctRanges], v6 = objc_claimAutoreleasedReturnValue(), v7[0] = MEMORY[0x1E69E9820], v7[1] = 3221225472, v7[2] = __59__EKUIYearMonthView_overlaySignificantDatesChangedInRange___block_invoke, v7[3] = &unk_1E84408C8, v7[4] = self, v7[5] = &v8, objc_msgSend(v6, "enumerateObjectsUsingBlock:", v7), v6, (v9[3] & 1) != 0))
   {
     [(EKUIYearMonthView *)self _updateFirstOfMonthAndYearIndices];
   }
@@ -1197,9 +1197,9 @@ void __59__EKUIYearMonthView_overlaySignificantDatesChangedInRange___block_invok
   }
 }
 
-- (void)setOverlaySignificantDatesProvider:(id)a3
+- (void)setOverlaySignificantDatesProvider:(id)provider
 {
-  objc_storeStrong(&self->_overlaySignificantDatesProvider, a3);
+  objc_storeStrong(&self->_overlaySignificantDatesProvider, provider);
 
   [(EKUIYearMonthView *)self _updateFirstOfMonthAndYearIndices];
 }
@@ -1211,9 +1211,9 @@ void __59__EKUIYearMonthView_overlaySignificantDatesChangedInRange___block_invok
   v5 = [(NSCalendar *)calendar components:14 fromDate:v4];
 
   v6 = [(NSCalendar *)self->_calendar dateFromComponents:v5];
-  v7 = [(EKUIYearMonthView *)self calendarDate];
-  v8 = [v7 date];
-  v9 = [v6 isEqualToDate:v8];
+  calendarDate = [(EKUIYearMonthView *)self calendarDate];
+  date = [calendarDate date];
+  v9 = [v6 isEqualToDate:date];
 
   if (v9)
   {
@@ -1236,19 +1236,19 @@ void __59__EKUIYearMonthView_overlaySignificantDatesChangedInRange___block_invok
 - (BOOL)isCurrentMonth
 {
   v3 = MEMORY[0x1E69930C8];
-  v4 = [MEMORY[0x1E695DF00] date];
-  v5 = [(NSCalendar *)self->_calendar timeZone];
-  v6 = [v3 calendarDateWithDate:v4 timeZone:v5];
+  date = [MEMORY[0x1E695DF00] date];
+  timeZone = [(NSCalendar *)self->_calendar timeZone];
+  v6 = [v3 calendarDateWithDate:date timeZone:timeZone];
 
   LOBYTE(self) = [(EKUIYearMonthView *)self containsCalendarDate:v6];
   return self;
 }
 
-- (void)_drawMonthName:(id)a3 atPoint:(CGPoint)a4
+- (void)_drawMonthName:(id)name atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
+  y = point.y;
+  x = point.x;
+  nameCopy = name;
   [(EKUIYearMonthView *)self headerFontMaxSize];
   if (vabdd_f64(v8, *&_drawMonthName_atPoint__s_desiredFontSizeForSmallestUsedFontSize) >= 2.22044605e-16)
   {
@@ -1272,10 +1272,10 @@ void __59__EKUIYearMonthView_overlaySignificantDatesChangedInRange___block_invok
   Width = CGRectGetWidth(v46);
   [(EKUIYearMonthView *)self xSpacing];
   v15 = Width - v14;
-  v16 = [(EKUIYearMonthView *)self headerFont];
-  v17 = [v16 fontDescriptor];
+  headerFont = [(EKUIYearMonthView *)self headerFont];
+  fontDescriptor = [headerFont fontDescriptor];
 
-  v18 = [MEMORY[0x1E69DB878] fontWithDescriptor:v17 size:v10];
+  v18 = [MEMORY[0x1E69DB878] fontWithDescriptor:fontDescriptor size:v10];
   if ([(EKUIYearMonthView *)self isCurrentMonth])
   {
     [(EKUIYearMonthView *)self tintColor];
@@ -1296,7 +1296,7 @@ void __59__EKUIYearMonthView_overlaySignificantDatesChangedInRange___block_invok
   v26 = v19;
   v27 = [v20 dictionaryWithObjectsAndKeys:{v18, v21, v19, v22, v25, *MEMORY[0x1E69DB660], 0}];
 
-  [v7 sizeWithAttributes:v27];
+  [nameCopy sizeWithAttributes:v27];
   v29 = v28;
   v31 = v30;
   if (v28 <= v15)
@@ -1323,10 +1323,10 @@ LABEL_13:
       {
         v34 = v18;
         v10 = v10 + -1.0;
-        v18 = [MEMORY[0x1E69DB878] fontWithDescriptor:v17 size:v10];
+        v18 = [MEMORY[0x1E69DB878] fontWithDescriptor:fontDescriptor size:v10];
 
         [v27 setObject:v18 forKey:v21];
-        [v7 sizeWithAttributes:v27];
+        [nameCopy sizeWithAttributes:v27];
         v29 = v35;
         v31 = v36;
         if (v35 <= v15)
@@ -1367,26 +1367,26 @@ LABEL_13:
 
   v41 = CalCeilToScreenScale(v29 + *v40);
   v42 = ceil(v31 + 0.0 + 0.0);
-  v43 = [*(v33 + 2184) systemBackgroundColor];
-  [v43 setFill];
+  systemBackgroundColor = [*(v33 + 2184) systemBackgroundColor];
+  [systemBackgroundColor setFill];
 
   v47.origin.x = x;
   v47.origin.y = y;
   v47.size.width = v41;
   v47.size.height = v42;
   UIRectFill(v47);
-  [v7 drawInRect:v27 withAttributes:{x, y, v41, v42}];
+  [nameCopy drawInRect:v27 withAttributes:{x, y, v41, v42}];
 }
 
-- (id)_imageForMonthName:(id)a3
+- (id)_imageForMonthName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   if (_imageForMonthName__onceToken != -1)
   {
     [EKUIYearMonthView _imageForMonthName:];
   }
 
-  v68 = v4;
+  v68 = nameCopy;
   if ((_imageForMonthName__warmingCache & 1) == 0)
   {
     v5 = +[EKUISemiConstantCache sharedInstance];
@@ -1401,7 +1401,7 @@ LABEL_13:
     }
   }
 
-  v8 = [(EKUIYearMonthView *)self tintAdjustmentMode];
+  tintAdjustmentMode = [(EKUIYearMonthView *)self tintAdjustmentMode];
   v9 = MEMORY[0x1E696AD98];
   [(EKUIYearMonthView *)self bounds];
   *&v11 = v10;
@@ -1411,7 +1411,7 @@ LABEL_13:
   v14 = objc_opt_class();
   v15 = NSStringFromClass(v14);
   v16 = @"normal";
-  if (v8 == 2)
+  if (tintAdjustmentMode == 2)
   {
     v17 = @"dimmed";
   }
@@ -1421,8 +1421,8 @@ LABEL_13:
     v17 = @"normal";
   }
 
-  v18 = [v12 stringValue];
-  v19 = [v13 stringValue];
+  stringValue = [v12 stringValue];
+  stringValue2 = [v13 stringValue];
   if ([(EKUIYearMonthView *)self vibrant])
   {
     v16 = @"vibrant";
@@ -1438,17 +1438,17 @@ LABEL_13:
     v20 = @"not";
   }
 
-  v21 = [(EKUIYearMonthView *)self traitCollection];
-  v22 = [v21 userInterfaceStyle];
+  traitCollection = [(EKUIYearMonthView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
   v23 = @"light";
-  if (v22 == 2)
+  if (userInterfaceStyle == 2)
   {
     v23 = @"dark";
   }
 
   v64 = v16;
   v24 = v68;
-  v25 = [v67 stringWithFormat:@"%@:%@:%@:%@:%@:%@:%@:%@", v68, v15, v17, v18, v19, v64, v20, v23];
+  v25 = [v67 stringWithFormat:@"%@:%@:%@:%@:%@:%@:%@:%@", v68, v15, v17, stringValue, stringValue2, v64, v20, v23];
 
   v26 = [_imageForMonthName__s_cache objectForKey:v25];
   if (!v26)
@@ -1477,10 +1477,10 @@ LABEL_13:
     Width = CGRectGetWidth(v79);
     [(EKUIYearMonthView *)self xSpacing];
     v34 = Width - v33;
-    v35 = [(EKUIYearMonthView *)self headerFont];
-    v36 = [v35 fontDescriptor];
+    headerFont = [(EKUIYearMonthView *)self headerFont];
+    fontDescriptor = [headerFont fontDescriptor];
 
-    v37 = [MEMORY[0x1E69DB878] fontWithDescriptor:v36 size:v29];
+    v37 = [MEMORY[0x1E69DB878] fontWithDescriptor:fontDescriptor size:v29];
     v65 = v25;
     if ([(EKUIYearMonthView *)self isCurrentMonth])
     {
@@ -1523,7 +1523,7 @@ LABEL_29:
         {
           v51 = v37;
           v29 = v29 + -1.0;
-          v37 = [MEMORY[0x1E69DB878] fontWithDescriptor:v36 size:v29];
+          v37 = [MEMORY[0x1E69DB878] fontWithDescriptor:fontDescriptor size:v29];
 
           [v45 setObject:v37 forKey:v40];
           [v68 sizeWithAttributes:v45];
@@ -1641,25 +1641,25 @@ uint64_t __40__EKUIYearMonthView__imageForMonthName___block_invoke_2(double *a1)
 
 - (void)_warmImageCache
 {
-  v3 = [(NSCalendar *)self->_calendar monthSymbols];
-  v4 = [v3 count];
+  monthSymbols = [(NSCalendar *)self->_calendar monthSymbols];
+  v4 = [monthSymbols count];
 
   if (v4)
   {
     for (i = 0; i != v4; ++i)
     {
       v6 = [(EKCalendarDate *)self->_calendarDate calendarDateByAddingMonths:i];
-      v7 = [v6 date];
-      v8 = [(EKUIYearMonthView *)self monthNameForDate:v7];
+      date = [v6 date];
+      v8 = [(EKUIYearMonthView *)self monthNameForDate:date];
 
       v9 = [(EKUIYearMonthView *)self _imageForMonthName:v8];
     }
   }
 }
 
-- (id)monthNameForDate:(id)a3
+- (id)monthNameForDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   if (CUIKCurrentLocaleRequiresUnabbrevatedMonthNames())
   {
     CUIKLongStringForMonth();
@@ -1671,26 +1671,26 @@ uint64_t __40__EKUIYearMonthView__imageForMonthName___block_invoke_2(double *a1)
   }
   v4 = ;
 
-  v5 = [MEMORY[0x1E695DF58] currentLocale];
-  v6 = [v4 capitalizedStringWithLocale:v5];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v6 = [v4 capitalizedStringWithLocale:currentLocale];
 
   return v6;
 }
 
-- (void)_drawWeekDayInitialsAtPoint:(CGPoint)a3
+- (void)_drawWeekDayInitialsAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v27[3] = *MEMORY[0x1E69E9840];
   v6 = CUIKWeekdayVeryShortAbbreviations();
   [(EKUIYearMonthView *)self xSpacing];
   v8 = v7;
   v9 = CUIKZeroIndexedWeekStart();
   v10 = [v6 count];
-  v11 = [(EKUIYearMonthView *)self weekDayInitialsFont];
-  [v11 ascender];
+  weekDayInitialsFont = [(EKUIYearMonthView *)self weekDayInitialsFont];
+  [weekDayInitialsFont ascender];
   v13 = v12;
-  [v11 descender];
+  [weekDayInitialsFont descender];
   CalRoundToScreenScale(v13 - v14);
   v16 = v15;
   if (CTFontGetLanguageAwareOutsets())
@@ -1698,8 +1698,8 @@ uint64_t __40__EKUIYearMonthView__imageForMonthName___block_invoke_2(double *a1)
     v16 = CalCeilToScreenScale(v16 + 0.0 + 0.0);
   }
 
-  v17 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [v17 setFill];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [systemBackgroundColor setFill];
 
   v28.origin.x = x;
   v28.origin.y = y;
@@ -1719,7 +1719,7 @@ uint64_t __40__EKUIYearMonthView__imageForMonthName___block_invoke_2(double *a1)
   v21 = *MEMORY[0x1E69DB688];
   v26[0] = *MEMORY[0x1E69DB648];
   v26[1] = v21;
-  v27[0] = v11;
+  v27[0] = weekDayInitialsFont;
   v27[1] = v18;
   v26[2] = *MEMORY[0x1E69DB650];
   v27[2] = v19;
@@ -1765,18 +1765,18 @@ uint64_t __40__EKUIYearMonthView__imageForMonthName___block_invoke_2(double *a1)
   v7 = v6;
   v8 = [v5 count] * v6;
   v9 = MEMORY[0x1E696AEC0];
-  v10 = [(EKUIYearMonthView *)self traitCollection];
-  v11 = [v9 stringWithFormat:@"weekdayInitialImage:%d:%tu", v8, objc_msgSend(v10, "userInterfaceStyle")];
+  traitCollection = [(EKUIYearMonthView *)self traitCollection];
+  v11 = [v9 stringWithFormat:@"weekdayInitialImage:%d:%tu", v8, objc_msgSend(traitCollection, "userInterfaceStyle")];
 
   v12 = [__weekDayInitialsImages objectForKey:v11];
   if (!v12)
   {
     v13 = CUIKZeroIndexedWeekStart();
     v14 = [v5 count];
-    v15 = [(EKUIYearMonthView *)self weekDayInitialsFont];
-    [v15 ascender];
+    weekDayInitialsFont = [(EKUIYearMonthView *)self weekDayInitialsFont];
+    [weekDayInitialsFont ascender];
     v17 = v16;
-    [v15 descender];
+    [weekDayInitialsFont descender];
     CalRoundToScreenScale(v17 - v18);
     v20 = v19;
     v35 = 0.0;
@@ -1798,13 +1798,13 @@ uint64_t __40__EKUIYearMonthView__imageForMonthName___block_invoke_2(double *a1)
     v28 = v7 * v14;
     v29 = v20;
     v25[4] = self;
-    v26 = v15;
+    v26 = weekDayInitialsFont;
     v30 = v14;
     v31 = v13;
     v27 = v5;
     v32 = v7;
     v33 = v20;
-    v23 = v15;
+    v23 = weekDayInitialsFont;
     v12 = [v22 imageWithActions:v25];
     [__weekDayInitialsImages setObject:v12 forKey:v11];
   }
@@ -1870,11 +1870,11 @@ void __42__EKUIYearMonthView__weekDayInitialsImage__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_drawMonthDays:(int64_t)a3 size:(CGSize)a4 underlineThickness:(double)a5 atPoint:(CGPoint)a6
+- (void)_drawMonthDays:(int64_t)days size:(CGSize)size underlineThickness:(double)thickness atPoint:(CGPoint)point
 {
-  y = a6.y;
-  x = a6.x;
-  [(EKUIYearMonthView *)self bounds:a4.width];
+  y = point.y;
+  x = point.x;
+  [(EKUIYearMonthView *)self bounds:size.width];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -1897,7 +1897,7 @@ void __42__EKUIYearMonthView__weekDayInitialsImage__block_invoke(uint64_t a1)
   [(EKUIYearMonthView *)self ySpacing];
   v30 = v29;
   daysInWeek = self->_daysInWeek;
-  v32 = 2 * daysInWeek - a3 + 29;
+  v32 = 2 * daysInWeek - days + 29;
   v33 = v32 % daysInWeek;
   if (CalTimeDirectionIsLeftToRight())
   {
@@ -1909,13 +1909,13 @@ void __42__EKUIYearMonthView__weekDayInitialsImage__block_invoke(uint64_t a1)
     firstDayIndex = self->_daysInWeek + ~self->_firstDayIndex;
   }
 
-  v35 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [v35 setFill];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [systemBackgroundColor setFill];
 
   [(EKUIYearMonthView *)self bounds];
   UIRectFill(v54);
-  v36 = [objc_opt_class() _defaultTextColor];
-  [v36 set];
+  _defaultTextColor = [objc_opt_class() _defaultTextColor];
+  [_defaultTextColor set];
 
   v37 = self->_firstDayIndex;
   v38 = v32 - v33;
@@ -1933,7 +1933,7 @@ void __42__EKUIYearMonthView__weekDayInitialsImage__block_invoke(uint64_t a1)
       CalRoundToScreenScale(v28);
       v46 = v45;
       CalRoundToScreenScale(v30);
-      [(EKUIYearMonthView *)self _drawDayNumber:v44 size:v46 underlineThickness:v47 atPoint:a5, v42, v41];
+      [(EKUIYearMonthView *)self _drawDayNumber:v44 size:v46 underlineThickness:v47 atPoint:thickness, v42, v41];
       if (v43-- <= 1)
       {
         IsLeftToRight = CalTimeDirectionIsLeftToRight();
@@ -1968,10 +1968,10 @@ void __42__EKUIYearMonthView__weekDayInitialsImage__block_invoke(uint64_t a1)
   }
 }
 
-- (id)_imageForMonthDays:(int64_t)a3 size:(CGSize)a4 underlineThickness:(double)a5
+- (id)_imageForMonthDays:(int64_t)days size:(CGSize)size underlineThickness:(double)thickness
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   if (_imageForMonthDays_size_underlineThickness__onceToken != -1)
   {
     [EKUIYearMonthView _imageForMonthDays:size:underlineThickness:];
@@ -1980,31 +1980,31 @@ void __42__EKUIYearMonthView__weekDayInitialsImage__block_invoke(uint64_t a1)
   [(EKUIYearMonthView *)self bounds];
   v11 = v10;
   v12 = EKUICurrentWindowSizeParadigmForViewHierarchy(self);
-  v13 = [(EKUIYearMonthView *)self dayNumberFont];
-  [v13 pointSize];
+  dayNumberFont = [(EKUIYearMonthView *)self dayNumberFont];
+  [dayNumberFont pointSize];
   v15 = v14;
 
-  v16 = [(EKUIYearMonthView *)self dayColorKey];
-  if (v16)
+  dayColorKey = [(EKUIYearMonthView *)self dayColorKey];
+  if (dayColorKey)
   {
-    v17 = [(EKUIYearMonthView *)self dayColorKey];
+    dayColorKey2 = [(EKUIYearMonthView *)self dayColorKey];
   }
 
   else
   {
-    v17 = @"default";
+    dayColorKey2 = @"default";
   }
 
   v18 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v19 = [(EKUIYearMonthView *)self traitCollection];
-  v20 = [v19 userInterfaceStyle];
+  traitCollection = [(EKUIYearMonthView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
   v21 = @"light";
-  if (v20 == 2)
+  if (userInterfaceStyle == 2)
   {
     v21 = @"dark";
   }
 
-  v22 = [v18 initWithFormat:@"%d:%d:%f:%f:%d:%d:%@:%f:%@", a3, v11, *&width, *&height, v12, v15, v17, *&a5, v21];
+  v22 = [v18 initWithFormat:@"%d:%d:%f:%f:%d:%d:%@:%f:%@", days, v11, *&width, *&height, v12, v15, dayColorKey2, *&thickness, v21];
 
   v23 = [_imageForMonthDays_size_underlineThickness__cache objectForKey:v22];
   if (!v23)
@@ -2032,7 +2032,7 @@ void __42__EKUIYearMonthView__weekDayInitialsImage__block_invoke(uint64_t a1)
     [(EKUIYearMonthView *)self ySpacing];
     v43 = v42;
     daysInWeek = self->_daysInWeek;
-    v45 = (2 * daysInWeek - a3 + 29) / daysInWeek;
+    v45 = (2 * daysInWeek - days + 29) / daysInWeek;
     v46 = v42 * v45;
     v47 = v45 * daysInWeek;
     v48 = objc_opt_new();
@@ -2050,7 +2050,7 @@ void __42__EKUIYearMonthView__weekDayInitialsImage__block_invoke(uint64_t a1)
     *&v51[7] = v39;
     *&v51[8] = y;
     v51[9] = v47;
-    *&v51[10] = a5;
+    *&v51[10] = thickness;
     v23 = [v49 imageWithActions:v51];
     [_imageForMonthDays_size_underlineThickness__cache setObject:v23 forKey:v22];
   }
@@ -2146,36 +2146,36 @@ void __64__EKUIYearMonthView__imageForMonthDays_size_underlineThickness___block_
   }
 }
 
-- (void)_drawDayNumber:(id)a3 size:(CGSize)a4 underlineThickness:(double)a5 atPoint:(CGPoint)a6
+- (void)_drawDayNumber:(id)number size:(CGSize)size underlineThickness:(double)thickness atPoint:(CGPoint)point
 {
-  y = a6.y;
-  x = a6.x;
-  height = a4.height;
-  width = a4.width;
+  y = point.y;
+  x = point.x;
+  height = size.height;
+  width = size.width;
   v37[4] = *MEMORY[0x1E69E9840];
-  v12 = a3;
+  numberCopy = number;
   v13 = objc_alloc_init(MEMORY[0x1E69DB7C8]);
   [v13 setAlignment:1];
-  v14 = [(EKUIYearMonthView *)self dayNumberFont];
+  dayNumberFont = [(EKUIYearMonthView *)self dayNumberFont];
   v15 = +[EKUIYearMonthView _defaultTextColor];
-  v16 = [(EKUIYearMonthView *)self dayColorKey];
-  if (v16)
+  dayColorKey = [(EKUIYearMonthView *)self dayColorKey];
+  if (dayColorKey)
   {
-    v17 = v16;
-    v18 = [(EKUIYearMonthView *)self dayColor];
+    v17 = dayColorKey;
+    dayColor = [(EKUIYearMonthView *)self dayColor];
 
-    if (v18)
+    if (dayColor)
     {
-      v19 = [(EKUIYearMonthView *)self dayColor];
+      dayColor2 = [(EKUIYearMonthView *)self dayColor];
 
-      v15 = v19;
+      v15 = dayColor2;
     }
   }
 
   v20 = *MEMORY[0x1E69DB688];
   v36[0] = *MEMORY[0x1E69DB648];
   v36[1] = v20;
-  v37[0] = v14;
+  v37[0] = dayNumberFont;
   v37[1] = v13;
   v21 = *MEMORY[0x1E69DB650];
   v37[2] = v15;
@@ -2189,21 +2189,21 @@ void __64__EKUIYearMonthView__imageForMonthDays_size_underlineThickness___block_
   v37[3] = v25;
   v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v37 forKeys:v36 count:4];
 
-  v27 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [v27 setFill];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [systemBackgroundColor setFill];
 
   v38.origin.x = x;
   v38.origin.y = y;
   v38.size.width = width;
   v38.size.height = height;
   UIRectFill(v38);
-  [v12 drawInRect:v26 withAttributes:{x, y, width, height}];
-  if (a5 > 0.0)
+  [numberCopy drawInRect:v26 withAttributes:{x, y, width, height}];
+  if (thickness > 0.0)
   {
     v28 = CalendarAppTintColor();
     [v28 set];
 
-    [v12 boundingRectWithSize:0 options:v26 attributes:0 context:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
+    [numberCopy boundingRectWithSize:0 options:v26 attributes:0 context:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
     v30 = v29;
     CalRoundToScreenScale(x + (width - v29) * 0.5);
     v32 = v31;
@@ -2218,49 +2218,49 @@ void __64__EKUIYearMonthView__imageForMonthDays_size_underlineThickness___block_
     v39.origin.y = v35;
     v39.origin.x = v32;
     v39.size.width = v30;
-    v39.size.height = a5;
+    v39.size.height = thickness;
     UIRectFill(v39);
   }
 }
 
-- (id)_imageForDayNumber:(id)a3 size:(CGSize)a4 underlineThickness:(double)a5 forPreview:(BOOL)a6
+- (id)_imageForDayNumber:(id)number size:(CGSize)size underlineThickness:(double)thickness forPreview:(BOOL)preview
 {
-  v6 = a6;
-  height = a4.height;
-  width = a4.width;
+  previewCopy = preview;
+  height = size.height;
+  width = size.width;
   v67[4] = *MEMORY[0x1E69E9840];
-  v50 = a3;
+  numberCopy = number;
   if (_imageForDayNumber_size_underlineThickness_forPreview__onceToken != -1)
   {
     [EKUIYearMonthView _imageForDayNumber:size:underlineThickness:forPreview:];
   }
 
-  v49 = v6;
-  v51 = !v6;
+  v49 = previewCopy;
+  v51 = !previewCopy;
   [(EKUIYearMonthView *)self bounds];
   v12 = v11;
   v13 = EKUICurrentWindowSizeParadigmForViewHierarchy(self);
-  v14 = [(EKUIYearMonthView *)self dayColorKey];
-  if (v14)
+  dayColorKey = [(EKUIYearMonthView *)self dayColorKey];
+  if (dayColorKey)
   {
-    v15 = [(EKUIYearMonthView *)self dayColorKey];
+    dayColorKey2 = [(EKUIYearMonthView *)self dayColorKey];
   }
 
   else
   {
-    v15 = @"default";
+    dayColorKey2 = @"default";
   }
 
   v16 = objc_alloc(MEMORY[0x1E696AEC0]);
   v17 = objc_opt_class();
   v18 = NSStringFromClass(v17);
-  v19 = [(EKUIYearMonthView *)self traitCollection];
-  v20 = [v19 preferredContentSizeCategory];
-  v21 = [(EKUIYearMonthView *)self dayNumberFont];
-  [v21 pointSize];
+  traitCollection = [(EKUIYearMonthView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  dayNumberFont = [(EKUIYearMonthView *)self dayNumberFont];
+  [dayNumberFont pointSize];
   v23 = v22;
-  v24 = [(EKUIYearMonthView *)self traitCollection];
-  if ([v24 userInterfaceStyle] == 2)
+  traitCollection2 = [(EKUIYearMonthView *)self traitCollection];
+  if ([traitCollection2 userInterfaceStyle] == 2)
   {
     v25 = @"dark";
   }
@@ -2270,34 +2270,34 @@ void __64__EKUIYearMonthView__imageForMonthDays_size_underlineThickness___block_
     v25 = @"light";
   }
 
-  v26 = [v16 initWithFormat:@"%@:%@:%@:%d:%d:%f:%@:%f%i:%@", v50, v18, v20, v12, v13, v23, v15, *&a5, v51, v25];
+  v26 = [v16 initWithFormat:@"%@:%@:%@:%d:%d:%f:%@:%f%i:%@", numberCopy, v18, preferredContentSizeCategory, v12, v13, v23, dayColorKey2, *&thickness, v51, v25];
 
   v27 = [_imageForDayNumber_size_underlineThickness_forPreview__cache objectForKey:v26];
   if (!v27)
   {
-    v48 = v15;
+    v48 = dayColorKey2;
     v28 = objc_alloc_init(MEMORY[0x1E69DB7C8]);
     [v28 setAlignment:1];
-    v29 = [(EKUIYearMonthView *)self dayNumberFont];
+    dayNumberFont2 = [(EKUIYearMonthView *)self dayNumberFont];
     v30 = +[EKUIYearMonthView _defaultTextColor];
-    v31 = [(EKUIYearMonthView *)self dayColorKey];
-    if (v31)
+    dayColorKey3 = [(EKUIYearMonthView *)self dayColorKey];
+    if (dayColorKey3)
     {
-      v32 = v31;
-      v33 = [(EKUIYearMonthView *)self dayColor];
+      v32 = dayColorKey3;
+      dayColor = [(EKUIYearMonthView *)self dayColor];
 
-      if (v33)
+      if (dayColor)
       {
-        v34 = [(EKUIYearMonthView *)self dayColor];
+        dayColor2 = [(EKUIYearMonthView *)self dayColor];
 
-        v30 = v34;
+        v30 = dayColor2;
       }
     }
 
     v35 = *MEMORY[0x1E69DB688];
     v66[0] = *MEMORY[0x1E69DB648];
     v66[1] = v35;
-    v67[0] = v29;
+    v67[0] = dayNumberFont2;
     v67[1] = v28;
     v36 = *MEMORY[0x1E69DB650];
     v67[2] = v30;
@@ -2329,17 +2329,17 @@ void __64__EKUIYearMonthView__imageForMonthDays_size_underlineThickness___block_
     v65 = v49;
     v61 = width;
     v62 = height;
-    v53 = v29;
-    v54 = v50;
+    v53 = dayNumberFont2;
+    v54 = numberCopy;
     v55 = v41;
-    v63 = a5;
-    v56 = self;
+    thicknessCopy = thickness;
+    selfCopy = self;
     v44 = v41;
-    v45 = v29;
+    v45 = dayNumberFont2;
     v27 = [v43 imageWithActions:v52];
     [_imageForDayNumber_size_underlineThickness_forPreview__cache setObject:v27 forKey:v26];
 
-    v15 = v48;
+    dayColorKey2 = v48;
   }
 
   return v27;
@@ -2412,7 +2412,7 @@ void __75__EKUIYearMonthView__imageForDayNumber_size_underlineThickness_forPrevi
   }
 }
 
-+ (double)heightForInterfaceOrientation:(int64_t)a3 windowSize:(CGSize)a4 heightSizeClass:(int64_t)a5
++ (double)heightForInterfaceOrientation:(int64_t)orientation windowSize:(CGSize)size heightSizeClass:(int64_t)class
 {
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_0();

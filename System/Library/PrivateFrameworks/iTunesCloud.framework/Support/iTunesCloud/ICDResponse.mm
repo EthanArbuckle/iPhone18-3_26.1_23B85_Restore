@@ -1,7 +1,7 @@
 @interface ICDResponse
-+ (id)responseWithCode:(unint64_t)a3 headerFields:(id)a4 data:(id)a5 MIMEType:(id)a6 error:(id)a7;
-+ (id)responseWithResponse:(id)a3;
-- (ICDResponse)initWithCode:(unint64_t)a3 headerFields:(id)a4 data:(id)a5 MIMEType:(id)a6 error:(id)a7;
++ (id)responseWithCode:(unint64_t)code headerFields:(id)fields data:(id)data MIMEType:(id)type error:(id)error;
++ (id)responseWithResponse:(id)response;
+- (ICDResponse)initWithCode:(unint64_t)code headerFields:(id)fields data:(id)data MIMEType:(id)type error:(id)error;
 - (id)description;
 @end
 
@@ -20,29 +20,29 @@
   return v7;
 }
 
-- (ICDResponse)initWithCode:(unint64_t)a3 headerFields:(id)a4 data:(id)a5 MIMEType:(id)a6 error:(id)a7
+- (ICDResponse)initWithCode:(unint64_t)code headerFields:(id)fields data:(id)data MIMEType:(id)type error:(id)error
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  fieldsCopy = fields;
+  dataCopy = data;
+  typeCopy = type;
+  errorCopy = error;
   v25.receiver = self;
   v25.super_class = ICDResponse;
   v16 = [(ICDResponse *)&v25 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_error, a7);
-    v18 = [v14 copy];
+    objc_storeStrong(&v16->_error, error);
+    v18 = [typeCopy copy];
     MIMEType = v17->_MIMEType;
     v17->_MIMEType = v18;
 
-    v17->_responseCode = a3;
-    v20 = [v13 copy];
+    v17->_responseCode = code;
+    v20 = [dataCopy copy];
     responseData = v17->_responseData;
     v17->_responseData = v20;
 
-    v22 = [v12 copy];
+    v22 = [fieldsCopy copy];
     responseHeaderFields = v17->_responseHeaderFields;
     v17->_responseHeaderFields = v22;
   }
@@ -50,28 +50,28 @@
   return v17;
 }
 
-+ (id)responseWithResponse:(id)a3
++ (id)responseWithResponse:(id)response
 {
-  v3 = a3;
+  responseCopy = response;
   v4 = objc_alloc(objc_opt_class());
-  v5 = [v3 responseCode];
-  v6 = [v3 responseHeaderFields];
-  v7 = [v3 responseData];
-  v8 = [v3 MIMEType];
-  v9 = [v3 error];
+  responseCode = [responseCopy responseCode];
+  responseHeaderFields = [responseCopy responseHeaderFields];
+  responseData = [responseCopy responseData];
+  mIMEType = [responseCopy MIMEType];
+  error = [responseCopy error];
 
-  v10 = [v4 initWithCode:v5 headerFields:v6 data:v7 MIMEType:v8 error:v9];
+  v10 = [v4 initWithCode:responseCode headerFields:responseHeaderFields data:responseData MIMEType:mIMEType error:error];
 
   return v10;
 }
 
-+ (id)responseWithCode:(unint64_t)a3 headerFields:(id)a4 data:(id)a5 MIMEType:(id)a6 error:(id)a7
++ (id)responseWithCode:(unint64_t)code headerFields:(id)fields data:(id)data MIMEType:(id)type error:(id)error
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = [objc_alloc(objc_opt_class()) initWithCode:a3 headerFields:v14 data:v13 MIMEType:v12 error:v11];
+  errorCopy = error;
+  typeCopy = type;
+  dataCopy = data;
+  fieldsCopy = fields;
+  v15 = [objc_alloc(objc_opt_class()) initWithCode:code headerFields:fieldsCopy data:dataCopy MIMEType:typeCopy error:errorCopy];
 
   return v15;
 }

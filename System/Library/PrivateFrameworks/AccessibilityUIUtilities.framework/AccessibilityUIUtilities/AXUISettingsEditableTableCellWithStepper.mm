@@ -1,7 +1,7 @@
 @interface AXUISettingsEditableTableCellWithStepper
-- (AXUISettingsEditableTableCellWithStepper)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (AXUISettingsEditableTableCellWithStepper)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (AXUISettingsEditableTableCellWithStepperDelegate)delegate;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (double)_axStepperMaximumValue;
 - (double)_axStepperMinimumValue;
 - (double)_axStepperStepValue;
@@ -9,29 +9,29 @@
 - (id)_axStepperStringValue;
 - (id)_axStepperUnitString;
 - (int64_t)_axStepperKeyboardType;
-- (void)_axStepperSetValue:(double)a3;
-- (void)_stepperChanged:(id)a3;
-- (void)_textFieldChanged:(id)a3;
+- (void)_axStepperSetValue:(double)value;
+- (void)_stepperChanged:(id)changed;
+- (void)_textFieldChanged:(id)changed;
 - (void)_updateAccessibilityLabelForTextField;
 - (void)_updateSecondsLabel;
-- (void)_updateSecondsLabelForDelegate:(id)a3;
+- (void)_updateSecondsLabelForDelegate:(id)delegate;
 - (void)didMoveToSuperview;
 - (void)initializeView;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)textFieldDidEndEditing:(id)a3;
-- (void)updateWithValue:(double)a3 shouldUpdateTextField:(BOOL)a4;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
+- (void)setDelegate:(id)delegate;
+- (void)textFieldDidEndEditing:(id)editing;
+- (void)updateWithValue:(double)value shouldUpdateTextField:(BOOL)field;
 @end
 
 @implementation AXUISettingsEditableTableCellWithStepper
 
-- (AXUISettingsEditableTableCellWithStepper)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (AXUISettingsEditableTableCellWithStepper)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = AXUISettingsEditableTableCellWithStepper;
-  v4 = [(AXUISettingsEditableTextCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(AXUISettingsEditableTextCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -48,39 +48,39 @@
   v31.receiver = self;
   v31.super_class = AXUISettingsEditableTableCellWithStepper;
   [(AXUISettingsEditableTextCell *)&v31 initializeView];
-  v3 = [(PSTableCell *)self specifier];
+  specifier = [(PSTableCell *)self specifier];
   v4 = *MEMORY[0x1E69C58C8];
-  v5 = [v3 propertyForKey:*MEMORY[0x1E69C58C8]];
+  v5 = [specifier propertyForKey:*MEMORY[0x1E69C58C8]];
   if (v5)
   {
-    v6 = [(PSTableCell *)self specifier];
-    v7 = [v6 propertyForKey:v4];
-    v8 = [v7 BOOLValue];
+    specifier2 = [(PSTableCell *)self specifier];
+    v7 = [specifier2 propertyForKey:v4];
+    bOOLValue = [v7 BOOLValue];
   }
 
   else
   {
-    v8 = 1;
+    bOOLValue = 1;
   }
 
-  v9 = [(AXUISettingsEditableTextCell *)self nameTextField];
-  [v9 setKeyboardType:8];
+  nameTextField = [(AXUISettingsEditableTextCell *)self nameTextField];
+  [nameTextField setKeyboardType:8];
 
-  v10 = [(AXUISettingsEditableTextCell *)self nameTextField];
-  [v10 setReturnKeyType:9];
+  nameTextField2 = [(AXUISettingsEditableTextCell *)self nameTextField];
+  [nameTextField2 setReturnKeyType:9];
 
-  v11 = [(AXUISettingsEditableTextCell *)self nameTextField];
-  [v11 addTarget:self action:sel__textFieldChanged_ forControlEvents:0x20000];
+  nameTextField3 = [(AXUISettingsEditableTextCell *)self nameTextField];
+  [nameTextField3 addTarget:self action:sel__textFieldChanged_ forControlEvents:0x20000];
 
-  v12 = [(AXUISettingsEditableTextCell *)self nameTextField];
-  [v12 setEnabled:v8];
+  nameTextField4 = [(AXUISettingsEditableTextCell *)self nameTextField];
+  [nameTextField4 setEnabled:bOOLValue];
 
-  v13 = [MEMORY[0x1E69DC888] systemLightGrayColor];
-  v14 = [(AXUISettingsEditableTextCell *)self nameTextField];
-  [v14 setBackgroundColor:v13];
+  systemLightGrayColor = [MEMORY[0x1E69DC888] systemLightGrayColor];
+  nameTextField5 = [(AXUISettingsEditableTextCell *)self nameTextField];
+  [nameTextField5 setBackgroundColor:systemLightGrayColor];
 
-  v15 = [(AXUISettingsEditableTextCell *)self nameTextField];
-  [v15 setBorderStyle:3];
+  nameTextField6 = [(AXUISettingsEditableTextCell *)self nameTextField];
+  [nameTextField6 setBorderStyle:3];
 
   stepper = self->_stepper;
   if (!stepper)
@@ -93,19 +93,19 @@
     [(UIStepper *)self->_stepper setUserInteractionEnabled:1];
     [(UIStepper *)self->_stepper addTarget:self action:sel__stepperChanged_ forControlEvents:4096];
     [(UIStepper *)self->_stepper accessibilitySetIdentification:@"AXStepper"];
-    v20 = [(AXUISettingsEditableTableCellWithStepper *)self contentView];
-    [v20 addSubview:self->_stepper];
+    contentView = [(AXUISettingsEditableTableCellWithStepper *)self contentView];
+    [contentView addSubview:self->_stepper];
 
     stepper = self->_stepper;
   }
 
-  [(UIStepper *)stepper setEnabled:v8];
+  [(UIStepper *)stepper setEnabled:bOOLValue];
   secondsLabel = self->_secondsLabel;
   if (!secondsLabel)
   {
-    v22 = [(AXUISettingsEditableTableCellWithStepper *)self detailTextLabel];
+    detailTextLabel = [(AXUISettingsEditableTableCellWithStepper *)self detailTextLabel];
     v23 = self->_secondsLabel;
-    self->_secondsLabel = v22;
+    self->_secondsLabel = detailTextLabel;
 
     if (!self->_secondsLabel)
     {
@@ -113,59 +113,59 @@
       v25 = self->_secondsLabel;
       self->_secondsLabel = v24;
 
-      v26 = [(AXUISettingsEditableTableCellWithStepper *)self contentView];
-      [v26 addSubview:self->_secondsLabel];
+      contentView2 = [(AXUISettingsEditableTableCellWithStepper *)self contentView];
+      [contentView2 addSubview:self->_secondsLabel];
     }
 
     v27 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
     [(UILabel *)self->_secondsLabel setFont:v27];
 
-    v28 = [MEMORY[0x1E69DC888] clearColor];
-    [(UILabel *)self->_secondsLabel setBackgroundColor:v28];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UILabel *)self->_secondsLabel setBackgroundColor:clearColor];
 
-    v29 = [MEMORY[0x1E69C5710] appearance];
-    v30 = [v29 textColor];
-    [(UILabel *)self->_secondsLabel setTextColor:v30];
+    appearance = [MEMORY[0x1E69C5710] appearance];
+    textColor = [appearance textColor];
+    [(UILabel *)self->_secondsLabel setTextColor:textColor];
 
     [(UILabel *)self->_secondsLabel setAdjustsFontForContentSizeCategory:1];
     [(UILabel *)self->_secondsLabel setIsAccessibilityElement:0];
     secondsLabel = self->_secondsLabel;
   }
 
-  [(UILabel *)secondsLabel setEnabled:v8];
+  [(UILabel *)secondsLabel setEnabled:bOOLValue];
   [(AXUISettingsEditableTableCellWithStepper *)self _updateAccessibilityLabelForTextField];
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v12.receiver = self;
   v12.super_class = AXUISettingsEditableTableCellWithStepper;
-  [(AXUISettingsEditableTextCell *)&v12 refreshCellContentsWithSpecifier:v4];
+  [(AXUISettingsEditableTextCell *)&v12 refreshCellContentsWithSpecifier:specifierCopy];
   v5 = *MEMORY[0x1E69C58C8];
-  v6 = [v4 propertyForKey:*MEMORY[0x1E69C58C8]];
+  v6 = [specifierCopy propertyForKey:*MEMORY[0x1E69C58C8]];
   if (v6)
   {
-    v7 = [v4 propertyForKey:v5];
-    v8 = [v7 BOOLValue];
+    v7 = [specifierCopy propertyForKey:v5];
+    bOOLValue = [v7 BOOLValue];
   }
 
   else
   {
-    v8 = 1;
+    bOOLValue = 1;
   }
 
-  v9 = [(AXUISettingsEditableTextCell *)self nameTextField];
-  [v9 setEnabled:v8];
+  nameTextField = [(AXUISettingsEditableTextCell *)self nameTextField];
+  [nameTextField setEnabled:bOOLValue];
 
-  [(UIStepper *)self->_stepper setEnabled:v8];
-  [(UILabel *)self->_secondsLabel setEnabled:v8];
+  [(UIStepper *)self->_stepper setEnabled:bOOLValue];
+  [(UILabel *)self->_secondsLabel setEnabled:bOOLValue];
   [(AXUISettingsEditableTableCellWithStepper *)self _updateAccessibilityLabelForTextField];
-  v10 = [v4 target];
-  v11 = [v4 propertyForKey:@"testingUseNoPreferencesDelegate"];
+  target = [specifierCopy target];
+  v11 = [specifierCopy propertyForKey:@"testingUseNoPreferencesDelegate"];
   -[AXUISettingsEditableTableCellWithStepper setTestingUseNoPreferencesDelegate:](self, "setTestingUseNoPreferencesDelegate:", [v11 BOOLValue]);
 
-  [(AXUISettingsEditableTableCellWithStepper *)self setDelegate:v10];
+  [(AXUISettingsEditableTableCellWithStepper *)self setDelegate:target];
 }
 
 - (void)prepareForReuse
@@ -173,29 +173,29 @@
   v12.receiver = self;
   v12.super_class = AXUISettingsEditableTableCellWithStepper;
   [(AXUISettingsEditableTextCell *)&v12 prepareForReuse];
-  v3 = [(AXUISettingsEditableTextCell *)self nameTextField];
-  [v3 setKeyboardType:8];
+  nameTextField = [(AXUISettingsEditableTextCell *)self nameTextField];
+  [nameTextField setKeyboardType:8];
 
-  v4 = [(AXUISettingsEditableTextCell *)self nameTextField];
-  [v4 setReturnKeyType:9];
+  nameTextField2 = [(AXUISettingsEditableTextCell *)self nameTextField];
+  [nameTextField2 setReturnKeyType:9];
 
-  v5 = [MEMORY[0x1E69DC888] systemLightGrayColor];
-  v6 = [(AXUISettingsEditableTextCell *)self nameTextField];
-  [v6 setBackgroundColor:v5];
+  systemLightGrayColor = [MEMORY[0x1E69DC888] systemLightGrayColor];
+  nameTextField3 = [(AXUISettingsEditableTextCell *)self nameTextField];
+  [nameTextField3 setBackgroundColor:systemLightGrayColor];
 
-  v7 = [(AXUISettingsEditableTextCell *)self nameTextField];
-  [v7 setBorderStyle:3];
+  nameTextField4 = [(AXUISettingsEditableTextCell *)self nameTextField];
+  [nameTextField4 setBorderStyle:3];
 
   [(UIStepper *)self->_stepper setUserInteractionEnabled:1];
   v8 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
   [(UILabel *)self->_secondsLabel setFont:v8];
 
-  v9 = [MEMORY[0x1E69DC888] clearColor];
-  [(UILabel *)self->_secondsLabel setBackgroundColor:v9];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(UILabel *)self->_secondsLabel setBackgroundColor:clearColor];
 
-  v10 = [MEMORY[0x1E69C5710] appearance];
-  v11 = [v10 textColor];
-  [(UILabel *)self->_secondsLabel setTextColor:v11];
+  appearance = [MEMORY[0x1E69C5710] appearance];
+  textColor = [appearance textColor];
+  [(UILabel *)self->_secondsLabel setTextColor:textColor];
 
   [(UILabel *)self->_secondsLabel setAdjustsFontForContentSizeCategory:1];
   [(UILabel *)self->_secondsLabel setIsAccessibilityElement:0];
@@ -204,19 +204,19 @@
 
 - (double)_axStepperMaximumValue
 {
-  v3 = [(AXUISettingsEditableTableCellWithStepper *)self testingUseNoPreferencesDelegate];
-  v4 = [(AXUISettingsEditableTableCellWithStepper *)self delegate];
-  v5 = v4;
-  if (v3)
+  testingUseNoPreferencesDelegate = [(AXUISettingsEditableTableCellWithStepper *)self testingUseNoPreferencesDelegate];
+  delegate = [(AXUISettingsEditableTableCellWithStepper *)self delegate];
+  v5 = delegate;
+  if (testingUseNoPreferencesDelegate)
   {
-    [v4 maximumValueForStepperCell:self];
+    [delegate maximumValueForStepperCell:self];
     v7 = v6;
   }
 
   else
   {
-    v8 = [(PSTableCell *)self specifier];
-    [v5 maximumValueForSpecifier:v8];
+    specifier = [(PSTableCell *)self specifier];
+    [v5 maximumValueForSpecifier:specifier];
     v7 = v9;
   }
 
@@ -225,19 +225,19 @@
 
 - (double)_axStepperMinimumValue
 {
-  v3 = [(AXUISettingsEditableTableCellWithStepper *)self testingUseNoPreferencesDelegate];
-  v4 = [(AXUISettingsEditableTableCellWithStepper *)self delegate];
-  v5 = v4;
-  if (v3)
+  testingUseNoPreferencesDelegate = [(AXUISettingsEditableTableCellWithStepper *)self testingUseNoPreferencesDelegate];
+  delegate = [(AXUISettingsEditableTableCellWithStepper *)self delegate];
+  v5 = delegate;
+  if (testingUseNoPreferencesDelegate)
   {
-    [v4 minimumValueForStepperCell:self];
+    [delegate minimumValueForStepperCell:self];
     v7 = v6;
   }
 
   else
   {
-    v8 = [(PSTableCell *)self specifier];
-    [v5 minimumValueForSpecifier:v8];
+    specifier = [(PSTableCell *)self specifier];
+    [v5 minimumValueForSpecifier:specifier];
     v7 = v9;
   }
 
@@ -246,12 +246,12 @@
 
 - (int64_t)_axStepperKeyboardType
 {
-  v3 = [(AXUISettingsEditableTableCellWithStepper *)self testingUseNoPreferencesDelegate];
-  v4 = [(AXUISettingsEditableTableCellWithStepper *)self delegate];
-  v5 = v4;
-  if (v3)
+  testingUseNoPreferencesDelegate = [(AXUISettingsEditableTableCellWithStepper *)self testingUseNoPreferencesDelegate];
+  delegate = [(AXUISettingsEditableTableCellWithStepper *)self delegate];
+  delegate2 = delegate;
+  if (testingUseNoPreferencesDelegate)
   {
-    v6 = [v4 keyboardTypeForStepperCell:self];
+    v6 = [delegate keyboardTypeForStepperCell:self];
   }
 
   else
@@ -263,9 +263,9 @@
       return 8;
     }
 
-    v5 = [(AXUISettingsEditableTableCellWithStepper *)self delegate];
-    v8 = [(PSTableCell *)self specifier];
-    v6 = [v5 keyboardTypeForSpecifier:v8];
+    delegate2 = [(AXUISettingsEditableTableCellWithStepper *)self delegate];
+    specifier = [(PSTableCell *)self specifier];
+    v6 = [delegate2 keyboardTypeForSpecifier:specifier];
   }
 
   return v6;
@@ -273,12 +273,12 @@
 
 - (id)_axStepperUnitString
 {
-  v3 = [(AXUISettingsEditableTableCellWithStepper *)self testingUseNoPreferencesDelegate];
-  v4 = [(AXUISettingsEditableTableCellWithStepper *)self delegate];
-  v5 = v4;
-  if (v3)
+  testingUseNoPreferencesDelegate = [(AXUISettingsEditableTableCellWithStepper *)self testingUseNoPreferencesDelegate];
+  delegate = [(AXUISettingsEditableTableCellWithStepper *)self delegate];
+  delegate2 = delegate;
+  if (testingUseNoPreferencesDelegate)
   {
-    v6 = [v4 unitsStringForStepperCell:self];
+    v6 = [delegate unitsStringForStepperCell:self];
 LABEL_5:
 
     goto LABEL_7;
@@ -288,9 +288,9 @@ LABEL_5:
 
   if (v7)
   {
-    v5 = [(AXUISettingsEditableTableCellWithStepper *)self delegate];
-    v8 = [(PSTableCell *)self specifier];
-    v6 = [v5 unitsStringForSpecifier:v8];
+    delegate2 = [(AXUISettingsEditableTableCellWithStepper *)self delegate];
+    specifier = [(PSTableCell *)self specifier];
+    v6 = [delegate2 unitsStringForSpecifier:specifier];
 
     goto LABEL_5;
   }
@@ -303,19 +303,19 @@ LABEL_7:
 
 - (double)_axStepperValue
 {
-  v3 = [(AXUISettingsEditableTableCellWithStepper *)self testingUseNoPreferencesDelegate];
-  v4 = [(AXUISettingsEditableTableCellWithStepper *)self delegate];
-  v5 = v4;
-  if (v3)
+  testingUseNoPreferencesDelegate = [(AXUISettingsEditableTableCellWithStepper *)self testingUseNoPreferencesDelegate];
+  delegate = [(AXUISettingsEditableTableCellWithStepper *)self delegate];
+  v5 = delegate;
+  if (testingUseNoPreferencesDelegate)
   {
-    [v4 valueForStepperCell:self];
+    [delegate valueForStepperCell:self];
     v7 = v6;
   }
 
   else
   {
-    v8 = [(PSTableCell *)self specifier];
-    [v5 valueForSpecifier:v8];
+    specifier = [(PSTableCell *)self specifier];
+    [v5 valueForSpecifier:specifier];
     v7 = v9;
   }
 
@@ -324,67 +324,67 @@ LABEL_7:
 
 - (double)_axStepperStepValue
 {
-  v3 = [(AXUISettingsEditableTableCellWithStepper *)self testingUseNoPreferencesDelegate];
-  v4 = [(AXUISettingsEditableTableCellWithStepper *)self delegate];
-  v5 = v4;
-  if (v3)
+  testingUseNoPreferencesDelegate = [(AXUISettingsEditableTableCellWithStepper *)self testingUseNoPreferencesDelegate];
+  delegate = [(AXUISettingsEditableTableCellWithStepper *)self delegate];
+  v5 = delegate;
+  if (testingUseNoPreferencesDelegate)
   {
-    [v4 stepValueForStepperCell:self];
+    [delegate stepValueForStepperCell:self];
     v7 = v6;
   }
 
   else
   {
-    v8 = [(PSTableCell *)self specifier];
-    [v5 stepValueForSpecifier:v8];
+    specifier = [(PSTableCell *)self specifier];
+    [v5 stepValueForSpecifier:specifier];
     v7 = v9;
   }
 
   return v7;
 }
 
-- (void)_axStepperSetValue:(double)a3
+- (void)_axStepperSetValue:(double)value
 {
-  v5 = [(AXUISettingsEditableTableCellWithStepper *)self testingUseNoPreferencesDelegate];
-  v7 = [(AXUISettingsEditableTableCellWithStepper *)self delegate];
-  if (v5)
+  testingUseNoPreferencesDelegate = [(AXUISettingsEditableTableCellWithStepper *)self testingUseNoPreferencesDelegate];
+  delegate = [(AXUISettingsEditableTableCellWithStepper *)self delegate];
+  if (testingUseNoPreferencesDelegate)
   {
-    [v7 stepperCell:self setValue:a3];
+    [delegate stepperCell:self setValue:value];
   }
 
   else
   {
-    v6 = [(PSTableCell *)self specifier];
-    [v7 specifier:v6 setValue:a3];
+    specifier = [(PSTableCell *)self specifier];
+    [delegate specifier:specifier setValue:value];
   }
 }
 
 - (id)_axStepperStringValue
 {
-  v3 = [(AXUISettingsEditableTableCellWithStepper *)self testingUseNoPreferencesDelegate];
-  v4 = [(AXUISettingsEditableTableCellWithStepper *)self delegate];
-  v5 = v4;
-  if (v3)
+  testingUseNoPreferencesDelegate = [(AXUISettingsEditableTableCellWithStepper *)self testingUseNoPreferencesDelegate];
+  delegate = [(AXUISettingsEditableTableCellWithStepper *)self delegate];
+  v5 = delegate;
+  if (testingUseNoPreferencesDelegate)
   {
-    v6 = [v4 stringValueForStepperCell:self];
+    v6 = [delegate stringValueForStepperCell:self];
   }
 
   else
   {
-    v7 = [(PSTableCell *)self specifier];
-    v6 = [v5 stringValueForSpecifier:v7];
+    specifier = [(PSTableCell *)self specifier];
+    v6 = [v5 stringValueForSpecifier:specifier];
   }
 
   return v6;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v6 = a3;
-  objc_storeWeak(&self->_delegate, v6);
-  v4 = [(AXUISettingsEditableTableCellWithStepper *)self _axStepperKeyboardType];
-  v5 = [(AXUISettingsEditableTextCell *)self nameTextField];
-  [v5 setKeyboardType:v4];
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_delegate, delegateCopy);
+  _axStepperKeyboardType = [(AXUISettingsEditableTableCellWithStepper *)self _axStepperKeyboardType];
+  nameTextField = [(AXUISettingsEditableTextCell *)self nameTextField];
+  [nameTextField setKeyboardType:_axStepperKeyboardType];
 
   [(AXUISettingsEditableTableCellWithStepper *)self _axStepperMinimumValue];
   [(UIStepper *)self->_stepper setMinimumValue:?];
@@ -394,30 +394,30 @@ LABEL_7:
   [(UIStepper *)self->_stepper setValue:?];
   [(AXUISettingsEditableTableCellWithStepper *)self _axStepperStepValue];
   [(UIStepper *)self->_stepper setStepValue:?];
-  [(AXUISettingsEditableTableCellWithStepper *)self _updateSecondsLabelForDelegate:v6];
+  [(AXUISettingsEditableTableCellWithStepper *)self _updateSecondsLabelForDelegate:delegateCopy];
 }
 
 - (void)_updateAccessibilityLabelForTextField
 {
-  v4 = [(AXUISettingsEditableTextCell *)self nameTextField];
-  v3 = [(UILabel *)self->_secondsLabel text];
-  [v4 setAccessibilityLabel:v3];
+  nameTextField = [(AXUISettingsEditableTextCell *)self nameTextField];
+  text = [(UILabel *)self->_secondsLabel text];
+  [nameTextField setAccessibilityLabel:text];
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
-  v19 = [a3 text];
+  text = [editing text];
   v4 = objc_alloc_init(MEMORY[0x1E696ADA0]);
-  v5 = [v4 decimalSeparator];
-  v6 = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
-  v7 = [v6 mutableCopy];
+  decimalSeparator = [v4 decimalSeparator];
+  decimalDigitCharacterSet = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
+  v7 = [decimalDigitCharacterSet mutableCopy];
 
-  v8 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:v5];
+  v8 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:decimalSeparator];
   [v7 formUnionWithCharacterSet:v8];
 
-  if ([v19 length])
+  if ([text length])
   {
-    v9 = [v19 stringByTrimmingCharactersInSet:v7];
+    v9 = [text stringByTrimmingCharactersInSet:v7];
     v10 = [v9 length];
 
     if (v10)
@@ -429,7 +429,7 @@ LABEL_6:
     }
   }
 
-  v12 = [v4 numberFromString:v19];
+  v12 = [v4 numberFromString:text];
   [v12 doubleValue];
   v14 = v13;
 
@@ -449,71 +449,71 @@ LABEL_6:
   v16 = v14;
 LABEL_8:
   [(AXUISettingsEditableTableCellWithStepper *)self _axStepperSetValue:v16];
-  v17 = [(AXUISettingsEditableTableCellWithStepper *)self _axStepperStringValue];
-  v18 = [(AXUISettingsEditableTextCell *)self nameTextField];
-  [v18 setText:v17];
+  _axStepperStringValue = [(AXUISettingsEditableTableCellWithStepper *)self _axStepperStringValue];
+  nameTextField = [(AXUISettingsEditableTextCell *)self nameTextField];
+  [nameTextField setText:_axStepperStringValue];
 
   [(UIStepper *)self->_stepper setValue:v16];
   [(AXUISettingsEditableTableCellWithStepper *)self _updateSecondsLabel];
   [(AXUISettingsEditableTableCellWithStepper *)self _updateAccessibilityLabelForTextField];
 }
 
-- (void)_stepperChanged:(id)a3
+- (void)_stepperChanged:(id)changed
 {
   [(UIStepper *)self->_stepper value];
 
   [(AXUISettingsEditableTableCellWithStepper *)self updateWithValue:1 shouldUpdateTextField:?];
 }
 
-- (void)_textFieldChanged:(id)a3
+- (void)_textFieldChanged:(id)changed
 {
-  v4 = [a3 text];
-  [v4 doubleValue];
+  text = [changed text];
+  [text doubleValue];
   v6 = v5;
 
   [(AXUISettingsEditableTableCellWithStepper *)self updateWithValue:0 shouldUpdateTextField:v6];
 }
 
-- (void)updateWithValue:(double)a3 shouldUpdateTextField:(BOOL)a4
+- (void)updateWithValue:(double)value shouldUpdateTextField:(BOOL)field
 {
-  v4 = a4;
-  v7 = [(AXUISettingsEditableTableCellWithStepper *)self stepper];
-  [v7 maximumValue];
-  v9 = v8;
+  fieldCopy = field;
+  stepper = [(AXUISettingsEditableTableCellWithStepper *)self stepper];
+  [stepper maximumValue];
+  valueCopy = v8;
 
-  if (v9 > a3)
+  if (valueCopy > value)
   {
-    v9 = a3;
+    valueCopy = value;
   }
 
-  v10 = [(AXUISettingsEditableTableCellWithStepper *)self stepper];
-  [v10 minimumValue];
+  stepper2 = [(AXUISettingsEditableTableCellWithStepper *)self stepper];
+  [stepper2 minimumValue];
   v12 = v11;
 
-  if (v9 >= v12)
+  if (valueCopy >= v12)
   {
-    v12 = v9;
+    v12 = valueCopy;
   }
 
   [(AXUISettingsEditableTableCellWithStepper *)self _axStepperSetValue:v12];
-  v13 = [(AXUISettingsEditableTableCellWithStepper *)self stepper];
-  [v13 setValue:v12];
+  stepper3 = [(AXUISettingsEditableTableCellWithStepper *)self stepper];
+  [stepper3 setValue:v12];
 
-  if (v4)
+  if (fieldCopy)
   {
     [(AXUISettingsEditableTextCell *)self updateText];
     if ([(AXUISettingsEditableTableCellWithStepper *)self shouldResizeTextFieldOnUpdate])
     {
-      v14 = [(AXUISettingsEditableTextCell *)self nameTextField];
-      [v14 frame];
+      nameTextField = [(AXUISettingsEditableTextCell *)self nameTextField];
+      [nameTextField frame];
       v16 = v15;
       v18 = v17;
       v20 = v19;
-      v21 = [(AXUISettingsEditableTextCell *)self nameTextField];
-      [v21 sizeThatFits:{200.0, 100.0}];
+      nameTextField2 = [(AXUISettingsEditableTextCell *)self nameTextField];
+      [nameTextField2 sizeThatFits:{200.0, 100.0}];
       v23 = v22;
 
-      [v14 setFrame:{v16, v18, v23, v20}];
+      [nameTextField setFrame:{v16, v18, v23, v20}];
     }
 
     [(AXUISettingsEditableTableCellWithStepper *)self _updateSecondsLabel];
@@ -524,27 +524,27 @@ LABEL_8:
 
 - (void)_updateSecondsLabel
 {
-  v3 = [(AXUISettingsEditableTableCellWithStepper *)self delegate];
-  [(AXUISettingsEditableTableCellWithStepper *)self _updateSecondsLabelForDelegate:v3];
+  delegate = [(AXUISettingsEditableTableCellWithStepper *)self delegate];
+  [(AXUISettingsEditableTableCellWithStepper *)self _updateSecondsLabelForDelegate:delegate];
 }
 
-- (void)_updateSecondsLabelForDelegate:(id)a3
+- (void)_updateSecondsLabelForDelegate:(id)delegate
 {
-  v4 = [(UILabel *)self->_secondsLabel text];
-  v5 = [v4 copy];
+  text = [(UILabel *)self->_secondsLabel text];
+  v5 = [text copy];
 
-  v6 = [(AXUISettingsEditableTableCellWithStepper *)self _axStepperUnitString];
-  if (v6)
+  _axStepperUnitString = [(AXUISettingsEditableTableCellWithStepper *)self _axStepperUnitString];
+  if (_axStepperUnitString)
   {
-    [(UILabel *)self->_secondsLabel setText:v6];
+    [(UILabel *)self->_secondsLabel setText:_axStepperUnitString];
   }
 
   else
   {
-    v7 = [(AXUISettingsEditableTextCell *)self nameTextField];
-    v8 = [v7 text];
+    nameTextField = [(AXUISettingsEditableTextCell *)self nameTextField];
+    text2 = [nameTextField text];
 
-    v9 = [MEMORY[0x1E696AE88] localizedScannerWithString:v8];
+    v9 = [MEMORY[0x1E696AE88] localizedScannerWithString:text2];
     v16 = 0.0;
     [v9 scanDouble:&v16];
     v10 = MEMORY[0x1E696AEC0];
@@ -563,8 +563,8 @@ LABEL_8:
     [(UILabel *)self->_secondsLabel setText:v13];
   }
 
-  v14 = [(UILabel *)self->_secondsLabel text];
-  v15 = [v5 isEqualToString:v14];
+  text3 = [(UILabel *)self->_secondsLabel text];
+  v15 = [v5 isEqualToString:text3];
 
   if ((v15 & 1) == 0)
   {
@@ -574,9 +574,9 @@ LABEL_8:
 
 - (void)didMoveToSuperview
 {
-  v3 = [(AXUISettingsEditableTableCellWithStepper *)self superview];
+  superview = [(AXUISettingsEditableTableCellWithStepper *)self superview];
 
-  if (v3)
+  if (superview)
   {
     [(AXUISettingsEditableTextCell *)self updateText];
 
@@ -584,14 +584,14 @@ LABEL_8:
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   if (AXPreferredContentSizeCategoryIsAccessibilityCategory())
   {
-    v6 = [(AXUISettingsEditableTextCell *)self nameTextField];
-    [v6 sizeThatFits:{200.0, 3.40282347e38}];
+    nameTextField = [(AXUISettingsEditableTextCell *)self nameTextField];
+    [nameTextField sizeThatFits:{200.0, 3.40282347e38}];
     v8 = v7;
     [(UILabel *)self->_secondsLabel sizeThatFits:200.0, 3.40282347e38];
     v10 = v8 + v9;
@@ -622,19 +622,19 @@ LABEL_8:
   v42.receiver = self;
   v42.super_class = AXUISettingsEditableTableCellWithStepper;
   [(AXUISettingsEditableTextCell *)&v42 layoutSubviews];
-  v3 = [(AXUISettingsEditableTextCell *)self nameTextField];
-  [v3 sizeToFit];
+  nameTextField = [(AXUISettingsEditableTextCell *)self nameTextField];
+  [nameTextField sizeToFit];
   [(UILabel *)self->_secondsLabel sizeToFit];
-  [v3 frame];
+  [nameTextField frame];
   v5 = v4;
   v7 = v6;
-  v8 = [(AXUISettingsEditableTextCell *)self nameTextField];
-  [v8 sizeThatFits:{200.0, 100.0}];
+  nameTextField2 = [(AXUISettingsEditableTextCell *)self nameTextField];
+  [nameTextField2 sizeThatFits:{200.0, 100.0}];
   v10 = v9;
 
   IsAccessibilityCategory = AXPreferredContentSizeCategoryIsAccessibilityCategory();
-  v12 = [(AXUISettingsEditableTableCellWithStepper *)self contentView];
-  [v12 frame];
+  contentView = [(AXUISettingsEditableTableCellWithStepper *)self contentView];
+  [contentView frame];
   v14 = v13;
   v15 = v7;
   if (IsAccessibilityCategory)
@@ -646,9 +646,9 @@ LABEL_8:
   v17 = v14 - v15;
 
   v18 = v17 * 0.5;
-  v19 = [MEMORY[0x1E69C5710] appearance];
-  v20 = [v19 textColor];
-  [(UILabel *)self->_secondsLabel setTextColor:v20];
+  appearance = [MEMORY[0x1E69C5710] appearance];
+  textColor = [appearance textColor];
+  [(UILabel *)self->_secondsLabel setTextColor:textColor];
 
   v21 = MEMORY[0x1E69DDA98];
   if ([*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection] == 1)
@@ -675,7 +675,7 @@ LABEL_8:
 
   [(UILabel *)self->_secondsLabel frame];
   v27 = v26;
-  [v3 setFrame:{v5, v18, v10, v7}];
+  [nameTextField setFrame:{v5, v18, v10, v7}];
   secondsLabel = self->_secondsLabel;
   v45.origin.x = v25;
   v45.origin.y = v18;
@@ -690,8 +690,8 @@ LABEL_8:
   v33 = 10.0;
   if (![*v21 userInterfaceLayoutDirection])
   {
-    v34 = [(AXUISettingsEditableTableCellWithStepper *)self contentView];
-    [v34 bounds];
+    contentView2 = [(AXUISettingsEditableTableCellWithStepper *)self contentView];
+    [contentView2 bounds];
     MaxX = CGRectGetMaxX(v47);
     [(UIStepper *)self->_stepper frame];
     v33 = MaxX - (v36 + 10.0);
@@ -700,14 +700,14 @@ LABEL_8:
   if (AXPreferredContentSizeCategoryIsAccessibilityCategory())
   {
     [(UILabel *)self->_secondsLabel frame];
-    [v3 frame];
+    [nameTextField frame];
     CGRectGetMaxY(v48);
-    [v3 frame];
+    [nameTextField frame];
     [(UILabel *)self->_secondsLabel setFrame:?];
   }
 
-  v37 = [(AXUISettingsEditableTableCellWithStepper *)self contentView];
-  [v37 frame];
+  contentView3 = [(AXUISettingsEditableTableCellWithStepper *)self contentView];
+  [contentView3 frame];
   v39 = v38;
   [(UIStepper *)self->_stepper frame];
   v41 = (v39 - v40) * 0.5;

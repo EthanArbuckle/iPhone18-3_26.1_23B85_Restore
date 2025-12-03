@@ -1,8 +1,8 @@
 @interface BWTiledEspressoInferenceAdapter
 - (BWTiledEspressoInferenceAdapter)init;
 - (id)_generateInferenceProviderCacheKeyWithAttributes:(id)result;
-- (id)_newInferenceProviderWithType:(uint64_t)a3 configuration:(uint64_t)a4 resourceProvider:(uint64_t)a5 additionalCacheAttributes:;
-- (id)inferenceProviderForType:(int)a3 version:(id)a4 configuration:(id)a5 resourceProvider:(id)a6 status:(int *)a7;
+- (id)_newInferenceProviderWithType:(uint64_t)type configuration:(uint64_t)configuration resourceProvider:(uint64_t)provider additionalCacheAttributes:;
+- (id)inferenceProviderForType:(int)type version:(id)version configuration:(id)configuration resourceProvider:(id)provider status:(int *)status;
 - (void)dealloc;
 @end
 
@@ -98,38 +98,38 @@ id __106__BWTiledEspressoInferenceAdapter_inferenceProviderForType_version_confi
   return [BWTiledEspressoInferenceProvider videoFormatWithPixelFormat:1278226488 size:v12];
 }
 
-- (id)inferenceProviderForType:(int)a3 version:(id)a4 configuration:(id)a5 resourceProvider:(id)a6 status:(int *)a7
+- (id)inferenceProviderForType:(int)type version:(id)version configuration:(id)configuration resourceProvider:(id)provider status:(int *)status
 {
-  v10 = *&a3;
-  if ((a3 - 159) >= 2 && (a3 - 170) >= 2)
+  v10 = *&type;
+  if ((type - 159) >= 2 && (type - 170) >= 2)
   {
-    if (a3 == 107)
+    if (type == 107)
     {
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
       v13 = 0;
       v14 = -31701;
-      if (!a5 || (isKindOfClass & 1) == 0)
+      if (!configuration || (isKindOfClass & 1) == 0)
       {
         goto LABEL_22;
       }
 
-      v13 = [(BWTiledEspressoInferenceAdapter *)self _newInferenceProviderWithType:a5 configuration:a6 resourceProvider:0 additionalCacheAttributes:?];
+      v13 = [(BWTiledEspressoInferenceAdapter *)self _newInferenceProviderWithType:configuration configuration:provider resourceProvider:0 additionalCacheAttributes:?];
       if (!v13)
       {
         v14 = -31702;
         goto LABEL_22;
       }
 
-      [a5 targetAspectRatio];
+      [configuration targetAspectRatio];
       v17 = v16;
-      v18 = [a5 appliesFinalCropRect];
+      appliesFinalCropRect = [configuration appliesFinalCropRect];
       v19 = [BWInferenceLazyVideoRequirement alloc];
       v33[0] = MEMORY[0x1E69E9820];
       v33[1] = 3221225472;
       v33[2] = __106__BWTiledEspressoInferenceAdapter_inferenceProviderForType_version_configuration_resourceProvider_status___block_invoke;
       v33[3] = &unk_1E798F7E0;
-      v33[4] = a5;
+      v33[4] = configuration;
       v20 = [(BWInferenceLazyVideoRequirement *)v19 initWithAttachedMediaKey:0x1F219E750 preparedByAttachedMediaKey:@"PrimaryFormat" videoFormatProvider:v33];
       if (v20)
       {
@@ -141,8 +141,8 @@ id __106__BWTiledEspressoInferenceAdapter_inferenceProviderForType_version_confi
         v30[2] = __106__BWTiledEspressoInferenceAdapter_inferenceProviderForType_version_configuration_resourceProvider_status___block_invoke_2;
         v30[3] = &unk_1E7990C40;
         v31 = v17;
-        v30[4] = a5;
-        v32 = v18;
+        v30[4] = configuration;
+        v32 = appliesFinalCropRect;
         if ([(BWInferenceLazyVideoRequirement *)v22 initWithAttachedMediaKey:@"PrimaryFormat" preparedByAttachedMediaKey:@"PrimaryFormat" videoFormatProvider:v30])
         {
           [OUTLINED_FUNCTION_4() setInputImageVideoRequirement:?];
@@ -152,13 +152,13 @@ id __106__BWTiledEspressoInferenceAdapter_inferenceProviderForType_version_confi
           v28[2] = __106__BWTiledEspressoInferenceAdapter_inferenceProviderForType_version_configuration_resourceProvider_status___block_invoke_3;
           v28[3] = &unk_1E798F7B8;
           v29 = v17;
-          v28[4] = a5;
+          v28[4] = configuration;
           v24 = [(BWInferenceLazyVideoRequirement *)v23 initWithAttachedMediaKey:0x1F21AABB0 preparedByAttachedMediaKey:@"PrimaryFormat" videoFormatProvider:v28];
           if (v24)
           {
             v25 = v24;
             [v13 setOutputAlphaVideoRequirement:v24];
-            if ([a5 produceLowResPersonMaskClone])
+            if ([configuration produceLowResPersonMaskClone])
             {
               v26 = [[BWInferenceCloneVideoRequirement alloc] initWithAttachedMediaKey:0x1F21AADF0 sourceVideoRequirement:v21];
               if (!v26)
@@ -214,9 +214,9 @@ LABEL_30:
   v12 = objc_opt_isKindOfClass();
   v13 = 0;
   v14 = -31701;
-  if (a5 && (v12 & 1) != 0)
+  if (configuration && (v12 & 1) != 0)
   {
-    v13 = [(BWTiledEspressoInferenceAdapter *)self _newInferenceProviderWithType:v10 configuration:a5 resourceProvider:a6 additionalCacheAttributes:0];
+    v13 = [(BWTiledEspressoInferenceAdapter *)self _newInferenceProviderWithType:v10 configuration:configuration resourceProvider:provider additionalCacheAttributes:0];
     if (v13)
     {
       v14 = 0;
@@ -229,17 +229,17 @@ LABEL_30:
   }
 
 LABEL_22:
-  if (a7)
+  if (status)
   {
-    *a7 = v14;
+    *status = v14;
   }
 
   return v13;
 }
 
-- (id)_newInferenceProviderWithType:(uint64_t)a3 configuration:(uint64_t)a4 resourceProvider:(uint64_t)a5 additionalCacheAttributes:
+- (id)_newInferenceProviderWithType:(uint64_t)type configuration:(uint64_t)configuration resourceProvider:(uint64_t)provider additionalCacheAttributes:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -250,24 +250,24 @@ LABEL_22:
   v27 = [MEMORY[0x1E696AD98] numberWithInt:a2];
   v11 = [v10 dictionaryWithDictionary:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v27, &v26, 1)}];
   v12 = v11;
-  if (a5)
+  if (provider)
   {
-    [v11 addEntriesFromDictionary:a5];
+    [v11 addEntriesFromDictionary:provider];
   }
 
-  v13 = [(BWTiledEspressoInferenceAdapter *)a1 _generateInferenceProviderCacheKeyWithAttributes:v12];
+  v13 = [(BWTiledEspressoInferenceAdapter *)self _generateInferenceProviderCacheKeyWithAttributes:v12];
   if (!v13)
   {
     return 0;
   }
 
   v14 = v13;
-  v25.receiver = a1;
+  v25.receiver = self;
   v25.super_class = BWTiledEspressoInferenceAdapter;
   v15 = objc_msgSendSuper2(&v25, sel_shouldCacheInferenceProvider);
   if (v8 == 107 && v15)
   {
-    v24.receiver = a1;
+    v24.receiver = self;
     v24.super_class = BWTiledEspressoInferenceAdapter;
     v16 = [objc_msgSendSuper2(&v24 cachedInferenceProviderByCacheKey)];
     if (v16)
@@ -298,19 +298,19 @@ LABEL_14:
 
   v18 = BWLearnedNRInferenceProvider;
 LABEL_15:
-  v19 = [[v18 alloc] initWithConfiguration:a3 resourceProvider:a4];
+  v19 = [[v18 alloc] initWithConfiguration:type resourceProvider:configuration];
   v17 = v19;
   if (v19)
   {
     [v19 setCustomInferenceIdentifier:v14];
-    v23.receiver = a1;
+    v23.receiver = self;
     v23.super_class = BWTiledEspressoInferenceAdapter;
     v20 = objc_msgSendSuper2(&v23, sel_shouldCacheInferenceProvider);
     if (v8 == 107)
     {
       if (v20)
       {
-        v22.receiver = a1;
+        v22.receiver = self;
         v22.super_class = BWTiledEspressoInferenceAdapter;
         [objc_msgSendSuper2(&v22 cachedInferenceProviderByCacheKey)];
       }
@@ -327,8 +327,8 @@ LABEL_15:
     v3 = [a2 count];
     if (v3)
     {
-      v4 = [MEMORY[0x1E695DF70] array];
-      v12 = OUTLINED_FUNCTION_11_2(v4, v5, v6, v7, v8, v9, v10, v11, v25, v27, v29, v31, v33, v35, v37, v39, v41, v43, v45, v47, v49, v51, v53, v55, v57, v59, 0);
+      array = [MEMORY[0x1E695DF70] array];
+      v12 = OUTLINED_FUNCTION_11_2(array, v5, v6, v7, v8, v9, v10, v11, v25, v27, v29, v31, v33, v35, v37, v39, v41, v43, v45, v47, v49, v51, v53, v55, v57, v59, 0);
       if (v12)
       {
         v13 = v12;
@@ -355,7 +355,7 @@ LABEL_15:
         while (v13);
       }
 
-      v3 = [v4 componentsJoinedByString:@"|"];
+      v3 = [array componentsJoinedByString:@"|"];
     }
 
     return v3;

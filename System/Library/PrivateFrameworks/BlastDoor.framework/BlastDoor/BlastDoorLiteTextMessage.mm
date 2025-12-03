@@ -14,7 +14,7 @@
   v6 = &v13 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_213FB568C(self + OBJC_IVAR___BlastDoorLiteTextMessage_liteTextMessage, v6, type metadata accessor for LiteTextMessage);
   v7 = v6[16];
-  v8 = self;
+  selfCopy = self;
   sub_213FB5844(v6, type metadata accessor for LiteTextMessage);
   if (v7 == 14)
   {
@@ -44,7 +44,7 @@
 
 - (BlastDoorLiteTapback)tapback
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2145606F0();
 
   return v3;

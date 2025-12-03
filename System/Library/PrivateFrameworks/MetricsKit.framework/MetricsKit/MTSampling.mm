@@ -1,9 +1,9 @@
 @interface MTSampling
-- (BOOL)isSampledInWithEventType:(id)a3 samplingForced:(id)a4 sessionSamplingPercentage:(id)a5 sessionDuration:(id)a6 samplingPercentage:(id)a7;
-- (BOOL)isSampledInWithEventType:(id)a3 sessionSamplingPercentage:(double)a4 sessionDurationMs:(unint64_t)a5;
-- (BOOL)isSampledInWithMetricsData:(id)a3;
+- (BOOL)isSampledInWithEventType:(id)type samplingForced:(id)forced sessionSamplingPercentage:(id)percentage sessionDuration:(id)duration samplingPercentage:(id)samplingPercentage;
+- (BOOL)isSampledInWithEventType:(id)type sessionSamplingPercentage:(double)percentage sessionDurationMs:(unint64_t)ms;
+- (BOOL)isSampledInWithMetricsData:(id)data;
 - (MTSampling)init;
-- (void)clearSessionWithEventType:(id)a3;
+- (void)clearSessionWithEventType:(id)type;
 @end
 
 @implementation MTSampling
@@ -22,14 +22,14 @@
   return v2;
 }
 
-- (BOOL)isSampledInWithMetricsData:(id)a3
+- (BOOL)isSampledInWithMetricsData:(id)data
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"eventType"];
-  v5 = [v3 objectForKeyedSubscript:@"xpSamplingPercentageUsers"];
-  v6 = [v3 objectForKeyedSubscript:@"xpSessionDuration"];
-  v7 = [v3 objectForKeyedSubscript:@"xpSamplingForced"];
-  v8 = [v3 objectForKeyedSubscript:@"xpSamplingPercentage"];
+  dataCopy = data;
+  v4 = [dataCopy objectForKeyedSubscript:@"eventType"];
+  v5 = [dataCopy objectForKeyedSubscript:@"xpSamplingPercentageUsers"];
+  v6 = [dataCopy objectForKeyedSubscript:@"xpSessionDuration"];
+  v7 = [dataCopy objectForKeyedSubscript:@"xpSamplingForced"];
+  v8 = [dataCopy objectForKeyedSubscript:@"xpSamplingPercentage"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -91,19 +91,19 @@
   return v14;
 }
 
-- (BOOL)isSampledInWithEventType:(id)a3 samplingForced:(id)a4 sessionSamplingPercentage:(id)a5 sessionDuration:(id)a6 samplingPercentage:(id)a7
+- (BOOL)isSampledInWithEventType:(id)type samplingForced:(id)forced sessionSamplingPercentage:(id)percentage sessionDuration:(id)duration samplingPercentage:(id)samplingPercentage
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  typeCopy = type;
+  forcedCopy = forced;
+  percentageCopy = percentage;
+  durationCopy = duration;
+  samplingPercentageCopy = samplingPercentage;
   v20 = 1;
-  if (!v13 || ([v13 BOOLValue] & 1) == 0)
+  if (!forcedCopy || ([forcedCopy BOOLValue] & 1) == 0)
   {
-    if (!v12 || (v14 ? (v17 = v14) : (v17 = &unk_286A4C200), ([v17 doubleValue], v15) ? (v19 = v15) : (v19 = &unk_286A4C200), !-[MTSampling isSampledInWithEventType:sessionSamplingPercentage:sessionDurationMs:](self, "isSampledInWithEventType:sessionSamplingPercentage:sessionDurationMs:", v12, objc_msgSend(v19, "unsignedIntValue"), v18)))
+    if (!typeCopy || (percentageCopy ? (v17 = percentageCopy) : (v17 = &unk_286A4C200), ([v17 doubleValue], durationCopy) ? (v19 = durationCopy) : (v19 = &unk_286A4C200), !-[MTSampling isSampledInWithEventType:sessionSamplingPercentage:sessionDurationMs:](self, "isSampledInWithEventType:sessionSamplingPercentage:sessionDurationMs:", typeCopy, objc_msgSend(v19, "unsignedIntValue"), v18)))
     {
-      if (!v16 || ([v16 doubleValue], !-[MTSampling isSampledInWithSamplingPercentage:](self, "isSampledInWithSamplingPercentage:")))
+      if (!samplingPercentageCopy || ([samplingPercentageCopy doubleValue], !-[MTSampling isSampledInWithSamplingPercentage:](self, "isSampledInWithSamplingPercentage:")))
       {
         v20 = 0;
       }
@@ -113,13 +113,13 @@
   return v20;
 }
 
-- (BOOL)isSampledInWithEventType:(id)a3 sessionSamplingPercentage:(double)a4 sessionDurationMs:(unint64_t)a5
+- (BOOL)isSampledInWithEventType:(id)type sessionSamplingPercentage:(double)percentage sessionDurationMs:(unint64_t)ms
 {
-  v8 = a3;
-  v9 = self;
-  objc_sync_enter(v9);
-  v10 = [(MTSampling *)v9 sessions];
-  v11 = [v10 objectForKeyedSubscript:v8];
+  typeCopy = type;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  sessions = [(MTSampling *)selfCopy sessions];
+  v11 = [sessions objectForKeyedSubscript:typeCopy];
 
   if (v11)
   {
@@ -128,14 +128,14 @@
 
     if (v13 != -1)
     {
-      v14 = [(MTSampling *)v9 sessions];
-      [v14 removeObjectForKey:v8];
+      sessions2 = [(MTSampling *)selfCopy sessions];
+      [sessions2 removeObjectForKey:typeCopy];
 
       v11 = 0;
     }
   }
 
-  objc_sync_exit(v9);
+  objc_sync_exit(selfCopy);
 
   if (v11)
   {
@@ -148,29 +148,29 @@
     }
   }
 
-  if (a4 == 0.0)
+  if (percentage == 0.0)
   {
     v17 = 0;
     goto LABEL_14;
   }
 
-  v18 = [(MTSampling *)v9 isSampledInWithSamplingPercentage:a4];
+  v18 = [(MTSampling *)selfCopy isSampledInWithSamplingPercentage:percentage];
   v17 = v18;
-  if (a5 && v18)
+  if (ms && v18)
   {
-    v19 = a5 / 1000.0;
+    v19 = ms / 1000.0;
     v20 = [MEMORY[0x277CBEAA8] now];
     v21 = [v20 dateByAddingTimeInterval:v19];
 
-    v22 = v9;
+    v22 = selfCopy;
     objc_sync_enter(v22);
-    v23 = [(MTSampling *)v22 sessions];
-    v24 = [v23 objectForKeyedSubscript:v8];
+    sessions3 = [(MTSampling *)v22 sessions];
+    v24 = [sessions3 objectForKeyedSubscript:typeCopy];
 
     if (!v24)
     {
-      v25 = [(MTSampling *)v22 sessions];
-      [v25 setObject:v21 forKeyedSubscript:v8];
+      sessions4 = [(MTSampling *)v22 sessions];
+      [sessions4 setObject:v21 forKeyedSubscript:typeCopy];
     }
 
     objc_sync_exit(v22);
@@ -181,7 +181,7 @@
     v29[2] = __83__MTSampling_isSampledInWithEventType_sessionSamplingPercentage_sessionDurationMs___block_invoke;
     v29[3] = &unk_2798CD090;
     objc_copyWeak(&v31, &location);
-    v30 = v8;
+    v30 = typeCopy;
     v27 = [v26 scheduledTimerWithTimeInterval:0 repeats:v29 block:v19];
 
     objc_destroyWeak(&v31);
@@ -202,11 +202,11 @@ void __83__MTSampling_isSampledInWithEventType_sessionSamplingPercentage_session
   [WeakRetained clearSessionWithEventType:*(a1 + 32)];
 }
 
-- (void)clearSessionWithEventType:(id)a3
+- (void)clearSessionWithEventType:(id)type
 {
-  v9 = a3;
-  v4 = [(MTSampling *)self sessions];
-  v5 = [v4 objectForKeyedSubscript:v9];
+  typeCopy = type;
+  sessions = [(MTSampling *)self sessions];
+  v5 = [sessions objectForKeyedSubscript:typeCopy];
 
   if (v5)
   {
@@ -215,8 +215,8 @@ void __83__MTSampling_isSampledInWithEventType_sessionSamplingPercentage_session
 
     if (v7 != -1)
     {
-      v8 = [(MTSampling *)self sessions];
-      [v8 removeObjectForKey:v9];
+      sessions2 = [(MTSampling *)self sessions];
+      [sessions2 removeObjectForKey:typeCopy];
     }
   }
 }

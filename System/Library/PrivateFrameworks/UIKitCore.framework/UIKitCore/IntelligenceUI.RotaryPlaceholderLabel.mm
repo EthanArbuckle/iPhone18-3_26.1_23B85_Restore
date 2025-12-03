@@ -1,6 +1,6 @@
 @interface IntelligenceUI.RotaryPlaceholderLabel
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
 @end
 
@@ -8,7 +8,7 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
 
   v3 = sub_189144794();
   v5 = v4;
@@ -20,9 +20,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(IntelligenceUI.RotaryPlaceholderLabel *)self intrinsicContentSize:a3.width];
+  [(IntelligenceUI.RotaryPlaceholderLabel *)self intrinsicContentSize:fits.width];
   result.height = v4;
   result.width = v3;
   return result;
@@ -30,7 +30,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   IntelligenceUI.RotaryPlaceholderLabel.layoutSubviews()();
 }
 

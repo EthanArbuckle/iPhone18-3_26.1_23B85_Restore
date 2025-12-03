@@ -1,19 +1,19 @@
 @interface _UISearchControllerATVSearchBarAnimatorLegacy
-- (void)animateTransition:(id)a3;
-- (void)didFocusSearchBarForController:(id)a3;
-- (void)didRelayoutSearchBarForController:(id)a3;
-- (void)didUnfocusSearchBarForController:(id)a3;
-- (void)willFocusOffscreenViewForController:(id)a3 withHeading:(unint64_t)a4;
+- (void)animateTransition:(id)transition;
+- (void)didFocusSearchBarForController:(id)controller;
+- (void)didRelayoutSearchBarForController:(id)controller;
+- (void)didUnfocusSearchBarForController:(id)controller;
+- (void)willFocusOffscreenViewForController:(id)controller withHeading:(unint64_t)heading;
 @end
 
 @implementation _UISearchControllerATVSearchBarAnimatorLegacy
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
   v351[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 viewControllerForKey:@"UITransitionContextFromViewController"];
-  v7 = [v5 viewControllerForKey:@"UITransitionContextToViewController"];
+  transitionCopy = transition;
+  v6 = [transitionCopy viewControllerForKey:@"UITransitionContextFromViewController"];
+  v7 = [transitionCopy viewControllerForKey:@"UITransitionContextToViewController"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
@@ -27,82 +27,82 @@
   }
 
   v10 = v9;
-  v11 = [v10 presentingViewController];
-  v12 = [v11 transitionCoordinator];
+  presentingViewController = [v10 presentingViewController];
+  transitionCoordinator = [presentingViewController transitionCoordinator];
 
-  v13 = [v10 _searchPresentationController];
+  _searchPresentationController = [v10 _searchPresentationController];
   objc_opt_class();
   v14 = objc_opt_isKindOfClass();
 
   if ((v14 & 1) == 0)
   {
-    v298 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v298 handleFailureInMethod:a2 object:self file:@"_UISearchControllerATVSearchAnimatorLegacy.m" lineNumber:45 description:@"UISearchBar's presentation controller must be of type _UISearchATVPresentationController."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UISearchControllerATVSearchAnimatorLegacy.m" lineNumber:45 description:@"UISearchBar's presentation controller must be of type _UISearchATVPresentationController."];
   }
 
-  v332 = self;
-  v15 = [v10 _searchPresentationController];
-  v16 = [v10 searchBar];
-  if ([v16 showsScopeBar])
+  selfCopy = self;
+  _searchPresentationController2 = [v10 _searchPresentationController];
+  searchBar = [v10 searchBar];
+  if ([searchBar showsScopeBar])
   {
-    v17 = [v16 _scopeBarContainerView];
-    if (v17)
+    _scopeBarContainerView = [searchBar _scopeBarContainerView];
+    if (_scopeBarContainerView)
     {
-      v336 = [v16 _scopeBarContainerView];
+      _scopeBarContainerView2 = [searchBar _scopeBarContainerView];
     }
 
     else
     {
-      v336 = 0;
+      _scopeBarContainerView2 = 0;
     }
   }
 
   else
   {
-    v336 = 0;
+    _scopeBarContainerView2 = 0;
   }
 
-  v334 = v15;
+  v334 = _searchPresentationController2;
   if (isKindOfClass)
   {
-    v335 = v16;
+    v335 = searchBar;
     v330 = v10;
     v331 = v6;
-    v18 = [v7 view];
-    [v5 finalFrameForViewController:v7];
-    [v18 setFrame:?];
-    v19 = [v5 containerView];
-    [v19 addSubview:v18];
+    view = [v7 view];
+    [transitionCopy finalFrameForViewController:v7];
+    [view setFrame:?];
+    containerView = [transitionCopy containerView];
+    [containerView addSubview:view];
 
     if ([v7 obscuresBackgroundDuringPresentation])
     {
-      v20 = [v15 backgroundObscuringView];
-      [v5 finalFrameForViewController:v7];
-      [v20 setFrame:?];
+      backgroundObscuringView = [_searchPresentationController2 backgroundObscuringView];
+      [transitionCopy finalFrameForViewController:v7];
+      [backgroundObscuringView setFrame:?];
     }
 
-    v329 = v12;
+    v329 = transitionCoordinator;
     v21 = [v7 _systemInputViewControllerAfterUpdate:0];
-    v333 = v18;
+    v333 = view;
     if ([v21 resolvedKeyboardStyle] == 1)
     {
-      v22 = [v7 searchBar];
-      [v22 _setDisableFocus:1];
+      searchBar2 = [v7 searchBar];
+      [searchBar2 _setDisableFocus:1];
 
       [v335 frame];
-      [v18 frame];
+      [view frame];
       [v335 sizeThatFits:{v23, v24}];
       v26 = v25;
-      [v18 frame];
+      [view frame];
       v28 = v27 + -80.0;
       v29 = MEMORY[0x1E695EFF8];
-      v30 = [v15 searchBarContainerView];
-      [v30 addSubview:v335];
+      searchBarContainerView = [_searchPresentationController2 searchBarContainerView];
+      [searchBarContainerView addSubview:v335];
 
       if (dyld_program_sdk_at_least())
       {
-        v31 = [v7 view];
-        [v31 safeAreaInsets];
+        view2 = [v7 view];
+        [view2 safeAreaInsets];
         v33 = v32;
       }
 
@@ -114,35 +114,35 @@
       v56 = v28 + -80.0;
       v57 = *v29;
       v323 = v29[1];
-      v58 = [v7 presentationController];
-      v59 = [v58 presentingViewController];
-      v60 = [v59 tabBarController];
+      presentationController = [v7 presentationController];
+      presentingViewController2 = [presentationController presentingViewController];
+      tabBarController = [presentingViewController2 tabBarController];
 
-      if (v60)
+      if (tabBarController)
       {
-        v61 = [v7 presentationController];
-        v62 = [v61 presentingViewController];
-        [v62 tabBarController];
-        v64 = v63 = v15;
-        v65 = [v64 tabBar];
+        presentationController2 = [v7 presentationController];
+        presentingViewController3 = [presentationController2 presentingViewController];
+        [presentingViewController3 tabBarController];
+        v64 = v63 = _searchPresentationController2;
+        tabBar = [v64 tabBar];
 
-        v66 = [v65 superview];
-        v67 = [v66 coordinateSpace];
-        [v65 frame];
+        superview = [tabBar superview];
+        coordinateSpace = [superview coordinateSpace];
+        [tabBar frame];
         v69 = v68;
         v71 = v70;
         v73 = v72;
         v75 = v74;
-        v76 = [v63 searchBarContainerView];
-        v77 = [v76 superview];
-        v78 = [v77 coordinateSpace];
-        [v67 convertRect:v78 toCoordinateSpace:{v69, v71, v73, v75}];
+        searchBarContainerView2 = [v63 searchBarContainerView];
+        superview2 = [searchBarContainerView2 superview];
+        coordinateSpace2 = [superview2 coordinateSpace];
+        [coordinateSpace convertRect:coordinateSpace2 toCoordinateSpace:{v69, v71, v73, v75}];
         v80 = v79;
         v82 = v81;
         v84 = v83;
         v86 = v85;
 
-        if ([v65 _displayStyle] == 1)
+        if ([tabBar _displayStyle] == 1)
         {
           v352.origin.x = v80;
           v352.origin.y = v82;
@@ -151,36 +151,36 @@
           v33 = CGRectGetMaxY(v352) + 43.0;
         }
 
-        v18 = v333;
-        v15 = v334;
+        view = v333;
+        _searchPresentationController2 = v334;
       }
 
-      [v18 bounds];
+      [view bounds];
       v88 = v87;
       v90 = v89;
       v92 = v91;
       v94 = v93;
-      v95 = [v18 _screen];
-      [v95 scale];
+      _screen = [view _screen];
+      [_screen scale];
       UIRectCenteredXInRectScale(v57, v33, v56, v26, v88, v90, v92, v94, v96);
       v98 = v97;
       v100 = v99;
       v102 = v101;
       v104 = v103;
 
-      v105 = [v15 searchBarContainerView];
-      [v105 setFrame:{v98, v100, v102, v104}];
+      searchBarContainerView3 = [_searchPresentationController2 searchBarContainerView];
+      [searchBarContainerView3 setFrame:{v98, v100, v102, v104}];
 
       [v335 setFrame:{v57, v323, v56, v26}];
-      v106 = [v21 view];
+      view3 = [v21 view];
       v107 = *(MEMORY[0x1E695EFD0] + 16);
       v347[0] = *MEMORY[0x1E695EFD0];
       v347[1] = v107;
       v347[2] = *(MEMORY[0x1E695EFD0] + 32);
-      [v106 setTransform:v347];
+      [view3 setTransform:v347];
 
-      v108 = [v21 view];
-      [v108 layoutIfNeeded];
+      view4 = [v21 view];
+      [view4 layoutIfNeeded];
 
       [v21 view];
       v319 = v318 = 1.0;
@@ -198,18 +198,18 @@
       v353.size.width = v102;
       v353.size.height = v104;
       v113 = CGRectGetMaxY(v353) + 34.5;
-      v114 = [v21 view];
-      v115 = [v114 centerXAnchor];
-      v116 = [v7 view];
-      v117 = [v116 centerXAnchor];
-      v118 = [v115 constraintEqualToAnchor:v117];
+      view5 = [v21 view];
+      centerXAnchor = [view5 centerXAnchor];
+      view6 = [v7 view];
+      centerXAnchor2 = [view6 centerXAnchor];
+      v118 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
 
-      v119 = [v21 view];
-      v120 = [v119 topAnchor];
-      v121 = [v21 view];
-      v122 = [v121 superview];
-      v123 = [v122 topAnchor];
-      v124 = [v120 constraintEqualToAnchor:v123 constant:v113];
+      view7 = [v21 view];
+      topAnchor = [view7 topAnchor];
+      view8 = [v21 view];
+      superview3 = [view8 superview];
+      topAnchor2 = [superview3 topAnchor];
+      v124 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v113];
 
       v125 = v118;
       v126 = v124;
@@ -222,19 +222,19 @@
 
       [v21 setAlignmentConstraint:v118 forAxis:0];
       [v21 setAlignmentConstraint:v124 forAxis:1];
-      v129 = [v21 view];
-      [v129 frame];
+      view9 = [v21 view];
+      [view9 frame];
       v131 = v113 + v130;
 
-      v132 = [v7 _leftDividerView];
-      v133 = [v7 view];
-      [v133 frame];
+      _leftDividerView = [v7 _leftDividerView];
+      view10 = [v7 view];
+      [view10 frame];
       v135 = v134 + -160.0;
 
-      [v132 setFrame:{80.0, v131, v135, 1.0}];
-      [v333 addSubview:v132];
-      v136 = [v7 _rightDividerView];
-      [v136 removeFromSuperview];
+      [_leftDividerView setFrame:{80.0, v131, v135, 1.0}];
+      [v333 addSubview:_leftDividerView];
+      _rightDividerView = [v7 _rightDividerView];
+      [_rightDividerView removeFromSuperview];
 
       [v333 frame];
       v138 = v137 + -160.0;
@@ -243,69 +243,69 @@
       v354.origin.y = v131;
       v354.size.width = v137 + -160.0;
       MaxY = CGRectGetMaxY(v354);
-      v140 = [v7 _leftDividerView];
-      v314 = [v7 _rightDividerView];
+      _leftDividerView2 = [v7 _leftDividerView];
+      _rightDividerView2 = [v7 _rightDividerView];
       v324 = v126;
-      if ([v335 showsScopeBar] && v336)
+      if ([v335 showsScopeBar] && _scopeBarContainerView2)
       {
-        v321 = v132;
+        v321 = _leftDividerView;
         v315 = v125;
         v312 = v21;
-        v327 = v5;
+        v327 = transitionCopy;
         [v335 _scopeBarHeight];
         v142 = v141;
-        v143 = [v335 _scopeBar];
-        [v143 sizeThatFits:{10000.0, 10000.0}];
+        _scopeBar = [v335 _scopeBar];
+        [_scopeBar sizeThatFits:{10000.0, 10000.0}];
         v145 = v144;
 
         v146 = (v138 - v145) * 0.5 + 80.0;
-        [v336 setFrame:{v146, v131, v145, v142}];
+        [_scopeBarContainerView2 setFrame:{v146, v131, v145, v142}];
         v318 = 1.0;
-        [v336 setAlpha:?];
-        [v333 addSubview:v336];
+        [_scopeBarContainerView2 setAlpha:?];
+        [v333 addSubview:_scopeBarContainerView2];
         v355.origin.x = v146;
         v355.origin.y = v131;
         v355.size.width = v145;
         rect = v142;
         v355.size.height = v142;
         MaxY = CGRectGetMaxY(v355);
-        v147 = [v7 _scopeBarFocusContainerGuide];
-        v148 = [v7 _scopeBarConstraints];
+        _scopeBarFocusContainerGuide = [v7 _scopeBarFocusContainerGuide];
+        _scopeBarConstraints = [v7 _scopeBarConstraints];
 
-        if (v148)
+        if (_scopeBarConstraints)
         {
           v149 = MEMORY[0x1E69977A0];
-          v150 = [v7 _scopeBarConstraints];
-          [v149 deactivateConstraints:v150];
+          _scopeBarConstraints2 = [v7 _scopeBarConstraints];
+          [v149 deactivateConstraints:_scopeBarConstraints2];
         }
 
-        v306 = [v147 topAnchor];
-        v304 = [v336 topAnchor];
-        v302 = [v306 constraintEqualToAnchor:v304];
+        topAnchor3 = [_scopeBarFocusContainerGuide topAnchor];
+        topAnchor4 = [_scopeBarContainerView2 topAnchor];
+        v302 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
         v350[0] = v302;
-        v301 = [v336 bottomAnchor];
-        v300 = [v147 bottomAnchor];
-        v299 = [v301 constraintEqualToAnchor:v300 constant:-30.0];
+        bottomAnchor = [_scopeBarContainerView2 bottomAnchor];
+        bottomAnchor2 = [_scopeBarFocusContainerGuide bottomAnchor];
+        v299 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-30.0];
         v350[1] = v299;
-        v151 = [v147 leftAnchor];
-        v152 = v147;
-        v308 = v147;
+        leftAnchor = [_scopeBarFocusContainerGuide leftAnchor];
+        v152 = _scopeBarFocusContainerGuide;
+        v308 = _scopeBarFocusContainerGuide;
         v153 = v333;
-        v154 = [v333 leftAnchor];
-        v155 = [v151 constraintEqualToAnchor:v154 constant:80.0];
+        leftAnchor2 = [v333 leftAnchor];
+        v155 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:80.0];
         v350[2] = v155;
-        v156 = [v333 rightAnchor];
-        v157 = [v152 rightAnchor];
-        v158 = [v156 constraintEqualToAnchor:v157 constant:80.0];
+        rightAnchor = [v333 rightAnchor];
+        rightAnchor2 = [v152 rightAnchor];
+        v158 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:80.0];
         v350[3] = v158;
         v159 = [MEMORY[0x1E695DEC8] arrayWithObjects:v350 count:4];
         [v7 set_scopeBarConstraints:v159];
 
         v160 = MEMORY[0x1E69977A0];
-        v161 = [v7 _scopeBarConstraints];
-        [v160 activateConstraints:v161];
+        _scopeBarConstraints3 = [v7 _scopeBarConstraints];
+        [v160 activateConstraints:_scopeBarConstraints3];
 
-        [v336 frame];
+        [_scopeBarContainerView2 frame];
         MidY = CGRectGetMidY(v356);
         v138 = v146 + -30.0 + -80.0;
         v357.origin.x = v146;
@@ -314,63 +314,63 @@
         v357.size.height = rect;
         v163 = CGRectGetMaxX(v357) + 30.0;
         [v333 frame];
-        v164 = v314;
-        [v314 setFrame:{v163, MidY, CGRectGetMaxX(v358) + -80.0 - v163, 1.0}];
-        [v333 addSubview:v314];
+        v164 = _rightDividerView2;
+        [_rightDividerView2 setFrame:{v163, MidY, CGRectGetMaxX(v358) + -80.0 - v163, 1.0}];
+        [v333 addSubview:_rightDividerView2];
 
         v131 = MidY;
-        v5 = v327;
+        transitionCopy = v327;
         v21 = v312;
         v125 = v315;
-        v132 = v321;
+        _leftDividerView = v321;
       }
 
       else
       {
         v153 = v333;
-        v164 = v314;
+        v164 = _rightDividerView2;
       }
 
       v165 = MaxY + 30.0;
-      [v140 setFrame:{80.0, v131, v138, v318}];
-      [v153 addSubview:v140];
-      v166 = [v7 _resultsControllerViewContainer];
-      v167 = [v166 superview];
-      [v167 bounds];
+      [_leftDividerView2 setFrame:{80.0, v131, v138, v318}];
+      [v153 addSubview:_leftDividerView2];
+      _resultsControllerViewContainer = [v7 _resultsControllerViewContainer];
+      superview4 = [_resultsControllerViewContainer superview];
+      [superview4 bounds];
       v169 = v168;
       v171 = v170;
 
       [v153 frame];
       v173 = v172 - v165;
-      v174 = [v7 _resultsControllerViewContainer];
-      [v174 setFrame:{v169, v165, v171, v173}];
+      _resultsControllerViewContainer2 = [v7 _resultsControllerViewContainer];
+      [_resultsControllerViewContainer2 setFrame:{v169, v165, v171, v173}];
 
       v175 = v319;
-      v176 = v324;
+      _leftDividerView3 = v324;
     }
 
     else
     {
-      v39 = [v7 presentationController];
-      v40 = [v39 presentingViewController];
-      v41 = [v40 view];
-      v317 = [v41 _shouldReverseLayoutDirection];
+      presentationController3 = [v7 presentationController];
+      presentingViewController4 = [presentationController3 presentingViewController];
+      view11 = [presentingViewController4 view];
+      _shouldReverseLayoutDirection = [view11 _shouldReverseLayoutDirection];
 
       v42 = v334;
       [v335 frame];
-      [v18 frame];
+      [view frame];
       [v335 sizeThatFits:{v43, v44}];
       v46 = v45;
-      [v18 frame];
+      [view frame];
       v48 = v47 + -190.0;
       v49 = MEMORY[0x1E695EFF8];
-      v50 = [v334 searchBarContainerView];
-      [v50 addSubview:v335];
+      searchBarContainerView4 = [v334 searchBarContainerView];
+      [searchBarContainerView4 addSubview:v335];
 
       if (dyld_program_sdk_at_least())
       {
-        v52 = [v7 view];
-        [v52 safeAreaInsets];
+        view12 = [v7 view];
+        [view12 safeAreaInsets];
         v54 = v53;
       }
 
@@ -382,35 +382,35 @@
       v177 = v48 + -80.0;
       v178 = *v49;
       v325 = v49[1];
-      v179 = [v7 presentationController];
-      v180 = [v179 presentingViewController];
-      v181 = [v180 tabBarController];
+      presentationController4 = [v7 presentationController];
+      presentingViewController5 = [presentationController4 presentingViewController];
+      tabBarController2 = [presentingViewController5 tabBarController];
 
-      v328 = v5;
-      if (v181)
+      v328 = transitionCopy;
+      if (tabBarController2)
       {
-        v182 = [v7 presentationController];
-        v183 = [v182 presentingViewController];
-        v184 = [v183 tabBarController];
-        v185 = [v184 tabBar];
+        presentationController5 = [v7 presentationController];
+        presentingViewController6 = [presentationController5 presentingViewController];
+        tabBarController3 = [presentingViewController6 tabBarController];
+        tabBar2 = [tabBarController3 tabBar];
 
-        v186 = [v185 superview];
-        v187 = [v186 coordinateSpace];
-        [v185 frame];
+        superview5 = [tabBar2 superview];
+        coordinateSpace3 = [superview5 coordinateSpace];
+        [tabBar2 frame];
         v189 = v188;
         v191 = v190;
         v193 = v192;
         v195 = v194;
-        v196 = [v334 searchBarContainerView];
-        v197 = [v196 superview];
-        v198 = [v197 coordinateSpace];
-        [v187 convertRect:v198 toCoordinateSpace:{v189, v191, v193, v195}];
+        searchBarContainerView5 = [v334 searchBarContainerView];
+        superview6 = [searchBarContainerView5 superview];
+        coordinateSpace4 = [superview6 coordinateSpace];
+        [coordinateSpace3 convertRect:coordinateSpace4 toCoordinateSpace:{v189, v191, v193, v195}];
         v200 = v199;
         v202 = v201;
         v204 = v203;
         v206 = v205;
 
-        if ([v185 _displayStyle] == 1)
+        if ([tabBar2 _displayStyle] == 1)
         {
           v359.origin.x = v200;
           v359.origin.y = v202;
@@ -419,29 +419,29 @@
           v54 = CGRectGetMaxY(v359) + 43.0;
         }
 
-        v18 = v333;
+        view = v333;
         v42 = v334;
       }
 
-      [v18 bounds];
+      [view bounds];
       v208 = v207;
       v210 = v209;
       v212 = v211;
       v214 = v213;
-      v215 = [v18 _screen];
-      [v215 scale];
+      _screen2 = [view _screen];
+      [_screen2 scale];
       UIRectCenteredXInRectScale(v178, v54, v177, v46, v208, v210, v212, v214, v216);
       v218 = v217;
       v220 = v219;
       v222 = v221;
       v224 = v223;
 
-      v225 = [v42 searchBarContainerView];
-      [v225 setFrame:{v218, v220, v222, v224}];
+      searchBarContainerView6 = [v42 searchBarContainerView];
+      [searchBarContainerView6 setFrame:{v218, v220, v222, v224}];
 
       [v335 setFrame:{v178, v325, v177, v46}];
-      v226 = [v21 view];
-      [v226 layoutIfNeeded];
+      view13 = [v21 view];
+      [view13 layoutIfNeeded];
 
       v227 = MEMORY[0x1E69977A0];
       v228 = [v21 alignmentConstraintArrayForAxis:0];
@@ -456,25 +456,25 @@
       v360.size.width = v222;
       v360.size.height = v224;
       v231 = CGRectGetMaxY(v360) + 34.5;
-      v232 = [v21 view];
-      v233 = [v232 leadingAnchor];
-      v234 = [v21 view];
-      v235 = [v234 superview];
-      v236 = [v235 leadingAnchor];
+      view14 = [v21 view];
+      leadingAnchor = [view14 leadingAnchor];
+      view15 = [v21 view];
+      superview7 = [view15 superview];
+      leadingAnchor2 = [superview7 leadingAnchor];
       v237 = 190.0;
       v238 = 80.0;
-      if (!v317)
+      if (!_shouldReverseLayoutDirection)
       {
         v238 = 190.0;
       }
 
-      v239 = [v233 constraintEqualToAnchor:v236 constant:v238];
+      v239 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v238];
 
-      v240 = [v21 view];
-      v241 = [v240 topAnchor];
-      v242 = [v7 view];
-      v243 = [v242 topAnchor];
-      v125 = [v241 constraintEqualToAnchor:v243 constant:v231];
+      view16 = [v21 view];
+      topAnchor5 = [view16 topAnchor];
+      view17 = [v7 view];
+      topAnchor6 = [view17 topAnchor];
+      v125 = [topAnchor5 constraintEqualToAnchor:topAnchor6 constant:v231];
 
       v175 = v239;
       v244 = &qword_18A678000;
@@ -488,14 +488,14 @@
       [v21 setAlignmentConstraint:v175 forAxis:0];
       [v21 setAlignmentConstraint:v125 forAxis:1];
       [v21 setUnfocusedFocusGuideOutsets:{-34.5, -40.0, -34.5, -40.0}];
-      if ((v317 & 1) == 0)
+      if ((_shouldReverseLayoutDirection & 1) == 0)
       {
-        v247 = [v21 view];
-        [v247 frame];
+        view18 = [v21 view];
+        [view18 frame];
         v237 = v248 + 70.0 + 190.0;
       }
 
-      [v18 frame];
+      [view frame];
       v250 = v249 + -270.0;
       v251 = 1.0;
       v361.size.height = 1.0;
@@ -503,68 +503,68 @@
       v361.origin.y = v231;
       v361.size.width = v249 + -270.0;
       v252 = CGRectGetMaxY(v361);
-      v176 = [v7 _leftDividerView];
-      v322 = [v7 _rightDividerView];
+      _leftDividerView3 = [v7 _leftDividerView];
+      _rightDividerView3 = [v7 _rightDividerView];
       if ([v335 showsScopeBar])
       {
-        v326 = v176;
-        if (v336)
+        v326 = _leftDividerView3;
+        if (_scopeBarContainerView2)
         {
           v316 = v125;
           v320 = v175;
           [v335 _scopeBarHeight];
           v254 = v253;
-          v255 = [v335 _scopeBar];
-          [v255 sizeThatFits:{10000.0, 10000.0}];
+          _scopeBar2 = [v335 _scopeBar];
+          [_scopeBar2 sizeThatFits:{10000.0, 10000.0}];
           v257 = v256;
 
           v258 = v237 + (v250 - v257) * 0.5;
-          [v336 setFrame:{v258, v231, v257, v254}];
-          [v336 setAlpha:1.0];
-          [v18 addSubview:v336];
+          [_scopeBarContainerView2 setFrame:{v258, v231, v257, v254}];
+          [_scopeBarContainerView2 setAlpha:1.0];
+          [view addSubview:_scopeBarContainerView2];
           v362.origin.x = v258;
           v362.origin.y = v231;
           v362.size.width = v257;
           v362.size.height = v254;
           v252 = CGRectGetMaxY(v362);
-          v259 = [v7 _scopeBarFocusContainerGuide];
-          v260 = [v7 _scopeBarConstraints];
+          _scopeBarFocusContainerGuide2 = [v7 _scopeBarFocusContainerGuide];
+          _scopeBarConstraints4 = [v7 _scopeBarConstraints];
 
-          if (v260)
+          if (_scopeBarConstraints4)
           {
             v261 = MEMORY[0x1E69977A0];
-            v262 = [v7 _scopeBarConstraints];
-            [v261 deactivateConstraints:v262];
+            _scopeBarConstraints5 = [v7 _scopeBarConstraints];
+            [v261 deactivateConstraints:_scopeBarConstraints5];
           }
 
-          recta = [v259 topAnchor];
-          v309 = [v336 topAnchor];
-          v307 = [recta constraintEqualToAnchor:v309];
+          recta = [_scopeBarFocusContainerGuide2 topAnchor];
+          topAnchor7 = [_scopeBarContainerView2 topAnchor];
+          v307 = [recta constraintEqualToAnchor:topAnchor7];
           v348[0] = v307;
-          v305 = [v336 bottomAnchor];
-          v303 = [v259 bottomAnchor];
-          v263 = [v305 constraintEqualToAnchor:v303 constant:-30.0];
+          bottomAnchor3 = [_scopeBarContainerView2 bottomAnchor];
+          bottomAnchor4 = [_scopeBarFocusContainerGuide2 bottomAnchor];
+          v263 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-30.0];
           v348[1] = v263;
-          v264 = [v259 leftAnchor];
-          v265 = [v18 leftAnchor];
-          v266 = [v264 constraintEqualToAnchor:v265 constant:190.0];
+          leftAnchor3 = [_scopeBarFocusContainerGuide2 leftAnchor];
+          leftAnchor4 = [view leftAnchor];
+          v266 = [leftAnchor3 constraintEqualToAnchor:leftAnchor4 constant:190.0];
           v348[2] = v266;
-          v267 = [v333 rightAnchor];
-          [v259 rightAnchor];
-          v268 = v313 = v259;
-          v269 = [v267 constraintEqualToAnchor:v268 constant:80.0];
+          rightAnchor3 = [v333 rightAnchor];
+          [_scopeBarFocusContainerGuide2 rightAnchor];
+          v268 = v313 = _scopeBarFocusContainerGuide2;
+          v269 = [rightAnchor3 constraintEqualToAnchor:v268 constant:80.0];
           v348[3] = v269;
           v270 = [MEMORY[0x1E695DEC8] arrayWithObjects:v348 count:4];
           [v7 set_scopeBarConstraints:v270];
 
-          v18 = v333;
+          view = v333;
           v244 = &qword_18A678000;
 
           v271 = MEMORY[0x1E69977A0];
-          v272 = [v7 _scopeBarConstraints];
-          [v271 activateConstraints:v272];
+          _scopeBarConstraints6 = [v7 _scopeBarConstraints];
+          [v271 activateConstraints:_scopeBarConstraints6];
 
-          [v336 frame];
+          [_scopeBarContainerView2 frame];
           v273 = CGRectGetMidY(v363);
           v250 = v258 + -30.0 - v237;
           v364.origin.x = v258;
@@ -573,12 +573,12 @@
           v364.size.height = v254;
           v274 = CGRectGetMaxX(v364) + 30.0;
           [v333 frame];
-          [v322 setFrame:{v274, v273, CGRectGetMaxX(v365) + -80.0 - v274, 1.0}];
-          [v333 addSubview:v322];
+          [_rightDividerView3 setFrame:{v274, v273, CGRectGetMaxX(v365) + -80.0 - v274, 1.0}];
+          [v333 addSubview:_rightDividerView3];
 
           v231 = v273;
-          v176 = v326;
-          v5 = v328;
+          _leftDividerView3 = v326;
+          transitionCopy = v328;
           v175 = v320;
           v125 = v316;
           v251 = 1.0;
@@ -586,42 +586,42 @@
       }
 
       v275 = v252 + 30.0;
-      [v176 setFrame:{v237, v231, v250, v251}];
-      [v18 addSubview:v176];
-      v276 = [v7 _resultsControllerViewContainer];
-      v277 = [v276 superview];
-      [v277 bounds];
+      [_leftDividerView3 setFrame:{v237, v231, v250, v251}];
+      [view addSubview:_leftDividerView3];
+      _resultsControllerViewContainer3 = [v7 _resultsControllerViewContainer];
+      superview8 = [_resultsControllerViewContainer3 superview];
+      [superview8 bounds];
 
-      v278 = [v21 view];
-      [v278 frame];
+      view19 = [v21 view];
+      [view19 frame];
       v279 = *(v244 + 173);
       v281 = v280 + v279 + 70.0;
 
-      if (!v317)
+      if (!_shouldReverseLayoutDirection)
       {
         v279 = v281;
       }
 
-      [v18 frame];
+      [view frame];
       v283 = v282;
-      v284 = [v21 view];
-      [v284 frame];
+      view20 = [v21 view];
+      [view20 frame];
       v286 = v283 - v285 + -70.0 + -190.0 + -80.0;
 
-      [v18 frame];
+      [view frame];
       v288 = v287 - v275;
-      v140 = [v7 _resultsControllerViewContainer];
-      [v140 setFrame:{v279, v275, v286, v288}];
-      v132 = v322;
+      _leftDividerView2 = [v7 _resultsControllerViewContainer];
+      [_leftDividerView2 setFrame:{v279, v275, v286, v288}];
+      _leftDividerView = _rightDividerView3;
     }
 
-    v289 = [v21 view];
-    v290 = [v289 superview];
-    v291 = [v21 view];
-    [v290 bringSubviewToFront:v291];
+    view21 = [v21 view];
+    superview9 = [view21 superview];
+    view22 = [v21 view];
+    [superview9 bringSubviewToFront:view22];
 
-    v292 = [v7 _resultsControllerViewContainer];
-    [v292 setAlpha:0.0];
+    _resultsControllerViewContainer4 = [v7 _resultsControllerViewContainer];
+    [_resultsControllerViewContainer4 setAlpha:0.0];
 
     v345[0] = MEMORY[0x1E69E9820];
     v345[1] = 3221225472;
@@ -635,13 +635,13 @@
     v342[2] = __67___UISearchControllerATVSearchBarAnimatorLegacy_animateTransition___block_invoke_2;
     v342[3] = &unk_1E70F3C60;
     v343 = v293;
-    v295 = v5;
+    v295 = transitionCopy;
     v344 = v295;
     v296 = _Block_copy(v342);
     if ([v295 isAnimated])
     {
-      [(_UISearchControllerAnimator *)v332 transitionDuration:v295];
-      v12 = v329;
+      [(_UISearchControllerAnimator *)selfCopy transitionDuration:v295];
+      transitionCoordinator = v329;
       +[UIView animateWithDuration:delay:options:animations:completion:](UIView, "animateWithDuration:delay:options:animations:completion:", [v329 completionCurve], v294, v296, v297, 0.0);
     }
 
@@ -649,14 +649,14 @@
     {
       v294[2](v294);
       v296[2](v296, 1);
-      v12 = v329;
+      transitionCoordinator = v329;
     }
 
-    v15 = v334;
+    _searchPresentationController2 = v334;
 
     v10 = v330;
     v6 = v331;
-    v16 = v335;
+    searchBar = v335;
     v55 = v333;
   }
 
@@ -667,7 +667,7 @@
     aBlock[2] = __67___UISearchControllerATVSearchBarAnimatorLegacy_animateTransition___block_invoke_3;
     aBlock[3] = &unk_1E70F35B8;
     v340 = v6;
-    v34 = v5;
+    v34 = transitionCopy;
     v341 = v34;
     v35 = _Block_copy(aBlock);
     v337[0] = MEMORY[0x1E69E9820];
@@ -679,8 +679,8 @@
     v37 = _Block_copy(v337);
     if ([v36 isAnimated])
     {
-      [(_UISearchControllerAnimator *)v332 transitionDuration:v36];
-      +[UIView animateWithDuration:delay:options:animations:completion:](UIView, "animateWithDuration:delay:options:animations:completion:", [v12 completionCurve], v35, v37, v38, 0.0);
+      [(_UISearchControllerAnimator *)selfCopy transitionDuration:v36];
+      +[UIView animateWithDuration:delay:options:animations:completion:](UIView, "animateWithDuration:delay:options:animations:completion:", [transitionCoordinator completionCurve], v35, v37, v38, 0.0);
     }
 
     else
@@ -693,74 +693,74 @@
   }
 }
 
-- (void)didRelayoutSearchBarForController:(id)a3
+- (void)didRelayoutSearchBarForController:(id)controller
 {
   v213[4] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 _searchPresentationController];
+  controllerCopy = controller;
+  _searchPresentationController = [controllerCopy _searchPresentationController];
 
-  if (v6)
+  if (_searchPresentationController)
   {
-    v7 = [v5 _systemInputViewControllerAfterUpdate:0];
-    v8 = [v5 _searchPresentationController];
+    v7 = [controllerCopy _systemInputViewControllerAfterUpdate:0];
+    _searchPresentationController2 = [controllerCopy _searchPresentationController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if ((isKindOfClass & 1) == 0)
     {
-      v182 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v182 handleFailureInMethod:a2 object:self file:@"_UISearchControllerATVSearchAnimatorLegacy.m" lineNumber:393 description:@"UISearchBar's presentation controller must be of type _UISearchATVPresentationController."];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UISearchControllerATVSearchAnimatorLegacy.m" lineNumber:393 description:@"UISearchBar's presentation controller must be of type _UISearchATVPresentationController."];
     }
 
-    v10 = [v5 _searchPresentationController];
-    v11 = [v10 searchBarContainerView];
-    [v11 bounds];
+    _searchPresentationController3 = [controllerCopy _searchPresentationController];
+    searchBarContainerView = [_searchPresentationController3 searchBarContainerView];
+    [searchBarContainerView bounds];
     v13 = v12;
     v15 = v14;
     v17 = v16;
     v19 = v18;
-    v20 = [v5 searchBar];
-    [v20 setFrame:{v13, v15, v17, v19}];
+    searchBar = [controllerCopy searchBar];
+    [searchBar setFrame:{v13, v15, v17, v19}];
 
-    v21 = [v10 searchBarContainerView];
-    [v21 frame];
+    searchBarContainerView2 = [_searchPresentationController3 searchBarContainerView];
+    [searchBarContainerView2 frame];
     v23 = v22;
     v25 = v24;
     v27 = v26;
     v29 = v28;
 
-    v30 = [v5 presentingViewController];
-    v31 = [v30 tabBarController];
-    v32 = [v31 tabBar];
+    presentingViewController = [controllerCopy presentingViewController];
+    tabBarController = [presentingViewController tabBarController];
+    tabBar = [tabBarController tabBar];
 
-    if (v25 < 0.0 && [v32 _displayStyle] == 1)
+    if (v25 < 0.0 && [tabBar _displayStyle] == 1)
     {
-      [v32 frame];
-      [v32 setFrame:?];
+      [tabBar frame];
+      [tabBar setFrame:?];
     }
 
-    v33 = [v5 searchBar];
-    v34 = [v33 _scopeBarContainerView];
+    searchBar2 = [controllerCopy searchBar];
+    _scopeBarContainerView = [searchBar2 _scopeBarContainerView];
 
     v214.origin.x = v23;
     v214.origin.y = v25;
     v214.size.width = v27;
     v214.size.height = v29;
     MaxY = CGRectGetMaxY(v214);
-    v36 = [v5 view];
-    LODWORD(v37) = [v36 _shouldReverseLayoutDirection];
+    view = [controllerCopy view];
+    LODWORD(v37) = [view _shouldReverseLayoutDirection];
 
     if ([v7 resolvedKeyboardStyle] == 1)
     {
-      v38 = [v7 view];
-      [v38 frame];
+      view2 = [v7 view];
+      [view2 frame];
       v40 = MaxY + 34.5 + v39;
 
-      v41 = [v7 view];
-      v42 = v41;
-      if (v41)
+      view3 = [v7 view];
+      v42 = view3;
+      if (view3)
       {
-        [v41 transform];
+        [view3 transform];
       }
 
       else
@@ -775,21 +775,21 @@
         v40 = v40 + -34.5;
       }
 
-      v52 = [v5 _leftDividerView];
-      v53 = [v5 view];
-      [v53 frame];
+      _leftDividerView = [controllerCopy _leftDividerView];
+      view4 = [controllerCopy view];
+      [view4 frame];
       v55 = v54 + -160.0;
 
       v56 = 1.0;
-      [v52 setFrame:{80.0, v40, v55, 1.0}];
-      v57 = [v5 view];
-      [v57 addSubview:v52];
+      [_leftDividerView setFrame:{80.0, v40, v55, 1.0}];
+      view5 = [controllerCopy view];
+      [view5 addSubview:_leftDividerView];
 
-      v58 = [v5 _rightDividerView];
-      [v58 removeFromSuperview];
+      _rightDividerView = [controllerCopy _rightDividerView];
+      [_rightDividerView removeFromSuperview];
 
-      v59 = [v5 view];
-      [v59 frame];
+      view6 = [controllerCopy view];
+      [view6 frame];
       v61 = v60 + -160.0;
 
       v216.size.height = 1.0;
@@ -797,76 +797,76 @@
       v216.origin.y = v40;
       v216.size.width = v61;
       v62 = CGRectGetMaxY(v216);
-      v63 = [v5 _leftDividerView];
-      v64 = [v5 _rightDividerView];
-      v65 = [v5 searchBar];
-      v66 = [v65 showsScopeBar];
+      _leftDividerView2 = [controllerCopy _leftDividerView];
+      _rightDividerView2 = [controllerCopy _rightDividerView];
+      searchBar3 = [controllerCopy searchBar];
+      showsScopeBar = [searchBar3 showsScopeBar];
 
-      if (v66 && v34)
+      if (showsScopeBar && _scopeBarContainerView)
       {
-        v200 = v64;
-        rect = v63;
-        v203 = v52;
+        v200 = _rightDividerView2;
+        rect = _leftDividerView2;
+        v203 = _leftDividerView;
         v205 = v7;
-        v207 = v32;
-        v209 = v10;
-        v67 = [v5 searchBar];
-        [v67 _scopeBarHeight];
+        v207 = tabBar;
+        v209 = _searchPresentationController3;
+        searchBar4 = [controllerCopy searchBar];
+        [searchBar4 _scopeBarHeight];
         v69 = v68;
 
-        v70 = [v5 searchBar];
-        v71 = [v70 _scopeBar];
-        [v71 sizeThatFits:{10000.0, 10000.0}];
+        searchBar5 = [controllerCopy searchBar];
+        _scopeBar = [searchBar5 _scopeBar];
+        [_scopeBar sizeThatFits:{10000.0, 10000.0}];
         v73 = v72;
 
         v74 = (v61 - v73) * 0.5 + 80.0;
-        [v34 setFrame:{v74, v40, v73, v69}];
-        [v34 setAlpha:1.0];
-        v75 = [v5 view];
-        [v75 addSubview:v34];
+        [_scopeBarContainerView setFrame:{v74, v40, v73, v69}];
+        [_scopeBarContainerView setAlpha:1.0];
+        view7 = [controllerCopy view];
+        [view7 addSubview:_scopeBarContainerView];
 
         v217.origin.x = v74;
         v217.origin.y = v40;
         v217.size.width = v73;
         v217.size.height = v69;
         v198 = CGRectGetMaxY(v217);
-        v76 = [v5 _scopeBarFocusContainerGuide];
-        v77 = [v5 _scopeBarConstraints];
+        _scopeBarFocusContainerGuide = [controllerCopy _scopeBarFocusContainerGuide];
+        _scopeBarConstraints = [controllerCopy _scopeBarConstraints];
 
-        if (v77)
+        if (_scopeBarConstraints)
         {
           v78 = MEMORY[0x1E69977A0];
-          v79 = [v5 _scopeBarConstraints];
-          [v78 deactivateConstraints:v79];
+          _scopeBarConstraints2 = [controllerCopy _scopeBarConstraints];
+          [v78 deactivateConstraints:_scopeBarConstraints2];
         }
 
-        v194 = [v76 topAnchor];
-        v192 = [v34 topAnchor];
-        v190 = [v194 constraintEqualToAnchor:v192];
+        topAnchor = [_scopeBarFocusContainerGuide topAnchor];
+        topAnchor2 = [_scopeBarContainerView topAnchor];
+        v190 = [topAnchor constraintEqualToAnchor:topAnchor2];
         v213[0] = v190;
-        v188 = [v34 bottomAnchor];
-        v186 = [v76 bottomAnchor];
-        v184 = [v188 constraintEqualToAnchor:v186 constant:-30.0];
+        bottomAnchor = [_scopeBarContainerView bottomAnchor];
+        bottomAnchor2 = [_scopeBarFocusContainerGuide bottomAnchor];
+        v184 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-30.0];
         v213[1] = v184;
-        v183 = [v76 leftAnchor];
-        v80 = [v5 view];
-        v81 = [v80 leftAnchor];
-        [v183 constraintEqualToAnchor:v81 constant:80.0];
-        v82 = v196 = v76;
+        leftAnchor = [_scopeBarFocusContainerGuide leftAnchor];
+        view8 = [controllerCopy view];
+        leftAnchor2 = [view8 leftAnchor];
+        [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:80.0];
+        v82 = v196 = _scopeBarFocusContainerGuide;
         v213[2] = v82;
-        v83 = [v5 view];
-        v84 = [v83 rightAnchor];
-        v85 = [v76 rightAnchor];
-        [v84 constraintEqualToAnchor:v85 constant:80.0];
-        v87 = v86 = v34;
+        view9 = [controllerCopy view];
+        rightAnchor = [view9 rightAnchor];
+        rightAnchor2 = [_scopeBarFocusContainerGuide rightAnchor];
+        [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:80.0];
+        v87 = v86 = _scopeBarContainerView;
         v213[3] = v87;
         v88 = [MEMORY[0x1E695DEC8] arrayWithObjects:v213 count:4];
-        [v5 set_scopeBarConstraints:v88];
+        [controllerCopy set_scopeBarConstraints:v88];
 
-        v34 = v86;
+        _scopeBarContainerView = v86;
         v89 = MEMORY[0x1E69977A0];
-        v90 = [v5 _scopeBarConstraints];
-        [v89 activateConstraints:v90];
+        _scopeBarConstraints3 = [controllerCopy _scopeBarConstraints];
+        [v89 activateConstraints:_scopeBarConstraints3];
 
         [v86 frame];
         MidY = CGRectGetMidY(v218);
@@ -876,62 +876,62 @@
         v219.size.width = v73;
         v219.size.height = v69;
         v92 = CGRectGetMaxX(v219) + 30.0;
-        v93 = [v5 view];
-        [v93 frame];
+        view10 = [controllerCopy view];
+        [view10 frame];
         v94 = CGRectGetMaxX(v220) + -80.0 - v92;
 
-        v64 = v200;
+        _rightDividerView2 = v200;
         [v200 setFrame:{v92, MidY, v94, 1.0}];
-        v95 = [v5 view];
-        [v95 addSubview:v200];
+        view11 = [controllerCopy view];
+        [view11 addSubview:v200];
 
         v7 = v205;
-        v32 = v207;
-        v10 = v209;
-        v63 = rect;
-        v52 = v203;
+        tabBar = v207;
+        _searchPresentationController3 = v209;
+        _leftDividerView2 = rect;
+        _leftDividerView = v203;
         v56 = 1.0;
         v62 = v198;
       }
 
       else
       {
-        v96 = [v5 _scopeBarConstraints];
+        _scopeBarConstraints4 = [controllerCopy _scopeBarConstraints];
 
-        if (v96)
+        if (_scopeBarConstraints4)
         {
           v97 = MEMORY[0x1E69977A0];
-          v98 = [v5 _scopeBarConstraints];
-          [v97 deactivateConstraints:v98];
+          _scopeBarConstraints5 = [controllerCopy _scopeBarConstraints];
+          [v97 deactivateConstraints:_scopeBarConstraints5];
         }
 
-        [v34 removeFromSuperview];
-        v99 = [v5 _leftDividerView];
-        [v99 setFrame:{80.0, v40, v55, 1.0}];
+        [_scopeBarContainerView removeFromSuperview];
+        _leftDividerView3 = [controllerCopy _leftDividerView];
+        [_leftDividerView3 setFrame:{80.0, v40, v55, 1.0}];
 
-        v100 = [v5 _rightDividerView];
-        [v100 removeFromSuperview];
+        _rightDividerView3 = [controllerCopy _rightDividerView];
+        [_rightDividerView3 removeFromSuperview];
 
         MidY = v40;
       }
 
-      [v63 setFrame:{80.0, MidY, v61, v56}];
-      v101 = [v5 view];
-      v102 = [v5 _leftDividerView];
-      [v101 addSubview:v102];
+      [_leftDividerView2 setFrame:{80.0, MidY, v61, v56}];
+      view12 = [controllerCopy view];
+      _leftDividerView4 = [controllerCopy _leftDividerView];
+      [view12 addSubview:_leftDividerView4];
 
-      v103 = [v5 _resultsControllerViewContainer];
-      v104 = [v103 superview];
-      [v104 bounds];
+      _resultsControllerViewContainer = [controllerCopy _resultsControllerViewContainer];
+      superview = [_resultsControllerViewContainer superview];
+      [superview bounds];
       v106 = v105;
       v108 = v107;
 
-      v109 = [v5 view];
-      [v109 frame];
+      view13 = [controllerCopy view];
+      [view13 frame];
       v111 = v110 - (v62 + 30.0);
 
-      v112 = [v5 _resultsControllerViewContainer];
-      [v112 setFrame:{v106, v62 + 30.0, v108, v111}];
+      _resultsControllerViewContainer2 = [controllerCopy _resultsControllerViewContainer];
+      [_resultsControllerViewContainer2 setFrame:{v106, v62 + 30.0, v108, v111}];
     }
 
     else
@@ -939,21 +939,21 @@
       if ([v7 resolvedKeyboardStyle] != 2)
       {
 LABEL_43:
-        v179 = [v7 view];
-        v180 = [v179 superview];
-        v181 = [v7 view];
-        [v180 bringSubviewToFront:v181];
+        view14 = [v7 view];
+        superview2 = [view14 superview];
+        view15 = [v7 view];
+        [superview2 bringSubviewToFront:view15];
 
         goto LABEL_44;
       }
 
-      v43 = [v7 view];
-      [v43 frame];
+      view16 = [v7 view];
+      [view16 frame];
       if (v37)
       {
         MaxX = CGRectGetMaxX(*&v44);
-        v49 = [v5 view];
-        [v49 frame];
+        view17 = [controllerCopy view];
+        [view17 frame];
         v50 = MaxX < CGRectGetMaxX(v215);
       }
 
@@ -967,111 +967,111 @@ LABEL_43:
       v221.size.width = v27;
       v221.size.height = v29;
       v113 = CGRectGetMaxY(v221);
-      v114 = [v5 view];
-      [v114 frame];
+      view18 = [controllerCopy view];
+      [view18 frame];
       v116 = v115 + -270.0;
 
       v117 = &qword_18A678000;
       v118 = 190.0;
       if (v50)
       {
-        v119 = [v7 view];
-        [v119 frame];
+        view19 = [v7 view];
+        [view19 frame];
         v116 = v116 - (v120 + 70.0);
 
         if ((v37 & 1) == 0)
         {
-          v121 = [v7 view];
-          [v121 frame];
+          view20 = [v7 view];
+          [view20 frame];
           v118 = v122 + 70.0 + 190.0;
         }
       }
 
       v123 = v113 + 34.5;
-      if (v34 && ([v5 searchBar], v124 = objc_claimAutoreleasedReturnValue(), v125 = objc_msgSend(v124, "showsScopeBar"), v124, v125))
+      if (_scopeBarContainerView && ([controllerCopy searchBar], v124 = objc_claimAutoreleasedReturnValue(), v125 = objc_msgSend(v124, "showsScopeBar"), v124, v125))
       {
         v204 = v50;
         v206 = v37;
-        v208 = v32;
-        v210 = v10;
-        v126 = [v5 searchBar];
-        [v126 _scopeBarHeight];
+        v208 = tabBar;
+        v210 = _searchPresentationController3;
+        searchBar6 = [controllerCopy searchBar];
+        [searchBar6 _scopeBarHeight];
         v128 = v127;
 
-        v129 = [v5 searchBar];
-        v130 = [v129 _scopeBar];
-        [v130 sizeThatFits:{10000.0, 10000.0}];
+        searchBar7 = [controllerCopy searchBar];
+        _scopeBar2 = [searchBar7 _scopeBar];
+        [_scopeBar2 sizeThatFits:{10000.0, 10000.0}];
         v132 = v131;
 
         v133 = v118 + (v116 - v132) * 0.5;
-        [v34 setFrame:{v133, v123, v132, v128}];
-        [v34 setAlpha:1.0];
-        v134 = [v5 view];
-        [v134 addSubview:v34];
+        [_scopeBarContainerView setFrame:{v133, v123, v132, v128}];
+        [_scopeBarContainerView setAlpha:1.0];
+        view21 = [controllerCopy view];
+        [view21 addSubview:_scopeBarContainerView];
 
-        v135 = [v5 _scopeBarFocusContainerGuide];
-        v136 = [v5 _scopeBarConstraints];
+        _scopeBarFocusContainerGuide2 = [controllerCopy _scopeBarFocusContainerGuide];
+        _scopeBarConstraints6 = [controllerCopy _scopeBarConstraints];
 
-        if (v136)
+        if (_scopeBarConstraints6)
         {
           v137 = MEMORY[0x1E69977A0];
-          v138 = [v5 _scopeBarConstraints];
-          [v137 deactivateConstraints:v138];
+          _scopeBarConstraints7 = [controllerCopy _scopeBarConstraints];
+          [v137 deactivateConstraints:_scopeBarConstraints7];
         }
 
         v139 = v128 + 30.0;
-        v199 = [v135 topAnchor];
-        v197 = [v34 topAnchor];
-        v195 = [v199 constraintEqualToAnchor:v197];
+        topAnchor3 = [_scopeBarFocusContainerGuide2 topAnchor];
+        topAnchor4 = [_scopeBarContainerView topAnchor];
+        v195 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
         v212[0] = v195;
-        v193 = [v34 bottomAnchor];
-        v191 = [v135 bottomAnchor];
-        v189 = [v193 constraintEqualToAnchor:v191 constant:-30.0];
+        bottomAnchor3 = [_scopeBarContainerView bottomAnchor];
+        bottomAnchor4 = [_scopeBarFocusContainerGuide2 bottomAnchor];
+        v189 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-30.0];
         v212[1] = v189;
-        v185 = [v135 leadingAnchor];
-        v187 = [v7 view];
-        [v187 trailingAnchor];
-        v140 = v135;
-        v37 = v201 = v135;
-        v141 = [v185 constraintEqualToAnchor:v37 constant:70.0];
+        leadingAnchor = [_scopeBarFocusContainerGuide2 leadingAnchor];
+        view22 = [v7 view];
+        [view22 trailingAnchor];
+        v140 = _scopeBarFocusContainerGuide2;
+        v37 = v201 = _scopeBarFocusContainerGuide2;
+        v141 = [leadingAnchor constraintEqualToAnchor:v37 constant:70.0];
         v212[2] = v141;
-        v142 = [v5 view];
-        v143 = [v142 trailingAnchor];
-        v144 = [v140 trailingAnchor];
-        v145 = [v143 constraintEqualToAnchor:v144];
+        view23 = [controllerCopy view];
+        trailingAnchor = [view23 trailingAnchor];
+        trailingAnchor2 = [v140 trailingAnchor];
+        v145 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
         v212[3] = v145;
         [MEMORY[0x1E695DEC8] arrayWithObjects:v212 count:4];
-        v146 = v34;
+        v146 = _scopeBarContainerView;
         v148 = v147 = v7;
-        [v5 set_scopeBarConstraints:v148];
+        [controllerCopy set_scopeBarConstraints:v148];
 
         v7 = v147;
-        v34 = v146;
+        _scopeBarContainerView = v146;
 
         v149 = MEMORY[0x1E69977A0];
-        v150 = [v5 _scopeBarConstraints];
-        [v149 activateConstraints:v150];
+        _scopeBarConstraints8 = [controllerCopy _scopeBarConstraints];
+        [v149 activateConstraints:_scopeBarConstraints8];
 
-        [v34 frame];
+        [_scopeBarContainerView frame];
         v151 = CGRectGetMidY(v222);
         v152 = v133 + -30.0 - v118;
-        v153 = [v5 _leftDividerView];
-        [v153 setFrame:{v118, v151, v152, 1.0}];
+        _leftDividerView5 = [controllerCopy _leftDividerView];
+        [_leftDividerView5 setFrame:{v118, v151, v152, 1.0}];
 
         v223.origin.x = v133;
         v223.origin.y = v123;
         v223.size.width = v132;
         v223.size.height = v128;
         v154 = CGRectGetMaxX(v223) + 30.0;
-        v155 = [v5 _rightDividerView];
-        [v155 setFrame:{v154, v151, v152, 1.0}];
+        _rightDividerView4 = [controllerCopy _rightDividerView];
+        [_rightDividerView4 setFrame:{v154, v151, v152, 1.0}];
 
-        v156 = [v5 view];
-        v157 = [v5 _rightDividerView];
-        [v156 addSubview:v157];
+        view24 = [controllerCopy view];
+        _rightDividerView5 = [controllerCopy _rightDividerView];
+        [view24 addSubview:_rightDividerView5];
 
-        v32 = v208;
-        v10 = v210;
+        tabBar = v208;
+        _searchPresentationController3 = v210;
         LOBYTE(v37) = v206;
         v50 = v204;
         v117 = &qword_18A678000;
@@ -1079,49 +1079,49 @@ LABEL_43:
 
       else
       {
-        v158 = [v5 _scopeBarConstraints];
+        _scopeBarConstraints9 = [controllerCopy _scopeBarConstraints];
 
-        if (v158)
+        if (_scopeBarConstraints9)
         {
           v159 = MEMORY[0x1E69977A0];
-          v160 = [v5 _scopeBarConstraints];
-          [v159 deactivateConstraints:v160];
+          _scopeBarConstraints10 = [controllerCopy _scopeBarConstraints];
+          [v159 deactivateConstraints:_scopeBarConstraints10];
         }
 
-        [v34 removeFromSuperview];
-        v161 = [v5 _leftDividerView];
-        [v161 setFrame:{v118, v123, v116, 1.0}];
+        [_scopeBarContainerView removeFromSuperview];
+        _leftDividerView6 = [controllerCopy _leftDividerView];
+        [_leftDividerView6 setFrame:{v118, v123, v116, 1.0}];
 
-        v162 = [v5 _rightDividerView];
-        [v162 removeFromSuperview];
+        _rightDividerView6 = [controllerCopy _rightDividerView];
+        [_rightDividerView6 removeFromSuperview];
 
         v139 = 30.0;
       }
 
       v163 = v123 + v139;
-      v164 = [v5 view];
-      v165 = [v5 _leftDividerView];
-      [v164 addSubview:v165];
+      view25 = [controllerCopy view];
+      _leftDividerView7 = [controllerCopy _leftDividerView];
+      [view25 addSubview:_leftDividerView7];
 
-      v166 = [v5 _resultsControllerViewContainer];
-      v167 = [v166 superview];
-      [v167 bounds];
+      _resultsControllerViewContainer3 = [controllerCopy _resultsControllerViewContainer];
+      superview3 = [_resultsControllerViewContainer3 superview];
+      [superview3 bounds];
 
-      v168 = [v5 view];
-      [v168 frame];
+      view26 = [controllerCopy view];
+      [view26 frame];
       v170 = v169;
 
       if (v50)
       {
-        v171 = [v7 view];
-        [v171 frame];
+        view27 = [v7 view];
+        [view27 frame];
         v173 = *(v117 + 173);
         v170 = v170 - (v172 + 70.0 + v173 + 80.0);
 
         if ((v37 & 1) == 0)
         {
-          v174 = [v7 view];
-          [v174 frame];
+          view28 = [v7 view];
+          [view28 frame];
           v173 = v175 + 70.0 + *(v117 + 173);
         }
       }
@@ -1131,12 +1131,12 @@ LABEL_43:
         v173 = 0.0;
       }
 
-      v176 = [v5 view];
-      [v176 frame];
+      view29 = [controllerCopy view];
+      [view29 frame];
       v178 = v177 - v163;
 
-      v52 = [v5 _resultsControllerViewContainer];
-      [v52 setFrame:{v173, v163, v170, v178}];
+      _leftDividerView = [controllerCopy _resultsControllerViewContainer];
+      [_leftDividerView setFrame:{v173, v163, v170, v178}];
     }
 
     goto LABEL_43;
@@ -1145,27 +1145,27 @@ LABEL_43:
 LABEL_44:
 }
 
-- (void)didFocusSearchBarForController:(id)a3
+- (void)didFocusSearchBarForController:(id)controller
 {
-  v4 = a3;
-  v5 = [v4 _systemInputViewControllerAfterUpdate:0];
+  controllerCopy = controller;
+  v5 = [controllerCopy _systemInputViewControllerAfterUpdate:0];
   v6 = [v5 alignmentConstraintForAxis:0];
-  v7 = [v4 searchBar];
-  v8 = [v4 _suggestionView];
-  v9 = [v4 _leftDividerView];
-  v114 = [v4 _rightDividerView];
-  v10 = 0;
-  if ([v7 showsScopeBar])
+  searchBar = [controllerCopy searchBar];
+  _suggestionView = [controllerCopy _suggestionView];
+  _leftDividerView = [controllerCopy _leftDividerView];
+  _rightDividerView = [controllerCopy _rightDividerView];
+  _scopeBarContainerView2 = 0;
+  if ([searchBar showsScopeBar])
   {
-    v11 = [v7 _scopeBarContainerView];
-    if (v11)
+    _scopeBarContainerView = [searchBar _scopeBarContainerView];
+    if (_scopeBarContainerView)
     {
-      v10 = [v7 _scopeBarContainerView];
+      _scopeBarContainerView2 = [searchBar _scopeBarContainerView];
     }
 
     else
     {
-      v10 = 0;
+      _scopeBarContainerView2 = 0;
     }
   }
 
@@ -1174,11 +1174,11 @@ LABEL_44:
     goto LABEL_31;
   }
 
-  v12 = [v5 view];
-  v13 = v12;
-  if (v12)
+  view = [v5 view];
+  v13 = view;
+  if (view)
   {
-    [v12 transform];
+    [view transform];
   }
 
   else
@@ -1190,36 +1190,36 @@ LABEL_44:
 
   if (!IsIdentity)
   {
-    v23 = [v4 _searchPresentationController];
+    _searchPresentationController = [controllerCopy _searchPresentationController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if ((isKindOfClass & 1) == 0)
     {
-      v91 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v91 handleFailureInMethod:a2 object:self file:@"_UISearchControllerATVSearchAnimatorLegacy.m" lineNumber:660 description:@"UISearchBar's presentation controller must be of type _UISearchATVPresentationController."];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UISearchControllerATVSearchAnimatorLegacy.m" lineNumber:660 description:@"UISearchBar's presentation controller must be of type _UISearchATVPresentationController."];
     }
 
-    v25 = [v5 view];
-    [v25 bounds];
+    view2 = [v5 view];
+    [view2 bounds];
     v27 = v26;
 
-    v28 = [v5 view];
+    view3 = [v5 view];
     memset(&v170, 0, sizeof(v170));
     CGAffineTransformMakeTranslation(&v170, 0.0, v27 * -0.5 + -1.0);
     v168 = v170;
     CGAffineTransformScale(&v169, &v168, 1.0, 1.0 / v27);
     v170 = v169;
     v167 = v169;
-    v29 = [v5 view];
+    view4 = [v5 view];
     v169 = v167;
-    [v29 setTransform:&v169];
+    [view4 setTransform:&v169];
 
-    [v28 setAlpha:0.0];
+    [view3 setAlpha:0.0];
     v30 = v27 + 34.5;
-    if (v8)
+    if (_suggestionView)
     {
-      [v8 frame];
+      [_suggestionView frame];
       v108 = v33;
       v110 = v32;
       v106 = v34;
@@ -1234,9 +1234,9 @@ LABEL_44:
     }
 
     v105 = v30 + v31;
-    if (v9)
+    if (_leftDividerView)
     {
-      [v9 frame];
+      [_leftDividerView frame];
       v101 = v71;
       v103 = v70;
       v99 = v72;
@@ -1251,13 +1251,13 @@ LABEL_44:
     }
 
     v73 = v30 + v69;
-    [v10 frame];
+    [_scopeBarContainerView2 frame];
     v95 = v75;
     v97 = v74;
     v77 = v76;
     v79 = v30 + v78;
-    v80 = [v4 _resultsControllerViewContainer];
-    [v80 frame];
+    _resultsControllerViewContainer = [controllerCopy _resultsControllerViewContainer];
+    [_resultsControllerViewContainer frame];
     v82 = v81;
     v84 = v83;
     v86 = v85;
@@ -1268,17 +1268,17 @@ LABEL_44:
     v144[2] = __80___UISearchControllerATVSearchBarAnimatorLegacy_didFocusSearchBarForController___block_invoke;
     v144[3] = &unk_1E7106B30;
     v145 = v5;
-    v146 = v8;
+    v146 = _suggestionView;
     v151 = v110;
     v152 = v105;
     v153 = v108;
     v154 = v106;
-    v147 = v9;
+    v147 = _leftDividerView;
     v155 = v103;
     v156 = v73;
     v157 = v101;
     v158 = v99;
-    v148 = v10;
+    v148 = _scopeBarContainerView2;
     v159 = v97;
     v160 = v79;
     v161 = v77;
@@ -1287,9 +1287,9 @@ LABEL_44:
     v164 = v30 + v84;
     v165 = v86;
     v166 = v88 - v30;
-    v149 = v4;
-    v150 = v28;
-    v89 = v28;
+    v149 = controllerCopy;
+    v150 = view3;
+    v89 = view3;
     v90 = _Block_copy(v144);
     [(_UISearchControllerAnimator *)self transitionDuration:0];
     [UIView animateWithDuration:"animateWithDuration:delay:options:animations:completion:" delay:2048 options:v90 animations:0 completion:?];
@@ -1302,16 +1302,16 @@ LABEL_31:
     {
       [v6 constant];
       v16 = v15;
-      v17 = [v4 view];
-      [v17 frame];
+      view5 = [controllerCopy view];
+      [view5 frame];
       MinX = CGRectGetMinX(v171);
 
       if (v16 < MinX)
       {
-        v19 = [v4 view];
-        v20 = [v19 _shouldReverseLayoutDirection];
+        view6 = [controllerCopy view];
+        _shouldReverseLayoutDirection = [view6 _shouldReverseLayoutDirection];
 
-        if (v20)
+        if (_shouldReverseLayoutDirection)
         {
           v21 = 190.0;
           v22 = 80.0;
@@ -1319,41 +1319,41 @@ LABEL_31:
 
         else
         {
-          v35 = [v5 view];
-          [v35 frame];
+          view7 = [v5 view];
+          [view7 frame];
           v22 = 190.0;
           v21 = v36 + 70.0 + 190.0;
         }
 
         v92 = v22;
-        v37 = [v4 view];
-        [v37 frame];
+        view8 = [controllerCopy view];
+        [view8 frame];
         v39 = v38;
-        v40 = [v5 view];
-        [v40 frame];
+        view9 = [v5 view];
+        [view9 frame];
         v42 = v39 - v41 + -70.0 - v22;
 
-        v43 = [v8 superview];
-        [v43 frame];
+        superview = [_suggestionView superview];
+        [superview frame];
         v109 = v45;
         v111 = v44;
         v107 = v46;
 
-        [v10 frame];
+        [_scopeBarContainerView2 frame];
         v48 = v47;
         v50 = v49;
         v52 = v51;
-        [v9 frame];
+        [_leftDividerView frame];
         v98 = v53;
         v100 = v54;
         v55 = (v21 + v42) * 0.5 + -30.0 - v21;
-        if (!v10)
+        if (!_scopeBarContainerView2)
         {
           v55 = v42;
         }
 
         v93 = v55;
-        [v114 frame];
+        [_rightDividerView frame];
         v102 = v56;
         v104 = v57;
         v172.origin.x = (v21 + v42) * 0.5;
@@ -1361,8 +1361,8 @@ LABEL_31:
         v172.size.width = v50;
         v172.size.height = v52;
         v58 = CGRectGetMaxX(v172) + 30.0;
-        v59 = [v4 _resultsControllerViewContainer];
-        [v59 frame];
+        _resultsControllerViewContainer2 = [controllerCopy _resultsControllerViewContainer];
+        [_resultsControllerViewContainer2 frame];
         v94 = v60;
         v96 = v61;
 
@@ -1370,8 +1370,8 @@ LABEL_31:
         aBlock[1] = 3221225472;
         aBlock[2] = __80___UISearchControllerATVSearchBarAnimatorLegacy_didFocusSearchBarForController___block_invoke_2;
         aBlock[3] = &unk_1E7106B58;
-        v113 = v9;
-        v62 = v8;
+        v113 = _leftDividerView;
+        v62 = _suggestionView;
         v63 = v6;
         v116 = v6;
         v123 = v92;
@@ -1385,17 +1385,17 @@ LABEL_31:
         v129 = v98;
         v130 = v93;
         v131 = v100;
-        v119 = v10;
+        v119 = _scopeBarContainerView2;
         v132 = (v21 + v42) * 0.5;
         v133 = v48;
         v134 = v50;
         v135 = v52;
-        v120 = v114;
+        v120 = _rightDividerView;
         v136 = v58;
         v137 = v102;
         v138 = v21 + v42 - v58;
         v139 = v104;
-        v121 = v4;
+        v121 = controllerCopy;
         v140 = v21;
         v141 = v94;
         v142 = v42;
@@ -1409,8 +1409,8 @@ LABEL_31:
         v68 = [(UIViewPropertyAnimator *)v66 initWithDuration:v65 timingParameters:?];
 
         v6 = v63;
-        v8 = v62;
-        v9 = v113;
+        _suggestionView = v62;
+        _leftDividerView = v113;
         [(UIViewPropertyAnimator *)v68 addAnimations:v64];
         [(UIViewPropertyAnimator *)v68 startAnimation];
       }
@@ -1418,37 +1418,37 @@ LABEL_31:
   }
 }
 
-- (void)didUnfocusSearchBarForController:(id)a3
+- (void)didUnfocusSearchBarForController:(id)controller
 {
-  v4 = a3;
-  v5 = [v4 _systemInputViewControllerAfterUpdate:0];
+  controllerCopy = controller;
+  v5 = [controllerCopy _systemInputViewControllerAfterUpdate:0];
   v6 = [v5 alignmentConstraintForAxis:0];
-  v7 = [v4 searchBar];
-  v8 = [v4 _suggestionView];
-  v9 = [v4 _leftDividerView];
-  v117 = [v4 _rightDividerView];
-  v10 = 0;
-  if ([v7 showsScopeBar])
+  searchBar = [controllerCopy searchBar];
+  _suggestionView = [controllerCopy _suggestionView];
+  _leftDividerView = [controllerCopy _leftDividerView];
+  _rightDividerView = [controllerCopy _rightDividerView];
+  _scopeBarContainerView2 = 0;
+  if ([searchBar showsScopeBar])
   {
-    v11 = [v7 _scopeBarContainerView];
-    if (v11)
+    _scopeBarContainerView = [searchBar _scopeBarContainerView];
+    if (_scopeBarContainerView)
     {
-      v10 = [v7 _scopeBarContainerView];
+      _scopeBarContainerView2 = [searchBar _scopeBarContainerView];
     }
 
     else
     {
-      v10 = 0;
+      _scopeBarContainerView2 = 0;
     }
   }
 
   if ([v5 resolvedKeyboardStyle] == 1)
   {
-    v12 = [v5 view];
-    v13 = v12;
-    if (v12)
+    view = [v5 view];
+    v13 = view;
+    if (view)
     {
-      [v12 transform];
+      [view transform];
     }
 
     else
@@ -1460,27 +1460,27 @@ LABEL_31:
 
     if (IsIdentity)
     {
-      v15 = [v5 view];
-      v16 = [v5 view];
-      [v16 bounds];
+      view2 = [v5 view];
+      view3 = [v5 view];
+      [view3 bounds];
       v108 = v18;
       v110 = v17;
       v114 = v19;
       v21 = v20;
 
-      v22 = [v5 view];
+      view4 = [v5 view];
       v23 = *(MEMORY[0x1E695EFD0] + 16);
       *&v174.a = *MEMORY[0x1E695EFD0];
       *&v174.c = v23;
       *&v174.tx = *(MEMORY[0x1E695EFD0] + 32);
-      [v22 setTransform:&v174];
+      [view4 setTransform:&v174];
 
-      [v15 setAlpha:1.0];
+      [view2 setAlpha:1.0];
       v112 = v21;
       v24 = v21 + 34.5;
-      if (v8)
+      if (_suggestionView)
       {
-        [v8 frame];
+        [_suggestionView frame];
         v104 = v27;
         v106 = v26;
         v102 = v28;
@@ -1496,9 +1496,9 @@ LABEL_31:
 
       v100 = v25 - v24;
       v116 = v6;
-      if (v9)
+      if (_leftDividerView)
       {
-        [v9 frame];
+        [_leftDividerView frame];
         v96 = v53;
         v99 = v52;
         v95 = v54;
@@ -1513,13 +1513,13 @@ LABEL_31:
       }
 
       v55 = v51 - v24;
-      [v10 frame];
+      [_scopeBarContainerView2 frame];
       v93 = v57;
       v94 = v56;
       v59 = v58;
       v61 = v60 - v24;
-      v62 = [v4 _resultsControllerViewContainer];
-      [v62 frame];
+      _resultsControllerViewContainer = [controllerCopy _resultsControllerViewContainer];
+      [_resultsControllerViewContainer frame];
       v64 = v63;
       v66 = v65;
       v68 = v67;
@@ -1534,17 +1534,17 @@ LABEL_31:
       v156 = v114;
       v157 = v112;
       v148 = v5;
-      v149 = v8;
+      v149 = _suggestionView;
       v158 = v106;
       v159 = v100;
       v160 = v104;
       v161 = v102;
-      v150 = v9;
+      v150 = _leftDividerView;
       v162 = v99;
       v163 = v55;
       v164 = v96;
       v165 = v95;
-      v151 = v10;
+      v151 = _scopeBarContainerView2;
       v166 = v94;
       v167 = v61;
       v168 = v93;
@@ -1553,9 +1553,9 @@ LABEL_31:
       v171 = v66 - v24;
       v172 = v68;
       v173 = v70 - (0.0 - v24);
-      v152 = v4;
-      v153 = v15;
-      v71 = v15;
+      v152 = controllerCopy;
+      v153 = view2;
+      v71 = view2;
       v72 = _Block_copy(aBlock);
       [(_UISearchControllerAnimator *)self transitionDuration:0];
       [UIView animateWithDuration:"animateWithDuration:delay:options:animations:completion:" delay:2048 options:v72 animations:0 completion:?];
@@ -1570,7 +1570,7 @@ LABEL_24:
   {
     [v6 constant];
     v30 = v29;
-    [v4 view];
+    [controllerCopy view];
     v31 = v116 = v6;
     [v31 frame];
     MinX = CGRectGetMinX(v175);
@@ -1578,43 +1578,43 @@ LABEL_24:
     v6 = v116;
     if (v30 >= MinX)
     {
-      v33 = [v4 view];
-      [v33 _shouldReverseLayoutDirection];
+      view5 = [controllerCopy view];
+      [view5 _shouldReverseLayoutDirection];
 
-      v34 = [v5 view];
-      [v34 frame];
+      view6 = [v5 view];
+      [view6 frame];
       v115 = -v35;
 
-      v36 = [v8 superview];
-      [v36 frame];
+      superview = [_suggestionView superview];
+      [superview frame];
       v111 = v38;
       v113 = v37;
       v109 = v39;
 
-      [v10 frame];
+      [_scopeBarContainerView2 frame];
       v41 = v40;
       v43 = v42;
       v45 = v44;
-      v46 = [v4 view];
-      [v46 center];
+      view7 = [controllerCopy view];
+      [view7 center];
       v48 = v47 + v43 * -0.5;
 
-      [v9 frame];
+      [_leftDividerView frame];
       v105 = v49;
       v107 = v50;
-      if (v10)
+      if (_scopeBarContainerView2)
       {
         v98 = v48 + -30.0 + -190.0;
       }
 
       else
       {
-        v73 = [v4 view];
-        [v73 frame];
+        view8 = [controllerCopy view];
+        [view8 frame];
         v98 = v74 + -270.0;
       }
 
-      [v117 frame];
+      [_rightDividerView frame];
       v101 = v75;
       v103 = v76;
       v176.origin.x = v48;
@@ -1622,17 +1622,17 @@ LABEL_24:
       v176.size.width = v43;
       v176.size.height = v45;
       v77 = CGRectGetMaxX(v176) + 30.0;
-      v78 = [v4 view];
-      [v78 frame];
+      view9 = [controllerCopy view];
+      [view9 frame];
       v97 = v79 + -80.0 - v77;
 
-      v80 = [v4 _resultsControllerViewContainer];
-      [v80 frame];
+      _resultsControllerViewContainer2 = [controllerCopy _resultsControllerViewContainer];
+      [_resultsControllerViewContainer2 frame];
       v82 = v81;
       v84 = v83;
 
-      v85 = [v4 view];
-      [v85 frame];
+      view10 = [controllerCopy view];
+      [view10 frame];
       v87 = v86;
 
       v118[0] = MEMORY[0x1E69E9820];
@@ -1641,27 +1641,27 @@ LABEL_24:
       v118[3] = &unk_1E7106B58;
       v119 = v116;
       v126 = v115;
-      v120 = v8;
+      v120 = _suggestionView;
       v127 = 0;
       v128 = v113;
       v129 = v111;
       v130 = v109;
-      v121 = v9;
+      v121 = _leftDividerView;
       v131 = 0x4067C00000000000;
       v132 = v105;
       v133 = v98;
       v134 = v107;
-      v122 = v10;
+      v122 = _scopeBarContainerView2;
       v135 = v48;
       v136 = v41;
       v137 = v43;
       v138 = v45;
-      v123 = v117;
+      v123 = _rightDividerView;
       v139 = v77;
       v140 = v101;
       v141 = v97;
       v142 = v103;
-      v124 = v4;
+      v124 = controllerCopy;
       v143 = 0;
       v144 = v82;
       v145 = v87;
@@ -1685,34 +1685,34 @@ LABEL_24:
 LABEL_25:
 }
 
-- (void)willFocusOffscreenViewForController:(id)a3 withHeading:(unint64_t)a4
+- (void)willFocusOffscreenViewForController:(id)controller withHeading:(unint64_t)heading
 {
-  v133 = a4;
-  v6 = a3;
-  v7 = [v6 _systemInputViewControllerAfterUpdate:0];
-  v8 = [v6 _searchPresentationController];
+  headingCopy = heading;
+  controllerCopy = controller;
+  v7 = [controllerCopy _systemInputViewControllerAfterUpdate:0];
+  _searchPresentationController = [controllerCopy _searchPresentationController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
-    v98 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v98 handleFailureInMethod:a2 object:self file:@"_UISearchControllerATVSearchAnimatorLegacy.m" lineNumber:841 description:@"UISearchBar's presentation controller must be of type _UISearchATVPresentationController."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UISearchControllerATVSearchAnimatorLegacy.m" lineNumber:841 description:@"UISearchBar's presentation controller must be of type _UISearchATVPresentationController."];
   }
 
-  v10 = [v6 presentationController];
-  v11 = [v10 presentingViewController];
-  v12 = [v11 view];
-  v13 = [v12 _shouldReverseLayoutDirection];
+  presentationController = [controllerCopy presentationController];
+  presentingViewController = [presentationController presentingViewController];
+  view = [presentingViewController view];
+  _shouldReverseLayoutDirection = [view _shouldReverseLayoutDirection];
 
-  v14 = [v7 view];
-  [v14 frame];
-  if (v13)
+  view2 = [v7 view];
+  [view2 frame];
+  if (_shouldReverseLayoutDirection)
   {
     MaxX = CGRectGetMaxX(*&v15);
-    v20 = [v7 view];
-    v21 = [v20 superview];
-    [v21 bounds];
+    view3 = [v7 view];
+    superview = [view3 superview];
+    [superview bounds];
     v22 = MaxX < CGRectGetMaxX(v181);
   }
 
@@ -1723,48 +1723,48 @@ LABEL_25:
 
   if ([v7 resolvedKeyboardStyle] != 2 || !v22)
   {
-    v23 = [v6 presentingViewController];
-    v24 = [v23 tabBarController];
-    v25 = [v24 tabBar];
+    presentingViewController2 = [controllerCopy presentingViewController];
+    tabBarController = [presentingViewController2 tabBarController];
+    tabBar = [tabBarController tabBar];
 
-    v124 = self;
-    if ([v25 _displayStyle] != 1)
+    selfCopy = self;
+    if ([tabBar _displayStyle] != 1)
     {
 
-      v25 = 0;
+      tabBar = 0;
     }
 
-    v26 = [v6 searchBar];
-    v27 = [v26 superview];
-    v28 = [v6 _suggestionView];
-    if ([v26 showsScopeBar])
+    searchBar = [controllerCopy searchBar];
+    superview2 = [searchBar superview];
+    _suggestionView = [controllerCopy _suggestionView];
+    if ([searchBar showsScopeBar])
     {
-      v29 = [v26 _scopeBarContainerView];
-      if (v29)
+      _scopeBarContainerView = [searchBar _scopeBarContainerView];
+      if (_scopeBarContainerView)
       {
-        v30 = [v26 _scopeBarContainerView];
+        _scopeBarContainerView2 = [searchBar _scopeBarContainerView];
       }
 
       else
       {
-        v30 = 0;
+        _scopeBarContainerView2 = 0;
       }
     }
 
     else
     {
-      v30 = 0;
+      _scopeBarContainerView2 = 0;
     }
 
-    v31 = [v6 _leftDividerView];
-    v135 = [v6 _rightDividerView];
-    v136 = [v6 _resultsControllerViewContainer];
+    _leftDividerView = [controllerCopy _leftDividerView];
+    _rightDividerView = [controllerCopy _rightDividerView];
+    _resultsControllerViewContainer = [controllerCopy _resultsControllerViewContainer];
     v131 = [v7 alignmentConstraintForAxis:1];
     [v131 constant];
     v112 = v32;
-    if (v25)
+    if (tabBar)
     {
-      [v25 frame];
+      [tabBar frame];
       v120 = v33;
       v121 = v34;
       v119 = v35;
@@ -1777,17 +1777,17 @@ LABEL_25:
       v119 = *(MEMORY[0x1E695F058] + 24);
     }
 
-    v36 = [v7 view];
-    [v36 frame];
+    view4 = [v7 view];
+    [view4 frame];
     v38 = v37;
     v104 = v39;
     v122 = v41;
     v123 = v40;
 
-    v42 = [v31 superview];
-    if (v42)
+    superview3 = [_leftDividerView superview];
+    if (superview3)
     {
-      [v31 frame];
+      [_leftDividerView frame];
       v44 = v43;
       v46 = v45;
       v129 = v48;
@@ -1802,10 +1802,10 @@ LABEL_25:
       v130 = *(MEMORY[0x1E695F058] + 16);
     }
 
-    v49 = [v135 superview];
-    if (v49)
+    superview4 = [_rightDividerView superview];
+    if (superview4)
     {
-      [v135 frame];
+      [_rightDividerView frame];
       v116 = v51;
       v117 = v50;
       v102 = v52;
@@ -1820,22 +1820,22 @@ LABEL_25:
       v115 = *(MEMORY[0x1E695F058] + 24);
     }
 
-    [v27 frame];
+    [superview2 frame];
     v127 = v55;
     v128 = v54;
     v57 = v56;
     rect = v58;
-    if (v28)
+    if (_suggestionView)
     {
-      [v28 frame];
+      [_suggestionView frame];
       v114 = v59;
       v61 = v60;
       v110 = v63;
       v111 = v62;
-      if (v30)
+      if (_scopeBarContainerView2)
       {
 LABEL_27:
-        [v30 frame];
+        [_scopeBarContainerView2 frame];
         v108 = v65;
         v109 = v64;
         v67 = v66;
@@ -1850,7 +1850,7 @@ LABEL_27:
       v114 = *MEMORY[0x1E695F058];
       v110 = *(MEMORY[0x1E695F058] + 24);
       v111 = *(MEMORY[0x1E695F058] + 16);
-      if (v30)
+      if (_scopeBarContainerView2)
       {
         goto LABEL_27;
       }
@@ -1861,13 +1861,13 @@ LABEL_27:
     v109 = *MEMORY[0x1E695F058];
     v107 = *(MEMORY[0x1E695F058] + 24);
 LABEL_30:
-    v132 = v31;
-    [v136 frame];
+    v132 = _leftDividerView;
+    [_resultsControllerViewContainer frame];
     v100 = v70;
     v101 = v69;
     v72 = v71;
     v106 = v73;
-    v74 = dbl_18A679EA0[v25 == 0];
+    v74 = dbl_18A679EA0[tabBar == 0];
     v118 = v44;
     v182.origin.x = v44;
     v182.origin.y = v46;
@@ -1879,21 +1879,21 @@ LABEL_30:
     v183.origin.y = v57;
     v183.size.height = rect;
     v76 = v74 + MaxY - CGRectGetMinY(v183) + 30.0;
-    v125 = v26;
-    v77 = v30;
+    v125 = searchBar;
+    v77 = _scopeBarContainerView2;
     if ([v7 resolvedKeyboardStyle] == 2)
     {
-      v78 = v28;
+      v78 = _suggestionView;
     }
 
     else
     {
-      v79 = [v7 view];
-      v80 = v79;
-      v78 = v28;
-      if (v79)
+      view5 = [v7 view];
+      v80 = view5;
+      v78 = _suggestionView;
+      if (view5)
       {
-        [v79 transform];
+        [view5 transform];
       }
 
       else
@@ -1905,19 +1905,19 @@ LABEL_30:
 
       if (IsIdentity)
       {
-        v82 = v27;
-        v83 = [v7 view];
-        [v83 frame];
+        v82 = superview2;
+        view6 = [v7 view];
+        [view6 frame];
         v76 = v76 - (v84 + 34.5);
 
         goto LABEL_38;
       }
     }
 
-    v82 = v27;
+    v82 = superview2;
 LABEL_38:
-    v85 = [v6 searchResultsToHiddenKeyboardFocusGuide];
-    v86 = (v57 >= 0.0) & (v133 >> 1);
+    searchResultsToHiddenKeyboardFocusGuide = [controllerCopy searchResultsToHiddenKeyboardFocusGuide];
+    v86 = (v57 >= 0.0) & (headingCopy >> 1);
     if (v86 == 1)
     {
       v134 = v38;
@@ -1931,9 +1931,9 @@ LABEL_38:
       v103 = v102 - v76;
       v105 = v72 - v76;
       v92 = 0.0 - v76;
-      v93 = [v7 view];
+      view7 = [v7 view];
 
-      if (!v93)
+      if (!view7)
       {
         goto LABEL_45;
       }
@@ -1941,8 +1941,8 @@ LABEL_38:
 
     else
     {
-      v94 = v135;
-      if ((v133 & 1) == 0 || v57 >= 0.0)
+      v94 = _rightDividerView;
+      if ((headingCopy & 1) == 0 || v57 >= 0.0)
       {
         goto LABEL_46;
       }
@@ -1960,16 +1960,16 @@ LABEL_38:
       v92 = v76 + 0.0;
     }
 
-    [v85 setEnabled:{v86, *&v99}];
+    [searchResultsToHiddenKeyboardFocusGuide setEnabled:{v86, *&v99}];
 LABEL_45:
     v95 = v100 - v92;
-    [(_UISearchControllerAnimator *)v124 transitionDuration:0];
+    [(_UISearchControllerAnimator *)selfCopy transitionDuration:0];
     v97 = v96;
     v137[0] = MEMORY[0x1E69E9820];
     v137[1] = 3221225472;
     v137[2] = __97___UISearchControllerATVSearchBarAnimatorLegacy_willFocusOffscreenViewForController_withHeading___block_invoke;
     v137[3] = &unk_1E7106B80;
-    v138 = v25;
+    v138 = tabBar;
     v147 = v120;
     v148 = v87;
     v149 = v121;
@@ -1989,8 +1989,8 @@ LABEL_45:
     v160 = v90;
     v161 = v130;
     v162 = v129;
-    v94 = v135;
-    v142 = v135;
+    v94 = _rightDividerView;
+    v142 = _rightDividerView;
     v163 = v117;
     v164 = v103;
     v165 = v116;
@@ -2000,7 +2000,7 @@ LABEL_45:
     v168 = v91;
     v169 = v108;
     v170 = v107;
-    v144 = v136;
+    v144 = _resultsControllerViewContainer;
     v171 = v101 + 0.0;
     v172 = v105;
     v173 = v106;

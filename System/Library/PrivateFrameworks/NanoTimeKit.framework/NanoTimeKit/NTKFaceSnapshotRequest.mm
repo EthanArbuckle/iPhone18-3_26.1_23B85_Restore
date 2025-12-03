@@ -1,30 +1,30 @@
 @interface NTKFaceSnapshotRequest
 - (BOOL)isReady;
-- (NTKFaceSnapshotRequest)initWithFace:(id)a3 options:(id)a4 completion:(id)a5;
+- (NTKFaceSnapshotRequest)initWithFace:(id)face options:(id)options completion:(id)completion;
 @end
 
 @implementation NTKFaceSnapshotRequest
 
-- (NTKFaceSnapshotRequest)initWithFace:(id)a3 options:(id)a4 completion:(id)a5
+- (NTKFaceSnapshotRequest)initWithFace:(id)face options:(id)options completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  faceCopy = face;
+  optionsCopy = options;
+  completionCopy = completion;
   v20.receiver = self;
   v20.super_class = NTKFaceSnapshotRequest;
   v12 = [(NTKFaceSnapshotRequest *)&v20 init];
   if (v12)
   {
-    v13 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     creationDate = v12->_creationDate;
-    v12->_creationDate = v13;
+    v12->_creationDate = date;
 
-    objc_storeStrong(&v12->_face, a3);
-    v15 = [v10 copy];
+    objc_storeStrong(&v12->_face, face);
+    v15 = [optionsCopy copy];
     options = v12->_options;
     v12->_options = v15;
 
-    v17 = [v11 copy];
+    v17 = [completionCopy copy];
     completion = v12->_completion;
     v12->_completion = v17;
   }
@@ -34,7 +34,7 @@
 
 - (BOOL)isReady
 {
-  v2 = [(NTKFaceSnapshotRequest *)self face];
+  face = [(NTKFaceSnapshotRequest *)self face];
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -43,26 +43,26 @@
   v11 = 3221225472;
   v12 = __33__NTKFaceSnapshotRequest_isReady__block_invoke;
   v13 = &unk_27877FB58;
-  v3 = v2;
+  v3 = face;
   v14 = v3;
   v15 = &v16;
   [v3 enumerateComplicationSlotsWithBlock:&v10];
   if (*(v17 + 24))
   {
-    v4 = [v3 device];
-    v5 = [v4 pairingID];
-    if (v5)
+    device = [v3 device];
+    pairingID = [device pairingID];
+    if (pairingID)
     {
-      v6 = [NTKFaceSnapshotterComplicationCollections objectForKey:v5];
-      v7 = [v6 hasLoaded];
+      v6 = [NTKFaceSnapshotterComplicationCollections objectForKey:pairingID];
+      hasLoaded = [v6 hasLoaded];
     }
 
     else
     {
-      v7 = 1;
+      hasLoaded = 1;
     }
 
-    v8 = v7 & NTKFaceSnapshotterCompanionAppLibraryLoaded;
+    v8 = hasLoaded & NTKFaceSnapshotterCompanionAppLibraryLoaded;
   }
 
   else

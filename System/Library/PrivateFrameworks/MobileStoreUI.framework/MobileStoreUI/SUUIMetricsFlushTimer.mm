@@ -1,13 +1,13 @@
 @interface SUUIMetricsFlushTimer
 + (id)sharedTimer;
 - (SUUIMetricsFlushTimer)init;
-- (void)_applicationDidEnterBackgroundNotification:(id)a3;
+- (void)_applicationDidEnterBackgroundNotification:(id)notification;
 - (void)_cancelFlushTimer;
 - (void)_performFlush;
-- (void)addMetricsController:(id)a3;
+- (void)addMetricsController:(id)controller;
 - (void)dealloc;
 - (void)reloadFlushInterval;
-- (void)removeMetricsController:(id)a3;
+- (void)removeMetricsController:(id)controller;
 @end
 
 @implementation SUUIMetricsFlushTimer
@@ -23,9 +23,9 @@
     metricsControllers = v2->_metricsControllers;
     v2->_metricsControllers = v3;
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v2 selector:sel__applicationDidEnterBackgroundNotification_ name:*MEMORY[0x277D76660] object:0];
-    [v5 addObserver:v2 selector:sel__applicationWillEnterForegroundNotification_ name:*MEMORY[0x277D76758] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__applicationDidEnterBackgroundNotification_ name:*MEMORY[0x277D76660] object:0];
+    [defaultCenter addObserver:v2 selector:sel__applicationWillEnterForegroundNotification_ name:*MEMORY[0x277D76758] object:0];
   }
 
   return v2;
@@ -33,9 +33,9 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D76660] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D76758] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76660] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76758] object:0];
   timer = self->_timer;
   if (timer)
   {
@@ -52,7 +52,7 @@
   v3 = sharedTimer_sTimer;
   if (!sharedTimer_sTimer)
   {
-    v4 = objc_alloc_init(a1);
+    v4 = objc_alloc_init(self);
     v5 = sharedTimer_sTimer;
     sharedTimer_sTimer = v4;
 
@@ -62,9 +62,9 @@
   return v3;
 }
 
-- (void)addMetricsController:(id)a3
+- (void)addMetricsController:(id)controller
 {
-  [(NSHashTable *)self->_metricsControllers addObject:a3];
+  [(NSHashTable *)self->_metricsControllers addObject:controller];
 
   [(SUUIMetricsFlushTimer *)self reloadFlushInterval];
 }
@@ -160,22 +160,22 @@ void __44__SUUIMetricsFlushTimer_reloadFlushInterval__block_invoke(uint64_t a1)
   [WeakRetained _performFlush];
 }
 
-- (void)removeMetricsController:(id)a3
+- (void)removeMetricsController:(id)controller
 {
-  v4 = a3;
-  if ([(NSHashTable *)self->_metricsControllers count]== 1 && [(NSHashTable *)self->_metricsControllers containsObject:v4])
+  controllerCopy = controller;
+  if ([(NSHashTable *)self->_metricsControllers count]== 1 && [(NSHashTable *)self->_metricsControllers containsObject:controllerCopy])
   {
-    [v4 flushImmediately];
+    [controllerCopy flushImmediately];
   }
 
-  [(NSHashTable *)self->_metricsControllers removeObject:v4];
+  [(NSHashTable *)self->_metricsControllers removeObject:controllerCopy];
   [(SUUIMetricsFlushTimer *)self reloadFlushInterval];
 }
 
-- (void)_applicationDidEnterBackgroundNotification:(id)a3
+- (void)_applicationDidEnterBackgroundNotification:(id)notification
 {
-  v4 = [(NSHashTable *)self->_metricsControllers anyObject];
-  [v4 flushImmediately];
+  anyObject = [(NSHashTable *)self->_metricsControllers anyObject];
+  [anyObject flushImmediately];
   [(SUUIMetricsFlushTimer *)self _cancelFlushTimer];
 }
 

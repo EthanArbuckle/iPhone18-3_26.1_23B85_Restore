@@ -1,15 +1,15 @@
 @interface WFWorkflowRunViewSource
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)originFrame;
 - (UIView)originView;
-- (WFWorkflowRunViewSource)initWithCoder:(id)a3;
-- (WFWorkflowRunViewSource)initWithView:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (WFWorkflowRunViewSource)initWithCoder:(id)coder;
+- (WFWorkflowRunViewSource)initWithView:(id)view;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)refresh;
-- (void)updateSourceView:(id)a3;
+- (void)updateSourceView:(id)view;
 @end
 
 @implementation WFWorkflowRunViewSource
@@ -40,21 +40,21 @@
   v11.receiver = self;
   v11.super_class = WFWorkflowRunViewSource;
   v4 = [(WFWorkflowRunViewSource *)&v11 description];
-  v5 = [(WFWorkflowRunViewSource *)self renderID];
-  v6 = [(WFWorkflowRunViewSource *)self contextID];
+  renderID = [(WFWorkflowRunViewSource *)self renderID];
+  contextID = [(WFWorkflowRunViewSource *)self contextID];
   v7 = MEMORY[0x1E696B098];
   [(WFWorkflowRunViewSource *)self originFrame];
   v8 = [v7 valueWithCGRect:?];
-  v9 = [v3 stringWithFormat:@"<%@, renderID: %llu, contextID: %u, originFrame: %@>", v4, v5, v6, v8];
+  v9 = [v3 stringWithFormat:@"<%@, renderID: %llu, contextID: %u, originFrame: %@>", v4, renderID, contextID, v8];
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(WFWorkflowRunViewSource *)self uuid];
-  v7 = [v6 copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  uuid = [(WFWorkflowRunViewSource *)self uuid];
+  v7 = [uuid copyWithZone:zone];
   v8 = *(v5 + 24);
   *(v5 + 24) = v7;
 
@@ -68,41 +68,41 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFWorkflowRunViewSource *)self uuid];
-  [v4 encodeObject:v5 forKey:@"uuid"];
+  coderCopy = coder;
+  uuid = [(WFWorkflowRunViewSource *)self uuid];
+  [coderCopy encodeObject:uuid forKey:@"uuid"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[WFWorkflowRunViewSource renderID](self, "renderID")}];
-  [v4 encodeObject:v6 forKey:@"renderID"];
+  [coderCopy encodeObject:v6 forKey:@"renderID"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[WFWorkflowRunViewSource contextID](self, "contextID")}];
-  [v4 encodeObject:v7 forKey:@"contextID"];
+  [coderCopy encodeObject:v7 forKey:@"contextID"];
 
   v8 = MEMORY[0x1E696B098];
   [(WFWorkflowRunViewSource *)self originFrame];
   v9 = [v8 valueWithCGRect:?];
-  [v4 encodeObject:v9 forKey:@"originFrame"];
+  [coderCopy encodeObject:v9 forKey:@"originFrame"];
 }
 
-- (WFWorkflowRunViewSource)initWithCoder:(id)a3
+- (WFWorkflowRunViewSource)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = WFWorkflowRunViewSource;
   v5 = [(WFWorkflowRunViewSource *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
     uuid = v5->_uuid;
     v5->_uuid = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"renderID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"renderID"];
     v5->_renderID = [v8 unsignedLongLongValue];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contextID"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contextID"];
     v5->_contextID = [v9 unsignedIntValue];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"originFrame"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"originFrame"];
     [v10 CGRectValue];
     v5->_originFrame.origin.x = v11;
     v5->_originFrame.origin.y = v12;
@@ -116,29 +116,29 @@
 
 - (unint64_t)hash
 {
-  v2 = [(WFWorkflowRunViewSource *)self uuid];
-  v3 = [v2 hash];
+  uuid = [(WFWorkflowRunViewSource *)self uuid];
+  v3 = [uuid hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v7 = [(WFWorkflowRunViewSource *)v6 uuid];
-      v8 = [(WFWorkflowRunViewSource *)self uuid];
-      v9 = [v7 isEqual:v8];
+      uuid = [(WFWorkflowRunViewSource *)v6 uuid];
+      uuid2 = [(WFWorkflowRunViewSource *)self uuid];
+      v9 = [uuid isEqual:uuid2];
     }
 
     else
@@ -152,68 +152,68 @@
 
 - (void)refresh
 {
-  v3 = [(WFWorkflowRunViewSource *)self originView];
-  v4 = [v3 layer];
+  originView = [(WFWorkflowRunViewSource *)self originView];
+  layer = [originView layer];
   [(WFWorkflowRunViewSource *)self setRenderID:CALayerGetRenderId()];
 
-  v5 = [(WFWorkflowRunViewSource *)self originView];
-  v6 = [v5 layer];
+  originView2 = [(WFWorkflowRunViewSource *)self originView];
+  layer2 = [originView2 layer];
   v7 = CALayerGetContext();
   -[WFWorkflowRunViewSource setContextID:](self, "setContextID:", [v7 contextId]);
 
-  v22 = [(WFWorkflowRunViewSource *)self originView];
-  v8 = [v22 superview];
-  v9 = [(WFWorkflowRunViewSource *)self originView];
-  [v9 frame];
+  originView3 = [(WFWorkflowRunViewSource *)self originView];
+  superview = [originView3 superview];
+  originView4 = [(WFWorkflowRunViewSource *)self originView];
+  [originView4 frame];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18 = [(WFWorkflowRunViewSource *)self originView];
-  v19 = [v18 window];
-  v20 = [v19 rootViewController];
-  v21 = [v20 view];
-  [v8 convertRect:v21 toView:{v11, v13, v15, v17}];
+  originView5 = [(WFWorkflowRunViewSource *)self originView];
+  window = [originView5 window];
+  rootViewController = [window rootViewController];
+  view = [rootViewController view];
+  [superview convertRect:view toView:{v11, v13, v15, v17}];
   [(WFWorkflowRunViewSource *)self setOriginFrame:?];
 }
 
-- (void)updateSourceView:(id)a3
+- (void)updateSourceView:(id)view
 {
-  v37 = a3;
-  [(WFWorkflowRunViewSource *)self setOriginView:v37];
-  if (v37)
+  viewCopy = view;
+  [(WFWorkflowRunViewSource *)self setOriginView:viewCopy];
+  if (viewCopy)
   {
-    v4 = [v37 layer];
+    layer = [viewCopy layer];
     RenderId = CALayerGetRenderId();
 
-    v6 = [(WFWorkflowRunViewSource *)self renderID];
-    v7 = v6 != RenderId;
-    if (v6 != RenderId)
+    renderID = [(WFWorkflowRunViewSource *)self renderID];
+    v7 = renderID != RenderId;
+    if (renderID != RenderId)
     {
       [(WFWorkflowRunViewSource *)self setRenderID:RenderId];
     }
 
-    v8 = [v37 layer];
+    layer2 = [viewCopy layer];
     v9 = CALayerGetContext();
-    v10 = [v9 contextId];
+    contextId = [v9 contextId];
 
-    v11 = [(WFWorkflowRunViewSource *)self contextID];
-    if (v10 && v11 != v10)
+    contextID = [(WFWorkflowRunViewSource *)self contextID];
+    if (contextId && contextID != contextId)
     {
-      [(WFWorkflowRunViewSource *)self setContextID:v10];
+      [(WFWorkflowRunViewSource *)self setContextID:contextId];
       v7 = 1;
     }
 
-    v12 = [v37 superview];
-    [v37 frame];
+    superview = [viewCopy superview];
+    [viewCopy frame];
     v14 = v13;
     v16 = v15;
     v18 = v17;
     v20 = v19;
-    v21 = [v37 window];
-    v22 = [v21 rootViewController];
-    v23 = [v22 view];
-    [v12 convertRect:v23 toView:{v14, v16, v18, v20}];
+    window = [viewCopy window];
+    rootViewController = [window rootViewController];
+    view = [rootViewController view];
+    [superview convertRect:view toView:{v14, v16, v18, v20}];
     v25 = v24;
     v27 = v26;
     v29 = v28;
@@ -238,8 +238,8 @@
     }
 
 LABEL_15:
-    v36 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v36 postNotificationName:@"WFWorkflowRunViewSourceUpdatedNotification" object:self userInfo:MEMORY[0x1E695E0F8]];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"WFWorkflowRunViewSourceUpdatedNotification" object:self userInfo:MEMORY[0x1E695E0F8]];
 
     goto LABEL_16;
   }
@@ -264,48 +264,48 @@ LABEL_15:
 LABEL_16:
 }
 
-- (WFWorkflowRunViewSource)initWithView:(id)a3
+- (WFWorkflowRunViewSource)initWithView:(id)view
 {
-  v4 = a3;
-  if (v4 && (v28.receiver = self, v28.super_class = WFWorkflowRunViewSource, (self = [(WFWorkflowRunViewSource *)&v28 init]) != 0))
+  viewCopy = view;
+  if (viewCopy && (v28.receiver = self, v28.super_class = WFWorkflowRunViewSource, (self = [(WFWorkflowRunViewSource *)&v28 init]) != 0))
   {
-    v5 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     uuid = self->_uuid;
-    self->_uuid = v5;
+    self->_uuid = uUID;
 
-    v7 = [v4 layer];
+    layer = [viewCopy layer];
     self->_renderID = CALayerGetRenderId();
 
-    v8 = [v4 layer];
+    layer2 = [viewCopy layer];
     v9 = CALayerGetContext();
     self->_contextID = [v9 contextId];
 
-    v10 = [v4 superview];
-    [v4 frame];
+    superview = [viewCopy superview];
+    [viewCopy frame];
     v12 = v11;
     v14 = v13;
     v16 = v15;
     v18 = v17;
-    v19 = [v4 window];
-    v20 = [v19 rootViewController];
-    v21 = [v20 view];
-    [v10 convertRect:v21 toView:{v12, v14, v16, v18}];
+    window = [viewCopy window];
+    rootViewController = [window rootViewController];
+    view = [rootViewController view];
+    [superview convertRect:view toView:{v12, v14, v16, v18}];
     self->_originFrame.origin.x = v22;
     self->_originFrame.origin.y = v23;
     self->_originFrame.size.width = v24;
     self->_originFrame.size.height = v25;
 
-    objc_storeWeak(&self->_originView, v4);
+    objc_storeWeak(&self->_originView, viewCopy);
     self = self;
-    v26 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v26 = 0;
+    selfCopy = 0;
   }
 
-  return v26;
+  return selfCopy;
 }
 
 @end

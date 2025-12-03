@@ -1,35 +1,35 @@
 @interface HDAuthorizationStatus
-+ (BOOL)isAuthorizedForObjectType:(id)a3 authorizationStatus:(id)a4 clientEntitlements:(id)a5 sharing:(BOOL)a6 error:(id *)a7;
-+ (id)authorizationStatusForRecordForObjectType:(id)a3 authorizationStatusRecord:(id)a4 clientEntitlements:(id)a5;
-+ (id)authorizationStatusForTypes:(id)a3 bundleIdentifier:(id)a4 profile:(id)a5 error:(id *)a6;
++ (BOOL)isAuthorizedForObjectType:(id)type authorizationStatus:(id)status clientEntitlements:(id)entitlements sharing:(BOOL)sharing error:(id *)error;
++ (id)authorizationStatusForRecordForObjectType:(id)type authorizationStatusRecord:(id)record clientEntitlements:(id)entitlements;
++ (id)authorizationStatusForTypes:(id)types bundleIdentifier:(id)identifier profile:(id)profile error:(id *)error;
 @end
 
 @implementation HDAuthorizationStatus
 
-+ (id)authorizationStatusForTypes:(id)a3 bundleIdentifier:(id)a4 profile:(id)a5 error:(id *)a6
++ (id)authorizationStatusForTypes:(id)types bundleIdentifier:(id)identifier profile:(id)profile error:(id *)error
 {
   v53 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v36 = v9;
-  if (!v10)
+  typesCopy = types;
+  identifierCopy = identifier;
+  profileCopy = profile;
+  v36 = typesCopy;
+  if (!identifierCopy)
   {
     v28 = MEMORY[0x277CCA9B8];
     v29 = @"Missing application-identifier entitlement.";
-    v30 = a6;
+    errorCopy2 = error;
     v31 = 4;
 LABEL_20:
-    [v28 hk_assignError:v30 code:v31 description:v29];
+    [v28 hk_assignError:errorCopy2 code:v31 description:v29];
     v16 = 0;
     goto LABEL_23;
   }
 
-  if (![v9 count])
+  if (![typesCopy count])
   {
     v28 = MEMORY[0x277CCA9B8];
     v29 = @"The types argument may not be empty";
-    v30 = a6;
+    errorCopy2 = error;
     v31 = 3;
     goto LABEL_20;
   }
@@ -42,18 +42,18 @@ LABEL_20:
   v51 = 0;
   v12 = objc_alloc_init(HDMutableDatabaseTransactionContext);
   [(HDMutableDatabaseTransactionContext *)v12 setHighPriority:1];
-  v13 = [v11 database];
+  database = [profileCopy database];
   v41[0] = MEMORY[0x277D85DD0];
   v41[1] = 3221225472;
   v41[2] = __84__HDAuthorizationStatus_authorizationStatusForTypes_bundleIdentifier_profile_error___block_invoke;
   v41[3] = &unk_27861D560;
   v45 = &v46;
-  v42 = v10;
-  v14 = v9;
+  v42 = identifierCopy;
+  v14 = typesCopy;
   v43 = v14;
-  v44 = v11;
-  v15 = [(HDHealthEntity *)HDAuthorizationEntity performReadTransactionWithHealthDatabase:v13 context:v12 error:a6 block:v41];
-  v35 = v11;
+  v44 = profileCopy;
+  v15 = [(HDHealthEntity *)HDAuthorizationEntity performReadTransactionWithHealthDatabase:database context:v12 error:error block:v41];
+  v35 = profileCopy;
 
   if (!v15)
   {
@@ -123,7 +123,7 @@ LABEL_17:
 LABEL_22:
   _Block_object_dispose(&v46, 8);
 
-  v11 = v35;
+  profileCopy = v35;
 LABEL_23:
 
   v32 = *MEMORY[0x277D85DE8];
@@ -164,39 +164,39 @@ BOOL __84__HDAuthorizationStatus_authorizationStatusForTypes_bundleIdentifier_pr
   return result;
 }
 
-+ (BOOL)isAuthorizedForObjectType:(id)a3 authorizationStatus:(id)a4 clientEntitlements:(id)a5 sharing:(BOOL)a6 error:(id *)a7
++ (BOOL)isAuthorizedForObjectType:(id)type authorizationStatus:(id)status clientEntitlements:(id)entitlements sharing:(BOOL)sharing error:(id *)error
 {
-  v7 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  if (!v13)
+  sharingCopy = sharing;
+  typeCopy = type;
+  statusCopy = status;
+  entitlementsCopy = entitlements;
+  if (!statusCopy)
   {
-    v26 = [MEMORY[0x277CCA890] currentHandler];
-    [v26 handleFailureInMethod:a2 object:a1 file:@"HDAuthorizationStatus.m" lineNumber:95 description:{@"Invalid parameter not satisfying: %@", @"authorizationStatus != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDAuthorizationStatus.m" lineNumber:95 description:{@"Invalid parameter not satisfying: %@", @"authorizationStatus != nil"}];
   }
 
-  v27 = a1;
-  v15 = [v13 integerValue];
+  selfCopy = self;
+  integerValue = [statusCopy integerValue];
   v16 = HKAuthorizationStatusAllowsSharing();
   v17 = HKAuthorizationStatusAllowsReading();
   v18 = *MEMORY[0x277CCCCE0];
-  v19 = v12;
-  v20 = [v12 identifier];
-  v21 = [v14 arrayEntitlement:v18 containsString:v20];
+  v19 = typeCopy;
+  identifier = [typeCopy identifier];
+  v21 = [entitlementsCopy arrayEntitlement:v18 containsString:identifier];
 
-  if ((v15 - 101) >= 4)
+  if ((integerValue - 101) >= 4)
   {
-    if (v15 == 100)
+    if (integerValue == 100)
     {
-      v22 = v7 | v21 ^ 1;
+      v22 = sharingCopy | v21 ^ 1;
       v23 = v22 ^ 1;
     }
 
     else
     {
-      v24 = [MEMORY[0x277CCA890] currentHandler];
-      [v24 handleFailureInMethod:a2 object:v27 file:@"HDAuthorizationStatus.m" lineNumber:117 description:{@"Unexpected authorization status %@", v13}];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:selfCopy file:@"HDAuthorizationStatus.m" lineNumber:117 description:{@"Unexpected authorization status %@", statusCopy}];
 
       v23 = 0;
       v22 = 0;
@@ -206,7 +206,7 @@ BOOL __84__HDAuthorizationStatus_authorizationStatusForTypes_bundleIdentifier_pr
   else
   {
     v22 = 0;
-    if (v7)
+    if (sharingCopy)
     {
       v23 = v16;
     }
@@ -217,7 +217,7 @@ BOOL __84__HDAuthorizationStatus_authorizationStatusForTypes_bundleIdentifier_pr
     }
   }
 
-  if (a7 && (v23 & 1) == 0)
+  if (error && (v23 & 1) == 0)
   {
     if (v22)
     {
@@ -228,26 +228,26 @@ BOOL __84__HDAuthorizationStatus_authorizationStatusForTypes_bundleIdentifier_pr
     {
       [MEMORY[0x277CCA9B8] hk_error:4 format:@"Not authorized"];
     }
-    *a7 = ;
+    *error = ;
   }
 
   return v23 & 1;
 }
 
-+ (id)authorizationStatusForRecordForObjectType:(id)a3 authorizationStatusRecord:(id)a4 clientEntitlements:(id)a5
++ (id)authorizationStatusForRecordForObjectType:(id)type authorizationStatusRecord:(id)record clientEntitlements:(id)entitlements
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  [v7 code];
-  if ((HKDataTypeRequiresAuthorization() & 1) == 0 || ([v7 code], HKDataTypeRequiresPerObjectAuthorization()) || (v10 = *MEMORY[0x277CCCCE0], objc_msgSend(v7, "identifier"), v11 = objc_claimAutoreleasedReturnValue(), LODWORD(v10) = objc_msgSend(v9, "arrayEntitlement:containsString:", v10, v11), v11, v10))
+  typeCopy = type;
+  recordCopy = record;
+  entitlementsCopy = entitlements;
+  [typeCopy code];
+  if ((HKDataTypeRequiresAuthorization() & 1) == 0 || ([typeCopy code], HKDataTypeRequiresPerObjectAuthorization()) || (v10 = *MEMORY[0x277CCCCE0], objc_msgSend(typeCopy, "identifier"), v11 = objc_claimAutoreleasedReturnValue(), LODWORD(v10) = objc_msgSend(entitlementsCopy, "arrayEntitlement:containsString:", v10, v11), v11, v10))
   {
     v12 = +[HDAuthorizationStatusRecord unrestrictedReadAuthorizationStatus];
   }
 
-  else if (v8)
+  else if (recordCopy)
   {
-    v12 = v8;
+    v12 = recordCopy;
   }
 
   else

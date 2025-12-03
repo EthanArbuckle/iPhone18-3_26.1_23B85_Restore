@@ -1,28 +1,28 @@
 @interface IDSInvitationManager
-- (BOOL)validateReceivedInvitation:(id)a3;
-- (IDSInvitationManager)initWithServiceIdentifier:(id)a3;
+- (BOOL)validateReceivedInvitation:(id)invitation;
+- (IDSInvitationManager)initWithServiceIdentifier:(id)identifier;
 - (IDSInvitationManagerDelegate)delegate;
 - (NSSet)pendingInvitations;
 - (NSSet)receivedInvitations;
-- (id)validateStrictDecodingForSentInvitation:(id)a3;
-- (void)acceptInvitation:(id)a3 withContext:(id)a4 options:(id)a5 serverAcknowledgedBlock:(id)a6;
-- (void)cancelInvitation:(id)a3 withContext:(id)a4 options:(id)a5 serverAcknowledgedBlock:(id)a6;
-- (void)declineInvitation:(id)a3 withContext:(id)a4 options:(id)a5 serverAcknowledgedBlock:(id)a6;
-- (void)removePendingInvitation:(id)a3;
-- (void)removeReceivedInvitation:(id)a3;
-- (void)sendInvitationToDestination:(id)a3 expirationDate:(id)a4 context:(id)a5 options:(id)a6 serverAcknowledgedBlock:(id)a7;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7 context:(id)a8;
-- (void)service:(id)a3 account:(id)a4 incomingInvitation:(id)a5 withContext:(id)a6;
-- (void)service:(id)a3 account:(id)a4 incomingInvitationUpdate:(id)a5 withContext:(id)a6;
-- (void)setDelegate:(id)a3 queue:(id)a4;
-- (void)setupInvitationsForService:(id)a3;
+- (id)validateStrictDecodingForSentInvitation:(id)invitation;
+- (void)acceptInvitation:(id)invitation withContext:(id)context options:(id)options serverAcknowledgedBlock:(id)block;
+- (void)cancelInvitation:(id)invitation withContext:(id)context options:(id)options serverAcknowledgedBlock:(id)block;
+- (void)declineInvitation:(id)invitation withContext:(id)context options:(id)options serverAcknowledgedBlock:(id)block;
+- (void)removePendingInvitation:(id)invitation;
+- (void)removeReceivedInvitation:(id)invitation;
+- (void)sendInvitationToDestination:(id)destination expirationDate:(id)date context:(id)context options:(id)options serverAcknowledgedBlock:(id)block;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error context:(id)context;
+- (void)service:(id)service account:(id)account incomingInvitation:(id)invitation withContext:(id)context;
+- (void)service:(id)service account:(id)account incomingInvitationUpdate:(id)update withContext:(id)context;
+- (void)setDelegate:(id)delegate queue:(id)queue;
+- (void)setupInvitationsForService:(id)service;
 @end
 
 @implementation IDSInvitationManager
 
-- (IDSInvitationManager)initWithServiceIdentifier:(id)a3
+- (IDSInvitationManager)initWithServiceIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = IDSInvitationManager;
   v5 = [(IDSInvitationManager *)&v11 init];
@@ -34,7 +34,7 @@
     v8[2] = sub_195A3A49C;
     v8[3] = &unk_1E743EA30;
     v9 = v5;
-    v10 = v4;
+    v10 = identifierCopy;
     [v6 performBlock:v8 waitUntilDone:1];
   }
 
@@ -52,8 +52,8 @@
   [v3 performBlock:v8 waitUntilDone:1];
 
   v4 = MEMORY[0x1E695DFD8];
-  v5 = [(NSMutableDictionary *)self->_pendingInvitations allValues];
-  v6 = [v4 setWithArray:v5];
+  allValues = [(NSMutableDictionary *)self->_pendingInvitations allValues];
+  v6 = [v4 setWithArray:allValues];
 
   return v6;
 }
@@ -69,49 +69,49 @@
   [v3 performBlock:v8 waitUntilDone:1];
 
   v4 = MEMORY[0x1E695DFD8];
-  v5 = [(NSMutableDictionary *)self->_receivedInvitations allValues];
-  v6 = [v4 setWithArray:v5];
+  allValues = [(NSMutableDictionary *)self->_receivedInvitations allValues];
+  v6 = [v4 setWithArray:allValues];
 
   return v6;
 }
 
-- (void)setupInvitationsForService:(id)a3
+- (void)setupInvitationsForService:(id)service
 {
   v67 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v46 = self;
+  serviceCopy = service;
+  selfCopy = self;
   if (!self->_invitationsLoadedFromDisk)
   {
     v5 = +[IDSDaemonController sharedInstance];
     [v5 blockUntilConnected];
 
     v6 = +[IDSDaemonController sharedInstance];
-    v7 = [v6 listener];
-    v48 = [v7 pendingInvitationsForService:v4];
+    listener = [v6 listener];
+    v48 = [listener pendingInvitationsForService:serviceCopy];
 
     v8 = +[IDSDaemonController sharedInstance];
-    v9 = [v8 listener];
-    v47 = [v9 receivedInvitationsForService:v4];
+    listener2 = [v8 listener];
+    v47 = [listener2 receivedInvitationsForService:serviceCopy];
 
     v10 = +[IDSLogging IDSService];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v48 allKeys];
+      allKeys = [v48 allKeys];
       *buf = 138412290;
-      v63 = v11;
+      v63 = allKeys;
       _os_log_impl(&dword_1959FF000, v10, OS_LOG_TYPE_DEFAULT, "setupInvitationsForService: Fetched pending invitations from daemon: %@", buf, 0xCu);
     }
 
     v12 = +[IDSLogging IDSService];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v47 allKeys];
+      allKeys2 = [v47 allKeys];
       *buf = 138412290;
-      v63 = v13;
+      v63 = allKeys2;
       _os_log_impl(&dword_1959FF000, v12, OS_LOG_TYPE_DEFAULT, "setupInvitationsForService: Fetched received invitations from daemon: %@", buf, 0xCu);
     }
 
-    v43 = v4;
+    v43 = serviceCopy;
 
     v59 = 0u;
     v60 = 0u;
@@ -163,7 +163,7 @@
 
           else
           {
-            [(NSMutableDictionary *)v46->_pendingInvitations setObject:v25 forKey:v19];
+            [(NSMutableDictionary *)selfCopy->_pendingInvitations setObject:v25 forKey:v19];
           }
 
           ++v18;
@@ -226,7 +226,7 @@
 
           else
           {
-            [(NSMutableDictionary *)v46->_receivedInvitations setObject:v39 forKey:v33];
+            [(NSMutableDictionary *)selfCopy->_receivedInvitations setObject:v39 forKey:v33];
           }
 
           ++v32;
@@ -239,19 +239,19 @@
       while (v29);
     }
 
-    v46->_invitationsLoadedFromDisk = 1;
-    v4 = v43;
+    selfCopy->_invitationsLoadedFromDisk = 1;
+    serviceCopy = v43;
   }
 
   v42 = *MEMORY[0x1E69E9840];
 }
 
-- (id)validateStrictDecodingForSentInvitation:(id)a3
+- (id)validateStrictDecodingForSentInvitation:(id)invitation
 {
   v27[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  invitationCopy = invitation;
   v25 = 0;
-  v4 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v3 requiringSecureCoding:1 error:&v25];
+  v4 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:invitationCopy requiringSecureCoding:1 error:&v25];
   v5 = v25;
   if (v5)
   {
@@ -274,11 +274,11 @@
     if (!v6)
     {
       v20 = 0;
-      v3 = v11;
+      invitationCopy = v11;
       goto LABEL_8;
     }
 
-    v3 = v11;
+    invitationCopy = v11;
   }
 
   v12 = +[IDSLogging IDSService];
@@ -294,8 +294,8 @@
   v16 = *MEMORY[0x1E696AA08];
   v26[0] = v15;
   v26[1] = v16;
-  v17 = [v6 userInfo];
-  v18 = [v17 objectForKey:*MEMORY[0x1E696A278]];
+  userInfo = [v6 userInfo];
+  v18 = [userInfo objectForKey:*MEMORY[0x1E696A278]];
   v27[1] = v18;
   v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:v26 count:2];
   v20 = [v14 initWithDomain:@"com.apple.identityservices.error" code:55 userInfo:v19];
@@ -306,18 +306,18 @@ LABEL_8:
   return v20;
 }
 
-- (void)sendInvitationToDestination:(id)a3 expirationDate:(id)a4 context:(id)a5 options:(id)a6 serverAcknowledgedBlock:(id)a7
+- (void)sendInvitationToDestination:(id)destination expirationDate:(id)date context:(id)context options:(id)options serverAcknowledgedBlock:(id)block
 {
   v69 = *MEMORY[0x1E69E9840];
-  v37 = a3;
-  v35 = a4;
-  v36 = a5;
-  v12 = a6;
-  v13 = a7;
+  destinationCopy = destination;
+  dateCopy = date;
+  contextCopy = context;
+  optionsCopy = options;
+  blockCopy = block;
   v14 = +[IDSDaemonController sharedInstance];
   [v14 blockUntilConnected];
 
-  v15 = [[IDSSentInvitation alloc] initWithDestination:v37 state:1 expirationDate:v35 uniqueID:0 context:v36];
+  v15 = [[IDSSentInvitation alloc] initWithDestination:destinationCopy state:1 expirationDate:dateCopy uniqueID:0 context:contextCopy];
   v59 = 0;
   v60 = &v59;
   v61 = 0x3032000000;
@@ -329,12 +329,12 @@ LABEL_8:
   v57[1] = 0x3032000000;
   v57[2] = sub_195A006D4;
   v57[3] = sub_195A03D10;
-  v16 = [(IDSInvitation *)v15 uniqueID];
-  v58 = [v16 UUIDString];
+  uniqueID = [(IDSInvitation *)v15 uniqueID];
+  uUIDString = [uniqueID UUIDString];
 
-  if (v12)
+  if (optionsCopy)
   {
-    v17 = [v12 mutableCopy];
+    v17 = [optionsCopy mutableCopy];
   }
 
   else
@@ -342,8 +342,8 @@ LABEL_8:
     v17 = objc_alloc_init(MEMORY[0x1E695DF90]);
   }
 
-  v18 = [(IDSInvitation *)v15 uniqueID];
-  v19 = [v18 UUIDString];
+  uniqueID2 = [(IDSInvitation *)v15 uniqueID];
+  uUIDString2 = [uniqueID2 UUIDString];
   v20 = IDSGetUUIDData();
   [v17 setValue:v20 forKey:@"IDSSendMessageOptionUUID"];
 
@@ -361,13 +361,13 @@ LABEL_8:
     v41[2] = sub_195A3B65C;
     v41[3] = &unk_1E743F7F8;
     v46 = &v56;
-    v24 = v13;
+    v24 = blockCopy;
     v45 = v24;
     v41[4] = self;
     v47 = &v49;
     v25 = v15;
     v42 = v25;
-    v43 = v37;
+    v43 = destinationCopy;
     v44 = v17;
     v48 = &v59;
     [v23 performBlock:v41 waitUntilDone:1];
@@ -396,9 +396,9 @@ LABEL_8:
     if (*(v50 + 24) == 1)
     {
       pendingInvitations = self->_pendingInvitations;
-      v30 = [(IDSInvitation *)v25 uniqueID];
-      v31 = [v30 UUIDString];
-      [(NSMutableDictionary *)pendingInvitations setObject:v25 forKey:v31];
+      uniqueID3 = [(IDSInvitation *)v25 uniqueID];
+      uUIDString3 = [uniqueID3 UUIDString];
+      [(NSMutableDictionary *)pendingInvitations setObject:v25 forKey:uUIDString3];
     }
 
     else
@@ -422,7 +422,7 @@ LABEL_8:
       v39 = v24;
       v40 = &v59;
       dispatch_async(delegateQueue, v38);
-      v30 = v39;
+      uniqueID3 = v39;
     }
 
 LABEL_19:
@@ -430,14 +430,14 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (v13)
+  if (blockCopy)
   {
     v22 = self->_delegateQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = sub_195A3B644;
     block[3] = &unk_1E743F110;
-    v55 = v13;
+    v55 = blockCopy;
     v54 = v21;
     dispatch_async(v22, block);
   }
@@ -450,13 +450,13 @@ LABEL_20:
   v34 = *MEMORY[0x1E69E9840];
 }
 
-- (void)cancelInvitation:(id)a3 withContext:(id)a4 options:(id)a5 serverAcknowledgedBlock:(id)a6
+- (void)cancelInvitation:(id)invitation withContext:(id)context options:(id)options serverAcknowledgedBlock:(id)block
 {
   v58 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  invitationCopy = invitation;
+  contextCopy = context;
+  optionsCopy = options;
+  blockCopy = block;
   v14 = +[IDSDaemonController sharedInstance];
   [v14 blockUntilConnected];
 
@@ -471,12 +471,12 @@ LABEL_20:
   v46[1] = 0x3032000000;
   v46[2] = sub_195A006D4;
   v46[3] = sub_195A03D10;
-  v15 = [v10 uniqueID];
-  v47 = [v15 UUIDString];
+  uniqueID = [invitationCopy uniqueID];
+  uUIDString = [uniqueID UUIDString];
 
-  if (v12)
+  if (optionsCopy)
   {
-    v16 = [v12 mutableCopy];
+    v16 = [optionsCopy mutableCopy];
   }
 
   else
@@ -484,21 +484,21 @@ LABEL_20:
     v16 = objc_alloc_init(MEMORY[0x1E695DF90]);
   }
 
-  v17 = [v10 uniqueID];
-  v18 = [v17 UUIDString];
+  uniqueID2 = [invitationCopy uniqueID];
+  uUIDString2 = [uniqueID2 UUIDString];
   v19 = IDSGetUUIDData();
   [v16 setValue:v19 forKey:@"IDSSendMessageOptionUUID"];
 
   [v16 setValue:&unk_1F0A29888 forKey:@"IDSSendMessageOptionCommand"];
-  [v10 setState:3];
-  v20 = v11;
-  if (!v11)
+  [invitationCopy setState:3];
+  context = contextCopy;
+  if (!contextCopy)
   {
-    v20 = [v10 context];
+    context = [invitationCopy context];
   }
 
-  [v10 setContext:v20];
-  if (!v11)
+  [invitationCopy setContext:context];
+  if (!contextCopy)
   {
   }
 
@@ -512,11 +512,11 @@ LABEL_20:
   v34[2] = sub_195A3BC68;
   v34[3] = &unk_1E743F848;
   v38 = &v45;
-  v22 = v13;
+  v22 = blockCopy;
   v37 = v22;
   v34[4] = self;
   v39 = &v41;
-  v23 = v10;
+  v23 = invitationCopy;
   v35 = v23;
   v24 = v16;
   v36 = v24;
@@ -572,13 +572,13 @@ LABEL_20:
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (void)acceptInvitation:(id)a3 withContext:(id)a4 options:(id)a5 serverAcknowledgedBlock:(id)a6
+- (void)acceptInvitation:(id)invitation withContext:(id)context options:(id)options serverAcknowledgedBlock:(id)block
 {
   v62 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  invitationCopy = invitation;
+  contextCopy = context;
+  optionsCopy = options;
+  blockCopy = block;
   v14 = +[IDSDaemonController sharedInstance];
   [v14 blockUntilConnected];
 
@@ -593,12 +593,12 @@ LABEL_20:
   v50[1] = 0x3032000000;
   v50[2] = sub_195A006D4;
   v50[3] = sub_195A03D10;
-  v15 = [v10 uniqueID];
-  v51 = [v15 UUIDString];
+  uniqueID = [invitationCopy uniqueID];
+  uUIDString = [uniqueID UUIDString];
 
-  if (v12)
+  if (optionsCopy)
   {
-    v16 = [v12 mutableCopy];
+    v16 = [optionsCopy mutableCopy];
   }
 
   else
@@ -606,17 +606,17 @@ LABEL_20:
     v16 = objc_alloc_init(MEMORY[0x1E695DF90]);
   }
 
-  v17 = [v10 uniqueID];
-  v18 = [v17 UUIDString];
+  uniqueID2 = [invitationCopy uniqueID];
+  uUIDString2 = [uniqueID2 UUIDString];
   v19 = IDSGetUUIDData();
   [v16 setValue:v19 forKey:@"IDSSendMessageOptionUUID"];
 
   [v16 setValue:&unk_1F0A298A0 forKey:@"IDSSendMessageOptionCommand"];
-  [v10 setState:4];
-  [v10 setContext:v11];
+  [invitationCopy setState:4];
+  [invitationCopy setContext:contextCopy];
   v20 = MEMORY[0x1E69A5240];
-  v21 = [v10 fromID];
-  v22 = [v20 destinationWithURI:v21];
+  fromID = [invitationCopy fromID];
+  v22 = [v20 destinationWithURI:fromID];
 
   v45 = 0;
   v46 = &v45;
@@ -628,11 +628,11 @@ LABEL_20:
   v37[2] = sub_195A3C2BC;
   v37[3] = &unk_1E743F7F8;
   v42 = &v49;
-  v24 = v13;
+  v24 = blockCopy;
   v41 = v24;
   v37[4] = self;
   v43 = &v45;
-  v25 = v10;
+  v25 = invitationCopy;
   v38 = v25;
   v26 = v22;
   v39 = v26;
@@ -690,13 +690,13 @@ LABEL_20:
   v33 = *MEMORY[0x1E69E9840];
 }
 
-- (void)declineInvitation:(id)a3 withContext:(id)a4 options:(id)a5 serverAcknowledgedBlock:(id)a6
+- (void)declineInvitation:(id)invitation withContext:(id)context options:(id)options serverAcknowledgedBlock:(id)block
 {
   v63 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  invitationCopy = invitation;
+  contextCopy = context;
+  optionsCopy = options;
+  blockCopy = block;
   v14 = +[IDSDaemonController sharedInstance];
   [v14 blockUntilConnected];
 
@@ -711,12 +711,12 @@ LABEL_20:
   v51[1] = 0x3032000000;
   v51[2] = sub_195A006D4;
   v51[3] = sub_195A03D10;
-  v15 = [v10 uniqueID];
-  v52 = [v15 UUIDString];
+  uniqueID = [invitationCopy uniqueID];
+  uUIDString = [uniqueID UUIDString];
 
-  if (v12)
+  if (optionsCopy)
   {
-    v16 = [v12 mutableCopy];
+    v16 = [optionsCopy mutableCopy];
   }
 
   else
@@ -724,27 +724,27 @@ LABEL_20:
     v16 = objc_alloc_init(MEMORY[0x1E695DF90]);
   }
 
-  v17 = [v10 uniqueID];
-  v18 = [v17 UUIDString];
+  uniqueID2 = [invitationCopy uniqueID];
+  uUIDString2 = [uniqueID2 UUIDString];
   v19 = IDSGetUUIDData();
   [v16 setValue:v19 forKey:@"IDSSendMessageOptionUUID"];
 
   [v16 setValue:&unk_1F0A298B8 forKey:@"IDSSendMessageOptionCommand"];
-  [v10 setState:5];
-  v20 = v11;
-  if (!v11)
+  [invitationCopy setState:5];
+  context = contextCopy;
+  if (!contextCopy)
   {
-    v20 = [v10 context];
+    context = [invitationCopy context];
   }
 
-  [v10 setContext:v20];
-  if (!v11)
+  [invitationCopy setContext:context];
+  if (!contextCopy)
   {
   }
 
   v21 = MEMORY[0x1E69A5240];
-  v22 = [v10 fromID];
-  v23 = [v21 destinationWithURI:v22];
+  fromID = [invitationCopy fromID];
+  v23 = [v21 destinationWithURI:fromID];
 
   v46 = 0;
   v47 = &v46;
@@ -756,11 +756,11 @@ LABEL_20:
   v38[2] = sub_195A3C924;
   v38[3] = &unk_1E743F7F8;
   v43 = &v50;
-  v25 = v13;
+  v25 = blockCopy;
   v42 = v25;
   v38[4] = self;
   v44 = &v46;
-  v26 = v10;
+  v26 = invitationCopy;
   v39 = v26;
   v27 = v23;
   v40 = v27;
@@ -818,13 +818,13 @@ LABEL_20:
   v34 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setDelegate:(id)a3 queue:(id)a4
+- (void)setDelegate:(id)delegate queue:(id)queue
 {
-  v7 = a4;
-  objc_storeWeak(&self->_delegate, a3);
-  if (v7)
+  queueCopy = queue;
+  objc_storeWeak(&self->_delegate, delegate);
+  if (queueCopy)
   {
-    objc_storeStrong(&self->_delegateQueue, a4);
+    objc_storeStrong(&self->_delegateQueue, queue);
   }
 
   v8 = +[IDSDaemonController sharedInstance];
@@ -839,10 +839,10 @@ LABEL_20:
   [v9 performBlock:v10 waitUntilDone:1];
 }
 
-- (BOOL)validateReceivedInvitation:(id)a3
+- (BOOL)validateReceivedInvitation:(id)invitation
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  invitationCopy = invitation;
   v5 = +[IDSInternalQueueController sharedInstance];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
@@ -851,7 +851,7 @@ LABEL_20:
   v31[4] = self;
   [v5 performBlock:v31 waitUntilDone:1];
 
-  if (!v4)
+  if (!invitationCopy)
   {
     v16 = +[IDSLogging IDSService];
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -862,20 +862,20 @@ LABEL_20:
     goto LABEL_27;
   }
 
-  v6 = [v4 expirationDate];
-  if (v6)
+  expirationDate = [invitationCopy expirationDate];
+  if (expirationDate)
   {
-    v7 = v6;
-    v8 = [v4 expirationDate];
-    v9 = [MEMORY[0x1E695DF00] date];
-    v10 = [v8 compare:v9];
+    v7 = expirationDate;
+    expirationDate2 = [invitationCopy expirationDate];
+    date = [MEMORY[0x1E695DF00] date];
+    v10 = [expirationDate2 compare:date];
 
     if (v10 == -1)
     {
       v16 = +[IDSLogging IDSService];
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
-        sub_195B29A88(v4);
+        sub_195B29A88(invitationCopy);
       }
 
       goto LABEL_27;
@@ -891,18 +891,18 @@ LABEL_20:
   }
 
   v13 = *(&self->super.isa + v12);
-  v14 = [v4 uniqueID];
-  v15 = [v14 UUIDString];
-  v16 = [v13 objectForKey:v15];
+  uniqueID = [invitationCopy uniqueID];
+  uUIDString = [uniqueID UUIDString];
+  v16 = [v13 objectForKey:uUIDString];
 
-  if ([v4 state] != 1)
+  if ([invitationCopy state] != 1)
   {
     if (!v16)
     {
       v21 = +[IDSLogging IDSService];
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
-        sub_195B29C64(v4);
+        sub_195B29C64(invitationCopy);
       }
 
       goto LABEL_26;
@@ -910,20 +910,20 @@ LABEL_20:
 
     if (_os_feature_enabled_impl())
     {
-      v17 = [v16 senderMergeID];
+      senderMergeID = [v16 senderMergeID];
 
-      if (v17)
+      if (senderMergeID)
       {
-        v18 = [v16 senderMergeID];
-        v19 = [v4 senderMergeID];
-        v20 = [v18 isEqualToString:v19];
+        senderMergeID2 = [v16 senderMergeID];
+        senderMergeID3 = [invitationCopy senderMergeID];
+        v20 = [senderMergeID2 isEqualToString:senderMergeID3];
 
         if ((v20 & 1) == 0)
         {
           v21 = +[IDSLogging IDSService];
           if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
           {
-            sub_195B29B14(v4);
+            sub_195B29B14(invitationCopy);
           }
 
 LABEL_26:
@@ -939,27 +939,27 @@ LABEL_27:
         v22 = +[IDSLogging IDSService];
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
         {
-          v23 = [v16 senderMergeID];
-          v24 = [v4 senderMergeID];
+          senderMergeID4 = [v16 senderMergeID];
+          senderMergeID5 = [invitationCopy senderMergeID];
           *buf = 138412546;
-          v33 = v23;
+          v33 = senderMergeID4;
           v34 = 2112;
-          v35 = v24;
+          v35 = senderMergeID5;
           _os_log_impl(&dword_1959FF000, v22, OS_LOG_TYPE_DEFAULT, "Validating Invitation: Stored invitation's sender mergeId {%@} is invalid. Could not compare to received invitation's sender mergeId {%@}", buf, 0x16u);
         }
       }
     }
 
-    v25 = [v4 uniqueID];
-    v26 = [v16 uniqueID];
-    v27 = [v25 isEqual:v26];
+    uniqueID2 = [invitationCopy uniqueID];
+    uniqueID3 = [v16 uniqueID];
+    v27 = [uniqueID2 isEqual:uniqueID3];
 
     if ((v27 & 1) == 0)
     {
       v21 = +[IDSLogging IDSService];
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
-        sub_195B29BBC(v4);
+        sub_195B29BBC(invitationCopy);
       }
 
       goto LABEL_26;
@@ -973,36 +973,36 @@ LABEL_28:
   return v28;
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingInvitation:(id)a5 withContext:(id)a6
+- (void)service:(id)service account:(id)account incomingInvitation:(id)invitation withContext:(id)context
 {
   v52 = *MEMORY[0x1E69E9840];
-  v7 = a5;
+  invitationCopy = invitation;
   v8 = +[IDSDaemonController sharedInstance];
   [v8 blockUntilConnected];
 
-  if ([(IDSInvitationManager *)self validateReceivedInvitation:v7])
+  if ([(IDSInvitationManager *)self validateReceivedInvitation:invitationCopy])
   {
-    v9 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v7 requiringSecureCoding:1 error:0];
-    v10 = [v7 state];
-    if (v10 == 3)
+    v9 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:invitationCopy requiringSecureCoding:1 error:0];
+    state = [invitationCopy state];
+    if (state == 3)
     {
       v30 = +[IDSDaemonController sharedInstance];
-      v31 = [v7 uniqueID];
-      v32 = [v31 UUIDString];
-      v47 = v32;
+      uniqueID = [invitationCopy uniqueID];
+      uUIDString = [uniqueID UUIDString];
+      v47 = uUIDString;
       v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v47 count:1];
-      v34 = [(IDSService *)self->_internal accounts];
-      v35 = [v34 anyObject];
-      v36 = [v35 serviceName];
-      [v30 removeReceivedInvitation:v33 forService:v36];
+      accounts = [(IDSService *)self->_internal accounts];
+      anyObject = [accounts anyObject];
+      serviceName = [anyObject serviceName];
+      [v30 removeReceivedInvitation:v33 forService:serviceName];
 
       receivedInvitations = self->_receivedInvitations;
-      v38 = [v7 uniqueID];
-      v39 = [v38 UUIDString];
-      [(NSMutableDictionary *)receivedInvitations removeObjectForKey:v39];
+      uniqueID2 = [invitationCopy uniqueID];
+      uUIDString2 = [uniqueID2 UUIDString];
+      [(NSMutableDictionary *)receivedInvitations removeObjectForKey:uUIDString2];
 
-      v40 = [(IDSInvitationManager *)self delegate];
-      if (!v40 || (v41 = v40, [(IDSInvitationManager *)self delegate], v42 = objc_claimAutoreleasedReturnValue(), v43 = objc_opt_respondsToSelector(), v42, v41, (v43 & 1) == 0))
+      delegate = [(IDSInvitationManager *)self delegate];
+      if (!delegate || (v41 = delegate, [(IDSInvitationManager *)self delegate], v42 = objc_claimAutoreleasedReturnValue(), v43 = objc_opt_respondsToSelector(), v42, v41, (v43 & 1) == 0))
       {
         v25 = +[IDSLogging IDSService];
         if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -1013,19 +1013,19 @@ LABEL_28:
         goto LABEL_19;
       }
 
-      v44 = [(IDSInvitationManager *)self delegate];
-      [v44 manager:self senderDidCancelInvitation:v7];
+      delegate2 = [(IDSInvitationManager *)self delegate];
+      [delegate2 manager:self senderDidCancelInvitation:invitationCopy];
 
       v25 = +[IDSLogging IDSService];
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
-        v45 = [v7 state];
-        v27 = [v7 uniqueID];
-        v28 = [v27 UUIDString];
+        state2 = [invitationCopy state];
+        uniqueID3 = [invitationCopy uniqueID];
+        uUIDString3 = [uniqueID3 UUIDString];
         *buf = 134218242;
-        v49 = v45;
+        v49 = state2;
         v50 = 2112;
-        v51 = v28;
+        v51 = uUIDString3;
         v29 = "IncomingInvitation: Invitation state %ld. Delivered {%@} to delegate senderDidCancelInvitation";
         goto LABEL_12;
       }
@@ -1033,32 +1033,32 @@ LABEL_28:
 
     else
     {
-      if (v10 != 1)
+      if (state != 1)
       {
         v25 = +[IDSLogging IDSService];
         if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
         {
-          sub_195B29DBC(v7);
+          sub_195B29DBC(invitationCopy);
         }
 
         goto LABEL_19;
       }
 
       v11 = +[IDSDaemonController sharedInstance];
-      v12 = [(IDSService *)self->_internal accounts];
-      v13 = [v12 anyObject];
-      v14 = [v13 serviceName];
-      v15 = [v7 uniqueID];
-      v16 = [v15 UUIDString];
-      [v11 persistReceivedInvitation:v9 forService:v14 withUniqueID:v16];
+      accounts2 = [(IDSService *)self->_internal accounts];
+      anyObject2 = [accounts2 anyObject];
+      serviceName2 = [anyObject2 serviceName];
+      uniqueID4 = [invitationCopy uniqueID];
+      uUIDString4 = [uniqueID4 UUIDString];
+      [v11 persistReceivedInvitation:v9 forService:serviceName2 withUniqueID:uUIDString4];
 
       v17 = self->_receivedInvitations;
-      v18 = [v7 uniqueID];
-      v19 = [v18 UUIDString];
-      [(NSMutableDictionary *)v17 setObject:v7 forKey:v19];
+      uniqueID5 = [invitationCopy uniqueID];
+      uUIDString5 = [uniqueID5 UUIDString];
+      [(NSMutableDictionary *)v17 setObject:invitationCopy forKey:uUIDString5];
 
-      v20 = [(IDSInvitationManager *)self delegate];
-      if (!v20 || (v21 = v20, [(IDSInvitationManager *)self delegate], v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_opt_respondsToSelector(), v22, v21, (v23 & 1) == 0))
+      delegate3 = [(IDSInvitationManager *)self delegate];
+      if (!delegate3 || (v21 = delegate3, [(IDSInvitationManager *)self delegate], v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_opt_respondsToSelector(), v22, v21, (v23 & 1) == 0))
       {
         v25 = +[IDSLogging IDSService];
         if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -1069,19 +1069,19 @@ LABEL_28:
         goto LABEL_19;
       }
 
-      v24 = [(IDSInvitationManager *)self delegate];
-      [v24 manager:self incomingInvitation:v7];
+      delegate4 = [(IDSInvitationManager *)self delegate];
+      [delegate4 manager:self incomingInvitation:invitationCopy];
 
       v25 = +[IDSLogging IDSService];
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
-        v26 = [v7 state];
-        v27 = [v7 uniqueID];
-        v28 = [v27 UUIDString];
+        state3 = [invitationCopy state];
+        uniqueID3 = [invitationCopy uniqueID];
+        uUIDString3 = [uniqueID3 UUIDString];
         *buf = 134218242;
-        v49 = v26;
+        v49 = state3;
         v50 = 2112;
-        v51 = v28;
+        v51 = uUIDString3;
         v29 = "IncomingInvitation: Invitation state %ld. Delivered {%@} to delegate incomingInvitation";
 LABEL_12:
         _os_log_impl(&dword_1959FF000, v25, OS_LOG_TYPE_DEFAULT, v29, buf, 0x16u);
@@ -1094,35 +1094,35 @@ LABEL_19:
   v46 = *MEMORY[0x1E69E9840];
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingInvitationUpdate:(id)a5 withContext:(id)a6
+- (void)service:(id)service account:(id)account incomingInvitationUpdate:(id)update withContext:(id)context
 {
   v52[1] = *MEMORY[0x1E69E9840];
-  v7 = a5;
+  updateCopy = update;
   v8 = +[IDSDaemonController sharedInstance];
   [v8 blockUntilConnected];
 
-  if ([(IDSInvitationManager *)self validateReceivedInvitation:v7])
+  if ([(IDSInvitationManager *)self validateReceivedInvitation:updateCopy])
   {
-    v9 = [v7 state];
-    if (v9 == 5)
+    state = [updateCopy state];
+    if (state == 5)
     {
       v30 = +[IDSDaemonController sharedInstance];
-      v31 = [v7 uniqueID];
-      v32 = [v31 UUIDString];
-      v47 = v32;
+      uniqueID = [updateCopy uniqueID];
+      uUIDString = [uniqueID UUIDString];
+      v47 = uUIDString;
       v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v47 count:1];
-      v34 = [(IDSService *)self->_internal accounts];
-      v35 = [v34 anyObject];
-      v36 = [v35 serviceName];
-      [v30 removePendingInvitation:v33 forService:v36];
+      accounts = [(IDSService *)self->_internal accounts];
+      anyObject = [accounts anyObject];
+      serviceName = [anyObject serviceName];
+      [v30 removePendingInvitation:v33 forService:serviceName];
 
       pendingInvitations = self->_pendingInvitations;
-      v38 = [v7 uniqueID];
-      v39 = [v38 UUIDString];
-      [(NSMutableDictionary *)pendingInvitations removeObjectForKey:v39];
+      uniqueID2 = [updateCopy uniqueID];
+      uUIDString2 = [uniqueID2 UUIDString];
+      [(NSMutableDictionary *)pendingInvitations removeObjectForKey:uUIDString2];
 
-      v40 = [(IDSInvitationManager *)self delegate];
-      if (!v40 || (v41 = v40, [(IDSInvitationManager *)self delegate], v42 = objc_claimAutoreleasedReturnValue(), v43 = objc_opt_respondsToSelector(), v42, v41, (v43 & 1) == 0))
+      delegate = [(IDSInvitationManager *)self delegate];
+      if (!delegate || (v41 = delegate, [(IDSInvitationManager *)self delegate], v42 = objc_claimAutoreleasedReturnValue(), v43 = objc_opt_respondsToSelector(), v42, v41, (v43 & 1) == 0))
       {
         v25 = +[IDSLogging IDSService];
         if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -1133,19 +1133,19 @@ LABEL_19:
         goto LABEL_19;
       }
 
-      v44 = [(IDSInvitationManager *)self delegate];
-      [v44 manager:self receiverDidDeclineInvitation:v7];
+      delegate2 = [(IDSInvitationManager *)self delegate];
+      [delegate2 manager:self receiverDidDeclineInvitation:updateCopy];
 
       v25 = +[IDSLogging IDSService];
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
-        v45 = [v7 state];
-        v27 = [v7 uniqueID];
-        v28 = [v27 UUIDString];
+        state2 = [updateCopy state];
+        uniqueID3 = [updateCopy uniqueID];
+        uUIDString3 = [uniqueID3 UUIDString];
         *buf = 134218242;
-        v49 = v45;
+        v49 = state2;
         v50 = 2112;
-        v51 = v28;
+        v51 = uUIDString3;
         v29 = "IncomingInvitationUpdate: Invitation state %ld. Delivered {%@} to delegate receiverDidDeclineInvitation";
         goto LABEL_12;
       }
@@ -1153,34 +1153,34 @@ LABEL_19:
 
     else
     {
-      if (v9 != 4)
+      if (state != 4)
       {
         v25 = +[IDSLogging IDSService];
         if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
         {
-          sub_195B29EE4(v7);
+          sub_195B29EE4(updateCopy);
         }
 
         goto LABEL_19;
       }
 
       v10 = +[IDSDaemonController sharedInstance];
-      v11 = [v7 uniqueID];
-      v12 = [v11 UUIDString];
-      v52[0] = v12;
+      uniqueID4 = [updateCopy uniqueID];
+      uUIDString4 = [uniqueID4 UUIDString];
+      v52[0] = uUIDString4;
       v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v52 count:1];
-      v14 = [(IDSService *)self->_internal accounts];
-      v15 = [v14 anyObject];
-      v16 = [v15 serviceName];
-      [v10 removePendingInvitation:v13 forService:v16];
+      accounts2 = [(IDSService *)self->_internal accounts];
+      anyObject2 = [accounts2 anyObject];
+      serviceName2 = [anyObject2 serviceName];
+      [v10 removePendingInvitation:v13 forService:serviceName2];
 
       v17 = self->_pendingInvitations;
-      v18 = [v7 uniqueID];
-      v19 = [v18 UUIDString];
-      [(NSMutableDictionary *)v17 removeObjectForKey:v19];
+      uniqueID5 = [updateCopy uniqueID];
+      uUIDString5 = [uniqueID5 UUIDString];
+      [(NSMutableDictionary *)v17 removeObjectForKey:uUIDString5];
 
-      v20 = [(IDSInvitationManager *)self delegate];
-      if (!v20 || (v21 = v20, [(IDSInvitationManager *)self delegate], v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_opt_respondsToSelector(), v22, v21, (v23 & 1) == 0))
+      delegate3 = [(IDSInvitationManager *)self delegate];
+      if (!delegate3 || (v21 = delegate3, [(IDSInvitationManager *)self delegate], v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_opt_respondsToSelector(), v22, v21, (v23 & 1) == 0))
       {
         v25 = +[IDSLogging IDSService];
         if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -1191,19 +1191,19 @@ LABEL_19:
         goto LABEL_19;
       }
 
-      v24 = [(IDSInvitationManager *)self delegate];
-      [v24 manager:self receiverDidAcceptInvitation:v7];
+      delegate4 = [(IDSInvitationManager *)self delegate];
+      [delegate4 manager:self receiverDidAcceptInvitation:updateCopy];
 
       v25 = +[IDSLogging IDSService];
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
-        v26 = [v7 state];
-        v27 = [v7 uniqueID];
-        v28 = [v27 UUIDString];
+        state3 = [updateCopy state];
+        uniqueID3 = [updateCopy uniqueID];
+        uUIDString3 = [uniqueID3 UUIDString];
         *buf = 134218242;
-        v49 = v26;
+        v49 = state3;
         v50 = 2112;
-        v51 = v28;
+        v51 = uUIDString3;
         v29 = "IncomingInvitationUpdate: Invitation state %ld. Delivered {%@} to delegate receiverDidAcceptInvitation";
 LABEL_12:
         _os_log_impl(&dword_1959FF000, v25, OS_LOG_TYPE_DEFAULT, v29, buf, 0x16u);
@@ -1216,15 +1216,15 @@ LABEL_19:
   v46 = *MEMORY[0x1E69E9840];
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7 context:(id)a8
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error context:(id)context
 {
-  v10 = a6;
+  successCopy = success;
   v90 = *MEMORY[0x1E69E9840];
-  v59 = a3;
-  v60 = a4;
-  v14 = a5;
-  v62 = a7;
-  v61 = a8;
+  serviceCopy = service;
+  accountCopy = account;
+  identifierCopy = identifier;
+  errorCopy = error;
+  contextCopy = context;
   v15 = +[IDSDaemonController sharedInstance];
   [v15 blockUntilConnected];
 
@@ -1233,21 +1233,21 @@ LABEL_19:
   {
     v17 = @"NO";
     *buf = 138412802;
-    *&buf[4] = v14;
+    *&buf[4] = identifierCopy;
     *&buf[12] = 2112;
-    if (v10)
+    if (successCopy)
     {
       v17 = @"YES";
     }
 
     *&buf[14] = v17;
     *&buf[22] = 2112;
-    v87 = v62;
+    v87 = errorCopy;
     _os_log_impl(&dword_1959FF000, v16, OS_LOG_TYPE_DEFAULT, "InvitationManager didSendWithSuccess: Identifier {%@}. didSendWithSuccess {%@} with error %@", buf, 0x20u);
   }
 
-  v18 = [(NSMutableDictionary *)self->_pendingInvitations objectForKey:v14];
-  if (v18 || ([(NSMutableDictionary *)self->_receivedInvitations objectForKey:v14], (v18 = objc_claimAutoreleasedReturnValue()) != 0))
+  v18 = [(NSMutableDictionary *)self->_pendingInvitations objectForKey:identifierCopy];
+  if (v18 || ([(NSMutableDictionary *)self->_receivedInvitations objectForKey:identifierCopy], (v18 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -1268,36 +1268,36 @@ LABEL_19:
     v70[3] = &unk_1E743F870;
     v72 = buf;
     v70[4] = self;
-    v58 = v14;
+    v58 = identifierCopy;
     v71 = v58;
     v73 = &v74;
     [v19 performBlock:v70 waitUntilDone:1];
 
     if ([v18 state]== 1)
     {
-      if (v62)
+      if (errorCopy)
       {
         [(NSMutableDictionary *)self->_pendingInvitations removeObjectForKey:v58];
       }
 
       else
       {
-        v31 = [v61 destinationCorrelationIdentifier];
-        [v18 setSenderMergeID:v31];
+        destinationCorrelationIdentifier = [contextCopy destinationCorrelationIdentifier];
+        [v18 setSenderMergeID:destinationCorrelationIdentifier];
 
-        v32 = [v61 fromID];
-        v33 = [v32 _stripFZIDPrefix];
-        v34 = [v33 _bestGuessURI];
-        [v18 setSelfHandle:v34];
+        fromID = [contextCopy fromID];
+        _stripFZIDPrefix = [fromID _stripFZIDPrefix];
+        _bestGuessURI = [_stripFZIDPrefix _bestGuessURI];
+        [v18 setSelfHandle:_bestGuessURI];
 
         v35 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v18 requiringSecureCoding:1 error:0];
         v36 = +[IDSDaemonController sharedInstance];
-        v37 = [(IDSService *)self->_internal accounts];
-        v38 = [v37 anyObject];
-        v39 = [v38 serviceName];
-        v40 = [v18 uniqueID];
-        v41 = [v40 UUIDString];
-        [v36 persistPendingInvitation:v35 forService:v39 withUniqueID:v41];
+        accounts = [(IDSService *)self->_internal accounts];
+        anyObject = [accounts anyObject];
+        serviceName = [anyObject serviceName];
+        uniqueID = [v18 uniqueID];
+        uUIDString = [uniqueID UUIDString];
+        [v36 persistPendingInvitation:v35 forService:serviceName withUniqueID:uUIDString];
       }
 
       if (*(*&buf[8] + 40))
@@ -1305,11 +1305,11 @@ LABEL_19:
         v42 = +[IDSLogging IDSService];
         if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
         {
-          v43 = [v18 state];
+          state = [v18 state];
           *v82 = 138412546;
           v83 = v58;
           v84 = 2048;
-          v85 = v43;
+          v85 = state;
           _os_log_impl(&dword_1959FF000, v42, OS_LOG_TYPE_DEFAULT, "InvitationManager didSendWithSuccess: Calling block for invitation with identifier {%@} and state {%ld}", v82, 0x16u);
         }
 
@@ -1318,7 +1318,7 @@ LABEL_19:
         block[1] = 3221225472;
         block[2] = sub_195A3E2F8;
         block[3] = &unk_1E743EF60;
-        v67 = v62;
+        v67 = errorCopy;
         v69 = buf;
         v68 = v18;
         dispatch_async(delegateQueue, block);
@@ -1340,48 +1340,48 @@ LABEL_31:
       goto LABEL_32;
     }
 
-    if (!v62)
+    if (!errorCopy)
     {
-      v20 = [v18 state];
-      if ((v20 - 4) >= 2)
+      state2 = [v18 state];
+      if ((state2 - 4) >= 2)
       {
-        if (v20 != 3)
+        if (state2 != 3)
         {
           goto LABEL_25;
         }
 
         v46 = +[IDSDaemonController sharedInstance];
-        v47 = [v18 uniqueID];
-        v48 = [v47 UUIDString];
-        v81 = v48;
+        uniqueID2 = [v18 uniqueID];
+        uUIDString2 = [uniqueID2 UUIDString];
+        v81 = uUIDString2;
         v49 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v81 count:1];
-        v50 = [(IDSService *)self->_internal accounts];
-        v51 = [v50 anyObject];
-        v52 = [v51 serviceName];
-        [v46 removePendingInvitation:v49 forService:v52];
+        accounts2 = [(IDSService *)self->_internal accounts];
+        anyObject2 = [accounts2 anyObject];
+        serviceName2 = [anyObject2 serviceName];
+        [v46 removePendingInvitation:v49 forService:serviceName2];
 
         pendingInvitations = self->_pendingInvitations;
-        v29 = [v18 uniqueID];
-        v30 = [v29 UUIDString];
-        [(NSMutableDictionary *)pendingInvitations removeObjectForKey:v30];
+        uniqueID3 = [v18 uniqueID];
+        uUIDString3 = [uniqueID3 UUIDString];
+        [(NSMutableDictionary *)pendingInvitations removeObjectForKey:uUIDString3];
       }
 
       else
       {
         v21 = +[IDSDaemonController sharedInstance];
-        v22 = [v18 uniqueID];
-        v23 = [v22 UUIDString];
-        v80 = v23;
+        uniqueID4 = [v18 uniqueID];
+        uUIDString4 = [uniqueID4 UUIDString];
+        v80 = uUIDString4;
         v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v80 count:1];
-        v25 = [(IDSService *)self->_internal accounts];
-        v26 = [v25 anyObject];
-        v27 = [v26 serviceName];
-        [v21 removeReceivedInvitation:v24 forService:v27];
+        accounts3 = [(IDSService *)self->_internal accounts];
+        anyObject3 = [accounts3 anyObject];
+        serviceName3 = [anyObject3 serviceName];
+        [v21 removeReceivedInvitation:v24 forService:serviceName3];
 
         receivedInvitations = self->_receivedInvitations;
-        v29 = [v18 uniqueID];
-        v30 = [v29 UUIDString];
-        [(NSMutableDictionary *)receivedInvitations removeObjectForKey:v30];
+        uniqueID3 = [v18 uniqueID];
+        uUIDString3 = [uniqueID3 UUIDString];
+        [(NSMutableDictionary *)receivedInvitations removeObjectForKey:uUIDString3];
       }
     }
 
@@ -1391,11 +1391,11 @@ LABEL_25:
       v54 = +[IDSLogging IDSService];
       if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
       {
-        v55 = [v18 state];
+        state3 = [v18 state];
         *v82 = 138412546;
         v83 = v58;
         v84 = 2048;
-        v85 = v55;
+        v85 = state3;
         _os_log_impl(&dword_1959FF000, v54, OS_LOG_TYPE_DEFAULT, "InvitationManager didSendWithSuccess: Calling block for invitation with identifier {%@} and state {%ld}", v82, 0x16u);
       }
 
@@ -1405,7 +1405,7 @@ LABEL_25:
       v63[2] = sub_195A3E32C;
       v63[3] = &unk_1E743E670;
       v65 = &v74;
-      v64 = v62;
+      v64 = errorCopy;
       dispatch_async(v56, v63);
       v45 = v64;
       goto LABEL_32;
@@ -1438,34 +1438,34 @@ LABEL_33:
   v57 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removePendingInvitation:(id)a3
+- (void)removePendingInvitation:(id)invitation
 {
-  v9 = a3;
+  invitationCopy = invitation;
   v4 = +[IDSDaemonController sharedInstance];
   [v4 blockUntilConnected];
 
   v5 = +[IDSDaemonController sharedInstance];
-  v6 = [(IDSService *)self->_internal accounts];
-  v7 = [v6 anyObject];
-  v8 = [v7 serviceName];
-  [v5 removePendingInvitation:v9 forService:v8];
+  accounts = [(IDSService *)self->_internal accounts];
+  anyObject = [accounts anyObject];
+  serviceName = [anyObject serviceName];
+  [v5 removePendingInvitation:invitationCopy forService:serviceName];
 
-  [(NSMutableDictionary *)self->_pendingInvitations removeObjectsForKeys:v9];
+  [(NSMutableDictionary *)self->_pendingInvitations removeObjectsForKeys:invitationCopy];
 }
 
-- (void)removeReceivedInvitation:(id)a3
+- (void)removeReceivedInvitation:(id)invitation
 {
-  v9 = a3;
+  invitationCopy = invitation;
   v4 = +[IDSDaemonController sharedInstance];
   [v4 blockUntilConnected];
 
   v5 = +[IDSDaemonController sharedInstance];
-  v6 = [(IDSService *)self->_internal accounts];
-  v7 = [v6 anyObject];
-  v8 = [v7 serviceName];
-  [v5 removeReceivedInvitation:v9 forService:v8];
+  accounts = [(IDSService *)self->_internal accounts];
+  anyObject = [accounts anyObject];
+  serviceName = [anyObject serviceName];
+  [v5 removeReceivedInvitation:invitationCopy forService:serviceName];
 
-  [(NSMutableDictionary *)self->_receivedInvitations removeObjectsForKeys:v9];
+  [(NSMutableDictionary *)self->_receivedInvitations removeObjectsForKeys:invitationCopy];
 }
 
 - (IDSInvitationManagerDelegate)delegate

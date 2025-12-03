@@ -1,14 +1,14 @@
 @interface DisclosureProvider
-- (void)audioPlayerDidFinishPlaying:(id)a3 successfully:(BOOL)a4;
+- (void)audioPlayerDidFinishPlaying:(id)playing successfully:(BOOL)successfully;
 @end
 
 @implementation DisclosureProvider
 
-- (void)audioPlayerDidFinishPlaying:(id)a3 successfully:(BOOL)a4
+- (void)audioPlayerDidFinishPlaying:(id)playing successfully:(BOOL)successfully
 {
-  v5 = a3;
-  v6 = self;
-  sub_1003FE4C0(v5);
+  playingCopy = playing;
+  selfCopy = self;
+  sub_1003FE4C0(playingCopy);
 }
 
 @end

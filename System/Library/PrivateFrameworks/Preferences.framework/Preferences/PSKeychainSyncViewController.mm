@@ -1,9 +1,9 @@
 @interface PSKeychainSyncViewController
 - (KeychainSyncViewControllerDelegate)delegate;
-- (double)heightForHeaderInTableView:(id)a3;
+- (double)heightForHeaderInTableView:(id)view;
 - (id)headerView;
 - (id)specifiers;
-- (void)setTitle:(id)a3;
+- (void)setTitle:(id)title;
 @end
 
 @implementation PSKeychainSyncViewController
@@ -42,31 +42,31 @@
   return specifiers;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v5 = +[PSKeychainSyncManager sharedManager];
-  v6 = [v5 isRunningInBuddy];
+  isRunningInBuddy = [v5 isRunningInBuddy];
 
-  if (v6)
+  if (isRunningInBuddy)
   {
-    v7 = [(PSKeychainSyncViewController *)self headerView];
-    [v7 setTitleText:v4];
+    headerView = [(PSKeychainSyncViewController *)self headerView];
+    [headerView setTitleText:titleCopy];
   }
 
   else
   {
-    v7 = [(PSKeychainSyncViewController *)self navigationItem];
-    [v7 setTitle:v4];
+    headerView = [(PSKeychainSyncViewController *)self navigationItem];
+    [headerView setTitle:titleCopy];
   }
 }
 
-- (double)heightForHeaderInTableView:(id)a3
+- (double)heightForHeaderInTableView:(id)view
 {
-  v4 = a3;
-  v5 = [(PSKeychainSyncViewController *)self headerView];
-  [v4 bounds];
-  [v5 preferredHeightForWidth:v4 inTableView:v6];
+  viewCopy = view;
+  headerView = [(PSKeychainSyncViewController *)self headerView];
+  [viewCopy bounds];
+  [headerView preferredHeightForWidth:viewCopy inTableView:v6];
   v8 = v7;
 
   return v8;

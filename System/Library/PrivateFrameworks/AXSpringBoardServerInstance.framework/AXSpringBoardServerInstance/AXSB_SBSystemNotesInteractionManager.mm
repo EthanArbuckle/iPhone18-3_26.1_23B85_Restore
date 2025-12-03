@@ -1,16 +1,16 @@
 @interface AXSB_SBSystemNotesInteractionManager
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 @end
 
 @implementation AXSB_SBSystemNotesInteractionManager
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CE7E40] server];
-  v6 = [v5 areSystemGesturesDisabledByAccessibility];
+  beginCopy = begin;
+  server = [MEMORY[0x277CE7E40] server];
+  areSystemGesturesDisabledByAccessibility = [server areSystemGesturesDisabledByAccessibility];
 
-  if (v6)
+  if (areSystemGesturesDisabledByAccessibility)
   {
     v7 = AXLogCommon();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -26,7 +26,7 @@
   {
     v10.receiver = self;
     v10.super_class = AXSB_SBSystemNotesInteractionManager;
-    v8 = [(AXSB_SBSystemNotesInteractionManager *)&v10 gestureRecognizerShouldBegin:v4];
+    v8 = [(AXSB_SBSystemNotesInteractionManager *)&v10 gestureRecognizerShouldBegin:beginCopy];
   }
 
   return v8;

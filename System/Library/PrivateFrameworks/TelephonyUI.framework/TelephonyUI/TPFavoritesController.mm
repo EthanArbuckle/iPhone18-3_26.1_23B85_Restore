@@ -5,42 +5,42 @@
 - (NSCache)contactCache;
 - (NSCache)transportNameCache;
 - (TPFavoritesController)init;
-- (TPFavoritesController)initWithContactStore:(id)a3 prefetchCount:(unint64_t)a4;
+- (TPFavoritesController)initWithContactStore:(id)store prefetchCount:(unint64_t)count;
 - (TUCallProviderManager)callProviderManager;
-- (id)contactCacheKeyForFavoritesEntry:(id)a3;
-- (id)contactForFavoritesEntry:(id)a3;
-- (id)contactForFavoritesEntry:(id)a3 keyDescriptors:(id)a4;
-- (id)contactsForFavoritesEntries:(id)a3 keyDescriptors:(id)a4;
-- (id)fetchContactForFavoritesEntries:(id)a3 keyDescriptors:(id)a4;
-- (id)fetchContactForFavoritesEntry:(id)a3;
-- (id)fetchContactForFavoritesEntry:(id)a3 keyDescriptors:(id)a4;
+- (id)contactCacheKeyForFavoritesEntry:(id)entry;
+- (id)contactForFavoritesEntry:(id)entry;
+- (id)contactForFavoritesEntry:(id)entry keyDescriptors:(id)descriptors;
+- (id)contactsForFavoritesEntries:(id)entries keyDescriptors:(id)descriptors;
+- (id)fetchContactForFavoritesEntries:(id)entries keyDescriptors:(id)descriptors;
+- (id)fetchContactForFavoritesEntry:(id)entry;
+- (id)fetchContactForFavoritesEntry:(id)entry keyDescriptors:(id)descriptors;
 - (id)fetchFavoritesEntries;
-- (id)fetchTransportNameForFavoritesEntry:(id)a3;
-- (id)transportNameCacheKeyForFavoritesEntry:(id)a3;
-- (id)transportNameForFavoritesEntry:(id)a3;
-- (unint64_t)absoluteIndexForIndex:(unint64_t)a3;
-- (void)addEntry:(id)a3;
+- (id)fetchTransportNameForFavoritesEntry:(id)entry;
+- (id)transportNameCacheKeyForFavoritesEntry:(id)entry;
+- (id)transportNameForFavoritesEntry:(id)entry;
+- (unint64_t)absoluteIndexForIndex:(unint64_t)index;
+- (void)addEntry:(id)entry;
 - (void)dealloc;
 - (void)fetchFavoritesEntries;
 - (void)fetchIfNeeded;
-- (void)handleContactsFavoritesDidChangeNotification:(id)a3;
-- (void)moveEntryAtIndex:(unint64_t)a3 toIndex:(unint64_t)a4;
+- (void)handleContactsFavoritesDidChangeNotification:(id)notification;
+- (void)moveEntryAtIndex:(unint64_t)index toIndex:(unint64_t)toIndex;
 - (void)performInitialFetchIfNeeded;
-- (void)providersChangedForProviderManager:(id)a3;
-- (void)removeEntriesAtIndexes:(id)a3;
-- (void)setFavoritesEntries:(id)a3;
+- (void)providersChangedForProviderManager:(id)manager;
+- (void)removeEntriesAtIndexes:(id)indexes;
+- (void)setFavoritesEntries:(id)entries;
 @end
 
 @implementation TPFavoritesController
 
 - (void)fetchIfNeeded
 {
-  v3 = [(TPFavoritesController *)self delayedFetchBlock];
+  delayedFetchBlock = [(TPFavoritesController *)self delayedFetchBlock];
 
-  if (v3)
+  if (delayedFetchBlock)
   {
-    v4 = [(TPFavoritesController *)self delayedFetchBlock];
-    dispatch_block_cancel(v4);
+    delayedFetchBlock2 = [(TPFavoritesController *)self delayedFetchBlock];
+    dispatch_block_cancel(delayedFetchBlock2);
   }
 
   objc_initWeak(&location, self);
@@ -63,14 +63,14 @@
   v10 = __Block_byref_object_copy_;
   v11 = __Block_byref_object_dispose_;
   v12 = 0;
-  v3 = [(TPFavoritesController *)self serialDispatchQueue];
+  serialDispatchQueue = [(TPFavoritesController *)self serialDispatchQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __41__TPFavoritesController_favoritesEntries__block_invoke;
   v6[3] = &unk_1E7C0C3D8;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(serialDispatchQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -92,8 +92,8 @@ void __38__TPFavoritesController_fetchIfNeeded__block_invoke(uint64_t a1)
 
 - (void)performInitialFetchIfNeeded
 {
-  v3 = [(TPFavoritesController *)self serialDispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  serialDispatchQueue = [(TPFavoritesController *)self serialDispatchQueue];
+  dispatch_assert_queue_V2(serialDispatchQueue);
 
   if (!self->_favoritesEntries)
   {
@@ -129,19 +129,19 @@ void __38__TPFavoritesController_fetchIfNeeded__block_invoke(uint64_t a1)
     favoritesManager = self->_favoritesManager;
     self->_favoritesManager = v9;
 
-    v11 = [(TPFavoritesController *)self fetchFavoritesEntries];
-    [(TPFavoritesController *)self setFavoritesEntries:v11];
+    fetchFavoritesEntries = [(TPFavoritesController *)self fetchFavoritesEntries];
+    [(TPFavoritesController *)self setFavoritesEntries:fetchFavoritesEntries];
 
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v12 addObserver:self selector:sel_handleContactsFavoritesDidChangeNotification_ name:*MEMORY[0x1E695C458] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_handleContactsFavoritesDidChangeNotification_ name:*MEMORY[0x1E695C458] object:0];
   }
 }
 
 - (id)fetchFavoritesEntries
 {
   v54 = *MEMORY[0x1E69E9840];
-  v3 = [(TPFavoritesController *)self serialDispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  serialDispatchQueue = [(TPFavoritesController *)self serialDispatchQueue];
+  dispatch_assert_queue_V2(serialDispatchQueue);
 
   v4 = TPDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -151,15 +151,15 @@ void __38__TPFavoritesController_fetchIfNeeded__block_invoke(uint64_t a1)
   }
 
   v44 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v5 = [(TPFavoritesController *)self contactCache];
-  [v5 removeAllObjects];
+  contactCache = [(TPFavoritesController *)self contactCache];
+  [contactCache removeAllObjects];
 
-  v6 = [(TPFavoritesController *)self transportNameCache];
-  [v6 removeAllObjects];
+  transportNameCache = [(TPFavoritesController *)self transportNameCache];
+  [transportNameCache removeAllObjects];
 
-  v7 = [(TPFavoritesController *)self favoritesManager];
-  v8 = [v7 entries];
-  v9 = [v8 copy];
+  favoritesManager = [(TPFavoritesController *)self favoritesManager];
+  entries = [favoritesManager entries];
+  v9 = [entries copy];
 
   v10 = TPDefaultLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -202,15 +202,15 @@ void __38__TPFavoritesController_fetchIfNeeded__block_invoke(uint64_t a1)
         }
 
         v19 = v17;
-        v20 = [v19 actionType];
-        if ([v20 isEqualToString:v15])
+        actionType = [v19 actionType];
+        if ([actionType isEqualToString:v15])
         {
         }
 
         else
         {
-          v21 = [v19 actionType];
-          v22 = [v21 isEqualToString:v41];
+          actionType2 = [v19 actionType];
+          v22 = [actionType2 isEqualToString:v41];
 
           v23 = v19;
           if (!v22)
@@ -219,8 +219,8 @@ void __38__TPFavoritesController_fetchIfNeeded__block_invoke(uint64_t a1)
           }
         }
 
-        v24 = [(TPFavoritesController *)self callProviderManager];
-        v25 = [v24 providerForFavoritesEntry:v19];
+        callProviderManager = [(TPFavoritesController *)self callProviderManager];
+        v25 = [callProviderManager providerForFavoritesEntry:v19];
 
         if (!v25)
         {
@@ -250,31 +250,31 @@ LABEL_21:
               [(TPFavoritesController *)buf fetchFavoritesEntries:&v52];
             }
 
-            v28 = [(TPFavoritesController *)self contactCache];
+            contactCache2 = [(TPFavoritesController *)self contactCache];
             v29 = [(TPFavoritesController *)self fetchContactForFavoritesEntry:v23];
             v30 = [(TPFavoritesController *)self contactCacheKeyForFavoritesEntry:v23];
-            [v28 setObject:v29 forKey:v30];
+            [contactCache2 setObject:v29 forKey:v30];
 
             v31 = [(TPFavoritesController *)self fetchTransportNameForFavoritesEntry:v19];
             if (v31)
             {
-              v32 = [(TPFavoritesController *)self transportNameCache];
+              transportNameCache2 = [(TPFavoritesController *)self transportNameCache];
               v33 = [(TPFavoritesController *)self transportNameCacheKeyForFavoritesEntry:v19];
-              [v32 setObject:v31 forKey:v33];
+              [transportNameCache2 setObject:v31 forKey:v33];
             }
 
             else
             {
-              v32 = TPDefaultLog();
-              if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
+              transportNameCache2 = TPDefaultLog();
+              if (os_log_type_enabled(transportNameCache2, OS_LOG_TYPE_ERROR))
               {
                 *v49 = v40;
                 v50 = v19;
-                _os_log_error_impl(&dword_1B4894000, v32, OS_LOG_TYPE_ERROR, "Cannot find a transport name for this favorites entry %@", v49, 0xCu);
+                _os_log_error_impl(&dword_1B4894000, transportNameCache2, OS_LOG_TYPE_ERROR, "Cannot find a transport name for this favorites entry %@", v49, 0xCu);
               }
             }
 
-            v34 = [v23 name];
+            name = [v23 name];
           }
         }
 
@@ -306,8 +306,8 @@ LABEL_21:
 
 - (NSCache)contactCache
 {
-  v3 = [(TPFavoritesController *)self serialDispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  serialDispatchQueue = [(TPFavoritesController *)self serialDispatchQueue];
+  dispatch_assert_queue_V2(serialDispatchQueue);
 
   contactCache = self->_contactCache;
 
@@ -316,8 +316,8 @@ LABEL_21:
 
 - (NSCache)transportNameCache
 {
-  v3 = [(TPFavoritesController *)self serialDispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  serialDispatchQueue = [(TPFavoritesController *)self serialDispatchQueue];
+  dispatch_assert_queue_V2(serialDispatchQueue);
 
   transportNameCache = self->_transportNameCache;
 
@@ -326,8 +326,8 @@ LABEL_21:
 
 - (TUCallProviderManager)callProviderManager
 {
-  v3 = [(TPFavoritesController *)self serialDispatchQueue];
-  dispatch_assert_queue_V2(v3);
+  serialDispatchQueue = [(TPFavoritesController *)self serialDispatchQueue];
+  dispatch_assert_queue_V2(serialDispatchQueue);
 
   callProviderManager = self->_callProviderManager;
 
@@ -341,9 +341,9 @@ LABEL_21:
   return 0;
 }
 
-- (TPFavoritesController)initWithContactStore:(id)a3 prefetchCount:(unint64_t)a4
+- (TPFavoritesController)initWithContactStore:(id)store prefetchCount:(unint64_t)count
 {
-  v7 = a3;
+  storeCopy = store;
   v27.receiver = self;
   v27.super_class = TPFavoritesController;
   v8 = [(TPFavoritesController *)&v27 init];
@@ -354,9 +354,9 @@ LABEL_21:
     serialDispatchQueue = v8->_serialDispatchQueue;
     v8->_serialDispatchQueue = v10;
 
-    objc_storeStrong(&v8->_contactStore, a3);
+    objc_storeStrong(&v8->_contactStore, store);
     objc_storeStrong(&v8->_completionDispatchQueue, MEMORY[0x1E69E96A0]);
-    v8->_prefetchCount = a4;
+    v8->_prefetchCount = count;
     v12 = objc_alloc_init(MEMORY[0x1E695DEE0]);
     contactCache = v8->_contactCache;
     v8->_contactCache = v12;
@@ -376,8 +376,8 @@ LABEL_21:
 
     v17 = dispatch_time(0, 1000000000);
     v18 = v8->_serialDispatchQueue;
-    v19 = [(TPFavoritesController *)v8 delayedFetchBlock];
-    dispatch_after(v17, v18, v19);
+    delayedFetchBlock = [(TPFavoritesController *)v8 delayedFetchBlock];
+    dispatch_after(v17, v18, delayedFetchBlock);
 
     objc_destroyWeak(&v25);
     objc_destroyWeak(&location);
@@ -399,8 +399,8 @@ void __60__TPFavoritesController_initWithContactStore_prefetchCount___block_invo
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = TPFavoritesController;
@@ -415,14 +415,14 @@ void __60__TPFavoritesController_initWithContactStore_prefetchCount___block_invo
   v10 = __Block_byref_object_copy_;
   v11 = __Block_byref_object_dispose_;
   v12 = 0;
-  v3 = [(TPFavoritesController *)self serialDispatchQueue];
+  serialDispatchQueue = [(TPFavoritesController *)self serialDispatchQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __37__TPFavoritesController_contactStore__block_invoke;
   v6[3] = &unk_1E7C0C3D8;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(serialDispatchQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -430,18 +430,18 @@ void __60__TPFavoritesController_initWithContactStore_prefetchCount___block_invo
   return v4;
 }
 
-- (void)addEntry:(id)a3
+- (void)addEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [(TPFavoritesController *)self serialDispatchQueue];
+  entryCopy = entry;
+  serialDispatchQueue = [(TPFavoritesController *)self serialDispatchQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __34__TPFavoritesController_addEntry___block_invoke;
   v7[3] = &unk_1E7C0C400;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = entryCopy;
+  v6 = entryCopy;
+  dispatch_async(serialDispatchQueue, v7);
 }
 
 void __34__TPFavoritesController_addEntry___block_invoke(uint64_t a1)
@@ -482,23 +482,23 @@ void __34__TPFavoritesController_addEntry___block_invoke(uint64_t a1)
 
 - (BOOL)canAddEntry
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(TPFavoritesController *)self serialDispatchQueue];
+  serialDispatchQueue = [(TPFavoritesController *)self serialDispatchQueue];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __36__TPFavoritesController_canAddEntry__block_invoke;
   v5[3] = &unk_1E7C0C3D8;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(serialDispatchQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __36__TPFavoritesController_canAddEntry__block_invoke(uint64_t a1)
@@ -507,17 +507,17 @@ void __36__TPFavoritesController_canAddEntry__block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = [v2 isFull] ^ 1;
 }
 
-- (void)moveEntryAtIndex:(unint64_t)a3 toIndex:(unint64_t)a4
+- (void)moveEntryAtIndex:(unint64_t)index toIndex:(unint64_t)toIndex
 {
-  v7 = [(TPFavoritesController *)self serialDispatchQueue];
+  serialDispatchQueue = [(TPFavoritesController *)self serialDispatchQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __50__TPFavoritesController_moveEntryAtIndex_toIndex___block_invoke;
   block[3] = &unk_1E7C0C428;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
-  dispatch_async(v7, block);
+  block[5] = index;
+  block[6] = toIndex;
+  dispatch_async(serialDispatchQueue, block);
 }
 
 void __50__TPFavoritesController_moveEntryAtIndex_toIndex___block_invoke(uint64_t a1)
@@ -551,18 +551,18 @@ void __50__TPFavoritesController_moveEntryAtIndex_toIndex___block_invoke(uint64_
   }
 }
 
-- (void)removeEntriesAtIndexes:(id)a3
+- (void)removeEntriesAtIndexes:(id)indexes
 {
-  v4 = a3;
-  v5 = [(TPFavoritesController *)self serialDispatchQueue];
+  indexesCopy = indexes;
+  serialDispatchQueue = [(TPFavoritesController *)self serialDispatchQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__TPFavoritesController_removeEntriesAtIndexes___block_invoke;
   v7[3] = &unk_1E7C0C400;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = indexesCopy;
+  selfCopy = self;
+  v6 = indexesCopy;
+  dispatch_async(serialDispatchQueue, v7);
 }
 
 void __48__TPFavoritesController_removeEntriesAtIndexes___block_invoke(uint64_t a1)
@@ -587,25 +587,25 @@ void __48__TPFavoritesController_removeEntriesAtIndexes___block_invoke_2(uint64_
   [v3 removeEntryAtIndex:a2];
 }
 
-- (id)contactForFavoritesEntry:(id)a3
+- (id)contactForFavoritesEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy_;
   v16 = __Block_byref_object_dispose_;
   v17 = 0;
-  v5 = [(TPFavoritesController *)self serialDispatchQueue];
+  serialDispatchQueue = [(TPFavoritesController *)self serialDispatchQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __50__TPFavoritesController_contactForFavoritesEntry___block_invoke;
   block[3] = &unk_1E7C0C478;
   block[4] = self;
-  v10 = v4;
+  v10 = entryCopy;
   v11 = &v12;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = entryCopy;
+  dispatch_sync(serialDispatchQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -634,28 +634,28 @@ void __50__TPFavoritesController_contactForFavoritesEntry___block_invoke(uint64_
   }
 }
 
-- (id)contactForFavoritesEntry:(id)a3 keyDescriptors:(id)a4
+- (id)contactForFavoritesEntry:(id)entry keyDescriptors:(id)descriptors
 {
-  v6 = a3;
-  v7 = a4;
+  entryCopy = entry;
+  descriptorsCopy = descriptors;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy_;
   v21 = __Block_byref_object_dispose_;
   v22 = 0;
-  v8 = [(TPFavoritesController *)self serialDispatchQueue];
+  serialDispatchQueue = [(TPFavoritesController *)self serialDispatchQueue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __65__TPFavoritesController_contactForFavoritesEntry_keyDescriptors___block_invoke;
   v13[3] = &unk_1E7C0C4A0;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = entryCopy;
+  v15 = descriptorsCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, v13);
+  v9 = descriptorsCopy;
+  v10 = entryCopy;
+  dispatch_sync(serialDispatchQueue, v13);
 
   v11 = v18[5];
   _Block_object_dispose(&v17, 8);
@@ -673,28 +673,28 @@ uint64_t __65__TPFavoritesController_contactForFavoritesEntry_keyDescriptors___b
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)contactsForFavoritesEntries:(id)a3 keyDescriptors:(id)a4
+- (id)contactsForFavoritesEntries:(id)entries keyDescriptors:(id)descriptors
 {
-  v6 = a3;
-  v7 = a4;
+  entriesCopy = entries;
+  descriptorsCopy = descriptors;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy_;
   v21 = __Block_byref_object_dispose_;
   v22 = 0;
-  v8 = [(TPFavoritesController *)self serialDispatchQueue];
+  serialDispatchQueue = [(TPFavoritesController *)self serialDispatchQueue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __68__TPFavoritesController_contactsForFavoritesEntries_keyDescriptors___block_invoke;
   v13[3] = &unk_1E7C0C4A0;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = entriesCopy;
+  v15 = descriptorsCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, v13);
+  v9 = descriptorsCopy;
+  v10 = entriesCopy;
+  dispatch_sync(serialDispatchQueue, v13);
 
   v11 = v18[5];
   _Block_object_dispose(&v17, 8);
@@ -712,25 +712,25 @@ uint64_t __68__TPFavoritesController_contactsForFavoritesEntries_keyDescriptors_
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)transportNameForFavoritesEntry:(id)a3
+- (id)transportNameForFavoritesEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy_;
   v16 = __Block_byref_object_dispose_;
   v17 = 0;
-  v5 = [(TPFavoritesController *)self serialDispatchQueue];
+  serialDispatchQueue = [(TPFavoritesController *)self serialDispatchQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __56__TPFavoritesController_transportNameForFavoritesEntry___block_invoke;
   block[3] = &unk_1E7C0C478;
   block[4] = self;
-  v10 = v4;
+  v10 = entryCopy;
   v11 = &v12;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = entryCopy;
+  dispatch_sync(serialDispatchQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -762,25 +762,25 @@ void __56__TPFavoritesController_transportNameForFavoritesEntry___block_invoke(u
   }
 }
 
-- (unint64_t)absoluteIndexForIndex:(unint64_t)a3
+- (unint64_t)absoluteIndexForIndex:(unint64_t)index
 {
-  v5 = [(TPFavoritesController *)self serialDispatchQueue];
-  dispatch_assert_queue_V2(v5);
+  serialDispatchQueue = [(TPFavoritesController *)self serialDispatchQueue];
+  dispatch_assert_queue_V2(serialDispatchQueue);
 
   v6 = self->_favoritesEntries;
-  if ([(NSArray *)v6 count]<= a3)
+  if ([(NSArray *)v6 count]<= index)
   {
     v10 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    v7 = [(NSArray *)v6 objectAtIndex:a3];
+    v7 = [(NSArray *)v6 objectAtIndex:index];
     if (v7)
     {
-      v8 = [(TPFavoritesController *)self favoritesManager];
-      v9 = [v8 entries];
-      v10 = [v9 indexOfObject:v7];
+      favoritesManager = [(TPFavoritesController *)self favoritesManager];
+      entries = [favoritesManager entries];
+      v10 = [entries indexOfObject:v7];
     }
 
     else
@@ -792,15 +792,15 @@ void __56__TPFavoritesController_transportNameForFavoritesEntry___block_invoke(u
   return v10;
 }
 
-- (id)contactCacheKeyForFavoritesEntry:(id)a3
+- (id)contactCacheKeyForFavoritesEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [(TPFavoritesController *)self serialDispatchQueue];
-  dispatch_assert_queue_V2(v5);
+  entryCopy = entry;
+  serialDispatchQueue = [(TPFavoritesController *)self serialDispatchQueue];
+  dispatch_assert_queue_V2(serialDispatchQueue);
 
   v6 = MEMORY[0x1E696AEC0];
   v7 = MEMORY[0x1E696AD98];
-  v8 = [v4 hash];
+  v8 = [entryCopy hash];
 
   v9 = [v7 numberWithUnsignedInteger:v8];
   v10 = [v6 stringWithFormat:@"%@", v9];
@@ -808,13 +808,13 @@ void __56__TPFavoritesController_transportNameForFavoritesEntry___block_invoke(u
   return v10;
 }
 
-- (id)fetchContactForFavoritesEntry:(id)a3
+- (id)fetchContactForFavoritesEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [(TPFavoritesController *)self serialDispatchQueue];
-  dispatch_assert_queue_V2(v5);
+  entryCopy = entry;
+  serialDispatchQueue = [(TPFavoritesController *)self serialDispatchQueue];
+  dispatch_assert_queue_V2(serialDispatchQueue);
 
-  v6 = [(TPFavoritesController *)self fetchContactForFavoritesEntry:v4 keyDescriptors:0];
+  v6 = [(TPFavoritesController *)self fetchContactForFavoritesEntry:entryCopy keyDescriptors:0];
 
   if (!v6)
   {
@@ -830,30 +830,30 @@ void __56__TPFavoritesController_transportNameForFavoritesEntry___block_invoke(u
   return v6;
 }
 
-- (id)fetchContactForFavoritesEntry:(id)a3 keyDescriptors:(id)a4
+- (id)fetchContactForFavoritesEntry:(id)entry keyDescriptors:(id)descriptors
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TPFavoritesController *)self serialDispatchQueue];
-  dispatch_assert_queue_V2(v8);
+  entryCopy = entry;
+  descriptorsCopy = descriptors;
+  serialDispatchQueue = [(TPFavoritesController *)self serialDispatchQueue];
+  dispatch_assert_queue_V2(serialDispatchQueue);
 
-  v9 = [v6 contactProperty];
-  v10 = [v9 contact];
+  contactProperty = [entryCopy contactProperty];
+  contact = [contactProperty contact];
 
-  if (v7 && v10 && ([v10 areKeysAvailable:v7] & 1) == 0)
+  if (descriptorsCopy && contact && ([contact areKeysAvailable:descriptorsCopy] & 1) == 0)
   {
-    v11 = [MEMORY[0x1E695DF70] arrayWithArray:v7];
-    v12 = [v10 availableKeyDescriptor];
-    if (v12)
+    v11 = [MEMORY[0x1E695DF70] arrayWithArray:descriptorsCopy];
+    availableKeyDescriptor = [contact availableKeyDescriptor];
+    if (availableKeyDescriptor)
     {
-      [v11 addObject:v12];
+      [v11 addObject:availableKeyDescriptor];
     }
 
     contactStore = self->_contactStore;
-    v14 = [v10 identifier];
+    identifier = [contact identifier];
     v21 = 0;
-    v15 = [(CNContactStore *)contactStore unifiedContactWithIdentifier:v14 keysToFetch:v11 error:&v21];
+    v15 = [(CNContactStore *)contactStore unifiedContactWithIdentifier:identifier keysToFetch:v11 error:&v21];
     v16 = v21;
 
     if (!v15)
@@ -865,37 +865,37 @@ void __56__TPFavoritesController_transportNameForFavoritesEntry___block_invoke(u
         *buf = 138412802;
         v23 = v20;
         v24 = 2112;
-        v25 = v6;
+        v25 = entryCopy;
         v26 = 2112;
         v27 = v16;
         _os_log_error_impl(&dword_1B4894000, v17, OS_LOG_TYPE_ERROR, "Could not retrieve a contact using contact store (%@), favorites entry (%@) error (%@)", buf, 0x20u);
       }
     }
 
-    v10 = v15;
+    contact = v15;
   }
 
   v18 = *MEMORY[0x1E69E9840];
 
-  return v10;
+  return contact;
 }
 
-- (id)fetchContactForFavoritesEntries:(id)a3 keyDescriptors:(id)a4
+- (id)fetchContactForFavoritesEntries:(id)entries keyDescriptors:(id)descriptors
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TPFavoritesController *)self serialDispatchQueue];
-  dispatch_assert_queue_V2(v8);
+  entriesCopy = entries;
+  descriptorsCopy = descriptors;
+  serialDispatchQueue = [(TPFavoritesController *)self serialDispatchQueue];
+  dispatch_assert_queue_V2(serialDispatchQueue);
 
   v9 = [MEMORY[0x1E695E0F0] mutableCopy];
   v10 = objc_opt_new();
-  [v10 addObjectsFromArray:v7];
+  [v10 addObjectsFromArray:descriptorsCopy];
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v11 = v6;
+  v11 = entriesCopy;
   v12 = [v11 countByEnumeratingWithState:&v30 objects:v40 count:16];
   if (v12)
   {
@@ -910,18 +910,18 @@ void __56__TPFavoritesController_transportNameForFavoritesEntry___block_invoke(u
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v30 + 1) + 8 * i) contactProperty];
-        v17 = [v16 contact];
+        contactProperty = [*(*(&v30 + 1) + 8 * i) contactProperty];
+        contact = [contactProperty contact];
 
-        if (v7 && v17 && ([v17 areKeysAvailable:v7] & 1) == 0)
+        if (descriptorsCopy && contact && ([contact areKeysAvailable:descriptorsCopy] & 1) == 0)
         {
-          v18 = [v17 identifier];
-          [v9 addObject:v18];
+          identifier = [contact identifier];
+          [v9 addObject:identifier];
 
-          v19 = [v17 availableKeyDescriptor];
-          if (v19)
+          availableKeyDescriptor = [contact availableKeyDescriptor];
+          if (availableKeyDescriptor)
           {
-            [v10 addObject:v19];
+            [v10 addObject:availableKeyDescriptor];
           }
         }
       }
@@ -936,9 +936,9 @@ void __56__TPFavoritesController_transportNameForFavoritesEntry___block_invoke(u
   {
     v20 = [MEMORY[0x1E695CD58] predicateForContactsWithIdentifiers:v9];
     contactStore = self->_contactStore;
-    v22 = [v10 allObjects];
+    allObjects = [v10 allObjects];
     v29 = 0;
-    v23 = [(CNContactStore *)contactStore unifiedContactsMatchingPredicate:v20 keysToFetch:v22 error:&v29];
+    v23 = [(CNContactStore *)contactStore unifiedContactsMatchingPredicate:v20 keysToFetch:allObjects error:&v29];
     v24 = v29;
 
     if (!v23 || v24)
@@ -968,26 +968,26 @@ void __56__TPFavoritesController_transportNameForFavoritesEntry___block_invoke(u
   return v23;
 }
 
-- (id)fetchTransportNameForFavoritesEntry:(id)a3
+- (id)fetchTransportNameForFavoritesEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [(TPFavoritesController *)self serialDispatchQueue];
-  dispatch_assert_queue_V2(v5);
+  entryCopy = entry;
+  serialDispatchQueue = [(TPFavoritesController *)self serialDispatchQueue];
+  dispatch_assert_queue_V2(serialDispatchQueue);
 
-  v6 = [v4 localizedBundleName];
+  localizedBundleName = [entryCopy localizedBundleName];
 
-  return v6;
+  return localizedBundleName;
 }
 
-- (id)transportNameCacheKeyForFavoritesEntry:(id)a3
+- (id)transportNameCacheKeyForFavoritesEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [(TPFavoritesController *)self serialDispatchQueue];
-  dispatch_assert_queue_V2(v5);
+  entryCopy = entry;
+  serialDispatchQueue = [(TPFavoritesController *)self serialDispatchQueue];
+  dispatch_assert_queue_V2(serialDispatchQueue);
 
   v6 = MEMORY[0x1E696AEC0];
   v7 = MEMORY[0x1E696AD98];
-  v8 = [v4 hash];
+  v8 = [entryCopy hash];
 
   v9 = [v7 numberWithUnsignedInteger:v8];
   v10 = [v6 stringWithFormat:@"%@", v9];
@@ -995,25 +995,25 @@ void __56__TPFavoritesController_transportNameForFavoritesEntry___block_invoke(u
   return v10;
 }
 
-- (void)setFavoritesEntries:(id)a3
+- (void)setFavoritesEntries:(id)entries
 {
-  v4 = a3;
-  v5 = [(TPFavoritesController *)self serialDispatchQueue];
-  dispatch_assert_queue_V2(v5);
+  entriesCopy = entries;
+  serialDispatchQueue = [(TPFavoritesController *)self serialDispatchQueue];
+  dispatch_assert_queue_V2(serialDispatchQueue);
 
-  if (self->_favoritesEntries != v4)
+  if (self->_favoritesEntries != entriesCopy)
   {
-    v6 = [(NSArray *)v4 copy];
+    v6 = [(NSArray *)entriesCopy copy];
     favoritesEntries = self->_favoritesEntries;
     self->_favoritesEntries = v6;
 
-    v8 = [(TPFavoritesController *)self completionDispatchQueue];
+    completionDispatchQueue = [(TPFavoritesController *)self completionDispatchQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __45__TPFavoritesController_setFavoritesEntries___block_invoke;
     block[3] = &unk_1E7C0C368;
     block[4] = self;
-    dispatch_async(v8, block);
+    dispatch_async(completionDispatchQueue, block);
   }
 }
 
@@ -1023,15 +1023,15 @@ void __45__TPFavoritesController_setFavoritesEntries___block_invoke(uint64_t a1)
   [v2 postNotificationName:@"TPFavoritesControllerFavoritesEntriesDidChangeNotification" object:*(a1 + 32) userInfo:0];
 }
 
-- (void)handleContactsFavoritesDidChangeNotification:(id)a3
+- (void)handleContactsFavoritesDidChangeNotification:(id)notification
 {
-  v4 = [(TPFavoritesController *)self serialDispatchQueue];
+  serialDispatchQueue = [(TPFavoritesController *)self serialDispatchQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __70__TPFavoritesController_handleContactsFavoritesDidChangeNotification___block_invoke;
   block[3] = &unk_1E7C0C368;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(serialDispatchQueue, block);
 }
 
 void __70__TPFavoritesController_handleContactsFavoritesDidChangeNotification___block_invoke(uint64_t a1)
@@ -1040,16 +1040,16 @@ void __70__TPFavoritesController_handleContactsFavoritesDidChangeNotification___
   [*(a1 + 32) setFavoritesEntries:v2];
 }
 
-- (void)providersChangedForProviderManager:(id)a3
+- (void)providersChangedForProviderManager:(id)manager
 {
-  v4 = [(TPFavoritesController *)self serialDispatchQueue];
-  dispatch_assert_queue_V2(v4);
+  serialDispatchQueue = [(TPFavoritesController *)self serialDispatchQueue];
+  dispatch_assert_queue_V2(serialDispatchQueue);
 
   if ([(TPFavoritesController *)self needsProvidersUpdates])
   {
     [(TPFavoritesController *)self setNeedsProvidersUpdates:0];
-    v5 = [(TPFavoritesController *)self fetchFavoritesEntries];
-    [(TPFavoritesController *)self setFavoritesEntries:v5];
+    fetchFavoritesEntries = [(TPFavoritesController *)self fetchFavoritesEntries];
+    [(TPFavoritesController *)self setFavoritesEntries:fetchFavoritesEntries];
   }
 }
 
@@ -1064,10 +1064,10 @@ void __70__TPFavoritesController_handleContactsFavoritesDidChangeNotification___
 
 - (void)fetchFavoritesEntries
 {
-  v7 = [a2 prefetchCount];
-  *a1 = 134217984;
-  *a3 = v7;
-  _os_log_debug_impl(&dword_1B4894000, a4, OS_LOG_TYPE_DEBUG, "Performing contact fetch, prefetch count: %lu", a1, 0xCu);
+  prefetchCount = [a2 prefetchCount];
+  *self = 134217984;
+  *a3 = prefetchCount;
+  _os_log_debug_impl(&dword_1B4894000, a4, OS_LOG_TYPE_DEBUG, "Performing contact fetch, prefetch count: %lu", self, 0xCu);
 }
 
 @end

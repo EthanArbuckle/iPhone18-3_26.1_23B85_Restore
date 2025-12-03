@@ -1,24 +1,24 @@
 @interface InferenceRecordContainerJournalEntry
-+ (void)applyEntries:(id)a3 withProfile:(id)a4;
++ (void)applyEntries:(id)entries withProfile:(id)profile;
 - (_TtC25FitnessIntelligencePlugin36InferenceRecordContainerJournalEntry)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation InferenceRecordContainerJournalEntry
 
-+ (void)applyEntries:(id)a3 withProfile:(id)a4
++ (void)applyEntries:(id)entries withProfile:(id)profile
 {
   sub_7688(0, &qword_8EF18, HDJournalEntry_ptr);
   v5 = sub_75688();
-  v6 = a4;
-  sub_1E060(v5, v6);
+  profileCopy = profile;
+  sub_1E060(v5, profileCopy);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1DCD4(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1DCD4(coderCopy);
 }
 
 - (_TtC25FitnessIntelligencePlugin36InferenceRecordContainerJournalEntry)init

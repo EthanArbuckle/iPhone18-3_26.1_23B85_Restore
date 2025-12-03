@@ -1,81 +1,81 @@
 @interface SDPommesFeature
-+ (BOOL)isMailBundle:(id)a3;
-+ (BOOL)isSearchToolClientBundle:(id)a3;
-+ (BOOL)isSpotlightUIClientBundle:(id)a3;
-+ (BOOL)usingPommesRankingForClientBundle:(id)a3;
-+ (BOOL)usingRewritesForContextBundleIDs:(id)a3 clientBundleID:(id)a4 userQuery:(id)a5 indexSupportsRewrites:(BOOL)a6 isCounting:(BOOL)a7 embeddingsEnabled:(BOOL)a8;
++ (BOOL)isMailBundle:(id)bundle;
++ (BOOL)isSearchToolClientBundle:(id)bundle;
++ (BOOL)isSpotlightUIClientBundle:(id)bundle;
++ (BOOL)usingPommesRankingForClientBundle:(id)bundle;
++ (BOOL)usingRewritesForContextBundleIDs:(id)ds clientBundleID:(id)d userQuery:(id)query indexSupportsRewrites:(BOOL)rewrites isCounting:(BOOL)counting embeddingsEnabled:(BOOL)enabled;
 + (id)allBundleIDsUsingPommesRankingSearchTool;
 + (id)baseBundleIDs;
 @end
 
 @implementation SDPommesFeature
 
-+ (BOOL)isMailBundle:(id)a3
++ (BOOL)isMailBundle:(id)bundle
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"com.apple.mobilemail"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"com.apple.email.SearchIndexer"))
+  bundleCopy = bundle;
+  if ([bundleCopy isEqualToString:@"com.apple.mobilemail"] & 1) != 0 || (objc_msgSend(bundleCopy, "isEqualToString:", @"com.apple.email.SearchIndexer"))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"com.apple.pommesctl"];
+    v4 = [bundleCopy isEqualToString:@"com.apple.pommesctl"];
   }
 
   return v4;
 }
 
-+ (BOOL)isSpotlightUIClientBundle:(id)a3
++ (BOOL)isSpotlightUIClientBundle:(id)bundle
 {
-  v3 = [a3 lowercaseString];
-  if ([v3 hasPrefix:@"com.apple.spotlight"])
+  lowercaseString = [bundle lowercaseString];
+  if ([lowercaseString hasPrefix:@"com.apple.spotlight"])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 hasPrefix:@"com.apple.search.framework"];
+    v4 = [lowercaseString hasPrefix:@"com.apple.search.framework"];
   }
 
   return v4;
 }
 
-+ (BOOL)isSearchToolClientBundle:(id)a3
++ (BOOL)isSearchToolClientBundle:(id)bundle
 {
-  v3 = a3;
-  if ([v3 hasPrefix:@"com.apple.omniSearch"] & 1) != 0 || (objc_msgSend(v3, "hasPrefix:", @"com.apple.intelligenceflow"))
+  bundleCopy = bundle;
+  if ([bundleCopy hasPrefix:@"com.apple.omniSearch"] & 1) != 0 || (objc_msgSend(bundleCopy, "hasPrefix:", @"com.apple.intelligenceflow"))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 hasPrefix:@"com.apple.ondeviceeval"];
+    v4 = [bundleCopy hasPrefix:@"com.apple.ondeviceeval"];
   }
 
   return v4;
 }
 
-+ (BOOL)usingPommesRankingForClientBundle:(id)a3
++ (BOOL)usingPommesRankingForClientBundle:(id)bundle
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"com.apple.mobilemail"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"com.apple.email.SearchIndexer") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"com.apple.pommesctl"))
+  bundleCopy = bundle;
+  if ([bundleCopy isEqualToString:@"com.apple.mobilemail"] & 1) != 0 || (objc_msgSend(bundleCopy, "isEqualToString:", @"com.apple.email.SearchIndexer") & 1) != 0 || (objc_msgSend(bundleCopy, "isEqualToString:", @"com.apple.pommesctl"))
   {
     goto LABEL_4;
   }
 
-  if (([v3 isEqualToString:@"com.apple.mobilesafari"] & 1) != 0 || objc_msgSend(v3, "isEqualToString:", @"com.argos.BlendABApp2"))
+  if (([bundleCopy isEqualToString:@"com.apple.mobilesafari"] & 1) != 0 || objc_msgSend(bundleCopy, "isEqualToString:", @"com.argos.BlendABApp2"))
   {
     goto LABEL_8;
   }
 
-  if (([v3 isEqualToString:@"com.apple.mobileslideshow"] & 1) == 0 && (objc_msgSend(v3, "isEqualToString:", @"com.apple.mobilecal") & 1) == 0 && (objc_msgSend(v3, "isEqualToString:", @"com.apple.MobileSMS") & 1) == 0)
+  if (([bundleCopy isEqualToString:@"com.apple.mobileslideshow"] & 1) == 0 && (objc_msgSend(bundleCopy, "isEqualToString:", @"com.apple.mobilecal") & 1) == 0 && (objc_msgSend(bundleCopy, "isEqualToString:", @"com.apple.MobileSMS") & 1) == 0)
   {
-    if (([v3 isEqualToString:@"com.apple.mobilenotes"] & 1) == 0 && !objc_msgSend(v3, "isEqualToString:", @"com.apple.reminders") && !objc_msgSend(v3, "isEqualToString:", @"com.apple.Preferences"))
+    if (([bundleCopy isEqualToString:@"com.apple.mobilenotes"] & 1) == 0 && !objc_msgSend(bundleCopy, "isEqualToString:", @"com.apple.reminders") && !objc_msgSend(bundleCopy, "isEqualToString:", @"com.apple.Preferences"))
     {
-      v6 = [v3 isEqualToString:@"com.apple.Passbook"];
+      v6 = [bundleCopy isEqualToString:@"com.apple.Passbook"];
       goto LABEL_9;
     }
 
@@ -93,48 +93,48 @@ LABEL_5:
   return v4;
 }
 
-+ (BOOL)usingRewritesForContextBundleIDs:(id)a3 clientBundleID:(id)a4 userQuery:(id)a5 indexSupportsRewrites:(BOOL)a6 isCounting:(BOOL)a7 embeddingsEnabled:(BOOL)a8
++ (BOOL)usingRewritesForContextBundleIDs:(id)ds clientBundleID:(id)d userQuery:(id)query indexSupportsRewrites:(BOOL)rewrites isCounting:(BOOL)counting embeddingsEnabled:(BOOL)enabled
 {
-  v8 = a8;
-  v9 = a7;
-  v10 = a6;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  if ([SDPommesFeature isSearchToolClientBundle:v14])
+  enabledCopy = enabled;
+  countingCopy = counting;
+  rewritesCopy = rewrites;
+  dsCopy = ds;
+  dCopy = d;
+  queryCopy = query;
+  if ([SDPommesFeature isSearchToolClientBundle:dCopy])
   {
     goto LABEL_11;
   }
 
-  if ([SDPommesFeature isMessagesBundle:v14])
+  if ([SDPommesFeature isMessagesBundle:dCopy])
   {
     goto LABEL_11;
   }
 
-  if ([SDPommesFeature isPhotosBundle:v14])
+  if ([SDPommesFeature isPhotosBundle:dCopy])
   {
     goto LABEL_11;
   }
 
-  v16 = [SDPommesFeature isMailBundle:v14];
+  v16 = [SDPommesFeature isMailBundle:dCopy];
   v17 = v16;
-  if (v8 && !v16)
+  if (enabledCopy && !v16)
   {
     goto LABEL_11;
   }
 
-  if ([v15 length] > 0x1D)
+  if ([queryCopy length] > 0x1D)
   {
     goto LABEL_11;
   }
 
-  if (![v13 count])
+  if (![dsCopy count])
   {
     goto LABEL_13;
   }
 
-  v18 = [v13 objectAtIndexedSubscript:0];
-  if ([v18 isEqualToString:@"com.apple.mobileslideshow"])
+  decimalDigitCharacterSet = [dsCopy objectAtIndexedSubscript:0];
+  if ([decimalDigitCharacterSet isEqualToString:@"com.apple.mobileslideshow"])
   {
     LOBYTE(v19) = 0;
 LABEL_15:
@@ -142,7 +142,7 @@ LABEL_15:
     goto LABEL_12;
   }
 
-  v20 = [v13 objectAtIndexedSubscript:0];
+  v20 = [dsCopy objectAtIndexedSubscript:0];
   v21 = [v20 isEqualToString:@"com.apple.mobilesafari"];
 
   if (v21)
@@ -154,11 +154,11 @@ LABEL_11:
   else
   {
 LABEL_13:
-    v19 = v10 & ~v9;
+    v19 = rewritesCopy & ~countingCopy;
     if ((v19 & v17) == 1)
     {
-      v18 = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
-      LOBYTE(v19) = [v15 rangeOfCharacterFromSet:v18] == 0x7FFFFFFFFFFFFFFFLL;
+      decimalDigitCharacterSet = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
+      LOBYTE(v19) = [queryCopy rangeOfCharacterFromSet:decimalDigitCharacterSet] == 0x7FFFFFFFFFFFFFFFLL;
       goto LABEL_15;
     }
   }
@@ -213,7 +213,7 @@ void __32__SDPommesFeature_baseBundleIDs__block_invoke()
   block[1] = 3221225472;
   block[2] = __59__SDPommesFeature_allBundleIDsUsingPommesRankingSearchTool__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (allBundleIDsUsingPommesRankingSearchTool_onceToken != -1)
   {
     dispatch_once(&allBundleIDsUsingPommesRankingSearchTool_onceToken, block);

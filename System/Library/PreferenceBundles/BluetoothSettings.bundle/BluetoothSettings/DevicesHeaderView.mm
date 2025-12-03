@@ -1,18 +1,18 @@
 @interface DevicesHeaderView
-- (DevicesHeaderView)initWithSpecifier:(id)a3;
+- (DevicesHeaderView)initWithSpecifier:(id)specifier;
 - (NSString)name;
 - (UIListContentConfiguration)listContentConfiguration;
-- (double)preferredHeightForWidth:(double)a3;
-- (void)setListContentConfiguration:(id)a3;
-- (void)setName:(id)a3;
-- (void)setupSubviewsWithSpecifier:(id)a3;
+- (double)preferredHeightForWidth:(double)width;
+- (void)setListContentConfiguration:(id)configuration;
+- (void)setName:(id)name;
+- (void)setupSubviewsWithSpecifier:(id)specifier;
 @end
 
 @implementation DevicesHeaderView
 
-- (DevicesHeaderView)initWithSpecifier:(id)a3
+- (DevicesHeaderView)initWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v8.receiver = self;
   v8.super_class = DevicesHeaderView;
   v5 = [(DevicesHeaderView *)&v8 init];
@@ -20,7 +20,7 @@
   if (v5)
   {
     [(DevicesHeaderView *)v5 setAutoresizingMask:2];
-    [(DevicesHeaderView *)v6 setupSubviewsWithSpecifier:v4];
+    [(DevicesHeaderView *)v6 setupSubviewsWithSpecifier:specifierCopy];
   }
 
   return v6;
@@ -28,44 +28,44 @@
 
 - (NSString)name
 {
-  v2 = [(DevicesHeaderView *)self listContentConfiguration];
-  v3 = [v2 text];
+  listContentConfiguration = [(DevicesHeaderView *)self listContentConfiguration];
+  text = [listContentConfiguration text];
 
-  return v3;
+  return text;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = a3;
-  v5 = [(DevicesHeaderView *)self listContentConfiguration];
-  [v5 setText:v4];
+  nameCopy = name;
+  listContentConfiguration = [(DevicesHeaderView *)self listContentConfiguration];
+  [listContentConfiguration setText:nameCopy];
 
-  [(DevicesHeaderView *)self setListContentConfiguration:v5];
+  [(DevicesHeaderView *)self setListContentConfiguration:listContentConfiguration];
 }
 
 - (UIListContentConfiguration)listContentConfiguration
 {
-  v2 = [(DevicesHeaderView *)self listContentView];
-  v3 = [v2 configuration];
+  listContentView = [(DevicesHeaderView *)self listContentView];
+  configuration = [listContentView configuration];
 
-  return v3;
+  return configuration;
 }
 
-- (void)setListContentConfiguration:(id)a3
+- (void)setListContentConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(DevicesHeaderView *)self listContentView];
-  [v5 setConfiguration:v4];
+  configurationCopy = configuration;
+  listContentView = [(DevicesHeaderView *)self listContentView];
+  [listContentView setConfiguration:configurationCopy];
 }
 
-- (double)preferredHeightForWidth:(double)a3
+- (double)preferredHeightForWidth:(double)width
 {
-  v5 = [(DevicesHeaderView *)self spinner];
-  [v5 frame];
+  spinner = [(DevicesHeaderView *)self spinner];
+  [spinner frame];
   v7 = v6 + 24.0;
 
-  v8 = [(DevicesHeaderView *)self listContentView];
-  [v8 sizeThatFits:{a3, 1.79769313e308}];
+  listContentView = [(DevicesHeaderView *)self listContentView];
+  [listContentView sizeThatFits:{width, 1.79769313e308}];
   v10 = v9;
 
   if (v7 >= v10)
@@ -79,78 +79,78 @@
   }
 }
 
-- (void)setupSubviewsWithSpecifier:(id)a3
+- (void)setupSubviewsWithSpecifier:(id)specifier
 {
   v53[6] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D756E0];
-  v5 = a3;
-  v6 = [v4 groupedHeaderConfiguration];
-  v7 = [v5 name];
+  specifierCopy = specifier;
+  groupedHeaderConfiguration = [v4 groupedHeaderConfiguration];
+  name = [specifierCopy name];
 
-  v52 = v6;
-  [v6 setText:v7];
+  v52 = groupedHeaderConfiguration;
+  [groupedHeaderConfiguration setText:name];
 
-  v8 = [objc_alloc(MEMORY[0x277D756E8]) initWithConfiguration:v6];
+  v8 = [objc_alloc(MEMORY[0x277D756E8]) initWithConfiguration:groupedHeaderConfiguration];
   [(DevicesHeaderView *)self setListContentView:v8];
 
-  v9 = [(DevicesHeaderView *)self contentView];
-  v10 = [(DevicesHeaderView *)self listContentView];
-  [v9 addSubview:v10];
+  contentView = [(DevicesHeaderView *)self contentView];
+  listContentView = [(DevicesHeaderView *)self listContentView];
+  [contentView addSubview:listContentView];
 
   v11 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
   [(DevicesHeaderView *)self setSpinner:v11];
 
-  v12 = [(DevicesHeaderView *)self spinner];
-  [v12 startAnimating];
+  spinner = [(DevicesHeaderView *)self spinner];
+  [spinner startAnimating];
 
-  v13 = [(DevicesHeaderView *)self contentView];
-  v14 = [(DevicesHeaderView *)self spinner];
-  [v13 addSubview:v14];
+  contentView2 = [(DevicesHeaderView *)self contentView];
+  spinner2 = [(DevicesHeaderView *)self spinner];
+  [contentView2 addSubview:spinner2];
 
-  v15 = [(DevicesHeaderView *)self listContentView];
-  [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
+  listContentView2 = [(DevicesHeaderView *)self listContentView];
+  [listContentView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v16 = [(DevicesHeaderView *)self spinner];
-  [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
+  spinner3 = [(DevicesHeaderView *)self spinner];
+  [spinner3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v37 = MEMORY[0x277CCAAD0];
-  v51 = [(DevicesHeaderView *)self listContentView];
-  v49 = [v51 leadingAnchor];
-  v50 = [(DevicesHeaderView *)self contentView];
-  v48 = [v50 leadingAnchor];
-  v47 = [v49 constraintEqualToAnchor:v48];
+  listContentView3 = [(DevicesHeaderView *)self listContentView];
+  leadingAnchor = [listContentView3 leadingAnchor];
+  contentView3 = [(DevicesHeaderView *)self contentView];
+  leadingAnchor2 = [contentView3 leadingAnchor];
+  v47 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v53[0] = v47;
-  v46 = [(DevicesHeaderView *)self listContentView];
-  v44 = [v46 topAnchor];
-  v45 = [(DevicesHeaderView *)self contentView];
-  v43 = [v45 topAnchor];
-  v42 = [v44 constraintEqualToAnchor:v43];
+  listContentView4 = [(DevicesHeaderView *)self listContentView];
+  topAnchor = [listContentView4 topAnchor];
+  contentView4 = [(DevicesHeaderView *)self contentView];
+  topAnchor2 = [contentView4 topAnchor];
+  v42 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v53[1] = v42;
-  v41 = [(DevicesHeaderView *)self listContentView];
-  v39 = [v41 trailingAnchor];
-  v40 = [(DevicesHeaderView *)self contentView];
-  v38 = [v40 trailingAnchor];
-  v36 = [v39 constraintEqualToAnchor:v38];
+  listContentView5 = [(DevicesHeaderView *)self listContentView];
+  trailingAnchor = [listContentView5 trailingAnchor];
+  contentView5 = [(DevicesHeaderView *)self contentView];
+  trailingAnchor2 = [contentView5 trailingAnchor];
+  v36 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v53[2] = v36;
-  v35 = [(DevicesHeaderView *)self listContentView];
-  v33 = [v35 bottomAnchor];
-  v34 = [(DevicesHeaderView *)self contentView];
-  v32 = [v34 bottomAnchor];
-  v31 = [v33 constraintEqualToAnchor:v32];
+  listContentView6 = [(DevicesHeaderView *)self listContentView];
+  bottomAnchor = [listContentView6 bottomAnchor];
+  contentView6 = [(DevicesHeaderView *)self contentView];
+  bottomAnchor2 = [contentView6 bottomAnchor];
+  v31 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v53[3] = v31;
-  v30 = [(DevicesHeaderView *)self spinner];
-  v28 = [v30 leadingAnchor];
-  v29 = [(DevicesHeaderView *)self listContentView];
-  v17 = [v29 textLayoutGuide];
-  v18 = [v17 trailingAnchor];
-  v19 = [v28 constraintEqualToAnchor:v18 constant:10.0];
+  spinner4 = [(DevicesHeaderView *)self spinner];
+  leadingAnchor3 = [spinner4 leadingAnchor];
+  listContentView7 = [(DevicesHeaderView *)self listContentView];
+  textLayoutGuide = [listContentView7 textLayoutGuide];
+  trailingAnchor3 = [textLayoutGuide trailingAnchor];
+  v19 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor3 constant:10.0];
   v53[4] = v19;
-  v20 = [(DevicesHeaderView *)self spinner];
-  v21 = [v20 centerYAnchor];
-  v22 = [(DevicesHeaderView *)self listContentView];
-  v23 = [v22 textLayoutGuide];
-  v24 = [v23 centerYAnchor];
-  v25 = [v21 constraintEqualToAnchor:v24];
+  spinner5 = [(DevicesHeaderView *)self spinner];
+  centerYAnchor = [spinner5 centerYAnchor];
+  listContentView8 = [(DevicesHeaderView *)self listContentView];
+  textLayoutGuide2 = [listContentView8 textLayoutGuide];
+  centerYAnchor2 = [textLayoutGuide2 centerYAnchor];
+  v25 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v53[5] = v25;
   v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v53 count:6];
   [v37 activateConstraints:v26];

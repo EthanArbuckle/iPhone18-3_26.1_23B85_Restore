@@ -1,7 +1,7 @@
 @interface AppDelegate
 - (_TtC10Calculator11AppDelegate)init;
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5;
-- (void)buildMenuWithBuilder:(id)a3;
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options;
+- (void)buildMenuWithBuilder:(id)builder;
 @end
 
 @implementation AppDelegate
@@ -13,22 +13,22 @@
   return [(AppDelegate *)&v3 init];
 }
 
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  v12 = sub_10000AD38(v9);
+  applicationCopy = application;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  v12 = sub_10000AD38(sessionCopy);
 
   return v12;
 }
 
-- (void)buildMenuWithBuilder:(id)a3
+- (void)buildMenuWithBuilder:(id)builder
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1000A83AC(a3);
+  selfCopy = self;
+  sub_1000A83AC(builder);
   swift_unknownObjectRelease();
 }
 

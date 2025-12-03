@@ -1,22 +1,22 @@
 @interface SASProximityAnisetteRequestAction
-+ (id)actionFromDictionary:(id)a3;
++ (id)actionFromDictionary:(id)dictionary;
 - (id)requestPayload;
 - (id)responsePayload;
-- (void)eraseAnisetteWithCompletion:(id)a3;
-- (void)fetchAnisetteDataAndProvisionIfNecessary:(BOOL)a3 withCompletion:(id)a4;
-- (void)legacyAnisetteDataForDSID:(id)a3 withCompletion:(id)a4;
-- (void)provisionAnisetteWithCompletion:(id)a3;
-- (void)setResponseFromData:(id)a3;
-- (void)syncAnisetteWithSIMData:(id)a3 completion:(id)a4;
+- (void)eraseAnisetteWithCompletion:(id)completion;
+- (void)fetchAnisetteDataAndProvisionIfNecessary:(BOOL)necessary withCompletion:(id)completion;
+- (void)legacyAnisetteDataForDSID:(id)d withCompletion:(id)completion;
+- (void)provisionAnisetteWithCompletion:(id)completion;
+- (void)setResponseFromData:(id)data;
+- (void)syncAnisetteWithSIMData:(id)data completion:(id)completion;
 @end
 
 @implementation SASProximityAnisetteRequestAction
 
-+ (id)actionFromDictionary:(id)a3
++ (id)actionFromDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_alloc_init(SASProximityAnisetteRequestAction);
-  v5 = [v3 objectForKeyedSubscript:@"request"];
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"request"];
 
   -[SASProximityAnisetteRequestAction setRequest:](v4, "setRequest:", [v5 integerValue]);
 
@@ -40,10 +40,10 @@
 {
   v30 = *MEMORY[0x277D85DE8];
   v3 = dispatch_semaphore_create(0);
-  v4 = [(SASProximityAnisetteRequestAction *)self request];
-  if (v4 <= 1)
+  request = [(SASProximityAnisetteRequestAction *)self request];
+  if (request <= 1)
   {
-    if (!v4)
+    if (!request)
     {
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
@@ -56,12 +56,12 @@
       goto LABEL_13;
     }
 
-    if (v4 != 1)
+    if (request != 1)
     {
       goto LABEL_14;
     }
 
-    v5 = [(SASProximityAnisetteRequestAction *)self sim];
+    dsid = [(SASProximityAnisetteRequestAction *)self sim];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __52__SASProximityAnisetteRequestAction_responsePayload__block_invoke_11;
@@ -69,12 +69,12 @@
     v24[4] = self;
     v6 = &v25;
     v25 = v3;
-    [(SASProximityAnisetteRequestAction *)self syncAnisetteWithSIMData:v5 completion:v24];
+    [(SASProximityAnisetteRequestAction *)self syncAnisetteWithSIMData:dsid completion:v24];
   }
 
   else
   {
-    if (v4 == 2)
+    if (request == 2)
     {
       v22[0] = MEMORY[0x277D85DD0];
       v22[1] = 3221225472;
@@ -87,9 +87,9 @@
       goto LABEL_13;
     }
 
-    if (v4 == 3)
+    if (request == 3)
     {
-      v7 = [(SASProximityAnisetteRequestAction *)self shouldProvision];
+      shouldProvision = [(SASProximityAnisetteRequestAction *)self shouldProvision];
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = __52__SASProximityAnisetteRequestAction_responsePayload__block_invoke_13;
@@ -97,16 +97,16 @@
       v20[4] = self;
       v6 = &v21;
       v21 = v3;
-      [(SASProximityAnisetteRequestAction *)self fetchAnisetteDataAndProvisionIfNecessary:v7 withCompletion:v20];
+      [(SASProximityAnisetteRequestAction *)self fetchAnisetteDataAndProvisionIfNecessary:shouldProvision withCompletion:v20];
       goto LABEL_13;
     }
 
-    if (v4 != 4)
+    if (request != 4)
     {
       goto LABEL_14;
     }
 
-    v5 = [(SASProximityAnisetteRequestAction *)self dsid];
+    dsid = [(SASProximityAnisetteRequestAction *)self dsid];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __52__SASProximityAnisetteRequestAction_responsePayload__block_invoke_15;
@@ -114,7 +114,7 @@
     v18[4] = self;
     v6 = &v19;
     v19 = v3;
-    [(SASProximityAnisetteRequestAction *)self legacyAnisetteDataForDSID:v5 withCompletion:v18];
+    [(SASProximityAnisetteRequestAction *)self legacyAnisetteDataForDSID:dsid withCompletion:v18];
   }
 
 LABEL_13:
@@ -124,12 +124,12 @@ LABEL_14:
   v9 = [MEMORY[0x277CCABB0] numberWithBool:{-[SASProximityAnisetteRequestAction success](self, "success")}];
   [v8 setObject:v9 forKeyedSubscript:@"success"];
 
-  v10 = [(SASProximityAnisetteRequestAction *)self anisetteData];
+  anisetteData = [(SASProximityAnisetteRequestAction *)self anisetteData];
 
-  if (v10)
+  if (anisetteData)
   {
-    v11 = [(SASProximityAnisetteRequestAction *)self anisetteData];
-    [v8 setObject:v11 forKeyedSubscript:@"anisette"];
+    anisetteData2 = [(SASProximityAnisetteRequestAction *)self anisetteData];
+    [v8 setObject:anisetteData2 forKeyedSubscript:@"anisette"];
   }
 
   v17 = 0;
@@ -261,18 +261,18 @@ void __52__SASProximityAnisetteRequestAction_responsePayload__block_invoke_15(ui
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setResponseFromData:(id)a3
+- (void)setResponseFromData:(id)data
 {
   v20 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCAAC8];
   v5 = MEMORY[0x277CBEB98];
-  v6 = a3;
+  dataCopy = data;
   v7 = objc_opt_class();
   v8 = objc_opt_class();
   v9 = objc_opt_class();
   v10 = [v5 setWithObjects:{v7, v8, v9, objc_opt_class(), 0}];
   v17 = 0;
-  v11 = [v4 unarchivedObjectOfClasses:v10 fromData:v6 error:&v17];
+  v11 = [v4 unarchivedObjectOfClasses:v10 fromData:dataCopy error:&v17];
 
   v12 = v17;
   if (!v11)
@@ -295,46 +295,46 @@ void __52__SASProximityAnisetteRequestAction_responsePayload__block_invoke_15(ui
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)provisionAnisetteWithCompletion:(id)a3
+- (void)provisionAnisetteWithCompletion:(id)completion
 {
   v3 = MEMORY[0x277CF0168];
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(v3);
-  [v5 provisionWithCompletion:v4];
+  [v5 provisionWithCompletion:completionCopy];
 }
 
-- (void)syncAnisetteWithSIMData:(id)a3 completion:(id)a4
+- (void)syncAnisetteWithSIMData:(id)data completion:(id)completion
 {
   v5 = MEMORY[0x277CF0168];
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  dataCopy = data;
   v8 = objc_alloc_init(v5);
-  [v8 syncWithSIMData:v7 completion:v6];
+  [v8 syncWithSIMData:dataCopy completion:completionCopy];
 }
 
-- (void)eraseAnisetteWithCompletion:(id)a3
+- (void)eraseAnisetteWithCompletion:(id)completion
 {
   v3 = MEMORY[0x277CF0168];
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(v3);
-  [v5 eraseWithCompletion:v4];
+  [v5 eraseWithCompletion:completionCopy];
 }
 
-- (void)fetchAnisetteDataAndProvisionIfNecessary:(BOOL)a3 withCompletion:(id)a4
+- (void)fetchAnisetteDataAndProvisionIfNecessary:(BOOL)necessary withCompletion:(id)completion
 {
   v4 = MEMORY[0x277CF0168];
-  v5 = a4;
+  completionCopy = completion;
   v6 = objc_alloc_init(v4);
-  [v6 anisetteDataWithCompletion:v5];
+  [v6 anisetteDataWithCompletion:completionCopy];
 }
 
-- (void)legacyAnisetteDataForDSID:(id)a3 withCompletion:(id)a4
+- (void)legacyAnisetteDataForDSID:(id)d withCompletion:(id)completion
 {
   v5 = MEMORY[0x277CF0168];
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  dCopy = d;
   v8 = objc_alloc_init(v5);
-  [v8 legacyAnisetteDataForDSID:v7 withCompletion:v6];
+  [v8 legacyAnisetteDataForDSID:dCopy withCompletion:completionCopy];
 }
 
 @end

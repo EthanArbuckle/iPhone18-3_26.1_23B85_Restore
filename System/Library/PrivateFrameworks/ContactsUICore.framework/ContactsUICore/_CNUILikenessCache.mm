@@ -1,13 +1,13 @@
 @interface _CNUILikenessCache
 + (id)log;
-- (_CNUILikenessCache)initWithCapacity:(unint64_t)a3;
-- (id)objectForKey:(id)a3 onCacheMiss:(id)a4;
-- (void)emptyCache:(id)a3;
-- (void)receiveDatabaseChangeNotification:(id)a3;
+- (_CNUILikenessCache)initWithCapacity:(unint64_t)capacity;
+- (id)objectForKey:(id)key onCacheMiss:(id)miss;
+- (void)emptyCache:(id)cache;
+- (void)receiveDatabaseChangeNotification:(id)notification;
 - (void)receiveMemoryPressureSignal;
 - (void)setUpDatabaseChangeNotificationHandler;
 - (void)setUpEvictionHandler;
-- (void)setUpIvarsWithCacheCapacity:(unint64_t)a3;
+- (void)setUpIvarsWithCacheCapacity:(unint64_t)capacity;
 - (void)setUpMemoryPressureWatcher;
 @end
 
@@ -25,7 +25,7 @@
   return v3;
 }
 
-- (_CNUILikenessCache)initWithCapacity:(unint64_t)a3
+- (_CNUILikenessCache)initWithCapacity:(unint64_t)capacity
 {
   v8.receiver = self;
   v8.super_class = _CNUILikenessCache;
@@ -33,7 +33,7 @@
   v5 = v4;
   if (v4)
   {
-    [(_CNUILikenessCache *)v4 setUpIvarsWithCacheCapacity:a3];
+    [(_CNUILikenessCache *)v4 setUpIvarsWithCacheCapacity:capacity];
     [(_CNUILikenessCache *)v5 setUpEvictionHandler];
     [(_CNUILikenessCache *)v5 setUpDatabaseChangeNotificationHandler];
     [(_CNUILikenessCache *)v5 setUpMemoryPressureWatcher];
@@ -43,15 +43,15 @@
   return v5;
 }
 
-- (void)setUpIvarsWithCacheCapacity:(unint64_t)a3
+- (void)setUpIvarsWithCacheCapacity:(unint64_t)capacity
 {
   v16[1] = *MEMORY[0x1E69E9840];
   v5 = objc_alloc(MEMORY[0x1E6996660]);
-  v6 = [MEMORY[0x1E6996660] boundingStrategyWithCapacity:a3];
+  v6 = [MEMORY[0x1E6996660] boundingStrategyWithCapacity:capacity];
   v16[0] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
-  v8 = [MEMORY[0x1E6996660] nonatomicCacheScheduler];
-  v9 = [v5 initWithBoundingStrategies:v7 resourceScheduler:v8];
+  nonatomicCacheScheduler = [MEMORY[0x1E6996660] nonatomicCacheScheduler];
+  v9 = [v5 initWithBoundingStrategies:v7 resourceScheduler:nonatomicCacheScheduler];
   cache = self->_cache;
   self->_cache = v9;
 
@@ -81,15 +81,15 @@
 
 - (void)setUpDatabaseChangeNotificationHandler
 {
-  v4 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v3 = [v4 notificationCenter];
-  [v3 addObserver:self selector:sel_receiveDatabaseChangeNotification_ name:*MEMORY[0x1E695C3D8] object:0];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  notificationCenter = [currentEnvironment notificationCenter];
+  [notificationCenter addObserver:self selector:sel_receiveDatabaseChangeNotification_ name:*MEMORY[0x1E695C3D8] object:0];
 }
 
 - (void)setUpMemoryPressureWatcher
 {
-  v3 = [(_CNUILikenessCache *)self backgroundQueue];
-  v4 = dispatch_source_create(MEMORY[0x1E69E96E8], 0, 6uLL, v3);
+  backgroundQueue = [(_CNUILikenessCache *)self backgroundQueue];
+  v4 = dispatch_source_create(MEMORY[0x1E69E96E8], 0, 6uLL, backgroundQueue);
   memoryMonitoringSource = self->_memoryMonitoringSource;
   self->_memoryMonitoringSource = v4;
 
@@ -106,23 +106,23 @@
   objc_destroyWeak(&location);
 }
 
-- (id)objectForKey:(id)a3 onCacheMiss:(id)a4
+- (id)objectForKey:(id)key onCacheMiss:(id)miss
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_CNUILikenessCache *)self lock];
-  v13 = v6;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  keyCopy = key;
+  missCopy = miss;
+  lock = [(_CNUILikenessCache *)self lock];
+  v13 = keyCopy;
+  v14 = missCopy;
+  v9 = missCopy;
+  v10 = keyCopy;
   v11 = CNResultWithLock();
 
   return v11;
 }
 
-- (void)receiveDatabaseChangeNotification:(id)a3
+- (void)receiveDatabaseChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = [objc_opt_class() log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -130,7 +130,7 @@
     _os_log_impl(&dword_1A31E6000, v5, OS_LOG_TYPE_DEFAULT, "Database change notification received", v6, 2u);
   }
 
-  [(_CNUILikenessCache *)self emptyCache:v4];
+  [(_CNUILikenessCache *)self emptyCache:notificationCopy];
 }
 
 - (void)receiveMemoryPressureSignal
@@ -145,9 +145,9 @@
   [(_CNUILikenessCache *)self emptyCache:0];
 }
 
-- (void)emptyCache:(id)a3
+- (void)emptyCache:(id)cache
 {
-  v3 = [(_CNUILikenessCache *)self lock];
+  lock = [(_CNUILikenessCache *)self lock];
   CNRunWithLock();
 }
 

@@ -50,11 +50,11 @@
 
   v1 = v0;
   _Block_object_dispose(&v8, 8);
-  v2 = [v0 sharedAVSystemController];
+  sharedAVSystemController = [v0 sharedAVSystemController];
   LODWORD(v7[0]) = 0;
   v6 = 0;
   v4 = 0;
-  if ([v2 getActiveCategoryVolume:v7 andName:&v6])
+  if ([sharedAVSystemController getActiveCategoryVolume:v7 andName:&v6])
   {
     LODWORD(v3) = v7[0];
     v4 = [MEMORY[0x277CCABB0] numberWithFloat:v3];

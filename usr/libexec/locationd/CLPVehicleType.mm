@@ -1,17 +1,17 @@
 @interface CLPVehicleType
-- (id)initWithCLMotionActivity:(CLMotionActivity *)a3;
+- (id)initWithCLMotionActivity:(CLMotionActivity *)activity;
 @end
 
 @implementation CLPVehicleType
 
-- (id)initWithCLMotionActivity:(CLMotionActivity *)a3
+- (id)initWithCLMotionActivity:(CLMotionActivity *)activity
 {
   v16.receiver = self;
   v16.super_class = CLPVehicleType;
-  v13 = [(CLPVehicleType *)&v16 init:a3];
+  v13 = [(CLPVehicleType *)&v16 init:activity];
   if (v13)
   {
-    v14 = +[CLPMeta isInIndia]&& CLMotionActivity::isInVehicle(a3) && a3->vehicleType == 3;
+    v14 = +[CLPMeta isInIndia]&& CLMotionActivity::isInVehicle(activity) && activity->vehicleType == 3;
     [(CLPVehicleType *)v13 setIsMotorcycle:v14];
   }
 

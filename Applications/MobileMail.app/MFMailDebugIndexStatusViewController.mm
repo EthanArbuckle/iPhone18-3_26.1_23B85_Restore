@@ -1,24 +1,24 @@
 @interface MFMailDebugIndexStatusViewController
 - (NSISO8601DateFormatter)reindexDateFormatter;
-- (id)_calculateIndexingSpeedWithMessagesIndexed:(int64_t)a3;
-- (id)_dataForIndexPath:(id)a3;
-- (id)_loadCacheForKey:(id)a3;
-- (id)_messagesIndexedInTimeInterval:(double)a3 snapshots:(id)a4 currentMessagesIndexed:(int64_t)a5;
+- (id)_calculateIndexingSpeedWithMessagesIndexed:(int64_t)indexed;
+- (id)_dataForIndexPath:(id)path;
+- (id)_loadCacheForKey:(id)key;
+- (id)_messagesIndexedInTimeInterval:(double)interval snapshots:(id)snapshots currentMessagesIndexed:(int64_t)indexed;
 - (id)_reindexReasonsCache;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_periodicallyRefreshStatus;
 - (void)_refreshStatus;
 - (void)_startObservingTurboModeToggle;
 - (void)_stopObservingTurboModeToggle;
 - (void)_stopRefreshingStatus;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation MFMailDebugIndexStatusViewController
@@ -48,58 +48,58 @@
   v17.super_class = MFMailDebugIndexStatusViewController;
   [(MFMailDebugIndexStatusViewController *)&v17 viewDidLoad];
   v3 = [UITableView alloc];
-  v4 = [(MFMailDebugIndexStatusViewController *)self view];
-  [v4 bounds];
+  view = [(MFMailDebugIndexStatusViewController *)self view];
+  [view bounds];
   v5 = [v3 initWithFrame:1 style:?];
   [(MFMailDebugIndexStatusViewController *)self setTableView:v5];
 
-  v6 = [(MFMailDebugIndexStatusViewController *)self tableView];
-  [v6 setAutoresizingMask:18];
+  tableView = [(MFMailDebugIndexStatusViewController *)self tableView];
+  [tableView setAutoresizingMask:18];
 
-  v7 = [(MFMailDebugIndexStatusViewController *)self tableView];
-  [v7 setDataSource:self];
+  tableView2 = [(MFMailDebugIndexStatusViewController *)self tableView];
+  [tableView2 setDataSource:self];
 
-  v8 = [(MFMailDebugIndexStatusViewController *)self tableView];
-  [v8 setDelegate:self];
+  tableView3 = [(MFMailDebugIndexStatusViewController *)self tableView];
+  [tableView3 setDelegate:self];
 
-  v9 = [(MFMailDebugIndexStatusViewController *)self tableView];
-  [v9 setSeparatorStyle:1];
+  tableView4 = [(MFMailDebugIndexStatusViewController *)self tableView];
+  [tableView4 setSeparatorStyle:1];
 
-  v10 = [(MFMailDebugIndexStatusViewController *)self tableView];
-  [v10 setAllowsSelection:1];
+  tableView5 = [(MFMailDebugIndexStatusViewController *)self tableView];
+  [tableView5 setAllowsSelection:1];
 
   v11 = objc_alloc_init(NSNumberFormatter);
   [(MFMailDebugIndexStatusViewController *)self setNumberFormatter:v11];
 
-  v12 = [(MFMailDebugIndexStatusViewController *)self numberFormatter];
-  [v12 setGroupingSize:3];
+  numberFormatter = [(MFMailDebugIndexStatusViewController *)self numberFormatter];
+  [numberFormatter setGroupingSize:3];
 
-  v13 = [(MFMailDebugIndexStatusViewController *)self numberFormatter];
-  [v13 setUsesGroupingSeparator:1];
+  numberFormatter2 = [(MFMailDebugIndexStatusViewController *)self numberFormatter];
+  [numberFormatter2 setUsesGroupingSeparator:1];
 
-  v14 = [(MFMailDebugIndexStatusViewController *)self numberFormatter];
-  [v14 setGroupingSeparator:{@", "}];
+  numberFormatter3 = [(MFMailDebugIndexStatusViewController *)self numberFormatter];
+  [numberFormatter3 setGroupingSeparator:{@", "}];
 
-  v15 = [(MFMailDebugIndexStatusViewController *)self view];
-  v16 = [(MFMailDebugIndexStatusViewController *)self tableView];
-  [v15 addSubview:v16];
+  view2 = [(MFMailDebugIndexStatusViewController *)self view];
+  tableView6 = [(MFMailDebugIndexStatusViewController *)self tableView];
+  [view2 addSubview:tableView6];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = MFMailDebugIndexStatusViewController;
-  [(MFMailDebugIndexStatusViewController *)&v4 viewWillAppear:a3];
+  [(MFMailDebugIndexStatusViewController *)&v4 viewWillAppear:appear];
   [(MFMailDebugIndexStatusViewController *)self _refreshStatus];
   [(MFMailDebugIndexStatusViewController *)self _periodicallyRefreshStatus];
   [(MFMailDebugIndexStatusViewController *)self _startObservingTurboModeToggle];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = MFMailDebugIndexStatusViewController;
-  [(MFMailDebugIndexStatusViewController *)&v4 viewWillDisappear:a3];
+  [(MFMailDebugIndexStatusViewController *)&v4 viewWillDisappear:disappear];
   [(MFMailDebugIndexStatusViewController *)self _stopRefreshingStatus];
   [(MFMailDebugIndexStatusViewController *)self _stopObservingTurboModeToggle];
 }
@@ -118,20 +118,20 @@
   v3 = +[UIApplication sharedApplication];
   [v3 setIdleTimerDisabled:0];
 
-  v4 = [(MFMailDebugIndexStatusViewController *)self turboModeObservationToken];
-  [v4 cancel];
+  turboModeObservationToken = [(MFMailDebugIndexStatusViewController *)self turboModeObservationToken];
+  [turboModeObservationToken cancel];
 
   [(MFMailDebugIndexStatusViewController *)self setTurboModeObservationToken:0];
 }
 
-- (id)_dataForIndexPath:(id)a3
+- (id)_dataForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(MFMailDebugIndexStatusViewController *)self items];
-  v6 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v4 section]);
-  v7 = [v5 objectForKeyedSubscript:v6];
+  pathCopy = path;
+  items = [(MFMailDebugIndexStatusViewController *)self items];
+  v6 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [pathCopy section]);
+  v7 = [items objectForKeyedSubscript:v6];
 
-  v8 = [v4 row];
+  v8 = [pathCopy row];
   if (v8 >= [v7 count])
   {
     v9 = 0;
@@ -139,45 +139,45 @@
 
   else
   {
-    v9 = [v7 objectAtIndexedSubscript:{objc_msgSend(v4, "row")}];
+    v9 = [v7 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
   }
 
   return v9;
 }
 
-- (id)_messagesIndexedInTimeInterval:(double)a3 snapshots:(id)a4 currentMessagesIndexed:(int64_t)a5
+- (id)_messagesIndexedInTimeInterval:(double)interval snapshots:(id)snapshots currentMessagesIndexed:(int64_t)indexed
 {
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v8 = a4;
-  v9 = [v8 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  snapshotsCopy = snapshots;
+  v9 = [snapshotsCopy countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v9)
   {
     v10 = *v25;
-    v11 = a3 * 0.8;
-    v12 = a3 * 1.2;
+    v11 = interval * 0.8;
+    v12 = interval * 1.2;
 LABEL_3:
     v13 = 0;
     while (1)
     {
       if (*v25 != v10)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(snapshotsCopy);
       }
 
       v14 = *(*(&v24 + 1) + 8 * v13);
       v15 = objc_autoreleasePoolPush();
-      v16 = [v14 date];
-      [v16 timeIntervalSinceNow];
+      date = [v14 date];
+      [date timeIntervalSinceNow];
       v18 = v17;
 
-      v19 = [v14 messagesIndexed];
-      v20 = [v19 integerValue];
+      messagesIndexed = [v14 messagesIndexed];
+      integerValue = [messagesIndexed integerValue];
 
       v21 = v12 < -v18 || v11 > -v18;
-      v22 = a5 - v20 < 0 || v21;
+      v22 = indexed - integerValue < 0 || v21;
       if ((v22 & 1) == 0)
       {
         v5 = [NSNumber numberWithInteger:?];
@@ -191,7 +191,7 @@ LABEL_3:
 
       if (v9 == ++v13)
       {
-        v9 = [v8 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        v9 = [snapshotsCopy countByEnumeratingWithState:&v24 objects:v28 count:16];
         if (v9)
         {
           goto LABEL_3;
@@ -211,14 +211,14 @@ LABEL_17:
   return v5;
 }
 
-- (id)_calculateIndexingSpeedWithMessagesIndexed:(int64_t)a3
+- (id)_calculateIndexingSpeedWithMessagesIndexed:(int64_t)indexed
 {
   v5 = +[NSDate now];
-  v6 = [(MFMailDebugIndexStatusViewController *)self lastKnownIndexCountDate];
-  if (v6 && (v7 = [(MFMailDebugIndexStatusViewController *)self lastKnownIndexCount], v6, v7))
+  lastKnownIndexCountDate = [(MFMailDebugIndexStatusViewController *)self lastKnownIndexCountDate];
+  if (lastKnownIndexCountDate && (v7 = [(MFMailDebugIndexStatusViewController *)self lastKnownIndexCount], lastKnownIndexCountDate, v7))
   {
-    v8 = [(MFMailDebugIndexStatusViewController *)self lastKnownIndexCountDate];
-    [v5 timeIntervalSinceDate:v8];
+    lastKnownIndexCountDate2 = [(MFMailDebugIndexStatusViewController *)self lastKnownIndexCountDate];
+    [v5 timeIntervalSinceDate:lastKnownIndexCountDate2];
     v10 = v9;
 
     if (v10 < 5.0)
@@ -226,10 +226,10 @@ LABEL_17:
       goto LABEL_7;
     }
 
-    v11 = [(MFMailDebugIndexStatusViewController *)self lastKnownIndexCount];
-    v12 = [(MFMailDebugIndexStatusViewController *)self lastKnownIndexCountDate];
-    [v5 timeIntervalSinceDate:v12];
-    v14 = [NSNumber numberWithDouble:(60 * (a3 - v11)) / v13];
+    lastKnownIndexCount = [(MFMailDebugIndexStatusViewController *)self lastKnownIndexCount];
+    lastKnownIndexCountDate3 = [(MFMailDebugIndexStatusViewController *)self lastKnownIndexCountDate];
+    [v5 timeIntervalSinceDate:lastKnownIndexCountDate3];
+    v14 = [NSNumber numberWithDouble:(60 * (indexed - lastKnownIndexCount)) / v13];
     [(MFMailDebugIndexStatusViewController *)self setCurrentIndexingSpeed:v14];
   }
 
@@ -239,19 +239,19 @@ LABEL_17:
   }
 
   [(MFMailDebugIndexStatusViewController *)self setLastKnownIndexCountDate:v5];
-  [(MFMailDebugIndexStatusViewController *)self setLastKnownIndexCount:a3];
+  [(MFMailDebugIndexStatusViewController *)self setLastKnownIndexCount:indexed];
 LABEL_7:
-  v15 = [(MFMailDebugIndexStatusViewController *)self currentIndexingSpeed];
+  currentIndexingSpeed = [(MFMailDebugIndexStatusViewController *)self currentIndexingSpeed];
 
-  return v15;
+  return currentIndexingSpeed;
 }
 
-- (id)_loadCacheForKey:(id)a3
+- (id)_loadCacheForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = objc_alloc_init(NSMutableArray);
   v5 = +[NSUserDefaults em_userDefaults];
-  v6 = [v5 objectForKey:v3];
+  v6 = [v5 objectForKey:keyCopy];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1001DDAF8;
@@ -267,9 +267,9 @@ LABEL_7:
 
 - (id)_reindexReasonsCache
 {
-  v3 = [(MFMailDebugIndexStatusViewController *)self reindexReasonsCache];
+  reindexReasonsCache = [(MFMailDebugIndexStatusViewController *)self reindexReasonsCache];
 
-  if (!v3)
+  if (!reindexReasonsCache)
   {
     v4 = +[NSUserDefaults em_userDefaults];
     v5 = [v4 objectForKey:EDSearchableIndexDefaultsKeyLastKnownReindexReasons];
@@ -292,8 +292,8 @@ LABEL_7:
 
 - (void)_stopRefreshingStatus
 {
-  v3 = [(MFMailDebugIndexStatusViewController *)self refreshTimer];
-  [v3 invalidate];
+  refreshTimer = [(MFMailDebugIndexStatusViewController *)self refreshTimer];
+  [refreshTimer invalidate];
 
   [(MFMailDebugIndexStatusViewController *)self setRefreshTimer:0];
 }
@@ -302,44 +302,44 @@ LABEL_7:
 {
   objc_initWeak(&location, self);
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 daemonInterface];
-  v4 = [v3 diagnosticInfoGatherer];
+  daemonInterface = [v2 daemonInterface];
+  diagnosticInfoGatherer = [daemonInterface diagnosticInfoGatherer];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1001DDE70;
   v5[3] = &unk_10064E0C0;
   objc_copyWeak(&v6, &location);
-  [v4 databaseStatisticsWithCompletionHandler:v5];
+  [diagnosticInfoGatherer databaseStatisticsWithCompletionHandler:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  if (a4 > 5)
+  if (section > 5)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_100654738 + a4);
+    return *(&off_100654738 + section);
   }
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v6 = a3;
-  if (a4 > 3)
+  viewCopy = view;
+  if (section > 3)
   {
     v11 = @"Showing up to last 50 recorded re-index reasons.";
-    if (a4 != 5)
+    if (section != 5)
     {
       v11 = 0;
     }
 
-    if (a4 == 4)
+    if (section == 4)
     {
       v10 = @"Server messages are downloaded and indexed overnight if the device has been plugged in.";
     }
@@ -350,12 +350,12 @@ LABEL_7:
     }
   }
 
-  else if (a4)
+  else if (section)
   {
-    if (a4 == 3)
+    if (section == 3)
     {
-      v7 = [(MFMailDebugIndexStatusViewController *)self items];
-      v8 = [v7 objectForKeyedSubscript:&off_100674360];
+      items = [(MFMailDebugIndexStatusViewController *)self items];
+      v8 = [items objectForKeyedSubscript:&off_100674360];
       v9 = [v8 count];
 
       if (v9 < 4)
@@ -383,14 +383,14 @@ LABEL_7:
   return v10;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MFMailDebugIndexStatusViewController *)self _dataForIndexPath:v7];
-  v9 = [v8 primaryText];
-  v10 = v9;
-  if (v9 == @"Turbo mode")
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(MFMailDebugIndexStatusViewController *)self _dataForIndexPath:pathCopy];
+  primaryText = [v8 primaryText];
+  v10 = primaryText;
+  if (primaryText == @"Turbo mode")
   {
     v21 = [DebugSwitchCell preferenceSwitchWithTitle:@"Turbo mode" preference:22];
 LABEL_9:
@@ -398,7 +398,7 @@ LABEL_9:
     goto LABEL_12;
   }
 
-  if (v9 == @"View chart")
+  if (primaryText == @"View chart")
   {
     objc_initWeak(&location, self);
     v27[0] = _NSConcreteStackBlock;
@@ -406,7 +406,7 @@ LABEL_9:
     v27[2] = sub_1001DFB30;
     v27[3] = &unk_10064CC78;
     objc_copyWeak(&v29, &location);
-    v28 = v7;
+    v28 = pathCopy;
     v11 = [DebugButtonCell cellWithTitle:@"View chart" style:2 handler:v27];
 
     objc_destroyWeak(&v29);
@@ -414,20 +414,20 @@ LABEL_9:
     goto LABEL_12;
   }
 
-  if (v9 == @"Reset speed statistics")
+  if (primaryText == @"Reset speed statistics")
   {
     v24[0] = _NSConcreteStackBlock;
     v24[1] = 3221225472;
     v24[2] = sub_1001DFC68;
     v24[3] = &unk_10064C660;
-    v25 = v7;
-    v26 = self;
+    v25 = pathCopy;
+    selfCopy = self;
     v11 = [DebugButtonCell cellWithTitle:@"Reset speed statistics" style:1 handler:v24];
 
     goto LABEL_12;
   }
 
-  if (v9 == @"Reset reindexing reasons")
+  if (primaryText == @"Reset reindexing reasons")
   {
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
@@ -438,7 +438,7 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v11 = [v6 dequeueReusableCellWithIdentifier:@"DebugIndexStatusCell"];
+  v11 = [viewCopy dequeueReusableCellWithIdentifier:@"DebugIndexStatusCell"];
   if (!v11)
   {
     v11 = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:@"DebugIndexStatusCell"];
@@ -450,22 +450,22 @@ LABEL_9:
 
   v13 = +[UIListContentConfiguration cellConfiguration];
   v14 = +[UIColor secondaryLabelColor];
-  v15 = [v13 secondaryTextProperties];
-  [v15 setColor:v14];
+  secondaryTextProperties = [v13 secondaryTextProperties];
+  [secondaryTextProperties setColor:v14];
 
-  v16 = [v8 primaryText];
-  [v13 setText:v16];
+  primaryText2 = [v8 primaryText];
+  [v13 setText:primaryText2];
 
-  v17 = [v8 secondaryText];
-  [v13 setSecondaryText:v17];
+  secondaryText = [v8 secondaryText];
+  [v13 setSecondaryText:secondaryText];
 
   [v11 setContentConfiguration:v13];
   v18 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   v19 = +[UIColor secondaryLabelColor];
   [v18 setTextColor:v19];
 
-  v20 = [v8 labelText];
-  [v18 setText:v20];
+  labelText = [v8 labelText];
+  [v18 setText:labelText];
 
   [v18 sizeToFit];
   [v11 setAccessoryView:v18];
@@ -475,36 +475,36 @@ LABEL_12:
   return v11;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(MFMailDebugIndexStatusViewController *)self items];
-  v6 = [NSNumber numberWithInteger:a4];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  items = [(MFMailDebugIndexStatusViewController *)self items];
+  v6 = [NSNumber numberWithInteger:section];
+  v7 = [items objectForKeyedSubscript:v6];
   v8 = [v7 count];
 
   return v8;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(MFMailDebugIndexStatusViewController *)self items];
-  v4 = [v3 count];
+  items = [(MFMailDebugIndexStatusViewController *)self items];
+  v4 = [items count];
 
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v7 = a3;
-  v5 = a4;
-  v6 = [v7 cellForRowAtIndexPath:v5];
+  viewCopy = view;
+  pathCopy = path;
+  v6 = [viewCopy cellForRowAtIndexPath:pathCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [v6 invokeAction];
   }
 
-  [v7 deselectRowAtIndexPath:v5 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
 @end

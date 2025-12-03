@@ -1,11 +1,11 @@
 @interface PASampleTimeSeriesDataStore
-- (PASampleTimeSeriesDataStore)initWithCoder:(id)a3;
-- (PASampleTimeSeriesDataStore)initWithSampleStore:(id)a3;
+- (PASampleTimeSeriesDataStore)initWithCoder:(id)coder;
+- (PASampleTimeSeriesDataStore)initWithSampleStore:(id)store;
 @end
 
 @implementation PASampleTimeSeriesDataStore
 
-- (PASampleTimeSeriesDataStore)initWithSampleStore:(id)a3
+- (PASampleTimeSeriesDataStore)initWithSampleStore:(id)store
 {
   v7.receiver = self;
   v7.super_class = PASampleTimeSeriesDataStore;
@@ -13,20 +13,20 @@
   v5 = v4;
   if (v4)
   {
-    objc_storeStrong(&v4->_sampleStore, a3);
+    objc_storeStrong(&v4->_sampleStore, store);
   }
 
   return v5;
 }
 
-- (PASampleTimeSeriesDataStore)initWithCoder:(id)a3
+- (PASampleTimeSeriesDataStore)initWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = PASampleTimeSeriesDataStore;
   v4 = [(PASampleTimeSeriesDataStore *)&v9 init];
   if (v4)
   {
-    v5 = [[SASampleStore alloc] initWithCoder:a3];
+    v5 = [[SASampleStore alloc] initWithCoder:coder];
     if (!v5)
     {
       v7 = 0;

@@ -1,58 +1,58 @@
 @interface HKOverlayRoomAudioViewController
-+ (id)createInteractiveChartViewControllerForTypeIdentifier:(id)a3 chartFactory:(id)a4 applicationItems:(id)a5 displayDate:(id)a6 preferredOverlay:(int64_t)a7 restorationUserActivity:(id)a8 trendModel:(id)a9 factorDisplayTypes:(id)a10 additionalChartOptions:(unint64_t)a11;
++ (id)createInteractiveChartViewControllerForTypeIdentifier:(id)identifier chartFactory:(id)factory applicationItems:(id)items displayDate:(id)date preferredOverlay:(int64_t)overlay restorationUserActivity:(id)activity trendModel:(id)model factorDisplayTypes:(id)self0 additionalChartOptions:(unint64_t)self1;
 - (BOOL)_shouldShowUnattenuatedOverlayPill;
 - (BOOL)supportsShowAllFilters;
-- (HKOverlayRoomAudioViewController)initWithDisplayDate:(id)a3 applicationItems:(id)a4 mode:(int64_t)a5 identifier:(id)a6 preferredOverlay:(int64_t)a7 audioExposureDeviceDataSource:(id)a8 trendModel:(id)a9 factorDisplayTypes:(id)a10;
-- (id)_buildAudioAverageDataSourceWithUnitController:(id)a3 displayType:(id)a4 healthStore:(id)a5 averageOverVisibleRange:(BOOL)a6 attenuated:(BOOL)a7;
-- (id)_buildAverageDataSourceTitleFromTimeScope:(BOOL)a3;
+- (HKOverlayRoomAudioViewController)initWithDisplayDate:(id)date applicationItems:(id)items mode:(int64_t)mode identifier:(id)identifier preferredOverlay:(int64_t)overlay audioExposureDeviceDataSource:(id)source trendModel:(id)model factorDisplayTypes:(id)self0;
+- (id)_buildAudioAverageDataSourceWithUnitController:(id)controller displayType:(id)type healthStore:(id)store averageOverVisibleRange:(BOOL)range attenuated:(BOOL)attenuated;
+- (id)_buildAverageDataSourceTitleFromTimeScope:(BOOL)scope;
 - (id)_buildGranularAverageDataSourceTitleFromTimeScope;
-- (id)_headphonePredicateForDevices:(id)a3 withName:(id)a4;
-- (id)_makeHeadphoneDeviceFiltersUsingContextCreator:(id)a3;
-- (id)_unattenuatedBaseDisplayTypeForPrimaryDisplayType:(id)a3 applicationItems:(id)a4;
-- (id)contextSectionContainersForMode:(int64_t)a3 applicationItems:(id)a4 overlayChartController:(id)a5;
-- (id)controllerTitleWithApplicationItems:(id)a3;
+- (id)_headphonePredicateForDevices:(id)devices withName:(id)name;
+- (id)_makeHeadphoneDeviceFiltersUsingContextCreator:(id)creator;
+- (id)_unattenuatedBaseDisplayTypeForPrimaryDisplayType:(id)type applicationItems:(id)items;
+- (id)contextSectionContainersForMode:(int64_t)mode applicationItems:(id)items overlayChartController:(id)controller;
+- (id)controllerTitleWithApplicationItems:(id)items;
 - (id)createChartOverlayViewController;
-- (id)createViewControllerForMode:(int64_t)a3 displayDate:(id)a4 applicationItems:(id)a5;
-- (id)primaryDisplayTypeWithApplicationItems:(id)a3;
+- (id)createViewControllerForMode:(int64_t)mode displayDate:(id)date applicationItems:(id)items;
+- (id)primaryDisplayTypeWithApplicationItems:(id)items;
 - (id)showAllFiltersButtonTitle;
-- (int64_t)_initialPillForPreference:(int64_t)a3;
+- (int64_t)_initialPillForPreference:(int64_t)preference;
 - (void)_registerForAudioExposureDeviceUpdates;
 - (void)_reloadAudioExposureDevices;
 - (void)_setupAudioExposureDataSourceIfNeeded;
-- (void)sampleTypeDateRangeController:(id)a3 didUpdateDateRanges:(id)a4;
+- (void)sampleTypeDateRangeController:(id)controller didUpdateDateRanges:(id)ranges;
 - (void)viewDidLoad;
 @end
 
 @implementation HKOverlayRoomAudioViewController
 
-+ (id)createInteractiveChartViewControllerForTypeIdentifier:(id)a3 chartFactory:(id)a4 applicationItems:(id)a5 displayDate:(id)a6 preferredOverlay:(int64_t)a7 restorationUserActivity:(id)a8 trendModel:(id)a9 factorDisplayTypes:(id)a10 additionalChartOptions:(unint64_t)a11
++ (id)createInteractiveChartViewControllerForTypeIdentifier:(id)identifier chartFactory:(id)factory applicationItems:(id)items displayDate:(id)date preferredOverlay:(int64_t)overlay restorationUserActivity:(id)activity trendModel:(id)model factorDisplayTypes:(id)self0 additionalChartOptions:(unint64_t)self1
 {
-  v17 = a10;
-  v18 = a9;
-  v19 = a8;
-  v20 = a6;
-  v21 = a5;
-  v22 = a3;
-  v23 = [[a1 alloc] initWithDisplayDate:v20 applicationItems:v21 mode:1 identifier:v22 preferredOverlay:a7 trendModel:v18 factorDisplayTypes:v17];
+  typesCopy = types;
+  modelCopy = model;
+  activityCopy = activity;
+  dateCopy = date;
+  itemsCopy = items;
+  identifierCopy = identifier;
+  v23 = [[self alloc] initWithDisplayDate:dateCopy applicationItems:itemsCopy mode:1 identifier:identifierCopy preferredOverlay:overlay trendModel:modelCopy factorDisplayTypes:typesCopy];
 
-  [v23 setRestorationUserActivity:v19];
-  [v23 setAdditionalChartOptions:a11];
+  [v23 setRestorationUserActivity:activityCopy];
+  [v23 setAdditionalChartOptions:options];
 
   return v23;
 }
 
-- (HKOverlayRoomAudioViewController)initWithDisplayDate:(id)a3 applicationItems:(id)a4 mode:(int64_t)a5 identifier:(id)a6 preferredOverlay:(int64_t)a7 audioExposureDeviceDataSource:(id)a8 trendModel:(id)a9 factorDisplayTypes:(id)a10
+- (HKOverlayRoomAudioViewController)initWithDisplayDate:(id)date applicationItems:(id)items mode:(int64_t)mode identifier:(id)identifier preferredOverlay:(int64_t)overlay audioExposureDeviceDataSource:(id)source trendModel:(id)model factorDisplayTypes:(id)self0
 {
-  v15 = a3;
-  v16 = a6;
-  obj = a8;
-  v36 = a8;
-  v17 = a9;
-  v18 = a10;
-  v19 = a4;
-  v20 = [HKOverlayRoomTrendContext findInitialDateFromTrendModel:v17];
+  dateCopy = date;
+  identifierCopy = identifier;
+  obj = source;
+  sourceCopy = source;
+  modelCopy = model;
+  typesCopy = types;
+  itemsCopy = items;
+  v20 = [HKOverlayRoomTrendContext findInitialDateFromTrendModel:modelCopy];
   v21 = v20;
-  v37 = v15;
+  v37 = dateCopy;
   if (v20)
   {
     v22 = v20;
@@ -60,42 +60,42 @@
 
   else
   {
-    v22 = v15;
+    v22 = dateCopy;
   }
 
   v23 = v22;
 
   v38.receiver = self;
   v38.super_class = HKOverlayRoomAudioViewController;
-  v24 = [(HKOverlayRoomViewController *)&v38 initWithDisplayDate:v23 applicationItems:v19 factorDisplayTypes:v18 mode:a5];
+  v24 = [(HKOverlayRoomViewController *)&v38 initWithDisplayDate:v23 applicationItems:itemsCopy factorDisplayTypes:typesCopy mode:mode];
 
   if (v24)
   {
-    if (([v16 isEqualToString:*MEMORY[0x1E696BD08]] & 1) == 0 && (objc_msgSend(v16, "isEqualToString:", *MEMORY[0x1E696BD28]) & 1) == 0 && (objc_msgSend(v16, "isEqualToString:", *MEMORY[0x1E696BD10]) & 1) == 0)
+    if (([identifierCopy isEqualToString:*MEMORY[0x1E696BD08]] & 1) == 0 && (objc_msgSend(identifierCopy, "isEqualToString:", *MEMORY[0x1E696BD28]) & 1) == 0 && (objc_msgSend(identifierCopy, "isEqualToString:", *MEMORY[0x1E696BD10]) & 1) == 0)
     {
-      [HKOverlayRoomAudioViewController initWithDisplayDate:a2 applicationItems:v24 mode:v16 identifier:? preferredOverlay:? audioExposureDeviceDataSource:? trendModel:? factorDisplayTypes:?];
+      [HKOverlayRoomAudioViewController initWithDisplayDate:a2 applicationItems:v24 mode:identifierCopy identifier:? preferredOverlay:? audioExposureDeviceDataSource:? trendModel:? factorDisplayTypes:?];
     }
 
     v24->_isShowingUnattenuatedOverlayPill = 0;
-    objc_storeStrong(&v24->_quantityTypeIdentifier, a6);
-    v24->_preferredOverlay = a7;
+    objc_storeStrong(&v24->_quantityTypeIdentifier, identifier);
+    v24->_preferredOverlay = overlay;
     v25 = objc_alloc_init(MEMORY[0x1E695DF70]);
     contextDelegates = v24->_contextDelegates;
     v24->_contextDelegates = v25;
 
     objc_storeStrong(&v24->_audioExposureDevicesDataSource, obj);
     [(HKOverlayRoomAudioViewController *)v24 _setupAudioExposureDataSourceIfNeeded];
-    objc_storeStrong(&v24->_trendModel, a9);
+    objc_storeStrong(&v24->_trendModel, model);
     preferredOverlayIndex = v24->_preferredOverlayIndex;
     v24->_preferredOverlayIndex = 0;
 
     v28 = 0;
-    if (a5 != 3)
+    if (mode != 3)
     {
-      v29 = [v17 selectTrendInitially];
-      if (a5)
+      selectTrendInitially = [modelCopy selectTrendInitially];
+      if (mode)
       {
-        v30 = a7 == 0;
+        v30 = overlay == 0;
       }
 
       else
@@ -104,7 +104,7 @@
       }
 
       v31 = !v30;
-      v28 = v31 | v29;
+      v28 = v31 | selectTrendInitially;
     }
 
     [(HKOverlayRoomViewController *)v24 setShouldSelectInitialOverlay:v28 & 1, a2];
@@ -121,7 +121,7 @@
   [(HKOverlayRoomAudioViewController *)self _registerForAudioExposureDeviceUpdates];
 }
 
-- (id)controllerTitleWithApplicationItems:(id)a3
+- (id)controllerTitleWithApplicationItems:(id)items
 {
   if ([(HKOverlayRoomAudioViewController *)self _isEnvironmentalAudioExposureRoom])
   {
@@ -133,11 +133,11 @@
 
   else
   {
-    v8 = [(HKOverlayRoomAudioViewController *)self _isHeadphoneAudioExposureRoom];
+    _isHeadphoneAudioExposureRoom = [(HKOverlayRoomAudioViewController *)self _isHeadphoneAudioExposureRoom];
     v4 = HKHealthKitFrameworkBundle();
     v5 = v4;
     v6 = *MEMORY[0x1E696B910];
-    if (v8)
+    if (_isHeadphoneAudioExposureRoom)
     {
       v7 = @"HEADPHONE_AUDIO_EXPOSURE";
     }
@@ -173,34 +173,34 @@
   return v3;
 }
 
-- (id)primaryDisplayTypeWithApplicationItems:(id)a3
+- (id)primaryDisplayTypeWithApplicationItems:(id)items
 {
   v3 = MEMORY[0x1E696C2E0];
   quantityTypeIdentifier = self->_quantityTypeIdentifier;
-  v5 = a3;
+  itemsCopy = items;
   v6 = [v3 quantityTypeForIdentifier:quantityTypeIdentifier];
-  v7 = [v5 displayTypeController];
+  displayTypeController = [itemsCopy displayTypeController];
 
-  v8 = [v7 displayTypeForObjectType:v6];
+  v8 = [displayTypeController displayTypeForObjectType:v6];
 
   return v8;
 }
 
-- (id)contextSectionContainersForMode:(int64_t)a3 applicationItems:(id)a4 overlayChartController:(id)a5
+- (id)contextSectionContainersForMode:(int64_t)mode applicationItems:(id)items overlayChartController:(id)controller
 {
   v125[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = [(HKOverlayRoomAudioViewController *)self primaryDisplayTypeWithApplicationItems:v8];
+  itemsCopy = items;
+  controllerCopy = controller;
+  v10 = [(HKOverlayRoomAudioViewController *)self primaryDisplayTypeWithApplicationItems:itemsCopy];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __108__HKOverlayRoomAudioViewController_contextSectionContainersForMode_applicationItems_overlayChartController___block_invoke_2;
   aBlock[3] = &unk_1E81B6178;
-  v11 = v9;
+  v11 = controllerCopy;
   v111 = v11;
-  v12 = v8;
+  v12 = itemsCopy;
   v112 = v12;
-  v113 = a3;
+  modeCopy = mode;
   v13 = _Block_copy(aBlock);
   v105[0] = MEMORY[0x1E69E9820];
   v105[1] = 3221225472;
@@ -213,7 +213,7 @@
   v107 = v15;
   v16 = v11;
   v108 = v16;
-  v109 = a3;
+  modeCopy2 = mode;
   v17 = _Block_copy(v105);
   v101[0] = MEMORY[0x1E69E9820];
   v101[1] = 3221225472;
@@ -223,7 +223,7 @@
   v102 = v18;
   v19 = v14;
   v103 = v19;
-  v104 = a3;
+  modeCopy3 = mode;
   v93 = _Block_copy(v101);
   v97[0] = MEMORY[0x1E69E9820];
   v97[1] = 3221225472;
@@ -233,7 +233,7 @@
   v98 = v20;
   v21 = v19;
   v99 = v21;
-  v100 = a3;
+  modeCopy4 = mode;
   v22 = _Block_copy(v97);
   v94 = v22;
   v92 = v21;
@@ -249,21 +249,21 @@
       v17[2](v17, self->_quantityTypeIdentifier, 2);
     }
     v25 = ;
-    v26 = [(HKOverlayRoomAudioViewController *)self trendModel];
+    trendModel = [(HKOverlayRoomAudioViewController *)self trendModel];
 
-    if (v26)
+    if (trendModel)
     {
       v27 = [HKOverlayRoomTrendContext alloc];
-      v28 = [(HKOverlayRoomAudioViewController *)self trendModel];
-      v29 = [(HKOverlayRoomTrendContext *)v27 initWithBaseDisplayType:v15 trendModel:v28 overlayChartController:v20 applicationItems:v21 overlayMode:a3];
+      trendModel2 = [(HKOverlayRoomAudioViewController *)self trendModel];
+      v29 = [(HKOverlayRoomTrendContext *)v27 initWithBaseDisplayType:v15 trendModel:trendModel2 overlayChartController:v20 applicationItems:v21 overlayMode:mode];
 
-      v30 = [(HKOverlayRoomViewController *)self chartController];
-      [v30 setTrendAccessibilityDelegate:v29];
+      chartController = [(HKOverlayRoomViewController *)self chartController];
+      [chartController setTrendAccessibilityDelegate:v29];
 
-      v31 = [(HKOverlayRoomAudioViewController *)self trendModel];
-      LODWORD(v28) = [v31 selectTrendInitially];
+      trendModel3 = [(HKOverlayRoomAudioViewController *)self trendModel];
+      LODWORD(trendModel2) = [trendModel3 selectTrendInitially];
 
-      if (v28)
+      if (trendModel2)
       {
         v29 = v29;
 
@@ -276,7 +276,7 @@
       v29 = 0;
     }
 
-    if ((a3 - 1) < 2)
+    if ((mode - 1) < 2)
     {
       v91 = v15;
       v38 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:0];
@@ -285,8 +285,8 @@
 
       v40 = [HKOverlayContextSectionContainer alloc];
       v123 = v25;
-      v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v123 count:1];
-      v41 = __115__HKOverlayRoomBloodGlucoseViewController_contextSectionContainersForMode_applicationItems_overlayChartController___block_invoke(v36, 0, v36);
+      array = [MEMORY[0x1E695DEC8] arrayWithObjects:&v123 count:1];
+      v41 = __115__HKOverlayRoomBloodGlucoseViewController_contextSectionContainersForMode_applicationItems_overlayChartController___block_invoke(array, 0, array);
       v124 = v41;
       v42 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v124 count:1];
       v43 = [(HKOverlayContextSectionContainer *)v40 initWithContainerTitle:0 overlayContextSections:v42];
@@ -300,18 +300,18 @@ LABEL_47:
       goto LABEL_48;
     }
 
-    if (a3 == 3)
+    if (mode == 3)
     {
       v87 = v20;
       v91 = v15;
-      v36 = objc_alloc_init(MEMORY[0x1E695DF70]);
+      array = objc_alloc_init(MEMORY[0x1E695DF70]);
       v44 = v17[2](v17, self->_quantityTypeIdentifier, 2);
-      [(HKOverlayContextSectionContainer *)v36 addObject:v44];
+      [(HKOverlayContextSectionContainer *)array addObject:v44];
 
       if ([(HKOverlayRoomAudioViewController *)self _shouldShowUnattenuatedOverlayPill])
       {
         v45 = v17[2](v17, self->_quantityTypeIdentifier, 0);
-        [(HKOverlayContextSectionContainer *)v36 addObject:v45];
+        [(HKOverlayContextSectionContainer *)array addObject:v45];
 
         self->_isShowingUnattenuatedOverlayPill = 1;
       }
@@ -326,14 +326,14 @@ LABEL_47:
       v49 = v13[2](v13, 5, 0);
       v122[3] = v49;
       v50 = [MEMORY[0x1E695DEC8] arrayWithObjects:v122 count:4];
-      [(HKOverlayContextSectionContainer *)v36 addObjectsFromArray:v50];
+      [(HKOverlayContextSectionContainer *)array addObjectsFromArray:v50];
 
       if (v29)
       {
-        [(HKOverlayContextSectionContainer *)v36 addObject:v29];
+        [(HKOverlayContextSectionContainer *)array addObject:v29];
       }
 
-      v51 = [(HKOverlayContextSectionContainer *)v36 indexOfObject:v25];
+      v51 = [(HKOverlayContextSectionContainer *)array indexOfObject:v25];
       if (v51 == 0x7FFFFFFFFFFFFFFFLL)
       {
         v52 = 0;
@@ -351,7 +351,7 @@ LABEL_47:
       }
 
       v41 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v74 = __115__HKOverlayRoomBloodGlucoseViewController_contextSectionContainersForMode_applicationItems_overlayChartController___block_invoke(v41, 0, v36);
+      v74 = __115__HKOverlayRoomBloodGlucoseViewController_contextSectionContainersForMode_applicationItems_overlayChartController___block_invoke(v41, 0, array);
       [v41 addObject:v74];
 
       v42 = [[HKOverlayContextSectionContainer alloc] initWithContainerTitle:0 overlayContextSections:v41];
@@ -366,9 +366,9 @@ LABEL_34:
     goto LABEL_49;
   }
 
-  v23 = [(HKOverlayRoomAudioViewController *)self _isHeadphoneAudioExposureRoom];
+  _isHeadphoneAudioExposureRoom = [(HKOverlayRoomAudioViewController *)self _isHeadphoneAudioExposureRoom];
   v24 = [(HKOverlayRoomAudioViewController *)self _initialPillForPreference:[(HKOverlayRoomAudioViewController *)self preferredOverlay]];
-  if (v23)
+  if (_isHeadphoneAudioExposureRoom)
   {
     if (v24 == 2)
     {
@@ -380,21 +380,21 @@ LABEL_34:
       v17[2](v17, self->_quantityTypeIdentifier, 0);
     }
     v25 = ;
-    v53 = [(HKOverlayRoomAudioViewController *)self trendModel];
+    trendModel4 = [(HKOverlayRoomAudioViewController *)self trendModel];
 
-    if (v53)
+    if (trendModel4)
     {
       v54 = [HKOverlayRoomTrendContext alloc];
-      v55 = [(HKOverlayRoomAudioViewController *)self trendModel];
-      v29 = [(HKOverlayRoomTrendContext *)v54 initWithBaseDisplayType:v15 trendModel:v55 overlayChartController:v20 applicationItems:v21 overlayMode:a3];
+      trendModel5 = [(HKOverlayRoomAudioViewController *)self trendModel];
+      v29 = [(HKOverlayRoomTrendContext *)v54 initWithBaseDisplayType:v15 trendModel:trendModel5 overlayChartController:v20 applicationItems:v21 overlayMode:mode];
 
-      v56 = [(HKOverlayRoomViewController *)self chartController];
-      [v56 setTrendAccessibilityDelegate:v29];
+      chartController2 = [(HKOverlayRoomViewController *)self chartController];
+      [chartController2 setTrendAccessibilityDelegate:v29];
 
-      v57 = [(HKOverlayRoomAudioViewController *)self trendModel];
-      LODWORD(v55) = [v57 selectTrendInitially];
+      trendModel6 = [(HKOverlayRoomAudioViewController *)self trendModel];
+      LODWORD(trendModel5) = [trendModel6 selectTrendInitially];
 
-      if (v55)
+      if (trendModel5)
       {
         v29 = v29;
 
@@ -407,16 +407,16 @@ LABEL_34:
       v29 = 0;
     }
 
-    if ((a3 - 1) >= 2)
+    if ((mode - 1) >= 2)
     {
-      if (a3 != 3)
+      if (mode != 3)
       {
         goto LABEL_34;
       }
 
       v88 = v20;
       v91 = v15;
-      v36 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v84 = MEMORY[0x1E695DF70];
       v85 = v17[2](v17, self->_quantityTypeIdentifier, 0);
       v117[0] = v85;
@@ -439,8 +439,8 @@ LABEL_34:
 
       v86 = v68;
       v70 = __115__HKOverlayRoomBloodGlucoseViewController_contextSectionContainersForMode_applicationItems_overlayChartController___block_invoke(v69, 0, v68);
-      v71 = [v70 overlayContextItems];
-      v72 = [v71 indexOfObject:v25];
+      overlayContextItems = [v70 overlayContextItems];
+      v72 = [overlayContextItems indexOfObject:v25];
 
       if (v72 == 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -459,7 +459,7 @@ LABEL_34:
       }
 
       v63 = v70;
-      [(HKOverlayContextSectionContainer *)v36 addObject:v70];
+      [(HKOverlayContextSectionContainer *)array addObject:v70];
       v95[0] = MEMORY[0x1E69E9820];
       v95[1] = 3221225472;
       v95[2] = __108__HKOverlayRoomAudioViewController_contextSectionContainersForMode_applicationItems_overlayChartController___block_invoke_6;
@@ -473,12 +473,12 @@ LABEL_34:
         v77 = [v76 localizedStringForKey:@"AUDIO_OVERLAY_HEADPHONES_FILTER_SECTION" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
 
         v79 = __115__HKOverlayRoomBloodGlucoseViewController_contextSectionContainersForMode_applicationItems_overlayChartController___block_invoke(v78, v77, v75);
-        [(HKOverlayContextSectionContainer *)v36 addObject:v79];
+        [(HKOverlayContextSectionContainer *)array addObject:v79];
 
         v63 = v70;
       }
 
-      v80 = [[HKOverlayContextSectionContainer alloc] initWithContainerTitle:0 overlayContextSections:v36];
+      v80 = [[HKOverlayContextSectionContainer alloc] initWithContainerTitle:0 overlayContextSections:array];
       v116 = v80;
       [MEMORY[0x1E695DEC8] arrayWithObjects:&v116 count:1];
       v37 = v81 = v75;
@@ -496,8 +496,8 @@ LABEL_34:
 
       v60 = [HKOverlayContextSectionContainer alloc];
       v118 = v25;
-      v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v118 count:1];
-      v41 = __115__HKOverlayRoomBloodGlucoseViewController_contextSectionContainersForMode_applicationItems_overlayChartController___block_invoke(v36, 0, v36);
+      array = [MEMORY[0x1E695DEC8] arrayWithObjects:&v118 count:1];
+      v41 = __115__HKOverlayRoomBloodGlucoseViewController_contextSectionContainersForMode_applicationItems_overlayChartController___block_invoke(array, 0, array);
       v119 = v41;
       v61 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v119 count:1];
       v62 = [(HKOverlayContextSectionContainer *)v60 initWithContainerTitle:0 overlayContextSections:v61];
@@ -520,8 +520,8 @@ LABEL_34:
   v35 = __115__HKOverlayRoomBloodGlucoseViewController_contextSectionContainersForMode_applicationItems_overlayChartController___block_invoke(v34, 0, v34);
   [(HKOverlayRoomTrendContext *)v29 addObject:v35];
 
-  v36 = [[HKOverlayContextSectionContainer alloc] initWithContainerTitle:0 overlayContextSections:v29];
-  v114 = v36;
+  array = [[HKOverlayContextSectionContainer alloc] initWithContainerTitle:0 overlayContextSections:v29];
+  v114 = array;
   v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v114 count:1];
 LABEL_48:
 
@@ -605,54 +605,54 @@ HKOverlayRoomViewControllerLastQuantityContext *__108__HKOverlayRoomAudioViewCon
   return v1;
 }
 
-- (id)_unattenuatedBaseDisplayTypeForPrimaryDisplayType:(id)a3 applicationItems:(id)a4
+- (id)_unattenuatedBaseDisplayTypeForPrimaryDisplayType:(id)type applicationItems:(id)items
 {
   v6 = *MEMORY[0x1E696BD08];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v7 healthStore];
-  v10 = [v7 unitController];
-  v11 = [v8 _audioLevelDataSourceForTypeIdentifier:v6 withHealthStore:v9 attenuatesExposureData:0 unitController:v10];
+  itemsCopy = items;
+  typeCopy = type;
+  healthStore = [itemsCopy healthStore];
+  unitController = [itemsCopy unitController];
+  v11 = [typeCopy _audioLevelDataSourceForTypeIdentifier:v6 withHealthStore:healthStore attenuatesExposureData:0 unitController:unitController];
 
   v12 = [[HKInteractiveChartOverlayNamedDataSource alloc] initWithDataSource:v11 named:@"HKAudioExposureUnattenuatedData" withContextTitleForTimeScope:0];
-  v13 = [v8 hk_interactiveChartsFormatterForTimeScope:5];
-  v14 = [v8 displayCategory];
-  v15 = [v7 unitController];
-  v16 = [v7 chartDataCacheController];
+  v13 = [typeCopy hk_interactiveChartsFormatterForTimeScope:5];
+  displayCategory = [typeCopy displayCategory];
+  unitController2 = [itemsCopy unitController];
+  chartDataCacheController = [itemsCopy chartDataCacheController];
 
-  v17 = [v8 hk_standardSeriesForTimeScope:5 displayCategory:v14 unitController:v15 dataCacheController:v16];
+  v17 = [typeCopy hk_standardSeriesForTimeScope:5 displayCategory:displayCategory unitController:unitController2 dataCacheController:chartDataCacheController];
 
-  v18 = [(HKOverlayRoomViewController *)self chartController];
-  v19 = [v18 displayTypeForGraphSeries:v17 namedDataSource:v12 templateDisplayType:v8 timeScope:5 formatter:v13];
+  chartController = [(HKOverlayRoomViewController *)self chartController];
+  v19 = [chartController displayTypeForGraphSeries:v17 namedDataSource:v12 templateDisplayType:typeCopy timeScope:5 formatter:v13];
 
   return v19;
 }
 
 - (BOOL)_shouldShowUnattenuatedOverlayPill
 {
-  v2 = [(HKOverlayRoomViewController *)self applicationItems];
-  v3 = [v2 sampleDateRangeController];
+  applicationItems = [(HKOverlayRoomViewController *)self applicationItems];
+  sampleDateRangeController = [applicationItems sampleDateRangeController];
 
-  v4 = [v3 dateRangesBySampleType];
+  dateRangesBySampleType = [sampleDateRangeController dateRangesBySampleType];
 
-  if (!v4)
+  if (!dateRangesBySampleType)
   {
     goto LABEL_6;
   }
 
   v5 = [MEMORY[0x1E696C2E0] quantityTypeForIdentifier:*MEMORY[0x1E696BD10]];
-  v6 = [v3 dateRangeForSampleType:v5];
-  v7 = [v6 minValue];
-  if (!v7)
+  v6 = [sampleDateRangeController dateRangeForSampleType:v5];
+  minValue = [v6 minValue];
+  if (!minValue)
   {
 
     goto LABEL_6;
   }
 
-  v8 = v7;
-  v9 = [v6 maxValue];
+  v8 = minValue;
+  maxValue = [v6 maxValue];
 
-  if (!v9)
+  if (!maxValue)
   {
 LABEL_6:
     v10 = 0;
@@ -665,11 +665,11 @@ LABEL_7:
   return v10;
 }
 
-- (void)sampleTypeDateRangeController:(id)a3 didUpdateDateRanges:(id)a4
+- (void)sampleTypeDateRangeController:(id)controller didUpdateDateRanges:(id)ranges
 {
   v6.receiver = self;
   v6.super_class = HKOverlayRoomAudioViewController;
-  [(HKOverlayRoomViewController *)&v6 sampleTypeDateRangeController:a3 didUpdateDateRanges:a4];
+  [(HKOverlayRoomViewController *)&v6 sampleTypeDateRangeController:controller didUpdateDateRanges:ranges];
   isShowingUnattenuatedOverlayPill = self->_isShowingUnattenuatedOverlayPill;
   if (isShowingUnattenuatedOverlayPill != [(HKOverlayRoomAudioViewController *)self _shouldShowUnattenuatedOverlayPill])
   {
@@ -677,24 +677,24 @@ LABEL_7:
   }
 }
 
-- (id)_makeHeadphoneDeviceFiltersUsingContextCreator:(id)a3
+- (id)_makeHeadphoneDeviceFiltersUsingContextCreator:(id)creator
 {
   v36 = *MEMORY[0x1E69E9840];
-  v26 = a3;
+  creatorCopy = creator;
   v4 = MEMORY[0x1E695DF70];
-  v5 = [(HKOverlayRoomAudioViewController *)self audioExposureDevicesDataSource];
-  v6 = [v5 devicesByName];
-  v7 = [v4 arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  audioExposureDevicesDataSource = [(HKOverlayRoomAudioViewController *)self audioExposureDevicesDataSource];
+  devicesByName = [audioExposureDevicesDataSource devicesByName];
+  v7 = [v4 arrayWithCapacity:{objc_msgSend(devicesByName, "count")}];
 
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v8 = [(HKOverlayRoomAudioViewController *)self audioExposureDevicesDataSource];
-  v9 = [v8 devicesByName];
+  audioExposureDevicesDataSource2 = [(HKOverlayRoomAudioViewController *)self audioExposureDevicesDataSource];
+  devicesByName2 = [audioExposureDevicesDataSource2 devicesByName];
 
-  obj = v9;
-  v10 = [v9 countByEnumeratingWithState:&v30 objects:v35 count:16];
+  obj = devicesByName2;
+  v10 = [devicesByName2 countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v10)
   {
     v11 = v10;
@@ -710,9 +710,9 @@ LABEL_7:
 
         v14 = *(*(&v30 + 1) + 8 * i);
         v15 = objc_autoreleasePoolPush();
-        v16 = [(HKOverlayRoomAudioViewController *)self audioExposureDevicesDataSource];
-        v17 = [v16 devicesByName];
-        v18 = [v17 objectForKeyedSubscript:v14];
+        audioExposureDevicesDataSource3 = [(HKOverlayRoomAudioViewController *)self audioExposureDevicesDataSource];
+        devicesByName3 = [audioExposureDevicesDataSource3 devicesByName];
+        v18 = [devicesByName3 objectForKeyedSubscript:v14];
 
         v19 = [(HKOverlayRoomAudioViewController *)self _headphonePredicateForDevices:v18 withName:v14];
         [v7 addObject:v19];
@@ -735,24 +735,24 @@ LABEL_7:
   v28[1] = 3221225472;
   v28[2] = __83__HKOverlayRoomAudioViewController__makeHeadphoneDeviceFiltersUsingContextCreator___block_invoke;
   v28[3] = &unk_1E81B75F0;
-  v29 = v26;
-  v23 = v26;
+  v29 = creatorCopy;
+  v23 = creatorCopy;
   v24 = [v22 hk_map:v28];
 
   return v24;
 }
 
-- (int64_t)_initialPillForPreference:(int64_t)a3
+- (int64_t)_initialPillForPreference:(int64_t)preference
 {
   result = 0;
-  if (a3 > 3)
+  if (preference > 3)
   {
-    if (a3 == 4)
+    if (preference == 4)
     {
       return 2;
     }
 
-    if (a3 == 11)
+    if (preference == 11)
     {
       return result;
     }
@@ -760,12 +760,12 @@ LABEL_7:
 
   else
   {
-    if (!a3)
+    if (!preference)
     {
       return result;
     }
 
-    if (a3 == 1)
+    if (preference == 1)
     {
       return 1;
     }
@@ -775,25 +775,25 @@ LABEL_7:
   v5 = *MEMORY[0x1E696B940];
   if (os_log_type_enabled(*MEMORY[0x1E696B940], OS_LOG_TYPE_DEBUG))
   {
-    [(HKOverlayRoomAudioViewController *)a3 _initialPillForPreference:v5];
+    [(HKOverlayRoomAudioViewController *)preference _initialPillForPreference:v5];
   }
 
   return 0;
 }
 
-- (id)createViewControllerForMode:(int64_t)a3 displayDate:(id)a4 applicationItems:(id)a5
+- (id)createViewControllerForMode:(int64_t)mode displayDate:(id)date applicationItems:(id)items
 {
-  v8 = a5;
-  v9 = a4;
+  itemsCopy = items;
+  dateCopy = date;
   v10 = [HKOverlayRoomAudioViewController alloc];
-  v11 = [(HKOverlayRoomAudioViewController *)self quantityTypeIdentifier];
-  v12 = [(HKOverlayRoomAudioViewController *)self preferredOverlay];
-  v13 = [(HKOverlayRoomAudioViewController *)self audioExposureDevicesDataSource];
-  v14 = [(HKOverlayRoomAudioViewController *)self trendModel];
-  v15 = [(HKOverlayRoomViewController *)self factorDisplayTypes];
-  v16 = [(HKOverlayRoomAudioViewController *)v10 initWithDisplayDate:v9 applicationItems:v8 mode:a3 identifier:v11 preferredOverlay:v12 audioExposureDeviceDataSource:v13 trendModel:v14 factorDisplayTypes:v15];
+  quantityTypeIdentifier = [(HKOverlayRoomAudioViewController *)self quantityTypeIdentifier];
+  preferredOverlay = [(HKOverlayRoomAudioViewController *)self preferredOverlay];
+  audioExposureDevicesDataSource = [(HKOverlayRoomAudioViewController *)self audioExposureDevicesDataSource];
+  trendModel = [(HKOverlayRoomAudioViewController *)self trendModel];
+  factorDisplayTypes = [(HKOverlayRoomViewController *)self factorDisplayTypes];
+  v16 = [(HKOverlayRoomAudioViewController *)v10 initWithDisplayDate:dateCopy applicationItems:itemsCopy mode:mode identifier:quantityTypeIdentifier preferredOverlay:preferredOverlay audioExposureDeviceDataSource:audioExposureDevicesDataSource trendModel:trendModel factorDisplayTypes:factorDisplayTypes];
 
-  [(HKOverlayRoomViewController *)v16 setAdditionalChartOptions:[(HKOverlayRoomViewController *)self filteredInteractiveChartOptionsForMode:a3]];
+  [(HKOverlayRoomViewController *)v16 setAdditionalChartOptions:[(HKOverlayRoomViewController *)self filteredInteractiveChartOptionsForMode:mode]];
 
   return v16;
 }
@@ -806,31 +806,31 @@ LABEL_7:
     if (v3 != 8)
     {
       v4 = v3;
-      v5 = [(HKOverlayRoomViewController *)self applicationItems];
-      v6 = [v5 timeScopeController];
-      [v6 setSelectedTimeScope:v4];
+      applicationItems = [(HKOverlayRoomViewController *)self applicationItems];
+      timeScopeController = [applicationItems timeScopeController];
+      [timeScopeController setSelectedTimeScope:v4];
     }
   }
 
   v9.receiver = self;
   v9.super_class = HKOverlayRoomAudioViewController;
-  v7 = [(HKOverlayRoomViewController *)&v9 createChartOverlayViewController];
+  createChartOverlayViewController = [(HKOverlayRoomViewController *)&v9 createChartOverlayViewController];
 
-  return v7;
+  return createChartOverlayViewController;
 }
 
 - (void)_setupAudioExposureDataSourceIfNeeded
 {
   if ([(HKOverlayRoomAudioViewController *)self _isAudioExposureDevicesSupported])
   {
-    v3 = [(HKOverlayRoomAudioViewController *)self audioExposureDevicesDataSource];
+    audioExposureDevicesDataSource = [(HKOverlayRoomAudioViewController *)self audioExposureDevicesDataSource];
 
-    if (!v3)
+    if (!audioExposureDevicesDataSource)
     {
       v4 = [HKAudioExposureDevicesDataSource alloc];
-      v5 = [(HKOverlayRoomViewController *)self applicationItems];
-      v6 = [v5 healthStore];
-      v7 = [(HKAudioExposureDevicesDataSource *)v4 initWithDeviceType:0 healthStore:v6];
+      applicationItems = [(HKOverlayRoomViewController *)self applicationItems];
+      healthStore = [applicationItems healthStore];
+      v7 = [(HKAudioExposureDevicesDataSource *)v4 initWithDeviceType:0 healthStore:healthStore];
 
       [(HKAudioExposureDevicesDataSource *)v7 startQuery];
       [(HKOverlayRoomAudioViewController *)self setAudioExposureDevicesDataSource:v7];
@@ -842,12 +842,12 @@ LABEL_7:
 {
   if ([(HKOverlayRoomAudioViewController *)self _isAudioExposureDevicesSupported])
   {
-    v3 = [(HKOverlayRoomAudioViewController *)self audioExposureDevicesDataSource];
+    audioExposureDevicesDataSource = [(HKOverlayRoomAudioViewController *)self audioExposureDevicesDataSource];
 
-    if (v3)
+    if (audioExposureDevicesDataSource)
     {
-      v4 = [(HKOverlayRoomAudioViewController *)self audioExposureDevicesDataSource];
-      [v4 addObserver:self];
+      audioExposureDevicesDataSource2 = [(HKOverlayRoomAudioViewController *)self audioExposureDevicesDataSource];
+      [audioExposureDevicesDataSource2 addObserver:self];
     }
   }
 }
@@ -856,13 +856,13 @@ LABEL_7:
 {
   if ([(HKOverlayRoomAudioViewController *)self _isAudioExposureDevicesSupported])
   {
-    v3 = [(HKOverlayRoomAudioViewController *)self audioExposureDevicesDataSource];
-    v4 = v3;
-    if (v3 && (v6 = v3, v3 = [(HKOverlayRoomAudioViewController *)self isViewLoaded], v4 = v6, (v3 & 1) != 0))
+    audioExposureDevicesDataSource = [(HKOverlayRoomAudioViewController *)self audioExposureDevicesDataSource];
+    v4 = audioExposureDevicesDataSource;
+    if (audioExposureDevicesDataSource && (v6 = audioExposureDevicesDataSource, audioExposureDevicesDataSource = [(HKOverlayRoomAudioViewController *)self isViewLoaded], v4 = v6, (audioExposureDevicesDataSource & 1) != 0))
     {
-      v5 = [(HKOverlayRoomViewController *)self controllerMode];
+      controllerMode = [(HKOverlayRoomViewController *)self controllerMode];
 
-      if (v5 == 3)
+      if (controllerMode == 3)
       {
 
         [(HKOverlayRoomViewController *)self reloadOverlayContextItems];
@@ -872,29 +872,29 @@ LABEL_7:
     else
     {
 
-      MEMORY[0x1EEE66BB8](v3, v4);
+      MEMORY[0x1EEE66BB8](audioExposureDevicesDataSource, v4);
     }
   }
 }
 
-- (id)_headphonePredicateForDevices:(id)a3 withName:(id)a4
+- (id)_headphonePredicateForDevices:(id)devices withName:(id)name
 {
   v5 = MEMORY[0x1E696C378];
-  v6 = a4;
-  v7 = [v5 predicateForObjectsFromDevices:a3];
-  v8 = [[HKInteractiveChartOverlayPredicate alloc] initWithPredicate:v7 name:v6];
+  nameCopy = name;
+  v7 = [v5 predicateForObjectsFromDevices:devices];
+  v8 = [[HKInteractiveChartOverlayPredicate alloc] initWithPredicate:v7 name:nameCopy];
 
   return v8;
 }
 
-- (id)_buildAudioAverageDataSourceWithUnitController:(id)a3 displayType:(id)a4 healthStore:(id)a5 averageOverVisibleRange:(BOOL)a6 attenuated:(BOOL)a7
+- (id)_buildAudioAverageDataSourceWithUnitController:(id)controller displayType:(id)type healthStore:(id)store averageOverVisibleRange:(BOOL)range attenuated:(BOOL)attenuated
 {
-  v7 = a7;
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  if (v7)
+  attenuatedCopy = attenuated;
+  rangeCopy = range;
+  controllerCopy = controller;
+  typeCopy = type;
+  storeCopy = store;
+  if (attenuatedCopy)
   {
     v15 = _HKStatisticsOptionAttenuateSamples() | 0x42;
     v16 = @"HKOverlayRoomNamedChartCacheDataSource_AttenuatedLEQ";
@@ -906,13 +906,13 @@ LABEL_7:
     v15 = 66;
   }
 
-  v17 = [[HKQuantityTypeDataSource alloc] initWithUnitController:v12 options:v15 displayType:v13 healthStore:v14];
-  v18 = [(HKOverlayRoomAudioViewController *)self _userInfoCreationBlockForLEQ];
-  [(HKQuantityTypeDataSource *)v17 setUserInfoCreationBlock:v18];
+  v17 = [[HKQuantityTypeDataSource alloc] initWithUnitController:controllerCopy options:v15 displayType:typeCopy healthStore:storeCopy];
+  _userInfoCreationBlockForLEQ = [(HKOverlayRoomAudioViewController *)self _userInfoCreationBlockForLEQ];
+  [(HKQuantityTypeDataSource *)v17 setUserInfoCreationBlock:_userInfoCreationBlockForLEQ];
 
-  if (v8)
+  if (rangeCopy)
   {
-    [(HKOverlayRoomAudioViewController *)self _buildAverageDataSourceTitleFromTimeScope:v7];
+    [(HKOverlayRoomAudioViewController *)self _buildAverageDataSourceTitleFromTimeScope:attenuatedCopy];
   }
 
   else
@@ -925,14 +925,14 @@ LABEL_7:
   return v20;
 }
 
-- (id)_buildAverageDataSourceTitleFromTimeScope:(BOOL)a3
+- (id)_buildAverageDataSourceTitleFromTimeScope:(BOOL)scope
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __78__HKOverlayRoomAudioViewController__buildAverageDataSourceTitleFromTimeScope___block_invoke;
   v6[3] = &unk_1E81B7618;
   v6[4] = self;
-  v7 = a3;
+  scopeCopy = scope;
   v3 = _Block_copy(v6);
   v4 = _Block_copy(v3);
 

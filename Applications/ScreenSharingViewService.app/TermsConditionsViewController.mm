@@ -1,26 +1,26 @@
 @interface TermsConditionsViewController
-- (TermsConditionsViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (TermsConditionsViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)machineModel;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)agree:(id)a3;
-- (void)decline:(id)a3;
+- (void)agree:(id)agree;
+- (void)decline:(id)decline;
 - (void)didReceiveMemoryWarning;
-- (void)postPauseResumeCommand:(int)a3;
-- (void)setUserInfo:(id)a3;
+- (void)postPauseResumeCommand:(int)command;
+- (void)setUserInfo:(id)info;
 - (void)toggleIsAppleSupportRequest;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
 @end
 
 @implementation TermsConditionsViewController
 
-- (TermsConditionsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (TermsConditionsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   v23.receiver = self;
   v23.super_class = TermsConditionsViewController;
-  v8 = [(TermsConditionsViewController *)&v23 initWithNibName:v6 bundle:v7];
+  v8 = [(TermsConditionsViewController *)&v23 initWithNibName:nameCopy bundle:bundleCopy];
   if (v8)
   {
     if (qword_10000D2E8 != -1)
@@ -32,27 +32,27 @@
     [(TermsConditionsViewController *)v8 setHelperToolConnection:v9];
 
     v10 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___ViewServiceProtocol];
-    v11 = [(TermsConditionsViewController *)v8 helperToolConnection];
-    [v11 setRemoteObjectInterface:v10];
+    helperToolConnection = [(TermsConditionsViewController *)v8 helperToolConnection];
+    [helperToolConnection setRemoteObjectInterface:v10];
 
     v12 = v8;
     v22 = v12;
     v13 = [(TermsConditionsViewController *)v12 helperToolConnection:_NSConcreteStackBlock];
     [v13 setInvalidationHandler:&v21];
 
-    v14 = [(TermsConditionsViewController *)v12 helperToolConnection];
-    [v14 resume];
+    helperToolConnection2 = [(TermsConditionsViewController *)v12 helperToolConnection];
+    [helperToolConnection2 resume];
 
-    v15 = [(TermsConditionsViewController *)v12 helperToolConnection];
-    v16 = [v15 remoteObjectProxyWithErrorHandler:&stru_100008310];
+    helperToolConnection3 = [(TermsConditionsViewController *)v12 helperToolConnection];
+    v16 = [helperToolConnection3 remoteObjectProxyWithErrorHandler:&stru_100008310];
     [(TermsConditionsViewController *)v12 setHelperTool:v16];
 
-    v17 = [(TermsConditionsViewController *)v12 helperTool];
+    helperTool = [(TermsConditionsViewController *)v12 helperTool];
     v24 = @"pid";
     v18 = [NSNumber numberWithInt:getpid()];
     v25 = v18;
     v19 = [NSDictionary dictionaryWithObjects:&v25 forKeys:&v24 count:1];
-    [v17 pidNotification:v19];
+    [helperTool pidNotification:v19];
   }
 
   return v8;
@@ -85,9 +85,9 @@
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    v3 = [(TermsConditionsViewController *)self userInfoSet];
+    userInfoSet = [(TermsConditionsViewController *)self userInfoSet];
     *buf = 67109120;
-    v11 = v3;
+    v11 = userInfoSet;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "self.userInfoSet %d", buf, 8u);
   }
 
@@ -97,8 +97,8 @@
   if (v5)
   {
     v6 = [NSString stringWithContentsOfFile:v5 encoding:4 error:0];
-    v7 = [(TermsConditionsViewController *)self termsTextView];
-    [v7 setText:v6];
+    termsTextView = [(TermsConditionsViewController *)self termsTextView];
+    [termsTextView setText:v6];
   }
 
   else
@@ -132,7 +132,7 @@
   [(TermsConditionsViewController *)&v2 didReceiveMemoryWarning];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4 = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle2];
   [v4 pointSize];
@@ -167,8 +167,8 @@
   }
 
   v15 = [UIFont systemFontOfSize:v6 weight:UIFontWeightSemibold];
-  v16 = [(TermsConditionsViewController *)self termsHeaderTextView];
-  [v16 setFont:v15];
+  termsHeaderTextView = [(TermsConditionsViewController *)self termsHeaderTextView];
+  [termsHeaderTextView setFont:v15];
 
   if (v9 <= v13)
   {
@@ -180,96 +180,96 @@
     v17 = v13;
   }
 
-  v18 = [(TermsConditionsViewController *)self termsSubHeaderTextView];
-  v19 = [v18 font];
-  v20 = [v19 fontWithSize:v17];
-  v21 = [(TermsConditionsViewController *)self termsSubHeaderTextView];
-  [v21 setFont:v20];
+  termsSubHeaderTextView = [(TermsConditionsViewController *)self termsSubHeaderTextView];
+  font = [termsSubHeaderTextView font];
+  v20 = [font fontWithSize:v17];
+  termsSubHeaderTextView2 = [(TermsConditionsViewController *)self termsSubHeaderTextView];
+  [termsSubHeaderTextView2 setFont:v20];
 
   if (v12 > v14)
   {
     v12 = v14;
   }
 
-  v25 = [(TermsConditionsViewController *)self termsTextView];
-  v22 = [v25 font];
-  v23 = [v22 fontWithSize:v12];
-  v24 = [(TermsConditionsViewController *)self termsTextView];
-  [v24 setFont:v23];
+  termsTextView = [(TermsConditionsViewController *)self termsTextView];
+  font2 = [termsTextView font];
+  v23 = [font2 fontWithSize:v12];
+  termsTextView2 = [(TermsConditionsViewController *)self termsTextView];
+  [termsTextView2 setFont:v23];
 }
 
-- (void)setUserInfo:(id)a3
+- (void)setUserInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v37 = 138412290;
-    v38 = v4;
+    v38 = infoCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "userinfo called with %@", &v37, 0xCu);
   }
 
-  if (v4)
+  if (infoCopy)
   {
-    v5 = [v4 objectForKeyedSubscript:@"isAppleSupportRequest"];
+    v5 = [infoCopy objectForKeyedSubscript:@"isAppleSupportRequest"];
     if (v5)
     {
       v6 = v5;
-      v7 = [v4 objectForKeyedSubscript:@"isAppleSupportRequest"];
+      v7 = [infoCopy objectForKeyedSubscript:@"isAppleSupportRequest"];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v9 = [v4 objectForKeyedSubscript:@"isAppleSupportRequest"];
+        v9 = [infoCopy objectForKeyedSubscript:@"isAppleSupportRequest"];
         -[TermsConditionsViewController setIsAppleSupportRequest:](self, "setIsAppleSupportRequest:", [v9 BOOLValue]);
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
         {
-          v10 = [(TermsConditionsViewController *)self isAppleSupportRequest];
+          isAppleSupportRequest = [(TermsConditionsViewController *)self isAppleSupportRequest];
           v37 = 67109120;
-          LODWORD(v38) = v10;
+          LODWORD(v38) = isAppleSupportRequest;
           _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Apple Support %d", &v37, 8u);
         }
       }
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"isPaused"];
+    v11 = [infoCopy objectForKeyedSubscript:@"isPaused"];
     if (v11)
     {
       v12 = v11;
-      v13 = [v4 objectForKeyedSubscript:@"isPaused"];
+      v13 = [infoCopy objectForKeyedSubscript:@"isPaused"];
       objc_opt_class();
       v14 = objc_opt_isKindOfClass();
 
       if (v14)
       {
-        v15 = [v4 objectForKeyedSubscript:@"isPaused"];
+        v15 = [infoCopy objectForKeyedSubscript:@"isPaused"];
         -[TermsConditionsViewController setIsPaused:](self, "setIsPaused:", [v15 BOOLValue]);
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
         {
-          v16 = [(TermsConditionsViewController *)self isPaused];
+          isPaused = [(TermsConditionsViewController *)self isPaused];
           v37 = 67109120;
-          LODWORD(v38) = v16;
+          LODWORD(v38) = isPaused;
           _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "isPaused %d", &v37, 8u);
         }
       }
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"isSessionActive"];
+    v17 = [infoCopy objectForKeyedSubscript:@"isSessionActive"];
     if (v17)
     {
       v18 = v17;
-      v19 = [v4 objectForKeyedSubscript:@"isSessionActive"];
+      v19 = [infoCopy objectForKeyedSubscript:@"isSessionActive"];
       objc_opt_class();
       v20 = objc_opt_isKindOfClass();
 
       if (v20)
       {
-        v21 = [v4 objectForKeyedSubscript:@"isSessionActive"];
+        v21 = [infoCopy objectForKeyedSubscript:@"isSessionActive"];
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
         {
-          v22 = [v21 BOOLValue];
+          bOOLValue = [v21 BOOLValue];
           v37 = 67109120;
-          LODWORD(v38) = v22;
+          LODWORD(v38) = bOOLValue;
           _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "session active %d", &v37, 8u);
         }
 
@@ -282,45 +282,45 @@
       }
     }
 
-    v25 = [v4 objectForKeyedSubscript:@"isShareSettings"];
+    v25 = [infoCopy objectForKeyedSubscript:@"isShareSettings"];
     if (v25)
     {
       v26 = v25;
-      v27 = [v4 objectForKeyedSubscript:@"isShareSettings"];
+      v27 = [infoCopy objectForKeyedSubscript:@"isShareSettings"];
       objc_opt_class();
       v28 = objc_opt_isKindOfClass();
 
       if (v28)
       {
-        v29 = [v4 objectForKeyedSubscript:@"isShareSettings"];
+        v29 = [infoCopy objectForKeyedSubscript:@"isShareSettings"];
         -[TermsConditionsViewController setShareSettingsRequest:](self, "setShareSettingsRequest:", [v29 BOOLValue]);
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
         {
-          v30 = [(TermsConditionsViewController *)self shareSettingsRequest];
+          shareSettingsRequest = [(TermsConditionsViewController *)self shareSettingsRequest];
           v37 = 67109120;
-          LODWORD(v38) = v30;
+          LODWORD(v38) = shareSettingsRequest;
           _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Share settings %d", &v37, 8u);
         }
       }
     }
 
-    v31 = [v4 objectForKeyedSubscript:@"isEnded"];
+    v31 = [infoCopy objectForKeyedSubscript:@"isEnded"];
     if (v31)
     {
       v32 = v31;
-      v33 = [v4 objectForKeyedSubscript:@"isEnded"];
+      v33 = [infoCopy objectForKeyedSubscript:@"isEnded"];
       objc_opt_class();
       v34 = objc_opt_isKindOfClass();
 
       if (v34)
       {
-        v35 = [v4 objectForKeyedSubscript:@"isEnded"];
+        v35 = [infoCopy objectForKeyedSubscript:@"isEnded"];
         -[TermsConditionsViewController setIsEnded:](self, "setIsEnded:", [v35 BOOLValue]);
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
         {
-          v36 = [(TermsConditionsViewController *)self isEnded];
+          isEnded = [(TermsConditionsViewController *)self isEnded];
           v37 = 67109120;
-          LODWORD(v38) = v36;
+          LODWORD(v38) = isEnded;
           _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "isEnded %d", &v37, 8u);
         }
       }
@@ -330,18 +330,18 @@
   }
 }
 
-- (void)postPauseResumeCommand:(int)a3
+- (void)postPauseResumeCommand:(int)command
 {
   v10 = @"result";
-  v4 = [NSNumber numberWithInteger:a3];
+  v4 = [NSNumber numberWithInteger:command];
   v11 = v4;
   v5 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
 
-  v6 = [(TermsConditionsViewController *)self helperTool];
+  helperTool = [(TermsConditionsViewController *)self helperTool];
   v7 = v5;
-  if (v6)
+  if (helperTool)
   {
-    [v6 pauseResumeResponse:v7];
+    [helperTool pauseResumeResponse:v7];
     v8 = +[NSRunLoop currentRunLoop];
     v9 = [NSDate dateWithTimeIntervalSinceNow:0.25];
     [v8 runUntilDate:v9];
@@ -353,7 +353,7 @@
   }
 }
 
-- (void)agree:(id)a3
+- (void)agree:(id)agree
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
@@ -364,7 +364,7 @@
   [(TermsConditionsViewController *)self postResultNotification:1];
 }
 
-- (void)decline:(id)a3
+- (void)decline:(id)decline
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
@@ -399,8 +399,8 @@
     if ([v2 hasPrefix:@"Mac"])
     {
       v5 = +[NSProcessInfo processInfo];
-      v6 = [v5 environment];
-      v7 = [v6 objectForKey:@"SIMULATOR_MODEL_IDENTIFIER"];
+      environment = [v5 environment];
+      v7 = [environment objectForKey:@"SIMULATOR_MODEL_IDENTIFIER"];
 
       v2 = v7;
     }

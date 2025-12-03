@@ -32,8 +32,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(MPMediaQuery *)self filterPredicates];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  filterPredicates = [(MPMediaQuery *)self filterPredicates];
+  v3 = [filterPredicates countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -43,7 +43,7 @@
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(filterPredicates);
         }
 
         v6 = *(*(&v8 + 1) + 8 * i);
@@ -55,7 +55,7 @@
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [filterPredicates countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;

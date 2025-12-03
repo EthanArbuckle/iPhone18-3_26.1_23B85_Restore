@@ -1,35 +1,35 @@
 @interface HUAvailableRelatedTriggerItemProvider
-- (BOOL)relatedItemsAffectedByTrigger:(id)a3;
-- (HUAvailableRelatedTriggerItemProvider)initWithHome:(id)a3 relatedItems:(id)a4 context:(id)a5;
+- (BOOL)relatedItemsAffectedByTrigger:(id)trigger;
+- (HUAvailableRelatedTriggerItemProvider)initWithHome:(id)home relatedItems:(id)items context:(id)context;
 - (NSSet)itemProviders;
 - (id)invalidationReasons;
-- (id)itemsToHideInSet:(id)a3;
+- (id)itemsToHideInSet:(id)set;
 - (id)recommendationsFilter;
-- (id)reloadAvailableTriggerItemsWithObjects:(id)a3;
+- (id)reloadAvailableTriggerItemsWithObjects:(id)objects;
 - (id)reloadItems;
 - (void)_buildProviders;
-- (void)disableUpdatesWithReason:(id)a3;
-- (void)endDisableUpdatesWithReason:(id)a3;
-- (void)setRecommendationsFilter:(id)a3;
-- (void)setTriggerFilter:(id)a3;
+- (void)disableUpdatesWithReason:(id)reason;
+- (void)endDisableUpdatesWithReason:(id)reason;
+- (void)setRecommendationsFilter:(id)filter;
+- (void)setTriggerFilter:(id)filter;
 @end
 
 @implementation HUAvailableRelatedTriggerItemProvider
 
-- (HUAvailableRelatedTriggerItemProvider)initWithHome:(id)a3 relatedItems:(id)a4 context:(id)a5
+- (HUAvailableRelatedTriggerItemProvider)initWithHome:(id)home relatedItems:(id)items context:(id)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  homeCopy = home;
+  itemsCopy = items;
+  contextCopy = context;
   v19.receiver = self;
   v19.super_class = HUAvailableRelatedTriggerItemProvider;
   v12 = [(HFItemProvider *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_relatedItems, a4);
-    objc_storeStrong(&v13->_home, a3);
-    objc_storeStrong(&v13->_context, a5);
+    objc_storeStrong(&v12->_relatedItems, items);
+    objc_storeStrong(&v13->_home, home);
+    objc_storeStrong(&v13->_context, context);
     v14 = [MEMORY[0x277CBEB58] set];
     triggerItems = v13->_triggerItems;
     v13->_triggerItems = v14;
@@ -47,44 +47,44 @@
 - (void)_buildProviders
 {
   v3 = [HUTriggerItemProvider alloc];
-  v4 = [(HUAvailableRelatedTriggerItemProvider *)self home];
-  v5 = [(HUTriggerItemProvider *)v3 initWithHome:v4];
+  home = [(HUAvailableRelatedTriggerItemProvider *)self home];
+  v5 = [(HUTriggerItemProvider *)v3 initWithHome:home];
   [(HUAvailableRelatedTriggerItemProvider *)self setRelatedActiveTriggerItemProvider:v5];
 
   v6 = objc_alloc(MEMORY[0x277D17E58]);
-  v7 = [(HUAvailableRelatedTriggerItemProvider *)self home];
-  v8 = [(HUAvailableRelatedTriggerItemProvider *)self relatedItems];
-  v9 = [v6 initWithHome:v7 andServiceLikeItems:v8];
+  home2 = [(HUAvailableRelatedTriggerItemProvider *)self home];
+  relatedItems = [(HUAvailableRelatedTriggerItemProvider *)self relatedItems];
+  v9 = [v6 initWithHome:home2 andServiceLikeItems:relatedItems];
   [(HUAvailableRelatedTriggerItemProvider *)self setRecommendationItemProvider:v9];
 
-  v12 = [(HUAvailableRelatedTriggerItemProvider *)self context];
-  v10 = [v12 engineOptions];
-  v11 = [(HUAvailableRelatedTriggerItemProvider *)self recommendationItemProvider];
-  [v11 setEngineOptions:v10 | 0x80];
+  context = [(HUAvailableRelatedTriggerItemProvider *)self context];
+  engineOptions = [context engineOptions];
+  recommendationItemProvider = [(HUAvailableRelatedTriggerItemProvider *)self recommendationItemProvider];
+  [recommendationItemProvider setEngineOptions:engineOptions | 0x80];
 }
 
-- (void)setTriggerFilter:(id)a3
+- (void)setTriggerFilter:(id)filter
 {
-  v4 = a3;
-  v5 = _Block_copy(v4);
+  filterCopy = filter;
+  v5 = _Block_copy(filterCopy);
   triggerFilter = self->_triggerFilter;
   self->_triggerFilter = v5;
 
-  if (v4)
+  if (filterCopy)
   {
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __58__HUAvailableRelatedTriggerItemProvider_setTriggerFilter___block_invoke;
     v9[3] = &unk_277DC33F8;
-    v10 = v4;
-    v7 = [(HUAvailableRelatedTriggerItemProvider *)self relatedActiveTriggerItemProvider];
-    [v7 setFilter:v9];
+    v10 = filterCopy;
+    relatedActiveTriggerItemProvider = [(HUAvailableRelatedTriggerItemProvider *)self relatedActiveTriggerItemProvider];
+    [relatedActiveTriggerItemProvider setFilter:v9];
   }
 
   else
   {
-    v8 = [(HUAvailableRelatedTriggerItemProvider *)self relatedActiveTriggerItemProvider];
-    [v8 setFilter:0];
+    relatedActiveTriggerItemProvider2 = [(HUAvailableRelatedTriggerItemProvider *)self relatedActiveTriggerItemProvider];
+    [relatedActiveTriggerItemProvider2 setFilter:0];
   }
 }
 
@@ -118,53 +118,53 @@ uint64_t __58__HUAvailableRelatedTriggerItemProvider_setTriggerFilter___block_in
   return v7;
 }
 
-- (void)setRecommendationsFilter:(id)a3
+- (void)setRecommendationsFilter:(id)filter
 {
-  v4 = a3;
-  v5 = [(HUAvailableRelatedTriggerItemProvider *)self recommendationItemProvider];
-  [v5 setFilter:v4];
+  filterCopy = filter;
+  recommendationItemProvider = [(HUAvailableRelatedTriggerItemProvider *)self recommendationItemProvider];
+  [recommendationItemProvider setFilter:filterCopy];
 }
 
 - (id)recommendationsFilter
 {
-  v2 = [(HUAvailableRelatedTriggerItemProvider *)self recommendationItemProvider];
-  v3 = [v2 filter];
+  recommendationItemProvider = [(HUAvailableRelatedTriggerItemProvider *)self recommendationItemProvider];
+  filter = [recommendationItemProvider filter];
 
-  return v3;
+  return filter;
 }
 
 - (NSSet)itemProviders
 {
   v3 = MEMORY[0x277CBEB98];
-  v4 = [(HUAvailableRelatedTriggerItemProvider *)self recommendationItemProvider];
-  v5 = [(HUAvailableRelatedTriggerItemProvider *)self relatedActiveTriggerItemProvider];
-  v6 = [v3 setWithObjects:{v4, v5, 0}];
+  recommendationItemProvider = [(HUAvailableRelatedTriggerItemProvider *)self recommendationItemProvider];
+  relatedActiveTriggerItemProvider = [(HUAvailableRelatedTriggerItemProvider *)self relatedActiveTriggerItemProvider];
+  v6 = [v3 setWithObjects:{recommendationItemProvider, relatedActiveTriggerItemProvider, 0}];
 
   return v6;
 }
 
 - (id)reloadItems
 {
-  v3 = [(HUAvailableRelatedTriggerItemProvider *)self updatesDisabledReasons];
-  v4 = [v3 count];
+  updatesDisabledReasons = [(HUAvailableRelatedTriggerItemProvider *)self updatesDisabledReasons];
+  v4 = [updatesDisabledReasons count];
 
   if (v4)
   {
     v5 = MEMORY[0x277D2C900];
     v6 = objc_alloc(MEMORY[0x277D14768]);
-    v7 = [(HUAvailableRelatedTriggerItemProvider *)self triggerItems];
-    v8 = [v6 initWithAddedItems:0 removedItems:0 existingItems:v7];
+    triggerItems = [(HUAvailableRelatedTriggerItemProvider *)self triggerItems];
+    v8 = [v6 initWithAddedItems:0 removedItems:0 existingItems:triggerItems];
     v9 = [v5 futureWithResult:v8];
   }
 
   else
   {
-    v10 = [(HUAvailableRelatedTriggerItemProvider *)self itemProviders];
-    v11 = [v10 na_map:&__block_literal_global_251];
+    itemProviders = [(HUAvailableRelatedTriggerItemProvider *)self itemProviders];
+    v11 = [itemProviders na_map:&__block_literal_global_251];
 
     v12 = MEMORY[0x277D2C900];
-    v13 = [v11 allObjects];
-    v14 = [v12 combineAllFutures:v13];
+    allObjects = [v11 allObjects];
+    v14 = [v12 combineAllFutures:allObjects];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __52__HUAvailableRelatedTriggerItemProvider_reloadItems__block_invoke_2;
@@ -330,16 +330,16 @@ void __52__HUAvailableRelatedTriggerItemProvider_reloadItems__block_invoke_8(uin
   [v3 setActive:{objc_msgSend(v4, "BOOLValue")}];
 }
 
-- (id)itemsToHideInSet:(id)a3
+- (id)itemsToHideInSet:(id)set
 {
-  v4 = a3;
-  v5 = [(HUAvailableRelatedTriggerItemProvider *)self triggerItems];
-  v6 = [v5 na_setByIntersectingWithSet:v4];
+  setCopy = set;
+  triggerItems = [(HUAvailableRelatedTriggerItemProvider *)self triggerItems];
+  v6 = [triggerItems na_setByIntersectingWithSet:setCopy];
 
   v7 = [MEMORY[0x277CBEB58] set];
   v8 = [v6 na_filter:&__block_literal_global_64_1];
-  v9 = [(HUAvailableRelatedTriggerItemProvider *)self triggerItems];
-  v10 = [v9 na_filter:&__block_literal_global_66_5];
+  triggerItems2 = [(HUAvailableRelatedTriggerItemProvider *)self triggerItems];
+  v10 = [triggerItems2 na_filter:&__block_literal_global_66_5];
 
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
@@ -359,11 +359,11 @@ void __52__HUAvailableRelatedTriggerItemProvider_reloadItems__block_invoke_8(uin
   v17 = 3221225472;
   v18 = __58__HUAvailableRelatedTriggerItemProvider_itemsToHideInSet___block_invoke_5;
   v19 = &unk_277DC3500;
-  v20 = self;
+  selfCopy = self;
   v21 = v12;
   v13 = v12;
   v14 = [v8 na_filter:&v16];
-  [v7 unionSet:{v14, v16, v17, v18, v19, v20}];
+  [v7 unionSet:{v14, v16, v17, v18, v19, selfCopy}];
 
   return v7;
 }
@@ -465,17 +465,17 @@ uint64_t __58__HUAvailableRelatedTriggerItemProvider_itemsToHideInSet___block_in
   return v23;
 }
 
-- (BOOL)relatedItemsAffectedByTrigger:(id)a3
+- (BOOL)relatedItemsAffectedByTrigger:(id)trigger
 {
-  v4 = a3;
-  v5 = [(HUAvailableRelatedTriggerItemProvider *)self relatedItems];
+  triggerCopy = trigger;
+  relatedItems = [(HUAvailableRelatedTriggerItemProvider *)self relatedItems];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __71__HUAvailableRelatedTriggerItemProvider_relatedItemsAffectedByTrigger___block_invoke;
   v9[3] = &unk_277DC3528;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 na_any:v9];
+  v10 = triggerCopy;
+  v6 = triggerCopy;
+  v7 = [relatedItems na_any:v9];
 
   return v7;
 }
@@ -489,7 +489,7 @@ uint64_t __71__HUAvailableRelatedTriggerItemProvider_relatedItemsAffectedByTrigg
   return v4;
 }
 
-- (id)reloadAvailableTriggerItemsWithObjects:(id)a3
+- (id)reloadAvailableTriggerItemsWithObjects:(id)objects
 {
   v5[4] = self;
   v6[0] = MEMORY[0x277D85DD0];
@@ -501,7 +501,7 @@ uint64_t __71__HUAvailableRelatedTriggerItemProvider_relatedItemsAffectedByTrigg
   v5[1] = 3221225472;
   v5[2] = __80__HUAvailableRelatedTriggerItemProvider_reloadAvailableTriggerItemsWithObjects___block_invoke_4;
   v5[3] = &unk_277DC35B8;
-  v3 = [(HFItemProvider *)self reloadItemsWithObjects:a3 keyAdaptor:&__block_literal_global_74_2 itemAdaptor:&__block_literal_global_76_1 filter:v6 itemMap:v5];
+  v3 = [(HFItemProvider *)self reloadItemsWithObjects:objects keyAdaptor:&__block_literal_global_74_2 itemAdaptor:&__block_literal_global_76_1 filter:v6 itemMap:v5];
 
   return v3;
 }
@@ -540,26 +540,26 @@ HUAvailableTriggerItem *__80__HUAvailableRelatedTriggerItemProvider_reloadAvaila
 {
   v8.receiver = self;
   v8.super_class = HUAvailableRelatedTriggerItemProvider;
-  v3 = [(HFItemProvider *)&v8 invalidationReasons];
-  v4 = [(HUAvailableRelatedTriggerItemProvider *)self itemProviders];
-  v5 = [v4 na_flatMap:&__block_literal_global_85_1];
-  v6 = [v3 setByAddingObjectsFromSet:v5];
+  invalidationReasons = [(HFItemProvider *)&v8 invalidationReasons];
+  itemProviders = [(HUAvailableRelatedTriggerItemProvider *)self itemProviders];
+  v5 = [itemProviders na_flatMap:&__block_literal_global_85_1];
+  v6 = [invalidationReasons setByAddingObjectsFromSet:v5];
 
   return v6;
 }
 
-- (void)disableUpdatesWithReason:(id)a3
+- (void)disableUpdatesWithReason:(id)reason
 {
-  v4 = a3;
-  v5 = [(HUAvailableRelatedTriggerItemProvider *)self updatesDisabledReasons];
-  [v5 addObject:v4];
+  reasonCopy = reason;
+  updatesDisabledReasons = [(HUAvailableRelatedTriggerItemProvider *)self updatesDisabledReasons];
+  [updatesDisabledReasons addObject:reasonCopy];
 }
 
-- (void)endDisableUpdatesWithReason:(id)a3
+- (void)endDisableUpdatesWithReason:(id)reason
 {
-  v4 = a3;
-  v5 = [(HUAvailableRelatedTriggerItemProvider *)self updatesDisabledReasons];
-  [v5 removeObject:v4];
+  reasonCopy = reason;
+  updatesDisabledReasons = [(HUAvailableRelatedTriggerItemProvider *)self updatesDisabledReasons];
+  [updatesDisabledReasons removeObject:reasonCopy];
 }
 
 @end

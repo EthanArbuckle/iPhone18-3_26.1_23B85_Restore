@@ -1,12 +1,12 @@
 @interface SiriIntentsSnippetFactory
-- (id)viewControllerForSnippet:(id)a3 error:(id *)a4;
+- (id)viewControllerForSnippet:(id)snippet error:(id *)error;
 @end
 
 @implementation SiriIntentsSnippetFactory
 
-- (id)viewControllerForSnippet:(id)a3 error:(id *)a4
+- (id)viewControllerForSnippet:(id)snippet error:(id *)error
 {
-  v5 = a3;
+  snippetCopy = snippet;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -15,12 +15,12 @@
     v7 = objc_alloc_init(SiriIntentsSnippetViewController);
   }
 
-  else if (a4)
+  else if (error)
   {
     v8 = [NSError errorWithDomain:SiriUISnippetPluginErrorDomain code:100 userInfo:0];
     v9 = v8;
     v7 = 0;
-    *a4 = v8;
+    *error = v8;
   }
 
   else

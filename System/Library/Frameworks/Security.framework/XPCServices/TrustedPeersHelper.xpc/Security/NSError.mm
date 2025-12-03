@@ -4,9 +4,9 @@
 - (BOOL)_isRetryableNSURLError;
 - (BOOL)ckksIsCKErrorRecordChangedError;
 - (BOOL)isCKInternalServerHTTPError;
-- (BOOL)isCKKSServerPluginError:(int64_t)a3;
+- (BOOL)isCKKSServerPluginError:(int64_t)error;
 - (BOOL)isCKServerInternalError;
-- (BOOL)isCuttlefishError:(int64_t)a3;
+- (BOOL)isCuttlefishError:(int64_t)error;
 - (BOOL)isRetryable;
 - (double)cuttlefishRetryAfter;
 - (double)retryInterval;
@@ -16,35 +16,35 @@
 
 - (double)retryInterval
 {
-  v2 = self;
+  selfCopy = self;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = sub_1002037BC;
   v18 = sub_1002037CC;
   v19 = 0;
-  v3 = [(NSError *)v2 domain];
-  v4 = [v3 isEqualToString:@"CKErrorDomain"];
+  domain = [(NSError *)selfCopy domain];
+  v4 = [domain isEqualToString:@"CKErrorDomain"];
 
   if (v4)
   {
-    if ([(NSError *)v2 code]== 2)
+    if ([(NSError *)selfCopy code]== 2)
     {
-      v5 = [(NSError *)v2 userInfo];
-      v6 = [v5 objectForKeyedSubscript:@"CKPartialErrors"];
+      userInfo = [(NSError *)selfCopy userInfo];
+      userInfo2 = [userInfo objectForKeyedSubscript:@"CKPartialErrors"];
 
       v13[0] = _NSConcreteStackBlock;
       v13[1] = 3221225472;
       v13[2] = sub_1002037D4;
       v13[3] = &unk_100289038;
       v13[4] = &v14;
-      [v6 enumerateKeysAndObjectsUsingBlock:v13];
+      [userInfo2 enumerateKeysAndObjectsUsingBlock:v13];
     }
 
     else
     {
-      v6 = [(NSError *)v2 userInfo];
-      v7 = [v6 objectForKeyedSubscript:@"CKRetryAfter"];
+      userInfo2 = [(NSError *)selfCopy userInfo];
+      v7 = [userInfo2 objectForKeyedSubscript:@"CKRetryAfter"];
       v8 = v15[5];
       v15[5] = v7;
     }
@@ -64,7 +64,7 @@
 
   _Block_object_dispose(&v14, 8);
 
-  [(NSError *)v2 cuttlefishRetryAfter];
+  [(NSError *)selfCopy cuttlefishRetryAfter];
   if (v11 >= result)
   {
     result = v11;
@@ -80,43 +80,43 @@
 
 - (double)cuttlefishRetryAfter
 {
-  v2 = self;
-  v3 = [(NSError *)v2 domain];
+  selfCopy = self;
+  domain = [(NSError *)selfCopy domain];
   v4 = 0.0;
-  if (![v3 isEqualToString:@"CKErrorDomain"])
+  if (![domain isEqualToString:@"CKErrorDomain"])
   {
     goto LABEL_9;
   }
 
-  v5 = [(NSError *)v2 code];
+  code = [(NSError *)selfCopy code];
 
-  if (v5 == 15)
+  if (code == 15)
   {
-    v6 = [(NSError *)v2 userInfo];
-    v3 = [v6 objectForKeyedSubscript:NSUnderlyingErrorKey];
+    userInfo = [(NSError *)selfCopy userInfo];
+    domain = [userInfo objectForKeyedSubscript:NSUnderlyingErrorKey];
 
-    v7 = [v3 domain];
-    if ([v7 isEqualToString:@"CKInternalErrorDomain"])
+    v3Domain = [domain domain];
+    if ([v3Domain isEqualToString:@"CKInternalErrorDomain"])
     {
-      v8 = [v3 code];
+      code2 = [domain code];
 
-      if (v8 != 6000)
+      if (code2 != 6000)
       {
 LABEL_9:
 
         goto LABEL_10;
       }
 
-      v9 = [v3 userInfo];
-      v7 = [v9 objectForKeyedSubscript:NSUnderlyingErrorKey];
+      userInfo2 = [domain userInfo];
+      v3Domain = [userInfo2 objectForKeyedSubscript:NSUnderlyingErrorKey];
 
-      v10 = [v7 domain];
-      LODWORD(v9) = [v10 isEqualToString:CuttlefishErrorDomain];
+      v7Domain = [v3Domain domain];
+      LODWORD(userInfo2) = [v7Domain isEqualToString:CuttlefishErrorDomain];
 
-      if (v9)
+      if (userInfo2)
       {
-        v11 = [v7 userInfo];
-        v12 = [v11 objectForKeyedSubscript:CuttlefishErrorRetryAfterKey];
+        userInfo3 = [v3Domain userInfo];
+        v12 = [userInfo3 objectForKeyedSubscript:CuttlefishErrorRetryAfterKey];
 
         if (v12)
         {
@@ -141,8 +141,8 @@ LABEL_10:
     goto LABEL_8;
   }
 
-  v5 = [(NSError *)self domain];
-  v6 = [v5 isEqualToString:TrustedPeersHelperErrorDomain];
+  domain = [(NSError *)self domain];
+  v6 = [domain isEqualToString:TrustedPeersHelperErrorDomain];
 
   if (v6)
   {
@@ -155,25 +155,25 @@ LABEL_10:
     goto LABEL_8;
   }
 
-  v7 = [(NSError *)self domain];
-  v8 = [v7 isEqualToString:@"CKErrorDomain"];
+  domain2 = [(NSError *)self domain];
+  v8 = [domain2 isEqualToString:@"CKErrorDomain"];
 
   if (v8)
   {
-    v9 = [(NSError *)self userInfo];
-    v10 = [v9 objectForKeyedSubscript:@"CKRetryAfter"];
+    userInfo = [(NSError *)self userInfo];
+    v10 = [userInfo objectForKeyedSubscript:@"CKRetryAfter"];
 
     if (!v10)
     {
-      v11 = [(NSError *)self code];
-      if (v11 >= 8)
+      code = [(NSError *)self code];
+      if (code >= 8)
       {
         LOBYTE(v3) = 0;
       }
 
       else
       {
-        v3 = 0x98u >> v11;
+        v3 = 0x98u >> code;
       }
 
       return v3 & 1;
@@ -194,28 +194,28 @@ LABEL_8:
 
 - (BOOL)_isRetryableAKError
 {
-  v3 = [(NSError *)self userInfo];
-  v4 = [v3 objectForKeyedSubscript:NSUnderlyingErrorKey];
+  userInfo = [(NSError *)self userInfo];
+  v4 = [userInfo objectForKeyedSubscript:NSUnderlyingErrorKey];
 
-  v5 = [(NSError *)self domain];
-  v6 = 0;
-  if ([v5 isEqualToString:@"AKAuthenticationError"] && v4)
+  domain = [(NSError *)self domain];
+  _isRetryableNSURLError = 0;
+  if ([domain isEqualToString:@"AKAuthenticationError"] && v4)
   {
-    v6 = [v4 _isRetryableNSURLError];
+    _isRetryableNSURLError = [v4 _isRetryableNSURLError];
   }
 
-  return v6;
+  return _isRetryableNSURLError;
 }
 
 - (BOOL)_isRetryableNSURLError
 {
-  v2 = self;
-  v3 = [(NSError *)v2 domain];
-  v4 = [v3 isEqualToString:NSURLErrorDomain];
+  selfCopy = self;
+  domain = [(NSError *)selfCopy domain];
+  v4 = [domain isEqualToString:NSURLErrorDomain];
 
   if (v4)
   {
-    v5 = (([(NSError *)v2 code]+ 1009) & 0xFFFFFFFFFFFFFFF7) == 0;
+    v5 = (([(NSError *)selfCopy code]+ 1009) & 0xFFFFFFFFFFFFFFF7) == 0;
   }
 
   else
@@ -226,41 +226,41 @@ LABEL_8:
   return v5;
 }
 
-- (BOOL)isCuttlefishError:(int64_t)a3
+- (BOOL)isCuttlefishError:(int64_t)error
 {
-  v4 = self;
-  v5 = [(NSError *)v4 domain];
-  if (![v5 isEqualToString:@"CKErrorDomain"])
+  selfCopy = self;
+  domain = [(NSError *)selfCopy domain];
+  if (![domain isEqualToString:@"CKErrorDomain"])
   {
     goto LABEL_8;
   }
 
-  v6 = [(NSError *)v4 code];
+  code = [(NSError *)selfCopy code];
 
-  if (v6 == 15)
+  if (code == 15)
   {
-    v7 = [(NSError *)v4 userInfo];
-    v5 = [v7 objectForKeyedSubscript:NSUnderlyingErrorKey];
+    userInfo = [(NSError *)selfCopy userInfo];
+    domain = [userInfo objectForKeyedSubscript:NSUnderlyingErrorKey];
 
-    v8 = [v5 domain];
-    if (![v8 isEqualToString:@"CKInternalErrorDomain"])
+    v5Domain = [domain domain];
+    if (![v5Domain isEqualToString:@"CKInternalErrorDomain"])
     {
       goto LABEL_11;
     }
 
-    v9 = [v5 code];
+    code2 = [domain code];
 
-    if (v9 == 6000)
+    if (code2 == 6000)
     {
-      v10 = [v5 userInfo];
-      v8 = [v10 objectForKeyedSubscript:NSUnderlyingErrorKey];
+      userInfo2 = [domain userInfo];
+      v5Domain = [userInfo2 objectForKeyedSubscript:NSUnderlyingErrorKey];
 
-      v11 = [v8 domain];
-      if ([v11 isEqualToString:CuttlefishErrorDomain])
+      v8Domain = [v5Domain domain];
+      if ([v8Domain isEqualToString:CuttlefishErrorDomain])
       {
-        v12 = [v8 code];
+        code3 = [v5Domain code];
 
-        if (v12 == a3)
+        if (code3 == error)
         {
           v13 = 1;
 LABEL_12:
@@ -293,18 +293,18 @@ LABEL_14:
 
 - (BOOL)_isCKServerInternalError
 {
-  v3 = [(NSError *)self userInfo];
-  v4 = [v3 objectForKeyedSubscript:NSUnderlyingErrorKey];
+  userInfo = [(NSError *)self userInfo];
+  v4 = [userInfo objectForKeyedSubscript:NSUnderlyingErrorKey];
 
-  v5 = [(NSError *)self domain];
-  if ([v5 isEqualToString:@"CKErrorDomain"])
+  domain = [(NSError *)self domain];
+  if ([domain isEqualToString:@"CKErrorDomain"])
   {
-    v6 = [(NSError *)self code];
+    code = [(NSError *)self code];
     v7 = 0;
-    if (v6 == 15 && v4)
+    if (code == 15 && v4)
     {
-      v8 = [v4 domain];
-      if ([v8 isEqualToString:@"CKInternalErrorDomain"])
+      domain2 = [v4 domain];
+      if ([domain2 isEqualToString:@"CKInternalErrorDomain"])
       {
         v7 = [v4 code] == 2000;
       }
@@ -326,18 +326,18 @@ LABEL_14:
 
 - (BOOL)isCKInternalServerHTTPError
 {
-  v3 = [(NSError *)self userInfo];
-  v4 = [v3 objectForKeyedSubscript:NSUnderlyingErrorKey];
+  userInfo = [(NSError *)self userInfo];
+  v4 = [userInfo objectForKeyedSubscript:NSUnderlyingErrorKey];
 
-  v5 = [(NSError *)self domain];
-  if ([v5 isEqualToString:CKErrorDomain])
+  domain = [(NSError *)self domain];
+  if ([domain isEqualToString:CKErrorDomain])
   {
-    v6 = [(NSError *)self code];
+    code = [(NSError *)self code];
     v7 = 0;
-    if (v6 == 15 && v4)
+    if (code == 15 && v4)
     {
-      v8 = [v4 domain];
-      if ([v8 isEqualToString:CKUnderlyingErrorDomain])
+      domain2 = [v4 domain];
+      if ([domain2 isEqualToString:CKUnderlyingErrorDomain])
       {
         v7 = [v4 code] == 2001;
       }
@@ -359,18 +359,18 @@ LABEL_14:
 
 - (BOOL)isCKServerInternalError
 {
-  v3 = [(NSError *)self userInfo];
-  v4 = [v3 objectForKeyedSubscript:NSUnderlyingErrorKey];
+  userInfo = [(NSError *)self userInfo];
+  v4 = [userInfo objectForKeyedSubscript:NSUnderlyingErrorKey];
 
-  v5 = [(NSError *)self domain];
-  if ([v5 isEqualToString:CKErrorDomain])
+  domain = [(NSError *)self domain];
+  if ([domain isEqualToString:CKErrorDomain])
   {
-    v6 = [(NSError *)self code];
+    code = [(NSError *)self code];
     v7 = 0;
-    if (v6 == 15 && v4)
+    if (code == 15 && v4)
     {
-      v8 = [v4 domain];
-      if ([v8 isEqualToString:CKUnderlyingErrorDomain])
+      domain2 = [v4 domain];
+      if ([domain2 isEqualToString:CKUnderlyingErrorDomain])
       {
         v7 = [v4 code] == 2000;
       }
@@ -390,32 +390,32 @@ LABEL_14:
   return v7;
 }
 
-- (BOOL)isCKKSServerPluginError:(int64_t)a3
+- (BOOL)isCKKSServerPluginError:(int64_t)error
 {
-  v5 = [(NSError *)self userInfo];
-  v6 = [v5 objectForKeyedSubscript:NSUnderlyingErrorKey];
+  userInfo = [(NSError *)self userInfo];
+  v6 = [userInfo objectForKeyedSubscript:NSUnderlyingErrorKey];
 
-  v7 = [v6 userInfo];
-  v8 = [v7 objectForKeyedSubscript:NSUnderlyingErrorKey];
+  userInfo2 = [v6 userInfo];
+  v8 = [userInfo2 objectForKeyedSubscript:NSUnderlyingErrorKey];
 
-  v9 = [(NSError *)self domain];
-  if ([v9 isEqualToString:CKErrorDomain])
+  domain = [(NSError *)self domain];
+  if ([domain isEqualToString:CKErrorDomain])
   {
     v10 = 0;
     if ([(NSError *)self code]== 15 && v6)
     {
-      v11 = [v6 domain];
-      if (![v11 isEqualToString:CKUnderlyingErrorDomain] || (objc_msgSend(v6, "code") == 6000 ? (v12 = v8 == 0) : (v12 = 1), v12))
+      domain2 = [v6 domain];
+      if (![domain2 isEqualToString:CKUnderlyingErrorDomain] || (objc_msgSend(v6, "code") == 6000 ? (v12 = v8 == 0) : (v12 = 1), v12))
       {
         v10 = 0;
       }
 
       else
       {
-        v13 = [v8 domain];
-        if ([v13 isEqualToString:@"CloudkitKeychainService"])
+        domain3 = [v8 domain];
+        if ([domain3 isEqualToString:@"CloudkitKeychainService"])
         {
-          v10 = [v8 code] == a3;
+          v10 = [v8 code] == error;
         }
 
         else
@@ -436,11 +436,11 @@ LABEL_14:
 
 - (BOOL)ckksIsCKErrorRecordChangedError
 {
-  v3 = [(NSError *)self userInfo];
-  v4 = [v3 objectForKeyedSubscript:CKPartialErrorsByItemIDKey];
+  userInfo = [(NSError *)self userInfo];
+  v4 = [userInfo objectForKeyedSubscript:CKPartialErrorsByItemIDKey];
 
-  v5 = [(NSError *)self domain];
-  if (![v5 isEqualToString:CKErrorDomain] || -[NSError code](self, "code") != 2)
+  domain = [(NSError *)self domain];
+  if (![domain isEqualToString:CKErrorDomain] || -[NSError code](self, "code") != 2)
   {
 
     goto LABEL_18;
@@ -457,8 +457,8 @@ LABEL_18:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [v4 objectEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  objectEnumerator = [v4 objectEnumerator];
+  v7 = [objectEnumerator countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -469,12 +469,12 @@ LABEL_18:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 domain];
-        if (![v12 isEqualToString:CKErrorDomain])
+        domain2 = [v11 domain];
+        if (![domain2 isEqualToString:CKErrorDomain])
         {
 
 LABEL_21:
@@ -488,16 +488,16 @@ LABEL_21:
 
         else
         {
-          v13 = [v11 code];
+          code = [v11 code];
 
-          if (v13 != 11)
+          if (code != 11)
           {
             goto LABEL_21;
           }
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [objectEnumerator countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v8)
       {
         continue;

@@ -25,8 +25,8 @@
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v16 = [v3 indexPathsForVisibleItems];
-  v17 = [v16 countByEnumeratingWithState:&v25 objects:v30 count:16];
+  indexPathsForVisibleItems = [v3 indexPathsForVisibleItems];
+  v17 = [indexPathsForVisibleItems countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v17)
   {
     v18 = v17;
@@ -37,7 +37,7 @@
       {
         if (*v26 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(indexPathsForVisibleItems);
         }
 
         v21 = [v3 cellForItemAtIndexPath:*(*(&v25 + 1) + 8 * i)];
@@ -62,7 +62,7 @@
         }
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v25 objects:v30 count:16];
+      v18 = [indexPathsForVisibleItems countByEnumeratingWithState:&v25 objects:v30 count:16];
       if (v18)
       {
         continue;

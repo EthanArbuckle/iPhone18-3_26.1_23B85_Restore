@@ -1,26 +1,26 @@
 @interface MKAttributionLabel
-- (MKAttributionLabel)initWithFrame:(CGRect)a3;
-- (id)_attributesWithStroke:(BOOL)a3;
+- (MKAttributionLabel)initWithFrame:(CGRect)frame;
+- (id)_attributesWithStroke:(BOOL)stroke;
 - (id)_labelTitle;
 - (void)_prepareLabel;
 - (void)_updateTextColor;
-- (void)drawRect:(CGRect)a3;
-- (void)setDisplayStyle:(int64_t)a3;
-- (void)setMapType:(unint64_t)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setDisplayStyle:(int64_t)style;
+- (void)setMapType:(unint64_t)type;
 - (void)sizeToFit;
-- (void)traitEnvironment:(id)a3 didChangeTraitCollection:(id)a4;
+- (void)traitEnvironment:(id)environment didChangeTraitCollection:(id)collection;
 @end
 
 @implementation MKAttributionLabel
 
 - (void)_prepareLabel
 {
-  v11 = [(MKAttributionLabel *)self _labelTitle];
-  v3 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v11];
+  _labelTitle = [(MKAttributionLabel *)self _labelTitle];
+  v3 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:_labelTitle];
   v4 = [(MKAttributionLabel *)self _attributesWithStroke:1];
   [v3 setAttributes:v4 range:{0, objc_msgSend(v3, "length")}];
 
-  v5 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v11];
+  v5 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:_labelTitle];
   v6 = [(MKAttributionLabel *)self _attributesWithStroke:0];
   [v5 setAttributes:v6 range:{0, objc_msgSend(v3, "length")}];
 
@@ -74,8 +74,8 @@ LABEL_7:
   mapType = self->_mapType;
   if (mapType - 1 >= 4 && mapType != 107)
   {
-    v5 = [(MKAttributionLabel *)self traitCollection];
-    v3 = [v5 userInterfaceStyle] != 2;
+    traitCollection = [(MKAttributionLabel *)self traitCollection];
+    v3 = [traitCollection userInterfaceStyle] != 2;
   }
 
   if (self->_useDarkText != v3)
@@ -97,11 +97,11 @@ LABEL_7:
   [(MKAttributionLabel *)self setFrame:v4];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v6.receiver = self;
   v6.super_class = MKAttributionLabel;
-  [(MKAttributionLabel *)&v6 drawRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(MKAttributionLabel *)&v6 drawRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   strokeText = self->_strokeText;
   [(MKAttributionLabel *)self bounds];
   [(NSAttributedString *)strokeText drawInRect:?];
@@ -110,42 +110,42 @@ LABEL_7:
   [(NSAttributedString *)innerText drawInRect:?];
 }
 
-- (void)traitEnvironment:(id)a3 didChangeTraitCollection:(id)a4
+- (void)traitEnvironment:(id)environment didChangeTraitCollection:(id)collection
 {
-  v5 = a4;
-  v6 = [(MKAttributionLabel *)self traitCollection];
-  v7 = [v6 userInterfaceStyle];
-  v8 = [v5 userInterfaceStyle];
+  collectionCopy = collection;
+  traitCollection = [(MKAttributionLabel *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
+  userInterfaceStyle2 = [collectionCopy userInterfaceStyle];
 
-  if (v7 != v8)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
 
     [(MKAttributionLabel *)self _updateTextColor];
   }
 }
 
-- (void)setDisplayStyle:(int64_t)a3
+- (void)setDisplayStyle:(int64_t)style
 {
-  if (self->_displayStyle != a3)
+  if (self->_displayStyle != style)
   {
-    self->_displayStyle = a3;
+    self->_displayStyle = style;
     [(MKAttributionLabel *)self _prepareLabel];
   }
 }
 
-- (void)setMapType:(unint64_t)a3
+- (void)setMapType:(unint64_t)type
 {
-  if (self->_mapType != a3)
+  if (self->_mapType != type)
   {
-    self->_mapType = a3;
+    self->_mapType = type;
     [(MKAttributionLabel *)self _updateTextColor];
   }
 }
 
-- (id)_attributesWithStroke:(BOOL)a3
+- (id)_attributesWithStroke:(BOOL)stroke
 {
   v14[4] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (stroke)
   {
     v13[0] = *MEMORY[0x1E69DB648];
     v4 = [MEMORY[0x1E69DB878] boldSystemFontOfSize:9.0];
@@ -194,7 +194,7 @@ LABEL_7:
   return v9;
 }
 
-- (MKAttributionLabel)initWithFrame:(CGRect)a3
+- (MKAttributionLabel)initWithFrame:(CGRect)frame
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v9.receiver = self;
@@ -204,8 +204,8 @@ LABEL_7:
   if (v3)
   {
     [(MKAttributionLabel *)v3 setOpaque:0];
-    v5 = [MEMORY[0x1E69DC888] clearColor];
-    [(MKAttributionLabel *)v4 setBackgroundColor:v5];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(MKAttributionLabel *)v4 setBackgroundColor:clearColor];
 
     [(MKAttributionLabel *)v4 setAlpha:0.5];
     v10[0] = objc_opt_class();

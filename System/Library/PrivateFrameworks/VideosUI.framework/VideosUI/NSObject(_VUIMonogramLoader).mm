@@ -7,16 +7,16 @@
 
 - (uint64_t)tv_generatorType
 {
-  v1 = objc_getAssociatedObject(a1, sel_tv_generatorType);
-  v2 = [v1 unsignedIntegerValue];
+  v1 = objc_getAssociatedObject(self, sel_tv_generatorType);
+  unsignedIntegerValue = [v1 unsignedIntegerValue];
 
-  return v2;
+  return unsignedIntegerValue;
 }
 
 - (void)tv_setGeneratorType:()_VUIMonogramLoader
 {
   v2 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
-  objc_setAssociatedObject(a1, sel_tv_generatorType, v2, 1);
+  objc_setAssociatedObject(self, sel_tv_generatorType, v2, 1);
 }
 
 @end

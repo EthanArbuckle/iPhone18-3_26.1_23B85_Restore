@@ -1,7 +1,7 @@
 @interface PuzzleGameCenterService
 - (_TtC8NewsFeed23PuzzleGameCenterService)init;
-- (void)networkReachabilityDidChange:(id)a3;
-- (void)player:(GKPlayer *)a3 wantsToPlayGameActivity:(GKGameActivity *)a4 completionHandler:(id)a5;
+- (void)networkReachabilityDidChange:(id)change;
+- (void)player:(GKPlayer *)player wantsToPlayGameActivity:(GKGameActivity *)activity completionHandler:(id)handler;
 @end
 
 @implementation PuzzleGameCenterService
@@ -14,15 +14,15 @@
   return result;
 }
 
-- (void)player:(GKPlayer *)a3 wantsToPlayGameActivity:(GKGameActivity *)a4 completionHandler:(id)a5
+- (void)player:(GKPlayer *)player wantsToPlayGameActivity:(GKGameActivity *)activity completionHandler:(id)handler
 {
   sub_1D5B73DC0();
   MEMORY[0x1EEE9AC00](v9 - 8, v10);
   v12 = &v20 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = player;
+  v14[3] = activity;
   v14[4] = v13;
   v14[5] = self;
   v15 = sub_1D726294C();
@@ -37,20 +37,20 @@
   v17[3] = 0;
   v17[4] = &unk_1D731C230;
   v17[5] = v16;
-  v18 = a3;
-  v19 = a4;
+  playerCopy = player;
+  activityCopy = activity;
 
   sub_1D6DCF07C(0, 0, v12, &unk_1D731C238, v17);
 }
 
-- (void)networkReachabilityDidChange:(id)a3
+- (void)networkReachabilityDidChange:(id)change
 {
   sub_1D5B73DC0();
   MEMORY[0x1EEE9AC00](v5 - 8, v6);
   v8 = &v11 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   swift_unknownObjectRetain();
 
-  if ([a3 isNetworkReachable])
+  if ([change isNetworkReachable])
   {
     v9 = sub_1D726294C();
     (*(*(v9 - 8) + 56))(v8, 1, 1, v9);

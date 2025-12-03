@@ -1,16 +1,16 @@
 @interface PKFakeTapToFocusDelegate
-+ (BOOL)_shouldAttachForView:(id)a3;
-+ (BOOL)isPossibleForView:(id)a3 focusInfo:(id)a4;
++ (BOOL)_shouldAttachForView:(id)view;
++ (BOOL)isPossibleForView:(id)view focusInfo:(id)info;
 + (id)_infoInProcess;
-+ (id)_tapGestureForView:(id)a3;
-- (BOOL)_scribbleInteractionIsEnabled:(id)a3;
-- (CGRect)_scribbleInteraction:(id)a3 frameForElement:(id)a4;
-- (PKFakeTapToFocusDelegate)initWithView:(id)a3;
-- (void)_focusWithFocusInfo:(id)a3;
-- (void)_scribbleInteraction:(id)a3 didTargetElement:(id)a4 forTouches:(id)a5 event:(id)a6;
-- (void)_scribbleInteraction:(id)a3 focusElement:(id)a4 initialFocusSelectionReferencePoint:(CGPoint)a5 completion:(id)a6;
-- (void)_scribbleInteraction:(id)a3 requestElementsInRect:(CGRect)a4 completion:(id)a5;
-- (void)_waitForFirstResponderChangeWithFocusInfo:(id)a3 completion:(id)a4;
++ (id)_tapGestureForView:(id)view;
+- (BOOL)_scribbleInteractionIsEnabled:(id)enabled;
+- (CGRect)_scribbleInteraction:(id)interaction frameForElement:(id)element;
+- (PKFakeTapToFocusDelegate)initWithView:(id)view;
+- (void)_focusWithFocusInfo:(id)info;
+- (void)_scribbleInteraction:(id)interaction didTargetElement:(id)element forTouches:(id)touches event:(id)event;
+- (void)_scribbleInteraction:(id)interaction focusElement:(id)element initialFocusSelectionReferencePoint:(CGPoint)point completion:(id)completion;
+- (void)_scribbleInteraction:(id)interaction requestElementsInRect:(CGRect)rect completion:(id)completion;
+- (void)_waitForFirstResponderChangeWithFocusInfo:(id)info completion:(id)completion;
 @end
 
 @implementation PKFakeTapToFocusDelegate
@@ -120,15 +120,15 @@ void __42__PKFakeTapToFocusDelegate__infoInProcess__block_invoke()
   qword_1ED6A5530 = v46;
 }
 
-+ (id)_tapGestureForView:(id)a3
++ (id)_tapGestureForView:(id)view
 {
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [a3 gestureRecognizers];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  gestureRecognizers = [view gestureRecognizers];
+  v4 = [gestureRecognizers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = *v10;
@@ -138,7 +138,7 @@ void __42__PKFakeTapToFocusDelegate__infoInProcess__block_invoke()
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(gestureRecognizers);
         }
 
         v7 = *(*(&v9 + 1) + 8 * i);
@@ -150,7 +150,7 @@ void __42__PKFakeTapToFocusDelegate__infoInProcess__block_invoke()
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [gestureRecognizers countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -165,30 +165,30 @@ LABEL_11:
   return v4;
 }
 
-+ (BOOL)_shouldAttachForView:(id)a3
++ (BOOL)_shouldAttachForView:(id)view
 {
-  v4 = a3;
-  if (v4 && (dyld_program_sdk_at_least() & 1) == 0)
+  viewCopy = view;
+  if (viewCopy && (dyld_program_sdk_at_least() & 1) == 0)
   {
-    v6 = [a1 _infoInProcess];
-    v7 = [a1 isPossibleForView:v4 focusInfo:v6];
+    _infoInProcess = [self _infoInProcess];
+    v7 = [self isPossibleForView:viewCopy focusInfo:_infoInProcess];
     v5 = 0;
-    if (v6 && v7)
+    if (_infoInProcess && v7)
     {
-      if (v6[3] && (v8 = objc_opt_class(), NSStringFromClass(v8), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 hash], v11 = v6[3], v9, v10 == v11) && (!v6[4] || (objc_msgSend(v4, "subviews"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "firstObject"), v13 = objc_claimAutoreleasedReturnValue(), v12, v13) && (v14 = objc_opt_class(), NSStringFromClass(v14), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "hash"), v17 = v6[4], v15, v13, v16 == v17)))
+      if (_infoInProcess[3] && (v8 = objc_opt_class(), NSStringFromClass(v8), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 hash], v11 = _infoInProcess[3], v9, v10 == v11) && (!_infoInProcess[4] || (objc_msgSend(viewCopy, "subviews"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "firstObject"), v13 = objc_claimAutoreleasedReturnValue(), v12, v13) && (v14 = objc_opt_class(), NSStringFromClass(v14), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "hash"), v17 = _infoInProcess[4], v15, v13, v16 == v17)))
       {
-        if (v6[5] && v6[6])
+        if (_infoInProcess[5] && _infoInProcess[6])
         {
           v23 = 0;
           v24 = &v23;
           v25 = 0x2020000000;
           v26 = 0;
-          v18 = v4;
+          v18 = viewCopy;
           v20[0] = MEMORY[0x1E69E9820];
           v20[1] = 3221225472;
           v20[2] = __49__PKFakeTapToFocusDelegate__shouldAttachForView___block_invoke;
           v20[3] = &unk_1E82DC548;
-          v21 = v6;
+          v21 = _infoInProcess;
           v22 = &v23;
           [v18 enumerateEventHandlers:v20];
           v5 = *(v24 + 24);
@@ -270,18 +270,18 @@ void __49__PKFakeTapToFocusDelegate__shouldAttachForView___block_invoke(uint64_t
   }
 }
 
-+ (BOOL)isPossibleForView:(id)a3 focusInfo:(id)a4
++ (BOOL)isPossibleForView:(id)view focusInfo:(id)info
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  viewCopy = view;
+  infoCopy = info;
+  v7 = infoCopy;
+  if (infoCopy)
   {
-    v8 = v6[2];
+    v8 = infoCopy[2];
     if (v8 == 2)
     {
-      v10 = [v5 gestureRecognizers];
-      isKindOfClass = [v10 count] != 0;
+      gestureRecognizers = [viewCopy gestureRecognizers];
+      isKindOfClass = [gestureRecognizers count] != 0;
 
       goto LABEL_7;
     }
@@ -300,30 +300,30 @@ LABEL_7:
   return isKindOfClass & 1;
 }
 
-- (PKFakeTapToFocusDelegate)initWithView:(id)a3
+- (PKFakeTapToFocusDelegate)initWithView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v18.receiver = self;
   v18.super_class = PKFakeTapToFocusDelegate;
   v5 = [(PKFakeTapToFocusDelegate *)&v18 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_view, v4);
-    v7 = [objc_opt_class() _infoInProcess];
+    objc_storeWeak(&v5->_view, viewCopy);
+    _infoInProcess = [objc_opt_class() _infoInProcess];
     focusInfo = v6->_focusInfo;
-    v6->_focusInfo = v7;
+    v6->_focusInfo = _infoInProcess;
 
-    v9 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     elementID = v6->_elementID;
-    v6->_elementID = v9;
+    v6->_elementID = uUID;
 
     v11 = v6->_focusInfo;
     if (v11)
     {
       if (v11->_type == 2)
       {
-        v12 = [objc_opt_class() _tapGestureForView:v4];
+        v12 = [objc_opt_class() _tapGestureForView:viewCopy];
         objc_storeWeak(&v6->_tapGesture, v12);
 
         v13 = objc_alloc_init(PKFakeUITapGestureForRequirements);
@@ -345,15 +345,15 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)_scribbleInteractionIsEnabled:(id)a3
+- (BOOL)_scribbleInteractionIsEnabled:(id)enabled
 {
   WeakRetained = objc_loadWeakRetained(&self->_view);
-  v5 = [WeakRetained firstResponder];
+  firstResponder = [WeakRetained firstResponder];
 
-  if (v5)
+  if (firstResponder)
   {
     v6 = objc_loadWeakRetained(&self->_view);
-    v7 = [v6 _containsResponder:v5] ^ 1;
+    v7 = [v6 _containsResponder:firstResponder] ^ 1;
   }
 
   else
@@ -364,7 +364,7 @@ LABEL_7:
   return v7;
 }
 
-- (CGRect)_scribbleInteraction:(id)a3 frameForElement:(id)a4
+- (CGRect)_scribbleInteraction:(id)interaction frameForElement:(id)element
 {
   WeakRetained = objc_loadWeakRetained(&self->_view);
   if (WeakRetained)
@@ -396,29 +396,29 @@ LABEL_7:
   return result;
 }
 
-- (void)_scribbleInteraction:(id)a3 didTargetElement:(id)a4 forTouches:(id)a5 event:(id)a6
+- (void)_scribbleInteraction:(id)interaction didTargetElement:(id)element forTouches:(id)touches event:(id)event
 {
   v30 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  interactionCopy = interaction;
+  elementCopy = element;
+  touchesCopy = touches;
+  eventCopy = event;
   focusInfo = self->_focusInfo;
   if (focusInfo)
   {
-    if (focusInfo->_type == 2 && self->_elementID == v11)
+    if (focusInfo->_type == 2 && self->_elementID == elementCopy)
     {
       WeakRetained = objc_loadWeakRetained(&self->_tapGesture);
       v16 = objc_opt_respondsToSelector();
 
       if (v16)
       {
-        v24 = v10;
+        v24 = interactionCopy;
         v27 = 0u;
         v28 = 0u;
         v25 = 0u;
         v26 = 0u;
-        v17 = v12;
+        v17 = touchesCopy;
         v18 = [v17 countByEnumeratingWithState:&v25 objects:v29 count:16];
         if (v18)
         {
@@ -434,9 +434,9 @@ LABEL_7:
               }
 
               v22 = *(*(&v25 + 1) + 8 * i);
-              [(PKFakeUITapGestureForRequirements *)self->_gestureForRequirements _addTouch:v22 forEvent:v13];
+              [(PKFakeUITapGestureForRequirements *)self->_gestureForRequirements _addTouch:v22 forEvent:eventCopy];
               v23 = objc_loadWeakRetained(&self->_tapGesture);
-              [v23 _removeTouch:v22 forEvent:v13];
+              [v23 _removeTouch:v22 forEvent:eventCopy];
             }
 
             v19 = [v17 countByEnumeratingWithState:&v25 objects:v29 count:16];
@@ -445,47 +445,47 @@ LABEL_7:
           while (v19);
         }
 
-        v10 = v24;
+        interactionCopy = v24;
       }
     }
   }
 }
 
-- (void)_scribbleInteraction:(id)a3 requestElementsInRect:(CGRect)a4 completion:(id)a5
+- (void)_scribbleInteraction:(id)interaction requestElementsInRect:(CGRect)rect completion:(id)completion
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v6 = a5;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_view);
 
   if (WeakRetained)
   {
     v9[0] = self->_elementID;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
-    v6[2](v6, v8, 0x7FFFFFFFFFFFFFFFLL);
+    completionCopy[2](completionCopy, v8, 0x7FFFFFFFFFFFFFFFLL);
   }
 
   else
   {
-    v6[2](v6, MEMORY[0x1E695E0F0], 0x7FFFFFFFFFFFFFFFLL);
+    completionCopy[2](completionCopy, MEMORY[0x1E695E0F0], 0x7FFFFFFFFFFFFFFFLL);
   }
 }
 
-- (void)_focusWithFocusInfo:(id)a3
+- (void)_focusWithFocusInfo:(id)info
 {
-  v4 = a3;
-  if (v4)
+  infoCopy = info;
+  if (infoCopy)
   {
-    v5 = v4[2];
+    v5 = infoCopy[2];
     if (v5 == 2)
     {
-      v7 = v4;
+      v7 = infoCopy;
       [(PKFakeUITapGestureForRequirements *)self->_gestureForRequirements setState:5];
       goto LABEL_9;
     }
 
     if (v5 == 1)
     {
-      v7 = v4;
+      v7 = infoCopy;
       WeakRetained = objc_loadWeakRetained(&self->_view);
       [WeakRetained sendActionsForControlEvents:v7[7]];
       goto LABEL_7;
@@ -497,21 +497,21 @@ LABEL_7:
     }
   }
 
-  v7 = v4;
+  v7 = infoCopy;
   WeakRetained = objc_loadWeakRetained(&self->_view);
   [WeakRetained becomeFirstResponder];
 LABEL_7:
 
 LABEL_9:
-  v4 = v7;
+  infoCopy = v7;
 LABEL_10:
 }
 
-- (void)_scribbleInteraction:(id)a3 focusElement:(id)a4 initialFocusSelectionReferencePoint:(CGPoint)a5 completion:(id)a6
+- (void)_scribbleInteraction:(id)interaction focusElement:(id)element initialFocusSelectionReferencePoint:(CGPoint)point completion:(id)completion
 {
-  v18 = a3;
-  v9 = a4;
-  v10 = a6;
+  interactionCopy = interaction;
+  elementCopy = element;
+  completionCopy = completion;
   focusInfo = self->_focusInfo;
   if (focusInfo && focusInfo->_type == 2)
   {
@@ -520,13 +520,13 @@ LABEL_10:
     {
       v13 = WeakRetained;
       v14 = objc_loadWeakRetained(&self->_tapGesture);
-      v15 = [v14 state];
+      state = [v14 state];
 
       focusInfo = self->_focusInfo;
-      if (v15 == 5)
+      if (state == 5)
       {
         [(PKFakeTapToFocusDelegate *)self _focusWithFocusInfo:focusInfo];
-        v10[2](v10, 0);
+        completionCopy[2](completionCopy, 0);
         goto LABEL_10;
       }
     }
@@ -542,41 +542,41 @@ LABEL_10:
   if (v16)
   {
     [(PKFakeTapToFocusDelegate *)self _focusWithFocusInfo:v17];
-    [(PKFakeTapToFocusDelegate *)self _waitForFirstResponderChangeWithFocusInfo:self->_focusInfo completion:v10];
+    [(PKFakeTapToFocusDelegate *)self _waitForFirstResponderChangeWithFocusInfo:self->_focusInfo completion:completionCopy];
   }
 
   else
   {
-    [(PKFakeTapToFocusDelegate *)self _waitForFirstResponderChangeWithFocusInfo:v17 completion:v10];
+    [(PKFakeTapToFocusDelegate *)self _waitForFirstResponderChangeWithFocusInfo:v17 completion:completionCopy];
     [(PKFakeTapToFocusDelegate *)self _focusWithFocusInfo:self->_focusInfo];
   }
 
 LABEL_10:
 }
 
-- (void)_waitForFirstResponderChangeWithFocusInfo:(id)a3 completion:(id)a4
+- (void)_waitForFirstResponderChangeWithFocusInfo:(id)info completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  infoCopy = info;
+  completionCopy = completion;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3042000000;
   v20 = __Block_byref_object_copy__36;
   v21 = __Block_byref_object_dispose__36;
   v22 = 0;
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v8 = *MEMORY[0x1E69DEB18];
-  v9 = [MEMORY[0x1E696ADC8] mainQueue];
+  mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __81__PKFakeTapToFocusDelegate__waitForFirstResponderChangeWithFocusInfo_completion___block_invoke;
   v13[3] = &unk_1E82DC570;
-  v15 = v6;
+  v15 = completionCopy;
   v16 = &v17;
-  v14 = v5;
-  v10 = v6;
-  v11 = v5;
-  v12 = [v7 addObserverForName:v8 object:0 queue:v9 usingBlock:v13];
+  v14 = infoCopy;
+  v10 = completionCopy;
+  v11 = infoCopy;
+  v12 = [defaultCenter addObserverForName:v8 object:0 queue:mainQueue usingBlock:v13];
   objc_storeWeak(v18 + 5, v12);
 
   _Block_object_dispose(&v17, 8);

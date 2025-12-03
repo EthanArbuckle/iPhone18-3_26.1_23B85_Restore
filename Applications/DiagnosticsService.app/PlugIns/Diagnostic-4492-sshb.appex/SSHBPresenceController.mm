@@ -1,17 +1,17 @@
 @interface SSHBPresenceController
-- (void)setStatusCode:(int64_t)a3;
-- (void)setupWithInputs:(id)a3 responder:(id)a4;
+- (void)setStatusCode:(int64_t)code;
+- (void)setupWithInputs:(id)inputs responder:(id)responder;
 - (void)start;
 - (void)teardown;
-- (void)turtleCallback:(id)a3;
+- (void)turtleCallback:(id)callback;
 - (void)turtleWasDisconnected;
 @end
 
 @implementation SSHBPresenceController
 
-- (void)setupWithInputs:(id)a3 responder:(id)a4
+- (void)setupWithInputs:(id)inputs responder:(id)responder
 {
-  [(SSHBPresenceController *)self setInputs:a3, a4];
+  [(SSHBPresenceController *)self setInputs:inputs, responder];
   [(SSHBPresenceController *)self setStatusCodeSet:0];
   v5 = +[NSMutableArray array];
   [(SSHBPresenceController *)self setTurtleData:v5];
@@ -19,14 +19,14 @@
   v6 = objc_alloc_init(Turtle);
   [(SSHBPresenceController *)self setTurtle:v6];
 
-  v7 = [(SSHBPresenceController *)self turtle];
-  [v7 setDelegate:self];
+  turtle = [(SSHBPresenceController *)self turtle];
+  [turtle setDelegate:self];
 
   CFRunLoopRunInMode(kCFRunLoopDefaultMode, 2.0, 1u);
-  v8 = [(SSHBPresenceController *)self inputs];
-  v9 = [v8 frequentSampling];
+  inputs = [(SSHBPresenceController *)self inputs];
+  frequentSampling = [inputs frequentSampling];
 
-  if (v9)
+  if (frequentSampling)
   {
     v10 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -35,9 +35,9 @@
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Enabling frequent sampling...", buf, 2u);
     }
 
-    v11 = [(SSHBPresenceController *)self turtle];
+    turtle2 = [(SSHBPresenceController *)self turtle];
     v23 = 0;
-    v12 = [v11 configureFrequentBackgroundScan:1 error:&v23];
+    v12 = [turtle2 configureFrequentBackgroundScan:1 error:&v23];
     v13 = v23;
 
     if ((v12 & 1) == 0)
@@ -57,10 +57,10 @@
     v13 = 0;
   }
 
-  v15 = [(SSHBPresenceController *)self inputs];
-  v16 = [v15 disableGapSubtraction];
+  inputs2 = [(SSHBPresenceController *)self inputs];
+  disableGapSubtraction = [inputs2 disableGapSubtraction];
 
-  if (v16)
+  if (disableGapSubtraction)
   {
     v17 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -69,9 +69,9 @@
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Disabling gap subtraction...", buf, 2u);
     }
 
-    v18 = [(SSHBPresenceController *)self turtle];
+    turtle3 = [(SSHBPresenceController *)self turtle];
     v22 = v13;
-    v19 = [v18 gapSubtraction:0 error:&v22];
+    v19 = [turtle3 gapSubtraction:0 error:&v22];
     v20 = v22;
 
     if ((v19 & 1) == 0)
@@ -99,33 +99,33 @@
 
 - (void)start
 {
-  v3 = [(SSHBPresenceController *)self turtle];
-  v4 = [(SSHBPresenceController *)self inputs];
-  [v4 sampleDuration];
-  [v3 waitForDuration:?];
+  turtle = [(SSHBPresenceController *)self turtle];
+  inputs = [(SSHBPresenceController *)self inputs];
+  [inputs sampleDuration];
+  [turtle waitForDuration:?];
 
   if (![(SSHBPresenceController *)self statusCodeSet])
   {
-    v5 = [(SSHBPresenceController *)self inputs];
-    v6 = [v5 frequentSampling];
-    v7 = [(SSHBPresenceController *)self inputs];
-    [v7 sampleDuration];
+    inputs2 = [(SSHBPresenceController *)self inputs];
+    frequentSampling = [inputs2 frequentSampling];
+    inputs3 = [(SSHBPresenceController *)self inputs];
+    [inputs3 sampleDuration];
     v9 = v8;
 
     v10 = 50.0;
-    if (!v6)
+    if (!frequentSampling)
     {
       v10 = 2.0;
     }
 
     v11 = llround(v9 * v10);
 
-    v12 = [(SSHBPresenceController *)self inputs];
-    [v12 acceptedDeviation];
+    inputs4 = [(SSHBPresenceController *)self inputs];
+    [inputs4 acceptedDeviation];
     v14 = vcvtms_s32_f32(v11 - (v11 * v13));
 
-    v15 = [(SSHBPresenceController *)self turtleData];
-    v16 = [v15 count];
+    turtleData = [(SSHBPresenceController *)self turtleData];
+    v16 = [turtleData count];
 
     v17 = DiagnosticLogHandleForCategory();
     v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT);
@@ -133,9 +133,9 @@
     {
       if (v18)
       {
-        v21 = [(SSHBPresenceController *)self turtleData];
+        turtleData2 = [(SSHBPresenceController *)self turtleData];
         v28 = 134217984;
-        v29 = [v21 count];
+        v29 = [turtleData2 count];
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "SSHB found. (%lu)", &v28, 0xCu);
       }
 
@@ -146,9 +146,9 @@
     {
       if (v18)
       {
-        v19 = [(SSHBPresenceController *)self turtleData];
+        turtleData3 = [(SSHBPresenceController *)self turtleData];
         v28 = 134217984;
-        v29 = [v19 count];
+        v29 = [turtleData3 count];
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "SSHB NOT found, or insufficient number of samples. (%lu)", &v28, 0xCu);
       }
 
@@ -158,35 +158,35 @@
     [(SSHBPresenceController *)self setStatusCode:v20];
   }
 
-  v22 = [(SSHBPresenceController *)self turtle];
-  v23 = [v22 criticalErrors:0];
+  turtle2 = [(SSHBPresenceController *)self turtle];
+  v23 = [turtle2 criticalErrors:0];
   v24 = [NSMutableDictionary dictionaryWithObject:v23 forKey:@"criticalErrors"];
 
-  v25 = [(SSHBPresenceController *)self inputs];
-  LODWORD(v23) = [v25 sendRawData];
+  inputs5 = [(SSHBPresenceController *)self inputs];
+  LODWORD(v23) = [inputs5 sendRawData];
 
   if (v23)
   {
-    v26 = [(SSHBPresenceController *)self turtleData];
-    [v24 setObject:v26 forKeyedSubscript:@"rawData"];
+    turtleData4 = [(SSHBPresenceController *)self turtleData];
+    [v24 setObject:turtleData4 forKeyedSubscript:@"rawData"];
   }
 
-  v27 = [(SSHBPresenceController *)self result];
-  [v27 setData:v24];
+  result = [(SSHBPresenceController *)self result];
+  [result setData:v24];
 
   [(SSHBPresenceController *)self setFinished:1];
 }
 
 - (void)teardown
 {
-  v3 = [(SSHBPresenceController *)self turtle];
+  turtle = [(SSHBPresenceController *)self turtle];
 
-  if (v3)
+  if (turtle)
   {
-    v4 = [(SSHBPresenceController *)self inputs];
-    v5 = [v4 frequentSampling];
+    inputs = [(SSHBPresenceController *)self inputs];
+    frequentSampling = [inputs frequentSampling];
 
-    if (v5)
+    if (frequentSampling)
     {
       v6 = DiagnosticLogHandleForCategory();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -195,9 +195,9 @@
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Re-disabling frequent sampling...", buf, 2u);
       }
 
-      v7 = [(SSHBPresenceController *)self turtle];
+      turtle2 = [(SSHBPresenceController *)self turtle];
       v19 = 0;
-      v8 = [v7 configureFrequentBackgroundScan:0 error:&v19];
+      v8 = [turtle2 configureFrequentBackgroundScan:0 error:&v19];
       v9 = v19;
 
       if ((v8 & 1) == 0)
@@ -215,10 +215,10 @@
       v9 = 0;
     }
 
-    v11 = [(SSHBPresenceController *)self inputs];
-    v12 = [v11 disableGapSubtraction];
+    inputs2 = [(SSHBPresenceController *)self inputs];
+    disableGapSubtraction = [inputs2 disableGapSubtraction];
 
-    if (v12)
+    if (disableGapSubtraction)
     {
       v13 = DiagnosticLogHandleForCategory();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -227,9 +227,9 @@
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Re-enabling gap subtraction...", buf, 2u);
       }
 
-      v14 = [(SSHBPresenceController *)self turtle];
+      turtle3 = [(SSHBPresenceController *)self turtle];
       v18 = v9;
-      v15 = [v14 gapSubtraction:1 error:&v18];
+      v15 = [turtle3 gapSubtraction:1 error:&v18];
       v16 = v18;
 
       if ((v15 & 1) == 0)
@@ -251,14 +251,14 @@
   }
 }
 
-- (void)setStatusCode:(int64_t)a3
+- (void)setStatusCode:(int64_t)code
 {
   if (![(SSHBPresenceController *)self statusCodeSet])
   {
     [(SSHBPresenceController *)self setStatusCodeSet:1];
-    v6 = [NSNumber numberWithInteger:a3];
-    v5 = [(SSHBPresenceController *)self result];
-    [v5 setStatusCode:v6];
+    v6 = [NSNumber numberWithInteger:code];
+    result = [(SSHBPresenceController *)self result];
+    [result setStatusCode:v6];
   }
 }
 
@@ -273,23 +273,23 @@
   [(SSHBPresenceController *)self setStatusCode:3];
 }
 
-- (void)turtleCallback:(id)a3
+- (void)turtleCallback:(id)callback
 {
-  v4 = a3;
-  v5 = [(SSHBPresenceController *)self isCancelled];
-  if (v4 && (v5 & 1) == 0)
+  callbackCopy = callback;
+  isCancelled = [(SSHBPresenceController *)self isCancelled];
+  if (callbackCopy && (isCancelled & 1) == 0)
   {
-    [v4 capValue];
-    [v4 gapValue];
-    [v4 forceValue];
-    v6 = [(SSHBPresenceController *)self turtleData];
-    v7 = [v4 descriptionDictionary];
-    [v6 addObject:v7];
+    [callbackCopy capValue];
+    [callbackCopy gapValue];
+    [callbackCopy forceValue];
+    turtleData = [(SSHBPresenceController *)self turtleData];
+    descriptionDictionary = [callbackCopy descriptionDictionary];
+    [turtleData addObject:descriptionDictionary];
 
     v8 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      sub_100005E88(v4, v8);
+      sub_100005E88(callbackCopy, v8);
     }
   }
 }

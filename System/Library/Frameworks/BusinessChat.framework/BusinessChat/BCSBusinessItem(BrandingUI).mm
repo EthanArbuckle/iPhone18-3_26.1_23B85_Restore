@@ -7,14 +7,14 @@
 
 - (BCBrandedHeaderViewController)makeBrandedHeaderViewController
 {
-  v1 = [[BCBrandedHeaderViewController alloc] initWithBusinessItem:a1 isCallMenu:0];
+  v1 = [[BCBrandedHeaderViewController alloc] initWithBusinessItem:self isCallMenu:0];
 
   return v1;
 }
 
 - (BCBrandedHeaderViewController)makeBrandedHeaderViewControllerForCallMenu
 {
-  v1 = [[BCBrandedHeaderViewController alloc] initWithBusinessItem:a1 isCallMenu:1];
+  v1 = [[BCBrandedHeaderViewController alloc] initWithBusinessItem:self isCallMenu:1];
 
   return v1;
 }

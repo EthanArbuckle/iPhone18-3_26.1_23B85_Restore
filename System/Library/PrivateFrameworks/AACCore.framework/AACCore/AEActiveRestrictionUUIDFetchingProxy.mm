@@ -1,9 +1,9 @@
 @interface AEActiveRestrictionUUIDFetchingProxy
-+ (id)daemonProxyWithQueue:(id)a3;
-+ (id)proxyWithEndpoint:(id)a3 queue:(id)a4;
-+ (id)proxyWithOrigin:(void *)a3 queue:;
-- (id)initWithXPCProxy:(void *)a3 queue:;
-- (id)setOfActiveRestrictionUUIDs:(id)a3;
++ (id)daemonProxyWithQueue:(id)queue;
++ (id)proxyWithEndpoint:(id)endpoint queue:(id)queue;
++ (id)proxyWithOrigin:(void *)origin queue:;
+- (id)initWithXPCProxy:(void *)proxy queue:;
+- (id)setOfActiveRestrictionUUIDs:(id)ds;
 @end
 
 @implementation AEActiveRestrictionUUIDFetchingProxy
@@ -32,64 +32,64 @@ void __68__AEActiveRestrictionUUIDFetchingProxy_setOfActiveRestrictionUUIDs___bl
   *(v9 + 40) = v6;
 }
 
-- (id)initWithXPCProxy:(void *)a3 queue:
+- (id)initWithXPCProxy:(void *)proxy queue:
 {
   v6 = a2;
-  v7 = a3;
-  if (a1)
+  proxyCopy = proxy;
+  if (self)
   {
-    v10.receiver = a1;
+    v10.receiver = self;
     v10.super_class = AEActiveRestrictionUUIDFetchingProxy;
     v8 = objc_msgSendSuper2(&v10, sel_init);
-    a1 = v8;
+    self = v8;
     if (v8)
     {
       objc_storeStrong(v8 + 1, a2);
-      objc_storeStrong(a1 + 2, a3);
+      objc_storeStrong(self + 2, proxy);
     }
   }
 
-  return a1;
+  return self;
 }
 
-+ (id)proxyWithOrigin:(void *)a3 queue:
++ (id)proxyWithOrigin:(void *)origin queue:
 {
-  v4 = a3;
+  originCopy = origin;
   v5 = a2;
   objc_opt_self();
   v6 = objc_opt_new();
-  v7 = [v6 makeInterface];
+  makeInterface = [v6 makeInterface];
 
-  v8 = [[AEXPCProxy alloc] initWithOrigin:v5 interface:v7];
-  v9 = [[AEActiveRestrictionUUIDFetchingProxy alloc] initWithXPCProxy:v8 queue:v4];
+  v8 = [[AEXPCProxy alloc] initWithOrigin:v5 interface:makeInterface];
+  v9 = [[AEActiveRestrictionUUIDFetchingProxy alloc] initWithXPCProxy:v8 queue:originCopy];
 
   return v9;
 }
 
-+ (id)daemonProxyWithQueue:(id)a3
++ (id)daemonProxyWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = [[AEMachServiceXPCConnectionOrigin alloc] initWithMachServiceName:4096 options:?];
-  v6 = [(AEActiveRestrictionUUIDFetchingProxy *)a1 proxyWithOrigin:v5 queue:v4];
+  v6 = [(AEActiveRestrictionUUIDFetchingProxy *)self proxyWithOrigin:v5 queue:queueCopy];
 
   return v6;
 }
 
-+ (id)proxyWithEndpoint:(id)a3 queue:(id)a4
++ (id)proxyWithEndpoint:(id)endpoint queue:(id)queue
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[AEAnonymousXPCConnectionOrigin alloc] initWithEndpoint:v7];
+  queueCopy = queue;
+  endpointCopy = endpoint;
+  v8 = [[AEAnonymousXPCConnectionOrigin alloc] initWithEndpoint:endpointCopy];
 
-  v9 = [(AEActiveRestrictionUUIDFetchingProxy *)a1 proxyWithOrigin:v8 queue:v6];
+  v9 = [(AEActiveRestrictionUUIDFetchingProxy *)self proxyWithOrigin:v8 queue:queueCopy];
 
   return v9;
 }
 
-- (id)setOfActiveRestrictionUUIDs:(id)a3
+- (id)setOfActiveRestrictionUUIDs:(id)ds
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dsCopy = ds;
   if (self)
   {
     xpcProxy = self->_xpcProxy;
@@ -127,7 +127,7 @@ void __68__AEActiveRestrictionUUIDFetchingProxy_setOfActiveRestrictionUUIDs___bl
     v17[3] = &unk_278BB7130;
     v17[4] = &v24;
     v17[5] = &v18;
-    [v6 fetchSetOfActiveRestrictionUUIDsWithClientType:v4 completion:v17];
+    [v6 fetchSetOfActiveRestrictionUUIDsWithClientType:dsCopy completion:v17];
     v8 = v25[5];
     if (v8)
     {

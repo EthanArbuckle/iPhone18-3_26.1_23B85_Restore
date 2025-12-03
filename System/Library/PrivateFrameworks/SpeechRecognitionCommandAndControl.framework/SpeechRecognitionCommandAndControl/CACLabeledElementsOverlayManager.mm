@@ -1,26 +1,26 @@
 @interface CACLabeledElementsOverlayManager
-+ (void)assignNumbersToLabeledElements:(id)a3 numberingStrategy:(int)a4 startingNumber:(int64_t)a5;
++ (void)assignNumbersToLabeledElements:(id)elements numberingStrategy:(int)strategy startingNumber:(int64_t)number;
 - (CACLabeledElementsOverlayManagerDelegate)delegate;
 - (NSArray)labeledElementsCopy;
-- (id)_findLabeledElementsThatIntersectsLabelRect:(CGRect)a3 fromLabeledElement:(id)a4 justLabelRect:(BOOL)a5 additionalElements:(id)a6;
-- (id)_optimizeLabeledElements:(id)a3 startingNumberedLabelsAtIndex:(unint64_t)a4;
-- (void)_layoutNumberedElements:(id)a3;
-- (void)addLabeledElements:(id)a3 forceNoArrow:(BOOL)a4 startingNumberedLabelsAtIndex:(unint64_t)a5;
+- (id)_findLabeledElementsThatIntersectsLabelRect:(CGRect)rect fromLabeledElement:(id)element justLabelRect:(BOOL)labelRect additionalElements:(id)elements;
+- (id)_optimizeLabeledElements:(id)elements startingNumberedLabelsAtIndex:(unint64_t)index;
+- (void)_layoutNumberedElements:(id)elements;
+- (void)addLabeledElements:(id)elements forceNoArrow:(BOOL)arrow startingNumberedLabelsAtIndex:(unint64_t)index;
 - (void)clearLabeledElements;
 - (void)hide;
-- (void)hideAnimated:(BOOL)a3 completion:(id)a4;
+- (void)hideAnimated:(BOOL)animated completion:(id)completion;
 - (void)hideWithoutAnimation;
-- (void)setDelegate:(id)a3;
-- (void)showLabeledElementsOverlayWithLabeledElements:(id)a3 forceNoArrow:(BOOL)a4 startingNumberedLabelsAtIndex:(unint64_t)a5;
+- (void)setDelegate:(id)delegate;
+- (void)showLabeledElementsOverlayWithLabeledElements:(id)elements forceNoArrow:(BOOL)arrow startingNumberedLabelsAtIndex:(unint64_t)index;
 - (void)startDelayedDimmingOfNumbers;
 - (void)stopDelayedDimmingOfNumbers;
 @end
 
 @implementation CACLabeledElementsOverlayManager
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -30,12 +30,12 @@
   }
 }
 
-- (void)showLabeledElementsOverlayWithLabeledElements:(id)a3 forceNoArrow:(BOOL)a4 startingNumberedLabelsAtIndex:(unint64_t)a5
+- (void)showLabeledElementsOverlayWithLabeledElements:(id)elements forceNoArrow:(BOOL)arrow startingNumberedLabelsAtIndex:(unint64_t)index
 {
-  v6 = a4;
-  v8 = a3;
+  arrowCopy = arrow;
+  elementsCopy = elements;
   [(CACLabeledElementsOverlayManager *)self clearLabeledElements];
-  [(CACLabeledElementsOverlayManager *)self addLabeledElements:v8 forceNoArrow:v6 startingNumberedLabelsAtIndex:a5];
+  [(CACLabeledElementsOverlayManager *)self addLabeledElements:elementsCopy forceNoArrow:arrowCopy startingNumberedLabelsAtIndex:index];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -54,10 +54,10 @@ CACLabeledElementsOverlayViewController *__125__CACLabeledElementsOverlayManager
 
 - (NSArray)labeledElementsCopy
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableArray *)v2->_labeledElements copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSMutableArray *)selfCopy->_labeledElements copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -82,28 +82,28 @@ CACLabeledElementsOverlayViewController *__125__CACLabeledElementsOverlayManager
   objc_sync_exit(obj);
 }
 
-- (void)addLabeledElements:(id)a3 forceNoArrow:(BOOL)a4 startingNumberedLabelsAtIndex:(unint64_t)a5
+- (void)addLabeledElements:(id)elements forceNoArrow:(BOOL)arrow startingNumberedLabelsAtIndex:(unint64_t)index
 {
-  v7 = a3;
-  self->_forceNoArrow = a4;
-  v10 = v7;
+  elementsCopy = elements;
+  self->_forceNoArrow = arrow;
+  v10 = elementsCopy;
   v8 = [CACLabeledElementsOverlayManager _optimizeLabeledElements:"_optimizeLabeledElements:startingNumberedLabelsAtIndex:" startingNumberedLabelsAtIndex:?];
-  v9 = self;
-  objc_sync_enter(v9);
-  [(NSMutableArray *)v9->_labeledElements addObjectsFromArray:v8];
-  objc_sync_exit(v9);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableArray *)selfCopy->_labeledElements addObjectsFromArray:v8];
+  objc_sync_exit(selfCopy);
 }
 
-- (id)_optimizeLabeledElements:(id)a3 startingNumberedLabelsAtIndex:(unint64_t)a4
+- (id)_optimizeLabeledElements:(id)elements startingNumberedLabelsAtIndex:(unint64_t)index
 {
   v117 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277D75128] sharedApplication];
-  v95 = [v6 userInterfaceLayoutDirection] == 1;
+  elementsCopy = elements;
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  v95 = [mEMORY[0x277D75128] userInterfaceLayoutDirection] == 1;
 
-  v7 = [(CACLabeledElementsOverlayManager *)self delegate];
-  v91 = self;
-  v8 = [v7 screenForLabeledElementsOverlayManager:self];
+  delegate = [(CACLabeledElementsOverlayManager *)self delegate];
+  selfCopy = self;
+  v8 = [delegate screenForLabeledElementsOverlayManager:self];
   [v8 bounds];
   v10 = v9;
   v12 = v11;
@@ -115,7 +115,7 @@ CACLabeledElementsOverlayViewController *__125__CACLabeledElementsOverlayManager
   v111 = 0u;
   v112 = 0u;
   v113 = 0u;
-  v18 = v5;
+  v18 = elementsCopy;
   v19 = [v18 countByEnumeratingWithState:&v110 objects:v116 count:16];
   if (v19)
   {
@@ -351,17 +351,17 @@ LABEL_22:
   v81 = [v80 mutableCopy];
 
   v82 = objc_opt_class();
-  v83 = [(CACLabeledElementsOverlayManager *)v91 delegate];
-  [v82 assignNumbersToLabeledElements:v81 numberingStrategy:objc_msgSend(v83 startingNumber:{"shouldAssignNumbersRandomlyInLabeledElementsOverlayManager:", v91), a4}];
+  delegate2 = [(CACLabeledElementsOverlayManager *)selfCopy delegate];
+  [v82 assignNumbersToLabeledElements:v81 numberingStrategy:objc_msgSend(delegate2 startingNumber:{"shouldAssignNumbersRandomlyInLabeledElementsOverlayManager:", selfCopy), index}];
 
   v84 = [[_TtC34SpeechRecognitionCommandAndControl21CACElementNumberGroup alloc] initWithElements:v81 volatile:0];
   v85 = +[_TtC34SpeechRecognitionCommandAndControl26CACElementNumberStabilizer shared];
   [v85 willPresentElementGroup:v84];
 
-  v86 = [(CACLabeledElementsOverlayManager *)v91 delegate];
-  [v86 didAssignNumbersInLabeledElementsOverlayManager:v91];
+  delegate3 = [(CACLabeledElementsOverlayManager *)selfCopy delegate];
+  [delegate3 didAssignNumbersInLabeledElementsOverlayManager:selfCopy];
 
-  [(CACLabeledElementsOverlayManager *)v91 _layoutNumberedElements:v81];
+  [(CACLabeledElementsOverlayManager *)selfCopy _layoutNumberedElements:v81];
 
   return v89;
 }
@@ -477,21 +477,21 @@ uint64_t __91__CACLabeledElementsOverlayManager__optimizeLabeledElements_startin
   return v10;
 }
 
-- (void)_layoutNumberedElements:(id)a3
+- (void)_layoutNumberedElements:(id)elements
 {
   v193 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277D75128] sharedApplication];
-  v6 = [v5 userInterfaceLayoutDirection];
+  elementsCopy = elements;
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x277D75128] userInterfaceLayoutDirection];
 
-  v7 = [v4 firstObject];
-  v150 = v7;
+  firstObject = [elementsCopy firstObject];
+  v150 = firstObject;
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v7 element];
-    v9 = [v8 application];
-    v10 = [v9 bundleId];
-    v159 = [v10 isEqualToString:@"com.apple.mobilesafari"] ^ 1;
+    element = [firstObject element];
+    application = [element application];
+    bundleId = [application bundleId];
+    v159 = [bundleId isEqualToString:@"com.apple.mobilesafari"] ^ 1;
   }
 
   else
@@ -503,9 +503,9 @@ uint64_t __91__CACLabeledElementsOverlayManager__optimizeLabeledElements_startin
   v186 = 0u;
   v183 = 0u;
   v184 = 0u;
-  obj = v4;
+  obj = elementsCopy;
   v11 = &OBJC_IVAR___CACDisplayManager__statusIndicatorType;
-  v158 = self;
+  selfCopy = self;
   v161 = [obj countByEnumeratingWithState:&v183 objects:v192 count:16];
   if (v161)
   {
@@ -539,13 +539,13 @@ uint64_t __91__CACLabeledElementsOverlayManager__optimizeLabeledElements_startin
         }
 
         [v13 setBadgePresentation:v23];
-        v25 = [v13 numberedLabel];
-        +[CACLabeledBadgeView sizeOfBadgeGivenNumberOfDisplayedDigits:arrowOrientation:badgePresentation:badgeIndicator:](CACLabeledBadgeView, "sizeOfBadgeGivenNumberOfDisplayedDigits:arrowOrientation:badgePresentation:badgeIndicator:", [v25 length], objc_msgSend(v13, "arrowOrientation"), objc_msgSend(v13, "badgePresentation"), objc_msgSend(v13, "badgeIndicatorMask"));
+        numberedLabel = [v13 numberedLabel];
+        +[CACLabeledBadgeView sizeOfBadgeGivenNumberOfDisplayedDigits:arrowOrientation:badgePresentation:badgeIndicator:](CACLabeledBadgeView, "sizeOfBadgeGivenNumberOfDisplayedDigits:arrowOrientation:badgePresentation:badgeIndicator:", [numberedLabel length], objc_msgSend(v13, "arrowOrientation"), objc_msgSend(v13, "badgePresentation"), objc_msgSend(v13, "badgeIndicatorMask"));
         v27 = v26;
         v29 = v28;
 
         [v13 labelRectangle];
-        if (v6 == 1)
+        if (userInterfaceLayoutDirection == 1)
         {
           v194.origin.x = v16;
           v194.origin.y = v18;
@@ -556,7 +556,7 @@ uint64_t __91__CACLabeledElementsOverlayManager__optimizeLabeledElements_startin
 
         [v13 setLabelRectangle:{v16, v18 + v22 - v29 + -2.0, v27, v29}];
         objc_autoreleasePoolPop(v14);
-        self = v158;
+        self = selfCopy;
         v11 = &OBJC_IVAR___CACDisplayManager__statusIndicatorType;
       }
 
@@ -596,7 +596,7 @@ uint64_t __91__CACLabeledElementsOverlayManager__optimizeLabeledElements_startin
         {
           [v37 labelRectangle];
           v46 = v45 + v34;
-          if (v6 != 1)
+          if (userInterfaceLayoutDirection != 1)
           {
             v46 = -(v45 + v34);
           }
@@ -619,7 +619,7 @@ uint64_t __91__CACLabeledElementsOverlayManager__optimizeLabeledElements_startin
         v54 = v53;
         v55 = v53 + -4.0;
         v56 = -(v53 + -4.0);
-        if (v6 != 1)
+        if (userInterfaceLayoutDirection != 1)
         {
           v55 = v56;
         }
@@ -663,7 +663,7 @@ uint64_t __91__CACLabeledElementsOverlayManager__optimizeLabeledElements_startin
             v69 = v65;
             v70 = v66;
             v71 = v67;
-            if (v6 == 1)
+            if (userInterfaceLayoutDirection == 1)
             {
               if (CGRectGetMinX(*&v64) < v57)
               {
@@ -722,11 +722,11 @@ LABEL_46:
         v33 = v151;
         v75 = v47;
         v76 = v48;
-        if (v6 == 1)
+        if (userInterfaceLayoutDirection == 1)
         {
           v77 = v160;
           v78 = v162;
-          self = v158;
+          self = selfCopy;
           v11 = &OBJC_IVAR___CACDisplayManager__statusIndicatorType;
           v30 = v152;
           v35 = 2.0;
@@ -747,7 +747,7 @@ LABEL_46:
 
         v80 = v160;
         v81 = v162;
-        self = v158;
+        self = selfCopy;
         v11 = &OBJC_IVAR___CACDisplayManager__statusIndicatorType;
         v30 = v152;
         v35 = 2.0;
@@ -816,7 +816,7 @@ LABEL_54:
           v102 = (v100 - v101) * 0.5;
           v103 = v94 - truncf(v102);
           v104 = v92 + 8.0;
-          if (v6 == 1)
+          if (userInterfaceLayoutDirection == 1)
           {
             v104 = v92 + -8.0;
           }
@@ -848,8 +848,8 @@ LABEL_54:
     while (v84);
   }
 
-  v111 = [(CACLabeledElementsOverlayManager *)self delegate];
-  v112 = [v111 screenForLabeledElementsOverlayManager:self];
+  delegate = [(CACLabeledElementsOverlayManager *)self delegate];
+  v112 = [delegate screenForLabeledElementsOverlayManager:self];
   [v112 bounds];
   v114 = v113;
   v116 = v115;
@@ -979,25 +979,25 @@ LABEL_54:
   }
 }
 
-- (id)_findLabeledElementsThatIntersectsLabelRect:(CGRect)a3 fromLabeledElement:(id)a4 justLabelRect:(BOOL)a5 additionalElements:(id)a6
+- (id)_findLabeledElementsThatIntersectsLabelRect:(CGRect)rect fromLabeledElement:(id)element justLabelRect:(BOOL)labelRect additionalElements:(id)elements
 {
-  v7 = a5;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  labelRectCopy = labelRect;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v34 = *MEMORY[0x277D85DE8];
-  v13 = a4;
-  v14 = a6;
-  v15 = [MEMORY[0x277CBEB18] array];
-  v16 = [MEMORY[0x277CBEB18] array];
-  [v16 addObjectsFromArray:self->_labeledElements];
-  [v16 addObjectsFromArray:v14];
+  elementCopy = element;
+  elementsCopy = elements;
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  [array2 addObjectsFromArray:self->_labeledElements];
+  [array2 addObjectsFromArray:elementsCopy];
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v17 = v16;
+  v17 = array2;
   v18 = [v17 countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v18)
   {
@@ -1013,10 +1013,10 @@ LABEL_54:
         }
 
         v22 = *(*(&v29 + 1) + 8 * i);
-        if (v22 != v13)
+        if (v22 != elementCopy)
         {
           v23 = *(*(&v29 + 1) + 8 * i);
-          if (v7)
+          if (labelRectCopy)
           {
             [v23 labelRectangle];
           }
@@ -1036,7 +1036,7 @@ LABEL_54:
           v36.size.height = height;
           if (CGRectIntersectsRect(v36, v37))
           {
-            [v15 addObject:v22];
+            [array addObject:v22];
           }
         }
       }
@@ -1047,27 +1047,27 @@ LABEL_54:
     while (v19);
   }
 
-  return v15;
+  return array;
 }
 
-+ (void)assignNumbersToLabeledElements:(id)a3 numberingStrategy:(int)a4 startingNumber:(int64_t)a5
++ (void)assignNumbersToLabeledElements:(id)elements numberingStrategy:(int)strategy startingNumber:(int64_t)number
 {
   v57 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [v7 count];
-  v9 = malloc_type_calloc(v8 + a5, 8uLL, 0x100004000313F17uLL);
-  v10 = malloc_type_calloc(v8 + a5, 8uLL, 0x100004000313F17uLL);
-  v11 = malloc_type_calloc(v8 + a5, 1uLL, 0x100004077774924uLL);
+  elementsCopy = elements;
+  v8 = [elementsCopy count];
+  v9 = malloc_type_calloc(v8 + number, 8uLL, 0x100004000313F17uLL);
+  v10 = malloc_type_calloc(v8 + number, 8uLL, 0x100004000313F17uLL);
+  v11 = malloc_type_calloc(v8 + number, 1uLL, 0x100004077774924uLL);
   v12 = v11;
-  v45 = a4;
-  if (a4 == 1)
+  strategyCopy = strategy;
+  if (strategy == 1)
   {
     if (v8 < 1)
     {
       v33 = +[CACDisplayManager sharedManager];
-      v34 = [v33 randomElementNumberingSeed];
+      randomElementNumberingSeed = [v33 randomElementNumberingSeed];
 
-      srand(v34);
+      srand(randomElementNumberingSeed);
     }
 
     else
@@ -1079,9 +1079,9 @@ LABEL_54:
       }
 
       v14 = +[CACDisplayManager sharedManager];
-      v15 = [v14 randomElementNumberingSeed];
+      randomElementNumberingSeed2 = [v14 randomElementNumberingSeed];
 
-      srand(v15);
+      srand(randomElementNumberingSeed2);
       for (j = 0; j != v8; ++j)
       {
         v17 = rand() % v8;
@@ -1097,14 +1097,14 @@ LABEL_54:
 
   else
   {
-    v42 = a5;
-    v43 = v7;
+    numberCopy = number;
+    v43 = elementsCopy;
     v44 = v10;
     v53 = 0u;
     v54 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v19 = v7;
+    v19 = elementsCopy;
     v20 = [v19 countByEnumeratingWithState:&v51 objects:v56 count:16];
     if (v20)
     {
@@ -1121,14 +1121,14 @@ LABEL_54:
             objc_enumerationMutation(v19);
           }
 
-          v25 = [*(*(&v51 + 1) + 8 * k) label];
-          v26 = [v25 integerValue];
+          label = [*(*(&v51 + 1) + 8 * k) label];
+          integerValue = [label integerValue];
 
-          v27 = v26 >= 1 && v26 <= v8;
-          if (v27 && !v9[v22] && !*&v46[8 * v26] && v45 == 0)
+          v27 = integerValue >= 1 && integerValue <= v8;
+          if (v27 && !v9[v22] && !*&v46[8 * integerValue] && strategyCopy == 0)
           {
-            v9[v22] = v26;
-            *&v46[8 * v26] = v22 + 1;
+            v9[v22] = integerValue;
+            *&v46[8 * integerValue] = v22 + 1;
             v12[v22] = 1;
           }
 
@@ -1141,15 +1141,15 @@ LABEL_54:
       while (v21);
     }
 
-    v7 = v43;
+    elementsCopy = v43;
     v10 = v44;
     if (v8 >= 1)
     {
       v29 = 0;
       do
       {
-        v30 = &v44[8 * v42 - 8];
-        v31 = v42 - 1;
+        v30 = &v44[8 * numberCopy - 8];
+        v31 = numberCopy - 1;
         if (v9[v29])
         {
           ++v29;
@@ -1178,7 +1178,7 @@ LABEL_54:
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v35 = v7;
+  v35 = elementsCopy;
   v36 = [v35 countByEnumeratingWithState:&v47 objects:v55 count:16];
   if (v36)
   {
@@ -1214,23 +1214,23 @@ LABEL_54:
 {
   [(CACSimpleContentViewManager *)self setPendingDimmingTransactionID:[(CACSimpleContentViewManager *)self pendingDimmingTransactionID]+ 1];
   [(CACSimpleContentViewManager *)self setActiveDimmingTransactionID:[(CACSimpleContentViewManager *)self pendingDimmingTransactionID]];
-  v3 = [(CACSimpleContentViewManager *)self viewController];
-  v4 = [v3 view];
-  [v4 setAlpha:1.0];
+  viewController = [(CACSimpleContentViewManager *)self viewController];
+  view = [viewController view];
+  [view setAlpha:1.0];
 
-  v11 = [(CACLabeledElementsOverlayManager *)self delegate];
-  if ([v11 isOverlayFadingEnabledForLabeledElementsOverlayManager:self])
+  delegate = [(CACLabeledElementsOverlayManager *)self delegate];
+  if ([delegate isOverlayFadingEnabledForLabeledElementsOverlayManager:self])
   {
-    v5 = [(CACLabeledElementsOverlayManager *)self delegate];
-    if ([v5 isAlwaysShowingLabeledElementsOverlayManager:self])
+    delegate2 = [(CACLabeledElementsOverlayManager *)self delegate];
+    if ([delegate2 isAlwaysShowingLabeledElementsOverlayManager:self])
     {
-      v6 = [(CACLabeledElementsOverlayManager *)self delegate];
-      v7 = [v6 isHandlingDisambiguationForLabeledElementsOverlayManager:self];
+      delegate3 = [(CACLabeledElementsOverlayManager *)self delegate];
+      v7 = [delegate3 isHandlingDisambiguationForLabeledElementsOverlayManager:self];
 
       if ((v7 & 1) == 0)
       {
-        v8 = [(CACLabeledElementsOverlayManager *)self delegate];
-        [v8 overlayFadeDelayForLabeledElementsOverlayManager:self];
+        delegate4 = [(CACLabeledElementsOverlayManager *)self delegate];
+        [delegate4 overlayFadeDelayForLabeledElementsOverlayManager:self];
         v10 = dispatch_time(0, (v9 * 1000000000.0));
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
@@ -1275,9 +1275,9 @@ void __64__CACLabeledElementsOverlayManager_startDelayedDimmingOfNumbers__block_
 - (void)stopDelayedDimmingOfNumbers
 {
   [(CACSimpleContentViewManager *)self setPendingDimmingTransactionID:[(CACSimpleContentViewManager *)self pendingDimmingTransactionID]+ 1];
-  v4 = [(CACSimpleContentViewManager *)self viewController];
-  v3 = [v4 view];
-  [v3 setAlpha:1.0];
+  viewController = [(CACSimpleContentViewManager *)self viewController];
+  view = [viewController view];
+  [view setAlpha:1.0];
 }
 
 - (void)hide
@@ -1294,19 +1294,19 @@ void __64__CACLabeledElementsOverlayManager_startDelayedDimmingOfNumbers__block_
   [(CACSimpleContentViewManager *)&v2 hideWithoutAnimation];
 }
 
-- (void)hideAnimated:(BOOL)a3 completion:(id)a4
+- (void)hideAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
+  animatedCopy = animated;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__CACLabeledElementsOverlayManager_hideAnimated_completion___block_invoke;
   block[3] = &unk_279CEB2D0;
   block[4] = self;
-  v6 = a4;
+  completionCopy = completion;
   dispatch_async(MEMORY[0x277D85CD0], block);
   v7.receiver = self;
   v7.super_class = CACLabeledElementsOverlayManager;
-  [(CACSimpleContentViewManager *)&v7 hideAnimated:v4 completion:v6];
+  [(CACSimpleContentViewManager *)&v7 hideAnimated:animatedCopy completion:completionCopy];
 }
 
 - (CACLabeledElementsOverlayManagerDelegate)delegate

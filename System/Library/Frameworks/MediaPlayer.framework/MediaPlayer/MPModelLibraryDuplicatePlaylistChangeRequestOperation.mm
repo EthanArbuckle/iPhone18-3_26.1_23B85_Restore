@@ -1,51 +1,51 @@
 @interface MPModelLibraryDuplicatePlaylistChangeRequestOperation
-- (void)_addPlaylistToCloudLibraryIfNeeded:(id)a3 withProperties:(id)a4 completion:(id)a5;
-- (void)_finishWithError:(id)a3 newPlaylist:(id)a4;
+- (void)_addPlaylistToCloudLibraryIfNeeded:(id)needed withProperties:(id)properties completion:(id)completion;
+- (void)_finishWithError:(id)error newPlaylist:(id)playlist;
 - (void)execute;
 @end
 
 @implementation MPModelLibraryDuplicatePlaylistChangeRequestOperation
 
-- (void)_finishWithError:(id)a3 newPlaylist:(id)a4
+- (void)_finishWithError:(id)error newPlaylist:(id)playlist
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(MPModelLibraryDuplicatePlaylistChangeRequestOperation *)self responseHandler];
-  if (v7)
+  errorCopy = error;
+  playlistCopy = playlist;
+  responseHandler = [(MPModelLibraryDuplicatePlaylistChangeRequestOperation *)self responseHandler];
+  if (responseHandler)
   {
-    (v7)[2](v7, [v6 persistentID], v8);
+    (responseHandler)[2](responseHandler, [playlistCopy persistentID], errorCopy);
   }
 
-  [(MPAsyncOperation *)self finishWithError:v8];
+  [(MPAsyncOperation *)self finishWithError:errorCopy];
 }
 
-- (void)_addPlaylistToCloudLibraryIfNeeded:(id)a3 withProperties:(id)a4 completion:(id)a5
+- (void)_addPlaylistToCloudLibraryIfNeeded:(id)needed withProperties:(id)properties completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MPAsyncOperation *)self userIdentity];
-  v12 = [MPCloudController controllerWithUserIdentity:v11];
+  neededCopy = needed;
+  propertiesCopy = properties;
+  completionCopy = completion;
+  userIdentity = [(MPAsyncOperation *)self userIdentity];
+  v12 = [MPCloudController controllerWithUserIdentity:userIdentity];
 
   if ([v12 isCloudLibraryEnabled])
   {
-    v13 = [(MPAsyncOperation *)self userIdentity];
-    v14 = [MPCloudController controllerWithUserIdentity:v13];
-    v15 = [v8 persistentID];
+    userIdentity2 = [(MPAsyncOperation *)self userIdentity];
+    v14 = [MPCloudController controllerWithUserIdentity:userIdentity2];
+    persistentID = [neededCopy persistentID];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __118__MPModelLibraryDuplicatePlaylistChangeRequestOperation__addPlaylistToCloudLibraryIfNeeded_withProperties_completion___block_invoke;
     v16[3] = &unk_1E767AD98;
-    v20 = v10;
-    v17 = v8;
-    v18 = self;
-    v19 = v9;
-    [v14 createPlaylistWithPersistentID:v15 properties:v19 trackList:0 completionHandler:v16];
+    v20 = completionCopy;
+    v17 = neededCopy;
+    selfCopy = self;
+    v19 = propertiesCopy;
+    [v14 createPlaylistWithPersistentID:persistentID properties:v19 trackList:0 completionHandler:v16];
   }
 
   else
   {
-    (*(v10 + 2))(v10, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -77,38 +77,38 @@ void __118__MPModelLibraryDuplicatePlaylistChangeRequestOperation__addPlaylistTo
 - (void)execute
 {
   v47 = *MEMORY[0x1E69E9840];
-  v28 = [(MPModelLibraryDuplicatePlaylistChangeRequestOperation *)self request];
-  v26 = [v28 mediaLibrary];
-  v25 = [v28 playlist];
-  v3 = [v28 playlistPersistentID];
-  if (v3)
+  request = [(MPModelLibraryDuplicatePlaylistChangeRequestOperation *)self request];
+  mediaLibrary = [request mediaLibrary];
+  playlist = [request playlist];
+  playlistPersistentID = [request playlistPersistentID];
+  if (playlistPersistentID)
   {
-    v4 = v3;
+    persistentID = playlistPersistentID;
   }
 
   else
   {
-    v5 = [v25 identifiers];
-    v6 = [v5 library];
-    v4 = [v6 persistentID];
+    identifiers = [playlist identifiers];
+    library = [identifiers library];
+    persistentID = [library persistentID];
 
-    if (!v4)
+    if (!persistentID)
     {
-      v24 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v24 handleFailureInMethod:a2 object:self file:@"MPModelLibraryDuplicatePlaylistChangeRequestOperation.m" lineNumber:31 description:@"MPModelLibraryDuplicatePlaylistChangeRequest requires either a playlist or persistent ID"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelLibraryDuplicatePlaylistChangeRequestOperation.m" lineNumber:31 description:@"MPModelLibraryDuplicatePlaylistChangeRequest requires either a playlist or persistent ID"];
 
-      v4 = 0;
+      persistentID = 0;
     }
   }
 
-  v27 = [[MPMediaPlaylist alloc] initWithPersistentID:v4];
-  v7 = [(MPMediaPlaylist *)v27 items];
-  v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v7, "count")}];
+  v27 = [[MPMediaPlaylist alloc] initWithPersistentID:persistentID];
+  items = [(MPMediaPlaylist *)v27 items];
+  v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(items, "count")}];
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v9 = v7;
+  v9 = items;
   v10 = [v9 countByEnumeratingWithState:&v36 objects:v46 count:16];
   if (v10)
   {
@@ -122,10 +122,10 @@ void __118__MPModelLibraryDuplicatePlaylistChangeRequestOperation__addPlaylistTo
           objc_enumerationMutation(v9);
         }
 
-        v13 = [*(*(&v36 + 1) + 8 * i) persistentID];
-        if (v13)
+        persistentID2 = [*(*(&v36 + 1) + 8 * i) persistentID];
+        if (persistentID2)
         {
-          v14 = [MEMORY[0x1E696AD98] numberWithLongLong:v13];
+          v14 = [MEMORY[0x1E696AD98] numberWithLongLong:persistentID2];
           [v8 addObject:v14];
         }
 
@@ -135,7 +135,7 @@ void __118__MPModelLibraryDuplicatePlaylistChangeRequestOperation__addPlaylistTo
           if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
           {
             *buf = 138543362;
-            v41 = self;
+            selfCopy3 = self;
             _os_log_impl(&dword_1A238D000, v14, OS_LOG_TYPE_ERROR, "%{public}@ Original playlist has a track without a persistent ID!", buf, 0xCu);
           }
         }
@@ -147,24 +147,24 @@ void __118__MPModelLibraryDuplicatePlaylistChangeRequestOperation__addPlaylistTo
     while (v10);
   }
 
-  v15 = [MEMORY[0x1E696AAE8] mediaPlayerBundle];
-  v16 = [v15 localizedStringForKey:@"PLAYLIST_COPY_TITLE_ADDITION" value:&stru_1F149ECA8 table:@"MediaPlayer"];
+  mediaPlayerBundle = [MEMORY[0x1E696AAE8] mediaPlayerBundle];
+  v16 = [mediaPlayerBundle localizedStringForKey:@"PLAYLIST_COPY_TITLE_ADDITION" value:&stru_1F149ECA8 table:@"MediaPlayer"];
 
-  v17 = [(MPMediaPlaylist *)v27 name];
-  v18 = [v17 stringByAppendingFormat:@" %@", v16];
+  name = [(MPMediaPlaylist *)v27 name];
+  v18 = [name stringByAppendingFormat:@" %@", v16];
 
-  v19 = [v26 addPlaylistWithName:v18];
+  v19 = [mediaLibrary addPlaylistWithName:v18];
   v20 = os_log_create("com.apple.amp.mediaplayer", "Default");
   v21 = os_log_type_enabled(v20, OS_LOG_TYPE_ERROR);
   if (v19)
   {
     if (v21)
     {
-      v22 = [v19 persistentID];
+      persistentID3 = [v19 persistentID];
       *buf = 138543874;
-      v41 = self;
+      selfCopy3 = self;
       v42 = 2048;
-      v43 = v22;
+      v43 = persistentID3;
       v44 = 2114;
       v45 = v18;
       _os_log_impl(&dword_1A238D000, v20, OS_LOG_TYPE_ERROR, "%{public}@ Created new playlist with persistent ID %lld: %{public}@", buf, 0x20u);
@@ -180,7 +180,7 @@ void __118__MPModelLibraryDuplicatePlaylistChangeRequestOperation__addPlaylistTo
     v31 = v19;
     v32 = v18;
     v33 = v27;
-    v34 = v26;
+    v34 = mediaLibrary;
     [v31 replaceItemsWithPersistentIDs:v8 completion:v30];
 
     objc_destroyWeak(&v35);
@@ -192,7 +192,7 @@ void __118__MPModelLibraryDuplicatePlaylistChangeRequestOperation__addPlaylistTo
     if (v21)
     {
       *buf = 138543362;
-      v41 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_1A238D000, v20, OS_LOG_TYPE_ERROR, "%{public}@ Failed to create playlist", buf, 0xCu);
     }
 

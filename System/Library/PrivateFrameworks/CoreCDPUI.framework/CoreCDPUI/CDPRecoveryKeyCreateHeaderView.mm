@@ -1,29 +1,29 @@
 @interface CDPRecoveryKeyCreateHeaderView
-- (CDPRecoveryKeyCreateHeaderView)initWithSpecifier:(id)a3;
-- (double)preferredHeightForWidth:(double)a3 inTableView:(id)a4;
+- (CDPRecoveryKeyCreateHeaderView)initWithSpecifier:(id)specifier;
+- (double)preferredHeightForWidth:(double)width inTableView:(id)view;
 - (void)layoutSubviews;
 @end
 
 @implementation CDPRecoveryKeyCreateHeaderView
 
-- (CDPRecoveryKeyCreateHeaderView)initWithSpecifier:(id)a3
+- (CDPRecoveryKeyCreateHeaderView)initWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v35.receiver = self;
   v35.super_class = CDPRecoveryKeyCreateHeaderView;
-  v5 = [(PSKeychainSyncHeaderView *)&v35 initWithSpecifier:v4];
+  v5 = [(PSKeychainSyncHeaderView *)&v35 initWithSpecifier:specifierCopy];
   v6 = v5;
   if (v5)
   {
     v7 = *MEMORY[0x277D3FC08];
     v8 = *(&v5->super.super.super.super.isa + v7);
-    v9 = [MEMORY[0x277D75348] _labelColor];
-    [v8 setTextColor:v9];
+    _labelColor = [MEMORY[0x277D75348] _labelColor];
+    [v8 setTextColor:_labelColor];
 
     v10 = *MEMORY[0x277D3FC00];
     v11 = *(&v6->super.super.super.super.isa + v10);
-    v12 = [MEMORY[0x277D75348] _labelColor];
-    [v11 setTextColor:v12];
+    _labelColor2 = [MEMORY[0x277D75348] _labelColor];
+    [v11 setTextColor:_labelColor2];
 
     v13 = *(&v6->super.super.super.super.isa + v7);
     v37 = 0;
@@ -44,21 +44,21 @@
 
     v15 = v14;
     _Block_object_dispose(&v37, 8);
-    v16 = [v14 sharedStyle];
-    v17 = [v16 headerTitleFont];
-    [v13 setFont:v17];
+    sharedStyle = [v14 sharedStyle];
+    headerTitleFont = [sharedStyle headerTitleFont];
+    [v13 setFont:headerTitleFont];
 
     v18 = *(&v6->super.super.super.super.isa + v10);
     v19 = MEMORY[0x277D74300];
     v20 = *MEMORY[0x277D76918];
-    v21 = [MEMORY[0x277D759A0] mainScreen];
-    v22 = [v21 traitCollection];
-    v23 = [v19 preferredFontForTextStyle:v20 compatibleWithTraitCollection:v22];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    traitCollection = [mainScreen traitCollection];
+    v23 = [v19 preferredFontForTextStyle:v20 compatibleWithTraitCollection:traitCollection];
     [v18 setFont:v23];
 
     [*(&v6->super.super.super.super.isa + v7) setTextAlignment:1];
-    v24 = [MEMORY[0x277D75348] _systemBackgroundColor];
-    [(CDPRecoveryKeyCreateHeaderView *)v6 setBackgroundColor:v24];
+    _systemBackgroundColor = [MEMORY[0x277D75348] _systemBackgroundColor];
+    [(CDPRecoveryKeyCreateHeaderView *)v6 setBackgroundColor:_systemBackgroundColor];
 
     if ([MEMORY[0x277CFD560] isNaturalUIEnabled])
     {
@@ -66,8 +66,8 @@
       [*(&v6->super.super.super.super.isa + v10) setTextAlignment:4];
       v25 = MEMORY[0x277D74310];
       v26 = *MEMORY[0x277D76A20];
-      v27 = [(CDPRecoveryKeyCreateHeaderView *)v6 traitCollection];
-      v28 = [v25 preferredFontDescriptorWithTextStyle:v26 compatibleWithTraitCollection:v27];
+      traitCollection2 = [(CDPRecoveryKeyCreateHeaderView *)v6 traitCollection];
+      v28 = [v25 preferredFontDescriptorWithTextStyle:v26 compatibleWithTraitCollection:traitCollection2];
 
       v29 = MEMORY[0x277D74300];
       v30 = [v28 fontDescriptorWithSymbolicTraits:2];
@@ -77,19 +77,19 @@
       v32 = [MEMORY[0x277D74300] fontWithDescriptor:v28 size:0.0];
       [*(&v6->super.super.super.super.isa + v10) setFont:v32];
 
-      v33 = [MEMORY[0x277D75348] secondaryLabelColor];
-      [*(&v6->super.super.super.super.isa + v10) setTextColor:v33];
+      secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+      [*(&v6->super.super.super.super.isa + v10) setTextColor:secondaryLabelColor];
     }
   }
 
   return v6;
 }
 
-- (double)preferredHeightForWidth:(double)a3 inTableView:(id)a4
+- (double)preferredHeightForWidth:(double)width inTableView:(id)view
 {
   v5.receiver = self;
   v5.super_class = CDPRecoveryKeyCreateHeaderView;
-  [(PSKeychainSyncHeaderView *)&v5 preferredHeightForWidth:a4 inTableView:a3];
+  [(PSKeychainSyncHeaderView *)&v5 preferredHeightForWidth:view inTableView:width];
   if (result < 150.0)
   {
     return 150.0;

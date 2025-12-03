@@ -1,15 +1,15 @@
 @interface MDMBlockOperation
-+ (MDMBlockOperation)blockOperationWithBlock:(id)a3;
++ (MDMBlockOperation)blockOperationWithBlock:(id)block;
 - (void)main;
 @end
 
 @implementation MDMBlockOperation
 
-+ (MDMBlockOperation)blockOperationWithBlock:(id)a3
++ (MDMBlockOperation)blockOperationWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = objc_opt_new();
-  [v4 setBlock:v3];
+  [v4 setBlock:blockCopy];
 
   return v4;
 }
@@ -19,8 +19,8 @@
   v3 = objc_autoreleasePoolPush();
   v4 = objc_opt_new();
   [v4 setOperation:self];
-  v5 = [(MDMBlockOperation *)self block];
-  (v5)[2](v5, v4);
+  block = [(MDMBlockOperation *)self block];
+  (block)[2](block, v4);
 
   objc_autoreleasePoolPop(v3);
 }

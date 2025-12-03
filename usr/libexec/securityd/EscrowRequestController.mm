@@ -1,41 +1,41 @@
 @interface EscrowRequestController
-- (EscrowRequestController)initWithLockStateTracker:(id)a3;
-- (id)_onqueueNextStateMachineTransition:(id)a3 flags:(id)a4 pendingFlags:(id)a5;
-- (void)storePrerecordsInEscrowRPC:(id)a3;
-- (void)triggerEscrowUpdateRPC:(id)a3 options:(id)a4 reply:(id)a5;
+- (EscrowRequestController)initWithLockStateTracker:(id)tracker;
+- (id)_onqueueNextStateMachineTransition:(id)transition flags:(id)flags pendingFlags:(id)pendingFlags;
+- (void)storePrerecordsInEscrowRPC:(id)c;
+- (void)triggerEscrowUpdateRPC:(id)c options:(id)options reply:(id)reply;
 @end
 
 @implementation EscrowRequestController
 
-- (void)storePrerecordsInEscrowRPC:(id)a3
+- (void)storePrerecordsInEscrowRPC:(id)c
 {
-  v4 = a3;
+  cCopy = c;
   v5 = [EscrowRequestPerformEscrowEnrollOperation alloc];
-  v6 = [(EscrowRequestController *)self lockStateTracker];
-  v7 = [(EscrowRequestPerformEscrowEnrollOperation *)v5 initWithIntendedState:@"nothing_to_do" errorState:@"nothing_to_do" enforceRateLimiting:0 lockStateTracker:v6];
+  lockStateTracker = [(EscrowRequestController *)self lockStateTracker];
+  v7 = [(EscrowRequestPerformEscrowEnrollOperation *)v5 initWithIntendedState:@"nothing_to_do" errorState:@"nothing_to_do" enforceRateLimiting:0 lockStateTracker:lockStateTracker];
 
-  v8 = [(EscrowRequestController *)self stateMachine];
-  [v8 startOperation];
+  stateMachine = [(EscrowRequestController *)self stateMachine];
+  [stateMachine startOperation];
 
-  v9 = [(EscrowRequestController *)self stateMachine];
+  stateMachine2 = [(EscrowRequestController *)self stateMachine];
   v10 = [NSSet setWithObject:@"nothing_to_do"];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000A3E7C;
   v13[3] = &unk_1003386E8;
   v14 = v7;
-  v15 = v4;
-  v11 = v4;
+  v15 = cCopy;
+  v11 = cCopy;
   v12 = v7;
-  [v9 doSimpleStateMachineRPC:@"trigger-escrow-store" op:v12 sourceStates:v10 reply:v13];
+  [stateMachine2 doSimpleStateMachineRPC:@"trigger-escrow-store" op:v12 sourceStates:v10 reply:v13];
 }
 
-- (void)triggerEscrowUpdateRPC:(id)a3 options:(id)a4 reply:(id)a5
+- (void)triggerEscrowUpdateRPC:(id)c options:(id)options reply:(id)reply
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(EscrowRequestController *)self stateMachine];
-  [v9 startOperation];
+  optionsCopy = options;
+  replyCopy = reply;
+  stateMachine = [(EscrowRequestController *)self stateMachine];
+  [stateMachine startOperation];
 
   v57 = 0;
   v10 = [SecEscrowPendingRecord loadAllFromKeychain:&v57];
@@ -52,9 +52,9 @@ LABEL_4:
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Investigating a new escrow request", buf, 2u);
     }
 
-    v16 = [v7 objectForKeyedSubscript:SecEscrowRequestOptionFederationMove];
+    v16 = [optionsCopy objectForKeyedSubscript:SecEscrowRequestOptionFederationMove];
     v50 = v16;
-    v47 = self;
+    selfCopy = self;
     if (v16)
     {
       v17 = v16;
@@ -85,8 +85,8 @@ LABEL_4:
     if (v22)
     {
       v23 = v22;
-      v48 = v8;
-      v49 = v7;
+      v48 = replyCopy;
+      v49 = optionsCopy;
       v24 = 0;
       v25 = *v54;
       while (2)
@@ -111,8 +111,8 @@ LABEL_4:
 
             [v27 setHasCertCached:0];
             [v27 setSerializedPrerecord:0];
-            v29 = [v19 data];
-            [v27 setSerializedReason:v29];
+            data = [v19 data];
+            [v27 setSerializedReason:data];
 
             v52 = 0;
             [v27 saveToKeychain:&v52];
@@ -128,10 +128,10 @@ LABEL_4:
                 _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "escrowrequest: Unable to save modified request to keychain: %@", buf, 0xCu);
               }
 
-              v8 = v48;
+              replyCopy = v48;
               v48[2](v48, v12);
 
-              v7 = v49;
+              optionsCopy = v49;
               goto LABEL_46;
             }
 
@@ -155,8 +155,8 @@ LABEL_4:
         break;
       }
 
-      v8 = v48;
-      v7 = v49;
+      replyCopy = v48;
+      optionsCopy = v49;
       if (v24)
       {
         goto LABEL_45;
@@ -176,23 +176,23 @@ LABEL_4:
 
     v34 = objc_alloc_init(SecEscrowPendingRecord);
     v35 = +[NSUUID UUID];
-    v36 = [v35 UUIDString];
-    [(SecEscrowPendingRecord *)v34 setUuid:v36];
+    uUIDString = [v35 UUIDString];
+    [(SecEscrowPendingRecord *)v34 setUuid:uUIDString];
 
     [(SecEscrowPendingRecord *)v34 setAltDSID:0];
     v37 = +[NSDate date];
     [v37 timeIntervalSince1970];
     [(SecEscrowPendingRecord *)v34 setTriggerRequestTime:1000 * v38];
 
-    v39 = [v19 data];
-    [(SecEscrowPendingRecord *)v34 setSerializedReason:v39];
+    data2 = [v19 data];
+    [(SecEscrowPendingRecord *)v34 setSerializedReason:data2];
 
     v40 = sub_100006274("escrowrequest");
     if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
     {
-      v41 = [(SecEscrowPendingRecord *)v34 uuid];
+      uuid = [(SecEscrowPendingRecord *)v34 uuid];
       *buf = 138412290;
-      v60 = v41;
+      v60 = uuid;
       _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "beginning a new escrow request (%@)", buf, 0xCu);
     }
 
@@ -210,7 +210,7 @@ LABEL_4:
         _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_DEFAULT, "escrowrequest: unable to save escrow update request: %@", buf, 0xCu);
       }
 
-      v8[2](v8, v12);
+      replyCopy[2](replyCopy, v12);
       goto LABEL_46;
     }
 
@@ -219,23 +219,23 @@ LABEL_45:
     v45 = +[NSDate date];
     [v44 setDateProperty:v45 forKey:@"ERSPending"];
 
-    [(EscrowRequestController *)v47 setHaveRecordedDate:1];
-    v46 = [(EscrowRequestController *)v47 stateMachine];
-    [v46 handleFlag:@"escrowrequest_inform_cloudservices"];
+    [(EscrowRequestController *)selfCopy setHaveRecordedDate:1];
+    stateMachine2 = [(EscrowRequestController *)selfCopy stateMachine];
+    [stateMachine2 handleFlag:@"escrowrequest_inform_cloudservices"];
 
-    v8[2](v8, 0);
+    replyCopy[2](replyCopy, 0);
     v12 = 0;
 LABEL_46:
 
     goto LABEL_47;
   }
 
-  v13 = [v11 domain];
-  if ([v13 isEqualToString:NSOSStatusErrorDomain])
+  domain = [v11 domain];
+  if ([domain isEqualToString:NSOSStatusErrorDomain])
   {
-    v14 = [v12 code];
+    code = [v12 code];
 
-    if (v14 == -25300)
+    if (code == -25300)
     {
       goto LABEL_4;
     }
@@ -253,24 +253,24 @@ LABEL_46:
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "failed to fetch records from keychain: %@", buf, 0xCu);
   }
 
-  v8[2](v8, v12);
+  replyCopy[2](replyCopy, v12);
 LABEL_47:
 }
 
-- (id)_onqueueNextStateMachineTransition:(id)a3 flags:(id)a4 pendingFlags:(id)a5
+- (id)_onqueueNextStateMachineTransition:(id)transition flags:(id)flags pendingFlags:(id)pendingFlags
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(EscrowRequestController *)self queue];
-  dispatch_assert_queue_V2(v9);
+  transitionCopy = transition;
+  flagsCopy = flags;
+  queue = [(EscrowRequestController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if ([v8 _onqueueContains:@"escrowrequest_inform_cloudservices"])
+  if ([flagsCopy _onqueueContains:@"escrowrequest_inform_cloudservices"])
   {
-    [v8 _onqueueRemoveFlag:@"escrowrequest_inform_cloudservices"];
+    [flagsCopy _onqueueRemoveFlag:@"escrowrequest_inform_cloudservices"];
 LABEL_4:
     v10 = [EscrowRequestInformCloudServicesOperation alloc];
-    v11 = [(EscrowRequestController *)self lockStateTracker];
-    v12 = [(EscrowRequestInformCloudServicesOperation *)v10 initWithIntendedState:@"nothing_to_do" errorState:@"nothing_to_do" lockStateTracker:v11];
+    lockStateTracker = [(EscrowRequestController *)self lockStateTracker];
+    v12 = [(EscrowRequestInformCloudServicesOperation *)v10 initWithIntendedState:@"nothing_to_do" errorState:@"nothing_to_do" lockStateTracker:lockStateTracker];
 LABEL_5:
     v13 = v12;
 LABEL_6:
@@ -278,20 +278,20 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if ([v7 isEqualToString:@"trigger_cloudservices"])
+  if ([transitionCopy isEqualToString:@"trigger_cloudservices"])
   {
     goto LABEL_4;
   }
 
-  if ([v7 isEqualToString:@"trigger_escrow_upload"])
+  if ([transitionCopy isEqualToString:@"trigger_escrow_upload"])
   {
     v15 = [EscrowRequestPerformEscrowEnrollOperation alloc];
-    v11 = [(EscrowRequestController *)self lockStateTracker];
-    v12 = [(EscrowRequestPerformEscrowEnrollOperation *)v15 initWithIntendedState:@"nothing_to_do" errorState:@"nothing_to_do" enforceRateLimiting:1 lockStateTracker:v11];
+    lockStateTracker = [(EscrowRequestController *)self lockStateTracker];
+    v12 = [(EscrowRequestPerformEscrowEnrollOperation *)v15 initWithIntendedState:@"nothing_to_do" errorState:@"nothing_to_do" enforceRateLimiting:1 lockStateTracker:lockStateTracker];
     goto LABEL_5;
   }
 
-  if ([v7 isEqualToString:@"wait_for_unlock"])
+  if ([transitionCopy isEqualToString:@"wait_for_unlock"])
   {
     v16 = sub_100006274("escrowrequest");
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -301,9 +301,9 @@ LABEL_6:
     }
 
     v13 = [OctagonStateTransitionOperation named:@"wait-for-unlock" entering:@"nothing_to_do"];
-    v11 = [(EscrowRequestController *)self lockStateTracker];
-    v17 = [v11 unlockDependency];
-    [v13 addNullableDependency:v17];
+    lockStateTracker = [(EscrowRequestController *)self lockStateTracker];
+    unlockDependency = [lockStateTracker unlockDependency];
+    [v13 addNullableDependency:unlockDependency];
 
     goto LABEL_6;
   }
@@ -313,8 +313,8 @@ LABEL_6:
   v19 = v55;
   if (v19)
   {
-    v20 = [(EscrowRequestController *)self lockStateTracker];
-    v21 = [v20 isLockedError:v19];
+    lockStateTracker2 = [(EscrowRequestController *)self lockStateTracker];
+    v21 = [lockStateTracker2 isLockedError:v19];
 
     if (v21)
     {
@@ -404,9 +404,9 @@ LABEL_6:
           {
             if (v39)
             {
-              v48 = [v27 uuid];
+              uuid = [v27 uuid];
               *buf = 138412290;
-              v58 = v48;
+              v58 = uuid;
               _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "Request %@ needs to be stored!", buf, 0xCu);
             }
 
@@ -425,9 +425,9 @@ LABEL_51:
             goto LABEL_41;
           }
 
-          v40 = [v27 uuid];
+          uuid2 = [v27 uuid];
           *buf = 138412290;
-          v58 = v40;
+          v58 = uuid2;
           v41 = v38;
           v42 = "Request %@ needs to be stored, but has been attempted recently. Holding off...";
         }
@@ -439,9 +439,9 @@ LABEL_51:
             v44 = sub_100006274("escrowrequest");
             if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
             {
-              v45 = [v27 uuid];
+              uuid3 = [v27 uuid];
               *buf = 138412290;
-              v58 = v45;
+              v58 = uuid3;
               _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEFAULT, "Request %@ needs a cached certififcate", buf, 0xCu);
             }
 
@@ -456,9 +456,9 @@ LABEL_51:
             goto LABEL_41;
           }
 
-          v40 = [v27 uuid];
+          uuid2 = [v27 uuid];
           *buf = 138412290;
-          v58 = v40;
+          v58 = uuid2;
           v41 = v38;
           v42 = "Request %@ needs to cache a certificate, but that has been attempted recently. Holding off...";
         }
@@ -494,9 +494,9 @@ LABEL_7:
   return v13;
 }
 
-- (EscrowRequestController)initWithLockStateTracker:(id)a3
+- (EscrowRequestController)initWithLockStateTracker:(id)tracker
 {
-  v5 = a3;
+  trackerCopy = tracker;
   v17.receiver = self;
   v17.super_class = EscrowRequestController;
   v6 = [(EscrowRequestController *)&v17 init];
@@ -507,7 +507,7 @@ LABEL_7:
     queue = v6->_queue;
     v6->_queue = v8;
 
-    objc_storeStrong(&v6->_lockStateTracker, a3);
+    objc_storeStrong(&v6->_lockStateTracker, tracker);
     v10 = [OctagonStateMachine alloc];
     v19[0] = @"nothing_to_do";
     v19[1] = @"trigger_cloudservices";
@@ -521,7 +521,7 @@ LABEL_7:
     v18 = @"escrowrequest_inform_cloudservices";
     v12 = [NSArray arrayWithObjects:&v18 count:1];
     v13 = [NSSet setWithArray:v12];
-    v14 = [(OctagonStateMachine *)v10 initWithName:@"escrowrequest" states:v11 flags:v13 initialState:@"nothing_to_do" queue:v6->_queue stateEngine:v6 unexpectedStateErrorDomain:@"com.apple.security.escrowrequest.state" lockStateTracker:v5 reachabilityTracker:0];
+    v14 = [(OctagonStateMachine *)v10 initWithName:@"escrowrequest" states:v11 flags:v13 initialState:@"nothing_to_do" queue:v6->_queue stateEngine:v6 unexpectedStateErrorDomain:@"com.apple.security.escrowrequest.state" lockStateTracker:trackerCopy reachabilityTracker:0];
     stateMachine = v6->_stateMachine;
     v6->_stateMachine = v14;
 

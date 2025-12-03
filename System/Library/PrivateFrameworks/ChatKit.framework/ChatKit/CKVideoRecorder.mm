@@ -2,22 +2,22 @@
 - (BOOL)startVideoCapture;
 - (CKVideoRecorder)init;
 - (CKVideoRecorderDelegate)delegate;
-- (id)_cameraWithPosition:(int64_t)a3;
+- (id)_cameraWithPosition:(int64_t)position;
 - (id)_configureFrontVideoInput;
 - (id)_configureRearVideoInput;
 - (id)audioDevice;
 - (id)frontFacingCamera;
 - (id)rearFacingCamera;
 - (void)cancel;
-- (void)captureOutput:(id)a3 didFinishRecordingToOutputFileAtURL:(id)a4 fromConnections:(id)a5 error:(id)a6;
+- (void)captureOutput:(id)output didFinishRecordingToOutputFileAtURL:(id)l fromConnections:(id)connections error:(id)error;
 - (void)dealloc;
 - (void)loadView;
-- (void)setCameraDevice:(int64_t)a3;
-- (void)setupCamera:(id)a3;
+- (void)setCameraDevice:(int64_t)device;
+- (void)setupCamera:(id)camera;
 - (void)startVideoCapture;
 - (void)stopVideoCapture;
 - (void)takePicture;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation CKVideoRecorder
@@ -40,27 +40,27 @@
     v7 = [objc_alloc(MEMORY[0x1E6987180]) initWithSession:v6];
     [v7 setVideoGravity:*MEMORY[0x1E69874F0]];
     [(CKVideoRecorder *)v3 setCaptureVideoPreviewLayer:v7];
-    v8 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v9 = [v8 objectForKey:@"kCKVideoMessagingCameraDevice"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v9 = [standardUserDefaults objectForKey:@"kCKVideoMessagingCameraDevice"];
 
     if (v9)
     {
-      v10 = [v9 integerValue];
+      integerValue = [v9 integerValue];
     }
 
     else
     {
-      v10 = 1;
+      integerValue = 1;
     }
 
-    if (v10 >= 1)
+    if (integerValue >= 1)
     {
       v11 = 1;
     }
 
     else
     {
-      v11 = v10;
+      v11 = integerValue;
     }
 
     v3->_currentDevice = v11;
@@ -138,23 +138,23 @@ void __23__CKVideoRecorder_init__block_invoke(uint64_t a1)
   v15.receiver = self;
   v15.super_class = CKVideoRecorder;
   [(CKVideoRecorder *)&v15 loadView];
-  v3 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v3 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(CKVideoRecorder *)self captureVideoPreviewLayer];
-  [v12 setFrame:{v5, v7, v9, v11}];
-  v13 = [(CKVideoRecorder *)self view];
-  v14 = [v13 layer];
-  [v14 insertSublayer:v12 atIndex:0];
+  captureVideoPreviewLayer = [(CKVideoRecorder *)self captureVideoPreviewLayer];
+  [captureVideoPreviewLayer setFrame:{v5, v7, v9, v11}];
+  view = [(CKVideoRecorder *)self view];
+  layer = [view layer];
+  [layer insertSublayer:captureVideoPreviewLayer atIndex:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   avCaptureSessionDispatchQueue = self->_avCaptureSessionDispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -164,7 +164,7 @@ void __23__CKVideoRecorder_init__block_invoke(uint64_t a1)
   dispatch_async(avCaptureSessionDispatchQueue, block);
   v6.receiver = self;
   v6.super_class = CKVideoRecorder;
-  [(CKVideoRecorder *)&v6 viewWillAppear:v3];
+  [(CKVideoRecorder *)&v6 viewWillAppear:appearCopy];
 }
 
 void __34__CKVideoRecorder_viewWillAppear___block_invoke(uint64_t a1)
@@ -205,13 +205,13 @@ void __34__CKVideoRecorder_viewWillAppear___block_invoke(uint64_t a1)
   block[3] = &unk_1E72EBA18;
   block[4] = self;
   dispatch_async(avCaptureSessionDispatchQueue, block);
-  v4 = [(CKVideoRecorder *)self delegate];
+  delegate = [(CKVideoRecorder *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CKVideoRecorder *)self delegate];
-    [v6 ckVideoRecorderRecordingCanceled:self];
+    delegate2 = [(CKVideoRecorder *)self delegate];
+    [delegate2 ckVideoRecorderRecordingCanceled:self];
   }
 }
 
@@ -223,17 +223,17 @@ void __25__CKVideoRecorder_cancel__block_invoke(uint64_t a1)
 
 - (void)stopVideoCapture
 {
-  v2 = [(CKVideoRecorder *)self videoOutput];
-  [v2 stopRecording];
+  videoOutput = [(CKVideoRecorder *)self videoOutput];
+  [videoOutput stopRecording];
 }
 
 - (BOOL)startVideoCapture
 {
   v3 = CKAttachmentTmpFileURL(@"VideoMessage.mov");
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v3 URLByDeletingLastPathComponent];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  uRLByDeletingLastPathComponent = [v3 URLByDeletingLastPathComponent];
   v14 = 0;
-  v6 = [v4 createDirectoryAtURL:v5 withIntermediateDirectories:1 attributes:0 error:&v14];
+  v6 = [defaultManager createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v14];
   v7 = v14;
 
   if ((v6 & 1) == 0)
@@ -246,13 +246,13 @@ void __25__CKVideoRecorder_cancel__block_invoke(uint64_t a1)
   }
 
   [(CKVideoRecorder *)self setOutputFileURL:v3];
-  v9 = [MEMORY[0x1E696AC08] defaultManager];
-  v10 = [(CKVideoRecorder *)self outputFileURL];
-  [v9 removeItemAtURL:v10 error:0];
+  defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+  outputFileURL = [(CKVideoRecorder *)self outputFileURL];
+  [defaultManager2 removeItemAtURL:outputFileURL error:0];
 
-  v11 = [(CKVideoRecorder *)self videoOutput];
-  v12 = [(CKVideoRecorder *)self outputFileURL];
-  [v11 startRecordingToOutputFileURL:v12 recordingDelegate:self];
+  videoOutput = [(CKVideoRecorder *)self videoOutput];
+  outputFileURL2 = [(CKVideoRecorder *)self outputFileURL];
+  [videoOutput startRecordingToOutputFileURL:outputFileURL2 recordingDelegate:self];
 
   return 1;
 }
@@ -261,16 +261,16 @@ void __25__CKVideoRecorder_cancel__block_invoke(uint64_t a1)
 {
   if (![(CKVideoRecorder *)self canceled])
   {
-    v3 = [(CKVideoRecorder *)self stillImageOutput];
-    v4 = [v3 connectionWithMediaType:*MEMORY[0x1E6987608]];
+    stillImageOutput = [(CKVideoRecorder *)self stillImageOutput];
+    v4 = [stillImageOutput connectionWithMediaType:*MEMORY[0x1E6987608]];
 
-    v5 = [(CKVideoRecorder *)self stillImageOutput];
+    stillImageOutput2 = [(CKVideoRecorder *)self stillImageOutput];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __30__CKVideoRecorder_takePicture__block_invoke;
     v6[3] = &unk_1E72F0CD0;
     v6[4] = self;
-    [v5 captureStillImageAsynchronouslyFromConnection:v4 completionHandler:v6];
+    [stillImageOutput2 captureStillImageAsynchronouslyFromConnection:v4 completionHandler:v6];
   }
 }
 
@@ -298,16 +298,16 @@ void __30__CKVideoRecorder_takePicture__block_invoke(uint64_t a1, uint64_t a2)
 {
   [(AVCaptureVideoPreviewLayer *)self->_captureVideoPreviewLayer setSession:0];
   [(CKVideoRecorder *)self removeFromParentViewController];
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [(CKVideoRecorder *)self outputFileURL];
-  [v3 removeItemAtURL:v4 error:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  outputFileURL = [(CKVideoRecorder *)self outputFileURL];
+  [defaultManager removeItemAtURL:outputFileURL error:0];
 
   v5.receiver = self;
   v5.super_class = CKVideoRecorder;
   [(CKVideoRecorder *)&v5 dealloc];
 }
 
-- (id)_cameraWithPosition:(int64_t)a3
+- (id)_cameraWithPosition:(int64_t)position
 {
   v17 = *MEMORY[0x1E69E9840];
   [MEMORY[0x1E69870A0] devicesWithMediaType:*MEMORY[0x1E6987608]];
@@ -330,7 +330,7 @@ void __30__CKVideoRecorder_takePicture__block_invoke(uint64_t a1, uint64_t a2)
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9 position] == a3)
+        if ([v9 position] == position)
         {
           v10 = v9;
           goto LABEL_11;
@@ -404,8 +404,8 @@ LABEL_11:
 - (id)_configureFrontVideoInput
 {
   v3 = objc_alloc(MEMORY[0x1E69870B0]);
-  v4 = [(CKVideoRecorder *)self frontFacingCamera];
-  v5 = [v3 initWithDevice:v4 error:0];
+  frontFacingCamera = [(CKVideoRecorder *)self frontFacingCamera];
+  v5 = [v3 initWithDevice:frontFacingCamera error:0];
 
   [(CKVideoRecorder *)self setFrontVideoInput:v5];
 
@@ -415,17 +415,17 @@ LABEL_11:
 - (id)_configureRearVideoInput
 {
   v3 = objc_alloc(MEMORY[0x1E69870B0]);
-  v4 = [(CKVideoRecorder *)self rearFacingCamera];
-  v5 = [v3 initWithDevice:v4 error:0];
+  rearFacingCamera = [(CKVideoRecorder *)self rearFacingCamera];
+  v5 = [v3 initWithDevice:rearFacingCamera error:0];
 
   [(CKVideoRecorder *)self setRearVideoInput:v5];
 
   return v5;
 }
 
-- (void)setCameraDevice:(int64_t)a3
+- (void)setCameraDevice:(int64_t)device
 {
-  if (![(CKVideoRecorder *)self canceled]&& self->_currentDevice != a3)
+  if (![(CKVideoRecorder *)self canceled]&& self->_currentDevice != device)
   {
     avCaptureSessionDispatchQueue = self->_avCaptureSessionDispatchQueue;
     v6[0] = MEMORY[0x1E69E9820];
@@ -433,9 +433,9 @@ LABEL_11:
     v6[2] = __35__CKVideoRecorder_setCameraDevice___block_invoke;
     v6[3] = &unk_1E72ED810;
     v6[4] = self;
-    v6[5] = a3;
+    v6[5] = device;
     dispatch_async(avCaptureSessionDispatchQueue, v6);
-    self->_currentDevice = a3;
+    self->_currentDevice = device;
   }
 }
 
@@ -491,49 +491,49 @@ LABEL_7:
   [v17 commitConfiguration];
 }
 
-- (void)setupCamera:(id)a3
+- (void)setupCamera:(id)camera
 {
-  v3 = a3;
-  if ([v3 hasFlash] && objc_msgSend(v3, "lockForConfiguration:", 0))
+  cameraCopy = camera;
+  if ([cameraCopy hasFlash] && objc_msgSend(cameraCopy, "lockForConfiguration:", 0))
   {
-    if ([v3 isFlashModeSupported:2])
+    if ([cameraCopy isFlashModeSupported:2])
     {
-      [v3 setFlashMode:2];
+      [cameraCopy setFlashMode:2];
     }
 
-    [v3 unlockForConfiguration];
+    [cameraCopy unlockForConfiguration];
   }
 
-  if ([v3 hasTorch] && objc_msgSend(v3, "lockForConfiguration:", 0))
+  if ([cameraCopy hasTorch] && objc_msgSend(cameraCopy, "lockForConfiguration:", 0))
   {
-    if ([v3 isTorchModeSupported:2])
+    if ([cameraCopy isTorchModeSupported:2])
     {
-      [v3 setTorchMode:2];
+      [cameraCopy setTorchMode:2];
     }
 
-    [v3 unlockForConfiguration];
+    [cameraCopy unlockForConfiguration];
   }
 
-  if ([v3 isFocusModeSupported:2] && objc_msgSend(v3, "lockForConfiguration:", 0))
+  if ([cameraCopy isFocusModeSupported:2] && objc_msgSend(cameraCopy, "lockForConfiguration:", 0))
   {
-    [v3 setFocusMode:2];
-    [v3 unlockForConfiguration];
+    [cameraCopy setFocusMode:2];
+    [cameraCopy unlockForConfiguration];
   }
 }
 
-- (void)captureOutput:(id)a3 didFinishRecordingToOutputFileAtURL:(id)a4 fromConnections:(id)a5 error:(id)a6
+- (void)captureOutput:(id)output didFinishRecordingToOutputFileAtURL:(id)l fromConnections:(id)connections error:(id)error
 {
-  v12 = a4;
-  v8 = a6;
+  lCopy = l;
+  errorCopy = error;
   if (![(CKVideoRecorder *)self canceled])
   {
-    v9 = [(CKVideoRecorder *)self delegate];
+    delegate = [(CKVideoRecorder *)self delegate];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v11 = [(CKVideoRecorder *)self delegate];
-      [v11 ckVideoRecorder:self videoCaptured:v12 error:v8];
+      delegate2 = [(CKVideoRecorder *)self delegate];
+      [delegate2 ckVideoRecorder:self videoCaptured:lCopy error:errorCopy];
     }
   }
 }
@@ -548,9 +548,9 @@ LABEL_7:
 - (void)startVideoCapture
 {
   v10 = *MEMORY[0x1E69E9840];
-  v5 = [a1 URLByDeletingLastPathComponent];
+  uRLByDeletingLastPathComponent = [self URLByDeletingLastPathComponent];
   v6 = 138412546;
-  v7 = v5;
+  v7 = uRLByDeletingLastPathComponent;
   v8 = 2112;
   v9 = a2;
   _os_log_error_impl(&dword_19020E000, a3, OS_LOG_TYPE_ERROR, "Failed [NSFileManager createDirectoryAtURL:%@] with error %@", &v6, 0x16u);

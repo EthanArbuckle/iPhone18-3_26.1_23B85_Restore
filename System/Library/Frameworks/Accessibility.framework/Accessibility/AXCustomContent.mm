@@ -1,16 +1,16 @@
 @interface AXCustomContent
 + (AXCustomContent)customContentWithAttributedLabel:(NSAttributedString *)label attributedValue:(NSAttributedString *)value;
 + (AXCustomContent)customContentWithLabel:(NSString *)label value:(NSString *)value;
-- (AXCustomContent)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (AXCustomContent)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
 - (NSAttributedString)attributedLabel;
 - (NSAttributedString)attributedValue;
 - (NSString)label;
 - (NSString)value;
 - (id)_init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AXCustomContent
@@ -48,114 +48,114 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = self;
-  v14.receiver = v3;
+  selfCopy = self;
+  v14.receiver = selfCopy;
   v14.super_class = AXCustomContent;
   v4 = [(AXCustomContent *)&v14 init];
-  v5 = [(AXCustomContent *)v3 label];
-  v6 = [v5 copy];
+  label = [(AXCustomContent *)selfCopy label];
+  v6 = [label copy];
   [(AXCustomContent *)v4 setLabel:v6];
 
-  v7 = [(AXCustomContent *)v3 attributedLabel];
-  v8 = [v7 copy];
+  attributedLabel = [(AXCustomContent *)selfCopy attributedLabel];
+  v8 = [attributedLabel copy];
   [(AXCustomContent *)v4 setAttributedLabel:v8];
 
-  v9 = [(AXCustomContent *)v3 value];
-  v10 = [v9 copy];
+  value = [(AXCustomContent *)selfCopy value];
+  v10 = [value copy];
   [(AXCustomContent *)v4 setValue:v10];
 
-  v11 = [(AXCustomContent *)v3 attributedValue];
-  v12 = [v11 copy];
+  attributedValue = [(AXCustomContent *)selfCopy attributedValue];
+  v12 = [attributedValue copy];
   [(AXCustomContent *)v4 setAttributedValue:v12];
 
-  [(AXCustomContent *)v4 setImportance:[(AXCustomContent *)v3 importance]];
+  [(AXCustomContent *)v4 setImportance:[(AXCustomContent *)selfCopy importance]];
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  v4 = [(AXCustomContent *)self label];
-  [v8 encodeObject:v4 forKey:@"label"];
+  coderCopy = coder;
+  label = [(AXCustomContent *)self label];
+  [coderCopy encodeObject:label forKey:@"label"];
 
-  v5 = [(AXCustomContent *)self attributedLabel];
-  [v8 encodeObject:v5 forKey:@"attributedLabel"];
+  attributedLabel = [(AXCustomContent *)self attributedLabel];
+  [coderCopy encodeObject:attributedLabel forKey:@"attributedLabel"];
 
-  v6 = [(AXCustomContent *)self value];
-  [v8 encodeObject:v6 forKey:@"value"];
+  value = [(AXCustomContent *)self value];
+  [coderCopy encodeObject:value forKey:@"value"];
 
-  v7 = [(AXCustomContent *)self attributedValue];
-  [v8 encodeObject:v7 forKey:@"attributedValue"];
+  attributedValue = [(AXCustomContent *)self attributedValue];
+  [coderCopy encodeObject:attributedValue forKey:@"attributedValue"];
 
-  [v8 encodeInteger:-[AXCustomContent importance](self forKey:{"importance"), @"importance"}];
+  [coderCopy encodeInteger:-[AXCustomContent importance](self forKey:{"importance"), @"importance"}];
 }
 
-- (AXCustomContent)initWithCoder:(id)a3
+- (AXCustomContent)initWithCoder:(id)coder
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(AXCustomContent *)self _init];
+  coderCopy = coder;
+  _init = [(AXCustomContent *)self _init];
   v6 = MEMORY[0x1E695DFD8];
   v28[0] = objc_opt_class();
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:1];
   v8 = [v6 setWithArray:v7];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"label"];
-  [(AXCustomContent *)v5 setLabel:v9];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"label"];
+  [(AXCustomContent *)_init setLabel:v9];
 
   v10 = MEMORY[0x1E695DFD8];
   v27 = objc_opt_class();
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v27 count:1];
   v12 = [v10 setWithArray:v11];
-  v13 = [v4 decodeObjectOfClasses:v12 forKey:@"attributedLabel"];
-  [(AXCustomContent *)v5 setAttributedLabel:v13];
+  v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"attributedLabel"];
+  [(AXCustomContent *)_init setAttributedLabel:v13];
 
   v14 = MEMORY[0x1E695DFD8];
   v26 = objc_opt_class();
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v26 count:1];
   v16 = [v14 setWithArray:v15];
-  v17 = [v4 decodeObjectOfClasses:v16 forKey:@"value"];
-  [(AXCustomContent *)v5 setValue:v17];
+  v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"value"];
+  [(AXCustomContent *)_init setValue:v17];
 
   v18 = MEMORY[0x1E695DFD8];
   v25 = objc_opt_class();
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v25 count:1];
   v20 = [v18 setWithArray:v19];
-  v21 = [v4 decodeObjectOfClasses:v20 forKey:@"attributedValue"];
-  [(AXCustomContent *)v5 setAttributedValue:v21];
+  v21 = [coderCopy decodeObjectOfClasses:v20 forKey:@"attributedValue"];
+  [(AXCustomContent *)_init setAttributedValue:v21];
 
-  v22 = [v4 decodeIntegerForKey:@"importance"];
-  [(AXCustomContent *)v5 setImportance:v22];
+  v22 = [coderCopy decodeIntegerForKey:@"importance"];
+  [(AXCustomContent *)_init setImportance:v22];
 
   v23 = *MEMORY[0x1E69E9840];
-  return v5;
+  return _init;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(AXCustomContent *)self label];
-    v6 = [v4 label];
-    if ([v5 isEqualToString:v6])
+    label = [(AXCustomContent *)self label];
+    label2 = [equalCopy label];
+    if ([label isEqualToString:label2])
     {
-      v7 = [(AXCustomContent *)self value];
-      v8 = [v4 value];
-      if ([v7 isEqualToString:v8])
+      value = [(AXCustomContent *)self value];
+      value2 = [equalCopy value];
+      if ([value isEqualToString:value2])
       {
-        v9 = [(AXCustomContent *)self attributedLabel];
-        v10 = [v4 attributedLabel];
-        if ([v9 isEqual:v10])
+        attributedLabel = [(AXCustomContent *)self attributedLabel];
+        attributedLabel2 = [equalCopy attributedLabel];
+        if ([attributedLabel isEqual:attributedLabel2])
         {
-          v11 = [(AXCustomContent *)self attributedValue];
-          v12 = [v4 attributedValue];
-          if ([v11 isEqual:v12])
+          attributedValue = [(AXCustomContent *)self attributedValue];
+          attributedValue2 = [equalCopy attributedValue];
+          if ([attributedValue isEqual:attributedValue2])
           {
-            v13 = [(AXCustomContent *)self importance];
-            v14 = v13 == [v4 importance];
+            importance = [(AXCustomContent *)self importance];
+            v14 = importance == [equalCopy importance];
           }
 
           else
@@ -195,15 +195,15 @@
   label = self->_label;
   if (label || (attributedLabel = self->_attributedLabel) == 0)
   {
-    v3 = label;
+    string = label;
   }
 
   else
   {
-    v3 = [(NSAttributedString *)attributedLabel string];
+    string = [(NSAttributedString *)attributedLabel string];
   }
 
-  return v3;
+  return string;
 }
 
 - (NSString)value
@@ -211,15 +211,15 @@
   value = self->_value;
   if (value || (attributedValue = self->_attributedValue) == 0)
   {
-    v3 = value;
+    string = value;
   }
 
   else
   {
-    v3 = [(NSAttributedString *)attributedValue string];
+    string = [(NSAttributedString *)attributedValue string];
   }
 
-  return v3;
+  return string;
 }
 
 - (NSAttributedString)attributedLabel
@@ -260,9 +260,9 @@
   v9.receiver = self;
   v9.super_class = AXCustomContent;
   v4 = [(AXCustomContent *)&v9 description];
-  v5 = [(AXCustomContent *)self label];
-  v6 = [(AXCustomContent *)self value];
-  v7 = [v3 stringWithFormat:@"%@: label: %@, value: %@", v4, v5, v6];
+  label = [(AXCustomContent *)self label];
+  value = [(AXCustomContent *)self value];
+  v7 = [v3 stringWithFormat:@"%@: label: %@, value: %@", v4, label, value];
 
   return v7;
 }

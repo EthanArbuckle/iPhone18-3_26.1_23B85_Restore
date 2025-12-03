@@ -1,7 +1,7 @@
 @interface ML3Client
 - (BOOL)isDaemonClient;
 - (ML3Client)init;
-- (ML3Client)initWithConnection:(id)a3;
+- (ML3Client)initWithConnection:(id)connection;
 - (id)description;
 @end
 
@@ -11,16 +11,16 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(ML3Client *)self bundleID];
-  v6 = [v3 stringWithFormat:@"<%@: %p %@ [%lld]>", v4, self, v5, -[ML3Client processID](self, "processID")];
+  bundleID = [(ML3Client *)self bundleID];
+  v6 = [v3 stringWithFormat:@"<%@: %p %@ [%lld]>", v4, self, bundleID, -[ML3Client processID](self, "processID")];
 
   return v6;
 }
 
 - (BOOL)isDaemonClient
 {
-  v3 = [objc_opt_class() daemonClient];
-  LOBYTE(self) = [(ML3Client *)self isEqual:v3];
+  daemonClient = [objc_opt_class() daemonClient];
+  LOBYTE(self) = [(ML3Client *)self isEqual:daemonClient];
 
   return self;
 }
@@ -32,18 +32,18 @@
   return 0;
 }
 
-- (ML3Client)initWithConnection:(id)a3
+- (ML3Client)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v10.receiver = self;
   v10.super_class = ML3Client;
   v6 = [(ML3Client *)&v10 init];
   v7 = v6;
-  if (v5 && v6)
+  if (connectionCopy && v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
-    v7->_processID = [v5 processIdentifier];
-    [v5 auditToken];
+    objc_storeStrong(&v6->_connection, connection);
+    v7->_processID = [connectionCopy processIdentifier];
+    [connectionCopy auditToken];
     CPCopyBundleIdentifierAndTeamFromAuditToken();
     bundleID = v7->_bundleID;
     v7->_bundleID = 0;

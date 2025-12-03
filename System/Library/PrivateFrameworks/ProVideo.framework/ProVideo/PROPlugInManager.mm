@@ -1,45 +1,45 @@
 @interface PROPlugInManager
-+ (id)allocWithZone:(_NSZone *)a3;
++ (id)allocWithZone:(_NSZone *)zone;
 + (id)sharedPlugInManager;
-- (BOOL)bundleIsDeferred:(id)a3;
-- (BOOL)checkIfShouldBlockPlugin:(id)a3 returnPluginDictionary:(id *)a4;
-- (BOOL)checkPluginVersionAgainstBlockList:(id)a3 blockDict:(id)a4;
+- (BOOL)bundleIsDeferred:(id)deferred;
+- (BOOL)checkIfShouldBlockPlugin:(id)plugin returnPluginDictionary:(id *)dictionary;
+- (BOOL)checkPluginVersionAgainstBlockList:(id)list blockDict:(id)dict;
 - (BOOL)requiresProtocolsToBePresentWhenLoading;
 - (id)blockedDocumentPlugins;
 - (id)blockedLibraryPlugins;
 - (id)deferredPluginKitPlugs;
 - (id)delegate;
-- (id)loadBlockPluginList:(__CFString *)a3;
-- (id)plugInGroupWithUUID:(__CFUUID *)a3;
+- (id)loadBlockPluginList:(__CFString *)list;
+- (id)plugInGroupWithUUID:(__CFUUID *)d;
 - (id)plugInGroups;
 - (id)plugInGroupsMutable;
 - (id)plugInSearchDirectories;
-- (id)plugInWithClassName:(id)a3;
-- (id)plugInWithUUID:(__CFUUID *)a3;
+- (id)plugInWithClassName:(id)name;
+- (id)plugInWithUUID:(__CFUUID *)d;
 - (id)plugIns;
-- (id)plugInsForProtocol:(id)a3;
-- (id)plugInsForProtocols:(id)a3;
-- (void)addDeferredPluginBundle:(id)a3;
-- (void)addDocumentBlockedPlugin:(id)a3;
-- (void)addLibraryBlockedPlugin:(id)a3 bundleName:(id)a4 pluginName:(id)a5 version:(id)a6;
-- (void)addPlugInSearchDirectory:(id)a3;
-- (void)getNameOverrides:(id)a3 pluginName:(id *)a4 bundleName:(id *)a5;
-- (void)loadDeferredPlugin:(id)a3;
+- (id)plugInsForProtocol:(id)protocol;
+- (id)plugInsForProtocols:(id)protocols;
+- (void)addDeferredPluginBundle:(id)bundle;
+- (void)addDocumentBlockedPlugin:(id)plugin;
+- (void)addLibraryBlockedPlugin:(id)plugin bundleName:(id)name pluginName:(id)pluginName version:(id)version;
+- (void)addPlugInSearchDirectory:(id)directory;
+- (void)getNameOverrides:(id)overrides pluginName:(id *)name bundleName:(id *)bundleName;
+- (void)loadDeferredPlugin:(id)plugin;
 - (void)loadDeferredPlugins;
-- (void)registerAPIObject:(id)a3 forProtocol:(id)a4 version:(unsigned int)a5;
+- (void)registerAPIObject:(id)object forProtocol:(id)protocol version:(unsigned int)version;
 - (void)removeAllBlockedDocumentPlugins;
 - (void)removeAllPlugIns;
-- (void)removeDeferredPluginBundle:(id)a3;
-- (void)removePlugin:(id)a3;
-- (void)scanForPlugInsInBundle:(id)a3 deferralNotification:(id)a4;
-- (void)scanForPlugInsInBundle:(id)a3 withPluginKitPlugIn:(id)a4 deferralNotification:(id)a5;
-- (void)scanForPlugInsInDirectory:(id)a3 actuallyLoad:(BOOL)a4 deferralNotification:(id)a5;
-- (void)scanForPlugInsInDirectory:(id)a3 deferralNotification:(id)a4;
-- (void)setDelegate:(id)a3;
-- (void)setPlugInSearchDirectories:(id)a3;
-- (void)setRequiresProtocolsToBePresentWhenLoading:(BOOL)a3;
-- (void)unregisterAPIForProtocol:(id)a3;
-- (void)unregisterAPIForProtocol:(id)a3 version:(unsigned int)a4;
+- (void)removeDeferredPluginBundle:(id)bundle;
+- (void)removePlugin:(id)plugin;
+- (void)scanForPlugInsInBundle:(id)bundle deferralNotification:(id)notification;
+- (void)scanForPlugInsInBundle:(id)bundle withPluginKitPlugIn:(id)in deferralNotification:(id)notification;
+- (void)scanForPlugInsInDirectory:(id)directory actuallyLoad:(BOOL)load deferralNotification:(id)notification;
+- (void)scanForPlugInsInDirectory:(id)directory deferralNotification:(id)notification;
+- (void)setDelegate:(id)delegate;
+- (void)setPlugInSearchDirectories:(id)directories;
+- (void)setRequiresProtocolsToBePresentWhenLoading:(BOOL)loading;
+- (void)unregisterAPIForProtocol:(id)protocol;
+- (void)unregisterAPIForProtocol:(id)protocol version:(unsigned int)version;
 @end
 
 @implementation PROPlugInManager
@@ -49,22 +49,22 @@
   result = sharedPlugInManager_sharedInstance;
   if (!sharedPlugInManager_sharedInstance)
   {
-    result = objc_alloc_init(a1);
+    result = objc_alloc_init(self);
     sharedPlugInManager_sharedInstance = result;
   }
 
   return result;
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
-  v4 = a1;
-  if (objc_opt_class() == a1)
+  selfCopy = self;
+  if (objc_opt_class() == self)
   {
-    v4 = objc_opt_class();
+    selfCopy = objc_opt_class();
   }
 
-  return NSAllocateObject(v4, 0, a3);
+  return NSAllocateObject(selfCopy, 0, zone);
 }
 
 - (id)delegate
@@ -76,7 +76,7 @@
   return 0;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE660];
@@ -93,7 +93,7 @@
   return 0;
 }
 
-- (void)setRequiresProtocolsToBePresentWhenLoading:(BOOL)a3
+- (void)setRequiresProtocolsToBePresentWhenLoading:(BOOL)loading
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE660];
@@ -101,7 +101,7 @@
   [v3 raise:v4 format:{@"*** Bad news! %@ send to abstract class %@!", v5, objc_opt_class()}];
 }
 
-- (void)addPlugInSearchDirectory:(id)a3
+- (void)addPlugInSearchDirectory:(id)directory
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE660];
@@ -109,7 +109,7 @@
   [v3 raise:v4 format:{@"*** Bad news! %@ send to abstract class %@!", v5, objc_opt_class()}];
 }
 
-- (void)setPlugInSearchDirectories:(id)a3
+- (void)setPlugInSearchDirectories:(id)directories
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE660];
@@ -126,7 +126,7 @@
   return 0;
 }
 
-- (void)scanForPlugInsInDirectory:(id)a3 deferralNotification:(id)a4
+- (void)scanForPlugInsInDirectory:(id)directory deferralNotification:(id)notification
 {
   v4 = MEMORY[0x277CBEAD8];
   v5 = *MEMORY[0x277CBE660];
@@ -134,7 +134,7 @@
   [v4 raise:v5 format:{@"*** Bad news! %@ send to abstract class %@!", v6, objc_opt_class()}];
 }
 
-- (void)scanForPlugInsInDirectory:(id)a3 actuallyLoad:(BOOL)a4 deferralNotification:(id)a5
+- (void)scanForPlugInsInDirectory:(id)directory actuallyLoad:(BOOL)load deferralNotification:(id)notification
 {
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE660];
@@ -142,7 +142,7 @@
   [v5 raise:v6 format:{@"*** Bad news! %@ send to abstract class %@!", v7, objc_opt_class()}];
 }
 
-- (void)scanForPlugInsInBundle:(id)a3 deferralNotification:(id)a4
+- (void)scanForPlugInsInBundle:(id)bundle deferralNotification:(id)notification
 {
   v4 = MEMORY[0x277CBEAD8];
   v5 = *MEMORY[0x277CBE660];
@@ -150,7 +150,7 @@
   [v4 raise:v5 format:{@"*** Bad news! %@ send to abstract class %@!", v6, objc_opt_class()}];
 }
 
-- (void)scanForPlugInsInBundle:(id)a3 withPluginKitPlugIn:(id)a4 deferralNotification:(id)a5
+- (void)scanForPlugInsInBundle:(id)bundle withPluginKitPlugIn:(id)in deferralNotification:(id)notification
 {
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE660];
@@ -166,7 +166,7 @@
   [v2 raise:v3 format:{@"*** Bad news! %@ send to abstract class %@!", v4, objc_opt_class()}];
 }
 
-- (void)addDeferredPluginBundle:(id)a3
+- (void)addDeferredPluginBundle:(id)bundle
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE660];
@@ -182,7 +182,7 @@
   [v2 raise:v3 format:{@"*** Bad news! %@ send to abstract class %@!", v4, objc_opt_class()}];
 }
 
-- (void)loadDeferredPlugin:(id)a3
+- (void)loadDeferredPlugin:(id)plugin
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE660];
@@ -199,7 +199,7 @@
   return 0;
 }
 
-- (void)removeDeferredPluginBundle:(id)a3
+- (void)removeDeferredPluginBundle:(id)bundle
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE660];
@@ -207,7 +207,7 @@
   [v3 raise:v4 format:{@"*** Bad news! %@ send to abstract class %@!", v5, objc_opt_class()}];
 }
 
-- (void)removePlugin:(id)a3
+- (void)removePlugin:(id)plugin
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE660];
@@ -215,7 +215,7 @@
   [v3 raise:v4 format:{@"*** Bad news! %@ send to abstract class %@!", v5, objc_opt_class()}];
 }
 
-- (BOOL)bundleIsDeferred:(id)a3
+- (BOOL)bundleIsDeferred:(id)deferred
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE660];
@@ -224,7 +224,7 @@
   return 0;
 }
 
-- (void)addLibraryBlockedPlugin:(id)a3 bundleName:(id)a4 pluginName:(id)a5 version:(id)a6
+- (void)addLibraryBlockedPlugin:(id)plugin bundleName:(id)name pluginName:(id)pluginName version:(id)version
 {
   v6 = MEMORY[0x277CBEAD8];
   v7 = *MEMORY[0x277CBE660];
@@ -232,7 +232,7 @@
   [v6 raise:v7 format:{@"*** Bad news! %@ send to abstract class %@!", v8, objc_opt_class()}];
 }
 
-- (void)addDocumentBlockedPlugin:(id)a3
+- (void)addDocumentBlockedPlugin:(id)plugin
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE660];
@@ -240,7 +240,7 @@
   [v3 raise:v4 format:{@"*** Bad news! %@ send to abstract class %@!", v5, objc_opt_class()}];
 }
 
-- (id)loadBlockPluginList:(__CFString *)a3
+- (id)loadBlockPluginList:(__CFString *)list
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE660];
@@ -249,7 +249,7 @@
   return 0;
 }
 
-- (BOOL)checkPluginVersionAgainstBlockList:(id)a3 blockDict:(id)a4
+- (BOOL)checkPluginVersionAgainstBlockList:(id)list blockDict:(id)dict
 {
   v4 = MEMORY[0x277CBEAD8];
   v5 = *MEMORY[0x277CBE660];
@@ -258,7 +258,7 @@
   return 0;
 }
 
-- (BOOL)checkIfShouldBlockPlugin:(id)a3 returnPluginDictionary:(id *)a4
+- (BOOL)checkIfShouldBlockPlugin:(id)plugin returnPluginDictionary:(id *)dictionary
 {
   v4 = MEMORY[0x277CBEAD8];
   v5 = *MEMORY[0x277CBE660];
@@ -267,7 +267,7 @@
   return 0;
 }
 
-- (void)getNameOverrides:(id)a3 pluginName:(id *)a4 bundleName:(id *)a5
+- (void)getNameOverrides:(id)overrides pluginName:(id *)name bundleName:(id *)bundleName
 {
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE660];
@@ -328,7 +328,7 @@
   return 0;
 }
 
-- (id)plugInsForProtocol:(id)a3
+- (id)plugInsForProtocol:(id)protocol
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE660];
@@ -337,7 +337,7 @@
   return 0;
 }
 
-- (id)plugInsForProtocols:(id)a3
+- (id)plugInsForProtocols:(id)protocols
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE660];
@@ -346,7 +346,7 @@
   return 0;
 }
 
-- (id)plugInWithUUID:(__CFUUID *)a3
+- (id)plugInWithUUID:(__CFUUID *)d
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE660];
@@ -355,7 +355,7 @@
   return 0;
 }
 
-- (id)plugInWithClassName:(id)a3
+- (id)plugInWithClassName:(id)name
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE660];
@@ -364,7 +364,7 @@
   return 0;
 }
 
-- (id)plugInGroupWithUUID:(__CFUUID *)a3
+- (id)plugInGroupWithUUID:(__CFUUID *)d
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE660];
@@ -373,7 +373,7 @@
   return 0;
 }
 
-- (void)registerAPIObject:(id)a3 forProtocol:(id)a4 version:(unsigned int)a5
+- (void)registerAPIObject:(id)object forProtocol:(id)protocol version:(unsigned int)version
 {
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE660];
@@ -381,7 +381,7 @@
   [v5 raise:v6 format:{@"*** Bad news! %@ send to abstract class %@!", v7, objc_opt_class()}];
 }
 
-- (void)unregisterAPIForProtocol:(id)a3 version:(unsigned int)a4
+- (void)unregisterAPIForProtocol:(id)protocol version:(unsigned int)version
 {
   v4 = MEMORY[0x277CBEAD8];
   v5 = *MEMORY[0x277CBE660];
@@ -389,7 +389,7 @@
   [v4 raise:v5 format:{@"*** Bad news! %@ send to abstract class %@!", v6, objc_opt_class()}];
 }
 
-- (void)unregisterAPIForProtocol:(id)a3
+- (void)unregisterAPIForProtocol:(id)protocol
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE660];

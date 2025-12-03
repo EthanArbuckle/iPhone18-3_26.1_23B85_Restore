@@ -1,16 +1,16 @@
 @interface TransparencyFollowUpExtensionViewController
-- (void)_openKBArticle:(id)a3;
-- (void)processFollowUpItem:(id)a3 selectedAction:(id)a4 completion:(id)a5;
+- (void)_openKBArticle:(id)article;
+- (void)processFollowUpItem:(id)item selectedAction:(id)action completion:(id)completion;
 @end
 
 @implementation TransparencyFollowUpExtensionViewController
 
-- (void)_openKBArticle:(id)a3
+- (void)_openKBArticle:(id)article
 {
-  v3 = a3;
-  if (v3)
+  articleCopy = article;
+  if (articleCopy)
   {
-    v4 = [NSURL URLWithString:v3];
+    v4 = [NSURL URLWithString:articleCopy];
     if (qword_10000C858 != -1)
     {
       sub_100004EB0();
@@ -64,11 +64,11 @@
   }
 }
 
-- (void)processFollowUpItem:(id)a3 selectedAction:(id)a4 completion:(id)a5
+- (void)processFollowUpItem:(id)item selectedAction:(id)action completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemCopy = item;
+  actionCopy = action;
+  completionCopy = completion;
   if (qword_10000C858 != -1)
   {
     sub_100004F00();
@@ -78,20 +78,20 @@
   if (os_log_type_enabled(qword_10000C860, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v34 = v8;
+    v34 = itemCopy;
     v35 = 2112;
-    v36 = v9;
+    v36 = actionCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "processing Transparency follow up item %@, action %@", buf, 0x16u);
   }
 
-  v12 = [v8 userInfo];
-  v13 = [v12 objectForKeyedSubscript:@"type"];
+  userInfo = [itemCopy userInfo];
+  v13 = [userInfo objectForKeyedSubscript:@"type"];
 
-  v14 = [v9 userInfo];
-  v15 = [v14 objectForKeyedSubscript:@"action"];
+  userInfo2 = [actionCopy userInfo];
+  v15 = [userInfo2 objectForKeyedSubscript:@"action"];
 
-  v16 = [v8 userInfo];
-  v17 = [v16 objectForKeyedSubscript:@"eventId"];
+  userInfo3 = [itemCopy userInfo];
+  v17 = [userInfo3 objectForKeyedSubscript:@"eventId"];
 
   if (!v13 || !v15)
   {
@@ -108,8 +108,8 @@
     }
   }
 
-  v19 = [v15 intValue];
-  if (!v19)
+  intValue = [v15 intValue];
+  if (!intValue)
   {
     if (qword_10000C858 != -1)
     {
@@ -128,8 +128,8 @@
 
     if ([v13 intValue] == 3)
     {
-      v29 = [v9 userInfo];
-      v30 = [v29 objectForKeyedSubscript:@"infoLink"];
+      userInfo4 = [actionCopy userInfo];
+      v30 = [userInfo4 objectForKeyedSubscript:@"infoLink"];
       [(TransparencyFollowUpExtensionViewController *)self _openKBArticle:v30];
 
       goto LABEL_43;
@@ -158,7 +158,7 @@ LABEL_41:
     goto LABEL_42;
   }
 
-  if (v19 == 2)
+  if (intValue == 2)
   {
     if (qword_10000C858 != -1)
     {
@@ -192,7 +192,7 @@ LABEL_41:
     goto LABEL_41;
   }
 
-  if (v19 != 1)
+  if (intValue != 1)
   {
 LABEL_43:
     v23 = 0;
@@ -216,7 +216,7 @@ LABEL_43:
 
   v21 = +[TransparencyFollowup instance];
   v32 = 0;
-  v22 = [v21 clearFollowup:v8 error:&v32];
+  v22 = [v21 clearFollowup:itemCopy error:&v32];
   v23 = v32;
 
   if ((v22 & 1) == 0)
@@ -238,7 +238,7 @@ LABEL_43:
   }
 
 LABEL_44:
-  v10[2](v10, 1);
+  completionCopy[2](completionCopy, 1);
 }
 
 @end

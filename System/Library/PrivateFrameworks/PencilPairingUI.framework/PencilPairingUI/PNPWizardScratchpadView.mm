@@ -1,30 +1,30 @@
 @interface PNPWizardScratchpadView
-- (BOOL)_viewIsPartOfStylusCanvasView:(id)a3;
+- (BOOL)_viewIsPartOfStylusCanvasView:(id)view;
 - (CGPoint)pointForFirstTool;
-- (PNPWizardScratchpadView)initWithFrame:(CGRect)a3;
+- (PNPWizardScratchpadView)initWithFrame:(CGRect)frame;
 - (PNPWizardScratchpadViewDelegate)delegate;
 - (id)_selectedInk;
 - (id)_selectedInkView;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)_animateAdjustmentSliderAppearance:(id)a3;
-- (void)_animateInkChange:(id)a3;
-- (void)_animateLayoutChange:(id)a3;
-- (void)_canvasViewWillBeginDrawing:(id)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)_animateAdjustmentSliderAppearance:(id)appearance;
+- (void)_animateInkChange:(id)change;
+- (void)_animateLayoutChange:(id)change;
+- (void)_canvasViewWillBeginDrawing:(id)drawing;
 - (void)_dismissToastNotification;
 - (void)_initializeToastViewIfNecessary;
-- (void)_inkViewPressed:(id)a3;
-- (void)_selectInkAtIndex:(int64_t)a3;
+- (void)_inkViewPressed:(id)pressed;
+- (void)_selectInkAtIndex:(int64_t)index;
 - (void)_showToastNotificationAndAnimateStrokeAway;
 - (void)_showToastNotificationWithInitialAnimation;
 - (void)_triggerShowToastTimer;
-- (void)canvasViewDidBeginDrawing:(id)a3;
-- (void)canvasViewDidEndDrawing:(id)a3;
+- (void)canvasViewDidBeginDrawing:(id)drawing;
+- (void)canvasViewDidEndDrawing:(id)drawing;
 - (void)clearCanvas;
-- (void)eventSource:(id)a3 hadPencilDoubleTapped:(id)a4;
+- (void)eventSource:(id)source hadPencilDoubleTapped:(id)tapped;
 - (void)layoutSubviews;
 - (void)prepareCanvasViews;
-- (void)setStep:(unint64_t)a3;
-- (void)viewWillMoveToSuperview:(id)a3;
+- (void)setStep:(unint64_t)step;
+- (void)viewWillMoveToSuperview:(id)superview;
 @end
 
 @implementation PNPWizardScratchpadView
@@ -41,12 +41,12 @@
   [(PNPWizardScratchpadView *)self bounds];
   [(PNPWizardScratchpadCanvasView *)fingerDrawingCanvasView setFrame:?];
   v6 = self->_backgroundView;
-  v7 = [MEMORY[0x277D75348] scratchpadBackgroundColor];
-  [(UIView *)v6 setBackgroundColor:v7];
+  scratchpadBackgroundColor = [MEMORY[0x277D75348] scratchpadBackgroundColor];
+  [(UIView *)v6 setBackgroundColor:scratchpadBackgroundColor];
 
   toolsBackgroundPillView = self->_toolsBackgroundPillView;
-  v9 = [MEMORY[0x277D75348] toolBackgroundColor];
-  [(UIView *)toolsBackgroundPillView setBackgroundColor:v9];
+  toolBackgroundColor = [MEMORY[0x277D75348] toolBackgroundColor];
+  [(UIView *)toolsBackgroundPillView setBackgroundColor:toolBackgroundColor];
 
   [(UIView *)self->_toolsBackgroundPillView setAlpha:0.91];
   v10 = MEMORY[0x277D75208];
@@ -55,18 +55,18 @@
   v11 = MEMORY[0x277D75208];
   [(PNPWizardScratchpadView *)self bounds];
   v12 = [v11 bezierPathWithRoundedRect:? cornerRadius:?];
-  v13 = [v12 bezierPathByReversingPath];
-  [v62 appendPath:v13];
+  bezierPathByReversingPath = [v12 bezierPathByReversingPath];
+  [v62 appendPath:bezierPathByReversingPath];
 
   frameLayer = self->_frameLayer;
   v15 = v62;
   -[CAShapeLayer setPath:](frameLayer, "setPath:", [v62 CGPath]);
   v16 = self->_frameLayer;
-  v17 = [MEMORY[0x277D75348] platterContainerColor];
-  -[CAShapeLayer setFillColor:](v16, "setFillColor:", [v17 CGColor]);
+  platterContainerColor = [MEMORY[0x277D75348] platterContainerColor];
+  -[CAShapeLayer setFillColor:](v16, "setFillColor:", [platterContainerColor CGColor]);
 
-  v18 = [(NSMutableArray *)self->_inkViews firstObject];
-  [v18 intrinsicContentSize];
+  firstObject = [(NSMutableArray *)self->_inkViews firstObject];
+  [firstObject intrinsicContentSize];
   v20 = v19;
 
   v21 = [(NSMutableArray *)self->_inkViews count];
@@ -132,9 +132,9 @@
   UIRectInset();
   [(UIView *)self->_toolsBackgroundPillView setFrame:?];
   [(UIView *)self->_toolsBackgroundPillView _setContinuousCornerRadius:12.0];
-  v38 = [(PNPWizardScratchpadView *)self _selectedInkView];
+  _selectedInkView = [(PNPWizardScratchpadView *)self _selectedInkView];
   [(PNPWizardInkWeightControl *)self->_inkWeightControl intrinsicContentSize];
-  [v38 frame];
+  [_selectedInkView frame];
   UIRectCenteredXInRect();
   v40 = v39;
   v42 = v41;
@@ -149,7 +149,7 @@
     v45 = 9.0;
   }
 
-  [v38 frame];
+  [_selectedInkView frame];
   [(PNPWizardInkWeightControl *)self->_inkWeightControl setFrame:v40, v46 - (v44 + v45), v42, v44];
   v47 = 0.8;
   if (!self->_inkWeightControlVisible)
@@ -160,8 +160,8 @@
   [(PNPWizardInkWeightControl *)self->_inkWeightControl setAlpha:v47];
   [(PNPWizardScratchpadToast *)self->_toastView intrinsicContentSize];
   [(PNPWizardScratchpadView *)self bounds];
-  v48 = [(PNPWizardScratchpadView *)self traitCollection];
-  [v48 displayScale];
+  traitCollection = [(PNPWizardScratchpadView *)self traitCollection];
+  [traitCollection displayScale];
   v61 = v49;
   UIRectCenteredIntegralRectScale();
   v51 = v50;
@@ -171,9 +171,9 @@
 
   [(PNPWizardScratchpadToast *)self->_toastView setFrame:v51, v53, v55, v57, v61];
   toastView = self->_toastView;
-  v59 = [(PNPWizardScratchpadView *)self showingToast];
+  showingToast = [(PNPWizardScratchpadView *)self showingToast];
   v60 = 1.0;
-  if (!v59)
+  if (!showingToast)
   {
     v60 = 0.0;
   }
@@ -183,9 +183,9 @@
 
 - (CGPoint)pointForFirstTool
 {
-  v3 = [(NSMutableArray *)self->_inkViews firstObject];
-  [v3 bounds];
-  [(PNPWizardScratchpadView *)self convertRect:v3 fromView:?];
+  firstObject = [(NSMutableArray *)self->_inkViews firstObject];
+  [firstObject bounds];
+  [(PNPWizardScratchpadView *)self convertRect:firstObject fromView:?];
   UIRectGetCenter();
   v5 = v4;
   v7 = v6;
@@ -197,9 +197,9 @@
   return result;
 }
 
-- (void)_animateLayoutChange:(id)a3
+- (void)_animateLayoutChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   [(PNPWizardScratchpadView *)self setNeedsLayout];
   v5 = MEMORY[0x277D75D18];
   v9[0] = MEMORY[0x277D85DD0];
@@ -211,8 +211,8 @@
   v7[1] = 3221225472;
   v7[2] = __48__PNPWizardScratchpadView__animateLayoutChange___block_invoke_2;
   v7[3] = &unk_279A0A1C0;
-  v8 = v4;
-  v6 = v4;
+  v8 = changeCopy;
+  v6 = changeCopy;
   [v5 _animateUsingDefaultTimingWithOptions:4 animations:v9 completion:v7];
 }
 
@@ -227,9 +227,9 @@ uint64_t __48__PNPWizardScratchpadView__animateLayoutChange___block_invoke_2(uin
   return result;
 }
 
-- (void)_animateInkChange:(id)a3
+- (void)_animateInkChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   [(PNPWizardScratchpadView *)self setNeedsLayout];
   v5 = MEMORY[0x277D75D18];
   v9[0] = MEMORY[0x277D85DD0];
@@ -241,8 +241,8 @@ uint64_t __48__PNPWizardScratchpadView__animateLayoutChange___block_invoke_2(uin
   v7[1] = 3221225472;
   v7[2] = __45__PNPWizardScratchpadView__animateInkChange___block_invoke_2;
   v7[3] = &unk_279A0A1C0;
-  v8 = v4;
-  v6 = v4;
+  v8 = changeCopy;
+  v6 = changeCopy;
   [v5 animateWithDuration:4 delay:v9 usingSpringWithDamping:v7 initialSpringVelocity:0.475 options:0.0 animations:0.8 completion:0.0];
 }
 
@@ -257,9 +257,9 @@ uint64_t __45__PNPWizardScratchpadView__animateInkChange___block_invoke_2(uint64
   return result;
 }
 
-- (void)_animateAdjustmentSliderAppearance:(id)a3
+- (void)_animateAdjustmentSliderAppearance:(id)appearance
 {
-  v4 = a3;
+  appearanceCopy = appearance;
   [(PNPWizardScratchpadView *)self setNeedsLayout];
   v18 = 0.0;
   v16 = 0u;
@@ -279,8 +279,8 @@ uint64_t __45__PNPWizardScratchpadView__animateInkChange___block_invoke_2(uint64
   v11 = 3221225472;
   v12 = __62__PNPWizardScratchpadView__animateAdjustmentSliderAppearance___block_invoke_2;
   v13 = &unk_279A0A470;
-  v14 = v4;
-  v9 = v4;
+  v14 = appearanceCopy;
+  v9 = appearanceCopy;
   [v8 addCompletion:&v10];
   [v8 startAnimation];
 }
@@ -299,13 +299,13 @@ uint64_t __62__PNPWizardScratchpadView__animateAdjustmentSliderAppearance___bloc
   return result;
 }
 
-- (void)eventSource:(id)a3 hadPencilDoubleTapped:(id)a4
+- (void)eventSource:(id)source hadPencilDoubleTapped:(id)tapped
 {
-  v8 = a4;
-  v5 = [(PNPWizardScratchpadView *)self _selectedInk];
-  v6 = [v5 identifier];
+  tappedCopy = tapped;
+  _selectedInk = [(PNPWizardScratchpadView *)self _selectedInk];
+  identifier = [_selectedInk identifier];
 
-  if (v6 == *MEMORY[0x277CD96D8])
+  if (identifier == *MEMORY[0x277CD96D8])
   {
     previousMarkingToolIndex = self->_previousMarkingToolIndex;
   }
@@ -318,24 +318,24 @@ uint64_t __62__PNPWizardScratchpadView__animateAdjustmentSliderAppearance___bloc
 
   [(PNPWizardScratchpadView *)self _selectInkAtIndex:previousMarkingToolIndex];
   [(PNPWizardScratchpadView *)self _animateLayoutChange:0];
-  if (v8)
+  if (tappedCopy)
   {
-    v8[2]();
+    tappedCopy[2]();
   }
 }
 
-- (void)_selectInkAtIndex:(int64_t)a3
+- (void)_selectInkAtIndex:(int64_t)index
 {
   if (!self->_isDrawing)
   {
     [(PNPWizardScratchpadView *)self _deselectAllInks];
-    self->_selectedInkIndex = a3;
-    v6 = [(NSMutableArray *)self->_inkViews objectAtIndex:a3];
+    self->_selectedInkIndex = index;
+    v6 = [(NSMutableArray *)self->_inkViews objectAtIndex:index];
     [v6 setSelected:1];
 
     canvasView = self->_canvasView;
-    v8 = [(PNPWizardScratchpadView *)self _selectedInk];
-    [(PNPWizardScratchpadCanvasView *)canvasView setInk:v8];
+    _selectedInk = [(PNPWizardScratchpadView *)self _selectedInk];
+    [(PNPWizardScratchpadCanvasView *)canvasView setInk:_selectedInk];
   }
 }
 
@@ -372,34 +372,34 @@ void __43__PNPWizardScratchpadView__selectedInkView__block_invoke(uint64_t a1, v
 
 - (id)_selectedInk
 {
-  v3 = [(PNPWizardScratchpadView *)self _selectedInkView];
-  v4 = [v3 ink];
+  _selectedInkView = [(PNPWizardScratchpadView *)self _selectedInkView];
+  v4 = [_selectedInkView ink];
   [(PNPWizardInkWeightControl *)self->_inkWeightControl value];
   BSIntervalValueForFraction();
   v6 = v5;
   v7 = MEMORY[0x277CD9638];
-  v8 = [v4 identifier];
-  v9 = [v4 color];
-  v10 = [v7 inkWithIdentifier:v8 color:v9 weight:v6];
+  identifier = [v4 identifier];
+  color = [v4 color];
+  v10 = [v7 inkWithIdentifier:identifier color:color weight:v6];
 
   return v10;
 }
 
-- (void)_inkViewPressed:(id)a3
+- (void)_inkViewPressed:(id)pressed
 {
-  v11 = a3;
-  v4 = [v11 view];
-  v5 = [(NSMutableArray *)self->_inkViews indexOfObject:v4];
+  pressedCopy = pressed;
+  view = [pressedCopy view];
+  v5 = [(NSMutableArray *)self->_inkViews indexOfObject:view];
   if (v5 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = v5;
-    [v11 locationInView:v4];
-    v7 = [v4 pointInside:0 withEvent:?];
-    [v4 setPressed:0];
-    if ([v11 state] == 1 || objc_msgSend(v11, "state") == 2)
+    [pressedCopy locationInView:view];
+    v7 = [view pointInside:0 withEvent:?];
+    [view setPressed:0];
+    if ([pressedCopy state] == 1 || objc_msgSend(pressedCopy, "state") == 2)
     {
-      [v4 setPressed:v7];
-      if ((([v11 state] == 3) & v7) == 0)
+      [view setPressed:v7];
+      if ((([pressedCopy state] == 3) & v7) == 0)
       {
 LABEL_10:
         [(PNPWizardScratchpadView *)self _animateInkChange:0];
@@ -407,19 +407,19 @@ LABEL_10:
       }
     }
 
-    else if ((([v11 state] == 3) & v7) != 1)
+    else if ((([pressedCopy state] == 3) & v7) != 1)
     {
 LABEL_11:
-      v10 = [(PNPWizardScratchpadView *)self delegate];
-      [v10 scratchPadViewHadInteractionEvent:self];
+      delegate = [(PNPWizardScratchpadView *)self delegate];
+      [delegate scratchPadViewHadInteractionEvent:self];
 
       goto LABEL_12;
     }
 
-    v8 = [(PNPWizardScratchpadView *)self _selectedInk];
-    v9 = [v8 identifier];
+    _selectedInk = [(PNPWizardScratchpadView *)self _selectedInk];
+    identifier = [_selectedInk identifier];
 
-    if (([v9 isEqual:*MEMORY[0x277CD96D8]] & 1) == 0)
+    if (([identifier isEqual:*MEMORY[0x277CD96D8]] & 1) == 0)
     {
       self->_previousMarkingToolIndex = self->_selectedInkIndex;
     }
@@ -432,10 +432,10 @@ LABEL_11:
 LABEL_12:
 }
 
-- (BOOL)_viewIsPartOfStylusCanvasView:(id)a3
+- (BOOL)_viewIsPartOfStylusCanvasView:(id)view
 {
-  v4 = a3;
-  v5 = ([(PNPWizardScratchpadCanvasView *)self->_canvasView containsView:v4]& 1) != 0 || self->_canvasView == v4;
+  viewCopy = view;
+  v5 = ([(PNPWizardScratchpadCanvasView *)self->_canvasView containsView:viewCopy]& 1) != 0 || self->_canvasView == viewCopy;
 
   return v5;
 }
@@ -483,10 +483,10 @@ uint64_t __69__PNPWizardScratchpadView__showToastNotificationWithInitialAnimatio
   v8[0] = 0;
   v8[1] = v8;
   v8[2] = 0x2020000000;
-  v3 = [(PNPWizardScratchpadCanvasView *)self->_canvasView canvasView];
-  v4 = [v3 drawing];
-  v5 = [v4 _visibleStrokes];
-  v6 = [v5 count] != 0;
+  canvasView = [(PNPWizardScratchpadCanvasView *)self->_canvasView canvasView];
+  drawing = [canvasView drawing];
+  _visibleStrokes = [drawing _visibleStrokes];
+  v6 = [_visibleStrokes count] != 0;
 
   v9 = v6;
   v7[0] = MEMORY[0x277D85DD0];
@@ -542,16 +542,16 @@ uint64_t __52__PNPWizardScratchpadView__dismissToastNotification__block_invoke(u
   return [v2 _animateLayoutChange:0];
 }
 
-- (void)_canvasViewWillBeginDrawing:(id)a3
+- (void)_canvasViewWillBeginDrawing:(id)drawing
 {
-  if ([(PNPWizardScratchpadView *)self _viewIsPartOfStylusCanvasView:a3])
+  if ([(PNPWizardScratchpadView *)self _viewIsPartOfStylusCanvasView:drawing])
   {
     v4 = [(PNPWizardScratchpadCanvasView *)self->_canvasView ink];
-    v5 = [v4 identifier];
-    v6 = [v5 isEqual:*MEMORY[0x277CD96D8]];
+    identifier = [v4 identifier];
+    v6 = [identifier isEqual:*MEMORY[0x277CD96D8]];
 
-    v7 = [(PNPWizardScratchpadView *)self delegate];
-    v8 = [v7 scratchPadViewIsPlayingAnimation:self];
+    delegate = [(PNPWizardScratchpadView *)self delegate];
+    v8 = [delegate scratchPadViewIsPlayingAnimation:self];
 
     if (v6)
     {
@@ -572,17 +572,17 @@ uint64_t __52__PNPWizardScratchpadView__dismissToastNotification__block_invoke(u
   }
 }
 
-- (void)canvasViewDidBeginDrawing:(id)a3
+- (void)canvasViewDidBeginDrawing:(id)drawing
 {
-  if ([(PNPWizardScratchpadView *)self _viewIsPartOfStylusCanvasView:a3])
+  if ([(PNPWizardScratchpadView *)self _viewIsPartOfStylusCanvasView:drawing])
   {
     self->_isDrawing = 1;
-    v4 = [(PNPWizardScratchpadView *)self delegate];
-    [v4 scratchPadViewHadInteractionEvent:self];
+    delegate = [(PNPWizardScratchpadView *)self delegate];
+    [delegate scratchPadViewHadInteractionEvent:self];
 
     v5 = [(PNPWizardScratchpadCanvasView *)self->_canvasView ink];
-    v6 = [v5 identifier];
-    v7 = [v6 isEqual:*MEMORY[0x277CD96D8]];
+    identifier = [v5 identifier];
+    v7 = [identifier isEqual:*MEMORY[0x277CD96D8]];
 
     if ((v7 & 1) == 0)
     {
@@ -595,22 +595,22 @@ uint64_t __52__PNPWizardScratchpadView__dismissToastNotification__block_invoke(u
   }
 }
 
-- (void)canvasViewDidEndDrawing:(id)a3
+- (void)canvasViewDidEndDrawing:(id)drawing
 {
-  v8 = a3;
+  drawingCopy = drawing;
   if ([(PNPWizardScratchpadView *)self _viewIsPartOfStylusCanvasView:?])
   {
     self->_isDrawing = 0;
   }
 
-  if (![(PNPWizardScratchpadView *)self _viewIsPartOfStylusCanvasView:v8])
+  if (![(PNPWizardScratchpadView *)self _viewIsPartOfStylusCanvasView:drawingCopy])
   {
     [(PNPWizardScratchpadView *)self _showToastNotificationAndAnimateStrokeAway];
   }
 
-  v4 = [v8 drawing];
-  v5 = [v4 _visibleStrokes];
-  v6 = [v5 count];
+  drawing = [drawingCopy drawing];
+  _visibleStrokes = [drawing _visibleStrokes];
+  v6 = [_visibleStrokes count];
 
   if (v6)
   {
@@ -627,18 +627,18 @@ uint64_t __52__PNPWizardScratchpadView__dismissToastNotification__block_invoke(u
   [(PNPWizardScratchpadView *)self setShowingToast:0];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   v12.receiver = self;
   v12.super_class = PNPWizardScratchpadView;
-  v8 = [(PNPWizardScratchpadView *)&v12 hitTest:v7 withEvent:x, y];
-  if (-[PNPWizardScratchpadView _viewIsPartOfStylusCanvasView:](self, "_viewIsPartOfStylusCanvasView:", v8) && ![v7 pnp_isPencilEvent])
+  v8 = [(PNPWizardScratchpadView *)&v12 hitTest:eventCopy withEvent:x, y];
+  if (-[PNPWizardScratchpadView _viewIsPartOfStylusCanvasView:](self, "_viewIsPartOfStylusCanvasView:", v8) && ![eventCopy pnp_isPencilEvent])
   {
     [(PNPWizardScratchpadCanvasView *)self->_fingerDrawingCanvasView convertPoint:self fromView:x, y];
-    v9 = [(PNPWizardScratchpadCanvasView *)self->_fingerDrawingCanvasView hitTest:v7 withEvent:?];
+    v9 = [(PNPWizardScratchpadCanvasView *)self->_fingerDrawingCanvasView hitTest:eventCopy withEvent:?];
   }
 
   else
@@ -651,11 +651,11 @@ uint64_t __52__PNPWizardScratchpadView__dismissToastNotification__block_invoke(u
   return v10;
 }
 
-- (PNPWizardScratchpadView)initWithFrame:(CGRect)a3
+- (PNPWizardScratchpadView)initWithFrame:(CGRect)frame
 {
   v34.receiver = self;
   v34.super_class = PNPWizardScratchpadView;
-  v3 = [(PNPWizardScratchpadView *)&v34 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PNPWizardScratchpadView *)&v34 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = objc_alloc_init(MEMORY[0x277D75D18]);
   backgroundView = v3->_backgroundView;
   v3->_backgroundView = v4;
@@ -676,22 +676,22 @@ uint64_t __52__PNPWizardScratchpadView__dismissToastNotification__block_invoke(u
   v10 = v3->_fingerDrawingCanvasView;
   v11 = MEMORY[0x277CD9638];
   v12 = *MEMORY[0x277CD96E0];
-  v13 = [MEMORY[0x277D75348] fingerDrawingInkColor];
-  v14 = [v11 inkWithIdentifier:v12 color:v13 weight:0.2];
+  fingerDrawingInkColor = [MEMORY[0x277D75348] fingerDrawingInkColor];
+  v14 = [v11 inkWithIdentifier:v12 color:fingerDrawingInkColor weight:0.2];
   [(PNPWizardScratchpadCanvasView *)v10 setInk:v14];
 
   [(PNPWizardScratchpadView *)v3 addSubview:v3->_fingerDrawingCanvasView];
   [(PNPWizardScratchpadView *)v3 addSubview:v3->_canvasView];
-  v15 = [MEMORY[0x277CD9F90] layer];
+  layer = [MEMORY[0x277CD9F90] layer];
   frameLayer = v3->_frameLayer;
-  v3->_frameLayer = v15;
+  v3->_frameLayer = layer;
 
-  v17 = [(PNPWizardScratchpadView *)v3 layer];
-  [v17 addSublayer:v3->_frameLayer];
+  layer2 = [(PNPWizardScratchpadView *)v3 layer];
+  [layer2 addSublayer:v3->_frameLayer];
 
   v18 = v3->_frameLayer;
-  v19 = [MEMORY[0x277D75348] scratchpadFrameColor];
-  -[CAShapeLayer setFillColor:](v18, "setFillColor:", [v19 CGColor]);
+  scratchpadFrameColor = [MEMORY[0x277D75348] scratchpadFrameColor];
+  -[CAShapeLayer setFillColor:](v18, "setFillColor:", [scratchpadFrameColor CGColor]);
 
   v20 = objc_alloc_init(MEMORY[0x277D75D18]);
   toolsBackgroundPillView = v3->_toolsBackgroundPillView;
@@ -703,9 +703,9 @@ uint64_t __52__PNPWizardScratchpadView__dismissToastNotification__block_invoke(u
   v3->_inkWeightControl = v22;
 
   [(PNPWizardScratchpadView *)v3 addSubview:v3->_inkWeightControl];
-  v24 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   inkViews = v3->_inkViews;
-  v3->_inkViews = v24;
+  v3->_inkViews = array;
 
   for (i = 0; i != 8; ++i)
   {
@@ -736,17 +736,17 @@ uint64_t __52__PNPWizardScratchpadView__dismissToastNotification__block_invoke(u
 {
   [(PNPWizardScratchpadCanvasView *)self->_fingerDrawingCanvasView prepareCanvasView];
   [(PNPWizardScratchpadCanvasView *)self->_canvasView prepareCanvasView];
-  v3 = [(PNPWizardScratchpadCanvasView *)self->_canvasView drawingGestureRecognizer];
-  [v3 setAllowedTouchTypes:&unk_286FED350];
+  drawingGestureRecognizer = [(PNPWizardScratchpadCanvasView *)self->_canvasView drawingGestureRecognizer];
+  [drawingGestureRecognizer setAllowedTouchTypes:&unk_286FED350];
 
-  v4 = [(PNPWizardScratchpadCanvasView *)self->_fingerDrawingCanvasView drawingGestureRecognizer];
-  [v4 setAllowedTouchTypes:&unk_286FED368];
+  drawingGestureRecognizer2 = [(PNPWizardScratchpadCanvasView *)self->_fingerDrawingCanvasView drawingGestureRecognizer];
+  [drawingGestureRecognizer2 setAllowedTouchTypes:&unk_286FED368];
 }
 
-- (void)setStep:(unint64_t)a3
+- (void)setStep:(unint64_t)step
 {
-  self->_step = a3;
-  if (a3 == 1)
+  self->_step = step;
+  if (step == 1)
   {
     [(PNPWizardScratchpadView *)self _triggerShowToastTimer];
   }
@@ -769,9 +769,9 @@ uint64_t __52__PNPWizardScratchpadView__dismissToastNotification__block_invoke(u
   MEMORY[0x2821F96F8](v5, v6);
 }
 
-- (void)viewWillMoveToSuperview:(id)a3
+- (void)viewWillMoveToSuperview:(id)superview
 {
-  if (!a3)
+  if (!superview)
   {
     [(NSTimer *)self->_showToastTimer invalidate];
     showToastTimer = self->_showToastTimer;

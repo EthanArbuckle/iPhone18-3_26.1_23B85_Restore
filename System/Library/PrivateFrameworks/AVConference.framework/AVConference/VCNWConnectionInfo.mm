@@ -1,38 +1,38 @@
 @interface VCNWConnectionInfo
-- (BOOL)isSameRemoteAddress:(id)a3;
+- (BOOL)isSameRemoteAddress:(id)address;
 - (OS_nw_parameters)parameters;
 - (VCNetworkAddress)remoteAddress;
 - (id)newParametersFromConnection;
 - (id)newRemoteAddressFromConnection;
 - (void)dealloc;
 - (void)newRemoteAddressFromConnection;
-- (void)setConnection:(id)a3;
-- (void)setParameters:(id)a3;
-- (void)setRemoteAddress:(id)a3;
+- (void)setConnection:(id)connection;
+- (void)setParameters:(id)parameters;
+- (void)setRemoteAddress:(id)address;
 @end
 
 @implementation VCNWConnectionInfo
 
-- (void)setConnection:(id)a3
+- (void)setConnection:(id)connection
 {
   connection = self->_connection;
-  self->_connection = nw_retain(a3);
+  self->_connection = nw_retain(connection);
 
   nw_release(connection);
 }
 
-- (void)setParameters:(id)a3
+- (void)setParameters:(id)parameters
 {
   parameters = self->_parameters;
-  self->_parameters = nw_retain(a3);
+  self->_parameters = nw_retain(parameters);
 
   nw_release(parameters);
 }
 
-- (void)setRemoteAddress:(id)a3
+- (void)setRemoteAddress:(id)address
 {
   remoteAddress = self->_remoteAddress;
-  self->_remoteAddress = [a3 copy];
+  self->_remoteAddress = [address copy];
 }
 
 - (VCNetworkAddress)remoteAddress
@@ -126,16 +126,16 @@ LABEL_10:
   return v10;
 }
 
-- (BOOL)isSameRemoteAddress:(id)a3
+- (BOOL)isSameRemoteAddress:(id)address
 {
-  v5 = -[NSString isEqualToString:](-[VCNetworkAddress ip](-[VCNWConnectionInfo remoteAddress](self, "remoteAddress"), "ip"), "isEqualToString:", [a3 ip]);
+  v5 = -[NSString isEqualToString:](-[VCNetworkAddress ip](-[VCNWConnectionInfo remoteAddress](self, "remoteAddress"), "ip"), "isEqualToString:", [address ip]);
   if (v5)
   {
-    v6 = [(VCNetworkAddress *)[(VCNWConnectionInfo *)self remoteAddress] port];
-    if (v6 == [a3 port])
+    port = [(VCNetworkAddress *)[(VCNWConnectionInfo *)self remoteAddress] port];
+    if (port == [address port])
     {
-      v7 = [(VCNetworkAddress *)[(VCNWConnectionInfo *)self remoteAddress] ipVersion];
-      LOBYTE(v5) = v7 == [a3 ipVersion];
+      ipVersion = [(VCNetworkAddress *)[(VCNWConnectionInfo *)self remoteAddress] ipVersion];
+      LOBYTE(v5) = ipVersion == [address ipVersion];
     }
 
     else

@@ -7,26 +7,26 @@
 
 - (BOOL)_accessibilityDidTriggerShowMenuAction
 {
-  v3 = [(BKLibraryBookshelfGridBookCellAccessibility *)self bkaxTarget];
-  v4 = [v3 infoCell];
-  v5 = [v4 moreButton];
+  bkaxTarget = [(BKLibraryBookshelfGridBookCellAccessibility *)self bkaxTarget];
+  infoCell = [bkaxTarget infoCell];
+  moreButton = [infoCell moreButton];
 
-  v6 = [v5 contextMenuInteraction];
+  contextMenuInteraction = [moreButton contextMenuInteraction];
   if (objc_opt_respondsToSelector())
   {
-    [v5 accessibilityActivationPoint];
-    [v6 _presentMenuAtLocation:?];
-    v7 = 1;
+    [moreButton accessibilityActivationPoint];
+    [contextMenuInteraction _presentMenuAtLocation:?];
+    _accessibilityDidTriggerShowMenuAction = 1;
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = BKLibraryBookshelfGridBookCellAccessibility;
-    v7 = [(BKLibraryBookshelfGridBookCellAccessibility *)&v9 _accessibilityDidTriggerShowMenuAction];
+    _accessibilityDidTriggerShowMenuAction = [(BKLibraryBookshelfGridBookCellAccessibility *)&v9 _accessibilityDidTriggerShowMenuAction];
   }
 
-  return v7;
+  return _accessibilityDidTriggerShowMenuAction;
 }
 
 - (id)bkaxTarget

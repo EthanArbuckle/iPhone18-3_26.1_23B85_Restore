@@ -1,24 +1,24 @@
 @interface TSAFunctionBrowserState
-- (TSAFunctionBrowserState)initWithContext:(id)a3;
+- (TSAFunctionBrowserState)initWithContext:(id)context;
 - (unsigned)back;
-- (unsigned)backByAmount:(unint64_t)a3;
+- (unsigned)backByAmount:(unint64_t)amount;
 - (unsigned)forward;
-- (unsigned)forwardByAmount:(unint64_t)a3;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)p_filterOutUnknownFunctions:(id)a3;
-- (void)recordNavigationTo:(unsigned __int16)a3;
-- (void)recordRecentFunction:(unsigned __int16)a3;
-- (void)saveToArchiver:(id)a3;
+- (unsigned)forwardByAmount:(unint64_t)amount;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)p_filterOutUnknownFunctions:(id)functions;
+- (void)recordNavigationTo:(unsigned __int16)to;
+- (void)recordRecentFunction:(unsigned __int16)function;
+- (void)saveToArchiver:(id)archiver;
 @end
 
 @implementation TSAFunctionBrowserState
 
-- (TSAFunctionBrowserState)initWithContext:(id)a3
+- (TSAFunctionBrowserState)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v16.receiver = self;
   v16.super_class = TSAFunctionBrowserState;
-  v5 = [(TSAFunctionBrowserState *)&v16 initWithContext:v4];
+  v5 = [(TSAFunctionBrowserState *)&v16 initWithContext:contextCopy];
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x277CBEB18]);
@@ -40,18 +40,18 @@
   return v5;
 }
 
-- (void)p_filterOutUnknownFunctions:(id)a3
+- (void)p_filterOutUnknownFunctions:(id)functions
 {
-  v8 = a3;
-  v5 = objc_msgSend_indexesOfObjectsPassingTest_(v8, v3, &unk_28850F9F0, v4);
-  objc_msgSend_removeObjectsAtIndexes_(v8, v6, v5, v7);
+  functionsCopy = functions;
+  v5 = objc_msgSend_indexesOfObjectsPassingTest_(functionsCopy, v3, &unk_28850F9F0, v4);
+  objc_msgSend_removeObjectsAtIndexes_(functionsCopy, v6, v5, v7);
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v46 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithDescriptor_(v46, v4, off_2812F3500[2], v5);
+  v6 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812F3500[2], v5);
 
   v7 = objc_alloc(MEMORY[0x277CBEB18]);
   v10 = objc_msgSend_tsp_initWithUInt32Array_(v7, v8, v6 + 40, v9);
@@ -89,7 +89,7 @@
   {
     v43 = *(v6 + 72);
     self->mCurrentFunction = v43;
-    v44 = v46;
+    v44 = unarchiverCopy;
     if (!v43)
     {
       goto LABEL_12;
@@ -107,7 +107,7 @@
     self->mCurrentFunction = 0;
   }
 
-  v44 = v46;
+  v44 = unarchiverCopy;
 LABEL_12:
 }
 
@@ -164,47 +164,47 @@ LABEL_12:
   return v24;
 }
 
-- (unsigned)backByAmount:(unint64_t)a3
+- (unsigned)backByAmount:(unint64_t)amount
 {
-  if (!a3)
+  if (!amount)
   {
     return 0;
   }
 
-  v4 = a3;
+  amountCopy = amount;
   do
   {
-    result = objc_msgSend_back(self, a2, a3, v3);
-    --v4;
+    result = objc_msgSend_back(self, a2, amount, v3);
+    --amountCopy;
   }
 
-  while (v4);
+  while (amountCopy);
   return result;
 }
 
-- (unsigned)forwardByAmount:(unint64_t)a3
+- (unsigned)forwardByAmount:(unint64_t)amount
 {
-  if (!a3)
+  if (!amount)
   {
     return 0;
   }
 
-  v4 = a3;
+  amountCopy = amount;
   do
   {
-    result = objc_msgSend_forward(self, a2, a3, v3);
-    --v4;
+    result = objc_msgSend_forward(self, a2, amount, v3);
+    --amountCopy;
   }
 
-  while (v4);
+  while (amountCopy);
   return result;
 }
 
-- (void)recordNavigationTo:(unsigned __int16)a3
+- (void)recordNavigationTo:(unsigned __int16)to
 {
-  if (self->mCurrentFunction != a3)
+  if (self->mCurrentFunction != to)
   {
-    objc_msgSend_willModify(self, a2, a3, v3);
+    objc_msgSend_willModify(self, a2, to, v3);
     objc_msgSend_removeAllObjects(self->mForwardFunctions, v6, v7, v8);
     mCurrentFunction = self->mCurrentFunction;
     if (self->mCurrentFunction)
@@ -219,15 +219,15 @@ LABEL_12:
       objc_msgSend_removeObjectAtIndex_(self->mBackFunctions, v16, 0, v17);
     }
 
-    self->mCurrentFunction = a3;
+    self->mCurrentFunction = to;
   }
 }
 
-- (void)recordRecentFunction:(unsigned __int16)a3
+- (void)recordRecentFunction:(unsigned __int16)function
 {
-  v4 = a3;
-  objc_msgSend_willModify(self, a2, a3, v3);
-  v16 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v6, v4, v7);
+  functionCopy = function;
+  objc_msgSend_willModify(self, a2, function, v3);
+  v16 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v6, functionCopy, v7);
   objc_msgSend_removeObject_(self->mRecentFunctions, v8, v16, v9);
   if (objc_msgSend_count(self->mRecentFunctions, v10, v11, v12) >= 0xC)
   {
@@ -237,11 +237,11 @@ LABEL_12:
   objc_msgSend_insertObject_atIndex_(self->mRecentFunctions, v13, v16, 0);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v13 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithNewFunction_descriptor_(v13, v4, sub_2760D38D8, off_2812F3500[2]);
+  v5 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_2760D38D8, off_2812F3500[2]);
 
   objc_msgSend_tsp_saveToUInt32Array_(self->mRecentFunctions, v6, v5 + 24, v7);
   objc_msgSend_tsp_saveToUInt32Array_(self->mBackFunctions, v8, v5 + 40, v9);

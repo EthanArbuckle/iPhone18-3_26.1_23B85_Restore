@@ -1,37 +1,37 @@
 @interface EMFQueryResult
-+ (__EmojiTokenWrapper)_emojiTokenForDocumentID:(id)a3 usingLocaleData:(__EmojiLocaleDataWrapper *)a4;
-+ (id)_emojiStringForDocumentID:(id)a3 usingLocaleData:(__EmojiLocaleDataWrapper *)a4;
++ (__EmojiTokenWrapper)_emojiTokenForDocumentID:(id)d usingLocaleData:(__EmojiLocaleDataWrapper *)data;
++ (id)_emojiStringForDocumentID:(id)d usingLocaleData:(__EmojiLocaleDataWrapper *)data;
 - (BOOL)_matchingDocumentWeightsContainsOnlyBlackLivesMatterResults;
-- (EMFQueryResult)initWithQuery:(id)a3 matchingDocumentWeights:(id)a4 resultOverride:(id)a5;
+- (EMFQueryResult)initWithQuery:(id)query matchingDocumentWeights:(id)weights resultOverride:(id)override;
 - (NSArray)documentMatches;
-- (id)_handleOverrideResultInterpolationForStandardResults:(id)a3;
-- (id)_interpolateOverriddenResultsByAppending:(id)a3;
-- (id)_interpolateOverriddenResultsByAppendingAndMoving:(id)a3;
-- (id)_interpolateOverriddenResultsByFiltering:(id)a3;
-- (id)_interpolateOverriddenResultsByPrepending:(id)a3;
+- (id)_handleOverrideResultInterpolationForStandardResults:(id)results;
+- (id)_interpolateOverriddenResultsByAppending:(id)appending;
+- (id)_interpolateOverriddenResultsByAppendingAndMoving:(id)moving;
+- (id)_interpolateOverriddenResultsByFiltering:(id)filtering;
+- (id)_interpolateOverriddenResultsByPrepending:(id)prepending;
 - (id)description;
-- (id)emojiMatchesAndDocumentWeightsUsingEmojiLocaleData:(__EmojiLocaleDataWrapper *)a3;
-- (id)emojiMatchesForOverriddenResultsUsingEmojiLocaleData:(__EmojiLocaleDataWrapper *)a3;
-- (id)emojiStringMatchesUsingEmojiLocaleData:(__EmojiLocaleDataWrapper *)a3;
+- (id)emojiMatchesAndDocumentWeightsUsingEmojiLocaleData:(__EmojiLocaleDataWrapper *)data;
+- (id)emojiMatchesForOverriddenResultsUsingEmojiLocaleData:(__EmojiLocaleDataWrapper *)data;
+- (id)emojiStringMatchesUsingEmojiLocaleData:(__EmojiLocaleDataWrapper *)data;
 @end
 
 @implementation EMFQueryResult
 
-- (EMFQueryResult)initWithQuery:(id)a3 matchingDocumentWeights:(id)a4 resultOverride:(id)a5
+- (EMFQueryResult)initWithQuery:(id)query matchingDocumentWeights:(id)weights resultOverride:(id)override
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  queryCopy = query;
+  weightsCopy = weights;
+  overrideCopy = override;
   v12 = [(EMFQueryResult *)self init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_query, a3);
-    v14 = [v10 copy];
+    objc_storeStrong(&v12->_query, query);
+    v14 = [weightsCopy copy];
     matchingDocumentWeights = v13->_matchingDocumentWeights;
     v13->_matchingDocumentWeights = v14;
 
-    objc_storeStrong(&v13->_resultOverride, a5);
+    objc_storeStrong(&v13->_resultOverride, override);
   }
 
   return v13;
@@ -86,8 +86,8 @@
       }
 
       v13 = [v6 copy];
-      v14 = [(EMFQueryResult *)self resultOverride];
-      if (v14)
+      resultOverride = [(EMFQueryResult *)self resultOverride];
+      if (resultOverride)
       {
         v15 = [(EMFQueryResult *)self _handleOverrideResultInterpolationForStandardResults:v13];
       }
@@ -114,15 +114,15 @@
   return v5;
 }
 
-- (id)emojiStringMatchesUsingEmojiLocaleData:(__EmojiLocaleDataWrapper *)a3
+- (id)emojiStringMatchesUsingEmojiLocaleData:(__EmojiLocaleDataWrapper *)data
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (data)
   {
     sortedResultSet = self->_sortedResultSet;
     if (sortedResultSet)
     {
-      v5 = [(NSOrderedSet *)sortedResultSet array];
+      array = [(NSOrderedSet *)sortedResultSet array];
     }
 
     else
@@ -132,8 +132,8 @@
       v18 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v8 = [(EMFQueryResult *)self documentMatches];
-      v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      documentMatches = [(EMFQueryResult *)self documentMatches];
+      v9 = [documentMatches countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v9)
       {
         v10 = v9;
@@ -144,24 +144,24 @@
           {
             if (*v18 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(documentMatches);
             }
 
-            v13 = [objc_opt_class() _emojiStringForDocumentID:*(*(&v17 + 1) + 8 * i) usingLocaleData:a3];
+            v13 = [objc_opt_class() _emojiStringForDocumentID:*(*(&v17 + 1) + 8 * i) usingLocaleData:data];
             if (v13)
             {
               [v7 addObject:v13];
             }
           }
 
-          v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+          v10 = [documentMatches countByEnumeratingWithState:&v17 objects:v21 count:16];
         }
 
         while (v10);
       }
 
-      v5 = [EMFQueryResultSorter sortResults:v7 withLocaleData:a3 sortType:1];
-      v14 = [objc_alloc(MEMORY[0x1E695DFB8]) initWithArray:v5];
+      array = [EMFQueryResultSorter sortResults:v7 withLocaleData:data sortType:1];
+      v14 = [objc_alloc(MEMORY[0x1E695DFB8]) initWithArray:array];
       v15 = self->_sortedResultSet;
       self->_sortedResultSet = v14;
     }
@@ -169,13 +169,13 @@
 
   else
   {
-    v5 = MEMORY[0x1E695E0F0];
+    array = MEMORY[0x1E695E0F0];
   }
 
-  return v5;
+  return array;
 }
 
-- (id)emojiMatchesAndDocumentWeightsUsingEmojiLocaleData:(__EmojiLocaleDataWrapper *)a3
+- (id)emojiMatchesAndDocumentWeightsUsingEmojiLocaleData:(__EmojiLocaleDataWrapper *)data
 {
   v26 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -203,7 +203,7 @@
         }
 
         v13 = *(*(&v20 + 1) + 8 * v11);
-        v8 = [objc_opt_class() _emojiStringForDocumentID:v13 usingLocaleData:a3];
+        v8 = [objc_opt_class() _emojiStringForDocumentID:v13 usingLocaleData:data];
 
         if (v8)
         {
@@ -244,7 +244,7 @@
   return v17;
 }
 
-- (id)emojiMatchesForOverriddenResultsUsingEmojiLocaleData:(__EmojiLocaleDataWrapper *)a3
+- (id)emojiMatchesForOverriddenResultsUsingEmojiLocaleData:(__EmojiLocaleDataWrapper *)data
 {
   v19 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -252,8 +252,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(EMFQueryResultOverride *)self->_resultOverride results];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  results = [(EMFQueryResultOverride *)self->_resultOverride results];
+  v7 = [results countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -264,17 +264,17 @@
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(results);
         }
 
-        v11 = [objc_opt_class() _emojiStringForDocumentID:*(*(&v14 + 1) + 8 * i) usingLocaleData:a3];
+        v11 = [objc_opt_class() _emojiStringForDocumentID:*(*(&v14 + 1) + 8 * i) usingLocaleData:data];
         if (v11)
         {
           [v5 addObject:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [results countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -287,21 +287,21 @@
 
 - (id)description
 {
-  v3 = [(EMFQueryResult *)self documentMatches];
-  v4 = [(EMFQuery *)self->_query tokens];
-  v5 = [v4 componentsJoinedByString:@" "];
+  documentMatches = [(EMFQueryResult *)self documentMatches];
+  tokens = [(EMFQuery *)self->_query tokens];
+  v5 = [tokens componentsJoinedByString:@" "];
 
   v6 = MEMORY[0x1E696AEC0];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  v9 = [v6 stringWithFormat:@"<%@: query tokens: '%@', matches: %lu>", v8, v5, objc_msgSend(v3, "count")];
+  v9 = [v6 stringWithFormat:@"<%@: query tokens: '%@', matches: %lu>", v8, v5, objc_msgSend(documentMatches, "count")];
 
   return v9;
 }
 
-+ (__EmojiTokenWrapper)_emojiTokenForDocumentID:(id)a3 usingLocaleData:(__EmojiLocaleDataWrapper *)a4
++ (__EmojiTokenWrapper)_emojiTokenForDocumentID:(id)d usingLocaleData:(__EmojiLocaleDataWrapper *)data
 {
-  if ([a3 unsignedIntValue] != 1263 || (EMFIsDeviceInGreaterChina() & 1) == 0)
+  if ([d unsignedIntValue] != 1263 || (EMFIsDeviceInGreaterChina() & 1) == 0)
   {
     result = CEMEmojiTokenCreateWithIndex();
     if (result)
@@ -315,10 +315,10 @@
   return 0;
 }
 
-+ (id)_emojiStringForDocumentID:(id)a3 usingLocaleData:(__EmojiLocaleDataWrapper *)a4
++ (id)_emojiStringForDocumentID:(id)d usingLocaleData:(__EmojiLocaleDataWrapper *)data
 {
-  v6 = a3;
-  v7 = [a1 _emojiTokenForDocumentID:v6 usingLocaleData:a4];
+  dCopy = d;
+  v7 = [self _emojiTokenForDocumentID:dCopy usingLocaleData:data];
   String = CEMEmojiTokenGetString();
   if (String)
   {
@@ -328,7 +328,7 @@
 
   else
   {
-    [v6 unsignedIntValue];
+    [dCopy unsignedIntValue];
     log_emoji_string_lookup_error();
     if (v7)
     {
@@ -343,8 +343,8 @@
 
 - (BOOL)_matchingDocumentWeightsContainsOnlyBlackLivesMatterResults
 {
-  v3 = [(NSDictionary *)self->_matchingDocumentWeights allKeys];
-  if ([v3 count] == 3)
+  allKeys = [(NSDictionary *)self->_matchingDocumentWeights allKeys];
+  if ([allKeys count] == 3)
   {
     v4 = [(NSDictionary *)self->_matchingDocumentWeights objectForKeyedSubscript:&unk_1F24DF2E0];
     if (v4)
@@ -376,105 +376,105 @@
   return v7;
 }
 
-- (id)_handleOverrideResultInterpolationForStandardResults:(id)a3
+- (id)_handleOverrideResultInterpolationForStandardResults:(id)results
 {
-  v4 = a3;
-  v5 = [(EMFQueryResultOverride *)self->_resultOverride overrideBehavior];
-  if (v5 <= 1)
+  resultsCopy = results;
+  overrideBehavior = [(EMFQueryResultOverride *)self->_resultOverride overrideBehavior];
+  if (overrideBehavior <= 1)
   {
-    if (!v5)
+    if (!overrideBehavior)
     {
-      v6 = [(EMFQueryResult *)self _interpolateOverriddenResultsByOverwriting];
+      _interpolateOverriddenResultsByOverwriting = [(EMFQueryResult *)self _interpolateOverriddenResultsByOverwriting];
       goto LABEL_13;
     }
 
-    if (v5 == 1)
+    if (overrideBehavior == 1)
     {
-      v6 = [(EMFQueryResult *)self _interpolateOverriddenResultsByPrepending:v4];
+      _interpolateOverriddenResultsByOverwriting = [(EMFQueryResult *)self _interpolateOverriddenResultsByPrepending:resultsCopy];
       goto LABEL_13;
     }
   }
 
   else
   {
-    switch(v5)
+    switch(overrideBehavior)
     {
       case 2:
-        v6 = [(EMFQueryResult *)self _interpolateOverriddenResultsByAppending:v4];
+        _interpolateOverriddenResultsByOverwriting = [(EMFQueryResult *)self _interpolateOverriddenResultsByAppending:resultsCopy];
         goto LABEL_13;
       case 3:
-        v6 = [(EMFQueryResult *)self _interpolateOverriddenResultsByAppendingAndMoving:v4];
+        _interpolateOverriddenResultsByOverwriting = [(EMFQueryResult *)self _interpolateOverriddenResultsByAppendingAndMoving:resultsCopy];
         goto LABEL_13;
       case 4:
-        v6 = [(EMFQueryResult *)self _interpolateOverriddenResultsByFiltering:v4];
+        _interpolateOverriddenResultsByOverwriting = [(EMFQueryResult *)self _interpolateOverriddenResultsByFiltering:resultsCopy];
         goto LABEL_13;
     }
   }
 
-  v6 = v4;
+  _interpolateOverriddenResultsByOverwriting = resultsCopy;
 LABEL_13:
-  v7 = v6;
+  v7 = _interpolateOverriddenResultsByOverwriting;
 
   return v7;
 }
 
-- (id)_interpolateOverriddenResultsByPrepending:(id)a3
+- (id)_interpolateOverriddenResultsByPrepending:(id)prepending
 {
   v4 = MEMORY[0x1E695DFA0];
-  v5 = a3;
+  prependingCopy = prepending;
   v6 = [v4 alloc];
-  v7 = [(EMFQueryResultOverride *)self->_resultOverride results];
-  v8 = [v6 initWithArray:v7];
+  results = [(EMFQueryResultOverride *)self->_resultOverride results];
+  v8 = [v6 initWithArray:results];
 
-  [v8 addObjectsFromArray:v5];
-  v9 = [v8 array];
+  [v8 addObjectsFromArray:prependingCopy];
+  array = [v8 array];
 
-  return v9;
+  return array;
 }
 
-- (id)_interpolateOverriddenResultsByAppending:(id)a3
+- (id)_interpolateOverriddenResultsByAppending:(id)appending
 {
   v4 = MEMORY[0x1E695DFA0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithArray:v5];
+  appendingCopy = appending;
+  v6 = [[v4 alloc] initWithArray:appendingCopy];
 
-  v7 = [(EMFQueryResultOverride *)self->_resultOverride results];
-  [v6 addObjectsFromArray:v7];
+  results = [(EMFQueryResultOverride *)self->_resultOverride results];
+  [v6 addObjectsFromArray:results];
 
-  v8 = [v6 array];
+  array = [v6 array];
 
-  return v8;
+  return array;
 }
 
-- (id)_interpolateOverriddenResultsByAppendingAndMoving:(id)a3
+- (id)_interpolateOverriddenResultsByAppendingAndMoving:(id)moving
 {
   v4 = MEMORY[0x1E695DFA0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithArray:v5];
+  movingCopy = moving;
+  v6 = [[v4 alloc] initWithArray:movingCopy];
 
-  v7 = [(EMFQueryResultOverride *)self->_resultOverride results];
-  [v6 removeObjectsInArray:v7];
+  results = [(EMFQueryResultOverride *)self->_resultOverride results];
+  [v6 removeObjectsInArray:results];
 
-  v8 = [(EMFQueryResultOverride *)self->_resultOverride results];
-  [v6 addObjectsFromArray:v8];
+  results2 = [(EMFQueryResultOverride *)self->_resultOverride results];
+  [v6 addObjectsFromArray:results2];
 
-  v9 = [v6 array];
+  array = [v6 array];
 
-  return v9;
+  return array;
 }
 
-- (id)_interpolateOverriddenResultsByFiltering:(id)a3
+- (id)_interpolateOverriddenResultsByFiltering:(id)filtering
 {
   v4 = MEMORY[0x1E695DFA0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithArray:v5];
+  filteringCopy = filtering;
+  v6 = [[v4 alloc] initWithArray:filteringCopy];
 
-  v7 = [(EMFQueryResultOverride *)self->_resultOverride results];
-  [v6 removeObjectsInArray:v7];
+  results = [(EMFQueryResultOverride *)self->_resultOverride results];
+  [v6 removeObjectsInArray:results];
 
-  v8 = [v6 array];
+  array = [v6 array];
 
-  return v8;
+  return array;
 }
 
 @end

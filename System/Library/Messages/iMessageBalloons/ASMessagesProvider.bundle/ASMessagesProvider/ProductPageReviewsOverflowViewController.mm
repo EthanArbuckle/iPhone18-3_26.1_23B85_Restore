@@ -1,14 +1,14 @@
 @interface ProductPageReviewsOverflowViewController
-- (_TtC18ASMessagesProvider40ProductPageReviewsOverflowViewController)initWithCoder:(id)a3;
-- (_TtC18ASMessagesProvider40ProductPageReviewsOverflowViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC18ASMessagesProvider40ProductPageReviewsOverflowViewController)initWithCoder:(id)coder;
+- (_TtC18ASMessagesProvider40ProductPageReviewsOverflowViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation ProductPageReviewsOverflowViewController
 
-- (_TtC18ASMessagesProvider40ProductPageReviewsOverflowViewController)initWithCoder:(id)a3
+- (_TtC18ASMessagesProvider40ProductPageReviewsOverflowViewController)initWithCoder:(id)coder
 {
   result = sub_76A840();
   __break(1u);
@@ -17,27 +17,27 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_654E00();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_655254();
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(ProductPageReviewsOverflowViewController *)&v5 viewWillDisappear:v3];
+  [(ProductPageReviewsOverflowViewController *)&v5 viewWillDisappear:disappearCopy];
   [*&v4[OBJC_IVAR____TtC18ASMessagesProvider40ProductPageReviewsOverflowViewController_scrollView] setContentOffset:0 animated:{0.0, 0.0, v5.receiver, v5.super_class}];
 }
 
-- (_TtC18ASMessagesProvider40ProductPageReviewsOverflowViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC18ASMessagesProvider40ProductPageReviewsOverflowViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

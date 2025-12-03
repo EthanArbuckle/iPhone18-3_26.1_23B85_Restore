@@ -1,27 +1,27 @@
 @interface GTDeviceCapabilitiesXPCProxy
-- (BOOL)respondsToSelector:(SEL)a3;
-- (GTDeviceCapabilitiesXPCProxy)initWithConnection:(id)a3 remoteProperties:(id)a4;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (GTDeviceCapabilitiesXPCProxy)initWithConnection:(id)connection remoteProperties:(id)properties;
 - (id)daemonDeviceCapabilities;
-- (id)deviceCompatibilityCapabilitiesWithHeapDescriptors:(id)a3;
+- (id)deviceCompatibilityCapabilitiesWithHeapDescriptors:(id)descriptors;
 - (id)gpuToolsVersionQuery;
-- (id)inferiorEnvironment:(id)a3;
+- (id)inferiorEnvironment:(id)environment;
 @end
 
 @implementation GTDeviceCapabilitiesXPCProxy
 
-- (GTDeviceCapabilitiesXPCProxy)initWithConnection:(id)a3 remoteProperties:(id)a4
+- (GTDeviceCapabilitiesXPCProxy)initWithConnection:(id)connection remoteProperties:(id)properties
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  propertiesCopy = properties;
   v23.receiver = self;
   v23.super_class = GTDeviceCapabilitiesXPCProxy;
   v8 = [(GTDeviceCapabilitiesXPCProxy *)&v23 init];
   if (v8)
   {
     v9 = &unk_2860ECC70;
-    v10 = [v7 protocolName];
+    protocolName = [propertiesCopy protocolName];
     v11 = NSStringFromProtocol(v9);
-    v12 = [v10 isEqualToString:v11];
+    v12 = [protocolName isEqualToString:v11];
 
     if (!v12)
     {
@@ -31,14 +31,14 @@
     }
 
     v13 = [GTServiceConnection alloc];
-    v14 = [v7 deviceUDID];
-    v15 = -[GTServiceConnection initWithConnection:device:port:](v13, "initWithConnection:device:port:", v6, v14, [v7 servicePort]);
+    deviceUDID = [propertiesCopy deviceUDID];
+    v15 = -[GTServiceConnection initWithConnection:device:port:](v13, "initWithConnection:device:port:", connectionCopy, deviceUDID, [propertiesCopy servicePort]);
     connection = v8->_connection;
     v8->_connection = v15;
 
     v17 = [GTServiceProperties protocolMethods:v9];
-    v18 = [v7 protocolMethods];
-    v19 = newSetWithArrayMinusArray(v17, v18);
+    protocolMethods = [propertiesCopy protocolMethods];
+    v19 = newSetWithArrayMinusArray(v17, protocolMethods);
     ignoreMethods = v8->_ignoreMethods;
     v8->_ignoreMethods = v19;
   }
@@ -49,10 +49,10 @@ LABEL_6:
   return v21;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   ignoreMethods = self->_ignoreMethods;
-  v6 = NSStringFromSelector(a3);
+  v6 = NSStringFromSelector(selector);
   if ([(NSSet *)ignoreMethods containsObject:v6])
   {
     v7 = 0;
@@ -62,7 +62,7 @@ LABEL_6:
   {
     v9.receiver = self;
     v9.super_class = GTDeviceCapabilitiesXPCProxy;
-    v7 = [(GTDeviceCapabilitiesXPCProxy *)&v9 respondsToSelector:a3];
+    v7 = [(GTDeviceCapabilitiesXPCProxy *)&v9 respondsToSelector:selector];
   }
 
   return v7;
@@ -93,13 +93,13 @@ LABEL_6:
   return nsobject_classes;
 }
 
-- (id)deviceCompatibilityCapabilitiesWithHeapDescriptors:(id)a3
+- (id)deviceCompatibilityCapabilitiesWithHeapDescriptors:(id)descriptors
 {
-  v5 = a3;
+  descriptorsCopy = descriptors;
   empty = xpc_dictionary_create_empty();
   Name = sel_getName(a2);
   xpc_dictionary_set_string(empty, "_cmd", Name);
-  xpc_dictionary_set_nsobject(empty, "heapDescriptors", v5);
+  xpc_dictionary_set_nsobject(empty, "heapDescriptors", descriptorsCopy);
 
   v8 = [(GTServiceConnection *)self->_connection sendMessageWithReplySync:empty error:0];
   if (v8)
@@ -141,13 +141,13 @@ LABEL_6:
   return nsdictionary_any;
 }
 
-- (id)inferiorEnvironment:(id)a3
+- (id)inferiorEnvironment:(id)environment
 {
-  v5 = a3;
+  environmentCopy = environment;
   empty = xpc_dictionary_create_empty();
   Name = sel_getName(a2);
   xpc_dictionary_set_string(empty, "_cmd", Name);
-  xpc_dictionary_set_nsobject(empty, "launchDictionary", v5);
+  xpc_dictionary_set_nsobject(empty, "launchDictionary", environmentCopy);
 
   v8 = [(GTServiceConnection *)self->_connection sendMessageWithReplySync:empty error:0];
   if (v8)

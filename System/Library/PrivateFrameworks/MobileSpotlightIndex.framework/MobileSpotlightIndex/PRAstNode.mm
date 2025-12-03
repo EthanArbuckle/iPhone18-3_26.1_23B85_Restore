@@ -1,5 +1,5 @@
 @interface PRAstNode
-- (PRAstNode)initWithSourceToken:(id)a3 isLastToken:(BOOL)a4;
+- (PRAstNode)initWithSourceToken:(id)token isLastToken:(BOOL)lastToken;
 - (id)description;
 - (void)dealloc;
 @end
@@ -20,15 +20,15 @@
   [(PRAstNode *)&v3 dealloc];
 }
 
-- (PRAstNode)initWithSourceToken:(id)a3 isLastToken:(BOOL)a4
+- (PRAstNode)initWithSourceToken:(id)token isLastToken:(BOOL)lastToken
 {
   v8.receiver = self;
   v8.super_class = PRAstNode;
   v6 = [(PRAstNode *)&v8 init];
   if (v6)
   {
-    v6->_sourceToken = a3;
-    v6->_isLastToken = a4;
+    v6->_sourceToken = token;
+    v6->_isLastToken = lastToken;
   }
 
   return v6;

@@ -1,12 +1,12 @@
 @interface SFGradientColor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFGradientColor)initWithCoder:(id)a3;
-- (SFGradientColor)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFGradientColor)initWithCoder:(id)coder;
+- (SFGradientColor)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFGradientColor
@@ -16,33 +16,33 @@
   v8.receiver = self;
   v8.super_class = SFGradientColor;
   v3 = [(SFColor *)&v8 hash];
-  v4 = [(SFGradientColor *)self colors];
-  v5 = [v4 hash];
+  colors = [(SFGradientColor *)self colors];
+  v5 = [colors hash];
   v6 = v5 ^ [(SFGradientColor *)self gradientType];
 
   return v6 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(SFGradientColor *)v6 isMemberOfClass:objc_opt_class()])
+    if ([(SFGradientColor *)equalCopy isMemberOfClass:objc_opt_class()])
     {
       v14.receiver = self;
       v14.super_class = SFGradientColor;
-      if ([(SFColor *)&v14 isEqual:v6])
+      if ([(SFColor *)&v14 isEqual:equalCopy])
       {
-        v7 = v6;
-        v8 = [(SFGradientColor *)self colors];
-        v9 = [(SFGradientColor *)v7 colors];
-        if ((v8 != 0) == (v9 == 0))
+        v7 = equalCopy;
+        colors = [(SFGradientColor *)self colors];
+        colors2 = [(SFGradientColor *)v7 colors];
+        if ((colors != 0) == (colors2 == 0))
         {
           v11 = 0;
 LABEL_14:
@@ -50,12 +50,12 @@ LABEL_14:
           goto LABEL_15;
         }
 
-        v10 = [(SFGradientColor *)self colors];
-        if (!v10 || (-[SFGradientColor colors](self, "colors"), v3 = objc_claimAutoreleasedReturnValue(), -[SFGradientColor colors](v7, "colors"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqual:v4]))
+        colors3 = [(SFGradientColor *)self colors];
+        if (!colors3 || (-[SFGradientColor colors](self, "colors"), v3 = objc_claimAutoreleasedReturnValue(), -[SFGradientColor colors](v7, "colors"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqual:v4]))
         {
-          v12 = [(SFGradientColor *)self gradientType];
-          v11 = v12 == [(SFGradientColor *)v7 gradientType];
-          if (!v10)
+          gradientType = [(SFGradientColor *)self gradientType];
+          v11 = gradientType == [(SFGradientColor *)v7 gradientType];
+          if (!colors3)
           {
 LABEL_13:
 
@@ -80,13 +80,13 @@ LABEL_15:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = SFGradientColor;
-  v4 = [(SFColor *)&v8 copyWithZone:a3];
-  v5 = [(SFGradientColor *)self colors];
-  v6 = [v5 copy];
+  v4 = [(SFColor *)&v8 copyWithZone:zone];
+  colors = [(SFGradientColor *)self colors];
+  v6 = [colors copy];
   [v4 setColors:v6];
 
   [v4 setGradientType:{-[SFGradientColor gradientType](self, "gradientType")}];
@@ -96,39 +96,39 @@ LABEL_15:
 - (NSData)jsonData
 {
   v2 = [[_SFPBGradientColor alloc] initWithFacade:self];
-  v3 = [(_SFPBGradientColor *)v2 jsonData];
+  jsonData = [(_SFPBGradientColor *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBGradientColor alloc] initWithFacade:self];
-  v3 = [(_SFPBGradientColor *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBGradientColor *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = SFGradientColor;
-  [(SFColor *)&v3 encodeWithCoder:a3];
+  [(SFColor *)&v3 encodeWithCoder:coder];
 }
 
-- (SFGradientColor)initWithCoder:(id)a3
+- (SFGradientColor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SFGradientColor *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v7 = [[_SFPBColor alloc] initWithData:v6];
   v8 = [[SFColor alloc] initWithProtobuf:v7];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(SFColor *)v8 colors];
-    [(SFGradientColor *)v5 setColors:v9];
+    colors = [(SFColor *)v8 colors];
+    [(SFGradientColor *)v5 setColors:colors];
 
     [(SFGradientColor *)v5 setGradientType:[(SFColor *)v8 gradientType]];
     [(SFColor *)v8 redComponent];
@@ -140,24 +140,24 @@ LABEL_15:
     [(SFColor *)v8 alphaComponent];
     [(SFColor *)v5 setAlphaComponent:?];
     [(SFColor *)v5 setColorTintStyle:[(SFColor *)v8 colorTintStyle]];
-    v10 = [(SFColor *)v8 darkModeColor];
-    [(SFColor *)v5 setDarkModeColor:v10];
+    darkModeColor = [(SFColor *)v8 darkModeColor];
+    [(SFColor *)v5 setDarkModeColor:darkModeColor];
   }
 
   return v5;
 }
 
-- (SFGradientColor)initWithProtobuf:(id)a3
+- (SFGradientColor)initWithProtobuf:(id)protobuf
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  protobufCopy = protobuf;
   v21.receiver = self;
   v21.super_class = SFGradientColor;
   v5 = [(SFGradientColor *)&v21 init];
   if (v5)
   {
-    v6 = [v4 colors];
-    if (v6)
+    colors = [protobufCopy colors];
+    if (colors)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -171,8 +171,8 @@ LABEL_15:
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = [v4 colors];
-    v9 = [v8 countByEnumeratingWithState:&v17 objects:v22 count:16];
+    colors2 = [protobufCopy colors];
+    v9 = [colors2 countByEnumeratingWithState:&v17 objects:v22 count:16];
     if (v9)
     {
       v10 = v9;
@@ -183,7 +183,7 @@ LABEL_15:
         {
           if (*v18 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(colors2);
           }
 
           v13 = [[SFColor alloc] initWithProtobuf:*(*(&v17 + 1) + 8 * i)];
@@ -193,16 +193,16 @@ LABEL_15:
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v17 objects:v22 count:16];
+        v10 = [colors2 countByEnumeratingWithState:&v17 objects:v22 count:16];
       }
 
       while (v10);
     }
 
     [(SFGradientColor *)v5 setColors:v7];
-    if ([v4 gradientType])
+    if ([protobufCopy gradientType])
     {
-      -[SFGradientColor setGradientType:](v5, "setGradientType:", [v4 gradientType]);
+      -[SFGradientColor setGradientType:](v5, "setGradientType:", [protobufCopy gradientType]);
     }
 
     v14 = v5;

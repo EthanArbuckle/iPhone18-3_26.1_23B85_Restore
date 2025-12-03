@@ -6,10 +6,10 @@
 
 - (uint64_t)viewingLocation
 {
-  v1 = [a1 parentViewController];
-  v2 = [v1 viewingLocation];
+  parentViewController = [self parentViewController];
+  viewingLocation = [parentViewController viewingLocation];
 
-  return v2;
+  return viewingLocation;
 }
 
 @end

@@ -1,33 +1,33 @@
 @interface CMMetMinute
-- (CMMetMinute)initWithCoder:(id)a3;
-- (CMMetMinute)initWithSample:(CLMetMinute)a3;
-- (CMMetMinute)initWithStartDate:(id)a3 averageIntensity:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CMMetMinute)initWithCoder:(id)coder;
+- (CMMetMinute)initWithSample:(CLMetMinute)sample;
+- (CMMetMinute)initWithStartDate:(id)date averageIntensity:(id)intensity;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMMetMinute
 
-- (CMMetMinute)initWithStartDate:(id)a3 averageIntensity:(id)a4
+- (CMMetMinute)initWithStartDate:(id)date averageIntensity:(id)intensity
 {
   v12.receiver = self;
   v12.super_class = CMMetMinute;
   v8 = [(CMMetMinute *)&v12 init];
   if (v8)
   {
-    v8->fStartDate = objc_msgSend_copy(a3, v6, v7);
-    v8->fAverageIntensity = objc_msgSend_copy(a4, v9, v10);
+    v8->fStartDate = objc_msgSend_copy(date, v6, v7);
+    v8->fAverageIntensity = objc_msgSend_copy(intensity, v9, v10);
   }
 
   return v8;
 }
 
-- (CMMetMinute)initWithSample:(CLMetMinute)a3
+- (CMMetMinute)initWithSample:(CLMetMinute)sample
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = sample.var1;
+  var0 = sample.var0;
   v13.receiver = self;
   v13.super_class = CMMetMinute;
   v5 = [(CMMetMinute *)&v13 init];
@@ -49,7 +49,7 @@
   [(CMMetMinute *)&v3 dealloc];
 }
 
-- (CMMetMinute)initWithCoder:(id)a3
+- (CMMetMinute)initWithCoder:(id)coder
 {
   v16.receiver = self;
   v16.super_class = CMMetMinute;
@@ -57,32 +57,32 @@
   if (v4)
   {
     v5 = objc_opt_class();
-    v7 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v6, v5, @"kMetMinuteDataCodingKeyStartDate");
+    v7 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v6, v5, @"kMetMinuteDataCodingKeyStartDate");
     v4->fStartDate = objc_msgSend_copy(v7, v8, v9);
     v10 = objc_opt_class();
-    v12 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v11, v10, @"kMetMinuteDataCodingKeyAverageIntensity");
+    v12 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v11, v10, @"kMetMinuteDataCodingKeyAverageIntensity");
     v4->fAverageIntensity = objc_msgSend_copy(v12, v13, v14);
   }
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   fStartDate = self->fStartDate;
   fAverageIntensity = self->fAverageIntensity;
 
   return MEMORY[0x1EEE66B58](v7, sel_initWithStartDate_averageIntensity_, fStartDate);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  objc_msgSend_encodeObject_forKey_(a3, a2, self->fStartDate, @"kMetMinuteDataCodingKeyStartDate");
+  objc_msgSend_encodeObject_forKey_(coder, a2, self->fStartDate, @"kMetMinuteDataCodingKeyStartDate");
   fAverageIntensity = self->fAverageIntensity;
 
-  objc_msgSend_encodeObject_forKey_(a3, v5, fAverageIntensity, @"kMetMinuteDataCodingKeyAverageIntensity");
+  objc_msgSend_encodeObject_forKey_(coder, v5, fAverageIntensity, @"kMetMinuteDataCodingKeyAverageIntensity");
 }
 
 - (id)description

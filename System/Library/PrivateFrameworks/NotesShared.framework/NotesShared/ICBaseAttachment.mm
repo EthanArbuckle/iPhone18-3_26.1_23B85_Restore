@@ -1,17 +1,17 @@
 @interface ICBaseAttachment
-+ (id)attachmentWithIdentifier:(id)a3 includeDeleted:(BOOL)a4 context:(id)a5;
-+ (id)newAttachmentWithIdentifier:(id)a3 note:(id)a4;
-+ (id)predicateForVisibleAttachmentsIncludingTrash:(BOOL)a3 inContext:(id)a4;
++ (id)attachmentWithIdentifier:(id)identifier includeDeleted:(BOOL)deleted context:(id)context;
++ (id)newAttachmentWithIdentifier:(id)identifier note:(id)note;
++ (id)predicateForVisibleAttachmentsIncludingTrash:(BOOL)trash inContext:(id)context;
 + (id)predicateForVisibleObjects;
-+ (void)deleteAttachment:(id)a3;
-+ (void)undeleteAttachment:(id)a3;
++ (void)deleteAttachment:(id)attachment;
++ (void)undeleteAttachment:(id)attachment;
 - (BOOL)isUsed;
 - (BOOL)isVisible;
 - (ICBaseAttachment)rootParentAttachment;
 - (_NSRange)rangeInNote;
 - (id)cloudAccount;
 - (id)parentCloudObjectForMinimumSupportedVersionPropagation;
-- (void)setParentAttachment:(id)a3;
+- (void)setParentAttachment:(id)attachment;
 @end
 
 @implementation ICBaseAttachment
@@ -20,7 +20,7 @@
 {
   v9[2] = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277CCA920];
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS___ICBaseAttachment;
   v3 = objc_msgSendSuper2(&v8, sel_predicateForVisibleObjects);
   v9[0] = v3;
@@ -34,31 +34,31 @@
 
 - (id)parentCloudObjectForMinimumSupportedVersionPropagation
 {
-  v3 = [(ICBaseAttachment *)self parentAttachment];
-  v4 = v3;
-  if (v3)
+  parentAttachment = [(ICBaseAttachment *)self parentAttachment];
+  v4 = parentAttachment;
+  if (parentAttachment)
   {
-    v5 = v3;
+    note = parentAttachment;
   }
 
   else
   {
-    v5 = [(ICBaseAttachment *)self note];
+    note = [(ICBaseAttachment *)self note];
   }
 
-  v6 = v5;
+  v6 = note;
 
   return v6;
 }
 
 - (_NSRange)rangeInNote
 {
-  v3 = [(ICBaseAttachment *)self note];
+  note = [(ICBaseAttachment *)self note];
 
-  if (v3)
+  if (note)
   {
-    v4 = [(ICBaseAttachment *)self note];
-    v5 = [v4 rangeForAttachment:self];
+    note2 = [(ICBaseAttachment *)self note];
+    v5 = [note2 rangeForAttachment:self];
     v7 = v6;
 
     v8 = v5;
@@ -83,19 +83,19 @@
     return 0;
   }
 
-  v4 = [(ICBaseAttachment *)self parentAttachment];
+  parentAttachment = [(ICBaseAttachment *)self parentAttachment];
 
-  if (!v4)
+  if (!parentAttachment)
   {
     return [(ICBaseAttachment *)self rangeInNote]!= 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v5 = [(ICBaseAttachment *)self parentAttachment];
-  if ([v5 isUsed])
+  parentAttachment2 = [(ICBaseAttachment *)self parentAttachment];
+  if ([parentAttachment2 isUsed])
   {
-    v6 = [(ICBaseAttachment *)self parentAttachment];
-    v7 = [v6 attachmentModel];
-    v3 = [v7 usesChildAttachment:self];
+    parentAttachment3 = [(ICBaseAttachment *)self parentAttachment];
+    attachmentModel = [parentAttachment3 attachmentModel];
+    v3 = [attachmentModel usesChildAttachment:self];
   }
 
   else
@@ -106,106 +106,106 @@
   return v3;
 }
 
-+ (id)newAttachmentWithIdentifier:(id)a3 note:(id)a4
++ (id)newAttachmentWithIdentifier:(id)identifier note:(id)note
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 managedObjectContext];
-  v9 = [a1 newObjectWithIdentifier:v7 context:v8];
+  noteCopy = note;
+  identifierCopy = identifier;
+  managedObjectContext = [noteCopy managedObjectContext];
+  v9 = [self newObjectWithIdentifier:identifierCopy context:managedObjectContext];
 
-  v10 = [v6 account];
-  [v9 setAccount:v10];
+  account = [noteCopy account];
+  [v9 setAccount:account];
 
-  [v9 setNote:v6];
-  v11 = [v6 account];
+  [v9 setNote:noteCopy];
+  account2 = [noteCopy account];
 
-  v12 = [v11 persistentStore];
-  [v9 assignToPersistentStore:v12];
+  persistentStore = [account2 persistentStore];
+  [v9 assignToPersistentStore:persistentStore];
 
   return v9;
 }
 
-+ (void)deleteAttachment:(id)a3
++ (void)deleteAttachment:(id)attachment
 {
-  v5 = a3;
+  attachmentCopy = attachment;
   objc_opt_class();
   v3 = ICDynamicCast();
 
   if (v3)
   {
-    v4 = [v5 media];
-    [ICMedia deleteMedia:v4];
+    media = [attachmentCopy media];
+    [ICMedia deleteMedia:media];
   }
 
-  [v5 markForDeletion];
+  [attachmentCopy markForDeletion];
 }
 
-+ (void)undeleteAttachment:(id)a3
++ (void)undeleteAttachment:(id)attachment
 {
-  v5 = a3;
+  attachmentCopy = attachment;
   objc_opt_class();
   v3 = ICDynamicCast();
 
   if (v3)
   {
-    v4 = [v5 media];
-    [ICMedia undeleteMedia:v4];
+    media = [attachmentCopy media];
+    [ICMedia undeleteMedia:media];
   }
 
-  [v5 unmarkForDeletion];
+  [attachmentCopy unmarkForDeletion];
 }
 
 - (BOOL)isVisible
 {
-  v3 = [(ICBaseAttachment *)self note];
-  if ([v3 isVisible])
+  note = [(ICBaseAttachment *)self note];
+  if ([note isVisible])
   {
     v6.receiver = self;
     v6.super_class = ICBaseAttachment;
-    v4 = [(ICCloudSyncingObject *)&v6 isVisible];
+    isVisible = [(ICCloudSyncingObject *)&v6 isVisible];
   }
 
   else
   {
-    v4 = 0;
+    isVisible = 0;
   }
 
-  return v4;
+  return isVisible;
 }
 
-+ (id)attachmentWithIdentifier:(id)a3 includeDeleted:(BOOL)a4 context:(id)a5
++ (id)attachmentWithIdentifier:(id)identifier includeDeleted:(BOOL)deleted context:(id)context
 {
   v18[2] = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = [MEMORY[0x277CCAC30] predicateWithFormat:@"identifier == %@", a3];
-  v10 = v9;
-  v11 = v9;
-  if (!a4)
+  contextCopy = context;
+  identifier = [MEMORY[0x277CCAC30] predicateWithFormat:@"identifier == %@", identifier];
+  v10 = identifier;
+  v11 = identifier;
+  if (!deleted)
   {
     v12 = MEMORY[0x277CCA920];
-    v18[0] = v9;
-    v13 = [a1 predicateForVisibleAttachmentsInContext:v8];
+    v18[0] = identifier;
+    v13 = [self predicateForVisibleAttachmentsInContext:contextCopy];
     v18[1] = v13;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:2];
     v11 = [v12 andPredicateWithSubpredicates:v14];
   }
 
-  v15 = [a1 ic_objectsMatchingPredicate:v11 context:v8];
-  v16 = [v15 firstObject];
+  v15 = [self ic_objectsMatchingPredicate:v11 context:contextCopy];
+  firstObject = [v15 firstObject];
 
-  return v16;
+  return firstObject;
 }
 
-+ (id)predicateForVisibleAttachmentsIncludingTrash:(BOOL)a3 inContext:(id)a4
++ (id)predicateForVisibleAttachmentsIncludingTrash:(BOOL)trash inContext:(id)context
 {
   v17[2] = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277CBEB18];
-  v7 = a4;
+  contextCopy = context;
   v8 = objc_alloc_init(v6);
-  v9 = [a1 predicateForVisibleObjects];
-  [v8 addObject:v9];
+  predicateForVisibleObjects = [self predicateForVisibleObjects];
+  [v8 addObject:predicateForVisibleObjects];
 
-  if (!a3)
+  if (!trash)
   {
     v10 = [MEMORY[0x277CCAC30] predicateWithFormat:@"note.folder.folderType != %d", 1];
     [v8 addObject:v10];
@@ -214,7 +214,7 @@
   v11 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:v8];
   v12 = MEMORY[0x277CCA920];
   v17[0] = v11;
-  v13 = [ICUnsupportedObjectPredicateHelper predicateForSupportedAttachmentsInContext:v7];
+  v13 = [ICUnsupportedObjectPredicateHelper predicateForSupportedAttachmentsInContext:contextCopy];
 
   v17[1] = v13;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:2];
@@ -225,53 +225,53 @@
 
 - (id)cloudAccount
 {
-  v3 = [(ICBaseAttachment *)self account];
-  v4 = v3;
-  if (v3)
+  account = [(ICBaseAttachment *)self account];
+  v4 = account;
+  if (account)
   {
-    v5 = v3;
+    cloudAccount = account;
   }
 
   else
   {
-    v6 = [(ICBaseAttachment *)self note];
-    v5 = [v6 cloudAccount];
+    note = [(ICBaseAttachment *)self note];
+    cloudAccount = [note cloudAccount];
   }
 
-  return v5;
+  return cloudAccount;
 }
 
-- (void)setParentAttachment:(id)a3
+- (void)setParentAttachment:(id)attachment
 {
-  v5 = a3;
-  v4 = [(ICBaseAttachment *)self parentAttachment];
+  attachmentCopy = attachment;
+  parentAttachment = [(ICBaseAttachment *)self parentAttachment];
 
-  if (v4 != v5)
+  if (parentAttachment != attachmentCopy)
   {
     [(ICBaseAttachment *)self willChangeValueForKey:@"parentAttachment"];
     [(ICBaseAttachment *)self willChangeValueForKey:@"parentCloudObject"];
-    [(ICBaseAttachment *)self setPrimitiveValue:v5 forKey:@"parentAttachment"];
+    [(ICBaseAttachment *)self setPrimitiveValue:attachmentCopy forKey:@"parentAttachment"];
     [(ICBaseAttachment *)self didChangeValueForKey:@"parentAttachment"];
     [(ICBaseAttachment *)self didChangeValueForKey:@"parentCloudObject"];
-    [v5 resetToIntrinsicNotesVersionAndPropagateToChildObjects];
+    [attachmentCopy resetToIntrinsicNotesVersionAndPropagateToChildObjects];
   }
 }
 
 - (ICBaseAttachment)rootParentAttachment
 {
-  v3 = [(ICBaseAttachment *)self parentAttachment];
-  if (v3)
+  parentAttachment = [(ICBaseAttachment *)self parentAttachment];
+  if (parentAttachment)
   {
-    v4 = [(ICBaseAttachment *)self parentAttachment];
-    v5 = [v4 rootParentAttachment];
+    parentAttachment2 = [(ICBaseAttachment *)self parentAttachment];
+    selfCopy = [parentAttachment2 rootParentAttachment];
   }
 
   else
   {
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 @end

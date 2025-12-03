@@ -1,10 +1,10 @@
 @interface NLEmbedding
-+ (BOOL)_writeEmbeddingForDictionary:(id)a3 language:(id)a4 revision:(unint64_t)a5 toURL:(id)a6 orData:(id)a7 error:(id *)a8;
-+ (BOOL)assetsAvailableForEmbeddingType:(id)a3 language:(id)a4;
-+ (BOOL)writeEmbeddingMLModelForDictionary:(id)a3 language:(id)a4 revision:(unint64_t)a5 toURL:(id)a6 options:(id)a7 error:(id *)a8;
++ (BOOL)_writeEmbeddingForDictionary:(id)dictionary language:(id)language revision:(unint64_t)revision toURL:(id)l orData:(id)data error:(id *)error;
++ (BOOL)assetsAvailableForEmbeddingType:(id)type language:(id)language;
++ (BOOL)writeEmbeddingMLModelForDictionary:(id)dictionary language:(id)language revision:(unint64_t)revision toURL:(id)l options:(id)options error:(id *)error;
 + (NLEmbedding)embeddingWithContentsOfURL:(NSURL *)url error:(NSError *)error;
-+ (NLEmbedding)embeddingWithData:(id)a3 error:(id *)a4;
-+ (NLEmbedding)embeddingWithMLModel:(id)a3 error:(id *)a4;
++ (NLEmbedding)embeddingWithData:(id)data error:(id *)error;
++ (NLEmbedding)embeddingWithMLModel:(id)model error:(id *)error;
 + (NLEmbedding)sentenceEmbeddingForLanguage:(NLLanguage)language;
 + (NLEmbedding)sentenceEmbeddingForLanguage:(NLLanguage)language revision:(NSUInteger)revision;
 + (NLEmbedding)wordEmbeddingForLanguage:(NLLanguage)language;
@@ -13,37 +13,37 @@
 + (NSIndexSet)supportedSentenceEmbeddingRevisionsForLanguage:(NLLanguage)language;
 + (NSUInteger)currentRevisionForLanguage:(NLLanguage)language;
 + (NSUInteger)currentSentenceEmbeddingRevisionForLanguage:(NLLanguage)language;
-+ (id)_embeddingWithContentsOfURL:(id)a3 error:(id *)a4;
-+ (id)_embeddingWithData:(id)a3 error:(id *)a4;
-+ (id)contextualWordEmbeddingForLanguage:(id)a3;
-+ (id)contextualWordEmbeddingForLanguage:(id)a3 revision:(unint64_t)a4;
-+ (id)embeddingDataForDictionary:(id)a3 language:(id)a4 revision:(unint64_t)a5 error:(id *)a6;
-+ (id)modelDescriptionForEmbedding:(id)a3;
-+ (id)supportedContextualWordEmbeddingRevisionsForLanguage:(id)a3;
-+ (id)supportedRevisionsForType:(id)a3 locale:(id)a4;
-+ (id)transformerContextualTokenEmbeddingForLanguage:(id)a3;
-+ (unint64_t)currentContextualWordEmbeddingRevisionForLanguage:(id)a3;
-+ (unint64_t)currentRevisionForType:(id)a3 locale:(id)a4;
-+ (void)requestAssetsForEmbeddingType:(id)a3 language:(id)a4 withCompletionHandler:(id)a5;
++ (id)_embeddingWithContentsOfURL:(id)l error:(id *)error;
++ (id)_embeddingWithData:(id)data error:(id *)error;
++ (id)contextualWordEmbeddingForLanguage:(id)language;
++ (id)contextualWordEmbeddingForLanguage:(id)language revision:(unint64_t)revision;
++ (id)embeddingDataForDictionary:(id)dictionary language:(id)language revision:(unint64_t)revision error:(id *)error;
++ (id)modelDescriptionForEmbedding:(id)embedding;
++ (id)supportedContextualWordEmbeddingRevisionsForLanguage:(id)language;
++ (id)supportedRevisionsForType:(id)type locale:(id)locale;
++ (id)transformerContextualTokenEmbeddingForLanguage:(id)language;
++ (unint64_t)currentContextualWordEmbeddingRevisionForLanguage:(id)language;
++ (unint64_t)currentRevisionForType:(id)type locale:(id)locale;
++ (void)requestAssetsForEmbeddingType:(id)type language:(id)language withCompletionHandler:(id)handler;
 - (BOOL)getVector:(float *)vector forString:(NSString *)string;
 - (NLDistance)distanceBetweenString:(NSString *)firstString andString:(NSString *)secondString distanceType:(NLDistanceType)distanceType;
-- (NLEmbedding)initWithContentsOfURL:(id)a3 error:(id *)p_isa;
-- (NLEmbedding)initWithData:(id)a3 error:(id *)a4;
-- (NLEmbedding)initWithMLModel:(id)a3 error:(id *)a4;
-- (NLEmbedding)initWithNLModel:(id)a3 error:(id *)p_isa;
-- (NLEmbedding)initWithType:(id)a3 architecture:(id)a4 locale:(id)a5 version:(id)a6;
+- (NLEmbedding)initWithContentsOfURL:(id)l error:(id *)p_isa;
+- (NLEmbedding)initWithData:(id)data error:(id *)error;
+- (NLEmbedding)initWithMLModel:(id)model error:(id *)error;
+- (NLEmbedding)initWithNLModel:(id)model error:(id *)p_isa;
+- (NLEmbedding)initWithType:(id)type architecture:(id)architecture locale:(id)locale version:(id)version;
 - (NLLanguage)language;
 - (NSArray)neighborsForString:(NSString *)string maximumCount:(NSUInteger)maxCount maximumDistance:(NLDistance)maxDistance distanceType:(NLDistanceType)distanceType;
 - (NSArray)neighborsForVector:(NSArray *)vector maximumCount:(NSUInteger)maxCount maximumDistance:(NLDistance)maxDistance distanceType:(NLDistanceType)distanceType;
 - (NSArray)vectorForString:(NSString *)string;
 - (NSUInteger)revision;
-- (id)_initWithContentsOfURL:(id)a3 error:(id *)p_isa;
-- (id)_initWithData:(id)a3 error:(id *)p_isa;
-- (id)vectorsForTokenizedSentences:(id)a3 maxTokens:(unint64_t)a4;
-- (id)vectorsForTokenizedSentences:(id)a3 untokenizedSentences:(id)a4 maxTokens:(unint64_t)a5;
-- (id)vectorsForUntokenizedSentences:(id)a3 maxTokens:(unint64_t)a4;
-- (void)_createEmbeddingRefWithContentsOfURL:(id)a3;
-- (void)_createEmbeddingRefWithData:(id)a3;
+- (id)_initWithContentsOfURL:(id)l error:(id *)p_isa;
+- (id)_initWithData:(id)data error:(id *)p_isa;
+- (id)vectorsForTokenizedSentences:(id)sentences maxTokens:(unint64_t)tokens;
+- (id)vectorsForTokenizedSentences:(id)sentences untokenizedSentences:(id)untokenizedSentences maxTokens:(unint64_t)tokens;
+- (id)vectorsForUntokenizedSentences:(id)sentences maxTokens:(unint64_t)tokens;
+- (void)_createEmbeddingRefWithContentsOfURL:(id)l;
+- (void)_createEmbeddingRefWithData:(id)data;
 - (void)dealloc;
 - (void)enumerateNeighborsForString:(NSString *)string maximumCount:(NSUInteger)maxCount maximumDistance:(NLDistance)maxDistance distanceType:(NLDistanceType)distanceType usingBlock:(void *)block;
 - (void)enumerateNeighborsForVector:(NSArray *)vector maximumCount:(NSUInteger)maxCount maximumDistance:(NLDistance)maxDistance distanceType:(NLDistanceType)distanceType usingBlock:(void *)block;
@@ -64,38 +64,38 @@
   [(NLEmbedding *)&v4 dealloc];
 }
 
-- (NLEmbedding)initWithType:(id)a3 architecture:(id)a4 locale:(id)a5 version:(id)a6
+- (NLEmbedding)initWithType:(id)type architecture:(id)architecture locale:(id)locale version:(id)version
 {
   v24[2] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  typeCopy = type;
+  architectureCopy = architecture;
+  localeCopy = locale;
+  versionCopy = version;
   v14 = MEMORY[0x1E695DF90];
   v15 = *MEMORY[0x1E69981F8];
   v23[0] = *MEMORY[0x1E6998208];
   v23[1] = v15;
-  v24[0] = v10;
-  v24[1] = v12;
+  v24[0] = typeCopy;
+  v24[1] = localeCopy;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:v23 count:2];
   v17 = [v14 dictionaryWithDictionary:v16];
 
-  if (v11)
+  if (architectureCopy)
   {
-    [v17 setObject:v11 forKey:*MEMORY[0x1E69981E0]];
+    [v17 setObject:architectureCopy forKey:*MEMORY[0x1E69981E0]];
   }
 
-  if (v13)
+  if (versionCopy)
   {
-    [v17 setObject:v13 forKey:*MEMORY[0x1E6998230]];
+    [v17 setObject:versionCopy forKey:*MEMORY[0x1E6998230]];
   }
 
-  v18 = NLStringEmbeddingCreateWithOptions();
-  if (v18)
+  selfCopy = NLStringEmbeddingCreateWithOptions();
+  if (selfCopy)
   {
     if (NLStringEmbeddingGetDimension() < 1)
     {
-      v18 = 0;
+      selfCopy = 0;
     }
 
     else
@@ -105,33 +105,33 @@
       v19 = [(NLEmbedding *)&v22 init];
       if (v19)
       {
-        v19->_embedding = v18;
+        v19->_embedding = selfCopy;
         v19->_usesUntokenizedSentences = 0;
       }
 
       self = v19;
-      v18 = self;
+      selfCopy = self;
     }
   }
 
   v20 = *MEMORY[0x1E69E9840];
-  return v18;
+  return selfCopy;
 }
 
-- (void)_createEmbeddingRefWithContentsOfURL:(id)a3
+- (void)_createEmbeddingRefWithContentsOfURL:(id)l
 {
   v13[2] = *MEMORY[0x1E69E9840];
-  v3 = [a3 path];
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
+  path = [l path];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v11 = 0;
-  if ([v4 fileExistsAtPath:v3 isDirectory:&v11] && (v11 & 1) == 0)
+  if ([defaultManager fileExistsAtPath:path isDirectory:&v11] && (v11 & 1) == 0)
   {
     v6 = *MEMORY[0x1E6998210];
     v7 = *MEMORY[0x1E6998200];
     v12[0] = *MEMORY[0x1E6998208];
     v12[1] = v7;
     v13[0] = v6;
-    v13[1] = v3;
+    v13[1] = path;
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:2];
     v5 = NLStringEmbeddingCreateWithOptions();
   }
@@ -145,14 +145,14 @@
   return v5;
 }
 
-- (id)_initWithContentsOfURL:(id)a3 error:(id *)p_isa
+- (id)_initWithContentsOfURL:(id)l error:(id *)p_isa
 {
-  v5 = self;
+  selfCopy = self;
   v15[1] = *MEMORY[0x1E69E9840];
-  v6 = [(NLEmbedding *)self _createEmbeddingRefWithContentsOfURL:a3];
+  v6 = [(NLEmbedding *)self _createEmbeddingRefWithContentsOfURL:l];
   if (v6 && (v7 = v6, NLStringEmbeddingGetDimension() >= 1))
   {
-    v13.receiver = v5;
+    v13.receiver = selfCopy;
     v13.super_class = NLEmbedding;
     v8 = [(NLEmbedding *)&v13 init];
     if (v8)
@@ -160,8 +160,8 @@
       v8->_embedding = v7;
     }
 
-    v5 = v8;
-    p_isa = &v5->super.isa;
+    selfCopy = v8;
+    p_isa = &selfCopy->super.isa;
   }
 
   else if (p_isa)
@@ -179,15 +179,15 @@
   return p_isa;
 }
 
-- (NLEmbedding)initWithContentsOfURL:(id)a3 error:(id *)p_isa
+- (NLEmbedding)initWithContentsOfURL:(id)l error:(id *)p_isa
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 path];
-  v8 = [v7 pathExtension];
-  v9 = [MEMORY[0x1E696AC08] defaultManager];
+  lCopy = l;
+  path = [lCopy path];
+  pathExtension = [path pathExtension];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v25 = 0;
-  if (([v9 fileExistsAtPath:v7 isDirectory:&v25] & 1) == 0)
+  if (([defaultManager fileExistsAtPath:path isDirectory:&v25] & 1) == 0)
   {
     if (!p_isa)
     {
@@ -208,7 +208,7 @@
     goto LABEL_3;
   }
 
-  if ([v8 isEqualToString:@"mlmodel"])
+  if ([pathExtension isEqualToString:@"mlmodel"])
   {
     if (!p_isa)
     {
@@ -231,7 +231,7 @@ LABEL_7:
   if (v25)
   {
 LABEL_3:
-    v10 = [NLModel modelWithContentsOfURL:v6 error:p_isa];
+    v10 = [NLModel modelWithContentsOfURL:lCopy error:p_isa];
     if (v10)
     {
       v11 = v10;
@@ -246,7 +246,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v19 = [(NLEmbedding *)self _createEmbeddingRefWithContentsOfURL:v6];
+  v19 = [(NLEmbedding *)self _createEmbeddingRefWithContentsOfURL:lCopy];
   if (!v19 || (v20 = v19, NLStringEmbeddingGetDimension() < 1))
   {
     if (p_isa)
@@ -277,16 +277,16 @@ LABEL_9:
   return p_isa;
 }
 
-- (void)_createEmbeddingRefWithData:(id)a3
+- (void)_createEmbeddingRefWithData:(id)data
 {
   v11[2] = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E69981F0];
   v10[0] = *MEMORY[0x1E6998208];
   v10[1] = v3;
   v11[0] = *MEMORY[0x1E6998210];
-  v11[1] = a3;
+  v11[1] = data;
   v4 = MEMORY[0x1E695DF20];
-  v5 = a3;
+  dataCopy = data;
   v6 = [v4 dictionaryWithObjects:v11 forKeys:v10 count:2];
 
   v7 = NLStringEmbeddingCreateWithOptions();
@@ -294,14 +294,14 @@ LABEL_9:
   return v7;
 }
 
-- (id)_initWithData:(id)a3 error:(id *)p_isa
+- (id)_initWithData:(id)data error:(id *)p_isa
 {
-  v5 = self;
+  selfCopy = self;
   v15[1] = *MEMORY[0x1E69E9840];
-  v6 = [(NLEmbedding *)self _createEmbeddingRefWithData:a3];
+  v6 = [(NLEmbedding *)self _createEmbeddingRefWithData:data];
   if (v6 && (v7 = v6, NLStringEmbeddingGetDimension() >= 1))
   {
-    v13.receiver = v5;
+    v13.receiver = selfCopy;
     v13.super_class = NLEmbedding;
     v8 = [(NLEmbedding *)&v13 init];
     if (v8)
@@ -309,8 +309,8 @@ LABEL_9:
       v8->_embedding = v7;
     }
 
-    v5 = v8;
-    p_isa = &v5->super.isa;
+    selfCopy = v8;
+    p_isa = &selfCopy->super.isa;
   }
 
   else if (p_isa)
@@ -328,11 +328,11 @@ LABEL_9:
   return p_isa;
 }
 
-- (NLEmbedding)initWithData:(id)a3 error:(id *)a4
+- (NLEmbedding)initWithData:(id)data error:(id *)error
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(NLEmbedding *)self _createEmbeddingRefWithData:v6];
+  dataCopy = data;
+  v7 = [(NLEmbedding *)self _createEmbeddingRefWithData:dataCopy];
   if (v7 && (v8 = v7, NLStringEmbeddingGetDimension() >= 1))
   {
     v17.receiver = self;
@@ -344,55 +344,55 @@ LABEL_9:
     }
 
     self = v9;
-    v10 = self;
+    selfCopy2 = self;
   }
 
   else
   {
-    if (a4)
+    if (error)
     {
       v11 = MEMORY[0x1E696ABC0];
       v18 = *MEMORY[0x1E696A578];
       v19[0] = @"Failed to load embedding data";
       v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:&v18 count:1];
-      *a4 = [v11 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:5 userInfo:v12];
+      *error = [v11 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:5 userInfo:v12];
     }
 
-    v13 = [NLModel modelWithData:v6 error:a4];
+    v13 = [NLModel modelWithData:dataCopy error:error];
     if (v13)
     {
       v14 = v13;
-      self = [(NLEmbedding *)self initWithNLModel:v13 error:a4];
+      self = [(NLEmbedding *)self initWithNLModel:v13 error:error];
 
-      v10 = self;
+      selfCopy2 = self;
     }
 
     else
     {
-      v10 = 0;
+      selfCopy2 = 0;
     }
   }
 
   v15 = *MEMORY[0x1E69E9840];
-  return v10;
+  return selfCopy2;
 }
 
-- (NLEmbedding)initWithNLModel:(id)a3 error:(id *)p_isa
+- (NLEmbedding)initWithNLModel:(id)model error:(id *)p_isa
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [v7 embedding];
-  v9 = [v8 _embeddingRef];
+  modelCopy = model;
+  embedding = [modelCopy embedding];
+  _embeddingRef = [embedding _embeddingRef];
 
-  if (v9)
+  if (_embeddingRef)
   {
     v15.receiver = self;
     v15.super_class = NLEmbedding;
     v10 = [(NLEmbedding *)&v15 init];
     if (v10)
     {
-      v10->_embedding = CFRetain(v9);
-      objc_storeStrong(&v10->_nlModel, a3);
+      v10->_embedding = CFRetain(_embeddingRef);
+      objc_storeStrong(&v10->_nlModel, model);
     }
 
     self = v10;
@@ -414,21 +414,21 @@ LABEL_9:
   return p_isa;
 }
 
-- (NLEmbedding)initWithMLModel:(id)a3 error:(id *)a4
+- (NLEmbedding)initWithMLModel:(id)model error:(id *)error
 {
-  v6 = [NLModel modelWithMLModel:a3 error:?];
+  v6 = [NLModel modelWithMLModel:model error:?];
   if (v6)
   {
-    self = [(NLEmbedding *)self initWithNLModel:v6 error:a4];
-    v7 = self;
+    self = [(NLEmbedding *)self initWithNLModel:v6 error:error];
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  v8 = v7;
+  v8 = selfCopy;
 
   return v8;
 }
@@ -450,9 +450,9 @@ LABEL_9:
   return v5;
 }
 
-+ (id)contextualWordEmbeddingForLanguage:(id)a3
++ (id)contextualWordEmbeddingForLanguage:(id)language
 {
-  v3 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:a3];
+  v3 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:language];
   if (v3)
   {
     v4 = [NLEmbedding alloc];
@@ -503,15 +503,15 @@ LABEL_9:
   return v9;
 }
 
-+ (id)contextualWordEmbeddingForLanguage:(id)a3 revision:(unint64_t)a4
++ (id)contextualWordEmbeddingForLanguage:(id)language revision:(unint64_t)revision
 {
-  v5 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:a3];
+  v5 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:language];
   if (v5)
   {
     v6 = [NLEmbedding alloc];
     v7 = *MEMORY[0x1E6998218];
     v8 = *MEMORY[0x1E69981E8];
-    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:revision];
     v10 = [(NLEmbedding *)v6 initWithType:v7 architecture:v8 locale:v5 version:v9];
   }
 
@@ -523,9 +523,9 @@ LABEL_9:
   return v10;
 }
 
-+ (id)transformerContextualTokenEmbeddingForLanguage:(id)a3
++ (id)transformerContextualTokenEmbeddingForLanguage:(id)language
 {
-  v3 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:a3];
+  v3 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:language];
   if (v3)
   {
     v4 = [NLEmbedding alloc];
@@ -580,14 +580,14 @@ LABEL_9:
   v8 = block;
   embedding = self->_embedding;
   v10 = NLStringEmbeddingCopyNeighborsWithDistances();
-  v11 = [v10 allKeys];
+  allKeys = [v10 allKeys];
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __96__NLEmbedding_enumerateNeighborsForString_maximumCount_maximumDistance_distanceType_usingBlock___block_invoke;
   v29[3] = &unk_1E7628EA8;
   v12 = v10;
   v30 = v12;
-  v13 = [v11 sortedArrayUsingComparator:v29];
+  v13 = [allKeys sortedArrayUsingComparator:v29];
 
   v27 = 0u;
   v28 = 0u;
@@ -650,12 +650,12 @@ uint64_t __96__NLEmbedding_enumerateNeighborsForString_maximumCount_maximumDista
 - (NSArray)neighborsForString:(NSString *)string maximumCount:(NSUInteger)maxCount maximumDistance:(NLDistance)maxDistance distanceType:(NLDistanceType)distanceType
 {
   v10 = string;
-  v11 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __76__NLEmbedding_neighborsForString_maximumCount_maximumDistance_distanceType___block_invoke;
   v16[3] = &unk_1E762A1A0;
-  v12 = v11;
+  v12 = array;
   v17 = v12;
   [(NLEmbedding *)self enumerateNeighborsForString:v10 maximumCount:maxCount maximumDistance:distanceType distanceType:v16 usingBlock:maxDistance];
   if ([(NSArray *)v12 count]|| [(NLEmbedding *)self containsString:v10])
@@ -679,14 +679,14 @@ uint64_t __96__NLEmbedding_enumerateNeighborsForString_maximumCount_maximumDista
   v8 = block;
   embedding = self->_embedding;
   v10 = NLStringEmbeddingCopyNeighborsForVectorWithDistances();
-  v11 = [v10 allKeys];
+  allKeys = [v10 allKeys];
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __96__NLEmbedding_enumerateNeighborsForVector_maximumCount_maximumDistance_distanceType_usingBlock___block_invoke;
   v29[3] = &unk_1E7628EA8;
   v12 = v10;
   v30 = v12;
-  v13 = [v11 sortedArrayUsingComparator:v29];
+  v13 = [allKeys sortedArrayUsingComparator:v29];
 
   v27 = 0u;
   v28 = 0u;
@@ -750,12 +750,12 @@ uint64_t __96__NLEmbedding_enumerateNeighborsForVector_maximumCount_maximumDista
 {
   v10 = MEMORY[0x1E695DF70];
   v11 = vector;
-  v12 = [v10 array];
+  array = [v10 array];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __76__NLEmbedding_neighborsForVector_maximumCount_maximumDistance_distanceType___block_invoke;
   v15[3] = &unk_1E762A1A0;
-  v13 = v12;
+  v13 = array;
   v16 = v13;
   [(NLEmbedding *)self enumerateNeighborsForVector:v11 maximumCount:maxCount maximumDistance:distanceType distanceType:v15 usingBlock:maxDistance];
 
@@ -777,13 +777,13 @@ uint64_t __96__NLEmbedding_enumerateNeighborsForVector_maximumCount_maximumDista
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 bytes];
+    bytes = [v7 bytes];
     if ([(NLEmbedding *)self dimension])
     {
       v10 = 0;
       do
       {
-        vector[v10] = *(v9 + 4 * v10);
+        vector[v10] = *(bytes + 4 * v10);
         ++v10;
       }
 
@@ -794,22 +794,22 @@ uint64_t __96__NLEmbedding_enumerateNeighborsForVector_maximumCount_maximumDista
   return v8 != 0;
 }
 
-- (id)vectorsForTokenizedSentences:(id)a3 maxTokens:(unint64_t)a4
+- (id)vectorsForTokenizedSentences:(id)sentences maxTokens:(unint64_t)tokens
 {
-  v6 = a3;
-  v7 = [v6 count];
+  sentencesCopy = sentences;
+  v7 = [sentencesCopy count];
   embedding = self->_embedding;
   Dimension = NLStringEmbeddingGetDimension();
-  v10 = [MEMORY[0x1E695DF88] dataWithLength:4 * a4 * v7 * Dimension];
-  v11 = [MEMORY[0x1E695DF88] dataWithLength:4 * Dimension];
-  [v10 mutableBytes];
-  [v11 mutableBytes];
+  dimension = [MEMORY[0x1E695DF88] dataWithLength:4 * tokens * v7 * Dimension];
+  dimension2 = [MEMORY[0x1E695DF88] dataWithLength:4 * Dimension];
+  [dimension mutableBytes];
+  [dimension2 mutableBytes];
   v12 = self->_embedding;
-  LODWORD(a4) = NLStringEmbeddingFillWordVectors();
+  LODWORD(tokens) = NLStringEmbeddingFillWordVectors();
 
-  if (a4)
+  if (tokens)
   {
-    v13 = v10;
+    v13 = dimension;
   }
 
   else
@@ -822,22 +822,22 @@ uint64_t __96__NLEmbedding_enumerateNeighborsForVector_maximumCount_maximumDista
   return v13;
 }
 
-- (id)vectorsForUntokenizedSentences:(id)a3 maxTokens:(unint64_t)a4
+- (id)vectorsForUntokenizedSentences:(id)sentences maxTokens:(unint64_t)tokens
 {
-  v6 = a3;
-  v7 = [v6 count];
+  sentencesCopy = sentences;
+  v7 = [sentencesCopy count];
   embedding = self->_embedding;
   Dimension = NLStringEmbeddingGetDimension();
-  v10 = [MEMORY[0x1E695DF88] dataWithLength:4 * a4 * v7 * Dimension];
-  v11 = [MEMORY[0x1E695DF88] dataWithLength:4 * Dimension];
-  [v10 mutableBytes];
-  [v11 mutableBytes];
+  dimension = [MEMORY[0x1E695DF88] dataWithLength:4 * tokens * v7 * Dimension];
+  dimension2 = [MEMORY[0x1E695DF88] dataWithLength:4 * Dimension];
+  [dimension mutableBytes];
+  [dimension2 mutableBytes];
   v12 = self->_embedding;
-  LODWORD(a4) = NLStringEmbeddingFillTokenVectorsWithShape();
+  LODWORD(tokens) = NLStringEmbeddingFillTokenVectorsWithShape();
 
-  if (a4)
+  if (tokens)
   {
-    v13 = v10;
+    v13 = dimension;
   }
 
   else
@@ -850,18 +850,18 @@ uint64_t __96__NLEmbedding_enumerateNeighborsForVector_maximumCount_maximumDista
   return v13;
 }
 
-- (id)vectorsForTokenizedSentences:(id)a3 untokenizedSentences:(id)a4 maxTokens:(unint64_t)a5
+- (id)vectorsForTokenizedSentences:(id)sentences untokenizedSentences:(id)untokenizedSentences maxTokens:(unint64_t)tokens
 {
-  v8 = a3;
-  v9 = a4;
+  sentencesCopy = sentences;
+  untokenizedSentencesCopy = untokenizedSentences;
   if ([(NLEmbedding *)self usesUntokenizedSentences])
   {
-    [(NLEmbedding *)self vectorsForUntokenizedSentences:v9 maxTokens:a5];
+    [(NLEmbedding *)self vectorsForUntokenizedSentences:untokenizedSentencesCopy maxTokens:tokens];
   }
 
   else
   {
-    [(NLEmbedding *)self vectorsForTokenizedSentences:v8 maxTokens:a5];
+    [(NLEmbedding *)self vectorsForTokenizedSentences:sentencesCopy maxTokens:tokens];
   }
   v10 = ;
 
@@ -872,9 +872,9 @@ uint64_t __96__NLEmbedding_enumerateNeighborsForVector_maximumCount_maximumDista
 {
   embedding = self->_embedding;
   v3 = NLStringEmbeddingCopyModelLocale();
-  v4 = [v3 localeIdentifier];
+  localeIdentifier = [v3 localeIdentifier];
 
-  return v4;
+  return localeIdentifier;
 }
 
 - (NSUInteger)revision
@@ -893,11 +893,11 @@ uint64_t __96__NLEmbedding_enumerateNeighborsForVector_maximumCount_maximumDista
   return result;
 }
 
-+ (id)supportedRevisionsForType:(id)a3 locale:(id)a4
++ (id)supportedRevisionsForType:(id)type locale:(id)locale
 {
   v18 = *MEMORY[0x1E69E9840];
   v4 = NLStringEmbeddingCopySupportedVersions();
-  v5 = [MEMORY[0x1E696AD50] indexSet];
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
   if (v4)
   {
     v15 = 0u;
@@ -919,7 +919,7 @@ uint64_t __96__NLEmbedding_enumerateNeighborsForVector_maximumCount_maximumDista
             objc_enumerationMutation(v6);
           }
 
-          [v5 addIndex:{objc_msgSend(*(*(&v13 + 1) + 8 * i), "unsignedIntegerValue", v13)}];
+          [indexSet addIndex:{objc_msgSend(*(*(&v13 + 1) + 8 * i), "unsignedIntegerValue", v13)}];
         }
 
         v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -933,7 +933,7 @@ uint64_t __96__NLEmbedding_enumerateNeighborsForVector_maximumCount_maximumDista
 
   v11 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return indexSet;
 }
 
 + (NSIndexSet)supportedRevisionsForLanguage:(NLLanguage)language
@@ -941,7 +941,7 @@ uint64_t __96__NLEmbedding_enumerateNeighborsForVector_maximumCount_maximumDista
   v4 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:language];
   if (v4)
   {
-    v5 = [a1 supportedRevisionsForType:*MEMORY[0x1E6998210] locale:v4];
+    v5 = [self supportedRevisionsForType:*MEMORY[0x1E6998210] locale:v4];
   }
 
   else
@@ -952,12 +952,12 @@ uint64_t __96__NLEmbedding_enumerateNeighborsForVector_maximumCount_maximumDista
   return v5;
 }
 
-+ (id)supportedContextualWordEmbeddingRevisionsForLanguage:(id)a3
++ (id)supportedContextualWordEmbeddingRevisionsForLanguage:(id)language
 {
-  v4 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:a3];
+  v4 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:language];
   if (v4)
   {
-    v5 = [a1 supportedRevisionsForType:*MEMORY[0x1E6998218] locale:v4];
+    v5 = [self supportedRevisionsForType:*MEMORY[0x1E6998218] locale:v4];
   }
 
   else
@@ -973,7 +973,7 @@ uint64_t __96__NLEmbedding_enumerateNeighborsForVector_maximumCount_maximumDista
   v4 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:language];
   if (v4)
   {
-    v5 = [a1 supportedRevisionsForType:*MEMORY[0x1E6998220] locale:v4];
+    v5 = [self supportedRevisionsForType:*MEMORY[0x1E6998220] locale:v4];
   }
 
   else
@@ -984,15 +984,15 @@ uint64_t __96__NLEmbedding_enumerateNeighborsForVector_maximumCount_maximumDista
   return v5;
 }
 
-+ (unint64_t)currentRevisionForType:(id)a3 locale:(id)a4
++ (unint64_t)currentRevisionForType:(id)type locale:(id)locale
 {
   result = NLStringEmbeddingCopyCurrentVersion();
   if (result)
   {
     v5 = result;
-    v6 = [result unsignedIntegerValue];
+    unsignedIntegerValue = [result unsignedIntegerValue];
     CFRelease(v5);
-    return v6;
+    return unsignedIntegerValue;
   }
 
   return result;
@@ -1003,7 +1003,7 @@ uint64_t __96__NLEmbedding_enumerateNeighborsForVector_maximumCount_maximumDista
   v4 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:language];
   if (v4)
   {
-    v5 = [a1 currentRevisionForType:*MEMORY[0x1E6998210] locale:v4];
+    v5 = [self currentRevisionForType:*MEMORY[0x1E6998210] locale:v4];
   }
 
   else
@@ -1014,12 +1014,12 @@ uint64_t __96__NLEmbedding_enumerateNeighborsForVector_maximumCount_maximumDista
   return v5;
 }
 
-+ (unint64_t)currentContextualWordEmbeddingRevisionForLanguage:(id)a3
++ (unint64_t)currentContextualWordEmbeddingRevisionForLanguage:(id)language
 {
-  v4 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:a3];
+  v4 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:language];
   if (v4)
   {
-    v5 = [a1 currentRevisionForType:*MEMORY[0x1E6998218] locale:v4];
+    v5 = [self currentRevisionForType:*MEMORY[0x1E6998218] locale:v4];
   }
 
   else
@@ -1035,7 +1035,7 @@ uint64_t __96__NLEmbedding_enumerateNeighborsForVector_maximumCount_maximumDista
   v4 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:language];
   if (v4)
   {
-    v5 = [a1 currentRevisionForType:*MEMORY[0x1E6998220] locale:v4];
+    v5 = [self currentRevisionForType:*MEMORY[0x1E6998220] locale:v4];
   }
 
   else
@@ -1046,18 +1046,18 @@ uint64_t __96__NLEmbedding_enumerateNeighborsForVector_maximumCount_maximumDista
   return v5;
 }
 
-+ (BOOL)_writeEmbeddingForDictionary:(id)a3 language:(id)a4 revision:(unint64_t)a5 toURL:(id)a6 orData:(id)a7 error:(id *)a8
++ (BOOL)_writeEmbeddingForDictionary:(id)dictionary language:(id)language revision:(unint64_t)revision toURL:(id)l orData:(id)data error:(id *)error
 {
   v67 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v50 = a6;
+  dictionaryCopy = dictionary;
+  languageCopy = language;
+  lCopy = l;
   memset(v56, 0, sizeof(v56));
-  v48 = a8;
-  v49 = a7;
-  if ([v13 countByEnumeratingWithState:v56 objects:v66 count:16])
+  errorCopy = error;
+  dataCopy = data;
+  if ([dictionaryCopy countByEnumeratingWithState:v56 objects:v66 count:16])
   {
-    v15 = [v13 objectForKey:**(&v56[0] + 1)];
+    v15 = [dictionaryCopy objectForKey:**(&v56[0] + 1)];
     v16 = [v15 count];
   }
 
@@ -1070,7 +1070,7 @@ uint64_t __96__NLEmbedding_enumerateNeighborsForVector_maximumCount_maximumDista
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v17 = v13;
+  v17 = dictionaryCopy;
   v18 = [v17 countByEnumeratingWithState:&v52 objects:v65 count:16];
   if (v18)
   {
@@ -1108,24 +1108,24 @@ LABEL_6:
 
     NSLog(&cfstr_EmbeddingDicti.isa, v22, v24, v16);
 
-    if (v48)
+    if (errorCopy)
     {
       v28 = MEMORY[0x1E696ABC0];
       v59 = *MEMORY[0x1E696A578];
       v60 = @"Embedding dictionary has mismatched dimensions";
       v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v60 forKeys:&v59 count:1];
       [v28 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:4 userInfo:v29];
-      *v48 = v30 = 0;
-      v26 = v14;
-      v31 = v49;
-      v32 = v50;
+      *errorCopy = v30 = 0;
+      v26 = languageCopy;
+      v31 = dataCopy;
+      v32 = lCopy;
       goto LABEL_40;
     }
 
     v30 = 0;
-    v26 = v14;
-    v31 = v49;
-    v32 = v50;
+    v26 = languageCopy;
+    v31 = dataCopy;
+    v32 = lCopy;
   }
 
   else
@@ -1144,10 +1144,10 @@ LABEL_12:
         v25 = 3;
       }
 
-      v26 = v14;
-      if (v14)
+      v26 = languageCopy;
+      if (languageCopy)
       {
-        v27 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v14];
+        v27 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:languageCopy];
       }
 
       else
@@ -1155,7 +1155,7 @@ LABEL_12:
         v27 = 0;
       }
 
-      v32 = v50;
+      v32 = lCopy;
       v34 = 10;
       v51 = v27;
       do
@@ -1181,7 +1181,7 @@ LABEL_12:
 
       v36 = MEMORY[0x1E695DF90];
       v63[0] = *MEMORY[0x1E6998230];
-      v37 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a5];
+      v37 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:revision];
       v64[0] = v37;
       v63[1] = *MEMORY[0x1E6998240];
       v38 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v35];
@@ -1198,39 +1198,39 @@ LABEL_12:
         [v29 setObject:v51 forKey:*MEMORY[0x1E69981F8]];
       }
 
-      v31 = v49;
+      v31 = dataCopy;
       if (v32)
       {
-        v42 = [v32 path];
-        [v29 setObject:v42 forKey:*MEMORY[0x1E6998200]];
+        path = [v32 path];
+        [v29 setObject:path forKey:*MEMORY[0x1E6998200]];
       }
 
-      if (v49)
+      if (dataCopy)
       {
-        [v29 setObject:v49 forKey:*MEMORY[0x1E69981F0]];
+        [v29 setObject:dataCopy forKey:*MEMORY[0x1E69981F0]];
       }
 
       v43 = NLStringEmbeddingSaveCompressedModel();
       v30 = v43;
-      if (v48 && (v43 & 1) == 0)
+      if (errorCopy && (v43 & 1) == 0)
       {
         v44 = MEMORY[0x1E696ABC0];
         v61 = *MEMORY[0x1E696A578];
         v62 = @"Failed to save embedding file";
         v45 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v62 forKeys:&v61 count:1];
         v41 = v51;
-        *v48 = [v44 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:7 userInfo:v45];
+        *errorCopy = [v44 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:7 userInfo:v45];
       }
     }
 
     else
     {
-      v26 = v14;
-      v31 = v49;
-      if (!v48)
+      v26 = languageCopy;
+      v31 = dataCopy;
+      if (!errorCopy)
       {
         v30 = 0;
-        v32 = v50;
+        v32 = lCopy;
         goto LABEL_41;
       }
 
@@ -1239,8 +1239,8 @@ LABEL_12:
       v58 = @"Embedding dictionary is missing data";
       v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v58 forKeys:&v57 count:1];
       [v33 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:4 userInfo:v29];
-      *v48 = v30 = 0;
-      v32 = v50;
+      *errorCopy = v30 = 0;
+      v32 = lCopy;
     }
 
 LABEL_40:
@@ -1252,17 +1252,17 @@ LABEL_41:
   return v30;
 }
 
-+ (id)embeddingDataForDictionary:(id)a3 language:(id)a4 revision:(unint64_t)a5 error:(id *)a6
++ (id)embeddingDataForDictionary:(id)dictionary language:(id)language revision:(unint64_t)revision error:(id *)error
 {
   v10 = MEMORY[0x1E695DF88];
-  v11 = a4;
-  v12 = a3;
-  v13 = [v10 data];
-  LODWORD(a6) = [a1 _writeEmbeddingForDictionary:v12 language:v11 revision:a5 toURL:0 orData:v13 error:a6];
+  languageCopy = language;
+  dictionaryCopy = dictionary;
+  data = [v10 data];
+  LODWORD(error) = [self _writeEmbeddingForDictionary:dictionaryCopy language:languageCopy revision:revision toURL:0 orData:data error:error];
 
-  if (a6)
+  if (error)
   {
-    v14 = v13;
+    v14 = data;
   }
 
   else
@@ -1275,31 +1275,31 @@ LABEL_41:
   return v14;
 }
 
-+ (id)modelDescriptionForEmbedding:(id)a3
++ (id)modelDescriptionForEmbedding:(id)embedding
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = a3;
-  v5 = [v4 revision];
-  v6 = [v4 dimension];
-  v7 = [v4 vocabularySize];
+  embeddingCopy = embedding;
+  revision = [embeddingCopy revision];
+  dimension = [embeddingCopy dimension];
+  vocabularySize = [embeddingCopy vocabularySize];
 
-  return [v3 stringWithFormat:@"This model is an embedding (version %llu) with dimension %llu and vocabulary size %llu", v5, v6, v7];
+  return [v3 stringWithFormat:@"This model is an embedding (version %llu) with dimension %llu and vocabulary size %llu", revision, dimension, vocabularySize];
 }
 
-+ (BOOL)writeEmbeddingMLModelForDictionary:(id)a3 language:(id)a4 revision:(unint64_t)a5 toURL:(id)a6 options:(id)a7 error:(id *)a8
++ (BOOL)writeEmbeddingMLModelForDictionary:(id)dictionary language:(id)language revision:(unint64_t)revision toURL:(id)l options:(id)options error:(id *)error
 {
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
-  v17 = [a1 embeddingDataForDictionary:a3 language:v14 revision:a5 error:a8];
+  languageCopy = language;
+  lCopy = l;
+  optionsCopy = options;
+  v17 = [self embeddingDataForDictionary:dictionary language:languageCopy revision:revision error:error];
   if (v17)
   {
-    v18 = [NLEmbedding embeddingWithData:v17 error:a8];
+    v18 = [NLEmbedding embeddingWithData:v17 error:error];
     if (v18)
     {
-      v35 = v16;
-      v19 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{v14, @"Language", 0}];
-      v20 = [NLModelConfiguration defaultModelConfigurationForType:0 options:v19 error:a8];
+      v35 = optionsCopy;
+      v19 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{languageCopy, @"Language", 0}];
+      v20 = [NLModelConfiguration defaultModelConfigurationForType:0 options:v19 error:error];
 
       v21 = [[NLModelImplE alloc] initWithModelData:v17 configuration:v20 labelMap:0 vocabularyMap:0 documentFrequencyMap:0 customEmbeddingData:0 trainingInfo:0 error:0];
       v34 = v20;
@@ -1307,14 +1307,14 @@ LABEL_41:
       if (v22)
       {
         v32 = v21;
-        v33 = v15;
+        v33 = lCopy;
         v23 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v35];
         v24 = *MEMORY[0x1E695FDB8];
         v25 = [v23 objectForKey:*MEMORY[0x1E695FDB8]];
 
         if (!v25)
         {
-          v26 = [a1 modelDescriptionForEmbedding:v18];
+          v26 = [self modelDescriptionForEmbedding:v18];
           [v23 setObject:v26 forKey:v24];
         }
 
@@ -1323,24 +1323,24 @@ LABEL_41:
 
         if (!v28)
         {
-          v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%llu", a5];
-          [v23 setObject:v29 forKey:v27];
+          revision = [MEMORY[0x1E696AEC0] stringWithFormat:@"%llu", revision];
+          [v23 setObject:revision forKey:v27];
         }
 
-        v15 = v33;
-        v30 = [(NLModel *)v22 writeMLModelToURL:v33 options:v23 error:a8];
+        lCopy = v33;
+        v30 = [(NLModel *)v22 writeMLModelToURL:v33 options:v23 error:error];
 
-        v16 = v35;
+        optionsCopy = v35;
         v21 = v32;
       }
 
       else
       {
-        v16 = v35;
-        if (a8)
+        optionsCopy = v35;
+        if (error)
         {
           [MEMORY[0x1E696ABC0] errorWithDomain:@"NLNaturalLanguageErrorDomain" code:6 userInfo:0];
-          *a8 = v30 = 0;
+          *error = v30 = 0;
         }
 
         else
@@ -1356,10 +1356,10 @@ LABEL_41:
     }
   }
 
-  else if (a8)
+  else if (error)
   {
     [MEMORY[0x1E696ABC0] errorWithDomain:@"NLNaturalLanguageErrorDomain" code:6 userInfo:0];
-    *a8 = v30 = 0;
+    *error = v30 = 0;
   }
 
   else
@@ -1378,85 +1378,85 @@ LABEL_41:
   return v6;
 }
 
-+ (NLEmbedding)embeddingWithData:(id)a3 error:(id *)a4
++ (NLEmbedding)embeddingWithData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [[NLEmbedding alloc] initWithData:v5 error:a4];
+  dataCopy = data;
+  v6 = [[NLEmbedding alloc] initWithData:dataCopy error:error];
 
   return v6;
 }
 
-+ (NLEmbedding)embeddingWithMLModel:(id)a3 error:(id *)a4
++ (NLEmbedding)embeddingWithMLModel:(id)model error:(id *)error
 {
-  v5 = a3;
-  v6 = [[NLEmbedding alloc] initWithMLModel:v5 error:a4];
+  modelCopy = model;
+  v6 = [[NLEmbedding alloc] initWithMLModel:modelCopy error:error];
 
   return v6;
 }
 
-+ (id)_embeddingWithContentsOfURL:(id)a3 error:(id *)a4
++ (id)_embeddingWithContentsOfURL:(id)l error:(id *)error
 {
-  v5 = a3;
-  v6 = [[NLEmbedding alloc] _initWithContentsOfURL:v5 error:a4];
+  lCopy = l;
+  v6 = [[NLEmbedding alloc] _initWithContentsOfURL:lCopy error:error];
 
   return v6;
 }
 
-+ (id)_embeddingWithData:(id)a3 error:(id *)a4
++ (id)_embeddingWithData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [[NLEmbedding alloc] _initWithData:v5 error:a4];
+  dataCopy = data;
+  v6 = [[NLEmbedding alloc] _initWithData:dataCopy error:error];
 
   return v6;
 }
 
-+ (BOOL)assetsAvailableForEmbeddingType:(id)a3 language:(id)a4
++ (BOOL)assetsAvailableForEmbeddingType:(id)type language:(id)language
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v6)
+  typeCopy = type;
+  languageCopy = language;
+  if (!languageCopy)
   {
     goto LABEL_10;
   }
 
-  if (![v5 isEqualToString:@"Static"])
+  if (![typeCopy isEqualToString:@"Static"])
   {
-    if ([v5 isEqualToString:@"Dynamic"])
+    if ([typeCopy isEqualToString:@"Dynamic"])
     {
-      v7 = [NLEmbedding contextualWordEmbeddingForLanguage:v6];
+      v7 = [NLEmbedding contextualWordEmbeddingForLanguage:languageCopy];
       goto LABEL_6;
     }
 
-    if ([v5 isEqualToString:@"Contextual"])
+    if ([typeCopy isEqualToString:@"Contextual"])
     {
-      v8 = [NLContextualEmbedding contextualEmbeddingWithLanguage:v6];
-      v9 = [v8 hasAvailableAssets];
+      v8 = [NLContextualEmbedding contextualEmbeddingWithLanguage:languageCopy];
+      hasAvailableAssets = [v8 hasAvailableAssets];
       goto LABEL_7;
     }
 
 LABEL_10:
-    v9 = 0;
+    hasAvailableAssets = 0;
     goto LABEL_11;
   }
 
-  v7 = [NLEmbedding wordEmbeddingForLanguage:v6];
+  v7 = [NLEmbedding wordEmbeddingForLanguage:languageCopy];
 LABEL_6:
   v8 = v7;
-  v9 = v7 != 0;
+  hasAvailableAssets = v7 != 0;
 LABEL_7:
 
 LABEL_11:
-  return v9;
+  return hasAvailableAssets;
 }
 
-+ (void)requestAssetsForEmbeddingType:(id)a3 language:(id)a4 withCompletionHandler:(id)a5
++ (void)requestAssetsForEmbeddingType:(id)type language:(id)language withCompletionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v8)
+  typeCopy = type;
+  languageCopy = language;
+  handlerCopy = handler;
+  if (languageCopy)
   {
-    if ([v7 isEqualToString:@"Static"])
+    if ([typeCopy isEqualToString:@"Static"])
     {
       v10 = @"WordEmbedding";
       v18[0] = MEMORY[0x1E69E9820];
@@ -1464,26 +1464,26 @@ LABEL_11:
       v18[2] = __76__NLEmbedding_requestAssetsForEmbeddingType_language_withCompletionHandler___block_invoke;
       v18[3] = &unk_1E7629E18;
       v11 = &v19;
-      v19 = v9;
+      v19 = handlerCopy;
       v12 = v18;
     }
 
     else
     {
-      if (![v7 isEqualToString:@"Dynamic"])
+      if (![typeCopy isEqualToString:@"Dynamic"])
       {
-        if (![v7 isEqualToString:@"Contextual"])
+        if (![typeCopy isEqualToString:@"Contextual"])
         {
           goto LABEL_8;
         }
 
-        v13 = [NLContextualEmbedding contextualEmbeddingWithLanguage:v8];
+        v13 = [NLContextualEmbedding contextualEmbeddingWithLanguage:languageCopy];
         v14[0] = MEMORY[0x1E69E9820];
         v14[1] = 3221225472;
         v14[2] = __76__NLEmbedding_requestAssetsForEmbeddingType_language_withCompletionHandler___block_invoke_3;
         v14[3] = &unk_1E7629E18;
         v11 = &v15;
-        v15 = v9;
+        v15 = handlerCopy;
         [v13 requestEmbeddingAssetsWithCompletionHandler:v14];
 
         goto LABEL_7;
@@ -1495,11 +1495,11 @@ LABEL_11:
       v16[2] = __76__NLEmbedding_requestAssetsForEmbeddingType_language_withCompletionHandler___block_invoke_2;
       v16[3] = &unk_1E7629E18;
       v11 = &v17;
-      v17 = v9;
+      v17 = handlerCopy;
       v12 = v16;
     }
 
-    [NLTagger requestAssetsForLanguage:v8 tagScheme:v10 completionHandler:v12];
+    [NLTagger requestAssetsForLanguage:languageCopy tagScheme:v10 completionHandler:v12];
 LABEL_7:
   }
 

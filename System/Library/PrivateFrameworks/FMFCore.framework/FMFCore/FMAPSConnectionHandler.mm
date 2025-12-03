@@ -1,27 +1,27 @@
 @interface FMAPSConnectionHandler
 - (_TtC7FMFCore22FMAPSConnectionHandler)init;
-- (void)connection:(id)a3 didReceiveMessageForTopic:(id)a4 userInfo:(id)a5;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forTopic:(id)a5 identifier:(id)a6;
+- (void)connection:(id)connection didReceiveMessageForTopic:(id)topic userInfo:(id)info;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
+- (void)connection:(id)connection didReceiveToken:(id)token forTopic:(id)topic identifier:(id)identifier;
 @end
 
 @implementation FMAPSConnectionHandler
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
-  if (a4)
+  if (token)
   {
-    v6 = a3;
-    v7 = self;
-    v8 = a4;
+    connectionCopy = connection;
+    selfCopy = self;
+    tokenCopy = token;
     v9 = sub_24A4AAA10();
     v11 = v10;
   }
 
   else
   {
-    v12 = a3;
-    v13 = self;
+    connectionCopy2 = connection;
+    selfCopy2 = self;
     v9 = 0;
     v11 = 0xF000000000000000;
   }
@@ -37,20 +37,20 @@
   return result;
 }
 
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forTopic:(id)a5 identifier:(id)a6
+- (void)connection:(id)connection didReceiveToken:(id)token forTopic:(id)topic identifier:(id)identifier
 {
-  v8 = a4;
-  if (a4)
+  tokenCopy = token;
+  if (token)
   {
-    v10 = a3;
-    v11 = a5;
-    v12 = a6;
-    v13 = self;
-    v14 = v8;
-    v8 = sub_24A4AAA10();
+    connectionCopy = connection;
+    topicCopy = topic;
+    identifierCopy = identifier;
+    selfCopy = self;
+    v14 = tokenCopy;
+    tokenCopy = sub_24A4AAA10();
     v16 = v15;
 
-    if (a5)
+    if (topic)
     {
       goto LABEL_3;
     }
@@ -58,17 +58,17 @@
 
   else
   {
-    v17 = a3;
-    v18 = a5;
-    v19 = a6;
-    v20 = self;
+    connectionCopy2 = connection;
+    topicCopy2 = topic;
+    identifierCopy2 = identifier;
+    selfCopy2 = self;
     v16 = 0xF000000000000000;
-    if (a5)
+    if (topic)
     {
 LABEL_3:
       sub_24A4AB850();
 
-      if (!a6)
+      if (!identifier)
       {
         goto LABEL_7;
       }
@@ -77,26 +77,26 @@ LABEL_3:
     }
   }
 
-  if (a6)
+  if (identifier)
   {
 LABEL_4:
     sub_24A4AB850();
   }
 
 LABEL_7:
-  sub_24A456BE4(v8, v16);
+  sub_24A456BE4(tokenCopy, v16);
 
-  sub_24A386DFC(v8, v16);
+  sub_24A386DFC(tokenCopy, v16);
 }
 
-- (void)connection:(id)a3 didReceiveMessageForTopic:(id)a4 userInfo:(id)a5
+- (void)connection:(id)connection didReceiveMessageForTopic:(id)topic userInfo:(id)info
 {
-  v5 = a5;
-  if (a4)
+  infoCopy = info;
+  if (topic)
   {
     v8 = sub_24A4AB850();
     v10 = v9;
-    if (!v5)
+    if (!infoCopy)
     {
       goto LABEL_4;
     }
@@ -106,16 +106,16 @@ LABEL_7:
 
   v8 = 0;
   v10 = 0;
-  if (a5)
+  if (info)
   {
 LABEL_3:
-    v5 = sub_24A4AB780();
+    infoCopy = sub_24A4AB780();
   }
 
 LABEL_4:
-  v11 = a3;
-  v12 = self;
-  sub_24A45714C(v8, v10, v5);
+  connectionCopy = connection;
+  selfCopy = self;
+  sub_24A45714C(v8, v10, infoCopy);
 }
 
 @end

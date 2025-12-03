@@ -1,31 +1,31 @@
 @interface SBDeviceApplicationScenePlaceholderContentContext
 - (SBDeviceApplicationScenePlaceholderContentContext)init;
-- (SBDeviceApplicationScenePlaceholderContentContext)initWithActivationSettings:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (SBDeviceApplicationScenePlaceholderContentContext)initWithActivationSettings:(id)settings;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SBDeviceApplicationScenePlaceholderContentContext
 
 - (SBDeviceApplicationScenePlaceholderContentContext)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"SBDeviceApplicationScenePlaceholderContentContext.m" lineNumber:43 description:@"Initializer unavailable; please use -[SBDeviceApplicationScenePlaceholderContentContext initWithDeviceApplicationSceneHandle:activationSettings:] instead."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBDeviceApplicationScenePlaceholderContentContext.m" lineNumber:43 description:@"Initializer unavailable; please use -[SBDeviceApplicationScenePlaceholderContentContext initWithDeviceApplicationSceneHandle:activationSettings:] instead."];
 
   v6.receiver = self;
   v6.super_class = SBDeviceApplicationScenePlaceholderContentContext;
   return [(SBDeviceApplicationScenePlaceholderContentContext *)&v6 init];
 }
 
-- (SBDeviceApplicationScenePlaceholderContentContext)initWithActivationSettings:(id)a3
+- (SBDeviceApplicationScenePlaceholderContentContext)initWithActivationSettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   v13.receiver = self;
   v13.super_class = SBDeviceApplicationScenePlaceholderContentContext;
   v6 = [(SBDeviceApplicationScenePlaceholderContentContext *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_settings, a3);
+    objc_storeStrong(&v6->_settings, settings);
     v8 = [(SBActivationSettings *)v7->_settings objectForActivationSetting:5];
     url = v7->_url;
     v7->_url = v8;
@@ -39,7 +39,7 @@
       v7->_preferredContentType = 2;
     }
 
-    if ([v5 BOOLForActivationSetting:9])
+    if ([settingsCopy BOOLForActivationSetting:9])
     {
       v7->_preferredContentType = 1;
     }
@@ -48,11 +48,11 @@
   return v7;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [SBMutableDeviceApplicationScenePlaceholderContentContext alloc];
-  v5 = [(SBDeviceApplicationScenePlaceholderContentContext *)self activationSettings];
-  v6 = [(SBDeviceApplicationScenePlaceholderContentContext *)v4 initWithActivationSettings:v5];
+  activationSettings = [(SBDeviceApplicationScenePlaceholderContentContext *)self activationSettings];
+  v6 = [(SBDeviceApplicationScenePlaceholderContentContext *)v4 initWithActivationSettings:activationSettings];
 
   [(SBDeviceApplicationScenePlaceholderContentContext *)v6 setLayoutEnvironment:[(SBDeviceApplicationScenePlaceholderContentContext *)self layoutEnvironment]];
   [(SBDeviceApplicationScenePlaceholderContentContext *)v6 setPrefersLiveXIB:[(SBDeviceApplicationScenePlaceholderContentContext *)self prefersLiveXIB]];
@@ -60,8 +60,8 @@
   v7 = [(SBDeviceApplicationScenePlaceholderContentContext *)self url];
   [(SBDeviceApplicationScenePlaceholderContentContext *)v6 setUrl:v7];
 
-  v8 = [(SBDeviceApplicationScenePlaceholderContentContext *)self requestedLaunchIdentifier];
-  [(SBDeviceApplicationScenePlaceholderContentContext *)v6 setRequestedLaunchIdentifier:v8];
+  requestedLaunchIdentifier = [(SBDeviceApplicationScenePlaceholderContentContext *)self requestedLaunchIdentifier];
+  [(SBDeviceApplicationScenePlaceholderContentContext *)v6 setRequestedLaunchIdentifier:requestedLaunchIdentifier];
 
   [(SBDeviceApplicationScenePlaceholderContentContext *)v6 setHasOrientationMismatchForClassicApp:[(SBDeviceApplicationScenePlaceholderContentContext *)self hasOrientationMismatchForClassicApp]];
   [(SBDeviceApplicationScenePlaceholderContentContext *)v6 setSizingPolicy:[(SBDeviceApplicationScenePlaceholderContentContext *)self sizingPolicy]];

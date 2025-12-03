@@ -1,11 +1,11 @@
 @interface SCDANotifyObserver
-- (SCDANotifyObserver)initWithName:(id)a3 options:(unint64_t)a4 queue:(id)a5 delegate:(id)a6;
+- (SCDANotifyObserver)initWithName:(id)name options:(unint64_t)options queue:(id)queue delegate:(id)delegate;
 - (id)description;
 - (unint64_t)state;
 - (void)_invalidate;
-- (void)_updateStateWithToken:(int)a3;
+- (void)_updateStateWithToken:(int)token;
 - (void)dealloc;
-- (void)getStateWithCompletion:(id)a3;
+- (void)getStateWithCompletion:(id)completion;
 - (void)invalidate;
 @end
 
@@ -42,10 +42,10 @@
   [(SCDANotifyObserver *)&v3 dealloc];
 }
 
-- (void)_updateStateWithToken:(int)a3
+- (void)_updateStateWithToken:(int)token
 {
   state64 = 0;
-  if (a3 != -1 && !notify_get_state(a3, &state64) || (registrationToken = self->_registrationToken, registrationToken != -1) && !notify_get_state(registrationToken, &state64))
+  if (token != -1 && !notify_get_state(token, &state64) || (registrationToken = self->_registrationToken, registrationToken != -1) && !notify_get_state(registrationToken, &state64))
   {
     state = self->_state;
     v6 = state64;
@@ -61,11 +61,11 @@
   }
 }
 
-- (void)getStateWithCompletion:(id)a3
+- (void)getStateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     if (self->_options)
     {
@@ -75,13 +75,13 @@
       v7[2] = __45__SCDANotifyObserver_getStateWithCompletion___block_invoke;
       v7[3] = &unk_1E85D32E8;
       v7[4] = self;
-      v8 = v4;
+      v8 = completionCopy;
       dispatch_async(queue, v7);
     }
 
     else
     {
-      (*(v4 + 2))(v4, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
@@ -110,23 +110,23 @@
   return v2;
 }
 
-- (SCDANotifyObserver)initWithName:(id)a3 options:(unint64_t)a4 queue:(id)a5 delegate:(id)a6
+- (SCDANotifyObserver)initWithName:(id)name options:(unint64_t)options queue:(id)queue delegate:(id)delegate
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  nameCopy = name;
+  queueCopy = queue;
+  delegateCopy = delegate;
   v26.receiver = self;
   v26.super_class = SCDANotifyObserver;
   v13 = [(SCDANotifyObserver *)&v26 init];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [nameCopy copy];
     name = v13->_name;
     v13->_name = v14;
 
-    v13->_options = a4;
-    objc_storeStrong(&v13->_queue, a5);
-    v16 = objc_storeWeak(&v13->_delegate, v12);
+    v13->_options = options;
+    objc_storeStrong(&v13->_queue, queue);
+    v16 = objc_storeWeak(&v13->_delegate, delegateCopy);
     *&v13->_flags = *&v13->_flags & 0xFE | objc_opt_respondsToSelector() & 1;
 
     WeakRetained = objc_loadWeakRetained(&v13->_delegate);
@@ -148,10 +148,10 @@
     block[1] = 3221225472;
     block[2] = __58__SCDANotifyObserver_initWithName_options_queue_delegate___block_invoke;
     block[3] = &unk_1E85D2988;
-    v22 = v10;
+    v22 = nameCopy;
     v23 = v13;
     objc_copyWeak(v24, &location);
-    v24[1] = a4;
+    v24[1] = options;
     dispatch_async(queue, block);
     objc_destroyWeak(v24);
 

@@ -1,17 +1,17 @@
 @interface CKBlackholeConversationListViewController
-- (void)setSpecifier:(id)a3;
+- (void)setSpecifier:(id)specifier;
 @end
 
 @implementation CKBlackholeConversationListViewController
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
-  v5 = a3;
-  if (self->_specifier != v5)
+  specifierCopy = specifier;
+  if (self->_specifier != specifierCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_specifier, a3);
-    v5 = v6;
+    v6 = specifierCopy;
+    objc_storeStrong(&self->_specifier, specifier);
+    specifierCopy = v6;
   }
 }
 

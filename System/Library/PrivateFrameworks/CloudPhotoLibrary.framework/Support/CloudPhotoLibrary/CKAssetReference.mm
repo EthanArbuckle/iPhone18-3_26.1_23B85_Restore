@@ -6,8 +6,8 @@
 
 - (id)cplFingerPrint
 {
-  v2 = [(CKAssetReference *)self fileSignature];
-  v3 = [CKAsset cplFingerPrintForSignature:v2];
+  fileSignature = [(CKAssetReference *)self fileSignature];
+  v3 = [CKAsset cplFingerPrintForSignature:fileSignature];
 
   return v3;
 }

@@ -1,9 +1,9 @@
 @interface DebugDirectionAnnotationView
-- (DebugDirectionAnnotationView)initWithAnnotation:(id)a3 debugAnnotation:(id)a4 reuseIdentifier:(id)a5;
-- (void)_setMapPitchRadians:(double)a3;
-- (void)_setMapRotationRadians:(double)a3;
+- (DebugDirectionAnnotationView)initWithAnnotation:(id)annotation debugAnnotation:(id)debugAnnotation reuseIdentifier:(id)identifier;
+- (void)_setMapPitchRadians:(double)radians;
+- (void)_setMapRotationRadians:(double)radians;
 - (void)_updateTransform;
-- (void)setAnnotation:(id)a3;
+- (void)setAnnotation:(id)annotation;
 @end
 
 @implementation DebugDirectionAnnotationView
@@ -46,60 +46,60 @@
   +[CATransaction commit];
 }
 
-- (void)_setMapRotationRadians:(double)a3
+- (void)_setMapRotationRadians:(double)radians
 {
   v4.receiver = self;
   v4.super_class = DebugDirectionAnnotationView;
-  [(DebugDirectionAnnotationView *)&v4 _setMapRotationRadians:a3];
+  [(DebugDirectionAnnotationView *)&v4 _setMapRotationRadians:radians];
   [(DebugDirectionAnnotationView *)self _updateTransform];
 }
 
-- (void)_setMapPitchRadians:(double)a3
+- (void)_setMapPitchRadians:(double)radians
 {
   v4.receiver = self;
   v4.super_class = DebugDirectionAnnotationView;
-  [(DebugDirectionAnnotationView *)&v4 _setMapPitchRadians:a3];
+  [(DebugDirectionAnnotationView *)&v4 _setMapPitchRadians:radians];
   [(DebugDirectionAnnotationView *)self _updateTransform];
 }
 
-- (void)setAnnotation:(id)a3
+- (void)setAnnotation:(id)annotation
 {
-  objc_storeStrong(&self->_annotation, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_annotation, annotation);
+  annotationCopy = annotation;
   [(DebugDirectionAnnotation *)self->_annotation size];
   v7 = v6;
   [(DebugDirectionAnnotation *)self->_annotation size];
   [(CALayer *)self->_directionView setBounds:0.0, 0.0, v7, v8];
-  v9 = [(DebugDirectionAnnotation *)self->_annotation color];
-  -[CALayer setBackgroundColor:](self->_directionView, "setBackgroundColor:", [v9 CGColor]);
+  color = [(DebugDirectionAnnotation *)self->_annotation color];
+  -[CALayer setBackgroundColor:](self->_directionView, "setBackgroundColor:", [color CGColor]);
 
   [(DebugDirectionAnnotation *)self->_annotation size];
   v11 = v10;
   [(DebugDirectionAnnotation *)self->_annotation size];
   [(CALayer *)self->_fovLeftDirectionView setBounds:0.0, 0.0, v11, v12];
-  v13 = [(DebugDirectionAnnotation *)self->_annotation color];
-  -[CALayer setBackgroundColor:](self->_fovLeftDirectionView, "setBackgroundColor:", [v13 CGColor]);
+  color2 = [(DebugDirectionAnnotation *)self->_annotation color];
+  -[CALayer setBackgroundColor:](self->_fovLeftDirectionView, "setBackgroundColor:", [color2 CGColor]);
 
   [(DebugDirectionAnnotation *)self->_annotation size];
   v15 = v14;
   [(DebugDirectionAnnotation *)self->_annotation size];
   [(CALayer *)self->_fovRightDirectionView setBounds:0.0, 0.0, v15, v16];
-  v17 = [(DebugDirectionAnnotation *)self->_annotation color];
-  -[CALayer setBackgroundColor:](self->_fovRightDirectionView, "setBackgroundColor:", [v17 CGColor]);
+  color3 = [(DebugDirectionAnnotation *)self->_annotation color];
+  -[CALayer setBackgroundColor:](self->_fovRightDirectionView, "setBackgroundColor:", [color3 CGColor]);
 
   [(DebugDirectionAnnotationView *)self _updateTransform];
 }
 
-- (DebugDirectionAnnotationView)initWithAnnotation:(id)a3 debugAnnotation:(id)a4 reuseIdentifier:(id)a5
+- (DebugDirectionAnnotationView)initWithAnnotation:(id)annotation debugAnnotation:(id)debugAnnotation reuseIdentifier:(id)identifier
 {
-  v8 = a3;
+  annotationCopy = annotation;
   v52.receiver = self;
   v52.super_class = DebugDirectionAnnotationView;
-  v9 = [(DebugDirectionAnnotationView *)&v52 initWithAnnotation:v8 reuseIdentifier:a5];
+  v9 = [(DebugDirectionAnnotationView *)&v52 initWithAnnotation:annotationCopy reuseIdentifier:identifier];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_annotation, a3);
+    objc_storeStrong(&v9->_annotation, annotation);
     v11 = +[CALayer layer];
     directionView = v10->_directionView;
     v10->_directionView = v11;
@@ -110,8 +110,8 @@
     [(CALayer *)v10->_directionView setBounds:0.0, 0.0, v14, v15];
     [(CALayer *)v10->_directionView setPosition:0.0, 0.0];
     [(CALayer *)v10->_directionView setAnchorPoint:0.5, 0.0];
-    v16 = [(DebugDirectionAnnotation *)v10->_annotation color];
-    -[CALayer setBackgroundColor:](v10->_directionView, "setBackgroundColor:", [v16 CGColor]);
+    color = [(DebugDirectionAnnotation *)v10->_annotation color];
+    -[CALayer setBackgroundColor:](v10->_directionView, "setBackgroundColor:", [color CGColor]);
 
     v57[0] = @"bounds";
     v17 = +[NSNull null];
@@ -131,8 +131,8 @@
     v22 = [NSDictionary dictionaryWithObjects:v58 forKeys:v57 count:5];
     [(CALayer *)v10->_directionView setActions:v22];
 
-    v23 = [(DebugDirectionAnnotationView *)v10 layer];
-    [v23 addSublayer:v10->_directionView];
+    layer = [(DebugDirectionAnnotationView *)v10 layer];
+    [layer addSublayer:v10->_directionView];
 
     v24 = +[CALayer layer];
     fovLeftDirectionView = v10->_fovLeftDirectionView;
@@ -144,8 +144,8 @@
     [(CALayer *)v10->_fovLeftDirectionView setFrame:0.0, 0.0, v27, v28];
     [(CALayer *)v10->_fovLeftDirectionView setPosition:0.0, 0.0];
     [(CALayer *)v10->_fovLeftDirectionView setAnchorPoint:0.5, 0.0];
-    v29 = [(DebugDirectionAnnotation *)v10->_annotation color];
-    -[CALayer setBackgroundColor:](v10->_fovLeftDirectionView, "setBackgroundColor:", [v29 CGColor]);
+    color2 = [(DebugDirectionAnnotation *)v10->_annotation color];
+    -[CALayer setBackgroundColor:](v10->_fovLeftDirectionView, "setBackgroundColor:", [color2 CGColor]);
 
     v55[0] = @"bounds";
     v30 = +[NSNull null];
@@ -165,8 +165,8 @@
     v35 = [NSDictionary dictionaryWithObjects:v56 forKeys:v55 count:5];
     [(CALayer *)v10->_fovLeftDirectionView setActions:v35];
 
-    v36 = [(DebugDirectionAnnotationView *)v10 layer];
-    [v36 addSublayer:v10->_fovLeftDirectionView];
+    layer2 = [(DebugDirectionAnnotationView *)v10 layer];
+    [layer2 addSublayer:v10->_fovLeftDirectionView];
 
     v37 = +[CALayer layer];
     fovRightDirectionView = v10->_fovRightDirectionView;
@@ -178,8 +178,8 @@
     [(CALayer *)v10->_fovRightDirectionView setFrame:0.0, 0.0, v40, v41];
     [(CALayer *)v10->_fovRightDirectionView setPosition:0.0, 0.0];
     [(CALayer *)v10->_fovRightDirectionView setAnchorPoint:0.5, 0.0];
-    v42 = [(DebugDirectionAnnotation *)v10->_annotation color];
-    -[CALayer setBackgroundColor:](v10->_fovRightDirectionView, "setBackgroundColor:", [v42 CGColor]);
+    color3 = [(DebugDirectionAnnotation *)v10->_annotation color];
+    -[CALayer setBackgroundColor:](v10->_fovRightDirectionView, "setBackgroundColor:", [color3 CGColor]);
 
     v53[0] = @"bounds";
     v43 = +[NSNull null];
@@ -199,8 +199,8 @@
     v48 = [NSDictionary dictionaryWithObjects:v54 forKeys:v53 count:5];
     [(CALayer *)v10->_fovRightDirectionView setActions:v48];
 
-    v49 = [(DebugDirectionAnnotationView *)v10 layer];
-    [v49 addSublayer:v10->_fovRightDirectionView];
+    layer3 = [(DebugDirectionAnnotationView *)v10 layer];
+    [layer3 addSublayer:v10->_fovRightDirectionView];
 
     v50 = v10;
   }

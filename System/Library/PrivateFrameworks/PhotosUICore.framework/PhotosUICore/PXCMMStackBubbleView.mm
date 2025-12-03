@@ -1,33 +1,33 @@
 @interface PXCMMStackBubbleView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PXCMMStackBubbleView)initWithCoder:(id)a3;
-- (PXCMMStackBubbleView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PXCMMStackBubbleView)initWithCoder:(id)coder;
+- (PXCMMStackBubbleView)initWithFrame:(CGRect)frame;
 - (void)_updateSubviews;
 - (void)layoutSubviews;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setDataSourceManager:(id)a3;
-- (void)setMomentShare:(id)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setDataSourceManager:(id)manager;
+- (void)setMomentShare:(id)share;
 @end
 
 @implementation PXCMMStackBubbleView
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (DataSourceManagerObservationContext_134990 != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (DataSourceManagerObservationContext_134990 != context)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXCMMStackBubbleView.m" lineNumber:125 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMStackBubbleView.m" lineNumber:125 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if (v6)
+  if (changeCopy)
   {
-    v11 = v9;
+    v11 = observableCopy;
     [(PXCMMStackBubbleView *)self _updateSubviews];
-    v9 = v11;
+    observableCopy = v11;
   }
 }
 
@@ -44,12 +44,12 @@
 
 - (void)_updateSubviews
 {
-  v3 = [(PXCMMStackBubbleView *)self dataSourceManager];
-  v4 = [v3 dataSource];
-  v5 = [v4 containsAnyItems];
+  dataSourceManager = [(PXCMMStackBubbleView *)self dataSourceManager];
+  dataSource = [dataSourceManager dataSource];
+  containsAnyItems = [dataSource containsAnyItems];
 
   stackView = self->_stackView;
-  if (v5)
+  if (containsAnyItems)
   {
     if (!stackView)
     {
@@ -58,11 +58,11 @@
       v9 = self->_stackView;
       self->_stackView = v8;
 
-      v10 = [(PXCMMStackBubbleView *)self mediaProvider];
-      [(PXMessagesStackView *)self->_stackView setMediaProvider:v10];
+      mediaProvider = [(PXCMMStackBubbleView *)self mediaProvider];
+      [(PXMessagesStackView *)self->_stackView setMediaProvider:mediaProvider];
 
-      v11 = [(PXCMMStackBubbleView *)self dataSourceManager];
-      [(PXBaseMessagesStackView *)self->_stackView setDataSourceManager:v11];
+      dataSourceManager2 = [(PXCMMStackBubbleView *)self dataSourceManager];
+      [(PXBaseMessagesStackView *)self->_stackView setDataSourceManager:dataSourceManager2];
 
       [(PXCMMStackBubbleView *)self addSubview:self->_stackView];
     }
@@ -99,35 +99,35 @@
   }
 }
 
-- (void)setDataSourceManager:(id)a3
+- (void)setDataSourceManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   dataSourceManager = self->_dataSourceManager;
-  if (dataSourceManager != v5)
+  if (dataSourceManager != managerCopy)
   {
-    v7 = v5;
+    v7 = managerCopy;
     [(PXSectionedDataSourceManager *)dataSourceManager unregisterChangeObserver:self context:DataSourceManagerObservationContext_134990];
-    objc_storeStrong(&self->_dataSourceManager, a3);
+    objc_storeStrong(&self->_dataSourceManager, manager);
     [(PXSectionedDataSourceManager *)self->_dataSourceManager registerChangeObserver:self context:DataSourceManagerObservationContext_134990];
     [(PXCMMStackBubbleView *)self _updateSubviews];
-    v5 = v7;
+    managerCopy = v7;
   }
 }
 
-- (void)setMomentShare:(id)a3
+- (void)setMomentShare:(id)share
 {
-  v8 = a3;
+  shareCopy = share;
   if (([(PHMomentShare *)self->_momentShare isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_momentShare, a3);
-    if (v8)
+    objc_storeStrong(&self->_momentShare, share);
+    if (shareCopy)
     {
-      v5 = PXCuratedAssetsWithFallbackForMomentShare(v8, 1);
+      v5 = PXCuratedAssetsWithFallbackForMomentShare(shareCopy, 1);
       LOBYTE(v7) = 0;
-      v6 = [PXPhotoKitAssetsDataSourceManager dataSourceManagerForAssetCollection:v8 existingAssetsFetchResult:v5 existingKeyAssetsFetchResult:0 fetchPropertySets:0 basePredicate:0 options:0 ignoreSharedLibraryFilters:v7];
-      if ([v8 status] == 2)
+      v6 = [PXPhotoKitAssetsDataSourceManager dataSourceManagerForAssetCollection:shareCopy existingAssetsFetchResult:v5 existingKeyAssetsFetchResult:0 fetchPropertySets:0 basePredicate:0 options:0 ignoreSharedLibraryFilters:v7];
+      if ([shareCopy status] == 2)
       {
-        [v8 acceptMomentShareWithCompletion:&__block_literal_global_135003];
+        [shareCopy acceptMomentShareWithCompletion:&__block_literal_global_135003];
       }
     }
 
@@ -156,10 +156,10 @@ void __39__PXCMMStackBubbleView_setMomentShare___block_invoke(uint64_t a1, char 
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(PXCMMStackBubbleView *)self maximumHeight];
   if (height >= v5)
   {
@@ -174,24 +174,24 @@ void __39__PXCMMStackBubbleView_setMomentShare___block_invoke(uint64_t a1, char 
   return result;
 }
 
-- (PXCMMStackBubbleView)initWithCoder:(id)a3
+- (PXCMMStackBubbleView)initWithCoder:(id)coder
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXCMMStackBubbleView.m" lineNumber:43 description:{@"%s is not available as initializer", "-[PXCMMStackBubbleView initWithCoder:]"}];
+  coderCopy = coder;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMStackBubbleView.m" lineNumber:43 description:{@"%s is not available as initializer", "-[PXCMMStackBubbleView initWithCoder:]"}];
 
   abort();
 }
 
-- (PXCMMStackBubbleView)initWithFrame:(CGRect)a3
+- (PXCMMStackBubbleView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = PXCMMStackBubbleView;
-  v3 = [(PXCMMStackBubbleView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXCMMStackBubbleView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69789A8] sharedMomentSharePhotoLibrary];
-    v5 = [PXPhotoKitUIMediaProvider mediaProviderWithLibrary:v4];
+    mEMORY[0x1E69789A8] = [MEMORY[0x1E69789A8] sharedMomentSharePhotoLibrary];
+    v5 = [PXPhotoKitUIMediaProvider mediaProviderWithLibrary:mEMORY[0x1E69789A8]];
     mediaProvider = v3->_mediaProvider;
     v3->_mediaProvider = v5;
 

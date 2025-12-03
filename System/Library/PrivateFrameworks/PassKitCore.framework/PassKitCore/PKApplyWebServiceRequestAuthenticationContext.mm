@@ -1,13 +1,13 @@
 @interface PKApplyWebServiceRequestAuthenticationContext
-- (PKApplyWebServiceRequestAuthenticationContext)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PKApplyWebServiceRequestAuthenticationContext)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKApplyWebServiceRequestAuthenticationContext
 
-- (PKApplyWebServiceRequestAuthenticationContext)initWithCoder:(id)a3
+- (PKApplyWebServiceRequestAuthenticationContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = PKApplyWebServiceRequestAuthenticationContext;
   v5 = [(PKApplyWebServiceRequestAuthenticationContext *)&v18 init];
@@ -16,19 +16,19 @@
     v6 = objc_alloc(MEMORY[0x1E695DFD8]);
     v7 = objc_opt_class();
     v8 = [v6 initWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"certificates"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"certificates"];
     certificates = v5->_certificates;
     v5->_certificates = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"signaturePayload"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"signaturePayload"];
     signaturePayload = v5->_signaturePayload;
     v5->_signaturePayload = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"signature"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"signature"];
     signature = v5->_signature;
     v5->_signature = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"authenticationCrediential"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"authenticationCrediential"];
     authenticationCrediential = v5->_authenticationCrediential;
     v5->_authenticationCrediential = v15;
   }
@@ -36,14 +36,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   certificates = self->_certificates;
-  v5 = a3;
-  [v5 encodeObject:certificates forKey:@"certificates"];
-  [v5 encodeObject:self->_signaturePayload forKey:@"signaturePayload"];
-  [v5 encodeObject:self->_signature forKey:@"signature"];
-  [v5 encodeObject:self->_authenticationCrediential forKey:@"authenticationCrediential"];
+  coderCopy = coder;
+  [coderCopy encodeObject:certificates forKey:@"certificates"];
+  [coderCopy encodeObject:self->_signaturePayload forKey:@"signaturePayload"];
+  [coderCopy encodeObject:self->_signature forKey:@"signature"];
+  [coderCopy encodeObject:self->_authenticationCrediential forKey:@"authenticationCrediential"];
 }
 
 @end

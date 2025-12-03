@@ -1,8 +1,8 @@
 @interface ICDebugStatusRootView
-- (_TtC11MobileNotesP33_679C7337F26BC959ACC0954CE78EECC421ICDebugStatusRootView)initWithCoder:(id)a3;
-- (_TtC11MobileNotesP33_679C7337F26BC959ACC0954CE78EECC421ICDebugStatusRootView)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)handlePanGesture:(id)a3;
+- (_TtC11MobileNotesP33_679C7337F26BC959ACC0954CE78EECC421ICDebugStatusRootView)initWithCoder:(id)coder;
+- (_TtC11MobileNotesP33_679C7337F26BC959ACC0954CE78EECC421ICDebugStatusRootView)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)handlePanGesture:(id)gesture;
 - (void)layoutSubviews;
 - (void)safeAreaInsetsDidChange;
 - (void)updateColors;
@@ -11,7 +11,7 @@
 
 @implementation ICDebugStatusRootView
 
-- (_TtC11MobileNotesP33_679C7337F26BC959ACC0954CE78EECC421ICDebugStatusRootView)initWithCoder:(id)a3
+- (_TtC11MobileNotesP33_679C7337F26BC959ACC0954CE78EECC421ICDebugStatusRootView)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC11MobileNotesP33_679C7337F26BC959ACC0954CE78EECC421ICDebugStatusRootView_panStart;
   *v3 = 0;
@@ -24,15 +24,15 @@
   return result;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v13.receiver = self;
   v13.super_class = swift_getObjectType();
   v7 = v13.receiver;
-  v8 = a4;
-  v9 = [(ICDebugStatusRootView *)&v13 hitTest:v8 withEvent:x, y];
+  eventCopy = event;
+  v9 = [(ICDebugStatusRootView *)&v13 hitTest:eventCopy withEvent:x, y];
   if (v9)
   {
     v10 = v9;
@@ -43,7 +43,7 @@
   }
 
   Strong = swift_unknownObjectUnownedLoadStrong();
-  v10 = [Strong hitTest:v8 withEvent:{x, y}];
+  v10 = [Strong hitTest:eventCopy withEvent:{x, y}];
 
 LABEL_5:
 
@@ -71,26 +71,26 @@ LABEL_5:
   }
 }
 
-- (void)handlePanGesture:(id)a3
+- (void)handlePanGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = self;
-  sub_100234E48(v4);
+  gestureCopy = gesture;
+  selfCopy = self;
+  sub_100234E48(gestureCopy);
 }
 
 - (void)updateColors
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002349FC();
 }
 
 - (void)updateInitialPosition
 {
-  v2 = self;
+  selfCopy = self;
   sub_10023480C();
 }
 
-- (_TtC11MobileNotesP33_679C7337F26BC959ACC0954CE78EECC421ICDebugStatusRootView)initWithFrame:(CGRect)a3
+- (_TtC11MobileNotesP33_679C7337F26BC959ACC0954CE78EECC421ICDebugStatusRootView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

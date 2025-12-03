@@ -12,7 +12,7 @@
   v3[2] = xmmword_20C14BFD0;
   v3[3] = xmmword_20C14BFE0;
   v3[4] = xmmword_20C14BFF0;
-  v1 = [a1 _colorEffectCAMatrix:v3];
+  v1 = [self _colorEffectCAMatrix:v3];
 
   return v1;
 }
@@ -27,7 +27,7 @@
   v5 = 0;
   v7 = 0;
   v8 = 1065353216;
-  v1 = [a1 _colorEffectCAMatrix:v3];
+  v1 = [self _colorEffectCAMatrix:v3];
 
   return v1;
 }

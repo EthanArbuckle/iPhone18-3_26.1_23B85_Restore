@@ -1,7 +1,7 @@
 @interface HMDHomeManagerXPCMessageSendPolicy
-- (BOOL)canSendWithPolicyParameters:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (HMDHomeManagerXPCMessageSendPolicy)initWithEntitlements:(unint64_t)a3 options:(unint64_t)a4 active:(BOOL)a5;
+- (BOOL)canSendWithPolicyParameters:(id)parameters;
+- (BOOL)isEqual:(id)equal;
+- (HMDHomeManagerXPCMessageSendPolicy)initWithEntitlements:(unint64_t)entitlements options:(unint64_t)options active:(BOOL)active;
 - (id)attributeDescriptions;
 @end
 
@@ -31,10 +31,10 @@
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v11) = 1;
   }
@@ -43,9 +43,9 @@
   {
     v13.receiver = self;
     v13.super_class = HMDHomeManagerXPCMessageSendPolicy;
-    if ([(HMDXPCMessageSendPolicy *)&v13 isEqual:v4])
+    if ([(HMDXPCMessageSendPolicy *)&v13 isEqual:equalCopy])
     {
-      v5 = v4;
+      v5 = equalCopy;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -61,8 +61,8 @@
 
       if (v7 && (v8 = [(HMDHomeManagerXPCMessageSendPolicy *)self options], v8 == [(HMDHomeManagerXPCMessageSendPolicy *)v7 options]) && (v9 = [(HMDHomeManagerXPCMessageSendPolicy *)self entitlements], v9 == [(HMDHomeManagerXPCMessageSendPolicy *)v7 entitlements]))
       {
-        v10 = [(HMDHomeManagerXPCMessageSendPolicy *)self isActive];
-        v11 = v10 ^ [(HMDHomeManagerXPCMessageSendPolicy *)v7 isActive]^ 1;
+        isActive = [(HMDHomeManagerXPCMessageSendPolicy *)self isActive];
+        v11 = isActive ^ [(HMDHomeManagerXPCMessageSendPolicy *)v7 isActive]^ 1;
       }
 
       else
@@ -80,14 +80,14 @@
   return v11;
 }
 
-- (BOOL)canSendWithPolicyParameters:(id)a3
+- (BOOL)canSendWithPolicyParameters:(id)parameters
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  parametersCopy = parameters;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = parametersCopy;
   }
 
   else
@@ -100,7 +100,7 @@
   if (!v6)
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
@@ -110,7 +110,7 @@
       v28 = 2112;
       v29 = objc_opt_class();
       v30 = 2112;
-      v31 = v4;
+      v31 = parametersCopy;
       v15 = "%{public}@Cannot send message with policy parameters because they are of unexpected class %@: %@";
       v16 = v13;
       v17 = 32;
@@ -124,19 +124,19 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v7 = [v6 entitlements];
-  v8 = [(HMDHomeManagerXPCMessageSendPolicy *)self entitlements]& v7;
+  entitlements = [v6 entitlements];
+  v8 = [(HMDHomeManagerXPCMessageSendPolicy *)self entitlements]& entitlements;
   if (v8 != [(HMDHomeManagerXPCMessageSendPolicy *)self entitlements])
   {
     v11 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy2 = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
       v14 = HMFGetLogIdentifier();
       [v6 entitlements];
       v19 = HMXPCClientEntitlementsShortDescription();
-      [(HMDHomeManagerXPCMessageSendPolicy *)v18 entitlements];
+      [(HMDHomeManagerXPCMessageSendPolicy *)selfCopy2 entitlements];
       v20 = HMXPCClientEntitlementsShortDescription();
       v26 = 138543874;
       v27 = v14;
@@ -160,11 +160,11 @@ LABEL_18:
 
   if ([(HMDHomeManagerXPCMessageSendPolicy *)self options])
   {
-    v9 = [(HMDHomeManagerXPCMessageSendPolicy *)self options];
-    if (([v6 options] & v9) == 0)
+    options = [(HMDHomeManagerXPCMessageSendPolicy *)self options];
+    if (([v6 options] & options) == 0)
     {
       v11 = objc_autoreleasePoolPush();
-      v24 = self;
+      selfCopy3 = self;
       v13 = HMFGetOSLogHandle();
       if (!os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
@@ -174,7 +174,7 @@ LABEL_18:
       v14 = HMFGetLogIdentifier();
       [v6 options];
       v19 = HMHomeManagerOptionsToString();
-      [(HMDHomeManagerXPCMessageSendPolicy *)v24 options];
+      [(HMDHomeManagerXPCMessageSendPolicy *)selfCopy3 options];
       v20 = HMHomeManagerOptionsToString();
       v26 = 138543874;
       v27 = v14;
@@ -190,7 +190,7 @@ LABEL_18:
   if (-[HMDHomeManagerXPCMessageSendPolicy isActive](self, "isActive") && ([v6 isActive] & 1) == 0)
   {
     v11 = objc_autoreleasePoolPush();
-    v25 = self;
+    selfCopy4 = self;
     v13 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
@@ -213,40 +213,40 @@ LABEL_19:
   return v10;
 }
 
-- (HMDHomeManagerXPCMessageSendPolicy)initWithEntitlements:(unint64_t)a3 options:(unint64_t)a4 active:(BOOL)a5
+- (HMDHomeManagerXPCMessageSendPolicy)initWithEntitlements:(unint64_t)entitlements options:(unint64_t)options active:(BOOL)active
 {
-  if (a4)
+  if (options)
   {
     v12.receiver = self;
     v12.super_class = HMDHomeManagerXPCMessageSendPolicy;
     v8 = [(HMDHomeManagerXPCMessageSendPolicy *)&v12 init];
     if (v8)
     {
-      v8->_options = a4;
-      if (a3 <= 1)
+      v8->_options = options;
+      if (entitlements <= 1)
       {
-        v9 = 1;
+        entitlementsCopy = 1;
       }
 
       else
       {
-        v9 = a3;
+        entitlementsCopy = entitlements;
       }
 
-      v8->_entitlements = v9;
-      v8->_active = a5;
+      v8->_entitlements = entitlementsCopy;
+      v8->_active = active;
     }
 
     self = v8;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 @end

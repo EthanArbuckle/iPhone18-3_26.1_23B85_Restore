@@ -1,16 +1,16 @@
 @interface RTTUIConversationControllerCoordinator
 + (id)sharedInstance;
-- (BOOL)realtimeTextDidChange:(id)a3 forUtterance:(id)a4 lastRowPath:(id)a5;
+- (BOOL)realtimeTextDidChange:(id)change forUtterance:(id)utterance lastRowPath:(id)path;
 - (RTTUIConversationControllerCoordinator)init;
-- (id)conversationControllerForCallUUID:(id)a3;
-- (id)recentMessageControllerForCallUUID:(id)a3;
-- (void)_registerForTranscriptionUpdatesForCall:(id)a3;
-- (void)_sendNewUtteranceString:(id)a3 atIndex:(unint64_t)a4 forCellPath:(id)a5 call:(id)a6;
-- (void)hearingServerDidDie:(id)a3;
-- (void)processCallScreeningTranscription:(id)a3 transcriptionID:(id)a4 callUUID:(id)a5;
+- (id)conversationControllerForCallUUID:(id)d;
+- (id)recentMessageControllerForCallUUID:(id)d;
+- (void)_registerForTranscriptionUpdatesForCall:(id)call;
+- (void)_sendNewUtteranceString:(id)string atIndex:(unint64_t)index forCellPath:(id)path call:(id)call;
+- (void)hearingServerDidDie:(id)die;
+- (void)processCallScreeningTranscription:(id)transcription transcriptionID:(id)d callUUID:(id)iD;
 - (void)processUtteranceQueue;
-- (void)registerForCallUpdates:(id)a3;
-- (void)sendNewUtteranceString:(id)a3 controller:(id)a4;
+- (void)registerForCallUpdates:(id)updates;
+- (void)sendNewUtteranceString:(id)string controller:(id)controller;
 @end
 
 @implementation RTTUIConversationControllerCoordinator
@@ -21,7 +21,7 @@
   block[1] = 3221225472;
   block[2] = __56__RTTUIConversationControllerCoordinator_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -57,9 +57,9 @@ uint64_t __56__RTTUIConversationControllerCoordinator_sharedInstance__block_invo
   recentMessageControllers = v2->_recentMessageControllers;
   v2->_recentMessageControllers = v8;
 
-  v10 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   utteranceBuffer = v2->_utteranceBuffer;
-  v2->_utteranceBuffer = v10;
+  v2->_utteranceBuffer = array;
 
   v12 = objc_alloc_init(MEMORY[0x277CCAAF8]);
   realtimeSendLock = v2->_realtimeSendLock;
@@ -69,54 +69,54 @@ uint64_t __56__RTTUIConversationControllerCoordinator_sharedInstance__block_invo
   registeredCalls = v2->_registeredCalls;
   v2->_registeredCalls = v14;
 
-  v16 = [MEMORY[0x277D440C8] sharedInstance];
-  [v16 startServerWithDelegate:v2];
+  mEMORY[0x277D440C8] = [MEMORY[0x277D440C8] sharedInstance];
+  [mEMORY[0x277D440C8] startServerWithDelegate:v2];
 
   return v2;
 }
 
-- (void)sendNewUtteranceString:(id)a3 controller:(id)a4
+- (void)sendNewUtteranceString:(id)string controller:(id)controller
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 call];
+  stringCopy = string;
+  controllerCopy = controller;
+  call = [controllerCopy call];
   v9 = AXLogRTT();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = stringCopy;
     _os_log_impl(&dword_261725000, v9, OS_LOG_TYPE_INFO, "Sending utterance |%@|", &buf, 0xCu);
   }
 
-  if ([v6 length])
+  if ([stringCopy length])
   {
-    v10 = [v6 copy];
+    v10 = [stringCopy copy];
     v11 = MEMORY[0x277D440E8];
-    v12 = [v7 currentContactPath];
-    v13 = [v11 utteranceWithContactPath:v12 andText:v10];
-    v14 = [v7 addUtterance:v13];
+    currentContactPath = [controllerCopy currentContactPath];
+    v13 = [v11 utteranceWithContactPath:currentContactPath andText:v10];
+    v14 = [controllerCopy addUtterance:v13];
 
-    v15 = [v7 utteranceCellAtIndexPath:v14];
+    v15 = [controllerCopy utteranceCellAtIndexPath:v14];
     *&buf = 0;
     *(&buf + 1) = &buf;
     v36 = 0x3032000000;
     v37 = __Block_byref_object_copy_;
     v38 = __Block_byref_object_dispose_;
-    v16 = [v15 utterance];
-    v17 = [v16 text];
-    v39 = [v17 copy];
+    utterance = [v15 utterance];
+    text = [utterance text];
+    v39 = [text copy];
 
     v18 = AXLogRTT();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
-      v19 = [v15 utterance];
+      utterance2 = [v15 utterance];
       *v29 = 138412802;
       v30 = v15;
       v31 = 2112;
       v32 = v14;
       v33 = 2112;
-      v34 = v19;
+      v34 = utterance2;
       _os_log_impl(&dword_261725000, v18, OS_LOG_TYPE_INFO, "Got cell %@[%@] with utterance %@", v29, 0x20u);
     }
 
@@ -126,10 +126,10 @@ uint64_t __56__RTTUIConversationControllerCoordinator_sharedInstance__block_invo
     block[2] = __76__RTTUIConversationControllerCoordinator_sendNewUtteranceString_controller___block_invoke;
     block[3] = &unk_279AE4C98;
     v24 = v10;
-    v25 = self;
+    selfCopy = self;
     p_buf = &buf;
     v26 = v14;
-    v27 = v8;
+    v27 = call;
     v21 = v14;
     v22 = v10;
     dispatch_async(utteranceRequestQueue, block);
@@ -172,25 +172,25 @@ uint64_t __76__RTTUIConversationControllerCoordinator_sendNewUtteranceString_con
   return [*(a1 + 40) _sendNewUtteranceString:*(*(*(a1 + 64) + 8) + 40) atIndex:v7 forCellPath:*(a1 + 48) call:*(a1 + 56)];
 }
 
-- (id)conversationControllerForCallUUID:(id)a3
+- (id)conversationControllerForCallUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [RTTUIConversationControllerCoordinator conversationControllerForCallUUID:];
   }
 
-  v5 = [(RTTUIConversationControllerCoordinator *)self conversationControllers];
+  conversationControllers = [(RTTUIConversationControllerCoordinator *)self conversationControllers];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __76__RTTUIConversationControllerCoordinator_conversationControllerForCallUUID___block_invoke;
   v10[3] = &unk_279AE4CC0;
-  v11 = v4;
-  v6 = v4;
-  v7 = [v5 ax_filteredArrayUsingBlock:v10];
-  v8 = [v7 lastObject];
+  v11 = dCopy;
+  v6 = dCopy;
+  v7 = [conversationControllers ax_filteredArrayUsingBlock:v10];
+  lastObject = [v7 lastObject];
 
-  return v8;
+  return lastObject;
 }
 
 uint64_t __76__RTTUIConversationControllerCoordinator_conversationControllerForCallUUID___block_invoke(uint64_t a1, void *a2)
@@ -202,25 +202,25 @@ uint64_t __76__RTTUIConversationControllerCoordinator_conversationControllerForC
   return v5;
 }
 
-- (id)recentMessageControllerForCallUUID:(id)a3
+- (id)recentMessageControllerForCallUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [RTTUIConversationControllerCoordinator recentMessageControllerForCallUUID:];
   }
 
-  v5 = [(RTTUIConversationControllerCoordinator *)self recentMessageControllers];
+  recentMessageControllers = [(RTTUIConversationControllerCoordinator *)self recentMessageControllers];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __77__RTTUIConversationControllerCoordinator_recentMessageControllerForCallUUID___block_invoke;
   v10[3] = &unk_279AE4CE8;
-  v11 = v4;
-  v6 = v4;
-  v7 = [v5 ax_filteredArrayUsingBlock:v10];
-  v8 = [v7 lastObject];
+  v11 = dCopy;
+  v6 = dCopy;
+  v7 = [recentMessageControllers ax_filteredArrayUsingBlock:v10];
+  lastObject = [v7 lastObject];
 
-  return v8;
+  return lastObject;
 }
 
 uint64_t __77__RTTUIConversationControllerCoordinator_recentMessageControllerForCallUUID___block_invoke(uint64_t a1, void *a2)
@@ -232,22 +232,22 @@ uint64_t __77__RTTUIConversationControllerCoordinator_recentMessageControllerFor
   return v5;
 }
 
-- (void)registerForCallUpdates:(id)a3
+- (void)registerForCallUpdates:(id)updates
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (![(NSMutableSet *)self->_registeredCalls containsObject:v4])
+  updatesCopy = updates;
+  if (![(NSMutableSet *)self->_registeredCalls containsObject:updatesCopy])
   {
-    [(NSMutableSet *)self->_registeredCalls addObject:v4];
-    v6 = [MEMORY[0x277D440C8] sharedInstance];
+    [(NSMutableSet *)self->_registeredCalls addObject:updatesCopy];
+    mEMORY[0x277D440C8] = [MEMORY[0x277D440C8] sharedInstance];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __65__RTTUIConversationControllerCoordinator_registerForCallUpdates___block_invoke;
     v21[3] = &unk_279AE4D38;
     v21[4] = self;
-    v7 = v4;
+    v7 = updatesCopy;
     v22 = v7;
-    [v6 registerForUpdatesWithTranslation:v21 forCallUID:v7];
+    [mEMORY[0x277D440C8] registerForUpdatesWithTranslation:v21 forCallUID:v7];
 
     v23 = 0;
     v24 = &v23;
@@ -273,24 +273,24 @@ uint64_t __77__RTTUIConversationControllerCoordinator_recentMessageControllerFor
     {
       if (v8())
       {
-        v11 = [MEMORY[0x277D440C8] sharedInstance];
+        mEMORY[0x277D440C8]2 = [MEMORY[0x277D440C8] sharedInstance];
         v19[0] = MEMORY[0x277D85DD0];
         v19[1] = 3221225472;
         v19[2] = __65__RTTUIConversationControllerCoordinator_registerForCallUpdates___block_invoke_53;
         v19[3] = &unk_279AE4D88;
         v19[4] = self;
         v20 = v7;
-        [v11 registerForRemoteUpdates:v19 forCallUID:v20];
+        [mEMORY[0x277D440C8]2 registerForRemoteUpdates:v19 forCallUID:v20];
 
 LABEL_18:
-        v16 = [MEMORY[0x277D440C8] sharedInstance];
+        mEMORY[0x277D440C8]3 = [MEMORY[0x277D440C8] sharedInstance];
         v17[0] = MEMORY[0x277D85DD0];
         v17[1] = 3221225472;
         v17[2] = __65__RTTUIConversationControllerCoordinator_registerForCallUpdates___block_invoke_56;
         v17[3] = &unk_279AE4DD8;
         v17[4] = self;
         v18 = v7;
-        [v16 registerForServiceUpdates:v17 forCallUID:v18];
+        [mEMORY[0x277D440C8]3 registerForServiceUpdates:v17 forCallUID:v18];
 
         goto LABEL_19;
       }
@@ -344,7 +344,7 @@ LABEL_18:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = updatesCopy;
     _os_log_impl(&dword_261725000, v5, OS_LOG_TYPE_INFO, "Already registered to listen for updates from %@", &buf, 0xCu);
   }
 
@@ -542,27 +542,27 @@ void __65__RTTUIConversationControllerCoordinator_registerForCallUpdates___block
   }
 }
 
-- (BOOL)realtimeTextDidChange:(id)a3 forUtterance:(id)a4 lastRowPath:(id)a5
+- (BOOL)realtimeTextDidChange:(id)change forUtterance:(id)utterance lastRowPath:(id)path
 {
   v52 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v33 = [v8 call];
-  v11 = [(NSLock *)self->_realtimeSendLock tryLock];
-  if (v11)
+  changeCopy = change;
+  utteranceCopy = utterance;
+  pathCopy = path;
+  call = [changeCopy call];
+  tryLock = [(NSLock *)self->_realtimeSendLock tryLock];
+  if (tryLock)
   {
-    if ([v9 isMe] && (objc_msgSend(v9, "hasTimedOut") & 1) == 0)
+    if ([utteranceCopy isMe] && (objc_msgSend(utteranceCopy, "hasTimedOut") & 1) == 0)
     {
-      v17 = [v9 text];
-      v18 = [v8 textViewUtterance];
-      [v9 updateText:v18];
-      v19 = [v33 callUUID];
-      v32 = [(RTTUIConversationControllerCoordinator *)self recentMessageControllerForCallUUID:v19];
+      text = [utteranceCopy text];
+      textViewUtterance = [changeCopy textViewUtterance];
+      [utteranceCopy updateText:textViewUtterance];
+      callUUID = [call callUUID];
+      v32 = [(RTTUIConversationControllerCoordinator *)self recentMessageControllerForCallUUID:callUUID];
 
-      [v32 didSendString:v18];
-      objc_storeStrong(&self->_inProgressRealTimeIndexPath, a5);
-      v20 = [v9 copy];
+      [v32 didSendString:textViewUtterance];
+      objc_storeStrong(&self->_inProgressRealTimeIndexPath, path);
+      v20 = [utteranceCopy copy];
       inProgressRealTimeUtterance = self->_inProgressRealTimeUtterance;
       self->_inProgressRealTimeUtterance = v20;
 
@@ -574,38 +574,38 @@ void __65__RTTUIConversationControllerCoordinator_registerForCallUpdates___block
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
       {
         *v45 = 138740227;
-        v46 = v17;
+        v46 = text;
         v47 = 2117;
-        v48 = v18;
+        v48 = textViewUtterance;
         _os_log_impl(&dword_261725000, v22, OS_LOG_TYPE_INFO, "KNOWN |%{sensitive}@| NEW |%{sensitive}@|", v45, 0x16u);
       }
 
-      v23 = [v17 length];
+      v23 = [text length];
       v42[0] = MEMORY[0x277D85DD0];
       v42[1] = 3221225472;
       v42[2] = __89__RTTUIConversationControllerCoordinator_realtimeTextDidChange_forUtterance_lastRowPath___block_invoke;
       v42[3] = &unk_279AE4E00;
-      v24 = v18;
+      v24 = textViewUtterance;
       v43 = v24;
       p_buf = &buf;
-      [v17 enumerateSubstringsInRange:0 options:v23 usingBlock:{2, v42}];
-      v25 = [MEMORY[0x277CCAB68] string];
+      [text enumerateSubstringsInRange:0 options:v23 usingBlock:{2, v42}];
+      string = [MEMORY[0x277CCAB68] string];
       if (*(*(&buf + 1) + 24) == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v26 = [v24 substringFromIndex:{objc_msgSend(v17, "length")}];
-        [v25 appendString:v26];
+        v26 = [v24 substringFromIndex:{objc_msgSend(text, "length")}];
+        [string appendString:v26];
       }
 
       else
       {
-        v27 = [v17 length];
+        v27 = [text length];
         v28 = *(*(&buf + 1) + 24);
         v29 = v27 - v28;
         if (v27 != v28)
         {
           do
           {
-            [v25 appendFormat:@"%c", 8];
+            [string appendFormat:@"%c", 8];
             --v29;
           }
 
@@ -614,7 +614,7 @@ void __65__RTTUIConversationControllerCoordinator_registerForCallUpdates___block
         }
 
         v26 = [v24 substringFromIndex:v27];
-        [v25 appendString:v26];
+        [string appendString:v26];
       }
 
       utteranceRequestQueue = self->_utteranceRequestQueue;
@@ -623,10 +623,10 @@ void __65__RTTUIConversationControllerCoordinator_registerForCallUpdates___block
       v38[2] = __89__RTTUIConversationControllerCoordinator_realtimeTextDidChange_forUtterance_lastRowPath___block_invoke_64;
       v38[3] = &unk_279AE4E28;
       v38[4] = self;
-      v31 = v25;
+      v31 = string;
       v39 = v31;
-      v40 = v10;
-      v41 = v33;
+      v40 = pathCopy;
+      v41 = call;
       dispatch_async(utteranceRequestQueue, v38);
       if (![v31 length])
       {
@@ -654,9 +654,9 @@ void __65__RTTUIConversationControllerCoordinator_registerForCallUpdates___block
     v13 = AXLogRTT();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
-      v14 = [v8 textViewUtterance];
+      textViewUtterance2 = [changeCopy textViewUtterance];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v14;
+      *(&buf + 4) = textViewUtterance2;
       _os_log_impl(&dword_261725000, v13, OS_LOG_TYPE_INFO, "Collision, trying again |%@|", &buf, 0xCu);
     }
 
@@ -666,13 +666,13 @@ void __65__RTTUIConversationControllerCoordinator_registerForCallUpdates___block
     block[2] = __89__RTTUIConversationControllerCoordinator_realtimeTextDidChange_forUtterance_lastRowPath___block_invoke_65;
     block[3] = &unk_279AE4E28;
     block[4] = self;
-    v35 = v8;
-    v36 = v9;
-    v37 = v10;
+    v35 = changeCopy;
+    v36 = utteranceCopy;
+    v37 = pathCopy;
     dispatch_after(v15, MEMORY[0x277D85CD0], block);
   }
 
-  return v11;
+  return tryLock;
 }
 
 void __89__RTTUIConversationControllerCoordinator_realtimeTextDidChange_forUtterance_lastRowPath___block_invoke(uint64_t a1, void *a2, uint64_t a3, uint64_t a4, uint64_t a5, uint64_t a6, _BYTE *a7)
@@ -712,42 +712,42 @@ void __89__RTTUIConversationControllerCoordinator_realtimeTextDidChange_forUtter
   }
 }
 
-- (void)_sendNewUtteranceString:(id)a3 atIndex:(unint64_t)a4 forCellPath:(id)a5 call:(id)a6
+- (void)_sendNewUtteranceString:(id)string atIndex:(unint64_t)index forCellPath:(id)path call:(id)call
 {
   v35 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  stringCopy = string;
+  pathCopy = path;
+  callCopy = call;
   v13 = AXLogRTT();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     *buf = 138412802;
-    v30 = v10;
+    v30 = stringCopy;
     v31 = 1024;
-    v32 = a4;
+    indexCopy = index;
     v33 = 2112;
-    v34 = v11;
+    v34 = pathCopy;
     _os_log_impl(&dword_261725000, v13, OS_LOG_TYPE_INFO, "_sending new utterance: %@ at index: %d for path: %@", buf, 0x1Cu);
   }
 
-  v14 = [v10 length];
-  if (v14 > a4)
+  v14 = [stringCopy length];
+  if (v14 > index)
   {
     v15 = v14;
     do
     {
-      v16 = [(RTTUIConversationControllerCoordinator *)self utteranceBuffer];
-      v17 = [RTTUtteranceRequest utteranceRequestWithIndex:a4 forString:v10 inCellPath:v11 call:v12];
-      [v16 addObject:v17];
+      utteranceBuffer = [(RTTUIConversationControllerCoordinator *)self utteranceBuffer];
+      v17 = [RTTUtteranceRequest utteranceRequestWithIndex:index forString:stringCopy inCellPath:pathCopy call:callCopy];
+      [utteranceBuffer addObject:v17];
 
-      v18 = [v10 rangeOfComposedCharacterSequencesForRange:{a4, 1}];
-      a4 = v18 + v19;
+      v18 = [stringCopy rangeOfComposedCharacterSequencesForRange:{index, 1}];
+      index = v18 + v19;
     }
 
     while (v18 + v19 < v15);
   }
 
-  if ([RTTUIUtilities ttyShouldBeRealtimeForCall:v12])
+  if ([RTTUIUtilities ttyShouldBeRealtimeForCall:callCopy])
   {
     [(NSLock *)self->_realtimeSendLock unlock];
   }
@@ -761,16 +761,16 @@ void __89__RTTUIConversationControllerCoordinator_realtimeTextDidChange_forUtter
       _os_log_impl(&dword_261725000, v20, OS_LOG_TYPE_INFO, "Sending trailing space", buf, 2u);
     }
 
-    v21 = [(RTTUIConversationControllerCoordinator *)self utteranceBuffer];
-    v22 = [RTTUtteranceRequest utteranceRequestWithIndex:0 forString:@" " inCellPath:0 call:v12];
-    [v21 addObject:v22];
+    utteranceBuffer2 = [(RTTUIConversationControllerCoordinator *)self utteranceBuffer];
+    v22 = [RTTUtteranceRequest utteranceRequestWithIndex:0 forString:@" " inCellPath:0 call:callCopy];
+    [utteranceBuffer2 addObject:v22];
 
     v23 = MEMORY[0x277D85DD0];
     v24 = 3221225472;
     v25 = __91__RTTUIConversationControllerCoordinator__sendNewUtteranceString_atIndex_forCellPath_call___block_invoke;
     v26 = &unk_279AE4E50;
-    v27 = self;
-    v28 = v11;
+    selfCopy = self;
+    v28 = pathCopy;
     dispatch_async(MEMORY[0x277D85CD0], &v23);
   }
 
@@ -832,12 +832,12 @@ void __91__RTTUIConversationControllerCoordinator__sendNewUtteranceString_atInde
 - (void)processUtteranceQueue
 {
   v43 = *MEMORY[0x277D85DE8];
-  v3 = [(RTTUIConversationControllerCoordinator *)self utteranceBuffer];
-  v4 = [v3 count];
+  utteranceBuffer = [(RTTUIConversationControllerCoordinator *)self utteranceBuffer];
+  v4 = [utteranceBuffer count];
 
   [(NSMutableArray *)self->_utteranceBuffer ax_removeObjectsFromArrayUsingBlock:&__block_literal_global];
-  v5 = [(RTTUIConversationControllerCoordinator *)self utteranceBuffer];
-  v6 = [v5 count];
+  utteranceBuffer2 = [(RTTUIConversationControllerCoordinator *)self utteranceBuffer];
+  v6 = [utteranceBuffer2 count];
 
   if (v4 != v6)
   {
@@ -863,15 +863,15 @@ void __91__RTTUIConversationControllerCoordinator__sendNewUtteranceString_atInde
   }
 
   [(RTTUIConversationControllerCoordinator *)self setProcessingUtteranceBuffer:1];
-  v8 = [(RTTUIConversationControllerCoordinator *)self utteranceBuffer];
-  v9 = [v8 firstObject];
+  utteranceBuffer3 = [(RTTUIConversationControllerCoordinator *)self utteranceBuffer];
+  firstObject = [utteranceBuffer3 firstObject];
 
-  v10 = [v9 string];
-  v11 = [v10 rangeOfComposedCharacterSequencesForRange:{objc_msgSend(v9, "index"), 1}];
+  string = [firstObject string];
+  v11 = [string rangeOfComposedCharacterSequencesForRange:{objc_msgSend(firstObject, "index"), 1}];
   v13 = v12;
 
-  v14 = [v9 string];
-  v15 = [v14 substringWithRange:{v11, v13}];
+  string2 = [firstObject string];
+  v15 = [string2 substringWithRange:{v11, v13}];
 
   v16 = AXLogRTT();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
@@ -886,38 +886,38 @@ void __91__RTTUIConversationControllerCoordinator__sendNewUtteranceString_atInde
     *buf = 138412546;
     v40 = v18;
     v41 = 2112;
-    v42 = v9;
+    v42 = firstObject;
     _os_log_impl(&dword_261725000, v16, OS_LOG_TYPE_INFO, "Sending %@ - %@", buf, 0x16u);
   }
 
-  v19 = [MEMORY[0x277D440C8] sharedInstance];
-  v20 = [v9 call];
-  v21 = [v20 callUUID];
-  [v19 sendString:v15 forCallUID:v21];
+  mEMORY[0x277D440C8] = [MEMORY[0x277D440C8] sharedInstance];
+  call = [firstObject call];
+  callUUID = [call callUUID];
+  [mEMORY[0x277D440C8] sendString:v15 forCallUID:callUUID];
 
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__RTTUIConversationControllerCoordinator_processUtteranceQueue__block_invoke_74;
   block[3] = &unk_279AE4E50;
   block[4] = self;
-  v22 = v9;
+  v22 = firstObject;
   v38 = v22;
   dispatch_async(MEMORY[0x277D85CD0], block);
-  v23 = [(RTTUIConversationControllerCoordinator *)self utteranceBuffer];
-  [v23 removeObject:v22];
+  utteranceBuffer4 = [(RTTUIConversationControllerCoordinator *)self utteranceBuffer];
+  [utteranceBuffer4 removeObject:v22];
 
-  v24 = [(RTTUIConversationControllerCoordinator *)self utteranceBuffer];
-  if ([v24 count])
+  utteranceBuffer5 = [(RTTUIConversationControllerCoordinator *)self utteranceBuffer];
+  if ([utteranceBuffer5 count])
   {
-    v25 = [v22 call];
-    v26 = [v25 status];
+    call2 = [v22 call];
+    status = [call2 status];
 
-    if (v26 == 1)
+    if (status == 1)
     {
-      v27 = [v22 call];
-      v28 = [v27 isTTY];
+      call3 = [v22 call];
+      isTTY = [call3 isTTY];
 
-      if (v28)
+      if (isTTY)
       {
         v29 = 200000000;
       }
@@ -1017,18 +1017,18 @@ void __63__RTTUIConversationControllerCoordinator_processUtteranceQueue__block_i
   }
 }
 
-- (void)_registerForTranscriptionUpdatesForCall:(id)a3
+- (void)_registerForTranscriptionUpdatesForCall:(id)call
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D440C8] sharedInstance];
+  callCopy = call;
+  mEMORY[0x277D440C8] = [MEMORY[0x277D440C8] sharedInstance];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __82__RTTUIConversationControllerCoordinator__registerForTranscriptionUpdatesForCall___block_invoke;
   v7[3] = &unk_279AE4D88;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 registerForRemoteUpdates:v7 forCallUID:v6];
+  v8 = callCopy;
+  v6 = callCopy;
+  [mEMORY[0x277D440C8] registerForRemoteUpdates:v7 forCallUID:v6];
 }
 
 void __82__RTTUIConversationControllerCoordinator__registerForTranscriptionUpdatesForCall___block_invoke(uint64_t a1, void *a2, void *a3, void *a4, uint64_t a5)
@@ -1121,37 +1121,37 @@ void __82__RTTUIConversationControllerCoordinator__registerForTranscriptionUpdat
   v7 = [v2 addTranslatedTranscriptionText:*(a1 + 56) translatedText:*(a1 + 64) isNew:*(a1 + 72) == 7];
 }
 
-- (void)processCallScreeningTranscription:(id)a3 transcriptionID:(id)a4 callUUID:(id)a5
+- (void)processCallScreeningTranscription:(id)transcription transcriptionID:(id)d callUUID:(id)iD
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@", v10, v9];
-  v12 = [v11 isEqualToString:self->_latestCallScreeningTranscriptionID] ^ 1;
+  transcriptionCopy = transcription;
+  dCopy = d;
+  iDCopy = iD;
+  dCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@", iDCopy, dCopy];
+  v12 = [dCopy isEqualToString:self->_latestCallScreeningTranscriptionID] ^ 1;
   v13 = MEMORY[0x277CCACA8];
   v14 = ttyLocString();
-  v15 = [v13 stringWithFormat:v14, v8];
+  transcriptionCopy = [v13 stringWithFormat:v14, transcriptionCopy];
 
-  objc_storeStrong(&self->_latestCallScreeningTranscriptionID, v11);
+  objc_storeStrong(&self->_latestCallScreeningTranscriptionID, dCopy);
   v16 = AXLogRTT();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
     v17 = [MEMORY[0x277CCABB0] numberWithBool:v12];
     *buf = 138413058;
-    v22 = v8;
+    v22 = transcriptionCopy;
     v23 = 2112;
-    v24 = v9;
+    v24 = dCopy;
     v25 = 2112;
-    v26 = v10;
+    v26 = iDCopy;
     v27 = 2112;
     v28 = v17;
     _os_log_impl(&dword_261725000, v16, OS_LOG_TYPE_INFO, "Received call screening RTT transcript: %@ (id %@), callID: %@, isNew: %@", buf, 0x2Au);
   }
 
-  v20 = v10;
-  v18 = v15;
-  v19 = v10;
+  v20 = iDCopy;
+  v18 = transcriptionCopy;
+  v19 = iDCopy;
   AXPerformBlockAsynchronouslyOnMainThread();
 }
 
@@ -1164,7 +1164,7 @@ void __101__RTTUIConversationControllerCoordinator_processCallScreeningTranscrip
   [v4 sendTranscription:*(a1 + 48) forCallUUID:*(a1 + 40) isNew:*(a1 + 56)];
 }
 
-- (void)hearingServerDidDie:(id)a3
+- (void)hearingServerDidDie:(id)die
 {
   v4 = AXLogRTT();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))

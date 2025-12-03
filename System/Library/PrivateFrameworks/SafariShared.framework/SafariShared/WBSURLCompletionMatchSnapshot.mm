@@ -1,40 +1,40 @@
 @interface WBSURLCompletionMatchSnapshot
 - (NSString)description;
-- (WBSURLCompletionMatchSnapshot)initWithCoder:(id)a3;
-- (WBSURLCompletionMatchSnapshot)initWithURL:(id)a3 title:(id)a4 matchLocation:(int64_t)a5 isTopHit:(BOOL)a6 isSynthesizedTopHit:(BOOL)a7 isTopHitDueToTriggerMatch:(BOOL)a8 visitCount:(int64_t)a9 lastVisitTime:(id)a10;
-- (void)encodeWithCoder:(id)a3;
+- (WBSURLCompletionMatchSnapshot)initWithCoder:(id)coder;
+- (WBSURLCompletionMatchSnapshot)initWithURL:(id)l title:(id)title matchLocation:(int64_t)location isTopHit:(BOOL)hit isSynthesizedTopHit:(BOOL)topHit isTopHitDueToTriggerMatch:(BOOL)match visitCount:(int64_t)count lastVisitTime:(id)self0;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WBSURLCompletionMatchSnapshot
 
-- (WBSURLCompletionMatchSnapshot)initWithURL:(id)a3 title:(id)a4 matchLocation:(int64_t)a5 isTopHit:(BOOL)a6 isSynthesizedTopHit:(BOOL)a7 isTopHitDueToTriggerMatch:(BOOL)a8 visitCount:(int64_t)a9 lastVisitTime:(id)a10
+- (WBSURLCompletionMatchSnapshot)initWithURL:(id)l title:(id)title matchLocation:(int64_t)location isTopHit:(BOOL)hit isSynthesizedTopHit:(BOOL)topHit isTopHitDueToTriggerMatch:(BOOL)match visitCount:(int64_t)count lastVisitTime:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a10;
+  lCopy = l;
+  titleCopy = title;
+  timeCopy = time;
   v28.receiver = self;
   v28.super_class = WBSURLCompletionMatchSnapshot;
   v19 = [(WBSURLCompletionMatchSnapshot *)&v28 init];
   if (v19)
   {
-    v20 = [v16 copy];
+    v20 = [lCopy copy];
     url = v19->_url;
     v19->_url = v20;
 
-    v22 = [v17 copy];
+    v22 = [titleCopy copy];
     title = v19->_title;
     v19->_title = v22;
 
-    v24 = [(NSURL *)v19->_url safari_userVisibleString];
+    safari_userVisibleString = [(NSURL *)v19->_url safari_userVisibleString];
     userVisibleURLString = v19->_userVisibleURLString;
-    v19->_userVisibleURLString = v24;
+    v19->_userVisibleURLString = safari_userVisibleString;
 
-    v19->_topHit = a6;
-    v19->_synthesizedTopHit = a7;
-    v19->_topHitDueToTriggerMatch = a8;
-    v19->_matchLocation = a5;
-    v19->_visitCount = a9;
-    objc_storeStrong(&v19->_lastVisitTime, a10);
+    v19->_topHit = hit;
+    v19->_synthesizedTopHit = topHit;
+    v19->_topHitDueToTriggerMatch = match;
+    v19->_matchLocation = location;
+    v19->_visitCount = count;
+    objc_storeStrong(&v19->_lastVisitTime, time);
     v26 = v19;
   }
 
@@ -51,34 +51,34 @@
   return v6;
 }
 
-- (WBSURLCompletionMatchSnapshot)initWithCoder:(id)a3
+- (WBSURLCompletionMatchSnapshot)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"url"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
-  v7 = [v4 decodeIntegerForKey:@"matchLocation"];
-  v8 = [v4 decodeBoolForKey:@"topHit"];
-  v9 = [v4 decodeBoolForKey:@"synthesizedTopHit"];
-  v10 = [v4 decodeBoolForKey:@"topHitDueToTriggerMatch"];
-  v11 = [v4 decodeIntegerForKey:@"visitCount"];
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastVisitTime"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"url"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+  v7 = [coderCopy decodeIntegerForKey:@"matchLocation"];
+  v8 = [coderCopy decodeBoolForKey:@"topHit"];
+  v9 = [coderCopy decodeBoolForKey:@"synthesizedTopHit"];
+  v10 = [coderCopy decodeBoolForKey:@"topHitDueToTriggerMatch"];
+  v11 = [coderCopy decodeIntegerForKey:@"visitCount"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastVisitTime"];
 
   v13 = [(WBSURLCompletionMatchSnapshot *)self initWithURL:v5 title:v6 matchLocation:v7 isTopHit:v8 isSynthesizedTopHit:v9 isTopHitDueToTriggerMatch:v10 visitCount:v11 lastVisitTime:v12];
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   url = self->_url;
-  v5 = a3;
-  [v5 encodeObject:url forKey:@"url"];
-  [v5 encodeObject:self->_title forKey:@"title"];
-  [v5 encodeInteger:self->_matchLocation forKey:@"matchLocation"];
-  [v5 encodeBool:self->_topHit forKey:@"topHit"];
-  [v5 encodeBool:self->_synthesizedTopHit forKey:@"synthesizedTopHit"];
-  [v5 encodeBool:self->_topHitDueToTriggerMatch forKey:@"topHitDueToTriggerMatch"];
-  [v5 encodeInteger:self->_visitCount forKey:@"visitCount"];
-  [v5 encodeObject:self->_lastVisitTime forKey:@"lastVisitTime"];
+  coderCopy = coder;
+  [coderCopy encodeObject:url forKey:@"url"];
+  [coderCopy encodeObject:self->_title forKey:@"title"];
+  [coderCopy encodeInteger:self->_matchLocation forKey:@"matchLocation"];
+  [coderCopy encodeBool:self->_topHit forKey:@"topHit"];
+  [coderCopy encodeBool:self->_synthesizedTopHit forKey:@"synthesizedTopHit"];
+  [coderCopy encodeBool:self->_topHitDueToTriggerMatch forKey:@"topHitDueToTriggerMatch"];
+  [coderCopy encodeInteger:self->_visitCount forKey:@"visitCount"];
+  [coderCopy encodeObject:self->_lastVisitTime forKey:@"lastVisitTime"];
 }
 
 @end

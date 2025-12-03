@@ -1,12 +1,12 @@
 @interface IconGridView
-- (_TtC22SubscribePageExtension12IconGridView)initWithCoder:(id)a3;
-- (_TtC22SubscribePageExtension12IconGridView)initWithFrame:(CGRect)a3;
+- (_TtC22SubscribePageExtension12IconGridView)initWithCoder:(id)coder;
+- (_TtC22SubscribePageExtension12IconGridView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation IconGridView
 
-- (_TtC22SubscribePageExtension12IconGridView)initWithCoder:(id)a3
+- (_TtC22SubscribePageExtension12IconGridView)initWithCoder:(id)coder
 {
   v4 = sub_10000C518(&qword_10092DE18);
   __chkstk_darwin(v4);
@@ -24,11 +24,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10071A1A4();
 }
 
-- (_TtC22SubscribePageExtension12IconGridView)initWithFrame:(CGRect)a3
+- (_TtC22SubscribePageExtension12IconGridView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

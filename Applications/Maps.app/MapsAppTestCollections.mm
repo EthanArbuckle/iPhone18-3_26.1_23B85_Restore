@@ -1,20 +1,20 @@
 @interface MapsAppTestCollections
 - (BOOL)runTest;
 - (void)_dismissCollection;
-- (void)_dispatchAfterShortDelay:(id)a3;
+- (void)_dispatchAfterShortDelay:(id)delay;
 - (void)_expandCollection;
 - (void)_expandCollectionsList;
 - (void)_openFirstCollection;
-- (void)_performScrollTestOfScrollView:(id)a3 completion:(id)a4;
+- (void)_performScrollTestOfScrollView:(id)view completion:(id)completion;
 - (void)_setupTrayLayoutAndPerformScrollTest;
 @end
 
 @implementation MapsAppTestCollections
 
-- (void)_performScrollTestOfScrollView:(id)a3 completion:(id)a4
+- (void)_performScrollTestOfScrollView:(id)view completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  viewCopy = view;
   v7 = objc_alloc_init(UIScrollTestParameters);
   [v7 setIterations:10];
   [v7 setDelta:20.0];
@@ -24,28 +24,28 @@
   v9[1] = 3221225472;
   v9[2] = sub_100BE2DF0;
   v9[3] = &unk_10165CB08;
-  v10 = v5;
-  v8 = v5;
-  [v6 _performScrollTestWithParameters:v7 completionBlock:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [viewCopy _performScrollTestWithParameters:v7 completionBlock:v9];
 }
 
-- (void)_dispatchAfterShortDelay:(id)a3
+- (void)_dispatchAfterShortDelay:(id)delay
 {
-  v3 = a3;
+  delayCopy = delay;
   v4 = dispatch_time(0, 1000000000);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100BE2EB8;
   block[3] = &unk_101661760;
-  v7 = v3;
-  v5 = v3;
+  v7 = delayCopy;
+  v5 = delayCopy;
   dispatch_after(v4, &_dispatch_main_q, block);
 }
 
 - (void)_dismissCollection
 {
-  v3 = [(MapsAppTest *)self testCoordinator];
-  [v3 pptTestDismissTrayAnimated:1 assertTrayType:0];
+  testCoordinator = [(MapsAppTest *)self testCoordinator];
+  [testCoordinator pptTestDismissTrayAnimated:1 assertTrayType:0];
 
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
@@ -80,8 +80,8 @@
 
 - (void)_openFirstCollection
 {
-  v3 = [(MapsAppTest *)self testCoordinator];
-  [v3 pptTestOpenFirstCollection];
+  testCoordinator = [(MapsAppTest *)self testCoordinator];
+  [testCoordinator pptTestOpenFirstCollection];
 
   v4 = dispatch_time(0, 1000000000);
   block[0] = _NSConcreteStackBlock;
@@ -94,8 +94,8 @@
 
 - (void)_expandCollectionsList
 {
-  v3 = [(MapsAppTest *)self testCoordinator];
-  [v3 pptTestOpenCollections];
+  testCoordinator = [(MapsAppTest *)self testCoordinator];
+  [testCoordinator pptTestOpenCollections];
 
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
@@ -127,10 +127,10 @@
 
 - (BOOL)runTest
 {
-  v3 = [(MapsAppTest *)self options];
-  v4 = [v3 _mapstest_isUsingSampleProactiveData];
+  options = [(MapsAppTest *)self options];
+  _mapstest_isUsingSampleProactiveData = [options _mapstest_isUsingSampleProactiveData];
 
-  if (v4)
+  if (_mapstest_isUsingSampleProactiveData)
   {
     v5 = dispatch_time(0, 6000000000);
     block[0] = _NSConcreteStackBlock;

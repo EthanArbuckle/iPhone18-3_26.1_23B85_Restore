@@ -1,13 +1,13 @@
 @interface CKTapbackClassicAssetProvider
-+ (id)assetForAssociatedMessageType:(int64_t)a3;
++ (id)assetForAssociatedMessageType:(int64_t)type;
 - (CKTapbackClassicAssetProvider)init;
 @end
 
 @implementation CKTapbackClassicAssetProvider
 
-+ (id)assetForAssociatedMessageType:(int64_t)a3
++ (id)assetForAssociatedMessageType:(int64_t)type
 {
-  v3 = _s7ChatKit27TapbackClassicAssetProviderC5asset3forAA0cdE0CSgSo23IMAssociatedMessageTypeV_tFZ_0(a3);
+  v3 = _s7ChatKit27TapbackClassicAssetProviderC5asset3forAA0cdE0CSgSo23IMAssociatedMessageTypeV_tFZ_0(type);
 
   return v3;
 }

@@ -1,92 +1,92 @@
 @interface AXSSKeyboardCommand
-+ (id)commandWithStandardCommandIdentifier:(id)a3;
-- (AXSSKeyboardCommand)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCommand:(id)a3;
++ (id)commandWithStandardCommandIdentifier:(id)identifier;
+- (AXSSKeyboardCommand)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCommand:(id)command;
 - (NSString)localizedName;
-- (id)_initWithType:(id)a3 standardCommandIdentifier:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithType:(id)type standardCommandIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AXSSKeyboardCommand
 
-+ (id)commandWithStandardCommandIdentifier:(id)a3
++ (id)commandWithStandardCommandIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithStandardCommandIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [[self alloc] initWithStandardCommandIdentifier:identifierCopy];
 
   return v5;
 }
 
-- (id)_initWithType:(id)a3 standardCommandIdentifier:(id)a4
+- (id)_initWithType:(id)type standardCommandIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  typeCopy = type;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = AXSSKeyboardCommand;
   v9 = [(AXSSKeyboardCommand *)&v12 init];
   p_isa = &v9->super.isa;
   if (v9)
   {
-    objc_storeStrong(&v9->_type, a3);
-    objc_storeStrong(p_isa + 2, a4);
+    objc_storeStrong(&v9->_type, type);
+    objc_storeStrong(p_isa + 2, identifier);
   }
 
   return p_isa;
 }
 
-- (AXSSKeyboardCommand)initWithCoder:(id)a3
+- (AXSSKeyboardCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"standardCommandIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"standardCommandIdentifier"];
     self = [(AXSSKeyboardCommand *)self _initWithType:v5 standardCommandIdentifier:v6];
 
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(AXSSKeyboardCommand *)self type];
-  [v4 encodeObject:v5 forKey:@"type"];
+  coderCopy = coder;
+  type = [(AXSSKeyboardCommand *)self type];
+  [coderCopy encodeObject:type forKey:@"type"];
 
-  v6 = [(AXSSKeyboardCommand *)self standardCommandIdentifier];
-  [v4 encodeObject:v6 forKey:@"standardCommandIdentifier"];
+  standardCommandIdentifier = [(AXSSKeyboardCommand *)self standardCommandIdentifier];
+  [coderCopy encodeObject:standardCommandIdentifier forKey:@"standardCommandIdentifier"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(AXSSKeyboardCommand *)self type];
-  v6 = [(AXSSKeyboardCommand *)self standardCommandIdentifier];
-  v7 = [v4 _initWithType:v5 standardCommandIdentifier:v6];
+  type = [(AXSSKeyboardCommand *)self type];
+  standardCommandIdentifier = [(AXSSKeyboardCommand *)self standardCommandIdentifier];
+  v7 = [v4 _initWithType:type standardCommandIdentifier:standardCommandIdentifier];
 
   return v7;
 }
 
 - (NSString)localizedName
 {
-  v3 = [(AXSSKeyboardCommand *)self type];
-  v4 = [v3 isEqualToString:@"Standard"];
+  type = [(AXSSKeyboardCommand *)self type];
+  v4 = [type isEqualToString:@"Standard"];
 
   if (v4)
   {
-    v5 = [(AXSSKeyboardCommand *)self standardCommandIdentifier];
-    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"COMMAND_%@", v5];
+    standardCommandIdentifier = [(AXSSKeyboardCommand *)self standardCommandIdentifier];
+    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"COMMAND_%@", standardCommandIdentifier];
     v7 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v8 = [v7 localizedStringForKey:v6 value:&stru_1F405A428 table:@"FullKeyboardAccess"];
   }
@@ -99,29 +99,29 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(AXSSKeyboardCommand *)self isEqualToCommand:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(AXSSKeyboardCommand *)self isEqualToCommand:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToCommand:(id)a3
+- (BOOL)isEqualToCommand:(id)command
 {
-  v4 = a3;
-  v5 = [(AXSSKeyboardCommand *)self type];
-  v6 = [v5 isEqualToString:@"Standard"];
+  commandCopy = command;
+  type = [(AXSSKeyboardCommand *)self type];
+  v6 = [type isEqualToString:@"Standard"];
 
   if (v6)
   {
-    v7 = [v4 type];
-    if ([v7 isEqualToString:@"Standard"])
+    type2 = [commandCopy type];
+    if ([type2 isEqualToString:@"Standard"])
     {
-      v8 = [v4 standardCommandIdentifier];
-      v9 = [(AXSSKeyboardCommand *)self standardCommandIdentifier];
-      v10 = [v8 isEqualToString:v9];
+      standardCommandIdentifier = [commandCopy standardCommandIdentifier];
+      standardCommandIdentifier2 = [(AXSSKeyboardCommand *)self standardCommandIdentifier];
+      v10 = [standardCommandIdentifier isEqualToString:standardCommandIdentifier2];
     }
 
     else
@@ -140,10 +140,10 @@
 
 - (unint64_t)hash
 {
-  v3 = [(AXSSKeyboardCommand *)self type];
-  v4 = [v3 hash];
-  v5 = [(AXSSKeyboardCommand *)self standardCommandIdentifier];
-  v6 = [v5 hash];
+  type = [(AXSSKeyboardCommand *)self type];
+  v4 = [type hash];
+  standardCommandIdentifier = [(AXSSKeyboardCommand *)self standardCommandIdentifier];
+  v6 = [standardCommandIdentifier hash];
 
   return v6 ^ v4;
 }
@@ -153,9 +153,9 @@
   v8.receiver = self;
   v8.super_class = AXSSKeyboardCommand;
   v3 = [(AXSSKeyboardCommand *)&v8 description];
-  v4 = [(AXSSKeyboardCommand *)self type];
-  v5 = [(AXSSKeyboardCommand *)self standardCommandIdentifier];
-  v6 = [v3 stringByAppendingFormat:@" - type: %@, command identifier: %@", v4, v5];
+  type = [(AXSSKeyboardCommand *)self type];
+  standardCommandIdentifier = [(AXSSKeyboardCommand *)self standardCommandIdentifier];
+  v6 = [v3 stringByAppendingFormat:@" - type: %@, command identifier: %@", type, standardCommandIdentifier];
 
   return v6;
 }

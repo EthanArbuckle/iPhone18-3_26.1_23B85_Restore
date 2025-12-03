@@ -1,7 +1,7 @@
 @interface TrajectoryPoint
 - (_TtC11DockKitCore15TrajectoryPoint)init;
-- (_TtC11DockKitCore15TrajectoryPoint)initWithTime:(double)a3 positions:(id)a4 velocities:(id)a5;
-- (id)copyWithZone:(void *)a3;
+- (_TtC11DockKitCore15TrajectoryPoint)initWithTime:(double)time positions:(id)positions velocities:(id)velocities;
+- (id)copyWithZone:(void *)zone;
 @end
 
 @implementation TrajectoryPoint
@@ -17,13 +17,13 @@
   return [(TrajectoryPoint *)&v4 init];
 }
 
-- (_TtC11DockKitCore15TrajectoryPoint)initWithTime:(double)a3 positions:(id)a4 velocities:(id)a5
+- (_TtC11DockKitCore15TrajectoryPoint)initWithTime:(double)time positions:(id)positions velocities:(id)velocities
 {
   v7 = sub_224627ED8();
   v8 = sub_224627ED8();
   v9 = OBJC_IVAR____TtC11DockKitCore15TrajectoryPoint_positions;
   v10 = OBJC_IVAR____TtC11DockKitCore15TrajectoryPoint_velocities;
-  *(&self->super.isa + OBJC_IVAR____TtC11DockKitCore15TrajectoryPoint_time) = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC11DockKitCore15TrajectoryPoint_time) = time;
   *(&self->super.isa + v9) = v7;
   *(&self->super.isa + v10) = v8;
   v12.receiver = self;
@@ -31,15 +31,15 @@
   return [(TrajectoryPoint *)&v12 init];
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
   v4 = objc_allocWithZone(type metadata accessor for TrajectoryPoint());
-  v5 = self;
+  selfCopy = self;
   v6 = [v4 init];
-  *&v6[OBJC_IVAR____TtC11DockKitCore15TrajectoryPoint_time] = *(&v5->super.isa + OBJC_IVAR____TtC11DockKitCore15TrajectoryPoint_time);
-  *&v6[OBJC_IVAR____TtC11DockKitCore15TrajectoryPoint_positions] = *(&v5->super.isa + OBJC_IVAR____TtC11DockKitCore15TrajectoryPoint_positions);
+  *&v6[OBJC_IVAR____TtC11DockKitCore15TrajectoryPoint_time] = *(&selfCopy->super.isa + OBJC_IVAR____TtC11DockKitCore15TrajectoryPoint_time);
+  *&v6[OBJC_IVAR____TtC11DockKitCore15TrajectoryPoint_positions] = *(&selfCopy->super.isa + OBJC_IVAR____TtC11DockKitCore15TrajectoryPoint_positions);
 
-  v7 = *(&v5->super.isa + OBJC_IVAR____TtC11DockKitCore15TrajectoryPoint_velocities);
+  v7 = *(&selfCopy->super.isa + OBJC_IVAR____TtC11DockKitCore15TrajectoryPoint_velocities);
 
   *&v6[OBJC_IVAR____TtC11DockKitCore15TrajectoryPoint_velocities] = v7;
 

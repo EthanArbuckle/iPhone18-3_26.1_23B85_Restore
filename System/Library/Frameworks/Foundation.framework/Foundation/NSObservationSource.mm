@@ -1,13 +1,13 @@
 @interface NSObservationSource
-- (void)_observerStorageOfSize:(unint64_t)a3;
+- (void)_observerStorageOfSize:(unint64_t)size;
 - (void)dealloc;
 @end
 
 @implementation NSObservationSource
 
-- (void)_observerStorageOfSize:(unint64_t)a3
+- (void)_observerStorageOfSize:(unint64_t)size
 {
-  if (a3 != 32)
+  if (size != 32)
   {
     __assert_rtn("[NSObservationSource _observerStorageOfSize:]", "NSObservationTransformers.m", 21, "sz == 4 * sizeof(id)");
   }

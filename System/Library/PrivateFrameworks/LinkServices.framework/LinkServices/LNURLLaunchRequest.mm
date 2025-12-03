@@ -1,16 +1,16 @@
 @interface LNURLLaunchRequest
-+ (BOOL)isValidURLForLaunching:(id)a3;
-- (LNURLLaunchRequest)initWithEntity:(id)a3 metadata:(id)a4;
-- (LNURLLaunchRequest)initWithEnumCaseIdentifier:(id)a3 metadata:(id)a4;
-- (LNURLLaunchRequest)initWithURL:(id)a3;
++ (BOOL)isValidURLForLaunching:(id)launching;
+- (LNURLLaunchRequest)initWithEntity:(id)entity metadata:(id)metadata;
+- (LNURLLaunchRequest)initWithEnumCaseIdentifier:(id)identifier metadata:(id)metadata;
+- (LNURLLaunchRequest)initWithURL:(id)l;
 - (NSString)doNotDismissSiriKey;
-- (void)performValidatingURLScheme:(BOOL)a3 completionHandler:(id)a4;
-- (void)performWithCompletionHandler:(id)a3;
+- (void)performValidatingURLScheme:(BOOL)scheme completionHandler:(id)handler;
+- (void)performWithCompletionHandler:(id)handler;
 @end
 
 @implementation LNURLLaunchRequest
 
-- (LNURLLaunchRequest)initWithURL:(id)a3
+- (LNURLLaunchRequest)initWithURL:(id)l
 {
   v3 = sub_19774EAD0();
   v4 = *(*(v3 - 8) + 64);
@@ -19,44 +19,44 @@
   return sub_19768A2B4();
 }
 
-- (LNURLLaunchRequest)initWithEntity:(id)a3 metadata:(id)a4
+- (LNURLLaunchRequest)initWithEntity:(id)entity metadata:(id)metadata
 {
-  v5 = a3;
-  v6 = a4;
+  entityCopy = entity;
+  metadataCopy = metadata;
   return sub_19768A3F8();
 }
 
-- (LNURLLaunchRequest)initWithEnumCaseIdentifier:(id)a3 metadata:(id)a4
+- (LNURLLaunchRequest)initWithEnumCaseIdentifier:(id)identifier metadata:(id)metadata
 {
   sub_19774EF50();
-  v5 = a4;
+  metadataCopy = metadata;
   return sub_19768A4B4();
 }
 
-- (void)performWithCompletionHandler:(id)a3
+- (void)performWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   *(v5 + 24) = self;
-  v6 = self;
+  selfCopy = self;
 
   sub_197693D14();
 }
 
-- (void)performValidatingURLScheme:(BOOL)a3 completionHandler:(id)a4
+- (void)performValidatingURLScheme:(BOOL)scheme completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
-  *(v7 + 16) = a3;
+  *(v7 + 16) = scheme;
   *(v7 + 24) = v6;
   *(v7 + 32) = self;
-  v8 = self;
+  selfCopy = self;
 
   sub_197693D14();
 }
 
-+ (BOOL)isValidURLForLaunching:(id)a3
++ (BOOL)isValidURLForLaunching:(id)launching
 {
   v3 = sub_19774EAD0();
   v4 = *(v3 - 8);

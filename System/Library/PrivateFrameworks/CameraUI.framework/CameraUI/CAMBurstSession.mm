@@ -2,9 +2,9 @@
 - (CAMBurstSession)init;
 - (NSString)identifier;
 - (id)description;
-- (id)performBurstAnalysisForDevice:(int64_t)a3;
-- (void)addStillImageCaptureResult:(id)a3;
-- (void)addStillImageLocalPersistenceResult:(id)a3 withFaces:(id)a4;
+- (id)performBurstAnalysisForDevice:(int64_t)device;
+- (void)addStillImageCaptureResult:(id)result;
+- (void)addStillImageLocalPersistenceResult:(id)result withFaces:(id)faces;
 @end
 
 @implementation CAMBurstSession
@@ -33,30 +33,30 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(CAMBurstSession *)self identifier];
+  identifier = [(CAMBurstSession *)self identifier];
   v6 = [(CAMBurstSession *)self count];
-  v7 = [(CAMBurstSession *)self estimatedCount];
-  v8 = [(CAMBurstSession *)self _isFinalized];
+  estimatedCount = [(CAMBurstSession *)self estimatedCount];
+  _isFinalized = [(CAMBurstSession *)self _isFinalized];
   v9 = @"NO";
-  if (v8)
+  if (_isFinalized)
   {
     v9 = @"YES";
   }
 
-  v10 = [v3 stringWithFormat:@"<%@ identifier:%@, count:%ld, estimatedCount:%ld, finalized:%@>", v4, v5, v6, v7, v9];
+  v10 = [v3 stringWithFormat:@"<%@ identifier:%@, count:%ld, estimatedCount:%ld, finalized:%@>", v4, identifier, v6, estimatedCount, v9];
 
   return v10;
 }
 
 - (NSString)identifier
 {
-  v2 = [(CAMBurstSession *)self _burstImageSet];
-  v3 = [v2 burstId];
+  _burstImageSet = [(CAMBurstSession *)self _burstImageSet];
+  burstId = [_burstImageSet burstId];
 
-  return v3;
+  return burstId;
 }
 
-- (id)performBurstAnalysisForDevice:(int64_t)a3
+- (id)performBurstAnalysisForDevice:(int64_t)device
 {
   if ([(CAMBurstSession *)self _isFinalized])
   {
@@ -65,65 +65,65 @@
 
   else
   {
-    v5 = [(CAMBurstSession *)self identifier];
-    v6 = [(CAMBurstSession *)self _burstImageSet];
-    v7 = [v6 allImageIdentifiers];
-    v8 = [v6 bestImageIdentifiers];
-    v9 = [v6 coverImageIdentifier];
-    v4 = [[CAMBurstAnalysisResult alloc] initWithIdentifier:v5 allAssetIdentifiers:v7 goodAssetIdentifiers:v8 bestAssetIdentifier:v9];
+    identifier = [(CAMBurstSession *)self identifier];
+    _burstImageSet = [(CAMBurstSession *)self _burstImageSet];
+    allImageIdentifiers = [_burstImageSet allImageIdentifiers];
+    bestImageIdentifiers = [_burstImageSet bestImageIdentifiers];
+    coverImageIdentifier = [_burstImageSet coverImageIdentifier];
+    v4 = [[CAMBurstAnalysisResult alloc] initWithIdentifier:identifier allAssetIdentifiers:allImageIdentifiers goodAssetIdentifiers:bestImageIdentifiers bestAssetIdentifier:coverImageIdentifier];
   }
 
   return v4;
 }
 
-- (void)addStillImageCaptureResult:(id)a3
+- (void)addStillImageCaptureResult:(id)result
 {
-  v7 = a3;
-  v4 = [(CAMBurstSession *)self _isFinalized];
-  v5 = v7;
-  if (!v4)
+  resultCopy = result;
+  _isFinalized = [(CAMBurstSession *)self _isFinalized];
+  v5 = resultCopy;
+  if (!_isFinalized)
   {
-    v6 = [v7 error];
-    if (!v6)
+    error = [resultCopy error];
+    if (!error)
     {
       [(CAMBurstSession *)self _setEstimatedCount:[(CAMBurstSession *)self estimatedCount]+ 1];
     }
 
-    v5 = v7;
+    v5 = resultCopy;
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](_isFinalized, v5);
 }
 
-- (void)addStillImageLocalPersistenceResult:(id)a3 withFaces:(id)a4
+- (void)addStillImageLocalPersistenceResult:(id)result withFaces:(id)faces
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  facesCopy = faces;
   if (![(CAMBurstSession *)self _isFinalized])
   {
-    v8 = [v6 captureResult];
-    v9 = [v8 error];
-    if (v9)
+    captureResult = [resultCopy captureResult];
+    error = [captureResult error];
+    if (error)
     {
       v10 = os_log_create("com.apple.camera", "Camera");
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        [CAMBurstSession addStillImageLocalPersistenceResult:v9 withFaces:v10];
+        [CAMBurstSession addStillImageLocalPersistenceResult:error withFaces:v10];
       }
     }
 
     else
     {
-      v20 = [v8 stillImageUnfilteredPreviewSurface];
-      v22 = [v8 metadata];
-      v21 = [v22 mutableCopy];
+      stillImageUnfilteredPreviewSurface = [captureResult stillImageUnfilteredPreviewSurface];
+      metadata = [captureResult metadata];
+      v21 = [metadata mutableCopy];
       v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v23 = 0u;
       v24 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v12 = v7;
+      v12 = facesCopy;
       v13 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
       if (v13)
       {
@@ -138,8 +138,8 @@
               objc_enumerationMutation(v12);
             }
 
-            v17 = [*(*(&v23 + 1) + 8 * i) burstMetadataRepresentation];
-            [v11 addObject:v17];
+            burstMetadataRepresentation = [*(*(&v23 + 1) + 8 * i) burstMetadataRepresentation];
+            [v11 addObject:burstMetadataRepresentation];
           }
 
           v14 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -149,13 +149,13 @@
       }
 
       [v21 setObject:v11 forKey:@"AccumulatedFaceMetadata"];
-      v18 = [v6 localPersistenceUUID];
-      v19 = [(CAMBurstSession *)self _burstImageSet];
-      [v19 addImageFromIOSurface:v20 properties:v21 identifier:v18 completionBlock:0];
+      localPersistenceUUID = [resultCopy localPersistenceUUID];
+      _burstImageSet = [(CAMBurstSession *)self _burstImageSet];
+      [_burstImageSet addImageFromIOSurface:stillImageUnfilteredPreviewSurface properties:v21 identifier:localPersistenceUUID completionBlock:0];
       [(CAMBurstSession *)self _setCount:[(CAMBurstSession *)self count]+ 1];
 
-      v10 = v22;
-      v9 = 0;
+      v10 = metadata;
+      error = 0;
     }
   }
 }

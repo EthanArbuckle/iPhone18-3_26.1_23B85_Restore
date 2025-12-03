@@ -1,17 +1,17 @@
 @interface BEEvaluateJavaScriptContext
 - (id)_jsonRepresentation;
-- (id)_transformResults:(id)a3 error:(id)a4;
-- (void)addScriptToEvaluate:(id)a3 key:(id)a4 transform:(id)a5;
+- (id)_transformResults:(id)results error:(id)error;
+- (void)addScriptToEvaluate:(id)evaluate key:(id)key transform:(id)transform;
 @end
 
 @implementation BEEvaluateJavaScriptContext
 
-- (void)addScriptToEvaluate:(id)a3 key:(id)a4 transform:(id)a5
+- (void)addScriptToEvaluate:(id)evaluate key:(id)key transform:(id)transform
 {
-  v18 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v18 length])
+  evaluateCopy = evaluate;
+  keyCopy = key;
+  transformCopy = transform;
+  if ([evaluateCopy length])
   {
     if (!self->_scripts)
     {
@@ -34,13 +34,13 @@
       self->_transforms = v14;
     }
 
-    [(NSMutableDictionary *)self->_scripts setObject:v18 forKeyedSubscript:v8];
-    [(NSMutableArray *)self->_scriptKeyOrdered addObject:v8];
-    if (v9)
+    [(NSMutableDictionary *)self->_scripts setObject:evaluateCopy forKeyedSubscript:keyCopy];
+    [(NSMutableArray *)self->_scriptKeyOrdered addObject:keyCopy];
+    if (transformCopy)
     {
-      v16 = [v9 copy];
+      v16 = [transformCopy copy];
       v17 = objc_retainBlock(v16);
-      [(NSMutableDictionary *)self->_transforms setObject:v17 forKeyedSubscript:v8];
+      [(NSMutableDictionary *)self->_transforms setObject:v17 forKeyedSubscript:keyCopy];
     }
   }
 }
@@ -84,20 +84,20 @@
   return v12;
 }
 
-- (id)_transformResults:(id)a3 error:(id)a4
+- (id)_transformResults:(id)results error:(id)error
 {
-  v6 = a4;
-  v7 = a3;
+  errorCopy = error;
+  resultsCopy = results;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1EFD0;
   v13[3] = &unk_328C00;
   v13[4] = self;
-  v14 = v6;
+  v14 = errorCopy;
   v8 = objc_opt_new();
   v15 = v8;
-  v9 = v6;
-  [v7 enumerateKeysAndObjectsUsingBlock:v13];
+  v9 = errorCopy;
+  [resultsCopy enumerateKeysAndObjectsUsingBlock:v13];
 
   v10 = v15;
   v11 = v8;

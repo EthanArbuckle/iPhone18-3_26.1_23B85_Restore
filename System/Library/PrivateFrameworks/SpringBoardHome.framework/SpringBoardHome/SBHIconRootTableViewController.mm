@@ -1,17 +1,17 @@
 @interface SBHIconRootTableViewController
 - (BOOL)isEditing;
 - (BOOL)isScrollTracking;
-- (BOOL)setCurrentPageIndex:(int64_t)a3 animated:(BOOL)a4 completion:(id)a5;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (BOOL)setCurrentPageIndex:(int64_t)index animated:(BOOL)animated completion:(id)completion;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (int64_t)currentPageIndex;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)cancelScrolling;
-- (void)revealIcon:(id)a3 animated:(BOOL)a4 completionHandler:(id)a5;
-- (void)setEditing:(BOOL)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setFolder:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)revealIcon:(id)icon animated:(BOOL)animated completionHandler:(id)handler;
+- (void)setEditing:(BOOL)editing;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setFolder:(id)folder;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -22,22 +22,22 @@
   v5.receiver = self;
   v5.super_class = SBHIconRootTableViewController;
   [(SBHIconRootTableViewController *)&v5 viewDidLoad];
-  v3 = [(SBHIconRootTableViewController *)self tableView];
+  tableView = [(SBHIconRootTableViewController *)self tableView];
   v4 = objc_opt_self();
-  [v3 registerClass:v4 forCellReuseIdentifier:@"RootIcon"];
+  [tableView registerClass:v4 forCellReuseIdentifier:@"RootIcon"];
 }
 
-- (void)setFolder:(id)a3
+- (void)setFolder:(id)folder
 {
-  v5 = a3;
-  if (self->_folder != v5)
+  folderCopy = folder;
+  if (self->_folder != folderCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_folder, a3);
-    v6 = [(SBHIconRootTableViewController *)self tableView];
-    [v6 reloadData];
+    v7 = folderCopy;
+    objc_storeStrong(&self->_folder, folder);
+    tableView = [(SBHIconRootTableViewController *)self tableView];
+    [tableView reloadData];
 
-    v5 = v7;
+    folderCopy = v7;
   }
 }
 
@@ -48,68 +48,68 @@
   return [(SBHIconRootTableViewController *)&v3 isEditing];
 }
 
-- (void)setEditing:(BOOL)a3
+- (void)setEditing:(BOOL)editing
 {
   v3.receiver = self;
   v3.super_class = SBHIconRootTableViewController;
-  [(SBHIconRootTableViewController *)&v3 setEditing:a3];
+  [(SBHIconRootTableViewController *)&v3 setEditing:editing];
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
   v4.receiver = self;
   v4.super_class = SBHIconRootTableViewController;
-  [(SBHIconRootTableViewController *)&v4 setEditing:a3 animated:a4];
+  [(SBHIconRootTableViewController *)&v4 setEditing:editing animated:animated];
 }
 
 - (BOOL)isScrollTracking
 {
-  v2 = [(SBHIconRootTableViewController *)self tableView];
-  v3 = [v2 isTracking];
+  tableView = [(SBHIconRootTableViewController *)self tableView];
+  isTracking = [tableView isTracking];
 
-  return v3;
+  return isTracking;
 }
 
 - (void)cancelScrolling
 {
-  v2 = [(SBHIconRootTableViewController *)self tableView];
-  [v2 cancelTouchTracking];
+  tableView = [(SBHIconRootTableViewController *)self tableView];
+  [tableView cancelTouchTracking];
 }
 
 - (int64_t)currentPageIndex
 {
-  v2 = [(SBHIconRootTableViewController *)self tableView];
-  v3 = [v2 indexPathsForVisibleRows];
+  tableView = [(SBHIconRootTableViewController *)self tableView];
+  indexPathsForVisibleRows = [tableView indexPathsForVisibleRows];
 
-  v4 = [v3 firstObject];
-  v5 = [v4 section];
+  firstObject = [indexPathsForVisibleRows firstObject];
+  section = [firstObject section];
 
-  return v5;
+  return section;
 }
 
-- (BOOL)setCurrentPageIndex:(int64_t)a3 animated:(BOOL)a4 completion:(id)a5
+- (BOOL)setCurrentPageIndex:(int64_t)index animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = [(SBHIconRootTableViewController *)self tableView];
-  v10 = [MEMORY[0x1E696AC88] indexPathForRow:0 inSection:a3];
-  [v9 rectForRowAtIndexPath:v10];
-  [v9 setContentOffset:v5 animated:?];
-  if (v8)
+  animatedCopy = animated;
+  completionCopy = completion;
+  tableView = [(SBHIconRootTableViewController *)self tableView];
+  v10 = [MEMORY[0x1E696AC88] indexPathForRow:0 inSection:index];
+  [tableView rectForRowAtIndexPath:v10];
+  [tableView setContentOffset:animatedCopy animated:?];
+  if (completionCopy)
   {
-    v8[2](v8);
+    completionCopy[2](completionCopy);
   }
 
   return 1;
 }
 
-- (void)revealIcon:(id)a3 animated:(BOOL)a4 completionHandler:(id)a5
+- (void)revealIcon:(id)icon animated:(BOOL)animated completionHandler:(id)handler
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(SBHIconRootTableViewController *)self folder];
-  v11 = [v10 indexPathForIcon:v9];
+  animatedCopy = animated;
+  handlerCopy = handler;
+  iconCopy = icon;
+  folder = [(SBHIconRootTableViewController *)self folder];
+  v11 = [folder indexPathForIcon:iconCopy];
 
   if (v11)
   {
@@ -118,13 +118,13 @@
     v13[1] = 3221225472;
     v13[2] = __72__SBHIconRootTableViewController_revealIcon_animated_completionHandler___block_invoke;
     v13[3] = &unk_1E8089600;
-    v14 = v8;
-    [(SBHIconRootTableViewController *)self setCurrentPageIndex:v12 animated:v5 completion:v13];
+    v14 = handlerCopy;
+    [(SBHIconRootTableViewController *)self setCurrentPageIndex:v12 animated:animatedCopy completion:v13];
   }
 
-  else if (v8)
+  else if (handlerCopy)
   {
-    (*(v8 + 2))(v8, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -139,51 +139,51 @@ uint64_t __72__SBHIconRootTableViewController_revealIcon_animated_completionHand
   return result;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(SBHIconRootTableViewController *)self folder];
-  v4 = [v3 listCount];
+  folder = [(SBHIconRootTableViewController *)self folder];
+  listCount = [folder listCount];
 
-  return v4;
+  return listCount;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(SBHIconRootTableViewController *)self folder];
-  v6 = [v5 listAtIndex:a4];
+  folder = [(SBHIconRootTableViewController *)self folder];
+  v6 = [folder listAtIndex:section];
 
-  v7 = [v6 numberOfIcons];
-  return v7;
+  numberOfIcons = [v6 numberOfIcons];
+  return numberOfIcons;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"RootIcon" forIndexPath:v6];
-  v8 = [(SBHIconRootTableViewController *)self folder];
-  v9 = [v8 iconAtIndexPath:v6];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"RootIcon" forIndexPath:pathCopy];
+  folder = [(SBHIconRootTableViewController *)self folder];
+  v9 = [folder iconAtIndexPath:pathCopy];
 
-  v10 = [(SBHIconRootTableViewController *)self traitCollection];
-  v11 = [v7 textLabel];
+  traitCollection = [(SBHIconRootTableViewController *)self traitCollection];
+  textLabel = [v7 textLabel];
   v12 = [v9 displayNameForLocation:@"SBIconLocationRoot"];
-  [v11 setText:v12];
+  [textLabel setText:v12];
 
-  v13 = [v7 imageView];
-  v14 = [(SBHIconRootTableViewController *)self iconImageCache];
-  v15 = [v14 imageForIcon:v9 compatibleWithTraitCollection:v10 options:0];
-  [v13 setImage:v15];
+  imageView = [v7 imageView];
+  iconImageCache = [(SBHIconRootTableViewController *)self iconImageCache];
+  v15 = [iconImageCache imageForIcon:v9 compatibleWithTraitCollection:traitCollection options:0];
+  [imageView setImage:v15];
 
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(SBHIconRootTableViewController *)self folder];
-  v8 = [v9 iconAtIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  folder = [(SBHIconRootTableViewController *)self folder];
+  v8 = [folder iconAtIndexPath:pathCopy];
   [v8 launchFromLocation:@"SBIconLocationRoot" context:0];
-  [v7 deselectRowAtIndexPath:v6 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
 @end

@@ -1,60 +1,60 @@
 @interface ADiOSAssistantPropertiesUtilities
-+ (int)_audibleVoiceFeedbackSettingFromSISchemaToODD:(int)a3;
-+ (int)_heySiriHangupEnablementStateFromSISchemaToODD:(int)a3;
-+ (int)_siriInCallEnablementStateFromSISchemaToODD:(int)a3;
++ (int)_audibleVoiceFeedbackSettingFromSISchemaToODD:(int)d;
++ (int)_heySiriHangupEnablementStateFromSISchemaToODD:(int)d;
++ (int)_siriInCallEnablementStateFromSISchemaToODD:(int)d;
 + (int)getHangUpEnablementState;
-+ (int)getODDCarPlayAnnounceStatusFrom:(int64_t)a3;
++ (int)getODDCarPlayAnnounceStatusFrom:(int64_t)from;
 + (int)getSiriInCallEnablementState;
-+ (int)getSiriPauseTimeStateFrom:(int64_t)a3;
++ (int)getSiriPauseTimeStateFrom:(int64_t)from;
 + (int)getVoiceFeedbackStatus;
 @end
 
 @implementation ADiOSAssistantPropertiesUtilities
 
-+ (int)_audibleVoiceFeedbackSettingFromSISchemaToODD:(int)a3
++ (int)_audibleVoiceFeedbackSettingFromSISchemaToODD:(int)d
 {
-  if ((a3 - 1) >= 6)
+  if ((d - 1) >= 6)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return d;
   }
 }
 
-+ (int)_siriInCallEnablementStateFromSISchemaToODD:(int)a3
++ (int)_siriInCallEnablementStateFromSISchemaToODD:(int)d
 {
-  if ((a3 - 1) >= 3)
+  if ((d - 1) >= 3)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return d;
   }
 }
 
-+ (int)_heySiriHangupEnablementStateFromSISchemaToODD:(int)a3
++ (int)_heySiriHangupEnablementStateFromSISchemaToODD:(int)d
 {
-  if ((a3 - 1) >= 3)
+  if ((d - 1) >= 3)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return d;
   }
 }
 
-+ (int)getSiriPauseTimeStateFrom:(int64_t)a3
++ (int)getSiriPauseTimeStateFrom:(int64_t)from
 {
-  if ((a3 - 1) < 3)
+  if ((from - 1) < 3)
   {
-    return a3;
+    return from;
   }
 
   else
@@ -63,35 +63,35 @@
   }
 }
 
-+ (int)getODDCarPlayAnnounceStatusFrom:(int64_t)a3
++ (int)getODDCarPlayAnnounceStatusFrom:(int64_t)from
 {
-  if ((a3 - 1) > 3)
+  if ((from - 1) > 3)
   {
     return 0;
   }
 
   else
   {
-    return dword_1003F0340[a3 - 1];
+    return dword_1003F0340[from - 1];
   }
 }
 
 + (int)getVoiceFeedbackStatus
 {
   v3 = +[AFPreferences sharedPreferences];
-  v4 = [v3 useDeviceSpeakerForTTS];
+  useDeviceSpeakerForTTS = [v3 useDeviceSpeakerForTTS];
 
-  if (v4 > 3)
+  if (useDeviceSpeakerForTTS > 3)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = dword_1003F0330[v4];
+    v5 = dword_1003F0330[useDeviceSpeakerForTTS];
   }
 
-  return [a1 _audibleVoiceFeedbackSettingFromSISchemaToODD:v5];
+  return [self _audibleVoiceFeedbackSettingFromSISchemaToODD:v5];
 }
 
 + (int)getSiriInCallEnablementState
@@ -106,7 +106,7 @@
     v5 = 0;
   }
 
-  return [a1 _siriInCallEnablementStateFromSISchemaToODD:v5];
+  return [self _siriInCallEnablementStateFromSISchemaToODD:v5];
 }
 
 + (int)getHangUpEnablementState
@@ -121,7 +121,7 @@
     v5 = 0;
   }
 
-  return [a1 _heySiriHangupEnablementStateFromSISchemaToODD:v5];
+  return [self _heySiriHangupEnablementStateFromSISchemaToODD:v5];
 }
 
 @end

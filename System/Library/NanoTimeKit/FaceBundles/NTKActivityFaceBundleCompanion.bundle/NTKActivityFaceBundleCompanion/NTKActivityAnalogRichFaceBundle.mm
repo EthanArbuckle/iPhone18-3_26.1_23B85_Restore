@@ -1,17 +1,17 @@
 @interface NTKActivityAnalogRichFaceBundle
-- (id)galleryTitleForDevice:(id)a3;
+- (id)galleryTitleForDevice:(id)device;
 @end
 
 @implementation NTKActivityAnalogRichFaceBundle
 
-- (id)galleryTitleForDevice:(id)a3
+- (id)galleryTitleForDevice:(id)device
 {
   if (_os_feature_enabled_impl())
   {
     v7.receiver = self;
     v7.super_class = NTKActivityAnalogRichFaceBundle;
-    v4 = [(NTKActivityAnalogRichFaceBundle *)&v7 galleryTitle];
-    v5 = [NSString stringWithFormat:@"%@ (Legacy)", v4];
+    galleryTitle = [(NTKActivityAnalogRichFaceBundle *)&v7 galleryTitle];
+    v5 = [NSString stringWithFormat:@"%@ (Legacy)", galleryTitle];
   }
 
   else

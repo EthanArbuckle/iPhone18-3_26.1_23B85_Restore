@@ -2,13 +2,13 @@
 + (id)sharedInstance;
 - (ARCubemapCompletion)init;
 - (id).cxx_construct;
-- (id)completeCubemap:(simd_float3)a3 cameraExposure:(simd_float3)a4 rotationWorldFromCube:(simd_float3)a5;
-- (id)completeLatLongImage:(id)a3;
+- (id)completeCubemap:(simd_float3)cubemap cameraExposure:(simd_float3)exposure rotationWorldFromCube:(simd_float3)cube;
+- (id)completeLatLongImage:(id)image;
 - (id)generateSeamSmoothingTexture;
-- (id)grayCubemapOfSize:(unint64_t)a3;
-- (id)toTexture:(id *)a3;
-- (unsigned)srgbToLog:(unsigned __int8)a3;
-- (vImage_Buffer)toVImageBuffer:(SEL)a3;
+- (id)grayCubemapOfSize:(unint64_t)size;
+- (id)toTexture:(id *)texture;
+- (unsigned)srgbToLog:(unsigned __int8)log;
+- (vImage_Buffer)toVImageBuffer:(SEL)buffer;
 - (void)dealloc;
 @end
 
@@ -58,9 +58,9 @@ void __37__ARCubemapCompletion_sharedInstance__block_invoke()
   v2->_device = v7;
 
   v2->_use_model_pre_A11 = [(MTLDevice *)v2->_device supportsFamily:1004]^ 1;
-  v9 = [(ARCubemapCompletion *)v2 generateSeamSmoothingTexture];
+  generateSeamSmoothingTexture = [(ARCubemapCompletion *)v2 generateSeamSmoothingTexture];
   roughness = v2->_roughness;
-  v2->_roughness = v9;
+  v2->_roughness = generateSeamSmoothingTexture;
 
   v11 = ARKitCoreBundle();
   if (v2->_use_model_pre_A11)
@@ -347,9 +347,9 @@ LABEL_73:
 
     v2->_alpha_threshold = 0.9;
     v2->_bias_exposure_threshold = 0.005;
-    v66 = [(MTLDevice *)v2->_device newCommandQueue];
+    newCommandQueue = [(MTLDevice *)v2->_device newCommandQueue];
     queue = v2->_queue;
-    v2->_queue = v66;
+    v2->_queue = newCommandQueue;
 
     [(MTLCommandQueue *)v2->_queue setLabel:@"com.apple.arkit.cubemapcompletion.queue"];
     v2->_espressoInitialized = 1;
@@ -585,35 +585,35 @@ LABEL_75:
   [(ARCubemapCompletion *)&v3 dealloc];
 }
 
-- (unsigned)srgbToLog:(unsigned __int8)a3
+- (unsigned)srgbToLog:(unsigned __int8)log
 {
-  v3 = powf(a3 / 255.0, 2.2);
+  v3 = powf(log / 255.0, 2.2);
   v4 = (log10((v3 / 0.18) + 1.0e-16) * 224.999985 + 445.0) / 1023.0;
   return (fmaxf(fminf(v4, 1.0), 0.0) * 255.0);
 }
 
-- (id)completeCubemap:(simd_float3)a3 cameraExposure:(simd_float3)a4 rotationWorldFromCube:(simd_float3)a5
+- (id)completeCubemap:(simd_float3)cubemap cameraExposure:(simd_float3)exposure rotationWorldFromCube:(simd_float3)cube
 {
-  v31.columns[1] = a4;
-  v31.columns[2] = a5;
-  v31.columns[0] = a3;
+  v31.columns[1] = exposure;
+  v31.columns[2] = cube;
+  v31.columns[0] = cubemap;
   v36 = *MEMORY[0x1E69E9840];
   v9 = a7;
   [v9 width];
   [v9 height];
   kdebug_trace();
-  if (*(a1 + 60))
+  if (*(self + 60))
   {
     __asm { FMOV            V0.2S, #1.0 }
 
-    *(a1 + 256) = _D0;
-    *(a1 + 264) = 1065353216;
-    v15 = *(a1 + 152);
-    *(a1 + 144) = v15 > a2;
+    *(self + 256) = _D0;
+    *(self + 264) = 1065353216;
+    v15 = *(self + 152);
+    *(self + 144) = v15 > a2;
     if (v15 <= a2)
     {
       v16 = v31;
-      if (*(a1 + 224))
+      if (*(self + 224))
       {
         v18 = 255;
       }
@@ -623,32 +623,32 @@ LABEL_75:
         v18 = 128;
       }
 
-      *(a1 + 160) = v18;
+      *(self + 160) = v18;
     }
 
     else
     {
       v16.columns[1] = v31.columns[1];
       v16.columns[2] = v31.columns[2];
-      if (*(a1 + 224))
+      if (*(self + 224))
       {
-        *(a1 + 268) = *(a1 + 192) / 2;
-        *(a1 + 256) = vdup_n_s32(0x3F7D70A4u);
-        *(a1 + 264) = 1066192077;
+        *(self + 268) = *(self + 192) / 2;
+        *(self + 256) = vdup_n_s32(0x3F7D70A4u);
+        *(self + 264) = 1066192077;
       }
 
-      *(a1 + 160) = 255;
+      *(self + 160) = 255;
       v16.columns[0] = v31.columns[0];
     }
 
-    v19 = *(a1 + 120);
+    v19 = *(self + 120);
     v38 = __invert_f3(v16);
-    v20 = [v19 equirectangularTextureFromCubemapTexture:v9 rotation:*(a1 + 184) width:*(a1 + 192) height:{*v38.columns[0].i64, *v38.columns[1].i64, *v38.columns[2].i64}];
-    v21 = [a1 completeLatLongImage:v20];
+    v20 = [v19 equirectangularTextureFromCubemapTexture:v9 rotation:*(self + 184) width:*(self + 192) height:{*v38.columns[0].i64, *v38.columns[1].i64, *v38.columns[2].i64}];
+    v21 = [self completeLatLongImage:v20];
     if (v21)
     {
-      v22 = [*(a1 + 120) cubemapTextureFromEquirectangularTexture:v21 rotation:objc_msgSend(v9 size:{"height"), *v31.columns[0].i64, *v31.columns[1].i64, *v31.columns[2].i64}];
-      v17 = [*(a1 + 128) blurCubemapTexture:v22 roughness:*(a1 + 136) rotation:{*v31.columns[0].i64, *v31.columns[1].i64, *v31.columns[2].i64}];
+      v22 = [*(self + 120) cubemapTextureFromEquirectangularTexture:v21 rotation:objc_msgSend(v9 size:{"height"), *v31.columns[0].i64, *v31.columns[1].i64, *v31.columns[2].i64}];
+      v17 = [*(self + 128) blurCubemapTexture:v22 roughness:*(self + 136) rotation:{*v31.columns[0].i64, *v31.columns[1].i64, *v31.columns[2].i64}];
       [v17 width];
       [v17 height];
       kdebug_trace();
@@ -673,7 +673,7 @@ LABEL_75:
           *buf = 138543618;
           v33 = v27;
           v34 = 2048;
-          v35 = a1;
+          selfCopy2 = self;
           _os_log_impl(&dword_1C241C000, v25, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Could not complete environment texture", buf, 0x16u);
         }
       }
@@ -685,27 +685,27 @@ LABEL_75:
         *buf = 138543618;
         v33 = v29;
         v34 = 2048;
-        v35 = a1;
+        selfCopy2 = self;
         _os_log_impl(&dword_1C241C000, v25, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Could not complete environment texture", buf, 0x16u);
       }
 
-      v17 = [a1 grayCubemapOfSize:{objc_msgSend(v9, "width")}];
+      v17 = [self grayCubemapOfSize:{objc_msgSend(v9, "width")}];
     }
   }
 
   else
   {
-    v17 = [a1 grayCubemapOfSize:{objc_msgSend(v9, "width")}];
+    v17 = [self grayCubemapOfSize:{objc_msgSend(v9, "width")}];
   }
 
   return v17;
 }
 
-- (id)completeLatLongImage:(id)a3
+- (id)completeLatLongImage:(id)image
 {
   v19 = 0u;
   v20 = 0u;
-  [(ARCubemapCompletion *)self toVImageBuffer:a3];
+  [(ARCubemapCompletion *)self toVImageBuffer:image];
   v8 = v19;
   v9 = v20;
   if (espresso_network_bind_input_vimagebuffer_bgra8() || espresso_network_bind_buffer() || !self->_espresso_plan || (kdebug_trace(), espresso_plan_execute_sync()))
@@ -733,19 +733,19 @@ LABEL_75:
   return v4;
 }
 
-- (vImage_Buffer)toVImageBuffer:(SEL)a3
+- (vImage_Buffer)toVImageBuffer:(SEL)buffer
 {
   v6 = a4;
   [v6 width];
   [v6 height];
   kdebug_trace();
-  v7 = [v6 width];
-  v8 = [v6 height];
+  width = [v6 width];
+  height = [v6 height];
   data = self->_vImageBuffer.data;
   rowBytes = self->_vImageBuffer.rowBytes;
   memset(v33, 0, 24);
-  v33[3] = v7;
-  v33[4] = v8;
+  v33[3] = width;
+  v33[4] = height;
   v33[5] = 1;
   [v6 getBytes:data bytesPerRow:rowBytes fromRegion:v33 mipmapLevel:0];
   v13 = self->_vImageBuffer.data;
@@ -753,7 +753,7 @@ LABEL_75:
   begin = self->_randomNumbers.__begin_;
   *&self->_g_avg = 0;
   self->_r_avg = 0.0;
-  if (v8)
+  if (height)
   {
     v16 = 0;
     v17 = 0;
@@ -761,8 +761,8 @@ LABEL_75:
     do
     {
       v19 = v18;
-      v20 = v7;
-      if (v7)
+      v20 = width;
+      if (width)
       {
         while (1)
         {
@@ -892,7 +892,7 @@ LABEL_30:
       v18 += v14;
     }
 
-    while (v16 != v8);
+    while (v16 != height);
     r_avg = self->_r_avg;
     v28 = self->_g_avg;
     b_avg = self->_b_avg;
@@ -918,31 +918,31 @@ LABEL_30:
   return result;
 }
 
-- (id)toTexture:(id *)a3
+- (id)toTexture:(id *)texture
 {
   kdebug_trace();
-  var4 = a3->var4;
-  var5 = a3->var5;
-  var0 = a3->var0;
-  var10 = a3->var10;
-  var11 = a3->var11;
-  var9 = a3->var9;
-  v58 = self;
+  var4 = texture->var4;
+  var5 = texture->var5;
+  var0 = texture->var0;
+  var10 = texture->var10;
+  var11 = texture->var11;
+  var9 = texture->var9;
+  selfCopy = self;
   v56 = var4;
   if (var5)
   {
     v11 = 0;
-    v12 = a3->var0;
+    v12 = texture->var0;
     v13 = 0;
     rowBytes = self->_vImageBuffer.rowBytes;
-    v55 = a3->var5;
+    v55 = texture->var5;
     data = self->_vImageBuffer.data;
-    v50 = a3->var9;
-    v51 = a3->var10;
+    v50 = texture->var9;
+    v51 = texture->var10;
     v53 = 4 * var10;
     v15 = 0.0;
     v16 = 4 * var9;
-    v52 = a3->var0;
+    v52 = texture->var0;
     v17 = 0.0;
     v18 = 0.0;
     do
@@ -957,7 +957,7 @@ LABEL_30:
           if (!data[v21])
           {
             v22 = *v20;
-            if (v58->_use_model_pre_A11)
+            if (selfCopy->_use_model_pre_A11)
             {
               v15 = v15 + __exp10(((v22 * 1023.0) + -445.0) * 0.00444444456) * 0.180000007;
               v17 = v17 + __exp10(((v20[var11] * 1023.0) + -445.0) * 0.00444444456) * 0.180000007;
@@ -989,7 +989,7 @@ LABEL_30:
 
     while (v13 != v55);
     v23 = v11;
-    self = v58;
+    self = selfCopy;
     var5 = v55;
     var4 = v56;
     var10 = v51;
@@ -1047,10 +1047,10 @@ LABEL_30:
     while (v25 != var5);
   }
 
-  if (v58->_generateHDROutput)
+  if (selfCopy->_generateHDROutput)
   {
     [ARKitUserDefaults floatForKey:@"com.apple.arkit.environmentTexturing.maxHDR"];
-    if (v58->_generateHDROutput)
+    if (selfCopy->_generateHDROutput)
     {
       v37 = 115;
     }
@@ -1068,20 +1068,20 @@ LABEL_30:
   }
 
   v66 = v36;
-  v57 = [(MTLCommandQueue *)v58->_queue commandBuffer];
-  v38 = [v57 computeCommandEncoder];
+  commandBuffer = [(MTLCommandQueue *)selfCopy->_queue commandBuffer];
+  computeCommandEncoder = [commandBuffer computeCommandEncoder];
   v39 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:55 width:var4 height:var5 mipmapped:0];
   [v39 setUsage:7];
-  v40 = [(MTLDevice *)v58->_device newTextureWithDescriptor:v39];
-  v41 = [(MTLDevice *)v58->_device newTextureWithDescriptor:v39];
-  v42 = [(MTLDevice *)v58->_device newTextureWithDescriptor:v39];
+  v40 = [(MTLDevice *)selfCopy->_device newTextureWithDescriptor:v39];
+  v41 = [(MTLDevice *)selfCopy->_device newTextureWithDescriptor:v39];
+  v42 = [(MTLDevice *)selfCopy->_device newTextureWithDescriptor:v39];
   [v40 setLabel:@"com.apple.arkit.cubemapcompletion.rplane"];
   [v41 setLabel:@"com.apple.arkit.cubemapcompletion.gplane"];
   [v42 setLabel:@"com.apple.arkit.cubemapcompletion.plane"];
   v43 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:v37 width:v56 height:var5 mipmapped:0];
 
   [v43 setUsage:7];
-  v44 = [(MTLDevice *)v58->_device newTextureWithDescriptor:v43];
+  v44 = [(MTLDevice *)selfCopy->_device newTextureWithDescriptor:v43];
   [v44 setLabel:@"com.apple.arkit.cubemapcompletion.dst"];
   v60 = 0;
   v61 = 0;
@@ -1089,44 +1089,44 @@ LABEL_30:
   v63 = v56;
   v64 = var5;
   v65 = 1;
-  [v40 replaceRegion:&v60 mipmapLevel:0 withBytes:a3->var0 bytesPerRow:a3->var3[0]];
+  [v40 replaceRegion:&v60 mipmapLevel:0 withBytes:texture->var0 bytesPerRow:texture->var3[0]];
   v60 = 0;
   v61 = 0;
   v62 = 0;
   v63 = v56;
   v64 = var5;
   v65 = 1;
-  [v41 replaceRegion:&v60 mipmapLevel:0 withBytes:a3->var0 + 4 * a3->var11 bytesPerRow:a3->var3[0]];
+  [v41 replaceRegion:&v60 mipmapLevel:0 withBytes:texture->var0 + 4 * texture->var11 bytesPerRow:texture->var3[0]];
   v60 = 0;
   v61 = 0;
   v62 = 0;
   v63 = v56;
   v64 = var5;
   v65 = 1;
-  [v42 replaceRegion:&v60 mipmapLevel:0 withBytes:a3->var0 + 8 * a3->var11 bytesPerRow:a3->var3[0]];
-  [v38 setComputePipelineState:v58->_combineBuffersToHDR];
-  [v38 setTexture:v40 atIndex:0];
-  [v38 setTexture:v41 atIndex:1];
-  [v38 setTexture:v42 atIndex:2];
-  [v38 setTexture:v44 atIndex:3];
-  [v38 setBytes:&v66 length:4 atIndex:0];
-  [v38 setBytes:v67 length:4 atIndex:1];
-  [v38 setBytes:v67 length:4 atIndex:2];
-  [v38 setBytes:v67 length:4 atIndex:3];
-  v45 = [(MTLComputePipelineState *)v58->_combineBuffersToHDR threadExecutionWidth];
-  v46 = [(MTLComputePipelineState *)v58->_combineBuffersToHDR maxTotalThreadsPerThreadgroup];
-  v47 = [v44 width];
-  v48 = [v44 height];
-  v60 = (v45 + v47 - 1) / v45;
-  v61 = (v46 / v45 + v48 - 1) / (v46 / v45);
+  [v42 replaceRegion:&v60 mipmapLevel:0 withBytes:texture->var0 + 8 * texture->var11 bytesPerRow:texture->var3[0]];
+  [computeCommandEncoder setComputePipelineState:selfCopy->_combineBuffersToHDR];
+  [computeCommandEncoder setTexture:v40 atIndex:0];
+  [computeCommandEncoder setTexture:v41 atIndex:1];
+  [computeCommandEncoder setTexture:v42 atIndex:2];
+  [computeCommandEncoder setTexture:v44 atIndex:3];
+  [computeCommandEncoder setBytes:&v66 length:4 atIndex:0];
+  [computeCommandEncoder setBytes:v67 length:4 atIndex:1];
+  [computeCommandEncoder setBytes:v67 length:4 atIndex:2];
+  [computeCommandEncoder setBytes:v67 length:4 atIndex:3];
+  threadExecutionWidth = [(MTLComputePipelineState *)selfCopy->_combineBuffersToHDR threadExecutionWidth];
+  maxTotalThreadsPerThreadgroup = [(MTLComputePipelineState *)selfCopy->_combineBuffersToHDR maxTotalThreadsPerThreadgroup];
+  width = [v44 width];
+  height = [v44 height];
+  v60 = (threadExecutionWidth + width - 1) / threadExecutionWidth;
+  v61 = (maxTotalThreadsPerThreadgroup / threadExecutionWidth + height - 1) / (maxTotalThreadsPerThreadgroup / threadExecutionWidth);
   v62 = 1;
-  v59[0] = v45;
-  v59[1] = v46 / v45;
+  v59[0] = threadExecutionWidth;
+  v59[1] = maxTotalThreadsPerThreadgroup / threadExecutionWidth;
   v59[2] = 1;
-  [v38 dispatchThreadgroups:&v60 threadsPerThreadgroup:v59];
-  [v38 endEncoding];
-  [v57 commit];
-  [v57 waitUntilCompleted];
+  [computeCommandEncoder dispatchThreadgroups:&v60 threadsPerThreadgroup:v59];
+  [computeCommandEncoder endEncoding];
+  [commandBuffer commit];
+  [commandBuffer waitUntilCompleted];
   [v44 width];
   [v44 height];
   kdebug_trace();
@@ -1134,18 +1134,18 @@ LABEL_30:
   return v44;
 }
 
-- (id)grayCubemapOfSize:(unint64_t)a3
+- (id)grayCubemapOfSize:(unint64_t)size
 {
-  v5 = 4 * a3;
-  v6 = 4 * a3 * a3;
+  v5 = 4 * size;
+  v6 = 4 * size * size;
   std::vector<unsigned char>::vector[abi:ne200100](__p, v6);
-  if (a3)
+  if (size)
   {
     v7 = 0;
     v8 = 0;
     do
     {
-      v9 = a3;
+      sizeCopy = size;
       v10 = v7;
       do
       {
@@ -1154,25 +1154,25 @@ LABEL_30:
         *(__p[0] + v10 + 2) = 127;
         *(__p[0] + v10 + 3) = -1;
         v10 += 4;
-        --v9;
+        --sizeCopy;
       }
 
-      while (v9);
+      while (sizeCopy);
       ++v8;
       v7 += v5;
     }
 
-    while (v8 != a3);
+    while (v8 != size);
   }
 
-  v11 = [MEMORY[0x1E69741C0] textureCubeDescriptorWithPixelFormat:81 size:a3 mipmapped:0];
+  v11 = [MEMORY[0x1E69741C0] textureCubeDescriptorWithPixelFormat:81 size:size mipmapped:0];
   [v11 setUsage:5];
   v12 = [(MTLDevice *)self->_device newTextureWithDescriptor:v11];
   for (i = 0; i != 6; ++i)
   {
     memset(v15, 0, 24);
-    v15[3] = a3;
-    v15[4] = a3;
+    v15[3] = size;
+    v15[4] = size;
     v15[5] = 1;
     [v12 replaceRegion:v15 mipmapLevel:0 slice:i withBytes:__p[0] bytesPerRow:v5 bytesPerImage:v6];
   }

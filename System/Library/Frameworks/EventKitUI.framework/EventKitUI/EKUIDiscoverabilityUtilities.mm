@@ -1,22 +1,22 @@
 @interface EKUIDiscoverabilityUtilities
-+ (void)scanEventsForDiscoveredConferencesIfNeeded:(id)a3;
-+ (void)sendDiscoverabilitySignalForConference:(id)a3;
++ (void)scanEventsForDiscoveredConferencesIfNeeded:(id)needed;
++ (void)sendDiscoverabilitySignalForConference:(id)conference;
 @end
 
 @implementation EKUIDiscoverabilityUtilities
 
-+ (void)sendDiscoverabilitySignalForConference:(id)a3
++ (void)sendDiscoverabilitySignalForConference:(id)conference
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  conferenceCopy = conference;
   if ([MEMORY[0x1E6992FA0] currentProcessIsFirstPartyApp])
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v4 = [v3 joinMethods];
-    v5 = [v4 countByEnumeratingWithState:&v19 objects:v34 count:16];
+    joinMethods = [conferenceCopy joinMethods];
+    v5 = [joinMethods countByEnumeratingWithState:&v19 objects:v34 count:16];
     if (v5)
     {
       v6 = *v20;
@@ -27,7 +27,7 @@ LABEL_4:
       {
         if (*v20 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(joinMethods);
         }
 
         v9 = MEMORY[0x1E6992F40];
@@ -41,7 +41,7 @@ LABEL_4:
 
         if (v5 == ++v8)
         {
-          v5 = [v4 countByEnumeratingWithState:&v19 objects:v34 count:16];
+          v5 = [joinMethods countByEnumeratingWithState:&v19 objects:v34 count:16];
           if (v5)
           {
             goto LABEL_4;
@@ -79,7 +79,7 @@ LABEL_4:
 
     v13 = v12;
     _Block_object_dispose(&v28, 8);
-    v14 = [v12 discoverabilitySignal];
+    discoverabilitySignal = [v12 discoverabilitySignal];
     v28 = 0;
     v29 = &v28;
     v30 = 0x2050000000;
@@ -99,40 +99,40 @@ LABEL_4:
     v16 = v15;
     _Block_object_dispose(&v28, 8);
     v17 = [[v15 alloc] initWithIdentifier:@"com.apple.mobilecal.virtual-conference-added" bundleID:@"com.apple.mobilecal" context:0 userInfo:v11];
-    v18 = [v14 source];
-    [v18 sendEvent:v17];
+    source = [discoverabilitySignal source];
+    [source sendEvent:v17];
   }
 }
 
-+ (void)scanEventsForDiscoveredConferencesIfNeeded:(id)a3
++ (void)scanEventsForDiscoveredConferencesIfNeeded:(id)needed
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  neededCopy = needed;
   if ([MEMORY[0x1E6992FA0] currentProcessIsFirstPartyApp])
   {
-    v5 = [MEMORY[0x1E6993470] sharedPreferences];
-    v6 = [v5 scanForDiscoveredVirtualConferences];
+    mEMORY[0x1E6993470] = [MEMORY[0x1E6993470] sharedPreferences];
+    scanForDiscoveredVirtualConferences = [mEMORY[0x1E6993470] scanForDiscoveredVirtualConferences];
 
-    if (v6)
+    if (scanForDiscoveredVirtualConferences)
     {
-      v28 = a1;
+      selfCopy = self;
       v7 = objc_alloc_init(MEMORY[0x1E695DF10]);
-      v8 = [MEMORY[0x1E695DEE8] currentCalendar];
-      v9 = [MEMORY[0x1E695DF00] date];
-      v10 = [v8 components:28 fromDate:v9];
+      currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+      date = [MEMORY[0x1E695DF00] date];
+      v10 = [currentCalendar components:28 fromDate:date];
 
       [v7 setDay:1];
       [v7 setMonth:6];
       [v7 setYear:2021];
       [v10 setYear:{objc_msgSend(v10, "year") + 1}];
-      v11 = [MEMORY[0x1E695DEE8] currentCalendar];
-      v27 = [v11 dateFromComponents:v7];
+      currentCalendar2 = [MEMORY[0x1E695DEE8] currentCalendar];
+      v27 = [currentCalendar2 dateFromComponents:v7];
 
-      v12 = [MEMORY[0x1E695DEE8] currentCalendar];
-      v26 = [v12 dateFromComponents:v10];
+      currentCalendar3 = [MEMORY[0x1E695DEE8] currentCalendar];
+      v26 = [currentCalendar3 dateFromComponents:v10];
 
-      v13 = [v4 sourcesEnabledForEntityType:0];
-      v14 = [MEMORY[0x1E695DF70] array];
+      v13 = [neededCopy sourcesEnabledForEntityType:0];
+      array = [MEMORY[0x1E695DF70] array];
       v33 = 0u;
       v34 = 0u;
       v35 = 0u;
@@ -156,9 +156,9 @@ LABEL_4:
             if ([v20 sourceType] != 5 && objc_msgSend(v20, "sourceType") != 4)
             {
               v21 = [v20 calendarsForEntityType:0];
-              v22 = [v21 allObjects];
+              allObjects = [v21 allObjects];
 
-              [v14 addObjectsFromArray:v22];
+              [array addObjectsFromArray:allObjects];
             }
           }
 
@@ -168,15 +168,15 @@ LABEL_4:
         while (v17);
       }
 
-      v23 = [v4 predicateForEventsWithStartDate:v27 endDate:v26 calendars:v14 loadDefaultProperties:1];
+      v23 = [neededCopy predicateForEventsWithStartDate:v27 endDate:v26 calendars:array loadDefaultProperties:1];
       v24 = dispatch_get_global_queue(-32768, 0);
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __75__EKUIDiscoverabilityUtilities_scanEventsForDiscoveredConferencesIfNeeded___block_invoke;
       block[3] = &unk_1E8441000;
-      v30 = v4;
+      v30 = neededCopy;
       v31 = v23;
-      v32 = v28;
+      v32 = selfCopy;
       v25 = v23;
       dispatch_async(v24, block);
     }

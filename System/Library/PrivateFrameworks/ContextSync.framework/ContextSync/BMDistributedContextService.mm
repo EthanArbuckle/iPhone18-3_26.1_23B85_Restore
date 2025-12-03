@@ -1,36 +1,36 @@
 @interface BMDistributedContextService
 + (id)distributedContextManager;
-+ (id)stringForIDSDeviceType:(int64_t)a3;
++ (id)stringForIDSDeviceType:(int64_t)type;
 - (BMDistributedContextService)init;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)registerForUpdates:(id)a3 withIdentifier:(id)a4 withOptions:(unint64_t)a5 forDeviceTypes:(int64_t)a6 withError:(id *)a7;
-- (BOOL)registerForUpdates:(id)a3 withIdentifier:(id)a4 withOptions:(unint64_t)a5 forDevices:(id)a6 withError:(id *)a7;
-- (BOOL)registerRemoteDSLSubscription:(id)a3 withRemoteIdentifier:(id)a4 withOptions:(unint64_t)a5 forDevices:(id)a6;
-- (BOOL)unregisterForUpdates:(id)a3 withIdentifier:(id)a4 forDeviceTypes:(int64_t)a5 withError:(id *)a6;
-- (BOOL)unregisterForUpdates:(id)a3 withIdentifier:(id)a4 forDevices:(id)a5 withError:(id *)a6;
-- (BOOL)unregisterRemoteDSLSubscription:(id)a3 withRemoteIdentifier:(id)a4 forDevices:(id)a5;
-- (id)devicesWithDeviceType:(int64_t)a3;
-- (id)idsDeviceForDeviceUUID:(id)a3;
-- (id)registerSinkWithIdentifier:(id)a3 withDSL:(id)a4;
-- (void)assertLocalSubscriptionsToDevice:(id)a3 shouldSendIfNoSubscriptions:(BOOL)a4;
-- (void)cancelSubscriptionForIdentifier:(id)a3;
-- (void)connection:(id)a3 devicesChanged:(id)a4;
-- (void)contextChanged:(id)a3 forSubscriptionWithIdentifier:(id)a4;
-- (void)handleIncomingContextChangeMessage:(id)a3 forDevice:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)registerForUpdates:(id)updates withIdentifier:(id)identifier withOptions:(unint64_t)options forDeviceTypes:(int64_t)types withError:(id *)error;
+- (BOOL)registerForUpdates:(id)updates withIdentifier:(id)identifier withOptions:(unint64_t)options forDevices:(id)devices withError:(id *)error;
+- (BOOL)registerRemoteDSLSubscription:(id)subscription withRemoteIdentifier:(id)identifier withOptions:(unint64_t)options forDevices:(id)devices;
+- (BOOL)unregisterForUpdates:(id)updates withIdentifier:(id)identifier forDeviceTypes:(int64_t)types withError:(id *)error;
+- (BOOL)unregisterForUpdates:(id)updates withIdentifier:(id)identifier forDevices:(id)devices withError:(id *)error;
+- (BOOL)unregisterRemoteDSLSubscription:(id)subscription withRemoteIdentifier:(id)identifier forDevices:(id)devices;
+- (id)devicesWithDeviceType:(int64_t)type;
+- (id)idsDeviceForDeviceUUID:(id)d;
+- (id)registerSinkWithIdentifier:(id)identifier withDSL:(id)l;
+- (void)assertLocalSubscriptionsToDevice:(id)device shouldSendIfNoSubscriptions:(BOOL)subscriptions;
+- (void)cancelSubscriptionForIdentifier:(id)identifier;
+- (void)connection:(id)connection devicesChanged:(id)changed;
+- (void)contextChanged:(id)changed forSubscriptionWithIdentifier:(id)identifier;
+- (void)handleIncomingContextChangeMessage:(id)message forDevice:(id)device;
 - (void)initializeSinksForRemoteDSLIdentifiers;
 - (void)loadSubscriptions;
-- (void)logMetricsForMessage:(id)a3 andContext:(id)a4 fromDevice:(id)a5;
-- (void)logMetricsForSubscription:(id)a3 uponReboot:(BOOL)a4;
-- (void)registerForUpdates:(id)a3 withIdentifier:(id)a4 forUseCase:(id)a5 withOptions:(unint64_t)a6 forDeviceTypes:(int64_t)a7 withErrorHandler:(id)a8;
-- (void)registerForUpdates:(id)a3 withIdentifier:(id)a4 forUseCase:(id)a5 withOptions:(unint64_t)a6 forDevices:(id)a7 withErrorHandler:(id)a8;
-- (void)removeAllSubscriptionsForDeadRemoteDevice:(id)a3;
-- (void)removeSubscriptionWithIdentifier:(id)a3 fromSubscribingDevice:(id)a4;
-- (void)saveRemoteSubscription:(id)a3 fromDevice:(id)a4;
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)subscribeToBiomeWithRemoteDSL:(id)a3 forRemoteIdentifier:(id)a4;
-- (void)teardownOneOffSubscriptionWithIdentifier:(id)a3 fromSubscribingDevice:(id)a4;
-- (void)unregisterForUpdates:(id)a3 withIdentifier:(id)a4 forUseCase:(id)a5 forDeviceTypes:(int64_t)a6 withErrorHandler:(id)a7;
-- (void)unregisterForUpdates:(id)a3 withIdentifier:(id)a4 forUseCase:(id)a5 forDevices:(id)a6 withErrorHandler:(id)a7;
+- (void)logMetricsForMessage:(id)message andContext:(id)context fromDevice:(id)device;
+- (void)logMetricsForSubscription:(id)subscription uponReboot:(BOOL)reboot;
+- (void)registerForUpdates:(id)updates withIdentifier:(id)identifier forUseCase:(id)case withOptions:(unint64_t)options forDeviceTypes:(int64_t)types withErrorHandler:(id)handler;
+- (void)registerForUpdates:(id)updates withIdentifier:(id)identifier forUseCase:(id)case withOptions:(unint64_t)options forDevices:(id)devices withErrorHandler:(id)handler;
+- (void)removeAllSubscriptionsForDeadRemoteDevice:(id)device;
+- (void)removeSubscriptionWithIdentifier:(id)identifier fromSubscribingDevice:(id)device;
+- (void)saveRemoteSubscription:(id)subscription fromDevice:(id)device;
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context;
+- (void)subscribeToBiomeWithRemoteDSL:(id)l forRemoteIdentifier:(id)identifier;
+- (void)teardownOneOffSubscriptionWithIdentifier:(id)identifier fromSubscribingDevice:(id)device;
+- (void)unregisterForUpdates:(id)updates withIdentifier:(id)identifier forUseCase:(id)case forDeviceTypes:(int64_t)types withErrorHandler:(id)handler;
+- (void)unregisterForUpdates:(id)updates withIdentifier:(id)identifier forUseCase:(id)case forDevices:(id)devices withErrorHandler:(id)handler;
 - (void)updateSubscriptionsAfterUnlock;
 @end
 
@@ -147,13 +147,13 @@ uint64_t __56__BMDistributedContextService_distributedContextManager__block_invo
 - (void)loadSubscriptions
 {
   v3 = os_transaction_create();
-  v4 = [(BMDistributedContextService *)self queue];
+  queue = [(BMDistributedContextService *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__BMDistributedContextService_loadSubscriptions__block_invoke;
   block[3] = &unk_278E07BD8;
   block[4] = self;
-  dispatch_sync(v4, block);
+  dispatch_sync(queue, block);
 
   if (![(BMDistributedContextService *)self rebootNotificationDelivered])
   {
@@ -395,8 +395,8 @@ uint64_t __48__BMDistributedContextService_loadSubscriptions__block_invoke_2(uin
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        v11 = [(NSMutableDictionary *)self->_subscriptionSinks objectForKeyedSubscript:v10];
+        identifier = [v9 identifier];
+        v11 = [(NSMutableDictionary *)self->_subscriptionSinks objectForKeyedSubscript:identifier];
 
         if (!v11)
         {
@@ -405,12 +405,12 @@ uint64_t __48__BMDistributedContextService_loadSubscriptions__block_invoke_2(uin
           if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
           {
             *buf = v16;
-            v22 = v10;
+            v22 = identifier;
             _os_log_impl(&dword_244177000, v13, OS_LOG_TYPE_INFO, "Recreating sink for %@", buf, 0xCu);
           }
 
-          v14 = [(BMDistributedContextService *)self registerSinkWithIdentifier:v10 withDSL:v12];
-          [(NSMutableDictionary *)self->_subscriptionSinks setObject:v14 forKeyedSubscript:v10];
+          v14 = [(BMDistributedContextService *)self registerSinkWithIdentifier:identifier withDSL:v12];
+          [(NSMutableDictionary *)self->_subscriptionSinks setObject:v14 forKeyedSubscript:identifier];
         }
       }
 
@@ -429,8 +429,8 @@ uint64_t __48__BMDistributedContextService_loadSubscriptions__block_invoke_2(uin
   dispatch_assert_queue_V2(self->_queue);
   if (!self->_rebootNotificationDelivered)
   {
-    v3 = [(BMDistributedContextService *)self subscriptionDefaults];
-    v4 = [v3 objectForKey:@"lockedUpdates"];
+    subscriptionDefaults = [(BMDistributedContextService *)self subscriptionDefaults];
+    v4 = [subscriptionDefaults objectForKey:@"lockedUpdates"];
 
     if (v4 && [(BMDistributedContextSubscribeMessage *)v4 count])
     {
@@ -492,16 +492,16 @@ uint64_t __48__BMDistributedContextService_loadSubscriptions__block_invoke_2(uin
         while (v8);
       }
 
-      v16 = [MEMORY[0x277CBEB38] dictionary];
-      [(BMDistributedContextService *)self setLockedUpdates:v16];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      [(BMDistributedContextService *)self setLockedUpdates:dictionary];
 
-      v17 = [(BMDistributedContextService *)self subscriptionDefaults];
-      [v17 removeObjectForKey:@"lockedUpdates"];
+      subscriptionDefaults2 = [(BMDistributedContextService *)self subscriptionDefaults];
+      [subscriptionDefaults2 removeObjectForKey:@"lockedUpdates"];
 
       v4 = v31;
     }
 
-    v18 = [(BMDistributedContextSubscriptionManager *)self->_subscriptionManager deviceIdentifiersWithActiveSubscriptions];
+    deviceIdentifiersWithActiveSubscriptions = [(BMDistributedContextSubscriptionManager *)self->_subscriptionManager deviceIdentifiersWithActiveSubscriptions];
     v19 = [BMDistributedContextSubscribeMessage alloc];
     v20 = [(BMDistributedContextSubscribeMessage *)v19 initWithSubscriptions:MEMORY[0x277CBEBF8] localDevice:self->_deviceUUID messageIntent:6];
     v21 = __biome_log_for_category();
@@ -516,7 +516,7 @@ uint64_t __48__BMDistributedContextService_loadSubscriptions__block_invoke_2(uin
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v22 = v18;
+    v22 = deviceIdentifiersWithActiveSubscriptions;
     v23 = [v22 countByEnumeratingWithState:&v33 objects:v41 count:16];
     if (v23)
     {
@@ -534,9 +534,9 @@ uint64_t __48__BMDistributedContextService_loadSubscriptions__block_invoke_2(uin
           v27 = *(*(&v33 + 1) + 8 * j);
           if (([v27 isEqualToString:self->_deviceUUID] & 1) == 0)
           {
-            v28 = [(BMDistributedContextSubscribeMessage *)v20 dictionaryRepresentation];
+            dictionaryRepresentation = [(BMDistributedContextSubscribeMessage *)v20 dictionaryRepresentation];
             v32 = 0;
-            [(BMDistributedContextService *)self sendIDSMessageWithContent:v28 asWaking:0 toDevice:v27 error:&v32];
+            [(BMDistributedContextService *)self sendIDSMessageWithContent:dictionaryRepresentation asWaking:0 toDevice:v27 error:&v32];
           }
         }
 
@@ -547,26 +547,26 @@ uint64_t __48__BMDistributedContextService_loadSubscriptions__block_invoke_2(uin
     }
 
     [(BMDistributedContextService *)self setRebootNotificationDelivered:1];
-    v29 = [(BMDistributedContextService *)self subscriptionDefaults];
-    [v29 setBool:-[BMDistributedContextService rebootNotificationDelivered](self forKey:{"rebootNotificationDelivered"), @"rebootNotificationDelivered"}];
+    subscriptionDefaults3 = [(BMDistributedContextService *)self subscriptionDefaults];
+    [subscriptionDefaults3 setBool:-[BMDistributedContextService rebootNotificationDelivered](self forKey:{"rebootNotificationDelivered"), @"rebootNotificationDelivered"}];
   }
 
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (id)registerSinkWithIdentifier:(id)a3 withDSL:(id)a4
+- (id)registerSinkWithIdentifier:(id)identifier withDSL:(id)l
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = MEMORY[0x277CF1918];
-  v8 = a4;
-  v9 = [[v7 alloc] initWithIdentifier:v6 targetQueue:self->_biomeQueue];
-  v10 = [v8 subscribeOn:v9];
+  lCopy = l;
+  v9 = [[v7 alloc] initWithIdentifier:identifierCopy targetQueue:self->_biomeQueue];
+  v10 = [lCopy subscribeOn:v9];
 
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __66__BMDistributedContextService_registerSinkWithIdentifier_withDSL___block_invoke;
   v16[3] = &unk_278E07C00;
-  v17 = v6;
+  v17 = identifierCopy;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __66__BMDistributedContextService_registerSinkWithIdentifier_withDSL___block_invoke_48;
@@ -711,36 +711,36 @@ void __66__BMDistributedContextService_registerSinkWithIdentifier_withDSL___bloc
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)subscribeToBiomeWithRemoteDSL:(id)a3 forRemoteIdentifier:(id)a4
+- (void)subscribeToBiomeWithRemoteDSL:(id)l forRemoteIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_queue);
-  v8 = [(BMDistributedContextService *)self registerSinkWithIdentifier:v7 withDSL:v6];
+  v8 = [(BMDistributedContextService *)self registerSinkWithIdentifier:identifierCopy withDSL:lCopy];
   v9 = __biome_log_for_category();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v6 rootStreamIdentifiers];
-    v11 = [v6 streamPublishers];
+    rootStreamIdentifiers = [lCopy rootStreamIdentifiers];
+    streamPublishers = [lCopy streamPublishers];
     v13 = 138412802;
-    v14 = v6;
+    v14 = lCopy;
     v15 = 2112;
-    v16 = v10;
+    v16 = rootStreamIdentifiers;
     v17 = 2112;
-    v18 = v11;
+    v18 = streamPublishers;
     _os_log_impl(&dword_244177000, v9, OS_LOG_TYPE_DEFAULT, "Subscribed to Biome with %@, stream identifiers are %@, publishers are %@", &v13, 0x20u);
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeAllSubscriptionsForDeadRemoteDevice:(id)a3
+- (void)removeAllSubscriptionsForDeadRemoteDevice:(id)device
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deviceCopy = device;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [(BMDistributedContextSubscriptionManager *)self->_subscriptionManager subscriptionsWithSubscribingDevice:v4];
+  v5 = [(BMDistributedContextSubscriptionManager *)self->_subscriptionManager subscriptionsWithSubscribingDevice:deviceCopy];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -762,20 +762,20 @@ void __66__BMDistributedContextService_registerSinkWithIdentifier_withDSL___bloc
           objc_enumerationMutation(v5);
         }
 
-        v11 = [*(*(&v16 + 1) + 8 * v10) identifier];
-        [(BMDistributedContextService *)self removeSubscriptionWithIdentifier:v11 fromSubscribingDevice:v4];
-        v12 = [(BMDistributedContextSubscriptionManager *)self->_subscriptionManager subscribingDevicesForIdentifier:v11 subscribedToDevice:self->_deviceUUID];
+        identifier = [*(*(&v16 + 1) + 8 * v10) identifier];
+        [(BMDistributedContextService *)self removeSubscriptionWithIdentifier:identifier fromSubscribingDevice:deviceCopy];
+        v12 = [(BMDistributedContextSubscriptionManager *)self->_subscriptionManager subscribingDevicesForIdentifier:identifier subscribedToDevice:self->_deviceUUID];
         if (![v12 count])
         {
           v13 = __biome_log_for_category();
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
           {
             *buf = v15;
-            v21 = v11;
+            v21 = identifier;
             _os_log_impl(&dword_244177000, v13, OS_LOG_TYPE_DEFAULT, "No more devices with active subscription to identifier%@", buf, 0xCu);
           }
 
-          [(BMDistributedContextService *)self cancelSubscriptionForIdentifier:v11];
+          [(BMDistributedContextService *)self cancelSubscriptionForIdentifier:identifier];
         }
 
         ++v10;
@@ -791,24 +791,24 @@ void __66__BMDistributedContextService_registerSinkWithIdentifier_withDSL___bloc
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cancelSubscriptionForIdentifier:(id)a3
+- (void)cancelSubscriptionForIdentifier:(id)identifier
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = __biome_log_for_category();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v4;
+    v11 = identifierCopy;
     _os_log_impl(&dword_244177000, v5, OS_LOG_TYPE_DEFAULT, "Unsubscribing identifier %@ from Biome", &v10, 0xCu);
   }
 
-  v6 = [(NSMutableDictionary *)self->_subscriptionSinks objectForKeyedSubscript:v4];
+  v6 = [(NSMutableDictionary *)self->_subscriptionSinks objectForKeyedSubscript:identifierCopy];
   v7 = v6;
   if (v6)
   {
     [v6 cancel];
-    [(NSMutableDictionary *)self->_subscriptionSinks setObject:0 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_subscriptionSinks setObject:0 forKeyedSubscript:identifierCopy];
   }
 
   else
@@ -823,12 +823,12 @@ void __66__BMDistributedContextService_registerSinkWithIdentifier_withDSL___bloc
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)assertLocalSubscriptionsToDevice:(id)a3 shouldSendIfNoSubscriptions:(BOOL)a4
+- (void)assertLocalSubscriptionsToDevice:(id)device shouldSendIfNoSubscriptions:(BOOL)subscriptions
 {
-  v4 = a4;
-  v6 = a3;
+  subscriptionsCopy = subscriptions;
+  deviceCopy = device;
   dispatch_assert_queue_V2(self->_queue);
-  v7 = [(BMDistributedContextSubscriptionManager *)self->_subscriptionManager subscriptionsWithSubscribedDevice:v6];
+  v7 = [(BMDistributedContextSubscriptionManager *)self->_subscriptionManager subscriptionsWithSubscribedDevice:deviceCopy];
   if ([v7 count])
   {
     v8 = 0;
@@ -836,23 +836,23 @@ void __66__BMDistributedContextService_registerSinkWithIdentifier_withDSL___bloc
 
   else
   {
-    v8 = !v4;
+    v8 = !subscriptionsCopy;
   }
 
   if (!v8)
   {
     v9 = [[BMDistributedContextSubscribeMessage alloc] initWithSubscriptions:v7 localDevice:self->_deviceUUID messageIntent:1];
-    v10 = [(BMDistributedContextSubscribeMessage *)v9 dictionaryRepresentation];
+    dictionaryRepresentation = [(BMDistributedContextSubscribeMessage *)v9 dictionaryRepresentation];
     v11 = 0;
-    [(BMDistributedContextService *)self sendIDSMessageWithContent:v10 asWaking:[(BMDistributedContextSubscribeMessage *)v9 shouldWake] toDevice:v6 error:&v11];
+    [(BMDistributedContextService *)self sendIDSMessageWithContent:dictionaryRepresentation asWaking:[(BMDistributedContextSubscribeMessage *)v9 shouldWake] toDevice:deviceCopy error:&v11];
   }
 }
 
-- (void)saveRemoteSubscription:(id)a3 fromDevice:(id)a4
+- (void)saveRemoteSubscription:(id)subscription fromDevice:(id)device
 {
   v75 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  subscriptionCopy = subscription;
+  deviceCopy = device;
   dispatch_assert_queue_V2(self->_queue);
   v54 = objc_opt_new();
   v8 = objc_opt_new();
@@ -860,7 +860,7 @@ void __66__BMDistributedContextService_registerSinkWithIdentifier_withDSL___bloc
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
-  v9 = [(BMDistributedContextSubscriptionManager *)self->_subscriptionManager subscriptionsWithSubscribingDevice:v7];
+  v9 = [(BMDistributedContextSubscriptionManager *)self->_subscriptionManager subscriptionsWithSubscribingDevice:deviceCopy];
   v10 = [v9 countByEnumeratingWithState:&v63 objects:v74 count:16];
   if (v10)
   {
@@ -875,8 +875,8 @@ void __66__BMDistributedContextService_registerSinkWithIdentifier_withDSL___bloc
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v63 + 1) + 8 * i) identifier];
-        [v8 addObject:v14];
+        identifier = [*(*(&v63 + 1) + 8 * i) identifier];
+        [v8 addObject:identifier];
       }
 
       v11 = [v9 countByEnumeratingWithState:&v63 objects:v74 count:16];
@@ -885,14 +885,14 @@ void __66__BMDistributedContextService_registerSinkWithIdentifier_withDSL___bloc
     while (v11);
   }
 
-  v53 = v7;
+  v53 = deviceCopy;
 
   v61 = 0u;
   v62 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v51 = v6;
-  obj = [v6 subscriptions];
+  v51 = subscriptionCopy;
+  obj = [subscriptionCopy subscriptions];
   v15 = [obj countByEnumeratingWithState:&v59 objects:v73 count:16];
   if (v15)
   {
@@ -909,10 +909,10 @@ void __66__BMDistributedContextService_registerSinkWithIdentifier_withDSL___bloc
 
         v19 = *(*(&v59 + 1) + 8 * j);
         subscriptionManager = self->_subscriptionManager;
-        v21 = [v19 identifier];
-        v22 = [v19 subscribingDevice];
-        v23 = [v19 subscribedDevice];
-        v24 = [(BMDistributedContextSubscriptionManager *)subscriptionManager subscriptionForIdentifier:v21 fromSubscribingDevice:v22 onSubscribedDevice:v23];
+        identifier2 = [v19 identifier];
+        subscribingDevice = [v19 subscribingDevice];
+        subscribedDevice = [v19 subscribedDevice];
+        v24 = [(BMDistributedContextSubscriptionManager *)subscriptionManager subscriptionForIdentifier:identifier2 fromSubscribingDevice:subscribingDevice onSubscribedDevice:subscribedDevice];
 
         if (([v24 isEqual:v19] & 1) == 0)
         {
@@ -927,12 +927,12 @@ void __66__BMDistributedContextService_registerSinkWithIdentifier_withDSL___bloc
           }
 
           [(BMDistributedContextSubscriptionManager *)self->_subscriptionManager removeSubscription:v24];
-          v26 = [v24 identifier];
-          [(BMDistributedContextService *)self cancelSubscriptionForIdentifier:v26];
+          identifier3 = [v24 identifier];
+          [(BMDistributedContextService *)self cancelSubscriptionForIdentifier:identifier3];
 
           v27 = [v19 dsl];
-          v28 = [v19 identifier];
-          [(BMDistributedContextService *)self subscribeToBiomeWithRemoteDSL:v27 forRemoteIdentifier:v28];
+          identifier4 = [v19 identifier];
+          [(BMDistributedContextService *)self subscribeToBiomeWithRemoteDSL:v27 forRemoteIdentifier:identifier4];
 
           v29 = self->_subscriptionManager;
           v68 = v19;
@@ -940,8 +940,8 @@ void __66__BMDistributedContextService_registerSinkWithIdentifier_withDSL___bloc
           [(BMDistributedContextSubscriptionManager *)v29 addSubscriptions:v30];
         }
 
-        v31 = [v19 identifier];
-        [v54 addObject:v31];
+        identifier5 = [v19 identifier];
+        [v54 addObject:identifier5];
       }
 
       v16 = [obj countByEnumeratingWithState:&v59 objects:v73 count:16];
@@ -1014,16 +1014,16 @@ void __66__BMDistributedContextService_registerSinkWithIdentifier_withDSL___bloc
   v43 = __biome_log_for_category();
   if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
   {
-    v44 = [(BMDistributedContextSubscriptionManager *)self->_subscriptionManager allSubscriptions];
+    allSubscriptions = [(BMDistributedContextSubscriptionManager *)self->_subscriptionManager allSubscriptions];
     *buf = 138412546;
     v70 = v34;
     v71 = 2112;
-    v72 = v44;
+    v72 = allSubscriptions;
     _os_log_impl(&dword_244177000, v43, OS_LOG_TYPE_DEFAULT, "Updated all subscriptions from remote %@: %@", buf, 0x16u);
   }
 
-  v45 = [v51 subscriptions];
-  if (!v45 || (v46 = v45, [v51 subscriptions], v47 = objc_claimAutoreleasedReturnValue(), v48 = objc_msgSend(v47, "count"), v47, v46, !v48))
+  subscriptions = [v51 subscriptions];
+  if (!subscriptions || (v46 = subscriptions, [v51 subscriptions], v47 = objc_claimAutoreleasedReturnValue(), v48 = objc_msgSend(v47, "count"), v47, v46, !v48))
   {
     v49 = __biome_log_for_category();
     if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
@@ -1039,33 +1039,33 @@ void __66__BMDistributedContextService_registerSinkWithIdentifier_withDSL___bloc
   v50 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeSubscriptionWithIdentifier:(id)a3 fromSubscribingDevice:(id)a4
+- (void)removeSubscriptionWithIdentifier:(id)identifier fromSubscribingDevice:(id)device
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  deviceCopy = device;
   v8 = __biome_log_for_category();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412546;
-    v11 = v6;
+    v11 = identifierCopy;
     v12 = 2112;
-    v13 = v7;
+    v13 = deviceCopy;
     _os_log_impl(&dword_244177000, v8, OS_LOG_TYPE_DEFAULT, "unsubscribing from subscription %@ made by subscribing device %@", &v10, 0x16u);
   }
 
-  [(BMDistributedContextSubscriptionManager *)self->_subscriptionManager removeSubscriptionWithIdentifier:v6 fromSubscribingDevice:v7 onSubscribedDevice:self->_deviceUUID];
+  [(BMDistributedContextSubscriptionManager *)self->_subscriptionManager removeSubscriptionWithIdentifier:identifierCopy fromSubscribingDevice:deviceCopy onSubscribedDevice:self->_deviceUUID];
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)contextChanged:(id)a3 forSubscriptionWithIdentifier:(id)a4
+- (void)contextChanged:(id)changed forSubscriptionWithIdentifier:(id)identifier
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  changedCopy = changed;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_queue);
-  v25 = v7;
-  [(BMDistributedContextSubscriptionManager *)self->_subscriptionManager subscriptionsWithIdentifier:v7 subscribedToDevice:self->_deviceUUID];
+  v25 = identifierCopy;
+  [(BMDistributedContextSubscriptionManager *)self->_subscriptionManager subscriptionsWithIdentifier:identifierCopy subscribedToDevice:self->_deviceUUID];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
@@ -1085,26 +1085,26 @@ void __66__BMDistributedContextService_registerSinkWithIdentifier_withDSL___bloc
         }
 
         v12 = *(*(&v28 + 1) + 8 * i);
-        v13 = [v12 configuration];
-        v14 = [v13 wakeState];
-        v15 = [v14 integerValue];
+        configuration = [v12 configuration];
+        wakeState = [configuration wakeState];
+        integerValue = [wakeState integerValue];
 
-        v16 = [v6 dictionaryRepresentation];
-        v17 = [v12 subscribingDevice];
+        dictionaryRepresentation = [changedCopy dictionaryRepresentation];
+        subscribingDevice = [v12 subscribingDevice];
         v27 = 0;
-        v18 = [(BMDistributedContextService *)self sendIDSMessageWithContent:v16 asWaking:v15 & 1 toDevice:v17 error:&v27];
+        v18 = [(BMDistributedContextService *)self sendIDSMessageWithContent:dictionaryRepresentation asWaking:integerValue & 1 toDevice:subscribingDevice error:&v27];
         v19 = v27;
 
         if (v18)
         {
-          v20 = [v12 configuration];
-          v21 = [v20 oneOffSubscription];
-          v22 = [v21 BOOLValue];
+          configuration2 = [v12 configuration];
+          oneOffSubscription = [configuration2 oneOffSubscription];
+          bOOLValue = [oneOffSubscription BOOLValue];
 
-          if (v22)
+          if (bOOLValue)
           {
-            v23 = [v12 subscribingDevice];
-            [(BMDistributedContextService *)self teardownOneOffSubscriptionWithIdentifier:v25 fromSubscribingDevice:v23];
+            subscribingDevice2 = [v12 subscribingDevice];
+            [(BMDistributedContextService *)self teardownOneOffSubscriptionWithIdentifier:v25 fromSubscribingDevice:subscribingDevice2];
           }
         }
       }
@@ -1118,21 +1118,21 @@ void __66__BMDistributedContextService_registerSinkWithIdentifier_withDSL___bloc
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)registerRemoteDSLSubscription:(id)a3 withRemoteIdentifier:(id)a4 withOptions:(unint64_t)a5 forDevices:(id)a6
+- (BOOL)registerRemoteDSLSubscription:(id)subscription withRemoteIdentifier:(id)identifier withOptions:(unint64_t)options forDevices:(id)devices
 {
   v51 = *MEMORY[0x277D85DE8];
-  v37 = a3;
-  v36 = a4;
-  v9 = a6;
+  subscriptionCopy = subscription;
+  identifierCopy = identifier;
+  devicesCopy = devices;
   dispatch_assert_queue_V2(self->_queue);
-  v32 = v9;
-  if (v9)
+  v32 = devicesCopy;
+  if (devicesCopy)
   {
     v45 = 0u;
     v46 = 0u;
     v43 = 0u;
     v44 = 0u;
-    obj = v9;
+    obj = devicesCopy;
     v39 = [obj countByEnumeratingWithState:&v43 objects:v50 count:16];
     if (v39)
     {
@@ -1156,10 +1156,10 @@ void __66__BMDistributedContextService_registerSinkWithIdentifier_withDSL___bloc
             v40 = v12;
             v14 = [BMDistributedContextSubscriptionConfiguration alloc];
             v15 = [MEMORY[0x277CBEAA8] now];
-            v16 = [(BMDistributedContextSubscriptionConfiguration *)v14 initWithOptions:a5 lastChangedDate:v15];
+            v16 = [(BMDistributedContextSubscriptionConfiguration *)v14 initWithOptions:options lastChangedDate:v15];
 
-            v17 = [[BMDistributedContextSubscription alloc] initWithIdentifier:v36 dsl:v37 subscribingDevice:self->_deviceUUID subscribedDevice:v11 configuration:v16];
-            v18 = [(BMDistributedContextSubscriptionManager *)self->_subscriptionManager subscriptionForIdentifier:v36 fromSubscribingDevice:self->_deviceUUID onSubscribedDevice:v11];
+            v17 = [[BMDistributedContextSubscription alloc] initWithIdentifier:identifierCopy dsl:subscriptionCopy subscribingDevice:self->_deviceUUID subscribedDevice:v11 configuration:v16];
+            v18 = [(BMDistributedContextSubscriptionManager *)self->_subscriptionManager subscriptionForIdentifier:identifierCopy fromSubscribingDevice:self->_deviceUUID onSubscribedDevice:v11];
             if ([v18 isEqual:v17])
             {
               v19 = __biome_log_for_category();
@@ -1186,10 +1186,10 @@ void __66__BMDistributedContextService_registerSinkWithIdentifier_withDSL___bloc
             v22 = [(BMDistributedContextSubscriptionManager *)self->_subscriptionManager subscriptionsWithSubscribedDevice:v11];
             v23 = [[BMDistributedContextSubscribeMessage alloc] initWithSubscriptions:v22 localDevice:self->_deviceUUID messageIntent:1];
             v24 = +[BMDistributedContextService distributedContextManager];
-            v25 = [(BMDistributedContextSubscribeMessage *)v23 dictionaryRepresentation];
-            v26 = [(BMDistributedContextSubscribeMessage *)v23 shouldWake];
+            dictionaryRepresentation = [(BMDistributedContextSubscribeMessage *)v23 dictionaryRepresentation];
+            shouldWake = [(BMDistributedContextSubscribeMessage *)v23 shouldWake];
             v42 = 0;
-            v41 |= [v24 sendIDSMessageWithContent:v25 asWaking:v26 toDevice:v11 error:&v42];
+            v41 |= [v24 sendIDSMessageWithContent:dictionaryRepresentation asWaking:shouldWake toDevice:v11 error:&v42];
 
             v13 = v40;
           }
@@ -1221,9 +1221,9 @@ void __66__BMDistributedContextService_registerSinkWithIdentifier_withDSL___bloc
     v28 = __biome_log_for_category();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
-      v29 = [(BMDistributedContextSubscriptionManager *)self->_subscriptionManager allSubscriptions];
+      allSubscriptions = [(BMDistributedContextSubscriptionManager *)self->_subscriptionManager allSubscriptions];
       *buf = 138412290;
-      v49 = v29;
+      v49 = allSubscriptions;
       _os_log_impl(&dword_244177000, v28, OS_LOG_TYPE_DEFAULT, "Updated subscription for local: %@", buf, 0xCu);
     }
   }
@@ -1237,30 +1237,30 @@ void __66__BMDistributedContextService_registerSinkWithIdentifier_withDSL___bloc
   return v27 & 1;
 }
 
-- (BOOL)unregisterRemoteDSLSubscription:(id)a3 withRemoteIdentifier:(id)a4 forDevices:(id)a5
+- (BOOL)unregisterRemoteDSLSubscription:(id)subscription withRemoteIdentifier:(id)identifier forDevices:(id)devices
 {
   v45 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  identifierCopy = identifier;
+  devicesCopy = devices;
   dispatch_assert_queue_V2(self->_queue);
-  if (v8)
+  if (devicesCopy)
   {
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    obj = v8;
+    obj = devicesCopy;
     v9 = [obj countByEnumeratingWithState:&v36 objects:v44 count:16];
     v10 = &off_244189000;
     if (v9)
     {
-      v30 = v8;
+      v30 = devicesCopy;
       v11 = 0;
       v34 = 0;
       v12 = *v37;
       v13 = v9;
       v31 = *v37;
-      v32 = self;
+      selfCopy = self;
       do
       {
         for (i = 0; i != v13; ++i)
@@ -1274,26 +1274,26 @@ void __66__BMDistributedContextService_registerSinkWithIdentifier_withDSL___bloc
           v16 = [(BMDistributedContextService *)self idsDeviceForDeviceUUID:v15];
           if (v16)
           {
-            v17 = [(BMDistributedContextSubscriptionManager *)self->_subscriptionManager subscriptionForIdentifier:v7 fromSubscribingDevice:self->_deviceUUID onSubscribedDevice:v15];
+            v17 = [(BMDistributedContextSubscriptionManager *)self->_subscriptionManager subscriptionForIdentifier:identifierCopy fromSubscribingDevice:self->_deviceUUID onSubscribedDevice:v15];
             if (v17)
             {
               [(BMDistributedContextService *)self logMetricsForSubscription:v17 uponReboot:0];
-              [(BMDistributedContextSubscriptionManager *)self->_subscriptionManager removeSubscriptionWithIdentifier:v7 fromSubscribingDevice:self->_deviceUUID onSubscribedDevice:v15];
+              [(BMDistributedContextSubscriptionManager *)self->_subscriptionManager removeSubscriptionWithIdentifier:identifierCopy fromSubscribingDevice:self->_deviceUUID onSubscribedDevice:v15];
               v18 = [(BMDistributedContextSubscriptionManager *)self->_subscriptionManager subscriptionsWithSubscribedDevice:v15];
               v19 = [[BMDistributedContextSubscribeMessage alloc] initWithSubscriptions:v18 localDevice:self->_deviceUUID messageIntent:6];
               +[BMDistributedContextService distributedContextManager];
               v20 = v13;
-              v22 = v21 = v7;
-              v23 = [(BMDistributedContextSubscribeMessage *)v19 dictionaryRepresentation];
-              v24 = [(BMDistributedContextSubscribeMessage *)v19 shouldWake];
+              v22 = v21 = identifierCopy;
+              dictionaryRepresentation = [(BMDistributedContextSubscribeMessage *)v19 dictionaryRepresentation];
+              shouldWake = [(BMDistributedContextSubscribeMessage *)v19 shouldWake];
               v35 = 0;
-              v34 |= [v22 sendIDSMessageWithContent:v23 asWaking:v24 toDevice:v15 error:&v35];
+              v34 |= [v22 sendIDSMessageWithContent:dictionaryRepresentation asWaking:shouldWake toDevice:v15 error:&v35];
 
-              v7 = v21;
+              identifierCopy = v21;
               v13 = v20;
 
               v12 = v31;
-              self = v32;
+              self = selfCopy;
               v11 = 1;
             }
 
@@ -1303,7 +1303,7 @@ void __66__BMDistributedContextService_registerSinkWithIdentifier_withDSL___bloc
               if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
               {
                 *buf = 138412546;
-                v41 = v7;
+                v41 = identifierCopy;
                 v42 = 2112;
                 v43 = v15;
                 _os_log_error_impl(&dword_244177000, v18, OS_LOG_TYPE_ERROR, "Asked to remove subscription but couldn't find existing subscription %@ on subscribed device %@", buf, 0x16u);
@@ -1328,7 +1328,7 @@ void __66__BMDistributedContextService_registerSinkWithIdentifier_withDSL___bloc
 
       while (v13);
       v25 = v34 & v11;
-      v8 = v30;
+      devicesCopy = v30;
       v10 = &off_244189000;
     }
 
@@ -1340,9 +1340,9 @@ void __66__BMDistributedContextService_registerSinkWithIdentifier_withDSL___bloc
     v26 = __biome_log_for_category();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
-      v27 = [(BMDistributedContextSubscriptionManager *)self->_subscriptionManager allSubscriptions];
+      allSubscriptions = [(BMDistributedContextSubscriptionManager *)self->_subscriptionManager allSubscriptions];
       *buf = *(v10 + 225);
-      v41 = v27;
+      v41 = allSubscriptions;
       _os_log_impl(&dword_244177000, v26, OS_LOG_TYPE_DEFAULT, "Updated subscription for local: %@", buf, 0xCu);
     }
   }
@@ -1356,28 +1356,28 @@ void __66__BMDistributedContextService_registerSinkWithIdentifier_withDSL___bloc
   return v25 & 1;
 }
 
-- (void)handleIncomingContextChangeMessage:(id)a3 forDevice:(id)a4
+- (void)handleIncomingContextChangeMessage:(id)message forDevice:(id)device
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  deviceCopy = device;
   v8 = __biome_log_for_category();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 translatedEvent];
+    translatedEvent = [messageCopy translatedEvent];
     *buf = 138412546;
-    v25 = v9;
+    v25 = translatedEvent;
     v26 = 2112;
-    v27 = v7;
+    v27 = deviceCopy;
     _os_log_impl(&dword_244177000, v8, OS_LOG_TYPE_DEFAULT, "Saving new context changed message %@ from subscribed device %@", buf, 0x16u);
   }
 
-  v10 = [v6 translatedEvent];
-  [BMDistributedContextStreamWriter postEvent:v10];
+  translatedEvent2 = [messageCopy translatedEvent];
+  [BMDistributedContextStreamWriter postEvent:translatedEvent2];
 
   subscriptionManager = self->_subscriptionManager;
-  v12 = [v6 subscriptionIdentifier];
-  v13 = [(BMDistributedContextSubscriptionManager *)subscriptionManager subscriptionForIdentifier:v12 fromSubscribingDevice:self->_deviceUUID onSubscribedDevice:v7];
+  subscriptionIdentifier = [messageCopy subscriptionIdentifier];
+  v13 = [(BMDistributedContextSubscriptionManager *)subscriptionManager subscriptionForIdentifier:subscriptionIdentifier fromSubscribingDevice:self->_deviceUUID onSubscribedDevice:deviceCopy];
 
   queue = self->_queue;
   v19[0] = MEMORY[0x277D85DD0];
@@ -1385,11 +1385,11 @@ void __66__BMDistributedContextService_registerSinkWithIdentifier_withDSL___bloc
   v19[2] = __76__BMDistributedContextService_handleIncomingContextChangeMessage_forDevice___block_invoke;
   v19[3] = &unk_278E07C78;
   v20 = v13;
-  v21 = v7;
-  v22 = self;
-  v23 = v6;
-  v15 = v6;
-  v16 = v7;
+  v21 = deviceCopy;
+  selfCopy = self;
+  v23 = messageCopy;
+  v15 = messageCopy;
+  v16 = deviceCopy;
   v17 = v13;
   dispatch_sync(queue, v19);
 
@@ -1466,58 +1466,58 @@ LABEL_12:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)teardownOneOffSubscriptionWithIdentifier:(id)a3 fromSubscribingDevice:(id)a4
+- (void)teardownOneOffSubscriptionWithIdentifier:(id)identifier fromSubscribingDevice:(id)device
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  deviceCopy = device;
   dispatch_assert_queue_V2(self->_queue);
   v8 = __biome_log_for_category();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412546;
-    v13 = v6;
+    v13 = identifierCopy;
     v14 = 2112;
-    v15 = v7;
+    v15 = deviceCopy;
     _os_log_impl(&dword_244177000, v8, OS_LOG_TYPE_DEFAULT, "Removing one-off subscription with identifer %@ from subscribing device %@", &v12, 0x16u);
   }
 
-  [(BMDistributedContextService *)self removeSubscriptionWithIdentifier:v6 fromSubscribingDevice:v7];
-  v9 = [(BMDistributedContextSubscriptionManager *)self->_subscriptionManager subscribingDevicesForIdentifier:v6 subscribedToDevice:self->_deviceUUID];
+  [(BMDistributedContextService *)self removeSubscriptionWithIdentifier:identifierCopy fromSubscribingDevice:deviceCopy];
+  v9 = [(BMDistributedContextSubscriptionManager *)self->_subscriptionManager subscribingDevicesForIdentifier:identifierCopy subscribedToDevice:self->_deviceUUID];
   if (![v9 count])
   {
     v10 = __biome_log_for_category();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412290;
-      v13 = v6;
+      v13 = identifierCopy;
       _os_log_impl(&dword_244177000, v10, OS_LOG_TYPE_DEFAULT, "No more devices with active subscription to identifier%@", &v12, 0xCu);
     }
 
-    [(BMDistributedContextService *)self cancelSubscriptionForIdentifier:v6];
+    [(BMDistributedContextService *)self cancelSubscriptionForIdentifier:identifierCopy];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)registerForUpdates:(id)a3 withIdentifier:(id)a4 withOptions:(unint64_t)a5 forDeviceTypes:(int64_t)a6 withError:(id *)a7
+- (BOOL)registerForUpdates:(id)updates withIdentifier:(id)identifier withOptions:(unint64_t)options forDeviceTypes:(int64_t)types withError:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
+  updatesCopy = updates;
+  identifierCopy = identifier;
   rebootNotificationDelivered = self->_rebootNotificationDelivered;
   if (rebootNotificationDelivered)
   {
     v15 = +[BMDistributedContextService distributedContextManager];
-    v16 = [v15 devicesWithDeviceType:a6];
+    v16 = [v15 devicesWithDeviceType:types];
 
     v17 = __biome_log_for_category();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
-      v19 = [MEMORY[0x277CCABB0] numberWithInteger:a6];
+      v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:options];
+      v19 = [MEMORY[0x277CCABB0] numberWithInteger:types];
       *buf = 138413058;
-      *&buf[4] = v13;
+      *&buf[4] = identifierCopy;
       *&buf[12] = 2112;
       *&buf[14] = v18;
       *&buf[22] = 2112;
@@ -1531,22 +1531,22 @@ LABEL_12:
     *&buf[8] = buf;
     *&buf[16] = 0x2020000000;
     LOBYTE(v31) = 0;
-    v20 = [(BMDistributedContextService *)self queue];
+    queue = [(BMDistributedContextService *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __102__BMDistributedContextService_registerForUpdates_withIdentifier_withOptions_forDeviceTypes_withError___block_invoke;
     block[3] = &unk_278E07CA0;
     v28 = buf;
-    v25 = v12;
-    v26 = v13;
-    v29 = a5;
+    v25 = updatesCopy;
+    v26 = identifierCopy;
+    optionsCopy = options;
     v21 = v16;
     v27 = v21;
-    dispatch_sync(v20, block);
+    dispatch_sync(queue, block);
 
     if ((*(*&buf[8] + 24) & 1) == 0)
     {
-      [BMDistributedContextUtilities updateDescriptionForError:a7 withErrorCode:3];
+      [BMDistributedContextUtilities updateDescriptionForError:error withErrorCode:3];
     }
 
     _Block_object_dispose(buf, 8);
@@ -1554,7 +1554,7 @@ LABEL_12:
 
   else
   {
-    [BMDistributedContextUtilities updateDescriptionForError:a7 withErrorCode:2];
+    [BMDistributedContextUtilities updateDescriptionForError:error withErrorCode:2];
   }
 
   v22 = *MEMORY[0x277D85DE8];
@@ -1567,25 +1567,25 @@ void __102__BMDistributedContextService_registerForUpdates_withIdentifier_withOp
   *(*(a1[7] + 8) + 24) = [v2 registerRemoteDSLSubscription:a1[4] withRemoteIdentifier:a1[5] withOptions:a1[8] forDevices:a1[6]];
 }
 
-- (BOOL)registerForUpdates:(id)a3 withIdentifier:(id)a4 withOptions:(unint64_t)a5 forDevices:(id)a6 withError:(id *)a7
+- (BOOL)registerForUpdates:(id)updates withIdentifier:(id)identifier withOptions:(unint64_t)options forDevices:(id)devices withError:(id *)error
 {
   v29 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
+  updatesCopy = updates;
+  identifierCopy = identifier;
+  devicesCopy = devices;
   rebootNotificationDelivered = self->_rebootNotificationDelivered;
   if (rebootNotificationDelivered)
   {
     v16 = __biome_log_for_category();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
+      v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:options];
       *buf = 138412802;
-      *&buf[4] = v13;
+      *&buf[4] = identifierCopy;
       *&buf[12] = 2112;
       *&buf[14] = v17;
       *&buf[22] = 2112;
-      v28 = v14;
+      v28 = devicesCopy;
       _os_log_impl(&dword_244177000, v16, OS_LOG_TYPE_DEFAULT, "Registering DSL %@ with options %@, for devices %@", buf, 0x20u);
     }
 
@@ -1593,21 +1593,21 @@ void __102__BMDistributedContextService_registerForUpdates_withIdentifier_withOp
     *&buf[8] = buf;
     *&buf[16] = 0x2020000000;
     LOBYTE(v28) = 0;
-    v18 = [(BMDistributedContextService *)self queue];
+    queue = [(BMDistributedContextService *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __98__BMDistributedContextService_registerForUpdates_withIdentifier_withOptions_forDevices_withError___block_invoke;
     block[3] = &unk_278E07CA0;
     v25 = buf;
-    v22 = v12;
-    v23 = v13;
-    v26 = a5;
-    v24 = v14;
-    dispatch_sync(v18, block);
+    v22 = updatesCopy;
+    v23 = identifierCopy;
+    optionsCopy = options;
+    v24 = devicesCopy;
+    dispatch_sync(queue, block);
 
     if ((*(*&buf[8] + 24) & 1) == 0)
     {
-      [BMDistributedContextUtilities updateDescriptionForError:a7 withErrorCode:3];
+      [BMDistributedContextUtilities updateDescriptionForError:error withErrorCode:3];
     }
 
     _Block_object_dispose(buf, 8);
@@ -1615,7 +1615,7 @@ void __102__BMDistributedContextService_registerForUpdates_withIdentifier_withOp
 
   else
   {
-    [BMDistributedContextUtilities updateDescriptionForError:a7 withErrorCode:2];
+    [BMDistributedContextUtilities updateDescriptionForError:error withErrorCode:2];
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -1628,23 +1628,23 @@ void __98__BMDistributedContextService_registerForUpdates_withIdentifier_withOpt
   *(*(a1[7] + 8) + 24) = [v2 registerRemoteDSLSubscription:a1[4] withRemoteIdentifier:a1[5] withOptions:a1[8] forDevices:a1[6]];
 }
 
-- (BOOL)unregisterForUpdates:(id)a3 withIdentifier:(id)a4 forDeviceTypes:(int64_t)a5 withError:(id *)a6
+- (BOOL)unregisterForUpdates:(id)updates withIdentifier:(id)identifier forDeviceTypes:(int64_t)types withError:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
+  updatesCopy = updates;
+  identifierCopy = identifier;
   rebootNotificationDelivered = self->_rebootNotificationDelivered;
   if (rebootNotificationDelivered)
   {
     v13 = +[BMDistributedContextService distributedContextManager];
-    v14 = [v13 devicesWithDeviceType:a5];
+    v14 = [v13 devicesWithDeviceType:types];
 
     v15 = __biome_log_for_category();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
+      v16 = [MEMORY[0x277CCABB0] numberWithInteger:types];
       *buf = 138412802;
-      *&buf[4] = v11;
+      *&buf[4] = identifierCopy;
       *&buf[12] = 2112;
       *&buf[14] = v16;
       *&buf[22] = 2112;
@@ -1656,21 +1656,21 @@ void __98__BMDistributedContextService_registerForUpdates_withIdentifier_withOpt
     *&buf[8] = buf;
     *&buf[16] = 0x2020000000;
     LOBYTE(v30) = 0;
-    v17 = [(BMDistributedContextService *)self queue];
+    queue = [(BMDistributedContextService *)self queue];
     v21 = MEMORY[0x277D85DD0];
     v22 = 3221225472;
     v23 = __92__BMDistributedContextService_unregisterForUpdates_withIdentifier_forDeviceTypes_withError___block_invoke;
     v24 = &unk_278E07CC8;
     v28 = buf;
-    v25 = v10;
-    v26 = v11;
+    v25 = updatesCopy;
+    v26 = identifierCopy;
     v18 = v14;
     v27 = v18;
-    dispatch_sync(v17, &v21);
+    dispatch_sync(queue, &v21);
 
     if ((*(*&buf[8] + 24) & 1) == 0)
     {
-      [BMDistributedContextUtilities updateDescriptionForError:a6 withErrorCode:3, v21, v22, v23, v24, v25, v26];
+      [BMDistributedContextUtilities updateDescriptionForError:error withErrorCode:3, v21, v22, v23, v24, v25, v26];
     }
 
     _Block_object_dispose(buf, 8);
@@ -1678,7 +1678,7 @@ void __98__BMDistributedContextService_registerForUpdates_withIdentifier_withOpt
 
   else
   {
-    [BMDistributedContextUtilities updateDescriptionForError:a6 withErrorCode:2];
+    [BMDistributedContextUtilities updateDescriptionForError:error withErrorCode:2];
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -1691,12 +1691,12 @@ void __92__BMDistributedContextService_unregisterForUpdates_withIdentifier_forDe
   *(*(a1[7] + 8) + 24) = [v2 unregisterRemoteDSLSubscription:a1[4] withRemoteIdentifier:a1[5] forDevices:a1[6]];
 }
 
-- (BOOL)unregisterForUpdates:(id)a3 withIdentifier:(id)a4 forDevices:(id)a5 withError:(id *)a6
+- (BOOL)unregisterForUpdates:(id)updates withIdentifier:(id)identifier forDevices:(id)devices withError:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  updatesCopy = updates;
+  identifierCopy = identifier;
+  devicesCopy = devices;
   rebootNotificationDelivered = self->_rebootNotificationDelivered;
   if (rebootNotificationDelivered)
   {
@@ -1704,9 +1704,9 @@ void __92__BMDistributedContextService_unregisterForUpdates_withIdentifier_forDe
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      *&buf[4] = v11;
+      *&buf[4] = identifierCopy;
       *&buf[12] = 2112;
-      *&buf[14] = v12;
+      *&buf[14] = devicesCopy;
       _os_log_impl(&dword_244177000, v14, OS_LOG_TYPE_DEFAULT, "Unregistering DSL %@ for devices %@", buf, 0x16u);
     }
 
@@ -1714,20 +1714,20 @@ void __92__BMDistributedContextService_unregisterForUpdates_withIdentifier_forDe
     *&buf[8] = buf;
     *&buf[16] = 0x2020000000;
     v27 = 0;
-    v15 = [(BMDistributedContextService *)self queue];
+    queue = [(BMDistributedContextService *)self queue];
     v18 = MEMORY[0x277D85DD0];
     v19 = 3221225472;
     v20 = __88__BMDistributedContextService_unregisterForUpdates_withIdentifier_forDevices_withError___block_invoke;
     v21 = &unk_278E07CC8;
     v25 = buf;
-    v22 = v10;
-    v23 = v11;
-    v24 = v12;
-    dispatch_sync(v15, &v18);
+    v22 = updatesCopy;
+    v23 = identifierCopy;
+    v24 = devicesCopy;
+    dispatch_sync(queue, &v18);
 
     if ((*(*&buf[8] + 24) & 1) == 0)
     {
-      [BMDistributedContextUtilities updateDescriptionForError:a6 withErrorCode:3, v18, v19, v20, v21, v22, v23];
+      [BMDistributedContextUtilities updateDescriptionForError:error withErrorCode:3, v18, v19, v20, v21, v22, v23];
     }
 
     _Block_object_dispose(buf, 8);
@@ -1735,7 +1735,7 @@ void __92__BMDistributedContextService_unregisterForUpdates_withIdentifier_forDe
 
   else
   {
-    [BMDistributedContextUtilities updateDescriptionForError:a6 withErrorCode:2];
+    [BMDistributedContextUtilities updateDescriptionForError:error withErrorCode:2];
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -1748,23 +1748,23 @@ void __88__BMDistributedContextService_unregisterForUpdates_withIdentifier_forDe
   *(*(a1[7] + 8) + 24) = [v2 unregisterRemoteDSLSubscription:a1[4] withRemoteIdentifier:a1[5] forDevices:a1[6]];
 }
 
-+ (id)stringForIDSDeviceType:(int64_t)a3
++ (id)stringForIDSDeviceType:(int64_t)type
 {
-  if ((a3 - 1) > 7)
+  if ((type - 1) > 7)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_278E07D60[a3 - 1];
+    return off_278E07D60[type - 1];
   }
 }
 
-- (id)idsDeviceForDeviceUUID:(id)a3
+- (id)idsDeviceForDeviceUUID:(id)d
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   [(IDSService *)self->_internetService devices];
   v14 = 0u;
   v15 = 0u;
@@ -1784,8 +1784,8 @@ void __88__BMDistributedContextService_unregisterForUpdates_withIdentifier_forDe
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 uniqueIDOverride];
-        v11 = [v10 isEqualToString:v4];
+        uniqueIDOverride = [v9 uniqueIDOverride];
+        v11 = [uniqueIDOverride isEqualToString:dCopy];
 
         if (v11)
         {
@@ -1811,32 +1811,32 @@ LABEL_11:
   return v6;
 }
 
-- (id)devicesWithDeviceType:(int64_t)a3
+- (id)devicesWithDeviceType:(int64_t)type
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = [(IDSService *)self->_internetService devices];
-  v5 = [v4 valueForKeyPath:@"uniqueIDOverride"];
+  devices = [(IDSService *)self->_internetService devices];
+  v5 = [devices valueForKeyPath:@"uniqueIDOverride"];
   v6 = v5;
-  if (!a3)
+  if (!type)
   {
     v20 = v5;
     goto LABEL_33;
   }
 
-  v25 = a3;
+  typeCopy = type;
   v26 = v5;
-  v7 = [MEMORY[0x277CBEB18] array];
-  v8 = [MEMORY[0x277CBEB18] array];
-  v30 = [MEMORY[0x277CBEB18] array];
-  v29 = [MEMORY[0x277CBEB18] array];
-  v9 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
+  array4 = [MEMORY[0x277CBEB18] array];
+  array5 = [MEMORY[0x277CBEB18] array];
   [MEMORY[0x277CBEB18] array];
-  v28 = v27 = v4;
+  v28 = v27 = devices;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v10 = v4;
+  v10 = devices;
   v11 = [v10 countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v11)
   {
@@ -1852,21 +1852,21 @@ LABEL_11:
         }
 
         v15 = *(*(&v31 + 1) + 8 * i);
-        v16 = v8;
-        if ([v15 deviceType] == 2 || (v16 = v30, objc_msgSend(v15, "deviceType") == 4) || (v16 = v29, objc_msgSend(v15, "deviceType") == 6) || (v16 = v28, objc_msgSend(v15, "deviceType") == 1))
+        v16 = array2;
+        if ([v15 deviceType] == 2 || (v16 = array3, objc_msgSend(v15, "deviceType") == 4) || (v16 = array4, objc_msgSend(v15, "deviceType") == 6) || (v16 = v28, objc_msgSend(v15, "deviceType") == 1))
         {
-          v17 = [v15 uniqueIDOverride];
-          [v16 addObject:v17];
+          uniqueIDOverride = [v15 uniqueIDOverride];
+          [v16 addObject:uniqueIDOverride];
         }
 
         if ([v15 isLocallyPaired])
         {
-          v18 = [v15 uniqueIDOverride];
-          [v9 addObject:v18];
+          uniqueIDOverride2 = [v15 uniqueIDOverride];
+          [array5 addObject:uniqueIDOverride2];
         }
 
-        v19 = [v15 uniqueIDOverride];
-        [v7 addObject:v19];
+        uniqueIDOverride3 = [v15 uniqueIDOverride];
+        [array addObject:uniqueIDOverride3];
       }
 
       v12 = [v10 countByEnumeratingWithState:&v31 objects:v35 count:16];
@@ -1876,19 +1876,19 @@ LABEL_11:
   }
 
   v20 = 0;
-  if (v25 > 3)
+  if (typeCopy > 3)
   {
     v6 = v26;
-    if (v25 != 4)
+    if (typeCopy != 4)
     {
-      if (v25 != 5)
+      if (typeCopy != 5)
       {
-        v4 = v27;
-        if (v25 == 6)
+        devices = v27;
+        if (typeCopy == 6)
         {
           v20 = objc_opt_new();
-          [v20 addObjectsFromArray:v8];
-          [v20 addObjectsFromArray:v30];
+          [v20 addObjectsFromArray:array2];
+          [v20 addObjectsFromArray:array3];
           [v20 addObjectsFromArray:v28];
         }
 
@@ -1901,35 +1901,35 @@ LABEL_30:
       goto LABEL_31;
     }
 
-    v21 = v9;
+    v21 = array5;
   }
 
   else
   {
     v6 = v26;
-    if (v25 != 1)
+    if (typeCopy != 1)
     {
-      if (v25 != 2)
+      if (typeCopy != 2)
       {
-        v4 = v27;
-        if (v25 == 3)
+        devices = v27;
+        if (typeCopy == 3)
         {
-          v20 = v29;
+          v20 = array4;
         }
 
         goto LABEL_32;
       }
 
-      v22 = v30;
+      v22 = array3;
       goto LABEL_30;
     }
 
-    v21 = v8;
+    v21 = array2;
   }
 
 LABEL_31:
   v20 = v21;
-  v4 = v27;
+  devices = v27;
 LABEL_32:
 
 LABEL_33:
@@ -1938,17 +1938,17 @@ LABEL_33:
   return v20;
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context
 {
   v34 = *MEMORY[0x277D85DE8];
-  v10 = a5;
-  v11 = a6;
-  v12 = a7;
-  v13 = [(IDSService *)self->_internetService deviceForFromID:v11];
-  [(BMDistributedContextService *)self logMetricsForMessage:v10 andContext:v12 fromDevice:v13];
+  messageCopy = message;
+  dCopy = d;
+  contextCopy = context;
+  v13 = [(IDSService *)self->_internetService deviceForFromID:dCopy];
+  [(BMDistributedContextService *)self logMetricsForMessage:messageCopy andContext:contextCopy fromDevice:v13];
   if (v13)
   {
-    v14 = [v10 objectForKeyedSubscript:@"type"];
+    v14 = [messageCopy objectForKeyedSubscript:@"type"];
     v15 = [v14 isEqualToString:@"subscription"];
 
     v16 = __biome_log_for_category();
@@ -1957,14 +1957,14 @@ LABEL_33:
     {
       if (v17)
       {
-        v18 = [v13 uniqueIDOverride];
-        v19 = [v12 serverReceivedTime];
+        uniqueIDOverride = [v13 uniqueIDOverride];
+        serverReceivedTime = [contextCopy serverReceivedTime];
         *buf = 138412802;
-        v29 = v18;
+        v29 = uniqueIDOverride;
         v30 = 2112;
-        v31 = v10;
+        v31 = messageCopy;
         v32 = 2112;
-        v33 = v19;
+        v33 = serverReceivedTime;
         _os_log_impl(&dword_244177000, v16, OS_LOG_TYPE_DEFAULT, "Received new subscription from %@: %@ sent at %@", buf, 0x20u);
       }
 
@@ -1973,9 +1973,9 @@ LABEL_33:
       block[1] = 3221225472;
       block[2] = __78__BMDistributedContextService_service_account_incomingMessage_fromID_context___block_invoke;
       block[3] = &unk_278E07C28;
-      v25 = v10;
+      v25 = messageCopy;
       v26 = v13;
-      v27 = self;
+      selfCopy = self;
       dispatch_sync(queue, block);
 
       v21 = v25;
@@ -1986,15 +1986,15 @@ LABEL_33:
       if (v17)
       {
         *buf = 138412290;
-        v29 = v10;
+        v29 = messageCopy;
         _os_log_impl(&dword_244177000, v16, OS_LOG_TYPE_DEFAULT, "Received new context: %@", buf, 0xCu);
       }
 
-      v21 = [[BMDistributedContextContextChangedMessage alloc] initWithMessageDictionary:v10];
+      v21 = [[BMDistributedContextContextChangedMessage alloc] initWithMessageDictionary:messageCopy];
       if (v21)
       {
-        v22 = [v13 uniqueIDOverride];
-        [(BMDistributedContextService *)self handleIncomingContextChangeMessage:v21 forDevice:v22];
+        uniqueIDOverride2 = [v13 uniqueIDOverride];
+        [(BMDistributedContextService *)self handleIncomingContextChangeMessage:v21 forDevice:uniqueIDOverride2];
       }
     }
   }
@@ -2026,17 +2026,17 @@ void __78__BMDistributedContextService_service_account_incomingMessage_fromID_co
   }
 }
 
-- (void)connection:(id)a3 devicesChanged:(id)a4
+- (void)connection:(id)connection devicesChanged:(id)changed
 {
-  v5 = a4;
+  changedCopy = changed;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __57__BMDistributedContextService_connection_devicesChanged___block_invoke;
   v8[3] = &unk_278E07CF0;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = changedCopy;
+  selfCopy = self;
+  v7 = changedCopy;
   dispatch_sync(queue, v8);
 }
 
@@ -2132,32 +2132,32 @@ void __57__BMDistributedContextService_connection_devicesChanged___block_invoke(
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = objc_autoreleasePoolPush();
-  v9 = [MEMORY[0x277CF0E20] processWithXPCConnection:v7];
+  v9 = [MEMORY[0x277CF0E20] processWithXPCConnection:connectionCopy];
   v10 = __biome_log_for_category();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v9 executableName];
+    executableName = [v9 executableName];
     v17 = 138543618;
-    v18 = v11;
+    v18 = executableName;
     v19 = 1024;
     v20 = [v9 pid];
     _os_log_impl(&dword_244177000, v10, OS_LOG_TYPE_DEFAULT, "Incoming connection from %{public}@(%d)", &v17, 0x12u);
   }
 
   v12 = [MEMORY[0x277CF0E00] policyForProcess:v9 connectionFlags:0 useCase:*MEMORY[0x277CF0DF8]];
-  v13 = [v12 allowsAccessToContextSync];
-  if (v13)
+  allowsAccessToContextSync = [v12 allowsAccessToContextSync];
+  if (allowsAccessToContextSync)
   {
     v14 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_28578EAA0];
-    [v7 setExportedInterface:v14];
-    [v7 setExportedObject:self];
-    [v7 resume];
+    [connectionCopy setExportedInterface:v14];
+    [connectionCopy setExportedObject:self];
+    [connectionCopy resume];
   }
 
   else
@@ -2171,102 +2171,102 @@ void __57__BMDistributedContextService_connection_devicesChanged___block_invoke(
 
   objc_autoreleasePoolPop(v8);
   v15 = *MEMORY[0x277D85DE8];
-  return v13;
+  return allowsAccessToContextSync;
 }
 
-- (void)registerForUpdates:(id)a3 withIdentifier:(id)a4 forUseCase:(id)a5 withOptions:(unint64_t)a6 forDeviceTypes:(int64_t)a7 withErrorHandler:(id)a8
+- (void)registerForUpdates:(id)updates withIdentifier:(id)identifier forUseCase:(id)case withOptions:(unint64_t)options forDeviceTypes:(int64_t)types withErrorHandler:(id)handler
 {
   v39[1] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a8;
+  updatesCopy = updates;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v14 = MEMORY[0x277CBEB38];
-  v15 = a5;
-  v16 = [v14 dictionary];
+  caseCopy = case;
+  dictionary = [v14 dictionary];
   v17 = *MEMORY[0x277CCA450];
-  [v16 setValue:@"Unknown Error" forKey:*MEMORY[0x277CCA450]];
-  v34 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ContextSyncErrorDomain" code:0 userInfo:v16];
-  v35 = [MEMORY[0x277CCAE80] currentConnection];
+  [dictionary setValue:@"Unknown Error" forKey:*MEMORY[0x277CCA450]];
+  v34 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ContextSyncErrorDomain" code:0 userInfo:dictionary];
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
   v18 = [MEMORY[0x277CF0E20] processWithXPCConnection:?];
-  v19 = [MEMORY[0x277CF0E00] policyForProcess:v18 connectionFlags:0 useCase:v15];
+  v19 = [MEMORY[0x277CF0E00] policyForProcess:v18 connectionFlags:0 useCase:caseCopy];
 
-  v36 = v11;
-  if (v12 && ([v11 rootStreamIdentifiers], v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v19, "allowsAccessToContextSyncStreams:", v20), v20, (v21 & 1) != 0))
+  v36 = updatesCopy;
+  if (identifierCopy && ([updatesCopy rootStreamIdentifiers], v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v19, "allowsAccessToContextSyncStreams:", v20), v20, (v21 & 1) != 0))
   {
-    if (([v12 isEqualToString:@"com.apple.duetactivityscheduler.remotedeviceactivitymonitor"] & 1) != 0 || objc_msgSend(v12, "isEqualToString:", @"com.appleinternal.proactive.remoteactivitylevel"))
+    if (([identifierCopy isEqualToString:@"com.apple.duetactivityscheduler.remotedeviceactivitymonitor"] & 1) != 0 || objc_msgSend(identifierCopy, "isEqualToString:", @"com.appleinternal.proactive.remoteactivitylevel"))
     {
-      v22 = a6 | 2;
+      optionsCopy = options | 2;
     }
 
     else
     {
-      v22 = a6;
+      optionsCopy = options;
     }
 
     v29 = +[BMDistributedContextService distributedContextManager];
     v37 = v34;
-    v30 = [v29 registerForUpdates:v11 withIdentifier:v12 withOptions:v22 forDeviceTypes:a7 withError:&v37];
+    v30 = [v29 registerForUpdates:updatesCopy withIdentifier:identifierCopy withOptions:optionsCopy forDeviceTypes:types withError:&v37];
     v28 = v37;
 
-    v13[2](v13, (v30 & 1) != 0, v28);
+    handlerCopy[2](handlerCopy, (v30 & 1) != 0, v28);
   }
 
   else
   {
     v23 = MEMORY[0x277CCACA8];
-    v24 = [v18 executableName];
-    v25 = [v23 stringWithFormat:@"'%@' is not entitled for context sync access to '%@'", v24, v12];
+    executableName = [v18 executableName];
+    identifierCopy = [v23 stringWithFormat:@"'%@' is not entitled for context sync access to '%@'", executableName, identifierCopy];
 
     v26 = MEMORY[0x277CCA9B8];
     v38 = v17;
-    v39[0] = v25;
+    v39[0] = identifierCopy;
     v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v39 forKeys:&v38 count:1];
     v28 = [v26 errorWithDomain:@"ContextSyncErrorDomain" code:5 userInfo:v27];
 
-    v13[2](v13, 0, v28);
+    handlerCopy[2](handlerCopy, 0, v28);
   }
 
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerForUpdates:(id)a3 withIdentifier:(id)a4 forUseCase:(id)a5 withOptions:(unint64_t)a6 forDevices:(id)a7 withErrorHandler:(id)a8
+- (void)registerForUpdates:(id)updates withIdentifier:(id)identifier forUseCase:(id)case withOptions:(unint64_t)options forDevices:(id)devices withErrorHandler:(id)handler
 {
   v44[1] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v41 = a7;
-  v40 = a8;
+  updatesCopy = updates;
+  identifierCopy = identifier;
+  devicesCopy = devices;
+  handlerCopy = handler;
   v14 = MEMORY[0x277CBEB38];
-  v15 = a5;
-  v16 = [v14 dictionary];
+  caseCopy = case;
+  dictionary = [v14 dictionary];
   v17 = *MEMORY[0x277CCA450];
-  [v16 setValue:@"Unknown Error" forKey:*MEMORY[0x277CCA450]];
-  v39 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ContextSyncErrorDomain" code:0 userInfo:v16];
-  v18 = [MEMORY[0x277CCAE80] currentConnection];
-  v19 = [MEMORY[0x277CF0E20] processWithXPCConnection:v18];
+  [dictionary setValue:@"Unknown Error" forKey:*MEMORY[0x277CCA450]];
+  v39 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ContextSyncErrorDomain" code:0 userInfo:dictionary];
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+  v19 = [MEMORY[0x277CF0E20] processWithXPCConnection:currentConnection];
   v20 = [MEMORY[0x277CF0E00] policyForProcess:? connectionFlags:? useCase:?];
 
-  v21 = v13;
-  if (v13 && ([v12 rootStreamIdentifiers], v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v20, "allowsAccessToContextSyncStreams:", v22), v22, (v23 & 1) != 0))
+  v21 = identifierCopy;
+  if (identifierCopy && ([updatesCopy rootStreamIdentifiers], v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v20, "allowsAccessToContextSyncStreams:", v22), v22, (v23 & 1) != 0))
   {
     v24 = +[BMDistributedContextService distributedContextManager];
     v42 = v39;
-    v25 = [v24 registerForUpdates:v12 withIdentifier:v21 withOptions:a6 forDevices:v41 withError:&v42];
+    v25 = [v24 registerForUpdates:updatesCopy withIdentifier:v21 withOptions:options forDevices:devicesCopy withError:&v42];
     v26 = v42;
 
-    v27 = v40;
-    (*(v40 + 2))(v40, (v25 & 1) != 0, v26);
+    v27 = handlerCopy;
+    (*(handlerCopy + 2))(handlerCopy, (v25 & 1) != 0, v26);
   }
 
   else
   {
     v28 = MEMORY[0x277CCACA8];
-    v29 = [v19 executableName];
-    v38 = v16;
-    v30 = v18;
-    v31 = v12;
+    executableName = [v19 executableName];
+    v38 = dictionary;
+    v30 = currentConnection;
+    v31 = updatesCopy;
     v32 = v21;
-    v33 = [v28 stringWithFormat:@"'%@' is not entitled for context sync access to '%@'", v29, v21];
+    v33 = [v28 stringWithFormat:@"'%@' is not entitled for context sync access to '%@'", executableName, v21];
 
     v34 = MEMORY[0x277CCA9B8];
     v43 = v17;
@@ -2275,98 +2275,98 @@ void __57__BMDistributedContextService_connection_devicesChanged___block_invoke(
     v26 = [v34 errorWithDomain:@"ContextSyncErrorDomain" code:5 userInfo:v35];
 
     v21 = v32;
-    v27 = v40;
-    (*(v40 + 2))(v40, 0, v26);
+    v27 = handlerCopy;
+    (*(handlerCopy + 2))(handlerCopy, 0, v26);
 
-    v12 = v31;
-    v18 = v30;
-    v16 = v38;
+    updatesCopy = v31;
+    currentConnection = v30;
+    dictionary = v38;
   }
 
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unregisterForUpdates:(id)a3 withIdentifier:(id)a4 forUseCase:(id)a5 forDeviceTypes:(int64_t)a6 withErrorHandler:(id)a7
+- (void)unregisterForUpdates:(id)updates withIdentifier:(id)identifier forUseCase:(id)case forDeviceTypes:(int64_t)types withErrorHandler:(id)handler
 {
   v37[1] = *MEMORY[0x277D85DE8];
-  v34 = a3;
-  v10 = a4;
-  v11 = a7;
+  updatesCopy = updates;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v12 = MEMORY[0x277CBEB38];
-  v13 = a5;
-  v14 = [v12 dictionary];
+  caseCopy = case;
+  dictionary = [v12 dictionary];
   v15 = *MEMORY[0x277CCA450];
-  [v14 setValue:@"Unknown Error" forKey:*MEMORY[0x277CCA450]];
-  v32 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ContextSyncErrorDomain" code:0 userInfo:v14];
-  v33 = [MEMORY[0x277CCAE80] currentConnection];
+  [dictionary setValue:@"Unknown Error" forKey:*MEMORY[0x277CCA450]];
+  v32 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ContextSyncErrorDomain" code:0 userInfo:dictionary];
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
   v16 = [MEMORY[0x277CF0E20] processWithXPCConnection:?];
-  v17 = [MEMORY[0x277CF0E00] policyForProcess:v16 connectionFlags:0 useCase:v13];
+  v17 = [MEMORY[0x277CF0E00] policyForProcess:v16 connectionFlags:0 useCase:caseCopy];
 
-  v18 = v10;
-  if (v10 && ([v34 rootStreamIdentifiers], v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v17, "allowsAccessToContextSyncStreams:", v19), v19, (v20 & 1) != 0))
+  v18 = identifierCopy;
+  if (identifierCopy && ([updatesCopy rootStreamIdentifiers], v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v17, "allowsAccessToContextSyncStreams:", v19), v19, (v20 & 1) != 0))
   {
     v21 = +[BMDistributedContextService distributedContextManager];
     v35 = v32;
-    v22 = v34;
-    v23 = [v21 unregisterForUpdates:v34 withIdentifier:v18 forDeviceTypes:a6 withError:&v35];
+    v22 = updatesCopy;
+    v23 = [v21 unregisterForUpdates:updatesCopy withIdentifier:v18 forDeviceTypes:types withError:&v35];
     v24 = v35;
 
-    v11[2](v11, (v23 & 1) != 0, v24);
+    handlerCopy[2](handlerCopy, (v23 & 1) != 0, v24);
   }
 
   else
   {
     v25 = MEMORY[0x277CCACA8];
-    v26 = [v16 executableName];
-    v27 = [v25 stringWithFormat:@"'%@' is not entitled for context sync access to '%@'", v26, v10];
+    executableName = [v16 executableName];
+    identifierCopy = [v25 stringWithFormat:@"'%@' is not entitled for context sync access to '%@'", executableName, identifierCopy];
 
     v28 = MEMORY[0x277CCA9B8];
     v36 = v15;
-    v37[0] = v27;
+    v37[0] = identifierCopy;
     v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v37 forKeys:&v36 count:1];
     v24 = [v28 errorWithDomain:@"ContextSyncErrorDomain" code:5 userInfo:v29];
 
-    v11[2](v11, 0, v24);
-    v22 = v34;
+    handlerCopy[2](handlerCopy, 0, v24);
+    v22 = updatesCopy;
   }
 
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unregisterForUpdates:(id)a3 withIdentifier:(id)a4 forUseCase:(id)a5 forDevices:(id)a6 withErrorHandler:(id)a7
+- (void)unregisterForUpdates:(id)updates withIdentifier:(id)identifier forUseCase:(id)case forDevices:(id)devices withErrorHandler:(id)handler
 {
   v39[1] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v35 = a6;
-  v13 = a7;
+  updatesCopy = updates;
+  identifierCopy = identifier;
+  devicesCopy = devices;
+  handlerCopy = handler;
   v14 = MEMORY[0x277CBEB38];
-  v15 = a5;
-  v16 = [v14 dictionary];
+  caseCopy = case;
+  dictionary = [v14 dictionary];
   v17 = *MEMORY[0x277CCA450];
-  [v16 setValue:@"Unknown Error" forKey:*MEMORY[0x277CCA450]];
-  v18 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ContextSyncErrorDomain" code:0 userInfo:v16];
-  v34 = [MEMORY[0x277CCAE80] currentConnection];
+  [dictionary setValue:@"Unknown Error" forKey:*MEMORY[0x277CCA450]];
+  v18 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ContextSyncErrorDomain" code:0 userInfo:dictionary];
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
   v19 = [MEMORY[0x277CF0E20] processWithXPCConnection:?];
-  v20 = [MEMORY[0x277CF0E00] policyForProcess:v19 connectionFlags:0 useCase:v15];
+  v20 = [MEMORY[0x277CF0E00] policyForProcess:v19 connectionFlags:0 useCase:caseCopy];
 
-  v36 = v12;
-  if (v12 && ([v11 rootStreamIdentifiers], v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v20, "allowsAccessToContextSyncStreams:", v21), v21, (v22 & 1) != 0))
+  v36 = identifierCopy;
+  if (identifierCopy && ([updatesCopy rootStreamIdentifiers], v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v20, "allowsAccessToContextSyncStreams:", v21), v21, (v22 & 1) != 0))
   {
     v23 = +[BMDistributedContextService distributedContextManager];
     v37 = v18;
-    v24 = v35;
-    v25 = [v23 unregisterForUpdates:v11 withIdentifier:v36 forDevices:v35 withError:&v37];
+    v24 = devicesCopy;
+    v25 = [v23 unregisterForUpdates:updatesCopy withIdentifier:v36 forDevices:devicesCopy withError:&v37];
     v26 = v37;
 
-    v13[2](v13, (v25 & 1) != 0, v26);
+    handlerCopy[2](handlerCopy, (v25 & 1) != 0, v26);
   }
 
   else
   {
     v27 = MEMORY[0x277CCACA8];
-    v28 = [v19 executableName];
-    v29 = [v27 stringWithFormat:@"'%@' is not entitled for context sync access to '%@'", v28, v36];
+    executableName = [v19 executableName];
+    v29 = [v27 stringWithFormat:@"'%@' is not entitled for context sync access to '%@'", executableName, v36];
 
     v30 = MEMORY[0x277CCA9B8];
     v38 = v17;
@@ -2380,30 +2380,30 @@ void __57__BMDistributedContextService_connection_devicesChanged___block_invoke(
       [BMDistributedContextService unregisterForUpdates:withIdentifier:forUseCase:forDevices:withErrorHandler:];
     }
 
-    v13[2](v13, 0, v26);
-    v24 = v35;
+    handlerCopy[2](handlerCopy, 0, v26);
+    v24 = devicesCopy;
   }
 
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logMetricsForSubscription:(id)a3 uponReboot:(BOOL)a4
+- (void)logMetricsForSubscription:(id)subscription uponReboot:(BOOL)reboot
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  subscriptionCopy = subscription;
   v6 = [MEMORY[0x277CBEAA8] now];
-  v7 = [v5 dsl];
-  v8 = [v7 streamPublishers];
+  v7 = [subscriptionCopy dsl];
+  streamPublishers = [v7 streamPublishers];
 
-  v9 = [v5 subscribingDevice];
-  v10 = [(BMDistributedContextService *)self idsDeviceForDeviceUUID:v9];
+  subscribingDevice = [subscriptionCopy subscribingDevice];
+  v10 = [(BMDistributedContextService *)self idsDeviceForDeviceUUID:subscribingDevice];
 
   if (!v10)
   {
     v11 = __biome_log_for_category();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [BMDistributedContextService logMetricsForSubscription:v5 uponReboot:?];
+      [BMDistributedContextService logMetricsForSubscription:subscriptionCopy uponReboot:?];
     }
   }
 
@@ -2411,7 +2411,7 @@ void __57__BMDistributedContextService_connection_devicesChanged___block_invoke(
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = v8;
+  obj = streamPublishers;
   v12 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v12)
   {
@@ -2427,7 +2427,7 @@ void __57__BMDistributedContextService_connection_devicesChanged___block_invoke(
         }
 
         v16 = *(*(&v22 + 1) + 8 * i);
-        v19 = v5;
+        v19 = subscriptionCopy;
         v20 = v10;
         v21 = v6;
         AnalyticsSendEventLazy();
@@ -2495,18 +2495,18 @@ id __68__BMDistributedContextService_logMetricsForSubscription_uponReboot___bloc
   return v2;
 }
 
-- (void)logMetricsForMessage:(id)a3 andContext:(id)a4 fromDevice:(id)a5
+- (void)logMetricsForMessage:(id)message andContext:(id)context fromDevice:(id)device
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 objectForKeyedSubscript:@"version"];
+  messageCopy = message;
+  contextCopy = context;
+  deviceCopy = device;
+  v10 = [messageCopy objectForKeyedSubscript:@"version"];
 
   if (v10)
   {
-    v11 = v8;
-    v12 = v7;
-    v13 = v9;
+    v11 = contextCopy;
+    v12 = messageCopy;
+    v13 = deviceCopy;
     AnalyticsSendEventLazy();
   }
 }

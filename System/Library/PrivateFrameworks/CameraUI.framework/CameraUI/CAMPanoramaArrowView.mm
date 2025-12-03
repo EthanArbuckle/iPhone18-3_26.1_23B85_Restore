@@ -1,9 +1,9 @@
 @interface CAMPanoramaArrowView
-- (CAMPanoramaArrowView)initWithFrame:(CGRect)a3;
-- (CGPath)_newTailPiecesPathOfWidth:(double *)a3;
+- (CAMPanoramaArrowView)initWithFrame:(CGRect)frame;
+- (CGPath)_newTailPiecesPathOfWidth:(double *)width;
 - (CGSize)intrinsicContentSize;
-- (void)_updateTailWithAnimationDuration:(double)a3;
-- (void)animateWithNormalizedSpeed:(double)a3 duration:(double)a4;
+- (void)_updateTailWithAnimationDuration:(double)duration;
+- (void)animateWithNormalizedSpeed:(double)speed duration:(double)duration;
 - (void)dealloc;
 - (void)layoutSubviews;
 - (void)reset;
@@ -11,11 +11,11 @@
 
 @implementation CAMPanoramaArrowView
 
-- (CAMPanoramaArrowView)initWithFrame:(CGRect)a3
+- (CAMPanoramaArrowView)initWithFrame:(CGRect)frame
 {
   v24.receiver = self;
   v24.super_class = CAMPanoramaArrowView;
-  v3 = [(CAMPanoramaArrowView *)&v24 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CAMPanoramaArrowView *)&v24 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = CAMCameraUIFrameworkBundle();
@@ -29,8 +29,8 @@
     v9 = v8;
     [v5 size];
     v11 = v10;
-    v12 = [(CAMPanoramaArrowView *)v3 traitCollection];
-    [v12 displayScale];
+    traitCollection = [(CAMPanoramaArrowView *)v3 traitCollection];
+    [traitCollection displayScale];
     v14 = v9 + 20.0 + v13 * 3.0;
 
     [(CAMPanoramaArrowView *)v3 setFrame:0.0, 0.0, v14, v11];
@@ -60,8 +60,8 @@
     v21 = [MEMORY[0x1E69DC888] colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0];
     -[CAShapeLayer setFillColor:](v20, "setFillColor:", [v21 CGColor]);
 
-    v22 = [(UIView *)v3->_arrowTail layer];
-    [v22 addSublayer:v3->_arrowTailPiecesLayer];
+    layer = [(UIView *)v3->_arrowTail layer];
+    [layer addSublayer:v3->_arrowTailPiecesLayer];
 
     [(CAMPanoramaArrowView *)v3 _updateTailWithAnimationDuration:0.0];
   }
@@ -82,8 +82,8 @@
   [(UIImageView *)self->_arrowHead intrinsicContentSize];
   v4 = v3;
   v6 = v5 + 20.0;
-  v7 = [(CAMPanoramaArrowView *)self traitCollection];
-  [v7 displayScale];
+  traitCollection = [(CAMPanoramaArrowView *)self traitCollection];
+  [traitCollection displayScale];
   v9 = v6 + v8 * 3.0;
 
   v10 = v9;
@@ -100,7 +100,7 @@
   [(CAMPanoramaArrowView *)&v2 layoutSubviews];
 }
 
-- (CGPath)_newTailPiecesPathOfWidth:(double *)a3
+- (CGPath)_newTailPiecesPathOfWidth:(double *)width
 {
   Mutable = CGPathCreateMutable();
   MaxX = CGRectGetMaxX(self->_arrowTailRect);
@@ -131,7 +131,7 @@
   v19.origin.y = v12;
   v19.size.height = v13;
   CGPathAddRect(Mutable, 0, v19);
-  if (a3)
+  if (width)
   {
     v20.size.width = 4.0;
     v20.origin.x = v8;
@@ -142,17 +142,17 @@
     v21.origin.x = v11;
     v21.origin.y = v12;
     v21.size.height = v13;
-    *a3 = v14 - CGRectGetMinX(v21);
+    *width = v14 - CGRectGetMinX(v21);
   }
 
   return Mutable;
 }
 
-- (void)_updateTailWithAnimationDuration:(double)a3
+- (void)_updateTailWithAnimationDuration:(double)duration
 {
   v9 = 0;
   v5 = [(CAMPanoramaArrowView *)self _newTailPiecesPathOfWidth:&v9];
-  if (a3 <= 0.0)
+  if (duration <= 0.0)
   {
     [(CAShapeLayer *)self->_arrowTailPiecesLayer setPath:v5];
   }
@@ -160,7 +160,7 @@
   else
   {
     v6 = [MEMORY[0x1E6979318] animationWithKeyPath:@"path"];
-    [v6 setDuration:a3];
+    [v6 setDuration:duration];
     v7 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979ED8]];
     [v6 setTimingFunction:v7];
 
@@ -180,17 +180,17 @@
   self->_currentTailPiecesPath = v5;
 }
 
-- (void)animateWithNormalizedSpeed:(double)a3 duration:(double)a4
+- (void)animateWithNormalizedSpeed:(double)speed duration:(double)duration
 {
   currentNormalizedSpeed = self->_currentNormalizedSpeed;
-  v7 = a3 >= 1.0;
+  v7 = speed >= 1.0;
   if (currentNormalizedSpeed >= 1.0)
   {
     v7 = 0;
   }
 
-  v8 = currentNormalizedSpeed * 1.02 <= a3 || v7;
-  if (a3 < 1.0)
+  v8 = currentNormalizedSpeed * 1.02 <= speed || v7;
+  if (speed < 1.0)
   {
     v9 = self->_tailBiggestDelta + -1.0;
     v10 = 0.0;
@@ -217,9 +217,9 @@
   }
 
   v15 = currentNormalizedSpeed * 0.98;
-  if (a3 >= 1.15)
+  if (speed >= 1.15)
   {
-    if (a3 >= 1.3)
+    if (speed >= 1.3)
     {
       v13 = 0.0;
       if (v8)
@@ -231,7 +231,7 @@
         goto LABEL_33;
       }
 
-      v14 = v15 < a3;
+      v14 = v15 < speed;
       v12 = 0.0;
       v11 = 0.0;
       v9 = 0.0;
@@ -273,7 +273,7 @@
       }
 
       v13 = 0.0;
-      v14 = v15 < a3;
+      v14 = v15 < speed;
       v12 = 0.0;
       v11 = 0.0;
       v9 = 0.0;
@@ -317,7 +317,7 @@ LABEL_32:
     }
 
     v13 = 0.0;
-    v14 = v15 < a3;
+    v14 = v15 < speed;
     v12 = 0.0;
     v11 = 0.0;
     v9 = 0.0;
@@ -361,10 +361,10 @@ LABEL_33:
     self->_tailBigDelta = v11;
     self->_tailMediumDelta = v12;
     self->_tailSmallDelta = v13;
-    [(CAMPanoramaArrowView *)self _updateTailWithAnimationDuration:a4];
+    [(CAMPanoramaArrowView *)self _updateTailWithAnimationDuration:duration];
   }
 
-  self->_currentNormalizedSpeed = a3;
+  self->_currentNormalizedSpeed = speed;
 }
 
 - (void)reset

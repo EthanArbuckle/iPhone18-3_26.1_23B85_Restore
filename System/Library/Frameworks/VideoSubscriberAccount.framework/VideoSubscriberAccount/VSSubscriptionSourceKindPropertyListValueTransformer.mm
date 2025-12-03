@@ -1,20 +1,20 @@
 @interface VSSubscriptionSourceKindPropertyListValueTransformer
-- (id)reverseTransformedValue:(id)a3;
-- (id)transformedValue:(id)a3;
+- (id)reverseTransformedValue:(id)value;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation VSSubscriptionSourceKindPropertyListValueTransformer
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  v3 = [a3 integerValue];
+  integerValue = [value integerValue];
   v4 = @"PSSSIdentifierTypeURL";
-  if (v3 != 1)
+  if (integerValue != 1)
   {
     v4 = 0;
   }
 
-  if (v3)
+  if (integerValue)
   {
     return v4;
   }
@@ -25,15 +25,15 @@
   }
 }
 
-- (id)reverseTransformedValue:(id)a3
+- (id)reverseTransformedValue:(id)value
 {
-  v3 = a3;
-  if ([v3 isEqual:@"PSSSIdentifierTypeBundle"])
+  valueCopy = value;
+  if ([valueCopy isEqual:@"PSSSIdentifierTypeBundle"])
   {
     v4 = &unk_284DF3490;
   }
 
-  else if ([v3 isEqual:@"PSSSIdentifierTypeURL"])
+  else if ([valueCopy isEqual:@"PSSSIdentifierTypeURL"])
   {
     v4 = &unk_284DF34A8;
   }

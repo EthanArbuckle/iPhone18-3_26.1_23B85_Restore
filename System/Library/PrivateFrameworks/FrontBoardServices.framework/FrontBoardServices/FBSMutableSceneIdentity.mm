@@ -1,16 +1,16 @@
 @interface FBSMutableSceneIdentity
-- (void)setIdentifier:(id)a3;
-- (void)setInternalWorkspaceIdentifier:(id)a3;
-- (void)setWorkspaceIdentifier:(id)a3;
+- (void)setIdentifier:(id)identifier;
+- (void)setInternalWorkspaceIdentifier:(id)identifier;
+- (void)setWorkspaceIdentifier:(id)identifier;
 @end
 
 @implementation FBSMutableSceneIdentity
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v7 = a3;
+  identifierCopy = identifier;
   NSClassFromString(&cfstr_Nsstring.isa);
-  if (!v7)
+  if (!identifierCopy)
   {
     [FBSMutableSceneIdentity setIdentifier:a2];
   }
@@ -20,15 +20,15 @@
     [FBSMutableSceneIdentity setIdentifier:a2];
   }
 
-  v5 = [v7 copy];
+  v5 = [identifierCopy copy];
   identifier = self->super._identifier;
   self->super._identifier = v5;
 }
 
-- (void)setWorkspaceIdentifier:(id)a3
+- (void)setWorkspaceIdentifier:(id)identifier
 {
-  v7 = a3;
-  if (v7)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     NSClassFromString(&cfstr_Nsstring.isa);
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -37,15 +37,15 @@
     }
   }
 
-  v5 = [v7 copy];
+  v5 = [identifierCopy copy];
   workspaceIdentifier = self->super._workspaceIdentifier;
   self->super._workspaceIdentifier = v5;
 }
 
-- (void)setInternalWorkspaceIdentifier:(id)a3
+- (void)setInternalWorkspaceIdentifier:(id)identifier
 {
-  v7 = a3;
-  if (v7)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     NSClassFromString(&cfstr_Nsstring.isa);
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -54,7 +54,7 @@
     }
   }
 
-  v5 = [v7 copy];
+  v5 = [identifierCopy copy];
   internalWorkspaceIdentifier = self->super._internalWorkspaceIdentifier;
   self->super._internalWorkspaceIdentifier = v5;
 }

@@ -1,83 +1,83 @@
 @interface EBWorkbook
-+ (id)readWithState:(id)a3 reader:(id)a4;
-+ (int)xlSheetTypeEnumFromEDSheet:(id)a3;
-+ (void)readDocumentPresentation:(id)a3 state:(id)a4;
-+ (void)readDocumentProperties:(id)a3 state:(id)a4;
-+ (void)setupProcessors:(id)a3;
++ (id)readWithState:(id)state reader:(id)reader;
++ (int)xlSheetTypeEnumFromEDSheet:(id)sheet;
++ (void)readDocumentPresentation:(id)presentation state:(id)state;
++ (void)readDocumentProperties:(id)properties state:(id)state;
++ (void)setupProcessors:(id)processors;
 @end
 
 @implementation EBWorkbook
 
-+ (id)readWithState:(id)a3 reader:(id)a4
++ (id)readWithState:(id)state reader:(id)reader
 {
-  v35 = a3;
-  v6 = a4;
+  stateCopy = state;
+  readerCopy = reader;
   v7 = [EDWorkbook alloc];
-  v8 = [v6 fileName];
-  v9 = -[EDWorkbook initWithFileName:andStringOptimization:](v7, "initWithFileName:andStringOptimization:", v8, [v6 useStringOptimization]);
+  fileName = [readerCopy fileName];
+  v9 = -[EDWorkbook initWithFileName:andStringOptimization:](v7, "initWithFileName:andStringOptimization:", fileName, [readerCopy useStringOptimization]);
 
-  v10 = v35;
-  [(OCDDocument *)v9 setReader:v6];
-  v11 = [v6 temporaryDirectory];
-  [(EDWorkbook *)v9 setTemporaryDirectory:v11];
+  v10 = stateCopy;
+  [(OCDDocument *)v9 setReader:readerCopy];
+  temporaryDirectory = [readerCopy temporaryDirectory];
+  [(EDWorkbook *)v9 setTemporaryDirectory:temporaryDirectory];
 
-  v12 = [(EDWorkbook *)v9 processors];
-  [a1 setupProcessors:v12];
+  processors = [(EDWorkbook *)v9 processors];
+  [self setupProcessors:processors];
 
   [TCProgressContext createStageWithSteps:@"read workbook globals" takingSteps:10.0 name:1.0];
-  [v35 setWorkbook:v9];
-  v13 = [(EDWorkbook *)v9 resources];
-  [v35 setResources:v13];
+  [stateCopy setWorkbook:v9];
+  resources = [(EDWorkbook *)v9 resources];
+  [stateCopy setResources:resources];
 
-  [a1 readDocumentProperties:v9 state:v35];
-  [a1 readDocumentPresentation:v9 state:v35];
+  [self readDocumentProperties:v9 state:stateCopy];
+  [self readDocumentPresentation:v9 state:stateCopy];
   [TCProgressContext advanceProgress:1.0];
-  [EBFontTable readWithState:v35];
-  [EBContentFormatTable readWithState:v35];
-  [EBCellFormatTable readWithState:v35];
+  [EBFontTable readWithState:stateCopy];
+  [EBContentFormatTable readWithState:stateCopy];
+  [EBCellFormatTable readWithState:stateCopy];
   [TCProgressContext advanceProgress:2.0];
   v36 = &unk_286ED1A78;
   v37 = 0;
   v38 = 0;
   v39 = 0;
-  v14 = [v35 xlReader];
-  (*(*v14 + 352))(v14, &v36);
+  xlReader = [stateCopy xlReader];
+  (*(*xlReader + 352))(xlReader, &v36);
   if (((v38 - v37) & 0x7FFFFFFF8) != 0)
   {
-    [v35 reportWarning:ECPivotTables];
+    [stateCopy reportWarning:ECPivotTables];
   }
 
-  [EBColorTable readWithState:v35];
+  [EBColorTable readWithState:stateCopy];
   [TCProgressContext advanceProgress:1.0];
-  [v35 readGlobalXlObjects];
-  [EBLinkTable readFromState:v35];
-  [EBNameTable readFromState:v35];
+  [stateCopy readGlobalXlObjects];
+  [EBLinkTable readFromState:stateCopy];
+  [EBNameTable readFromState:stateCopy];
   [TCProgressContext advanceProgress:1.0];
-  [EBStringTable readWithState:v35];
+  [EBStringTable readWithState:stateCopy];
   [TCProgressContext advanceProgress:3.0];
-  if (*([v35 xlReader] + 200) >= 1)
+  if (*([stateCopy xlReader] + 200) >= 1)
   {
-    v15 = [EBEscher readRootObjectWithType:1 state:v35];
+    v15 = [EBEscher readRootObjectWithType:1 state:stateCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v16 = [v35 oaState];
-      [OABDrawingGroup readBlipsFromDrawingGroup:v15 toDocument:v9 state:v16];
+      oaState = [stateCopy oaState];
+      [OABDrawingGroup readBlipsFromDrawingGroup:v15 toDocument:v9 state:oaState];
 
-      v17 = [(OCDDocument *)v9 theme];
-      v18 = [v35 oaState];
-      [OABDrawingGroup readGraphicalDefaultsFromDrawingGroup:v15 toTheme:v17 state:v18];
+      theme = [(OCDDocument *)v9 theme];
+      oaState2 = [stateCopy oaState];
+      [OABDrawingGroup readGraphicalDefaultsFromDrawingGroup:v15 toTheme:theme state:oaState2];
     }
 
-    v10 = v35;
+    v10 = stateCopy;
   }
 
   [TCProgressContext advanceProgress:1.0];
   SheetCount = XlBinaryReader::getSheetCount([v10 xlReader]);
-  v20 = [v6 delegate];
-  if (v20 && (objc_opt_respondsToSelector() & 1) != 0)
+  delegate = [readerCopy delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v20 readerDidStartDocument:v9 withElementCount:SheetCount];
+    [delegate readerDidStartDocument:v9 withElementCount:SheetCount];
   }
 
   if (SheetCount)
@@ -86,19 +86,19 @@
     v22 = 0;
     do
     {
-      if ([v35 isCancelled])
+      if ([stateCopy isCancelled])
       {
         [TCMessageException raiseUntaggedMessage:@"TCUserCancelled", 0];
       }
 
-      [EBSheet readSheetWithIndex:v21 state:v35];
-      if (v20 && (objc_opt_respondsToSelector() & 1) != 0)
+      [EBSheet readSheetWithIndex:v21 state:stateCopy];
+      if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
       {
         v23 = v9;
         v24 = [(EDWorkbook *)v9 sheetAtIndex:v21];
-        v25 = v6;
-        v26 = [v6 isThumbnail];
-        v27 = [v35 workbook];
+        v25 = readerCopy;
+        isThumbnail = [readerCopy isThumbnail];
+        workbook = [stateCopy workbook];
         if (v21 >= SheetCount - 1)
         {
           v28 = 1;
@@ -106,21 +106,21 @@
 
         else
         {
-          v28 = v26;
+          v28 = isThumbnail;
         }
 
-        [v20 readerDidReadElement:v24 atIndex:v21 inDocument:v27 isLastElement:v28];
+        [delegate readerDidReadElement:v24 atIndex:v21 inDocument:workbook isLastElement:v28];
 
         v22 |= [v24 isHidden] ^ 1;
         if (v22 & 1) != 0 && ([v25 isThumbnail])
         {
 
-          v6 = v25;
+          readerCopy = v25;
           v9 = v23;
           break;
         }
 
-        v6 = v25;
+        readerCopy = v25;
         v9 = v23;
       }
 
@@ -132,14 +132,14 @@
 
   [TCProgressContext advanceProgress:1.0];
   +[TCProgressContext endStage];
-  v29 = [v35 xlReader];
-  if ((*(*v29 + 88))(v29))
+  xlReader2 = [stateCopy xlReader];
+  if ((*(*xlReader2 + 88))(xlReader2))
   {
-    v30 = [(OCDDocument *)v9 summary];
-    v31 = [v35 xlReader];
-    if (v31)
+    summary = [(OCDDocument *)v9 summary];
+    xlReader3 = [stateCopy xlReader];
+    if (xlReader3)
     {
-      v32 = v31 + *(*v31 - 24);
+      v32 = xlReader3 + *(*xlReader3 - 24);
     }
 
     else
@@ -147,15 +147,15 @@
       v32 = 0;
     }
 
-    [OCBSummary readSummary:v30 reader:v32];
+    [OCBSummary readSummary:summary reader:v32];
 
-    v33 = [(OCDDocument *)v9 theme];
-    [v33 validateTheme];
+    theme2 = [(OCDDocument *)v9 theme];
+    [theme2 validateTheme];
   }
 
-  if (v20 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v20 readerDidEndDocument:v9];
+    [delegate readerDidEndDocument:v9];
   }
 
   XlPivotInfoTable::~XlPivotInfoTable(&v36);
@@ -163,13 +163,13 @@
   return v9;
 }
 
-+ (void)readDocumentProperties:(id)a3 state:(id)a4
++ (void)readDocumentProperties:(id)properties state:(id)state
 {
-  v5 = a3;
-  v6 = a4;
+  propertiesCopy = properties;
+  stateCopy = state;
   XlDocumentProperties::XlDocumentProperties(v17);
-  v7 = [v6 xlReader];
-  (*(*v7 + 152))(v7, v17);
+  xlReader = [stateCopy xlReader];
+  (*(*xlReader + 152))(xlReader, v17);
   if (v18 == 1900)
   {
     v8 = 1;
@@ -180,36 +180,36 @@
     v8 = 2;
   }
 
-  [v5 setDateBase:v8];
-  v9 = [v6 oaState];
-  v10 = [v9 useXmlBlobs];
+  [propertiesCopy setDateBase:v8];
+  oaState = [stateCopy oaState];
+  useXmlBlobs = [oaState useXmlBlobs];
 
-  if (v10)
+  if (useXmlBlobs)
   {
     v11 = v20;
     v12 = v21;
-    v13 = [v5 theme];
-    v14 = [v6 oaState];
-    v15 = [v14 xmlDrawingState];
-    [OAXTheme readFromThemeData:v11 themeDataSize:v12 toTheme:v13 xmlDrawingState:v15];
+    theme = [propertiesCopy theme];
+    oaState2 = [stateCopy oaState];
+    xmlDrawingState = [oaState2 xmlDrawingState];
+    [OAXTheme readFromThemeData:v11 themeDataSize:v12 toTheme:theme xmlDrawingState:xmlDrawingState];
   }
 
   if (v19[10] == 1)
   {
     v16 = [EBReference edReferenceFromXlRef:v19];
-    [v5 setVisibleRange:v16];
+    [propertiesCopy setVisibleRange:v16];
   }
 
   XlDocumentProperties::~XlDocumentProperties(v17);
 }
 
-+ (void)readDocumentPresentation:(id)a3 state:(id)a4
++ (void)readDocumentPresentation:(id)presentation state:(id)state
 {
-  v5 = a3;
-  v6 = a4;
-  if (*([v6 xlReader] + 1344) == 1)
+  presentationCopy = presentation;
+  stateCopy = state;
+  if (*([stateCopy xlReader] + 1344) == 1)
   {
-    [v5 setActiveSheetIndex:0];
+    [presentationCopy setActiveSheetIndex:0];
   }
 
   else
@@ -217,14 +217,14 @@
     v10 = 0;
     v11 = 0;
     v12 = 0;
-    v7 = [v6 xlReader];
-    (*(*v7 + 160))(v7, &v9);
+    xlReader = [stateCopy xlReader];
+    (*(*xlReader + 160))(xlReader, &v9);
     if (((v11 - v10) & 0x7FFFFFFF8) != 0)
     {
       v8 = XlConditionalFormatTable::at(&v9, 0);
       if (v8)
       {
-        [v5 setActiveSheetIndex:*(v8 + 8)];
+        [presentationCopy setActiveSheetIndex:*(v8 + 8)];
       }
     }
 
@@ -232,16 +232,16 @@
   }
 }
 
-+ (void)setupProcessors:(id)a3
++ (void)setupProcessors:(id)processors
 {
-  v3 = a3;
-  [v3 removeAllObjects];
-  [v3 addProcessorClass:objc_opt_class()];
+  processorsCopy = processors;
+  [processorsCopy removeAllObjects];
+  [processorsCopy addProcessorClass:objc_opt_class()];
 }
 
-+ (int)xlSheetTypeEnumFromEDSheet:(id)a3
++ (int)xlSheetTypeEnumFromEDSheet:(id)sheet
 {
-  v3 = a3;
+  sheetCopy = sheet;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

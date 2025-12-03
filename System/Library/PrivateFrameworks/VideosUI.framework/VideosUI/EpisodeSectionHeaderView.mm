@@ -1,22 +1,22 @@
 @interface EpisodeSectionHeaderView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
-- (void)didSelectIndex:(int64_t)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
+- (void)didSelectIndex:(int64_t)index;
 - (void)layoutSubviews;
 @end
 
 @implementation EpisodeSectionHeaderView
 
-- (void)didSelectIndex:(int64_t)a3
+- (void)didSelectIndex:(int64_t)index
 {
-  v4 = self;
-  sub_1E3E02AA8(a3);
+  selfCopy = self;
+  sub_1E3E02AA8(index);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
+  width = fits.width;
+  selfCopy = self;
   v5 = sub_1E3E02CD0(width);
   v7 = v6;
 
@@ -29,15 +29,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3E02EEC();
 }
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
-  width = a3.width;
-  v6 = self;
-  v7 = sub_1E3E02CD8(a4, width);
+  width = subviews.width;
+  selfCopy = self;
+  v7 = sub_1E3E02CD8(only, width);
   v9 = v8;
 
   v10 = v7;

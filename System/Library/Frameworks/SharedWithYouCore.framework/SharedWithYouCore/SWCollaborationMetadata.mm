@@ -1,78 +1,78 @@
 @interface SWCollaborationMetadata
-+ (SWCollaborationMetadata)allocWithZone:(_NSZone *)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCollaborationMetadata:(id)a3;
-- (SWCollaborationMetadata)initWithCoder:(id)a3;
-- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)a3 title:(id)a4 defaultOptions:(id)a5;
-- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)a3 title:(id)a4 defaultOptions:(id)a5 creationDate:(id)a6 contentType:(id)a7;
-- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)a3 title:(id)a4 defaultOptions:(id)a5 creationDate:(id)a6 contentType:(id)a7 ckAppBundleIDs:(id)a8;
-- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)a3 title:(id)a4 defaultOptions:(id)a5 creationDate:(id)a6 contentType:(id)a7 ckAppBundleIDs:(id)a8 initiatorHandle:(id)a9 initiatorNameComponents:(id)a10;
-- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)a3 title:(id)a4 defaultOptions:(id)a5 creationDate:(id)a6 contentType:(id)a7 containerSetupInfo:(id)a8;
-- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)a3 title:(id)a4 defaultOptions:(id)a5 creationDate:(id)a6 contentType:(id)a7 initiatorHandle:(id)a8 initiatorNameComponents:(id)a9;
-- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)a3 title:(id)a4 defaultOptions:(id)a5 initiatorHandle:(id)a6 initiatorNameComponents:(id)a7;
-- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)a3 title:(id)a4 defaultOptions:(id)a5 initiatorHandle:(id)a6 initiatorNameComponents:(id)a7 containerSetupInfo:(id)a8;
-- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)a3 title:(id)a4 defaultShareOptions:(id)a5;
-- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)a3 title:(id)a4 defaultShareOptions:(id)a5 creationDate:(id)a6 contentType:(id)a7;
-- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)a3 title:(id)a4 defaultShareOptions:(id)a5 creationDate:(id)a6 contentType:(id)a7 ckAppBundleIDs:(id)a8;
-- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)a3 title:(id)a4 defaultShareOptions:(id)a5 creationDate:(id)a6 contentType:(id)a7 ckAppBundleIDs:(id)a8 initiatorHandle:(id)a9 initiatorNameComponents:(id)a10;
-- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)a3 title:(id)a4 defaultShareOptions:(id)a5 creationDate:(id)a6 contentType:(id)a7 initiatorHandle:(id)a8 initiatorNameComponents:(id)a9;
-- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)a3 title:(id)a4 defaultShareOptions:(id)a5 creationDate:(id)a6 contentType:(id)a7 initiatorHandle:(id)a8 initiatorNameComponents:(id)a9 containerSetupInfo:(id)a10 sourceProcessData:(id)a11;
-- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)a3 title:(id)a4 defaultShareOptions:(id)a5 initiatorHandle:(id)a6 initiatorNameComponents:(id)a7;
-- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)a3 title:(id)a4 defaultShareOptions:(id)a5 initiatorHandle:(id)a6 initiatorNameComponents:(id)a7 containerSetupInfo:(id)a8;
-- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)a3 title:(id)a4 defaultShareOptions:(id)a5 initiatorHandle:(id)a6 initiatorNameComponents:(id)a7 containerSetupInfo:(id)a8 sourceProcessData:(id)a9;
-- (SWCollaborationMetadata)initWithLocalIdentifier:(id)a3 collaborationIdentifier:(id)a4 title:(id)a5 defaultOptions:(id)a6;
-- (SWCollaborationMetadata)initWithLocalIdentifier:(id)a3 collaborationIdentifier:(id)a4 title:(id)a5 defaultOptions:(id)a6 creationDate:(id)a7 contentType:(id)a8 ckAppBundleIDs:(id)a9;
-- (SWCollaborationMetadata)initWithLocalIdentifier:(id)a3 collaborationIdentifier:(id)a4 title:(id)a5 defaultOptions:(id)a6 creationDate:(id)a7 contentType:(id)a8 ckAppBundleIDs:(id)a9 initiatorHandle:(id)a10 initiatorNameComponents:(id)a11;
-- (SWCollaborationMetadata)initWithLocalIdentifier:(id)a3 collaborationIdentifier:(id)a4 title:(id)a5 defaultOptions:(id)a6 initiatorHandle:(id)a7 initiatorNameComponents:(id)a8;
-- (SWCollaborationMetadata)initWithLocalIdentifier:(id)a3 collaborationIdentifier:(id)a4 title:(id)a5 defaultShareOptions:(id)a6;
-- (SWCollaborationMetadata)initWithLocalIdentifier:(id)a3 collaborationIdentifier:(id)a4 title:(id)a5 defaultShareOptions:(id)a6 creationDate:(id)a7 contentType:(id)a8 ckAppBundleIDs:(id)a9;
-- (SWCollaborationMetadata)initWithLocalIdentifier:(id)a3 collaborationIdentifier:(id)a4 title:(id)a5 defaultShareOptions:(id)a6 creationDate:(id)a7 contentType:(id)a8 ckAppBundleIDs:(id)a9 initiatorHandle:(id)a10 initiatorNameComponents:(id)a11;
-- (SWCollaborationMetadata)initWithLocalIdentifier:(id)a3 collaborationIdentifier:(id)a4 title:(id)a5 defaultShareOptions:(id)a6 creationDate:(id)a7 contentType:(id)a8 ckAppBundleIDs:(id)a9 initiatorHandle:(id)a10 initiatorNameComponents:(id)a11 containerSetupInfo:(id)a12 sourceProcessData:(id)a13;
-- (SWCollaborationMetadata)initWithLocalIdentifier:(id)a3 collaborationIdentifier:(id)a4 title:(id)a5 defaultShareOptions:(id)a6 defaultOptions:(id)a7 creationDate:(id)a8 contentType:(id)a9 initiatorHandle:(id)a10 initiatorNameComponents:(id)a11 ckAppBundleIDs:(id)a12 handleToIdentityMap:(id)a13 containerSetupInfo:(id)a14 sourceProcessData:(id)a15;
-- (SWCollaborationMetadata)initWithLocalIdentifier:(id)a3 collaborationIdentifier:(id)a4 title:(id)a5 defaultShareOptions:(id)a6 initiatorHandle:(id)a7 initiatorNameComponents:(id)a8;
-- (id)copyWithZone:(_NSZone *)a3;
++ (SWCollaborationMetadata)allocWithZone:(_NSZone *)zone;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCollaborationMetadata:(id)metadata;
+- (SWCollaborationMetadata)initWithCoder:(id)coder;
+- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)identifier title:(id)title defaultOptions:(id)options;
+- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)identifier title:(id)title defaultOptions:(id)options creationDate:(id)date contentType:(id)type;
+- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)identifier title:(id)title defaultOptions:(id)options creationDate:(id)date contentType:(id)type ckAppBundleIDs:(id)ds;
+- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)identifier title:(id)title defaultOptions:(id)options creationDate:(id)date contentType:(id)type ckAppBundleIDs:(id)ds initiatorHandle:(id)handle initiatorNameComponents:(id)self0;
+- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)identifier title:(id)title defaultOptions:(id)options creationDate:(id)date contentType:(id)type containerSetupInfo:(id)info;
+- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)identifier title:(id)title defaultOptions:(id)options creationDate:(id)date contentType:(id)type initiatorHandle:(id)handle initiatorNameComponents:(id)components;
+- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)identifier title:(id)title defaultOptions:(id)options initiatorHandle:(id)handle initiatorNameComponents:(id)components;
+- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)identifier title:(id)title defaultOptions:(id)options initiatorHandle:(id)handle initiatorNameComponents:(id)components containerSetupInfo:(id)info;
+- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)identifier title:(id)title defaultShareOptions:(id)options;
+- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)identifier title:(id)title defaultShareOptions:(id)options creationDate:(id)date contentType:(id)type;
+- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)identifier title:(id)title defaultShareOptions:(id)options creationDate:(id)date contentType:(id)type ckAppBundleIDs:(id)ds;
+- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)identifier title:(id)title defaultShareOptions:(id)options creationDate:(id)date contentType:(id)type ckAppBundleIDs:(id)ds initiatorHandle:(id)handle initiatorNameComponents:(id)self0;
+- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)identifier title:(id)title defaultShareOptions:(id)options creationDate:(id)date contentType:(id)type initiatorHandle:(id)handle initiatorNameComponents:(id)components;
+- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)identifier title:(id)title defaultShareOptions:(id)options creationDate:(id)date contentType:(id)type initiatorHandle:(id)handle initiatorNameComponents:(id)components containerSetupInfo:(id)self0 sourceProcessData:(id)self1;
+- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)identifier title:(id)title defaultShareOptions:(id)options initiatorHandle:(id)handle initiatorNameComponents:(id)components;
+- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)identifier title:(id)title defaultShareOptions:(id)options initiatorHandle:(id)handle initiatorNameComponents:(id)components containerSetupInfo:(id)info;
+- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)identifier title:(id)title defaultShareOptions:(id)options initiatorHandle:(id)handle initiatorNameComponents:(id)components containerSetupInfo:(id)info sourceProcessData:(id)data;
+- (SWCollaborationMetadata)initWithLocalIdentifier:(id)identifier collaborationIdentifier:(id)collaborationIdentifier title:(id)title defaultOptions:(id)options;
+- (SWCollaborationMetadata)initWithLocalIdentifier:(id)identifier collaborationIdentifier:(id)collaborationIdentifier title:(id)title defaultOptions:(id)options creationDate:(id)date contentType:(id)type ckAppBundleIDs:(id)ds;
+- (SWCollaborationMetadata)initWithLocalIdentifier:(id)identifier collaborationIdentifier:(id)collaborationIdentifier title:(id)title defaultOptions:(id)options creationDate:(id)date contentType:(id)type ckAppBundleIDs:(id)ds initiatorHandle:(id)self0 initiatorNameComponents:(id)self1;
+- (SWCollaborationMetadata)initWithLocalIdentifier:(id)identifier collaborationIdentifier:(id)collaborationIdentifier title:(id)title defaultOptions:(id)options initiatorHandle:(id)handle initiatorNameComponents:(id)components;
+- (SWCollaborationMetadata)initWithLocalIdentifier:(id)identifier collaborationIdentifier:(id)collaborationIdentifier title:(id)title defaultShareOptions:(id)options;
+- (SWCollaborationMetadata)initWithLocalIdentifier:(id)identifier collaborationIdentifier:(id)collaborationIdentifier title:(id)title defaultShareOptions:(id)options creationDate:(id)date contentType:(id)type ckAppBundleIDs:(id)ds;
+- (SWCollaborationMetadata)initWithLocalIdentifier:(id)identifier collaborationIdentifier:(id)collaborationIdentifier title:(id)title defaultShareOptions:(id)options creationDate:(id)date contentType:(id)type ckAppBundleIDs:(id)ds initiatorHandle:(id)self0 initiatorNameComponents:(id)self1;
+- (SWCollaborationMetadata)initWithLocalIdentifier:(id)identifier collaborationIdentifier:(id)collaborationIdentifier title:(id)title defaultShareOptions:(id)options creationDate:(id)date contentType:(id)type ckAppBundleIDs:(id)ds initiatorHandle:(id)self0 initiatorNameComponents:(id)self1 containerSetupInfo:(id)self2 sourceProcessData:(id)self3;
+- (SWCollaborationMetadata)initWithLocalIdentifier:(id)identifier collaborationIdentifier:(id)collaborationIdentifier title:(id)title defaultShareOptions:(id)options defaultOptions:(id)defaultOptions creationDate:(id)date contentType:(id)type initiatorHandle:(id)self0 initiatorNameComponents:(id)self1 ckAppBundleIDs:(id)self2 handleToIdentityMap:(id)self3 containerSetupInfo:(id)self4 sourceProcessData:(id)self5;
+- (SWCollaborationMetadata)initWithLocalIdentifier:(id)identifier collaborationIdentifier:(id)collaborationIdentifier title:(id)title defaultShareOptions:(id)options initiatorHandle:(id)handle initiatorNameComponents:(id)components;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)_commonInitWithLocalIdentifier:(id)a3 collaborationIdentifier:(id)a4 title:(id)a5 defaultShareOptions:(id)a6 defaultOptions:(id)a7 creationDate:(id)a8 contentType:(id)a9 initiatorHandle:(id)a10 initiatorNameComponents:(id)a11 ckAppBundleIDs:(id)a12 handleToIdentityMap:(id)a13 containerSetupInfo:(id)a14 sourceProcessData:(id)a15;
-- (void)encodeWithCoder:(id)a3;
+- (void)_commonInitWithLocalIdentifier:(id)identifier collaborationIdentifier:(id)collaborationIdentifier title:(id)title defaultShareOptions:(id)options defaultOptions:(id)defaultOptions creationDate:(id)date contentType:(id)type initiatorHandle:(id)self0 initiatorNameComponents:(id)self1 ckAppBundleIDs:(id)self2 handleToIdentityMap:(id)self3 containerSetupInfo:(id)self4 sourceProcessData:(id)self5;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SWCollaborationMetadata
 
-+ (SWCollaborationMetadata)allocWithZone:(_NSZone *)a3
++ (SWCollaborationMetadata)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    return [_SWCollaborationMetadata allocWithZone:a3];
+    return [_SWCollaborationMetadata allocWithZone:zone];
   }
 
   else
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SWCollaborationMetadata;
-    return objc_msgSendSuper2(&v6, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v6, sel_allocWithZone_, zone);
   }
 }
 
-- (void)_commonInitWithLocalIdentifier:(id)a3 collaborationIdentifier:(id)a4 title:(id)a5 defaultShareOptions:(id)a6 defaultOptions:(id)a7 creationDate:(id)a8 contentType:(id)a9 initiatorHandle:(id)a10 initiatorNameComponents:(id)a11 ckAppBundleIDs:(id)a12 handleToIdentityMap:(id)a13 containerSetupInfo:(id)a14 sourceProcessData:(id)a15
+- (void)_commonInitWithLocalIdentifier:(id)identifier collaborationIdentifier:(id)collaborationIdentifier title:(id)title defaultShareOptions:(id)options defaultOptions:(id)defaultOptions creationDate:(id)date contentType:(id)type initiatorHandle:(id)self0 initiatorNameComponents:(id)self1 ckAppBundleIDs:(id)self2 handleToIdentityMap:(id)self3 containerSetupInfo:(id)self4 sourceProcessData:(id)self5
 {
-  v71 = a11;
-  if (a3)
+  componentsCopy = components;
+  if (identifier)
   {
-    v22 = a15;
-    v23 = a14;
-    v24 = a13;
-    v25 = a12;
-    v26 = a10;
-    v27 = a9;
-    v28 = a8;
-    v29 = a7;
-    v30 = a6;
-    v31 = a5;
-    v32 = a4;
-    v33 = [a3 copy];
+    dataCopy = data;
+    infoCopy = info;
+    mapCopy = map;
+    dsCopy = ds;
+    handleCopy = handle;
+    typeCopy = type;
+    dateCopy = date;
+    defaultOptionsCopy = defaultOptions;
+    optionsCopy = options;
+    titleCopy = title;
+    collaborationIdentifierCopy = collaborationIdentifier;
+    v33 = [identifier copy];
     localIdentifier = self->_localIdentifier;
     self->_localIdentifier = v33;
   }
@@ -81,64 +81,64 @@
   {
     localIdentifier = self->_localIdentifier;
     self->_localIdentifier = &stru_1F4E16F00;
-    v35 = a15;
-    v36 = a14;
-    v37 = a13;
-    v38 = a12;
-    v39 = a10;
-    v40 = a9;
-    v41 = a8;
-    v42 = a7;
-    v43 = a6;
-    v44 = a5;
-    v45 = a4;
+    dataCopy2 = data;
+    infoCopy2 = info;
+    mapCopy2 = map;
+    dsCopy2 = ds;
+    handleCopy2 = handle;
+    typeCopy2 = type;
+    dateCopy2 = date;
+    defaultOptionsCopy2 = defaultOptions;
+    optionsCopy2 = options;
+    titleCopy2 = title;
+    collaborationIdentifierCopy2 = collaborationIdentifier;
   }
 
-  v46 = [a4 copy];
+  v46 = [collaborationIdentifier copy];
   collaborationIdentifier = self->_collaborationIdentifier;
   self->_collaborationIdentifier = v46;
 
-  v48 = [a5 copy];
+  v48 = [title copy];
   title = self->_title;
   self->_title = v48;
 
-  v50 = [a6 copy];
+  v50 = [options copy];
   defaultShareOptions = self->_defaultShareOptions;
   self->_defaultShareOptions = v50;
 
-  v52 = [a7 copy];
+  v52 = [defaultOptions copy];
   defaultOptions = self->_defaultOptions;
   self->_defaultOptions = v52;
 
-  v54 = [a8 copy];
+  v54 = [date copy];
   creationDate = self->_creationDate;
   self->_creationDate = v54;
 
-  v56 = [a9 copy];
+  v56 = [type copy];
   contentType = self->_contentType;
   self->_contentType = v56;
 
-  v58 = [a10 copy];
+  v58 = [handle copy];
   initiatorHandle = self->_initiatorHandle;
   self->_initiatorHandle = v58;
 
   initiatorNameComponents = self->_initiatorNameComponents;
-  self->_initiatorNameComponents = v71;
-  v72 = v71;
+  self->_initiatorNameComponents = componentsCopy;
+  v72 = componentsCopy;
 
-  v61 = [a12 copy];
+  v61 = [ds copy];
   ckAppBundleIDs = self->_ckAppBundleIDs;
   self->_ckAppBundleIDs = v61;
 
-  v63 = [a13 copy];
+  v63 = [map copy];
   handleToIdentityMap = self->_handleToIdentityMap;
   self->_handleToIdentityMap = v63;
 
-  v65 = [a14 copy];
+  v65 = [info copy];
   containerSetupInfo = self->_containerSetupInfo;
   self->_containerSetupInfo = v65;
 
-  v67 = [a15 copy];
+  v67 = [data copy];
   sourceProcessData = self->_sourceProcessData;
   self->_sourceProcessData = v67;
 
@@ -147,422 +147,422 @@
   self->_type = v69;
 }
 
-- (SWCollaborationMetadata)initWithLocalIdentifier:(id)a3 collaborationIdentifier:(id)a4 title:(id)a5 defaultShareOptions:(id)a6 defaultOptions:(id)a7 creationDate:(id)a8 contentType:(id)a9 initiatorHandle:(id)a10 initiatorNameComponents:(id)a11 ckAppBundleIDs:(id)a12 handleToIdentityMap:(id)a13 containerSetupInfo:(id)a14 sourceProcessData:(id)a15
+- (SWCollaborationMetadata)initWithLocalIdentifier:(id)identifier collaborationIdentifier:(id)collaborationIdentifier title:(id)title defaultShareOptions:(id)options defaultOptions:(id)defaultOptions creationDate:(id)date contentType:(id)type initiatorHandle:(id)self0 initiatorNameComponents:(id)self1 ckAppBundleIDs:(id)self2 handleToIdentityMap:(id)self3 containerSetupInfo:(id)self4 sourceProcessData:(id)self5
 {
-  v20 = a3;
-  v36 = a4;
-  v35 = a5;
-  v34 = a6;
-  v33 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
-  v24 = a11;
-  v25 = a12;
-  v26 = a13;
-  v27 = a14;
-  v28 = a15;
+  identifierCopy = identifier;
+  collaborationIdentifierCopy = collaborationIdentifier;
+  titleCopy = title;
+  optionsCopy = options;
+  defaultOptionsCopy = defaultOptions;
+  dateCopy = date;
+  typeCopy = type;
+  handleCopy = handle;
+  componentsCopy = components;
+  dsCopy = ds;
+  mapCopy = map;
+  infoCopy = info;
+  dataCopy = data;
   v37.receiver = self;
   v37.super_class = SWCollaborationMetadata;
   v29 = [(SWCollaborationMetadata *)&v37 init];
   v30 = v29;
   if (v29)
   {
-    [(SWCollaborationMetadata *)v29 _commonInitWithLocalIdentifier:v20 collaborationIdentifier:v36 title:v35 defaultShareOptions:v34 defaultOptions:v33 creationDate:v21 contentType:v22 initiatorHandle:v23 initiatorNameComponents:v24 ckAppBundleIDs:v25 handleToIdentityMap:v26 containerSetupInfo:v27 sourceProcessData:v28];
+    [(SWCollaborationMetadata *)v29 _commonInitWithLocalIdentifier:identifierCopy collaborationIdentifier:collaborationIdentifierCopy title:titleCopy defaultShareOptions:optionsCopy defaultOptions:defaultOptionsCopy creationDate:dateCopy contentType:typeCopy initiatorHandle:handleCopy initiatorNameComponents:componentsCopy ckAppBundleIDs:dsCopy handleToIdentityMap:mapCopy containerSetupInfo:infoCopy sourceProcessData:dataCopy];
   }
 
   return v30;
 }
 
-- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)a3 title:(id)a4 defaultShareOptions:(id)a5 initiatorHandle:(id)a6 initiatorNameComponents:(id)a7 containerSetupInfo:(id)a8 sourceProcessData:(id)a9
+- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)identifier title:(id)title defaultShareOptions:(id)options initiatorHandle:(id)handle initiatorNameComponents:(id)components containerSetupInfo:(id)info sourceProcessData:(id)data
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
+  identifierCopy = identifier;
+  titleCopy = title;
+  optionsCopy = options;
+  handleCopy = handle;
+  componentsCopy = components;
+  infoCopy = info;
+  dataCopy = data;
   v22 = [(SWCollaborationMetadata *)self init];
   if (v22)
   {
-    v23 = [v17 optionsGroups];
-    [(SWCollaborationMetadata *)v22 _commonInitWithLocalIdentifier:0 collaborationIdentifier:v15 title:v16 defaultShareOptions:v17 defaultOptions:v23 creationDate:0 contentType:0 initiatorHandle:v18 initiatorNameComponents:v19 ckAppBundleIDs:0 handleToIdentityMap:0 containerSetupInfo:v20 sourceProcessData:v21];
+    optionsGroups = [optionsCopy optionsGroups];
+    [(SWCollaborationMetadata *)v22 _commonInitWithLocalIdentifier:0 collaborationIdentifier:identifierCopy title:titleCopy defaultShareOptions:optionsCopy defaultOptions:optionsGroups creationDate:0 contentType:0 initiatorHandle:handleCopy initiatorNameComponents:componentsCopy ckAppBundleIDs:0 handleToIdentityMap:0 containerSetupInfo:infoCopy sourceProcessData:dataCopy];
   }
 
   return v22;
 }
 
-- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)a3 title:(id)a4 defaultShareOptions:(id)a5 initiatorHandle:(id)a6 initiatorNameComponents:(id)a7 containerSetupInfo:(id)a8
+- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)identifier title:(id)title defaultShareOptions:(id)options initiatorHandle:(id)handle initiatorNameComponents:(id)components containerSetupInfo:(id)info
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  identifierCopy = identifier;
+  titleCopy = title;
+  optionsCopy = options;
+  handleCopy = handle;
+  componentsCopy = components;
+  infoCopy = info;
   v20 = [(SWCollaborationMetadata *)self init];
   if (v20)
   {
-    v21 = [v16 optionsGroups];
-    [(SWCollaborationMetadata *)v20 _commonInitWithLocalIdentifier:0 collaborationIdentifier:v14 title:v15 defaultShareOptions:v16 defaultOptions:v21 creationDate:0 contentType:0 initiatorHandle:v17 initiatorNameComponents:v18 ckAppBundleIDs:0 handleToIdentityMap:0 containerSetupInfo:v19 sourceProcessData:0];
+    optionsGroups = [optionsCopy optionsGroups];
+    [(SWCollaborationMetadata *)v20 _commonInitWithLocalIdentifier:0 collaborationIdentifier:identifierCopy title:titleCopy defaultShareOptions:optionsCopy defaultOptions:optionsGroups creationDate:0 contentType:0 initiatorHandle:handleCopy initiatorNameComponents:componentsCopy ckAppBundleIDs:0 handleToIdentityMap:0 containerSetupInfo:infoCopy sourceProcessData:0];
   }
 
   return v20;
 }
 
-- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)a3 title:(id)a4 defaultShareOptions:(id)a5 initiatorHandle:(id)a6 initiatorNameComponents:(id)a7
+- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)identifier title:(id)title defaultShareOptions:(id)options initiatorHandle:(id)handle initiatorNameComponents:(id)components
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identifierCopy = identifier;
+  titleCopy = title;
+  optionsCopy = options;
+  handleCopy = handle;
+  componentsCopy = components;
   v17 = [(SWCollaborationMetadata *)self init];
   if (v17)
   {
-    v18 = [v14 optionsGroups];
-    [(SWCollaborationMetadata *)v17 _commonInitWithLocalIdentifier:0 collaborationIdentifier:v12 title:v13 defaultShareOptions:v14 defaultOptions:v18 creationDate:0 contentType:0 initiatorHandle:v15 initiatorNameComponents:v16 ckAppBundleIDs:0 handleToIdentityMap:0 containerSetupInfo:0 sourceProcessData:0];
+    optionsGroups = [optionsCopy optionsGroups];
+    [(SWCollaborationMetadata *)v17 _commonInitWithLocalIdentifier:0 collaborationIdentifier:identifierCopy title:titleCopy defaultShareOptions:optionsCopy defaultOptions:optionsGroups creationDate:0 contentType:0 initiatorHandle:handleCopy initiatorNameComponents:componentsCopy ckAppBundleIDs:0 handleToIdentityMap:0 containerSetupInfo:0 sourceProcessData:0];
   }
 
   return v17;
 }
 
-- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)a3 title:(id)a4 defaultOptions:(id)a5 initiatorHandle:(id)a6 initiatorNameComponents:(id)a7
+- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)identifier title:(id)title defaultOptions:(id)options initiatorHandle:(id)handle initiatorNameComponents:(id)components
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identifierCopy = identifier;
+  titleCopy = title;
+  optionsCopy = options;
+  handleCopy = handle;
+  componentsCopy = components;
   v17 = [(SWCollaborationMetadata *)self init];
   if (v17)
   {
-    v18 = [SWCollaborationShareOptions shareOptionsWithOptionsGroups:v14];
-    [(SWCollaborationMetadata *)v17 _commonInitWithLocalIdentifier:0 collaborationIdentifier:v12 title:v13 defaultShareOptions:v18 defaultOptions:v14 creationDate:0 contentType:0 initiatorHandle:v15 initiatorNameComponents:v16 ckAppBundleIDs:0 handleToIdentityMap:0 containerSetupInfo:0 sourceProcessData:0];
+    v18 = [SWCollaborationShareOptions shareOptionsWithOptionsGroups:optionsCopy];
+    [(SWCollaborationMetadata *)v17 _commonInitWithLocalIdentifier:0 collaborationIdentifier:identifierCopy title:titleCopy defaultShareOptions:v18 defaultOptions:optionsCopy creationDate:0 contentType:0 initiatorHandle:handleCopy initiatorNameComponents:componentsCopy ckAppBundleIDs:0 handleToIdentityMap:0 containerSetupInfo:0 sourceProcessData:0];
   }
 
   return v17;
 }
 
-- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)a3 title:(id)a4 defaultOptions:(id)a5 initiatorHandle:(id)a6 initiatorNameComponents:(id)a7 containerSetupInfo:(id)a8
+- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)identifier title:(id)title defaultOptions:(id)options initiatorHandle:(id)handle initiatorNameComponents:(id)components containerSetupInfo:(id)info
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  identifierCopy = identifier;
+  titleCopy = title;
+  optionsCopy = options;
+  handleCopy = handle;
+  componentsCopy = components;
+  infoCopy = info;
   v20 = [(SWCollaborationMetadata *)self init];
   if (v20)
   {
-    v21 = [SWCollaborationShareOptions shareOptionsWithOptionsGroups:v16];
-    [(SWCollaborationMetadata *)v20 _commonInitWithLocalIdentifier:0 collaborationIdentifier:v14 title:v15 defaultShareOptions:v21 defaultOptions:v16 creationDate:0 contentType:0 initiatorHandle:v17 initiatorNameComponents:v18 ckAppBundleIDs:0 handleToIdentityMap:0 containerSetupInfo:v19 sourceProcessData:0];
+    v21 = [SWCollaborationShareOptions shareOptionsWithOptionsGroups:optionsCopy];
+    [(SWCollaborationMetadata *)v20 _commonInitWithLocalIdentifier:0 collaborationIdentifier:identifierCopy title:titleCopy defaultShareOptions:v21 defaultOptions:optionsCopy creationDate:0 contentType:0 initiatorHandle:handleCopy initiatorNameComponents:componentsCopy ckAppBundleIDs:0 handleToIdentityMap:0 containerSetupInfo:infoCopy sourceProcessData:0];
   }
 
   return v20;
 }
 
-- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)a3 title:(id)a4 defaultShareOptions:(id)a5 creationDate:(id)a6 contentType:(id)a7 initiatorHandle:(id)a8 initiatorNameComponents:(id)a9
+- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)identifier title:(id)title defaultShareOptions:(id)options creationDate:(id)date contentType:(id)type initiatorHandle:(id)handle initiatorNameComponents:(id)components
 {
-  v16 = a9;
-  v17 = a8;
-  v18 = a7;
-  v19 = a6;
-  v20 = a5;
-  v21 = a4;
-  v22 = a3;
-  v23 = [v20 optionsGroups];
-  v24 = [(SWCollaborationMetadata *)self initWithLocalIdentifier:0 collaborationIdentifier:v22 title:v21 defaultShareOptions:v20 defaultOptions:v23 creationDate:v19 contentType:v18 initiatorHandle:v17 initiatorNameComponents:v16 ckAppBundleIDs:0 handleToIdentityMap:0 containerSetupInfo:0 sourceProcessData:0];
+  componentsCopy = components;
+  handleCopy = handle;
+  typeCopy = type;
+  dateCopy = date;
+  optionsCopy = options;
+  titleCopy = title;
+  identifierCopy = identifier;
+  optionsGroups = [optionsCopy optionsGroups];
+  v24 = [(SWCollaborationMetadata *)self initWithLocalIdentifier:0 collaborationIdentifier:identifierCopy title:titleCopy defaultShareOptions:optionsCopy defaultOptions:optionsGroups creationDate:dateCopy contentType:typeCopy initiatorHandle:handleCopy initiatorNameComponents:componentsCopy ckAppBundleIDs:0 handleToIdentityMap:0 containerSetupInfo:0 sourceProcessData:0];
 
   return v24;
 }
 
-- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)a3 title:(id)a4 defaultShareOptions:(id)a5 creationDate:(id)a6 contentType:(id)a7 initiatorHandle:(id)a8 initiatorNameComponents:(id)a9 containerSetupInfo:(id)a10 sourceProcessData:(id)a11
+- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)identifier title:(id)title defaultShareOptions:(id)options creationDate:(id)date contentType:(id)type initiatorHandle:(id)handle initiatorNameComponents:(id)components containerSetupInfo:(id)self0 sourceProcessData:(id)self1
 {
-  v17 = a11;
-  v18 = a10;
-  v19 = a9;
-  v20 = a8;
-  v21 = a7;
-  v22 = a6;
-  v23 = a5;
-  v24 = a4;
-  v25 = a3;
-  v26 = [v23 optionsGroups];
-  v29 = [(SWCollaborationMetadata *)self initWithLocalIdentifier:0 collaborationIdentifier:v25 title:v24 defaultShareOptions:v23 defaultOptions:v26 creationDate:v22 contentType:v21 initiatorHandle:v20 initiatorNameComponents:v19 ckAppBundleIDs:0 handleToIdentityMap:0 containerSetupInfo:v18 sourceProcessData:v17];
+  dataCopy = data;
+  infoCopy = info;
+  componentsCopy = components;
+  handleCopy = handle;
+  typeCopy = type;
+  dateCopy = date;
+  optionsCopy = options;
+  titleCopy = title;
+  identifierCopy = identifier;
+  optionsGroups = [optionsCopy optionsGroups];
+  v29 = [(SWCollaborationMetadata *)self initWithLocalIdentifier:0 collaborationIdentifier:identifierCopy title:titleCopy defaultShareOptions:optionsCopy defaultOptions:optionsGroups creationDate:dateCopy contentType:typeCopy initiatorHandle:handleCopy initiatorNameComponents:componentsCopy ckAppBundleIDs:0 handleToIdentityMap:0 containerSetupInfo:infoCopy sourceProcessData:dataCopy];
 
   return v29;
 }
 
-- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)a3 title:(id)a4 defaultOptions:(id)a5 creationDate:(id)a6 contentType:(id)a7 initiatorHandle:(id)a8 initiatorNameComponents:(id)a9
+- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)identifier title:(id)title defaultOptions:(id)options creationDate:(id)date contentType:(id)type initiatorHandle:(id)handle initiatorNameComponents:(id)components
 {
-  v16 = a9;
-  v17 = a8;
-  v18 = a7;
-  v19 = a6;
-  v20 = a5;
-  v21 = a4;
-  v22 = a3;
-  v23 = [SWCollaborationShareOptions shareOptionsWithOptionsGroups:v20];
-  v24 = [(SWCollaborationMetadata *)self initWithLocalIdentifier:0 collaborationIdentifier:v22 title:v21 defaultShareOptions:v23 defaultOptions:v20 creationDate:v19 contentType:v18 initiatorHandle:v17 initiatorNameComponents:v16 ckAppBundleIDs:0 handleToIdentityMap:0 containerSetupInfo:0 sourceProcessData:0];
+  componentsCopy = components;
+  handleCopy = handle;
+  typeCopy = type;
+  dateCopy = date;
+  optionsCopy = options;
+  titleCopy = title;
+  identifierCopy = identifier;
+  v23 = [SWCollaborationShareOptions shareOptionsWithOptionsGroups:optionsCopy];
+  v24 = [(SWCollaborationMetadata *)self initWithLocalIdentifier:0 collaborationIdentifier:identifierCopy title:titleCopy defaultShareOptions:v23 defaultOptions:optionsCopy creationDate:dateCopy contentType:typeCopy initiatorHandle:handleCopy initiatorNameComponents:componentsCopy ckAppBundleIDs:0 handleToIdentityMap:0 containerSetupInfo:0 sourceProcessData:0];
 
   return v24;
 }
 
-- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)a3 title:(id)a4 defaultShareOptions:(id)a5 creationDate:(id)a6 contentType:(id)a7
+- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)identifier title:(id)title defaultShareOptions:(id)options creationDate:(id)date contentType:(id)type
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [v14 optionsGroups];
-  v18 = [(SWCollaborationMetadata *)self initWithLocalIdentifier:0 collaborationIdentifier:v16 title:v15 defaultShareOptions:v14 defaultOptions:v17 creationDate:v13 contentType:v12 initiatorHandle:0 initiatorNameComponents:0 ckAppBundleIDs:0 handleToIdentityMap:0 containerSetupInfo:0 sourceProcessData:0];
+  typeCopy = type;
+  dateCopy = date;
+  optionsCopy = options;
+  titleCopy = title;
+  identifierCopy = identifier;
+  optionsGroups = [optionsCopy optionsGroups];
+  v18 = [(SWCollaborationMetadata *)self initWithLocalIdentifier:0 collaborationIdentifier:identifierCopy title:titleCopy defaultShareOptions:optionsCopy defaultOptions:optionsGroups creationDate:dateCopy contentType:typeCopy initiatorHandle:0 initiatorNameComponents:0 ckAppBundleIDs:0 handleToIdentityMap:0 containerSetupInfo:0 sourceProcessData:0];
 
   return v18;
 }
 
-- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)a3 title:(id)a4 defaultOptions:(id)a5 creationDate:(id)a6 contentType:(id)a7 containerSetupInfo:(id)a8
+- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)identifier title:(id)title defaultOptions:(id)options creationDate:(id)date contentType:(id)type containerSetupInfo:(id)info
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
-  v20 = [SWCollaborationShareOptions shareOptionsWithOptionsGroups:v17];
-  v21 = [(SWCollaborationMetadata *)self initWithLocalIdentifier:0 collaborationIdentifier:v19 title:v18 defaultShareOptions:v20 defaultOptions:v17 creationDate:v16 contentType:v15 initiatorHandle:0 initiatorNameComponents:0 ckAppBundleIDs:0 handleToIdentityMap:0 containerSetupInfo:v14 sourceProcessData:0];
+  infoCopy = info;
+  typeCopy = type;
+  dateCopy = date;
+  optionsCopy = options;
+  titleCopy = title;
+  identifierCopy = identifier;
+  v20 = [SWCollaborationShareOptions shareOptionsWithOptionsGroups:optionsCopy];
+  v21 = [(SWCollaborationMetadata *)self initWithLocalIdentifier:0 collaborationIdentifier:identifierCopy title:titleCopy defaultShareOptions:v20 defaultOptions:optionsCopy creationDate:dateCopy contentType:typeCopy initiatorHandle:0 initiatorNameComponents:0 ckAppBundleIDs:0 handleToIdentityMap:0 containerSetupInfo:infoCopy sourceProcessData:0];
 
   return v21;
 }
 
-- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)a3 title:(id)a4 defaultOptions:(id)a5 creationDate:(id)a6 contentType:(id)a7
+- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)identifier title:(id)title defaultOptions:(id)options creationDate:(id)date contentType:(id)type
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [SWCollaborationShareOptions shareOptionsWithOptionsGroups:v14];
-  v18 = [(SWCollaborationMetadata *)self initWithLocalIdentifier:0 collaborationIdentifier:v16 title:v15 defaultShareOptions:v17 defaultOptions:v14 creationDate:v13 contentType:v12 initiatorHandle:0 initiatorNameComponents:0 ckAppBundleIDs:0 handleToIdentityMap:0 containerSetupInfo:0 sourceProcessData:0];
+  typeCopy = type;
+  dateCopy = date;
+  optionsCopy = options;
+  titleCopy = title;
+  identifierCopy = identifier;
+  v17 = [SWCollaborationShareOptions shareOptionsWithOptionsGroups:optionsCopy];
+  v18 = [(SWCollaborationMetadata *)self initWithLocalIdentifier:0 collaborationIdentifier:identifierCopy title:titleCopy defaultShareOptions:v17 defaultOptions:optionsCopy creationDate:dateCopy contentType:typeCopy initiatorHandle:0 initiatorNameComponents:0 ckAppBundleIDs:0 handleToIdentityMap:0 containerSetupInfo:0 sourceProcessData:0];
 
   return v18;
 }
 
-- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)a3 title:(id)a4 defaultShareOptions:(id)a5
+- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)identifier title:(id)title defaultShareOptions:(id)options
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v8 optionsGroups];
-  v12 = [(SWCollaborationMetadata *)self initWithLocalIdentifier:0 collaborationIdentifier:v10 title:v9 defaultShareOptions:v8 defaultOptions:v11 creationDate:0 contentType:0 initiatorHandle:0 initiatorNameComponents:0 ckAppBundleIDs:0 handleToIdentityMap:0 containerSetupInfo:0 sourceProcessData:0];
+  optionsCopy = options;
+  titleCopy = title;
+  identifierCopy = identifier;
+  optionsGroups = [optionsCopy optionsGroups];
+  v12 = [(SWCollaborationMetadata *)self initWithLocalIdentifier:0 collaborationIdentifier:identifierCopy title:titleCopy defaultShareOptions:optionsCopy defaultOptions:optionsGroups creationDate:0 contentType:0 initiatorHandle:0 initiatorNameComponents:0 ckAppBundleIDs:0 handleToIdentityMap:0 containerSetupInfo:0 sourceProcessData:0];
 
   return v12;
 }
 
-- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)a3 title:(id)a4 defaultOptions:(id)a5
+- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)identifier title:(id)title defaultOptions:(id)options
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [SWCollaborationShareOptions shareOptionsWithOptionsGroups:v8];
-  v12 = [(SWCollaborationMetadata *)self initWithLocalIdentifier:0 collaborationIdentifier:v10 title:v9 defaultShareOptions:v11 defaultOptions:v8 creationDate:0 contentType:0 initiatorHandle:0 initiatorNameComponents:0 ckAppBundleIDs:0 handleToIdentityMap:0 containerSetupInfo:0 sourceProcessData:0];
+  optionsCopy = options;
+  titleCopy = title;
+  identifierCopy = identifier;
+  v11 = [SWCollaborationShareOptions shareOptionsWithOptionsGroups:optionsCopy];
+  v12 = [(SWCollaborationMetadata *)self initWithLocalIdentifier:0 collaborationIdentifier:identifierCopy title:titleCopy defaultShareOptions:v11 defaultOptions:optionsCopy creationDate:0 contentType:0 initiatorHandle:0 initiatorNameComponents:0 ckAppBundleIDs:0 handleToIdentityMap:0 containerSetupInfo:0 sourceProcessData:0];
 
   return v12;
 }
 
-- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)a3 title:(id)a4 defaultShareOptions:(id)a5 creationDate:(id)a6 contentType:(id)a7 ckAppBundleIDs:(id)a8
+- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)identifier title:(id)title defaultShareOptions:(id)options creationDate:(id)date contentType:(id)type ckAppBundleIDs:(id)ds
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
-  v20 = [v17 optionsGroups];
-  v21 = [(SWCollaborationMetadata *)self initWithLocalIdentifier:0 collaborationIdentifier:v19 title:v18 defaultShareOptions:v17 defaultOptions:v20 creationDate:v16 contentType:v15 initiatorHandle:0 initiatorNameComponents:0 ckAppBundleIDs:v14 handleToIdentityMap:0 containerSetupInfo:0 sourceProcessData:0];
+  dsCopy = ds;
+  typeCopy = type;
+  dateCopy = date;
+  optionsCopy = options;
+  titleCopy = title;
+  identifierCopy = identifier;
+  optionsGroups = [optionsCopy optionsGroups];
+  v21 = [(SWCollaborationMetadata *)self initWithLocalIdentifier:0 collaborationIdentifier:identifierCopy title:titleCopy defaultShareOptions:optionsCopy defaultOptions:optionsGroups creationDate:dateCopy contentType:typeCopy initiatorHandle:0 initiatorNameComponents:0 ckAppBundleIDs:dsCopy handleToIdentityMap:0 containerSetupInfo:0 sourceProcessData:0];
 
   return v21;
 }
 
-- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)a3 title:(id)a4 defaultOptions:(id)a5 creationDate:(id)a6 contentType:(id)a7 ckAppBundleIDs:(id)a8
+- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)identifier title:(id)title defaultOptions:(id)options creationDate:(id)date contentType:(id)type ckAppBundleIDs:(id)ds
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
-  v20 = [SWCollaborationShareOptions shareOptionsWithOptionsGroups:v17];
-  v21 = [(SWCollaborationMetadata *)self initWithLocalIdentifier:0 collaborationIdentifier:v19 title:v18 defaultShareOptions:v20 defaultOptions:v17 creationDate:v16 contentType:v15 initiatorHandle:0 initiatorNameComponents:0 ckAppBundleIDs:v14 handleToIdentityMap:0 containerSetupInfo:0 sourceProcessData:0];
+  dsCopy = ds;
+  typeCopy = type;
+  dateCopy = date;
+  optionsCopy = options;
+  titleCopy = title;
+  identifierCopy = identifier;
+  v20 = [SWCollaborationShareOptions shareOptionsWithOptionsGroups:optionsCopy];
+  v21 = [(SWCollaborationMetadata *)self initWithLocalIdentifier:0 collaborationIdentifier:identifierCopy title:titleCopy defaultShareOptions:v20 defaultOptions:optionsCopy creationDate:dateCopy contentType:typeCopy initiatorHandle:0 initiatorNameComponents:0 ckAppBundleIDs:dsCopy handleToIdentityMap:0 containerSetupInfo:0 sourceProcessData:0];
 
   return v21;
 }
 
-- (SWCollaborationMetadata)initWithLocalIdentifier:(id)a3 collaborationIdentifier:(id)a4 title:(id)a5 defaultShareOptions:(id)a6
+- (SWCollaborationMetadata)initWithLocalIdentifier:(id)identifier collaborationIdentifier:(id)collaborationIdentifier title:(id)title defaultShareOptions:(id)options
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [v10 optionsGroups];
-  v15 = [(SWCollaborationMetadata *)self initWithLocalIdentifier:v13 collaborationIdentifier:v12 title:v11 defaultShareOptions:v10 defaultOptions:v14 creationDate:0 contentType:0 initiatorHandle:0 initiatorNameComponents:0 ckAppBundleIDs:0 handleToIdentityMap:0 containerSetupInfo:0 sourceProcessData:0];
+  optionsCopy = options;
+  titleCopy = title;
+  collaborationIdentifierCopy = collaborationIdentifier;
+  identifierCopy = identifier;
+  optionsGroups = [optionsCopy optionsGroups];
+  v15 = [(SWCollaborationMetadata *)self initWithLocalIdentifier:identifierCopy collaborationIdentifier:collaborationIdentifierCopy title:titleCopy defaultShareOptions:optionsCopy defaultOptions:optionsGroups creationDate:0 contentType:0 initiatorHandle:0 initiatorNameComponents:0 ckAppBundleIDs:0 handleToIdentityMap:0 containerSetupInfo:0 sourceProcessData:0];
 
   return v15;
 }
 
-- (SWCollaborationMetadata)initWithLocalIdentifier:(id)a3 collaborationIdentifier:(id)a4 title:(id)a5 defaultOptions:(id)a6
+- (SWCollaborationMetadata)initWithLocalIdentifier:(id)identifier collaborationIdentifier:(id)collaborationIdentifier title:(id)title defaultOptions:(id)options
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [SWCollaborationShareOptions shareOptionsWithOptionsGroups:v10];
-  v15 = [(SWCollaborationMetadata *)self initWithLocalIdentifier:v13 collaborationIdentifier:v12 title:v11 defaultShareOptions:v14 defaultOptions:v10 creationDate:0 contentType:0 initiatorHandle:0 initiatorNameComponents:0 ckAppBundleIDs:0 handleToIdentityMap:0 containerSetupInfo:0 sourceProcessData:0];
+  optionsCopy = options;
+  titleCopy = title;
+  collaborationIdentifierCopy = collaborationIdentifier;
+  identifierCopy = identifier;
+  v14 = [SWCollaborationShareOptions shareOptionsWithOptionsGroups:optionsCopy];
+  v15 = [(SWCollaborationMetadata *)self initWithLocalIdentifier:identifierCopy collaborationIdentifier:collaborationIdentifierCopy title:titleCopy defaultShareOptions:v14 defaultOptions:optionsCopy creationDate:0 contentType:0 initiatorHandle:0 initiatorNameComponents:0 ckAppBundleIDs:0 handleToIdentityMap:0 containerSetupInfo:0 sourceProcessData:0];
 
   return v15;
 }
 
-- (SWCollaborationMetadata)initWithLocalIdentifier:(id)a3 collaborationIdentifier:(id)a4 title:(id)a5 defaultShareOptions:(id)a6 initiatorHandle:(id)a7 initiatorNameComponents:(id)a8
+- (SWCollaborationMetadata)initWithLocalIdentifier:(id)identifier collaborationIdentifier:(id)collaborationIdentifier title:(id)title defaultShareOptions:(id)options initiatorHandle:(id)handle initiatorNameComponents:(id)components
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
-  v20 = [v16 optionsGroups];
-  v21 = [(SWCollaborationMetadata *)self initWithLocalIdentifier:v19 collaborationIdentifier:v18 title:v17 defaultShareOptions:v16 defaultOptions:v20 creationDate:0 contentType:0 initiatorHandle:v15 initiatorNameComponents:v14 ckAppBundleIDs:0 handleToIdentityMap:0 containerSetupInfo:0 sourceProcessData:0];
+  componentsCopy = components;
+  handleCopy = handle;
+  optionsCopy = options;
+  titleCopy = title;
+  collaborationIdentifierCopy = collaborationIdentifier;
+  identifierCopy = identifier;
+  optionsGroups = [optionsCopy optionsGroups];
+  v21 = [(SWCollaborationMetadata *)self initWithLocalIdentifier:identifierCopy collaborationIdentifier:collaborationIdentifierCopy title:titleCopy defaultShareOptions:optionsCopy defaultOptions:optionsGroups creationDate:0 contentType:0 initiatorHandle:handleCopy initiatorNameComponents:componentsCopy ckAppBundleIDs:0 handleToIdentityMap:0 containerSetupInfo:0 sourceProcessData:0];
 
   return v21;
 }
 
-- (SWCollaborationMetadata)initWithLocalIdentifier:(id)a3 collaborationIdentifier:(id)a4 title:(id)a5 defaultOptions:(id)a6 initiatorHandle:(id)a7 initiatorNameComponents:(id)a8
+- (SWCollaborationMetadata)initWithLocalIdentifier:(id)identifier collaborationIdentifier:(id)collaborationIdentifier title:(id)title defaultOptions:(id)options initiatorHandle:(id)handle initiatorNameComponents:(id)components
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
-  v20 = [SWCollaborationShareOptions shareOptionsWithOptionsGroups:v16];
-  v21 = [(SWCollaborationMetadata *)self initWithLocalIdentifier:v19 collaborationIdentifier:v18 title:v17 defaultShareOptions:v20 defaultOptions:v16 creationDate:0 contentType:0 initiatorHandle:v15 initiatorNameComponents:v14 ckAppBundleIDs:0 handleToIdentityMap:0 containerSetupInfo:0 sourceProcessData:0];
+  componentsCopy = components;
+  handleCopy = handle;
+  optionsCopy = options;
+  titleCopy = title;
+  collaborationIdentifierCopy = collaborationIdentifier;
+  identifierCopy = identifier;
+  v20 = [SWCollaborationShareOptions shareOptionsWithOptionsGroups:optionsCopy];
+  v21 = [(SWCollaborationMetadata *)self initWithLocalIdentifier:identifierCopy collaborationIdentifier:collaborationIdentifierCopy title:titleCopy defaultShareOptions:v20 defaultOptions:optionsCopy creationDate:0 contentType:0 initiatorHandle:handleCopy initiatorNameComponents:componentsCopy ckAppBundleIDs:0 handleToIdentityMap:0 containerSetupInfo:0 sourceProcessData:0];
 
   return v21;
 }
 
-- (SWCollaborationMetadata)initWithLocalIdentifier:(id)a3 collaborationIdentifier:(id)a4 title:(id)a5 defaultShareOptions:(id)a6 creationDate:(id)a7 contentType:(id)a8 ckAppBundleIDs:(id)a9
+- (SWCollaborationMetadata)initWithLocalIdentifier:(id)identifier collaborationIdentifier:(id)collaborationIdentifier title:(id)title defaultShareOptions:(id)options creationDate:(id)date contentType:(id)type ckAppBundleIDs:(id)ds
 {
-  v16 = a9;
-  v17 = a8;
-  v18 = a7;
-  v19 = a6;
-  v20 = a5;
-  v21 = a4;
-  v22 = a3;
-  v23 = [v19 optionsGroups];
-  v24 = [(SWCollaborationMetadata *)self initWithLocalIdentifier:v22 collaborationIdentifier:v21 title:v20 defaultShareOptions:v19 defaultOptions:v23 creationDate:v18 contentType:v17 initiatorHandle:0 initiatorNameComponents:0 ckAppBundleIDs:v16 handleToIdentityMap:0 containerSetupInfo:0 sourceProcessData:0];
+  dsCopy = ds;
+  typeCopy = type;
+  dateCopy = date;
+  optionsCopy = options;
+  titleCopy = title;
+  collaborationIdentifierCopy = collaborationIdentifier;
+  identifierCopy = identifier;
+  optionsGroups = [optionsCopy optionsGroups];
+  v24 = [(SWCollaborationMetadata *)self initWithLocalIdentifier:identifierCopy collaborationIdentifier:collaborationIdentifierCopy title:titleCopy defaultShareOptions:optionsCopy defaultOptions:optionsGroups creationDate:dateCopy contentType:typeCopy initiatorHandle:0 initiatorNameComponents:0 ckAppBundleIDs:dsCopy handleToIdentityMap:0 containerSetupInfo:0 sourceProcessData:0];
 
   return v24;
 }
 
-- (SWCollaborationMetadata)initWithLocalIdentifier:(id)a3 collaborationIdentifier:(id)a4 title:(id)a5 defaultOptions:(id)a6 creationDate:(id)a7 contentType:(id)a8 ckAppBundleIDs:(id)a9
+- (SWCollaborationMetadata)initWithLocalIdentifier:(id)identifier collaborationIdentifier:(id)collaborationIdentifier title:(id)title defaultOptions:(id)options creationDate:(id)date contentType:(id)type ckAppBundleIDs:(id)ds
 {
-  v16 = a9;
-  v17 = a8;
-  v18 = a7;
-  v19 = a6;
-  v20 = a5;
-  v21 = a4;
-  v22 = a3;
-  v23 = [SWCollaborationShareOptions shareOptionsWithOptionsGroups:v19];
-  v24 = [(SWCollaborationMetadata *)self initWithLocalIdentifier:v22 collaborationIdentifier:v21 title:v20 defaultShareOptions:v23 defaultOptions:v19 creationDate:v18 contentType:v17 initiatorHandle:0 initiatorNameComponents:0 ckAppBundleIDs:v16 handleToIdentityMap:0 containerSetupInfo:0 sourceProcessData:0];
+  dsCopy = ds;
+  typeCopy = type;
+  dateCopy = date;
+  optionsCopy = options;
+  titleCopy = title;
+  collaborationIdentifierCopy = collaborationIdentifier;
+  identifierCopy = identifier;
+  v23 = [SWCollaborationShareOptions shareOptionsWithOptionsGroups:optionsCopy];
+  v24 = [(SWCollaborationMetadata *)self initWithLocalIdentifier:identifierCopy collaborationIdentifier:collaborationIdentifierCopy title:titleCopy defaultShareOptions:v23 defaultOptions:optionsCopy creationDate:dateCopy contentType:typeCopy initiatorHandle:0 initiatorNameComponents:0 ckAppBundleIDs:dsCopy handleToIdentityMap:0 containerSetupInfo:0 sourceProcessData:0];
 
   return v24;
 }
 
-- (SWCollaborationMetadata)initWithLocalIdentifier:(id)a3 collaborationIdentifier:(id)a4 title:(id)a5 defaultShareOptions:(id)a6 creationDate:(id)a7 contentType:(id)a8 ckAppBundleIDs:(id)a9 initiatorHandle:(id)a10 initiatorNameComponents:(id)a11 containerSetupInfo:(id)a12 sourceProcessData:(id)a13
+- (SWCollaborationMetadata)initWithLocalIdentifier:(id)identifier collaborationIdentifier:(id)collaborationIdentifier title:(id)title defaultShareOptions:(id)options creationDate:(id)date contentType:(id)type ckAppBundleIDs:(id)ds initiatorHandle:(id)self0 initiatorNameComponents:(id)self1 containerSetupInfo:(id)self2 sourceProcessData:(id)self3
 {
-  v29 = a13;
-  v18 = a12;
-  v28 = a11;
-  v27 = a10;
-  v19 = a9;
-  v20 = a8;
-  v26 = a7;
-  v21 = a6;
-  v25 = a5;
-  v22 = a4;
-  v23 = a3;
-  v31 = [v21 optionsGroups];
-  v33 = [(SWCollaborationMetadata *)self initWithLocalIdentifier:v23 collaborationIdentifier:v22 title:v25 defaultShareOptions:v21 defaultOptions:v31 creationDate:v26 contentType:v20 initiatorHandle:v27 initiatorNameComponents:v28 ckAppBundleIDs:v19 handleToIdentityMap:0 containerSetupInfo:v18 sourceProcessData:v29];
+  dataCopy = data;
+  infoCopy = info;
+  componentsCopy = components;
+  handleCopy = handle;
+  dsCopy = ds;
+  typeCopy = type;
+  dateCopy = date;
+  optionsCopy = options;
+  titleCopy = title;
+  collaborationIdentifierCopy = collaborationIdentifier;
+  identifierCopy = identifier;
+  optionsGroups = [optionsCopy optionsGroups];
+  v33 = [(SWCollaborationMetadata *)self initWithLocalIdentifier:identifierCopy collaborationIdentifier:collaborationIdentifierCopy title:titleCopy defaultShareOptions:optionsCopy defaultOptions:optionsGroups creationDate:dateCopy contentType:typeCopy initiatorHandle:handleCopy initiatorNameComponents:componentsCopy ckAppBundleIDs:dsCopy handleToIdentityMap:0 containerSetupInfo:infoCopy sourceProcessData:dataCopy];
 
   return v33;
 }
 
-- (SWCollaborationMetadata)initWithLocalIdentifier:(id)a3 collaborationIdentifier:(id)a4 title:(id)a5 defaultShareOptions:(id)a6 creationDate:(id)a7 contentType:(id)a8 ckAppBundleIDs:(id)a9 initiatorHandle:(id)a10 initiatorNameComponents:(id)a11
+- (SWCollaborationMetadata)initWithLocalIdentifier:(id)identifier collaborationIdentifier:(id)collaborationIdentifier title:(id)title defaultShareOptions:(id)options creationDate:(id)date contentType:(id)type ckAppBundleIDs:(id)ds initiatorHandle:(id)self0 initiatorNameComponents:(id)self1
 {
-  v17 = a11;
-  v18 = a10;
-  v19 = a9;
-  v20 = a8;
-  v21 = a7;
-  v22 = a6;
-  v23 = a5;
-  v24 = a4;
-  v25 = a3;
-  v26 = [v22 optionsGroups];
-  v29 = [(SWCollaborationMetadata *)self initWithLocalIdentifier:v25 collaborationIdentifier:v24 title:v23 defaultShareOptions:v22 defaultOptions:v26 creationDate:v21 contentType:v20 initiatorHandle:v18 initiatorNameComponents:v17 ckAppBundleIDs:v19 handleToIdentityMap:0 containerSetupInfo:0 sourceProcessData:0];
+  componentsCopy = components;
+  handleCopy = handle;
+  dsCopy = ds;
+  typeCopy = type;
+  dateCopy = date;
+  optionsCopy = options;
+  titleCopy = title;
+  collaborationIdentifierCopy = collaborationIdentifier;
+  identifierCopy = identifier;
+  optionsGroups = [optionsCopy optionsGroups];
+  v29 = [(SWCollaborationMetadata *)self initWithLocalIdentifier:identifierCopy collaborationIdentifier:collaborationIdentifierCopy title:titleCopy defaultShareOptions:optionsCopy defaultOptions:optionsGroups creationDate:dateCopy contentType:typeCopy initiatorHandle:handleCopy initiatorNameComponents:componentsCopy ckAppBundleIDs:dsCopy handleToIdentityMap:0 containerSetupInfo:0 sourceProcessData:0];
 
   return v29;
 }
 
-- (SWCollaborationMetadata)initWithLocalIdentifier:(id)a3 collaborationIdentifier:(id)a4 title:(id)a5 defaultOptions:(id)a6 creationDate:(id)a7 contentType:(id)a8 ckAppBundleIDs:(id)a9 initiatorHandle:(id)a10 initiatorNameComponents:(id)a11
+- (SWCollaborationMetadata)initWithLocalIdentifier:(id)identifier collaborationIdentifier:(id)collaborationIdentifier title:(id)title defaultOptions:(id)options creationDate:(id)date contentType:(id)type ckAppBundleIDs:(id)ds initiatorHandle:(id)self0 initiatorNameComponents:(id)self1
 {
-  v17 = a11;
-  v18 = a10;
-  v19 = a9;
-  v20 = a8;
-  v21 = a7;
-  v22 = a6;
-  v23 = a5;
-  v24 = a4;
-  v25 = a3;
-  v26 = [SWCollaborationShareOptions shareOptionsWithOptionsGroups:v22];
-  v29 = [(SWCollaborationMetadata *)self initWithLocalIdentifier:v25 collaborationIdentifier:v24 title:v23 defaultShareOptions:v26 defaultOptions:v22 creationDate:v21 contentType:v20 initiatorHandle:v18 initiatorNameComponents:v17 ckAppBundleIDs:v19 handleToIdentityMap:0 containerSetupInfo:0 sourceProcessData:0];
+  componentsCopy = components;
+  handleCopy = handle;
+  dsCopy = ds;
+  typeCopy = type;
+  dateCopy = date;
+  optionsCopy = options;
+  titleCopy = title;
+  collaborationIdentifierCopy = collaborationIdentifier;
+  identifierCopy = identifier;
+  v26 = [SWCollaborationShareOptions shareOptionsWithOptionsGroups:optionsCopy];
+  v29 = [(SWCollaborationMetadata *)self initWithLocalIdentifier:identifierCopy collaborationIdentifier:collaborationIdentifierCopy title:titleCopy defaultShareOptions:v26 defaultOptions:optionsCopy creationDate:dateCopy contentType:typeCopy initiatorHandle:handleCopy initiatorNameComponents:componentsCopy ckAppBundleIDs:dsCopy handleToIdentityMap:0 containerSetupInfo:0 sourceProcessData:0];
 
   return v29;
 }
 
-- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)a3 title:(id)a4 defaultShareOptions:(id)a5 creationDate:(id)a6 contentType:(id)a7 ckAppBundleIDs:(id)a8 initiatorHandle:(id)a9 initiatorNameComponents:(id)a10
+- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)identifier title:(id)title defaultShareOptions:(id)options creationDate:(id)date contentType:(id)type ckAppBundleIDs:(id)ds initiatorHandle:(id)handle initiatorNameComponents:(id)self0
 {
-  v17 = a10;
-  v18 = a9;
-  v19 = a8;
-  v20 = a7;
-  v21 = a6;
-  v22 = a5;
-  v23 = a4;
-  v24 = a3;
-  v25 = [v22 optionsGroups];
-  v26 = [(SWCollaborationMetadata *)self initWithLocalIdentifier:0 collaborationIdentifier:v24 title:v23 defaultShareOptions:v22 defaultOptions:v25 creationDate:v21 contentType:v20 initiatorHandle:v18 initiatorNameComponents:v17 ckAppBundleIDs:v19 handleToIdentityMap:0 containerSetupInfo:0 sourceProcessData:0];
+  componentsCopy = components;
+  handleCopy = handle;
+  dsCopy = ds;
+  typeCopy = type;
+  dateCopy = date;
+  optionsCopy = options;
+  titleCopy = title;
+  identifierCopy = identifier;
+  optionsGroups = [optionsCopy optionsGroups];
+  v26 = [(SWCollaborationMetadata *)self initWithLocalIdentifier:0 collaborationIdentifier:identifierCopy title:titleCopy defaultShareOptions:optionsCopy defaultOptions:optionsGroups creationDate:dateCopy contentType:typeCopy initiatorHandle:handleCopy initiatorNameComponents:componentsCopy ckAppBundleIDs:dsCopy handleToIdentityMap:0 containerSetupInfo:0 sourceProcessData:0];
 
   return v26;
 }
 
-- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)a3 title:(id)a4 defaultOptions:(id)a5 creationDate:(id)a6 contentType:(id)a7 ckAppBundleIDs:(id)a8 initiatorHandle:(id)a9 initiatorNameComponents:(id)a10
+- (SWCollaborationMetadata)initWithCollaborationIdentifier:(id)identifier title:(id)title defaultOptions:(id)options creationDate:(id)date contentType:(id)type ckAppBundleIDs:(id)ds initiatorHandle:(id)handle initiatorNameComponents:(id)self0
 {
-  v17 = a10;
-  v18 = a9;
-  v19 = a8;
-  v20 = a7;
-  v21 = a6;
-  v22 = a5;
-  v23 = a4;
-  v24 = a3;
-  v25 = [SWCollaborationShareOptions shareOptionsWithOptionsGroups:v22];
-  v26 = [(SWCollaborationMetadata *)self initWithLocalIdentifier:0 collaborationIdentifier:v24 title:v23 defaultShareOptions:v25 defaultOptions:v22 creationDate:v21 contentType:v20 initiatorHandle:v18 initiatorNameComponents:v17 ckAppBundleIDs:v19 handleToIdentityMap:0 containerSetupInfo:0 sourceProcessData:0];
+  componentsCopy = components;
+  handleCopy = handle;
+  dsCopy = ds;
+  typeCopy = type;
+  dateCopy = date;
+  optionsCopy = options;
+  titleCopy = title;
+  identifierCopy = identifier;
+  v25 = [SWCollaborationShareOptions shareOptionsWithOptionsGroups:optionsCopy];
+  v26 = [(SWCollaborationMetadata *)self initWithLocalIdentifier:0 collaborationIdentifier:identifierCopy title:titleCopy defaultShareOptions:v25 defaultOptions:optionsCopy creationDate:dateCopy contentType:typeCopy initiatorHandle:handleCopy initiatorNameComponents:componentsCopy ckAppBundleIDs:dsCopy handleToIdentityMap:0 containerSetupInfo:0 sourceProcessData:0];
 
   return v26;
 }
@@ -570,29 +570,29 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(SWCollaborationMetadata *)self collaborationIdentifier];
-  [v3 appendFormat:@" collaborationIdentifier=%@", v4];
+  collaborationIdentifier = [(SWCollaborationMetadata *)self collaborationIdentifier];
+  [v3 appendFormat:@" collaborationIdentifier=%@", collaborationIdentifier];
 
-  v5 = [(SWCollaborationMetadata *)self title];
-  [v3 appendFormat:@" title=%@", v5];
+  title = [(SWCollaborationMetadata *)self title];
+  [v3 appendFormat:@" title=%@", title];
 
-  v6 = [(SWCollaborationMetadata *)self defaultShareOptions];
-  [v3 appendFormat:@" defaultShareOptions=%@", v6];
+  defaultShareOptions = [(SWCollaborationMetadata *)self defaultShareOptions];
+  [v3 appendFormat:@" defaultShareOptions=%@", defaultShareOptions];
 
-  v7 = [(SWCollaborationMetadata *)self userSelectedShareOptions];
-  [v3 appendFormat:@" userSelectedShareOptions=%@", v7];
+  userSelectedShareOptions = [(SWCollaborationMetadata *)self userSelectedShareOptions];
+  [v3 appendFormat:@" userSelectedShareOptions=%@", userSelectedShareOptions];
 
-  v8 = [(SWCollaborationMetadata *)self initiatorHandle];
-  [v3 appendFormat:@" initiatorHandle=%@", v8];
+  initiatorHandle = [(SWCollaborationMetadata *)self initiatorHandle];
+  [v3 appendFormat:@" initiatorHandle=%@", initiatorHandle];
 
-  v9 = [(SWCollaborationMetadata *)self initiatorNameComponents];
-  [v3 appendFormat:@" initiatorNameComponents=%@", v9];
+  initiatorNameComponents = [(SWCollaborationMetadata *)self initiatorNameComponents];
+  [v3 appendFormat:@" initiatorNameComponents=%@", initiatorNameComponents];
 
-  v10 = [(SWCollaborationMetadata *)self handleToIdentityMap];
-  [v3 appendFormat:@" handleToIdentityMap=%@", v10];
+  handleToIdentityMap = [(SWCollaborationMetadata *)self handleToIdentityMap];
+  [v3 appendFormat:@" handleToIdentityMap=%@", handleToIdentityMap];
 
-  v11 = [(SWCollaborationMetadata *)self type];
-  [v3 appendFormat:@" type=%@", v11];
+  type = [(SWCollaborationMetadata *)self type];
+  [v3 appendFormat:@" type=%@", type];
 
   [v3 appendString:@">"];
   v12 = [v3 copy];
@@ -600,25 +600,25 @@
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(SWCollaborationMetadata *)self isEqualToCollaborationMetadata:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(SWCollaborationMetadata *)self isEqualToCollaborationMetadata:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToCollaborationMetadata:(id)a3
+- (BOOL)isEqualToCollaborationMetadata:(id)metadata
 {
-  v4 = a3;
-  v114 = [(SWCollaborationMetadata *)self collaborationIdentifier];
-  if (v114 || ([v4 collaborationIdentifier], (v102 = objc_claimAutoreleasedReturnValue()) != 0))
+  metadataCopy = metadata;
+  collaborationIdentifier = [(SWCollaborationMetadata *)self collaborationIdentifier];
+  if (collaborationIdentifier || ([metadataCopy collaborationIdentifier], (v102 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v5 = [(SWCollaborationMetadata *)self collaborationIdentifier];
-    [v4 collaborationIdentifier];
-    v100 = v101 = v5;
-    v6 = [v5 isEqual:?];
+    collaborationIdentifier2 = [(SWCollaborationMetadata *)self collaborationIdentifier];
+    [metadataCopy collaborationIdentifier];
+    v100 = v101 = collaborationIdentifier2;
+    v6 = [collaborationIdentifier2 isEqual:?];
     v7 = 1;
     if (!v6)
     {
@@ -651,15 +651,15 @@
     v7 = 0;
   }
 
-  v99 = [(SWCollaborationMetadata *)self localIdentifier];
-  HIDWORD(v112[7]) = v99 == 0;
+  localIdentifier = [(SWCollaborationMetadata *)self localIdentifier];
+  HIDWORD(v112[7]) = localIdentifier == 0;
   v113 = v7;
-  if (v99 || ([v4 localIdentifier], (v95 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (localIdentifier || ([metadataCopy localIdentifier], (v95 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v16 = [(SWCollaborationMetadata *)self localIdentifier];
-    v97 = [v4 localIdentifier];
-    v98 = v16;
-    if (![v16 isEqual:?])
+    localIdentifier2 = [(SWCollaborationMetadata *)self localIdentifier];
+    localIdentifier3 = [metadataCopy localIdentifier];
+    v98 = localIdentifier2;
+    if (![localIdentifier2 isEqual:?])
     {
       v112[0] = 1;
       v107 = 0;
@@ -694,15 +694,15 @@
     v17 = 0;
   }
 
-  v96 = [(SWCollaborationMetadata *)self title];
-  LODWORD(v112[7]) = v96 == 0;
+  title = [(SWCollaborationMetadata *)self title];
+  LODWORD(v112[7]) = title == 0;
   LODWORD(v112[6]) = v17;
-  if (v96 || ([v4 title], (v91 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (title || ([metadataCopy title], (v91 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v18 = [(SWCollaborationMetadata *)self title];
-    v93 = [v4 title];
-    v94 = v18;
-    if (![v18 isEqual:?])
+    title2 = [(SWCollaborationMetadata *)self title];
+    title3 = [metadataCopy title];
+    v94 = title2;
+    if (![title2 isEqual:?])
     {
       LODWORD(v112[0]) = 1;
       v105 = 0;
@@ -737,15 +737,15 @@
     v19 = 0;
   }
 
-  v92 = [(SWCollaborationMetadata *)self defaultShareOptions];
-  HIDWORD(v112[6]) = v92 == 0;
+  defaultShareOptions = [(SWCollaborationMetadata *)self defaultShareOptions];
+  HIDWORD(v112[6]) = defaultShareOptions == 0;
   HIDWORD(v112[5]) = v19;
-  if (v92 || ([v4 defaultShareOptions], (v87 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (defaultShareOptions || ([metadataCopy defaultShareOptions], (v87 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v20 = [(SWCollaborationMetadata *)self defaultShareOptions];
-    v89 = [v4 defaultShareOptions];
-    v90 = v20;
-    if (![v20 isEqual:?])
+    defaultShareOptions2 = [(SWCollaborationMetadata *)self defaultShareOptions];
+    defaultShareOptions3 = [metadataCopy defaultShareOptions];
+    v90 = defaultShareOptions2;
+    if (![defaultShareOptions2 isEqual:?])
     {
       LODWORD(v112[0]) = 1;
       v104 = 0;
@@ -779,15 +779,15 @@
     HIDWORD(v112[4]) = 0;
   }
 
-  v21 = [(SWCollaborationMetadata *)self userSelectedShareOptions];
-  LODWORD(v112[5]) = v21 == 0;
-  v88 = v21;
-  if (v21 || ([v4 userSelectedShareOptions], (v83 = objc_claimAutoreleasedReturnValue()) != 0))
+  userSelectedShareOptions = [(SWCollaborationMetadata *)self userSelectedShareOptions];
+  LODWORD(v112[5]) = userSelectedShareOptions == 0;
+  v88 = userSelectedShareOptions;
+  if (userSelectedShareOptions || ([metadataCopy userSelectedShareOptions], (v83 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v22 = [(SWCollaborationMetadata *)self userSelectedShareOptions];
-    v85 = [v4 userSelectedShareOptions];
-    v86 = v22;
-    if (![v22 isEqual:?])
+    userSelectedShareOptions2 = [(SWCollaborationMetadata *)self userSelectedShareOptions];
+    userSelectedShareOptions3 = [metadataCopy userSelectedShareOptions];
+    v86 = userSelectedShareOptions2;
+    if (![userSelectedShareOptions2 isEqual:?])
     {
       LODWORD(v112[0]) = 1;
       memset(v103, 0, sizeof(v103));
@@ -821,15 +821,15 @@
     HIDWORD(v112[3]) = 0;
   }
 
-  v23 = [(SWCollaborationMetadata *)self creationDate];
-  LODWORD(v112[4]) = v23 == 0;
-  v84 = v23;
-  if (v23 || ([v4 creationDate], (v79 = objc_claimAutoreleasedReturnValue()) != 0))
+  creationDate = [(SWCollaborationMetadata *)self creationDate];
+  LODWORD(v112[4]) = creationDate == 0;
+  v84 = creationDate;
+  if (creationDate || ([metadataCopy creationDate], (v79 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v24 = [(SWCollaborationMetadata *)self creationDate];
-    v81 = [v4 creationDate];
-    v82 = v24;
-    if (![v24 isEqual:?])
+    creationDate2 = [(SWCollaborationMetadata *)self creationDate];
+    creationDate3 = [metadataCopy creationDate];
+    v82 = creationDate2;
+    if (![creationDate2 isEqual:?])
     {
       LODWORD(v112[0]) = 1;
       *v103 = 0;
@@ -864,15 +864,15 @@
     HIDWORD(v112[2]) = 0;
   }
 
-  v25 = [(SWCollaborationMetadata *)self contentType];
-  LODWORD(v112[3]) = v25 == 0;
-  v80 = v25;
-  if (v25 || ([v4 contentType], (v75 = objc_claimAutoreleasedReturnValue()) != 0))
+  contentType = [(SWCollaborationMetadata *)self contentType];
+  LODWORD(v112[3]) = contentType == 0;
+  v80 = contentType;
+  if (contentType || ([metadataCopy contentType], (v75 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v26 = [(SWCollaborationMetadata *)self contentType];
-    v77 = [v4 contentType];
-    v78 = v26;
-    if (![v26 isEqual:?])
+    contentType2 = [(SWCollaborationMetadata *)self contentType];
+    contentType3 = [metadataCopy contentType];
+    v78 = contentType2;
+    if (![contentType2 isEqual:?])
     {
       LODWORD(v112[0]) = 1;
       *v103 = 0x100000000;
@@ -908,15 +908,15 @@
     HIDWORD(v112[1]) = 0;
   }
 
-  v27 = [(SWCollaborationMetadata *)self ckAppBundleIDs];
-  LODWORD(v112[2]) = v27 == 0;
-  v76 = v27;
-  if (v27 || ([v4 ckAppBundleIDs], (v71 = objc_claimAutoreleasedReturnValue()) != 0))
+  ckAppBundleIDs = [(SWCollaborationMetadata *)self ckAppBundleIDs];
+  LODWORD(v112[2]) = ckAppBundleIDs == 0;
+  v76 = ckAppBundleIDs;
+  if (ckAppBundleIDs || ([metadataCopy ckAppBundleIDs], (v71 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v28 = [(SWCollaborationMetadata *)self ckAppBundleIDs];
-    v73 = [v4 ckAppBundleIDs];
-    v74 = v28;
-    if (![v28 isEqual:?])
+    ckAppBundleIDs2 = [(SWCollaborationMetadata *)self ckAppBundleIDs];
+    ckAppBundleIDs3 = [metadataCopy ckAppBundleIDs];
+    v74 = ckAppBundleIDs2;
+    if (![ckAppBundleIDs2 isEqual:?])
     {
       v112[0] = 0x100000001;
       v8 = 0;
@@ -950,15 +950,15 @@
     HIDWORD(v112[0]) = 0;
   }
 
-  v29 = [(SWCollaborationMetadata *)self initiatorHandle];
-  LODWORD(v112[1]) = v29 == 0;
-  v72 = v29;
-  if (v29 || ([v4 initiatorHandle], (v67 = objc_claimAutoreleasedReturnValue()) != 0))
+  initiatorHandle = [(SWCollaborationMetadata *)self initiatorHandle];
+  LODWORD(v112[1]) = initiatorHandle == 0;
+  v72 = initiatorHandle;
+  if (initiatorHandle || ([metadataCopy initiatorHandle], (v67 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v30 = [(SWCollaborationMetadata *)self initiatorHandle];
-    v69 = [v4 initiatorHandle];
-    v70 = v30;
-    if (![v30 isEqual:?])
+    initiatorHandle2 = [(SWCollaborationMetadata *)self initiatorHandle];
+    initiatorHandle3 = [metadataCopy initiatorHandle];
+    v70 = initiatorHandle2;
+    if (![initiatorHandle2 isEqual:?])
     {
       LODWORD(v112[0]) = 1;
       v9 = 0;
@@ -991,15 +991,15 @@
     LODWORD(v111) = 0;
   }
 
-  v31 = [(SWCollaborationMetadata *)self initiatorNameComponents];
-  HIDWORD(v111) = v31 == 0;
-  v68 = v31;
-  if (v31 || ([v4 initiatorNameComponents], (v63 = objc_claimAutoreleasedReturnValue()) != 0))
+  initiatorNameComponents = [(SWCollaborationMetadata *)self initiatorNameComponents];
+  HIDWORD(v111) = initiatorNameComponents == 0;
+  v68 = initiatorNameComponents;
+  if (initiatorNameComponents || ([metadataCopy initiatorNameComponents], (v63 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v32 = [(SWCollaborationMetadata *)self initiatorNameComponents];
-    v65 = [v4 initiatorNameComponents];
-    v66 = v32;
-    if (![v32 isEqual:?])
+    initiatorNameComponents2 = [(SWCollaborationMetadata *)self initiatorNameComponents];
+    initiatorNameComponents3 = [metadataCopy initiatorNameComponents];
+    v66 = initiatorNameComponents2;
+    if (![initiatorNameComponents2 isEqual:?])
     {
       LODWORD(v112[0]) = 1;
       v10 = 0;
@@ -1031,15 +1031,15 @@
     LODWORD(v110) = 0;
   }
 
-  v33 = [(SWCollaborationMetadata *)self handleToIdentityMap];
-  HIDWORD(v110) = v33 == 0;
-  v64 = v33;
-  if (v33 || ([v4 handleToIdentityMap], (v59 = objc_claimAutoreleasedReturnValue()) != 0))
+  handleToIdentityMap = [(SWCollaborationMetadata *)self handleToIdentityMap];
+  HIDWORD(v110) = handleToIdentityMap == 0;
+  v64 = handleToIdentityMap;
+  if (handleToIdentityMap || ([metadataCopy handleToIdentityMap], (v59 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v34 = [(SWCollaborationMetadata *)self handleToIdentityMap];
-    v61 = [v4 handleToIdentityMap];
-    v62 = v34;
-    if (![v34 isEqual:?])
+    handleToIdentityMap2 = [(SWCollaborationMetadata *)self handleToIdentityMap];
+    handleToIdentityMap3 = [metadataCopy handleToIdentityMap];
+    v62 = handleToIdentityMap2;
+    if (![handleToIdentityMap2 isEqual:?])
     {
       LODWORD(v112[0]) = 1;
       v11 = 0;
@@ -1070,15 +1070,15 @@
     LODWORD(v109) = 0;
   }
 
-  v35 = [(SWCollaborationMetadata *)self sourceProcessData];
-  HIDWORD(v109) = v35 == 0;
-  v60 = v35;
-  if (v35 || ([v4 sourceProcessData], (v55 = objc_claimAutoreleasedReturnValue()) != 0))
+  sourceProcessData = [(SWCollaborationMetadata *)self sourceProcessData];
+  HIDWORD(v109) = sourceProcessData == 0;
+  v60 = sourceProcessData;
+  if (sourceProcessData || ([metadataCopy sourceProcessData], (v55 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v36 = [(SWCollaborationMetadata *)self sourceProcessData];
-    v57 = [v4 sourceProcessData];
-    v58 = v36;
-    if (![v36 isEqual:?])
+    sourceProcessData2 = [(SWCollaborationMetadata *)self sourceProcessData];
+    sourceProcessData3 = [metadataCopy sourceProcessData];
+    v58 = sourceProcessData2;
+    if (![sourceProcessData2 isEqual:?])
     {
       LODWORD(v112[0]) = 1;
       v12 = 0;
@@ -1109,15 +1109,15 @@
     *v108 = 0;
   }
 
-  v37 = [(SWCollaborationMetadata *)self containerSetupInfo];
-  *&v108[8] = v37 == 0;
-  v56 = v37;
-  if (v37 || ([v4 containerSetupInfo], (v51 = objc_claimAutoreleasedReturnValue()) != 0))
+  containerSetupInfo = [(SWCollaborationMetadata *)self containerSetupInfo];
+  *&v108[8] = containerSetupInfo == 0;
+  v56 = containerSetupInfo;
+  if (containerSetupInfo || ([metadataCopy containerSetupInfo], (v51 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v38 = [(SWCollaborationMetadata *)self containerSetupInfo];
-    v53 = [v4 containerSetupInfo];
-    v54 = v38;
-    if (![v38 isEqual:?])
+    containerSetupInfo2 = [(SWCollaborationMetadata *)self containerSetupInfo];
+    containerSetupInfo3 = [metadataCopy containerSetupInfo];
+    v54 = containerSetupInfo2;
+    if (![containerSetupInfo2 isEqual:?])
     {
       LODWORD(v112[0]) = 1;
       v13 = 0;
@@ -1147,15 +1147,15 @@
     LODWORD(v106) = 0;
   }
 
-  v39 = [(SWCollaborationMetadata *)self userSelectedOptions];
-  HIDWORD(v106) = v39 == 0;
-  v52 = v39;
-  if (v39 || ([v4 userSelectedOptions], (v47 = objc_claimAutoreleasedReturnValue()) != 0))
+  userSelectedOptions = [(SWCollaborationMetadata *)self userSelectedOptions];
+  HIDWORD(v106) = userSelectedOptions == 0;
+  v52 = userSelectedOptions;
+  if (userSelectedOptions || ([metadataCopy userSelectedOptions], (v47 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v40 = [(SWCollaborationMetadata *)self userSelectedOptions];
-    v49 = [v4 userSelectedOptions];
-    v50 = v40;
-    if (![v40 isEqual:?])
+    userSelectedOptions2 = [(SWCollaborationMetadata *)self userSelectedOptions];
+    userSelectedOptions3 = [metadataCopy userSelectedOptions];
+    v50 = userSelectedOptions2;
+    if (![userSelectedOptions2 isEqual:?])
     {
       LODWORD(v112[0]) = 1;
       v14 = 0;
@@ -1184,14 +1184,14 @@
     v104 = 0;
   }
 
-  v41 = [(SWCollaborationMetadata *)self type];
-  v45 = v41 == 0;
-  v48 = v41;
-  if (v41 || ([v4 type], (v46 = objc_claimAutoreleasedReturnValue()) != 0))
+  type = [(SWCollaborationMetadata *)self type];
+  v45 = type == 0;
+  v48 = type;
+  if (type || ([metadataCopy type], (v46 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v42 = [(SWCollaborationMetadata *)self type];
-    v43 = [v4 type];
-    v108[4] = [v42 isEqual:v43];
+    type2 = [(SWCollaborationMetadata *)self type];
+    type3 = [metadataCopy type];
+    v108[4] = [type2 isEqual:type3];
     LODWORD(v112[0]) = 1;
     v107 = 1;
     v105 = 0x100000001;
@@ -1425,7 +1425,7 @@ LABEL_163:
   {
   }
 
-  if (!v114)
+  if (!collaborationIdentifier)
   {
   }
 
@@ -1434,101 +1434,101 @@ LABEL_163:
 
 - (unint64_t)hash
 {
-  v31 = [(SWCollaborationMetadata *)self collaborationIdentifier];
-  v3 = [v31 hash];
-  v30 = [(SWCollaborationMetadata *)self localIdentifier];
-  v4 = [v30 hash] ^ v3;
-  v29 = [(SWCollaborationMetadata *)self title];
-  v5 = [v29 hash];
-  v28 = [(SWCollaborationMetadata *)self defaultShareOptions];
-  v6 = v4 ^ v5 ^ [v28 hash];
-  v27 = [(SWCollaborationMetadata *)self userSelectedShareOptions];
-  v7 = [v27 hash];
-  v26 = [(SWCollaborationMetadata *)self creationDate];
-  v8 = v7 ^ [v26 hash];
-  v9 = [(SWCollaborationMetadata *)self contentType];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(SWCollaborationMetadata *)self ckAppBundleIDs];
-  v12 = [v11 hash];
-  v13 = [(SWCollaborationMetadata *)self initiatorHandle];
-  v14 = v12 ^ [v13 hash];
-  v15 = [(SWCollaborationMetadata *)self initiatorNameComponents];
-  v16 = v14 ^ [v15 hash];
-  v17 = [(SWCollaborationMetadata *)self handleToIdentityMap];
-  v25 = v10 ^ v16 ^ [v17 hash];
-  v18 = [(SWCollaborationMetadata *)self sourceProcessData];
-  v19 = [v18 hash];
-  v20 = [(SWCollaborationMetadata *)self containerSetupInfo];
-  v21 = v19 ^ [v20 hash];
-  v22 = [(SWCollaborationMetadata *)self type];
-  v23 = v21 ^ [v22 hash];
+  collaborationIdentifier = [(SWCollaborationMetadata *)self collaborationIdentifier];
+  v3 = [collaborationIdentifier hash];
+  localIdentifier = [(SWCollaborationMetadata *)self localIdentifier];
+  v4 = [localIdentifier hash] ^ v3;
+  title = [(SWCollaborationMetadata *)self title];
+  v5 = [title hash];
+  defaultShareOptions = [(SWCollaborationMetadata *)self defaultShareOptions];
+  v6 = v4 ^ v5 ^ [defaultShareOptions hash];
+  userSelectedShareOptions = [(SWCollaborationMetadata *)self userSelectedShareOptions];
+  v7 = [userSelectedShareOptions hash];
+  creationDate = [(SWCollaborationMetadata *)self creationDate];
+  v8 = v7 ^ [creationDate hash];
+  contentType = [(SWCollaborationMetadata *)self contentType];
+  v10 = v6 ^ v8 ^ [contentType hash];
+  ckAppBundleIDs = [(SWCollaborationMetadata *)self ckAppBundleIDs];
+  v12 = [ckAppBundleIDs hash];
+  initiatorHandle = [(SWCollaborationMetadata *)self initiatorHandle];
+  v14 = v12 ^ [initiatorHandle hash];
+  initiatorNameComponents = [(SWCollaborationMetadata *)self initiatorNameComponents];
+  v16 = v14 ^ [initiatorNameComponents hash];
+  handleToIdentityMap = [(SWCollaborationMetadata *)self handleToIdentityMap];
+  v25 = v10 ^ v16 ^ [handleToIdentityMap hash];
+  sourceProcessData = [(SWCollaborationMetadata *)self sourceProcessData];
+  v19 = [sourceProcessData hash];
+  containerSetupInfo = [(SWCollaborationMetadata *)self containerSetupInfo];
+  v21 = v19 ^ [containerSetupInfo hash];
+  type = [(SWCollaborationMetadata *)self type];
+  v23 = v21 ^ [type hash];
 
   return v25 ^ v23;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v18 = [objc_opt_class() allocWithZone:a3];
-  v20 = [(SWCollaborationMetadata *)self localIdentifier];
-  v15 = [(SWCollaborationMetadata *)self collaborationIdentifier];
-  v13 = [(SWCollaborationMetadata *)self title];
-  v17 = [(SWCollaborationMetadata *)self defaultShareOptions];
-  v16 = [(SWCollaborationMetadata *)self defaultOptions];
-  v14 = [(SWCollaborationMetadata *)self creationDate];
-  v12 = [(SWCollaborationMetadata *)self contentType];
-  v4 = [(SWCollaborationMetadata *)self initiatorHandle];
-  v5 = [(SWCollaborationMetadata *)self initiatorNameComponents];
-  v6 = [(SWCollaborationMetadata *)self ckAppBundleIDs];
-  v7 = [(SWCollaborationMetadata *)self handleToIdentityMap];
-  v8 = [(SWCollaborationMetadata *)self containerSetupInfo];
-  v9 = [(SWCollaborationMetadata *)self sourceProcessData];
-  v19 = [v18 initWithLocalIdentifier:v20 collaborationIdentifier:v15 title:v13 defaultShareOptions:v17 defaultOptions:v16 creationDate:v14 contentType:v12 initiatorHandle:v4 initiatorNameComponents:v5 ckAppBundleIDs:v6 handleToIdentityMap:v7 containerSetupInfo:v8 sourceProcessData:v9];
+  v18 = [objc_opt_class() allocWithZone:zone];
+  localIdentifier = [(SWCollaborationMetadata *)self localIdentifier];
+  collaborationIdentifier = [(SWCollaborationMetadata *)self collaborationIdentifier];
+  title = [(SWCollaborationMetadata *)self title];
+  defaultShareOptions = [(SWCollaborationMetadata *)self defaultShareOptions];
+  defaultOptions = [(SWCollaborationMetadata *)self defaultOptions];
+  creationDate = [(SWCollaborationMetadata *)self creationDate];
+  contentType = [(SWCollaborationMetadata *)self contentType];
+  initiatorHandle = [(SWCollaborationMetadata *)self initiatorHandle];
+  initiatorNameComponents = [(SWCollaborationMetadata *)self initiatorNameComponents];
+  ckAppBundleIDs = [(SWCollaborationMetadata *)self ckAppBundleIDs];
+  handleToIdentityMap = [(SWCollaborationMetadata *)self handleToIdentityMap];
+  containerSetupInfo = [(SWCollaborationMetadata *)self containerSetupInfo];
+  sourceProcessData = [(SWCollaborationMetadata *)self sourceProcessData];
+  v19 = [v18 initWithLocalIdentifier:localIdentifier collaborationIdentifier:collaborationIdentifier title:title defaultShareOptions:defaultShareOptions defaultOptions:defaultOptions creationDate:creationDate contentType:contentType initiatorHandle:initiatorHandle initiatorNameComponents:initiatorNameComponents ckAppBundleIDs:ckAppBundleIDs handleToIdentityMap:handleToIdentityMap containerSetupInfo:containerSetupInfo sourceProcessData:sourceProcessData];
 
-  v10 = [(SWCollaborationMetadata *)self type];
-  [v19 setType:v10];
+  type = [(SWCollaborationMetadata *)self type];
+  [v19 setType:type];
 
   return v19;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v18 = [(SWCollaborationMetadata *)_SWMutableCollaborationMetadata allocWithZone:a3];
-  v20 = [(SWCollaborationMetadata *)self localIdentifier];
-  v15 = [(SWCollaborationMetadata *)self collaborationIdentifier];
-  v13 = [(SWCollaborationMetadata *)self title];
-  v17 = [(SWCollaborationMetadata *)self defaultShareOptions];
-  v16 = [(SWCollaborationMetadata *)self defaultOptions];
-  v14 = [(SWCollaborationMetadata *)self creationDate];
-  v12 = [(SWCollaborationMetadata *)self contentType];
-  v4 = [(SWCollaborationMetadata *)self initiatorHandle];
-  v5 = [(SWCollaborationMetadata *)self initiatorNameComponents];
-  v6 = [(SWCollaborationMetadata *)self ckAppBundleIDs];
-  v7 = [(SWCollaborationMetadata *)self handleToIdentityMap];
-  v8 = [(SWCollaborationMetadata *)self containerSetupInfo];
-  v9 = [(SWCollaborationMetadata *)self sourceProcessData];
-  v19 = [(SWCollaborationMetadata *)v18 initWithLocalIdentifier:v20 collaborationIdentifier:v15 title:v13 defaultShareOptions:v17 defaultOptions:v16 creationDate:v14 contentType:v12 initiatorHandle:v4 initiatorNameComponents:v5 ckAppBundleIDs:v6 handleToIdentityMap:v7 containerSetupInfo:v8 sourceProcessData:v9];
+  v18 = [(SWCollaborationMetadata *)_SWMutableCollaborationMetadata allocWithZone:zone];
+  localIdentifier = [(SWCollaborationMetadata *)self localIdentifier];
+  collaborationIdentifier = [(SWCollaborationMetadata *)self collaborationIdentifier];
+  title = [(SWCollaborationMetadata *)self title];
+  defaultShareOptions = [(SWCollaborationMetadata *)self defaultShareOptions];
+  defaultOptions = [(SWCollaborationMetadata *)self defaultOptions];
+  creationDate = [(SWCollaborationMetadata *)self creationDate];
+  contentType = [(SWCollaborationMetadata *)self contentType];
+  initiatorHandle = [(SWCollaborationMetadata *)self initiatorHandle];
+  initiatorNameComponents = [(SWCollaborationMetadata *)self initiatorNameComponents];
+  ckAppBundleIDs = [(SWCollaborationMetadata *)self ckAppBundleIDs];
+  handleToIdentityMap = [(SWCollaborationMetadata *)self handleToIdentityMap];
+  containerSetupInfo = [(SWCollaborationMetadata *)self containerSetupInfo];
+  sourceProcessData = [(SWCollaborationMetadata *)self sourceProcessData];
+  v19 = [(SWCollaborationMetadata *)v18 initWithLocalIdentifier:localIdentifier collaborationIdentifier:collaborationIdentifier title:title defaultShareOptions:defaultShareOptions defaultOptions:defaultOptions creationDate:creationDate contentType:contentType initiatorHandle:initiatorHandle initiatorNameComponents:initiatorNameComponents ckAppBundleIDs:ckAppBundleIDs handleToIdentityMap:handleToIdentityMap containerSetupInfo:containerSetupInfo sourceProcessData:sourceProcessData];
 
-  v10 = [(SWCollaborationMetadata *)self type];
-  [(SWCollaborationMetadata *)v19 setType:v10];
+  type = [(SWCollaborationMetadata *)self type];
+  [(SWCollaborationMetadata *)v19 setType:type];
 
   return v19;
 }
 
-- (SWCollaborationMetadata)initWithCoder:(id)a3
+- (SWCollaborationMetadata)initWithCoder:(id)coder
 {
   v61[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  coderCopy = coder;
   v4 = objc_opt_class();
   v5 = NSStringFromSelector(sel_collaborationIdentifier);
-  v58 = [v3 decodeObjectOfClass:v4 forKey:v5];
+  v58 = [coderCopy decodeObjectOfClass:v4 forKey:v5];
 
   v6 = objc_opt_class();
   v7 = NSStringFromSelector(sel_localIdentifier);
-  v56 = [v3 decodeObjectOfClass:v6 forKey:v7];
+  v56 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
 
   v8 = objc_opt_class();
   v9 = NSStringFromSelector(sel_title);
-  v54 = [v3 decodeObjectOfClass:v8 forKey:v9];
+  v54 = [coderCopy decodeObjectOfClass:v8 forKey:v9];
 
   v10 = MEMORY[0x1E695DFD8];
   v61[0] = objc_opt_class();
@@ -1536,7 +1536,7 @@ LABEL_163:
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v61 count:2];
   v12 = [v10 setWithArray:v11];
   v13 = NSStringFromSelector(sel_defaultShareOptions);
-  v57 = [v3 decodeObjectOfClasses:v12 forKey:v13];
+  v57 = [coderCopy decodeObjectOfClasses:v12 forKey:v13];
 
   v14 = MEMORY[0x1E695DFD8];
   v60[0] = objc_opt_class();
@@ -1544,29 +1544,29 @@ LABEL_163:
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v60 count:2];
   v16 = [v14 setWithArray:v15];
   v17 = NSStringFromSelector(sel_userSelectedShareOptions);
-  v53 = [v3 decodeObjectOfClasses:v16 forKey:v17];
+  v53 = [coderCopy decodeObjectOfClasses:v16 forKey:v17];
 
   v18 = objc_opt_class();
   v19 = NSStringFromSelector(sel_creationDate);
-  v52 = [v3 decodeObjectOfClass:v18 forKey:v19];
+  v52 = [coderCopy decodeObjectOfClass:v18 forKey:v19];
 
   v20 = objc_opt_class();
   v21 = NSStringFromSelector(sel_contentType);
-  v22 = [v3 decodeObjectOfClass:v20 forKey:v21];
+  v22 = [coderCopy decodeObjectOfClass:v20 forKey:v21];
 
   v23 = MEMORY[0x1E695DFD8];
   v24 = objc_opt_class();
   v25 = [v23 setWithObjects:{v24, objc_opt_class(), 0}];
   v26 = NSStringFromSelector(sel_ckAppBundleIDs);
-  v27 = [v3 decodeObjectOfClasses:v25 forKey:v26];
+  v27 = [coderCopy decodeObjectOfClasses:v25 forKey:v26];
 
   v28 = objc_opt_class();
   v29 = NSStringFromSelector(sel_initiatorHandle);
-  v30 = [v3 decodeObjectOfClass:v28 forKey:v29];
+  v30 = [coderCopy decodeObjectOfClass:v28 forKey:v29];
 
   v31 = objc_opt_class();
   v32 = NSStringFromSelector(sel_initiatorNameComponents);
-  v51 = [v3 decodeObjectOfClass:v31 forKey:v32];
+  v51 = [coderCopy decodeObjectOfClass:v31 forKey:v32];
 
   v33 = MEMORY[0x1E695DFA8];
   v59[0] = objc_opt_class();
@@ -1576,22 +1576,22 @@ LABEL_163:
   v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:v59 count:4];
   v35 = [v33 setWithArray:v34];
   v36 = NSStringFromSelector(sel_handleToIdentityMap);
-  v50 = [v3 decodeObjectOfClasses:v35 forKey:v36];
+  v50 = [coderCopy decodeObjectOfClasses:v35 forKey:v36];
 
   v37 = objc_opt_class();
   v38 = NSStringFromSelector(sel_containerSetupInfo);
-  v49 = [v3 decodeObjectOfClass:v37 forKey:v38];
+  v49 = [coderCopy decodeObjectOfClass:v37 forKey:v38];
 
   v39 = objc_opt_class();
   v40 = NSStringFromSelector(sel_sourceProcessData);
-  v41 = [v3 decodeObjectOfClass:v39 forKey:v40];
+  v41 = [coderCopy decodeObjectOfClass:v39 forKey:v40];
 
   v42 = objc_opt_class();
   v43 = NSStringFromSelector(sel_type);
-  v44 = [v3 decodeObjectOfClass:v42 forKey:v43];
+  v44 = [coderCopy decodeObjectOfClass:v42 forKey:v43];
 
-  v45 = [v57 optionsGroups];
-  v46 = [(SWCollaborationMetadata *)self initWithLocalIdentifier:v56 collaborationIdentifier:v58 title:v54 defaultShareOptions:v57 defaultOptions:v45 creationDate:v52 contentType:v22 initiatorHandle:v30 initiatorNameComponents:v51 ckAppBundleIDs:v27 handleToIdentityMap:v50 containerSetupInfo:v49 sourceProcessData:v41];
+  optionsGroups = [v57 optionsGroups];
+  v46 = [(SWCollaborationMetadata *)self initWithLocalIdentifier:v56 collaborationIdentifier:v58 title:v54 defaultShareOptions:v57 defaultOptions:optionsGroups creationDate:v52 contentType:v22 initiatorHandle:v30 initiatorNameComponents:v51 ckAppBundleIDs:v27 handleToIdentityMap:v50 containerSetupInfo:v49 sourceProcessData:v41];
 
   [(SWCollaborationMetadata *)v46 setUserSelectedShareOptions:v53];
   [(SWCollaborationMetadata *)v46 setType:v44];
@@ -1600,64 +1600,64 @@ LABEL_163:
   return v46;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SWCollaborationMetadata *)self collaborationIdentifier];
+  coderCopy = coder;
+  collaborationIdentifier = [(SWCollaborationMetadata *)self collaborationIdentifier];
   v6 = NSStringFromSelector(sel_collaborationIdentifier);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:collaborationIdentifier forKey:v6];
 
-  v7 = [(SWCollaborationMetadata *)self localIdentifier];
+  localIdentifier = [(SWCollaborationMetadata *)self localIdentifier];
   v8 = NSStringFromSelector(sel_localIdentifier);
-  [v4 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:localIdentifier forKey:v8];
 
-  v9 = [(SWCollaborationMetadata *)self title];
+  title = [(SWCollaborationMetadata *)self title];
   v10 = NSStringFromSelector(sel_title);
-  [v4 encodeObject:v9 forKey:v10];
+  [coderCopy encodeObject:title forKey:v10];
 
-  v11 = [(SWCollaborationMetadata *)self defaultShareOptions];
+  defaultShareOptions = [(SWCollaborationMetadata *)self defaultShareOptions];
   v12 = NSStringFromSelector(sel_defaultShareOptions);
-  [v4 encodeObject:v11 forKey:v12];
+  [coderCopy encodeObject:defaultShareOptions forKey:v12];
 
-  v13 = [(SWCollaborationMetadata *)self userSelectedShareOptions];
+  userSelectedShareOptions = [(SWCollaborationMetadata *)self userSelectedShareOptions];
   v14 = NSStringFromSelector(sel_userSelectedShareOptions);
-  [v4 encodeObject:v13 forKey:v14];
+  [coderCopy encodeObject:userSelectedShareOptions forKey:v14];
 
-  v15 = [(SWCollaborationMetadata *)self creationDate];
+  creationDate = [(SWCollaborationMetadata *)self creationDate];
   v16 = NSStringFromSelector(sel_creationDate);
-  [v4 encodeObject:v15 forKey:v16];
+  [coderCopy encodeObject:creationDate forKey:v16];
 
-  v17 = [(SWCollaborationMetadata *)self contentType];
+  contentType = [(SWCollaborationMetadata *)self contentType];
   v18 = NSStringFromSelector(sel_contentType);
-  [v4 encodeObject:v17 forKey:v18];
+  [coderCopy encodeObject:contentType forKey:v18];
 
-  v19 = [(SWCollaborationMetadata *)self ckAppBundleIDs];
+  ckAppBundleIDs = [(SWCollaborationMetadata *)self ckAppBundleIDs];
   v20 = NSStringFromSelector(sel_ckAppBundleIDs);
-  [v4 encodeObject:v19 forKey:v20];
+  [coderCopy encodeObject:ckAppBundleIDs forKey:v20];
 
-  v21 = [(SWCollaborationMetadata *)self initiatorHandle];
+  initiatorHandle = [(SWCollaborationMetadata *)self initiatorHandle];
   v22 = NSStringFromSelector(sel_initiatorHandle);
-  [v4 encodeObject:v21 forKey:v22];
+  [coderCopy encodeObject:initiatorHandle forKey:v22];
 
-  v23 = [(SWCollaborationMetadata *)self initiatorNameComponents];
+  initiatorNameComponents = [(SWCollaborationMetadata *)self initiatorNameComponents];
   v24 = NSStringFromSelector(sel_initiatorNameComponents);
-  [v4 encodeObject:v23 forKey:v24];
+  [coderCopy encodeObject:initiatorNameComponents forKey:v24];
 
-  v25 = [(SWCollaborationMetadata *)self handleToIdentityMap];
+  handleToIdentityMap = [(SWCollaborationMetadata *)self handleToIdentityMap];
   v26 = NSStringFromSelector(sel_handleToIdentityMap);
-  [v4 encodeObject:v25 forKey:v26];
+  [coderCopy encodeObject:handleToIdentityMap forKey:v26];
 
-  v27 = [(SWCollaborationMetadata *)self sourceProcessData];
+  sourceProcessData = [(SWCollaborationMetadata *)self sourceProcessData];
   v28 = NSStringFromSelector(sel_sourceProcessData);
-  [v4 encodeObject:v27 forKey:v28];
+  [coderCopy encodeObject:sourceProcessData forKey:v28];
 
-  v29 = [(SWCollaborationMetadata *)self containerSetupInfo];
+  containerSetupInfo = [(SWCollaborationMetadata *)self containerSetupInfo];
   v30 = NSStringFromSelector(sel_containerSetupInfo);
-  [v4 encodeObject:v29 forKey:v30];
+  [coderCopy encodeObject:containerSetupInfo forKey:v30];
 
-  v32 = [(SWCollaborationMetadata *)self type];
+  type = [(SWCollaborationMetadata *)self type];
   v31 = NSStringFromSelector(sel_type);
-  [v4 encodeObject:v32 forKey:v31];
+  [coderCopy encodeObject:type forKey:v31];
 }
 
 @end

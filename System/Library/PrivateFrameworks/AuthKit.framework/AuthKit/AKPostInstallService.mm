@@ -1,7 +1,7 @@
 @interface AKPostInstallService
 + (id)sharedService;
-- (void)_performPostInstallWithCompletion:(id)a3;
-- (void)fetchUserInfoForAltDSID:(id)a3 completion:(id)a4;
+- (void)_performPostInstallWithCompletion:(id)completion;
+- (void)fetchUserInfoForAltDSID:(id)d completion:(id)completion;
 - (void)start;
 @end
 
@@ -25,7 +25,7 @@
 
 - (void)start
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = _AKLogSystem();
   v9 = OS_LOG_TYPE_DEFAULT;
@@ -42,17 +42,17 @@
   v5 = 0;
   v6 = sub_100072368;
   v7 = &unk_100320E78;
-  v8 = _objc_retain(v11);
+  v8 = _objc_retain(selfCopy);
   xpc_activity_register(identifier, XPC_ACTIVITY_CHECK_IN, &v3);
   objc_storeStrong(&v8, 0);
 }
 
-- (void)_performPostInstallWithCompletion:(id)a3
+- (void)_performPostInstallWithCompletion:(id)completion
 {
-  v62 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v60 = dispatch_group_create();
   dispatch_group_enter(v60);
   v59 = [[AKSatoriController alloc] initWithClient:0];
@@ -64,15 +64,15 @@
   v58 = _objc_retain(v60);
   [v19 warmUpVerificationSessionWithCompletionHandler:v57];
   v56 = +[AKAccountManager sharedInstance];
-  v55 = [v56 primaryAuthKitAccount];
-  if (v55)
+  primaryAuthKitAccount = [v56 primaryAuthKitAccount];
+  if (primaryAuthKitAccount)
   {
-    v54 = [v56 altDSIDForAccount:v55];
+    v54 = [v56 altDSIDForAccount:primaryAuthKitAccount];
     dispatch_group_enter(v60);
     v17 = +[AKFeatureManager sharedManager];
-    v18 = [v17 isTokenCacheEnabled];
+    isTokenCacheEnabled = [v17 isTokenCacheEnabled];
     _objc_release(v17);
-    if (v18)
+    if (isTokenCacheEnabled)
     {
       v53 = _AKLogSystem();
       v52 = OS_LOG_TYPE_DEFAULT;
@@ -122,7 +122,7 @@
     v37 = 0;
     v38 = sub_100072EF4;
     v39 = &unk_10031F050;
-    v40 = _objc_retain(v62);
+    v40 = _objc_retain(selfCopy);
     v41 = _objc_retain(v54);
     v42 = _objc_retain(v60);
     [v7 performLivenessCheckInForAllEligibleAccountsWithReason:3 completion:&v35];
@@ -170,7 +170,7 @@
     objc_storeStrong(&v25, 0);
   }
 
-  objc_storeStrong(&v55, 0);
+  objc_storeStrong(&primaryAuthKitAccount, 0);
   objc_storeStrong(&v56, 0);
   objc_storeStrong(&v58, 0);
   objc_storeStrong(&v59, 0);
@@ -178,14 +178,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)fetchUserInfoForAltDSID:(id)a3 completion:(id)a4
+- (void)fetchUserInfoForAltDSID:(id)d completion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v19 = 0;
-  objc_storeStrong(&v19, a4);
+  objc_storeStrong(&v19, completion);
   v18 = _AKLogSystem();
   v17 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))

@@ -2,9 +2,9 @@
 - (NSString)recordingUUID;
 - (UIView)source;
 - (_TtC10VoiceMemos36RCRecordingCellMoreButtonMenuCreator)init;
-- (_TtC10VoiceMemos36RCRecordingCellMoreButtonMenuCreator)initWithRecordingUUID:(id)a3 actionDelegate:(id)a4 source:(id)a5;
-- (id)createMenuWithDisplayShowTranscriptAction:(BOOL)a3 displayCopyTranscriptAction:(BOOL)a4 hasMultipleTracks:(BOOL)a5 isSpatialRecording:(BOOL)a6;
-- (void)setRecordingUUID:(id)a3;
+- (_TtC10VoiceMemos36RCRecordingCellMoreButtonMenuCreator)initWithRecordingUUID:(id)d actionDelegate:(id)delegate source:(id)source;
+- (id)createMenuWithDisplayShowTranscriptAction:(BOOL)action displayCopyTranscriptAction:(BOOL)transcriptAction hasMultipleTracks:(BOOL)tracks isSpatialRecording:(BOOL)recording;
+- (void)setRecordingUUID:(id)d;
 @end
 
 @implementation RCRecordingCellMoreButtonMenuCreator
@@ -17,7 +17,7 @@
   return v2;
 }
 
-- (void)setRecordingUUID:(id)a3
+- (void)setRecordingUUID:(id)d
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = (self + OBJC_IVAR____TtC10VoiceMemos36RCRecordingCellMoreButtonMenuCreator_recordingUUID);
@@ -32,23 +32,23 @@
   return Strong;
 }
 
-- (_TtC10VoiceMemos36RCRecordingCellMoreButtonMenuCreator)initWithRecordingUUID:(id)a3 actionDelegate:(id)a4 source:(id)a5
+- (_TtC10VoiceMemos36RCRecordingCellMoreButtonMenuCreator)initWithRecordingUUID:(id)d actionDelegate:(id)delegate source:(id)source
 {
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
   swift_unknownObjectRetain();
-  v9 = a5;
+  sourceCopy = source;
   v10 = sub_1001204C4(v6, v8);
   swift_unknownObjectRelease();
 
   return v10;
 }
 
-- (id)createMenuWithDisplayShowTranscriptAction:(BOOL)a3 displayCopyTranscriptAction:(BOOL)a4 hasMultipleTracks:(BOOL)a5 isSpatialRecording:(BOOL)a6
+- (id)createMenuWithDisplayShowTranscriptAction:(BOOL)action displayCopyTranscriptAction:(BOOL)transcriptAction hasMultipleTracks:(BOOL)tracks isSpatialRecording:(BOOL)recording
 {
-  v7 = a5;
-  v9 = self;
-  v10.super.super.isa = sub_100120654(a4, v7, a6).super.super.isa;
+  tracksCopy = tracks;
+  selfCopy = self;
+  v10.super.super.isa = sub_100120654(transcriptAction, tracksCopy, recording).super.super.isa;
 
   return v10.super.super.isa;
 }

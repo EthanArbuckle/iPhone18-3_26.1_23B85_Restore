@@ -1,33 +1,33 @@
 @interface NTKPlumeriaFaceView
-- (NTKPlumeriaFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
+- (NTKPlumeriaFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
 - (id)createFaceColorPalette;
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_applyFrozen;
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7;
-- (void)_configureForEditMode:(int64_t)a3;
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_configureForEditMode:(int64_t)mode;
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
 - (void)_loadSnapshotContentViews;
 - (void)_reorderSwitcherSnapshotView;
 - (void)_setUpMetalView;
 - (void)_tearDownMetalView;
 - (void)_unloadSnapshotContentViews;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
+- (void)setOverrideDate:(id)date duration:(double)duration;
 @end
 
 @implementation NTKPlumeriaFaceView
 
-- (NTKPlumeriaFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKPlumeriaFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
-  v9 = a4;
+  deviceCopy = device;
   v13.receiver = self;
   v13.super_class = NTKPlumeriaFaceView;
-  v10 = [(NTKPlumeriaFaceView *)&v13 initWithFaceStyle:a3 forDevice:v9 clientIdentifier:a5];
+  v10 = [(NTKPlumeriaFaceView *)&v13 initWithFaceStyle:style forDevice:deviceCopy clientIdentifier:identifier];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_device, a4);
+    objc_storeStrong(&v10->_device, device);
     v11->_isPaused = 1;
   }
 
@@ -57,23 +57,23 @@
   [(NTKPlumeriaFaceView *)&v2 _applyFrozen];
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
   v7.receiver = self;
   v7.super_class = NTKPlumeriaFaceView;
-  v6 = a3;
-  [(NTKPlumeriaFaceView *)&v7 setOverrideDate:v6 duration:a4];
-  [(NTKPlumeriaQuad *)self->_compositeQuad setOverrideDate:v6 duration:a4, v7.receiver, v7.super_class];
+  dateCopy = date;
+  [(NTKPlumeriaFaceView *)&v7 setOverrideDate:dateCopy duration:duration];
+  [(NTKPlumeriaQuad *)self->_compositeQuad setOverrideDate:dateCopy duration:duration, v7.receiver, v7.super_class];
 }
 
 - (void)_reorderSwitcherSnapshotView
 {
-  v3 = [(NTKPlumeriaFaceView *)self switcherSnapshotView];
+  switcherSnapshotView = [(NTKPlumeriaFaceView *)self switcherSnapshotView];
 
-  if (v3)
+  if (switcherSnapshotView)
   {
-    v4 = [(NTKPlumeriaFaceView *)self switcherSnapshotView];
-    [(NTKPlumeriaFaceView *)self bringSubviewToFront:v4];
+    switcherSnapshotView2 = [(NTKPlumeriaFaceView *)self switcherSnapshotView];
+    [(NTKPlumeriaFaceView *)self bringSubviewToFront:switcherSnapshotView2];
   }
 }
 
@@ -91,8 +91,8 @@
   self->_compositeQuad = v5;
 
   [(CLKUIMetalQuadView *)self->_quadView addQuad:self->_compositeQuad];
-  v7 = [(NTKPlumeriaFaceView *)self contentView];
-  [v7 addSubview:self->_quadView];
+  contentView = [(NTKPlumeriaFaceView *)self contentView];
+  [contentView addSubview:self->_quadView];
 
   [(NTKPlumeriaFaceView *)self bounds];
   [(CLKUIMetalQuadView *)self->_quadView setFrame:?];
@@ -114,19 +114,19 @@
   self->_quadView = 0;
 }
 
-- (void)_configureForEditMode:(int64_t)a3
+- (void)_configureForEditMode:(int64_t)mode
 {
   v6.receiver = self;
   v6.super_class = NTKPlumeriaFaceView;
   [(NTKPlumeriaFaceView *)&v6 _configureForEditMode:?];
-  if (a3 == 10)
+  if (mode == 10)
   {
     v5 = 4;
   }
 
   else
   {
-    if (a3)
+    if (mode)
     {
       return;
     }
@@ -144,29 +144,29 @@
   return v2;
 }
 
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
   v5.receiver = self;
   v5.super_class = NTKPlumeriaFaceView;
-  [(NTKPlumeriaFaceView *)&v5 _configureForTransitionFraction:a4 fromEditMode:a5 toEditMode:a3];
+  [(NTKPlumeriaFaceView *)&v5 _configureForTransitionFraction:mode fromEditMode:editMode toEditMode:fraction];
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a6 == 10)
+  if (mode == 10)
   {
     v26 = v13;
     v27 = v10;
     v28 = v9;
     v29 = v8;
     v30 = v7;
-    v18 = a5;
-    v19 = [a4 effectiveOptionName];
-    v20 = NTKPlumeriaSettingIndexFromColorwayName(v19);
+    toOptionCopy = toOption;
+    effectiveOptionName = [option effectiveOptionName];
+    v20 = NTKPlumeriaSettingIndexFromColorwayName(effectiveOptionName);
 
-    v21 = [v18 effectiveOptionName];
+    effectiveOptionName2 = [toOptionCopy effectiveOptionName];
 
-    v22 = NTKPlumeriaSettingIndexFromColorwayName(v21);
+    v22 = NTKPlumeriaSettingIndexFromColorwayName(effectiveOptionName2);
     if (v20 == v22)
     {
       v23 = 0;
@@ -180,61 +180,61 @@
     [(NTKPlumeriaQuad *)self->_compositeQuad setState:v23, v14, v26, v27, v28, v29, v30, v11];
     compositeQuad = self->_compositeQuad;
 
-    *&v24 = a3;
+    *&v24 = fraction;
     [(NTKPlumeriaQuad *)compositeQuad morphBetweenColorways:v20 index1:v22 index2:v24];
   }
 }
 
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v8 = a3;
+  optionCopy = option;
   v12.receiver = self;
   v12.super_class = NTKPlumeriaFaceView;
-  [(NTKPlumeriaFaceView *)&v12 _applyOption:v8 forCustomEditMode:a4 slot:a5];
-  if (a4 == 10)
+  [(NTKPlumeriaFaceView *)&v12 _applyOption:optionCopy forCustomEditMode:mode slot:slot];
+  if (mode == 10)
   {
-    v9 = [v8 effectiveOptionName];
-    v10 = NTKPlumeriaSettingIndexFromColorwayName(v9);
+    effectiveOptionName = [optionCopy effectiveOptionName];
+    v10 = NTKPlumeriaSettingIndexFromColorwayName(effectiveOptionName);
 
-    v11 = [(NTKPlumeriaQuad *)self->_compositeQuad state];
+    state = [(NTKPlumeriaQuad *)self->_compositeQuad state];
     [(NTKPlumeriaQuad *)self->_compositeQuad morphBetweenColorways:v10 index1:v10 index2:0.0];
-    [(NTKPlumeriaQuad *)self->_compositeQuad setState:v11];
+    [(NTKPlumeriaQuad *)self->_compositeQuad setState:state];
   }
 }
 
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v11.receiver = self;
   v11.super_class = NTKPlumeriaFaceView;
-  [(NTKPlumeriaFaceView *)&v11 _applyBreathingFraction:a4 forCustomEditMode:a5 slot:?];
-  if (a4 == 10)
+  [(NTKPlumeriaFaceView *)&v11 _applyBreathingFraction:mode forCustomEditMode:slot slot:?];
+  if (mode == 10)
   {
     NTKLargeElementScaleForBreathingFraction();
     v8 = v7;
-    v9 = [(NTKPlumeriaFaceView *)self rootContainerView];
+    rootContainerView = [(NTKPlumeriaFaceView *)self rootContainerView];
     CGAffineTransformMakeScale(&v10, v8, v8);
-    [v9 setTransform:&v10];
+    [rootContainerView setTransform:&v10];
   }
 }
 
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v15.receiver = self;
   v15.super_class = NTKPlumeriaFaceView;
-  [(NTKPlumeriaFaceView *)&v15 _applyRubberBandingFraction:a4 forCustomEditMode:a5 slot:?];
-  if (a4 == 10)
+  [(NTKPlumeriaFaceView *)&v15 _applyRubberBandingFraction:mode forCustomEditMode:slot slot:?];
+  if (mode == 10)
   {
     NTKScaleForRubberBandingFraction();
     v8 = v7;
     NTKAlphaForRubberBandingFraction();
     v10 = v9;
-    v11 = [(NTKPlumeriaFaceView *)self rootContainerView];
+    rootContainerView = [(NTKPlumeriaFaceView *)self rootContainerView];
     CGAffineTransformMakeScale(&v13, v8, v8);
     CGAffineTransformTranslate(&v14, &v13, 0.0, 1.0);
-    [v11 setTransform:&v14];
+    [rootContainerView setTransform:&v14];
 
-    v12 = [(NTKPlumeriaFaceView *)self rootContainerView];
-    [v12 setAlpha:v10];
+    rootContainerView2 = [(NTKPlumeriaFaceView *)self rootContainerView];
+    [rootContainerView2 setAlpha:v10];
   }
 }
 

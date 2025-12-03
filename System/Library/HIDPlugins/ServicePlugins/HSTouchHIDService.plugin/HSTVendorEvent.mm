@@ -1,10 +1,10 @@
 @interface HSTVendorEvent
-- (HSTVendorEvent)initWithType:(unsigned __int16)a3 buffer:(const void *)a4 length:(unint64_t)a5;
+- (HSTVendorEvent)initWithType:(unsigned __int16)type buffer:(const void *)buffer length:(unint64_t)length;
 @end
 
 @implementation HSTVendorEvent
 
-- (HSTVendorEvent)initWithType:(unsigned __int16)a3 buffer:(const void *)a4 length:(unint64_t)a5
+- (HSTVendorEvent)initWithType:(unsigned __int16)type buffer:(const void *)buffer length:(unint64_t)length
 {
   v14.receiver = self;
   v14.super_class = HSTVendorEvent;
@@ -12,8 +12,8 @@
   v9 = v8;
   if (v8)
   {
-    v8->_type = a3;
-    v10 = [NSData dataWithBytes:a4 length:a5];
+    v8->_type = type;
+    v10 = [NSData dataWithBytes:buffer length:length];
     data = v9->_data;
     v9->_data = v10;
 

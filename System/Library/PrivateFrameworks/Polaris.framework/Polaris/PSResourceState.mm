@@ -1,26 +1,26 @@
 @interface PSResourceState
 - (id)computeDesiredStride;
-- (id)init:(id)a3 withConfig:(id)a4;
+- (id)init:(id)init withConfig:(id)config;
 @end
 
 @implementation PSResourceState
 
-- (id)init:(id)a3 withConfig:(id)a4
+- (id)init:(id)init withConfig:(id)config
 {
-  v26 = a3;
-  v6 = a4;
+  initCopy = init;
+  configCopy = config;
   v31.receiver = self;
   v31.super_class = PSResourceState;
   v7 = [(PSResourceState *)&v31 init];
   v8 = v7;
   if (v7)
   {
-    [(PSResourceState *)v7 setResourceName:v26];
-    v9 = [v6 supportedCadences];
-    [(PSResourceState *)v8 setSupportedStrides:v9];
+    [(PSResourceState *)v7 setResourceName:initCopy];
+    supportedCadences = [configCopy supportedCadences];
+    [(PSResourceState *)v8 setSupportedStrides:supportedCadences];
 
-    v10 = [v6 defaultStride];
-    [(PSResourceState *)v8 setDefaultStride:v10];
+    defaultStride = [configCopy defaultStride];
+    [(PSResourceState *)v8 setDefaultStride:defaultStride];
 
     [(PSResourceState *)v8 setState:0];
     [(PSResourceState *)v8 setProviderStride:0];
@@ -35,8 +35,8 @@
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v13 = [(PSResourceState *)v8 supportedStrides];
-    v14 = [v13 countByEnumeratingWithState:&v27 objects:v32 count:16];
+    supportedStrides = [(PSResourceState *)v8 supportedStrides];
+    v14 = [supportedStrides countByEnumeratingWithState:&v27 objects:v32 count:16];
     if (v14)
     {
       v15 = *v28;
@@ -47,32 +47,32 @@
         {
           if (*v28 != v15)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(supportedStrides);
           }
 
           v17 = *(*(&v27 + 1) + 8 * v16);
           v18 = [NSNumber numberWithBool:0];
-          v19 = [(PSResourceState *)v8 guaranteedStrideChangeNotification];
-          [v19 setObject:v18 forKeyedSubscript:v17];
+          guaranteedStrideChangeNotification = [(PSResourceState *)v8 guaranteedStrideChangeNotification];
+          [guaranteedStrideChangeNotification setObject:v18 forKeyedSubscript:v17];
 
           v16 = v16 + 1;
         }
 
         while (v14 != v16);
-        v14 = [v13 countByEnumeratingWithState:&v27 objects:v32 count:16];
+        v14 = [supportedStrides countByEnumeratingWithState:&v27 objects:v32 count:16];
       }
 
       while (v14);
     }
 
-    v20 = [(PSResourceState *)v8 resourcesWithStrideChangeNotification];
-    v21 = [v20 containsObject:v26];
+    resourcesWithStrideChangeNotification = [(PSResourceState *)v8 resourcesWithStrideChangeNotification];
+    v21 = [resourcesWithStrideChangeNotification containsObject:initCopy];
 
     if (v21)
     {
       v22 = [NSNumber numberWithBool:1];
-      v23 = [(PSResourceState *)v8 guaranteedStrideChangeNotification];
-      [v23 setObject:v22 forKeyedSubscript:&off_100029958];
+      guaranteedStrideChangeNotification2 = [(PSResourceState *)v8 guaranteedStrideChangeNotification];
+      [guaranteedStrideChangeNotification2 setObject:v22 forKeyedSubscript:&off_100029958];
     }
 
     v24 = objc_alloc_init(NSMutableDictionary);
@@ -86,10 +86,10 @@
 
 - (id)computeDesiredStride
 {
-  v2 = self;
+  selfCopy = self;
   if ([(NSMutableDictionary *)self->_consumersForStride count])
   {
-    if ([(NSMutableDictionary *)v2->_supportedStrides count])
+    if ([(NSMutableDictionary *)selfCopy->_supportedStrides count])
     {
       __src = 0;
       v52 = 0;
@@ -98,9 +98,9 @@
       v48 = 0u;
       v49 = 0u;
       v50 = 0u;
-      v3 = v2->_supportedStrides;
+      v3 = selfCopy->_supportedStrides;
       v4 = [(NSMutableDictionary *)v3 countByEnumeratingWithState:&v47 objects:v58 count:16];
-      v40 = v2;
+      v40 = selfCopy;
       if (v4)
       {
         v5 = *v48;
@@ -113,7 +113,7 @@
               objc_enumerationMutation(v3);
             }
 
-            v7 = [*(*(&v47 + 1) + 8 * i) unsignedIntValue];
+            unsignedIntValue = [*(*(&v47 + 1) + 8 * i) unsignedIntValue];
             v8 = v52;
             if (v52 >= v53)
             {
@@ -147,7 +147,7 @@
                 sub_1000092C0(&__src, v15);
               }
 
-              *(4 * v12) = v7;
+              *(4 * v12) = unsignedIntValue;
               v9 = 4 * v12 + 4;
               memcpy(0, v10, v11);
               v16 = __src;
@@ -159,12 +159,12 @@
                 operator delete(v16);
               }
 
-              v2 = v40;
+              selfCopy = v40;
             }
 
             else
             {
-              *v52 = v7;
+              *v52 = unsignedIntValue;
               v9 = (v8 + 4);
             }
 
@@ -185,18 +185,18 @@
       v42 = 0u;
       v43 = 0u;
       v44 = 0u;
-      obj = v2->_consumersForStride;
+      obj = selfCopy->_consumersForStride;
       if ([(NSMutableDictionary *)obj countByEnumeratingWithState:&v41 objects:v57 count:16])
       {
         *v42;
         *v42;
         v17 = **(&v41 + 1);
-        v18 = [**(&v41 + 1) name];
-        v19 = v18;
-        v20 = [v18 UTF8String];
-        [(NSMutableDictionary *)v2->_consumersForStride objectForKeyedSubscript:v17];
-        v21 = [objc_claimAutoreleasedReturnValue() unsignedIntValue];
-        v22 = strlen(v20);
+        name = [**(&v41 + 1) name];
+        v19 = name;
+        uTF8String = [name UTF8String];
+        [(NSMutableDictionary *)selfCopy->_consumersForStride objectForKeyedSubscript:v17];
+        unsignedIntValue2 = [objc_claimAutoreleasedReturnValue() unsignedIntValue];
+        v22 = strlen(uTF8String);
         if (v22 < 0x7FFFFFFFFFFFFFF8)
         {
           v23 = v22;
@@ -205,11 +205,11 @@
             HIBYTE(v55) = v22;
             if (v22)
             {
-              memmove(&__dst, v20, v22);
+              memmove(&__dst, uTF8String, v22);
             }
 
             *(&__dst + v23) = 0;
-            v56 = v21;
+            v56 = unsignedIntValue2;
             sub_10000936C();
           }
 

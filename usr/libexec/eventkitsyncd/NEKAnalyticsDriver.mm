@@ -1,10 +1,10 @@
 @interface NEKAnalyticsDriver
 - (BOOL)_forceDiagnosticForTesting;
 - (BOOL)_minimumDateThresholdMet;
-- (BOOL)_shouldNotifyForDrift:(id)a3 orDuplication:(id)a4 forDiagnosticTimestamp:(double)a5;
-- (NEKAnalyticsDriver)initWithSyncController:(id)a3;
-- (void)_sendMessage:(id)a3;
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7;
+- (BOOL)_shouldNotifyForDrift:(id)drift orDuplication:(id)duplication forDiagnosticTimestamp:(double)timestamp;
+- (NEKAnalyticsDriver)initWithSyncController:(id)controller;
+- (void)_sendMessage:(id)message;
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context;
 @end
 
 @implementation NEKAnalyticsDriver
@@ -34,9 +34,9 @@
   return !v2;
 }
 
-- (NEKAnalyticsDriver)initWithSyncController:(id)a3
+- (NEKAnalyticsDriver)initWithSyncController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v18.receiver = self;
   v18.super_class = NEKAnalyticsDriver;
   v5 = [(NEKAnalyticsDriver *)&v18 init];
@@ -48,7 +48,7 @@
     minimumDateThreshold = v5->_minimumDateThreshold;
     v5->_minimumDateThreshold = v8;
 
-    objc_storeWeak(&v5->_syncController, v4);
+    objc_storeWeak(&v5->_syncController, controllerCopy);
     v10 = [[NDTActivity alloc] initWithDelegate:v5];
     activity = v5->_activity;
     v5->_activity = v10;
@@ -67,19 +67,19 @@
   return v5;
 }
 
-- (void)_sendMessage:(id)a3
+- (void)_sendMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v22[0] = IDSSendMessageOptionTimeoutKey;
   v22[1] = IDSSendMessageOptionFireAndForgetKey;
   v23[0] = &off_1000BB7A8;
   v23[1] = &__kCFBooleanTrue;
   v5 = [NSDictionary dictionaryWithObjects:v23 forKeys:v22 count:2];
-  v6 = [(NEKAnalyticsDriver *)self service];
+  service = [(NEKAnalyticsDriver *)self service];
   v7 = [NSSet setWithObject:IDSDefaultPairedDevice];
   v14 = 0;
   v15 = 0;
-  v8 = [v6 sendData:v4 toDestinations:v7 priority:200 options:v5 identifier:&v15 error:&v14];
+  v8 = [service sendData:messageCopy toDestinations:v7 priority:200 options:v5 identifier:&v15 error:&v14];
   v9 = v15;
   v10 = v14;
 
@@ -87,7 +87,7 @@
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12 = v11;
-    v13 = [v4 length];
+    v13 = [messageCopy length];
     *buf = 67109634;
     v17 = v13;
     v18 = 2114;
@@ -98,21 +98,21 @@
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context
 {
-  v42 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [[NEKPBDailyAnalytics alloc] initWithData:v13];
-  v17 = [(NEKAnalyticsDriver *)self _forceDiagnosticForTesting];
-  v18 = [(NEKAnalyticsDriver *)self _minimumDateThresholdMet];
+  serviceCopy = service;
+  accountCopy = account;
+  dataCopy = data;
+  dCopy = d;
+  contextCopy = context;
+  v16 = [[NEKPBDailyAnalytics alloc] initWithData:dataCopy];
+  _forceDiagnosticForTesting = [(NEKAnalyticsDriver *)self _forceDiagnosticForTesting];
+  _minimumDateThresholdMet = [(NEKAnalyticsDriver *)self _minimumDateThresholdMet];
   WeakRetained = objc_loadWeakRetained(&self->_syncController);
-  v20 = [WeakRetained isCurrentlySyncing];
+  isCurrentlySyncing = [WeakRetained isCurrentlySyncing];
 
-  v21 = [v15 originalGUID];
-  if (((v18 | v17) & 1) == 0)
+  originalGUID = [contextCopy originalGUID];
+  if (((_minimumDateThresholdMet | _forceDiagnosticForTesting) & 1) == 0)
   {
     v32 = *(qword_1000D18A8 + 8);
     if (!os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
@@ -124,13 +124,13 @@
     *buf = 138412546;
     v44 = minimumDateThreshold;
     v45 = 2112;
-    v46 = v21;
+    v46 = originalGUID;
     v34 = "Minimum date threshold not met [%@] - ignoring incoming data for drift or duplication with IDS identifier: %@";
     v35 = v32;
     goto LABEL_11;
   }
 
-  if (!(v17 & 1 | ((v20 & 1) == 0)))
+  if (!(_forceDiagnosticForTesting & 1 | ((isCurrentlySyncing & 1) == 0)))
   {
     v38 = *(qword_1000D18A8 + 8);
     if (!os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
@@ -139,7 +139,7 @@
     }
 
     *buf = 138412290;
-    v44 = v21;
+    v44 = originalGUID;
     v34 = "Active sync session - ignoring incomingData for drift or duplication with IDS identifier: %@";
     v35 = v38;
     v36 = OS_LOG_TYPE_INFO;
@@ -155,7 +155,7 @@
     }
 
     *buf = 138412290;
-    v44 = v21;
+    v44 = originalGUID;
     v34 = "Failed to deserialize analytics data from watch with IDS identifier: %@";
     v35 = v22;
     v36 = OS_LOG_TYPE_DEFAULT;
@@ -167,7 +167,7 @@ LABEL_16:
   if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v44 = v21;
+    v44 = originalGUID;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "Deserialized analytics data from watch with IDS identifier: %@", buf, 0xCu);
   }
 
@@ -185,7 +185,7 @@ LABEL_16:
     *buf = 138412546;
     v44 = @"/var/mobile/Library/Calendar/Calendar.sqlitedb";
     v45 = 2112;
-    v46 = v21;
+    v46 = originalGUID;
     v34 = "Calendar DB does not exist at path [%@] - ignoring incomingData for drift or duplication with IDS identifier: %@";
     v35 = v39;
 LABEL_11:
@@ -201,17 +201,17 @@ LABEL_17:
   [v25 timeIntervalSinceReferenceDate];
   v27 = v26;
 
-  v28 = [(NEKPBDailyAnalytics *)v16 duplicateCheck];
-  v29 = [NEKDuplicationResults duplicateResultsFromCheck:v28 withDiagnosticTimestamp:v27];
+  duplicateCheck = [(NEKPBDailyAnalytics *)v16 duplicateCheck];
+  v29 = [NEKDuplicationResults duplicateResultsFromCheck:duplicateCheck withDiagnosticTimestamp:v27];
 
-  v30 = [(NEKPBDailyAnalytics *)v16 occurrenceCache];
-  v31 = [NEKDriftResults driftResultsForCache:v30 withDiagnosticTimestamp:v41 andDatabase:v27];
+  occurrenceCache = [(NEKPBDailyAnalytics *)v16 occurrenceCache];
+  v31 = [NEKDriftResults driftResultsForCache:occurrenceCache withDiagnosticTimestamp:v41 andDatabase:v27];
 
   [NEKAnalyticsReporter saveSyncReportForDrift:v31 andDuplication:v29];
   [NEKAnalyticsReporter sendAnalyticsForDrift:v31 andDuplication:v29];
   if ([(NEKAnalyticsDriver *)self _shouldNotifyForDrift:v31 orDuplication:v29 forDiagnosticTimestamp:v27])
   {
-    [(NEKNotificationCenter *)self->_notificationCenter requestDiagnosticNotificationForDeviceID:v14];
+    [(NEKNotificationCenter *)self->_notificationCenter requestDiagnosticNotificationForDeviceID:dCopy];
   }
 
   else
@@ -228,17 +228,17 @@ LABEL_17:
 LABEL_18:
 }
 
-- (BOOL)_shouldNotifyForDrift:(id)a3 orDuplication:(id)a4 forDiagnosticTimestamp:(double)a5
+- (BOOL)_shouldNotifyForDrift:(id)drift orDuplication:(id)duplication forDiagnosticTimestamp:(double)timestamp
 {
-  v8 = a3;
-  v9 = a4;
+  driftCopy = drift;
+  duplicationCopy = duplication;
   v10 = +[NEKEnvironment instance];
-  v11 = [v10 tinyStore];
+  tinyStore = [v10 tinyStore];
 
   LOBYTE(v10) = +[FeatureFlags sendDiagnosticNotificaton];
-  v12 = [(NEKAnalyticsDriver *)self _forceDiagnosticForTesting];
-  v13 = v12;
-  if ((v10 & 1) == 0 && (v12 & 1) == 0)
+  _forceDiagnosticForTesting = [(NEKAnalyticsDriver *)self _forceDiagnosticForTesting];
+  v13 = _forceDiagnosticForTesting;
+  if ((v10 & 1) == 0 && (_forceDiagnosticForTesting & 1) == 0)
   {
     v14 = *(qword_1000D18A8 + 8);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
@@ -252,8 +252,8 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  [v11 getDoubleValueForKey:@"diagnosticNotificationIgnoreUntil" default:*&qword_1000D1130];
-  if (!((v15 <= a5) | v13 & 1))
+  [tinyStore getDoubleValueForKey:@"diagnosticNotificationIgnoreUntil" default:*&qword_1000D1130];
+  if (!((v15 <= timestamp) | v13 & 1))
   {
     v27 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
     v28 = *(qword_1000D18A8 + 8);
@@ -267,13 +267,13 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  [v11 getDoubleValueForKey:@"diagnosticLastChecked" default:*&qword_1000D1130];
+  [tinyStore getDoubleValueForKey:@"diagnosticLastChecked" default:*&qword_1000D1130];
   v17 = v16;
   v18 = *&qword_1000D1130;
-  [v11 setDoubleValue:@"diagnosticLastChecked" forKey:a5];
-  [v8 firstFoundTimestamp];
+  [tinyStore setDoubleValue:@"diagnosticLastChecked" forKey:timestamp];
+  [driftCopy firstFoundTimestamp];
   v20 = v19;
-  [v9 firstFoundTimestamp];
+  [duplicationCopy firstFoundTimestamp];
   v22 = v21;
   v23 = fmax(v20, v21) > v17;
   v24 = v17 != v18 && v23;

@@ -1,24 +1,24 @@
 @interface RFInteractionPerformed
-- (void)emitWithTurnIdentifier:(id)a3;
-- (void)emitWithTurnIdentifier:(id)a3 aceViewId:(id)a4;
+- (void)emitWithTurnIdentifier:(id)identifier;
+- (void)emitWithTurnIdentifier:(id)identifier aceViewId:(id)id;
 @end
 
 @implementation RFInteractionPerformed
 
-- (void)emitWithTurnIdentifier:(id)a3
+- (void)emitWithTurnIdentifier:(id)identifier
 {
   v4 = sub_26A84ACC8();
   v5 = *(v4 - 8);
   MEMORY[0x28223BE20](v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_26A84ACA8();
-  v8 = self;
+  selfCopy = self;
   sub_26A5E0AD0(v7);
 
   (*(v5 + 8))(v7, v4);
 }
 
-- (void)emitWithTurnIdentifier:(id)a3 aceViewId:(id)a4
+- (void)emitWithTurnIdentifier:(id)identifier aceViewId:(id)id
 {
   v5 = sub_26A84ACC8();
   v6 = *(v5 - 8);
@@ -28,7 +28,7 @@
   v11 = &v14 - v10;
   sub_26A84ACA8();
   sub_26A84ACA8();
-  v12 = self;
+  selfCopy = self;
   sub_26A5E0E50(v11, v8);
 
   v13 = *(v6 + 8);

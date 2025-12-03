@@ -3,21 +3,21 @@
 - (OPTTSFinalTextToSpeechStreamingResponse)contentAsOPTTSFinalTextToSpeechStreamingResponse;
 - (OPTTSMutableTextToSpeechRouterStreamingStreamingResponse)init;
 - (OPTTSPartialTextToSpeechStreamingResponse)contentAsOPTTSPartialTextToSpeechStreamingResponse;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)content_type;
-- (void)setContentAsOPTTSBeginTextToSpeechStreamingResponse:(id)a3;
-- (void)setContentAsOPTTSFinalTextToSpeechStreamingResponse:(id)a3;
-- (void)setContentAsOPTTSPartialTextToSpeechStreamingResponse:(id)a3;
-- (void)setContent_type:(int64_t)a3;
+- (void)setContentAsOPTTSBeginTextToSpeechStreamingResponse:(id)response;
+- (void)setContentAsOPTTSFinalTextToSpeechStreamingResponse:(id)response;
+- (void)setContentAsOPTTSPartialTextToSpeechStreamingResponse:(id)response;
+- (void)setContent_type:(int64_t)content_type;
 @end
 
 @implementation OPTTSMutableTextToSpeechRouterStreamingStreamingResponse
 
-- (void)setContentAsOPTTSFinalTextToSpeechStreamingResponse:(id)a3
+- (void)setContentAsOPTTSFinalTextToSpeechStreamingResponse:(id)response
 {
-  v5 = a3;
+  responseCopy = response;
   [(OPTTSMutableTextToSpeechRouterStreamingStreamingResponse *)self setContent_type:3];
-  v4 = [v5 copy];
+  v4 = [responseCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"content"];
 }
 
@@ -36,11 +36,11 @@
   return v3;
 }
 
-- (void)setContentAsOPTTSPartialTextToSpeechStreamingResponse:(id)a3
+- (void)setContentAsOPTTSPartialTextToSpeechStreamingResponse:(id)response
 {
-  v5 = a3;
+  responseCopy = response;
   [(OPTTSMutableTextToSpeechRouterStreamingStreamingResponse *)self setContent_type:2];
-  v4 = [v5 copy];
+  v4 = [responseCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"content"];
 }
 
@@ -59,11 +59,11 @@
   return v3;
 }
 
-- (void)setContentAsOPTTSBeginTextToSpeechStreamingResponse:(id)a3
+- (void)setContentAsOPTTSBeginTextToSpeechStreamingResponse:(id)response
 {
-  v5 = a3;
+  responseCopy = response;
   [(OPTTSMutableTextToSpeechRouterStreamingStreamingResponse *)self setContent_type:1];
-  v4 = [v5 copy];
+  v4 = [responseCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"content"];
 }
 
@@ -82,23 +82,23 @@
   return v3;
 }
 
-- (void)setContent_type:(int64_t)a3
+- (void)setContent_type:(int64_t)content_type
 {
-  v4 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInteger:a3];
+  v4 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInteger:content_type];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
 - (int64_t)content_type
 {
   v2 = [(NSMutableDictionary *)self->super._storage objectForKeyedSubscript:@"content_type"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSMutableDictionary *)self->super._storage copy];
   v6 = v4[1];
   v4[1] = v5;
@@ -113,9 +113,9 @@
   v2 = [(OPTTSMutableTextToSpeechRouterStreamingStreamingResponse *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v2->super._storage;
-    v2->super._storage = v3;
+    v2->super._storage = dictionary;
   }
 
   return v2;

@@ -1,28 +1,28 @@
 @interface VCMediaNegotiationBlobMultiwayAudioStream
-- (BOOL)isEqual:(id)a3;
-- (VCMediaNegotiationBlobMultiwayAudioStream)initWithStreamConfig:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (VCMediaNegotiationBlobMultiwayAudioStream)initWithStreamConfig:(id)config;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)newMultiwayAudioStream;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)printWithLogFile:(void *)a3;
-- (void)setHasMaxNetworkBitrate:(BOOL)a3;
-- (void)setHasMaxPacketsPerSecond:(BOOL)a3;
-- (void)setHasRepairedMaxNetworkBitrate:(BOOL)a3;
-- (void)setHasRepairedStreamID:(BOOL)a3;
-- (void)setHasSupportedPayloads:(BOOL)a3;
-- (void)setPayloadFlagsWithPayloads:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)printWithLogFile:(void *)file;
+- (void)setHasMaxNetworkBitrate:(BOOL)bitrate;
+- (void)setHasMaxPacketsPerSecond:(BOOL)second;
+- (void)setHasRepairedMaxNetworkBitrate:(BOOL)bitrate;
+- (void)setHasRepairedStreamID:(BOOL)d;
+- (void)setHasSupportedPayloads:(BOOL)payloads;
+- (void)setPayloadFlagsWithPayloads:(id)payloads;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCMediaNegotiationBlobMultiwayAudioStream
 
-- (void)setHasMaxNetworkBitrate:(BOOL)a3
+- (void)setHasMaxNetworkBitrate:(BOOL)bitrate
 {
-  if (a3)
+  if (bitrate)
   {
     v3 = 2;
   }
@@ -35,9 +35,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasSupportedPayloads:(BOOL)a3
+- (void)setHasSupportedPayloads:(BOOL)payloads
 {
-  if (a3)
+  if (payloads)
   {
     v3 = 32;
   }
@@ -50,9 +50,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasMaxPacketsPerSecond:(BOOL)a3
+- (void)setHasMaxPacketsPerSecond:(BOOL)second
 {
-  if (a3)
+  if (second)
   {
     v3 = 4;
   }
@@ -65,9 +65,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasRepairedStreamID:(BOOL)a3
+- (void)setHasRepairedStreamID:(BOOL)d
 {
-  if (a3)
+  if (d)
   {
     v3 = 16;
   }
@@ -80,9 +80,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasRepairedMaxNetworkBitrate:(BOOL)a3
+- (void)setHasRepairedMaxNetworkBitrate:(BOOL)bitrate
 {
-  if (a3)
+  if (bitrate)
   {
     v3 = 8;
   }
@@ -105,26 +105,26 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_ssrc), @"ssrc"}];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_ssrc), @"ssrc"}];
   has = self->_has;
   if ((has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_maxNetworkBitrate), @"maxNetworkBitrate"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_maxNetworkBitrate), @"maxNetworkBitrate"}];
     has = self->_has;
   }
 
   if ((has & 0x20) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_supportedPayloads), @"supportedPayloads"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_supportedPayloads), @"supportedPayloads"}];
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_streamID), @"streamID"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_qualityIndex), @"qualityIndex"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_streamID), @"streamID"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_qualityIndex), @"qualityIndex"}];
   v6 = self->_has;
   if (v6)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_maxMediaBitrate), @"maxMediaBitrate"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_maxMediaBitrate), @"maxMediaBitrate"}];
     v6 = self->_has;
     if ((v6 & 4) == 0)
     {
@@ -135,10 +135,10 @@ LABEL_7:
       }
 
 LABEL_13:
-      [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_repairedStreamID), @"repairedStreamID"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_repairedStreamID), @"repairedStreamID"}];
       if ((*&self->_has & 8) == 0)
       {
-        return v3;
+        return dictionary;
       }
 
       goto LABEL_9;
@@ -151,7 +151,7 @@ LABEL_13:
   }
 
   *&v5 = self->_maxPacketsPerSecond;
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithFloat:", v5), @"maxPacketsPerSecond"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithFloat:", v5), @"maxPacketsPerSecond"}];
   v6 = self->_has;
   if ((v6 & 0x10) != 0)
   {
@@ -162,13 +162,13 @@ LABEL_8:
   if ((v6 & 8) != 0)
   {
 LABEL_9:
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_repairedMaxNetworkBitrate), @"repairedMaxNetworkBitrate"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_repairedMaxNetworkBitrate), @"repairedMaxNetworkBitrate"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   PBDataWriterWriteUint32Field();
   has = self->_has;
@@ -232,30 +232,30 @@ LABEL_13:
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  *(a3 + 8) = self->_ssrc;
+  *(to + 8) = self->_ssrc;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(a3 + 3) = self->_maxNetworkBitrate;
-    *(a3 + 44) |= 2u;
+    *(to + 3) = self->_maxNetworkBitrate;
+    *(to + 44) |= 2u;
     has = self->_has;
   }
 
   if ((has & 0x20) != 0)
   {
-    *(a3 + 10) = self->_supportedPayloads;
-    *(a3 + 44) |= 0x20u;
+    *(to + 10) = self->_supportedPayloads;
+    *(to + 44) |= 0x20u;
   }
 
-  *(a3 + 9) = self->_streamID;
-  *(a3 + 5) = self->_qualityIndex;
+  *(to + 9) = self->_streamID;
+  *(to + 5) = self->_qualityIndex;
   v4 = self->_has;
   if (v4)
   {
-    *(a3 + 2) = self->_maxMediaBitrate;
-    *(a3 + 44) |= 1u;
+    *(to + 2) = self->_maxMediaBitrate;
+    *(to + 44) |= 1u;
     v4 = self->_has;
     if ((v4 & 4) == 0)
     {
@@ -274,8 +274,8 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(a3 + 4) = LODWORD(self->_maxPacketsPerSecond);
-  *(a3 + 44) |= 4u;
+  *(to + 4) = LODWORD(self->_maxPacketsPerSecond);
+  *(to + 44) |= 4u;
   v4 = self->_has;
   if ((v4 & 0x10) == 0)
   {
@@ -286,23 +286,23 @@ LABEL_8:
     }
 
 LABEL_13:
-    *(a3 + 6) = self->_repairedMaxNetworkBitrate;
-    *(a3 + 44) |= 8u;
+    *(to + 6) = self->_repairedMaxNetworkBitrate;
+    *(to + 44) |= 8u;
     return;
   }
 
 LABEL_12:
-  *(a3 + 7) = self->_repairedStreamID;
-  *(a3 + 44) |= 0x10u;
+  *(to + 7) = self->_repairedStreamID;
+  *(to + 44) |= 0x10u;
   if ((*&self->_has & 8) != 0)
   {
     goto LABEL_13;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 8) = self->_ssrc;
   has = self->_has;
   if ((has & 2) != 0)
@@ -371,12 +371,12 @@ LABEL_9:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    if (self->_ssrc != *(a3 + 8))
+    if (self->_ssrc != *(equal + 8))
     {
 LABEL_34:
       LOBYTE(v5) = 0;
@@ -385,78 +385,78 @@ LABEL_34:
 
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 44) & 2) == 0 || self->_maxNetworkBitrate != *(a3 + 3))
+      if ((*(equal + 44) & 2) == 0 || self->_maxNetworkBitrate != *(equal + 3))
       {
         goto LABEL_34;
       }
     }
 
-    else if ((*(a3 + 44) & 2) != 0)
+    else if ((*(equal + 44) & 2) != 0)
     {
       goto LABEL_34;
     }
 
     if ((*&self->_has & 0x20) != 0)
     {
-      if ((*(a3 + 44) & 0x20) == 0 || self->_supportedPayloads != *(a3 + 10))
+      if ((*(equal + 44) & 0x20) == 0 || self->_supportedPayloads != *(equal + 10))
       {
         goto LABEL_34;
       }
     }
 
-    else if ((*(a3 + 44) & 0x20) != 0)
+    else if ((*(equal + 44) & 0x20) != 0)
     {
       goto LABEL_34;
     }
 
-    if (self->_streamID != *(a3 + 9) || self->_qualityIndex != *(a3 + 5))
+    if (self->_streamID != *(equal + 9) || self->_qualityIndex != *(equal + 5))
     {
       goto LABEL_34;
     }
 
     if (*&self->_has)
     {
-      if ((*(a3 + 44) & 1) == 0 || self->_maxMediaBitrate != *(a3 + 2))
+      if ((*(equal + 44) & 1) == 0 || self->_maxMediaBitrate != *(equal + 2))
       {
         goto LABEL_34;
       }
     }
 
-    else if (*(a3 + 44))
+    else if (*(equal + 44))
     {
       goto LABEL_34;
     }
 
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 44) & 4) == 0 || self->_maxPacketsPerSecond != *(a3 + 4))
+      if ((*(equal + 44) & 4) == 0 || self->_maxPacketsPerSecond != *(equal + 4))
       {
         goto LABEL_34;
       }
     }
 
-    else if ((*(a3 + 44) & 4) != 0)
+    else if ((*(equal + 44) & 4) != 0)
     {
       goto LABEL_34;
     }
 
     if ((*&self->_has & 0x10) != 0)
     {
-      if ((*(a3 + 44) & 0x10) == 0 || self->_repairedStreamID != *(a3 + 7))
+      if ((*(equal + 44) & 0x10) == 0 || self->_repairedStreamID != *(equal + 7))
       {
         goto LABEL_34;
       }
     }
 
-    else if ((*(a3 + 44) & 0x10) != 0)
+    else if ((*(equal + 44) & 0x10) != 0)
     {
       goto LABEL_34;
     }
 
-    LOBYTE(v5) = (*(a3 + 44) & 8) == 0;
+    LOBYTE(v5) = (*(equal + 44) & 8) == 0;
     if ((*&self->_has & 8) != 0)
     {
-      if ((*(a3 + 44) & 8) == 0 || self->_repairedMaxNetworkBitrate != *(a3 + 6))
+      if ((*(equal + 44) & 8) == 0 || self->_repairedMaxNetworkBitrate != *(equal + 6))
       {
         goto LABEL_34;
       }
@@ -559,31 +559,31 @@ LABEL_19:
   return v4 ^ v5 ^ (2654435761 * self->_ssrc) ^ (2654435761 * self->_streamID) ^ (2654435761 * self->_qualityIndex) ^ v6 ^ v7 ^ v11 ^ v12;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  self->_ssrc = *(a3 + 8);
-  v3 = *(a3 + 44);
+  self->_ssrc = *(from + 8);
+  v3 = *(from + 44);
   if ((v3 & 2) != 0)
   {
-    self->_maxNetworkBitrate = *(a3 + 3);
+    self->_maxNetworkBitrate = *(from + 3);
     *&self->_has |= 2u;
-    v3 = *(a3 + 44);
+    v3 = *(from + 44);
   }
 
   if ((v3 & 0x20) != 0)
   {
-    self->_supportedPayloads = *(a3 + 10);
+    self->_supportedPayloads = *(from + 10);
     *&self->_has |= 0x20u;
   }
 
-  self->_streamID = *(a3 + 9);
-  self->_qualityIndex = *(a3 + 5);
-  v4 = *(a3 + 44);
+  self->_streamID = *(from + 9);
+  self->_qualityIndex = *(from + 5);
+  v4 = *(from + 44);
   if (v4)
   {
-    self->_maxMediaBitrate = *(a3 + 2);
+    self->_maxMediaBitrate = *(from + 2);
     *&self->_has |= 1u;
-    v4 = *(a3 + 44);
+    v4 = *(from + 44);
     if ((v4 & 4) == 0)
     {
 LABEL_7:
@@ -596,14 +596,14 @@ LABEL_7:
     }
   }
 
-  else if ((*(a3 + 44) & 4) == 0)
+  else if ((*(from + 44) & 4) == 0)
   {
     goto LABEL_7;
   }
 
-  self->_maxPacketsPerSecond = *(a3 + 4);
+  self->_maxPacketsPerSecond = *(from + 4);
   *&self->_has |= 4u;
-  v4 = *(a3 + 44);
+  v4 = *(from + 44);
   if ((v4 & 0x10) == 0)
   {
 LABEL_8:
@@ -613,23 +613,23 @@ LABEL_8:
     }
 
 LABEL_13:
-    self->_repairedMaxNetworkBitrate = *(a3 + 6);
+    self->_repairedMaxNetworkBitrate = *(from + 6);
     *&self->_has |= 8u;
     return;
   }
 
 LABEL_12:
-  self->_repairedStreamID = *(a3 + 7);
+  self->_repairedStreamID = *(from + 7);
   *&self->_has |= 0x10u;
-  if ((*(a3 + 44) & 8) != 0)
+  if ((*(from + 44) & 8) != 0)
   {
     goto LABEL_13;
   }
 }
 
-- (VCMediaNegotiationBlobMultiwayAudioStream)initWithStreamConfig:(id)a3
+- (VCMediaNegotiationBlobMultiwayAudioStream)initWithStreamConfig:(id)config
 {
-  if ([a3 isSubstream])
+  if ([config isSubstream])
   {
 
     return 0;
@@ -640,16 +640,16 @@ LABEL_12:
     v5 = [(VCMediaNegotiationBlobMultiwayAudioStream *)self init];
     if (v5)
     {
-      v5->_ssrc = [a3 ssrc];
-      v5->_maxNetworkBitrate = [a3 maxNetworkBitrate];
+      v5->_ssrc = [config ssrc];
+      v5->_maxNetworkBitrate = [config maxNetworkBitrate];
       *&v5->_has |= 2u;
-      v5->_maxMediaBitrate = [a3 maxMediaBitrate];
+      v5->_maxMediaBitrate = [config maxMediaBitrate];
       *&v5->_has |= 1u;
-      v5->_maxPacketsPerSecond = [a3 maxPacketsPerSecond];
+      v5->_maxPacketsPerSecond = [config maxPacketsPerSecond];
       *&v5->_has |= 4u;
-      v5->_streamID = [a3 streamID];
-      v5->_qualityIndex = [a3 qualityIndex];
-      if ([a3 hasRepairedStreamID])
+      v5->_streamID = [config streamID];
+      v5->_qualityIndex = [config qualityIndex];
+      if ([config hasRepairedStreamID])
       {
         v6 = 16;
       }
@@ -660,17 +660,17 @@ LABEL_12:
       }
 
       *&v5->_has = *&v5->_has & 0xEF | v6;
-      v5->_repairedStreamID = [a3 repairedStreamID];
-      v5->_repairedMaxNetworkBitrate = [a3 repairedMaxNetworkBitrate];
+      v5->_repairedStreamID = [config repairedStreamID];
+      v5->_repairedMaxNetworkBitrate = [config repairedMaxNetworkBitrate];
       *&v5->_has = (*&v5->_has >> 1) & 8 | *&v5->_has & 0xF7;
-      -[VCMediaNegotiationBlobMultiwayAudioStream setPayloadFlagsWithPayloads:](v5, "setPayloadFlagsWithPayloads:", [a3 supportedAudioPayloads]);
+      -[VCMediaNegotiationBlobMultiwayAudioStream setPayloadFlagsWithPayloads:](v5, "setPayloadFlagsWithPayloads:", [config supportedAudioPayloads]);
     }
   }
 
   return v5;
 }
 
-- (void)setPayloadFlagsWithPayloads:(id)a3
+- (void)setPayloadFlagsWithPayloads:(id)payloads
 {
   v15 = *MEMORY[0x1E69E9840];
   *&self->_has |= 0x20u;
@@ -678,7 +678,7 @@ LABEL_12:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v11 objects:v10 count:16];
+  v5 = [payloads countByEnumeratingWithState:&v11 objects:v10 count:16];
   if (v5)
   {
     v6 = v5;
@@ -689,7 +689,7 @@ LABEL_12:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(payloads);
         }
 
         v9 = +[VCMediaNegotiationBlobAudioSettings negotiationPayloadFromPayload:](VCMediaNegotiationBlobAudioSettings, "negotiationPayloadFromPayload:", [*(*(&v11 + 1) + 8 * i) unsignedIntValue]);
@@ -699,7 +699,7 @@ LABEL_12:
         }
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v11 objects:v10 count:16];
+      v6 = [payloads countByEnumeratingWithState:&v11 objects:v10 count:16];
     }
 
     while (v6);
@@ -743,12 +743,12 @@ LABEL_12:
   return v3;
 }
 
-- (void)printWithLogFile:(void *)a3
+- (void)printWithLogFile:(void *)file
 {
   v22 = *MEMORY[0x1E69E9840];
   v4 = [MEMORY[0x1E696AD60] stringWithFormat:@"Multiway Audio Stream Settings: SSRC=%x maxNetworkBitrate=%d maxMediaBitrate=%d maxPacketsPerSecond=%f supportedPayloads=0x%08x streamID=%d qualityIndex=%d hasRepaired:%u repairedMaxNetworkBitrate=%d repairedStreamID=%d", self->_ssrc, self->_maxNetworkBitrate, self->_maxMediaBitrate, self->_maxPacketsPerSecond, self->_supportedPayloads, self->_streamID, self->_qualityIndex, -[VCMediaNegotiationBlobMultiwayAudioStream hasRepairedStreamID](self, "hasRepairedStreamID"), self->_repairedMaxNetworkBitrate, self->_repairedStreamID];
-  v5 = [v4 UTF8String];
-  VRLogfilePrintWithTimestamp(a3, "Media Blob -     %s\n", v6, v7, v8, v9, v10, v11, v5);
+  uTF8String = [v4 UTF8String];
+  VRLogfilePrintWithTimestamp(file, "Media Blob -     %s\n", v6, v7, v8, v9, v10, v11, uTF8String);
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
     v12 = VRTraceErrorLogLevelToCSTR();
@@ -762,7 +762,7 @@ LABEL_12:
       v18 = 1024;
       v19 = 1350;
       v20 = 2080;
-      v21 = [v4 UTF8String];
+      uTF8String2 = [v4 UTF8String];
       _os_log_impl(&dword_1DB56E000, v13, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Media Blob -     %s\n", buf, 0x26u);
     }
   }

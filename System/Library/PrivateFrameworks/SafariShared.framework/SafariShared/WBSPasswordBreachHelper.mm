@@ -1,26 +1,26 @@
 @interface WBSPasswordBreachHelper
-- (void)addResultRecordDictionaries:(id)a3 completionHandler:(id)a4;
-- (void)clearAllRecordsWithCompletionHandler:(id)a3;
-- (void)clearRecentlyBreachedResultRecordsWithCompletionHandler:(id)a3;
-- (void)getPasswordEvaluationsForPersistentIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)getResultRecordDictionariesForResultQueryDictionaries:(id)a3 withCompletionHandler:(id)a4;
-- (void)recentlyBreachedResultRecordDictionariesWithCompletionHandler:(id)a3;
-- (void)runLookupSessionIgnoringMinimumDelay:(BOOL)a3 completionHandler:(id)a4;
-- (void)writePasswordEvaluationsToCache:(id)a3 completionHandler:(id)a4;
+- (void)addResultRecordDictionaries:(id)dictionaries completionHandler:(id)handler;
+- (void)clearAllRecordsWithCompletionHandler:(id)handler;
+- (void)clearRecentlyBreachedResultRecordsWithCompletionHandler:(id)handler;
+- (void)getPasswordEvaluationsForPersistentIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)getResultRecordDictionariesForResultQueryDictionaries:(id)dictionaries withCompletionHandler:(id)handler;
+- (void)recentlyBreachedResultRecordDictionariesWithCompletionHandler:(id)handler;
+- (void)runLookupSessionIgnoringMinimumDelay:(BOOL)delay completionHandler:(id)handler;
+- (void)writePasswordEvaluationsToCache:(id)cache completionHandler:(id)handler;
 @end
 
 @implementation WBSPasswordBreachHelper
 
-- (void)runLookupSessionIgnoringMinimumDelay:(BOOL)a3 completionHandler:(id)a4
+- (void)runLookupSessionIgnoringMinimumDelay:(BOOL)delay completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __82__WBSPasswordBreachHelper_runLookupSessionIgnoringMinimumDelay_completionHandler___block_invoke;
   v7[3] = &unk_1E7FC90A0;
-  v8 = v5;
-  v9 = a3;
-  v6 = v5;
+  v8 = handlerCopy;
+  delayCopy = delay;
+  v6 = handlerCopy;
   [WBSPasswordBreachManager getSharedManagerWithCompletionHandler:v7];
 }
 
@@ -45,18 +45,18 @@ void __82__WBSPasswordBreachHelper_runLookupSessionIgnoringMinimumDelay_completi
   }
 }
 
-- (void)getResultRecordDictionariesForResultQueryDictionaries:(id)a3 withCompletionHandler:(id)a4
+- (void)getResultRecordDictionariesForResultQueryDictionaries:(id)dictionaries withCompletionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = [MEMORY[0x1E69C8930] resultQueriesFromDictionaryRepresentations:a3];
+  handlerCopy = handler;
+  v6 = [MEMORY[0x1E69C8930] resultQueriesFromDictionaryRepresentations:dictionaries];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __103__WBSPasswordBreachHelper_getResultRecordDictionariesForResultQueryDictionaries_withCompletionHandler___block_invoke;
   v9[3] = &unk_1E7FC90C8;
   v10 = v6;
-  v11 = v5;
+  v11 = handlerCopy;
   v7 = v6;
-  v8 = v5;
+  v8 = handlerCopy;
   [WBSPasswordBreachManager getSharedManagerWithCompletionHandler:v9];
 }
 
@@ -77,15 +77,15 @@ void __103__WBSPasswordBreachHelper_getResultRecordDictionariesForResultQueryDic
   }
 }
 
-- (void)recentlyBreachedResultRecordDictionariesWithCompletionHandler:(id)a3
+- (void)recentlyBreachedResultRecordDictionariesWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __89__WBSPasswordBreachHelper_recentlyBreachedResultRecordDictionariesWithCompletionHandler___block_invoke;
   v5[3] = &unk_1E7FC90F0;
-  v6 = v3;
-  v4 = v3;
+  v6 = handlerCopy;
+  v4 = handlerCopy;
   [WBSPasswordBreachManager getSharedManagerWithCompletionHandler:v5];
 }
 
@@ -106,15 +106,15 @@ void __89__WBSPasswordBreachHelper_recentlyBreachedResultRecordDictionariesWithC
   }
 }
 
-- (void)clearRecentlyBreachedResultRecordsWithCompletionHandler:(id)a3
+- (void)clearRecentlyBreachedResultRecordsWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __83__WBSPasswordBreachHelper_clearRecentlyBreachedResultRecordsWithCompletionHandler___block_invoke;
   v5[3] = &unk_1E7FC90F0;
-  v6 = v3;
-  v4 = v3;
+  v6 = handlerCopy;
+  v4 = handlerCopy;
   [WBSPasswordBreachManager getSharedManagerWithCompletionHandler:v5];
 }
 
@@ -130,15 +130,15 @@ uint64_t __83__WBSPasswordBreachHelper_clearRecentlyBreachedResultRecordsWithCom
   return v3();
 }
 
-- (void)clearAllRecordsWithCompletionHandler:(id)a3
+- (void)clearAllRecordsWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __64__WBSPasswordBreachHelper_clearAllRecordsWithCompletionHandler___block_invoke;
   v5[3] = &unk_1E7FC90F0;
-  v6 = v3;
-  v4 = v3;
+  v6 = handlerCopy;
+  v4 = handlerCopy;
   [WBSPasswordBreachManager getSharedManagerWithCompletionHandler:v5];
 }
 
@@ -162,18 +162,18 @@ void __64__WBSPasswordBreachHelper_clearAllRecordsWithCompletionHandler___block_
   }
 }
 
-- (void)addResultRecordDictionaries:(id)a3 completionHandler:(id)a4
+- (void)addResultRecordDictionaries:(id)dictionaries completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = [MEMORY[0x1E69C8938] resultRecordsFromDictionaryRepresentations:a3];
+  handlerCopy = handler;
+  v6 = [MEMORY[0x1E69C8938] resultRecordsFromDictionaryRepresentations:dictionaries];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __73__WBSPasswordBreachHelper_addResultRecordDictionaries_completionHandler___block_invoke;
   v9[3] = &unk_1E7FC90C8;
   v10 = v6;
-  v11 = v5;
+  v11 = handlerCopy;
   v7 = v6;
-  v8 = v5;
+  v8 = handlerCopy;
   [WBSPasswordBreachManager getSharedManagerWithCompletionHandler:v9];
 }
 
@@ -189,18 +189,18 @@ uint64_t __73__WBSPasswordBreachHelper_addResultRecordDictionaries_completionHan
   return v3();
 }
 
-- (void)getPasswordEvaluationsForPersistentIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)getPasswordEvaluationsForPersistentIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __92__WBSPasswordBreachHelper_getPasswordEvaluationsForPersistentIdentifiers_completionHandler___block_invoke;
   v9[3] = &unk_1E7FC90C8;
-  v10 = v5;
-  v11 = v6;
-  v7 = v5;
-  v8 = v6;
+  v10 = identifiersCopy;
+  v11 = handlerCopy;
+  v7 = identifiersCopy;
+  v8 = handlerCopy;
   [WBSPasswordBreachManager getSharedManagerWithCompletionHandler:v9];
 }
 
@@ -217,18 +217,18 @@ uint64_t __92__WBSPasswordBreachHelper_getPasswordEvaluationsForPersistentIdenti
   }
 }
 
-- (void)writePasswordEvaluationsToCache:(id)a3 completionHandler:(id)a4
+- (void)writePasswordEvaluationsToCache:(id)cache completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  cacheCopy = cache;
+  handlerCopy = handler;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __77__WBSPasswordBreachHelper_writePasswordEvaluationsToCache_completionHandler___block_invoke;
   v9[3] = &unk_1E7FC90C8;
-  v10 = v5;
-  v11 = v6;
-  v7 = v5;
-  v8 = v6;
+  v10 = cacheCopy;
+  v11 = handlerCopy;
+  v7 = cacheCopy;
+  v8 = handlerCopy;
   [WBSPasswordBreachManager getSharedManagerWithCompletionHandler:v9];
 }
 

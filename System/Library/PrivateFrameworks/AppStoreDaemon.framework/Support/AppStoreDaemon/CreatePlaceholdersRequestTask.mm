@@ -1,15 +1,15 @@
 @interface CreatePlaceholdersRequestTask
-- (id)initForClient:(id)a3 withOptions:(id)a4;
+- (id)initForClient:(id)client withOptions:(id)options;
 - (void)main;
 @end
 
 @implementation CreatePlaceholdersRequestTask
 
-- (id)initForClient:(id)a3 withOptions:(id)a4
+- (id)initForClient:(id)client withOptions:(id)options
 {
   v8.receiver = self;
   v8.super_class = CreatePlaceholdersRequestTask;
-  v4 = [(RequestTask *)&v8 initForClient:a3 withOptions:a4];
+  v4 = [(RequestTask *)&v8 initForClient:client withOptions:options];
   if (v4)
   {
     v5 = objc_alloc_init(_TtC9appstored6LogKey);
@@ -22,7 +22,7 @@
 
 - (void)main
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     options = self->super._options;
@@ -34,16 +34,16 @@
   }
 
   v4 = options;
-  v5 = [(ASDRequestOptions *)v4 items];
-  v6 = [v5 mutableCopy];
+  items = [(ASDRequestOptions *)v4 items];
+  v6 = [items mutableCopy];
 
   v97 = [v6 count];
   v7 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    if (v2)
+    if (selfCopy)
     {
-      logKey = v2->_logKey;
+      logKey = selfCopy->_logKey;
     }
 
     else
@@ -79,43 +79,43 @@
       v11 = objc_autoreleasePoolPush();
       v12 = v10;
       v13 = v12;
-      if (v2)
+      if (selfCopy)
       {
         v14 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v12 count]);
         v15 = sub_100227468();
-        v16 = [v15 isConnected];
+        isConnected = [v15 isConnected];
 
-        if (v16)
+        if (isConnected)
         {
           v17 = sub_10036FDEC(v13, &stru_100523988);
           v18 = [AMSMediaTask alloc];
           v19 = +[BagService appstoredService];
-          v20 = [v19 amsBag];
-          v21 = [v18 initWithType:0 clientIdentifier:@"appstore" clientVersion:@"1" bag:v20];
+          amsBag = [v19 amsBag];
+          v21 = [v18 initWithType:0 clientIdentifier:@"appstore" clientVersion:@"1" bag:amsBag];
 
           [v21 setItemIdentifiers:v17];
           v22 = sub_10000479C();
           [v21 setClientInfo:v22];
 
-          v23 = [(LogKey *)v2->_logKey description];
+          v23 = [(LogKey *)selfCopy->_logKey description];
           [v21 setLogKey:v23];
 
           v24 = +[ACAccountStore ams_sharedAccountStore];
-          v25 = [v24 ams_activeiTunesAccount];
-          [v21 setAccount:v25];
+          ams_activeiTunesAccount = [v24 ams_activeiTunesAccount];
+          [v21 setAccount:ams_activeiTunesAccount];
 
           [v21 setAdditionalQueryParams:&off_100549868];
           v26 = dispatch_semaphore_create(0);
-          v27 = [v21 perform];
+          perform = [v21 perform];
           v116[0] = _NSConcreteStackBlock;
           v116[1] = 3221225472;
           v116[2] = sub_100335CEC;
           v116[3] = &unk_1005239B0;
           v117 = v14;
-          v118 = v2;
+          v118 = selfCopy;
           v28 = v26;
           v119 = v28;
-          [v27 addFinishBlock:v116];
+          [perform addFinishBlock:v116];
           v29 = dispatch_time(0, 10000000000);
           if (dispatch_semaphore_wait(v28, v29))
           {
@@ -123,7 +123,7 @@
             v31 = ASDLogHandleForCategory();
             if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
             {
-              v96 = v2->_logKey;
+              v96 = selfCopy->_logKey;
               *buf = 138412290;
               v126 = v96;
               _os_log_error_impl(&_mh_execute_header, v31, OS_LOG_TYPE_ERROR, "[%@] Placeholder artwork will be missing, media task timed out", buf, 0xCu);
@@ -138,7 +138,7 @@
           v17 = ASDLogHandleForCategory();
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
           {
-            v32 = v2->_logKey;
+            v32 = selfCopy->_logKey;
             *buf = 138412290;
             v126 = v32;
             _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "[%@] Placeholder artwork will be missing, no network available", buf, 0xCu);
@@ -150,13 +150,13 @@
         v102 = v14;
         if (os_variant_has_internal_content())
         {
-          v33 = v2->super._options;
-          v106 = [(ASDRequestOptions *)v33 createAsMobileBackup];
+          v33 = selfCopy->super._options;
+          createAsMobileBackup = [(ASDRequestOptions *)v33 createAsMobileBackup];
         }
 
         else
         {
-          v106 = 0;
+          createAsMobileBackup = 0;
         }
 
         v114 = 0u;
@@ -182,14 +182,14 @@
               v107 = v34;
               v35 = *(*(&v112 + 1) + 8 * v34);
               v36 = [_TtC9appstored6LogKey alloc];
-              v37 = v2;
-              v38 = v2->_logKey;
+              v37 = selfCopy;
+              v38 = selfCopy->_logKey;
               v39 = [(LogKey *)v38 description];
-              v40 = [v35 bundleID];
-              v41 = v40;
-              if (v40)
+              bundleID = [v35 bundleID];
+              v41 = bundleID;
+              if (bundleID)
               {
-                v42 = v40;
+                v42 = bundleID;
               }
 
               else
@@ -198,12 +198,12 @@
               }
 
               v124[0] = v42;
-              v43 = [v35 itemID];
-              v44 = [v43 stringValue];
-              v45 = v44;
-              if (v44)
+              itemID = [v35 itemID];
+              stringValue = [itemID stringValue];
+              v45 = stringValue;
+              if (stringValue)
               {
-                v46 = v44;
+                v46 = stringValue;
               }
 
               else
@@ -216,15 +216,15 @@
               v48 = [(LogKey *)v36 initWithBase:v39 IDs:v47];
 
               v49 = objc_alloc_init(CoordinatorBuilder);
-              v50 = [v35 bundleID];
-              v52 = v50;
+              bundleID2 = [v35 bundleID];
+              v52 = bundleID2;
               if (v49)
               {
-                objc_setProperty_atomic(v49, v51, v50, 8);
+                objc_setProperty_atomic(v49, v51, bundleID2, 8);
 
                 v49->_intent = 3;
                 objc_setProperty_atomic(v49, v53, v48, 48);
-                if (v106)
+                if (createAsMobileBackup)
                 {
                   v49->_clientID = 2;
                 }
@@ -238,7 +238,7 @@
               v54 = sub_1003A040C(v49, &v111);
               v55 = v111;
               v56 = v55;
-              v2 = v37;
+              selfCopy = v37;
               if (!v54)
               {
                 v61 = ASDLogHandleForCategory();
@@ -254,12 +254,12 @@
                 goto LABEL_76;
               }
 
-              if (v106)
+              if (createAsMobileBackup)
               {
                 v57 = v37->super._options;
-                v58 = [(ASDRequestOptions *)v57 completeDataPromise];
+                completeDataPromise = [(ASDRequestOptions *)v57 completeDataPromise];
 
-                if (v58)
+                if (completeDataPromise)
                 {
                   v59 = ASDLogHandleForCategory();
                   if (os_log_type_enabled(v59, OS_LOG_TYPE_ERROR))
@@ -320,24 +320,24 @@
               else
               {
                 v49 = objc_alloc_init(PlaceholderBuilder);
-                v64 = [v35 itemID];
-                v66 = [v102 objectForKeyedSubscript:v64];
+                itemID2 = [v35 itemID];
+                v66 = [v102 objectForKeyedSubscript:itemID2];
                 if (v49)
                 {
                   objc_setProperty_atomic(v49, v65, v66, 32);
                 }
 
-                v68 = [v35 itemName];
+                itemName = [v35 itemName];
                 if (v49)
                 {
-                  objc_setProperty_atomic(v49, v67, v68, 48);
+                  objc_setProperty_atomic(v49, v67, itemName, 48);
                 }
 
-                v69 = [v35 bundleID];
-                v71 = v69;
+                bundleID3 = [v35 bundleID];
+                v71 = bundleID3;
                 if (v49)
                 {
-                  objc_setProperty_atomic(v49, v70, v69, 40);
+                  objc_setProperty_atomic(v49, v70, bundleID3, 40);
 
                   v49[1]._bundleID = 2;
                   v72 = v48;
@@ -351,41 +351,41 @@
                 }
 
                 v74 = objc_alloc_init(MIStoreMetadata);
-                v75 = [v35 vendorName];
-                [v74 setArtistName:v75];
+                vendorName = [v35 vendorName];
+                [v74 setArtistName:vendorName];
 
-                v76 = [v35 bundleID];
-                [v74 setSoftwareVersionBundleID:v76];
+                bundleID4 = [v35 bundleID];
+                [v74 setSoftwareVersionBundleID:bundleID4];
 
-                v77 = [v35 itemName];
-                [v74 setItemName:v77];
+                itemName2 = [v35 itemName];
+                [v74 setItemName:itemName2];
 
-                v78 = [v35 itemID];
-                [v74 setItemID:v78];
+                itemID3 = [v35 itemID];
+                [v74 setItemID:itemID3];
 
-                v79 = [v35 externalVersionIdentifier];
-                [v74 setSoftwareVersionExternalIdentifier:v79];
+                externalVersionIdentifier = [v35 externalVersionIdentifier];
+                [v74 setSoftwareVersionExternalIdentifier:externalVersionIdentifier];
 
-                v80 = [v35 storeFront];
-                [v74 setStorefront:v80];
+                storeFront = [v35 storeFront];
+                [v74 setStorefront:storeFront];
 
-                v81 = [v35 accountName];
-                [v74 setAppleID:v81];
+                accountName = [v35 accountName];
+                [v74 setAppleID:accountName];
 
-                v82 = [v35 accountID];
-                [v74 setDSPersonID:v82];
+                accountID = [v35 accountID];
+                [v74 setDSPersonID:accountID];
 
-                v83 = [v35 downloaderID];
-                [v74 setDownloaderID:v83];
+                downloaderID = [v35 downloaderID];
+                [v74 setDownloaderID:downloaderID];
 
-                v84 = [v35 familyID];
-                [v74 setFamilyID:v84];
+                familyID = [v35 familyID];
+                [v74 setFamilyID:familyID];
 
-                v85 = [v35 purchaserDSID];
-                [v74 setPurchaserID:v85];
+                purchaserDSID = [v35 purchaserDSID];
+                [v74 setPurchaserID:purchaserDSID];
 
-                v86 = [v35 altDSID];
-                [v74 setAltDSID:v86];
+                altDSID = [v35 altDSID];
+                [v74 setAltDSID:altDSID];
 
                 [v74 setDeviceBasedVPP:{objc_msgSend(v35, "deviceBasedVPP")}];
                 [v74 setSourceApp:@"com.apple.AppStore"];
@@ -484,9 +484,9 @@ LABEL_77:
       v94 = ASDLogHandleForCategory();
       if (os_log_type_enabled(v94, OS_LOG_TYPE_DEFAULT))
       {
-        if (v2)
+        if (selfCopy)
         {
-          v95 = v2->_logKey;
+          v95 = selfCopy->_logKey;
         }
 
         else

@@ -3,36 +3,36 @@
 - (BOOL)allowsReplacementForCurrentlyHighlightedResult;
 - (BOOL)supportsReplacement;
 - (UITextSearchingFindSession)initWithSearchableObject:(id)searchableObject;
-- (UITextSearchingFindSession)initWithStronglyHeldSearchableObject:(id)a3;
+- (UITextSearchingFindSession)initWithStronglyHeldSearchableObject:(id)object;
 - (id)_allFoundRanges;
 - (id)_documentComparator;
-- (id)_nearestRangeToSelectedRangeInDocument:(id)a3;
-- (id)_nextItemInOrderedSet:(id)a3 usingComparator:(id)a4 fromItem:(id)a5 inDirection:(int64_t)a6 loopAround:(BOOL)a7;
-- (id)_textRangeComparatorForDocument:(id)a3;
+- (id)_nearestRangeToSelectedRangeInDocument:(id)document;
+- (id)_nextItemInOrderedSet:(id)set usingComparator:(id)comparator fromItem:(id)item inDirection:(int64_t)direction loopAround:(BOOL)around;
+- (id)_textRangeComparatorForDocument:(id)document;
 - (id)parentInteraction;
 - (id)searchableObject;
 - (int64_t)highlightedResultIndex;
 - (int64_t)resultCount;
 - (void)_finishedSearching;
-- (void)_foundRange:(id)a3 forSearchString:(id)a4 inDocument:(id)a5;
+- (void)_foundRange:(id)range forSearchString:(id)string inDocument:(id)document;
 - (void)_invalidateAllFoundRanges;
-- (void)_invalidateFoundRange:(id)a3 inDocument:(id)a4;
-- (void)_nextResultRelativeToRange:(id *)a3 document:(id *)a4 inDirection:(int64_t)a5;
-- (void)_performBlockWhenSearchResultsAreAvailable:(id)a3;
+- (void)_invalidateFoundRange:(id)range inDocument:(id)document;
+- (void)_nextResultRelativeToRange:(id *)range document:(id *)document inDirection:(int64_t)direction;
+- (void)_performBlockWhenSearchResultsAreAvailable:(id)available;
 - (void)_performDelayedSearchOperations;
 - (void)_readilyHighlightNearestRangeToSelectedRangeIfNecessary;
-- (void)_readilyHighlightNextResultInDirection:(int64_t)a3;
-- (void)_replaceHighlightedTextRangeWithReplacementString:(id)a3;
-- (void)_setHighlightedRange:(id)a3 inDocument:(id)a4;
+- (void)_readilyHighlightNextResultInDirection:(int64_t)direction;
+- (void)_replaceHighlightedTextRangeWithReplacementString:(id)string;
+- (void)_setHighlightedRange:(id)range inDocument:(id)document;
 - (void)_setNeedsResultCountUpdate;
 - (void)_setReadyToPerformDelayedSearchOperations;
 - (void)_updateResultCountLabel;
 - (void)_updateSearchableObjectProtocolConformance;
 - (void)highlightNearestFoundRangeToSelectedRangeIfNecessary;
-- (void)highlightNextResultInDirection:(int64_t)a3;
-- (void)performSearchWithQuery:(id)a3 options:(id)a4;
-- (void)performSingleReplacementWithSearchQuery:(id)a3 replacementString:(id)a4 options:(id)a5;
-- (void)replaceAllInstancesOfSearchQuery:(id)a3 withReplacementString:(id)a4 options:(id)a5;
+- (void)highlightNextResultInDirection:(int64_t)direction;
+- (void)performSearchWithQuery:(id)query options:(id)options;
+- (void)performSingleReplacementWithSearchQuery:(id)query replacementString:(id)string options:(id)options;
+- (void)replaceAllInstancesOfSearchQuery:(id)query withReplacementString:(id)string options:(id)options;
 - (void)reset;
 @end
 
@@ -58,14 +58,14 @@
   return v6;
 }
 
-- (UITextSearchingFindSession)initWithStronglyHeldSearchableObject:(id)a3
+- (UITextSearchingFindSession)initWithStronglyHeldSearchableObject:(id)object
 {
-  v5 = a3;
-  v6 = [(UITextSearchingFindSession *)self initWithSearchableObject:v5];
+  objectCopy = object;
+  v6 = [(UITextSearchingFindSession *)self initWithSearchableObject:objectCopy];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_stronglyHeldSearchableObject, a3);
+    objc_storeStrong(&v6->_stronglyHeldSearchableObject, object);
   }
 
   return v7;
@@ -79,15 +79,15 @@
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_searchableObject);
-  v4 = [WeakRetained supportsTextReplacement];
+  supportsTextReplacement = [WeakRetained supportsTextReplacement];
 
-  return v4;
+  return supportsTextReplacement;
 }
 
 - (BOOL)allowsReplacementForCurrentlyHighlightedResult
 {
-  v3 = [(UITextSearchingFindSession *)self supportsReplacement];
-  if (v3)
+  supportsReplacement = [(UITextSearchingFindSession *)self supportsReplacement];
+  if (supportsReplacement)
   {
     if (self->_highlightedTextRange)
     {
@@ -96,57 +96,57 @@
         WeakRetained = objc_loadWeakRetained(&self->_searchableObject);
         v5 = [WeakRetained shouldReplaceFoundTextInRange:self->_highlightedTextRange inDocument:self->_highlightedDocument withText:&stru_1EFB14550];
 
-        LOBYTE(v3) = v5;
+        LOBYTE(supportsReplacement) = v5;
       }
 
       else
       {
-        LOBYTE(v3) = 1;
+        LOBYTE(supportsReplacement) = 1;
       }
     }
 
     else
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(supportsReplacement) = 0;
     }
   }
 
-  return v3;
+  return supportsReplacement;
 }
 
 - (BOOL)_isCurrentSearchQueryValid
 {
-  v3 = [(UITextSearchingFindSession *)self _hasResults];
-  if (v3)
+  _hasResults = [(UITextSearchingFindSession *)self _hasResults];
+  if (_hasResults)
   {
-    v4 = [(UIFindSession *)self searchText];
-    v5 = [v4 isEqualToString:self->_lastSearchQuery];
+    searchText = [(UIFindSession *)self searchText];
+    v5 = [searchText isEqualToString:self->_lastSearchQuery];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(_hasResults) = v5;
   }
 
-  return v3;
+  return _hasResults;
 }
 
-- (void)_nextResultRelativeToRange:(id *)a3 document:(id *)a4 inDirection:(int64_t)a5
+- (void)_nextResultRelativeToRange:(id *)range document:(id *)document inDirection:(int64_t)direction
 {
   v9 = [(NSMutableOrderedSet *)self->_sortedDocumentIdentifiers count]< 2;
-  v10 = [(NSMutableDictionary *)self->_sortedResultsByDocument objectForKey:*a4];
-  v11 = [(UITextSearchingFindSession *)self _textRangeComparatorForDocument:*a4];
-  v12 = [(UITextSearchingFindSession *)self _nextItemInOrderedSet:v10 usingComparator:v11 fromItem:*a3 inDirection:a5 loopAround:v9];
+  v10 = [(NSMutableDictionary *)self->_sortedResultsByDocument objectForKey:*document];
+  v11 = [(UITextSearchingFindSession *)self _textRangeComparatorForDocument:*document];
+  v12 = [(UITextSearchingFindSession *)self _nextItemInOrderedSet:v10 usingComparator:v11 fromItem:*range inDirection:direction loopAround:v9];
 
   if (!v12)
   {
     sortedDocumentIdentifiers = self->_sortedDocumentIdentifiers;
-    v14 = [(UITextSearchingFindSession *)self _documentComparator];
-    v15 = [(UITextSearchingFindSession *)self _nextItemInOrderedSet:sortedDocumentIdentifiers usingComparator:v14 fromItem:*a4 inDirection:a5 loopAround:1];
+    _documentComparator = [(UITextSearchingFindSession *)self _documentComparator];
+    v15 = [(UITextSearchingFindSession *)self _nextItemInOrderedSet:sortedDocumentIdentifiers usingComparator:_documentComparator fromItem:*document inDirection:direction loopAround:1];
 
     if (v15)
     {
-      objc_storeStrong(a4, v15);
+      objc_storeStrong(document, v15);
       v16 = [(NSMutableDictionary *)self->_sortedResultsByDocument objectForKey:v15];
       v17 = v16;
-      if (a5)
+      if (direction)
       {
         [v16 lastObject];
       }
@@ -164,16 +164,16 @@
     }
   }
 
-  v18 = *a3;
-  *a3 = v12;
+  v18 = *range;
+  *range = v12;
 }
 
-- (void)_readilyHighlightNextResultInDirection:(int64_t)a3
+- (void)_readilyHighlightNextResultInDirection:(int64_t)direction
 {
   if (!self->_awaitingFirstResults && ![(UITextSearchingFindSession *)self _isCurrentSearchQueryValid])
   {
-    v5 = [(UIFindSession *)self searchText];
-    v6 = [v5 length];
+    searchText = [(UIFindSession *)self searchText];
+    v6 = [searchText length];
 
     if (v6)
     {
@@ -190,8 +190,8 @@
       }
 
       v9 = v8;
-      v10 = [(UIFindSession *)self searchText];
-      [(UITextSearchingFindSession *)self performSearchWithQuery:v10 options:v9];
+      searchText2 = [(UIFindSession *)self searchText];
+      [(UITextSearchingFindSession *)self performSearchWithQuery:searchText2 options:v9];
     }
   }
 
@@ -200,7 +200,7 @@
   {
     v13 = highlightedTextRange;
     v12 = self->_highlightedDocument;
-    [(UITextSearchingFindSession *)self _nextResultRelativeToRange:&v13 document:&v12 inDirection:a3];
+    [(UITextSearchingFindSession *)self _nextResultRelativeToRange:&v13 document:&v12 inDirection:direction];
     [(UITextSearchingFindSession *)self _setHighlightedRange:v13 inDocument:v12];
   }
 
@@ -211,12 +211,12 @@
   }
 }
 
-- (void)highlightNextResultInDirection:(int64_t)a3
+- (void)highlightNextResultInDirection:(int64_t)direction
 {
   if ([(UITextSearchingFindSession *)self _hasResults]|| !self->_isSearching)
   {
 
-    [(UITextSearchingFindSession *)self _readilyHighlightNextResultInDirection:a3];
+    [(UITextSearchingFindSession *)self _readilyHighlightNextResultInDirection:direction];
   }
 
   else
@@ -226,7 +226,7 @@
     v5[2] = __61__UITextSearchingFindSession_highlightNextResultInDirection___block_invoke;
     v5[3] = &unk_1E70F32F0;
     v5[4] = self;
-    v5[5] = a3;
+    v5[5] = direction;
     [(UITextSearchingFindSession *)self _performBlockWhenSearchResultsAreAvailable:v5];
   }
 }
@@ -260,30 +260,30 @@ void __61__UITextSearchingFindSession_highlightNextResultInDirection___block_inv
 
 - (int64_t)highlightedResultIndex
 {
-  v3 = [(UITextSearchingFindSession *)self _allFoundRanges];
-  v4 = [v3 indexOfObject:self->_highlightedTextRange];
+  _allFoundRanges = [(UITextSearchingFindSession *)self _allFoundRanges];
+  v4 = [_allFoundRanges indexOfObject:self->_highlightedTextRange];
 
   return v4;
 }
 
-- (void)performSearchWithQuery:(id)a3 options:(id)a4
+- (void)performSearchWithQuery:(id)query options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  queryCopy = query;
+  optionsCopy = options;
   self->_isSearching = 1;
   [(UITextSearchingFindSession *)self reset];
-  if (!v7)
+  if (!optionsCopy)
   {
-    v7 = +[UITextSearchOptions defaultSearchOptions];
+    optionsCopy = +[UITextSearchOptions defaultSearchOptions];
   }
 
   lastSearchQuery = self->_lastSearchQuery;
-  self->_lastSearchQuery = v6;
-  v9 = v6;
+  self->_lastSearchQuery = queryCopy;
+  v9 = queryCopy;
 
   lastSearchOptions = self->_lastSearchOptions;
-  self->_lastSearchOptions = v7;
-  v11 = v7;
+  self->_lastSearchOptions = optionsCopy;
+  v11 = optionsCopy;
 
   self->_awaitingFirstResults = 1;
   WeakRetained = objc_loadWeakRetained(&self->_parentInteraction);
@@ -298,21 +298,21 @@ void __61__UITextSearchingFindSession_highlightNextResultInDirection___block_inv
   [v15 performTextSearchWithQueryString:v9 usingOptions:v11 resultAggregator:self->_aggregator];
 }
 
-- (void)_replaceHighlightedTextRangeWithReplacementString:(id)a3
+- (void)_replaceHighlightedTextRangeWithReplacementString:(id)string
 {
-  v14 = a3;
+  stringCopy = string;
   highlightedTextRange = self->_highlightedTextRange;
   if (highlightedTextRange || ([(UITextSearchingFindSession *)self _readilyHighlightNearestRangeToSelectedRangeIfNecessary], (highlightedTextRange = self->_highlightedTextRange) != 0))
   {
     v5 = highlightedTextRange;
     v6 = self->_highlightedDocument;
     WeakRetained = objc_loadWeakRetained(&self->_searchableObject);
-    [WeakRetained replaceFoundTextInRange:v5 inDocument:v6 withText:v14];
+    [WeakRetained replaceFoundTextInRange:v5 inDocument:v6 withText:stringCopy];
 
-    v8 = [v14 length];
+    v8 = [stringCopy length];
     if (v8 == [(NSString *)self->_lastSearchQuery length])
     {
-      if (([v14 isEqualToString:self->_lastSearchQuery] & 1) == 0)
+      if (([stringCopy isEqualToString:self->_lastSearchQuery] & 1) == 0)
       {
         v9 = objc_loadWeakRetained(&self->_searchableObject);
         [v9 decorateFoundTextRange:v5 inDocument:v6 usingStyle:0];
@@ -339,9 +339,9 @@ void __61__UITextSearchingFindSession_highlightNextResultInDirection___block_inv
       if (self->_highlightedTextRange)
       {
         v12 = objc_loadWeakRetained(&self->_searchableObject);
-        v13 = [v12 selectedTextRange];
+        selectedTextRange = [v12 selectedTextRange];
 
-        if (!v13)
+        if (!selectedTextRange)
         {
           objc_storeStrong(&self->_highlightedRangeBeforeSubsequentSearch, self->_highlightedTextRange);
           objc_storeStrong(&self->_highlightedDocumentBeforeSubsequentSearch, self->_highlightedDocument);
@@ -353,18 +353,18 @@ void __61__UITextSearchingFindSession_highlightNextResultInDirection___block_inv
   }
 }
 
-- (void)performSingleReplacementWithSearchQuery:(id)a3 replacementString:(id)a4 options:(id)a5
+- (void)performSingleReplacementWithSearchQuery:(id)query replacementString:(id)string options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  queryCopy = query;
+  stringCopy = string;
+  optionsCopy = options;
   if ([(UITextSearchingFindSession *)self supportsReplacement])
   {
-    [(UIFindSession *)self setSearchText:v8];
-    [(UIFindSession *)self setReplacementText:v9];
-    if (-[UITextSearchingFindSession _hasResults](self, "_hasResults") && [v8 isEqualToString:self->_lastSearchQuery])
+    [(UIFindSession *)self setSearchText:queryCopy];
+    [(UIFindSession *)self setReplacementText:stringCopy];
+    if (-[UITextSearchingFindSession _hasResults](self, "_hasResults") && [queryCopy isEqualToString:self->_lastSearchQuery])
     {
-      [(UITextSearchingFindSession *)self _replaceHighlightedTextRangeWithReplacementString:v9];
+      [(UITextSearchingFindSession *)self _replaceHighlightedTextRangeWithReplacementString:stringCopy];
     }
 
     else
@@ -373,12 +373,12 @@ void __61__UITextSearchingFindSession_highlightNextResultInDirection___block_inv
       v12[1] = 3221225472;
       v12[2] = __96__UITextSearchingFindSession_performSingleReplacementWithSearchQuery_replacementString_options___block_invoke;
       v12[3] = &unk_1E70F6228;
-      v11 = v8;
+      v11 = queryCopy;
       v13 = v11;
-      v14 = self;
-      v15 = v9;
+      selfCopy = self;
+      v15 = stringCopy;
       [(UITextSearchingFindSession *)self _performBlockWhenSearchResultsAreAvailable:v12];
-      [(UITextSearchingFindSession *)self performSearchWithQuery:v11 options:v10];
+      [(UITextSearchingFindSession *)self performSearchWithQuery:v11 options:optionsCopy];
       [(UITextSearchingFindSession *)self highlightNearestFoundRangeToSelectedRangeIfNecessary];
     }
   }
@@ -398,21 +398,21 @@ uint64_t __96__UITextSearchingFindSession_performSingleReplacementWithSearchQuer
   return result;
 }
 
-- (void)replaceAllInstancesOfSearchQuery:(id)a3 withReplacementString:(id)a4 options:(id)a5
+- (void)replaceAllInstancesOfSearchQuery:(id)query withReplacementString:(id)string options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  queryCopy = query;
+  stringCopy = string;
+  optionsCopy = options;
   if ([(UITextSearchingFindSession *)self supportsReplacement])
   {
-    [(UIFindSession *)self setSearchText:v8];
-    [(UIFindSession *)self setReplacementText:v9];
+    [(UIFindSession *)self setSearchText:queryCopy];
+    [(UIFindSession *)self setReplacementText:stringCopy];
     if ((*&self->_searchableObjectConformsTo & 8) != 0)
     {
       WeakRetained = objc_loadWeakRetained(&self->_searchableObject);
-      [WeakRetained replaceAllOccurrencesOfQueryString:v8 usingOptions:v10 withText:v9];
+      [WeakRetained replaceAllOccurrencesOfQueryString:queryCopy usingOptions:optionsCopy withText:stringCopy];
 
-      [(UITextSearchingFindSession *)self performSearchWithQuery:v9 options:self->_lastSearchOptions];
+      [(UITextSearchingFindSession *)self performSearchWithQuery:stringCopy options:self->_lastSearchOptions];
     }
 
     else
@@ -421,10 +421,10 @@ uint64_t __96__UITextSearchingFindSession_performSingleReplacementWithSearchQuer
       v14 = 3221225472;
       v15 = __93__UITextSearchingFindSession_replaceAllInstancesOfSearchQuery_withReplacementString_options___block_invoke;
       v16 = &unk_1E70F35B8;
-      v17 = self;
-      v18 = v9;
+      selfCopy = self;
+      v18 = stringCopy;
       v11 = _Block_copy(&v13);
-      if ([v8 isEqualToString:{self->_lastSearchQuery, v13, v14, v15, v16, v17}] && -[UITextSearchingFindSession _hasResults](self, "_hasResults"))
+      if ([queryCopy isEqualToString:{self->_lastSearchQuery, v13, v14, v15, v16, selfCopy}] && -[UITextSearchingFindSession _hasResults](self, "_hasResults"))
       {
         v11[2](v11);
       }
@@ -432,7 +432,7 @@ uint64_t __96__UITextSearchingFindSession_performSingleReplacementWithSearchQuer
       else
       {
         [(UITextSearchingFindSession *)self _performBlockWhenSearchResultsAreAvailable:v11];
-        [(UITextSearchingFindSession *)self performSearchWithQuery:v8 options:v10];
+        [(UITextSearchingFindSession *)self performSearchWithQuery:queryCopy options:optionsCopy];
       }
     }
   }
@@ -499,8 +499,8 @@ void __93__UITextSearchingFindSession_replaceAllInstancesOfSearchQuery_withRepla
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(NSMutableDictionary *)self->_sortedResultsByDocument allValues];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allValues = [(NSMutableDictionary *)self->_sortedResultsByDocument allValues];
+  v3 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -512,13 +512,13 @@ void __93__UITextSearchingFindSession_replaceAllInstancesOfSearchQuery_withRepla
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allValues);
         }
 
         v5 += [*(*(&v9 + 1) + 8 * i) count];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v4);
@@ -718,34 +718,34 @@ void __93__UITextSearchingFindSession_replaceAllInstancesOfSearchQuery_withRepla
   *&self->_searchableObjectConformsTo = *&self->_searchableObjectConformsTo & 0xF7FF | v26;
 }
 
-- (id)_nextItemInOrderedSet:(id)a3 usingComparator:(id)a4 fromItem:(id)a5 inDirection:(int64_t)a6 loopAround:(BOOL)a7
+- (id)_nextItemInOrderedSet:(id)set usingComparator:(id)comparator fromItem:(id)item inDirection:(int64_t)direction loopAround:(BOOL)around
 {
-  v7 = a7;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = [v11 indexOfObject:v13];
+  aroundCopy = around;
+  setCopy = set;
+  comparatorCopy = comparator;
+  itemCopy = item;
+  v14 = [setCopy indexOfObject:itemCopy];
   if (v14 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (!v13)
+    if (!itemCopy)
     {
-      if (a6)
+      if (direction)
       {
-        [v11 lastObject];
+        [setCopy lastObject];
       }
 
       else
       {
-        [v11 firstObject];
+        [setCopy firstObject];
       }
       v19 = ;
       goto LABEL_29;
     }
 
-    v15 = [v11 indexOfObject:v13 inSortedRange:0 options:objc_msgSend(v11 usingComparator:{"count"), 1024, v12}] - (a6 == 1);
+    v15 = [setCopy indexOfObject:itemCopy inSortedRange:0 options:objc_msgSend(setCopy usingComparator:{"count"), 1024, comparatorCopy}] - (direction == 1);
   }
 
-  else if (a6)
+  else if (direction)
   {
     v15 = v14 - 1;
   }
@@ -755,7 +755,7 @@ void __93__UITextSearchingFindSession_replaceAllInstancesOfSearchQuery_withRepla
     v15 = v14 + 1;
   }
 
-  v16 = [v11 count];
+  v16 = [setCopy count];
   if (!v16)
   {
     goto LABEL_26;
@@ -763,7 +763,7 @@ void __93__UITextSearchingFindSession_replaceAllInstancesOfSearchQuery_withRepla
 
   v17 = v15 < 0 || v15 >= v16;
   v18 = !v17;
-  if (!v17 || !v7)
+  if (!v17 || !aroundCopy)
   {
     if (!v18)
     {
@@ -789,7 +789,7 @@ LABEL_26:
 
   v15 = 0;
 LABEL_27:
-  v19 = [v11 objectAtIndex:v15];
+  v19 = [setCopy objectAtIndex:v15];
 LABEL_29:
   v20 = v19;
 LABEL_30:
@@ -797,22 +797,22 @@ LABEL_30:
   return v20;
 }
 
-- (id)_nearestRangeToSelectedRangeInDocument:(id)a3
+- (id)_nearestRangeToSelectedRangeInDocument:(id)document
 {
-  v4 = a3;
+  documentCopy = document;
   WeakRetained = objc_loadWeakRetained(&self->_searchableObject);
-  v6 = [WeakRetained selectedTextRange];
+  selectedTextRange = [WeakRetained selectedTextRange];
 
-  v7 = [(NSMutableDictionary *)self->_sortedResultsByDocument objectForKey:v4];
+  v7 = [(NSMutableDictionary *)self->_sortedResultsByDocument objectForKey:documentCopy];
   v8 = v7;
-  if (!v6)
+  if (!selectedTextRange)
   {
     goto LABEL_14;
   }
 
   v9 = [v7 count];
-  v10 = [(UITextSearchingFindSession *)self _textRangeComparatorForDocument:v4];
-  v11 = [v8 indexOfObject:v6 inSortedRange:0 options:v9 usingComparator:{1024, v10}];
+  v10 = [(UITextSearchingFindSession *)self _textRangeComparatorForDocument:documentCopy];
+  v11 = [v8 indexOfObject:selectedTextRange inSortedRange:0 options:v9 usingComparator:{1024, v10}];
 
   if (v11 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -830,12 +830,12 @@ LABEL_30:
     v13 = v11;
   }
 
-  v14 = [v8 objectAtIndex:v13];
-  if ([v14 isEqual:v6] && v11 < objc_msgSend(v8, "count") - 1)
+  firstObject2 = [v8 objectAtIndex:v13];
+  if ([firstObject2 isEqual:selectedTextRange] && v11 < objc_msgSend(v8, "count") - 1)
   {
     v15 = [v8 objectAtIndex:v11 + 1];
 
-    v14 = v15;
+    firstObject2 = v15;
   }
 
   v16 = objc_loadWeakRetained(&self->_searchableObject);
@@ -844,26 +844,26 @@ LABEL_30:
   if (v17)
   {
     v18 = objc_loadWeakRetained(&self->_searchableObject);
-    v19 = [v18 endOfDocument];
+    endOfDocument = [v18 endOfDocument];
 
-    v20 = [v6 start];
-    v21 = [v20 isEqual:v19];
+    start = [selectedTextRange start];
+    v21 = [start isEqual:endOfDocument];
 
     if (v21)
     {
-      v22 = [v8 firstObject];
+      firstObject = [v8 firstObject];
 
-      v14 = v22;
+      firstObject2 = firstObject;
     }
   }
 
-  if (!v14)
+  if (!firstObject2)
   {
 LABEL_14:
-    v14 = [v8 firstObject];
+    firstObject2 = [v8 firstObject];
   }
 
-  return v14;
+  return firstObject2;
 }
 
 - (void)_readilyHighlightNearestRangeToSelectedRangeIfNecessary
@@ -878,10 +878,10 @@ LABEL_14:
 
     else if ((*&self->_searchableObjectConformsTo & 0x400) == 0 || (WeakRetained = objc_loadWeakRetained(&self->_searchableObject), [WeakRetained selectedTextSearchDocument], v9 = objc_claimAutoreleasedReturnValue(), WeakRetained, (v5 = v9) == 0))
     {
-      v7 = [(NSMutableOrderedSet *)self->_sortedDocumentIdentifiers firstObject];
-      if (v7)
+      firstObject = [(NSMutableOrderedSet *)self->_sortedDocumentIdentifiers firstObject];
+      if (firstObject)
       {
-        v5 = v7;
+        v5 = firstObject;
       }
 
       else
@@ -931,14 +931,14 @@ LABEL_14:
   }
 }
 
-- (void)_setHighlightedRange:(id)a3 inDocument:(id)a4
+- (void)_setHighlightedRange:(id)range inDocument:(id)document
 {
-  v15 = a3;
-  v7 = a4;
+  rangeCopy = range;
+  documentCopy = document;
   if ((*&self->_searchableObjectConformsTo & 0x10) != 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_searchableObject);
-    [WeakRetained willHighlightFoundTextRange:v15 inDocument:v7];
+    [WeakRetained willHighlightFoundTextRange:rangeCopy inDocument:documentCopy];
   }
 
   if (self->_highlightedTextRange)
@@ -953,21 +953,21 @@ LABEL_14:
     }
   }
 
-  objc_storeStrong(&self->_highlightedTextRange, a3);
-  objc_storeStrong(&self->_highlightedDocument, a4);
-  if (v15)
+  objc_storeStrong(&self->_highlightedTextRange, range);
+  objc_storeStrong(&self->_highlightedDocument, document);
+  if (rangeCopy)
   {
     v12 = objc_loadWeakRetained(&self->_searchableObject);
-    [v12 decorateFoundTextRange:v15 inDocument:v7 usingStyle:2];
+    [v12 decorateFoundTextRange:rangeCopy inDocument:documentCopy usingStyle:2];
 
     if ((*&self->_searchableObjectConformsTo & 0x20) != 0)
     {
       v13 = objc_loadWeakRetained(&self->_searchableObject);
-      [v13 scrollRangeToVisible:v15 inDocument:v7];
+      [v13 scrollRangeToVisible:rangeCopy inDocument:documentCopy];
     }
 
-    v14 = [(UITextSearchingFindSession *)self parentInteraction];
-    [v14 updateResultCount];
+    parentInteraction = [(UITextSearchingFindSession *)self parentInteraction];
+    [parentInteraction updateResultCount];
   }
 }
 
@@ -996,9 +996,9 @@ uint64_t __49__UITextSearchingFindSession__documentComparator__block_invoke(uint
   return v8;
 }
 
-- (id)_textRangeComparatorForDocument:(id)a3
+- (id)_textRangeComparatorForDocument:(id)document
 {
-  v4 = a3;
+  documentCopy = document;
   objc_copyWeak(&to, &self->_searchableObject);
   if ((*&self->_searchableObjectConformsTo & 0x1000) != 0)
   {
@@ -1007,8 +1007,8 @@ uint64_t __49__UITextSearchingFindSession__documentComparator__block_invoke(uint
     v12[2] = __62__UITextSearchingFindSession__textRangeComparatorForDocument___block_invoke;
     v12[3] = &unk_1E7122D30;
     v12[4] = self;
-    v13 = v4;
-    v7 = v4;
+    v13 = documentCopy;
+    v7 = documentCopy;
     v6 = _Block_copy(v12);
   }
 
@@ -1019,8 +1019,8 @@ uint64_t __49__UITextSearchingFindSession__documentComparator__block_invoke(uint
     aBlock[2] = __62__UITextSearchingFindSession__textRangeComparatorForDocument___block_invoke_2;
     aBlock[3] = &unk_1E7122D58;
     objc_copyWeak(&v11, &to);
-    v10 = v4;
-    v5 = v4;
+    v10 = documentCopy;
+    v5 = documentCopy;
     v6 = _Block_copy(aBlock);
 
     objc_destroyWeak(&v11);
@@ -1111,10 +1111,10 @@ uint64_t __62__UITextSearchingFindSession__textRangeComparatorForDocument___bloc
   }
 }
 
-- (void)_performBlockWhenSearchResultsAreAvailable:(id)a3
+- (void)_performBlockWhenSearchResultsAreAvailable:(id)available
 {
   blocksAwaitingSearchResults = self->_blocksAwaitingSearchResults;
-  v5 = [a3 copy];
+  v5 = [available copy];
   v4 = _Block_copy(v5);
   [(NSMutableArray *)blocksAwaitingSearchResults addObject:v4];
 }
@@ -1122,7 +1122,7 @@ uint64_t __62__UITextSearchingFindSession__textRangeComparatorForDocument___bloc
 - (id)_allFoundRanges
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DFA0] orderedSet];
+  orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -1162,7 +1162,7 @@ uint64_t __62__UITextSearchingFindSession__textRangeComparatorForDocument___bloc
                 objc_enumerationMutation(v9);
               }
 
-              [v3 addObject:*(*(&v16 + 1) + 8 * j)];
+              [orderedSet addObject:*(*(&v16 + 1) + 8 * j)];
             }
 
             v11 = [v9 countByEnumeratingWithState:&v16 objects:v24 count:16];
@@ -1178,28 +1178,28 @@ uint64_t __62__UITextSearchingFindSession__textRangeComparatorForDocument___bloc
     while (v5);
   }
 
-  return v3;
+  return orderedSet;
 }
 
-- (void)_foundRange:(id)a3 forSearchString:(id)a4 inDocument:(id)a5
+- (void)_foundRange:(id)range forSearchString:(id)string inDocument:(id)document
 {
-  v33 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
+  rangeCopy = range;
+  stringCopy = string;
+  documentCopy = document;
+  v11 = documentCopy;
   v12 = @"__singleton__";
-  if (v10)
+  if (documentCopy)
   {
-    v12 = v10;
+    v12 = documentCopy;
   }
 
   v13 = v12;
   sortedDocumentIdentifiers = self->_sortedDocumentIdentifiers;
   if (!sortedDocumentIdentifiers)
   {
-    v15 = [MEMORY[0x1E695DFA0] orderedSet];
+    orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
     v16 = self->_sortedDocumentIdentifiers;
-    self->_sortedDocumentIdentifiers = v15;
+    self->_sortedDocumentIdentifiers = orderedSet;
 
     sortedDocumentIdentifiers = self->_sortedDocumentIdentifiers;
   }
@@ -1208,14 +1208,14 @@ uint64_t __62__UITextSearchingFindSession__textRangeComparatorForDocument___bloc
   {
     if ([(NSMutableOrderedSet *)self->_sortedDocumentIdentifiers count]&& (*&self->_searchableObjectConformsTo & 0x800) == 0)
     {
-      v32 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v32 handleFailureInMethod:a2 object:self file:@"UITextSearchingFindSession.m" lineNumber:618 description:{@"UITextSearching: When providing multiple documents to the aggregator, you must implement the optional method compareOrderFromDocument:toDocument:."}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UITextSearchingFindSession.m" lineNumber:618 description:{@"UITextSearching: When providing multiple documents to the aggregator, you must implement the optional method compareOrderFromDocument:toDocument:."}];
     }
 
     v17 = self->_sortedDocumentIdentifiers;
     v18 = [(NSMutableOrderedSet *)v17 count];
-    v19 = [(UITextSearchingFindSession *)self _documentComparator];
-    v20 = [(NSMutableOrderedSet *)v17 indexOfObject:v13 inSortedRange:0 options:v18 usingComparator:1024, v19];
+    _documentComparator = [(UITextSearchingFindSession *)self _documentComparator];
+    v20 = [(NSMutableOrderedSet *)v17 indexOfObject:v13 inSortedRange:0 options:v18 usingComparator:1024, _documentComparator];
 
     [(NSMutableOrderedSet *)self->_sortedDocumentIdentifiers insertObject:v13 atIndex:v20];
   }
@@ -1223,9 +1223,9 @@ uint64_t __62__UITextSearchingFindSession__textRangeComparatorForDocument___bloc
   sortedResultsByDocument = self->_sortedResultsByDocument;
   if (!sortedResultsByDocument)
   {
-    v22 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v23 = self->_sortedResultsByDocument;
-    self->_sortedResultsByDocument = v22;
+    self->_sortedResultsByDocument = dictionary;
 
     sortedResultsByDocument = self->_sortedResultsByDocument;
   }
@@ -1235,43 +1235,43 @@ uint64_t __62__UITextSearchingFindSession__textRangeComparatorForDocument___bloc
   if (!v24)
   {
     v25 = self->_sortedResultsByDocument;
-    v26 = [MEMORY[0x1E695DFA0] orderedSet];
-    [(NSMutableDictionary *)v25 setObject:v26 forKey:v13];
+    orderedSet2 = [MEMORY[0x1E695DFA0] orderedSet];
+    [(NSMutableDictionary *)v25 setObject:orderedSet2 forKey:v13];
   }
 
   v27 = [(NSMutableDictionary *)self->_sortedResultsByDocument objectForKey:v13];
   v28 = [v27 count];
   v29 = [(UITextSearchingFindSession *)self _textRangeComparatorForDocument:v13];
-  v30 = [v27 indexOfObject:v33 inSortedRange:0 options:v28 usingComparator:{1024, v29}];
+  v30 = [v27 indexOfObject:rangeCopy inSortedRange:0 options:v28 usingComparator:{1024, v29}];
 
-  [v27 insertObject:v33 atIndex:v30];
+  [v27 insertObject:rangeCopy atIndex:v30];
   WeakRetained = objc_loadWeakRetained(&self->_searchableObject);
-  [WeakRetained decorateFoundTextRange:v33 inDocument:v11 usingStyle:1];
+  [WeakRetained decorateFoundTextRange:rangeCopy inDocument:v11 usingStyle:1];
 
   self->_awaitingFirstResults = 0;
   [(UITextSearchingFindSession *)self _setNeedsResultCountUpdate];
   [(UITextSearchingFindSession *)self _setReadyToPerformDelayedSearchOperations];
 }
 
-- (void)_invalidateFoundRange:(id)a3 inDocument:(id)a4
+- (void)_invalidateFoundRange:(id)range inDocument:(id)document
 {
-  if (a4)
+  if (document)
   {
-    v6 = a4;
+    documentCopy = document;
   }
 
   else
   {
-    v6 = @"__singleton__";
+    documentCopy = @"__singleton__";
   }
 
   sortedResultsByDocument = self->_sortedResultsByDocument;
-  v10 = a4;
-  v8 = a3;
-  v9 = [(NSMutableDictionary *)sortedResultsByDocument objectForKey:v6];
-  [v9 removeObject:v8];
+  documentCopy2 = document;
+  rangeCopy = range;
+  v9 = [(NSMutableDictionary *)sortedResultsByDocument objectForKey:documentCopy];
+  [v9 removeObject:rangeCopy];
 
-  LODWORD(v9) = [v8 isEqual:self->_highlightedTextRange];
+  LODWORD(v9) = [rangeCopy isEqual:self->_highlightedTextRange];
   if (v9)
   {
     [(UITextSearchingFindSession *)self highlightNextResultInDirection:0];

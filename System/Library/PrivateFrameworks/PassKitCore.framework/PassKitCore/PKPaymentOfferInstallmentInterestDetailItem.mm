@@ -1,25 +1,25 @@
 @interface PKPaymentOfferInstallmentInterestDetailItem
-- (BOOL)isEqual:(id)a3;
-- (PKPaymentOfferInstallmentInterestDetailItem)initWithCoder:(id)a3;
-- (PKPaymentOfferInstallmentInterestDetailItem)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKPaymentOfferInstallmentInterestDetailItem)initWithCoder:(id)coder;
+- (PKPaymentOfferInstallmentInterestDetailItem)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentOfferInstallmentInterestDetailItem
 
-- (PKPaymentOfferInstallmentInterestDetailItem)initWithDictionary:(id)a3
+- (PKPaymentOfferInstallmentInterestDetailItem)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v18.receiver = self;
   v18.super_class = PKPaymentOfferInstallmentInterestDetailItem;
   v5 = [(PKPaymentOfferInstallmentInterestDetailItem *)&v18 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"type"];
+    v6 = [dictionaryCopy PKStringForKey:@"type"];
     v7 = v6;
     if (v6 != @"apr")
     {
@@ -49,11 +49,11 @@ LABEL_5:
 LABEL_10:
 
     v5->_type = v9;
-    v13 = [v4 PKDecimalNumberFromStringForKey:@"interestPercentage"];
+    v13 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"interestPercentage"];
     interestPercentage = v5->_interestPercentage;
     v5->_interestPercentage = v13;
 
-    v15 = [v4 PKCurrencyAmountForKey:@"totalInterest"];
+    v15 = [dictionaryCopy PKCurrencyAmountForKey:@"totalInterest"];
     totalInterest = v5->_totalInterest;
     v5->_totalInterest = v15;
   }
@@ -83,29 +83,29 @@ LABEL_10:
   }
 
   [v3 setObject:v7 forKeyedSubscript:@"type"];
-  v8 = [(NSDecimalNumber *)self->_interestPercentage stringValue];
-  [v4 setObject:v8 forKeyedSubscript:@"interestPercentage"];
+  stringValue = [(NSDecimalNumber *)self->_interestPercentage stringValue];
+  [v4 setObject:stringValue forKeyedSubscript:@"interestPercentage"];
 
-  v9 = [(PKCurrencyAmount *)self->_totalInterest dictionaryRepresentation];
-  [v4 setObject:v9 forKeyedSubscript:@"totalInterest"];
+  dictionaryRepresentation = [(PKCurrencyAmount *)self->_totalInterest dictionaryRepresentation];
+  [v4 setObject:dictionaryRepresentation forKeyedSubscript:@"totalInterest"];
 
   v10 = [v4 copy];
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -199,45 +199,45 @@ LABEL_18:
   return v3;
 }
 
-- (PKPaymentOfferInstallmentInterestDetailItem)initWithCoder:(id)a3
+- (PKPaymentOfferInstallmentInterestDetailItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKPaymentOfferInstallmentInterestDetailItem;
   v5 = [(PKPaymentOfferInstallmentInterestDetailItem *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"interestPercentage"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"interestPercentage"];
     interestPercentage = v5->_interestPercentage;
     v5->_interestPercentage = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"totalInterest"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"totalInterest"];
     totalInterest = v5->_totalInterest;
     v5->_totalInterest = v8;
 
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   interestPercentage = self->_interestPercentage;
-  v5 = a3;
-  [v5 encodeObject:interestPercentage forKey:@"interestPercentage"];
-  [v5 encodeObject:self->_totalInterest forKey:@"totalInterest"];
-  [v5 encodeInteger:self->_type forKey:@"type"];
+  coderCopy = coder;
+  [coderCopy encodeObject:interestPercentage forKey:@"interestPercentage"];
+  [coderCopy encodeObject:self->_totalInterest forKey:@"totalInterest"];
+  [coderCopy encodeInteger:self->_type forKey:@"type"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKPaymentOfferInstallmentInterestDetailItem allocWithZone:](PKPaymentOfferInstallmentInterestDetailItem init];
-  v6 = [(PKCurrencyAmount *)self->_totalInterest copyWithZone:a3];
+  v6 = [(PKCurrencyAmount *)self->_totalInterest copyWithZone:zone];
   totalInterest = v5->_totalInterest;
   v5->_totalInterest = v6;
 
-  v8 = [(NSDecimalNumber *)self->_interestPercentage copyWithZone:a3];
+  v8 = [(NSDecimalNumber *)self->_interestPercentage copyWithZone:zone];
   interestPercentage = v5->_interestPercentage;
   v5->_interestPercentage = v8;
 

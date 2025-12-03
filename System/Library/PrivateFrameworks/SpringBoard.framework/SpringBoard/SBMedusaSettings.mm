@@ -14,25 +14,25 @@
   [(SBMedusaSettings *)self setPersistentDock:1];
   [(SBMedusaSettings *)self setNumberOfRecents:3.0];
   [(SBMedusaSettings *)self setDismissHitTestTopPadding:20.0];
-  v4 = [(SBMedusaSettings *)self dockAnimationSettings];
-  [v4 setDefaultValues];
+  dockAnimationSettings = [(SBMedusaSettings *)self dockAnimationSettings];
+  [dockAnimationSettings setDefaultValues];
 
-  v5 = [(SBMedusaSettings *)self dockAnimationSettings];
+  dockAnimationSettings2 = [(SBMedusaSettings *)self dockAnimationSettings];
   v77 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v5 setFrameRateRange:1114113 highFrameRateReason:{*&v77.minimum, *&v77.maximum, *&v77.preferred}];
+  [dockAnimationSettings2 setFrameRateRange:1114113 highFrameRateReason:{*&v77.minimum, *&v77.maximum, *&v77.preferred}];
 
-  v6 = [(SBMedusaSettings *)self dockWithPresentedFolderAnimationSettings];
-  [v6 setDefaultValues];
+  dockWithPresentedFolderAnimationSettings = [(SBMedusaSettings *)self dockWithPresentedFolderAnimationSettings];
+  [dockWithPresentedFolderAnimationSettings setDefaultValues];
 
-  v7 = [(SBMedusaSettings *)self dockWithPresentedFolderAnimationSettings];
+  dockWithPresentedFolderAnimationSettings2 = [(SBMedusaSettings *)self dockWithPresentedFolderAnimationSettings];
   v78 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v7 setFrameRateRange:1114113 highFrameRateReason:{*&v78.minimum, *&v78.maximum, *&v78.preferred}];
+  [dockWithPresentedFolderAnimationSettings2 setFrameRateRange:1114113 highFrameRateReason:{*&v78.minimum, *&v78.maximum, *&v78.preferred}];
 
-  v8 = [(SBMedusaSettings *)self dockWithPresentedFolderAnimationSettings];
-  [v8 setDampingRatio:0.9962];
+  dockWithPresentedFolderAnimationSettings3 = [(SBMedusaSettings *)self dockWithPresentedFolderAnimationSettings];
+  [dockWithPresentedFolderAnimationSettings3 setDampingRatio:0.9962];
 
-  v9 = [(SBMedusaSettings *)self dockWithPresentedFolderAnimationSettings];
-  [v9 setResponse:0.2721];
+  dockWithPresentedFolderAnimationSettings4 = [(SBMedusaSettings *)self dockWithPresentedFolderAnimationSettings];
+  [dockWithPresentedFolderAnimationSettings4 setResponse:0.2721];
 
   [(SBMedusaSettings *)self setNarrowEdgeSwipeHitTestWidth:108.0];
   [(SBMedusaSettings *)self setWideEdgeSwipeHitTestWidth:140.0];
@@ -73,115 +73,115 @@
   [(SBMedusaSettings *)self setVibrantColorMatrixM45:0.0];
   [(SBMedusaSettings *)self setBlurFadeAnimationDuration:0.25];
   [(SBMedusaSettings *)self setReduceMotionBlurFadeAnimationDuration:0.2];
-  v10 = [(SBMedusaSettings *)self windowDragAnimationSettings];
-  [v10 setDefaultValues];
+  windowDragAnimationSettings = [(SBMedusaSettings *)self windowDragAnimationSettings];
+  [windowDragAnimationSettings setDefaultValues];
 
-  v11 = [(SBMedusaSettings *)self windowDragAnimationSettings];
-  [v11 setTrackingDampingRatio:0.92];
+  windowDragAnimationSettings2 = [(SBMedusaSettings *)self windowDragAnimationSettings];
+  [windowDragAnimationSettings2 setTrackingDampingRatio:0.92];
 
-  v12 = [(SBMedusaSettings *)self windowDragAnimationSettings];
-  [v12 setTrackingResponse:0.1];
+  windowDragAnimationSettings3 = [(SBMedusaSettings *)self windowDragAnimationSettings];
+  [windowDragAnimationSettings3 setTrackingResponse:0.1];
 
-  v13 = [(SBMedusaSettings *)self windowDragAnimationSettings];
+  windowDragAnimationSettings4 = [(SBMedusaSettings *)self windowDragAnimationSettings];
   v79 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v13 setFrameRateRange:1114113 highFrameRateReason:{*&v79.minimum, *&v79.maximum, *&v79.preferred}];
+  [windowDragAnimationSettings4 setFrameRateRange:1114113 highFrameRateReason:{*&v79.minimum, *&v79.maximum, *&v79.preferred}];
 
-  v14 = [(SBMedusaSettings *)self medusaAnimationSettings];
-  [v14 setDampingRatio:0.92];
+  medusaAnimationSettings = [(SBMedusaSettings *)self medusaAnimationSettings];
+  [medusaAnimationSettings setDampingRatio:0.92];
 
-  v15 = [(SBMedusaSettings *)self medusaAnimationSettings];
-  [v15 setResponse:0.457];
+  medusaAnimationSettings2 = [(SBMedusaSettings *)self medusaAnimationSettings];
+  [medusaAnimationSettings2 setResponse:0.457];
 
-  v16 = [(SBMedusaSettings *)self medusaAnimationSettings];
-  [v16 setTrackingDampingRatio:0.9];
+  medusaAnimationSettings3 = [(SBMedusaSettings *)self medusaAnimationSettings];
+  [medusaAnimationSettings3 setTrackingDampingRatio:0.9];
 
-  v17 = [(SBMedusaSettings *)self medusaAnimationSettings];
-  [v17 setTrackingResponse:0.12];
+  medusaAnimationSettings4 = [(SBMedusaSettings *)self medusaAnimationSettings];
+  [medusaAnimationSettings4 setTrackingResponse:0.12];
 
-  v18 = [(SBMedusaSettings *)self medusaAnimationSettings];
+  medusaAnimationSettings5 = [(SBMedusaSettings *)self medusaAnimationSettings];
   v80 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v18 setFrameRateRange:1114113 highFrameRateReason:{*&v80.minimum, *&v80.maximum, *&v80.preferred}];
+  [medusaAnimationSettings5 setFrameRateRange:1114113 highFrameRateReason:{*&v80.minimum, *&v80.maximum, *&v80.preferred}];
 
-  v19 = [(SBMedusaSettings *)self resizeAnimationSettings];
-  [v19 setDampingRatio:1.0];
+  resizeAnimationSettings = [(SBMedusaSettings *)self resizeAnimationSettings];
+  [resizeAnimationSettings setDampingRatio:1.0];
 
-  v20 = [(SBMedusaSettings *)self resizeAnimationSettings];
-  [v20 setResponse:0.42];
+  resizeAnimationSettings2 = [(SBMedusaSettings *)self resizeAnimationSettings];
+  [resizeAnimationSettings2 setResponse:0.42];
 
-  v21 = [(SBMedusaSettings *)self resizeAnimationSettings];
+  resizeAnimationSettings3 = [(SBMedusaSettings *)self resizeAnimationSettings];
   v81 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v21 setFrameRateRange:1114113 highFrameRateReason:{*&v81.minimum, *&v81.maximum, *&v81.preferred}];
+  [resizeAnimationSettings3 setFrameRateRange:1114113 highFrameRateReason:{*&v81.minimum, *&v81.maximum, *&v81.preferred}];
 
-  v22 = [(SBMedusaSettings *)self platterAnimationSettings];
-  [v22 setDampingRatio:0.9];
+  platterAnimationSettings = [(SBMedusaSettings *)self platterAnimationSettings];
+  [platterAnimationSettings setDampingRatio:0.9];
 
-  v23 = [(SBMedusaSettings *)self platterAnimationSettings];
-  [v23 setResponse:0.42];
+  platterAnimationSettings2 = [(SBMedusaSettings *)self platterAnimationSettings];
+  [platterAnimationSettings2 setResponse:0.42];
 
-  v24 = [(SBMedusaSettings *)self platterAnimationSettings];
+  platterAnimationSettings3 = [(SBMedusaSettings *)self platterAnimationSettings];
   v82 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v24 setFrameRateRange:1114113 highFrameRateReason:{*&v82.minimum, *&v82.maximum, *&v82.preferred}];
+  [platterAnimationSettings3 setFrameRateRange:1114113 highFrameRateReason:{*&v82.minimum, *&v82.maximum, *&v82.preferred}];
 
-  v25 = [(SBMedusaSettings *)self dropAnimationSettings];
-  [v25 setDampingRatio:0.92];
+  dropAnimationSettings = [(SBMedusaSettings *)self dropAnimationSettings];
+  [dropAnimationSettings setDampingRatio:0.92];
 
-  v26 = [(SBMedusaSettings *)self dropAnimationSettings];
-  [v26 setResponse:0.457];
+  dropAnimationSettings2 = [(SBMedusaSettings *)self dropAnimationSettings];
+  [dropAnimationSettings2 setResponse:0.457];
 
-  v27 = [(SBMedusaSettings *)self dropAnimationSettings];
-  [v27 setTrackingDampingRatio:0.92];
+  dropAnimationSettings3 = [(SBMedusaSettings *)self dropAnimationSettings];
+  [dropAnimationSettings3 setTrackingDampingRatio:0.92];
 
-  v28 = [(SBMedusaSettings *)self dropAnimationSettings];
-  [v28 setTrackingResponse:0.457];
+  dropAnimationSettings4 = [(SBMedusaSettings *)self dropAnimationSettings];
+  [dropAnimationSettings4 setTrackingResponse:0.457];
 
-  v29 = [(SBMedusaSettings *)self dropAnimationSettings];
+  dropAnimationSettings5 = [(SBMedusaSettings *)self dropAnimationSettings];
   v83 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v29 setFrameRateRange:1114113 highFrameRateReason:{*&v83.minimum, *&v83.maximum, *&v83.preferred}];
+  [dropAnimationSettings5 setFrameRateRange:1114113 highFrameRateReason:{*&v83.minimum, *&v83.maximum, *&v83.preferred}];
 
-  v30 = [(SBMedusaSettings *)self switcherCardDropAnimationSettings];
-  [v30 setDefaultValues];
+  switcherCardDropAnimationSettings = [(SBMedusaSettings *)self switcherCardDropAnimationSettings];
+  [switcherCardDropAnimationSettings setDefaultValues];
 
-  v31 = [(SBMedusaSettings *)self switcherCardDropAnimationSettings];
-  [v31 setDampingRatio:0.92];
+  switcherCardDropAnimationSettings2 = [(SBMedusaSettings *)self switcherCardDropAnimationSettings];
+  [switcherCardDropAnimationSettings2 setDampingRatio:0.92];
 
-  v32 = [(SBMedusaSettings *)self switcherCardDropAnimationSettings];
-  [v32 setResponse:0.531];
+  switcherCardDropAnimationSettings3 = [(SBMedusaSettings *)self switcherCardDropAnimationSettings];
+  [switcherCardDropAnimationSettings3 setResponse:0.531];
 
-  v33 = [(SBMedusaSettings *)self switcherCardDropAnimationSettings];
-  [v33 setTrackingDampingRatio:0.92];
+  switcherCardDropAnimationSettings4 = [(SBMedusaSettings *)self switcherCardDropAnimationSettings];
+  [switcherCardDropAnimationSettings4 setTrackingDampingRatio:0.92];
 
-  v34 = [(SBMedusaSettings *)self switcherCardDropAnimationSettings];
-  [v34 setTrackingResponse:0.531];
+  switcherCardDropAnimationSettings5 = [(SBMedusaSettings *)self switcherCardDropAnimationSettings];
+  [switcherCardDropAnimationSettings5 setTrackingResponse:0.531];
 
-  v35 = [(SBMedusaSettings *)self switcherCardDropAnimationSettings];
+  switcherCardDropAnimationSettings6 = [(SBMedusaSettings *)self switcherCardDropAnimationSettings];
   v84 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v35 setFrameRateRange:1114113 highFrameRateReason:{*&v84.minimum, *&v84.maximum, *&v84.preferred}];
+  [switcherCardDropAnimationSettings6 setFrameRateRange:1114113 highFrameRateReason:{*&v84.minimum, *&v84.maximum, *&v84.preferred}];
 
-  v36 = [(SBMedusaSettings *)self topAffordanceExpandAnimationSettings];
-  [v36 setDampingRatio:1.01];
+  topAffordanceExpandAnimationSettings = [(SBMedusaSettings *)self topAffordanceExpandAnimationSettings];
+  [topAffordanceExpandAnimationSettings setDampingRatio:1.01];
 
-  v37 = [(SBMedusaSettings *)self topAffordanceExpandAnimationSettings];
-  [v37 setResponse:0.28];
+  topAffordanceExpandAnimationSettings2 = [(SBMedusaSettings *)self topAffordanceExpandAnimationSettings];
+  [topAffordanceExpandAnimationSettings2 setResponse:0.28];
 
-  v38 = [(SBMedusaSettings *)self topAffordanceExpandAnimationSettings];
-  [v38 setRetargetImpulse:0.016];
+  topAffordanceExpandAnimationSettings3 = [(SBMedusaSettings *)self topAffordanceExpandAnimationSettings];
+  [topAffordanceExpandAnimationSettings3 setRetargetImpulse:0.016];
 
-  v39 = [(SBMedusaSettings *)self topAffordanceExpandAnimationSettings];
+  topAffordanceExpandAnimationSettings4 = [(SBMedusaSettings *)self topAffordanceExpandAnimationSettings];
   v85 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v39 setFrameRateRange:1114113 highFrameRateReason:{*&v85.minimum, *&v85.maximum, *&v85.preferred}];
+  [topAffordanceExpandAnimationSettings4 setFrameRateRange:1114113 highFrameRateReason:{*&v85.minimum, *&v85.maximum, *&v85.preferred}];
 
-  v40 = [(SBMedusaSettings *)self topAffordanceCollapseAnimationSettings];
-  [v40 setDampingRatio:1.01];
+  topAffordanceCollapseAnimationSettings = [(SBMedusaSettings *)self topAffordanceCollapseAnimationSettings];
+  [topAffordanceCollapseAnimationSettings setDampingRatio:1.01];
 
-  v41 = [(SBMedusaSettings *)self topAffordanceCollapseAnimationSettings];
-  [v41 setResponse:0.28];
+  topAffordanceCollapseAnimationSettings2 = [(SBMedusaSettings *)self topAffordanceCollapseAnimationSettings];
+  [topAffordanceCollapseAnimationSettings2 setResponse:0.28];
 
-  v42 = [(SBMedusaSettings *)self topAffordanceCollapseAnimationSettings];
-  [v42 setRetargetImpulse:0.016];
+  topAffordanceCollapseAnimationSettings3 = [(SBMedusaSettings *)self topAffordanceCollapseAnimationSettings];
+  [topAffordanceCollapseAnimationSettings3 setRetargetImpulse:0.016];
 
-  v43 = [(SBMedusaSettings *)self topAffordanceCollapseAnimationSettings];
+  topAffordanceCollapseAnimationSettings4 = [(SBMedusaSettings *)self topAffordanceCollapseAnimationSettings];
   v86 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v43 setFrameRateRange:1114113 highFrameRateReason:{*&v86.minimum, *&v86.maximum, *&v86.preferred}];
+  [topAffordanceCollapseAnimationSettings4 setFrameRateRange:1114113 highFrameRateReason:{*&v86.minimum, *&v86.maximum, *&v86.preferred}];
 
   [(SBMedusaSettings *)self setDropAnimationUnblurThresholdPercentage:0.5];
   [(SBMedusaSettings *)self setResizeAnimationUnblurThresholdPercentage:0.9];
@@ -242,8 +242,8 @@
 
   else
   {
-    v2 = [MEMORY[0x277D75418] currentDevice];
-    if ([v2 userInterfaceIdiom])
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice userInterfaceIdiom])
     {
       [(SBMedusaSettings *)self setCornerRadiusFallbackForOldApps:0.0];
 LABEL_10:
@@ -286,44 +286,44 @@ LABEL_11:
   [(SBMedusaSettings *)self setDefaultDimmingOpacity:0.3];
   [(SBMedusaSettings *)self setSwitcherShelfSplitViewIconInset:4.0];
   [(SBMedusaSettings *)self setSwitcherShelfIconHitTestInset:24.0];
-  v48 = [(SBMedusaSettings *)self switcherShelfGenieRopeSettings];
-  [v48 setDefaultValues];
+  switcherShelfGenieRopeSettings = [(SBMedusaSettings *)self switcherShelfGenieRopeSettings];
+  [switcherShelfGenieRopeSettings setDefaultValues];
 
-  v49 = [(SBMedusaSettings *)self switcherShelfGenieRopeSettings];
-  [v49 setResponse:0.375];
+  switcherShelfGenieRopeSettings2 = [(SBMedusaSettings *)self switcherShelfGenieRopeSettings];
+  [switcherShelfGenieRopeSettings2 setResponse:0.375];
 
-  v50 = [(SBMedusaSettings *)self switcherShelfGenieRopeSettings];
-  [v50 setDampingRatio:1.0];
+  switcherShelfGenieRopeSettings3 = [(SBMedusaSettings *)self switcherShelfGenieRopeSettings];
+  [switcherShelfGenieRopeSettings3 setDampingRatio:1.0];
 
-  v51 = [(SBMedusaSettings *)self switcherShelfGenieRopeSettings];
+  switcherShelfGenieRopeSettings4 = [(SBMedusaSettings *)self switcherShelfGenieRopeSettings];
   v87 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v51 setFrameRateRange:1114113 highFrameRateReason:{*&v87.minimum, *&v87.maximum, *&v87.preferred}];
+  [switcherShelfGenieRopeSettings4 setFrameRateRange:1114113 highFrameRateReason:{*&v87.minimum, *&v87.maximum, *&v87.preferred}];
 
-  v52 = [(SBMedusaSettings *)self switcherShelfCardGeniePresentationSettings];
-  [v52 setDefaultValues];
+  switcherShelfCardGeniePresentationSettings = [(SBMedusaSettings *)self switcherShelfCardGeniePresentationSettings];
+  [switcherShelfCardGeniePresentationSettings setDefaultValues];
 
-  v53 = [(SBMedusaSettings *)self switcherShelfCardGeniePresentationSettings];
-  [v53 setResponse:0.675];
+  switcherShelfCardGeniePresentationSettings2 = [(SBMedusaSettings *)self switcherShelfCardGeniePresentationSettings];
+  [switcherShelfCardGeniePresentationSettings2 setResponse:0.675];
 
-  v54 = [(SBMedusaSettings *)self switcherShelfCardGeniePresentationSettings];
-  [v54 setDampingRatio:1.05];
+  switcherShelfCardGeniePresentationSettings3 = [(SBMedusaSettings *)self switcherShelfCardGeniePresentationSettings];
+  [switcherShelfCardGeniePresentationSettings3 setDampingRatio:1.05];
 
-  v55 = [(SBMedusaSettings *)self switcherShelfCardGeniePresentationSettings];
+  switcherShelfCardGeniePresentationSettings4 = [(SBMedusaSettings *)self switcherShelfCardGeniePresentationSettings];
   v88 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v55 setFrameRateRange:1114113 highFrameRateReason:{*&v88.minimum, *&v88.maximum, *&v88.preferred}];
+  [switcherShelfCardGeniePresentationSettings4 setFrameRateRange:1114113 highFrameRateReason:{*&v88.minimum, *&v88.maximum, *&v88.preferred}];
 
-  v56 = [(SBMedusaSettings *)self switcherShelfCardGenieDismissalSettings];
-  [v56 setDefaultValues];
+  switcherShelfCardGenieDismissalSettings = [(SBMedusaSettings *)self switcherShelfCardGenieDismissalSettings];
+  [switcherShelfCardGenieDismissalSettings setDefaultValues];
 
-  v57 = [(SBMedusaSettings *)self switcherShelfCardGenieDismissalSettings];
-  [v57 setResponse:0.5];
+  switcherShelfCardGenieDismissalSettings2 = [(SBMedusaSettings *)self switcherShelfCardGenieDismissalSettings];
+  [switcherShelfCardGenieDismissalSettings2 setResponse:0.5];
 
-  v58 = [(SBMedusaSettings *)self switcherShelfCardGenieDismissalSettings];
-  [v58 setDampingRatio:0.875];
+  switcherShelfCardGenieDismissalSettings3 = [(SBMedusaSettings *)self switcherShelfCardGenieDismissalSettings];
+  [switcherShelfCardGenieDismissalSettings3 setDampingRatio:0.875];
 
-  v59 = [(SBMedusaSettings *)self switcherShelfCardGenieDismissalSettings];
+  switcherShelfCardGenieDismissalSettings4 = [(SBMedusaSettings *)self switcherShelfCardGenieDismissalSettings];
   v89 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v59 setFrameRateRange:1114113 highFrameRateReason:{*&v89.minimum, *&v89.maximum, *&v89.preferred}];
+  [switcherShelfCardGenieDismissalSettings4 setFrameRateRange:1114113 highFrameRateReason:{*&v89.minimum, *&v89.maximum, *&v89.preferred}];
 
   [(SBMedusaSettings *)self setSwitcherShelfGenieInitialYIncrementBelowScreen:100.0];
   [(SBMedusaSettings *)self setSwitcherShelfCardGenieResponseIncrementScalar:0.08];
@@ -332,59 +332,59 @@ LABEL_11:
   [(SBMedusaSettings *)self setSwitcherShelfGenieBezierCurveXExponent:1.6];
   [(SBMedusaSettings *)self setSwitcherShelfGenieBezierCurveYExponent:1.0];
   [(SBMedusaSettings *)self setSwitcherShelfGenieBezierCurveScaleExponent:0.98];
-  v60 = [(SBMedusaSettings *)self switcherShelfNonGenieRopeSettings];
-  [v60 setDefaultValues];
+  switcherShelfNonGenieRopeSettings = [(SBMedusaSettings *)self switcherShelfNonGenieRopeSettings];
+  [switcherShelfNonGenieRopeSettings setDefaultValues];
 
-  v61 = [(SBMedusaSettings *)self switcherShelfNonGenieRopeSettings];
-  [v61 setResponse:0.4];
+  switcherShelfNonGenieRopeSettings2 = [(SBMedusaSettings *)self switcherShelfNonGenieRopeSettings];
+  [switcherShelfNonGenieRopeSettings2 setResponse:0.4];
 
-  v62 = [(SBMedusaSettings *)self switcherShelfNonGenieRopeSettings];
-  [v62 setDampingRatio:1.0];
+  switcherShelfNonGenieRopeSettings3 = [(SBMedusaSettings *)self switcherShelfNonGenieRopeSettings];
+  [switcherShelfNonGenieRopeSettings3 setDampingRatio:1.0];
 
-  v63 = [(SBMedusaSettings *)self switcherShelfNonGenieRopeSettings];
+  switcherShelfNonGenieRopeSettings4 = [(SBMedusaSettings *)self switcherShelfNonGenieRopeSettings];
   v90 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v63 setFrameRateRange:1114113 highFrameRateReason:{*&v90.minimum, *&v90.maximum, *&v90.preferred}];
+  [switcherShelfNonGenieRopeSettings4 setFrameRateRange:1114113 highFrameRateReason:{*&v90.minimum, *&v90.maximum, *&v90.preferred}];
 
-  v64 = [(SBMedusaSettings *)self switcherShelfCardNonGeniePresentationSettings];
-  [v64 setDefaultValues];
+  switcherShelfCardNonGeniePresentationSettings = [(SBMedusaSettings *)self switcherShelfCardNonGeniePresentationSettings];
+  [switcherShelfCardNonGeniePresentationSettings setDefaultValues];
 
-  v65 = [(SBMedusaSettings *)self switcherShelfCardNonGeniePresentationSettings];
-  [v65 setResponse:0.475];
+  switcherShelfCardNonGeniePresentationSettings2 = [(SBMedusaSettings *)self switcherShelfCardNonGeniePresentationSettings];
+  [switcherShelfCardNonGeniePresentationSettings2 setResponse:0.475];
 
-  v66 = [(SBMedusaSettings *)self switcherShelfCardNonGeniePresentationSettings];
-  [v66 setDampingRatio:0.9];
+  switcherShelfCardNonGeniePresentationSettings3 = [(SBMedusaSettings *)self switcherShelfCardNonGeniePresentationSettings];
+  [switcherShelfCardNonGeniePresentationSettings3 setDampingRatio:0.9];
 
-  v67 = [(SBMedusaSettings *)self switcherShelfCardNonGeniePresentationSettings];
+  switcherShelfCardNonGeniePresentationSettings4 = [(SBMedusaSettings *)self switcherShelfCardNonGeniePresentationSettings];
   v91 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v67 setFrameRateRange:1114113 highFrameRateReason:{*&v91.minimum, *&v91.maximum, *&v91.preferred}];
+  [switcherShelfCardNonGeniePresentationSettings4 setFrameRateRange:1114113 highFrameRateReason:{*&v91.minimum, *&v91.maximum, *&v91.preferred}];
 
-  v68 = [(SBMedusaSettings *)self switcherShelfCardNonGenieDismissalSettings];
-  [v68 setDefaultValues];
+  switcherShelfCardNonGenieDismissalSettings = [(SBMedusaSettings *)self switcherShelfCardNonGenieDismissalSettings];
+  [switcherShelfCardNonGenieDismissalSettings setDefaultValues];
 
-  v69 = [(SBMedusaSettings *)self switcherShelfCardNonGenieDismissalSettings];
-  [v69 setResponse:0.25];
+  switcherShelfCardNonGenieDismissalSettings2 = [(SBMedusaSettings *)self switcherShelfCardNonGenieDismissalSettings];
+  [switcherShelfCardNonGenieDismissalSettings2 setResponse:0.25];
 
-  v70 = [(SBMedusaSettings *)self switcherShelfCardNonGenieDismissalSettings];
-  [v70 setDampingRatio:0.85];
+  switcherShelfCardNonGenieDismissalSettings3 = [(SBMedusaSettings *)self switcherShelfCardNonGenieDismissalSettings];
+  [switcherShelfCardNonGenieDismissalSettings3 setDampingRatio:0.85];
 
-  v71 = [(SBMedusaSettings *)self switcherShelfCardNonGenieDismissalSettings];
+  switcherShelfCardNonGenieDismissalSettings4 = [(SBMedusaSettings *)self switcherShelfCardNonGenieDismissalSettings];
   v92 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v71 setFrameRateRange:1114113 highFrameRateReason:{*&v92.minimum, *&v92.maximum, *&v92.preferred}];
+  [switcherShelfCardNonGenieDismissalSettings4 setFrameRateRange:1114113 highFrameRateReason:{*&v92.minimum, *&v92.maximum, *&v92.preferred}];
 
   [(SBMedusaSettings *)self setSwitcherShelfCardNonGenieResponseIncrementScalar:0.02];
   [(SBMedusaSettings *)self setSwitcherShelfCardNonGenieDismissedScale:0.8];
-  v72 = [(SBMedusaSettings *)self switcherShelfBounceIconSettings];
-  [v72 setDefaultValues];
+  switcherShelfBounceIconSettings = [(SBMedusaSettings *)self switcherShelfBounceIconSettings];
+  [switcherShelfBounceIconSettings setDefaultValues];
 
-  v73 = [(SBMedusaSettings *)self switcherShelfBounceIconSettings];
-  [v73 setResponse:0.5];
+  switcherShelfBounceIconSettings2 = [(SBMedusaSettings *)self switcherShelfBounceIconSettings];
+  [switcherShelfBounceIconSettings2 setResponse:0.5];
 
-  v74 = [(SBMedusaSettings *)self switcherShelfBounceIconSettings];
-  [v74 setDampingRatio:1.0];
+  switcherShelfBounceIconSettings3 = [(SBMedusaSettings *)self switcherShelfBounceIconSettings];
+  [switcherShelfBounceIconSettings3 setDampingRatio:1.0];
 
-  v75 = [(SBMedusaSettings *)self switcherShelfBounceIconSettings];
+  switcherShelfBounceIconSettings4 = [(SBMedusaSettings *)self switcherShelfBounceIconSettings];
   v93 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v75 setFrameRateRange:1114113 highFrameRateReason:{*&v93.minimum, *&v93.maximum, *&v93.preferred}];
+  [switcherShelfBounceIconSettings4 setFrameRateRange:1114113 highFrameRateReason:{*&v93.minimum, *&v93.maximum, *&v93.preferred}];
 
   [(SBMedusaSettings *)self setSwitcherShelfGenieIconBounceDelay:0.33];
 }

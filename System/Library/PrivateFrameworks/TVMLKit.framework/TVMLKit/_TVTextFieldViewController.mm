@@ -5,9 +5,9 @@
 - (void)_updateViewLayout;
 - (void)dealloc;
 - (void)loadView;
-- (void)searchBarDidChangeText:(id)a3;
-- (void)textDidChangeForKeyboard:(id)a3;
-- (void)updateWithViewElement:(id)a3;
+- (void)searchBarDidChangeText:(id)text;
+- (void)textDidChangeForKeyboard:(id)keyboard;
+- (void)updateWithViewElement:(id)element;
 @end
 
 @implementation _TVTextFieldViewController
@@ -20,12 +20,12 @@
   [(_TVTextFieldViewController *)&v3 dealloc];
 }
 
-- (void)updateWithViewElement:(id)a3
+- (void)updateWithViewElement:(id)element
 {
-  v6 = a3;
-  objc_storeStrong(&self->_viewElement, a3);
-  v5 = [(IKTextFieldElement *)self->_viewElement keyboard];
-  [v5 setDelegate:self];
+  elementCopy = element;
+  objc_storeStrong(&self->_viewElement, element);
+  keyboard = [(IKTextFieldElement *)self->_viewElement keyboard];
+  [keyboard setDelegate:self];
 
   if ([(_TVTextFieldViewController *)self isViewLoaded])
   {
@@ -38,19 +38,19 @@
 {
   if ([(_TVTextFieldViewController *)self isViewLoaded])
   {
-    v3 = [(_TVTextFieldViewController *)self view];
-    v4 = [v3 textField];
+    view = [(_TVTextFieldViewController *)self view];
+    textField = [view textField];
   }
 
   else
   {
-    v4 = 0;
+    textField = 0;
   }
 
-  return v4;
+  return textField;
 }
 
-- (void)textDidChangeForKeyboard:(id)a3
+- (void)textDidChangeForKeyboard:(id)keyboard
 {
   if ([(_TVTextFieldViewController *)self isViewLoaded])
   {
@@ -69,7 +69,7 @@
   [(_TVTextFieldViewController *)self _updateUserText];
 }
 
-- (void)searchBarDidChangeText:(id)a3
+- (void)searchBarDidChangeText:(id)text
 {
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel__updateKeyboardWithUserText object:0];
 
@@ -78,52 +78,52 @@
 
 - (void)_updateViewLayout
 {
-  v18 = [(_TVTextFieldViewController *)self viewElement];
-  v3 = [(_TVTextFieldViewController *)self view];
-  v4 = [v3 textField];
-  v5 = [v18 tv_attributedString];
-  v6 = [v18 tv_textAttributes];
-  v7 = [v6 mutableCopy];
+  viewElement = [(_TVTextFieldViewController *)self viewElement];
+  view = [(_TVTextFieldViewController *)self view];
+  textField = [view textField];
+  tv_attributedString = [viewElement tv_attributedString];
+  tv_textAttributes = [viewElement tv_textAttributes];
+  v7 = [tv_textAttributes mutableCopy];
 
-  v8 = [v18 style];
-  v9 = [v8 tv_highlightColor];
-  v10 = [v9 color];
+  style = [viewElement style];
+  tv_highlightColor = [style tv_highlightColor];
+  color = [tv_highlightColor color];
 
-  if (v10)
+  if (color)
   {
-    [v7 setObject:v10 forKey:*MEMORY[0x277D740C0]];
+    [v7 setObject:color forKey:*MEMORY[0x277D740C0]];
   }
 
-  [v4 setAttributedPlaceholder:v5];
-  [v4 setDefaultTextAttributes:v7];
-  v11 = [v18 attributes];
-  v12 = [v11 objectForKey:@"activityIndicator"];
-  v13 = [v12 BOOLValue];
+  [textField setAttributedPlaceholder:tv_attributedString];
+  [textField setDefaultTextAttributes:v7];
+  attributes = [viewElement attributes];
+  v12 = [attributes objectForKey:@"activityIndicator"];
+  bOOLValue = [v12 BOOLValue];
 
-  v14 = [v3 activityIndicatorView];
-  v15 = v14;
-  if (v13)
+  activityIndicatorView = [view activityIndicatorView];
+  v15 = activityIndicatorView;
+  if (bOOLValue)
   {
-    [v14 startAnimating];
+    [activityIndicatorView startAnimating];
   }
 
   else
   {
-    [v14 stopAnimating];
+    [activityIndicatorView stopAnimating];
   }
 
-  v16 = [(_TVTextFieldViewController *)self view];
-  v17 = [(_TVTextFieldViewController *)self viewElement];
-  [v16 transferLayoutStylesFromElement:v17];
+  view2 = [(_TVTextFieldViewController *)self view];
+  viewElement2 = [(_TVTextFieldViewController *)self viewElement];
+  [view2 transferLayoutStylesFromElement:viewElement2];
 }
 
 - (void)_updateUserText
 {
-  v6 = [(_TVTextFieldViewController *)self viewElement];
-  v3 = [(_TVTextFieldViewController *)self textField];
-  v4 = [v6 keyboard];
-  v5 = [v4 text];
-  [v3 setText:v5];
+  viewElement = [(_TVTextFieldViewController *)self viewElement];
+  textField = [(_TVTextFieldViewController *)self textField];
+  keyboard = [viewElement keyboard];
+  text = [keyboard text];
+  [textField setText:text];
 
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel__updateKeyboardWithUserText object:0];
 }
@@ -131,11 +131,11 @@
 - (void)_updateKeyboardWithUserText
 {
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel__updateKeyboardWithUserText object:0];
-  v6 = [(_TVTextFieldViewController *)self textField];
-  v3 = [(_TVTextFieldViewController *)self viewElement];
-  v4 = [v3 keyboard];
-  v5 = [v6 text];
-  [v4 setText:v5];
+  textField = [(_TVTextFieldViewController *)self textField];
+  viewElement = [(_TVTextFieldViewController *)self viewElement];
+  keyboard = [viewElement keyboard];
+  text = [textField text];
+  [keyboard setText:text];
 }
 
 @end

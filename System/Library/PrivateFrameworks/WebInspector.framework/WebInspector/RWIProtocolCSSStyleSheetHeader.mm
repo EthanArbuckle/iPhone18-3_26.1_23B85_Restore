@@ -9,22 +9,22 @@
 - (double)startColumn;
 - (double)startLine;
 - (int64_t)origin;
-- (void)setFrameId:(id)a3;
-- (void)setOrigin:(int64_t)a3;
-- (void)setSourceURL:(id)a3;
-- (void)setStartColumn:(double)a3;
-- (void)setStartLine:(double)a3;
-- (void)setStyleSheetId:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setFrameId:(id)id;
+- (void)setOrigin:(int64_t)origin;
+- (void)setSourceURL:(id)l;
+- (void)setStartColumn:(double)column;
+- (void)setStartLine:(double)line;
+- (void)setStyleSheetId:(id)id;
+- (void)setTitle:(id)title;
 @end
 
 @implementation RWIProtocolCSSStyleSheetHeader
 
-- (void)setStyleSheetId:(id)a3
+- (void)setStyleSheetId:(id)id
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolCSSStyleSheetHeader;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"styleSheetId"];
+  [(RWIProtocolJSONObject *)&v3 setString:id forKey:@"styleSheetId"];
 }
 
 - (NSString)styleSheetId
@@ -36,11 +36,11 @@
   return v2;
 }
 
-- (void)setFrameId:(id)a3
+- (void)setFrameId:(id)id
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolCSSStyleSheetHeader;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"frameId"];
+  [(RWIProtocolJSONObject *)&v3 setString:id forKey:@"frameId"];
 }
 
 - (NSString)frameId
@@ -52,11 +52,11 @@
   return v2;
 }
 
-- (void)setSourceURL:(id)a3
+- (void)setSourceURL:(id)l
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolCSSStyleSheetHeader;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"sourceURL"];
+  [(RWIProtocolJSONObject *)&v3 setString:l forKey:@"sourceURL"];
 }
 
 - (NSString)sourceURL
@@ -68,7 +68,7 @@
   return v2;
 }
 
-- (void)setOrigin:(int64_t)a3
+- (void)setOrigin:(int64_t)origin
 {
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   if (v6)
@@ -136,11 +136,11 @@ LABEL_8:
   return v10;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolCSSStyleSheetHeader;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"title"];
+  [(RWIProtocolJSONObject *)&v3 setString:title forKey:@"title"];
 }
 
 - (NSString)title
@@ -166,11 +166,11 @@ LABEL_8:
   return [(RWIProtocolJSONObject *)&v3 BOOLForKey:@"isInline"];
 }
 
-- (void)setStartLine:(double)a3
+- (void)setStartLine:(double)line
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolCSSStyleSheetHeader;
-  [(RWIProtocolJSONObject *)&v3 setDouble:@"startLine" forKey:a3];
+  [(RWIProtocolJSONObject *)&v3 setDouble:@"startLine" forKey:line];
 }
 
 - (double)startLine
@@ -181,11 +181,11 @@ LABEL_8:
   return result;
 }
 
-- (void)setStartColumn:(double)a3
+- (void)setStartColumn:(double)column
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolCSSStyleSheetHeader;
-  [(RWIProtocolJSONObject *)&v3 setDouble:@"startColumn" forKey:a3];
+  [(RWIProtocolJSONObject *)&v3 setDouble:@"startColumn" forKey:column];
 }
 
 - (double)startColumn
@@ -198,7 +198,7 @@ LABEL_8:
 
 - (atomic_uint)origin
 {
-  result = OUTLINED_FUNCTION_4(a1, a2, a3);
+  result = OUTLINED_FUNCTION_4(self, a2, a3);
   if (result)
   {
     result = OUTLINED_FUNCTION_1_1(result);

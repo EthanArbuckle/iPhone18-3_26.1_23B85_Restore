@@ -1,16 +1,16 @@
 @interface AXMSceneprintBasedNode
-- (void)evaluate:(id)a3 metrics:(id)a4;
+- (void)evaluate:(id)evaluate metrics:(id)metrics;
 @end
 
 @implementation AXMSceneprintBasedNode
 
-- (void)evaluate:(id)a3 metrics:(id)a4
+- (void)evaluate:(id)evaluate metrics:(id)metrics
 {
-  v6 = a3;
-  v7 = a4;
+  evaluateCopy = evaluate;
+  metricsCopy = metrics;
   v16.receiver = self;
   v16.super_class = AXMSceneprintBasedNode;
-  [(AXMEvaluationNode *)&v16 evaluate:v6 metrics:v7];
+  [(AXMEvaluationNode *)&v16 evaluate:evaluateCopy metrics:metricsCopy];
   v8 = objc_autoreleasePoolPush();
   objc_initWeak(&location, self);
   v11[0] = MEMORY[0x1E69E9820];
@@ -18,9 +18,9 @@
   v11[2] = __43__AXMSceneprintBasedNode_evaluate_metrics___block_invoke;
   v11[3] = &unk_1E7A1DEE0;
   objc_copyWeak(&v14, &location);
-  v9 = v6;
+  v9 = evaluateCopy;
   v12 = v9;
-  v10 = v7;
+  v10 = metricsCopy;
   v13 = v10;
   [v9 createSceneObservationIfNilWithBlock:v11];
 

@@ -1,22 +1,22 @@
 @interface HMDHAP2Storage
 - (HAP2StorageDelegate)delegate;
-- (HMDHAP2Storage)initWithAccessoryBrowser:(id)a3;
-- (id)keyBagForIdentifier:(id)a3;
-- (void)_removeKeysForIdentifiers:(id)a3 completion:(id)a4;
-- (void)deregisterPairedAccessoryWithIdentifier:(id)a3;
-- (void)fetchCacheForIdentifier:(id)a3 completion:(id)a4;
-- (void)fetchControllerKeyForDeviceId:(id)a3 completion:(id)a4;
-- (void)fetchKeysForIdentifiers:(id)a3 completion:(id)a4;
-- (void)hasKeysForIdentifiers:(id)a3 completion:(id)a4;
-- (void)registerPairedAccessoryWithIdentifier:(id)a3;
-- (void)removeCacheForIdentifier:(id)a3 completion:(id)a4;
-- (void)removeControllerKeyWithCompletion:(id)a3;
-- (void)removeKeysForIdentifiers:(id)a3 completion:(id)a4;
+- (HMDHAP2Storage)initWithAccessoryBrowser:(id)browser;
+- (id)keyBagForIdentifier:(id)identifier;
+- (void)_removeKeysForIdentifiers:(id)identifiers completion:(id)completion;
+- (void)deregisterPairedAccessoryWithIdentifier:(id)identifier;
+- (void)fetchCacheForIdentifier:(id)identifier completion:(id)completion;
+- (void)fetchControllerKeyForDeviceId:(id)id completion:(id)completion;
+- (void)fetchKeysForIdentifiers:(id)identifiers completion:(id)completion;
+- (void)hasKeysForIdentifiers:(id)identifiers completion:(id)completion;
+- (void)registerPairedAccessoryWithIdentifier:(id)identifier;
+- (void)removeCacheForIdentifier:(id)identifier completion:(id)completion;
+- (void)removeControllerKeyWithCompletion:(id)completion;
+- (void)removeKeysForIdentifiers:(id)identifiers completion:(id)completion;
 - (void)resetPairedAccessoryIdentifiers;
-- (void)saveCacheForIdentifier:(id)a3 data:(id)a4 completion:(id)a5;
-- (void)saveControllerIdentity:(id)a3 completion:(id)a4;
-- (void)saveKeysForIdentifiers:(id)a3 completion:(id)a4;
-- (void)setDelegate:(id)a3;
+- (void)saveCacheForIdentifier:(id)identifier data:(id)data completion:(id)completion;
+- (void)saveControllerIdentity:(id)identity completion:(id)completion;
+- (void)saveKeysForIdentifiers:(id)identifiers completion:(id)completion;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation HMDHAP2Storage
@@ -28,10 +28,10 @@
   return WeakRetained;
 }
 
-- (void)saveKeysForIdentifiers:(id)a3 completion:(id)a4
+- (void)saveKeysForIdentifiers:(id)identifiers completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
   if (self)
   {
     workQueue = self->_workQueue;
@@ -46,11 +46,11 @@
   block[1] = 3221225472;
   block[2] = __52__HMDHAP2Storage_saveKeysForIdentifiers_completion___block_invoke;
   block[3] = &unk_2797355D0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifiersCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = identifiersCopy;
   dispatch_async(workQueue, block);
 }
 
@@ -144,9 +144,9 @@ void __52__HMDHAP2Storage_saveKeysForIdentifiers_completion___block_invoke_3(uin
   }
 }
 
-- (id)keyBagForIdentifier:(id)a3
+- (id)keyBagForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -167,10 +167,10 @@ void __52__HMDHAP2Storage_saveKeysForIdentifiers_completion___block_invoke_3(uin
   block[1] = 3221225472;
   block[2] = __38__HMDHAP2Storage_keyBagForIdentifier___block_invoke;
   block[3] = &unk_279735BC0;
-  v11 = self;
+  selfCopy = self;
   v12 = &v13;
-  v10 = v4;
-  v6 = v4;
+  v10 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_sync(workQueue, block);
   v7 = v14[5];
 
@@ -196,10 +196,10 @@ void __38__HMDHAP2Storage_keyBagForIdentifier___block_invoke(void *a1)
   *(v6 + 40) = v5;
 }
 
-- (void)removeCacheForIdentifier:(id)a3 completion:(id)a4
+- (void)removeCacheForIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   if (self)
   {
     workQueue = self->_workQueue;
@@ -215,10 +215,10 @@ void __38__HMDHAP2Storage_keyBagForIdentifier___block_invoke(void *a1)
   block[2] = __54__HMDHAP2Storage_removeCacheForIdentifier_completion___block_invoke;
   block[3] = &unk_2797355D0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = identifierCopy;
   dispatch_async(workQueue, block);
 }
 
@@ -255,12 +255,12 @@ void __54__HMDHAP2Storage_removeCacheForIdentifier_completion___block_invoke(voi
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)saveCacheForIdentifier:(id)a3 data:(id)a4 completion:(id)a5
+- (void)saveCacheForIdentifier:(id)identifier data:(id)data completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
+  identifierCopy = identifier;
+  dataCopy = data;
+  completionCopy = completion;
+  v11 = completionCopy;
   if (self)
   {
     workQueue = self->_workQueue;
@@ -276,12 +276,12 @@ void __54__HMDHAP2Storage_removeCacheForIdentifier_completion___block_invoke(voi
   v16[2] = __57__HMDHAP2Storage_saveCacheForIdentifier_data_completion___block_invoke;
   v16[3] = &unk_279734578;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
-  v13 = v9;
+  v17 = identifierCopy;
+  v18 = dataCopy;
+  v19 = completionCopy;
+  v13 = dataCopy;
   v14 = v11;
-  v15 = v8;
+  v15 = identifierCopy;
   dispatch_async(workQueue, v16);
 }
 
@@ -318,10 +318,10 @@ void __57__HMDHAP2Storage_saveCacheForIdentifier_data_completion___block_invoke(
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchCacheForIdentifier:(id)a3 completion:(id)a4
+- (void)fetchCacheForIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   if (self)
   {
     workQueue = self->_workQueue;
@@ -337,10 +337,10 @@ void __57__HMDHAP2Storage_saveCacheForIdentifier_data_completion___block_invoke(
   block[2] = __53__HMDHAP2Storage_fetchCacheForIdentifier_completion___block_invoke;
   block[3] = &unk_2797355D0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = identifierCopy;
   dispatch_async(workQueue, block);
 }
 
@@ -396,10 +396,10 @@ void __53__HMDHAP2Storage_fetchCacheForIdentifier_completion___block_invoke_16(u
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)saveControllerIdentity:(id)a3 completion:(id)a4
+- (void)saveControllerIdentity:(id)identity completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identityCopy = identity;
+  completionCopy = completion;
   v8 = MEMORY[0x277CBEAD8];
   v9 = *MEMORY[0x277CBE658];
   v10 = MEMORY[0x277CCACA8];
@@ -411,9 +411,9 @@ void __53__HMDHAP2Storage_fetchCacheForIdentifier_completion___block_invoke_16(u
   objc_exception_throw(v13);
 }
 
-- (void)_removeKeysForIdentifiers:(id)a3 completion:(id)a4
+- (void)_removeKeysForIdentifiers:(id)identifiers completion:(id)completion
 {
-  v6 = a3;
+  identifiersCopy = identifiers;
   if (self)
   {
     workQueue = self->_workQueue;
@@ -424,17 +424,17 @@ void __53__HMDHAP2Storage_fetchCacheForIdentifier_completion___block_invoke_16(u
     workQueue = 0;
   }
 
-  v8 = a4;
+  completionCopy = completion;
   dispatch_assert_queue_V2(workQueue);
-  v9 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __55__HMDHAP2Storage__removeKeysForIdentifiers_completion___block_invoke;
   v13[3] = &unk_2797208B8;
   v13[4] = self;
-  v10 = v9;
+  v10 = dictionary;
   v14 = v10;
-  [v6 hmf_enumerateWithAutoreleasePoolUsingBlock:v13];
+  [identifiersCopy hmf_enumerateWithAutoreleasePoolUsingBlock:v13];
   if (![v10 count])
   {
 
@@ -442,14 +442,14 @@ void __53__HMDHAP2Storage_fetchCacheForIdentifier_completion___block_invoke_16(u
   }
 
   v11 = [v10 copy];
-  v8[2](v8, v11);
+  completionCopy[2](completionCopy, v11);
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __55__HMDHAP2Storage__removeKeysForIdentifiers_completion___block_invoke_2;
   v12[3] = &unk_279720908;
   v12[4] = self;
-  [v6 hmf_enumerateWithAutoreleasePoolUsingBlock:v12];
+  [identifiersCopy hmf_enumerateWithAutoreleasePoolUsingBlock:v12];
 }
 
 void __55__HMDHAP2Storage__removeKeysForIdentifiers_completion___block_invoke(uint64_t a1, void *a2)
@@ -497,10 +497,10 @@ void __55__HMDHAP2Storage__removeKeysForIdentifiers_completion___block_invoke_2(
   [v5 storage:*(a1 + 32) didRemoveKeyWithIdentifier:v4];
 }
 
-- (void)removeKeysForIdentifiers:(id)a3 completion:(id)a4
+- (void)removeKeysForIdentifiers:(id)identifiers completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
   if (self)
   {
     workQueue = self->_workQueue;
@@ -516,16 +516,16 @@ void __55__HMDHAP2Storage__removeKeysForIdentifiers_completion___block_invoke_2(
   block[2] = __54__HMDHAP2Storage_removeKeysForIdentifiers_completion___block_invoke;
   block[3] = &unk_2797355D0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifiersCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = identifiersCopy;
   dispatch_async(workQueue, block);
 }
 
-- (void)removeControllerKeyWithCompletion:(id)a3
+- (void)removeControllerKeyWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -537,10 +537,10 @@ void __55__HMDHAP2Storage__removeKeysForIdentifiers_completion___block_invoke_2(
   objc_exception_throw(v10);
 }
 
-- (void)fetchKeysForIdentifiers:(id)a3 completion:(id)a4
+- (void)fetchKeysForIdentifiers:(id)identifiers completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
   if (self)
   {
     workQueue = self->_workQueue;
@@ -555,11 +555,11 @@ void __55__HMDHAP2Storage__removeKeysForIdentifiers_completion___block_invoke_2(
   block[1] = 3221225472;
   block[2] = __53__HMDHAP2Storage_fetchKeysForIdentifiers_completion___block_invoke;
   block[3] = &unk_2797355D0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifiersCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = identifiersCopy;
   dispatch_async(workQueue, block);
 }
 
@@ -630,10 +630,10 @@ void __53__HMDHAP2Storage_fetchKeysForIdentifiers_completion___block_invoke_2(ui
 LABEL_9:
 }
 
-- (void)fetchControllerKeyForDeviceId:(id)a3 completion:(id)a4
+- (void)fetchControllerKeyForDeviceId:(id)id completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  completionCopy = completion;
   if (self)
   {
     workQueue = self->_workQueue;
@@ -649,10 +649,10 @@ LABEL_9:
   block[2] = __59__HMDHAP2Storage_fetchControllerKeyForDeviceId_completion___block_invoke;
   block[3] = &unk_2797355D0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = idCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = idCopy;
   dispatch_async(workQueue, block);
 }
 
@@ -674,10 +674,10 @@ void __59__HMDHAP2Storage_fetchControllerKeyForDeviceId_completion___block_invok
   (*(a1[6] + 16))();
 }
 
-- (void)hasKeysForIdentifiers:(id)a3 completion:(id)a4
+- (void)hasKeysForIdentifiers:(id)identifiers completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
   if (self)
   {
     workQueue = self->_workQueue;
@@ -692,11 +692,11 @@ void __59__HMDHAP2Storage_fetchControllerKeyForDeviceId_completion___block_invok
   block[1] = 3221225472;
   block[2] = __51__HMDHAP2Storage_hasKeysForIdentifiers_completion___block_invoke;
   block[3] = &unk_2797355D0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifiersCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = identifiersCopy;
   dispatch_async(workQueue, block);
 }
 
@@ -733,9 +733,9 @@ void __51__HMDHAP2Storage_hasKeysForIdentifiers_completion___block_invoke_2(uint
   [*(a1 + 32) setObject:v8 forKeyedSubscript:v7];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   if (self)
   {
     workQueue = self->_workQueue;
@@ -751,14 +751,14 @@ void __51__HMDHAP2Storage_hasKeysForIdentifiers_completion___block_invoke_2(uint
   v7[2] = __30__HMDHAP2Storage_setDelegate___block_invoke;
   v7[3] = &unk_2797359B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(workQueue, v7);
 }
 
-- (void)deregisterPairedAccessoryWithIdentifier:(id)a3
+- (void)deregisterPairedAccessoryWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (self)
   {
     workQueue = self->_workQueue;
@@ -773,9 +773,9 @@ void __51__HMDHAP2Storage_hasKeysForIdentifiers_completion___block_invoke_2(uint
   v7[1] = 3221225472;
   v7[2] = __58__HMDHAP2Storage_deregisterPairedAccessoryWithIdentifier___block_invoke;
   v7[3] = &unk_2797359B0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = identifierCopy;
+  selfCopy = self;
+  v6 = identifierCopy;
   dispatch_async(workQueue, v7);
 }
 
@@ -837,9 +837,9 @@ void __58__HMDHAP2Storage_deregisterPairedAccessoryWithIdentifier___block_invoke
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerPairedAccessoryWithIdentifier:(id)a3
+- (void)registerPairedAccessoryWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (self)
   {
     workQueue = self->_workQueue;
@@ -854,9 +854,9 @@ void __58__HMDHAP2Storage_deregisterPairedAccessoryWithIdentifier___block_invoke
   v7[1] = 3221225472;
   v7[2] = __56__HMDHAP2Storage_registerPairedAccessoryWithIdentifier___block_invoke;
   v7[3] = &unk_2797359B0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = identifierCopy;
+  selfCopy = self;
+  v6 = identifierCopy;
   dispatch_async(workQueue, v7);
 }
 
@@ -934,9 +934,9 @@ uint64_t __49__HMDHAP2Storage_resetPairedAccessoryIdentifiers__block_invoke(uint
   return [v2 removeAllObjects];
 }
 
-- (HMDHAP2Storage)initWithAccessoryBrowser:(id)a3
+- (HMDHAP2Storage)initWithAccessoryBrowser:(id)browser
 {
-  v4 = a3;
+  browserCopy = browser;
   v16.receiver = self;
   v16.super_class = HMDHAP2Storage;
   v5 = [(HMDHAP2Storage *)&v16 init];
@@ -948,15 +948,15 @@ uint64_t __49__HMDHAP2Storage_resetPairedAccessoryIdentifiers__block_invoke(uint
     workQueue = v5->_workQueue;
     v5->_workQueue = v8;
 
-    v10 = [MEMORY[0x277CFEC78] systemStore];
+    systemStore = [MEMORY[0x277CFEC78] systemStore];
     storage = v5->_storage;
-    v5->_storage = v10;
+    v5->_storage = systemStore;
 
     v12 = [MEMORY[0x277CBEB58] set];
     registeredIdentifiers = v5->_registeredIdentifiers;
     v5->_registeredIdentifiers = v12;
 
-    objc_storeWeak(&v5->_accessoryBrowser, v4);
+    objc_storeWeak(&v5->_accessoryBrowser, browserCopy);
     v14 = v5;
   }
 

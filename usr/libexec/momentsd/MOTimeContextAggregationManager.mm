@@ -1,69 +1,69 @@
 @interface MOTimeContextAggregationManager
-- (BOOL)_shouldMergeBundle:(id)a3 toCluster:(id)a4 parameters:(id)a5 granularity:(unint64_t)a6;
-- (BOOL)_shouldMergeBundleForCoarseGranularity:(id)a3 toCluster:(id)a4 parameters:(id)a5;
-- (BOOL)_shouldMergeBundleForFineGranularity:(id)a3 toCluster:(id)a4 parameters:(id)a5;
-- (BOOL)_shouldMergeTransitBundleForFineGranularity:(id)a3 toCluster:(id)a4 parameters:(id)a5;
-- (float)_maximumGoodnessScoreDeltaFromBundle:(id)a3 toCluster:(id)a4;
-- (id)_groupBundles:(id)a3 parameters:(id)a4 granularity:(unint64_t)a5;
-- (id)_groupTransitBundles:(id)a3 parameters:(id)a4 granularity:(unint64_t)a5;
-- (id)_megaBundleFromActivityTimeContextBundles:(id)a3 parameters:(id)a4;
-- (id)_megaBundlesFromOutingActivityTimeContextBundles:(id)a3 parameters:(id)a4 granularity:(unint64_t)a5;
-- (void)_aggregateBundlesForCoarseGranularity:(id)a3 withParameters:(id)a4 handler:(id)a5;
-- (void)_aggregateBundlesForFineGranularity:(id)a3 withParameters:(id)a4 handler:(id)a5;
-- (void)aggregateBundles:(id)a3 withParameters:(id)a4 granularity:(unint64_t)a5 handler:(id)a6;
+- (BOOL)_shouldMergeBundle:(id)bundle toCluster:(id)cluster parameters:(id)parameters granularity:(unint64_t)granularity;
+- (BOOL)_shouldMergeBundleForCoarseGranularity:(id)granularity toCluster:(id)cluster parameters:(id)parameters;
+- (BOOL)_shouldMergeBundleForFineGranularity:(id)granularity toCluster:(id)cluster parameters:(id)parameters;
+- (BOOL)_shouldMergeTransitBundleForFineGranularity:(id)granularity toCluster:(id)cluster parameters:(id)parameters;
+- (float)_maximumGoodnessScoreDeltaFromBundle:(id)bundle toCluster:(id)cluster;
+- (id)_groupBundles:(id)bundles parameters:(id)parameters granularity:(unint64_t)granularity;
+- (id)_groupTransitBundles:(id)bundles parameters:(id)parameters granularity:(unint64_t)granularity;
+- (id)_megaBundleFromActivityTimeContextBundles:(id)bundles parameters:(id)parameters;
+- (id)_megaBundlesFromOutingActivityTimeContextBundles:(id)bundles parameters:(id)parameters granularity:(unint64_t)granularity;
+- (void)_aggregateBundlesForCoarseGranularity:(id)granularity withParameters:(id)parameters handler:(id)handler;
+- (void)_aggregateBundlesForFineGranularity:(id)granularity withParameters:(id)parameters handler:(id)handler;
+- (void)aggregateBundles:(id)bundles withParameters:(id)parameters granularity:(unint64_t)granularity handler:(id)handler;
 @end
 
 @implementation MOTimeContextAggregationManager
 
-- (void)aggregateBundles:(id)a3 withParameters:(id)a4 granularity:(unint64_t)a5 handler:(id)a6
+- (void)aggregateBundles:(id)bundles withParameters:(id)parameters granularity:(unint64_t)granularity handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  bundlesCopy = bundles;
+  parametersCopy = parameters;
+  handlerCopy = handler;
   v13 = objc_autoreleasePoolPush();
   v14 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     *buf = 134218240;
-    v22 = a5;
+    granularityCopy2 = granularity;
     v23 = 2048;
-    v24 = [v10 count];
+    v24 = [bundlesCopy count];
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "TimeContextAggregation (granularity=%lu): Input eventBundles count, %lu", buf, 0x16u);
   }
 
-  if ([v10 count] <= 1)
+  if ([bundlesCopy count] <= 1)
   {
     v15 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      v22 = a5;
+      granularityCopy2 = granularity;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "TimeContextAggregation (granularity=%lu): Insufficient event bundles (<2). Skip summarization", buf, 0xCu);
     }
 
     goto LABEL_10;
   }
 
-  if (a5 == 2)
+  if (granularity == 2)
   {
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = __87__MOTimeContextAggregationManager_aggregateBundles_withParameters_granularity_handler___block_invoke_377;
     v17[3] = &unk_1003369E0;
-    v18 = v12;
-    [(MOTimeContextAggregationManager *)self _aggregateBundlesForCoarseGranularity:v10 withParameters:v11 handler:v17];
+    v18 = handlerCopy;
+    [(MOTimeContextAggregationManager *)self _aggregateBundlesForCoarseGranularity:bundlesCopy withParameters:parametersCopy handler:v17];
     v16 = v18;
     goto LABEL_12;
   }
 
-  if (a5 == 1)
+  if (granularity == 1)
   {
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = __87__MOTimeContextAggregationManager_aggregateBundles_withParameters_granularity_handler___block_invoke;
     v19[3] = &unk_1003369E0;
-    v20 = v12;
-    [(MOTimeContextAggregationManager *)self _aggregateBundlesForFineGranularity:v10 withParameters:v11 handler:v19];
+    v20 = handlerCopy;
+    [(MOTimeContextAggregationManager *)self _aggregateBundlesForFineGranularity:bundlesCopy withParameters:parametersCopy handler:v19];
     v16 = v20;
 LABEL_12:
 
@@ -71,7 +71,7 @@ LABEL_12:
   }
 
 LABEL_10:
-  (*(v12 + 2))(v12, 0, 0);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0);
 LABEL_13:
   objc_autoreleasePoolPop(v13);
 }
@@ -106,26 +106,26 @@ void __87__MOTimeContextAggregationManager_aggregateBundles_withParameters_granu
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_aggregateBundlesForFineGranularity:(id)a3 withParameters:(id)a4 handler:(id)a5
+- (void)_aggregateBundlesForFineGranularity:(id)granularity withParameters:(id)parameters handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  granularityCopy = granularity;
+  parametersCopy = parameters;
+  handlerCopy = handler;
   v11 = objc_autoreleasePoolPush();
-  v12 = [v8 count];
+  v12 = [granularityCopy count];
   v13 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
   v14 = os_log_type_enabled(v13, OS_LOG_TYPE_INFO);
   if (v12)
   {
     if (v14)
     {
-      v15 = [v8 count];
+      v15 = [granularityCopy count];
       *buf = 134217984;
       v31 = v15;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "FineGranularityAggregation for TimeContext: input eventBundles count, %lu", buf, 0xCu);
     }
 
-    v16 = [(MOTimeContextAggregationManager *)self _megaBundlesFromOutingActivityTimeContextBundles:v8 parameters:v9 granularity:1];
+    v16 = [(MOTimeContextAggregationManager *)self _megaBundlesFromOutingActivityTimeContextBundles:granularityCopy parameters:parametersCopy granularity:1];
     if ([v16 count])
     {
       v27 = 0u;
@@ -168,7 +168,7 @@ void __87__MOTimeContextAggregationManager_aggregateBundles_withParameters_granu
 
     objc_autoreleasePoolPop(v11);
     v24 = objc_autoreleasePoolPush();
-    v10[2](v10, v16, 0);
+    handlerCopy[2](handlerCopy, v16, 0);
     objc_autoreleasePoolPop(v24);
   }
 
@@ -180,24 +180,24 @@ void __87__MOTimeContextAggregationManager_aggregateBundles_withParameters_granu
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "FineGranularityAggregation for TimeContext: No eventBundle to be proccessed", buf, 2u);
     }
 
-    v10[2](v10, 0, 0);
+    handlerCopy[2](handlerCopy, 0, 0);
     objc_autoreleasePoolPop(v11);
   }
 }
 
-- (id)_megaBundlesFromOutingActivityTimeContextBundles:(id)a3 parameters:(id)a4 granularity:(unint64_t)a5
+- (id)_megaBundlesFromOutingActivityTimeContextBundles:(id)bundles parameters:(id)parameters granularity:(unint64_t)granularity
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v7 count] <= 1)
+  bundlesCopy = bundles;
+  parametersCopy = parameters;
+  if ([bundlesCopy count] <= 1)
   {
     v9 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       *buf = 134218240;
-      *v249 = [v7 count];
+      *v249 = [bundlesCopy count];
       *&v249[8] = 2048;
-      *&v249[10] = a5;
+      *&v249[10] = granularity;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Aggregation for TimeContext: no needed to aggregate bundles since bundles  count is: %lu, granularity, %lu", buf, 0x16u);
     }
 
@@ -209,16 +209,16 @@ void __87__MOTimeContextAggregationManager_aggregateBundles_withParameters_granu
   v11 = [[NSSortDescriptor alloc] initWithKey:@"startDate" ascending:1];
   v12 = [[NSSortDescriptor alloc] initWithKey:@"endDate" ascending:1];
   v193 = [NSPredicate predicateWithFormat:@"%K = %lu", @"interfaceType", 2];
-  v13 = [v7 filteredArrayUsingPredicate:?];
+  v13 = [bundlesCopy filteredArrayUsingPredicate:?];
   v192 = [NSPredicate predicateWithFormat:@"%K = %lu", @"interfaceType", 1];
-  v202 = [v7 filteredArrayUsingPredicate:?];
+  v202 = [bundlesCopy filteredArrayUsingPredicate:?];
   [NSPredicate predicateWithFormat:@"%K = %lu", @"interfaceType", 12];
-  v191 = v194 = v7;
-  v14 = [v7 filteredArrayUsingPredicate:?];
-  v15 = [(MOAggregationManager *)self fUniverse];
+  v191 = v194 = bundlesCopy;
+  v14 = [bundlesCopy filteredArrayUsingPredicate:?];
+  fUniverse = [(MOAggregationManager *)self fUniverse];
   v16 = objc_opt_class();
   v17 = NSStringFromClass(v16);
-  v221 = [v15 getService:v17];
+  v221 = [fUniverse getService:v17];
 
   v197 = v13;
   v211 = v14;
@@ -231,13 +231,13 @@ void __87__MOTimeContextAggregationManager_aggregateBundles_withParameters_granu
   v20 = [v18 sortedArrayUsingDescriptors:v19];
 
   v21 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
-  v22 = a5;
+  granularityCopy8 = granularity;
   if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
   {
     *buf = 134218240;
     *v249 = [v20 count];
     *&v249[8] = 2048;
-    *&v249[10] = a5;
+    *&v249[10] = granularity;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "Aggregation for TimeContext: outing grouping process input bundle count, %lu, granularity, %lu", buf, 0x16u);
   }
 
@@ -250,17 +250,17 @@ void __87__MOTimeContextAggregationManager_aggregateBundles_withParameters_granu
     *buf = 134218240;
     *v249 = v25;
     *&v249[8] = 2048;
-    *&v249[10] = a5;
+    *&v249[10] = granularity;
     _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "Aggregation for TimeContext: outing grouping process input bundle count after filtering, %lu, granularity, %lu", buf, 0x16u);
   }
 
-  v198 = self;
+  selfCopy = self;
   v187 = v23;
-  v26 = [(MOTimeContextAggregationManager *)self _groupBundles:v23 parameters:v8 granularity:a5];
+  v26 = [(MOTimeContextAggregationManager *)self _groupBundles:v23 parameters:parametersCopy granularity:granularity];
   v213 = objc_opt_new();
   v27 = objc_opt_new();
   v196 = v26;
-  v215 = v8;
+  v215 = parametersCopy;
   v218 = v27;
   if ([v26 count])
   {
@@ -284,26 +284,26 @@ void __87__MOTimeContextAggregationManager_aggregateBundles_withParameters_granu
           }
 
           v33 = *(*(&v242 + 1) + 8 * i);
-          v34 = [v33 getTimeSpanOfMOEventBundleArray];
+          getTimeSpanOfMOEventBundleArray = [v33 getTimeSpanOfMOEventBundleArray];
           v35 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
           if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
           {
-            v36 = [v34 startDate];
-            v37 = [v34 endDate];
+            startDate = [getTimeSpanOfMOEventBundleArray startDate];
+            endDate = [getTimeSpanOfMOEventBundleArray endDate];
             *buf = 138412802;
-            *v249 = v36;
+            *v249 = startDate;
             *&v249[8] = 2112;
-            *&v249[10] = v37;
+            *&v249[10] = endDate;
             v250 = 2048;
-            v251 = a5;
+            granularityCopy4 = granularity;
             _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_INFO, "Aggregation for TimeContext: activity grouping date interval, start, %@, end, %@, granularity, %lu", buf, 0x20u);
 
-            v8 = v215;
+            parametersCopy = v215;
           }
 
-          if (v34)
+          if (getTimeSpanOfMOEventBundleArray)
           {
-            [v213 setObject:v33 forKey:v34];
+            [v213 setObject:v33 forKey:getTimeSpanOfMOEventBundleArray];
           }
 
           v27 = v218;
@@ -315,7 +315,7 @@ void __87__MOTimeContextAggregationManager_aggregateBundles_withParameters_granu
       while (v30);
     }
 
-    v22 = a5;
+    granularityCopy8 = granularity;
   }
 
   v38 = [NSPredicate predicateWithFormat:@"bundleSubType != %lu", 204];
@@ -345,11 +345,11 @@ void __87__MOTimeContextAggregationManager_aggregateBundles_withParameters_granu
     *buf = 134218240;
     *v249 = v47;
     *&v249[8] = 2048;
-    *&v249[10] = v22;
+    *&v249[10] = granularityCopy8;
     _os_log_impl(&_mh_execute_header, v46, OS_LOG_TYPE_INFO, "Aggregation for TimeContext: acitivity grouping process input bundle count, %lu, granularity, %lu", buf, 0x16u);
   }
 
-  v48 = [(MOAggregationManager *)v198 filterEventBundlesEligibleForSummarization:v45];
+  v48 = [(MOAggregationManager *)selfCopy filterEventBundlesEligibleForSummarization:v45];
 
   v49 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
   if (os_log_type_enabled(v49, OS_LOG_TYPE_INFO))
@@ -358,12 +358,12 @@ void __87__MOTimeContextAggregationManager_aggregateBundles_withParameters_granu
     *buf = 134218240;
     *v249 = v50;
     *&v249[8] = 2048;
-    *&v249[10] = v22;
+    *&v249[10] = granularityCopy8;
     _os_log_impl(&_mh_execute_header, v49, OS_LOG_TYPE_INFO, "Aggregation for TimeContext: activity grouping process input bundle count after filtering, %lu, granularity, %lu", buf, 0x16u);
   }
 
   v184 = v48;
-  v51 = [(MOTimeContextAggregationManager *)v198 _groupBundles:v48 parameters:v8 granularity:1];
+  v51 = [(MOTimeContextAggregationManager *)selfCopy _groupBundles:v48 parameters:parametersCopy granularity:1];
   v214 = objc_opt_new();
   v195 = v51;
   if ([v51 count])
@@ -388,26 +388,26 @@ void __87__MOTimeContextAggregationManager_aggregateBundles_withParameters_granu
           }
 
           v57 = *(*(&v238 + 1) + 8 * j);
-          v58 = [v57 getTimeSpanOfMOEventBundleArray];
+          getTimeSpanOfMOEventBundleArray2 = [v57 getTimeSpanOfMOEventBundleArray];
           v59 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
           if (os_log_type_enabled(v59, OS_LOG_TYPE_INFO))
           {
-            v60 = [v58 startDate];
-            v61 = [v58 endDate];
+            startDate2 = [getTimeSpanOfMOEventBundleArray2 startDate];
+            endDate2 = [getTimeSpanOfMOEventBundleArray2 endDate];
             *buf = 138412802;
-            *v249 = v60;
+            *v249 = startDate2;
             *&v249[8] = 2112;
-            *&v249[10] = v61;
+            *&v249[10] = endDate2;
             v250 = 2048;
-            v251 = a5;
+            granularityCopy4 = granularity;
             _os_log_impl(&_mh_execute_header, v59, OS_LOG_TYPE_INFO, "Aggregation for TimeContext: activity grouping date interval, start, %@, end, %@, granularity, %lu", buf, 0x20u);
 
-            v8 = v215;
+            parametersCopy = v215;
           }
 
-          if (v58)
+          if (getTimeSpanOfMOEventBundleArray2)
           {
-            [v214 setObject:v57 forKey:v58];
+            [v214 setObject:v57 forKey:getTimeSpanOfMOEventBundleArray2];
           }
 
           v27 = v218;
@@ -419,7 +419,7 @@ void __87__MOTimeContextAggregationManager_aggregateBundles_withParameters_granu
       while (v54);
     }
 
-    v22 = a5;
+    granularityCopy8 = granularity;
   }
 
   v212 = objc_opt_new();
@@ -428,15 +428,15 @@ void __87__MOTimeContextAggregationManager_aggregateBundles_withParameters_granu
     goto LABEL_78;
   }
 
-  v62 = [v214 allKeys];
-  if (![v62 count])
+  allKeys = [v214 allKeys];
+  if (![allKeys count])
   {
 
     goto LABEL_78;
   }
 
-  v63 = [v213 allKeys];
-  v64 = [v63 count];
+  allKeys2 = [v213 allKeys];
+  v64 = [allKeys2 count];
 
   if (!v64)
   {
@@ -452,8 +452,8 @@ LABEL_78:
     v237 = 0u;
     v234 = 0u;
     v235 = 0u;
-    v112 = [v213 allValues];
-    v113 = [v112 countByEnumeratingWithState:&v234 objects:v256 count:16];
+    allValues = [v213 allValues];
+    v113 = [allValues countByEnumeratingWithState:&v234 objects:v256 count:16];
     if (v113)
     {
       v114 = v113;
@@ -464,11 +464,11 @@ LABEL_78:
         {
           if (*v235 != v115)
           {
-            objc_enumerationMutation(v112);
+            objc_enumerationMutation(allValues);
           }
 
           v117 = *(*(&v234 + 1) + 8 * k);
-          v118 = [MOSummarizationUtilities createOutingMegaBundleFromBundles:v117 withParameters:v8 isCoarseGranularity:v22 == 2 timeZoneManager:v221];
+          v118 = [MOSummarizationUtilities createOutingMegaBundleFromBundles:v117 withParameters:parametersCopy isCoarseGranularity:granularityCopy8 == 2 timeZoneManager:v221];
           if (v118)
           {
             [v217 addObject:v118];
@@ -476,7 +476,7 @@ LABEL_78:
           }
         }
 
-        v114 = [v112 countByEnumeratingWithState:&v234 objects:v256 count:16];
+        v114 = [allValues countByEnumeratingWithState:&v234 objects:v256 count:16];
       }
 
       while (v114);
@@ -486,8 +486,8 @@ LABEL_78:
     v233 = 0u;
     v230 = 0u;
     v231 = 0u;
-    v67 = [v214 allValues];
-    v119 = [v67 countByEnumeratingWithState:&v230 objects:v255 count:16];
+    allValues2 = [v214 allValues];
+    v119 = [allValues2 countByEnumeratingWithState:&v230 objects:v255 count:16];
     if (v119)
     {
       v120 = v119;
@@ -498,17 +498,17 @@ LABEL_78:
         {
           if (*v231 != v121)
           {
-            objc_enumerationMutation(v67);
+            objc_enumerationMutation(allValues2);
           }
 
-          v123 = [MOSummarizationUtilities createActivityMegaBundleFromBundles:*(*(&v230 + 1) + 8 * m) withParameters:v8 isCoarseGranularity:v22 == 2 isWeeklySummary:0 timeZoneManager:v221];
+          v123 = [MOSummarizationUtilities createActivityMegaBundleFromBundles:*(*(&v230 + 1) + 8 * m) withParameters:parametersCopy isCoarseGranularity:granularityCopy8 == 2 isWeeklySummary:0 timeZoneManager:v221];
           if (v123)
           {
             [v217 addObject:v123];
           }
         }
 
-        v120 = [v67 countByEnumeratingWithState:&v230 objects:v255 count:16];
+        v120 = [allValues2 countByEnumeratingWithState:&v230 objects:v255 count:16];
       }
 
       while (v120);
@@ -517,36 +517,36 @@ LABEL_78:
     goto LABEL_125;
   }
 
-  v65 = [v213 allKeys];
+  allKeys3 = [v213 allKeys];
   v258[0] = v201;
   v258[1] = v200;
   v66 = [NSArray arrayWithObjects:v258 count:2];
-  v67 = [v65 sortedArrayUsingDescriptors:v66];
+  allValues2 = [allKeys3 sortedArrayUsingDescriptors:v66];
 
-  v68 = [v214 allKeys];
+  allKeys4 = [v214 allKeys];
   v257[0] = v201;
   v257[1] = v200;
   v69 = [NSArray arrayWithObjects:v257 count:2];
-  v70 = [v68 sortedArrayUsingDescriptors:v69];
+  v70 = [allKeys4 sortedArrayUsingDescriptors:v69];
 
   v71 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
   if (os_log_type_enabled(v71, OS_LOG_TYPE_INFO))
   {
-    v72 = [v67 count];
+    v72 = [allValues2 count];
     v73 = [v70 count];
     *buf = 134218496;
     *v249 = v72;
     *&v249[8] = 2048;
     *&v249[10] = v73;
     v250 = 2048;
-    v251 = v22;
+    granularityCopy4 = granularityCopy8;
     _os_log_impl(&_mh_execute_header, v71, OS_LOG_TYPE_INFO, "Aggregation for TimeContext: outing mega intervals count: %lu, activity mega intervals count: %lu, granularity, %lu", buf, 0x20u);
   }
 
   v199 = v70;
 
   v74 = v212;
-  if (![v67 count])
+  if (![allValues2 count])
   {
     v124 = 0;
     v110 = 0;
@@ -560,7 +560,7 @@ LABEL_78:
   while ([v199 count] > v77)
   {
     v205 = v76;
-    v78 = [v67 objectAtIndexedSubscript:v75];
+    v78 = [allValues2 objectAtIndexedSubscript:v75];
     v79 = [v199 objectAtIndexedSubscript:v77];
     v80 = [v78 intersectsDateInterval:v79];
     v207 = v78;
@@ -574,13 +574,13 @@ LABEL_78:
     v209 = v84;
     if (!v80)
     {
-      v91 = [v74 allKeys];
-      v92 = [v91 containsObject:v84];
+      allKeys5 = [v74 allKeys];
+      v92 = [allKeys5 containsObject:v84];
 
       if ((v92 & 1) == 0)
       {
-        v93 = [v84 allObjects];
-        v94 = [MOSummarizationUtilities createActivityMegaBundleFromBundles:v93 withParameters:v215 isCoarseGranularity:a5 == 2 isWeeklySummary:0 timeZoneManager:v221];
+        allObjects = [v84 allObjects];
+        v94 = [MOSummarizationUtilities createActivityMegaBundleFromBundles:allObjects withParameters:v215 isCoarseGranularity:granularity == 2 isWeeklySummary:0 timeZoneManager:v221];
 
         if (v94)
         {
@@ -589,9 +589,9 @@ LABEL_78:
         }
       }
 
-      v95 = [v74 allKeys];
+      allKeys6 = [v74 allKeys];
       v86 = v82;
-      v96 = [v95 containsObject:v82];
+      v96 = [allKeys6 containsObject:v82];
 
       if (v96)
       {
@@ -599,8 +599,8 @@ LABEL_78:
       }
 
       v88 = v82;
-      v97 = [v82 allObjects];
-      v90 = [MOSummarizationUtilities createOutingMegaBundleFromBundles:v97 withParameters:v215 isCoarseGranularity:a5 == 2 timeZoneManager:v221];
+      allObjects2 = [v82 allObjects];
+      v90 = [MOSummarizationUtilities createOutingMegaBundleFromBundles:allObjects2 withParameters:v215 isCoarseGranularity:granularity == 2 timeZoneManager:v221];
 
       if (!v90)
       {
@@ -608,8 +608,8 @@ LABEL_78:
       }
 
       [v217 addObject:v90];
-      v98 = [v82 allObjects];
-      [v218 addObjectsFromArray:v98];
+      allObjects3 = [v82 allObjects];
+      [v218 addObjectsFromArray:allObjects3];
 
 LABEL_61:
       v74 = v212;
@@ -621,8 +621,8 @@ LABEL_74:
 
     if (!v82 || !v84 || ![v82 intersectsSet:v84])
     {
-      v99 = [v74 allKeys];
-      v100 = [v99 containsObject:v84];
+      allKeys7 = [v74 allKeys];
+      v100 = [allKeys7 containsObject:v84];
 
       if (v100)
       {
@@ -631,8 +631,8 @@ LABEL_74:
 
       else
       {
-        v101 = [v84 allObjects];
-        v90 = [MOSummarizationUtilities createActivityMegaBundleFromBundles:v101 withParameters:v215 isCoarseGranularity:a5 == 2 isWeeklySummary:0 timeZoneManager:v221];
+        allObjects4 = [v84 allObjects];
+        v90 = [MOSummarizationUtilities createActivityMegaBundleFromBundles:allObjects4 withParameters:v215 isCoarseGranularity:granularity == 2 isWeeklySummary:0 timeZoneManager:v221];
 
         if (v90)
         {
@@ -647,8 +647,8 @@ LABEL_74:
         }
       }
 
-      v102 = [v74 allKeys];
-      v103 = [v102 containsObject:v82];
+      allKeys8 = [v74 allKeys];
+      v103 = [allKeys8 containsObject:v82];
 
       if (v103)
       {
@@ -657,14 +657,14 @@ LABEL_74:
 
       else
       {
-        v105 = [v82 allObjects];
-        v104 = [MOSummarizationUtilities createOutingMegaBundleFromBundles:v105 withParameters:v215 isCoarseGranularity:a5 == 2 timeZoneManager:v221];
+        allObjects5 = [v82 allObjects];
+        v104 = [MOSummarizationUtilities createOutingMegaBundleFromBundles:allObjects5 withParameters:v215 isCoarseGranularity:granularity == 2 timeZoneManager:v221];
 
         if (v104)
         {
           [v217 addObject:v104];
-          v106 = [v82 allObjects];
-          [v218 addObjectsFromArray:v106];
+          allObjects6 = [v82 allObjects];
+          [v218 addObjectsFromArray:allObjects6];
 
           v74 = v212;
           [v212 setObject:v104 forKey:v82];
@@ -684,14 +684,14 @@ LABEL_74:
 
     v85 = v84;
     v86 = v82;
-    v87 = [v74 allKeys];
-    LOBYTE(v85) = [v87 containsObject:v85];
+    allKeys9 = [v74 allKeys];
+    LOBYTE(v85) = [allKeys9 containsObject:v85];
 
     if ((v85 & 1) == 0)
     {
       v88 = v209;
-      v89 = [v209 allObjects];
-      v90 = [MOSummarizationUtilities createActivityMegaBundleFromBundles:v89 withParameters:v215 isCoarseGranularity:a5 == 2 isWeeklySummary:0 timeZoneManager:v221];
+      allObjects7 = [v209 allObjects];
+      v90 = [MOSummarizationUtilities createActivityMegaBundleFromBundles:allObjects7 withParameters:v215 isCoarseGranularity:granularity == 2 isWeeklySummary:0 timeZoneManager:v221];
 
       if (v90)
       {
@@ -705,15 +705,15 @@ LABEL_66:
     }
 
 LABEL_75:
-    v107 = [v207 endDate];
-    v108 = [v203 endDate];
-    v109 = [v107 isOnOrAfter:v108];
+    endDate3 = [v207 endDate];
+    endDate4 = [v203 endDate];
+    v109 = [endDate3 isOnOrAfter:endDate4];
 
     v77 += v109;
     v76 = v205 + (v109 ^ 1);
     v110 = v76;
     v75 = v76;
-    if ([v67 count] <= v76)
+    if ([allValues2 count] <= v76)
     {
       goto LABEL_101;
     }
@@ -723,9 +723,9 @@ LABEL_75:
 LABEL_101:
   v124 = v77;
   v27 = v218;
-  v22 = a5;
+  granularityCopy8 = granularity;
 LABEL_102:
-  if ([v67 count] > v75 && objc_msgSend(v199, "count") == v124)
+  if ([allValues2 count] > v75 && objc_msgSend(v199, "count") == v124)
   {
     v125 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
     if (os_log_type_enabled(v125, OS_LOG_TYPE_INFO))
@@ -733,32 +733,32 @@ LABEL_102:
       *buf = 67109376;
       *v249 = v110;
       *&v249[4] = 2048;
-      *&v249[6] = v22;
+      *&v249[6] = granularityCopy8;
       _os_log_impl(&_mh_execute_header, v125, OS_LOG_TYPE_INFO, "Aggregation for TimeContext: not all outing mega intervals are looped through, stopping at %d, granularity, %lu", buf, 0x12u);
     }
 
-    if ([v67 count] > v110)
+    if ([allValues2 count] > v110)
     {
       v126 = v110;
       do
       {
-        v127 = [v67 objectAtIndexedSubscript:v126];
+        v127 = [allValues2 objectAtIndexedSubscript:v126];
         v128 = [v213 objectForKey:v127];
         v129 = [NSSet setWithArray:v128];
 
-        v130 = [v212 allKeys];
-        LOBYTE(v128) = [v130 containsObject:v129];
+        allKeys10 = [v212 allKeys];
+        LOBYTE(v128) = [allKeys10 containsObject:v129];
 
         if ((v128 & 1) == 0)
         {
-          v131 = [v129 allObjects];
-          v132 = [MOSummarizationUtilities createOutingMegaBundleFromBundles:v131 withParameters:v215 isCoarseGranularity:a5 == 2 timeZoneManager:v221];
+          allObjects8 = [v129 allObjects];
+          v132 = [MOSummarizationUtilities createOutingMegaBundleFromBundles:allObjects8 withParameters:v215 isCoarseGranularity:granularity == 2 timeZoneManager:v221];
 
           if (v132)
           {
             [v217 addObject:v132];
-            v133 = [v129 allObjects];
-            [v218 addObjectsFromArray:v133];
+            allObjects9 = [v129 allObjects];
+            [v218 addObjectsFromArray:allObjects9];
 
             [v212 setObject:v132 forKey:v129];
           }
@@ -767,15 +767,15 @@ LABEL_102:
         ++v126;
       }
 
-      while ([v67 count] > v126);
+      while ([allValues2 count] > v126);
       v110 = v126;
       v27 = v218;
-      v22 = a5;
+      granularityCopy8 = granularity;
     }
   }
 
   n = v199;
-  if ([v199 count] > v124 && objc_msgSend(v67, "count") == v110)
+  if ([v199 count] > v124 && objc_msgSend(allValues2, "count") == v110)
   {
     v135 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
     if (os_log_type_enabled(v135, OS_LOG_TYPE_INFO))
@@ -783,7 +783,7 @@ LABEL_102:
       *buf = 67109376;
       *v249 = v110;
       *&v249[4] = 2048;
-      *&v249[6] = v22;
+      *&v249[6] = granularityCopy8;
       _os_log_impl(&_mh_execute_header, v135, OS_LOG_TYPE_INFO, "Aggregation for TimeContext: not all activity mega intervals are looped through, stopping at %d, granularity, %lu", buf, 0x12u);
     }
 
@@ -793,14 +793,14 @@ LABEL_102:
       v137 = [v214 objectForKey:v136];
       v138 = [NSSet setWithArray:v137];
 
-      v139 = [v212 allKeys];
-      LOBYTE(v137) = [v139 containsObject:v138];
+      allKeys11 = [v212 allKeys];
+      LOBYTE(v137) = [allKeys11 containsObject:v138];
 
       if ((v137 & 1) == 0)
       {
-        v140 = v22 == 2;
-        v141 = [v138 allObjects];
-        v142 = [MOSummarizationUtilities createActivityMegaBundleFromBundles:v141 withParameters:v215 isCoarseGranularity:v140 isWeeklySummary:0 timeZoneManager:v221];
+        v140 = granularityCopy8 == 2;
+        allObjects10 = [v138 allObjects];
+        v142 = [MOSummarizationUtilities createActivityMegaBundleFromBundles:allObjects10 withParameters:v215 isCoarseGranularity:v140 isWeeklySummary:0 timeZoneManager:v221];
 
         if (v142)
         {
@@ -808,14 +808,14 @@ LABEL_102:
           [v212 setObject:v142 forKey:v138];
         }
 
-        v22 = a5;
+        granularityCopy8 = granularity;
       }
 
       ++v124;
     }
   }
 
-  v8 = v215;
+  parametersCopy = v215;
 LABEL_125:
 
   v143 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
@@ -825,7 +825,7 @@ LABEL_125:
     *buf = 134218240;
     *v249 = v144;
     *&v249[8] = 2048;
-    *&v249[10] = v22;
+    *&v249[10] = granularityCopy8;
     _os_log_impl(&_mh_execute_header, v143, OS_LOG_TYPE_INFO, "Aggregation for TimeContext: total mega bundles count after deduping: %lu,  granularity, %lu", buf, 0x16u);
   }
 
@@ -878,9 +878,9 @@ LABEL_125:
     *&v249[8] = 2048;
     *&v249[10] = v159;
     v250 = 2048;
-    v251 = v160;
+    granularityCopy4 = v160;
     v252 = 2048;
-    v253 = v22;
+    v253 = granularityCopy8;
     _os_log_impl(&_mh_execute_header, v157, OS_LOG_TYPE_INFO, "Aggregation for transit bundle grouping process input bundle counts, outing, %lu, activity, %lu, timecontext, %lu, granularity, %lu", buf, 0x2Au);
   }
 
@@ -888,7 +888,7 @@ LABEL_125:
   v210 = v146;
 
   v204 = v156;
-  v161 = [(MOTimeContextAggregationManager *)v198 _groupTransitBundles:v156 parameters:v8 granularity:1];
+  v161 = [(MOTimeContextAggregationManager *)selfCopy _groupTransitBundles:v156 parameters:parametersCopy granularity:1];
   v162 = objc_opt_new();
   v219 = v161;
   if ([v161 count])
@@ -913,7 +913,7 @@ LABEL_125:
           }
 
           v168 = *(*(&v226 + 1) + 8 * ii);
-          v169 = [MOSummarizationUtilities createTransitMegaBundleFromBundles:v168 withParameters:v8 isCoarseGranularity:a5 == 2 timeZoneManager:v221 groupedOutingBundles:v27];
+          v169 = [MOSummarizationUtilities createTransitMegaBundleFromBundles:v168 withParameters:parametersCopy isCoarseGranularity:granularity == 2 timeZoneManager:v221 groupedOutingBundles:v27];
           if (v169)
           {
             [v162 setObject:v168 forKey:v169];
@@ -928,8 +928,8 @@ LABEL_125:
       while (v165);
     }
 
-    v170 = [v162 allKeys];
-    [v217 addObjectsFromArray:v170];
+    allKeys12 = [v162 allKeys];
+    [v217 addObjectsFromArray:allKeys12];
   }
 
   v171 = objc_opt_new();
@@ -965,7 +965,7 @@ LABEL_125:
     while (v174);
   }
 
-  v178 = [MOSummarizationUtilities mergeOutingBundlesWithInDayWithGroupedBundles:v217 remainingSingletonBundles:v171 parameters:v8 isCoarseGranularity:a5 == 2 timeZoneManager:v221];
+  v178 = [MOSummarizationUtilities mergeOutingBundlesWithInDayWithGroupedBundles:v217 remainingSingletonBundles:v171 parameters:parametersCopy isCoarseGranularity:granularity == 2 timeZoneManager:v221];
   v179 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
   if (os_log_type_enabled(v179, OS_LOG_TYPE_INFO))
   {
@@ -973,7 +973,7 @@ LABEL_125:
     *buf = 134218240;
     *v249 = v180;
     *&v249[8] = 2048;
-    *&v249[10] = a5;
+    *&v249[10] = granularity;
     _os_log_impl(&_mh_execute_header, v179, OS_LOG_TYPE_INFO, "Aggregation for TimeContext: total mega bundles count after merge visits to the same place in the same day %lu, granularity, %lu", buf, 0x16u);
   }
 
@@ -989,37 +989,37 @@ LABEL_125:
     *buf = 134218240;
     *v249 = v182;
     *&v249[8] = 2048;
-    *&v249[10] = a5;
+    *&v249[10] = granularity;
     _os_log_impl(&_mh_execute_header, v181, OS_LOG_TYPE_INFO, "Aggregation: final timecontext mega bundles count: %lu, granularity, %lu", buf, 0x16u);
   }
 
   v9 = v217;
   v10 = v9;
-  v7 = v194;
+  bundlesCopy = v194;
 LABEL_160:
 
   return v10;
 }
 
-- (void)_aggregateBundlesForCoarseGranularity:(id)a3 withParameters:(id)a4 handler:(id)a5
+- (void)_aggregateBundlesForCoarseGranularity:(id)granularity withParameters:(id)parameters handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count])
+  granularityCopy = granularity;
+  parametersCopy = parameters;
+  handlerCopy = handler;
+  if ([granularityCopy count])
   {
     v11 = objc_opt_new();
     v12 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
-      v13 = [v8 count];
+      v13 = [granularityCopy count];
       *buf = 134217984;
       v32 = v13;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "CoarseGranularityAggregation for time context related bundles: input eventBundles count, %lu", buf, 0xCu);
     }
 
-    v14 = [(MOTimeContextAggregationManager *)self _megaBundlesFromOutingActivityTimeContextBundles:v8 parameters:v9 granularity:2];
-    v15 = [(MOTimeContextAggregationManager *)self _megaBundleFromActivityTimeContextBundles:v8 parameters:v9];
+    v14 = [(MOTimeContextAggregationManager *)self _megaBundlesFromOutingActivityTimeContextBundles:granularityCopy parameters:parametersCopy granularity:2];
+    v15 = [(MOTimeContextAggregationManager *)self _megaBundleFromActivityTimeContextBundles:granularityCopy parameters:parametersCopy];
     if ([v14 count])
     {
       [v11 addObjectsFromArray:v14];
@@ -1078,7 +1078,7 @@ LABEL_160:
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, "CoarseGranularityAggregation for time context related bundles: output eventBundles count, %lu", buf, 0xCu);
     }
 
-    v10[2](v10, v11, 0);
+    handlerCopy[2](handlerCopy, v11, 0);
   }
 
   else
@@ -1090,17 +1090,17 @@ LABEL_160:
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "CoarseGranularityAggregation: No eventBundle to be proccessed", buf, 2u);
     }
 
-    v10[2](v10, 0, 0);
+    handlerCopy[2](handlerCopy, 0, 0);
   }
 }
 
-- (id)_megaBundleFromActivityTimeContextBundles:(id)a3 parameters:(id)a4
+- (id)_megaBundleFromActivityTimeContextBundles:(id)bundles parameters:(id)parameters
 {
-  v6 = a4;
-  v7 = a3;
+  parametersCopy = parameters;
+  bundlesCopy = bundles;
   v29 = [[NSArray alloc] initWithObjects:{&off_10036C178, &off_10036C190, 0}];
   v28 = [NSPredicate predicateWithFormat:@"interfaceType in %@", v29];
-  v8 = [v7 filteredArrayUsingPredicate:?];
+  v8 = [bundlesCopy filteredArrayUsingPredicate:?];
 
   v9 = [NSPredicate predicateWithFormat:@"bundleSubType != %lu", 204];
   v10 = [NSPredicate predicateWithFormat:@"bundleSubType != %lu", 207];
@@ -1114,7 +1114,7 @@ LABEL_160:
   v14 = [v8 filteredArrayUsingPredicate:v13];
   if (![v14 count])
   {
-    v19 = v6;
+    v19 = parametersCopy;
     v20 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
@@ -1128,12 +1128,12 @@ LABEL_8:
     goto LABEL_12;
   }
 
-  v15 = self;
-  v16 = [v6 aggregationDateInterval];
-  [v16 duration];
+  selfCopy = self;
+  aggregationDateInterval = [parametersCopy aggregationDateInterval];
+  [aggregationDateInterval duration];
   v18 = v17;
 
-  v19 = v6;
+  v19 = parametersCopy;
   if (v18 < 604800.0)
   {
     v20 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
@@ -1149,10 +1149,10 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v23 = [(MOAggregationManager *)v15 fUniverse];
+  fUniverse = [(MOAggregationManager *)selfCopy fUniverse];
   v24 = objc_opt_class();
   v25 = NSStringFromClass(v24);
-  v20 = [v23 getService:v25];
+  v20 = [fUniverse getService:v25];
 
   v22 = [MOSummarizationUtilities createActivityMegaBundleFromBundles:v14 withParameters:v19 isCoarseGranularity:1 isWeeklySummary:1 timeZoneManager:v20];
   v26 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
@@ -1168,11 +1168,11 @@ LABEL_12:
   return v22;
 }
 
-- (id)_groupBundles:(id)a3 parameters:(id)a4 granularity:(unint64_t)a5
+- (id)_groupBundles:(id)bundles parameters:(id)parameters granularity:(unint64_t)granularity
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v8 count] > 1)
+  bundlesCopy = bundles;
+  parametersCopy = parameters;
+  if ([bundlesCopy count] > 1)
   {
     v11 = [[NSSortDescriptor alloc] initWithKey:@"startDate" ascending:1];
     v26 = [[NSSortDescriptor alloc] initWithKey:@"endDate" ascending:1];
@@ -1180,8 +1180,8 @@ LABEL_12:
     v34[0] = v11;
     v34[1] = v26;
     v12 = [NSArray arrayWithObjects:v34 count:2];
-    v28 = v8;
-    v13 = [v8 sortedArrayUsingDescriptors:v12];
+    v28 = bundlesCopy;
+    v13 = [bundlesCopy sortedArrayUsingDescriptors:v12];
 
     v29 = objc_opt_new();
     v14 = objc_opt_new();
@@ -1199,7 +1199,7 @@ LABEL_12:
         v17 = v15 + 1;
         v18 = [v13 objectAtIndexedSubscript:v15 + 1];
         v19 = [v14 copy];
-        v20 = [(MOTimeContextAggregationManager *)self _shouldMergeBundle:v18 toCluster:v19 parameters:v9 granularity:a5];
+        v20 = [(MOTimeContextAggregationManager *)self _shouldMergeBundle:v18 toCluster:v19 parameters:parametersCopy granularity:granularity];
 
         if (v20)
         {
@@ -1236,12 +1236,12 @@ LABEL_12:
       *buf = 134218240;
       v31 = [v29 count];
       v32 = 2048;
-      v33 = a5;
+      granularityCopy = granularity;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "Aggregation for TimeContext: grouped bundle count: %lu, granularity: %lu", buf, 0x16u);
     }
 
     v10 = v27;
-    v8 = v28;
+    bundlesCopy = v28;
   }
 
   else
@@ -1259,25 +1259,25 @@ LABEL_12:
   return v29;
 }
 
-- (BOOL)_shouldMergeBundle:(id)a3 toCluster:(id)a4 parameters:(id)a5 granularity:(unint64_t)a6
+- (BOOL)_shouldMergeBundle:(id)bundle toCluster:(id)cluster parameters:(id)parameters granularity:(unint64_t)granularity
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (a6 == 2)
+  bundleCopy = bundle;
+  clusterCopy = cluster;
+  parametersCopy = parameters;
+  if (granularity == 2)
   {
-    v13 = [(MOTimeContextAggregationManager *)self _shouldMergeBundleForCoarseGranularity:v10 toCluster:v11 parameters:v12];
+    v13 = [(MOTimeContextAggregationManager *)self _shouldMergeBundleForCoarseGranularity:bundleCopy toCluster:clusterCopy parameters:parametersCopy];
   }
 
   else
   {
-    if (a6 != 1)
+    if (granularity != 1)
     {
       v14 = 0;
       goto LABEL_7;
     }
 
-    v13 = [(MOTimeContextAggregationManager *)self _shouldMergeBundleForFineGranularity:v10 toCluster:v11 parameters:v12];
+    v13 = [(MOTimeContextAggregationManager *)self _shouldMergeBundleForFineGranularity:bundleCopy toCluster:clusterCopy parameters:parametersCopy];
   }
 
   v14 = v13;
@@ -1286,12 +1286,12 @@ LABEL_7:
   return v14;
 }
 
-- (BOOL)_shouldMergeBundleForFineGranularity:(id)a3 toCluster:(id)a4 parameters:(id)a5
+- (BOOL)_shouldMergeBundleForFineGranularity:(id)granularity toCluster:(id)cluster parameters:(id)parameters
 {
-  v8 = COERCE_DOUBLE(a3);
-  v9 = a4;
-  v10 = a5;
-  [v9 lastObject];
+  v8 = COERCE_DOUBLE(granularity);
+  clusterCopy = cluster;
+  parametersCopy = parameters;
+  [clusterCopy lastObject];
   v11 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
   v12 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
@@ -1300,16 +1300,16 @@ LABEL_7:
     v13 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
     [*&v11 endDate];
     v14 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-    v15 = [*&v8 startDate];
-    v16 = [*&v8 endDate];
+    startDate = [*&v8 startDate];
+    endDate = [*&v8 endDate];
     *buf = 138413058;
     v75 = v13;
     v76 = 2112;
     v77 = v14;
     v78 = 2112;
-    v79 = v15;
+    v79 = startDate;
     v80 = 2112;
-    v81 = v16;
+    v81 = endDate;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "FineGranularityAggregation for TimeContext: the last bundle in cluster start date, %@, end date, %@, bundle to be add to cluster: start date, %@, end date, %@", buf, 0x2Au);
   }
 
@@ -1363,24 +1363,24 @@ LABEL_26:
         v30 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
         [*&v11 endDate];
         v31 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-        v32 = [*&v8 startDate];
-        v33 = [*&v8 endDate];
+        startDate2 = [*&v8 startDate];
+        endDate2 = [*&v8 endDate];
         *buf = 138413058;
         v75 = v30;
         v76 = 2112;
         v77 = v31;
         v78 = 2112;
-        v79 = v32;
+        v79 = startDate2;
         v80 = 2112;
-        v81 = v33;
+        v81 = endDate2;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "FineGranularityAggregation for TimeContext: two bundles should not merge since one of thme is covering more than one day, bundle1: start date, %@, end date, %@, bundle 2: start date, %@, end date, %@", buf, 0x2Au);
       }
 
       goto LABEL_27;
     }
 
-    v24 = [*&v8 rankingDictionary];
-    v25 = [v24 objectForKeyedSubscript:@"bundleGoodnessScore"];
+    rankingDictionary = [*&v8 rankingDictionary];
+    v25 = [rankingDictionary objectForKeyedSubscript:@"bundleGoodnessScore"];
     [v25 floatValue];
     v27 = v26;
 
@@ -1392,7 +1392,7 @@ LABEL_26:
       _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_INFO, "FineGranularityAggregation for TimeContext:bundle goodness score, %f", buf, 0xCu);
     }
 
-    [v10 fineGranularity_outingBundlesExclusionGoodnessScoreThreshold];
+    [parametersCopy fineGranularity_outingBundlesExclusionGoodnessScoreThreshold];
     if (v27 > v29)
     {
       v21 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
@@ -1428,14 +1428,14 @@ LABEL_26:
     [v37 doubleValue];
     v39 = v38;
 
-    [MOSummarizationUtilities maximumDistanceFromBundle:*&v8 toBundleCluster:v9];
+    [MOSummarizationUtilities maximumDistanceFromBundle:*&v8 toBundleCluster:clusterCopy];
     v41 = v40;
-    [(MOTimeContextAggregationManager *)self _maximumGoodnessScoreDeltaFromBundle:*&v8 toCluster:v9];
+    [(MOTimeContextAggregationManager *)self _maximumGoodnessScoreDeltaFromBundle:*&v8 toCluster:clusterCopy];
     v43 = v42;
     v44 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
     if (os_log_type_enabled(v44, OS_LOG_TYPE_INFO))
     {
-      [v10 fineGranularity_outingBundlesAggregationDistanceThreshold];
+      [parametersCopy fineGranularity_outingBundlesAggregationDistanceThreshold];
       *buf = 134218240;
       v75 = v36;
       v76 = 2048;
@@ -1448,7 +1448,7 @@ LABEL_26:
     v47 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
     if (os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
     {
-      [v10 fineGranularity_outingBundlesAggregationTimeIntervalThreshold];
+      [parametersCopy fineGranularity_outingBundlesAggregationTimeIntervalThreshold];
       *buf = 134218240;
       v75 = v46;
       v76 = 2048;
@@ -1459,7 +1459,7 @@ LABEL_26:
     v49 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
     if (os_log_type_enabled(v49, OS_LOG_TYPE_INFO))
     {
-      [v10 fineGranularity_outingBundlesAggregationGoodnessScoreDeltaThreshold];
+      [parametersCopy fineGranularity_outingBundlesAggregationGoodnessScoreDeltaThreshold];
       *buf = 134218240;
       v75 = v43;
       v76 = 2048;
@@ -1467,16 +1467,16 @@ LABEL_26:
       _os_log_impl(&_mh_execute_header, v49, OS_LOG_TYPE_INFO, "FineGranularityAggregation: max goodness score deta between bundle and members in existing cluster: %f (thres=%f)", buf, 0x16u);
     }
 
-    [v10 fineGranularity_outingBundlesAggregationDistanceThreshold];
+    [parametersCopy fineGranularity_outingBundlesAggregationDistanceThreshold];
     if (v36 < v51)
     {
-      [v10 fineGranularity_outingBundlesAggregationTimeIntervalThreshold];
+      [parametersCopy fineGranularity_outingBundlesAggregationTimeIntervalThreshold];
       if (v46 < v52)
       {
-        [v10 fineGranularity_outingBundlesAggregationDistanceToClusterThreshold];
+        [parametersCopy fineGranularity_outingBundlesAggregationDistanceToClusterThreshold];
         if (v41 < v53)
         {
-          [v10 fineGranularity_outingBundlesAggregationGoodnessScoreDeltaThreshold];
+          [parametersCopy fineGranularity_outingBundlesAggregationGoodnessScoreDeltaThreshold];
           if (v43 < v54)
           {
             v55 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
@@ -1486,33 +1486,33 @@ LABEL_26:
               v73 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
               [*&v11 endDate];
               v72 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-              v69 = [*&v11 action];
-              v70 = [v69 actionName];
-              v68 = [*&v11 place];
-              v56 = [v68 placeName];
+              action = [*&v11 action];
+              actionName = [action actionName];
+              place = [*&v11 place];
+              placeName = [place placeName];
               [*&v8 startDate];
               v57 = v71 = v55;
-              v58 = [*&v8 endDate];
-              v67 = [*&v8 action];
-              v59 = [v67 actionName];
-              v66 = [*&v8 place];
-              v60 = [v66 placeName];
+              endDate3 = [*&v8 endDate];
+              action2 = [*&v8 action];
+              actionName2 = [action2 actionName];
+              place2 = [*&v8 place];
+              placeName2 = [place2 placeName];
               *buf = 138414082;
               v75 = v73;
               v76 = 2112;
               v77 = v72;
               v78 = 2112;
-              v79 = v70;
+              v79 = actionName;
               v80 = 2112;
-              v81 = v56;
+              v81 = placeName;
               v82 = 2112;
               v83 = v57;
               v84 = 2112;
-              v85 = v58;
+              v85 = endDate3;
               v86 = 2112;
-              v87 = v59;
+              v87 = actionName2;
               v88 = 2112;
-              v89 = v60;
+              v89 = placeName2;
               _os_log_impl(&_mh_execute_header, v71, OS_LOG_TYPE_INFO, "FineGranularityAggregation for TimeContext: two bundles should be merged for outing, bundle1: startDate:%@, endDate:%@, action:%@, place:%@, bundle 2: startDate:%@, endDate:%@, action:%@, place:%@", buf, 0x52u);
 
               v55 = v71;
@@ -1541,7 +1541,7 @@ LABEL_26:
     _os_log_impl(&_mh_execute_header, v63, OS_LOG_TYPE_INFO, "FineGranularityAggregation for TimeContext: time interval between activities from two activity related bundles: %f", buf, 0xCu);
   }
 
-  [v10 fineGranularity_activityBundlesAggregationTimeIntervalThreshold];
+  [parametersCopy fineGranularity_activityBundlesAggregationTimeIntervalThreshold];
   if (v62 >= v64)
   {
 LABEL_58:
@@ -1566,62 +1566,62 @@ LABEL_59:
   return v23;
 }
 
-- (BOOL)_shouldMergeBundleForCoarseGranularity:(id)a3 toCluster:(id)a4 parameters:(id)a5
+- (BOOL)_shouldMergeBundleForCoarseGranularity:(id)granularity toCluster:(id)cluster parameters:(id)parameters
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 lastObject];
+  granularityCopy = granularity;
+  clusterCopy = cluster;
+  parametersCopy = parameters;
+  lastObject = [clusterCopy lastObject];
   v12 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
-    [v11 startDate];
+    [lastObject startDate];
     v13 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-    [v11 endDate];
+    [lastObject endDate];
     v14 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-    v15 = [v8 startDate];
-    [v8 endDate];
-    v17 = v16 = v10;
+    startDate = [granularityCopy startDate];
+    [granularityCopy endDate];
+    v17 = v16 = parametersCopy;
     *buf = 138413058;
     v87 = v13;
     v88 = 2112;
     v89 = v14;
     v90 = 2112;
-    v91 = v15;
+    v91 = startDate;
     v92 = 2112;
     v93 = v17;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "CoarseGranularityAggregation for TimeContext: the last bundle in cluster start date, %@, end date, %@, bundle to be add to cluster: start date, %@, end date, %@", buf, 0x2Au);
 
-    v10 = v16;
+    parametersCopy = v16;
   }
 
-  if (![MOSummarizationUtilities isOutingBundleFromHomeOrWorkVisit:v11]&& ![MOSummarizationUtilities isOutingBundleFromHomeOrWorkVisit:v8])
+  if (![MOSummarizationUtilities isOutingBundleFromHomeOrWorkVisit:lastObject]&& ![MOSummarizationUtilities isOutingBundleFromHomeOrWorkVisit:granularityCopy])
   {
-    v22 = [v11 interfaceType] == 2 && objc_msgSend(v8, "interfaceType") == 2;
-    if ([v11 interfaceType] == 2 && objc_msgSend(v8, "interfaceType") == 12)
+    v22 = [lastObject interfaceType] == 2 && objc_msgSend(granularityCopy, "interfaceType") == 2;
+    if ([lastObject interfaceType] == 2 && objc_msgSend(granularityCopy, "interfaceType") == 12)
     {
       v23 = 1;
     }
 
     else
     {
-      v23 = [v11 interfaceType] == 12 && objc_msgSend(v8, "interfaceType") == 2;
+      v23 = [lastObject interfaceType] == 12 && objc_msgSend(granularityCopy, "interfaceType") == 2;
     }
 
-    v24 = [v11 interfaceType] == 1 && objc_msgSend(v8, "interfaceType") == 1;
-    if ([v11 interfaceType] == 1 && objc_msgSend(v8, "interfaceType") == 12)
+    v24 = [lastObject interfaceType] == 1 && objc_msgSend(granularityCopy, "interfaceType") == 1;
+    if ([lastObject interfaceType] == 1 && objc_msgSend(granularityCopy, "interfaceType") == 12)
     {
       v25 = 1;
     }
 
     else
     {
-      v25 = [v11 interfaceType] == 12 && objc_msgSend(v8, "interfaceType") == 1;
+      v25 = [lastObject interfaceType] == 12 && objc_msgSend(granularityCopy, "interfaceType") == 1;
     }
 
     if (v22 || v23)
     {
-      if (![MOSummarizationUtilities isBundle:v11 insideTheSameDayAsOtherBundle:v8])
+      if (![MOSummarizationUtilities isBundle:lastObject insideTheSameDayAsOtherBundle:granularityCopy])
       {
         v18 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
         if (!os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
@@ -1629,28 +1629,28 @@ LABEL_59:
           goto LABEL_8;
         }
 
-        [v11 startDate];
+        [lastObject startDate];
         v32 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-        [v11 endDate];
+        [lastObject endDate];
         v33 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-        v34 = [v8 startDate];
-        v35 = [v8 endDate];
+        startDate2 = [granularityCopy startDate];
+        endDate = [granularityCopy endDate];
         *buf = 138413058;
         v87 = v32;
         v88 = 2112;
         v89 = v33;
         v90 = 2112;
-        v91 = v34;
+        v91 = startDate2;
         v92 = 2112;
-        v93 = v35;
+        v93 = endDate;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "CoarseGranularityAggregation for TimeContext: two bundles should not merge since one of thme is covering more than one day, bundle1: start date, %@, end date, %@, bundle 2: start date, %@, end date, %@", buf, 0x2Au);
 LABEL_59:
 
         goto LABEL_8;
       }
 
-      v26 = [v8 rankingDictionary];
-      v27 = [v26 objectForKeyedSubscript:@"bundleGoodnessScore"];
+      rankingDictionary = [granularityCopy rankingDictionary];
+      v27 = [rankingDictionary objectForKeyedSubscript:@"bundleGoodnessScore"];
       [v27 floatValue];
       v29 = v28;
 
@@ -1662,7 +1662,7 @@ LABEL_59:
         _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_INFO, "CoarseGranularityAggregation for TimeContext:bundle goodness score, %f", buf, 0xCu);
       }
 
-      [v10 coarseGranularity_outingBundlesExclusionGoodnessScoreThreshold];
+      [parametersCopy coarseGranularity_outingBundlesExclusionGoodnessScoreThreshold];
       if (v29 > v31)
       {
         v18 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
@@ -1676,7 +1676,7 @@ LABEL_59:
         goto LABEL_7;
       }
 
-      if ([MOSummarizationUtilities isFlightBundle:v8])
+      if ([MOSummarizationUtilities isFlightBundle:granularityCopy])
       {
         v18 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
         if (!os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
@@ -1689,7 +1689,7 @@ LABEL_59:
         goto LABEL_7;
       }
 
-      v18 = [MOSummarizationUtilities metricForVisitsFromBundle:v11 andNextBundle:v8];
+      v18 = [MOSummarizationUtilities metricForVisitsFromBundle:lastObject andNextBundle:granularityCopy];
       v36 = [v18 objectForKey:@"distance"];
       [v36 doubleValue];
       v38 = v37;
@@ -1698,14 +1698,14 @@ LABEL_59:
       [v39 doubleValue];
       v41 = v40;
 
-      [MOSummarizationUtilities maximumDistanceFromBundle:v8 toBundleCluster:v9];
+      [MOSummarizationUtilities maximumDistanceFromBundle:granularityCopy toBundleCluster:clusterCopy];
       v43 = v42;
-      [(MOTimeContextAggregationManager *)self _maximumGoodnessScoreDeltaFromBundle:v8 toCluster:v9];
+      [(MOTimeContextAggregationManager *)self _maximumGoodnessScoreDeltaFromBundle:granularityCopy toCluster:clusterCopy];
       v45 = v44;
       v46 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
       if (os_log_type_enabled(v46, OS_LOG_TYPE_INFO))
       {
-        [v10 coarseGranularity_outingBundlesAggregationDistanceThreshold];
+        [parametersCopy coarseGranularity_outingBundlesAggregationDistanceThreshold];
         *buf = 134218240;
         v87 = v38;
         v88 = 2048;
@@ -1716,7 +1716,7 @@ LABEL_59:
       v48 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
       if (os_log_type_enabled(v48, OS_LOG_TYPE_INFO))
       {
-        [v10 coarseGranularity_outingBundlesAggregationTimeIntervalThreshold];
+        [parametersCopy coarseGranularity_outingBundlesAggregationTimeIntervalThreshold];
         *buf = 134218240;
         v87 = v41;
         v88 = 2048;
@@ -1727,7 +1727,7 @@ LABEL_59:
       v50 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
       if (os_log_type_enabled(v50, OS_LOG_TYPE_INFO))
       {
-        [v10 coarseGranularity_outingBundlesAggregationGoodnessScoreDeltaThreshold];
+        [parametersCopy coarseGranularity_outingBundlesAggregationGoodnessScoreDeltaThreshold];
         *buf = 134218240;
         v87 = v45;
         v88 = 2048;
@@ -1735,55 +1735,55 @@ LABEL_59:
         _os_log_impl(&_mh_execute_header, v50, OS_LOG_TYPE_INFO, "CoarseGranularityAggregation: max goodness score deta between bundle and members in existing cluster: %f (thres=%f)", buf, 0x16u);
       }
 
-      [v10 coarseGranularity_outingBundlesAggregationDistanceThreshold];
+      [parametersCopy coarseGranularity_outingBundlesAggregationDistanceThreshold];
       if (v38 < v52)
       {
-        [v10 coarseGranularity_outingBundlesAggregationTimeIntervalThreshold];
+        [parametersCopy coarseGranularity_outingBundlesAggregationTimeIntervalThreshold];
         if (v41 < v53)
         {
-          [v10 coarseGranularity_outingBundlesAggregationDistanceToClusterThreshold];
+          [parametersCopy coarseGranularity_outingBundlesAggregationDistanceToClusterThreshold];
           if (v43 < v54)
           {
-            [v10 coarseGranularity_outingBundlesAggregationGoodnessScoreDeltaThreshold];
+            [parametersCopy coarseGranularity_outingBundlesAggregationGoodnessScoreDeltaThreshold];
             if (v45 < v55)
             {
               v56 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
               if (os_log_type_enabled(v56, OS_LOG_TYPE_INFO))
               {
-                [v11 startDate];
+                [lastObject startDate];
                 *&log = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-                [v11 endDate];
+                [lastObject endDate];
                 v80 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-                v78 = [v11 action];
-                v79 = [v78 actionName];
-                v77 = [v11 place];
-                v57 = [v77 placeName];
-                v58 = [v8 startDate];
-                v59 = [v8 endDate];
-                v76 = [v8 action];
-                v60 = [v76 actionName];
-                v75 = [v8 place];
-                [v75 placeName];
-                v61 = v83 = v10;
+                action = [lastObject action];
+                actionName = [action actionName];
+                place = [lastObject place];
+                placeName = [place placeName];
+                startDate3 = [granularityCopy startDate];
+                endDate2 = [granularityCopy endDate];
+                action2 = [granularityCopy action];
+                actionName2 = [action2 actionName];
+                place2 = [granularityCopy place];
+                [place2 placeName];
+                v61 = v83 = parametersCopy;
                 *buf = 138414082;
                 v87 = *&log;
                 v88 = 2112;
                 v89 = v80;
                 v90 = 2112;
-                v91 = v79;
+                v91 = actionName;
                 v92 = 2112;
-                v93 = v57;
+                v93 = placeName;
                 v94 = 2112;
-                v95 = v58;
+                v95 = startDate3;
                 v96 = 2112;
-                v97 = v59;
+                v97 = endDate2;
                 v98 = 2112;
-                v99 = v60;
+                v99 = actionName2;
                 v100 = 2112;
                 v101 = v61;
                 _os_log_impl(&_mh_execute_header, v56, OS_LOG_TYPE_INFO, "CoarseGranularityAggregation for TimeContext: two bundles should be merged for outing, bundle1: startDate:%@, endDate:%@, action:%@, place:%@, bundle 2: startDate:%@, endDate:%@, action:%@, place:%@", buf, 0x52u);
 
-                v10 = v83;
+                parametersCopy = v83;
               }
 
 LABEL_62:
@@ -1797,12 +1797,12 @@ LABEL_62:
 
       if (v24 || v25)
       {
-        [MOSummarizationUtilities workoutTimeIntervalBetweenBundle:v11 andNextBundle:v8];
+        [MOSummarizationUtilities workoutTimeIntervalBetweenBundle:lastObject andNextBundle:granularityCopy];
         v63 = v62;
         v64 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
         if (os_log_type_enabled(v64, OS_LOG_TYPE_INFO))
         {
-          [v10 fineGranularity_activityBundlesAggregationTimeIntervalThreshold];
+          [parametersCopy fineGranularity_activityBundlesAggregationTimeIntervalThreshold];
           *buf = 134218240;
           v87 = v63;
           v88 = 2048;
@@ -1810,38 +1810,38 @@ LABEL_62:
           _os_log_impl(&_mh_execute_header, v64, OS_LOG_TYPE_INFO, "CoarseGranularityAggregation for TimeContext: time interval between activities from two activity related bundles: %f, threshold: %f", buf, 0x16u);
         }
 
-        [v10 fineGranularity_activityBundlesAggregationTimeIntervalThreshold];
+        [parametersCopy fineGranularity_activityBundlesAggregationTimeIntervalThreshold];
         if (v63 < v66)
         {
           v56 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
           if (os_log_type_enabled(v56, OS_LOG_TYPE_INFO))
           {
-            [v11 bundleIdentifier];
+            [lastObject bundleIdentifier];
             v69 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-            [v11 startDate];
+            [lastObject startDate];
             v70 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-            v71 = [v11 endDate];
-            [v8 bundleIdentifier];
-            v72 = v85 = v10;
-            v73 = [v8 startDate];
-            [v8 endDate];
+            endDate3 = [lastObject endDate];
+            [granularityCopy bundleIdentifier];
+            v72 = v85 = parametersCopy;
+            startDate4 = [granularityCopy startDate];
+            [granularityCopy endDate];
             v74 = loga = v56;
             *buf = 138413570;
             v87 = v69;
             v88 = 2112;
             v89 = v70;
             v90 = 2112;
-            v91 = v71;
+            v91 = endDate3;
             v92 = 2112;
             v93 = v72;
             v94 = 2112;
-            v95 = v73;
+            v95 = startDate4;
             v96 = 2112;
             v97 = v74;
             _os_log_impl(&_mh_execute_header, loga, OS_LOG_TYPE_INFO, "CoarseGranularityAggregation for TimeContext: two activity bundles should be merged for activity, bundle1: bundle ID, %@, startDate, %@, endDate, %@; bundle 2: bundle ID, %@, startDate, %@, endDate, %@", buf, 0x3Eu);
 
             v56 = loga;
-            v10 = v85;
+            parametersCopy = v85;
           }
 
           goto LABEL_62;
@@ -1855,30 +1855,30 @@ LABEL_62:
       goto LABEL_8;
     }
 
-    [v11 bundleIdentifier];
+    [lastObject bundleIdentifier];
     v32 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-    [v11 startDate];
+    [lastObject startDate];
     v33 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-    v34 = [v11 endDate];
-    v35 = [v8 bundleIdentifier];
-    [v8 startDate];
-    v67 = v84 = v10;
-    v68 = [v8 endDate];
+    startDate2 = [lastObject endDate];
+    endDate = [granularityCopy bundleIdentifier];
+    [granularityCopy startDate];
+    v67 = v84 = parametersCopy;
+    endDate4 = [granularityCopy endDate];
     *buf = 138413570;
     v87 = v32;
     v88 = 2112;
     v89 = v33;
     v90 = 2112;
-    v91 = v34;
+    v91 = startDate2;
     v92 = 2112;
-    v93 = v35;
+    v93 = endDate;
     v94 = 2112;
     v95 = v67;
     v96 = 2112;
-    v97 = v68;
+    v97 = endDate4;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "CoarseGranularityAggregation for TimeContext: bundle does not meet summarization criteria, bundle1: bundle ID, %@, startDate, %@, endDate, %@; bundle 2: bundle ID, %@, startDate, %@, endDate, %@", buf, 0x3Eu);
 
-    v10 = v84;
+    parametersCopy = v84;
     goto LABEL_59;
   }
 
@@ -1898,15 +1898,15 @@ LABEL_9:
   return v20;
 }
 
-- (float)_maximumGoodnessScoreDeltaFromBundle:(id)a3 toCluster:(id)a4
+- (float)_maximumGoodnessScoreDeltaFromBundle:(id)bundle toCluster:(id)cluster
 {
-  v5 = a3;
-  v6 = a4;
+  bundleCopy = bundle;
+  clusterCopy = cluster;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v7 = [clusterCopy countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1918,16 +1918,16 @@ LABEL_9:
       {
         if (*v23 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(clusterCopy);
         }
 
         v12 = *(*(&v22 + 1) + 8 * i);
-        v13 = [v5 rankingDictionary];
-        v14 = [v13 objectForKeyedSubscript:@"bundleGoodnessScore"];
+        rankingDictionary = [bundleCopy rankingDictionary];
+        v14 = [rankingDictionary objectForKeyedSubscript:@"bundleGoodnessScore"];
         [v14 floatValue];
         v16 = v15;
-        v17 = [v12 rankingDictionary];
-        v18 = [v17 objectForKeyedSubscript:@"bundleGoodnessScore"];
+        rankingDictionary2 = [v12 rankingDictionary];
+        v18 = [rankingDictionary2 objectForKeyedSubscript:@"bundleGoodnessScore"];
         [v18 floatValue];
         v20 = vabds_f32(v16, v19);
 
@@ -1937,7 +1937,7 @@ LABEL_9:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v8 = [clusterCopy countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v8);
@@ -1951,36 +1951,36 @@ LABEL_9:
   return v10;
 }
 
-- (id)_groupTransitBundles:(id)a3 parameters:(id)a4 granularity:(unint64_t)a5
+- (id)_groupTransitBundles:(id)bundles parameters:(id)parameters granularity:(unint64_t)granularity
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v8 count] > 1)
+  bundlesCopy = bundles;
+  parametersCopy = parameters;
+  if ([bundlesCopy count] > 1)
   {
     v22 = objc_opt_new();
     v10 = objc_opt_new();
-    if ([v8 count] != 1)
+    if ([bundlesCopy count] != 1)
     {
       v11 = 0;
       do
       {
         if (![v10 count])
         {
-          v12 = [v8 objectAtIndexedSubscript:v11];
+          v12 = [bundlesCopy objectAtIndexedSubscript:v11];
           [v10 addObject:v12];
         }
 
         v13 = v11 + 1;
-        v14 = [v8 objectAtIndexedSubscript:v11 + 1];
+        v14 = [bundlesCopy objectAtIndexedSubscript:v11 + 1];
         v15 = [v10 copy];
-        v16 = [(MOTimeContextAggregationManager *)self _shouldMergeTransitBundle:v14 toCluster:v15 parameters:v9 granularity:a5];
+        v16 = [(MOTimeContextAggregationManager *)self _shouldMergeTransitBundle:v14 toCluster:v15 parameters:parametersCopy granularity:granularity];
 
         if (v16)
         {
-          v17 = [v8 objectAtIndexedSubscript:v11 + 1];
+          v17 = [bundlesCopy objectAtIndexedSubscript:v11 + 1];
           [v10 addObject:v17];
 
-          if (v11 == [v8 count] - 2 && -[NSObject count](v10, "count") >= 2)
+          if (v11 == [bundlesCopy count] - 2 && -[NSObject count](v10, "count") >= 2)
           {
             v18 = [v10 copy];
             [v22 addObject:v18];
@@ -2001,7 +2001,7 @@ LABEL_9:
         ++v11;
       }
 
-      while ([v8 count] - 1 > v13);
+      while ([bundlesCopy count] - 1 > v13);
     }
 
     v20 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
@@ -2010,7 +2010,7 @@ LABEL_9:
       *buf = 134218240;
       v24 = [v22 count];
       v25 = 2048;
-      v26 = a5;
+      granularityCopy = granularity;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "Aggregation for TimeContext: grouped bundle count: %lu, granularity: %lu", buf, 0x16u);
     }
   }
@@ -2030,49 +2030,49 @@ LABEL_9:
   return v22;
 }
 
-- (BOOL)_shouldMergeTransitBundleForFineGranularity:(id)a3 toCluster:(id)a4 parameters:(id)a5
+- (BOOL)_shouldMergeTransitBundleForFineGranularity:(id)granularity toCluster:(id)cluster parameters:(id)parameters
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [a4 lastObject];
+  granularityCopy = granularity;
+  parametersCopy = parameters;
+  lastObject = [cluster lastObject];
   v10 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
-    v11 = [v9 startDate];
-    v12 = [v9 endDate];
-    v13 = [v7 startDate];
-    v14 = [v7 endDate];
+    startDate = [lastObject startDate];
+    endDate = [lastObject endDate];
+    startDate2 = [granularityCopy startDate];
+    endDate2 = [granularityCopy endDate];
     *buf = 138413058;
-    v85 = v11;
+    v85 = startDate;
     v86 = 2112;
-    v87 = v12;
+    v87 = endDate;
     v88 = 2112;
-    v89 = v13;
+    v89 = startDate2;
     v90 = 2112;
-    v91 = v14;
+    v91 = endDate2;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Aggregation for transit bundle: the last bundle in cluster start date, %@, end date, %@, bundle to be add to cluster: start date, %@, end date, %@", buf, 0x2Au);
   }
 
-  v15 = [v9 interfaceType];
-  v76 = [MOSummarizationUtilities bundleHasOneWayRoute:v9 parameters:v8];
+  interfaceType = [lastObject interfaceType];
+  v76 = [MOSummarizationUtilities bundleHasOneWayRoute:lastObject parameters:parametersCopy];
   v16 = [NSArray arrayWithObjects:@"HKWorkoutActivityTypeWalking", @"HKWorkoutActivityTypeHiking", @"HKWorkoutActivityTypeRunning", @"HKWorkoutActivityTypeCycling", @"walk", @"run", @"cycle", 0];
-  v17 = [v9 action];
+  action = [lastObject action];
 
-  if (v17)
+  if (action)
   {
-    v18 = [v9 action];
-    v19 = [v18 actionName];
-    LODWORD(v17) = [v16 containsObject:v19];
+    action2 = [lastObject action];
+    actionName = [action2 actionName];
+    LODWORD(action) = [v16 containsObject:actionName];
   }
 
-  v20 = [v9 place];
+  place = [lastObject place];
 
-  if (v20)
+  if (place)
   {
-    v21 = [v9 place];
-    v22 = [v21 placeName];
+    place2 = [lastObject place];
+    placeName = [place2 placeName];
 
-    v23 = v22 == 0;
+    v23 = placeName == 0;
   }
 
   else
@@ -2080,21 +2080,21 @@ LABEL_9:
     v23 = 1;
   }
 
-  v24 = [v9 places];
+  places = [lastObject places];
 
   v78 = v16;
-  if (v24)
+  if (places)
   {
-    v74 = v7;
-    v25 = v17;
-    v17 = v15;
-    v26 = v8;
+    v74 = granularityCopy;
+    v25 = action;
+    action = interfaceType;
+    v26 = parametersCopy;
     v81 = 0u;
     v82 = 0u;
     v79 = 0u;
     v80 = 0u;
-    v27 = [v9 places];
-    v28 = [v27 countByEnumeratingWithState:&v79 objects:v83 count:16];
+    places2 = [lastObject places];
+    v28 = [places2 countByEnumeratingWithState:&v79 objects:v83 count:16];
     if (v28)
     {
       v29 = v28;
@@ -2105,33 +2105,33 @@ LABEL_9:
         {
           if (*v80 != v30)
           {
-            objc_enumerationMutation(v27);
+            objc_enumerationMutation(places2);
           }
 
-          v32 = [*(*(&v79 + 1) + 8 * i) placeName];
+          placeName2 = [*(*(&v79 + 1) + 8 * i) placeName];
 
-          v23 = (v32 == 0) & v23;
+          v23 = (placeName2 == 0) & v23;
         }
 
-        v29 = [v27 countByEnumeratingWithState:&v79 objects:v83 count:16];
+        v29 = [places2 countByEnumeratingWithState:&v79 objects:v83 count:16];
       }
 
       while (v29);
     }
 
-    v8 = v26;
-    v15 = v17;
-    LODWORD(v17) = v25;
-    v7 = v74;
+    parametersCopy = v26;
+    interfaceType = action;
+    LODWORD(action) = v25;
+    granularityCopy = v74;
   }
 
-  if ([v9 bundleSubType] == 201)
+  if ([lastObject bundleSubType] == 201)
   {
-    v33 = [v9 metaDataForRank];
-    v34 = [v33 objectForKeyedSubscript:@"WorkoutDuration"];
+    metaDataForRank = [lastObject metaDataForRank];
+    v34 = [metaDataForRank objectForKeyedSubscript:@"WorkoutDuration"];
     [v34 doubleValue];
     v36 = v35;
-    [v8 fineGranularity_transitBundlesWorkoutMinimumDuration];
+    [parametersCopy fineGranularity_transitBundlesWorkoutMinimumDuration];
     v38 = v37;
 
     v39 = v36 >= v38;
@@ -2142,63 +2142,63 @@ LABEL_9:
     v39 = 1;
   }
 
-  v40 = [v7 interfaceType] == 2 || objc_msgSend(v7, "interfaceType") == 12;
-  v41 = v15 == 1;
-  v42 = [MOSummarizationUtilities getInterestingDestination:v7];
+  v40 = [granularityCopy interfaceType] == 2 || objc_msgSend(granularityCopy, "interfaceType") == 12;
+  v41 = interfaceType == 1;
+  v42 = [MOSummarizationUtilities getInterestingDestination:granularityCopy];
   v43 = v42;
-  if ((v41 & v76 & v17 & v39 & v23) == 1 && v40 && v42 != 0)
+  if ((v41 & v76 & action & v39 & v23) == 1 && v40 && v42 != 0)
   {
-    v77 = v8;
-    v75 = [MOSummarizationUtilities sortedActivityEventsFromBundle:v9];
-    v47 = [v75 lastObject];
-    v48 = [v47 workoutLocationRoute];
-    v49 = [v48 lastObject];
+    v77 = parametersCopy;
+    v75 = [MOSummarizationUtilities sortedActivityEventsFromBundle:lastObject];
+    lastObject2 = [v75 lastObject];
+    workoutLocationRoute = [lastObject2 workoutLocationRoute];
+    lastObject3 = [workoutLocationRoute lastObject];
 
     v50 = [CLLocation alloc];
-    v51 = [v43 location];
-    [v51 latitude];
+    location = [v43 location];
+    [location latitude];
     v53 = v52;
-    v54 = [v43 location];
-    [v54 longitude];
+    location2 = [v43 location];
+    [location2 longitude];
     v56 = [v50 initWithLatitude:v53 longitude:v55];
 
-    [v56 distanceFromLocation:v49];
+    [v56 distanceFromLocation:lastObject3];
     v58 = v57;
-    v59 = [v9 action];
-    v60 = [v59 actionName];
-    if ([v60 isEqualToString:@"HKWorkoutActivityTypeCycling"])
+    action3 = [lastObject action];
+    actionName2 = [action3 actionName];
+    if ([actionName2 isEqualToString:@"HKWorkoutActivityTypeCycling"])
     {
     }
 
     else
     {
-      v61 = [v9 action];
-      v62 = [v61 actionName];
-      v63 = [v62 isEqualToString:@"cycle"];
+      action4 = [lastObject action];
+      actionName3 = [action4 actionName];
+      v63 = [actionName3 isEqualToString:@"cycle"];
 
       if (!v63)
       {
-        v8 = v77;
+        parametersCopy = v77;
         [v77 fineGranularity_transitBundlesDestinationMaximumTimeThresholdPedestrian];
         goto LABEL_37;
       }
     }
 
-    v8 = v77;
+    parametersCopy = v77;
     [v77 fineGranularity_transitBundlesDestinationMaximumTimeThresholdCycle];
 LABEL_37:
     v65 = v64;
     v66 = [NSDateInterval alloc];
-    v67 = [v9 startDate];
-    v68 = [v49 timestamp];
-    v69 = [v68 dateByAddingTimeInterval:v65];
-    v70 = [v66 initWithStartDate:v67 endDate:v69];
+    startDate3 = [lastObject startDate];
+    timestamp = [lastObject3 timestamp];
+    v69 = [timestamp dateByAddingTimeInterval:v65];
+    v70 = [v66 initWithStartDate:startDate3 endDate:v69];
 
-    v71 = [v43 startDate];
-    LOBYTE(v68) = [v70 containsDate:v71];
+    startDate4 = [v43 startDate];
+    LOBYTE(timestamp) = [v70 containsDate:startDate4];
 
-    [v8 fineGranularity_transitBundlesDestinationMaximumDistanceThreshold];
-    v46 = (v58 <= v72) & v68;
+    [parametersCopy fineGranularity_transitBundlesDestinationMaximumDistanceThreshold];
+    v46 = (v58 <= v72) & timestamp;
 
     goto LABEL_38;
   }

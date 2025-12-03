@@ -1,7 +1,7 @@
 @interface LinkAcceleratorViewController
 - (_TtC11NotesEditor29LinkAcceleratorViewController)init;
-- (_TtC11NotesEditor29LinkAcceleratorViewController)initWithCoder:(id)a3;
-- (_TtC11NotesEditor29LinkAcceleratorViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC11NotesEditor29LinkAcceleratorViewController)initWithCoder:(id)coder;
+- (_TtC11NotesEditor29LinkAcceleratorViewController)initWithNibName:(id)name bundle:(id)bundle;
 @end
 
 @implementation LinkAcceleratorViewController
@@ -23,7 +23,7 @@
   return [(LinkAcceleratorViewController *)&v9 initWithNibName:0 bundle:0];
 }
 
-- (_TtC11NotesEditor29LinkAcceleratorViewController)initWithCoder:(id)a3
+- (_TtC11NotesEditor29LinkAcceleratorViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC11NotesEditor29LinkAcceleratorViewController_linkAcceleratorController) = 0;
   v4 = (&self->super.super.super.isa + OBJC_IVAR____TtC11NotesEditor29LinkAcceleratorViewController_didSelectNoteLinkCompletion);
@@ -40,7 +40,7 @@
   return result;
 }
 
-- (_TtC11NotesEditor29LinkAcceleratorViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC11NotesEditor29LinkAcceleratorViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

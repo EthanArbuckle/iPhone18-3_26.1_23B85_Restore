@@ -1,36 +1,36 @@
 @interface IDSKTOptInOutStatusData
-- (IDSKTOptInOutStatusData)initWithCoder:(id)a3;
+- (IDSKTOptInOutStatusData)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSKTOptInOutStatusData
 
-- (IDSKTOptInOutStatusData)initWithCoder:(id)a3
+- (IDSKTOptInOutStatusData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = IDSKTOptInOutStatusData;
   v5 = [(IDSKTOptInOutStatusData *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"KTOptStatusDataPubAccKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"KTOptStatusDataPubAccKey"];
     publicAccountKey = v5->_publicAccountKey;
     v5->_publicAccountKey = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"KTOptStatusDataOptInStatus"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"KTOptStatusDataOptInStatus"];
     optInStatus = v5->_optInStatus;
     v5->_optInStatus = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"KTOptStatusKTApplication"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"KTOptStatusKTApplication"];
     ktApplication = v5->_ktApplication;
     v5->_ktApplication = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"KTOptStatusServiceIdentifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"KTOptStatusServiceIdentifier"];
     serviceIdentifier = v5->_serviceIdentifier;
     v5->_serviceIdentifier = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"KTOptStatusChangeReason"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"KTOptStatusChangeReason"];
     optChangeReason = v5->_optChangeReason;
     v5->_optChangeReason = v14;
   }
@@ -38,24 +38,24 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   publicAccountKey = self->_publicAccountKey;
-  v5 = a3;
-  [v5 encodeObject:publicAccountKey forKey:@"KTOptStatusDataPubAccKey"];
-  [v5 encodeObject:self->_optInStatus forKey:@"KTOptStatusDataOptInStatus"];
-  [v5 encodeObject:self->_ktApplication forKey:@"KTOptStatusKTApplication"];
-  [v5 encodeObject:self->_serviceIdentifier forKey:@"KTOptStatusServiceIdentifier"];
-  [v5 encodeObject:self->_optChangeReason forKey:@"KTOptStatusChangeReason"];
+  coderCopy = coder;
+  [coderCopy encodeObject:publicAccountKey forKey:@"KTOptStatusDataPubAccKey"];
+  [coderCopy encodeObject:self->_optInStatus forKey:@"KTOptStatusDataOptInStatus"];
+  [coderCopy encodeObject:self->_ktApplication forKey:@"KTOptStatusKTApplication"];
+  [coderCopy encodeObject:self->_serviceIdentifier forKey:@"KTOptStatusServiceIdentifier"];
+  [coderCopy encodeObject:self->_optChangeReason forKey:@"KTOptStatusChangeReason"];
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
   publicAccountKey = self->_publicAccountKey;
-  v5 = [(NSNumber *)self->_optInStatus BOOLValue];
+  bOOLValue = [(NSNumber *)self->_optInStatus BOOLValue];
   v6 = @"NO";
-  if (v5)
+  if (bOOLValue)
   {
     v6 = @"YES";
   }

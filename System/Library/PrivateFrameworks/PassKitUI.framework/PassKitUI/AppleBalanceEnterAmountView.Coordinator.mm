@@ -1,37 +1,37 @@
 @interface AppleBalanceEnterAmountView.Coordinator
-- (BOOL)enterCurrencyAmountView:(id)a3 shouldChangeAmountFrom:(id)a4 to:(id)a5;
+- (BOOL)enterCurrencyAmountView:(id)view shouldChangeAmountFrom:(id)from to:(id)to;
 - (_TtCV9PassKitUI27AppleBalanceEnterAmountView11Coordinator)init;
-- (void)enterCurrencyAmountViewDidChangeAmount:(id)a3;
-- (void)numberPadSuggestionsView:(id)a3 didSelectSuggestion:(id)a4;
+- (void)enterCurrencyAmountViewDidChangeAmount:(id)amount;
+- (void)numberPadSuggestionsView:(id)view didSelectSuggestion:(id)suggestion;
 @end
 
 @implementation AppleBalanceEnterAmountView.Coordinator
 
-- (BOOL)enterCurrencyAmountView:(id)a3 shouldChangeAmountFrom:(id)a4 to:(id)a5
+- (BOOL)enterCurrencyAmountView:(id)view shouldChangeAmountFrom:(id)from to:(id)to
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_1BD676A74(a4, a5);
-  LOBYTE(a5) = v12;
+  viewCopy = view;
+  fromCopy = from;
+  toCopy = to;
+  selfCopy = self;
+  sub_1BD676A74(from, to);
+  LOBYTE(to) = v12;
 
-  return a5 & 1;
+  return to & 1;
 }
 
-- (void)enterCurrencyAmountViewDidChangeAmount:(id)a3
+- (void)enterCurrencyAmountViewDidChangeAmount:(id)amount
 {
-  v5 = a3;
-  v6 = self;
-  sub_1BD6756EC(a3);
+  amountCopy = amount;
+  selfCopy = self;
+  sub_1BD6756EC(amount);
 }
 
-- (void)numberPadSuggestionsView:(id)a3 didSelectSuggestion:(id)a4
+- (void)numberPadSuggestionsView:(id)view didSelectSuggestion:(id)suggestion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1BD676B98(a4);
+  viewCopy = view;
+  suggestionCopy = suggestion;
+  selfCopy = self;
+  sub_1BD676B98(suggestion);
 }
 
 - (_TtCV9PassKitUI27AppleBalanceEnterAmountView11Coordinator)init

@@ -1,24 +1,24 @@
 @interface ACProtobufVariableValue
-- (ACProtobufVariableValue)initWithObjectValue:(id)a3;
-- (BOOL)_setObject:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ACProtobufVariableValue)initWithObjectValue:(id)value;
+- (BOOL)_setObject:(id)object;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)object;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIntegerValue:(BOOL)a3;
-- (void)setHasUnsignedIntegerValue:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIntegerValue:(BOOL)value;
+- (void)setHasUnsignedIntegerValue:(BOOL)value;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ACProtobufVariableValue
 
-- (void)setHasIntegerValue:(BOOL)a3
+- (void)setHasIntegerValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 2;
   }
@@ -31,9 +31,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasUnsignedIntegerValue:(BOOL)a3
+- (void)setHasUnsignedIntegerValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 4;
   }
@@ -52,20 +52,20 @@
   v8.receiver = self;
   v8.super_class = ACProtobufVariableValue;
   v4 = [(ACProtobufVariableValue *)&v8 description];
-  v5 = [(ACProtobufVariableValue *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ACProtobufVariableValue *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   stringValue = self->_stringValue;
   if (stringValue)
   {
-    [v3 setObject:stringValue forKey:@"stringValue"];
+    [dictionary setObject:stringValue forKey:@"stringValue"];
   }
 
   has = self->_has;
@@ -112,56 +112,56 @@ LABEL_7:
   uuidValue = self->_uuidValue;
   if (uuidValue)
   {
-    v10 = [(ACProtobufUUID *)uuidValue dictionaryRepresentation];
-    [v4 setObject:v10 forKey:@"uuidValue"];
+    dictionaryRepresentation = [(ACProtobufUUID *)uuidValue dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"uuidValue"];
   }
 
   dateValue = self->_dateValue;
   if (dateValue)
   {
-    v12 = [(ACProtobufDate *)dateValue dictionaryRepresentation];
-    [v4 setObject:v12 forKey:@"dateValue"];
+    dictionaryRepresentation2 = [(ACProtobufDate *)dateValue dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"dateValue"];
   }
 
   urlValue = self->_urlValue;
   if (urlValue)
   {
-    v14 = [(ACProtobufURL *)urlValue dictionaryRepresentation];
-    [v4 setObject:v14 forKey:@"urlValue"];
+    dictionaryRepresentation3 = [(ACProtobufURL *)urlValue dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"urlValue"];
   }
 
   arrayValue = self->_arrayValue;
   if (arrayValue)
   {
-    v16 = [(ACProtobufVariableValueList *)arrayValue dictionaryRepresentation];
-    [v4 setObject:v16 forKey:@"arrayValue"];
+    dictionaryRepresentation4 = [(ACProtobufVariableValueList *)arrayValue dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation4 forKey:@"arrayValue"];
   }
 
   setValue = self->_setValue;
   if (setValue)
   {
-    v18 = [(ACProtobufVariableValueList *)setValue dictionaryRepresentation];
-    [v4 setObject:v18 forKey:@"setValue"];
+    dictionaryRepresentation5 = [(ACProtobufVariableValueList *)setValue dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation5 forKey:@"setValue"];
   }
 
   dictionaryValue = self->_dictionaryValue;
   if (dictionaryValue)
   {
-    v20 = [(ACProtobufVariableValueDictionary *)dictionaryValue dictionaryRepresentation];
-    [v4 setObject:v20 forKey:@"dictionaryValue"];
+    dictionaryRepresentation6 = [(ACProtobufVariableValueDictionary *)dictionaryValue dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation6 forKey:@"dictionaryValue"];
   }
 
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_stringValue)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   has = self->_has;
@@ -169,7 +169,7 @@ LABEL_7:
   {
     integerValue = self->_integerValue;
     PBDataWriterWriteInt64Field();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -190,74 +190,74 @@ LABEL_5:
 
   unsignedIntegerValue = self->_unsignedIntegerValue;
   PBDataWriterWriteUint64Field();
-  v4 = v9;
+  toCopy = v9;
   if (*&self->_has)
   {
 LABEL_6:
     doubleValue = self->_doubleValue;
     PBDataWriterWriteDoubleField();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_7:
   if (self->_dataValue)
   {
     PBDataWriterWriteDataField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_uuidValue)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_dateValue)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_urlValue)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_arrayValue)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_setValue)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_dictionaryValue)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_stringValue)
   {
-    [v4 setStringValue:?];
-    v4 = v6;
+    [toCopy setStringValue:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 2) = self->_integerValue;
-    *(v4 + 96) |= 2u;
+    *(toCopy + 2) = self->_integerValue;
+    *(toCopy + 96) |= 2u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -276,63 +276,63 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 3) = self->_unsignedIntegerValue;
-  *(v4 + 96) |= 4u;
+  *(toCopy + 3) = self->_unsignedIntegerValue;
+  *(toCopy + 96) |= 4u;
   if (*&self->_has)
   {
 LABEL_6:
-    *(v4 + 1) = *&self->_doubleValue;
-    *(v4 + 96) |= 1u;
+    *(toCopy + 1) = *&self->_doubleValue;
+    *(toCopy + 96) |= 1u;
   }
 
 LABEL_7:
   if (self->_dataValue)
   {
     [v6 setDataValue:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_uuidValue)
   {
     [v6 setUuidValue:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_dateValue)
   {
     [v6 setDateValue:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_urlValue)
   {
     [v6 setUrlValue:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_arrayValue)
   {
     [v6 setArrayValue:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_setValue)
   {
     [v6 setSetValue:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_dictionaryValue)
   {
     [v6 setDictionaryValue:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_stringValue copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_stringValue copyWithZone:zone];
   v7 = *(v5 + 72);
   *(v5 + 72) = v6;
 
@@ -372,47 +372,47 @@ LABEL_4:
   }
 
 LABEL_5:
-  v9 = [(NSData *)self->_dataValue copyWithZone:a3];
+  v9 = [(NSData *)self->_dataValue copyWithZone:zone];
   v10 = *(v5 + 40);
   *(v5 + 40) = v9;
 
-  v11 = [(ACProtobufUUID *)self->_uuidValue copyWithZone:a3];
+  v11 = [(ACProtobufUUID *)self->_uuidValue copyWithZone:zone];
   v12 = *(v5 + 88);
   *(v5 + 88) = v11;
 
-  v13 = [(ACProtobufDate *)self->_dateValue copyWithZone:a3];
+  v13 = [(ACProtobufDate *)self->_dateValue copyWithZone:zone];
   v14 = *(v5 + 48);
   *(v5 + 48) = v13;
 
-  v15 = [(ACProtobufURL *)self->_urlValue copyWithZone:a3];
+  v15 = [(ACProtobufURL *)self->_urlValue copyWithZone:zone];
   v16 = *(v5 + 80);
   *(v5 + 80) = v15;
 
-  v17 = [(ACProtobufVariableValueList *)self->_arrayValue copyWithZone:a3];
+  v17 = [(ACProtobufVariableValueList *)self->_arrayValue copyWithZone:zone];
   v18 = *(v5 + 32);
   *(v5 + 32) = v17;
 
-  v19 = [(ACProtobufVariableValueList *)self->_setValue copyWithZone:a3];
+  v19 = [(ACProtobufVariableValueList *)self->_setValue copyWithZone:zone];
   v20 = *(v5 + 64);
   *(v5 + 64) = v19;
 
-  v21 = [(ACProtobufVariableValueDictionary *)self->_dictionaryValue copyWithZone:a3];
+  v21 = [(ACProtobufVariableValueDictionary *)self->_dictionaryValue copyWithZone:zone];
   v22 = *(v5 + 56);
   *(v5 + 56) = v21;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_33;
   }
 
   stringValue = self->_stringValue;
-  if (stringValue | *(v4 + 9))
+  if (stringValue | *(equalCopy + 9))
   {
     if (![(NSString *)stringValue isEqual:?])
     {
@@ -420,16 +420,16 @@ LABEL_5:
     }
   }
 
-  v6 = *(v4 + 96);
+  v6 = *(equalCopy + 96);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 96) & 2) == 0 || self->_integerValue != *(v4 + 2))
+    if ((*(equalCopy + 96) & 2) == 0 || self->_integerValue != *(equalCopy + 2))
     {
       goto LABEL_33;
     }
   }
 
-  else if ((*(v4 + 96) & 2) != 0)
+  else if ((*(equalCopy + 96) & 2) != 0)
   {
 LABEL_33:
     v14 = 0;
@@ -438,38 +438,38 @@ LABEL_33:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 96) & 4) == 0 || self->_unsignedIntegerValue != *(v4 + 3))
+    if ((*(equalCopy + 96) & 4) == 0 || self->_unsignedIntegerValue != *(equalCopy + 3))
     {
       goto LABEL_33;
     }
   }
 
-  else if ((*(v4 + 96) & 4) != 0)
+  else if ((*(equalCopy + 96) & 4) != 0)
   {
     goto LABEL_33;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 96) & 1) == 0 || self->_doubleValue != *(v4 + 1))
+    if ((*(equalCopy + 96) & 1) == 0 || self->_doubleValue != *(equalCopy + 1))
     {
       goto LABEL_33;
     }
   }
 
-  else if (*(v4 + 96))
+  else if (*(equalCopy + 96))
   {
     goto LABEL_33;
   }
 
   dataValue = self->_dataValue;
-  if (dataValue | *(v4 + 5) && ![(NSData *)dataValue isEqual:?])
+  if (dataValue | *(equalCopy + 5) && ![(NSData *)dataValue isEqual:?])
   {
     goto LABEL_33;
   }
 
   uuidValue = self->_uuidValue;
-  if (uuidValue | *(v4 + 11))
+  if (uuidValue | *(equalCopy + 11))
   {
     if (![(ACProtobufUUID *)uuidValue isEqual:?])
     {
@@ -478,7 +478,7 @@ LABEL_33:
   }
 
   dateValue = self->_dateValue;
-  if (dateValue | *(v4 + 6))
+  if (dateValue | *(equalCopy + 6))
   {
     if (![(ACProtobufDate *)dateValue isEqual:?])
     {
@@ -487,7 +487,7 @@ LABEL_33:
   }
 
   urlValue = self->_urlValue;
-  if (urlValue | *(v4 + 10))
+  if (urlValue | *(equalCopy + 10))
   {
     if (![(ACProtobufURL *)urlValue isEqual:?])
     {
@@ -496,7 +496,7 @@ LABEL_33:
   }
 
   arrayValue = self->_arrayValue;
-  if (arrayValue | *(v4 + 4))
+  if (arrayValue | *(equalCopy + 4))
   {
     if (![(ACProtobufVariableValueList *)arrayValue isEqual:?])
     {
@@ -505,7 +505,7 @@ LABEL_33:
   }
 
   setValue = self->_setValue;
-  if (setValue | *(v4 + 8))
+  if (setValue | *(equalCopy + 8))
   {
     if (![(ACProtobufVariableValueList *)setValue isEqual:?])
     {
@@ -514,7 +514,7 @@ LABEL_33:
   }
 
   dictionaryValue = self->_dictionaryValue;
-  if (dictionaryValue | *(v4 + 7))
+  if (dictionaryValue | *(equalCopy + 7))
   {
     v14 = [(ACProtobufVariableValueDictionary *)dictionaryValue isEqual:?];
   }
@@ -601,22 +601,22 @@ LABEL_11:
   return v15 ^ v17 ^ [(ACProtobufVariableValueDictionary *)self->_dictionaryValue hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v18 = v4;
-  if (*(v4 + 9))
+  fromCopy = from;
+  v18 = fromCopy;
+  if (*(fromCopy + 9))
   {
     [(ACProtobufVariableValue *)self setStringValue:?];
-    v4 = v18;
+    fromCopy = v18;
   }
 
-  v5 = *(v4 + 96);
+  v5 = *(fromCopy + 96);
   if ((v5 & 2) != 0)
   {
-    self->_integerValue = *(v4 + 2);
+    self->_integerValue = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v5 = *(v4 + 96);
+    v5 = *(fromCopy + 96);
     if ((v5 & 4) == 0)
     {
 LABEL_5:
@@ -629,29 +629,29 @@ LABEL_5:
     }
   }
 
-  else if ((*(v4 + 96) & 4) == 0)
+  else if ((*(fromCopy + 96) & 4) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_unsignedIntegerValue = *(v4 + 3);
+  self->_unsignedIntegerValue = *(fromCopy + 3);
   *&self->_has |= 4u;
-  if (*(v4 + 96))
+  if (*(fromCopy + 96))
   {
 LABEL_6:
-    self->_doubleValue = *(v4 + 1);
+    self->_doubleValue = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
 LABEL_7:
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(ACProtobufVariableValue *)self setDataValue:?];
-    v4 = v18;
+    fromCopy = v18;
   }
 
   uuidValue = self->_uuidValue;
-  v7 = *(v4 + 11);
+  v7 = *(fromCopy + 11);
   if (uuidValue)
   {
     if (!v7)
@@ -672,10 +672,10 @@ LABEL_7:
     [(ACProtobufVariableValue *)self setUuidValue:?];
   }
 
-  v4 = v18;
+  fromCopy = v18;
 LABEL_18:
   dateValue = self->_dateValue;
-  v9 = *(v4 + 6);
+  v9 = *(fromCopy + 6);
   if (dateValue)
   {
     if (!v9)
@@ -696,10 +696,10 @@ LABEL_18:
     [(ACProtobufVariableValue *)self setDateValue:?];
   }
 
-  v4 = v18;
+  fromCopy = v18;
 LABEL_24:
   urlValue = self->_urlValue;
-  v11 = *(v4 + 10);
+  v11 = *(fromCopy + 10);
   if (urlValue)
   {
     if (!v11)
@@ -720,10 +720,10 @@ LABEL_24:
     [(ACProtobufVariableValue *)self setUrlValue:?];
   }
 
-  v4 = v18;
+  fromCopy = v18;
 LABEL_30:
   arrayValue = self->_arrayValue;
-  v13 = *(v4 + 4);
+  v13 = *(fromCopy + 4);
   if (arrayValue)
   {
     if (!v13)
@@ -744,10 +744,10 @@ LABEL_30:
     [(ACProtobufVariableValue *)self setArrayValue:?];
   }
 
-  v4 = v18;
+  fromCopy = v18;
 LABEL_36:
   setValue = self->_setValue;
-  v15 = *(v4 + 8);
+  v15 = *(fromCopy + 8);
   if (setValue)
   {
     if (!v15)
@@ -768,10 +768,10 @@ LABEL_36:
     [(ACProtobufVariableValue *)self setSetValue:?];
   }
 
-  v4 = v18;
+  fromCopy = v18;
 LABEL_42:
   dictionaryValue = self->_dictionaryValue;
-  v17 = *(v4 + 7);
+  v17 = *(fromCopy + 7);
   if (dictionaryValue)
   {
     if (v17)
@@ -788,12 +788,12 @@ LABEL_42:
   MEMORY[0x1EEE66BB8]();
 }
 
-- (ACProtobufVariableValue)initWithObjectValue:(id)a3
+- (ACProtobufVariableValue)initWithObjectValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v5 = [(ACProtobufVariableValue *)self init];
   v6 = v5;
-  if (v5 && [(ACProtobufVariableValue *)v5 _setObject:v4])
+  if (v5 && [(ACProtobufVariableValue *)v5 _setObject:valueCopy])
   {
     v7 = v6;
   }
@@ -806,47 +806,47 @@ LABEL_42:
   return v7;
 }
 
-- (BOOL)_setObject:(id)a3
+- (BOOL)_setObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      Type = CFNumberGetType(v4);
+      Type = CFNumberGetType(objectCopy);
       if (Type <= kCFNumberCGFloatType)
       {
         if (((1 << Type) & 0x13060) != 0)
         {
-          [(__CFNumber *)v4 doubleValue];
+          [(__CFNumber *)objectCopy doubleValue];
           [(ACProtobufVariableValue *)self setDoubleValue:?];
           goto LABEL_28;
         }
 
         if (Type == kCFNumberCFIndexType)
         {
-          [(ACProtobufVariableValue *)self setUnsignedIntegerValue:[(__CFNumber *)v4 unsignedLongLongValue]];
+          [(ACProtobufVariableValue *)self setUnsignedIntegerValue:[(__CFNumber *)objectCopy unsignedLongLongValue]];
           goto LABEL_28;
         }
       }
 
-      [(ACProtobufVariableValue *)self setIntegerValue:[(__CFNumber *)v4 longLongValue]];
+      [(ACProtobufVariableValue *)self setIntegerValue:[(__CFNumber *)objectCopy longLongValue]];
       goto LABEL_28;
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(ACProtobufVariableValue *)self setDataValue:v4];
+      [(ACProtobufVariableValue *)self setDataValue:objectCopy];
       goto LABEL_28;
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [[ACProtobufDate alloc] initWithDate:v4];
+      v6 = [[ACProtobufDate alloc] initWithDate:objectCopy];
       [(ACProtobufVariableValue *)self setDateValue:v6];
     }
 
@@ -855,7 +855,7 @@ LABEL_42:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v6 = [[ACProtobufUUID alloc] initWithUUID:v4];
+        v6 = [[ACProtobufUUID alloc] initWithUUID:objectCopy];
         [(ACProtobufVariableValue *)self setUuidValue:v6];
       }
 
@@ -867,7 +867,7 @@ LABEL_42:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v7 = [[ACProtobufVariableValueList alloc] initWithSet:v4];
+            v7 = [[ACProtobufVariableValueList alloc] initWithSet:objectCopy];
             if (v7)
             {
               v6 = v7;
@@ -881,7 +881,7 @@ LABEL_42:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v8 = [[ACProtobufVariableValueList alloc] initWithArray:v4];
+              v8 = [[ACProtobufVariableValueList alloc] initWithArray:objectCopy];
               if (v8)
               {
                 v6 = v8;
@@ -895,7 +895,7 @@ LABEL_42:
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v9 = [[ACProtobufVariableValueDictionary alloc] initWithDictionary:v4];
+                v9 = [[ACProtobufVariableValueDictionary alloc] initWithDictionary:objectCopy];
                 if (v9)
                 {
                   v6 = v9;
@@ -910,7 +910,7 @@ LABEL_42:
           goto LABEL_29;
         }
 
-        v6 = [[ACProtobufURL alloc] initWithURL:v4];
+        v6 = [[ACProtobufURL alloc] initWithURL:objectCopy];
         [(ACProtobufVariableValue *)self setUrlValue:v6];
       }
     }
@@ -920,7 +920,7 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  [(ACProtobufVariableValue *)self setStringValue:v4];
+  [(ACProtobufVariableValue *)self setStringValue:objectCopy];
 LABEL_28:
   v10 = 1;
 LABEL_29:
@@ -932,21 +932,21 @@ LABEL_29:
 {
   if ([(ACProtobufVariableValue *)self hasStringValue])
   {
-    v3 = [(ACProtobufVariableValue *)self stringValue];
+    stringValue = [(ACProtobufVariableValue *)self stringValue];
 LABEL_11:
-    v5 = v3;
+    v5 = stringValue;
     goto LABEL_12;
   }
 
   if ([(ACProtobufVariableValue *)self hasIntegerValue])
   {
-    v3 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[ACProtobufVariableValue integerValue](self, "integerValue")}];
+    stringValue = [MEMORY[0x1E696AD98] numberWithLongLong:{-[ACProtobufVariableValue integerValue](self, "integerValue")}];
     goto LABEL_11;
   }
 
   if ([(ACProtobufVariableValue *)self hasUnsignedIntegerValue])
   {
-    v3 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[ACProtobufVariableValue unsignedIntegerValue](self, "unsignedIntegerValue")}];
+    stringValue = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[ACProtobufVariableValue unsignedIntegerValue](self, "unsignedIntegerValue")}];
     goto LABEL_11;
   }
 
@@ -954,58 +954,58 @@ LABEL_11:
   {
     v4 = MEMORY[0x1E696AD98];
     [(ACProtobufVariableValue *)self doubleValue];
-    v3 = [v4 numberWithDouble:?];
+    stringValue = [v4 numberWithDouble:?];
     goto LABEL_11;
   }
 
   if ([(ACProtobufVariableValue *)self hasDataValue])
   {
-    v3 = [(ACProtobufVariableValue *)self dataValue];
+    stringValue = [(ACProtobufVariableValue *)self dataValue];
     goto LABEL_11;
   }
 
   if ([(ACProtobufVariableValue *)self hasUuidValue])
   {
-    v7 = [(ACProtobufVariableValue *)self uuidValue];
-    v8 = [v7 uuid];
+    uuidValue = [(ACProtobufVariableValue *)self uuidValue];
+    uuid = [uuidValue uuid];
 LABEL_27:
-    v5 = v8;
+    v5 = uuid;
 
     goto LABEL_12;
   }
 
   if ([(ACProtobufVariableValue *)self hasUrlValue])
   {
-    v7 = [(ACProtobufVariableValue *)self urlValue];
-    v8 = [v7 url];
+    uuidValue = [(ACProtobufVariableValue *)self urlValue];
+    uuid = [uuidValue url];
     goto LABEL_27;
   }
 
   if ([(ACProtobufVariableValue *)self hasDateValue])
   {
-    v7 = [(ACProtobufVariableValue *)self dateValue];
-    v8 = [v7 date];
+    uuidValue = [(ACProtobufVariableValue *)self dateValue];
+    uuid = [uuidValue date];
     goto LABEL_27;
   }
 
   if ([(ACProtobufVariableValue *)self hasArrayValue])
   {
-    v7 = [(ACProtobufVariableValue *)self arrayValue];
-    v8 = [v7 array];
+    uuidValue = [(ACProtobufVariableValue *)self arrayValue];
+    uuid = [uuidValue array];
     goto LABEL_27;
   }
 
   if ([(ACProtobufVariableValue *)self hasSetValue])
   {
-    v7 = [(ACProtobufVariableValue *)self setValue];
-    v8 = [v7 set];
+    uuidValue = [(ACProtobufVariableValue *)self setValue];
+    uuid = [uuidValue set];
     goto LABEL_27;
   }
 
   if ([(ACProtobufVariableValue *)self hasDictionaryValue])
   {
-    v7 = [(ACProtobufVariableValue *)self dictionaryValue];
-    v8 = [v7 dictionary];
+    uuidValue = [(ACProtobufVariableValue *)self dictionaryValue];
+    uuid = [uuidValue dictionary];
     goto LABEL_27;
   }
 

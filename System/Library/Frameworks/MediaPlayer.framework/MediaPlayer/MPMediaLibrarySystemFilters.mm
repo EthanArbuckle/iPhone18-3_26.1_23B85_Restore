@@ -1,9 +1,9 @@
 @interface MPMediaLibrarySystemFilters
 + (NSMutableDictionary)systemFiltersPerLibrary;
 + (OS_dispatch_queue)globalSerialQueue;
-+ (id)filtersForLibrary:(id)a3;
++ (id)filtersForLibrary:(id)library;
 - (BOOL)shouldExcludePurchaseHistoryContent;
-- (id)_initWithLibrary:(id)a3;
+- (id)_initWithLibrary:(id)library;
 - (void)_updateFilters;
 @end
 
@@ -16,10 +16,10 @@
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  v3 = [(MPMediaLibraryView *)self->_libraryView library];
-  v4 = [v3 sagaOnDiskDatabaseRevision];
+  library = [(MPMediaLibraryView *)self->_libraryView library];
+  sagaOnDiskDatabaseRevision = [library sagaOnDiskDatabaseRevision];
 
-  if (v4)
+  if (sagaOnDiskDatabaseRevision)
   {
     v5 = MEMORY[0x1A58E1100]();
     *&v15 = mlcore::ItemPropertyRemoteLocationID(v5);
@@ -31,13 +31,13 @@
   v6 = os_log_create("com.apple.amp.mediaplayer", "Library");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(MPMediaLibraryView *)self->_libraryView library];
-    v8 = [v7 uniqueIdentifier];
+    library2 = [(MPMediaLibraryView *)self->_libraryView library];
+    uniqueIdentifier = [library2 uniqueIdentifier];
     shouldExcludePurchaseHistoryContent = self->_shouldExcludePurchaseHistoryContent;
     *buf = 134218754;
-    v17 = self;
+    selfCopy = self;
     v18 = 2112;
-    v19 = v8;
+    v19 = uniqueIdentifier;
     v20 = 1024;
     v21 = 0;
     v22 = 1024;
@@ -72,39 +72,39 @@ void __45__MPMediaLibrarySystemFilters__updateFilters__block_invoke(uint64_t a1,
 
 - (BOOL)shouldExcludePurchaseHistoryContent
 {
-  v3 = [(MPMediaLibraryView *)self->_libraryView library];
-  v4 = [v3 isHomeSharingLibrary];
+  library = [(MPMediaLibraryView *)self->_libraryView library];
+  isHomeSharingLibrary = [library isHomeSharingLibrary];
 
-  return (v4 & 1) == 0 && self->_shouldExcludePurchaseHistoryContent;
+  return (isHomeSharingLibrary & 1) == 0 && self->_shouldExcludePurchaseHistoryContent;
 }
 
-- (id)_initWithLibrary:(id)a3
+- (id)_initWithLibrary:(id)library
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  libraryCopy = library;
   v13.receiver = self;
   v13.super_class = MPMediaLibrarySystemFilters;
   v5 = [(MPMediaLibrarySystemFilters *)&v13 init];
   if (v5)
   {
-    v6 = [[MPMediaLibraryView alloc] initWithLibrary:v4 filteringOptions:0];
+    v6 = [[MPMediaLibraryView alloc] initWithLibrary:libraryCopy filteringOptions:0];
     libraryView = v5->_libraryView;
     v5->_libraryView = v6;
 
     v8 = os_log_create("com.apple.amp.mediaplayer", "Library");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(MPMediaLibraryView *)v5->_libraryView library];
-      v10 = [v9 uniqueIdentifier];
+      library = [(MPMediaLibraryView *)v5->_libraryView library];
+      uniqueIdentifier = [library uniqueIdentifier];
       *buf = 134218242;
       v15 = v5;
       v16 = 2112;
-      v17 = v10;
+      v17 = uniqueIdentifier;
       _os_log_impl(&dword_1A238D000, v8, OS_LOG_TYPE_DEFAULT, "MPMediaLibrarySystemFilters %p - Init with library: %@", buf, 0x16u);
     }
 
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 addObserver:v5 selector:sel__cloudLibraryAvailabilityDidChange_ name:@"MPMediaLibraryCloudLibraryAvailabilityDidChangeNotification" object:v4];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel__cloudLibraryAvailabilityDidChange_ name:@"MPMediaLibraryCloudLibraryAvailabilityDidChangeNotification" object:libraryCopy];
 
     [(MPMediaLibrarySystemFilters *)v5 _updateFilters];
   }
@@ -112,26 +112,26 @@ void __45__MPMediaLibrarySystemFilters__updateFilters__block_invoke(uint64_t a1,
   return v5;
 }
 
-+ (id)filtersForLibrary:(id)a3
++ (id)filtersForLibrary:(id)library
 {
-  v5 = a3;
+  libraryCopy = library;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = __Block_byref_object_copy__8890;
   v19 = __Block_byref_object_dispose__8891;
   v20 = 0;
-  v6 = [a1 globalSerialQueue];
+  globalSerialQueue = [self globalSerialQueue];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __49__MPMediaLibrarySystemFilters_filtersForLibrary___block_invoke;
   v10[3] = &unk_1E76799F8;
-  v13 = a1;
+  selfCopy = self;
   v14 = a2;
-  v11 = v5;
+  v11 = libraryCopy;
   v12 = &v15;
-  v7 = v5;
-  dispatch_sync(v6, v10);
+  v7 = libraryCopy;
+  dispatch_sync(globalSerialQueue, v10);
 
   v8 = v16[5];
   _Block_object_dispose(&v15, 8);
@@ -188,7 +188,7 @@ void __54__MPMediaLibrarySystemFilters_systemFiltersPerLibrary__block_invoke()
   block[1] = 3221225472;
   block[2] = __48__MPMediaLibrarySystemFilters_globalSerialQueue__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[MPMediaLibrarySystemFilters globalSerialQueue]::onceToken != -1)
   {
     dispatch_once(&+[MPMediaLibrarySystemFilters globalSerialQueue]::onceToken, block);

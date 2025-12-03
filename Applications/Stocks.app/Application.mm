@@ -1,7 +1,7 @@
 @interface Application
 - (_TtC9StocksApp11Application)init;
 - (id)_extendLaunchTest;
-- (void)sendEvent:(id)a3;
+- (void)sendEvent:(id)event;
 @end
 
 @implementation Application
@@ -26,13 +26,13 @@
   return v2;
 }
 
-- (void)sendEvent:(id)a3
+- (void)sendEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = swift_getObjectType();
-  v4 = a3;
+  eventCopy = event;
   v5 = v8.receiver;
-  [(Application *)&v8 sendEvent:v4];
+  [(Application *)&v8 sendEvent:eventCopy];
   v6 = v5 + OBJC_IVAR____TtC9StocksApp11Application_keyboardInputMonitor;
   swift_beginAccess();
   if (*(v6 + 24))

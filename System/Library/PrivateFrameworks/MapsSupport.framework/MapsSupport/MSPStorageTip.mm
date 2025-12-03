@@ -1,21 +1,21 @@
 @interface MSPStorageTip
-- (MSPStorageTip)initWithTitle:(id)a3 message:(id)a4 expectedSize:(int64_t)a5 enablementAction:(id)a6;
-- (void)enableWithCompletionHandler:(id)a3;
+- (MSPStorageTip)initWithTitle:(id)title message:(id)message expectedSize:(int64_t)size enablementAction:(id)action;
+- (void)enableWithCompletionHandler:(id)handler;
 @end
 
 @implementation MSPStorageTip
 
-- (void)enableWithCompletionHandler:(id)a3
+- (void)enableWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   global_queue = geo_get_global_queue();
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__MSPStorageTip_enableWithCompletionHandler___block_invoke;
   v7[3] = &unk_279868010;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(global_queue, v7);
 }
 
@@ -44,26 +44,26 @@ void __45__MSPStorageTip_enableWithCompletionHandler___block_invoke_2(uint64_t a
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
-- (MSPStorageTip)initWithTitle:(id)a3 message:(id)a4 expectedSize:(int64_t)a5 enablementAction:(id)a6
+- (MSPStorageTip)initWithTitle:(id)title message:(id)message expectedSize:(int64_t)size enablementAction:(id)action
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  titleCopy = title;
+  messageCopy = message;
+  actionCopy = action;
   v22.receiver = self;
   v22.super_class = MSPStorageTip;
   v13 = [(MSPStorageTip *)&v22 init];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [titleCopy copy];
     title = v13->_title;
     v13->_title = v14;
 
-    v16 = [v11 copy];
+    v16 = [messageCopy copy];
     message = v13->_message;
     v13->_message = v16;
 
-    v13->_expectedSize = a5;
-    v18 = [v12 copy];
+    v13->_expectedSize = size;
+    v18 = [actionCopy copy];
     enablementAction = v13->_enablementAction;
     v13->_enablementAction = v18;
 

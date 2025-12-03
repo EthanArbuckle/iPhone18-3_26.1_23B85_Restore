@@ -1,9 +1,9 @@
 @interface ZonesAccumulator
 - (BOOL)disabledForSession;
-- (_TtC11WorkoutCore16ZonesAccumulator)initWithBuilder:(id)a3;
-- (void)accumulatorDidStartWithStartDate:(id)a3 handler:(id)a4;
+- (_TtC11WorkoutCore16ZonesAccumulator)initWithBuilder:(id)builder;
+- (void)accumulatorDidStartWithStartDate:(id)date handler:(id)handler;
 - (void)accumulatorDidStop;
-- (void)setDisabledForSession:(BOOL)a3;
+- (void)setDisabledForSession:(BOOL)session;
 - (void)workoutBuilderDidCollectEvent;
 @end
 
@@ -16,9 +16,9 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setDisabledForSession:(BOOL)a3
+- (void)setDisabledForSession:(BOOL)session
 {
-  v3 = a3;
+  sessionCopy = session;
   v5 = type metadata accessor for Date();
   v6 = *(v5 - 8);
   v7 = *(v6 + 64);
@@ -27,11 +27,11 @@
   v10 = OBJC_IVAR____TtC11WorkoutCore16ZonesAccumulator_disabledForSession;
   swift_beginAccess();
   v11 = *(&self->super.super.super.isa + v10);
-  *(&self->super.super.super.isa + v10) = v3;
-  if (v11 != v3)
+  *(&self->super.super.super.isa + v10) = sessionCopy;
+  if (v11 != sessionCopy)
   {
-    v12 = self;
-    if (v3)
+    selfCopy = self;
+    if (sessionCopy)
     {
       ZonesAccumulator.stopQuery()();
     }
@@ -46,14 +46,14 @@
   }
 }
 
-- (void)accumulatorDidStartWithStartDate:(id)a3 handler:(id)a4
+- (void)accumulatorDidStartWithStartDate:(id)date handler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation4DateVSgMd, &_s10Foundation4DateVSgMR);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v16 - v9;
-  v11 = _Block_copy(a4);
-  if (a3)
+  v11 = _Block_copy(handler);
+  if (date)
   {
     static Date._unconditionallyBridgeFromObjectiveC(_:)();
     v12 = type metadata accessor for Date();
@@ -77,7 +77,7 @@
     v14 = 0;
   }
 
-  v15 = self;
+  selfCopy = self;
   specialized ZonesAccumulator.accumulatorDidStart(withStart:handler:)(v10);
   outlined consume of (@escaping @callee_guaranteed () -> ())?(v14);
 
@@ -94,7 +94,7 @@
   (*(*(v7 - 8) + 56))(v6, 1, 1, v7);
   v8 = OBJC_IVAR____TtC11WorkoutCore16ZonesAccumulator_activityStartDate;
   swift_beginAccess();
-  v9 = self;
+  selfCopy = self;
   outlined assign with take of Date?(v6, self + v8);
   swift_endAccess();
   ZonesAccumulator.stopQuery()();
@@ -102,11 +102,11 @@
 
 - (void)workoutBuilderDidCollectEvent
 {
-  v2 = self;
+  selfCopy = self;
   ZonesAccumulator.workoutBuilderDidCollectEvent()();
 }
 
-- (_TtC11WorkoutCore16ZonesAccumulator)initWithBuilder:(id)a3
+- (_TtC11WorkoutCore16ZonesAccumulator)initWithBuilder:(id)builder
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,32 +1,32 @@
 @interface SNSoundPrintAEmbeddingModelInput
-- (SNSoundPrintAEmbeddingModelInput)initWithAudioSamples:(id)a3;
-- (id)featureValueForName:(id)a3;
+- (SNSoundPrintAEmbeddingModelInput)initWithAudioSamples:(id)samples;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation SNSoundPrintAEmbeddingModelInput
 
-- (SNSoundPrintAEmbeddingModelInput)initWithAudioSamples:(id)a3
+- (SNSoundPrintAEmbeddingModelInput)initWithAudioSamples:(id)samples
 {
-  v5 = a3;
+  samplesCopy = samples;
   v9.receiver = self;
   v9.super_class = SNSoundPrintAEmbeddingModelInput;
   v6 = [(SNSoundPrintAEmbeddingModelInput *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_audioSamples, a3);
+    objc_storeStrong(&v6->_audioSamples, samples);
   }
 
   return v7;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  if ([a3 isEqualToString:@"audioSamples"])
+  if ([name isEqualToString:@"audioSamples"])
   {
     v4 = MEMORY[0x1E695FE60];
-    v5 = [(SNSoundPrintAEmbeddingModelInput *)self audioSamples];
-    v6 = [v4 featureValueWithMultiArray:v5];
+    audioSamples = [(SNSoundPrintAEmbeddingModelInput *)self audioSamples];
+    v6 = [v4 featureValueWithMultiArray:audioSamples];
   }
 
   else

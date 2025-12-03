@@ -1,21 +1,21 @@
 @interface ICPBDGSFinishDelegationRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (uint64_t)addPlayerDelegateInfoToken:(uint64_t)a1;
-- (void)writeTo:(id)a3;
+- (uint64_t)addPlayerDelegateInfoToken:(uint64_t)token;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ICPBDGSFinishDelegationRequest
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     playerDelegateInfoTokens = self->_playerDelegateInfoTokens;
-    if (playerDelegateInfoTokens | v4[1])
+    if (playerDelegateInfoTokens | equalCopy[1])
     {
       v6 = [(NSMutableArray *)playerDelegateInfoTokens isEqual:?];
     }
@@ -34,10 +34,10 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -58,7 +58,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:{a3, v13}];
+        v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:{zone, v13}];
         [(ICPBDGSFinishDelegationRequest *)v5 addPlayerDelegateInfoToken:v11];
 
         ++v10;
@@ -74,21 +74,21 @@
   return v5;
 }
 
-- (uint64_t)addPlayerDelegateInfoToken:(uint64_t)a1
+- (uint64_t)addPlayerDelegateInfoToken:(uint64_t)token
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (token)
   {
-    v5 = *(a1 + 8);
+    v5 = *(token + 8);
     v9 = v4;
     if (!v5)
     {
       v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v7 = *(a1 + 8);
-      *(a1 + 8) = v6;
+      v7 = *(token + 8);
+      *(token + 8) = v6;
 
-      v5 = *(a1 + 8);
+      v5 = *(token + 8);
     }
 
     v3 = [v5 addObject:v9];
@@ -98,10 +98,10 @@
   return MEMORY[0x1EEE66BB8](v3, v4);
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -137,7 +137,7 @@
 - (id)dictionaryRepresentation
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSMutableArray *)self->_playerDelegateInfoTokens count])
   {
     v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_playerDelegateInfoTokens, "count")}];
@@ -160,8 +160,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v12 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v12 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -170,10 +170,10 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"playerDelegateInfoToken"];
+    [dictionary setObject:v4 forKey:@"playerDelegateInfoToken"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -182,8 +182,8 @@
   v8.receiver = self;
   v8.super_class = ICPBDGSFinishDelegationRequest;
   v4 = [(ICPBDGSFinishDelegationRequest *)&v8 description];
-  v5 = [(ICPBDGSFinishDelegationRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ICPBDGSFinishDelegationRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

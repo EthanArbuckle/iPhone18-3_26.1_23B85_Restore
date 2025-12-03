@@ -1,9 +1,9 @@
 @interface LPIconMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (LPIconMetadata)init;
-- (LPIconMetadata)initWithCoder:(id)a3;
-- (id)_initWithURL:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (LPIconMetadata)initWithCoder:(id)coder;
+- (id)_initWithURL:(id)l;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LPIconMetadata
@@ -23,34 +23,34 @@
   return v3;
 }
 
-- (id)_initWithURL:(id)a3
+- (id)_initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v6 = [(LPIconMetadata *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_URL, a3);
+    objc_storeStrong(&v6->_URL, l);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (LPIconMetadata)initWithCoder:(id)a3
+- (LPIconMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = LPIconMetadata;
   v5 = [(LPIconMetadata *)&v12 init];
   if (v5)
   {
-    v5->_version = [v4 decodeInt32ForKey:@"version"];
-    v6 = decodeURLForKey(v4, @"URL");
+    v5->_version = [coderCopy decodeInt32ForKey:@"version"];
+    v6 = decodeURLForKey(coderCopy, @"URL");
     URL = v5->_URL;
     v5->_URL = v6;
 
-    v8 = decodeStringForKey(v4, @"accessibilityText");
+    v8 = decodeStringForKey(coderCopy, @"accessibilityText");
     accessibilityText = v5->_accessibilityText;
     v5->_accessibilityText = v8;
 
@@ -60,20 +60,20 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt32:self->_version forKey:@"version"];
-  [v4 _lp_encodeURLIfNotNilOrLocalFile:self->_URL forKey:@"URL"];
-  [v4 _lp_encodeStringIfNotNil:self->_accessibilityText forKey:@"accessibilityText"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:self->_version forKey:@"version"];
+  [coderCopy _lp_encodeURLIfNotNilOrLocalFile:self->_URL forKey:@"URL"];
+  [coderCopy _lp_encodeStringIfNotNil:self->_accessibilityText forKey:@"accessibilityText"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v9.receiver = self;
   v9.super_class = LPIconMetadata;
-  if ([(LPIconMetadata *)&v9 isEqual:v4])
+  if ([(LPIconMetadata *)&v9 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -83,7 +83,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = equalCopy;
       v7 = v6;
       if (*(v6 + 2) == self->_version && (objectsAreEqual_0(v6[2], self->_URL) & 1) != 0)
       {

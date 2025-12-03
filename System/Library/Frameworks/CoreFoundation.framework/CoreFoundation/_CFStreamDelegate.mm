@@ -1,12 +1,12 @@
 @interface _CFStreamDelegate
-- (_CFStreamDelegate)initWithStreamEvents:(unint64_t)a3 callback:(void *)a4 context:(id *)a5;
+- (_CFStreamDelegate)initWithStreamEvents:(unint64_t)events callback:(void *)callback context:(id *)context;
 - (void)dealloc;
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4;
+- (void)stream:(id)stream handleEvent:(unint64_t)event;
 @end
 
 @implementation _CFStreamDelegate
 
-- (_CFStreamDelegate)initWithStreamEvents:(unint64_t)a3 callback:(void *)a4 context:(id *)a5
+- (_CFStreamDelegate)initWithStreamEvents:(unint64_t)events callback:(void *)callback context:(id *)context
 {
   v16 = *MEMORY[0x1E69E9840];
   v15.receiver = self;
@@ -15,11 +15,11 @@
   v9 = v8;
   if (v8)
   {
-    v8->_flags = a3;
-    v8->_cb._rcb = a4;
-    v10 = *&a5->var0;
-    v11 = *&a5->var2;
-    v8->_client.copyDescription = a5->var4;
+    v8->_flags = events;
+    v8->_cb._rcb = callback;
+    v10 = *&context->var0;
+    v11 = *&context->var2;
+    v8->_client.copyDescription = context->var4;
     *&v8->_client.version = v10;
     *&v8->_client.retain = v11;
     retain = v8->_client.retain;
@@ -55,11 +55,11 @@
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4
+- (void)stream:(id)stream handleEvent:(unint64_t)event
 {
-  if ((self->_flags & a4) != 0)
+  if ((self->_flags & event) != 0)
   {
-    (self->_cb._rcb)(a3, a4, self->_client.info);
+    (self->_cb._rcb)(stream, event, self->_client.info);
   }
 }
 

@@ -1,23 +1,23 @@
 @interface ACCMemUsageStat
-- (ACCMemUsageStat)initWithName:(id)a3;
+- (ACCMemUsageStat)initWithName:(id)name;
 - (BOOL)update;
-- (double)timeIntervalSinceMark:(id)a3;
+- (double)timeIntervalSinceMark:(id)mark;
 - (id)description;
-- (void)mark:(id)a3;
+- (void)mark:(id)mark;
 @end
 
 @implementation ACCMemUsageStat
 
-- (ACCMemUsageStat)initWithName:(id)a3
+- (ACCMemUsageStat)initWithName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = ACCMemUsageStat;
   v6 = [(ACCMemUsageStat *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_name, a3);
+    objc_storeStrong(&v6->_name, name);
     v8 = [[ACCMemUsageStatInfo alloc] initWithName:&stru_10022D360];
     statInfo = v7->_statInfo;
     v7->_statInfo = v8;
@@ -60,8 +60,8 @@
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v4 = [(NSMutableDictionary *)self->_markList allValues];
-    v5 = [v4 countByEnumeratingWithState:&v10 objects:v17 count:16];
+    allValues = [(NSMutableDictionary *)self->_markList allValues];
+    v5 = [allValues countByEnumeratingWithState:&v10 objects:v17 count:16];
     if (v5)
     {
       v6 = v5;
@@ -72,13 +72,13 @@
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allValues);
           }
 
           [*(*(&v10 + 1) + 8 * i) updateResident:v16 virtualValue:v15 physFootprintValue:v14];
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v10 objects:v17 count:16];
+        v6 = [allValues countByEnumeratingWithState:&v10 objects:v17 count:16];
       }
 
       while (v6);
@@ -88,28 +88,28 @@
   return MemoryUse;
 }
 
-- (void)mark:(id)a3
+- (void)mark:(id)mark
 {
-  v7 = a3;
+  markCopy = mark;
   v4 = [(NSMutableDictionary *)self->_markList objectForKey:?];
   if (!v4)
   {
     v5 = [ACCMemUsageStatInfo alloc];
-    v6 = [NSString stringWithFormat:@"%@-mark-%@", self->_name, v7];
-    v4 = [(ACCMemUsageStatInfo *)v5 initWithName:v6 andInfo:self->_statInfo];
+    markCopy = [NSString stringWithFormat:@"%@-mark-%@", self->_name, markCopy];
+    v4 = [(ACCMemUsageStatInfo *)v5 initWithName:markCopy andInfo:self->_statInfo];
 
-    [(NSMutableDictionary *)self->_markList setObject:v4 forKey:v7];
+    [(NSMutableDictionary *)self->_markList setObject:v4 forKey:markCopy];
   }
 }
 
-- (double)timeIntervalSinceMark:(id)a3
+- (double)timeIntervalSinceMark:(id)mark
 {
-  v3 = [(NSMutableDictionary *)self->_markList objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_markList objectForKey:mark];
   if (v3)
   {
     v4 = +[NSDate date];
-    v5 = [v3 startTime];
-    [v4 timeIntervalSinceDate:v5];
+    startTime = [v3 startTime];
+    [v4 timeIntervalSinceDate:startTime];
     v7 = v6;
   }
 

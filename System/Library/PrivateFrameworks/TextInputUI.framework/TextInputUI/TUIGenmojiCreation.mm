@@ -1,31 +1,31 @@
 @interface TUIGenmojiCreation
 + (BOOL)isGenmojiCreationAvailable;
-+ (void)showGenmojiCreationForResponder:(id)a3;
++ (void)showGenmojiCreationForResponder:(id)responder;
 @end
 
 @implementation TUIGenmojiCreation
 
-+ (void)showGenmojiCreationForResponder:(id)a3
++ (void)showGenmojiCreationForResponder:(id)responder
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  responderCopy = responder;
+  v4 = responderCopy;
+  if (!responderCopy)
   {
-    v9 = TUIGenmojiCreationLog();
-    if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    defaultCenter = TUIGenmojiCreationLog();
+    if (!os_log_type_enabled(defaultCenter, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_15;
     }
 
     LOWORD(v14) = 0;
     v10 = "Cannot show Genmoji creation for a nil responder.";
-    v11 = v9;
+    v11 = defaultCenter;
     v12 = 2;
     goto LABEL_17;
   }
 
-  if (([v3 isFirstResponder] & 1) == 0)
+  if (([responderCopy isFirstResponder] & 1) == 0)
   {
     if ([v4 canBecomeFirstResponder])
     {
@@ -46,8 +46,8 @@
       }
     }
 
-    v9 = TUIGenmojiCreationLog();
-    if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    defaultCenter = TUIGenmojiCreationLog();
+    if (!os_log_type_enabled(defaultCenter, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_15;
     }
@@ -55,7 +55,7 @@
     v14 = 138412290;
     v15 = v4;
     v10 = "Trying to show Genmoji creation for responder:%@ but it failed to become, or cannot become, first responder.";
-    v11 = v9;
+    v11 = defaultCenter;
     v12 = 12;
 LABEL_17:
     _os_log_error_impl(&dword_18FFDC000, v11, OS_LOG_TYPE_ERROR, v10, &v14, v12);
@@ -63,26 +63,26 @@ LABEL_17:
   }
 
 LABEL_3:
-  v5 = [MEMORY[0x1E69DCBF0] sharedInputModeController];
-  v6 = [v5 currentInputMode];
-  v7 = [v6 isEmojiInputMode];
+  mEMORY[0x1E69DCBF0] = [MEMORY[0x1E69DCBF0] sharedInputModeController];
+  currentInputMode = [mEMORY[0x1E69DCBF0] currentInputMode];
+  isEmojiInputMode = [currentInputMode isEmojiInputMode];
 
-  if ((v7 & 1) == 0)
+  if ((isEmojiInputMode & 1) == 0)
   {
-    v8 = [MEMORY[0x1E69DCBE0] activeInstance];
-    [v8 setInputMode:*MEMORY[0x1E69DDFB8] userInitiated:1];
+    activeInstance = [MEMORY[0x1E69DCBE0] activeInstance];
+    [activeInstance setInputMode:*MEMORY[0x1E69DDFB8] userInitiated:1];
   }
 
-  v9 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v9 postNotificationName:@"TUIShowGenmojiCreationNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"TUIShowGenmojiCreationNotification" object:0];
 LABEL_15:
 }
 
 + (BOOL)isGenmojiCreationAvailable
 {
   v15 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  [currentDevice userInterfaceIdiom];
 
   v3 = _os_feature_enabled_impl();
   v4 = +[TUIGenerativeModelsAvailability isAvailable];

@@ -1,35 +1,35 @@
 @interface PKFlightSharingMessageExtensionViewProperties
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToFlightSharingMessageExtensionViewProperties:(id)a3;
-- (PKFlightSharingMessageExtensionViewProperties)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToFlightSharingMessageExtensionViewProperties:(id)properties;
+- (PKFlightSharingMessageExtensionViewProperties)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKFlightSharingMessageExtensionViewProperties
 
-- (PKFlightSharingMessageExtensionViewProperties)initWithCoder:(id)a3
+- (PKFlightSharingMessageExtensionViewProperties)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = PKFlightSharingMessageExtensionViewProperties;
-  v5 = [(PKSharingMessageExtensionViewProperties *)&v15 initWithCoder:v4];
+  v5 = [(PKSharingMessageExtensionViewProperties *)&v15 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"flight"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"flight"];
     flight = v5->_flight;
     v5->_flight = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"logoImage"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"logoImage"];
     logoImage = v5->_logoImage;
     v5->_logoImage = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"foregroundColor"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"foregroundColor"];
     foregroundColor = v5->_foregroundColor;
     v5->_foregroundColor = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"backgroundColor"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"backgroundColor"];
     backgroundColor = v5->_backgroundColor;
     v5->_backgroundColor = v12;
   }
@@ -37,16 +37,16 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKFlightSharingMessageExtensionViewProperties;
-  v4 = a3;
-  [(PKSharingMessageExtensionViewProperties *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_flight forKey:{@"flight", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_logoImage forKey:@"logoImage"];
-  [v4 encodeObject:self->_foregroundColor forKey:@"foregroundColor"];
-  [v4 encodeObject:self->_backgroundColor forKey:@"backgroundColor"];
+  coderCopy = coder;
+  [(PKSharingMessageExtensionViewProperties *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_flight forKey:{@"flight", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_logoImage forKey:@"logoImage"];
+  [coderCopy encodeObject:self->_foregroundColor forKey:@"foregroundColor"];
+  [coderCopy encodeObject:self->_backgroundColor forKey:@"backgroundColor"];
 }
 
 - (id)description
@@ -65,11 +65,11 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = v3;
+  array = [MEMORY[0x1E695DF70] array];
+  v4 = array;
   if (self->_flight)
   {
-    [v3 addObject:?];
+    [array addObject:?];
   }
 
   if (self->_logoImage)
@@ -92,27 +92,27 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKFlightSharingMessageExtensionViewProperties *)self isEqualToFlightSharingMessageExtensionViewProperties:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKFlightSharingMessageExtensionViewProperties *)self isEqualToFlightSharingMessageExtensionViewProperties:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToFlightSharingMessageExtensionViewProperties:(id)a3
+- (BOOL)isEqualToFlightSharingMessageExtensionViewProperties:(id)properties
 {
-  v3 = a3;
-  if (v3 && PKEqualObjects() && PKEqualObjects() && PKEqualObjects())
+  propertiesCopy = properties;
+  if (propertiesCopy && PKEqualObjects() && PKEqualObjects() && PKEqualObjects())
   {
     v4 = PKEqualObjects();
   }

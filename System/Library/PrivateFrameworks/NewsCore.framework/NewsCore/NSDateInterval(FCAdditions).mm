@@ -106,14 +106,14 @@ LABEL_8:
 - (id)fc_unionWithDateInterval:()FCAdditions
 {
   v4 = a3;
-  v5 = [a1 startDate];
-  v6 = [v4 startDate];
-  v7 = [v5 earlierDate:v6];
+  startDate = [self startDate];
+  startDate2 = [v4 startDate];
+  v7 = [startDate earlierDate:startDate2];
 
-  v8 = [a1 endDate];
-  v9 = [v4 endDate];
+  endDate = [self endDate];
+  endDate2 = [v4 endDate];
 
-  v10 = [v8 laterDate:v9];
+  v10 = [endDate laterDate:endDate2];
 
   v11 = [objc_alloc(MEMORY[0x1E696AB80]) initWithStartDate:v7 endDate:v10];
 

@@ -1,25 +1,25 @@
 @interface PKAccountClosedViewController
-- (PKAccountClosedViewController)initWithAccount:(id)a3 accountUserCollection:(id)a4 familyMemberCollection:(id)a5 context:(int64_t)a6;
-- (void)explanationViewDidSelectBodyButton:(id)a3;
+- (PKAccountClosedViewController)initWithAccount:(id)account accountUserCollection:(id)collection familyMemberCollection:(id)memberCollection context:(int64_t)context;
+- (void)explanationViewDidSelectBodyButton:(id)button;
 - (void)viewDidLoad;
 @end
 
 @implementation PKAccountClosedViewController
 
-- (PKAccountClosedViewController)initWithAccount:(id)a3 accountUserCollection:(id)a4 familyMemberCollection:(id)a5 context:(int64_t)a6
+- (PKAccountClosedViewController)initWithAccount:(id)account accountUserCollection:(id)collection familyMemberCollection:(id)memberCollection context:(int64_t)context
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  accountCopy = account;
+  collectionCopy = collection;
+  memberCollectionCopy = memberCollection;
   v17.receiver = self;
   v17.super_class = PKAccountClosedViewController;
-  v14 = [(PKExplanationViewController *)&v17 initWithContext:a6];
+  v14 = [(PKExplanationViewController *)&v17 initWithContext:context];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_account, a3);
-    objc_storeStrong(&v15->_accountUserCollection, a4);
-    objc_storeStrong(&v15->_familyMemberCollection, a5);
+    objc_storeStrong(&v14->_account, account);
+    objc_storeStrong(&v15->_accountUserCollection, collection);
+    objc_storeStrong(&v15->_familyMemberCollection, memberCollection);
   }
 
   return v15;
@@ -30,34 +30,34 @@
   v18.receiver = self;
   v18.super_class = PKAccountClosedViewController;
   [(PKExplanationViewController *)&v18 viewDidLoad];
-  v3 = [(PKExplanationViewController *)self explanationView];
-  [v3 setShowPrivacyView:0];
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  [explanationView setShowPrivacyView:0];
   v4 = PKLocalizedFeatureString();
-  [v3 setTitleText:v4];
+  [explanationView setTitleText:v4];
 
-  v5 = [(PKAccountUserCollection *)self->_accountUserCollection coOwnerAccountUser];
+  coOwnerAccountUser = [(PKAccountUserCollection *)self->_accountUserCollection coOwnerAccountUser];
   familyMemberCollection = self->_familyMemberCollection;
-  v7 = [v5 altDSID];
-  v8 = [(PKFamilyMemberCollection *)familyMemberCollection familyMemberForAltDSID:v7];
+  altDSID = [coOwnerAccountUser altDSID];
+  v8 = [(PKFamilyMemberCollection *)familyMemberCollection familyMemberForAltDSID:altDSID];
 
   v9 = MEMORY[0x1E69B8740];
-  v10 = [v5 nameComponents];
-  v11 = [v9 contactForFamilyMember:v8 nameComponents:v10 imageData:0];
+  nameComponents = [coOwnerAccountUser nameComponents];
+  v11 = [v9 contactForFamilyMember:v8 nameComponents:nameComponents imageData:0];
 
-  v17 = [v11 givenName];
+  givenName = [v11 givenName];
   v12 = PKLocalizedFeatureString();
 
-  [v3 setBodyText:{v12, v17}];
+  [explanationView setBodyText:{v12, givenName}];
   v13 = PKLocalizedFeatureString();
-  [v3 setBodyButtonText:v13];
+  [explanationView setBodyButtonText:v13];
 
-  v14 = [v3 dockView];
-  v15 = [v14 primaryButton];
+  dockView = [explanationView dockView];
+  primaryButton = [dockView primaryButton];
   v16 = PKLocalizedFeatureString();
-  [v15 setTitle:v16 forState:0];
+  [primaryButton setTitle:v16 forState:0];
 }
 
-- (void)explanationViewDidSelectBodyButton:(id)a3
+- (void)explanationViewDidSelectBodyButton:(id)button
 {
   v7 = [[PKPaymentMoreInformationViewController alloc] initWithContext:[(PKExplanationViewController *)self context]];
   v4 = PKLocalizedFeatureString();

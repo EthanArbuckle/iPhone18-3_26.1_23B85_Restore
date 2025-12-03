@@ -1,11 +1,11 @@
 @interface PBBProtoSendBuysOnWatchCredentials
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PBBProtoSendBuysOnWatchCredentials
@@ -16,20 +16,20 @@
   v8.receiver = self;
   v8.super_class = PBBProtoSendBuysOnWatchCredentials;
   v4 = [(PBBProtoSendBuysOnWatchCredentials *)&v8 description];
-  v5 = [(PBBProtoSendBuysOnWatchCredentials *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PBBProtoSendBuysOnWatchCredentials *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   username = self->_username;
   if (username)
   {
-    [v3 setObject:username forKey:@"username"];
+    [dictionary setObject:username forKey:@"username"];
   }
 
   password = self->_password;
@@ -41,61 +41,61 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_username)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_password)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_username)
   {
-    [v4 setUsername:?];
-    v4 = v5;
+    [toCopy setUsername:?];
+    toCopy = v5;
   }
 
   if (self->_password)
   {
     [v5 setPassword:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_username copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_username copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(NSString *)self->_password copyWithZone:a3];
+  v8 = [(NSString *)self->_password copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((username = self->_username, !(username | v4[2])) || -[NSString isEqual:](username, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((username = self->_username, !(username | equalCopy[2])) || -[NSString isEqual:](username, "isEqual:")))
   {
     password = self->_password;
-    if (password | v4[1])
+    if (password | equalCopy[1])
     {
       v7 = [(NSString *)password isEqual:?];
     }
@@ -114,20 +114,20 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[2])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[2])
   {
     [(PBBProtoSendBuysOnWatchCredentials *)self setUsername:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[1])
+  if (fromCopy[1])
   {
     [(PBBProtoSendBuysOnWatchCredentials *)self setPassword:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

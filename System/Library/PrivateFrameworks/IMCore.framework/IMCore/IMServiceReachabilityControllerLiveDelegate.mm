@@ -1,14 +1,14 @@
 @interface IMServiceReachabilityControllerLiveDelegate
 - (NSArray)serviceNamesForSending;
-- (id)preconditionsForServiceName:(id)a3;
-- (id)preferredAccountIDForServiceName:(id)a3;
-- (int64_t)sortOrderForServiceName:(id)a3;
-- (void)calculateReachabilityWithRequest:(id)a3 responseHandler:(id)a4;
+- (id)preconditionsForServiceName:(id)name;
+- (id)preferredAccountIDForServiceName:(id)name;
+- (int64_t)sortOrderForServiceName:(id)name;
+- (void)calculateReachabilityWithRequest:(id)request responseHandler:(id)handler;
 @end
 
 @implementation IMServiceReachabilityControllerLiveDelegate
 
-- (id)preconditionsForServiceName:(id)a3
+- (id)preconditionsForServiceName:(id)name
 {
   sub_1A84E5DBC();
 
@@ -20,7 +20,7 @@
   return v3;
 }
 
-- (id)preferredAccountIDForServiceName:(id)a3
+- (id)preferredAccountIDForServiceName:(id)name
 {
   sub_1A84E5DBC();
 
@@ -40,32 +40,32 @@
   return v5;
 }
 
-- (void)calculateReachabilityWithRequest:(id)a3 responseHandler:(id)a4
+- (void)calculateReachabilityWithRequest:(id)request responseHandler:(id)handler
 {
   v6 = objc_opt_self();
-  v7 = a3;
+  requestCopy = request;
   swift_unknownObjectRetain();
-  v8 = [v6 sharedController];
-  v9 = [v8 remoteDaemon];
+  sharedController = [v6 sharedController];
+  remoteDaemon = [sharedController remoteDaemon];
 
-  [v9 calculateReachabilityWithRequest:v7 responseHandler:a4];
+  [remoteDaemon calculateReachabilityWithRequest:requestCopy responseHandler:handler];
   swift_unknownObjectRelease();
 
   swift_unknownObjectRelease();
 }
 
-- (int64_t)sortOrderForServiceName:(id)a3
+- (int64_t)sortOrderForServiceName:(id)name
 {
-  v3 = [objc_opt_self() serviceWithInternalName_];
-  if (!v3)
+  serviceWithInternalName_ = [objc_opt_self() serviceWithInternalName_];
+  if (!serviceWithInternalName_)
   {
     return -1;
   }
 
-  v4 = v3;
-  v5 = [v3 serviceForSendingPriority];
+  v4 = serviceWithInternalName_;
+  serviceForSendingPriority = [serviceWithInternalName_ serviceForSendingPriority];
 
-  return v5;
+  return serviceForSendingPriority;
 }
 
 - (NSArray)serviceNamesForSending

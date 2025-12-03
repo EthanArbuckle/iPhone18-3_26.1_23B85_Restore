@@ -1,18 +1,18 @@
 @interface CRGlobalContextObjC
-+ (id)newObjCReplicaFor:(id)a3;
++ (id)newObjCReplicaFor:(id)for;
 + (id)objCRenames;
-+ (id)renameObjCSequence:(id)a3 after:(int64_t)a4 in:(id)a5;
++ (id)renameObjCSequence:(id)sequence after:(int64_t)after in:(id)in;
 + (int64_t)renameGeneration;
-+ (void)releaseObjCSequence:(id)a3;
-+ (void)retainObjCSequence:(id)a3;
-+ (void)retainOrReleaseWithInitial:(id)a3 current:(id)a4 forReplica:(id)a5;
-+ (void)retainOrReleaseWithInitial:(id)a3 current:(id)a4 forReplica:(id)a5 copyingFrom:(id)a6;
++ (void)releaseObjCSequence:(id)sequence;
++ (void)retainObjCSequence:(id)sequence;
++ (void)retainOrReleaseWithInitial:(id)initial current:(id)current forReplica:(id)replica;
++ (void)retainOrReleaseWithInitial:(id)initial current:(id)current forReplica:(id)replica copyingFrom:(id)from;
 - (_TtC9Coherence19CRGlobalContextObjC)init;
 @end
 
 @implementation CRGlobalContextObjC
 
-+ (id)newObjCReplicaFor:(id)a3
++ (id)newObjCReplicaFor:(id)for
 {
   v3 = sub_1AE23BFEC();
   v4 = *(v3 - 8);
@@ -49,10 +49,10 @@
   return v8;
 }
 
-+ (void)releaseObjCSequence:(id)a3
++ (void)releaseObjCSequence:(id)sequence
 {
-  v3 = a3;
-  sub_1ADE42A7C(v3, sub_1ADF8DC64);
+  sequenceCopy = sequence;
+  sub_1ADE42A7C(sequenceCopy, sub_1ADF8DC64);
 }
 
 + (int64_t)renameGeneration
@@ -67,36 +67,36 @@
   return v4;
 }
 
-+ (id)renameObjCSequence:(id)a3 after:(int64_t)a4 in:(id)a5
++ (id)renameObjCSequence:(id)sequence after:(int64_t)after in:(id)in
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = sub_1ADE419F0(v7, a4);
+  sequenceCopy = sequence;
+  inCopy = in;
+  v9 = sub_1ADE419F0(sequenceCopy, after);
 
   return v9;
 }
 
-+ (void)retainOrReleaseWithInitial:(id)a3 current:(id)a4 forReplica:(id)a5
++ (void)retainOrReleaseWithInitial:(id)initial current:(id)current forReplica:(id)replica
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  sub_1ADE41BE4(v7, v8, v9);
+  initialCopy = initial;
+  currentCopy = current;
+  replicaCopy = replica;
+  sub_1ADE41BE4(initialCopy, currentCopy, replicaCopy);
 }
 
-+ (void)retainOrReleaseWithInitial:(id)a3 current:(id)a4 forReplica:(id)a5 copyingFrom:(id)a6
++ (void)retainOrReleaseWithInitial:(id)initial current:(id)current forReplica:(id)replica copyingFrom:(id)from
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  sub_1ADE422E4(v9, v10, v11, v12);
+  initialCopy = initial;
+  currentCopy = current;
+  replicaCopy = replica;
+  fromCopy = from;
+  sub_1ADE422E4(initialCopy, currentCopy, replicaCopy, fromCopy);
 }
 
-+ (void)retainObjCSequence:(id)a3
++ (void)retainObjCSequence:(id)sequence
 {
-  v3 = a3;
-  sub_1ADE42A7C(v3, sub_1ADF8D99C);
+  sequenceCopy = sequence;
+  sub_1ADE42A7C(sequenceCopy, sub_1ADF8D99C);
 }
 
 - (_TtC9Coherence19CRGlobalContextObjC)init

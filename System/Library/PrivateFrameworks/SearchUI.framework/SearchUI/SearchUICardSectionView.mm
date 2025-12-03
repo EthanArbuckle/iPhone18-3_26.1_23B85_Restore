@@ -1,22 +1,22 @@
 @interface SearchUICardSectionView
-+ (BOOL)fillsBackgroundWithContentForRowModel:(id)a3;
-+ (UIEdgeInsets)separatorInsetsForStyle:(int)a3 cellView:(id)a4 leadingView:(id)a5 leadingTextView:(id)a6;
-- (BOOL)configureUserReportButton:(id)a3;
++ (BOOL)fillsBackgroundWithContentForRowModel:(id)model;
++ (UIEdgeInsets)separatorInsetsForStyle:(int)style cellView:(id)view leadingView:(id)leadingView leadingTextView:(id)textView;
+- (BOOL)configureUserReportButton:(id)button;
 - (NSString)description;
 - (SFCardSection)section;
-- (SearchUICardSectionView)initWithRowModel:(id)a3 feedbackDelegate:(id)a4;
+- (SearchUICardSectionView)initWithRowModel:(id)model feedbackDelegate:(id)delegate;
 - (SearchUIFeedbackDelegate)feedbackDelegate;
 - (double)highlightFrameCornerRadius;
-- (double)trailingMarginForAccessory:(id)a3;
-- (void)containerView:(id)a3 willMeasureArrangedSubviewsFittingSize:(CGSize)a4 forReason:(int64_t)a5;
-- (void)didInvalidateSizeAnimate:(BOOL)a3;
-- (void)openPunchout:(id)a3 triggerEvent:(unint64_t)a4;
+- (double)trailingMarginForAccessory:(id)accessory;
+- (void)containerView:(id)view willMeasureArrangedSubviewsFittingSize:(CGSize)size forReason:(int64_t)reason;
+- (void)didInvalidateSizeAnimate:(BOOL)animate;
+- (void)openPunchout:(id)punchout triggerEvent:(unint64_t)event;
 - (void)requestRemovalFromEnclosingView;
-- (void)setFeedbackDelegate:(id)a3;
-- (void)setRowModel:(id)a3;
-- (void)setShouldShowTabIndicator:(BOOL)a3;
-- (void)updateChevronVisible:(BOOL)a3 leaveSpaceForChevron:(BOOL)a4;
-- (void)updateWithRowModel:(id)a3;
+- (void)setFeedbackDelegate:(id)delegate;
+- (void)setRowModel:(id)model;
+- (void)setShouldShowTabIndicator:(BOOL)indicator;
+- (void)updateChevronVisible:(BOOL)visible leaveSpaceForChevron:(BOOL)chevron;
+- (void)updateWithRowModel:(id)model;
 @end
 
 @implementation SearchUICardSectionView
@@ -28,23 +28,23 @@
   return WeakRetained;
 }
 
-+ (BOOL)fillsBackgroundWithContentForRowModel:(id)a3
++ (BOOL)fillsBackgroundWithContentForRowModel:(id)model
 {
-  v3 = [a3 backgroundColor];
-  v4 = v3 != 0;
+  backgroundColor = [model backgroundColor];
+  v4 = backgroundColor != 0;
 
   return v4;
 }
 
-+ (UIEdgeInsets)separatorInsetsForStyle:(int)a3 cellView:(id)a4 leadingView:(id)a5 leadingTextView:(id)a6
++ (UIEdgeInsets)separatorInsetsForStyle:(int)style cellView:(id)view leadingView:(id)leadingView leadingTextView:(id)textView
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  viewCopy = view;
+  leadingViewCopy = leadingView;
+  textViewCopy = textView;
   v12 = *MEMORY[0x1E69DDCE0];
   v13 = *(MEMORY[0x1E69DDCE0] + 16);
   v14 = *(MEMORY[0x1E69DDCE0] + 24);
-  if (a3 == 5)
+  if (style == 5)
   {
     MinX = *(MEMORY[0x1E69DDCE0] + 8);
   }
@@ -53,28 +53,28 @@
   {
     +[SearchUIUtilities standardTableCellContentInset];
     MinX = v16;
-    if (a3 == 4)
+    if (style == 4)
     {
       v14 = v16;
     }
 
-    if (a3 != 3 && a3 != 4 || (v17 = v11) == 0)
+    if (style != 3 && style != 4 || (v17 = textViewCopy) == 0)
     {
-      v17 = v10;
+      v17 = leadingViewCopy;
     }
 
     v18 = v17;
     [v18 bounds];
-    [v18 convertRect:v9 toView:?];
+    [v18 convertRect:viewCopy toView:?];
     v20 = v19;
     v22 = v21;
     v24 = v23;
     v26 = v25;
 
-    v27 = [MEMORY[0x1E69D91A8] isLTR];
+    isLTR = [MEMORY[0x1E69D91A8] isLTR];
     if (v18)
     {
-      if (v27)
+      if (isLTR)
       {
         v33.origin.x = v20;
         v33.origin.y = v22;
@@ -85,7 +85,7 @@
 
       else
       {
-        [v9 bounds];
+        [viewCopy bounds];
         MaxX = CGRectGetMaxX(v34);
         v35.origin.x = v20;
         v35.origin.y = v22;
@@ -107,33 +107,33 @@
   return result;
 }
 
-- (SearchUICardSectionView)initWithRowModel:(id)a3 feedbackDelegate:(id)a4
+- (SearchUICardSectionView)initWithRowModel:(id)model feedbackDelegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  modelCopy = model;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = SearchUICardSectionView;
   v8 = [(NUIContainerStackView *)&v14 initWithArrangedSubviews:0];
   v9 = v8;
   if (v8)
   {
-    [(SearchUICardSectionView *)v8 setRowModel:v6];
-    [(SearchUICardSectionView *)v9 setFeedbackDelegate:v7];
+    [(SearchUICardSectionView *)v8 setRowModel:modelCopy];
+    [(SearchUICardSectionView *)v9 setFeedbackDelegate:delegateCopy];
     [(NUIContainerStackView *)v9 setAlignment:3];
     [(NUIContainerStackView *)v9 setDistribution:0];
     [(SearchUICardSectionView *)v9 setLayoutMarginsRelativeArrangement:1];
-    v10 = [(SearchUICardSectionView *)v9 setupContentView];
-    [(SearchUICardSectionView *)v9 setContentView:v10];
+    setupContentView = [(SearchUICardSectionView *)v9 setupContentView];
+    [(SearchUICardSectionView *)v9 setContentView:setupContentView];
 
-    v11 = [(SearchUICardSectionView *)v9 contentView];
+    contentView = [(SearchUICardSectionView *)v9 contentView];
 
-    if (v11)
+    if (contentView)
     {
-      v12 = [(SearchUICardSectionView *)v9 contentView];
-      [(SearchUICardSectionView *)v9 addArrangedSubview:v12];
+      contentView2 = [(SearchUICardSectionView *)v9 contentView];
+      [(SearchUICardSectionView *)v9 addArrangedSubview:contentView2];
     }
 
-    [(SearchUICardSectionView *)v9 updateWithRowModel:v6];
+    [(SearchUICardSectionView *)v9 updateWithRowModel:modelCopy];
     [(SearchUICardSectionView *)v9 updateChevronVisible:0 leaveSpaceForChevron:0];
     [(SearchUICardSectionView *)v9 setDelegate:v9];
     [MEMORY[0x1E69D9248] makeContainerShadowCompatible:v9];
@@ -142,33 +142,33 @@
   return v9;
 }
 
-- (void)containerView:(id)a3 willMeasureArrangedSubviewsFittingSize:(CGSize)a4 forReason:(int64_t)a5
+- (void)containerView:(id)view willMeasureArrangedSubviewsFittingSize:(CGSize)size forReason:(int64_t)reason
 {
-  if (a3 == self)
+  if (view == self)
   {
-    v7 = [MEMORY[0x1E69D91A8] widthIsCompact:{a4.width, a4.height}];
+    v7 = [MEMORY[0x1E69D91A8] widthIsCompact:{size.width, size.height}];
 
     [(SearchUICardSectionView *)self setIsCompactWidth:v7];
   }
 }
 
-- (void)updateChevronVisible:(BOOL)a3 leaveSpaceForChevron:(BOOL)a4
+- (void)updateChevronVisible:(BOOL)visible leaveSpaceForChevron:(BOOL)chevron
 {
-  v4 = a4;
-  v5 = a3;
+  chevronCopy = chevron;
+  visibleCopy = visible;
   v7 = *MEMORY[0x1E69DDCE0];
   v8 = *(MEMORY[0x1E69DDCE0] + 8);
   v9 = *(MEMORY[0x1E69DDCE0] + 16);
   v10 = *(MEMORY[0x1E69DDCE0] + 24);
-  v11 = [(SearchUICardSectionView *)self contentView];
+  contentView = [(SearchUICardSectionView *)self contentView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v13 = [(SearchUICardSectionView *)self contentView];
-  v14 = v13;
+  contentView2 = [(SearchUICardSectionView *)self contentView];
+  contentView3 = contentView2;
   if (isKindOfClass)
   {
-    [v13 layoutMargins];
+    [contentView2 layoutMargins];
   }
 
   else
@@ -185,8 +185,8 @@
       goto LABEL_6;
     }
 
-    v14 = [(SearchUICardSectionView *)self contentView];
-    [v14 effectiveLayoutMargins];
+    contentView3 = [(SearchUICardSectionView *)self contentView];
+    [contentView3 effectiveLayoutMargins];
   }
 
   v23 = v15;
@@ -196,16 +196,16 @@
 
 LABEL_6:
   [(NUIContainerStackView *)self setSpacing:10.0 - v20];
-  v24 = !v5 && !v4;
-  v25 = [(SearchUICardSectionView *)self chevronView];
-  [v25 setHidden:v24];
+  v24 = !visibleCopy && !chevronCopy;
+  chevronView = [(SearchUICardSectionView *)self chevronView];
+  [chevronView setHidden:v24];
 
   v26 = 0.0;
   if (!v24)
   {
-    v27 = [(SearchUICardSectionView *)self chevronView];
+    chevronView2 = [(SearchUICardSectionView *)self chevronView];
 
-    if (!v27)
+    if (!chevronView2)
     {
       v28 = +[SearchUISymbolImage chevronImage];
       v29 = [SearchUIImageView imageViewWithImage:v28];
@@ -216,29 +216,29 @@ LABEL_6:
       [(SearchUICardSectionView *)self addArrangedSubview:v29];
     }
 
-    v30 = v5;
-    v31 = [(SearchUICardSectionView *)self chevronView];
-    [v31 setAlpha:v30];
+    v30 = visibleCopy;
+    chevronView3 = [(SearchUICardSectionView *)self chevronView];
+    [chevronView3 setAlpha:v30];
 
-    v32 = [(SearchUICardSectionView *)self chevronView];
-    [(SearchUICardSectionView *)self trailingMarginForAccessory:v32];
+    chevronView4 = [(SearchUICardSectionView *)self chevronView];
+    [(SearchUICardSectionView *)self trailingMarginForAccessory:chevronView4];
     v26 = v33;
   }
 
-  v34 = [MEMORY[0x1E69D91A8] isLTR];
+  isLTR = [MEMORY[0x1E69D91A8] isLTR];
   if (_UISolariumEnabled())
   {
-    v35 = [(SearchUICardSectionView *)self rowModel];
-    v36 = [v35 adjustMarginsForConcentricity];
+    rowModel = [(SearchUICardSectionView *)self rowModel];
+    adjustMarginsForConcentricity = [rowModel adjustMarginsForConcentricity];
 
-    if (v36)
+    if (adjustMarginsForConcentricity)
     {
       v9 = v22 - v21;
       v7 = v22 - v23;
     }
   }
 
-  if (v34)
+  if (isLTR)
   {
     v37 = v8;
   }
@@ -248,7 +248,7 @@ LABEL_6:
     v37 = v26;
   }
 
-  if (v34)
+  if (isLTR)
   {
     v38 = v26;
   }
@@ -261,14 +261,14 @@ LABEL_6:
   [(SearchUICardSectionView *)self setLayoutMargins:v7, v37, v9, v38];
 }
 
-- (double)trailingMarginForAccessory:(id)a3
+- (double)trailingMarginForAccessory:(id)accessory
 {
-  [a3 intrinsicContentSize];
+  [accessory intrinsicContentSize];
   v5 = v4;
   +[SearchUIUtilities imageAccessoryAdditionalCompactHorizontalMargin];
   v7 = v6;
-  v8 = [(SearchUICardSectionView *)self rowModel];
-  v9 = [(SearchUICardSectionView *)self rowModel];
+  rowModel = [(SearchUICardSectionView *)self rowModel];
+  rowModel2 = [(SearchUICardSectionView *)self rowModel];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -279,9 +279,9 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v10 = [v8 useCompactVersionOfUI];
+  useCompactVersionOfUI = [rowModel useCompactVersionOfUI];
 
-  if (!v10 || ([MEMORY[0x1E69D9240] isMacOS] & 1) != 0)
+  if (!useCompactVersionOfUI || ([MEMORY[0x1E69D9240] isMacOS] & 1) != 0)
   {
     goto LABEL_6;
   }
@@ -295,45 +295,45 @@ LABEL_7:
 
 - (SFCardSection)section
 {
-  v2 = [(SearchUICardSectionView *)self rowModel];
-  v3 = [v2 cardSection];
+  rowModel = [(SearchUICardSectionView *)self rowModel];
+  cardSection = [rowModel cardSection];
 
-  return v3;
+  return cardSection;
 }
 
-- (void)updateWithRowModel:(id)a3
+- (void)updateWithRowModel:(id)model
 {
-  [(SearchUICardSectionView *)self setRowModel:a3];
+  [(SearchUICardSectionView *)self setRowModel:model];
 
   [(SearchUICardSectionView *)self setUserReportMenu:0];
 }
 
-- (void)openPunchout:(id)a3 triggerEvent:(unint64_t)a4
+- (void)openPunchout:(id)punchout triggerEvent:(unint64_t)event
 {
-  v6 = a3;
+  punchoutCopy = punchout;
   v12 = objc_opt_new();
-  [v12 setPunchout:v6];
+  [v12 setPunchout:punchoutCopy];
 
   v7 = objc_opt_new();
   [v7 setCommand:v12];
-  v8 = [(SearchUICardSectionView *)self rowModel];
-  v9 = [(SearchUICardSectionView *)self feedbackDelegate];
-  v10 = [SearchUIUtilities environmentForDelegate:v9];
-  v11 = [SearchUICommandHandler handlerForButton:v7 rowModel:v8 environment:v10];
-  [v11 executeWithTriggerEvent:a4];
+  rowModel = [(SearchUICardSectionView *)self rowModel];
+  feedbackDelegate = [(SearchUICardSectionView *)self feedbackDelegate];
+  v10 = [SearchUIUtilities environmentForDelegate:feedbackDelegate];
+  v11 = [SearchUICommandHandler handlerForButton:v7 rowModel:rowModel environment:v10];
+  [v11 executeWithTriggerEvent:event];
 }
 
-- (void)didInvalidateSizeAnimate:(BOOL)a3
+- (void)didInvalidateSizeAnimate:(BOOL)animate
 {
-  v3 = a3;
-  v5 = [(SearchUICardSectionView *)self feedbackDelegate];
+  animateCopy = animate;
+  feedbackDelegate = [(SearchUICardSectionView *)self feedbackDelegate];
   v6 = objc_opt_respondsToSelector();
 
-  v7 = [(SearchUICardSectionView *)self feedbackDelegate];
-  v9 = v7;
+  feedbackDelegate2 = [(SearchUICardSectionView *)self feedbackDelegate];
+  feedbackDelegate3 = feedbackDelegate2;
   if (v6)
   {
-    [v7 cardSectionViewDidInvalidateSize:self animate:v3];
+    [feedbackDelegate2 cardSectionViewDidInvalidateSize:self animate:animateCopy];
   }
 
   else
@@ -345,68 +345,68 @@ LABEL_7:
       return;
     }
 
-    v9 = [(SearchUICardSectionView *)self feedbackDelegate];
-    [v9 cardSectionViewDidInvalidateSize:self];
+    feedbackDelegate3 = [(SearchUICardSectionView *)self feedbackDelegate];
+    [feedbackDelegate3 cardSectionViewDidInvalidateSize:self];
   }
 }
 
 - (void)requestRemovalFromEnclosingView
 {
-  v3 = [(SearchUICardSectionView *)self feedbackDelegate];
+  feedbackDelegate = [(SearchUICardSectionView *)self feedbackDelegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(SearchUICardSectionView *)self feedbackDelegate];
-    v6 = [(SearchUICardSectionView *)self rowModel];
-    [v5 removeRowModel:v6 completion:0];
+    feedbackDelegate2 = [(SearchUICardSectionView *)self feedbackDelegate];
+    rowModel = [(SearchUICardSectionView *)self rowModel];
+    [feedbackDelegate2 removeRowModel:rowModel completion:0];
   }
 
   [(SearchUICardSectionView *)self didInvalidateSizeAnimate:1];
 }
 
-- (BOOL)configureUserReportButton:(id)a3
+- (BOOL)configureUserReportButton:(id)button
 {
-  v4 = a3;
-  v5 = [(SearchUICardSectionView *)self userReportMenu];
+  buttonCopy = button;
+  userReportMenu = [(SearchUICardSectionView *)self userReportMenu];
 
-  if (!v5)
+  if (!userReportMenu)
   {
     v6 = objc_opt_new();
     v7 = objc_opt_new();
     [v6 setCommand:v7];
 
-    v8 = [(SearchUICardSectionView *)self feedbackDelegate];
-    v9 = [SearchUIUtilities environmentForDelegate:v8];
+    feedbackDelegate = [(SearchUICardSectionView *)self feedbackDelegate];
+    v9 = [SearchUIUtilities environmentForDelegate:feedbackDelegate];
 
-    if (v4)
+    if (buttonCopy)
     {
-      v10 = v4;
+      selfCopy = buttonCopy;
     }
 
     else
     {
-      v10 = self;
+      selfCopy = self;
     }
 
-    [v9 setSourceView:v10];
-    v11 = [(SearchUICardSectionView *)self rowModel];
-    v12 = [SearchUICommandHandler handlerForButton:v6 rowModel:v11 environment:v9];
+    [v9 setSourceView:selfCopy];
+    rowModel = [(SearchUICardSectionView *)self rowModel];
+    v12 = [SearchUICommandHandler handlerForButton:v6 rowModel:rowModel environment:v9];
 
     if ([v12 prefersContextMenu])
     {
-      v13 = [v12 contextMenu];
-      [(SearchUICardSectionView *)self setUserReportMenu:v13];
+      contextMenu = [v12 contextMenu];
+      [(SearchUICardSectionView *)self setUserReportMenu:contextMenu];
     }
   }
 
-  v14 = [(SearchUICardSectionView *)self userReportMenu];
-  v15 = [v14 children];
-  v16 = [v15 count];
+  userReportMenu2 = [(SearchUICardSectionView *)self userReportMenu];
+  children = [userReportMenu2 children];
+  v16 = [children count];
 
   if (v16)
   {
-    [(SearchUICardSectionView *)v4 setMenu:v14];
+    [(SearchUICardSectionView *)buttonCopy setMenu:userReportMenu2];
   }
 
   return v16 != 0;
@@ -414,76 +414,76 @@ LABEL_7:
 
 - (double)highlightFrameCornerRadius
 {
-  v3 = [(SearchUICardSectionView *)self highlightReferenceView];
+  highlightReferenceView = [(SearchUICardSectionView *)self highlightReferenceView];
 
-  if (!v3)
+  if (!highlightReferenceView)
   {
     return -1.0;
   }
 
-  v4 = [(SearchUICardSectionView *)self highlightReferenceView];
-  v5 = [v4 layer];
-  [v5 cornerRadius];
+  highlightReferenceView2 = [(SearchUICardSectionView *)self highlightReferenceView];
+  layer = [highlightReferenceView2 layer];
+  [layer cornerRadius];
   v7 = v6;
 
   return v7;
 }
 
-- (void)setShouldShowTabIndicator:(BOOL)a3
+- (void)setShouldShowTabIndicator:(BOOL)indicator
 {
-  if (self->_shouldShowTabIndicator != a3)
+  if (self->_shouldShowTabIndicator != indicator)
   {
-    v4 = a3;
-    self->_shouldShowTabIndicator = a3;
-    if (a3)
+    indicatorCopy = indicator;
+    self->_shouldShowTabIndicator = indicator;
+    if (indicator)
     {
-      v6 = [(SearchUICardSectionView *)self secondaryCommandView];
+      secondaryCommandView = [(SearchUICardSectionView *)self secondaryCommandView];
 
-      if (!v6)
+      if (!secondaryCommandView)
       {
         v7 = objc_opt_new();
         [(SearchUICardSectionView *)self setSecondaryCommandView:v7];
 
-        v8 = [(SearchUICardSectionView *)self feedbackDelegate];
-        v9 = [(SearchUICardSectionView *)self secondaryCommandView];
-        [v9 setFeedbackDelegate:v8];
+        feedbackDelegate = [(SearchUICardSectionView *)self feedbackDelegate];
+        secondaryCommandView2 = [(SearchUICardSectionView *)self secondaryCommandView];
+        [secondaryCommandView2 setFeedbackDelegate:feedbackDelegate];
 
-        v10 = [(SearchUICardSectionView *)self rowModel];
-        v11 = [(SearchUICardSectionView *)self secondaryCommandView];
-        [v11 setRowModel:v10];
+        rowModel = [(SearchUICardSectionView *)self rowModel];
+        secondaryCommandView3 = [(SearchUICardSectionView *)self secondaryCommandView];
+        [secondaryCommandView3 setRowModel:rowModel];
 
-        v12 = [(SearchUICardSectionView *)self secondaryCommandView];
-        [SearchUIAutoLayout requireIntrinsicSizeForView:v12];
+        secondaryCommandView4 = [(SearchUICardSectionView *)self secondaryCommandView];
+        [SearchUIAutoLayout requireIntrinsicSizeForView:secondaryCommandView4];
 
         +[SearchUIUtilities standardTableCellContentInset];
         v14 = -v13;
-        v15 = [(SearchUICardSectionView *)self secondaryCommandView];
-        [v15 setCustomAlignmentRectInsets:{0.0, 0.0, 0.0, v14}];
+        secondaryCommandView5 = [(SearchUICardSectionView *)self secondaryCommandView];
+        [secondaryCommandView5 setCustomAlignmentRectInsets:{0.0, 0.0, 0.0, v14}];
 
-        v16 = [(SearchUICardSectionView *)self secondaryCommandView];
-        [(SearchUICardSectionView *)self addArrangedSubview:v16];
+        secondaryCommandView6 = [(SearchUICardSectionView *)self secondaryCommandView];
+        [(SearchUICardSectionView *)self addArrangedSubview:secondaryCommandView6];
       }
     }
 
-    v17 = [(SearchUICardSectionView *)self secondaryCommandView];
-    [v17 setHidden:!v4];
+    secondaryCommandView7 = [(SearchUICardSectionView *)self secondaryCommandView];
+    [secondaryCommandView7 setHidden:!indicatorCopy];
   }
 }
 
-- (void)setFeedbackDelegate:(id)a3
+- (void)setFeedbackDelegate:(id)delegate
 {
-  v4 = a3;
-  objc_storeWeak(&self->_feedbackDelegate, v4);
-  v5 = [(SearchUICardSectionView *)self secondaryCommandView];
-  [v5 setFeedbackDelegate:v4];
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_feedbackDelegate, delegateCopy);
+  secondaryCommandView = [(SearchUICardSectionView *)self secondaryCommandView];
+  [secondaryCommandView setFeedbackDelegate:delegateCopy];
 }
 
-- (void)setRowModel:(id)a3
+- (void)setRowModel:(id)model
 {
-  objc_storeStrong(&self->_rowModel, a3);
-  v5 = [(SearchUICardSectionView *)self rowModel];
-  v4 = [(SearchUICardSectionView *)self secondaryCommandView];
-  [v4 setRowModel:v5];
+  objc_storeStrong(&self->_rowModel, model);
+  rowModel = [(SearchUICardSectionView *)self rowModel];
+  secondaryCommandView = [(SearchUICardSectionView *)self secondaryCommandView];
+  [secondaryCommandView setRowModel:rowModel];
 }
 
 - (NSString)description
@@ -494,8 +494,8 @@ LABEL_7:
   v4 = [(SearchUICardSectionView *)&v8 description];
   v5 = [v3 stringWithString:v4];
 
-  v6 = [(SearchUICardSectionView *)self section];
-  [v5 appendFormat:@"\t %@", v6];
+  section = [(SearchUICardSectionView *)self section];
+  [v5 appendFormat:@"\t %@", section];
 
   return v5;
 }

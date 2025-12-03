@@ -10,12 +10,12 @@
 
 - (id)_as_applicationBackgroundBlock
 {
-  v1 = objc_getAssociatedObject(a1, applicationBackgroundBlockKey);
+  v1 = objc_getAssociatedObject(self, applicationBackgroundBlockKey);
   v2 = v1;
   if (v1)
   {
-    v3 = [v1 block];
-    v4 = _Block_copy(v3);
+    block = [v1 block];
+    v4 = _Block_copy(block);
   }
 
   else
@@ -33,51 +33,51 @@
   v7 = v4;
   if (v4)
   {
-    v6 = [[ASBackgroundObserver alloc] initWithViewController:a1 block:v4];
-    objc_setAssociatedObject(a1, v5, v6, 1);
+    v6 = [[ASBackgroundObserver alloc] initWithViewController:self block:v4];
+    objc_setAssociatedObject(self, v5, v6, 1);
   }
 
   else
   {
-    objc_setAssociatedObject(a1, applicationBackgroundBlockKey, 0, 1);
+    objc_setAssociatedObject(self, applicationBackgroundBlockKey, 0, 1);
   }
 }
 
 - (id)_as_viewControllerToPresentFrom
 {
-  v1 = a1;
-  v2 = [v1 presentedViewController];
-  if (v2)
+  selfCopy = self;
+  presentedViewController = [selfCopy presentedViewController];
+  if (presentedViewController)
   {
     while (1)
     {
-      v3 = v2;
-      if ([v2 isBeingDismissed])
+      v3 = presentedViewController;
+      if ([presentedViewController isBeingDismissed])
       {
         break;
       }
 
-      v2 = [v3 presentedViewController];
-      v1 = v3;
-      if (!v2)
+      presentedViewController = [v3 presentedViewController];
+      selfCopy = v3;
+      if (!presentedViewController)
       {
-        v1 = v3;
+        selfCopy = v3;
         v3 = 0;
         break;
       }
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (id)_as_presentedViewControllerStackForPasswordManagerUpToClasses:()AuthenticationServicesExtras
 {
   v24 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 presentedViewController];
+  presentedViewController = [self presentedViewController];
 
-  if (v5)
+  if (presentedViewController)
   {
     v21 = 0u;
     v22 = 0u;
@@ -89,7 +89,7 @@
     {
       v8 = v7;
       v9 = *v20;
-      v10 = MEMORY[0x1E695E0F0];
+      array = MEMORY[0x1E695E0F0];
 LABEL_4:
       v11 = 0;
       while (1)
@@ -100,7 +100,7 @@ LABEL_4:
         }
 
         v12 = *(*(&v19 + 1) + 8 * v11);
-        v13 = [a1 presentedViewController];
+        presentedViewController2 = [self presentedViewController];
         LOBYTE(v12) = objc_opt_isKindOfClass();
 
         if (v12)
@@ -125,26 +125,26 @@ LABEL_4:
     {
 LABEL_10:
 
-      v10 = [MEMORY[0x1E695DF70] array];
-      v14 = [a1 presentedViewController];
-      [v10 addObject:v14];
+      array = [MEMORY[0x1E695DF70] array];
+      presentedViewController3 = [self presentedViewController];
+      [array addObject:presentedViewController3];
 
-      v15 = [a1 presentedViewController];
-      v16 = [v15 _as_presentedViewControllerStackForPasswordManagerUpToClasses:v6];
-      [v10 addObjectsFromArray:v16];
+      presentedViewController4 = [self presentedViewController];
+      v16 = [presentedViewController4 _as_presentedViewControllerStackForPasswordManagerUpToClasses:v6];
+      [array addObjectsFromArray:v16];
 
-      v6 = v15;
+      v6 = presentedViewController4;
     }
   }
 
   else
   {
-    v10 = MEMORY[0x1E695E0F0];
+    array = MEMORY[0x1E695E0F0];
   }
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return v10;
+  return array;
 }
 
 - (void)_as_restorePresentedViewControllerStackForPasswordManager:()AuthenticationServicesExtras
@@ -152,15 +152,15 @@ LABEL_10:
   v4 = a3;
   if ([v4 count])
   {
-    v5 = [v4 firstObject];
+    firstObject = [v4 firstObject];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __108__UIViewController_AuthenticationServicesExtras___as_restorePresentedViewControllerStackForPasswordManager___block_invoke;
     v7[3] = &unk_1E7AF76A8;
-    v8 = v5;
+    v8 = firstObject;
     v9 = v4;
-    v6 = v5;
-    [a1 presentViewController:v6 animated:0 completion:v7];
+    v6 = firstObject;
+    [self presentViewController:v6 animated:0 completion:v7];
   }
 }
 

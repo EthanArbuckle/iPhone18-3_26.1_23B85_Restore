@@ -1,6 +1,6 @@
 @interface AssetsMissingMetadataVC
-- (_TtC7Journal23AssetsMissingMetadataVC)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)controller:(id)a3 didChangeContentWithSnapshot:(id)a4;
+- (_TtC7Journal23AssetsMissingMetadataVC)initWithNibName:(id)name bundle:(id)bundle;
+- (void)controller:(id)controller didChangeContentWithSnapshot:(id)snapshot;
 - (void)viewDidLoad;
 @end
 
@@ -8,11 +8,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10068B0A8();
 }
 
-- (void)controller:(id)a3 didChangeContentWithSnapshot:(id)a4
+- (void)controller:(id)controller didChangeContentWithSnapshot:(id)snapshot
 {
   v6 = sub_1000F24EC(&unk_100AEC3B8);
   v7 = *(v6 - 8);
@@ -25,8 +25,8 @@
   v10 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC7Journal23AssetsMissingMetadataVC_dataSource);
   if (v10)
   {
-    v11 = a4;
-    v12 = self;
+    snapshotCopy = snapshot;
+    selfCopy = self;
     v13 = v10;
     dispatch thunk of UITableViewDiffableDataSource.apply(_:animatingDifferences:completion:)();
 
@@ -40,9 +40,9 @@
   }
 }
 
-- (_TtC7Journal23AssetsMissingMetadataVC)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7Journal23AssetsMissingMetadataVC)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -54,8 +54,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_10068C938(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_10068C938(v5, v7, bundle);
 }
 
 @end

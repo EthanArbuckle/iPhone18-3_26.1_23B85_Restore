@@ -1,25 +1,25 @@
 @interface NSData
-+ (id)tsp_dataWithContentsOfURL:(id)a3 decryptionKey:(id)a4;
-+ (id)tsp_dataWithTranscoder:(id)a3;
-+ (id)tsu_dataWithInputStream:(id)a3 error:(id *)a4;
-+ (id)tsu_decodeFromHexidecimalString:(id)a3;
-- (BOOL)tsp_writeToURL:(id)a3 encryptionKey:(id)a4;
-- (id)tsp_dataWithDecryptionKey:(id)a3;
-- (id)tsp_dataWithEncryptionKey:(id)a3;
-- (id)tsp_dispatchDataWithApplier:(id)a3;
++ (id)tsp_dataWithContentsOfURL:(id)l decryptionKey:(id)key;
++ (id)tsp_dataWithTranscoder:(id)transcoder;
++ (id)tsu_dataWithInputStream:(id)stream error:(id *)error;
++ (id)tsu_decodeFromHexidecimalString:(id)string;
+- (BOOL)tsp_writeToURL:(id)l encryptionKey:(id)key;
+- (id)tsp_dataWithDecryptionKey:(id)key;
+- (id)tsp_dataWithEncryptionKey:(id)key;
+- (id)tsp_dispatchDataWithApplier:(id)applier;
 - (id)tsu_encodeToHexidecimalString;
 - (id)tsu_md5Hash;
-- (void)tsp_splitDataWithMaxSize:(unint64_t)a3 subdataHandlerBlock:(id)a4;
-- (void)tsu_getMD5Hash:(char *)a3;
+- (void)tsp_splitDataWithMaxSize:(unint64_t)size subdataHandlerBlock:(id)block;
+- (void)tsu_getMD5Hash:(char *)hash;
 @end
 
 @implementation NSData
 
-- (BOOL)tsp_writeToURL:(id)a3 encryptionKey:(id)a4
+- (BOOL)tsp_writeToURL:(id)l encryptionKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[TSUFileIOChannel alloc] initForStreamWritingURL:v6 error:0];
+  lCopy = l;
+  keyCopy = key;
+  v8 = [[TSUFileIOChannel alloc] initForStreamWritingURL:lCopy error:0];
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -40,12 +40,12 @@
     if (v12)
     {
       v13 = [TSPCryptoComponentWriteChannel alloc];
-      v14 = [(TSPCryptoComponentWriteChannel *)v13 initWithWriteChannel:v12 encryptionInfo:v7, v18, v19, v20, v21];
+      v14 = [(TSPCryptoComponentWriteChannel *)v13 initWithWriteChannel:v12 encryptionInfo:keyCopy, v18, v19, v20, v21];
       *(v25 + 24) = v14 != 0;
       if (v14)
       {
-        v15 = [(NSData *)self tsp_dispatchData];
-        [(TSPCryptoComponentWriteChannel *)v14 writeData:v15];
+        tsp_dispatchData = [(NSData *)self tsp_dispatchData];
+        [(TSPCryptoComponentWriteChannel *)v14 writeData:tsp_dispatchData];
 
         dispatch_semaphore_wait(v11, 0xFFFFFFFFFFFFFFFFLL);
         [(TSPCryptoComponentWriteChannel *)v14 close];
@@ -67,16 +67,16 @@
   return v16 & 1;
 }
 
-+ (id)tsp_dataWithTranscoder:(id)a3
++ (id)tsp_dataWithTranscoder:(id)transcoder
 {
-  v3 = a3;
+  transcoderCopy = transcoder;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = sub_10004CF78;
   v14 = sub_10004CF88;
   v15 = 0;
-  if (v3)
+  if (transcoderCopy)
   {
     v4 = objc_alloc_init(NSMutableData);
     v5 = v11[5];
@@ -87,8 +87,8 @@
     v9[2] = sub_10004CF90;
     v9[3] = &unk_1001C93C8;
     v9[4] = &v10;
-    [v3 readWithHandlerAndWait:v9];
-    [v3 close];
+    [transcoderCopy readWithHandlerAndWait:v9];
+    [transcoderCopy close];
     v6 = v11[5];
   }
 
@@ -103,14 +103,14 @@
   return v7;
 }
 
-+ (id)tsp_dataWithContentsOfURL:(id)a3 decryptionKey:(id)a4
++ (id)tsp_dataWithContentsOfURL:(id)l decryptionKey:(id)key
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[TSUFileIOChannel alloc] initForReadingURL:v5 error:0];
+  lCopy = l;
+  keyCopy = key;
+  v7 = [[TSUFileIOChannel alloc] initForReadingURL:lCopy error:0];
   if (v7)
   {
-    v8 = [[TSPCryptoTranscodeReadChannel alloc] initWithReadChannel:v7 decryptionInfo:v6 encryptionInfo:0];
+    v8 = [[TSPCryptoTranscodeReadChannel alloc] initWithReadChannel:v7 decryptionInfo:keyCopy encryptionInfo:0];
     v9 = [NSData tsp_dataWithTranscoder:v8];
   }
 
@@ -122,13 +122,13 @@
   return v9;
 }
 
-- (id)tsp_dataWithDecryptionKey:(id)a3
+- (id)tsp_dataWithDecryptionKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [[TSPMemoryReadChannel alloc] initWithNSData:self];
   if (v5)
   {
-    v6 = [[TSPCryptoTranscodeReadChannel alloc] initWithReadChannel:v5 decryptionInfo:v4 encryptionInfo:0];
+    v6 = [[TSPCryptoTranscodeReadChannel alloc] initWithReadChannel:v5 decryptionInfo:keyCopy encryptionInfo:0];
     v7 = [NSData tsp_dataWithTranscoder:v6];
   }
 
@@ -140,13 +140,13 @@
   return v7;
 }
 
-- (id)tsp_dataWithEncryptionKey:(id)a3
+- (id)tsp_dataWithEncryptionKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [[TSPMemoryReadChannel alloc] initWithNSData:self];
   if (v5)
   {
-    v6 = [[TSPCryptoTranscodeReadChannel alloc] initWithReadChannel:v5 decryptionInfo:0 encryptionInfo:v4];
+    v6 = [[TSPCryptoTranscodeReadChannel alloc] initWithReadChannel:v5 decryptionInfo:0 encryptionInfo:keyCopy];
     v7 = [NSData tsp_dataWithTranscoder:v6];
   }
 
@@ -158,9 +158,9 @@
   return v7;
 }
 
-- (id)tsp_dispatchDataWithApplier:(id)a3
+- (id)tsp_dispatchDataWithApplier:(id)applier
 {
-  v4 = a3;
+  applierCopy = applier;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -174,9 +174,9 @@
   v10[2] = sub_10004D458;
   v10[3] = &unk_1001C9418;
   v11 = v10[4] = self;
-  v12 = v4;
+  v12 = applierCopy;
   v13 = &v14;
-  v6 = v4;
+  v6 = applierCopy;
   v7 = v11;
   [(NSData *)self enumerateByteRangesUsingBlock:v10];
   v8 = v15[5];
@@ -186,14 +186,14 @@
   return v8;
 }
 
-- (void)tsp_splitDataWithMaxSize:(unint64_t)a3 subdataHandlerBlock:(id)a4
+- (void)tsp_splitDataWithMaxSize:(unint64_t)size subdataHandlerBlock:(id)block
 {
-  v6 = a4;
-  if (a3)
+  blockCopy = block;
+  if (size)
   {
     v18 = 0;
     v7 = [(NSData *)self length];
-    if (v7 > a3)
+    if (v7 > size)
     {
       v9 = 0;
       v10 = 0;
@@ -207,14 +207,14 @@
         }
 
         v11 = objc_autoreleasePoolPush();
-        v12 = v7 >= a3 ? a3 : v7;
+        v12 = v7 >= size ? size : v7;
         v13 = [(NSData *)self subdataWithRange:v9, v12, v17];
         if (!v13)
         {
           break;
         }
 
-        v6[2](v6, v13, v10++, &v18);
+        blockCopy[2](blockCopy, v13, v10++, &v18);
         if (v18)
         {
           goto LABEL_15;
@@ -250,7 +250,7 @@ LABEL_15:
       goto LABEL_16;
     }
 
-    v6[2](v6, self, 0, &v18);
+    blockCopy[2](blockCopy, self, 0, &v18);
   }
 
   else
@@ -276,7 +276,7 @@ LABEL_23:
   if (v3)
   {
     v4 = [(NSData *)self length];
-    v5 = [(NSData *)self bytes];
+    bytes = [(NSData *)self bytes];
     v6 = 2 * v4;
     v3 = malloc_type_calloc(2 * v4, 1uLL, 0x100004077774924uLL);
     if (v3)
@@ -286,7 +286,7 @@ LABEL_23:
         v7 = v3 + 1;
         do
         {
-          v9 = *v5++;
+          v9 = *bytes++;
           v8 = v9;
           v10 = (v9 >> 4) + 55;
           v11 = (v9 >> 4) | 0x30;
@@ -321,15 +321,15 @@ LABEL_23:
   return v3;
 }
 
-- (void)tsu_getMD5Hash:(char *)a3
+- (void)tsu_getMD5Hash:(char *)hash
 {
   memset(&v9, 0, sizeof(v9));
   CC_MD5_Init(&v9);
   v5 = [(NSData *)self length];
-  v6 = [(NSData *)self bytes];
+  bytes = [(NSData *)self bytes];
   if (v5)
   {
-    v7 = v6;
+    v7 = bytes;
     do
     {
       if (v5 >= 0xFFFFFFFF)
@@ -350,7 +350,7 @@ LABEL_23:
     while (v5);
   }
 
-  CC_MD5_Final(a3, &v9);
+  CC_MD5_Final(hash, &v9);
 }
 
 - (id)tsu_md5Hash
@@ -361,17 +361,17 @@ LABEL_23:
   return v3;
 }
 
-+ (id)tsu_decodeFromHexidecimalString:(id)a3
++ (id)tsu_decodeFromHexidecimalString:(id)string
 {
-  v3 = a3;
-  if (![v3 length] || (objc_msgSend(v3, "length") & 1) != 0)
+  stringCopy = string;
+  if (![stringCopy length] || (objc_msgSend(stringCopy, "length") & 1) != 0)
   {
     v16 = 0;
   }
 
   else
   {
-    v4 = [v3 length];
+    v4 = [stringCopy length];
     v5 = malloc_type_calloc(2 * v4, 1uLL, 0x100004077774924uLL);
     v6 = v5;
     v7 = v4 >> 1;
@@ -382,7 +382,7 @@ LABEL_23:
       v10 = v7;
       do
       {
-        v11 = [v3 characterAtIndex:v8 - 1];
+        v11 = [stringCopy characterAtIndex:v8 - 1];
         if (v11 <= 0x39)
         {
           v12 = 0;
@@ -394,7 +394,7 @@ LABEL_23:
         }
 
         v13 = v12 + v11;
-        v14 = [v3 characterAtIndex:v8];
+        v14 = [stringCopy characterAtIndex:v8];
         if (v14 <= 0x39)
         {
           v15 = -48;
@@ -419,15 +419,15 @@ LABEL_23:
   return v16;
 }
 
-+ (id)tsu_dataWithInputStream:(id)a3 error:(id *)a4
++ (id)tsu_dataWithInputStream:(id)stream error:(id *)error
 {
-  v4 = a3;
-  [v4 open];
+  streamCopy = stream;
+  [streamCopy open];
   v5 = objc_alloc_init(NSMutableData);
-  v6 = [v4 read:v9 maxLength:1024];
+  v6 = [streamCopy read:v9 maxLength:1024];
   if (v6 >= 1)
   {
-    for (i = v6; i > 0; i = [v4 read:v9 maxLength:1024])
+    for (i = v6; i > 0; i = [streamCopy read:v9 maxLength:1024])
     {
       [v5 appendBytes:v9 length:i];
     }

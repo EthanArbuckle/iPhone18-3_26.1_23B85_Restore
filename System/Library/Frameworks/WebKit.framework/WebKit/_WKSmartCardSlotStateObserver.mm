@@ -1,16 +1,16 @@
 @interface _WKSmartCardSlotStateObserver
-- (_WKSmartCardSlotStateObserver)initWithService:(void *)a3 slot:(void *)a4;
+- (_WKSmartCardSlotStateObserver)initWithService:(void *)service slot:(void *)slot;
 - (atomic_ullong)observeValueForKeyPath:(atomic_ullong *)result ofObject:change:context:;
 - (id).cxx_construct;
-- (uint64_t)observeValueForKeyPath:(WTF *)this ofObject:(void *)a2 change:context:;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)observeValueForKeyPath:(void *)a1 ofObject:(void *)a2 change:context:;
+- (uint64_t)observeValueForKeyPath:(WTF *)this ofObject:(void *)object change:context:;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)observeValueForKeyPath:(void *)path ofObject:(void *)object change:context:;
 - (void)removeObserver;
 @end
 
 @implementation _WKSmartCardSlotStateObserver
 
-- (_WKSmartCardSlotStateObserver)initWithService:(void *)a3 slot:(void *)a4
+- (_WKSmartCardSlotStateObserver)initWithService:(void *)service slot:(void *)slot
 {
   v14.receiver = self;
   v14.super_class = _WKSmartCardSlotStateObserver;
@@ -18,8 +18,8 @@
   v8 = v6;
   if (v6)
   {
-    v9 = *a3;
-    *a3 = 0;
+    v9 = *service;
+    *service = 0;
     m_ptr = v6->m_service.m_impl.m_ptr;
     v8->m_service.m_impl.m_ptr = v9;
     if (m_ptr && atomic_fetch_add(m_ptr, 0xFFFFFFFF) == 1)
@@ -28,8 +28,8 @@
       WTF::fastFree(m_ptr, v7);
     }
 
-    v11 = *a4;
-    *a4 = 0;
+    v11 = *slot;
+    *slot = 0;
     v12 = v8->m_slot.m_ptr;
     v8->m_slot.m_ptr = v11;
     if (v12)
@@ -40,19 +40,19 @@
   return v8;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   m_ptr = self->m_service.m_impl.m_ptr;
   if (m_ptr && *(m_ptr + 1))
   {
-    v9 = [objc_msgSend(a5 objectForKeyedSubscript:{*MEMORY[0x1E696A4F0]), "intValue"}];
+    v9 = [objc_msgSend(change objectForKeyedSubscript:{*MEMORY[0x1E696A4F0]), "intValue"}];
     if (v9 == 4)
     {
-      v10 = [a4 makeSmartCard];
-      v11 = v10;
-      if (v10)
+      makeSmartCard = [object makeSmartCard];
+      v11 = makeSmartCard;
+      if (makeSmartCard)
       {
-        v12 = v10;
+        v12 = makeSmartCard;
       }
 
       v13 = self->m_service.m_impl.m_ptr;
@@ -102,27 +102,27 @@
   return self;
 }
 
-- (void)observeValueForKeyPath:(void *)a1 ofObject:(void *)a2 change:context:
+- (void)observeValueForKeyPath:(void *)path ofObject:(void *)object change:context:
 {
-  *a1 = &unk_1F110B920;
-  v3 = a1[2];
-  a1[2] = 0;
+  *path = &unk_1F110B920;
+  v3 = path[2];
+  path[2] = 0;
   if (v3)
   {
   }
 
-  v4 = a1[1];
-  a1[1] = 0;
+  v4 = path[1];
+  path[1] = 0;
   if (v4 && atomic_fetch_add(v4, 0xFFFFFFFF) == 1)
   {
     atomic_store(1u, v4);
-    WTF::fastFree(v4, a2);
+    WTF::fastFree(v4, object);
   }
 
-  return a1;
+  return path;
 }
 
-- (uint64_t)observeValueForKeyPath:(WTF *)this ofObject:(void *)a2 change:context:
+- (uint64_t)observeValueForKeyPath:(WTF *)this ofObject:(void *)object change:context:
 {
   *this = &unk_1F110B920;
   v3 = *(this + 2);
@@ -136,10 +136,10 @@
   if (v4 && atomic_fetch_add(v4, 0xFFFFFFFF) == 1)
   {
     atomic_store(1u, v4);
-    WTF::fastFree(v4, a2);
+    WTF::fastFree(v4, object);
   }
 
-  return WTF::fastFree(this, a2);
+  return WTF::fastFree(this, object);
 }
 
 - (atomic_ullong)observeValueForKeyPath:(atomic_ullong *)result ofObject:change:context:

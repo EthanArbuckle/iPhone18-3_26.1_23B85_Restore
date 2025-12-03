@@ -1,19 +1,19 @@
 @interface _UIValueCellContentViewConfigurationAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 @end
 
 @implementation _UIValueCellContentViewConfigurationAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v6 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = @"_UIValueCellContentViewConfiguration";
   v4 = "@";
   [location[0] validateClass:0 hasInstanceMethod:? withFullSignature:?];
@@ -23,17 +23,17 @@
 
 - (id)accessibilityLabel
 {
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
   v7.receiver = self;
   v7.super_class = _UIValueCellContentViewConfigurationAccessibility;
   v8[0] = [(_UIValueCellContentViewConfigurationAccessibility *)&v7 accessibilityLabel];
   if (![v8[0] length])
   {
-    v6 = [(_UIValueCellContentViewConfigurationAccessibility *)v9 safeValueForKey:@"textLabel"];
-    v2 = [v6 accessibilityLabel];
+    v6 = [(_UIValueCellContentViewConfigurationAccessibility *)selfCopy safeValueForKey:@"textLabel"];
+    accessibilityLabel = [v6 accessibilityLabel];
     v3 = v8[0];
-    v8[0] = v2;
+    v8[0] = accessibilityLabel;
     MEMORY[0x29EDC9740](v3);
     MEMORY[0x29EDC9740](v6);
   }
@@ -46,17 +46,17 @@
 
 - (id)accessibilityValue
 {
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
   v7.receiver = self;
   v7.super_class = _UIValueCellContentViewConfigurationAccessibility;
   v8[0] = [(_UIValueCellContentViewConfigurationAccessibility *)&v7 accessibilityValue];
   if (![v8[0] length])
   {
-    v6 = [(_UIValueCellContentViewConfigurationAccessibility *)v9 safeValueForKey:@"valueLabel"];
-    v2 = [v6 accessibilityLabel];
+    v6 = [(_UIValueCellContentViewConfigurationAccessibility *)selfCopy safeValueForKey:@"valueLabel"];
+    accessibilityLabel = [v6 accessibilityLabel];
     v3 = v8[0];
-    v8[0] = v2;
+    v8[0] = accessibilityLabel;
     MEMORY[0x29EDC9740](v3);
     MEMORY[0x29EDC9740](v6);
   }

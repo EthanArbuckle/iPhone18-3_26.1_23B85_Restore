@@ -1,35 +1,35 @@
 @interface ASKImageRequest
 + (NSArray)searchBundles;
-+ (void)setSearchBundles:(id)a3;
++ (void)setSearchBundles:(id)bundles;
 - (ASKImageRequest)init;
-- (ASKImageRequest)initWithURLRequest:(id)a3 dataConsumer:(id)a4 delegate:(id)a5;
+- (ASKImageRequest)initWithURLRequest:(id)request dataConsumer:(id)consumer delegate:(id)delegate;
 - (ASKImageRequestDelegate)delegate;
 - (BOOL)isMonogramRequest;
 - (BOOL)isResourceRequest;
 - (id)description;
 - (id)makeLoadOperation;
 - (unint64_t)cacheOptions;
-- (void)didLoadResource:(id)a3 error:(id)a4;
+- (void)didLoadResource:(id)resource error:(id)error;
 @end
 
 @implementation ASKImageRequest
 
-- (ASKImageRequest)initWithURLRequest:(id)a3 dataConsumer:(id)a4 delegate:(id)a5
+- (ASKImageRequest)initWithURLRequest:(id)request dataConsumer:(id)consumer delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  consumerCopy = consumer;
+  delegateCopy = delegate;
   v15.receiver = self;
   v15.super_class = ASKImageRequest;
   v11 = [(ASKResourceRequest *)&v15 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [requestCopy copy];
     urlRequest = v11->_urlRequest;
     v11->_urlRequest = v12;
 
-    objc_storeStrong(&v11->_dataConsumer, a4);
-    objc_storeWeak(&v11->_delegate, v10);
+    objc_storeStrong(&v11->_dataConsumer, consumer);
+    objc_storeWeak(&v11->_delegate, delegateCopy);
   }
 
   return v11;
@@ -46,9 +46,9 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(ASKImageRequest *)self urlRequest];
-  v6 = [(ASKImageRequest *)self dataConsumer];
-  v7 = [NSString stringWithFormat:@"<%@:%p urlRequest = %@, dataConsumer = %@>", v4, self, v5, v6];
+  urlRequest = [(ASKImageRequest *)self urlRequest];
+  dataConsumer = [(ASKImageRequest *)self dataConsumer];
+  v7 = [NSString stringWithFormat:@"<%@:%p urlRequest = %@, dataConsumer = %@>", v4, self, urlRequest, dataConsumer];
 
   return v7;
 }
@@ -56,10 +56,10 @@
 - (BOOL)isResourceRequest
 {
   v3 = +[PUIArtworkURLScheme resource];
-  v4 = [(ASKImageRequest *)self urlRequest];
-  v5 = [v4 URL];
-  v6 = [v5 scheme];
-  v7 = [v3 isEqual:v6];
+  urlRequest = [(ASKImageRequest *)self urlRequest];
+  v5 = [urlRequest URL];
+  scheme = [v5 scheme];
+  v7 = [v3 isEqual:scheme];
 
   return v7;
 }
@@ -67,10 +67,10 @@
 - (BOOL)isMonogramRequest
 {
   v3 = +[PUIArtworkURLScheme monogram];
-  v4 = [(ASKImageRequest *)self urlRequest];
-  v5 = [v4 URL];
-  v6 = [v5 scheme];
-  v7 = [v3 isEqual:v6];
+  urlRequest = [(ASKImageRequest *)self urlRequest];
+  v5 = [urlRequest URL];
+  scheme = [v5 scheme];
+  v7 = [v3 isEqual:scheme];
 
   return v7;
 }
@@ -88,9 +88,9 @@
   }
 }
 
-+ (void)setSearchBundles:(id)a3
++ (void)setSearchBundles:(id)bundles
 {
-  _searchBundles = [a3 copy];
+  _searchBundles = [bundles copy];
 
   _objc_release_x1();
 }
@@ -119,11 +119,11 @@
   if ([(ASKImageRequest *)self isResourceRequest])
   {
     v3 = [ASKLoadBundleResourceOperation alloc];
-    v4 = [(ASKImageRequest *)self urlRequest];
-    v5 = [v4 URL];
-    v6 = [v5 host];
-    v7 = [objc_opt_class() searchBundles];
-    v8 = [(ASKLoadBundleResourceOperation *)v3 initWithResourceName:v6 searchBundles:v7];
+    urlRequest = [(ASKImageRequest *)self urlRequest];
+    dataConsumer = [urlRequest URL];
+    host = [dataConsumer host];
+    searchBundles = [objc_opt_class() searchBundles];
+    v8 = [(ASKLoadBundleResourceOperation *)v3 initWithResourceName:host searchBundles:searchBundles];
 
 LABEL_5:
     goto LABEL_7;
@@ -132,37 +132,37 @@ LABEL_5:
   if ([(ASKImageRequest *)self isMonogramRequest])
   {
     v9 = [ASKLoadMonogramResourceOperation alloc];
-    v4 = [(ASKImageRequest *)self urlRequest];
-    v5 = [v4 URL];
-    v6 = [(ASKImageRequest *)self dataConsumer];
-    [v6 size];
-    v8 = [(ASKLoadMonogramResourceOperation *)v9 initWithMonogramResourceURL:v5 size:?];
+    urlRequest = [(ASKImageRequest *)self urlRequest];
+    dataConsumer = [urlRequest URL];
+    host = [(ASKImageRequest *)self dataConsumer];
+    [host size];
+    v8 = [(ASKLoadMonogramResourceOperation *)v9 initWithMonogramResourceURL:dataConsumer size:?];
     goto LABEL_5;
   }
 
   v10 = [ASKLoadImageResourceOperation alloc];
-  v4 = [(ASKImageRequest *)self urlRequest];
-  v5 = [(ASKImageRequest *)self dataConsumer];
-  v8 = [(ASKLoadImageResourceOperation *)v10 initWithURLRequest:v4 dataConsumer:v5];
+  urlRequest = [(ASKImageRequest *)self urlRequest];
+  dataConsumer = [(ASKImageRequest *)self dataConsumer];
+  v8 = [(ASKLoadImageResourceOperation *)v10 initWithURLRequest:urlRequest dataConsumer:dataConsumer];
 LABEL_7:
 
   return v8;
 }
 
-- (void)didLoadResource:(id)a3 error:(id)a4
+- (void)didLoadResource:(id)resource error:(id)error
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(ASKImageRequest *)self delegate];
-  v8 = v7;
-  if (v6)
+  resourceCopy = resource;
+  errorCopy = error;
+  delegate = [(ASKImageRequest *)self delegate];
+  v8 = delegate;
+  if (errorCopy)
   {
-    [v7 imageRequest:self didFailWithError:v6];
+    [delegate imageRequest:self didFailWithError:errorCopy];
   }
 
   else
   {
-    [v7 imageRequest:self didLoadImage:v9];
+    [delegate imageRequest:self didLoadImage:resourceCopy];
   }
 }
 

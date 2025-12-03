@@ -1,26 +1,26 @@
 @interface ARPHomeControlMicrolocationCorrelationTask
-- (ARPHomeControlMicrolocationCorrelationTask)initWithCorrelationsFile:(id)a3 knowledgeStore:(id)a4;
-- (id)queryForMicroLocationsOverlappingEvents:(id)a3 maxEvents:(unint64_t)a4;
+- (ARPHomeControlMicrolocationCorrelationTask)initWithCorrelationsFile:(id)file knowledgeStore:(id)store;
+- (id)queryForMicroLocationsOverlappingEvents:(id)events maxEvents:(unint64_t)maxEvents;
 - (void)execute;
 @end
 
 @implementation ARPHomeControlMicrolocationCorrelationTask
 
-- (ARPHomeControlMicrolocationCorrelationTask)initWithCorrelationsFile:(id)a3 knowledgeStore:(id)a4
+- (ARPHomeControlMicrolocationCorrelationTask)initWithCorrelationsFile:(id)file knowledgeStore:(id)store
 {
-  v6 = a3;
-  v7 = a4;
+  fileCopy = file;
+  storeCopy = store;
   v14.receiver = self;
   v14.super_class = ARPHomeControlMicrolocationCorrelationTask;
   v8 = [(ARPHomeControlMicrolocationCorrelationTask *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [fileCopy copy];
     file = v8->_file;
     v8->_file = v9;
 
-    objc_storeStrong(&v8->_knowledgeStore, a4);
-    v11 = [[ARPHomeControlCorrelationUtilities alloc] initWithKnowledgeStore:v7];
+    objc_storeStrong(&v8->_knowledgeStore, store);
+    v11 = [[ARPHomeControlCorrelationUtilities alloc] initWithKnowledgeStore:storeCopy];
     utilities = v8->_utilities;
     v8->_utilities = v11;
   }
@@ -28,25 +28,25 @@
   return v8;
 }
 
-- (id)queryForMicroLocationsOverlappingEvents:(id)a3 maxEvents:(unint64_t)a4
+- (id)queryForMicroLocationsOverlappingEvents:(id)events maxEvents:(unint64_t)maxEvents
 {
-  v5 = a3;
-  if ([v5 count])
+  eventsCopy = events;
+  if ([eventsCopy count])
   {
-    v6 = [v5 firstObject];
-    v7 = [v6 startDate];
-    v8 = [v7 dateByAddingTimeInterval:2.0];
+    firstObject = [eventsCopy firstObject];
+    startDate = [firstObject startDate];
+    v8 = [startDate dateByAddingTimeInterval:2.0];
 
-    v9 = [v5 lastObject];
-    v10 = [v9 startDate];
-    v11 = [v10 dateByAddingTimeInterval:-2.0];
+    lastObject = [eventsCopy lastObject];
+    startDate2 = [lastObject startDate];
+    v11 = [startDate2 dateByAddingTimeInterval:-2.0];
 
     if ([v8 compare:v11] == 1)
     {
       v12 = objc_alloc(getBMDKEventStreamClass());
-      v13 = [MEMORY[0x277CFE298] microLocationVisitStream];
-      v14 = [v13 name];
-      v15 = [v12 initWithDKStreamIdentifier:v14 contentProtection:*MEMORY[0x277CCA1A0]];
+      microLocationVisitStream = [MEMORY[0x277CFE298] microLocationVisitStream];
+      name = [microLocationVisitStream name];
+      v15 = [v12 initWithDKStreamIdentifier:name contentProtection:*MEMORY[0x277CCA1A0]];
 
       v16 = MEMORY[0x277CCABB0];
       [v8 timeIntervalSinceReferenceDate];
@@ -66,7 +66,7 @@
       v35[2] = 0x3032000000;
       v35[3] = __Block_byref_object_copy__1;
       v35[4] = __Block_byref_object_dispose__1;
-      v36 = [v5 objectAtIndexedSubscript:0];
+      v36 = [eventsCopy objectAtIndexedSubscript:0];
       v34[0] = 0;
       v34[1] = v34;
       v34[2] = 0x2020000000;
@@ -77,11 +77,11 @@
       v27[3] = &unk_278C64718;
       v30 = v35;
       v31 = v37;
-      v28 = v5;
+      v28 = eventsCopy;
       v22 = v21;
       v29 = v22;
       v32 = v34;
-      v33 = a4;
+      maxEventsCopy = maxEvents;
       v23 = [v20 sinkWithCompletion:&__block_literal_global_4 shouldContinue:v27];
       v24 = v29;
       v25 = v22;
@@ -171,7 +171,7 @@ LABEL_9:
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_23EB15000, a2, OS_LOG_TYPE_ERROR, "Error reading persisted microlocation home controls archive file: %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

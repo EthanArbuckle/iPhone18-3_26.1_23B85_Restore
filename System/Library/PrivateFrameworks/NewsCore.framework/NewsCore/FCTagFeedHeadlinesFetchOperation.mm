@@ -1,7 +1,7 @@
 @interface FCTagFeedHeadlinesFetchOperation
-- (BOOL)canRetryWithError:(id)a3 retryAfter:(id *)a4;
-- (FCTagFeedHeadlinesFetchOperation)initWithConfiguration:(id)a3 cloudContext:(id)a4 feedDescriptor:(id)a5 personalizer:(id)a6;
-- (void)operationWillFinishWithError:(id)a3;
+- (BOOL)canRetryWithError:(id)error retryAfter:(id *)after;
+- (FCTagFeedHeadlinesFetchOperation)initWithConfiguration:(id)configuration cloudContext:(id)context feedDescriptor:(id)descriptor personalizer:(id)personalizer;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 - (void)prepareOperation;
 - (void)resetForRetry;
@@ -9,29 +9,29 @@
 
 @implementation FCTagFeedHeadlinesFetchOperation
 
-- (FCTagFeedHeadlinesFetchOperation)initWithConfiguration:(id)a3 cloudContext:(id)a4 feedDescriptor:(id)a5 personalizer:(id)a6
+- (FCTagFeedHeadlinesFetchOperation)initWithConfiguration:(id)configuration cloudContext:(id)context feedDescriptor:(id)descriptor personalizer:(id)personalizer
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  configurationCopy = configuration;
+  contextCopy = context;
+  descriptorCopy = descriptor;
+  personalizerCopy = personalizer;
   v29.receiver = self;
   v29.super_class = FCTagFeedHeadlinesFetchOperation;
   v15 = [(FCOperation *)&v29 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_configuration, a3);
-    objc_storeStrong(&v16->_cloudContext, a4);
-    objc_storeStrong(&v16->_feedDescriptor, a5);
-    objc_storeStrong(&v16->_personalizer, a6);
-    v17 = [MEMORY[0x1E695DF00] date];
+    objc_storeStrong(&v15->_configuration, configuration);
+    objc_storeStrong(&v16->_cloudContext, context);
+    objc_storeStrong(&v16->_feedDescriptor, descriptor);
+    objc_storeStrong(&v16->_personalizer, personalizer);
+    date = [MEMORY[0x1E695DF00] date];
     topOfFeedDate = v16->_topOfFeedDate;
-    v16->_topOfFeedDate = v17;
+    v16->_topOfFeedDate = date;
 
-    v19 = [MEMORY[0x1E695DF00] date];
-    v20 = [MEMORY[0x1E695DF00] dateWithTimeInterval:v19 sinceDate:-21600.0];
-    v21 = [[FCDateRange alloc] initWithEarlierDate:v20 laterDate:v19];
+    date2 = [MEMORY[0x1E695DF00] date];
+    v20 = [MEMORY[0x1E695DF00] dateWithTimeInterval:date2 sinceDate:-21600.0];
+    v21 = [[FCDateRange alloc] initWithEarlierDate:v20 laterDate:date2];
     v22 = [FCFeedRange feedRangeFromDateRange:v21];
     freeFeedRange = v16->_freeFeedRange;
     v16->_freeFeedRange = v22;
@@ -41,9 +41,9 @@
     v16->_paidFeedRange = v24;
 
     v16->_maxFetchCount = 10;
-    v26 = [MEMORY[0x1E695DEC8] array];
+    array = [MEMORY[0x1E695DEC8] array];
     precedingHeadlines = v16->_precedingHeadlines;
-    v16->_precedingHeadlines = v26;
+    v16->_precedingHeadlines = array;
   }
 
   return v16;
@@ -51,13 +51,13 @@
 
 - (void)prepareOperation
 {
-  v3 = [(FCTagFeedHeadlinesFetchOperation *)self precedingHeadlines];
-  v4 = [v3 fc_setByTransformingWithBlock:&__block_literal_global_123];
+  precedingHeadlines = [(FCTagFeedHeadlinesFetchOperation *)self precedingHeadlines];
+  v4 = [precedingHeadlines fc_setByTransformingWithBlock:&__block_literal_global_123];
   shownArticleIDs = self->_shownArticleIDs;
   self->_shownArticleIDs = v4;
 
-  v8 = [(FCTagFeedHeadlinesFetchOperation *)self precedingHeadlines];
-  v6 = [v8 fc_setByTransformingWithBlock:&__block_literal_global_5_1];
+  precedingHeadlines2 = [(FCTagFeedHeadlinesFetchOperation *)self precedingHeadlines];
+  v6 = [precedingHeadlines2 fc_setByTransformingWithBlock:&__block_literal_global_5_1];
   shownClusterIDs = self->_shownClusterIDs;
   self->_shownClusterIDs = v6;
 }
@@ -107,8 +107,8 @@
   if (self)
   {
     v26 = self->_feedDescriptor;
-    v3 = [(FCFeedDescriptor *)v26 backingTag];
-    if (!v3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+    backingTag = [(FCFeedDescriptor *)v26 backingTag];
+    if (!backingTag && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v24 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"invalid nil value for '%s'", "tag"];
       *buf = 136315906;
@@ -122,10 +122,10 @@
       _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
     }
 
-    v27 = [FCFeedContext feedContextForTag:v3];
-    v4 = [v3 tagType];
-    v25 = v4 != 1;
-    if (v4 == 1)
+    v27 = [FCFeedContext feedContextForTag:backingTag];
+    tagType = [backingTag tagType];
+    v25 = tagType != 1;
+    if (tagType == 1)
     {
       v5 = 2;
     }
@@ -135,20 +135,20 @@
       v5 = 3;
     }
 
-    v6 = [v3 freeFeedIDForBin:v5];
-    v7 = [v3 paidFeedIDForBin:v5];
-    v8 = [MEMORY[0x1E695DF70] array];
-    v9 = [MEMORY[0x1E695DF90] dictionary];
+    v6 = [backingTag freeFeedIDForBin:v5];
+    v7 = [backingTag paidFeedIDForBin:v5];
+    array = [MEMORY[0x1E695DF70] array];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     if (v6)
     {
       v10 = objc_alloc_init(FCFeedRequest);
       [(FCFeedRequest *)v10 setFeedID:v6];
-      v11 = [(FCTagFeedHeadlinesFetchOperation *)self freeFeedRange];
-      [(FCFeedRequest *)v10 setFeedRange:v11];
+      freeFeedRange = [(FCTagFeedHeadlinesFetchOperation *)self freeFeedRange];
+      [(FCFeedRequest *)v10 setFeedRange:freeFeedRange];
 
       [(FCFeedRequest *)v10 setCachedOnly:self->_fetchOrdinaryItemsFromCache];
-      [v8 addObject:v10];
-      [v9 setObject:v27 forKey:v6];
+      [array addObject:v10];
+      [dictionary setObject:v27 forKey:v6];
     }
 
     else
@@ -156,13 +156,13 @@
       v10 = 0;
     }
 
-    if (v4 != 1)
+    if (tagType != 1)
     {
       v12 = self->_cloudContext;
-      v13 = [(FCCloudContext *)v12 paidAccessChecker];
-      v14 = [(FCFeedDescriptor *)v26 backingChannel];
+      paidAccessChecker = [(FCCloudContext *)v12 paidAccessChecker];
+      backingChannel = [(FCFeedDescriptor *)v26 backingChannel];
 
-      LODWORD(v12) = [v13 canGetSubscriptionToChannel:v14];
+      LODWORD(v12) = [paidAccessChecker canGetSubscriptionToChannel:backingChannel];
       if (v12)
       {
         v15 = [v7 isEqualToString:v6];
@@ -172,11 +172,11 @@
           {
             v16 = [(FCFeedRequest *)v10 copy];
             [v16 setFeedID:v7];
-            v17 = [(FCTagFeedHeadlinesFetchOperation *)self paidFeedRange];
-            [v16 setFeedRange:v17];
+            paidFeedRange = [(FCTagFeedHeadlinesFetchOperation *)self paidFeedRange];
+            [v16 setFeedRange:paidFeedRange];
 
-            [v8 addObject:v16];
-            [v9 setObject:v27 forKey:v7];
+            [array addObject:v16];
+            [dictionary setObject:v27 forKey:v7];
           }
         }
       }
@@ -185,7 +185,7 @@
     v18 = objc_alloc_init(FCFeedRequestOperation);
     [(FCFeedRequestOperation *)v18 setContext:self->_cloudContext];
     [(FCFeedRequestOperation *)v18 setConfiguration:self->_configuration];
-    [(FCFeedRequestOperation *)v18 setFeedRequests:v8];
+    [(FCFeedRequestOperation *)v18 setFeedRequests:array];
     [(FCFeedRequestOperation *)v18 setMaxCount:[(FCTagFeedHeadlinesFetchOperation *)self maxFetchCount]];
     [(FCFeedRequestOperation *)v18 setOptions:14];
     [(FCFeedRequestOperation *)v18 setExpectedNetworkEventCount:1];
@@ -194,13 +194,13 @@
     *&buf[16] = __81__FCTagFeedHeadlinesFetchOperation__fetchOrdinaryHeadlinesWithCompletionHandler___block_invoke;
     *&v41 = &unk_1E7C438C0;
     v19 = v28;
-    v44 = v9;
+    v44 = dictionary;
     v45 = v19;
     *(&v41 + 1) = v6;
     v42 = v7;
-    v43 = self;
+    selfCopy = self;
     v46 = v25;
-    v20 = v9;
+    v20 = dictionary;
     v21 = v7;
     v22 = v6;
     [(FCFeedRequestOperation *)v18 setRequestCompletionHandler:buf];
@@ -326,10 +326,10 @@ void __52__FCTagFeedHeadlinesFetchOperation_performOperation__block_invoke(void 
   }
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v4 = a3;
-  v11 = [(FCTagFeedHeadlinesFetchOperation *)self fetchCompletionHandler];
+  errorCopy = error;
+  fetchCompletionHandler = [(FCTagFeedHeadlinesFetchOperation *)self fetchCompletionHandler];
   v5 = MEMORY[0x1E695E0F0];
   if (self)
   {
@@ -353,18 +353,18 @@ void __52__FCTagFeedHeadlinesFetchOperation_performOperation__block_invoke(void 
     resultFinished = 0;
   }
 
-  v11[2](v11, v5, v8, v9, resultFinished, v4);
+  fetchCompletionHandler[2](fetchCompletionHandler, v5, v8, v9, resultFinished, errorCopy);
 }
 
-- (BOOL)canRetryWithError:(id)a3 retryAfter:(id *)a4
+- (BOOL)canRetryWithError:(id)error retryAfter:(id *)after
 {
-  v5 = [a3 fc_isRequestDroppedError];
-  if (v5)
+  fc_isRequestDroppedError = [error fc_isRequestDroppedError];
+  if (fc_isRequestDroppedError)
   {
-    *a4 = objc_opt_new();
+    *after = objc_opt_new();
   }
 
-  return v5;
+  return fc_isRequestDroppedError;
 }
 
 - (void)resetForRetry

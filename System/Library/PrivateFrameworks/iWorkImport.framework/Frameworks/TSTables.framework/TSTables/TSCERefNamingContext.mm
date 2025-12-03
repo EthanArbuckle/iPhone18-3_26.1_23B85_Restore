@@ -1,7 +1,7 @@
 @interface TSCERefNamingContext
 - (TSCERefNamingContext)init;
 - (TSKUIDStruct)hostTableUID;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)reset;
 @end
 
@@ -21,7 +21,7 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   v4 = objc_opt_new();

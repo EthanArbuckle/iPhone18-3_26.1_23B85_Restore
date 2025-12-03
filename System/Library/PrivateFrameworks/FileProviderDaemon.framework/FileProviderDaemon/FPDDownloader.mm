@@ -1,18 +1,18 @@
 @interface FPDDownloader
 - (FPDDomain)domain;
-- (FPDDownloader)initWithDomain:(id)a3 callbackQueue:(id)a4;
+- (FPDDownloader)initWithDomain:(id)domain callbackQueue:(id)queue;
 - (void)_cleanup;
-- (void)_createChildItem:(id)a3;
-- (void)_didDownloadItem:(id)a3 withError:(id)a4;
-- (void)_downloadItem:(id)a3 recursively:(unint64_t)a4 retryCount:(int)a5 request:(id)a6 withCompletion:(id)a7;
+- (void)_createChildItem:(id)item;
+- (void)_didDownloadItem:(id)item withError:(id)error;
+- (void)_downloadItem:(id)item recursively:(unint64_t)recursively retryCount:(int)count request:(id)request withCompletion:(id)completion;
 - (void)_logRootProgress;
-- (void)_nonRecursiveDownloadOfItem:(id)a3 request:(id)a4 perItemCompletion:(id)a5 withCompletion:(id)a6;
-- (void)_progressComputationPreflightForRecursiveRoot:(id)a3 completion:(id)a4;
-- (void)_recursiveDownloadOfItem:(id)a3 request:(id)a4 recursively:(unint64_t)a5 perItemCompletion:(id)a6 withCompletion:(id)a7;
+- (void)_nonRecursiveDownloadOfItem:(id)item request:(id)request perItemCompletion:(id)completion withCompletion:(id)withCompletion;
+- (void)_progressComputationPreflightForRecursiveRoot:(id)root completion:(id)completion;
+- (void)_recursiveDownloadOfItem:(id)item request:(id)request recursively:(unint64_t)recursively perItemCompletion:(id)completion withCompletion:(id)withCompletion;
 - (void)_stopTrackingFileURLs;
 - (void)cancel;
 - (void)dealloc;
-- (void)downloadURL:(id)a3 recursively:(unint64_t)a4 request:(id)a5 withCompletion:(id)a6;
+- (void)downloadURL:(id)l recursively:(unint64_t)recursively request:(id)request withCompletion:(id)completion;
 @end
 
 @implementation FPDDownloader
@@ -36,10 +36,10 @@
   [(NSProgress *)self->_cancellationProgress cancel];
 }
 
-- (FPDDownloader)initWithDomain:(id)a3 callbackQueue:(id)a4
+- (FPDDownloader)initWithDomain:(id)domain callbackQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  domainCopy = domain;
+  queueCopy = queue;
   v8 = [(FPDDownloader *)self init];
   if (v8)
   {
@@ -49,8 +49,8 @@
       [FPDDownloader initWithDomain:callbackQueue:];
     }
 
-    objc_storeWeak(&v8->_domain, v6);
-    objc_storeStrong(&v8->_callbackQueue, a4);
+    objc_storeWeak(&v8->_domain, domainCopy);
+    objc_storeStrong(&v8->_callbackQueue, queue);
     v10 = [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:1];
     cancellationProgress = v8->_cancellationProgress;
     v8->_cancellationProgress = v10;
@@ -76,8 +76,8 @@
     [FPDDownloader _cleanup];
   }
 
-  v4 = [(FPDDownloader *)self progress];
-  [v4 unpublish];
+  progress = [(FPDDownloader *)self progress];
+  [progress unpublish];
 
   [(FPDDownloader *)self _stopTrackingFileURLs];
   [(NSObservation *)self->_observation finishObserving];
@@ -85,10 +85,10 @@
   self->_observation = 0;
 }
 
-- (void)_progressComputationPreflightForRecursiveRoot:(id)a3 completion:(id)a4
+- (void)_progressComputationPreflightForRecursiveRoot:(id)root completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  rootCopy = root;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   [(NSProgress *)self->_progress setCancellationHandler:&__block_literal_global];
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -107,7 +107,7 @@
   v9 = _Block_copy(v12);
   v10 = +[FPDDownloadManager sharedInstance];
   v11 = objc_loadWeakRetained(&location);
-  [v10 progressComputationPreflightForRecursiveRoot:v6 downloader:v11 itemProgressNeedsSetup:v9 itemProgressSetup:v8 completion:v7];
+  [v10 progressComputationPreflightForRecursiveRoot:rootCopy downloader:v11 itemProgressNeedsSetup:v9 itemProgressSetup:v8 completion:completionCopy];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&v15);
@@ -183,33 +183,33 @@ void __74__FPDDownloader__progressComputationPreflightForRecursiveRoot_completio
 - (void)_stopTrackingFileURLs
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = [a1 progress];
-  v4 = [v3 fileURL];
+  progress = [self progress];
+  fileURL = [progress fileURL];
   v6 = 138412290;
-  v7 = v4;
+  v7 = fileURL;
   _os_log_debug_impl(&dword_1CEFC7000, a2, OS_LOG_TYPE_DEBUG, "[DEBUG] downloader: Will stop tracking all urls for root URL %@", &v6, 0xCu);
 
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_createChildItem:(id)a3
+- (void)_createChildItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = objc_opt_new();
-  v6 = [v4 fileURL];
-  [v5 setFileURL:v6];
+  fileURL = [itemCopy fileURL];
+  [v5 setFileURL:fileURL];
 
-  v7 = [(FPDDownloader *)self progress];
-  v8 = [v4 documentSize];
-  [v7 addChild:v5 withPendingUnitCount:{objc_msgSend(v8, "integerValue")}];
+  progress = [(FPDDownloader *)self progress];
+  documentSize = [itemCopy documentSize];
+  [progress addChild:v5 withPendingUnitCount:{objc_msgSend(documentSize, "integerValue")}];
 
-  v9 = [v4 fileURL];
-  [v5 startTrackingFileURL:v9 kind:*MEMORY[0x1E696A848] allowReadPausedProgressFromDisk:0];
+  fileURL2 = [itemCopy fileURL];
+  [v5 startTrackingFileURL:fileURL2 kind:*MEMORY[0x1E696A848] allowReadPausedProgressFromDisk:0];
 
   childProxies = self->_childProxies;
-  v11 = [v4 itemID];
+  itemID = [itemCopy itemID];
 
-  [(NSMutableDictionary *)childProxies setObject:v5 forKey:v11];
+  [(NSMutableDictionary *)childProxies setObject:v5 forKey:itemID];
   v12 = fp_current_or_default_log();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
@@ -231,8 +231,8 @@ void __74__FPDDownloader__progressComputationPreflightForRecursiveRoot_completio
   v12[3] = 0;
   objc_initWeak(&location, self);
   v4 = MEMORY[0x1E696ADA8];
-  v5 = [(FPDDownloader *)self progress];
-  v6 = [v4 keyPathWithRootObject:v5 path:"fractionCompleted"];
+  progress = [(FPDDownloader *)self progress];
+  v6 = [v4 keyPathWithRootObject:progress path:"fractionCompleted"];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __33__FPDDownloader__logRootProgress__block_invoke;
@@ -274,26 +274,26 @@ void __33__FPDDownloader__logRootProgress__block_invoke(uint64_t a1)
   }
 }
 
-- (void)downloadURL:(id)a3 recursively:(unint64_t)a4 request:(id)a5 withCompletion:(id)a6
+- (void)downloadURL:(id)l recursively:(unint64_t)recursively request:(id)request withCompletion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  lCopy = l;
+  requestCopy = request;
+  completionCopy = completion;
   v13 = +[FPDDownloadManager sharedInstance];
-  v14 = [(FPDDownloader *)self domain];
+  domain = [(FPDDownloader *)self domain];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __64__FPDDownloader_downloadURL_recursively_request_withCompletion___block_invoke;
   v18[3] = &unk_1E83BDE38;
-  v19 = v10;
-  v20 = self;
-  v22 = v12;
-  v23 = a4;
-  v21 = v11;
-  v15 = v11;
-  v16 = v12;
-  v17 = v10;
-  [v13 retrieveFPItemForURL:v17 domain:v14 request:v15 completion:v18];
+  v19 = lCopy;
+  selfCopy = self;
+  v22 = completionCopy;
+  recursivelyCopy = recursively;
+  v21 = requestCopy;
+  v15 = requestCopy;
+  v16 = completionCopy;
+  v17 = lCopy;
+  [v13 retrieveFPItemForURL:v17 domain:domain request:v15 completion:v18];
 }
 
 void __64__FPDDownloader_downloadURL_recursively_request_withCompletion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -331,11 +331,11 @@ void __64__FPDDownloader_downloadURL_recursively_request_withCompletion___block_
   }
 }
 
-- (void)_downloadItem:(id)a3 recursively:(unint64_t)a4 retryCount:(int)a5 request:(id)a6 withCompletion:(id)a7
+- (void)_downloadItem:(id)item recursively:(unint64_t)recursively retryCount:(int)count request:(id)request withCompletion:(id)completion
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  itemCopy = item;
+  requestCopy = request;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __77__FPDDownloader__downloadItem_recursively_retryCount_request_withCompletion___block_invoke;
@@ -347,18 +347,18 @@ void __64__FPDDownloader_downloadURL_recursively_request_withCompletion___block_
   v20[2] = __77__FPDDownloader__downloadItem_recursively_retryCount_request_withCompletion___block_invoke_3;
   v20[3] = &unk_1E83BDED8;
   v20[4] = self;
-  v16 = v12;
+  v16 = itemCopy;
   v21 = v16;
-  v24 = a4;
-  v25 = a5;
-  v17 = v13;
+  recursivelyCopy = recursively;
+  countCopy = count;
+  v17 = requestCopy;
   v22 = v17;
-  v23 = v14;
-  v18 = v14;
+  v23 = completionCopy;
+  v18 = completionCopy;
   v19 = _Block_copy(v20);
-  if (a4 && (([v16 isFolder] & 1) != 0 || objc_msgSend(v16, "isPackage")))
+  if (recursively && (([v16 isFolder] & 1) != 0 || objc_msgSend(v16, "isPackage")))
   {
-    [(FPDDownloader *)self _recursiveDownloadOfItem:v16 request:v17 recursively:a4 perItemCompletion:v15 withCompletion:v19];
+    [(FPDDownloader *)self _recursiveDownloadOfItem:v16 request:v17 recursively:recursively perItemCompletion:v15 withCompletion:v19];
   }
 
   else
@@ -497,26 +497,26 @@ LABEL_21:
 LABEL_23:
 }
 
-- (void)_nonRecursiveDownloadOfItem:(id)a3 request:(id)a4 perItemCompletion:(id)a5 withCompletion:(id)a6
+- (void)_nonRecursiveDownloadOfItem:(id)item request:(id)request perItemCompletion:(id)completion withCompletion:(id)withCompletion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  itemCopy = item;
+  requestCopy = request;
+  completionCopy = completion;
+  withCompletionCopy = withCompletion;
   objc_initWeak(&location, self);
   v14 = +[FPDDownloadManager sharedInstance];
   v15 = objc_loadWeakRetained(&location);
-  [v14 downloadItem:v10 recursively:0 downloader:v15 request:v11 perItemCompletion:v12 withCompletion:v13];
+  [v14 downloadItem:itemCopy recursively:0 downloader:v15 request:requestCopy perItemCompletion:completionCopy withCompletion:withCompletionCopy];
 
   objc_destroyWeak(&location);
 }
 
-- (void)_recursiveDownloadOfItem:(id)a3 request:(id)a4 recursively:(unint64_t)a5 perItemCompletion:(id)a6 withCompletion:(id)a7
+- (void)_recursiveDownloadOfItem:(id)item request:(id)request recursively:(unint64_t)recursively perItemCompletion:(id)completion withCompletion:(id)withCompletion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  itemCopy = item;
+  requestCopy = request;
+  completionCopy = completion;
+  withCompletionCopy = withCompletion;
   objc_initWeak(&location, self);
   v16 = [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:-1];
   progress = self->_progress;
@@ -528,15 +528,15 @@ LABEL_23:
   v22[2] = __95__FPDDownloader__recursiveDownloadOfItem_request_recursively_perItemCompletion_withCompletion___block_invoke;
   v22[3] = &unk_1E83BDF28;
   v22[4] = self;
-  v18 = v12;
+  v18 = itemCopy;
   v23 = v18;
-  v27[1] = a5;
+  v27[1] = recursively;
   objc_copyWeak(v27, &location);
-  v19 = v13;
+  v19 = requestCopy;
   v24 = v19;
-  v20 = v14;
+  v20 = completionCopy;
   v25 = v20;
-  v21 = v15;
+  v21 = withCompletionCopy;
   v26 = v21;
   [(FPDDownloader *)self _progressComputationPreflightForRecursiveRoot:v18 completion:v22];
 
@@ -587,40 +587,40 @@ void __95__FPDDownloader__recursiveDownloadOfItem_request_recursively_perItemCom
   }
 }
 
-- (void)_didDownloadItem:(id)a3 withError:(id)a4
+- (void)_didDownloadItem:(id)item withError:(id)error
 {
   v55 = *MEMORY[0x1E69E9840];
-  v44 = a3;
-  v43 = a4;
-  if (v43)
+  itemCopy = item;
+  errorCopy = error;
+  if (errorCopy)
   {
     v5 = fp_current_or_default_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      [(FPDDownloader *)v44 _didDownloadItem:v43 withError:v5];
+      [(FPDDownloader *)itemCopy _didDownloadItem:errorCopy withError:v5];
     }
   }
 
-  if ([v44 isFolder])
+  if ([itemCopy isFolder])
   {
     v6 = self->_parentToChildMap;
     objc_sync_enter(v6);
     v7 = fp_current_or_default_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      v40 = [v44 itemID];
-      v41 = [v40 identifier];
-      v42 = [v44 fileURL];
+      itemID = [itemCopy itemID];
+      identifier = [itemID identifier];
+      fileURL = [itemCopy fileURL];
       *buf = 138412546;
-      v52 = v41;
+      v52 = identifier;
       v53 = 2112;
-      v54 = v42;
+      v54 = fileURL;
       _os_log_debug_impl(&dword_1CEFC7000, v7, OS_LOG_TYPE_DEBUG, "[DEBUG] downloader: Finished downloading folder (%@) %@.", buf, 0x16u);
     }
 
     parentToChildMap = self->_parentToChildMap;
-    v9 = [v44 itemID];
-    v10 = [(NSMutableDictionary *)parentToChildMap objectForKeyedSubscript:v9];
+    itemID2 = [itemCopy itemID];
+    v10 = [(NSMutableDictionary *)parentToChildMap objectForKeyedSubscript:itemID2];
 
     v48 = 0u;
     v49 = 0u;
@@ -641,25 +641,25 @@ void __95__FPDDownloader__recursiveDownloadOfItem_request_recursively_perItemCom
           }
 
           v15 = *(*(&v46 + 1) + 8 * i);
-          v16 = [v15 fileURL];
-          v17 = v16 == 0;
+          fileURL2 = [v15 fileURL];
+          v17 = fileURL2 == 0;
 
           if (v17)
           {
-            v18 = [v44 fileURL];
-            v19 = [v15 filename];
-            v20 = [v18 URLByAppendingPathComponent:v19 isDirectory:{objc_msgSend(v15, "isFolder")}];
+            fileURL3 = [itemCopy fileURL];
+            filename = [v15 filename];
+            v20 = [fileURL3 URLByAppendingPathComponent:filename isDirectory:{objc_msgSend(v15, "isFolder")}];
 
             v21 = fp_current_or_default_log();
             if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
             {
               v23 = v6;
-              v24 = [v44 fileURL];
-              v25 = [v15 filename];
+              fileURL4 = [itemCopy fileURL];
+              filename2 = [v15 filename];
               *buf = 138412546;
-              v52 = v24;
+              v52 = fileURL4;
               v53 = 2112;
-              v54 = v25;
+              v54 = filename2;
               _os_log_error_impl(&dword_1CEFC7000, v21, OS_LOG_TYPE_ERROR, "[ERROR] downloader: folder %@ child filename %@.", buf, 0x16u);
 
               v6 = v23;
@@ -668,9 +668,9 @@ void __95__FPDDownloader__recursiveDownloadOfItem_request_recursively_perItemCom
             [v15 setFileURL:v20];
           }
 
-          v22 = [v15 fileURL];
+          fileURL5 = [v15 fileURL];
 
-          if (v22)
+          if (fileURL5)
           {
             [(FPDDownloader *)self _createChildItem:v15];
           }
@@ -683,8 +683,8 @@ void __95__FPDDownloader__recursiveDownloadOfItem_request_recursively_perItemCom
     }
 
     v26 = self->_parentToChildMap;
-    v27 = [v44 itemID];
-    [(NSMutableDictionary *)v26 removeObjectForKey:v27];
+    itemID3 = [itemCopy itemID];
+    [(NSMutableDictionary *)v26 removeObjectForKey:itemID3];
 
     objc_sync_exit(v6);
   }
@@ -692,12 +692,12 @@ void __95__FPDDownloader__recursiveDownloadOfItem_request_recursively_perItemCom
   else
   {
     childProxies = self->_childProxies;
-    v29 = [v44 itemID];
-    v6 = [(NSMutableDictionary *)childProxies objectForKeyedSubscript:v29];
+    itemID4 = [itemCopy itemID];
+    v6 = [(NSMutableDictionary *)childProxies objectForKeyedSubscript:itemID4];
 
     if (v6)
     {
-      v30 = v43 == 0;
+      v30 = errorCopy == 0;
     }
 
     else
@@ -709,20 +709,20 @@ void __95__FPDDownloader__recursiveDownloadOfItem_request_recursively_perItemCom
     {
       [(NSMutableDictionary *)v6 stopTrackingIfStarted];
       v31 = self->_childProxies;
-      v32 = [v44 itemID];
-      [(NSMutableDictionary *)v31 removeObjectForKey:v32];
+      itemID5 = [itemCopy itemID];
+      [(NSMutableDictionary *)v31 removeObjectForKey:itemID5];
 
       v33 = MEMORY[0x1E696AD98];
-      v34 = [(FPDDownloader *)self progress];
-      v35 = [v34 fileCompletedCount];
-      v36 = [v33 numberWithInt:{objc_msgSend(v35, "intValue") + 1}];
-      v37 = [(FPDDownloader *)self progress];
-      [v37 setFileCompletedCount:v36];
+      progress = [(FPDDownloader *)self progress];
+      fileCompletedCount = [progress fileCompletedCount];
+      v36 = [v33 numberWithInt:{objc_msgSend(fileCompletedCount, "intValue") + 1}];
+      progress2 = [(FPDDownloader *)self progress];
+      [progress2 setFileCompletedCount:v36];
 
       v38 = fp_current_or_default_log();
       if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
       {
-        [(FPDDownloader *)v44 _didDownloadItem:v6 withError:v38];
+        [(FPDDownloader *)itemCopy _didDownloadItem:v6 withError:v38];
       }
     }
   }

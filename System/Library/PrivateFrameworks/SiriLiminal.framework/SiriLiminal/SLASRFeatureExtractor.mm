@@ -1,14 +1,14 @@
 @interface SLASRFeatureExtractor
-+ (id)_getLastTokenForPath:(id)a3 fromPhrases:(id)a4;
-+ (id)_getTokenConfidenceForPath:(id)a3 fromPhrases:(id)a4;
-+ (id)extractASRFaturesFrom:(id)a3;
-+ (id)extractLRNNFaturesFrom:(id)a3;
-+ (id)getBestSpeechRecognitionTextFromPackage:(id)a3;
++ (id)_getLastTokenForPath:(id)path fromPhrases:(id)phrases;
++ (id)_getTokenConfidenceForPath:(id)path fromPhrases:(id)phrases;
++ (id)extractASRFaturesFrom:(id)from;
++ (id)extractLRNNFaturesFrom:(id)from;
++ (id)getBestSpeechRecognitionTextFromPackage:(id)package;
 @end
 
 @implementation SLASRFeatureExtractor
 
-+ (id)extractLRNNFaturesFrom:(id)a3
++ (id)extractLRNNFaturesFrom:(id)from
 {
   v8 = *MEMORY[0x277D85DE8];
   v3 = SLLogContextFacilityCoreSpeech;
@@ -23,42 +23,42 @@
   return 0;
 }
 
-+ (id)getBestSpeechRecognitionTextFromPackage:(id)a3
++ (id)getBestSpeechRecognitionTextFromPackage:(id)package
 {
   v42 = *MEMORY[0x277D85DE8];
-  v32 = a3;
-  v3 = [v32 recognition];
+  packageCopy = package;
+  recognition = [packageCopy recognition];
   v4 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  v5 = [v3 utterances];
-  v6 = [v5 firstObject];
+  utterances = [recognition utterances];
+  firstObject = [utterances firstObject];
 
-  v31 = v3;
-  v7 = [v3 phrases];
+  v31 = recognition;
+  phrases = [recognition phrases];
   v8 = 0;
-  if ([v7 count])
+  if ([phrases count])
   {
     v9 = 0;
-    v33 = v7;
-    v34 = v6;
+    v33 = phrases;
+    v34 = firstObject;
     do
     {
-      v10 = [v6 interpretationIndices];
-      v11 = [v10 count];
+      interpretationIndices = [firstObject interpretationIndices];
+      v11 = [interpretationIndices count];
 
       if (v9 >= v11)
       {
         break;
       }
 
-      v12 = [v7 objectAtIndex:v9];
-      v13 = [v6 interpretationIndices];
-      v14 = [v13 objectAtIndex:v9];
-      v15 = [v14 unsignedIntegerValue];
+      v12 = [phrases objectAtIndex:v9];
+      interpretationIndices2 = [firstObject interpretationIndices];
+      v14 = [interpretationIndices2 objectAtIndex:v9];
+      unsignedIntegerValue = [v14 unsignedIntegerValue];
 
-      v16 = [v12 interpretations];
-      v17 = [v16 count];
+      interpretations = [v12 interpretations];
+      v17 = [interpretations count];
 
-      if (v15 >= v17)
+      if (unsignedIntegerValue >= v17)
       {
 
         v28 = &stru_2878A3BF0;
@@ -66,16 +66,16 @@
       }
 
       v36 = v12;
-      v18 = [v12 interpretations];
-      v19 = [v18 objectAtIndex:v15];
+      interpretations2 = [v12 interpretations];
+      v19 = [interpretations2 objectAtIndex:unsignedIntegerValue];
 
       v39 = 0u;
       v40 = 0u;
       v37 = 0u;
       v38 = 0u;
       v35 = v19;
-      v20 = [v19 tokens];
-      v21 = [v20 countByEnumeratingWithState:&v37 objects:v41 count:16];
+      tokens = [v19 tokens];
+      v21 = [tokens countByEnumeratingWithState:&v37 objects:v41 count:16];
       if (v21)
       {
         v22 = v21;
@@ -87,7 +87,7 @@
             v25 = v8;
             if (*v38 != v23)
             {
-              objc_enumerationMutation(v20);
+              objc_enumerationMutation(tokens);
             }
 
             v26 = *(*(&v37 + 1) + 8 * i);
@@ -96,20 +96,20 @@
               [v4 appendString:@" "];
             }
 
-            v27 = [v26 text];
-            [v4 appendString:v27];
+            text = [v26 text];
+            [v4 appendString:text];
             v8 = v26;
           }
 
-          v22 = [v20 countByEnumeratingWithState:&v37 objects:v41 count:16];
+          v22 = [tokens countByEnumeratingWithState:&v37 objects:v41 count:16];
         }
 
         while (v22);
       }
 
       ++v9;
-      v7 = v33;
-      v6 = v34;
+      phrases = v33;
+      firstObject = v34;
     }
 
     while (v9 < [v33 count]);
@@ -123,22 +123,22 @@ LABEL_19:
   return v28;
 }
 
-+ (id)_getTokenConfidenceForPath:(id)a3 fromPhrases:(id)a4
++ (id)_getTokenConfidenceForPath:(id)path fromPhrases:(id)phrases
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v6, "count")}];
-  v8 = [MEMORY[0x277CBEB18] array];
+  pathCopy = path;
+  phrasesCopy = phrases;
+  v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(phrasesCopy, "count")}];
+  array = [MEMORY[0x277CBEB18] array];
   v9 = SLLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(SLLogContextFacilityCoreSpeech, OS_LOG_TYPE_INFO))
   {
     v10 = v9;
-    v11 = [v5 dictionaryRepresentation];
+    dictionaryRepresentation = [pathCopy dictionaryRepresentation];
     *buf = 136315394;
     v25 = "+[SLASRFeatureExtractor _getTokenConfidenceForPath:fromPhrases:]";
     v26 = 2114;
-    v27 = v11;
+    v27 = dictionaryRepresentation;
     _os_log_impl(&dword_26754E000, v10, OS_LOG_TYPE_INFO, "%s Constructing tokens for speech path %{public}@", buf, 0x16u);
   }
 
@@ -146,11 +146,11 @@ LABEL_19:
   v21[1] = 3221225472;
   v21[2] = __64__SLASRFeatureExtractor__getTokenConfidenceForPath_fromPhrases___block_invoke;
   v21[3] = &unk_279C0E970;
-  v22 = v5;
-  v23 = v8;
-  v12 = v8;
-  v13 = v5;
-  [v6 enumerateObjectsUsingBlock:v21];
+  v22 = pathCopy;
+  v23 = array;
+  v12 = array;
+  v13 = pathCopy;
+  [phrasesCopy enumerateObjectsUsingBlock:v21];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __64__SLASRFeatureExtractor__getTokenConfidenceForPath_fromPhrases___block_invoke_2;
@@ -210,34 +210,34 @@ void __64__SLASRFeatureExtractor__getTokenConfidenceForPath_fromPhrases___block_
   v9 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_getLastTokenForPath:(id)a3 fromPhrases:(id)a4
++ (id)_getLastTokenForPath:(id)path fromPhrases:(id)phrases
 {
-  v5 = a4;
-  v6 = [a3 interpretationIndices];
-  v7 = [v6 lastObject];
-  v8 = [v7 unsignedIntegerValue];
+  phrasesCopy = phrases;
+  interpretationIndices = [path interpretationIndices];
+  lastObject = [interpretationIndices lastObject];
+  unsignedIntegerValue = [lastObject unsignedIntegerValue];
 
-  v9 = [v5 lastObject];
+  lastObject2 = [phrasesCopy lastObject];
 
-  v10 = [v9 interpretations];
-  v11 = [v10 objectAtIndex:v8];
+  interpretations = [lastObject2 interpretations];
+  v11 = [interpretations objectAtIndex:unsignedIntegerValue];
 
-  v12 = [v11 tokens];
-  v13 = [v12 firstObject];
+  tokens = [v11 tokens];
+  firstObject = [tokens firstObject];
 
-  return v13;
+  return firstObject;
 }
 
-+ (id)extractASRFaturesFrom:(id)a3
++ (id)extractASRFaturesFrom:(id)from
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   v5 = objc_alloc_init(SLASRFeatures);
-  if (v4)
+  if (fromCopy)
   {
-    v6 = [v4 recognition];
-    v7 = [v6 utterances];
-    v8 = [v7 count];
+    recognition = [fromCopy recognition];
+    utterances = [recognition utterances];
+    v8 = [utterances count];
 
     if (v8 >= 0xB)
     {
@@ -260,13 +260,13 @@ void __64__SLASRFeatureExtractor__getTokenConfidenceForPath_fromPhrases___block_
     v41 = __Block_byref_object_copy__213;
     v42 = __Block_byref_object_dispose__214;
     v43 = 0;
-    v27 = [v6 utterances];
+    utterances2 = [recognition utterances];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __47__SLASRFeatureExtractor_extractASRFaturesFrom___block_invoke;
     v28[3] = &unk_279C0E948;
-    v36 = a1;
-    v13 = v6;
+    selfCopy = self;
+    v13 = recognition;
     v29 = v13;
     v14 = v9;
     v30 = v14;
@@ -279,15 +279,15 @@ void __64__SLASRFeatureExtractor__getTokenConfidenceForPath_fromPhrases___block_
     v33 = v17;
     p_buf = &buf;
     v35 = &v38;
-    [v27 enumerateObjectsUsingBlock:v28];
+    [utterances2 enumerateObjectsUsingBlock:v28];
     [(SLASRFeatures *)v5 setLatticePathMaxScores:v14];
     [(SLASRFeatures *)v5 setLatticePathMeanScores:v16];
     [(SLASRFeatures *)v5 setLatticePathMinScores:v15];
     [(SLASRFeatures *)v5 setLatticePathVarScores:v17];
     [(SLASRFeatures *)v5 setTopLatticePathScores:*(*(&buf + 1) + 40)];
     -[SLASRFeatures setTopLatticePathTokenCount:](v5, "setTopLatticePathTokenCount:", [*(*(&buf + 1) + 40) count]);
-    v18 = [v4 audioAnalytics];
-    [v18 snr];
+    audioAnalytics = [fromCopy audioAnalytics];
+    [audioAnalytics snr];
     *&v19 = v19;
     [(SLASRFeatures *)v5 setSnr:v19];
 

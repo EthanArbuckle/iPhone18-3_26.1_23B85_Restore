@@ -1,23 +1,23 @@
 @interface ICSSettingsBundleController
-+ (id)localizedStringForKey:(id)a3;
-- (BOOL)isStateDrivenNavigationPossibleWithParentController:(id)a3;
-- (ICSSettingsBundleController)initWithParentListController:(id)a3;
++ (id)localizedStringForKey:(id)key;
+- (BOOL)isStateDrivenNavigationPossibleWithParentController:(id)controller;
+- (ICSSettingsBundleController)initWithParentListController:(id)controller;
 - (PSListController)parentListController;
 - (id)announceCallStyleIcon;
-- (id)announceCallsLabelText:(id)a3;
-- (id)specifiersWithSpecifier:(id)a3;
-- (void)handleUserDidTapOnMainSpecifier:(id)a3 parentController:(id)a4;
-- (void)performButtonActionForSpecifier:(id)a3;
-- (void)propertiesDidChangeForConfiguration:(id)a3;
+- (id)announceCallsLabelText:(id)text;
+- (id)specifiersWithSpecifier:(id)specifier;
+- (void)handleUserDidTapOnMainSpecifier:(id)specifier parentController:(id)controller;
+- (void)performButtonActionForSpecifier:(id)specifier;
+- (void)propertiesDidChangeForConfiguration:(id)configuration;
 @end
 
 @implementation ICSSettingsBundleController
 
-- (ICSSettingsBundleController)initWithParentListController:(id)a3
+- (ICSSettingsBundleController)initWithParentListController:(id)controller
 {
   v7.receiver = self;
   v7.super_class = ICSSettingsBundleController;
-  v3 = [(ICSSettingsBundleController *)&v7 initWithParentListController:a3];
+  v3 = [(ICSSettingsBundleController *)&v7 initWithParentListController:controller];
   if (v3)
   {
     v4 = objc_alloc_init(TUUserConfiguration);
@@ -30,16 +30,16 @@
   return v3;
 }
 
-- (id)specifiersWithSpecifier:(id)a3
+- (id)specifiersWithSpecifier:(id)specifier
 {
   v4 = +[NSMutableArray array];
-  v5 = [(ICSSettingsBundleController *)self announceCallsSpecifier];
+  announceCallsSpecifier = [(ICSSettingsBundleController *)self announceCallsSpecifier];
 
-  if (!v5)
+  if (!announceCallsSpecifier)
   {
     v6 = [objc_opt_class() localizedStringForKey:@"ANNOUNCE_CALLS_LIST_TITLE"];
-    v7 = [(ICSSettingsBundleController *)self parentListController];
-    v8 = [(ICSSettingsBundleController *)self isStateDrivenNavigationPossibleWithParentController:v7];
+    parentListController = [(ICSSettingsBundleController *)self parentListController];
+    v8 = [(ICSSettingsBundleController *)self isStateDrivenNavigationPossibleWithParentController:parentListController];
 
     if (v8)
     {
@@ -64,13 +64,13 @@ LABEL_7:
     }
 
     [v9 setIdentifier:@"ANNOUNCE_CALLS"];
-    v10 = [(ICSSettingsBundleController *)self announceCallStyleIcon];
-    [v9 setProperty:v10 forKey:PSIconImageKey];
+    announceCallStyleIcon = [(ICSSettingsBundleController *)self announceCallStyleIcon];
+    [v9 setProperty:announceCallStyleIcon forKey:PSIconImageKey];
 
-    v11 = [(ICSSettingsBundleController *)self userConfiguration];
+    userConfiguration = [(ICSSettingsBundleController *)self userConfiguration];
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
-    [v9 setProperty:v11 forKey:v13];
+    [v9 setProperty:userConfiguration forKey:v13];
 
     [v4 addObject:v9];
     goto LABEL_7;
@@ -82,12 +82,12 @@ LABEL_8:
   return v14;
 }
 
-+ (id)localizedStringForKey:(id)a3
++ (id)localizedStringForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [NSBundle bundleForClass:objc_opt_class()];
-  v6 = [a1 localizationTableName];
-  v7 = [v5 localizedStringForKey:v4 value:&stru_C9F0 table:v6];
+  localizationTableName = [self localizationTableName];
+  v7 = [v5 localizedStringForKey:keyCopy value:&stru_C9F0 table:localizationTableName];
 
   return v7;
 }
@@ -99,20 +99,20 @@ LABEL_8:
   return WeakRetained;
 }
 
-- (id)announceCallsLabelText:(id)a3
+- (id)announceCallsLabelText:(id)text
 {
-  v3 = [(ICSSettingsBundleController *)self userConfiguration];
-  v4 = +[ICSCallAnnouncementSettingsController localizedlabelTextForAnnounceCallsConfiguration:](ICSCallAnnouncementSettingsController, "localizedlabelTextForAnnounceCallsConfiguration:", [v3 announceCalls]);
+  userConfiguration = [(ICSSettingsBundleController *)self userConfiguration];
+  v4 = +[ICSCallAnnouncementSettingsController localizedlabelTextForAnnounceCallsConfiguration:](ICSCallAnnouncementSettingsController, "localizedlabelTextForAnnounceCallsConfiguration:", [userConfiguration announceCalls]);
 
   return v4;
 }
 
 - (id)announceCallStyleIcon
 {
-  v2 = [(ICSSettingsBundleController *)self parentListController];
-  v3 = [v2 specifier];
-  v4 = [v3 identifier];
-  v5 = [v4 isEqualToString:@"FACETIME"];
+  parentListController = [(ICSSettingsBundleController *)self parentListController];
+  specifier = [parentListController specifier];
+  identifier = [specifier identifier];
+  v5 = [identifier isEqualToString:@"FACETIME"];
 
   v6 = [NSBundle bundleForClass:objc_opt_class()];
   if (v5)
@@ -130,37 +130,37 @@ LABEL_8:
   return v8;
 }
 
-- (void)performButtonActionForSpecifier:(id)a3
+- (void)performButtonActionForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [(ICSSettingsBundleController *)self parentListController];
-  [(ICSSettingsBundleController *)self handleUserDidTapOnMainSpecifier:v4 parentController:v5];
+  specifierCopy = specifier;
+  parentListController = [(ICSSettingsBundleController *)self parentListController];
+  [(ICSSettingsBundleController *)self handleUserDidTapOnMainSpecifier:specifierCopy parentController:parentListController];
 }
 
-- (void)propertiesDidChangeForConfiguration:(id)a3
+- (void)propertiesDidChangeForConfiguration:(id)configuration
 {
-  v5 = [(ICSSettingsBundleController *)self parentListController];
-  v4 = [(ICSSettingsBundleController *)self announceCallsSpecifier];
-  [v5 reloadSpecifier:v4];
+  parentListController = [(ICSSettingsBundleController *)self parentListController];
+  announceCallsSpecifier = [(ICSSettingsBundleController *)self announceCallsSpecifier];
+  [parentListController reloadSpecifier:announceCallsSpecifier];
 }
 
-- (BOOL)isStateDrivenNavigationPossibleWithParentController:(id)a3
+- (BOOL)isStateDrivenNavigationPossibleWithParentController:(id)controller
 {
   v4 = sub_559C();
   v5 = *(v4 - 8);
   v6 = *(v5 + 64);
   __chkstk_darwin();
   v8 = &v12 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v9 = a3;
-  v10 = [v9 traitCollection];
+  controllerCopy = controller;
+  traitCollection = [controllerCopy traitCollection];
   sub_561C();
 
-  LOBYTE(v10) = sub_557C();
+  LOBYTE(traitCollection) = sub_557C();
   (*(v5 + 8))(v8, v4);
-  return v10 & 1;
+  return traitCollection & 1;
 }
 
-- (void)handleUserDidTapOnMainSpecifier:(id)a3 parentController:(id)a4
+- (void)handleUserDidTapOnMainSpecifier:(id)specifier parentController:(id)controller
 {
   v5 = sub_559C();
   v6 = *(v5 - 8);
@@ -174,10 +174,10 @@ LABEL_8:
   v13 = *(v12 + 64);
   __chkstk_darwin();
   v15 = &v18 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v16 = a4;
+  controllerCopy = controller;
   sub_562C();
   sub_555C();
-  v17 = [v16 traitCollection];
+  traitCollection = [controllerCopy traitCollection];
   sub_561C();
 
   sub_51F4();

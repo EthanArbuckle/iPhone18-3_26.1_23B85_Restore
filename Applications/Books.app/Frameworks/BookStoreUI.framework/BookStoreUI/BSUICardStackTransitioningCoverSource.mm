@@ -1,41 +1,41 @@
 @interface BSUICardStackTransitioningCoverSource
-+ (BOOL)isValidSourceWithFeedViewController:(id)a3 query:(id)a4;
-- (BSUICardStackTransitioningCoverSource)initWithFeedViewController:(id)a3 query:(id)a4 isInNonHorizontalLayout:(BOOL)a5;
++ (BOOL)isValidSourceWithFeedViewController:(id)controller query:(id)query;
+- (BSUICardStackTransitioningCoverSource)initWithFeedViewController:(id)controller query:(id)query isInNonHorizontalLayout:(BOOL)layout;
 - (CGRect)frame;
 - (id)cardStackTransitioningCoverSourceHide;
-- (void)cardStackTransitioningCoverSourceReplaceReferenceView:(id)a3;
+- (void)cardStackTransitioningCoverSourceReplaceReferenceView:(id)view;
 - (void)dealloc;
-- (void)imageResourceDidChangeImage:(id)a3;
+- (void)imageResourceDidChangeImage:(id)image;
 @end
 
 @implementation BSUICardStackTransitioningCoverSource
 
-+ (BOOL)isValidSourceWithFeedViewController:(id)a3 query:(id)a4
++ (BOOL)isValidSourceWithFeedViewController:(id)controller query:(id)query
 {
-  v4 = [a3 renderReferencesMatchingQuery:a4];
+  v4 = [controller renderReferencesMatchingQuery:query];
   v5 = [v4 count] != 0;
 
   return v5;
 }
 
-- (BSUICardStackTransitioningCoverSource)initWithFeedViewController:(id)a3 query:(id)a4 isInNonHorizontalLayout:(BOOL)a5
+- (BSUICardStackTransitioningCoverSource)initWithFeedViewController:(id)controller query:(id)query isInNonHorizontalLayout:(BOOL)layout
 {
-  v9 = a3;
-  v10 = a4;
+  controllerCopy = controller;
+  queryCopy = query;
   v40.receiver = self;
   v40.super_class = BSUICardStackTransitioningCoverSource;
   v11 = [(BSUICardStackTransitioningCoverSource *)&v40 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_feedViewController, a3);
-    objc_storeStrong(&v12->_query, a4);
-    v12->_isInNonHorizontalLayout = a5;
-    v13 = [v9 renderReferencesMatchingQuery:v10];
-    v14 = [v13 allKeys];
-    v15 = [v14 firstObject];
+    objc_storeStrong(&v11->_feedViewController, controller);
+    objc_storeStrong(&v12->_query, query);
+    v12->_isInNonHorizontalLayout = layout;
+    v13 = [controllerCopy renderReferencesMatchingQuery:queryCopy];
+    allKeys = [v13 allKeys];
+    firstObject = [allKeys firstObject];
 
-    if (v15 && ([v13 objectForKeyedSubscript:v15], v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "firstObject"), v17 = objc_claimAutoreleasedReturnValue(), v16, v17))
+    if (firstObject && ([v13 objectForKeyedSubscript:firstObject], v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "firstObject"), v17 = objc_claimAutoreleasedReturnValue(), v16, v17))
     {
       [v17 center];
       [v17 size];
@@ -53,22 +53,22 @@
       v12->_frame.size = size;
     }
 
-    v23 = [v9 view];
+    view = [controllerCopy view];
     referenceView = v12->_referenceView;
-    v12->_referenceView = v23;
+    v12->_referenceView = view;
 
-    v25 = [(BSUICardStackTransitioningCoverSource *)v12 feedViewController];
-    v26 = [v25 imageResourcesMatchingQuery:v10];
+    feedViewController = [(BSUICardStackTransitioningCoverSource *)v12 feedViewController];
+    v26 = [feedViewController imageResourcesMatchingQuery:queryCopy];
 
-    v27 = [v13 allKeys];
-    v28 = [v27 firstObject];
+    allKeys2 = [v13 allKeys];
+    firstObject2 = [allKeys2 firstObject];
 
-    if (v28)
+    if (firstObject2)
     {
-      v29 = [v26 objectForKeyedSubscript:v28];
-      v30 = [v29 anyObject];
+      v29 = [v26 objectForKeyedSubscript:firstObject2];
+      anyObject = [v29 anyObject];
       imageResource = v12->_imageResource;
-      v12->_imageResource = v30;
+      v12->_imageResource = anyObject;
     }
 
     else
@@ -79,16 +79,16 @@
 
     [(TUIImageResource *)v12->_imageResource addObserver:v12];
     v32 = [(TUIImageResource *)v12->_imageResource imageContentWithOptions:1];
-    v33 = [v32 image];
-    v34 = [v33 newImage];
+    image = [v32 image];
+    newImage = [image newImage];
     [v32 insets];
-    v35 = [v34 imageWithAlignmentRectInsets:?];
+    v35 = [newImage imageWithAlignmentRectInsets:?];
     coverImage = v12->_coverImage;
     v12->_coverImage = v35;
 
     if ([v13 count])
     {
-      v37 = [TUIRenderReferenceOverride overrideWithQuery:v10 alpha:0.0];
+      v37 = [TUIRenderReferenceOverride overrideWithQuery:queryCopy alpha:0.0];
       overrideForHiding = v12->_overrideForHiding;
       v12->_overrideForHiding = v37;
     }
@@ -107,20 +107,20 @@
 
 - (id)cardStackTransitioningCoverSourceHide
 {
-  v3 = [(BSUICardStackTransitioningCoverSource *)self overrideForHiding];
-  v4 = [(BSUICardStackTransitioningCoverSource *)self feedViewController];
-  [v4 addRenderOverride:v3];
+  overrideForHiding = [(BSUICardStackTransitioningCoverSource *)self overrideForHiding];
+  feedViewController = [(BSUICardStackTransitioningCoverSource *)self feedViewController];
+  [feedViewController addRenderOverride:overrideForHiding];
 
-  v5 = [(BSUICardStackTransitioningCoverSource *)self feedViewController];
-  objc_initWeak(&location, v5);
+  feedViewController2 = [(BSUICardStackTransitioningCoverSource *)self feedViewController];
+  objc_initWeak(&location, feedViewController2);
 
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_575C8;
   v9[3] = &unk_386F40;
   objc_copyWeak(&v11, &location);
-  v10 = v3;
-  v6 = v3;
+  v10 = overrideForHiding;
+  v6 = overrideForHiding;
   v7 = objc_retainBlock(v9);
 
   objc_destroyWeak(&v11);
@@ -129,9 +129,9 @@
   return v7;
 }
 
-- (void)cardStackTransitioningCoverSourceReplaceReferenceView:(id)a3
+- (void)cardStackTransitioningCoverSourceReplaceReferenceView:(id)view
 {
-  v13 = a3;
+  viewCopy = view;
   [(BSUICardStackTransitioningCoverSource *)self frame];
   if (!CGRectIsEmpty(v15))
   {
@@ -140,23 +140,23 @@
     v7 = v6;
     v9 = v8;
     v11 = v10;
-    v12 = [(BSUICardStackTransitioningCoverSource *)self referenceView];
-    [v13 convertRect:v12 fromView:{v5, v7, v9, v11}];
+    referenceView = [(BSUICardStackTransitioningCoverSource *)self referenceView];
+    [viewCopy convertRect:referenceView fromView:{v5, v7, v9, v11}];
     [(BSUICardStackTransitioningCoverSource *)self setFrame:?];
 
-    [(BSUICardStackTransitioningCoverSource *)self setReferenceView:v13];
+    [(BSUICardStackTransitioningCoverSource *)self setReferenceView:viewCopy];
   }
 }
 
-- (void)imageResourceDidChangeImage:(id)a3
+- (void)imageResourceDidChangeImage:(id)image
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_57774;
   v4[3] = &unk_386D98;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  imageCopy = image;
+  v3 = imageCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 

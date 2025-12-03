@@ -1,15 +1,15 @@
 @interface CarKeySessionManager
-- (void)sesSession:(id)a3 event:(id)a4;
+- (void)sesSession:(id)session event:(id)event;
 @end
 
 @implementation CarKeySessionManager
 
-- (void)sesSession:(id)a3 event:(id)a4
+- (void)sesSession:(id)session event:(id)event
 {
   v6 = sub_16A5B4();
-  v7 = a3;
-  v8 = self;
-  sub_B46D8(v8, v6);
+  sessionCopy = session;
+  selfCopy = self;
+  sub_B46D8(selfCopy, v6);
 }
 
 @end

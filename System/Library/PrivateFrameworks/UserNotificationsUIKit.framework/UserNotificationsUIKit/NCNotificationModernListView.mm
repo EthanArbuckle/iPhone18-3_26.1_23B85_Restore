@@ -1,13 +1,13 @@
 @interface NCNotificationModernListView
 - (BOOL)viewEffectivelyTracking;
 - (CGPoint)animatableContentOffset;
-- (NCNotificationModernListView)initWithCoder:(id)a3;
-- (NCNotificationModernListView)initWithModelType:(Class)a3 purpose:(id)a4;
-- (NCNotificationModernListView)initWithModelType:(Class)a3 purpose:(id)a4 purposeWithSensitiveTextHashed:(id)a5;
+- (NCNotificationModernListView)initWithCoder:(id)coder;
+- (NCNotificationModernListView)initWithModelType:(Class)type purpose:(id)purpose;
+- (NCNotificationModernListView)initWithModelType:(Class)type purpose:(id)purpose purposeWithSensitiveTextHashed:(id)hashed;
 - (double)gestureTranslationY;
 - (void)dealloc;
 - (void)didSetNeedsUpdateOfApparentZPositionsOfListCells;
-- (void)setContentOffset:(CGPoint)a3 animated:(BOOL)a4;
+- (void)setContentOffset:(CGPoint)offset animated:(BOOL)animated;
 - (void)syncScrollPosition;
 @end
 
@@ -15,24 +15,24 @@
 
 - (BOOL)viewEffectivelyTracking
 {
-  v2 = self;
-  v3 = [(NCNotificationModernListView *)v2 traitCollection];
-  v4 = [v3 _backlightLuminance];
+  selfCopy = self;
+  traitCollection = [(NCNotificationModernListView *)selfCopy traitCollection];
+  _backlightLuminance = [traitCollection _backlightLuminance];
 
-  if (v4 == 2)
+  if (_backlightLuminance == 2)
   {
-    v5 = [(NCNotificationModernListView *)v2 isTracking];
+    isTracking = [(NCNotificationModernListView *)selfCopy isTracking];
   }
 
   else
   {
-    v5 = 0;
+    isTracking = 0;
   }
 
-  return v5;
+  return isTracking;
 }
 
-- (NCNotificationModernListView)initWithModelType:(Class)a3 purpose:(id)a4 purposeWithSensitiveTextHashed:(id)a5
+- (NCNotificationModernListView)initWithModelType:(Class)type purpose:(id)purpose purposeWithSensitiveTextHashed:(id)hashed
 {
   swift_getObjCClassMetadata();
   sub_21E92A458();
@@ -40,7 +40,7 @@
   return NCNotificationModernListView.init(modelType:purpose:purposeWithSensitiveTextHashed:)();
 }
 
-- (NCNotificationModernListView)initWithModelType:(Class)a3 purpose:(id)a4
+- (NCNotificationModernListView)initWithModelType:(Class)type purpose:(id)purpose
 {
   sub_21E92A458();
   v6 = OBJC_IVAR___NCNotificationModernListView_animatableProperty;
@@ -53,12 +53,12 @@
 
   v11.receiver = self;
   v11.super_class = NCNotificationModernListView;
-  v9 = [(NCNotificationListView *)&v11 initWithModelType:a3 purpose:v8];
+  v9 = [(NCNotificationListView *)&v11 initWithModelType:type purpose:v8];
 
   return v9;
 }
 
-- (NCNotificationModernListView)initWithCoder:(id)a3
+- (NCNotificationModernListView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR___NCNotificationModernListView_animatableProperty;
   v5 = [objc_allocWithZone(MEMORY[0x277D75D38]) init];
@@ -74,9 +74,9 @@
 - (void)dealloc
 {
   v2 = *(&self->super.super.super.super.super.isa + OBJC_IVAR___NCNotificationModernListView_animatableProperty);
-  v3 = self;
+  selfCopy = self;
   [v2 invalidate];
-  v4.receiver = v3;
+  v4.receiver = selfCopy;
   v4.super_class = NCNotificationModernListView;
   [(NCNotificationModernListView *)&v4 dealloc];
 }
@@ -93,19 +93,19 @@
 
 - (double)gestureTranslationY
 {
-  v2 = self;
-  v3 = [(NCNotificationModernListView *)v2 panGestureRecognizer];
-  [v3 translationInView_];
+  selfCopy = self;
+  panGestureRecognizer = [(NCNotificationModernListView *)selfCopy panGestureRecognizer];
+  [panGestureRecognizer translationInView_];
   v5 = v4;
 
   return v5;
 }
 
-- (void)setContentOffset:(CGPoint)a3 animated:(BOOL)a4
+- (void)setContentOffset:(CGPoint)offset animated:(BOOL)animated
 {
   v4.receiver = self;
   v4.super_class = NCNotificationModernListView;
-  [(NCNotificationModernListView *)&v4 setContentOffset:a4 animated:a3.x, a3.y];
+  [(NCNotificationModernListView *)&v4 setContentOffset:animated animated:offset.x, offset.y];
 }
 
 - (void)syncScrollPosition
@@ -120,7 +120,7 @@
   v7[2] = sub_21E792C28;
   v7[3] = &block_descriptor_6;
   v5 = _Block_copy(v7);
-  v6 = self;
+  selfCopy = self;
 
   [v3 _performWithoutRetargetingAnimations_];
 
@@ -129,7 +129,7 @@
 
 - (void)didSetNeedsUpdateOfApparentZPositionsOfListCells
 {
-  v2 = self;
+  selfCopy = self;
   NCNotificationModernListView.didSetNeedsUpdateOfApparentZPositionsOfListCells()();
 }
 

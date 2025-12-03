@@ -1,43 +1,43 @@
 @interface MRVirtualVoiceInputDeviceDescriptor
-- (MRVirtualVoiceInputDeviceDescriptor)initWithData:(id)a3;
-- (MRVirtualVoiceInputDeviceDescriptor)initWithProtobuf:(id)a3;
+- (MRVirtualVoiceInputDeviceDescriptor)initWithData:(id)data;
+- (MRVirtualVoiceInputDeviceDescriptor)initWithProtobuf:(id)protobuf;
 - (NSData)data;
 - (_MRVoiceInputDeviceDescriptorProtobuf)protobuf;
-- (id)_copyWithZone:(_NSZone *)a3 usingConcreteClass:(Class)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)_copyWithZone:(_NSZone *)zone usingConcreteClass:(Class)class;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation MRVirtualVoiceInputDeviceDescriptor
 
-- (MRVirtualVoiceInputDeviceDescriptor)initWithData:(id)a3
+- (MRVirtualVoiceInputDeviceDescriptor)initWithData:(id)data
 {
-  v4 = a3;
-  v5 = [[_MRVoiceInputDeviceDescriptorProtobuf alloc] initWithData:v4];
+  dataCopy = data;
+  v5 = [[_MRVoiceInputDeviceDescriptorProtobuf alloc] initWithData:dataCopy];
 
   v6 = [(MRVirtualVoiceInputDeviceDescriptor *)self initWithProtobuf:v5];
   return v6;
 }
 
-- (MRVirtualVoiceInputDeviceDescriptor)initWithProtobuf:(id)a3
+- (MRVirtualVoiceInputDeviceDescriptor)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v20.receiver = self;
   v20.super_class = MRVirtualVoiceInputDeviceDescriptor;
   v5 = [(MRVirtualVoiceInputDeviceDescriptor *)&v20 init];
   if (v5)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    if ([v4 supportedFormatsCount])
+    if ([protobufCopy supportedFormatsCount])
     {
       v7 = 0;
       v8 = 1;
       do
       {
-        v9 = [v4 supportedFormatsAtIndex:v7];
+        v9 = [protobufCopy supportedFormatsAtIndex:v7];
         v10 = MEMORY[0x1E696AE40];
-        v11 = [v9 formatSettingsPlistData];
-        v12 = [v10 propertyListWithData:v11 options:0 format:0 error:0];
+        formatSettingsPlistData = [v9 formatSettingsPlistData];
+        v12 = [v10 propertyListWithData:formatSettingsPlistData options:0 format:0 error:0];
 
         if (v12)
         {
@@ -47,16 +47,16 @@
         v7 = v8;
       }
 
-      while ([v4 supportedFormatsCount] > v8++);
+      while ([protobufCopy supportedFormatsCount] > v8++);
     }
 
     objc_storeStrong(&v5->_supportedFormats, v6);
-    v14 = [v4 defaultFormat];
-    if ([v14 hasFormatSettingsPlistData])
+    defaultFormat = [protobufCopy defaultFormat];
+    if ([defaultFormat hasFormatSettingsPlistData])
     {
       v15 = MEMORY[0x1E696AE40];
-      v16 = [v14 formatSettingsPlistData];
-      v17 = [v15 propertyListWithData:v16 options:0 format:0 error:0];
+      formatSettingsPlistData2 = [defaultFormat formatSettingsPlistData];
+      v17 = [v15 propertyListWithData:formatSettingsPlistData2 options:0 format:0 error:0];
       defaultFormat = v5->_defaultFormat;
       v5->_defaultFormat = v17;
     }
@@ -67,10 +67,10 @@
 
 - (NSData)data
 {
-  v2 = [(MRVirtualVoiceInputDeviceDescriptor *)self protobuf];
-  v3 = [v2 data];
+  protobuf = [(MRVirtualVoiceInputDeviceDescriptor *)self protobuf];
+  data = [protobuf data];
 
-  return v3;
+  return data;
 }
 
 - (_MRVoiceInputDeviceDescriptorProtobuf)protobuf
@@ -118,23 +118,23 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
 
-  return [(MRVirtualVoiceInputDeviceDescriptor *)self _copyWithZone:a3 usingConcreteClass:v5];
+  return [(MRVirtualVoiceInputDeviceDescriptor *)self _copyWithZone:zone usingConcreteClass:v5];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
 
-  return [(MRVirtualVoiceInputDeviceDescriptor *)self _copyWithZone:a3 usingConcreteClass:v5];
+  return [(MRVirtualVoiceInputDeviceDescriptor *)self _copyWithZone:zone usingConcreteClass:v5];
 }
 
-- (id)_copyWithZone:(_NSZone *)a3 usingConcreteClass:(Class)a4
+- (id)_copyWithZone:(_NSZone *)zone usingConcreteClass:(Class)class
 {
-  v5 = objc_alloc_init(a4);
+  v5 = objc_alloc_init(class);
   v6 = [(NSArray *)self->_supportedFormats copy];
   v7 = v5[1];
   v5[1] = v6;

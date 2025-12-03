@@ -1,8 +1,8 @@
 @interface PHMediaFormatConversionPlaceholderSource
-+ (id)imageSourceForFileType:(id)a3;
-+ (id)videoSourceForFileType:(id)a3;
++ (id)imageSourceForFileType:(id)type;
++ (id)videoSourceForFileType:(id)type;
 - (CGSize)imageDimensions;
-- (PHMediaFormatConversionPlaceholderSource)initWithFileType:(id)a3 mediaType:(int64_t)a4;
+- (PHMediaFormatConversionPlaceholderSource)initWithFileType:(id)type mediaType:(int64_t)mediaType;
 - (id)fileURL;
 - (unint64_t)length;
 @end
@@ -40,13 +40,13 @@
 - (id)fileURL
 {
   v2 = MEMORY[0x277CE1CB8];
-  v3 = [(PHMediaFormatConversionPlaceholderSource *)self fileType];
-  v4 = [v2 typeWithIdentifier:v3];
-  v5 = [v4 preferredFilenameExtension];
+  fileType = [(PHMediaFormatConversionPlaceholderSource *)self fileType];
+  v4 = [v2 typeWithIdentifier:fileType];
+  preferredFilenameExtension = [v4 preferredFilenameExtension];
 
-  if (v5)
+  if (preferredFilenameExtension)
   {
-    v6 = [@"IMG_0001" stringByAppendingPathExtension:v5];
+    v6 = [@"IMG_0001" stringByAppendingPathExtension:preferredFilenameExtension];
     v7 = MEMORY[0x277CBEBC0];
     v8 = NSTemporaryDirectory();
     v9 = [v8 stringByAppendingPathComponent:v6];
@@ -61,39 +61,39 @@
   return v10;
 }
 
-- (PHMediaFormatConversionPlaceholderSource)initWithFileType:(id)a3 mediaType:(int64_t)a4
+- (PHMediaFormatConversionPlaceholderSource)initWithFileType:(id)type mediaType:(int64_t)mediaType
 {
-  v7 = a3;
+  typeCopy = type;
   v11.receiver = self;
   v11.super_class = PHMediaFormatConversionPlaceholderSource;
   v8 = [(PHMediaFormatConversionPlaceholderSource *)&v11 init];
   if (v8)
   {
-    if (!v7)
+    if (!typeCopy)
     {
-      v10 = [MEMORY[0x277CCA890] currentHandler];
-      [v10 handleFailureInMethod:a2 object:v8 file:@"PHMediaFormatConversion.m" lineNumber:470 description:{@"Invalid parameter not satisfying: %@", @"fileType"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v8 file:@"PHMediaFormatConversion.m" lineNumber:470 description:{@"Invalid parameter not satisfying: %@", @"fileType"}];
     }
 
-    [(PHMediaFormatConversionPlaceholderSource *)v8 setFileType:v7];
-    [(PHMediaFormatConversionContent *)v8 setMediaType:a4];
+    [(PHMediaFormatConversionPlaceholderSource *)v8 setFileType:typeCopy];
+    [(PHMediaFormatConversionContent *)v8 setMediaType:mediaType];
   }
 
   return v8;
 }
 
-+ (id)videoSourceForFileType:(id)a3
++ (id)videoSourceForFileType:(id)type
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithFileType:v4 mediaType:1];
+  typeCopy = type;
+  v5 = [[self alloc] initWithFileType:typeCopy mediaType:1];
 
   return v5;
 }
 
-+ (id)imageSourceForFileType:(id)a3
++ (id)imageSourceForFileType:(id)type
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithFileType:v4 mediaType:2];
+  typeCopy = type;
+  v5 = [[self alloc] initWithFileType:typeCopy mediaType:2];
 
   return v5;
 }

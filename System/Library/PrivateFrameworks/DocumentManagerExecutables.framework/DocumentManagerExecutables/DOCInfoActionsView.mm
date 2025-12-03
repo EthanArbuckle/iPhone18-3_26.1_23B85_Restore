@@ -2,11 +2,11 @@
 - (CGRect)bounds;
 - (CGRect)frame;
 - (NSArray)nodes;
-- (_TtC26DocumentManagerExecutables18DOCInfoActionsView)initWithFrame:(CGRect)a3;
+- (_TtC26DocumentManagerExecutables18DOCInfoActionsView)initWithFrame:(CGRect)frame;
 - (double)spacing;
 - (void)layoutSubviews;
-- (void)setNodes:(id)a3;
-- (void)setSpacing:(double)a3;
+- (void)setNodes:(id)nodes;
+- (void)setSpacing:(double)spacing;
 @end
 
 @implementation DOCInfoActionsView
@@ -19,18 +19,18 @@
   return result;
 }
 
-- (void)setSpacing:(double)a3
+- (void)setSpacing:(double)spacing
 {
   v5 = type metadata accessor for DOCInfoActionsView();
   v11.receiver = self;
   v11.super_class = v5;
-  v6 = self;
+  selfCopy = self;
   [(DOCInfoActionsView *)&v11 spacing];
   v8 = v7;
-  v10.receiver = v6;
+  v10.receiver = selfCopy;
   v10.super_class = v5;
-  [(DOCInfoActionsView *)&v10 setSpacing:a3];
-  [(DOCInfoActionsView *)v6 spacing];
+  [(DOCInfoActionsView *)&v10 setSpacing:spacing];
+  [(DOCInfoActionsView *)selfCopy spacing];
   if (v9 != v8)
   {
     DOCInfoActionsView.updateForSpacingChange()();
@@ -47,17 +47,17 @@
   return v2.super.isa;
 }
 
-- (void)setNodes:(id)a3
+- (void)setNodes:(id)nodes
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&_sSo7DOCNode_pMd);
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   DOCInfoActionsView.nodes.setter(v4);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   DOCInfoActionsView.layoutSubviews()();
 }
 
@@ -81,7 +81,7 @@
   return result;
 }
 
-- (_TtC26DocumentManagerExecutables18DOCInfoActionsView)initWithFrame:(CGRect)a3
+- (_TtC26DocumentManagerExecutables18DOCInfoActionsView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,37 +1,37 @@
 @interface IDSTCPLink
-- (BOOL)disconnect:(sockaddr_in *)a3 remoteAddress:(sockaddr_in *)a4;
+- (BOOL)disconnect:(sockaddr_in *)disconnect remoteAddress:(sockaddr_in *)address;
 - (IDSLinkDelegate)alternateDelegate;
 - (IDSLinkDelegate)delegate;
-- (IDSTCPConnection_)_getIDSTCPConnection:(id *)a3;
-- (IDSTCPLink)initWithDeviceUniqueID:(id)a3 cbuuid:(id)a4 isSSL:(BOOL)a5 getPacketLength:(id)a6;
+- (IDSTCPConnection_)_getIDSTCPConnection:(id *)connection;
+- (IDSTCPLink)initWithDeviceUniqueID:(id)d cbuuid:(id)cbuuid isSSL:(BOOL)l getPacketLength:(id)length;
 - (id)copyLinkStatsDict;
-- (id)generateLinkReport:(double)a3 isCurrentLink:(BOOL)a4;
-- (sockaddr)connect:(int)a3 localAddress:(const sockaddr *)a4 portRange:(unsigned __int16)a5 remoteAddress:(const sockaddr *)a6 clientUUID:(unsigned __int8)a7[16] completionHandler:(id)a8;
+- (id)generateLinkReport:(double)report isCurrentLink:(BOOL)link;
+- (sockaddr)connect:(int)connect localAddress:(const sockaddr *)address portRange:(unsigned __int16)range remoteAddress:(const sockaddr *)remoteAddress clientUUID:(unsigned __int8)d[16] completionHandler:(id)handler;
 - (unint64_t)headerOverhead;
-- (unint64_t)sendPacketBufferArray:(id *)a3 arraySize:(int)a4 toDeviceUniqueID:(id)a5 cbuuid:(id)a6;
+- (unint64_t)sendPacketBufferArray:(id *)array arraySize:(int)size toDeviceUniqueID:(id)d cbuuid:(id)cbuuid;
 - (void)dealloc;
 - (void)invalidate;
-- (void)processIncomingPacket:(id *)a3;
-- (void)setWiFiAssistState:(BOOL)a3;
+- (void)processIncomingPacket:(id *)packet;
+- (void)setWiFiAssistState:(BOOL)state;
 @end
 
 @implementation IDSTCPLink
 
-- (IDSTCPLink)initWithDeviceUniqueID:(id)a3 cbuuid:(id)a4 isSSL:(BOOL)a5 getPacketLength:(id)a6
+- (IDSTCPLink)initWithDeviceUniqueID:(id)d cbuuid:(id)cbuuid isSSL:(BOOL)l getPacketLength:(id)length
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  dCopy = d;
+  cbuuidCopy = cbuuid;
+  lengthCopy = length;
   v19.receiver = self;
   v19.super_class = IDSTCPLink;
   v14 = [(IDSTCPLink *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_cbuuid, a4);
-    objc_storeStrong(&v15->_deviceUniqueID, a3);
-    v15->_isSSL = a5;
-    v16 = _Block_copy(v13);
+    objc_storeStrong(&v14->_cbuuid, cbuuid);
+    objc_storeStrong(&v15->_deviceUniqueID, d);
+    v15->_isSSL = l;
+    v16 = _Block_copy(lengthCopy);
     getPacketLength = v15->_getPacketLength;
     v15->_getPacketLength = v16;
 
@@ -151,13 +151,13 @@
   return v8;
 }
 
-- (IDSTCPConnection_)_getIDSTCPConnection:(id *)a3
+- (IDSTCPConnection_)_getIDSTCPConnection:(id *)connection
 {
   v28 = *MEMORY[0x1E69E9840];
   conns = self->_conns;
   if (conns)
   {
-    while (!IsSameSA(&conns->var6, &a3->var18) || !IsSameSA(&conns->var7, &a3->var19))
+    while (!IsSameSA(&conns->var6, &connection->var18) || !IsSameSA(&conns->var7, &connection->var19))
     {
       conns = conns->var12;
       if (!conns)
@@ -188,8 +188,8 @@ LABEL_5:
     v17 = v5;
     v18 = v5;
     v19 = v5;
-    SAToIPPortString(__str, 0x80uLL, &a3->var18);
-    SAToIPPortString(v12, 0x80uLL, &a3->var19);
+    SAToIPPortString(__str, 0x80uLL, &connection->var18);
+    SAToIPPortString(v12, 0x80uLL, &connection->var19);
     v6 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
@@ -218,14 +218,14 @@ LABEL_5:
   return conns;
 }
 
-- (sockaddr)connect:(int)a3 localAddress:(const sockaddr *)a4 portRange:(unsigned __int16)a5 remoteAddress:(const sockaddr *)a6 clientUUID:(unsigned __int8)a7[16] completionHandler:(id)a8
+- (sockaddr)connect:(int)connect localAddress:(const sockaddr *)address portRange:(unsigned __int16)range remoteAddress:(const sockaddr *)remoteAddress clientUUID:(unsigned __int8)d[16] completionHandler:(id)handler
 {
-  v9 = a5;
+  rangeCopy = range;
   v95 = *MEMORY[0x1E69E9840];
-  v12 = a8;
+  handlerCopy = handler;
   if (self->_getPacketLength)
   {
-    v60 = a6;
+    remoteAddressCopy = remoteAddress;
     *&v13 = 0xAAAAAAAAAAAAAAAALL;
     *(&v13 + 1) = 0xAAAAAAAAAAAAAAAALL;
     v83 = v13;
@@ -244,14 +244,14 @@ LABEL_5:
     v72 = v13;
     *v69 = v13;
     v70 = v13;
-    v64 = self;
-    aBlock = v12;
+    selfCopy = self;
+    aBlock = handlerCopy;
     v67 = 1;
     v14 = malloc_type_calloc(1uLL, 0x150uLL, 0x10A00409F0FFA38uLL);
-    v63 = v12;
+    v63 = handlerCopy;
     if (v14 && (v15 = sub_1A7C226B4(0x4000, 0), (*(v14 + 2) = v15) != 0) && (v16 = _IDSLinkPacketBufferCreate(), (*(v14 + 35) = v16) != 0))
     {
-      if (a4->sa_family == 30)
+      if (address->sa_family == 30)
       {
         v17 = 30;
       }
@@ -311,7 +311,7 @@ LABEL_5:
 
         p_counters = &self->_counters;
         v21 = *(v14 + 13);
-        v22 = v9 + 1;
+        v22 = rangeCopy + 1;
 LABEL_12:
         v23 = 0;
         v24 = bswap32(v21) >> 16;
@@ -465,24 +465,24 @@ LABEL_106:
         }
 
         *(v14 + 2) = 1;
-        *(v14 + 40) = v64;
+        *(v14 + 40) = selfCopy;
         *(v14 + 37) = p_counters;
-        *(v14 + 3) = [(IDSTCPLink *)v64 isSSL:v56];
+        *(v14 + 3) = [(IDSTCPLink *)selfCopy isSSL:v56];
         __memcpy_chk();
-        *(v14 + 76) = a3;
+        *(v14 + 76) = connect;
         v37 = *(v14 + 35);
-        v37[12] = a3;
+        v37[12] = connect;
         memcpy(v37 + 14, v14 + 24, v14[24]);
-        memcpy(v37 + 46, v60, v60->sa_len);
-        if (!uuid_is_null(a7))
+        memcpy(v37 + 46, remoteAddressCopy, remoteAddressCopy->sa_len);
+        if (!uuid_is_null(d))
         {
           *&v89[29] = 0xAAAAAAAAAAAAAAAALL;
           *&v43 = 0xAAAAAAAAAAAAAAAALL;
           *(&v43 + 1) = 0xAAAAAAAAAAAAAAAALL;
           *v89 = v43;
           *&v89[16] = v43;
-          uuid_unparse(a7, v89);
-          if (setsockopt(*v14, 0xFFFF, 4360, a7, 0x10u))
+          uuid_unparse(d, v89);
+          if (setsockopt(*v14, 0xFFFF, 4360, d, 0x10u))
           {
             v44 = *__error();
             v45 = OSLogHandleForTransportCategory();
@@ -561,7 +561,7 @@ LABEL_106:
 
         else
         {
-          if ((connect(*v14, v60, v60->sa_len) & 0x80000000) == 0)
+          if ((connect(*v14, remoteAddressCopy, remoteAddressCopy->sa_len) & 0x80000000) == 0)
           {
             v39 = OSLogHandleForTransportCategory();
             if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
@@ -610,8 +610,8 @@ LABEL_80:
             }
 
             v30 = v63;
-            *(v14 + 39) = v64->_conns;
-            v64->_conns = v14;
+            *(v14 + 39) = selfCopy->_conns;
+            selfCopy->_conns = v14;
             goto LABEL_45;
           }
 
@@ -728,7 +728,7 @@ LABEL_31:
   }
 
   v31 = OSLogHandleForTransportCategory();
-  v30 = v12;
+  v30 = handlerCopy;
   if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
   {
     *v89 = 0;
@@ -753,7 +753,7 @@ LABEL_45:
   return v19;
 }
 
-- (BOOL)disconnect:(sockaddr_in *)a3 remoteAddress:(sockaddr_in *)a4
+- (BOOL)disconnect:(sockaddr_in *)disconnect remoteAddress:(sockaddr_in *)address
 {
   v28 = *MEMORY[0x1E69E9840];
   if (!self->_getPacketLength)
@@ -806,7 +806,7 @@ LABEL_26:
   if (!conns)
   {
 LABEL_14:
-    SAToIPPortString(v20, 0x80uLL, a4);
+    SAToIPPortString(v20, 0x80uLL, address);
     v12 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
@@ -842,7 +842,7 @@ LABEL_14:
   while (1)
   {
     v9 = v6;
-    if (*&v6->var6.ss_len == *&a3->sin_len && v6->var6.__ss_align == *a3->sin_zero && *&v6->var7.ss_len == *&a4->sin_len && v6->var7.__ss_align == *a4->sin_zero)
+    if (*&v6->var6.ss_len == *&disconnect->sin_len && v6->var6.__ss_align == *disconnect->sin_zero && *&v6->var7.ss_len == *&address->sin_len && v6->var7.__ss_align == *address->sin_zero)
     {
       break;
     }
@@ -877,18 +877,18 @@ LABEL_14:
   return v13;
 }
 
-- (void)processIncomingPacket:(id *)a3
+- (void)processIncomingPacket:(id *)packet
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained link:self didReceivePacket:a3 fromDeviceUniqueID:self->_deviceUniqueID cbuuid:self->_cbuuid];
+  [WeakRetained link:self didReceivePacket:packet fromDeviceUniqueID:self->_deviceUniqueID cbuuid:self->_cbuuid];
 }
 
-- (unint64_t)sendPacketBufferArray:(id *)a3 arraySize:(int)a4 toDeviceUniqueID:(id)a5 cbuuid:(id)a6
+- (unint64_t)sendPacketBufferArray:(id *)array arraySize:(int)size toDeviceUniqueID:(id)d cbuuid:(id)cbuuid
 {
   v32 = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = a6;
-  v12 = v11;
+  dCopy = d;
+  cbuuidCopy = cbuuid;
+  v12 = cbuuidCopy;
   if (!self->_getPacketLength)
   {
     v18 = OSLogHandleForTransportCategory();
@@ -914,7 +914,7 @@ LABEL_14:
     goto LABEL_28;
   }
 
-  if (v11 && ([v11 isEqualToString:self->_cbuuid] & 1) == 0)
+  if (cbuuidCopy && ([cbuuidCopy isEqualToString:self->_cbuuid] & 1) == 0)
   {
     v19 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -923,7 +923,7 @@ LABEL_14:
       *buf = 138412546;
       v29 = v12;
       v30 = 2112;
-      v31 = cbuuid;
+      cbuuidCopy2 = cbuuid;
       _os_log_impl(&dword_1A7AD9000, v19, OS_LOG_TYPE_DEFAULT, "wrong device: %@ %@", buf, 0x16u);
     }
 
@@ -943,13 +943,13 @@ LABEL_14:
     goto LABEL_28;
   }
 
-  if (a4 < 1)
+  if (size < 1)
   {
     v16 = 11;
     goto LABEL_43;
   }
 
-  v13 = [(IDSTCPLink *)self _getIDSTCPConnection:*a3];
+  v13 = [(IDSTCPLink *)self _getIDSTCPConnection:*array];
   if (!v13)
   {
     v16 = 11;
@@ -989,22 +989,22 @@ LABEL_38:
 
     if (v13->var4)
     {
-      v24 = a4;
-      v25 = a3;
+      sizeCopy = size;
+      arrayCopy = array;
       do
       {
-        v26 = *v25++;
+        v26 = *arrayCopy++;
         v27 = bswap32(*(v26 + 16) + 3) >> 16;
         IDSLinkPacketBufferAddBufferStart(v26, -8);
         **v26 = 66327;
         *(*v26 + 3) = v27;
-        --v24;
+        --sizeCopy;
       }
 
-      while (v24);
+      while (sizeCopy);
     }
 
-    v16 = sub_1A7B43CA4(v14, a3);
+    v16 = sub_1A7B43CA4(v14, array);
     if (v16 == 14)
     {
       if (*(v14 + 5))
@@ -1019,7 +1019,7 @@ LABEL_38:
     }
 
 LABEL_28:
-    if (a4 <= 0)
+    if (size <= 0)
     {
       goto LABEL_43;
     }
@@ -1049,20 +1049,20 @@ LABEL_28:
 
   v16 = 6;
 LABEL_41:
-  v22 = a4;
+  sizeCopy2 = size;
   do
   {
-    _IDSLinkPacketBufferRelease("/Library/Caches/com.apple.xbs/Sources/IdentityServices/IDSFoundation/IDSTCPLink.m", 1045, *a3++);
-    --v22;
+    _IDSLinkPacketBufferRelease("/Library/Caches/com.apple.xbs/Sources/IdentityServices/IDSFoundation/IDSTCPLink.m", 1045, *array++);
+    --sizeCopy2;
   }
 
-  while (v22);
+  while (sizeCopy2);
 LABEL_43:
 
   return v16;
 }
 
-- (id)generateLinkReport:(double)a3 isCurrentLink:(BOOL)a4
+- (id)generateLinkReport:(double)report isCurrentLink:(BOOL)link
 {
   previousReportTime = self->_previousReportTime;
   if (previousReportTime == 0.0)
@@ -1072,12 +1072,12 @@ LABEL_43:
 
   else
   {
-    v7 = a3 - previousReportTime;
+    v7 = report - previousReportTime;
     v8 = self->_counters._totalBytesSent - self->_previousCounters._totalBytesSent;
     v9 = self->_counters._totalBytesReceived - self->_previousCounters._totalBytesReceived;
     v24 = self->_counters._totalPacketsSent - self->_previousCounters._totalPacketsSent;
     v25 = MEMORY[0x1E696AEC0];
-    v23 = a4;
+    linkCopy = link;
     v10 = formattedBytes(v8);
     v11 = formattedSpeed(((8 * v8) / v7 + 0.5));
     totalPacketsSent = self->_counters._totalPacketsSent;
@@ -1088,7 +1088,7 @@ LABEL_43:
     totalPacketsReceived = self->_counters._totalPacketsReceived;
     v18 = formattedBytes(self->_counters._totalBytesReceived);
     v19 = 32;
-    if (v23)
+    if (linkCopy)
     {
       v19 = 42;
     }
@@ -1096,7 +1096,7 @@ LABEL_43:
     v20 = [v25 stringWithFormat:@"%c Tx %6llu pkts %@B %@bps     %6llu pkts %@B\n                        Rx %6llu pkts %@B %@bps     %6llu pkts %@B\n", v19, v24, v10, v11, totalPacketsSent, v13, v14, v15, v16, totalPacketsReceived, v18];
   }
 
-  self->_previousReportTime = a3;
+  self->_previousReportTime = report;
   v21 = *&self->_counters._totalBytesReceived;
   *&self->_previousCounters._totalBytesSent = *&self->_counters._totalBytesSent;
   *&self->_previousCounters._totalBytesReceived = v21;
@@ -1104,14 +1104,14 @@ LABEL_43:
   return v20;
 }
 
-- (void)setWiFiAssistState:(BOOL)a3
+- (void)setWiFiAssistState:(BOOL)state
 {
   v22 = *MEMORY[0x1E69E9840];
   conns = self->_conns;
   if (conns)
   {
-    v4 = a3;
-    if (a3)
+    stateCopy = state;
+    if (state)
     {
       v6 = 1;
     }
@@ -1127,7 +1127,7 @@ LABEL_43:
       {
         var0 = conns->var0;
         v14 = v6;
-        v15 = v4;
+        v15 = stateCopy;
         v8 = setsockopt(var0, 0xFFFF, 4387, &v14, 8u);
         if (!v8)
         {
@@ -1167,7 +1167,7 @@ LABEL_43:
 
         else
         {
-          self->_wifiAssistEnabled = v4;
+          self->_wifiAssistEnabled = stateCopy;
         }
       }
 

@@ -37,9 +37,9 @@
 
 - (void)listenForChanges
 {
-  v3 = [(SHMediaLibraryAccountListener *)self notificationObserver];
+  notificationObserver = [(SHMediaLibraryAccountListener *)self notificationObserver];
 
-  if (v3)
+  if (notificationObserver)
   {
     [(SHMediaLibraryAccountListener *)self stopListeningForChanges];
   }
@@ -62,8 +62,8 @@
 - (void)stopListeningForChanges
 {
   v4 = +[NSNotificationCenter defaultCenter];
-  v3 = [(SHMediaLibraryAccountListener *)self notificationObserver];
-  [v4 removeObserver:v3];
+  notificationObserver = [(SHMediaLibraryAccountListener *)self notificationObserver];
+  [v4 removeObserver:notificationObserver];
 }
 
 @end

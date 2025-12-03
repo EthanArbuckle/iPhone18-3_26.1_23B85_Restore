@@ -1,40 +1,40 @@
 @interface TUIVisibilityChangeNode
-- (TUIVisibilityChangeNode)initWithIdentifiers:(id)a3 added:(id)a4 removed:(id)a5 identifierNodeMap:(id)a6 attributesMap:(id)a7;
+- (TUIVisibilityChangeNode)initWithIdentifiers:(id)identifiers added:(id)added removed:(id)removed identifierNodeMap:(id)map attributesMap:(id)attributesMap;
 - (id)newAdded;
 - (id)newRemoved;
 @end
 
 @implementation TUIVisibilityChangeNode
 
-- (TUIVisibilityChangeNode)initWithIdentifiers:(id)a3 added:(id)a4 removed:(id)a5 identifierNodeMap:(id)a6 attributesMap:(id)a7
+- (TUIVisibilityChangeNode)initWithIdentifiers:(id)identifiers added:(id)added removed:(id)removed identifierNodeMap:(id)map attributesMap:(id)attributesMap
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identifiersCopy = identifiers;
+  addedCopy = added;
+  removedCopy = removed;
+  mapCopy = map;
+  attributesMapCopy = attributesMap;
   v29.receiver = self;
   v29.super_class = TUIVisibilityChangeNode;
   v17 = [(TUIVisibilityChangeNode *)&v29 init];
   if (v17)
   {
-    v18 = [v12 copy];
+    v18 = [identifiersCopy copy];
     identifiers = v17->_identifiers;
     v17->_identifiers = v18;
 
-    v20 = [v13 copy];
+    v20 = [addedCopy copy];
     added = v17->_added;
     v17->_added = v20;
 
-    v22 = [v14 copy];
+    v22 = [removedCopy copy];
     removed = v17->_removed;
     v17->_removed = v22;
 
-    v24 = [v15 copy];
+    v24 = [mapCopy copy];
     identifierNodeMap = v17->_identifierNodeMap;
     v17->_identifierNodeMap = v24;
 
-    v26 = [v16 copy];
+    v26 = [attributesMapCopy copy];
     attributesMap = v17->_attributesMap;
     v17->_attributesMap = v26;
   }

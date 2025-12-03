@@ -1,7 +1,7 @@
 @interface HazeEstimation
-- (HazeEstimation)initWithMetalContext:(id)a3;
+- (HazeEstimation)initWithMetalContext:(id)context;
 - (SourceROI)hazeROI;
-- (__n128)calculateHazeValues:(uint64_t)a3 pixels:(int)a4 thresh:(float32x4_t *)a5 properties:(void *)a6;
+- (__n128)calculateHazeValues:(uint64_t)values pixels:(int)pixels thresh:(float32x4_t *)thresh properties:(void *)properties;
 - (int)allocInternalData;
 - (int)configure;
 - (int)createShaders;
@@ -39,10 +39,10 @@
 
 - (int)allocInternalData
 {
-  v3 = [(FigMetalContext *)self->_metalContext allocator];
-  v4 = [v3 newTextureDescriptor];
+  allocator = [(FigMetalContext *)self->_metalContext allocator];
+  newTextureDescriptor = [allocator newTextureDescriptor];
 
-  if (!v4)
+  if (!newTextureDescriptor)
   {
     [(HazeEstimation *)&v20 allocInternalData];
 LABEL_11:
@@ -58,29 +58,29 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v5 = [v4 desc];
-  [v5 setTextureType:2];
+  desc = [newTextureDescriptor desc];
+  [desc setTextureType:2];
 
   v6 = *self->_anon_28;
-  v7 = [v4 desc];
-  [v7 setWidth:v6];
+  desc2 = [newTextureDescriptor desc];
+  [desc2 setWidth:v6];
 
   v8 = *&self->_anon_28[4];
-  v9 = [v4 desc];
-  [v9 setHeight:v8];
+  desc3 = [newTextureDescriptor desc];
+  [desc3 setHeight:v8];
 
-  v10 = [v4 desc];
-  [v10 setDepth:1];
+  desc4 = [newTextureDescriptor desc];
+  [desc4 setDepth:1];
 
-  v11 = [v4 desc];
-  [v11 setUsage:7];
+  desc5 = [newTextureDescriptor desc];
+  [desc5 setUsage:7];
 
-  v12 = [v4 desc];
-  [v12 setPixelFormat:115];
+  desc6 = [newTextureDescriptor desc];
+  [desc6 setPixelFormat:115];
 
-  [v4 setLabel:@"haze_estimation_thumbnail_tex"];
-  v13 = [(FigMetalContext *)self->_metalContext allocator];
-  v14 = [v13 newTextureWithDescriptor:v4];
+  [newTextureDescriptor setLabel:@"haze_estimation_thumbnail_tex"];
+  allocator2 = [(FigMetalContext *)self->_metalContext allocator];
+  v14 = [allocator2 newTextureWithDescriptor:newTextureDescriptor];
   thumbnailTexture = self->_thumbnailTexture;
   self->_thumbnailTexture = v14;
 
@@ -106,10 +106,10 @@ LABEL_6:
   return v18;
 }
 
-- (HazeEstimation)initWithMetalContext:(id)a3
+- (HazeEstimation)initWithMetalContext:(id)context
 {
-  v5 = a3;
-  if (!v5)
+  contextCopy = context;
+  if (!contextCopy)
   {
     FigDebugAssert3();
     v20 = 0;
@@ -123,10 +123,10 @@ LABEL_13:
     goto LABEL_7;
   }
 
-  objc_storeStrong(&self->_metalContext, a3);
-  v6 = [v5 device];
+  objc_storeStrong(&self->_metalContext, context);
+  device = [contextCopy device];
   device = self->_device;
-  self->_device = v6;
+  self->_device = device;
 
   v18.receiver = self;
   v18.super_class = HazeEstimation;
@@ -138,10 +138,10 @@ LABEL_13:
     goto LABEL_7;
   }
 
-  v10 = [(HazeEstimation *)v8 createShaders];
-  if (v10)
+  createShaders = [(HazeEstimation *)v8 createShaders];
+  if (createShaders)
   {
-    [(HazeEstimation *)v10 initWithMetalContext:v9];
+    [(HazeEstimation *)createShaders initWithMetalContext:v9];
     goto LABEL_13;
   }
 
@@ -156,16 +156,16 @@ LABEL_13:
   }
 
   v9->_hazeConfigured = 0;
-  v13 = [(HazeEstimation *)v9 configure];
-  if (v13)
+  configure = [(HazeEstimation *)v9 configure];
+  if (configure)
   {
-    [(HazeEstimation *)v13 initWithMetalContext:v9];
+    [(HazeEstimation *)configure initWithMetalContext:v9];
     goto LABEL_13;
   }
 
-  v14 = [(FigMetalContext *)v9->_metalContext commandQueue];
+  commandQueue = [(FigMetalContext *)v9->_metalContext commandQueue];
   commandQueue = v9->_commandQueue;
-  v9->_commandQueue = v14;
+  v9->_commandQueue = commandQueue;
 
 LABEL_7:
   return v9;
@@ -173,19 +173,19 @@ LABEL_7:
 
 - (int)run
 {
-  v3 = [(HazeEstimation *)self allocInternalData];
-  if (v3)
+  allocInternalData = [(HazeEstimation *)self allocInternalData];
+  if (allocInternalData)
   {
-    v5 = v3;
+    v5 = allocInternalData;
     [HazeEstimation run];
   }
 
   else
   {
-    v4 = [(HazeEstimation *)self prepareThumbnail];
-    if (v4)
+    prepareThumbnail = [(HazeEstimation *)self prepareThumbnail];
+    if (prepareThumbnail)
     {
-      v5 = v4;
+      v5 = prepareThumbnail;
       [HazeEstimation run];
     }
 
@@ -206,9 +206,9 @@ LABEL_7:
 
 - (int)prepareThumbnail
 {
-  v3 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-  v4 = v3;
-  if (!v3)
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  v4 = commandBuffer;
+  if (!commandBuffer)
   {
     [HazeEstimation prepareThumbnail];
 LABEL_7:
@@ -216,15 +216,15 @@ LABEL_7:
     goto LABEL_4;
   }
 
-  v5 = [v3 computeCommandEncoder];
-  if (!v5)
+  computeCommandEncoder = [commandBuffer computeCommandEncoder];
+  if (!computeCommandEncoder)
   {
     [HazeEstimation prepareThumbnail];
     goto LABEL_7;
   }
 
-  v6 = v5;
-  [v5 setComputePipelineState:self->_computePipelineHazeThumbnailGeneration];
+  v6 = computeCommandEncoder;
+  [computeCommandEncoder setComputePipelineState:self->_computePipelineHazeThumbnailGeneration];
   [v6 setTexture:self->_inputRGBTexture atIndex:0];
   [v6 setTexture:self->_thumbnailTexture atIndex:1];
   [v6 setBuffer:self->_hazeInternalBuffer offset:48 atIndex:0];
@@ -330,72 +330,72 @@ LABEL_16:
   return v22;
 }
 
-- (__n128)calculateHazeValues:(uint64_t)a3 pixels:(int)a4 thresh:(float32x4_t *)a5 properties:(void *)a6
+- (__n128)calculateHazeValues:(uint64_t)values pixels:(int)pixels thresh:(float32x4_t *)thresh properties:(void *)properties
 {
-  v9 = a6;
-  v11 = a4;
+  propertiesCopy = properties;
+  pixelsCopy = pixels;
   v12 = 0uLL;
-  if (a4 >= 1)
+  if (pixels >= 1)
   {
-    v13 = a4;
-    v14 = a5;
+    pixelsCopy2 = pixels;
+    threshCopy = thresh;
     do
     {
-      v15 = *v14++;
+      v15 = *threshCopy++;
       v63 = v12;
-      [v9 sr_pow];
+      [propertiesCopy sr_pow];
       v10 = _simd_pow_f4(v15, vdupq_lane_s32(v16, 0));
       v12 = vaddq_f32(v63, v10);
-      --v13;
+      --pixelsCopy2;
     }
 
-    while (v13);
+    while (pixelsCopy2);
   }
 
-  v10.f32[0] = a4;
+  v10.f32[0] = pixels;
   v64 = vdupq_lane_s32(*v10.f32, 0);
   xa = vdivq_f32(v12, v64);
-  [v9 sr_pow];
+  [propertiesCopy sr_pow];
   *v18.i32 = 1.0 / v17;
   v19 = _simd_pow_f4(xa, vdupq_lane_s32(v18, 0));
   v20 = 0uLL;
-  if (a4 >= 1)
+  if (pixels >= 1)
   {
     do
     {
-      v21 = *a5++;
+      v21 = *thresh++;
       v22 = vsubq_f32(v21, v19);
       v20 = vmlaq_f32(v20, v22, v22);
-      --v11;
+      --pixelsCopy;
     }
 
-    while (v11);
+    while (pixelsCopy);
   }
 
   xb = vsqrtq_f32(vdivq_f32(v20, v64));
   v65 = v19;
-  [v9 sr_var];
+  [propertiesCopy sr_var];
   v66 = vmlsq_lane_f32(v65, xb, v23, 0);
-  [v9 min_display_black];
+  [propertiesCopy min_display_black];
   v25 = v24;
-  [v9 evmExpRatio];
+  [propertiesCopy evmExpRatio];
   *v27.i32 = v25 * v26;
   v28 = vsubq_f32(v66, vdupq_lane_s32(v27, 0));
   v67 = vdupq_n_s32(0x358637BDu);
   x = vmaxnmq_f32(v28, v67);
-  [v9 evtBkt];
+  [propertiesCopy evtBkt];
   v30 = v29 * vmuls_lane_f32(256.0, x, 3);
-  [v9 reluC1];
+  [propertiesCopy reluC1];
   v32 = v31;
-  [v9 reluC2];
+  [propertiesCopy reluC2];
   v34 = v33;
-  [v9 reluC3];
-  v36 = (v35 * a1) * 1024.0;
-  [v9 reluC4];
+  [propertiesCopy reluC3];
+  v36 = (v35 * self) * 1024.0;
+  [propertiesCopy reluC4];
   *&v38 = *&v38 * 1024.0;
   if (v30 < v36)
   {
-    v39 = (v32 * a1) * 1024.0;
+    v39 = (v32 * self) * 1024.0;
     if (v30 <= v39)
     {
       *&v38 = v34 * 1024.0;
@@ -408,24 +408,24 @@ LABEL_16:
   }
 
   *&v38 = *&v38 * 0.00097656;
-  [v9 reluC1];
-  v41 = v40 * a1;
-  [v9 reluC5];
+  [propertiesCopy reluC1];
+  v41 = v40 * self;
+  [propertiesCopy reluC5];
   v43 = v41 * v42;
-  [v9 reluC2];
+  [propertiesCopy reluC2];
   *v45.i32 = v43 * (v44 - v56);
   v57 = vmlaq_n_f32(vdupq_lane_s32(v45, 0), x, v56);
   v46 = fminf(fminf(v57.f32[0], v57.f32[2]), v57.f32[1]);
-  [v9 sr_sat];
+  [propertiesCopy sr_sat];
   *&v48 = fmax(((fmaxf(fmaxf(v57.f32[0], v57.f32[2]), v57.f32[1]) / v46) - v47), 1.0);
   *v48.i32 = *v48.i32;
   xc = v48;
-  [v9 sr_min];
+  [propertiesCopy sr_min];
   *v50.i32 = v49 * v46;
   v58 = vsubq_f32(v57, vdupq_lane_s32(v50, 0));
-  [v9 min_display_black];
+  [propertiesCopy min_display_black];
   v52 = v51;
-  [v9 evmExpRatio];
+  [propertiesCopy evmExpRatio];
   *v54.i32 = v52 * v53;
   v68 = vdivq_f32(vmaxnmq_f32(vsubq_f32(v58, vdupq_lane_s32(v54, 0)), v67), vdupq_lane_s32(xc, 0));
 
@@ -449,7 +449,7 @@ LABEL_16:
   FigDebugAssert3();
   OUTLINED_FUNCTION_8();
   result = FigSignalErrorAtGM();
-  *a1 = result;
+  *self = result;
   return result;
 }
 
@@ -459,7 +459,7 @@ LABEL_16:
   FigDebugAssert3();
   OUTLINED_FUNCTION_8();
   result = FigSignalErrorAtGM();
-  *a1 = result;
+  *self = result;
   return result;
 }
 

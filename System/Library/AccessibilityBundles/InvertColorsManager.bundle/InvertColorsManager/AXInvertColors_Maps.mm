@@ -1,25 +1,25 @@
 @interface AXInvertColors_Maps
-+ (void)installCategories:(id)a3;
-+ (void)performValidations:(id)a3;
++ (void)installCategories:(id)categories;
++ (void)performValidations:(id)validations;
 @end
 
 @implementation AXInvertColors_Maps
 
-+ (void)performValidations:(id)a3
++ (void)performValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NavShareETACell" hasInstanceVariable:@"_badgeImageView" withType:"UIImageView"];
-  [v3 validateClass:@"_SearchResultTableViewCell" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SearchResultTableViewCell" hasInstanceVariable:@"_containerStackView" withType:"NUIContainerStackView"];
-  [v3 validateClass:@"SearchHomeBrowseCategoryCollectionViewCell" hasInstanceVariable:@"_browseImageView" withType:"UIImageView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NavShareETACell" hasInstanceVariable:@"_badgeImageView" withType:"UIImageView"];
+  [validationsCopy validateClass:@"_SearchResultTableViewCell" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SearchResultTableViewCell" hasInstanceVariable:@"_containerStackView" withType:"NUIContainerStackView"];
+  [validationsCopy validateClass:@"SearchHomeBrowseCategoryCollectionViewCell" hasInstanceVariable:@"_browseImageView" withType:"UIImageView"];
 }
 
-+ (void)installCategories:(id)a3
++ (void)installCategories:(id)categories
 {
-  v3 = a3;
-  [v3 installSafeCategory:@"SearchResultTableViewCellInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"NavShareETACellInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"SearchHomeBrowseCategoryCollectionViewCellInvertColorsAccessibility" canInteractWithTargetClass:1];
+  categoriesCopy = categories;
+  [categoriesCopy installSafeCategory:@"SearchResultTableViewCellInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"NavShareETACellInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"SearchHomeBrowseCategoryCollectionViewCellInvertColorsAccessibility" canInteractWithTargetClass:1];
 }
 
 @end

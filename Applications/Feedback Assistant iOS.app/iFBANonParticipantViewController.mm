@@ -2,9 +2,9 @@
 - (UIButton)appleSeedWebsiteButton;
 - (UIButton)developerWebsiteButton;
 - (UIButton)signOutButton;
-- (void)didTapAppleSeedWebsite:(id)a3;
-- (void)didTapDeveloperWebsite:(id)a3;
-- (void)didTapSignOut:(id)a3;
+- (void)didTapAppleSeedWebsite:(id)website;
+- (void)didTapDeveloperWebsite:(id)website;
+- (void)didTapSignOut:(id)out;
 - (void)viewDidLoad;
 @end
 
@@ -15,38 +15,38 @@
   v9.receiver = self;
   v9.super_class = iFBANonParticipantViewController;
   [(FBASimpleTextNoticeController *)&v9 viewDidLoad];
-  v3 = [(iFBANonParticipantViewController *)self appleSeedWebsiteButton];
-  v4 = [v3 titleLabel];
-  [v4 setTextAlignment:1];
+  appleSeedWebsiteButton = [(iFBANonParticipantViewController *)self appleSeedWebsiteButton];
+  titleLabel = [appleSeedWebsiteButton titleLabel];
+  [titleLabel setTextAlignment:1];
 
-  v5 = [(iFBANonParticipantViewController *)self developerWebsiteButton];
-  v6 = [v5 titleLabel];
-  [v6 setTextAlignment:1];
+  developerWebsiteButton = [(iFBANonParticipantViewController *)self developerWebsiteButton];
+  titleLabel2 = [developerWebsiteButton titleLabel];
+  [titleLabel2 setTextAlignment:1];
 
-  v7 = [(iFBANonParticipantViewController *)self signOutButton];
-  v8 = [v7 titleLabel];
-  [v8 setTextAlignment:1];
+  signOutButton = [(iFBANonParticipantViewController *)self signOutButton];
+  titleLabel3 = [signOutButton titleLabel];
+  [titleLabel3 setTextAlignment:1];
 }
 
-- (void)didTapAppleSeedWebsite:(id)a3
+- (void)didTapAppleSeedWebsite:(id)website
 {
   v4 = +[UIApplication sharedApplication];
   v3 = +[FBKSharedConstants portalURL];
   [v4 openURL:v3 options:&__NSDictionary0__struct completionHandler:0];
 }
 
-- (void)didTapDeveloperWebsite:(id)a3
+- (void)didTapDeveloperWebsite:(id)website
 {
   v4 = +[UIApplication sharedApplication];
   v3 = +[FBKSharedConstants developerURL];
   [v4 openURL:v3 options:&__NSDictionary0__struct completionHandler:0];
 }
 
-- (void)didTapSignOut:(id)a3
+- (void)didTapSignOut:(id)out
 {
   v4 = +[FBKData sharedInstance];
-  v5 = [v4 loginManager];
-  [v5 logOut];
+  loginManager = [v4 loginManager];
+  [loginManager logOut];
 
   +[FBKFileManager deleteAllDraftDirectories];
 

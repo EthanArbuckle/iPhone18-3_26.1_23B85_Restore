@@ -1,17 +1,17 @@
 @interface UISmartActionPollSuggestion
-+ (id)pollDictionaryWithTitle:(id)a3 options:(id)a4;
-- (UISmartActionPollSuggestion)initWithTitle:(id)a3 options:(id)a4;
++ (id)pollDictionaryWithTitle:(id)title options:(id)options;
+- (UISmartActionPollSuggestion)initWithTitle:(id)title options:(id)options;
 @end
 
 @implementation UISmartActionPollSuggestion
 
-+ (id)pollDictionaryWithTitle:(id)a3 options:(id)a4
++ (id)pollDictionaryWithTitle:(id)title options:(id)options
 {
   v5 = MEMORY[0x1E695DF90];
-  v6 = a4;
-  v7 = a3;
+  optionsCopy = options;
+  titleCopy = title;
   v8 = objc_alloc_init(v5);
-  [v8 setObject:v7 forKey:@"pollTitle"];
+  [v8 setObject:titleCopy forKey:@"pollTitle"];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -19,7 +19,7 @@
   v12[3] = &unk_1E710E740;
   v13 = v8;
   v9 = v8;
-  [v6 enumerateObjectsUsingBlock:v12];
+  [optionsCopy enumerateObjectsUsingBlock:v12];
 
   v10 = [v9 copy];
 
@@ -42,21 +42,21 @@ void __63__UISmartActionPollSuggestion_pollDictionaryWithTitle_options___block_i
   }
 }
 
-- (UISmartActionPollSuggestion)initWithTitle:(id)a3 options:(id)a4
+- (UISmartActionPollSuggestion)initWithTitle:(id)title options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_opt_class() pollDictionaryWithTitle:v6 options:v7];
+  titleCopy = title;
+  optionsCopy = options;
+  v8 = [objc_opt_class() pollDictionaryWithTitle:titleCopy options:optionsCopy];
   v15.receiver = self;
   v15.super_class = UISmartActionPollSuggestion;
   v9 = [(UISmartActionSuggestion *)&v15 initWithSmartPollsResponse:v8];
   if (v9)
   {
-    v10 = [v6 copy];
+    v10 = [titleCopy copy];
     title = v9->_title;
     v9->_title = v10;
 
-    v12 = [v7 copy];
+    v12 = [optionsCopy copy];
     options = v9->_options;
     v9->_options = v12;
   }

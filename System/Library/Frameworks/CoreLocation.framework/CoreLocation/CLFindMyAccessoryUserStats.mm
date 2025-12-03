@@ -1,11 +1,11 @@
 @interface CLFindMyAccessoryUserStats
-+ (id)batteryStateToString:(int64_t)a3;
++ (id)batteryStateToString:(int64_t)string;
 - (CLFindMyAccessoryUserStats)init;
-- (CLFindMyAccessoryUserStats)initWithOverflowFlag:(unint64_t)a3 crashCount:(unint64_t)a4 multiTime:(unint64_t)a5 nearOwnerTime:(unint64_t)a6 wildTime:(unint64_t)a7 soundCount:(unint64_t)a8 soundTime:(unint64_t)a9 rangingCount:(unint64_t)a10 rangingTime:(unint64_t)a11 multiLeashTime:(unint64_t)a12 multiConnectionTime:(unint64_t)a13 nearOwnerTimeV2:(unint64_t)a14 singleLeashTime:(unint64_t)a15 singleConnectionTime:(unint64_t)a16 dualConnectionTime:(unint64_t)a17 dualLeashTime:(unint64_t)a18 utAccelCount:(unint64_t)a19 lastClear:(unint64_t)a20 roseOnTime:(unint64_t)a21 ownerLongSoundCount:(unint64_t)a22 ownerShortSoundCount:(unint64_t)a23 utLongSoundCount:(unint64_t)a24 utShortSoundCount:(unint64_t)a25 bomSoundCount:(unint64_t)a26 fc1ndRangingCount:(unint64_t)a27 fc1ndRangingTime:(unint64_t)a28 lastPIn:(unint64_t)a29 batteryState:(int64_t)a30 nbmmsRangingTime:(unint64_t)a31 abandonedFwUpdateCount:(unint64_t)a32 abandonedFwUpdateTime:(unint64_t)a33 roseInitCount:(unint64_t)a34 pairingAttemptsCount:(unint64_t)a35 tempVeryLowCount:(unint64_t)a36 tempLowCount:(unint64_t)a37 tempOkCount:(unint64_t)a38 tempHighCount:(unint64_t)a39 proxPairingTime:(unint64_t)a40 tempLastPIn:(unint64_t)a41 nbmmsRangingCount:(unint64_t)a42 version:(unint64_t)a43;
-- (CLFindMyAccessoryUserStats)initWithPayloadV1:(id)a3;
-- (CLFindMyAccessoryUserStats)initWithPayloadV2:(id)a3;
-- (CLFindMyAccessoryUserStats)initWithPayloadV3:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (CLFindMyAccessoryUserStats)initWithOverflowFlag:(unint64_t)flag crashCount:(unint64_t)count multiTime:(unint64_t)time nearOwnerTime:(unint64_t)ownerTime wildTime:(unint64_t)wildTime soundCount:(unint64_t)soundCount soundTime:(unint64_t)soundTime rangingCount:(unint64_t)self0 rangingTime:(unint64_t)self1 multiLeashTime:(unint64_t)self2 multiConnectionTime:(unint64_t)self3 nearOwnerTimeV2:(unint64_t)self4 singleLeashTime:(unint64_t)self5 singleConnectionTime:(unint64_t)self6 dualConnectionTime:(unint64_t)self7 dualLeashTime:(unint64_t)self8 utAccelCount:(unint64_t)self9 lastClear:(unint64_t)clear roseOnTime:(unint64_t)onTime ownerLongSoundCount:(unint64_t)longSoundCount ownerShortSoundCount:(unint64_t)shortSoundCount utLongSoundCount:(unint64_t)utLongSoundCount utShortSoundCount:(unint64_t)utShortSoundCount bomSoundCount:(unint64_t)bomSoundCount fc1ndRangingCount:(unint64_t)fc1ndRangingCount fc1ndRangingTime:(unint64_t)fc1ndRangingTime lastPIn:(unint64_t)in batteryState:(int64_t)flag0 nbmmsRangingTime:(unint64_t)flag1 abandonedFwUpdateCount:(unint64_t)flag2 abandonedFwUpdateTime:(unint64_t)flag3 roseInitCount:(unint64_t)flag4 pairingAttemptsCount:(unint64_t)flag5 tempVeryLowCount:(unint64_t)flag6 tempLowCount:(unint64_t)flag7 tempOkCount:(unint64_t)flag8 tempHighCount:(unint64_t)flag9 proxPairingTime:(unint64_t)count0 tempLastPIn:(unint64_t)count1 nbmmsRangingCount:(unint64_t)count2 version:(unint64_t)count3;
+- (CLFindMyAccessoryUserStats)initWithPayloadV1:(id)v1;
+- (CLFindMyAccessoryUserStats)initWithPayloadV2:(id)v2;
+- (CLFindMyAccessoryUserStats)initWithPayloadV3:(id)v3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLFindMyAccessoryUserStats
@@ -17,13 +17,13 @@
   return 0;
 }
 
-- (CLFindMyAccessoryUserStats)initWithPayloadV1:(id)a3
+- (CLFindMyAccessoryUserStats)initWithPayloadV1:(id)v1
 {
   v13 = *MEMORY[0x1E69E9840];
-  if ([a3 length] == 19)
+  if ([v1 length] == 19)
   {
-    v5 = [a3 bytes];
-    result = [(CLFindMyAccessoryUserStats *)self initWithOverflowFlag:*v5 crashCount:v5[1] multiTime:*(v5 + 1) | (v5[4] << 16) nearOwnerTime:*(v5 + 5) | (v5[7] << 16) wildTime:*(v5 + 4) | (v5[10] << 16) soundCount:*(v5 + 11) soundTime:*(v5 + 13) rangingCount:*(v5 + 15) rangingTime:*(v5 + 17) multiLeashTime:0 multiConnectionTime:0 nearOwnerTimeV2:0 singleLeashTime:0 singleConnectionTime:0 dualConnectionTime:0 dualLeashTime:0 utAccelCount:0 lastClear:0 roseOnTime:0 ownerLongSoundCount:0 ownerShortSoundCount:0 utLongSoundCount:0 utShortSoundCount:0 bomSoundCount:0 fc1ndRangingCount:0 fc1ndRangingTime:0 lastPIn:0 batteryState:-1 nbmmsRangingTime:0 abandonedFwUpdateCount:0 abandonedFwUpdateTime:0 roseInitCount:0 pairingAttemptsCount:0 tempVeryLowCount:0 tempLowCount:0 tempOkCount:0 tempHighCount:0 proxPairingTime:0 tempLastPIn:0 nbmmsRangingCount:0 version:1];
+    bytes = [v1 bytes];
+    result = [(CLFindMyAccessoryUserStats *)self initWithOverflowFlag:*bytes crashCount:bytes[1] multiTime:*(bytes + 1) | (bytes[4] << 16) nearOwnerTime:*(bytes + 5) | (bytes[7] << 16) wildTime:*(bytes + 4) | (bytes[10] << 16) soundCount:*(bytes + 11) soundTime:*(bytes + 13) rangingCount:*(bytes + 15) rangingTime:*(bytes + 17) multiLeashTime:0 multiConnectionTime:0 nearOwnerTimeV2:0 singleLeashTime:0 singleConnectionTime:0 dualConnectionTime:0 dualLeashTime:0 utAccelCount:0 lastClear:0 roseOnTime:0 ownerLongSoundCount:0 ownerShortSoundCount:0 utLongSoundCount:0 utShortSoundCount:0 bomSoundCount:0 fc1ndRangingCount:0 fc1ndRangingTime:0 lastPIn:0 batteryState:-1 nbmmsRangingTime:0 abandonedFwUpdateCount:0 abandonedFwUpdateTime:0 roseInitCount:0 pairingAttemptsCount:0 tempVeryLowCount:0 tempLowCount:0 tempOkCount:0 tempHighCount:0 proxPairingTime:0 tempLastPIn:0 nbmmsRangingCount:0 version:1];
     v7 = *MEMORY[0x1E69E9840];
   }
 
@@ -65,15 +65,15 @@
   return result;
 }
 
-- (CLFindMyAccessoryUserStats)initWithPayloadV2:(id)a3
+- (CLFindMyAccessoryUserStats)initWithPayloadV2:(id)v2
 {
   v15 = *MEMORY[0x1E69E9840];
-  if ([a3 length] == 60)
+  if ([v2 length] == 60)
   {
-    v5 = [a3 bytes];
-    v6 = *(v5 + 25);
-    v7 = *(v5 + 26);
-    result = [(CLFindMyAccessoryUserStats *)self initWithOverflowFlag:0 crashCount:0 multiTime:v5[1] + *v5 nearOwnerTime:v5[4] + v5[2] + v5[5] wildTime:v5[3] soundCount:(v7 + v6 + *(v5 + 28)) soundTime:3 * v7 - (*(v5 + 27) + v6) + 8 * (*(v5 + 27) + v6) rangingCount:*(v5 + 24) rangingTime:v5[11] multiLeashTime:*v5 multiConnectionTime:v5[1] nearOwnerTimeV2:v5[2] singleLeashTime:v5[4] singleConnectionTime:v5[5] dualConnectionTime:v5[6] dualLeashTime:v5[7] utAccelCount:v5[8] lastClear:v5[9] roseOnTime:v5[10] ownerLongSoundCount:v6 ownerShortSoundCount:v7 utLongSoundCount:*(v5 + 27) utShortSoundCount:*(v5 + 28) bomSoundCount:*(v5 + 29) fc1ndRangingCount:*(v5 + 24) fc1ndRangingTime:v5[11] lastPIn:0 batteryState:-1 nbmmsRangingTime:0 abandonedFwUpdateCount:0 abandonedFwUpdateTime:0 roseInitCount:0 pairingAttemptsCount:0 tempVeryLowCount:0 tempLowCount:0 tempOkCount:0 tempHighCount:0 proxPairingTime:0 tempLastPIn:0 nbmmsRangingCount:0 version:2];
+    bytes = [v2 bytes];
+    v6 = *(bytes + 25);
+    v7 = *(bytes + 26);
+    result = [(CLFindMyAccessoryUserStats *)self initWithOverflowFlag:0 crashCount:0 multiTime:bytes[1] + *bytes nearOwnerTime:bytes[4] + bytes[2] + bytes[5] wildTime:bytes[3] soundCount:(v7 + v6 + *(bytes + 28)) soundTime:3 * v7 - (*(bytes + 27) + v6) + 8 * (*(bytes + 27) + v6) rangingCount:*(bytes + 24) rangingTime:bytes[11] multiLeashTime:*bytes multiConnectionTime:bytes[1] nearOwnerTimeV2:bytes[2] singleLeashTime:bytes[4] singleConnectionTime:bytes[5] dualConnectionTime:bytes[6] dualLeashTime:bytes[7] utAccelCount:bytes[8] lastClear:bytes[9] roseOnTime:bytes[10] ownerLongSoundCount:v6 ownerShortSoundCount:v7 utLongSoundCount:*(bytes + 27) utShortSoundCount:*(bytes + 28) bomSoundCount:*(bytes + 29) fc1ndRangingCount:*(bytes + 24) fc1ndRangingTime:bytes[11] lastPIn:0 batteryState:-1 nbmmsRangingTime:0 abandonedFwUpdateCount:0 abandonedFwUpdateTime:0 roseInitCount:0 pairingAttemptsCount:0 tempVeryLowCount:0 tempLowCount:0 tempOkCount:0 tempHighCount:0 proxPairingTime:0 tempLastPIn:0 nbmmsRangingCount:0 version:2];
     v9 = *MEMORY[0x1E69E9840];
   }
 
@@ -115,7 +115,7 @@
   return result;
 }
 
-- (CLFindMyAccessoryUserStats)initWithPayloadV3:(id)a3
+- (CLFindMyAccessoryUserStats)initWithPayloadV3:(id)v3
 {
   *&v178[5] = *MEMORY[0x1E69E9840];
   if (qword_1EAFE46C8 != -1)
@@ -131,13 +131,13 @@
     v171 = 2082;
     v172 = "";
     v173 = 2114;
-    v174 = a3;
+    v3Copy = v3;
     v175 = 1026;
-    *v176 = [a3 length];
+    *v176 = [v3 length];
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#durian #userstats initWithPayloadV3, payload:%{public, location:escape_only}@, size:%{public}d}", buf, 0x22u);
   }
 
-  if (!a3 || ![a3 length])
+  if (!v3 || ![v3 length])
   {
     if (qword_1EAFE46C8 != -1)
     {
@@ -152,9 +152,9 @@
       v171 = 2082;
       v172 = "";
       v173 = 2082;
-      v174 = "empty payload, no stats";
+      v3Copy = "empty payload, no stats";
       v175 = 2114;
-      *v176 = a3;
+      *v176 = v3;
       _os_log_impl(&dword_19B873000, v144, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:#durian #userstats, error:%{public, location:escape_only}s, payload:%{public, location:escape_only}@}", buf, 0x26u);
       if (qword_1EAFE46C8 != -1)
       {
@@ -170,9 +170,9 @@
       v171 = 2082;
       v172 = "";
       v173 = 2082;
-      v174 = "empty payload, no stats";
+      v3Copy = "empty payload, no stats";
       v175 = 2114;
-      *v176 = a3;
+      *v176 = v3;
       v146 = "{msg%{public}.0s:#durian #userstats, error:%{public, location:escape_only}s, payload:%{public, location:escape_only}@}";
       v147 = v145;
       v148 = 38;
@@ -188,8 +188,8 @@ LABEL_254:
   v6 = [(CLFindMyAccessoryUserStats *)&v168 init];
   if (v6)
   {
-    v167 = [a3 bytes];
-    if (![a3 length])
+    bytes = [v3 bytes];
+    if (![v3 length])
     {
 LABEL_257:
       v151 = *(v6 + 21);
@@ -212,12 +212,12 @@ LABEL_257:
     while (1)
     {
       v9 = v8 + 2;
-      if (v8 + 2 >= [a3 length])
+      if (v8 + 2 >= [v3 length])
       {
         break;
       }
 
-      v10 = *(v167 + v8 + 1);
+      v10 = *(bytes + v8 + 1);
       if ((v10 - 5) <= 0xFFFFFFFB)
       {
         if (qword_1EAFE46C8 != -1)
@@ -228,15 +228,15 @@ LABEL_257:
         v158 = qword_1EAFE4700;
         if (os_log_type_enabled(qword_1EAFE4700, OS_LOG_TYPE_ERROR))
         {
-          v159 = [a3 length];
+          v159 = [v3 length];
           *buf = 68290050;
           v170 = 0;
           v171 = 2082;
           v172 = "";
           v173 = 2082;
-          v174 = "invalid length";
+          v3Copy = "invalid length";
           v175 = 2114;
-          *v176 = a3;
+          *v176 = v3;
           *&v176[8] = 1026;
           *&v176[10] = v8 + 2;
           *&v176[14] = 1026;
@@ -254,15 +254,15 @@ LABEL_257:
           goto LABEL_255;
         }
 
-        v160 = [a3 length];
+        v160 = [v3 length];
         *buf = 68290050;
         v170 = 0;
         v171 = 2082;
         v172 = "";
         v173 = 2082;
-        v174 = "invalid length";
+        v3Copy = "invalid length";
         v175 = 2114;
-        *v176 = a3;
+        *v176 = v3;
         *&v176[8] = 1026;
         *&v176[10] = v8 + 2;
         *&v176[14] = 1026;
@@ -271,9 +271,9 @@ LABEL_257:
         goto LABEL_279;
       }
 
-      v11 = *(v167 + v8);
+      v11 = *(bytes + v8);
       v8 = v9 + v10;
-      if (v9 + v10 > [a3 length])
+      if (v9 + v10 > [v3 length])
       {
         if (qword_1EAFE46C8 != -1)
         {
@@ -283,15 +283,15 @@ LABEL_257:
         v161 = qword_1EAFE4700;
         if (os_log_type_enabled(qword_1EAFE4700, OS_LOG_TYPE_ERROR))
         {
-          v162 = [a3 length];
+          v162 = [v3 length];
           *buf = 68290050;
           v170 = 0;
           v171 = 2082;
           v172 = "";
           v173 = 2082;
-          v174 = "malformed TLV, offset + length > payload";
+          v3Copy = "malformed TLV, offset + length > payload";
           v175 = 2114;
-          *v176 = a3;
+          *v176 = v3;
           *&v176[8] = 1026;
           *&v176[10] = v9;
           *&v176[14] = 1026;
@@ -306,15 +306,15 @@ LABEL_257:
         v156 = qword_1EAFE4700;
         if (os_signpost_enabled(qword_1EAFE4700))
         {
-          v163 = [a3 length];
+          v163 = [v3 length];
           *buf = 68290050;
           v170 = 0;
           v171 = 2082;
           v172 = "";
           v173 = 2082;
-          v174 = "malformed TLV, offset + length > payload";
+          v3Copy = "malformed TLV, offset + length > payload";
           v175 = 2114;
-          *v176 = a3;
+          *v176 = v3;
           *&v176[8] = 1026;
           *&v176[10] = v9;
           *&v176[14] = 1026;
@@ -328,7 +328,7 @@ LABEL_255:
         goto LABEL_256;
       }
 
-      v12 = [a3 subdataWithRange:{v9, v10}];
+      v12 = [v3 subdataWithRange:{v9, v10}];
       if (qword_1EAFE46C8 != -1)
       {
         dispatch_once(&qword_1EAFE46C8, &unk_1F0E6E5D8);
@@ -342,7 +342,7 @@ LABEL_255:
         v171 = 2082;
         v172 = "";
         v173 = 2082;
-        v174 = "TLV";
+        v3Copy = "TLV";
         v175 = 1026;
         *v176 = v9;
         *&v176[4] = 2114;
@@ -359,7 +359,7 @@ LABEL_255:
       switch(v11)
       {
         case 0:
-          v14 = [v12 bytes];
+          bytes2 = [v12 bytes];
           v15 = [v12 length];
           *(v6 + 11) = 0;
           if (v15 >= 8)
@@ -372,7 +372,7 @@ LABEL_255:
             v16 = v15;
           }
 
-          memcpy(v6 + 88, v14, v16);
+          memcpy(v6 + 88, bytes2, v16);
           if (qword_1EAFE46C8 != -1)
           {
             dispatch_once(&qword_1EAFE46C8, &unk_1F0E6E5D8);
@@ -390,7 +390,7 @@ LABEL_255:
           v171 = 2082;
           v172 = "";
           v173 = 2082;
-          v174 = "multiLeashTime";
+          v3Copy = "multiLeashTime";
           v175 = 1026;
           *v176 = 0;
           *&v176[4] = 1026;
@@ -401,7 +401,7 @@ LABEL_255:
           *v178 = v18;
           break;
         case 1:
-          v71 = [v12 bytes];
+          bytes3 = [v12 bytes];
           v72 = [v12 length];
           *(v6 + 12) = 0;
           if (v72 >= 8)
@@ -414,7 +414,7 @@ LABEL_255:
             v73 = v72;
           }
 
-          memcpy(v6 + 96, v71, v73);
+          memcpy(v6 + 96, bytes3, v73);
           if (qword_1EAFE46C8 != -1)
           {
             dispatch_once(&qword_1EAFE46C8, &unk_1F0E6E5D8);
@@ -432,7 +432,7 @@ LABEL_255:
           v171 = 2082;
           v172 = "";
           v173 = 2082;
-          v174 = "multiConnectionTime";
+          v3Copy = "multiConnectionTime";
           v175 = 1026;
           *v176 = 1;
           *&v176[4] = 1026;
@@ -443,7 +443,7 @@ LABEL_255:
           *v178 = v74;
           break;
         case 2:
-          v55 = [v12 bytes];
+          bytes4 = [v12 bytes];
           v56 = [v12 length];
           *(v6 + 13) = 0;
           if (v56 >= 8)
@@ -456,7 +456,7 @@ LABEL_255:
             v57 = v56;
           }
 
-          memcpy(v6 + 104, v55, v57);
+          memcpy(v6 + 104, bytes4, v57);
           if (qword_1EAFE46C8 != -1)
           {
             dispatch_once(&qword_1EAFE46C8, &unk_1F0E6E5D8);
@@ -474,7 +474,7 @@ LABEL_255:
           v171 = 2082;
           v172 = "";
           v173 = 2082;
-          v174 = "nearOwnerTime";
+          v3Copy = "nearOwnerTime";
           v175 = 1026;
           *v176 = 2;
           *&v176[4] = 1026;
@@ -485,7 +485,7 @@ LABEL_255:
           *v178 = v58;
           break;
         case 3:
-          v63 = [v12 bytes];
+          bytes5 = [v12 bytes];
           v64 = [v12 length];
           *(v6 + 6) = 0;
           if (v64 >= 8)
@@ -498,7 +498,7 @@ LABEL_255:
             v65 = v64;
           }
 
-          memcpy(v6 + 48, v63, v65);
+          memcpy(v6 + 48, bytes5, v65);
           if (qword_1EAFE46C8 != -1)
           {
             dispatch_once(&qword_1EAFE46C8, &unk_1F0E6E5D8);
@@ -516,7 +516,7 @@ LABEL_255:
           v171 = 2082;
           v172 = "";
           v173 = 2082;
-          v174 = "wildTime";
+          v3Copy = "wildTime";
           v175 = 1026;
           *v176 = 3;
           *&v176[4] = 1026;
@@ -527,7 +527,7 @@ LABEL_255:
           *v178 = v66;
           break;
         case 4:
-          v35 = [v12 bytes];
+          bytes6 = [v12 bytes];
           v36 = [v12 length];
           *(v6 + 14) = 0;
           if (v36 >= 8)
@@ -540,7 +540,7 @@ LABEL_255:
             v37 = v36;
           }
 
-          memcpy(v6 + 112, v35, v37);
+          memcpy(v6 + 112, bytes6, v37);
           if (qword_1EAFE46C8 != -1)
           {
             dispatch_once(&qword_1EAFE46C8, &unk_1F0E6E5D8);
@@ -558,7 +558,7 @@ LABEL_255:
           v171 = 2082;
           v172 = "";
           v173 = 2082;
-          v174 = "singleLeashTime";
+          v3Copy = "singleLeashTime";
           v175 = 1026;
           *v176 = 4;
           *&v176[4] = 1026;
@@ -569,7 +569,7 @@ LABEL_255:
           *v178 = v38;
           break;
         case 5:
-          v87 = [v12 bytes];
+          bytes7 = [v12 bytes];
           v88 = [v12 length];
           *(v6 + 15) = 0;
           if (v88 >= 8)
@@ -582,7 +582,7 @@ LABEL_255:
             v89 = v88;
           }
 
-          memcpy(v6 + 120, v87, v89);
+          memcpy(v6 + 120, bytes7, v89);
           if (qword_1EAFE46C8 != -1)
           {
             dispatch_once(&qword_1EAFE46C8, &unk_1F0E6E5D8);
@@ -600,7 +600,7 @@ LABEL_255:
           v171 = 2082;
           v172 = "";
           v173 = 2082;
-          v174 = "singleConnectionTime";
+          v3Copy = "singleConnectionTime";
           v175 = 1026;
           *v176 = 5;
           *&v176[4] = 1026;
@@ -611,7 +611,7 @@ LABEL_255:
           *v178 = v90;
           break;
         case 6:
-          v99 = [v12 bytes];
+          bytes8 = [v12 bytes];
           v100 = [v12 length];
           *(v6 + 16) = 0;
           if (v100 >= 8)
@@ -624,7 +624,7 @@ LABEL_255:
             v101 = v100;
           }
 
-          memcpy(v6 + 128, v99, v101);
+          memcpy(v6 + 128, bytes8, v101);
           if (qword_1EAFE46C8 != -1)
           {
             dispatch_once(&qword_1EAFE46C8, &unk_1F0E6E5D8);
@@ -642,7 +642,7 @@ LABEL_255:
           v171 = 2082;
           v172 = "";
           v173 = 2082;
-          v174 = "dualConnectionTime";
+          v3Copy = "dualConnectionTime";
           v175 = 1026;
           *v176 = 6;
           *&v176[4] = 1026;
@@ -653,7 +653,7 @@ LABEL_255:
           *v178 = v102;
           break;
         case 7:
-          v67 = [v12 bytes];
+          bytes9 = [v12 bytes];
           v68 = [v12 length];
           *(v6 + 17) = 0;
           if (v68 >= 8)
@@ -666,7 +666,7 @@ LABEL_255:
             v69 = v68;
           }
 
-          memcpy(v6 + 136, v67, v69);
+          memcpy(v6 + 136, bytes9, v69);
           if (qword_1EAFE46C8 != -1)
           {
             dispatch_once(&qword_1EAFE46C8, &unk_1F0E6E5D8);
@@ -684,7 +684,7 @@ LABEL_255:
           v171 = 2082;
           v172 = "";
           v173 = 2082;
-          v174 = "dualLeashTime";
+          v3Copy = "dualLeashTime";
           v175 = 1026;
           *v176 = 7;
           *&v176[4] = 1026;
@@ -695,7 +695,7 @@ LABEL_255:
           *v178 = v70;
           break;
         case 8:
-          v111 = [v12 bytes];
+          bytes10 = [v12 bytes];
           v112 = [v12 length];
           *(v6 + 18) = 0;
           if (v112 >= 8)
@@ -708,7 +708,7 @@ LABEL_255:
             v113 = v112;
           }
 
-          memcpy(v6 + 144, v111, v113);
+          memcpy(v6 + 144, bytes10, v113);
           if (qword_1EAFE46C8 != -1)
           {
             dispatch_once(&qword_1EAFE46C8, &unk_1F0E6E5D8);
@@ -726,7 +726,7 @@ LABEL_255:
           v171 = 2082;
           v172 = "";
           v173 = 2082;
-          v174 = "utAccelCount";
+          v3Copy = "utAccelCount";
           v175 = 1026;
           *v176 = 8;
           *&v176[4] = 1026;
@@ -737,7 +737,7 @@ LABEL_255:
           *v178 = v114;
           break;
         case 9:
-          v43 = [v12 bytes];
+          bytes11 = [v12 bytes];
           v44 = [v12 length];
           *(v6 + 19) = 0;
           if (v44 >= 8)
@@ -750,7 +750,7 @@ LABEL_255:
             v45 = v44;
           }
 
-          memcpy(v6 + 152, v43, v45);
+          memcpy(v6 + 152, bytes11, v45);
           if (qword_1EAFE46C8 != -1)
           {
             dispatch_once(&qword_1EAFE46C8, &unk_1F0E6E5D8);
@@ -768,7 +768,7 @@ LABEL_255:
           v171 = 2082;
           v172 = "";
           v173 = 2082;
-          v174 = "lastClear";
+          v3Copy = "lastClear";
           v175 = 1026;
           *v176 = 9;
           *&v176[4] = 1026;
@@ -779,7 +779,7 @@ LABEL_255:
           *v178 = v46;
           break;
         case 10:
-          v107 = [v12 bytes];
+          bytes12 = [v12 bytes];
           v108 = [v12 length];
           *(v6 + 20) = 0;
           if (v108 >= 8)
@@ -792,7 +792,7 @@ LABEL_255:
             v109 = v108;
           }
 
-          memcpy(v6 + 160, v107, v109);
+          memcpy(v6 + 160, bytes12, v109);
           if (qword_1EAFE46C8 != -1)
           {
             dispatch_once(&qword_1EAFE46C8, &unk_1F0E6E5D8);
@@ -810,7 +810,7 @@ LABEL_255:
           v171 = 2082;
           v172 = "";
           v173 = 2082;
-          v174 = "roseOnTime";
+          v3Copy = "roseOnTime";
           v175 = 1026;
           *v176 = 10;
           *&v176[4] = 1026;
@@ -821,7 +821,7 @@ LABEL_255:
           *v178 = v110;
           break;
         case 11:
-          v31 = [v12 bytes];
+          bytes13 = [v12 bytes];
           v32 = [v12 length];
           *(v6 + 27) = 0;
           if (v32 >= 8)
@@ -834,7 +834,7 @@ LABEL_255:
             v33 = v32;
           }
 
-          memcpy(v6 + 216, v31, v33);
+          memcpy(v6 + 216, bytes13, v33);
           if (qword_1EAFE46C8 != -1)
           {
             dispatch_once(&qword_1EAFE46C8, &unk_1F0E6E5D8);
@@ -852,7 +852,7 @@ LABEL_255:
           v171 = 2082;
           v172 = "";
           v173 = 2082;
-          v174 = "fc1ndRangingTime";
+          v3Copy = "fc1ndRangingTime";
           v175 = 1026;
           *v176 = 11;
           *&v176[4] = 1026;
@@ -863,7 +863,7 @@ LABEL_255:
           *v178 = v34;
           break;
         case 12:
-          v39 = [v12 bytes];
+          bytes14 = [v12 bytes];
           v40 = [v12 length];
           *(v6 + 26) = 0;
           if (v40 >= 8)
@@ -876,7 +876,7 @@ LABEL_255:
             v41 = v40;
           }
 
-          memcpy(v6 + 208, v39, v41);
+          memcpy(v6 + 208, bytes14, v41);
           if (qword_1EAFE46C8 != -1)
           {
             dispatch_once(&qword_1EAFE46C8, &unk_1F0E6E5D8);
@@ -894,7 +894,7 @@ LABEL_255:
           v171 = 2082;
           v172 = "";
           v173 = 2082;
-          v174 = "fc1ndRangingCount";
+          v3Copy = "fc1ndRangingCount";
           v175 = 1026;
           *v176 = 12;
           *&v176[4] = 1026;
@@ -905,7 +905,7 @@ LABEL_255:
           *v178 = v42;
           break;
         case 13:
-          v95 = [v12 bytes];
+          bytes15 = [v12 bytes];
           v96 = [v12 length];
           *(v6 + 21) = 0;
           if (v96 >= 8)
@@ -918,7 +918,7 @@ LABEL_255:
             v97 = v96;
           }
 
-          memcpy(v6 + 168, v95, v97);
+          memcpy(v6 + 168, bytes15, v97);
           if (qword_1EAFE46C8 != -1)
           {
             dispatch_once(&qword_1EAFE46C8, &unk_1F0E6E5D8);
@@ -936,7 +936,7 @@ LABEL_255:
           v171 = 2082;
           v172 = "";
           v173 = 2082;
-          v174 = "ownerLongSoundCount";
+          v3Copy = "ownerLongSoundCount";
           v175 = 1026;
           *v176 = 13;
           *&v176[4] = 1026;
@@ -947,7 +947,7 @@ LABEL_255:
           *v178 = v98;
           break;
         case 14:
-          v27 = [v12 bytes];
+          bytes16 = [v12 bytes];
           v28 = [v12 length];
           *(v6 + 22) = 0;
           if (v28 >= 8)
@@ -960,7 +960,7 @@ LABEL_255:
             v29 = v28;
           }
 
-          memcpy(v6 + 176, v27, v29);
+          memcpy(v6 + 176, bytes16, v29);
           if (qword_1EAFE46C8 != -1)
           {
             dispatch_once(&qword_1EAFE46C8, &unk_1F0E6E5D8);
@@ -978,7 +978,7 @@ LABEL_255:
           v171 = 2082;
           v172 = "";
           v173 = 2082;
-          v174 = "ownerShortSoundCount";
+          v3Copy = "ownerShortSoundCount";
           v175 = 1026;
           *v176 = 14;
           *&v176[4] = 1026;
@@ -989,7 +989,7 @@ LABEL_255:
           *v178 = v30;
           break;
         case 15:
-          v59 = [v12 bytes];
+          bytes17 = [v12 bytes];
           v60 = [v12 length];
           *(v6 + 23) = 0;
           if (v60 >= 8)
@@ -1002,7 +1002,7 @@ LABEL_255:
             v61 = v60;
           }
 
-          memcpy(v6 + 184, v59, v61);
+          memcpy(v6 + 184, bytes17, v61);
           if (qword_1EAFE46C8 != -1)
           {
             dispatch_once(&qword_1EAFE46C8, &unk_1F0E6E5D8);
@@ -1020,7 +1020,7 @@ LABEL_255:
           v171 = 2082;
           v172 = "";
           v173 = 2082;
-          v174 = "utLongSoundCount";
+          v3Copy = "utLongSoundCount";
           v175 = 1026;
           *v176 = 15;
           *&v176[4] = 1026;
@@ -1031,7 +1031,7 @@ LABEL_255:
           *v178 = v62;
           break;
         case 16:
-          v23 = [v12 bytes];
+          bytes18 = [v12 bytes];
           v24 = [v12 length];
           *(v6 + 24) = 0;
           if (v24 >= 8)
@@ -1044,7 +1044,7 @@ LABEL_255:
             v25 = v24;
           }
 
-          memcpy(v6 + 192, v23, v25);
+          memcpy(v6 + 192, bytes18, v25);
           if (qword_1EAFE46C8 != -1)
           {
             dispatch_once(&qword_1EAFE46C8, &unk_1F0E6E5D8);
@@ -1062,7 +1062,7 @@ LABEL_255:
           v171 = 2082;
           v172 = "";
           v173 = 2082;
-          v174 = "utShortSoundCount";
+          v3Copy = "utShortSoundCount";
           v175 = 1026;
           *v176 = 16;
           *&v176[4] = 1026;
@@ -1073,7 +1073,7 @@ LABEL_255:
           *v178 = v26;
           break;
         case 17:
-          v79 = [v12 bytes];
+          bytes19 = [v12 bytes];
           v80 = [v12 length];
           *(v6 + 25) = 0;
           if (v80 >= 8)
@@ -1086,7 +1086,7 @@ LABEL_255:
             v81 = v80;
           }
 
-          memcpy(v6 + 200, v79, v81);
+          memcpy(v6 + 200, bytes19, v81);
           if (qword_1EAFE46C8 != -1)
           {
             dispatch_once(&qword_1EAFE46C8, &unk_1F0E6E5D8);
@@ -1104,7 +1104,7 @@ LABEL_255:
           v171 = 2082;
           v172 = "";
           v173 = 2082;
-          v174 = "bomSoundCount";
+          v3Copy = "bomSoundCount";
           v175 = 1026;
           *v176 = 17;
           *&v176[4] = 1026;
@@ -1115,7 +1115,7 @@ LABEL_255:
           *v178 = v82;
           break;
         case 18:
-          v103 = [v12 bytes];
+          bytes20 = [v12 bytes];
           v104 = [v12 length];
           *(v6 + 28) = 0;
           if (v104 >= 8)
@@ -1128,7 +1128,7 @@ LABEL_255:
             v105 = v104;
           }
 
-          memcpy(v6 + 224, v103, v105);
+          memcpy(v6 + 224, bytes20, v105);
           if (qword_1EAFE46C8 != -1)
           {
             dispatch_once(&qword_1EAFE46C8, &unk_1F0E6E5D8);
@@ -1146,7 +1146,7 @@ LABEL_255:
           v171 = 2082;
           v172 = "";
           v173 = 2082;
-          v174 = "lastPIn";
+          v3Copy = "lastPIn";
           v175 = 1026;
           *v176 = 18;
           *&v176[4] = 1026;
@@ -1157,7 +1157,7 @@ LABEL_255:
           *v178 = v106;
           break;
         case 19:
-          v123 = [v12 bytes];
+          bytes21 = [v12 bytes];
           v124 = [v12 length];
           *(v6 + 29) = 0;
           if (v124 >= 8)
@@ -1170,7 +1170,7 @@ LABEL_255:
             v125 = v124;
           }
 
-          memcpy(v6 + 232, v123, v125);
+          memcpy(v6 + 232, bytes21, v125);
           v126 = *(v6 + 29);
           if (v126 >= 4)
           {
@@ -1195,7 +1195,7 @@ LABEL_255:
           v171 = 2082;
           v172 = "";
           v173 = 2082;
-          v174 = "batteryState";
+          v3Copy = "batteryState";
           v175 = 1026;
           *v176 = 19;
           *&v176[4] = 1026;
@@ -1206,7 +1206,7 @@ LABEL_255:
           *v178 = v127;
           break;
         case 20:
-          v83 = [v12 bytes];
+          bytes22 = [v12 bytes];
           v84 = [v12 length];
           *(v6 + 30) = 0;
           if (v84 >= 8)
@@ -1219,7 +1219,7 @@ LABEL_255:
             v85 = v84;
           }
 
-          memcpy(v6 + 240, v83, v85);
+          memcpy(v6 + 240, bytes22, v85);
           if (qword_1EAFE46C8 != -1)
           {
             dispatch_once(&qword_1EAFE46C8, &unk_1F0E6E5D8);
@@ -1237,7 +1237,7 @@ LABEL_255:
           v171 = 2082;
           v172 = "";
           v173 = 2082;
-          v174 = "nbmmsRangingTime";
+          v3Copy = "nbmmsRangingTime";
           v175 = 1026;
           *v176 = 20;
           *&v176[4] = 1026;
@@ -1248,7 +1248,7 @@ LABEL_255:
           *v178 = v86;
           break;
         case 21:
-          v91 = [v12 bytes];
+          bytes23 = [v12 bytes];
           v92 = [v12 length];
           *(v6 + 31) = 0;
           if (v92 >= 8)
@@ -1261,7 +1261,7 @@ LABEL_255:
             v93 = v92;
           }
 
-          memcpy(v6 + 248, v91, v93);
+          memcpy(v6 + 248, bytes23, v93);
           if (qword_1EAFE46C8 != -1)
           {
             dispatch_once(&qword_1EAFE46C8, &unk_1F0E6E5D8);
@@ -1279,7 +1279,7 @@ LABEL_255:
           v171 = 2082;
           v172 = "";
           v173 = 2082;
-          v174 = "abandonedFwUpdateCount";
+          v3Copy = "abandonedFwUpdateCount";
           v175 = 1026;
           *v176 = 21;
           *&v176[4] = 1026;
@@ -1290,7 +1290,7 @@ LABEL_255:
           *v178 = v94;
           break;
         case 22:
-          v119 = [v12 bytes];
+          bytes24 = [v12 bytes];
           v120 = [v12 length];
           *(v6 + 32) = 0;
           if (v120 >= 8)
@@ -1303,7 +1303,7 @@ LABEL_255:
             v121 = v120;
           }
 
-          memcpy(v6 + 256, v119, v121);
+          memcpy(v6 + 256, bytes24, v121);
           if (qword_1EAFE46C8 != -1)
           {
             dispatch_once(&qword_1EAFE46C8, &unk_1F0E6E5D8);
@@ -1321,7 +1321,7 @@ LABEL_255:
           v171 = 2082;
           v172 = "";
           v173 = 2082;
-          v174 = "abandonedFwUpdateTime";
+          v3Copy = "abandonedFwUpdateTime";
           v175 = 1026;
           *v176 = 22;
           *&v176[4] = 1026;
@@ -1332,7 +1332,7 @@ LABEL_255:
           *v178 = v122;
           break;
         case 23:
-          v128 = [v12 bytes];
+          bytes25 = [v12 bytes];
           v129 = [v12 length];
           *(v6 + 33) = 0;
           if (v129 >= 8)
@@ -1345,7 +1345,7 @@ LABEL_255:
             v130 = v129;
           }
 
-          memcpy(v6 + 264, v128, v130);
+          memcpy(v6 + 264, bytes25, v130);
           if (qword_1EAFE46C8 != -1)
           {
             dispatch_once(&qword_1EAFE46C8, &unk_1F0E6E5D8);
@@ -1363,7 +1363,7 @@ LABEL_255:
           v171 = 2082;
           v172 = "";
           v173 = 2082;
-          v174 = "roseInitCount";
+          v3Copy = "roseInitCount";
           v175 = 1026;
           *v176 = 23;
           *&v176[4] = 1026;
@@ -1374,7 +1374,7 @@ LABEL_255:
           *v178 = v131;
           break;
         case 24:
-          v51 = [v12 bytes];
+          bytes26 = [v12 bytes];
           v52 = [v12 length];
           *(v6 + 34) = 0;
           if (v52 >= 8)
@@ -1387,7 +1387,7 @@ LABEL_255:
             v53 = v52;
           }
 
-          memcpy(v6 + 272, v51, v53);
+          memcpy(v6 + 272, bytes26, v53);
           if (qword_1EAFE46C8 != -1)
           {
             dispatch_once(&qword_1EAFE46C8, &unk_1F0E6E5D8);
@@ -1405,7 +1405,7 @@ LABEL_255:
           v171 = 2082;
           v172 = "";
           v173 = 2082;
-          v174 = "pairingAttemptsCount";
+          v3Copy = "pairingAttemptsCount";
           v175 = 1026;
           *v176 = 24;
           *&v176[4] = 1026;
@@ -1416,7 +1416,7 @@ LABEL_255:
           *v178 = v54;
           break;
         case 25:
-          v47 = [v12 bytes];
+          bytes27 = [v12 bytes];
           v48 = [v12 length];
           *(v6 + 35) = 0;
           if (v48 >= 8)
@@ -1429,7 +1429,7 @@ LABEL_255:
             v49 = v48;
           }
 
-          memcpy(v6 + 280, v47, v49);
+          memcpy(v6 + 280, bytes27, v49);
           if (qword_1EAFE46C8 != -1)
           {
             dispatch_once(&qword_1EAFE46C8, &unk_1F0E6E5D8);
@@ -1447,7 +1447,7 @@ LABEL_255:
           v171 = 2082;
           v172 = "";
           v173 = 2082;
-          v174 = "tempVeryLowCount";
+          v3Copy = "tempVeryLowCount";
           v175 = 1026;
           *v176 = 25;
           *&v176[4] = 1026;
@@ -1458,7 +1458,7 @@ LABEL_255:
           *v178 = v50;
           break;
         case 26:
-          v140 = [v12 bytes];
+          bytes28 = [v12 bytes];
           v141 = [v12 length];
           *(v6 + 36) = 0;
           if (v141 >= 8)
@@ -1471,7 +1471,7 @@ LABEL_255:
             v142 = v141;
           }
 
-          memcpy(v6 + 288, v140, v142);
+          memcpy(v6 + 288, bytes28, v142);
           if (qword_1EAFE46C8 != -1)
           {
             dispatch_once(&qword_1EAFE46C8, &unk_1F0E6E5D8);
@@ -1489,7 +1489,7 @@ LABEL_255:
           v171 = 2082;
           v172 = "";
           v173 = 2082;
-          v174 = "tempLowCount";
+          v3Copy = "tempLowCount";
           v175 = 1026;
           *v176 = 26;
           *&v176[4] = 1026;
@@ -1500,7 +1500,7 @@ LABEL_255:
           *v178 = v143;
           break;
         case 27:
-          v19 = [v12 bytes];
+          bytes29 = [v12 bytes];
           v20 = [v12 length];
           *(v6 + 37) = 0;
           if (v20 >= 8)
@@ -1513,7 +1513,7 @@ LABEL_255:
             v21 = v20;
           }
 
-          memcpy(v6 + 296, v19, v21);
+          memcpy(v6 + 296, bytes29, v21);
           if (qword_1EAFE46C8 != -1)
           {
             dispatch_once(&qword_1EAFE46C8, &unk_1F0E6E5D8);
@@ -1531,7 +1531,7 @@ LABEL_255:
           v171 = 2082;
           v172 = "";
           v173 = 2082;
-          v174 = "tempOkCount";
+          v3Copy = "tempOkCount";
           v175 = 1026;
           *v176 = 27;
           *&v176[4] = 1026;
@@ -1542,7 +1542,7 @@ LABEL_255:
           *v178 = v22;
           break;
         case 28:
-          v132 = [v12 bytes];
+          bytes30 = [v12 bytes];
           v133 = [v12 length];
           *(v6 + 38) = 0;
           if (v133 >= 8)
@@ -1555,7 +1555,7 @@ LABEL_255:
             v134 = v133;
           }
 
-          memcpy(v6 + 304, v132, v134);
+          memcpy(v6 + 304, bytes30, v134);
           if (qword_1EAFE46C8 != -1)
           {
             dispatch_once(&qword_1EAFE46C8, &unk_1F0E6E5D8);
@@ -1573,7 +1573,7 @@ LABEL_255:
           v171 = 2082;
           v172 = "";
           v173 = 2082;
-          v174 = "tempHighCount";
+          v3Copy = "tempHighCount";
           v175 = 1026;
           *v176 = 28;
           *&v176[4] = 1026;
@@ -1584,7 +1584,7 @@ LABEL_255:
           *v178 = v135;
           break;
         case 29:
-          v136 = [v12 bytes];
+          bytes31 = [v12 bytes];
           v137 = [v12 length];
           *(v6 + 39) = 0;
           if (v137 >= 8)
@@ -1597,7 +1597,7 @@ LABEL_255:
             v138 = v137;
           }
 
-          memcpy(v6 + 312, v136, v138);
+          memcpy(v6 + 312, bytes31, v138);
           if (qword_1EAFE46C8 != -1)
           {
             dispatch_once(&qword_1EAFE46C8, &unk_1F0E6E5D8);
@@ -1615,7 +1615,7 @@ LABEL_255:
           v171 = 2082;
           v172 = "";
           v173 = 2082;
-          v174 = "proxPairingTime";
+          v3Copy = "proxPairingTime";
           v175 = 1026;
           *v176 = 29;
           *&v176[4] = 1026;
@@ -1626,7 +1626,7 @@ LABEL_255:
           *v178 = v139;
           break;
         case 30:
-          v115 = [v12 bytes];
+          bytes32 = [v12 bytes];
           v116 = [v12 length];
           *(v6 + 40) = 0;
           if (v116 >= 8)
@@ -1639,7 +1639,7 @@ LABEL_255:
             v117 = v116;
           }
 
-          memcpy(v6 + 320, v115, v117);
+          memcpy(v6 + 320, bytes32, v117);
           if (qword_1EAFE46C8 != -1)
           {
             dispatch_once(&qword_1EAFE46C8, &unk_1F0E6E5D8);
@@ -1657,7 +1657,7 @@ LABEL_255:
           v171 = 2082;
           v172 = "";
           v173 = 2082;
-          v174 = "tempLastPIn";
+          v3Copy = "tempLastPIn";
           v175 = 1026;
           *v176 = 30;
           *&v176[4] = 1026;
@@ -1668,7 +1668,7 @@ LABEL_255:
           *v178 = v118;
           break;
         case 31:
-          v75 = [v12 bytes];
+          bytes33 = [v12 bytes];
           v76 = [v12 length];
           *(v6 + 41) = 0;
           if (v76 >= 8)
@@ -1681,7 +1681,7 @@ LABEL_255:
             v77 = v76;
           }
 
-          memcpy(v6 + 328, v75, v77);
+          memcpy(v6 + 328, bytes33, v77);
           if (qword_1EAFE46C8 != -1)
           {
             dispatch_once(&qword_1EAFE46C8, &unk_1F0E6E5D8);
@@ -1699,7 +1699,7 @@ LABEL_255:
           v171 = 2082;
           v172 = "";
           v173 = 2082;
-          v174 = "nbmmsRangingCount";
+          v3Copy = "nbmmsRangingCount";
           v175 = 1026;
           *v176 = 31;
           *&v176[4] = 1026;
@@ -1723,7 +1723,7 @@ LABEL_255:
             v171 = 2082;
             v172 = "";
             v173 = 2082;
-            v174 = "unknown type";
+            v3Copy = "unknown type";
             v175 = 2114;
             *v176 = v12;
             *&v176[8] = 1026;
@@ -1750,7 +1750,7 @@ LABEL_255:
           v171 = 2082;
           v172 = "";
           v173 = 2082;
-          v174 = "unknown type";
+          v3Copy = "unknown type";
           v175 = 2114;
           *v176 = v12;
           *&v176[8] = 1026;
@@ -1767,7 +1767,7 @@ LABEL_255:
 
       _os_log_impl(&dword_19B873000, v17, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:#durian #userstats, type:%{public, location:escape_only}s, typeByte:%{public}d, length:%{public}d, valueHex:%{public, location:escape_only}@, value:%{public}lu}", buf, 0x3Cu);
 LABEL_245:
-      if (v8 >= [a3 length])
+      if (v8 >= [v3 length])
       {
         goto LABEL_257;
       }
@@ -1781,15 +1781,15 @@ LABEL_245:
     v154 = qword_1EAFE4700;
     if (os_log_type_enabled(qword_1EAFE4700, OS_LOG_TYPE_ERROR))
     {
-      v155 = [a3 length];
+      v155 = [v3 length];
       *buf = 68290050;
       v170 = 0;
       v171 = 2082;
       v172 = "";
       v173 = 2082;
-      v174 = "malformed TLV, offset + 2 >= length";
+      v3Copy = "malformed TLV, offset + 2 >= length";
       v175 = 2114;
-      *v176 = a3;
+      *v176 = v3;
       *&v176[8] = 1026;
       *&v176[10] = v8;
       *&v176[14] = 1026;
@@ -1807,15 +1807,15 @@ LABEL_245:
       goto LABEL_255;
     }
 
-    v157 = [a3 length];
+    v157 = [v3 length];
     *buf = 68290050;
     v170 = 0;
     v171 = 2082;
     v172 = "";
     v173 = 2082;
-    v174 = "malformed TLV, offset + 2 >= length";
+    v3Copy = "malformed TLV, offset + 2 >= length";
     v175 = 2114;
-    *v176 = a3;
+    *v176 = v3;
     *&v176[8] = 1026;
     *&v176[10] = v8;
     *&v176[14] = 1026;
@@ -1832,116 +1832,116 @@ LABEL_256:
   return v6;
 }
 
-- (CLFindMyAccessoryUserStats)initWithOverflowFlag:(unint64_t)a3 crashCount:(unint64_t)a4 multiTime:(unint64_t)a5 nearOwnerTime:(unint64_t)a6 wildTime:(unint64_t)a7 soundCount:(unint64_t)a8 soundTime:(unint64_t)a9 rangingCount:(unint64_t)a10 rangingTime:(unint64_t)a11 multiLeashTime:(unint64_t)a12 multiConnectionTime:(unint64_t)a13 nearOwnerTimeV2:(unint64_t)a14 singleLeashTime:(unint64_t)a15 singleConnectionTime:(unint64_t)a16 dualConnectionTime:(unint64_t)a17 dualLeashTime:(unint64_t)a18 utAccelCount:(unint64_t)a19 lastClear:(unint64_t)a20 roseOnTime:(unint64_t)a21 ownerLongSoundCount:(unint64_t)a22 ownerShortSoundCount:(unint64_t)a23 utLongSoundCount:(unint64_t)a24 utShortSoundCount:(unint64_t)a25 bomSoundCount:(unint64_t)a26 fc1ndRangingCount:(unint64_t)a27 fc1ndRangingTime:(unint64_t)a28 lastPIn:(unint64_t)a29 batteryState:(int64_t)a30 nbmmsRangingTime:(unint64_t)a31 abandonedFwUpdateCount:(unint64_t)a32 abandonedFwUpdateTime:(unint64_t)a33 roseInitCount:(unint64_t)a34 pairingAttemptsCount:(unint64_t)a35 tempVeryLowCount:(unint64_t)a36 tempLowCount:(unint64_t)a37 tempOkCount:(unint64_t)a38 tempHighCount:(unint64_t)a39 proxPairingTime:(unint64_t)a40 tempLastPIn:(unint64_t)a41 nbmmsRangingCount:(unint64_t)a42 version:(unint64_t)a43
+- (CLFindMyAccessoryUserStats)initWithOverflowFlag:(unint64_t)flag crashCount:(unint64_t)count multiTime:(unint64_t)time nearOwnerTime:(unint64_t)ownerTime wildTime:(unint64_t)wildTime soundCount:(unint64_t)soundCount soundTime:(unint64_t)soundTime rangingCount:(unint64_t)self0 rangingTime:(unint64_t)self1 multiLeashTime:(unint64_t)self2 multiConnectionTime:(unint64_t)self3 nearOwnerTimeV2:(unint64_t)self4 singleLeashTime:(unint64_t)self5 singleConnectionTime:(unint64_t)self6 dualConnectionTime:(unint64_t)self7 dualLeashTime:(unint64_t)self8 utAccelCount:(unint64_t)self9 lastClear:(unint64_t)clear roseOnTime:(unint64_t)onTime ownerLongSoundCount:(unint64_t)longSoundCount ownerShortSoundCount:(unint64_t)shortSoundCount utLongSoundCount:(unint64_t)utLongSoundCount utShortSoundCount:(unint64_t)utShortSoundCount bomSoundCount:(unint64_t)bomSoundCount fc1ndRangingCount:(unint64_t)fc1ndRangingCount fc1ndRangingTime:(unint64_t)fc1ndRangingTime lastPIn:(unint64_t)in batteryState:(int64_t)flag0 nbmmsRangingTime:(unint64_t)flag1 abandonedFwUpdateCount:(unint64_t)flag2 abandonedFwUpdateTime:(unint64_t)flag3 roseInitCount:(unint64_t)flag4 pairingAttemptsCount:(unint64_t)flag5 tempVeryLowCount:(unint64_t)flag6 tempLowCount:(unint64_t)flag7 tempOkCount:(unint64_t)flag8 tempHighCount:(unint64_t)flag9 proxPairingTime:(unint64_t)count0 tempLastPIn:(unint64_t)count1 nbmmsRangingCount:(unint64_t)count2 version:(unint64_t)count3
 {
   v50.receiver = self;
   v50.super_class = CLFindMyAccessoryUserStats;
   result = [(CLFindMyAccessoryUserStats *)&v50 init];
   if (result)
   {
-    result->_version = a43;
-    result->_overflowFlag = a3;
-    result->_crashCount = a4;
-    result->_multiTime = a5;
-    result->_nearOwnerTime = a6;
-    result->_wildTime = a7;
-    result->_soundCount = a8;
-    result->_soundTime = a9;
-    result->_rangingCount = a10;
-    result->_rangingTime = a11;
-    result->_multiLeashTime = a12;
-    result->_multiConnectionTime = a13;
-    result->_nearOwnerTimeV2 = a14;
-    result->_singleLeashTime = a15;
-    result->_singleConnectionTime = a16;
-    result->_dualConnectionTime = a17;
-    result->_dualLeashTime = a18;
-    result->_utAccelCount = a19;
-    result->_lastClear = a20;
-    result->_roseOnTime = a21;
-    result->_ownerLongSoundCount = a22;
-    result->_ownerShortSoundCount = a23;
-    result->_utLongSoundCount = a24;
-    result->_utShortSoundCount = a25;
-    result->_bomSoundCount = a26;
-    result->_fc1ndRangingCount = a27;
-    result->_fc1ndRangingTime = a28;
-    result->_lastPIn = a29;
-    result->_batteryState = a30;
-    result->_nbmmsRangingTime = a31;
-    result->_abandonedFwUpdateCount = a32;
-    result->_abandonedFwUpdateTime = a33;
-    result->_roseInitCount = a34;
-    result->_pairingAttemptsCount = a35;
-    result->_tempVeryLowCount = a36;
-    result->_tempLowCount = a37;
-    result->_tempOkCount = a38;
-    result->_tempHighCount = a39;
-    result->_proxPairingTime = a40;
-    result->_tempLastPIn = a41;
-    result->_nbmmsRangingCount = a42;
+    result->_version = version;
+    result->_overflowFlag = flag;
+    result->_crashCount = count;
+    result->_multiTime = time;
+    result->_nearOwnerTime = ownerTime;
+    result->_wildTime = wildTime;
+    result->_soundCount = soundCount;
+    result->_soundTime = soundTime;
+    result->_rangingCount = rangingCount;
+    result->_rangingTime = rangingTime;
+    result->_multiLeashTime = leashTime;
+    result->_multiConnectionTime = connectionTime;
+    result->_nearOwnerTimeV2 = v2;
+    result->_singleLeashTime = singleLeashTime;
+    result->_singleConnectionTime = singleConnectionTime;
+    result->_dualConnectionTime = dualConnectionTime;
+    result->_dualLeashTime = dualLeashTime;
+    result->_utAccelCount = accelCount;
+    result->_lastClear = clear;
+    result->_roseOnTime = onTime;
+    result->_ownerLongSoundCount = longSoundCount;
+    result->_ownerShortSoundCount = shortSoundCount;
+    result->_utLongSoundCount = utLongSoundCount;
+    result->_utShortSoundCount = utShortSoundCount;
+    result->_bomSoundCount = bomSoundCount;
+    result->_fc1ndRangingCount = fc1ndRangingCount;
+    result->_fc1ndRangingTime = fc1ndRangingTime;
+    result->_lastPIn = in;
+    result->_batteryState = state;
+    result->_nbmmsRangingTime = nbmmsRangingTime;
+    result->_abandonedFwUpdateCount = updateCount;
+    result->_abandonedFwUpdateTime = updateTime;
+    result->_roseInitCount = initCount;
+    result->_pairingAttemptsCount = attemptsCount;
+    result->_tempVeryLowCount = lowCount;
+    result->_tempLowCount = tempLowCount;
+    result->_tempOkCount = okCount;
+    result->_tempHighCount = highCount;
+    result->_proxPairingTime = pairingTime;
+    result->_tempLastPIn = pIn;
+    result->_nbmmsRangingCount = nbmmsRangingCount;
   }
 
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_overflowFlag), @"overflowFlag"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_crashCount), @"crashCount"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_multiTime), @"multiTime"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_nearOwnerTime), @"nearOwnerTime"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_wildTime), @"wildTime"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_soundCount), @"soundCount"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_soundTime), @"soundTime"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_rangingCount), @"rangingCount"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_rangingTime), @"rangingTime"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_multiLeashTime), @"multiLeashTime"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_multiConnectionTime), @"multiConnectionTime"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_nearOwnerTimeV2), @"nearOwnerTimeV2"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_singleLeashTime), @"singleLeashTime"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_singleConnectionTime), @"singleConnectionTime"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_dualConnectionTime), @"dualConnectionTime"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_dualLeashTime), @"dualLeashTime"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_utAccelCount), @"utAccelCount"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_lastClear), @"lastClear"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_roseOnTime), @"roseOnTime"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_ownerLongSoundCount), @"ownerLongSoundCount"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_ownerShortSoundCount), @"ownerShortSoundCount"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_utLongSoundCount), @"utLongSoundCount"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_utShortSoundCount), @"utShortSoundCount"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_bomSoundCount), @"bomSoundCount"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_fc1ndRangingCount), @"fc1ndRangingCount"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_fc1ndRangingTime), @"fc1ndRangingTime"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_lastPIn), @"lastPin"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_batteryState), @"batteryState"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_nbmmsRangingTime), @"nbmmsRangingTime"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_abandonedFwUpdateCount), @"abandonedFwUpdateCount"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_abandonedFwUpdateTime), @"abandonedFwUpdateTime"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_roseInitCount), @"roseInitCount"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_pairingAttemptsCount), @"proxPairingAttemptsCount"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_tempVeryLowCount), @"tempVeryLowCount"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_tempLowCount), @"tempLowCount"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_tempOkCount), @"tempOkCount"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_tempHighCount), @"tempHighCount"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_proxPairingTime), @"proxPairingTime"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_tempLastPIn), @"lastPInTemperature"}];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_nbmmsRangingCount), @"nbmmsRangingCount"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_overflowFlag), @"overflowFlag"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_crashCount), @"crashCount"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_multiTime), @"multiTime"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_nearOwnerTime), @"nearOwnerTime"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_wildTime), @"wildTime"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_soundCount), @"soundCount"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_soundTime), @"soundTime"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_rangingCount), @"rangingCount"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_rangingTime), @"rangingTime"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_multiLeashTime), @"multiLeashTime"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_multiConnectionTime), @"multiConnectionTime"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_nearOwnerTimeV2), @"nearOwnerTimeV2"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_singleLeashTime), @"singleLeashTime"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_singleConnectionTime), @"singleConnectionTime"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_dualConnectionTime), @"dualConnectionTime"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_dualLeashTime), @"dualLeashTime"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_utAccelCount), @"utAccelCount"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_lastClear), @"lastClear"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_roseOnTime), @"roseOnTime"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_ownerLongSoundCount), @"ownerLongSoundCount"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_ownerShortSoundCount), @"ownerShortSoundCount"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_utLongSoundCount), @"utLongSoundCount"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_utShortSoundCount), @"utShortSoundCount"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_bomSoundCount), @"bomSoundCount"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_fc1ndRangingCount), @"fc1ndRangingCount"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_fc1ndRangingTime), @"fc1ndRangingTime"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_lastPIn), @"lastPin"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_batteryState), @"batteryState"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_nbmmsRangingTime), @"nbmmsRangingTime"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_abandonedFwUpdateCount), @"abandonedFwUpdateCount"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_abandonedFwUpdateTime), @"abandonedFwUpdateTime"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_roseInitCount), @"roseInitCount"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_pairingAttemptsCount), @"proxPairingAttemptsCount"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_tempVeryLowCount), @"tempVeryLowCount"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_tempLowCount), @"tempLowCount"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_tempOkCount), @"tempOkCount"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_tempHighCount), @"tempHighCount"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_proxPairingTime), @"proxPairingTime"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_tempLastPIn), @"lastPInTemperature"}];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_nbmmsRangingCount), @"nbmmsRangingCount"}];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_version];
 
-  [a3 encodeObject:v5 forKey:@"version"];
+  [coder encodeObject:v5 forKey:@"version"];
 }
 
-+ (id)batteryStateToString:(int64_t)a3
++ (id)batteryStateToString:(int64_t)string
 {
-  if ((a3 + 1) > 4)
+  if ((string + 1) > 4)
   {
     return @"Unset";
   }
 
   else
   {
-    return off_1E753E850[a3 + 1];
+    return off_1E753E850[string + 1];
   }
 }
 

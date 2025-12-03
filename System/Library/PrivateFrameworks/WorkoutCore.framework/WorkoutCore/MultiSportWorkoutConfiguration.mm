@@ -7,7 +7,7 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = MultiSportWorkoutConfiguration.hash.getter();
 
   return v3;
@@ -15,7 +15,7 @@
 
 - (NSString)analyticsSubActivities
 {
-  v2 = self;
+  selfCopy = self;
   v3 = MultiSportWorkoutConfiguration.analyticsSubActivities.getter();
   v5 = v4;
 

@@ -1,16 +1,16 @@
 @interface LeastNumberPriorityQueue
-- (BOOL)lessThanWithId:(id)a3 withId:(id)a4;
+- (BOOL)lessThanWithId:(id)id withId:(id)withId;
 @end
 
 @implementation LeastNumberPriorityQueue
 
-- (BOOL)lessThanWithId:(id)a3 withId:(id)a4
+- (BOOL)lessThanWithId:(id)id withId:(id)withId
 {
-  v5 = a4;
-  LODWORD(a3) = [a3 unsignedIntValue];
-  v6 = [v5 unsignedIntValue];
+  withIdCopy = withId;
+  LODWORD(id) = [id unsignedIntValue];
+  unsignedIntValue = [withIdCopy unsignedIntValue];
 
-  return a3 >= v6;
+  return id >= unsignedIntValue;
 }
 
 @end

@@ -1,42 +1,42 @@
 @interface SBSUIInCallDestroySceneAction
 - (NSString)analyticsSource;
-- (SBSUIInCallDestroySceneAction)initWithDestructionReason:(int64_t)a3 analyticsSource:(id)a4 timeout:(double)a5 withResponseHandler:(id)a6;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5;
+- (SBSUIInCallDestroySceneAction)initWithDestructionReason:(int64_t)reason analyticsSource:(id)source timeout:(double)timeout withResponseHandler:(id)handler;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting;
 - (int64_t)destructionReason;
 @end
 
 @implementation SBSUIInCallDestroySceneAction
 
-- (SBSUIInCallDestroySceneAction)initWithDestructionReason:(int64_t)a3 analyticsSource:(id)a4 timeout:(double)a5 withResponseHandler:(id)a6
+- (SBSUIInCallDestroySceneAction)initWithDestructionReason:(int64_t)reason analyticsSource:(id)source timeout:(double)timeout withResponseHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a6;
+  sourceCopy = source;
+  handlerCopy = handler;
   v12 = objc_alloc_init(MEMORY[0x1E698E700]);
-  v13 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v13 = [MEMORY[0x1E696AD98] numberWithInteger:reason];
   [v12 setObject:v13 forSetting:1];
 
-  if (v10)
+  if (sourceCopy)
   {
-    [v12 setObject:v10 forSetting:2];
+    [v12 setObject:sourceCopy forSetting:2];
   }
 
   v16.receiver = self;
   v16.super_class = SBSUIInCallDestroySceneAction;
-  v14 = [(SBSUIInCallDestroySceneAction *)&v16 initWithInfo:v12 timeout:MEMORY[0x1E69E96A0] forResponseOnQueue:v11 withHandler:a5];
+  v14 = [(SBSUIInCallDestroySceneAction *)&v16 initWithInfo:v12 timeout:MEMORY[0x1E69E96A0] forResponseOnQueue:handlerCopy withHandler:timeout];
 
   return v14;
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
   v3 = @"analyticsSource";
-  if (a3 != 2)
+  if (setting != 2)
   {
     v3 = 0;
   }
 
-  if (a3 == 1)
+  if (setting == 1)
   {
     return @"destructionReason";
   }
@@ -47,19 +47,19 @@
   }
 }
 
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting
 {
-  v6 = a4;
-  v7 = v6;
-  if (a5 == 2)
+  objectCopy = object;
+  v7 = objectCopy;
+  if (setting == 2)
   {
-    v8 = v6;
+    v8 = objectCopy;
     goto LABEL_5;
   }
 
-  if (a5 == 1)
+  if (setting == 1)
   {
-    v8 = SBSUIInCallWindowSceneSessionDestructionReasonDescription([v6 integerValue]);
+    v8 = SBSUIInCallWindowSceneSessionDestructionReasonDescription([objectCopy integerValue]);
 LABEL_5:
     v9 = v8;
     goto LABEL_7;
@@ -73,19 +73,19 @@ LABEL_7:
 
 - (NSString)analyticsSource
 {
-  v2 = [(SBSUIInCallDestroySceneAction *)self info];
-  v3 = [v2 objectForSetting:2];
+  info = [(SBSUIInCallDestroySceneAction *)self info];
+  v3 = [info objectForSetting:2];
 
   return v3;
 }
 
 - (int64_t)destructionReason
 {
-  v2 = [(SBSUIInCallDestroySceneAction *)self info];
-  v3 = [v2 objectForSetting:1];
-  v4 = [v3 integerValue];
+  info = [(SBSUIInCallDestroySceneAction *)self info];
+  v3 = [info objectForSetting:1];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 @end

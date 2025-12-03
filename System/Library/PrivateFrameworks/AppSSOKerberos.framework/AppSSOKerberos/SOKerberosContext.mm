@@ -1,48 +1,48 @@
 @interface SOKerberosContext
 - (NSString)userPrincipalName;
-- (SOKerberosContext)initWithRequest:(id)a3 extensionData:(id)a4;
-- (void)cancelRequest:(BOOL)a3;
+- (SOKerberosContext)initWithRequest:(id)request extensionData:(id)data;
+- (void)cancelRequest:(BOOL)request;
 - (void)completeRequest;
 - (void)completeRequestWithDoNotHandle;
-- (void)completeRequestWithError:(id)a3;
-- (void)completeRequestWithHTTPResponse:(id)a3 httpBody:(id)a4;
-- (void)completeRequestWithHTTPResponseHeaders:(id)a3;
-- (void)completeRequestWithHeaders:(id)a3;
+- (void)completeRequestWithError:(id)error;
+- (void)completeRequestWithHTTPResponse:(id)response httpBody:(id)body;
+- (void)completeRequestWithHTTPResponseHeaders:(id)headers;
+- (void)completeRequestWithHeaders:(id)headers;
 - (void)finishRequest;
-- (void)presentAuthorizationViewControllerWithCompletion:(id)a3;
-- (void)setUserName:(id)a3;
+- (void)presentAuthorizationViewControllerWithCompletion:(id)completion;
+- (void)setUserName:(id)name;
 - (void)startRequest;
 - (void)waitForCompletion;
 @end
 
 @implementation SOKerberosContext
 
-- (SOKerberosContext)initWithRequest:(id)a3 extensionData:(id)a4
+- (SOKerberosContext)initWithRequest:(id)request extensionData:(id)data
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  dataCopy = data;
   v61.receiver = self;
   v61.super_class = SOKerberosContext;
   v9 = [(SOKerberosContext *)&v61 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_authorizationRequest, a3);
-    v11 = [(ASAuthorizationProviderExtensionAuthorizationRequest *)v10->_authorizationRequest localizedCallerDisplayName];
+    objc_storeStrong(&v9->_authorizationRequest, request);
+    localizedCallerDisplayName = [(ASAuthorizationProviderExtensionAuthorizationRequest *)v10->_authorizationRequest localizedCallerDisplayName];
     callerLocalizedName = v10->_callerLocalizedName;
-    v10->_callerLocalizedName = v11;
+    v10->_callerLocalizedName = localizedCallerDisplayName;
 
-    v13 = [v7 realm];
-    v14 = [v13 uppercaseString];
+    realm = [requestCopy realm];
+    uppercaseString = [realm uppercaseString];
     realm = v10->_realm;
-    v10->_realm = v14;
+    v10->_realm = uppercaseString;
 
-    v16 = [v7 url];
-    v17 = [v16 host];
+    v16 = [requestCopy url];
+    host = [v16 host];
     hostName = v10->_hostName;
-    v10->_hostName = v17;
+    v10->_hostName = host;
 
-    objc_storeStrong(&v10->_extensionData, a4);
+    objc_storeStrong(&v10->_extensionData, data);
     v19 = objc_alloc_init(SOKerberosExtensionUserData);
     extensionUserData = v10->_extensionUserData;
     v10->_extensionUserData = v19;
@@ -52,14 +52,14 @@
     dispatchGroup = v10->_dispatchGroup;
     v10->_dispatchGroup = v21;
 
-    v23 = [(ASAuthorizationProviderExtensionAuthorizationRequest *)v10->_authorizationRequest callerBundleIdentifier];
+    callerBundleIdentifier = [(ASAuthorizationProviderExtensionAuthorizationRequest *)v10->_authorizationRequest callerBundleIdentifier];
     callerBundleIdentifier = v10->_callerBundleIdentifier;
-    v10->_callerBundleIdentifier = v23;
+    v10->_callerBundleIdentifier = callerBundleIdentifier;
 
-    v25 = [(ASAuthorizationProviderExtensionAuthorizationRequest *)v10->_authorizationRequest authorizationRequest];
-    v26 = [v25 impersonationBundleIdentifier];
+    authorizationRequest = [(ASAuthorizationProviderExtensionAuthorizationRequest *)v10->_authorizationRequest authorizationRequest];
+    impersonationBundleIdentifier = [authorizationRequest impersonationBundleIdentifier];
     impersonationBundleIdentifier = v10->_impersonationBundleIdentifier;
-    v10->_impersonationBundleIdentifier = v26;
+    v10->_impersonationBundleIdentifier = impersonationBundleIdentifier;
 
     if ([(NSString *)v10->_impersonationBundleIdentifier isEqualToString:&stru_285206D08])
     {
@@ -67,7 +67,7 @@
       v10->_impersonationBundleIdentifier = 0;
     }
 
-    v10->_isManagedApp = [v7 isCallerManaged];
+    v10->_isManagedApp = [requestCopy isCallerManaged];
     *&v10->_attemptedToGetCredsFromKeychain = 0;
     v10->_laContextFailureCount = 0;
     v10->_refreshCredential = 0;
@@ -76,15 +76,15 @@
     siteCodeGroup = v10->_siteCodeGroup;
     v10->_siteCodeGroup = v29;
 
-    v31 = [v7 authorizationRequest];
-    v32 = [v31 auditTokenData];
+    authorizationRequest2 = [requestCopy authorizationRequest];
+    auditTokenData = [authorizationRequest2 auditTokenData];
     auditToken = v10->_auditToken;
-    v10->_auditToken = v32;
+    v10->_auditToken = auditTokenData;
 
     v10->_useKerberosPasswordInsteadOfMDMIdentity = 0;
     v34 = [SOKerberosRealmSettings alloc];
-    v35 = [(SOKerberosContext *)v10 realm];
-    v36 = [(SOKerberosRealmSettings *)v34 initWithRealm:v35];
+    realm2 = [(SOKerberosContext *)v10 realm];
+    v36 = [(SOKerberosRealmSettings *)v34 initWithRealm:realm2];
     currentSettings = v10->_currentSettings;
     v10->_currentSettings = v36;
 
@@ -92,21 +92,21 @@
     v38 = v10->_currentSettings;
     if (v38)
     {
-      v39 = [(SOKerberosRealmSettings *)v38 credentialUUID];
+      credentialUUID = [(SOKerberosRealmSettings *)v38 credentialUUID];
       credentialUUID = v10->_credentialUUID;
-      v10->_credentialUUID = v39;
+      v10->_credentialUUID = credentialUUID;
 
-      v41 = [(SOKerberosRealmSettings *)v10->_currentSettings pkinitPersistentRef];
+      pkinitPersistentRef = [(SOKerberosRealmSettings *)v10->_currentSettings pkinitPersistentRef];
       pkinitPersistentRef = v10->_pkinitPersistentRef;
-      v10->_pkinitPersistentRef = v41;
+      v10->_pkinitPersistentRef = pkinitPersistentRef;
 
-      v43 = [(SOKerberosRealmSettings *)v10->_currentSettings smartCardTokenID];
+      smartCardTokenID = [(SOKerberosRealmSettings *)v10->_currentSettings smartCardTokenID];
       certificateTokenID = v10->_certificateTokenID;
-      v10->_certificateTokenID = v43;
+      v10->_certificateTokenID = smartCardTokenID;
 
-      v45 = [(SOKerberosRealmSettings *)v10->_currentSettings userPrincipalName];
+      userPrincipalName = [(SOKerberosRealmSettings *)v10->_currentSettings userPrincipalName];
 
-      if (v45)
+      if (userPrincipalName)
       {
         v46 = SO_LOG_SOKerberosContext();
         if (os_log_type_enabled(v46, OS_LOG_TYPE_DEBUG))
@@ -114,38 +114,38 @@
           [SOKerberosContext initWithRequest:? extensionData:?];
         }
 
-        v47 = [(SOKerberosRealmSettings *)v10->_currentSettings userPrincipalName];
+        userPrincipalName2 = [(SOKerberosRealmSettings *)v10->_currentSettings userPrincipalName];
         userPrincipalName = v10->_userPrincipalName;
-        v10->_userPrincipalName = v47;
+        v10->_userPrincipalName = userPrincipalName2;
 
-        v49 = [(SOKerberosRealmSettings *)v10->_currentSettings userName];
+        userName = [(SOKerberosRealmSettings *)v10->_currentSettings userName];
         userName = v10->_userName;
-        v10->_userName = v49;
+        v10->_userName = userName;
 
         v10->_userNameIsReadOnly = 1;
       }
 
       else
       {
-        v51 = [v8 principalName];
+        principalName = [dataCopy principalName];
 
-        if (v51)
+        if (principalName)
         {
           v52 = SO_LOG_SOKerberosContext();
           if (os_log_type_enabled(v52, OS_LOG_TYPE_DEBUG))
           {
-            [SOKerberosContext initWithRequest:v8 extensionData:?];
+            [SOKerberosContext initWithRequest:dataCopy extensionData:?];
           }
 
-          v53 = [v8 principalName];
+          principalName2 = [dataCopy principalName];
           v54 = v10->_userName;
-          v10->_userName = v53;
+          v10->_userName = principalName2;
         }
 
         else
         {
-          v55 = [v7 httpHeaders];
-          v56 = [v55 objectForKey:@"user_name"];
+          httpHeaders = [requestCopy httpHeaders];
+          v56 = [httpHeaders objectForKey:@"user_name"];
           if (v56)
           {
             v57 = SO_LOG_SOKerberosContext();
@@ -160,9 +160,9 @@
         }
       }
 
-      v58 = [v8 principalName];
+      principalName3 = [dataCopy principalName];
 
-      if (v58)
+      if (principalName3)
       {
         v59 = SO_LOG_SOKerberosContext();
         if (os_log_type_enabled(v59, OS_LOG_TYPE_DEBUG))
@@ -188,9 +188,9 @@
     v6 = self->_userPrincipalName;
     if (!v5)
     {
-      v7 = [(NSString *)v6 lowercaseString];
-      v8 = [v3 lowercaseString];
-      v9 = [v7 hasSuffix:v8];
+      lowercaseString = [(NSString *)v6 lowercaseString];
+      lowercaseString2 = [v3 lowercaseString];
+      v9 = [lowercaseString hasSuffix:lowercaseString2];
 
       if (v9)
       {
@@ -219,9 +219,9 @@ LABEL_13:
     v6 = self->_userName;
     if (!v12)
     {
-      v15 = [(NSString *)v6 lowercaseString];
-      v16 = [v3 lowercaseString];
-      v17 = [v15 hasSuffix:v16];
+      lowercaseString3 = [(NSString *)v6 lowercaseString];
+      lowercaseString4 = [v3 lowercaseString];
+      v17 = [lowercaseString3 hasSuffix:lowercaseString4];
 
       if (v17)
       {
@@ -245,17 +245,17 @@ LABEL_18:
   return v14;
 }
 
-- (void)setUserName:(id)a3
+- (void)setUserName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   if (!self->_userNameIsReadOnly)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_userName, a3);
+    v7 = nameCopy;
+    objc_storeStrong(&self->_userName, name);
     userPrincipalName = self->_userPrincipalName;
     self->_userPrincipalName = 0;
 
-    v5 = v7;
+    nameCopy = v7;
   }
 }
 
@@ -283,7 +283,7 @@ LABEL_18:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cancelRequest:(BOOL)a3
+- (void)cancelRequest:(BOOL)request
 {
   v4 = SO_LOG_SOKerberosContext();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -293,8 +293,8 @@ LABEL_18:
 
   [(SOKerberosContext *)self setRequestCancelled:1];
   [(SOKerberosContext *)self finishRequest];
-  v5 = [(SOKerberosContext *)self authorizationRequest];
-  [v5 cancel];
+  authorizationRequest = [(SOKerberosContext *)self authorizationRequest];
+  [authorizationRequest cancel];
 }
 
 - (void)completeRequest
@@ -305,9 +305,9 @@ LABEL_18:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)completeRequestWithHeaders:(id)a3
+- (void)completeRequestWithHeaders:(id)headers
 {
-  v4 = a3;
+  headersCopy = headers;
   v5 = SO_LOG_SOKerberosContext();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -315,13 +315,13 @@ LABEL_18:
   }
 
   [(SOKerberosContext *)self finishRequest];
-  v6 = [(SOKerberosContext *)self authorizationRequest];
-  [v6 completeWithHTTPAuthorizationHeaders:v4];
+  authorizationRequest = [(SOKerberosContext *)self authorizationRequest];
+  [authorizationRequest completeWithHTTPAuthorizationHeaders:headersCopy];
 }
 
-- (void)completeRequestWithHTTPResponseHeaders:(id)a3
+- (void)completeRequestWithHTTPResponseHeaders:(id)headers
 {
-  v4 = a3;
+  headersCopy = headers;
   v5 = SO_LOG_SOKerberosContext();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -329,18 +329,18 @@ LABEL_18:
   }
 
   v6 = objc_alloc(MEMORY[0x277CCAA40]);
-  v7 = [(SOKerberosContext *)self authorizationRequest];
-  v8 = [v7 url];
-  v9 = [v6 initWithURL:v8 statusCode:200 HTTPVersion:@"HTTP/1.1" headerFields:v4];
+  authorizationRequest = [(SOKerberosContext *)self authorizationRequest];
+  v8 = [authorizationRequest url];
+  v9 = [v6 initWithURL:v8 statusCode:200 HTTPVersion:@"HTTP/1.1" headerFields:headersCopy];
 
   v10 = objc_opt_new();
   [(SOKerberosContext *)self completeRequestWithHTTPResponse:v9 httpBody:v10];
 }
 
-- (void)completeRequestWithHTTPResponse:(id)a3 httpBody:(id)a4
+- (void)completeRequestWithHTTPResponse:(id)response httpBody:(id)body
 {
-  v6 = a4;
-  v7 = a3;
+  bodyCopy = body;
+  responseCopy = response;
   v8 = SO_LOG_SOKerberosContext();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -348,13 +348,13 @@ LABEL_18:
   }
 
   [(SOKerberosContext *)self finishRequest];
-  v9 = [(SOKerberosContext *)self authorizationRequest];
-  [v9 completeWithHTTPResponse:v7 httpBody:v6];
+  authorizationRequest = [(SOKerberosContext *)self authorizationRequest];
+  [authorizationRequest completeWithHTTPResponse:responseCopy httpBody:bodyCopy];
 }
 
-- (void)completeRequestWithError:(id)a3
+- (void)completeRequestWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = SO_LOG_SOKerberosContext();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -362,8 +362,8 @@ LABEL_18:
   }
 
   [(SOKerberosContext *)self finishRequest];
-  v6 = [(SOKerberosContext *)self authorizationRequest];
-  [v6 completeWithError:v4];
+  authorizationRequest = [(SOKerberosContext *)self authorizationRequest];
+  [authorizationRequest completeWithError:errorCopy];
 }
 
 - (void)completeRequestWithDoNotHandle
@@ -374,22 +374,22 @@ LABEL_18:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)presentAuthorizationViewControllerWithCompletion:(id)a3
+- (void)presentAuthorizationViewControllerWithCompletion:(id)completion
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = SO_LOG_SOKerberosContext();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [SOKerberosContext presentAuthorizationViewControllerWithCompletion:];
   }
 
-  v6 = [(SOKerberosContext *)self authorizationRequest];
-  v7 = [v6 authorizationRequest];
+  authorizationRequest = [(SOKerberosContext *)self authorizationRequest];
+  v6AuthorizationRequest = [authorizationRequest authorizationRequest];
   v10 = &unk_28520B9A0;
   v11[0] = &unk_28520B9A0;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-  [v7 presentAuthorizationViewControllerWithHints:v8 completion:v4];
+  [v6AuthorizationRequest presentAuthorizationViewControllerWithHints:v8 completion:completionCopy];
 
   v9 = *MEMORY[0x277D85DE8];
 }

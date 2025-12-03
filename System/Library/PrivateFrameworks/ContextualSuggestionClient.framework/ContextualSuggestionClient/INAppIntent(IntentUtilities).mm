@@ -6,8 +6,8 @@
 
 - (id)atx_comparableParameters
 {
-  v1 = [a1 serializedParameters];
-  v2 = [v1 mutableCopy];
+  serializedParameters = [self serializedParameters];
+  v2 = [serializedParameters mutableCopy];
 
   [v2 setObject:0 forKeyedSubscript:@"AppIntentDescriptor"];
 

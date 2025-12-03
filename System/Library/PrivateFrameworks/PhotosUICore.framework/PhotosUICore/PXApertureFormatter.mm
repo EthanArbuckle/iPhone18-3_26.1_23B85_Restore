@@ -1,20 +1,20 @@
 @interface PXApertureFormatter
-+ (id)stringForObjectValue:(id)a3;
-- (BOOL)getObjectValue:(id *)a3 forString:(id)a4 range:(_NSRange *)a5 error:(id *)a6;
-- (id)stringForObjectValue:(id)a3;
++ (id)stringForObjectValue:(id)value;
+- (BOOL)getObjectValue:(id *)value forString:(id)string range:(_NSRange *)range error:(id *)error;
+- (id)stringForObjectValue:(id)value;
 @end
 
 @implementation PXApertureFormatter
 
-+ (id)stringForObjectValue:(id)a3
++ (id)stringForObjectValue:(id)value
 {
-  v3 = a3;
-  if (v3)
+  valueCopy = value;
+  if (valueCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v3 doubleValue];
+      [valueCopy doubleValue];
       if (v4 - floor(v4) == 0.0)
       {
         v5 = @"ƒ/%0.0f";
@@ -42,13 +42,13 @@
   return v6;
 }
 
-- (BOOL)getObjectValue:(id *)a3 forString:(id)a4 range:(_NSRange *)a5 error:(id *)a6
+- (BOOL)getObjectValue:(id *)value forString:(id)string range:(_NSRange *)range error:(id *)error
 {
-  v8 = a4;
+  stringCopy = string;
   v14 = 0.0;
-  if ([v8 length])
+  if ([stringCopy length])
   {
-    v9 = [MEMORY[0x1E696AE88] scannerWithString:v8];
+    v9 = [MEMORY[0x1E696AE88] scannerWithString:stringCopy];
     if (![v9 scanDouble:&v14])
     {
       if ([v9 scanString:@"ƒ/" intoString:0] & 1) != 0 || (objc_msgSend(v9, "scanString:intoString:", @"f/", 0))
@@ -65,7 +65,7 @@
       {
       }
 
-      if (!a6)
+      if (!error)
       {
         v12 = 0;
         goto LABEL_12;
@@ -73,7 +73,7 @@
 
       v11 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:2048 userInfo:0];
       v12 = 0;
-      a3 = a6;
+      value = error;
       goto LABEL_10;
     }
   }
@@ -84,7 +84,7 @@
   }
 
 LABEL_8:
-  if (!a3)
+  if (!value)
   {
     v12 = 1;
     goto LABEL_12;
@@ -93,16 +93,16 @@ LABEL_8:
   v11 = [MEMORY[0x1E696AD98] numberWithDouble:v14];
   v12 = 1;
 LABEL_10:
-  *a3 = v11;
+  *value = v11;
 LABEL_12:
 
   return v12;
 }
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
-  v3 = a3;
-  v4 = [objc_opt_class() stringForObjectValue:v3];
+  valueCopy = value;
+  v4 = [objc_opt_class() stringForObjectValue:valueCopy];
 
   return v4;
 }

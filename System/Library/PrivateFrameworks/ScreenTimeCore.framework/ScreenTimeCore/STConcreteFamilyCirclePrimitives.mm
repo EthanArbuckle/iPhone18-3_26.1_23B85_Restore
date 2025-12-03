@@ -1,13 +1,13 @@
 @interface STConcreteFamilyCirclePrimitives
 - (STFamilyCirclePrimitivesDelegate)delegate;
 - (void)_delegateFetchedFamilyMembers;
-- (void)_familyCircleChangedWithNotification:(id)a3;
+- (void)_familyCircleChangedWithNotification:(id)notification;
 - (void)_familyCircleDidChange;
 - (void)_iCloudAccountDidChange;
-- (void)_startObservingFamilyChangeNotificationsOnQueue:(id)a3;
+- (void)_startObservingFamilyChangeNotificationsOnQueue:(id)queue;
 - (void)_stopObservingFamilyChangeNotifications;
 - (void)dealloc;
-- (void)fetchFamilyMembersForcingCacheRefresh:(BOOL)a3 completionHandler:(id)a4;
+- (void)fetchFamilyMembersForcingCacheRefresh:(BOOL)refresh completionHandler:(id)handler;
 @end
 
 @implementation STConcreteFamilyCirclePrimitives
@@ -20,9 +20,9 @@
   [(STConcreteFamilyCirclePrimitives *)&v3 dealloc];
 }
 
-- (void)_startObservingFamilyChangeNotificationsOnQueue:(id)a3
+- (void)_startObservingFamilyChangeNotificationsOnQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = +[STLog familyMessaging];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -32,13 +32,13 @@
   }
 
   objc_initWeak(&location, self);
-  v6 = [DMFiCloudAccountDidChangeDarwinNotification UTF8String];
+  uTF8String = [DMFiCloudAccountDidChangeDarwinNotification UTF8String];
   handler[0] = _NSConcreteStackBlock;
   handler[1] = 3221225472;
   handler[2] = sub_1000155D0;
   handler[3] = &unk_1001A3090;
   objc_copyWeak(&v28, &location);
-  if (notify_register_dispatch(v6, &self->_iCloudAccountChangedToken, v4, handler))
+  if (notify_register_dispatch(uTF8String, &self->_iCloudAccountChangedToken, queueCopy, handler))
   {
     v7 = +[STLog familyCirclePrimitives];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -47,13 +47,13 @@
     }
   }
 
-  v15 = [FAFamilyUpdateNotification UTF8String];
+  uTF8String2 = [FAFamilyUpdateNotification UTF8String];
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_100015610;
   v25[3] = &unk_1001A3090;
   objc_copyWeak(&v26, &location);
-  if (notify_register_dispatch(v15, &self->_familyChangedToken, v4, v25))
+  if (notify_register_dispatch(uTF8String2, &self->_familyChangedToken, queueCopy, v25))
   {
     v16 = +[STLog familyCirclePrimitives];
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -112,7 +112,7 @@
   }
 }
 
-- (void)_familyCircleChangedWithNotification:(id)a3
+- (void)_familyCircleChangedWithNotification:(id)notification
 {
   v4 = +[STLog familyMessaging];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -169,15 +169,15 @@
   [(STConcreteFamilyCirclePrimitives *)self fetchFamilyMembersForcingCacheRefresh:0 completionHandler:v4];
 }
 
-- (void)fetchFamilyMembersForcingCacheRefresh:(BOOL)a3 completionHandler:(id)a4
+- (void)fetchFamilyMembersForcingCacheRefresh:(BOOL)refresh completionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = a4;
+  refreshCopy = refresh;
+  handlerCopy = handler;
   v6 = +[STLog familyMessaging];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = "NO";
-    if (v4)
+    if (refreshCopy)
     {
       v7 = "YES";
     }
@@ -195,8 +195,8 @@
   v10[1] = 3221225472;
   v10[2] = sub_100015D80;
   v10[3] = &unk_1001A30E0;
-  v11 = v5;
-  v9 = v5;
+  v11 = handlerCopy;
+  v9 = handlerCopy;
   [v8 startRequestWithCompletionHandler:v10];
 }
 

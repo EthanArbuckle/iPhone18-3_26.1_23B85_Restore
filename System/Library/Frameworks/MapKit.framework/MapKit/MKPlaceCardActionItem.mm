@@ -1,36 +1,36 @@
 @interface MKPlaceCardActionItem
-+ (MKPlaceCardActionItem)actionItemWithType:(unint64_t)a3;
-+ (MKPlaceCardActionItem)actionItemWithType:(unint64_t)a3 actionDataProvider:(id)a4 enabled:(BOOL)a5;
-+ (id)actionTypesToMenuElements:(id)a3 menuElementCreationBlock:(id)a4;
-+ (id)buildActionMenuForItems:(id)a3 buildingOptions:(id)a4 menuElementCreationBlock:(id)a5;
-- (MKPlaceCardActionItem)initWithType:(unint64_t)a3 appearanceProvider:(id)a4 enabled:(BOOL)a5;
-- (MKPlaceCardActionItem)initWithType:(unint64_t)a3 displayString:(id)a4 glyph:(id)a5 enabled:(BOOL)a6;
++ (MKPlaceCardActionItem)actionItemWithType:(unint64_t)type;
++ (MKPlaceCardActionItem)actionItemWithType:(unint64_t)type actionDataProvider:(id)provider enabled:(BOOL)enabled;
++ (id)actionTypesToMenuElements:(id)elements menuElementCreationBlock:(id)block;
++ (id)buildActionMenuForItems:(id)items buildingOptions:(id)options menuElementCreationBlock:(id)block;
+- (MKPlaceCardActionItem)initWithType:(unint64_t)type appearanceProvider:(id)provider enabled:(BOOL)enabled;
+- (MKPlaceCardActionItem)initWithType:(unint64_t)type displayString:(id)string glyph:(id)glyph enabled:(BOOL)enabled;
 - (NSString)glyph;
 - (id)description;
-- (id)menuElementWithActionHandler:(id)a3;
+- (id)menuElementWithActionHandler:(id)handler;
 - (id)resolvedActionItem;
 @end
 
 @implementation MKPlaceCardActionItem
 
-- (id)menuElementWithActionHandler:(id)a3
+- (id)menuElementWithActionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(MKPlaceCardActionItem *)self resolvedActionItem];
+  handlerCopy = handler;
+  resolvedActionItem = [(MKPlaceCardActionItem *)self resolvedActionItem];
   v6 = MEMORY[0x1E69DCAB8];
-  v7 = [v5 glyph];
-  v8 = [v6 _mapkit_systemImageNamed:v7];
+  glyph = [resolvedActionItem glyph];
+  v8 = [v6 _mapkit_systemImageNamed:glyph];
 
   v9 = MEMORY[0x1E69DC628];
-  v10 = [(MKPlaceCardActionItem *)self resolvedActionItem];
-  v11 = [v10 displayString];
+  resolvedActionItem2 = [(MKPlaceCardActionItem *)self resolvedActionItem];
+  displayString = [resolvedActionItem2 displayString];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __54__MKPlaceCardActionItem_menuElementWithActionHandler___block_invoke;
   v15[3] = &unk_1E76C9F08;
-  v16 = v4;
-  v12 = v4;
-  v13 = [v9 actionWithTitle:v11 image:v8 identifier:0 handler:v15];
+  v16 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = [v9 actionWithTitle:displayString image:v8 identifier:0 handler:v15];
 
   return v13;
 }
@@ -39,24 +39,24 @@
 {
   if ([(MKPlaceCardActionItem *)self selected]&& ([(MKPlaceCardActionItem *)self selectedItem], v3 = objc_claimAutoreleasedReturnValue(), v3, v3))
   {
-    v4 = [(MKPlaceCardActionItem *)self selectedItem];
+    selfCopy = [(MKPlaceCardActionItem *)self selectedItem];
   }
 
   else
   {
-    v4 = self;
+    selfCopy = self;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[MKPlaceCardActionItem type](self, "type")}];
-  v5 = [(MKPlaceCardActionItem *)self displayString];
+  displayString = [(MKPlaceCardActionItem *)self displayString];
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[MKPlaceCardActionItem enabled](self, "enabled")}];
-  v7 = [v3 stringWithFormat:@"type: %@, displayString: %@, enabled: %@", v4, v5, v6];
+  v7 = [v3 stringWithFormat:@"type: %@, displayString: %@, enabled: %@", v4, displayString, v6];
 
   return v7;
 }
@@ -68,45 +68,45 @@
   return v2;
 }
 
-- (MKPlaceCardActionItem)initWithType:(unint64_t)a3 displayString:(id)a4 glyph:(id)a5 enabled:(BOOL)a6
+- (MKPlaceCardActionItem)initWithType:(unint64_t)type displayString:(id)string glyph:(id)glyph enabled:(BOOL)enabled
 {
-  v6 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = [[MKPlaceActionItemCustomAppearanceProvider alloc] initWithActionType:a3 overrideTitle:v11 symbolName:v10];
+  enabledCopy = enabled;
+  glyphCopy = glyph;
+  stringCopy = string;
+  v12 = [[MKPlaceActionItemCustomAppearanceProvider alloc] initWithActionType:type overrideTitle:stringCopy symbolName:glyphCopy];
 
-  v13 = [[MKPlaceCardActionItem alloc] initWithType:a3 appearanceProvider:v12 enabled:v6];
+  v13 = [[MKPlaceCardActionItem alloc] initWithType:type appearanceProvider:v12 enabled:enabledCopy];
   return v13;
 }
 
-- (MKPlaceCardActionItem)initWithType:(unint64_t)a3 appearanceProvider:(id)a4 enabled:(BOOL)a5
+- (MKPlaceCardActionItem)initWithType:(unint64_t)type appearanceProvider:(id)provider enabled:(BOOL)enabled
 {
-  v9 = a4;
+  providerCopy = provider;
   v13.receiver = self;
   v13.super_class = MKPlaceCardActionItem;
   v10 = [(MKPlaceCardActionItem *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    v10->_type = a3;
-    objc_storeStrong(&v10->_appearanceProvider, a4);
-    v11->_enabled = a5;
+    v10->_type = type;
+    objc_storeStrong(&v10->_appearanceProvider, provider);
+    v11->_enabled = enabled;
   }
 
   return v11;
 }
 
-+ (id)actionTypesToMenuElements:(id)a3 menuElementCreationBlock:(id)a4
++ (id)actionTypesToMenuElements:(id)elements menuElementCreationBlock:(id)block
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v5, "count")}];
+  elementsCopy = elements;
+  blockCopy = block;
+  v7 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(elementsCopy, "count")}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = v5;
+  obj = elementsCopy;
   v8 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
@@ -122,7 +122,7 @@
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        v13 = v6[2](v6, v12);
+        v13 = blockCopy[2](blockCopy, v12);
         v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v12, "type")}];
         [v7 setObject:v13 forKeyedSubscript:v14];
       }
@@ -136,32 +136,32 @@
   return v7;
 }
 
-+ (id)buildActionMenuForItems:(id)a3 buildingOptions:(id)a4 menuElementCreationBlock:(id)a5
++ (id)buildActionMenuForItems:(id)items buildingOptions:(id)options menuElementCreationBlock:(id)block
 {
   v49 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x1E695DF70] array];
-  v12 = [v9 headerMenuElement];
+  itemsCopy = items;
+  optionsCopy = options;
+  blockCopy = block;
+  array = [MEMORY[0x1E695DF70] array];
+  headerMenuElement = [optionsCopy headerMenuElement];
 
-  if (v12)
+  if (headerMenuElement)
   {
-    v13 = [v9 headerMenuElement];
-    [v11 addObject:v13];
+    headerMenuElement2 = [optionsCopy headerMenuElement];
+    [array addObject:headerMenuElement2];
   }
 
-  v14 = [MEMORY[0x1E695DF70] array];
-  v38 = v8;
-  v36 = v10;
-  v15 = [a1 actionTypesToMenuElements:v8 menuElementCreationBlock:v10];
+  array2 = [MEMORY[0x1E695DF70] array];
+  v38 = itemsCopy;
+  v36 = blockCopy;
+  v15 = [self actionTypesToMenuElements:itemsCopy menuElementCreationBlock:blockCopy];
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v37 = v9;
-  v16 = [v9 requestedActionTypes];
-  v17 = [v16 countByEnumeratingWithState:&v43 objects:v48 count:16];
+  v37 = optionsCopy;
+  requestedActionTypes = [optionsCopy requestedActionTypes];
+  v17 = [requestedActionTypes countByEnumeratingWithState:&v43 objects:v48 count:16];
   v18 = 0x1E69DC000uLL;
   if (v17)
   {
@@ -173,7 +173,7 @@
       {
         if (*v44 != v20)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(requestedActionTypes);
         }
 
         v22 = *(*(&v43 + 1) + 8 * i);
@@ -192,38 +192,38 @@
           {
 
 LABEL_12:
-            [v14 addObject:v23];
+            [array2 addObject:v23];
             goto LABEL_17;
           }
 
-          [v11 addObject:v24];
+          [array addObject:v24];
         }
 
-        else if ([v22 isEqualToNumber:&unk_1F1611698] && objc_msgSend(v14, "count"))
+        else if ([v22 isEqualToNumber:&unk_1F1611698] && objc_msgSend(array2, "count"))
         {
           v25 = *(v18 + 3168);
-          v26 = [v14 copy];
+          v26 = [array2 copy];
           v27 = [v25 menuWithTitle:&stru_1F15B23C0 image:0 identifier:0 options:1 children:v26];
 
-          [v11 addObject:v27];
-          v28 = [MEMORY[0x1E695DF70] array];
+          [array addObject:v27];
+          array3 = [MEMORY[0x1E695DF70] array];
 
-          v14 = v28;
+          array2 = array3;
           v18 = 0x1E69DC000;
         }
 
 LABEL_17:
       }
 
-      v19 = [v16 countByEnumeratingWithState:&v43 objects:v48 count:16];
+      v19 = [requestedActionTypes countByEnumeratingWithState:&v43 objects:v48 count:16];
     }
 
     while (v19);
   }
 
-  if ([v14 count])
+  if ([array2 count])
   {
-    [v11 addObjectsFromArray:v14];
+    [array addObjectsFromArray:array2];
   }
 
   if ([v37 addMismatchedItems])
@@ -232,8 +232,8 @@ LABEL_17:
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v29 = [v15 allValues];
-    v30 = [v29 countByEnumeratingWithState:&v39 objects:v47 count:16];
+    allValues = [v15 allValues];
+    v30 = [allValues countByEnumeratingWithState:&v39 objects:v47 count:16];
     if (v30)
     {
       v31 = v30;
@@ -244,22 +244,22 @@ LABEL_17:
         {
           if (*v40 != v32)
           {
-            objc_enumerationMutation(v29);
+            objc_enumerationMutation(allValues);
           }
 
-          [v11 addObject:*(*(&v39 + 1) + 8 * j)];
+          [array addObject:*(*(&v39 + 1) + 8 * j)];
         }
 
-        v31 = [v29 countByEnumeratingWithState:&v39 objects:v47 count:16];
+        v31 = [allValues countByEnumeratingWithState:&v39 objects:v47 count:16];
       }
 
       while (v31);
     }
   }
 
-  if ([v11 count])
+  if ([array count])
   {
-    v34 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F15B23C0 children:v11];
+    v34 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F15B23C0 children:array];
     [v34 setAccessibilityIdentifier:@"PlacecardEllipsisMenu"];
   }
 
@@ -271,20 +271,20 @@ LABEL_17:
   return v34;
 }
 
-+ (MKPlaceCardActionItem)actionItemWithType:(unint64_t)a3
++ (MKPlaceCardActionItem)actionItemWithType:(unint64_t)type
 {
-  v3 = [[MKPlaceCardActionItem alloc] initWithType:a3 displayString:0 glyph:0 enabled:1];
+  v3 = [[MKPlaceCardActionItem alloc] initWithType:type displayString:0 glyph:0 enabled:1];
 
   return v3;
 }
 
-+ (MKPlaceCardActionItem)actionItemWithType:(unint64_t)a3 actionDataProvider:(id)a4 enabled:(BOOL)a5
++ (MKPlaceCardActionItem)actionItemWithType:(unint64_t)type actionDataProvider:(id)provider enabled:(BOOL)enabled
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = [[MKPlaceActionItemAppearanceProvider alloc] initWithActionType:a3 dataProvider:v7];
+  enabledCopy = enabled;
+  providerCopy = provider;
+  v8 = [[MKPlaceActionItemAppearanceProvider alloc] initWithActionType:type dataProvider:providerCopy];
 
-  v9 = [[MKPlaceCardActionItem alloc] initWithType:a3 appearanceProvider:v8 enabled:v5];
+  v9 = [[MKPlaceCardActionItem alloc] initWithType:type appearanceProvider:v8 enabled:enabledCopy];
 
   return v9;
 }

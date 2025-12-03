@@ -1,80 +1,80 @@
 @interface SiriSharedUIScrollablePageantView
-- (void)handleLongPress:(id)a3;
-- (void)handleTap:(id)a3;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
+- (void)handleLongPress:(id)press;
+- (void)handleTap:(id)tap;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
 @end
 
 @implementation SiriSharedUIScrollablePageantView
 
-- (void)handleTap:(id)a3
+- (void)handleTap:(id)tap
 {
-  v4 = a3;
-  v5 = self;
-  sub_21E481C8C(v4);
+  tapCopy = tap;
+  selfCopy = self;
+  sub_21E481C8C(tapCopy);
 }
 
-- (void)handleLongPress:(id)a3
+- (void)handleLongPress:(id)press
 {
-  v4 = a3;
-  v5 = self;
-  sub_21E482148(v4);
+  pressCopy = press;
+  selfCopy = self;
+  sub_21E482148(pressCopy);
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC12SiriSharedUI33SiriSharedUIScrollablePageantView_focusedContinuer);
   if (v3)
   {
-    v5 = self;
+    selfCopy = self;
     v4 = v3;
     sub_21E48423C(v4);
   }
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (!a4)
+  if (!decelerate)
   {
     v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC12SiriSharedUI33SiriSharedUIScrollablePageantView_focusedContinuer);
     if (v4)
     {
-      v6 = self;
+      selfCopy = self;
       v5 = v4;
       sub_21E48423C(v5);
     }
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v7 = self;
-  [a3 contentOffset];
-  v4 = v7 + OBJC_IVAR____TtC12SiriSharedUI33SiriSharedUIScrollablePageantView_initialContentOffset;
+  selfCopy = self;
+  [dragging contentOffset];
+  v4 = selfCopy + OBJC_IVAR____TtC12SiriSharedUI33SiriSharedUIScrollablePageantView_initialContentOffset;
   *v4 = v5;
   *(v4 + 1) = v6;
   v4[16] = 0;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   objc_opt_self();
   v4 = swift_dynamicCastObjCClass();
   if (v4)
   {
     v5 = v4;
-    v6 = a3;
-    v7 = self;
+    scrollCopy = scroll;
+    selfCopy = self;
     sub_21E483324(v5);
   }
 
   else
   {
     v8 = qword_280C14550;
-    v9 = a3;
-    v10 = self;
+    scrollCopy2 = scroll;
+    selfCopy2 = self;
     if (v8 != -1)
     {
       swift_once();

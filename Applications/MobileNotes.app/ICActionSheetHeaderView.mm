@@ -1,25 +1,25 @@
 @interface ICActionSheetHeaderView
-- (ICActionSheetHeaderView)initWithTitle:(id)a3 snippet:(id)a4 iconImage:(id)a5;
+- (ICActionSheetHeaderView)initWithTitle:(id)title snippet:(id)snippet iconImage:(id)image;
 - (void)initializeSubviews;
 - (void)setupConstraints;
 @end
 
 @implementation ICActionSheetHeaderView
 
-- (ICActionSheetHeaderView)initWithTitle:(id)a3 snippet:(id)a4 iconImage:(id)a5
+- (ICActionSheetHeaderView)initWithTitle:(id)title snippet:(id)snippet iconImage:(id)image
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  titleCopy = title;
+  snippetCopy = snippet;
+  imageCopy = image;
   v14.receiver = self;
   v14.super_class = ICActionSheetHeaderView;
   v11 = [(ICActionSheetHeaderView *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    [(ICActionSheetHeaderView *)v11 setIconImage:v10];
-    [(ICActionSheetHeaderView *)v12 setTitle:v8];
-    [(ICActionSheetHeaderView *)v12 setSnippet:v9];
+    [(ICActionSheetHeaderView *)v11 setIconImage:imageCopy];
+    [(ICActionSheetHeaderView *)v12 setTitle:titleCopy];
+    [(ICActionSheetHeaderView *)v12 setSnippet:snippetCopy];
     [(ICActionSheetHeaderView *)v12 initializeSubviews];
     [(ICActionSheetHeaderView *)v12 setupConstraints];
   }
@@ -29,82 +29,82 @@
 
 - (void)initializeSubviews
 {
-  v3 = [(ICActionSheetHeaderView *)self iconImageView];
-  [v3 removeFromSuperview];
+  iconImageView = [(ICActionSheetHeaderView *)self iconImageView];
+  [iconImageView removeFromSuperview];
 
-  v4 = [(ICActionSheetHeaderView *)self titleView];
-  [v4 removeFromSuperview];
+  titleView = [(ICActionSheetHeaderView *)self titleView];
+  [titleView removeFromSuperview];
 
-  v5 = [(ICActionSheetHeaderView *)self snippetView];
-  [v5 removeFromSuperview];
+  snippetView = [(ICActionSheetHeaderView *)self snippetView];
+  [snippetView removeFromSuperview];
 
   v6 = [UIImageView alloc];
-  v7 = [(ICActionSheetHeaderView *)self iconImage];
-  v8 = [v6 initWithImage:v7];
+  iconImage = [(ICActionSheetHeaderView *)self iconImage];
+  v8 = [v6 initWithImage:iconImage];
   [(ICActionSheetHeaderView *)self setIconImageView:v8];
 
-  v9 = [(ICActionSheetHeaderView *)self iconImageView];
-  [v9 setAccessibilityIgnoresInvertColors:1];
+  iconImageView2 = [(ICActionSheetHeaderView *)self iconImageView];
+  [iconImageView2 setAccessibilityIgnoresInvertColors:1];
 
   v10 = objc_alloc_init(UILabel);
   [(ICActionSheetHeaderView *)self setTitleView:v10];
 
   v11 = [NSAttributedString alloc];
-  v12 = [(ICActionSheetHeaderView *)self title];
+  title = [(ICActionSheetHeaderView *)self title];
   v35 = NSFontAttributeName;
   v13 = [UIFont boldSystemFontOfSize:21.0];
-  v14 = [v13 ic_fontWithSingleLineA];
-  v36 = v14;
+  ic_fontWithSingleLineA = [v13 ic_fontWithSingleLineA];
+  v36 = ic_fontWithSingleLineA;
   v15 = [NSDictionary dictionaryWithObjects:&v36 forKeys:&v35 count:1];
-  v16 = [v11 initWithString:v12 attributes:v15];
-  v17 = [(ICActionSheetHeaderView *)self titleView];
-  [v17 setAttributedText:v16];
+  v16 = [v11 initWithString:title attributes:v15];
+  titleView2 = [(ICActionSheetHeaderView *)self titleView];
+  [titleView2 setAttributedText:v16];
 
   v18 = objc_alloc_init(UILabel);
   [(ICActionSheetHeaderView *)self setSnippetView:v18];
 
   v19 = [NSAttributedString alloc];
-  v20 = [(ICActionSheetHeaderView *)self snippet];
+  snippet = [(ICActionSheetHeaderView *)self snippet];
   v33[0] = NSFontAttributeName;
   v21 = [UIFont systemFontOfSize:16.0];
-  v22 = [v21 ic_fontWithSingleLineA];
-  v34[0] = v22;
+  ic_fontWithSingleLineA2 = [v21 ic_fontWithSingleLineA];
+  v34[0] = ic_fontWithSingleLineA2;
   v33[1] = NSForegroundColorAttributeName;
   v23 = [UIColor colorWithRed:0.652 green:0.667 blue:0.663 alpha:1.0];
   v34[1] = v23;
   v24 = [NSDictionary dictionaryWithObjects:v34 forKeys:v33 count:2];
-  v25 = [v19 initWithString:v20 attributes:v24];
-  v26 = [(ICActionSheetHeaderView *)self snippetView];
-  [v26 setAttributedText:v25];
+  v25 = [v19 initWithString:snippet attributes:v24];
+  snippetView2 = [(ICActionSheetHeaderView *)self snippetView];
+  [snippetView2 setAttributedText:v25];
 
   [(ICActionSheetHeaderView *)self setTranslatesAutoresizingMaskIntoConstraints:0];
-  v27 = [(ICActionSheetHeaderView *)self iconImageView];
-  [v27 setTranslatesAutoresizingMaskIntoConstraints:0];
+  iconImageView3 = [(ICActionSheetHeaderView *)self iconImageView];
+  [iconImageView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v28 = [(ICActionSheetHeaderView *)self titleView];
-  [v28 setTranslatesAutoresizingMaskIntoConstraints:0];
+  titleView3 = [(ICActionSheetHeaderView *)self titleView];
+  [titleView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v29 = [(ICActionSheetHeaderView *)self snippetView];
-  [v29 setTranslatesAutoresizingMaskIntoConstraints:0];
+  snippetView3 = [(ICActionSheetHeaderView *)self snippetView];
+  [snippetView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v30 = [(ICActionSheetHeaderView *)self iconImageView];
-  [(ICActionSheetHeaderView *)self addSubview:v30];
+  iconImageView4 = [(ICActionSheetHeaderView *)self iconImageView];
+  [(ICActionSheetHeaderView *)self addSubview:iconImageView4];
 
-  v31 = [(ICActionSheetHeaderView *)self titleView];
-  [(ICActionSheetHeaderView *)self addSubview:v31];
+  titleView4 = [(ICActionSheetHeaderView *)self titleView];
+  [(ICActionSheetHeaderView *)self addSubview:titleView4];
 
-  v32 = [(ICActionSheetHeaderView *)self snippetView];
-  [(ICActionSheetHeaderView *)self addSubview:v32];
+  snippetView4 = [(ICActionSheetHeaderView *)self snippetView];
+  [(ICActionSheetHeaderView *)self addSubview:snippetView4];
 }
 
 - (void)setupConstraints
 {
-  v3 = [(ICActionSheetHeaderView *)self activatedConstraints];
+  activatedConstraints = [(ICActionSheetHeaderView *)self activatedConstraints];
 
-  if (v3)
+  if (activatedConstraints)
   {
-    v4 = [(ICActionSheetHeaderView *)self activatedConstraints];
-    [NSLayoutConstraint deactivateConstraints:v4];
+    activatedConstraints2 = [(ICActionSheetHeaderView *)self activatedConstraints];
+    [NSLayoutConstraint deactivateConstraints:activatedConstraints2];
 
     [(ICActionSheetHeaderView *)self setActivatedConstraints:0];
   }
@@ -113,40 +113,40 @@
   v5 = [NSLayoutConstraint constraintWithItem:self attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:94.0];
   [v26 addObject:v5];
 
-  v6 = [(ICActionSheetHeaderView *)self iconImageView];
-  v7 = [NSLayoutConstraint constraintWithItem:v6 attribute:10 relatedBy:0 toItem:self attribute:10 multiplier:1.0 constant:0.0];
+  iconImageView = [(ICActionSheetHeaderView *)self iconImageView];
+  v7 = [NSLayoutConstraint constraintWithItem:iconImageView attribute:10 relatedBy:0 toItem:self attribute:10 multiplier:1.0 constant:0.0];
   [v26 addObject:v7];
 
-  v8 = [(ICActionSheetHeaderView *)self iconImageView];
-  v9 = [NSLayoutConstraint constraintWithItem:v8 attribute:5 relatedBy:0 toItem:self attribute:5 multiplier:1.0 constant:20.0];
+  iconImageView2 = [(ICActionSheetHeaderView *)self iconImageView];
+  v9 = [NSLayoutConstraint constraintWithItem:iconImageView2 attribute:5 relatedBy:0 toItem:self attribute:5 multiplier:1.0 constant:20.0];
   [v26 addObject:v9];
 
-  v10 = [(ICActionSheetHeaderView *)self titleView];
-  v11 = [(ICActionSheetHeaderView *)self iconImageView];
-  v12 = [NSLayoutConstraint constraintWithItem:v10 attribute:3 relatedBy:0 toItem:v11 attribute:3 multiplier:1.0 constant:5.0];
+  titleView = [(ICActionSheetHeaderView *)self titleView];
+  iconImageView3 = [(ICActionSheetHeaderView *)self iconImageView];
+  v12 = [NSLayoutConstraint constraintWithItem:titleView attribute:3 relatedBy:0 toItem:iconImageView3 attribute:3 multiplier:1.0 constant:5.0];
   [v26 addObject:v12];
 
-  v13 = [(ICActionSheetHeaderView *)self snippetView];
-  v14 = [(ICActionSheetHeaderView *)self iconImageView];
-  v15 = [NSLayoutConstraint constraintWithItem:v13 attribute:4 relatedBy:0 toItem:v14 attribute:4 multiplier:1.0 constant:-4.0];
+  snippetView = [(ICActionSheetHeaderView *)self snippetView];
+  iconImageView4 = [(ICActionSheetHeaderView *)self iconImageView];
+  v15 = [NSLayoutConstraint constraintWithItem:snippetView attribute:4 relatedBy:0 toItem:iconImageView4 attribute:4 multiplier:1.0 constant:-4.0];
   [v26 addObject:v15];
 
-  v16 = [(ICActionSheetHeaderView *)self titleView];
-  v17 = [(ICActionSheetHeaderView *)self iconImageView];
-  v18 = [NSLayoutConstraint constraintWithItem:v16 attribute:5 relatedBy:0 toItem:v17 attribute:6 multiplier:1.0 constant:10.0];
+  titleView2 = [(ICActionSheetHeaderView *)self titleView];
+  iconImageView5 = [(ICActionSheetHeaderView *)self iconImageView];
+  v18 = [NSLayoutConstraint constraintWithItem:titleView2 attribute:5 relatedBy:0 toItem:iconImageView5 attribute:6 multiplier:1.0 constant:10.0];
   [v26 addObject:v18];
 
-  v19 = [(ICActionSheetHeaderView *)self snippetView];
-  v20 = [(ICActionSheetHeaderView *)self iconImageView];
-  v21 = [NSLayoutConstraint constraintWithItem:v19 attribute:5 relatedBy:0 toItem:v20 attribute:6 multiplier:1.0 constant:10.0];
+  snippetView2 = [(ICActionSheetHeaderView *)self snippetView];
+  iconImageView6 = [(ICActionSheetHeaderView *)self iconImageView];
+  v21 = [NSLayoutConstraint constraintWithItem:snippetView2 attribute:5 relatedBy:0 toItem:iconImageView6 attribute:6 multiplier:1.0 constant:10.0];
   [v26 addObject:v21];
 
-  v22 = [(ICActionSheetHeaderView *)self titleView];
-  v23 = [NSLayoutConstraint constraintWithItem:v22 attribute:6 relatedBy:-1 toItem:self attribute:6 multiplier:1.0 constant:-20.0];
+  titleView3 = [(ICActionSheetHeaderView *)self titleView];
+  v23 = [NSLayoutConstraint constraintWithItem:titleView3 attribute:6 relatedBy:-1 toItem:self attribute:6 multiplier:1.0 constant:-20.0];
   [v26 addObject:v23];
 
-  v24 = [(ICActionSheetHeaderView *)self snippetView];
-  v25 = [NSLayoutConstraint constraintWithItem:v24 attribute:6 relatedBy:-1 toItem:self attribute:6 multiplier:1.0 constant:-20.0];
+  snippetView3 = [(ICActionSheetHeaderView *)self snippetView];
+  v25 = [NSLayoutConstraint constraintWithItem:snippetView3 attribute:6 relatedBy:-1 toItem:self attribute:6 multiplier:1.0 constant:-20.0];
   [v26 addObject:v25];
 
   [NSLayoutConstraint activateConstraints:v26];

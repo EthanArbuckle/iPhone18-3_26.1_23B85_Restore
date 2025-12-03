@@ -1,21 +1,21 @@
 @interface RadioGetFeaturedStationsRequest
-- (RadioGetFeaturedStationsRequest)initWithStationCount:(unsigned int)a3;
-- (id)_importFeaturedStationWithDictionary:(id)a3 inModel:(id)a4 loadArtworkSynchronously:(BOOL)a5;
-- (id)_stationDictionariesByApplyingResponse:(id)a3 error:(id *)a4;
-- (void)startWithCompletionHandler:(id)a3;
-- (void)startWithFeaturedStationsCompletionHandler:(id)a3;
+- (RadioGetFeaturedStationsRequest)initWithStationCount:(unsigned int)count;
+- (id)_importFeaturedStationWithDictionary:(id)dictionary inModel:(id)model loadArtworkSynchronously:(BOOL)synchronously;
+- (id)_stationDictionariesByApplyingResponse:(id)response error:(id *)error;
+- (void)startWithCompletionHandler:(id)handler;
+- (void)startWithFeaturedStationsCompletionHandler:(id)handler;
 @end
 
 @implementation RadioGetFeaturedStationsRequest
 
-- (id)_stationDictionariesByApplyingResponse:(id)a3 error:(id *)a4
+- (id)_stationDictionariesByApplyingResponse:(id)response error:(id *)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = [a3 radio_decompressedBodyData];
-  if ([v6 length])
+  radio_decompressedBodyData = [response radio_decompressedBodyData];
+  if ([radio_decompressedBodyData length])
   {
     v17 = 0;
-    v7 = [v6 propertyListForRadioResponseReturningError:&v17];
+    v7 = [radio_decompressedBodyData propertyListForRadioResponseReturningError:&v17];
     v8 = v17;
     v9 = v8;
     if (v7)
@@ -31,7 +31,7 @@
 LABEL_16:
           [(RadioRequest *)self setStatus:v13];
 
-          if (!a4)
+          if (!error)
           {
             goto LABEL_18;
           }
@@ -60,7 +60,7 @@ LABEL_16:
         *buf = 138412546;
         v19 = v12;
         v20 = 2112;
-        v21 = v6;
+        v21 = radio_decompressedBodyData;
         _os_log_impl(&dword_261792000, v10, OS_LOG_TYPE_ERROR, "Error: Unable to deserialize featured stations response (%@), data: %@", buf, 0x16u);
       }
 
@@ -74,11 +74,11 @@ LABEL_16:
 
   v10 = 0;
   v12 = 0;
-  if (a4)
+  if (error)
   {
 LABEL_17:
     v14 = v12;
-    *a4 = v12;
+    *error = v12;
   }
 
 LABEL_18:
@@ -88,11 +88,11 @@ LABEL_18:
   return v10;
 }
 
-- (id)_importFeaturedStationWithDictionary:(id)a3 inModel:(id)a4 loadArtworkSynchronously:(BOOL)a5
+- (id)_importFeaturedStationWithDictionary:(id)dictionary inModel:(id)model loadArtworkSynchronously:(BOOL)synchronously
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  modelCopy = model;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -100,11 +100,11 @@ LABEL_18:
     goto LABEL_13;
   }
 
-  v8 = [v6 objectForKey:@"station-hash"];
+  v8 = [dictionaryCopy objectForKey:@"station-hash"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v7 stationWithHash:v8];
+    v9 = [modelCopy stationWithHash:v8];
     if (v9)
     {
       goto LABEL_6;
@@ -118,14 +118,14 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v9 = [v7 newFeaturedStationWithDictionary:v6];
+  v9 = [modelCopy newFeaturedStationWithDictionary:dictionaryCopy];
   if (!v9)
   {
     v11 = os_log_create("com.apple.amp.radio", "Requests");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v14 = 138412290;
-      v15 = v6;
+      v15 = dictionaryCopy;
       _os_log_impl(&dword_261792000, v11, OS_LOG_TYPE_ERROR, "Error: Unable to create featured station with dictionary: %@", &v14, 0xCu);
     }
 
@@ -142,17 +142,17 @@ LABEL_13:
   return v10;
 }
 
-- (void)startWithFeaturedStationsCompletionHandler:(id)a3
+- (void)startWithFeaturedStationsCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = dispatch_get_global_queue(0, 0);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __78__RadioGetFeaturedStationsRequest_startWithFeaturedStationsCompletionHandler___block_invoke;
   v7[3] = &unk_279AEACF0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(v5, v7);
 }
 
@@ -420,16 +420,16 @@ void __78__RadioGetFeaturedStationsRequest_startWithFeaturedStationsCompletionHa
   [v3 postNotificationName:@"RadioRequestDidFinishNotification" object:a1[6]];
 }
 
-- (void)startWithCompletionHandler:(id)a3
+- (void)startWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __62__RadioGetFeaturedStationsRequest_startWithCompletionHandler___block_invoke;
   v6[3] = &unk_279AEAA98;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(RadioGetFeaturedStationsRequest *)self startWithFeaturedStationsCompletionHandler:v6];
 }
 
@@ -644,7 +644,7 @@ void __62__RadioGetFeaturedStationsRequest_startWithCompletionHandler___block_in
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (RadioGetFeaturedStationsRequest)initWithStationCount:(unsigned int)a3
+- (RadioGetFeaturedStationsRequest)initWithStationCount:(unsigned int)count
 {
   v9.receiver = self;
   v9.super_class = RadioGetFeaturedStationsRequest;
@@ -652,7 +652,7 @@ void __62__RadioGetFeaturedStationsRequest_startWithCompletionHandler___block_in
   v5 = v4;
   if (v4)
   {
-    v4->_stationCount = a3;
+    v4->_stationCount = count;
     v6 = dispatch_queue_create("com.apple.Radio.RadioSyncRequest.artworkQueue", 0);
     artworkQueue = v5->_artworkQueue;
     v5->_artworkQueue = v6;

@@ -2,15 +2,15 @@
 + (id)shared;
 - (IRPreferences)init;
 - (NSString)preferenceString;
-- (id)_getDictItemsForLogging:(id)a3 withTitle:(id)a4;
-- (id)_getKeyWithType:(id)a3 withDefaultValue:(id)a4 expectedType:(Class)a5;
+- (id)_getDictItemsForLogging:(id)logging withTitle:(id)title;
+- (id)_getKeyWithType:(id)type withDefaultValue:(id)value expectedType:(Class)expectedType;
 - (void)_defaultsSet;
 - (void)_registerForUserDefaultsRefreshNotification;
 - (void)dealloc;
-- (void)deleteAndNotifyKey:(id)a3;
+- (void)deleteAndNotifyKey:(id)key;
 - (void)refresh;
-- (void)setMobileAssetSettingsWithMobileAssetDict:(id)a3 assetVersion:(id)a4;
-- (void)updateAndNotifyKey:(id)a3 withObject:(id)a4;
+- (void)setMobileAssetSettingsWithMobileAssetDict:(id)dict assetVersion:(id)version;
+- (void)updateAndNotifyKey:(id)key withObject:(id)object;
 @end
 
 @implementation IRPreferences
@@ -21,7 +21,7 @@
   block[1] = 3221225472;
   block[2] = __23__IRPreferences_shared__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (shared_onceToken_0 != -1)
   {
     dispatch_once(&shared_onceToken_0, block);
@@ -79,52 +79,52 @@ uint64_t __23__IRPreferences_shared__block_invoke(uint64_t a1)
   [(IRPreferences *)self _defaultsSet];
 }
 
-- (void)updateAndNotifyKey:(id)a3 withObject:(id)a4
+- (void)updateAndNotifyKey:(id)key withObject:(id)object
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(IRPreferences *)self defaults];
-  v9 = [@"IR" stringByAppendingString:v7];
+  objectCopy = object;
+  keyCopy = key;
+  defaults = [(IRPreferences *)self defaults];
+  v9 = [@"IR" stringByAppendingString:keyCopy];
 
-  [v8 setObject:v6 forKey:v9];
+  [defaults setObject:objectCopy forKey:v9];
   [(IRPreferences *)self refresh];
 
   notify_post("com.apple.intelligentroutingd.UserDefaultsRefresh");
 }
 
-- (void)deleteAndNotifyKey:(id)a3
+- (void)deleteAndNotifyKey:(id)key
 {
-  v4 = a3;
-  v5 = [(IRPreferences *)self defaults];
-  v6 = [@"IR" stringByAppendingString:v4];
+  keyCopy = key;
+  defaults = [(IRPreferences *)self defaults];
+  v6 = [@"IR" stringByAppendingString:keyCopy];
 
-  [v5 removeObjectForKey:v6];
+  [defaults removeObjectForKey:v6];
   [(IRPreferences *)self refresh];
 
   notify_post("com.apple.intelligentroutingd.UserDefaultsRefresh");
 }
 
-- (id)_getDictItemsForLogging:(id)a3 withTitle:(id)a4
+- (id)_getDictItemsForLogging:(id)logging withTitle:(id)title
 {
-  v5 = a3;
-  v6 = a4;
+  loggingCopy = logging;
+  titleCopy = title;
   v7 = objc_opt_new();
-  v8 = [v5 allKeys];
+  allKeys = [loggingCopy allKeys];
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
   v17 = __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke;
   v18 = &unk_2797E1F70;
   v9 = v7;
   v19 = v9;
-  v10 = v5;
+  v10 = loggingCopy;
   v20 = v10;
-  [v8 enumerateObjectsUsingBlock:&v15];
+  [allKeys enumerateObjectsUsingBlock:&v15];
 
   if ([v9 count])
   {
     v11 = MEMORY[0x277CCACA8];
     v12 = [v9 componentsJoinedByString:@"\n"];
-    v13 = [v11 stringWithFormat:@"\n%@\n%@", v6, v12, v15, v16, v17, v18, v19];
+    v13 = [v11 stringWithFormat:@"\n%@\n%@", titleCopy, v12, v15, v16, v17, v18, v19];
   }
 
   else
@@ -150,15 +150,15 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
 
 - (NSString)preferenceString
 {
-  v3 = [(IRPreferences *)self defaults];
-  v4 = [v3 dictionaryRepresentation];
+  defaults = [(IRPreferences *)self defaults];
+  dictionaryRepresentation = [defaults dictionaryRepresentation];
 
-  v5 = [(IRPreferences *)self _getDictItemsForLogging:v4 withTitle:@" Defaults Overrides:"];
-  v6 = [(IRPreferences *)self mobileAssetSettings];
+  v5 = [(IRPreferences *)self _getDictItemsForLogging:dictionaryRepresentation withTitle:@" Defaults Overrides:"];
+  mobileAssetSettings = [(IRPreferences *)self mobileAssetSettings];
   v7 = MEMORY[0x277CCACA8];
-  v8 = [(IRPreferences *)self mobileAssetVersion];
-  v9 = [v7 stringWithFormat:@" MobileAsset Overrides (%@):", v8];
-  v10 = [(IRPreferences *)self _getDictItemsForLogging:v6 withTitle:v9];
+  mobileAssetVersion = [(IRPreferences *)self mobileAssetVersion];
+  v9 = [v7 stringWithFormat:@" MobileAsset Overrides (%@):", mobileAssetVersion];
+  v10 = [(IRPreferences *)self _getDictItemsForLogging:mobileAssetSettings withTitle:v9];
 
   v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"IRPreferences:%@%@", v5, v10];
 
@@ -168,7 +168,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
 - (void)_defaultsSet
 {
   v3 = objc_opt_class();
-  v4 = [(IRPreferences *)self testPreferenceString];
+  testPreferenceString = [(IRPreferences *)self testPreferenceString];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -177,7 +177,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v3 = objc_opt_class();
   }
 
-  v6 = [(IRPreferences *)self testPreferenceString];
+  testPreferenceString2 = [(IRPreferences *)self testPreferenceString];
   objc_opt_class();
   v7 = objc_opt_isKindOfClass();
 
@@ -186,7 +186,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v3 = objc_opt_class();
   }
 
-  v8 = [(IRPreferences *)self testPreferenceString];
+  testPreferenceString3 = [(IRPreferences *)self testPreferenceString];
   objc_opt_class();
   v9 = objc_opt_isKindOfClass();
 
@@ -200,7 +200,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_testPreferenceString = v10;
 
   v12 = objc_opt_class();
-  v13 = [(IRPreferences *)self testPreferenceInteger];
+  testPreferenceInteger = [(IRPreferences *)self testPreferenceInteger];
   objc_opt_class();
   v14 = objc_opt_isKindOfClass();
 
@@ -209,7 +209,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v12 = objc_opt_class();
   }
 
-  v15 = [(IRPreferences *)self testPreferenceInteger];
+  testPreferenceInteger2 = [(IRPreferences *)self testPreferenceInteger];
   objc_opt_class();
   v16 = objc_opt_isKindOfClass();
 
@@ -218,7 +218,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v12 = objc_opt_class();
   }
 
-  v17 = [(IRPreferences *)self testPreferenceInteger];
+  testPreferenceInteger3 = [(IRPreferences *)self testPreferenceInteger];
   objc_opt_class();
   v18 = objc_opt_isKindOfClass();
 
@@ -232,7 +232,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_testPreferenceInteger = v19;
 
   v21 = objc_opt_class();
-  v22 = [(IRPreferences *)self testPreferenceDouble];
+  testPreferenceDouble = [(IRPreferences *)self testPreferenceDouble];
   objc_opt_class();
   v23 = objc_opt_isKindOfClass();
 
@@ -241,7 +241,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v21 = objc_opt_class();
   }
 
-  v24 = [(IRPreferences *)self testPreferenceDouble];
+  testPreferenceDouble2 = [(IRPreferences *)self testPreferenceDouble];
   objc_opt_class();
   v25 = objc_opt_isKindOfClass();
 
@@ -250,7 +250,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v21 = objc_opt_class();
   }
 
-  v26 = [(IRPreferences *)self testPreferenceDouble];
+  testPreferenceDouble3 = [(IRPreferences *)self testPreferenceDouble];
   objc_opt_class();
   v27 = objc_opt_isKindOfClass();
 
@@ -264,7 +264,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_testPreferenceDouble = v28;
 
   v30 = objc_opt_class();
-  v31 = [(IRPreferences *)self overrideIsAirplayForCandidateIDArray];
+  overrideIsAirplayForCandidateIDArray = [(IRPreferences *)self overrideIsAirplayForCandidateIDArray];
   objc_opt_class();
   v32 = objc_opt_isKindOfClass();
 
@@ -273,7 +273,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v30 = objc_opt_class();
   }
 
-  v33 = [(IRPreferences *)self overrideIsAirplayForCandidateIDArray];
+  overrideIsAirplayForCandidateIDArray2 = [(IRPreferences *)self overrideIsAirplayForCandidateIDArray];
   objc_opt_class();
   v34 = objc_opt_isKindOfClass();
 
@@ -282,7 +282,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v30 = objc_opt_class();
   }
 
-  v35 = [(IRPreferences *)self overrideIsAirplayForCandidateIDArray];
+  overrideIsAirplayForCandidateIDArray3 = [(IRPreferences *)self overrideIsAirplayForCandidateIDArray];
   objc_opt_class();
   v36 = objc_opt_isKindOfClass();
 
@@ -291,13 +291,13 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v30 = objc_opt_class();
   }
 
-  v37 = [MEMORY[0x277CBEA60] array];
-  v38 = [(IRPreferences *)self _getKeyWithType:@"IRoverrideIsAirplayForCandidateIDArray" withDefaultValue:v37 expectedType:v30];
+  array = [MEMORY[0x277CBEA60] array];
+  v38 = [(IRPreferences *)self _getKeyWithType:@"IRoverrideIsAirplayForCandidateIDArray" withDefaultValue:array expectedType:v30];
   overrideIsAirplayForCandidateIDArray = self->_overrideIsAirplayForCandidateIDArray;
   self->_overrideIsAirplayForCandidateIDArray = v38;
 
   v40 = objc_opt_class();
-  v41 = [(IRPreferences *)self testMobileAssetLoad];
+  testMobileAssetLoad = [(IRPreferences *)self testMobileAssetLoad];
   objc_opt_class();
   v42 = objc_opt_isKindOfClass();
 
@@ -306,7 +306,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v40 = objc_opt_class();
   }
 
-  v43 = [(IRPreferences *)self testMobileAssetLoad];
+  testMobileAssetLoad2 = [(IRPreferences *)self testMobileAssetLoad];
   objc_opt_class();
   v44 = objc_opt_isKindOfClass();
 
@@ -315,7 +315,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v40 = objc_opt_class();
   }
 
-  v45 = [(IRPreferences *)self testMobileAssetLoad];
+  testMobileAssetLoad3 = [(IRPreferences *)self testMobileAssetLoad];
   objc_opt_class();
   v46 = objc_opt_isKindOfClass();
 
@@ -329,7 +329,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_testMobileAssetLoad = v47;
 
   v49 = objc_opt_class();
-  v50 = [(IRPreferences *)self loadMobileAssetXPCActivityInterval];
+  loadMobileAssetXPCActivityInterval = [(IRPreferences *)self loadMobileAssetXPCActivityInterval];
   objc_opt_class();
   v51 = objc_opt_isKindOfClass();
 
@@ -338,7 +338,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v49 = objc_opt_class();
   }
 
-  v52 = [(IRPreferences *)self loadMobileAssetXPCActivityInterval];
+  loadMobileAssetXPCActivityInterval2 = [(IRPreferences *)self loadMobileAssetXPCActivityInterval];
   objc_opt_class();
   v53 = objc_opt_isKindOfClass();
 
@@ -347,7 +347,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v49 = objc_opt_class();
   }
 
-  v54 = [(IRPreferences *)self loadMobileAssetXPCActivityInterval];
+  loadMobileAssetXPCActivityInterval3 = [(IRPreferences *)self loadMobileAssetXPCActivityInterval];
   objc_opt_class();
   v55 = objc_opt_isKindOfClass();
 
@@ -361,7 +361,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_loadMobileAssetXPCActivityInterval = v56;
 
   v58 = objc_opt_class();
-  v59 = [(IRPreferences *)self bleRssiProximityThreshold];
+  bleRssiProximityThreshold = [(IRPreferences *)self bleRssiProximityThreshold];
   objc_opt_class();
   v60 = objc_opt_isKindOfClass();
 
@@ -370,7 +370,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v58 = objc_opt_class();
   }
 
-  v61 = [(IRPreferences *)self bleRssiProximityThreshold];
+  bleRssiProximityThreshold2 = [(IRPreferences *)self bleRssiProximityThreshold];
   objc_opt_class();
   v62 = objc_opt_isKindOfClass();
 
@@ -379,7 +379,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v58 = objc_opt_class();
   }
 
-  v63 = [(IRPreferences *)self bleRssiProximityThreshold];
+  bleRssiProximityThreshold3 = [(IRPreferences *)self bleRssiProximityThreshold];
   objc_opt_class();
   v64 = objc_opt_isKindOfClass();
 
@@ -393,7 +393,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_bleRssiProximityThreshold = v65;
 
   v67 = objc_opt_class();
-  v68 = [(IRPreferences *)self deviceRangeProximityThreshold];
+  deviceRangeProximityThreshold = [(IRPreferences *)self deviceRangeProximityThreshold];
   objc_opt_class();
   v69 = objc_opt_isKindOfClass();
 
@@ -402,7 +402,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v67 = objc_opt_class();
   }
 
-  v70 = [(IRPreferences *)self deviceRangeProximityThreshold];
+  deviceRangeProximityThreshold2 = [(IRPreferences *)self deviceRangeProximityThreshold];
   objc_opt_class();
   v71 = objc_opt_isKindOfClass();
 
@@ -411,7 +411,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v67 = objc_opt_class();
   }
 
-  v72 = [(IRPreferences *)self deviceRangeProximityThreshold];
+  deviceRangeProximityThreshold3 = [(IRPreferences *)self deviceRangeProximityThreshold];
   objc_opt_class();
   v73 = objc_opt_isKindOfClass();
 
@@ -425,7 +425,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_deviceRangeProximityThreshold = v74;
 
   v76 = objc_opt_class();
-  v77 = [(IRPreferences *)self miloLslIsSameMiloThreshold];
+  miloLslIsSameMiloThreshold = [(IRPreferences *)self miloLslIsSameMiloThreshold];
   objc_opt_class();
   v78 = objc_opt_isKindOfClass();
 
@@ -434,7 +434,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v76 = objc_opt_class();
   }
 
-  v79 = [(IRPreferences *)self miloLslIsSameMiloThreshold];
+  miloLslIsSameMiloThreshold2 = [(IRPreferences *)self miloLslIsSameMiloThreshold];
   objc_opt_class();
   v80 = objc_opt_isKindOfClass();
 
@@ -443,7 +443,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v76 = objc_opt_class();
   }
 
-  v81 = [(IRPreferences *)self miloLslIsSameMiloThreshold];
+  miloLslIsSameMiloThreshold3 = [(IRPreferences *)self miloLslIsSameMiloThreshold];
   objc_opt_class();
   v82 = objc_opt_isKindOfClass();
 
@@ -457,7 +457,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_miloLslIsSameMiloThreshold = v83;
 
   v85 = objc_opt_class();
-  v86 = [(IRPreferences *)self pickerChoiceOverrideIntervalSeconds];
+  pickerChoiceOverrideIntervalSeconds = [(IRPreferences *)self pickerChoiceOverrideIntervalSeconds];
   objc_opt_class();
   v87 = objc_opt_isKindOfClass();
 
@@ -466,7 +466,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v85 = objc_opt_class();
   }
 
-  v88 = [(IRPreferences *)self pickerChoiceOverrideIntervalSeconds];
+  pickerChoiceOverrideIntervalSeconds2 = [(IRPreferences *)self pickerChoiceOverrideIntervalSeconds];
   objc_opt_class();
   v89 = objc_opt_isKindOfClass();
 
@@ -475,7 +475,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v85 = objc_opt_class();
   }
 
-  v90 = [(IRPreferences *)self pickerChoiceOverrideIntervalSeconds];
+  pickerChoiceOverrideIntervalSeconds3 = [(IRPreferences *)self pickerChoiceOverrideIntervalSeconds];
   objc_opt_class();
   v91 = objc_opt_isKindOfClass();
 
@@ -489,7 +489,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_pickerChoiceOverrideIntervalSeconds = v92;
 
   v94 = objc_opt_class();
-  v95 = [(IRPreferences *)self mediaPlaybackEventsTimeIntervalThreshold];
+  mediaPlaybackEventsTimeIntervalThreshold = [(IRPreferences *)self mediaPlaybackEventsTimeIntervalThreshold];
   objc_opt_class();
   v96 = objc_opt_isKindOfClass();
 
@@ -498,7 +498,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v94 = objc_opt_class();
   }
 
-  v97 = [(IRPreferences *)self mediaPlaybackEventsTimeIntervalThreshold];
+  mediaPlaybackEventsTimeIntervalThreshold2 = [(IRPreferences *)self mediaPlaybackEventsTimeIntervalThreshold];
   objc_opt_class();
   v98 = objc_opt_isKindOfClass();
 
@@ -507,7 +507,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v94 = objc_opt_class();
   }
 
-  v99 = [(IRPreferences *)self mediaPlaybackEventsTimeIntervalThreshold];
+  mediaPlaybackEventsTimeIntervalThreshold3 = [(IRPreferences *)self mediaPlaybackEventsTimeIntervalThreshold];
   objc_opt_class();
   v100 = objc_opt_isKindOfClass();
 
@@ -521,7 +521,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_mediaPlaybackEventsTimeIntervalThreshold = v101;
 
   v103 = objc_opt_class();
-  v104 = [(IRPreferences *)self appleTvCtrlEventsTimeIntervalThreshold];
+  appleTvCtrlEventsTimeIntervalThreshold = [(IRPreferences *)self appleTvCtrlEventsTimeIntervalThreshold];
   objc_opt_class();
   v105 = objc_opt_isKindOfClass();
 
@@ -530,7 +530,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v103 = objc_opt_class();
   }
 
-  v106 = [(IRPreferences *)self appleTvCtrlEventsTimeIntervalThreshold];
+  appleTvCtrlEventsTimeIntervalThreshold2 = [(IRPreferences *)self appleTvCtrlEventsTimeIntervalThreshold];
   objc_opt_class();
   v107 = objc_opt_isKindOfClass();
 
@@ -539,7 +539,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v103 = objc_opt_class();
   }
 
-  v108 = [(IRPreferences *)self appleTvCtrlEventsTimeIntervalThreshold];
+  appleTvCtrlEventsTimeIntervalThreshold3 = [(IRPreferences *)self appleTvCtrlEventsTimeIntervalThreshold];
   objc_opt_class();
   v109 = objc_opt_isKindOfClass();
 
@@ -553,7 +553,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_appleTvCtrlEventsTimeIntervalThreshold = v110;
 
   v112 = objc_opt_class();
-  v113 = [(IRPreferences *)self mediaRulesFilterAnyMultipleEventsTimeIntervalInSeconds];
+  mediaRulesFilterAnyMultipleEventsTimeIntervalInSeconds = [(IRPreferences *)self mediaRulesFilterAnyMultipleEventsTimeIntervalInSeconds];
   objc_opt_class();
   v114 = objc_opt_isKindOfClass();
 
@@ -562,7 +562,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v112 = objc_opt_class();
   }
 
-  v115 = [(IRPreferences *)self mediaRulesFilterAnyMultipleEventsTimeIntervalInSeconds];
+  mediaRulesFilterAnyMultipleEventsTimeIntervalInSeconds2 = [(IRPreferences *)self mediaRulesFilterAnyMultipleEventsTimeIntervalInSeconds];
   objc_opt_class();
   v116 = objc_opt_isKindOfClass();
 
@@ -571,7 +571,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v112 = objc_opt_class();
   }
 
-  v117 = [(IRPreferences *)self mediaRulesFilterAnyMultipleEventsTimeIntervalInSeconds];
+  mediaRulesFilterAnyMultipleEventsTimeIntervalInSeconds3 = [(IRPreferences *)self mediaRulesFilterAnyMultipleEventsTimeIntervalInSeconds];
   objc_opt_class();
   v118 = objc_opt_isKindOfClass();
 
@@ -585,7 +585,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_mediaRulesFilterAnyMultipleEventsTimeIntervalInSeconds = v119;
 
   v121 = objc_opt_class();
-  v122 = [(IRPreferences *)self mediaRulesFilterSimilarMultipleEventsTimeIntervalInSeconds];
+  mediaRulesFilterSimilarMultipleEventsTimeIntervalInSeconds = [(IRPreferences *)self mediaRulesFilterSimilarMultipleEventsTimeIntervalInSeconds];
   objc_opt_class();
   v123 = objc_opt_isKindOfClass();
 
@@ -594,7 +594,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v121 = objc_opt_class();
   }
 
-  v124 = [(IRPreferences *)self mediaRulesFilterSimilarMultipleEventsTimeIntervalInSeconds];
+  mediaRulesFilterSimilarMultipleEventsTimeIntervalInSeconds2 = [(IRPreferences *)self mediaRulesFilterSimilarMultipleEventsTimeIntervalInSeconds];
   objc_opt_class();
   v125 = objc_opt_isKindOfClass();
 
@@ -603,7 +603,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v121 = objc_opt_class();
   }
 
-  v126 = [(IRPreferences *)self mediaRulesFilterSimilarMultipleEventsTimeIntervalInSeconds];
+  mediaRulesFilterSimilarMultipleEventsTimeIntervalInSeconds3 = [(IRPreferences *)self mediaRulesFilterSimilarMultipleEventsTimeIntervalInSeconds];
   objc_opt_class();
   v127 = objc_opt_isKindOfClass();
 
@@ -617,7 +617,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_mediaRulesFilterSimilarMultipleEventsTimeIntervalInSeconds = v128;
 
   v130 = objc_opt_class();
-  v131 = [(IRPreferences *)self cleanupXPCActivityInterval];
+  cleanupXPCActivityInterval = [(IRPreferences *)self cleanupXPCActivityInterval];
   objc_opt_class();
   v132 = objc_opt_isKindOfClass();
 
@@ -626,7 +626,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v130 = objc_opt_class();
   }
 
-  v133 = [(IRPreferences *)self cleanupXPCActivityInterval];
+  cleanupXPCActivityInterval2 = [(IRPreferences *)self cleanupXPCActivityInterval];
   objc_opt_class();
   v134 = objc_opt_isKindOfClass();
 
@@ -635,7 +635,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v130 = objc_opt_class();
   }
 
-  v135 = [(IRPreferences *)self cleanupXPCActivityInterval];
+  cleanupXPCActivityInterval3 = [(IRPreferences *)self cleanupXPCActivityInterval];
   objc_opt_class();
   v136 = objc_opt_isKindOfClass();
 
@@ -649,7 +649,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_cleanupXPCActivityInterval = v137;
 
   v139 = objc_opt_class();
-  v140 = [(IRPreferences *)self dbCleanupXPCActivityDeleteServiceThreshold];
+  dbCleanupXPCActivityDeleteServiceThreshold = [(IRPreferences *)self dbCleanupXPCActivityDeleteServiceThreshold];
   objc_opt_class();
   v141 = objc_opt_isKindOfClass();
 
@@ -658,7 +658,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v139 = objc_opt_class();
   }
 
-  v142 = [(IRPreferences *)self dbCleanupXPCActivityDeleteServiceThreshold];
+  dbCleanupXPCActivityDeleteServiceThreshold2 = [(IRPreferences *)self dbCleanupXPCActivityDeleteServiceThreshold];
   objc_opt_class();
   v143 = objc_opt_isKindOfClass();
 
@@ -667,7 +667,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v139 = objc_opt_class();
   }
 
-  v144 = [(IRPreferences *)self dbCleanupXPCActivityDeleteServiceThreshold];
+  dbCleanupXPCActivityDeleteServiceThreshold3 = [(IRPreferences *)self dbCleanupXPCActivityDeleteServiceThreshold];
   objc_opt_class();
   v145 = objc_opt_isKindOfClass();
 
@@ -681,7 +681,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_dbCleanupXPCActivityDeleteServiceThreshold = v146;
 
   v148 = objc_opt_class();
-  v149 = [(IRPreferences *)self dbCleanupXPCActivityDeleteHistoryEventsThreshold];
+  dbCleanupXPCActivityDeleteHistoryEventsThreshold = [(IRPreferences *)self dbCleanupXPCActivityDeleteHistoryEventsThreshold];
   objc_opt_class();
   v150 = objc_opt_isKindOfClass();
 
@@ -690,7 +690,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v148 = objc_opt_class();
   }
 
-  v151 = [(IRPreferences *)self dbCleanupXPCActivityDeleteHistoryEventsThreshold];
+  dbCleanupXPCActivityDeleteHistoryEventsThreshold2 = [(IRPreferences *)self dbCleanupXPCActivityDeleteHistoryEventsThreshold];
   objc_opt_class();
   v152 = objc_opt_isKindOfClass();
 
@@ -699,7 +699,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v148 = objc_opt_class();
   }
 
-  v153 = [(IRPreferences *)self dbCleanupXPCActivityDeleteHistoryEventsThreshold];
+  dbCleanupXPCActivityDeleteHistoryEventsThreshold3 = [(IRPreferences *)self dbCleanupXPCActivityDeleteHistoryEventsThreshold];
   objc_opt_class();
   v154 = objc_opt_isKindOfClass();
 
@@ -713,7 +713,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_dbCleanupXPCActivityDeleteHistoryEventsThreshold = v155;
 
   v157 = objc_opt_class();
-  v158 = [(IRPreferences *)self dbCleanupXPCActivityDeleteReplayEventsThreshold];
+  dbCleanupXPCActivityDeleteReplayEventsThreshold = [(IRPreferences *)self dbCleanupXPCActivityDeleteReplayEventsThreshold];
   objc_opt_class();
   v159 = objc_opt_isKindOfClass();
 
@@ -722,7 +722,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v157 = objc_opt_class();
   }
 
-  v160 = [(IRPreferences *)self dbCleanupXPCActivityDeleteReplayEventsThreshold];
+  dbCleanupXPCActivityDeleteReplayEventsThreshold2 = [(IRPreferences *)self dbCleanupXPCActivityDeleteReplayEventsThreshold];
   objc_opt_class();
   v161 = objc_opt_isKindOfClass();
 
@@ -731,7 +731,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v157 = objc_opt_class();
   }
 
-  v162 = [(IRPreferences *)self dbCleanupXPCActivityDeleteReplayEventsThreshold];
+  dbCleanupXPCActivityDeleteReplayEventsThreshold3 = [(IRPreferences *)self dbCleanupXPCActivityDeleteReplayEventsThreshold];
   objc_opt_class();
   v163 = objc_opt_isKindOfClass();
 
@@ -745,7 +745,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_dbCleanupXPCActivityDeleteReplayEventsThreshold = v164;
 
   v166 = objc_opt_class();
-  v167 = [(IRPreferences *)self dbCleanupXPCActivityDeleteCandidatesThreshold];
+  dbCleanupXPCActivityDeleteCandidatesThreshold = [(IRPreferences *)self dbCleanupXPCActivityDeleteCandidatesThreshold];
   objc_opt_class();
   v168 = objc_opt_isKindOfClass();
 
@@ -754,7 +754,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v166 = objc_opt_class();
   }
 
-  v169 = [(IRPreferences *)self dbCleanupXPCActivityDeleteCandidatesThreshold];
+  dbCleanupXPCActivityDeleteCandidatesThreshold2 = [(IRPreferences *)self dbCleanupXPCActivityDeleteCandidatesThreshold];
   objc_opt_class();
   v170 = objc_opt_isKindOfClass();
 
@@ -763,7 +763,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v166 = objc_opt_class();
   }
 
-  v171 = [(IRPreferences *)self dbCleanupXPCActivityDeleteCandidatesThreshold];
+  dbCleanupXPCActivityDeleteCandidatesThreshold3 = [(IRPreferences *)self dbCleanupXPCActivityDeleteCandidatesThreshold];
   objc_opt_class();
   v172 = objc_opt_isKindOfClass();
 
@@ -777,7 +777,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_dbCleanupXPCActivityDeleteCandidatesThreshold = v173;
 
   v175 = objc_opt_class();
-  v176 = [(IRPreferences *)self miloEnable];
+  miloEnable = [(IRPreferences *)self miloEnable];
   objc_opt_class();
   v177 = objc_opt_isKindOfClass();
 
@@ -786,7 +786,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v175 = objc_opt_class();
   }
 
-  v178 = [(IRPreferences *)self miloEnable];
+  miloEnable2 = [(IRPreferences *)self miloEnable];
   objc_opt_class();
   v179 = objc_opt_isKindOfClass();
 
@@ -795,7 +795,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v175 = objc_opt_class();
   }
 
-  v180 = [(IRPreferences *)self miloEnable];
+  miloEnable3 = [(IRPreferences *)self miloEnable];
   objc_opt_class();
   v181 = objc_opt_isKindOfClass();
 
@@ -809,7 +809,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_miloEnable = v182;
 
   v184 = objc_opt_class();
-  v185 = [(IRPreferences *)self candidateLastUsedThrForMiLoLowLatancyPowerOpt];
+  candidateLastUsedThrForMiLoLowLatancyPowerOpt = [(IRPreferences *)self candidateLastUsedThrForMiLoLowLatancyPowerOpt];
   objc_opt_class();
   v186 = objc_opt_isKindOfClass();
 
@@ -818,7 +818,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v184 = objc_opt_class();
   }
 
-  v187 = [(IRPreferences *)self candidateLastUsedThrForMiLoLowLatancyPowerOpt];
+  candidateLastUsedThrForMiLoLowLatancyPowerOpt2 = [(IRPreferences *)self candidateLastUsedThrForMiLoLowLatancyPowerOpt];
   objc_opt_class();
   v188 = objc_opt_isKindOfClass();
 
@@ -827,7 +827,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v184 = objc_opt_class();
   }
 
-  v189 = [(IRPreferences *)self candidateLastUsedThrForMiLoLowLatancyPowerOpt];
+  candidateLastUsedThrForMiLoLowLatancyPowerOpt3 = [(IRPreferences *)self candidateLastUsedThrForMiLoLowLatancyPowerOpt];
   objc_opt_class();
   v190 = objc_opt_isKindOfClass();
 
@@ -841,7 +841,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_candidateLastUsedThrForMiLoLowLatancyPowerOpt = v191;
 
   v193 = objc_opt_class();
-  v194 = [(IRPreferences *)self miloTimeoutForSetSpotOnRequestSeconds];
+  miloTimeoutForSetSpotOnRequestSeconds = [(IRPreferences *)self miloTimeoutForSetSpotOnRequestSeconds];
   objc_opt_class();
   v195 = objc_opt_isKindOfClass();
 
@@ -850,7 +850,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v193 = objc_opt_class();
   }
 
-  v196 = [(IRPreferences *)self miloTimeoutForSetSpotOnRequestSeconds];
+  miloTimeoutForSetSpotOnRequestSeconds2 = [(IRPreferences *)self miloTimeoutForSetSpotOnRequestSeconds];
   objc_opt_class();
   v197 = objc_opt_isKindOfClass();
 
@@ -859,7 +859,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v193 = objc_opt_class();
   }
 
-  v198 = [(IRPreferences *)self miloTimeoutForSetSpotOnRequestSeconds];
+  miloTimeoutForSetSpotOnRequestSeconds3 = [(IRPreferences *)self miloTimeoutForSetSpotOnRequestSeconds];
   objc_opt_class();
   v199 = objc_opt_isKindOfClass();
 
@@ -873,7 +873,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_miloTimeoutForSetSpotOnRequestSeconds = v200;
 
   v202 = objc_opt_class();
-  v203 = [(IRPreferences *)self miLoProviderMaxNumberOfConsecutiveMiLoFailAttempts];
+  miLoProviderMaxNumberOfConsecutiveMiLoFailAttempts = [(IRPreferences *)self miLoProviderMaxNumberOfConsecutiveMiLoFailAttempts];
   objc_opt_class();
   v204 = objc_opt_isKindOfClass();
 
@@ -882,7 +882,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v202 = objc_opt_class();
   }
 
-  v205 = [(IRPreferences *)self miLoProviderMaxNumberOfConsecutiveMiLoFailAttempts];
+  miLoProviderMaxNumberOfConsecutiveMiLoFailAttempts2 = [(IRPreferences *)self miLoProviderMaxNumberOfConsecutiveMiLoFailAttempts];
   objc_opt_class();
   v206 = objc_opt_isKindOfClass();
 
@@ -891,7 +891,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v202 = objc_opt_class();
   }
 
-  v207 = [(IRPreferences *)self miLoProviderMaxNumberOfConsecutiveMiLoFailAttempts];
+  miLoProviderMaxNumberOfConsecutiveMiLoFailAttempts3 = [(IRPreferences *)self miLoProviderMaxNumberOfConsecutiveMiLoFailAttempts];
   objc_opt_class();
   v208 = objc_opt_isKindOfClass();
 
@@ -905,7 +905,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_miLoProviderMaxNumberOfConsecutiveMiLoFailAttempts = v209;
 
   v211 = objc_opt_class();
-  v212 = [(IRPreferences *)self ttrThrottleTimeSec];
+  ttrThrottleTimeSec = [(IRPreferences *)self ttrThrottleTimeSec];
   objc_opt_class();
   v213 = objc_opt_isKindOfClass();
 
@@ -914,7 +914,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v211 = objc_opt_class();
   }
 
-  v214 = [(IRPreferences *)self ttrThrottleTimeSec];
+  ttrThrottleTimeSec2 = [(IRPreferences *)self ttrThrottleTimeSec];
   objc_opt_class();
   v215 = objc_opt_isKindOfClass();
 
@@ -923,7 +923,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v211 = objc_opt_class();
   }
 
-  v216 = [(IRPreferences *)self ttrThrottleTimeSec];
+  ttrThrottleTimeSec3 = [(IRPreferences *)self ttrThrottleTimeSec];
   objc_opt_class();
   v217 = objc_opt_isKindOfClass();
 
@@ -937,7 +937,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_ttrThrottleTimeSec = v218;
 
   v220 = objc_opt_class();
-  v221 = [(IRPreferences *)self ttrPeriodicThrottleTimeSec];
+  ttrPeriodicThrottleTimeSec = [(IRPreferences *)self ttrPeriodicThrottleTimeSec];
   objc_opt_class();
   v222 = objc_opt_isKindOfClass();
 
@@ -946,7 +946,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v220 = objc_opt_class();
   }
 
-  v223 = [(IRPreferences *)self ttrPeriodicThrottleTimeSec];
+  ttrPeriodicThrottleTimeSec2 = [(IRPreferences *)self ttrPeriodicThrottleTimeSec];
   objc_opt_class();
   v224 = objc_opt_isKindOfClass();
 
@@ -955,7 +955,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v220 = objc_opt_class();
   }
 
-  v225 = [(IRPreferences *)self ttrPeriodicThrottleTimeSec];
+  ttrPeriodicThrottleTimeSec3 = [(IRPreferences *)self ttrPeriodicThrottleTimeSec];
   objc_opt_class();
   v226 = objc_opt_isKindOfClass();
 
@@ -969,7 +969,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_ttrPeriodicThrottleTimeSec = v227;
 
   v229 = objc_opt_class();
-  v230 = [(IRPreferences *)self nearbyDeviceMeasurmentExpityTimeSeconds];
+  nearbyDeviceMeasurmentExpityTimeSeconds = [(IRPreferences *)self nearbyDeviceMeasurmentExpityTimeSeconds];
   objc_opt_class();
   v231 = objc_opt_isKindOfClass();
 
@@ -978,7 +978,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v229 = objc_opt_class();
   }
 
-  v232 = [(IRPreferences *)self nearbyDeviceMeasurmentExpityTimeSeconds];
+  nearbyDeviceMeasurmentExpityTimeSeconds2 = [(IRPreferences *)self nearbyDeviceMeasurmentExpityTimeSeconds];
   objc_opt_class();
   v233 = objc_opt_isKindOfClass();
 
@@ -987,7 +987,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v229 = objc_opt_class();
   }
 
-  v234 = [(IRPreferences *)self nearbyDeviceMeasurmentExpityTimeSeconds];
+  nearbyDeviceMeasurmentExpityTimeSeconds3 = [(IRPreferences *)self nearbyDeviceMeasurmentExpityTimeSeconds];
   objc_opt_class();
   v235 = objc_opt_isKindOfClass();
 
@@ -1001,7 +1001,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_nearbyDeviceMeasurmentExpityTimeSeconds = v236;
 
   v238 = objc_opt_class();
-  v239 = [(IRPreferences *)self proximitySessionRetryCountThreshold];
+  proximitySessionRetryCountThreshold = [(IRPreferences *)self proximitySessionRetryCountThreshold];
   objc_opt_class();
   v240 = objc_opt_isKindOfClass();
 
@@ -1010,7 +1010,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v238 = objc_opt_class();
   }
 
-  v241 = [(IRPreferences *)self proximitySessionRetryCountThreshold];
+  proximitySessionRetryCountThreshold2 = [(IRPreferences *)self proximitySessionRetryCountThreshold];
   objc_opt_class();
   v242 = objc_opt_isKindOfClass();
 
@@ -1019,7 +1019,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v238 = objc_opt_class();
   }
 
-  v243 = [(IRPreferences *)self proximitySessionRetryCountThreshold];
+  proximitySessionRetryCountThreshold3 = [(IRPreferences *)self proximitySessionRetryCountThreshold];
   objc_opt_class();
   v244 = objc_opt_isKindOfClass();
 
@@ -1033,7 +1033,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_proximitySessionRetryCountThreshold = v245;
 
   v247 = objc_opt_class();
-  v248 = [(IRPreferences *)self nearbyDeviceRegionThreshold];
+  nearbyDeviceRegionThreshold = [(IRPreferences *)self nearbyDeviceRegionThreshold];
   objc_opt_class();
   v249 = objc_opt_isKindOfClass();
 
@@ -1042,7 +1042,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v247 = objc_opt_class();
   }
 
-  v250 = [(IRPreferences *)self nearbyDeviceRegionThreshold];
+  nearbyDeviceRegionThreshold2 = [(IRPreferences *)self nearbyDeviceRegionThreshold];
   objc_opt_class();
   v251 = objc_opt_isKindOfClass();
 
@@ -1051,7 +1051,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v247 = objc_opt_class();
   }
 
-  v252 = [(IRPreferences *)self nearbyDeviceRegionThreshold];
+  nearbyDeviceRegionThreshold3 = [(IRPreferences *)self nearbyDeviceRegionThreshold];
   objc_opt_class();
   v253 = objc_opt_isKindOfClass();
 
@@ -1065,7 +1065,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_nearbyDeviceRegionThreshold = v254;
 
   v256 = objc_opt_class();
-  v257 = [(IRPreferences *)self uwbSuspendPedestrianFenceRadiusMeters];
+  uwbSuspendPedestrianFenceRadiusMeters = [(IRPreferences *)self uwbSuspendPedestrianFenceRadiusMeters];
   objc_opt_class();
   v258 = objc_opt_isKindOfClass();
 
@@ -1074,7 +1074,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v256 = objc_opt_class();
   }
 
-  v259 = [(IRPreferences *)self uwbSuspendPedestrianFenceRadiusMeters];
+  uwbSuspendPedestrianFenceRadiusMeters2 = [(IRPreferences *)self uwbSuspendPedestrianFenceRadiusMeters];
   objc_opt_class();
   v260 = objc_opt_isKindOfClass();
 
@@ -1083,7 +1083,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v256 = objc_opt_class();
   }
 
-  v261 = [(IRPreferences *)self uwbSuspendPedestrianFenceRadiusMeters];
+  uwbSuspendPedestrianFenceRadiusMeters3 = [(IRPreferences *)self uwbSuspendPedestrianFenceRadiusMeters];
   objc_opt_class();
   v262 = objc_opt_isKindOfClass();
 
@@ -1097,7 +1097,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_uwbSuspendPedestrianFenceRadiusMeters = v263;
 
   v265 = objc_opt_class();
-  v266 = [(IRPreferences *)self uwbSuspendPedestrianFenceEnable];
+  uwbSuspendPedestrianFenceEnable = [(IRPreferences *)self uwbSuspendPedestrianFenceEnable];
   objc_opt_class();
   v267 = objc_opt_isKindOfClass();
 
@@ -1106,7 +1106,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v265 = objc_opt_class();
   }
 
-  v268 = [(IRPreferences *)self uwbSuspendPedestrianFenceEnable];
+  uwbSuspendPedestrianFenceEnable2 = [(IRPreferences *)self uwbSuspendPedestrianFenceEnable];
   objc_opt_class();
   v269 = objc_opt_isKindOfClass();
 
@@ -1115,7 +1115,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v265 = objc_opt_class();
   }
 
-  v270 = [(IRPreferences *)self uwbSuspendPedestrianFenceEnable];
+  uwbSuspendPedestrianFenceEnable3 = [(IRPreferences *)self uwbSuspendPedestrianFenceEnable];
   objc_opt_class();
   v271 = objc_opt_isKindOfClass();
 
@@ -1129,7 +1129,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_uwbSuspendPedestrianFenceEnable = v272;
 
   v274 = objc_opt_class();
-  v275 = [(IRPreferences *)self replayWriterEventsSizeToBuffer];
+  replayWriterEventsSizeToBuffer = [(IRPreferences *)self replayWriterEventsSizeToBuffer];
   objc_opt_class();
   v276 = objc_opt_isKindOfClass();
 
@@ -1138,7 +1138,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v274 = objc_opt_class();
   }
 
-  v277 = [(IRPreferences *)self replayWriterEventsSizeToBuffer];
+  replayWriterEventsSizeToBuffer2 = [(IRPreferences *)self replayWriterEventsSizeToBuffer];
   objc_opt_class();
   v278 = objc_opt_isKindOfClass();
 
@@ -1147,7 +1147,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v274 = objc_opt_class();
   }
 
-  v279 = [(IRPreferences *)self replayWriterEventsSizeToBuffer];
+  replayWriterEventsSizeToBuffer3 = [(IRPreferences *)self replayWriterEventsSizeToBuffer];
   objc_opt_class();
   v280 = objc_opt_isKindOfClass();
 
@@ -1161,7 +1161,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_replayWriterEventsSizeToBuffer = v281;
 
   v283 = objc_opt_class();
-  v284 = [(IRPreferences *)self numberOfHistoryEventsInCache];
+  numberOfHistoryEventsInCache = [(IRPreferences *)self numberOfHistoryEventsInCache];
   objc_opt_class();
   v285 = objc_opt_isKindOfClass();
 
@@ -1170,7 +1170,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v283 = objc_opt_class();
   }
 
-  v286 = [(IRPreferences *)self numberOfHistoryEventsInCache];
+  numberOfHistoryEventsInCache2 = [(IRPreferences *)self numberOfHistoryEventsInCache];
   objc_opt_class();
   v287 = objc_opt_isKindOfClass();
 
@@ -1179,7 +1179,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v283 = objc_opt_class();
   }
 
-  v288 = [(IRPreferences *)self numberOfHistoryEventsInCache];
+  numberOfHistoryEventsInCache3 = [(IRPreferences *)self numberOfHistoryEventsInCache];
   objc_opt_class();
   v289 = objc_opt_isKindOfClass();
 
@@ -1193,7 +1193,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_numberOfHistoryEventsInCache = v290;
 
   v292 = objc_opt_class();
-  v293 = [(IRPreferences *)self numberOfEventsToSaveInDisk];
+  numberOfEventsToSaveInDisk = [(IRPreferences *)self numberOfEventsToSaveInDisk];
   objc_opt_class();
   v294 = objc_opt_isKindOfClass();
 
@@ -1202,7 +1202,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v292 = objc_opt_class();
   }
 
-  v295 = [(IRPreferences *)self numberOfEventsToSaveInDisk];
+  numberOfEventsToSaveInDisk2 = [(IRPreferences *)self numberOfEventsToSaveInDisk];
   objc_opt_class();
   v296 = objc_opt_isKindOfClass();
 
@@ -1211,7 +1211,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v292 = objc_opt_class();
   }
 
-  v297 = [(IRPreferences *)self numberOfEventsToSaveInDisk];
+  numberOfEventsToSaveInDisk3 = [(IRPreferences *)self numberOfEventsToSaveInDisk];
   objc_opt_class();
   v298 = objc_opt_isKindOfClass();
 
@@ -1225,7 +1225,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_numberOfEventsToSaveInDisk = v299;
 
   v301 = objc_opt_class();
-  v302 = [(IRPreferences *)self coreAnalyticsEnable];
+  coreAnalyticsEnable = [(IRPreferences *)self coreAnalyticsEnable];
   objc_opt_class();
   v303 = objc_opt_isKindOfClass();
 
@@ -1234,7 +1234,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v301 = objc_opt_class();
   }
 
-  v304 = [(IRPreferences *)self coreAnalyticsEnable];
+  coreAnalyticsEnable2 = [(IRPreferences *)self coreAnalyticsEnable];
   objc_opt_class();
   v305 = objc_opt_isKindOfClass();
 
@@ -1243,7 +1243,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v301 = objc_opt_class();
   }
 
-  v306 = [(IRPreferences *)self coreAnalyticsEnable];
+  coreAnalyticsEnable3 = [(IRPreferences *)self coreAnalyticsEnable];
   objc_opt_class();
   v307 = objc_opt_isKindOfClass();
 
@@ -1257,7 +1257,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_coreAnalyticsEnable = v308;
 
   v310 = objc_opt_class();
-  v311 = [(IRPreferences *)self coreAnalyticsXPCActivityInterval];
+  coreAnalyticsXPCActivityInterval = [(IRPreferences *)self coreAnalyticsXPCActivityInterval];
   objc_opt_class();
   v312 = objc_opt_isKindOfClass();
 
@@ -1266,7 +1266,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v310 = objc_opt_class();
   }
 
-  v313 = [(IRPreferences *)self coreAnalyticsXPCActivityInterval];
+  coreAnalyticsXPCActivityInterval2 = [(IRPreferences *)self coreAnalyticsXPCActivityInterval];
   objc_opt_class();
   v314 = objc_opt_isKindOfClass();
 
@@ -1275,7 +1275,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v310 = objc_opt_class();
   }
 
-  v315 = [(IRPreferences *)self coreAnalyticsXPCActivityInterval];
+  coreAnalyticsXPCActivityInterval3 = [(IRPreferences *)self coreAnalyticsXPCActivityInterval];
   objc_opt_class();
   v316 = objc_opt_isKindOfClass();
 
@@ -1289,7 +1289,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_coreAnalyticsXPCActivityInterval = v317;
 
   v319 = objc_opt_class();
-  v320 = [(IRPreferences *)self coreAnalyticsXPCHistoryEventsValidThreshold];
+  coreAnalyticsXPCHistoryEventsValidThreshold = [(IRPreferences *)self coreAnalyticsXPCHistoryEventsValidThreshold];
   objc_opt_class();
   v321 = objc_opt_isKindOfClass();
 
@@ -1298,7 +1298,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v319 = objc_opt_class();
   }
 
-  v322 = [(IRPreferences *)self coreAnalyticsXPCHistoryEventsValidThreshold];
+  coreAnalyticsXPCHistoryEventsValidThreshold2 = [(IRPreferences *)self coreAnalyticsXPCHistoryEventsValidThreshold];
   objc_opt_class();
   v323 = objc_opt_isKindOfClass();
 
@@ -1307,7 +1307,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v319 = objc_opt_class();
   }
 
-  v324 = [(IRPreferences *)self coreAnalyticsXPCHistoryEventsValidThreshold];
+  coreAnalyticsXPCHistoryEventsValidThreshold3 = [(IRPreferences *)self coreAnalyticsXPCHistoryEventsValidThreshold];
   objc_opt_class();
   v325 = objc_opt_isKindOfClass();
 
@@ -1321,7 +1321,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_coreAnalyticsXPCHistoryEventsValidThreshold = v326;
 
   v328 = objc_opt_class();
-  v329 = [(IRPreferences *)self coreAnalyticsStatisticsCollectionPeriodInSeconds];
+  coreAnalyticsStatisticsCollectionPeriodInSeconds = [(IRPreferences *)self coreAnalyticsStatisticsCollectionPeriodInSeconds];
   objc_opt_class();
   v330 = objc_opt_isKindOfClass();
 
@@ -1330,7 +1330,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v328 = objc_opt_class();
   }
 
-  v331 = [(IRPreferences *)self coreAnalyticsStatisticsCollectionPeriodInSeconds];
+  coreAnalyticsStatisticsCollectionPeriodInSeconds2 = [(IRPreferences *)self coreAnalyticsStatisticsCollectionPeriodInSeconds];
   objc_opt_class();
   v332 = objc_opt_isKindOfClass();
 
@@ -1339,7 +1339,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v328 = objc_opt_class();
   }
 
-  v333 = [(IRPreferences *)self coreAnalyticsStatisticsCollectionPeriodInSeconds];
+  coreAnalyticsStatisticsCollectionPeriodInSeconds3 = [(IRPreferences *)self coreAnalyticsStatisticsCollectionPeriodInSeconds];
   objc_opt_class();
   v334 = objc_opt_isKindOfClass();
 
@@ -1353,7 +1353,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_coreAnalyticsStatisticsCollectionPeriodInSeconds = v335;
 
   v337 = objc_opt_class();
-  v338 = [(IRPreferences *)self coreAnalyticsWeeklyMobileAssetVersion];
+  coreAnalyticsWeeklyMobileAssetVersion = [(IRPreferences *)self coreAnalyticsWeeklyMobileAssetVersion];
   objc_opt_class();
   v339 = objc_opt_isKindOfClass();
 
@@ -1362,7 +1362,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v337 = objc_opt_class();
   }
 
-  v340 = [(IRPreferences *)self coreAnalyticsWeeklyMobileAssetVersion];
+  coreAnalyticsWeeklyMobileAssetVersion2 = [(IRPreferences *)self coreAnalyticsWeeklyMobileAssetVersion];
   objc_opt_class();
   v341 = objc_opt_isKindOfClass();
 
@@ -1371,7 +1371,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v337 = objc_opt_class();
   }
 
-  v342 = [(IRPreferences *)self coreAnalyticsWeeklyMobileAssetVersion];
+  coreAnalyticsWeeklyMobileAssetVersion3 = [(IRPreferences *)self coreAnalyticsWeeklyMobileAssetVersion];
   objc_opt_class();
   v343 = objc_opt_isKindOfClass();
 
@@ -1385,7 +1385,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_coreAnalyticsWeeklyMobileAssetVersion = v344;
 
   v346 = objc_opt_class();
-  v347 = [(IRPreferences *)self coreAnalyticsSessionEnable];
+  coreAnalyticsSessionEnable = [(IRPreferences *)self coreAnalyticsSessionEnable];
   objc_opt_class();
   v348 = objc_opt_isKindOfClass();
 
@@ -1394,7 +1394,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v346 = objc_opt_class();
   }
 
-  v349 = [(IRPreferences *)self coreAnalyticsSessionEnable];
+  coreAnalyticsSessionEnable2 = [(IRPreferences *)self coreAnalyticsSessionEnable];
   objc_opt_class();
   v350 = objc_opt_isKindOfClass();
 
@@ -1403,7 +1403,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v346 = objc_opt_class();
   }
 
-  v351 = [(IRPreferences *)self coreAnalyticsSessionEnable];
+  coreAnalyticsSessionEnable3 = [(IRPreferences *)self coreAnalyticsSessionEnable];
   objc_opt_class();
   v352 = objc_opt_isKindOfClass();
 
@@ -1417,7 +1417,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_coreAnalyticsSessionEnable = v353;
 
   v355 = objc_opt_class();
-  v356 = [(IRPreferences *)self coreAnalyticsSessionPeriodInSeconds];
+  coreAnalyticsSessionPeriodInSeconds = [(IRPreferences *)self coreAnalyticsSessionPeriodInSeconds];
   objc_opt_class();
   v357 = objc_opt_isKindOfClass();
 
@@ -1426,7 +1426,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v355 = objc_opt_class();
   }
 
-  v358 = [(IRPreferences *)self coreAnalyticsSessionPeriodInSeconds];
+  coreAnalyticsSessionPeriodInSeconds2 = [(IRPreferences *)self coreAnalyticsSessionPeriodInSeconds];
   objc_opt_class();
   v359 = objc_opt_isKindOfClass();
 
@@ -1435,7 +1435,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v355 = objc_opt_class();
   }
 
-  v360 = [(IRPreferences *)self coreAnalyticsSessionPeriodInSeconds];
+  coreAnalyticsSessionPeriodInSeconds3 = [(IRPreferences *)self coreAnalyticsSessionPeriodInSeconds];
   objc_opt_class();
   v361 = objc_opt_isKindOfClass();
 
@@ -1449,7 +1449,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_coreAnalyticsSessionPeriodInSeconds = v362;
 
   v364 = objc_opt_class();
-  v365 = [(IRPreferences *)self mediaRulesContinuityTimeIntervalInSeconds];
+  mediaRulesContinuityTimeIntervalInSeconds = [(IRPreferences *)self mediaRulesContinuityTimeIntervalInSeconds];
   objc_opt_class();
   v366 = objc_opt_isKindOfClass();
 
@@ -1458,7 +1458,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v364 = objc_opt_class();
   }
 
-  v367 = [(IRPreferences *)self mediaRulesContinuityTimeIntervalInSeconds];
+  mediaRulesContinuityTimeIntervalInSeconds2 = [(IRPreferences *)self mediaRulesContinuityTimeIntervalInSeconds];
   objc_opt_class();
   v368 = objc_opt_isKindOfClass();
 
@@ -1467,7 +1467,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v364 = objc_opt_class();
   }
 
-  v369 = [(IRPreferences *)self mediaRulesContinuityTimeIntervalInSeconds];
+  mediaRulesContinuityTimeIntervalInSeconds3 = [(IRPreferences *)self mediaRulesContinuityTimeIntervalInSeconds];
   objc_opt_class();
   v370 = objc_opt_isKindOfClass();
 
@@ -1481,7 +1481,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_mediaRulesContinuityTimeIntervalInSeconds = v371;
 
   v373 = objc_opt_class();
-  v374 = [(IRPreferences *)self mediaRulesPickerChoiceConsistencyTimeIntervalInSeconds];
+  mediaRulesPickerChoiceConsistencyTimeIntervalInSeconds = [(IRPreferences *)self mediaRulesPickerChoiceConsistencyTimeIntervalInSeconds];
   objc_opt_class();
   v375 = objc_opt_isKindOfClass();
 
@@ -1490,7 +1490,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v373 = objc_opt_class();
   }
 
-  v376 = [(IRPreferences *)self mediaRulesPickerChoiceConsistencyTimeIntervalInSeconds];
+  mediaRulesPickerChoiceConsistencyTimeIntervalInSeconds2 = [(IRPreferences *)self mediaRulesPickerChoiceConsistencyTimeIntervalInSeconds];
   objc_opt_class();
   v377 = objc_opt_isKindOfClass();
 
@@ -1499,7 +1499,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v373 = objc_opt_class();
   }
 
-  v378 = [(IRPreferences *)self mediaRulesPickerChoiceConsistencyTimeIntervalInSeconds];
+  mediaRulesPickerChoiceConsistencyTimeIntervalInSeconds3 = [(IRPreferences *)self mediaRulesPickerChoiceConsistencyTimeIntervalInSeconds];
   objc_opt_class();
   v379 = objc_opt_isKindOfClass();
 
@@ -1513,7 +1513,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_mediaRulesPickerChoiceConsistencyTimeIntervalInSeconds = v380;
 
   v382 = objc_opt_class();
-  v383 = [(IRPreferences *)self mediaRulesPickerChoiceConsistencyEnable];
+  mediaRulesPickerChoiceConsistencyEnable = [(IRPreferences *)self mediaRulesPickerChoiceConsistencyEnable];
   objc_opt_class();
   v384 = objc_opt_isKindOfClass();
 
@@ -1522,7 +1522,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v382 = objc_opt_class();
   }
 
-  v385 = [(IRPreferences *)self mediaRulesPickerChoiceConsistencyEnable];
+  mediaRulesPickerChoiceConsistencyEnable2 = [(IRPreferences *)self mediaRulesPickerChoiceConsistencyEnable];
   objc_opt_class();
   v386 = objc_opt_isKindOfClass();
 
@@ -1531,7 +1531,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v382 = objc_opt_class();
   }
 
-  v387 = [(IRPreferences *)self mediaRulesPickerChoiceConsistencyEnable];
+  mediaRulesPickerChoiceConsistencyEnable3 = [(IRPreferences *)self mediaRulesPickerChoiceConsistencyEnable];
   objc_opt_class();
   v388 = objc_opt_isKindOfClass();
 
@@ -1545,7 +1545,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_mediaRulesPickerChoiceConsistencyEnable = v389;
 
   v391 = objc_opt_class();
-  v392 = [(IRPreferences *)self mediaRulesUserRejectedInLastDayEnable];
+  mediaRulesUserRejectedInLastDayEnable = [(IRPreferences *)self mediaRulesUserRejectedInLastDayEnable];
   objc_opt_class();
   v393 = objc_opt_isKindOfClass();
 
@@ -1554,7 +1554,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v391 = objc_opt_class();
   }
 
-  v394 = [(IRPreferences *)self mediaRulesUserRejectedInLastDayEnable];
+  mediaRulesUserRejectedInLastDayEnable2 = [(IRPreferences *)self mediaRulesUserRejectedInLastDayEnable];
   objc_opt_class();
   v395 = objc_opt_isKindOfClass();
 
@@ -1563,7 +1563,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v391 = objc_opt_class();
   }
 
-  v396 = [(IRPreferences *)self mediaRulesUserRejectedInLastDayEnable];
+  mediaRulesUserRejectedInLastDayEnable3 = [(IRPreferences *)self mediaRulesUserRejectedInLastDayEnable];
   objc_opt_class();
   v397 = objc_opt_isKindOfClass();
 
@@ -1577,7 +1577,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_mediaRulesUserRejectedInLastDayEnable = v398;
 
   v400 = objc_opt_class();
-  v401 = [(IRPreferences *)self appleTvCtrlRulesContinuityTimeIntervalInSeconds];
+  appleTvCtrlRulesContinuityTimeIntervalInSeconds = [(IRPreferences *)self appleTvCtrlRulesContinuityTimeIntervalInSeconds];
   objc_opt_class();
   v402 = objc_opt_isKindOfClass();
 
@@ -1586,7 +1586,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v400 = objc_opt_class();
   }
 
-  v403 = [(IRPreferences *)self appleTvCtrlRulesContinuityTimeIntervalInSeconds];
+  appleTvCtrlRulesContinuityTimeIntervalInSeconds2 = [(IRPreferences *)self appleTvCtrlRulesContinuityTimeIntervalInSeconds];
   objc_opt_class();
   v404 = objc_opt_isKindOfClass();
 
@@ -1595,7 +1595,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v400 = objc_opt_class();
   }
 
-  v405 = [(IRPreferences *)self appleTvCtrlRulesContinuityTimeIntervalInSeconds];
+  appleTvCtrlRulesContinuityTimeIntervalInSeconds3 = [(IRPreferences *)self appleTvCtrlRulesContinuityTimeIntervalInSeconds];
   objc_opt_class();
   v406 = objc_opt_isKindOfClass();
 
@@ -1609,7 +1609,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_appleTvCtrlRulesContinuityTimeIntervalInSeconds = v407;
 
   v409 = objc_opt_class();
-  v410 = [(IRPreferences *)self appInFocusWindowInSeconds];
+  appInFocusWindowInSeconds = [(IRPreferences *)self appInFocusWindowInSeconds];
   objc_opt_class();
   v411 = objc_opt_isKindOfClass();
 
@@ -1618,7 +1618,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v409 = objc_opt_class();
   }
 
-  v412 = [(IRPreferences *)self appInFocusWindowInSeconds];
+  appInFocusWindowInSeconds2 = [(IRPreferences *)self appInFocusWindowInSeconds];
   objc_opt_class();
   v413 = objc_opt_isKindOfClass();
 
@@ -1627,7 +1627,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v409 = objc_opt_class();
   }
 
-  v414 = [(IRPreferences *)self appInFocusWindowInSeconds];
+  appInFocusWindowInSeconds3 = [(IRPreferences *)self appInFocusWindowInSeconds];
   objc_opt_class();
   v415 = objc_opt_isKindOfClass();
 
@@ -1641,7 +1641,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_appInFocusWindowInSeconds = v416;
 
   v418 = objc_opt_class();
-  v419 = [(IRPreferences *)self appInFocusWindowEnableOnServiceRun];
+  appInFocusWindowEnableOnServiceRun = [(IRPreferences *)self appInFocusWindowEnableOnServiceRun];
   objc_opt_class();
   v420 = objc_opt_isKindOfClass();
 
@@ -1650,7 +1650,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v418 = objc_opt_class();
   }
 
-  v421 = [(IRPreferences *)self appInFocusWindowEnableOnServiceRun];
+  appInFocusWindowEnableOnServiceRun2 = [(IRPreferences *)self appInFocusWindowEnableOnServiceRun];
   objc_opt_class();
   v422 = objc_opt_isKindOfClass();
 
@@ -1659,7 +1659,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v418 = objc_opt_class();
   }
 
-  v423 = [(IRPreferences *)self appInFocusWindowEnableOnServiceRun];
+  appInFocusWindowEnableOnServiceRun3 = [(IRPreferences *)self appInFocusWindowEnableOnServiceRun];
   objc_opt_class();
   v424 = objc_opt_isKindOfClass();
 
@@ -1673,7 +1673,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_appInFocusWindowEnableOnServiceRun = v425;
 
   v427 = objc_opt_class();
-  v428 = [(IRPreferences *)self bannersFromScreenUnlockToAppInFocusEnable];
+  bannersFromScreenUnlockToAppInFocusEnable = [(IRPreferences *)self bannersFromScreenUnlockToAppInFocusEnable];
   objc_opt_class();
   v429 = objc_opt_isKindOfClass();
 
@@ -1682,7 +1682,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v427 = objc_opt_class();
   }
 
-  v430 = [(IRPreferences *)self bannersFromScreenUnlockToAppInFocusEnable];
+  bannersFromScreenUnlockToAppInFocusEnable2 = [(IRPreferences *)self bannersFromScreenUnlockToAppInFocusEnable];
   objc_opt_class();
   v431 = objc_opt_isKindOfClass();
 
@@ -1691,7 +1691,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v427 = objc_opt_class();
   }
 
-  v432 = [(IRPreferences *)self bannersFromScreenUnlockToAppInFocusEnable];
+  bannersFromScreenUnlockToAppInFocusEnable3 = [(IRPreferences *)self bannersFromScreenUnlockToAppInFocusEnable];
   objc_opt_class();
   v433 = objc_opt_isKindOfClass();
 
@@ -1705,7 +1705,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_bannersFromScreenUnlockToAppInFocusEnable = v434;
 
   v436 = objc_opt_class();
-  v437 = [(IRPreferences *)self liveOnEnable];
+  liveOnEnable = [(IRPreferences *)self liveOnEnable];
   objc_opt_class();
   v438 = objc_opt_isKindOfClass();
 
@@ -1714,7 +1714,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v436 = objc_opt_class();
   }
 
-  v439 = [(IRPreferences *)self liveOnEnable];
+  liveOnEnable2 = [(IRPreferences *)self liveOnEnable];
   objc_opt_class();
   v440 = objc_opt_isKindOfClass();
 
@@ -1723,7 +1723,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v436 = objc_opt_class();
   }
 
-  v441 = [(IRPreferences *)self liveOnEnable];
+  liveOnEnable3 = [(IRPreferences *)self liveOnEnable];
   objc_opt_class();
   v442 = objc_opt_isKindOfClass();
 
@@ -1737,7 +1737,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_liveOnEnable = v443;
 
   v445 = objc_opt_class();
-  v446 = [(IRPreferences *)self liveOnTtrDebugDataRequestsEnabled];
+  liveOnTtrDebugDataRequestsEnabled = [(IRPreferences *)self liveOnTtrDebugDataRequestsEnabled];
   objc_opt_class();
   v447 = objc_opt_isKindOfClass();
 
@@ -1746,7 +1746,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v445 = objc_opt_class();
   }
 
-  v448 = [(IRPreferences *)self liveOnTtrDebugDataRequestsEnabled];
+  liveOnTtrDebugDataRequestsEnabled2 = [(IRPreferences *)self liveOnTtrDebugDataRequestsEnabled];
   objc_opt_class();
   v449 = objc_opt_isKindOfClass();
 
@@ -1755,7 +1755,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v445 = objc_opt_class();
   }
 
-  v450 = [(IRPreferences *)self liveOnTtrDebugDataRequestsEnabled];
+  liveOnTtrDebugDataRequestsEnabled3 = [(IRPreferences *)self liveOnTtrDebugDataRequestsEnabled];
   objc_opt_class();
   v451 = objc_opt_isKindOfClass();
 
@@ -1769,7 +1769,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_liveOnTtrDebugDataRequestsEnabled = v452;
 
   v454 = objc_opt_class();
-  v455 = [(IRPreferences *)self liveOnTtrPeriodicDataRequestsEnabled];
+  liveOnTtrPeriodicDataRequestsEnabled = [(IRPreferences *)self liveOnTtrPeriodicDataRequestsEnabled];
   objc_opt_class();
   v456 = objc_opt_isKindOfClass();
 
@@ -1778,7 +1778,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v454 = objc_opt_class();
   }
 
-  v457 = [(IRPreferences *)self liveOnTtrPeriodicDataRequestsEnabled];
+  liveOnTtrPeriodicDataRequestsEnabled2 = [(IRPreferences *)self liveOnTtrPeriodicDataRequestsEnabled];
   objc_opt_class();
   v458 = objc_opt_isKindOfClass();
 
@@ -1787,7 +1787,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v454 = objc_opt_class();
   }
 
-  v459 = [(IRPreferences *)self liveOnTtrPeriodicDataRequestsEnabled];
+  liveOnTtrPeriodicDataRequestsEnabled3 = [(IRPreferences *)self liveOnTtrPeriodicDataRequestsEnabled];
   objc_opt_class();
   v460 = objc_opt_isKindOfClass();
 
@@ -1801,7 +1801,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_liveOnTtrPeriodicDataRequestsEnabled = v461;
 
   v463 = objc_opt_class();
-  v464 = [(IRPreferences *)self numberOfUsedCandidates];
+  numberOfUsedCandidates = [(IRPreferences *)self numberOfUsedCandidates];
   objc_opt_class();
   v465 = objc_opt_isKindOfClass();
 
@@ -1810,7 +1810,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v463 = objc_opt_class();
   }
 
-  v466 = [(IRPreferences *)self numberOfUsedCandidates];
+  numberOfUsedCandidates2 = [(IRPreferences *)self numberOfUsedCandidates];
   objc_opt_class();
   v467 = objc_opt_isKindOfClass();
 
@@ -1819,7 +1819,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v463 = objc_opt_class();
   }
 
-  v468 = [(IRPreferences *)self numberOfUsedCandidates];
+  numberOfUsedCandidates3 = [(IRPreferences *)self numberOfUsedCandidates];
   objc_opt_class();
   v469 = objc_opt_isKindOfClass();
 
@@ -1833,7 +1833,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_numberOfUsedCandidates = v470;
 
   v472 = objc_opt_class();
-  v473 = [(IRPreferences *)self numberOfSeenCandidates];
+  numberOfSeenCandidates = [(IRPreferences *)self numberOfSeenCandidates];
   objc_opt_class();
   v474 = objc_opt_isKindOfClass();
 
@@ -1842,7 +1842,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v472 = objc_opt_class();
   }
 
-  v475 = [(IRPreferences *)self numberOfSeenCandidates];
+  numberOfSeenCandidates2 = [(IRPreferences *)self numberOfSeenCandidates];
   objc_opt_class();
   v476 = objc_opt_isKindOfClass();
 
@@ -1851,7 +1851,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v472 = objc_opt_class();
   }
 
-  v477 = [(IRPreferences *)self numberOfSeenCandidates];
+  numberOfSeenCandidates3 = [(IRPreferences *)self numberOfSeenCandidates];
   objc_opt_class();
   v478 = objc_opt_isKindOfClass();
 
@@ -1865,7 +1865,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_numberOfSeenCandidates = v479;
 
   v481 = objc_opt_class();
-  v482 = [(IRPreferences *)self candidateUpdateTimeIntervalSeconds];
+  candidateUpdateTimeIntervalSeconds = [(IRPreferences *)self candidateUpdateTimeIntervalSeconds];
   objc_opt_class();
   v483 = objc_opt_isKindOfClass();
 
@@ -1874,7 +1874,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v481 = objc_opt_class();
   }
 
-  v484 = [(IRPreferences *)self candidateUpdateTimeIntervalSeconds];
+  candidateUpdateTimeIntervalSeconds2 = [(IRPreferences *)self candidateUpdateTimeIntervalSeconds];
   objc_opt_class();
   v485 = objc_opt_isKindOfClass();
 
@@ -1883,7 +1883,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v481 = objc_opt_class();
   }
 
-  v486 = [(IRPreferences *)self candidateUpdateTimeIntervalSeconds];
+  candidateUpdateTimeIntervalSeconds3 = [(IRPreferences *)self candidateUpdateTimeIntervalSeconds];
   objc_opt_class();
   v487 = objc_opt_isKindOfClass();
 
@@ -1897,7 +1897,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_candidateUpdateTimeIntervalSeconds = v488;
 
   v490 = objc_opt_class();
-  v491 = [(IRPreferences *)self uprankToAutorouteEligibilityThreshold3rdParty];
+  uprankToAutorouteEligibilityThreshold3rdParty = [(IRPreferences *)self uprankToAutorouteEligibilityThreshold3rdParty];
   objc_opt_class();
   v492 = objc_opt_isKindOfClass();
 
@@ -1906,7 +1906,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v490 = objc_opt_class();
   }
 
-  v493 = [(IRPreferences *)self uprankToAutorouteEligibilityThreshold3rdParty];
+  uprankToAutorouteEligibilityThreshold3rdParty2 = [(IRPreferences *)self uprankToAutorouteEligibilityThreshold3rdParty];
   objc_opt_class();
   v494 = objc_opt_isKindOfClass();
 
@@ -1915,7 +1915,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v490 = objc_opt_class();
   }
 
-  v495 = [(IRPreferences *)self uprankToAutorouteEligibilityThreshold3rdParty];
+  uprankToAutorouteEligibilityThreshold3rdParty3 = [(IRPreferences *)self uprankToAutorouteEligibilityThreshold3rdParty];
   objc_opt_class();
   v496 = objc_opt_isKindOfClass();
 
@@ -1929,7 +1929,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_uprankToAutorouteEligibilityThreshold3rdParty = v497;
 
   v499 = objc_opt_class();
-  v500 = [(IRPreferences *)self uprankToOneTapEligibilityThreshold3rdParty];
+  uprankToOneTapEligibilityThreshold3rdParty = [(IRPreferences *)self uprankToOneTapEligibilityThreshold3rdParty];
   objc_opt_class();
   v501 = objc_opt_isKindOfClass();
 
@@ -1938,7 +1938,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v499 = objc_opt_class();
   }
 
-  v502 = [(IRPreferences *)self uprankToOneTapEligibilityThreshold3rdParty];
+  uprankToOneTapEligibilityThreshold3rdParty2 = [(IRPreferences *)self uprankToOneTapEligibilityThreshold3rdParty];
   objc_opt_class();
   v503 = objc_opt_isKindOfClass();
 
@@ -1947,7 +1947,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v499 = objc_opt_class();
   }
 
-  v504 = [(IRPreferences *)self uprankToOneTapEligibilityThreshold3rdParty];
+  uprankToOneTapEligibilityThreshold3rdParty3 = [(IRPreferences *)self uprankToOneTapEligibilityThreshold3rdParty];
   objc_opt_class();
   v505 = objc_opt_isKindOfClass();
 
@@ -1961,7 +1961,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_uprankToOneTapEligibilityThreshold3rdParty = v506;
 
   v508 = objc_opt_class();
-  v509 = [(IRPreferences *)self downrankToNoneEligibilityThreshold3rdParty];
+  downrankToNoneEligibilityThreshold3rdParty = [(IRPreferences *)self downrankToNoneEligibilityThreshold3rdParty];
   objc_opt_class();
   v510 = objc_opt_isKindOfClass();
 
@@ -1970,7 +1970,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v508 = objc_opt_class();
   }
 
-  v511 = [(IRPreferences *)self downrankToNoneEligibilityThreshold3rdParty];
+  downrankToNoneEligibilityThreshold3rdParty2 = [(IRPreferences *)self downrankToNoneEligibilityThreshold3rdParty];
   objc_opt_class();
   v512 = objc_opt_isKindOfClass();
 
@@ -1979,7 +1979,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v508 = objc_opt_class();
   }
 
-  v513 = [(IRPreferences *)self downrankToNoneEligibilityThreshold3rdParty];
+  downrankToNoneEligibilityThreshold3rdParty3 = [(IRPreferences *)self downrankToNoneEligibilityThreshold3rdParty];
   objc_opt_class();
   v514 = objc_opt_isKindOfClass();
 
@@ -1993,7 +1993,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_downrankToNoneEligibilityThreshold3rdParty = v515;
 
   v517 = objc_opt_class();
-  v518 = [(IRPreferences *)self downrankToOneTapEligibilityThreshold3rdParty];
+  downrankToOneTapEligibilityThreshold3rdParty = [(IRPreferences *)self downrankToOneTapEligibilityThreshold3rdParty];
   objc_opt_class();
   v519 = objc_opt_isKindOfClass();
 
@@ -2002,7 +2002,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v517 = objc_opt_class();
   }
 
-  v520 = [(IRPreferences *)self downrankToOneTapEligibilityThreshold3rdParty];
+  downrankToOneTapEligibilityThreshold3rdParty2 = [(IRPreferences *)self downrankToOneTapEligibilityThreshold3rdParty];
   objc_opt_class();
   v521 = objc_opt_isKindOfClass();
 
@@ -2011,7 +2011,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v517 = objc_opt_class();
   }
 
-  v522 = [(IRPreferences *)self downrankToOneTapEligibilityThreshold3rdParty];
+  downrankToOneTapEligibilityThreshold3rdParty3 = [(IRPreferences *)self downrankToOneTapEligibilityThreshold3rdParty];
   objc_opt_class();
   v523 = objc_opt_isKindOfClass();
 
@@ -2025,7 +2025,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_downrankToOneTapEligibilityThreshold3rdParty = v524;
 
   v526 = objc_opt_class();
-  v527 = [(IRPreferences *)self eligibilityInitStateIsOneTap3rdParty];
+  eligibilityInitStateIsOneTap3rdParty = [(IRPreferences *)self eligibilityInitStateIsOneTap3rdParty];
   objc_opt_class();
   v528 = objc_opt_isKindOfClass();
 
@@ -2034,7 +2034,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v526 = objc_opt_class();
   }
 
-  v529 = [(IRPreferences *)self eligibilityInitStateIsOneTap3rdParty];
+  eligibilityInitStateIsOneTap3rdParty2 = [(IRPreferences *)self eligibilityInitStateIsOneTap3rdParty];
   objc_opt_class();
   v530 = objc_opt_isKindOfClass();
 
@@ -2043,7 +2043,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v526 = objc_opt_class();
   }
 
-  v531 = [(IRPreferences *)self eligibilityInitStateIsOneTap3rdParty];
+  eligibilityInitStateIsOneTap3rdParty3 = [(IRPreferences *)self eligibilityInitStateIsOneTap3rdParty];
   objc_opt_class();
   v532 = objc_opt_isKindOfClass();
 
@@ -2057,7 +2057,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_eligibilityInitStateIsOneTap3rdParty = v533;
 
   v535 = objc_opt_class();
-  v536 = [(IRPreferences *)self downrankToNoneEligibilityBasedOnDismissAndRejectThreshold3rdParty];
+  downrankToNoneEligibilityBasedOnDismissAndRejectThreshold3rdParty = [(IRPreferences *)self downrankToNoneEligibilityBasedOnDismissAndRejectThreshold3rdParty];
   objc_opt_class();
   v537 = objc_opt_isKindOfClass();
 
@@ -2066,7 +2066,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v535 = objc_opt_class();
   }
 
-  v538 = [(IRPreferences *)self downrankToNoneEligibilityBasedOnDismissAndRejectThreshold3rdParty];
+  downrankToNoneEligibilityBasedOnDismissAndRejectThreshold3rdParty2 = [(IRPreferences *)self downrankToNoneEligibilityBasedOnDismissAndRejectThreshold3rdParty];
   objc_opt_class();
   v539 = objc_opt_isKindOfClass();
 
@@ -2075,7 +2075,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v535 = objc_opt_class();
   }
 
-  v540 = [(IRPreferences *)self downrankToNoneEligibilityBasedOnDismissAndRejectThreshold3rdParty];
+  downrankToNoneEligibilityBasedOnDismissAndRejectThreshold3rdParty3 = [(IRPreferences *)self downrankToNoneEligibilityBasedOnDismissAndRejectThreshold3rdParty];
   objc_opt_class();
   v541 = objc_opt_isKindOfClass();
 
@@ -2089,7 +2089,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_downrankToNoneEligibilityBasedOnDismissAndRejectThreshold3rdParty = v542;
 
   v544 = objc_opt_class();
-  v545 = [(IRPreferences *)self uprankToAutorouteEligibilityThreshold1stParty];
+  uprankToAutorouteEligibilityThreshold1stParty = [(IRPreferences *)self uprankToAutorouteEligibilityThreshold1stParty];
   objc_opt_class();
   v546 = objc_opt_isKindOfClass();
 
@@ -2098,7 +2098,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v544 = objc_opt_class();
   }
 
-  v547 = [(IRPreferences *)self uprankToAutorouteEligibilityThreshold1stParty];
+  uprankToAutorouteEligibilityThreshold1stParty2 = [(IRPreferences *)self uprankToAutorouteEligibilityThreshold1stParty];
   objc_opt_class();
   v548 = objc_opt_isKindOfClass();
 
@@ -2107,7 +2107,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v544 = objc_opt_class();
   }
 
-  v549 = [(IRPreferences *)self uprankToAutorouteEligibilityThreshold1stParty];
+  uprankToAutorouteEligibilityThreshold1stParty3 = [(IRPreferences *)self uprankToAutorouteEligibilityThreshold1stParty];
   objc_opt_class();
   v550 = objc_opt_isKindOfClass();
 
@@ -2121,7 +2121,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_uprankToAutorouteEligibilityThreshold1stParty = v551;
 
   v553 = objc_opt_class();
-  v554 = [(IRPreferences *)self uprankToOneTapEligibilityThreshold1stParty];
+  uprankToOneTapEligibilityThreshold1stParty = [(IRPreferences *)self uprankToOneTapEligibilityThreshold1stParty];
   objc_opt_class();
   v555 = objc_opt_isKindOfClass();
 
@@ -2130,7 +2130,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v553 = objc_opt_class();
   }
 
-  v556 = [(IRPreferences *)self uprankToOneTapEligibilityThreshold1stParty];
+  uprankToOneTapEligibilityThreshold1stParty2 = [(IRPreferences *)self uprankToOneTapEligibilityThreshold1stParty];
   objc_opt_class();
   v557 = objc_opt_isKindOfClass();
 
@@ -2139,7 +2139,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v553 = objc_opt_class();
   }
 
-  v558 = [(IRPreferences *)self uprankToOneTapEligibilityThreshold1stParty];
+  uprankToOneTapEligibilityThreshold1stParty3 = [(IRPreferences *)self uprankToOneTapEligibilityThreshold1stParty];
   objc_opt_class();
   v559 = objc_opt_isKindOfClass();
 
@@ -2153,7 +2153,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_uprankToOneTapEligibilityThreshold1stParty = v560;
 
   v562 = objc_opt_class();
-  v563 = [(IRPreferences *)self downrankToNoneEligibilityThreshold1stParty];
+  downrankToNoneEligibilityThreshold1stParty = [(IRPreferences *)self downrankToNoneEligibilityThreshold1stParty];
   objc_opt_class();
   v564 = objc_opt_isKindOfClass();
 
@@ -2162,7 +2162,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v562 = objc_opt_class();
   }
 
-  v565 = [(IRPreferences *)self downrankToNoneEligibilityThreshold1stParty];
+  downrankToNoneEligibilityThreshold1stParty2 = [(IRPreferences *)self downrankToNoneEligibilityThreshold1stParty];
   objc_opt_class();
   v566 = objc_opt_isKindOfClass();
 
@@ -2171,7 +2171,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v562 = objc_opt_class();
   }
 
-  v567 = [(IRPreferences *)self downrankToNoneEligibilityThreshold1stParty];
+  downrankToNoneEligibilityThreshold1stParty3 = [(IRPreferences *)self downrankToNoneEligibilityThreshold1stParty];
   objc_opt_class();
   v568 = objc_opt_isKindOfClass();
 
@@ -2185,7 +2185,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_downrankToNoneEligibilityThreshold1stParty = v569;
 
   v571 = objc_opt_class();
-  v572 = [(IRPreferences *)self downrankToOneTapEligibilityThreshold1stParty];
+  downrankToOneTapEligibilityThreshold1stParty = [(IRPreferences *)self downrankToOneTapEligibilityThreshold1stParty];
   objc_opt_class();
   v573 = objc_opt_isKindOfClass();
 
@@ -2194,7 +2194,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v571 = objc_opt_class();
   }
 
-  v574 = [(IRPreferences *)self downrankToOneTapEligibilityThreshold1stParty];
+  downrankToOneTapEligibilityThreshold1stParty2 = [(IRPreferences *)self downrankToOneTapEligibilityThreshold1stParty];
   objc_opt_class();
   v575 = objc_opt_isKindOfClass();
 
@@ -2203,7 +2203,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v571 = objc_opt_class();
   }
 
-  v576 = [(IRPreferences *)self downrankToOneTapEligibilityThreshold1stParty];
+  downrankToOneTapEligibilityThreshold1stParty3 = [(IRPreferences *)self downrankToOneTapEligibilityThreshold1stParty];
   objc_opt_class();
   v577 = objc_opt_isKindOfClass();
 
@@ -2217,7 +2217,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_downrankToOneTapEligibilityThreshold1stParty = v578;
 
   v580 = objc_opt_class();
-  v581 = [(IRPreferences *)self eligibilityInitStateIsOneTap1stParty];
+  eligibilityInitStateIsOneTap1stParty = [(IRPreferences *)self eligibilityInitStateIsOneTap1stParty];
   objc_opt_class();
   v582 = objc_opt_isKindOfClass();
 
@@ -2226,7 +2226,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v580 = objc_opt_class();
   }
 
-  v583 = [(IRPreferences *)self eligibilityInitStateIsOneTap1stParty];
+  eligibilityInitStateIsOneTap1stParty2 = [(IRPreferences *)self eligibilityInitStateIsOneTap1stParty];
   objc_opt_class();
   v584 = objc_opt_isKindOfClass();
 
@@ -2235,7 +2235,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v580 = objc_opt_class();
   }
 
-  v585 = [(IRPreferences *)self eligibilityInitStateIsOneTap1stParty];
+  eligibilityInitStateIsOneTap1stParty3 = [(IRPreferences *)self eligibilityInitStateIsOneTap1stParty];
   objc_opt_class();
   v586 = objc_opt_isKindOfClass();
 
@@ -2249,7 +2249,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_eligibilityInitStateIsOneTap1stParty = v587;
 
   v589 = objc_opt_class();
-  v590 = [(IRPreferences *)self downrankToNoneEligibilityBasedOnDismissAndRejectThreshold1stParty];
+  downrankToNoneEligibilityBasedOnDismissAndRejectThreshold1stParty = [(IRPreferences *)self downrankToNoneEligibilityBasedOnDismissAndRejectThreshold1stParty];
   objc_opt_class();
   v591 = objc_opt_isKindOfClass();
 
@@ -2258,7 +2258,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v589 = objc_opt_class();
   }
 
-  v592 = [(IRPreferences *)self downrankToNoneEligibilityBasedOnDismissAndRejectThreshold1stParty];
+  downrankToNoneEligibilityBasedOnDismissAndRejectThreshold1stParty2 = [(IRPreferences *)self downrankToNoneEligibilityBasedOnDismissAndRejectThreshold1stParty];
   objc_opt_class();
   v593 = objc_opt_isKindOfClass();
 
@@ -2267,7 +2267,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v589 = objc_opt_class();
   }
 
-  v594 = [(IRPreferences *)self downrankToNoneEligibilityBasedOnDismissAndRejectThreshold1stParty];
+  downrankToNoneEligibilityBasedOnDismissAndRejectThreshold1stParty3 = [(IRPreferences *)self downrankToNoneEligibilityBasedOnDismissAndRejectThreshold1stParty];
   objc_opt_class();
   v595 = objc_opt_isKindOfClass();
 
@@ -2281,7 +2281,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_downrankToNoneEligibilityBasedOnDismissAndRejectThreshold1stParty = v596;
 
   v598 = objc_opt_class();
-  v599 = [(IRPreferences *)self pickerAutoSelectToPicketChoiceMinInterval];
+  pickerAutoSelectToPicketChoiceMinInterval = [(IRPreferences *)self pickerAutoSelectToPicketChoiceMinInterval];
   objc_opt_class();
   v600 = objc_opt_isKindOfClass();
 
@@ -2290,7 +2290,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v598 = objc_opt_class();
   }
 
-  v601 = [(IRPreferences *)self pickerAutoSelectToPicketChoiceMinInterval];
+  pickerAutoSelectToPicketChoiceMinInterval2 = [(IRPreferences *)self pickerAutoSelectToPicketChoiceMinInterval];
   objc_opt_class();
   v602 = objc_opt_isKindOfClass();
 
@@ -2299,7 +2299,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v598 = objc_opt_class();
   }
 
-  v603 = [(IRPreferences *)self pickerAutoSelectToPicketChoiceMinInterval];
+  pickerAutoSelectToPicketChoiceMinInterval3 = [(IRPreferences *)self pickerAutoSelectToPicketChoiceMinInterval];
   objc_opt_class();
   v604 = objc_opt_isKindOfClass();
 
@@ -2313,7 +2313,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_pickerAutoSelectToPicketChoiceMinInterval = v605;
 
   v607 = objc_opt_class();
-  v608 = [(IRPreferences *)self brokeredUseScansForEligibilityOfMainDevice];
+  brokeredUseScansForEligibilityOfMainDevice = [(IRPreferences *)self brokeredUseScansForEligibilityOfMainDevice];
   objc_opt_class();
   v609 = objc_opt_isKindOfClass();
 
@@ -2322,7 +2322,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v607 = objc_opt_class();
   }
 
-  v610 = [(IRPreferences *)self brokeredUseScansForEligibilityOfMainDevice];
+  brokeredUseScansForEligibilityOfMainDevice2 = [(IRPreferences *)self brokeredUseScansForEligibilityOfMainDevice];
   objc_opt_class();
   v611 = objc_opt_isKindOfClass();
 
@@ -2331,7 +2331,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v607 = objc_opt_class();
   }
 
-  v612 = [(IRPreferences *)self brokeredUseScansForEligibilityOfMainDevice];
+  brokeredUseScansForEligibilityOfMainDevice3 = [(IRPreferences *)self brokeredUseScansForEligibilityOfMainDevice];
   objc_opt_class();
   v613 = objc_opt_isKindOfClass();
 
@@ -2345,7 +2345,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_brokeredUseScansForEligibilityOfMainDevice = v614;
 
   v616 = objc_opt_class();
-  v617 = [(IRPreferences *)self brokeredUseScansForEligibilityOfSecondaryDevice];
+  brokeredUseScansForEligibilityOfSecondaryDevice = [(IRPreferences *)self brokeredUseScansForEligibilityOfSecondaryDevice];
   objc_opt_class();
   v618 = objc_opt_isKindOfClass();
 
@@ -2354,7 +2354,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v616 = objc_opt_class();
   }
 
-  v619 = [(IRPreferences *)self brokeredUseScansForEligibilityOfSecondaryDevice];
+  brokeredUseScansForEligibilityOfSecondaryDevice2 = [(IRPreferences *)self brokeredUseScansForEligibilityOfSecondaryDevice];
   objc_opt_class();
   v620 = objc_opt_isKindOfClass();
 
@@ -2363,7 +2363,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v616 = objc_opt_class();
   }
 
-  v621 = [(IRPreferences *)self brokeredUseScansForEligibilityOfSecondaryDevice];
+  brokeredUseScansForEligibilityOfSecondaryDevice3 = [(IRPreferences *)self brokeredUseScansForEligibilityOfSecondaryDevice];
   objc_opt_class();
   v622 = objc_opt_isKindOfClass();
 
@@ -2377,7 +2377,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_brokeredUseScansForEligibilityOfSecondaryDevice = v623;
 
   v625 = objc_opt_class();
-  v626 = [(IRPreferences *)self miloSameSpaceRatioThreshold];
+  miloSameSpaceRatioThreshold = [(IRPreferences *)self miloSameSpaceRatioThreshold];
   objc_opt_class();
   v627 = objc_opt_isKindOfClass();
 
@@ -2386,7 +2386,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v625 = objc_opt_class();
   }
 
-  v628 = [(IRPreferences *)self miloSameSpaceRatioThreshold];
+  miloSameSpaceRatioThreshold2 = [(IRPreferences *)self miloSameSpaceRatioThreshold];
   objc_opt_class();
   v629 = objc_opt_isKindOfClass();
 
@@ -2395,7 +2395,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v625 = objc_opt_class();
   }
 
-  v630 = [(IRPreferences *)self miloSameSpaceRatioThreshold];
+  miloSameSpaceRatioThreshold3 = [(IRPreferences *)self miloSameSpaceRatioThreshold];
   objc_opt_class();
   v631 = objc_opt_isKindOfClass();
 
@@ -2409,7 +2409,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_miloSameSpaceRatioThreshold = v632;
 
   v634 = objc_opt_class();
-  v635 = [(IRPreferences *)self miloSameSpaceEventsTimeIntervalSeconds];
+  miloSameSpaceEventsTimeIntervalSeconds = [(IRPreferences *)self miloSameSpaceEventsTimeIntervalSeconds];
   objc_opt_class();
   v636 = objc_opt_isKindOfClass();
 
@@ -2418,7 +2418,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v634 = objc_opt_class();
   }
 
-  v637 = [(IRPreferences *)self miloSameSpaceEventsTimeIntervalSeconds];
+  miloSameSpaceEventsTimeIntervalSeconds2 = [(IRPreferences *)self miloSameSpaceEventsTimeIntervalSeconds];
   objc_opt_class();
   v638 = objc_opt_isKindOfClass();
 
@@ -2427,7 +2427,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v634 = objc_opt_class();
   }
 
-  v639 = [(IRPreferences *)self miloSameSpaceEventsTimeIntervalSeconds];
+  miloSameSpaceEventsTimeIntervalSeconds3 = [(IRPreferences *)self miloSameSpaceEventsTimeIntervalSeconds];
   objc_opt_class();
   v640 = objc_opt_isKindOfClass();
 
@@ -2441,7 +2441,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_miloSameSpaceEventsTimeIntervalSeconds = v641;
 
   v643 = objc_opt_class();
-  v644 = [(IRPreferences *)self miloSameSpaceEventsNumberOfEventsToWatch];
+  miloSameSpaceEventsNumberOfEventsToWatch = [(IRPreferences *)self miloSameSpaceEventsNumberOfEventsToWatch];
   objc_opt_class();
   v645 = objc_opt_isKindOfClass();
 
@@ -2450,7 +2450,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v643 = objc_opt_class();
   }
 
-  v646 = [(IRPreferences *)self miloSameSpaceEventsNumberOfEventsToWatch];
+  miloSameSpaceEventsNumberOfEventsToWatch2 = [(IRPreferences *)self miloSameSpaceEventsNumberOfEventsToWatch];
   objc_opt_class();
   v647 = objc_opt_isKindOfClass();
 
@@ -2459,7 +2459,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v643 = objc_opt_class();
   }
 
-  v648 = [(IRPreferences *)self miloSameSpaceEventsNumberOfEventsToWatch];
+  miloSameSpaceEventsNumberOfEventsToWatch3 = [(IRPreferences *)self miloSameSpaceEventsNumberOfEventsToWatch];
   objc_opt_class();
   v649 = objc_opt_isKindOfClass();
 
@@ -2473,7 +2473,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_miloSameSpaceEventsNumberOfEventsToWatch = v650;
 
   v652 = objc_opt_class();
-  v653 = [(IRPreferences *)self loiSameSpaceEventsTimeIntervalSeconds];
+  loiSameSpaceEventsTimeIntervalSeconds = [(IRPreferences *)self loiSameSpaceEventsTimeIntervalSeconds];
   objc_opt_class();
   v654 = objc_opt_isKindOfClass();
 
@@ -2482,7 +2482,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v652 = objc_opt_class();
   }
 
-  v655 = [(IRPreferences *)self loiSameSpaceEventsTimeIntervalSeconds];
+  loiSameSpaceEventsTimeIntervalSeconds2 = [(IRPreferences *)self loiSameSpaceEventsTimeIntervalSeconds];
   objc_opt_class();
   v656 = objc_opt_isKindOfClass();
 
@@ -2491,7 +2491,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v652 = objc_opt_class();
   }
 
-  v657 = [(IRPreferences *)self loiSameSpaceEventsTimeIntervalSeconds];
+  loiSameSpaceEventsTimeIntervalSeconds3 = [(IRPreferences *)self loiSameSpaceEventsTimeIntervalSeconds];
   objc_opt_class();
   v658 = objc_opt_isKindOfClass();
 
@@ -2505,7 +2505,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_loiSameSpaceEventsTimeIntervalSeconds = v659;
 
   v661 = objc_opt_class();
-  v662 = [(IRPreferences *)self loiSameSpaceEventsNumberOfEventsToWatch];
+  loiSameSpaceEventsNumberOfEventsToWatch = [(IRPreferences *)self loiSameSpaceEventsNumberOfEventsToWatch];
   objc_opt_class();
   v663 = objc_opt_isKindOfClass();
 
@@ -2514,7 +2514,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v661 = objc_opt_class();
   }
 
-  v664 = [(IRPreferences *)self loiSameSpaceEventsNumberOfEventsToWatch];
+  loiSameSpaceEventsNumberOfEventsToWatch2 = [(IRPreferences *)self loiSameSpaceEventsNumberOfEventsToWatch];
   objc_opt_class();
   v665 = objc_opt_isKindOfClass();
 
@@ -2523,7 +2523,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v661 = objc_opt_class();
   }
 
-  v666 = [(IRPreferences *)self loiSameSpaceEventsNumberOfEventsToWatch];
+  loiSameSpaceEventsNumberOfEventsToWatch3 = [(IRPreferences *)self loiSameSpaceEventsNumberOfEventsToWatch];
   objc_opt_class();
   v667 = objc_opt_isKindOfClass();
 
@@ -2537,7 +2537,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_loiSameSpaceEventsNumberOfEventsToWatch = v668;
 
   v670 = objc_opt_class();
-  v671 = [(IRPreferences *)self loiSameSpaceOverrideBrokerForAVODIDArray];
+  loiSameSpaceOverrideBrokerForAVODIDArray = [(IRPreferences *)self loiSameSpaceOverrideBrokerForAVODIDArray];
   objc_opt_class();
   v672 = objc_opt_isKindOfClass();
 
@@ -2546,7 +2546,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v670 = objc_opt_class();
   }
 
-  v673 = [(IRPreferences *)self loiSameSpaceOverrideBrokerForAVODIDArray];
+  loiSameSpaceOverrideBrokerForAVODIDArray2 = [(IRPreferences *)self loiSameSpaceOverrideBrokerForAVODIDArray];
   objc_opt_class();
   v674 = objc_opt_isKindOfClass();
 
@@ -2555,7 +2555,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v670 = objc_opt_class();
   }
 
-  v675 = [(IRPreferences *)self loiSameSpaceOverrideBrokerForAVODIDArray];
+  loiSameSpaceOverrideBrokerForAVODIDArray3 = [(IRPreferences *)self loiSameSpaceOverrideBrokerForAVODIDArray];
   objc_opt_class();
   v676 = objc_opt_isKindOfClass();
 
@@ -2564,13 +2564,13 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v670 = objc_opt_class();
   }
 
-  v677 = [MEMORY[0x277CBEA60] array];
-  v678 = [(IRPreferences *)self _getKeyWithType:@"IRloiSameSpaceOverrideBrokerForAVODIDArray" withDefaultValue:v677 expectedType:v670];
+  array2 = [MEMORY[0x277CBEA60] array];
+  v678 = [(IRPreferences *)self _getKeyWithType:@"IRloiSameSpaceOverrideBrokerForAVODIDArray" withDefaultValue:array2 expectedType:v670];
   loiSameSpaceOverrideBrokerForAVODIDArray = self->_loiSameSpaceOverrideBrokerForAVODIDArray;
   self->_loiSameSpaceOverrideBrokerForAVODIDArray = v678;
 
   v680 = objc_opt_class();
-  v681 = [(IRPreferences *)self loiSameSpaceOverrideBrokerForCandidateIDArray];
+  loiSameSpaceOverrideBrokerForCandidateIDArray = [(IRPreferences *)self loiSameSpaceOverrideBrokerForCandidateIDArray];
   objc_opt_class();
   v682 = objc_opt_isKindOfClass();
 
@@ -2579,7 +2579,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v680 = objc_opt_class();
   }
 
-  v683 = [(IRPreferences *)self loiSameSpaceOverrideBrokerForCandidateIDArray];
+  loiSameSpaceOverrideBrokerForCandidateIDArray2 = [(IRPreferences *)self loiSameSpaceOverrideBrokerForCandidateIDArray];
   objc_opt_class();
   v684 = objc_opt_isKindOfClass();
 
@@ -2588,7 +2588,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v680 = objc_opt_class();
   }
 
-  v685 = [(IRPreferences *)self loiSameSpaceOverrideBrokerForCandidateIDArray];
+  loiSameSpaceOverrideBrokerForCandidateIDArray3 = [(IRPreferences *)self loiSameSpaceOverrideBrokerForCandidateIDArray];
   objc_opt_class();
   v686 = objc_opt_isKindOfClass();
 
@@ -2597,13 +2597,13 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v680 = objc_opt_class();
   }
 
-  v687 = [MEMORY[0x277CBEA60] array];
-  v688 = [(IRPreferences *)self _getKeyWithType:@"IRloiSameSpaceOverrideBrokerForCandidateIDArray" withDefaultValue:v687 expectedType:v680];
+  array3 = [MEMORY[0x277CBEA60] array];
+  v688 = [(IRPreferences *)self _getKeyWithType:@"IRloiSameSpaceOverrideBrokerForCandidateIDArray" withDefaultValue:array3 expectedType:v680];
   loiSameSpaceOverrideBrokerForCandidateIDArray = self->_loiSameSpaceOverrideBrokerForCandidateIDArray;
   self->_loiSameSpaceOverrideBrokerForCandidateIDArray = v688;
 
   v690 = objc_opt_class();
-  v691 = [(IRPreferences *)self historySameSpaceEventsTimeIntervalSeconds];
+  historySameSpaceEventsTimeIntervalSeconds = [(IRPreferences *)self historySameSpaceEventsTimeIntervalSeconds];
   objc_opt_class();
   v692 = objc_opt_isKindOfClass();
 
@@ -2612,7 +2612,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v690 = objc_opt_class();
   }
 
-  v693 = [(IRPreferences *)self historySameSpaceEventsTimeIntervalSeconds];
+  historySameSpaceEventsTimeIntervalSeconds2 = [(IRPreferences *)self historySameSpaceEventsTimeIntervalSeconds];
   objc_opt_class();
   v694 = objc_opt_isKindOfClass();
 
@@ -2621,7 +2621,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v690 = objc_opt_class();
   }
 
-  v695 = [(IRPreferences *)self historySameSpaceEventsTimeIntervalSeconds];
+  historySameSpaceEventsTimeIntervalSeconds3 = [(IRPreferences *)self historySameSpaceEventsTimeIntervalSeconds];
   objc_opt_class();
   v696 = objc_opt_isKindOfClass();
 
@@ -2635,7 +2635,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_historySameSpaceEventsTimeIntervalSeconds = v697;
 
   v699 = objc_opt_class();
-  v700 = [(IRPreferences *)self candidateSelectorMostUsedSimilarAppTimeIntervalSeconds];
+  candidateSelectorMostUsedSimilarAppTimeIntervalSeconds = [(IRPreferences *)self candidateSelectorMostUsedSimilarAppTimeIntervalSeconds];
   objc_opt_class();
   v701 = objc_opt_isKindOfClass();
 
@@ -2644,7 +2644,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v699 = objc_opt_class();
   }
 
-  v702 = [(IRPreferences *)self candidateSelectorMostUsedSimilarAppTimeIntervalSeconds];
+  candidateSelectorMostUsedSimilarAppTimeIntervalSeconds2 = [(IRPreferences *)self candidateSelectorMostUsedSimilarAppTimeIntervalSeconds];
   objc_opt_class();
   v703 = objc_opt_isKindOfClass();
 
@@ -2653,7 +2653,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v699 = objc_opt_class();
   }
 
-  v704 = [(IRPreferences *)self candidateSelectorMostUsedSimilarAppTimeIntervalSeconds];
+  candidateSelectorMostUsedSimilarAppTimeIntervalSeconds3 = [(IRPreferences *)self candidateSelectorMostUsedSimilarAppTimeIntervalSeconds];
   objc_opt_class();
   v705 = objc_opt_isKindOfClass();
 
@@ -2667,7 +2667,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_candidateSelectorMostUsedSimilarAppTimeIntervalSeconds = v706;
 
   v708 = objc_opt_class();
-  v709 = [(IRPreferences *)self candidateSelectorMostUsedAnyAppTimeIntervalSeconds];
+  candidateSelectorMostUsedAnyAppTimeIntervalSeconds = [(IRPreferences *)self candidateSelectorMostUsedAnyAppTimeIntervalSeconds];
   objc_opt_class();
   v710 = objc_opt_isKindOfClass();
 
@@ -2676,7 +2676,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v708 = objc_opt_class();
   }
 
-  v711 = [(IRPreferences *)self candidateSelectorMostUsedAnyAppTimeIntervalSeconds];
+  candidateSelectorMostUsedAnyAppTimeIntervalSeconds2 = [(IRPreferences *)self candidateSelectorMostUsedAnyAppTimeIntervalSeconds];
   objc_opt_class();
   v712 = objc_opt_isKindOfClass();
 
@@ -2685,7 +2685,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v708 = objc_opt_class();
   }
 
-  v713 = [(IRPreferences *)self candidateSelectorMostUsedAnyAppTimeIntervalSeconds];
+  candidateSelectorMostUsedAnyAppTimeIntervalSeconds3 = [(IRPreferences *)self candidateSelectorMostUsedAnyAppTimeIntervalSeconds];
   objc_opt_class();
   v714 = objc_opt_isKindOfClass();
 
@@ -2699,7 +2699,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_candidateSelectorMostUsedAnyAppTimeIntervalSeconds = v715;
 
   v717 = objc_opt_class();
-  v718 = [(IRPreferences *)self candidateSelectorMostRecentBrokeredMainDeviceIntervalSeconds];
+  candidateSelectorMostRecentBrokeredMainDeviceIntervalSeconds = [(IRPreferences *)self candidateSelectorMostRecentBrokeredMainDeviceIntervalSeconds];
   objc_opt_class();
   v719 = objc_opt_isKindOfClass();
 
@@ -2708,7 +2708,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v717 = objc_opt_class();
   }
 
-  v720 = [(IRPreferences *)self candidateSelectorMostRecentBrokeredMainDeviceIntervalSeconds];
+  candidateSelectorMostRecentBrokeredMainDeviceIntervalSeconds2 = [(IRPreferences *)self candidateSelectorMostRecentBrokeredMainDeviceIntervalSeconds];
   objc_opt_class();
   v721 = objc_opt_isKindOfClass();
 
@@ -2717,7 +2717,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v717 = objc_opt_class();
   }
 
-  v722 = [(IRPreferences *)self candidateSelectorMostRecentBrokeredMainDeviceIntervalSeconds];
+  candidateSelectorMostRecentBrokeredMainDeviceIntervalSeconds3 = [(IRPreferences *)self candidateSelectorMostRecentBrokeredMainDeviceIntervalSeconds];
   objc_opt_class();
   v723 = objc_opt_isKindOfClass();
 
@@ -2731,7 +2731,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_candidateSelectorMostRecentBrokeredMainDeviceIntervalSeconds = v724;
 
   v726 = objc_opt_class();
-  v727 = [(IRPreferences *)self candidateSelectorMostUsedSimilarAppMaximumNumberOfEvents];
+  candidateSelectorMostUsedSimilarAppMaximumNumberOfEvents = [(IRPreferences *)self candidateSelectorMostUsedSimilarAppMaximumNumberOfEvents];
   objc_opt_class();
   v728 = objc_opt_isKindOfClass();
 
@@ -2740,7 +2740,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v726 = objc_opt_class();
   }
 
-  v729 = [(IRPreferences *)self candidateSelectorMostUsedSimilarAppMaximumNumberOfEvents];
+  candidateSelectorMostUsedSimilarAppMaximumNumberOfEvents2 = [(IRPreferences *)self candidateSelectorMostUsedSimilarAppMaximumNumberOfEvents];
   objc_opt_class();
   v730 = objc_opt_isKindOfClass();
 
@@ -2749,7 +2749,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v726 = objc_opt_class();
   }
 
-  v731 = [(IRPreferences *)self candidateSelectorMostUsedSimilarAppMaximumNumberOfEvents];
+  candidateSelectorMostUsedSimilarAppMaximumNumberOfEvents3 = [(IRPreferences *)self candidateSelectorMostUsedSimilarAppMaximumNumberOfEvents];
   objc_opt_class();
   v732 = objc_opt_isKindOfClass();
 
@@ -2763,7 +2763,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_candidateSelectorMostUsedSimilarAppMaximumNumberOfEvents = v733;
 
   v735 = objc_opt_class();
-  v736 = [(IRPreferences *)self candidateSelectorMostUsedAnyAppMaximumNumberOfEvents];
+  candidateSelectorMostUsedAnyAppMaximumNumberOfEvents = [(IRPreferences *)self candidateSelectorMostUsedAnyAppMaximumNumberOfEvents];
   objc_opt_class();
   v737 = objc_opt_isKindOfClass();
 
@@ -2772,7 +2772,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v735 = objc_opt_class();
   }
 
-  v738 = [(IRPreferences *)self candidateSelectorMostUsedAnyAppMaximumNumberOfEvents];
+  candidateSelectorMostUsedAnyAppMaximumNumberOfEvents2 = [(IRPreferences *)self candidateSelectorMostUsedAnyAppMaximumNumberOfEvents];
   objc_opt_class();
   v739 = objc_opt_isKindOfClass();
 
@@ -2781,7 +2781,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v735 = objc_opt_class();
   }
 
-  v740 = [(IRPreferences *)self candidateSelectorMostUsedAnyAppMaximumNumberOfEvents];
+  candidateSelectorMostUsedAnyAppMaximumNumberOfEvents3 = [(IRPreferences *)self candidateSelectorMostUsedAnyAppMaximumNumberOfEvents];
   objc_opt_class();
   v741 = objc_opt_isKindOfClass();
 
@@ -2795,7 +2795,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_candidateSelectorMostUsedAnyAppMaximumNumberOfEvents = v742;
 
   v744 = objc_opt_class();
-  v745 = [(IRPreferences *)self candidateSelectorMostRecentBrokeredDeviceMaximumNumberOfEvents];
+  candidateSelectorMostRecentBrokeredDeviceMaximumNumberOfEvents = [(IRPreferences *)self candidateSelectorMostRecentBrokeredDeviceMaximumNumberOfEvents];
   objc_opt_class();
   v746 = objc_opt_isKindOfClass();
 
@@ -2804,7 +2804,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v744 = objc_opt_class();
   }
 
-  v747 = [(IRPreferences *)self candidateSelectorMostRecentBrokeredDeviceMaximumNumberOfEvents];
+  candidateSelectorMostRecentBrokeredDeviceMaximumNumberOfEvents2 = [(IRPreferences *)self candidateSelectorMostRecentBrokeredDeviceMaximumNumberOfEvents];
   objc_opt_class();
   v748 = objc_opt_isKindOfClass();
 
@@ -2813,7 +2813,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v744 = objc_opt_class();
   }
 
-  v749 = [(IRPreferences *)self candidateSelectorMostRecentBrokeredDeviceMaximumNumberOfEvents];
+  candidateSelectorMostRecentBrokeredDeviceMaximumNumberOfEvents3 = [(IRPreferences *)self candidateSelectorMostRecentBrokeredDeviceMaximumNumberOfEvents];
   objc_opt_class();
   v750 = objc_opt_isKindOfClass();
 
@@ -2827,7 +2827,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_candidateSelectorMostRecentBrokeredDeviceMaximumNumberOfEvents = v751;
 
   v753 = objc_opt_class();
-  v754 = [(IRPreferences *)self candidateSelectorIsContinuityEnabled];
+  candidateSelectorIsContinuityEnabled = [(IRPreferences *)self candidateSelectorIsContinuityEnabled];
   objc_opt_class();
   v755 = objc_opt_isKindOfClass();
 
@@ -2836,7 +2836,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v753 = objc_opt_class();
   }
 
-  v756 = [(IRPreferences *)self candidateSelectorIsContinuityEnabled];
+  candidateSelectorIsContinuityEnabled2 = [(IRPreferences *)self candidateSelectorIsContinuityEnabled];
   objc_opt_class();
   v757 = objc_opt_isKindOfClass();
 
@@ -2845,7 +2845,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v753 = objc_opt_class();
   }
 
-  v758 = [(IRPreferences *)self candidateSelectorIsContinuityEnabled];
+  candidateSelectorIsContinuityEnabled3 = [(IRPreferences *)self candidateSelectorIsContinuityEnabled];
   objc_opt_class();
   v759 = objc_opt_isKindOfClass();
 
@@ -2859,7 +2859,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_candidateSelectorIsContinuityEnabled = v760;
 
   v762 = objc_opt_class();
-  v763 = [(IRPreferences *)self candidateSelectorIsMostUsedSimilarAppEnabled];
+  candidateSelectorIsMostUsedSimilarAppEnabled = [(IRPreferences *)self candidateSelectorIsMostUsedSimilarAppEnabled];
   objc_opt_class();
   v764 = objc_opt_isKindOfClass();
 
@@ -2868,7 +2868,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v762 = objc_opt_class();
   }
 
-  v765 = [(IRPreferences *)self candidateSelectorIsMostUsedSimilarAppEnabled];
+  candidateSelectorIsMostUsedSimilarAppEnabled2 = [(IRPreferences *)self candidateSelectorIsMostUsedSimilarAppEnabled];
   objc_opt_class();
   v766 = objc_opt_isKindOfClass();
 
@@ -2877,7 +2877,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v762 = objc_opt_class();
   }
 
-  v767 = [(IRPreferences *)self candidateSelectorIsMostUsedSimilarAppEnabled];
+  candidateSelectorIsMostUsedSimilarAppEnabled3 = [(IRPreferences *)self candidateSelectorIsMostUsedSimilarAppEnabled];
   objc_opt_class();
   v768 = objc_opt_isKindOfClass();
 
@@ -2891,7 +2891,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_candidateSelectorIsMostUsedSimilarAppEnabled = v769;
 
   v771 = objc_opt_class();
-  v772 = [(IRPreferences *)self candidateSelectorIsNearestRangeWithHistoryOrSameICloudEnabled];
+  candidateSelectorIsNearestRangeWithHistoryOrSameICloudEnabled = [(IRPreferences *)self candidateSelectorIsNearestRangeWithHistoryOrSameICloudEnabled];
   objc_opt_class();
   v773 = objc_opt_isKindOfClass();
 
@@ -2900,7 +2900,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v771 = objc_opt_class();
   }
 
-  v774 = [(IRPreferences *)self candidateSelectorIsNearestRangeWithHistoryOrSameICloudEnabled];
+  candidateSelectorIsNearestRangeWithHistoryOrSameICloudEnabled2 = [(IRPreferences *)self candidateSelectorIsNearestRangeWithHistoryOrSameICloudEnabled];
   objc_opt_class();
   v775 = objc_opt_isKindOfClass();
 
@@ -2909,7 +2909,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v771 = objc_opt_class();
   }
 
-  v776 = [(IRPreferences *)self candidateSelectorIsNearestRangeWithHistoryOrSameICloudEnabled];
+  candidateSelectorIsNearestRangeWithHistoryOrSameICloudEnabled3 = [(IRPreferences *)self candidateSelectorIsNearestRangeWithHistoryOrSameICloudEnabled];
   objc_opt_class();
   v777 = objc_opt_isKindOfClass();
 
@@ -2923,7 +2923,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_candidateSelectorIsNearestRangeWithHistoryOrSameICloudEnabled = v778;
 
   v780 = objc_opt_class();
-  v781 = [(IRPreferences *)self candidateSelectorIsNearestRangeEnabled];
+  candidateSelectorIsNearestRangeEnabled = [(IRPreferences *)self candidateSelectorIsNearestRangeEnabled];
   objc_opt_class();
   v782 = objc_opt_isKindOfClass();
 
@@ -2932,7 +2932,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v780 = objc_opt_class();
   }
 
-  v783 = [(IRPreferences *)self candidateSelectorIsNearestRangeEnabled];
+  candidateSelectorIsNearestRangeEnabled2 = [(IRPreferences *)self candidateSelectorIsNearestRangeEnabled];
   objc_opt_class();
   v784 = objc_opt_isKindOfClass();
 
@@ -2941,7 +2941,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v780 = objc_opt_class();
   }
 
-  v785 = [(IRPreferences *)self candidateSelectorIsNearestRangeEnabled];
+  candidateSelectorIsNearestRangeEnabled3 = [(IRPreferences *)self candidateSelectorIsNearestRangeEnabled];
   objc_opt_class();
   v786 = objc_opt_isKindOfClass();
 
@@ -2955,7 +2955,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_candidateSelectorIsNearestRangeEnabled = v787;
 
   v789 = objc_opt_class();
-  v790 = [(IRPreferences *)self candidateSelectorIsMostUsedAnyAppEnabled];
+  candidateSelectorIsMostUsedAnyAppEnabled = [(IRPreferences *)self candidateSelectorIsMostUsedAnyAppEnabled];
   objc_opt_class();
   v791 = objc_opt_isKindOfClass();
 
@@ -2964,7 +2964,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v789 = objc_opt_class();
   }
 
-  v792 = [(IRPreferences *)self candidateSelectorIsMostUsedAnyAppEnabled];
+  candidateSelectorIsMostUsedAnyAppEnabled2 = [(IRPreferences *)self candidateSelectorIsMostUsedAnyAppEnabled];
   objc_opt_class();
   v793 = objc_opt_isKindOfClass();
 
@@ -2973,7 +2973,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v789 = objc_opt_class();
   }
 
-  v794 = [(IRPreferences *)self candidateSelectorIsMostUsedAnyAppEnabled];
+  candidateSelectorIsMostUsedAnyAppEnabled3 = [(IRPreferences *)self candidateSelectorIsMostUsedAnyAppEnabled];
   objc_opt_class();
   v795 = objc_opt_isKindOfClass();
 
@@ -2987,7 +2987,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_candidateSelectorIsMostUsedAnyAppEnabled = v796;
 
   v798 = objc_opt_class();
-  v799 = [(IRPreferences *)self candidateSelectorAllowSelectByUWB];
+  candidateSelectorAllowSelectByUWB = [(IRPreferences *)self candidateSelectorAllowSelectByUWB];
   objc_opt_class();
   v800 = objc_opt_isKindOfClass();
 
@@ -2996,7 +2996,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v798 = objc_opt_class();
   }
 
-  v801 = [(IRPreferences *)self candidateSelectorAllowSelectByUWB];
+  candidateSelectorAllowSelectByUWB2 = [(IRPreferences *)self candidateSelectorAllowSelectByUWB];
   objc_opt_class();
   v802 = objc_opt_isKindOfClass();
 
@@ -3005,7 +3005,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v798 = objc_opt_class();
   }
 
-  v803 = [(IRPreferences *)self candidateSelectorAllowSelectByUWB];
+  candidateSelectorAllowSelectByUWB3 = [(IRPreferences *)self candidateSelectorAllowSelectByUWB];
   objc_opt_class();
   v804 = objc_opt_isKindOfClass();
 
@@ -3019,7 +3019,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_candidateSelectorAllowSelectByUWB = v805;
 
   v807 = objc_opt_class();
-  v808 = [(IRPreferences *)self candidateSelectorAllowSelectByMiLo];
+  candidateSelectorAllowSelectByMiLo = [(IRPreferences *)self candidateSelectorAllowSelectByMiLo];
   objc_opt_class();
   v809 = objc_opt_isKindOfClass();
 
@@ -3028,7 +3028,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v807 = objc_opt_class();
   }
 
-  v810 = [(IRPreferences *)self candidateSelectorAllowSelectByMiLo];
+  candidateSelectorAllowSelectByMiLo2 = [(IRPreferences *)self candidateSelectorAllowSelectByMiLo];
   objc_opt_class();
   v811 = objc_opt_isKindOfClass();
 
@@ -3037,7 +3037,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v807 = objc_opt_class();
   }
 
-  v812 = [(IRPreferences *)self candidateSelectorAllowSelectByMiLo];
+  candidateSelectorAllowSelectByMiLo3 = [(IRPreferences *)self candidateSelectorAllowSelectByMiLo];
   objc_opt_class();
   v813 = objc_opt_isKindOfClass();
 
@@ -3051,7 +3051,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_candidateSelectorAllowSelectByMiLo = v814;
 
   v816 = objc_opt_class();
-  v817 = [(IRPreferences *)self candidateSelectorAllowSelectByBLE];
+  candidateSelectorAllowSelectByBLE = [(IRPreferences *)self candidateSelectorAllowSelectByBLE];
   objc_opt_class();
   v818 = objc_opt_isKindOfClass();
 
@@ -3060,7 +3060,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v816 = objc_opt_class();
   }
 
-  v819 = [(IRPreferences *)self candidateSelectorAllowSelectByBLE];
+  candidateSelectorAllowSelectByBLE2 = [(IRPreferences *)self candidateSelectorAllowSelectByBLE];
   objc_opt_class();
   v820 = objc_opt_isKindOfClass();
 
@@ -3069,7 +3069,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v816 = objc_opt_class();
   }
 
-  v821 = [(IRPreferences *)self candidateSelectorAllowSelectByBLE];
+  candidateSelectorAllowSelectByBLE3 = [(IRPreferences *)self candidateSelectorAllowSelectByBLE];
   objc_opt_class();
   v822 = objc_opt_isKindOfClass();
 
@@ -3083,7 +3083,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_candidateSelectorAllowSelectByBLE = v823;
 
   v825 = objc_opt_class();
-  v826 = [(IRPreferences *)self candidateSelectorAllowSelectByLOI];
+  candidateSelectorAllowSelectByLOI = [(IRPreferences *)self candidateSelectorAllowSelectByLOI];
   objc_opt_class();
   v827 = objc_opt_isKindOfClass();
 
@@ -3092,7 +3092,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v825 = objc_opt_class();
   }
 
-  v828 = [(IRPreferences *)self candidateSelectorAllowSelectByLOI];
+  candidateSelectorAllowSelectByLOI2 = [(IRPreferences *)self candidateSelectorAllowSelectByLOI];
   objc_opt_class();
   v829 = objc_opt_isKindOfClass();
 
@@ -3101,7 +3101,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v825 = objc_opt_class();
   }
 
-  v830 = [(IRPreferences *)self candidateSelectorAllowSelectByLOI];
+  candidateSelectorAllowSelectByLOI3 = [(IRPreferences *)self candidateSelectorAllowSelectByLOI];
   objc_opt_class();
   v831 = objc_opt_isKindOfClass();
 
@@ -3115,7 +3115,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_candidateSelectorAllowSelectByLOI = v832;
 
   v834 = objc_opt_class();
-  v835 = [(IRPreferences *)self candidateSelectorAllowSelectByPDRFence];
+  candidateSelectorAllowSelectByPDRFence = [(IRPreferences *)self candidateSelectorAllowSelectByPDRFence];
   objc_opt_class();
   v836 = objc_opt_isKindOfClass();
 
@@ -3124,7 +3124,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v834 = objc_opt_class();
   }
 
-  v837 = [(IRPreferences *)self candidateSelectorAllowSelectByPDRFence];
+  candidateSelectorAllowSelectByPDRFence2 = [(IRPreferences *)self candidateSelectorAllowSelectByPDRFence];
   objc_opt_class();
   v838 = objc_opt_isKindOfClass();
 
@@ -3133,7 +3133,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v834 = objc_opt_class();
   }
 
-  v839 = [(IRPreferences *)self candidateSelectorAllowSelectByPDRFence];
+  candidateSelectorAllowSelectByPDRFence3 = [(IRPreferences *)self candidateSelectorAllowSelectByPDRFence];
   objc_opt_class();
   v840 = objc_opt_isKindOfClass();
 
@@ -3147,7 +3147,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_candidateSelectorAllowSelectByPDRFence = v841;
 
   v843 = objc_opt_class();
-  v844 = [(IRPreferences *)self candidateSelectorAllowSelectByHistory];
+  candidateSelectorAllowSelectByHistory = [(IRPreferences *)self candidateSelectorAllowSelectByHistory];
   objc_opt_class();
   v845 = objc_opt_isKindOfClass();
 
@@ -3156,7 +3156,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v843 = objc_opt_class();
   }
 
-  v846 = [(IRPreferences *)self candidateSelectorAllowSelectByHistory];
+  candidateSelectorAllowSelectByHistory2 = [(IRPreferences *)self candidateSelectorAllowSelectByHistory];
   objc_opt_class();
   v847 = objc_opt_isKindOfClass();
 
@@ -3165,7 +3165,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v843 = objc_opt_class();
   }
 
-  v848 = [(IRPreferences *)self candidateSelectorAllowSelectByHistory];
+  candidateSelectorAllowSelectByHistory3 = [(IRPreferences *)self candidateSelectorAllowSelectByHistory];
   objc_opt_class();
   v849 = objc_opt_isKindOfClass();
 
@@ -3179,7 +3179,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_candidateSelectorAllowSelectByHistory = v850;
 
   v852 = objc_opt_class();
-  v853 = [(IRPreferences *)self candidateSelectorCallToActionAppearThreshold];
+  candidateSelectorCallToActionAppearThreshold = [(IRPreferences *)self candidateSelectorCallToActionAppearThreshold];
   objc_opt_class();
   v854 = objc_opt_isKindOfClass();
 
@@ -3188,7 +3188,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v852 = objc_opt_class();
   }
 
-  v855 = [(IRPreferences *)self candidateSelectorCallToActionAppearThreshold];
+  candidateSelectorCallToActionAppearThreshold2 = [(IRPreferences *)self candidateSelectorCallToActionAppearThreshold];
   objc_opt_class();
   v856 = objc_opt_isKindOfClass();
 
@@ -3197,7 +3197,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v852 = objc_opt_class();
   }
 
-  v857 = [(IRPreferences *)self candidateSelectorCallToActionAppearThreshold];
+  candidateSelectorCallToActionAppearThreshold3 = [(IRPreferences *)self candidateSelectorCallToActionAppearThreshold];
   objc_opt_class();
   v858 = objc_opt_isKindOfClass();
 
@@ -3211,7 +3211,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_candidateSelectorCallToActionAppearThreshold = v859;
 
   v861 = objc_opt_class();
-  v862 = [(IRPreferences *)self pdrFenceRadiusInMeters];
+  pdrFenceRadiusInMeters = [(IRPreferences *)self pdrFenceRadiusInMeters];
   objc_opt_class();
   v863 = objc_opt_isKindOfClass();
 
@@ -3220,7 +3220,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v861 = objc_opt_class();
   }
 
-  v864 = [(IRPreferences *)self pdrFenceRadiusInMeters];
+  pdrFenceRadiusInMeters2 = [(IRPreferences *)self pdrFenceRadiusInMeters];
   objc_opt_class();
   v865 = objc_opt_isKindOfClass();
 
@@ -3229,7 +3229,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v861 = objc_opt_class();
   }
 
-  v866 = [(IRPreferences *)self pdrFenceRadiusInMeters];
+  pdrFenceRadiusInMeters3 = [(IRPreferences *)self pdrFenceRadiusInMeters];
   objc_opt_class();
   v867 = objc_opt_isKindOfClass();
 
@@ -3243,7 +3243,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_pdrFenceRadiusInMeters = v868;
 
   v870 = objc_opt_class();
-  v871 = [(IRPreferences *)self pdrFenceRadiusTimeoutInSeconds];
+  pdrFenceRadiusTimeoutInSeconds = [(IRPreferences *)self pdrFenceRadiusTimeoutInSeconds];
   objc_opt_class();
   v872 = objc_opt_isKindOfClass();
 
@@ -3252,7 +3252,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v870 = objc_opt_class();
   }
 
-  v873 = [(IRPreferences *)self pdrFenceRadiusTimeoutInSeconds];
+  pdrFenceRadiusTimeoutInSeconds2 = [(IRPreferences *)self pdrFenceRadiusTimeoutInSeconds];
   objc_opt_class();
   v874 = objc_opt_isKindOfClass();
 
@@ -3261,7 +3261,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v870 = objc_opt_class();
   }
 
-  v875 = [(IRPreferences *)self pdrFenceRadiusTimeoutInSeconds];
+  pdrFenceRadiusTimeoutInSeconds3 = [(IRPreferences *)self pdrFenceRadiusTimeoutInSeconds];
   objc_opt_class();
   v876 = objc_opt_isKindOfClass();
 
@@ -3275,7 +3275,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_pdrFenceRadiusTimeoutInSeconds = v877;
 
   v879 = objc_opt_class();
-  v880 = [(IRPreferences *)self pdrFenceOtherThanRadiusTimeoutInSeconds];
+  pdrFenceOtherThanRadiusTimeoutInSeconds = [(IRPreferences *)self pdrFenceOtherThanRadiusTimeoutInSeconds];
   objc_opt_class();
   v881 = objc_opt_isKindOfClass();
 
@@ -3284,7 +3284,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v879 = objc_opt_class();
   }
 
-  v882 = [(IRPreferences *)self pdrFenceOtherThanRadiusTimeoutInSeconds];
+  pdrFenceOtherThanRadiusTimeoutInSeconds2 = [(IRPreferences *)self pdrFenceOtherThanRadiusTimeoutInSeconds];
   objc_opt_class();
   v883 = objc_opt_isKindOfClass();
 
@@ -3293,7 +3293,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v879 = objc_opt_class();
   }
 
-  v884 = [(IRPreferences *)self pdrFenceOtherThanRadiusTimeoutInSeconds];
+  pdrFenceOtherThanRadiusTimeoutInSeconds3 = [(IRPreferences *)self pdrFenceOtherThanRadiusTimeoutInSeconds];
   objc_opt_class();
   v885 = objc_opt_isKindOfClass();
 
@@ -3307,7 +3307,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_pdrFenceOtherThanRadiusTimeoutInSeconds = v886;
 
   v888 = objc_opt_class();
-  v889 = [(IRPreferences *)self miloRoomDetectionInCustomLOIEnabled];
+  miloRoomDetectionInCustomLOIEnabled = [(IRPreferences *)self miloRoomDetectionInCustomLOIEnabled];
   objc_opt_class();
   v890 = objc_opt_isKindOfClass();
 
@@ -3316,7 +3316,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v888 = objc_opt_class();
   }
 
-  v891 = [(IRPreferences *)self miloRoomDetectionInCustomLOIEnabled];
+  miloRoomDetectionInCustomLOIEnabled2 = [(IRPreferences *)self miloRoomDetectionInCustomLOIEnabled];
   objc_opt_class();
   v892 = objc_opt_isKindOfClass();
 
@@ -3325,7 +3325,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v888 = objc_opt_class();
   }
 
-  v893 = [(IRPreferences *)self miloRoomDetectionInCustomLOIEnabled];
+  miloRoomDetectionInCustomLOIEnabled3 = [(IRPreferences *)self miloRoomDetectionInCustomLOIEnabled];
   objc_opt_class();
   v894 = objc_opt_isKindOfClass();
 
@@ -3339,7 +3339,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_miloRoomDetectionInCustomLOIEnabled = v895;
 
   v897 = objc_opt_class();
-  v898 = [(IRPreferences *)self timeInSecondsWithoutUsageToAggressiveFiltering];
+  timeInSecondsWithoutUsageToAggressiveFiltering = [(IRPreferences *)self timeInSecondsWithoutUsageToAggressiveFiltering];
   objc_opt_class();
   v899 = objc_opt_isKindOfClass();
 
@@ -3348,7 +3348,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v897 = objc_opt_class();
   }
 
-  v900 = [(IRPreferences *)self timeInSecondsWithoutUsageToAggressiveFiltering];
+  timeInSecondsWithoutUsageToAggressiveFiltering2 = [(IRPreferences *)self timeInSecondsWithoutUsageToAggressiveFiltering];
   objc_opt_class();
   v901 = objc_opt_isKindOfClass();
 
@@ -3357,7 +3357,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v897 = objc_opt_class();
   }
 
-  v902 = [(IRPreferences *)self timeInSecondsWithoutUsageToAggressiveFiltering];
+  timeInSecondsWithoutUsageToAggressiveFiltering3 = [(IRPreferences *)self timeInSecondsWithoutUsageToAggressiveFiltering];
   objc_opt_class();
   v903 = objc_opt_isKindOfClass();
 
@@ -3371,7 +3371,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_timeInSecondsWithoutUsageToAggressiveFiltering = v904;
 
   v906 = objc_opt_class();
-  v907 = [(IRPreferences *)self timeInSecondsToBeClassifiedAsNewCandidateForAggressiveFiltering];
+  timeInSecondsToBeClassifiedAsNewCandidateForAggressiveFiltering = [(IRPreferences *)self timeInSecondsToBeClassifiedAsNewCandidateForAggressiveFiltering];
   objc_opt_class();
   v908 = objc_opt_isKindOfClass();
 
@@ -3380,7 +3380,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v906 = objc_opt_class();
   }
 
-  v909 = [(IRPreferences *)self timeInSecondsToBeClassifiedAsNewCandidateForAggressiveFiltering];
+  timeInSecondsToBeClassifiedAsNewCandidateForAggressiveFiltering2 = [(IRPreferences *)self timeInSecondsToBeClassifiedAsNewCandidateForAggressiveFiltering];
   objc_opt_class();
   v910 = objc_opt_isKindOfClass();
 
@@ -3389,7 +3389,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v906 = objc_opt_class();
   }
 
-  v911 = [(IRPreferences *)self timeInSecondsToBeClassifiedAsNewCandidateForAggressiveFiltering];
+  timeInSecondsToBeClassifiedAsNewCandidateForAggressiveFiltering3 = [(IRPreferences *)self timeInSecondsToBeClassifiedAsNewCandidateForAggressiveFiltering];
   objc_opt_class();
   v912 = objc_opt_isKindOfClass();
 
@@ -3403,7 +3403,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
   self->_timeInSecondsToBeClassifiedAsNewCandidateForAggressiveFiltering = v913;
 
   v915 = objc_opt_class();
-  v916 = [(IRPreferences *)self startDateForSignificantBundlesLookup];
+  startDateForSignificantBundlesLookup = [(IRPreferences *)self startDateForSignificantBundlesLookup];
   objc_opt_class();
   v917 = objc_opt_isKindOfClass();
 
@@ -3412,7 +3412,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v915 = objc_opt_class();
   }
 
-  v918 = [(IRPreferences *)self startDateForSignificantBundlesLookup];
+  startDateForSignificantBundlesLookup2 = [(IRPreferences *)self startDateForSignificantBundlesLookup];
   objc_opt_class();
   v919 = objc_opt_isKindOfClass();
 
@@ -3421,7 +3421,7 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v915 = objc_opt_class();
   }
 
-  v920 = [(IRPreferences *)self startDateForSignificantBundlesLookup];
+  startDateForSignificantBundlesLookup3 = [(IRPreferences *)self startDateForSignificantBundlesLookup];
   objc_opt_class();
   v921 = objc_opt_isKindOfClass();
 
@@ -3430,19 +3430,19 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     v915 = objc_opt_class();
   }
 
-  v924 = [MEMORY[0x277CBEAA8] distantPast];
-  v922 = [(IRPreferences *)self _getKeyWithType:@"IRstartDateForSignificantBundlesLookup" withDefaultValue:v924 expectedType:v915];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
+  v922 = [(IRPreferences *)self _getKeyWithType:@"IRstartDateForSignificantBundlesLookup" withDefaultValue:distantPast expectedType:v915];
   startDateForSignificantBundlesLookup = self->_startDateForSignificantBundlesLookup;
   self->_startDateForSignificantBundlesLookup = v922;
 }
 
-- (id)_getKeyWithType:(id)a3 withDefaultValue:(id)a4 expectedType:(Class)a5
+- (id)_getKeyWithType:(id)type withDefaultValue:(id)value expectedType:(Class)expectedType
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(IRPreferences *)self defaults];
-  v11 = [v10 objectForKey:v8];
+  typeCopy = type;
+  valueCopy = value;
+  defaults = [(IRPreferences *)self defaults];
+  v11 = [defaults objectForKey:typeCopy];
 
   v12 = MEMORY[0x277D21260];
   if (!v11)
@@ -3458,18 +3458,18 @@ void __51__IRPreferences__getDictItemsForLogging_withTitle___block_invoke(uint64
     {
       v26 = v14;
       *v31 = 138412802;
-      *&v31[4] = v8;
+      *&v31[4] = typeCopy;
       *&v31[12] = 2112;
       *&v31[14] = objc_opt_class();
       *&v31[22] = 2112;
-      v32 = a5;
+      expectedTypeCopy2 = expectedType;
       v27 = *&v31[14];
       _os_log_debug_impl(&dword_25543D000, v26, OS_LOG_TYPE_DEBUG, "#preferences, Unexpected type stored in defaults for settings key %@ . Got %@ expecting %@. Ignoring override.", v31, 0x20u);
     }
 
 LABEL_8:
     v16 = [(IRPreferences *)self mobileAssetSettings:*v31];
-    v17 = [v16 objectForKey:v8];
+    v17 = [v16 objectForKey:typeCopy];
 
     if (v17)
     {
@@ -3484,7 +3484,7 @@ LABEL_8:
           *v31 = 138412546;
           *&v31[4] = v17;
           *&v31[12] = 2112;
-          *&v31[14] = v8;
+          *&v31[14] = typeCopy;
           _os_log_impl(&dword_25543D000, v19, OS_LOG_TYPE_DEFAULT, "#preferences, Setting found in mobile asset storage. Setting value: %@ for key: %@", v31, 0x16u);
           v21 = v17;
         }
@@ -3500,11 +3500,11 @@ LABEL_16:
         v28 = v19;
         v29 = objc_opt_class();
         *v31 = 138412802;
-        *&v31[4] = v8;
+        *&v31[4] = typeCopy;
         *&v31[12] = 2112;
         *&v31[14] = v29;
         *&v31[22] = 2112;
-        v32 = a5;
+        expectedTypeCopy2 = expectedType;
         v30 = v29;
         _os_log_debug_impl(&dword_25543D000, v28, OS_LOG_TYPE_DEBUG, "#preferences, Unexpected type stored in mobile asset for preference key %@ . Got %@ expecting %@. Ignoring mobile asset override.", v31, 0x20u);
       }
@@ -3512,11 +3512,11 @@ LABEL_16:
 
     v22 = *v12;
     v23 = os_log_type_enabled(*v12, OS_LOG_TYPE_DEBUG);
-    v21 = v9;
+    v21 = valueCopy;
     if (v23)
     {
-      [IRPreferences _getKeyWithType:v8 withDefaultValue:v9 expectedType:v22];
-      v21 = v9;
+      [IRPreferences _getKeyWithType:typeCopy withDefaultValue:valueCopy expectedType:v22];
+      v21 = valueCopy;
     }
 
     goto LABEL_16;
@@ -3527,7 +3527,7 @@ LABEL_16:
     *v31 = 138412546;
     *&v31[4] = v11;
     *&v31[12] = 2112;
-    *&v31[14] = v8;
+    *&v31[14] = typeCopy;
     _os_log_impl(&dword_25543D000, v14, OS_LOG_TYPE_DEFAULT, "#preferences, Setting found in defaults storage. Setting value: %@ for key: %@", v31, 0x16u);
   }
 
@@ -3552,27 +3552,27 @@ void __60__IRPreferences__registerForUserDefaultsRefreshNotification__block_invo
   [v0 refresh];
 }
 
-- (void)setMobileAssetSettingsWithMobileAssetDict:(id)a3 assetVersion:(id)a4
+- (void)setMobileAssetSettingsWithMobileAssetDict:(id)dict assetVersion:(id)version
 {
-  v6 = a3;
+  dictCopy = dict;
   v7 = MEMORY[0x277CBEB38];
-  v8 = a4;
+  versionCopy = version;
   v9 = objc_alloc_init(v7);
-  v10 = [v6 allKeys];
+  allKeys = [dictCopy allKeys];
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
   v17 = __72__IRPreferences_setMobileAssetSettingsWithMobileAssetDict_assetVersion___block_invoke;
   v18 = &unk_2797E1F70;
   v19 = v9;
-  v20 = v6;
-  v11 = v6;
+  v20 = dictCopy;
+  v11 = dictCopy;
   v12 = v9;
-  [v10 enumerateObjectsUsingBlock:&v15];
+  [allKeys enumerateObjectsUsingBlock:&v15];
 
   v13 = [IRPreferences shared:v15];
   [v13 setMobileAssetSettings:v12];
 
-  [(IRPreferences *)self setMobileAssetVersion:v8];
+  [(IRPreferences *)self setMobileAssetVersion:versionCopy];
   v14 = +[IRPreferences shared];
   [v14 refresh];
 }

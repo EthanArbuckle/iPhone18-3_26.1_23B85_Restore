@@ -2,7 +2,7 @@
 + (id)getDefaultSoftwareLayout;
 + (id)sharedAggdReporter;
 + (id)singletonInstance;
-+ (void)setSharedAggdReporter:(id)a3;
++ (void)setSharedAggdReporter:(id)reporter;
 @end
 
 @implementation TIAggdReporter
@@ -60,14 +60,14 @@ uint64_t __35__TIAggdReporter_singletonInstance__block_invoke()
   return v2;
 }
 
-+ (void)setSharedAggdReporter:(id)a3
++ (void)setSharedAggdReporter:(id)reporter
 {
-  v4 = a3;
-  if (__testingInstance != v4)
+  reporterCopy = reporter;
+  if (__testingInstance != reporterCopy)
   {
-    v5 = v4;
-    objc_storeStrong(&__testingInstance, a3);
-    v4 = v5;
+    v5 = reporterCopy;
+    objc_storeStrong(&__testingInstance, reporter);
+    reporterCopy = v5;
   }
 }
 

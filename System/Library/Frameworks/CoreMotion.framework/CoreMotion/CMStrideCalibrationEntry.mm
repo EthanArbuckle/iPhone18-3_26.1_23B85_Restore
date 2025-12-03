@@ -1,14 +1,14 @@
 @interface CMStrideCalibrationEntry
-+ (CLStrideCalEntry)inputFromPreparedStatement:(SEL)a3;
-- (BOOL)isEqual:(id)a3;
-- (CMStrideCalibrationEntry)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5;
-- (CMStrideCalibrationEntry)initWithCLStrideCalEntry:(CLStrideCalEntry *)a3;
-- (CMStrideCalibrationEntry)initWithCoder:(id)a3;
++ (CLStrideCalEntry)inputFromPreparedStatement:(SEL)statement;
+- (BOOL)isEqual:(id)equal;
+- (CMStrideCalibrationEntry)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp;
+- (CMStrideCalibrationEntry)initWithCLStrideCalEntry:(CLStrideCalEntry *)entry;
+- (CMStrideCalibrationEntry)initWithCoder:(id)coder;
 - (NSString)description;
 - (id)binarySampleRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)sr_dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMStrideCalibrationEntry
@@ -49,24 +49,24 @@
   return result;
 }
 
-- (CMStrideCalibrationEntry)initWithCLStrideCalEntry:(CLStrideCalEntry *)a3
+- (CMStrideCalibrationEntry)initWithCLStrideCalEntry:(CLStrideCalEntry *)entry
 {
   v11.receiver = self;
   v11.super_class = CMStrideCalibrationEntry;
   result = [(CMStrideCalibrationEntry *)&v11 init];
   if (result)
   {
-    v5 = *&a3->recordId;
-    v6 = *&a3->pacebin;
-    v7 = *&a3->kvalueTrack;
-    *&result->_strideCalStruct.endTime = *&a3->endTime;
+    v5 = *&entry->recordId;
+    v6 = *&entry->pacebin;
+    v7 = *&entry->kvalueTrack;
+    *&result->_strideCalStruct.endTime = *&entry->endTime;
     *&result->_strideCalStruct.kvalueTrack = v7;
     *&result->_strideCalStruct.pacebin = v6;
     *&result->_strideCalStruct.recordId = v5;
-    v8 = *&a3->steps;
-    v9 = *&a3->percentGrade;
-    v10 = *&a3->timestamp;
-    *&result->_strideCalStruct.runningFormStrideLengthMetrics = *&a3->runningFormStrideLengthMetrics;
+    v8 = *&entry->steps;
+    v9 = *&entry->percentGrade;
+    v10 = *&entry->timestamp;
+    *&result->_strideCalStruct.runningFormStrideLengthMetrics = *&entry->runningFormStrideLengthMetrics;
     *&result->_strideCalStruct.timestamp = v10;
     *&result->_strideCalStruct.percentGrade = v9;
     *&result->_strideCalStruct.steps = v8;
@@ -75,47 +75,47 @@
   return result;
 }
 
-- (CMStrideCalibrationEntry)initWithCoder:(id)a3
+- (CMStrideCalibrationEntry)initWithCoder:(id)coder
 {
   v50.receiver = self;
   v50.super_class = CMStrideCalibrationEntry;
   v5 = [(CMStrideCalibrationEntry *)&v50 init];
   if (v5)
   {
-    v6 = objc_msgSend_decodeIntForKey_(a3, v4, @"kCMStrideCalibrationEntryCodingKeyRecordId");
-    objc_msgSend_decodeDoubleForKey_(a3, v7, @"kCMStrideCalibrationEntryCodingKeyStartTime");
+    v6 = objc_msgSend_decodeIntForKey_(coder, v4, @"kCMStrideCalibrationEntryCodingKeyRecordId");
+    objc_msgSend_decodeDoubleForKey_(coder, v7, @"kCMStrideCalibrationEntryCodingKeyStartTime");
     v49 = v8;
     v9 = objc_opt_class();
-    v11 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v10, v9, @"kCMStrideCalibrationEntryCodingKeyPacebin");
+    v11 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v10, v9, @"kCMStrideCalibrationEntryCodingKeyPacebin");
     v14 = objc_msgSend_unsignedIntValue(v11, v12, v13);
-    objc_msgSend_decodeDoubleForKey_(a3, v15, @"kCMStrideCalibrationEntryCodingKeyKvalue");
+    objc_msgSend_decodeDoubleForKey_(coder, v15, @"kCMStrideCalibrationEntryCodingKeyKvalue");
     v17 = v16;
-    objc_msgSend_decodeDoubleForKey_(a3, v18, @"kCMStrideCalibrationEntryCodingKeyKvalueTrack");
+    objc_msgSend_decodeDoubleForKey_(coder, v18, @"kCMStrideCalibrationEntryCodingKeyKvalueTrack");
     v20 = v19;
-    objc_msgSend_decodeDoubleForKey_(a3, v21, @"kCMStrideCalibrationEntryCodingKeyScore");
+    objc_msgSend_decodeDoubleForKey_(coder, v21, @"kCMStrideCalibrationEntryCodingKeyScore");
     v23 = v22;
-    objc_msgSend_decodeDoubleForKey_(a3, v24, @"kCMStrideCalibrationEntryCodingKeyEndTime");
+    objc_msgSend_decodeDoubleForKey_(coder, v24, @"kCMStrideCalibrationEntryCodingKeyEndTime");
     v26 = v25;
-    objc_msgSend_decodeDoubleForKey_(a3, v27, @"kCMStrideCalibrationEntryCodingKeyDistance");
+    objc_msgSend_decodeDoubleForKey_(coder, v27, @"kCMStrideCalibrationEntryCodingKeyDistance");
     v29 = v28;
-    v31 = objc_msgSend_decodeInt32ForKey_(a3, v30, @"kCMStrideCalibrationEntryCodingKeySteps");
-    v33 = objc_msgSend_decodeInt32ForKey_(a3, v32, @"kCMStrideCalibrationEntryCodingKeySession");
-    objc_msgSend_decodeDoubleForKey_(a3, v34, @"kCMStrideCalibrationEntryCodingKeySpeed");
+    v31 = objc_msgSend_decodeInt32ForKey_(coder, v30, @"kCMStrideCalibrationEntryCodingKeySteps");
+    v33 = objc_msgSend_decodeInt32ForKey_(coder, v32, @"kCMStrideCalibrationEntryCodingKeySession");
+    objc_msgSend_decodeDoubleForKey_(coder, v34, @"kCMStrideCalibrationEntryCodingKeySpeed");
     v36 = v35;
-    objc_msgSend_decodeDoubleForKey_(a3, v37, @"kCMStrideCalibrationEntryCodingKeyPercentGrade");
+    objc_msgSend_decodeDoubleForKey_(coder, v37, @"kCMStrideCalibrationEntryCodingKeyPercentGrade");
     v39 = v38;
-    v41 = objc_msgSend_decodeIntegerForKey_(a3, v40, @"kCMStrideCalibrationEntryCodingKeyGpsSource");
+    v41 = objc_msgSend_decodeIntegerForKey_(coder, v40, @"kCMStrideCalibrationEntryCodingKeyGpsSource");
     v44 = 0.0;
-    if (objc_msgSend_containsValueForKey_(a3, v42, @"kCMStrideCalibrationEntryCodingKeyMeanRunningStrideLength"))
+    if (objc_msgSend_containsValueForKey_(coder, v42, @"kCMStrideCalibrationEntryCodingKeyMeanRunningStrideLength"))
     {
-      objc_msgSend_decodeDoubleForKey_(a3, v43, @"kCMStrideCalibrationEntryCodingKeyMeanRunningStrideLength");
+      objc_msgSend_decodeDoubleForKey_(coder, v43, @"kCMStrideCalibrationEntryCodingKeyMeanRunningStrideLength");
       v44 = v45;
     }
 
-    v46 = objc_msgSend_containsValueForKey_(a3, v43, @"kCMStrideCalibrationEntryCodingKeyNumberRunningStrideLengthSamples");
+    v46 = objc_msgSend_containsValueForKey_(coder, v43, @"kCMStrideCalibrationEntryCodingKeyNumberRunningStrideLengthSamples");
     if (v46)
     {
-      v46 = objc_msgSend_decodeIntForKey_(a3, v47, @"kCMStrideCalibrationEntryCodingKeyNumberRunningStrideLengthSamples");
+      v46 = objc_msgSend_decodeIntForKey_(coder, v47, @"kCMStrideCalibrationEntryCodingKeyNumberRunningStrideLengthSamples");
     }
 
     v5->_strideCalStruct.recordId = v6;
@@ -138,29 +138,29 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  objc_msgSend_encodeInt_forKey_(a3, a2, self->_strideCalStruct.recordId, @"kCMStrideCalibrationEntryCodingKeyRecordId");
-  objc_msgSend_encodeDouble_forKey_(a3, v5, @"kCMStrideCalibrationEntryCodingKeyStartTime", self->_strideCalStruct.startTime);
+  objc_msgSend_encodeInt_forKey_(coder, a2, self->_strideCalStruct.recordId, @"kCMStrideCalibrationEntryCodingKeyRecordId");
+  objc_msgSend_encodeDouble_forKey_(coder, v5, @"kCMStrideCalibrationEntryCodingKeyStartTime", self->_strideCalStruct.startTime);
   v7 = objc_msgSend_numberWithUnsignedInt_(MEMORY[0x1E696AD98], v6, self->_strideCalStruct.pacebin);
-  objc_msgSend_encodeObject_forKey_(a3, v8, v7, @"kCMStrideCalibrationEntryCodingKeyPacebin");
-  objc_msgSend_encodeDouble_forKey_(a3, v9, @"kCMStrideCalibrationEntryCodingKeyKvalue", self->_strideCalStruct.kvalue);
-  objc_msgSend_encodeDouble_forKey_(a3, v10, @"kCMStrideCalibrationEntryCodingKeyKvalueTrack", self->_strideCalStruct.kvalueTrack);
-  objc_msgSend_encodeDouble_forKey_(a3, v11, @"kCMStrideCalibrationEntryCodingKeyScore", self->_strideCalStruct.score);
-  objc_msgSend_encodeDouble_forKey_(a3, v12, @"kCMStrideCalibrationEntryCodingKeyEndTime", self->_strideCalStruct.endTime);
-  objc_msgSend_encodeDouble_forKey_(a3, v13, @"kCMStrideCalibrationEntryCodingKeyDistance", self->_strideCalStruct.distance);
-  objc_msgSend_encodeInt32_forKey_(a3, v14, self->_strideCalStruct.steps, @"kCMStrideCalibrationEntryCodingKeySteps");
-  objc_msgSend_encodeInt32_forKey_(a3, v15, self->_strideCalStruct.session, @"kCMStrideCalibrationEntryCodingKeySession");
-  objc_msgSend_encodeDouble_forKey_(a3, v16, @"kCMStrideCalibrationEntryCodingKeySpeed", self->_strideCalStruct.speed);
-  objc_msgSend_encodeDouble_forKey_(a3, v17, @"kCMStrideCalibrationEntryCodingKeyPercentGrade", self->_strideCalStruct.percentGrade);
-  objc_msgSend_encodeInteger_forKey_(a3, v18, self->_strideCalStruct.gpsSource, @"kCMStrideCalibrationEntryCodingKeyGpsSource");
-  objc_msgSend_encodeDouble_forKey_(a3, v19, @"kCMStrideCalibrationEntryCodingKeyMeanRunningStrideLength", self->_strideCalStruct.runningFormStrideLength);
+  objc_msgSend_encodeObject_forKey_(coder, v8, v7, @"kCMStrideCalibrationEntryCodingKeyPacebin");
+  objc_msgSend_encodeDouble_forKey_(coder, v9, @"kCMStrideCalibrationEntryCodingKeyKvalue", self->_strideCalStruct.kvalue);
+  objc_msgSend_encodeDouble_forKey_(coder, v10, @"kCMStrideCalibrationEntryCodingKeyKvalueTrack", self->_strideCalStruct.kvalueTrack);
+  objc_msgSend_encodeDouble_forKey_(coder, v11, @"kCMStrideCalibrationEntryCodingKeyScore", self->_strideCalStruct.score);
+  objc_msgSend_encodeDouble_forKey_(coder, v12, @"kCMStrideCalibrationEntryCodingKeyEndTime", self->_strideCalStruct.endTime);
+  objc_msgSend_encodeDouble_forKey_(coder, v13, @"kCMStrideCalibrationEntryCodingKeyDistance", self->_strideCalStruct.distance);
+  objc_msgSend_encodeInt32_forKey_(coder, v14, self->_strideCalStruct.steps, @"kCMStrideCalibrationEntryCodingKeySteps");
+  objc_msgSend_encodeInt32_forKey_(coder, v15, self->_strideCalStruct.session, @"kCMStrideCalibrationEntryCodingKeySession");
+  objc_msgSend_encodeDouble_forKey_(coder, v16, @"kCMStrideCalibrationEntryCodingKeySpeed", self->_strideCalStruct.speed);
+  objc_msgSend_encodeDouble_forKey_(coder, v17, @"kCMStrideCalibrationEntryCodingKeyPercentGrade", self->_strideCalStruct.percentGrade);
+  objc_msgSend_encodeInteger_forKey_(coder, v18, self->_strideCalStruct.gpsSource, @"kCMStrideCalibrationEntryCodingKeyGpsSource");
+  objc_msgSend_encodeDouble_forKey_(coder, v19, @"kCMStrideCalibrationEntryCodingKeyMeanRunningStrideLength", self->_strideCalStruct.runningFormStrideLength);
   runningFormStrideLengthMetrics = self->_strideCalStruct.runningFormStrideLengthMetrics;
 
-  objc_msgSend_encodeInt_forKey_(a3, v20, runningFormStrideLengthMetrics, @"kCMStrideCalibrationEntryCodingKeyNumberRunningStrideLengthSamples");
+  objc_msgSend_encodeInt_forKey_(coder, v20, runningFormStrideLengthMetrics, @"kCMStrideCalibrationEntryCodingKeyNumberRunningStrideLengthSamples");
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -169,28 +169,28 @@
   }
 
   v7 = objc_msgSend_recordId(self, v5, v6);
-  if (v7 != objc_msgSend_recordId(a3, v8, v9))
+  if (v7 != objc_msgSend_recordId(equal, v8, v9))
   {
     return 0;
   }
 
   objc_msgSend_startTime(self, v10, v11);
   v13 = v12;
-  objc_msgSend_startTime(a3, v14, v15);
+  objc_msgSend_startTime(equal, v14, v15);
   if (v13 != v18)
   {
     return 0;
   }
 
   v19 = objc_msgSend_pacebin(self, v16, v17);
-  if (v19 != objc_msgSend_pacebin(a3, v20, v21))
+  if (v19 != objc_msgSend_pacebin(equal, v20, v21))
   {
     return 0;
   }
 
   objc_msgSend_kvalue(self, v22, v23);
   v25 = v24;
-  objc_msgSend_kvalue(a3, v26, v27);
+  objc_msgSend_kvalue(equal, v26, v27);
   if (v25 != v30)
   {
     return 0;
@@ -198,7 +198,7 @@
 
   objc_msgSend_kvalueTrack(self, v28, v29);
   v32 = v31;
-  objc_msgSend_kvalueTrack(a3, v33, v34);
+  objc_msgSend_kvalueTrack(equal, v33, v34);
   if (v32 != v37)
   {
     return 0;
@@ -206,7 +206,7 @@
 
   objc_msgSend_score(self, v35, v36);
   v39 = v38;
-  objc_msgSend_score(a3, v40, v41);
+  objc_msgSend_score(equal, v40, v41);
   if (v39 != v44)
   {
     return 0;
@@ -214,7 +214,7 @@
 
   objc_msgSend_endTime(self, v42, v43);
   v46 = v45;
-  objc_msgSend_endTime(a3, v47, v48);
+  objc_msgSend_endTime(equal, v47, v48);
   if (v46 != v51)
   {
     return 0;
@@ -222,27 +222,27 @@
 
   objc_msgSend_distance(self, v49, v50);
   v53 = v52;
-  objc_msgSend_distance(a3, v54, v55);
+  objc_msgSend_distance(equal, v54, v55);
   if (v53 != v58)
   {
     return 0;
   }
 
   v59 = objc_msgSend_steps(self, v56, v57);
-  if (v59 != objc_msgSend_steps(a3, v60, v61))
+  if (v59 != objc_msgSend_steps(equal, v60, v61))
   {
     return 0;
   }
 
   v64 = objc_msgSend_session(self, v62, v63);
-  if (v64 != objc_msgSend_session(a3, v65, v66))
+  if (v64 != objc_msgSend_session(equal, v65, v66))
   {
     return 0;
   }
 
   objc_msgSend_speed(self, v67, v68);
   v70 = v69;
-  objc_msgSend_speed(a3, v71, v72);
+  objc_msgSend_speed(equal, v71, v72);
   if (v70 != v75)
   {
     return 0;
@@ -250,34 +250,34 @@
 
   objc_msgSend_percentGrade(self, v73, v74);
   v77 = v76;
-  objc_msgSend_percentGrade(a3, v78, v79);
+  objc_msgSend_percentGrade(equal, v78, v79);
   if (v77 != v82)
   {
     return 0;
   }
 
   v83 = objc_msgSend_gpsSource(self, v80, v81);
-  if (v83 != objc_msgSend_gpsSource(a3, v84, v85))
+  if (v83 != objc_msgSend_gpsSource(equal, v84, v85))
   {
     return 0;
   }
 
   objc_msgSend_meanRunningStrideLength(self, v86, v87);
   v89 = v88;
-  objc_msgSend_meanRunningStrideLength(a3, v90, v91);
+  objc_msgSend_meanRunningStrideLength(equal, v90, v91);
   if (v89 != v94)
   {
     return 0;
   }
 
   v95 = objc_msgSend_numberRunningStrideLengthSamples(self, v92, v93);
-  return v95 == objc_msgSend_numberRunningStrideLengthSamples(a3, v96, v97);
+  return v95 == objc_msgSend_numberRunningStrideLengthSamples(equal, v96, v97);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   result = objc_msgSend_init(v7, v8, v9);
   v11 = *&self->_strideCalStruct.pacebin;
   v12 = *&self->_strideCalStruct.kvalueTrack;
@@ -329,7 +329,7 @@
   return objc_msgSend_stringWithFormat_(v3, v61, @"%@, <recordId, %lu, startTime, %@, endTime, %@, kvalue, %f, kvalueTrack, %f, score, %f, session, %d, distance, %f, steps, %d, speed, %f, percentGrade, %f, gpsSource, %d, meanRunningStrideLength, %f, numberRunningStrideLengthSamples, %d>", v5, v8, v14, v20, v24, v28, v32, v35, v39, v42, v46, v50, v53, v57, v60);
 }
 
-+ (CLStrideCalEntry)inputFromPreparedStatement:(SEL)a3
++ (CLStrideCalEntry)inputFromPreparedStatement:(SEL)statement
 {
   *&retstr->runningFormStrideLengthMetrics = 0;
   *&retstr->percentGrade = 0u;
@@ -368,9 +368,9 @@
   return v5;
 }
 
-- (CMStrideCalibrationEntry)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5
+- (CMStrideCalibrationEntry)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp
 {
-  if (objc_msgSend_length(a3, a2, a3, a4, a5))
+  if (objc_msgSend_length(representation, a2, representation, metadata, timestamp))
   {
     v14.receiver = self;
     v14.super_class = CMStrideCalibrationEntry;
@@ -379,7 +379,7 @@
     {
       v8 = MEMORY[0x1E696ACD0];
       v9 = objc_opt_class();
-      v11 = objc_msgSend_unarchivedObjectOfClass_fromData_error_(v8, v10, v9, a3, 0);
+      v11 = objc_msgSend_unarchivedObjectOfClass_fromData_error_(v8, v10, v9, representation, 0);
       if (v11)
       {
         v12 = v11;

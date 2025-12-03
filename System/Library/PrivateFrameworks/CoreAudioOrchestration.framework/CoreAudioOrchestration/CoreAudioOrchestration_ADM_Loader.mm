@@ -1,5 +1,5 @@
 @interface CoreAudioOrchestration_ADM_Loader
-- (CoreAudioOrchestration_ADM_Loader)initWithLogger:(id)a3;
+- (CoreAudioOrchestration_ADM_Loader)initWithLogger:(id)logger;
 - (id)createFactory;
 - (void)createFactory;
 - (void)dealloc;
@@ -7,16 +7,16 @@
 
 @implementation CoreAudioOrchestration_ADM_Loader
 
-- (CoreAudioOrchestration_ADM_Loader)initWithLogger:(id)a3
+- (CoreAudioOrchestration_ADM_Loader)initWithLogger:(id)logger
 {
-  v5 = a3;
+  loggerCopy = logger;
   v14.receiver = self;
   v14.super_class = CoreAudioOrchestration_ADM_Loader;
   v6 = [(CoreAudioOrchestration_ADM_Loader *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->logger, a3);
+    objc_storeStrong(&v6->logger, logger);
     logger = v7->logger;
     if (os_log_type_enabled(logger, OS_LOG_TYPE_INFO))
     {
@@ -62,9 +62,9 @@
 
 - (id)createFactory
 {
-  v3 = [(CoreAudioOrchestration_ADM_Loader *)self admLibrary];
+  admLibrary = [(CoreAudioOrchestration_ADM_Loader *)self admLibrary];
   logger = self->logger;
-  if (v3)
+  if (admLibrary)
   {
     if (os_log_type_enabled(self->logger, OS_LOG_TYPE_INFO))
     {
@@ -111,7 +111,7 @@ LABEL_11:
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 136315138;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_24508F000, a2, OS_LOG_TYPE_ERROR, "ADM dlsym failed: %s", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

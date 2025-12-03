@@ -1,12 +1,12 @@
 @interface CRLChangeNotifier
 - (CRLChangeNotifier)init;
-- (id)p_findCountedObserverForObserver:(id)a3 inArray:(id)a4;
-- (void)p_addObserver:(id)a3 forChangeSource:(id)a4 isClass:(BOOL)a5;
-- (void)p_processChanges:(id)a3 preprocessing:(BOOL)a4;
-- (void)p_removeDeallocatedObserversFromArray:(id)a3;
-- (void)p_removeObserver:(id)a3 forChangeSource:(id)a4 isClass:(BOOL)a5;
-- (void)p_removeZeroCountObserversInMap:(id)a3 fromCountedObserversByChangeSourceMap:(id)a4;
-- (void)p_trimChangeSourceToCountedObserversMap:(id)a3;
+- (id)p_findCountedObserverForObserver:(id)observer inArray:(id)array;
+- (void)p_addObserver:(id)observer forChangeSource:(id)source isClass:(BOOL)class;
+- (void)p_processChanges:(id)changes preprocessing:(BOOL)preprocessing;
+- (void)p_removeDeallocatedObserversFromArray:(id)array;
+- (void)p_removeObserver:(id)observer forChangeSource:(id)source isClass:(BOOL)class;
+- (void)p_removeZeroCountObserversInMap:(id)map fromCountedObserversByChangeSourceMap:(id)sourceMap;
+- (void)p_trimChangeSourceToCountedObserversMap:(id)map;
 @end
 
 @implementation CRLChangeNotifier
@@ -34,17 +34,17 @@
   return v2;
 }
 
-- (id)p_findCountedObserverForObserver:(id)a3 inArray:(id)a4
+- (id)p_findCountedObserverForObserver:(id)observer inArray:(id)array
 {
-  v5 = a3;
-  v6 = a4;
+  observerCopy = observer;
+  arrayCopy = array;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1002C4E08;
   v11[3] = &unk_101852420;
-  v7 = v5;
+  v7 = observerCopy;
   v12 = v7;
-  v8 = [v6 indexOfObjectPassingTest:v11];
+  v8 = [arrayCopy indexOfObjectPassingTest:v11];
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = 0;
@@ -52,34 +52,34 @@
 
   else
   {
-    v9 = [v6 objectAtIndexedSubscript:v8];
+    v9 = [arrayCopy objectAtIndexedSubscript:v8];
   }
 
   return v9;
 }
 
-- (void)p_addObserver:(id)a3 forChangeSource:(id)a4 isClass:(BOOL)a5
+- (void)p_addObserver:(id)observer forChangeSource:(id)source isClass:(BOOL)class
 {
-  v5 = a5;
-  v15 = a3;
-  v8 = a4;
-  v9 = self;
-  objc_sync_enter(v9);
+  classCopy = class;
+  observerCopy = observer;
+  sourceCopy = source;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v10 = 8;
-  if (v5)
+  if (classCopy)
   {
     v10 = 16;
   }
 
-  v11 = *(&v9->super.isa + v10);
-  v12 = [v11 objectForKey:v8];
+  v11 = *(&selfCopy->super.isa + v10);
+  v12 = [v11 objectForKey:sourceCopy];
   if (!v12)
   {
     v12 = objc_alloc_init(NSMutableArray);
-    [v11 setObject:v12 forKey:v8];
+    [v11 setObject:v12 forKey:sourceCopy];
   }
 
-  v13 = [(CRLChangeNotifier *)v9 p_findCountedObserverForObserver:v15 inArray:v12];
+  v13 = [(CRLChangeNotifier *)selfCopy p_findCountedObserverForObserver:observerCopy inArray:v12];
   v14 = v13;
   if (v13)
   {
@@ -88,43 +88,43 @@
 
   else
   {
-    v14 = [[CRLCountedObserver alloc] initWithObserver:v15];
+    v14 = [[CRLCountedObserver alloc] initWithObserver:observerCopy];
     [v12 addObject:v14];
   }
 
-  objc_sync_exit(v9);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)p_removeObserver:(id)a3 forChangeSource:(id)a4 isClass:(BOOL)a5
+- (void)p_removeObserver:(id)observer forChangeSource:(id)source isClass:(BOOL)class
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  objc_sync_enter(v10);
+  classCopy = class;
+  observerCopy = observer;
+  sourceCopy = source;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v11 = 8;
-  if (v5)
+  if (classCopy)
   {
     v11 = 16;
   }
 
-  v12 = *(&v10->super.isa + v11);
-  v13 = [v12 objectForKey:v9];
+  v12 = *(&selfCopy->super.isa + v11);
+  v13 = [v12 objectForKey:sourceCopy];
   if (v13)
   {
-    v14 = [(CRLChangeNotifier *)v10 p_findCountedObserverForObserver:v8 inArray:v13];
+    v14 = [(CRLChangeNotifier *)selfCopy p_findCountedObserverForObserver:observerCopy inArray:v13];
     if (v14)
     {
       v27 = 0;
       v28 = &v27;
       v29 = 0x2020000000;
       v30 = 0;
-      currentlyNotifyingLock = v10->_currentlyNotifyingLock;
+      currentlyNotifyingLock = selfCopy->_currentlyNotifyingLock;
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_1002C51E4;
       block[3] = &unk_101839FF8;
-      block[4] = v10;
+      block[4] = selfCopy;
       block[5] = &v27;
       dispatch_sync(currentlyNotifyingLock, block);
       v16 = v14;
@@ -133,14 +133,14 @@
       {
         if (*(v28 + 24) == 1)
         {
-          v17 = v10->_currentlyNotifyingLock;
+          v17 = selfCopy->_currentlyNotifyingLock;
           v18 = _NSConcreteStackBlock;
           v19 = 3221225472;
           v20 = sub_1002C5200;
           v21 = &unk_101852448;
-          v25 = v5;
-          v22 = v10;
-          v23 = v9;
+          v25 = classCopy;
+          v22 = selfCopy;
+          v23 = sourceCopy;
           v24 = v16;
           dispatch_sync(v17, &v18);
         }
@@ -153,7 +153,7 @@
 
       if (![v13 count])
       {
-        [v12 removeObjectForKey:v9];
+        [v12 removeObjectForKey:sourceCopy];
       }
 
       objc_sync_exit(v16);
@@ -162,14 +162,14 @@
     }
   }
 
-  objc_sync_exit(v10);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)p_processChanges:(id)a3 preprocessing:(BOOL)a4
+- (void)p_processChanges:(id)changes preprocessing:(BOOL)preprocessing
 {
-  v4 = a4;
-  v6 = a3;
-  v56 = v4;
+  preprocessingCopy = preprocessing;
+  changesCopy = changes;
+  v56 = preprocessingCopy;
   v7 = objc_alloc_init(NSMutableArray);
   v53 = objc_alloc_init(NSMutableOrderedSet);
   currentlyNotifyingLock = self->_currentlyNotifyingLock;
@@ -179,12 +179,12 @@
   block[3] = &unk_10183AB38;
   block[4] = self;
   dispatch_sync(currentlyNotifyingLock, block);
-  v48 = self;
-  v54 = self;
-  objc_sync_enter(v54);
-  v47 = v6;
-  v9 = [v6 changesArray];
-  v10 = [v9 copy];
+  selfCopy = self;
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  v47 = changesCopy;
+  changesArray = [changesCopy changesArray];
+  v10 = [changesArray copy];
 
   v81 = 0u;
   v82 = 0u;
@@ -205,13 +205,13 @@
         }
 
         v11 = *(*(&v79 + 1) + 8 * i);
-        v12 = [v11 changeSource];
+        changeSource = [v11 changeSource];
         v77 = 0u;
         v78 = 0u;
         v75 = 0u;
         v76 = 0u;
-        v58 = v12;
-        v13 = [(NSMapTable *)v54->_changeSourceOfObjectObservers objectForKey:?];
+        v58 = changeSource;
+        v13 = [(NSMapTable *)selfCopy2->_changeSourceOfObjectObservers objectForKey:?];
         v14 = [v13 countByEnumeratingWithState:&v75 objects:v87 count:16];
         if (v14)
         {
@@ -226,7 +226,7 @@
               }
 
               v17 = *(*(&v75 + 1) + 8 * j);
-              v18 = [v17 observer];
+              observer = [v17 observer];
               v19 = objc_opt_respondsToSelector();
 
               if (v19)
@@ -246,7 +246,7 @@
         v74 = 0u;
         v71 = 0u;
         v72 = 0u;
-        v55 = v54->_changeSourceOfClassObservers;
+        v55 = selfCopy2->_changeSourceOfClassObservers;
         v59 = [(NSMapTable *)v55 countByEnumeratingWithState:&v71 objects:v86 count:16];
         if (v59)
         {
@@ -267,7 +267,7 @@
                 v70 = 0u;
                 v67 = 0u;
                 v68 = 0u;
-                v22 = [(NSMapTable *)v54->_changeSourceOfClassObservers objectForKey:v21];
+                v22 = [(NSMapTable *)selfCopy2->_changeSourceOfClassObservers objectForKey:v21];
                 v23 = [v22 countByEnumeratingWithState:&v67 objects:v85 count:16];
                 if (v23)
                 {
@@ -282,7 +282,7 @@
                       }
 
                       v26 = *(*(&v67 + 1) + 8 * m);
-                      v27 = [v26 observer];
+                      observer2 = [v26 observer];
                       v28 = objc_opt_respondsToSelector();
 
                       if (v28)
@@ -313,7 +313,7 @@
     while (v49);
   }
 
-  objc_sync_exit(v54);
+  objc_sync_exit(selfCopy2);
   v65 = 0u;
   v66 = 0u;
   v63 = 0u;
@@ -333,33 +333,33 @@
         }
 
         v33 = *(*(&v63 + 1) + 8 * n);
-        v34 = [v33 countedObserver];
-        objc_sync_enter(v34);
-        v35 = [v34 observer];
+        countedObserver = [v33 countedObserver];
+        objc_sync_enter(countedObserver);
+        observer3 = [countedObserver observer];
         if (v56)
         {
-          v36 = [v33 entry];
-          v37 = [v36 changes];
-          v38 = [v33 entry];
-          v39 = [v38 changeSource];
-          [v35 preprocessChanges:v37 forChangeSource:v39];
+          entry = [v33 entry];
+          changes = [entry changes];
+          entry2 = [v33 entry];
+          changeSource2 = [entry2 changeSource];
+          [observer3 preprocessChanges:changes forChangeSource:changeSource2];
         }
 
         else
         {
-          v40 = [v33 entry];
-          v41 = [v40 changes];
-          v42 = [v33 entry];
-          v43 = [v42 changeSource];
-          [v35 processChanges:v41 forChangeSource:v43];
+          entry3 = [v33 entry];
+          changes2 = [entry3 changes];
+          entry4 = [v33 entry];
+          changeSource3 = [entry4 changeSource];
+          [observer3 processChanges:changes2 forChangeSource:changeSource3];
 
           if (objc_opt_respondsToSelector())
           {
-            [v53 addObject:v35];
+            [v53 addObject:observer3];
           }
         }
 
-        objc_sync_exit(v34);
+        objc_sync_exit(countedObserver);
       }
 
       v30 = [v61 countByEnumeratingWithState:&v63 objects:v84 count:16];
@@ -368,12 +368,12 @@
     while (v30);
   }
 
-  v44 = [v53 array];
-  [v44 makeObjectsPerformSelector:"didProcessAllChanges"];
+  array = [v53 array];
+  [array makeObjectsPerformSelector:"didProcessAllChanges"];
 
-  v45 = v54;
+  v45 = selfCopy2;
   objc_sync_enter(v45);
-  v46 = v48->_currentlyNotifyingLock;
+  v46 = selfCopy->_currentlyNotifyingLock;
   v62[0] = _NSConcreteStackBlock;
   v62[1] = 3221225472;
   v62[2] = sub_1002C6168;
@@ -383,15 +383,15 @@
   objc_sync_exit(v45);
 }
 
-- (void)p_removeZeroCountObserversInMap:(id)a3 fromCountedObserversByChangeSourceMap:(id)a4
+- (void)p_removeZeroCountObserversInMap:(id)map fromCountedObserversByChangeSourceMap:(id)sourceMap
 {
-  v5 = a3;
-  v6 = a4;
+  mapCopy = map;
+  sourceMapCopy = sourceMap;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = v5;
+  v7 = mapCopy;
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
@@ -411,7 +411,7 @@
         if (![v11 currentCount])
         {
           v12 = [v7 objectForKey:v11];
-          v13 = [v6 objectForKey:v12];
+          v13 = [sourceMapCopy objectForKey:v12];
           [v13 removeObject:v11];
         }
 
@@ -428,22 +428,22 @@
   }
 }
 
-- (void)p_removeDeallocatedObserversFromArray:(id)a3
+- (void)p_removeDeallocatedObserversFromArray:(id)array
 {
-  v3 = a3;
+  arrayCopy = array;
   v4 = [NSPredicate predicateWithBlock:&stru_1018525C8];
-  [v3 filterUsingPredicate:v4];
+  [arrayCopy filterUsingPredicate:v4];
 }
 
-- (void)p_trimChangeSourceToCountedObserversMap:(id)a3
+- (void)p_trimChangeSourceToCountedObserversMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   v5 = objc_alloc_init(NSMutableArray);
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = v4;
+  v6 = mapCopy;
   v7 = [v6 countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v7)
   {

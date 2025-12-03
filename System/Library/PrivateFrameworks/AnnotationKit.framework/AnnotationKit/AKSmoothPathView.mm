@@ -1,33 +1,33 @@
 @interface AKSmoothPathView
-+ (id)newSmoothPathViewForCurrentPlatformWithController:(id)a3;
++ (id)newSmoothPathViewForCurrentPlatformWithController:(id)controller;
 - (AKController)controller;
-- (AKSmoothPathView)initWithController:(id)a3;
-- (AKSmoothPathView)initWithFrame:(CGRect)a3;
-- (BOOL)_catchUpAccumulatedTouchesForRecognizer:(id)a3;
+- (AKSmoothPathView)initWithController:(id)controller;
+- (AKSmoothPathView)initWithFrame:(CGRect)frame;
+- (BOOL)_catchUpAccumulatedTouchesForRecognizer:(id)recognizer;
 - (CGRect)singleDotRect;
-- (__n128)_pointForRecognizer:(void *)a3;
-- (__n128)_pointForTouch:(void *)a3;
-- (double)_convertValueFromModelToSelf:(double)a3;
+- (__n128)_pointForRecognizer:(void *)recognizer;
+- (__n128)_pointForTouch:(void *)touch;
+- (double)_convertValueFromModelToSelf:(double)self;
 - (double)_effectiveStrokeWidthInModel;
 - (double)_windowBackingScaleFactor;
-- (double)weightForValue:(double)a3;
+- (double)weightForValue:(double)value;
 - (id)drawing;
 - (void)_clear;
-- (void)_setupFilterChainWithBitmapFifo:(BOOL)a3;
-- (void)_setupShadowInContext:(CGContext *)a3;
+- (void)_setupFilterChainWithBitmapFifo:(BOOL)fifo;
+- (void)_setupShadowInContext:(CGContext *)context;
 - (void)_updateInterpolatingFifoLineWidth;
 - (void)_updateShadowRadiusInView;
 - (void)awakeFromNib;
 - (void)callDelegate;
 - (void)commonInit;
 - (void)continueStrokeWithoutSmoothing:(AKSmoothPathView *)self;
-- (void)drawRect:(CGRect)a3;
-- (void)handleDragAction:(id)a3;
-- (void)handleTapAction:(id)a3;
-- (void)setHasShadow:(BOOL)a3;
-- (void)setPrestrokedOutputMode:(BOOL)a3;
-- (void)setStartedTouchDrawing:(BOOL)a3;
-- (void)setStrokeWidth:(double)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)handleDragAction:(id)action;
+- (void)handleTapAction:(id)action;
+- (void)setHasShadow:(BOOL)shadow;
+- (void)setPrestrokedOutputMode:(BOOL)mode;
+- (void)setStartedTouchDrawing:(BOOL)drawing;
+- (void)setStrokeWidth:(double)width;
 - (void)startStroke;
 - (void)teardown;
 - (void)terminateStroke;
@@ -36,32 +36,32 @@
 
 @implementation AKSmoothPathView
 
-+ (id)newSmoothPathViewForCurrentPlatformWithController:(id)a3
++ (id)newSmoothPathViewForCurrentPlatformWithController:(id)controller
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithController:v3];
+  controllerCopy = controller;
+  v4 = [objc_alloc(objc_opt_class()) initWithController:controllerCopy];
 
   return v4;
 }
 
-- (AKSmoothPathView)initWithController:(id)a3
+- (AKSmoothPathView)initWithController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = [(AKSmoothPathView *)self initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v6 = v5;
   if (v5)
   {
-    [(AKSmoothPathView *)v5 setController:v4];
+    [(AKSmoothPathView *)v5 setController:controllerCopy];
   }
 
   return v6;
 }
 
-- (AKSmoothPathView)initWithFrame:(CGRect)a3
+- (AKSmoothPathView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = AKSmoothPathView;
-  v3 = [(AKSmoothPathView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AKSmoothPathView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -97,8 +97,8 @@
 
 - (void)teardown
 {
-  v3 = [(AKSmoothPathView *)self bitmapFifo];
-  [v3 teardown];
+  bitmapFifo = [(AKSmoothPathView *)self bitmapFifo];
+  [bitmapFifo teardown];
 
   [(AKSmoothPathView *)self setBitmapFifo:0];
   [(AKSmoothPathView *)self setInterpolatingFIFO:0];
@@ -108,28 +108,28 @@
   [(AKSmoothPathView *)self setDelegate:0];
 }
 
-- (void)_setupFilterChainWithBitmapFifo:(BOOL)a3
+- (void)_setupFilterChainWithBitmapFifo:(BOOL)fifo
 {
-  if (a3)
+  if (fifo)
   {
     v4 = [[AKBitmapFIFO alloc] initWithFIFO:0];
     [(AKSmoothPathView *)self setBitmapFifo:v4];
 
-    v5 = [(AKSmoothPathView *)self bitmapFifo];
-    [v5 setView:self];
+    bitmapFifo = [(AKSmoothPathView *)self bitmapFifo];
+    [bitmapFifo setView:self];
 
-    v6 = [(AKSmoothPathView *)self bitmapFifo];
-    [v6 setIsInLiveDraw:0];
+    bitmapFifo2 = [(AKSmoothPathView *)self bitmapFifo];
+    [bitmapFifo2 setIsInLiveDraw:0];
 
-    v7 = [(AKSmoothPathView *)self bitmapFifo];
-    [v7 setBitmapSizeMultiplier:3.0];
+    bitmapFifo3 = [(AKSmoothPathView *)self bitmapFifo];
+    [bitmapFifo3 setBitmapSizeMultiplier:3.0];
 
     [(AKSmoothPathView *)self _updateShadowRadiusInView];
     v8 = [objc_alloc(MEMORY[0x277CFEE48]) initWithFIFO:0 drawingTarget:0];
     [(AKSmoothPathView *)self setInterpolatingFIFO:v8];
 
-    v9 = [(AKSmoothPathView *)self interpolatingFIFO];
-    [v9 setEmitInterpolatedPoints:1];
+    interpolatingFIFO = [(AKSmoothPathView *)self interpolatingFIFO];
+    [interpolatingFIFO setEmitInterpolatedPoints:1];
 
     objc_initWeak(&location, self);
     v10 = v26;
@@ -138,21 +138,21 @@
     v26[2] = sub_23F478294;
     v26[3] = &unk_278C7C0D8;
     objc_copyWeak(&v27, &location);
-    v11 = [(AKSmoothPathView *)self interpolatingFIFO];
-    [v11 setEmissionHandler:v26];
+    interpolatingFIFO2 = [(AKSmoothPathView *)self interpolatingFIFO];
+    [interpolatingFIFO2 setEmissionHandler:v26];
   }
 
   else
   {
-    v12 = [(AKSmoothPathView *)self bitmapFifo];
-    [v12 teardown];
+    bitmapFifo4 = [(AKSmoothPathView *)self bitmapFifo];
+    [bitmapFifo4 teardown];
 
     [(AKSmoothPathView *)self setBitmapFifo:0];
     v13 = [objc_alloc(MEMORY[0x277CFEE48]) initWithFIFO:0 drawingTarget:self];
     [(AKSmoothPathView *)self setInterpolatingFIFO:v13];
 
-    v14 = [(AKSmoothPathView *)self interpolatingFIFO];
-    [v14 setEmitInterpolatedPoints:0];
+    interpolatingFIFO3 = [(AKSmoothPathView *)self interpolatingFIFO];
+    [interpolatingFIFO3 setEmitInterpolatedPoints:0];
 
     objc_initWeak(&location, self);
     v10 = v24;
@@ -161,8 +161,8 @@
     v24[2] = sub_23F4783A4;
     v24[3] = &unk_278C7C0D8;
     objc_copyWeak(&v25, &location);
-    v11 = [(AKSmoothPathView *)self interpolatingFIFO];
-    [v11 setEmissionHandler:v24];
+    interpolatingFIFO2 = [(AKSmoothPathView *)self interpolatingFIFO];
+    [interpolatingFIFO2 setEmissionHandler:v24];
   }
 
   objc_destroyWeak(v10 + 4);
@@ -172,15 +172,15 @@
   [(AKSmoothPathView *)self _windowBackingScaleFactor];
   v16 = 1.0 / v15;
   v17 = objc_alloc(MEMORY[0x277CFEE30]);
-  v18 = [(AKSmoothPathView *)self interpolatingFIFO];
+  interpolatingFIFO4 = [(AKSmoothPathView *)self interpolatingFIFO];
   v19 = v16 * 4.0;
   *&v19 = v16 * 4.0;
-  v20 = [v17 initWithFIFO:v18 width:3 spacing:v19];
+  v20 = [v17 initWithFIFO:interpolatingFIFO4 width:3 spacing:v19];
   [(AKSmoothPathView *)self setSmoothingFIFO:v20];
 
   v21 = objc_alloc(MEMORY[0x277CFEE40]);
-  v22 = [(AKSmoothPathView *)self smoothingFIFO];
-  v23 = [v21 initWithFIFO:v22];
+  smoothingFIFO = [(AKSmoothPathView *)self smoothingFIFO];
+  v23 = [v21 initWithFIFO:smoothingFIFO];
   [(AKSmoothPathView *)self setStrokeFIFO:v23];
 
   [(AKSmoothPathView *)self setStartedTouchDrawing:0];
@@ -191,17 +191,17 @@
   [(AKSmoothPathView *)self _windowBackingScaleFactor];
   *&v3 = v3;
   v4 = 5.0 / *&v3;
-  v6 = [(AKSmoothPathView *)self interpolatingFIFO];
+  interpolatingFIFO = [(AKSmoothPathView *)self interpolatingFIFO];
   *&v5 = v4;
-  [v6 setUnitScale:v5];
+  [interpolatingFIFO setUnitScale:v5];
 }
 
 - (void)callDelegate
 {
   if ([(AKSmoothPathView *)self prestrokedOutputMode])
   {
-    v3 = [(AKSmoothPathView *)self bitmapFifo];
-    v4 = [v3 newPathFromCurrentBitmap];
+    bitmapFifo = [(AKSmoothPathView *)self bitmapFifo];
+    newPathFromCurrentBitmap = [bitmapFifo newPathFromCurrentBitmap];
   }
 
   else
@@ -224,9 +224,9 @@
       if (!CGRectEqualToRect(v24, v27))
       {
         [(AKSmoothPathView *)self singleDotRect];
-        v4 = CGPathCreateWithEllipseInRect(v26, 0);
+        newPathFromCurrentBitmap = CGPathCreateWithEllipseInRect(v26, 0);
         v14 = 1;
-        if (!v4)
+        if (!newPathFromCurrentBitmap)
         {
           goto LABEL_18;
         }
@@ -235,89 +235,89 @@
       }
     }
 
-    v13 = [(AKSmoothPathView *)self interpolatingFIFO];
-    v4 = [v13 path];
+    interpolatingFIFO = [(AKSmoothPathView *)self interpolatingFIFO];
+    newPathFromCurrentBitmap = [interpolatingFIFO path];
 
-    CGPathRetain(v4);
+    CGPathRetain(newPathFromCurrentBitmap);
   }
 
   v14 = 0;
-  if (!v4)
+  if (!newPathFromCurrentBitmap)
   {
     goto LABEL_18;
   }
 
 LABEL_7:
-  if (!CGPathIsEmpty(v4))
+  if (!CGPathIsEmpty(newPathFromCurrentBitmap))
   {
-    BoundingBox = CGPathGetBoundingBox(v4);
+    BoundingBox = CGPathGetBoundingBox(newPathFromCurrentBitmap);
     width = BoundingBox.size.width;
     height = BoundingBox.size.height;
     [(AKSmoothPathView *)self convertRect:0 toView:0.0, 0.0, 1.0, 1.0];
     if (width * v18 > 2.0 || height * v17 > 2.0)
     {
       v20 = v14 | [(AKSmoothPathView *)self prestrokedOutputMode];
-      v21 = [(AKSmoothPathView *)self delegate];
-      v22 = v21;
+      delegate = [(AKSmoothPathView *)self delegate];
+      v22 = delegate;
       if (v20 == 1)
       {
-        [v21 inputView:self didCollectPrestrokedPath:v4];
+        [delegate inputView:self didCollectPrestrokedPath:newPathFromCurrentBitmap];
       }
 
       else
       {
-        [v21 inputView:self didCollectPath:v4];
+        [delegate inputView:self didCollectPath:newPathFromCurrentBitmap];
       }
     }
   }
 
 LABEL_18:
-  CGPathRelease(v4);
+  CGPathRelease(newPathFromCurrentBitmap);
 
   MEMORY[0x2821F9670](self, sel__clear);
 }
 
-- (void)setPrestrokedOutputMode:(BOOL)a3
+- (void)setPrestrokedOutputMode:(BOOL)mode
 {
-  self->_prestrokedOutputMode = a3;
+  self->_prestrokedOutputMode = mode;
   [(AKSmoothPathView *)self setCurrentWeight:1.0];
 
   MEMORY[0x2821F9670](self, sel__setupFilterChainWithBitmapFifo_);
 }
 
-- (void)setStartedTouchDrawing:(BOOL)a3
+- (void)setStartedTouchDrawing:(BOOL)drawing
 {
-  v3 = a3;
-  if (self->_startedTouchDrawing != a3)
+  drawingCopy = drawing;
+  if (self->_startedTouchDrawing != drawing)
   {
-    self->_startedTouchDrawing = a3;
+    self->_startedTouchDrawing = drawing;
   }
 
-  v4 = [(AKSmoothPathView *)self bitmapFifo];
-  [v4 setIsInLiveDraw:v3];
+  bitmapFifo = [(AKSmoothPathView *)self bitmapFifo];
+  [bitmapFifo setIsInLiveDraw:drawingCopy];
 }
 
-- (void)setStrokeWidth:(double)a3
+- (void)setStrokeWidth:(double)width
 {
-  if (self->_strokeWidth != a3)
+  if (self->_strokeWidth != width)
   {
-    self->_strokeWidth = a3;
-    [(AKSmoothPathView *)self setApplyModelBaseScaleFactorToStroke:fabs(a3 + -1.0) >= 0.0005];
+    self->_strokeWidth = width;
+    [(AKSmoothPathView *)self setApplyModelBaseScaleFactorToStroke:fabs(width + -1.0) >= 0.0005];
     [(AKSmoothPathView *)self _updateInterpolatingFifoLineWidth];
 
     [(AKSmoothPathView *)self updateInterpolatingFifoUnitScale];
   }
 }
 
-- (void)setHasShadow:(BOOL)a3
+- (void)setHasShadow:(BOOL)shadow
 {
-  self->_hasShadow = a3;
+  self->_hasShadow = shadow;
   v4 = 0.0;
-  if (a3)
+  if (shadow)
   {
-    v5 = [(AKSmoothPathView *)self controller];
-    v6 = [v5 currentPageController];
-    [v6 modelBaseScaleFactor];
+    controller = [(AKSmoothPathView *)self controller];
+    currentPageController = [controller currentPageController];
+    [currentPageController modelBaseScaleFactor];
     v4 = v7 * 3.0;
   }
 
@@ -328,28 +328,28 @@ LABEL_18:
 
 - (id)drawing
 {
-  v2 = [(AKSmoothPathView *)self strokeFIFO];
-  v3 = [v2 strokes];
+  strokeFIFO = [(AKSmoothPathView *)self strokeFIFO];
+  strokes = [strokeFIFO strokes];
 
-  return v3;
+  return strokes;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(AKSmoothPathView *)self strokeColor];
-  v9 = [v8 akIsEDR];
-  v10 = [(AKSmoothPathView *)self layer];
-  [v10 setWantsExtendedDynamicRangeContent:v9];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  strokeColor = [(AKSmoothPathView *)self strokeColor];
+  akIsEDR = [strokeColor akIsEDR];
+  layer = [(AKSmoothPathView *)self layer];
+  [layer setWantsExtendedDynamicRangeContent:akIsEDR];
 
-  v11 = [(AKSmoothPathView *)self strokeColor];
-  LODWORD(v9) = [v11 akIsEDR];
-  v12 = [(AKSmoothPathView *)self layer];
-  v13 = v12;
-  if (v9)
+  strokeColor2 = [(AKSmoothPathView *)self strokeColor];
+  LODWORD(akIsEDR) = [strokeColor2 akIsEDR];
+  layer2 = [(AKSmoothPathView *)self layer];
+  v13 = layer2;
+  if (akIsEDR)
   {
     v14 = *MEMORY[0x277CD9DB8];
   }
@@ -359,7 +359,7 @@ LABEL_18:
     v14 = *MEMORY[0x277CD9DC0];
   }
 
-  [v12 setPreferredDynamicRange:v14];
+  [layer2 setPreferredDynamicRange:v14];
 
   [(AKSmoothPathView *)self bounds];
   v16 = v15;
@@ -389,10 +389,10 @@ LABEL_18:
     v71.size.height = v22;
     if (v24 <= CGRectGetHeight(v71) * 0.9)
     {
-      v25 = [(AKSmoothPathView *)self controller];
+      controller = [(AKSmoothPathView *)self controller];
       v26 = v64;
       v27 = y;
-      if ([v25 currentPageIndex] != 0x7FFFFFFFFFFFFFFFLL)
+      if ([controller currentPageIndex] != 0x7FFFFFFFFFFFFFFFLL)
       {
         if ([(AKSmoothPathView *)self hasShadow])
         {
@@ -422,8 +422,8 @@ LABEL_18:
           v26 = v73.size.height;
         }
 
-        v34 = [MEMORY[0x277D75348] clearColor];
-        [v34 set];
+        clearColor = [MEMORY[0x277D75348] clearColor];
+        [clearColor set];
 
         v74.origin.x = x;
         v74.origin.y = v27;
@@ -444,17 +444,17 @@ LABEL_18:
         CGContextSaveGState(v29);
         if ([(AKSmoothPathView *)self prestrokedOutputMode])
         {
-          v35 = [(AKSmoothPathView *)self bitmapFifo];
-          v36 = [v35 currentBitmap];
+          bitmapFifo = [(AKSmoothPathView *)self bitmapFifo];
+          currentBitmap = [bitmapFifo currentBitmap];
 
-          if (v36)
+          if (currentBitmap)
           {
             memset(&v67, 0, sizeof(v67));
-            v37 = [(AKSmoothPathView *)self bitmapFifo];
-            v38 = v37;
-            if (v37)
+            bitmapFifo2 = [(AKSmoothPathView *)self bitmapFifo];
+            v38 = bitmapFifo2;
+            if (bitmapFifo2)
             {
-              [v37 viewToBitmapTransform];
+              [bitmapFifo2 viewToBitmapTransform];
             }
 
             else
@@ -467,8 +467,8 @@ LABEL_18:
             CGAffineTransformInvert(&v66, &transform);
             transform = v66;
             CGContextConcatCTM(v29, &transform);
-            v53 = [(AKSmoothPathView *)self bitmapFifo];
-            [v53 bitmapRectInView];
+            bitmapFifo3 = [(AKSmoothPathView *)self bitmapFifo];
+            [bitmapFifo3 bitmapRectInView];
             transform = v67;
             v79 = CGRectApplyAffineTransform(v78, &transform);
             v54 = v79.origin.x;
@@ -490,9 +490,9 @@ LABEL_18:
             v81.origin.y = v55;
             v81.size.width = v56;
             v81.size.height = v57;
-            CGContextClipToMask(v29, v81, v36);
-            v62 = [(AKSmoothPathView *)self strokeColor];
-            CGContextSetFillColorWithColor(v29, [v62 akCGColorWithHeadroom]);
+            CGContextClipToMask(v29, v81, currentBitmap);
+            strokeColor3 = [(AKSmoothPathView *)self strokeColor];
+            CGContextSetFillColorWithColor(v29, [strokeColor3 akCGColorWithHeadroom]);
 
             v82.origin.x = v58;
             v82.origin.y = v59;
@@ -501,8 +501,8 @@ LABEL_18:
             CGContextFillRect(v29, v82);
           }
 
-          v63 = [(AKSmoothPathView *)self bitmapFifo];
-          [v63 resetDirtyRect];
+          bitmapFifo4 = [(AKSmoothPathView *)self bitmapFifo];
+          [bitmapFifo4 resetDirtyRect];
         }
 
         else
@@ -520,14 +520,14 @@ LABEL_18:
           CGContextSetLineWidth(v29, cachedModelToViewScale * v41);
           if ([(AKSmoothPathView *)self disableSingleDotSpecialCase]|| (v42 = *MEMORY[0x277CBF3A0], v43 = *(MEMORY[0x277CBF3A0] + 8), v44 = *(MEMORY[0x277CBF3A0] + 16), v45 = *(MEMORY[0x277CBF3A0] + 24), [(AKSmoothPathView *)self singleDotRect], v83.origin.x = v46, v83.origin.y = v47, v83.size.width = v48, v83.size.height = v49, v76.origin.x = v42, v76.origin.y = v43, v76.size.width = v44, v76.size.height = v45, CGRectEqualToRect(v76, v83)))
           {
-            v50 = [(AKSmoothPathView *)self interpolatingFIFO];
-            v51 = [v50 path];
+            interpolatingFIFO = [(AKSmoothPathView *)self interpolatingFIFO];
+            path = [interpolatingFIFO path];
 
-            if (v51 && !CGPathIsEmpty(v51))
+            if (path && !CGPathIsEmpty(path))
             {
-              CGContextAddPath(v29, v51);
-              v52 = [(AKSmoothPathView *)self strokeColor];
-              CGContextSetStrokeColorWithColor(v29, [v52 CGColor]);
+              CGContextAddPath(v29, path);
+              strokeColor4 = [(AKSmoothPathView *)self strokeColor];
+              CGContextSetStrokeColorWithColor(v29, [strokeColor4 CGColor]);
 
               CGContextStrokePath(v29);
             }
@@ -558,17 +558,17 @@ LABEL_18:
   [(AKSmoothPathView *)self setDisableSingleDotSpecialCase:0];
   [(AKSmoothPathView *)self setSingleDotCurrentSize:0.2];
   [(AKSmoothPathView *)self setSingleDotRect:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
-  v3 = [(AKSmoothPathView *)self strokeColor];
-  v4 = [v3 akIsEDR];
-  v5 = [(AKSmoothPathView *)self layer];
-  [v5 setWantsExtendedDynamicRangeContent:v4];
+  strokeColor = [(AKSmoothPathView *)self strokeColor];
+  akIsEDR = [strokeColor akIsEDR];
+  layer = [(AKSmoothPathView *)self layer];
+  [layer setWantsExtendedDynamicRangeContent:akIsEDR];
 
-  v6 = [(AKSmoothPathView *)self strokeColor];
-  LODWORD(v4) = [v6 akIsEDR];
-  v7 = [(AKSmoothPathView *)self layer];
-  v8 = v7;
+  strokeColor2 = [(AKSmoothPathView *)self strokeColor];
+  LODWORD(akIsEDR) = [strokeColor2 akIsEDR];
+  layer2 = [(AKSmoothPathView *)self layer];
+  v8 = layer2;
   v9 = *MEMORY[0x277CD9DB8];
-  if (v4)
+  if (akIsEDR)
   {
     v10 = *MEMORY[0x277CD9DB8];
   }
@@ -578,36 +578,36 @@ LABEL_18:
     v10 = *MEMORY[0x277CD9DC0];
   }
 
-  [v7 setPreferredDynamicRange:v10];
+  [layer2 setPreferredDynamicRange:v10];
 
-  v11 = [(AKSmoothPathView *)self layer];
-  v12 = [v11 preferredDynamicRange];
+  layer3 = [(AKSmoothPathView *)self layer];
+  preferredDynamicRange = [layer3 preferredDynamicRange];
 
-  if (v12 == v9)
+  if (preferredDynamicRange == v9)
   {
     v13 = *MEMORY[0x277CDA0D0];
-    v14 = [(AKSmoothPathView *)self layer];
-    [v14 setContentsFormat:v13];
+    layer4 = [(AKSmoothPathView *)self layer];
+    [layer4 setContentsFormat:v13];
   }
 
   [(AKSmoothPathView *)self _effectiveStrokeWidthInModel];
   self->_cachedEffectiveStrokeWidthInModel = v15;
-  v16 = self;
-  v17 = v16;
+  selfCopy = self;
+  v17 = selfCopy;
   v18 = 1.0;
-  if (v16->_applyModelBaseScaleFactorToStroke)
+  if (selfCopy->_applyModelBaseScaleFactorToStroke)
   {
-    v19 = [(AKSmoothPathView *)v16 controller];
-    v20 = [v19 currentPageController];
-    [v20 convertRectFromModelToOverlay:{0.0, 0.0, 1.0, 1.0}];
+    controller = [(AKSmoothPathView *)selfCopy controller];
+    currentPageController = [controller currentPageController];
+    [currentPageController convertRectFromModelToOverlay:{0.0, 0.0, 1.0, 1.0}];
     v22 = v21;
     v24 = v23;
     v26 = v25;
     v28 = v27;
 
-    v29 = [v19 currentPageController];
-    v30 = [v29 overlayView];
-    [v30 convertRect:v17 toView:{v22, v24, v26, v28}];
+    currentPageController2 = [controller currentPageController];
+    overlayView = [currentPageController2 overlayView];
+    [overlayView convertRect:v17 toView:{v22, v24, v26, v28}];
     v18 = v31;
     v33 = v32;
 
@@ -619,21 +619,21 @@ LABEL_18:
 
   v17[52] = v18;
   [v17 setStartedTouchDrawing:1];
-  v34 = [v17 delegate];
+  delegate = [v17 delegate];
   v35 = objc_opt_respondsToSelector();
 
   if (v35)
   {
-    v36 = [v17 delegate];
-    [v36 inputViewWillStartDrawing:v17];
+    delegate2 = [v17 delegate];
+    [delegate2 inputViewWillStartDrawing:v17];
   }
 }
 
 - (void)continueStrokeWithoutSmoothing:(AKSmoothPathView *)self
 {
   [(AKSmoothPathView *)self setIsAddingPointWithoutSmoothing:1, v2];
-  v4 = [(CHQuadCurvePointFIFO *)self->_interpolatingFIFO emissionHandler];
-  (v4)[2](v4, &v5, 1, 0, 0);
+  emissionHandler = [(CHQuadCurvePointFIFO *)self->_interpolatingFIFO emissionHandler];
+  (emissionHandler)[2](emissionHandler, &v5, 1, 0, 0);
 
   [(AKSmoothPathView *)self setIsAddingPointWithoutSmoothing:0];
 }
@@ -652,29 +652,29 @@ LABEL_18:
   dispatch_after(v3, MEMORY[0x277D85CD0], block);
 }
 
-- (void)handleTapAction:(id)a3
+- (void)handleTapAction:(id)action
 {
-  v4 = a3;
-  if ([v4 state] == 3)
+  actionCopy = action;
+  if ([actionCopy state] == 3)
   {
     [(AKSmoothPathView *)self startStroke];
-    [(AKSmoothPathView *)self _pointForRecognizer:v4];
+    [(AKSmoothPathView *)self _pointForRecognizer:actionCopy];
     [(AKSmoothPathView *)self continueStrokeWithoutSmoothing:?];
     [(AKSmoothPathView *)self terminateStroke];
   }
 }
 
-- (BOOL)_catchUpAccumulatedTouchesForRecognizer:(id)a3
+- (BOOL)_catchUpAccumulatedTouchesForRecognizer:(id)recognizer
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 accumulatedTouches];
-  [v4 resetAccumulatedTouches];
+  recognizerCopy = recognizer;
+  accumulatedTouches = [recognizerCopy accumulatedTouches];
+  [recognizerCopy resetAccumulatedTouches];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = v5;
+  v6 = accumulatedTouches;
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
@@ -702,13 +702,13 @@ LABEL_18:
   return v10;
 }
 
-- (void)handleDragAction:(id)a3
+- (void)handleDragAction:(id)action
 {
-  v6 = a3;
-  v4 = [v6 state];
-  if (v4 > 3)
+  actionCopy = action;
+  state = [actionCopy state];
+  if (state > 3)
   {
-    if ((v4 - 4) >= 2)
+    if ((state - 4) >= 2)
     {
       goto LABEL_13;
     }
@@ -716,19 +716,19 @@ LABEL_18:
     goto LABEL_8;
   }
 
-  switch(v4)
+  switch(state)
   {
     case 1:
       [(AKSmoothPathView *)self startStroke];
-      v5 = [(AKSmoothPathView *)self _catchUpAccumulatedTouchesForRecognizer:v6];
+      v5 = [(AKSmoothPathView *)self _catchUpAccumulatedTouchesForRecognizer:actionCopy];
       break;
     case 2:
-      v5 = [(AKSmoothPathView *)self _catchUpAccumulatedTouchesForRecognizer:v6];
+      v5 = [(AKSmoothPathView *)self _catchUpAccumulatedTouchesForRecognizer:actionCopy];
       break;
     case 3:
-      if (![(AKSmoothPathView *)self _catchUpAccumulatedTouchesForRecognizer:v6])
+      if (![(AKSmoothPathView *)self _catchUpAccumulatedTouchesForRecognizer:actionCopy])
       {
-        [(AKSmoothPathView *)self _pointForRecognizer:v6];
+        [(AKSmoothPathView *)self _pointForRecognizer:actionCopy];
         [(AKSmoothPathView *)self continueStroke:?];
       }
 
@@ -741,14 +741,14 @@ LABEL_8:
 
   if (!v5)
   {
-    [(AKSmoothPathView *)self _pointForRecognizer:v6];
+    [(AKSmoothPathView *)self _pointForRecognizer:actionCopy];
     [(AKSmoothPathView *)self continueStroke:?];
   }
 
 LABEL_13:
 }
 
-- (double)weightForValue:(double)a3
+- (double)weightForValue:(double)value
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -761,10 +761,10 @@ LABEL_13:
   }
 
   v4 = (*&qword_27E39B788 - *&qword_27E39B780) / (*&qword_27E39B778 - *&qword_27E39B770);
-  v5 = *&qword_27E39B780 + v4 * (a3 - *&qword_27E39B770);
+  v5 = *&qword_27E39B780 + v4 * (value - *&qword_27E39B770);
   if (v5 <= *&qword_27E39B788)
   {
-    v6 = *&qword_27E39B780 + v4 * (a3 - *&qword_27E39B770);
+    v6 = *&qword_27E39B780 + v4 * (value - *&qword_27E39B770);
   }
 
   else
@@ -791,13 +791,13 @@ LABEL_13:
   [(AKSmoothPathView *)self setNeedsDisplay];
 }
 
-- (void)_setupShadowInContext:(CGContext *)a3
+- (void)_setupShadowInContext:(CGContext *)context
 {
-  v17 = [(AKSmoothPathView *)self controller];
-  v5 = [v17 currentPageController];
-  v6 = [v5 currentModelToScreenExifOrientation];
+  controller = [(AKSmoothPathView *)self controller];
+  currentPageController = [controller currentPageController];
+  currentModelToScreenExifOrientation = [currentPageController currentModelToScreenExifOrientation];
 
-  v7 = [AKGeometryHelper inverseExifOrientation:v6];
+  v7 = [AKGeometryHelper inverseExifOrientation:currentModelToScreenExifOrientation];
   [(AKSmoothPathView *)self shadowRadiusInModel];
   [AKGeometryHelper adjustPoint:v7 forExifOrientation:0.0 aboutCenter:-v8, *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
   v10 = v9;
@@ -805,10 +805,10 @@ LABEL_13:
   [(AKSmoothPathView *)self shadowRadiusInModel];
   v14 = v13;
   v15 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.3];
-  v16 = [v15 CGColor];
+  cGColor = [v15 CGColor];
   v19.width = v10;
   v19.height = v12;
-  CGContextSetShadowWithColor(a3, v19, v14, v16);
+  CGContextSetShadowWithColor(context, v19, v14, cGColor);
 }
 
 - (void)_updateShadowRadiusInView
@@ -826,14 +826,14 @@ LABEL_13:
   }
 
   [(AKSmoothPathView *)self setShadowRadiusInView:v5];
-  v7 = [(AKSmoothPathView *)self bitmapFifo];
+  bitmapFifo = [(AKSmoothPathView *)self bitmapFifo];
 
-  if (v7)
+  if (bitmapFifo)
   {
     [(AKSmoothPathView *)self shadowRadiusInView];
     v9 = v8;
-    v10 = [(AKSmoothPathView *)self bitmapFifo];
-    [v10 setShadowRadiusInView:v9];
+    bitmapFifo2 = [(AKSmoothPathView *)self bitmapFifo];
+    [bitmapFifo2 setShadowRadiusInView:v9];
   }
 }
 
@@ -843,9 +843,9 @@ LABEL_13:
   v4 = v3;
   if (self->_applyModelBaseScaleFactorToStroke)
   {
-    v5 = [(AKSmoothPathView *)self controller];
-    v6 = [v5 currentPageController];
-    [v6 modelBaseScaleFactor];
+    controller = [(AKSmoothPathView *)self controller];
+    currentPageController = [controller currentPageController];
+    [currentPageController modelBaseScaleFactor];
     v8 = v7;
 
     if (v8 > 0.0)
@@ -857,30 +857,30 @@ LABEL_13:
   return v4;
 }
 
-- (double)_convertValueFromModelToSelf:(double)a3
+- (double)_convertValueFromModelToSelf:(double)self
 {
-  v5 = [(AKSmoothPathView *)self controller];
+  controller = [(AKSmoothPathView *)self controller];
   v6 = *MEMORY[0x277CBF348];
   v7 = *(MEMORY[0x277CBF348] + 8);
-  v8 = [v5 currentPageController];
-  [v8 convertPointFromModelToOverlay:{a3, 0.0}];
+  currentPageController = [controller currentPageController];
+  [currentPageController convertPointFromModelToOverlay:{self, 0.0}];
   v10 = v9;
   v12 = v11;
 
-  v13 = [v5 currentPageController];
-  [v13 convertPointFromModelToOverlay:{v6, v7}];
+  currentPageController2 = [controller currentPageController];
+  [currentPageController2 convertPointFromModelToOverlay:{v6, v7}];
   v15 = v14;
   v17 = v16;
 
-  v18 = [v5 currentPageController];
-  v19 = [v18 overlayView];
-  [v19 convertPoint:self toView:{v10, v12}];
+  currentPageController3 = [controller currentPageController];
+  overlayView = [currentPageController3 overlayView];
+  [overlayView convertPoint:self toView:{v10, v12}];
   v21 = v20;
   v23 = v22;
 
-  v24 = [v5 currentPageController];
-  v25 = [v24 overlayView];
-  [v25 convertPoint:self toView:{v15, v17}];
+  currentPageController4 = [controller currentPageController];
+  overlayView2 = [currentPageController4 overlayView];
+  [overlayView2 convertPoint:self toView:{v15, v17}];
   v27 = v26;
   v29 = v28;
 
@@ -899,13 +899,13 @@ LABEL_13:
   return v32;
 }
 
-- (__n128)_pointForTouch:(void *)a3
+- (__n128)_pointForTouch:(void *)touch
 {
-  v4 = a3;
-  [v4 locationInView:a1];
+  touchCopy = touch;
+  [touchCopy locationInView:self];
   v6 = v5;
   v8 = v7;
-  [v4 maximumPossibleForce];
+  [touchCopy maximumPossibleForce];
   if (v9 == 0.0)
   {
     v14 = 1.0;
@@ -913,14 +913,14 @@ LABEL_13:
 
   else
   {
-    [v4 force];
+    [touchCopy force];
     v11 = v10;
-    [v4 maximumPossibleForce];
-    [a1 weightForValue:v11 / v12];
+    [touchCopy maximumPossibleForce];
+    [self weightForValue:v11 / v12];
     v14 = v13;
   }
 
-  [a1 setCurrentWeight:v14];
+  [self setCurrentWeight:v14];
   *&v15 = v6;
   *&v16 = v8;
   *&v17 = v14;
@@ -931,16 +931,16 @@ LABEL_13:
   return v20;
 }
 
-- (__n128)_pointForRecognizer:(void *)a3
+- (__n128)_pointForRecognizer:(void *)recognizer
 {
-  v4 = a3;
-  [v4 locationInView:a1];
+  recognizerCopy = recognizer;
+  [recognizerCopy locationInView:self];
   v6 = v5;
   v8 = v7;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v4 currentMaxWeight];
+    [recognizerCopy currentMaxWeight];
     if (v9 == 0.0)
     {
       v14 = 1.0;
@@ -948,10 +948,10 @@ LABEL_13:
 
     else
     {
-      [v4 currentWeight];
+      [recognizerCopy currentWeight];
       v11 = v10;
-      [v4 currentMaxWeight];
-      [a1 weightForValue:v11 / v12];
+      [recognizerCopy currentMaxWeight];
+      [self weightForValue:v11 / v12];
       v14 = v13;
     }
   }
@@ -968,7 +968,7 @@ LABEL_13:
     }
   }
 
-  [a1 setCurrentWeight:v14];
+  [self setCurrentWeight:v14];
   *&v17 = v6;
   *&v18 = v8;
   *&v19 = v14;
@@ -981,21 +981,21 @@ LABEL_13:
 
 - (double)_windowBackingScaleFactor
 {
-  v3 = [(AKSmoothPathView *)self window];
-  v4 = [v3 screen];
+  window = [(AKSmoothPathView *)self window];
+  screen = [window screen];
 
-  if (v4)
+  if (screen)
   {
-    v5 = [(AKSmoothPathView *)self window];
-    v6 = [v5 screen];
-    [v6 scale];
+    window2 = [(AKSmoothPathView *)self window];
+    screen2 = [window2 screen];
+    [screen2 scale];
     v8 = v7;
   }
 
   else
   {
-    v5 = [MEMORY[0x277D759A0] mainScreen];
-    [v5 scale];
+    window2 = [MEMORY[0x277D759A0] mainScreen];
+    [window2 scale];
     v8 = v9;
   }
 
@@ -1014,8 +1014,8 @@ LABEL_13:
     v3 = v7;
   }
 
-  v8 = [(AKSmoothPathView *)self interpolatingFIFO];
-  [v8 setLineWidth:v3];
+  interpolatingFIFO = [(AKSmoothPathView *)self interpolatingFIFO];
+  [interpolatingFIFO setLineWidth:v3];
 }
 
 - (AKController)controller

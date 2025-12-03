@@ -1,31 +1,31 @@
 @interface ICDocCamPhotoCaptureDelegate
-- (ICDocCamPhotoCaptureDelegate)initWithRequestedPhotoSettings:(id)a3 willCapturePhotoAnimation:(id)a4 completed:(id)a5;
-- (float)sharpnessForImageBuffer:(__CVBuffer *)a3;
-- (void)captureOutput:(id)a3 didFinishCaptureForResolvedSettings:(id)a4 error:(id)a5;
-- (void)captureOutput:(id)a3 didFinishProcessingLivePhotoToMovieFileAtURL:(id)a4 duration:(id *)a5 photoDisplayTime:(id *)a6 resolvedSettings:(id)a7 error:(id)a8;
-- (void)captureOutput:(id)a3 didFinishProcessingPhoto:(id)a4 error:(id)a5;
-- (void)captureOutput:(id)a3 willCapturePhotoForResolvedSettings:(id)a4;
+- (ICDocCamPhotoCaptureDelegate)initWithRequestedPhotoSettings:(id)settings willCapturePhotoAnimation:(id)animation completed:(id)completed;
+- (float)sharpnessForImageBuffer:(__CVBuffer *)buffer;
+- (void)captureOutput:(id)output didFinishCaptureForResolvedSettings:(id)settings error:(id)error;
+- (void)captureOutput:(id)output didFinishProcessingLivePhotoToMovieFileAtURL:(id)l duration:(id *)duration photoDisplayTime:(id *)time resolvedSettings:(id)settings error:(id)error;
+- (void)captureOutput:(id)output didFinishProcessingPhoto:(id)photo error:(id)error;
+- (void)captureOutput:(id)output willCapturePhotoForResolvedSettings:(id)settings;
 - (void)dealloc;
 - (void)didFinish;
-- (void)setPbRef:(__CVBuffer *)a3;
+- (void)setPbRef:(__CVBuffer *)ref;
 @end
 
 @implementation ICDocCamPhotoCaptureDelegate
 
-- (ICDocCamPhotoCaptureDelegate)initWithRequestedPhotoSettings:(id)a3 willCapturePhotoAnimation:(id)a4 completed:(id)a5
+- (ICDocCamPhotoCaptureDelegate)initWithRequestedPhotoSettings:(id)settings willCapturePhotoAnimation:(id)animation completed:(id)completed
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  settingsCopy = settings;
+  animationCopy = animation;
+  completedCopy = completed;
   v15.receiver = self;
   v15.super_class = ICDocCamPhotoCaptureDelegate;
   v11 = [(ICDocCamPhotoCaptureDelegate *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    [(ICDocCamPhotoCaptureDelegate *)v11 setRequestedPhotoSettings:v8];
-    [(ICDocCamPhotoCaptureDelegate *)v12 setWillCapturePhotoAnimation:v9];
-    [(ICDocCamPhotoCaptureDelegate *)v12 setCompleted:v10];
+    [(ICDocCamPhotoCaptureDelegate *)v11 setRequestedPhotoSettings:settingsCopy];
+    [(ICDocCamPhotoCaptureDelegate *)v12 setWillCapturePhotoAnimation:animationCopy];
+    [(ICDocCamPhotoCaptureDelegate *)v12 setCompleted:completedCopy];
     v13 = objc_alloc_init(MEMORY[0x277CBEB38]);
     [(ICDocCamPhotoCaptureDelegate *)v12 setImageAttributes:v13];
   }
@@ -44,68 +44,68 @@
 
 - (void)didFinish
 {
-  v3 = [(ICDocCamPhotoCaptureDelegate *)self completed];
-  v4 = [(ICDocCamPhotoCaptureDelegate *)self pbRef];
-  v5 = [(ICDocCamPhotoCaptureDelegate *)self metaData];
-  v6 = [(ICDocCamPhotoCaptureDelegate *)self imageAttributes];
-  (v3)[2](v3, self, v4, v5, v6);
+  completed = [(ICDocCamPhotoCaptureDelegate *)self completed];
+  pbRef = [(ICDocCamPhotoCaptureDelegate *)self pbRef];
+  metaData = [(ICDocCamPhotoCaptureDelegate *)self metaData];
+  imageAttributes = [(ICDocCamPhotoCaptureDelegate *)self imageAttributes];
+  (completed)[2](completed, self, pbRef, metaData, imageAttributes);
 
   [(ICDocCamPhotoCaptureDelegate *)self setRequestedPhotoSettings:0];
 
   [(ICDocCamPhotoCaptureDelegate *)self setPbRef:0];
 }
 
-- (void)setPbRef:(__CVBuffer *)a3
+- (void)setPbRef:(__CVBuffer *)ref
 {
   pbRef = self->_pbRef;
-  if (pbRef != a3)
+  if (pbRef != ref)
   {
     CVPixelBufferRelease(pbRef);
-    self->_pbRef = CVPixelBufferRetain(a3);
+    self->_pbRef = CVPixelBufferRetain(ref);
   }
 }
 
-- (void)captureOutput:(id)a3 willCapturePhotoForResolvedSettings:(id)a4
+- (void)captureOutput:(id)output willCapturePhotoForResolvedSettings:(id)settings
 {
-  v4 = [(ICDocCamPhotoCaptureDelegate *)self willCapturePhotoAnimation:a3];
+  v4 = [(ICDocCamPhotoCaptureDelegate *)self willCapturePhotoAnimation:output];
   v4[2]();
 }
 
-- (void)captureOutput:(id)a3 didFinishProcessingPhoto:(id)a4 error:(id)a5
+- (void)captureOutput:(id)output didFinishProcessingPhoto:(id)photo error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  outputCopy = output;
+  photoCopy = photo;
+  errorCopy = error;
+  if (errorCopy)
   {
     v11 = os_log_create("com.apple.documentcamera", "");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [(ICDocCamPhotoCaptureDelegate *)v10 captureOutput:v11 didFinishProcessingPhoto:v12 error:v13, v14, v15, v16, v17];
+      [(ICDocCamPhotoCaptureDelegate *)errorCopy captureOutput:v11 didFinishProcessingPhoto:v12 error:v13, v14, v15, v16, v17];
     }
 
     goto LABEL_5;
   }
 
-  v18 = [v9 pixelBuffer];
-  v19 = [(ICDocCamPhotoCaptureDelegate *)self requestedPhotoSettings];
-  if ([v19 isConstantColorEnabled])
+  pixelBuffer = [photoCopy pixelBuffer];
+  requestedPhotoSettings = [(ICDocCamPhotoCaptureDelegate *)self requestedPhotoSettings];
+  if ([requestedPhotoSettings isConstantColorEnabled])
   {
-    v20 = [(ICDocCamPhotoCaptureDelegate *)self requestedPhotoSettings];
-    if ([v20 isConstantColorFallbackPhotoDeliveryEnabled])
+    requestedPhotoSettings2 = [(ICDocCamPhotoCaptureDelegate *)self requestedPhotoSettings];
+    if ([requestedPhotoSettings2 isConstantColorFallbackPhotoDeliveryEnabled])
     {
-      v21 = [v8 isFlashScene];
+      isFlashScene = [outputCopy isFlashScene];
     }
 
     else
     {
-      v21 = 0;
+      isFlashScene = 0;
     }
 
-    v22 = [v9 isConstantColorFallbackPhoto];
-    if (v21)
+    isConstantColorFallbackPhoto = [photoCopy isConstantColorFallbackPhoto];
+    if (isFlashScene)
     {
-      if (v22)
+      if (isConstantColorFallbackPhoto)
       {
         if ([(ICDocCamPhotoCaptureDelegate *)self constantColorDeliveredOriginalPhoto])
         {
@@ -118,9 +118,9 @@
               [ICDocCamPhotoCaptureDelegate captureOutput:? didFinishProcessingPhoto:? error:?];
             }
 
-            v18 = [(ICDocCamPhotoCaptureDelegate *)self pbRef];
-            v25 = [(ICDocCamPhotoCaptureDelegate *)self imageAttributes];
-            [v25 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"constantColorPhoto"];
+            pixelBuffer = [(ICDocCamPhotoCaptureDelegate *)self pbRef];
+            imageAttributes = [(ICDocCamPhotoCaptureDelegate *)self imageAttributes];
+            [imageAttributes setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"constantColorPhoto"];
           }
         }
 
@@ -131,32 +131,32 @@
       {
         if ([(ICDocCamPhotoCaptureDelegate *)self constantColorDeliveredFallBackPhoto])
         {
-          [v9 constantColorCenterWeightedMeanConfidenceLevel];
+          [photoCopy constantColorCenterWeightedMeanConfidenceLevel];
           v32 = v31;
           if (v31 < 0.9)
           {
             v33 = os_log_create("com.apple.documentcamera", "");
             if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
             {
-              [ICDocCamPhotoCaptureDelegate captureOutput:v9 didFinishProcessingPhoto:? error:?];
+              [ICDocCamPhotoCaptureDelegate captureOutput:photoCopy didFinishProcessingPhoto:? error:?];
             }
 
-            v18 = [(ICDocCamPhotoCaptureDelegate *)self pbRef];
+            pixelBuffer = [(ICDocCamPhotoCaptureDelegate *)self pbRef];
           }
 
           v34 = [MEMORY[0x277CCABB0] numberWithBool:v32 >= 0.9];
-          v35 = [(ICDocCamPhotoCaptureDelegate *)self imageAttributes];
-          [v35 setObject:v34 forKeyedSubscript:@"constantColorPhoto"];
+          imageAttributes2 = [(ICDocCamPhotoCaptureDelegate *)self imageAttributes];
+          [imageAttributes2 setObject:v34 forKeyedSubscript:@"constantColorPhoto"];
         }
 
-        [v9 constantColorCenterWeightedMeanConfidenceLevel];
+        [photoCopy constantColorCenterWeightedMeanConfidenceLevel];
         [(ICDocCamPhotoCaptureDelegate *)self setConstantColorCenterWeightedMeanConfidenceLevel:?];
         [(ICDocCamPhotoCaptureDelegate *)self setConstantColorDeliveredOriginalPhoto:1];
       }
 
-      [(ICDocCamPhotoCaptureDelegate *)self sharpnessForImageBuffer:v18];
-      [(ICDocCamPhotoCaptureDelegate *)self setPbRef:v18];
-      v36 = CMCopyDictionaryOfAttachments(0, v18, 1u);
+      [(ICDocCamPhotoCaptureDelegate *)self sharpnessForImageBuffer:pixelBuffer];
+      [(ICDocCamPhotoCaptureDelegate *)self setPbRef:pixelBuffer];
+      v36 = CMCopyDictionaryOfAttachments(0, pixelBuffer, 1u);
       [(ICDocCamPhotoCaptureDelegate *)self setMetaData:v36];
 
       goto LABEL_5;
@@ -166,16 +166,16 @@
   else
   {
 
-    [v9 isConstantColorFallbackPhoto];
+    [photoCopy isConstantColorFallbackPhoto];
   }
 
-  [(ICDocCamPhotoCaptureDelegate *)self sharpnessForImageBuffer:v18];
+  [(ICDocCamPhotoCaptureDelegate *)self sharpnessForImageBuffer:pixelBuffer];
   v27 = v26;
   [(ICDocCamPhotoCaptureDelegate *)self highestSharpness];
   if (v27 > v28)
   {
-    [(ICDocCamPhotoCaptureDelegate *)self setPbRef:v18];
-    v29 = CMCopyDictionaryOfAttachments(0, v18, 1u);
+    [(ICDocCamPhotoCaptureDelegate *)self setPbRef:pixelBuffer];
+    v29 = CMCopyDictionaryOfAttachments(0, pixelBuffer, 1u);
     [(ICDocCamPhotoCaptureDelegate *)self setMetaData:v29];
 
     *&v30 = v27;
@@ -185,43 +185,43 @@
 LABEL_5:
 }
 
-- (void)captureOutput:(id)a3 didFinishProcessingLivePhotoToMovieFileAtURL:(id)a4 duration:(id *)a5 photoDisplayTime:(id *)a6 resolvedSettings:(id)a7 error:(id)a8
+- (void)captureOutput:(id)output didFinishProcessingLivePhotoToMovieFileAtURL:(id)l duration:(id *)duration photoDisplayTime:(id *)time resolvedSettings:(id)settings error:(id)error
 {
-  v8 = a8;
-  if (v8)
+  errorCopy = error;
+  if (errorCopy)
   {
     v9 = os_log_create("com.apple.documentcamera", "");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [(ICDocCamPhotoCaptureDelegate *)v8 captureOutput:v9 didFinishProcessingLivePhotoToMovieFileAtURL:v10 duration:v11 photoDisplayTime:v12 resolvedSettings:v13 error:v14, v15];
+      [(ICDocCamPhotoCaptureDelegate *)errorCopy captureOutput:v9 didFinishProcessingLivePhotoToMovieFileAtURL:v10 duration:v11 photoDisplayTime:v12 resolvedSettings:v13 error:v14, v15];
     }
   }
 }
 
-- (void)captureOutput:(id)a3 didFinishCaptureForResolvedSettings:(id)a4 error:(id)a5
+- (void)captureOutput:(id)output didFinishCaptureForResolvedSettings:(id)settings error:(id)error
 {
-  v6 = a5;
-  if (v6)
+  errorCopy = error;
+  if (errorCopy)
   {
     v7 = os_log_create("com.apple.documentcamera", "");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [(ICDocCamPhotoCaptureDelegate *)v6 captureOutput:v7 didFinishProcessingPhoto:v8 error:v9, v10, v11, v12, v13];
+      [(ICDocCamPhotoCaptureDelegate *)errorCopy captureOutput:v7 didFinishProcessingPhoto:v8 error:v9, v10, v11, v12, v13];
     }
   }
 
   [(ICDocCamPhotoCaptureDelegate *)self didFinish];
 }
 
-- (float)sharpnessForImageBuffer:(__CVBuffer *)a3
+- (float)sharpnessForImageBuffer:(__CVBuffer *)buffer
 {
   v21 = *MEMORY[0x277D85DE8];
-  CVPixelBufferLockBaseAddress(a3, 1uLL);
-  WidthOfPlane = CVPixelBufferGetWidthOfPlane(a3, 0);
-  HeightOfPlane = CVPixelBufferGetHeightOfPlane(a3, 0);
+  CVPixelBufferLockBaseAddress(buffer, 1uLL);
+  WidthOfPlane = CVPixelBufferGetWidthOfPlane(buffer, 0);
+  HeightOfPlane = CVPixelBufferGetHeightOfPlane(buffer, 0);
   v6 = HeightOfPlane * WidthOfPlane;
-  BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(a3, 0);
-  BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(a3, 0);
+  BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(buffer, 0);
+  BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(buffer, 0);
   src.data = BaseAddressOfPlane;
   src.height = HeightOfPlane;
   src.width = WidthOfPlane;
@@ -265,7 +265,7 @@ LABEL_5:
     }
   }
 
-  CVPixelBufferUnlockBaseAddress(a3, 1uLL);
+  CVPixelBufferUnlockBaseAddress(buffer, 1uLL);
   return *&__StandardDeviation;
 }
 

@@ -1,16 +1,16 @@
 @interface TSWPEquationBaseRep
-+ (void)drawErrorIconWithSize:(CGSize)a3 context:(CGContext *)a4;
-+ (void)drawWarningIconWithSize:(CGSize)a3 context:(CGContext *)a4;
-+ (void)p_drawErrorIcon:(CGPDFDocument *)a3 size:(CGSize)a4 context:(CGContext *)a5;
++ (void)drawErrorIconWithSize:(CGSize)size context:(CGContext *)context;
++ (void)drawWarningIconWithSize:(CGSize)size context:(CGContext *)context;
++ (void)p_drawErrorIcon:(CGPDFDocument *)icon size:(CGSize)size context:(CGContext *)context;
 @end
 
 @implementation TSWPEquationBaseRep
 
-+ (void)p_drawErrorIcon:(CGPDFDocument *)a3 size:(CGSize)a4 context:(CGContext *)a5
++ (void)p_drawErrorIcon:(CGPDFDocument *)icon size:(CGSize)size context:(CGContext *)context
 {
-  if (a3)
+  if (icon)
   {
-    Page = CGPDFDocumentGetPage(a3, 1uLL);
+    Page = CGPDFDocumentGetPage(icon, 1uLL);
     if (Page)
     {
       v7 = Page;
@@ -19,8 +19,8 @@
       v11 = v10;
       v13 = v12;
       v15 = v14;
-      CGContextSaveGState(a5);
-      CGContextSetShouldAntialias(a5, 1);
+      CGContextSaveGState(context);
+      CGContextSetShouldAntialias(context, 1);
       v35.origin.x = v9;
       v35.origin.y = v11;
       v35.size.width = v13;
@@ -31,8 +31,8 @@
       v36.size.width = v13;
       v36.size.height = v15;
       MaxY = CGRectGetMaxY(v36);
-      CGContextTranslateCTM(a5, 0.0, MinY + MaxY);
-      CGContextScaleCTM(a5, 1.0, -1.0);
+      CGContextTranslateCTM(context, 0.0, MinY + MaxY);
+      CGContextScaleCTM(context, 1.0, -1.0);
       v33 = 0u;
       v34 = 0u;
       v32 = 0u;
@@ -56,17 +56,17 @@
         v27 = 0u;
         TSDComputeDrawTransformForPDFPage();
         memset(&v26, 0, sizeof(v26));
-        CGContextConcatCTM(a5, &v26);
+        CGContextConcatCTM(context, &v26);
         CGContextClipToRectSafe();
-        CGContextDrawPDFPage(a5, v7);
+        CGContextDrawPDFPage(context, v7);
       }
 
-      CGContextRestoreGState(a5);
+      CGContextRestoreGState(context);
     }
   }
 }
 
-+ (void)drawErrorIconWithSize:(CGSize)a3 context:(CGContext *)a4
++ (void)drawErrorIconWithSize:(CGSize)size context:(CGContext *)context
 {
   if (qword_280A58280 != -1)
   {
@@ -75,10 +75,10 @@
 
   v5 = qword_280A58278;
 
-  MEMORY[0x2821F9670](a1, sel_p_drawErrorIcon_size_context_, v5);
+  MEMORY[0x2821F9670](self, sel_p_drawErrorIcon_size_context_, v5);
 }
 
-+ (void)drawWarningIconWithSize:(CGSize)a3 context:(CGContext *)a4
++ (void)drawWarningIconWithSize:(CGSize)size context:(CGContext *)context
 {
   if (qword_280A58290 != -1)
   {
@@ -87,7 +87,7 @@
 
   v5 = qword_280A58288;
 
-  MEMORY[0x2821F9670](a1, sel_p_drawErrorIcon_size_context_, v5);
+  MEMORY[0x2821F9670](self, sel_p_drawErrorIcon_size_context_, v5);
 }
 
 @end

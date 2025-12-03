@@ -1,24 +1,24 @@
 @interface ILMessageFilterReportRequest
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRequest:(id)a3;
-- (ILMessageFilterReportRequest)initWithCoder:(id)a3;
-- (ILMessageFilterReportRequest)initWithExtensionIdentifier:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRequest:(id)request;
+- (ILMessageFilterReportRequest)initWithCoder:(id)coder;
+- (ILMessageFilterReportRequest)initWithExtensionIdentifier:(id)identifier;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ILMessageFilterReportRequest
 
-- (ILMessageFilterReportRequest)initWithExtensionIdentifier:(id)a3
+- (ILMessageFilterReportRequest)initWithExtensionIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = ILMessageFilterReportRequest;
   v5 = [(ILMessageFilterReportRequest *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     extensionIdentifier = v5->_extensionIdentifier;
     v5->_extensionIdentifier = v6;
   }
@@ -30,71 +30,71 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(ILMessageFilterReportRequest *)self extensionIdentifier];
-  v6 = [(ILMessageFilterReportRequest *)self sender];
-  v7 = [v3 stringWithFormat:@"<%@ %p extensionIdentifier=%@ sender=%@ suggestedAction=%ld>", v4, self, v5, v6, -[ILMessageFilterReportRequest suggestedAction](self, "suggestedAction")];
+  extensionIdentifier = [(ILMessageFilterReportRequest *)self extensionIdentifier];
+  sender = [(ILMessageFilterReportRequest *)self sender];
+  v7 = [v3 stringWithFormat:@"<%@ %p extensionIdentifier=%@ sender=%@ suggestedAction=%ld>", v4, self, extensionIdentifier, sender, -[ILMessageFilterReportRequest suggestedAction](self, "suggestedAction")];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(ILMessageFilterReportRequest *)self isEqualToRequest:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(ILMessageFilterReportRequest *)self isEqualToRequest:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToRequest:(id)a3
+- (BOOL)isEqualToRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(ILMessageFilterReportRequest *)self extensionIdentifier];
-  v6 = [v4 extensionIdentifier];
-  if ([v5 isEqualToString:v6])
+  requestCopy = request;
+  extensionIdentifier = [(ILMessageFilterReportRequest *)self extensionIdentifier];
+  extensionIdentifier2 = [requestCopy extensionIdentifier];
+  if ([extensionIdentifier isEqualToString:extensionIdentifier2])
   {
-    v7 = [(ILMessageFilterReportRequest *)self sender];
-    v8 = [v4 sender];
-    if (v8)
+    sender = [(ILMessageFilterReportRequest *)self sender];
+    sender2 = [requestCopy sender];
+    if (sender2)
     {
-      if ([v7 isEqualToString:v8])
+      if ([sender isEqualToString:sender2])
       {
         goto LABEL_4;
       }
     }
 
-    else if (!v7)
+    else if (!sender)
     {
 LABEL_4:
-      v9 = [(ILMessageFilterReportRequest *)self messageBody];
-      v10 = [v4 messageBody];
-      if (v10)
+      messageBody = [(ILMessageFilterReportRequest *)self messageBody];
+      messageBody2 = [requestCopy messageBody];
+      if (messageBody2)
       {
-        if ([v9 isEqualToString:v10])
+        if ([messageBody isEqualToString:messageBody2])
         {
           goto LABEL_6;
         }
       }
 
-      else if (!v9)
+      else if (!messageBody)
       {
 LABEL_6:
-        v11 = [(ILMessageFilterReportRequest *)self receiverISOCountryCode];
-        v12 = [v4 receiverISOCountryCode];
-        if (v12)
+        receiverISOCountryCode = [(ILMessageFilterReportRequest *)self receiverISOCountryCode];
+        receiverISOCountryCode2 = [requestCopy receiverISOCountryCode];
+        if (receiverISOCountryCode2)
         {
-          if ([v11 isEqualToString:v12])
+          if ([receiverISOCountryCode isEqualToString:receiverISOCountryCode2])
           {
 LABEL_8:
-            v13 = [(ILMessageFilterReportRequest *)self suggestedAction];
-            v14 = v13 == [v4 suggestedAction];
+            suggestedAction = [(ILMessageFilterReportRequest *)self suggestedAction];
+            v14 = suggestedAction == [requestCopy suggestedAction];
 LABEL_16:
 
             goto LABEL_17;
           }
         }
 
-        else if (!v11)
+        else if (!receiverISOCountryCode)
         {
           goto LABEL_8;
         }
@@ -123,76 +123,76 @@ LABEL_19:
 
 - (unint64_t)hash
 {
-  v3 = [(ILMessageFilterReportRequest *)self extensionIdentifier];
-  v4 = [v3 hash];
-  v5 = [(ILMessageFilterReportRequest *)self sender];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(ILMessageFilterReportRequest *)self messageBody];
-  v8 = [v7 hash];
-  v9 = [(ILMessageFilterReportRequest *)self receiverISOCountryCode];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(ILMessageFilterReportRequest *)self suggestedAction];
+  extensionIdentifier = [(ILMessageFilterReportRequest *)self extensionIdentifier];
+  v4 = [extensionIdentifier hash];
+  sender = [(ILMessageFilterReportRequest *)self sender];
+  v6 = [sender hash] ^ v4;
+  messageBody = [(ILMessageFilterReportRequest *)self messageBody];
+  v8 = [messageBody hash];
+  receiverISOCountryCode = [(ILMessageFilterReportRequest *)self receiverISOCountryCode];
+  v10 = v6 ^ v8 ^ [receiverISOCountryCode hash];
+  suggestedAction = [(ILMessageFilterReportRequest *)self suggestedAction];
 
-  return v10 ^ v11;
+  return v10 ^ suggestedAction;
 }
 
-- (ILMessageFilterReportRequest)initWithCoder:(id)a3
+- (ILMessageFilterReportRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_extensionIdentifier);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
 
   v8 = [(ILMessageFilterReportRequest *)self initWithExtensionIdentifier:v7];
   if (v8)
   {
     v9 = objc_opt_class();
     v10 = NSStringFromSelector(sel_sender);
-    v11 = [v4 decodeObjectOfClass:v9 forKey:v10];
+    v11 = [coderCopy decodeObjectOfClass:v9 forKey:v10];
     sender = v8->_sender;
     v8->_sender = v11;
 
     v13 = objc_opt_class();
     v14 = NSStringFromSelector(sel_messageBody);
-    v15 = [v4 decodeObjectOfClass:v13 forKey:v14];
+    v15 = [coderCopy decodeObjectOfClass:v13 forKey:v14];
     messageBody = v8->_messageBody;
     v8->_messageBody = v15;
 
     v17 = objc_opt_class();
     v18 = NSStringFromSelector(sel_receiverISOCountryCode);
-    v19 = [v4 decodeObjectOfClass:v17 forKey:v18];
+    v19 = [coderCopy decodeObjectOfClass:v17 forKey:v18];
     receiverISOCountryCode = v8->_receiverISOCountryCode;
     v8->_receiverISOCountryCode = v19;
 
     v21 = NSStringFromSelector(sel_suggestedAction);
-    v8->_suggestedAction = [v4 decodeIntegerForKey:v21];
+    v8->_suggestedAction = [coderCopy decodeIntegerForKey:v21];
   }
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ILMessageFilterReportRequest *)self extensionIdentifier];
+  coderCopy = coder;
+  extensionIdentifier = [(ILMessageFilterReportRequest *)self extensionIdentifier];
   v6 = NSStringFromSelector(sel_extensionIdentifier);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:extensionIdentifier forKey:v6];
 
-  v7 = [(ILMessageFilterReportRequest *)self sender];
+  sender = [(ILMessageFilterReportRequest *)self sender];
   v8 = NSStringFromSelector(sel_sender);
-  [v4 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:sender forKey:v8];
 
-  v9 = [(ILMessageFilterReportRequest *)self messageBody];
+  messageBody = [(ILMessageFilterReportRequest *)self messageBody];
   v10 = NSStringFromSelector(sel_messageBody);
-  [v4 encodeObject:v9 forKey:v10];
+  [coderCopy encodeObject:messageBody forKey:v10];
 
-  v11 = [(ILMessageFilterReportRequest *)self receiverISOCountryCode];
+  receiverISOCountryCode = [(ILMessageFilterReportRequest *)self receiverISOCountryCode];
   v12 = NSStringFromSelector(sel_receiverISOCountryCode);
-  [v4 encodeObject:v11 forKey:v12];
+  [coderCopy encodeObject:receiverISOCountryCode forKey:v12];
 
-  v13 = [(ILMessageFilterReportRequest *)self suggestedAction];
+  suggestedAction = [(ILMessageFilterReportRequest *)self suggestedAction];
   v14 = NSStringFromSelector(sel_suggestedAction);
-  [v4 encodeInteger:v13 forKey:v14];
+  [coderCopy encodeInteger:suggestedAction forKey:v14];
 }
 
 @end

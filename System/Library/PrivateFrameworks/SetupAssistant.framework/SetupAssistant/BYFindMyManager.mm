@@ -36,7 +36,7 @@
 
   v5 = v4;
   _Block_object_dispose(&v23, 8);
-  v6 = [v4 sharedInstance];
+  sharedInstance = [v4 sharedInstance];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __34__BYFindMyManager_isFindMyEnabled__block_invoke;
@@ -44,7 +44,7 @@
   v13 = &v14;
   v7 = v2;
   v12 = v7;
-  [v6 fmipStateWithCompletion:v11];
+  [sharedInstance fmipStateWithCompletion:v11];
 
   dispatch_semaphore_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
   v8 = _BYLoggingFacility();

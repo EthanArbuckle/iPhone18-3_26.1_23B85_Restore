@@ -1,13 +1,13 @@
 @interface IMThemePageDynamic
-- (BOOL)isNight:(id)a3;
+- (BOOL)isNight:(id)night;
 @end
 
 @implementation IMThemePageDynamic
 
-- (BOOL)isNight:(id)a3
+- (BOOL)isNight:(id)night
 {
-  v3 = [a3 traitCollection];
-  v4 = [v3 userInterfaceStyle] == &dword_0 + 2;
+  traitCollection = [night traitCollection];
+  v4 = [traitCollection userInterfaceStyle] == &dword_0 + 2;
 
   return v4;
 }

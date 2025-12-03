@@ -2,7 +2,7 @@
 - (BOOL)_allItemsHidden;
 - (BOOL)_canvasConnectionConstraintsNeedUpdatePass;
 - (BOOL)_hasStaleConfiguration;
-- (BOOL)_itemWantsLayoutAsIfVisible:(id)a3;
+- (BOOL)_itemWantsLayoutAsIfVisible:(id)visible;
 - (BOOL)_spanningGuideConstraintsNeedUpdate;
 - (NSArray)items;
 - (NSString)description;
@@ -10,39 +10,39 @@
 - (_UILAConfigurationHistory)_configurationHistory;
 - (_UILAPropertySource)_propertySource;
 - (_UILayoutArrangement)init;
-- (_UILayoutArrangement)initWithItems:(id)a3;
-- (_UILayoutArrangement)initWithItems:(id)a3 onAxis:(int64_t)a4;
+- (_UILayoutArrangement)initWithItems:(id)items;
+- (_UILayoutArrangement)initWithItems:(id)items onAxis:(int64_t)axis;
 - (float)_spanningLayoutGuideFittingPriority;
 - (id)_spanningLayoutGuideCreateIfNecessary;
-- (id)_viewOrGuideForLocationAttribute:(int64_t)a3;
+- (id)_viewOrGuideForLocationAttribute:(int64_t)attribute;
 - (int64_t)_axisForSpanningLayoutGuide;
 - (int64_t)_centerAttributeForCanvasConnections;
 - (int64_t)_dimensionAttributeForCurrentAxis;
 - (int64_t)_minAttributeForCanvasConnections;
-- (unint64_t)_indexOfItemForLocationAttribute:(int64_t)a3;
+- (unint64_t)_indexOfItemForLocationAttribute:(int64_t)attribute;
 - (void)_clearAllConstraintsArrays;
 - (void)_clearCanvasConnectionConstraints;
 - (void)_createSpanningLayoutGuide;
 - (void)_createUnanimatedConfigurationTargetIfNecessary;
-- (void)_hasBaselineChangedNotification:(id)a3;
+- (void)_hasBaselineChangedNotification:(id)notification;
 - (void)_hasBaselineChangedNotificationRequirementDidChange;
-- (void)_invalidateBaselineConstraint:(id)a3;
+- (void)_invalidateBaselineConstraint:(id)constraint;
 - (void)_registerAnimationRequest;
 - (void)_removeSpanningLayoutGuide;
-- (void)_respondToChangesWithIncomingItem:(id)a3 outgoingItem:(id)a4 newlyHiddenItem:(id)a5 newlyUnhiddenItem:(id)a6;
-- (void)_setAxis:(int64_t)a3 notify:(BOOL)a4;
-- (void)_setLayoutFillsCanvas:(BOOL)a3 notify:(BOOL)a4;
-- (void)_setLayoutUsesCanvasMarginsWhenFilling:(BOOL)a3 notify:(BOOL)a4;
-- (void)_trackChangesWithConfigBlock:(id)a3;
+- (void)_respondToChangesWithIncomingItem:(id)item outgoingItem:(id)outgoingItem newlyHiddenItem:(id)hiddenItem newlyUnhiddenItem:(id)unhiddenItem;
+- (void)_setAxis:(int64_t)axis notify:(BOOL)notify;
+- (void)_setLayoutFillsCanvas:(BOOL)canvas notify:(BOOL)notify;
+- (void)_setLayoutUsesCanvasMarginsWhenFilling:(BOOL)filling notify:(BOOL)notify;
+- (void)_trackChangesWithConfigBlock:(id)block;
 - (void)_updateArrangementConstraints;
 - (void)_updateCanvasConnectionConstraintsIfNecessary;
 - (void)_updateConfigurationHistory;
 - (void)_updateSpanningLayoutGuideConstraintsIfNecessary;
-- (void)_visibilityParameterChangedForItem:(id)a3;
-- (void)addItem:(id)a3;
-- (void)insertItem:(id)a3 atIndex:(unint64_t)a4;
-- (void)removeItem:(id)a3;
-- (void)setCanvas:(id)a3;
+- (void)_visibilityParameterChangedForItem:(id)item;
+- (void)addItem:(id)item;
+- (void)insertItem:(id)item atIndex:(unint64_t)index;
+- (void)removeItem:(id)item;
+- (void)setCanvas:(id)canvas;
 @end
 
 @implementation _UILayoutArrangement
@@ -78,8 +78,8 @@
 {
   if (!self->_unanimatedConfigurationTarget)
   {
-    v6 = [(_UILayoutArrangement *)self _configurationHistory];
-    v4 = [v6 copy];
+    _configurationHistory = [(_UILayoutArrangement *)self _configurationHistory];
+    v4 = [_configurationHistory copy];
     unanimatedConfigurationTarget = self->_unanimatedConfigurationTarget;
     self->_unanimatedConfigurationTarget = v4;
   }
@@ -94,11 +94,11 @@
     v5 = self->_configurationHistory;
     self->_configurationHistory = v4;
 
-    v6 = [(_UILAConfigurationHistory *)self->_configurationHistory _newlyHiddenItems];
-    [v6 unionSet:self->_newlyHiddenItems];
+    _newlyHiddenItems = [(_UILAConfigurationHistory *)self->_configurationHistory _newlyHiddenItems];
+    [_newlyHiddenItems unionSet:self->_newlyHiddenItems];
 
-    v7 = [(_UILAConfigurationHistory *)self->_configurationHistory _newlyUnhiddenItems];
-    [v7 unionSet:self->_newlyUnhiddenItems];
+    _newlyUnhiddenItems = [(_UILAConfigurationHistory *)self->_configurationHistory _newlyUnhiddenItems];
+    [_newlyUnhiddenItems unionSet:self->_newlyUnhiddenItems];
 
     configurationHistory = self->_configurationHistory;
   }
@@ -159,18 +159,18 @@
 
 - (void)_updateArrangementConstraints
 {
-  v3 = [(_UILayoutArrangement *)self _configurationHistory];
-  [v3 setInLayoutArrangementUpdateSection:1];
+  _configurationHistory = [(_UILayoutArrangement *)self _configurationHistory];
+  [_configurationHistory setInLayoutArrangementUpdateSection:1];
   [(_UILayoutArrangement *)self _updateSpanningLayoutGuideConstraintsIfNecessary];
   [(_UILayoutArrangement *)self _updateCanvasConnectionConstraintsIfNecessary];
   [(_UILayoutArrangement *)self _updateConfigurationHistory];
-  [v3 setInLayoutArrangementUpdateSection:0];
+  [_configurationHistory setInLayoutArrangementUpdateSection:0];
 }
 
 - (BOOL)_canvasConnectionConstraintsNeedUpdatePass
 {
-  v3 = [(_UILayoutArrangement *)self _propertySource];
-  if (!-[_UILAConfigurationHistory hasEstablishedBaseValues](self->_configurationHistory, "hasEstablishedBaseValues") && [v3 layoutFillsCanvas] && -[NSMutableArray count](self->_mutableItems, "count"))
+  _propertySource = [(_UILayoutArrangement *)self _propertySource];
+  if (!-[_UILAConfigurationHistory hasEstablishedBaseValues](self->_configurationHistory, "hasEstablishedBaseValues") && [_propertySource layoutFillsCanvas] && -[NSMutableArray count](self->_mutableItems, "count"))
   {
     goto LABEL_10;
   }
@@ -181,19 +181,19 @@
     goto LABEL_12;
   }
 
-  v4 = [(_UILAConfigurationHistory *)self->_configurationHistory layoutFillsCanvas];
-  if (v4 == [v3 layoutFillsCanvas] && (v5 = -[_UILAConfigurationHistory layoutUsesCanvasMarginsWhenFilling](self->_configurationHistory, "layoutUsesCanvasMarginsWhenFilling"), v5 == objc_msgSend(v3, "layoutUsesCanvasMarginsWhenFilling")) && (v6 = -[_UILAConfigurationHistory axis](self->_configurationHistory, "axis"), v6 == objc_msgSend(v3, "axis")) && !-[NSMutableSet count](self->_incomingItems, "count") && !-[NSMutableSet count](self->_outgoingItems, "count"))
+  layoutFillsCanvas = [(_UILAConfigurationHistory *)self->_configurationHistory layoutFillsCanvas];
+  if (layoutFillsCanvas == [_propertySource layoutFillsCanvas] && (v5 = -[_UILAConfigurationHistory layoutUsesCanvasMarginsWhenFilling](self->_configurationHistory, "layoutUsesCanvasMarginsWhenFilling"), v5 == objc_msgSend(_propertySource, "layoutUsesCanvasMarginsWhenFilling")) && (v6 = -[_UILAConfigurationHistory axis](self->_configurationHistory, "axis"), v6 == objc_msgSend(_propertySource, "axis")) && !-[NSMutableSet count](self->_incomingItems, "count") && !-[NSMutableSet count](self->_outgoingItems, "count"))
   {
-    v9 = [v3 _newlyUnhiddenItems];
-    if ([v9 count])
+    _newlyUnhiddenItems = [_propertySource _newlyUnhiddenItems];
+    if ([_newlyUnhiddenItems count])
     {
       v7 = 1;
     }
 
     else
     {
-      v10 = [v3 _newlyHiddenItems];
-      v7 = [v10 count] != 0;
+      _newlyHiddenItems = [_propertySource _newlyHiddenItems];
+      v7 = [_newlyHiddenItems count] != 0;
     }
   }
 
@@ -215,15 +215,15 @@ LABEL_12:
     return;
   }
 
-  v3 = [(_UILayoutArrangement *)self _propertySource];
-  v4 = [v3 layoutUsesCanvasMarginsWhenFilling];
-  v5 = [(_UILayoutArrangement *)self canvas];
-  v6 = v5;
-  if (v4)
+  _propertySource = [(_UILayoutArrangement *)self _propertySource];
+  layoutUsesCanvasMarginsWhenFilling = [_propertySource layoutUsesCanvasMarginsWhenFilling];
+  canvas = [(_UILayoutArrangement *)self canvas];
+  v6 = canvas;
+  if (layoutUsesCanvasMarginsWhenFilling)
   {
-    v7 = [v5 layoutMarginsGuide];
+    layoutMarginsGuide = [canvas layoutMarginsGuide];
 
-    v6 = v7;
+    v6 = layoutMarginsGuide;
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -234,20 +234,20 @@ LABEL_12:
   v45 = v6;
   v53 = v45;
   v51 = _Block_copy(aBlock);
-  v8 = [(_UILayoutArrangement *)self _usesCenteringConnectionConstraint];
-  v9 = [(_UILayoutArrangement *)self _minAttributeForCanvasConnections];
-  v48 = _UILAFacingAttributeOfAttribute(v9);
-  v10 = [v3 layoutFillsCanvas];
-  v11 = v10;
-  v49 = v8;
+  _usesCenteringConnectionConstraint = [(_UILayoutArrangement *)self _usesCenteringConnectionConstraint];
+  _minAttributeForCanvasConnections = [(_UILayoutArrangement *)self _minAttributeForCanvasConnections];
+  v48 = _UILAFacingAttributeOfAttribute(_minAttributeForCanvasConnections);
+  layoutFillsCanvas = [_propertySource layoutFillsCanvas];
+  v11 = layoutFillsCanvas;
+  v49 = _usesCenteringConnectionConstraint;
   v12 = 2;
-  if (v8)
+  if (_usesCenteringConnectionConstraint)
   {
     v12 = 3;
   }
 
   v47 = v12;
-  if (v10)
+  if (layoutFillsCanvas)
   {
     v13 = v12;
   }
@@ -272,7 +272,7 @@ LABEL_12:
     self->_canvasConnectionConstraints = v16;
   }
 
-  v18 = [(_UILayoutArrangement *)self _viewOrGuideForLocationAttribute:v9];
+  v18 = [(_UILayoutArrangement *)self _viewOrGuideForLocationAttribute:_minAttributeForCanvasConnections];
   v19 = v18;
   if (v18)
   {
@@ -285,8 +285,8 @@ LABEL_12:
   }
 
   v44 = v13;
-  v46 = v3;
-  v20 = [(_UILayoutArrangement *)self _configurationRequiresCanvasConnectionFittingConstraint];
+  v46 = _propertySource;
+  _configurationRequiresCanvasConnectionFittingConstraint = [(_UILayoutArrangement *)self _configurationRequiresCanvasConnectionFittingConstraint];
   if (v11)
   {
     v21 = 0;
@@ -303,7 +303,7 @@ LABEL_12:
         v23 = [(NSMutableArray *)self->_canvasConnectionConstraints objectAtIndex:v21];
       }
 
-      v24 = v51[2](v51, v23, v9, v19);
+      v24 = v51[2](v51, v23, _minAttributeForCanvasConnections, v19);
       v25 = v24;
       if (v23)
       {
@@ -312,10 +312,10 @@ LABEL_12:
           [(NSMutableArray *)self->_canvasConnectionConstraints replaceObjectAtIndex:v21 withObject:v24];
         }
 
-        if (!v20)
+        if (!_configurationRequiresCanvasConnectionFittingConstraint)
         {
 LABEL_28:
-          v20 = [v25 relation] != 0;
+          _configurationRequiresCanvasConnectionFittingConstraint = [v25 relation] != 0;
           goto LABEL_29;
         }
       }
@@ -323,32 +323,32 @@ LABEL_28:
       else
       {
         [(NSMutableArray *)self->_canvasConnectionConstraints addObject:v24];
-        if (!v20)
+        if (!_configurationRequiresCanvasConnectionFittingConstraint)
         {
           goto LABEL_28;
         }
       }
 
-      v20 = 1;
+      _configurationRequiresCanvasConnectionFittingConstraint = 1;
 LABEL_29:
       if (v21)
       {
-        v9 = 0;
+        _minAttributeForCanvasConnections = 0;
       }
 
       else
       {
-        v9 = v48;
+        _minAttributeForCanvasConnections = v48;
       }
 
       if (v21 != 0 && v49)
       {
-        v9 = [(_UILayoutArrangement *)self _centerAttributeForCanvasConnections];
+        _minAttributeForCanvasConnections = [(_UILayoutArrangement *)self _centerAttributeForCanvasConnections];
       }
 
-      if (v9)
+      if (_minAttributeForCanvasConnections)
       {
-        v26 = [(_UILayoutArrangement *)self _viewOrGuideForLocationAttribute:v9];
+        v26 = [(_UILayoutArrangement *)self _viewOrGuideForLocationAttribute:_minAttributeForCanvasConnections];
 
         if (!v50 && v26 != 0)
         {
@@ -375,24 +375,24 @@ LABEL_29:
   v26 = v19;
 LABEL_41:
   v27 = v44;
-  if (v20)
+  if (_configurationRequiresCanvasConnectionFittingConstraint)
   {
     v27 = v44 + 1;
     v28 = v15;
     if (v15 == v44 + 1)
     {
-      v29 = [(NSMutableArray *)self->_canvasConnectionConstraints lastObject];
-      v30 = [(_UILayoutArrangement *)self _dimensionAttributeForCurrentAxis];
-      if (v29)
+      lastObject = [(NSMutableArray *)self->_canvasConnectionConstraints lastObject];
+      _dimensionAttributeForCurrentAxis = [(_UILayoutArrangement *)self _dimensionAttributeForCurrentAxis];
+      if (lastObject)
       {
-        v31 = [v29 firstItem];
-        v32 = [(_UILayoutArrangement *)self canvas];
-        v33 = v32;
-        if (v31 == v32)
+        firstItem = [lastObject firstItem];
+        canvas2 = [(_UILayoutArrangement *)self canvas];
+        v33 = canvas2;
+        if (firstItem == canvas2)
         {
-          v35 = [v29 firstAttribute];
+          firstAttribute = [lastObject firstAttribute];
 
-          if (v35 == v30)
+          if (firstAttribute == _dimensionAttributeForCurrentAxis)
           {
 LABEL_54:
 
@@ -406,10 +406,10 @@ LABEL_54:
 
         v34 = 0;
 LABEL_50:
-        [v29 setActive:0];
+        [lastObject setActive:0];
         v36 = MEMORY[0x1E69977A0];
-        v37 = [(_UILayoutArrangement *)self canvas];
-        v38 = [v36 constraintWithItem:v37 attribute:v30 relatedBy:0 constant:0.0];
+        canvas3 = [(_UILayoutArrangement *)self canvas];
+        v38 = [v36 constraintWithItem:canvas3 attribute:_dimensionAttributeForCurrentAxis relatedBy:0 constant:0.0];
 
         LODWORD(v39) = 1111752704;
         [v38 setPriority:v39];
@@ -432,8 +432,8 @@ LABEL_50:
 
     else
     {
-      v30 = [(_UILayoutArrangement *)self _dimensionAttributeForCurrentAxis];
-      v29 = 0;
+      _dimensionAttributeForCurrentAxis = [(_UILayoutArrangement *)self _dimensionAttributeForCurrentAxis];
+      lastObject = 0;
     }
 
     v34 = 1;
@@ -447,8 +447,8 @@ LABEL_55:
     v42 = v41;
     do
     {
-      v43 = [(NSMutableArray *)self->_canvasConnectionConstraints lastObject];
-      [v43 setActive:0];
+      lastObject2 = [(NSMutableArray *)self->_canvasConnectionConstraints lastObject];
+      [lastObject2 setActive:0];
       [(NSMutableArray *)self->_canvasConnectionConstraints removeObjectAtIndex:--v42];
     }
 
@@ -463,28 +463,28 @@ LABEL_55:
 
 - (BOOL)_hasStaleConfiguration
 {
-  v3 = [(_UILayoutArrangement *)self _configurationHistory];
-  v4 = [(_UILayoutArrangement *)self _propertySource];
-  if (!-[NSMutableSet count](self->_incomingItems, "count") && !-[NSMutableSet count](self->_outgoingItems, "count") && [v3 hasEstablishedBaseValues] && (v5 = objc_msgSend(v3, "axis"), v5 == objc_msgSend(v4, "axis")) && (v6 = objc_msgSend(v3, "layoutFillsCanvas"), v6 == objc_msgSend(v4, "layoutFillsCanvas")) && (!objc_msgSend(v4, "layoutFillsCanvas") || (v9 = objc_msgSend(v3, "layoutUsesCanvasMarginsWhenFilling"), v9 == objc_msgSend(v4, "layoutUsesCanvasMarginsWhenFilling"))))
+  _configurationHistory = [(_UILayoutArrangement *)self _configurationHistory];
+  _propertySource = [(_UILayoutArrangement *)self _propertySource];
+  if (!-[NSMutableSet count](self->_incomingItems, "count") && !-[NSMutableSet count](self->_outgoingItems, "count") && [_configurationHistory hasEstablishedBaseValues] && (v5 = objc_msgSend(_configurationHistory, "axis"), v5 == objc_msgSend(_propertySource, "axis")) && (v6 = objc_msgSend(_configurationHistory, "layoutFillsCanvas"), v6 == objc_msgSend(_propertySource, "layoutFillsCanvas")) && (!objc_msgSend(_propertySource, "layoutFillsCanvas") || (v9 = objc_msgSend(_configurationHistory, "layoutUsesCanvasMarginsWhenFilling"), v9 == objc_msgSend(_propertySource, "layoutUsesCanvasMarginsWhenFilling"))))
   {
-    v10 = [v4 _newlyHiddenItems];
-    if ([v10 count])
+    _newlyHiddenItems = [_propertySource _newlyHiddenItems];
+    if ([_newlyHiddenItems count])
     {
       v7 = 1;
     }
 
     else
     {
-      v11 = [v4 _newlyUnhiddenItems];
-      if ([v11 count])
+      _newlyUnhiddenItems = [_propertySource _newlyUnhiddenItems];
+      if ([_newlyUnhiddenItems count])
       {
         v7 = 1;
       }
 
       else
       {
-        v12 = [v4 invalidBaselineConstraints];
-        v7 = [v12 count] != 0;
+        invalidBaselineConstraints = [_propertySource invalidBaselineConstraints];
+        v7 = [invalidBaselineConstraints count] != 0;
       }
     }
   }
@@ -512,10 +512,10 @@ LABEL_55:
 
 - (int64_t)_axisForSpanningLayoutGuide
 {
-  v2 = [(_UILayoutArrangement *)self _propertySource];
-  v3 = [v2 axis];
+  _propertySource = [(_UILayoutArrangement *)self _propertySource];
+  axis = [_propertySource axis];
 
-  return v3;
+  return axis;
 }
 
 - (void)_updateSpanningLayoutGuideConstraintsIfNecessary
@@ -526,14 +526,14 @@ LABEL_55:
     return;
   }
 
-  v3 = [(_UILayoutSpacer *)self->_spanningLayoutGuide _isHorizontal];
-  if ([(_UILayoutArrangement *)self _axisForSpanningLayoutGuide]== v3)
+  _isHorizontal = [(_UILayoutSpacer *)self->_spanningLayoutGuide _isHorizontal];
+  if ([(_UILayoutArrangement *)self _axisForSpanningLayoutGuide]== _isHorizontal)
   {
     [(_UILayoutArrangement *)self _removeSpanningLayoutGuide];
     [(_UILayoutArrangement *)self _createSpanningLayoutGuide];
   }
 
-  v4 = [(UILayoutGuide *)self->_spanningLayoutGuide _systemConstraints];
+  _systemConstraints = [(UILayoutGuide *)self->_spanningLayoutGuide _systemConstraints];
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -552,10 +552,10 @@ LABEL_55:
   v51 = v6;
   v69 = v51;
   v49 = _Block_copy(v68);
-  v48 = [(_UILayoutArrangement *)self _propertySource];
-  v8 = [v48 axis];
-  v9 = [v4 count];
-  if (v8)
+  _propertySource = [(_UILayoutArrangement *)self _propertySource];
+  axis = [_propertySource axis];
+  v9 = [_systemConstraints count];
+  if (axis)
   {
     v10 = 5;
   }
@@ -569,39 +569,39 @@ LABEL_55:
   v12 = [(_UILayoutArrangement *)self _usesInequalitySpanningConstraintForAttribute:v10];
   v13 = [(_UILayoutArrangement *)self _usesInequalitySpanningConstraintForAttribute:v11];
   v14 = v13;
-  v15 = 1;
+  _spanningLayoutGuideAlwaysUsesFittingConstraint = 1;
   if (!v12 && !v13)
   {
-    v15 = [(_UILayoutArrangement *)self _spanningLayoutGuideAlwaysUsesFittingConstraint];
+    _spanningLayoutGuideAlwaysUsesFittingConstraint = [(_UILayoutArrangement *)self _spanningLayoutGuideAlwaysUsesFittingConstraint];
   }
 
-  v53 = v4;
-  if ([(_UILAConfigurationHistory *)self->_configurationHistory axis]== v8 && v9)
+  v53 = _systemConstraints;
+  if ([(_UILAConfigurationHistory *)self->_configurationHistory axis]== axis && v9)
   {
     v52 = [(NSMutableSet *)self->_incomingItems mutableCopy];
-    if ([v4 count])
+    if ([_systemConstraints count])
     {
       v16 = 0;
       v17 = 0;
       v47 = v49 + 2;
-      v50 = v15;
+      v50 = _spanningLayoutGuideAlwaysUsesFittingConstraint;
       while (1)
       {
-        v18 = [v4 objectAtIndex:{v17, v47}];
+        v18 = [_systemConstraints objectAtIndex:{v17, v47}];
         v19 = v18;
         if (v17)
         {
           goto LABEL_16;
         }
 
-        v26 = [v18 secondItem];
+        secondItem = [v18 secondItem];
 
-        if (v26)
+        if (secondItem)
         {
           break;
         }
 
-        if (v15)
+        if (_spanningLayoutGuideAlwaysUsesFittingConstraint)
         {
           [v51 addObject:v19];
         }
@@ -615,28 +615,28 @@ LABEL_55:
         v16 = 1;
 LABEL_34:
 
-        if (v17 >= [v4 count])
+        if (v17 >= [_systemConstraints count])
         {
           goto LABEL_52;
         }
       }
 
-      if (v15)
+      if (_spanningLayoutGuideAlwaysUsesFittingConstraint)
       {
         v49[2]();
       }
 
 LABEL_16:
       v55 = v16;
-      v20 = [v19 secondItem];
-      if ([(NSMutableSet *)self->_outgoingItems containsObject:v20])
+      secondItem2 = [v19 secondItem];
+      if ([(NSMutableSet *)self->_outgoingItems containsObject:secondItem2])
       {
-        [v4 objectAtIndex:++v17];
-        v22 = v21 = v4;
+        [_systemConstraints objectAtIndex:++v17];
+        v22 = v21 = _systemConstraints;
         [v19 setActive:0];
         [v22 setActive:0];
 
-        v4 = v21;
+        _systemConstraints = v21;
       }
 
       else
@@ -657,8 +657,8 @@ LABEL_16:
           v24 = 1;
         }
 
-        v54 = v15 && v23;
-        if (v15 && v23)
+        v54 = _spanningLayoutGuideAlwaysUsesFittingConstraint && v23;
+        if (_spanningLayoutGuideAlwaysUsesFittingConstraint && v23)
         {
           v25 = v24;
         }
@@ -676,12 +676,12 @@ LABEL_16:
         else
         {
           [v19 setActive:0];
-          (v7)[2](v7, v20, (v17 & 1) == v16, v54);
+          (v7)[2](v7, secondItem2, (v17 & 1) == v16, v54);
         }
 
-        [v52 removeObject:v20];
-        v4 = v53;
-        v15 = v50;
+        [v52 removeObject:secondItem2];
+        _systemConstraints = v53;
+        _spanningLayoutGuideAlwaysUsesFittingConstraint = v50;
       }
 
       v16 = v55;
@@ -724,12 +724,12 @@ LABEL_52:
 
   else
   {
-    if ([v4 count])
+    if ([_systemConstraints count])
     {
-      [MEMORY[0x1E69977A0] deactivateConstraints:v4];
+      [MEMORY[0x1E69977A0] deactivateConstraints:_systemConstraints];
     }
 
-    if (v15)
+    if (_spanningLayoutGuideAlwaysUsesFittingConstraint)
     {
       v49[2]();
     }
@@ -742,7 +742,7 @@ LABEL_52:
     v28 = [(NSMutableArray *)v27 countByEnumeratingWithState:&v64 objects:v75 count:16];
     if (!v28)
     {
-      v38 = v4;
+      v38 = _systemConstraints;
       goto LABEL_61;
     }
 
@@ -791,9 +791,9 @@ LABEL_61:
         }
 
         v44 = *(*(&v56 + 1) + 8 * k);
-        v45 = [v44 secondItem];
+        secondItem3 = [v44 secondItem];
         objc_opt_class();
-        v46 = (objc_opt_isKindOfClass() & 1) == 0 || [(_UILayoutArrangement *)self _itemWantsLayoutAsIfVisible:v45];
+        v46 = (objc_opt_isKindOfClass() & 1) == 0 || [(_UILayoutArrangement *)self _itemWantsLayoutAsIfVisible:secondItem3];
         [v44 setActive:v46];
       }
 
@@ -808,36 +808,36 @@ LABEL_61:
 
 - (void)_updateConfigurationHistory
 {
-  v14 = [(_UILayoutArrangement *)self _configurationHistory];
-  v3 = [(_UILayoutArrangement *)self _propertySource];
-  if ([v14 isInLayoutArrangementUpdateSection])
+  _configurationHistory = [(_UILayoutArrangement *)self _configurationHistory];
+  _propertySource = [(_UILayoutArrangement *)self _propertySource];
+  if ([_configurationHistory isInLayoutArrangementUpdateSection])
   {
-    [v14 setHasEstablishedBaseValues:1];
-    [v14 setLayoutFillsCanvas:{objc_msgSend(v3, "layoutFillsCanvas")}];
+    [_configurationHistory setHasEstablishedBaseValues:1];
+    [_configurationHistory setLayoutFillsCanvas:{objc_msgSend(_propertySource, "layoutFillsCanvas")}];
   }
 
   else
   {
     [(NSMutableSet *)self->_incomingItems removeAllObjects];
     [(NSMutableSet *)self->_outgoingItems removeAllObjects];
-    v4 = [v14 _newlyUnhiddenItems];
-    [v4 removeAllObjects];
+    _newlyUnhiddenItems = [_configurationHistory _newlyUnhiddenItems];
+    [_newlyUnhiddenItems removeAllObjects];
 
-    v5 = [v14 _newlyHiddenItems];
-    [v5 removeAllObjects];
+    _newlyHiddenItems = [_configurationHistory _newlyHiddenItems];
+    [_newlyHiddenItems removeAllObjects];
 
-    v6 = [v14 invalidBaselineConstraints];
-    [v6 removeAllObjects];
+    invalidBaselineConstraints = [_configurationHistory invalidBaselineConstraints];
+    [invalidBaselineConstraints removeAllObjects];
 
-    [v14 setAxis:{objc_msgSend(v3, "axis")}];
-    [v14 setLayoutUsesCanvasMarginsWhenFilling:{objc_msgSend(v3, "layoutUsesCanvasMarginsWhenFilling")}];
+    [_configurationHistory setAxis:{objc_msgSend(_propertySource, "axis")}];
+    [_configurationHistory setLayoutUsesCanvasMarginsWhenFilling:{objc_msgSend(_propertySource, "layoutUsesCanvasMarginsWhenFilling")}];
     if (self->_unanimatedConfigurationTarget || (v7 = objc_loadWeakRetained(&self->_canvas), v8 = [v7 _isInAnimatedLayout], v7, (v8 & 1) == 0))
     {
       [(_UILayoutArrangement *)self _setUnanimatedConfigurationTarget:0];
       if (self->_awaitingAnimationLayoutPass)
       {
-        v13 = [(_UILayoutArrangement *)self canvas];
-        [v13 setNeedsLayout];
+        canvas = [(_UILayoutArrangement *)self canvas];
+        [canvas setNeedsLayout];
       }
     }
 
@@ -848,9 +848,9 @@ LABEL_61:
       {
         v10 = WeakRetained;
         v11 = objc_loadWeakRetained(&self->_canvas);
-        v12 = [v11 _isInAnimatedLayout];
+        _isInAnimatedLayout = [v11 _isInAnimatedLayout];
 
-        if (v12)
+        if (_isInAnimatedLayout)
         {
           self->_awaitingAnimationLayoutPass = 0;
         }
@@ -907,8 +907,8 @@ LABEL_61:
   spanningLayoutGuide = self->_spanningLayoutGuide;
   self->_spanningLayoutGuide = v3;
 
-  v5 = [(_UILayoutArrangement *)self _identifierForSpanningLayoutGuide];
-  [(UILayoutGuide *)self->_spanningLayoutGuide setIdentifier:v5];
+  _identifierForSpanningLayoutGuide = [(_UILayoutArrangement *)self _identifierForSpanningLayoutGuide];
+  [(UILayoutGuide *)self->_spanningLayoutGuide setIdentifier:_identifierForSpanningLayoutGuide];
 
   WeakRetained = objc_loadWeakRetained(&self->_canvas);
   if (WeakRetained)
@@ -924,7 +924,7 @@ LABEL_61:
 
 - (BOOL)_spanningGuideConstraintsNeedUpdate
 {
-  v3 = [(_UILayoutArrangement *)self _propertySource];
+  _propertySource = [(_UILayoutArrangement *)self _propertySource];
   if ([(NSMutableSet *)self->_incomingItems count]|| [(NSMutableSet *)self->_outgoingItems count])
   {
     v4 = 1;
@@ -932,27 +932,27 @@ LABEL_61:
 
   else
   {
-    v6 = [v3 _newlyUnhiddenItems];
-    if ([v6 count])
+    _newlyUnhiddenItems = [_propertySource _newlyUnhiddenItems];
+    if ([_newlyUnhiddenItems count])
     {
       v4 = 1;
     }
 
     else
     {
-      v7 = [v3 _newlyHiddenItems];
-      if ([v7 count])
+      _newlyHiddenItems = [_propertySource _newlyHiddenItems];
+      if ([_newlyHiddenItems count])
       {
         v4 = 1;
       }
 
       else
       {
-        v8 = [(UILayoutGuide *)self->_spanningLayoutGuide _systemConstraints];
-        if ([v8 count])
+        _systemConstraints = [(UILayoutGuide *)self->_spanningLayoutGuide _systemConstraints];
+        if ([_systemConstraints count])
         {
-          v9 = [(_UILAConfigurationHistory *)self->_configurationHistory axis];
-          v4 = v9 != [v3 axis];
+          axis = [(_UILAConfigurationHistory *)self->_configurationHistory axis];
+          v4 = axis != [_propertySource axis];
         }
 
         else
@@ -968,9 +968,9 @@ LABEL_61:
 
 - (float)_spanningLayoutGuideFittingPriority
 {
-  v2 = [(_UILayoutArrangement *)self _allItemsHidden];
+  _allItemsHidden = [(_UILayoutArrangement *)self _allItemsHidden];
   result = 51.0;
-  if (v2)
+  if (_allItemsHidden)
   {
     return 0.001;
   }
@@ -980,13 +980,13 @@ LABEL_61:
 
 - (BOOL)_allItemsHidden
 {
-  v3 = [(_UILayoutArrangement *)self items];
-  if ([v3 count])
+  items = [(_UILayoutArrangement *)self items];
+  if ([items count])
   {
-    v4 = [(_UILayoutArrangement *)self items];
-    v5 = [v4 count];
-    v6 = [(_UILayoutArrangement *)self _hiddenItems];
-    v7 = v5 == [v6 count];
+    items2 = [(_UILayoutArrangement *)self items];
+    v5 = [items2 count];
+    _hiddenItems = [(_UILayoutArrangement *)self _hiddenItems];
+    v7 = v5 == [_hiddenItems count];
   }
 
   else
@@ -1006,8 +1006,8 @@ LABEL_61:
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v3 = [(_UILayoutArrangement *)self items];
-    v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    items = [(_UILayoutArrangement *)self items];
+    v4 = [items countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v4)
     {
       v5 = v4;
@@ -1018,15 +1018,15 @@ LABEL_61:
         {
           if (*v16 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(items);
           }
 
           v8 = *(*(&v15 + 1) + 8 * i);
           v9 = [v8 _viewForLoweringBaselineLayoutAttribute:11];
           if ([v9 _isHasBaselinePropertyChangeable])
           {
-            v10 = [MEMORY[0x1E696AD88] defaultCenter];
-            [v10 addObserver:self selector:sel__hasBaselineChangedNotification_ name:@"_UIViewHasBaselinePropertyChanged" object:v9];
+            defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+            [defaultCenter addObserver:self selector:sel__hasBaselineChangedNotification_ name:@"_UIViewHasBaselinePropertyChanged" object:v9];
           }
 
           v11 = [v8 _viewForLoweringBaselineLayoutAttribute:12];
@@ -1035,13 +1035,13 @@ LABEL_61:
           {
             if ([v11 _isHasBaselinePropertyChangeable])
             {
-              v13 = [MEMORY[0x1E696AD88] defaultCenter];
-              [v13 addObserver:self selector:sel__hasBaselineChangedNotification_ name:@"_UIViewHasBaselinePropertyChanged" object:v12];
+              defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+              [defaultCenter2 addObserver:self selector:sel__hasBaselineChangedNotification_ name:@"_UIViewHasBaselinePropertyChanged" object:v12];
             }
           }
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v5 = [items countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v5);
@@ -1050,26 +1050,26 @@ LABEL_61:
 
   else
   {
-    v14 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v14 removeObserver:self name:@"_UIViewHasBaselinePropertyChanged" object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 removeObserver:self name:@"_UIViewHasBaselinePropertyChanged" object:0];
   }
 }
 
-- (void)setCanvas:(id)a3
+- (void)setCanvas:(id)canvas
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  canvasCopy = canvas;
   WeakRetained = objc_loadWeakRetained(&self->_canvas);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != canvasCopy)
   {
-    v6 = self;
+    selfCopy = self;
     v7 = objc_loadWeakRetained(&self->_canvas);
-    [(UIView *)v7 _removeLayoutArrangement:v6];
+    [(UIView *)v7 _removeLayoutArrangement:selfCopy];
 
-    [(UIView *)v4 _addLayoutArrangement:v6];
-    objc_storeWeak(&self->_canvas, v4);
-    [(_UILayoutArrangement *)v6 _clearAllConstraintsArrays];
+    [(UIView *)canvasCopy _addLayoutArrangement:selfCopy];
+    objc_storeWeak(&self->_canvas, canvasCopy);
+    [(_UILayoutArrangement *)selfCopy _clearAllConstraintsArrays];
     v8 = objc_loadWeakRetained(&self->_canvas);
 
     if (v8)
@@ -1078,7 +1078,7 @@ LABEL_61:
       v21 = 0u;
       v18 = 0u;
       v19 = 0u;
-      v9 = v6->_mutableItems;
+      v9 = selfCopy->_mutableItems;
       v10 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v10)
       {
@@ -1115,7 +1115,7 @@ LABEL_61:
       }
     }
 
-    [(_UILayoutArrangement *)v6 _respondToChangesWithIncomingItem:0 outgoingItem:0 newlyHiddenItem:0 newlyUnhiddenItem:0, v18];
+    [(_UILayoutArrangement *)selfCopy _respondToChangesWithIncomingItem:0 outgoingItem:0 newlyHiddenItem:0 newlyUnhiddenItem:0, v18];
   }
 }
 
@@ -1132,9 +1132,9 @@ LABEL_61:
   }
 }
 
-- (void)_trackChangesWithConfigBlock:(id)a3
+- (void)_trackChangesWithConfigBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   [(_UILayoutArrangement *)self _createUnanimatedConfigurationTargetIfNecessary];
   WeakRetained = objc_loadWeakRetained(&self->_canvas);
   v5 = _UILAIsAnimatingOnCanvas(WeakRetained);
@@ -1146,27 +1146,27 @@ LABEL_61:
 
   else
   {
-    v6[2](v6, self->_unanimatedConfigurationTarget);
+    blockCopy[2](blockCopy, self->_unanimatedConfigurationTarget);
   }
 
   [(_UILayoutArrangement *)self _respondToChangesWithIncomingItem:0 outgoingItem:0 newlyHiddenItem:0 newlyUnhiddenItem:0];
 }
 
-- (void)_setAxis:(int64_t)a3 notify:(BOOL)a4
+- (void)_setAxis:(int64_t)axis notify:(BOOL)notify
 {
-  if (self->_axis != a3)
+  if (self->_axis != axis)
   {
     v10[7] = v4;
     v10[8] = v5;
-    v6 = a4;
-    self->_axis = a3;
+    notifyCopy = notify;
+    self->_axis = axis;
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __40___UILayoutArrangement__setAxis_notify___block_invoke;
     v10[3] = &__block_descriptor_40_e35_v16__0___UILAConfigurationHistory_8l;
-    v10[4] = a3;
+    v10[4] = axis;
     [(_UILayoutArrangement *)self _trackChangesWithConfigBlock:v10];
-    if (v6)
+    if (notifyCopy)
     {
       WeakRetained = objc_loadWeakRetained(&self->_canvas);
       _UILANotifyCanvasesOfSizeInvalidationForItemIfNecessary(WeakRetained);
@@ -1177,21 +1177,21 @@ LABEL_61:
   }
 }
 
-- (void)_setLayoutFillsCanvas:(BOOL)a3 notify:(BOOL)a4
+- (void)_setLayoutFillsCanvas:(BOOL)canvas notify:(BOOL)notify
 {
-  if (self->_layoutFillsCanvas != a3)
+  if (self->_layoutFillsCanvas != canvas)
   {
     v11 = v4;
     v12 = v5;
-    v6 = a4;
-    self->_layoutFillsCanvas = a3;
+    notifyCopy = notify;
+    self->_layoutFillsCanvas = canvas;
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __53___UILayoutArrangement__setLayoutFillsCanvas_notify___block_invoke;
     v9[3] = &__block_descriptor_33_e35_v16__0___UILAConfigurationHistory_8l;
-    v10 = a3;
+    canvasCopy = canvas;
     [(_UILayoutArrangement *)self _trackChangesWithConfigBlock:v9];
-    if (v6)
+    if (notifyCopy)
     {
       WeakRetained = objc_loadWeakRetained(&self->_canvas);
       _UILANotifyCanvasesOfSizeInvalidationForItemIfNecessary(WeakRetained);
@@ -1199,21 +1199,21 @@ LABEL_61:
   }
 }
 
-- (void)_setLayoutUsesCanvasMarginsWhenFilling:(BOOL)a3 notify:(BOOL)a4
+- (void)_setLayoutUsesCanvasMarginsWhenFilling:(BOOL)filling notify:(BOOL)notify
 {
-  if (self->_layoutUsesCanvasMarginsWhenFilling != a3)
+  if (self->_layoutUsesCanvasMarginsWhenFilling != filling)
   {
     v11 = v4;
     v12 = v5;
-    v6 = a4;
-    self->_layoutUsesCanvasMarginsWhenFilling = a3;
+    notifyCopy = notify;
+    self->_layoutUsesCanvasMarginsWhenFilling = filling;
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __70___UILayoutArrangement__setLayoutUsesCanvasMarginsWhenFilling_notify___block_invoke;
     v9[3] = &__block_descriptor_33_e35_v16__0___UILAConfigurationHistory_8l;
-    v10 = a3;
+    fillingCopy = filling;
     [(_UILayoutArrangement *)self _trackChangesWithConfigBlock:v9];
-    if (v6)
+    if (notifyCopy)
     {
       WeakRetained = objc_loadWeakRetained(&self->_canvas);
       _UILANotifyCanvasesOfSizeInvalidationForItemIfNecessary(WeakRetained);
@@ -1221,27 +1221,27 @@ LABEL_61:
   }
 }
 
-- (_UILayoutArrangement)initWithItems:(id)a3 onAxis:(int64_t)a4
+- (_UILayoutArrangement)initWithItems:(id)items onAxis:(int64_t)axis
 {
-  result = [(_UILayoutArrangement *)self initWithItems:a3];
+  result = [(_UILayoutArrangement *)self initWithItems:items];
   if (result)
   {
-    result->_axis = a4;
+    result->_axis = axis;
   }
 
   return result;
 }
 
-- (_UILayoutArrangement)initWithItems:(id)a3
+- (_UILayoutArrangement)initWithItems:(id)items
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemsCopy = items;
   v31.receiver = self;
   v31.super_class = _UILayoutArrangement;
   v5 = [(_UILayoutArrangement *)&v31 init];
   if (v5)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [itemsCopy mutableCopy];
     mutableItems = v5->_mutableItems;
     v5->_mutableItems = v6;
 
@@ -1261,7 +1261,7 @@ LABEL_61:
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v14 = v4;
+    v14 = itemsCopy;
     v15 = [v14 countByEnumeratingWithState:&v27 objects:v32 count:16];
     if (v15)
     {
@@ -1330,35 +1330,35 @@ LABEL_61:
   return 0;
 }
 
-- (void)addItem:(id)a3
+- (void)addItem:(id)item
 {
-  v8 = a3;
+  itemCopy = item;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v5 = v8;
-  if (v8 && (isKindOfClass & 1) != 0)
+  v5 = itemCopy;
+  if (itemCopy && (isKindOfClass & 1) != 0)
   {
     mutableItems = self->_mutableItems;
-    v7 = v8;
+    v7 = itemCopy;
     [(_UILayoutArrangement *)self insertItem:v7 atIndex:[(NSMutableArray *)mutableItems count]];
 
-    v5 = v8;
+    v5 = itemCopy;
   }
 }
 
-- (void)insertItem:(id)a3 atIndex:(unint64_t)a4
+- (void)insertItem:(id)item atIndex:(unint64_t)index
 {
-  v24 = a3;
-  if (a4 == 0x7FFFFFFFFFFFFFFFLL || [(NSMutableArray *)self->_mutableItems count]< a4)
+  itemCopy = item;
+  if (index == 0x7FFFFFFFFFFFFFFFLL || [(NSMutableArray *)self->_mutableItems count]< index)
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"_UILayoutArrangement.m" lineNumber:462 description:@"index for item in layout arrangement is out of bounds"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UILayoutArrangement.m" lineNumber:462 description:@"index for item in layout arrangement is out of bounds"];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v24;
+    v7 = itemCopy;
   }
 
   else
@@ -1380,16 +1380,16 @@ LABEL_61:
       if ((v12 & 1) == 0)
       {
         p_mutableItems = &self->_mutableItems;
-        [(NSMutableArray *)self->_mutableItems insertObject:v8 atIndex:a4];
+        [(NSMutableArray *)self->_mutableItems insertObject:v8 atIndex:index];
         v19 = v8;
-        v18 = v24;
-        if (a4 != 0x7FFFFFFFFFFFFFFFLL)
+        v18 = itemCopy;
+        if (index != 0x7FFFFFFFFFFFFFFFLL)
         {
           goto LABEL_18;
         }
 
         v20 = [(NSMutableArray *)*p_mutableItems indexOfObject:v19];
-        v18 = v24;
+        v18 = itemCopy;
         if (v20 == 0x7FFFFFFFFFFFFFFFLL)
         {
           goto LABEL_18;
@@ -1397,21 +1397,21 @@ LABEL_61:
 
         v15 = v20;
         v17 = 1;
-        v18 = v24;
+        v18 = itemCopy;
         goto LABEL_16;
       }
     }
 
     p_mutableItems = &self->_mutableItems;
     v14 = [(NSMutableArray *)self->_mutableItems indexOfObject:v8];
-    if (v14 != a4)
+    if (v14 != index)
     {
       v15 = v14;
       if (v14 == 0x7FFFFFFFFFFFFFFFLL)
       {
         v16 = v8;
         v17 = 0;
-        v18 = v24;
+        v18 = itemCopy;
         goto LABEL_17;
       }
 
@@ -1420,7 +1420,7 @@ LABEL_61:
 LABEL_16:
       [(NSMutableArray *)*p_mutableItems removeObjectAtIndex:v15];
 LABEL_17:
-      [(NSMutableArray *)*p_mutableItems insertObject:v8 atIndex:((__PAIR128__(a4, [(NSMutableArray *)*p_mutableItems count]) - a4) >> 64)];
+      [(NSMutableArray *)*p_mutableItems insertObject:v8 atIndex:((__PAIR128__(index, [(NSMutableArray *)*p_mutableItems count]) - index) >> 64)];
       if (!v17)
       {
 LABEL_19:
@@ -1450,15 +1450,15 @@ LABEL_18:
 LABEL_23:
 }
 
-- (void)removeItem:(id)a3
+- (void)removeItem:(id)item
 {
-  v8 = a3;
+  itemCopy = item;
   v4 = [(NSMutableArray *)self->_mutableItems indexOfObject:?];
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = v4;
     objc_opt_class();
-    v6 = (objc_opt_isKindOfClass() & 1) != 0 ? v8 : 0;
+    v6 = (objc_opt_isKindOfClass() & 1) != 0 ? itemCopy : 0;
     v7 = v6;
     [(NSMutableArray *)self->_mutableItems removeObjectAtIndex:v5];
     if (v7)
@@ -1468,62 +1468,62 @@ LABEL_23:
   }
 }
 
-- (void)_visibilityParameterChangedForItem:(id)a3
+- (void)_visibilityParameterChangedForItem:(id)item
 {
-  v9 = a3;
-  v4 = [(NSMutableArray *)self->_mutableItems indexOfObject:v9];
-  v5 = v9;
+  itemCopy = item;
+  v4 = [(NSMutableArray *)self->_mutableItems indexOfObject:itemCopy];
+  v5 = itemCopy;
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = [v9 _la_isVisible];
-    v7 = [(NSMutableSet *)self->_hiddenItems containsObject:v9];
+    _la_isVisible = [itemCopy _la_isVisible];
+    v7 = [(NSMutableSet *)self->_hiddenItems containsObject:itemCopy];
     v8 = v7;
-    if (v6 && v7)
+    if (_la_isVisible && v7)
     {
-      [(NSMutableSet *)self->_hiddenItems removeObject:v9];
-      [(_UILayoutArrangement *)self _respondToChangesWithIncomingItem:0 outgoingItem:0 newlyHiddenItem:0 newlyUnhiddenItem:v9];
+      [(NSMutableSet *)self->_hiddenItems removeObject:itemCopy];
+      [(_UILayoutArrangement *)self _respondToChangesWithIncomingItem:0 outgoingItem:0 newlyHiddenItem:0 newlyUnhiddenItem:itemCopy];
     }
 
-    v5 = v9;
-    if (((v6 | v8) & 1) == 0)
+    v5 = itemCopy;
+    if (((_la_isVisible | v8) & 1) == 0)
     {
-      [(NSMutableSet *)self->_hiddenItems addObject:v9];
-      [(_UILayoutArrangement *)self _respondToChangesWithIncomingItem:0 outgoingItem:0 newlyHiddenItem:v9 newlyUnhiddenItem:0];
-      v5 = v9;
+      [(NSMutableSet *)self->_hiddenItems addObject:itemCopy];
+      [(_UILayoutArrangement *)self _respondToChangesWithIncomingItem:0 outgoingItem:0 newlyHiddenItem:itemCopy newlyUnhiddenItem:0];
+      v5 = itemCopy;
     }
   }
 }
 
-- (BOOL)_itemWantsLayoutAsIfVisible:(id)a3
+- (BOOL)_itemWantsLayoutAsIfVisible:(id)visible
 {
-  v4 = a3;
-  v5 = [(_UILayoutArrangement *)self _propertySource];
-  v6 = [v4 _la_isVisible];
+  visibleCopy = visible;
+  _propertySource = [(_UILayoutArrangement *)self _propertySource];
+  _la_isVisible = [visibleCopy _la_isVisible];
   v7 = 0;
-  v8 = v6 ^ 1;
-  if (((v6 ^ 1) & 1) == 0 && v5 != self)
+  v8 = _la_isVisible ^ 1;
+  if (((_la_isVisible ^ 1) & 1) == 0 && _propertySource != self)
   {
-    v9 = [(_UILayoutArrangement *)v5 _newlyUnhiddenItems];
-    if ([v9 containsObject:v4])
+    _newlyUnhiddenItems = [(_UILayoutArrangement *)_propertySource _newlyUnhiddenItems];
+    if ([_newlyUnhiddenItems containsObject:visibleCopy])
     {
       v7 = 0;
     }
 
     else
     {
-      v10 = [(_UILayoutArrangement *)self _newlyUnhiddenItems];
-      v7 = [v10 containsObject:v4];
+      _newlyUnhiddenItems2 = [(_UILayoutArrangement *)self _newlyUnhiddenItems];
+      v7 = [_newlyUnhiddenItems2 containsObject:visibleCopy];
     }
   }
 
-  if (v5 == self)
+  if (_propertySource == self)
   {
     v11 = 1;
   }
 
   else
   {
-    v11 = v6;
+    v11 = _la_isVisible;
   }
 
   if (v11)
@@ -1533,16 +1533,16 @@ LABEL_23:
 
   else
   {
-    v13 = [(_UILayoutArrangement *)v5 _newlyHiddenItems];
-    if ([v13 containsObject:v4])
+    _newlyHiddenItems = [(_UILayoutArrangement *)_propertySource _newlyHiddenItems];
+    if ([_newlyHiddenItems containsObject:visibleCopy])
     {
       v12 = 0;
     }
 
     else
     {
-      v14 = [(_UILayoutArrangement *)self _newlyHiddenItems];
-      v12 = [v14 containsObject:v4];
+      _newlyHiddenItems2 = [(_UILayoutArrangement *)self _newlyHiddenItems];
+      v12 = [_newlyHiddenItems2 containsObject:visibleCopy];
     }
   }
 
@@ -1559,28 +1559,28 @@ LABEL_23:
   return v15;
 }
 
-- (void)_invalidateBaselineConstraint:(id)a3
+- (void)_invalidateBaselineConstraint:(id)constraint
 {
-  v4 = a3;
+  constraintCopy = constraint;
   invalidBaselineConstraints = self->_invalidBaselineConstraints;
-  v8 = v4;
+  v8 = constraintCopy;
   if (!invalidBaselineConstraints)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v7 = self->_invalidBaselineConstraints;
     self->_invalidBaselineConstraints = v6;
 
-    v4 = v8;
+    constraintCopy = v8;
     invalidBaselineConstraints = self->_invalidBaselineConstraints;
   }
 
-  [(NSMutableSet *)invalidBaselineConstraints addObject:v4];
+  [(NSMutableSet *)invalidBaselineConstraints addObject:constraintCopy];
 }
 
-- (void)_hasBaselineChangedNotification:(id)a3
+- (void)_hasBaselineChangedNotification:(id)notification
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  notificationCopy = notification;
   if (![(_UILayoutArrangement *)self _requiresNotificationForHasBaselinePropertyChanges])
   {
     if (os_variant_has_internal_diagnostics())
@@ -1591,13 +1591,13 @@ LABEL_23:
         goto LABEL_19;
       }
 
-      v16 = [(_UILayoutArrangement *)self canvas];
-      v17 = [(_UILayoutArrangement *)self canvas];
-      v18 = [v17 constraints];
+      canvas = [(_UILayoutArrangement *)self canvas];
+      canvas2 = [(_UILayoutArrangement *)self canvas];
+      constraints = [canvas2 constraints];
       *buf = 138412546;
-      v30 = v16;
+      v30 = canvas;
       v31 = 2112;
-      v32 = v18;
+      v32 = constraints;
       _os_log_fault_impl(&dword_188A29000, v15, OS_LOG_TYPE_FAULT, "Layout arrangement received undesired -_hasBaselineChangedNotification for stackView. This is a UIStackView bug.\n UIStackView = %@,\n cosntraints = %@", buf, 0x16u);
     }
 
@@ -1607,19 +1607,19 @@ LABEL_23:
       if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
 LABEL_20:
-        v6 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v6 removeObserver:self name:@"_UIViewHasBaselinePropertyChanged" object:0];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter removeObserver:self name:@"_UIViewHasBaselinePropertyChanged" object:0];
         goto LABEL_14;
       }
 
       v15 = v14;
-      v16 = [(_UILayoutArrangement *)self canvas];
-      v17 = [(_UILayoutArrangement *)self canvas];
-      v18 = [v17 constraints];
+      canvas = [(_UILayoutArrangement *)self canvas];
+      canvas2 = [(_UILayoutArrangement *)self canvas];
+      constraints = [canvas2 constraints];
       *buf = 138412546;
-      v30 = v16;
+      v30 = canvas;
       v31 = 2112;
-      v32 = v18;
+      v32 = constraints;
       _os_log_impl(&dword_188A29000, v15, OS_LOG_TYPE_ERROR, "Layout arrangement received undesired -_hasBaselineChangedNotification for stackView. This is a UIStackView bug.\n UIStackView = %@,\n cosntraints = %@", buf, 0x16u);
     }
 
@@ -1627,23 +1627,23 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v5 = [v4 object];
+  object = [notificationCopy object];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v24 = __56___UILayoutArrangement__hasBaselineChangedNotification___block_invoke;
   v25 = &unk_1E71292C8;
-  v6 = v5;
-  v26 = v6;
-  v27 = self;
-  v7 = [(_UILayoutArrangement *)self _baselineDependentConstraints];
-  if ([v7 count])
+  defaultCenter = object;
+  v26 = defaultCenter;
+  selfCopy = self;
+  _baselineDependentConstraints = [(_UILayoutArrangement *)self _baselineDependentConstraints];
+  if ([_baselineDependentConstraints count])
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v8 = v7;
-    v9 = [v8 countByEnumeratingWithState:&v19 objects:v28 count:16];
+    canvas3 = _baselineDependentConstraints;
+    v9 = [canvas3 countByEnumeratingWithState:&v19 objects:v28 count:16];
     if (v9)
     {
       v10 = v9;
@@ -1655,13 +1655,13 @@ LABEL_19:
         {
           if (*v20 != v12)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(canvas3);
           }
 
           v11 |= v24(v23, *(*(&v19 + 1) + 8 * i));
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v19 objects:v28 count:16];
+        v10 = [canvas3 countByEnumeratingWithState:&v19 objects:v28 count:16];
       }
 
       while (v10);
@@ -1671,8 +1671,8 @@ LABEL_19:
         goto LABEL_13;
       }
 
-      v8 = [(_UILayoutArrangement *)self canvas];
-      [v8 setNeedsUpdateConstraints];
+      canvas3 = [(_UILayoutArrangement *)self canvas];
+      [canvas3 setNeedsUpdateConstraints];
     }
   }
 
@@ -1681,119 +1681,119 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)_respondToChangesWithIncomingItem:(id)a3 outgoingItem:(id)a4 newlyHiddenItem:(id)a5 newlyUnhiddenItem:(id)a6
+- (void)_respondToChangesWithIncomingItem:(id)item outgoingItem:(id)outgoingItem newlyHiddenItem:(id)hiddenItem newlyUnhiddenItem:(id)unhiddenItem
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  itemCopy = item;
+  outgoingItemCopy = outgoingItem;
+  hiddenItemCopy = hiddenItem;
+  unhiddenItemCopy = unhiddenItem;
   [(_UILayoutArrangement *)self _createUnanimatedConfigurationTargetIfNecessary];
   WeakRetained = objc_loadWeakRetained(&self->_canvas);
   v15 = _UILAIsAnimatingOnCanvas(WeakRetained);
 
-  if (v11)
+  if (outgoingItemCopy)
   {
-    [v11 _decrementHiddenManagedByLayoutArrangementCount];
-    [(NSMutableSet *)self->_outgoingItems addObject:v11];
-    [(NSMutableSet *)self->_incomingItems removeObject:v11];
-    [(NSMutableSet *)self->_hiddenItems removeObject:v11];
-    v16 = [(_UILAConfigurationHistory *)self->_unanimatedConfigurationTarget _newlyHiddenItems];
-    [v16 removeObject:v11];
+    [outgoingItemCopy _decrementHiddenManagedByLayoutArrangementCount];
+    [(NSMutableSet *)self->_outgoingItems addObject:outgoingItemCopy];
+    [(NSMutableSet *)self->_incomingItems removeObject:outgoingItemCopy];
+    [(NSMutableSet *)self->_hiddenItems removeObject:outgoingItemCopy];
+    _newlyHiddenItems = [(_UILAConfigurationHistory *)self->_unanimatedConfigurationTarget _newlyHiddenItems];
+    [_newlyHiddenItems removeObject:outgoingItemCopy];
 
-    [(NSMutableSet *)self->_newlyHiddenItems removeObject:v11];
+    [(NSMutableSet *)self->_newlyHiddenItems removeObject:outgoingItemCopy];
     if ([(_UILayoutArrangement *)self _requiresNotificationForHasBaselinePropertyChanges])
     {
-      v17 = [v11 _viewForLoweringBaselineLayoutAttribute:11];
+      v17 = [outgoingItemCopy _viewForLoweringBaselineLayoutAttribute:11];
       if (v17)
       {
-        v18 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v18 removeObserver:self name:@"_UIViewHasBaselinePropertyChanged" object:v17];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter removeObserver:self name:@"_UIViewHasBaselinePropertyChanged" object:v17];
       }
     }
   }
 
-  if (v10)
+  if (itemCopy)
   {
-    [v10 _incrementHiddenManagedByLayoutArrangementCount];
-    [(NSMutableSet *)self->_incomingItems addObject:v10];
-    [(NSMutableSet *)self->_outgoingItems removeObject:v10];
-    if (([v10 _la_isVisible] & 1) == 0)
+    [itemCopy _incrementHiddenManagedByLayoutArrangementCount];
+    [(NSMutableSet *)self->_incomingItems addObject:itemCopy];
+    [(NSMutableSet *)self->_outgoingItems removeObject:itemCopy];
+    if (([itemCopy _la_isVisible] & 1) == 0)
     {
-      [(NSMutableSet *)self->_hiddenItems addObject:v10];
-      v19 = [(_UILAConfigurationHistory *)self->_unanimatedConfigurationTarget _newlyHiddenItems];
-      [v19 addObject:v10];
+      [(NSMutableSet *)self->_hiddenItems addObject:itemCopy];
+      _newlyHiddenItems2 = [(_UILAConfigurationHistory *)self->_unanimatedConfigurationTarget _newlyHiddenItems];
+      [_newlyHiddenItems2 addObject:itemCopy];
 
-      [(NSMutableSet *)self->_newlyHiddenItems addObject:v10];
+      [(NSMutableSet *)self->_newlyHiddenItems addObject:itemCopy];
     }
 
     if ([(_UILayoutArrangement *)self _requiresNotificationForHasBaselinePropertyChanges])
     {
-      v20 = [v10 _viewForLoweringBaselineLayoutAttribute:11];
+      v20 = [itemCopy _viewForLoweringBaselineLayoutAttribute:11];
       if ([v20 _isHasBaselinePropertyChangeable])
       {
-        v21 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v21 addObserver:self selector:sel__hasBaselineChangedNotification_ name:@"_UIViewHasBaselinePropertyChanged" object:v20];
+        defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter2 addObserver:self selector:sel__hasBaselineChangedNotification_ name:@"_UIViewHasBaselinePropertyChanged" object:v20];
       }
 
-      v22 = [v10 _viewForLoweringBaselineLayoutAttribute:12];
+      v22 = [itemCopy _viewForLoweringBaselineLayoutAttribute:12];
       v23 = v22;
       if (v22 != v20 && [v22 _isHasBaselinePropertyChangeable])
       {
-        v24 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v24 addObserver:self selector:sel__hasBaselineChangedNotification_ name:@"_UIViewHasBaselinePropertyChanged" object:v23];
+        defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter3 addObserver:self selector:sel__hasBaselineChangedNotification_ name:@"_UIViewHasBaselinePropertyChanged" object:v23];
       }
     }
   }
 
-  if (v12 | v13)
+  if (hiddenItemCopy | unhiddenItemCopy)
   {
     if (v15)
     {
       [(_UILayoutArrangement *)self _registerAnimationRequest];
     }
 
-    if (v12)
+    if (hiddenItemCopy)
     {
-      [(NSMutableSet *)self->_newlyHiddenItems addObject:v12];
-      [(NSMutableSet *)self->_newlyUnhiddenItems removeObject:v12];
+      [(NSMutableSet *)self->_newlyHiddenItems addObject:hiddenItemCopy];
+      [(NSMutableSet *)self->_newlyUnhiddenItems removeObject:hiddenItemCopy];
       if (v15)
       {
         v31[0] = MEMORY[0x1E69E9820];
         v31[1] = 3221225472;
         v31[2] = __105___UILayoutArrangement__respondToChangesWithIncomingItem_outgoingItem_newlyHiddenItem_newlyUnhiddenItem___block_invoke;
         v31[3] = &unk_1E70F3590;
-        v32 = v12;
+        v32 = hiddenItemCopy;
         [UIViewAnimationState _addSystemPostAnimationAction:v31];
 
         goto LABEL_26;
       }
 
-      v29 = [(_UILAConfigurationHistory *)self->_unanimatedConfigurationTarget _newlyHiddenItems];
-      [v29 addObject:v12];
+      _newlyHiddenItems3 = [(_UILAConfigurationHistory *)self->_unanimatedConfigurationTarget _newlyHiddenItems];
+      [_newlyHiddenItems3 addObject:hiddenItemCopy];
 
-      v26 = [(_UILAConfigurationHistory *)self->_unanimatedConfigurationTarget _newlyUnhiddenItems];
-      v27 = v26;
-      v28 = v12;
+      _newlyUnhiddenItems = [(_UILAConfigurationHistory *)self->_unanimatedConfigurationTarget _newlyUnhiddenItems];
+      v27 = _newlyUnhiddenItems;
+      v28 = hiddenItemCopy;
     }
 
     else
     {
-      [(NSMutableSet *)self->_newlyUnhiddenItems addObject:v13];
-      [(NSMutableSet *)self->_newlyHiddenItems removeObject:v13];
+      [(NSMutableSet *)self->_newlyUnhiddenItems addObject:unhiddenItemCopy];
+      [(NSMutableSet *)self->_newlyHiddenItems removeObject:unhiddenItemCopy];
       if (v15)
       {
         goto LABEL_26;
       }
 
-      v25 = [(_UILAConfigurationHistory *)self->_unanimatedConfigurationTarget _newlyUnhiddenItems];
-      [v25 addObject:v13];
+      _newlyUnhiddenItems2 = [(_UILAConfigurationHistory *)self->_unanimatedConfigurationTarget _newlyUnhiddenItems];
+      [_newlyUnhiddenItems2 addObject:unhiddenItemCopy];
 
-      v26 = [(_UILAConfigurationHistory *)self->_unanimatedConfigurationTarget _newlyHiddenItems];
-      v27 = v26;
-      v28 = v13;
+      _newlyUnhiddenItems = [(_UILAConfigurationHistory *)self->_unanimatedConfigurationTarget _newlyHiddenItems];
+      v27 = _newlyUnhiddenItems;
+      v28 = unhiddenItemCopy;
     }
 
-    [v26 removeObject:v28];
+    [_newlyUnhiddenItems removeObject:v28];
   }
 
 LABEL_26:
@@ -1801,17 +1801,17 @@ LABEL_26:
   [v30 setNeedsUpdateConstraints];
 }
 
-- (unint64_t)_indexOfItemForLocationAttribute:(int64_t)a3
+- (unint64_t)_indexOfItemForLocationAttribute:(int64_t)attribute
 {
-  v4 = [(_UILayoutArrangement *)self _mutableItems];
-  v5 = [v4 count];
+  _mutableItems = [(_UILayoutArrangement *)self _mutableItems];
+  v5 = [_mutableItems count];
   if (v5)
   {
     v6 = v5;
     v7 = 0;
     while (1)
     {
-      v8 = [v4 objectAtIndexedSubscript:v7];
+      v8 = [_mutableItems objectAtIndexedSubscript:v7];
       v9 = [(_UILayoutArrangement *)self _itemWantsLayoutAsIfVisible:v8];
 
       if (v9)
@@ -1835,15 +1835,15 @@ LABEL_5:
   return v7;
 }
 
-- (id)_viewOrGuideForLocationAttribute:(int64_t)a3
+- (id)_viewOrGuideForLocationAttribute:(int64_t)attribute
 {
   v5 = [(_UILayoutArrangement *)self _indexOfItemForLocationAttribute:?];
-  if (v5 == 0x7FFFFFFFFFFFFFFFLL || ((-[NSMutableArray objectAtIndexedSubscript:](self->_mutableItems, "objectAtIndexedSubscript:", v5), v6 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) ? ([v6 _viewOrGuideForLocationAttribute:a3], v7 = objc_claimAutoreleasedReturnValue()) : (v7 = v6), v8 = v7, v6, !v8))
+  if (v5 == 0x7FFFFFFFFFFFFFFFLL || ((-[NSMutableArray objectAtIndexedSubscript:](self->_mutableItems, "objectAtIndexedSubscript:", v5), v6 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) ? ([v6 _viewOrGuideForLocationAttribute:attribute], v7 = objc_claimAutoreleasedReturnValue()) : (v7 = v6), _spanningLayoutGuideCreateIfNecessary = v7, v6, !_spanningLayoutGuideCreateIfNecessary))
   {
-    v8 = [(_UILayoutArrangement *)self _spanningLayoutGuideCreateIfNecessary];
+    _spanningLayoutGuideCreateIfNecessary = [(_UILayoutArrangement *)self _spanningLayoutGuideCreateIfNecessary];
   }
 
-  return v8;
+  return _spanningLayoutGuideCreateIfNecessary;
 }
 
 - (NSString)description
@@ -1854,58 +1854,58 @@ LABEL_5:
   if (os_variant_has_internal_diagnostics())
   {
     WeakRetained = objc_loadWeakRetained(&self->_canvas);
-    v6 = [v3 stringByAppendingFormat:@" stackView=%p", WeakRetained];
+    weakRetained = [v3 stringByAppendingFormat:@" stackView=%p", WeakRetained];
 
     if ([(NSMutableSet *)self->_incomingItems count])
     {
-      v7 = [v6 stringByAppendingFormat:@" incomingItems=%p", self->_incomingItems];
+      v7 = [weakRetained stringByAppendingFormat:@" incomingItems=%p", self->_incomingItems];
 
-      v6 = v7;
+      weakRetained = v7;
     }
 
     if ([(NSMutableSet *)self->_outgoingItems count])
     {
-      v8 = [v6 stringByAppendingFormat:@" outgoingItems=%p", self->_outgoingItems];
+      v8 = [weakRetained stringByAppendingFormat:@" outgoingItems=%p", self->_outgoingItems];
 
-      v6 = v8;
+      weakRetained = v8;
     }
 
     if ([(NSMutableSet *)self->_hiddenItems count])
     {
-      v9 = [v6 stringByAppendingFormat:@" hiddenItems=%p", self->_hiddenItems];
+      v9 = [weakRetained stringByAppendingFormat:@" hiddenItems=%p", self->_hiddenItems];
 
-      v6 = v9;
+      weakRetained = v9;
     }
 
     if ([(NSMutableSet *)self->_newlyHiddenItems count])
     {
-      v10 = [v6 stringByAppendingFormat:@" newlyHiddenItems=%p", self->_newlyHiddenItems];
+      v10 = [weakRetained stringByAppendingFormat:@" newlyHiddenItems=%p", self->_newlyHiddenItems];
 
-      v6 = v10;
+      weakRetained = v10;
     }
 
     if ([(NSMutableSet *)self->_newlyUnhiddenItems count])
     {
-      v11 = [v6 stringByAppendingFormat:@" newlyUnhiddenItems=%p", self->_newlyUnhiddenItems];
+      v11 = [weakRetained stringByAppendingFormat:@" newlyUnhiddenItems=%p", self->_newlyUnhiddenItems];
 
-      v6 = v11;
+      weakRetained = v11;
     }
 
     if ([(NSMutableSet *)self->_invalidBaselineConstraints count])
     {
-      v12 = [v6 stringByAppendingFormat:@" invalidBaselineConstraints=%p", self->_invalidBaselineConstraints];
+      v12 = [weakRetained stringByAppendingFormat:@" invalidBaselineConstraints=%p", self->_invalidBaselineConstraints];
 
-      v6 = v12;
+      weakRetained = v12;
     }
 
     if ([(NSMutableArray *)self->_canvasConnectionConstraints count])
     {
-      v3 = [v6 stringByAppendingFormat:@" canvasConnectionConstraints=%p", self->_canvasConnectionConstraints];
+      v3 = [weakRetained stringByAppendingFormat:@" canvasConnectionConstraints=%p", self->_canvasConnectionConstraints];
     }
 
     else
     {
-      v3 = v6;
+      v3 = weakRetained;
     }
   }
 

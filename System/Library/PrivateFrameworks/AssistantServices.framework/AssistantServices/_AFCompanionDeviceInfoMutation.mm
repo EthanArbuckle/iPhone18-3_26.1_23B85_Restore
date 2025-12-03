@@ -3,7 +3,7 @@
 - (BOOL)getMuxSupportCapability;
 - (BOOL)getPeerToPeerHandoffCapability;
 - (BOOL)getSyncMetadataCapability;
-- (_AFCompanionDeviceInfoMutation)initWithBase:(id)a3;
+- (_AFCompanionDeviceInfoMutation)initWithBase:(id)base;
 - (id)getAceHost;
 - (id)getAssistantID;
 - (id)getCompanionName;
@@ -20,30 +20,30 @@
 {
   if ((*&self->_mutationFlags & 0x1000) != 0)
   {
-    v2 = self->_companionName;
+    companionName = self->_companionName;
   }
 
   else
   {
-    v2 = [(AFCompanionDeviceInfo *)self->_base companionName];
+    companionName = [(AFCompanionDeviceInfo *)self->_base companionName];
   }
 
-  return v2;
+  return companionName;
 }
 
 - (id)getSiriLanguage
 {
   if ((*&self->_mutationFlags & 0x800) != 0)
   {
-    v2 = self->_siriLanguage;
+    siriLanguage = self->_siriLanguage;
   }
 
   else
   {
-    v2 = [(AFCompanionDeviceInfo *)self->_base siriLanguage];
+    siriLanguage = [(AFCompanionDeviceInfo *)self->_base siriLanguage];
   }
 
-  return v2;
+  return siriLanguage;
 }
 
 - (BOOL)getMeDevice
@@ -102,102 +102,102 @@
 {
   if ((*&self->_mutationFlags & 0x40) != 0)
   {
-    v2 = self->_syncMetadata;
+    syncMetadata = self->_syncMetadata;
   }
 
   else
   {
-    v2 = [(AFCompanionDeviceInfo *)self->_base syncMetadata];
+    syncMetadata = [(AFCompanionDeviceInfo *)self->_base syncMetadata];
   }
 
-  return v2;
+  return syncMetadata;
 }
 
 - (id)getAceHost
 {
   if ((*&self->_mutationFlags & 0x20) != 0)
   {
-    v2 = self->_aceHost;
+    aceHost = self->_aceHost;
   }
 
   else
   {
-    v2 = [(AFCompanionDeviceInfo *)self->_base aceHost];
+    aceHost = [(AFCompanionDeviceInfo *)self->_base aceHost];
   }
 
-  return v2;
+  return aceHost;
 }
 
 - (id)getProductPrefix
 {
   if ((*&self->_mutationFlags & 0x10) != 0)
   {
-    v2 = self->_productPrefix;
+    productPrefix = self->_productPrefix;
   }
 
   else
   {
-    v2 = [(AFCompanionDeviceInfo *)self->_base productPrefix];
+    productPrefix = [(AFCompanionDeviceInfo *)self->_base productPrefix];
   }
 
-  return v2;
+  return productPrefix;
 }
 
 - (id)getIdsIdentifier
 {
   if ((*&self->_mutationFlags & 8) != 0)
   {
-    v2 = self->_idsIdentifier;
+    idsIdentifier = self->_idsIdentifier;
   }
 
   else
   {
-    v2 = [(AFCompanionDeviceInfo *)self->_base idsIdentifier];
+    idsIdentifier = [(AFCompanionDeviceInfo *)self->_base idsIdentifier];
   }
 
-  return v2;
+  return idsIdentifier;
 }
 
 - (id)getSpeechID
 {
   if ((*&self->_mutationFlags & 4) != 0)
   {
-    v2 = self->_speechID;
+    speechID = self->_speechID;
   }
 
   else
   {
-    v2 = [(AFCompanionDeviceInfo *)self->_base speechID];
+    speechID = [(AFCompanionDeviceInfo *)self->_base speechID];
   }
 
-  return v2;
+  return speechID;
 }
 
 - (id)getAssistantID
 {
   if ((*&self->_mutationFlags & 2) != 0)
   {
-    v2 = self->_assistantID;
+    assistantID = self->_assistantID;
   }
 
   else
   {
-    v2 = [(AFCompanionDeviceInfo *)self->_base assistantID];
+    assistantID = [(AFCompanionDeviceInfo *)self->_base assistantID];
   }
 
-  return v2;
+  return assistantID;
 }
 
-- (_AFCompanionDeviceInfoMutation)initWithBase:(id)a3
+- (_AFCompanionDeviceInfoMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFCompanionDeviceInfoMutation;
   v6 = [(_AFCompanionDeviceInfoMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

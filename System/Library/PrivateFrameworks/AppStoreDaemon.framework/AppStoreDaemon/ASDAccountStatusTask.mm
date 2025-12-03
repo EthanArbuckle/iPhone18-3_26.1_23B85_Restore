@@ -1,7 +1,7 @@
 @interface ASDAccountStatusTask
 - (ASDAccountStatusTask)init;
-- (ASDAccountStatusTask)initWithCoder:(id)a3;
-- (void)statusWithCompletion:(id)a3;
+- (ASDAccountStatusTask)initWithCoder:(id)coder;
+- (void)statusWithCompletion:(id)completion;
 @end
 
 @implementation ASDAccountStatusTask
@@ -21,10 +21,10 @@
   return v2;
 }
 
-- (void)statusWithCompletion:(id)a3
+- (void)statusWithCompletion:(id)completion
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   broker = self->_broker;
   v16 = 0;
   v6 = [(ASDClipServiceBroker *)broker getClipServiceWithError:&v16];
@@ -35,7 +35,7 @@
     v14[1] = 3221225472;
     v14[2] = __45__ASDAccountStatusTask_statusWithCompletion___block_invoke;
     v14[3] = &unk_1E7CDB730;
-    v8 = v4;
+    v8 = completionCopy;
     v15 = v8;
     v9 = [v6 synchronousRemoteObjectProxyWithErrorHandler:v14];
     v12[0] = MEMORY[0x1E69E9820];
@@ -56,7 +56,7 @@
       _os_log_error_impl(&dword_1B8220000, v10, OS_LOG_TYPE_ERROR, "Request to service failed with error: %@", buf, 0xCu);
     }
 
-    (*(v4 + 2))(v4, 0, v7);
+    (*(completionCopy + 2))(completionCopy, 0, v7);
   }
 
   v11 = *MEMORY[0x1E69E9840];
@@ -78,15 +78,15 @@ void __45__ASDAccountStatusTask_statusWithCompletion___block_invoke(uint64_t a1,
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (ASDAccountStatusTask)initWithCoder:(id)a3
+- (ASDAccountStatusTask)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = ASDAccountStatusTask;
   v5 = [(ASDAccountStatusTask *)&v7 init];
   if (v5)
   {
-    v5->_lookupFamilyInfoIfNecessary = [v4 decodeBoolForKey:@"_lookupFamilyInfoIfNecessary"];
+    v5->_lookupFamilyInfoIfNecessary = [coderCopy decodeBoolForKey:@"_lookupFamilyInfoIfNecessary"];
   }
 
   return v5;

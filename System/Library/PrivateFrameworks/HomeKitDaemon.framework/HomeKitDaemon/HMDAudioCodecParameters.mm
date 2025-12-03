@@ -1,34 +1,34 @@
 @interface HMDAudioCodecParameters
 - (BOOL)_parseFromTLVData;
-- (HMDAudioCodecParameters)initWithChannelCount:(id)a3 bitRateSetting:(id)a4 audioSampleRate:(id)a5 rtpPtime:(id)a6;
-- (HMDAudioCodecParameters)initWithCoder:(id)a3;
+- (HMDAudioCodecParameters)initWithChannelCount:(id)count bitRateSetting:(id)setting audioSampleRate:(id)rate rtpPtime:(id)ptime;
+- (HMDAudioCodecParameters)initWithCoder:(id)coder;
 - (NSData)tlvData;
-- (void)description:(id)a3 indent:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)description:(id)description indent:(id)indent;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDAudioCodecParameters
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMDAudioCodecParameters *)self audioChannelCount];
-  [v4 encodeObject:v5 forKey:@"kAudioCodecParameters__AudioChannels"];
+  coderCopy = coder;
+  audioChannelCount = [(HMDAudioCodecParameters *)self audioChannelCount];
+  [coderCopy encodeObject:audioChannelCount forKey:@"kAudioCodecParameters__AudioChannels"];
 
-  v6 = [(HMDAudioCodecParameters *)self bitRateSettings];
-  [v4 encodeObject:v6 forKey:@"kAudioCodecParameters__Bitrate"];
+  bitRateSettings = [(HMDAudioCodecParameters *)self bitRateSettings];
+  [coderCopy encodeObject:bitRateSettings forKey:@"kAudioCodecParameters__Bitrate"];
 
-  v7 = [(HMDAudioCodecParameters *)self audioSampleRates];
-  [v4 encodeObject:v7 forKey:@"kAudioCodecParameters__SampleRate"];
+  audioSampleRates = [(HMDAudioCodecParameters *)self audioSampleRates];
+  [coderCopy encodeObject:audioSampleRates forKey:@"kAudioCodecParameters__SampleRate"];
 
-  v8 = [(HMDAudioCodecParameters *)self rtpPtime];
-  [v4 encodeObject:v8 forKey:@"kAudioCodecParameters__RTPPtime"];
+  rtpPtime = [(HMDAudioCodecParameters *)self rtpPtime];
+  [coderCopy encodeObject:rtpPtime forKey:@"kAudioCodecParameters__RTPPtime"];
 }
 
-- (HMDAudioCodecParameters)initWithCoder:(id)a3
+- (HMDAudioCodecParameters)initWithCoder:(id)coder
 {
   v32[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v28.receiver = self;
   v28.super_class = HMDAudioCodecParameters;
   v5 = [(HMDAudioCodecParameters *)&v28 init];
@@ -38,7 +38,7 @@
     v32[0] = objc_opt_class();
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:1];
     v8 = [v6 setWithArray:v7];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"kAudioCodecParameters__AudioChannels"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"kAudioCodecParameters__AudioChannels"];
     audioChannelCount = v5->_audioChannelCount;
     v5->_audioChannelCount = v9;
 
@@ -47,7 +47,7 @@
     v31[1] = objc_opt_class();
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:2];
     v13 = [v11 setWithArray:v12];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"kAudioCodecParameters__Bitrate"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"kAudioCodecParameters__Bitrate"];
     bitRateSettings = v5->_bitRateSettings;
     v5->_bitRateSettings = v14;
 
@@ -56,7 +56,7 @@
     v30[1] = objc_opt_class();
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:2];
     v18 = [v16 setWithArray:v17];
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"kAudioCodecParameters__SampleRate"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"kAudioCodecParameters__SampleRate"];
     audioSampleRates = v5->_audioSampleRates;
     v5->_audioSampleRates = v19;
 
@@ -64,7 +64,7 @@
     v29 = objc_opt_class();
     v22 = [MEMORY[0x277CBEA60] arrayWithObjects:&v29 count:1];
     v23 = [v21 setWithArray:v22];
-    v24 = [v4 decodeObjectOfClasses:v23 forKey:@"kAudioCodecParameters__RTPPtime"];
+    v24 = [coderCopy decodeObjectOfClasses:v23 forKey:@"kAudioCodecParameters__RTPPtime"];
     rtpPtime = v5->_rtpPtime;
     v5->_rtpPtime = v24;
   }
@@ -73,52 +73,52 @@
   return v5;
 }
 
-- (void)description:(id)a3 indent:(id)a4
+- (void)description:(id)description indent:(id)indent
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HAPTLVBase *)self tlvDatablob];
-  [v7 appendFormat:@"\n %@ tlvDatablob = %@ ", v6, v8];
+  indentCopy = indent;
+  descriptionCopy = description;
+  tlvDatablob = [(HAPTLVBase *)self tlvDatablob];
+  [descriptionCopy appendFormat:@"\n %@ tlvDatablob = %@ ", indentCopy, tlvDatablob];
 
-  v9 = [(HMDAudioCodecParameters *)self audioChannelCount];
-  [v7 appendFormat:@"\n %@ audioChannelCount = %@ ", v6, v9];
+  audioChannelCount = [(HMDAudioCodecParameters *)self audioChannelCount];
+  [descriptionCopy appendFormat:@"\n %@ audioChannelCount = %@ ", indentCopy, audioChannelCount];
 
-  v10 = [(HMDAudioCodecParameters *)self bitRateSettings];
-  v11 = arrayToString(v10, v6);
-  [v7 appendFormat:@"\n %@ bitRateSetting = %@ ", v6, v11];
+  bitRateSettings = [(HMDAudioCodecParameters *)self bitRateSettings];
+  v11 = arrayToString(bitRateSettings, indentCopy);
+  [descriptionCopy appendFormat:@"\n %@ bitRateSetting = %@ ", indentCopy, v11];
 
-  v12 = [(HMDAudioCodecParameters *)self audioSampleRates];
-  v13 = arrayToString(v12, v6);
-  [v7 appendFormat:@"\n %@ audioSampleRates = %@ ", v6, v13];
+  audioSampleRates = [(HMDAudioCodecParameters *)self audioSampleRates];
+  v13 = arrayToString(audioSampleRates, indentCopy);
+  [descriptionCopy appendFormat:@"\n %@ audioSampleRates = %@ ", indentCopy, v13];
 
-  v14 = [(HMDAudioCodecParameters *)self rtpPtime];
-  [v7 appendFormat:@"\n %@ rtpPtime = %@ ", v6, v14];
+  rtpPtime = [(HMDAudioCodecParameters *)self rtpPtime];
+  [descriptionCopy appendFormat:@"\n %@ rtpPtime = %@ ", indentCopy, rtpPtime];
 }
 
 - (NSData)tlvData
 {
-  v3 = [MEMORY[0x277CFEC80] creator];
-  v4 = [(HMDAudioCodecParameters *)self audioChannelCount];
-  [v3 addTLV:1 number:v4];
+  creator = [MEMORY[0x277CFEC80] creator];
+  audioChannelCount = [(HMDAudioCodecParameters *)self audioChannelCount];
+  [creator addTLV:1 number:audioChannelCount];
 
   v5 = MEMORY[0x277CCABB0];
-  v6 = [(HMDAudioCodecParameters *)self bitRateSettings];
-  v7 = [v6 objectAtIndex:0];
+  bitRateSettings = [(HMDAudioCodecParameters *)self bitRateSettings];
+  v7 = [bitRateSettings objectAtIndex:0];
   v8 = [v5 numberWithUnsignedInteger:{objc_msgSend(v7, "bitrateSetting")}];
-  [v3 addTLV:2 number:v8];
+  [creator addTLV:2 number:v8];
 
   v9 = MEMORY[0x277CCABB0];
-  v10 = [(HMDAudioCodecParameters *)self audioSampleRates];
-  v11 = [v10 objectAtIndex:0];
+  audioSampleRates = [(HMDAudioCodecParameters *)self audioSampleRates];
+  v11 = [audioSampleRates objectAtIndex:0];
   v12 = [v9 numberWithUnsignedInteger:{objc_msgSend(v11, "sampleRate")}];
-  [v3 addTLV:3 number:v12];
+  [creator addTLV:3 number:v12];
 
-  v13 = [(HMDAudioCodecParameters *)self rtpPtime];
-  [v3 addTLV:4 number:v13];
+  rtpPtime = [(HMDAudioCodecParameters *)self rtpPtime];
+  [creator addTLV:4 number:rtpPtime];
 
-  v14 = [v3 serialize];
+  serialize = [creator serialize];
 
-  return v14;
+  return serialize;
 }
 
 - (BOOL)_parseFromTLVData
@@ -137,21 +137,21 @@
   v9 = [(HAPTLVBase *)self _parseMandatory:v7 optional:v8];
   if (v9)
   {
-    v10 = [v3 field];
+    field = [v3 field];
     audioChannelCount = self->_audioChannelCount;
-    self->_audioChannelCount = v10;
+    self->_audioChannelCount = field;
 
-    v12 = [v4 field];
+    field2 = [v4 field];
     bitRateSettings = self->_bitRateSettings;
-    self->_bitRateSettings = v12;
+    self->_bitRateSettings = field2;
 
-    v14 = [v5 field];
+    field3 = [v5 field];
     audioSampleRates = self->_audioSampleRates;
-    self->_audioSampleRates = v14;
+    self->_audioSampleRates = field3;
 
-    v16 = [v6 field];
+    field4 = [v6 field];
     rtpPtime = self->_rtpPtime;
-    self->_rtpPtime = v16;
+    self->_rtpPtime = field4;
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -174,22 +174,22 @@ HMDBitRateSetting *__44__HMDAudioCodecParameters__parseFromTLVData__block_invoke
   return v3;
 }
 
-- (HMDAudioCodecParameters)initWithChannelCount:(id)a3 bitRateSetting:(id)a4 audioSampleRate:(id)a5 rtpPtime:(id)a6
+- (HMDAudioCodecParameters)initWithChannelCount:(id)count bitRateSetting:(id)setting audioSampleRate:(id)rate rtpPtime:(id)ptime
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  countCopy = count;
+  settingCopy = setting;
+  rateCopy = rate;
+  ptimeCopy = ptime;
   v18.receiver = self;
   v18.super_class = HMDAudioCodecParameters;
   v15 = [(HMDAudioCodecParameters *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_audioChannelCount, a3);
-    objc_storeStrong(&v16->_bitRateSettings, a4);
-    objc_storeStrong(&v16->_audioSampleRates, a5);
-    objc_storeStrong(&v16->_rtpPtime, a6);
+    objc_storeStrong(&v15->_audioChannelCount, count);
+    objc_storeStrong(&v16->_bitRateSettings, setting);
+    objc_storeStrong(&v16->_audioSampleRates, rate);
+    objc_storeStrong(&v16->_rtpPtime, ptime);
   }
 
   return v16;

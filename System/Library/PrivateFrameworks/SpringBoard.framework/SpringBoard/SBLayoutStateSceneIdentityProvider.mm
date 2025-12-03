@@ -1,37 +1,37 @@
 @interface SBLayoutStateSceneIdentityProvider
-- (SBLayoutStateSceneIdentityProvider)initWithDisplayIdentity:(id)a3;
+- (SBLayoutStateSceneIdentityProvider)initWithDisplayIdentity:(id)identity;
 - (SBLayoutStateSceneIdentityProviderDataSource)dataSource;
-- (id)_sceneIdentityForApplication:(id)a3 uniqueIdentifier:(id)a4 targetContentIdentifier:(id)a5 allowCanMatches:(BOOL)a6 preferNewScene:(BOOL)a7 allowSceneCreation:(BOOL)a8 visibleIdentifiers:(id)a9 excludingIdentifiers:(id)a10 sceneSessionRole:(id)a11 preferredDisplay:(id)a12;
-- (id)newSceneIdentityForApplication:(id)a3;
-- (id)sceneIdentityForApplication:(id)a3 createPrimaryIfRequired:(BOOL)a4 sceneSessionRole:(id)a5;
+- (id)_sceneIdentityForApplication:(id)application uniqueIdentifier:(id)identifier targetContentIdentifier:(id)contentIdentifier allowCanMatches:(BOOL)matches preferNewScene:(BOOL)scene allowSceneCreation:(BOOL)creation visibleIdentifiers:(id)identifiers excludingIdentifiers:(id)self0 sceneSessionRole:(id)self1 preferredDisplay:(id)self2;
+- (id)newSceneIdentityForApplication:(id)application;
+- (id)sceneIdentityForApplication:(id)application createPrimaryIfRequired:(BOOL)required sceneSessionRole:(id)role;
 @end
 
 @implementation SBLayoutStateSceneIdentityProvider
 
-- (SBLayoutStateSceneIdentityProvider)initWithDisplayIdentity:(id)a3
+- (SBLayoutStateSceneIdentityProvider)initWithDisplayIdentity:(id)identity
 {
-  v5 = a3;
+  identityCopy = identity;
   v9.receiver = self;
   v9.super_class = SBLayoutStateSceneIdentityProvider;
   v6 = [(SBLayoutStateSceneIdentityProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_displayIdentity, a3);
+    objc_storeStrong(&v6->_displayIdentity, identity);
   }
 
   return v7;
 }
 
-- (id)newSceneIdentityForApplication:(id)a3
+- (id)newSceneIdentityForApplication:(id)application
 {
-  v4 = a3;
-  v5 = [v4 bundleIdentifier];
+  applicationCopy = application;
+  bundleIdentifier = [applicationCopy bundleIdentifier];
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v7 = [v4 info];
+  info = [applicationCopy info];
 
-  v8 = [WeakRetained newSceneIdentifierForBundleIdentifier:v5 supportsMultiwindow:{objc_msgSend(v7, "supportsMultiwindow")}];
-  if ([v5 isEqualToString:@"com.apple.LoginUI"])
+  v8 = [WeakRetained newSceneIdentifierForBundleIdentifier:bundleIdentifier supportsMultiwindow:{objc_msgSend(info, "supportsMultiwindow")}];
+  if ([bundleIdentifier isEqualToString:@"com.apple.LoginUI"])
   {
     v9 = @"LoginWorkspace";
   }
@@ -46,77 +46,77 @@
   return v10;
 }
 
-- (id)sceneIdentityForApplication:(id)a3 createPrimaryIfRequired:(BOOL)a4 sceneSessionRole:(id)a5
+- (id)sceneIdentityForApplication:(id)application createPrimaryIfRequired:(BOOL)required sceneSessionRole:(id)role
 {
-  v31 = a4;
-  v7 = a3;
-  v8 = a5;
-  v9 = [(SBLayoutStateSceneIdentityProvider *)self _identifierForApplication:v7];
-  v10 = [(SBLayoutStateSceneIdentityProvider *)self dataSource];
-  v11 = [SBApp windowSceneManager];
-  v12 = [v11 windowSceneForDisplayIdentity:self->_displayIdentity];
+  requiredCopy = required;
+  applicationCopy = application;
+  roleCopy = role;
+  v9 = [(SBLayoutStateSceneIdentityProvider *)self _identifierForApplication:applicationCopy];
+  dataSource = [(SBLayoutStateSceneIdentityProvider *)self dataSource];
+  windowSceneManager = [SBApp windowSceneManager];
+  v12 = [windowSceneManager windowSceneForDisplayIdentity:self->_displayIdentity];
 
-  v13 = [v12 layoutStateProvider];
-  v14 = [v13 layoutState];
+  layoutStateProvider = [v12 layoutStateProvider];
+  layoutState = [layoutStateProvider layoutState];
 
-  v15 = [v14 appLayout];
-  if ([v14 unlockedEnvironmentMode] == 3)
+  appLayout = [layoutState appLayout];
+  if ([layoutState unlockedEnvironmentMode] == 3)
   {
     v30 = v9;
-    v16 = v8;
-    v17 = [v10 switcherController];
-    v18 = [v17 displayItemLayoutAttributesProvider];
+    v16 = roleCopy;
+    switcherController = [dataSource switcherController];
+    displayItemLayoutAttributesProvider = [switcherController displayItemLayoutAttributesProvider];
 
-    v19 = [v14 interfaceOrientation];
-    v20 = (v19 - 1) < 2 ? 1 : 2 * ((v19 - 3) < 2);
+    interfaceOrientation = [layoutState interfaceOrientation];
+    v20 = (interfaceOrientation - 1) < 2 ? 1 : 2 * ((interfaceOrientation - 3) < 2);
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __107__SBLayoutStateSceneIdentityProvider_sceneIdentityForApplication_createPrimaryIfRequired_sceneSessionRole___block_invoke;
     v32[3] = &unk_2783A8C90;
-    v33 = v7;
-    v21 = [v18 lastInteractedDisplayItemInAppLayout:v15 orientation:v20 passingTest:v32];
+    v33 = applicationCopy;
+    v21 = [displayItemLayoutAttributesProvider lastInteractedDisplayItemInAppLayout:appLayout orientation:v20 passingTest:v32];
     v22 = v21;
     if (v21)
     {
-      v23 = [v21 uniqueIdentifier];
+      uniqueIdentifier = [v21 uniqueIdentifier];
     }
 
     else
     {
-      v23 = 0;
+      uniqueIdentifier = 0;
     }
 
-    v8 = v16;
+    roleCopy = v16;
     v9 = v30;
-    if (v23)
+    if (uniqueIdentifier)
     {
       goto LABEL_12;
     }
   }
 
-  v24 = [v7 info];
-  v25 = [v24 supportsMultiwindow];
+  info = [applicationCopy info];
+  supportsMultiwindow = [info supportsMultiwindow];
 
-  if (v25 && v31)
+  if (supportsMultiwindow && requiredCopy)
   {
-    v26 = [v10 layoutStateManager];
-    v23 = [v26 primarySceneIdentifierForBundleIdentifier:v9 sceneSessionRole:v8 displayIdentity:self->_displayIdentity];
+    layoutStateManager = [dataSource layoutStateManager];
+    uniqueIdentifier = [layoutStateManager primarySceneIdentifierForBundleIdentifier:v9 sceneSessionRole:roleCopy displayIdentity:self->_displayIdentity];
 
-    if (!v23)
+    if (!uniqueIdentifier)
     {
-      v27 = [(SBLayoutStateSceneIdentityProvider *)self newSceneIdentityForApplication:v7];
+      v27 = [(SBLayoutStateSceneIdentityProvider *)self newSceneIdentityForApplication:applicationCopy];
       goto LABEL_13;
     }
 
 LABEL_12:
-    v27 = [MEMORY[0x277D0ADC0] identityForIdentifier:v23];
+    v27 = [MEMORY[0x277D0ADC0] identityForIdentifier:uniqueIdentifier];
 LABEL_13:
     v28 = v27;
 
     goto LABEL_15;
   }
 
-  v28 = [(SBLayoutStateSceneIdentityProvider *)self sceneIdentityForApplication:v7];
+  v28 = [(SBLayoutStateSceneIdentityProvider *)self sceneIdentityForApplication:applicationCopy];
 LABEL_15:
 
   return v28;
@@ -131,25 +131,25 @@ uint64_t __107__SBLayoutStateSceneIdentityProvider_sceneIdentityForApplication_c
   return v5;
 }
 
-- (id)_sceneIdentityForApplication:(id)a3 uniqueIdentifier:(id)a4 targetContentIdentifier:(id)a5 allowCanMatches:(BOOL)a6 preferNewScene:(BOOL)a7 allowSceneCreation:(BOOL)a8 visibleIdentifiers:(id)a9 excludingIdentifiers:(id)a10 sceneSessionRole:(id)a11 preferredDisplay:(id)a12
+- (id)_sceneIdentityForApplication:(id)application uniqueIdentifier:(id)identifier targetContentIdentifier:(id)contentIdentifier allowCanMatches:(BOOL)matches preferNewScene:(BOOL)scene allowSceneCreation:(BOOL)creation visibleIdentifiers:(id)identifiers excludingIdentifiers:(id)self0 sceneSessionRole:(id)self1 preferredDisplay:(id)self2
 {
-  v88 = a8;
-  v12 = a7;
-  v13 = a6;
+  creationCopy = creation;
+  sceneCopy = scene;
+  matchesCopy = matches;
   v119 = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v18 = a4;
-  v104 = a5;
-  v107 = a9;
-  v19 = v17;
-  v106 = a10;
-  v98 = a11;
-  v20 = self;
-  v21 = a12;
-  v22 = [(SBLayoutStateSceneIdentityProvider *)self _identifierForApplication:v17];
-  if (v18)
+  applicationCopy = application;
+  identifierCopy = identifier;
+  contentIdentifierCopy = contentIdentifier;
+  identifiersCopy = identifiers;
+  v19 = applicationCopy;
+  excludingIdentifiersCopy = excludingIdentifiers;
+  roleCopy = role;
+  selfCopy = self;
+  displayCopy = display;
+  v22 = [(SBLayoutStateSceneIdentityProvider *)self _identifierForApplication:applicationCopy];
+  if (identifierCopy)
   {
-    v23 = [MEMORY[0x277D0ADC0] identityForIdentifier:v18];
+    v23 = [MEMORY[0x277D0ADC0] identityForIdentifier:identifierCopy];
     if (!v23)
     {
       goto LABEL_102;
@@ -158,45 +158,45 @@ uint64_t __107__SBLayoutStateSceneIdentityProvider_sceneIdentityForApplication_c
     goto LABEL_104;
   }
 
-  v105 = v12;
-  v24 = [v17 info];
-  v25 = [v24 supportsMultiwindow];
+  v105 = sceneCopy;
+  info = [applicationCopy info];
+  supportsMultiwindow = [info supportsMultiwindow];
 
-  if (!v25)
+  if (!supportsMultiwindow)
   {
     v23 = 0;
-    v18 = 0;
+    identifierCopy = 0;
     goto LABEL_102;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v27 = [WeakRetained layoutStateManager];
-  v28 = [v27 defaultSceneIdentifierForBundleIdentifier:v22 targetContentIdentifier:v104 allowCanMatches:v13 preferNewScene:v12 visibleSceneIdentifiers:v107 excludingSceneIdentifiers:v106 sceneSessionRole:v98 preferredDisplay:v21];
+  layoutStateManager = [WeakRetained layoutStateManager];
+  v28 = [layoutStateManager defaultSceneIdentifierForBundleIdentifier:v22 targetContentIdentifier:contentIdentifierCopy allowCanMatches:matchesCopy preferNewScene:sceneCopy visibleSceneIdentifiers:identifiersCopy excludingSceneIdentifiers:excludingIdentifiersCopy sceneSessionRole:roleCopy preferredDisplay:displayCopy];
 
   if (v28)
   {
     goto LABEL_100;
   }
 
-  v94 = [v19 _dataStore];
-  v29 = [WeakRetained externalApplicationSceneHandles];
+  _dataStore = [v19 _dataStore];
+  externalApplicationSceneHandles = [WeakRetained externalApplicationSceneHandles];
   v30 = [WeakRetained transientApplicationSceneHandlesForApplication:v19];
-  v82 = v29;
+  v82 = externalApplicationSceneHandles;
   if (v30)
   {
     v31 = v30;
-    v32 = [v30 setByAddingObjectsFromSet:v29];
+    v32 = [v30 setByAddingObjectsFromSet:externalApplicationSceneHandles];
   }
 
   else
   {
-    v32 = v29;
+    v32 = externalApplicationSceneHandles;
   }
 
   v83 = WeakRetained;
   v84 = v22;
-  v85 = v21;
-  v86 = self;
+  v85 = displayCopy;
+  selfCopy2 = self;
   v110 = 0u;
   v111 = 0u;
   v108 = 0u;
@@ -216,7 +216,7 @@ uint64_t __107__SBLayoutStateSceneIdentityProvider_sceneIdentityForApplication_c
   v33 = 0;
   v103 = 0;
   v28 = 0;
-  v87 = !v13;
+  v87 = !matchesCopy;
   v100 = *v109;
   v93 = v19;
   while (2)
@@ -231,11 +231,11 @@ uint64_t __107__SBLayoutStateSceneIdentityProvider_sceneIdentityForApplication_c
       }
 
       v36 = *(*(&v108 + 1) + 8 * v34);
-      v37 = [v36 sceneIdentifier];
-      v38 = [v106 containsObject:v37];
-      v39 = [v107 containsObject:v37];
-      v40 = [v36 application];
-      v41 = [v40 isEqual:v19];
+      sceneIdentifier = [v36 sceneIdentifier];
+      v38 = [excludingIdentifiersCopy containsObject:sceneIdentifier];
+      v39 = [identifiersCopy containsObject:sceneIdentifier];
+      application = [v36 application];
+      v41 = [application isEqual:v19];
 
       if (!v41)
       {
@@ -244,22 +244,22 @@ uint64_t __107__SBLayoutStateSceneIdentityProvider_sceneIdentityForApplication_c
 
       if (!__sb__runningInSpringBoard())
       {
-        v44 = [MEMORY[0x277D75418] currentDevice];
-        v45 = [v44 userInterfaceIdiom];
+        currentDevice = [MEMORY[0x277D75418] currentDevice];
+        userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-        v46 = v45 == 1;
+        v46 = userInterfaceIdiom == 1;
         v43 = 0x277D75000uLL;
-        if (!v46 || !v104)
+        if (!v46 || !contentIdentifierCopy)
         {
           goto LABEL_26;
         }
 
 LABEL_23:
-        v47 = [v36 sceneIdentifier];
-        v48 = [v94 sceneStoreForIdentifier:v47 creatingIfNecessary:0];
+        sceneIdentifier2 = [v36 sceneIdentifier];
+        v48 = [_dataStore sceneStoreForIdentifier:sceneIdentifier2 creatingIfNecessary:0];
 
         v49 = [v48 objectForKey:@"sceneSessionRole"];
-        if (![v49 isEqual:v98])
+        if (![v49 isEqual:roleCopy])
         {
 LABEL_76:
 
@@ -293,10 +293,10 @@ LABEL_77:
         }
 
         v95 = v51;
-        v54 = v104;
+        v54 = contentIdentifierCopy;
         v55 = +[SBFocusAppConfigurationContextMonitor sharedInstance];
-        v56 = [v93 bundleIdentifier];
-        v57 = [v55 targetContentIdentifierPrefixForBundleIdentifier:v56];
+        bundleIdentifier = [v93 bundleIdentifier];
+        v57 = [v55 targetContentIdentifierPrefixForBundleIdentifier:bundleIdentifier];
 
         v97 = v57;
         if (v57)
@@ -339,7 +339,7 @@ LABEL_77:
 
               else
               {
-                v69 = v37;
+                v69 = sceneIdentifier;
               }
 
               v70 = v69;
@@ -375,9 +375,9 @@ LABEL_71:
                 v74 = SBLogSceneResolution();
                 if (os_log_type_enabled(v74, OS_LOG_TYPE_ERROR))
                 {
-                  v80 = [v93 bundleIdentifier];
+                  bundleIdentifier2 = [v93 bundleIdentifier];
                   *buf = 138543619;
-                  v113 = v80;
+                  v113 = bundleIdentifier2;
                   v114 = 2113;
                   v115 = v64;
                   _os_log_error_impl(&dword_21ED4E000, v74, OS_LOG_TYPE_ERROR, "error evaluating UISceneActivationConditions for %{public}@: %{private}@", buf, 0x16u);
@@ -463,7 +463,7 @@ LABEL_66:
 
           else
           {
-            v72 = v37;
+            v72 = sceneIdentifier;
           }
 
           v101 = v72;
@@ -478,7 +478,7 @@ LABEL_66:
 
           else
           {
-            v72 = v37;
+            v72 = sceneIdentifier;
           }
 
           v71 = v33;
@@ -492,7 +492,7 @@ LABEL_66:
 
       v42 = SBFEffectiveDeviceClass();
       v43 = 0x277D75000;
-      if (v104 && v42 == 2)
+      if (contentIdentifierCopy && v42 == 2)
       {
         goto LABEL_23;
       }
@@ -512,7 +512,7 @@ LABEL_26:
 
         else
         {
-          v52 = v37;
+          v52 = sceneIdentifier;
         }
 
         v53 = v52;
@@ -536,8 +536,8 @@ LABEL_80:
         }
 
 LABEL_85:
-        v77 = [MEMORY[0x277CBEBC0] URLWithString:v104];
-        v75 = [v77 isFileURL];
+        v77 = [MEMORY[0x277CBEBC0] URLWithString:contentIdentifierCopy];
+        isFileURL = [v77 isFileURL];
 
         goto LABEL_86;
       }
@@ -548,9 +548,9 @@ LABEL_85:
       }
 
 LABEL_79:
-      v75 = 1;
+      isFileURL = 1;
 LABEL_86:
-      v105 = v75;
+      v105 = isFileURL;
       if (v33)
       {
         v78 = 1;
@@ -558,7 +558,7 @@ LABEL_86:
 
       else
       {
-        v78 = v75;
+        v78 = isFileURL;
       }
 
       v79 = v103;
@@ -596,9 +596,9 @@ LABEL_94:
 
 LABEL_99:
 
-  v20 = v86;
+  selfCopy = selfCopy2;
   v22 = v84;
-  v21 = v85;
+  displayCopy = v85;
   WeakRetained = v83;
   if (v28)
   {
@@ -611,14 +611,14 @@ LABEL_100:
     v23 = 0;
   }
 
-  v18 = 0;
+  identifierCopy = 0;
 
   if (!v23)
   {
 LABEL_102:
-    if (v88)
+    if (creationCopy)
     {
-      v23 = [(SBLayoutStateSceneIdentityProvider *)v20 newSceneIdentityForApplication:v19];
+      v23 = [(SBLayoutStateSceneIdentityProvider *)selfCopy newSceneIdentityForApplication:v19];
     }
   }
 

@@ -1,17 +1,17 @@
 @interface UIPrinterAttributesService
 + (id)instance;
 - (UIPrinterAttributesService)init;
-- (void)_updatePolledPrinterState:(id)a3 forPrinter:(id)a4;
+- (void)_updatePolledPrinterState:(id)state forPrinter:(id)printer;
 - (void)dealloc;
 - (void)pollForPrinterWarningStatus;
-- (void)startPollForPrinterWarningStatus:(id)a3 completionHandler:(id)a4;
+- (void)startPollForPrinterWarningStatus:(id)status completionHandler:(id)handler;
 @end
 
 @implementation UIPrinterAttributesService
 
 + (id)instance
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -37,23 +37,23 @@
   [(UIPrinterAttributesService *)&v2 dealloc];
 }
 
-- (void)startPollForPrinterWarningStatus:(id)a3 completionHandler:(id)a4
+- (void)startPollForPrinterWarningStatus:(id)status completionHandler:(id)handler
 {
-  v10 = a3;
-  v7 = a4;
-  if (!v10)
+  statusCopy = status;
+  handlerCopy = handler;
+  if (!statusCopy)
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 
   if (self->_printerWarningPollTime < 0)
   {
     self->_printerWarningPollTime = 3;
-    v8 = MEMORY[0x25F8E54A0](v7);
+    v8 = MEMORY[0x25F8E54A0](handlerCopy);
     completionHandler = self->_completionHandler;
     self->_completionHandler = v8;
 
-    objc_storeStrong(&self->_printer, a3);
+    objc_storeStrong(&self->_printer, status);
     [(UIPrinterAttributesService *)self pollForPrinterWarningStatus];
   }
 }
@@ -87,19 +87,19 @@ void __57__UIPrinterAttributesService_pollForPrinterWarningStatus__block_invoke(
   [WeakRetained _updatePolledPrinterState:v3 forPrinter:*(a1 + 32)];
 }
 
-- (void)_updatePolledPrinterState:(id)a3 forPrinter:(id)a4
+- (void)_updatePolledPrinterState:(id)state forPrinter:(id)printer
 {
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  printerCopy = printer;
   completionHandler = self->_completionHandler;
   if (completionHandler)
   {
     printer = self->_printer;
-    if (printer == v7)
+    if (printer == printerCopy)
     {
-      if (v6)
+      if (stateCopy)
       {
-        v10 = [v6 objectForKeyedSubscript:*MEMORY[0x277D41218]];
+        v10 = [stateCopy objectForKeyedSubscript:*MEMORY[0x277D41218]];
         v11 = [v10 componentsJoinedByString:@"\n"];
 
         (*(self->_completionHandler + 2))();
@@ -126,13 +126,13 @@ void __57__UIPrinterAttributesService_pollForPrinterWarningStatus__block_invoke(
 
     else
     {
-      NSLog(&cfstr_PolledStateFor_0.isa, v7, printer);
+      NSLog(&cfstr_PolledStateFor_0.isa, printerCopy, printer);
     }
   }
 
   else
   {
-    NSLog(&cfstr_PolledStateFor.isa, v7);
+    NSLog(&cfstr_PolledStateFor.isa, printerCopy);
   }
 }
 

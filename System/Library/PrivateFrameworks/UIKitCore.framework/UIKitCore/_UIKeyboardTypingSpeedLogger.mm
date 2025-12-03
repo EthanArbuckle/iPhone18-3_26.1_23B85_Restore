@@ -1,7 +1,7 @@
 @interface _UIKeyboardTypingSpeedLogger
 - (_UIKeyboardTypingSpeedLogger)init;
 - (void)logToAggregate;
-- (void)recordTypingDelay:(double)a3;
+- (void)recordTypingDelay:(double)delay;
 @end
 
 @implementation _UIKeyboardTypingSpeedLogger
@@ -22,32 +22,32 @@
   return result;
 }
 
-- (void)recordTypingDelay:(double)a3
+- (void)recordTypingDelay:(double)delay
 {
   if (_UIGetUIKeyboardTypingSpeedLogger())
   {
     ++self->_typingDelaySampleCount;
-    if (a3 <= 0.1)
+    if (delay <= 0.1)
     {
       v5 = 0;
     }
 
-    else if (a3 <= 0.15)
+    else if (delay <= 0.15)
     {
       v5 = 1;
     }
 
-    else if (a3 <= 0.2)
+    else if (delay <= 0.2)
     {
       v5 = 2;
     }
 
-    else if (a3 <= 0.25)
+    else if (delay <= 0.25)
     {
       v5 = 3;
     }
 
-    else if (a3 <= 0.3)
+    else if (delay <= 0.3)
     {
       v5 = 4;
     }
@@ -55,7 +55,7 @@
     else
     {
       v5 = 5;
-      if (a3 > 0.4)
+      if (delay > 0.4)
       {
         v5 = 6;
       }

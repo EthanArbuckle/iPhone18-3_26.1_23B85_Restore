@@ -1,38 +1,38 @@
 @interface BMTextImageContent
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMTextImageContent)initWithJSONDictionary:(id)a3 error:(id *)p_isa;
-- (BMTextImageContent)initWithText:(id)a3 imageData:(id)a4 metadata:(id)a5;
-- (BOOL)isEqual:(id)a3;
+- (BMTextImageContent)initWithJSONDictionary:(id)dictionary error:(id *)p_isa;
+- (BMTextImageContent)initWithText:(id)text imageData:(id)data metadata:(id)metadata;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMTextImageContent
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMTextImageContent *)self text];
-    v7 = [v5 text];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    text = [(BMTextImageContent *)self text];
+    text2 = [v5 text];
+    v8 = text2;
+    if (text == text2)
     {
     }
 
     else
     {
-      v9 = [(BMTextImageContent *)self text];
-      v10 = [v5 text];
-      v11 = [v9 isEqual:v10];
+      text3 = [(BMTextImageContent *)self text];
+      text4 = [v5 text];
+      v11 = [text3 isEqual:text4];
 
       if (!v11)
       {
@@ -40,18 +40,18 @@
       }
     }
 
-    v13 = [(BMTextImageContent *)self imageData];
-    v14 = [v5 imageData];
-    v15 = v14;
-    if (v13 == v14)
+    imageData = [(BMTextImageContent *)self imageData];
+    imageData2 = [v5 imageData];
+    v15 = imageData2;
+    if (imageData == imageData2)
     {
     }
 
     else
     {
-      v16 = [(BMTextImageContent *)self imageData];
-      v17 = [v5 imageData];
-      v18 = [v16 isEqual:v17];
+      imageData3 = [(BMTextImageContent *)self imageData];
+      imageData4 = [v5 imageData];
+      v18 = [imageData3 isEqual:imageData4];
 
       if (!v18)
       {
@@ -63,18 +63,18 @@ LABEL_15:
       }
     }
 
-    v19 = [(BMTextImageContent *)self metadata];
-    v20 = [v5 metadata];
-    if (v19 == v20)
+    metadata = [(BMTextImageContent *)self metadata];
+    metadata2 = [v5 metadata];
+    if (metadata == metadata2)
     {
       v12 = 1;
     }
 
     else
     {
-      v21 = [(BMTextImageContent *)self metadata];
-      v22 = [v5 metadata];
-      v12 = [v21 isEqual:v22];
+      metadata3 = [(BMTextImageContent *)self metadata];
+      metadata4 = [v5 metadata];
+      v12 = [metadata3 isEqual:metadata4];
     }
 
     goto LABEL_15;
@@ -89,39 +89,39 @@ LABEL_16:
 - (id)jsonDictionary
 {
   v15[3] = *MEMORY[0x1E69E9840];
-  v3 = [(BMTextImageContent *)self text];
-  v4 = [(BMTextImageContent *)self imageData];
-  v5 = [v4 base64EncodedStringWithOptions:0];
+  text = [(BMTextImageContent *)self text];
+  imageData = [(BMTextImageContent *)self imageData];
+  v5 = [imageData base64EncodedStringWithOptions:0];
 
-  v6 = [(BMTextImageContent *)self metadata];
-  v7 = [v6 jsonDictionary];
+  metadata = [(BMTextImageContent *)self metadata];
+  jsonDictionary = [metadata jsonDictionary];
 
   v14[0] = @"text";
-  v8 = v3;
-  if (!v3)
+  null = text;
+  if (!text)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[0] = v8;
+  v15[0] = null;
   v14[1] = @"imageData";
-  v9 = v5;
+  null2 = v5;
   if (!v5)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[1] = v9;
+  v15[1] = null2;
   v14[2] = @"metadata";
-  v10 = v7;
-  if (!v7)
+  null3 = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[2] = v10;
+  v15[2] = null3;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:3];
-  if (v7)
+  if (jsonDictionary)
   {
     if (v5)
     {
@@ -130,7 +130,7 @@ LABEL_16:
 
 LABEL_14:
 
-    if (v3)
+    if (text)
     {
       goto LABEL_10;
     }
@@ -144,7 +144,7 @@ LABEL_14:
   }
 
 LABEL_9:
-  if (v3)
+  if (text)
   {
     goto LABEL_10;
   }
@@ -157,21 +157,21 @@ LABEL_10:
   return v11;
 }
 
-- (BMTextImageContent)initWithJSONDictionary:(id)a3 error:(id *)p_isa
+- (BMTextImageContent)initWithJSONDictionary:(id)dictionary error:(id *)p_isa
 {
   v39[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"text"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"text"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"imageData"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"imageData"];
     if (!v9 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v10 = 0;
 LABEL_7:
-      v11 = [v6 objectForKeyedSubscript:@"metadata"];
+      v11 = [dictionaryCopy objectForKeyedSubscript:@"metadata"];
       if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
         objc_opt_class();
@@ -314,14 +314,14 @@ LABEL_14:
 {
   v3 = objc_opt_new();
   [(BMTextImageContent *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_text)
   {
     PBDataWriterWriteStringField();
@@ -335,14 +335,14 @@ LABEL_14:
   if (self->_metadata)
   {
     PBDataWriterPlaceMark();
-    [(BMCustomAttributes *)self->_metadata writeTo:v4];
+    [(BMCustomAttributes *)self->_metadata writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v24.receiver = self;
   v24.super_class = BMTextImageContent;
   v5 = [(BMEventBase *)&v24 init];
@@ -351,12 +351,12 @@ LABEL_14:
     goto LABEL_31;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -367,18 +367,18 @@ LABEL_14:
       while (1)
       {
         LOBYTE(v25[0]) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:v25 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:v25 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v25[0] & 0x7F) << v7;
@@ -395,9 +395,9 @@ LABEL_14:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -412,7 +412,7 @@ LABEL_16:
           goto LABEL_30;
         }
 
-        v19 = [[BMCustomAttributes alloc] initByReadFrom:v4];
+        v19 = [[BMCustomAttributes alloc] initByReadFrom:fromCopy];
         if (!v19)
         {
           goto LABEL_30;
@@ -453,13 +453,13 @@ LABEL_16:
       }
 
 LABEL_28:
-      v21 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v21 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_30:
     v22 = 0;
@@ -477,28 +477,28 @@ LABEL_31:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMTextImageContent *)self text];
-  v5 = [(BMTextImageContent *)self imageData];
-  v6 = [(BMTextImageContent *)self metadata];
-  v7 = [v3 initWithFormat:@"BMTextImageContent with text: %@, imageData: %@, metadata: %@", v4, v5, v6];
+  text = [(BMTextImageContent *)self text];
+  imageData = [(BMTextImageContent *)self imageData];
+  metadata = [(BMTextImageContent *)self metadata];
+  v7 = [v3 initWithFormat:@"BMTextImageContent with text: %@, imageData: %@, metadata: %@", text, imageData, metadata];
 
   return v7;
 }
 
-- (BMTextImageContent)initWithText:(id)a3 imageData:(id)a4 metadata:(id)a5
+- (BMTextImageContent)initWithText:(id)text imageData:(id)data metadata:(id)metadata
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  textCopy = text;
+  dataCopy = data;
+  metadataCopy = metadata;
   v14.receiver = self;
   v14.super_class = BMTextImageContent;
   v12 = [(BMEventBase *)&v14 init];
   if (v12)
   {
     v12->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v12->_text, a3);
-    objc_storeStrong(&v12->_imageData, a4);
-    objc_storeStrong(&v12->_metadata, a5);
+    objc_storeStrong(&v12->_text, text);
+    objc_storeStrong(&v12->_imageData, data);
+    objc_storeStrong(&v12->_metadata, metadata);
   }
 
   return v12;
@@ -545,9 +545,9 @@ id __29__BMTextImageContent_columns__block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -555,8 +555,8 @@ id __29__BMTextImageContent_columns__block_invoke(uint64_t a1, void *a2)
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMTextImageContent alloc] initByReadFrom:v7];
     v4 = v8;

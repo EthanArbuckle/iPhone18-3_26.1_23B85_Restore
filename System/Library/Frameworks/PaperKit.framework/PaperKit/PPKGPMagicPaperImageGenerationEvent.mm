@@ -1,21 +1,21 @@
 @interface PPKGPMagicPaperImageGenerationEvent
-+ (int64_t)imageGenerationInvocationFromPPKInvocation:(int64_t)a3;
-+ (int64_t)imageGenerationModeFromPPKMode:(int64_t)a3;
++ (int64_t)imageGenerationInvocationFromPPKInvocation:(int64_t)invocation;
++ (int64_t)imageGenerationModeFromPPKMode:(int64_t)mode;
 - (PPKGPMagicPaperImageGenerationEvent)init;
 - (int64_t)mode;
 @end
 
 @implementation PPKGPMagicPaperImageGenerationEvent
 
-+ (int64_t)imageGenerationInvocationFromPPKInvocation:(int64_t)a3
++ (int64_t)imageGenerationInvocationFromPPKInvocation:(int64_t)invocation
 {
   v3 = 1;
-  if (a3 == 2)
+  if (invocation == 2)
   {
     v3 = 2;
   }
 
-  if (a3 == 3)
+  if (invocation == 3)
   {
     return 3;
   }
@@ -26,16 +26,16 @@
   }
 }
 
-+ (int64_t)imageGenerationModeFromPPKMode:(int64_t)a3
++ (int64_t)imageGenerationModeFromPPKMode:(int64_t)mode
 {
-  if ((a3 - 1) >= 4)
+  if ((mode - 1) >= 4)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return mode;
   }
 }
 
@@ -47,8 +47,8 @@
   if (v2)
   {
     v2->_invocation = [PPKGPMagicPaperImageGenerationEvent imageGenerationInvocationFromPPKInvocation:0];
-    v3 = [MEMORY[0x1E69784B8] activePencil];
-    v2->_isPencilPaired = [v3 isConnected];
+    activePencil = [MEMORY[0x1E69784B8] activePencil];
+    v2->_isPencilPaired = [activePencil isConnected];
   }
 
   return v2;

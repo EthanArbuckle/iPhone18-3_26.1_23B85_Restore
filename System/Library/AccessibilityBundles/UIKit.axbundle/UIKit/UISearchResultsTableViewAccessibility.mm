@@ -6,7 +6,7 @@
 
 - (id)accessibilityLabel
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   if ([(UISearchResultsTableViewAccessibility *)self accessibilityElementCount])
   {
@@ -15,7 +15,7 @@
 
   else
   {
-    v5 = [(UISearchResultsTableViewAccessibility *)v7 safeValueForKey:@"controller"];
+    v5 = [(UISearchResultsTableViewAccessibility *)selfCopy safeValueForKey:@"controller"];
     v4 = [v5 safeValueForKey:@"_noResultsLabel"];
     location[0] = [v4 accessibilityLabel];
     MEMORY[0x29EDC9740](v4);

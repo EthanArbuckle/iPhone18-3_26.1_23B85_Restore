@@ -1,19 +1,19 @@
 @interface _Version
-- (_Version)initWithString:(id)a3;
-- (int64_t)compareTo:(id)a3;
+- (_Version)initWithString:(id)string;
+- (int64_t)compareTo:(id)to;
 @end
 
 @implementation _Version
 
-- (_Version)initWithString:(id)a3
+- (_Version)initWithString:(id)string
 {
-  v5 = a3;
+  stringCopy = string;
   v22.receiver = self;
   v22.super_class = _Version;
   v6 = [(_Version *)&v22 init];
   if (v6)
   {
-    v7 = [v5 componentsSeparatedByString:@"."];
+    v7 = [stringCopy componentsSeparatedByString:@"."];
     v8 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v7, "count")}];
     v18 = 0u;
     v19 = 0u;
@@ -52,31 +52,31 @@
     v6->_components = v8;
     v16 = v8;
 
-    objc_storeStrong(&v6->_versionString, a3);
+    objc_storeStrong(&v6->_versionString, string);
   }
 
   return v6;
 }
 
-- (int64_t)compareTo:(id)a3
+- (int64_t)compareTo:(id)to
 {
-  v4 = a3;
-  v5 = [(_Version *)self components];
-  v6 = [v5 count];
+  toCopy = to;
+  components = [(_Version *)self components];
+  v6 = [components count];
 
-  v7 = [v4 components];
-  v8 = [v7 count];
+  components2 = [toCopy components];
+  v8 = [components2 count];
 
   if (v8 > v6)
   {
-    v7 = [v4 components];
-    v6 = [v7 count];
+    components2 = [toCopy components];
+    v6 = [components2 count];
   }
 
   if (v6 < 1)
   {
 LABEL_19:
-    v7 = 0;
+    components2 = 0;
   }
 
   else
@@ -84,39 +84,39 @@ LABEL_19:
     v9 = 0;
     while (1)
     {
-      v10 = [(_Version *)self components];
-      v11 = [v10 count];
+      components3 = [(_Version *)self components];
+      v11 = [components3 count];
 
       if (v11 <= v9)
       {
-        v14 = 0;
+        integerValue = 0;
       }
 
       else
       {
-        v12 = [(_Version *)self components];
-        v13 = [v12 objectAtIndexedSubscript:v9];
-        v14 = [v13 integerValue];
+        components4 = [(_Version *)self components];
+        v13 = [components4 objectAtIndexedSubscript:v9];
+        integerValue = [v13 integerValue];
       }
 
-      v15 = [v4 components];
-      v16 = [v15 count];
+      components5 = [toCopy components];
+      v16 = [components5 count];
 
       if (v16 <= v9)
       {
-        v19 = 0;
+        integerValue2 = 0;
       }
 
       else
       {
-        v17 = [v4 components];
-        v18 = [v17 objectAtIndexedSubscript:v9];
-        v19 = [v18 integerValue];
+        components6 = [toCopy components];
+        v18 = [components6 objectAtIndexedSubscript:v9];
+        integerValue2 = [v18 integerValue];
       }
 
-      v20 = v14 < v19 ? -1 : v7;
-      v7 = v14 > v19 ? 1 : v20;
-      if (v14 != v19)
+      v20 = integerValue < integerValue2 ? -1 : components2;
+      components2 = integerValue > integerValue2 ? 1 : v20;
+      if (integerValue != integerValue2)
       {
         break;
       }
@@ -128,7 +128,7 @@ LABEL_19:
     }
   }
 
-  return v7;
+  return components2;
 }
 
 @end

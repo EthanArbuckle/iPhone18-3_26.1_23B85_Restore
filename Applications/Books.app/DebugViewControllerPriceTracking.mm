@@ -1,12 +1,12 @@
 @interface DebugViewControllerPriceTracking
 - (BKDebugViewSection)section;
 - (DebugViewControllerPriceTracking)init;
-- (DebugViewControllerPriceTracking)initWithOwner:(id)a3;
+- (DebugViewControllerPriceTracking)initWithOwner:(id)owner;
 @end
 
 @implementation DebugViewControllerPriceTracking
 
-- (DebugViewControllerPriceTracking)initWithOwner:(id)a3
+- (DebugViewControllerPriceTracking)initWithOwner:(id)owner
 {
   ObjectType = swift_getObjectType();
   swift_unknownObjectWeakInit();
@@ -25,7 +25,7 @@
 
 - (BKDebugViewSection)section
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10028CAE0();
 
   return v3;

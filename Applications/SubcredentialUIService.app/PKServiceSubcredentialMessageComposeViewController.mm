@@ -1,8 +1,8 @@
 @interface PKServiceSubcredentialMessageComposeViewController
 - (PKServiceSubcredentialMessageComposeViewController)init;
-- (void)messageComposeViewController:(id)a3 didFinishWithResult:(int64_t)a4;
-- (void)setDisplayPropertiesWithScreenSize:(CGSize)a3 scale:(double)a4;
-- (void)setSharingRequest:(id)a3 completionHandler:(id)a4;
+- (void)messageComposeViewController:(id)controller didFinishWithResult:(int64_t)result;
+- (void)setDisplayPropertiesWithScreenSize:(CGSize)size scale:(double)scale;
+- (void)setSharingRequest:(id)request completionHandler:(id)handler;
 @end
 
 @implementation PKServiceSubcredentialMessageComposeViewController
@@ -24,10 +24,10 @@
   return v2;
 }
 
-- (void)setDisplayPropertiesWithScreenSize:(CGSize)a3 scale:(double)a4
+- (void)setDisplayPropertiesWithScreenSize:(CGSize)size scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v7 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -37,30 +37,30 @@
     v9 = 138543618;
     v10 = v8;
     v11 = 2048;
-    v12 = a4;
+    scaleCopy = scale;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Setting display properties with screenSize=%{public}@ scale=%.f", &v9, 0x16u);
   }
 
   PKSetDisplayProperties();
 }
 
-- (void)setSharingRequest:(id)a3 completionHandler:(id)a4
+- (void)setSharingRequest:(id)request completionHandler:(id)handler
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100000FD0;
   v6[3] = &unk_100004118;
   v6[4] = self;
-  v7 = a4;
-  v5 = v7;
-  [PKSharingMessageExtensionMessageBuilder messageFromSharingRequest:a3 completionHandler:v6];
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  [PKSharingMessageExtensionMessageBuilder messageFromSharingRequest:request completionHandler:v6];
 }
 
-- (void)messageComposeViewController:(id)a3 didFinishWithResult:(int64_t)a4
+- (void)messageComposeViewController:(id)controller didFinishWithResult:(int64_t)result
 {
-  [a3 dismissViewControllerAnimated:1 completion:0];
-  v6 = [(PKServiceSubcredentialMessageComposeViewController *)self _remoteViewControllerProxy];
-  [v6 messageComposeViewControllerDidFinishWithResult:a4 == 1];
+  [controller dismissViewControllerAnimated:1 completion:0];
+  _remoteViewControllerProxy = [(PKServiceSubcredentialMessageComposeViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy messageComposeViewControllerDidFinishWithResult:result == 1];
 }
 
 @end

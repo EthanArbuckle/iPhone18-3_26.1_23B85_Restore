@@ -33,44 +33,44 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(CRUDetailViewComponent *)v2 locale];
-    v5 = [v4 localizedStringWithKey:@"NEW_CAMERA" defaultString:@"NEW_CAMERA"];
+    locale = [(CRUDetailViewComponent *)v2 locale];
+    v5 = [locale localizedStringWithKey:@"NEW_CAMERA" defaultString:@"NEW_CAMERA"];
     [(CRUDetailViewComponent *)v3 setTitleText:v5];
 
     v6 = MEMORY[0x277CBEBC0];
-    v7 = [(CRUDetailViewComponent *)v3 locale];
-    v8 = [v7 localizedStringWithKey:@"FINISH_REPAIR_KB_URL" defaultString:@"FINISH_REPAIR_KB_URL"];
+    locale2 = [(CRUDetailViewComponent *)v3 locale];
+    v8 = [locale2 localizedStringWithKey:@"FINISH_REPAIR_KB_URL" defaultString:@"FINISH_REPAIR_KB_URL"];
     v9 = [v6 URLWithString:v8];
     [(CRUDetailViewComponent *)v3 setKbArticleURL:v9];
 
-    v10 = [(CRUDetailViewComponent *)v3 locale];
-    v11 = [v10 localizedStringWithKey:@"FINISH_CAMERA_DESC" defaultString:@"FINISH_CAMERA_DESC"];
+    locale3 = [(CRUDetailViewComponent *)v3 locale];
+    v11 = [locale3 localizedStringWithKey:@"FINISH_CAMERA_DESC" defaultString:@"FINISH_CAMERA_DESC"];
 
-    v12 = [(CRUDetailViewComponent *)v3 locale];
-    v13 = [v12 localizedStringWithKey:@"RESTART_FINISH_REPAIR" defaultString:@"RESTART_FINISH_REPAIR"];
+    locale4 = [(CRUDetailViewComponent *)v3 locale];
+    v13 = [locale4 localizedStringWithKey:@"RESTART_FINISH_REPAIR" defaultString:@"RESTART_FINISH_REPAIR"];
     [(CRUDetailViewComponent *)v3 setButtonTitle:v13];
 
     if ([(CRUDetailViewComponent *)v3 deviceClass]== 3)
     {
       v14 = MEMORY[0x277CBEBC0];
-      v15 = [(CRUDetailViewComponent *)v3 locale];
-      v16 = [v15 localizedStringWithKey:@"CAMERA_REPAIR_KB_URL_IPAD" defaultString:@"CAMERA_REPAIR_KB_URL_IPAD"];
+      locale5 = [(CRUDetailViewComponent *)v3 locale];
+      v16 = [locale5 localizedStringWithKey:@"CAMERA_REPAIR_KB_URL_IPAD" defaultString:@"CAMERA_REPAIR_KB_URL_IPAD"];
       v17 = [v14 URLWithString:v16];
       [(CRUDetailViewComponent *)v3 setKbArticleURL:v17];
 
-      v18 = [(CRUDetailViewComponent *)v3 locale];
-      v19 = [v18 localizedStringWithKey:@"FINISH_CAMERA_DESC_IPAD" defaultString:@"FINISH_CAMERA_DESC_IPAD"];
+      locale6 = [(CRUDetailViewComponent *)v3 locale];
+      v19 = [locale6 localizedStringWithKey:@"FINISH_CAMERA_DESC_IPAD" defaultString:@"FINISH_CAMERA_DESC_IPAD"];
 
       v11 = v19;
     }
 
     [(CRUDetailViewComponent *)v3 setInformativeText:v11];
-    v20 = [(CRUDetailViewComponent *)v3 locale];
-    v21 = [v20 localizedStringWithKey:@"Camera" defaultString:@"Camera"];
+    locale7 = [(CRUDetailViewComponent *)v3 locale];
+    v21 = [locale7 localizedStringWithKey:@"Camera" defaultString:@"Camera"];
     [(CRUDetailViewComponent *)v3 setComponentName:v21];
 
-    v22 = [(CRUDetailViewComponent *)v3 locale];
-    v23 = [v22 localizedStringWithKey:@"CAMERA_FOOTER_LEARN_MORE" defaultString:@"CAMERA_FOOTER_LEARN_MORE"];
+    locale8 = [(CRUDetailViewComponent *)v3 locale];
+    v23 = [locale8 localizedStringWithKey:@"CAMERA_FOOTER_LEARN_MORE" defaultString:@"CAMERA_FOOTER_LEARN_MORE"];
     [(CRUDetailViewComponent *)v3 setFooterText:v23];
   }
 

@@ -1,90 +1,90 @@
 @interface MFGroupedSenderDestructiveTriageInteraction
-+ (id)interactionWithQuery:(id)a3 groupedSenderDisplayName:(id)a4 selectedBucket:(int64_t)a5 undoManager:(id)a6 origin:(int64_t)a7 actor:(int64_t)a8;
-- (id)_alertMessageForDisplayName:(id)a3 selectedBucket:(int64_t)a4 categoryMessageCount:(unint64_t)a5 totalMessageCount:(unint64_t)a6;
-- (id)_alertTitleForDisplayName:(id)a3 selectedBucket:(int64_t)a4 categoryMessageCount:(unint64_t)a5 totalMessageCount:(unint64_t)a6;
-- (void)_addMessageDeletionActionsForAlertController:(id)a3 triageInteraction:(id)a4 categoryMessageCount:(unint64_t)a5 continuation:(id)a6;
-- (void)_performContinuation:(id)a3 withAlertController:(id)a4;
-- (void)_updateAlertController:(id)a3 triageInteraction:(id)a4 displayName:(id)a5 selectedBucket:(int64_t)a6 categoryMessageCount:(unint64_t)a7 totalMessageCount:(unint64_t)a8 continuation:(id)a9;
++ (id)interactionWithQuery:(id)query groupedSenderDisplayName:(id)name selectedBucket:(int64_t)bucket undoManager:(id)manager origin:(int64_t)origin actor:(int64_t)actor;
+- (id)_alertMessageForDisplayName:(id)name selectedBucket:(int64_t)bucket categoryMessageCount:(unint64_t)count totalMessageCount:(unint64_t)messageCount;
+- (id)_alertTitleForDisplayName:(id)name selectedBucket:(int64_t)bucket categoryMessageCount:(unint64_t)count totalMessageCount:(unint64_t)messageCount;
+- (void)_addMessageDeletionActionsForAlertController:(id)controller triageInteraction:(id)interaction categoryMessageCount:(unint64_t)count continuation:(id)continuation;
+- (void)_performContinuation:(id)continuation withAlertController:(id)controller;
+- (void)_updateAlertController:(id)controller triageInteraction:(id)interaction displayName:(id)name selectedBucket:(int64_t)bucket categoryMessageCount:(unint64_t)count totalMessageCount:(unint64_t)messageCount continuation:(id)continuation;
 @end
 
 @implementation MFGroupedSenderDestructiveTriageInteraction
 
-+ (id)interactionWithQuery:(id)a3 groupedSenderDisplayName:(id)a4 selectedBucket:(int64_t)a5 undoManager:(id)a6 origin:(int64_t)a7 actor:(int64_t)a8
++ (id)interactionWithQuery:(id)query groupedSenderDisplayName:(id)name selectedBucket:(int64_t)bucket undoManager:(id)manager origin:(int64_t)origin actor:(int64_t)actor
 {
-  v14 = a4;
-  v17.receiver = a1;
+  nameCopy = name;
+  v17.receiver = self;
   v17.super_class = &OBJC_METACLASS___MFGroupedSenderDestructiveTriageInteraction;
-  v15 = objc_msgSendSuper2(&v17, "interactionWithQuery:undoManager:origin:actor:", a3, a6, a7, a8);
-  [v15 setDisplayName:v14];
-  [v15 setSelectedBucket:a5];
+  v15 = objc_msgSendSuper2(&v17, "interactionWithQuery:undoManager:origin:actor:", query, manager, origin, actor);
+  [v15 setDisplayName:nameCopy];
+  [v15 setSelectedBucket:bucket];
 
   return v15;
 }
 
-- (id)_alertTitleForDisplayName:(id)a3 selectedBucket:(int64_t)a4 categoryMessageCount:(unint64_t)a5 totalMessageCount:(unint64_t)a6
+- (id)_alertTitleForDisplayName:(id)name selectedBucket:(int64_t)bucket categoryMessageCount:(unint64_t)count totalMessageCount:(unint64_t)messageCount
 {
-  v8 = a3;
+  nameCopy = name;
   [(MFGroupedSenderDestructiveTriageInteraction *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[MFGroupedSenderDestructiveTriageInteraction _alertTitleForDisplayName:selectedBucket:categoryMessageCount:totalMessageCount:]", "MFGroupedSenderDestructiveTriageInteraction.m", 37, "0");
 }
 
-- (id)_alertMessageForDisplayName:(id)a3 selectedBucket:(int64_t)a4 categoryMessageCount:(unint64_t)a5 totalMessageCount:(unint64_t)a6
+- (id)_alertMessageForDisplayName:(id)name selectedBucket:(int64_t)bucket categoryMessageCount:(unint64_t)count totalMessageCount:(unint64_t)messageCount
 {
-  v8 = a3;
+  nameCopy = name;
   [(MFGroupedSenderDestructiveTriageInteraction *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[MFGroupedSenderDestructiveTriageInteraction _alertMessageForDisplayName:selectedBucket:categoryMessageCount:totalMessageCount:]", "MFGroupedSenderDestructiveTriageInteraction.m", 41, "0");
 }
 
-- (void)_addMessageDeletionActionsForAlertController:(id)a3 triageInteraction:(id)a4 categoryMessageCount:(unint64_t)a5 continuation:(id)a6
+- (void)_addMessageDeletionActionsForAlertController:(id)controller triageInteraction:(id)interaction categoryMessageCount:(unint64_t)count continuation:(id)continuation
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  controllerCopy = controller;
+  interactionCopy = interaction;
+  continuationCopy = continuation;
   [(MFGroupedSenderDestructiveTriageInteraction *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[MFGroupedSenderDestructiveTriageInteraction _addMessageDeletionActionsForAlertController:triageInteraction:categoryMessageCount:continuation:]", "MFGroupedSenderDestructiveTriageInteraction.m", 45, "0");
 }
 
-- (void)_updateAlertController:(id)a3 triageInteraction:(id)a4 displayName:(id)a5 selectedBucket:(int64_t)a6 categoryMessageCount:(unint64_t)a7 totalMessageCount:(unint64_t)a8 continuation:(id)a9
+- (void)_updateAlertController:(id)controller triageInteraction:(id)interaction displayName:(id)name selectedBucket:(int64_t)bucket categoryMessageCount:(unint64_t)count totalMessageCount:(unint64_t)messageCount continuation:(id)continuation
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a9;
-  v19 = v15;
+  controllerCopy = controller;
+  interactionCopy = interaction;
+  nameCopy = name;
+  continuationCopy = continuation;
+  v19 = controllerCopy;
   v25 = v19;
-  v26 = self;
-  v20 = v17;
+  selfCopy = self;
+  v20 = nameCopy;
   v27 = v20;
-  v30 = a6;
-  v31 = a7;
-  v32 = a8;
-  v21 = v16;
+  bucketCopy = bucket;
+  countCopy = count;
+  messageCountCopy = messageCount;
+  v21 = interactionCopy;
   v28 = v21;
-  v22 = v18;
+  v22 = continuationCopy;
   v29 = v22;
   v23 = [EFScheduler mainThreadScheduler:_NSConcreteStackBlock];
   [v23 performBlock:&v24];
 }
 
-- (void)_performContinuation:(id)a3 withAlertController:(id)a4
+- (void)_performContinuation:(id)continuation withAlertController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  continuationCopy = continuation;
+  controllerCopy = controller;
   v8 = [UIAlertController alertControllerWithTitle:0 message:0 preferredStyle:1];
-  v9 = [(MFTriageInteraction *)self delegate];
+  delegate = [(MFTriageInteraction *)self delegate];
   v13 = _NSConcreteStackBlock;
   v14 = 3221225472;
   v15 = sub_1001CF570;
   v16 = &unk_100654200;
-  v17 = self;
+  selfCopy = self;
   v10 = v8;
   v18 = v10;
-  v11 = v6;
+  v11 = continuationCopy;
   v19 = v11;
-  v12 = v7;
+  v12 = controllerCopy;
   v20 = v12;
-  [v9 groupedSenderMessageCountForDestructiveTriageInteraction:self completionHandler:&v13];
-  [v9 updateAvatarViewControllerForTriageInteraction:self alertController:{v10, v13, v14, v15, v16, v17}];
+  [delegate groupedSenderMessageCountForDestructiveTriageInteraction:self completionHandler:&v13];
+  [delegate updateAvatarViewControllerForTriageInteraction:self alertController:{v10, v13, v14, v15, v16, selfCopy}];
 }
 
 @end

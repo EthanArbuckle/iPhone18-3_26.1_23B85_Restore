@@ -1,15 +1,15 @@
 @interface CKReplyContextAggregateAttachmentMessagePartChatItem
 - (BOOL)replyIsFromMe;
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4;
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets;
 @end
 
 @implementation CKReplyContextAggregateAttachmentMessagePartChatItem
 
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets
 {
   v20.receiver = self;
   v20.super_class = CKReplyContextAggregateAttachmentMessagePartChatItem;
-  [(CKAggregateAttachmentMessagePartChatItem *)&v20 loadSizeThatFits:a4 textAlignmentInsets:a3.width, a3.height];
+  [(CKAggregateAttachmentMessagePartChatItem *)&v20 loadSizeThatFits:insets textAlignmentInsets:fits.width, fits.height];
   v5 = v4;
   v7 = v6;
   v8 = +[CKUIBehavior sharedBehaviors];
@@ -48,10 +48,10 @@
 
 - (BOOL)replyIsFromMe
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 replyIsFromMe];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  replyIsFromMe = [iMChatItem replyIsFromMe];
 
-  return v3;
+  return replyIsFromMe;
 }
 
 @end

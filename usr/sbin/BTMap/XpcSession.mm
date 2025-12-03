@@ -1,26 +1,26 @@
 @interface XpcSession
-- (XpcSession)initWithConnection:(id)a3;
-- (id)serializeIMMessageNotification:(id)a3;
-- (id)serializeIMSPIMessage:(id)a3;
+- (XpcSession)initWithConnection:(id)connection;
+- (id)serializeIMMessageNotification:(id)notification;
+- (id)serializeIMSPIMessage:(id)message;
 - (void)dealloc;
-- (void)getImCoreSeedMessages:(id)a3;
-- (void)handleMsg:(id)a3;
-- (void)markMessageAsRead:(id)a3;
-- (void)messageReceivedNotification:(id)a3;
-- (void)messageSentNotification:(id)a3;
+- (void)getImCoreSeedMessages:(id)messages;
+- (void)handleMsg:(id)msg;
+- (void)markMessageAsRead:(id)read;
+- (void)messageReceivedNotification:(id)notification;
+- (void)messageSentNotification:(id)notification;
 - (void)registerForIMCoreNotifications;
-- (void)sendMsg:(id)a3 args:(id)a4;
-- (void)sendReplyToMsg:(id)a3 status:(unsigned __int8)a4 args:(id)a5;
-- (void)sendTextMessage:(id)a3;
+- (void)sendMsg:(id)msg args:(id)args;
+- (void)sendReplyToMsg:(id)msg status:(unsigned __int8)status args:(id)args;
+- (void)sendTextMessage:(id)message;
 @end
 
 @implementation XpcSession
 
-- (XpcSession)initWithConnection:(id)a3
+- (XpcSession)initWithConnection:(id)connection
 {
   v7.receiver = self;
   v7.super_class = XpcSession;
-  v3 = [(BTXpcSession *)&v7 initWithConnection:a3];
+  v3 = [(BTXpcSession *)&v7 initWithConnection:connection];
   if (v3)
   {
     v4 = objc_alloc_init(MapHandler);
@@ -33,10 +33,10 @@
   return v3;
 }
 
-- (void)handleMsg:(id)a3
+- (void)handleMsg:(id)msg
 {
-  v5 = a3;
-  string = xpc_dictionary_get_string(v5, "kMsgId");
+  msgCopy = msg;
+  string = xpc_dictionary_get_string(msgCopy, "kMsgId");
   if (!strcmp(string, "kStart"))
   {
     [(XpcSession *)self registerForIMCoreNotifications];
@@ -44,31 +44,31 @@
 
   else if (!strcmp(string, "kMarkMessageRead"))
   {
-    [(XpcSession *)self markMessageAsRead:v5];
+    [(XpcSession *)self markMessageAsRead:msgCopy];
   }
 
   else if (!strcmp(string, "kSendTextMessage"))
   {
-    [(XpcSession *)self sendTextMessage:v5];
+    [(XpcSession *)self sendTextMessage:msgCopy];
   }
 
   else if (!strcmp(string, "kGetImCoreInitialMessages"))
   {
-    [(XpcSession *)self getImCoreSeedMessages:v5];
+    [(XpcSession *)self getImCoreSeedMessages:msgCopy];
   }
 
   _objc_release_x1();
 }
 
-- (void)sendMsg:(id)a3 args:(id)a4
+- (void)sendMsg:(id)msg args:(id)args
 {
-  v10 = a4;
-  v6 = a3;
+  argsCopy = args;
+  msgCopy = msg;
   v7 = xpc_dictionary_create(0, 0, 0);
-  v8 = [v6 cStringUsingEncoding:4];
+  v8 = [msgCopy cStringUsingEncoding:4];
 
   xpc_dictionary_set_string(v7, "kMsgId", v8);
-  if (v10)
+  if (argsCopy)
   {
     v9 = _CFXPCCreateXPCObjectFromCFObject();
     xpc_dictionary_set_value(v7, "kMsgArgs", v9);
@@ -77,23 +77,23 @@
   [(BTXpcSession *)self sendMsg:v7];
 }
 
-- (void)sendReplyToMsg:(id)a3 status:(unsigned __int8)a4 args:(id)a5
+- (void)sendReplyToMsg:(id)msg status:(unsigned __int8)status args:(id)args
 {
-  v5 = a4;
-  v8 = a5;
-  xdict = xpc_dictionary_create_reply(a3);
-  xpc_dictionary_set_int64(xdict, "kMsgStatus", v5);
+  statusCopy = status;
+  argsCopy = args;
+  xdict = xpc_dictionary_create_reply(msg);
+  xpc_dictionary_set_int64(xdict, "kMsgStatus", statusCopy);
   v9 = _CFXPCCreateXPCObjectFromCFObject();
 
   xpc_dictionary_set_value(xdict, "kMsgArgs", v9);
   [(BTXpcSession *)self sendReply:xdict];
 }
 
-- (void)messageReceivedNotification:(id)a3
+- (void)messageReceivedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 object];
-  if ([v5 isMuted])
+  notificationCopy = notification;
+  object = [notificationCopy object];
+  if ([object isMuted])
   {
     v6 = qword_10000CEC8;
     if (os_log_type_enabled(qword_10000CEC8, OS_LOG_TYPE_DEFAULT))
@@ -105,21 +105,21 @@
 
   else
   {
-    v7 = [v4 userInfo];
-    v8 = [v7 objectForKey:IMChatValueKey];
+    userInfo = [notificationCopy userInfo];
+    v8 = [userInfo objectForKey:IMChatValueKey];
 
     v9 = qword_10000CEC8;
     if (os_log_type_enabled(qword_10000CEC8, OS_LOG_TYPE_DEFAULT))
     {
       v10 = v9;
-      v11 = [v8 guid];
+      guid = [v8 guid];
       *buf = 138412290;
-      v18 = v11;
+      v18 = guid;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Sending received text message with GUID %@ to bluetoothd", buf, 0xCu);
     }
 
     v12 = +[NSMutableArray array];
-    v13 = [(XpcSession *)self serializeIMMessageNotification:v4];
+    v13 = [(XpcSession *)self serializeIMMessageNotification:notificationCopy];
     [v12 addObject:v13];
 
     v15 = @"kMessagesInfo";
@@ -129,43 +129,43 @@
   }
 }
 
-- (void)messageSentNotification:(id)a3
+- (void)messageSentNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:IMChatValueKey];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKey:IMChatValueKey];
 
-  v7 = [v6 guid];
-  v8 = [(MapHandler *)self->_mapHandler pendingSendGuids];
-  if (![v8 containsObject:v7])
+  guid = [v6 guid];
+  pendingSendGuids = [(MapHandler *)self->_mapHandler pendingSendGuids];
+  if (![pendingSendGuids containsObject:guid])
   {
 LABEL_6:
 
     goto LABEL_7;
   }
 
-  v9 = [v6 isSent];
+  isSent = [v6 isSent];
 
-  if (v9)
+  if (isSent)
   {
     v10 = qword_10000CEC8;
     if (os_log_type_enabled(qword_10000CEC8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v17 = v7;
+      v17 = guid;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Guid %@ has sent, updating CK", buf, 0xCu);
     }
 
-    v8 = +[NSMutableArray array];
-    v11 = [(XpcSession *)self serializeIMMessageNotification:v4];
-    [v8 addObject:v11];
+    pendingSendGuids = +[NSMutableArray array];
+    v11 = [(XpcSession *)self serializeIMMessageNotification:notificationCopy];
+    [pendingSendGuids addObject:v11];
 
     v14 = @"kMessagesInfo";
-    v15 = v8;
+    v15 = pendingSendGuids;
     v12 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
     [(XpcSession *)self sendMsg:@"kMessageSent" args:v12];
-    v13 = [(MapHandler *)self->_mapHandler pendingSendGuids];
-    [v13 removeObject:v7];
+    pendingSendGuids2 = [(MapHandler *)self->_mapHandler pendingSendGuids];
+    [pendingSendGuids2 removeObject:guid];
 
     goto LABEL_6;
   }
@@ -173,9 +173,9 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)markMessageAsRead:(id)a3
+- (void)markMessageAsRead:(id)read
 {
-  v3 = xpc_dictionary_get_value(a3, "kMsgArgs");
+  v3 = xpc_dictionary_get_value(read, "kMsgArgs");
   v4 = [NSString stringWithUTF8String:xpc_dictionary_get_string(v3, "kMessageGUID")];
   v5 = qword_10000CEC8;
   if (os_log_type_enabled(qword_10000CEC8, OS_LOG_TYPE_DEFAULT))
@@ -188,9 +188,9 @@ LABEL_7:
   IMSPIQueryMessageWithGUIDAndQOS();
 }
 
-- (void)sendTextMessage:(id)a3
+- (void)sendTextMessage:(id)message
 {
-  v3 = xpc_dictionary_get_value(a3, "kMsgArgs");
+  v3 = xpc_dictionary_get_value(message, "kMsgArgs");
   v4 = [NSString stringWithUTF8String:xpc_dictionary_get_string(v3, "kBody")];
   string = xpc_dictionary_get_string(v3, "kRecipientPhoneNumber");
   v6 = xpc_dictionary_get_string(v3, "kRecipientEmail");
@@ -241,52 +241,52 @@ LABEL_12:
   }
 }
 
-- (void)getImCoreSeedMessages:(id)a3
+- (void)getImCoreSeedMessages:(id)messages
 {
-  v4 = a3;
-  v3 = v4;
+  messagesCopy = messages;
+  v3 = messagesCopy;
   IMSPIQueryMessagesWithQOS();
 }
 
-- (id)serializeIMSPIMessage:(id)a3
+- (id)serializeIMSPIMessage:(id)message
 {
-  v3 = a3;
-  v4 = qword_10000CEC8;
+  messageCopy = message;
+  body = qword_10000CEC8;
   if (os_log_type_enabled(qword_10000CEC8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Processing added text message", buf, 2u);
+    _os_log_impl(&_mh_execute_header, body, OS_LOG_TYPE_DEFAULT, "Processing added text message", buf, 2u);
   }
 
-  v5 = [v3 date];
-  v6 = [v3 isAudioMessage];
-  if (v6)
+  date = [messageCopy date];
+  isAudioMessage = [messageCopy isAudioMessage];
+  if (isAudioMessage)
   {
-    v4 = [v3 body];
-    if (![v4 length])
+    body = [messageCopy body];
+    if (![body length])
     {
-      v7 = @"Audio Message";
+      body2 = @"Audio Message";
       goto LABEL_8;
     }
   }
 
-  v7 = [v3 body];
-  if (v6)
+  body2 = [messageCopy body];
+  if (isAudioMessage)
   {
 LABEL_8:
   }
 
-  v8 = [v3 sender];
-  v9 = [v8 displayName];
+  sender = [messageCopy sender];
+  displayName = [sender displayName];
 
-  v10 = [v3 sender];
-  v11 = [v10 address];
+  sender2 = [messageCopy sender];
+  address = [sender2 address];
 
-  v12 = [v3 guid];
-  v43 = [v3 service];
-  v41 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isRead]);
-  v13 = [v11 containsString:@"@"];
-  v14 = v11;
+  guid = [messageCopy guid];
+  service = [messageCopy service];
+  v41 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [messageCopy isRead]);
+  v13 = [address containsString:@"@"];
+  v14 = address;
   if (v13)
   {
     v15 = v14;
@@ -309,10 +309,10 @@ LABEL_8:
   }
 
   v42 = v16;
-  v17 = [(__CFString *)v7 UTF8StringWithMaxLength:128];
+  v17 = [(__CFString *)body2 UTF8StringWithMaxLength:128];
   v45[0] = @"kDate";
-  v18 = v5;
-  if (!v5)
+  v18 = date;
+  if (!date)
   {
     v18 = +[NSDate date];
   }
@@ -320,8 +320,8 @@ LABEL_8:
   v34 = v18;
   v46[0] = v18;
   v45[1] = @"kBody";
-  v19 = v7;
-  if (!v7)
+  v19 = body2;
+  if (!body2)
   {
     v19 = +[NSNull null];
   }
@@ -338,15 +338,15 @@ LABEL_8:
     v20 = +[NSNull null];
   }
 
-  v40 = v5;
+  v40 = date;
   v32 = v20;
   v46[3] = v20;
   v45[4] = @"kSenderLastName";
   v36 = +[NSNull null];
   v46[4] = v36;
   v45[5] = @"kSenderFormattedName";
-  v21 = v9;
-  if (!v9)
+  v21 = displayName;
+  if (!displayName)
   {
     v21 = +[NSNull null];
   }
@@ -354,13 +354,13 @@ LABEL_8:
   v30 = v21;
   v46[5] = v21;
   v45[6] = @"kMessageGUID";
-  v22 = v12;
-  if (!v12)
+  v22 = guid;
+  if (!guid)
   {
     v22 = +[NSNull null];
   }
 
-  v39 = v12;
+  v39 = guid;
   v46[6] = v22;
   v45[7] = @"kSenderEmail";
   v23 = v15;
@@ -369,7 +369,7 @@ LABEL_8:
     v23 = +[NSNull null];
   }
 
-  v24 = v7;
+  v24 = body2;
   v46[7] = v23;
   v45[8] = @"kSenderPhoneNumber";
   v25 = v42;
@@ -381,8 +381,8 @@ LABEL_8:
   v26 = v17;
   v46[8] = v25;
   v45[9] = @"kAppType";
-  v27 = v43;
-  if (!v43)
+  v27 = service;
+  if (!service)
   {
     v27 = +[NSNull null];
   }
@@ -401,7 +401,7 @@ LABEL_8:
   {
   }
 
-  if (!v43)
+  if (!service)
   {
   }
 
@@ -415,7 +415,7 @@ LABEL_8:
 
   if (v39)
   {
-    if (v9)
+    if (displayName)
     {
       goto LABEL_43;
     }
@@ -424,7 +424,7 @@ LABEL_8:
   else
   {
 
-    if (v9)
+    if (displayName)
     {
       goto LABEL_43;
     }
@@ -457,13 +457,13 @@ LABEL_47:
   return v35;
 }
 
-- (id)serializeIMMessageNotification:(id)a3
+- (id)serializeIMMessageNotification:(id)notification
 {
-  v3 = a3;
-  v4 = [v3 object];
-  v5 = [v3 userInfo];
+  notificationCopy = notification;
+  object = [notificationCopy object];
+  userInfo = [notificationCopy userInfo];
 
-  v6 = [v5 objectForKey:IMChatValueKey];
+  v6 = [userInfo objectForKey:IMChatValueKey];
 
   v7 = qword_10000CEC8;
   if (os_log_type_enabled(qword_10000CEC8, OS_LOG_TYPE_DEFAULT))
@@ -472,11 +472,11 @@ LABEL_47:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Processing added text message", buf, 2u);
   }
 
-  v8 = [v6 sender];
-  v9 = [v8 name];
+  sender = [v6 sender];
+  name = [sender name];
 
-  v10 = [v6 sender];
-  v11 = [v10 ID];
+  sender2 = [v6 sender];
+  v11 = [sender2 ID];
 
   v12 = [v11 containsString:@"@"];
   v13 = v11;
@@ -506,11 +506,11 @@ LABEL_47:
   v16 = 0;
   if ([v6 isFromMe])
   {
-    v17 = [v4 recipient];
-    v18 = [v17 name];
+    recipient = [object recipient];
+    name2 = [recipient name];
 
-    v19 = [v4 recipient];
-    v20 = [v19 ID];
+    recipient2 = [object recipient];
+    v20 = [recipient2 ID];
 
     v21 = [v20 containsString:@"@"];
     if (v21)
@@ -535,13 +535,13 @@ LABEL_47:
 
     v62 = v22;
     v63 = v23;
-    v16 = v18;
+    v16 = name2;
   }
 
-  v58 = [v6 timeDelivered];
-  v24 = [v6 plainBody];
-  v57 = v4;
-  if (![v24 length])
+  timeDelivered = [v6 timeDelivered];
+  plainBody = [v6 plainBody];
+  v57 = object;
+  if (![plainBody length])
   {
     v25 = v16;
     v26 = qword_10000CEC8;
@@ -551,22 +551,22 @@ LABEL_47:
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "No body, using message summary instead", buf, 2u);
     }
 
-    v27 = [v6 _imMessageItem];
+    _imMessageItem = [v6 _imMessageItem];
     v28 = IMSPIMessageSummary();
 
-    v24 = v28;
+    plainBody = v28;
     v16 = v25;
   }
 
-  v61 = [v24 UTF8StringWithMaxLength:128];
-  v60 = [v6 guid];
-  v29 = [v6 subject];
-  v59 = [v29 accountTypeName];
+  v61 = [plainBody UTF8StringWithMaxLength:128];
+  guid = [v6 guid];
+  subject = [v6 subject];
+  accountTypeName = [subject accountTypeName];
 
   v30 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v6 isRead]);
   v65[0] = @"kDate";
-  v31 = v58;
-  if (!v58)
+  v31 = timeDelivered;
+  if (!timeDelivered)
   {
     v31 = +[NSDate date];
   }
@@ -574,8 +574,8 @@ LABEL_47:
   v51 = v31;
   v66[0] = v31;
   v65[1] = @"kBody";
-  v32 = v24;
-  if (!v24)
+  v32 = plainBody;
+  if (!plainBody)
   {
     v32 = +[NSNull null];
   }
@@ -591,8 +591,8 @@ LABEL_47:
 
   v66[2] = v33;
   v65[3] = @"kSenderFormattedName";
-  v34 = v9;
-  if (!v9)
+  v34 = name;
+  if (!name)
   {
     v34 = +[NSNull null];
   }
@@ -606,7 +606,7 @@ LABEL_47:
     v35 = +[NSNull null];
   }
 
-  v56 = v9;
+  v56 = name;
   v47 = v35;
   v66[4] = v35;
   v65[5] = @"kSenderPhoneNumber";
@@ -646,8 +646,8 @@ LABEL_47:
   v40 = v14;
   v66[8] = v39;
   v65[9] = @"kMessageGUID";
-  v41 = v60;
-  if (!v60)
+  v41 = guid;
+  if (!guid)
   {
     v41 = +[NSNull null];
   }
@@ -655,8 +655,8 @@ LABEL_47:
   v49 = v33;
   v66[9] = v41;
   v65[10] = @"kAppType";
-  v42 = v59;
-  if (!v59)
+  v42 = accountTypeName;
+  if (!accountTypeName)
   {
     v42 = +[NSNull null];
   }
@@ -675,11 +675,11 @@ LABEL_47:
   {
   }
 
-  if (!v59)
+  if (!accountTypeName)
   {
   }
 
-  if (!v60)
+  if (!guid)
   {
   }
 
@@ -729,14 +729,14 @@ LABEL_57:
 LABEL_59:
   if (v61)
   {
-    if (v24)
+    if (plainBody)
     {
       goto LABEL_61;
     }
 
 LABEL_70:
 
-    if (v58)
+    if (timeDelivered)
     {
       goto LABEL_62;
     }
@@ -744,13 +744,13 @@ LABEL_70:
     goto LABEL_71;
   }
 
-  if (!v24)
+  if (!plainBody)
   {
     goto LABEL_70;
   }
 
 LABEL_61:
-  if (v58)
+  if (timeDelivered)
   {
     goto LABEL_62;
   }

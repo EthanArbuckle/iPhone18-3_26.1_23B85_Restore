@@ -24,9 +24,9 @@
 {
   v3 = [CNDescriptionBuilder descriptionBuilderWithObject:self];
   v4 = [v3 appendName:@"os_unfair_lock_t" pointerValue:&self->_os_unfair_lock];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
 @end

@@ -1,62 +1,62 @@
 @interface CCUIMenuModuleViewController
-+ (id)checkmarkImageForPreferredContentSizeCategory:(id)a3;
-- (BOOL)_forceLimitContentSizeCategoryFromContentHeightIfNecessary:(double)a3 expanded:(BOOL)a4;
-- (BOOL)_setForceLimitContentSizeCategory:(BOOL)a3;
++ (id)checkmarkImageForPreferredContentSizeCategory:(id)category;
+- (BOOL)_forceLimitContentSizeCategoryFromContentHeightIfNecessary:(double)necessary expanded:(BOOL)expanded;
+- (BOOL)_setForceLimitContentSizeCategory:(BOOL)category;
 - (BOOL)_shouldHideGlyphForLimitedContentSizeCategory;
 - (BOOL)_shouldLimitContentSizeCategory;
 - (BOOL)_shouldShowFooterChin;
-- (BOOL)_toggleSelectionForMenuItem:(id)a3;
+- (BOOL)_toggleSelectionForMenuItem:(id)item;
 - (BOOL)hasGlyph;
 - (CCUIContentModuleContext)contentModuleContext;
 - (CCUIMenuItemsUpdating)menuUpdatingDelegate;
-- (CCUIMenuModuleViewController)initWithContentModuleContext:(id)a3;
-- (CCUIMenuModuleViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (CCUIMenuModuleViewController)initWithContentModuleContext:(id)context;
+- (CCUIMenuModuleViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (UIMenu)contextMenu;
 - (UIView)contentView;
 - (double)_aggregateModuleHeight;
-- (double)_contentScaleForSize:(CGSize)a3;
+- (double)_contentScaleForSize:(CGSize)size;
 - (double)_defaultMenuItemHeight;
 - (double)_desiredExpandedHeight;
 - (double)_footerHeight;
 - (double)_maximumHeight;
-- (double)_menuItemsHeightForWidth:(double)a3;
+- (double)_menuItemsHeightForWidth:(double)width;
 - (double)_separatorHeight;
 - (double)headerHeight;
-- (double)headerHeightForWidth:(double)a3;
+- (double)headerHeightForWidth:(double)width;
 - (double)preferredExpandedContentHeight;
-- (double)preferredExpandedContentHeightWithWidth:(double)a3;
-- (double)scrollViewContentHeightForWidth:(double)a3;
+- (double)preferredExpandedContentHeightWithWidth:(double)width;
+- (double)scrollViewContentHeightForWidth:(double)width;
 - (id)_busyIndicatorView;
-- (id)_leadingViewForMenuItem:(id)a3;
-- (id)_menuItemFromPlaceholderIndex:(unint64_t)a3;
-- (id)_preferredFontForTextStyle:(id)a3 hiFontStyle:(int64_t)a4;
+- (id)_leadingViewForMenuItem:(id)item;
+- (id)_menuItemFromPlaceholderIndex:(unint64_t)index;
+- (id)_preferredFontForTextStyle:(id)style hiFontStyle:(int64_t)fontStyle;
 - (id)_subtitleFont;
 - (id)_titleFont;
-- (id)_trailingViewForMenuItem:(id)a3;
+- (id)_trailingViewForMenuItem:(id)item;
 - (id)contextMenuItems;
-- (id)contextMenuPreviewForControlTemplateView:(id)a3;
-- (id)leadingImageForMenuItem:(id)a3;
-- (id)leadingViewForMenuItem:(id)a3;
-- (id)menuItemForIdentifier:(id)a3;
-- (id)trailingImageForMenuItem:(id)a3;
-- (id)trailingViewForMenuItem:(id)a3;
+- (id)contextMenuPreviewForControlTemplateView:(id)view;
+- (id)leadingImageForMenuItem:(id)item;
+- (id)leadingViewForMenuItem:(id)item;
+- (id)menuItemForIdentifier:(id)identifier;
+- (id)trailingImageForMenuItem:(id)item;
+- (id)trailingViewForMenuItem:(id)item;
 - (void)_contentSizeCategoryDidChange;
-- (void)_fadeViewsForExpandedState:(BOOL)a3;
-- (void)_handleActionTapped:(id)a3;
-- (void)_handlePressGesture:(id)a3;
-- (void)_layoutBusyIndicatorForSize:(CGSize)a3;
-- (void)_layoutContentViewForSize:(CGSize)a3;
-- (void)_layoutFooterButtonForSize:(CGSize)a3;
-- (void)_layoutFooterSeparatorForSize:(CGSize)a3;
-- (void)_layoutGlyphViewForSize:(CGSize)a3;
-- (void)_layoutHeaderSeparatorForSize:(CGSize)a3;
-- (void)_layoutSubtitleLabelForSize:(CGSize)a3;
-- (void)_layoutTitleLabelForSize:(CGSize)a3;
-- (void)_layoutTransformViewForSize:(CGSize)a3;
+- (void)_fadeViewsForExpandedState:(BOOL)state;
+- (void)_handleActionTapped:(id)tapped;
+- (void)_handlePressGesture:(id)gesture;
+- (void)_layoutBusyIndicatorForSize:(CGSize)size;
+- (void)_layoutContentViewForSize:(CGSize)size;
+- (void)_layoutFooterButtonForSize:(CGSize)size;
+- (void)_layoutFooterSeparatorForSize:(CGSize)size;
+- (void)_layoutGlyphViewForSize:(CGSize)size;
+- (void)_layoutHeaderSeparatorForSize:(CGSize)size;
+- (void)_layoutSubtitleLabelForSize:(CGSize)size;
+- (void)_layoutTitleLabelForSize:(CGSize)size;
+- (void)_layoutTransformViewForSize:(CGSize)size;
 - (void)_layoutViewSubviews;
-- (void)_setMenuItems:(id)a3;
-- (void)_setRootViewClipsToBounds:(BOOL)a3;
-- (void)_setView:(id)a3 clipsToBounds:(BOOL)a4;
+- (void)_setMenuItems:(id)items;
+- (void)_setRootViewClipsToBounds:(BOOL)bounds;
+- (void)_setView:(id)view clipsToBounds:(BOOL)bounds;
 - (void)_setupSubtitleLabel;
 - (void)_setupTitleLabel;
 - (void)_updateLeadingAndTrailingViews;
@@ -64,42 +64,42 @@
 - (void)_updatePreferredContentSize;
 - (void)_updateSubtitleFont;
 - (void)_updateTitleFont;
-- (void)addActionWithTitle:(id)a3 subtitle:(id)a4 glyph:(id)a5 handler:(id)a6;
-- (void)contentModuleWillTransitionToExpandedContentMode:(BOOL)a3;
-- (void)didTransitionToExpandedContentMode:(BOOL)a3;
+- (void)addActionWithTitle:(id)title subtitle:(id)subtitle glyph:(id)glyph handler:(id)handler;
+- (void)contentModuleWillTransitionToExpandedContentMode:(BOOL)mode;
+- (void)didTransitionToExpandedContentMode:(BOOL)mode;
 - (void)removeAllActions;
 - (void)removeFooterButton;
-- (void)setAlwaysExpanded:(BOOL)a3;
-- (void)setBusy:(BOOL)a3;
-- (void)setCustomContentView:(id)a3;
-- (void)setFooterButtonTitle:(id)a3 handler:(id)a4;
-- (void)setGlyphImage:(id)a3;
-- (void)setGlyphPackageDescription:(id)a3;
-- (void)setMenuItems:(id)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setUseIndentedLayout:(BOOL)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setAlwaysExpanded:(BOOL)expanded;
+- (void)setBusy:(BOOL)busy;
+- (void)setCustomContentView:(id)view;
+- (void)setFooterButtonTitle:(id)title handler:(id)handler;
+- (void)setGlyphImage:(id)image;
+- (void)setGlyphPackageDescription:(id)description;
+- (void)setMenuItems:(id)items;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTitle:(id)title;
+- (void)setUseIndentedLayout:(BOOL)layout;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willTransitionToExpandedContentMode:(BOOL)a3;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willTransitionToExpandedContentMode:(BOOL)mode;
 @end
 
 @implementation CCUIMenuModuleViewController
 
-+ (id)checkmarkImageForPreferredContentSizeCategory:(id)a3
++ (id)checkmarkImageForPreferredContentSizeCategory:(id)category
 {
-  v4 = a3;
-  v5 = v4;
+  categoryCopy = category;
+  v5 = categoryCopy;
   v6 = checkmarkImageForPreferredContentSizeCategory__checkmarkImage;
   if (checkmarkImageForPreferredContentSizeCategory__checkmarkImage)
   {
-    v7 = checkmarkImageForPreferredContentSizeCategory__checkmarkImageContentSizeCategory == v4;
+    v7 = checkmarkImageForPreferredContentSizeCategory__checkmarkImageContentSizeCategory == categoryCopy;
   }
 
   else
@@ -109,7 +109,7 @@
 
   if (!v7)
   {
-    objc_storeStrong(&checkmarkImageForPreferredContentSizeCategory__checkmarkImageContentSizeCategory, a3);
+    objc_storeStrong(&checkmarkImageForPreferredContentSizeCategory__checkmarkImageContentSizeCategory, category);
     v8 = *MEMORY[0x1E69DDC30];
     if (UIContentSizeCategoryCompareToCategory(v5, *MEMORY[0x1E69DDC30]) == NSOrderedDescending)
     {
@@ -127,8 +127,8 @@
     checkmarkImageForPreferredContentSizeCategory__checkmarkImage = v13;
 
     v15 = checkmarkImageForPreferredContentSizeCategory__checkmarkImage;
-    v16 = [MEMORY[0x1E69DC888] whiteColor];
-    v17 = [v15 _flatImageWithColor:v16];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    v17 = [v15 _flatImageWithColor:whiteColor];
     v18 = checkmarkImageForPreferredContentSizeCategory__checkmarkImage;
     checkmarkImageForPreferredContentSizeCategory__checkmarkImage = v17;
 
@@ -140,11 +140,11 @@
   return v6;
 }
 
-- (CCUIMenuModuleViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (CCUIMenuModuleViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v10.receiver = self;
   v10.super_class = CCUIMenuModuleViewController;
-  v4 = [(CCUIButtonModuleViewController *)&v10 initWithNibName:a3 bundle:a4];
+  v4 = [(CCUIButtonModuleViewController *)&v10 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -159,23 +159,23 @@
   return v4;
 }
 
-- (CCUIMenuModuleViewController)initWithContentModuleContext:(id)a3
+- (CCUIMenuModuleViewController)initWithContentModuleContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = [(CCUIMenuModuleViewController *)self initWithNibName:0 bundle:0];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_contentModuleContext, v4);
+    objc_storeWeak(&v5->_contentModuleContext, contextCopy);
   }
 
   return v6;
 }
 
-- (void)setAlwaysExpanded:(BOOL)a3
+- (void)setAlwaysExpanded:(BOOL)expanded
 {
-  self->_alwaysExpanded = a3;
-  if (a3)
+  self->_alwaysExpanded = expanded;
+  if (expanded)
   {
     [(CCUIButtonModuleViewController *)self setExpanded:1];
   }
@@ -199,26 +199,26 @@
   return busyIndicatorView;
 }
 
-- (void)setBusy:(BOOL)a3
+- (void)setBusy:(BOOL)busy
 {
-  if (self->_busy != a3)
+  if (self->_busy != busy)
   {
     v20[5] = v6;
     v20[6] = v5;
     v20[11] = v3;
     v20[12] = v4;
-    v7 = a3;
-    self->_busy = a3;
-    v9 = [(CCUIMenuModuleViewController *)self _busyIndicatorView];
-    v10 = v9;
-    if (v7)
+    busyCopy = busy;
+    self->_busy = busy;
+    _busyIndicatorView = [(CCUIMenuModuleViewController *)self _busyIndicatorView];
+    v10 = _busyIndicatorView;
+    if (busyCopy)
     {
-      [v9 startAnimating];
+      [_busyIndicatorView startAnimating];
     }
 
     else
     {
-      [v9 stopAnimating];
+      [_busyIndicatorView stopAnimating];
     }
 
     v20[0] = MEMORY[0x1E69E9820];
@@ -233,14 +233,14 @@
     v17[2] = __40__CCUIMenuModuleViewController_setBusy___block_invoke_2;
     v17[3] = &unk_1E83EA530;
     v18 = v10;
-    v19 = v7;
+    v19 = busyCopy;
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __40__CCUIMenuModuleViewController_setBusy___block_invoke_3;
     v13[3] = &unk_1E83EA558;
-    v16 = v7;
+    v16 = busyCopy;
     v14 = v18;
-    v15 = self;
+    selfCopy = self;
     v12 = v18;
     [v11 animateWithDuration:v17 animations:v13 completion:0.3];
   }
@@ -283,28 +283,28 @@ void __40__CCUIMenuModuleViewController_setBusy___block_invoke_3(uint64_t a1, in
   }
 }
 
-- (void)addActionWithTitle:(id)a3 subtitle:(id)a4 glyph:(id)a5 handler:(id)a6
+- (void)addActionWithTitle:(id)title subtitle:(id)subtitle glyph:(id)glyph handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (a5)
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  handlerCopy = handler;
+  if (glyph)
   {
     v13 = MEMORY[0x1E69DCAE0];
-    v14 = a5;
-    a5 = [[v13 alloc] initWithImage:v14];
+    glyphCopy = glyph;
+    glyph = [[v13 alloc] initWithImage:glyphCopy];
   }
 
-  [a5 setContentMode:4];
+  [glyph setContentMode:4];
   v15 = [CCUIMenuModuleItem alloc];
-  v16 = [MEMORY[0x1E696AFB0] UUID];
-  v17 = [v16 UUIDString];
-  v18 = [(CCUIMenuModuleItem *)v15 initWithTitle:v10 identifier:v17 handler:v12];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v18 = [(CCUIMenuModuleItem *)v15 initWithTitle:titleCopy identifier:uUIDString handler:handlerCopy];
 
-  [(CCUIMenuModuleItem *)v18 setSubtitle:v11];
+  [(CCUIMenuModuleItem *)v18 setSubtitle:subtitleCopy];
   [(NSMutableArray *)self->_menuItems addObject:v18];
   v19 = [[CCUIMenuModuleItemView alloc] initWithMenuItem:v18];
-  [(CCUIMenuModuleItemView *)v19 setLeadingView:a5];
+  [(CCUIMenuModuleItemView *)v19 setLeadingView:glyph];
   [(CCUIMenuModuleViewController *)self preferredExpandedContentWidth];
   [(CCUIMenuModuleItemView *)v19 setPreferredMaxLayoutWidth:?];
   [(CCUIMenuModuleItemView *)v19 setIndentation:self->_indentation];
@@ -329,18 +329,18 @@ void __74__CCUIMenuModuleViewController_addActionWithTitle_subtitle_glyph_handle
   [v2 setNeedsLayout];
 }
 
-- (void)setMenuItems:(id)a3
+- (void)setMenuItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  if ([v4 count] >= self->_minimumMenuItems)
+  if ([itemsCopy count] >= self->_minimumMenuItems)
   {
-    v7 = v4;
+    v7 = itemsCopy;
   }
 
   else
   {
-    v8 = [v4 mutableCopy];
+    v8 = [itemsCopy mutableCopy];
     if ([v8 count] < self->_minimumMenuItems)
     {
       v5 = 0;
@@ -362,10 +362,10 @@ void __74__CCUIMenuModuleViewController_addActionWithTitle_subtitle_glyph_handle
   [(CCUIMenuModuleViewController *)self _setMenuItems:v7];
 }
 
-- (id)_menuItemFromPlaceholderIndex:(unint64_t)a3
+- (id)_menuItemFromPlaceholderIndex:(unint64_t)index
 {
   v4 = [CCUIMenuModuleItem alloc];
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PLACEHOLDER #%ld", a3 + 1];
+  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PLACEHOLDER #%ld", index + 1];
   v6 = [(CCUIMenuModuleItem *)v4 initWithTitle:@" " identifier:v5 handler:0];
 
   [(CCUIMenuModuleItem *)v6 setPlaceholder:1];
@@ -373,25 +373,25 @@ void __74__CCUIMenuModuleViewController_addActionWithTitle_subtitle_glyph_handle
   return v6;
 }
 
-- (void)_setMenuItems:(id)a3
+- (void)_setMenuItems:(id)items
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemsCopy = items;
   v5 = CCUILogUserInterface;
   if (os_log_type_enabled(CCUILogUserInterface, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
     *buf = 134218498;
-    v15 = [v4 count];
+    v15 = [itemsCopy count];
     v16 = 2114;
     v17 = objc_opt_class();
     v18 = 2112;
-    v19 = v4;
+    v19 = itemsCopy;
     v7 = v17;
     _os_log_impl(&dword_1D168A000, v6, OS_LOG_TYPE_DEFAULT, "Setting %ld menu items for %{public}@: %@", buf, 0x20u);
   }
 
-  v8 = [v4 mutableCopy];
+  v8 = [itemsCopy mutableCopy];
   menuItems = self->_menuItems;
   self->_menuItems = v8;
 
@@ -401,8 +401,8 @@ void __74__CCUIMenuModuleViewController_addActionWithTitle_subtitle_glyph_handle
   v12[2] = __46__CCUIMenuModuleViewController__setMenuItems___block_invoke;
   v12[3] = &unk_1E83EA450;
   v12[4] = self;
-  v13 = v4;
-  v11 = v4;
+  v13 = itemsCopy;
+  v11 = itemsCopy;
   [v10 performWithoutAnimation:v12];
 }
 
@@ -492,16 +492,16 @@ void __46__CCUIMenuModuleViewController__setMenuItems___block_invoke(uint64_t a1
   [*(a1 + 32) _updatePreferredContentSize];
 }
 
-- (id)menuItemForIdentifier:(id)a3
+- (id)menuItemForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   menuItems = self->_menuItems;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __54__CCUIMenuModuleViewController_menuItemForIdentifier___block_invoke;
   v9[3] = &unk_1E83EA580;
-  v10 = v4;
-  v6 = v4;
+  v10 = identifierCopy;
+  v6 = identifierCopy;
   v7 = [(NSMutableArray *)menuItems bs_firstObjectPassingTest:v9];
 
   return v7;
@@ -516,9 +516,9 @@ uint64_t __54__CCUIMenuModuleViewController_menuItemForIdentifier___block_invoke
   return v4;
 }
 
-- (void)setUseIndentedLayout:(BOOL)a3
+- (void)setUseIndentedLayout:(BOOL)layout
 {
-  if (a3)
+  if (layout)
   {
     v3 = 2;
   }
@@ -531,10 +531,10 @@ uint64_t __54__CCUIMenuModuleViewController_menuItemForIdentifier___block_invoke
   [(CCUIMenuModuleViewController *)self setIndentation:v3];
 }
 
-- (id)leadingImageForMenuItem:(id)a3
+- (id)leadingImageForMenuItem:(id)item
 {
-  v4 = a3;
-  if (-[CCUIMenuModuleViewController useTrailingCheckmarkLayout](self, "useTrailingCheckmarkLayout") || ![v4 isSelected])
+  itemCopy = item;
+  if (-[CCUIMenuModuleViewController useTrailingCheckmarkLayout](self, "useTrailingCheckmarkLayout") || ![itemCopy isSelected])
   {
     v8 = 0;
   }
@@ -542,17 +542,17 @@ uint64_t __54__CCUIMenuModuleViewController_menuItemForIdentifier___block_invoke
   else
   {
     v5 = objc_opt_class();
-    v6 = [(CCUIMenuModuleViewController *)self traitCollection];
-    v7 = [v6 preferredContentSizeCategory];
-    v8 = [v5 checkmarkImageForPreferredContentSizeCategory:v7];
+    traitCollection = [(CCUIMenuModuleViewController *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    v8 = [v5 checkmarkImageForPreferredContentSizeCategory:preferredContentSizeCategory];
   }
 
   return v8;
 }
 
-- (id)leadingViewForMenuItem:(id)a3
+- (id)leadingViewForMenuItem:(id)item
 {
-  v3 = [(CCUIMenuModuleViewController *)self leadingImageForMenuItem:a3];
+  v3 = [(CCUIMenuModuleViewController *)self leadingImageForMenuItem:item];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v3];
@@ -567,16 +567,16 @@ uint64_t __54__CCUIMenuModuleViewController_menuItemForIdentifier___block_invoke
   return v4;
 }
 
-- (id)_leadingViewForMenuItem:(id)a3
+- (id)_leadingViewForMenuItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy_;
   v15 = __Block_byref_object_dispose_;
   v16 = 0;
-  if (([v4 isPlaceholder] & 1) == 0)
+  if (([itemCopy isPlaceholder] & 1) == 0)
   {
     v5 = MEMORY[0x1E69DD250];
     v8[0] = MEMORY[0x1E69E9820];
@@ -585,7 +585,7 @@ uint64_t __54__CCUIMenuModuleViewController_menuItemForIdentifier___block_invoke
     v8[3] = &unk_1E83EA5A8;
     v10 = &v11;
     v8[4] = self;
-    v9 = v4;
+    v9 = itemCopy;
     [v5 performWithoutAnimation:v8];
   }
 
@@ -605,15 +605,15 @@ uint64_t __56__CCUIMenuModuleViewController__leadingViewForMenuItem___block_invo
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (id)trailingImageForMenuItem:(id)a3
+- (id)trailingImageForMenuItem:(id)item
 {
-  v4 = a3;
-  if (-[CCUIMenuModuleViewController useTrailingCheckmarkLayout](self, "useTrailingCheckmarkLayout") && [v4 isSelected])
+  itemCopy = item;
+  if (-[CCUIMenuModuleViewController useTrailingCheckmarkLayout](self, "useTrailingCheckmarkLayout") && [itemCopy isSelected])
   {
     v5 = objc_opt_class();
-    v6 = [(CCUIMenuModuleViewController *)self traitCollection];
-    v7 = [v6 preferredContentSizeCategory];
-    v8 = [v5 checkmarkImageForPreferredContentSizeCategory:v7];
+    traitCollection = [(CCUIMenuModuleViewController *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    v8 = [v5 checkmarkImageForPreferredContentSizeCategory:preferredContentSizeCategory];
   }
 
   else
@@ -624,32 +624,32 @@ uint64_t __56__CCUIMenuModuleViewController__leadingViewForMenuItem___block_invo
   return v8;
 }
 
-- (id)trailingViewForMenuItem:(id)a3
+- (id)trailingViewForMenuItem:(id)item
 {
-  v4 = a3;
-  if ([v4 isBusy])
+  itemCopy = item;
+  if ([itemCopy isBusy])
   {
     identiferToActivityIndicatorView = self->_identiferToActivityIndicatorView;
-    v6 = [v4 identifier];
-    v7 = [(NSMutableDictionary *)identiferToActivityIndicatorView objectForKey:v6];
+    identifier = [itemCopy identifier];
+    v7 = [(NSMutableDictionary *)identiferToActivityIndicatorView objectForKey:identifier];
 
     if (!v7)
     {
       v7 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:1];
       [v7 startAnimating];
       v8 = self->_identiferToActivityIndicatorView;
-      v9 = [v4 identifier];
-      [(NSMutableDictionary *)v8 setObject:v7 forKey:v9];
+      identifier2 = [itemCopy identifier];
+      [(NSMutableDictionary *)v8 setObject:v7 forKey:identifier2];
     }
 
     v10 = self->_identiferToActivityIndicatorView;
-    v11 = [v4 identifier];
-    v12 = [(NSMutableDictionary *)v10 objectForKey:v11];
+    identifier3 = [itemCopy identifier];
+    v12 = [(NSMutableDictionary *)v10 objectForKey:identifier3];
   }
 
   else
   {
-    v7 = [(CCUIMenuModuleViewController *)self trailingImageForMenuItem:v4];
+    v7 = [(CCUIMenuModuleViewController *)self trailingImageForMenuItem:itemCopy];
     if (v7)
     {
       v12 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v7];
@@ -665,16 +665,16 @@ uint64_t __56__CCUIMenuModuleViewController__leadingViewForMenuItem___block_invo
   return v12;
 }
 
-- (id)_trailingViewForMenuItem:(id)a3
+- (id)_trailingViewForMenuItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy_;
   v15 = __Block_byref_object_dispose_;
   v16 = 0;
-  if (([v4 isPlaceholder] & 1) == 0)
+  if (([itemCopy isPlaceholder] & 1) == 0)
   {
     v5 = MEMORY[0x1E69DD250];
     v8[0] = MEMORY[0x1E69E9820];
@@ -683,7 +683,7 @@ uint64_t __56__CCUIMenuModuleViewController__leadingViewForMenuItem___block_invo
     v8[3] = &unk_1E83EA5A8;
     v10 = &v11;
     v8[4] = self;
-    v9 = v4;
+    v9 = itemCopy;
     [v5 performWithoutAnimation:v8];
   }
 
@@ -761,22 +761,22 @@ uint64_t __48__CCUIMenuModuleViewController_removeAllActions__block_invoke(uint6
     v4 = v3;
     [(CCUIMenuModuleViewController *)self preferredExpandedContentHeightWithWidth:?];
     v6 = v5;
-    v7 = [(CCUIMenuModuleViewController *)self viewIfLoaded];
-    [v7 setNeedsLayout];
+    viewIfLoaded = [(CCUIMenuModuleViewController *)self viewIfLoaded];
+    [viewIfLoaded setNeedsLayout];
 
     [(CCUIMenuModuleViewController *)self setPreferredContentSize:v4, v6];
   }
 }
 
-- (void)setFooterButtonTitle:(id)a3 handler:(id)a4
+- (void)setFooterButtonTitle:(id)title handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   v8 = [CCUIMenuModuleItem alloc];
-  v9 = [MEMORY[0x1E696AFB0] UUID];
-  v10 = [v9 UUIDString];
-  v11 = [(CCUIMenuModuleItem *)v8 initWithTitle:v6 identifier:v10 handler:v7];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v11 = [(CCUIMenuModuleItem *)v8 initWithTitle:titleCopy identifier:uUIDString handler:handlerCopy];
 
   footerButtonView = self->_footerButtonView;
   if (!footerButtonView)
@@ -802,8 +802,8 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v13 = [(CCUIMenuModuleItemView *)footerButtonView menuItem];
-  v14 = [v13 title];
+  menuItem = [(CCUIMenuModuleItemView *)footerButtonView menuItem];
+  title = [menuItem title];
   v15 = BSEqualStrings();
 
   v16 = MEMORY[0x1E69DD250];
@@ -939,8 +939,8 @@ uint64_t __50__CCUIMenuModuleViewController_removeFooterButton__block_invoke_2(u
 
 - (double)headerHeight
 {
-  v3 = [(CCUIMenuModuleViewController *)self view];
-  [v3 bounds];
+  view = [(CCUIMenuModuleViewController *)self view];
+  [view bounds];
   Width = CGRectGetWidth(v8);
 
   [(CCUIMenuModuleViewController *)self preferredExpandedContentWidth];
@@ -953,7 +953,7 @@ uint64_t __50__CCUIMenuModuleViewController_removeFooterButton__block_invoke_2(u
   return result;
 }
 
-- (double)headerHeightForWidth:(double)a3
+- (double)headerHeightForWidth:(double)width
 {
   [(UILabel *)self->_titleLabel frame];
   if (CGRectIsEmpty(v21))
@@ -962,7 +962,7 @@ uint64_t __50__CCUIMenuModuleViewController_removeFooterButton__block_invoke_2(u
   }
 
   titleLabel = self->_titleLabel;
-  [(CCUIMenuModuleViewController *)self _titleWidthForContainerWidth:a3];
+  [(CCUIMenuModuleViewController *)self _titleWidthForContainerWidth:width];
   [(UILabel *)titleLabel sizeThatFits:?];
   v7 = v6;
   [(UILabel *)self->_titleLabel _firstLineBaselineOffsetFromBoundsTop];
@@ -972,22 +972,22 @@ uint64_t __50__CCUIMenuModuleViewController_removeFooterButton__block_invoke_2(u
   if ([(CCUIMenuModuleViewController *)self hasGlyph])
   {
     [(CCUIMenuModuleViewController *)self _shouldHideGlyphForLimitedContentSizeCategory];
-    v12 = [(UILabel *)self->_titleLabel font];
-    [v12 _scaledValueForValue:18.0];
+    font = [(UILabel *)self->_titleLabel font];
+    [font _scaledValueForValue:18.0];
     UIRoundToScale();
     v14 = v13;
   }
 
   else
   {
-    v12 = [(UILabel *)self->_titleLabel font];
-    [v12 _scaledValueForValue:66.0];
+    font = [(UILabel *)self->_titleLabel font];
+    [font _scaledValueForValue:66.0];
     v14 = v11 + v15;
   }
 
-  v16 = [(UILabel *)self->_subtitleLabel text];
+  text = [(UILabel *)self->_subtitleLabel text];
 
-  if (v16)
+  if (text)
   {
     [(UILabel *)self->_subtitleLabel frame];
     if (CGRectIsEmpty(v22))
@@ -995,8 +995,8 @@ uint64_t __50__CCUIMenuModuleViewController_removeFooterButton__block_invoke_2(u
       [(CCUIMenuModuleViewController *)self _setupSubtitleLabel];
     }
 
-    v17 = [(UILabel *)self->_subtitleLabel font];
-    [v17 _scaledValueForValue:5.0];
+    font2 = [(UILabel *)self->_subtitleLabel font];
+    [font2 _scaledValueForValue:5.0];
     v19 = v18;
     [(UILabel *)self->_subtitleLabel frame];
     v14 = v14 + v19 + CGRectGetHeight(v23);
@@ -1017,37 +1017,37 @@ uint64_t __50__CCUIMenuModuleViewController_removeFooterButton__block_invoke_2(u
 {
   v5.receiver = self;
   v5.super_class = CCUIMenuModuleViewController;
-  v3 = [(CCUIButtonModuleViewController *)&v5 hasGlyph];
-  if (v3)
+  hasGlyph = [(CCUIButtonModuleViewController *)&v5 hasGlyph];
+  if (hasGlyph)
   {
-    LOBYTE(v3) = ![(CCUIMenuModuleViewController *)self hideGlyphInHeader];
+    LOBYTE(hasGlyph) = ![(CCUIMenuModuleViewController *)self hideGlyphInHeader];
   }
 
-  return v3;
+  return hasGlyph;
 }
 
-- (void)setCustomContentView:(id)a3
+- (void)setCustomContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   customContentView = self->_customContentView;
-  if (customContentView != v5)
+  if (customContentView != viewCopy)
   {
-    v16 = v5;
+    v16 = viewCopy;
     if (customContentView)
     {
       [(UIView *)customContentView removeFromSuperview];
       v7 = self->_customContentView;
       self->_customContentView = 0;
 
-      v5 = v16;
+      viewCopy = v16;
       self->_customContentViewScrolls = 0;
     }
 
-    if (v5)
+    if (viewCopy)
     {
       [(UIStackView *)self->_menuItemsContainer removeFromSuperview];
       [(UIScrollView *)self->_contentScrollView addSubview:v16];
-      objc_storeStrong(&self->_customContentView, a3);
+      objc_storeStrong(&self->_customContentView, view);
       [(CCUIMenuModuleViewController *)self preferredExpandedContentWidth];
       [(CCUIMenuModuleViewController *)self scrollViewContentHeightForWidth:?];
       v9 = v8;
@@ -1058,11 +1058,11 @@ uint64_t __50__CCUIMenuModuleViewController_removeFooterButton__block_invoke_2(u
       self->_customContentViewScrolls = v9 > v13;
       if (v9 > v13 || self->_shouldShowFooterButton)
       {
-        v14 = [(UIView *)self->_darkeningBackgroundView superview];
+        superview = [(UIView *)self->_darkeningBackgroundView superview];
         contentView = self->_contentView;
 
-        v5 = v16;
-        if (v14 == contentView)
+        viewCopy = v16;
+        if (superview == contentView)
         {
           goto LABEL_12;
         }
@@ -1083,12 +1083,12 @@ uint64_t __50__CCUIMenuModuleViewController_removeFooterButton__block_invoke_2(u
       self->_customContentViewScrolls = 0;
     }
 
-    v5 = v16;
+    viewCopy = v16;
   }
 
 LABEL_12:
 
-  MEMORY[0x1EEE66BB8](customContentView, v5);
+  MEMORY[0x1EEE66BB8](customContentView, viewCopy);
 }
 
 - (void)viewDidLoad
@@ -1097,13 +1097,13 @@ LABEL_12:
   v54.receiver = self;
   v54.super_class = CCUIMenuModuleViewController;
   [(CCUIButtonModuleViewController *)&v54 viewDidLoad];
-  v3 = [(CCUIMenuModuleViewController *)self view];
-  v4 = [(CCUIButtonModuleViewController *)self _templateView];
+  view = [(CCUIMenuModuleViewController *)self view];
+  _templateView = [(CCUIButtonModuleViewController *)self _templateView];
   if ([(CCUIMenuModuleViewController *)self prefersContextMenuDisplayStyle])
   {
-    [v4 setContextMenuDelegate:self];
+    [_templateView setContextMenuDelegate:self];
     v5 = +[CCUIControlCenterMaterialView _blankMaterialView];
-    [v4 setBackgroundView:v5];
+    [_templateView setBackgroundView:v5];
 
     [(CCUIMenuModuleViewController *)self setShouldProvideOwnPlatter:0];
   }
@@ -1115,7 +1115,7 @@ LABEL_12:
     self->_platterMaterialView = v6;
 
     [(MTMaterialView *)self->_platterMaterialView _setContinuousCornerRadius:CCUIExpandedModuleContinuousCornerRadius()];
-    [v3 insertSubview:self->_platterMaterialView atIndex:0];
+    [view insertSubview:self->_platterMaterialView atIndex:0];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __43__CCUIMenuModuleViewController_viewDidLoad__block_invoke;
@@ -1127,12 +1127,12 @@ LABEL_12:
   }
 
   v9 = objc_alloc(MEMORY[0x1E69DD250]);
-  [v3 bounds];
+  [view bounds];
   v10 = [v9 initWithFrame:?];
   transformView = self->_transformView;
   self->_transformView = v10;
 
-  [v3 insertSubview:self->_transformView belowSubview:v4];
+  [view insertSubview:self->_transformView belowSubview:_templateView];
   v12 = [(NSMutableDictionary *)self->_categoriesToVisualStylingProviders objectForKey:&unk_1F4D5A7D8];
   v13 = objc_alloc(MEMORY[0x1E69DCC10]);
   v14 = *MEMORY[0x1E695F058];
@@ -1146,8 +1146,8 @@ LABEL_12:
   [(UIView *)self->_transformView addSubview:self->_titleLabel];
   [(UILabel *)self->_titleLabel setTextAlignment:1];
   v20 = self->_titleLabel;
-  v21 = [(CCUIMenuModuleViewController *)self title];
-  [(UILabel *)v20 setText:v21];
+  title = [(CCUIMenuModuleViewController *)self title];
+  [(UILabel *)v20 setText:title];
 
   [(UILabel *)self->_titleLabel setNumberOfLines:0];
   [v12 automaticallyUpdateView:self->_titleLabel withStyle:0];
@@ -1158,8 +1158,8 @@ LABEL_12:
   [(UIView *)self->_transformView addSubview:self->_subtitleLabel];
   [(UILabel *)self->_subtitleLabel setTextAlignment:1];
   v24 = self->_subtitleLabel;
-  v25 = [(CCUIMenuModuleViewController *)self subtitle];
-  [(UILabel *)v24 setText:v25];
+  subtitle = [(CCUIMenuModuleViewController *)self subtitle];
+  [(UILabel *)v24 setText:subtitle];
 
   [(UILabel *)self->_subtitleLabel setNumberOfLines:0];
   [v12 automaticallyUpdateView:self->_subtitleLabel withStyle:1];
@@ -1218,13 +1218,13 @@ LABEL_12:
   [(UILongPressGestureRecognizer *)self->_pressGestureRecognizer setMinimumPressDuration:0.0];
   [(UILongPressGestureRecognizer *)self->_pressGestureRecognizer _setKeepTouchesOnContinuation:1];
   v44 = self->_pressGestureRecognizer;
-  v45 = [(UIScrollView *)self->_contentScrollView panGestureRecognizer];
-  [(UILongPressGestureRecognizer *)v44 requireGestureRecognizerToFail:v45];
+  panGestureRecognizer = [(UIScrollView *)self->_contentScrollView panGestureRecognizer];
+  [(UILongPressGestureRecognizer *)v44 requireGestureRecognizerToFail:panGestureRecognizer];
 
-  [v3 addGestureRecognizer:self->_pressGestureRecognizer];
+  [view addGestureRecognizer:self->_pressGestureRecognizer];
   v46 = objc_alloc(MEMORY[0x1E69DCF40]);
-  v47 = [MEMORY[0x1E69DD6E8] lightConfiguration];
-  v48 = [v46 initWithConfiguration:v47 view:v3];
+  lightConfiguration = [MEMORY[0x1E69DD6E8] lightConfiguration];
+  v48 = [v46 initWithConfiguration:lightConfiguration view:view];
   feedbackGenerator = self->_feedbackGenerator;
   self->_feedbackGenerator = v48;
 
@@ -1261,44 +1261,44 @@ void __43__CCUIMenuModuleViewController_viewDidLoad__block_invoke(uint64_t a1, u
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = CCUIMenuModuleViewController;
-  [(CCUIMenuModuleViewController *)&v4 viewWillAppear:a3];
+  [(CCUIMenuModuleViewController *)&v4 viewWillAppear:appear];
   if ([(CCUIMenuModuleViewController *)self isAlwaysExpanded])
   {
     [(CCUIMenuModuleViewController *)self willTransitionToExpandedContentMode:1];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = CCUIMenuModuleViewController;
-  [(CCUIMenuModuleViewController *)&v4 viewDidAppear:a3];
+  [(CCUIMenuModuleViewController *)&v4 viewDidAppear:appear];
   if ([(CCUIMenuModuleViewController *)self isAlwaysExpanded])
   {
     [(CCUIMenuModuleViewController *)self didTransitionToExpandedContentMode:1];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = CCUIMenuModuleViewController;
-  [(CCUIMenuModuleViewController *)&v4 viewWillDisappear:a3];
+  [(CCUIMenuModuleViewController *)&v4 viewWillDisappear:disappear];
   if ([(CCUIMenuModuleViewController *)self isAlwaysExpanded])
   {
     [(CCUIMenuModuleViewController *)self willTransitionToExpandedContentMode:0];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = CCUIMenuModuleViewController;
-  [(CCUIMenuModuleViewController *)&v4 viewDidDisappear:a3];
+  [(CCUIMenuModuleViewController *)&v4 viewDidDisappear:disappear];
   if ([(CCUIMenuModuleViewController *)self isAlwaysExpanded])
   {
     [(CCUIMenuModuleViewController *)self didTransitionToExpandedContentMode:0];
@@ -1317,8 +1317,8 @@ void __43__CCUIMenuModuleViewController_viewDidLoad__block_invoke(uint64_t a1, u
 
 - (void)_layoutViewSubviews
 {
-  v3 = [(CCUIMenuModuleViewController *)self view];
-  [v3 bounds];
+  view = [(CCUIMenuModuleViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -1339,36 +1339,36 @@ void __43__CCUIMenuModuleViewController_viewDidLoad__block_invoke(uint64_t a1, u
   [(CCUIMenuModuleViewController *)self _layoutContentViewForSize:v13, v15];
   [(CCUIMenuModuleViewController *)self _layoutFooterSeparatorForSize:v13, v15];
   [(CCUIMenuModuleViewController *)self _layoutFooterButtonForSize:v13, v15];
-  v16 = [(CCUIButtonModuleViewController *)self isExpanded];
+  isExpanded = [(CCUIButtonModuleViewController *)self isExpanded];
 
-  [(CCUIMenuModuleViewController *)self _fadeViewsForExpandedState:v16];
+  [(CCUIMenuModuleViewController *)self _fadeViewsForExpandedState:isExpanded];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = CCUIMenuModuleViewController;
-  v7 = a4;
-  [(CCUIMenuModuleViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(CCUIMenuModuleViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __83__CCUIMenuModuleViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v8[3] = &unk_1E83EA620;
   v8[4] = self;
-  [v7 animateAlongsideTransition:v8 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:0];
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
   v15.receiver = self;
   v15.super_class = CCUIMenuModuleViewController;
-  [(CCUIMenuModuleViewController *)&v15 viewDidMoveToWindow:a3 shouldAppearOrDisappear:a4];
-  if (a3 && !self->_shouldProvideOwnPlatter)
+  [(CCUIMenuModuleViewController *)&v15 viewDidMoveToWindow:window shouldAppearOrDisappear:disappear];
+  if (window && !self->_shouldProvideOwnPlatter)
   {
-    v6 = [(CCUIMenuModuleViewController *)self view];
-    v7 = [v6 visualStylingProviderForCategory:1];
+    view = [(CCUIMenuModuleViewController *)self view];
+    v7 = [view visualStylingProviderForCategory:1];
 
     v8 = [(NSMutableDictionary *)self->_categoriesToVisualStylingProviders objectForKey:&unk_1F4D5A7D8];
     v9 = v8;
@@ -1388,8 +1388,8 @@ void __43__CCUIMenuModuleViewController_viewDidLoad__block_invoke(uint64_t a1, u
       }
     }
 
-    v10 = [(CCUIMenuModuleViewController *)self view];
-    v11 = [v10 visualStylingProviderForCategory:2];
+    view2 = [(CCUIMenuModuleViewController *)self view];
+    v11 = [view2 visualStylingProviderForCategory:2];
 
     v12 = [(NSMutableDictionary *)self->_categoriesToVisualStylingProviders objectForKey:&unk_1F4D5A7F0];
     v13 = v12;
@@ -1403,25 +1403,25 @@ void __43__CCUIMenuModuleViewController_viewDidLoad__block_invoke(uint64_t a1, u
       }
     }
 
-    v14 = [(CCUIMenuModuleViewController *)self view];
-    [v14 setNeedsLayout];
+    view3 = [(CCUIMenuModuleViewController *)self view];
+    [view3 setNeedsLayout];
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v5.receiver = self;
   v5.super_class = CCUIMenuModuleViewController;
-  v4 = a3;
-  [(CCUIButtonModuleViewController *)&v5 setTitle:v4];
-  [(UILabel *)self->_titleLabel setText:v4, v5.receiver, v5.super_class];
+  titleCopy = title;
+  [(CCUIButtonModuleViewController *)&v5 setTitle:titleCopy];
+  [(UILabel *)self->_titleLabel setText:titleCopy, v5.receiver, v5.super_class];
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  objc_storeStrong(&self->_subtitle, a3);
-  v5 = a3;
-  [(UILabel *)self->_subtitleLabel setText:v5];
+  objc_storeStrong(&self->_subtitle, subtitle);
+  subtitleCopy = subtitle;
+  [(UILabel *)self->_subtitleLabel setText:subtitleCopy];
 }
 
 - (double)_maximumHeight
@@ -1440,10 +1440,10 @@ void __43__CCUIMenuModuleViewController_viewDidLoad__block_invoke(uint64_t a1, u
   return result;
 }
 
-- (void)contentModuleWillTransitionToExpandedContentMode:(BOOL)a3
+- (void)contentModuleWillTransitionToExpandedContentMode:(BOOL)mode
 {
   feedbackGenerator = self->_feedbackGenerator;
-  if (a3)
+  if (mode)
   {
     [(UISelectionFeedbackGenerator *)feedbackGenerator userInteractionStarted];
   }
@@ -1467,21 +1467,21 @@ void __43__CCUIMenuModuleViewController_viewDidLoad__block_invoke(uint64_t a1, u
   return result;
 }
 
-- (double)preferredExpandedContentHeightWithWidth:(double)a3
+- (double)preferredExpandedContentHeightWithWidth:(double)width
 {
   [(CCUIMenuModuleViewController *)self headerHeightForWidth:?];
-  [(CCUIMenuModuleViewController *)self scrollViewContentHeightForWidth:a3];
+  [(CCUIMenuModuleViewController *)self scrollViewContentHeightForWidth:width];
   [(CCUIMenuModuleViewController *)self _footerHeight];
-  v5 = [(CCUIMenuModuleViewController *)self view];
+  view = [(CCUIMenuModuleViewController *)self view];
   UIRoundToViewScale();
   v7 = v6;
 
   return v7;
 }
 
-- (BOOL)_forceLimitContentSizeCategoryFromContentHeightIfNecessary:(double)a3 expanded:(BOOL)a4
+- (BOOL)_forceLimitContentSizeCategoryFromContentHeightIfNecessary:(double)necessary expanded:(BOOL)expanded
 {
-  if (!a4)
+  if (!expanded)
   {
     return 0;
   }
@@ -1492,7 +1492,7 @@ void __43__CCUIMenuModuleViewController_viewDidLoad__block_invoke(uint64_t a1, u
   }
 
   [(CCUIMenuModuleViewController *)self _aggregateModuleHeight];
-  if (v6 <= a3)
+  if (v6 <= necessary)
   {
     return 0;
   }
@@ -1500,13 +1500,13 @@ void __43__CCUIMenuModuleViewController_viewDidLoad__block_invoke(uint64_t a1, u
   return [(CCUIMenuModuleViewController *)self _setForceLimitContentSizeCategory:1];
 }
 
-- (void)willTransitionToExpandedContentMode:(BOOL)a3
+- (void)willTransitionToExpandedContentMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v7.receiver = self;
   v7.super_class = CCUIMenuModuleViewController;
   [(CCUIButtonModuleViewController *)&v7 willTransitionToExpandedContentMode:?];
-  if (!v3)
+  if (!modeCopy)
   {
     self->_allowsMenuInteraction = 0;
   }
@@ -1516,15 +1516,15 @@ void __43__CCUIMenuModuleViewController_viewDidLoad__block_invoke(uint64_t a1, u
   v5[2] = __68__CCUIMenuModuleViewController_willTransitionToExpandedContentMode___block_invoke;
   v5[3] = &unk_1E83EA530;
   v5[4] = self;
-  v6 = v3;
+  v6 = modeCopy;
   [MEMORY[0x1E69DD250] performWithoutAnimation:v5];
   [(CCUIMenuModuleViewController *)self preferredExpandedContentHeight];
-  if ([(CCUIMenuModuleViewController *)self _forceLimitContentSizeCategoryFromContentHeightIfNecessary:v3 expanded:?])
+  if ([(CCUIMenuModuleViewController *)self _forceLimitContentSizeCategoryFromContentHeightIfNecessary:modeCopy expanded:?])
   {
     [(CCUIMenuModuleItemView *)self->_footerButtonView layoutIfNeeded];
   }
 
-  [(CCUIMenuModuleViewController *)self _setRootViewClipsToBounds:v3];
+  [(CCUIMenuModuleViewController *)self _setRootViewClipsToBounds:modeCopy];
   [(CCUIMenuModuleViewController *)self _setTransformViewClipsToBounds:0];
 }
 
@@ -1543,13 +1543,13 @@ uint64_t __68__CCUIMenuModuleViewController_willTransitionToExpandedContentMode_
   return [v4 setContentOffset:{v5, v6}];
 }
 
-- (void)didTransitionToExpandedContentMode:(BOOL)a3
+- (void)didTransitionToExpandedContentMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v5.receiver = self;
   v5.super_class = CCUIMenuModuleViewController;
   [(CCUIButtonModuleViewController *)&v5 didTransitionToExpandedContentMode:?];
-  if (v3)
+  if (modeCopy)
   {
     self->_allowsMenuInteraction = 1;
     [(CCUIMenuModuleViewController *)self _setRootViewClipsToBounds:0];
@@ -1557,20 +1557,20 @@ uint64_t __68__CCUIMenuModuleViewController_willTransitionToExpandedContentMode_
   }
 }
 
-- (void)setGlyphImage:(id)a3
+- (void)setGlyphImage:(id)image
 {
   v4.receiver = self;
   v4.super_class = CCUIMenuModuleViewController;
-  [(CCUIButtonModuleViewController *)&v4 setGlyphImage:a3];
+  [(CCUIButtonModuleViewController *)&v4 setGlyphImage:image];
   [(CCUIMenuModuleViewController *)self _updateTitleFont];
   [(CCUIMenuModuleViewController *)self _updateSubtitleFont];
 }
 
-- (void)setGlyphPackageDescription:(id)a3
+- (void)setGlyphPackageDescription:(id)description
 {
   v4.receiver = self;
   v4.super_class = CCUIMenuModuleViewController;
-  [(CCUIButtonModuleViewController *)&v4 setGlyphPackageDescription:a3];
+  [(CCUIButtonModuleViewController *)&v4 setGlyphPackageDescription:description];
   [(CCUIMenuModuleViewController *)self _updateTitleFont];
   [(CCUIMenuModuleViewController *)self _updateSubtitleFont];
 }
@@ -1578,13 +1578,13 @@ uint64_t __68__CCUIMenuModuleViewController_willTransitionToExpandedContentMode_
 - (id)contextMenuItems
 {
   v24 = *MEMORY[0x1E69E9840];
-  v2 = [(CCUIMenuModuleViewController *)self mostRecentMenuItems];
-  v3 = [MEMORY[0x1E695DF70] array];
+  mostRecentMenuItems = [(CCUIMenuModuleViewController *)self mostRecentMenuItems];
+  array = [MEMORY[0x1E695DF70] array];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = v2;
+  obj = mostRecentMenuItems;
   v4 = [obj countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v4)
   {
@@ -1600,27 +1600,27 @@ uint64_t __68__CCUIMenuModuleViewController_willTransitionToExpandedContentMode_
         }
 
         v8 = *(*(&v19 + 1) + 8 * i);
-        v9 = [v8 isSelected];
+        isSelected = [v8 isSelected];
         v10 = MEMORY[0x1E69DC628];
-        v11 = [v8 title];
-        v12 = [v8 image];
+        title = [v8 title];
+        image = [v8 image];
         v18[0] = MEMORY[0x1E69E9820];
         v18[1] = 3221225472;
         v18[2] = __48__CCUIMenuModuleViewController_contextMenuItems__block_invoke;
         v18[3] = &unk_1E83EA648;
         v18[4] = v8;
-        v13 = [v10 actionWithTitle:v11 image:v12 identifier:0 handler:v18];
+        v13 = [v10 actionWithTitle:title image:image identifier:0 handler:v18];
 
-        [v13 setState:v9];
-        v14 = [v8 subtitle];
+        [v13 setState:isSelected];
+        subtitle = [v8 subtitle];
 
-        if (v14)
+        if (subtitle)
         {
-          v15 = [v8 subtitle];
-          [v13 setSubtitle:v15];
+          subtitle2 = [v8 subtitle];
+          [v13 setSubtitle:subtitle2];
         }
 
-        [v3 addObject:v13];
+        [array addObject:v13];
       }
 
       v5 = [obj countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -1629,19 +1629,19 @@ uint64_t __68__CCUIMenuModuleViewController_willTransitionToExpandedContentMode_
     while (v5);
   }
 
-  return v3;
+  return array;
 }
 
 - (UIMenu)contextMenu
 {
   v25 = *MEMORY[0x1E69E9840];
-  v2 = [(CCUIMenuModuleViewController *)self mostRecentMenuItems];
-  v3 = [MEMORY[0x1E695DF70] array];
+  mostRecentMenuItems = [(CCUIMenuModuleViewController *)self mostRecentMenuItems];
+  array = [MEMORY[0x1E695DF70] array];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = v2;
+  obj = mostRecentMenuItems;
   v4 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v4)
   {
@@ -1657,27 +1657,27 @@ uint64_t __68__CCUIMenuModuleViewController_willTransitionToExpandedContentMode_
         }
 
         v8 = *(*(&v20 + 1) + 8 * i);
-        v9 = [v8 isSelected];
+        isSelected = [v8 isSelected];
         v10 = MEMORY[0x1E69DC628];
-        v11 = [v8 title];
-        v12 = [v8 image];
+        title = [v8 title];
+        image = [v8 image];
         v19[0] = MEMORY[0x1E69E9820];
         v19[1] = 3221225472;
         v19[2] = __43__CCUIMenuModuleViewController_contextMenu__block_invoke;
         v19[3] = &unk_1E83EA648;
         v19[4] = v8;
-        v13 = [v10 actionWithTitle:v11 image:v12 identifier:0 handler:v19];
+        v13 = [v10 actionWithTitle:title image:image identifier:0 handler:v19];
 
-        [v13 setState:v9];
-        v14 = [v8 subtitle];
+        [v13 setState:isSelected];
+        subtitle = [v8 subtitle];
 
-        if (v14)
+        if (subtitle)
         {
-          v15 = [v8 subtitle];
-          [v13 setSubtitle:v15];
+          subtitle2 = [v8 subtitle];
+          [v13 setSubtitle:subtitle2];
         }
 
-        [v3 addObject:v13];
+        [array addObject:v13];
       }
 
       v5 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -1686,9 +1686,9 @@ uint64_t __68__CCUIMenuModuleViewController_willTransitionToExpandedContentMode_
     while (v5);
   }
 
-  if ([v3 count])
+  if ([array count])
   {
-    v16 = [MEMORY[0x1E69DCC60] menuWithChildren:v3];
+    v16 = [MEMORY[0x1E69DCC60] menuWithChildren:array];
   }
 
   else
@@ -1699,24 +1699,24 @@ uint64_t __68__CCUIMenuModuleViewController_willTransitionToExpandedContentMode_
   return v16;
 }
 
-- (id)contextMenuPreviewForControlTemplateView:(id)a3
+- (id)contextMenuPreviewForControlTemplateView:(id)view
 {
-  v3 = [(CCUIMenuModuleViewController *)self view];
-  v4 = [v3 superview];
+  view = [(CCUIMenuModuleViewController *)self view];
+  superview = [view superview];
 
-  v5 = [objc_alloc(MEMORY[0x1E69DD070]) initWithView:v4];
+  v5 = [objc_alloc(MEMORY[0x1E69DD070]) initWithView:superview];
 
   return v5;
 }
 
-- (void)_handleActionTapped:(id)a3
+- (void)_handleActionTapped:(id)tapped
 {
   if (self->_allowsMenuInteraction)
   {
-    v4 = [a3 menuItem];
-    v5 = [v4 performAction];
+    menuItem = [tapped menuItem];
+    performAction = [menuItem performAction];
 
-    if (v5)
+    if (performAction)
     {
       WeakRetained = objc_loadWeakRetained(&self->_contentModuleContext);
 
@@ -1735,10 +1735,10 @@ uint64_t __68__CCUIMenuModuleViewController_willTransitionToExpandedContentMode_
   }
 }
 
-- (void)_fadeViewsForExpandedState:(BOOL)a3
+- (void)_fadeViewsForExpandedState:(BOOL)state
 {
   titleLabel = self->_titleLabel;
-  if (a3)
+  if (state)
   {
     v5 = 1.0;
     [(UILabel *)titleLabel setAlpha:1.0];
@@ -1769,12 +1769,12 @@ uint64_t __68__CCUIMenuModuleViewController_willTransitionToExpandedContentMode_
   [v9 setAlpha:v5];
 }
 
-- (void)_layoutTransformViewForSize:(CGSize)a3
+- (void)_layoutTransformViewForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(CCUIMenuModuleViewController *)self view];
-  [v6 bounds];
+  height = size.height;
+  width = size.width;
+  view = [(CCUIMenuModuleViewController *)self view];
+  [view bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -1810,16 +1810,16 @@ uint64_t __68__CCUIMenuModuleViewController_willTransitionToExpandedContentMode_
   [(UIView *)self->_transformView setFrame:v8, v10, v12, v14];
 }
 
-- (void)_layoutGlyphViewForSize:(CGSize)a3
+- (void)_layoutGlyphViewForSize:(CGSize)size
 {
-  v4 = [(CCUIButtonModuleViewController *)self buttonView:a3.width];
-  v5 = [(CCUIButtonModuleViewController *)self isExpanded];
+  v4 = [(CCUIButtonModuleViewController *)self buttonView:size.width];
+  isExpanded = [(CCUIButtonModuleViewController *)self isExpanded];
   v6 = 1.0;
-  if (v5)
+  if (isExpanded)
   {
-    v7 = [(CCUIMenuModuleViewController *)self _shouldHideGlyphForLimitedContentSizeCategory];
+    _shouldHideGlyphForLimitedContentSizeCategory = [(CCUIMenuModuleViewController *)self _shouldHideGlyphForLimitedContentSizeCategory];
     v6 = 0.0;
-    if (!v7)
+    if (!_shouldHideGlyphForLimitedContentSizeCategory)
     {
       v6 = ([(CCUIMenuModuleViewController *)self hideGlyphInHeader]^ 1);
     }
@@ -1829,12 +1829,12 @@ uint64_t __68__CCUIMenuModuleViewController_willTransitionToExpandedContentMode_
 
   if ([(CCUIButtonModuleViewController *)self isExpanded])
   {
-    v8 = [(CCUIMenuModuleViewController *)self view];
-    v9 = [v8 traitCollection];
-    [v9 displayScale];
+    view = [(CCUIMenuModuleViewController *)self view];
+    traitCollection = [view traitCollection];
+    [traitCollection displayScale];
 
-    v10 = [(CCUIMenuModuleViewController *)self view];
-    [v10 bounds];
+    view2 = [(CCUIMenuModuleViewController *)self view];
+    [view2 bounds];
     CGRectGetWidth(v22);
 
     UIRectIntegralWithScale();
@@ -1842,27 +1842,27 @@ uint64_t __68__CCUIMenuModuleViewController_willTransitionToExpandedContentMode_
     v14 = v13;
     v16 = v15;
     v18 = v17;
-    v20 = [(CCUIButtonModuleViewController *)self buttonView];
-    [v20 setFrame:{v12, v14, v16, v18}];
+    buttonView = [(CCUIButtonModuleViewController *)self buttonView];
+    [buttonView setFrame:{v12, v14, v16, v18}];
   }
 
   else
   {
-    v20 = [(CCUIButtonModuleViewController *)self buttonView];
-    v19 = [(CCUIMenuModuleViewController *)self view];
-    [v19 bounds];
-    [v20 setFrame:?];
+    buttonView = [(CCUIButtonModuleViewController *)self buttonView];
+    view3 = [(CCUIMenuModuleViewController *)self view];
+    [view3 bounds];
+    [buttonView setFrame:?];
   }
 }
 
-- (void)_layoutTitleLabelForSize:(CGSize)a3
+- (void)_layoutTitleLabelForSize:(CGSize)size
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __57__CCUIMenuModuleViewController__layoutTitleLabelForSize___block_invoke;
   v3[3] = &unk_1E83EA670;
   v3[4] = self;
-  v4 = a3;
+  sizeCopy = size;
   [MEMORY[0x1E69DD250] performWithoutAnimation:v3];
 }
 
@@ -1903,14 +1903,14 @@ uint64_t __57__CCUIMenuModuleViewController__layoutTitleLabelForSize___block_inv
   return [v15 setFrame:{0.0, v11, v16, v5}];
 }
 
-- (void)_layoutSubtitleLabelForSize:(CGSize)a3
+- (void)_layoutSubtitleLabelForSize:(CGSize)size
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __60__CCUIMenuModuleViewController__layoutSubtitleLabelForSize___block_invoke;
   v3[3] = &unk_1E83EA670;
   v3[4] = self;
-  v4 = a3;
+  sizeCopy = size;
   [MEMORY[0x1E69DD250] performWithoutAnimation:v3];
 }
 
@@ -1930,10 +1930,10 @@ uint64_t __60__CCUIMenuModuleViewController__layoutSubtitleLabelForSize___block_
   return [v8 setFrame:{0.0, v7, v9, v3}];
 }
 
-- (void)_layoutFooterButtonForSize:(CGSize)a3
+- (void)_layoutFooterButtonForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = 0.0;
   if (self->_shouldShowFooterButton)
   {
@@ -1946,7 +1946,7 @@ uint64_t __60__CCUIMenuModuleViewController__layoutSubtitleLabelForSize___block_
   [(CCUIMenuModuleItemView *)footerButtonView setFrame:0.0, height - v6, width];
 }
 
-- (void)_layoutBusyIndicatorForSize:(CGSize)a3
+- (void)_layoutBusyIndicatorForSize:(CGSize)size
 {
   if (self->_busyIndicatorView)
   {
@@ -1955,7 +1955,7 @@ uint64_t __60__CCUIMenuModuleViewController__layoutSubtitleLabelForSize___block_
     v3[2] = __60__CCUIMenuModuleViewController__layoutBusyIndicatorForSize___block_invoke;
     v3[3] = &unk_1E83EA670;
     v3[4] = self;
-    v4 = a3;
+    sizeCopy = size;
     [MEMORY[0x1E69DD250] performWithoutAnimation:v3];
   }
 }
@@ -1974,13 +1974,13 @@ uint64_t __60__CCUIMenuModuleViewController__layoutBusyIndicatorForSize___block_
   return [v4 setFrame:?];
 }
 
-- (void)_layoutHeaderSeparatorForSize:(CGSize)a3
+- (void)_layoutHeaderSeparatorForSize:(CGSize)size
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __62__CCUIMenuModuleViewController__layoutHeaderSeparatorForSize___block_invoke;
   v3[3] = &unk_1E83EA670;
-  v4 = a3;
+  sizeCopy = size;
   v3[4] = self;
   [MEMORY[0x1E69DD250] performWithoutAnimation:v3];
 }
@@ -2001,10 +2001,10 @@ uint64_t __62__CCUIMenuModuleViewController__layoutHeaderSeparatorForSize___bloc
   return [v6 setFrame:{0.0, v2, v4, v5}];
 }
 
-- (void)_layoutFooterSeparatorForSize:(CGSize)a3
+- (void)_layoutFooterSeparatorForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(CCUIMenuModuleViewController *)self _footerHeight];
   v7 = height - v6;
   [(CCUIMenuModuleViewController *)self _separatorHeight];
@@ -2013,17 +2013,17 @@ uint64_t __62__CCUIMenuModuleViewController__layoutHeaderSeparatorForSize___bloc
   [(UIView *)footerSeparatorView setFrame:0.0, v7, width, v8];
 }
 
-- (double)_contentScaleForSize:(CGSize)a3
+- (double)_contentScaleForSize:(CGSize)size
 {
-  width = a3.width;
+  width = size.width;
   v5 = 1.0;
-  if (![(CCUIButtonModuleViewController *)self isExpanded:a3.width])
+  if (![(CCUIButtonModuleViewController *)self isExpanded:size.width])
   {
     [(UIView *)self->_contentView bounds];
     if (!CGRectIsEmpty(v8))
     {
-      v6 = [(CCUIMenuModuleViewController *)self view];
-      [v6 bounds];
+      view = [(CCUIMenuModuleViewController *)self view];
+      [view bounds];
       v5 = width / CGRectGetWidth(v9);
     }
   }
@@ -2031,17 +2031,17 @@ uint64_t __62__CCUIMenuModuleViewController__layoutHeaderSeparatorForSize___bloc
   return v5;
 }
 
-- (void)_setView:(id)a3 clipsToBounds:(BOOL)a4
+- (void)_setView:(id)view clipsToBounds:(BOOL)bounds
 {
-  v5 = a3;
+  viewCopy = view;
   v6 = MEMORY[0x1E69DD250];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __55__CCUIMenuModuleViewController__setView_clipsToBounds___block_invoke;
   v8[3] = &unk_1E83EA530;
-  v9 = v5;
-  v10 = a4;
-  v7 = v5;
+  v9 = viewCopy;
+  boundsCopy = bounds;
+  v7 = viewCopy;
   [v6 performWithoutAnimation:v8];
 }
 
@@ -2071,16 +2071,16 @@ void __55__CCUIMenuModuleViewController__setView_clipsToBounds___block_invoke(ui
   [v4 setMaskedCorners:v5];
 }
 
-- (void)_setRootViewClipsToBounds:(BOOL)a3
+- (void)_setRootViewClipsToBounds:(BOOL)bounds
 {
-  v3 = a3;
-  v5 = [(CCUIMenuModuleViewController *)self view];
-  [(CCUIMenuModuleViewController *)self _setView:v5 clipsToBounds:v3];
+  boundsCopy = bounds;
+  view = [(CCUIMenuModuleViewController *)self view];
+  [(CCUIMenuModuleViewController *)self _setView:view clipsToBounds:boundsCopy];
 }
 
-- (void)_layoutContentViewForSize:(CGSize)a3
+- (void)_layoutContentViewForSize:(CGSize)size
 {
-  width = a3.width;
+  width = size.width;
   [(CCUIMenuModuleViewController *)self headerHeight];
   [(CCUIMenuModuleViewController *)self _footerHeight];
   [(CCUIMenuModuleViewController *)self _menuItemsHeightForWidth:width];
@@ -2167,11 +2167,11 @@ uint64_t __51__CCUIMenuModuleViewController__setupSubtitleLabel__block_invoke(ui
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v2 = [(UIStackView *)self->_menuItemsContainer arrangedSubviews];
-  v3 = [v2 reverseObjectEnumerator];
-  v4 = [v3 allObjects];
+  arrangedSubviews = [(UIStackView *)self->_menuItemsContainer arrangedSubviews];
+  reverseObjectEnumerator = [arrangedSubviews reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [allObjects countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2183,7 +2183,7 @@ uint64_t __51__CCUIMenuModuleViewController__setupSubtitleLabel__block_invoke(ui
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allObjects);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
@@ -2200,7 +2200,7 @@ uint64_t __51__CCUIMenuModuleViewController__setupSubtitleLabel__block_invoke(ui
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [allObjects countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -2212,14 +2212,14 @@ uint64_t __51__CCUIMenuModuleViewController__setupSubtitleLabel__block_invoke(ui
   }
 }
 
-- (BOOL)_toggleSelectionForMenuItem:(id)a3
+- (BOOL)_toggleSelectionForMenuItem:(id)item
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemCopy = item;
   footerButtonView = self->_footerButtonView;
-  if (v4)
+  if (itemCopy)
   {
-    v6 = footerButtonView == v4;
+    v6 = footerButtonView == itemCopy;
     if (v6 == [(CCUIMenuModuleItemView *)footerButtonView isHighlighted])
     {
       v7 = 0;
@@ -2244,8 +2244,8 @@ LABEL_6:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [(UIStackView *)self->_menuItemsContainer arrangedSubviews];
-  v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  arrangedSubviews = [(UIStackView *)self->_menuItemsContainer arrangedSubviews];
+  v9 = [arrangedSubviews countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
     v10 = v9;
@@ -2256,18 +2256,18 @@ LABEL_6:
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(arrangedSubviews);
         }
 
         v13 = *(*(&v15 + 1) + 8 * i);
-        if ([(CCUIMenuModuleItemView *)v13 isHighlighted]!= (v13 == v4))
+        if ([(CCUIMenuModuleItemView *)v13 isHighlighted]!= (v13 == itemCopy))
         {
-          [(CCUIMenuModuleItemView *)v13 setHighlighted:v13 == v4];
+          [(CCUIMenuModuleItemView *)v13 setHighlighted:v13 == itemCopy];
           v7 = 1;
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [arrangedSubviews countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v10);
@@ -2276,31 +2276,31 @@ LABEL_6:
   return v7 & 1;
 }
 
-- (void)_handlePressGesture:(id)a3
+- (void)_handlePressGesture:(id)gesture
 {
-  v30 = a3;
-  if ([v30 state] == 1)
+  gestureCopy = gesture;
+  if ([gestureCopy state] == 1)
   {
-    v4 = [(CCUIButtonModuleViewController *)self isExpanded];
-    self->_ignoreMenuItemAtTouchLocationAfterExpanded = !v4;
-    if (!v4)
+    isExpanded = [(CCUIButtonModuleViewController *)self isExpanded];
+    self->_ignoreMenuItemAtTouchLocationAfterExpanded = !isExpanded;
+    if (!isExpanded)
     {
       pressGestureRecognizer = self->_pressGestureRecognizer;
-      v6 = [(CCUIMenuModuleViewController *)self view];
-      v7 = [v6 window];
-      [(UILongPressGestureRecognizer *)pressGestureRecognizer locationInView:v7];
+      view = [(CCUIMenuModuleViewController *)self view];
+      window = [view window];
+      [(UILongPressGestureRecognizer *)pressGestureRecognizer locationInView:window];
       self->_touchLocationToIgnore.x = v8;
       self->_touchLocationToIgnore.y = v9;
     }
   }
 
-  v10 = [(CCUIMenuModuleViewController *)self view];
-  [v30 locationInView:v10];
+  view2 = [(CCUIMenuModuleViewController *)self view];
+  [gestureCopy locationInView:view2];
   v12 = v11;
   v14 = v13;
 
-  v15 = [(CCUIMenuModuleViewController *)self view];
-  v16 = [v15 hitTest:0 withEvent:{v12, v14}];
+  view3 = [(CCUIMenuModuleViewController *)self view];
+  v16 = [view3 hitTest:0 withEvent:{v12, v14}];
   v17 = objc_opt_self();
   v18 = v16;
   if (v17)
@@ -2327,15 +2327,15 @@ LABEL_6:
   {
     if (self->_ignoreMenuItemAtTouchLocationAfterExpanded)
     {
-      v21 = [(CCUIMenuModuleViewController *)self view];
-      v22 = [(CCUIMenuModuleViewController *)self view];
-      v23 = [v22 window];
-      [v21 convertPoint:v23 fromView:{self->_touchLocationToIgnore.x, self->_touchLocationToIgnore.y}];
+      view4 = [(CCUIMenuModuleViewController *)self view];
+      view5 = [(CCUIMenuModuleViewController *)self view];
+      window2 = [view5 window];
+      [view4 convertPoint:window2 fromView:{self->_touchLocationToIgnore.x, self->_touchLocationToIgnore.y}];
       v25 = v24;
       v27 = v26;
 
-      v28 = [(CCUIMenuModuleViewController *)self view];
-      v29 = [v28 hitTest:0 withEvent:{v25, v27}];
+      view6 = [(CCUIMenuModuleViewController *)self view];
+      v29 = [view6 hitTest:0 withEvent:{v25, v27}];
 
       if (!v20)
       {
@@ -2366,7 +2366,7 @@ LABEL_15:
       [(UISelectionFeedbackGenerator *)self->_feedbackGenerator selectionChanged];
     }
 
-    if (v20 && [v30 state] == 3)
+    if (v20 && [gestureCopy state] == 3)
     {
       [(CCUIMenuModuleViewController *)self _handleActionTapped:v20];
     }
@@ -2379,13 +2379,13 @@ LABEL_21:
 
 - (double)_separatorHeight
 {
-  v3 = [MEMORY[0x1E69DCEB0] mainScreen];
-  v4 = [(CCUIMenuModuleViewController *)self traitCollection];
-  v5 = [v4 preferredContentSizeCategory];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  traitCollection = [(CCUIMenuModuleViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
   v6 = 1.0;
-  if (!UIContentSizeCategoryIsAccessibilityCategory(v5))
+  if (!UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
-    [v3 scale];
+    [mainScreen scale];
     v6 = v7;
   }
 
@@ -2396,18 +2396,18 @@ LABEL_21:
 {
   if ([(CCUIMenuModuleViewController *)self _shouldLimitContentSizeCategory])
   {
-    v3 = *MEMORY[0x1E69DDC38];
+    preferredContentSizeCategory = *MEMORY[0x1E69DDC38];
   }
 
   else
   {
-    v4 = [(CCUIMenuModuleViewController *)self traitCollection];
-    v3 = [v4 preferredContentSizeCategory];
+    traitCollection = [(CCUIMenuModuleViewController *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
   }
 
-  v5 = [(CCUIMenuModuleViewController *)self hasGlyph];
+  hasGlyph = [(CCUIMenuModuleViewController *)self hasGlyph];
   v6 = MEMORY[0x1E69DDD40];
-  if (v5)
+  if (hasGlyph)
   {
     v7 = 8;
   }
@@ -2418,7 +2418,7 @@ LABEL_21:
     v7 = 4;
   }
 
-  v8 = [MEMORY[0x1E69DB878] bsui_preferredFontForTextStyle:*v6 hiFontStyle:v7 contentSizeCategory:v3];
+  v8 = [MEMORY[0x1E69DB878] bsui_preferredFontForTextStyle:*v6 hiFontStyle:v7 contentSizeCategory:preferredContentSizeCategory];
 
   return v8;
 }
@@ -2427,13 +2427,13 @@ LABEL_21:
 {
   if ([(CCUIMenuModuleViewController *)self _shouldLimitContentSizeCategory])
   {
-    v3 = *MEMORY[0x1E69DDC38];
+    preferredContentSizeCategory = *MEMORY[0x1E69DDC38];
   }
 
   else
   {
-    v4 = [(CCUIMenuModuleViewController *)self traitCollection];
-    v3 = [v4 preferredContentSizeCategory];
+    traitCollection = [(CCUIMenuModuleViewController *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
   }
 
   if ([(CCUIMenuModuleViewController *)self hasGlyph])
@@ -2446,61 +2446,61 @@ LABEL_21:
     v5 = 1;
   }
 
-  v6 = [MEMORY[0x1E69DB878] bsui_preferredFontForTextStyle:*MEMORY[0x1E69DDD80] hiFontStyle:v5 contentSizeCategory:v3];
+  v6 = [MEMORY[0x1E69DB878] bsui_preferredFontForTextStyle:*MEMORY[0x1E69DDD80] hiFontStyle:v5 contentSizeCategory:preferredContentSizeCategory];
 
   return v6;
 }
 
 - (BOOL)_shouldLimitContentSizeCategory
 {
-  v3 = [(CCUIMenuModuleViewController *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
+  traitCollection = [(CCUIMenuModuleViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  v5 = (self->_forceLimitContentSizeCategory || ([*MEMORY[0x1E69DDA98] activeInterfaceOrientation] - 3) <= 1) && UIContentSizeCategoryCompareToCategory(v4, *MEMORY[0x1E69DDC38]) == NSOrderedDescending;
+  v5 = (self->_forceLimitContentSizeCategory || ([*MEMORY[0x1E69DDA98] activeInterfaceOrientation] - 3) <= 1) && UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, *MEMORY[0x1E69DDC38]) == NSOrderedDescending;
   return v5;
 }
 
 - (BOOL)_shouldHideGlyphForLimitedContentSizeCategory
 {
-  v2 = [(CCUIMenuModuleViewController *)self _shouldLimitContentSizeCategory];
-  if (v2)
+  _shouldLimitContentSizeCategory = [(CCUIMenuModuleViewController *)self _shouldLimitContentSizeCategory];
+  if (_shouldLimitContentSizeCategory)
   {
-    LOBYTE(v2) = ([*MEMORY[0x1E69DDA98] activeInterfaceOrientation] - 3) < 2;
+    LOBYTE(_shouldLimitContentSizeCategory) = ([*MEMORY[0x1E69DDA98] activeInterfaceOrientation] - 3) < 2;
   }
 
-  return v2;
+  return _shouldLimitContentSizeCategory;
 }
 
-- (id)_preferredFontForTextStyle:(id)a3 hiFontStyle:(int64_t)a4
+- (id)_preferredFontForTextStyle:(id)style hiFontStyle:(int64_t)fontStyle
 {
-  v6 = a3;
-  v7 = [(CCUIMenuModuleViewController *)self traitCollection];
-  v8 = [v7 preferredContentSizeCategory];
+  styleCopy = style;
+  traitCollection = [(CCUIMenuModuleViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
   if ([(CCUIMenuModuleViewController *)self _shouldLimitContentSizeCategory])
   {
     v9 = *MEMORY[0x1E69DDC38];
 
-    v8 = v9;
+    preferredContentSizeCategory = v9;
   }
 
-  v10 = [MEMORY[0x1E69DB878] bsui_preferredFontForTextStyle:v6 hiFontStyle:a4 contentSizeCategory:v8];
+  v10 = [MEMORY[0x1E69DB878] bsui_preferredFontForTextStyle:styleCopy hiFontStyle:fontStyle contentSizeCategory:preferredContentSizeCategory];
 
   return v10;
 }
 
 - (double)_defaultMenuItemHeight
 {
-  v2 = [(CCUIMenuModuleViewController *)self traitCollection];
-  v3 = [v2 preferredContentSizeCategory];
+  traitCollection = [(CCUIMenuModuleViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  [CCUIMenuModuleItemView defaultMenuItemHeightForContentSizeCategory:v3];
+  [CCUIMenuModuleItemView defaultMenuItemHeightForContentSizeCategory:preferredContentSizeCategory];
   v5 = v4;
 
   return v5;
 }
 
-- (double)scrollViewContentHeightForWidth:(double)a3
+- (double)scrollViewContentHeightForWidth:(double)width
 {
   customContentView = self->_customContentView;
   if (customContentView)
@@ -2513,7 +2513,7 @@ LABEL_21:
   else if (self->_visibleMenuItems <= 0.0)
   {
 
-    [(CCUIMenuModuleViewController *)self _menuItemsHeightForWidth:a3];
+    [(CCUIMenuModuleViewController *)self _menuItemsHeightForWidth:width];
   }
 
   else
@@ -2527,11 +2527,11 @@ LABEL_21:
   return result;
 }
 
-- (double)_menuItemsHeightForWidth:(double)a3
+- (double)_menuItemsHeightForWidth:(double)width
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = [(UIStackView *)self->_menuItemsContainer arrangedSubviews];
-  v6 = [v5 count];
+  arrangedSubviews = [(UIStackView *)self->_menuItemsContainer arrangedSubviews];
+  v6 = [arrangedSubviews count];
 
   if (!v6)
   {
@@ -2542,8 +2542,8 @@ LABEL_21:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [(UIStackView *)self->_menuItemsContainer arrangedSubviews];
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  arrangedSubviews2 = [(UIStackView *)self->_menuItemsContainer arrangedSubviews];
+  v8 = [arrangedSubviews2 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
@@ -2555,18 +2555,18 @@ LABEL_21:
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(arrangedSubviews2);
         }
 
         v13 = *(*(&v16 + 1) + 8 * i);
         if (([v13 isHidden] & 1) == 0)
         {
-          [v13 sizeThatFits:{a3, 0.0}];
+          [v13 sizeThatFits:{width, 0.0}];
           v11 = v11 + v14;
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v9 = [arrangedSubviews2 countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v9);
@@ -2580,25 +2580,25 @@ LABEL_21:
   return v11;
 }
 
-- (BOOL)_setForceLimitContentSizeCategory:(BOOL)a3
+- (BOOL)_setForceLimitContentSizeCategory:(BOOL)category
 {
-  v3 = a3;
+  categoryCopy = category;
   forceLimitContentSizeCategory = self->_forceLimitContentSizeCategory;
-  if (forceLimitContentSizeCategory != a3)
+  if (forceLimitContentSizeCategory != category)
   {
-    self->_forceLimitContentSizeCategory = a3;
+    self->_forceLimitContentSizeCategory = category;
     titleLabel = self->_titleLabel;
-    v7 = [(CCUIMenuModuleViewController *)self _titleFont];
-    [(UILabel *)titleLabel setFont:v7];
+    _titleFont = [(CCUIMenuModuleViewController *)self _titleFont];
+    [(UILabel *)titleLabel setFont:_titleFont];
 
     subtitleLabel = self->_subtitleLabel;
-    v9 = [(CCUIMenuModuleViewController *)self _subtitleFont];
-    [(UILabel *)subtitleLabel setFont:v9];
+    _subtitleFont = [(CCUIMenuModuleViewController *)self _subtitleFont];
+    [(UILabel *)subtitleLabel setFont:_subtitleFont];
 
-    [(CCUIMenuModuleItemView *)self->_footerButtonView setShouldLimitContentSizeCategory:v3];
+    [(CCUIMenuModuleItemView *)self->_footerButtonView setShouldLimitContentSizeCategory:categoryCopy];
   }
 
-  return forceLimitContentSizeCategory != v3;
+  return forceLimitContentSizeCategory != categoryCopy;
 }
 
 - (void)_contentSizeCategoryDidChange
@@ -2613,34 +2613,34 @@ LABEL_21:
 - (void)_updateTitleFont
 {
   titleLabel = self->_titleLabel;
-  v4 = [(CCUIMenuModuleViewController *)self _titleFont];
-  [(UILabel *)titleLabel setFont:v4];
+  _titleFont = [(CCUIMenuModuleViewController *)self _titleFont];
+  [(UILabel *)titleLabel setFont:_titleFont];
 
-  v5 = [(CCUIMenuModuleViewController *)self viewIfLoaded];
-  [v5 setNeedsLayout];
+  viewIfLoaded = [(CCUIMenuModuleViewController *)self viewIfLoaded];
+  [viewIfLoaded setNeedsLayout];
 }
 
 - (void)_updateSubtitleFont
 {
   subtitleLabel = self->_subtitleLabel;
-  v4 = [(CCUIMenuModuleViewController *)self _subtitleFont];
-  [(UILabel *)subtitleLabel setFont:v4];
+  _subtitleFont = [(CCUIMenuModuleViewController *)self _subtitleFont];
+  [(UILabel *)subtitleLabel setFont:_subtitleFont];
 
-  v5 = [(CCUIMenuModuleViewController *)self viewIfLoaded];
-  [v5 setNeedsLayout];
+  viewIfLoaded = [(CCUIMenuModuleViewController *)self viewIfLoaded];
+  [viewIfLoaded setNeedsLayout];
 }
 
 - (void)_updateLeadingAndTrailingViews
 {
-  v3 = [(UIStackView *)self->_menuItemsContainer arrangedSubviews];
+  arrangedSubviews = [(UIStackView *)self->_menuItemsContainer arrangedSubviews];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __62__CCUIMenuModuleViewController__updateLeadingAndTrailingViews__block_invoke;
   v5[3] = &unk_1E83EA698;
   v5[4] = self;
-  [v3 enumerateObjectsUsingBlock:v5];
-  v4 = [(CCUIMenuModuleViewController *)self viewIfLoaded];
-  [v4 setNeedsLayout];
+  [arrangedSubviews enumerateObjectsUsingBlock:v5];
+  viewIfLoaded = [(CCUIMenuModuleViewController *)self viewIfLoaded];
+  [viewIfLoaded setNeedsLayout];
 }
 
 void __62__CCUIMenuModuleViewController__updateLeadingAndTrailingViews__block_invoke(uint64_t a1, void *a2)
@@ -2665,8 +2665,8 @@ void __62__CCUIMenuModuleViewController__updateLeadingAndTrailingViews__block_in
     Width = CGRectGetWidth(v17);
     if (Width >= 1024.0)
     {
-      v2 = [MEMORY[0x1E69DC938] currentDevice];
-      if ([v2 userInterfaceIdiom] == 1)
+      currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+      if ([currentDevice userInterfaceIdiom] == 1)
       {
         v8 = 24.0;
         if (SBFEffectiveHomeButtonType() != 2)
@@ -2690,8 +2690,8 @@ void __62__CCUIMenuModuleViewController__updateLeadingAndTrailingViews__block_in
       v11 = CGRectGetWidth(v19);
       if (v11 >= 834.0)
       {
-        v4 = [MEMORY[0x1E69DC938] currentDevice];
-        if ([v4 userInterfaceIdiom] == 1)
+        currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+        if ([currentDevice2 userInterfaceIdiom] == 1)
         {
           v8 = 24.0;
           if (SBFEffectiveHomeButtonType() == 2)
@@ -2705,8 +2705,8 @@ void __62__CCUIMenuModuleViewController__updateLeadingAndTrailingViews__block_in
       v12 = CGRectGetWidth(v20);
       if (v12 >= 834.0)
       {
-        v5 = [MEMORY[0x1E69DC938] currentDevice];
-        if ([v5 userInterfaceIdiom] == 1)
+        currentDevice3 = [MEMORY[0x1E69DC938] currentDevice];
+        if ([currentDevice3 userInterfaceIdiom] == 1)
         {
           v8 = 24.0;
           if (SBFEffectiveHomeButtonType() != 2)
@@ -2716,9 +2716,9 @@ void __62__CCUIMenuModuleViewController__updateLeadingAndTrailingViews__block_in
         }
       }
 
-      v13 = [MEMORY[0x1E69DC938] currentDevice];
+      currentDevice4 = [MEMORY[0x1E69DC938] currentDevice];
       v8 = 24.0;
-      if ([v13 userInterfaceIdiom] != 1)
+      if ([currentDevice4 userInterfaceIdiom] != 1)
       {
         v21.origin.x = CCUIReferenceScreenBounds();
         if (CGRectGetWidth(v21) < 430.0)
@@ -2829,8 +2829,8 @@ LABEL_40:
 
   else
   {
-    v4 = [(UIStackView *)self->_menuItemsContainer arrangedSubviews];
-    if ([v4 count])
+    arrangedSubviews = [(UIStackView *)self->_menuItemsContainer arrangedSubviews];
+    if ([arrangedSubviews count])
     {
       customContentViewScrolls = 1;
     }

@@ -1,8 +1,8 @@
 @interface NTKPrideWeaveSpiroQuad
-- (BOOL)prepareForTime:(double)a3;
+- (BOOL)prepareForTime:(double)time;
 - (NTKPrideWeaveSpiroQuad)init;
-- (void)renderForDisplayWithEncoder:(id)a3;
-- (void)setupForQuadView:(id)a3;
+- (void)renderForDisplayWithEncoder:(id)encoder;
+- (void)setupForQuadView:(id)view;
 @end
 
 @implementation NTKPrideWeaveSpiroQuad
@@ -37,9 +37,9 @@
   return v2;
 }
 
-- (void)setupForQuadView:(id)a3
+- (void)setupForQuadView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = +[CLKUIMetalResourceManager sharedDevice];
   v6 = [NSBundle bundleForClass:objc_opt_class()];
   v7 = [v5 newDefaultLibraryWithBundle:v6 error:0];
@@ -50,14 +50,14 @@
   [v10 setLabel:@"WeaveSpirographPipeline"];
   [v10 setVertexFunction:v8];
   [v10 setFragmentFunction:v9];
-  v11 = [v4 colorPixelFormat];
-  v12 = [v10 colorAttachments];
-  v13 = [v12 objectAtIndexedSubscript:0];
-  [v13 setPixelFormat:v11];
+  colorPixelFormat = [viewCopy colorPixelFormat];
+  colorAttachments = [v10 colorAttachments];
+  v13 = [colorAttachments objectAtIndexedSubscript:0];
+  [v13 setPixelFormat:colorPixelFormat];
 
   [v10 setDepthAttachmentPixelFormat:252];
-  v14 = [v10 colorAttachments];
-  v15 = [v14 objectAtIndexedSubscript:0];
+  colorAttachments2 = [v10 colorAttachments];
+  v15 = [colorAttachments2 objectAtIndexedSubscript:0];
   [v15 setBlendingEnabled:0];
 
   [v10 setRasterSampleCount:4];
@@ -90,11 +90,11 @@
   while (v20);
 }
 
-- (BOOL)prepareForTime:(double)a3
+- (BOOL)prepareForTime:(double)time
 {
-  v4 = (a3 - self->_previousTime) * self->_timeScale;
+  v4 = (time - self->_previousTime) * self->_timeScale;
   v5 = v4 > 0.0833333333 || v4 < 0.0;
-  self->_previousTime = a3;
+  self->_previousTime = time;
   if (v5)
   {
     v6 = 0.0;
@@ -117,7 +117,7 @@
   {
     v8 = (self->_currentIndex + 1) % 3;
     self->_currentIndex = v8;
-    v9 = [(MTLBuffer *)self->_curvesBuffer[v8] contents];
+    contents = [(MTLBuffer *)self->_curvesBuffer[v8] contents];
     CLKInterpolateBetweenFloatsUnclipped();
     v11 = v10;
     CLKInterpolateBetweenFloatsUnclipped();
@@ -128,7 +128,7 @@
     v16 = v15 + -0.05;
     v17 = self->_thickness;
     v18 = (v15 + v13);
-    v19 = (v9 + 16);
+    v19 = (contents + 16);
     do
     {
       v20 = self->_tritiumProgress[(v14 + [(NTKPrideWeaveSpiroQuad *)self startLoop]) % 11];
@@ -154,14 +154,14 @@
   return thickness != 0.0;
 }
 
-- (void)renderForDisplayWithEncoder:(id)a3
+- (void)renderForDisplayWithEncoder:(id)encoder
 {
   renderPipelineState = self->_renderPipelineState;
-  v5 = a3;
-  [v5 setRenderPipelineState:renderPipelineState];
-  [v5 setVertexBuffer:self->_curvesBuffer[self->_currentIndex] offset:0 atIndex:0];
-  [v5 setVertexBytes:&self->_uniforms length:12 atIndex:1];
-  [v5 drawPrimitives:4 vertexStart:0 vertexCount:256 instanceCount:11 baseInstance:0];
+  encoderCopy = encoder;
+  [encoderCopy setRenderPipelineState:renderPipelineState];
+  [encoderCopy setVertexBuffer:self->_curvesBuffer[self->_currentIndex] offset:0 atIndex:0];
+  [encoderCopy setVertexBytes:&self->_uniforms length:12 atIndex:1];
+  [encoderCopy drawPrimitives:4 vertexStart:0 vertexCount:256 instanceCount:11 baseInstance:0];
 }
 
 @end

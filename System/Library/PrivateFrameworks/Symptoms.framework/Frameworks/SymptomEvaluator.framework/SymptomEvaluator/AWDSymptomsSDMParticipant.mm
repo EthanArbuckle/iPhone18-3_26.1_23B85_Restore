@@ -1,23 +1,23 @@
 @interface AWDSymptomsSDMParticipant
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDlThroughputBytesPerSecond:(BOOL)a3;
-- (void)setHasParticipationDelta:(BOOL)a3;
-- (void)setHasPeriodDuration:(BOOL)a3;
-- (void)setHasUlThroughputBytesPerSecond:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDlThroughputBytesPerSecond:(BOOL)second;
+- (void)setHasParticipationDelta:(BOOL)delta;
+- (void)setHasPeriodDuration:(BOOL)duration;
+- (void)setHasUlThroughputBytesPerSecond:(BOOL)second;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDSymptomsSDMParticipant
 
-- (void)setHasParticipationDelta:(BOOL)a3
+- (void)setHasParticipationDelta:(BOOL)delta
 {
-  if (a3)
+  if (delta)
   {
     v3 = 4;
   }
@@ -30,9 +30,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasPeriodDuration:(BOOL)a3
+- (void)setHasPeriodDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 8;
   }
@@ -45,9 +45,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasDlThroughputBytesPerSecond:(BOOL)a3
+- (void)setHasDlThroughputBytesPerSecond:(BOOL)second
 {
-  if (a3)
+  if (second)
   {
     v3 = 2;
   }
@@ -60,9 +60,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasUlThroughputBytesPerSecond:(BOOL)a3
+- (void)setHasUlThroughputBytesPerSecond:(BOOL)second
 {
-  if (a3)
+  if (second)
   {
     v3 = 16;
   }
@@ -81,32 +81,32 @@
   v8.receiver = self;
   v8.super_class = AWDSymptomsSDMParticipant;
   v4 = [(AWDSymptomsSDMParticipant *)&v8 description];
-  v5 = [(AWDSymptomsSDMParticipant *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDSymptomsSDMParticipant *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ((*&self->_has & 4) != 0)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_participationDelta];
-    [v3 setObject:v4 forKey:@"participationDelta"];
+    [dictionary setObject:v4 forKey:@"participationDelta"];
   }
 
   name = self->_name;
   if (name)
   {
-    [v3 setObject:name forKey:@"name"];
+    [dictionary setObject:name forKey:@"name"];
   }
 
   has = self->_has;
   if ((has & 8) != 0)
   {
     v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_periodDuration];
-    [v3 setObject:v9 forKey:@"periodDuration"];
+    [dictionary setObject:v9 forKey:@"periodDuration"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -127,7 +127,7 @@ LABEL_7:
   }
 
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_dlThroughputBytesPerSecond];
-  [v3 setObject:v10 forKey:@"dlThroughputBytesPerSecond"];
+  [dictionary setObject:v10 forKey:@"dlThroughputBytesPerSecond"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -143,23 +143,23 @@ LABEL_8:
 
 LABEL_15:
   v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_ulThroughputBytesPerSecond];
-  [v3 setObject:v11 forKey:@"ulThroughputBytesPerSecond"];
+  [dictionary setObject:v11 forKey:@"ulThroughputBytesPerSecond"];
 
   if (*&self->_has)
   {
 LABEL_9:
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_additionalFlags];
-    [v3 setObject:v7 forKey:@"additionalFlags"];
+    [dictionary setObject:v7 forKey:@"additionalFlags"];
   }
 
 LABEL_10:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   if ((*&self->_has & 4) != 0)
   {
     participationDelta = self->_participationDelta;
@@ -221,27 +221,27 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 4) != 0)
   {
-    v4[3] = self->_participationDelta;
-    *(v4 + 56) |= 4u;
+    toCopy[3] = self->_participationDelta;
+    *(toCopy + 56) |= 4u;
   }
 
   if (self->_name)
   {
-    v6 = v4;
-    [v4 setName:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setName:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 8) != 0)
   {
-    v4[4] = self->_periodDuration;
-    *(v4 + 56) |= 8u;
+    toCopy[4] = self->_periodDuration;
+    *(toCopy + 56) |= 8u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -260,8 +260,8 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v4[2] = self->_dlThroughputBytesPerSecond;
-  *(v4 + 56) |= 2u;
+  toCopy[2] = self->_dlThroughputBytesPerSecond;
+  *(toCopy + 56) |= 2u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -275,21 +275,21 @@ LABEL_8:
   }
 
 LABEL_15:
-  v4[5] = self->_ulThroughputBytesPerSecond;
-  *(v4 + 56) |= 0x10u;
+  toCopy[5] = self->_ulThroughputBytesPerSecond;
+  *(toCopy + 56) |= 0x10u;
   if (*&self->_has)
   {
 LABEL_9:
-    v4[1] = self->_additionalFlags;
-    *(v4 + 56) |= 1u;
+    toCopy[1] = self->_additionalFlags;
+    *(toCopy + 56) |= 1u;
   }
 
 LABEL_10:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 4) != 0)
   {
@@ -297,7 +297,7 @@ LABEL_10:
     *(v5 + 56) |= 4u;
   }
 
-  v7 = [(NSString *)self->_name copyWithZone:a3];
+  v7 = [(NSString *)self->_name copyWithZone:zone];
   v8 = *(v6 + 48);
   *(v6 + 48) = v7;
 
@@ -351,31 +351,31 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_29;
   }
 
   has = self->_has;
-  v6 = *(v4 + 56);
+  v6 = *(equalCopy + 56);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 56) & 4) == 0 || self->_participationDelta != *(v4 + 3))
+    if ((*(equalCopy + 56) & 4) == 0 || self->_participationDelta != *(equalCopy + 3))
     {
       goto LABEL_29;
     }
   }
 
-  else if ((*(v4 + 56) & 4) != 0)
+  else if ((*(equalCopy + 56) & 4) != 0)
   {
     goto LABEL_29;
   }
 
   name = self->_name;
-  if (name | *(v4 + 6))
+  if (name | *(equalCopy + 6))
   {
     if (![(NSString *)name isEqual:?])
     {
@@ -389,47 +389,47 @@ LABEL_29:
 
   if ((has & 8) != 0)
   {
-    if ((*(v4 + 56) & 8) == 0 || self->_periodDuration != *(v4 + 4))
+    if ((*(equalCopy + 56) & 8) == 0 || self->_periodDuration != *(equalCopy + 4))
     {
       goto LABEL_29;
     }
   }
 
-  else if ((*(v4 + 56) & 8) != 0)
+  else if ((*(equalCopy + 56) & 8) != 0)
   {
     goto LABEL_29;
   }
 
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 56) & 2) == 0 || self->_dlThroughputBytesPerSecond != *(v4 + 2))
+    if ((*(equalCopy + 56) & 2) == 0 || self->_dlThroughputBytesPerSecond != *(equalCopy + 2))
     {
       goto LABEL_29;
     }
   }
 
-  else if ((*(v4 + 56) & 2) != 0)
+  else if ((*(equalCopy + 56) & 2) != 0)
   {
     goto LABEL_29;
   }
 
   if ((has & 0x10) != 0)
   {
-    if ((*(v4 + 56) & 0x10) == 0 || self->_ulThroughputBytesPerSecond != *(v4 + 5))
+    if ((*(equalCopy + 56) & 0x10) == 0 || self->_ulThroughputBytesPerSecond != *(equalCopy + 5))
     {
       goto LABEL_29;
     }
   }
 
-  else if ((*(v4 + 56) & 0x10) != 0)
+  else if ((*(equalCopy + 56) & 0x10) != 0)
   {
     goto LABEL_29;
   }
 
-  v8 = (*(v4 + 56) & 1) == 0;
+  v8 = (*(equalCopy + 56) & 1) == 0;
   if (has)
   {
-    if ((*(v4 + 56) & 1) == 0 || self->_additionalFlags != *(v4 + 1))
+    if ((*(equalCopy + 56) & 1) == 0 || self->_additionalFlags != *(equalCopy + 1))
     {
       goto LABEL_29;
     }
@@ -507,28 +507,28 @@ LABEL_8:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if ((v4[7] & 4) != 0)
+  fromCopy = from;
+  if ((fromCopy[7] & 4) != 0)
   {
-    self->_participationDelta = v4[3];
+    self->_participationDelta = fromCopy[3];
     *&self->_has |= 4u;
   }
 
-  if (v4[6])
+  if (fromCopy[6])
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(AWDSymptomsSDMParticipant *)self setName:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 56);
+  v5 = *(fromCopy + 56);
   if ((v5 & 8) != 0)
   {
-    self->_periodDuration = v4[4];
+    self->_periodDuration = fromCopy[4];
     *&self->_has |= 8u;
-    v5 = *(v4 + 56);
+    v5 = *(fromCopy + 56);
     if ((v5 & 2) == 0)
     {
 LABEL_7:
@@ -541,14 +541,14 @@ LABEL_7:
     }
   }
 
-  else if ((v4[7] & 2) == 0)
+  else if ((fromCopy[7] & 2) == 0)
   {
     goto LABEL_7;
   }
 
-  self->_dlThroughputBytesPerSecond = v4[2];
+  self->_dlThroughputBytesPerSecond = fromCopy[2];
   *&self->_has |= 2u;
-  v5 = *(v4 + 56);
+  v5 = *(fromCopy + 56);
   if ((v5 & 0x10) == 0)
   {
 LABEL_8:
@@ -561,12 +561,12 @@ LABEL_8:
   }
 
 LABEL_15:
-  self->_ulThroughputBytesPerSecond = v4[5];
+  self->_ulThroughputBytesPerSecond = fromCopy[5];
   *&self->_has |= 0x10u;
-  if (v4[7])
+  if (fromCopy[7])
   {
 LABEL_9:
-    self->_additionalFlags = v4[1];
+    self->_additionalFlags = fromCopy[1];
     *&self->_has |= 1u;
   }
 

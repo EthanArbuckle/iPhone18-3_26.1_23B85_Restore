@@ -1,6 +1,6 @@
 @interface MOAnalyticsStats
 - (MOAnalyticsStats)init;
-- (MOAnalyticsStats)initWithTimeSeries:(id)a3;
+- (MOAnalyticsStats)initWithTimeSeries:(id)series;
 @end
 
 @implementation MOAnalyticsStats
@@ -21,20 +21,20 @@
   return result;
 }
 
-- (MOAnalyticsStats)initWithTimeSeries:(id)a3
+- (MOAnalyticsStats)initWithTimeSeries:(id)series
 {
-  v4 = a3;
+  seriesCopy = series;
   v5 = [(MOAnalyticsStats *)self init];
   if (v5)
   {
-    v5->_count = [v4 count];
-    if ([v4 count])
+    v5->_count = [seriesCopy count];
+    if ([seriesCopy count])
     {
       v32 = 0u;
       v33 = 0u;
       v30 = 0u;
       v31 = 0u;
-      v6 = v4;
+      v6 = seriesCopy;
       v7 = [v6 countByEnumeratingWithState:&v30 objects:v35 count:16];
       v8 = 0.0;
       v9 = 0.0;

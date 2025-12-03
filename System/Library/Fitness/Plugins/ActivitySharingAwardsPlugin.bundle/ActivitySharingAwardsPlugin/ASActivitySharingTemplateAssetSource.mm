@@ -1,31 +1,31 @@
 @interface ASActivitySharingTemplateAssetSource
 - (ACHTemplateAssetSourceDelegate)assetSourceDelegate;
-- (ASActivitySharingTemplateAssetSource)initWithHealthStore:(id)a3;
-- (id)_competitionForVictoryTemplate:(id)a3;
-- (id)_friendForVictoryTemplate:(id)a3;
-- (id)_queue_friendWithUUID:(id)a3;
-- (id)customPlaceholderValuesForTemplate:(id)a3 error:(id *)a4;
-- (id)friendWithUUID:(id)a3;
-- (id)localizationBundleURLForTemplate:(id)a3;
-- (id)propertyListBundleURLForTemplate:(id)a3;
-- (id)resourceBundleURLForTemplate:(id)a3;
-- (void)_queue_updateWithFriends:(id)a3;
+- (ASActivitySharingTemplateAssetSource)initWithHealthStore:(id)store;
+- (id)_competitionForVictoryTemplate:(id)template;
+- (id)_friendForVictoryTemplate:(id)template;
+- (id)_queue_friendWithUUID:(id)d;
+- (id)customPlaceholderValuesForTemplate:(id)template error:(id *)error;
+- (id)friendWithUUID:(id)d;
+- (id)localizationBundleURLForTemplate:(id)template;
+- (id)propertyListBundleURLForTemplate:(id)template;
+- (id)resourceBundleURLForTemplate:(id)template;
+- (void)_queue_updateWithFriends:(id)friends;
 - (void)_startFriendsQuery;
-- (void)_updateWithFriends:(id)a3;
+- (void)_updateWithFriends:(id)friends;
 @end
 
 @implementation ASActivitySharingTemplateAssetSource
 
-- (ASActivitySharingTemplateAssetSource)initWithHealthStore:(id)a3
+- (ASActivitySharingTemplateAssetSource)initWithHealthStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v16.receiver = self;
   v16.super_class = ASActivitySharingTemplateAssetSource;
   v6 = [(ASActivitySharingTemplateAssetSource *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_healthStore, a3);
+    objc_storeStrong(&v6->_healthStore, store);
     v8 = HKCreateSerialDispatchQueue();
     friendListQueue = v7->_friendListQueue;
     v7->_friendListQueue = v8;
@@ -46,23 +46,23 @@
   return v7;
 }
 
-- (id)localizationBundleURLForTemplate:(id)a3
+- (id)localizationBundleURLForTemplate:(id)template
 {
-  v3 = [a3 uniqueName];
+  uniqueName = [template uniqueName];
   v4 = ASAchievementLocalizationPathForTemplate();
 
   return v4;
 }
 
-- (id)propertyListBundleURLForTemplate:(id)a3
+- (id)propertyListBundleURLForTemplate:(id)template
 {
-  v4 = a3;
-  v5 = [v4 uniqueName];
+  templateCopy = template;
+  uniqueName = [templateCopy uniqueName];
   v6 = ASIsCompetitionVictoryTemplate();
 
   if (v6)
   {
-    v7 = [(ASActivitySharingTemplateAssetSource *)self _competitionForVictoryTemplate:v4];
+    v7 = [(ASActivitySharingTemplateAssetSource *)self _competitionForVictoryTemplate:templateCopy];
     v8 = v7;
     if (v7)
     {
@@ -84,22 +84,22 @@
   return v9;
 }
 
-- (id)resourceBundleURLForTemplate:(id)a3
+- (id)resourceBundleURLForTemplate:(id)template
 {
-  v4 = a3;
+  templateCopy = template;
   ASLoggingInitialize();
   v5 = *MEMORY[0x277CE8FC0];
   if (os_log_type_enabled(*MEMORY[0x277CE8FC0], OS_LOG_TYPE_DEBUG))
   {
-    sub_23397BBD4(v5, v4);
+    sub_23397BBD4(v5, templateCopy);
   }
 
-  v6 = [v4 uniqueName];
+  uniqueName = [templateCopy uniqueName];
   v7 = ASIsCompetitionVictoryTemplate();
 
   if (v7)
   {
-    v8 = [(ASActivitySharingTemplateAssetSource *)self _competitionForVictoryTemplate:v4];
+    v8 = [(ASActivitySharingTemplateAssetSource *)self _competitionForVictoryTemplate:templateCopy];
     v9 = v8;
     if (v8)
     {
@@ -121,35 +121,35 @@
   return v10;
 }
 
-- (id)customPlaceholderValuesForTemplate:(id)a3 error:(id *)a4
+- (id)customPlaceholderValuesForTemplate:(id)template error:(id *)error
 {
-  v5 = a3;
-  v6 = [MEMORY[0x277CBEB38] dictionary];
-  v7 = [v5 uniqueName];
+  templateCopy = template;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  uniqueName = [templateCopy uniqueName];
   v8 = ASIsCompetitionVictoryTemplate();
 
   if (v8)
   {
-    v9 = [(ASActivitySharingTemplateAssetSource *)self _friendForVictoryTemplate:v5];
+    v9 = [(ASActivitySharingTemplateAssetSource *)self _friendForVictoryTemplate:templateCopy];
     v10 = v9;
     if (v9)
     {
-      v11 = [v9 displayName];
-      [v6 setObject:v11 forKeyedSubscript:*MEMORY[0x277CE9148]];
+      displayName = [v9 displayName];
+      [dictionary setObject:displayName forKeyedSubscript:*MEMORY[0x277CE9148]];
 
-      v12 = [v10 currentCompetition];
+      currentCompetition = [v10 currentCompetition];
 
-      if (v12)
+      if (currentCompetition)
       {
-        v13 = [v10 currentCompetition];
-        v14 = [v13 lastDayOfCompetition];
+        currentCompetition2 = [v10 currentCompetition];
+        lastDayOfCompetition = [currentCompetition2 lastDayOfCompetition];
         v15 = FILocalizedDayName();
-        [v6 setObject:v15 forKeyedSubscript:*MEMORY[0x277CE9140]];
+        [dictionary setObject:v15 forKeyedSubscript:*MEMORY[0x277CE9140]];
       }
     }
   }
 
-  return v6;
+  return dictionary;
 }
 
 - (void)_startFriendsQuery
@@ -170,26 +170,26 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_updateWithFriends:(id)a3
+- (void)_updateWithFriends:(id)friends
 {
-  v4 = a3;
+  friendsCopy = friends;
   friendListQueue = self->_friendListQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_23397B5A8;
   v7[3] = &unk_2789F6838;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = friendsCopy;
+  v6 = friendsCopy;
   dispatch_async(friendListQueue, v7);
 }
 
-- (void)_queue_updateWithFriends:(id)a3
+- (void)_queue_updateWithFriends:(id)friends
 {
   friendListQueue = self->_friendListQueue;
-  v5 = a3;
+  friendsCopy = friends;
   dispatch_assert_queue_V2(friendListQueue);
-  v6 = [v5 copy];
+  v6 = [friendsCopy copy];
 
   allFriends = self->_allFriends;
   self->_allFriends = v6;
@@ -202,13 +202,13 @@
     _os_log_impl(&dword_23397A000, v8, OS_LOG_TYPE_DEFAULT, "Friends updated, requesting asset source update", v10, 2u);
   }
 
-  v9 = [(ASActivitySharingTemplateAssetSource *)self assetSourceDelegate];
-  [v9 templateAssetSourceDidUpdateAssets:self];
+  assetSourceDelegate = [(ASActivitySharingTemplateAssetSource *)self assetSourceDelegate];
+  [assetSourceDelegate templateAssetSourceDidUpdateAssets:self];
 }
 
-- (id)friendWithUUID:(id)a3
+- (id)friendWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -220,10 +220,10 @@
   block[1] = 3221225472;
   block[2] = sub_23397B7A0;
   block[3] = &unk_2789F6860;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(friendListQueue, block);
   v7 = v13[5];
 
@@ -232,10 +232,10 @@
   return v7;
 }
 
-- (id)_queue_friendWithUUID:(id)a3
+- (id)_queue_friendWithUUID:(id)d
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_friendListQueue);
   v17 = 0u;
   v18 = 0u;
@@ -256,9 +256,9 @@
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 contact];
-        v11 = [v10 UUID];
-        v12 = [v11 isEqual:v4];
+        contact = [v9 contact];
+        uUID = [contact UUID];
+        v12 = [uUID isEqual:dCopy];
 
         if (v12)
         {
@@ -284,11 +284,11 @@ LABEL_11:
   return v6;
 }
 
-- (id)_competitionForVictoryTemplate:(id)a3
+- (id)_competitionForVictoryTemplate:(id)template
 {
-  v3 = [(ASActivitySharingTemplateAssetSource *)self _friendForVictoryTemplate:a3];
-  v4 = [v3 currentOrMostRecentCompetition];
-  if (!v4)
+  v3 = [(ASActivitySharingTemplateAssetSource *)self _friendForVictoryTemplate:template];
+  currentOrMostRecentCompetition = [v3 currentOrMostRecentCompetition];
+  if (!currentOrMostRecentCompetition)
   {
     ASLoggingInitialize();
     v5 = *MEMORY[0x277CE8FC0];
@@ -298,15 +298,15 @@ LABEL_11:
     }
   }
 
-  return v4;
+  return currentOrMostRecentCompetition;
 }
 
-- (id)_friendForVictoryTemplate:(id)a3
+- (id)_friendForVictoryTemplate:(id)template
 {
-  v4 = a3;
+  templateCopy = template;
   v5 = objc_alloc(MEMORY[0x277CCAD78]);
-  v6 = [v4 predicate];
-  v7 = [v5 initWithUUIDString:v6];
+  predicate = [templateCopy predicate];
+  v7 = [v5 initWithUUIDString:predicate];
 
   if (v7)
   {

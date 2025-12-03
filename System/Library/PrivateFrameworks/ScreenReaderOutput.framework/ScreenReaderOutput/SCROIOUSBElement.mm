@@ -1,16 +1,16 @@
 @interface SCROIOUSBElement
-- (SCROIOUSBElement)initWithIOObject:(unsigned int)a3;
+- (SCROIOUSBElement)initWithIOObject:(unsigned int)object;
 @end
 
 @implementation SCROIOUSBElement
 
-- (SCROIOUSBElement)initWithIOObject:(unsigned int)a3
+- (SCROIOUSBElement)initWithIOObject:(unsigned int)object
 {
   v8.receiver = self;
   v8.super_class = SCROIOUSBElement;
   v4 = [(SCROIOElement *)&v8 initWithIOObject:?];
   v5 = v4;
-  if (a3 && v4 && !IOObjectConformsTo(a3, "IOUSBDevice") && !IOObjectConformsTo(a3, "IOUSBDevice"))
+  if (object && v4 && !IOObjectConformsTo(object, "IOUSBDevice") && !IOObjectConformsTo(object, "IOUSBDevice"))
   {
     v6 = 0;
   }

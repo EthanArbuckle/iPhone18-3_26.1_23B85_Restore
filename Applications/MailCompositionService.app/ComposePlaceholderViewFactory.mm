@@ -1,23 +1,23 @@
 @interface ComposePlaceholderViewFactory
-- (ComposePlaceholderViewFactory)initWithDaemonInterface:(id)a3;
-- (id)_placeholderContentWithMessage:(id)a3;
-- (id)_requestContentForActivity:(id)a3;
-- (id)placeholderViewForUserActivity:(id)a3 frame:(CGRect)a4 parentMargins:(UIEdgeInsets)a5;
+- (ComposePlaceholderViewFactory)initWithDaemonInterface:(id)interface;
+- (id)_placeholderContentWithMessage:(id)message;
+- (id)_requestContentForActivity:(id)activity;
+- (id)placeholderViewForUserActivity:(id)activity frame:(CGRect)frame parentMargins:(UIEdgeInsets)margins;
 @end
 
 @implementation ComposePlaceholderViewFactory
 
-- (ComposePlaceholderViewFactory)initWithDaemonInterface:(id)a3
+- (ComposePlaceholderViewFactory)initWithDaemonInterface:(id)interface
 {
-  v4 = a3;
+  interfaceCopy = interface;
   v17.receiver = self;
   v17.super_class = ComposePlaceholderViewFactory;
   v5 = [(ComposePlaceholderViewFactory *)&v17 init];
   if (v5)
   {
-    v6 = [v4 messageRepository];
+    messageRepository = [interfaceCopy messageRepository];
     messageRepository = v5->_messageRepository;
-    v5->_messageRepository = v6;
+    v5->_messageRepository = messageRepository;
 
     v8 = [[MFComposeWebView alloc] initWithFrame:0 isQuickReply:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
     webview = v5->_webview;
@@ -31,55 +31,55 @@
     snapshotQueue = v5->_snapshotQueue;
     v5->_snapshotQueue = v12;
 
-    v14 = [v4 accountRepository];
-    v15 = [v14 deliveryAccounts];
-    v5->_showSenderField = [v15 count] > 1;
+    accountRepository = [interfaceCopy accountRepository];
+    deliveryAccounts = [accountRepository deliveryAccounts];
+    v5->_showSenderField = [deliveryAccounts count] > 1;
   }
 
   return v5;
 }
 
-- (id)placeholderViewForUserActivity:(id)a3 frame:(CGRect)a4 parentMargins:(UIEdgeInsets)a5
+- (id)placeholderViewForUserActivity:(id)activity frame:(CGRect)frame parentMargins:(UIEdgeInsets)margins
 {
-  right = a5.right;
-  bottom = a5.bottom;
-  left = a5.left;
-  top = a5.top;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v14 = a3;
-  v15 = [v14 userInfo];
-  v16 = [v15 objectForKeyedSubscript:MSMailActivityHandoffComposeKeySubject];
+  right = margins.right;
+  bottom = margins.bottom;
+  left = margins.left;
+  top = margins.top;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  activityCopy = activity;
+  userInfo = [activityCopy userInfo];
+  v16 = [userInfo objectForKeyedSubscript:MSMailActivityHandoffComposeKeySubject];
 
-  v17 = [(ComposePlaceholderViewFactory *)self _requestContentForActivity:v14];
-  v18 = [[ComposePlaceholderView alloc] initWithFrame:v16 subject:v17 modelFuture:x, y, width, height];
-  [(ComposePlaceholderView *)v18 setLayoutMargins:top, left, bottom, right];
-  v19 = [(ComposePlaceholderViewFactory *)self snapshotQueue];
+  v17 = [(ComposePlaceholderViewFactory *)self _requestContentForActivity:activityCopy];
+  height = [[ComposePlaceholderView alloc] initWithFrame:v16 subject:v17 modelFuture:x, y, width, height];
+  [(ComposePlaceholderView *)height setLayoutMargins:top, left, bottom, right];
+  snapshotQueue = [(ComposePlaceholderViewFactory *)self snapshotQueue];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_100005148;
   v23[3] = &unk_100018600;
-  v20 = v18;
+  v20 = height;
   v24 = v20;
-  v25 = self;
-  [v19 performBlock:v23];
+  selfCopy = self;
+  [snapshotQueue performBlock:v23];
 
   v21 = v20;
   return v20;
 }
 
-- (id)_requestContentForActivity:(id)a3
+- (id)_requestContentForActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:MSMailActivityHandoffComposeKeyAutosaveID];
+  activityCopy = activity;
+  userInfo = [activityCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:MSMailActivityHandoffComposeKeyAutosaveID];
 
-  v7 = [(ComposePlaceholderViewFactory *)self contentFuturesByID];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  contentFuturesByID = [(ComposePlaceholderViewFactory *)self contentFuturesByID];
+  future = [contentFuturesByID objectForKeyedSubscript:v6];
 
-  if (!v8)
+  if (!future)
   {
     v9 = +[EFPromise promise];
     v10 = +[EFScheduler globalAsyncScheduler];
@@ -91,56 +91,56 @@
     v16 = v11;
     v12 = v9;
     v17 = v12;
-    v18 = self;
+    selfCopy = self;
     [v10 performBlock:v15];
 
-    v8 = [v12 future];
-    v13 = [(ComposePlaceholderViewFactory *)self contentFuturesByID];
-    [v13 setObject:v8 forKeyedSubscript:v11];
+    future = [v12 future];
+    contentFuturesByID2 = [(ComposePlaceholderViewFactory *)self contentFuturesByID];
+    [contentFuturesByID2 setObject:future forKeyedSubscript:v11];
   }
 
-  return v8;
+  return future;
 }
 
-- (id)_placeholderContentWithMessage:(id)a3
+- (id)_placeholderContentWithMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = objc_alloc_init(ComposePlaceholderViewModel);
   [(ComposePlaceholderViewModel *)v5 setShowSenderAddress:[(ComposePlaceholderViewFactory *)self showSenderField]];
-  v6 = [v4 firstSender];
-  v7 = [v6 emailAddressValue];
-  v8 = [v7 simpleAddress];
-  v9 = v8;
-  if (v8)
+  firstSender = [messageCopy firstSender];
+  emailAddressValue = [firstSender emailAddressValue];
+  simpleAddress = [emailAddressValue simpleAddress];
+  v9 = simpleAddress;
+  if (simpleAddress)
   {
-    v10 = v8;
+    stringValue = simpleAddress;
   }
 
   else
   {
-    v10 = [v6 stringValue];
+    stringValue = [firstSender stringValue];
   }
 
-  v11 = v10;
+  v11 = stringValue;
 
   [(ComposePlaceholderViewModel *)v5 setSenderAddress:v11];
-  v12 = [v4 to];
+  v12 = [messageCopy to];
   v13 = sub_100005710(v12);
   [(ComposePlaceholderViewModel *)v5 setToRecipients:v13];
 
-  v14 = [v4 cc];
+  v14 = [messageCopy cc];
   v15 = sub_100005710(v14);
   [(ComposePlaceholderViewModel *)v5 setCcRecipients:v15];
 
-  v16 = [v4 bcc];
+  v16 = [messageCopy bcc];
   v17 = sub_100005710(v16);
   [(ComposePlaceholderViewModel *)v5 setBccRecipients:v17];
 
-  v18 = [v4 bestAlternativePart];
-  v19 = v18;
-  if (v18)
+  bestAlternativePart = [messageCopy bestAlternativePart];
+  v19 = bestAlternativePart;
+  if (bestAlternativePart)
   {
-    v20 = v18;
+    v20 = bestAlternativePart;
   }
 
   else

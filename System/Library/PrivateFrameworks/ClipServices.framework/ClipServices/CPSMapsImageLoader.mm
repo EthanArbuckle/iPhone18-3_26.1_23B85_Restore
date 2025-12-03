@@ -1,48 +1,48 @@
 @interface CPSMapsImageLoader
-- (CPSMapsImageLoader)initWithImageDownloader:(id)a3;
-- (void)_loadImageForGEOFeatureStyleAttributes:(id)a3 completionHandler:(id)a4;
-- (void)loadImageForGEOStyleAttributes:(id)a3 completionHandler:(id)a4;
-- (void)loadImageForMapItemMUID:(unint64_t)a3 completionHandler:(id)a4;
+- (CPSMapsImageLoader)initWithImageDownloader:(id)downloader;
+- (void)_loadImageForGEOFeatureStyleAttributes:(id)attributes completionHandler:(id)handler;
+- (void)loadImageForGEOStyleAttributes:(id)attributes completionHandler:(id)handler;
+- (void)loadImageForMapItemMUID:(unint64_t)d completionHandler:(id)handler;
 @end
 
 @implementation CPSMapsImageLoader
 
-- (CPSMapsImageLoader)initWithImageDownloader:(id)a3
+- (CPSMapsImageLoader)initWithImageDownloader:(id)downloader
 {
-  v5 = a3;
+  downloaderCopy = downloader;
   v14.receiver = self;
   v14.super_class = CPSMapsImageLoader;
   v6 = [(CPSMapsImageLoader *)&v14 init];
   if (v6)
   {
     v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.ClipServices.%@.%p", objc_opt_class(), v6];
-    v8 = [v7 UTF8String];
+    uTF8String = [v7 UTF8String];
     v9 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_DEFAULT, 0);
-    v10 = dispatch_queue_create(v8, v9);
+    v10 = dispatch_queue_create(uTF8String, v9);
     queue = v6->_queue;
     v6->_queue = v10;
 
-    objc_storeStrong(&v6->_imageDownloader, a3);
+    objc_storeStrong(&v6->_imageDownloader, downloader);
     v12 = v6;
   }
 
   return v6;
 }
 
-- (void)loadImageForGEOStyleAttributes:(id)a3 completionHandler:(id)a4
+- (void)loadImageForGEOStyleAttributes:(id)attributes completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  attributesCopy = attributes;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __71__CPSMapsImageLoader_loadImageForGEOStyleAttributes_completionHandler___block_invoke;
   block[3] = &unk_278DCDCF8;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = attributesCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = attributesCopy;
   dispatch_async(queue, block);
 }
 
@@ -52,18 +52,18 @@ void __71__CPSMapsImageLoader_loadImageForGEOStyleAttributes_completionHandler__
   [*(a1 + 40) _loadImageForGEOFeatureStyleAttributes:v2 completionHandler:*(a1 + 48)];
 }
 
-- (void)loadImageForMapItemMUID:(unint64_t)a3 completionHandler:(id)a4
+- (void)loadImageForMapItemMUID:(unint64_t)d completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64__CPSMapsImageLoader_loadImageForMapItemMUID_completionHandler___block_invoke;
   block[3] = &unk_278DCF328;
-  v10 = v6;
-  v11 = a3;
+  v10 = handlerCopy;
+  dCopy = d;
   block[4] = self;
-  v8 = v6;
+  v8 = handlerCopy;
   dispatch_async(queue, block);
 }
 
@@ -140,28 +140,28 @@ void __64__CPSMapsImageLoader_loadImageForMapItemMUID_completionHandler___block_
   }
 }
 
-- (void)_loadImageForGEOFeatureStyleAttributes:(id)a3 completionHandler:(id)a4
+- (void)_loadImageForGEOFeatureStyleAttributes:(id)attributes completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   queue = self->_queue;
-  v8 = a3;
+  attributesCopy = attributes;
   dispatch_assert_queue_V2(queue);
   v9 = objc_alloc_init(MEMORY[0x277D78198]);
   [v9 setGlyphOnly:1];
-  v10 = [MEMORY[0x277D78190] sharedManager];
+  mEMORY[0x277D78190] = [MEMORY[0x277D78190] sharedManager];
   v11 = _CPSScreenScale();
   *&v11 = v11;
-  v12 = [v10 imageForStyleAttributes:v8 withStylesheetName:@"default-search" contentScale:9 sizeGroup:v9 modifiers:v11];
+  v12 = [mEMORY[0x277D78190] imageForStyleAttributes:attributesCopy withStylesheetName:@"default-search" contentScale:9 sizeGroup:v9 modifiers:v11];
 
-  v13 = [MEMORY[0x277D78190] sharedManager];
+  mEMORY[0x277D78190]2 = [MEMORY[0x277D78190] sharedManager];
   v14 = _CPSScreenScale();
   *&v14 = v14;
-  v15 = [v13 imageForStyleAttributes:v8 withStylesheetName:@"default-search" contentScale:9 sizeGroup:0 modifiers:v14];
+  v15 = [mEMORY[0x277D78190]2 imageForStyleAttributes:attributesCopy withStylesheetName:@"default-search" contentScale:9 sizeGroup:0 modifiers:v14];
 
-  v16 = [v12 image];
+  image = [v12 image];
   if (v12 && v15)
   {
-    v17 = v16;
+    v17 = image;
     [v15 imageSize];
     v19 = v18;
     v21 = v20;
@@ -178,7 +178,7 @@ void __64__CPSMapsImageLoader_loadImageForMapItemMUID_completionHandler___block_
 
     if (v27)
     {
-      v6[2](v6, v27, 0);
+      handlerCopy[2](handlerCopy, v27, 0);
     }
 
     else
@@ -190,7 +190,7 @@ void __64__CPSMapsImageLoader_loadImageForMapItemMUID_completionHandler___block_
       }
 
       v44 = [MEMORY[0x277CCA9B8] cps_errorWithCode:7];
-      (v6)[2](v6, 0, v44);
+      (handlerCopy)[2](handlerCopy, 0, v44);
     }
   }
 
@@ -203,7 +203,7 @@ void __64__CPSMapsImageLoader_loadImageForMapItemMUID_completionHandler___block_
     }
 
     v27 = [MEMORY[0x277CCA9B8] cps_errorWithCode:7];
-    (v6)[2](v6, 0, v27);
+    (handlerCopy)[2](handlerCopy, 0, v27);
   }
 }
 

@@ -1,21 +1,21 @@
 @interface MBRestoreAppsPlugin
-- (id)endedBackupWithEngine:(id)a3 error:(id)a4;
-- (id)endingRestoreWithPolicy:(id)a3 engine:(id)a4;
-- (id)startingBackupWithEngine:(id)a3;
-- (id)startingRestoreWithPolicy:(id)a3 engine:(id)a4;
+- (id)endedBackupWithEngine:(id)engine error:(id)error;
+- (id)endingRestoreWithPolicy:(id)policy engine:(id)engine;
+- (id)startingBackupWithEngine:(id)engine;
+- (id)startingRestoreWithPolicy:(id)policy engine:(id)engine;
 @end
 
 @implementation MBRestoreAppsPlugin
 
-- (id)startingBackupWithEngine:(id)a3
+- (id)startingBackupWithEngine:(id)engine
 {
-  v3 = a3;
+  engineCopy = engine;
   if (MBIsInternalInstall())
   {
     v4 = +[MBBehaviorOptions sharedOptions];
-    v5 = [v4 domainsToBackUpRegex];
+    domainsToBackUpRegex = [v4 domainsToBackUpRegex];
 
-    if (v5)
+    if (domainsToBackUpRegex)
     {
       v6 = 0;
       goto LABEL_68;
@@ -62,61 +62,61 @@ LABEL_13:
   v14 = objc_alloc_init(MBIgnoredAccountsTracker);
   v15 = +[NSMutableArray array];
   v16 = +[NSMutableArray array];
-  v17 = [v3 persona];
-  v18 = [v17 personaIdentifier];
+  persona = [engineCopy persona];
+  personaIdentifier = [persona personaIdentifier];
 
-  v19 = [v3 persona];
-  v20 = [v19 demotedAppsPlistPath];
+  persona2 = [engineCopy persona];
+  demotedAppsPlistPath = [persona2 demotedAppsPlistPath];
 
-  if ([v3 conformsToProtocol:&OBJC_PROTOCOL___MBHasServiceAccount])
+  if ([engineCopy conformsToProtocol:&OBJC_PROTOCOL___MBHasServiceAccount])
   {
-    v21 = [v3 serviceAccount];
-    v22 = v21;
-    if (v21)
+    serviceAccount = [engineCopy serviceAccount];
+    v22 = serviceAccount;
+    if (serviceAccount)
     {
-      v23 = [v21 isPrimaryAccount];
+      isPrimaryAccount = [serviceAccount isPrimaryAccount];
     }
 
     else
     {
-      v23 = 1;
+      isPrimaryAccount = 1;
     }
   }
 
   else
   {
-    v23 = 1;
+    isPrimaryAccount = 1;
   }
 
   v24 = MBGetDefaultLog();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v103 = v18;
+    v103 = personaIdentifier;
     v104 = 1024;
-    *v105 = v23;
+    *v105 = isPrimaryAccount;
     *&v105[4] = 2112;
-    *&v105[6] = v20;
+    *&v105[6] = demotedAppsPlistPath;
     _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Fetching demoted apps for persona %{public}@ (%d) (%@)", buf, 0x1Cu);
-    v80 = v23;
-    v81 = v20;
-    v79 = v18;
+    v80 = isPrimaryAccount;
+    v81 = demotedAppsPlistPath;
+    v79 = personaIdentifier;
     _MBLog();
   }
 
-  if (!v20)
+  if (!demotedAppsPlistPath)
   {
     sub_10009F250();
   }
 
-  if (v18)
+  if (personaIdentifier)
   {
     v25 = 1;
   }
 
   else
   {
-    v25 = v23;
+    v25 = isPrimaryAccount;
   }
 
   if ((v25 & 1) == 0)
@@ -130,8 +130,8 @@ LABEL_13:
   v91[1] = 3221225472;
   v91[2] = sub_10006B590;
   v91[3] = &unk_1000FE3D8;
-  v96 = v23;
-  v28 = v18;
+  v96 = isPrimaryAccount;
+  v28 = personaIdentifier;
   v92 = v28;
   v29 = v14;
   v93 = v29;
@@ -161,7 +161,7 @@ LABEL_13:
     }
 
     v49 = +[NSFileManager defaultManager];
-    v50 = [v49 fileExistsAtPath:v20];
+    v50 = [v49 fileExistsAtPath:demotedAppsPlistPath];
 
     if (!v50)
     {
@@ -184,7 +184,7 @@ LABEL_54:
       }
 
       copyfile_state_free(v56);
-      if ([v3 isDeviceTransferEngine])
+      if ([engineCopy isDeviceTransferEngine])
       {
         v84 = v28;
         v60 = v11;
@@ -204,9 +204,9 @@ LABEL_54:
           v47 = v86;
           if (os_log_type_enabled(v68, OS_LOG_TYPE_ERROR))
           {
-            v69 = [@"/var/mobile/Media/iTunesRestore" fileSystemRepresentation];
+            fileSystemRepresentation = [@"/var/mobile/Media/iTunesRestore" fileSystemRepresentation];
             *buf = 136315394;
-            v103 = v69;
+            v103 = fileSystemRepresentation;
             v104 = 2112;
             *v105 = v64;
             _os_log_impl(&_mh_execute_header, v68, OS_LOG_TYPE_ERROR, "Failed to create directory at %s: %@", buf, 0x16u);
@@ -234,29 +234,29 @@ LABEL_54:
           goto LABEL_42;
         }
 
-        v71 = [@"/var/mobile/Media/iTunesRestore/RestoreApplications.plist" fileSystemRepresentation];
+        fileSystemRepresentation2 = [@"/var/mobile/Media/iTunesRestore/RestoreApplications.plist" fileSystemRepresentation];
         v72 = MBMobileUID();
         v73 = MBMobileUID();
         v11 = v60;
         v28 = v84;
-        if (lchown(v71, v72, v73))
+        if (lchown(fileSystemRepresentation2, v72, v73))
         {
           v67 = [MBError posixErrorWithPath:@"/var/mobile/Media/iTunesRestore/RestoreApplications.plist" format:@"lchown failed"];
         }
 
         else
         {
-          v74 = [v3 domainManager];
-          v75 = [v74 domainForName:@"MediaDomain"];
+          domainManager = [engineCopy domainManager];
+          v75 = [domainManager domainForName:@"MediaDomain"];
 
           v76 = objc_opt_new();
           [v76 addObject:@"Media/iTunesRestore/RestoreApplications.plist"];
-          v77 = [v75 relativePathsToBackupAndRestore];
+          relativePathsToBackupAndRestore = [v75 relativePathsToBackupAndRestore];
 
-          if (v77)
+          if (relativePathsToBackupAndRestore)
           {
-            v78 = [v75 relativePathsToBackupAndRestore];
-            [v76 unionSet:v78];
+            relativePathsToBackupAndRestore2 = [v75 relativePathsToBackupAndRestore];
+            [v76 unionSet:relativePathsToBackupAndRestore2];
           }
 
           [v75 setRelativePathsToBackupAndRestore:{v76, v79, v80}];
@@ -280,7 +280,7 @@ LABEL_54:
     v51 = v28;
     v52 = +[NSFileManager defaultManager];
     v88 = v11;
-    v53 = [v52 removeItemAtPath:v20 error:&v88];
+    v53 = [v52 removeItemAtPath:demotedAppsPlistPath error:&v88];
     v54 = v88;
 
     v55 = MBGetDefaultLog();
@@ -328,7 +328,7 @@ LABEL_30:
   {
     v85 = v30;
     v89 = v35;
-    v37 = [v34 writeToFile:v20 options:268435457 error:&v89];
+    v37 = [v34 writeToFile:demotedAppsPlistPath options:268435457 error:&v89];
     v38 = v89;
 
     if (v37)
@@ -348,15 +348,15 @@ LABEL_30:
       v43 = [NSDictionary dictionaryWithObjects:v101 forKeys:v100 count:3];
 
       v44 = +[NSFileManager defaultManager];
-      [v44 setAttributes:v43 ofItemAtPath:v20 error:0];
+      [v44 setAttributes:v43 ofItemAtPath:demotedAppsPlistPath error:0];
 
       v45 = MBGetDefaultLog();
       if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v103 = v20;
+        v103 = demotedAppsPlistPath;
         _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_DEFAULT, "Wrote out demoted apps plist to:%@", buf, 0xCu);
-        v79 = v20;
+        v79 = demotedAppsPlistPath;
         _MBLog();
       }
 
@@ -370,7 +370,7 @@ LABEL_30:
     if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v103 = v20;
+      v103 = demotedAppsPlistPath;
       v104 = 2112;
       *v105 = v38;
       _os_log_impl(&_mh_execute_header, v46, OS_LOG_TYPE_ERROR, "Failed to write demoted app plists at %@: %@", buf, 0x16u);
@@ -404,9 +404,9 @@ LABEL_68:
   return v6;
 }
 
-- (id)endedBackupWithEngine:(id)a3 error:(id)a4
+- (id)endedBackupWithEngine:(id)engine error:(id)error
 {
-  if ([a3 isDeviceTransferEngine])
+  if ([engine isDeviceTransferEngine])
   {
     v4 = +[NSFileManager defaultManager];
     v9 = 0;
@@ -431,22 +431,22 @@ LABEL_68:
   return 0;
 }
 
-- (id)startingRestoreWithPolicy:(id)a3 engine:(id)a4
+- (id)startingRestoreWithPolicy:(id)policy engine:(id)engine
 {
-  v4 = a4;
-  if ([v4 restoresPrimaryAccount] && objc_msgSend(v4, "isDeviceTransferEngine"))
+  engineCopy = engine;
+  if ([engineCopy restoresPrimaryAccount] && objc_msgSend(engineCopy, "isDeviceTransferEngine"))
   {
-    v5 = [v4 domainManager];
-    v6 = [v5 domainForName:@"MediaDomain"];
+    domainManager = [engineCopy domainManager];
+    v6 = [domainManager domainForName:@"MediaDomain"];
 
     v7 = objc_opt_new();
     [v7 addObject:@"Media/iTunesRestore/RestoreApplications.plist"];
-    v8 = [v6 relativePathsToBackupAndRestore];
+    relativePathsToBackupAndRestore = [v6 relativePathsToBackupAndRestore];
 
-    if (v8)
+    if (relativePathsToBackupAndRestore)
     {
-      v9 = [v6 relativePathsToBackupAndRestore];
-      [v7 unionSet:v9];
+      relativePathsToBackupAndRestore2 = [v6 relativePathsToBackupAndRestore];
+      [v7 unionSet:relativePathsToBackupAndRestore2];
     }
 
     [v6 setRelativePathsToBackupAndRestore:v7];
@@ -455,15 +455,15 @@ LABEL_68:
   return 0;
 }
 
-- (id)endingRestoreWithPolicy:(id)a3 engine:(id)a4
+- (id)endingRestoreWithPolicy:(id)policy engine:(id)engine
 {
-  v4 = a4;
-  if ([v4 restoresPrimaryAccount])
+  engineCopy = engine;
+  if ([engineCopy restoresPrimaryAccount])
   {
-    v5 = [v4 persona];
-    v6 = [v5 userIncompleteRestoreDirectory];
+    persona = [engineCopy persona];
+    userIncompleteRestoreDirectory = [persona userIncompleteRestoreDirectory];
 
-    v7 = [NSString stringWithFormat:@"%@%@", v6, @"/var/mobile/Library/Preferences/com.apple.MobileBackup.DemotedApps.plist"];
+    v7 = [NSString stringWithFormat:@"%@%@", userIncompleteRestoreDirectory, @"/var/mobile/Library/Preferences/com.apple.MobileBackup.DemotedApps.plist"];
     if (!MBIsInternalInstall())
     {
       goto LABEL_11;

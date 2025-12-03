@@ -1,22 +1,22 @@
 @interface VCAggregatorUtils
-+ (CGSize)sizeForVideoResolution:(int)a3;
-+ (id)safeRoundOffNumber:(id)a3 toSignificantDigits:(unsigned __int8)a4;
-+ (id)safeRoundOffNumber:(id)a3 toSignificantDigits:(unsigned __int8)a4 maxAllowedValue:(id)a5;
-+ (id)validBitmapIndices:(unsigned int)a3 size:(int)a4;
++ (CGSize)sizeForVideoResolution:(int)resolution;
++ (id)safeRoundOffNumber:(id)number toSignificantDigits:(unsigned __int8)digits;
++ (id)safeRoundOffNumber:(id)number toSignificantDigits:(unsigned __int8)digits maxAllowedValue:(id)value;
++ (id)validBitmapIndices:(unsigned int)indices size:(int)size;
 @end
 
 @implementation VCAggregatorUtils
 
-+ (id)safeRoundOffNumber:(id)a3 toSignificantDigits:(unsigned __int8)a4
++ (id)safeRoundOffNumber:(id)number toSignificantDigits:(unsigned __int8)digits
 {
-  if (a3)
+  if (number)
   {
-    v4 = a4;
+    digitsCopy = digits;
     v6 = objc_alloc_init(MEMORY[0x277CCABC0]);
     [v6 setUsesSignificantDigits:1];
-    [v6 setMaximumSignificantDigits:v4];
+    [v6 setMaximumSignificantDigits:digitsCopy];
     [v6 setDecimalSeparator:@"."];
-    v7 = [v6 stringFromNumber:a3];
+    v7 = [v6 stringFromNumber:number];
     if (v7)
     {
       v8 = v7;
@@ -37,23 +37,23 @@
   return v8;
 }
 
-+ (id)safeRoundOffNumber:(id)a3 toSignificantDigits:(unsigned __int8)a4 maxAllowedValue:(id)a5
++ (id)safeRoundOffNumber:(id)number toSignificantDigits:(unsigned __int8)digits maxAllowedValue:(id)value
 {
-  if (a3)
+  if (number)
   {
-    v6 = a4;
+    digitsCopy = digits;
     v8 = objc_alloc_init(MEMORY[0x277CCABC0]);
     [v8 setUsesSignificantDigits:1];
-    [v8 setMaximumSignificantDigits:v6];
+    [v8 setMaximumSignificantDigits:digitsCopy];
     [v8 setDecimalSeparator:@"."];
-    v9 = [v8 stringFromNumber:a3];
+    v9 = [v8 stringFromNumber:number];
 
     if (v9)
     {
       v10 = objc_alloc_init(MEMORY[0x277CCABC0]);
-      if ([objc_msgSend(v10 numberFromString:{v9), "compare:", a5}] == 1)
+      if ([objc_msgSend(v10 numberFromString:{v9), "compare:", value}] == 1)
       {
-        v11 = [v10 stringFromNumber:a5];
+        v11 = [v10 stringFromNumber:value];
         if (v11)
         {
           v9 = v11;
@@ -81,15 +81,15 @@
   return v9;
 }
 
-+ (id)validBitmapIndices:(unsigned int)a3 size:(int)a4
++ (id)validBitmapIndices:(unsigned int)indices size:(int)size
 {
-  v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:a4];
-  if (a4 >= 1)
+  v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:size];
+  if (size >= 1)
   {
     v7 = 0;
     do
     {
-      if ((a3 >> v7))
+      if ((indices >> v7))
       {
         [v6 addObject:{objc_msgSend(MEMORY[0x277CCABA8], "numberWithInt:", v7)}];
       }
@@ -97,15 +97,15 @@
       v7 = (v7 + 1);
     }
 
-    while (a4 != v7);
+    while (size != v7);
   }
 
   return v6;
 }
 
-+ (CGSize)sizeForVideoResolution:(int)a3
++ (CGSize)sizeForVideoResolution:(int)resolution
 {
-  SizeForVideoResolution = VCAggregatorUtils_GetSizeForVideoResolution(a3);
+  SizeForVideoResolution = VCAggregatorUtils_GetSizeForVideoResolution(resolution);
   result.height = v4;
   result.width = SizeForVideoResolution;
   return result;

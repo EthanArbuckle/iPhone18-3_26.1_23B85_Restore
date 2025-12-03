@@ -1,6 +1,6 @@
 @interface PXAppleMusicPreviewAsset
-- (BOOL)isEqual:(id)a3;
-- (PXAppleMusicPreviewAsset)initWithOriginalAsset:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PXAppleMusicPreviewAsset)initWithOriginalAsset:(id)asset;
 - (unint64_t)flags;
 @end
 
@@ -8,16 +8,16 @@
 
 - (unint64_t)flags
 {
-  v2 = [(PXAppleMusicPreviewAsset *)self originalAsset];
-  v3 = [v2 flags];
+  originalAsset = [(PXAppleMusicPreviewAsset *)self originalAsset];
+  flags = [originalAsset flags];
 
-  return v3 & 0xFFFFFFFFFFFFFFFDLL;
+  return flags & 0xFFFFFFFFFFFFFFFDLL;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -27,16 +27,16 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(PXAppleMusicPreviewAsset *)v4 identifier];
-      v6 = [(PXAppleMusicPreviewAsset *)self identifier];
-      if (v5 == v6)
+      identifier = [(PXAppleMusicPreviewAsset *)equalCopy identifier];
+      identifier2 = [(PXAppleMusicPreviewAsset *)self identifier];
+      if (identifier == identifier2)
       {
         v7 = 1;
       }
 
       else
       {
-        v7 = [v5 isEqual:v6];
+        v7 = [identifier isEqual:identifier2];
       }
     }
 
@@ -49,16 +49,16 @@
   return v7;
 }
 
-- (PXAppleMusicPreviewAsset)initWithOriginalAsset:(id)a3
+- (PXAppleMusicPreviewAsset)initWithOriginalAsset:(id)asset
 {
-  v5 = a3;
+  assetCopy = asset;
   v9.receiver = self;
   v9.super_class = PXAppleMusicPreviewAsset;
   v6 = [(PXAppleMusicPreviewAsset *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_originalAsset, a3);
+    objc_storeStrong(&v6->_originalAsset, asset);
   }
 
   return v7;

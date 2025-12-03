@@ -1,6 +1,6 @@
 @interface PPPoEConnectionUIViewController
 - (void)loadView;
-- (void)touchInCellAtIndexPath:(id)a3;
+- (void)touchInCellAtIndexPath:(id)path;
 @end
 
 @implementation PPPoEConnectionUIViewController
@@ -63,9 +63,9 @@
   objc_msgSend_touchInCellAtIndexPath_(self, v84, v83);
 }
 
-- (void)touchInCellAtIndexPath:(id)a3
+- (void)touchInCellAtIndexPath:(id)path
 {
-  v4 = objc_msgSend_tableManager(self, a2, a3);
+  v4 = objc_msgSend_tableManager(self, a2, path);
   v6 = objc_msgSend_indexOfSectionWithIdentifier_(v4, v5, @"PPPoEConnectionSelectionInfo");
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {

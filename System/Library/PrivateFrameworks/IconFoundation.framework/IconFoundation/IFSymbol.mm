@@ -1,61 +1,61 @@
 @interface IFSymbol
 + (id)_coreGlyphsBundle;
 + (id)_coreGlyphsPrivateBundle;
-- (BOOL)_shouldFlipFromSymbolImage:(id)a3 desiredDirection:(int64_t)a4;
+- (BOOL)_shouldFlipFromSymbolImage:(id)image desiredDirection:(int64_t)direction;
 - (BOOL)_useIconStack;
 - (CUICatalog)catalog;
-- (IFSymbol)initWithCoder:(id)a3;
-- (IFSymbol)initWithSymbolName:(id)a3 bundleURL:(id)a4;
-- (id)_graphicVariantVectorGlyphForGraphicSymbolDescriptor:(id)a3 resolvedRenderingMode:(int64_t *)a4 allowXOffsetFlip:(BOOL)a5 shouldFlipSymbolImage:(BOOL *)a6;
-- (id)_iconStackForGraphicSymbolDescriptor:(id)a3;
+- (IFSymbol)initWithCoder:(id)coder;
+- (IFSymbol)initWithSymbolName:(id)name bundleURL:(id)l;
+- (id)_graphicVariantVectorGlyphForGraphicSymbolDescriptor:(id)descriptor resolvedRenderingMode:(int64_t *)mode allowXOffsetFlip:(BOOL)flip shouldFlipSymbolImage:(BOOL *)image;
+- (id)_iconStackForGraphicSymbolDescriptor:(id)descriptor;
 - (id)description;
-- (id)imageForDescriptor:(id)a3;
-- (id)imageForGraphicSymbolDescriptor:(id)a3;
-- (id)imageForSize:(CGSize)a3 scale:(double)a4;
-- (void)_flipImageInLayer:(id)a3 requestedWidth:(double)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)imageForDescriptor:(id)descriptor;
+- (id)imageForGraphicSymbolDescriptor:(id)descriptor;
+- (id)imageForSize:(CGSize)size scale:(double)scale;
+- (void)_flipImageInLayer:(id)layer requestedWidth:(double)width;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IFSymbol
 
-- (IFSymbol)initWithSymbolName:(id)a3 bundleURL:(id)a4
+- (IFSymbol)initWithSymbolName:(id)name bundleURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  lCopy = l;
   v12.receiver = self;
   v12.super_class = IFSymbol;
   v8 = [(IFSymbol *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     name = v8->_name;
     v8->_name = v9;
 
-    objc_storeStrong(&v8->_bundleURL, a4);
+    objc_storeStrong(&v8->_bundleURL, l);
     v8->_lock._os_unfair_lock_opaque = 0;
   }
 
   return v8;
 }
 
-- (IFSymbol)initWithCoder:(id)a3
+- (IFSymbol)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleURL"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleURL"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
 
   v7 = [(IFSymbol *)self initWithSymbolName:v6 bundleURL:v5];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeObject:self->_name forKey:@"name"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_name forKey:@"name"];
   bundleURL = self->_bundleURL;
   if (bundleURL)
   {
-    [v5 encodeObject:bundleURL forKey:@"bundleURL"];
+    [coderCopy encodeObject:bundleURL forKey:@"bundleURL"];
   }
 }
 
@@ -65,9 +65,9 @@
   if (!self->_catalog)
   {
     v3 = [IFBundle bundleWithURL:self->_bundleURL];
-    v4 = [v3 assetCatalogURL];
+    assetCatalogURL = [v3 assetCatalogURL];
 
-    v5 = [objc_alloc(MEMORY[0x1E6999368]) initWithURL:v4 error:0];
+    v5 = [objc_alloc(MEMORY[0x1E6999368]) initWithURL:assetCatalogURL error:0];
     catalog = self->_catalog;
     self->_catalog = v5;
   }
@@ -120,22 +120,22 @@ void __36__IFSymbol__coreGlyphsPrivateBundle__block_invoke()
   _coreGlyphsPrivateBundle_bundle = v1;
 }
 
-- (id)imageForSize:(CGSize)a3 scale:(double)a4
+- (id)imageForSize:(CGSize)size scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
-  v8 = [(IFSymbol *)self name];
+  height = size.height;
+  width = size.width;
+  name = [(IFSymbol *)self name];
 
-  if (v8)
+  if (name)
   {
     v9 = objc_alloc_init(IFSymbolImageDescriptor);
-    [(IFSymbolImageDescriptor *)v9 setScale:a4];
+    [(IFSymbolImageDescriptor *)v9 setScale:scale];
     v10 = [(IFSymbol *)self imageForDescriptor:v9];
     v11 = v10;
     if (v10 && ([v10 vectorGlyph], v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
     {
-      v13 = [v11 vectorGlyph];
-      [v13 alignmentRect];
+      vectorGlyph = [v11 vectorGlyph];
+      [vectorGlyph alignmentRect];
       memset(&v26, 0, sizeof(v26));
       v16 = 1.0;
       v17 = v14 <= width;
@@ -166,81 +166,81 @@ void __36__IFSymbol__coreGlyphsPrivateBundle__block_invoke()
       }
 
       CGAffineTransformMakeScale(&v26, v16, v16);
-      [v13 alignmentRect];
+      [vectorGlyph alignmentRect];
       v25 = v26;
       v29 = CGRectApplyAffineTransform(v28, &v25);
-      v20 = [v13 rasterizeImageUsingScaleFactor:a4 forTargetSize:{v29.size.width, v29.size.height}];
+      v20 = [vectorGlyph rasterizeImageUsingScaleFactor:scale forTargetSize:{v29.size.width, v29.size.height}];
       if (v20)
       {
         v21 = v20;
-        v22 = [IFGraphicsContext bitmapContextWithSize:0 scale:width preset:height, a4];
+        scale = [IFGraphicsContext bitmapContextWithSize:0 scale:width preset:height, scale];
         if ([(IFSymbol *)self _shouldFlipFromSymbolImage:v11 desiredDirection:[(IFSymbolImageDescriptor *)v9 layoutDirection]])
         {
-          CGContextTranslateCTM([v22 cgContext], width, 0.0);
-          CGContextScaleCTM([v22 cgContext], -1.0, 1.0);
+          CGContextTranslateCTM([scale cgContext], width, 0.0);
+          CGContextScaleCTM([scale cgContext], -1.0, 1.0);
         }
 
-        [v22 drawCGImage:v21 centeredInRect:{0.0, 0.0, width, height}];
-        v23 = [v22 image];
+        [scale drawCGImage:v21 centeredInRect:{0.0, 0.0, width, height}];
+        image = [scale image];
         CFRelease(v21);
       }
 
       else
       {
-        v23 = 0;
+        image = 0;
       }
     }
 
     else
     {
-      v23 = 0;
+      image = 0;
     }
   }
 
   else
   {
-    v23 = 0;
+    image = 0;
   }
 
-  return v23;
+  return image;
 }
 
-- (id)imageForDescriptor:(id)a3
+- (id)imageForDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(IFSymbol *)self name];
-    [v4 setName:v5];
+    name = [(IFSymbol *)self name];
+    [descriptorCopy setName:name];
 
     v6 = MEMORY[0x1E69C8710];
-    v7 = [(IFSymbol *)self name];
-    v8 = [v6 infoForName:v7 allowsPrivate:1 locale:0];
+    name2 = [(IFSymbol *)self name];
+    v8 = [v6 infoForName:name2 allowsPrivate:1 locale:0];
 
     if (v8)
     {
-      v9 = [v8 name];
-      v10 = [(IFSymbol *)self name];
-      v11 = [v9 isEqualToString:v10];
+      name3 = [v8 name];
+      name4 = [(IFSymbol *)self name];
+      v11 = [name3 isEqualToString:name4];
 
       if ((v11 & 1) == 0)
       {
-        v12 = [v8 name];
-        [v4 setResolvedName:v12];
+        name5 = [v8 name];
+        [descriptorCopy setResolvedName:name5];
       }
     }
   }
 
-  v13 = [(IFSymbol *)self catalog];
-  v14 = [(IFSymbol *)self name];
-  [v4 scale];
+  catalog = [(IFSymbol *)self catalog];
+  name6 = [(IFSymbol *)self name];
+  [descriptorCopy scale];
   v16 = v15;
-  v17 = [v4 layoutDirection];
-  v18 = [v4 symbolSize];
-  v19 = [v4 symbolWeight];
-  [v4 pointSize];
-  v21 = [v13 namedVectorGlyphWithName:v14 scaleFactor:0 deviceIdiom:v17 layoutDirection:v18 glyphSize:v19 glyphWeight:0 glyphPointSize:v16 appearanceName:v20];
+  layoutDirection = [descriptorCopy layoutDirection];
+  symbolSize = [descriptorCopy symbolSize];
+  symbolWeight = [descriptorCopy symbolWeight];
+  [descriptorCopy pointSize];
+  v21 = [catalog namedVectorGlyphWithName:name6 scaleFactor:0 deviceIdiom:layoutDirection layoutDirection:symbolSize glyphSize:symbolWeight glyphWeight:0 glyphPointSize:v16 appearanceName:v20];
 
   if (v21)
   {
@@ -251,38 +251,38 @@ void __36__IFSymbol__coreGlyphsPrivateBundle__block_invoke()
   v23 = +[IFSymbol _coreGlyphsBundle];
   v24 = [v22 initWithName:@"Assets" fromBundle:v23 error:0];
 
-  v25 = [(IFSymbol *)self name];
-  [v4 scale];
+  name7 = [(IFSymbol *)self name];
+  [descriptorCopy scale];
   v27 = v26;
-  v28 = [v4 layoutDirection];
-  v29 = [v4 symbolSize];
-  v30 = [v4 symbolWeight];
-  [v4 pointSize];
-  v21 = [v24 namedVectorGlyphWithName:v25 scaleFactor:0 deviceIdiom:v28 layoutDirection:v29 glyphSize:v30 glyphWeight:0 glyphPointSize:v27 appearanceName:v31];
+  layoutDirection2 = [descriptorCopy layoutDirection];
+  symbolSize2 = [descriptorCopy symbolSize];
+  symbolWeight2 = [descriptorCopy symbolWeight];
+  [descriptorCopy pointSize];
+  v21 = [v24 namedVectorGlyphWithName:name7 scaleFactor:0 deviceIdiom:layoutDirection2 layoutDirection:symbolSize2 glyphSize:symbolWeight2 glyphWeight:0 glyphPointSize:v27 appearanceName:v31];
 
   if (v21)
   {
-    v13 = v24;
+    catalog = v24;
 LABEL_10:
     v41 = [IFSymbolImage alloc];
-    v42 = [v4 tintColor];
-    v43 = [(IFSymbolImage *)v41 initWithNamedVectorGlyph:v21 tintColor:v42];
+    tintColor = [descriptorCopy tintColor];
+    v43 = [(IFSymbolImage *)v41 initWithNamedVectorGlyph:v21 tintColor:tintColor];
 
     goto LABEL_11;
   }
 
   v32 = objc_alloc(MEMORY[0x1E6999368]);
   v33 = +[IFSymbol _coreGlyphsPrivateBundle];
-  v13 = [v32 initWithName:@"Assets" fromBundle:v33 error:0];
+  catalog = [v32 initWithName:@"Assets" fromBundle:v33 error:0];
 
-  v34 = [(IFSymbol *)self name];
-  [v4 scale];
+  name8 = [(IFSymbol *)self name];
+  [descriptorCopy scale];
   v36 = v35;
-  v37 = [v4 layoutDirection];
-  v38 = [v4 symbolSize];
-  v39 = [v4 symbolWeight];
-  [v4 pointSize];
-  v21 = [v13 namedVectorGlyphWithName:v34 scaleFactor:0 deviceIdiom:v37 layoutDirection:v38 glyphSize:v39 glyphWeight:0 glyphPointSize:v36 appearanceName:v40];
+  layoutDirection3 = [descriptorCopy layoutDirection];
+  symbolSize3 = [descriptorCopy symbolSize];
+  symbolWeight3 = [descriptorCopy symbolWeight];
+  [descriptorCopy pointSize];
+  v21 = [catalog namedVectorGlyphWithName:name8 scaleFactor:0 deviceIdiom:layoutDirection3 layoutDirection:symbolSize3 glyphSize:symbolWeight3 glyphWeight:0 glyphPointSize:v36 appearanceName:v40];
 
   if (v21)
   {
@@ -295,51 +295,51 @@ LABEL_11:
   return v43;
 }
 
-- (id)imageForGraphicSymbolDescriptor:(id)a3
+- (id)imageForGraphicSymbolDescriptor:(id)descriptor
 {
   v96[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 appearance] == 1 && !objc_msgSend(v4, "appearanceVariant"))
+  descriptorCopy = descriptor;
+  if ([descriptorCopy appearance] == 1 && !objc_msgSend(descriptorCopy, "appearanceVariant"))
   {
-    [v4 setAppearanceVariant:1];
+    [descriptorCopy setAppearanceVariant:1];
   }
 
   if ([(IFSymbol *)self _useIconStack])
   {
-    v5 = [(IFSymbol *)self _iconStackForGraphicSymbolDescriptor:v4];
-    [v4 size];
+    v5 = [(IFSymbol *)self _iconStackForGraphicSymbolDescriptor:descriptorCopy];
+    [descriptorCopy size];
     v7 = v6;
     v9 = v8;
-    [v4 scale];
+    [descriptorCopy scale];
     v11 = v10;
-    v12 = [v4 platform];
-    v13 = [v4 appearance];
-    v14 = [v4 appearanceVariant];
-    v15 = [v4 tintColor];
-    v16 = [v4 encapsulationShape];
-    v17 = [v5 _IF_ImageWithSize:v11 scale:v12 platform:v13 appearance:v14 appearanceVariant:v15 tintColor:0 isLegacy:v7 encapsulationShape:{v9, v16}];
+    platform = [descriptorCopy platform];
+    appearance = [descriptorCopy appearance];
+    appearanceVariant = [descriptorCopy appearanceVariant];
+    tintColor = [descriptorCopy tintColor];
+    encapsulationShape = [descriptorCopy encapsulationShape];
+    image = [v5 _IF_ImageWithSize:v11 scale:platform platform:appearance appearance:appearanceVariant appearanceVariant:tintColor tintColor:0 isLegacy:v7 encapsulationShape:{v9, encapsulationShape}];
 
     goto LABEL_6;
   }
 
   v82 = 0;
   v81 = 0;
-  v5 = [(IFSymbol *)self _graphicVariantVectorGlyphForGraphicSymbolDescriptor:v4 resolvedRenderingMode:&v82 allowXOffsetFlip:1 shouldFlipSymbolImage:&v81];
-  v17 = 0;
+  v5 = [(IFSymbol *)self _graphicVariantVectorGlyphForGraphicSymbolDescriptor:descriptorCopy resolvedRenderingMode:&v82 allowXOffsetFlip:1 shouldFlipSymbolImage:&v81];
+  image = 0;
   if (v5 && v82)
   {
     if (v82 > 2)
     {
       if (v82 == 3)
       {
-        v52 = [v4 resolvedSymbolColors];
-        v53 = [v52 objectAtIndexedSubscript:0];
-        v54 = [v53 cgColor];
+        resolvedSymbolColors = [descriptorCopy resolvedSymbolColors];
+        v53 = [resolvedSymbolColors objectAtIndexedSubscript:0];
+        cgColor = [v53 cgColor];
 
-        Alpha = CGColorGetAlpha(v54);
-        CopyWithAlpha = CGColorCreateCopyWithAlpha(v54, Alpha * 0.5);
-        v57 = CGColorCreateCopyWithAlpha(v54, Alpha * 0.3);
-        v96[0] = v54;
+        Alpha = CGColorGetAlpha(cgColor);
+        CopyWithAlpha = CGColorCreateCopyWithAlpha(cgColor, Alpha * 0.5);
+        v57 = CGColorCreateCopyWithAlpha(cgColor, Alpha * 0.3);
+        v96[0] = cgColor;
         v96[1] = CopyWithAlpha;
         v96[2] = v57;
         v58 = [MEMORY[0x1E695DEC8] arrayWithObjects:v96 count:3];
@@ -350,9 +350,9 @@ LABEL_11:
         v80 = v58;
         v59 = v58;
         v60 = MEMORY[0x1BFAE9070](v79);
-        [v4 scale];
+        [descriptorCopy scale];
         v62 = v61;
-        [v4 size];
+        [descriptorCopy size];
         v25 = [v5 rasterizeImageUsingScaleFactor:v60 forTargetSize:v62 withHierarchyColorResolver:{v63, v64}];
         if (CopyWithAlpha)
         {
@@ -382,8 +382,8 @@ LABEL_11:
         v74 = 0u;
         v75 = 0u;
         v76 = 0u;
-        v27 = [v4 resolvedSymbolColors];
-        v28 = [v27 countByEnumeratingWithState:&v73 objects:v95 count:16];
+        resolvedSymbolColors2 = [descriptorCopy resolvedSymbolColors];
+        v28 = [resolvedSymbolColors2 countByEnumeratingWithState:&v73 objects:v95 count:16];
         if (v28)
         {
           v29 = v28;
@@ -394,21 +394,21 @@ LABEL_11:
             {
               if (*v74 != v30)
               {
-                objc_enumerationMutation(v27);
+                objc_enumerationMutation(resolvedSymbolColors2);
               }
 
               [v26 addObject:{objc_msgSend(*(*(&v73 + 1) + 8 * i), "cgColor")}];
             }
 
-            v29 = [v27 countByEnumeratingWithState:&v73 objects:v95 count:16];
+            v29 = [resolvedSymbolColors2 countByEnumeratingWithState:&v73 objects:v95 count:16];
           }
 
           while (v29);
         }
 
-        [v4 scale];
+        [descriptorCopy scale];
         v33 = v32;
-        [v4 size];
+        [descriptorCopy size];
         v25 = [v5 rasterizeImageUsingScaleFactor:v26 forTargetSize:v33 withPaletteColors:{v34, v35}];
 
         if (!v25)
@@ -420,9 +420,9 @@ LABEL_11:
 
     else if (v82 == 1)
     {
-      [v4 scale];
+      [descriptorCopy scale];
       v37 = v36;
-      [v4 size];
+      [descriptorCopy size];
       v25 = [v5 rasterizeImageUsingScaleFactor:v37 forTargetSize:{v38, v39}];
       if (!v25)
       {
@@ -430,15 +430,15 @@ LABEL_37:
         v65 = IFDefaultLog();
         if (os_log_type_enabled(v65, OS_LOG_TYPE_ERROR))
         {
-          v66 = [(IFSymbol *)self name];
+          name = [(IFSymbol *)self name];
           v67 = v82;
-          [v4 size];
+          [descriptorCopy size];
           v69 = v68;
-          [v4 size];
+          [descriptorCopy size];
           v71 = v70;
-          [v4 scale];
+          [descriptorCopy scale];
           *buf = 138413570;
-          v84 = v66;
+          v84 = name;
           v85 = 2112;
           v86 = v5;
           v87 = 2048;
@@ -451,7 +451,7 @@ LABEL_37:
           v94 = v72;
         }
 
-        v17 = 0;
+        image = 0;
         goto LABEL_6;
       }
     }
@@ -467,7 +467,7 @@ LABEL_37:
       v77[1] = 3221225472;
       v77[2] = __44__IFSymbol_imageForGraphicSymbolDescriptor___block_invoke_22;
       v77[3] = &unk_1E7ED98C8;
-      v19 = v4;
+      v19 = descriptorCopy;
       v78 = v19;
       v20 = MEMORY[0x1BFAE9070](v77);
       [v19 scale];
@@ -483,27 +483,27 @@ LABEL_37:
 
     if (v81 == 1)
     {
-      [v4 size];
+      [descriptorCopy size];
       v41 = v40;
       v43 = v42;
-      [v4 scale];
+      [descriptorCopy scale];
       v45 = [IFGraphicsContext bitmapContextWithSize:0 scale:v41 preset:v43, v44];
-      v46 = [v45 cgContext];
-      [v4 size];
-      CGContextTranslateCTM(v46, v47, 0.0);
+      cgContext = [v45 cgContext];
+      [descriptorCopy size];
+      CGContextTranslateCTM(cgContext, v47, 0.0);
       CGContextScaleCTM([v45 cgContext], -1.0, 1.0);
-      [v4 size];
+      [descriptorCopy size];
       v49 = v48;
-      [v4 size];
+      [descriptorCopy size];
       [v45 drawCGImage:v25 centeredInRect:{0.0, 0.0, v49, v50}];
-      v17 = [v45 image];
+      image = [v45 image];
     }
 
     else
     {
       v51 = [IFImage alloc];
-      [v4 scale];
-      v17 = [(IFImage *)v51 initWithCGImage:v25 scale:?];
+      [descriptorCopy scale];
+      image = [(IFImage *)v51 initWithCGImage:v25 scale:?];
     }
 
     CFRelease(v25);
@@ -511,7 +511,7 @@ LABEL_37:
 
 LABEL_6:
 
-  return v17;
+  return image;
 }
 
 uint64_t __44__IFSymbol_imageForGraphicSymbolDescriptor___block_invoke(uint64_t a1, uint64_t a2, unint64_t a3)
@@ -548,13 +548,13 @@ uint64_t __44__IFSymbol_imageForGraphicSymbolDescriptor___block_invoke_22(uint64
   return a3;
 }
 
-- (id)_iconStackForGraphicSymbolDescriptor:(id)a3
+- (id)_iconStackForGraphicSymbolDescriptor:(id)descriptor
 {
   v114[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  descriptorCopy = descriptor;
   v98 = 0;
   v97 = 0;
-  v5 = [(IFSymbol *)self _graphicVariantVectorGlyphForGraphicSymbolDescriptor:v4 resolvedRenderingMode:&v98 allowXOffsetFlip:0 shouldFlipSymbolImage:&v97];
+  v5 = [(IFSymbol *)self _graphicVariantVectorGlyphForGraphicSymbolDescriptor:descriptorCopy resolvedRenderingMode:&v98 allowXOffsetFlip:0 shouldFlipSymbolImage:&v97];
   v6 = 0;
   if (v5 && v98)
   {
@@ -563,14 +563,14 @@ uint64_t __44__IFSymbol_imageForGraphicSymbolDescriptor___block_invoke_22(uint64
     {
       if (v98 == 3)
       {
-        v28 = [v4 resolvedSymbolColors];
-        v29 = [v28 objectAtIndexedSubscript:0];
-        v30 = [v29 cgColor];
+        resolvedSymbolColors = [descriptorCopy resolvedSymbolColors];
+        v29 = [resolvedSymbolColors objectAtIndexedSubscript:0];
+        cgColor = [v29 cgColor];
 
-        Alpha = CGColorGetAlpha(v30);
-        CopyWithAlpha = CGColorCreateCopyWithAlpha(v30, Alpha * 0.5);
-        v33 = CGColorCreateCopyWithAlpha(v30, Alpha * 0.3);
-        v114[0] = v30;
+        Alpha = CGColorGetAlpha(cgColor);
+        CopyWithAlpha = CGColorCreateCopyWithAlpha(cgColor, Alpha * 0.5);
+        v33 = CGColorCreateCopyWithAlpha(cgColor, Alpha * 0.3);
+        v114[0] = cgColor;
         v114[1] = CopyWithAlpha;
         v114[2] = v33;
         v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:v114 count:3];
@@ -582,9 +582,9 @@ uint64_t __44__IFSymbol_imageForGraphicSymbolDescriptor___block_invoke_22(uint64
         v35 = v34;
         v36 = v5;
         v37 = MEMORY[0x1BFAE9070](v95);
-        [v4 scale];
+        [descriptorCopy scale];
         v39 = v38;
-        [v4 size];
+        [descriptorCopy size];
         v40 = v36;
         v43 = [v36 layerStackWithDisplayScale:v37 forTargetSize:v39 withHierarchyColorResolver:{v41, v42}];
         if (CopyWithAlpha)
@@ -617,8 +617,8 @@ uint64_t __44__IFSymbol_imageForGraphicSymbolDescriptor___block_invoke_22(uint64
         v90 = 0u;
         v91 = 0u;
         v92 = 0u;
-        v15 = [v4 resolvedSymbolColors];
-        v16 = [v15 countByEnumeratingWithState:&v89 objects:v113 count:16];
+        resolvedSymbolColors2 = [descriptorCopy resolvedSymbolColors];
+        v16 = [resolvedSymbolColors2 countByEnumeratingWithState:&v89 objects:v113 count:16];
         if (v16)
         {
           v17 = v16;
@@ -629,21 +629,21 @@ uint64_t __44__IFSymbol_imageForGraphicSymbolDescriptor___block_invoke_22(uint64
             {
               if (*v90 != v18)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(resolvedSymbolColors2);
               }
 
               [v14 addObject:{objc_msgSend(*(*(&v89 + 1) + 8 * i), "cgColor")}];
             }
 
-            v17 = [v15 countByEnumeratingWithState:&v89 objects:v113 count:16];
+            v17 = [resolvedSymbolColors2 countByEnumeratingWithState:&v89 objects:v113 count:16];
           }
 
           while (v17);
         }
 
-        [v4 scale];
+        [descriptorCopy scale];
         v21 = v20;
-        [v4 size];
+        [descriptorCopy size];
         v7 = [v5 layerStackWithDisplayScale:v14 forTargetSize:v21 withPaletteColors:{v22, v23}];
 
         if (!v7)
@@ -655,9 +655,9 @@ uint64_t __44__IFSymbol_imageForGraphicSymbolDescriptor___block_invoke_22(uint64
 
     else if (v98 == 1)
     {
-      [v4 scale];
+      [descriptorCopy scale];
       v25 = v24;
-      [v4 size];
+      [descriptorCopy size];
       v7 = [v5 layerStackWithDisplayScale:v25 forTargetSize:{v26, v27}];
       if (!v7)
       {
@@ -676,7 +676,7 @@ uint64_t __44__IFSymbol_imageForGraphicSymbolDescriptor___block_invoke_22(uint64
       v93[1] = 3221225472;
       v93[2] = __49__IFSymbol__iconStackForGraphicSymbolDescriptor___block_invoke_27;
       v93[3] = &unk_1E7ED98C8;
-      v8 = v4;
+      v8 = descriptorCopy;
       v94 = v8;
       v9 = MEMORY[0x1BFAE9070](v93);
       [v8 scale];
@@ -690,8 +690,8 @@ uint64_t __44__IFSymbol_imageForGraphicSymbolDescriptor___block_invoke_22(uint64
       }
     }
 
-    v44 = [v7 layers];
-    v45 = [v44 count];
+    layers = [v7 layers];
+    v45 = [layers count];
 
     if (v45 <= 1)
     {
@@ -699,15 +699,15 @@ LABEL_27:
       v46 = IFDefaultLog();
       if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
       {
-        v61 = [(IFSymbol *)self name];
+        name = [(IFSymbol *)self name];
         v62 = v98;
-        [v4 size];
+        [descriptorCopy size];
         v64 = v63;
-        [v4 size];
+        [descriptorCopy size];
         v66 = v65;
-        [v4 scale];
+        [descriptorCopy scale];
         *buf = 138413570;
-        v102 = v61;
+        v102 = name;
         v103 = 2112;
         v104 = v5;
         v105 = 2048;
@@ -744,18 +744,18 @@ LABEL_30:
       v6 = [v7 mutableCopy];
       if (!v6)
       {
-        v48 = IFDefaultLog();
-        if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
+        layers2 = IFDefaultLog();
+        if (os_log_type_enabled(layers2, OS_LOG_TYPE_ERROR))
         {
-          v68 = [(IFSymbol *)self name];
+          name2 = [(IFSymbol *)self name];
           v69 = v98;
-          [v4 size];
+          [descriptorCopy size];
           v71 = v70;
-          [v4 size];
+          [descriptorCopy size];
           v73 = v72;
-          [v4 scale];
+          [descriptorCopy scale];
           *buf = 138413570;
-          v102 = v68;
+          v102 = name2;
           v103 = 2112;
           v104 = v5;
           v105 = 2048;
@@ -777,15 +777,15 @@ LABEL_30:
     v88 = 0u;
     v85 = 0u;
     v86 = 0u;
-    v48 = [v6 layers];
-    v49 = [v48 countByEnumeratingWithState:&v85 objects:v100 count:16];
+    layers2 = [v6 layers];
+    v49 = [layers2 countByEnumeratingWithState:&v85 objects:v100 count:16];
     if (v49)
     {
       v50 = v49;
       v75 = v6;
       v76 = v7;
       v51 = *v86;
-      v79 = v48;
+      v79 = layers2;
       v77 = v5;
       v78 = *v86;
       do
@@ -796,14 +796,14 @@ LABEL_30:
         {
           if (*v86 != v51)
           {
-            objc_enumerationMutation(v48);
+            objc_enumerationMutation(layers2);
           }
 
           v53 = *(*(&v85 + 1) + 8 * v52);
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [v4 size];
+            [descriptorCopy size];
             [(IFSymbol *)self _flipImageInLayer:v53 requestedWidth:?];
           }
 
@@ -817,8 +817,8 @@ LABEL_30:
               v82 = 0u;
               v83 = 0u;
               v84 = 0u;
-              v55 = [v54 layers];
-              v56 = [v55 countByEnumeratingWithState:&v81 objects:v99 count:16];
+              layers3 = [v54 layers];
+              v56 = [layers3 countByEnumeratingWithState:&v81 objects:v99 count:16];
               if (v56)
               {
                 v57 = v56;
@@ -829,26 +829,26 @@ LABEL_30:
                   {
                     if (*v82 != v58)
                     {
-                      objc_enumerationMutation(v55);
+                      objc_enumerationMutation(layers3);
                     }
 
                     v60 = *(*(&v81 + 1) + 8 * j);
                     objc_opt_class();
                     if (objc_opt_isKindOfClass())
                     {
-                      [v4 size];
+                      [descriptorCopy size];
                       [(IFSymbol *)self _flipImageInLayer:v60 requestedWidth:?];
                     }
                   }
 
-                  v57 = [v55 countByEnumeratingWithState:&v81 objects:v99 count:16];
+                  v57 = [layers3 countByEnumeratingWithState:&v81 objects:v99 count:16];
                 }
 
                 while (v57);
               }
 
               v51 = v78;
-              v48 = v79;
+              layers2 = v79;
               v50 = v80;
             }
           }
@@ -857,7 +857,7 @@ LABEL_30:
         }
 
         while (v52 != v50);
-        v50 = [v48 countByEnumeratingWithState:&v85 objects:v100 count:16];
+        v50 = [layers2 countByEnumeratingWithState:&v85 objects:v100 count:16];
       }
 
       while (v50);
@@ -910,39 +910,39 @@ uint64_t __49__IFSymbol__iconStackForGraphicSymbolDescriptor___block_invoke_27(u
   return a3;
 }
 
-- (void)_flipImageInLayer:(id)a3 requestedWidth:(double)a4
+- (void)_flipImageInLayer:(id)layer requestedWidth:(double)width
 {
-  v5 = a3;
-  v6 = [v5 image];
-  Width = CGImageGetWidth(v6);
-  Height = CGImageGetHeight(v6);
+  layerCopy = layer;
+  image = [layerCopy image];
+  Width = CGImageGetWidth(image);
+  Height = CGImageGetHeight(image);
   v19 = [IFGraphicsContext bitmapContextWithSize:0 scale:Width preset:Height, 1.0];
   CGContextTranslateCTM([v19 cgContext], Width, 0.0);
   CGContextScaleCTM([v19 cgContext], -1.0, 1.0);
-  [v19 drawCGImage:objc_msgSend(v5 centeredInRect:{"image"), 0.0, 0.0, Width, Height}];
-  v9 = [v19 image];
-  [v5 setImage:{objc_msgSend(v9, "CGImage")}];
-  [v5 frame];
+  [v19 drawCGImage:objc_msgSend(layerCopy centeredInRect:{"image"), 0.0, 0.0, Width, Height}];
+  image2 = [v19 image];
+  [layerCopy setImage:{objc_msgSend(image2, "CGImage")}];
+  [layerCopy frame];
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  [v5 frame];
-  v17 = a4 - v16;
-  [v5 frame];
-  [v5 setFrame:{v17 - v18, v11, v13, v15}];
+  [layerCopy frame];
+  v17 = width - v16;
+  [layerCopy frame];
+  [layerCopy setFrame:{v17 - v18, v11, v13, v15}];
 }
 
-- (BOOL)_shouldFlipFromSymbolImage:(id)a3 desiredDirection:(int64_t)a4
+- (BOOL)_shouldFlipFromSymbolImage:(id)image desiredDirection:(int64_t)direction
 {
-  v5 = a3;
-  if (![v5 isFlippable])
+  imageCopy = image;
+  if (![imageCopy isFlippable])
   {
     goto LABEL_7;
   }
 
-  if (a4 != 4)
+  if (direction != 4)
   {
-    if (a4 == 5 && [v5 layoutDirection] == 4)
+    if (direction == 5 && [imageCopy layoutDirection] == 4)
     {
       goto LABEL_5;
     }
@@ -952,7 +952,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if ([v5 layoutDirection] != 5)
+  if ([imageCopy layoutDirection] != 5)
   {
     goto LABEL_7;
   }
@@ -964,37 +964,37 @@ LABEL_8:
   return v6;
 }
 
-- (id)_graphicVariantVectorGlyphForGraphicSymbolDescriptor:(id)a3 resolvedRenderingMode:(int64_t *)a4 allowXOffsetFlip:(BOOL)a5 shouldFlipSymbolImage:(BOOL *)a6
+- (id)_graphicVariantVectorGlyphForGraphicSymbolDescriptor:(id)descriptor resolvedRenderingMode:(int64_t *)mode allowXOffsetFlip:(BOOL)flip shouldFlipSymbolImage:(BOOL *)image
 {
-  v7 = a5;
+  flipCopy = flip;
   v66 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = [(IFSymbol *)self imageForDescriptor:v10];
+  descriptorCopy = descriptor;
+  v11 = [(IFSymbol *)self imageForDescriptor:descriptorCopy];
   if (v11)
   {
-    v12 = [(IFSymbol *)self name];
-    [v10 setName:v12];
+    name = [(IFSymbol *)self name];
+    [descriptorCopy setName:name];
 
-    if (-[IFSymbol _shouldFlipFromSymbolImage:desiredDirection:](self, "_shouldFlipFromSymbolImage:desiredDirection:", v11, [v10 layoutDirection]))
+    if (-[IFSymbol _shouldFlipFromSymbolImage:desiredDirection:](self, "_shouldFlipFromSymbolImage:desiredDirection:", v11, [descriptorCopy layoutDirection]))
     {
-      [v10 setFlipXOffsetOverride:v7];
-      *a6 = 1;
+      [descriptorCopy setFlipXOffsetOverride:flipCopy];
+      *image = 1;
     }
 
     v13 = objc_alloc_init(MEMORY[0x1E6999438]);
-    -[NSObject setShape:](v13, "setShape:", [v10 resolvedShape]);
-    -[NSObject setFill:](v13, "setFill:", [v10 resolvedFill]);
-    -[NSObject setContentEffect:](v13, "setContentEffect:", [v10 resolvedSymbolEffect]);
-    -[NSObject setShapeEffect:](v13, "setShapeEffect:", [v10 resolvedEnclosureEffect]);
-    [v10 symbolOffset];
+    -[NSObject setShape:](v13, "setShape:", [descriptorCopy resolvedShape]);
+    -[NSObject setFill:](v13, "setFill:", [descriptorCopy resolvedFill]);
+    -[NSObject setContentEffect:](v13, "setContentEffect:", [descriptorCopy resolvedSymbolEffect]);
+    -[NSObject setShapeEffect:](v13, "setShapeEffect:", [descriptorCopy resolvedEnclosureEffect]);
+    [descriptorCopy symbolOffset];
     [v13 setImageOffset:?];
     v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v15 = [v10 resolvedEnclosureColors];
-    v16 = [v15 countByEnumeratingWithState:&v41 objects:v65 count:16];
+    resolvedEnclosureColors = [descriptorCopy resolvedEnclosureColors];
+    v16 = [resolvedEnclosureColors countByEnumeratingWithState:&v41 objects:v65 count:16];
     if (v16)
     {
       v17 = v16;
@@ -1005,72 +1005,72 @@ LABEL_8:
         {
           if (*v42 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(resolvedEnclosureColors);
           }
 
           [v14 addObject:{objc_msgSend(*(*(&v41 + 1) + 8 * i), "cgColor")}];
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v41 objects:v65 count:16];
+        v17 = [resolvedEnclosureColors countByEnumeratingWithState:&v41 objects:v65 count:16];
       }
 
       while (v17);
     }
 
     [v13 setFillColors:v14];
-    [v10 resolvedBorderWidth];
+    [descriptorCopy resolvedBorderWidth];
     [v13 setBorderWidth:?];
-    v20 = [v10 resolvedBorderColor];
-    -[NSObject setBorderColor:](v13, "setBorderColor:", [v20 cgColor]);
+    resolvedBorderColor = [descriptorCopy resolvedBorderColor];
+    -[NSObject setBorderColor:](v13, "setBorderColor:", [resolvedBorderColor cgColor]);
 
-    v21 = [v11 vectorGlyph];
-    v22 = [v10 resolvedRenderingModeFromSuggestedMode:{objc_msgSend(v21, "preferredRenderingMode")}];
+    vectorGlyph = [v11 vectorGlyph];
+    v22 = [descriptorCopy resolvedRenderingModeFromSuggestedMode:{objc_msgSend(vectorGlyph, "preferredRenderingMode")}];
 
     if (v22 == 1)
     {
-      v23 = [v10 resolvedSymbolColors];
-      v24 = [v23 objectAtIndexedSubscript:0];
+      resolvedSymbolColors = [descriptorCopy resolvedSymbolColors];
+      v24 = [resolvedSymbolColors objectAtIndexedSubscript:0];
       -[NSObject setMonochromeForegroundColor:](v13, "setMonochromeForegroundColor:", [v24 cgColor]);
     }
 
-    *a4 = v22;
+    *mode = v22;
     v25 = IFDefaultLog();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
     {
-      v40 = [(IFSymbol *)self name];
-      v39 = [v13 fillColors];
-      v38 = [v13 shape];
-      v37 = [v13 fill];
-      v36 = [v13 contentEffect];
-      v31 = [v13 monochromeForegroundColor];
-      v32 = [v10 resolvedName];
+      name2 = [(IFSymbol *)self name];
+      fillColors = [v13 fillColors];
+      shape = [v13 shape];
+      fill = [v13 fill];
+      contentEffect = [v13 contentEffect];
+      monochromeForegroundColor = [v13 monochromeForegroundColor];
+      resolvedName = [descriptorCopy resolvedName];
       [v13 borderWidth];
       v34 = v33;
-      v35 = [v13 borderColor];
+      borderColor = [v13 borderColor];
       *buf = 138414594;
-      v46 = v40;
+      v46 = name2;
       v47 = 2112;
       v48 = v13;
       v49 = 2112;
-      v50 = v39;
+      v50 = fillColors;
       v51 = 2048;
-      v52 = v38;
+      v52 = shape;
       v53 = 2048;
-      v54 = v37;
+      v54 = fill;
       v55 = 2048;
-      v56 = v36;
+      v56 = contentEffect;
       v57 = 2112;
-      v58 = v31;
+      v58 = monochromeForegroundColor;
       v59 = 2112;
-      v60 = v32;
+      v60 = resolvedName;
       v61 = 2048;
       v62 = v34;
       v63 = 2112;
-      v64 = v35;
+      v64 = borderColor;
     }
 
-    v26 = [v11 vectorGlyph];
-    v27 = [v26 graphicVariantWithOptions:v13];
+    vectorGlyph2 = [v11 vectorGlyph];
+    v27 = [vectorGlyph2 graphicVariantWithOptions:v13];
 
     if (!v27)
     {
@@ -1087,9 +1087,9 @@ LABEL_8:
     v13 = IFDefaultLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
-      v29 = [(IFSymbol *)self name];
+      name3 = [(IFSymbol *)self name];
       *buf = 138412290;
-      v46 = v29;
+      v46 = name3;
     }
 
     v27 = 0;
@@ -1104,8 +1104,8 @@ LABEL_8:
   v8.receiver = self;
   v8.super_class = IFSymbol;
   v4 = [(IFSymbol *)&v8 description];
-  v5 = [(IFSymbol *)self name];
-  v6 = [v3 stringWithFormat:@"%@ - %@", v4, v5];
+  name = [(IFSymbol *)self name];
+  v6 = [v3 stringWithFormat:@"%@ - %@", v4, name];
 
   return v6;
 }
@@ -1113,9 +1113,9 @@ LABEL_8:
 - (BOOL)_useIconStack
 {
   v2 = +[IFDefaults sharedInstance];
-  v3 = [v2 iconStackAppIconsAllowed];
+  iconStackAppIconsAllowed = [v2 iconStackAppIconsAllowed];
 
-  return v3;
+  return iconStackAppIconsAllowed;
 }
 
 void __44__IFSymbol_imageForGraphicSymbolDescriptor___block_invoke_cold_1(uint64_t a1, NSObject *a2)

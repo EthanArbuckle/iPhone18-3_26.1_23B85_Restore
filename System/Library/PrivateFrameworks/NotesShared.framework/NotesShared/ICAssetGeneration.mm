@@ -1,8 +1,8 @@
 @interface ICAssetGeneration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (ICAssetGeneration)init;
-- (ICAssetGeneration)initWithNumber:(int64_t)a3 identifier:(id)a4;
-- (ICAssetGeneration)initWithRawValue:(id)a3;
+- (ICAssetGeneration)initWithNumber:(int64_t)number identifier:(id)identifier;
+- (ICAssetGeneration)initWithRawValue:(id)value;
 - (NSString)rawValue;
 - (id)description;
 - (id)nextGeneration;
@@ -11,11 +11,11 @@
 
 @implementation ICAssetGeneration
 
-- (ICAssetGeneration)initWithNumber:(int64_t)a3 identifier:(id)a4
+- (ICAssetGeneration)initWithNumber:(int64_t)number identifier:(id)identifier
 {
-  v7 = a4;
-  v8 = v7;
-  if (a3 >= 1 && [v7 length])
+  identifierCopy = identifier;
+  v8 = identifierCopy;
+  if (number >= 1 && [identifierCopy length])
   {
     v13.receiver = self;
     v13.super_class = ICAssetGeneration;
@@ -23,20 +23,20 @@
     v10 = v9;
     if (v9)
     {
-      v9->_number = a3;
-      objc_storeStrong(&v9->_identifier, a4);
+      v9->_number = number;
+      objc_storeStrong(&v9->_identifier, identifier);
     }
 
     self = v10;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 - (ICAssetGeneration)init
@@ -48,44 +48,44 @@
   if (v2)
   {
     v2->_number = 1;
-    v4 = [MEMORY[0x277CCAD78] UUID];
-    v5 = [v4 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     identifier = v3->_identifier;
-    v3->_identifier = v5;
+    v3->_identifier = uUIDString;
   }
 
   return v3;
 }
 
-- (ICAssetGeneration)initWithRawValue:(id)a3
+- (ICAssetGeneration)initWithRawValue:(id)value
 {
-  v4 = [a3 componentsSeparatedByString:@"_"];
+  v4 = [value componentsSeparatedByString:@"_"];
   if ([v4 count] == 2)
   {
-    v5 = [v4 firstObject];
-    v6 = [v5 integerValue];
+    firstObject = [v4 firstObject];
+    integerValue = [firstObject integerValue];
 
-    v7 = [v4 lastObject];
-    self = [(ICAssetGeneration *)self initWithNumber:v6 identifier:v7];
+    lastObject = [v4 lastObject];
+    self = [(ICAssetGeneration *)self initWithNumber:integerValue identifier:lastObject];
 
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (id)nextGeneration
 {
   v3 = [ICAssetGeneration alloc];
-  v4 = [(ICAssetGeneration *)self number];
-  v5 = [MEMORY[0x277CCAD78] UUID];
-  v6 = [v5 UUIDString];
-  v7 = [(ICAssetGeneration *)v3 initWithNumber:v4 + 1 identifier:v6];
+  number = [(ICAssetGeneration *)self number];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v7 = [(ICAssetGeneration *)v3 initWithNumber:number + 1 identifier:uUIDString];
 
   return v7;
 }
@@ -96,45 +96,45 @@
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:{-[ICAssetGeneration number](self, "number")}];
-  v7 = [(ICAssetGeneration *)self identifier];
-  v8 = [v3 stringWithFormat:@"<%@: %p, number: %@, identifier: %@>", v5, self, v6, v7];
+  identifier = [(ICAssetGeneration *)self identifier];
+  v8 = [v3 stringWithFormat:@"<%@: %p, number: %@, identifier: %@>", v5, self, v6, identifier];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = ICDynamicCast();
 
-  v6 = [(ICAssetGeneration *)self rawValue];
-  v7 = [v5 rawValue];
+  rawValue = [(ICAssetGeneration *)self rawValue];
+  rawValue2 = [v5 rawValue];
   v8 = *MEMORY[0x277CBEEE8];
-  if (*MEMORY[0x277CBEEE8] == v6)
+  if (*MEMORY[0x277CBEEE8] == rawValue)
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = v6;
+    v9 = rawValue;
   }
 
   v10 = v9;
-  if (v8 == v7)
+  if (v8 == rawValue2)
   {
     v11 = 0;
   }
 
   else
   {
-    v11 = v7;
+    v11 = rawValue2;
   }
 
   v12 = v11;
@@ -175,8 +175,8 @@
   result = self->_hash;
   if (!result)
   {
-    v4 = [(ICAssetGeneration *)self rawValue];
-    v5 = [v4 hash];
+    rawValue = [(ICAssetGeneration *)self rawValue];
+    v5 = [rawValue hash];
     self->_hash = ICHashWithHashKeys(v5, v6, v7, v8, v9, v10, v11, v12, 0);
 
     return self->_hash;
@@ -189,8 +189,8 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = [MEMORY[0x277CCABB0] numberWithInteger:{-[ICAssetGeneration number](self, "number")}];
-  v5 = [(ICAssetGeneration *)self identifier];
-  v6 = [v3 stringWithFormat:@"%@%@%@", v4, @"_", v5];
+  identifier = [(ICAssetGeneration *)self identifier];
+  v6 = [v3 stringWithFormat:@"%@%@%@", v4, @"_", identifier];
 
   return v6;
 }

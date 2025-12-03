@@ -1,30 +1,30 @@
 @interface OSLogDeserializedEventStream
 - (NSDate)firstDate;
 - (NSDate)lastDate;
-- (OSLogDeserializedEventStream)initWithDataSourceDelegate:(id)a3;
-- (id)_eventArrayFromData:(id)a3;
+- (OSLogDeserializedEventStream)initWithDataSourceDelegate:(id)delegate;
+- (id)_eventArrayFromData:(id)data;
 - (id)_nextEventDictionary;
-- (void)_iterateThroughEventsWithProxy:(id)a3 filter:(id)a4 startingDate:(id)a5;
-- (void)_runInvalidationHandler:(unint64_t)a3;
+- (void)_iterateThroughEventsWithProxy:(id)proxy filter:(id)filter startingDate:(id)date;
+- (void)_runInvalidationHandler:(unint64_t)handler;
 - (void)_updateEventArray;
-- (void)activateStreamFromDate:(id)a3;
+- (void)activateStreamFromDate:(id)date;
 @end
 
 @implementation OSLogDeserializedEventStream
 
-- (void)activateStreamFromDate:(id)a3
+- (void)activateStreamFromDate:(id)date
 {
-  v5 = a3;
-  v6 = [(OSLogEventStreamBase *)self queue];
+  dateCopy = date;
+  queue = [(OSLogEventStreamBase *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__OSLogDeserializedEventStream_activateStreamFromDate___block_invoke;
   block[3] = &unk_2787AEE28;
-  v9 = v5;
+  v9 = dateCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v7 = dateCopy;
+  dispatch_async(queue, block);
 }
 
 void __55__OSLogDeserializedEventStream_activateStreamFromDate___block_invoke(uint64_t a1)
@@ -53,24 +53,24 @@ void __55__OSLogDeserializedEventStream_activateStreamFromDate___block_invoke(ui
 
 - (void)_updateEventArray
 {
-  v3 = [(OSLogDeserializedEventStream *)self dataSourceDelegate];
-  v4 = [v3 nextEventDataChunk];
-  v5 = [(OSLogDeserializedEventStream *)self _eventArrayFromData:v4];
+  dataSourceDelegate = [(OSLogDeserializedEventStream *)self dataSourceDelegate];
+  nextEventDataChunk = [dataSourceDelegate nextEventDataChunk];
+  v5 = [(OSLogDeserializedEventStream *)self _eventArrayFromData:nextEventDataChunk];
   curEventArray = self->_curEventArray;
   self->_curEventArray = v5;
 
-  v9 = [(OSLogDeserializedEventStream *)self curEventArray];
-  v7 = [v9 objectEnumerator];
+  curEventArray = [(OSLogDeserializedEventStream *)self curEventArray];
+  objectEnumerator = [curEventArray objectEnumerator];
   eventDictionaryEnumerator = self->_eventDictionaryEnumerator;
-  self->_eventDictionaryEnumerator = v7;
+  self->_eventDictionaryEnumerator = objectEnumerator;
 }
 
-- (id)_eventArrayFromData:(id)a3
+- (id)_eventArrayFromData:(id)data
 {
-  if (a3)
+  if (data)
   {
     v9 = 0;
-    v3 = [MEMORY[0x277CCAC58] propertyListWithData:a3 options:0 format:0 error:&v9];
+    v3 = [MEMORY[0x277CCAC58] propertyListWithData:data options:0 format:0 error:&v9];
     v4 = v9;
     if (v3)
     {
@@ -114,40 +114,40 @@ void __55__OSLogDeserializedEventStream_activateStreamFromDate___block_invoke(ui
   return v5;
 }
 
-- (void)_iterateThroughEventsWithProxy:(id)a3 filter:(id)a4 startingDate:(id)a5
+- (void)_iterateThroughEventsWithProxy:(id)proxy filter:(id)filter startingDate:(id)date
 {
-  v18 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(OSLogDeserializedEventStream *)self _nextEventDictionary];
-  if (v10)
+  proxyCopy = proxy;
+  filterCopy = filter;
+  dateCopy = date;
+  _nextEventDictionary = [(OSLogDeserializedEventStream *)self _nextEventDictionary];
+  if (_nextEventDictionary)
   {
-    v11 = v10;
+    v11 = _nextEventDictionary;
     LOBYTE(v12) = 0;
     while (1)
     {
-      [v18 setCurEventDictionary:v11];
-      v13 = [(OSLogDeserializedEventStream *)self metadata];
-      [v18 setMetadata:v13];
+      [proxyCopy setCurEventDictionary:v11];
+      metadata = [(OSLogDeserializedEventStream *)self metadata];
+      [proxyCopy setMetadata:metadata];
 
       v14 = 1;
-      if (v9 && !v12)
+      if (dateCopy && !v12)
       {
-        v15 = [v18 date];
-        v12 = [v15 compare:v9] != -1;
+        date = [proxyCopy date];
+        v12 = [date compare:dateCopy] != -1;
 
         v14 = v12;
       }
 
-      if (v8 && v14)
+      if (filterCopy && v14)
       {
-        v14 = [v8 evaluateWithObject:v18];
+        v14 = [filterCopy evaluateWithObject:proxyCopy];
       }
 
       if (v14)
       {
-        v16 = [(OSLogEventStreamBase *)self streamHandler];
-        (v16)[2](v16, v18);
+        streamHandler = [(OSLogEventStreamBase *)self streamHandler];
+        (streamHandler)[2](streamHandler, proxyCopy);
 
         if ([(OSLogEventStreamBase *)self invalidated])
         {
@@ -155,10 +155,10 @@ void __55__OSLogDeserializedEventStream_activateStreamFromDate___block_invoke(ui
         }
       }
 
-      v17 = [(OSLogDeserializedEventStream *)self _nextEventDictionary];
+      _nextEventDictionary2 = [(OSLogDeserializedEventStream *)self _nextEventDictionary];
 
-      v11 = v17;
-      if (!v17)
+      v11 = _nextEventDictionary2;
+      if (!_nextEventDictionary2)
       {
         goto LABEL_12;
       }
@@ -178,47 +178,47 @@ LABEL_12:
   }
 }
 
-- (void)_runInvalidationHandler:(unint64_t)a3
+- (void)_runInvalidationHandler:(unint64_t)handler
 {
-  v5 = [(OSLogEventStreamBase *)self invalidationHandler];
+  invalidationHandler = [(OSLogEventStreamBase *)self invalidationHandler];
 
-  if (v5)
+  if (invalidationHandler)
   {
-    v7 = [(OSLogEventStreamBase *)self invalidationHandler];
+    invalidationHandler2 = [(OSLogEventStreamBase *)self invalidationHandler];
     v6 = [OSLogEventStreamPosition alloc];
-    v7[2](v7, a3, v6);
+    invalidationHandler2[2](invalidationHandler2, handler, v6);
   }
 }
 
 - (id)_nextEventDictionary
 {
-  v3 = [(OSLogDeserializedEventStream *)self eventDictionaryEnumerator];
-  v4 = [v3 nextObject];
+  eventDictionaryEnumerator = [(OSLogDeserializedEventStream *)self eventDictionaryEnumerator];
+  nextObject = [eventDictionaryEnumerator nextObject];
 
-  if (!v4)
+  if (!nextObject)
   {
     [(OSLogDeserializedEventStream *)self _updateEventArray];
-    v5 = [(OSLogDeserializedEventStream *)self eventDictionaryEnumerator];
-    v4 = [v5 nextObject];
+    eventDictionaryEnumerator2 = [(OSLogDeserializedEventStream *)self eventDictionaryEnumerator];
+    nextObject = [eventDictionaryEnumerator2 nextObject];
   }
 
-  return v4;
+  return nextObject;
 }
 
-- (OSLogDeserializedEventStream)initWithDataSourceDelegate:(id)a3
+- (OSLogDeserializedEventStream)initWithDataSourceDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = OSLogDeserializedEventStream;
   v6 = [(OSLogEventStreamBase *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataSourceDelegate, a3);
-    v8 = [(OSLogDeserializedEventStream *)v7 dataSourceDelegate];
-    v9 = [v8 metadataChunk];
+    objc_storeStrong(&v6->_dataSourceDelegate, delegate);
+    dataSourceDelegate = [(OSLogDeserializedEventStream *)v7 dataSourceDelegate];
+    metadataChunk = [dataSourceDelegate metadataChunk];
 
-    v10 = [[_OSLogEventSerializationMetadata alloc] initWithDataRepresentation:v9];
+    v10 = [[_OSLogEventSerializationMetadata alloc] initWithDataRepresentation:metadataChunk];
     if (!v10)
     {
 
@@ -238,18 +238,18 @@ LABEL_6:
 
 - (NSDate)lastDate
 {
-  v2 = [(OSLogDeserializedEventStream *)self metadata];
-  v3 = [v2 lastDate];
+  metadata = [(OSLogDeserializedEventStream *)self metadata];
+  lastDate = [metadata lastDate];
 
-  return v3;
+  return lastDate;
 }
 
 - (NSDate)firstDate
 {
-  v2 = [(OSLogDeserializedEventStream *)self metadata];
-  v3 = [v2 firstDate];
+  metadata = [(OSLogDeserializedEventStream *)self metadata];
+  firstDate = [metadata firstDate];
 
-  return v3;
+  return firstDate;
 }
 
 @end

@@ -1,11 +1,11 @@
 @interface _WKWebsiteDataSize
-- (_WKWebsiteDataSize)initWithSize:(const void *)a3;
-- (unint64_t)sizeOfDataTypes:(id)a3;
+- (_WKWebsiteDataSize)initWithSize:(const void *)size;
+- (unint64_t)sizeOfDataTypes:(id)types;
 @end
 
 @implementation _WKWebsiteDataSize
 
-- (_WKWebsiteDataSize)initWithSize:(const void *)a3
+- (_WKWebsiteDataSize)initWithSize:(const void *)size
 {
   v9.receiver = self;
   v9.super_class = _WKWebsiteDataSize;
@@ -13,8 +13,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->_size = *a3;
-    WTF::HashTable<unsigned int,WTF::KeyValuePair<unsigned int,unsigned long long>,WTF::KeyValuePairKeyExtractor<WTF::KeyValuePair<unsigned int,unsigned long long>>,WTF::DefaultHash<unsigned int>,WTF::HashMap<unsigned int,unsigned long long,WTF::DefaultHash<unsigned int>,WTF::HashTraits<unsigned int>,WTF::HashTraits<unsigned long long>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::KeyValuePairTraits,WTF::HashTraits<unsigned int>,WTF::FastMalloc>::HashTable(&v10, a3 + 1);
+    v4->_size = *size;
+    WTF::HashTable<unsigned int,WTF::KeyValuePair<unsigned int,unsigned long long>,WTF::KeyValuePairKeyExtractor<WTF::KeyValuePair<unsigned int,unsigned long long>>,WTF::DefaultHash<unsigned int>,WTF::HashMap<unsigned int,unsigned long long,WTF::DefaultHash<unsigned int>,WTF::HashTraits<unsigned int>,WTF::HashTraits<unsigned long long>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::KeyValuePairTraits,WTF::HashTraits<unsigned int>,WTF::FastMalloc>::HashTable(&v10, size + 1);
     isa = v5[1].super.isa;
     v5[1].super.isa = v10;
     v10 = isa;
@@ -27,14 +27,14 @@
   return v5;
 }
 
-- (unint64_t)sizeOfDataTypes:(id)a3
+- (unint64_t)sizeOfDataTypes:(id)types
 {
   v27 = *MEMORY[0x1E69E9840];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v5 = [types countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (!v5)
   {
     return 0;
@@ -50,7 +50,7 @@
     {
       if (*v23 != v8)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(types);
       }
 
       v10 = *(*(&v22 + 1) + 8 * v9);
@@ -214,7 +214,7 @@ LABEL_49:
     }
 
     while (v9 != v6);
-    v20 = [a3 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    v20 = [types countByEnumeratingWithState:&v22 objects:v26 count:16];
     v6 = v20;
   }
 

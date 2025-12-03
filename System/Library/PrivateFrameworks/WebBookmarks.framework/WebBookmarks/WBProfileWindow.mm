@@ -1,22 +1,22 @@
 @interface WBProfileWindow
 - (BOOL)isInDefaultProfile;
-- (WBProfileWindow)initWithWindowState:(id)a3 tabGroupManager:(id)a4;
-- (WBProfileWindow)initWithWindowState:(id)a3 tabGroupManager:(id)a4 preferredProfileIdentifier:(id)a5;
+- (WBProfileWindow)initWithWindowState:(id)state tabGroupManager:(id)manager;
+- (WBProfileWindow)initWithWindowState:(id)state tabGroupManager:(id)manager preferredProfileIdentifier:(id)identifier;
 - (WBProfileWindowDelegate)delegate;
 - (WBTabGroup)unnamedTabGroupForActiveProfile;
-- (id)_displayTitleProviderForTabGroupWithUUID:(id)a3;
-- (id)_findOrCreateUnnamedTabGroupForProfile:(id)a3;
-- (id)_lastActiveTabGroupForProfile:(id)a3;
-- (id)existingUnnamedTabGroupForProfileWithIdentifier:(id)a3;
+- (id)_displayTitleProviderForTabGroupWithUUID:(id)d;
+- (id)_findOrCreateUnnamedTabGroupForProfile:(id)profile;
+- (id)_lastActiveTabGroupForProfile:(id)profile;
+- (id)existingUnnamedTabGroupForProfileWithIdentifier:(id)identifier;
 - (void)_attachLocalGroupToDefaultProfileIfNeeded;
-- (void)_attachUnnamedTabGroupToProfileWithIdentifier:(id)a3;
-- (void)_selectPreferredProfileIfNeeded:(id)a3;
+- (void)_attachUnnamedTabGroupToProfileWithIdentifier:(id)identifier;
+- (void)_selectPreferredProfileIfNeeded:(id)needed;
 - (void)dealloc;
-- (void)setActiveProfileIdentifier:(id)a3;
-- (void)setActiveTabGroupUUID:(id)a3;
-- (void)setUnnamedTabGroupDisplayTitleProvider:(id)a3;
-- (void)tabGroupManager:(id)a3 didRemoveProfileWithIdentifier:(id)a4;
-- (void)tabGroupManager:(id)a3 didRemoveTabGroupWithUUID:(id)a4;
+- (void)setActiveProfileIdentifier:(id)identifier;
+- (void)setActiveTabGroupUUID:(id)d;
+- (void)setUnnamedTabGroupDisplayTitleProvider:(id)provider;
+- (void)tabGroupManager:(id)manager didRemoveProfileWithIdentifier:(id)identifier;
+- (void)tabGroupManager:(id)manager didRemoveTabGroupWithUUID:(id)d;
 - (void)willClose;
 @end
 
@@ -25,9 +25,9 @@
 - (void)_attachLocalGroupToDefaultProfileIfNeeded
 {
   v3 = *MEMORY[0x277D49BD8];
-  v4 = [(WBWindowState *)self->_windowState localTabGroup];
-  v5 = [v4 profileIdentifier];
-  LOBYTE(v3) = [v3 isEqualToString:v5];
+  localTabGroup = [(WBWindowState *)self->_windowState localTabGroup];
+  profileIdentifier = [localTabGroup profileIdentifier];
+  LOBYTE(v3) = [v3 isEqualToString:profileIdentifier];
 
   if ((v3 & 1) == 0)
   {
@@ -36,14 +36,14 @@
     v10[2] = 0x2020000000;
     v11 = 0;
     tabGroupManager = self->_tabGroupManager;
-    v7 = [(WBWindowState *)self->_windowState localTabGroup];
-    v8 = [v7 uuid];
+    localTabGroup2 = [(WBWindowState *)self->_windowState localTabGroup];
+    uuid = [localTabGroup2 uuid];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __60__WBProfileWindow__attachLocalGroupToDefaultProfileIfNeeded__block_invoke;
     v9[3] = &unk_279E75168;
     v9[4] = v10;
-    [(WBTabGroupManager *)tabGroupManager updateTabGroupWithUUID:v8 persist:1 usingBlock:v9];
+    [(WBTabGroupManager *)tabGroupManager updateTabGroupWithUUID:uuid persist:1 usingBlock:v9];
 
     _Block_object_dispose(v10, 8);
   }
@@ -68,71 +68,71 @@
 - (BOOL)isInDefaultProfile
 {
   activeProfileIdentifier = self->_activeProfileIdentifier;
-  v3 = [(WBTabGroupManager *)self->_tabGroupManager defaultProfile];
-  v4 = [v3 identifier];
-  LOBYTE(activeProfileIdentifier) = [(NSString *)activeProfileIdentifier isEqual:v4];
+  defaultProfile = [(WBTabGroupManager *)self->_tabGroupManager defaultProfile];
+  identifier = [defaultProfile identifier];
+  LOBYTE(activeProfileIdentifier) = [(NSString *)activeProfileIdentifier isEqual:identifier];
 
   return activeProfileIdentifier;
 }
 
-- (WBProfileWindow)initWithWindowState:(id)a3 tabGroupManager:(id)a4
+- (WBProfileWindow)initWithWindowState:(id)state tabGroupManager:(id)manager
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 activeProfileIdentifier];
-  v9 = [(WBProfileWindow *)self initWithWindowState:v7 tabGroupManager:v6 preferredProfileIdentifier:v8];
+  managerCopy = manager;
+  stateCopy = state;
+  activeProfileIdentifier = [stateCopy activeProfileIdentifier];
+  v9 = [(WBProfileWindow *)self initWithWindowState:stateCopy tabGroupManager:managerCopy preferredProfileIdentifier:activeProfileIdentifier];
 
   return v9;
 }
 
-- (WBProfileWindow)initWithWindowState:(id)a3 tabGroupManager:(id)a4 preferredProfileIdentifier:(id)a5
+- (WBProfileWindow)initWithWindowState:(id)state tabGroupManager:(id)manager preferredProfileIdentifier:(id)identifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  stateCopy = state;
+  managerCopy = manager;
+  identifierCopy = identifier;
   v27.receiver = self;
   v27.super_class = WBProfileWindow;
   v12 = [(WBProfileWindow *)&v27 init];
   if (v12)
   {
-    v13 = [v9 activeProfileIdentifier];
-    v14 = v13;
-    if (v13)
+    activeProfileIdentifier = [stateCopy activeProfileIdentifier];
+    v14 = activeProfileIdentifier;
+    if (activeProfileIdentifier)
     {
-      v15 = v13;
+      v15 = activeProfileIdentifier;
       activeProfileIdentifier = v12->_activeProfileIdentifier;
       v12->_activeProfileIdentifier = v15;
     }
 
     else
     {
-      activeProfileIdentifier = [v10 defaultProfile];
-      v17 = [activeProfileIdentifier identifier];
+      activeProfileIdentifier = [managerCopy defaultProfile];
+      identifier = [activeProfileIdentifier identifier];
       v18 = v12->_activeProfileIdentifier;
-      v12->_activeProfileIdentifier = v17;
+      v12->_activeProfileIdentifier = identifier;
     }
 
-    objc_storeStrong(&v12->_tabGroupManager, a4);
-    objc_storeStrong(&v12->_windowState, a3);
+    objc_storeStrong(&v12->_tabGroupManager, manager);
+    objc_storeStrong(&v12->_windowState, state);
     [(WBProfileWindow *)v12 _attachLocalGroupToDefaultProfileIfNeeded];
-    [(WBProfileWindow *)v12 _attachUnnamedTabGroupToProfileWithIdentifier:v11];
+    [(WBProfileWindow *)v12 _attachUnnamedTabGroupToProfileWithIdentifier:identifierCopy];
     [(WBTabGroupManager *)v12->_tabGroupManager addTabGroupObserver:v12];
-    [(WBProfileWindow *)v12 _selectPreferredProfileIfNeeded:v11];
-    v19 = [v9 activeTabGroupUUID];
-    v20 = v19;
-    if (v19)
+    [(WBProfileWindow *)v12 _selectPreferredProfileIfNeeded:identifierCopy];
+    activeTabGroupUUID = [stateCopy activeTabGroupUUID];
+    v20 = activeTabGroupUUID;
+    if (activeTabGroupUUID)
     {
-      v21 = v19;
+      v21 = activeTabGroupUUID;
       activeTabGroupUUID = v12->_activeTabGroupUUID;
       v12->_activeTabGroupUUID = v21;
     }
 
     else
     {
-      activeTabGroupUUID = [(WBProfileWindow *)v12 existingUnnamedTabGroupForProfileWithIdentifier:v11];
-      v23 = [activeTabGroupUUID uuid];
+      activeTabGroupUUID = [(WBProfileWindow *)v12 existingUnnamedTabGroupForProfileWithIdentifier:identifierCopy];
+      uuid = [activeTabGroupUUID uuid];
       v24 = v12->_activeTabGroupUUID;
-      v12->_activeTabGroupUUID = v23;
+      v12->_activeTabGroupUUID = uuid;
     }
 
     v25 = v12;
@@ -149,18 +149,18 @@
   [(WBProfileWindow *)&v3 dealloc];
 }
 
-- (void)setActiveProfileIdentifier:(id)a3
+- (void)setActiveProfileIdentifier:(id)identifier
 {
-  v12 = a3;
-  if (([(NSString *)self->_activeProfileIdentifier isEqual:v12]& 1) == 0)
+  identifierCopy = identifier;
+  if (([(NSString *)self->_activeProfileIdentifier isEqual:identifierCopy]& 1) == 0)
   {
-    v4 = [(WBTabGroupManager *)self->_tabGroupManager profileWithIdentifier:v12];
+    v4 = [(WBTabGroupManager *)self->_tabGroupManager profileWithIdentifier:identifierCopy];
     if (v4)
     {
       v5 = [(WBProfileWindow *)self _findOrCreateUnnamedTabGroupForProfile:v4];
       if (v5)
       {
-        v6 = [v12 copy];
+        v6 = [identifierCopy copy];
         activeProfileIdentifier = self->_activeProfileIdentifier;
         self->_activeProfileIdentifier = v6;
 
@@ -180,25 +180,25 @@
   MEMORY[0x2821F9730]();
 }
 
-- (void)setActiveTabGroupUUID:(id)a3
+- (void)setActiveTabGroupUUID:(id)d
 {
-  v9 = a3;
+  dCopy = d;
   if (([(NSString *)self->_activeTabGroupUUID isEqual:?]& 1) == 0)
   {
-    v4 = [v9 copy];
+    v4 = [dCopy copy];
     activeTabGroupUUID = self->_activeTabGroupUUID;
     self->_activeTabGroupUUID = v4;
 
-    v6 = [(WBTabGroupManager *)self->_tabGroupManager tabGroupWithUUID:v9];
+    v6 = [(WBTabGroupManager *)self->_tabGroupManager tabGroupWithUUID:dCopy];
     if (([v6 isPrivateBrowsing] & 1) == 0)
     {
-      v7 = [v6 profileIdentifier];
-      [(WBWindowState *)self->_windowState setActiveProfileIdentifier:v7];
+      profileIdentifier = [v6 profileIdentifier];
+      [(WBWindowState *)self->_windowState setActiveProfileIdentifier:profileIdentifier];
     }
 
-    [(WBWindowState *)self->_windowState setActiveTabGroupUUID:v9 forProfileWithIdentifier:self->_activeProfileIdentifier];
-    v8 = [(WBTabGroupManager *)self->_tabGroupManager tabCollection];
-    [v8 saveWindowState:self->_windowState completionHandler:0];
+    [(WBWindowState *)self->_windowState setActiveTabGroupUUID:dCopy forProfileWithIdentifier:self->_activeProfileIdentifier];
+    tabCollection = [(WBTabGroupManager *)self->_tabGroupManager tabCollection];
+    [tabCollection saveWindowState:self->_windowState completionHandler:0];
   }
 }
 
@@ -210,8 +210,8 @@
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(WBWindowState *)self->_windowState unnamedTabGroupUUIDs];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  unnamedTabGroupUUIDs = [(WBWindowState *)self->_windowState unnamedTabGroupUUIDs];
+  v4 = [unnamedTabGroupUUIDs countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -223,7 +223,7 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(unnamedTabGroupUUIDs);
         }
 
         v8 = [(WBTabGroupManager *)self->_tabGroupManager tabGroupWithUUID:*(*(&v10 + 1) + 8 * v7)];
@@ -236,7 +236,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [unnamedTabGroupUUIDs countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -245,10 +245,10 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setUnnamedTabGroupDisplayTitleProvider:(id)a3
+- (void)setUnnamedTabGroupDisplayTitleProvider:(id)provider
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = [a3 copy];
+  v4 = [provider copy];
   unnamedTabGroupDisplayTitleProvider = self->_unnamedTabGroupDisplayTitleProvider;
   self->_unnamedTabGroupDisplayTitleProvider = v4;
 
@@ -256,8 +256,8 @@
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [(WBWindowState *)self->_windowState unnamedTabGroupUUIDs];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  unnamedTabGroupUUIDs = [(WBWindowState *)self->_windowState unnamedTabGroupUUIDs];
+  v7 = [unnamedTabGroupUUIDs countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -269,14 +269,14 @@
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(unnamedTabGroupUUIDs);
         }
 
         [(WBTabGroupManager *)self->_tabGroupManager updateTabGroupWithUUID:MEMORY[0x277D85DD0] persist:3221225472 usingBlock:__58__WBProfileWindow_setUnnamedTabGroupDisplayTitleProvider___block_invoke, &unk_279E750F8, self, *(*(&v12 + 1) + 8 * v10++)];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [unnamedTabGroupUUIDs countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
@@ -294,9 +294,9 @@ void __58__WBProfileWindow_setUnnamedTabGroupDisplayTitleProvider___block_invoke
   [v4 setDisplayTitleProvider:v5];
 }
 
-- (id)existingUnnamedTabGroupForProfileWithIdentifier:(id)a3
+- (id)existingUnnamedTabGroupForProfileWithIdentifier:(id)identifier
 {
-  v4 = [(WBTabGroupManager *)self->_tabGroupManager unnamedTabGroupsForProfileWithIdentifier:a3];
+  v4 = [(WBTabGroupManager *)self->_tabGroupManager unnamedTabGroupsForProfileWithIdentifier:identifier];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __67__WBProfileWindow_existingUnnamedTabGroupForProfileWithIdentifier___block_invoke;
@@ -318,14 +318,14 @@ uint64_t __67__WBProfileWindow_existingUnnamedTabGroupForProfileWithIdentifier__
   return v6;
 }
 
-- (void)tabGroupManager:(id)a3 didRemoveTabGroupWithUUID:(id)a4
+- (void)tabGroupManager:(id)manager didRemoveTabGroupWithUUID:(id)d
 {
-  v20 = a4;
-  v6 = [a3 removedTabGroupWithUUID:?];
-  v7 = [v6 profileIdentifier];
-  if ([v7 length])
+  dCopy = d;
+  v6 = [manager removedTabGroupWithUUID:?];
+  profileIdentifier = [v6 profileIdentifier];
+  if ([profileIdentifier length])
   {
-    v8 = [(WBTabGroupManager *)self->_tabGroupManager profileWithIdentifier:v7];
+    v8 = [(WBTabGroupManager *)self->_tabGroupManager profileWithIdentifier:profileIdentifier];
     if (!v8)
     {
 LABEL_15:
@@ -334,22 +334,22 @@ LABEL_15:
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v10 = [(WBWindowState *)self->_windowState unnamedTabGroupUUIDs];
-    v11 = [v10 containsObject:v20];
+    unnamedTabGroupUUIDs = [(WBWindowState *)self->_windowState unnamedTabGroupUUIDs];
+    v11 = [unnamedTabGroupUUIDs containsObject:dCopy];
 
     if (v11)
     {
-      [(WBWindowState *)self->_windowState removeUnnamedTabGroupUUID:v20];
-      [(WBWindowState *)self->_windowState removeActiveTabGroupUUIDForProfileWithIdentifier:v7];
+      [(WBWindowState *)self->_windowState removeUnnamedTabGroupUUID:dCopy];
+      [(WBWindowState *)self->_windowState removeActiveTabGroupUUIDForProfileWithIdentifier:profileIdentifier];
       if ([(WBProfileWindow *)self canSwitchProfiles])
       {
-        if ([(WBProfileWindow *)self _isProfileActive:v7])
+        if ([(WBProfileWindow *)self _isProfileActive:profileIdentifier])
         {
-          v12 = [(WBTabGroupManager *)self->_tabGroupManager tabCollection];
-          [v12 saveWindowState:self->_windowState completionHandler:&__block_literal_global];
+          tabCollection = [(WBTabGroupManager *)self->_tabGroupManager tabCollection];
+          [tabCollection saveWindowState:self->_windowState completionHandler:&__block_literal_global];
 
-          v13 = [(WBTabGroupManager *)self->_tabGroupManager defaultProfile];
-          [WeakRetained profileWindow:self selectProfile:v13];
+          defaultProfile = [(WBTabGroupManager *)self->_tabGroupManager defaultProfile];
+          [WeakRetained profileWindow:self selectProfile:defaultProfile];
 LABEL_13:
         }
       }
@@ -362,25 +362,25 @@ LABEL_13:
 
     else
     {
-      v14 = [v6 uuid];
-      v15 = [v14 isEqual:self->_activeTabGroupUUID];
+      uuid = [v6 uuid];
+      v15 = [uuid isEqual:self->_activeTabGroupUUID];
 
       if (v15)
       {
-        v13 = [(WBTabGroupManager *)self->_tabGroupManager profileWithIdentifier:self->_activeProfileIdentifier];
-        v16 = [(WBTabGroupManager *)self->_tabGroupManager defaultProfile];
-        v17 = [v13 isEqual:v16];
+        defaultProfile = [(WBTabGroupManager *)self->_tabGroupManager profileWithIdentifier:self->_activeProfileIdentifier];
+        defaultProfile2 = [(WBTabGroupManager *)self->_tabGroupManager defaultProfile];
+        v17 = [defaultProfile isEqual:defaultProfile2];
 
         if (v17)
         {
-          v18 = [(WBWindowState *)self->_windowState localTabGroup];
-          [WeakRetained profileWindow:self selectTabGroup:v18];
+          localTabGroup = [(WBWindowState *)self->_windowState localTabGroup];
+          [WeakRetained profileWindow:self selectTabGroup:localTabGroup];
         }
 
         else
         {
-          v18 = [v8 identifier];
-          v19 = [(WBProfileWindow *)self existingUnnamedTabGroupForProfileWithIdentifier:v18];
+          localTabGroup = [v8 identifier];
+          v19 = [(WBProfileWindow *)self existingUnnamedTabGroupForProfileWithIdentifier:localTabGroup];
           [WeakRetained profileWindow:self selectTabGroup:v19];
         }
 
@@ -406,20 +406,20 @@ void __61__WBProfileWindow_tabGroupManager_didRemoveTabGroupWithUUID___block_inv
   }
 }
 
-- (void)tabGroupManager:(id)a3 didRemoveProfileWithIdentifier:(id)a4
+- (void)tabGroupManager:(id)manager didRemoveProfileWithIdentifier:(id)identifier
 {
-  v8 = a4;
+  identifierCopy = identifier;
   v5 = [(WBProfileWindow *)self existingUnnamedTabGroupForProfileWithIdentifier:?];
   if (v5)
   {
     [(WBTabGroupManager *)self->_tabGroupManager removeTabGroup:v5];
-    if ([(WBProfileWindow *)self _isProfileActive:v8])
+    if ([(WBProfileWindow *)self _isProfileActive:identifierCopy])
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       if ([(WBProfileWindow *)self canSwitchProfiles])
       {
-        v7 = [(WBTabGroupManager *)self->_tabGroupManager defaultProfile];
-        [WeakRetained profileWindow:self selectProfile:v7];
+        defaultProfile = [(WBTabGroupManager *)self->_tabGroupManager defaultProfile];
+        [WeakRetained profileWindow:self selectProfile:defaultProfile];
       }
 
       else
@@ -437,9 +437,9 @@ uint64_t __60__WBProfileWindow__attachLocalGroupToDefaultProfileIfNeeded__block_
   return result;
 }
 
-- (void)_attachUnnamedTabGroupToProfileWithIdentifier:(id)a3
+- (void)_attachUnnamedTabGroupToProfileWithIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = [(WBTabGroupManager *)self->_tabGroupManager profileWithIdentifier:?];
     v5 = v4;
@@ -458,17 +458,17 @@ uint64_t __60__WBProfileWindow__attachLocalGroupToDefaultProfileIfNeeded__block_
   }
 }
 
-- (id)_displayTitleProviderForTabGroupWithUUID:(id)a3
+- (id)_displayTitleProviderForTabGroupWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __60__WBProfileWindow__displayTitleProviderForTabGroupWithUUID___block_invoke;
   v8[3] = &unk_279E75190;
   objc_copyWeak(&v10, &location);
-  v9 = v4;
-  v5 = v4;
+  v9 = dCopy;
+  v5 = dCopy;
   v6 = MEMORY[0x2743D6830](v8);
 
   objc_destroyWeak(&v10);
@@ -495,62 +495,62 @@ __CFString *__60__WBProfileWindow__displayTitleProviderForTabGroupWithUUID___blo
   return v6;
 }
 
-- (id)_findOrCreateUnnamedTabGroupForProfile:(id)a3
+- (id)_findOrCreateUnnamedTabGroupForProfile:(id)profile
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v5 isEqual:*MEMORY[0x277D49BD8]];
+  profileCopy = profile;
+  identifier = [profileCopy identifier];
+  v6 = [identifier isEqual:*MEMORY[0x277D49BD8]];
 
   if (v6)
   {
-    v7 = [(WBWindowState *)self->_windowState localTabGroup];
+    localTabGroup = [(WBWindowState *)self->_windowState localTabGroup];
   }
 
   else
   {
-    v8 = [v4 identifier];
-    v9 = [(WBProfileWindow *)self existingUnnamedTabGroupForProfileWithIdentifier:v8];
+    identifier2 = [profileCopy identifier];
+    v9 = [(WBProfileWindow *)self existingUnnamedTabGroupForProfileWithIdentifier:identifier2];
 
     if (v9)
     {
-      v10 = [v9 displayTitleProvider];
+      displayTitleProvider = [v9 displayTitleProvider];
 
-      if (!v10)
+      if (!displayTitleProvider)
       {
         tabGroupManager = self->_tabGroupManager;
-        v12 = [v9 uuid];
+        uuid = [v9 uuid];
         v32[0] = MEMORY[0x277D85DD0];
         v32[1] = 3221225472;
         v32[2] = __58__WBProfileWindow__findOrCreateUnnamedTabGroupForProfile___block_invoke;
         v32[3] = &unk_279E751B8;
         v32[4] = self;
-        [(WBTabGroupManager *)tabGroupManager updateTabGroupWithUUID:v12 persist:0 usingBlock:v32];
+        [(WBTabGroupManager *)tabGroupManager updateTabGroupWithUUID:uuid persist:0 usingBlock:v32];
       }
 
-      v7 = v9;
+      localTabGroup = v9;
     }
 
     else
     {
       windowState = self->_windowState;
-      v14 = [v4 identifier];
-      v15 = [v4 deviceIdentifier];
-      v16 = [(WBWindowState *)windowState localOrUnnamedTabGroupForRestoration:0 inProfileWithIdentifier:v14 deviceIdentifier:v15];
+      identifier3 = [profileCopy identifier];
+      deviceIdentifier = [profileCopy deviceIdentifier];
+      v16 = [(WBWindowState *)windowState localOrUnnamedTabGroupForRestoration:0 inProfileWithIdentifier:identifier3 deviceIdentifier:deviceIdentifier];
 
-      v17 = [v16 uuid];
-      v18 = [(WBProfileWindow *)self _displayTitleProviderForTabGroupWithUUID:v17];
+      uuid2 = [v16 uuid];
+      v18 = [(WBProfileWindow *)self _displayTitleProviderForTabGroupWithUUID:uuid2];
       [v16 setDisplayTitleProvider:v18];
 
-      v19 = [v4 identifier];
-      [v16 setProfileIdentifier:v19];
+      identifier4 = [profileCopy identifier];
+      [v16 setProfileIdentifier:identifier4];
 
       v20 = [(WBTabGroupManager *)self->_tabGroupManager insertUnnamedTabGroup:v16];
-      v21 = [(WBTabGroupManager *)self->_tabGroupManager tabCollection];
-      v22 = [v21 saveWindowState:self->_windowState];
+      tabCollection = [(WBTabGroupManager *)self->_tabGroupManager tabCollection];
+      v22 = [tabCollection saveWindowState:self->_windowState];
 
       if (v22)
       {
-        v7 = v20;
+        localTabGroup = v20;
       }
 
       else
@@ -561,12 +561,12 @@ __CFString *__60__WBProfileWindow__displayTitleProviderForTabGroupWithUUID___blo
           [(WBProfileWindow *)v23 _findOrCreateUnnamedTabGroupForProfile:v24, v25, v26, v27, v28, v29, v30];
         }
 
-        v7 = 0;
+        localTabGroup = 0;
       }
     }
   }
 
-  return v7;
+  return localTabGroup;
 }
 
 void __58__WBProfileWindow__findOrCreateUnnamedTabGroupForProfile___block_invoke(uint64_t a1, void *a2)
@@ -578,11 +578,11 @@ void __58__WBProfileWindow__findOrCreateUnnamedTabGroupForProfile___block_invoke
   [v3 setDisplayTitleProvider:v4];
 }
 
-- (id)_lastActiveTabGroupForProfile:(id)a3
+- (id)_lastActiveTabGroupForProfile:(id)profile
 {
   windowState = self->_windowState;
-  v5 = [a3 identifier];
-  v6 = [(WBWindowState *)windowState activeTabGroupUUIDForProfileWithIdentifier:v5];
+  identifier = [profile identifier];
+  v6 = [(WBWindowState *)windowState activeTabGroupUUIDForProfileWithIdentifier:identifier];
 
   if (v6)
   {
@@ -597,13 +597,13 @@ void __58__WBProfileWindow__findOrCreateUnnamedTabGroupForProfile___block_invoke
   return v7;
 }
 
-- (void)_selectPreferredProfileIfNeeded:(id)a3
+- (void)_selectPreferredProfileIfNeeded:(id)needed
 {
-  v4 = a3;
-  if (v4)
+  neededCopy = needed;
+  if (neededCopy)
   {
-    v17 = v4;
-    v5 = [(WBTabGroupManager *)self->_tabGroupManager profileWithIdentifier:v4];
+    v17 = neededCopy;
+    v5 = [(WBTabGroupManager *)self->_tabGroupManager profileWithIdentifier:neededCopy];
     if (v5)
     {
       v6 = [(WBProfileWindow *)self _findOrCreateUnnamedTabGroupForProfile:v5];
@@ -616,12 +616,12 @@ void __58__WBProfileWindow__findOrCreateUnnamedTabGroupForProfile___block_invoke
         v9 = [v17 copy];
         [(WBWindowState *)self->_windowState setActiveProfileIdentifier:v9];
 
-        v10 = [(WBWindowState *)self->_windowState activeTabGroupUUID];
-        if (v10)
+        activeTabGroupUUID = [(WBWindowState *)self->_windowState activeTabGroupUUID];
+        if (activeTabGroupUUID)
         {
           tabGroupManager = self->_tabGroupManager;
-          v12 = [(WBWindowState *)self->_windowState activeTabGroupUUID];
-          v13 = [(WBTabGroupManager *)tabGroupManager tabGroupWithUUID:v12];
+          activeTabGroupUUID2 = [(WBWindowState *)self->_windowState activeTabGroupUUID];
+          v13 = [(WBTabGroupManager *)tabGroupManager tabGroupWithUUID:activeTabGroupUUID2];
         }
 
         else
@@ -629,13 +629,13 @@ void __58__WBProfileWindow__findOrCreateUnnamedTabGroupForProfile___block_invoke
           v13 = 0;
         }
 
-        v14 = [v13 profileIdentifier];
-        v15 = [v14 isEqualToString:v17];
+        profileIdentifier = [v13 profileIdentifier];
+        v15 = [profileIdentifier isEqualToString:v17];
 
         if ((v15 & 1) == 0)
         {
-          v16 = [v6 uuid];
-          [(WBWindowState *)self->_windowState setActiveTabGroupUUID:v16];
+          uuid = [v6 uuid];
+          [(WBWindowState *)self->_windowState setActiveTabGroupUUID:uuid];
         }
       }
     }

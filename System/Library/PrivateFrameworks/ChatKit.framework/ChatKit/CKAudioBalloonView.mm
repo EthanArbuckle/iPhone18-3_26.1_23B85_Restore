@@ -1,43 +1,43 @@
 @interface CKAudioBalloonView
 - (BOOL)isControlHidden;
-- (CGSize)sizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4 tailInsets:(UIEdgeInsets *)a5;
-- (CKAudioBalloonView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets tailInsets:(UIEdgeInsets *)tailInsets;
+- (CKAudioBalloonView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)balloonTypePillContentInsets;
 - (id)nonVibrantSubViews;
 - (int64_t)waveformContentMode;
-- (void)configureForComposition:(id)a3;
-- (void)configureForMediaObject:(id)a3 previewWidth:(double)a4 orientation:(char)a5;
-- (void)configureForMessagePart:(id)a3;
-- (void)insertHighlightOverlayLayer:(id)a3;
+- (void)configureForComposition:(id)composition;
+- (void)configureForMediaObject:(id)object previewWidth:(double)width orientation:(char)orientation;
+- (void)configureForMessagePart:(id)part;
+- (void)insertHighlightOverlayLayer:(id)layer;
 - (void)layoutSubviews;
 - (void)prepareForDisplay;
 - (void)prepareForReuse;
-- (void)setControlHidden:(BOOL)a3;
-- (void)setDuration:(double)a3;
-- (void)setPlayed:(BOOL)a3;
-- (void)setPlaying:(BOOL)a3;
-- (void)setTime:(double)a3;
-- (void)setWaveform:(id)a3;
-- (void)setWaveformContentMode:(int64_t)a3;
+- (void)setControlHidden:(BOOL)hidden;
+- (void)setDuration:(double)duration;
+- (void)setPlayed:(BOOL)played;
+- (void)setPlaying:(BOOL)playing;
+- (void)setTime:(double)time;
+- (void)setWaveform:(id)waveform;
+- (void)setWaveformContentMode:(int64_t)mode;
 - (void)updateProgress;
 - (void)updateTimeString;
-- (void)vibrantContainerWillReparentNonVibrantSubviews:(id)a3;
-- (void)waveformProgressViewPanning:(id)a3;
+- (void)vibrantContainerWillReparentNonVibrantSubviews:(id)subviews;
+- (void)waveformProgressViewPanning:(id)panning;
 @end
 
 @implementation CKAudioBalloonView
 
-- (void)configureForMediaObject:(id)a3 previewWidth:(double)a4 orientation:(char)a5
+- (void)configureForMediaObject:(id)object previewWidth:(double)width orientation:(char)orientation
 {
-  v5 = a5;
+  orientationCopy = orientation;
   v18.receiver = self;
   v18.super_class = CKAudioBalloonView;
-  v8 = a3;
-  [(CKBalloonView *)&v18 configureForMediaObject:v8 previewWidth:v5 orientation:a4];
+  objectCopy = object;
+  [(CKBalloonView *)&v18 configureForMediaObject:objectCopy previewWidth:orientationCopy orientation:width];
   v9 = [CKUIBehavior sharedBehaviors:v18.receiver];
-  v10 = [v9 theme];
-  v11 = v10;
-  if (v5 == 1)
+  theme = [v9 theme];
+  v11 = theme;
+  if (orientationCopy == 1)
   {
     v12 = 1;
   }
@@ -47,40 +47,40 @@
     v12 = 0xFFFFFFFFLL;
   }
 
-  v13 = [v10 waveformColorForColorType:v12];
+  v13 = [theme waveformColorForColorType:v12];
 
-  v14 = [v8 waveformForOrientation:v5];
+  v14 = [objectCopy waveformForOrientation:orientationCopy];
   v15 = [v14 _flatImageWithColor:v13];
   [(CKAudioBalloonView *)self setWaveform:v15];
 
-  [v8 duration];
+  [objectCopy duration];
   v17 = v16;
 
   [(CKAudioBalloonView *)self setDuration:v17];
   [(CKAudioBalloonView *)self setPlayed:1];
 }
 
-- (void)configureForComposition:(id)a3
+- (void)configureForComposition:(id)composition
 {
   v8.receiver = self;
   v8.super_class = CKAudioBalloonView;
-  v4 = a3;
-  [(CKColoredBalloonView *)&v8 configureForComposition:v4];
-  v5 = [v4 mediaObjects];
+  compositionCopy = composition;
+  [(CKColoredBalloonView *)&v8 configureForComposition:compositionCopy];
+  mediaObjects = [compositionCopy mediaObjects];
 
-  v6 = [v5 lastObject];
+  lastObject = [mediaObjects lastObject];
   v7 = +[CKUIBehavior sharedBehaviors];
   [v7 previewMaxWidth];
-  [(CKAudioBalloonView *)self configureForMediaObject:v6 previewWidth:1 orientation:?];
+  [(CKAudioBalloonView *)self configureForMediaObject:lastObject previewWidth:1 orientation:?];
 
   [(CKAudioBalloonView *)self setPlayed:0];
 }
 
-- (CKAudioBalloonView)initWithFrame:(CGRect)a3
+- (CKAudioBalloonView)initWithFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = CKAudioBalloonView;
-  v3 = [(CKColoredBalloonView *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKColoredBalloonView *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DCC10]);
@@ -121,8 +121,8 @@
   v10 = v9;
   v12 = v11;
   v13 = +[CKUIBehavior sharedBehaviors];
-  v14 = [(CKAudioBalloonView *)self progressView];
-  [v14 frame];
+  progressView = [(CKAudioBalloonView *)self progressView];
+  [progressView frame];
   v16 = v15;
   v18 = v17;
   [v13 audioBalloonProgressInset];
@@ -139,9 +139,9 @@
   }
 
   v22 = floor((v8 + (v12 - v18) * 0.5) * v21) / v21;
-  [v14 setFrame:{v20, v22, v16, v18}];
-  v23 = [(CKAudioBalloonView *)self timeLabel];
-  [v23 sizeThatFits:{v10, v12}];
+  [progressView setFrame:{v20, v22, v16, v18}];
+  timeLabel = [(CKAudioBalloonView *)self timeLabel];
+  [timeLabel sizeThatFits:{v10, v12}];
   rect = v16;
   v25 = v24;
 
@@ -152,12 +152,12 @@
   MaxX = CGRectGetMaxX(v41);
   [v13 audioBalloonTimeInset];
   v28 = MaxX - (v25 + v27);
-  v29 = [(CKAudioBalloonView *)self timeLabel];
-  [v29 setFrame:{v28, v8, v25, v12}];
+  timeLabel2 = [(CKAudioBalloonView *)self timeLabel];
+  [timeLabel2 setFrame:{v28, v8, v25, v12}];
 
-  v30 = [(CKAudioBalloonView *)self waveformProgressView];
-  [v30 frame];
-  [v30 sizeThatFits:{v39, v38}];
+  waveformProgressView = [(CKAudioBalloonView *)self waveformProgressView];
+  [waveformProgressView frame];
+  [waveformProgressView sizeThatFits:{v39, v38}];
   v32 = v31;
   v42.origin.x = v20;
   v42.origin.y = v22;
@@ -173,17 +173,17 @@
     [CKAudioBalloonView layoutSubviews];
   }
 
-  [v30 setFrame:?];
-  [v30 setClipsToBounds:v28 - v36 - (v33 + 6.0) != v32];
+  [waveformProgressView setFrame:?];
+  [waveformProgressView setClipsToBounds:v28 - v36 - (v33 + 6.0) != v32];
 }
 
-- (void)insertHighlightOverlayLayer:(id)a3
+- (void)insertHighlightOverlayLayer:(id)layer
 {
-  v4 = a3;
-  v7 = [(CKAudioBalloonView *)self layer];
-  v5 = [(CKAudioBalloonView *)self timeLabel];
-  v6 = [v5 layer];
-  [v7 insertSublayer:v4 below:v6];
+  layerCopy = layer;
+  layer = [(CKAudioBalloonView *)self layer];
+  timeLabel = [(CKAudioBalloonView *)self timeLabel];
+  layer2 = [timeLabel layer];
+  [layer insertSublayer:layerCopy below:layer2];
 }
 
 - (UIEdgeInsets)balloonTypePillContentInsets
@@ -206,10 +206,10 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4 tailInsets:(UIEdgeInsets *)a5
+- (CGSize)sizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets tailInsets:(UIEdgeInsets *)tailInsets
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v10 = +[CKUIBehavior sharedBehaviors];
   [(CKColoredBalloonView *)self alignmentRectInsetsForBoundsSize:width, height];
   v60 = v12;
@@ -220,17 +220,17 @@
   v16 = width - (v12 + v14);
   v17 = v11 + v13;
   v18 = height - (v11 + v13);
-  v19 = [(CKAudioBalloonView *)self progressView];
-  [v19 sizeThatFits:{v16, v18}];
+  progressView = [(CKAudioBalloonView *)self progressView];
+  [progressView sizeThatFits:{v16, v18}];
   v21 = v20;
 
-  v22 = [(CKAudioBalloonView *)self waveformProgressView];
-  [v22 sizeThatFits:{v16, v18}];
+  waveformProgressView = [(CKAudioBalloonView *)self waveformProgressView];
+  [waveformProgressView sizeThatFits:{v16, v18}];
   v24 = v23;
   v57 = v25;
 
-  v26 = [(CKAudioBalloonView *)self timeLabel];
-  [v26 sizeThatFits:{v16, v18}];
+  timeLabel = [(CKAudioBalloonView *)self timeLabel];
+  [timeLabel sizeThatFits:{v16, v18}];
   v28 = v27;
   v30 = v29;
 
@@ -252,8 +252,8 @@
     v41.f64[0] = NAN;
     v41.f64[1] = NAN;
     v56 = *vbslq_s8(vnegq_f64(v41), v39, v40).i64;
-    v42 = [v10 waveformPowerLevelWidthIncrement];
-    v37 = v55 + v42 - (v56 + (v55 % v42));
+    waveformPowerLevelWidthIncrement = [v10 waveformPowerLevelWidthIncrement];
+    v37 = v55 + waveformPowerLevelWidthIncrement - (v56 + (v55 % waveformPowerLevelWidthIncrement));
   }
 
   if (![v10 isAccessibilityPreferredContentSizeCategory])
@@ -261,7 +261,7 @@
     [(CKColoredBalloonView *)self balloonDescriptor];
     [v10 balloonMaskSizeWithBalloonDescriptor:v62];
     v43 = v44;
-    if (!a4)
+    if (!insets)
     {
       goto LABEL_8;
     }
@@ -270,24 +270,24 @@
   }
 
   v43 = fmax(v30, v57 + 25.0);
-  if (a4)
+  if (insets)
   {
 LABEL_7:
-    a4->top = v61;
-    a4->left = v60;
-    a4->bottom = v59;
-    a4->right = v58;
+    insets->top = v61;
+    insets->left = v60;
+    insets->bottom = v59;
+    insets->right = v58;
   }
 
 LABEL_8:
   v45 = v38 - v37;
-  if (a5)
+  if (tailInsets)
   {
     [(CKBalloonView *)self tailInsetsForViewSize:width, height];
-    a5->top = v46;
-    a5->left = v47;
-    a5->bottom = v48;
-    a5->right = v49;
+    tailInsets->top = v46;
+    tailInsets->left = v47;
+    tailInsets->bottom = v48;
+    tailInsets->right = v49;
   }
 
   v50 = v15 + v45;
@@ -311,22 +311,22 @@ LABEL_8:
   v12.receiver = self;
   v12.super_class = CKAudioBalloonView;
   [(CKColoredBalloonView *)&v12 prepareForDisplay];
-  v3 = [(CKBalloonView *)self color];
-  v4 = [(CKAudioBalloonView *)self timeLabel];
+  color = [(CKBalloonView *)self color];
+  timeLabel = [(CKAudioBalloonView *)self timeLabel];
   v5 = +[CKUIBehavior sharedBehaviors];
-  v6 = [v5 theme];
-  v7 = [v6 balloonTextColorForColorType:v3];
-  [v4 setTextColor:v7];
+  theme = [v5 theme];
+  v7 = [theme balloonTextColorForColorType:color];
+  [timeLabel setTextColor:v7];
 
   v8 = +[CKUIBehavior sharedBehaviors];
-  v9 = [v8 audioBalloonTimeFont];
-  [v4 setFont:v9];
+  audioBalloonTimeFont = [v8 audioBalloonTimeFont];
+  [timeLabel setFont:audioBalloonTimeFont];
 
-  v10 = [(CKAudioBalloonView *)self progressView];
-  [v10 setColor:{-[CKBalloonView color](self, "color")}];
+  progressView = [(CKAudioBalloonView *)self progressView];
+  [progressView setColor:{-[CKBalloonView color](self, "color")}];
 
-  v11 = [(CKAudioBalloonView *)self waveformProgressView];
-  [v11 setColor:{-[CKBalloonView color](self, "color")}];
+  waveformProgressView = [(CKAudioBalloonView *)self waveformProgressView];
+  [waveformProgressView setColor:{-[CKBalloonView color](self, "color")}];
 
   [(CKAudioBalloonView *)self updateTimeString];
   [(CKAudioBalloonView *)self updateProgress];
@@ -343,8 +343,8 @@ LABEL_8:
   v11 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v3 = [(CKAudioBalloonView *)self nonVibrantSubViews];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v13 count:16];
+  nonVibrantSubViews = [(CKAudioBalloonView *)self nonVibrantSubViews];
+  v4 = [nonVibrantSubViews countByEnumeratingWithState:&v8 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -356,101 +356,101 @@ LABEL_8:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(nonVibrantSubViews);
         }
 
         [*(*(&v8 + 1) + 8 * v7++) setUserInteractionEnabled:1];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v13 count:16];
+      v5 = [nonVibrantSubViews countByEnumeratingWithState:&v8 objects:v13 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)setTime:(double)a3
+- (void)setTime:(double)time
 {
-  if (self->_time != a3)
+  if (self->_time != time)
   {
-    self->_time = a3;
+    self->_time = time;
     [(CKBalloonView *)self setNeedsPrepareForDisplay];
   }
 }
 
-- (void)setDuration:(double)a3
+- (void)setDuration:(double)duration
 {
-  if (self->_duration != a3)
+  if (self->_duration != duration)
   {
-    self->_duration = a3;
-    v5 = [(CKAudioBalloonView *)self waveformProgressView];
-    [v5 setDuration:a3];
-
-    [(CKBalloonView *)self setNeedsPrepareForDisplay];
-  }
-}
-
-- (void)setWaveform:(id)a3
-{
-  v4 = a3;
-  v5 = [(CKAudioBalloonView *)self waveformProgressView];
-  [v5 setWaveform:v4];
-}
-
-- (void)setPlaying:(BOOL)a3
-{
-  if (self->_playing != a3)
-  {
-    v4 = a3;
-    self->_playing = a3;
-    v6 = [(CKAudioBalloonView *)self waveformProgressView];
-    [v6 setPlaying:v4];
+    self->_duration = duration;
+    waveformProgressView = [(CKAudioBalloonView *)self waveformProgressView];
+    [waveformProgressView setDuration:duration];
 
     [(CKBalloonView *)self setNeedsPrepareForDisplay];
   }
 }
 
-- (void)setPlayed:(BOOL)a3
+- (void)setWaveform:(id)waveform
 {
-  if (self->_played != a3)
+  waveformCopy = waveform;
+  waveformProgressView = [(CKAudioBalloonView *)self waveformProgressView];
+  [waveformProgressView setWaveform:waveformCopy];
+}
+
+- (void)setPlaying:(BOOL)playing
+{
+  if (self->_playing != playing)
   {
-    v4 = a3;
-    self->_played = a3;
-    v6 = [(CKAudioBalloonView *)self waveformProgressView];
-    [v6 setPlayed:v4];
+    playingCopy = playing;
+    self->_playing = playing;
+    waveformProgressView = [(CKAudioBalloonView *)self waveformProgressView];
+    [waveformProgressView setPlaying:playingCopy];
 
     [(CKBalloonView *)self setNeedsPrepareForDisplay];
   }
 }
 
-- (void)setControlHidden:(BOOL)a3
+- (void)setPlayed:(BOOL)played
 {
-  v3 = a3;
-  v4 = [(CKAudioBalloonView *)self progressView];
-  [v4 setHidden:v3];
+  if (self->_played != played)
+  {
+    playedCopy = played;
+    self->_played = played;
+    waveformProgressView = [(CKAudioBalloonView *)self waveformProgressView];
+    [waveformProgressView setPlayed:playedCopy];
+
+    [(CKBalloonView *)self setNeedsPrepareForDisplay];
+  }
+}
+
+- (void)setControlHidden:(BOOL)hidden
+{
+  hiddenCopy = hidden;
+  progressView = [(CKAudioBalloonView *)self progressView];
+  [progressView setHidden:hiddenCopy];
 }
 
 - (BOOL)isControlHidden
 {
-  v2 = [(CKAudioBalloonView *)self progressView];
-  v3 = [v2 isHidden];
+  progressView = [(CKAudioBalloonView *)self progressView];
+  isHidden = [progressView isHidden];
 
-  return v3;
+  return isHidden;
 }
 
-- (void)setWaveformContentMode:(int64_t)a3
+- (void)setWaveformContentMode:(int64_t)mode
 {
-  v4 = [(CKAudioBalloonView *)self waveformProgressView];
-  [v4 setContentMode:a3];
+  waveformProgressView = [(CKAudioBalloonView *)self waveformProgressView];
+  [waveformProgressView setContentMode:mode];
 }
 
 - (int64_t)waveformContentMode
 {
-  v2 = [(CKAudioBalloonView *)self waveformProgressView];
-  v3 = [v2 contentMode];
+  waveformProgressView = [(CKAudioBalloonView *)self waveformProgressView];
+  contentMode = [waveformProgressView contentMode];
 
-  return v3;
+  return contentMode;
 }
 
 - (void)updateTimeString
@@ -463,22 +463,22 @@ LABEL_8:
     v4 = v5;
   }
 
-  v6 = [(CKAudioBalloonView *)self timeLabel];
+  timeLabel = [(CKAudioBalloonView *)self timeLabel];
   v7 = CKLocalizedStringForDuration(v4);
-  [v6 setText:v7];
+  [timeLabel setText:v7];
 
   [(CKAudioBalloonView *)self setNeedsLayout];
 }
 
 - (void)updateProgress
 {
-  v9 = [(CKAudioBalloonView *)self progressView];
+  progressView = [(CKAudioBalloonView *)self progressView];
   [(CKAudioBalloonView *)self time];
   v4 = v3;
   [(CKAudioBalloonView *)self duration];
   [CKAudioProgressView progressForTime:v4 duration:v5];
-  [v9 setProgress:?];
-  v6 = [(CKAudioBalloonView *)self isPlaying];
+  [progressView setProgress:?];
+  isPlaying = [(CKAudioBalloonView *)self isPlaying];
   if ([(CKAudioBalloonView *)self isPlayed])
   {
     v7 = [(CKBalloonView *)self orientation]== 0;
@@ -489,36 +489,36 @@ LABEL_8:
     v7 = 0;
   }
 
-  [v9 setPlayed:v7];
-  [v9 setPlaying:v6];
-  [v9 prepareForDisplayIfNeeded];
-  v8 = [(CKAudioBalloonView *)self waveformProgressView];
-  [v8 setCurrentTime:v4];
-  [v8 prepareForDisplayIfNeeded];
+  [progressView setPlayed:v7];
+  [progressView setPlaying:isPlaying];
+  [progressView prepareForDisplayIfNeeded];
+  waveformProgressView = [(CKAudioBalloonView *)self waveformProgressView];
+  [waveformProgressView setCurrentTime:v4];
+  [waveformProgressView prepareForDisplayIfNeeded];
 }
 
 - (id)nonVibrantSubViews
 {
   v8[3] = *MEMORY[0x1E69E9840];
-  v3 = [(CKAudioBalloonView *)self timeLabel];
-  v4 = [(CKAudioBalloonView *)self progressView];
-  v8[1] = v4;
-  v5 = [(CKAudioBalloonView *)self waveformProgressView];
-  v8[2] = v5;
+  timeLabel = [(CKAudioBalloonView *)self timeLabel];
+  progressView = [(CKAudioBalloonView *)self progressView];
+  v8[1] = progressView;
+  waveformProgressView = [(CKAudioBalloonView *)self waveformProgressView];
+  v8[2] = waveformProgressView;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:3];
 
   return v6;
 }
 
-- (void)vibrantContainerWillReparentNonVibrantSubviews:(id)a3
+- (void)vibrantContainerWillReparentNonVibrantSubviews:(id)subviews
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  subviewsCopy = subviews;
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  v4 = [subviewsCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -530,25 +530,25 @@ LABEL_8:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(subviewsCopy);
         }
 
         [*(*(&v8 + 1) + 8 * v7++) setUserInteractionEnabled:0];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [subviewsCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)waveformProgressViewPanning:(id)a3
+- (void)waveformProgressViewPanning:(id)panning
 {
-  v4 = a3;
-  v5 = [v4 view];
-  [v4 locationInView:v5];
+  panningCopy = panning;
+  view = [panningCopy view];
+  [panningCopy locationInView:view];
   v7 = v6;
 
   [(CKWaveformProgressView *)self->_waveformProgressView frame];
@@ -570,33 +570,33 @@ LABEL_8:
   }
 
   self->_time = v11;
-  v12 = [(CKBalloonView *)self delegate];
+  delegate = [(CKBalloonView *)self delegate];
   v13 = objc_opt_respondsToSelector();
 
   if (v13)
   {
-    v14 = [(CKBalloonView *)self delegate];
-    [v14 audioBalloonScrubberDidChangeValue:v11];
+    delegate2 = [(CKBalloonView *)self delegate];
+    [delegate2 audioBalloonScrubberDidChangeValue:v11];
   }
 }
 
-- (void)configureForMessagePart:(id)a3
+- (void)configureForMessagePart:(id)part
 {
-  v4 = a3;
+  partCopy = part;
   v9.receiver = self;
   v9.super_class = CKAudioBalloonView;
-  [(CKColoredBalloonView *)&v9 configureForMessagePart:v4];
+  [(CKColoredBalloonView *)&v9 configureForMessagePart:partCopy];
   v5 = +[CKUIBehavior sharedBehaviors];
   [v5 previewMaxWidth];
   v7 = v6;
 
-  v8 = [v4 mediaObject];
-  -[CKAudioBalloonView configureForMediaObject:previewWidth:orientation:](self, "configureForMediaObject:previewWidth:orientation:", v8, [v4 balloonOrientation], v7);
+  mediaObject = [partCopy mediaObject];
+  -[CKAudioBalloonView configureForMediaObject:previewWidth:orientation:](self, "configureForMediaObject:previewWidth:orientation:", mediaObject, [partCopy balloonOrientation], v7);
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    -[CKAudioBalloonView setPlayed:](self, "setPlayed:", [v4 isPlayed]);
+    -[CKAudioBalloonView setPlayed:](self, "setPlayed:", [partCopy isPlayed]);
   }
 }
 

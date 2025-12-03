@@ -1,22 +1,22 @@
 @interface TCColorPalettizer
-- (BOOL)addQuadColor:(_tagRgbQuad)a3;
-- (BOOL)addTSUColor:(id)a3;
+- (BOOL)addQuadColor:(_tagRgbQuad)color;
+- (BOOL)addTSUColor:(id)color;
 - (id)getPaletteData;
 - (id)getPaletteDataRaw;
 - (id)getPngPaletteData;
 - (id)initWitDefaultPaletteSize;
-- (id)initWitMaxPaletteSize:(unsigned int)a3;
-- (int)addPixelToOctree:(_tagOctree *)a3 pixel:(_tagRgbQuad)a4;
-- (int)createNodeOctree:(_tagOctreeNode *)a3 parent:(_tagOctreeNode *)a4;
-- (int)createOctree:(_tagOctree *)a3 maxPaletteSize:(unsigned __int16)a4;
-- (int)deleteListOctree:(_tagLevelItem *)a3;
-- (int)deleteNodeOctree:(_tagOctreeNode *)a3;
-- (int)deleteOctree:(_tagOctree *)a3;
-- (int)paletteIndexFromQuadColor:(_tagRgbQuad)a3;
-- (int)paletteIndexFromTSUColor:(id)a3;
-- (int)reduceOctree:(_tagOctree *)a3;
-- (int)rgbToIndexOctree:(_tagOctree *)a3 source:(_tagRgbQuad)a4 destination:(char *)a5;
-- (unsigned)getPaletteFromOctree:(_tagOctreeNode *)a3 paletteEntry:(_tagRgbQuad *)a4 index:(unsigned __int16)a5;
+- (id)initWitMaxPaletteSize:(unsigned int)size;
+- (int)addPixelToOctree:(_tagOctree *)octree pixel:(_tagRgbQuad)pixel;
+- (int)createNodeOctree:(_tagOctreeNode *)octree parent:(_tagOctreeNode *)parent;
+- (int)createOctree:(_tagOctree *)octree maxPaletteSize:(unsigned __int16)size;
+- (int)deleteListOctree:(_tagLevelItem *)octree;
+- (int)deleteNodeOctree:(_tagOctreeNode *)octree;
+- (int)deleteOctree:(_tagOctree *)octree;
+- (int)paletteIndexFromQuadColor:(_tagRgbQuad)color;
+- (int)paletteIndexFromTSUColor:(id)color;
+- (int)reduceOctree:(_tagOctree *)octree;
+- (int)rgbToIndexOctree:(_tagOctree *)octree source:(_tagRgbQuad)source destination:(char *)destination;
+- (unsigned)getPaletteFromOctree:(_tagOctreeNode *)octree paletteEntry:(_tagRgbQuad *)entry index:(unsigned __int16)index;
 - (unsigned)paletteColorCount;
 - (void)createPalette;
 - (void)dealloc;
@@ -24,16 +24,16 @@
 
 @implementation TCColorPalettizer
 
-- (id)initWitMaxPaletteSize:(unsigned int)a3
+- (id)initWitMaxPaletteSize:(unsigned int)size
 {
-  v3 = a3;
+  sizeCopy = size;
   v7.receiver = self;
   v7.super_class = TCColorPalettizer;
   v4 = [(TCColorPalettizer *)&v7 init];
   v5 = v4;
   if (v4)
   {
-    [(TCColorPalettizer *)v4 createOctree:&v4->m_pTree maxPaletteSize:v3];
+    [(TCColorPalettizer *)v4 createOctree:&v4->m_pTree maxPaletteSize:sizeCopy];
     v5->isDefaultPaletteSize = 0;
   }
 
@@ -67,30 +67,30 @@
   [(TCColorPalettizer *)&v3 dealloc];
 }
 
-- (BOOL)addTSUColor:(id)a3
+- (BOOL)addTSUColor:(id)color
 {
-  if (!a3 || !self->m_pTree)
+  if (!color || !self->m_pTree)
   {
     return 0;
   }
 
-  [a3 redComponent];
+  [color redComponent];
   v6 = (v5 * 255.0);
-  [a3 greenComponent];
+  [color greenComponent];
   v8 = (v7 * 255.0);
-  [a3 blueComponent];
+  [color blueComponent];
 
   return [(TCColorPalettizer *)self addQuadColor:(v6 << 16) | (v8 << 8) | (v9 * 255.0)];
 }
 
-- (BOOL)addQuadColor:(_tagRgbQuad)a3
+- (BOOL)addQuadColor:(_tagRgbQuad)color
 {
   if (!self->m_pTree)
   {
     return 0;
   }
 
-  if (!self->isDefaultPaletteSize || ((a3.var2 | a3.var1) | a3.var0 ? (v4 = (*&a3 & 0xFFFFFF) == 0xFFFFFF) : (v4 = 1), !v4))
+  if (!self->isDefaultPaletteSize || ((color.var2 | color.var1) | color.var0 ? (v4 = (*&color & 0xFFFFFF) == 0xFFFFFF) : (v4 = 1), !v4))
   {
     if ([TCColorPalettizer addPixelToOctree:"addPixelToOctree:pixel:" pixel:?])
     {
@@ -274,23 +274,23 @@ LABEL_8:
   return v5;
 }
 
-- (int)paletteIndexFromTSUColor:(id)a3
+- (int)paletteIndexFromTSUColor:(id)color
 {
   if (!self->m_pTree)
   {
     return -1;
   }
 
-  [a3 redComponent];
+  [color redComponent];
   v6 = (v5 * 255.0);
-  [a3 greenComponent];
+  [color greenComponent];
   v8 = (v7 * 255.0);
-  [a3 blueComponent];
+  [color blueComponent];
 
   return [(TCColorPalettizer *)self paletteIndexFromQuadColor:(v6 << 16) | (v8 << 8) | (v9 * 255.0)];
 }
 
-- (int)paletteIndexFromQuadColor:(_tagRgbQuad)a3
+- (int)paletteIndexFromQuadColor:(_tagRgbQuad)color
 {
   if (!self->m_pTree)
   {
@@ -299,12 +299,12 @@ LABEL_8:
 
   if (self->isDefaultPaletteSize)
   {
-    if (!((a3.var2 | a3.var1) | a3.var0))
+    if (!((color.var2 | color.var1) | color.var0))
     {
       return 0;
     }
 
-    if ((~*&a3 & 0xFFFFFF) == 0)
+    if ((~*&color & 0xFFFFFF) == 0)
     {
       return 1;
     }
@@ -326,11 +326,11 @@ LABEL_8:
   }
 }
 
-- (int)createOctree:(_tagOctree *)a3 maxPaletteSize:(unsigned __int16)a4
+- (int)createOctree:(_tagOctree *)octree maxPaletteSize:(unsigned __int16)size
 {
-  v4 = a4;
+  sizeCopy = size;
   v7 = malloc_type_malloc(0x60uLL, 0x10200403BC0D067uLL);
-  *a3 = v7;
+  *octree = v7;
   if (!v7)
   {
     return 1;
@@ -338,14 +338,14 @@ LABEL_8:
 
   v8 = v7;
   v7->var0 = 0;
-  v7->var1 = v4;
+  v7->var1 = sizeCopy;
   v7->var2 = 0;
   *&v7->var3 = 0u;
   *&v7->var4[1] = 0u;
   *&v7->var4[3] = 0u;
   *&v7->var4[5] = 0u;
   *&v7->var4[7] = 0u;
-  v9 = smalloc_typed(v4, 4uLL, 0x100004052888210uLL);
+  v9 = smalloc_typed(sizeCopy, 4uLL, 0x100004052888210uLL);
   v8->var3 = v9;
   if (v9)
   {
@@ -362,41 +362,41 @@ LABEL_8:
   }
 
   [(TCColorPalettizer *)self deleteOctree:v8];
-  *a3 = 0;
+  *octree = 0;
   return v10;
 }
 
-- (int)deleteOctree:(_tagOctree *)a3
+- (int)deleteOctree:(_tagOctree *)octree
 {
-  if (!a3)
+  if (!octree)
   {
     return 0;
   }
 
-  v5 = [(TCColorPalettizer *)self deleteNodeOctree:a3->var0];
+  v5 = [(TCColorPalettizer *)self deleteNodeOctree:octree->var0];
   for (i = 24; i != 96; i += 8)
   {
-    v7 = [(TCColorPalettizer *)self deleteListOctree:*(&a3->var0 + i)];
+    v7 = [(TCColorPalettizer *)self deleteListOctree:*(&octree->var0 + i)];
     if (v7)
     {
       v5 = v7;
     }
   }
 
-  var3 = a3->var3;
+  var3 = octree->var3;
   if (var3)
   {
     free(var3);
   }
 
-  free(a3);
+  free(octree);
   return v5;
 }
 
-- (int)createNodeOctree:(_tagOctreeNode *)a3 parent:(_tagOctreeNode *)a4
+- (int)createNodeOctree:(_tagOctreeNode *)octree parent:(_tagOctreeNode *)parent
 {
   v6 = malloc_type_malloc(0x60uLL, 0x10200401E285E51uLL);
-  *a3 = v6;
+  *octree = v6;
   if (!v6)
   {
     return 1;
@@ -404,7 +404,7 @@ LABEL_8:
 
   v7 = v6;
   result = 0;
-  v7->var0 = a4;
+  v7->var0 = parent;
   v7->var4 = 0;
   *v7->var1 = 0u;
   *&v7->var1[2] = 0u;
@@ -414,9 +414,9 @@ LABEL_8:
   return result;
 }
 
-- (int)deleteNodeOctree:(_tagOctreeNode *)a3
+- (int)deleteNodeOctree:(_tagOctreeNode *)octree
 {
-  if (!a3)
+  if (!octree)
   {
     return 0;
   }
@@ -424,25 +424,25 @@ LABEL_8:
   v5 = 0;
   for (i = 8; i != 72; i += 8)
   {
-    v7 = [(TCColorPalettizer *)self deleteNodeOctree:*(&a3->var0 + i)];
+    v7 = [(TCColorPalettizer *)self deleteNodeOctree:*(&octree->var0 + i)];
     if (v7)
     {
       v5 = v7;
     }
   }
 
-  free(a3);
+  free(octree);
   return v5;
 }
 
-- (int)deleteListOctree:(_tagLevelItem *)a3
+- (int)deleteListOctree:(_tagLevelItem *)octree
 {
-  if (!a3)
+  if (!octree)
   {
     return 0;
   }
 
-  if (a3->var0)
+  if (octree->var0)
   {
     v4 = [(TCColorPalettizer *)self deleteListOctree:?];
   }
@@ -452,22 +452,22 @@ LABEL_8:
     v4 = 0;
   }
 
-  free(a3);
+  free(octree);
   return v4;
 }
 
-- (int)addPixelToOctree:(_tagOctree *)a3 pixel:(_tagRgbQuad)a4
+- (int)addPixelToOctree:(_tagOctree *)octree pixel:(_tagRgbQuad)pixel
 {
-  if (a3)
+  if (octree)
   {
-    var0 = a4.var0;
-    v6 = *&a4.var0 >> 8;
-    v7 = *&a4.var0 >> 16;
-    v8 = a3->var0;
-    var2 = a3->var0->var2;
+    var0 = pixel.var0;
+    v6 = *&pixel.var0 >> 8;
+    v7 = *&pixel.var0 >> 16;
+    v8 = octree->var0;
+    var2 = octree->var0->var2;
     if (var2)
     {
-      v10 = a3->var0;
+      v10 = octree->var0;
 LABEL_4:
       if (var2 < 0x9999)
       {
@@ -483,9 +483,9 @@ LABEL_4:
 
     else
     {
-      v22 = *&a4.var0 >> 8;
-      var1 = a4.var1;
-      v15 = a4.var0;
+      v22 = *&pixel.var0 >> 8;
+      var1 = pixel.var1;
+      v15 = pixel.var0;
       v16 = 7;
       while (v16 != -1)
       {
@@ -518,15 +518,15 @@ LABEL_4:
       v8->var3.var2 = v7 << 8;
       v8->var2 = 1;
       v8->var3.var0 = var0 << 8;
-      ++a3->var2;
+      ++octree->var2;
       v12 = malloc_type_malloc(0x10uLL, 0x20040A4A59CD2uLL);
       if (v12)
       {
         v20 = v12;
         LODWORD(v12) = 0;
-        v20->var0 = a3->var4[8];
+        v20->var0 = octree->var4[8];
         v20->var1 = v8;
-        a3->var4[8] = v20;
+        octree->var4[8] = v20;
       }
     }
   }
@@ -539,9 +539,9 @@ LABEL_4:
   return v12;
 }
 
-- (int)reduceOctree:(_tagOctree *)a3
+- (int)reduceOctree:(_tagOctree *)octree
 {
-  v5 = &a3->var4[8];
+  v5 = &octree->var4[8];
   v6 = -8;
   while (!*v5)
   {
@@ -602,7 +602,7 @@ LABEL_5:
     *&var0->var3.var0 = vshr_n_u32(v17, 8uLL);
   }
 
-  ++a3->var2;
+  ++octree->var2;
   v8 = malloc_type_malloc(0x10uLL, 0x20040A4A59CD2uLL);
   if (v8)
   {
@@ -631,7 +631,7 @@ LABEL_5:
           return v8;
         }
 
-        --a3->var2;
+        --octree->var2;
         free(v20);
       }
     }
@@ -642,19 +642,19 @@ LABEL_5:
   return v8;
 }
 
-- (unsigned)getPaletteFromOctree:(_tagOctreeNode *)a3 paletteEntry:(_tagRgbQuad *)a4 index:(unsigned __int16)a5
+- (unsigned)getPaletteFromOctree:(_tagOctreeNode *)octree paletteEntry:(_tagRgbQuad *)entry index:(unsigned __int16)index
 {
   v8 = 0;
   v9 = 0;
-  var1 = a3->var1;
-  if (a3->var0)
+  var1 = octree->var1;
+  if (octree->var0)
   {
-    v11 = a5;
+    indexCopy = index;
   }
 
   else
   {
-    v11 = 0;
+    indexCopy = 0;
   }
 
   do
@@ -662,9 +662,9 @@ LABEL_5:
     v12 = var1[v8];
     if (v12)
     {
-      v13 = [(TCColorPalettizer *)self getPaletteFromOctree:v12 paletteEntry:a4 index:v11];
-      a4 += v13;
-      v11 += v13;
+      v13 = [(TCColorPalettizer *)self getPaletteFromOctree:v12 paletteEntry:entry index:indexCopy];
+      entry += v13;
+      indexCopy += v13;
       v9 += v13;
     }
 
@@ -672,30 +672,30 @@ LABEL_5:
   }
 
   while (v8 != 8);
-  if (!*var1 && !a3->var1[1] && !a3->var1[2] && !a3->var1[3] && !a3->var1[4] && !a3->var1[5] && !a3->var1[6] && !a3->var1[7])
+  if (!*var1 && !octree->var1[1] && !octree->var1[2] && !octree->var1[3] && !octree->var1[4] && !octree->var1[5] && !octree->var1[6] && !octree->var1[7])
   {
-    a4->var2 = BYTE1(a3->var3.var2);
-    var0 = a3->var3.var0;
-    a4->var1 = BYTE1(a3->var3.var1);
-    a4->var0 = BYTE1(var0);
-    a4->var3 = 0;
-    a3->var4 = v11;
+    entry->var2 = BYTE1(octree->var3.var2);
+    var0 = octree->var3.var0;
+    entry->var1 = BYTE1(octree->var3.var1);
+    entry->var0 = BYTE1(var0);
+    entry->var3 = 0;
+    octree->var4 = indexCopy;
     ++v9;
   }
 
   return v9;
 }
 
-- (int)rgbToIndexOctree:(_tagOctree *)a3 source:(_tagRgbQuad)a4 destination:(char *)a5
+- (int)rgbToIndexOctree:(_tagOctree *)octree source:(_tagRgbQuad)source destination:(char *)destination
 {
-  var0 = a3->var0;
-  if (!a3->var0)
+  var0 = octree->var0;
+  if (!octree->var0)
   {
     return 1;
   }
 
   v6 = 0;
-  v7 = vand_s8(vshl_u32(vdup_n_s32(a4.var0), 0xFFFFFFF0FFFFFFF8), 0xFF000000FFLL);
+  v7 = vand_s8(vshl_u32(vdup_n_s32(source.var0), 0xFFFFFFF0FFFFFFF8), 0xFF000000FFLL);
   while (1)
   {
     var1 = var0->var1;
@@ -707,7 +707,7 @@ LABEL_5:
     v9 = 7 - v6;
     v10 = vand_s8(vshl_u32(vshl_u32(v7, vneg_s32(vdup_n_s32(v9))), 0x200000001), 0x400000002);
     ++v6;
-    var0 = var1[v10.i32[0] | (a4.var0 >> v9) & 1u | v10.i32[1]];
+    var0 = var1[v10.i32[0] | (source.var0 >> v9) & 1u | v10.i32[1]];
     if (!var0)
     {
       return 1;
@@ -720,7 +720,7 @@ LABEL_5:
   }
 
   result = 0;
-  *a5 = var0->var4;
+  *destination = var0->var4;
   return result;
 }
 

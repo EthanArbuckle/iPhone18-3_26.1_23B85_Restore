@@ -11,15 +11,15 @@
 - (CGRect)alignmentFrameInParent;
 - (CGRect)alignmentFrameInRoot;
 - (CGRect)clipRect;
-- (CGRect)clippedRectInRoot:(CGRect)a3;
+- (CGRect)clippedRectInRoot:(CGRect)root;
 - (CGRect)frame;
 - (CGRect)frameInParent;
 - (CGRect)frameInRoot;
 - (CGRect)insertionFrame;
 - (CGRect)insertionFrameInRoot;
-- (CGRect)rectInParent:(CGRect)a3;
-- (CGRect)rectInRoot:(CGRect)a3;
-- (CGRect)selectionHighlightFrameFittingParentWidthForChildWithFrame:(CGRect)a3;
+- (CGRect)rectInParent:(CGRect)parent;
+- (CGRect)rectInRoot:(CGRect)root;
+- (CGRect)selectionHighlightFrameFittingParentWidthForChildWithFrame:(CGRect)frame;
 - (NSArray)layoutsForProvidingGuidesForChildLayouts;
 - (NSArray)visibleGeometries;
 - (TSDAbstractLayout)init;
@@ -30,23 +30,23 @@
 - (UIEdgeInsets)captionEdgeInsets;
 - (double)interimPositionX;
 - (double)interimPositionY;
-- (id)childLayoutContainingPossibleDescendentLayout:(id)a3;
-- (id)geometryInRoot:(id)a3;
-- (void)addChild:(id)a3;
-- (void)addLayoutsInRect:(CGRect)a3 toArray:(id)a4 deep:(BOOL)a5;
+- (id)childLayoutContainingPossibleDescendentLayout:(id)layout;
+- (id)geometryInRoot:(id)root;
+- (void)addChild:(id)child;
+- (void)addLayoutsInRect:(CGRect)rect toArray:(id)array deep:(BOOL)deep;
 - (void)dealloc;
-- (void)exchangeChildAtIndex:(unint64_t)a3 withChildAtIndex:(unint64_t)a4;
+- (void)exchangeChildAtIndex:(unint64_t)index withChildAtIndex:(unint64_t)atIndex;
 - (void)fixTransformFromInterimPosition;
-- (void)insertChild:(id)a3 above:(id)a4;
-- (void)insertChild:(id)a3 atIndex:(unint64_t)a4;
-- (void)insertChild:(id)a3 below:(id)a4;
-- (void)offsetGeometryBy:(CGPoint)a3;
-- (void)p_fixTransformFromInterimPosition:(CGPoint)a3 interimPositionXSet:(BOOL)a4 interimPositionYSet:(BOOL)a5;
+- (void)insertChild:(id)child above:(id)above;
+- (void)insertChild:(id)child atIndex:(unint64_t)index;
+- (void)insertChild:(id)child below:(id)below;
+- (void)offsetGeometryBy:(CGPoint)by;
+- (void)p_fixTransformFromInterimPosition:(CGPoint)position interimPositionXSet:(BOOL)set interimPositionYSet:(BOOL)ySet;
 - (void)removeFromParent;
-- (void)replaceChild:(id)a3 with:(id)a4;
-- (void)setChildren:(id)a3;
-- (void)setInterimPositionX:(double)a3;
-- (void)setInterimPositionY:(double)a3;
+- (void)replaceChild:(id)child with:(id)with;
+- (void)setChildren:(id)children;
+- (void)setInterimPositionX:(double)x;
+- (void)setInterimPositionY:(double)y;
 @end
 
 @implementation TSDAbstractLayout
@@ -116,9 +116,9 @@
   return v6;
 }
 
-- (id)geometryInRoot:(id)a3
+- (id)geometryInRoot:(id)root
 {
-  v4 = objc_msgSend_mutableCopy(a3, a2, a3);
+  v4 = objc_msgSend_mutableCopy(root, a2, root);
   v5 = self->_parent;
   if (v5)
   {
@@ -296,8 +296,8 @@
   *&retstr->a = 0u;
   objc_msgSend_transform(self, a3, v3);
   v6 = self->_parent;
-  v7 = self;
-  v9 = v7;
+  selfCopy = self;
+  v9 = selfCopy;
   if (v6)
   {
     do
@@ -324,7 +324,7 @@
 
   else
   {
-    v12 = v7;
+    v12 = selfCopy;
   }
 
   return result;
@@ -436,12 +436,12 @@
   return result;
 }
 
-- (CGRect)rectInParent:(CGRect)a3
+- (CGRect)rectInParent:(CGRect)parent
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = parent.size.height;
+  width = parent.size.width;
+  y = parent.origin.y;
+  x = parent.origin.x;
   objc_msgSend_transformInParent(self, a2, v3);
   v9.origin.x = x;
   v9.origin.y = y;
@@ -450,12 +450,12 @@
   return CGRectApplyAffineTransform(v9, &v8);
 }
 
-- (CGRect)rectInRoot:(CGRect)a3
+- (CGRect)rectInRoot:(CGRect)root
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = root.size.height;
+  width = root.size.width;
+  y = root.origin.y;
+  x = root.origin.x;
   objc_msgSend_transformInRoot(self, a2, v3);
   v9.origin.x = x;
   v9.origin.y = y;
@@ -485,13 +485,13 @@
   return result;
 }
 
-- (CGRect)clippedRectInRoot:(CGRect)a3
+- (CGRect)clippedRectInRoot:(CGRect)root
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!CGRectIsNull(a3))
+  height = root.size.height;
+  width = root.size.width;
+  y = root.origin.y;
+  x = root.origin.x;
+  if (!CGRectIsNull(root))
   {
     objc_msgSend_clipRect(self, v8, v9);
     v37.origin.x = v10;
@@ -549,12 +549,12 @@
   return result;
 }
 
-- (CGRect)selectionHighlightFrameFittingParentWidthForChildWithFrame:(CGRect)a3
+- (CGRect)selectionHighlightFrameFittingParentWidthForChildWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   objc_msgSend_frame(self, a2, v3);
   v29.origin.x = v8;
   v29.origin.y = v9;
@@ -632,28 +632,28 @@
 {
   if (self->_parent)
   {
-    v3 = objc_msgSend_root(self->_parent, a2, v2);
+    selfCopy = objc_msgSend_root(self->_parent, a2, v2);
   }
 
   else
   {
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)setChildren:(id)a3
+- (void)setChildren:(id)children
 {
   v59 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  childrenCopy = children;
   children = self->_children;
-  if (children != v5 && (objc_msgSend_isEqual_(children, v4, v5) & 1) == 0)
+  if (children != childrenCopy && (objc_msgSend_isEqual_(children, v4, childrenCopy) & 1) == 0)
   {
-    if (v5)
+    if (childrenCopy)
     {
       v9 = objc_alloc(MEMORY[0x277CBEB98]);
-      v11 = objc_msgSend_initWithArray_(v9, v10, v5);
+      v11 = objc_msgSend_initWithArray_(v9, v10, childrenCopy);
     }
 
     else
@@ -661,7 +661,7 @@
       v11 = 0;
     }
 
-    v12 = objc_msgSend_count(v5, v7, v8);
+    v12 = objc_msgSend_count(childrenCopy, v7, v8);
     if (v12 != objc_msgSend_count(v11, v13, v14))
     {
       v16 = MEMORY[0x277D81150];
@@ -720,7 +720,7 @@
     v52 = 0u;
     v49 = 0u;
     v50 = 0u;
-    v35 = v5;
+    v35 = childrenCopy;
     v37 = objc_msgSend_countByEnumeratingWithState_objects_count_(v35, v36, &v49, v57, 16);
     if (v37)
     {
@@ -749,15 +749,15 @@
       while (v39);
     }
 
-    if (v5)
+    if (childrenCopy)
     {
-      v5 = v35;
+      childrenCopy = v35;
       v47 = objc_msgSend_mutableCopy(v35, v45, v46);
     }
 
     else
     {
-      v5 = MEMORY[0x277CBEBF8];
+      childrenCopy = MEMORY[0x277CBEBF8];
       v47 = objc_msgSend_mutableCopy(MEMORY[0x277CBEBF8], v45, v46);
     }
 
@@ -778,29 +778,29 @@
   }
 }
 
-- (void)addChild:(id)a3
+- (void)addChild:(id)child
 {
-  v9 = a3;
+  childCopy = child;
   children = self->_children;
   if (children)
   {
     v7 = objc_msgSend_count(children, v4, v5);
-    objc_msgSend_insertChild_atIndex_(self, v8, v9, v7);
+    objc_msgSend_insertChild_atIndex_(self, v8, childCopy, v7);
   }
 
   else
   {
-    objc_msgSend_insertChild_atIndex_(self, v4, v9, 0);
+    objc_msgSend_insertChild_atIndex_(self, v4, childCopy, 0);
   }
 }
 
-- (void)insertChild:(id)a3 atIndex:(unint64_t)a4
+- (void)insertChild:(id)child atIndex:(unint64_t)index
 {
-  v6 = a3;
-  if (v6)
+  childCopy = child;
+  if (childCopy)
   {
-    v16 = v6;
-    v9 = objc_msgSend_parent(v6, v7, v8);
+    v16 = childCopy;
+    v9 = objc_msgSend_parent(childCopy, v7, v8);
 
     if (v9)
     {
@@ -817,64 +817,64 @@
       children = self->_children;
     }
 
-    objc_msgSend_insertObject_atIndex_(children, v10, v16, a4);
+    objc_msgSend_insertObject_atIndex_(children, v10, v16, index);
     objc_msgSend_setParent_(v16, v15, self);
-    v6 = v16;
+    childCopy = v16;
   }
 }
 
-- (void)insertChild:(id)a3 below:(id)a4
+- (void)insertChild:(id)child below:(id)below
 {
-  v11 = a3;
-  v7 = a4;
+  childCopy = child;
+  belowCopy = below;
   children = self->_children;
   if (children)
   {
-    v9 = objc_msgSend_indexOfObjectIdenticalTo_(children, v6, v7);
+    v9 = objc_msgSend_indexOfObjectIdenticalTo_(children, v6, belowCopy);
     if (v9 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      objc_msgSend_insertChild_atIndex_(self, v10, v11, v9);
+      objc_msgSend_insertChild_atIndex_(self, v10, childCopy, v9);
     }
   }
 }
 
-- (void)insertChild:(id)a3 above:(id)a4
+- (void)insertChild:(id)child above:(id)above
 {
-  v11 = a3;
-  v7 = a4;
+  childCopy = child;
+  aboveCopy = above;
   children = self->_children;
   if (children)
   {
-    v9 = objc_msgSend_indexOfObjectIdenticalTo_(children, v6, v7);
+    v9 = objc_msgSend_indexOfObjectIdenticalTo_(children, v6, aboveCopy);
     if (v9 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      objc_msgSend_insertChild_atIndex_(self, v10, v11, v9 + 1);
+      objc_msgSend_insertChild_atIndex_(self, v10, childCopy, v9 + 1);
     }
   }
 }
 
-- (void)replaceChild:(id)a3 with:(id)a4
+- (void)replaceChild:(id)child with:(id)with
 {
-  v14 = a3;
-  v7 = a4;
+  childCopy = child;
+  withCopy = with;
   children = self->_children;
   if (children)
   {
-    v9 = objc_msgSend_indexOfObjectIdenticalTo_(children, v6, v14);
+    v9 = objc_msgSend_indexOfObjectIdenticalTo_(children, v6, childCopy);
     if (v9 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v11 = v9;
       objc_msgSend_removeObjectAtIndex_(self->_children, v10, v9);
-      objc_msgSend_setParent_(v14, v12, 0);
-      if (v7)
+      objc_msgSend_setParent_(childCopy, v12, 0);
+      if (withCopy)
       {
-        objc_msgSend_insertChild_atIndex_(self, v13, v7, v11);
+        objc_msgSend_insertChild_atIndex_(self, v13, withCopy, v11);
       }
     }
   }
 }
 
-- (void)exchangeChildAtIndex:(unint64_t)a3 withChildAtIndex:(unint64_t)a4
+- (void)exchangeChildAtIndex:(unint64_t)index withChildAtIndex:(unint64_t)atIndex
 {
   children = self->_children;
   if (!children)
@@ -888,14 +888,14 @@
     children = self->_children;
   }
 
-  if (a3 != a4 && children)
+  if (index != atIndex && children)
   {
-    v15 = objc_msgSend_count(children, a2, a3);
-    if (v15 > a3 && v15 > a4)
+    v15 = objc_msgSend_count(children, a2, index);
+    if (v15 > index && v15 > atIndex)
     {
       v26 = self->_children;
 
-      objc_msgSend_exchangeObjectAtIndex_withObjectAtIndex_(v26, v16, a3, a4);
+      objc_msgSend_exchangeObjectAtIndex_withObjectAtIndex_(v26, v16, index, atIndex);
     }
 
     else
@@ -912,20 +912,20 @@
   }
 }
 
-- (void)addLayoutsInRect:(CGRect)a3 toArray:(id)a4 deep:(BOOL)a5
+- (void)addLayoutsInRect:(CGRect)rect toArray:(id)array deep:(BOOL)deep
 {
-  v5 = a5;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  deepCopy = deep;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v47 = *MEMORY[0x277D85DE8];
-  v11 = a4;
+  arrayCopy = array;
   objc_msgSend_frameForCulling(self, v12, v13);
   if (TSUIntersectsRect())
   {
-    objc_msgSend_addObject_(v11, v14, self);
-    if (v5)
+    objc_msgSend_addObject_(arrayCopy, v14, self);
+    if (deepCopy)
     {
       objc_msgSend_frameForCulling(self, v15, v16);
       v52.origin.x = x;
@@ -981,7 +981,7 @@
               objc_enumerationMutation(v33);
             }
 
-            objc_msgSend_addLayoutsInRect_toArray_deep_(*(*(&v40 + 1) + 8 * i), v36, v11, 1, v27, v28, v29, v30);
+            objc_msgSend_addLayoutsInRect_toArray_deep_(*(*(&v40 + 1) + 8 * i), v36, arrayCopy, 1, v27, v28, v29, v30);
           }
 
           v37 = objc_msgSend_countByEnumeratingWithState_objects_count_(v33, v36, &v40, v46, 16);
@@ -1166,7 +1166,7 @@
   return x + v8;
 }
 
-- (void)setInterimPositionX:(double)a3
+- (void)setInterimPositionX:(double)x
 {
   shouldUseCaptionEdgeInsetsInInterimPosition = objc_msgSend_shouldUseCaptionEdgeInsetsInInterimPosition(self, a2, v3);
   v9 = 0.0;
@@ -1175,7 +1175,7 @@
     objc_msgSend_captionEdgeInsets(self, v7, v8);
   }
 
-  self->_interimPosition.x = a3 - v9;
+  self->_interimPosition.x = x - v9;
   self->_interimPositionXSet = 1;
 }
 
@@ -1192,7 +1192,7 @@
   return y + v8;
 }
 
-- (void)setInterimPositionY:(double)a3
+- (void)setInterimPositionY:(double)y
 {
   shouldUseCaptionEdgeInsetsInInterimPosition = objc_msgSend_shouldUseCaptionEdgeInsetsInInterimPosition(self, a2, v3);
   v9 = 0.0;
@@ -1201,7 +1201,7 @@
     objc_msgSend_captionEdgeInsets(self, v7, v8, 0.0);
   }
 
-  self->_interimPosition.y = a3 - v9;
+  self->_interimPosition.y = y - v9;
   self->_interimPositionYSet = 1;
 }
 
@@ -1214,33 +1214,33 @@
   *&self->_interimPositionXSet = 0;
 }
 
-- (void)p_fixTransformFromInterimPosition:(CGPoint)a3 interimPositionXSet:(BOOL)a4 interimPositionYSet:(BOOL)a5
+- (void)p_fixTransformFromInterimPosition:(CGPoint)position interimPositionXSet:(BOOL)set interimPositionYSet:(BOOL)ySet
 {
-  v5 = a5;
-  y = a3.y;
+  ySetCopy = ySet;
+  y = position.y;
   v8 = 0.0;
   v9 = 0.0;
-  if (a4)
+  if (set)
   {
-    x = a3.x;
-    objc_msgSend_alignmentFrameOriginForFixingInterimPosition(self, a2, a4);
-    v9 = x - a3.x;
+    x = position.x;
+    objc_msgSend_alignmentFrameOriginForFixingInterimPosition(self, a2, set);
+    v9 = x - position.x;
   }
 
-  if (v5)
+  if (ySetCopy)
   {
-    objc_msgSend_alignmentFrameOriginForFixingInterimPosition(self, a2, a4, a3.x);
+    objc_msgSend_alignmentFrameOriginForFixingInterimPosition(self, a2, set, position.x);
     v8 = y - v11;
   }
 
-  objc_msgSend_offsetGeometryBy_(self, a2, a4, v9, v8);
+  objc_msgSend_offsetGeometryBy_(self, a2, set, v9, v8);
 }
 
-- (void)offsetGeometryBy:(CGPoint)a3
+- (void)offsetGeometryBy:(CGPoint)by
 {
-  y = a3.y;
-  x = a3.x;
-  if (a3.x != *MEMORY[0x277CBF348] || a3.y != *(MEMORY[0x277CBF348] + 8))
+  y = by.y;
+  x = by.x;
+  if (by.x != *MEMORY[0x277CBF348] || by.y != *(MEMORY[0x277CBF348] + 8))
   {
     v12 = objc_msgSend_geometry(self, a2, v3);
     v10 = objc_msgSend_geometryByTranslatingBy_(v12, v8, v9, x, y);
@@ -1261,13 +1261,13 @@
   return result;
 }
 
-- (id)childLayoutContainingPossibleDescendentLayout:(id)a3
+- (id)childLayoutContainingPossibleDescendentLayout:(id)layout
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4)
+  layoutCopy = layout;
+  v7 = layoutCopy;
+  if (layoutCopy)
   {
-    v8 = v4;
+    v8 = layoutCopy;
     do
     {
       v9 = objc_msgSend_parent(v8, v5, v6);

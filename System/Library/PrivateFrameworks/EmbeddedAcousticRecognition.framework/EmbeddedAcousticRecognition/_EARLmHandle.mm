@@ -1,17 +1,17 @@
 @interface _EARLmHandle
 - (id).cxx_construct;
-- (id)_initWithHandle:(shared_ptr<kaldi::quasar::LmHandle>)a3;
+- (id)_initWithHandle:(shared_ptr<kaldi::quasar::LmHandle>)handle;
 - (shared_ptr<kaldi::quasar::LmHandle>)handle;
 @end
 
 @implementation _EARLmHandle
 
-- (id)_initWithHandle:(shared_ptr<kaldi::quasar::LmHandle>)a3
+- (id)_initWithHandle:(shared_ptr<kaldi::quasar::LmHandle>)handle
 {
-  ptr = a3.__ptr_;
+  ptr = handle.__ptr_;
   v10.receiver = self;
   v10.super_class = _EARLmHandle;
-  v4 = [(_EARLmHandle *)&v10 init:a3.__ptr_];
+  v4 = [(_EARLmHandle *)&v10 init:handle.__ptr_];
   v5 = v4;
   if (v4)
   {

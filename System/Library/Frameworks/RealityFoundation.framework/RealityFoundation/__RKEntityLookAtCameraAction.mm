@@ -1,10 +1,10 @@
 @interface __RKEntityLookAtCameraAction
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 @end
 
 @implementation __RKEntityLookAtCameraAction
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
 
   __RKEntityLookAtCameraAction.copy(with:)(v5);

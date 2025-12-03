@@ -1,7 +1,7 @@
 @interface FooModel.FooModelFeatureProvider
 - (NSSet)featureNames;
-- (id)featureValueForName:(id)a3;
-- (void)setFeatureNames:(id)a3;
+- (id)featureValueForName:(id)name;
+- (void)setFeatureNames:(id)names;
 @end
 
 @implementation FooModel.FooModelFeatureProvider
@@ -15,14 +15,14 @@
   return v3;
 }
 
-- (void)setFeatureNames:(id)a3
+- (void)setFeatureNames:(id)names
 {
   v4 = sub_251131108();
   v5 = *(self + 2);
   *(self + 2) = v4;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
   v3 = sub_251130F18();
   v5 = v4;

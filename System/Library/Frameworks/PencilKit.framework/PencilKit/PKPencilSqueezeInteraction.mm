@@ -1,23 +1,23 @@
 @interface PKPencilSqueezeInteraction
-+ (id)_existingInteractionForWindowScene:(id)a3;
++ (id)_existingInteractionForWindowScene:(id)scene;
 + (id)_perSceneInteractions;
 + (void)_postPencilSettingsDidChangeRemoteNotification;
-- (BOOL)_isPointInsidePaletteView:(CGPoint)a3 fromView:(id)a4 withEvent:(id)a5;
+- (BOOL)_isPointInsidePaletteView:(CGPoint)view fromView:(id)fromView withEvent:(id)event;
 - (BOOL)_paletteViewVisible;
-- (BOOL)_tiledCanvasViewShouldDiscardTapStroke:(id)a3;
-- (BOOL)pencilSqueezeControllerCanShowPaletteView:(id)a3;
-- (CGRect)_paletteViewFrameForHoverLocation:(CGPoint)a3 inView:(id)a4;
+- (BOOL)_tiledCanvasViewShouldDiscardTapStroke:(id)stroke;
+- (BOOL)pencilSqueezeControllerCanShowPaletteView:(id)view;
+- (CGRect)_paletteViewFrameForHoverLocation:(CGPoint)location inView:(id)view;
 - (PKPencilSqueezeInteraction)init;
 - (PKPencilSqueezeInteractionDelegate)_delegate;
 - (UIView)view;
-- (void)_setMiniPaletteVisible:(BOOL)a3 hoverLocation:(CGPoint)a4 inView:(id)a5;
+- (void)_setMiniPaletteVisible:(BOOL)visible hoverLocation:(CGPoint)location inView:(id)view;
 - (void)dealloc;
-- (void)didMoveToView:(id)a3;
-- (void)editingOverlayContainerDidChangeToSceneBounds:(CGRect)a3;
-- (void)pencilSqueezeControllerDidChangePaletteViewVisibility:(id)a3;
-- (void)pencilSqueezeControllerWillChangePaletteViewVisibility:(id)a3 toVisible:(BOOL)a4;
-- (void)set_delegate:(id)a3;
-- (void)willMoveToView:(id)a3;
+- (void)didMoveToView:(id)view;
+- (void)editingOverlayContainerDidChangeToSceneBounds:(CGRect)bounds;
+- (void)pencilSqueezeControllerDidChangePaletteViewVisibility:(id)visibility;
+- (void)pencilSqueezeControllerWillChangePaletteViewVisibility:(id)visibility toVisible:(BOOL)visible;
+- (void)set_delegate:(id)set_delegate;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation PKPencilSqueezeInteraction
@@ -48,15 +48,15 @@ void __51__PKPencilSqueezeInteraction__perSceneInteractions__block_invoke()
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"PKRemotePencilSettingsDidChangePreferredSqueezeActionNotification", 0, 0, 1u);
 }
 
-+ (id)_existingInteractionForWindowScene:(id)a3
++ (id)_existingInteractionForWindowScene:(id)scene
 {
-  v3 = a3;
+  sceneCopy = scene;
   if (_os_feature_enabled_impl())
   {
-    if (v3)
+    if (sceneCopy)
     {
       v4 = +[PKPencilSqueezeInteraction _perSceneInteractions];
-      v5 = [v4 objectForKey:v3];
+      v5 = [v4 objectForKey:sceneCopy];
 
       goto LABEL_8;
     }
@@ -83,31 +83,31 @@ LABEL_8:
   v13 = *MEMORY[0x1E69E9840];
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
-    v4 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+    bundleIdentifier = os_log_create("com.apple.pencilkit", "PencilSqueeze");
+    if (os_log_type_enabled(bundleIdentifier, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_1C7CCA000, v4, OS_LOG_TYPE_DEFAULT, "Feature Flag isn't enabled!", buf, 2u);
+      _os_log_impl(&dword_1C7CCA000, bundleIdentifier, OS_LOG_TYPE_DEFAULT, "Feature Flag isn't enabled!", buf, 2u);
     }
 
     goto LABEL_11;
   }
 
-  v3 = [MEMORY[0x1E696AAE8] mainBundle];
-  v4 = [v3 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  if (([v4 isEqualToString:@"com.apple.Stickers.UserGenerated.MessagesExtension"]& 1) != 0 || ([v4 isEqualToString:@"com.apple.iMessageAppsViewService"]& 1) != 0 || ([v4 isEqualToString:@"com.apple.UIKit.ColorPickerUIService"]& 1) != 0 || [v4 isEqualToString:@"com.apple.InCallService"])
+  if (([bundleIdentifier isEqualToString:@"com.apple.Stickers.UserGenerated.MessagesExtension"]& 1) != 0 || ([bundleIdentifier isEqualToString:@"com.apple.iMessageAppsViewService"]& 1) != 0 || ([bundleIdentifier isEqualToString:@"com.apple.UIKit.ColorPickerUIService"]& 1) != 0 || [bundleIdentifier isEqualToString:@"com.apple.InCallService"])
   {
     v5 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138477827;
-      v12 = v4;
+      v12 = bundleIdentifier;
       _os_log_impl(&dword_1C7CCA000, v5, OS_LOG_TYPE_DEFAULT, "Can't init interaction in process: %{private}@", buf, 0xCu);
     }
 
 LABEL_11:
-    v6 = 0;
+    selfCopy = 0;
     goto LABEL_12;
   }
 
@@ -121,26 +121,26 @@ LABEL_11:
   }
 
   self = v8;
-  v6 = self;
+  selfCopy = self;
 LABEL_12:
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)set_delegate:(id)a3
+- (void)set_delegate:(id)set_delegate
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  set_delegateCopy = set_delegate;
   WeakRetained = objc_loadWeakRetained(&self->__delegate);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != set_delegateCopy)
   {
     v6 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = objc_loadWeakRetained(&self->__delegate);
       v8 = PKDebugStringRepresentation(v7);
-      v9 = PKDebugStringRepresentation(v4);
+      v9 = PKDebugStringRepresentation(set_delegateCopy);
       v10 = 138412546;
       v11 = v8;
       v12 = 2112;
@@ -148,7 +148,7 @@ LABEL_12:
       _os_log_impl(&dword_1C7CCA000, v6, OS_LOG_TYPE_DEFAULT, "Updating delegate from: %@ to %@", &v10, 0x16u);
     }
 
-    objc_storeWeak(&self->__delegate, v4);
+    objc_storeWeak(&self->__delegate, set_delegateCopy);
   }
 }
 
@@ -161,13 +161,13 @@ LABEL_12:
   [(PKPencilSqueezeInteraction *)&v4 dealloc];
 }
 
-- (void)_setMiniPaletteVisible:(BOOL)a3 hoverLocation:(CGPoint)a4 inView:(id)a5
+- (void)_setMiniPaletteVisible:(BOOL)visible hoverLocation:(CGPoint)location inView:(id)view
 {
-  v5 = a3;
-  [a5 convertPoint:0 toView:{a4.x, a4.y}];
+  visibleCopy = visible;
+  [view convertPoint:0 toView:{location.x, location.y}];
   squeezeController = self->_squeezeController;
 
-  [(PKPencilSqueezeController *)squeezeController setMiniPaletteVisible:v5 hoverLocation:v7, v8];
+  [(PKPencilSqueezeController *)squeezeController setMiniPaletteVisible:visibleCopy hoverLocation:v7, v8];
 }
 
 - (BOOL)_paletteViewVisible
@@ -181,30 +181,30 @@ LABEL_12:
   return squeezeController & 1;
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_view);
 
-  if (v4 && !WeakRetained)
+  if (viewCopy && !WeakRetained)
   {
     v6 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v4 window];
-      v8 = [v7 windowScene];
+      window = [viewCopy window];
+      windowScene = [window windowScene];
       v21 = 138478083;
-      v22 = v4;
+      v22 = viewCopy;
       v23 = 2113;
-      v24 = v8;
+      v24 = windowScene;
       _os_log_impl(&dword_1C7CCA000, v6, OS_LOG_TYPE_DEFAULT, "Installing interaction on view: %{private}@, scene: %{private}@", &v21, 0x16u);
     }
 
-    v9 = [v4 window];
-    v10 = [v9 windowScene];
+    window2 = [viewCopy window];
+    windowScene2 = [window2 windowScene];
 
-    if (!v10)
+    if (!windowScene2)
     {
       v11 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
       if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
@@ -215,9 +215,9 @@ LABEL_12:
     }
 
     v12 = +[PKPencilSqueezeInteraction _perSceneInteractions];
-    v13 = [v4 window];
-    v14 = [v13 windowScene];
-    [v12 setObject:self forKey:v14];
+    window3 = [viewCopy window];
+    windowScene3 = [window3 windowScene];
+    [v12 setObject:self forKey:windowScene3];
 LABEL_15:
 
     goto LABEL_16;
@@ -225,48 +225,48 @@ LABEL_15:
 
   v15 = objc_loadWeakRetained(&self->_view);
 
-  if (!v4 && v15)
+  if (!viewCopy && v15)
   {
     v16 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v17 = objc_loadWeakRetained(&self->_view);
-      v18 = [v17 window];
-      v19 = [v18 windowScene];
+      window4 = [v17 window];
+      windowScene4 = [window4 windowScene];
       v21 = 138478083;
       v22 = v17;
       v23 = 2113;
-      v24 = v19;
+      v24 = windowScene4;
       _os_log_impl(&dword_1C7CCA000, v16, OS_LOG_TYPE_DEFAULT, "Uninstalling interaction from view: %{private}@, scene: %{private}@", &v21, 0x16u);
     }
 
     v12 = +[PKPencilSqueezeInteraction _perSceneInteractions];
-    v13 = objc_loadWeakRetained(&self->_view);
-    v14 = [v13 window];
-    v20 = [v14 windowScene];
-    [v12 removeObjectForKey:v20];
+    window3 = objc_loadWeakRetained(&self->_view);
+    windowScene3 = [window3 window];
+    v14WindowScene = [windowScene3 windowScene];
+    [v12 removeObjectForKey:v14WindowScene];
 
     goto LABEL_15;
   }
 
 LABEL_16:
-  objc_storeWeak(&self->_view, v4);
+  objc_storeWeak(&self->_view, viewCopy);
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
   WeakRetained = objc_loadWeakRetained(&self->_view);
   if (WeakRetained && (v5 = self->_squeezeController, WeakRetained, !v5))
   {
     v10 = objc_loadWeakRetained(&self->_view);
-    v11 = [v10 window];
+    window = [v10 window];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v12 = [PKTextEffectsWindowObserver alloc];
       v13 = objc_loadWeakRetained(&self->_view);
-      v14 = [v13 window];
-      v15 = [(PKTextEffectsWindowObserver *)v12 initWithTextEffectsWindow:v14];
+      window2 = [v13 window];
+      v15 = [(PKTextEffectsWindowObserver *)v12 initWithTextEffectsWindow:window2];
       p_textEffectsWindowObserver = &self->_textEffectsWindowObserver;
       textEffectsWindowObserver = self->_textEffectsWindowObserver;
       self->_textEffectsWindowObserver = v15;
@@ -285,12 +285,12 @@ LABEL_16:
     }
 
     v18 = objc_loadWeakRetained(&self->_view);
-    v19 = [v18 window];
-    v25 = [v19 rootViewController];
+    window3 = [v18 window];
+    rootViewController = [window3 rootViewController];
 
     v20 = [PKPencilSqueezeController alloc];
     v21 = objc_loadWeakRetained(&self->_view);
-    v22 = [(PKPencilSqueezeController *)v20 initWithContainerView:v21 rootViewController:v25 textEffectsWindowObserver:self->_textEffectsWindowObserver];
+    v22 = [(PKPencilSqueezeController *)v20 initWithContainerView:v21 rootViewController:rootViewController textEffectsWindowObserver:self->_textEffectsWindowObserver];
     squeezeController = self->_squeezeController;
     self->_squeezeController = v22;
 
@@ -300,7 +300,7 @@ LABEL_16:
       objc_storeWeak(&v24->_delegate, self);
     }
 
-    v6 = v25;
+    v6 = rootViewController;
   }
 
   else
@@ -335,16 +335,16 @@ LABEL_16:
   }
 }
 
-- (BOOL)_isPointInsidePaletteView:(CGPoint)a3 fromView:(id)a4 withEvent:(id)a5
+- (BOOL)_isPointInsidePaletteView:(CGPoint)view fromView:(id)fromView withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a4;
-  v10 = a5;
+  y = view.y;
+  x = view.x;
+  fromViewCopy = fromView;
+  eventCopy = event;
   if ([(PKPencilSqueezeInteraction *)self _paletteViewVisible])
   {
-    [v9 convertPoint:0 toView:{x, y}];
-    v13 = [(PKPencilSqueezeController *)self->_squeezeController hitTest:v9 fromView:v10 withEvent:v11, v12];
+    [fromViewCopy convertPoint:0 toView:{x, y}];
+    v13 = [(PKPencilSqueezeController *)self->_squeezeController hitTest:fromViewCopy fromView:eventCopy withEvent:v11, v12];
     v14 = v13 != 0;
   }
 
@@ -356,12 +356,12 @@ LABEL_16:
   return v14;
 }
 
-- (void)editingOverlayContainerDidChangeToSceneBounds:(CGRect)a3
+- (void)editingOverlayContainerDidChangeToSceneBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v12 = *MEMORY[0x1E69E9840];
   v8 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -379,9 +379,9 @@ LABEL_16:
   [(PKPencilSqueezeController *)self->_squeezeController keyWindowDidChangeBounds];
 }
 
-- (BOOL)pencilSqueezeControllerCanShowPaletteView:(id)a3
+- (BOOL)pencilSqueezeControllerCanShowPaletteView:(id)view
 {
-  v4 = [(PKPencilSqueezeInteraction *)self _delegate];
+  _delegate = [(PKPencilSqueezeInteraction *)self _delegate];
   v5 = objc_opt_respondsToSelector();
 
   if ((v5 & 1) == 0)
@@ -389,16 +389,16 @@ LABEL_16:
     return 1;
   }
 
-  v6 = [(PKPencilSqueezeInteraction *)self _delegate];
-  v7 = [v6 _pencilSqueezeInteractionCanShowPaletteView:self];
+  _delegate2 = [(PKPencilSqueezeInteraction *)self _delegate];
+  v7 = [_delegate2 _pencilSqueezeInteractionCanShowPaletteView:self];
 
   return v7;
 }
 
-- (void)pencilSqueezeControllerWillChangePaletteViewVisibility:(id)a3 toVisible:(BOOL)a4
+- (void)pencilSqueezeControllerWillChangePaletteViewVisibility:(id)visibility toVisible:(BOOL)visible
 {
-  v4 = a4;
-  v6 = a3;
+  visibleCopy = visible;
+  visibilityCopy = visibility;
   v7 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -406,9 +406,9 @@ LABEL_16:
     _os_log_impl(&dword_1C7CCA000, v7, OS_LOG_TYPE_DEFAULT, "Post palette view visibility will change notification", v10, 2u);
   }
 
-  if (!v6)
+  if (!visibilityCopy)
   {
-    if (!v4)
+    if (!visibleCopy)
     {
       goto LABEL_10;
     }
@@ -416,19 +416,19 @@ LABEL_16:
     goto LABEL_6;
   }
 
-  if (v4 && (v6[216] & 1) == 0)
+  if (visibleCopy && (visibilityCopy[216] & 1) == 0)
   {
 LABEL_6:
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 postNotificationName:@"PKPencilSqueezeInteractionWillShowPaletteViewNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"PKPencilSqueezeInteractionWillShowPaletteViewNotification" object:self];
 
     goto LABEL_10;
   }
 
-  if (v6[216] && !v4)
+  if (visibilityCopy[216] && !visibleCopy)
   {
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 postNotificationName:@"PKPencilSqueezeInteractionWillHidePaletteViewNotification" object:self];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 postNotificationName:@"PKPencilSqueezeInteractionWillHidePaletteViewNotification" object:self];
 
     self->_paletteViewDismissedTimestamp = CACurrentMediaTime();
   }
@@ -436,7 +436,7 @@ LABEL_6:
 LABEL_10:
 }
 
-- (void)pencilSqueezeControllerDidChangePaletteViewVisibility:(id)a3
+- (void)pencilSqueezeControllerDidChangePaletteViewVisibility:(id)visibility
 {
   v4 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -445,20 +445,20 @@ LABEL_10:
     _os_log_impl(&dword_1C7CCA000, v4, OS_LOG_TYPE_DEFAULT, "Post palette view visibility did change notification", v6, 2u);
   }
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 postNotificationName:@"PKPencilSqueezeInteractionDidChangePaletteViewVisibilityNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"PKPencilSqueezeInteractionDidChangePaletteViewVisibilityNotification" object:self];
 }
 
-- (CGRect)_paletteViewFrameForHoverLocation:(CGPoint)a3 inView:(id)a4
+- (CGRect)_paletteViewFrameForHoverLocation:(CGPoint)location inView:(id)view
 {
-  if (a4)
+  if (view)
   {
-    [a4 convertPoint:0 toView:{a3.x, a3.y}];
+    [view convertPoint:0 toView:{location.x, location.y}];
   }
 
   squeezeController = self->_squeezeController;
 
-  v6 = [(PKPencilSqueezeController *)squeezeController paletteViewFrameForHoverLocation:a3.y];
+  v6 = [(PKPencilSqueezeController *)squeezeController paletteViewFrameForHoverLocation:location.y];
   result.size.height = v9;
   result.size.width = v8;
   result.origin.y = v7;
@@ -466,7 +466,7 @@ LABEL_10:
   return result;
 }
 
-- (BOOL)_tiledCanvasViewShouldDiscardTapStroke:(id)a3
+- (BOOL)_tiledCanvasViewShouldDiscardTapStroke:(id)stroke
 {
   v10 = *MEMORY[0x1E69E9840];
   v3 = CACurrentMediaTime() - self->_paletteViewDismissedTimestamp;

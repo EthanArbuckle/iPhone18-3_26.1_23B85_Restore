@@ -28,7 +28,7 @@
     dispatch_once(&qword_1EDB27A48, &__block_literal_global_188);
   }
 
-  return [_MergedGlobals_215 numberOfMatchesInString:a1 options:0 range:{0, objc_msgSend(a1, "length")}] == 1;
+  return [_MergedGlobals_215 numberOfMatchesInString:self options:0 range:{0, objc_msgSend(self, "length")}] == 1;
 }
 
 + (id)fc_string:()FCAdditions
@@ -61,7 +61,7 @@
   if (v3 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v4 = v3;
-    v5 = v4;
+    stringValue = v4;
   }
 
   else
@@ -70,33 +70,33 @@
     if (v3 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v6 = v3;
-      v5 = [v6 stringValue];
+      stringValue = [v6 stringValue];
     }
 
     else
     {
       v6 = 0;
-      v5 = 0;
+      stringValue = 0;
     }
 
     v4 = 0;
   }
 
-  return v5;
+  return stringValue;
 }
 
 - (id)fc_lowercaseTokensWithMinimumLength:()FCAdditions
 {
   v30 = *MEMORY[0x1E69E9840];
   v5 = objc_opt_new();
-  v6 = [a1 length];
-  v7 = [a1 lowercaseString];
+  v6 = [self length];
+  lowercaseString = [self lowercaseString];
   if (v6 > a3)
   {
     v24 = v5;
-    v19 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-    v20 = v7;
-    [v7 componentsSeparatedByCharactersInSet:v19];
+    whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+    v20 = lowercaseString;
+    [lowercaseString componentsSeparatedByCharactersInSet:whitespaceCharacterSet];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
@@ -120,7 +120,7 @@
 
         v10 = *(*(&v25 + 1) + 8 * i);
         v11 = [v10 length];
-        v12 = [MEMORY[0x1E696AD60] string];
+        string = [MEMORY[0x1E696AD60] string];
         if (v11)
         {
           v13 = 0;
@@ -132,10 +132,10 @@
               if (!__maskrune(v15, 0x4000uLL))
               {
 LABEL_13:
-                [v12 appendFormat:@"%C", objc_msgSend(v10, "characterAtIndex:", j)];
+                [string appendFormat:@"%C", objc_msgSend(v10, "characterAtIndex:", j)];
                 if (v13 >= a3 - 1)
                 {
-                  v16 = [v12 copy];
+                  v16 = [string copy];
                   [v24 addObject:v16];
                 }
 
@@ -162,7 +162,7 @@ LABEL_19:
     }
   }
 
-  [v5 addObject:v7];
+  [v5 addObject:lowercaseString];
 
 LABEL_21:
   v17 = *MEMORY[0x1E69E9840];
@@ -172,36 +172,36 @@ LABEL_21:
 
 - (id)tokenizedLowerCaseStringWithMinimumLength:()FCAdditions
 {
-  v3 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    if ([a1 length] <= a3)
+    if ([self length] <= a3)
     {
-      v3 = [v3 copy];
+      selfCopy = [selfCopy copy];
     }
 
     else
     {
-      v5 = [v3 fc_lowercaseTokensWithMinimumLength:a3];
-      v6 = [v5 array];
-      v3 = [v6 componentsJoinedByString:@" "];
+      v5 = [selfCopy fc_lowercaseTokensWithMinimumLength:a3];
+      array = [v5 array];
+      selfCopy = [array componentsJoinedByString:@" "];
     }
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (id)fc_stringByTrimmingWhiteSpace
 {
-  if ([a1 length])
+  if ([self length])
   {
-    v2 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-    v3 = [a1 stringByTrimmingCharactersInSet:v2];
+    whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+    v3 = [self stringByTrimmingCharactersInSet:whitespaceCharacterSet];
   }
 
   else
   {
-    v3 = [a1 copy];
+    v3 = [self copy];
   }
 
   return v3;
@@ -209,8 +209,8 @@ LABEL_21:
 
 - (id)fc_stringByRemovingPunctuation
 {
-  v2 = [MEMORY[0x1E696AB08] punctuationCharacterSet];
-  v3 = [a1 stringByRemovingCharactersInSet:v2];
+  punctuationCharacterSet = [MEMORY[0x1E696AB08] punctuationCharacterSet];
+  v3 = [self stringByRemovingCharactersInSet:punctuationCharacterSet];
 
   return v3;
 }
@@ -218,16 +218,16 @@ LABEL_21:
 - (id)stringByRemovingCharactersInSet:()FCAdditions
 {
   v4 = a3;
-  v5 = [a1 length];
+  v5 = [self length];
   if (v4 && v5)
   {
-    v6 = [a1 componentsSeparatedByCharactersInSet:v4];
+    v6 = [self componentsSeparatedByCharactersInSet:v4];
     v7 = [v6 componentsJoinedByString:&stru_1F2DC7DC0];
   }
 
   else
   {
-    v7 = [a1 copy];
+    v7 = [self copy];
   }
 
   return v7;
@@ -237,7 +237,7 @@ LABEL_21:
 {
   v6 = a4;
   v7 = a3;
-  v8 = [a1 stringByReplacingOccurrencesOfString:v7 withString:v6 options:0 range:{0, objc_msgSend(v7, "length")}];
+  v8 = [self stringByReplacingOccurrencesOfString:v7 withString:v6 options:0 range:{0, objc_msgSend(v7, "length")}];
 
   return v8;
 }
@@ -246,7 +246,7 @@ LABEL_21:
 {
   for (i = objc_opt_new(); a3; --a3)
   {
-    [i appendString:a1];
+    [i appendString:self];
   }
 
   return i;
@@ -257,7 +257,7 @@ LABEL_21:
   v21 = *MEMORY[0x1E69E9840];
   v6 = a3;
   v7 = a4;
-  v8 = [a1 mutableCopy];
+  v8 = [self mutableCopy];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -296,7 +296,7 @@ LABEL_21:
   v4 = MEMORY[0x1E696AEC0];
   v5 = a3;
   v6 = [v4 stringWithFormat:@"\n%@", v5];
-  v7 = [a1 stringByReplacingOccurrencesOfString:@"\n" withString:v6];
+  v7 = [self stringByReplacingOccurrencesOfString:@"\n" withString:v6];
   v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", v5, v7];
 
   return v8;
@@ -320,15 +320,15 @@ LABEL_21:
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v5 = [a1 length];
-  if (v5 >= [v4 length] && (objc_msgSend(a1, "substringFromIndex:", objc_msgSend(a1, "length") - objc_msgSend(v4, "length")), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isEqualToString:", v4), v6, v7))
+  v5 = [self length];
+  if (v5 >= [v4 length] && (objc_msgSend(self, "substringFromIndex:", objc_msgSend(self, "length") - objc_msgSend(v4, "length")), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isEqualToString:", v4), v6, v7))
   {
-    v8 = [a1 copy];
+    v8 = [self copy];
   }
 
   else
   {
-    v8 = [a1 stringByAppendingString:v4];
+    v8 = [self stringByAppendingString:v4];
   }
 
   v9 = v8;
@@ -364,11 +364,11 @@ LABEL_21:
 {
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@(\\d*)", a3];
   v5 = [MEMORY[0x1E696AE70] regularExpressionWithPattern:v4 options:1 error:0];
-  v6 = [v5 firstMatchInString:a1 options:0 range:{0, objc_msgSend(a1, "length")}];
+  v6 = [v5 firstMatchInString:self options:0 range:{0, objc_msgSend(self, "length")}];
   if ([v6 numberOfRanges])
   {
     v7 = [v6 rangeAtIndex:1];
-    v9 = [a1 substringWithRange:{v7, v8}];
+    v9 = [self substringWithRange:{v7, v8}];
     v10 = objc_alloc_init(MEMORY[0x1E696ADA0]);
     [v10 setNumberStyle:1];
     v11 = [v10 numberFromString:v9];
@@ -385,9 +385,9 @@ LABEL_21:
 - (uint64_t)fc_isValidCloudKitIDWithPrefix:()FCAdditions
 {
   v4 = a3;
-  if ([a1 fc_isValidCloudKitID])
+  if ([self fc_isValidCloudKitID])
   {
-    v5 = [a1 hasPrefix:v4];
+    v5 = [self hasPrefix:v4];
   }
 
   else
@@ -401,8 +401,8 @@ LABEL_21:
 + (id)fc_hardPaywallArticleIDWithArticleID:()FCAdditions
 {
   v3 = [a3 substringFromIndex:1];
-  v4 = [v3 nf_stringByReversingString];
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"P%@", v4];
+  nf_stringByReversingString = [v3 nf_stringByReversingString];
+  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"P%@", nf_stringByReversingString];
 
   return v5;
 }
@@ -410,10 +410,10 @@ LABEL_21:
 - (uint64_t)fc_unsignedLongLongValue
 {
   v2 = objc_opt_new();
-  v3 = [v2 numberFromString:a1];
-  v4 = [v3 unsignedLongLongValue];
+  v3 = [v2 numberFromString:self];
+  unsignedLongLongValue = [v3 unsignedLongLongValue];
 
-  return v4;
+  return unsignedLongLongValue;
 }
 
 @end

@@ -1,12 +1,12 @@
 @interface InteractionAnalysisPETInteractionEvents
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (uint64_t)addInteractionEvent:(uint64_t)a1;
-- (void)setDeviceID:(uint64_t)a1;
-- (void)setInteractionEvents:(uint64_t)a1;
-- (void)writeTo:(id)a3;
+- (uint64_t)addInteractionEvent:(uint64_t)event;
+- (void)setDeviceID:(uint64_t)d;
+- (void)setInteractionEvents:(uint64_t)events;
+- (void)writeTo:(id)to;
 @end
 
 @implementation InteractionAnalysisPETInteractionEvents
@@ -17,8 +17,8 @@
   v8.receiver = self;
   v8.super_class = InteractionAnalysisPETInteractionEvents;
   v4 = [(InteractionAnalysisPETInteractionEvents *)&v8 description];
-  v5 = [(InteractionAnalysisPETInteractionEvents *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(InteractionAnalysisPETInteractionEvents *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -26,12 +26,12 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   deviceID = self->_deviceID;
   if (deviceID)
   {
-    [v3 setObject:deviceID forKey:@"deviceID"];
+    [dictionary setObject:deviceID forKey:@"deviceID"];
   }
 
   if ([(NSMutableArray *)self->_interactionEvents count])
@@ -56,8 +56,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -74,16 +74,16 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (!self->_deviceID)
   {
     [InteractionAnalysisPETInteractionEvents writeTo:];
   }
 
-  v5 = v4;
+  v5 = toCopy;
   PBDataWriterWriteStringField();
   v15 = 0u;
   v16 = 0u;
@@ -120,11 +120,11 @@
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_deviceID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_deviceID copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
@@ -148,7 +148,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{a3, v16}];
+        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{zone, v16}];
         [(InteractionAnalysisPETInteractionEvents *)v5 addInteractionEvent:v13];
 
         ++v12;
@@ -165,13 +165,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((deviceID = self->_deviceID, !(deviceID | v4[1])) || -[NSString isEqual:](deviceID, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((deviceID = self->_deviceID, !(deviceID | equalCopy[1])) || -[NSString isEqual:](deviceID, "isEqual:")))
   {
     interactionEvents = self->_interactionEvents;
-    if (interactionEvents | v4[2])
+    if (interactionEvents | equalCopy[2])
     {
       v7 = [(NSMutableArray *)interactionEvents isEqual:?];
     }
@@ -190,21 +190,21 @@
   return v7;
 }
 
-- (uint64_t)addInteractionEvent:(uint64_t)a1
+- (uint64_t)addInteractionEvent:(uint64_t)event
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (event)
   {
-    v5 = *(a1 + 16);
+    v5 = *(event + 16);
     v9 = v4;
     if (!v5)
     {
       v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v7 = *(a1 + 16);
-      *(a1 + 16) = v6;
+      v7 = *(event + 16);
+      *(event + 16) = v6;
 
-      v5 = *(a1 + 16);
+      v5 = *(event + 16);
     }
 
     v3 = [v5 addObject:v9];
@@ -214,19 +214,19 @@
   return MEMORY[0x1EEE66BB8](v3, v4);
 }
 
-- (void)setDeviceID:(uint64_t)a1
+- (void)setDeviceID:(uint64_t)d
 {
-  if (a1)
+  if (d)
   {
-    OUTLINED_FUNCTION_0_8(a1, a2, 8);
+    OUTLINED_FUNCTION_0_8(d, a2, 8);
   }
 }
 
-- (void)setInteractionEvents:(uint64_t)a1
+- (void)setInteractionEvents:(uint64_t)events
 {
-  if (a1)
+  if (events)
   {
-    OUTLINED_FUNCTION_0_8(a1, a2, 16);
+    OUTLINED_FUNCTION_0_8(events, a2, 16);
   }
 }
 

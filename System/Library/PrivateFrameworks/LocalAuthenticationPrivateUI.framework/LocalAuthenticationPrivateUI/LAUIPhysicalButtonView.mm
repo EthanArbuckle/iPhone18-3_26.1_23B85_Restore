@@ -1,27 +1,27 @@
 @interface LAUIPhysicalButtonView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (LAUIPhysicalButtonView)initWithStyle:(int64_t)a3;
-- (id)_colorForStyle:(int64_t)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (LAUIPhysicalButtonView)initWithStyle:(int64_t)style;
+- (id)_colorForStyle:(int64_t)style;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)_purgeExportedHandle;
 - (void)_updateExportState;
 - (void)_updateOnScreen;
 - (void)dealloc;
 - (void)didMoveToWindow;
 - (void)disableWorkarounds;
-- (void)interfaceOrientationDidChange:(id)a3;
+- (void)interfaceOrientationDidChange:(id)change;
 - (void)layoutSubviews;
-- (void)setAnimating:(BOOL)a3;
-- (void)setAnimationStyle:(int64_t)a3;
-- (void)setInstruction:(id)a3;
-- (void)setIsInstructionHidden:(BOOL)a3;
-- (void)setStyle:(int64_t)a3;
+- (void)setAnimating:(BOOL)animating;
+- (void)setAnimationStyle:(int64_t)style;
+- (void)setInstruction:(id)instruction;
+- (void)setIsInstructionHidden:(BOOL)hidden;
+- (void)setStyle:(int64_t)style;
 - (void)updateFrame;
 @end
 
 @implementation LAUIPhysicalButtonView
 
-- (LAUIPhysicalButtonView)initWithStyle:(int64_t)a3
+- (LAUIPhysicalButtonView)initWithStyle:(int64_t)style
 {
   v4 = MEMORY[0x277CBF3A0];
   v5 = *MEMORY[0x277CBF3A0];
@@ -54,8 +54,8 @@
     }
 
     v10->_disablePortraitWorkaround = v12;
-    v10->_style = a3;
-    v13 = [(LAUIPhysicalButtonView *)v10 _colorForStyle:a3];
+    v10->_style = style;
+    v13 = [(LAUIPhysicalButtonView *)v10 _colorForStyle:style];
     v14 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{*v4, v4[1], v4[2], v4[3]}];
     containerView = v10->_containerView;
     v10->_containerView = v14;
@@ -71,8 +71,8 @@
     v10->_buttonView = v16;
 
     [(UIView *)v10->_buttonView setBackgroundColor:v13];
-    v36 = [(UIView *)v10->_buttonView layer];
-    [v36 setCornerCurve:*MEMORY[0x277CDA138]];
+    layer = [(UIView *)v10->_buttonView layer];
+    [layer setCornerCurve:*MEMORY[0x277CDA138]];
     [(UIView *)v10->_containerView addSubview:v10->_buttonView];
     v18 = objc_alloc_init(MEMORY[0x277D756B8]);
     instructionLabel = v10->_instructionLabel;
@@ -84,18 +84,18 @@
     v20 = v10->_instructionLabel;
     v21 = MEMORY[0x277D74300];
     v22 = *MEMORY[0x277D76800];
-    v23 = [MEMORY[0x277D75128] sharedApplication];
-    v24 = [v23 preferredContentSizeCategory];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
 
-    if (v22 && ([v22 isEqualToString:*MEMORY[0x277D76860]] & 1) == 0 && UIContentSizeCategoryCompareToCategory(v24, v22) == NSOrderedDescending)
+    if (v22 && ([v22 isEqualToString:*MEMORY[0x277D76860]] & 1) == 0 && UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, v22) == NSOrderedDescending)
     {
       v25 = v22;
 
-      v24 = v25;
+      preferredContentSizeCategory = v25;
     }
 
     v26 = MEMORY[0x277D74300];
-    v27 = [MEMORY[0x277D75C80] traitCollectionWithPreferredContentSizeCategory:v24];
+    v27 = [MEMORY[0x277D75C80] traitCollectionWithPreferredContentSizeCategory:preferredContentSizeCategory];
     v28 = [v26 preferredFontForTextStyle:*MEMORY[0x277D76918] compatibleWithTraitCollection:v27];
 
     [v28 _scaledValueForValue:19.0];
@@ -106,15 +106,15 @@
 
     [(UILabel *)v10->_instructionLabel setTextColor:v13];
     v32 = v10->_instructionLabel;
-    v33 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v32 setBackgroundColor:v33];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v32 setBackgroundColor:clearColor];
 
     [(UILabel *)v10->_instructionLabel setAlpha:0.0];
     [(UILabel *)v10->_instructionLabel setNumberOfLines:0];
     [(UIView *)v10->_containerView addSubview:v10->_instructionLabel];
     [(LAUIPhysicalButtonView *)v10 setAnimationStyle:1];
-    v34 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v34 addObserver:v10 selector:sel_interfaceOrientationDidChange_ name:*MEMORY[0x277D76878] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v10 selector:sel_interfaceOrientationDidChange_ name:*MEMORY[0x277D76878] object:0];
   }
 
   return v10;
@@ -133,20 +133,20 @@
   v10.receiver = self;
   v10.super_class = LAUIPhysicalButtonView;
   [(LAUIPhysicalButtonView *)&v10 didMoveToWindow];
-  v3 = [(LAUIPhysicalButtonView *)self window];
-  v4 = v3;
+  window = [(LAUIPhysicalButtonView *)self window];
+  v4 = window;
   if (!self->_workaroundsDisabled)
   {
-    v5 = [v3 windowScene];
-    self->_lastInterfaceOrientation = [v5 interfaceOrientation];
+    windowScene = [window windowScene];
+    self->_lastInterfaceOrientation = [windowScene interfaceOrientation];
   }
 
   if (v4)
   {
-    v6 = [v4 screen];
-    v7 = [v6 fixedCoordinateSpace];
+    screen = [v4 screen];
+    fixedCoordinateSpace = [screen fixedCoordinateSpace];
     fixedCoordinateSpace = self->_fixedCoordinateSpace;
-    self->_fixedCoordinateSpace = v7;
+    self->_fixedCoordinateSpace = fixedCoordinateSpace;
 
     [(LAUIPhysicalButtonView *)self setNeedsLayout];
     [(LAUIPhysicalButtonView *)self updateFrame];
@@ -163,10 +163,10 @@
   [(LAUIPhysicalButtonView *)self _updateOnScreen];
 }
 
-- (void)interfaceOrientationDidChange:(id)a3
+- (void)interfaceOrientationDidChange:(id)change
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   if (self->_workaroundsDisabled)
   {
     goto LABEL_10;
@@ -177,28 +177,28 @@
     goto LABEL_10;
   }
 
-  v5 = [(LAUIPhysicalButtonView *)self window];
+  window = [(LAUIPhysicalButtonView *)self window];
 
-  if (!v5)
+  if (!window)
   {
     goto LABEL_10;
   }
 
-  v6 = [(LAUIPhysicalButtonView *)self window];
-  v7 = [v6 windowScene];
-  v8 = [v7 interfaceOrientation];
+  window2 = [(LAUIPhysicalButtonView *)self window];
+  windowScene = [window2 windowScene];
+  interfaceOrientation = [windowScene interfaceOrientation];
 
   v9 = LA_LOG_LAUIPhysicalButtonView();
   if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
 LABEL_8:
 
-    if (v8 != self->_lastInterfaceOrientation)
+    if (interfaceOrientation != self->_lastInterfaceOrientation)
     {
-      v13 = [(LAUIPhysicalButtonView *)self layer];
-      [v13 setOpacity:0.0];
+      layer = [(LAUIPhysicalButtonView *)self layer];
+      [layer setOpacity:0.0];
 
-      self->_lastInterfaceOrientation = v8;
+      self->_lastInterfaceOrientation = interfaceOrientation;
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __56__LAUIPhysicalButtonView_interfaceOrientationDidChange___block_invoke;
@@ -213,10 +213,10 @@ LABEL_10:
   }
 
   lastInterfaceOrientation = self->_lastInterfaceOrientation;
-  if (lastInterfaceOrientation < 5 && v8 < 5)
+  if (lastInterfaceOrientation < 5 && interfaceOrientation < 5)
   {
     v11 = off_2798214F8[lastInterfaceOrientation];
-    v12 = off_2798214F8[v8];
+    v12 = off_2798214F8[interfaceOrientation];
     *buf = 138412546;
     v16 = v11;
     v17 = 2112;
@@ -241,11 +241,11 @@ void __56__LAUIPhysicalButtonView_interfaceOrientationDidChange___block_invoke(u
   v72 = *MEMORY[0x277D85DE8];
   if (self->_exportedHandle || self->_exporting)
   {
-    v3 = LA_LOG_LAUIPhysicalButtonView();
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+    superview = LA_LOG_LAUIPhysicalButtonView();
+    if (os_log_type_enabled(superview, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(rect_24.m11) = 0;
-      _os_log_impl(&dword_2560E6000, v3, OS_LOG_TYPE_DEFAULT, "ignoring update frame request for exported physical button view", &rect_24, 2u);
+      _os_log_impl(&dword_2560E6000, superview, OS_LOG_TYPE_DEFAULT, "ignoring update frame request for exported physical button view", &rect_24, 2u);
     }
 
     goto LABEL_5;
@@ -253,8 +253,8 @@ void __56__LAUIPhysicalButtonView_interfaceOrientationDidChange___block_invoke(u
 
   if (self->_fixedCoordinateSpace)
   {
-    v3 = [(LAUIPhysicalButtonView *)self superview];
-    if (!v3)
+    superview = [(LAUIPhysicalButtonView *)self superview];
+    if (!superview)
     {
       self->_indeterminateFrame = 1;
 LABEL_5:
@@ -262,9 +262,9 @@ LABEL_5:
       return;
     }
 
-    v4 = [(LAUIPhysicalButtonView *)self window];
-    v5 = v4;
-    if (!v4)
+    window = [(LAUIPhysicalButtonView *)self window];
+    v5 = window;
+    if (!window)
     {
       self->_indeterminateFrame = 1;
 LABEL_65:
@@ -273,13 +273,13 @@ LABEL_65:
     }
 
     indeterminateFrame = self->_indeterminateFrame;
-    v7 = [v4 windowScene];
-    rect_16 = v7;
+    windowScene = [window windowScene];
+    rect_16 = windowScene;
     rect_8 = [v5 screen];
     [rect_8 scale];
-    v8 = [rect_8 coordinateSpace];
+    coordinateSpace = [rect_8 coordinateSpace];
     coordinateSpace = self->_coordinateSpace;
-    self->_coordinateSpace = v8;
+    self->_coordinateSpace = coordinateSpace;
 
     [(UICoordinateSpace *)self->_fixedCoordinateSpace bounds];
     [(LAUIPhysicalButtonView *)self _physicalButtonNormalizedFrame];
@@ -300,7 +300,7 @@ LABEL_12:
         *(&rect_24.m11 + 4) = v22;
         _os_log_impl(&dword_2560E6000, v21, OS_LOG_TYPE_DEFAULT, "MG: physical button normalized frame: %@", &rect_24, 0xCu);
 
-        v7 = rect_16;
+        windowScene = rect_16;
       }
 
       [(UICoordinateSpace *)self->_coordinateSpace convertRect:self->_fixedCoordinateSpace fromCoordinateSpace:?];
@@ -365,7 +365,7 @@ LABEL_12:
       if (edge == v42 && !v41)
       {
 LABEL_38:
-        [v3 convertRect:self->_coordinateSpace fromCoordinateSpace:v24, v26, v28, v30];
+        [superview convertRect:self->_coordinateSpace fromCoordinateSpace:v24, v26, v28, v30];
         v49 = v48;
         v51 = v50;
         v53 = v52;
@@ -378,7 +378,7 @@ LABEL_38:
           *(&rect_24.m11 + 4) = v57;
           _os_log_impl(&dword_2560E6000, v56, OS_LOG_TYPE_DEFAULT, "LA: physical button view frame: %@", &rect_24, 0xCu);
 
-          v7 = rect_16;
+          windowScene = rect_16;
         }
 
         if (!self->_export)
@@ -519,10 +519,10 @@ LABEL_37:
       goto LABEL_37;
     }
 
-    v19 = [v7 interfaceOrientation];
-    if (v19 < 5)
+    interfaceOrientation = [windowScene interfaceOrientation];
+    if (interfaceOrientation < 5)
     {
-      v20 = off_2798214F8[v19];
+      v20 = off_2798214F8[interfaceOrientation];
       LODWORD(rect_24.m11) = 138412290;
       *(&rect_24.m11 + 4) = v20;
       _os_log_impl(&dword_2560E6000, v18, OS_LOG_TYPE_DEFAULT, "LA: current orientation: %@", &rect_24, 0xCu);
@@ -543,30 +543,30 @@ LABEL_37:
   if (!self->_workaroundsDisabled)
   {
     self->_workaroundsDisabled = 1;
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 removeObserver:self name:*MEMORY[0x277D76878] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D76878] object:0];
   }
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
+    self->_style = style;
     v4 = [(LAUIPhysicalButtonView *)self _colorForStyle:?];
     [(UIView *)self->_buttonView setBackgroundColor:?];
     [(UILabel *)self->_instructionLabel setTextColor:v4];
   }
 }
 
-- (void)setAnimationStyle:(int64_t)a3
+- (void)setAnimationStyle:(int64_t)style
 {
-  if (self->_animationStyle == a3)
+  if (self->_animationStyle == style)
   {
     return;
   }
 
-  self->_animationStyle = a3;
+  self->_animationStyle = style;
   animation = self->_animation;
   if (animation)
   {
@@ -575,38 +575,38 @@ LABEL_37:
     self->_animation = 0;
   }
 
-  if (a3 == 2)
+  if (style == 2)
   {
     v11 = [LAUIPhysicalButtonViewShimmerAnimation alloc];
-    v7 = [(UILabel *)self->_instructionLabel layer];
-    v12 = [(LAUIPhysicalButtonViewAnimation *)v11 initWith:self layer:v7];
+    layer = [(UILabel *)self->_instructionLabel layer];
+    v12 = [(LAUIPhysicalButtonViewAnimation *)v11 initWith:self layer:layer];
     v13 = self->_animation;
     self->_animation = v12;
   }
 
-  else if (a3 == 1)
+  else if (style == 1)
   {
     v8 = [LAUIPhysicalButtonViewBounceAnimation alloc];
-    v9 = [(UIView *)self->_containerView layer];
-    v10 = [(LAUIPhysicalButtonViewAnimation *)v8 initWith:self layer:v9];
+    layer2 = [(UIView *)self->_containerView layer];
+    v10 = [(LAUIPhysicalButtonViewAnimation *)v8 initWith:self layer:layer2];
 
     if (self->_export)
     {
       [(LAUIPhysicalButtonViewAnimation *)v10 setForceMaxXEdge:!self->_disablePortraitWorkaround];
     }
 
-    v7 = self->_animation;
+    layer = self->_animation;
     self->_animation = v10;
   }
 
   else
   {
-    if (a3)
+    if (style)
     {
       goto LABEL_13;
     }
 
-    v7 = self->_animation;
+    layer = self->_animation;
     self->_animation = 0;
   }
 
@@ -624,9 +624,9 @@ LABEL_13:
   v110.receiver = self;
   v110.super_class = LAUIPhysicalButtonView;
   [(LAUIPhysicalButtonView *)&v110 layoutSubviews];
-  v3 = [(LAUIPhysicalButtonView *)self window];
-  v4 = [v3 screen];
-  [v4 scale];
+  window = [(LAUIPhysicalButtonView *)self window];
+  screen = [window screen];
+  [screen scale];
   v104 = v5;
   edge = self->_edge;
   v7 = 44.0;
@@ -935,15 +935,15 @@ LABEL_79:
   CGRectDivide(v111, &rect.size, &remainder, amount, self->_edge);
   v68 = fmax(v104, 1.0);
   [(UIView *)self->_buttonView setFrame:round(v68 * (rect.size.width + (v107 - v31) * 0.5)) / v68, round(v68 * (rect.size.height + (v108 - v34) * 0.5)) / v68, v31, v34];
-  v69 = [(UIView *)self->_buttonView layer];
-  v70 = v69;
+  layer = [(UIView *)self->_buttonView layer];
+  v70 = layer;
   v71 = 5.0;
   if (self->_export)
   {
     v71 = round(v68 * fmin(v31 * 0.5, v34 * 0.5)) / v68;
   }
 
-  [v69 setCornerRadius:v71];
+  [layer setCornerRadius:v71];
 
   CGRectDivide(remainder, &rect.size, &remainder, 8.0, self->_edge);
   height = remainder.size.height;
@@ -995,10 +995,10 @@ LABEL_79:
   [(UILabel *)self->_instructionLabel setFrame:v74, round(v68 * (v73 + (height - v105) * 0.5)) / v68, rect.origin.y];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(UIView *)self->_containerView frame];
   v10 = x;
   v11 = y;
@@ -1006,32 +1006,32 @@ LABEL_79:
   return CGRectContainsPoint(*&v6, *&v10);
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  v4 = self;
+  selfCopy = self;
   v8.receiver = self;
   v8.super_class = LAUIPhysicalButtonView;
-  v5 = [(LAUIPhysicalButtonView *)&v8 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(LAUIPhysicalButtonView *)&v8 hitTest:event withEvent:test.x, test.y];
   if (!v5)
   {
-    v4 = 0;
+    selfCopy = 0;
   }
 
-  v6 = v4;
+  v6 = selfCopy;
 
-  return v4;
+  return selfCopy;
 }
 
-- (id)_colorForStyle:(int64_t)a3
+- (id)_colorForStyle:(int64_t)style
 {
   style = self->_style;
   if (style == 2)
   {
-    v4 = [MEMORY[0x277D75348] blackColor];
-    if (!v4)
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    if (!blackColor)
     {
 LABEL_4:
-      v4 = [MEMORY[0x277D75348] colorWithRed:0.56 green:0.56 blue:0.58 alpha:1.0];
+      blackColor = [MEMORY[0x277D75348] colorWithRed:0.56 green:0.56 blue:0.58 alpha:1.0];
     }
   }
 
@@ -1042,32 +1042,32 @@ LABEL_4:
       goto LABEL_4;
     }
 
-    v4 = [MEMORY[0x277D75348] colorWithWhite:a3 alpha:{0.9803922, 1.0}];
-    if (!v4)
+    blackColor = [MEMORY[0x277D75348] colorWithWhite:style alpha:{0.9803922, 1.0}];
+    if (!blackColor)
     {
       goto LABEL_4;
     }
   }
 
-  return v4;
+  return blackColor;
 }
 
-- (void)setAnimating:(BOOL)a3
+- (void)setAnimating:(BOOL)animating
 {
-  if (self->_animating != a3)
+  if (self->_animating != animating)
   {
-    self->_animating = a3;
+    self->_animating = animating;
     [(LAUIPhysicalButtonView *)self _updateOnScreen];
   }
 }
 
 - (void)_updateOnScreen
 {
-  v3 = [(LAUIPhysicalButtonView *)self window];
-  v4 = v3;
-  if (!self->_animating || v3 == 0)
+  window = [(LAUIPhysicalButtonView *)self window];
+  v4 = window;
+  if (!self->_animating || window == 0)
   {
-    if (!v3)
+    if (!window)
     {
       [(LAUIPhysicalButtonView *)self _purgeExportedHandle];
     }
@@ -1164,8 +1164,8 @@ LABEL_4:
 
       [(CAAnimation *)v30 duration];
       v23 = v33;
-      v34 = [(UIView *)self->_containerView layer];
-      v35 = LAUILayerAddAdditiveAnimation(v34, 0, v30);
+      layer = [(UIView *)self->_containerView layer];
+      v35 = LAUILayerAddAdditiveAnimation(layer, 0, v30);
 
       objc_destroyWeak(&v37);
       objc_destroyWeak(&location);
@@ -1215,11 +1215,11 @@ void __41__LAUIPhysicalButtonView__updateOnScreen__block_invoke_2(uint64_t a1)
 {
   if (self->_export && !self->_exporting)
   {
-    v3 = [(LAUIPhysicalButtonView *)self window];
+    window = [(LAUIPhysicalButtonView *)self window];
 
     v4 = self->_visibilityAnimationCount != 0;
     onScreen = self->_onScreen;
-    if (!v3)
+    if (!window)
     {
       onScreen = 0;
       v4 = 0;
@@ -1311,12 +1311,12 @@ void __44__LAUIPhysicalButtonView__updateExportState__block_invoke_2(uint64_t a1
   }
 }
 
-- (void)setInstruction:(id)a3
+- (void)setInstruction:(id)instruction
 {
-  v9 = a3;
-  if ([(NSString *)v9 length])
+  instructionCopy = instruction;
+  if ([(NSString *)instructionCopy length])
   {
-    v4 = v9;
+    v4 = instructionCopy;
   }
 
   else
@@ -1345,11 +1345,11 @@ void __44__LAUIPhysicalButtonView__updateExportState__block_invoke_2(uint64_t a1
   }
 }
 
-- (void)setIsInstructionHidden:(BOOL)a3
+- (void)setIsInstructionHidden:(BOOL)hidden
 {
-  if (self->_isInstructionHidden != a3)
+  if (self->_isInstructionHidden != hidden)
   {
-    self->_isInstructionHidden = a3;
+    self->_isInstructionHidden = hidden;
     [(LAUIPhysicalButtonView *)self _updateOnScreen];
   }
 }

@@ -1,16 +1,16 @@
 @interface _UIShareOverviewActionControllerSizeNotifyingView
 - (_UIShareOverviewActionController)parentViewController;
-- (void)setBounds:(CGRect)a3;
+- (void)setBounds:(CGRect)bounds;
 @end
 
 @implementation _UIShareOverviewActionControllerSizeNotifyingView
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v9.receiver = self;
   v9.super_class = _UIShareOverviewActionControllerSizeNotifyingView;
   [(_UIShareOverviewActionControllerSizeNotifyingView *)&v9 setBounds:?];
@@ -24,8 +24,8 @@
   v11.size.height = height;
   if (!CGRectEqualToRect(v10, v11))
   {
-    v8 = [(_UIShareOverviewActionControllerSizeNotifyingView *)self parentViewController];
-    [v8 _updateSubviewsForNewGeometry];
+    parentViewController = [(_UIShareOverviewActionControllerSizeNotifyingView *)self parentViewController];
+    [parentViewController _updateSubviewsForNewGeometry];
   }
 }
 

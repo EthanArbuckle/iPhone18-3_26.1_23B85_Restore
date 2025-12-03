@@ -1,18 +1,18 @@
 @interface CachingArtworkViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (id)accessibilityLabel;
 @end
 
 @implementation CachingArtworkViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ShelfKitCollectionViews.ArtworkWithPlaybackStatusView"];
-  [v3 validateClass:@"ShelfKitCollectionViews.EpisodeHeaderCollectionViewCell"];
-  [v3 validateClass:@"ShelfKitCollectionViews.ChevronButton"];
-  [v3 validateClass:@"ShelfKitCollectionViews.CachingArtworkView" isKindOfClass:@"UIView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.ArtworkWithPlaybackStatusView"];
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.EpisodeHeaderCollectionViewCell"];
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.ChevronButton"];
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.CachingArtworkView" isKindOfClass:@"UIView"];
 }
 
 - (BOOL)isAccessibilityElement
@@ -58,15 +58,15 @@ uint64_t __57__CachingArtworkViewAccessibility_isAccessibilityElement__block_inv
   if (objc_opt_isKindOfClass())
   {
     v3 = [v2 _accessibilityFindSubviewDescendant:&__block_literal_global_307];
-    v4 = [v3 accessibilityLabel];
-    v5 = [v4 length];
+    accessibilityLabel = [v3 accessibilityLabel];
+    v5 = [accessibilityLabel length];
 
     if (v5)
     {
       v6 = MEMORY[0x29EDBA0F8];
       v7 = accessibilityLocalizedString(@"artwork.title.view");
-      v8 = [v3 accessibilityLabel];
-      v9 = [v6 stringWithFormat:v7, v8];
+      accessibilityLabel2 = [v3 accessibilityLabel];
+      v9 = [v6 stringWithFormat:v7, accessibilityLabel2];
 
       goto LABEL_6;
     }

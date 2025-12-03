@@ -1,13 +1,13 @@
 @interface _PBUIWallpaperBlurAnimatingView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 @end
 
 @implementation _PBUIWallpaperBlurAnimatingView
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"filters.gaussianBlur.inputRadius"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"filters.gaussianBlur.inputRadius"])
   {
     v5 = 1;
   }
@@ -16,7 +16,7 @@
   {
     v7.receiver = self;
     v7.super_class = _PBUIWallpaperBlurAnimatingView;
-    v5 = [(_PBUIWallpaperBlurAnimatingView *)&v7 _shouldAnimatePropertyWithKey:v4];
+    v5 = [(_PBUIWallpaperBlurAnimatingView *)&v7 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v5;

@@ -1,25 +1,25 @@
 @interface SSVPlaybackAsset
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)sinfs;
 - (NSString)URLString;
 - (NSString)downloadKey;
 - (NSString)flavor;
-- (SSVPlaybackAsset)initWithAssetDictionary:(id)a3;
+- (SSVPlaybackAsset)initWithAssetDictionary:(id)dictionary;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation SSVPlaybackAsset
 
-- (SSVPlaybackAsset)initWithAssetDictionary:(id)a3
+- (SSVPlaybackAsset)initWithAssetDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = SSVPlaybackAsset;
   v5 = [(SSVPlaybackAsset *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictionaryCopy copy];
     assetDictionary = v5->_assetDictionary;
     v5->_assetDictionary = v6;
   }
@@ -101,20 +101,20 @@
   v9.receiver = self;
   v9.super_class = SSVPlaybackAsset;
   v4 = [(SSVPlaybackAsset *)&v9 description];
-  v5 = [(SSVPlaybackAsset *)self flavor];
-  v6 = [(SSVPlaybackAsset *)self URLString];
-  v7 = [v3 stringWithFormat:@"%@ [Flavor: %@, URL: %@]", v4, v5, v6];
+  flavor = [(SSVPlaybackAsset *)self flavor];
+  uRLString = [(SSVPlaybackAsset *)self URLString];
+  v7 = [v3 stringWithFormat:@"%@ [Flavor: %@, URL: %@]", v4, flavor, uRLString];
 
   return v7;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(SSVPlaybackAsset *)self URLString];
-  v4 = v3;
-  if (v3)
+  uRLString = [(SSVPlaybackAsset *)self URLString];
+  v4 = uRLString;
+  if (uRLString)
   {
-    v5 = [v3 hash];
+    v5 = [uRLString hash];
   }
 
   else
@@ -129,15 +129,15 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v7 = [(SSVPlaybackAsset *)self URLString];
-    v8 = [v4 URLString];
-    v6 = [v7 isEqualToString:v8];
+    uRLString = [(SSVPlaybackAsset *)self URLString];
+    uRLString2 = [equalCopy URLString];
+    v6 = [uRLString isEqualToString:uRLString2];
   }
 
   else

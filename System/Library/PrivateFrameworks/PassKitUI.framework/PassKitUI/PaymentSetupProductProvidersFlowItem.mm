@@ -1,6 +1,6 @@
 @interface PaymentSetupProductProvidersFlowItem
 - (_TtC9PassKitUI36PaymentSetupProductProvidersFlowItem)init;
-- (void)setupProductProvidersViewController:(id)a3 didSelectMethod:(id)a4;
+- (void)setupProductProvidersViewController:(id)controller didSelectMethod:(id)method;
 @end
 
 @implementation PaymentSetupProductProvidersFlowItem
@@ -12,12 +12,12 @@
   return result;
 }
 
-- (void)setupProductProvidersViewController:(id)a3 didSelectMethod:(id)a4
+- (void)setupProductProvidersViewController:(id)controller didSelectMethod:(id)method
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1BD8FEEF0(v7);
+  controllerCopy = controller;
+  methodCopy = method;
+  selfCopy = self;
+  sub_1BD8FEEF0(methodCopy);
 }
 
 @end

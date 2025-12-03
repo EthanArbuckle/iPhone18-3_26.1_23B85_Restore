@@ -1,61 +1,61 @@
 @interface PDSCoordinator
 - (BOOL)_disabledForAnyReason;
-- (BOOL)_entries:(id)a3 includeState:(unsigned __int8)a4;
-- (BOOL)_lastPushTokenDiffersFrom:(id)a3;
-- (BOOL)_lastSandboxPushTokenDiffersFrom:(id)a3;
-- (BOOL)_matchingEntryExistsFor:(id)a3 inStore:(id)a4;
-- (BOOL)shouldScheduleHeartbeatForTracker:(id)a3;
+- (BOOL)_entries:(id)_entries includeState:(unsigned __int8)state;
+- (BOOL)_lastPushTokenDiffersFrom:(id)from;
+- (BOOL)_lastSandboxPushTokenDiffersFrom:(id)from;
+- (BOOL)_matchingEntryExistsFor:(id)for inStore:(id)store;
+- (BOOL)shouldScheduleHeartbeatForTracker:(id)tracker;
 - (CUTDeferredTaskQueue)processDeferredTaskQueue;
-- (PDSCoordinator)initWithQueue:(id)a3 serverBag:(id)a4 requestQueue:(id)a5 kvStoreBlock:(id)a6 entryStoreBlock:(id)a7 pushTokenBlock:(id)a8 systemMonitor:(id)a9 pushHandler:(id)a10;
-- (double)_timeToDelayRequestForTopics:(id)a3;
-- (int64_t)ttlForRequest:(id)a3;
+- (PDSCoordinator)initWithQueue:(id)queue serverBag:(id)bag requestQueue:(id)requestQueue kvStoreBlock:(id)block entryStoreBlock:(id)storeBlock pushTokenBlock:(id)tokenBlock systemMonitor:(id)monitor pushHandler:(id)self0;
+- (double)_timeToDelayRequestForTopics:(id)topics;
+- (int64_t)ttlForRequest:(id)request;
 - (unint64_t)_lastRequestHash;
-- (void)_bagReloaded:(id)a3;
-- (void)_comparePushTokensWithEntryStore:(id)a3;
-- (void)_markLastRequest:(id)a3;
-- (void)_markPushToken:(id)a3;
-- (void)_markSandboxPushToken:(id)a3;
+- (void)_bagReloaded:(id)reloaded;
+- (void)_comparePushTokensWithEntryStore:(id)store;
+- (void)_markLastRequest:(id)request;
+- (void)_markPushToken:(id)token;
+- (void)_markSandboxPushToken:(id)token;
 - (void)_processEntryStore;
-- (void)_updateEntriesForResponse:(id)a3 fromRequest:(id)a4;
-- (void)_updateOrDeleteEntry:(id)a3 inStore:(id)a4;
+- (void)_updateEntriesForResponse:(id)response fromRequest:(id)request;
+- (void)_updateOrDeleteEntry:(id)entry inStore:(id)store;
 - (void)dealloc;
-- (void)entryStore:(id)a3 didUpdatePendingTopics:(id)a4 forceImmediateUpdate:(BOOL)a5;
-- (void)handler:(id)a3 pushTokenChanged:(id)a4;
+- (void)entryStore:(id)store didUpdatePendingTopics:(id)topics forceImmediateUpdate:(BOOL)update;
+- (void)handler:(id)handler pushTokenChanged:(id)changed;
 - (void)registerIfNeeded;
-- (void)requestQueue:(id)a3 processedRequest:(id)a4 withResponse:(id)a5;
+- (void)requestQueue:(id)queue processedRequest:(id)request withResponse:(id)response;
 - (void)systemDidLeaveFirstDataProtectionLock;
 @end
 
 @implementation PDSCoordinator
 
-- (PDSCoordinator)initWithQueue:(id)a3 serverBag:(id)a4 requestQueue:(id)a5 kvStoreBlock:(id)a6 entryStoreBlock:(id)a7 pushTokenBlock:(id)a8 systemMonitor:(id)a9 pushHandler:(id)a10
+- (PDSCoordinator)initWithQueue:(id)queue serverBag:(id)bag requestQueue:(id)requestQueue kvStoreBlock:(id)block entryStoreBlock:(id)storeBlock pushTokenBlock:(id)tokenBlock systemMonitor:(id)monitor pushHandler:(id)self0
 {
-  v16 = a3;
-  v43 = a4;
-  v17 = a4;
-  v44 = a5;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = v16;
-  v23 = a9;
+  queueCopy = queue;
+  bagCopy = bag;
+  bagCopy2 = bag;
+  requestQueueCopy = requestQueue;
+  requestQueueCopy2 = requestQueue;
+  blockCopy = block;
+  storeBlockCopy = storeBlock;
+  tokenBlockCopy = tokenBlock;
+  v22 = queueCopy;
+  monitorCopy = monitor;
   v45 = v22;
-  v46 = a10;
+  handlerCopy = handler;
   if (!v22)
   {
     [PDSCoordinator initWithQueue:serverBag:requestQueue:kvStoreBlock:entryStoreBlock:pushTokenBlock:systemMonitor:pushHandler:];
   }
 
-  v24 = v17;
-  if (!v17)
+  v24 = bagCopy2;
+  if (!bagCopy2)
   {
     [PDSCoordinator initWithQueue:serverBag:requestQueue:kvStoreBlock:entryStoreBlock:pushTokenBlock:systemMonitor:pushHandler:];
   }
 
-  if (v18)
+  if (requestQueueCopy2)
   {
-    if (v19)
+    if (blockCopy)
     {
       goto LABEL_7;
     }
@@ -64,17 +64,17 @@
   else
   {
     [PDSCoordinator initWithQueue:serverBag:requestQueue:kvStoreBlock:entryStoreBlock:pushTokenBlock:systemMonitor:pushHandler:];
-    if (v19)
+    if (blockCopy)
     {
 LABEL_7:
-      if (v20)
+      if (storeBlockCopy)
       {
         goto LABEL_8;
       }
 
 LABEL_14:
       [PDSCoordinator initWithQueue:serverBag:requestQueue:kvStoreBlock:entryStoreBlock:pushTokenBlock:systemMonitor:pushHandler:];
-      if (v21)
+      if (tokenBlockCopy)
       {
         goto LABEL_9;
       }
@@ -84,13 +84,13 @@ LABEL_14:
   }
 
   [PDSCoordinator initWithQueue:serverBag:requestQueue:kvStoreBlock:entryStoreBlock:pushTokenBlock:systemMonitor:pushHandler:];
-  if (!v20)
+  if (!storeBlockCopy)
   {
     goto LABEL_14;
   }
 
 LABEL_8:
-  if (v21)
+  if (tokenBlockCopy)
   {
     goto LABEL_9;
   }
@@ -102,16 +102,16 @@ LABEL_9:
   v47.super_class = PDSCoordinator;
   v25 = [(PDSCoordinator *)&v47 init];
   v26 = v25;
-  v27 = v23;
-  v28 = v20;
-  v29 = v19;
+  v27 = monitorCopy;
+  v28 = storeBlockCopy;
+  v29 = blockCopy;
   if (v25)
   {
-    objc_storeStrong(&v25->_queue, a3);
-    objc_storeStrong(&v26->_serverBag, v43);
-    objc_storeStrong(&v26->_requestQueue, v44);
+    objc_storeStrong(&v25->_queue, queue);
+    objc_storeStrong(&v26->_serverBag, bagCopy);
+    objc_storeStrong(&v26->_requestQueue, requestQueueCopy);
     [(PDSRequestQueue *)v26->_requestQueue setDelegate:v26];
-    v30 = MEMORY[0x25F8A7090](v19);
+    v30 = MEMORY[0x25F8A7090](blockCopy);
     kvStoreBlock = v26->_kvStoreBlock;
     v26->_kvStoreBlock = v30;
 
@@ -119,22 +119,22 @@ LABEL_9:
     entryStoreBlock = v26->_entryStoreBlock;
     v26->_entryStoreBlock = v32;
 
-    v34 = MEMORY[0x25F8A7090](v21);
+    v34 = MEMORY[0x25F8A7090](tokenBlockCopy);
     pushTokenBlock = v26->_pushTokenBlock;
     v26->_pushTokenBlock = v34;
 
     *&v26->_requestPending = 0;
     v26->_tokenChanged = 0;
     v26->_bagLoadRetries = 0;
-    objc_storeStrong(&v26->_pushHandler, a10);
+    objc_storeStrong(&v26->_pushHandler, handler);
     [(IDSPushHandler *)v26->_pushHandler addListener:v26 topics:0 commands:0 queue:v26->_queue];
-    v36 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v36 addObserver:v26 selector:sel__bagReloaded_ name:*MEMORY[0x277D18930] object:v24];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v26 selector:sel__bagReloaded_ name:*MEMORY[0x277D18930] object:v24];
 
     [v27 addListener:v26];
     v37 = [PDSHeartbeatTracker alloc];
-    v38 = [(PDSCoordinator *)v26 queue];
-    v39 = [(PDSHeartbeatTracker *)v37 initWithDelegate:v26 queue:v38 kvStoreBlock:v29 serverBag:v24];
+    queue = [(PDSCoordinator *)v26 queue];
+    v39 = [(PDSHeartbeatTracker *)v37 initWithDelegate:v26 queue:queue kvStoreBlock:v29 serverBag:v24];
     heartbeatTracker = v26->_heartbeatTracker;
     v26->_heartbeatTracker = v39;
   }
@@ -159,8 +159,8 @@ LABEL_9:
     _os_log_impl(&dword_25DED8000, v3, OS_LOG_TYPE_DEFAULT, "Registering if needed.", buf, 2u);
   }
 
-  v4 = [(PDSCoordinator *)self entryStoreBlock];
-  v5 = v4[2]();
+  entryStoreBlock = [(PDSCoordinator *)self entryStoreBlock];
+  v5 = entryStoreBlock[2]();
 
   if (v5)
   {
@@ -179,54 +179,54 @@ LABEL_9:
   }
 }
 
-- (void)entryStore:(id)a3 didUpdatePendingTopics:(id)a4 forceImmediateUpdate:(BOOL)a5
+- (void)entryStore:(id)store didUpdatePendingTopics:(id)topics forceImmediateUpdate:(BOOL)update
 {
-  v10 = a4;
+  topicsCopy = topics;
   if (![(PDSCoordinator *)self _disabledForAnyReason])
   {
     [(PDSCoordinator *)self setRequestPending:1];
     v7 = 0.0;
-    if (!a5)
+    if (!update)
     {
-      [(PDSCoordinator *)self _timeToDelayRequestForTopics:v10];
+      [(PDSCoordinator *)self _timeToDelayRequestForTopics:topicsCopy];
       v7 = v8;
     }
 
-    v9 = [(PDSCoordinator *)self processDeferredTaskQueue];
-    [v9 enqueueExecutionWithTarget:self afterDelay:v7];
+    processDeferredTaskQueue = [(PDSCoordinator *)self processDeferredTaskQueue];
+    [processDeferredTaskQueue enqueueExecutionWithTarget:self afterDelay:v7];
   }
 }
 
-- (void)requestQueue:(id)a3 processedRequest:(id)a4 withResponse:(id)a5
+- (void)requestQueue:(id)queue processedRequest:(id)request withResponse:(id)response
 {
   v28 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  requestCopy = request;
+  responseCopy = response;
   v9 = pds_defaultLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v26 = 138412290;
-    v27 = v8;
+    v27 = responseCopy;
     _os_log_impl(&dword_25DED8000, v9, OS_LOG_TYPE_DEFAULT, "Received PDS registration response: %@", &v26, 0xCu);
   }
 
-  if ([v8 status])
+  if ([responseCopy status])
   {
     v10 = pds_defaultLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v8 status];
+      status = [responseCopy status];
       v26 = 134217984;
-      v27 = v11;
+      v27 = status;
       _os_log_impl(&dword_25DED8000, v10, OS_LOG_TYPE_DEFAULT, "Bad response status: %ld", &v26, 0xCu);
     }
 
-    v12 = [v8 status];
+    status2 = [responseCopy status];
     v13 = pds_defaultLog();
     v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
-    if (v12 <= 6004)
+    if (status2 <= 6004)
     {
-      if (v12 == 6001)
+      if (status2 == 6001)
       {
         if (v14)
         {
@@ -240,7 +240,7 @@ LABEL_29:
         goto LABEL_30;
       }
 
-      if (v12 == 6002)
+      if (status2 == 6002)
       {
         if (v14)
         {
@@ -258,9 +258,9 @@ LABEL_27:
 LABEL_21:
       if (v14)
       {
-        v22 = [v8 status];
+        status3 = [responseCopy status];
         v26 = 134217984;
-        v27 = v22;
+        v27 = status3;
         v15 = "Unhandled response status: %ld";
         v23 = v13;
         v24 = 12;
@@ -272,7 +272,7 @@ LABEL_28:
       goto LABEL_29;
     }
 
-    if (v12 == 6005)
+    if (status2 == 6005)
     {
       if (v14)
       {
@@ -284,7 +284,7 @@ LABEL_28:
       goto LABEL_29;
     }
 
-    if (v12 != 6009)
+    if (status2 != 6009)
     {
       goto LABEL_21;
     }
@@ -300,25 +300,25 @@ LABEL_28:
 
   else
   {
-    v16 = [v8 ttl];
-    v17 = [(PDSCoordinator *)self serverBag];
-    v18 = [v17 ttlFromBag];
+    v16 = [responseCopy ttl];
+    serverBag = [(PDSCoordinator *)self serverBag];
+    ttlFromBag = [serverBag ttlFromBag];
 
-    if (v16 > v18)
+    if (v16 > ttlFromBag)
     {
-      v19 = [(PDSCoordinator *)self serverBag];
-      [v19 ttlFromBag];
+      serverBag2 = [(PDSCoordinator *)self serverBag];
+      [serverBag2 ttlFromBag];
 
       v20 = pds_defaultLog();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
-        [PDSCoordinator requestQueue:v8 processedRequest:self withResponse:v20];
+        [PDSCoordinator requestQueue:responseCopy processedRequest:self withResponse:v20];
       }
     }
 
-    [(PDSCoordinator *)self _updateEntriesForResponse:v8 fromRequest:v7];
-    v21 = [(PDSCoordinator *)self heartbeatTracker];
-    [v21 noteUpdatedHeartbeatTTL:{objc_msgSend(v8, "ttl")}];
+    [(PDSCoordinator *)self _updateEntriesForResponse:responseCopy fromRequest:requestCopy];
+    heartbeatTracker = [(PDSCoordinator *)self heartbeatTracker];
+    [heartbeatTracker noteUpdatedHeartbeatTTL:{objc_msgSend(responseCopy, "ttl")}];
   }
 
 LABEL_30:
@@ -326,12 +326,12 @@ LABEL_30:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)ttlForRequest:(id)a3
+- (int64_t)ttlForRequest:(id)request
 {
-  v3 = [(PDSCoordinator *)self serverBag];
-  v4 = [v3 ttlFromBag];
+  serverBag = [(PDSCoordinator *)self serverBag];
+  ttlFromBag = [serverBag ttlFromBag];
 
-  return v4;
+  return ttlFromBag;
 }
 
 - (void)_processEntryStore
@@ -341,13 +341,13 @@ LABEL_30:
   self->_pendingRequestDate = 0;
 
   self->_requestPending = 0;
-  v4 = [(PDSCoordinator *)self entryStoreBlock];
-  v5 = v4[2]();
+  entryStoreBlock = [(PDSCoordinator *)self entryStoreBlock];
+  v5 = entryStoreBlock[2]();
 
   if (!v5)
   {
-    v9 = pds_defaultLog();
-    if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    entries = pds_defaultLog();
+    if (!os_log_type_enabled(entries, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_71;
     }
@@ -355,15 +355,15 @@ LABEL_30:
     *buf = 0;
     v10 = "EntryStore is nil! aborting";
 LABEL_31:
-    _os_log_impl(&dword_25DED8000, v9, OS_LOG_TYPE_DEFAULT, v10, buf, 2u);
+    _os_log_impl(&dword_25DED8000, entries, OS_LOG_TYPE_DEFAULT, v10, buf, 2u);
     goto LABEL_71;
   }
 
-  v6 = [v5 hasPendingEntries];
+  hasPendingEntries = [v5 hasPendingEntries];
   if ([v5 hasActiveEntries])
   {
-    v7 = [(PDSCoordinator *)self heartbeatTracker];
-    LODWORD(v8) = [v7 isPassedTrackedHeartbeatDate];
+    heartbeatTracker = [(PDSCoordinator *)self heartbeatTracker];
+    LODWORD(v8) = [heartbeatTracker isPassedTrackedHeartbeatDate];
   }
 
   else
@@ -375,7 +375,7 @@ LABEL_31:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12 = @"NO";
-    if (v6)
+    if (hasPendingEntries)
     {
       v13 = @"YES";
     }
@@ -406,13 +406,13 @@ LABEL_31:
       _os_log_impl(&dword_25DED8000, v14, OS_LOG_TYPE_DEFAULT, "No heartbeat currently needed", buf, 2u);
     }
 
-    v15 = [(PDSCoordinator *)self heartbeatTracker];
-    [v15 noteShouldTrackHeartbeat];
+    heartbeatTracker2 = [(PDSCoordinator *)self heartbeatTracker];
+    [heartbeatTracker2 noteShouldTrackHeartbeat];
 
-    if ((v6 & 1) == 0)
+    if ((hasPendingEntries & 1) == 0)
     {
-      v9 = pds_defaultLog();
-      if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+      entries = pds_defaultLog();
+      if (!os_log_type_enabled(entries, OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_71;
       }
@@ -423,10 +423,10 @@ LABEL_31:
     }
   }
 
-  v16 = [(PDSCoordinator *)self serverBag];
-  v17 = [v16 isLoaded];
+  serverBag = [(PDSCoordinator *)self serverBag];
+  isLoaded = [serverBag isLoaded];
 
-  if ((v17 & 1) == 0)
+  if ((isLoaded & 1) == 0)
   {
     v25 = pds_defaultLog();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -435,26 +435,26 @@ LABEL_31:
       _os_log_impl(&dword_25DED8000, v25, OS_LOG_TYPE_DEFAULT, "PDS Bag isn't loaded yet! Aborting.", buf, 2u);
     }
 
-    v26 = [(PDSCoordinator *)self serverBag];
-    v27 = [v26 isLoading];
+    serverBag2 = [(PDSCoordinator *)self serverBag];
+    isLoading = [serverBag2 isLoading];
 
-    if ((v27 & 1) == 0)
+    if ((isLoading & 1) == 0)
     {
-      v28 = [(PDSCoordinator *)self serverBag];
-      [v28 startBagLoad];
+      serverBag3 = [(PDSCoordinator *)self serverBag];
+      [serverBag3 startBagLoad];
     }
 
     v21 = objc_alloc(MEMORY[0x277D18A50]);
-    v22 = [(PDSCoordinator *)self heartbeatTracker];
-    v23 = [v22 trackedHeartbeatDate];
+    heartbeatTracker3 = [(PDSCoordinator *)self heartbeatTracker];
+    trackedHeartbeatDate = [heartbeatTracker3 trackedHeartbeatDate];
     v24 = @"Bag not loaded";
     goto LABEL_28;
   }
 
-  v18 = [MEMORY[0x277D192A8] sharedInstance];
-  v19 = [v18 isUnderFirstDataProtectionLock];
+  mEMORY[0x277D192A8] = [MEMORY[0x277D192A8] sharedInstance];
+  isUnderFirstDataProtectionLock = [mEMORY[0x277D192A8] isUnderFirstDataProtectionLock];
 
-  if (v19)
+  if (isUnderFirstDataProtectionLock)
   {
     v20 = pds_defaultLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -464,22 +464,22 @@ LABEL_31:
     }
 
     v21 = objc_alloc(MEMORY[0x277D18A50]);
-    v22 = [(PDSCoordinator *)self heartbeatTracker];
-    v23 = [v22 trackedHeartbeatDate];
+    heartbeatTracker3 = [(PDSCoordinator *)self heartbeatTracker];
+    trackedHeartbeatDate = [heartbeatTracker3 trackedHeartbeatDate];
     v24 = @"Before first unlock";
 LABEL_28:
-    v9 = [v21 initWithFailureReason:v24 registrationReason:&unk_286FBBB70 heartbeatDate:v23];
+    entries = [v21 initWithFailureReason:v24 registrationReason:&unk_286FBBB70 heartbeatDate:trackedHeartbeatDate];
 
-    v29 = [MEMORY[0x277D189A0] defaultLogger];
-    [v29 logMetric:v9];
+    defaultLogger = [MEMORY[0x277D189A0] defaultLogger];
+    [defaultLogger logMetric:entries];
 
     goto LABEL_71;
   }
 
-  v9 = [v5 entries];
-  if (v9)
+  entries = [v5 entries];
+  if (entries)
   {
-    v30 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:v9];
+    v30 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:entries];
   }
 
   else
@@ -489,10 +489,10 @@ LABEL_28:
 
   v31 = v30;
   v8 = v8;
-  if (v6)
+  if (hasPendingEntries)
   {
     v32 = v30;
-    if ([(PDSCoordinator *)self _entries:v9 includeState:1])
+    if ([(PDSCoordinator *)self _entries:entries includeState:1])
     {
       v33 = v8 | 2;
     }
@@ -502,7 +502,7 @@ LABEL_28:
       v33 = v8;
     }
 
-    if ([(PDSCoordinator *)self _entries:v9 includeState:2])
+    if ([(PDSCoordinator *)self _entries:entries includeState:2])
     {
       v8 = v33 | 4;
     }
@@ -533,9 +533,9 @@ LABEL_28:
   }
 
   v35 = [PDSRequestInfo alloc];
-  v36 = [(PDSCoordinator *)self heartbeatTracker];
-  v37 = [v36 trackedHeartbeatDate];
-  v38 = [(PDSRequestInfo *)v35 initWithRegistrationReason:v8 nextHeartbeatDate:v37];
+  heartbeatTracker4 = [(PDSCoordinator *)self heartbeatTracker];
+  trackedHeartbeatDate2 = [heartbeatTracker4 trackedHeartbeatDate];
+  v38 = [(PDSRequestInfo *)v35 initWithRegistrationReason:v8 nextHeartbeatDate:trackedHeartbeatDate2];
 
   v39 = [[PDSRequest alloc] initWithEntries:v31 requestInfo:v38];
   if (v39)
@@ -554,10 +554,10 @@ LABEL_28:
       v43 = pds_defaultLog();
       if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
       {
-        v44 = [(PDSCoordinator *)self heartbeatTracker];
-        v45 = [v44 trackedHeartbeatDate];
+        heartbeatTracker5 = [(PDSCoordinator *)self heartbeatTracker];
+        trackedHeartbeatDate3 = [heartbeatTracker5 trackedHeartbeatDate];
         *buf = 138412290;
-        v72 = v45;
+        v72 = trackedHeartbeatDate3;
         _os_log_impl(&dword_25DED8000, v43, OS_LOG_TYPE_DEFAULT, "Next Checkpoint Time: %@", buf, 0xCu);
       }
 
@@ -567,8 +567,8 @@ LABEL_28:
       if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
       {
         v47 = MEMORY[0x277CCABB0];
-        v48 = [(PDSCoordinator *)self serverBag];
-        v49 = [v47 numberWithInteger:{objc_msgSend(v48, "ttlWindowFromBag")}];
+        serverBag4 = [(PDSCoordinator *)self serverBag];
+        v49 = [v47 numberWithInteger:{objc_msgSend(serverBag4, "ttlWindowFromBag")}];
         *buf = 138412290;
         v72 = v49;
         _os_log_impl(&dword_25DED8000, v46, OS_LOG_TYPE_DEFAULT, "TTL Window: %@", buf, 0xCu);
@@ -578,7 +578,7 @@ LABEL_28:
       v69 = 0u;
       v66 = 0u;
       v67 = 0u;
-      v41 = v9;
+      v41 = entries;
       v50 = [v41 countByEnumeratingWithState:&v66 objects:v70 count:16];
       if (v50)
       {
@@ -624,27 +624,27 @@ LABEL_28:
     }
 
     [(PDSCoordinator *)self _markLastRequest:v39];
-    v56 = [(PDSCoordinator *)self serverBag];
-    [v56 messageTimeoutFromBag];
+    serverBag5 = [(PDSCoordinator *)self serverBag];
+    [serverBag5 messageTimeoutFromBag];
     v58 = v57;
-    v59 = [(PDSCoordinator *)self requestQueue];
-    [v59 setMessageTimeout:v58];
+    requestQueue = [(PDSCoordinator *)self requestQueue];
+    [requestQueue setMessageTimeout:v58];
 
-    v60 = [(PDSCoordinator *)self requestQueue];
-    [v60 enqueueRequest:v39];
+    requestQueue2 = [(PDSCoordinator *)self requestQueue];
+    [requestQueue2 enqueueRequest:v39];
   }
 
 LABEL_71:
   v61 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateEntriesForResponse:(id)a3 fromRequest:(id)a4
+- (void)_updateEntriesForResponse:(id)response fromRequest:(id)request
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PDSCoordinator *)self entryStoreBlock];
-  v9 = v8[2]();
+  responseCopy = response;
+  requestCopy = request;
+  entryStoreBlock = [(PDSCoordinator *)self entryStoreBlock];
+  v9 = entryStoreBlock[2]();
 
   if (v9)
   {
@@ -652,15 +652,15 @@ LABEL_71:
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v10 = [v7 entries];
-    v11 = [v10 countByEnumeratingWithState:&v34 objects:v43 count:16];
+    entries = [requestCopy entries];
+    v11 = [entries countByEnumeratingWithState:&v34 objects:v43 count:16];
     if (v11)
     {
       v12 = v11;
-      v31 = v7;
+      v31 = requestCopy;
       v13 = *v35;
-      v32 = v6;
-      obj = v10;
+      v32 = responseCopy;
+      obj = entries;
       while (1)
       {
         v14 = 0;
@@ -672,9 +672,9 @@ LABEL_71:
           }
 
           v15 = *(*(&v34 + 1) + 8 * v14);
-          v16 = [v15 user];
-          v17 = [v6 statusByUser];
-          v18 = [v17 objectForKey:v16];
+          user = [v15 user];
+          statusByUser = [responseCopy statusByUser];
+          v18 = [statusByUser objectForKey:user];
 
           if (!v18)
           {
@@ -682,7 +682,7 @@ LABEL_71:
             if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
-              v40 = v16;
+              v40 = user;
               v22 = v21;
               v23 = "User status not included in response: user: %@";
               v24 = 12;
@@ -695,15 +695,15 @@ LABEL_14:
             goto LABEL_15;
           }
 
-          v19 = [v18 integerValue];
-          if (v19)
+          integerValue = [v18 integerValue];
+          if (integerValue)
           {
-            v20 = v19;
+            v20 = integerValue;
             v21 = pds_defaultLog();
             if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412546;
-              v40 = v16;
+              v40 = user;
               v41 = 2048;
               v42 = v20;
               v22 = v21;
@@ -730,13 +730,13 @@ LABEL_14:
               _os_log_impl(&dword_25DED8000, v25, OS_LOG_TYPE_DEFAULT, "State has changed mid-update for entry: %@", buf, 0xCu);
             }
 
-            v26 = [v15 registration];
-            v27 = [v26 topicString];
-            v38 = v27;
+            registration = [v15 registration];
+            topicString = [registration topicString];
+            v38 = topicString;
             v28 = [MEMORY[0x277CBEA60] arrayWithObjects:&v38 count:1];
             [(PDSCoordinator *)self entryStore:v9 didUpdatePendingTopics:v28 forceImmediateUpdate:1];
 
-            v6 = v32;
+            responseCopy = v32;
           }
 
 LABEL_15:
@@ -745,12 +745,12 @@ LABEL_15:
         }
 
         while (v12 != v14);
-        v10 = obj;
+        entries = obj;
         v29 = [obj countByEnumeratingWithState:&v34 objects:v43 count:16];
         v12 = v29;
         if (!v29)
         {
-          v7 = v31;
+          requestCopy = v31;
           break;
         }
       }
@@ -759,29 +759,29 @@ LABEL_15:
 
   else
   {
-    v10 = pds_defaultLog();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    entries = pds_defaultLog();
+    if (os_log_type_enabled(entries, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_25DED8000, v10, OS_LOG_TYPE_DEFAULT, "EntryStore is nil! aborting", buf, 2u);
+      _os_log_impl(&dword_25DED8000, entries, OS_LOG_TYPE_DEFAULT, "EntryStore is nil! aborting", buf, 2u);
     }
   }
 
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateOrDeleteEntry:(id)a3 inStore:(id)a4
+- (void)_updateOrDeleteEntry:(id)entry inStore:(id)store
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 clientID];
-  v8 = [v5 state];
-  v9 = [v5 user];
-  if (v8 == 2)
+  entryCopy = entry;
+  storeCopy = store;
+  clientID = [entryCopy clientID];
+  state = [entryCopy state];
+  user = [entryCopy user];
+  if (state == 2)
   {
     v15 = 0;
-    v13 = [v6 deleteEntry:v5 withError:&v15];
+    v13 = [storeCopy deleteEntry:entryCopy withError:&v15];
     v11 = v15;
     if ((v13 & 1) == 0)
     {
@@ -801,10 +801,10 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (v8 == 1)
+  if (state == 1)
   {
     v16 = 0;
-    v10 = [v6 updateEntryState:3 forUser:v9 clientID:v7 withError:&v16];
+    v10 = [storeCopy updateEntryState:3 forUser:user clientID:clientID withError:&v16];
     v11 = v16;
     if ((v10 & 1) == 0)
     {
@@ -829,16 +829,16 @@ LABEL_12:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_entries:(id)a3 includeState:(unsigned __int8)a4
+- (BOOL)_entries:(id)_entries includeState:(unsigned __int8)state
 {
-  v4 = a4;
+  stateCopy = state;
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = a3;
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  _entriesCopy = _entries;
+  v6 = [_entriesCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -849,17 +849,17 @@ LABEL_12:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_entriesCopy);
         }
 
-        if ([*(*(&v13 + 1) + 8 * i) state] == v4)
+        if ([*(*(&v13 + 1) + 8 * i) state] == stateCopy)
         {
           v10 = 1;
           goto LABEL_11;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [_entriesCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v7)
       {
         continue;
@@ -878,36 +878,36 @@ LABEL_11:
 
 - (unint64_t)_lastRequestHash
 {
-  v2 = [(PDSCoordinator *)self kvStoreBlock];
-  v3 = v2[2]();
+  kvStoreBlock = [(PDSCoordinator *)self kvStoreBlock];
+  v3 = kvStoreBlock[2]();
 
   v4 = [v3 numberForKey:@"kPDSLastRequestHash"];
-  v5 = [v4 unsignedLongValue];
+  unsignedLongValue = [v4 unsignedLongValue];
 
-  return v5;
+  return unsignedLongValue;
 }
 
-- (void)_markLastRequest:(id)a3
+- (void)_markLastRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(PDSCoordinator *)self kvStoreBlock];
-  v9 = v5[2]();
+  requestCopy = request;
+  kvStoreBlock = [(PDSCoordinator *)self kvStoreBlock];
+  v9 = kvStoreBlock[2]();
 
   v6 = MEMORY[0x277CCABB0];
-  v7 = [v4 hash];
+  v7 = [requestCopy hash];
 
   v8 = [v6 numberWithUnsignedInteger:v7];
   [v9 setNumber:v8 forKey:@"kPDSLastRequestHash"];
 }
 
-- (BOOL)_matchingEntryExistsFor:(id)a3 inStore:(id)a4
+- (BOOL)_matchingEntryExistsFor:(id)for inStore:(id)store
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 user];
-  v8 = [v5 clientID];
-  [v6 entriesForUser:v7 withClientID:v8];
+  forCopy = for;
+  storeCopy = store;
+  user = [forCopy user];
+  clientID = [forCopy clientID];
+  [storeCopy entriesForUser:user withClientID:clientID];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -925,7 +925,7 @@ LABEL_11:
           objc_enumerationMutation(v9);
         }
 
-        if ([v5 isEqualToEntry:{*(*(&v15 + 1) + 8 * i), v15}])
+        if ([forCopy isEqualToEntry:{*(*(&v15 + 1) + 8 * i), v15}])
         {
           LOBYTE(v10) = 1;
           goto LABEL_11;
@@ -948,19 +948,19 @@ LABEL_11:
   return v10;
 }
 
-- (double)_timeToDelayRequestForTopics:(id)a3
+- (double)_timeToDelayRequestForTopics:(id)topics
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PDSCoordinator *)self serverBag];
-  [v5 coalesceDelayFromBag];
+  topicsCopy = topics;
+  serverBag = [(PDSCoordinator *)self serverBag];
+  [serverBag coalesceDelayFromBag];
   v7 = v6;
 
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v8 = v4;
+  v8 = topicsCopy;
   v9 = [v8 countByEnumeratingWithState:&v26 objects:v32 count:16];
   if (v9)
   {
@@ -977,8 +977,8 @@ LABEL_11:
         }
 
         v13 = *(*(&v26 + 1) + 8 * v12);
-        v14 = [(PDSCoordinator *)self serverBag];
-        LOBYTE(v13) = [v14 topicAvoidsCoalescing:v13];
+        serverBag2 = [(PDSCoordinator *)self serverBag];
+        LOBYTE(v13) = [serverBag2 topicAvoidsCoalescing:v13];
 
         if (v13)
         {
@@ -1003,8 +1003,8 @@ LABEL_11:
 
   if (self->_pendingRequestDate)
   {
-    v15 = [(PDSCoordinator *)self serverBag];
-    [v15 coalesceMaxPeriodFromBag];
+    serverBag3 = [(PDSCoordinator *)self serverBag];
+    [serverBag3 coalesceMaxPeriodFromBag];
     v17 = v16;
 
     v18 = [MEMORY[0x277CBEAA8] now];
@@ -1046,7 +1046,7 @@ LABEL_18:
   return v7;
 }
 
-- (void)_bagReloaded:(id)a3
+- (void)_bagReloaded:(id)reloaded
 {
   v4 = pds_defaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1055,13 +1055,13 @@ LABEL_18:
     _os_log_impl(&dword_25DED8000, v4, OS_LOG_TYPE_DEFAULT, "Received bag loaded notification -- attempting registration", buf, 2u);
   }
 
-  v5 = [(PDSCoordinator *)self queue];
+  queue = [(PDSCoordinator *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __31__PDSCoordinator__bagReloaded___block_invoke;
   block[3] = &unk_2799F82F0;
   block[4] = self;
-  dispatch_async(v5, block);
+  dispatch_async(queue, block);
 }
 
 - (void)systemDidLeaveFirstDataProtectionLock
@@ -1073,13 +1073,13 @@ LABEL_18:
     _os_log_impl(&dword_25DED8000, v3, OS_LOG_TYPE_DEFAULT, "Left first data protection lock -- attempting registration", buf, 2u);
   }
 
-  v4 = [(PDSCoordinator *)self queue];
+  queue = [(PDSCoordinator *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__PDSCoordinator_systemDidLeaveFirstDataProtectionLock__block_invoke;
   block[3] = &unk_2799F82F0;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(queue, block);
 }
 
 - (BOOL)_disabledForAnyReason
@@ -1099,10 +1099,10 @@ LABEL_7:
 
   else
   {
-    v5 = [(PDSCoordinator *)self serverBag];
-    v6 = [v5 bagKillSwitchActive];
+    serverBag = [(PDSCoordinator *)self serverBag];
+    bagKillSwitchActive = [serverBag bagKillSwitchActive];
 
-    if (v6)
+    if (bagKillSwitchActive)
     {
       v2 = pds_defaultLog();
       if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
@@ -1116,12 +1116,12 @@ LABEL_7:
     else
     {
       v9 = PDSProtocolVersionNumber();
-      v10 = [v9 longLongValue];
-      v11 = [(PDSCoordinator *)self serverBag];
-      v12 = [v11 minEnabledVersion];
-      v13 = [v12 longLongValue];
+      longLongValue = [v9 longLongValue];
+      serverBag2 = [(PDSCoordinator *)self serverBag];
+      minEnabledVersion = [serverBag2 minEnabledVersion];
+      longLongValue2 = [minEnabledVersion longLongValue];
 
-      if (v10 >= v13)
+      if (longLongValue >= longLongValue2)
       {
         result = 0;
         goto LABEL_9;
@@ -1131,12 +1131,12 @@ LABEL_7:
       if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
       {
         v14 = PDSProtocolVersionNumber();
-        v15 = [(PDSCoordinator *)self serverBag];
-        v16 = [v15 minEnabledVersion];
+        serverBag3 = [(PDSCoordinator *)self serverBag];
+        minEnabledVersion2 = [serverBag3 minEnabledVersion];
         v17 = 138412546;
         v18 = v14;
         v19 = 2112;
-        v20 = v16;
+        v20 = minEnabledVersion2;
         _os_log_impl(&dword_25DED8000, v2, OS_LOG_TYPE_DEFAULT, "PDS has been disabled because the protocol version %@ is lower than the min enabled version %@", &v17, 0x16u);
       }
     }
@@ -1148,9 +1148,9 @@ LABEL_9:
   return result;
 }
 
-- (void)handler:(id)a3 pushTokenChanged:(id)a4
+- (void)handler:(id)handler pushTokenChanged:(id)changed
 {
-  if ([a4 length])
+  if ([changed length])
   {
     v5 = pds_defaultLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1163,18 +1163,18 @@ LABEL_9:
   }
 }
 
-- (void)_comparePushTokensWithEntryStore:(id)a3
+- (void)_comparePushTokensWithEntryStore:(id)store
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PDSCoordinator *)self pushTokenBlock];
-  v6 = v5[2](v5, *MEMORY[0x277CEE9F0]);
+  storeCopy = store;
+  pushTokenBlock = [(PDSCoordinator *)self pushTokenBlock];
+  v6 = pushTokenBlock[2](pushTokenBlock, *MEMORY[0x277CEE9F0]);
 
-  v7 = [(PDSCoordinator *)self pushTokenBlock];
-  v8 = v7[2](v7, *MEMORY[0x277CEE9E8]);
+  pushTokenBlock2 = [(PDSCoordinator *)self pushTokenBlock];
+  v8 = pushTokenBlock2[2](pushTokenBlock2, *MEMORY[0x277CEE9E8]);
 
-  v9 = [v6 __imHexString];
-  v10 = [v9 length];
+  __imHexString = [v6 __imHexString];
+  v10 = [__imHexString length];
 
   if (v10)
   {
@@ -1203,7 +1203,7 @@ LABEL_9:
         _os_log_impl(&dword_25DED8000, v15, OS_LOG_TYPE_DEFAULT, "Production push token has changed! New token: %@", buf, 0xCu);
       }
 
-      [(PDSCoordinator *)self _pushTokenChangedWithEntryStore:v4];
+      [(PDSCoordinator *)self _pushTokenChangedWithEntryStore:storeCopy];
       [(PDSCoordinator *)self _markPushToken:v6];
       [(PDSCoordinator *)self setTokenChanged:1];
     }
@@ -1219,7 +1219,7 @@ LABEL_9:
         _os_log_impl(&dword_25DED8000, v17, OS_LOG_TYPE_DEFAULT, "Sandbox push token has changed! New token: %@", buf, 0xCu);
       }
 
-      [(PDSCoordinator *)self _pushTokenChangedWithEntryStore:v4];
+      [(PDSCoordinator *)self _pushTokenChangedWithEntryStore:storeCopy];
       [(PDSCoordinator *)self _markSandboxPushToken:v8];
       [(PDSCoordinator *)self setTokenChanged:1];
     }
@@ -1259,12 +1259,12 @@ void __51__PDSCoordinator__comparePushTokensWithEntryStore___block_invoke(uint64
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_lastPushTokenDiffersFrom:(id)a3
+- (BOOL)_lastPushTokenDiffersFrom:(id)from
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PDSCoordinator *)self kvStoreBlock];
-  v6 = v5[2]();
+  fromCopy = from;
+  kvStoreBlock = [(PDSCoordinator *)self kvStoreBlock];
+  v6 = kvStoreBlock[2]();
 
   v7 = [v6 dataForKey:@"kPDSLastPushToken"];
   v8 = pds_defaultLog();
@@ -1276,17 +1276,17 @@ void __51__PDSCoordinator__comparePushTokensWithEntryStore___block_invoke(uint64
     _os_log_impl(&dword_25DED8000, v8, OS_LOG_TYPE_DEFAULT, "Last push token: %@", &v13, 0xCu);
   }
 
-  v10 = [v7 isEqualToData:v4];
+  v10 = [v7 isEqualToData:fromCopy];
   v11 = *MEMORY[0x277D85DE8];
   return v10 ^ 1;
 }
 
-- (BOOL)_lastSandboxPushTokenDiffersFrom:(id)a3
+- (BOOL)_lastSandboxPushTokenDiffersFrom:(id)from
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PDSCoordinator *)self kvStoreBlock];
-  v6 = v5[2]();
+  fromCopy = from;
+  kvStoreBlock = [(PDSCoordinator *)self kvStoreBlock];
+  v6 = kvStoreBlock[2]();
 
   v7 = [v6 dataForKey:@"kPDSLastSandboxPushToken"];
   v8 = pds_defaultLog();
@@ -1298,9 +1298,9 @@ void __51__PDSCoordinator__comparePushTokensWithEntryStore___block_invoke(uint64
     _os_log_impl(&dword_25DED8000, v8, OS_LOG_TYPE_DEFAULT, "Last sandbox push token: %@", &v13, 0xCu);
   }
 
-  if (v4 | v7)
+  if (fromCopy | v7)
   {
-    v10 = [v7 isEqualToData:v4] ^ 1;
+    v10 = [v7 isEqualToData:fromCopy] ^ 1;
   }
 
   else
@@ -1312,32 +1312,32 @@ void __51__PDSCoordinator__comparePushTokensWithEntryStore___block_invoke(uint64
   return v10;
 }
 
-- (void)_markPushToken:(id)a3
+- (void)_markPushToken:(id)token
 {
-  v4 = a3;
-  v5 = [(PDSCoordinator *)self kvStoreBlock];
-  v6 = v5[2]();
+  tokenCopy = token;
+  kvStoreBlock = [(PDSCoordinator *)self kvStoreBlock];
+  v6 = kvStoreBlock[2]();
 
-  [v6 setData:v4 forKey:@"kPDSLastPushToken"];
+  [v6 setData:tokenCopy forKey:@"kPDSLastPushToken"];
 }
 
-- (void)_markSandboxPushToken:(id)a3
+- (void)_markSandboxPushToken:(id)token
 {
-  v4 = a3;
-  v5 = [(PDSCoordinator *)self kvStoreBlock];
-  v6 = v5[2]();
+  tokenCopy = token;
+  kvStoreBlock = [(PDSCoordinator *)self kvStoreBlock];
+  v6 = kvStoreBlock[2]();
 
-  [v6 setData:v4 forKey:@"kPDSLastSandboxPushToken"];
+  [v6 setData:tokenCopy forKey:@"kPDSLastSandboxPushToken"];
 }
 
-- (BOOL)shouldScheduleHeartbeatForTracker:(id)a3
+- (BOOL)shouldScheduleHeartbeatForTracker:(id)tracker
 {
-  v3 = [(PDSCoordinator *)self entryStoreBlock];
-  v4 = v3[2]();
+  entryStoreBlock = [(PDSCoordinator *)self entryStoreBlock];
+  v4 = entryStoreBlock[2]();
 
   if (v4)
   {
-    v5 = [v4 hasActiveEntries];
+    hasActiveEntries = [v4 hasActiveEntries];
   }
 
   else
@@ -1349,10 +1349,10 @@ void __51__PDSCoordinator__comparePushTokensWithEntryStore___block_invoke(uint64
       _os_log_impl(&dword_25DED8000, v6, OS_LOG_TYPE_DEFAULT, "EntryStore is nil! aborting", v8, 2u);
     }
 
-    v5 = 0;
+    hasActiveEntries = 0;
   }
 
-  return v5;
+  return hasActiveEntries;
 }
 
 - (CUTDeferredTaskQueue)processDeferredTaskQueue

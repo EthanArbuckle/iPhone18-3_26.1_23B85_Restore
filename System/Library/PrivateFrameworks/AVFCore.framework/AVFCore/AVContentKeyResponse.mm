@@ -2,8 +2,8 @@
 + (AVContentKeyResponse)contentKeyResponseWithAuthorizationTokenData:(NSData *)authorizationTokenData;
 + (AVContentKeyResponse)contentKeyResponseWithClearKeyData:(NSData *)keyData initializationVector:(NSData *)initializationVector;
 + (AVContentKeyResponse)contentKeyResponseWithFairPlayStreamingKeyResponseData:(NSData *)keyResponseData;
-+ (AVContentKeyResponse)contentKeyResponseWithFairPlayStreamingKeyResponseData:(id)a3 renewalDate:(id)a4;
-- (AVContentKeyResponse)initWithKeySystem:(id)a3;
++ (AVContentKeyResponse)contentKeyResponseWithFairPlayStreamingKeyResponseData:(id)data renewalDate:(id)date;
+- (AVContentKeyResponse)initWithKeySystem:(id)system;
 - (void)dealloc;
 @end
 
@@ -16,9 +16,9 @@
   return v3;
 }
 
-+ (AVContentKeyResponse)contentKeyResponseWithFairPlayStreamingKeyResponseData:(id)a3 renewalDate:(id)a4
++ (AVContentKeyResponse)contentKeyResponseWithFairPlayStreamingKeyResponseData:(id)data renewalDate:(id)date
 {
-  v4 = [[AVContentKeyResponseFairPlayStreaming alloc] initWithKeyData:a3 renewalDate:a4];
+  v4 = [[AVContentKeyResponseFairPlayStreaming alloc] initWithKeyData:data renewalDate:date];
 
   return v4;
 }
@@ -37,7 +37,7 @@
   return v3;
 }
 
-- (AVContentKeyResponse)initWithKeySystem:(id)a3
+- (AVContentKeyResponse)initWithKeySystem:(id)system
 {
   v7.receiver = self;
   v7.super_class = AVContentKeyResponse;
@@ -48,7 +48,7 @@
     v4->_keyResponse = v5;
     if (v5)
     {
-      v4->_keyResponse->_keySystem = a3;
+      v4->_keyResponse->_keySystem = system;
     }
 
     else

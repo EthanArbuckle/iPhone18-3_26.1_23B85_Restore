@@ -1,21 +1,21 @@
 @interface WolfAirDropNoticeSessionsController
-- (void)transferEndedForIdentifier:(id)a3;
-- (void)transferStartedForIdentifier:(id)a3 isFromMe:(id)a4 withTransferState:(id)a5 itemCount:(id)a6 isDestinationDownloads:(id)a7 senderName:(id)a8 localizedTransferDescription:(id)a9 previewImageData:(id)a10 contactIdentifier:(id)a11;
-- (void)transferUpdatedForIdentifier:(id)a3 withTransferState:(id)a4 transferAccepted:(id)a5 completedUnitCount:(id)a6 totalUnitCount:(id)a7 localizedTransferDescription:(id)a8;
+- (void)transferEndedForIdentifier:(id)identifier;
+- (void)transferStartedForIdentifier:(id)identifier isFromMe:(id)me withTransferState:(id)state itemCount:(id)count isDestinationDownloads:(id)downloads senderName:(id)name localizedTransferDescription:(id)description previewImageData:(id)self0 contactIdentifier:(id)self1;
+- (void)transferUpdatedForIdentifier:(id)identifier withTransferState:(id)state transferAccepted:(id)accepted completedUnitCount:(id)count totalUnitCount:(id)unitCount localizedTransferDescription:(id)description;
 @end
 
 @implementation WolfAirDropNoticeSessionsController
 
-- (void)transferStartedForIdentifier:(id)a3 isFromMe:(id)a4 withTransferState:(id)a5 itemCount:(id)a6 isDestinationDownloads:(id)a7 senderName:(id)a8 localizedTransferDescription:(id)a9 previewImageData:(id)a10 contactIdentifier:(id)a11
+- (void)transferStartedForIdentifier:(id)identifier isFromMe:(id)me withTransferState:(id)state itemCount:(id)count isDestinationDownloads:(id)downloads senderName:(id)name localizedTransferDescription:(id)description previewImageData:(id)self0 contactIdentifier:(id)self1
 {
-  v17 = a10;
+  dataCopy = data;
   v35 = sub_100008B98();
   v37 = v18;
-  if (a8)
+  if (name)
   {
     v34 = sub_100008B98();
     v36 = v19;
-    if (a9)
+    if (description)
     {
 LABEL_3:
       v20 = sub_100008B98();
@@ -28,7 +28,7 @@ LABEL_3:
   {
     v34 = 0;
     v36 = 0;
-    if (a9)
+    if (description)
     {
       goto LABEL_3;
     }
@@ -37,19 +37,19 @@ LABEL_3:
   v20 = 0;
   v38 = 0;
 LABEL_6:
-  v33 = a4;
-  v32 = a5;
-  v31 = a6;
-  v30 = a7;
-  v22 = a11;
-  v23 = self;
-  if (a10)
+  meCopy = me;
+  stateCopy = state;
+  countCopy = count;
+  downloadsCopy = downloads;
+  contactIdentifierCopy = contactIdentifier;
+  selfCopy = self;
+  if (data)
   {
-    v24 = a10;
-    v17 = sub_100008A98();
+    dataCopy2 = data;
+    dataCopy = sub_100008A98();
     v26 = v25;
 
-    if (v22)
+    if (contactIdentifierCopy)
     {
 LABEL_8:
       v27 = sub_100008B98();
@@ -62,7 +62,7 @@ LABEL_8:
   else
   {
     v26 = 0xF000000000000000;
-    if (v22)
+    if (contactIdentifierCopy)
     {
       goto LABEL_8;
     }
@@ -71,19 +71,19 @@ LABEL_8:
   v27 = 0;
   v29 = 0;
 LABEL_11:
-  sub_100003130(v35, v37, v33, v32, v31, v30, v34, v36, v20, v38, v17, v26, v27, v29);
+  sub_100003130(v35, v37, meCopy, stateCopy, countCopy, downloadsCopy, v34, v36, v20, v38, dataCopy, v26, v27, v29);
 
-  sub_10000856C(v17, v26);
+  sub_10000856C(dataCopy, v26);
 }
 
-- (void)transferUpdatedForIdentifier:(id)a3 withTransferState:(id)a4 transferAccepted:(id)a5 completedUnitCount:(id)a6 totalUnitCount:(id)a7 localizedTransferDescription:(id)a8
+- (void)transferUpdatedForIdentifier:(id)identifier withTransferState:(id)state transferAccepted:(id)accepted completedUnitCount:(id)count totalUnitCount:(id)unitCount localizedTransferDescription:(id)description
 {
   v14 = sub_100008B98();
   v16 = v15;
-  if (a8)
+  if (description)
   {
     v17 = sub_100008B98();
-    a8 = v18;
+    description = v18;
   }
 
   else
@@ -91,19 +91,19 @@ LABEL_11:
     v17 = 0;
   }
 
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a7;
-  v23 = self;
-  sub_100004A78(v14, v16, v19, v20, v21, v22, v17, a8);
+  stateCopy = state;
+  acceptedCopy = accepted;
+  countCopy = count;
+  unitCountCopy = unitCount;
+  selfCopy = self;
+  sub_100004A78(v14, v16, stateCopy, acceptedCopy, countCopy, unitCountCopy, v17, description);
 }
 
-- (void)transferEndedForIdentifier:(id)a3
+- (void)transferEndedForIdentifier:(id)identifier
 {
   v4 = sub_100008B98();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_100004564(v4, v6);
 }
 

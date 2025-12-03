@@ -1,22 +1,22 @@
 @interface BTAVRCP_RadioFolder
-- (BTAVRCP_RadioFolder)initWithName:(id)a3 uid:(unint64_t)a4;
-- (id)replyAttributesForUid:(unint64_t)a3 attributeIDs:(id)a4;
-- (id)replyItemAtIndex:(unint64_t)a3 attributeIDs:(id)a4;
-- (id)stationWithUid:(unint64_t)a3;
+- (BTAVRCP_RadioFolder)initWithName:(id)name uid:(unint64_t)uid;
+- (id)replyAttributesForUid:(unint64_t)uid attributeIDs:(id)ds;
+- (id)replyItemAtIndex:(unint64_t)index attributeIDs:(id)ds;
+- (id)stationWithUid:(unint64_t)uid;
 - (unint64_t)childrenCount;
-- (unsigned)createFolderWithUid:(unint64_t)a3 folder:(id *)a4;
-- (unsigned)playItemWithUid:(unint64_t)a3;
-- (void)fetchRecentStations:(id)a3;
+- (unsigned)createFolderWithUid:(unint64_t)uid folder:(id *)folder;
+- (unsigned)playItemWithUid:(unint64_t)uid;
+- (void)fetchRecentStations:(id)stations;
 - (void)refreshRecentStations;
 @end
 
 @implementation BTAVRCP_RadioFolder
 
-- (BTAVRCP_RadioFolder)initWithName:(id)a3 uid:(unint64_t)a4
+- (BTAVRCP_RadioFolder)initWithName:(id)name uid:(unint64_t)uid
 {
   v16.receiver = self;
   v16.super_class = BTAVRCP_RadioFolder;
-  v4 = [(BTAVRCP_VFSFolder *)&v16 initWithName:a3 uid:a4];
+  v4 = [(BTAVRCP_VFSFolder *)&v16 initWithName:name uid:uid];
   if (v4)
   {
     v5 = +[NSNotificationCenter defaultCenter];
@@ -54,25 +54,25 @@
   [(BTAVRCP_RadioFolder *)self fetchRecentStations:v2];
 }
 
-- (void)fetchRecentStations:(id)a3
+- (void)fetchRecentStations:(id)stations
 {
-  v3 = a3;
+  stationsCopy = stations;
   v4 = +[MPRadioLibrary defaultRadioLibrary];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10000A7A8;
   v6[3] = &unk_100018BD0;
-  v7 = v3;
-  v5 = v3;
+  v7 = stationsCopy;
+  v5 = stationsCopy;
   [v4 getRecentStationGroupsWithCompletionHandler:v6];
 }
 
-- (id)stationWithUid:(unint64_t)a3
+- (id)stationWithUid:(unint64_t)uid
 {
-  if (a3 && (-[BTAVRCP_RadioFolder recentStations](self, "recentStations"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v6 >= a3))
+  if (uid && (-[BTAVRCP_RadioFolder recentStations](self, "recentStations"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v6 >= uid))
   {
-    v8 = [(BTAVRCP_RadioFolder *)self recentStations];
-    v7 = [v8 objectAtIndexedSubscript:a3 - 1];
+    recentStations = [(BTAVRCP_RadioFolder *)self recentStations];
+    v7 = [recentStations objectAtIndexedSubscript:uid - 1];
   }
 
   else
@@ -85,17 +85,17 @@
 
 - (unint64_t)childrenCount
 {
-  v2 = [(BTAVRCP_RadioFolder *)self recentStations];
-  v3 = [v2 count];
+  recentStations = [(BTAVRCP_RadioFolder *)self recentStations];
+  v3 = [recentStations count];
 
   return v3;
 }
 
-- (unsigned)createFolderWithUid:(unint64_t)a3 folder:(id *)a4
+- (unsigned)createFolderWithUid:(unint64_t)uid folder:(id *)folder
 {
-  v4 = [(BTAVRCP_RadioFolder *)self stationWithUid:a3, a4];
+  folder = [(BTAVRCP_RadioFolder *)self stationWithUid:uid, folder];
 
-  if (v4)
+  if (folder)
   {
     return 8;
   }
@@ -106,27 +106,27 @@
   }
 }
 
-- (id)replyItemAtIndex:(unint64_t)a3 attributeIDs:(id)a4
+- (id)replyItemAtIndex:(unint64_t)index attributeIDs:(id)ds
 {
-  v6 = a4;
-  v7 = [(BTAVRCP_RadioFolder *)self recentStations];
-  v8 = [v7 count];
+  dsCopy = ds;
+  recentStations = [(BTAVRCP_RadioFolder *)self recentStations];
+  v8 = [recentStations count];
 
-  if (v8 <= a3)
+  if (v8 <= index)
   {
     v13 = 0;
   }
 
   else
   {
-    v9 = [(BTAVRCP_RadioFolder *)self recentStations];
-    v10 = [v9 objectAtIndexedSubscript:a3];
+    recentStations2 = [(BTAVRCP_RadioFolder *)self recentStations];
+    v10 = [recentStations2 objectAtIndexedSubscript:index];
 
-    if ([v6 containsObject:&off_100019BE8])
+    if ([dsCopy containsObject:&off_100019BE8])
     {
       v17 = @"kTitle";
-      v11 = [v10 localizedName];
-      v18 = v11;
+      localizedName = [v10 localizedName];
+      v18 = localizedName;
       v12 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
     }
 
@@ -135,25 +135,25 @@
       v12 = 0;
     }
 
-    v14 = [NSNumber numberWithUnsignedInteger:a3 + 1];
-    v15 = [v10 localizedName];
-    v13 = [(BTAVRCP_VFSFolder *)self replyItemWithUid:v14 name:v15 attributes:v12];
+    v14 = [NSNumber numberWithUnsignedInteger:index + 1];
+    localizedName2 = [v10 localizedName];
+    v13 = [(BTAVRCP_VFSFolder *)self replyItemWithUid:v14 name:localizedName2 attributes:v12];
   }
 
   return v13;
 }
 
-- (id)replyAttributesForUid:(unint64_t)a3 attributeIDs:(id)a4
+- (id)replyAttributesForUid:(unint64_t)uid attributeIDs:(id)ds
 {
-  v6 = a4;
-  v7 = [(BTAVRCP_RadioFolder *)self stationWithUid:a3];
+  dsCopy = ds;
+  v7 = [(BTAVRCP_RadioFolder *)self stationWithUid:uid];
   if (v7)
   {
     v8 = +[NSMutableDictionary dictionary];
-    if ([v6 containsObject:&off_100019BE8])
+    if ([dsCopy containsObject:&off_100019BE8])
     {
-      v9 = [v7 localizedName];
-      [v8 setValue:v9 forKey:@"kTitle"];
+      localizedName = [v7 localizedName];
+      [v8 setValue:localizedName forKey:@"kTitle"];
     }
   }
 
@@ -165,9 +165,9 @@
   return v8;
 }
 
-- (unsigned)playItemWithUid:(unint64_t)a3
+- (unsigned)playItemWithUid:(unint64_t)uid
 {
-  v3 = [(BTAVRCP_RadioFolder *)self stationWithUid:a3];
+  v3 = [(BTAVRCP_RadioFolder *)self stationWithUid:uid];
   if (v3)
   {
     v4 = +[MPMusicPlayerController systemMusicPlayer];

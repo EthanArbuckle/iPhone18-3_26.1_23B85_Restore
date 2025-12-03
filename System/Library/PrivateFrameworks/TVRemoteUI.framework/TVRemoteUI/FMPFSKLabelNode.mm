@@ -1,12 +1,12 @@
 @interface FMPFSKLabelNode
 - (NSString)description;
 - (_TtC10TVRemoteUI15FMPFSKLabelNode)init;
-- (_TtC10TVRemoteUI15FMPFSKLabelNode)initWithCoder:(id)a3;
+- (_TtC10TVRemoteUI15FMPFSKLabelNode)initWithCoder:(id)coder;
 @end
 
 @implementation FMPFSKLabelNode
 
-- (_TtC10TVRemoteUI15FMPFSKLabelNode)initWithCoder:(id)a3
+- (_TtC10TVRemoteUI15FMPFSKLabelNode)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
@@ -15,7 +15,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = FMPFSKLabelNode.description.getter();
   v5 = v4;
 

@@ -1,24 +1,24 @@
 @interface SceneDelegate
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidBecomeActive:(id)a3;
-- (void)sceneDidDisconnect:(id)a3;
-- (void)sceneDidEnterBackground:(id)a3;
-- (void)sceneWillEnterForeground:(id)a3;
-- (void)sceneWillResignActive:(id)a3;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidBecomeActive:(id)active;
+- (void)sceneDidDisconnect:(id)disconnect;
+- (void)sceneDidEnterBackground:(id)background;
+- (void)sceneWillEnterForeground:(id)foreground;
+- (void)sceneWillResignActive:(id)active;
 @end
 
 @implementation SceneDelegate
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v30 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, scene);
   v28 = 0;
-  objc_storeStrong(&v28, a4);
+  objc_storeStrong(&v28, session);
   v27 = 0;
-  objc_storeStrong(&v27, a5);
+  objc_storeStrong(&v27, options);
   v26 = _AKLogSystem();
   v25 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
@@ -37,7 +37,7 @@
     v19 = [v6 initWithWindowScene:v24];
     [v19 setRootViewController:v20];
     [v19 makeKeyAndVisible];
-    objc_storeStrong(&v30->_window, v19);
+    objc_storeStrong(&selfCopy->_window, v19);
     v7 = [AKRemoteViewSessionController alloc];
     v18 = [v7 initWithRootViewController:v20 sceneSession:v28];
     [v18 setNewAuthorizationViewController:&stru_1000144E0];
@@ -48,7 +48,7 @@
     v16 = &unk_1000143C8;
     v17 = v19;
     [v18 setWindowBlock:&v12];
-    objc_storeStrong(&v30->_viewSessionController, v18);
+    objc_storeStrong(&selfCopy->_viewSessionController, v18);
     v8 = v24;
     v31 = v18;
     v9 = [NSArray arrayWithObjects:&v31 count:1];
@@ -81,33 +81,33 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, disconnect);
   oslog = _AKLogSystem();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
   {
-    sub_100001BA0(v6, v5->_viewSessionController);
+    sub_100001BA0(v6, selfCopy->_viewSessionController);
     _os_log_debug_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEBUG, "sceneDidDisconnect invalidating view session controller: %@", v6, 0xCu);
   }
 
   objc_storeStrong(&oslog, 0);
-  [(AKRemoteViewSessionController *)v5->_viewSessionController invalidate];
-  objc_storeStrong(&v5->_viewSessionController, 0);
-  [(UIWindow *)v5->_window setRootViewController:0];
-  objc_storeStrong(&v5->_window, 0);
+  [(AKRemoteViewSessionController *)selfCopy->_viewSessionController invalidate];
+  objc_storeStrong(&selfCopy->_viewSessionController, 0);
+  [(UIWindow *)selfCopy->_window setRootViewController:0];
+  objc_storeStrong(&selfCopy->_window, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)sceneDidBecomeActive:(id)a3
+- (void)sceneDidBecomeActive:(id)active
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, active);
   v7 = _AKLogSystem();
   v6 = 2;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -122,12 +122,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)sceneWillResignActive:(id)a3
+- (void)sceneWillResignActive:(id)active
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, active);
   v7 = _AKLogSystem();
   v6 = 2;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -142,12 +142,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, foreground);
   v7 = _AKLogSystem();
   v6 = 2;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -162,12 +162,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, background);
   v7 = _AKLogSystem();
   v6 = 2;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))

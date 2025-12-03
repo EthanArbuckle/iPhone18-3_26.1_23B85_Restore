@@ -1,7 +1,7 @@
 @interface _MKFPresenceEvent
 + (NSPredicate)homeRelation;
-+ (id)modelIDForParentRelationshipTo:(id)a3;
-- (BOOL)validateForInsertOrUpdate:(id *)a3;
++ (id)modelIDForParentRelationshipTo:(id)to;
+- (BOOL)validateForInsertOrUpdate:(id *)update;
 - (MKFHome)home;
 - (MKFPresenceEventDatabaseID)databaseID;
 - (NSArray)guests;
@@ -13,25 +13,25 @@
 - (NSArray)guests
 {
   v2 = [(_MKFPresenceEvent *)self valueForKey:@"guests_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (NSArray)users
 {
   v2 = [(_MKFPresenceEvent *)self valueForKey:@"users_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (MKFHome)home
 {
-  v2 = [(_MKFPresenceEvent *)self trigger];
-  v3 = [v2 home];
+  trigger = [(_MKFPresenceEvent *)self trigger];
+  home = [trigger home];
 
-  return v3;
+  return home;
 }
 
 - (MKFPresenceEventDatabaseID)databaseID
@@ -41,26 +41,26 @@
   return v2;
 }
 
-- (BOOL)validateForInsertOrUpdate:(id *)a3
+- (BOOL)validateForInsertOrUpdate:(id *)update
 {
   v13.receiver = self;
   v13.super_class = _MKFPresenceEvent;
   if ([(_MKFEvent *)&v13 validateForInsertOrUpdate:?])
   {
-    v5 = [(_MKFPresenceEvent *)self presenceType];
-    v6 = [(_MKFPresenceEvent *)self activation];
-    [v6 unsignedIntegerValue];
+    presenceType = [(_MKFPresenceEvent *)self presenceType];
+    activation = [(_MKFPresenceEvent *)self activation];
+    [activation unsignedIntegerValue];
 
     v7 = eventTypeForPresenceTypeAndGranularity();
     v8 = userTypeForPresenceTypeAndGranularity();
     if (v7 == *MEMORY[0x277CD23E8] || v8 == *MEMORY[0x277CD23F0])
     {
-      if (a3)
+      if (update)
       {
         v10 = @"Invalid presenceType or activation";
 LABEL_13:
         [MEMORY[0x277CCA9B8] hmd_validationErrorWithDescription:v10];
-        *a3 = v11 = 0;
+        *update = v11 = 0;
 LABEL_16:
 
         return v11;
@@ -75,7 +75,7 @@ LABEL_16:
         goto LABEL_16;
       }
 
-      if (a3)
+      if (update)
       {
         v10 = @"HMPresenceEventUserTypeCurrentUser must be resolved to a user list";
         goto LABEL_13;
@@ -101,9 +101,9 @@ LABEL_16:
   return v3;
 }
 
-+ (id)modelIDForParentRelationshipTo:(id)a3
++ (id)modelIDForParentRelationshipTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];

@@ -32,8 +32,8 @@
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v4 = [(TUConversation *)self activeRemoteParticipants];
-    v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    activeRemoteParticipants = [(TUConversation *)self activeRemoteParticipants];
+    v5 = [activeRemoteParticipants countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v5)
     {
       v6 = *v10;
@@ -43,7 +43,7 @@
         {
           if (*v10 != v6)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(activeRemoteParticipants);
           }
 
           if ([*(*(&v9 + 1) + 8 * i) audioVideoMode])
@@ -53,7 +53,7 @@
           }
         }
 
-        v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v5 = [activeRemoteParticipants countByEnumeratingWithState:&v9 objects:v13 count:16];
         if (v5)
         {
           continue;
@@ -76,15 +76,15 @@ LABEL_13:
 
 - (NSSet)activeRemoteParticipantCXHandles
 {
-  v3 = [(TUConversation *)self activeRemoteParticipants];
-  v4 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v3 count]);
+  activeRemoteParticipants = [(TUConversation *)self activeRemoteParticipants];
+  v4 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [activeRemoteParticipants count]);
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(TUConversation *)self activeRemoteParticipants];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  activeRemoteParticipants2 = [(TUConversation *)self activeRemoteParticipants];
+  v6 = [activeRemoteParticipants2 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -95,15 +95,15 @@ LABEL_13:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(activeRemoteParticipants2);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) handle];
-        v11 = [CXHandle handleWithTUHandle:v10];
+        handle = [*(*(&v14 + 1) + 8 * i) handle];
+        v11 = [CXHandle handleWithTUHandle:handle];
         [v4 addObject:v11];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [activeRemoteParticipants2 countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);

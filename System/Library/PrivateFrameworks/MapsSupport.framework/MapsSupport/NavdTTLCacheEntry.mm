@@ -1,39 +1,39 @@
 @interface NavdTTLCacheEntry
 - (BOOL)_loadFromBackingStore;
-- (BOOL)hasHandlerForClientInfo:(id)a3;
-- (NavdTTLCacheEntry)initWithKey:(id)a3 cacheOperationQueue:(id)a4 cache:(id)a5;
-- (NavdTTLCacheEntry)initWithRowId:(int64_t)a3 refreshTimestamp:(double)a4 state:(int64_t)a5 cacheOperationQueue:(id)a6 cache:(id)a7;
-- (double)_nextTimerIntervalForValue:(id)a3;
-- (id)blockIfShouldUpdateForTimestamp:(double)a3 locationFuture:(id)a4;
+- (BOOL)hasHandlerForClientInfo:(id)info;
+- (NavdTTLCacheEntry)initWithKey:(id)key cacheOperationQueue:(id)queue cache:(id)cache;
+- (NavdTTLCacheEntry)initWithRowId:(int64_t)id refreshTimestamp:(double)timestamp state:(int64_t)state cacheOperationQueue:(id)queue cache:(id)cache;
+- (double)_nextTimerIntervalForValue:(id)value;
+- (id)blockIfShouldUpdateForTimestamp:(double)timestamp locationFuture:(id)future;
 - (void)_clearLoadedValues;
-- (void)_recievedUpdatedHypothesis:(id)a3 updateRefreshTimeStamp:(BOOL)a4;
+- (void)_recievedUpdatedHypothesis:(id)hypothesis updateRefreshTimeStamp:(BOOL)stamp;
 - (void)_saveEntry;
-- (void)_setState:(int64_t)a3;
-- (void)_updateWithLocation:(id)a3;
-- (void)clientDisplayedUINotification:(unint64_t)a3;
-- (void)removeHandlerForClientInfo:(id)a3;
-- (void)setHandler:(id)a3 forClient:(id)a4;
-- (void)setLocalUpdatesOnlyForClientInfo:(id)a3;
-- (void)subsumePendingEntry:(id)a3;
+- (void)_setState:(int64_t)state;
+- (void)_updateWithLocation:(id)location;
+- (void)clientDisplayedUINotification:(unint64_t)notification;
+- (void)removeHandlerForClientInfo:(id)info;
+- (void)setHandler:(id)handler forClient:(id)client;
+- (void)setLocalUpdatesOnlyForClientInfo:(id)info;
+- (void)subsumePendingEntry:(id)entry;
 @end
 
 @implementation NavdTTLCacheEntry
 
-- (NavdTTLCacheEntry)initWithRowId:(int64_t)a3 refreshTimestamp:(double)a4 state:(int64_t)a5 cacheOperationQueue:(id)a6 cache:(id)a7
+- (NavdTTLCacheEntry)initWithRowId:(int64_t)id refreshTimestamp:(double)timestamp state:(int64_t)state cacheOperationQueue:(id)queue cache:(id)cache
 {
-  v12 = a6;
-  v13 = a7;
+  queueCopy = queue;
+  cacheCopy = cache;
   v19.receiver = self;
   v19.super_class = NavdTTLCacheEntry;
   v14 = [(NavdTTLCacheEntry *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    v14->_rowId = a3;
-    v14->_state = a5;
-    v14->_refreshTimestamp = a4;
-    objc_storeWeak(&v14->_cacheOperationQueue, v12);
-    objc_storeStrong(&v15->_cache, a7);
+    v14->_rowId = id;
+    v14->_state = state;
+    v14->_refreshTimestamp = timestamp;
+    objc_storeWeak(&v14->_cacheOperationQueue, queueCopy);
+    objc_storeStrong(&v15->_cache, cache);
     v16 = objc_alloc_init(NSMutableDictionary);
     clientInfoStates = v15->_clientInfoStates;
     v15->_clientInfoStates = v16;
@@ -42,35 +42,35 @@
   return v15;
 }
 
-- (NavdTTLCacheEntry)initWithKey:(id)a3 cacheOperationQueue:(id)a4 cache:(id)a5
+- (NavdTTLCacheEntry)initWithKey:(id)key cacheOperationQueue:(id)queue cache:(id)cache
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a4;
-  v12 = [(NavdTTLCacheEntry *)self initWithRowId:-1 refreshTimestamp:3 state:v11 cacheOperationQueue:v10 cache:CFAbsoluteTimeGetCurrent()];
+  keyCopy = key;
+  cacheCopy = cache;
+  queueCopy = queue;
+  v12 = [(NavdTTLCacheEntry *)self initWithRowId:-1 refreshTimestamp:3 state:queueCopy cacheOperationQueue:cacheCopy cache:CFAbsoluteTimeGetCurrent()];
 
   if (v12)
   {
-    objc_storeStrong(&v12->_key, a3);
+    objc_storeStrong(&v12->_key, key);
   }
 
   return v12;
 }
 
-- (id)blockIfShouldUpdateForTimestamp:(double)a3 locationFuture:(id)a4
+- (id)blockIfShouldUpdateForTimestamp:(double)timestamp locationFuture:(id)future
 {
-  v7 = a4;
-  v8 = [(NavdTTLCacheEntry *)self state];
-  if (v8 == 1)
+  futureCopy = future;
+  state = [(NavdTTLCacheEntry *)self state];
+  if (state == 1)
   {
     [(NavdTTLCacheEntry *)self _setState:2];
-    objc_storeStrong(&self->_locationFuture, a4);
+    objc_storeStrong(&self->_locationFuture, future);
   }
 
-  else if (!v8)
+  else if (!state)
   {
     [(NavdTTLCacheEntry *)self refreshTimestamp];
-    if (v9 > a3)
+    if (v9 > timestamp)
     {
       v10 = 1;
     }
@@ -81,7 +81,7 @@
     }
 
     [(NavdTTLCacheEntry *)self _setState:v10];
-    objc_storeStrong(&self->_locationFuture, a4);
+    objc_storeStrong(&self->_locationFuture, future);
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_100034090;
@@ -99,27 +99,27 @@ LABEL_9:
   return v12;
 }
 
-- (void)setHandler:(id)a3 forClient:(id)a4
+- (void)setHandler:(id)handler forClient:(id)client
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self->_clientInfoStates objectForKeyedSubscript:v6];
+  handlerCopy = handler;
+  clientCopy = client;
+  v7 = [(NSMutableDictionary *)self->_clientInfoStates objectForKeyedSubscript:clientCopy];
   if (!v7)
   {
     v7 = objc_alloc_init(NavdClientInfoState);
-    [(NSMutableDictionary *)self->_clientInfoStates setObject:v7 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)self->_clientInfoStates setObject:v7 forKeyedSubscript:clientCopy];
   }
 
-  [(NavdClientInfoState *)v7 setHandler:v8];
+  [(NavdClientInfoState *)v7 setHandler:handlerCopy];
 }
 
-- (void)removeHandlerForClientInfo:(id)a3
+- (void)removeHandlerForClientInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   v4 = [(NSMutableDictionary *)self->_clientInfoStates objectForKeyedSubscript:?];
   if (v4)
   {
-    [(NSMutableDictionary *)self->_clientInfoStates removeObjectForKey:v5];
+    [(NSMutableDictionary *)self->_clientInfoStates removeObjectForKey:infoCopy];
     if ([v4 localUpdatesOnly])
     {
       --self->_localOnlyUpdatesCount;
@@ -127,17 +127,17 @@ LABEL_9:
   }
 }
 
-- (BOOL)hasHandlerForClientInfo:(id)a3
+- (BOOL)hasHandlerForClientInfo:(id)info
 {
-  v3 = [(NSMutableDictionary *)self->_clientInfoStates objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_clientInfoStates objectForKey:info];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (void)setLocalUpdatesOnlyForClientInfo:(id)a3
+- (void)setLocalUpdatesOnlyForClientInfo:(id)info
 {
-  v4 = [(NSMutableDictionary *)self->_clientInfoStates objectForKeyedSubscript:a3];
+  v4 = [(NSMutableDictionary *)self->_clientInfoStates objectForKeyedSubscript:info];
   if (v4)
   {
     v5 = v4;
@@ -151,12 +151,12 @@ LABEL_9:
   _objc_release_x1();
 }
 
-- (void)clientDisplayedUINotification:(unint64_t)a3
+- (void)clientDisplayedUINotification:(unint64_t)notification
 {
   if ([(NavdTTLCacheEntry *)self _loadFromBackingStore])
   {
-    v5 = [(GEORouteHypothesisValue *)self->_value monitor];
-    [v5 clientDisplayedUINotification:a3];
+    monitor = [(GEORouteHypothesisValue *)self->_value monitor];
+    [monitor clientDisplayedUINotification:notification];
 
     [(NavdTTLCacheEntry *)self _saveEntry];
 
@@ -191,9 +191,9 @@ LABEL_9:
   self->_value = 0;
 }
 
-- (void)_updateWithLocation:(id)a3
+- (void)_updateWithLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v5 = dispatch_group_create();
   if ([(NavdTTLCacheEntry *)self state]== 2)
   {
@@ -229,16 +229,16 @@ LABEL_9:
   if ([(NavdTTLCacheEntry *)self _loadFromBackingStore])
   {
     dispatch_group_enter(v5);
-    [v4 coordinate];
+    [locationCopy coordinate];
     v11 = v10;
-    [v4 coordinate];
+    [locationCopy coordinate];
     v13 = [[GEOLocation alloc] initWithGEOCoordinate:{v11, v12}];
     v14 = [MNFamiliarRouteProvider alloc];
     v15 = +[NSDate now];
     v16 = [v14 initWithPurpose:1 reason:@"Time to Leave" date:v15];
 
     objc_initWeak(location, self);
-    v17 = [(GEORouteHypothesisValue *)self->_value monitor];
+    monitor = [(GEORouteHypothesisValue *)self->_value monitor];
     v26 = _NSConcreteStackBlock;
     v27 = 3221225472;
     v28 = sub_100034910;
@@ -247,7 +247,7 @@ LABEL_9:
     v31 = buf;
     v33 = v6;
     v30 = v5;
-    [v17 updateLocation:v13 allowServer:v6 familiarRouteProvider:v16 hypothesisHandler:&v26];
+    [monitor updateLocation:v13 allowServer:v6 familiarRouteProvider:v16 hypothesisHandler:&v26];
 
     objc_destroyWeak(&v32);
     objc_destroyWeak(location);
@@ -259,8 +259,8 @@ LABEL_9:
 
   if (dispatch_group_wait(v5, v20))
   {
-    v21 = self;
-    objc_sync_enter(v21);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     if ((*(*&buf[8] + 24) & 1) == 0)
     {
       v22 = GEOFindOrCreateLog();
@@ -277,16 +277,16 @@ LABEL_9:
       v25 = [NSError errorWithDomain:v24 code:-19 userInfo:0];
       [v23 _setError:v25];
 
-      [(NavdTTLCacheEntry *)v21 _recievedUpdatedHypothesis:v23 updateRefreshTimeStamp:1];
+      [(NavdTTLCacheEntry *)selfCopy _recievedUpdatedHypothesis:v23 updateRefreshTimeStamp:1];
     }
 
-    objc_sync_exit(v21);
+    objc_sync_exit(selfCopy);
   }
 
   _Block_object_dispose(buf, 8);
 }
 
-- (void)_setState:(int64_t)a3
+- (void)_setState:(int64_t)state
 {
   [(NavdTTLCacheEntry *)self willChangeValueForKey:@"state"];
   v5 = GEOFindOrCreateLog();
@@ -305,14 +305,14 @@ LABEL_9:
     }
 
     v9 = v8;
-    if (a3 >= 5)
+    if (state >= 5)
     {
-      v10 = [NSString stringWithFormat:@"(unknown: %lu)", a3];
+      state = [NSString stringWithFormat:@"(unknown: %lu)", state];
     }
 
     else
     {
-      v10 = *(&off_100067958 + a3);
+      state = *(&off_100067958 + state);
     }
 
     *buf = 134218499;
@@ -320,60 +320,60 @@ LABEL_9:
     v13 = 2113;
     v14 = v9;
     v15 = 2113;
-    v16 = v10;
+    v16 = state;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "Changing state of rowId %lld from %{private}@ to %{private}@", buf, 0x20u);
   }
 
-  self->_state = a3;
+  self->_state = state;
   [(NavdTTLCacheEntry *)self didChangeValueForKey:@"state"];
 }
 
-- (double)_nextTimerIntervalForValue:(id)a3
+- (double)_nextTimerIntervalForValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   v4 = +[GEONavdDefaults sharedInstance];
-  v5 = [v4 useConservativeDepartureForRefreshTimer];
+  useConservativeDepartureForRefreshTimer = [v4 useConservativeDepartureForRefreshTimer];
 
-  v6 = [v3 currentHypothesis];
-  v7 = v6;
-  if (v5)
+  currentHypothesis = [valueCopy currentHypothesis];
+  v7 = currentHypothesis;
+  if (useConservativeDepartureForRefreshTimer)
   {
-    [v6 conservativeDepartureDate];
+    [currentHypothesis conservativeDepartureDate];
   }
 
   else
   {
-    [v6 suggestedDepartureDate];
+    [currentHypothesis suggestedDepartureDate];
   }
   v8 = ;
 
-  v9 = [v3 currentHypothesis];
-  v10 = [v9 transportType];
+  currentHypothesis2 = [valueCopy currentHypothesis];
+  transportType = [currentHypothesis2 transportType];
   v11 = +[GEONavdDefaults sharedInstance];
   v12 = v11;
-  if (v10 == 1)
+  if (transportType == 1)
   {
-    v13 = [v11 refreshEquationLowestFrequencyTransit];
+    refreshEquationLowestFrequencyTransit = [v11 refreshEquationLowestFrequencyTransit];
   }
 
   else
   {
-    v13 = [v11 refreshEquationLowestFrequency];
+    refreshEquationLowestFrequencyTransit = [v11 refreshEquationLowestFrequency];
   }
 
-  v14 = v13;
+  v14 = refreshEquationLowestFrequencyTransit;
 
   v15 = +[GEONavdDefaults sharedInstance];
-  v16 = [v15 refreshEquationHighestFrequency];
+  refreshEquationHighestFrequency = [v15 refreshEquationHighestFrequency];
 
-  v17 = [v3 currentHypothesis];
+  currentHypothesis3 = [valueCopy currentHypothesis];
 
-  if (v17)
+  if (currentHypothesis3)
   {
     [v8 timeIntervalSinceReferenceDate];
     v19 = (v18 - CFAbsoluteTimeGetCurrent()) * 0.0166666667;
     v20 = exp(-(v19 / v14 * (v19 / v14)));
-    v21 = v14 - v20 * (v14 - v16);
+    v21 = v14 - v20 * (v14 - refreshEquationHighestFrequency);
     v22 = +[GEONavdDefaults sharedInstance];
     [v22 maximumTimeBetweenConsecutiveHypothesisUpdatesInSeconds];
     v24 = v23;
@@ -419,60 +419,60 @@ LABEL_9:
   }
 }
 
-- (void)_recievedUpdatedHypothesis:(id)a3 updateRefreshTimeStamp:(BOOL)a4
+- (void)_recievedUpdatedHypothesis:(id)hypothesis updateRefreshTimeStamp:(BOOL)stamp
 {
-  v4 = a4;
-  v6 = a3;
+  stampCopy = stamp;
+  hypothesisCopy = hypothesis;
   v7 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     v8 = [(GEORouteHypothesisValue *)self->_value description];
     v24 = 138478083;
-    v25 = v6;
+    v25 = hypothesisCopy;
     v26 = 2113;
     v27 = v8;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "Calculated new hypothesis: %{private}@\nFor value: %{private}@", &v24, 0x16u);
   }
 
-  if (v6)
+  if (hypothesisCopy)
   {
-    v9 = [(GEORouteHypothesisValue *)self->_value currentHypothesis];
-    if (!v9)
+    currentHypothesis = [(GEORouteHypothesisValue *)self->_value currentHypothesis];
+    if (!currentHypothesis)
     {
-      v10 = [v6 error];
+      error = [hypothesisCopy error];
 
-      if (v10)
+      if (error)
       {
         goto LABEL_7;
       }
 
-      v9 = +[GEONavdAnalyticsManager sharedManager];
-      v23 = [v9 analyticsReporter];
-      [v6 estimatedTravelTime];
-      [v23 recordInitialTravelTime:?];
+      currentHypothesis = +[GEONavdAnalyticsManager sharedManager];
+      analyticsReporter = [currentHypothesis analyticsReporter];
+      [hypothesisCopy estimatedTravelTime];
+      [analyticsReporter recordInitialTravelTime:?];
     }
 
 LABEL_7:
-    [(GEORouteHypothesisValue *)self->_value setCurrentHypothesis:v6];
-    v11 = [v6 error];
-    v12 = v6;
-    if (v11)
+    [(GEORouteHypothesisValue *)self->_value setCurrentHypothesis:hypothesisCopy];
+    error2 = [hypothesisCopy error];
+    v12 = hypothesisCopy;
+    if (error2)
     {
       v13 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
         v24 = 138477827;
-        v25 = v11;
+        v25 = error2;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Error while refreshing the value: %{private}@", &v24, 0xCu);
       }
 
-      v14 = [v11 domain];
+      domain = [error2 domain];
       v15 = GEOErrorDomain();
-      if ([v14 isEqualToString:v15])
+      if ([domain isEqualToString:v15])
       {
-        v16 = [v11 code];
+        code = [error2 code];
 
-        if (v16 == -1501)
+        if (code == -1501)
         {
           [(GEORouteHypothesisValue *)self->_value setValueRefreshTimeStamp:-1.0];
           [(NavdTTLCachePrivate *)self->_cache removeEntry:self withKey:self->_key value:self->_value];
@@ -487,11 +487,11 @@ LABEL_7:
     else
     {
       [GEONavdPowerLogManager _powerLogWithEventName:@"ReceivedNewHypothesis"];
-      if (v4)
+      if (stampCopy)
       {
-        v17 = [(NavdTTLCacheEntry *)self localUpdatesOnly];
+        localUpdatesOnly = [(NavdTTLCacheEntry *)self localUpdatesOnly];
         v18 = -1.0;
-        if ((v17 & 1) == 0)
+        if ((localUpdatesOnly & 1) == 0)
         {
           Current = CFAbsoluteTimeGetCurrent();
           [(NavdTTLCacheEntry *)self _nextTimerIntervalForValue:self->_value];
@@ -519,11 +519,11 @@ LABEL_7:
   [(NavdTTLCacheEntry *)self _setState:0];
 }
 
-- (void)subsumePendingEntry:(id)a3
+- (void)subsumePendingEntry:(id)entry
 {
   clientInfoStates = self->_clientInfoStates;
-  v5 = [a3 clientInfoStates];
-  [(NSMutableDictionary *)clientInfoStates addEntriesFromDictionary:v5];
+  clientInfoStates = [entry clientInfoStates];
+  [(NSMutableDictionary *)clientInfoStates addEntriesFromDictionary:clientInfoStates];
 
   self->_localOnlyUpdatesCount = 0;
   v6 = self->_clientInfoStates;

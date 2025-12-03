@@ -1,29 +1,29 @@
 @interface LDAPSearchTask
-- (LDAPSearchTask)initWithQuery:(id)a3;
-- (id)_copySearchStringForQueryInput:(id)a3;
-- (id)daLevelErrorForLDAPError:(int)a3;
+- (LDAPSearchTask)initWithQuery:(id)query;
+- (id)_copySearchStringForQueryInput:(id)input;
+- (id)daLevelErrorForLDAPError:(int)error;
 - (int)numDownloadedElements;
-- (void)_appendKey:(id)a3 value:(id)a4 toSearchResultElement:(id)a5;
+- (void)_appendKey:(id)key value:(id)value toSearchResultElement:(id)element;
 - (void)_failImmediately;
 - (void)_performQuery;
-- (void)_promptForPasswordDueToError:(id)a3;
+- (void)_promptForPasswordDueToError:(id)error;
 - (void)disable;
-- (void)finishWithError:(id)a3;
+- (void)finishWithError:(id)error;
 - (void)performTask;
 @end
 
 @implementation LDAPSearchTask
 
-- (LDAPSearchTask)initWithQuery:(id)a3
+- (LDAPSearchTask)initWithQuery:(id)query
 {
-  v5 = a3;
+  queryCopy = query;
   v11.receiver = self;
   v11.super_class = LDAPSearchTask;
   v6 = [(LDAPSearchTask *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_query, a3);
+    objc_storeStrong(&v6->_query, query);
     v8 = objc_opt_new();
     foundContacts = v7->_foundContacts;
     v7->_foundContacts = v8;
@@ -34,11 +34,11 @@
 
 - (void)disable
 {
-  v3 = [(LDAPSearchTask *)self operation];
+  operation = [(LDAPSearchTask *)self operation];
 
-  if (v3)
+  if (operation)
   {
-    v4 = [(LDAPSearchTask *)self operation];
+    operation2 = [(LDAPSearchTask *)self operation];
     ldap_operation_cancel();
   }
 
@@ -47,15 +47,15 @@
   [(LDAPTask *)&v5 disable];
 }
 
-- (id)_copySearchStringForQueryInput:(id)a3
+- (id)_copySearchStringForQueryInput:(id)input
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 isEqualToString:&stru_285AC75D8] & 1) == 0)
+  inputCopy = input;
+  v5 = inputCopy;
+  if (inputCopy && ([inputCopy isEqualToString:&stru_285AC75D8] & 1) == 0)
   {
-    v7 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v8 = [v5 stringByTrimmingCharactersInSet:v7];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v8 = [v5 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
     v9 = [v8 componentsSeparatedByString:@" "];
     v10 = [MEMORY[0x277CBEB18] arrayWithArray:v9];
@@ -167,11 +167,11 @@
   v34[3] = &unk_278F1FB90;
   v34[4] = self;
   v32 = MEMORY[0x24C1D1EE0](v34);
-  v3 = [(LDAPSearchTask *)self query];
-  v4 = [v3 searchString];
+  query = [(LDAPSearchTask *)self query];
+  searchString = [query searchString];
 
-  v31 = v4;
-  v5 = [(LDAPSearchTask *)self _copySearchStringForQueryInput:v4];
+  v31 = searchString;
+  v5 = [(LDAPSearchTask *)self _copySearchStringForQueryInput:searchString];
   v6 = v5;
   if (v5)
   {
@@ -194,12 +194,12 @@
     _os_log_impl(&dword_24857C000, v9, v10, "searchstring is %@", buf, 0xCu);
   }
 
-  v11 = [(LDAPSearchTask *)self query];
-  v12 = [v11 searchBase];
-  v13 = v12;
-  if (v12)
+  query2 = [(LDAPSearchTask *)self query];
+  searchBase = [query2 searchBase];
+  v13 = searchBase;
+  if (searchBase)
   {
-    v14 = v12;
+    v14 = searchBase;
   }
 
   else
@@ -209,43 +209,43 @@
 
   v15 = v14;
 
-  v16 = [(LDAPSearchTask *)self query];
-  v17 = [v16 searchScope];
+  query3 = [(LDAPSearchTask *)self query];
+  searchScope = [query3 searchScope];
 
-  if (([v17 isEqualToString:@"kLDAPScopeBase"] & 1) == 0)
+  if (([searchScope isEqualToString:@"kLDAPScopeBase"] & 1) == 0)
   {
-    [v17 isEqualToString:@"kLDAPScopeOneLevel"];
+    [searchScope isEqualToString:@"kLDAPScopeOneLevel"];
   }
 
   v18 = DALoggingwithCategory();
   if (os_log_type_enabled(v18, v10))
   {
-    v19 = [(LDAPSearchTask *)self query];
-    v20 = [v19 searchBase];
+    query4 = [(LDAPSearchTask *)self query];
+    searchBase2 = [query4 searchBase];
     *buf = 138412546;
-    v36 = v20;
+    v36 = searchBase2;
     v37 = 2112;
-    v38 = v17;
+    v38 = searchScope;
     _os_log_impl(&dword_24857C000, v18, v10, "search base is %@, search scope is %@", buf, 0x16u);
   }
 
   v21 = _performQuery_attributes;
-  v22 = [(LDAPSearchTask *)self query];
-  v23 = [v22 includePhotos];
+  query5 = [(LDAPSearchTask *)self query];
+  includePhotos = [query5 includePhotos];
 
   v24 = v8;
-  if ((v23 & 1) == 0)
+  if ((includePhotos & 1) == 0)
   {
     v25 = _performQuery_attributesSansPhoto;
 
     v21 = v25;
   }
 
-  v26 = [(LDAPTask *)self ldConnection];
-  v27 = [(LDAPSearchTask *)self query];
-  [v27 timeLimit];
-  v28 = [(LDAPSearchTask *)self query];
-  [v28 maxResults];
+  ldConnection = [(LDAPTask *)self ldConnection];
+  query6 = [(LDAPSearchTask *)self query];
+  [query6 timeLimit];
+  query7 = [(LDAPSearchTask *)self query];
+  [query7 maxResults];
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __31__LDAPSearchTask__performQuery__block_invoke_105;
@@ -472,152 +472,152 @@ LABEL_11:
   return result;
 }
 
-- (void)_appendKey:(id)a3 value:(id)a4 toSearchResultElement:(id)a5
+- (void)_appendKey:(id)key value:(id)value toSearchResultElement:(id)element
 {
   v18 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  keyCopy = key;
+  valueCopy = value;
+  elementCopy = element;
   v10 = DALoggingwithCategory();
   v11 = *(MEMORY[0x277D03988] + 7);
   if (os_log_type_enabled(v10, v11))
   {
     v14 = 138412546;
-    v15 = v7;
+    v15 = keyCopy;
     v16 = 2112;
-    v17 = v8;
+    v17 = valueCopy;
     _os_log_impl(&dword_24857C000, v10, v11, "Found key->value of %@->%@", &v14, 0x16u);
   }
 
-  if ([v7 isEqualToString:@"givenname"])
+  if ([keyCopy isEqualToString:@"givenname"])
   {
-    [v9 setFirstName:v8];
+    [elementCopy setFirstName:valueCopy];
   }
 
-  else if ([v7 isEqualToString:@"sn"])
+  else if ([keyCopy isEqualToString:@"sn"])
   {
-    [v9 setLastName:v8];
+    [elementCopy setLastName:valueCopy];
   }
 
-  else if ([v7 isEqualToString:@"cn"])
+  else if ([keyCopy isEqualToString:@"cn"])
   {
-    [v9 setDisplayName:v8];
+    [elementCopy setDisplayName:valueCopy];
   }
 
-  else if ([v7 isEqualToString:@"mail"])
+  else if ([keyCopy isEqualToString:@"mail"])
   {
-    [v9 setEmailAddress:v8];
+    [elementCopy setEmailAddress:valueCopy];
   }
 
-  else if ([v7 isEqualToString:@"telephonenumber"])
+  else if ([keyCopy isEqualToString:@"telephonenumber"])
   {
-    [v9 setWorkPhone:v8];
+    [elementCopy setWorkPhone:valueCopy];
   }
 
-  else if ([v7 isEqualToString:@"facsimiletelephonenumber"])
+  else if ([keyCopy isEqualToString:@"facsimiletelephonenumber"])
   {
-    [v9 setFaxPhone:v8];
+    [elementCopy setFaxPhone:valueCopy];
   }
 
-  else if ([v7 isEqualToString:@"o"])
+  else if ([keyCopy isEqualToString:@"o"])
   {
-    [v9 setCompany:v8];
+    [elementCopy setCompany:valueCopy];
   }
 
-  else if ([v7 isEqualToString:@"title"])
+  else if ([keyCopy isEqualToString:@"title"])
   {
-    [v9 setTitle:v8];
+    [elementCopy setTitle:valueCopy];
   }
 
-  else if ([v7 isEqualToString:@"buildingname"])
+  else if ([keyCopy isEqualToString:@"buildingname"])
   {
-    [v9 setBuildingName:v8];
+    [elementCopy setBuildingName:valueCopy];
   }
 
-  else if ([v7 isEqualToString:@"applefloor"])
+  else if ([keyCopy isEqualToString:@"applefloor"])
   {
-    [v9 setAppleFloor:v8];
+    [elementCopy setAppleFloor:valueCopy];
   }
 
   else
   {
-    if ([v7 isEqualToString:@"street"])
+    if ([keyCopy isEqualToString:@"street"])
     {
-      v12 = [v8 ldapSanitizedAddress];
-      [v9 setStreet:v12];
+      ldapSanitizedAddress = [valueCopy ldapSanitizedAddress];
+      [elementCopy setStreet:ldapSanitizedAddress];
     }
 
     else
     {
-      if ([v7 isEqualToString:@"l"])
+      if ([keyCopy isEqualToString:@"l"])
       {
-        [v9 setCity:v8];
+        [elementCopy setCity:valueCopy];
         goto LABEL_44;
       }
 
-      if ([v7 isEqualToString:@"postalcode"])
+      if ([keyCopy isEqualToString:@"postalcode"])
       {
-        [v9 setZip:v8];
+        [elementCopy setZip:valueCopy];
         goto LABEL_44;
       }
 
-      if ([v7 isEqualToString:@"c"])
+      if ([keyCopy isEqualToString:@"c"])
       {
-        [v9 setCountry:v8];
+        [elementCopy setCountry:valueCopy];
         goto LABEL_44;
       }
 
-      if ([v7 isEqualToString:@"jpegphoto"])
+      if ([keyCopy isEqualToString:@"jpegphoto"])
       {
-        [v9 setJpegPhoto:v8];
+        [elementCopy setJpegPhoto:valueCopy];
         goto LABEL_44;
       }
 
-      if ([v7 isEqualToString:@"mobile"])
+      if ([keyCopy isEqualToString:@"mobile"])
       {
-        [v9 setMobilePhone:v8];
+        [elementCopy setMobilePhone:valueCopy];
         goto LABEL_44;
       }
 
-      if ([v7 isEqualToString:@"pager"])
+      if ([keyCopy isEqualToString:@"pager"])
       {
-        [v9 setPagerNumber:v8];
+        [elementCopy setPagerNumber:valueCopy];
         goto LABEL_44;
       }
 
-      if ([v7 isEqualToString:@"labeleduri"])
+      if ([keyCopy isEqualToString:@"labeleduri"])
       {
-        [v9 setUri:v8];
+        [elementCopy setUri:valueCopy];
         goto LABEL_44;
       }
 
-      if ([v7 isEqualToString:@"imhandle"])
+      if ([keyCopy isEqualToString:@"imhandle"])
       {
-        [v9 setImUsername:v8];
+        [elementCopy setImUsername:valueCopy];
         goto LABEL_44;
       }
 
-      if ([v7 isEqualToString:@"homephone"])
+      if ([keyCopy isEqualToString:@"homephone"])
       {
-        [v9 setHomePhone:v8];
+        [elementCopy setHomePhone:valueCopy];
         goto LABEL_44;
       }
 
-      if ([v7 isEqualToString:@"postaladdress"])
+      if ([keyCopy isEqualToString:@"postaladdress"])
       {
-        v12 = [v8 ldapSanitizedAddress];
-        [v9 setPostalAddress:v12];
+        ldapSanitizedAddress = [valueCopy ldapSanitizedAddress];
+        [elementCopy setPostalAddress:ldapSanitizedAddress];
       }
 
       else
       {
-        if (![v7 isEqualToString:@"homepostaladdress"])
+        if (![keyCopy isEqualToString:@"homepostaladdress"])
         {
           goto LABEL_44;
         }
 
-        v12 = [v8 ldapSanitizedAddress];
-        [v9 setHomePostalAddress:v12];
+        ldapSanitizedAddress = [valueCopy ldapSanitizedAddress];
+        [elementCopy setHomePostalAddress:ldapSanitizedAddress];
       }
     }
   }
@@ -627,26 +627,26 @@ LABEL_44:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_promptForPasswordDueToError:(id)a3
+- (void)_promptForPasswordDueToError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __47__LDAPSearchTask__promptForPasswordDueToError___block_invoke;
   v15 = &unk_278F1FC08;
-  v16 = self;
-  v17 = v4;
-  v5 = v4;
+  selfCopy = self;
+  v17 = errorCopy;
+  v5 = errorCopy;
   v6 = MEMORY[0x24C1D1EE0](&v12);
   v7 = [(LDAPTask *)self taskManager:v12];
-  v8 = [v7 account];
+  account = [v7 account];
 
-  if (v8)
+  if (account)
   {
-    v9 = [(LDAPTask *)self taskManager];
-    v10 = [v9 account];
+    taskManager = [(LDAPTask *)self taskManager];
+    account2 = [taskManager account];
     v11 = dataaccess_get_global_queue();
-    [v10 dropAssertionsAndRenewCredentialsInQueue:v11 withHandler:v6];
+    [account2 dropAssertionsAndRenewCredentialsInQueue:v11 withHandler:v6];
   }
 
   else
@@ -700,11 +700,11 @@ LABEL_6:
 {
   if (![(DADisableableObject *)self isDisabled])
   {
-    v3 = [(LDAPTask *)self taskManager];
-    v4 = [v3 account];
-    v5 = [v4 shouldFailAllTasks];
+    taskManager = [(LDAPTask *)self taskManager];
+    account = [taskManager account];
+    shouldFailAllTasks = [account shouldFailAllTasks];
 
-    if (v5)
+    if (shouldFailAllTasks)
     {
 
       [(LDAPSearchTask *)self _failImmediately];
@@ -712,11 +712,11 @@ LABEL_6:
 
     else
     {
-      v6 = [(LDAPTask *)self ldConnection];
+      ldConnection = [(LDAPTask *)self ldConnection];
 
-      if (v6)
+      if (ldConnection)
       {
-        v7 = [(LDAPTask *)self ldConnection];
+        ldConnection2 = [(LDAPTask *)self ldConnection];
         ldap_connection_disconnect();
 
         [(LDAPTask *)self setLdConnection:0];
@@ -727,80 +727,80 @@ LABEL_6:
   }
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if ([(LDAPTask *)v5 isFinished])
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(LDAPTask *)selfCopy isFinished])
   {
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    [(LDAPTask *)v5 setIsFinished:1];
-    objc_sync_exit(v5);
+    [(LDAPTask *)selfCopy setIsFinished:1];
+    objc_sync_exit(selfCopy);
 
-    if ([v4 code] == 79)
+    if ([errorCopy code] == 79)
     {
-      [(LDAPSearchTask *)v5 _promptForPasswordDueToError:v4];
+      [(LDAPSearchTask *)selfCopy _promptForPasswordDueToError:errorCopy];
     }
 
     else
     {
-      v6 = [(LDAPTask *)v5 dateConnectionWentOut];
+      dateConnectionWentOut = [(LDAPTask *)selfCopy dateConnectionWentOut];
 
-      if (v6)
+      if (dateConnectionWentOut)
       {
-        v7 = [(LDAPTask *)v5 taskManager];
-        v8 = [v7 account];
-        v9 = [v8 statusReport];
-        v10 = [MEMORY[0x277CBEAA8] date];
-        v11 = [(LDAPTask *)v5 dateConnectionWentOut];
-        [v10 timeIntervalSinceDate:v11];
-        [v9 noteTimeSpentInNetworking:?];
+        taskManager = [(LDAPTask *)selfCopy taskManager];
+        account = [taskManager account];
+        statusReport = [account statusReport];
+        date = [MEMORY[0x277CBEAA8] date];
+        dateConnectionWentOut2 = [(LDAPTask *)selfCopy dateConnectionWentOut];
+        [date timeIntervalSinceDate:dateConnectionWentOut2];
+        [statusReport noteTimeSpentInNetworking:?];
 
-        [(LDAPTask *)v5 setDateConnectionWentOut:0];
+        [(LDAPTask *)selfCopy setDateConnectionWentOut:0];
       }
 
-      v12 = [(LDAPTask *)v5 ldConnection];
+      ldConnection = [(LDAPTask *)selfCopy ldConnection];
 
-      if (v12)
+      if (ldConnection)
       {
-        v13 = [(LDAPTask *)v5 ldConnection];
+        ldConnection2 = [(LDAPTask *)selfCopy ldConnection];
         ldap_connection_disconnect();
       }
 
-      v14 = [(LDAPTask *)v5 delegate];
-      v15 = [(LDAPSearchTask *)v5 foundContacts];
-      [v14 ldapSearchTask:v5 finishedWithError:v4 foundItems:v15];
+      delegate = [(LDAPTask *)selfCopy delegate];
+      foundContacts = [(LDAPSearchTask *)selfCopy foundContacts];
+      [delegate ldapSearchTask:selfCopy finishedWithError:errorCopy foundItems:foundContacts];
 
-      v16.receiver = v5;
+      v16.receiver = selfCopy;
       v16.super_class = LDAPSearchTask;
-      [(LDAPTask *)&v16 finishWithError:v4];
+      [(LDAPTask *)&v16 finishWithError:errorCopy];
     }
   }
 }
 
 - (int)numDownloadedElements
 {
-  v2 = [(LDAPSearchTask *)self foundContacts];
-  v3 = [v2 count];
+  foundContacts = [(LDAPSearchTask *)self foundContacts];
+  v3 = [foundContacts count];
 
   return v3;
 }
 
-- (id)daLevelErrorForLDAPError:(int)a3
+- (id)daLevelErrorForLDAPError:(int)error
 {
-  if (a3 > 10000)
+  if (error > 10000)
   {
-    if ((a3 - 10001) < 3)
+    if ((error - 10001) < 3)
     {
       goto LABEL_12;
     }
 
-    if (a3 == 10006 || a3 == 10004)
+    if (error == 10006 || error == 10004)
     {
       goto LABEL_4;
     }
@@ -808,20 +808,20 @@ LABEL_6:
     goto LABEL_14;
   }
 
-  if (a3 > 0x32)
+  if (error > 0x32)
   {
     goto LABEL_14;
   }
 
-  if (((1 << a3) & 0x7000000002180) == 0)
+  if (((1 << error) & 0x7000000002180) == 0)
   {
-    if (((1 << a3) & 0x11) != 0)
+    if (((1 << error) & 0x11) != 0)
     {
       v3 = 2;
       return [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D038E0] code:v3 userInfo:0];
     }
 
-    if (a3 == 3)
+    if (error == 3)
     {
 LABEL_12:
       v3 = 0;

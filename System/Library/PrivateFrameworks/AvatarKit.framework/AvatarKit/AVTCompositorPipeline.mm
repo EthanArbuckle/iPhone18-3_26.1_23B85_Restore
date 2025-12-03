@@ -1,35 +1,35 @@
 @interface AVTCompositorPipeline
-- (AVTCompositorPipeline)initWithFunction:(id)a3;
-- (void)compositeTexture:(id)a3 forMemoji:(id)a4 considerSkin:(BOOL)a5 componentsToConsider:(unint64_t)a6 computeCommandHandler:(id)a7 blitCommandHandler:(id)a8 completionHandler:(id)a9 helper:(id)a10 helperTokens:(id)a11;
+- (AVTCompositorPipeline)initWithFunction:(id)function;
+- (void)compositeTexture:(id)texture forMemoji:(id)memoji considerSkin:(BOOL)skin componentsToConsider:(unint64_t)consider computeCommandHandler:(id)handler blitCommandHandler:(id)commandHandler completionHandler:(id)completionHandler helper:(id)self0 helperTokens:(id)self1;
 @end
 
 @implementation AVTCompositorPipeline
 
-- (AVTCompositorPipeline)initWithFunction:(id)a3
+- (AVTCompositorPipeline)initWithFunction:(id)function
 {
   v77 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  functionCopy = function;
   v75.receiver = self;
   v75.super_class = AVTCompositorPipeline;
   v58 = [(AVTCompositorPipeline *)&v75 init];
   if (v58)
   {
-    if (!v4)
+    if (!functionCopy)
     {
       [AVTCompositorPipeline initWithFunction:];
     }
 
-    v5 = [v4 device];
+    device = [functionCopy device];
     v6 = objc_alloc_init(MEMORY[0x1E6974038]);
-    [v6 setComputeFunction:v4];
-    v7 = [v4 name];
-    [v6 setLabel:v7];
+    [v6 setComputeFunction:functionCopy];
+    name = [functionCopy name];
+    [v6 setLabel:name];
 
     v73 = 0;
     v74 = 0;
     v55 = v6;
-    v56 = v5;
-    v8 = [v5 newComputePipelineStateWithDescriptor:v6 options:1 reflection:&v74 error:&v73];
+    v56 = device;
+    v8 = [device newComputePipelineStateWithDescriptor:v6 options:1 reflection:&v74 error:&v73];
     v9 = v74;
     v10 = v73;
     pipelineState = v58->_pipelineState;
@@ -40,43 +40,43 @@
       v12 = avt_default_log();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        [(AVTCompositorPipeline *)v4 initWithFunction:v10, v12];
+        [(AVTCompositorPipeline *)functionCopy initWithFunction:v10, v12];
       }
     }
 
     v53 = v10;
-    v57 = v4;
+    v57 = functionCopy;
     v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v69 = 0u;
     v70 = 0u;
     v71 = 0u;
     v72 = 0u;
     v54 = v9;
-    v14 = [v9 arguments];
-    v15 = [v14 countByEnumeratingWithState:&v69 objects:v76 count:16];
+    arguments = [v9 arguments];
+    v15 = [arguments countByEnumeratingWithState:&v69 objects:v76 count:16];
     v16 = v58;
     if (v15)
     {
       v17 = v15;
       v18 = *v70;
-      v59 = v14;
+      v59 = arguments;
       do
       {
         for (i = 0; i != v17; ++i)
         {
           if (*v70 != v18)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(arguments);
           }
 
           v20 = *(*(&v69 + 1) + 8 * i);
-          v21 = [v20 name];
-          v22 = [v21 isEqualToString:@"dst"];
+          name2 = [v20 name];
+          v22 = [name2 isEqualToString:@"dst"];
 
           if (!v22)
           {
-            v23 = [v20 name];
-            v24 = [v23 isEqualToString:@"builtin_skinColor"];
+            name3 = [v20 name];
+            v24 = [name3 isEqualToString:@"builtin_skinColor"];
 
             if (v24)
             {
@@ -104,8 +104,8 @@ LABEL_23:
               continue;
             }
 
-            v26 = [v20 name];
-            v27 = [v26 isEqualToString:@"builtin_mouthInside"];
+            name4 = [v20 name];
+            v27 = [name4 isEqualToString:@"builtin_mouthInside"];
 
             if (v27)
             {
@@ -124,8 +124,8 @@ LABEL_23:
             }
 
             v29 = v13;
-            v30 = [v20 name];
-            v31 = [v30 componentsSeparatedByString:@"_"];
+            name5 = [v20 name];
+            v31 = [name5 componentsSeparatedByString:@"_"];
 
             v32 = [v31 count];
             v33 = [v31 objectAtIndexedSubscript:0];
@@ -180,7 +180,7 @@ LABEL_23:
                   }
 
                   v37 = [v36 substringFromIndex:{objc_msgSend(@"color", "length")}];
-                  v38 = [v37 integerValue];
+                  integerValue = [v37 integerValue];
 
                   v39 = [v31 objectAtIndexedSubscript:0];
                   v40 = AVTPresetCategoryFromString(v39);
@@ -196,7 +196,7 @@ LABEL_23:
                   v65[2] = __42__AVTCompositorPipeline_initWithFunction___block_invoke_4;
                   v65[3] = &unk_1E7F47CA0;
                   v65[5] = v40;
-                  v65[6] = v38 - 1;
+                  v65[6] = integerValue - 1;
                 }
 
                 else
@@ -262,7 +262,7 @@ LABEL_23:
             v16 = v58;
 LABEL_45:
 
-            v14 = v59;
+            arguments = v59;
             continue;
           }
 
@@ -277,7 +277,7 @@ LABEL_45:
           }
         }
 
-        v17 = [v14 countByEnumeratingWithState:&v69 objects:v76 count:16];
+        v17 = [arguments countByEnumeratingWithState:&v69 objects:v76 count:16];
       }
 
       while (v17);
@@ -287,7 +287,7 @@ LABEL_45:
     bindings = v16->_bindings;
     v16->_bindings = v49;
 
-    v4 = v57;
+    functionCopy = v57;
   }
 
   v51 = *MEMORY[0x1E69E9840];
@@ -439,28 +439,28 @@ void __42__AVTCompositorPipeline_initWithFunction___block_invoke_6(uint64_t a1, 
   }
 }
 
-- (void)compositeTexture:(id)a3 forMemoji:(id)a4 considerSkin:(BOOL)a5 componentsToConsider:(unint64_t)a6 computeCommandHandler:(id)a7 blitCommandHandler:(id)a8 completionHandler:(id)a9 helper:(id)a10 helperTokens:(id)a11
+- (void)compositeTexture:(id)texture forMemoji:(id)memoji considerSkin:(BOOL)skin componentsToConsider:(unint64_t)consider computeCommandHandler:(id)handler blitCommandHandler:(id)commandHandler completionHandler:(id)completionHandler helper:(id)self0 helperTokens:(id)self1
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
-  v23 = a11;
-  if (self->_isAffectedBySkin && a5 || (self->_affectingComponentsMask & a6) != 0 || self->_shouldCompositeAgainDueToGPUError)
+  textureCopy = texture;
+  memojiCopy = memoji;
+  handlerCopy = handler;
+  commandHandlerCopy = commandHandler;
+  completionHandlerCopy = completionHandler;
+  helperCopy = helper;
+  tokensCopy = tokens;
+  if (self->_isAffectedBySkin && skin || (self->_affectingComponentsMask & consider) != 0 || self->_shouldCompositeAgainDueToGPUError)
   {
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
     v30[2] = __165__AVTCompositorPipeline_compositeTexture_forMemoji_considerSkin_componentsToConsider_computeCommandHandler_blitCommandHandler_completionHandler_helper_helperTokens___block_invoke;
     v30[3] = &unk_1E7F47CF0;
     v30[4] = self;
-    v31 = v22;
-    v32 = v18;
-    v33 = v23;
-    v24 = v17;
+    v31 = helperCopy;
+    v32 = memojiCopy;
+    v33 = tokensCopy;
+    v24 = textureCopy;
     v34 = v24;
-    v19[2](v19, v30);
+    handlerCopy[2](handlerCopy, v30);
     if ([v24 mipmapLevelCount] >= 2)
     {
       v28[0] = MEMORY[0x1E69E9820];
@@ -468,7 +468,7 @@ void __42__AVTCompositorPipeline_initWithFunction___block_invoke_6(uint64_t a1, 
       v28[2] = __165__AVTCompositorPipeline_compositeTexture_forMemoji_considerSkin_componentsToConsider_computeCommandHandler_blitCommandHandler_completionHandler_helper_helperTokens___block_invoke_2;
       v28[3] = &unk_1E7F47D18;
       v29 = v24;
-      v20[2](v20, v28);
+      commandHandlerCopy[2](commandHandlerCopy, v28);
     }
 
     objc_initWeak(&location, self);
@@ -477,7 +477,7 @@ void __42__AVTCompositorPipeline_initWithFunction___block_invoke_6(uint64_t a1, 
     v25[2] = __165__AVTCompositorPipeline_compositeTexture_forMemoji_considerSkin_componentsToConsider_computeCommandHandler_blitCommandHandler_completionHandler_helper_helperTokens___block_invoke_3;
     v25[3] = &unk_1E7F47D40;
     objc_copyWeak(&v26, &location);
-    v21[2](v21, v25);
+    completionHandlerCopy[2](completionHandlerCopy, v25);
     objc_destroyWeak(&v26);
     objc_destroyWeak(&location);
   }

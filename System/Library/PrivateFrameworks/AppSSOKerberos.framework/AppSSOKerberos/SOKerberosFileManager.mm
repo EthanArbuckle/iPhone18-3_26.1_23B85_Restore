@@ -1,15 +1,15 @@
 @interface SOKerberosFileManager
-+ (BOOL)archiveDictionary:(id)a3 toFile:(id)a4;
-+ (id)documentsDirectoryURLForFileName:(id)a3;
-+ (id)loadDictionaryFromFile:(id)a3;
++ (BOOL)archiveDictionary:(id)dictionary toFile:(id)file;
++ (id)documentsDirectoryURLForFileName:(id)name;
++ (id)loadDictionaryFromFile:(id)file;
 @end
 
 @implementation SOKerberosFileManager
 
-+ (BOOL)archiveDictionary:(id)a3 toFile:(id)a4
++ (BOOL)archiveDictionary:(id)dictionary toFile:(id)file
 {
-  v6 = a3;
-  v7 = [a1 documentsDirectoryURLForFileName:a4];
+  dictionaryCopy = dictionary;
+  v7 = [self documentsDirectoryURLForFileName:file];
   v8 = SO_LOG_SOKerberosFileManager();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -17,7 +17,7 @@
   }
 
   v17 = 0;
-  v9 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v17];
+  v9 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:dictionaryCopy requiringSecureCoding:1 error:&v17];
 
   v10 = v17;
   if (v10)
@@ -55,10 +55,10 @@ LABEL_11:
   return v13;
 }
 
-+ (id)loadDictionaryFromFile:(id)a3
++ (id)loadDictionaryFromFile:(id)file
 {
   v18[7] = *MEMORY[0x277D85DE8];
-  v3 = [a1 documentsDirectoryURLForFileName:a3];
+  v3 = [self documentsDirectoryURLForFileName:file];
   v4 = SO_LOG_SOKerberosFileManager();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -115,15 +115,15 @@ LABEL_11:
   return v9;
 }
 
-+ (id)documentsDirectoryURLForFileName:(id)a3
++ (id)documentsDirectoryURLForFileName:(id)name
 {
   v3 = MEMORY[0x277CCAA00];
-  v4 = a3;
-  v5 = [v3 defaultManager];
-  v6 = [v5 URLsForDirectory:9 inDomains:1];
-  v7 = [v6 firstObject];
+  nameCopy = name;
+  defaultManager = [v3 defaultManager];
+  v6 = [defaultManager URLsForDirectory:9 inDomains:1];
+  firstObject = [v6 firstObject];
 
-  v8 = [v7 URLByAppendingPathComponent:v4];
+  v8 = [firstObject URLByAppendingPathComponent:nameCopy];
 
   return v8;
 }

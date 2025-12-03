@@ -1,20 +1,20 @@
 @interface _PXCuratedLibraryLayoutZoomLevelChangeAnimationHelper
-- (_PXCuratedLibraryLayoutZoomLevelChangeAnimationHelper)initWithLayout:(id)a3;
+- (_PXCuratedLibraryLayoutZoomLevelChangeAnimationHelper)initWithLayout:(id)layout;
 - (double)animationDuration;
-- (id)animation:(id)a3 doubleSidedAnimatedSpriteIndexesForModifiedSpriteIndexes:(id)a4 rootLayout:(id)a5 presentedGeometries:(id *)a6 styles:(id *)a7 infos:(id *)a8;
-- (void)_adjustGeometries:(id *)a3 styles:(id *)a4 infos:(id *)a5 spriteIndexRange:(_PXGSpriteIndexRange)a6 appearing:(BOOL)a7;
-- (void)animation:(id)a3 adjustPresentedGeometries:(id *)a4 styles:(id *)a5 infos:(id *)a6 count:(unsigned int)a7;
-- (void)animation:(id)a3 prepareWithRootLayout:(id)a4 viewportShift:(CGPoint)a5;
+- (id)animation:(id)animation doubleSidedAnimatedSpriteIndexesForModifiedSpriteIndexes:(id)indexes rootLayout:(id)layout presentedGeometries:(id *)geometries styles:(id *)styles infos:(id *)infos;
+- (void)_adjustGeometries:(id *)geometries styles:(id *)styles infos:(id *)infos spriteIndexRange:(_PXGSpriteIndexRange)range appearing:(BOOL)appearing;
+- (void)animation:(id)animation adjustPresentedGeometries:(id *)geometries styles:(id *)styles infos:(id *)infos count:(unsigned int)count;
+- (void)animation:(id)animation prepareWithRootLayout:(id)layout viewportShift:(CGPoint)shift;
 @end
 
 @implementation _PXCuratedLibraryLayoutZoomLevelChangeAnimationHelper
 
-- (void)_adjustGeometries:(id *)a3 styles:(id *)a4 infos:(id *)a5 spriteIndexRange:(_PXGSpriteIndexRange)a6 appearing:(BOOL)a7
+- (void)_adjustGeometries:(id *)geometries styles:(id *)styles infos:(id *)infos spriteIndexRange:(_PXGSpriteIndexRange)range appearing:(BOOL)appearing
 {
-  v7 = a7;
+  appearingCopy = appearing;
   v59 = *MEMORY[0x1E69E9840];
   v10 = +[PXCuratedLibrarySettings sharedInstance];
-  if (v7)
+  if (appearingCopy)
   {
     v11 = self->_toLayoutSnapshotGeometryDescriptor;
     v12 = self->_fromLayoutSnapshotGeometryDescriptor;
@@ -30,7 +30,7 @@
     v56[3] = &unk_1E772D868;
     v56[4] = self;
     v39 = _Block_copy(v56);
-    v37 = [(PXVisualPositionsChangeDetails *)self->_visualPositionsChangeDetails anchorIndexAfterChanges];
+    anchorIndexAfterChanges = [(PXVisualPositionsChangeDetails *)self->_visualPositionsChangeDetails anchorIndexAfterChanges];
     *&v13 = COERCE_DOUBLE([(PXVisualPositionsChangeDetails *)self->_visualPositionsChangeDetails anchorIndexBeforeChanges]);
   }
 
@@ -50,12 +50,12 @@
     v54[3] = &unk_1E772D868;
     v54[4] = self;
     v39 = _Block_copy(v54);
-    v37 = [(PXVisualPositionsChangeDetails *)self->_visualPositionsChangeDetails anchorIndexBeforeChanges];
+    anchorIndexAfterChanges = [(PXVisualPositionsChangeDetails *)self->_visualPositionsChangeDetails anchorIndexBeforeChanges];
     *&v13 = COERCE_DOUBLE([(PXVisualPositionsChangeDetails *)self->_visualPositionsChangeDetails anchorIndexAfterChanges]);
   }
 
   v35 = *&v13;
-  v14 = HIDWORD(*&a6);
+  v14 = HIDWORD(*&range);
   [(PXCuratedLibraryLayoutSnapshotGeometryDescriptor *)v11 dataSourceIdentifier];
   [(PXCuratedLibraryLayoutSnapshotGeometryDescriptor *)v11 skimmingDataSourceIdentifier];
   [(PXCuratedLibraryLayoutSnapshotGeometryDescriptor *)v12 dataSourceIdentifier];
@@ -78,7 +78,7 @@
     else
     {
       *&v58.a = [(PXCuratedLibraryLayoutSnapshotGeometryDescriptor *)v11 dataSourceIdentifier];
-      *&v58.b = v37;
+      *&v58.b = anchorIndexAfterChanges;
       v16.f64[0] = NAN;
       v16.f64[1] = NAN;
       v44 = vnegq_f64(v16);
@@ -97,8 +97,8 @@
         if (*&v45.b == 1)
         {
           [v10 transitionScaleForDayNotMatchingMonths];
-          v20 = [(PXCuratedLibraryLayoutSnapshotGeometryDescriptor *)v12 zoomLevel];
-          if (v20 <= [(PXCuratedLibraryLayoutSnapshotGeometryDescriptor *)v40 zoomLevel])
+          zoomLevel = [(PXCuratedLibraryLayoutSnapshotGeometryDescriptor *)v12 zoomLevel];
+          if (zoomLevel <= [(PXCuratedLibraryLayoutSnapshotGeometryDescriptor *)v40 zoomLevel])
           {
             [v10 nonAnchorDaysFadeSpeed];
           }
@@ -150,13 +150,13 @@
   }
 }
 
-- (void)animation:(id)a3 prepareWithRootLayout:(id)a4 viewportShift:(CGPoint)a5
+- (void)animation:(id)animation prepareWithRootLayout:(id)layout viewportShift:(CGPoint)shift
 {
-  y = a5.y;
-  x = a5.x;
-  v10 = a3;
-  v11 = a4;
-  if (v11)
+  y = shift.y;
+  x = shift.x;
+  animationCopy = animation;
+  layoutCopy = layout;
+  if (layoutCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -164,68 +164,68 @@
       goto LABEL_3;
     }
 
-    v37 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v40 = objc_opt_class();
     v39 = NSStringFromClass(v40);
-    v41 = [v11 px_descriptionForAssertionMessage];
-    [v37 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryLayoutAnimationHelper.m" lineNumber:379 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"rootLayout", v39, v41}];
+    px_descriptionForAssertionMessage = [layoutCopy px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryLayoutAnimationHelper.m" lineNumber:379 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"rootLayout", v39, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v37 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v38 = objc_opt_class();
     v39 = NSStringFromClass(v38);
-    [v37 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryLayoutAnimationHelper.m" lineNumber:379 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"rootLayout", v39}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryLayoutAnimationHelper.m" lineNumber:379 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"rootLayout", v39}];
   }
 
 LABEL_3:
   [(PXCuratedLibraryLayoutSnapshotGeometryDescriptor *)self->_fromLayoutSnapshotGeometryDescriptor setOffset:x, y];
-  v12 = [[PXCuratedLibraryLayoutSnapshotGeometryDescriptor alloc] initWithLayout:v11];
+  v12 = [[PXCuratedLibraryLayoutSnapshotGeometryDescriptor alloc] initWithLayout:layoutCopy];
   toLayoutSnapshotGeometryDescriptor = self->_toLayoutSnapshotGeometryDescriptor;
   self->_toLayoutSnapshotGeometryDescriptor = v12;
 
-  v14 = [v11 viewModel];
-  v15 = [v14 assetsDataSourceManager];
+  viewModel = [layoutCopy viewModel];
+  assetsDataSourceManager = [viewModel assetsDataSourceManager];
 
-  v16 = [(PXCuratedLibraryLayoutSnapshotGeometryDescriptor *)self->_fromLayoutSnapshotGeometryDescriptor dataSourceIdentifier];
-  v17 = [(PXCuratedLibraryLayoutSnapshotGeometryDescriptor *)self->_toLayoutSnapshotGeometryDescriptor dataSourceIdentifier];
-  v18 = [v15 changeHistory];
-  v19 = [v18 changeDetailsFromDataSourceIdentifier:v16 toDataSourceIdentifier:v17];
+  dataSourceIdentifier = [(PXCuratedLibraryLayoutSnapshotGeometryDescriptor *)self->_fromLayoutSnapshotGeometryDescriptor dataSourceIdentifier];
+  dataSourceIdentifier2 = [(PXCuratedLibraryLayoutSnapshotGeometryDescriptor *)self->_toLayoutSnapshotGeometryDescriptor dataSourceIdentifier];
+  changeHistory = [assetsDataSourceManager changeHistory];
+  v19 = [changeHistory changeDetailsFromDataSourceIdentifier:dataSourceIdentifier toDataSourceIdentifier:dataSourceIdentifier2];
   changeDetails = self->_changeDetails;
   self->_changeDetails = v19;
 
-  v21 = [v15 visualPositionsChangeDetailsFromDataSourceIdentifier:v16 toDataSourceIdentifier:v17];
+  v21 = [assetsDataSourceManager visualPositionsChangeDetailsFromDataSourceIdentifier:dataSourceIdentifier toDataSourceIdentifier:dataSourceIdentifier2];
   visualPositionsChangeDetails = self->_visualPositionsChangeDetails;
   self->_visualPositionsChangeDetails = v21;
 
-  self->_transitionType = [v15 transitionTypeFromDataSourceIdentifier:v16 toDataSourceIdentifier:v17];
-  v23 = [v11 spec];
-  self->_shouldAlwaysFadeDecoration = [v23 userInterfaceIdiom] == 4;
+  self->_transitionType = [assetsDataSourceManager transitionTypeFromDataSourceIdentifier:dataSourceIdentifier toDataSourceIdentifier:dataSourceIdentifier2];
+  spec = [layoutCopy spec];
+  self->_shouldAlwaysFadeDecoration = [spec userInterfaceIdiom] == 4;
 
   if (self->_visualPositionsChangeDetails)
   {
-    v24 = [(PXCuratedLibraryLayoutSnapshotGeometryDescriptor *)self->_fromLayoutSnapshotGeometryDescriptor sections];
-    v25 = [(PXCuratedLibraryLayoutSnapshotGeometryDescriptor *)self->_toLayoutSnapshotGeometryDescriptor sections];
-    v26 = [(PXVisualPositionsChangeDetails *)self->_visualPositionsChangeDetails anchorIndexBeforeChanges];
-    v44 = [(PXVisualPositionsChangeDetails *)self->_visualPositionsChangeDetails anchorIndexAfterChanges];
-    v42 = v26;
-    v43 = v10;
-    if ([v24 count])
+    sections = [(PXCuratedLibraryLayoutSnapshotGeometryDescriptor *)self->_fromLayoutSnapshotGeometryDescriptor sections];
+    sections2 = [(PXCuratedLibraryLayoutSnapshotGeometryDescriptor *)self->_toLayoutSnapshotGeometryDescriptor sections];
+    anchorIndexBeforeChanges = [(PXVisualPositionsChangeDetails *)self->_visualPositionsChangeDetails anchorIndexBeforeChanges];
+    anchorIndexAfterChanges = [(PXVisualPositionsChangeDetails *)self->_visualPositionsChangeDetails anchorIndexAfterChanges];
+    v42 = anchorIndexBeforeChanges;
+    v43 = animationCopy;
+    if ([sections count])
     {
       v27 = self->_visualPositionsChangeDetails;
-      v28 = [v24 firstIndex];
+      firstIndex = [sections firstIndex];
       if (v27)
       {
-        [(PXVisualPositionsChangeDetails *)v27 visualPositionAfterApplyingChangesToIndex:v28];
+        [(PXVisualPositionsChangeDetails *)v27 visualPositionAfterApplyingChangesToIndex:firstIndex];
         v27 = v48;
       }
 
       v29 = self->_visualPositionsChangeDetails;
-      v30 = [v24 lastIndex];
+      lastIndex = [sections lastIndex];
       if (v29)
       {
-        [(PXVisualPositionsChangeDetails *)v29 visualPositionAfterApplyingChangesToIndex:v30];
+        [(PXVisualPositionsChangeDetails *)v29 visualPositionAfterApplyingChangesToIndex:lastIndex];
         v31 = v47;
       }
 
@@ -234,26 +234,26 @@ LABEL_3:
         v31 = 0;
       }
 
-      v26 = v42;
-      [(PXCuratedLibraryLayoutSnapshotGeometryDescriptor *)self->_toLayoutSnapshotGeometryDescriptor extrapolateSectionsBetween:v27 and:v31 withAnchorSection:v44];
-      v10 = v43;
+      anchorIndexBeforeChanges = v42;
+      [(PXCuratedLibraryLayoutSnapshotGeometryDescriptor *)self->_toLayoutSnapshotGeometryDescriptor extrapolateSectionsBetween:v27 and:v31 withAnchorSection:anchorIndexAfterChanges];
+      animationCopy = v43;
     }
 
-    if ([v25 count])
+    if ([sections2 count])
     {
       v32 = self->_visualPositionsChangeDetails;
-      v33 = [v25 firstIndex];
+      firstIndex2 = [sections2 firstIndex];
       if (v32)
       {
-        [(PXVisualPositionsChangeDetails *)v32 visualPositionAfterRevertingChangesFromIndex:v33];
+        [(PXVisualPositionsChangeDetails *)v32 visualPositionAfterRevertingChangesFromIndex:firstIndex2];
         v32 = v46;
       }
 
       v34 = self->_visualPositionsChangeDetails;
-      v35 = [v25 lastIndex];
+      lastIndex2 = [sections2 lastIndex];
       if (v34)
       {
-        [(PXVisualPositionsChangeDetails *)v34 visualPositionAfterRevertingChangesFromIndex:v35];
+        [(PXVisualPositionsChangeDetails *)v34 visualPositionAfterRevertingChangesFromIndex:lastIndex2];
         v36 = v45;
       }
 
@@ -262,41 +262,41 @@ LABEL_3:
         v36 = 0;
       }
 
-      v26 = v42;
+      anchorIndexBeforeChanges = v42;
       [(PXCuratedLibraryLayoutSnapshotGeometryDescriptor *)self->_fromLayoutSnapshotGeometryDescriptor extrapolateSectionsBetween:v32 and:v36 withAnchorSection:v42];
-      v10 = v43;
+      animationCopy = v43;
     }
 
-    [(PXCuratedLibraryLayoutSnapshotGeometryDescriptor *)self->_fromLayoutSnapshotGeometryDescriptor compactifySectionsBeyondVisibleRectWithAnchorSection:v26];
-    [(PXCuratedLibraryLayoutSnapshotGeometryDescriptor *)self->_toLayoutSnapshotGeometryDescriptor compactifySectionsBeyondVisibleRectWithAnchorSection:v44];
+    [(PXCuratedLibraryLayoutSnapshotGeometryDescriptor *)self->_fromLayoutSnapshotGeometryDescriptor compactifySectionsBeyondVisibleRectWithAnchorSection:anchorIndexBeforeChanges];
+    [(PXCuratedLibraryLayoutSnapshotGeometryDescriptor *)self->_toLayoutSnapshotGeometryDescriptor compactifySectionsBeyondVisibleRectWithAnchorSection:anchorIndexAfterChanges];
   }
 }
 
-- (void)animation:(id)a3 adjustPresentedGeometries:(id *)a4 styles:(id *)a5 infos:(id *)a6 count:(unsigned int)a7
+- (void)animation:(id)animation adjustPresentedGeometries:(id *)geometries styles:(id *)styles infos:(id *)infos count:(unsigned int)count
 {
-  [(PXCuratedLibraryLayoutSnapshotGeometryDescriptor *)self->_fromLayoutSnapshotGeometryDescriptor dataSourceIdentifier:a3];
+  [(PXCuratedLibraryLayoutSnapshotGeometryDescriptor *)self->_fromLayoutSnapshotGeometryDescriptor dataSourceIdentifier:animation];
   [(PXCuratedLibraryLayoutSnapshotGeometryDescriptor *)self->_fromLayoutSnapshotGeometryDescriptor visibleRect];
-  if (a7)
+  if (count)
   {
     PXGSectionedSpriteTagDecompose();
   }
 }
 
-- (id)animation:(id)a3 doubleSidedAnimatedSpriteIndexesForModifiedSpriteIndexes:(id)a4 rootLayout:(id)a5 presentedGeometries:(id *)a6 styles:(id *)a7 infos:(id *)a8
+- (id)animation:(id)animation doubleSidedAnimatedSpriteIndexesForModifiedSpriteIndexes:(id)indexes rootLayout:(id)layout presentedGeometries:(id *)geometries styles:(id *)styles infos:(id *)infos
 {
   v10 = MEMORY[0x1E696AD50];
-  v11 = a4;
+  indexesCopy = indexes;
   v12 = objc_alloc_init(v10);
-  v13 = [(PXCuratedLibraryLayoutSnapshotGeometryDescriptor *)self->_fromLayoutSnapshotGeometryDescriptor dataSourceIdentifier];
+  dataSourceIdentifier = [(PXCuratedLibraryLayoutSnapshotGeometryDescriptor *)self->_fromLayoutSnapshotGeometryDescriptor dataSourceIdentifier];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __168___PXCuratedLibraryLayoutZoomLevelChangeAnimationHelper_animation_doubleSidedAnimatedSpriteIndexesForModifiedSpriteIndexes_rootLayout_presentedGeometries_styles_infos___block_invoke;
   v16[3] = &unk_1E772D818;
-  v18 = a8;
-  v19 = v13;
+  infosCopy = infos;
+  v19 = dataSourceIdentifier;
   v14 = v12;
   v17 = v14;
-  [v11 enumerateIndexesUsingBlock:v16];
+  [indexesCopy enumerateIndexesUsingBlock:v16];
 
   return v14;
 }
@@ -310,16 +310,16 @@ LABEL_3:
   return v4;
 }
 
-- (_PXCuratedLibraryLayoutZoomLevelChangeAnimationHelper)initWithLayout:(id)a3
+- (_PXCuratedLibraryLayoutZoomLevelChangeAnimationHelper)initWithLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v13.receiver = self;
   v13.super_class = _PXCuratedLibraryLayoutZoomLevelChangeAnimationHelper;
-  v5 = [(PXCuratedLibraryLayoutAnimationHelper *)&v13 initWithLayout:v4];
+  v5 = [(PXCuratedLibraryLayoutAnimationHelper *)&v13 initWithLayout:layoutCopy];
   if (v5)
   {
-    v5->_userInterfaceDirection = [v4 userInterfaceDirection];
-    v6 = [[PXCuratedLibraryLayoutSnapshotGeometryDescriptor alloc] initWithLayout:v4];
+    v5->_userInterfaceDirection = [layoutCopy userInterfaceDirection];
+    v6 = [[PXCuratedLibraryLayoutSnapshotGeometryDescriptor alloc] initWithLayout:layoutCopy];
     fromLayoutSnapshotGeometryDescriptor = v5->_fromLayoutSnapshotGeometryDescriptor;
     v5->_fromLayoutSnapshotGeometryDescriptor = v6;
 

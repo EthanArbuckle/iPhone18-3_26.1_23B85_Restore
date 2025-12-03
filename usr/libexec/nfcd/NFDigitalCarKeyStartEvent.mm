@@ -1,32 +1,32 @@
 @interface NFDigitalCarKeyStartEvent
-- (NFDigitalCarKeyStartEvent)initWithCoder:(id)a3;
+- (NFDigitalCarKeyStartEvent)initWithCoder:(id)coder;
 - (id)asDictionary;
 - (id)description;
-- (id)initFromContactlessPaymentStartEvent:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)initFromContactlessPaymentStartEvent:(id)event;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NFDigitalCarKeyStartEvent
 
-- (id)initFromContactlessPaymentStartEvent:(id)a3
+- (id)initFromContactlessPaymentStartEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v13.receiver = self;
   v13.super_class = NFDigitalCarKeyStartEvent;
   v5 = [(NFDigitalCarKeyStartEvent *)&v13 init];
   if (v5)
   {
-    v6 = [v4 appletIdentifier];
+    appletIdentifier = [eventCopy appletIdentifier];
     appletIdentifier = v5->_appletIdentifier;
-    v5->_appletIdentifier = v6;
+    v5->_appletIdentifier = appletIdentifier;
 
-    v8 = [v4 keyIdentifier];
+    keyIdentifier = [eventCopy keyIdentifier];
     keyIdentifier = v5->_keyIdentifier;
-    v5->_keyIdentifier = v8;
+    v5->_keyIdentifier = keyIdentifier;
 
-    v10 = [v4 spIdentifier];
+    spIdentifier = [eventCopy spIdentifier];
     spIdentifier = v5->_spIdentifier;
-    v5->_spIdentifier = v10;
+    v5->_spIdentifier = spIdentifier;
   }
 
   return v5;
@@ -59,23 +59,23 @@
   return v5;
 }
 
-- (NFDigitalCarKeyStartEvent)initWithCoder:(id)a3
+- (NFDigitalCarKeyStartEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = NFDigitalCarKeyStartEvent;
   v5 = [(NFDigitalCarKeyStartEvent *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appletIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appletIdentifier"];
     appletIdentifier = v5->_appletIdentifier;
     v5->_appletIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"keyIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"keyIdentifier"];
     keyIdentifier = v5->_keyIdentifier;
     v5->_keyIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"spIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"spIdentifier"];
     spIdentifier = v5->_spIdentifier;
     v5->_spIdentifier = v10;
   }
@@ -83,13 +83,13 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   appletIdentifier = self->_appletIdentifier;
-  v5 = a3;
-  [v5 encodeObject:appletIdentifier forKey:@"appletIdentifier"];
-  [v5 encodeObject:self->_keyIdentifier forKey:@"keyIdentifier"];
-  [v5 encodeObject:self->_spIdentifier forKey:@"spIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:appletIdentifier forKey:@"appletIdentifier"];
+  [coderCopy encodeObject:self->_keyIdentifier forKey:@"keyIdentifier"];
+  [coderCopy encodeObject:self->_spIdentifier forKey:@"spIdentifier"];
 }
 
 @end

@@ -1,31 +1,31 @@
 @interface HKDisplayTypeContextItemAttributedLabelOverride
-+ (HKDisplayTypeContextItemAttributedLabelOverride)attributedLabelOverrideWithText:(id)a3 selectedText:(id)a4;
-- (BOOL)_isEqualToAttributedLabelOverride:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)attributedLabelTextWithSelectionState:(BOOL)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (HKDisplayTypeContextItemAttributedLabelOverride)attributedLabelOverrideWithText:(id)text selectedText:(id)selectedText;
+- (BOOL)_isEqualToAttributedLabelOverride:(id)override;
+- (BOOL)isEqual:(id)equal;
+- (id)attributedLabelTextWithSelectionState:(BOOL)state;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HKDisplayTypeContextItemAttributedLabelOverride
 
-+ (HKDisplayTypeContextItemAttributedLabelOverride)attributedLabelOverrideWithText:(id)a3 selectedText:(id)a4
++ (HKDisplayTypeContextItemAttributedLabelOverride)attributedLabelOverrideWithText:(id)text selectedText:(id)selectedText
 {
-  v5 = a3;
-  v6 = a4;
+  textCopy = text;
+  selectedTextCopy = selectedText;
   v7 = objc_alloc_init(HKDisplayTypeContextItemAttributedLabelOverride);
   attributedLabelText = v7->_attributedLabelText;
-  v7->_attributedLabelText = v5;
-  v9 = v5;
+  v7->_attributedLabelText = textCopy;
+  v9 = textCopy;
 
   selectedAttributedLabelText = v7->_selectedAttributedLabelText;
-  v7->_selectedAttributedLabelText = v6;
+  v7->_selectedAttributedLabelText = selectedTextCopy;
 
   return v7;
 }
 
-- (id)attributedLabelTextWithSelectionState:(BOOL)a3
+- (id)attributedLabelTextWithSelectionState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     [(HKDisplayTypeContextItemAttributedLabelOverride *)self selectedAttributedLabelText];
   }
@@ -39,10 +39,10 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -50,22 +50,22 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(HKDisplayTypeContextItemAttributedLabelOverride *)self _isEqualToAttributedLabelOverride:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(HKDisplayTypeContextItemAttributedLabelOverride *)self _isEqualToAttributedLabelOverride:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)_isEqualToAttributedLabelOverride:(id)a3
+- (BOOL)_isEqualToAttributedLabelOverride:(id)override
 {
-  v4 = a3;
+  overrideCopy = override;
   attributedLabelText = self->_attributedLabelText;
-  v6 = [v4 attributedLabelText];
-  if ([(NSAttributedString *)attributedLabelText isEqualToAttributedString:v6])
+  attributedLabelText = [overrideCopy attributedLabelText];
+  if ([(NSAttributedString *)attributedLabelText isEqualToAttributedString:attributedLabelText])
   {
     selectedAttributedLabelText = self->_selectedAttributedLabelText;
-    v8 = [v4 selectedAttributedLabelText];
-    v9 = [(NSAttributedString *)selectedAttributedLabelText isEqualToAttributedString:v8];
+    selectedAttributedLabelText = [overrideCopy selectedAttributedLabelText];
+    v9 = [(NSAttributedString *)selectedAttributedLabelText isEqualToAttributedString:selectedAttributedLabelText];
   }
 
   else
@@ -76,16 +76,16 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(HKDisplayTypeContextItemAttributedLabelOverride *)self attributedLabelText];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  attributedLabelText = [(HKDisplayTypeContextItemAttributedLabelOverride *)self attributedLabelText];
   v6 = v4[1];
-  v4[1] = v5;
+  v4[1] = attributedLabelText;
 
-  v7 = [(HKDisplayTypeContextItemAttributedLabelOverride *)self selectedAttributedLabelText];
+  selectedAttributedLabelText = [(HKDisplayTypeContextItemAttributedLabelOverride *)self selectedAttributedLabelText];
   v8 = v4[2];
-  v4[2] = v7;
+  v4[2] = selectedAttributedLabelText;
 
   return v4;
 }

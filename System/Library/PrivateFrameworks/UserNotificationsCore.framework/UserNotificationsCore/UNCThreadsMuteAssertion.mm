@@ -1,16 +1,16 @@
 @interface UNCThreadsMuteAssertion
 + (id)threadsMuteAssertion;
-+ (id)threadsMuteAssertionWithExpirationDateByThreadID:(id)a3;
-- (BOOL)isActiveForThreadIdentifier:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)threadsMuteAssertionWithExpirationDateByThreadID:(id)d;
+- (BOOL)isActiveForThreadIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)expirationDateByThreadID;
 - (NSSet)threadIDs;
-- (UNCThreadsMuteAssertion)initWithCoder:(id)a3;
-- (id)_initWithExpirationDateByThreadID:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (UNCThreadsMuteAssertion)initWithCoder:(id)coder;
+- (id)_initWithExpirationDateByThreadID:(id)d;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)getNextExpirationDate:(id *)a3 wasPurged:(BOOL *)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)getNextExpirationDate:(id *)date wasPurged:(BOOL *)purged;
 @end
 
 @implementation UNCThreadsMuteAssertion
@@ -23,28 +23,28 @@
   return v3;
 }
 
-+ (id)threadsMuteAssertionWithExpirationDateByThreadID:(id)a3
++ (id)threadsMuteAssertionWithExpirationDateByThreadID:(id)d
 {
-  v3 = a3;
-  v4 = [[UNCThreadsMuteAssertion alloc] _initWithExpirationDateByThreadID:v3];
+  dCopy = d;
+  v4 = [[UNCThreadsMuteAssertion alloc] _initWithExpirationDateByThreadID:dCopy];
 
   return v4;
 }
 
-- (id)_initWithExpirationDateByThreadID:(id)a3
+- (id)_initWithExpirationDateByThreadID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = UNCThreadsMuteAssertion;
-  v5 = [(UNCMuteAssertion *)&v9 _init];
-  if (v5)
+  _init = [(UNCMuteAssertion *)&v9 _init];
+  if (_init)
   {
-    v6 = [v4 mutableCopy];
-    v7 = v5[1];
-    v5[1] = v6;
+    v6 = [dCopy mutableCopy];
+    v7 = _init[1];
+    _init[1] = v6;
   }
 
-  return v5;
+  return _init;
 }
 
 - (NSDictionary)expirationDateByThreadID
@@ -54,11 +54,11 @@
   return v2;
 }
 
-- (BOOL)isActiveForThreadIdentifier:(id)a3
+- (BOOL)isActiveForThreadIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 length])
+  identifierCopy = identifier;
+  v5 = identifierCopy;
+  if (identifierCopy && [identifierCopy length])
   {
     v6 = [(NSMutableDictionary *)self->_mutableExpirationDateByThreadID objectForKey:v5];
   }
@@ -82,16 +82,16 @@
   return v8;
 }
 
-- (void)getNextExpirationDate:(id *)a3 wasPurged:(BOOL *)a4
+- (void)getNextExpirationDate:(id *)date wasPurged:(BOOL *)purged
 {
   v23 = *MEMORY[0x1E69E9840];
-  *a4 = 0;
+  *purged = 0;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = [(NSMutableDictionary *)self->_mutableExpirationDateByThreadID allKeys];
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  allKeys = [(NSMutableDictionary *)self->_mutableExpirationDateByThreadID allKeys];
+  v7 = [allKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
     v8 = v7;
@@ -103,7 +103,7 @@
       {
         if (*v19 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
@@ -121,11 +121,11 @@
         else
         {
           [(NSMutableDictionary *)self->_mutableExpirationDateByThreadID removeObjectForKey:v12];
-          *a4 = 1;
+          *purged = 1;
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v8);
@@ -137,7 +137,7 @@
   }
 
   v15 = v9;
-  *a3 = v9;
+  *date = v9;
 
   v16 = *MEMORY[0x1E69E9840];
 }
@@ -145,8 +145,8 @@
 - (NSSet)threadIDs
 {
   v2 = MEMORY[0x1E695DFD8];
-  v3 = [(NSMutableDictionary *)self->_mutableExpirationDateByThreadID allKeys];
-  v4 = [v3 copy];
+  allKeys = [(NSMutableDictionary *)self->_mutableExpirationDateByThreadID allKeys];
+  v4 = [allKeys copy];
   v5 = [v2 setWithArray:v4];
 
   return v5;
@@ -189,11 +189,11 @@ void __31__UNCThreadsMuteAssertion_hash__block_invoke(uint64_t a1, void *a2, voi
   *(*(*(a1 + 32) + 8) + 24) = v10 + v9 * v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass())) && (v5 = v4) != 0)
+  if ((objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass())) && (v5 = equalCopy) != 0)
   {
     v6 = v5;
     mutableExpirationDateByThreadID = self->_mutableExpirationDateByThreadID;
@@ -209,9 +209,9 @@ void __31__UNCThreadsMuteAssertion_hash__block_invoke(uint64_t a1, void *a2, voi
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSMutableDictionary *)self->_mutableExpirationDateByThreadID mutableCopy];
   v6 = v4[1];
   v4[1] = v5;
@@ -219,27 +219,27 @@ void __31__UNCThreadsMuteAssertion_hash__block_invoke(uint64_t a1, void *a2, voi
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = UNCThreadsMuteAssertion;
-  v4 = a3;
-  [(UNCMuteAssertion *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_mutableExpirationDateByThreadID forKey:{@"expirationDateByThreadID", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(UNCMuteAssertion *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_mutableExpirationDateByThreadID forKey:{@"expirationDateByThreadID", v5.receiver, v5.super_class}];
 }
 
-- (UNCThreadsMuteAssertion)initWithCoder:(id)a3
+- (UNCThreadsMuteAssertion)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = UNCThreadsMuteAssertion;
-  v5 = [(UNCMuteAssertion *)&v12 initWithCoder:v4];
+  v5 = [(UNCMuteAssertion *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"expirationDateByThreadID"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"expirationDateByThreadID"];
     mutableExpirationDateByThreadID = v5->_mutableExpirationDateByThreadID;
     v5->_mutableExpirationDateByThreadID = v9;
   }

@@ -1,8 +1,8 @@
 @interface _UIViewDeferredBasicAnimation
 - (id)_animationFrames;
-- (void)_enumerateAnimationFramesForKeyframes:(id)a3;
-- (void)addAnimationFrameForValue:(id)a3;
-- (void)animateFrameAtIndex:(int64_t)a3 animations:(id)a4;
+- (void)_enumerateAnimationFramesForKeyframes:(id)keyframes;
+- (void)addAnimationFrameForValue:(id)value;
+- (void)animateFrameAtIndex:(int64_t)index animations:(id)animations;
 @end
 
 @implementation _UIViewDeferredBasicAnimation
@@ -24,42 +24,42 @@
   return v2;
 }
 
-- (void)addAnimationFrameForValue:(id)a3
+- (void)addAnimationFrameForValue:(id)value
 {
   v7.receiver = self;
   v7.super_class = _UIViewDeferredBasicAnimation;
-  v4 = a3;
-  [(_UIViewDeferredAnimation *)&v7 addAnimationFrameForValue:v4];
+  valueCopy = value;
+  [(_UIViewDeferredAnimation *)&v7 addAnimationFrameForValue:valueCopy];
   v5 = [__currentViewAnimationState _updateAnimationFrameWithAnimationProperties:{self->_finalValue, v7.receiver, v7.super_class}];
   finalValue = self->_finalValue;
   self->_finalValue = v5;
 
-  [(_UIViewAnimationFrame *)self->_finalValue setValue:v4];
+  [(_UIViewAnimationFrame *)self->_finalValue setValue:valueCopy];
 }
 
-- (void)animateFrameAtIndex:(int64_t)a3 animations:(id)a4
+- (void)animateFrameAtIndex:(int64_t)index animations:(id)animations
 {
-  v7 = a4;
+  animationsCopy = animations;
   v9.receiver = self;
   v9.super_class = _UIViewDeferredBasicAnimation;
-  [(_UIViewDeferredAnimation *)&v9 animateFrameAtIndex:a3 animations:v7];
-  if (a3)
+  [(_UIViewDeferredAnimation *)&v9 animateFrameAtIndex:index animations:animationsCopy];
+  if (index)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"UIView.m" lineNumber:3142 description:@"frameIndex out of bounds"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIView.m" lineNumber:3142 description:@"frameIndex out of bounds"];
   }
 
-  v7[2](v7, self->_finalValue);
+  animationsCopy[2](animationsCopy, self->_finalValue);
 }
 
-- (void)_enumerateAnimationFramesForKeyframes:(id)a3
+- (void)_enumerateAnimationFramesForKeyframes:(id)keyframes
 {
-  v5 = a3;
-  v6 = [(_UIViewDeferredAnimation *)self initialValue];
-  (*(a3 + 2))(v5, v6, 0.0, 0.0, 0.0);
+  keyframesCopy = keyframes;
+  initialValue = [(_UIViewDeferredAnimation *)self initialValue];
+  (*(keyframes + 2))(keyframesCopy, initialValue, 0.0, 0.0, 0.0);
 
-  v7 = [(_UIViewAnimationFrame *)self->_finalValue value];
-  (*(a3 + 2))(v5, v7, 0.0, 1.0, 1.0);
+  value = [(_UIViewAnimationFrame *)self->_finalValue value];
+  (*(keyframes + 2))(keyframesCopy, value, 0.0, 1.0, 1.0);
 }
 
 @end

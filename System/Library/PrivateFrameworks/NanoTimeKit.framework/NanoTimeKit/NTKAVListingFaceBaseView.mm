@@ -1,7 +1,7 @@
 @interface NTKAVListingFaceBaseView
 - (BOOL)_changeCurrentListing;
 - (BOOL)_curtainViewVisible;
-- (NTKAVListingFaceBaseView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
+- (NTKAVListingFaceBaseView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
 - (void)_activatePauseLockout;
 - (void)_applyDataMode;
 - (void)_applyFrozen;
@@ -9,10 +9,10 @@
 - (void)_cancelAllTasks;
 - (void)_cancelDelayedPlayback;
 - (void)_cancelPauseLockout;
-- (void)_cleanupAfterOrb:(BOOL)a3;
-- (void)_endScrubbingAnimated:(BOOL)a3 withCompletion:(id)a4;
-- (void)_fadeFromCurtainViewWithDuration:(double)a3 completion:(id)a4;
-- (void)_fadeToCurtainViewWithDuration:(double)a3 completion:(id)a4;
+- (void)_cleanupAfterOrb:(BOOL)orb;
+- (void)_endScrubbingAnimated:(BOOL)animated withCompletion:(id)completion;
+- (void)_fadeFromCurtainViewWithDuration:(double)duration completion:(id)completion;
+- (void)_fadeToCurtainViewWithDuration:(double)duration completion:(id)completion;
 - (void)_handleScreenWake;
 - (void)_hideCurtainView;
 - (void)_loadSnapshotContentViews;
@@ -20,35 +20,35 @@
 - (void)_pauseImmediately;
 - (void)_performPreloadVideoTask;
 - (void)_playNextVideo;
-- (void)_playNextVideoAfterDelay:(double)a3;
+- (void)_playNextVideoAfterDelay:(double)delay;
 - (void)_playQueuedUpVideo;
 - (void)_playVideo;
-- (void)_playVideoForScreenWake:(id)a3;
+- (void)_playVideoForScreenWake:(id)wake;
 - (void)_prepareForEditing;
 - (void)_prepareForOrb;
 - (void)_queuePreloadVideoTask;
 - (void)_reset;
 - (void)_resetVideoForListing;
 - (void)_showCurtainView;
-- (void)_startScrubbingAnimated:(BOOL)a3 withCompletion:(id)a4;
-- (void)_transitionToPosterView:(id)a3;
+- (void)_startScrubbingAnimated:(BOOL)animated withCompletion:(id)completion;
+- (void)_transitionToPosterView:(id)view;
 - (void)_unloadSnapshotContentViews;
 - (void)_unpauseFromSwitcher;
 - (void)_updatePaused;
 - (void)dealloc;
 - (void)faultInFaceContentSkippedDuringSwiping;
-- (void)screenDidTurnOffAnimated:(BOOL)a3;
-- (void)screenWillTurnOnAnimated:(BOOL)a3;
-- (void)setNormalComplicationDisplayWrapper:(id)a3 forSlot:(id)a4;
+- (void)screenDidTurnOffAnimated:(BOOL)animated;
+- (void)screenWillTurnOnAnimated:(BOOL)animated;
+- (void)setNormalComplicationDisplayWrapper:(id)wrapper forSlot:(id)slot;
 @end
 
 @implementation NTKAVListingFaceBaseView
 
-- (NTKAVListingFaceBaseView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKAVListingFaceBaseView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
   v10.receiver = self;
   v10.super_class = NTKAVListingFaceBaseView;
-  v5 = [(NTKAVFaceBaseView *)&v10 initWithFaceStyle:a3 forDevice:a4 clientIdentifier:a5];
+  v5 = [(NTKAVFaceBaseView *)&v10 initWithFaceStyle:style forDevice:device clientIdentifier:identifier];
   if (v5)
   {
     if (CLKIsClockFaceApp())
@@ -58,8 +58,8 @@
       v5->_taskScheduler = v6;
     }
 
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v5 selector:sel__unpauseFromSwitcher name:@"NTKFaceLibraryDismissedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel__unpauseFromSwitcher name:@"NTKFaceLibraryDismissedNotification" object:0];
   }
 
   return v5;
@@ -67,8 +67,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(NTKDelayedBlock *)self->_playNextVideoDelayBlock cancel];
   [(NTKTaskScheduler *)self->_taskScheduler cancelAllTasks];
@@ -82,21 +82,21 @@
 {
   self->_preLoadedVideoOnSleep = 0;
   kdebug_trace();
-  v3 = [(NTKAVListingFaceBaseView *)self _nextListing];
-  v4 = [v3 isEqual:self->_currentListing];
+  _nextListing = [(NTKAVListingFaceBaseView *)self _nextListing];
+  v4 = [_nextListing isEqual:self->_currentListing];
   v5 = 0;
   if ((v4 & 1) == 0)
   {
-    v5 = [v3 snapshotDiffers:self->_currentListing];
-    objc_storeStrong(&self->_currentListing, v3);
+    v5 = [_nextListing snapshotDiffers:self->_currentListing];
+    objc_storeStrong(&self->_currentListing, _nextListing);
   }
 
   currentListing = self->_currentListing;
   if (currentListing)
   {
-    v7 = [(NTKAVListing *)currentListing video];
+    video = [(NTKAVListing *)currentListing video];
 
-    if (v7)
+    if (video)
     {
       if (v4)
       {
@@ -131,17 +131,17 @@ LABEL_12:
 
 - (void)_loadVideoForListing
 {
-  v4 = [(NTKAVFaceBaseView *)self videoPlayerView];
-  v3 = [(NTKAVListing *)self->_currentListing video];
-  [v4 loadVideo:v3];
+  videoPlayerView = [(NTKAVFaceBaseView *)self videoPlayerView];
+  video = [(NTKAVListing *)self->_currentListing video];
+  [videoPlayerView loadVideo:video];
 }
 
 - (void)_resetVideoForListing
 {
-  v2 = [(NTKAVFaceBaseView *)self videoPlayerView];
+  videoPlayerView = [(NTKAVFaceBaseView *)self videoPlayerView];
   v3 = *MEMORY[0x277CC08F0];
   v4 = *(MEMORY[0x277CC08F0] + 16);
-  [v2 seekToTime:&v3];
+  [videoPlayerView seekToTime:&v3];
 }
 
 - (void)_performPreloadVideoTask
@@ -150,8 +150,8 @@ LABEL_12:
   self->_shouldChangeVariantForScreenWake = 1;
   self->_preLoadingVideoOnSleep = 1;
   [(NTKAVListingFaceBaseView *)self _changeCurrentListing];
-  v3 = [(NTKAVFaceBaseView *)self videoPlayerView];
-  [v3 preroll];
+  videoPlayerView = [(NTKAVFaceBaseView *)self videoPlayerView];
+  [videoPlayerView preroll];
 
   self->_preLoadingVideoOnSleep = 0;
   self->_preLoadedVideoOnSleep = 1;
@@ -190,27 +190,27 @@ uint64_t __50__NTKAVListingFaceBaseView__queuePreloadVideoTask__block_invoke(uin
   return v3;
 }
 
-- (void)screenDidTurnOffAnimated:(BOOL)a3
+- (void)screenDidTurnOffAnimated:(BOOL)animated
 {
   v5.receiver = self;
   v5.super_class = NTKAVListingFaceBaseView;
-  [(NTKFaceView *)&v5 screenDidTurnOffAnimated:a3];
+  [(NTKFaceView *)&v5 screenDidTurnOffAnimated:animated];
   [(NTKAVListingFaceBaseView *)self setHandlingScreenWake:0];
   if (([(NTKFaceView *)self dataMode]- 1) <= 1 && ![(NTKAVListingFaceBaseView *)self isContentUnloadedForFaceSwiping])
   {
     self->_shouldChangeVariantForScreenWake = 1;
-    v4 = [(NTKAVFaceBaseView *)self videoPlayerView];
-    [v4 pause];
+    videoPlayerView = [(NTKAVFaceBaseView *)self videoPlayerView];
+    [videoPlayerView pause];
 
     [(NTKAVListingFaceBaseView *)self _showCurtainView];
   }
 }
 
-- (void)screenWillTurnOnAnimated:(BOOL)a3
+- (void)screenWillTurnOnAnimated:(BOOL)animated
 {
   v4.receiver = self;
   v4.super_class = NTKAVListingFaceBaseView;
-  [(NTKFaceView *)&v4 screenWillTurnOnAnimated:a3];
+  [(NTKFaceView *)&v4 screenWillTurnOnAnimated:animated];
   [(NTKAVListingFaceBaseView *)self _handleScreenWake];
 }
 
@@ -233,19 +233,19 @@ uint64_t __50__NTKAVListingFaceBaseView__queuePreloadVideoTask__block_invoke(uin
   if (!self->_blackView)
   {
     v3 = objc_alloc(MEMORY[0x277D75D18]);
-    v4 = [(NTKAVFaceBaseView *)self videoPlayerView];
-    [v4 bounds];
+    videoPlayerView = [(NTKAVFaceBaseView *)self videoPlayerView];
+    [videoPlayerView bounds];
     v5 = [v3 initWithFrame:?];
     blackView = self->_blackView;
     self->_blackView = v5;
 
     v7 = self->_blackView;
-    v8 = [MEMORY[0x277D75348] blackColor];
-    [(UIView *)v7 setBackgroundColor:v8];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(UIView *)v7 setBackgroundColor:blackColor];
   }
 
-  v9 = [(NTKFaceView *)self contentView];
-  [v9 addSubview:self->_blackView];
+  contentView = [(NTKFaceView *)self contentView];
+  [contentView addSubview:self->_blackView];
 }
 
 - (void)_hideCurtainView
@@ -255,18 +255,18 @@ uint64_t __50__NTKAVListingFaceBaseView__queuePreloadVideoTask__block_invoke(uin
   self->_blackView = 0;
 }
 
-- (void)_fadeToCurtainViewWithDuration:(double)a3 completion:(id)a4
+- (void)_fadeToCurtainViewWithDuration:(double)duration completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __70__NTKAVListingFaceBaseView__fadeToCurtainViewWithDuration_completion___block_invoke;
   aBlock[3] = &unk_27877E2C0;
-  v7 = v6;
+  v7 = completionCopy;
   v11 = v7;
   v8 = _Block_copy(aBlock);
   [(NTKAVListingFaceBaseView *)self _showCurtainView];
-  if (a3 >= 0.00000011920929)
+  if (duration >= 0.00000011920929)
   {
     [(UIView *)self->_blackView setAlpha:0.0];
     v9[0] = MEMORY[0x277D85DD0];
@@ -274,7 +274,7 @@ uint64_t __50__NTKAVListingFaceBaseView__queuePreloadVideoTask__block_invoke(uin
     v9[2] = __70__NTKAVListingFaceBaseView__fadeToCurtainViewWithDuration_completion___block_invoke_2;
     v9[3] = &unk_27877DB10;
     v9[4] = self;
-    [MEMORY[0x277D75D18] animateWithDuration:v9 animations:v8 completion:a3];
+    [MEMORY[0x277D75D18] animateWithDuration:v9 animations:v8 completion:duration];
   }
 
   else
@@ -294,19 +294,19 @@ uint64_t __70__NTKAVListingFaceBaseView__fadeToCurtainViewWithDuration_completio
   return result;
 }
 
-- (void)_fadeFromCurtainViewWithDuration:(double)a3 completion:(id)a4
+- (void)_fadeFromCurtainViewWithDuration:(double)duration completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __72__NTKAVListingFaceBaseView__fadeFromCurtainViewWithDuration_completion___block_invoke;
   aBlock[3] = &unk_27877E2E8;
   aBlock[4] = self;
-  v7 = v6;
+  v7 = completionCopy;
   v13 = v7;
   v8 = _Block_copy(aBlock);
   v9 = v8;
-  if (a3 < 0.00000011920929 || self->_blackView == 0)
+  if (duration < 0.00000011920929 || self->_blackView == 0)
   {
     (*(v8 + 2))(v8, 1);
   }
@@ -318,7 +318,7 @@ uint64_t __70__NTKAVListingFaceBaseView__fadeToCurtainViewWithDuration_completio
     v11[2] = __72__NTKAVListingFaceBaseView__fadeFromCurtainViewWithDuration_completion___block_invoke_2;
     v11[3] = &unk_27877DB10;
     v11[4] = self;
-    [MEMORY[0x277D75D18] animateWithDuration:v11 animations:v8 completion:a3];
+    [MEMORY[0x277D75D18] animateWithDuration:v11 animations:v8 completion:duration];
   }
 }
 
@@ -338,8 +338,8 @@ uint64_t __72__NTKAVListingFaceBaseView__fadeFromCurtainViewWithDuration_complet
 
 - (BOOL)_curtainViewVisible
 {
-  v2 = [(UIView *)self->_blackView superview];
-  v3 = v2 != 0;
+  superview = [(UIView *)self->_blackView superview];
+  v3 = superview != 0;
 
   return v3;
 }
@@ -352,11 +352,11 @@ uint64_t __72__NTKAVListingFaceBaseView__fadeFromCurtainViewWithDuration_complet
   [(NTKAVListingFaceBaseView *)self _updatePaused];
 }
 
-- (void)_cleanupAfterOrb:(BOOL)a3
+- (void)_cleanupAfterOrb:(BOOL)orb
 {
   v4.receiver = self;
   v4.super_class = NTKAVListingFaceBaseView;
-  [(NTKFaceView *)&v4 _cleanupAfterOrb:a3];
+  [(NTKFaceView *)&v4 _cleanupAfterOrb:orb];
   [(NTKAVListingFaceBaseView *)self _updatePaused];
 }
 
@@ -368,11 +368,11 @@ uint64_t __72__NTKAVListingFaceBaseView__fadeFromCurtainViewWithDuration_complet
   [(NTKAVListingFaceBaseView *)self _updateImageToBlur];
 }
 
-- (void)setNormalComplicationDisplayWrapper:(id)a3 forSlot:(id)a4
+- (void)setNormalComplicationDisplayWrapper:(id)wrapper forSlot:(id)slot
 {
   v4.receiver = self;
   v4.super_class = NTKAVListingFaceBaseView;
-  [(NTKFaceView *)&v4 setNormalComplicationDisplayWrapper:a3 forSlot:a4];
+  [(NTKFaceView *)&v4 setNormalComplicationDisplayWrapper:wrapper forSlot:slot];
 }
 
 - (void)_unloadSnapshotContentViews
@@ -390,35 +390,35 @@ uint64_t __72__NTKAVListingFaceBaseView__fadeFromCurtainViewWithDuration_complet
   v16.receiver = self;
   v16.super_class = NTKAVListingFaceBaseView;
   [(NTKFaceView *)&v16 _applyDataMode];
-  v3 = [(NTKFaceView *)self dataMode];
-  if (v3 != self->_previousDataMode)
+  dataMode = [(NTKFaceView *)self dataMode];
+  if (dataMode != self->_previousDataMode)
   {
-    v4 = v3;
-    if (v3 <= 2)
+    v4 = dataMode;
+    if (dataMode <= 2)
     {
-      if (v3 == 1)
+      if (dataMode == 1)
       {
         if (![(NTKAVListingFaceBaseView *)self isContentUnloadedForFaceSwiping])
         {
-          v9 = [(NTKAVFaceBaseView *)self posterImageView];
+          posterImageView = [(NTKAVFaceBaseView *)self posterImageView];
 
-          if (v9)
+          if (posterImageView)
           {
             [(NTKAVListingFaceBaseView *)self _showCurtainView];
           }
 
-          v10 = [(NTKAVFaceBaseView *)self posterImageView];
-          [v10 removeFromSuperview];
+          posterImageView2 = [(NTKAVFaceBaseView *)self posterImageView];
+          [posterImageView2 removeFromSuperview];
 
           [(NTKAVFaceBaseView *)self setPosterImageView:0];
-          v11 = [(NTKFaceView *)self contentView];
-          v12 = [(NTKAVFaceBaseView *)self videoPlayerView];
-          [v11 addSubview:v12];
+          contentView = [(NTKFaceView *)self contentView];
+          videoPlayerView = [(NTKAVFaceBaseView *)self videoPlayerView];
+          [contentView addSubview:videoPlayerView];
 
-          v13 = [(NTKAVFaceBaseView *)self videoPlayerView];
-          v14 = [v13 superview];
-          v15 = [(NTKAVFaceBaseView *)self videoPlayerView];
-          [v14 sendSubviewToBack:v15];
+          videoPlayerView2 = [(NTKAVFaceBaseView *)self videoPlayerView];
+          superview = [videoPlayerView2 superview];
+          videoPlayerView3 = [(NTKAVFaceBaseView *)self videoPlayerView];
+          [superview sendSubviewToBack:videoPlayerView3];
 
           if (self->_previousDataMode != 3)
           {
@@ -429,7 +429,7 @@ uint64_t __72__NTKAVListingFaceBaseView__fadeFromCurtainViewWithDuration_complet
         }
       }
 
-      else if (v3 == 2)
+      else if (dataMode == 2)
       {
         [(NTKAVListingFaceBaseView *)self faultInFaceContentSkippedDuringSwiping];
         [(NTKAVListingFaceBaseView *)self _cancelAllTasks];
@@ -440,7 +440,7 @@ uint64_t __72__NTKAVListingFaceBaseView__fadeFromCurtainViewWithDuration_complet
 
     else
     {
-      switch(v3)
+      switch(dataMode)
       {
         case 3:
           if (!self->_isPauseLockedout)
@@ -455,17 +455,17 @@ uint64_t __72__NTKAVListingFaceBaseView__fadeFromCurtainViewWithDuration_complet
           if ((self->_previousDataMode - 1) <= 2)
           {
             [(NTKAVListingFaceBaseView *)self _cancelAllTasks];
-            v5 = [(NTKAVFaceBaseView *)self videoPlayerView];
-            [v5 removeFromSuperview];
+            videoPlayerView4 = [(NTKAVFaceBaseView *)self videoPlayerView];
+            [videoPlayerView4 removeFromSuperview];
           }
 
-          v6 = [(NTKAVListingFaceBaseView *)self _onDeckPosterImageView];
-          v7 = [(NTKAVFaceBaseView *)self posterImageView];
-          [v7 removeFromSuperview];
+          _onDeckPosterImageView = [(NTKAVListingFaceBaseView *)self _onDeckPosterImageView];
+          posterImageView3 = [(NTKAVFaceBaseView *)self posterImageView];
+          [posterImageView3 removeFromSuperview];
 
-          [(NTKAVFaceBaseView *)self setPosterImageView:v6];
-          v8 = [(NTKFaceView *)self contentView];
-          [v8 addSubview:v6];
+          [(NTKAVFaceBaseView *)self setPosterImageView:_onDeckPosterImageView];
+          contentView2 = [(NTKFaceView *)self contentView];
+          [contentView2 addSubview:_onDeckPosterImageView];
 
           [(NTKAVListingFaceBaseView *)self _hideCurtainView];
           [(NTKAVListingFaceBaseView *)self _updatePaused];
@@ -491,14 +491,14 @@ LABEL_20:
   {
     [(NTKAVListingFaceBaseView *)self setContentUnloadedForFaceSwiping:0];
     [(NTKAVListingFaceBaseView *)self _updatePaused];
-    v3 = [(NTKFaceView *)self contentView];
-    v4 = [(NTKAVFaceBaseView *)self videoPlayerView];
-    [v3 addSubview:v4];
+    contentView = [(NTKFaceView *)self contentView];
+    videoPlayerView = [(NTKAVFaceBaseView *)self videoPlayerView];
+    [contentView addSubview:videoPlayerView];
 
-    v7 = [(NTKAVFaceBaseView *)self videoPlayerView];
-    v5 = [v7 superview];
-    v6 = [(NTKAVFaceBaseView *)self videoPlayerView];
-    [v5 sendSubviewToBack:v6];
+    videoPlayerView2 = [(NTKAVFaceBaseView *)self videoPlayerView];
+    superview = [videoPlayerView2 superview];
+    videoPlayerView3 = [(NTKAVFaceBaseView *)self videoPlayerView];
+    [superview sendSubviewToBack:videoPlayerView3];
   }
 }
 
@@ -529,11 +529,11 @@ LABEL_20:
 
 - (void)_updatePaused
 {
-  v3 = [(NTKFaceView *)self isFrozen]|| [(NTKFaceView *)self orbing]|| [(NTKFaceView *)self isSlow]|| [(NTKFaceView *)self dataMode]!= 1 || [(NTKAVListingFaceBaseView *)self isContentUnloadedForFaceSwiping]|| [(NTKFaceView *)self timeScrubbing];
-  self->_shouldPause = v3;
-  if (!self->_isPauseLockedout && self->_isPaused != v3)
+  timeScrubbing = [(NTKFaceView *)self isFrozen]|| [(NTKFaceView *)self orbing]|| [(NTKFaceView *)self isSlow]|| [(NTKFaceView *)self dataMode]!= 1 || [(NTKAVListingFaceBaseView *)self isContentUnloadedForFaceSwiping]|| [(NTKFaceView *)self timeScrubbing];
+  self->_shouldPause = timeScrubbing;
+  if (!self->_isPauseLockedout && self->_isPaused != timeScrubbing)
   {
-    self->_isPaused = v3;
+    self->_isPaused = timeScrubbing;
     kdebug_trace();
     if (self->_isPaused)
     {
@@ -566,10 +566,10 @@ LABEL_20:
 
     else
     {
-      v3 = [(NTKAVFaceBaseView *)self videoPlayerView];
-      v4 = [v3 playing];
+      videoPlayerView = [(NTKAVFaceBaseView *)self videoPlayerView];
+      playing = [videoPlayerView playing];
 
-      if (v4)
+      if (playing)
       {
 
         [(NTKAVListingFaceBaseView *)self _hideCurtainView];
@@ -590,7 +590,7 @@ LABEL_20:
   }
 }
 
-- (void)_playVideoForScreenWake:(id)a3
+- (void)_playVideoForScreenWake:(id)wake
 {
   if (![(NTKAVListingFaceBaseView *)self isContentUnloadedForFaceSwiping])
   {
@@ -621,35 +621,35 @@ LABEL_20:
 - (void)_cancelAllTasks
 {
   [(NTKTaskScheduler *)self->_taskScheduler cancelAllTasks];
-  v3 = [(NTKAVFaceBaseView *)self videoPlayerView];
-  [v3 resetRequestState];
+  videoPlayerView = [(NTKAVFaceBaseView *)self videoPlayerView];
+  [videoPlayerView resetRequestState];
 }
 
-- (void)_startScrubbingAnimated:(BOOL)a3 withCompletion:(id)a4
+- (void)_startScrubbingAnimated:(BOOL)animated withCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   [(NTKAVListingFaceBaseView *)self _pauseImmediately];
   v7.receiver = self;
   v7.super_class = NTKAVListingFaceBaseView;
-  [(NTKBackgroundImageFaceView *)&v7 _startScrubbingAnimated:v4 withCompletion:v6];
+  [(NTKBackgroundImageFaceView *)&v7 _startScrubbingAnimated:animatedCopy withCompletion:completionCopy];
 }
 
-- (void)_endScrubbingAnimated:(BOOL)a3 withCompletion:(id)a4
+- (void)_endScrubbingAnimated:(BOOL)animated withCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __65__NTKAVListingFaceBaseView__endScrubbingAnimated_withCompletion___block_invoke;
   v9[3] = &unk_27877E310;
-  v7 = v6;
+  v7 = completionCopy;
   v10 = v7;
   objc_copyWeak(&v11, &location);
   v8.receiver = self;
   v8.super_class = NTKAVListingFaceBaseView;
-  [(NTKBackgroundImageFaceView *)&v8 _endScrubbingAnimated:v4 withCompletion:v9];
+  [(NTKBackgroundImageFaceView *)&v8 _endScrubbingAnimated:animatedCopy withCompletion:v9];
   objc_destroyWeak(&v11);
 
   objc_destroyWeak(&location);
@@ -667,12 +667,12 @@ void __65__NTKAVListingFaceBaseView__endScrubbingAnimated_withCompletion___block
   [WeakRetained _updatePaused];
 }
 
-- (void)_transitionToPosterView:(id)a3
+- (void)_transitionToPosterView:(id)view
 {
-  v4 = a3;
-  v5 = [(NTKAVFaceBaseView *)self posterImageView];
+  viewCopy = view;
+  posterImageView = [(NTKAVFaceBaseView *)self posterImageView];
 
-  if (!v5)
+  if (!posterImageView)
   {
     currentListing = self->_currentListing;
     self->_currentListing = 0;
@@ -680,15 +680,15 @@ void __65__NTKAVListingFaceBaseView__endScrubbingAnimated_withCompletion___block
 
   v7.receiver = self;
   v7.super_class = NTKAVListingFaceBaseView;
-  [(NTKAVFaceBaseView *)&v7 _transitionToPosterView:v4];
+  [(NTKAVFaceBaseView *)&v7 _transitionToPosterView:viewCopy];
 }
 
 - (void)_playQueuedUpVideo
 {
   if (![(NTKAVListingFaceBaseView *)self isContentUnloadedForFaceSwiping]&& !self->_isPaused)
   {
-    v3 = [(NTKAVFaceBaseView *)self videoPlayerView];
-    [v3 play];
+    videoPlayerView = [(NTKAVFaceBaseView *)self videoPlayerView];
+    [videoPlayerView play];
   }
 }
 
@@ -696,12 +696,12 @@ void __65__NTKAVListingFaceBaseView__endScrubbingAnimated_withCompletion___block
 {
   if (![(NTKAVListingFaceBaseView *)self isContentUnloadedForFaceSwiping]&& [(NTKAVListingFaceBaseView *)self _changeCurrentListing]&& !self->_isPaused)
   {
-    v3 = [(NTKAVFaceBaseView *)self videoPlayerView];
-    [v3 play];
+    videoPlayerView = [(NTKAVFaceBaseView *)self videoPlayerView];
+    [videoPlayerView play];
   }
 }
 
-- (void)_playNextVideoAfterDelay:(double)a3
+- (void)_playNextVideoAfterDelay:(double)delay
 {
   objc_initWeak(&location, self);
   v5 = [NTKDelayedBlock alloc];
@@ -710,7 +710,7 @@ void __65__NTKAVListingFaceBaseView__endScrubbingAnimated_withCompletion___block
   v8[2] = __53__NTKAVListingFaceBaseView__playNextVideoAfterDelay___block_invoke;
   v8[3] = &unk_27877E338;
   objc_copyWeak(&v9, &location);
-  v6 = [(NTKDelayedBlock *)v5 initWithDelay:v8 action:a3];
+  v6 = [(NTKDelayedBlock *)v5 initWithDelay:v8 action:delay];
   playNextVideoDelayBlock = self->_playNextVideoDelayBlock;
   self->_playNextVideoDelayBlock = v6;
 

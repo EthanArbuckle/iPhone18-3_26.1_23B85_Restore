@@ -1,36 +1,36 @@
 @interface MPStoreSocialServiceController
-+ (id)_internalErrorForHTTPResponseCode:(int64_t)a3;
++ (id)_internalErrorForHTTPResponseCode:(int64_t)code;
 - (MPStoreSocialServiceController)init;
-- (id)_newOperationForRemovingFollower:(id)a3 completion:(id)a4;
-- (id)_transientStateForPerson:(id)a3 shouldCreate:(BOOL)a4;
-- (int64_t)transientFollowPendingRequestStateForPerson:(id)a3;
-- (int64_t)transientFollowStateForPerson:(id)a3;
-- (void)_notifyTransientStatesDidChangeWithSnapshot:(id)a3;
-- (void)_performTransientFollowPendingRequestState:(int64_t)a3 onPerson:(id)a4 completion:(id)a5;
-- (void)_performTransientFollowState:(int64_t)a3 onPerson:(id)a4 completion:(id)a5;
-- (void)_populateTransientStatesSnapshot:(id)a3;
+- (id)_newOperationForRemovingFollower:(id)follower completion:(id)completion;
+- (id)_transientStateForPerson:(id)person shouldCreate:(BOOL)create;
+- (int64_t)transientFollowPendingRequestStateForPerson:(id)person;
+- (int64_t)transientFollowStateForPerson:(id)person;
+- (void)_notifyTransientStatesDidChangeWithSnapshot:(id)snapshot;
+- (void)_performTransientFollowPendingRequestState:(int64_t)state onPerson:(id)person completion:(id)completion;
+- (void)_performTransientFollowState:(int64_t)state onPerson:(id)person completion:(id)completion;
+- (void)_populateTransientStatesSnapshot:(id)snapshot;
 - (void)_queue_transientStatesDidChange;
 - (void)_transientStatesDidChange;
-- (void)acceptAllFollowRequestsWithCompletion:(id)a3;
-- (void)removeFollower:(id)a3 completion:(id)a4;
+- (void)acceptAllFollowRequestsWithCompletion:(id)completion;
+- (void)removeFollower:(id)follower completion:(id)completion;
 @end
 
 @implementation MPStoreSocialServiceController
 
-- (id)_newOperationForRemovingFollower:(id)a3 completion:(id)a4
+- (id)_newOperationForRemovingFollower:(id)follower completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  followerCopy = follower;
   v7 = objc_alloc_init(MPStoreSocialRemoveFollowerOperationDataSource);
-  [(MPStoreSocialRemoveFollowerOperationDataSource *)v7 setPerson:v6];
+  [(MPStoreSocialRemoveFollowerOperationDataSource *)v7 setPerson:followerCopy];
 
   v8 = [[MPStoreSocialRequestOperation alloc] initWithDataSource:v7];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __78__MPStoreSocialServiceController__newOperationForRemovingFollower_completion___block_invoke;
   v11[3] = &unk_1E767D3C8;
-  v12 = v5;
-  v9 = v5;
+  v12 = completionCopy;
+  v9 = completionCopy;
   [(MPStoreSocialRequestOperation *)v8 setResponseHandler:v11];
 
   return v8;
@@ -77,30 +77,30 @@ void __78__MPStoreSocialServiceController__newOperationForRemovingFollower_compl
   v7 = 3221225472;
   v8 = __59__MPStoreSocialServiceController__transientStatesDidChange__block_invoke;
   v9 = &unk_1E76823C0;
-  v10 = self;
+  selfCopy = self;
   v11 = v3;
   v5 = v3;
   dispatch_sync(accessQueue, &v6);
-  [(MPStoreSocialServiceController *)self _notifyTransientStatesDidChangeWithSnapshot:v5, v6, v7, v8, v9, v10];
+  [(MPStoreSocialServiceController *)self _notifyTransientStatesDidChangeWithSnapshot:v5, v6, v7, v8, v9, selfCopy];
 }
 
-- (void)_notifyTransientStatesDidChangeWithSnapshot:(id)a3
+- (void)_notifyTransientStatesDidChangeWithSnapshot:(id)snapshot
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696AD88];
-  v5 = a3;
-  v6 = [v4 defaultCenter];
+  snapshotCopy = snapshot;
+  defaultCenter = [v4 defaultCenter];
   v8 = @"MPStoreSocialServiceControllerTransientStatesSnapshotKey";
-  v9[0] = v5;
+  v9[0] = snapshotCopy;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
 
-  [v6 postNotificationName:@"MPStoreSocialServiceControllerTransientStatesDidChangeNotification" object:self userInfo:v7];
+  [defaultCenter postNotificationName:@"MPStoreSocialServiceControllerTransientStatesDidChangeNotification" object:self userInfo:v7];
 }
 
-- (void)_populateTransientStatesSnapshot:(id)a3
+- (void)_populateTransientStatesSnapshot:(id)snapshot
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  snapshotCopy = snapshot;
   dispatch_assert_queue_V2(self->_accessQueue);
   v16 = 0u;
   v17 = 0u;
@@ -122,10 +122,10 @@ void __78__MPStoreSocialServiceController__newOperationForRemovingFollower_compl
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 followState];
-        v12 = [v10 followPendingRequestState];
-        v13 = [v10 person];
-        [v4 _addTransientFollowState:v11 transientFollowPendingRequestState:v12 forPerson:v13];
+        followState = [v10 followState];
+        followPendingRequestState = [v10 followPendingRequestState];
+        person = [v10 person];
+        [snapshotCopy _addTransientFollowState:followState transientFollowPendingRequestState:followPendingRequestState forPerson:person];
       }
 
       v7 = [(NSMutableSet *)v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -135,21 +135,21 @@ void __78__MPStoreSocialServiceController__newOperationForRemovingFollower_compl
   }
 }
 
-- (id)_transientStateForPerson:(id)a3 shouldCreate:(BOOL)a4
+- (id)_transientStateForPerson:(id)person shouldCreate:(BOOL)create
 {
-  v4 = a4;
-  v6 = a3;
+  createCopy = create;
+  personCopy = person;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
   v28 = __Block_byref_object_copy__41021;
   v29 = __Block_byref_object_dispose__41022;
   v30 = 0;
-  v7 = [v6 identifiers];
-  v8 = [v7 universalStore];
-  v9 = [v8 socialProfileID];
+  identifiers = [personCopy identifiers];
+  universalStore = [identifiers universalStore];
+  socialProfileID = [universalStore socialProfileID];
 
-  if ([v9 length])
+  if ([socialProfileID length])
   {
     accessQueue = self->_accessQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -157,15 +157,15 @@ void __78__MPStoreSocialServiceController__newOperationForRemovingFollower_compl
     block[2] = __72__MPStoreSocialServiceController__transientStateForPerson_shouldCreate___block_invoke;
     block[3] = &unk_1E7681330;
     block[4] = self;
-    v23 = v9;
+    v23 = socialProfileID;
     v24 = &v25;
     dispatch_sync(accessQueue, block);
   }
 
   v11 = v26[5];
-  if (!v11 && v4)
+  if (!v11 && createCopy)
   {
-    v12 = [[_MPStoreSocialTransientState alloc] initWithPerson:v6];
+    v12 = [[_MPStoreSocialTransientState alloc] initWithPerson:personCopy];
     v13 = v26[5];
     v26[5] = v12;
 
@@ -269,19 +269,19 @@ void __72__MPStoreSocialServiceController__transientStateForPerson_shouldCreate_
   }
 }
 
-- (void)_performTransientFollowPendingRequestState:(int64_t)a3 onPerson:(id)a4 completion:(id)a5
+- (void)_performTransientFollowPendingRequestState:(int64_t)state onPerson:(id)person completion:(id)completion
 {
-  v8 = a5;
-  v9 = [(MPStoreSocialServiceController *)self _transientStateForPerson:a4 shouldCreate:1];
+  completionCopy = completion;
+  v9 = [(MPStoreSocialServiceController *)self _transientStateForPerson:person shouldCreate:1];
   if (v9)
   {
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __97__MPStoreSocialServiceController__performTransientFollowPendingRequestState_onPerson_completion___block_invoke;
     v14[3] = &unk_1E767D350;
-    v10 = v8;
+    v10 = completionCopy;
     v15 = v10;
-    v11 = [v9 newOperationForTransientFollowPendingRequestState:a3 completion:v14];
+    v11 = [v9 newOperationForTransientFollowPendingRequestState:state completion:v14];
     if (v11)
     {
       [(NSOperationQueue *)self->_operationQueue addOperation:v11];
@@ -294,10 +294,10 @@ void __72__MPStoreSocialServiceController__transientStateForPerson_shouldCreate_
     }
   }
 
-  else if (v8)
+  else if (completionCopy)
   {
     v12 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"MPStoreSocialErrorDomain" code:-3000 userInfo:0];
-    (*(v8 + 2))(v8, 0, v12);
+    (*(completionCopy + 2))(completionCopy, 0, v12);
   }
 }
 
@@ -312,19 +312,19 @@ uint64_t __97__MPStoreSocialServiceController__performTransientFollowPendingRequ
   return result;
 }
 
-- (void)_performTransientFollowState:(int64_t)a3 onPerson:(id)a4 completion:(id)a5
+- (void)_performTransientFollowState:(int64_t)state onPerson:(id)person completion:(id)completion
 {
-  v8 = a5;
-  v9 = [(MPStoreSocialServiceController *)self _transientStateForPerson:a4 shouldCreate:1];
+  completionCopy = completion;
+  v9 = [(MPStoreSocialServiceController *)self _transientStateForPerson:person shouldCreate:1];
   if (v9)
   {
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __83__MPStoreSocialServiceController__performTransientFollowState_onPerson_completion___block_invoke;
     v14[3] = &unk_1E767D350;
-    v10 = v8;
+    v10 = completionCopy;
     v15 = v10;
-    v11 = [v9 newOperationForTransientFollowState:a3 completion:v14];
+    v11 = [v9 newOperationForTransientFollowState:state completion:v14];
     if (v11)
     {
       [(NSOperationQueue *)self->_operationQueue addOperation:v11];
@@ -337,10 +337,10 @@ uint64_t __97__MPStoreSocialServiceController__performTransientFollowPendingRequ
     }
   }
 
-  else if (v8)
+  else if (completionCopy)
   {
     v12 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"MPStoreSocialErrorDomain" code:-3000 userInfo:0];
-    (*(v8 + 2))(v8, 0, v12);
+    (*(completionCopy + 2))(completionCopy, 0, v12);
   }
 }
 
@@ -355,60 +355,60 @@ uint64_t __83__MPStoreSocialServiceController__performTransientFollowState_onPer
   return result;
 }
 
-- (int64_t)transientFollowPendingRequestStateForPerson:(id)a3
+- (int64_t)transientFollowPendingRequestStateForPerson:(id)person
 {
-  v3 = [(MPStoreSocialServiceController *)self _transientStateForPerson:a3 shouldCreate:0];
+  v3 = [(MPStoreSocialServiceController *)self _transientStateForPerson:person shouldCreate:0];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 followPendingRequestState];
+    followPendingRequestState = [v3 followPendingRequestState];
   }
 
   else
   {
-    v5 = 0;
+    followPendingRequestState = 0;
   }
 
-  return v5;
+  return followPendingRequestState;
 }
 
-- (void)acceptAllFollowRequestsWithCompletion:(id)a3
+- (void)acceptAllFollowRequestsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6 = [[MPStoreSocialPendingFollowRequestOperationDataSource alloc] initWithAction:0];
   v5 = [[MPStoreSocialRequestOperation alloc] initWithDataSource:v6];
-  [(MPStoreSocialRequestOperation *)v5 setResponseHandler:v4];
+  [(MPStoreSocialRequestOperation *)v5 setResponseHandler:completionCopy];
 
   [(NSOperationQueue *)self->_operationQueue addOperation:v5];
 }
 
-- (int64_t)transientFollowStateForPerson:(id)a3
+- (int64_t)transientFollowStateForPerson:(id)person
 {
-  v3 = [(MPStoreSocialServiceController *)self _transientStateForPerson:a3 shouldCreate:0];
+  v3 = [(MPStoreSocialServiceController *)self _transientStateForPerson:person shouldCreate:0];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 followState];
+    followState = [v3 followState];
   }
 
   else
   {
-    v5 = 0;
+    followState = 0;
   }
 
-  return v5;
+  return followState;
 }
 
-- (void)removeFollower:(id)a3 completion:(id)a4
+- (void)removeFollower:(id)follower completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __60__MPStoreSocialServiceController_removeFollower_completion___block_invoke;
   v10[3] = &unk_1E76816D0;
-  v7 = v6;
+  v7 = completionCopy;
   v11 = v7;
-  v8 = [(MPStoreSocialServiceController *)self _newOperationForRemovingFollower:a3 completion:v10];
+  v8 = [(MPStoreSocialServiceController *)self _newOperationForRemovingFollower:follower completion:v10];
   if (v8)
   {
     [(NSOperationQueue *)self->_operationQueue addOperation:v8];
@@ -457,24 +457,24 @@ uint64_t __60__MPStoreSocialServiceController_removeFollower_completion___block_
   return v2;
 }
 
-+ (id)_internalErrorForHTTPResponseCode:(int64_t)a3
++ (id)_internalErrorForHTTPResponseCode:(int64_t)code
 {
   v3 = -3000;
-  if (a3 > 403)
+  if (code > 403)
   {
     v5 = -3004;
-    if (a3 == 404)
+    if (code == 404)
     {
       v3 = -3002;
     }
 
-    v4 = a3 == 409;
+    v4 = code == 409;
     goto LABEL_7;
   }
 
-  if (a3 != 200)
+  if (code != 200)
   {
-    v4 = a3 == 403;
+    v4 = code == 403;
     v5 = -3003;
 LABEL_7:
     if (v4)

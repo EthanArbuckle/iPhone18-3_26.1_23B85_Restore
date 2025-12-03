@@ -1,37 +1,37 @@
 @interface NSData
-+ (id)dataFromAIDString:(id)a3;
-+ (id)dataFromHistoricalBytes:(id)a3;
-+ (unsigned)calculateChecksumForData:(id)a3;
++ (id)dataFromAIDString:(id)string;
++ (id)dataFromHistoricalBytes:(id)bytes;
++ (unsigned)calculateChecksumForData:(id)data;
 - (id)hexString;
 @end
 
 @implementation NSData
 
-+ (id)dataFromHistoricalBytes:(id)a3
++ (id)dataFromHistoricalBytes:(id)bytes
 {
-  v4 = a3;
+  bytesCopy = bytes;
   v5 = +[NSMutableData data];
   v11 = 59;
   [v5 appendBytes:&v11 length:1];
-  v10 = [v4 length] & 0xF | 0x80;
+  v10 = [bytesCopy length] & 0xF | 0x80;
   [v5 appendBytes:&v10 length:1];
   v9 = 17;
   [v5 appendBytes:&v9 length:1];
   v8 = -127;
   [v5 appendBytes:&v8 length:1];
-  [v5 appendData:v4];
+  [v5 appendData:bytesCopy];
 
-  v7 = [a1 calculateChecksumForData:v5];
+  v7 = [self calculateChecksumForData:v5];
   [v5 appendBytes:&v7 length:1];
 
   return v5;
 }
 
-+ (unsigned)calculateChecksumForData:(id)a3
++ (unsigned)calculateChecksumForData:(id)data
 {
-  v3 = a3;
-  v4 = [v3 bytes];
-  if ([v3 length] < 2)
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  if ([dataCopy length] < 2)
   {
     v5 = 0;
   }
@@ -42,32 +42,32 @@
     v6 = 1;
     do
     {
-      v5 ^= v4[v6++];
+      v5 ^= bytes[v6++];
     }
 
-    while (v6 < [v3 length]);
+    while (v6 < [dataCopy length]);
   }
 
   return v5;
 }
 
-+ (id)dataFromAIDString:(id)a3
++ (id)dataFromAIDString:(id)string
 {
-  v3 = a3;
-  if ([v3 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
-    v4 = [v3 uppercaseString];
+    uppercaseString = [stringCopy uppercaseString];
     v5 = [NSMutableCharacterSet characterSetWithCharactersInString:@"0123456789ABCDEF"];
     v6 = +[NSCharacterSet whitespaceCharacterSet];
     [v5 formUnionWithCharacterSet:v6];
 
-    v7 = [v5 invertedSet];
-    v8 = [v4 rangeOfCharacterFromSet:v7];
+    invertedSet = [v5 invertedSet];
+    v8 = [uppercaseString rangeOfCharacterFromSet:invertedSet];
 
     if (v8 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v9 = +[NSCharacterSet whitespaceCharacterSet];
-      v10 = [v4 componentsSeparatedByCharactersInSet:v9];
+      v10 = [uppercaseString componentsSeparatedByCharactersInSet:v9];
       v11 = [v10 componentsJoinedByString:&stru_1000392E8];
 
       if ([v11 length] && (objc_msgSend(v11, "length") & 1) == 0 && objc_msgSend(v11, "length") <= 0x20)
@@ -75,14 +75,14 @@
         v14 = +[NSMutableData dataWithCapacity:](NSMutableData, "dataWithCapacity:", [v11 length] >> 1);
         v22 = 0;
         *__str = 0;
-        v15 = [v11 UTF8String];
+        uTF8String = [v11 UTF8String];
         if ([v11 length])
         {
           v16 = 0;
           while (1)
           {
-            __str[0] = v15[v16];
-            __str[1] = v15[v16 + 1];
+            __str[0] = uTF8String[v16];
+            __str[1] = uTF8String[v16 + 1];
             __endptr = 0;
             v17 = strtol(__str, &__endptr, 16);
             if (v17 > 255 || __endptr != &v22)
@@ -131,10 +131,10 @@ LABEL_22:
 
 - (id)hexString
 {
-  v3 = [(NSData *)self bytes];
-  if (v3)
+  bytes = [(NSData *)self bytes];
+  if (bytes)
   {
-    v4 = v3;
+    v4 = bytes;
     v5 = +[NSMutableString string];
     if ([(NSData *)self length])
     {

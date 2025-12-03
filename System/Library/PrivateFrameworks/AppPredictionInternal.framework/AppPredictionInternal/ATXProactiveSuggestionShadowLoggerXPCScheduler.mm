@@ -1,28 +1,28 @@
 @interface ATXProactiveSuggestionShadowLoggerXPCScheduler
-- (id)shadowLoggingURLPathWithFileName:(id)a3;
-- (void)shadowLogWithXPCActivity:(id)a3;
+- (id)shadowLoggingURLPathWithFileName:(id)name;
+- (void)shadowLogWithXPCActivity:(id)activity;
 @end
 
 @implementation ATXProactiveSuggestionShadowLoggerXPCScheduler
 
-- (id)shadowLoggingURLPathWithFileName:(id)a3
+- (id)shadowLoggingURLPathWithFileName:(id)name
 {
   v3 = MEMORY[0x277CEBCB0];
-  v4 = a3;
-  v5 = [v3 feedbackRootDirectory];
-  v6 = [v5 stringByAppendingPathComponent:@"shadowLogging"];
+  nameCopy = name;
+  feedbackRootDirectory = [v3 feedbackRootDirectory];
+  v6 = [feedbackRootDirectory stringByAppendingPathComponent:@"shadowLogging"];
 
-  v7 = [v6 stringByAppendingPathComponent:v4];
+  v7 = [v6 stringByAppendingPathComponent:nameCopy];
 
   v8 = [MEMORY[0x277CBEBC0] fileURLWithPath:v7];
 
   return v8;
 }
 
-- (void)shadowLogWithXPCActivity:(id)a3
+- (void)shadowLogWithXPCActivity:(id)activity
 {
   v52[8] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  activityCopy = activity;
   v37 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-86400.0];
   v36 = [MEMORY[0x277CBEAA8] now];
   v51[0] = &unk_283A57308;
@@ -46,15 +46,15 @@
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v5 = [v4 allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v43 objects:v50 count:16];
+  allKeys = [v4 allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v43 objects:v50 count:16];
   if (v6)
   {
     v7 = v6;
     v8 = *v44;
     v9 = 0x277D42000uLL;
-    v35 = v3;
-    v33 = v5;
+    v35 = activityCopy;
+    v33 = allKeys;
     v34 = v4;
     v30 = *v44;
     do
@@ -65,19 +65,19 @@
       {
         if (*v44 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v43 + 1) + 8 * v10);
-        v12 = [v11 integerValue];
-        if ((v12 - 50) < 0xFFFFFFFFFFFFFFCFLL)
+        integerValue = [v11 integerValue];
+        if ((integerValue - 50) < 0xFFFFFFFFFFFFFFCFLL)
         {
           goto LABEL_24;
         }
 
-        v13 = v12;
+        v13 = integerValue;
         v32 = v10;
-        v38 = [*(v9 + 112) clientModelIdFromClientModelType:v12];
+        v38 = [*(v9 + 112) clientModelIdFromClientModelType:integerValue];
         v39 = 0u;
         v40 = 0u;
         v41 = 0u;
@@ -101,26 +101,26 @@
             }
 
             v19 = *(*(&v39 + 1) + 8 * i);
-            if ([v3 didDefer])
+            if ([activityCopy didDefer])
             {
 
-              v5 = v33;
+              allKeys = v33;
               v4 = v34;
               goto LABEL_28;
             }
 
-            v20 = [v19 integerValue];
-            if ((v20 - 11) >= 0xFFFFFFFFFFFFFFF6)
+            integerValue2 = [v19 integerValue];
+            if ((integerValue2 - 11) >= 0xFFFFFFFFFFFFFFF6)
             {
-              v21 = v20;
-              if (v20 == 1)
+              v21 = integerValue2;
+              if (integerValue2 == 1)
               {
                 v22 = off_2785933B8;
               }
 
               else
               {
-                if (v20 != 2)
+                if (integerValue2 != 2)
                 {
                   continue;
                 }
@@ -143,7 +143,7 @@
 
               AnalyticsSendEvent();
               v13 = v23;
-              v3 = v35;
+              activityCopy = v35;
             }
           }
 
@@ -158,7 +158,7 @@
 
 LABEL_23:
 
-        v5 = v33;
+        allKeys = v33;
         v4 = v34;
         v8 = v30;
         v7 = v31;
@@ -169,7 +169,7 @@ LABEL_24:
       }
 
       while (v10 != v7);
-      v7 = [v5 countByEnumeratingWithState:&v43 objects:v50 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v43 objects:v50 count:16];
     }
 
     while (v7);

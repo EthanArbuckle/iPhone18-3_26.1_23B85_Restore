@@ -1,14 +1,14 @@
 @interface PLModelMigrationAction_PopulateInitialSharedAssetCollectionStats
-- (int64_t)_recalculateSharedAssetContainerValuesForEntityNamed:(id)a3 propertiesToFetch:(id)a4 inContext:(id)a5 error:(id *)a6;
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)_recalculateSharedAssetContainerValuesForEntityNamed:(id)named propertiesToFetch:(id)fetch inContext:(id)context error:(id *)error;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_PopulateInitialSharedAssetCollectionStats
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v87[3] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  contextCopy = context;
   v6 = [(PLModelMigrationActionCore *)self cancellableDiscreteProgressWithTotalUnitCount:3 pendingParentUnitCount:0];
   v7 = objc_autoreleasePoolPush();
   v8 = +[PLMoment entityName];
@@ -17,7 +17,7 @@
   v87[2] = @"cachedCountShared";
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v87 count:3];
   v50 = 0;
-  v10 = [(PLModelMigrationAction_PopulateInitialSharedAssetCollectionStats *)self _recalculateSharedAssetContainerValuesForEntityNamed:v8 propertiesToFetch:v9 inContext:v5 error:&v50];
+  v10 = [(PLModelMigrationAction_PopulateInitialSharedAssetCollectionStats *)self _recalculateSharedAssetContainerValuesForEntityNamed:v8 propertiesToFetch:v9 inContext:contextCopy error:&v50];
   v11 = v50;
 
   objc_autoreleasePoolPop(v7);
@@ -31,7 +31,7 @@
     v86[2] = @"assetsCountShared";
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v86 count:3];
     v49 = 0;
-    v10 = [(PLModelMigrationAction_PopulateInitialSharedAssetCollectionStats *)self _recalculateSharedAssetContainerValuesForEntityNamed:v13 propertiesToFetch:v14 inContext:v5 error:&v49];
+    v10 = [(PLModelMigrationAction_PopulateInitialSharedAssetCollectionStats *)self _recalculateSharedAssetContainerValuesForEntityNamed:v13 propertiesToFetch:v14 inContext:contextCopy error:&v49];
     v11 = v49;
 
     objc_autoreleasePoolPop(v12);
@@ -42,14 +42,14 @@
   {
     v15 = objc_autoreleasePoolPush();
     v48 = 0;
-    v16 = [PLBackgroundJobSharedAssetContainerUpdateWorker performWorkOnAllItemsInContext:v5 withError:&v48];
+    v16 = [PLBackgroundJobSharedAssetContainerUpdateWorker performWorkOnAllItemsInContext:contextCopy withError:&v48];
     v17 = v48;
     if (v16)
     {
-      if ([v5 hasChanges])
+      if ([contextCopy hasChanges])
       {
         v47 = v17;
-        v18 = [v5 save:&v47];
+        v18 = [contextCopy save:&v47];
         v11 = v47;
 
         if ((v18 & 1) == 0)
@@ -59,9 +59,9 @@
 
           if (v20)
           {
-            v21 = [(PLModelMigrationActionCore *)self logger];
+            logger = [(PLModelMigrationActionCore *)self logger];
 
-            if (v21)
+            if (logger)
             {
               v84 = 0u;
               v85 = 0u;
@@ -144,9 +144,9 @@
 
       if (v28)
       {
-        v29 = [(PLModelMigrationActionCore *)self logger];
+        logger2 = [(PLModelMigrationActionCore *)self logger];
 
-        if (v29)
+        if (logger2)
         {
           v84 = 0u;
           v85 = 0u;
@@ -227,24 +227,24 @@ LABEL_20:
   [(PLModelMigrationActionCore *)self finalizeProgress];
   v38 = v11;
   v39 = v38;
-  if (v10 != 1 && a4)
+  if (v10 != 1 && error)
   {
     v40 = v38;
-    *a4 = v39;
+    *error = v39;
   }
 
   return v10;
 }
 
-- (int64_t)_recalculateSharedAssetContainerValuesForEntityNamed:(id)a3 propertiesToFetch:(id)a4 inContext:(id)a5 error:(id *)a6
+- (int64_t)_recalculateSharedAssetContainerValuesForEntityNamed:(id)named propertiesToFetch:(id)fetch inContext:(id)context error:(id *)error
 {
   v121 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (a6)
+  namedCopy = named;
+  fetchCopy = fetch;
+  contextCopy = context;
+  if (error)
   {
-    if (v11)
+    if (namedCopy)
     {
       goto LABEL_3;
     }
@@ -252,22 +252,22 @@ LABEL_20:
 
   else
   {
-    v76 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v76 handleFailureInMethod:a2 object:self file:@"PLModelMigrationActions_16000.m" lineNumber:135 description:{@"Invalid parameter not satisfying: %@", @"error"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLModelMigrationActions_16000.m" lineNumber:135 description:{@"Invalid parameter not satisfying: %@", @"error"}];
 
-    if (v11)
+    if (namedCopy)
     {
 LABEL_3:
-      if (v12)
+      if (fetchCopy)
       {
         goto LABEL_4;
       }
 
 LABEL_50:
-      v78 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v78 handleFailureInMethod:a2 object:self file:@"PLModelMigrationActions_16000.m" lineNumber:137 description:{@"Invalid parameter not satisfying: %@", @"propertiesToFetch"}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLModelMigrationActions_16000.m" lineNumber:137 description:{@"Invalid parameter not satisfying: %@", @"propertiesToFetch"}];
 
-      if (v13)
+      if (contextCopy)
       {
         goto LABEL_5;
       }
@@ -276,23 +276,23 @@ LABEL_50:
     }
   }
 
-  v77 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v77 handleFailureInMethod:a2 object:self file:@"PLModelMigrationActions_16000.m" lineNumber:136 description:{@"Invalid parameter not satisfying: %@", @"entityName"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PLModelMigrationActions_16000.m" lineNumber:136 description:{@"Invalid parameter not satisfying: %@", @"entityName"}];
 
-  if (!v12)
+  if (!fetchCopy)
   {
     goto LABEL_50;
   }
 
 LABEL_4:
-  if (v13)
+  if (contextCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_51:
-  v79 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v79 handleFailureInMethod:a2 object:self file:@"PLModelMigrationActions_16000.m" lineNumber:138 description:{@"Invalid parameter not satisfying: %@", @"context"}];
+  currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler4 handleFailureInMethod:a2 object:self file:@"PLModelMigrationActions_16000.m" lineNumber:138 description:{@"Invalid parameter not satisfying: %@", @"context"}];
 
 LABEL_5:
   v14 = PLMigrationGetLog();
@@ -300,9 +300,9 @@ LABEL_5:
 
   if (v15)
   {
-    v16 = [(PLModelMigrationActionCore *)self logger];
+    logger = [(PLModelMigrationActionCore *)self logger];
 
-    if (v16)
+    if (logger)
     {
       v119 = 0u;
       v120 = 0u;
@@ -342,7 +342,7 @@ LABEL_5:
       v82 = 138543618;
       v83 = v19;
       v84 = 2114;
-      v85 = v11;
+      v85 = namedCopy;
       LODWORD(v80) = 22;
       v20 = _os_log_send_and_compose_impl();
 
@@ -365,7 +365,7 @@ LABEL_5:
         *buf = 138543618;
         *&buf[4] = v24;
         *&buf[12] = 2114;
-        *&buf[14] = v11;
+        *&buf[14] = namedCopy;
         _os_log_impl(&dword_19BF1F000, v22, OS_LOG_TYPE_DEFAULT, "%{public}@: Zeroing out cached counts for entity: %{public}@...", buf, 0x16u);
       }
     }
@@ -402,7 +402,7 @@ LABEL_5:
   v89[13] = &unk_1F0FBC028;
   v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v89 forKeys:v88 count:14];
   v81 = 0;
-  v27 = [PLModelMigrator executeBatchUpdateWithEntityName:v25 predicate:0 propertiesToUpdate:v26 managedObjectContext:v13 error:&v81];
+  v27 = [PLModelMigrator executeBatchUpdateWithEntityName:v25 predicate:0 propertiesToUpdate:v26 managedObjectContext:contextCopy error:&v81];
   v28 = v81;
 
   if (v27)
@@ -413,9 +413,9 @@ LABEL_5:
 
     if (v30)
     {
-      v31 = [(PLModelMigrationActionCore *)self logger];
+      logger2 = [(PLModelMigrationActionCore *)self logger];
 
-      if (v31)
+      if (logger2)
       {
         v119 = 0u;
         v120 = 0u;
@@ -455,7 +455,7 @@ LABEL_5:
         v82 = 138543618;
         v83 = v34;
         v84 = 2114;
-        v85 = v11;
+        v85 = namedCopy;
         LODWORD(v80) = 22;
         v35 = _os_log_send_and_compose_impl();
 
@@ -478,20 +478,20 @@ LABEL_5:
           *buf = 138543618;
           *&buf[4] = v47;
           *&buf[12] = 2114;
-          *&buf[14] = v11;
+          *&buf[14] = namedCopy;
           _os_log_impl(&dword_19BF1F000, v45, OS_LOG_TYPE_DEFAULT, "%{public}@: Recalculating shared asset container values for entity: %{public}@...", buf, 0x16u);
         }
       }
     }
 
-    v28 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:v11];
+    v28 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:namedCopy];
     [v28 setFetchBatchSize:100];
-    [v28 setPropertiesToFetch:v12];
-    v48 = [v13 executeFetchRequest:v28 error:a6];
+    [v28 setPropertiesToFetch:fetchCopy];
+    v48 = [contextCopy executeFetchRequest:v28 error:error];
     if (v48)
     {
-      v49 = [v13 enumerateWithIncrementalSaveUsingObjects:v48 withBlock:&__block_literal_global_23927];
-      *a6 = v49;
+      v49 = [contextCopy enumerateWithIncrementalSaveUsingObjects:v48 withBlock:&__block_literal_global_23927];
+      *error = v49;
       if (!v49)
       {
         v65 = 1;
@@ -508,20 +508,20 @@ LABEL_46:
         goto LABEL_45;
       }
 
-      v52 = [(PLModelMigrationActionCore *)self logger];
+      logger3 = [(PLModelMigrationActionCore *)self logger];
 
-      if (!v52)
+      if (!logger3)
       {
         v69 = PLMigrationGetLog();
         if (os_log_type_enabled(v69, OS_LOG_TYPE_ERROR))
         {
           v70 = objc_opt_class();
           v71 = NSStringFromClass(v70);
-          v72 = *a6;
+          v72 = *error;
           *buf = 138543874;
           *&buf[4] = v71;
           *&buf[12] = 2114;
-          *&buf[14] = v11;
+          *&buf[14] = namedCopy;
           *&buf[22] = 2112;
           *&buf[24] = v72;
           _os_log_impl(&dword_19BF1F000, v69, OS_LOG_TYPE_ERROR, "%{public}@: Failed to enumerate and save shared container updates for entity: %{public}@ with error: %@", buf, 0x20u);
@@ -565,11 +565,11 @@ LABEL_46:
       os_log_type_enabled(v53, OS_LOG_TYPE_ERROR);
       v54 = objc_opt_class();
       v55 = NSStringFromClass(v54);
-      v56 = *a6;
+      v56 = *error;
       v82 = 138543874;
       v83 = v55;
       v84 = 2114;
-      v85 = v11;
+      v85 = namedCopy;
       v86 = 2112;
       v87 = v56;
       LODWORD(v80) = 32;
@@ -596,14 +596,14 @@ LABEL_45:
         goto LABEL_45;
       }
 
-      v61 = [(PLModelMigrationActionCore *)self logger];
+      logger4 = [(PLModelMigrationActionCore *)self logger];
 
-      if (!v61)
+      if (!logger4)
       {
         v73 = PLMigrationGetLog();
         if (os_log_type_enabled(v73, OS_LOG_TYPE_DEFAULT))
         {
-          v74 = *a6;
+          v74 = *error;
           *buf = 138412290;
           *&buf[4] = v74;
           _os_log_impl(&dword_19BF1F000, v73, OS_LOG_TYPE_DEFAULT, "Failed to execute fetch request with Error: %@", buf, 0xCu);
@@ -645,7 +645,7 @@ LABEL_45:
       memset(buf, 0, sizeof(buf));
       v62 = PLMigrationGetLog();
       os_log_type_enabled(v62, OS_LOG_TYPE_DEFAULT);
-      v63 = *a6;
+      v63 = *error;
       v82 = 138412290;
       v83 = v63;
       LODWORD(v80) = 12;
@@ -669,9 +669,9 @@ LABEL_45:
 
   if (v38)
   {
-    v39 = [(PLModelMigrationActionCore *)self logger];
+    logger5 = [(PLModelMigrationActionCore *)self logger];
 
-    if (v39)
+    if (logger5)
     {
       v119 = 0u;
       v120 = 0u;

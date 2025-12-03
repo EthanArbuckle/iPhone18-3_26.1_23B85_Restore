@@ -13,13 +13,13 @@
   if (v2)
   {
     *&v2->_beaconGroupComplete = 257;
-    v4 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     deviceUUIDtoDeviceMap = v3->_deviceUUIDtoDeviceMap;
-    v3->_deviceUUIDtoDeviceMap = v4;
+    v3->_deviceUUIDtoDeviceMap = dictionary;
 
-    v6 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     deviceToSafeLocationMap = v3->_deviceToSafeLocationMap;
-    v3->_deviceToSafeLocationMap = v6;
+    v3->_deviceToSafeLocationMap = dictionary2;
   }
 
   return v3;

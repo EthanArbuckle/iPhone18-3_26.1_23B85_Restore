@@ -1,10 +1,10 @@
 @interface GNSSLocationService
 - (GNSSLocationService)init;
-- (void)configureInitializeAndStartRavenSupervisorWithPlatformInfo:(id)a3 withParametersOverrideString:(id)a4 withCompletion:(id)a5;
-- (void)getRavenSolutionAtMCTime:(double)a3 WithReply:(id)a4;
-- (void)getRavenSolutionWithReply:(id)a3;
-- (void)pauseResetAndFreeRavenSupervisorWithCompletion:(id)a3;
-- (void)raiseRavenEventsFromData:(id)a3;
+- (void)configureInitializeAndStartRavenSupervisorWithPlatformInfo:(id)info withParametersOverrideString:(id)string withCompletion:(id)completion;
+- (void)getRavenSolutionAtMCTime:(double)time WithReply:(id)reply;
+- (void)getRavenSolutionWithReply:(id)reply;
+- (void)pauseResetAndFreeRavenSupervisorWithCompletion:(id)completion;
+- (void)raiseRavenEventsFromData:(id)data;
 @end
 
 @implementation GNSSLocationService
@@ -23,9 +23,9 @@
   if (v3)
   {
     v4 = [NSString stringWithFormat:@"_GNSSLocationService, %p", v3];
-    v5 = [v4 UTF8String];
+    uTF8String = [v4 UTF8String];
     v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v7 = dispatch_queue_create(v5, v6);
+    v7 = dispatch_queue_create(uTF8String, v6);
     queue = v3->_queue;
     v3->_queue = v7;
 
@@ -38,9 +38,9 @@
   return v3;
 }
 
-- (void)configureInitializeAndStartRavenSupervisorWithPlatformInfo:(id)a3 withParametersOverrideString:(id)a4 withCompletion:(id)a5
+- (void)configureInitializeAndStartRavenSupervisorWithPlatformInfo:(id)info withParametersOverrideString:(id)string withCompletion:(id)completion
 {
-  v5 = __chkstk_darwin(self, a2, a3, a4, a5);
+  v5 = __chkstk_darwin(self, a2, info, string, completion);
   v7 = v6;
   v9 = v8;
   v10 = v5;
@@ -309,9 +309,9 @@ LABEL_21:
   objc_autoreleasePoolPop(v15);
 }
 
-- (void)getRavenSolutionWithReply:(id)a3
+- (void)getRavenSolutionWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = objc_autoreleasePoolPush();
   if (!self->hasEntitlementToRunRaven)
   {
@@ -339,7 +339,7 @@ LABEL_21:
     }
 
 LABEL_13:
-    v4[2](v4, 0);
+    replyCopy[2](replyCopy, 0);
     goto LABEL_26;
   }
 
@@ -352,7 +352,7 @@ LABEL_13:
       sub_100004CC0(v6, v7, v8, v9, v10, v11, v12, v13);
     }
 
-    v4[2](v4, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   else
@@ -383,12 +383,12 @@ LABEL_13:
       }
 
       v32 = [NSData dataWithBytes:p_p length:v31];
-      (v4)[2](v4, v32);
+      (replyCopy)[2](replyCopy, v32);
     }
 
     else
     {
-      v4[2](v4, 0);
+      replyCopy[2](replyCopy, 0);
     }
 
     if (SHIBYTE(v35) < 0)
@@ -402,9 +402,9 @@ LABEL_26:
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)getRavenSolutionAtMCTime:(double)a3 WithReply:(id)a4
+- (void)getRavenSolutionAtMCTime:(double)time WithReply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v7 = objc_autoreleasePoolPush();
   hasEntitlementToRunRaven = self->hasEntitlementToRunRaven;
   v9 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
@@ -422,7 +422,7 @@ LABEL_26:
   if (v9)
   {
     *buf = 134349056;
-    v34 = a3;
+    timeCopy = time;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "CLGLS,GNSSLocationService,getRavenSolutionAtMCTimeWithReply,%{public}.2lf", buf, 0xCu);
   }
 
@@ -435,14 +435,14 @@ LABEL_26:
     }
 
 LABEL_13:
-    v6[2](v6, 0);
+    replyCopy[2](replyCopy, 0);
     goto LABEL_26;
   }
 
   sub_100004654(buf);
   __p[0] = 0;
   __p[1] = 0;
-  CNTimeSpan::SetTimeSpan(__p, 0, a3);
+  CNTimeSpan::SetTimeSpan(__p, 0, time);
   v32 = *__p;
   ptr = self->fRavenSupervisor.__ptr_;
   if (raven::RavenSupervisor::GetRavenSolution())
@@ -453,7 +453,7 @@ LABEL_13:
       sub_100004D38(v11, v12, v13, v14, v15, v16, v17, v18);
     }
 
-    v6[2](v6, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   else
@@ -484,12 +484,12 @@ LABEL_13:
       }
 
       v29 = [NSData dataWithBytes:v27 length:v28];
-      (v6)[2](v6, v29);
+      (replyCopy)[2](replyCopy, v29);
     }
 
     else
     {
-      v6[2](v6, 0);
+      replyCopy[2](replyCopy, 0);
     }
 
     if (SHIBYTE(v31) < 0)
@@ -503,9 +503,9 @@ LABEL_26:
   objc_autoreleasePoolPop(v7);
 }
 
-- (void)pauseResetAndFreeRavenSupervisorWithCompletion:(id)a3
+- (void)pauseResetAndFreeRavenSupervisorWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   hasEntitlementToRunRaven = self->hasEntitlementToRunRaven;
   if (hasEntitlementToRunRaven)
   {
@@ -550,18 +550,18 @@ LABEL_26:
     }
   }
 
-  v4[2](v4, hasEntitlementToRunRaven);
+  completionCopy[2](completionCopy, hasEntitlementToRunRaven);
 }
 
-- (void)raiseRavenEventsFromData:(id)a3
+- (void)raiseRavenEventsFromData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = objc_autoreleasePoolPush();
   if (self->hasEntitlementToRunRaven)
   {
     if (self->fRavenSupervisor.__ptr_)
     {
-      sub_100001BE8(__p, [v4 bytes], objc_msgSend(v4, "length"));
+      sub_100001BE8(__p, [dataCopy bytes], objc_msgSend(dataCopy, "length"));
       v6 = v26;
       if ((v26 & 0x80u) != 0)
       {

@@ -1,11 +1,11 @@
 @interface PXTextBannerView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PXTextBannerView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PXTextBannerView)initWithFrame:(CGRect)frame;
 - (void)_updateSubviews;
 - (void)layoutSubviews;
-- (void)setDestructiveText:(BOOL)a3;
-- (void)setText:(id)a3;
-- (void)setTextAlignment:(int64_t)a3;
+- (void)setDestructiveText:(BOOL)text;
+- (void)setText:(id)text;
+- (void)setTextAlignment:(int64_t)alignment;
 @end
 
 @implementation PXTextBannerView
@@ -38,10 +38,10 @@
   [(UILabel *)textLabel setFrame:v15.origin.x, v15.origin.y, v15.size.width, v15.size.height];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(UILabel *)self->_textLabel sizeThatFits:?];
   v7 = 5.0;
   if (self->_textAlignment == 1)
@@ -78,45 +78,45 @@
   [(UILabel *)self->_textLabel setTextColor:v3];
 }
 
-- (void)setTextAlignment:(int64_t)a3
+- (void)setTextAlignment:(int64_t)alignment
 {
-  if (self->_textAlignment != a3)
+  if (self->_textAlignment != alignment)
   {
-    self->_textAlignment = a3;
+    self->_textAlignment = alignment;
     [(PXTextBannerView *)self _updateSubviews];
   }
 }
 
-- (void)setDestructiveText:(BOOL)a3
+- (void)setDestructiveText:(BOOL)text
 {
-  if (self->_destructiveText != a3)
+  if (self->_destructiveText != text)
   {
-    self->_destructiveText = a3;
+    self->_destructiveText = text;
     [(PXTextBannerView *)self _updateSubviews];
   }
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   text = self->_text;
-  v9 = v4;
-  if (text != v4 || (v6 = [(NSString *)text isEqualToString:v4], v4 = v9, !v6))
+  v9 = textCopy;
+  if (text != textCopy || (v6 = [(NSString *)text isEqualToString:textCopy], textCopy = v9, !v6))
   {
-    v7 = [(NSString *)v4 copy];
+    v7 = [(NSString *)textCopy copy];
     v8 = self->_text;
     self->_text = v7;
 
     [(PXTextBannerView *)self _updateSubviews];
-    v4 = v9;
+    textCopy = v9;
   }
 }
 
-- (PXTextBannerView)initWithFrame:(CGRect)a3
+- (PXTextBannerView)initWithFrame:(CGRect)frame
 {
   v17.receiver = self;
   v17.super_class = PXTextBannerView;
-  v3 = [(PXTextBannerView *)&v17 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXTextBannerView *)&v17 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MEMORY[0x1E69DCAB8] px_imageNamed:@"PXPhotoViewGradient"];
@@ -130,21 +130,21 @@
     v3->_textLabel = v7;
 
     v9 = v3->_textLabel;
-    v10 = [MEMORY[0x1E69DC888] clearColor];
-    [(UILabel *)v9 setBackgroundColor:v10];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UILabel *)v9 setBackgroundColor:clearColor];
 
     v11 = v3->_textLabel;
     v12 = [MEMORY[0x1E69DB878] systemFontOfSize:12.0];
     [(UILabel *)v11 setFont:v12];
 
     v13 = v3->_textLabel;
-    v14 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UILabel *)v13 setTextColor:v14];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UILabel *)v13 setTextColor:whiteColor];
 
     [(UILabel *)v3->_textLabel setTextAlignment:2];
     [(PXTextBannerView *)v3 addSubview:v3->_textLabel];
-    v15 = [MEMORY[0x1E69DC888] clearColor];
-    [(PXTextBannerView *)v3 setBackgroundColor:v15];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    [(PXTextBannerView *)v3 setBackgroundColor:clearColor2];
 
     [(PXTextBannerView *)v3 _updateSubviews];
   }

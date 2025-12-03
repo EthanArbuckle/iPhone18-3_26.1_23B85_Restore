@@ -41,12 +41,12 @@
   v10 = [objc_opt_class() _renderingModeForNumber:v9];
   [v8 floatValue];
   v12 = v11;
-  v13 = [v6 bundlePath];
+  bundlePath = [v6 bundlePath];
 
-  v14 = [v13 stringByAppendingPathComponent:v7];
+  v14 = [bundlePath stringByAppendingPathComponent:v7];
 
-  v15 = [MEMORY[0x277CCAA00] defaultManager];
-  v16 = [v15 contentsAtPath:v14];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v16 = [defaultManager contentsAtPath:v14];
 
   v17 = [MEMORY[0x277D755B8] imageWithData:v16 scale:v12];
   v18 = [v17 imageWithRenderingMode:v10];
@@ -59,13 +59,13 @@
   v4 = a3;
   v5 = objc_opt_new();
   v6 = objc_opt_new();
-  v7 = [v6 UUIDString];
-  v8 = [v7 stringByAppendingPathExtension:@"png"];
+  uUIDString = [v6 UUIDString];
+  v8 = [uUIDString stringByAppendingPathExtension:@"png"];
 
   [v5 setObject:v8 forKeyedSubscript:@"file name"];
   v9 = [v4 stringByAppendingPathComponent:v8];
 
-  v10 = UIImagePNGRepresentation(a1);
+  v10 = UIImagePNGRepresentation(self);
   v18 = 0;
   v11 = [v10 writeToFile:v9 options:1 error:&v18];
   v12 = v18;
@@ -80,11 +80,11 @@
   }
 
   v14 = MEMORY[0x277CCABB0];
-  [(UIImage *)a1 scale];
+  [(UIImage *)self scale];
   v15 = [v14 numberWithDouble:?];
   [v5 setObject:v15 forKeyedSubscript:@"scale"];
 
-  v16 = [objc_opt_class() _numberForRenderingMode:{-[UIImage renderingMode](a1, "renderingMode")}];
+  v16 = [objc_opt_class() _numberForRenderingMode:{-[UIImage renderingMode](self, "renderingMode")}];
   [v5 setObject:v16 forKeyedSubscript:@"renderingMode"];
 
   return v5;
@@ -107,15 +107,15 @@
 
 + (uint64_t)_renderingModeForNumber:()JSONSerializable
 {
-  v3 = [a3 intValue];
-  if (v3 == 2)
+  intValue = [a3 intValue];
+  if (intValue == 2)
   {
     return 2;
   }
 
   else
   {
-    return v3 == 1;
+    return intValue == 1;
   }
 }
 

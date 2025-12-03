@@ -1,34 +1,34 @@
 @interface PPKPhotosMediaView
 - (BOOL)isHDRAllowed;
 - (CGRect)stillImageContentsRect;
-- (PPKPhotosMediaView)initWithFrame:(CGRect)a3;
-- (PPKPhotosMediaView)initWithImage:(CGImage *)a3 orientation:(int64_t)a4;
-- (PPKPhotosMediaView)initWithImage:(id)a3;
-- (PPKPhotosMediaView)initWithImageData:(id)a3;
-- (PPKPhotosMediaView)initWithImageURL:(id)a3;
+- (PPKPhotosMediaView)initWithFrame:(CGRect)frame;
+- (PPKPhotosMediaView)initWithImage:(CGImage *)image orientation:(int64_t)orientation;
+- (PPKPhotosMediaView)initWithImage:(id)image;
+- (PPKPhotosMediaView)initWithImageData:(id)data;
+- (PPKPhotosMediaView)initWithImageURL:(id)l;
 - (PPKPhotosMediaViewImageAnalysisInteractionContext)imageAnalysisContext;
 - (UIView)imageAnalysisInteractionHostView;
 - (void)_ensureImageAnalysisControllerIfNecessary;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setContentMode:(int64_t)a3;
-- (void)setImage:(CGImage *)a3 orientation:(int64_t)a4;
-- (void)setImage:(id)a3;
-- (void)setImageAnalysisInteractionHostView:(id)a3;
-- (void)setImageAnalysisOrientation:(int64_t)a3;
-- (void)setIsHDRAllowed:(BOOL)a3 animated:(BOOL)a4;
-- (void)setIsImageAnalysisEnabled:(BOOL)a3;
-- (void)setStillImageContentsRect:(CGRect)a3;
-- (void)setURL:(id)a3;
+- (void)setContentMode:(int64_t)mode;
+- (void)setImage:(CGImage *)image orientation:(int64_t)orientation;
+- (void)setImage:(id)image;
+- (void)setImageAnalysisInteractionHostView:(id)view;
+- (void)setImageAnalysisOrientation:(int64_t)orientation;
+- (void)setIsHDRAllowed:(BOOL)allowed animated:(BOOL)animated;
+- (void)setIsImageAnalysisEnabled:(BOOL)enabled;
+- (void)setStillImageContentsRect:(CGRect)rect;
+- (void)setURL:(id)l;
 @end
 
 @implementation PPKPhotosMediaView
 
-- (PPKPhotosMediaView)initWithFrame:(CGRect)a3
+- (PPKPhotosMediaView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = PPKPhotosMediaView;
-  v3 = [(PPKPhotosMediaView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PPKPhotosMediaView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -63,103 +63,103 @@
   return v4;
 }
 
-- (PPKPhotosMediaView)initWithImageData:(id)a3
+- (PPKPhotosMediaView)initWithImageData:(id)data
 {
   v4 = MEMORY[0x1E69DCAB8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithData:v5];
+  dataCopy = data;
+  v6 = [[v4 alloc] initWithData:dataCopy];
 
   v7 = [(PPKPhotosMediaView *)self initWithImage:v6];
   return v7;
 }
 
-- (PPKPhotosMediaView)initWithImageURL:(id)a3
+- (PPKPhotosMediaView)initWithImageURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = [(PPKPhotosMediaView *)self initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   if (v5)
   {
     v6 = objc_alloc_init(getPXFileBackedUIMediaProviderClass());
-    v7 = [(PPKPhotosMediaView *)v5 assetView];
-    [v7 setMediaProvider:v6];
+    assetView = [(PPKPhotosMediaView *)v5 assetView];
+    [assetView setMediaProvider:v6];
 
-    v8 = [objc_alloc(getPXFileBackedAssetClass()) initWithURL:v4];
-    v9 = [(PPKPhotosMediaView *)v5 assetView];
-    [v9 setAsset:v8];
+    v8 = [objc_alloc(getPXFileBackedAssetClass()) initWithURL:lCopy];
+    assetView2 = [(PPKPhotosMediaView *)v5 assetView];
+    [assetView2 setAsset:v8];
   }
 
   return v5;
 }
 
-- (PPKPhotosMediaView)initWithImage:(CGImage *)a3 orientation:(int64_t)a4
+- (PPKPhotosMediaView)initWithImage:(CGImage *)image orientation:(int64_t)orientation
 {
-  v5 = [objc_alloc(MEMORY[0x1E69DCAB8]) initWithCGImage:a3 imageOrientation:a4];
+  v5 = [objc_alloc(MEMORY[0x1E69DCAB8]) initWithCGImage:image imageOrientation:orientation];
   v6 = [(PPKPhotosMediaView *)self initWithImage:v5];
 
   return v6;
 }
 
-- (PPKPhotosMediaView)initWithImage:(id)a3
+- (PPKPhotosMediaView)initWithImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v5 = [(PPKPhotosMediaView *)self initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   if (v5)
   {
     v6 = objc_alloc_init(_ImageAssetMediaProvider);
-    v7 = [(PPKPhotosMediaView *)v5 assetView];
-    [v7 setMediaProvider:v6];
+    assetView = [(PPKPhotosMediaView *)v5 assetView];
+    [assetView setMediaProvider:v6];
 
-    v8 = [[_ImageAsset alloc] initWithImage:v4];
-    v9 = [(PPKPhotosMediaView *)v5 assetView];
-    [v9 setAsset:v8];
+    v8 = [[_ImageAsset alloc] initWithImage:imageCopy];
+    assetView2 = [(PPKPhotosMediaView *)v5 assetView];
+    [assetView2 setAsset:v8];
   }
 
   return v5;
 }
 
-- (void)setContentMode:(int64_t)a3
+- (void)setContentMode:(int64_t)mode
 {
   v6.receiver = self;
   v6.super_class = PPKPhotosMediaView;
   [(PPKPhotosMediaView *)&v6 setContentMode:?];
-  v5 = [(PPKPhotosMediaView *)self assetView];
-  [v5 setContentMode:a3];
+  assetView = [(PPKPhotosMediaView *)self assetView];
+  [assetView setContentMode:mode];
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v5 = objc_alloc_init(_ImageAssetMediaProvider);
-  v6 = [(PPKPhotosMediaView *)self assetView];
-  [v6 setMediaProvider:v5];
+  assetView = [(PPKPhotosMediaView *)self assetView];
+  [assetView setMediaProvider:v5];
 
-  v8 = [[_ImageAsset alloc] initWithImage:v4];
-  v7 = [(PPKPhotosMediaView *)self assetView];
-  [v7 setAsset:v8];
+  v8 = [[_ImageAsset alloc] initWithImage:imageCopy];
+  assetView2 = [(PPKPhotosMediaView *)self assetView];
+  [assetView2 setAsset:v8];
 }
 
-- (void)setURL:(id)a3
+- (void)setURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = objc_alloc_init(getPXFileBackedUIMediaProviderClass());
-  v6 = [(PPKPhotosMediaView *)self assetView];
-  [v6 setMediaProvider:v5];
+  assetView = [(PPKPhotosMediaView *)self assetView];
+  [assetView setMediaProvider:v5];
 
-  v8 = [objc_alloc(getPXFileBackedAssetClass()) initWithURL:v4];
-  v7 = [(PPKPhotosMediaView *)self assetView];
-  [v7 setAsset:v8];
+  v8 = [objc_alloc(getPXFileBackedAssetClass()) initWithURL:lCopy];
+  assetView2 = [(PPKPhotosMediaView *)self assetView];
+  [assetView2 setAsset:v8];
 }
 
-- (void)setImage:(CGImage *)a3 orientation:(int64_t)a4
+- (void)setImage:(CGImage *)image orientation:(int64_t)orientation
 {
-  v5 = [objc_alloc(MEMORY[0x1E69DCAB8]) initWithCGImage:a3 imageOrientation:a4];
+  v5 = [objc_alloc(MEMORY[0x1E69DCAB8]) initWithCGImage:image imageOrientation:orientation];
   [(PPKPhotosMediaView *)self setImage:v5];
 }
 
 - (CGRect)stillImageContentsRect
 {
-  v2 = [(PPKPhotosMediaView *)self assetView];
-  [v2 stillImageContentsRect];
+  assetView = [(PPKPhotosMediaView *)self assetView];
+  [assetView stillImageContentsRect];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -176,14 +176,14 @@
   return result;
 }
 
-- (void)setStillImageContentsRect:(CGRect)a3
+- (void)setStillImageContentsRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(PPKPhotosMediaView *)self assetView];
-  [v7 setStillImageContentsRect:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  assetView = [(PPKPhotosMediaView *)self assetView];
+  [assetView setStillImageContentsRect:{x, y, width, height}];
 }
 
 - (void)layoutSubviews
@@ -193,8 +193,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(PPKPhotosMediaView *)self assetView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  assetView = [(PPKPhotosMediaView *)self assetView];
+  [assetView setFrame:{v4, v6, v8, v10}];
 }
 
 - (PPKPhotosMediaViewImageAnalysisInteractionContext)imageAnalysisContext
@@ -209,9 +209,9 @@
   v4.receiver = self;
   v4.super_class = PPKPhotosMediaView;
   [(PPKPhotosMediaView *)&v4 didMoveToWindow];
-  v3 = [(PPKPhotosMediaView *)self window];
+  window = [(PPKPhotosMediaView *)self window];
 
-  if (v3)
+  if (window)
   {
     [(PPKPhotosMediaView *)self _ensureImageAnalysisControllerIfNecessary];
   }
@@ -219,8 +219,8 @@
 
 - (void)_ensureImageAnalysisControllerIfNecessary
 {
-  v3 = [(PPKPhotosMediaView *)self analysisController];
-  if (!v3)
+  analysisController = [(PPKPhotosMediaView *)self analysisController];
+  if (!analysisController)
   {
     if (![(PPKPhotosMediaView *)self isImageAnalysisEnabled])
     {
@@ -234,14 +234,14 @@
     analysisController = self->_analysisController;
     self->_analysisController = v6;
 
-    v3 = WeakRetained;
+    analysisController = WeakRetained;
   }
 }
 
-- (void)setIsImageAnalysisEnabled:(BOOL)a3
+- (void)setIsImageAnalysisEnabled:(BOOL)enabled
 {
-  self->_isImageAnalysisEnabled = a3;
-  if (a3)
+  self->_isImageAnalysisEnabled = enabled;
+  if (enabled)
   {
     [(PPKPhotosMediaView *)self _ensureImageAnalysisControllerIfNecessary];
   }
@@ -253,9 +253,9 @@
   }
 }
 
-- (void)setImageAnalysisInteractionHostView:(id)a3
+- (void)setImageAnalysisInteractionHostView:(id)view
 {
-  obj = a3;
+  obj = view;
   WeakRetained = objc_loadWeakRetained(&self->_imageAnalysisInteractionHostView);
 
   if (WeakRetained != obj)
@@ -265,27 +265,27 @@
   }
 }
 
-- (void)setImageAnalysisOrientation:(int64_t)a3
+- (void)setImageAnalysisOrientation:(int64_t)orientation
 {
-  if (self->_imageAnalysisOrientation != a3)
+  if (self->_imageAnalysisOrientation != orientation)
   {
-    self->_imageAnalysisOrientation = a3;
+    self->_imageAnalysisOrientation = orientation;
     [(_PhotosMediaViewAnalysisController *)self->_analysisController setAnalysisOrientation:?];
   }
 }
 
 - (BOOL)isHDRAllowed
 {
-  v2 = [(PPKPhotosMediaView *)self assetView];
-  v3 = [v2 preferredImageDynamicRange] == 2;
+  assetView = [(PPKPhotosMediaView *)self assetView];
+  v3 = [assetView preferredImageDynamicRange] == 2;
 
   return v3;
 }
 
-- (void)setIsHDRAllowed:(BOOL)a3 animated:(BOOL)a4
+- (void)setIsHDRAllowed:(BOOL)allowed animated:(BOOL)animated
 {
-  v4 = a4;
-  if ((_os_feature_enabled_impl() & a3) != 0)
+  animatedCopy = animated;
+  if ((_os_feature_enabled_impl() & allowed) != 0)
   {
     v6 = 2;
   }
@@ -295,10 +295,10 @@
     v6 = 0;
   }
 
-  v7 = [(PPKPhotosMediaView *)self assetView];
-  v8 = [v7 preferredImageDynamicRange];
+  assetView = [(PPKPhotosMediaView *)self assetView];
+  preferredImageDynamicRange = [assetView preferredImageDynamicRange];
 
-  if (v8 != v6)
+  if (preferredImageDynamicRange != v6)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
@@ -308,7 +308,7 @@
     aBlock[5] = v6;
     v9 = _Block_copy(aBlock);
     v10 = v9;
-    if (v4)
+    if (animatedCopy)
     {
       v11 = MEMORY[0x1E69DD250];
       v12[0] = MEMORY[0x1E69E9820];

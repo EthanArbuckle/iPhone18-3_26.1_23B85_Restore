@@ -1,40 +1,40 @@
 @interface PXStoryMemoryFeedActionPerformer
-- (BOOL)handlePrimaryActionOnItemAtIndexPath:(PXSimpleIndexPath *)a3 inDataSource:(id)a4 fromViewController:(id)a5;
-- (BOOL)navigateToObjectReference:(id)a3 originalSource:(id)a4 fromViewController:(id)a5 animated:(BOOL)a6 willPresentHandler:(id)a7 completionHandler:(id)a8;
+- (BOOL)handlePrimaryActionOnItemAtIndexPath:(PXSimpleIndexPath *)path inDataSource:(id)source fromViewController:(id)controller;
+- (BOOL)navigateToObjectReference:(id)reference originalSource:(id)source fromViewController:(id)controller animated:(BOOL)animated willPresentHandler:(id)handler completionHandler:(id)completionHandler;
 - (PXStoryMemoryFeedActionPerformer)init;
-- (PXStoryMemoryFeedActionPerformer)initWithViewControllerSetupBlock:(id)a3;
-- (void)_presentViewController:(id)a3 contentViewController:(id)a4 fromViewController:(id)a5 animated:(BOOL)a6 completion:(id)a7;
-- (void)deleteItemsInSelection:(id)a3 undoManager:(id)a4;
+- (PXStoryMemoryFeedActionPerformer)initWithViewControllerSetupBlock:(id)block;
+- (void)_presentViewController:(id)controller contentViewController:(id)viewController fromViewController:(id)fromViewController animated:(BOOL)animated completion:(id)completion;
+- (void)deleteItemsInSelection:(id)selection undoManager:(id)manager;
 @end
 
 @implementation PXStoryMemoryFeedActionPerformer
 
-- (void)_presentViewController:(id)a3 contentViewController:(id)a4 fromViewController:(id)a5 animated:(BOOL)a6 completion:(id)a7
+- (void)_presentViewController:(id)controller contentViewController:(id)viewController fromViewController:(id)fromViewController animated:(BOOL)animated completion:(id)completion
 {
-  v8 = a6;
-  if (a4)
+  animatedCopy = animated;
+  if (viewController)
   {
-    v12 = a4;
+    controllerCopy = viewController;
   }
 
   else
   {
-    v12 = a3;
+    controllerCopy = controller;
   }
 
-  v13 = v12;
-  v14 = a7;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
-  [off_1E7721710 prepareTransitionFromSummaryViewController:v15 toPresentedViewController:v17 detailViewController:v13];
-  [v15 presentViewController:v17 animated:v8 completion:v14];
+  v13 = controllerCopy;
+  completionCopy = completion;
+  fromViewControllerCopy = fromViewController;
+  viewControllerCopy2 = viewController;
+  controllerCopy2 = controller;
+  [off_1E7721710 prepareTransitionFromSummaryViewController:fromViewControllerCopy toPresentedViewController:controllerCopy2 detailViewController:v13];
+  [fromViewControllerCopy presentViewController:controllerCopy2 animated:animatedCopy completion:completionCopy];
 }
 
-- (void)deleteItemsInSelection:(id)a3 undoManager:(id)a4
+- (void)deleteItemsInSelection:(id)selection undoManager:(id)manager
 {
-  v5 = a4;
-  [a3 fetchSelectedObjects];
+  managerCopy = manager;
+  [selection fetchSelectedObjects];
   objc_claimAutoreleasedReturnValue();
   PXMap();
 }
@@ -73,22 +73,22 @@ void __71__PXStoryMemoryFeedActionPerformer_deleteItemsInSelection_undoManager__
   }
 }
 
-- (BOOL)navigateToObjectReference:(id)a3 originalSource:(id)a4 fromViewController:(id)a5 animated:(BOOL)a6 willPresentHandler:(id)a7 completionHandler:(id)a8
+- (BOOL)navigateToObjectReference:(id)reference originalSource:(id)source fromViewController:(id)controller animated:(BOOL)animated willPresentHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v10 = a6;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
-  v17 = a8;
-  v18 = PXStoryConfigurationForObjectReference(a3);
+  animatedCopy = animated;
+  sourceCopy = source;
+  controllerCopy = controller;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  v18 = PXStoryConfigurationForObjectReference(reference);
   v19 = v18;
   if (v18)
   {
-    [v18 configureWithNavigationSource:v14];
+    [v18 configureWithNavigationSource:sourceCopy];
     v20 = +[PXStorySettings sharedInstance];
-    v21 = [v20 enableProtoPlayground];
+    enableProtoPlayground = [v20 enableProtoPlayground];
 
-    if (v21)
+    if (enableProtoPlayground)
     {
       v22 = PXSoftLinkedProtoMemoriesPlayerViewController(v19);
       v23 = 0;
@@ -101,17 +101,17 @@ void __71__PXStoryMemoryFeedActionPerformer_deleteItemsInSelection_undoManager__
       v23 = v31;
     }
 
-    v24 = [(PXStoryMemoryFeedActionPerformer *)self viewControllerSetupBlock];
+    viewControllerSetupBlock = [(PXStoryMemoryFeedActionPerformer *)self viewControllerSetupBlock];
 
-    if (v24)
+    if (viewControllerSetupBlock)
     {
-      v25 = [(PXStoryMemoryFeedActionPerformer *)self viewControllerSetupBlock];
-      (v25)[2](v25, v23);
+      viewControllerSetupBlock2 = [(PXStoryMemoryFeedActionPerformer *)self viewControllerSetupBlock];
+      (viewControllerSetupBlock2)[2](viewControllerSetupBlock2, v23);
     }
 
-    if (v16)
+    if (handlerCopy)
     {
-      v16[2](v16, v23);
+      handlerCopy[2](handlerCopy, v23);
     }
 
     v28[0] = MEMORY[0x1E69E9820];
@@ -119,9 +119,9 @@ void __71__PXStoryMemoryFeedActionPerformer_deleteItemsInSelection_undoManager__
     v28[2] = __142__PXStoryMemoryFeedActionPerformer_navigateToObjectReference_originalSource_fromViewController_animated_willPresentHandler_completionHandler___block_invoke;
     v28[3] = &unk_1E774C2F0;
     v29 = v23;
-    v30 = v17;
+    v30 = completionHandlerCopy;
     v26 = v23;
-    [(PXStoryMemoryFeedActionPerformer *)self _presentViewController:v22 contentViewController:v26 fromViewController:v15 animated:v10 completion:v28];
+    [(PXStoryMemoryFeedActionPerformer *)self _presentViewController:v22 contentViewController:v26 fromViewController:controllerCopy animated:animatedCopy completion:v28];
   }
 
   return v19 != 0;
@@ -138,33 +138,33 @@ uint64_t __142__PXStoryMemoryFeedActionPerformer_navigateToObjectReference_origi
   return result;
 }
 
-- (BOOL)handlePrimaryActionOnItemAtIndexPath:(PXSimpleIndexPath *)a3 inDataSource:(id)a4 fromViewController:(id)a5
+- (BOOL)handlePrimaryActionOnItemAtIndexPath:(PXSimpleIndexPath *)path inDataSource:(id)source fromViewController:(id)controller
 {
-  v9 = a5;
-  v10 = *&a3->item;
-  v15[0] = *&a3->dataSourceIdentifier;
+  controllerCopy = controller;
+  v10 = *&path->item;
+  v15[0] = *&path->dataSourceIdentifier;
   v15[1] = v10;
-  v11 = [a4 objectReferenceAtIndexPath:v15];
+  v11 = [source objectReferenceAtIndexPath:v15];
   if (!v11)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PXStoryMemoryFeedActionPerformer.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"objectReference != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryMemoryFeedActionPerformer.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"objectReference != nil"}];
   }
 
-  v12 = [(PXStoryMemoryFeedActionPerformer *)self navigateToObjectReference:v11 originalSource:@"ForYou" fromViewController:v9 animated:1 willPresentHandler:0 completionHandler:0];
+  v12 = [(PXStoryMemoryFeedActionPerformer *)self navigateToObjectReference:v11 originalSource:@"ForYou" fromViewController:controllerCopy animated:1 willPresentHandler:0 completionHandler:0];
 
   return v12;
 }
 
-- (PXStoryMemoryFeedActionPerformer)initWithViewControllerSetupBlock:(id)a3
+- (PXStoryMemoryFeedActionPerformer)initWithViewControllerSetupBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9.receiver = self;
   v9.super_class = PXStoryMemoryFeedActionPerformer;
   v5 = [(PXStoryMemoryFeedActionPerformer *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [blockCopy copy];
     viewControllerSetupBlock = v5->_viewControllerSetupBlock;
     v5->_viewControllerSetupBlock = v6;
   }
@@ -174,8 +174,8 @@ uint64_t __142__PXStoryMemoryFeedActionPerformer_navigateToObjectReference_origi
 
 - (PXStoryMemoryFeedActionPerformer)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryMemoryFeedActionPerformer.m" lineNumber:39 description:{@"%s is not available as initializer", "-[PXStoryMemoryFeedActionPerformer init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryMemoryFeedActionPerformer.m" lineNumber:39 description:{@"%s is not available as initializer", "-[PXStoryMemoryFeedActionPerformer init]"}];
 
   abort();
 }

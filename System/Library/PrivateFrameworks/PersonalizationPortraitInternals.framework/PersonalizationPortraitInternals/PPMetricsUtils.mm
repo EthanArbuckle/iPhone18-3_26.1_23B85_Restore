@@ -1,19 +1,19 @@
 @interface PPMetricsUtils
-+ (id)filterBundleId:(id)a3;
-+ (id)filterGroupIdAllowance:(id)a3;
++ (id)filterBundleId:(id)id;
++ (id)filterGroupIdAllowance:(id)allowance;
 + (id)loggingQueue;
-+ (id)stringifyDomain:(unsigned __int8)a3;
-+ (id)stringifyFeedbackDomainStatus:(unsigned __int8)a3;
-+ (id)stringifyFeedbackType:(unsigned int)a3;
-+ (id)truncatedClientBundleId:(id)a3;
-+ (id)truncatedClientBundleIdOrCurrentBundleId:(id)a3;
-+ (int)mapDomainForPET2:(unsigned __int8)a3;
-+ (int)mapLocationAlgorithmForPET2:(unsigned __int16)a3;
-+ (int)mapNamedEntityAlgorithmForPET2:(unint64_t)a3;
-+ (int)mapNamedEntityCategory:(unint64_t)a3;
-+ (int)mapTopicAlgorithmForPET2:(unint64_t)a3;
-+ (int)mapTopicDonationErrorForPET2:(int64_t)a3;
-+ (int)sourceForBundleId:(id)a3;
++ (id)stringifyDomain:(unsigned __int8)domain;
++ (id)stringifyFeedbackDomainStatus:(unsigned __int8)status;
++ (id)stringifyFeedbackType:(unsigned int)type;
++ (id)truncatedClientBundleId:(id)id;
++ (id)truncatedClientBundleIdOrCurrentBundleId:(id)id;
++ (int)mapDomainForPET2:(unsigned __int8)t2;
++ (int)mapLocationAlgorithmForPET2:(unsigned __int16)t2;
++ (int)mapNamedEntityAlgorithmForPET2:(unint64_t)t2;
++ (int)mapNamedEntityCategory:(unint64_t)category;
++ (int)mapTopicAlgorithmForPET2:(unint64_t)t2;
++ (int)mapTopicDonationErrorForPET2:(int64_t)t2;
++ (int)sourceForBundleId:(id)id;
 @end
 
 @implementation PPMetricsUtils
@@ -30,7 +30,7 @@
   return v3;
 }
 
-+ (id)filterGroupIdAllowance:(id)a3
++ (id)filterGroupIdAllowance:(id)allowance
 {
   v21[9] = *MEMORY[0x277D85DE8];
   v3 = *MEMORY[0x277D3A6F0];
@@ -56,51 +56,51 @@
   v20 = *MEMORY[0x277D3A728];
   v21[8] = v20;
   v7 = MEMORY[0x277CBEAC0];
-  v8 = a3;
+  allowanceCopy = allowance;
   v9 = [v7 dictionaryWithObjects:v21 forKeys:v13 count:9];
-  v10 = [v9 objectForKeyedSubscript:v8];
+  v10 = [v9 objectForKeyedSubscript:allowanceCopy];
 
   v11 = *MEMORY[0x277D85DE8];
 
   return v10;
 }
 
-+ (id)truncatedClientBundleIdOrCurrentBundleId:(id)a3
++ (id)truncatedClientBundleIdOrCurrentBundleId:(id)id
 {
-  v4 = [a3 bundleIdentifierOrProcessName:0];
-  if (!v4)
+  bundleIdentifier = [id bundleIdentifierOrProcessName:0];
+  if (!bundleIdentifier)
   {
-    v5 = [MEMORY[0x277CCA8D8] mainBundle];
-    v4 = [v5 bundleIdentifier];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
   }
 
-  v6 = [a1 truncatedClientBundleId:v4];
+  v6 = [self truncatedClientBundleId:bundleIdentifier];
 
   return v6;
 }
 
-+ (id)truncatedClientBundleId:(id)a3
++ (id)truncatedClientBundleId:(id)id
 {
-  v3 = a3;
+  idCopy = id;
   v4 = objc_autoreleasePoolPush();
-  if (v3)
+  if (idCopy)
   {
-    v5 = [v3 componentsSeparatedByString:@"."];
+    v5 = [idCopy componentsSeparatedByString:@"."];
     if ([v5 count] >= 2)
     {
       v6 = [v5 objectAtIndexedSubscript:{objc_msgSend(v5, "count") - 1}];
 
-      v3 = v6;
+      idCopy = v6;
     }
 
-    if ([v3 length] >= 0x19)
+    if ([idCopy length] >= 0x19)
     {
-      v7 = [v3 substringFromIndex:{objc_msgSend(v3, "length") - 24}];
+      v7 = [idCopy substringFromIndex:{objc_msgSend(idCopy, "length") - 24}];
 
-      v3 = v7;
+      idCopy = v7;
     }
 
-    v8 = v3;
+    v8 = idCopy;
   }
 
   else
@@ -113,60 +113,60 @@
   return v8;
 }
 
-+ (id)stringifyFeedbackDomainStatus:(unsigned __int8)a3
++ (id)stringifyFeedbackDomainStatus:(unsigned __int8)status
 {
-  if ((a3 - 1) > 4)
+  if ((status - 1) > 4)
   {
     return @"NotInDomain";
   }
 
   else
   {
-    return off_278976CC8[(a3 - 1)];
+    return off_278976CC8[(status - 1)];
   }
 }
 
-+ (id)stringifyDomain:(unsigned __int8)a3
++ (id)stringifyDomain:(unsigned __int8)domain
 {
-  if ((a3 - 1) > 6)
+  if ((domain - 1) > 6)
   {
     return @"Topics";
   }
 
   else
   {
-    return off_278976C90[(a3 - 1)];
+    return off_278976C90[(domain - 1)];
   }
 }
 
-+ (id)stringifyFeedbackType:(unsigned int)a3
++ (id)stringifyFeedbackType:(unsigned int)type
 {
-  if (a3 > 5)
+  if (type > 5)
   {
     return @"Undefined";
   }
 
   else
   {
-    return off_278976C60[a3];
+    return off_278976C60[type];
   }
 }
 
-+ (int)sourceForBundleId:(id)a3
++ (int)sourceForBundleId:(id)id
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  idCopy = id;
   if (sourceForBundleId___pasOnceToken3 != -1)
   {
     dispatch_once(&sourceForBundleId___pasOnceToken3, &__block_literal_global_76_19052);
   }
 
   v4 = sourceForBundleId___pasExprOnceResult;
-  v5 = [v4 objectForKeyedSubscript:v3];
+  v5 = [v4 objectForKeyedSubscript:idCopy];
   if (v5)
   {
 LABEL_17:
-    v12 = [v5 intValue];
+    intValue = [v5 intValue];
   }
 
   else
@@ -175,7 +175,7 @@ LABEL_17:
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = [*MEMORY[0x277D3A6C8] objectForKeyedSubscript:{v3, 0}];
+    v6 = [*MEMORY[0x277D3A6C8] objectForKeyedSubscript:{idCopy, 0}];
     v7 = [v6 countByEnumeratingWithState:&v16 objects:v22 count:16];
     if (v7)
     {
@@ -209,16 +209,16 @@ LABEL_17:
       }
     }
 
-    if ([v3 rangeOfString:@"com.apple." options:10] == 0x7FFFFFFFFFFFFFFFLL)
+    if ([idCopy rangeOfString:@"com.apple." options:10] == 0x7FFFFFFFFFFFFFFFLL)
     {
-      if (v3)
+      if (idCopy)
       {
-        v12 = 17;
+        intValue = 17;
       }
 
       else
       {
-        v12 = 18;
+        intValue = 18;
       }
     }
 
@@ -228,16 +228,16 @@ LABEL_17:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138739971;
-        v21 = v3;
+        v21 = idCopy;
         _os_log_impl(&dword_23224A000, v15, OS_LOG_TYPE_DEFAULT, "PPMetricsUtils: unknown first-party source %{sensitive}@", buf, 0xCu);
       }
 
-      v12 = 16;
+      intValue = 16;
     }
   }
 
   v13 = *MEMORY[0x277D85DE8];
-  return v12;
+  return intValue;
 }
 
 void __36__PPMetricsUtils_sourceForBundleId___block_invoke()
@@ -304,27 +304,27 @@ void __36__PPMetricsUtils_sourceForBundleId___block_invoke()
   v13 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)filterBundleId:(id)a3
++ (id)filterBundleId:(id)id
 {
-  v3 = a3;
-  if ([v3 hasPrefix:@"com.apple"])
+  idCopy = id;
+  if ([idCopy hasPrefix:@"com.apple"])
   {
-    v4 = [v3 _pas_stringBackedByUTF8CString];
+    _pas_stringBackedByUTF8CString = [idCopy _pas_stringBackedByUTF8CString];
   }
 
   else
   {
-    v4 = @"Third-Party";
+    _pas_stringBackedByUTF8CString = @"Third-Party";
   }
 
-  return v4;
+  return _pas_stringBackedByUTF8CString;
 }
 
-+ (int)mapDomainForPET2:(unsigned __int8)a3
++ (int)mapDomainForPET2:(unsigned __int8)t2
 {
-  if ((a3 - 1) < 7)
+  if ((t2 - 1) < 7)
   {
-    return (a3 - 1) + 1;
+    return (t2 - 1) + 1;
   }
 
   else
@@ -333,50 +333,50 @@ void __36__PPMetricsUtils_sourceForBundleId___block_invoke()
   }
 }
 
-+ (int)mapTopicDonationErrorForPET2:(int64_t)a3
++ (int)mapTopicDonationErrorForPET2:(int64_t)t2
 {
-  if (a3 > 8)
+  if (t2 > 8)
   {
     return 8;
   }
 
   else
   {
-    return dword_2324188B0[a3];
+    return dword_2324188B0[t2];
   }
 }
 
-+ (int)mapTopicAlgorithmForPET2:(unint64_t)a3
++ (int)mapTopicAlgorithmForPET2:(unint64_t)t2
 {
-  if (a3 - 1 > 0xA)
+  if (t2 - 1 > 0xA)
   {
     return 0;
   }
 
   else
   {
-    return dword_232418884[a3 - 1];
+    return dword_232418884[t2 - 1];
   }
 }
 
-+ (int)mapLocationAlgorithmForPET2:(unsigned __int16)a3
++ (int)mapLocationAlgorithmForPET2:(unsigned __int16)t2
 {
-  if ((a3 - 1) > 0xB)
+  if ((t2 - 1) > 0xB)
   {
     return 0;
   }
 
   else
   {
-    return dword_232418854[(a3 - 1)];
+    return dword_232418854[(t2 - 1)];
   }
 }
 
-+ (int)mapNamedEntityCategory:(unint64_t)a3
++ (int)mapNamedEntityCategory:(unint64_t)category
 {
-  if (a3 - 1 < 0x15)
+  if (category - 1 < 0x15)
   {
-    return a3;
+    return category;
   }
 
   else
@@ -385,16 +385,16 @@ void __36__PPMetricsUtils_sourceForBundleId___block_invoke()
   }
 }
 
-+ (int)mapNamedEntityAlgorithmForPET2:(unint64_t)a3
++ (int)mapNamedEntityAlgorithmForPET2:(unint64_t)t2
 {
-  if (a3 - 1 > 0x10)
+  if (t2 - 1 > 0x10)
   {
     return 0;
   }
 
   else
   {
-    return dword_232418810[a3 - 1];
+    return dword_232418810[t2 - 1];
   }
 }
 

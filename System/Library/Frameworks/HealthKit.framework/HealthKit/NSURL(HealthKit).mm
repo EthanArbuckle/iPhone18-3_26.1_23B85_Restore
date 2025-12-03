@@ -14,38 +14,38 @@
 {
   v20 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [MEMORY[0x1E696AF20] componentsWithURL:a1 resolvingAgainstBaseURL:1];
+  v5 = [MEMORY[0x1E696AF20] componentsWithURL:self resolvingAgainstBaseURL:1];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [v5 queryItems];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
-  if (v7)
+  queryItems = [v5 queryItems];
+  value = [queryItems countByEnumeratingWithState:&v15 objects:v19 count:16];
+  if (value)
   {
     v8 = *v16;
     while (2)
     {
-      for (i = 0; i != v7; i = i + 1)
+      for (i = 0; i != value; i = i + 1)
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(queryItems);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 name];
-        v12 = [v11 isEqualToString:v4];
+        name = [v10 name];
+        v12 = [name isEqualToString:v4];
 
         if (v12)
         {
-          v7 = [v10 value];
+          value = [v10 value];
           goto LABEL_11;
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
-      if (v7)
+      value = [queryItems countByEnumeratingWithState:&v15 objects:v19 count:16];
+      if (value)
       {
         continue;
       }
@@ -58,26 +58,26 @@ LABEL_11:
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v7;
+  return value;
 }
 
 - (uint64_t)hk_isValidSafariViewControllerURL
 {
-  v1 = [a1 scheme];
-  v2 = [v1 lowercaseString];
-  v3 = [v2 hasPrefix:@"http"];
+  scheme = [self scheme];
+  lowercaseString = [scheme lowercaseString];
+  v3 = [lowercaseString hasPrefix:@"http"];
 
   return v3;
 }
 
 - (uint64_t)hk_isRewrittenHealthCardQRCodeURL
 {
-  v3 = [a1 pathComponents];
-  v4 = [a1 scheme];
-  if (![v4 caseInsensitiveCompare:@"https"])
+  pathComponents = [self pathComponents];
+  scheme = [self scheme];
+  if (![scheme caseInsensitiveCompare:@"https"])
   {
-    v6 = [a1 host];
-    if ([v6 caseInsensitiveCompare:@"redirect.health.apple.com"])
+    host = [self host];
+    if ([host caseInsensitiveCompare:@"redirect.health.apple.com"])
     {
 LABEL_4:
       v5 = 0;
@@ -86,22 +86,22 @@ LABEL_5:
       goto LABEL_6;
     }
 
-    v8 = [v3 count];
+    v8 = [pathComponents count];
     if (v8 > 2)
     {
       goto LABEL_10;
     }
 
-    if ([v3 count] != 2)
+    if ([pathComponents count] != 2)
     {
       goto LABEL_4;
     }
 
-    v1 = [a1 fragment];
-    if (v1)
+    fragment = [self fragment];
+    if (fragment)
     {
 LABEL_10:
-      v9 = [v3 objectAtIndexedSubscript:1];
+      v9 = [pathComponents objectAtIndexedSubscript:1];
       v5 = [v9 isEqualToString:@"SMARTHealthCard"];
 
       if (v8 > 2)
@@ -126,27 +126,27 @@ LABEL_6:
 
 - (uint64_t)hk_isRewrittenEUDigitalCOVIDCertificateQRCodeURL
 {
-  v2 = [a1 pathComponents];
-  v3 = [a1 scheme];
-  if ([v3 caseInsensitiveCompare:@"https"])
+  pathComponents = [self pathComponents];
+  scheme = [self scheme];
+  if ([scheme caseInsensitiveCompare:@"https"])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [a1 host];
-    if ([v5 caseInsensitiveCompare:@"redirect.health.apple.com"] || objc_msgSend(v2, "count") != 2)
+    host = [self host];
+    if ([host caseInsensitiveCompare:@"redirect.health.apple.com"] || objc_msgSend(pathComponents, "count") != 2)
     {
       v4 = 0;
     }
 
     else
     {
-      v6 = [a1 fragment];
-      if (v6)
+      fragment = [self fragment];
+      if (fragment)
       {
-        v7 = [v2 objectAtIndexedSubscript:1];
+        v7 = [pathComponents objectAtIndexedSubscript:1];
         v4 = [v7 isEqualToString:@"EU-DCC"];
       }
 
@@ -163,13 +163,13 @@ LABEL_6:
 - (id)hk_fileSizeWithError:()HealthKit
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  if (([a1 isFileURL] & 1) == 0)
+  if (([self isFileURL] & 1) == 0)
   {
-    [(NSURL(HealthKit) *)a2 hk_fileSizeWithError:a1];
+    [(NSURL(HealthKit) *)a2 hk_fileSizeWithError:self];
   }
 
   memset(&v18, 0, sizeof(v18));
-  if (stat([a1 fileSystemRepresentation], &v18))
+  if (stat([self fileSystemRepresentation], &v18))
   {
     v6 = __error();
     v7 = MEMORY[0x1E696ABC0];
@@ -177,7 +177,7 @@ LABEL_6:
     {
       v8 = *MEMORY[0x1E696A250];
       v19 = *MEMORY[0x1E696A998];
-      v20[0] = a1;
+      v20[0] = self;
       v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
       v10 = [v7 errorWithDomain:v8 code:4 userInfo:v9];
       v11 = v10;
@@ -200,7 +200,7 @@ LABEL_6:
     {
       v14 = __error();
       v15 = strerror(*v14);
-      [v7 hk_assignError:a3 code:102 format:{@"Failed to retrieve size for file at '%@': %s", a1, v15, *&v18.st_dev, v18.st_ino, *&v18.st_uid, *&v18.st_rdev, v18.st_atimespec.tv_sec, v18.st_atimespec.tv_nsec, v18.st_mtimespec.tv_sec, v18.st_mtimespec.tv_nsec, v18.st_ctimespec.tv_sec, v18.st_ctimespec.tv_nsec, v18.st_birthtimespec.tv_sec, v18.st_birthtimespec.tv_nsec}];
+      [v7 hk_assignError:a3 code:102 format:{@"Failed to retrieve size for file at '%@': %s", self, v15, *&v18.st_dev, v18.st_ino, *&v18.st_uid, *&v18.st_rdev, v18.st_atimespec.tv_sec, v18.st_atimespec.tv_nsec, v18.st_mtimespec.tv_sec, v18.st_mtimespec.tv_nsec, v18.st_ctimespec.tv_sec, v18.st_ctimespec.tv_nsec, v18.st_birthtimespec.tv_sec, v18.st_birthtimespec.tv_nsec}];
     }
 
     v13 = 0;
@@ -220,7 +220,7 @@ LABEL_6:
 {
   if (a3)
   {
-    v4 = [a1 URLWithString:?];
+    v4 = [self URLWithString:?];
   }
 
   else
@@ -242,11 +242,11 @@ LABEL_6:
   v24 = a14;
   if ((v19 == 0) != (a4 != 0))
   {
-    [NSURL(HealthKit) _hk_tapToRadarURLForBundleID:a2 component:a1 title:? description:? classification:? reproducibility:? keywords:? autoDiagnostics:? attachments:? collaborationContactHandles:? diagnosticExtensionOptions:? behavior:?];
+    [NSURL(HealthKit) _hk_tapToRadarURLForBundleID:a2 component:self title:? description:? classification:? reproducibility:? keywords:? autoDiagnostics:? attachments:? collaborationContactHandles:? diagnosticExtensionOptions:? behavior:?];
   }
 
-  v25 = [MEMORY[0x1E696AB08] URLQueryAllowedCharacterSet];
-  v26 = [v25 mutableCopy];
+  uRLQueryAllowedCharacterSet = [MEMORY[0x1E696AB08] URLQueryAllowedCharacterSet];
+  v26 = [uRLQueryAllowedCharacterSet mutableCopy];
 
   [v26 removeCharactersInString:{@"=, &"}];
   v27 = [MEMORY[0x1E696AD60] stringWithFormat:@"tap-to-radar://new"];
@@ -307,8 +307,8 @@ LABEL_6:
           v32 = @"Health Sleep";
 LABEL_42:
           v33 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-          v34 = [v33 stringValue];
-          v35 = [v34 stringByAddingPercentEncodingWithAllowedCharacters:v26];
+          stringValue = [v33 stringValue];
+          v35 = [stringValue stringByAddingPercentEncodingWithAllowedCharacters:v26];
           [v27 appendFormat:@"?ComponentID=%@", v35];
 
           v36 = [(__CFString *)v32 stringByAddingPercentEncodingWithAllowedCharacters:v26];

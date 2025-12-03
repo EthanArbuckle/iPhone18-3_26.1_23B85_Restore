@@ -1,48 +1,48 @@
 @interface OrgApacheLuceneSearchFieldComparator_RelevanceComparator
-- (int)compareValuesWithId:(id)a3 withId:(id)a4;
+- (int)compareValuesWithId:(id)id withId:(id)withId;
 - (void)dealloc;
-- (void)setScorerWithOrgApacheLuceneSearchScorer:(id)a3;
-- (void)setTopValueWithId:(id)a3;
+- (void)setScorerWithOrgApacheLuceneSearchScorer:(id)scorer;
+- (void)setTopValueWithId:(id)id;
 @end
 
 @implementation OrgApacheLuceneSearchFieldComparator_RelevanceComparator
 
-- (void)setTopValueWithId:(id)a3
+- (void)setTopValueWithId:(id)id
 {
-  if (!a3)
+  if (!id)
   {
     JreThrowNullPointerException();
   }
 
-  [a3 floatValue];
+  [id floatValue];
   self->topValue_ = v4;
 }
 
-- (void)setScorerWithOrgApacheLuceneSearchScorer:(id)a3
+- (void)setScorerWithOrgApacheLuceneSearchScorer:(id)scorer
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
 
-    JreStrongAssign(&self->scorer_, a3);
+    JreStrongAssign(&self->scorer_, scorer);
   }
 
   else
   {
-    v5 = new_OrgApacheLuceneSearchScoreCachingWrappingScorer_initWithOrgApacheLuceneSearchScorer_(a3);
+    v5 = new_OrgApacheLuceneSearchScoreCachingWrappingScorer_initWithOrgApacheLuceneSearchScorer_(scorer);
 
     JreStrongAssignAndConsume(&self->scorer_, v5);
   }
 }
 
-- (int)compareValuesWithId:(id)a3 withId:(id)a4
+- (int)compareValuesWithId:(id)id withId:(id)withId
 {
-  if (!a4)
+  if (!withId)
   {
     JreThrowNullPointerException();
   }
 
-  return [a4 compareToWithId:a3];
+  return [withId compareToWithId:id];
 }
 
 - (void)dealloc

@@ -1,53 +1,53 @@
 @interface CKSQLiteTableGroup
-+ (CKSQLiteTableGroup)tableGroupWithEntry:(id)a3 database:(id)a4 options:(unint64_t)a5;
-+ (id)groupEntryInDatabase:(id)a3 withGroupName:(id)a4 error:(id *)a5;
-+ (id)groupNameWithDomain:(int)a3 domainIdentifier:(id)a4 groupName:(id)a5;
-+ (id)lookupTableGroupInstanceInCache:(id)a3 withName:(id)a4 options:(unint64_t)a5;
-+ (id)performTableGroupValidationInDatabase:(id)a3;
-+ (id)purgeGroup:(id)a3;
-+ (id)tableGroupInDatabase:(id)a3 withID:(id)a4 error:(id *)a5;
-+ (id)tableGroupInDatabase:(id)a3 withName:(id)a4 options:(unint64_t)a5 error:(id *)a6;
-+ (void)enumerateGroupEntriesInDatabase:(id)a3 block:(id)a4;
-+ (void)enumerateGroupsInDatabase:(id)a3 block:(id)a4;
-+ (void)expireGroup:(id)a3 reason:(id)a4 database:(id)a5;
-+ (void)groupWillExpire:(id)a3;
-+ (void)purgeGroupWithName:(id)a3 inDatabase:(id)a4;
-- (BOOL)hasFlag:(unint64_t)a3;
++ (CKSQLiteTableGroup)tableGroupWithEntry:(id)entry database:(id)database options:(unint64_t)options;
++ (id)groupEntryInDatabase:(id)database withGroupName:(id)name error:(id *)error;
++ (id)groupNameWithDomain:(int)domain domainIdentifier:(id)identifier groupName:(id)name;
++ (id)lookupTableGroupInstanceInCache:(id)cache withName:(id)name options:(unint64_t)options;
++ (id)performTableGroupValidationInDatabase:(id)database;
++ (id)purgeGroup:(id)group;
++ (id)tableGroupInDatabase:(id)database withID:(id)d error:(id *)error;
++ (id)tableGroupInDatabase:(id)database withName:(id)name options:(unint64_t)options error:(id *)error;
++ (void)enumerateGroupEntriesInDatabase:(id)database block:(id)block;
++ (void)enumerateGroupsInDatabase:(id)database block:(id)block;
++ (void)expireGroup:(id)group reason:(id)reason database:(id)database;
++ (void)groupWillExpire:(id)expire;
++ (void)purgeGroupWithName:(id)name inDatabase:(id)database;
+- (BOOL)hasFlag:(unint64_t)flag;
 - (BOOL)isFirstInstanceInProcess;
 - (BOOL)isFirstInstanceSinceBoot;
-- (CKSQLiteTableGroup)initWithName:(id)a3 options:(unint64_t)a4 database:(id)a5;
-- (id)UUIDValueForKey:(id)a3 error:(id *)a4;
+- (CKSQLiteTableGroup)initWithName:(id)name options:(unint64_t)options database:(id)database;
+- (id)UUIDValueForKey:(id)key error:(id *)error;
 - (id)_tablesByNameInitializer;
-- (id)clearFlag:(unint64_t)a3;
-- (id)dataValueForKey:(id)a3 error:(id *)a4;
-- (id)databaseManager:(id *)a3;
-- (id)dateValueForKey:(id)a3 error:(id *)a4;
+- (id)clearFlag:(unint64_t)flag;
+- (id)dataValueForKey:(id)key error:(id *)error;
+- (id)databaseManager:(id *)manager;
+- (id)dateValueForKey:(id)key error:(id *)error;
 - (id)finishInitializing;
-- (id)migrateDataFromGroup:(id)a3;
-- (id)numberValueForKey:(id)a3 error:(id *)a4;
+- (id)migrateDataFromGroup:(id)group;
+- (id)numberValueForKey:(id)key error:(id *)error;
 - (id)performDataMigration;
 - (id)performValidation;
-- (id)prepareExistingTables:(id)a3;
+- (id)prepareExistingTables:(id)tables;
 - (id)prepareNewTables;
 - (id)prepareTables;
-- (id)requestCallbackForTarget:(id)a3 withDate:(id)a4 coalescingInterval:(double)a5 minimumSeparation:(double)a6;
-- (id)setDataValue:(id)a3 forKey:(id)a4;
-- (id)setDateValue:(id)a3 forKey:(id)a4;
-- (id)setFlag:(unint64_t)a3;
-- (id)setNumberValue:(id)a3 forKey:(id)a4;
-- (id)setStringValue:(id)a3 forKey:(id)a4;
-- (id)setUUIDValue:(id)a3 forKey:(id)a4;
-- (id)stringValueForKey:(id)a3 error:(id *)a4;
+- (id)requestCallbackForTarget:(id)target withDate:(id)date coalescingInterval:(double)interval minimumSeparation:(double)separation;
+- (id)setDataValue:(id)value forKey:(id)key;
+- (id)setDateValue:(id)value forKey:(id)key;
+- (id)setFlag:(unint64_t)flag;
+- (id)setNumberValue:(id)value forKey:(id)key;
+- (id)setStringValue:(id)value forKey:(id)key;
+- (id)setUUIDValue:(id)value forKey:(id)key;
+- (id)stringValueForKey:(id)key error:(id *)error;
 - (id)tocTable;
 - (id)tocTableGroupTable;
-- (id)updateGroupData:(id)a3;
-- (id)validateGroup:(id)a3 matches:(id)a4;
-- (id)validateTable:(id)a3 matchesTOCEntry:(id)a4;
-- (id)validateTablesMatchesTOCEntries:(id)a3;
-- (void)_setupActivityEntry:(id)a3;
-- (void)addTable:(id)a3;
+- (id)updateGroupData:(id)data;
+- (id)validateGroup:(id)group matches:(id)matches;
+- (id)validateTable:(id)table matchesTOCEntry:(id)entry;
+- (id)validateTablesMatchesTOCEntries:(id)entries;
+- (void)_setupActivityEntry:(id)entry;
+- (void)addTable:(id)table;
 - (void)dealloc;
-- (void)serialize:(id)a3;
+- (void)serialize:(id)serialize;
 - (void)updateLastUsedDate;
 @end
 
@@ -224,125 +224,125 @@ LABEL_7:
   return v6;
 }
 
-- (void)_setupActivityEntry:(id)a3
+- (void)_setupActivityEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   v7 = objc_msgSend_groupID(self, v5, v6);
-  objc_msgSend_setGroupID_(v4, v8, v7);
+  objc_msgSend_setGroupID_(entryCopy, v8, v7);
 
   v12 = objc_msgSend_name(self, v9, v10);
-  objc_msgSend_setGroupName_(v4, v11, v12);
+  objc_msgSend_setGroupName_(entryCopy, v11, v12);
 }
 
-- (id)numberValueForKey:(id)a3 error:(id *)a4
+- (id)numberValueForKey:(id)key error:(id *)error
 {
-  v6 = a3;
+  keyCopy = key;
   v8 = sub_188441668(self, v7);
-  v10 = objc_msgSend_numberValueForKey_error_(v8, v9, v6, a4);
+  v10 = objc_msgSend_numberValueForKey_error_(v8, v9, keyCopy, error);
 
   return v10;
 }
 
-- (id)setNumberValue:(id)a3 forKey:(id)a4
+- (id)setNumberValue:(id)value forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
+  keyCopy = key;
+  valueCopy = value;
   v9 = sub_188441668(self, v8);
-  v11 = objc_msgSend_setNumberValue_forKey_(v9, v10, v7, v6);
+  v11 = objc_msgSend_setNumberValue_forKey_(v9, v10, valueCopy, keyCopy);
 
   return v11;
 }
 
-- (id)stringValueForKey:(id)a3 error:(id *)a4
+- (id)stringValueForKey:(id)key error:(id *)error
 {
-  v6 = a3;
+  keyCopy = key;
   v8 = sub_188441668(self, v7);
-  v10 = objc_msgSend_stringValueForKey_error_(v8, v9, v6, a4);
+  v10 = objc_msgSend_stringValueForKey_error_(v8, v9, keyCopy, error);
 
   return v10;
 }
 
-- (id)setStringValue:(id)a3 forKey:(id)a4
+- (id)setStringValue:(id)value forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
+  keyCopy = key;
+  valueCopy = value;
   v9 = sub_188441668(self, v8);
-  v11 = objc_msgSend_setStringValue_forKey_(v9, v10, v7, v6);
+  v11 = objc_msgSend_setStringValue_forKey_(v9, v10, valueCopy, keyCopy);
 
   return v11;
 }
 
-- (id)dataValueForKey:(id)a3 error:(id *)a4
+- (id)dataValueForKey:(id)key error:(id *)error
 {
-  v6 = a3;
+  keyCopy = key;
   v8 = sub_188441668(self, v7);
-  v10 = objc_msgSend_dataValueForKey_error_(v8, v9, v6, a4);
+  v10 = objc_msgSend_dataValueForKey_error_(v8, v9, keyCopy, error);
 
   return v10;
 }
 
-- (id)setDataValue:(id)a3 forKey:(id)a4
+- (id)setDataValue:(id)value forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
+  keyCopy = key;
+  valueCopy = value;
   v9 = sub_188441668(self, v8);
-  v11 = objc_msgSend_setDataValue_forKey_(v9, v10, v7, v6);
+  v11 = objc_msgSend_setDataValue_forKey_(v9, v10, valueCopy, keyCopy);
 
   return v11;
 }
 
-- (id)dateValueForKey:(id)a3 error:(id *)a4
+- (id)dateValueForKey:(id)key error:(id *)error
 {
-  v6 = a3;
+  keyCopy = key;
   v8 = sub_188441668(self, v7);
-  v10 = objc_msgSend_dateValueForKey_error_(v8, v9, v6, a4);
+  v10 = objc_msgSend_dateValueForKey_error_(v8, v9, keyCopy, error);
 
   return v10;
 }
 
-- (id)setDateValue:(id)a3 forKey:(id)a4
+- (id)setDateValue:(id)value forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
+  keyCopy = key;
+  valueCopy = value;
   v9 = sub_188441668(self, v8);
-  v11 = objc_msgSend_setDateValue_forKey_(v9, v10, v7, v6);
+  v11 = objc_msgSend_setDateValue_forKey_(v9, v10, valueCopy, keyCopy);
 
   return v11;
 }
 
-- (id)UUIDValueForKey:(id)a3 error:(id *)a4
+- (id)UUIDValueForKey:(id)key error:(id *)error
 {
-  v6 = a3;
+  keyCopy = key;
   v8 = sub_188441668(self, v7);
-  v10 = objc_msgSend_UUIDValueForKey_error_(v8, v9, v6, a4);
+  v10 = objc_msgSend_UUIDValueForKey_error_(v8, v9, keyCopy, error);
 
   return v10;
 }
 
-- (id)setUUIDValue:(id)a3 forKey:(id)a4
+- (id)setUUIDValue:(id)value forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
+  keyCopy = key;
+  valueCopy = value;
   v9 = sub_188441668(self, v8);
-  v11 = objc_msgSend_setUUIDValue_forKey_(v9, v10, v7, v6);
+  v11 = objc_msgSend_setUUIDValue_forKey_(v9, v10, valueCopy, keyCopy);
 
   return v11;
 }
 
-+ (id)groupNameWithDomain:(int)a3 domainIdentifier:(id)a4 groupName:(id)a5
++ (id)groupNameWithDomain:(int)domain domainIdentifier:(id)identifier groupName:(id)name
 {
-  v7 = a4;
-  v9 = a5;
-  if (a3 > 1)
+  identifierCopy = identifier;
+  nameCopy = name;
+  if (domain > 1)
   {
     v10 = @"container";
     v11 = @"custom";
-    if (a3 != 3)
+    if (domain != 3)
     {
       v11 = 0;
     }
 
-    if (a3 != 2)
+    if (domain != 2)
     {
       v10 = v11;
     }
@@ -350,35 +350,35 @@ LABEL_7:
     goto LABEL_10;
   }
 
-  if (a3)
+  if (domain)
   {
     v10 = @"account";
-    if (a3 != 1)
+    if (domain != 1)
     {
       v10 = 0;
     }
 
 LABEL_10:
-    objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v8, @"%@_%@_%@", v10, v7, v9);
+    objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v8, @"%@_%@_%@", v10, identifierCopy, nameCopy);
     goto LABEL_11;
   }
 
-  objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v8, @"%@_%@", @"global", v9);
+  objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v8, @"%@_%@", @"global", nameCopy);
   v12 = LABEL_11:;
 
   return v12;
 }
 
-+ (id)purgeGroup:(id)a3
++ (id)purgeGroup:(id)group
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v6 = objc_msgSend_tocTableGroupTable(v3, v4, v5);
-  v8 = objc_msgSend_invalidateGroup_(v6, v7, v3);
+  groupCopy = group;
+  v6 = objc_msgSend_tocTableGroupTable(groupCopy, v4, v5);
+  v8 = objc_msgSend_invalidateGroup_(v6, v7, groupCopy);
 
   if (!v8)
   {
-    v10 = objc_msgSend_setFlag_(v3, v9, 2);
+    v10 = objc_msgSend_setFlag_(groupCopy, v9, 2);
   }
 
   if (ck_log_initialization_predicate != -1)
@@ -390,8 +390,8 @@ LABEL_10:
   if (os_log_type_enabled(ck_log_facility_sql, OS_LOG_TYPE_INFO))
   {
     v12 = v11;
-    v15 = objc_msgSend_name(v3, v13, v14);
-    v18 = objc_msgSend_groupID(v3, v16, v17);
+    v15 = objc_msgSend_name(groupCopy, v13, v14);
+    v18 = objc_msgSend_groupID(groupCopy, v16, v17);
     v21 = 138543874;
     v22 = v15;
     v23 = 2112;
@@ -406,41 +406,41 @@ LABEL_10:
   return v8;
 }
 
-+ (void)purgeGroupWithName:(id)a3 inDatabase:(id)a4
++ (void)purgeGroupWithName:(id)name inDatabase:(id)database
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  databaseCopy = database;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = sub_18868C878;
   v12[3] = &unk_1E70C1200;
-  v13 = v7;
-  v14 = v6;
-  v15 = a1;
-  v8 = v6;
-  v9 = v7;
+  v13 = databaseCopy;
+  v14 = nameCopy;
+  selfCopy = self;
+  v8 = nameCopy;
+  v9 = databaseCopy;
   v11 = objc_msgSend_performDatabaseTransaction_(v9, v10, v12);
 }
 
-+ (id)groupEntryInDatabase:(id)a3 withGroupName:(id)a4 error:(id *)a5
++ (id)groupEntryInDatabase:(id)database withGroupName:(id)name error:(id *)error
 {
-  v7 = a4;
-  v10 = objc_msgSend_tocTableGroup(a3, v8, v9);
+  nameCopy = name;
+  v10 = objc_msgSend_tocTableGroup(database, v8, v9);
   v13 = objc_msgSend_tocTableGroupTable(v10, v11, v12);
-  v15 = objc_msgSend_entryWithGroupName_error_(v13, v14, v7, a5);
+  v15 = objc_msgSend_entryWithGroupName_error_(v13, v14, nameCopy, error);
 
   return v15;
 }
 
-+ (void)enumerateGroupEntriesInDatabase:(id)a3 block:(id)a4
++ (void)enumerateGroupEntriesInDatabase:(id)database block:(id)block
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v27 = v6;
-  v10 = objc_msgSend_tocTableGroup(v6, v8, v9);
+  databaseCopy = database;
+  blockCopy = block;
+  v27 = databaseCopy;
+  v10 = objc_msgSend_tocTableGroup(databaseCopy, v8, v9);
   v13 = objc_msgSend_tocTableGroupTable(v10, v11, v12);
-  v14 = NSStringFromClass(a1);
+  v14 = NSStringFromClass(self);
   v16 = objc_msgSend_tableGroupsWithClass_(v13, v15, v14);
 
   v32 = 0;
@@ -465,7 +465,7 @@ LABEL_3:
 
       v23 = *(*(&v28 + 1) + 8 * v22);
       v24 = objc_autoreleasePoolPush();
-      v7[2](v7, v23, &v32);
+      blockCopy[2](blockCopy, v23, &v32);
       LOBYTE(v23) = v32;
       objc_autoreleasePoolPop(v24);
       if (v23)
@@ -489,35 +489,35 @@ LABEL_3:
   v26 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)enumerateGroupsInDatabase:(id)a3 block:(id)a4
++ (void)enumerateGroupsInDatabase:(id)database block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  databaseCopy = database;
+  blockCopy = block;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = sub_18868CD68;
   v11[3] = &unk_1E70C14F8;
-  v13 = v7;
-  v14 = a1;
-  v12 = v6;
-  v8 = v7;
-  v9 = v6;
-  objc_msgSend_enumerateGroupEntriesInDatabase_block_(a1, v10, v9, v11);
+  v13 = blockCopy;
+  selfCopy = self;
+  v12 = databaseCopy;
+  v8 = blockCopy;
+  v9 = databaseCopy;
+  objc_msgSend_enumerateGroupEntriesInDatabase_block_(self, v10, v9, v11);
 }
 
-+ (CKSQLiteTableGroup)tableGroupWithEntry:(id)a3 database:(id)a4 options:(unint64_t)a5
++ (CKSQLiteTableGroup)tableGroupWithEntry:(id)entry database:(id)database options:(unint64_t)options
 {
-  v7 = a3;
-  v8 = a4;
-  v11 = objc_msgSend_tocTableGroup(v8, v9, v10);
+  entryCopy = entry;
+  databaseCopy = database;
+  v11 = objc_msgSend_tocTableGroup(databaseCopy, v9, v10);
   v14 = objc_msgSend_tocTableGroupTable(v11, v12, v13);
 
-  v17 = objc_msgSend_creatingClass(v7, v15, v16);
+  v17 = objc_msgSend_creatingClass(entryCopy, v15, v16);
   v18 = NSClassFromString(v17);
 
   v19 = [v18 alloc];
-  v22 = objc_msgSend_name(v7, v20, v21);
-  v24 = objc_msgSend_initWithName_options_database_(v19, v23, v22, a5, v8);
+  v22 = objc_msgSend_name(entryCopy, v20, v21);
+  v24 = objc_msgSend_initWithName_options_database_(v19, v23, v22, options, databaseCopy);
 
   if (v24)
   {
@@ -527,26 +527,26 @@ LABEL_3:
     v32[2] = sub_18868CFB0;
     v32[3] = &unk_1E70C1070;
     v33 = v14;
-    v34 = v7;
+    v34 = entryCopy;
     v35 = v24;
     objc_msgSend_enumeratePropertyDataWithBlock_(v27, v28, v32);
   }
 
   else
   {
-    v29 = objc_msgSend_name(v7, v25, v26);
-    objc_msgSend_purgeGroupWithName_inDatabase_(CKSQLiteTableGroup, v30, v29, v8);
+    v29 = objc_msgSend_name(entryCopy, v25, v26);
+    objc_msgSend_purgeGroupWithName_inDatabase_(CKSQLiteTableGroup, v30, v29, databaseCopy);
   }
 
   return v24;
 }
 
-+ (id)lookupTableGroupInstanceInCache:(id)a3 withName:(id)a4 options:(unint64_t)a5
++ (id)lookupTableGroupInstanceInCache:(id)cache withName:(id)name options:(unint64_t)options
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
+  optionsCopy = options;
+  cacheCopy = cache;
+  nameCopy = name;
+  v9 = nameCopy;
   v10 = 0;
   v17 = 0;
   v18 = &v17;
@@ -554,15 +554,15 @@ LABEL_3:
   v20 = sub_1883EE21C;
   v21 = sub_1883EF7B4;
   v22 = 0;
-  if ((v5 & 0x80000) == 0)
+  if ((optionsCopy & 0x80000) == 0)
   {
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = sub_18868D188;
     v14[3] = &unk_1E70C14D0;
     v16 = &v17;
-    v15 = v8;
-    objc_msgSend_usingTableGroupCachePerformBlock_(v7, v11, v14);
+    v15 = nameCopy;
+    objc_msgSend_usingTableGroupCachePerformBlock_(cacheCopy, v11, v14);
 
     v10 = v18[5];
   }
@@ -573,27 +573,27 @@ LABEL_3:
   return v12;
 }
 
-+ (id)tableGroupInDatabase:(id)a3 withName:(id)a4 options:(unint64_t)a5 error:(id *)a6
++ (id)tableGroupInDatabase:(id)database withName:(id)name options:(unint64_t)options error:(id *)error
 {
-  v10 = a3;
-  v13 = a4;
+  databaseCopy = database;
+  nameCopy = name;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
   v34 = sub_1883EE21C;
   v35 = sub_1883EF7B4;
   v36 = 0;
-  if ((a5 & 0x200000) != 0)
+  if ((options & 0x200000) != 0)
   {
-    a5 |= 0xD0000uLL;
+    options |= 0xD0000uLL;
   }
 
-  if (v10 || (objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v11, @"CKErrorDomain", 1, @"table group lookup requires a database"), (v19 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (databaseCopy || (objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v11, @"CKErrorDomain", 1, @"table group lookup requires a database"), (v19 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    if (objc_msgSend_length(v13, v11, v12) || (objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v14, @"CKErrorDomain", 1, @"table group requires a non empty name"), (v19 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (objc_msgSend_length(nameCopy, v11, v12) || (objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v14, @"CKErrorDomain", 1, @"table group requires a non empty name"), (v19 = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v15 = _CKSQLDBSerializerLock(v10 + 8);
-      v17 = objc_msgSend_lookupTableGroupInstanceInCache_withName_options_(a1, v16, v10, v13, a5);
+      v15 = _CKSQLDBSerializerLock(databaseCopy + 8);
+      v17 = objc_msgSend_lookupTableGroupInstanceInCache_withName_options_(self, v16, databaseCopy, nameCopy, options);
       v18 = v32[5];
       v32[5] = v17;
 
@@ -618,11 +618,11 @@ LABEL_14:
         v25[1] = 3221225472;
         v25[2] = sub_18868D47C;
         v25[3] = &unk_1E70C1548;
-        v26 = v10;
+        v26 = databaseCopy;
         v28 = &v31;
-        v29 = a1;
-        v27 = v13;
-        v30 = a5;
+        selfCopy = self;
+        v27 = nameCopy;
+        optionsCopy = options;
         v19 = objc_msgSend_performDatabaseTransaction_(v26, v20, v25);
 
         if (!v15)
@@ -641,10 +641,10 @@ LABEL_15:
   v21 = v32[5];
   v32[5] = 0;
 
-  if (a6)
+  if (error)
   {
     v22 = v19;
-    *a6 = v19;
+    *error = v19;
   }
 
 LABEL_17:
@@ -654,25 +654,25 @@ LABEL_17:
   return v23;
 }
 
-+ (id)tableGroupInDatabase:(id)a3 withID:(id)a4 error:(id *)a5
++ (id)tableGroupInDatabase:(id)database withID:(id)d error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v12 = objc_msgSend_tocTableGroup(v8, v10, v11);
+  databaseCopy = database;
+  dCopy = d;
+  v12 = objc_msgSend_tocTableGroup(databaseCopy, v10, v11);
   v15 = objc_msgSend_tocTableGroupTable(v12, v13, v14);
   v31 = 0;
-  v17 = objc_msgSend_entryWithPrimaryKey_error_(v15, v16, v9, &v31);
+  v17 = objc_msgSend_entryWithPrimaryKey_error_(v15, v16, dCopy, &v31);
 
   v20 = v31;
   if (v17 && (objc_msgSend_name(v17, v18, v19), v21 = objc_claimAutoreleasedReturnValue(), v21, v21))
   {
     v24 = objc_msgSend_name(v17, v22, v23);
     v30 = v20;
-    v26 = objc_msgSend_tableGroupInDatabase_withName_options_error_(a1, v25, v8, v24, 0x10000, &v30);
+    v26 = objc_msgSend_tableGroupInDatabase_withName_options_error_(self, v25, databaseCopy, v24, 0x10000, &v30);
     v27 = v30;
 
     v20 = v27;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_8;
     }
@@ -681,7 +681,7 @@ LABEL_17:
   else
   {
     v26 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_8;
     }
@@ -690,7 +690,7 @@ LABEL_17:
   if (v20)
   {
     v28 = v20;
-    *a5 = v20;
+    *error = v20;
   }
 
 LABEL_8:
@@ -698,17 +698,17 @@ LABEL_8:
   return v26;
 }
 
-- (CKSQLiteTableGroup)initWithName:(id)a3 options:(unint64_t)a4 database:(id)a5
+- (CKSQLiteTableGroup)initWithName:(id)name options:(unint64_t)options database:(id)database
 {
-  v9 = a5;
+  databaseCopy = database;
   v25.receiver = self;
   v25.super_class = CKSQLiteTableGroup;
-  v10 = [(CKSQLiteTableGroupEntry *)&v25 initWithName:a3];
+  v10 = [(CKSQLiteTableGroupEntry *)&v25 initWithName:name];
   if (v10)
   {
     v11 = v10;
-    v10->_options = a4;
-    objc_storeStrong(&v10->_db, a5);
+    v10->_options = options;
+    objc_storeStrong(&v10->_db, database);
     v14 = objc_msgSend_init(v11, v12, v13);
     v17 = v14;
     if (v14)
@@ -731,12 +731,12 @@ LABEL_8:
   return v17;
 }
 
-- (id)setFlag:(unint64_t)a3
+- (id)setFlag:(unint64_t)flag
 {
-  v7 = objc_msgSend_db(self, a2, a3);
+  v7 = objc_msgSend_db(self, a2, flag);
   if (v7)
   {
-    v8 = objc_msgSend_setFlag_database_(self, v5, a3, v7);
+    v8 = objc_msgSend_setFlag_database_(self, v5, flag, v7);
   }
 
   else
@@ -744,7 +744,7 @@ LABEL_8:
     v9 = MEMORY[0x1E696AD98];
     v10 = objc_msgSend_flags(self, v5, v6);
     v13 = objc_msgSend_unsignedLongLongValue(v10, v11, v12);
-    v15 = objc_msgSend_numberWithUnsignedLongLong_(v9, v14, v13 | a3);
+    v15 = objc_msgSend_numberWithUnsignedLongLong_(v9, v14, v13 | flag);
     objc_msgSend_setFlags_(self, v16, v15);
 
     v8 = 0;
@@ -753,12 +753,12 @@ LABEL_8:
   return v8;
 }
 
-- (id)clearFlag:(unint64_t)a3
+- (id)clearFlag:(unint64_t)flag
 {
-  v7 = objc_msgSend_db(self, a2, a3);
+  v7 = objc_msgSend_db(self, a2, flag);
   if (v7)
   {
-    v8 = objc_msgSend_clearFlag_database_(self, v5, a3, v7);
+    v8 = objc_msgSend_clearFlag_database_(self, v5, flag, v7);
   }
 
   else
@@ -766,7 +766,7 @@ LABEL_8:
     v9 = MEMORY[0x1E696AD98];
     v10 = objc_msgSend_flags(self, v5, v6);
     v13 = objc_msgSend_unsignedLongLongValue(v10, v11, v12);
-    v15 = objc_msgSend_numberWithUnsignedLongLong_(v9, v14, v13 & ~a3);
+    v15 = objc_msgSend_numberWithUnsignedLongLong_(v9, v14, v13 & ~flag);
     objc_msgSend_setFlags_(self, v16, v15);
 
     v8 = 0;
@@ -775,18 +775,18 @@ LABEL_8:
   return v8;
 }
 
-- (BOOL)hasFlag:(unint64_t)a3
+- (BOOL)hasFlag:(unint64_t)flag
 {
-  v7 = objc_msgSend_db(self, a2, a3);
+  v7 = objc_msgSend_db(self, a2, flag);
   if (v7)
   {
-    hasFlag_database = objc_msgSend_hasFlag_database_(self, v5, a3, v7);
+    hasFlag_database = objc_msgSend_hasFlag_database_(self, v5, flag, v7);
   }
 
   else
   {
     v9 = objc_msgSend_flags(self, v5, v6);
-    hasFlag_database = (objc_msgSend_unsignedLongLongValue(v9, v10, v11) & a3) != 0;
+    hasFlag_database = (objc_msgSend_unsignedLongLongValue(v9, v10, v11) & flag) != 0;
   }
 
   return hasFlag_database;
@@ -807,10 +807,10 @@ LABEL_8:
   return v3;
 }
 
-+ (void)groupWillExpire:(id)a3
++ (void)groupWillExpire:(id)expire
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = objc_msgSend_objectForKey_(a3, a2, CKSQLiteTableGroupExpiryFileRemovalKey);
+  v3 = objc_msgSend_objectForKey_(expire, a2, CKSQLiteTableGroupExpiryFileRemovalKey);
   if (objc_msgSend_count(v3, v4, v5))
   {
     v8 = objc_msgSend_defaultManager(MEMORY[0x1E696AC08], v6, v7);
@@ -873,12 +873,12 @@ LABEL_8:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)expireGroup:(id)a3 reason:(id)a4 database:(id)a5
++ (void)expireGroup:(id)group reason:(id)reason database:(id)database
 {
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  groupCopy = group;
+  reasonCopy = reason;
+  databaseCopy = database;
   if (ck_log_initialization_predicate != -1)
   {
     dispatch_once(&ck_log_initialization_predicate, ck_log_initialization_block);
@@ -888,18 +888,18 @@ LABEL_8:
   if (os_log_type_enabled(ck_log_facility_sql, OS_LOG_TYPE_INFO))
   {
     v14 = v11;
-    v17 = objc_msgSend_name(v8, v15, v16);
+    v17 = objc_msgSend_name(groupCopy, v15, v16);
     v30 = 138543618;
     v31 = v17;
     v32 = 2114;
-    v33 = v9;
+    v33 = reasonCopy;
     _os_log_impl(&dword_1883EA000, v14, OS_LOG_TYPE_INFO, "Table group: %{public}@ expired due to: %{public}@", &v30, 0x16u);
   }
 
-  v20 = objc_msgSend_groupData(v8, v12, v13);
+  v20 = objc_msgSend_groupData(groupCopy, v12, v13);
   if (v20)
   {
-    v21 = objc_msgSend_creatingClass(v8, v18, v19);
+    v21 = objc_msgSend_creatingClass(groupCopy, v18, v19);
     v22 = NSClassFromString(v21);
     if (!v22)
     {
@@ -926,8 +926,8 @@ LABEL_8:
     objc_msgSend_groupWillExpire_(v22, v24, v20);
   }
 
-  v27 = objc_msgSend_name(v8, v18, v19);
-  objc_msgSend_purgeGroupWithName_inDatabase_(a1, v28, v27, v10);
+  v27 = objc_msgSend_name(groupCopy, v18, v19);
+  objc_msgSend_purgeGroupWithName_inDatabase_(self, v28, v27, databaseCopy);
 
   v29 = *MEMORY[0x1E69E9840];
 }
@@ -1036,13 +1036,13 @@ LABEL_8:
   return v38;
 }
 
-- (id)prepareExistingTables:(id)a3
+- (id)prepareExistingTables:(id)tables
 {
   v54 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  tablesCopy = tables;
   v7 = objc_msgSend_tocTable(self, v5, v6);
   v11 = objc_msgSend_groupID(self, v8, v9);
-  if (v4)
+  if (tablesCopy)
   {
     v52 = 0;
     obj = objc_msgSend_validationTocEntriesWithGroupID_error_(v7, v10, v11, &v52);
@@ -1088,7 +1088,7 @@ LABEL_8:
     {
       for (i = 0; i != v17; ++i)
       {
-        v20 = v4;
+        v20 = tablesCopy;
         if (*v48 != v18)
         {
           objc_enumerationMutation(obj);
@@ -1102,7 +1102,7 @@ LABEL_8:
         v31 = objc_msgSend_tableID(v21, v29, v30);
         objc_msgSend_setTableID_(v24, v32, v31);
 
-        v4 = v20;
+        tablesCopy = v20;
         if (v20)
         {
           objc_msgSend_addObject_(v46, v33, v22);
@@ -1116,14 +1116,14 @@ LABEL_8:
     while (v17);
   }
 
-  if (v4)
+  if (tablesCopy)
   {
     v37 = objc_msgSend_allKeys(self->_tablesByName, v35, v36);
     v38 = v46;
     objc_msgSend_addObjectsFromArray_(v46, v39, v37);
 
     v40 = v45;
-    v12 = v4[2](v4, v46, v45);
+    v12 = tablesCopy[2](tablesCopy, v46, v45);
     v7 = v43;
   }
 
@@ -1141,9 +1141,9 @@ LABEL_19:
   return v12;
 }
 
-- (void)addTable:(id)a3
+- (void)addTable:(id)table
 {
-  v25 = a3;
+  tableCopy = table;
   tablesByName = self->_tablesByName;
   if (tablesByName)
   {
@@ -1159,22 +1159,22 @@ LABEL_19:
   }
 
   v11 = v8;
-  v12 = objc_msgSend_logicalTableName(v25, v9, v10);
-  objc_msgSend_setObject_forKey_(self->_tablesByName, v13, v25, v12);
+  v12 = objc_msgSend_logicalTableName(tableCopy, v9, v10);
+  objc_msgSend_setObject_forKey_(self->_tablesByName, v13, tableCopy, v12);
   if (objc_msgSend_count(self->_tablesByName, v14, v15) != v11 + 1)
   {
     v23 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v16, v17);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v23, v24, a2, self, @"CKSQLiteTableGroup.m", 731, @"A table named %@ was added twice", v12);
   }
 
-  objc_msgSend_willAddToGroup_(v25, v16, self);
-  objc_msgSend_setTableGroup_(v25, v18, self);
+  objc_msgSend_willAddToGroup_(tableCopy, v16, self);
+  objc_msgSend_setTableGroup_(tableCopy, v18, self);
 }
 
-- (id)migrateDataFromGroup:(id)a3
+- (id)migrateDataFromGroup:(id)group
 {
   v85 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  groupCopy = group;
   v69 = 0;
   v70 = &v69;
   v71 = 0x3032000000;
@@ -1182,7 +1182,7 @@ LABEL_19:
   v73 = sub_1883EF7B4;
   v74 = 0;
   v7 = objc_msgSend_allTables(self, v5, v6);
-  v10 = objc_msgSend_allTables(v4, v8, v9);
+  v10 = objc_msgSend_allTables(groupCopy, v8, v9);
   v11 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v67 = 0u;
   v68 = 0u;
@@ -1249,7 +1249,7 @@ LABEL_19:
     v57[2] = sub_18868F2C4;
     v57[3] = &unk_1E70BC0C0;
     v58 = v21;
-    v59 = self;
+    selfCopy = self;
     v60 = &v69;
     v41 = objc_msgSend_performDatabaseTransaction_(v39, v40, v57);
 
@@ -1269,7 +1269,7 @@ LABEL_19:
         *buf = 138544130;
         v76 = v48;
         v77 = 2048;
-        v78 = self;
+        selfCopy3 = self;
         v79 = 2114;
         v80 = v51;
         v81 = 2114;
@@ -1294,7 +1294,7 @@ LABEL_19:
         *buf = 138544130;
         v76 = v53;
         v77 = 2048;
-        v78 = self;
+        selfCopy3 = self;
         v79 = 2114;
         v80 = v56;
         v81 = 2114;
@@ -1314,11 +1314,11 @@ LABEL_19:
   return v44;
 }
 
-- (id)updateGroupData:(id)a3
+- (id)updateGroupData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v7 = objc_msgSend_groupData(self, v5, v6);
-  v10 = objc_msgSend_copy(v4, v8, v9);
+  v10 = objc_msgSend_copy(dataCopy, v8, v9);
 
   objc_msgSend_setGroupData_(self, v11, v10);
   v14 = objc_msgSend_tocTableGroupTable(self, v12, v13);
@@ -1331,11 +1331,11 @@ LABEL_19:
   return v17;
 }
 
-- (void)serialize:(id)a3
+- (void)serialize:(id)serialize
 {
-  v5 = a3;
+  serializeCopy = serialize;
   v4 = _CKSQLDBSerializerLock(&self->_db->_serializer);
-  v5[2]();
+  serializeCopy[2]();
   if (v4)
   {
     v4[1].__sig = 0;
@@ -1343,31 +1343,31 @@ LABEL_19:
   }
 }
 
-- (id)databaseManager:(id *)a3
+- (id)databaseManager:(id *)manager
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  databaseManager = v4->_databaseManager;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  databaseManager = selfCopy->_databaseManager;
   if (!databaseManager)
   {
-    v8 = objc_msgSend_db(v4, v5, v6);
-    v10 = objc_msgSend_databaseManager_(v8, v9, a3);
-    v11 = v4->_databaseManager;
-    v4->_databaseManager = v10;
+    v8 = objc_msgSend_db(selfCopy, v5, v6);
+    v10 = objc_msgSend_databaseManager_(v8, v9, manager);
+    v11 = selfCopy->_databaseManager;
+    selfCopy->_databaseManager = v10;
 
-    databaseManager = v4->_databaseManager;
+    databaseManager = selfCopy->_databaseManager;
   }
 
   v12 = databaseManager;
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   return v12;
 }
 
-- (id)requestCallbackForTarget:(id)a3 withDate:(id)a4 coalescingInterval:(double)a5 minimumSeparation:(double)a6
+- (id)requestCallbackForTarget:(id)target withDate:(id)date coalescingInterval:(double)interval minimumSeparation:(double)separation
 {
-  v10 = a3;
-  v11 = a4;
+  targetCopy = target;
+  dateCopy = date;
   v20 = 0;
   v13 = objc_msgSend_databaseManager_(self, v12, &v20);
   v15 = v20;
@@ -1375,7 +1375,7 @@ LABEL_19:
   {
     if (v13)
     {
-      v15 = objc_msgSend_addActivityTriggerWithTarget_date_coalescingInterval_minimumSeparation_(v13, v14, v10, v11, a5, a6);
+      v15 = objc_msgSend_addActivityTriggerWithTarget_date_coalescingInterval_minimumSeparation_(v13, v14, targetCopy, dateCopy, interval, separation);
     }
 
     else
@@ -1526,24 +1526,24 @@ LABEL_29:
   return v14;
 }
 
-- (id)validateTable:(id)a3 matchesTOCEntry:(id)a4
+- (id)validateTable:(id)table matchesTOCEntry:(id)entry
 {
-  v6 = a3;
-  v7 = a4;
-  v10 = objc_msgSend_schema(v7, v8, v9);
-  v13 = objc_msgSend_createTableSQL(v6, v11, v12);
-  v16 = objc_msgSend_createTriggerSQL(v6, v14, v15);
+  tableCopy = table;
+  entryCopy = entry;
+  v10 = objc_msgSend_schema(entryCopy, v8, v9);
+  v13 = objc_msgSend_createTableSQL(tableCopy, v11, v12);
+  v16 = objc_msgSend_createTriggerSQL(tableCopy, v14, v15);
   v18 = objc_msgSend_stringByAppendingString_(v13, v17, v16);
 
   if ((objc_msgSend_isEqualToString_(v10, v19, v18) & 1) == 0)
   {
     v22 = objc_msgSend_name(self, v20, v21);
-    v37 = objc_msgSend_logicalTableName(v6, v39, v40);
+    v37 = objc_msgSend_logicalTableName(tableCopy, v39, v40);
     objc_msgSend_validationErrorWithMessage_(CKPrettyError, v41, @"Table group %@ failed validation - schema changed for table %@ (%@ vs %@)", v22, v37, v10, v18);
     goto LABEL_6;
   }
 
-  v22 = objc_msgSend_propertyData(v7, v20, v21);
+  v22 = objc_msgSend_propertyData(entryCopy, v20, v21);
   v23 = objc_opt_class();
   v26 = objc_msgSend_flattenedDBProperties(v23, v24, v25);
   isEqual = objc_msgSend_isEqual_(v22, v27, v26);
@@ -1551,7 +1551,7 @@ LABEL_29:
   if ((isEqual & 1) == 0)
   {
     v37 = objc_msgSend_name(self, v29, v30);
-    v45 = objc_msgSend_logicalTableName(v6, v43, v44);
+    v45 = objc_msgSend_logicalTableName(tableCopy, v43, v44);
     v42 = objc_msgSend_validationErrorWithMessage_(CKPrettyError, v46, @"Table group %@ failed validation - property data changed for table %@ (%@ vs %@)", v37, v45, v10, v18);
 
     goto LABEL_8;
@@ -1576,9 +1576,9 @@ LABEL_9:
   return v42;
 }
 
-- (id)validateTablesMatchesTOCEntries:(id)a3
+- (id)validateTablesMatchesTOCEntries:(id)entries
 {
-  v4 = a3;
+  entriesCopy = entries;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -1590,8 +1590,8 @@ LABEL_9:
   v10[1] = 3221225472;
   v10[2] = sub_18868FF24;
   v10[3] = &unk_1E70C15C0;
-  v6 = v4;
-  v12 = self;
+  v6 = entriesCopy;
+  selfCopy = self;
   v13 = &v14;
   v11 = v6;
   objc_msgSend_enumerateKeysAndObjectsUsingBlock_(tablesByName, v7, v10);
@@ -1602,16 +1602,16 @@ LABEL_9:
   return v8;
 }
 
-- (id)validateGroup:(id)a3 matches:(id)a4
+- (id)validateGroup:(id)group matches:(id)matches
 {
   v50 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  groupCopy = group;
+  matchesCopy = matches;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v8 = v6;
+  v8 = groupCopy;
   v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v9, &v45, v49, 16);
   if (!v10)
   {
@@ -1642,7 +1642,7 @@ LABEL_17:
       }
 
       v19 = v16;
-      v20 = objc_msgSend_objectForKey_(v7, v17, v15);
+      v20 = objc_msgSend_objectForKey_(matchesCopy, v17, v15);
       v23 = v20;
       if (!v20)
       {
@@ -1699,10 +1699,10 @@ LABEL_18:
   return v5;
 }
 
-+ (id)performTableGroupValidationInDatabase:(id)a3
++ (id)performTableGroupValidationInDatabase:(id)database
 {
-  v4 = a3;
-  v7 = objc_msgSend_tocTableGroup(v4, v5, v6);
+  databaseCopy = database;
+  v7 = objc_msgSend_tocTableGroup(databaseCopy, v5, v6);
   v10 = objc_msgSend_groupID(v7, v8, v9);
   v13 = objc_msgSend_tocTableGroupTable(v7, v11, v12);
   v37[0] = 0;
@@ -1726,8 +1726,8 @@ LABEL_18:
     v17 = v13;
     v26 = v17;
     v29 = &v31;
-    v30 = a1;
-    v18 = v4;
+    selfCopy = self;
+    v18 = databaseCopy;
     v27 = v18;
     v20 = objc_msgSend_performDatabaseTransactionWithoutForeignKeyConstraints_(v18, v19, v25);
 

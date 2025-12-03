@@ -1,27 +1,27 @@
 @interface ICLinkSuggestionQuery
-- (ICLinkSuggestionQuery)initWithQueryString:(id)a3 includeNotes:(BOOL)a4 includeWebsites:(BOOL)a5;
+- (ICLinkSuggestionQuery)initWithQueryString:(id)string includeNotes:(BOOL)notes includeWebsites:(BOOL)websites;
 - (id)attributesToFetch;
 - (id)newSearchQueryContext;
-- (id)newSearchQueryWithContext:(id)a3;
+- (id)newSearchQueryWithContext:(id)context;
 @end
 
 @implementation ICLinkSuggestionQuery
 
-- (ICLinkSuggestionQuery)initWithQueryString:(id)a3 includeNotes:(BOOL)a4 includeWebsites:(BOOL)a5
+- (ICLinkSuggestionQuery)initWithQueryString:(id)string includeNotes:(BOOL)notes includeWebsites:(BOOL)websites
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
+  websitesCopy = websites;
+  notesCopy = notes;
+  stringCopy = string;
   v12.receiver = self;
   v12.super_class = ICLinkSuggestionQuery;
   v9 = [(ICSearchQuery *)&v12 initWithExternalRankingQueries:0];
   if (v9)
   {
-    v10 = [ICSearchQueryOperation prefixMatchingQueryStringTitleForSearchString:v8];
+    v10 = [ICSearchQueryOperation prefixMatchingQueryStringTitleForSearchString:stringCopy];
     [(ICLinkSuggestionQuery *)v9 setQueryString:v10];
 
-    [(ICLinkSuggestionQuery *)v9 setIncludeNotes:v6];
-    [(ICLinkSuggestionQuery *)v9 setIncludeWebsites:v5];
+    [(ICLinkSuggestionQuery *)v9 setIncludeNotes:notesCopy];
+    [(ICLinkSuggestionQuery *)v9 setIncludeWebsites:websitesCopy];
   }
 
   return v9;
@@ -34,13 +34,13 @@
   return v2;
 }
 
-- (id)newSearchQueryWithContext:(id)a3
+- (id)newSearchQueryWithContext:(id)context
 {
   v4 = MEMORY[0x277CC3498];
-  v5 = a3;
+  contextCopy = context;
   v6 = [v4 alloc];
-  v7 = [(ICLinkSuggestionQuery *)self queryString];
-  v8 = [v6 initWithQueryString:v7 queryContext:v5];
+  queryString = [(ICLinkSuggestionQuery *)self queryString];
+  v8 = [v6 initWithQueryString:queryString queryContext:contextCopy];
 
   return v8;
 }

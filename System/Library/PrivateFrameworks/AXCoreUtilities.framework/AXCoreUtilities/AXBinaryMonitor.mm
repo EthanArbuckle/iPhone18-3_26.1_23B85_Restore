@@ -1,25 +1,25 @@
 @interface AXBinaryMonitor
 + (id)sharedInstance;
 - (AXBinaryMonitor)init;
-- (BOOL)_loadImageIsApp:(id)a3;
-- (BOOL)_loadImageIsAppExtension:(id)a3;
-- (BOOL)_loadImageIsBundle:(id)a3;
-- (BOOL)_loadImageIsDylib:(id)a3;
-- (BOOL)_loadImageIsFramework:(id)a3;
-- (id)_appExtensionNameForImage:(id)a3;
-- (id)_appNameForImage:(id)a3;
-- (id)_bundleNameAndType:(id)a3;
-- (id)_bundleNameForImage:(id)a3;
-- (id)_dylibNameForImage:(id)a3;
-- (id)_frameworkNameForImage:(id)a3;
-- (void)_addHandler:(id)a3 withName:(id)a4 toMap:(id *)a5;
-- (void)_applyHandlerBlocks:(id)a3 handlerMap:(id)a4;
-- (void)_handleLoadedImagePath:(id)a3;
-- (void)addHandler:(id)a3 forApp:(id)a4;
-- (void)addHandler:(id)a3 forAppExtension:(id)a4;
-- (void)addHandler:(id)a3 forBundleName:(id)a4;
-- (void)addHandler:(id)a3 forDylib:(id)a4;
-- (void)addHandler:(id)a3 forFramework:(id)a4;
+- (BOOL)_loadImageIsApp:(id)app;
+- (BOOL)_loadImageIsAppExtension:(id)extension;
+- (BOOL)_loadImageIsBundle:(id)bundle;
+- (BOOL)_loadImageIsDylib:(id)dylib;
+- (BOOL)_loadImageIsFramework:(id)framework;
+- (id)_appExtensionNameForImage:(id)image;
+- (id)_appNameForImage:(id)image;
+- (id)_bundleNameAndType:(id)type;
+- (id)_bundleNameForImage:(id)image;
+- (id)_dylibNameForImage:(id)image;
+- (id)_frameworkNameForImage:(id)image;
+- (void)_addHandler:(id)handler withName:(id)name toMap:(id *)map;
+- (void)_applyHandlerBlocks:(id)blocks handlerMap:(id)map;
+- (void)_handleLoadedImagePath:(id)path;
+- (void)addHandler:(id)handler forApp:(id)app;
+- (void)addHandler:(id)handler forAppExtension:(id)extension;
+- (void)addHandler:(id)handler forBundleName:(id)name;
+- (void)addHandler:(id)handler forDylib:(id)dylib;
+- (void)addHandler:(id)handler forFramework:(id)framework;
 - (void)evaluateExistingBinaries;
 @end
 
@@ -51,20 +51,20 @@ uint64_t __33__AXBinaryMonitor_sharedInstance__block_invoke()
   v2 = [(AXBinaryMonitor *)&v13 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
-    [(AXBinaryMonitor *)v2 setBundleHandlerMap:v3];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [(AXBinaryMonitor *)v2 setBundleHandlerMap:dictionary];
 
-    v4 = [MEMORY[0x1E695DF90] dictionary];
-    [(AXBinaryMonitor *)v2 setFrameworkHandlerMap:v4];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+    [(AXBinaryMonitor *)v2 setFrameworkHandlerMap:dictionary2];
 
-    v5 = [MEMORY[0x1E695DF90] dictionary];
-    [(AXBinaryMonitor *)v2 setDylibHandlerMap:v5];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
+    [(AXBinaryMonitor *)v2 setDylibHandlerMap:dictionary3];
 
-    v6 = [MEMORY[0x1E695DF90] dictionary];
-    [(AXBinaryMonitor *)v2 setAppHandlerMap:v6];
+    dictionary4 = [MEMORY[0x1E695DF90] dictionary];
+    [(AXBinaryMonitor *)v2 setAppHandlerMap:dictionary4];
 
-    v7 = [MEMORY[0x1E695DF90] dictionary];
-    [(AXBinaryMonitor *)v2 setAppExtensionHandlerMap:v7];
+    dictionary5 = [MEMORY[0x1E695DF90] dictionary];
+    [(AXBinaryMonitor *)v2 setAppExtensionHandlerMap:dictionary5];
 
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_attr_make_with_qos_class(v8, QOS_CLASS_BACKGROUND, 0);
@@ -81,8 +81,8 @@ uint64_t __33__AXBinaryMonitor_sharedInstance__block_invoke()
 
 - (void)evaluateExistingBinaries
 {
-  v2 = [(AXBinaryMonitor *)self binaryMonitorQueue];
-  dispatch_async(v2, &__block_literal_global_6);
+  binaryMonitorQueue = [(AXBinaryMonitor *)self binaryMonitorQueue];
+  dispatch_async(binaryMonitorQueue, &__block_literal_global_6);
 }
 
 void __43__AXBinaryMonitor_evaluateExistingBinaries__block_invoke()
@@ -145,86 +145,86 @@ void __43__AXBinaryMonitor_evaluateExistingBinaries__block_invoke_3(uint64_t a1,
   [v3 _handleLoadedImagePath:v2];
 }
 
-- (void)addHandler:(id)a3 forBundleName:(id)a4
+- (void)addHandler:(id)handler forBundleName:(id)name
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [v6 pathExtension];
-  v8 = [v7 length];
+  handlerCopy = handler;
+  nameCopy = name;
+  pathExtension = [nameCopy pathExtension];
+  v8 = [pathExtension length];
 
   if (!v8)
   {
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.bundle", v6];
+    nameCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.bundle", nameCopy];
 
-    v6 = v9;
+    nameCopy = nameCopy;
   }
 
-  [(AXBinaryMonitor *)self _addHandler:v10 withName:v6 toMap:&self->_bundleHandlerMap];
+  [(AXBinaryMonitor *)self _addHandler:handlerCopy withName:nameCopy toMap:&self->_bundleHandlerMap];
 }
 
-- (void)addHandler:(id)a3 forFramework:(id)a4
+- (void)addHandler:(id)handler forFramework:(id)framework
 {
-  v8 = a3;
-  v6 = a4;
-  if (([v6 hasSuffix:@".bundle"] & 1) == 0)
+  handlerCopy = handler;
+  frameworkCopy = framework;
+  if (([frameworkCopy hasSuffix:@".bundle"] & 1) == 0)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.framework", v6];
+    frameworkCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.framework", frameworkCopy];
 
-    v6 = v7;
+    frameworkCopy = frameworkCopy;
   }
 
-  [(AXBinaryMonitor *)self _addHandler:v8 withName:v6 toMap:&self->_frameworkHandlerMap];
+  [(AXBinaryMonitor *)self _addHandler:handlerCopy withName:frameworkCopy toMap:&self->_frameworkHandlerMap];
 }
 
-- (void)addHandler:(id)a3 forDylib:(id)a4
+- (void)addHandler:(id)handler forDylib:(id)dylib
 {
-  v8 = a3;
-  v6 = a4;
-  if (([v6 hasSuffix:@".dylib"] & 1) == 0)
+  handlerCopy = handler;
+  dylibCopy = dylib;
+  if (([dylibCopy hasSuffix:@".dylib"] & 1) == 0)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.dylib", v6];
+    dylibCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.dylib", dylibCopy];
 
-    v6 = v7;
+    dylibCopy = dylibCopy;
   }
 
-  [(AXBinaryMonitor *)self _addHandler:v8 withName:v6 toMap:&self->_dylibHandlerMap];
+  [(AXBinaryMonitor *)self _addHandler:handlerCopy withName:dylibCopy toMap:&self->_dylibHandlerMap];
 }
 
-- (void)addHandler:(id)a3 forAppExtension:(id)a4
+- (void)addHandler:(id)handler forAppExtension:(id)extension
 {
-  v8 = a3;
-  v6 = a4;
-  if (([v6 hasSuffix:@".appex"] & 1) == 0)
+  handlerCopy = handler;
+  extensionCopy = extension;
+  if (([extensionCopy hasSuffix:@".appex"] & 1) == 0)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.appex", v6];
+    extensionCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.appex", extensionCopy];
 
-    v6 = v7;
+    extensionCopy = extensionCopy;
   }
 
-  [(AXBinaryMonitor *)self _addHandler:v8 withName:v6 toMap:&self->_appExtensionHandlerMap];
+  [(AXBinaryMonitor *)self _addHandler:handlerCopy withName:extensionCopy toMap:&self->_appExtensionHandlerMap];
 }
 
-- (void)addHandler:(id)a3 forApp:(id)a4
+- (void)addHandler:(id)handler forApp:(id)app
 {
-  v8 = a3;
-  v6 = a4;
-  if (([v6 hasSuffix:@".app"] & 1) == 0)
+  handlerCopy = handler;
+  appCopy = app;
+  if (([appCopy hasSuffix:@".app"] & 1) == 0)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.app", v6];
+    appCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.app", appCopy];
 
-    v6 = v7;
+    appCopy = appCopy;
   }
 
-  [(AXBinaryMonitor *)self _addHandler:v8 withName:v6 toMap:&self->_appHandlerMap];
+  [(AXBinaryMonitor *)self _addHandler:handlerCopy withName:appCopy toMap:&self->_appHandlerMap];
 }
 
-- (void)_addHandler:(id)a3 withName:(id)a4 toMap:(id *)a5
+- (void)_addHandler:(id)handler withName:(id)name toMap:(id *)map
 {
-  v8 = a4;
-  v9 = [a3 copy];
-  v10 = *a5;
+  nameCopy = name;
+  v9 = [handler copy];
+  v10 = *map;
   v11 = v10;
-  if (!a3)
+  if (!handler)
   {
     v14 = @"not adding handler, block was null";
 LABEL_6:
@@ -232,7 +232,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (!v8)
+  if (!nameCopy)
   {
     v14 = @"not adding handler, binary name was nil";
     goto LABEL_6;
@@ -243,18 +243,18 @@ LABEL_6:
   v18[2] = __46__AXBinaryMonitor__addHandler_withName_toMap___block_invoke;
   v18[3] = &unk_1E735BAF8;
   v19 = v10;
-  v12 = v8;
+  v12 = nameCopy;
   v20 = v12;
   v21 = v9;
   AXPerformBlockSynchronouslyOnMainThread(v18);
-  v13 = [(AXBinaryMonitor *)self binaryMonitorQueue];
+  binaryMonitorQueue = [(AXBinaryMonitor *)self binaryMonitorQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __46__AXBinaryMonitor__addHandler_withName_toMap___block_invoke_2;
   block[3] = &unk_1E735B7E8;
   v16 = v12;
-  v17 = self;
-  dispatch_async(v13, block);
+  selfCopy = self;
+  dispatch_async(binaryMonitorQueue, block);
 
 LABEL_7:
 }
@@ -312,25 +312,25 @@ void __46__AXBinaryMonitor__addHandler_withName_toMap___block_invoke_2(uint64_t 
   }
 }
 
-- (id)_bundleNameAndType:(id)a3
+- (id)_bundleNameAndType:(id)type
 {
-  v3 = [a3 stringByDeletingLastPathComponent];
-  v4 = [v3 lastPathComponent];
+  stringByDeletingLastPathComponent = [type stringByDeletingLastPathComponent];
+  lastPathComponent = [stringByDeletingLastPathComponent lastPathComponent];
 
-  return v4;
+  return lastPathComponent;
 }
 
-- (BOOL)_loadImageIsFramework:(id)a3
+- (BOOL)_loadImageIsFramework:(id)framework
 {
-  v3 = [(AXBinaryMonitor *)self _bundleNameAndType:a3];
+  v3 = [(AXBinaryMonitor *)self _bundleNameAndType:framework];
   v4 = [v3 hasSuffix:@".framework"];
 
   return v4;
 }
 
-- (BOOL)_loadImageIsBundle:(id)a3
+- (BOOL)_loadImageIsBundle:(id)bundle
 {
-  v3 = [(AXBinaryMonitor *)self _bundleNameAndType:a3];
+  v3 = [(AXBinaryMonitor *)self _bundleNameAndType:bundle];
   if ([v3 hasSuffix:@"bundle"])
   {
     v4 = 1;
@@ -344,42 +344,42 @@ void __46__AXBinaryMonitor__addHandler_withName_toMap___block_invoke_2(uint64_t 
   return v4;
 }
 
-- (BOOL)_loadImageIsDylib:(id)a3
+- (BOOL)_loadImageIsDylib:(id)dylib
 {
-  v3 = [(AXBinaryMonitor *)self _bundleNameAndType:a3];
+  v3 = [(AXBinaryMonitor *)self _bundleNameAndType:dylib];
   v4 = [v3 hasSuffix:@".dylib"];
 
   return v4;
 }
 
-- (BOOL)_loadImageIsApp:(id)a3
+- (BOOL)_loadImageIsApp:(id)app
 {
-  v3 = [(AXBinaryMonitor *)self _bundleNameAndType:a3];
+  v3 = [(AXBinaryMonitor *)self _bundleNameAndType:app];
   v4 = [v3 hasSuffix:@".app"];
 
   return v4;
 }
 
-- (BOOL)_loadImageIsAppExtension:(id)a3
+- (BOOL)_loadImageIsAppExtension:(id)extension
 {
-  v3 = [(AXBinaryMonitor *)self _bundleNameAndType:a3];
+  v3 = [(AXBinaryMonitor *)self _bundleNameAndType:extension];
   v4 = [v3 hasSuffix:@".appex"];
 
   return v4;
 }
 
-- (id)_frameworkNameForImage:(id)a3
+- (id)_frameworkNameForImage:(id)image
 {
   v19 = *MEMORY[0x1E69E9840];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [a3 pathComponents];
-  v4 = [v3 reverseObjectEnumerator];
-  v5 = [v4 allObjects];
+  pathComponents = [image pathComponents];
+  reverseObjectEnumerator = [pathComponents reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v6 = [allObjects countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -390,7 +390,7 @@ void __46__AXBinaryMonitor__addHandler_withName_toMap___block_invoke_2(uint64_t 
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allObjects);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
@@ -401,7 +401,7 @@ void __46__AXBinaryMonitor__addHandler_withName_toMap___block_invoke_2(uint64_t 
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [allObjects countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         continue;
@@ -419,15 +419,15 @@ LABEL_11:
   return v11;
 }
 
-- (id)_bundleNameForImage:(id)a3
+- (id)_bundleNameForImage:(id)image
 {
   v19 = *MEMORY[0x1E69E9840];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [a3 pathComponents];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  pathComponents = [image pathComponents];
+  v4 = [pathComponents countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -438,12 +438,12 @@ LABEL_11:
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(pathComponents);
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
-        v9 = [v8 lowercaseString];
-        v10 = [v9 hasSuffix:@"bundle"];
+        lowercaseString = [v8 lowercaseString];
+        v10 = [lowercaseString hasSuffix:@"bundle"];
 
         if (v10)
         {
@@ -452,7 +452,7 @@ LABEL_11:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [pathComponents countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v5)
       {
         continue;
@@ -470,15 +470,15 @@ LABEL_11:
   return v11;
 }
 
-- (id)_appExtensionNameForImage:(id)a3
+- (id)_appExtensionNameForImage:(id)image
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [a3 pathComponents];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  pathComponents = [image pathComponents];
+  v4 = [pathComponents countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -489,7 +489,7 @@ LABEL_11:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(pathComponents);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
@@ -500,7 +500,7 @@ LABEL_11:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [pathComponents countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v5)
       {
         continue;
@@ -518,15 +518,15 @@ LABEL_11:
   return v9;
 }
 
-- (id)_appNameForImage:(id)a3
+- (id)_appNameForImage:(id)image
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [a3 pathComponents];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  pathComponents = [image pathComponents];
+  v4 = [pathComponents countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -537,7 +537,7 @@ LABEL_11:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(pathComponents);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
@@ -548,7 +548,7 @@ LABEL_11:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [pathComponents countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v5)
       {
         continue;
@@ -566,15 +566,15 @@ LABEL_11:
   return v9;
 }
 
-- (id)_dylibNameForImage:(id)a3
+- (id)_dylibNameForImage:(id)image
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [a3 pathComponents];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  pathComponents = [image pathComponents];
+  v4 = [pathComponents countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -585,7 +585,7 @@ LABEL_11:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(pathComponents);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
@@ -596,7 +596,7 @@ LABEL_11:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [pathComponents countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v5)
       {
         continue;
@@ -614,16 +614,16 @@ LABEL_11:
   return v9;
 }
 
-- (void)_applyHandlerBlocks:(id)a3 handlerMap:(id)a4
+- (void)_applyHandlerBlocks:(id)blocks handlerMap:(id)map
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  blocksCopy = blocks;
+  mapCopy = map;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [v6 objectForKey:{v5, 0}];
+  v7 = [mapCopy objectForKey:{blocksCopy, 0}];
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
@@ -649,38 +649,38 @@ LABEL_11:
     while (v9);
   }
 
-  [v6 removeObjectForKey:v5];
+  [mapCopy removeObjectForKey:blocksCopy];
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleLoadedImagePath:(id)a3
+- (void)_handleLoadedImagePath:(id)path
 {
-  v4 = a3;
-  if (v4)
+  pathCopy = path;
+  if (pathCopy)
   {
-    v8 = v4;
-    if ([(AXBinaryMonitor *)self _loadImageIsFramework:v4])
+    v8 = pathCopy;
+    if ([(AXBinaryMonitor *)self _loadImageIsFramework:pathCopy])
     {
       v5 = [(AXBinaryMonitor *)self _frameworkNameForImage:v8];
-      v6 = [(AXBinaryMonitor *)self frameworkHandlerMap];
+      frameworkHandlerMap = [(AXBinaryMonitor *)self frameworkHandlerMap];
     }
 
     else if ([(AXBinaryMonitor *)self _loadImageIsBundle:v8])
     {
       v5 = [(AXBinaryMonitor *)self _bundleNameForImage:v8];
-      v6 = [(AXBinaryMonitor *)self bundleHandlerMap];
+      frameworkHandlerMap = [(AXBinaryMonitor *)self bundleHandlerMap];
     }
 
     else if ([(AXBinaryMonitor *)self _loadImageIsDylib:v8])
     {
       v5 = [(AXBinaryMonitor *)self _dylibNameForImage:v8];
-      v6 = [(AXBinaryMonitor *)self dylibHandlerMap];
+      frameworkHandlerMap = [(AXBinaryMonitor *)self dylibHandlerMap];
     }
 
     else if ([(AXBinaryMonitor *)self _loadImageIsAppExtension:v8])
     {
       v5 = [(AXBinaryMonitor *)self _appExtensionNameForImage:v8];
-      v6 = [(AXBinaryMonitor *)self appExtensionHandlerMap];
+      frameworkHandlerMap = [(AXBinaryMonitor *)self appExtensionHandlerMap];
     }
 
     else
@@ -691,11 +691,11 @@ LABEL_11:
       }
 
       v5 = [(AXBinaryMonitor *)self _appNameForImage:v8];
-      v6 = [(AXBinaryMonitor *)self appHandlerMap];
+      frameworkHandlerMap = [(AXBinaryMonitor *)self appHandlerMap];
     }
 
-    v7 = v6;
-    [(AXBinaryMonitor *)self _applyHandlerBlocks:v5 handlerMap:v6];
+    v7 = frameworkHandlerMap;
+    [(AXBinaryMonitor *)self _applyHandlerBlocks:v5 handlerMap:frameworkHandlerMap];
   }
 
 LABEL_13:

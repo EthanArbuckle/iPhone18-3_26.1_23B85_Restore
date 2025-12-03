@@ -6,10 +6,10 @@
 
 - (double)maxAge
 {
-  v1 = [a1 objectForKey:@"Cache-Control"];
+  v1 = [self objectForKey:@"Cache-Control"];
   if (v1)
   {
-    v2 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
     v3 = [v1 componentsSeparatedByString:{@", "}];
     v4 = [v3 count];
     v5 = 0.0;
@@ -21,7 +21,7 @@
       while (1)
       {
         v8 = [v3 objectAtIndex:v7];
-        v9 = [v8 stringByTrimmingCharactersInSet:v2];
+        v9 = [v8 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
         v10 = [v9 componentsSeparatedByString:@"="];
         if ([v10 count] == 2)

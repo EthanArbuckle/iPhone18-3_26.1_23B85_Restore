@@ -1,18 +1,18 @@
 @interface CRUserDefaults
-- (BOOL)BOOLForKey:(id)a3;
-- (CRUserDefaults)initWithSuiteName:(id)a3 internalOnly:(BOOL)a4;
-- (id)_initWithSuiteName:(id)a3 internalOnly:(BOOL)a4;
-- (id)dictionaryForKey:(id)a3;
-- (id)objectForKey:(id)a3;
-- (id)stringForKey:(id)a3;
+- (BOOL)BOOLForKey:(id)key;
+- (CRUserDefaults)initWithSuiteName:(id)name internalOnly:(BOOL)only;
+- (id)_initWithSuiteName:(id)name internalOnly:(BOOL)only;
+- (id)dictionaryForKey:(id)key;
+- (id)objectForKey:(id)key;
+- (id)stringForKey:(id)key;
 @end
 
 @implementation CRUserDefaults
 
-- (id)_initWithSuiteName:(id)a3 internalOnly:(BOOL)a4
+- (id)_initWithSuiteName:(id)name internalOnly:(BOOL)only
 {
   v41 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  nameCopy = name;
   v34.receiver = self;
   v34.super_class = CRUserDefaults;
   v8 = [(CRUserDefaults *)&v34 init];
@@ -22,7 +22,7 @@
     goto LABEL_26;
   }
 
-  objc_storeStrong(&v8->_suiteName, a3);
+  objc_storeStrong(&v8->_suiteName, name);
   has_internal_content = os_variant_has_internal_content();
   v11 = MGGetBoolAnswer();
   v12 = objc_opt_new();
@@ -69,13 +69,13 @@
     }
 
     v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", getuid()];
-    v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.plist", v7];
+    nameCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.plist", nameCopy];
     v21 = [@"/var/MobileSoftwareUpdate/Controller/RepairServices" stringByAppendingPathComponent:@"defaults"];
     v22 = [v21 stringByAppendingPathComponent:v19];
-    v23 = [v22 stringByAppendingPathComponent:v20];
+    v23 = [v22 stringByAppendingPathComponent:nameCopy];
 
-    v24 = [MEMORY[0x1E696AC08] defaultManager];
-    LODWORD(v22) = [v24 fileExistsAtPath:v23];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    LODWORD(v22) = [defaultManager fileExistsAtPath:v23];
 
     if (v22)
     {
@@ -107,7 +107,7 @@
     goto LABEL_26;
   }
 
-  if (!a4)
+  if (!only)
   {
 LABEL_26:
     v14 = v9;
@@ -121,19 +121,19 @@ LABEL_27:
   return v14;
 }
 
-- (CRUserDefaults)initWithSuiteName:(id)a3 internalOnly:(BOOL)a4
+- (CRUserDefaults)initWithSuiteName:(id)name internalOnly:(BOOL)only
 {
-  v6 = a3;
+  nameCopy = name;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __49__CRUserDefaults_initWithSuiteName_internalOnly___block_invoke;
   block[3] = &unk_1E83B3F60;
-  v13 = self;
-  v14 = v6;
-  v15 = a4;
+  selfCopy = self;
+  v14 = nameCopy;
+  onlyCopy = only;
   v7 = initWithSuiteName_internalOnly__onceToken;
-  v8 = v6;
-  v9 = self;
+  v8 = nameCopy;
+  selfCopy2 = self;
   if (v7 != -1)
   {
     dispatch_once(&initWithSuiteName_internalOnly__onceToken, block);
@@ -151,11 +151,11 @@ uint64_t __49__CRUserDefaults_initWithSuiteName_internalOnly___block_invoke(uint
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:self->_suiteName];
-  v6 = [v5 objectForKey:v4];
+  v6 = [v5 objectForKey:keyCopy];
 
   if (v6)
   {
@@ -168,7 +168,7 @@ LABEL_5:
   defaultValues = self->_defaultValues;
   if (defaultValues)
   {
-    v7 = [(NSDictionary *)defaultValues objectForKey:v4];
+    v7 = [(NSDictionary *)defaultValues objectForKey:keyCopy];
     goto LABEL_5;
   }
 
@@ -178,9 +178,9 @@ LABEL_6:
   return v9;
 }
 
-- (id)dictionaryForKey:(id)a3
+- (id)dictionaryForKey:(id)key
 {
-  v3 = [(CRUserDefaults *)self objectForKey:a3];
+  v3 = [(CRUserDefaults *)self objectForKey:key];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -197,50 +197,50 @@ LABEL_6:
   return v4;
 }
 
-- (id)stringForKey:(id)a3
+- (id)stringForKey:(id)key
 {
-  v3 = [(CRUserDefaults *)self objectForKey:a3];
+  v3 = [(CRUserDefaults *)self objectForKey:key];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [v3 stringValue];
+      stringValue = [v3 stringValue];
     }
 
     else
     {
-      v4 = 0;
+      stringValue = 0;
     }
 
-    v3 = v4;
+    v3 = stringValue;
   }
 
   return v3;
 }
 
-- (BOOL)BOOLForKey:(id)a3
+- (BOOL)BOOLForKey:(id)key
 {
-  v3 = [(CRUserDefaults *)self objectForKey:a3];
+  v3 = [(CRUserDefaults *)self objectForKey:key];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     if ([v3 isEqualToString:@"YES"])
     {
-      v4 = 1;
+      bOOLValue = 1;
     }
 
     else
     {
       v5 = [v3 length];
-      v4 = 1;
+      bOOLValue = 1;
       if ([v3 compare:@"YES" options:1 range:{0, v5}])
       {
-        v4 = 1;
+        bOOLValue = 1;
         if ([v3 compare:@"Y" options:1 range:{0, v5}])
         {
-          v4 = [v3 integerValue] != 0;
+          bOOLValue = [v3 integerValue] != 0;
         }
       }
     }
@@ -251,16 +251,16 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [v3 BOOLValue];
+      bOOLValue = [v3 BOOLValue];
     }
 
     else
     {
-      v4 = 0;
+      bOOLValue = 0;
     }
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 @end

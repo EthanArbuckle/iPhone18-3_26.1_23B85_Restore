@@ -1,16 +1,16 @@
 @interface AMDLighthouseODMLWorker
 - (AMDLighthouseODMLWorker)init;
-- (id)checkIfModelShouldBeDownloaded:(id)a3 outError:(id *)a4;
-- (id)checkIfTaskShouldBeStopped:(id *)a3;
-- (id)createMLRTaskAttachmentsObject:(id)a3 modelDirURL:(id)a4 error:(id *)a5;
-- (id)gatherGaussianResults:(id)a3 withPartitions:(id)a4 outError:(id *)a5;
-- (id)gatherMetricsToReturn:(id)a3 withRecipe:(id)a4 withAttachments:(id)a5 outError:(id *)a6;
-- (id)logAllResultsToCoreAnalyticsOrDeDisco:(id)a3 withLoggingStrategies:(id)a4 outError:(id *)a5;
-- (id)logDeDiscoResults:(id)a3 outError:(id *)a4;
-- (id)logMultipleDeDiscoResults:(id)a3 outError:(id *)a4;
-- (id)logResultToCoreAnalytics:(id)a3 withMetric:(id)a4 withValue:(id)a5;
-- (id)performGenericTaskWithDataProcessingCarryover:(id)a3 outError:(id *)a4;
-- (id)targetingKeyValuePairsForKeys:(id)a3 error:(id *)a4;
+- (id)checkIfModelShouldBeDownloaded:(id)downloaded outError:(id *)error;
+- (id)checkIfTaskShouldBeStopped:(id *)stopped;
+- (id)createMLRTaskAttachmentsObject:(id)object modelDirURL:(id)l error:(id *)error;
+- (id)gatherGaussianResults:(id)results withPartitions:(id)partitions outError:(id *)error;
+- (id)gatherMetricsToReturn:(id)return withRecipe:(id)recipe withAttachments:(id)attachments outError:(id *)error;
+- (id)logAllResultsToCoreAnalyticsOrDeDisco:(id)disco withLoggingStrategies:(id)strategies outError:(id *)error;
+- (id)logDeDiscoResults:(id)results outError:(id *)error;
+- (id)logMultipleDeDiscoResults:(id)results outError:(id *)error;
+- (id)logResultToCoreAnalytics:(id)analytics withMetric:(id)metric withValue:(id)value;
+- (id)performGenericTaskWithDataProcessingCarryover:(id)carryover outError:(id *)error;
+- (id)targetingKeyValuePairsForKeys:(id)keys error:(id *)error;
 - (void)stop;
 @end
 
@@ -43,16 +43,16 @@
   return v9;
 }
 
-- (id)createMLRTaskAttachmentsObject:(id)a3 modelDirURL:(id)a4 error:(id *)a5
+- (id)createMLRTaskAttachmentsObject:(id)object modelDirURL:(id)l error:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, object);
   v22 = 0;
-  objc_storeStrong(&v22, a4);
-  v21[1] = a5;
+  objc_storeStrong(&v22, l);
+  v21[1] = error;
   v21[0] = [location[0] objectForKey:AttachmentKeys];
   v20 = objc_opt_new();
   memset(__b, 0, sizeof(__b));
@@ -102,20 +102,20 @@
   return v7;
 }
 
-- (id)logResultToCoreAnalytics:(id)a3 withMetric:(id)a4 withValue:(id)a5
+- (id)logResultToCoreAnalytics:(id)analytics withMetric:(id)metric withValue:(id)value
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, analytics);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
+  objc_storeStrong(&v14, metric);
   v13 = 0;
-  objc_storeStrong(&v13, a5);
+  objc_storeStrong(&v13, value);
   v9 = MEMORY[0x277D82BE0](location[0]);
   v10 = MEMORY[0x277D82BE0](v14);
   v11 = MEMORY[0x277D82BE0](v13);
-  v12 = MEMORY[0x277D82BE0](v16);
+  v12 = MEMORY[0x277D82BE0](selfCopy);
   AnalyticsSendEventLazy();
   v8 = [MEMORY[0x277CCABB0] numberWithLong:1];
   objc_storeStrong(&v12, 0);
@@ -179,14 +179,14 @@ id __73__AMDLighthouseODMLWorker_logResultToCoreAnalytics_withMetric_withValue__
   return v2;
 }
 
-- (id)logMultipleDeDiscoResults:(id)a3 outError:(id *)a4
+- (id)logMultipleDeDiscoResults:(id)results outError:(id *)error
 {
   v123 = *MEMORY[0x277D85DE8];
-  v115 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v113 = a4;
+  objc_storeStrong(location, results);
+  errorCopy = error;
   v112 = objc_alloc_init(MEMORY[0x277CBEB38]);
   memset(__b, 0, sizeof(__b));
   obj = MEMORY[0x277D82BE0](location[0]);
@@ -224,7 +224,7 @@ id __73__AMDLighthouseODMLWorker_logResultToCoreAnalytics_withMetric_withValue__
           }
 
           v107 = *(v106[1] + 8 * v67);
-          v64 = [(AMDLighthouseODMLWorker *)v115 checkIfTaskShouldBeStopped:v113];
+          v64 = [(AMDLighthouseODMLWorker *)selfCopy checkIfTaskShouldBeStopped:errorCopy];
           MEMORY[0x277D82BD8](v64);
           if (!v64)
           {
@@ -232,13 +232,13 @@ id __73__AMDLighthouseODMLWorker_logResultToCoreAnalytics_withMetric_withValue__
           }
 
           v104 = [v109 objectForKey:v107];
-          v103 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@", v108, v107];
+          v107 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@", v108, v107];
           v62 = MEMORY[0x277CCABB0];
           [v104 floatValue];
           v63 = [v62 numberWithFloat:?];
           [v112 setObject:? forKeyedSubscript:?];
           MEMORY[0x277D82BD8](v63);
-          objc_storeStrong(&v103, 0);
+          objc_storeStrong(&v107, 0);
           objc_storeStrong(&v104, 0);
           ++v67;
           if (v65 + 1 >= v68)
@@ -298,18 +298,18 @@ LABEL_19:
   if (!v105)
   {
     v102 = 0;
-    v61 = [(AMDLighthouseODMLWorker *)v115 recipe];
-    v101 = [(NSDictionary *)v61 objectForKey:@"multipleDediscoEncodingSchema"];
-    MEMORY[0x277D82BD8](v61);
+    recipe = [(AMDLighthouseODMLWorker *)selfCopy recipe];
+    v101 = [(NSDictionary *)recipe objectForKey:@"multipleDediscoEncodingSchema"];
+    MEMORY[0x277D82BD8](recipe);
     if (v101)
     {
       goto LABEL_30;
     }
 
-    v100 = [(AMDLighthouseODMLWorker *)v115 modelsURL];
-    if (v100)
+    modelsURL = [(AMDLighthouseODMLWorker *)selfCopy modelsURL];
+    if (modelsURL)
     {
-      v99 = [v100 URLByAppendingPathComponent:EncodingPath];
+      v99 = [modelsURL URLByAppendingPathComponent:EncodingPath];
       v97 = 0;
       v60 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v99 options:0 error:&v97];
       objc_storeStrong(&v102, v97);
@@ -319,7 +319,7 @@ LABEL_19:
         v5 = objc_alloc(MEMORY[0x277CCA9B8]);
         v59 = [v5 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:150 userInfo:0];
         v6 = v59;
-        *v113 = v59;
+        *errorCopy = v59;
       }
 
       v96 = v102;
@@ -333,7 +333,7 @@ LABEL_19:
         v8 = objc_alloc(MEMORY[0x277CCA9B8]);
         v57 = [v8 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:151 userInfo:0];
         v9 = v57;
-        *v113 = v57;
+        *errorCopy = v57;
       }
 
       objc_storeStrong(&v98, 0);
@@ -344,12 +344,12 @@ LABEL_19:
     else
     {
       v4 = v102;
-      *v113 = v102;
+      *errorCopy = v102;
       v116 = 0;
       v105 = 1;
     }
 
-    objc_storeStrong(&v100, 0);
+    objc_storeStrong(&modelsURL, 0);
     if (!v105)
     {
 LABEL_30:
@@ -371,43 +371,43 @@ LABEL_30:
 
           v95 = *(v94[1] + 8 * v53);
           v93 = [v95 objectForKey:PopulationSection];
-          v92 = [(AMDLighthouseODMLWorker *)v115 triExperimentIdentifiers];
-          if (v92)
+          triExperimentIdentifiers = [(AMDLighthouseODMLWorker *)selfCopy triExperimentIdentifiers];
+          if (triExperimentIdentifiers)
           {
-            v91 = [v92 experimentId];
-            v90 = [v92 deploymentId];
-            v89 = [v92 treatmentId];
+            experimentId = [triExperimentIdentifiers experimentId];
+            deploymentId = [triExperimentIdentifiers deploymentId];
+            treatmentId = [triExperimentIdentifiers treatmentId];
             v88 = 0;
             if (v93)
             {
               v87 = [v112 objectForKey:v93];
-              v86 = [v87 stringValue];
+              stringValue = [v87 stringValue];
               v43 = MEMORY[0x277CCACA8];
-              v41 = v86;
-              v42 = v91;
-              v45 = [MEMORY[0x277CCABB0] numberWithInt:v90];
-              v44 = [v45 stringValue];
-              v14 = [v43 stringWithFormat:@"com.apple.ampaiml.AppleMediaDiscoveryFrameworkLighthousePlugin:%@:%@:%@:%@", v41, v42, v44, v89];
+              v41 = stringValue;
+              v42 = experimentId;
+              v45 = [MEMORY[0x277CCABB0] numberWithInt:deploymentId];
+              stringValue2 = [v45 stringValue];
+              v14 = [v43 stringWithFormat:@"com.apple.ampaiml.AppleMediaDiscoveryFrameworkLighthousePlugin:%@:%@:%@:%@", v41, v42, stringValue2, treatmentId];
               v15 = v88;
               v88 = v14;
               MEMORY[0x277D82BD8](v15);
-              MEMORY[0x277D82BD8](v44);
+              MEMORY[0x277D82BD8](stringValue2);
               MEMORY[0x277D82BD8](v45);
-              objc_storeStrong(&v86, 0);
+              objc_storeStrong(&stringValue, 0);
               objc_storeStrong(&v87, 0);
             }
 
             else
             {
               v47 = MEMORY[0x277CCACA8];
-              v46 = v91;
-              v49 = [MEMORY[0x277CCABB0] numberWithInt:v90];
-              v48 = [v49 stringValue];
-              v12 = [v47 stringWithFormat:@"com.apple.ampaiml.AppleMediaDiscoveryFrameworkLighthousePlugin:%@:%@:%@", v46, v48, v89];
+              v46 = experimentId;
+              v49 = [MEMORY[0x277CCABB0] numberWithInt:deploymentId];
+              stringValue3 = [v49 stringValue];
+              v12 = [v47 stringWithFormat:@"com.apple.ampaiml.AppleMediaDiscoveryFrameworkLighthousePlugin:%@:%@:%@", v46, stringValue3, treatmentId];
               v13 = v88;
               v88 = v12;
               MEMORY[0x277D82BD8](v13);
-              MEMORY[0x277D82BD8](v48);
+              MEMORY[0x277D82BD8](stringValue3);
               MEMORY[0x277D82BD8](v49);
             }
 
@@ -458,7 +458,7 @@ LABEL_30:
                   v16 = objc_alloc(MEMORY[0x277CCA9B8]);
                   v29 = [v16 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:182 userInfo:0];
                   v17 = v29;
-                  *v113 = v29;
+                  *errorCopy = v29;
                 }
 
                 v27 = v81;
@@ -503,15 +503,15 @@ LABEL_53:
               v18 = objc_alloc(MEMORY[0x277CCA9B8]);
               v22 = [v18 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:144 userInfo:0];
               v19 = v22;
-              *v113 = v22;
+              *errorCopy = v22;
               v116 = 0;
               v105 = 1;
             }
 
             objc_storeStrong(&v81, 0);
             objc_storeStrong(&v88, 0);
-            objc_storeStrong(&v89, 0);
-            objc_storeStrong(&v91, 0);
+            objc_storeStrong(&treatmentId, 0);
+            objc_storeStrong(&experimentId, 0);
           }
 
           else
@@ -519,12 +519,12 @@ LABEL_53:
             v10 = objc_alloc(MEMORY[0x277CCA9B8]);
             v50 = [v10 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:145 userInfo:0];
             v11 = v50;
-            *v113 = v50;
+            *errorCopy = v50;
             v116 = 0;
             v105 = 1;
           }
 
-          objc_storeStrong(&v92, 0);
+          objc_storeStrong(&triExperimentIdentifiers, 0);
           objc_storeStrong(&v93, 0);
           if (v105)
           {
@@ -570,16 +570,16 @@ LABEL_59:
   return v20;
 }
 
-- (id)gatherGaussianResults:(id)a3 withPartitions:(id)a4 outError:(id *)a5
+- (id)gatherGaussianResults:(id)results withPartitions:(id)partitions outError:(id *)error
 {
   v46 = *MEMORY[0x277D85DE8];
-  v42 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, results);
   v40 = 0;
-  objc_storeStrong(&v40, a4);
-  v39 = a5;
+  objc_storeStrong(&v40, partitions);
+  errorCopy = error;
   v38 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v37 = objc_alloc_init(MEMORY[0x277CBEB38]);
   memset(__b, 0, sizeof(__b));
@@ -618,7 +618,7 @@ LABEL_59:
           }
 
           v32 = *(v31[1] + 8 * v16);
-          v13 = [(AMDLighthouseODMLWorker *)v42 checkIfTaskShouldBeStopped:v39];
+          v13 = [(AMDLighthouseODMLWorker *)selfCopy checkIfTaskShouldBeStopped:errorCopy];
           MEMORY[0x277D82BD8](v13);
           if (!v13)
           {
@@ -720,25 +720,25 @@ LABEL_22:
   return v6;
 }
 
-- (id)logDeDiscoResults:(id)a3 outError:(id *)a4
+- (id)logDeDiscoResults:(id)results outError:(id *)error
 {
   v81 = *MEMORY[0x277D85DE8];
-  v75 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v73 = a4;
-  v72 = [(AMDLighthouseODMLWorker *)v75 triExperimentIdentifiers];
-  if (v72)
+  objc_storeStrong(location, results);
+  errorCopy = error;
+  triExperimentIdentifiers = [(AMDLighthouseODMLWorker *)selfCopy triExperimentIdentifiers];
+  if (triExperimentIdentifiers)
   {
-    v70 = [v72 experimentId];
-    v69 = [v72 deploymentId];
-    v68 = [v72 treatmentId];
+    experimentId = [triExperimentIdentifiers experimentId];
+    deploymentId = [triExperimentIdentifiers deploymentId];
+    treatmentId = [triExperimentIdentifiers treatmentId];
     v39 = MEMORY[0x277CCACA8];
-    v41 = [MEMORY[0x277CCABB0] numberWithInt:v69];
-    v40 = [v41 stringValue];
-    v67 = [v39 stringWithFormat:@"com.apple.ampaiml.AppleMediaDiscoveryFrameworkLighthousePlugin:%@:%@:%@", v70, v40, v68];
-    MEMORY[0x277D82BD8](v40);
+    v41 = [MEMORY[0x277CCABB0] numberWithInt:deploymentId];
+    stringValue = [v41 stringValue];
+    v67 = [v39 stringWithFormat:@"com.apple.ampaiml.AppleMediaDiscoveryFrameworkLighthousePlugin:%@:%@:%@", experimentId, stringValue, treatmentId];
+    MEMORY[0x277D82BD8](stringValue);
     MEMORY[0x277D82BD8](v41);
     v66 = objc_alloc_init(MEMORY[0x277CBEB38]);
     memset(__b, 0, sizeof(__b));
@@ -777,7 +777,7 @@ LABEL_22:
             }
 
             v61 = *(v60[1] + 8 * v31);
-            v28 = [(AMDLighthouseODMLWorker *)v75 checkIfTaskShouldBeStopped:v73];
+            v28 = [(AMDLighthouseODMLWorker *)selfCopy checkIfTaskShouldBeStopped:errorCopy];
             MEMORY[0x277D82BD8](v28);
             if (!v28)
             {
@@ -869,18 +869,18 @@ LABEL_21:
 
       objc_storeStrong(&v55, 0);
       v53 = 0;
-      v25 = [(AMDLighthouseODMLWorker *)v75 recipe];
-      v52 = [(NSDictionary *)v25 objectForKey:@"dediscoEncodingSchema"];
-      MEMORY[0x277D82BD8](v25);
+      recipe = [(AMDLighthouseODMLWorker *)selfCopy recipe];
+      v52 = [(NSDictionary *)recipe objectForKey:@"dediscoEncodingSchema"];
+      MEMORY[0x277D82BD8](recipe);
       if (v52)
       {
         goto LABEL_36;
       }
 
-      v51 = [(AMDLighthouseODMLWorker *)v75 modelsURL];
-      if (v51)
+      modelsURL = [(AMDLighthouseODMLWorker *)selfCopy modelsURL];
+      if (modelsURL)
       {
-        v50 = [v51 URLByAppendingPathComponent:EncodingPath];
+        v50 = [modelsURL URLByAppendingPathComponent:EncodingPath];
         v48 = 0;
         v24 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v50 options:0 error:&v48];
         objc_storeStrong(&v53, v48);
@@ -890,7 +890,7 @@ LABEL_21:
           v7 = objc_alloc(MEMORY[0x277CCA9B8]);
           v23 = [v7 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:150 userInfo:0];
           v8 = v23;
-          *v73 = v23;
+          *errorCopy = v23;
         }
 
         v47 = v53;
@@ -904,7 +904,7 @@ LABEL_21:
           v10 = objc_alloc(MEMORY[0x277CCA9B8]);
           v21 = [v10 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:151 userInfo:0];
           v11 = v21;
-          *v73 = v21;
+          *errorCopy = v21;
         }
 
         objc_storeStrong(&v49, 0);
@@ -915,12 +915,12 @@ LABEL_21:
       else
       {
         v6 = v53;
-        *v73 = v53;
+        *errorCopy = v53;
         v76 = 0;
         v71 = 1;
       }
 
-      objc_storeStrong(&v51, 0);
+      objc_storeStrong(&modelsURL, 0);
       if (!v71)
       {
 LABEL_36:
@@ -943,7 +943,7 @@ LABEL_36:
           v12 = objc_alloc(MEMORY[0x277CCA9B8]);
           v16 = [v12 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:144 userInfo:0];
           v13 = v16;
-          *v73 = v16;
+          *errorCopy = v16;
           v76 = 0;
           v71 = 1;
         }
@@ -955,8 +955,8 @@ LABEL_36:
 
     objc_storeStrong(&v66, 0);
     objc_storeStrong(&v67, 0);
-    objc_storeStrong(&v68, 0);
-    objc_storeStrong(&v70, 0);
+    objc_storeStrong(&treatmentId, 0);
+    objc_storeStrong(&experimentId, 0);
   }
 
   else
@@ -964,12 +964,12 @@ LABEL_36:
     v4 = objc_alloc(MEMORY[0x277CCA9B8]);
     v44 = [v4 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:145 userInfo:0];
     v5 = v44;
-    *v73 = v44;
+    *errorCopy = v44;
     v76 = 0;
     v71 = 1;
   }
 
-  objc_storeStrong(&v72, 0);
+  objc_storeStrong(&triExperimentIdentifiers, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
   v14 = v76;
@@ -977,20 +977,20 @@ LABEL_36:
   return v14;
 }
 
-- (id)logAllResultsToCoreAnalyticsOrDeDisco:(id)a3 withLoggingStrategies:(id)a4 outError:(id *)a5
+- (id)logAllResultsToCoreAnalyticsOrDeDisco:(id)disco withLoggingStrategies:(id)strategies outError:(id *)error
 {
   v44 = *MEMORY[0x277D85DE8];
-  v40 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, disco);
   v38 = 0;
-  objc_storeStrong(&v38, a4);
-  v37 = a5;
+  objc_storeStrong(&v38, strategies);
+  errorCopy = error;
   v36 = 0;
-  if (([v38 containsObject:DeDisco] & 1) == 0 || ((v35 = -[AMDLighthouseODMLWorker logDeDiscoResults:outError:](v40, "logDeDiscoResults:outError:", location[0], v37)) != 0 ? (v36 = 1, v34 = 0) : (v41 = 0, v34 = 1), objc_storeStrong(&v35, 0), !v34))
+  if (([v38 containsObject:DeDisco] & 1) == 0 || ((v35 = -[AMDLighthouseODMLWorker logDeDiscoResults:outError:](selfCopy, "logDeDiscoResults:outError:", location[0], errorCopy)) != 0 ? (v36 = 1, v34 = 0) : (v41 = 0, v34 = 1), objc_storeStrong(&v35, 0), !v34))
   {
-    if (([v38 containsObject:MultipleDeDisco] & 1) == 0 || ((v33 = -[AMDLighthouseODMLWorker logMultipleDeDiscoResults:outError:](v40, "logMultipleDeDiscoResults:outError:", location[0], v37)) != 0 ? (v36 = 1, v34 = 0) : (v41 = 0, v34 = 1), objc_storeStrong(&v33, 0), !v34))
+    if (([v38 containsObject:MultipleDeDisco] & 1) == 0 || ((v33 = -[AMDLighthouseODMLWorker logMultipleDeDiscoResults:outError:](selfCopy, "logMultipleDeDiscoResults:outError:", location[0], errorCopy)) != 0 ? (v36 = 1, v34 = 0) : (v41 = 0, v34 = 1), objc_storeStrong(&v33, 0), !v34))
     {
       if (([v38 containsObject:CoreAnalytics] & 1) == 0)
       {
@@ -1033,7 +1033,7 @@ LABEL_36:
               }
 
               v28 = *(v27[1] + 8 * v13);
-              v10 = [(AMDLighthouseODMLWorker *)v40 checkIfTaskShouldBeStopped:v37];
+              v10 = [(AMDLighthouseODMLWorker *)selfCopy checkIfTaskShouldBeStopped:errorCopy];
               MEMORY[0x277D82BD8](v10);
               if (!v10)
               {
@@ -1041,7 +1041,7 @@ LABEL_36:
               }
 
               v26 = [v30 objectForKey:v28];
-              v25 = [(AMDLighthouseODMLWorker *)v40 logResultToCoreAnalytics:v29 withMetric:v28 withValue:v26];
+              v25 = [(AMDLighthouseODMLWorker *)selfCopy logResultToCoreAnalytics:v29 withMetric:v28 withValue:v26];
               if (v25)
               {
                 v36 = 1;
@@ -1130,7 +1130,7 @@ LABEL_36:
           v5 = objc_alloc(MEMORY[0x277CCA9B8]);
           v9 = [v5 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:143 userInfo:0];
           v6 = v9;
-          *v37 = v9;
+          *errorCopy = v9;
           v41 = 0;
         }
 
@@ -1147,45 +1147,45 @@ LABEL_36:
   return v7;
 }
 
-- (id)targetingKeyValuePairsForKeys:(id)a3 error:(id *)a4
+- (id)targetingKeyValuePairsForKeys:(id)keys error:(id *)error
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v7[1] = a4;
+  objc_storeStrong(location, keys);
+  v7[1] = error;
   v7[0] = objc_alloc_init(AMDDODMLCustomTargetingHelper);
-  v6 = [v7[0] mainTargetingResolver:location[0] error:a4];
+  v6 = [v7[0] mainTargetingResolver:location[0] error:error];
   objc_storeStrong(v7, 0);
   objc_storeStrong(location, 0);
 
   return v6;
 }
 
-- (id)gatherMetricsToReturn:(id)a3 withRecipe:(id)a4 withAttachments:(id)a5 outError:(id *)a6
+- (id)gatherMetricsToReturn:(id)return withRecipe:(id)recipe withAttachments:(id)attachments outError:(id *)error
 {
   v127 = *MEMORY[0x277D85DE8];
-  v122 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, return);
   v120 = 0;
-  objc_storeStrong(&v120, a4);
+  objc_storeStrong(&v120, recipe);
   v119 = 0;
-  objc_storeStrong(&v119, a5);
-  v118 = a6;
+  objc_storeStrong(&v119, attachments);
+  errorCopy = error;
   v117 = [v120 objectForKeyedSubscript:DataProcessingAndModelTraining];
   if (v117)
   {
-    v77 = [(AMDLighthouseODMLWorker *)v122 checkIfTaskShouldBeStopped:v118];
+    v77 = [(AMDLighthouseODMLWorker *)selfCopy checkIfTaskShouldBeStopped:errorCopy];
     MEMORY[0x277D82BD8](v77);
     if (v77)
     {
       v115 = [v120 objectForKeyedSubscript:AttachmentInstructions];
       v75 = [AMDDODMLAttachmentProcessor alloc];
-      v76 = [(AMDLighthouseODMLWorker *)v122 attachments];
+      attachments = [(AMDLighthouseODMLWorker *)selfCopy attachments];
       v114 = [AMDDODMLAttachmentProcessor initWithAttachmentURLs:v75 withInstructions:"initWithAttachmentURLs:withInstructions:error:errorDomain:" error:? errorDomain:?];
-      MEMORY[0x277D82BD8](v76);
+      MEMORY[0x277D82BD8](attachments);
       if (v114)
       {
         v8 = [AMDDODMLDataProcessor alloc];
@@ -1214,12 +1214,12 @@ LABEL_36:
               v109 = [v111 objectForKey:ModelName];
               if (v109)
               {
-                v66 = [(AMDLighthouseODMLWorker *)v122 checkIfTaskShouldBeStopped:v118];
+                v66 = [(AMDLighthouseODMLWorker *)selfCopy checkIfTaskShouldBeStopped:errorCopy];
                 MEMORY[0x277D82BD8](v66);
                 if (v66)
                 {
                   v108 = [v111 objectForKey:DataProcessing];
-                  if (!v108 || (([v113 resetDataProcessorWithRecipe:v108], (v107 = objc_msgSend(v113, "processRecipe:errorDomain:", v118, AMDLighthouseODMLPluginErrorDomain)) != 0) ? (v116 = 0) : (v123 = 0, v116 = 1), objc_storeStrong(&v107, 0), !v116))
+                  if (!v108 || (([v113 resetDataProcessorWithRecipe:v108], (v107 = objc_msgSend(v113, "processRecipe:errorDomain:", errorCopy, AMDLighthouseODMLPluginErrorDomain)) != 0) ? (v116 = 0) : (v123 = 0, v116 = 1), objc_storeStrong(&v107, 0), !v116))
                   {
                     v106 = [v111 objectForKey:TaskParameters];
                     if (!v106)
@@ -1254,14 +1254,14 @@ LABEL_36:
                       v19 = objc_alloc(MEMORY[0x277CCA9B8]);
                       v65 = [v19 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:143 userInfo:0];
                       v20 = v65;
-                      *v118 = v65;
+                      *errorCopy = v65;
                       v123 = 0;
                       v116 = 1;
                     }
 
                     else
                     {
-                      v64 = [(AMDLighthouseODMLWorker *)v122 checkIfTaskShouldBeStopped:v118];
+                      v64 = [(AMDLighthouseODMLWorker *)selfCopy checkIfTaskShouldBeStopped:errorCopy];
                       MEMORY[0x277D82BD8](v64);
                       if (v64)
                       {
@@ -1269,14 +1269,14 @@ LABEL_36:
                         if ([v103 longValue] == 1)
                         {
                           v61 = [AMDCoreMLDataProvider alloc];
-                          v60 = [v113 getInputSize];
-                          v63 = [v113 getElementsInSampleDictionary];
-                          v62 = [v113 getInputDictionary];
-                          v100 = [(AMDCoreMLDataProvider *)v61 initWithInputs:v60 featureSizeMap:v63 inputDictionary:?];
-                          MEMORY[0x277D82BD8](v62);
-                          MEMORY[0x277D82BD8](v63);
+                          getInputSize = [v113 getInputSize];
+                          getElementsInSampleDictionary = [v113 getElementsInSampleDictionary];
+                          getInputDictionary = [v113 getInputDictionary];
+                          v100 = [(AMDCoreMLDataProvider *)v61 initWithInputs:getInputSize featureSizeMap:getElementsInSampleDictionary inputDictionary:?];
+                          MEMORY[0x277D82BD8](getInputDictionary);
+                          MEMORY[0x277D82BD8](getElementsInSampleDictionary);
                           v99 = objc_alloc_init(AMDCoreMLTrainer);
-                          v21 = [(AMDCoreMLTrainer *)v99 runTask:v104 error:v118 errorDomain:AMDLighthouseODMLPluginErrorDomain dataProvider:v100];
+                          v21 = [(AMDCoreMLTrainer *)v99 runTask:v104 error:errorCopy errorDomain:AMDLighthouseODMLPluginErrorDomain dataProvider:v100];
                           v22 = v101;
                           v101 = v21;
                           MEMORY[0x277D82BD8](v22);
@@ -1287,14 +1287,14 @@ LABEL_36:
                         else if ([v102 longValue] == 1)
                         {
                           v57 = [AMDCoreMLDataProvider alloc];
-                          v56 = [v113 getInputSize];
-                          v59 = [v113 getElementsInSampleDictionary];
-                          v58 = [v113 getInputDictionary];
-                          v98 = [(AMDCoreMLDataProvider *)v57 initWithInputs:v56 featureSizeMap:v59 inputDictionary:?];
-                          MEMORY[0x277D82BD8](v58);
-                          MEMORY[0x277D82BD8](v59);
+                          getInputSize2 = [v113 getInputSize];
+                          getElementsInSampleDictionary2 = [v113 getElementsInSampleDictionary];
+                          getInputDictionary2 = [v113 getInputDictionary];
+                          v98 = [(AMDCoreMLDataProvider *)v57 initWithInputs:getInputSize2 featureSizeMap:getElementsInSampleDictionary2 inputDictionary:?];
+                          MEMORY[0x277D82BD8](getInputDictionary2);
+                          MEMORY[0x277D82BD8](getElementsInSampleDictionary2);
                           v97 = objc_alloc_init(AMDHeuristicModelEvaluator);
-                          v23 = [(AMDHeuristicModelEvaluator *)v97 runTask:v104 error:v118 errorDomain:AMDLighthouseODMLPluginErrorDomain dataProvider:v98];
+                          v23 = [(AMDHeuristicModelEvaluator *)v97 runTask:v104 error:errorCopy errorDomain:AMDLighthouseODMLPluginErrorDomain dataProvider:v98];
                           v24 = v101;
                           v101 = v23;
                           MEMORY[0x277D82BD8](v24);
@@ -1305,14 +1305,14 @@ LABEL_36:
                         else
                         {
                           v53 = [AMDDODMLEspressoDataProvider alloc];
-                          v52 = [v113 getInputSize];
-                          v55 = [v113 getElementsInSampleDictionary];
-                          v54 = [v113 getInputDictionary];
-                          v96 = [(AMDDODMLEspressoDataProvider *)v53 initWithInputs:v52 featureSizeMap:v55 inputDictionary:?];
-                          MEMORY[0x277D82BD8](v54);
-                          MEMORY[0x277D82BD8](v55);
+                          getInputSize3 = [v113 getInputSize];
+                          getElementsInSampleDictionary3 = [v113 getElementsInSampleDictionary];
+                          getInputDictionary3 = [v113 getInputDictionary];
+                          v96 = [(AMDDODMLEspressoDataProvider *)v53 initWithInputs:getInputSize3 featureSizeMap:getElementsInSampleDictionary3 inputDictionary:?];
+                          MEMORY[0x277D82BD8](getInputDictionary3);
+                          MEMORY[0x277D82BD8](getElementsInSampleDictionary3);
                           v95 = objc_alloc_init(AMDDODMLTrainer);
-                          v25 = [(AMDDODMLTrainer *)v95 runTask:v104 error:v118 errorDomain:AMDLighthouseODMLPluginErrorDomain dataProvider:v96 attachmentProcessor:v114];
+                          v25 = [(AMDDODMLTrainer *)v95 runTask:v104 error:errorCopy errorDomain:AMDLighthouseODMLPluginErrorDomain dataProvider:v96 attachmentProcessor:v114];
                           v26 = v101;
                           v101 = v25;
                           MEMORY[0x277D82BD8](v26);
@@ -1322,12 +1322,12 @@ LABEL_36:
 
                         if (v101)
                         {
-                          v49 = [v101 JSONResult];
-                          v94 = [v49 objectForKey:ModelMetrics];
-                          MEMORY[0x277D82BD8](v49);
+                          jSONResult = [v101 JSONResult];
+                          v94 = [jSONResult objectForKey:ModelMetrics];
+                          MEMORY[0x277D82BD8](jSONResult);
                           memset(v92, 0, sizeof(v92));
-                          v50 = [v94 allKeys];
-                          v51 = [v50 countByEnumeratingWithState:v92 objects:v125 count:16];
+                          allKeys = [v94 allKeys];
+                          v51 = [allKeys countByEnumeratingWithState:v92 objects:v125 count:16];
                           if (v51)
                           {
                             v46 = *v92[2];
@@ -1338,7 +1338,7 @@ LABEL_36:
                               v45 = v47;
                               if (*v92[2] != v46)
                               {
-                                objc_enumerationMutation(v50);
+                                objc_enumerationMutation(allKeys);
                               }
 
                               v93 = *(v92[1] + 8 * v47);
@@ -1349,7 +1349,7 @@ LABEL_36:
                               if (v45 + 1 >= v48)
                               {
                                 v47 = 0;
-                                v48 = [v50 countByEnumeratingWithState:v92 objects:v125 count:16];
+                                v48 = [allKeys countByEnumeratingWithState:v92 objects:v125 count:16];
                                 if (!v48)
                                 {
                                   break;
@@ -1358,7 +1358,7 @@ LABEL_36:
                             }
                           }
 
-                          MEMORY[0x277D82BD8](v50);
+                          MEMORY[0x277D82BD8](allKeys);
                           objc_storeStrong(&v94, 0);
                           v116 = 0;
                         }
@@ -1386,14 +1386,14 @@ LABEL_36:
                     if (!v116)
                     {
 LABEL_48:
-                      v44 = [(AMDLighthouseODMLWorker *)v122 checkIfTaskShouldBeStopped:v118];
+                      v44 = [(AMDLighthouseODMLWorker *)selfCopy checkIfTaskShouldBeStopped:errorCopy];
                       MEMORY[0x277D82BD8](v44);
                       if (v44)
                       {
                         v90 = [v111 objectForKey:DataPostProcessing];
-                        if (!v90 || (([v113 resetDataProcessorWithRecipe:v90], (v89 = objc_msgSend(v113, "processRecipe:errorDomain:", v118, AMDLighthouseODMLPluginErrorDomain)) != 0) ? (v116 = 0) : (v123 = 0, v116 = 1), objc_storeStrong(&v89, 0), !v116))
+                        if (!v90 || (([v113 resetDataProcessorWithRecipe:v90], (v89 = objc_msgSend(v113, "processRecipe:errorDomain:", errorCopy, AMDLighthouseODMLPluginErrorDomain)) != 0) ? (v116 = 0) : (v123 = 0, v116 = 1), objc_storeStrong(&v89, 0), !v116))
                         {
-                          v43 = [(AMDLighthouseODMLWorker *)v122 checkIfTaskShouldBeStopped:v118];
+                          v43 = [(AMDLighthouseODMLWorker *)selfCopy checkIfTaskShouldBeStopped:errorCopy];
                           MEMORY[0x277D82BD8](v43);
                           if (v43)
                           {
@@ -1429,11 +1429,11 @@ LABEL_48:
                                 {
                                   if ([v82 count] == 1)
                                   {
-                                    v35 = [v82 firstObject];
-                                    v34 = [v35 stringValue];
+                                    firstObject = [v82 firstObject];
+                                    stringValue = [firstObject stringValue];
                                     [v85 setObject:? forKeyedSubscript:?];
-                                    MEMORY[0x277D82BD8](v34);
-                                    MEMORY[0x277D82BD8](v35);
+                                    MEMORY[0x277D82BD8](stringValue);
+                                    MEMORY[0x277D82BD8](firstObject);
                                     v116 = 0;
                                   }
 
@@ -1442,7 +1442,7 @@ LABEL_48:
                                     v29 = objc_alloc(MEMORY[0x277CCA9B8]);
                                     v33 = [v29 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:139 userInfo:0];
                                     v30 = v33;
-                                    *v118 = v33;
+                                    *errorCopy = v33;
                                     v123 = 0;
                                     v116 = 1;
                                   }
@@ -1453,7 +1453,7 @@ LABEL_48:
                                   v27 = objc_alloc(MEMORY[0x277CCA9B8]);
                                   v36 = [v27 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:138 userInfo:0];
                                   v28 = v36;
-                                  *v118 = v36;
+                                  *errorCopy = v36;
                                   v123 = 0;
                                   v116 = 1;
                                 }
@@ -1538,7 +1538,7 @@ LABEL_74:
                 v11 = objc_alloc(MEMORY[0x277CCA9B8]);
                 v67 = [v11 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:137 userInfo:0];
                 v12 = v67;
-                *v118 = v67;
+                *errorCopy = v67;
                 v123 = 0;
                 v116 = 1;
               }
@@ -1583,7 +1583,7 @@ LABEL_82:
           v9 = objc_alloc(MEMORY[0x277CCA9B8]);
           v74 = [v9 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:126 userInfo:0];
           v10 = v74;
-          *v118 = v74;
+          *errorCopy = v74;
           v123 = 0;
           v116 = 1;
         }
@@ -1613,7 +1613,7 @@ LABEL_82:
     v6 = objc_alloc(MEMORY[0x277CCA9B8]);
     v78 = [v6 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:134 userInfo:0];
     v7 = v78;
-    *v118 = v78;
+    *errorCopy = v78;
     v123 = 0;
     v116 = 1;
   }
@@ -1628,14 +1628,14 @@ LABEL_82:
   return v31;
 }
 
-- (id)checkIfTaskShouldBeStopped:(id *)a3
+- (id)checkIfTaskShouldBeStopped:(id *)stopped
 {
   if ([(NSNumber *)self->_taskShouldBeStopped intValue]== 1)
   {
     v3 = objc_alloc(MEMORY[0x277CCA9B8]);
     v6 = [v3 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:148 userInfo:0];
     v4 = v6;
-    *a3 = v6;
+    *stopped = v6;
     v8 = 0;
   }
 
@@ -1647,13 +1647,13 @@ LABEL_82:
   return v8;
 }
 
-- (id)checkIfModelShouldBeDownloaded:(id)a3 outError:(id *)a4
+- (id)checkIfModelShouldBeDownloaded:(id)downloaded outError:(id *)error
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v19 = a4;
+  objc_storeStrong(location, downloaded);
+  errorCopy = error;
   v4 = objc_alloc(MEMORY[0x277D253F8]);
   v18 = [v4 initWithURLs:MEMORY[0x277CBEBF8]];
   v17 = [location[0] objectForKeyedSubscript:DataProcessingToCheckIfDownloadModel];
@@ -1679,7 +1679,7 @@ LABEL_82:
     v6 = objc_alloc(MEMORY[0x277CCA9B8]);
     v10 = [v6 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:126 userInfo:0];
     v7 = v10;
-    *v19 = v10;
+    *errorCopy = v10;
     v21 = 0;
   }
 
@@ -1693,16 +1693,16 @@ LABEL_82:
   return v8;
 }
 
-- (id)performGenericTaskWithDataProcessingCarryover:(id)a3 outError:(id *)a4
+- (id)performGenericTaskWithDataProcessingCarryover:(id)carryover outError:(id *)error
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v18[1] = a4;
+  objc_storeStrong(location, carryover);
+  v18[1] = error;
   v4 = [MEMORY[0x277CCABB0] numberWithInt:0];
-  taskShouldBeStopped = v20->_taskShouldBeStopped;
-  v20->_taskShouldBeStopped = v4;
+  taskShouldBeStopped = selfCopy->_taskShouldBeStopped;
+  selfCopy->_taskShouldBeStopped = v4;
   MEMORY[0x277D82BD8](taskShouldBeStopped);
   v18[0] = MEMORY[0x277D82BE0](sLog);
   v17 = 1;
@@ -1715,13 +1715,13 @@ LABEL_82:
   }
 
   objc_storeStrong(v18, 0);
-  v9 = v20;
+  v9 = selfCopy;
   v8 = location[0];
-  v11 = [(AMDLighthouseODMLWorker *)v20 recipe];
-  v10 = [(AMDLighthouseODMLWorker *)v20 attachments];
-  v15 = [AMDLighthouseODMLWorker gatherMetricsToReturn:v9 withRecipe:"gatherMetricsToReturn:withRecipe:withAttachments:outError:" withAttachments:v8 outError:v11];
-  MEMORY[0x277D82BD8](v10);
-  MEMORY[0x277D82BD8](v11);
+  recipe = [(AMDLighthouseODMLWorker *)selfCopy recipe];
+  attachments = [(AMDLighthouseODMLWorker *)selfCopy attachments];
+  v15 = [AMDLighthouseODMLWorker gatherMetricsToReturn:v9 withRecipe:"gatherMetricsToReturn:withRecipe:withAttachments:outError:" withAttachments:v8 outError:recipe];
+  MEMORY[0x277D82BD8](attachments);
+  MEMORY[0x277D82BD8](recipe);
   if (v15)
   {
     v21 = MEMORY[0x277D82BE0](v15);

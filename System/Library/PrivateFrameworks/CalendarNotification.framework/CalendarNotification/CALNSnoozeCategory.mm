@@ -1,39 +1,39 @@
 @interface CALNSnoozeCategory
 + (id)snoozeCategories;
-+ (id)snoozeCategoryForEventWithStartDate:(id)a3 endDate:(id)a4 now:(id)a5 isAllDay:(BOOL)a6;
-- (CALNSnoozeCategory)initWithSuffix:(id)a3 timedExpirationInterval:(double)a4 leeway:(double)a5 relativeToEnd:(BOOL)a6 validForAllDay:(BOOL)a7 actions:(id)a8;
-- (id)expirationDateForEventWithStartDate:(id)a3 endDate:(id)a4 isAllDay:(BOOL)a5;
++ (id)snoozeCategoryForEventWithStartDate:(id)date endDate:(id)endDate now:(id)now isAllDay:(BOOL)day;
+- (CALNSnoozeCategory)initWithSuffix:(id)suffix timedExpirationInterval:(double)interval leeway:(double)leeway relativeToEnd:(BOOL)end validForAllDay:(BOOL)day actions:(id)actions;
+- (id)expirationDateForEventWithStartDate:(id)date endDate:(id)endDate isAllDay:(BOOL)day;
 @end
 
 @implementation CALNSnoozeCategory
 
-- (CALNSnoozeCategory)initWithSuffix:(id)a3 timedExpirationInterval:(double)a4 leeway:(double)a5 relativeToEnd:(BOOL)a6 validForAllDay:(BOOL)a7 actions:(id)a8
+- (CALNSnoozeCategory)initWithSuffix:(id)suffix timedExpirationInterval:(double)interval leeway:(double)leeway relativeToEnd:(BOOL)end validForAllDay:(BOOL)day actions:(id)actions
 {
-  v15 = a3;
-  v16 = a8;
+  suffixCopy = suffix;
+  actionsCopy = actions;
   v20.receiver = self;
   v20.super_class = CALNSnoozeCategory;
   v17 = [(CALNSnoozeCategory *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_suffix, a3);
-    v18->_timedExpirationInterval = a4;
-    v18->_leeway = a5;
-    v18->_relativeToEnd = a6;
-    v18->_validForAllDay = a7;
-    objc_storeStrong(&v18->_actions, a8);
+    objc_storeStrong(&v17->_suffix, suffix);
+    v18->_timedExpirationInterval = interval;
+    v18->_leeway = leeway;
+    v18->_relativeToEnd = end;
+    v18->_validForAllDay = day;
+    objc_storeStrong(&v18->_actions, actions);
   }
 
   return v18;
 }
 
-- (id)expirationDateForEventWithStartDate:(id)a3 endDate:(id)a4 isAllDay:(BOOL)a5
+- (id)expirationDateForEventWithStartDate:(id)date endDate:(id)endDate isAllDay:(BOOL)day
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (a5 || (timedExpirationInterval = self->_timedExpirationInterval, timedExpirationInterval == -1000000000.0))
+  dateCopy = date;
+  endDateCopy = endDate;
+  v10 = endDateCopy;
+  if (day || (timedExpirationInterval = self->_timedExpirationInterval, timedExpirationInterval == -1000000000.0))
   {
     v12 = 0;
   }
@@ -43,32 +43,32 @@
     v14 = -timedExpirationInterval;
     if (!self->_relativeToEnd)
     {
-      v9 = v8;
+      endDateCopy = dateCopy;
     }
 
-    v12 = [v9 dateByAddingTimeInterval:v14];
+    v12 = [endDateCopy dateByAddingTimeInterval:v14];
   }
 
   return v12;
 }
 
-+ (id)snoozeCategoryForEventWithStartDate:(id)a3 endDate:(id)a4 now:(id)a5 isAllDay:(BOOL)a6
++ (id)snoozeCategoryForEventWithStartDate:(id)date endDate:(id)endDate now:(id)now isAllDay:(BOOL)day
 {
-  v6 = a6;
+  dayCopy = day;
   v34 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [a1 snoozeCategories];
-  [v10 timeIntervalSinceDate:v12];
+  dateCopy = date;
+  endDateCopy = endDate;
+  nowCopy = now;
+  snoozeCategories = [self snoozeCategories];
+  [dateCopy timeIntervalSinceDate:nowCopy];
   v15 = v14;
-  [v11 timeIntervalSinceDate:v12];
+  [endDateCopy timeIntervalSinceDate:nowCopy];
   v17 = v16;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v18 = v13;
+  v18 = snoozeCategories;
   v19 = [v18 countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v19)
   {
@@ -84,7 +84,7 @@
         }
 
         v23 = *(*(&v29 + 1) + 8 * i);
-        if (v6)
+        if (dayCopy)
         {
           if (*(v23 + 17))
           {

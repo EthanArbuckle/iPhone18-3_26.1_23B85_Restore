@@ -1,26 +1,26 @@
 @interface CPSInstrumentClusterCardLayout
-+ (id)layoutWithLayoutType:(unint64_t)a3;
++ (id)layoutWithLayoutType:(unint64_t)type;
 - (CGRect)safeArea;
 - (CGRect)viewArea;
-- (CPSInstrumentClusterCardLayout)initWithCarScreenInfo:(id)a3 isRightHandDrive:(BOOL)a4;
-- (CPSInstrumentClusterCardLayout)initWithLayout:(unint64_t)a3;
-- (uint64_t)initWithSafeAreaFrame:(char)a3 viewAreaFrame:(CGFloat)a4 displayFrame:(CGFloat)a5 physicalPixelWidth:(CGFloat)a6 isRightHandDrive:(CGFloat)a7;
+- (CPSInstrumentClusterCardLayout)initWithCarScreenInfo:(id)info isRightHandDrive:(BOOL)drive;
+- (CPSInstrumentClusterCardLayout)initWithLayout:(unint64_t)layout;
+- (uint64_t)initWithSafeAreaFrame:(char)frame viewAreaFrame:(CGFloat)areaFrame displayFrame:(CGFloat)displayFrame physicalPixelWidth:(CGFloat)width isRightHandDrive:(CGFloat)drive;
 @end
 
 @implementation CPSInstrumentClusterCardLayout
 
-+ (id)layoutWithLayoutType:(unint64_t)a3
++ (id)layoutWithLayoutType:(unint64_t)type
 {
-  v3 = [[CPSInstrumentClusterCardLayout alloc] initWithLayout:a3];
+  v3 = [[CPSInstrumentClusterCardLayout alloc] initWithLayout:type];
 
   return v3;
 }
 
-- (CPSInstrumentClusterCardLayout)initWithLayout:(unint64_t)a3
+- (CPSInstrumentClusterCardLayout)initWithLayout:(unint64_t)layout
 {
   v12 = *MEMORY[0x277D85DE8];
   v9 = a2;
-  v8 = a3;
+  layoutCopy = layout;
   v10 = 0;
   v7.receiver = self;
   v7.super_class = CPSInstrumentClusterCardLayout;
@@ -29,7 +29,7 @@
   objc_storeStrong(&v10, v5);
   if (v5)
   {
-    v10->_layoutForCard = v8;
+    v10->_layoutForCard = layoutCopy;
     oslog = CarPlaySupportGeneralLogging();
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_INFO))
     {
@@ -45,13 +45,13 @@
   return v4;
 }
 
-- (uint64_t)initWithSafeAreaFrame:(char)a3 viewAreaFrame:(CGFloat)a4 displayFrame:(CGFloat)a5 physicalPixelWidth:(CGFloat)a6 isRightHandDrive:(CGFloat)a7
+- (uint64_t)initWithSafeAreaFrame:(char)frame viewAreaFrame:(CGFloat)areaFrame displayFrame:(CGFloat)displayFrame physicalPixelWidth:(CGFloat)width isRightHandDrive:(CGFloat)drive
 {
   v65 = *MEMORY[0x277D85DE8];
-  v61.origin.x = a4;
-  v61.origin.y = a5;
-  v61.size.width = a6;
-  v61.size.height = a7;
+  v61.origin.x = areaFrame;
+  v61.origin.y = displayFrame;
+  v61.size.width = width;
+  v61.size.height = drive;
   v60.origin.x = a8;
   v60.origin.y = a9;
   v60.size.width = a10;
@@ -62,9 +62,9 @@
   v59.size.height = a15;
   v57 = a2;
   v56 = a16;
-  v55 = a3;
+  frameCopy = frame;
   v58 = 0;
-  v54.receiver = a1;
+  v54.receiver = self;
   v54.super_class = CPSInstrumentClusterCardLayout;
   v36 = objc_msgSendSuper2(&v54, sel_init);
   v58 = v36;
@@ -146,7 +146,7 @@
       {
         if (MidX <= v46)
         {
-          if (v55)
+          if (frameCopy)
           {
             *(v58 + 2) = 3;
           }
@@ -172,7 +172,7 @@
       v44 = OS_LOG_TYPE_INFO;
       if (os_log_type_enabled(v45, OS_LOG_TYPE_INFO))
       {
-        __os_log_helper_16_0_6_8_0_8_0_8_0_8_0_4_0_8_0(v63, *&v61.size.width, COERCE__INT64(660.0 * v48), *&MidX, *&v46, v55 & 1, *(v58 + 2));
+        __os_log_helper_16_0_6_8_0_8_0_8_0_8_0_4_0_8_0(v63, *&v61.size.width, COERCE__INT64(660.0 * v48), *&MidX, *&v46, frameCopy & 1, *(v58 + 2));
         _os_log_impl(&dword_242FE8000, v45, v44, "Layout Calculation: Safe area width %f is greater than %f. Safe area mid: %f, Display mid: %f. is RHD: %d. using layout %lu", v63, 0x3Au);
       }
 
@@ -198,26 +198,26 @@
   return v22;
 }
 
-- (CPSInstrumentClusterCardLayout)initWithCarScreenInfo:(id)a3 isRightHandDrive:(BOOL)a4
+- (CPSInstrumentClusterCardLayout)initWithCarScreenInfo:(id)info isRightHandDrive:(BOOL)drive
 {
-  v38 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v21 = [location[0] currentViewArea];
-  [v21 safeFrame];
+  objc_storeStrong(location, info);
+  currentViewArea = [location[0] currentViewArea];
+  [currentViewArea safeFrame];
   v33 = v4;
   v34 = v5;
   v35 = v6;
   v36 = v7;
-  MEMORY[0x277D82BD8](v21);
-  v22 = [location[0] currentViewArea];
-  [v22 visibleFrame];
+  MEMORY[0x277D82BD8](currentViewArea);
+  currentViewArea2 = [location[0] currentViewArea];
+  [currentViewArea2 visibleFrame];
   v29 = v8;
   v30 = v9;
   v31 = v10;
   v32 = v11;
-  MEMORY[0x277D82BD8](v22);
+  MEMORY[0x277D82BD8](currentViewArea2);
   [location[0] pixelSize];
   [location[0] pixelSize];
   CGRectMake_4();
@@ -228,12 +228,12 @@
   [location[0] physicalSize];
   v23 = v16;
   [location[0] pixelSize];
-  v17 = v38;
-  v38 = 0;
-  v38 = [(CPSInstrumentClusterCardLayout *)v17 initWithSafeAreaFrame:a4 viewAreaFrame:v33 displayFrame:v34 physicalPixelWidth:v35 isRightHandDrive:v36, v29, v30, v31, v32, v25, v26, v27, v28, v23 / v18];
-  v24 = MEMORY[0x277D82BE0](v38);
+  v17 = selfCopy;
+  selfCopy = 0;
+  selfCopy = [(CPSInstrumentClusterCardLayout *)v17 initWithSafeAreaFrame:drive viewAreaFrame:v33 displayFrame:v34 physicalPixelWidth:v35 isRightHandDrive:v36, v29, v30, v31, v32, v25, v26, v27, v28, v23 / v18];
+  v24 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v38, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v24;
 }
 

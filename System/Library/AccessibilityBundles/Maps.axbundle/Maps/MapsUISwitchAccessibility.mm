@@ -8,15 +8,15 @@
 {
   v7.receiver = self;
   v7.super_class = MapsUISwitchAccessibility;
-  v3 = [(MapsUISwitchAccessibility *)&v7 accessibilityTraits];
-  v4 = [(MapsUISwitchAccessibility *)self _accessibilityIsInSettingsTableViewCell];
+  accessibilityTraits = [(MapsUISwitchAccessibility *)&v7 accessibilityTraits];
+  _accessibilityIsInSettingsTableViewCell = [(MapsUISwitchAccessibility *)self _accessibilityIsInSettingsTableViewCell];
   v5 = *MEMORY[0x29EDC7578];
-  if (!v4)
+  if (!_accessibilityIsInSettingsTableViewCell)
   {
     v5 = 0;
   }
 
-  return v5 | v3;
+  return v5 | accessibilityTraits;
 }
 
 @end

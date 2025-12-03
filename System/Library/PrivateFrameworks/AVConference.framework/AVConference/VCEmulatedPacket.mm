@@ -1,11 +1,11 @@
 @interface VCEmulatedPacket
-- (VCEmulatedPacket)initWithPacketID:(unsigned int)a3;
-- (VCEmulatedPacket)initWithPacketID:(unsigned int)a3 datagram:(char *)a4 datagramSize:(unsigned int)a5;
+- (VCEmulatedPacket)initWithPacketID:(unsigned int)d;
+- (VCEmulatedPacket)initWithPacketID:(unsigned int)d datagram:(char *)datagram datagramSize:(unsigned int)size;
 @end
 
 @implementation VCEmulatedPacket
 
-- (VCEmulatedPacket)initWithPacketID:(unsigned int)a3
+- (VCEmulatedPacket)initWithPacketID:(unsigned int)d
 {
   v6 = *MEMORY[0x1E69E9840];
   v5.receiver = self;
@@ -13,13 +13,13 @@
   result = [(VCEmulatedPacket *)&v5 init];
   if (result)
   {
-    result->_packetID = a3;
+    result->_packetID = d;
   }
 
   return result;
 }
 
-- (VCEmulatedPacket)initWithPacketID:(unsigned int)a3 datagram:(char *)a4 datagramSize:(unsigned int)a5
+- (VCEmulatedPacket)initWithPacketID:(unsigned int)d datagram:(char *)datagram datagramSize:(unsigned int)size
 {
   v24 = *MEMORY[0x1E69E9840];
   v13.receiver = self;
@@ -28,11 +28,11 @@
   v9 = v8;
   if (v8)
   {
-    v8->_packetID = a3;
-    v8->_size = a5;
-    if (a4 && a5 < 0x5DD)
+    v8->_packetID = d;
+    v8->_size = size;
+    if (datagram && size < 0x5DD)
     {
-      memcpy(v8->_datagram, a4, a5);
+      memcpy(v8->_datagram, datagram, size);
       v9->_datagramPtr = v9->_datagram;
     }
 
@@ -51,9 +51,9 @@
           v18 = 1024;
           v19 = 51;
           v20 = 2048;
-          v21 = a4;
+          datagramCopy = datagram;
           v22 = 1024;
-          v23 = a5;
+          sizeCopy = size;
           _os_log_error_impl(&dword_1DB56E000, v11, OS_LOG_TYPE_ERROR, " [%s] %s:%d Cannot create VCEmualtedPacket with datagram: %p, datagramSize: %d", buf, 0x2Cu);
         }
       }

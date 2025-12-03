@@ -1,14 +1,14 @@
 @interface LocationViewerPageControl.Coordinator
-- (void)pageDidChange:(id)a3;
+- (void)pageDidChange:(id)change;
 @end
 
 @implementation LocationViewerPageControl.Coordinator
 
-- (void)pageDidChange:(id)a3
+- (void)pageDidChange:(id)change
 {
-  v3 = a3;
+  changeCopy = change;
 
-  sub_1005D6CCC(v3);
+  sub_1005D6CCC(changeCopy);
 }
 
 @end

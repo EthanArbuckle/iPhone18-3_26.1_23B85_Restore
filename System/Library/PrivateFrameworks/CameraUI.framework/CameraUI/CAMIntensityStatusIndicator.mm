@@ -1,14 +1,14 @@
 @interface CAMIntensityStatusIndicator
-- (void)setOn:(BOOL)a3;
+- (void)setOn:(BOOL)on;
 @end
 
 @implementation CAMIntensityStatusIndicator
 
-- (void)setOn:(BOOL)a3
+- (void)setOn:(BOOL)on
 {
-  if (self->_on != a3)
+  if (self->_on != on)
   {
-    self->_on = a3;
+    self->_on = on;
     [(CAMControlStatusIndicator *)self updateImage];
   }
 }

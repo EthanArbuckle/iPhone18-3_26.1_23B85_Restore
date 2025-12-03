@@ -1,8 +1,8 @@
 @interface NanoRoutePlanningResponseSnapshot
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (NanoRoutePlanningResponseSnapshot)init;
-- (id)deltaFromSnapshot:(id)a3;
+- (id)deltaFromSnapshot:(id)snapshot;
 @end
 
 @implementation NanoRoutePlanningResponseSnapshot
@@ -12,72 +12,72 @@
   v10.receiver = self;
   v10.super_class = NanoRoutePlanningResponseSnapshot;
   v3 = [(NanoRoutePlanningResponseSnapshot *)&v10 description];
-  v4 = [(NanoRoutePlanningResponseSnapshot *)self routeIdentifiers];
-  v5 = [(NanoRoutePlanningResponseSnapshot *)self selectedRouteIdentifier];
-  v6 = [(NanoRoutePlanningResponseSnapshot *)self revisionIdentifiers];
-  v7 = [(NanoRoutePlanningResponseSnapshot *)self selectedRideIndexes];
-  v8 = [NSString stringWithFormat:@"%@ {\nrouteIdentifiers: %@\nselectedRouteIdentifier: %@\nrevisionIdentifiers: %@\nselectedRideIndexes: %@\n}", v3, v4, v5, v6, v7];
+  routeIdentifiers = [(NanoRoutePlanningResponseSnapshot *)self routeIdentifiers];
+  selectedRouteIdentifier = [(NanoRoutePlanningResponseSnapshot *)self selectedRouteIdentifier];
+  revisionIdentifiers = [(NanoRoutePlanningResponseSnapshot *)self revisionIdentifiers];
+  selectedRideIndexes = [(NanoRoutePlanningResponseSnapshot *)self selectedRideIndexes];
+  v8 = [NSString stringWithFormat:@"%@ {\nrouteIdentifiers: %@\nselectedRouteIdentifier: %@\nrevisionIdentifiers: %@\nselectedRideIndexes: %@\n}", v3, routeIdentifiers, selectedRouteIdentifier, revisionIdentifiers, selectedRideIndexes];
 
   return v8;
 }
 
-- (id)deltaFromSnapshot:(id)a3
+- (id)deltaFromSnapshot:(id)snapshot
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  snapshotCopy = snapshot;
+  if (snapshotCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
+    v5 = snapshotCopy;
     v6 = objc_alloc_init(NanoRoutePlanningResponseDelta);
-    v7 = [(NanoRoutePlanningResponseSnapshot *)self routeIdentifiers];
-    v8 = [(NanoRoutePlanningResponseSnapshot *)v5 routeIdentifiers];
-    [(NanoRoutePlanningResponseDelta *)v6 setRoutesChanged:[MNComparison isValue:v7 equalTo:v8]^ 1];
+    routeIdentifiers = [(NanoRoutePlanningResponseSnapshot *)self routeIdentifiers];
+    routeIdentifiers2 = [(NanoRoutePlanningResponseSnapshot *)v5 routeIdentifiers];
+    [(NanoRoutePlanningResponseDelta *)v6 setRoutesChanged:[MNComparison isValue:routeIdentifiers equalTo:routeIdentifiers2]^ 1];
 
-    v9 = [(NanoRoutePlanningResponseSnapshot *)self selectedRouteIdentifier];
-    v10 = [(NanoRoutePlanningResponseSnapshot *)v5 selectedRouteIdentifier];
-    [(NanoRoutePlanningResponseDelta *)v6 setSelectedRouteChanged:[MNComparison isValue:v9 equalTo:v10]^ 1];
+    selectedRouteIdentifier = [(NanoRoutePlanningResponseSnapshot *)self selectedRouteIdentifier];
+    selectedRouteIdentifier2 = [(NanoRoutePlanningResponseSnapshot *)v5 selectedRouteIdentifier];
+    [(NanoRoutePlanningResponseDelta *)v6 setSelectedRouteChanged:[MNComparison isValue:selectedRouteIdentifier equalTo:selectedRouteIdentifier2]^ 1];
 
-    v11 = [(NanoRoutePlanningResponseSnapshot *)self revisionIdentifiers];
-    v12 = [(NanoRoutePlanningResponseSnapshot *)v5 revisionIdentifiers];
-    [(NanoRoutePlanningResponseDelta *)v6 setRouteRevisionsChanged:[MNComparison isValue:v11 equalTo:v12]^ 1];
+    revisionIdentifiers = [(NanoRoutePlanningResponseSnapshot *)self revisionIdentifiers];
+    revisionIdentifiers2 = [(NanoRoutePlanningResponseSnapshot *)v5 revisionIdentifiers];
+    [(NanoRoutePlanningResponseDelta *)v6 setRouteRevisionsChanged:[MNComparison isValue:revisionIdentifiers equalTo:revisionIdentifiers2]^ 1];
 
-    v13 = [(NanoRoutePlanningResponseSnapshot *)self selectedRideIndexes];
-    v14 = [(NanoRoutePlanningResponseSnapshot *)v5 selectedRideIndexes];
-    [(NanoRoutePlanningResponseDelta *)v6 setSelectedRideIndexesChanged:[MNComparison isValue:v13 equalTo:v14]^ 1];
+    selectedRideIndexes = [(NanoRoutePlanningResponseSnapshot *)self selectedRideIndexes];
+    selectedRideIndexes2 = [(NanoRoutePlanningResponseSnapshot *)v5 selectedRideIndexes];
+    [(NanoRoutePlanningResponseDelta *)v6 setSelectedRideIndexesChanged:[MNComparison isValue:selectedRideIndexes equalTo:selectedRideIndexes2]^ 1];
 
     if ([(NanoRoutePlanningResponseDelta *)v6 routeRevisionsChanged])
     {
-      v15 = [(NanoRoutePlanningResponseSnapshot *)v5 timestamp];
-      v16 = [(NanoRoutePlanningResponseSnapshot *)self timestamp];
-      v17 = [v15 compare:v16];
+      timestamp = [(NanoRoutePlanningResponseSnapshot *)v5 timestamp];
+      timestamp2 = [(NanoRoutePlanningResponseSnapshot *)self timestamp];
+      v17 = [timestamp compare:timestamp2];
 
       if (v17 == -1)
       {
-        v18 = v5;
+        selfCopy = v5;
       }
 
       else
       {
-        v18 = self;
+        selfCopy = self;
       }
 
       if (v17 == -1)
       {
-        v19 = self;
+        selfCopy2 = self;
       }
 
       else
       {
-        v19 = v5;
+        selfCopy2 = v5;
       }
 
-      v20 = v18;
-      v21 = v19;
+      v20 = selfCopy;
+      v21 = selfCopy2;
       v22 = [NSMutableOrderedSet alloc];
-      v23 = [(NanoRoutePlanningResponseSnapshot *)v21 revisionIdentifiers];
-      v24 = [v22 initWithArray:v23];
+      revisionIdentifiers3 = [(NanoRoutePlanningResponseSnapshot *)v21 revisionIdentifiers];
+      v24 = [v22 initWithArray:revisionIdentifiers3];
 
-      v25 = [(NanoRoutePlanningResponseSnapshot *)v20 revisionIdentifiers];
-      v26 = [NSSet setWithArray:v25];
+      revisionIdentifiers4 = [(NanoRoutePlanningResponseSnapshot *)v20 revisionIdentifiers];
+      v26 = [NSSet setWithArray:revisionIdentifiers4];
       [v24 minusSet:v26];
 
       v30[0] = _NSConcreteStackBlock;
@@ -99,23 +99,23 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(NanoRoutePlanningResponseSnapshot *)self revisionIdentifiers];
-    v7 = [v5 revisionIdentifiers];
-    if ([MNComparison isValue:v6 equalTo:v7])
+    v5 = equalCopy;
+    revisionIdentifiers = [(NanoRoutePlanningResponseSnapshot *)self revisionIdentifiers];
+    revisionIdentifiers2 = [v5 revisionIdentifiers];
+    if ([MNComparison isValue:revisionIdentifiers equalTo:revisionIdentifiers2])
     {
-      v8 = [(NanoRoutePlanningResponseSnapshot *)self selectedRouteIdentifier];
-      v9 = [v5 selectedRouteIdentifier];
-      if ([MNComparison isValue:v8 equalTo:v9])
+      selectedRouteIdentifier = [(NanoRoutePlanningResponseSnapshot *)self selectedRouteIdentifier];
+      selectedRouteIdentifier2 = [v5 selectedRouteIdentifier];
+      if ([MNComparison isValue:selectedRouteIdentifier equalTo:selectedRouteIdentifier2])
       {
-        v10 = [(NanoRoutePlanningResponseSnapshot *)self selectedRideIndexes];
-        v11 = [v5 selectedRideIndexes];
-        v12 = [MNComparison isValue:v10 equalTo:v11];
+        selectedRideIndexes = [(NanoRoutePlanningResponseSnapshot *)self selectedRideIndexes];
+        selectedRideIndexes2 = [v5 selectedRideIndexes];
+        v12 = [MNComparison isValue:selectedRideIndexes equalTo:selectedRideIndexes2];
       }
 
       else

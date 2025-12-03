@@ -1,16 +1,16 @@
 @interface HUCharacteristicEventOptionProvider
-+ (BOOL)hasOptionsForAnyServiceInHome:(id)a3 allowingSensors:(BOOL)a4;
-+ (BOOL)hasOptionsForServiceVendingItem:(id)a3 outCharacteristicType:(id *)a4;
-+ (BOOL)hasOptionsForServices:(id)a3 outCharacteristicType:(id *)a4 allowingSensors:(BOOL)a5;
-+ (BOOL)homeHubUpdateRequiredForServices:(id)a3 forHome:(id)a4;
++ (BOOL)hasOptionsForAnyServiceInHome:(id)home allowingSensors:(BOOL)sensors;
++ (BOOL)hasOptionsForServiceVendingItem:(id)item outCharacteristicType:(id *)type;
++ (BOOL)hasOptionsForServices:(id)services outCharacteristicType:(id *)type allowingSensors:(BOOL)sensors;
++ (BOOL)homeHubUpdateRequiredForServices:(id)services forHome:(id)home;
 + (id)_characteristicTypesRequiringUpdatedHomeHubs;
 + (id)_supportedCharacteristicTypes;
-+ (id)characteristicTypeWithOptionsForServices:(id)a3;
++ (id)characteristicTypeWithOptionsForServices:(id)services;
 - (HUCharacteristicEventOptionProvider)init;
-- (HUCharacteristicEventOptionProvider)initWithServiceVendingItem:(id)a3 home:(id)a4;
-- (id)_notifyingCharacteristicsKeyedByTypeForServices:(id)a3;
-- (id)_optionsForCharacteristicType:(id)a3 characteristics:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HUCharacteristicEventOptionProvider)initWithServiceVendingItem:(id)item home:(id)home;
+- (id)_notifyingCharacteristicsKeyedByTypeForServices:(id)services;
+- (id)_optionsForCharacteristicType:(id)type characteristics:(id)characteristics;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)invalidationReasons;
 - (id)reloadItems;
 - (id)valueSource;
@@ -20,25 +20,25 @@
 
 - (HUCharacteristicEventOptionProvider)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithServiceVendingItem_home_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HUCharacteristicEventOptionProvider.m" lineNumber:36 description:{@"%s is unavailable; use %@ instead", "-[HUCharacteristicEventOptionProvider init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUCharacteristicEventOptionProvider.m" lineNumber:36 description:{@"%s is unavailable; use %@ instead", "-[HUCharacteristicEventOptionProvider init]", v5}];
 
   return 0;
 }
 
-- (HUCharacteristicEventOptionProvider)initWithServiceVendingItem:(id)a3 home:(id)a4
+- (HUCharacteristicEventOptionProvider)initWithServiceVendingItem:(id)item home:(id)home
 {
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  homeCopy = home;
   v14.receiver = self;
   v14.super_class = HUCharacteristicEventOptionProvider;
   v9 = [(HFItemProvider *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_home, a4);
-    objc_storeStrong(&v10->_serviceVendingItem, a3);
+    objc_storeStrong(&v9->_home, home);
+    objc_storeStrong(&v10->_serviceVendingItem, item);
     v11 = [MEMORY[0x277CBEB58] set];
     optionItems = v10->_optionItems;
     v10->_optionItems = v11;
@@ -47,12 +47,12 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HUCharacteristicEventOptionProvider *)self serviceVendingItem];
-  v6 = [(HUCharacteristicEventOptionProvider *)self home];
-  v7 = [v4 initWithServiceVendingItem:v5 home:v6];
+  serviceVendingItem = [(HUCharacteristicEventOptionProvider *)self serviceVendingItem];
+  home = [(HUCharacteristicEventOptionProvider *)self home];
+  v7 = [v4 initWithServiceVendingItem:serviceVendingItem home:home];
 
   return v7;
 }
@@ -61,21 +61,21 @@
 {
   v41 = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277CBEB58] set];
-  v4 = [(HUCharacteristicEventOptionProvider *)self serviceVendingItem];
-  v5 = [v4 services];
+  serviceVendingItem = [(HUCharacteristicEventOptionProvider *)self serviceVendingItem];
+  services = [serviceVendingItem services];
 
-  v6 = [(HUCharacteristicEventOptionProvider *)self serviceVendingItem];
+  serviceVendingItem2 = [(HUCharacteristicEventOptionProvider *)self serviceVendingItem];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(HUCharacteristicEventOptionProvider *)self serviceVendingItem];
-    v9 = [v8 shouldReduceOptionItemsForNotifyingCharacteristics];
+    serviceVendingItem3 = [(HUCharacteristicEventOptionProvider *)self serviceVendingItem];
+    shouldReduceOptionItemsForNotifyingCharacteristics = [serviceVendingItem3 shouldReduceOptionItemsForNotifyingCharacteristics];
   }
 
   else
   {
-    v9 = 1;
+    shouldReduceOptionItemsForNotifyingCharacteristics = 1;
   }
 
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -85,9 +85,9 @@
   aBlock[4] = self;
   v10 = _Block_copy(aBlock);
   v11 = v10;
-  if (v9)
+  if (shouldReduceOptionItemsForNotifyingCharacteristics)
   {
-    v12 = (*(v10 + 2))(v10, v5);
+    v12 = (*(v10 + 2))(v10, services);
     [v3 unionSet:v12];
   }
 
@@ -97,13 +97,13 @@
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v12 = v5;
+    v12 = services;
     v13 = [v12 countByEnumeratingWithState:&v35 objects:v40 count:16];
     if (v13)
     {
       v14 = v13;
-      v33 = self;
-      v34 = v5;
+      selfCopy = self;
+      v34 = services;
       v15 = *v36;
       do
       {
@@ -114,7 +114,7 @@
             objc_enumerationMutation(v12);
           }
 
-          v17 = [MEMORY[0x277CBEB98] setWithObject:{*(*(&v35 + 1) + 8 * i), v33, v34, v35}];
+          v17 = [MEMORY[0x277CBEB98] setWithObject:{*(*(&v35 + 1) + 8 * i), selfCopy, v34, v35}];
           v18 = (v11)[2](v11, v17);
           [v3 unionSet:v18];
         }
@@ -123,31 +123,31 @@
       }
 
       while (v14);
-      self = v33;
-      v5 = v34;
+      self = selfCopy;
+      services = v34;
     }
   }
 
-  v19 = [(HUCharacteristicEventOptionProvider *)self filter];
+  filter = [(HUCharacteristicEventOptionProvider *)self filter];
 
-  if (v19)
+  if (filter)
   {
-    v20 = [(HUCharacteristicEventOptionProvider *)self filter];
-    v21 = [v3 na_filter:v20];
+    filter2 = [(HUCharacteristicEventOptionProvider *)self filter];
+    v21 = [v3 na_filter:filter2];
     v22 = [v21 mutableCopy];
 
     v3 = v22;
   }
 
   v23 = MEMORY[0x277D14AE8];
-  v24 = [(HUCharacteristicEventOptionProvider *)self optionItems];
-  v25 = [v23 diffFromSet:v24 toSet:v3];
+  optionItems = [(HUCharacteristicEventOptionProvider *)self optionItems];
+  v25 = [v23 diffFromSet:optionItems toSet:v3];
 
   v26 = objc_alloc(MEMORY[0x277D14768]);
-  v27 = [v25 additions];
-  v28 = [v25 deletions];
-  v29 = [v25 updates];
-  v30 = [v26 initWithAddedItems:v27 removedItems:v28 existingItems:v29];
+  additions = [v25 additions];
+  deletions = [v25 deletions];
+  updates = [v25 updates];
+  v30 = [v26 initWithAddedItems:additions removedItems:deletions existingItems:updates];
 
   [(HUCharacteristicEventOptionProvider *)self setOptionItems:v3];
   v31 = [MEMORY[0x277D2C900] futureWithResult:v30];
@@ -198,7 +198,7 @@ void __50__HUCharacteristicEventOptionProvider_reloadItems__block_invoke_2(uint6
   v9[4] = *MEMORY[0x277D85DE8];
   v8.receiver = self;
   v8.super_class = HUCharacteristicEventOptionProvider;
-  v2 = [(HFItemProvider *)&v8 invalidationReasons];
+  invalidationReasons = [(HFItemProvider *)&v8 invalidationReasons];
   v3 = *MEMORY[0x277D13B70];
   v9[0] = *MEMORY[0x277D13B68];
   v9[1] = v3;
@@ -206,29 +206,29 @@ void __50__HUCharacteristicEventOptionProvider_reloadItems__block_invoke_2(uint6
   v9[2] = *MEMORY[0x277D13B80];
   v9[3] = v4;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:4];
-  v6 = [v2 setByAddingObjectsFromArray:v5];
+  v6 = [invalidationReasons setByAddingObjectsFromArray:v5];
 
   return v6;
 }
 
-+ (BOOL)hasOptionsForServiceVendingItem:(id)a3 outCharacteristicType:(id *)a4
++ (BOOL)hasOptionsForServiceVendingItem:(id)item outCharacteristicType:(id *)type
 {
-  v6 = [a3 services];
-  LOBYTE(a4) = [a1 hasOptionsForServices:v6 outCharacteristicType:a4];
+  services = [item services];
+  LOBYTE(type) = [self hasOptionsForServices:services outCharacteristicType:type];
 
-  return a4;
+  return type;
 }
 
-+ (BOOL)hasOptionsForAnyServiceInHome:(id)a3 allowingSensors:(BOOL)a4
++ (BOOL)hasOptionsForAnyServiceInHome:(id)home allowingSensors:(BOOL)sensors
 {
-  v6 = [a3 accessories];
+  accessories = [home accessories];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __85__HUCharacteristicEventOptionProvider_hasOptionsForAnyServiceInHome_allowingSensors___block_invoke;
   v9[3] = &__block_descriptor_41_e21_B16__0__HMAccessory_8l;
-  v9[4] = a1;
-  v10 = a4;
-  v7 = [v6 na_any:v9];
+  v9[4] = self;
+  sensorsCopy = sensors;
+  v7 = [accessories na_any:v9];
 
   return v7;
 }
@@ -244,16 +244,16 @@ uint64_t __85__HUCharacteristicEventOptionProvider_hasOptionsForAnyServiceInHome
   return v7;
 }
 
-+ (BOOL)hasOptionsForServices:(id)a3 outCharacteristicType:(id *)a4 allowingSensors:(BOOL)a5
++ (BOOL)hasOptionsForServices:(id)services outCharacteristicType:(id *)type allowingSensors:(BOOL)sensors
 {
-  v8 = a3;
-  v9 = [a1 _supportedCharacteristicTypes];
-  if (!a5)
+  servicesCopy = services;
+  _supportedCharacteristicTypes = [self _supportedCharacteristicTypes];
+  if (!sensors)
   {
-    v10 = [MEMORY[0x277CD1970] hf_sensingCharacteristicTypes];
-    v11 = [v9 na_setByRemovingObjectsFromSet:v10];
+    hf_sensingCharacteristicTypes = [MEMORY[0x277CD1970] hf_sensingCharacteristicTypes];
+    v11 = [_supportedCharacteristicTypes na_setByRemovingObjectsFromSet:hf_sensingCharacteristicTypes];
 
-    v9 = v11;
+    _supportedCharacteristicTypes = v11;
   }
 
   v18 = 0;
@@ -266,13 +266,13 @@ uint64_t __85__HUCharacteristicEventOptionProvider_hasOptionsForAnyServiceInHome
   v15[1] = 3221225472;
   v15[2] = __99__HUCharacteristicEventOptionProvider_hasOptionsForServices_outCharacteristicType_allowingSensors___block_invoke;
   v15[3] = &unk_277DC4778;
-  v12 = v9;
+  v12 = _supportedCharacteristicTypes;
   v16 = v12;
   v17 = &v18;
-  v13 = [v8 na_any:v15];
-  if (a4)
+  v13 = [servicesCopy na_any:v15];
+  if (type)
   {
-    *a4 = v19[5];
+    *type = v19[5];
   }
 
   _Block_object_dispose(&v18, 8);
@@ -322,10 +322,10 @@ LABEL_6:
   return v6;
 }
 
-+ (id)characteristicTypeWithOptionsForServices:(id)a3
++ (id)characteristicTypeWithOptionsForServices:(id)services
 {
   v9 = 0;
-  v3 = [a1 hasOptionsForServices:a3 outCharacteristicType:&v9];
+  v3 = [self hasOptionsForServices:services outCharacteristicType:&v9];
   v4 = v9;
   v5 = v4;
   if (v3)
@@ -343,14 +343,14 @@ LABEL_6:
   return v6;
 }
 
-+ (BOOL)homeHubUpdateRequiredForServices:(id)a3 forHome:(id)a4
++ (BOOL)homeHubUpdateRequiredForServices:(id)services forHome:(id)home
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 _characteristicTypesRequiringUpdatedHomeHubs];
-  LOBYTE(a1) = [v7 hf_supportsSharedEventAutomation];
+  servicesCopy = services;
+  homeCopy = home;
+  _characteristicTypesRequiringUpdatedHomeHubs = [self _characteristicTypesRequiringUpdatedHomeHubs];
+  LOBYTE(self) = [homeCopy hf_supportsSharedEventAutomation];
 
-  if (a1)
+  if (self)
   {
     v9 = 0;
   }
@@ -361,8 +361,8 @@ LABEL_6:
     v11[1] = 3221225472;
     v11[2] = __80__HUCharacteristicEventOptionProvider_homeHubUpdateRequiredForServices_forHome___block_invoke;
     v11[3] = &unk_277DB9560;
-    v12 = v8;
-    v9 = [v6 na_any:v11];
+    v12 = _characteristicTypesRequiringUpdatedHomeHubs;
+    v9 = [servicesCopy na_any:v11];
   }
 
   return v9;
@@ -390,16 +390,16 @@ uint64_t __80__HUCharacteristicEventOptionProvider_homeHubUpdateRequiredForServi
   return v4;
 }
 
-- (id)_notifyingCharacteristicsKeyedByTypeForServices:(id)a3
+- (id)_notifyingCharacteristicsKeyedByTypeForServices:(id)services
 {
   v34 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  servicesCopy = services;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v3;
+  obj = servicesCopy;
   v22 = [obj countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v22)
   {
@@ -421,8 +421,8 @@ uint64_t __80__HUCharacteristicEventOptionProvider_homeHubUpdateRequiredForServi
         v25 = 0u;
         v26 = 0u;
         v27 = 0u;
-        v8 = [v7 characteristics];
-        v9 = [v8 countByEnumeratingWithState:&v24 objects:v32 count:16];
+        characteristics = [v7 characteristics];
+        v9 = [characteristics countByEnumeratingWithState:&v24 objects:v32 count:16];
         if (v9)
         {
           v10 = v9;
@@ -433,36 +433,36 @@ uint64_t __80__HUCharacteristicEventOptionProvider_homeHubUpdateRequiredForServi
             {
               if (*v25 != v11)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(characteristics);
               }
 
               v13 = *(*(&v24 + 1) + 8 * i);
-              v14 = [v13 properties];
-              v15 = [v14 containsObject:v5];
+              properties = [v13 properties];
+              v15 = [properties containsObject:v5];
 
               if (v15)
               {
-                v16 = [v13 characteristicType];
-                if (v16)
+                characteristicType = [v13 characteristicType];
+                if (characteristicType)
                 {
-                  v17 = [v4 objectForKeyedSubscript:v16];
+                  v17 = [dictionary objectForKeyedSubscript:characteristicType];
 
                   if (v17)
                   {
-                    v18 = [v4 objectForKeyedSubscript:v16];
+                    v18 = [dictionary objectForKeyedSubscript:characteristicType];
                     [v18 addObject:v13];
                   }
 
                   else
                   {
                     v18 = [MEMORY[0x277CBEB58] setWithObject:v13];
-                    [v4 setObject:v18 forKeyedSubscript:v16];
+                    [dictionary setObject:v18 forKeyedSubscript:characteristicType];
                   }
                 }
               }
             }
 
-            v10 = [v8 countByEnumeratingWithState:&v24 objects:v32 count:16];
+            v10 = [characteristics countByEnumeratingWithState:&v24 objects:v32 count:16];
           }
 
           while (v10);
@@ -478,14 +478,14 @@ uint64_t __80__HUCharacteristicEventOptionProvider_homeHubUpdateRequiredForServi
     while (v22);
   }
 
-  return v4;
+  return dictionary;
 }
 
-- (id)_optionsForCharacteristicType:(id)a3 characteristics:(id)a4
+- (id)_optionsForCharacteristicType:(id)type characteristics:(id)characteristics
 {
   v66[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  characteristicsCopy = characteristics;
   v8 = [MEMORY[0x277CBEB58] set];
   v49 = [MEMORY[0x277CBEB58] set];
   v9 = [MEMORY[0x277CBEB58] set];
@@ -493,12 +493,12 @@ uint64_t __80__HUCharacteristicEventOptionProvider_homeHubUpdateRequiredForServi
   v64[1] = 3221225472;
   v64[2] = __85__HUCharacteristicEventOptionProvider__optionsForCharacteristicType_characteristics___block_invoke;
   v64[3] = &unk_277DB9538;
-  v10 = v6;
+  v10 = typeCopy;
   v65 = v10;
-  v50 = [v7 na_firstObjectPassingTest:v64];
-  v11 = [v7 na_any:&__block_literal_global_289];
+  v50 = [characteristicsCopy na_firstObjectPassingTest:v64];
+  v11 = [characteristicsCopy na_any:&__block_literal_global_289];
   v12 = objc_opt_class();
-  v13 = [(HUCharacteristicEventOptionProvider *)self valueSource];
+  valueSource = [(HUCharacteristicEventOptionProvider *)self valueSource];
   v14 = *MEMORY[0x277CCF9A8];
   v66[0] = *MEMORY[0x277CCF978];
   v66[1] = v14;
@@ -511,19 +511,19 @@ uint64_t __80__HUCharacteristicEventOptionProvider_homeHubUpdateRequiredForServi
     goto LABEL_2;
   }
 
-  v18 = [MEMORY[0x277CD1970] hf_valueRangeCharacteristicTypes];
-  v19 = [v18 containsObject:v10];
+  hf_valueRangeCharacteristicTypes = [MEMORY[0x277CD1970] hf_valueRangeCharacteristicTypes];
+  v19 = [hf_valueRangeCharacteristicTypes containsObject:v10];
 
   if (v19)
   {
-    v20 = [v50 hf_maximumTriggerValue];
-    v21 = [v50 hf_valueBeforeTriggerValue:v20];
+    hf_maximumTriggerValue = [v50 hf_maximumTriggerValue];
+    v21 = [v50 hf_valueBeforeTriggerValue:hf_maximumTriggerValue];
 
     v22 = [MEMORY[0x277CD1CB0] numberRangeWithMaxValue:v21];
     [v9 addObject:v22];
 
-    v23 = [v50 hf_minimumTriggerValue];
-    v24 = [v50 hf_valueAfterTriggerValue:v23];
+    hf_minimumTriggerValue = [v50 hf_minimumTriggerValue];
+    v24 = [v50 hf_valueAfterTriggerValue:hf_minimumTriggerValue];
 
     v25 = [MEMORY[0x277CD1CB0] numberRangeWithMinValue:v24];
     [v9 addObject:v25];
@@ -531,8 +531,8 @@ uint64_t __80__HUCharacteristicEventOptionProvider_homeHubUpdateRequiredForServi
     goto LABEL_8;
   }
 
-  v26 = [MEMORY[0x277CD1970] hf_alarmCharacteristicTypes];
-  v27 = [v26 containsObject:v10];
+  hf_alarmCharacteristicTypes = [MEMORY[0x277CD1970] hf_alarmCharacteristicTypes];
+  v27 = [hf_alarmCharacteristicTypes containsObject:v10];
 
   if (v27)
   {
@@ -542,8 +542,8 @@ uint64_t __80__HUCharacteristicEventOptionProvider_homeHubUpdateRequiredForServi
     goto LABEL_8;
   }
 
-  v44 = [MEMORY[0x277CD1970] hf_powerStateCharacteristicTypes];
-  v45 = [v44 containsObject:v10];
+  hf_powerStateCharacteristicTypes = [MEMORY[0x277CD1970] hf_powerStateCharacteristicTypes];
+  v45 = [hf_powerStateCharacteristicTypes containsObject:v10];
 
   if (v45)
   {
@@ -591,26 +591,26 @@ LABEL_3:
       goto LABEL_8;
     }
 
-    v46 = [v7 na_firstObjectPassingTest:&__block_literal_global_39_2];
-    v47 = [v46 hf_programmableSwitchValidValueSet];
+    v46 = [characteristicsCopy na_firstObjectPassingTest:&__block_literal_global_39_2];
+    hf_programmableSwitchValidValueSet = [v46 hf_programmableSwitchValidValueSet];
     v12 = objc_opt_class();
-    v48 = [v47 sortedValues];
-    [v8 addObjectsFromArray:v48];
+    sortedValues = [hf_programmableSwitchValidValueSet sortedValues];
+    [v8 addObjectsFromArray:sortedValues];
   }
 
 LABEL_8:
-  v29 = [(HUCharacteristicEventOptionProvider *)self optionItems];
+  optionItems = [(HUCharacteristicEventOptionProvider *)self optionItems];
   v59[0] = MEMORY[0x277D85DD0];
   v59[1] = 3221225472;
   v59[2] = __85__HUCharacteristicEventOptionProvider__optionsForCharacteristicType_characteristics___block_invoke_2_41;
   v59[3] = &unk_277DC47A0;
-  v30 = v29;
+  v30 = optionItems;
   v60 = v30;
-  v31 = v7;
-  v62 = v13;
+  v31 = characteristicsCopy;
+  v62 = valueSource;
   v63 = v12;
   v61 = v31;
-  v32 = v13;
+  v32 = valueSource;
   v33 = [v8 na_map:v59];
   v56[0] = MEMORY[0x277D85DD0];
   v56[1] = 3221225472;
@@ -629,7 +629,7 @@ LABEL_8:
   v51[3] = &unk_277DC47F0;
   v52 = v34;
   v53 = v35;
-  v54 = self;
+  selfCopy = self;
   v55 = v10;
   v38 = v10;
   v39 = v35;
@@ -933,20 +933,20 @@ void __83__HUCharacteristicEventOptionProvider__characteristicTypesRequiringUpda
 
 - (id)valueSource
 {
-  v3 = [(HUCharacteristicEventOptionProvider *)self overrideValueSource];
+  overrideValueSource = [(HUCharacteristicEventOptionProvider *)self overrideValueSource];
 
-  if (v3)
+  if (overrideValueSource)
   {
-    v4 = [(HUCharacteristicEventOptionProvider *)self overrideValueSource];
+    overrideValueSource2 = [(HUCharacteristicEventOptionProvider *)self overrideValueSource];
   }
 
   else
   {
-    v5 = [(HUCharacteristicEventOptionProvider *)self home];
-    v4 = [v5 hf_characteristicValueManager];
+    home = [(HUCharacteristicEventOptionProvider *)self home];
+    overrideValueSource2 = [home hf_characteristicValueManager];
   }
 
-  return v4;
+  return overrideValueSource2;
 }
 
 @end

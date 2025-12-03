@@ -1,6 +1,6 @@
 @interface SFPrivacyReportIconView
 - (CGSize)intrinsicContentSize;
-- (SFPrivacyReportIconView)initWithFrame:(CGRect)a3;
+- (SFPrivacyReportIconView)initWithFrame:(CGRect)frame;
 - (void)_dynamicUserInterfaceTraitDidChange;
 - (void)_updateColors;
 - (void)_updateSymbolConfiguration;
@@ -8,12 +8,12 @@
 
 @implementation SFPrivacyReportIconView
 
-- (SFPrivacyReportIconView)initWithFrame:(CGRect)a3
+- (SFPrivacyReportIconView)initWithFrame:(CGRect)frame
 {
   v15[2] = *MEMORY[0x1E69E9840];
   v14.receiver = self;
   v14.super_class = SFPrivacyReportIconView;
-  v3 = [(SFPrivacyReportIconView *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFPrivacyReportIconView *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DCAE0]);
@@ -26,11 +26,11 @@
     [(UIImageView *)v3->_mask setFrame:?];
     [(UIImageView *)v3->_mask setAutoresizingMask:18];
     [(SFPrivacyReportIconView *)v3 setMaskView:v3->_mask];
-    v8 = [(SFPrivacyReportIconView *)v3 gradientLayer];
-    [v8 setStartPoint:{1.0, 0.0}];
+    gradientLayer = [(SFPrivacyReportIconView *)v3 gradientLayer];
+    [gradientLayer setStartPoint:{1.0, 0.0}];
 
-    v9 = [(SFPrivacyReportIconView *)v3 gradientLayer];
-    [v9 setEndPoint:{0.0, 1.0}];
+    gradientLayer2 = [(SFPrivacyReportIconView *)v3 gradientLayer];
+    [gradientLayer2 setEndPoint:{0.0, 1.0}];
 
     [(SFPrivacyReportIconView *)v3 _updateColors];
     [(SFPrivacyReportIconView *)v3 _updateSymbolConfiguration];
@@ -56,19 +56,19 @@
 - (void)_updateColors
 {
   v7[2] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69DC888] systemTealColor];
-  v7[0] = [v3 CGColor];
-  v4 = [MEMORY[0x1E69DC888] systemGreenColor];
-  v7[1] = [v4 CGColor];
+  systemTealColor = [MEMORY[0x1E69DC888] systemTealColor];
+  v7[0] = [systemTealColor CGColor];
+  systemGreenColor = [MEMORY[0x1E69DC888] systemGreenColor];
+  v7[1] = [systemGreenColor CGColor];
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:2];
-  v6 = [(SFPrivacyReportIconView *)self gradientLayer];
-  [v6 setColors:v5];
+  gradientLayer = [(SFPrivacyReportIconView *)self gradientLayer];
+  [gradientLayer setColors:v5];
 }
 
 - (void)_updateSymbolConfiguration
 {
-  v7 = [(SFPrivacyReportIconView *)self traitCollection];
-  if ([v7 horizontalSizeClass] == 2 && objc_msgSend(v7, "verticalSizeClass") == 2)
+  traitCollection = [(SFPrivacyReportIconView *)self traitCollection];
+  if ([traitCollection horizontalSizeClass] == 2 && objc_msgSend(traitCollection, "verticalSizeClass") == 2)
   {
     v3 = 50.0;
   }
@@ -79,8 +79,8 @@
   }
 
   v4 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:v3];
-  v5 = [(UIImageView *)self->_mask preferredSymbolConfiguration];
-  v6 = [v4 isEqualToConfiguration:v5];
+  preferredSymbolConfiguration = [(UIImageView *)self->_mask preferredSymbolConfiguration];
+  v6 = [v4 isEqualToConfiguration:preferredSymbolConfiguration];
 
   if ((v6 & 1) == 0)
   {

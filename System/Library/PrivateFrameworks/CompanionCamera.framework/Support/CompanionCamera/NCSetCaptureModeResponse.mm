@@ -1,15 +1,15 @@
 @interface NCSetCaptureModeResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsCaptureMode:(id)a3;
+- (int)StringAsCaptureMode:(id)mode;
 - (int)captureMode;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSuccess:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasSuccess:(BOOL)success;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NCSetCaptureModeResponse
@@ -27,55 +27,55 @@
   }
 }
 
-- (int)StringAsCaptureMode:(id)a3
+- (int)StringAsCaptureMode:(id)mode
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Photo"])
+  modeCopy = mode;
+  if ([modeCopy isEqualToString:@"Photo"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Video"])
+  else if ([modeCopy isEqualToString:@"Video"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Square"])
+  else if ([modeCopy isEqualToString:@"Square"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Timelapse"])
+  else if ([modeCopy isEqualToString:@"Timelapse"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"Portrait"])
+  else if ([modeCopy isEqualToString:@"Portrait"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"Slomo"])
+  else if ([modeCopy isEqualToString:@"Slomo"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"Panorama"])
+  else if ([modeCopy isEqualToString:@"Panorama"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"Cinematic"])
+  else if ([modeCopy isEqualToString:@"Cinematic"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"SpatialVideo"])
+  else if ([modeCopy isEqualToString:@"SpatialVideo"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"SpatialPhoto"])
+  else if ([modeCopy isEqualToString:@"SpatialPhoto"])
   {
     v4 = 12;
   }
@@ -88,9 +88,9 @@
   return v4;
 }
 
-- (void)setHasSuccess:(BOOL)a3
+- (void)setHasSuccess:(BOOL)success
 {
-  if (a3)
+  if (success)
   {
     v3 = 2;
   }
@@ -108,8 +108,8 @@
   v7.receiver = self;
   v7.super_class = NCSetCaptureModeResponse;
   v3 = [(NCSetCaptureModeResponse *)&v7 description];
-  v4 = [(NCSetCaptureModeResponse *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(NCSetCaptureModeResponse *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -145,23 +145,23 @@
   internalState = self->_internalState;
   if (internalState)
   {
-    v9 = [(NCCameraStateChangedRequest *)internalState dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"internalState"];
+    dictionaryRepresentation = [(NCCameraStateChangedRequest *)internalState dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"internalState"];
   }
 
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v8 = v4;
+  v8 = toCopy;
   if (has)
   {
     captureMode = self->_captureMode;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -169,44 +169,44 @@
   {
     success = self->_success;
     PBDataWriterWriteBOOLField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_internalState)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[2] = self->_captureMode;
-    *(v4 + 28) |= 1u;
+    toCopy[2] = self->_captureMode;
+    *(toCopy + 28) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 24) = self->_success;
-    *(v4 + 28) |= 2u;
+    *(toCopy + 24) = self->_success;
+    *(toCopy + 28) |= 2u;
   }
 
   if (self->_internalState)
   {
-    v6 = v4;
-    [v4 setInternalState:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setInternalState:?];
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -222,38 +222,38 @@
     *(v5 + 28) |= 2u;
   }
 
-  v8 = [(NCCameraStateChangedRequest *)self->_internalState copyWithZone:a3];
+  v8 = [(NCCameraStateChangedRequest *)self->_internalState copyWithZone:zone];
   v9 = v6[2];
   v6[2] = v8;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = *(v4 + 28);
+  v5 = *(equalCopy + 28);
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_captureMode != *(v4 + 2))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_captureMode != *(equalCopy + 2))
     {
       goto LABEL_12;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
     goto LABEL_12;
   }
 
   if ((*&self->_has & 2) == 0)
   {
-    if ((*(v4 + 28) & 2) == 0)
+    if ((*(equalCopy + 28) & 2) == 0)
     {
       goto LABEL_9;
     }
@@ -263,28 +263,28 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if ((*(v4 + 28) & 2) == 0)
+  if ((*(equalCopy + 28) & 2) == 0)
   {
     goto LABEL_12;
   }
 
-  v9 = *(v4 + 24);
+  v9 = *(equalCopy + 24);
   if (self->_success)
   {
-    if ((*(v4 + 24) & 1) == 0)
+    if ((*(equalCopy + 24) & 1) == 0)
     {
       goto LABEL_12;
     }
   }
 
-  else if (*(v4 + 24))
+  else if (*(equalCopy + 24))
   {
     goto LABEL_12;
   }
 
 LABEL_9:
   internalState = self->_internalState;
-  if (internalState | *(v4 + 2))
+  if (internalState | *(equalCopy + 2))
   {
     v7 = [(NCCameraStateChangedRequest *)internalState isEqual:?];
   }
@@ -325,21 +325,21 @@ LABEL_3:
   return v7 ^ v6 ^ [(NCCameraStateChangedRequest *)self->_internalState hash:v3];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 28);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 28);
   if (v6)
   {
-    self->_captureMode = *(v4 + 2);
+    self->_captureMode = *(fromCopy + 2);
     *&self->_has |= 1u;
-    v6 = *(v4 + 28);
+    v6 = *(fromCopy + 28);
   }
 
   if ((v6 & 2) != 0)
   {
-    self->_success = *(v4 + 24);
+    self->_success = *(fromCopy + 24);
     *&self->_has |= 2u;
   }
 

@@ -1,17 +1,17 @@
 @interface CalendarMonthHeaderView
-- (_TtC8HealthUI23CalendarMonthHeaderView)initWithCoder:(id)a3;
-- (_TtC8HealthUI23CalendarMonthHeaderView)initWithFrame:(CGRect)a3;
-- (void)applyLayoutAttributes:(id)a3;
+- (_TtC8HealthUI23CalendarMonthHeaderView)initWithCoder:(id)coder;
+- (_TtC8HealthUI23CalendarMonthHeaderView)initWithFrame:(CGRect)frame;
+- (void)applyLayoutAttributes:(id)attributes;
 @end
 
 @implementation CalendarMonthHeaderView
 
-- (_TtC8HealthUI23CalendarMonthHeaderView)initWithFrame:(CGRect)a3
+- (_TtC8HealthUI23CalendarMonthHeaderView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   sub_1C3D20374();
   sub_1C3D20364();
   sub_1C3D20314();
@@ -25,7 +25,7 @@
   return v7;
 }
 
-- (_TtC8HealthUI23CalendarMonthHeaderView)initWithCoder:(id)a3
+- (_TtC8HealthUI23CalendarMonthHeaderView)initWithCoder:(id)coder
 {
   sub_1C3D20374();
   sub_1C3D20364();
@@ -35,11 +35,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = a3;
+  coderCopy = coder;
   sub_1C3CF495C();
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   sub_1C3D20374();
   sub_1C3D20364();
@@ -49,9 +49,9 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
-  sub_1C3CF4560(v5);
+  attributesCopy = attributes;
+  selfCopy = self;
+  sub_1C3CF4560(attributesCopy);
 }
 
 @end

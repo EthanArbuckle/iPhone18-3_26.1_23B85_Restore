@@ -12,12 +12,12 @@
   v2 = v5.receiver;
   [(BaseEmojiAndStickerCollectionViewCell *)&v5 layoutSubviews];
   v3 = sub_19A7994EC();
-  v4 = [v3 view];
+  view = [v3 view];
 
-  if (v4)
+  if (view)
   {
     [v2 bounds];
-    [v4 setFrame_];
+    [view setFrame_];
   }
 
   else
@@ -28,7 +28,7 @@
 
 - (void)handleTap
 {
-  v2 = self;
+  selfCopy = self;
   sub_19A79988C();
 }
 

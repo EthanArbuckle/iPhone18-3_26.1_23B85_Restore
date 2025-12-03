@@ -1,23 +1,23 @@
 @interface TSCEFormulaRewrite_Uids
-- (BOOL)containsIndex:(unsigned int)a3;
-- (TSCEFormulaRewrite_Uids)initWithUids:(const void *)a3;
-- (TSCEFormulaRewrite_Uids)initWithUids:(const void *)a3 atIndexes:(const void *)a4;
-- (TSKUIDStruct)uidForIndex:(unsigned int)a3;
-- (TSKUIDStructVectorTemplate<TSKUIDStruct>)uidsForIndexes:(SEL)a3;
+- (BOOL)containsIndex:(unsigned int)index;
+- (TSCEFormulaRewrite_Uids)initWithUids:(const void *)uids;
+- (TSCEFormulaRewrite_Uids)initWithUids:(const void *)uids atIndexes:(const void *)indexes;
+- (TSKUIDStruct)uidForIndex:(unsigned int)index;
+- (TSKUIDStructVectorTemplate<TSKUIDStruct>)uidsForIndexes:(SEL)indexes;
 - (id).cxx_construct;
 - (id)description;
-- (id)indexSetBySubtractingOurIndexesFromIndexSet:(id)a3;
-- (id)initFromMessage:(const void *)a3;
-- (unsigned)columnIndexForUid:(const TSKUIDStruct *)a3;
-- (unsigned)rowIndexForUid:(const TSKUIDStruct *)a3;
-- (void)loadIndexesForTable:(id)a3 isRows:(BOOL)a4 shuffleMap:(id)a5;
-- (void)saveToMessage:(void *)a3;
+- (id)indexSetBySubtractingOurIndexesFromIndexSet:(id)set;
+- (id)initFromMessage:(const void *)message;
+- (unsigned)columnIndexForUid:(const TSKUIDStruct *)uid;
+- (unsigned)rowIndexForUid:(const TSKUIDStruct *)uid;
+- (void)loadIndexesForTable:(id)table isRows:(BOOL)rows shuffleMap:(id)map;
+- (void)saveToMessage:(void *)message;
 - (void)unloadIndexes;
 @end
 
 @implementation TSCEFormulaRewrite_Uids
 
-- (TSCEFormulaRewrite_Uids)initWithUids:(const void *)a3
+- (TSCEFormulaRewrite_Uids)initWithUids:(const void *)uids
 {
   v8.receiver = self;
   v8.super_class = TSCEFormulaRewrite_Uids;
@@ -25,7 +25,7 @@
   p_uids = &v4->_uids;
   if (v4)
   {
-    v6 = p_uids == a3;
+    v6 = p_uids == uids;
   }
 
   else
@@ -35,13 +35,13 @@
 
   if (!v6)
   {
-    sub_2210BD068(p_uids, *a3, *(a3 + 1), (*(a3 + 1) - *a3) >> 4);
+    sub_2210BD068(p_uids, *uids, *(uids + 1), (*(uids + 1) - *uids) >> 4);
   }
 
   return v4;
 }
 
-- (TSCEFormulaRewrite_Uids)initWithUids:(const void *)a3 atIndexes:(const void *)a4
+- (TSCEFormulaRewrite_Uids)initWithUids:(const void *)uids atIndexes:(const void *)indexes
 {
   v34.receiver = self;
   v34.super_class = TSCEFormulaRewrite_Uids;
@@ -50,13 +50,13 @@
   if (v6)
   {
     p_uids = &v6->_uids;
-    if (&v10->_uids != a3)
+    if (&v10->_uids != uids)
     {
-      sub_2210BD068(p_uids, *a3, *(a3 + 1), (*(a3 + 1) - *a3) >> 4);
+      sub_2210BD068(p_uids, *uids, *(uids + 1), (*(uids + 1) - *uids) >> 4);
     }
 
-    v12 = *a4;
-    if ((*(a3 + 1) - *a3) >> 4 != (*(a4 + 1) - *a4) >> 2)
+    v12 = *indexes;
+    if ((*(uids + 1) - *uids) >> 4 != (*(indexes + 1) - *indexes) >> 2)
     {
       v13 = MEMORY[0x277D81150];
       v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "[TSCEFormulaRewrite_Uids initWithUids:atIndexes:]", v8, v9);
@@ -64,17 +64,17 @@
       objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v13, v19, v14, v18, 172, 0, "Size mismatch for our vectors");
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v20, v21, v22, v23);
-      v12 = *a4;
+      v12 = *indexes;
     }
 
     v24 = objc_opt_new();
-    v25 = *a3;
-    v26 = *(a3 + 1);
-    if (*a3 != v26)
+    v25 = *uids;
+    v26 = *(uids + 1);
+    if (*uids != v26)
     {
       do
       {
-        if (v12 == *(a4 + 1))
+        if (v12 == *(indexes + 1))
         {
           break;
         }
@@ -99,11 +99,11 @@
   return v10;
 }
 
-- (void)loadIndexesForTable:(id)a3 isRows:(BOOL)a4 shuffleMap:(id)a5
+- (void)loadIndexesForTable:(id)table isRows:(BOOL)rows shuffleMap:(id)map
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  rowsCopy = rows;
+  tableCopy = table;
+  mapCopy = map;
   objc_msgSend_unloadIndexes(self, v10, v11, v12, v13);
   v16 = objc_opt_new();
   begin = self->_uids.__begin_;
@@ -112,21 +112,21 @@
     v50 = 0;
     lower = begin->_lower;
     upper = begin->_upper;
-    if (v6)
+    if (rowsCopy)
     {
-      v21 = objc_msgSend_rowIndexForRowUID_(v8, v14, lower, upper, v15);
+      v21 = objc_msgSend_rowIndexForRowUID_(tableCopy, v14, lower, upper, v15);
     }
 
     else
     {
-      v21 = objc_msgSend_columnIndexForColumnUID_(v8, v14, lower, upper, v15);
+      v21 = objc_msgSend_columnIndexForColumnUID_(tableCopy, v14, lower, upper, v15);
     }
 
     v25 = v21;
     v50 = v21;
-    if (v9)
+    if (mapCopy)
     {
-      v25 = objc_msgSend_mapIndex_(v9, v22, v21, v23, v24);
+      v25 = objc_msgSend_mapIndex_(mapCopy, v22, v21, v23, v24);
       v50 = v25;
     }
 
@@ -137,9 +137,9 @@
   }
 
   objc_storeStrong(&self->_indexes, v16);
-  if (v8 && v6)
+  if (tableCopy && rowsCopy)
   {
-    v29 = v8;
+    v29 = tableCopy;
     if (objc_opt_respondsToSelector())
     {
       v34 = objc_msgSend_calcEngine(v29, v30, v31, v32, v33);
@@ -175,7 +175,7 @@
   self->_indexes = 0;
 }
 
-- (BOOL)containsIndex:(unsigned int)a3
+- (BOOL)containsIndex:(unsigned int)index
 {
   indexes = self->_indexes;
   if (!indexes)
@@ -191,13 +191,13 @@
     indexes = self->_indexes;
   }
 
-  return objc_msgSend_containsIndex_(indexes, a2, a3, v3, v4);
+  return objc_msgSend_containsIndex_(indexes, a2, index, v3, v4);
 }
 
-- (TSKUIDStruct)uidForIndex:(unsigned int)a3
+- (TSKUIDStruct)uidForIndex:(unsigned int)index
 {
-  LODWORD(v9[0]) = a3;
-  if (objc_msgSend_containsIndex_(self, a2, *&a3, v3, v4, v9[0]))
+  LODWORD(v9[0]) = index;
+  if (objc_msgSend_containsIndex_(self, a2, *&index, v3, v4, v9[0]))
   {
     v9[1] = v9;
     v6 = sub_2212CBA68(&self->_uidsForIndexes.__table_.__bucket_list_.__ptr_, v9);
@@ -216,20 +216,20 @@
   return result;
 }
 
-- (unsigned)rowIndexForUid:(const TSKUIDStruct *)a3
+- (unsigned)rowIndexForUid:(const TSKUIDStruct *)uid
 {
-  if (sub_2210875C4(&self->_indexesForUids.__table_.__bucket_list_.__ptr_, a3))
+  if (sub_2210875C4(&self->_indexesForUids.__table_.__bucket_list_.__ptr_, uid))
   {
-    return *(sub_221287990(&self->_indexesForUids.__table_.__bucket_list_.__ptr_, a3) + 8);
+    return *(sub_221287990(&self->_indexesForUids.__table_.__bucket_list_.__ptr_, uid) + 8);
   }
 
-  if (*a3 != 0)
+  if (*uid != 0)
   {
     v10 = MEMORY[0x277D81150];
     v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[TSCEFormulaRewrite_Uids rowIndexForUid:]", v7, v8);
     v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCEFormulaRewriteInfo_RowColumnInfo.mm", v13, v14);
     v16 = NSStringFromSelector(a2);
-    v17 = TSKUIDStruct::description(a3);
+    v17 = TSKUIDStruct::description(uid);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v10, v18, v11, v15, 261, 0, "Warning, %{public}@ did not find the uuid: %@", v16, v17);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v19, v20, v21, v22);
@@ -238,22 +238,22 @@
   return 0x7FFFFFFF;
 }
 
-- (unsigned)columnIndexForUid:(const TSKUIDStruct *)a3
+- (unsigned)columnIndexForUid:(const TSKUIDStruct *)uid
 {
-  if (sub_2210875C4(&self->_indexesForUids.__table_.__bucket_list_.__ptr_, a3))
+  if (sub_2210875C4(&self->_indexesForUids.__table_.__bucket_list_.__ptr_, uid))
   {
-    return *(sub_221287990(&self->_indexesForUids.__table_.__bucket_list_.__ptr_, a3) + 8);
+    return *(sub_221287990(&self->_indexesForUids.__table_.__bucket_list_.__ptr_, uid) + 8);
   }
 
   else
   {
-    if (*a3 != 0)
+    if (*uid != 0)
     {
       v10 = MEMORY[0x277D81150];
       v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[TSCEFormulaRewrite_Uids columnIndexForUid:]", v7, v8);
       v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCEFormulaRewriteInfo_RowColumnInfo.mm", v13, v14);
       v16 = NSStringFromSelector(a2);
-      v17 = TSKUIDStruct::description(a3);
+      v17 = TSKUIDStruct::description(uid);
       objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v10, v18, v11, v15, 273, 0, "Warning, %{public}@ did not find the uuid: %@", v16, v17);
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v19, v20, v21, v22);
@@ -265,7 +265,7 @@
   return v9;
 }
 
-- (TSKUIDStructVectorTemplate<TSKUIDStruct>)uidsForIndexes:(SEL)a3
+- (TSKUIDStructVectorTemplate<TSKUIDStruct>)uidsForIndexes:(SEL)indexes
 {
   v10 = 0;
   v11 = &v10;
@@ -280,7 +280,7 @@
   v9[3] = &unk_27845F0D8;
   v9[4] = self;
   v9[5] = &v10;
-  objc_msgSend_enumerateIndexesUsingBlock_(a4, a3, v9, v4, v5);
+  objc_msgSend_enumerateIndexesUsingBlock_(a4, indexes, v9, v4, v5);
   v7 = v11;
   retstr->__end_ = 0;
   retstr->__cap_ = 0;
@@ -297,10 +297,10 @@
   return result;
 }
 
-- (id)indexSetBySubtractingOurIndexesFromIndexSet:(id)a3
+- (id)indexSetBySubtractingOurIndexesFromIndexSet:(id)set
 {
-  v4 = a3;
-  v9 = objc_msgSend_mutableCopy(v4, v5, v6, v7, v8);
+  setCopy = set;
+  v9 = objc_msgSend_mutableCopy(setCopy, v5, v6, v7, v8);
   v10 = v9;
   if (v9)
   {
@@ -325,7 +325,7 @@
   return v10;
 }
 
-- (id)initFromMessage:(const void *)a3
+- (id)initFromMessage:(const void *)message
 {
   v24.receiver = self;
   v24.super_class = TSCEFormulaRewrite_Uids;
@@ -333,14 +333,14 @@
   if (v4)
   {
     v5 = objc_opt_new();
-    v6 = *(a3 + 6);
+    v6 = *(message + 6);
     if (v6 >= 1)
     {
       v7 = 8;
       v8 = MEMORY[0x277D809E0];
       do
       {
-        TSCE::IndexedUidsArchive_IndexedUid::IndexedUidsArchive_IndexedUid(v21, *(*(a3 + 4) + v7));
+        TSCE::IndexedUidsArchive_IndexedUid::IndexedUidsArchive_IndexedUid(v21, *(*(message + 4) + v7));
         v20 = v23;
         v19 = 0uLL;
         if (v22)
@@ -378,27 +378,27 @@
   return v4;
 }
 
-- (void)saveToMessage:(void *)a3
+- (void)saveToMessage:(void *)message
 {
   next = self->_uidsForIndexes.__table_.__first_node_.__next_;
   if (next)
   {
     while (1)
     {
-      v5 = *(a3 + 4);
+      v5 = *(message + 4);
       if (!v5)
       {
         goto LABEL_7;
       }
 
-      v6 = *(a3 + 6);
+      v6 = *(message + 6);
       v7 = *v5;
       if (v6 >= *v5)
       {
         break;
       }
 
-      *(a3 + 6) = v6 + 1;
+      *(message + 6) = v6 + 1;
       v8 = *&v5[2 * v6 + 2];
 LABEL_9:
       v11 = *(v8 + 16);
@@ -425,19 +425,19 @@ LABEL_9:
       }
     }
 
-    if (v7 == *(a3 + 7))
+    if (v7 == *(message + 7))
     {
 LABEL_7:
-      google::protobuf::internal::RepeatedPtrFieldBase::Reserve((a3 + 16));
-      v5 = *(a3 + 4);
+      google::protobuf::internal::RepeatedPtrFieldBase::Reserve((message + 16));
+      v5 = *(message + 4);
       v7 = *v5;
     }
 
     *v5 = v7 + 1;
-    v8 = google::protobuf::Arena::CreateMaybeMessage<TSCE::IndexedUidsArchive_IndexedUid>(*(a3 + 2));
-    v9 = *(a3 + 6);
-    v10 = *(a3 + 4) + 8 * v9;
-    *(a3 + 6) = v9 + 1;
+    v8 = google::protobuf::Arena::CreateMaybeMessage<TSCE::IndexedUidsArchive_IndexedUid>(*(message + 2));
+    v9 = *(message + 6);
+    v10 = *(message + 4) + 8 * v9;
+    *(message + 6) = v9 + 1;
     *(v10 + 8) = v8;
     goto LABEL_9;
   }

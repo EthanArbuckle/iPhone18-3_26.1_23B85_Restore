@@ -1,20 +1,20 @@
 @interface CitySelectorAPIController
-- (CitySelectorAPIController)initWithStateChangeHandler:(id)a3 usingTraits:(id)a4;
+- (CitySelectorAPIController)initWithStateChangeHandler:(id)handler usingTraits:(id)traits;
 - (id)citySelectorSections;
 - (id)guideLocationsFromLastBatch;
 - (void)cancelFetchingCitySelectorView;
-- (void)fetchCitySelectorView:(id)a3;
-- (void)fetchGuidesWithIdentifiers:(id)a3 completion:(id)a4;
+- (void)fetchCitySelectorView:(id)view;
+- (void)fetchGuidesWithIdentifiers:(id)identifiers completion:(id)completion;
 @end
 
 @implementation CitySelectorAPIController
 
-- (void)fetchGuidesWithIdentifiers:(id)a3 completion:(id)a4
+- (void)fetchGuidesWithIdentifiers:(id)identifiers completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
   v8 = MKMapItemIdentifiersArrayToGEOMapItemIdentifiersArray();
-  v9 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v6, "count")}];
+  v9 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
   objc_initWeak(&location, self);
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
@@ -23,13 +23,13 @@
   objc_copyWeak(&v27, &location);
   v10 = v9;
   v26 = v10;
-  [v6 enumerateObjectsUsingBlock:v25];
-  v11 = [v6 count];
+  [identifiersCopy enumerateObjectsUsingBlock:v25];
+  v11 = [identifiersCopy count];
   if (v11 == [v10 count])
   {
     v12 = +[GEOMapService sharedService];
-    v13 = [(CitySelectorAPIController *)self traits];
-    v14 = [v12 ticketForGuideLocationLookupWithIds:v10 identifiers:v8 traits:v13];
+    traits = [(CitySelectorAPIController *)self traits];
+    v14 = [v12 ticketForGuideLocationLookupWithIds:v10 identifiers:v8 traits:traits];
     [(CitySelectorAPIController *)self setBatchTicket:v14];
 
     v15 = sub_1006951D4();
@@ -43,22 +43,22 @@
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v18, OS_SIGNPOST_INTERVAL_BEGIN, v16, "FetchingCitySelectorViewBatch", "", buf, 2u);
     }
 
-    v19 = [(CitySelectorAPIController *)self batchTicket];
+    batchTicket = [(CitySelectorAPIController *)self batchTicket];
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
     v21[2] = sub_100695228;
     v21[3] = &unk_10163C080;
     objc_copyWeak(v23, &location);
-    v22 = v7;
+    v22 = completionCopy;
     v23[1] = v16;
-    [v19 submitWithHandler:v21 networkActivity:0];
+    [batchTicket submitWithHandler:v21 networkActivity:0];
 
     objc_destroyWeak(v23);
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0);
     v20 = sub_1007982D8();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -73,20 +73,20 @@
 
 - (void)cancelFetchingCitySelectorView
 {
-  v2 = [(CitySelectorAPIController *)self ticket];
-  [v2 cancel];
+  ticket = [(CitySelectorAPIController *)self ticket];
+  [ticket cancel];
 }
 
-- (void)fetchCitySelectorView:(id)a3
+- (void)fetchCitySelectorView:(id)view
 {
-  v4 = a3;
-  v5 = [(CitySelectorAPIController *)self stateHandler];
-  v5[2](v5, [(CitySelectorAPIController *)self state], 1);
+  viewCopy = view;
+  stateHandler = [(CitySelectorAPIController *)self stateHandler];
+  stateHandler[2](stateHandler, [(CitySelectorAPIController *)self state], 1);
 
   [(CitySelectorAPIController *)self setState:1];
   v6 = +[MKMapService sharedService];
-  v7 = [(CitySelectorAPIController *)self traits];
-  v8 = [v6 ticketForCitySelectorViewWithTraits:v7 batchSize:{-[CitySelectorAPIController batchSize](self, "batchSize")}];
+  traits = [(CitySelectorAPIController *)self traits];
+  v8 = [v6 ticketForCitySelectorViewWithTraits:traits batchSize:{-[CitySelectorAPIController batchSize](self, "batchSize")}];
   [(CitySelectorAPIController *)self setTicket:v8];
 
   objc_initWeak(&location, self);
@@ -101,16 +101,16 @@
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v12, OS_SIGNPOST_INTERVAL_BEGIN, v10, "FetchingCitySelectorView", "", buf, 2u);
   }
 
-  v13 = [(CitySelectorAPIController *)self ticket];
+  ticket = [(CitySelectorAPIController *)self ticket];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1006956F0;
   v15[3] = &unk_101625D00;
   v17[1] = v10;
   objc_copyWeak(v17, &location);
-  v14 = v4;
+  v14 = viewCopy;
   v16 = v14;
-  [v13 submitWithHandler:v15 networkActivity:&stru_101625D20];
+  [ticket submitWithHandler:v15 networkActivity:&stru_101625D20];
 
   objc_destroyWeak(v17);
   objc_destroyWeak(&location);
@@ -118,34 +118,34 @@
 
 - (id)guideLocationsFromLastBatch
 {
-  v2 = [(CitySelectorAPIController *)self guideLocations];
-  v3 = [v2 copy];
+  guideLocations = [(CitySelectorAPIController *)self guideLocations];
+  v3 = [guideLocations copy];
 
   return v3;
 }
 
 - (id)citySelectorSections
 {
-  v2 = [(CitySelectorAPIController *)self sections];
-  v3 = [v2 copy];
+  sections = [(CitySelectorAPIController *)self sections];
+  v3 = [sections copy];
 
   return v3;
 }
 
-- (CitySelectorAPIController)initWithStateChangeHandler:(id)a3 usingTraits:(id)a4
+- (CitySelectorAPIController)initWithStateChangeHandler:(id)handler usingTraits:(id)traits
 {
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  traitsCopy = traits;
   v12.receiver = self;
   v12.super_class = CitySelectorAPIController;
   v8 = [(CitySelectorAPIController *)&v12 init];
   if (v8)
   {
-    v9 = objc_retainBlock(v6);
+    v9 = objc_retainBlock(handlerCopy);
     stateHandler = v8->_stateHandler;
     v8->_stateHandler = v9;
 
-    objc_storeStrong(&v8->_traits, a4);
+    objc_storeStrong(&v8->_traits, traits);
     v8->_state = 0;
   }
 

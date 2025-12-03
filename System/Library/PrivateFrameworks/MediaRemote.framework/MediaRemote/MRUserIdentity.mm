@@ -1,60 +1,60 @@
 @interface MRUserIdentity
-+ (id)basicIdentityWithIdentifier:(id)a3 displayName:(id)a4;
-+ (id)resolvableIdentityWithIdentifier:(id)a3;
-+ (id)resolvableIdentityWithIdentifier:(id)a3 displayName:(id)a4;
-+ (void)fetchIdentityForDSID:(id)a3 completion:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (MRUserIdentity)initWithCoder:(id)a3;
-- (MRUserIdentity)initWithIdentifier:(id)a3 displayName:(id)a4 type:(int64_t)a5;
-- (MRUserIdentity)initWithProtobuf:(id)a3;
-- (MRUserIdentity)initWithProtobufData:(id)a3;
++ (id)basicIdentityWithIdentifier:(id)identifier displayName:(id)name;
++ (id)resolvableIdentityWithIdentifier:(id)identifier;
++ (id)resolvableIdentityWithIdentifier:(id)identifier displayName:(id)name;
++ (void)fetchIdentityForDSID:(id)d completion:(id)completion;
+- (BOOL)isEqual:(id)equal;
+- (MRUserIdentity)initWithCoder:(id)coder;
+- (MRUserIdentity)initWithIdentifier:(id)identifier displayName:(id)name type:(int64_t)type;
+- (MRUserIdentity)initWithProtobuf:(id)protobuf;
+- (MRUserIdentity)initWithProtobufData:(id)data;
 - (NSData)protobufData;
 - (_MRUserIdentityProtobuf)protobuf;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MRUserIdentity
 
-+ (id)basicIdentityWithIdentifier:(id)a3 displayName:(id)a4
++ (id)basicIdentityWithIdentifier:(id)identifier displayName:(id)name
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[MRUserIdentity alloc] initWithIdentifier:v6 displayName:v5 type:0];
+  nameCopy = name;
+  identifierCopy = identifier;
+  v7 = [[MRUserIdentity alloc] initWithIdentifier:identifierCopy displayName:nameCopy type:0];
 
   return v7;
 }
 
-+ (id)resolvableIdentityWithIdentifier:(id)a3
++ (id)resolvableIdentityWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [[MRUserIdentity alloc] initWithIdentifier:v3 displayName:0 type:1];
+  identifierCopy = identifier;
+  v4 = [[MRUserIdentity alloc] initWithIdentifier:identifierCopy displayName:0 type:1];
 
   return v4;
 }
 
-+ (id)resolvableIdentityWithIdentifier:(id)a3 displayName:(id)a4
++ (id)resolvableIdentityWithIdentifier:(id)identifier displayName:(id)name
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[MRUserIdentity alloc] initWithIdentifier:v6 displayName:v5 type:1];
+  nameCopy = name;
+  identifierCopy = identifier;
+  v7 = [[MRUserIdentity alloc] initWithIdentifier:identifierCopy displayName:nameCopy type:1];
 
   return v7;
 }
 
-+ (void)fetchIdentityForDSID:(id)a3 completion:(id)a4
++ (void)fetchIdentityForDSID:(id)d completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  dCopy = d;
   v7 = MRGetSharedService();
   v8 = MRGroupSessionSubsystemGetNotificationQueue();
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __50__MRUserIdentity_fetchIdentityForDSID_completion___block_invoke;
   v10[3] = &unk_1E769EA10;
-  v11 = v5;
-  v9 = v5;
-  [v7 userIdentityForDSID:v6 queue:v8 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [v7 userIdentityForDSID:dCopy queue:v8 completion:v10];
 }
 
 uint64_t __50__MRUserIdentity_fetchIdentityForDSID_completion___block_invoke(uint64_t a1)
@@ -68,113 +68,113 @@ uint64_t __50__MRUserIdentity_fetchIdentityForDSID_completion___block_invoke(uin
   return result;
 }
 
-- (MRUserIdentity)initWithIdentifier:(id)a3 displayName:(id)a4 type:(int64_t)a5
+- (MRUserIdentity)initWithIdentifier:(id)identifier displayName:(id)name type:(int64_t)type
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  nameCopy = name;
   v16.receiver = self;
   v16.super_class = MRUserIdentity;
   v10 = [(MRUserIdentity *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [identifierCopy copy];
     identifier = v10->_identifier;
     v10->_identifier = v11;
 
-    v13 = [v9 copy];
+    v13 = [nameCopy copy];
     displayName = v10->_displayName;
     v10->_displayName = v13;
 
-    v10->_type = a5;
+    v10->_type = type;
   }
 
   return v10;
 }
 
-- (MRUserIdentity)initWithProtobuf:(id)a3
+- (MRUserIdentity)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
-  if (v4)
+  protobufCopy = protobuf;
+  if (protobufCopy)
   {
     v12.receiver = self;
     v12.super_class = MRUserIdentity;
     v5 = [(MRUserIdentity *)&v12 init];
     if (v5)
     {
-      v6 = [v4 identifier];
+      identifier = [protobufCopy identifier];
       identifier = v5->_identifier;
-      v5->_identifier = v6;
+      v5->_identifier = identifier;
 
-      v8 = [v4 displayName];
+      displayName = [protobufCopy displayName];
       displayName = v5->_displayName;
-      v5->_displayName = v8;
+      v5->_displayName = displayName;
 
-      v5->_type = [v4 type];
+      v5->_type = [protobufCopy type];
     }
 
     self = v5;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (MRUserIdentity)initWithProtobufData:(id)a3
+- (MRUserIdentity)initWithProtobufData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[_MRUserIdentityProtobuf alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[_MRUserIdentityProtobuf alloc] initWithData:dataCopy];
 
     self = [(MRUserIdentity *)self initWithProtobuf:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (MRUserIdentity)initWithCoder:(id)a3
+- (MRUserIdentity)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
 
   v6 = [(MRUserIdentity *)self initWithProtobufData:v5];
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(MRUserIdentity *)self protobuf];
-  v5 = [v6 data];
-  [v4 encodeObject:v5 forKey:@"protobufData"];
+  coderCopy = coder;
+  protobuf = [(MRUserIdentity *)self protobuf];
+  data = [protobuf data];
+  [coderCopy encodeObject:data forKey:@"protobufData"];
 }
 
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = objc_opt_class();
-  v5 = [(MRUserIdentity *)self identifier];
-  v6 = [(MRUserIdentity *)self displayName];
-  v7 = [v3 initWithFormat:@"<%@: identifier=%@, displayName=%@, type=%ld>", v4, v5, v6, -[MRUserIdentity type](self, "type")];
+  identifier = [(MRUserIdentity *)self identifier];
+  displayName = [(MRUserIdentity *)self displayName];
+  v7 = [v3 initWithFormat:@"<%@: identifier=%@, displayName=%@, type=%ld>", v4, identifier, displayName, -[MRUserIdentity type](self, "type")];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -184,7 +184,7 @@ uint64_t __50__MRUserIdentity_fetchIdentityForDSID_completion___block_invoke(uin
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       identifier = v5->_identifier;
       v7 = self->_identifier;
       v8 = v7;
@@ -238,11 +238,11 @@ LABEL_15:
 - (_MRUserIdentityProtobuf)protobuf
 {
   v3 = objc_alloc_init(_MRUserIdentityProtobuf);
-  v4 = [(MRUserIdentity *)self identifier];
-  [(_MRUserIdentityProtobuf *)v3 setIdentifier:v4];
+  identifier = [(MRUserIdentity *)self identifier];
+  [(_MRUserIdentityProtobuf *)v3 setIdentifier:identifier];
 
-  v5 = [(MRUserIdentity *)self displayName];
-  [(_MRUserIdentityProtobuf *)v3 setDisplayName:v5];
+  displayName = [(MRUserIdentity *)self displayName];
+  [(_MRUserIdentityProtobuf *)v3 setDisplayName:displayName];
 
   [(_MRUserIdentityProtobuf *)v3 setType:[(MRUserIdentity *)self type]];
 
@@ -251,10 +251,10 @@ LABEL_15:
 
 - (NSData)protobufData
 {
-  v2 = [(MRUserIdentity *)self protobuf];
-  v3 = [v2 data];
+  protobuf = [(MRUserIdentity *)self protobuf];
+  data = [protobuf data];
 
-  return v3;
+  return data;
 }
 
 @end

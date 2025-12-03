@@ -1,8 +1,8 @@
 @interface QSSMultiUserStartSpeechRequest
 - (NSArray)user_parameters;
 - (NSString)primary_speech_id;
-- (Offset<siri::speech::schema_fb::MultiUserStartSpeechRequest>)addObjectToBuffer:(void *)a3;
-- (QSSMultiUserStartSpeechRequest)initWithFlatbuffData:(id)a3 root:(const MultiUserStartSpeechRequest *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::MultiUserStartSpeechRequest>)addObjectToBuffer:(void *)buffer;
+- (QSSMultiUserStartSpeechRequest)initWithFlatbuffData:(id)data root:(const MultiUserStartSpeechRequest *)root verify:(BOOL)verify;
 - (QSSStartSpeechRequest)start_speech_request;
 - (id)flatbuffData;
 @end
@@ -38,14 +38,14 @@ flatbuffers::DetachedBuffer *__46__QSSMultiUserStartSpeechRequest_flatbuffData__
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::MultiUserStartSpeechRequest>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::MultiUserStartSpeechRequest>)addObjectToBuffer:(void *)buffer
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = [(QSSMultiUserStartSpeechRequest *)self start_speech_request];
-  v21 = [v5 addObjectToBuffer:a3];
+  start_speech_request = [(QSSMultiUserStartSpeechRequest *)self start_speech_request];
+  v21 = [start_speech_request addObjectToBuffer:buffer];
 
-  v6 = [(QSSMultiUserStartSpeechRequest *)self user_parameters];
-  v7 = [v6 count];
+  user_parameters = [(QSSMultiUserStartSpeechRequest *)self user_parameters];
+  v7 = [user_parameters count];
   if (v7)
   {
     if (!(v7 >> 62))
@@ -65,37 +65,37 @@ flatbuffers::DetachedBuffer *__46__QSSMultiUserStartSpeechRequest_flatbuffData__
   {
     *v24;
     *v24;
-    [**(&v23 + 1) addObjectToBuffer:a3];
+    [**(&v23 + 1) addObjectToBuffer:buffer];
     std::__allocate_at_least[abi:ne200100]<std::allocator<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>>(1uLL);
   }
 
-  flatbuffers::FlatBufferBuilder::StartVector(a3, 0, 4uLL);
-  v8 = flatbuffers::FlatBufferBuilder::EndVector(a3, 0);
-  v9 = [(QSSMultiUserStartSpeechRequest *)self primary_speech_id];
-  v10 = v9;
-  if (!v9)
+  flatbuffers::FlatBufferBuilder::StartVector(buffer, 0, 4uLL);
+  v8 = flatbuffers::FlatBufferBuilder::EndVector(buffer, 0);
+  primary_speech_id = [(QSSMultiUserStartSpeechRequest *)self primary_speech_id];
+  v10 = primary_speech_id;
+  if (!primary_speech_id)
   {
-    v9 = &stru_2879AE8E0;
+    primary_speech_id = &stru_2879AE8E0;
   }
 
-  v11 = [(__CFString *)v9 UTF8String];
-  v12 = strlen(v11);
-  String = flatbuffers::FlatBufferBuilder::CreateString(a3, v11, v12);
+  uTF8String = [(__CFString *)primary_speech_id UTF8String];
+  v12 = strlen(uTF8String);
+  String = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String, v12);
 
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v14 = *(a3 + 8);
-  v15 = *(a3 + 12);
-  v16 = *(a3 + 10);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 4, v21);
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v14 = *(buffer + 8);
+  v15 = *(buffer + 12);
+  v16 = *(buffer + 10);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 4, v21);
   if (v8)
   {
-    v17 = flatbuffers::FlatBufferBuilder::ReferTo(a3, v8);
-    flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 6, v17);
+    v17 = flatbuffers::FlatBufferBuilder::ReferTo(buffer, v8);
+    flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 6, v17);
   }
 
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 8, String);
-  v18.var0 = flatbuffers::FlatBufferBuilder::EndTable(a3, v14 - v15 + v16);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 8, String);
+  v18.var0 = flatbuffers::FlatBufferBuilder::EndTable(buffer, v14 - v15 + v16);
   v19 = *MEMORY[0x277D85DE8];
   return v18;
 }
@@ -125,10 +125,10 @@ flatbuffers::DetachedBuffer *__46__QSSMultiUserStartSpeechRequest_flatbuffData__
 
 - (NSArray)user_parameters
 {
-  v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"user_parameters"];
-  if (!v3)
+  array = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"user_parameters"];
+  if (!array)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     root = self->_root;
     v5 = &root[-*root->var0];
     if (*v5->var0 >= 7u)
@@ -145,7 +145,7 @@ flatbuffers::DetachedBuffer *__46__QSSMultiUserStartSpeechRequest_flatbuffData__
           do
           {
             v11 = [[QSSUserParameters alloc] initWithFlatbuffData:self->_data root:&v10[*v10->var0] verify:0];
-            [v3 addObject:v11];
+            [array addObject:v11];
 
             v10 += 4;
             v9 -= 4;
@@ -156,10 +156,10 @@ flatbuffers::DetachedBuffer *__46__QSSMultiUserStartSpeechRequest_flatbuffData__
       }
     }
 
-    [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"user_parameters"];
+    [(NSMutableDictionary *)self->_storage setObject:array forKeyedSubscript:@"user_parameters"];
   }
 
-  return v3;
+  return array;
 }
 
 - (QSSStartSpeechRequest)start_speech_request
@@ -187,42 +187,42 @@ flatbuffers::DetachedBuffer *__46__QSSMultiUserStartSpeechRequest_flatbuffData__
   return v3;
 }
 
-- (QSSMultiUserStartSpeechRequest)initWithFlatbuffData:(id)a3 root:(const MultiUserStartSpeechRequest *)a4 verify:(BOOL)a5
+- (QSSMultiUserStartSpeechRequest)initWithFlatbuffData:(id)data root:(const MultiUserStartSpeechRequest *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = QSSMultiUserStartSpeechRequest;
   v10 = [(QSSMultiUserStartSpeechRequest *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_26914CD70;
       v27 = 0;
@@ -244,9 +244,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

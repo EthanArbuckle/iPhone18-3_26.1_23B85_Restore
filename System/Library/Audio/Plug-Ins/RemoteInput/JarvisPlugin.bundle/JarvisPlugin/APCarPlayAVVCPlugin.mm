@@ -1,16 +1,16 @@
 @interface APCarPlayAVVCPlugin
-- (APCarPlayAVVCPlugin)initWithPluginDelegate:(id)a3;
+- (APCarPlayAVVCPlugin)initWithPluginDelegate:(id)delegate;
 - (int)createNewDevice;
-- (int)destroyDevice:(id)a3;
+- (int)destroyDevice:(id)device;
 - (void)clientInit;
 - (void)dealloc;
-- (void)handleNotification:(__CFString *)a3 fromObject:(const void *)a4;
+- (void)handleNotification:(__CFString *)notification fromObject:(const void *)object;
 - (void)invalidate;
 @end
 
 @implementation APCarPlayAVVCPlugin
 
-- (APCarPlayAVVCPlugin)initWithPluginDelegate:(id)a3
+- (APCarPlayAVVCPlugin)initWithPluginDelegate:(id)delegate
 {
   v25.receiver = self;
   v25.super_class = APCarPlayAVVCPlugin;
@@ -21,7 +21,7 @@
     return v5;
   }
 
-  v4->_delegate = a3;
+  v4->_delegate = delegate;
   v6 = [[NSMutableArray alloc] initWithCapacity:1];
   v5->_devices = v6;
   if (!v6)
@@ -154,22 +154,22 @@ LABEL_20:
   [(APCarPlayAVVCPlugin *)&v4 dealloc];
 }
 
-- (void)handleNotification:(__CFString *)a3 fromObject:(const void *)a4
+- (void)handleNotification:(__CFString *)notification fromObject:(const void *)object
 {
   if (dword_C9B0 <= 30 && (dword_C9B0 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
   }
 
-  v7 = self;
+  selfCopy = self;
   devicesQueue = self->_devicesQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_3330;
   block[3] = &unk_83D8;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = notification;
+  block[6] = object;
   dispatch_async(devicesQueue, block);
 }
 
@@ -218,11 +218,11 @@ LABEL_20:
       if (dword_C9B0 <= 50 && (dword_C9B0 != -1 || _LogCategory_Initialize()))
       {
         v7 = v4;
-        v8 = [(APCarPlayAVVCDevice *)v4 deviceIdentifier];
+        deviceIdentifier = [(APCarPlayAVVCDevice *)v4 deviceIdentifier];
         sub_18FC();
       }
 
-      [(AVAudioRemoteInputPluginDelegate *)self->_delegate inputPlugin:self didPublishDevice:v4, v7, v8];
+      [(AVAudioRemoteInputPluginDelegate *)self->_delegate inputPlugin:self didPublishDevice:v4, v7, deviceIdentifier];
       return 0;
     }
 
@@ -239,24 +239,24 @@ LABEL_20:
   }
 }
 
-- (int)destroyDevice:(id)a3
+- (int)destroyDevice:(id)device
 {
   devices = self->_devices;
   if (devices && [(NSMutableArray *)devices containsObject:?])
   {
     if (dword_C9B0 <= 50 && (dword_C9B0 != -1 || _LogCategory_Initialize()))
     {
-      v8 = a3;
-      v9 = [a3 deviceIdentifier];
+      deviceCopy = device;
+      deviceIdentifier = [device deviceIdentifier];
       sub_18FC();
     }
 
-    [(AVAudioRemoteInputPluginDelegate *)self->_delegate inputPlugin:self didUnpublishDevice:a3, v8, v9];
-    [(NSMutableArray *)self->_devices removeObject:a3];
+    [(AVAudioRemoteInputPluginDelegate *)self->_delegate inputPlugin:self didUnpublishDevice:device, deviceCopy, deviceIdentifier];
+    [(NSMutableArray *)self->_devices removeObject:device];
     if (!self->_isAVOutputDeviceEnabled)
     {
       LocalCenter = CFNotificationCenterGetLocalCenter();
-      CFNotificationCenterRemoveObserver(LocalCenter, self, kFigEndpointNotification_EndpointDeactivated, a3);
+      CFNotificationCenterRemoveObserver(LocalCenter, self, kFigEndpointNotification_EndpointDeactivated, device);
     }
   }
 

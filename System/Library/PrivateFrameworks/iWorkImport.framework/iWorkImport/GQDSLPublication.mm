@@ -1,15 +1,15 @@
 @interface GQDSLPublication
 - (CGSize)pageSize;
 - (GQDSLPublication)init;
-- (__CFArray)createUpgradedPathComponentsFromOldTemplatePathComponents:(__CFArray *)a3;
-- (__CFString)createFixedPathForOldAppBundleResourcePath:(__CFString *)a3;
-- (__CFString)createUpgradedPathForOldAssetPath:(__CFString *)a3;
-- (__CFURL)createUrlToAppBundleResource:(__CFString *)a3 processorBundle:(__CFBundle *)a4 fileUrl:(__CFURL *)a5;
-- (int)readAttributesFromReader:(_xmlTextReader *)a3;
+- (__CFArray)createUpgradedPathComponentsFromOldTemplatePathComponents:(__CFArray *)components;
+- (__CFString)createFixedPathForOldAppBundleResourcePath:(__CFString *)path;
+- (__CFString)createUpgradedPathForOldAssetPath:(__CFString *)path;
+- (__CFURL)createUrlToAppBundleResource:(__CFString *)resource processorBundle:(__CFBundle *)bundle fileUrl:(__CFURL *)url;
+- (int)readAttributesFromReader:(_xmlTextReader *)reader;
 - (void)dealloc;
-- (void)initializeAppBundleResourcesUrl:(__CFURL *)a3;
-- (void)setPageMargins:(id)a3;
-- (void)setStylesheet:(id)a3;
+- (void)initializeAppBundleResourcesUrl:(__CFURL *)url;
+- (void)setPageMargins:(id)margins;
+- (void)setStylesheet:(id)stylesheet;
 @end
 
 @implementation GQDSLPublication
@@ -55,21 +55,21 @@
   return result;
 }
 
-- (void)setPageMargins:(id)a3
+- (void)setPageMargins:(id)margins
 {
-  v5 = a3;
+  marginsCopy = margins;
 
-  self->mPageMargins = a3;
+  self->mPageMargins = margins;
 }
 
-- (void)setStylesheet:(id)a3
+- (void)setStylesheet:(id)stylesheet
 {
-  v5 = a3;
+  stylesheetCopy = stylesheet;
 
-  self->mStylesheet = a3;
+  self->mStylesheet = stylesheet;
 }
 
-- (void)initializeAppBundleResourcesUrl:(__CFURL *)a3
+- (void)initializeAppBundleResourcesUrl:(__CFURL *)url
 {
   if (!self->super.mAppBundleResourcesUrlInitialized)
   {
@@ -79,23 +79,23 @@
   self->super.mAppBundleResourcesUrlInitialized = 1;
 }
 
-- (__CFURL)createUrlToAppBundleResource:(__CFString *)a3 processorBundle:(__CFBundle *)a4 fileUrl:(__CFURL *)a5
+- (__CFURL)createUrlToAppBundleResource:(__CFString *)resource processorBundle:(__CFBundle *)bundle fileUrl:(__CFURL *)url
 {
-  v7 = [(GQDRoot *)self appBundleResourcesUrl:a5, a4];
-  if (v7)
+  bundle = [(GQDRoot *)self appBundleResourcesUrl:url, bundle];
+  if (bundle)
   {
-    if ([(GQDRoot *)self appBundleCanProcessCurrentDocVersion]&& (v8 = [(GQDSLPublication *)self createFixedPathForOldAppBundleResourcePath:a3]) != 0)
+    if ([(GQDRoot *)self appBundleCanProcessCurrentDocVersion]&& (v8 = [(GQDSLPublication *)self createFixedPathForOldAppBundleResourcePath:resource]) != 0)
     {
       v9 = v8;
       if (CFStringHasPrefix(v8, @"Charts/"))
       {
-        v7 = 0;
+        bundle = 0;
       }
 
       else
       {
-        v10 = CFURLCreateCopyAppendingPathComponent(0, v7, v9, 0);
-        v7 = CFURLCopyAbsoluteURL(v10);
+        v10 = CFURLCreateCopyAppendingPathComponent(0, bundle, v9, 0);
+        bundle = CFURLCopyAbsoluteURL(v10);
         CFRelease(v10);
       }
 
@@ -108,29 +108,29 @@
     }
   }
 
-  return v7;
+  return bundle;
 }
 
-- (int)readAttributesFromReader:(_xmlTextReader *)a3
+- (int)readAttributesFromReader:(_xmlTextReader *)reader
 {
-  sub_4290C(a3, qword_A3608, "page-width");
+  sub_4290C(reader, qword_A3608, "page-width");
   v9 = v5;
-  sub_4290C(a3, qword_A3608, "page-height");
+  sub_4290C(reader, qword_A3608, "page-height");
   v6.f64[0] = v9;
   v6.f64[1] = v7;
   self->mPageSize = vcvtq_f64_f32(vcvt_f32_f64(v6));
   return 1;
 }
 
-- (__CFString)createFixedPathForOldAppBundleResourcePath:(__CFString *)a3
+- (__CFString)createFixedPathForOldAppBundleResourcePath:(__CFString *)path
 {
-  v3 = a3;
-  if (!a3)
+  pathCopy = path;
+  if (!path)
   {
-    return v3;
+    return pathCopy;
   }
 
-  ArrayBySeparatingStrings = CFStringCreateArrayBySeparatingStrings(0, a3, @"/");
+  ArrayBySeparatingStrings = CFStringCreateArrayBySeparatingStrings(0, path, @"/");
   Count = CFArrayGetCount(ArrayBySeparatingStrings);
   v7 = Count;
   if (self->super.mAppBundleVersion >= 8 && Count >= 6)
@@ -254,31 +254,31 @@ LABEL_25:
 LABEL_40:
   if (v23)
   {
-    v3 = v23;
+    pathCopy = v23;
   }
 
   if (self->super.mAppBundleVersion >= 8)
   {
-    v3 = [(GQDSLPublication *)self createUpgradedPathForOldAssetPath:v3];
+    pathCopy = [(GQDSLPublication *)self createUpgradedPathForOldAssetPath:pathCopy];
     if (!v23)
     {
-      return v3;
+      return pathCopy;
     }
 
     goto LABEL_46;
   }
 
-  CFRetain(v3);
+  CFRetain(pathCopy);
   if (v23)
   {
 LABEL_46:
     CFRelease(v23);
   }
 
-  return v3;
+  return pathCopy;
 }
 
-- (__CFArray)createUpgradedPathComponentsFromOldTemplatePathComponents:(__CFArray *)a3
+- (__CFArray)createUpgradedPathComponentsFromOldTemplatePathComponents:(__CFArray *)components
 {
   if (!self->mIsOldTemplateNameMapInitialized)
   {
@@ -294,19 +294,19 @@ LABEL_46:
         if (v8)
         {
           self->mOldTemplateNameMap = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-          v9 = [v8 keyEnumerator];
-          v10 = [v9 nextObject];
-          if (v10)
+          keyEnumerator = [v8 keyEnumerator];
+          nextObject = [keyEnumerator nextObject];
+          if (nextObject)
           {
-            v11 = v10;
+            nextObject2 = nextObject;
             do
             {
-              v12 = sub_EFA4(v11);
-              -[__CFDictionary setObject:forKey:](self->mOldTemplateNameMap, "setObject:forKey:", sub_EFA4([v8 objectForKey:v11]), v12);
-              v11 = [v9 nextObject];
+              v12 = sub_EFA4(nextObject2);
+              -[__CFDictionary setObject:forKey:](self->mOldTemplateNameMap, "setObject:forKey:", sub_EFA4([v8 objectForKey:nextObject2]), v12);
+              nextObject2 = [keyEnumerator nextObject];
             }
 
-            while (v11);
+            while (nextObject2);
           }
         }
 
@@ -318,16 +318,16 @@ LABEL_46:
   if (self->mOldTemplateNameMap)
   {
     v13 = objc_alloc_init(NSAutoreleasePool);
-    Count = CFArrayGetCount(a3);
-    v15 = [(__CFDictionary *)self->mOldTemplateNameMap objectForKey:sub_EFA4([NSString pathWithComponents:[(__CFArray *)a3 subarrayWithRange:0, 5]])];
+    Count = CFArrayGetCount(components);
+    v15 = [(__CFDictionary *)self->mOldTemplateNameMap objectForKey:sub_EFA4([NSString pathWithComponents:[(__CFArray *)components subarrayWithRange:0, 5]])];
     if (v15)
     {
-      MutableCopy = [objc_msgSend(v15 stringByAppendingPathComponent:{+[NSString pathWithComponents:](NSString, "pathWithComponents:", -[__CFArray subarrayWithRange:](a3, "subarrayWithRange:", 5, (Count - 5)))), "pathComponents"}];
+      MutableCopy = [objc_msgSend(v15 stringByAppendingPathComponent:{+[NSString pathWithComponents:](NSString, "pathWithComponents:", -[__CFArray subarrayWithRange:](components, "subarrayWithRange:", 5, (Count - 5)))), "pathComponents"}];
     }
 
     else
     {
-      MutableCopy = CFArrayCreateMutableCopy(0, 0, a3);
+      MutableCopy = CFArrayCreateMutableCopy(0, 0, components);
       CFArrayRemoveValueAtIndex(MutableCopy, 0);
       CFArrayRemoveValueAtIndex(MutableCopy, 1);
     }
@@ -338,10 +338,10 @@ LABEL_46:
     }
   }
 
-  return CFRetain(a3);
+  return CFRetain(components);
 }
 
-- (__CFString)createUpgradedPathForOldAssetPath:(__CFString *)a3
+- (__CFString)createUpgradedPathForOldAssetPath:(__CFString *)path
 {
   if (!self->super.mIsOldAssetNameMapInitialized)
   {
@@ -360,7 +360,7 @@ LABEL_46:
   }
 
   mOldAssetNameMap = self->super.mOldAssetNameMap;
-  if (mOldAssetNameMap && (Value = CFDictionaryGetValue(mOldAssetNameMap, a3)) != 0)
+  if (mOldAssetNameMap && (Value = CFDictionaryGetValue(mOldAssetNameMap, path)) != 0)
   {
     v10 = Value;
     CFRetain(Value);
@@ -369,10 +369,10 @@ LABEL_46:
 
   else
   {
-    CFRetain(a3);
+    CFRetain(path);
   }
 
-  return a3;
+  return path;
 }
 
 @end

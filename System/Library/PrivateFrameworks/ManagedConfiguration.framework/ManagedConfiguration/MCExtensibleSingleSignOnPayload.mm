@@ -1,8 +1,8 @@
 @interface MCExtensibleSingleSignOnPayload
 + (id)typeStrings;
-- (BOOL)_validateHost:(id)a3 outError:(id *)a4;
-- (MCExtensibleSingleSignOnPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5;
-- (id)_validateURLString:(id)a3 outError:(id *)a4;
+- (BOOL)_validateHost:(id)host outError:(id *)error;
+- (MCExtensibleSingleSignOnPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error;
+- (id)_validateURLString:(id)string outError:(id *)error;
 - (id)payloadDescriptionKeyValueSections;
 - (id)stubDictionary;
 - (id)title;
@@ -21,20 +21,20 @@
   return v2;
 }
 
-- (MCExtensibleSingleSignOnPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5
+- (MCExtensibleSingleSignOnPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error
 {
   v137[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v129.receiver = self;
   v129.super_class = MCExtensibleSingleSignOnPayload;
-  v9 = [(MCPayload *)&v129 initWithDictionary:v8 profile:a4 outError:a5];
+  v9 = [(MCPayload *)&v129 initWithDictionary:dictionaryCopy profile:profile outError:error];
   if (!v9)
   {
     goto LABEL_13;
   }
 
   v128 = 0;
-  v10 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"Type" isRequired:1 outError:&v128];
+  v10 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"Type" isRequired:1 outError:&v128];
   v11 = v128;
   esso_type = v9->_esso_type;
   v9->_esso_type = v10;
@@ -60,7 +60,7 @@
   if ([(NSString *)v9->_esso_type isEqualToString:@"Credential"])
   {
     v126 = 0;
-    v28 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"Realm" isRequired:0 outError:&v126];
+    v28 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"Realm" isRequired:0 outError:&v126];
     v11 = v126;
     esso_realm = v9->_esso_realm;
     v9->_esso_realm = v28;
@@ -72,7 +72,7 @@
   }
 
   v125 = 0;
-  v30 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"ExtensionIdentifier" isRequired:1 outError:&v125];
+  v30 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"ExtensionIdentifier" isRequired:1 outError:&v125];
   v11 = v125;
   esso_extensionIdentifier = v9->_esso_extensionIdentifier;
   v9->_esso_extensionIdentifier = v30;
@@ -83,7 +83,7 @@
   }
 
   v124 = 0;
-  v32 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"TeamIdentifier" isRequired:0 outError:&v124];
+  v32 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"TeamIdentifier" isRequired:0 outError:&v124];
   v11 = v124;
   esso_teamIdentifier = v9->_esso_teamIdentifier;
   v9->_esso_teamIdentifier = v32;
@@ -94,7 +94,7 @@
   }
 
   v123 = 0;
-  v34 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"ExtensionData" isRequired:0 outError:&v123];
+  v34 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"ExtensionData" isRequired:0 outError:&v123];
   v11 = v123;
   esso_extensionData = v9->_esso_extensionData;
   v9->_esso_extensionData = v34;
@@ -105,7 +105,7 @@
   }
 
   v122 = 0;
-  v104 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"ScreenLockedBehavior" isRequired:0 outError:&v122];
+  v104 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"ScreenLockedBehavior" isRequired:0 outError:&v122];
   v11 = v122;
   esso_screenLockedBehavior = v9->_esso_screenLockedBehavior;
   v9->_esso_screenLockedBehavior = v104;
@@ -132,7 +132,7 @@
   }
 
   v120 = 0;
-  v39 = [v8 MCValidateAndRemoveArrayOfClass:objc_opt_class() withKey:@"DeniedBundleIdentifiers" isRequired:0 allowZeroLengthString:0 outError:&v120];
+  v39 = [dictionaryCopy MCValidateAndRemoveArrayOfClass:objc_opt_class() withKey:@"DeniedBundleIdentifiers" isRequired:0 allowZeroLengthString:0 outError:&v120];
   v11 = v120;
   esso_deniedBundleIdentifiers = v9->_esso_deniedBundleIdentifiers;
   v9->_esso_deniedBundleIdentifiers = v39;
@@ -145,7 +145,7 @@
   if ([(NSString *)v9->_esso_type isEqualToString:@"Credential"])
   {
     v119 = 0;
-    v41 = [v8 MCValidateAndRemoveArrayOfClass:objc_opt_class() withKey:@"Hosts" isRequired:1 allowZeroLengthString:0 outError:&v119];
+    v41 = [dictionaryCopy MCValidateAndRemoveArrayOfClass:objc_opt_class() withKey:@"Hosts" isRequired:1 allowZeroLengthString:0 outError:&v119];
     v42 = v119;
     if (v42)
     {
@@ -200,19 +200,19 @@ LABEL_28:
           break;
         }
 
-        v54 = [v52 lowercaseString];
-        if ([v105 containsObject:v54])
+        lowercaseString = [v52 lowercaseString];
+        if ([v105 containsObject:lowercaseString])
         {
           v57 = MEMORY[0x1E696ABC0];
-          v58 = [(MCExtensibleSingleSignOnPayload *)v9 esso_extensionIdentifier];
-          v66 = MCErrorArray(@"EXTENSIBLE_SSO_INTRA_HOST_CONFLICT_P_EXTENSION_ID_P_HOST", v59, v60, v61, v62, v63, v64, v65, v58);
+          esso_extensionIdentifier = [(MCExtensibleSingleSignOnPayload *)v9 esso_extensionIdentifier];
+          v66 = MCErrorArray(@"EXTENSIBLE_SSO_INTRA_HOST_CONFLICT_P_EXTENSION_ID_P_HOST", v59, v60, v61, v62, v63, v64, v65, esso_extensionIdentifier);
           v67 = [v57 MCErrorWithDomain:@"MCExtensibleSingleSignOnErrorDomain" code:54006 descriptionArray:v66 errorType:@"MCFatalError"];
 
           v11 = v67;
           break;
         }
 
-        [v105 addObject:v54];
+        [v105 addObject:lowercaseString];
         [(NSArray *)v103 addObject:v52];
 
         ++v50;
@@ -238,10 +238,10 @@ LABEL_28:
 LABEL_4:
       v15 = [(MCPayload *)v9 malformedPayloadErrorWithError:v11];
       v16 = v15;
-      if (a5)
+      if (error)
       {
         v17 = v15;
-        *a5 = v16;
+        *error = v16;
       }
 
       v18 = _MCLogObjects;
@@ -250,11 +250,11 @@ LABEL_4:
         v19 = v18;
         v20 = objc_opt_class();
         v21 = v20;
-        v22 = [v16 MCVerboseDescription];
+        mCVerboseDescription = [v16 MCVerboseDescription];
         *buf = 138543618;
         v131 = v20;
         v132 = 2114;
-        v133 = v22;
+        v133 = mCVerboseDescription;
         _os_log_impl(&dword_1A795B000, v19, OS_LOG_TYPE_ERROR, "%{public}@ Can't parse payload: %{public}@", buf, 0x16u);
       }
 
@@ -270,7 +270,7 @@ LABEL_4:
   }
 
   v113 = 0;
-  v41 = [v8 MCValidateAndRemoveArrayOfClass:objc_opt_class() withKey:@"URLs" isRequired:1 allowZeroLengthString:0 outError:&v113];
+  v41 = [dictionaryCopy MCValidateAndRemoveArrayOfClass:objc_opt_class() withKey:@"URLs" isRequired:1 allowZeroLengthString:0 outError:&v113];
   v42 = v113;
   if (v42)
   {
@@ -326,20 +326,20 @@ LABEL_61:
         goto LABEL_62;
       }
 
-      v84 = [v82 normalizedURL];
-      if ([v76 containsObject:v84])
+      normalizedURL = [v82 normalizedURL];
+      if ([v76 containsObject:normalizedURL])
       {
         v87 = MEMORY[0x1E696ABC0];
-        v88 = [(MCExtensibleSingleSignOnPayload *)v9 esso_extensionIdentifier];
-        v99 = [v82 absoluteString];
-        v96 = MCErrorArray(@"EXTENSIBLE_SSO_INTRA_URL_CONFLICT_P_EXTENSION_ID_P_URL", v89, v90, v91, v92, v93, v94, v95, v88);
+        esso_extensionIdentifier2 = [(MCExtensibleSingleSignOnPayload *)v9 esso_extensionIdentifier];
+        absoluteString = [v82 absoluteString];
+        v96 = MCErrorArray(@"EXTENSIBLE_SSO_INTRA_URL_CONFLICT_P_EXTENSION_ID_P_URL", v89, v90, v91, v92, v93, v94, v95, esso_extensionIdentifier2);
         [v87 MCErrorWithDomain:@"MCExtensibleSingleSignOnErrorDomain" code:54004 descriptionArray:v96 errorType:@"MCFatalError"];
-        v11 = v97 = v84;
+        v11 = v97 = normalizedURL;
 
         goto LABEL_61;
       }
 
-      [v76 addObject:v84];
+      [v76 addObject:normalizedURL];
       [(NSArray *)v107 addObject:v82];
     }
 
@@ -364,17 +364,17 @@ LABEL_62:
   }
 
 LABEL_9:
-  if ([v8 count])
+  if ([dictionaryCopy count])
   {
     v23 = _MCLogObjects;
     if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_INFO))
     {
       v24 = v23;
-      v25 = [(MCPayload *)v9 friendlyName];
+      friendlyName = [(MCPayload *)v9 friendlyName];
       *buf = 138543618;
-      v131 = v25;
+      v131 = friendlyName;
       v132 = 2114;
-      v133 = v8;
+      v133 = dictionaryCopy;
       _os_log_impl(&dword_1A795B000, v24, OS_LOG_TYPE_INFO, "Payload “%{public}@” contains ignored fields. They are: %{public}@", buf, 0x16u);
     }
   }
@@ -389,60 +389,60 @@ LABEL_13:
   v54 = *MEMORY[0x1E69E9840];
   v50.receiver = self;
   v50.super_class = MCExtensibleSingleSignOnPayload;
-  v3 = [(MCPayload *)&v50 verboseDescription];
-  v4 = [v3 mutableCopy];
+  verboseDescription = [(MCPayload *)&v50 verboseDescription];
+  v4 = [verboseDescription mutableCopy];
 
-  v5 = [(MCExtensibleSingleSignOnPayload *)self esso_type];
+  esso_type = [(MCExtensibleSingleSignOnPayload *)self esso_type];
 
-  if (v5)
+  if (esso_type)
   {
-    v6 = [(MCExtensibleSingleSignOnPayload *)self esso_type];
-    [v4 appendFormat:@"Type        : %@\n", v6];
+    esso_type2 = [(MCExtensibleSingleSignOnPayload *)self esso_type];
+    [v4 appendFormat:@"Type        : %@\n", esso_type2];
   }
 
-  v7 = [(MCExtensibleSingleSignOnPayload *)self esso_realm];
+  esso_realm = [(MCExtensibleSingleSignOnPayload *)self esso_realm];
 
-  if (v7)
+  if (esso_realm)
   {
-    v8 = [(MCExtensibleSingleSignOnPayload *)self esso_realm];
-    [v4 appendFormat:@"Realm       : %@\n", v8];
+    esso_realm2 = [(MCExtensibleSingleSignOnPayload *)self esso_realm];
+    [v4 appendFormat:@"Realm       : %@\n", esso_realm2];
   }
 
-  v9 = [(MCExtensibleSingleSignOnPayload *)self esso_extensionIdentifier];
+  esso_extensionIdentifier = [(MCExtensibleSingleSignOnPayload *)self esso_extensionIdentifier];
 
-  if (v9)
+  if (esso_extensionIdentifier)
   {
-    v10 = [(MCExtensibleSingleSignOnPayload *)self esso_extensionIdentifier];
-    [v4 appendFormat:@"Extension ID: %@\n", v10];
+    esso_extensionIdentifier2 = [(MCExtensibleSingleSignOnPayload *)self esso_extensionIdentifier];
+    [v4 appendFormat:@"Extension ID: %@\n", esso_extensionIdentifier2];
   }
 
-  v11 = [(MCExtensibleSingleSignOnPayload *)self esso_teamIdentifier];
+  esso_teamIdentifier = [(MCExtensibleSingleSignOnPayload *)self esso_teamIdentifier];
 
-  if (v11)
+  if (esso_teamIdentifier)
   {
-    v12 = [(MCExtensibleSingleSignOnPayload *)self esso_teamIdentifier];
-    [v4 appendFormat:@"Team ID     : %@\n", v12];
+    esso_teamIdentifier2 = [(MCExtensibleSingleSignOnPayload *)self esso_teamIdentifier];
+    [v4 appendFormat:@"Team ID     : %@\n", esso_teamIdentifier2];
   }
 
-  v13 = [(MCExtensibleSingleSignOnPayload *)self esso_extensionData];
+  esso_extensionData = [(MCExtensibleSingleSignOnPayload *)self esso_extensionData];
 
-  if (v13)
+  if (esso_extensionData)
   {
-    v14 = [(MCExtensibleSingleSignOnPayload *)self esso_extensionData];
-    [v4 appendFormat:@"Ext. Data   : [%ld entries]\n", objc_msgSend(v14, "count")];
+    esso_extensionData2 = [(MCExtensibleSingleSignOnPayload *)self esso_extensionData];
+    [v4 appendFormat:@"Ext. Data   : [%ld entries]\n", objc_msgSend(esso_extensionData2, "count")];
   }
 
-  v15 = [(MCExtensibleSingleSignOnPayload *)self esso_URLs];
+  esso_URLs = [(MCExtensibleSingleSignOnPayload *)self esso_URLs];
 
-  if (v15)
+  if (esso_URLs)
   {
     [v4 appendString:@"URLs        :\n"];
     v48 = 0u;
     v49 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v16 = [(MCExtensibleSingleSignOnPayload *)self esso_URLs];
-    v17 = [v16 countByEnumeratingWithState:&v46 objects:v53 count:16];
+    esso_URLs2 = [(MCExtensibleSingleSignOnPayload *)self esso_URLs];
+    v17 = [esso_URLs2 countByEnumeratingWithState:&v46 objects:v53 count:16];
     if (v17)
     {
       v18 = v17;
@@ -453,31 +453,31 @@ LABEL_13:
         {
           if (*v47 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(esso_URLs2);
           }
 
-          v21 = [*(*(&v46 + 1) + 8 * i) absoluteString];
-          [v4 appendFormat:@"    %@\n", v21];
+          absoluteString = [*(*(&v46 + 1) + 8 * i) absoluteString];
+          [v4 appendFormat:@"    %@\n", absoluteString];
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v46 objects:v53 count:16];
+        v18 = [esso_URLs2 countByEnumeratingWithState:&v46 objects:v53 count:16];
       }
 
       while (v18);
     }
   }
 
-  v22 = [(MCExtensibleSingleSignOnPayload *)self esso_hosts];
+  esso_hosts = [(MCExtensibleSingleSignOnPayload *)self esso_hosts];
 
-  if (v22)
+  if (esso_hosts)
   {
     [v4 appendString:@"Hosts       :\n"];
     v44 = 0u;
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v23 = [(MCExtensibleSingleSignOnPayload *)self esso_hosts];
-    v24 = [v23 countByEnumeratingWithState:&v42 objects:v52 count:16];
+    esso_hosts2 = [(MCExtensibleSingleSignOnPayload *)self esso_hosts];
+    v24 = [esso_hosts2 countByEnumeratingWithState:&v42 objects:v52 count:16];
     if (v24)
     {
       v25 = v24;
@@ -488,38 +488,38 @@ LABEL_13:
         {
           if (*v43 != v26)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(esso_hosts2);
           }
 
           [v4 appendFormat:@"    %@\n", *(*(&v42 + 1) + 8 * j)];
         }
 
-        v25 = [v23 countByEnumeratingWithState:&v42 objects:v52 count:16];
+        v25 = [esso_hosts2 countByEnumeratingWithState:&v42 objects:v52 count:16];
       }
 
       while (v25);
     }
   }
 
-  v28 = [(MCExtensibleSingleSignOnPayload *)self esso_screenLockedBehavior];
+  esso_screenLockedBehavior = [(MCExtensibleSingleSignOnPayload *)self esso_screenLockedBehavior];
 
-  if (v28)
+  if (esso_screenLockedBehavior)
   {
-    v29 = [(MCExtensibleSingleSignOnPayload *)self esso_screenLockedBehavior];
-    [v4 appendFormat:@"ScreenLocked: %@\n", v29];
+    esso_screenLockedBehavior2 = [(MCExtensibleSingleSignOnPayload *)self esso_screenLockedBehavior];
+    [v4 appendFormat:@"ScreenLocked: %@\n", esso_screenLockedBehavior2];
   }
 
-  v30 = [(MCExtensibleSingleSignOnPayload *)self esso_deniedBundleIdentifiers];
+  esso_deniedBundleIdentifiers = [(MCExtensibleSingleSignOnPayload *)self esso_deniedBundleIdentifiers];
 
-  if (v30)
+  if (esso_deniedBundleIdentifiers)
   {
     [v4 appendString:@"DenyBndlIds :\n"];
     v40 = 0u;
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v31 = [(MCExtensibleSingleSignOnPayload *)self esso_deniedBundleIdentifiers];
-    v32 = [v31 countByEnumeratingWithState:&v38 objects:v51 count:16];
+    esso_deniedBundleIdentifiers2 = [(MCExtensibleSingleSignOnPayload *)self esso_deniedBundleIdentifiers];
+    v32 = [esso_deniedBundleIdentifiers2 countByEnumeratingWithState:&v38 objects:v51 count:16];
     if (v32)
     {
       v33 = v32;
@@ -530,13 +530,13 @@ LABEL_13:
         {
           if (*v39 != v34)
           {
-            objc_enumerationMutation(v31);
+            objc_enumerationMutation(esso_deniedBundleIdentifiers2);
           }
 
           [v4 appendFormat:@"    %@\n", *(*(&v38 + 1) + 8 * k)];
         }
 
-        v33 = [v31 countByEnumeratingWithState:&v38 objects:v51 count:16];
+        v33 = [esso_deniedBundleIdentifiers2 countByEnumeratingWithState:&v38 objects:v51 count:16];
       }
 
       while (v33);
@@ -553,58 +553,58 @@ LABEL_13:
   v36 = *MEMORY[0x1E69E9840];
   v34.receiver = self;
   v34.super_class = MCExtensibleSingleSignOnPayload;
-  v3 = [(MCPayload *)&v34 stubDictionary];
-  v4 = [(MCExtensibleSingleSignOnPayload *)self esso_type];
+  stubDictionary = [(MCPayload *)&v34 stubDictionary];
+  esso_type = [(MCExtensibleSingleSignOnPayload *)self esso_type];
 
-  if (v4)
+  if (esso_type)
   {
-    v5 = [(MCExtensibleSingleSignOnPayload *)self esso_type];
-    [v3 setObject:v5 forKeyedSubscript:@"Type"];
+    esso_type2 = [(MCExtensibleSingleSignOnPayload *)self esso_type];
+    [stubDictionary setObject:esso_type2 forKeyedSubscript:@"Type"];
   }
 
-  v6 = [(MCExtensibleSingleSignOnPayload *)self esso_realm];
+  esso_realm = [(MCExtensibleSingleSignOnPayload *)self esso_realm];
 
-  if (v6)
+  if (esso_realm)
   {
-    v7 = [(MCExtensibleSingleSignOnPayload *)self esso_realm];
-    [v3 setObject:v7 forKeyedSubscript:@"Realm"];
+    esso_realm2 = [(MCExtensibleSingleSignOnPayload *)self esso_realm];
+    [stubDictionary setObject:esso_realm2 forKeyedSubscript:@"Realm"];
   }
 
-  v8 = [(MCExtensibleSingleSignOnPayload *)self esso_extensionIdentifier];
+  esso_extensionIdentifier = [(MCExtensibleSingleSignOnPayload *)self esso_extensionIdentifier];
 
-  if (v8)
+  if (esso_extensionIdentifier)
   {
-    v9 = [(MCExtensibleSingleSignOnPayload *)self esso_extensionIdentifier];
-    [v3 setObject:v9 forKeyedSubscript:@"ExtensionIdentifier"];
+    esso_extensionIdentifier2 = [(MCExtensibleSingleSignOnPayload *)self esso_extensionIdentifier];
+    [stubDictionary setObject:esso_extensionIdentifier2 forKeyedSubscript:@"ExtensionIdentifier"];
   }
 
-  v10 = [(MCExtensibleSingleSignOnPayload *)self esso_teamIdentifier];
+  esso_teamIdentifier = [(MCExtensibleSingleSignOnPayload *)self esso_teamIdentifier];
 
-  if (v10)
+  if (esso_teamIdentifier)
   {
-    v11 = [(MCExtensibleSingleSignOnPayload *)self esso_teamIdentifier];
-    [v3 setObject:v11 forKeyedSubscript:@"TeamIdentifier"];
+    esso_teamIdentifier2 = [(MCExtensibleSingleSignOnPayload *)self esso_teamIdentifier];
+    [stubDictionary setObject:esso_teamIdentifier2 forKeyedSubscript:@"TeamIdentifier"];
   }
 
-  v12 = [(MCExtensibleSingleSignOnPayload *)self esso_extensionData];
+  esso_extensionData = [(MCExtensibleSingleSignOnPayload *)self esso_extensionData];
 
-  if (v12)
+  if (esso_extensionData)
   {
-    v13 = [(MCExtensibleSingleSignOnPayload *)self esso_extensionData];
-    [v3 setObject:v13 forKeyedSubscript:@"ExtensionData"];
+    esso_extensionData2 = [(MCExtensibleSingleSignOnPayload *)self esso_extensionData];
+    [stubDictionary setObject:esso_extensionData2 forKeyedSubscript:@"ExtensionData"];
   }
 
-  v14 = [(MCExtensibleSingleSignOnPayload *)self esso_URLs];
+  esso_URLs = [(MCExtensibleSingleSignOnPayload *)self esso_URLs];
 
-  if (v14)
+  if (esso_URLs)
   {
-    v15 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v16 = [(MCExtensibleSingleSignOnPayload *)self esso_URLs];
-    v17 = [v16 countByEnumeratingWithState:&v30 objects:v35 count:16];
+    esso_URLs2 = [(MCExtensibleSingleSignOnPayload *)self esso_URLs];
+    v17 = [esso_URLs2 countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v17)
     {
       v18 = v17;
@@ -615,77 +615,77 @@ LABEL_13:
         {
           if (*v31 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(esso_URLs2);
           }
 
-          v21 = [*(*(&v30 + 1) + 8 * i) absoluteString];
-          [v15 addObject:v21];
+          absoluteString = [*(*(&v30 + 1) + 8 * i) absoluteString];
+          [array addObject:absoluteString];
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v30 objects:v35 count:16];
+        v18 = [esso_URLs2 countByEnumeratingWithState:&v30 objects:v35 count:16];
       }
 
       while (v18);
     }
 
-    [v3 setObject:v15 forKeyedSubscript:@"URLs"];
+    [stubDictionary setObject:array forKeyedSubscript:@"URLs"];
   }
 
-  v22 = [(MCExtensibleSingleSignOnPayload *)self esso_hosts];
+  esso_hosts = [(MCExtensibleSingleSignOnPayload *)self esso_hosts];
 
-  if (v22)
+  if (esso_hosts)
   {
-    v23 = [(MCExtensibleSingleSignOnPayload *)self esso_hosts];
-    [v3 setObject:v23 forKeyedSubscript:@"Hosts"];
+    esso_hosts2 = [(MCExtensibleSingleSignOnPayload *)self esso_hosts];
+    [stubDictionary setObject:esso_hosts2 forKeyedSubscript:@"Hosts"];
   }
 
-  v24 = [(MCExtensibleSingleSignOnPayload *)self esso_screenLockedBehavior];
+  esso_screenLockedBehavior = [(MCExtensibleSingleSignOnPayload *)self esso_screenLockedBehavior];
 
-  if (v24)
+  if (esso_screenLockedBehavior)
   {
-    v25 = [(MCExtensibleSingleSignOnPayload *)self esso_screenLockedBehavior];
-    [v3 setObject:v25 forKeyedSubscript:@"ScreenLockedBehavior"];
+    esso_screenLockedBehavior2 = [(MCExtensibleSingleSignOnPayload *)self esso_screenLockedBehavior];
+    [stubDictionary setObject:esso_screenLockedBehavior2 forKeyedSubscript:@"ScreenLockedBehavior"];
   }
 
-  v26 = [(MCExtensibleSingleSignOnPayload *)self esso_deniedBundleIdentifiers];
+  esso_deniedBundleIdentifiers = [(MCExtensibleSingleSignOnPayload *)self esso_deniedBundleIdentifiers];
 
-  if (v26)
+  if (esso_deniedBundleIdentifiers)
   {
-    v27 = [(MCExtensibleSingleSignOnPayload *)self esso_deniedBundleIdentifiers];
-    [v3 setObject:v27 forKeyedSubscript:@"DeniedBundleIdentifiers"];
+    esso_deniedBundleIdentifiers2 = [(MCExtensibleSingleSignOnPayload *)self esso_deniedBundleIdentifiers];
+    [stubDictionary setObject:esso_deniedBundleIdentifiers2 forKeyedSubscript:@"DeniedBundleIdentifiers"];
   }
 
   v28 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return stubDictionary;
 }
 
 - (id)title
 {
-  v3 = [(MCExtensibleSingleSignOnPayload *)self esso_extensionIdentifier];
-  v4 = MCContainingBundleIDForBundleID(v3);
+  esso_extensionIdentifier = [(MCExtensibleSingleSignOnPayload *)self esso_extensionIdentifier];
+  v4 = MCContainingBundleIDForBundleID(esso_extensionIdentifier);
 
   v5 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v4 allowPlaceholder:1 error:0];
-  v6 = [v5 localizedName];
-  v7 = [v6 length];
+  localizedName = [v5 localizedName];
+  v7 = [localizedName length];
 
-  if (!v7 || ([v5 localizedName], (v8 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!v7 || ([v5 localizedName], (esso_extensionIdentifier3 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v9 = [(MCExtensibleSingleSignOnPayload *)self esso_extensionIdentifier];
-    v10 = [v9 isEqualToString:@"com.apple.AppSSOKerberos.KerberosExtension"];
+    esso_extensionIdentifier2 = [(MCExtensibleSingleSignOnPayload *)self esso_extensionIdentifier];
+    v10 = [esso_extensionIdentifier2 isEqualToString:@"com.apple.AppSSOKerberos.KerberosExtension"];
 
     if (v10)
     {
-      v8 = @"Kerberos";
+      esso_extensionIdentifier3 = @"Kerberos";
     }
 
     else
     {
-      v8 = [(MCExtensibleSingleSignOnPayload *)self esso_extensionIdentifier];
+      esso_extensionIdentifier3 = [(MCExtensibleSingleSignOnPayload *)self esso_extensionIdentifier];
     }
   }
 
-  return v8;
+  return esso_extensionIdentifier3;
 }
 
 - (id)payloadDescriptionKeyValueSections
@@ -693,26 +693,26 @@ LABEL_13:
   v63 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
   v4 = objc_opt_new();
-  v5 = [(MCExtensibleSingleSignOnPayload *)self esso_type];
+  esso_type = [(MCExtensibleSingleSignOnPayload *)self esso_type];
 
-  if (v5)
+  if (esso_type)
   {
-    v6 = [(MCExtensibleSingleSignOnPayload *)self esso_type];
+    esso_type2 = [(MCExtensibleSingleSignOnPayload *)self esso_type];
 
-    if (v6 == @"Redirect")
+    if (esso_type2 == @"Redirect")
     {
       v9 = @"ESSO_TYPE_REDIRECT";
     }
 
     else
     {
-      v7 = [(MCExtensibleSingleSignOnPayload *)self esso_type];
+      esso_type3 = [(MCExtensibleSingleSignOnPayload *)self esso_type];
 
-      if (v7 != @"Credential")
+      if (esso_type3 != @"Credential")
       {
-        v8 = [(MCExtensibleSingleSignOnPayload *)self esso_type];
+        esso_type4 = [(MCExtensibleSingleSignOnPayload *)self esso_type];
 LABEL_8:
-        v10 = v8;
+        v10 = esso_type4;
         v11 = [MCKeyValue alloc];
         v12 = MCLocalizedString(@"TYPE");
         v13 = [(MCKeyValue *)v11 initWithLocalizedString:v10 localizedKey:v12];
@@ -724,55 +724,55 @@ LABEL_8:
       v9 = @"ESSO_TYPE_CREDENTIAL";
     }
 
-    v8 = MCLocalizedString(v9);
+    esso_type4 = MCLocalizedString(v9);
     goto LABEL_8;
   }
 
 LABEL_9:
-  v14 = [(MCExtensibleSingleSignOnPayload *)self esso_realm];
+  esso_realm = [(MCExtensibleSingleSignOnPayload *)self esso_realm];
 
-  if (v14)
+  if (esso_realm)
   {
     v15 = [MCKeyValue alloc];
-    v16 = [(MCExtensibleSingleSignOnPayload *)self esso_realm];
+    esso_realm2 = [(MCExtensibleSingleSignOnPayload *)self esso_realm];
     v17 = MCLocalizedString(@"REALM");
-    v18 = [(MCKeyValue *)v15 initWithLocalizedString:v16 localizedKey:v17];
+    v18 = [(MCKeyValue *)v15 initWithLocalizedString:esso_realm2 localizedKey:v17];
 
     [v4 addObject:v18];
   }
 
-  v19 = [(MCExtensibleSingleSignOnPayload *)self esso_extensionIdentifier];
+  esso_extensionIdentifier = [(MCExtensibleSingleSignOnPayload *)self esso_extensionIdentifier];
 
-  if (v19)
+  if (esso_extensionIdentifier)
   {
     v20 = [MCKeyValue alloc];
-    v21 = [(MCExtensibleSingleSignOnPayload *)self esso_extensionIdentifier];
+    esso_extensionIdentifier2 = [(MCExtensibleSingleSignOnPayload *)self esso_extensionIdentifier];
     v22 = MCLocalizedString(@"EXTENSION_ID");
-    v23 = [(MCKeyValue *)v20 initWithLocalizedString:v21 localizedKey:v22];
+    v23 = [(MCKeyValue *)v20 initWithLocalizedString:esso_extensionIdentifier2 localizedKey:v22];
 
     [v4 addObject:v23];
   }
 
-  v24 = [(MCExtensibleSingleSignOnPayload *)self esso_teamIdentifier];
+  esso_teamIdentifier = [(MCExtensibleSingleSignOnPayload *)self esso_teamIdentifier];
 
-  if (v24)
+  if (esso_teamIdentifier)
   {
     v25 = [MCKeyValue alloc];
-    v26 = [(MCExtensibleSingleSignOnPayload *)self esso_teamIdentifier];
+    esso_teamIdentifier2 = [(MCExtensibleSingleSignOnPayload *)self esso_teamIdentifier];
     v27 = MCLocalizedString(@"TEAM_ID");
-    v28 = [(MCKeyValue *)v25 initWithLocalizedString:v26 localizedKey:v27];
+    v28 = [(MCKeyValue *)v25 initWithLocalizedString:esso_teamIdentifier2 localizedKey:v27];
 
     [v4 addObject:v28];
   }
 
-  v29 = [(MCExtensibleSingleSignOnPayload *)self esso_screenLockedBehavior];
+  esso_screenLockedBehavior = [(MCExtensibleSingleSignOnPayload *)self esso_screenLockedBehavior];
 
-  if (v29)
+  if (esso_screenLockedBehavior)
   {
     v30 = [MCKeyValue alloc];
-    v31 = [(MCExtensibleSingleSignOnPayload *)self esso_screenLockedBehavior];
+    esso_screenLockedBehavior2 = [(MCExtensibleSingleSignOnPayload *)self esso_screenLockedBehavior];
     v32 = MCLocalizedString(@"SCREEN_LOCKED_BEHAVIOR");
-    v33 = [(MCKeyValue *)v30 initWithLocalizedString:v31 localizedKey:v32];
+    v33 = [(MCKeyValue *)v30 initWithLocalizedString:esso_screenLockedBehavior2 localizedKey:v32];
 
     [v4 addObject:v33];
   }
@@ -783,18 +783,18 @@ LABEL_9:
     [v3 addObject:v34];
   }
 
-  v35 = [(MCExtensibleSingleSignOnPayload *)self esso_URLs];
-  v36 = [v35 count];
+  esso_URLs = [(MCExtensibleSingleSignOnPayload *)self esso_URLs];
+  v36 = [esso_URLs count];
 
   if (v36)
   {
-    v37 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v58 = 0u;
     v59 = 0u;
     v60 = 0u;
     v61 = 0u;
-    v38 = [(MCExtensibleSingleSignOnPayload *)self esso_URLs];
-    v39 = [v38 countByEnumeratingWithState:&v58 objects:v62 count:16];
+    esso_URLs2 = [(MCExtensibleSingleSignOnPayload *)self esso_URLs];
+    v39 = [esso_URLs2 countByEnumeratingWithState:&v58 objects:v62 count:16];
     if (v39)
     {
       v40 = v39;
@@ -805,45 +805,45 @@ LABEL_9:
         {
           if (*v59 != v41)
           {
-            objc_enumerationMutation(v38);
+            objc_enumerationMutation(esso_URLs2);
           }
 
-          v43 = [*(*(&v58 + 1) + 8 * i) absoluteString];
-          [v37 addObject:v43];
+          absoluteString = [*(*(&v58 + 1) + 8 * i) absoluteString];
+          [array addObject:absoluteString];
         }
 
-        v40 = [v38 countByEnumeratingWithState:&v58 objects:v62 count:16];
+        v40 = [esso_URLs2 countByEnumeratingWithState:&v58 objects:v62 count:16];
       }
 
       while (v40);
     }
 
     v44 = MCLocalizedString(@"URLS");
-    v45 = [MCKeyValueSection sectionWithLocalizedArray:v37 title:v44 footer:0];
+    v45 = [MCKeyValueSection sectionWithLocalizedArray:array title:v44 footer:0];
 
     [v3 addObject:v45];
   }
 
-  v46 = [(MCExtensibleSingleSignOnPayload *)self esso_hosts];
-  v47 = [v46 count];
+  esso_hosts = [(MCExtensibleSingleSignOnPayload *)self esso_hosts];
+  v47 = [esso_hosts count];
 
   if (v47)
   {
-    v48 = [(MCExtensibleSingleSignOnPayload *)self esso_hosts];
+    esso_hosts2 = [(MCExtensibleSingleSignOnPayload *)self esso_hosts];
     v49 = MCLocalizedString(@"HOSTS");
-    v50 = [MCKeyValueSection sectionWithLocalizedArray:v48 title:v49 footer:0];
+    v50 = [MCKeyValueSection sectionWithLocalizedArray:esso_hosts2 title:v49 footer:0];
 
     [v3 addObject:v50];
   }
 
-  v51 = [(MCExtensibleSingleSignOnPayload *)self esso_deniedBundleIdentifiers];
-  v52 = [v51 count];
+  esso_deniedBundleIdentifiers = [(MCExtensibleSingleSignOnPayload *)self esso_deniedBundleIdentifiers];
+  v52 = [esso_deniedBundleIdentifiers count];
 
   if (v52)
   {
-    v53 = [(MCExtensibleSingleSignOnPayload *)self esso_deniedBundleIdentifiers];
+    esso_deniedBundleIdentifiers2 = [(MCExtensibleSingleSignOnPayload *)self esso_deniedBundleIdentifiers];
     v54 = MCLocalizedString(@"DENIED_BUNDLE_IDENTIFIERS");
-    v55 = [MCKeyValueSection sectionWithLocalizedArray:v53 title:v54 footer:0];
+    v55 = [MCKeyValueSection sectionWithLocalizedArray:esso_deniedBundleIdentifiers2 title:v54 footer:0];
 
     [v3 addObject:v55];
   }
@@ -859,43 +859,43 @@ LABEL_9:
   return v3;
 }
 
-- (BOOL)_validateHost:(id)a3 outError:(id *)a4
+- (BOOL)_validateHost:(id)host outError:(id *)error
 {
-  v5 = a3;
-  v13 = [v5 length];
+  hostCopy = host;
+  v13 = [hostCopy length];
   if (!v13)
   {
     v14 = MEMORY[0x1E696ABC0];
-    v15 = MCErrorArray(@"EXTENSIBLE_SSO_INVALID_HOST_P_HOST", v6, v7, v8, v9, v10, v11, v12, v5);
+    v15 = MCErrorArray(@"EXTENSIBLE_SSO_INVALID_HOST_P_HOST", v6, v7, v8, v9, v10, v11, v12, hostCopy);
     v16 = [v14 MCErrorWithDomain:@"MCExtensibleSingleSignOnErrorDomain" code:54001 descriptionArray:v15 errorType:@"MCFatalError"];
 
-    if (a4)
+    if (error)
     {
       v17 = v16;
-      *a4 = v16;
+      *error = v16;
     }
   }
 
   return v13 != 0;
 }
 
-- (id)_validateURLString:(id)a3 outError:(id *)a4
+- (id)_validateURLString:(id)string outError:(id *)error
 {
-  v6 = a3;
-  v7 = [objc_alloc(MEMORY[0x1E696AF20]) initWithString:v6];
-  v8 = [v7 scheme];
-  v9 = [v8 caseInsensitiveCompare:@"http"];
+  stringCopy = string;
+  v7 = [objc_alloc(MEMORY[0x1E696AF20]) initWithString:stringCopy];
+  scheme = [v7 scheme];
+  v9 = [scheme caseInsensitiveCompare:@"http"];
   if (v9)
   {
-    v4 = [v7 scheme];
-    if ([v4 caseInsensitiveCompare:@"https"])
+    scheme2 = [v7 scheme];
+    if ([scheme2 caseInsensitiveCompare:@"https"])
     {
       goto LABEL_7;
     }
   }
 
-  v10 = [v7 host];
-  if (![v10 length])
+  host = [v7 host];
+  if (![host length])
   {
 LABEL_6:
 
@@ -905,13 +905,13 @@ LABEL_8:
 
 LABEL_9:
       v19 = MEMORY[0x1E696ABC0];
-      v20 = MCErrorArray(@"EXTENSIBLE_SSO_INVALID_URL_P_URL", v12, v13, v14, v15, v16, v17, v18, v6);
+      v20 = MCErrorArray(@"EXTENSIBLE_SSO_INVALID_URL_P_URL", v12, v13, v14, v15, v16, v17, v18, stringCopy);
       v21 = [v19 MCErrorWithDomain:@"MCExtensibleSingleSignOnErrorDomain" code:54000 descriptionArray:v20 errorType:@"MCFatalError"];
 
-      if (a4)
+      if (error)
       {
         v22 = v21;
-        *a4 = v21;
+        *error = v21;
       }
 
       v23 = 0;
@@ -923,15 +923,15 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v11 = [v7 query];
-  if ([v11 length])
+  query = [v7 query];
+  if ([query length])
   {
 
     goto LABEL_6;
   }
 
-  v25 = [v7 fragment];
-  v26 = [v25 length];
+  fragment = [v7 fragment];
+  v26 = [fragment length];
 
   if (v9)
   {

@@ -1,35 +1,35 @@
 @interface IPAEditDescription
-+ (BOOL)containsValidOperations:(id)a3;
++ (BOOL)containsValidOperations:(id)operations;
 + (Class)expectedOperationClass;
-+ (id)presetifyAdjustmentStack:(id)a3;
-+ (id)sortOperations:(id)a3 withOrdering:(id)a4;
-+ (unint64_t)insertIndexForOperationWithIdentifier:(id)a3 inArray:(id)a4 withOrdering:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDescriptionRenderOperations:(id)a3;
-- (IPAEditDescription)descriptionWithOperations:(id)a3;
-- (IPAEditDescription)descriptionWithOperationsUpToUUID:(id)a3;
++ (id)presetifyAdjustmentStack:(id)stack;
++ (id)sortOperations:(id)operations withOrdering:(id)ordering;
++ (unint64_t)insertIndexForOperationWithIdentifier:(id)identifier inArray:(id)array withOrdering:(id)ordering;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDescriptionRenderOperations:(id)operations;
+- (IPAEditDescription)descriptionWithOperations:(id)operations;
+- (IPAEditDescription)descriptionWithOperationsUpToUUID:(id)d;
 - (IPAEditDescription)init;
-- (IPAEditDescription)initWithOperations:(id)a3;
+- (IPAEditDescription)initWithOperations:(id)operations;
 - (NSString)debugDescription;
 - (id)_init;
-- (id)_operationAtIndex:(unint64_t)a3;
+- (id)_operationAtIndex:(unint64_t)index;
 - (id)archivalRepresentation;
-- (id)descriptionByAddingOperation:(id)a3;
-- (id)descriptionByAddingOperation:(id)a3 atIndex:(unint64_t)a4;
-- (id)descriptionByRemovingOperation:(id)a3;
-- (id)descriptionByRemovingOperationAtIndex:(unint64_t)a3;
-- (id)descriptionByRemovingOperationsStartingAtIndex:(unint64_t)a3;
-- (id)descriptionByReplacingOperation:(id)a3 atIndex:(unint64_t)a4;
-- (id)firstOperationWithIdentifier:(id)a3;
-- (id)operationAtIndex:(unint64_t)a3;
-- (id)operationWithUUID:(id)a3;
+- (id)descriptionByAddingOperation:(id)operation;
+- (id)descriptionByAddingOperation:(id)operation atIndex:(unint64_t)index;
+- (id)descriptionByRemovingOperation:(id)operation;
+- (id)descriptionByRemovingOperationAtIndex:(unint64_t)index;
+- (id)descriptionByRemovingOperationsStartingAtIndex:(unint64_t)index;
+- (id)descriptionByReplacingOperation:(id)operation atIndex:(unint64_t)index;
+- (id)firstOperationWithIdentifier:(id)identifier;
+- (id)operationAtIndex:(unint64_t)index;
+- (id)operationWithUUID:(id)d;
 - (id)operations;
-- (unint64_t)firstIndexOfOperationWithIdentifier:(id)a3;
-- (unint64_t)indexOfOperationWithUUID:(id)a3;
-- (unint64_t)insertIndexForOperationWithIdentifier:(id)a3;
-- (unint64_t)sortOrderForOperationWithIdentifier:(id)a3;
-- (void)forEachImmutableOperation:(id)a3;
-- (void)withImmutableOperationAtIndex:(unint64_t)a3 block:(id)a4;
+- (unint64_t)firstIndexOfOperationWithIdentifier:(id)identifier;
+- (unint64_t)indexOfOperationWithUUID:(id)d;
+- (unint64_t)insertIndexForOperationWithIdentifier:(id)identifier;
+- (unint64_t)sortOrderForOperationWithIdentifier:(id)identifier;
+- (void)forEachImmutableOperation:(id)operation;
+- (void)withImmutableOperationAtIndex:(unint64_t)index block:(id)block;
 @end
 
 @implementation IPAEditDescription
@@ -37,11 +37,11 @@
 - (NSString)debugDescription
 {
   v3 = [MEMORY[0x277CCAB68] stringWithFormat:@"<%@:%p operations=%@", objc_opt_class(), self, self->_operations];
-  v4 = [(IPAEditDescription *)self _debugDescriptionSuffix];
-  v5 = v4;
-  if (v4)
+  _debugDescriptionSuffix = [(IPAEditDescription *)self _debugDescriptionSuffix];
+  v5 = _debugDescriptionSuffix;
+  if (_debugDescriptionSuffix)
   {
-    [v3 appendFormat:@" %@", v4];
+    [v3 appendFormat:@" %@", _debugDescriptionSuffix];
   }
 
   [v3 appendString:@">"];
@@ -50,18 +50,18 @@
   return v6;
 }
 
-- (IPAEditDescription)descriptionWithOperationsUpToUUID:(id)a3
+- (IPAEditDescription)descriptionWithOperationsUpToUUID:(id)d
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  dCopy = d;
+  if (!dCopy)
   {
     _PFAssertFailHandler();
   }
 
-  v5 = v4;
-  v6 = self;
-  v7 = [(NSArray *)v6->_operations count];
+  v5 = dCopy;
+  selfCopy = self;
+  v7 = [(NSArray *)selfCopy->_operations count];
   if (v7)
   {
     v8 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v7];
@@ -69,7 +69,7 @@
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v9 = v6->_operations;
+    v9 = selfCopy->_operations;
     v10 = [(NSArray *)v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v10)
     {
@@ -85,8 +85,8 @@ LABEL_5:
         }
 
         v14 = *(*(&v19 + 1) + 8 * v13);
-        v15 = [v14 UUID];
-        v16 = [v5 isEqual:v15];
+        uUID = [v14 UUID];
+        v16 = [v5 isEqual:uUID];
 
         if (v16)
         {
@@ -107,59 +107,59 @@ LABEL_5:
       }
     }
 
-    v17 = [(IPAEditDescription *)v6 descriptionWithOperations:v8];
+    v17 = [(IPAEditDescription *)selfCopy descriptionWithOperations:v8];
 
-    v6 = v17;
+    selfCopy = v17;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (id)descriptionByRemovingOperationsStartingAtIndex:(unint64_t)a3
+- (id)descriptionByRemovingOperationsStartingAtIndex:(unint64_t)index
 {
   v5 = [(NSArray *)self->_operations count];
-  v6 = self;
-  if (v5 > a3)
+  selfCopy = self;
+  if (v5 > index)
   {
-    v7 = [(NSArray *)self->_operations subarrayWithRange:0, a3];
-    v8 = [(IPAEditDescription *)v6 descriptionWithOperations:v7];
+    index = [(NSArray *)self->_operations subarrayWithRange:0, index];
+    v8 = [(IPAEditDescription *)selfCopy descriptionWithOperations:index];
 
-    v6 = v8;
+    selfCopy = v8;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (id)descriptionByReplacingOperation:(id)a3 atIndex:(unint64_t)a4
+- (id)descriptionByReplacingOperation:(id)operation atIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = self;
-  if ([(NSArray *)v7->_operations count]> a4)
+  operationCopy = operation;
+  selfCopy = self;
+  if ([(NSArray *)selfCopy->_operations count]> index)
   {
-    v8 = [(NSArray *)v7->_operations mutableCopy];
-    v9 = [v6 copy];
-    [v8 replaceObjectAtIndex:a4 withObject:v9];
-    v10 = [(IPAEditDescription *)v7 descriptionWithOperations:v8];
+    v8 = [(NSArray *)selfCopy->_operations mutableCopy];
+    v9 = [operationCopy copy];
+    [v8 replaceObjectAtIndex:index withObject:v9];
+    v10 = [(IPAEditDescription *)selfCopy descriptionWithOperations:v8];
 
-    v7 = v10;
+    selfCopy = v10;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (id)descriptionByRemovingOperation:(id)a3
+- (id)descriptionByRemovingOperation:(id)operation
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  if (v4)
+  operationCopy = operation;
+  selfCopy = self;
+  if (operationCopy)
   {
     v6 = objc_opt_new();
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v7 = v5->_operations;
+    v7 = selfCopy->_operations;
     v8 = [(NSArray *)v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v8)
     {
@@ -175,7 +175,7 @@ LABEL_5:
           }
 
           v12 = *(*(&v16 + 1) + 8 * i);
-          if (([v12 isEqual:{v4, v16}] & 1) == 0)
+          if (([v12 isEqual:{operationCopy, v16}] & 1) == 0)
           {
             [v6 addObject:v12];
           }
@@ -187,66 +187,66 @@ LABEL_5:
       while (v9);
     }
 
-    v13 = [(NSArray *)v5->_operations count];
+    v13 = [(NSArray *)selfCopy->_operations count];
     if (v13 != [v6 count])
     {
-      v14 = [(IPAEditDescription *)v5 descriptionWithOperations:v6];
+      v14 = [(IPAEditDescription *)selfCopy descriptionWithOperations:v6];
 
-      v5 = v14;
+      selfCopy = v14;
     }
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (id)descriptionByRemovingOperationAtIndex:(unint64_t)a3
+- (id)descriptionByRemovingOperationAtIndex:(unint64_t)index
 {
-  if ([(NSArray *)self->_operations count]<= a3)
+  if ([(NSArray *)self->_operations count]<= index)
   {
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
     v5 = [(NSArray *)self->_operations mutableCopy];
-    [v5 removeObjectAtIndex:a3];
-    v6 = [(IPAEditDescription *)self descriptionWithOperations:v5];
+    [v5 removeObjectAtIndex:index];
+    selfCopy = [(IPAEditDescription *)self descriptionWithOperations:v5];
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (id)descriptionByAddingOperation:(id)a3 atIndex:(unint64_t)a4
+- (id)descriptionByAddingOperation:(id)operation atIndex:(unint64_t)index
 {
-  v6 = [a3 copyWithZone:0];
+  v6 = [operation copyWithZone:0];
   v7 = [(NSArray *)self->_operations mutableCopy];
-  [v7 insertObject:v6 atIndex:a4];
+  [v7 insertObject:v6 atIndex:index];
   v8 = [(IPAEditDescription *)self descriptionWithOperations:v7];
 
   return v8;
 }
 
-- (id)descriptionByAddingOperation:(id)a3
+- (id)descriptionByAddingOperation:(id)operation
 {
-  v4 = [a3 copyWithZone:0];
+  v4 = [operation copyWithZone:0];
   v5 = [(NSArray *)self->_operations arrayByAddingObject:v4];
   v6 = [(IPAEditDescription *)self descriptionWithOperations:v5];
 
   return v6;
 }
 
-- (IPAEditDescription)descriptionWithOperations:(id)a3
+- (IPAEditDescription)descriptionWithOperations:(id)operations
 {
-  v3 = a3;
-  if (v3)
+  operationsCopy = operations;
+  if (operationsCopy)
   {
-    v4 = v3;
-    v5 = [objc_alloc(objc_opt_class()) _init];
+    v4 = operationsCopy;
+    _init = [objc_alloc(objc_opt_class()) _init];
     v6 = [v4 copy];
-    v7 = v5[1];
-    v5[1] = v6;
+    v7 = _init[1];
+    _init[1] = v6;
 
-    return v5;
+    return _init;
   }
 
   else
@@ -258,15 +258,15 @@ LABEL_5:
   return result;
 }
 
-- (void)withImmutableOperationAtIndex:(unint64_t)a3 block:(id)a4
+- (void)withImmutableOperationAtIndex:(unint64_t)index block:(id)block
 {
-  v10 = a4;
-  if (v10)
+  blockCopy = block;
+  if (blockCopy)
   {
-    if ([(NSArray *)self->_operations count]> a3)
+    if ([(NSArray *)self->_operations count]> index)
     {
-      v6 = [(NSArray *)self->_operations objectAtIndexedSubscript:a3];
-      v10[2](v10, v6);
+      v6 = [(NSArray *)self->_operations objectAtIndexedSubscript:index];
+      blockCopy[2](blockCopy, v6);
     }
   }
 
@@ -277,10 +277,10 @@ LABEL_5:
   }
 }
 
-- (void)forEachImmutableOperation:(id)a3
+- (void)forEachImmutableOperation:(id)operation
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  operationCopy = operation;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -302,7 +302,7 @@ LABEL_5:
           objc_enumerationMutation(v5);
         }
 
-        v4[2](v4, v8++, *(*(&v11 + 1) + 8 * v10++));
+        operationCopy[2](operationCopy, v8++, *(*(&v11 + 1) + 8 * v10++));
       }
 
       while (v7 != v10);
@@ -313,9 +313,9 @@ LABEL_5:
   }
 }
 
-- (id)operationWithUUID:(id)a3
+- (id)operationWithUUID:(id)d
 {
-  v4 = [(IPAEditDescription *)self indexOfOperationWithUUID:a3];
+  v4 = [(IPAEditDescription *)self indexOfOperationWithUUID:d];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0;
@@ -329,25 +329,25 @@ LABEL_5:
   return v5;
 }
 
-- (id)operationAtIndex:(unint64_t)a3
+- (id)operationAtIndex:(unint64_t)index
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL || [(NSArray *)self->_operations count]<= a3)
+  if (index == 0x7FFFFFFFFFFFFFFFLL || [(NSArray *)self->_operations count]<= index)
   {
     v6 = 0;
   }
 
   else
   {
-    v5 = [(NSArray *)self->_operations objectAtIndexedSubscript:a3];
+    v5 = [(NSArray *)self->_operations objectAtIndexedSubscript:index];
     v6 = [v5 copy];
   }
 
   return v6;
 }
 
-- (id)firstOperationWithIdentifier:(id)a3
+- (id)firstOperationWithIdentifier:(id)identifier
 {
-  v4 = [(IPAEditDescription *)self firstIndexOfOperationWithIdentifier:a3];
+  v4 = [(IPAEditDescription *)self firstIndexOfOperationWithIdentifier:identifier];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0;
@@ -361,24 +361,24 @@ LABEL_5:
   return v5;
 }
 
-- (unint64_t)insertIndexForOperationWithIdentifier:(id)a3
+- (unint64_t)insertIndexForOperationWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_opt_class() insertIndexForOperationWithIdentifier:v4 inArray:self->_operations withOrdering:self];
+  identifierCopy = identifier;
+  v5 = [objc_opt_class() insertIndexForOperationWithIdentifier:identifierCopy inArray:self->_operations withOrdering:self];
 
   return v5;
 }
 
-- (unint64_t)indexOfOperationWithUUID:(id)a3
+- (unint64_t)indexOfOperationWithUUID:(id)d
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  dCopy = d;
+  if (!dCopy)
   {
     _PFAssertFailHandler();
   }
 
-  v5 = v4;
+  v5 = dCopy;
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
@@ -401,8 +401,8 @@ LABEL_4:
         objc_enumerationMutation(v6);
       }
 
-      v13 = [*(*(&v16 + 1) + 8 * v11) UUID];
-      v14 = [v13 isEqual:v5];
+      uUID = [*(*(&v16 + 1) + 8 * v11) UUID];
+      v14 = [uUID isEqual:v5];
 
       if (v14)
       {
@@ -432,16 +432,16 @@ LABEL_10:
   return v12;
 }
 
-- (unint64_t)firstIndexOfOperationWithIdentifier:(id)a3
+- (unint64_t)firstIndexOfOperationWithIdentifier:(id)identifier
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     _PFAssertFailHandler();
   }
 
-  v5 = v4;
+  v5 = identifierCopy;
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
@@ -464,8 +464,8 @@ LABEL_4:
         objc_enumerationMutation(v6);
       }
 
-      v13 = [*(*(&v16 + 1) + 8 * v11) identifier];
-      v14 = [v13 isEqualToString:v5];
+      identifier = [*(*(&v16 + 1) + 8 * v11) identifier];
+      v14 = [identifier isEqualToString:v5];
 
       if (v14)
       {
@@ -502,37 +502,37 @@ LABEL_10:
   return v2;
 }
 
-- (BOOL)isEqualToDescriptionRenderOperations:(id)a3
+- (BOOL)isEqualToDescriptionRenderOperations:(id)operations
 {
-  v4 = a3;
-  v5 = [v4 operationCount];
-  if (v5 == [(IPAEditDescription *)self operationCount])
+  operationsCopy = operations;
+  operationCount = [operationsCopy operationCount];
+  if (operationCount == [(IPAEditDescription *)self operationCount])
   {
-    v6 = [(NSArray *)self->_operations objectEnumerator];
-    v7 = [v4[1] objectEnumerator];
-    v8 = [v6 nextObject];
-    v9 = [v7 nextObject];
-    v10 = v9;
+    objectEnumerator = [(NSArray *)self->_operations objectEnumerator];
+    objectEnumerator2 = [operationsCopy[1] objectEnumerator];
+    nextObject = [objectEnumerator nextObject];
+    nextObject2 = [objectEnumerator2 nextObject];
+    v10 = nextObject2;
     LOBYTE(v11) = 1;
-    if (v8 && v9)
+    if (nextObject && nextObject2)
     {
       while (1)
       {
-        v11 = [v8 isEqual:v10];
+        v11 = [nextObject isEqual:v10];
         if (!v11)
         {
           break;
         }
 
-        v12 = [v6 nextObject];
+        nextObject3 = [objectEnumerator nextObject];
 
-        v13 = [v7 nextObject];
+        nextObject4 = [objectEnumerator2 nextObject];
 
-        if (v12)
+        if (nextObject3)
         {
-          v10 = v13;
-          v8 = v12;
-          if (v13)
+          v10 = nextObject4;
+          nextObject = nextObject3;
+          if (nextObject4)
           {
             continue;
           }
@@ -542,8 +542,8 @@ LABEL_10:
       }
     }
 
-    v12 = v8;
-    v13 = v10;
+    nextObject3 = nextObject;
+    nextObject4 = v10;
 LABEL_10:
   }
 
@@ -555,11 +555,11 @@ LABEL_10:
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(IPAEditDescription *)self isEqualToDescription:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(IPAEditDescription *)self isEqualToDescription:equalCopy];
 
   return v5;
 }
@@ -578,24 +578,24 @@ LABEL_10:
   return 0;
 }
 
-+ (id)sortOperations:(id)a3 withOrdering:(id)a4
++ (id)sortOperations:(id)operations withOrdering:(id)ordering
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v26 = a4;
-  if (!v26)
+  operationsCopy = operations;
+  orderingCopy = ordering;
+  if (!orderingCopy)
   {
     _PFAssertFailHandler();
   }
 
-  if (v6)
+  if (operationsCopy)
   {
-    v7 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v8 = v6;
+    v8 = operationsCopy;
     v9 = [v8 countByEnumeratingWithState:&v27 objects:v35 count:16];
     if (v9)
     {
@@ -615,17 +615,17 @@ LABEL_10:
           if (objc_opt_isKindOfClass())
           {
             v14 = v13;
-            v15 = [v14 identifier];
-            if (v15)
+            identifier = [v14 identifier];
+            if (identifier)
             {
-              v16 = [a1 insertIndexForOperationWithIdentifier:v15 inArray:v7 withOrdering:v26];
+              v16 = [self insertIndexForOperationWithIdentifier:identifier inArray:array withOrdering:orderingCopy];
               if (v16 == 0x7FFFFFFFFFFFFFFFLL)
               {
                 v17 = IPAAdjustmentGetLog();
                 if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
                 {
                   *buf = 138412546;
-                  v32 = a1;
+                  selfCopy = self;
                   v33 = 2112;
                   v34 = v14;
                   v18 = v17;
@@ -637,7 +637,7 @@ LABEL_10:
                 goto LABEL_18;
               }
 
-              [v7 insertObject:v14 atIndex:v16];
+              [array insertObject:v14 atIndex:v16];
             }
 
             else
@@ -646,7 +646,7 @@ LABEL_10:
               if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
               {
                 *buf = 138412290;
-                v32 = v14;
+                selfCopy = v14;
                 v18 = v17;
                 v19 = "%@ does not have an identifier";
                 v20 = 12;
@@ -664,7 +664,7 @@ LABEL_18:
           if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
-            v32 = v13;
+            selfCopy = v13;
             _os_log_impl(&dword_25E5BB000, v14, OS_LOG_TYPE_ERROR, "%@ is not an edit operation", buf, 0xCu);
           }
 
@@ -677,16 +677,16 @@ LABEL_21:
       while (v10);
     }
 
-    v21 = [v7 count];
+    v21 = [array count];
     if (v21 != [v8 count])
     {
       v22 = IPAAdjustmentGetLog();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
-        v23 = [v7 count];
+        v23 = [array count];
         v24 = [v8 count];
         *buf = 134218240;
-        v32 = v23;
+        selfCopy = v23;
         v33 = 2048;
         v34 = v24;
         _os_log_impl(&dword_25E5BB000, v22, OS_LOG_TYPE_ERROR, "ordered count %lu doesn't match input count %lu - something went wrong (see above)", buf, 0x16u);
@@ -696,38 +696,38 @@ LABEL_21:
 
   else
   {
-    v7 = MEMORY[0x277CBEBF8];
+    array = MEMORY[0x277CBEBF8];
   }
 
-  return v7;
+  return array;
 }
 
-+ (unint64_t)insertIndexForOperationWithIdentifier:(id)a3 inArray:(id)a4 withOrdering:(id)a5
++ (unint64_t)insertIndexForOperationWithIdentifier:(id)identifier inArray:(id)array withOrdering:(id)ordering
 {
   v28 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v7)
+  identifierCopy = identifier;
+  arrayCopy = array;
+  orderingCopy = ordering;
+  if (!identifierCopy)
   {
     _PFAssertFailHandler();
 LABEL_16:
     _PFAssertFailHandler();
   }
 
-  if (!v8)
+  if (!arrayCopy)
   {
     goto LABEL_16;
   }
 
-  v10 = v9;
-  v22 = v7;
-  v11 = [v9 sortOrderForOperationWithIdentifier:v7];
+  v10 = orderingCopy;
+  v22 = identifierCopy;
+  v11 = [orderingCopy sortOrderForOperationWithIdentifier:identifierCopy];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v12 = v8;
+  v12 = arrayCopy;
   v13 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v13)
   {
@@ -745,8 +745,8 @@ LABEL_5:
         objc_enumerationMutation(v12);
       }
 
-      v19 = [*(*(&v23 + 1) + 8 * v17) identifier];
-      v20 = [v10 sortOrderForOperationWithIdentifier:v19];
+      identifier = [*(*(&v23 + 1) + 8 * v17) identifier];
+      v20 = [v10 sortOrderForOperationWithIdentifier:identifier];
 
       if (v11 < v20)
       {
@@ -783,40 +783,40 @@ LABEL_14:
   return v18;
 }
 
-- (id)_operationAtIndex:(unint64_t)a3
+- (id)_operationAtIndex:(unint64_t)index
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     v4 = 0;
   }
 
   else
   {
-    if ([(NSArray *)self->_operations count]<= a3)
+    if ([(NSArray *)self->_operations count]<= index)
     {
       v4 = 0;
     }
 
     else
     {
-      v4 = [(NSArray *)self->_operations objectAtIndexedSubscript:a3];
+      v4 = [(NSArray *)self->_operations objectAtIndexedSubscript:index];
     }
   }
 
   return v4;
 }
 
-- (IPAEditDescription)initWithOperations:(id)a3
+- (IPAEditDescription)initWithOperations:(id)operations
 {
-  v4 = a3;
+  operationsCopy = operations;
   v9.receiver = self;
   v9.super_class = IPAEditDescription;
   v5 = [(IPAEditDescription *)&v9 init];
   if (v5)
   {
-    if (v4)
+    if (operationsCopy)
     {
-      v6 = [v4 copy];
+      v6 = [operationsCopy copy];
     }
 
     else
@@ -831,9 +831,9 @@ LABEL_14:
   return v5;
 }
 
-- (unint64_t)sortOrderForOperationWithIdentifier:(id)a3
+- (unint64_t)sortOrderForOperationWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_opt_class();
   NSStringFromClass(v4);
   objc_claimAutoreleasedReturnValue();
@@ -850,19 +850,19 @@ LABEL_14:
   return [(IPAEditDescription *)v3 containsValidOperations:v4, v5];
 }
 
-+ (BOOL)containsValidOperations:(id)a3
++ (BOOL)containsValidOperations:(id)operations
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  operationsCopy = operations;
   [objc_opt_class() expectedOperationClass];
-  v4 = [v3 count];
+  v4 = [operationsCopy count];
   if (v4)
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = v3;
+    v5 = operationsCopy;
     v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
@@ -908,9 +908,9 @@ LABEL_4:
   return [(IPAEditDescription *)v3 presetifyAdjustmentStack:v4, v5];
 }
 
-+ (id)presetifyAdjustmentStack:(id)a3
++ (id)presetifyAdjustmentStack:(id)stack
 {
-  v3 = a3;
+  stackCopy = stack;
   v4 = objc_opt_class();
   NSStringFromClass(v4);
   objc_claimAutoreleasedReturnValue();

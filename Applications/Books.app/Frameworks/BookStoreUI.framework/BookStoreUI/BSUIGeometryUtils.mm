@@ -1,18 +1,18 @@
 @interface BSUIGeometryUtils
-+ (CGRect)centeredCGRectFromRect:(CGRect)result centerHorizontally:(BOOL)a4 centerVertically:(BOOL)a5 bounds:(CGRect)a6 scale:(double)a7;
++ (CGRect)centeredCGRectFromRect:(CGRect)result centerHorizontally:(BOOL)horizontally centerVertically:(BOOL)vertically bounds:(CGRect)bounds scale:(double)scale;
 @end
 
 @implementation BSUIGeometryUtils
 
-+ (CGRect)centeredCGRectFromRect:(CGRect)result centerHorizontally:(BOOL)a4 centerVertically:(BOOL)a5 bounds:(CGRect)a6 scale:(double)a7
++ (CGRect)centeredCGRectFromRect:(CGRect)result centerHorizontally:(BOOL)horizontally centerVertically:(BOOL)vertically bounds:(CGRect)bounds scale:(double)scale
 {
-  v7 = a5;
-  if (a4)
+  verticallyCopy = vertically;
+  if (horizontally)
   {
     UIRectCenteredXInRectScale();
   }
 
-  if (v7)
+  if (verticallyCopy)
   {
     UIRectCenteredYInRectScale();
   }

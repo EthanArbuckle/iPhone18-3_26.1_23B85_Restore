@@ -1,15 +1,15 @@
 @interface ISDialogOperation
-+ (id)operationWithDialog:(id)a3;
-+ (id)operationWithError:(id)a3;
++ (id)operationWithDialog:(id)dialog;
++ (id)operationWithError:(id)error;
 - (ISDialogOperation)init;
 - (NSArray)textFieldValues;
-- (void)_handleResponseForNotification:(__CFUserNotification *)a3 responseFlags:(unint64_t)a4;
+- (void)_handleResponseForNotification:(__CFUserNotification *)notification responseFlags:(unint64_t)flags;
 - (void)_run;
-- (void)_showUserNotification:(id)a3;
-- (void)_waitForUserNotificationResponse:(__CFUserNotification *)a3;
+- (void)_showUserNotification:(id)notification;
+- (void)_waitForUserNotificationResponse:(__CFUserNotification *)response;
 - (void)cancel;
 - (void)dealloc;
-- (void)handleButtonSelected:(int64_t)a3 withResponseDictionary:(id)a4;
+- (void)handleButtonSelected:(int64_t)selected withResponseDictionary:(id)dictionary;
 - (void)run;
 @end
 
@@ -33,10 +33,10 @@
 {
   [(ISDialogOperation *)self setDialog:0];
   [(ISDialogOperation *)self setSelectedButton:0];
-  v3 = [(ISDialogOperation *)self userNotification];
-  if (v3)
+  userNotification = [(ISDialogOperation *)self userNotification];
+  if (userNotification)
   {
-    CFUserNotificationCancel(v3);
+    CFUserNotificationCancel(userNotification);
   }
 
   [(ISDialogOperation *)self setUserNotification:0];
@@ -46,39 +46,39 @@
   [(ISDialogOperation *)&v4 dealloc];
 }
 
-+ (id)operationWithDialog:(id)a3
++ (id)operationWithDialog:(id)dialog
 {
   v4 = objc_alloc_init(objc_opt_class());
-  [v4 setDialog:a3];
+  [v4 setDialog:dialog];
 
   return v4;
 }
 
-+ (id)operationWithError:(id)a3
++ (id)operationWithError:(id)error
 {
-  v4 = [[ISDialog alloc] initWithError:a3];
-  v5 = [a1 operationWithDialog:v4];
+  v4 = [[ISDialog alloc] initWithError:error];
+  v5 = [self operationWithDialog:v4];
 
   return v5;
 }
 
-- (void)handleButtonSelected:(int64_t)a3 withResponseDictionary:(id)a4
+- (void)handleButtonSelected:(int64_t)selected withResponseDictionary:(id)dictionary
 {
-  v7 = [(ISOperation *)self delegate];
-  v8 = [[(ISDialogOperation *)self dialog] buttons];
-  if ([(NSArray *)v8 count]<= a3)
+  delegate = [(ISOperation *)self delegate];
+  buttons = [[(ISDialogOperation *)self dialog] buttons];
+  if ([(NSArray *)buttons count]<= selected)
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = [(NSArray *)v8 objectAtIndex:a3];
+    v9 = [(NSArray *)buttons objectAtIndex:selected];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [(ISOperationDelegate *)v7 operation:self selectedButton:v9];
+    [(ISOperationDelegate *)delegate operation:self selectedButton:v9];
   }
 
   else if ([(ISDialogOperation *)self performDefaultActions])
@@ -88,7 +88,7 @@
 
   [(ISDialogOperation *)self setSelectedButton:v9];
   [(ISOperation *)self lock];
-  v10 = [a4 objectForKey:*MEMORY[0x277CBF238]];
+  v10 = [dictionary objectForKey:*MEMORY[0x277CBF238]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -126,10 +126,10 @@
 
 - (void)cancel
 {
-  v3 = [(ISDialogOperation *)self userNotification];
-  if (v3)
+  userNotification = [(ISDialogOperation *)self userNotification];
+  if (userNotification)
   {
-    CFUserNotificationCancel(v3);
+    CFUserNotificationCancel(userNotification);
   }
 
   v4.receiver = self;
@@ -140,29 +140,29 @@
 - (void)run
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [(ISOperation *)self copySerializationLocks];
-  v4 = v3;
-  if (v3)
+  copySerializationLocks = [(ISOperation *)self copySerializationLocks];
+  v4 = copySerializationLocks;
+  if (copySerializationLocks)
   {
-    [v3 makeObjectsPerformSelector:sel_lock];
-    v5 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-    if (!v5)
+    [copySerializationLocks makeObjectsPerformSelector:sel_lock];
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+    if (!mEMORY[0x277D69B38])
     {
-      v5 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v6 = [v5 shouldLog];
-    if ([v5 shouldLogToDisk])
+    shouldLog = [mEMORY[0x277D69B38] shouldLog];
+    if ([mEMORY[0x277D69B38] shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
-    if (!os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_INFO))
+    if (!os_log_type_enabled([mEMORY[0x277D69B38] OSLogObject], OS_LOG_TYPE_INFO))
     {
       v7 &= 2u;
     }
@@ -172,7 +172,7 @@
       v23 = 138412546;
       v24 = objc_opt_class();
       v25 = 2112;
-      v26 = [(ISOperation *)self serializationLockIdentifiers];
+      serializationLockIdentifiers = [(ISOperation *)self serializationLockIdentifiers];
       LODWORD(v22) = 22;
       v21 = &v23;
       v8 = _os_log_send_and_compose_impl();
@@ -192,33 +192,33 @@
   [(ISDialogOperation *)self _run];
   if (v4)
   {
-    v11 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-    if (!v11)
+    mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+    if (!mEMORY[0x277D69B38]2)
     {
-      v11 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v12 = [v11 shouldLog];
-    v13 = [v11 shouldLogToDisk];
-    v14 = [v11 OSLogObject];
-    if (v13)
+    shouldLog2 = [mEMORY[0x277D69B38]2 shouldLog];
+    shouldLogToDisk = [mEMORY[0x277D69B38]2 shouldLogToDisk];
+    oSLogObject = [mEMORY[0x277D69B38]2 OSLogObject];
+    if (shouldLogToDisk)
     {
-      v12 |= 2u;
+      shouldLog2 |= 2u;
     }
 
-    if (!os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
-      v12 &= 2u;
+      shouldLog2 &= 2u;
     }
 
-    if (v12)
+    if (shouldLog2)
     {
       v15 = objc_opt_class();
-      v16 = [(ISOperation *)self serializationLockIdentifiers];
+      serializationLockIdentifiers2 = [(ISOperation *)self serializationLockIdentifiers];
       v23 = 138412546;
       v24 = v15;
       v25 = 2112;
-      v26 = v16;
+      serializationLockIdentifiers = serializationLockIdentifiers2;
       LODWORD(v22) = 22;
       v21 = &v23;
       v17 = _os_log_send_and_compose_impl();
@@ -238,12 +238,12 @@
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleResponseForNotification:(__CFUserNotification *)a3 responseFlags:(unint64_t)a4
+- (void)_handleResponseForNotification:(__CFUserNotification *)notification responseFlags:(unint64_t)flags
 {
   v7 = [(NSArray *)[[(ISDialogOperation *)self dialog] buttons] count];
   if (v7 == 3)
   {
-    v8 = [ISDialog buttonTitleKeyForCFUserNotificationButtonTag:a4 & 3];
+    v8 = [ISDialog buttonTitleKeyForCFUserNotificationButtonTag:flags & 3];
     if (v8)
     {
       v9 = [-[ISDialog orderedButtonTitleKeysForCFUserNotification](-[ISDialogOperation dialog](self "dialog")];
@@ -251,10 +251,10 @@
     }
   }
 
-  else if (a4 != 3)
+  else if (flags != 3)
   {
     v10 = v7;
-    if (a4 == 2)
+    if (flags == 2)
     {
       if ([MEMORY[0x277D69A80] deviceIsAppleTV] || !-[ISDialog noDefaultButton](self->_dialog, "noDefaultButton"))
       {
@@ -267,7 +267,7 @@
       }
     }
 
-    else if (a4)
+    else if (flags)
     {
       v9 = 0;
     }
@@ -282,7 +282,7 @@
 
   v9 = 0x7FFFFFFFFFFFFFFFLL;
 LABEL_14:
-  ResponseDictionary = CFUserNotificationGetResponseDictionary(a3);
+  ResponseDictionary = CFUserNotificationGetResponseDictionary(notification);
 
   [(ISDialogOperation *)self handleButtonSelected:v9 withResponseDictionary:ResponseDictionary];
 }
@@ -290,35 +290,35 @@ LABEL_14:
 - (void)_run
 {
   v51 = *MEMORY[0x277D85DE8];
-  v3 = [(ISDialogOperation *)self dialog];
-  if (v3 && (v4 = v3, [(ISDialog *)v3 isDisplayable]))
+  dialog = [(ISDialogOperation *)self dialog];
+  if (dialog && (v4 = dialog, [(ISDialog *)dialog isDisplayable]))
   {
     v5 = NSClassFromString(&cfstr_Dialogmanager.isa);
-    v6 = [(ISDialog *)v4 copyUserNotification];
-    if (v6)
+    copyUserNotification = [(ISDialog *)v4 copyUserNotification];
+    if (copyUserNotification)
     {
       if (!v5 || ([(objc_class *)v5 checkInDialog:v4]& 1) != 0 || [(ISDialog *)v4 allowDuplicates])
       {
         v7 = +[ISDevice sharedInstance];
-        v8 = [(ISOperation *)self copyActivePowerAssertionIdentifiers];
-        v9 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-        if (!v9)
+        copyActivePowerAssertionIdentifiers = [(ISOperation *)self copyActivePowerAssertionIdentifiers];
+        mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+        if (!mEMORY[0x277D69B38])
         {
-          v9 = [MEMORY[0x277D69B38] sharedConfig];
+          mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
         }
 
-        v10 = [v9 shouldLog];
-        if ([v9 shouldLogToDisk])
+        shouldLog = [mEMORY[0x277D69B38] shouldLog];
+        if ([mEMORY[0x277D69B38] shouldLogToDisk])
         {
-          v11 = v10 | 2;
+          v11 = shouldLog | 2;
         }
 
         else
         {
-          v11 = v10;
+          v11 = shouldLog;
         }
 
-        if (!os_log_type_enabled([v9 OSLogObject], OS_LOG_TYPE_DEBUG))
+        if (!os_log_type_enabled([mEMORY[0x277D69B38] OSLogObject], OS_LOG_TYPE_DEBUG))
         {
           v11 &= 2u;
         }
@@ -328,7 +328,7 @@ LABEL_14:
           v47 = 138412546;
           v48 = objc_opt_class();
           v49 = 2048;
-          v50 = [v8 count];
+          v50 = [copyActivePowerAssertionIdentifiers count];
           LODWORD(v36) = 22;
           v35 = &v47;
           v12 = _os_log_send_and_compose_impl();
@@ -346,7 +346,7 @@ LABEL_14:
         v44 = 0u;
         v41 = 0u;
         v42 = 0u;
-        v15 = [v8 countByEnumeratingWithState:&v41 objects:v46 count:{16, v35}];
+        v15 = [copyActivePowerAssertionIdentifiers countByEnumeratingWithState:&v41 objects:v46 count:{16, v35}];
         if (v15)
         {
           v16 = *v42;
@@ -356,26 +356,26 @@ LABEL_14:
             {
               if (*v42 != v16)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(copyActivePowerAssertionIdentifiers);
               }
 
               [(ISDevice *)v7 releasePowerAssertion:*(*(&v41 + 1) + 8 * i)];
             }
 
-            v15 = [v8 countByEnumeratingWithState:&v41 objects:v46 count:16];
+            v15 = [copyActivePowerAssertionIdentifiers countByEnumeratingWithState:&v41 objects:v46 count:16];
           }
 
           while (v15);
         }
 
-        v18 = [NSClassFromString(&cfstr_Daemon.isa) daemon];
-        [v18 beginShowingDialog];
-        [(ISDialogOperation *)self _showUserNotification:v6];
+        daemon = [NSClassFromString(&cfstr_Daemon.isa) daemon];
+        [daemon beginShowingDialog];
+        [(ISDialogOperation *)self _showUserNotification:copyUserNotification];
         v39 = 0u;
         v40 = 0u;
         v37 = 0u;
         v38 = 0u;
-        v19 = [v8 countByEnumeratingWithState:&v37 objects:v45 count:16];
+        v19 = [copyActivePowerAssertionIdentifiers countByEnumeratingWithState:&v37 objects:v45 count:16];
         if (v19)
         {
           v20 = *v38;
@@ -385,42 +385,42 @@ LABEL_14:
             {
               if (*v38 != v20)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(copyActivePowerAssertionIdentifiers);
               }
 
               [(ISDevice *)v7 takePowerAssertion:*(*(&v37 + 1) + 8 * j)];
             }
 
-            v19 = [v8 countByEnumeratingWithState:&v37 objects:v45 count:16];
+            v19 = [copyActivePowerAssertionIdentifiers countByEnumeratingWithState:&v37 objects:v45 count:16];
           }
 
           while (v19);
         }
 
         [(objc_class *)v5 checkOutDialog:v4];
-        [v18 endShowingDialog];
+        [daemon endShowingDialog];
       }
 
       else
       {
-        v28 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-        if (!v28)
+        mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+        if (!mEMORY[0x277D69B38]2)
         {
-          v28 = [MEMORY[0x277D69B38] sharedConfig];
+          mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharedConfig];
         }
 
-        v29 = [v28 shouldLog];
-        if ([v28 shouldLogToDisk])
+        shouldLog2 = [mEMORY[0x277D69B38]2 shouldLog];
+        if ([mEMORY[0x277D69B38]2 shouldLogToDisk])
         {
-          v30 = v29 | 2;
+          v30 = shouldLog2 | 2;
         }
 
         else
         {
-          v30 = v29;
+          v30 = shouldLog2;
         }
 
-        if (!os_log_type_enabled([v28 OSLogObject], OS_LOG_TYPE_INFO))
+        if (!os_log_type_enabled([mEMORY[0x277D69B38]2 OSLogObject], OS_LOG_TYPE_INFO))
         {
           v30 &= 2u;
         }
@@ -454,24 +454,24 @@ LABEL_14:
 
   else
   {
-    v22 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-    if (!v22)
+    mEMORY[0x277D69B38]3 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+    if (!mEMORY[0x277D69B38]3)
     {
-      v22 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38]3 = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v23 = [v22 shouldLog];
-    if ([v22 shouldLogToDisk])
+    shouldLog3 = [mEMORY[0x277D69B38]3 shouldLog];
+    if ([mEMORY[0x277D69B38]3 shouldLogToDisk])
     {
-      v24 = v23 | 2;
+      v24 = shouldLog3 | 2;
     }
 
     else
     {
-      v24 = v23;
+      v24 = shouldLog3;
     }
 
-    if (!os_log_type_enabled([v22 OSLogObject], OS_LOG_TYPE_INFO))
+    if (!os_log_type_enabled([mEMORY[0x277D69B38]3 OSLogObject], OS_LOG_TYPE_INFO))
     {
       v24 &= 2u;
     }
@@ -499,14 +499,14 @@ LABEL_14:
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_showUserNotification:(id)a3
+- (void)_showUserNotification:(id)notification
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = [a3 copyUserNotification];
-  if (v5)
+  copyUserNotification = [notification copyUserNotification];
+  if (copyUserNotification)
   {
-    v6 = v5;
-    [(ISDialogOperation *)self setUserNotification:v5];
+    v6 = copyUserNotification;
+    [(ISDialogOperation *)self setUserNotification:copyUserNotification];
     [(ISDialogOperation *)self _waitForUserNotificationResponse:v6];
     [(ISDialogOperation *)self setUserNotification:0];
     v7 = *MEMORY[0x277D85DE8];
@@ -516,29 +516,29 @@ LABEL_14:
 
   else
   {
-    v8 = [a3 currentRetryCount];
-    v9 = [a3 allowedRetryCount];
-    v10 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-    v11 = v10;
-    if (v8 >= v9)
+    currentRetryCount = [notification currentRetryCount];
+    allowedRetryCount = [notification allowedRetryCount];
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+    mEMORY[0x277D69B38]2 = mEMORY[0x277D69B38];
+    if (currentRetryCount >= allowedRetryCount)
     {
-      if (!v10)
+      if (!mEMORY[0x277D69B38])
       {
-        v11 = [MEMORY[0x277D69B38] sharedConfig];
+        mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharedConfig];
       }
 
-      v17 = [v11 shouldLog];
-      if ([v11 shouldLogToDisk])
+      shouldLog = [mEMORY[0x277D69B38]2 shouldLog];
+      if ([mEMORY[0x277D69B38]2 shouldLogToDisk])
       {
-        v18 = v17 | 2;
+        v18 = shouldLog | 2;
       }
 
       else
       {
-        v18 = v17;
+        v18 = shouldLog;
       }
 
-      if (!os_log_type_enabled([v11 OSLogObject], OS_LOG_TYPE_DEFAULT))
+      if (!os_log_type_enabled([mEMORY[0x277D69B38]2 OSLogObject], OS_LOG_TYPE_DEFAULT))
       {
         v18 &= 2u;
       }
@@ -563,23 +563,23 @@ LABEL_14:
 
     else
     {
-      if (!v10)
+      if (!mEMORY[0x277D69B38])
       {
-        v11 = [MEMORY[0x277D69B38] sharedConfig];
+        mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharedConfig];
       }
 
-      v12 = [v11 shouldLog];
-      if ([v11 shouldLogToDisk])
+      shouldLog2 = [mEMORY[0x277D69B38]2 shouldLog];
+      if ([mEMORY[0x277D69B38]2 shouldLogToDisk])
       {
-        v13 = v12 | 2;
+        v13 = shouldLog2 | 2;
       }
 
       else
       {
-        v13 = v12;
+        v13 = shouldLog2;
       }
 
-      if (!os_log_type_enabled([v11 OSLogObject], OS_LOG_TYPE_DEFAULT))
+      if (!os_log_type_enabled([mEMORY[0x277D69B38]2 OSLogObject], OS_LOG_TYPE_DEFAULT))
       {
         v13 &= 2u;
       }
@@ -601,21 +601,21 @@ LABEL_14:
         }
       }
 
-      [a3 setCurrentRetryCount:{objc_msgSend(a3, "currentRetryCount", v22) + 1}];
+      [notification setCurrentRetryCount:{objc_msgSend(notification, "currentRetryCount", v22) + 1}];
       [MEMORY[0x277CCACC8] sleepForTimeInterval:3.0];
-      [(ISDialogOperation *)self _showUserNotification:a3];
+      [(ISDialogOperation *)self _showUserNotification:notification];
     }
 
     v21 = *MEMORY[0x277D85DE8];
   }
 }
 
-- (void)_waitForUserNotificationResponse:(__CFUserNotification *)a3
+- (void)_waitForUserNotificationResponse:(__CFUserNotification *)response
 {
   responseFlags = 0;
-  if (!CFUserNotificationReceiveResponse(a3, 0.0, &responseFlags))
+  if (!CFUserNotificationReceiveResponse(response, 0.0, &responseFlags))
   {
-    [(ISDialogOperation *)self _handleResponseForNotification:a3 responseFlags:responseFlags];
+    [(ISDialogOperation *)self _handleResponseForNotification:response responseFlags:responseFlags];
     [[(ISDialogOperation *)self dialog] incrementDisplayCount];
     [(ISOperation *)self setSuccess:1];
   }

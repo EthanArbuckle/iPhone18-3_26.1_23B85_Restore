@@ -1,18 +1,18 @@
 @interface MOContextContactMetaDataMO
-+ (id)managedObjectWithObject:(id)a3 inManagedObjectContext:(id)a4;
++ (id)managedObjectWithObject:(id)object inManagedObjectContext:(id)context;
 @end
 
 @implementation MOContextContactMetaDataMO
 
-+ (id)managedObjectWithObject:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedObjectWithObject:(id)object inManagedObjectContext:(id)context
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[MOContextContactMetaDataMO alloc] initWithContext:v5];
+  contextCopy = context;
+  objectCopy = object;
+  v7 = [[MOContextContactMetaDataMO alloc] initWithContext:contextCopy];
 
-  v8 = [v6 contactName];
+  contactName = [objectCopy contactName];
 
-  [(MOContextContactMetaDataMO *)v7 setContactName:v8];
+  [(MOContextContactMetaDataMO *)v7 setContactName:contactName];
 
   return v7;
 }

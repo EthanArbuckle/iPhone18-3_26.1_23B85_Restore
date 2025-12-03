@@ -1,32 +1,32 @@
 @interface AVMessageParser
 + (AVMessageParser)airMessageParser;
 - (AVMessageParser)init;
-- (AVMessageParser)initWithLineSeparator:(id)a3 headerBodySeparator:(id)a4 bodyLengthKey:(id)a5 compressionMethodKey:(id)a6;
-- (id)partsWithData:(id)a3;
-- (void)setHeaderBodySeparator:(id)a3;
-- (void)setLineSeparator:(id)a3;
+- (AVMessageParser)initWithLineSeparator:(id)separator headerBodySeparator:(id)bodySeparator bodyLengthKey:(id)key compressionMethodKey:(id)methodKey;
+- (id)partsWithData:(id)data;
+- (void)setHeaderBodySeparator:(id)separator;
+- (void)setLineSeparator:(id)separator;
 @end
 
 @implementation AVMessageParser
 
-- (id)partsWithData:(id)a3
+- (id)partsWithData:(id)data
 {
-  v4 = a3;
-  v5 = [(AVMessageParser *)self lineSeparator];
-  v6 = [(AVMessageParser *)self lineSeparatorData];
-  v7 = [(AVMessageParser *)self headerBodySeparator];
-  v8 = [(AVMessageParser *)self headerBodySeparatorData];
-  v9 = [(AVMessageParser *)self bodyLengthKey];
-  v10 = [AVAirMessageParts messagePartsWithData:v4 lineSeparator:v5 data:v6 headerBodySeparator:v7 data:v8 bodyLengthKey:v9];
+  dataCopy = data;
+  lineSeparator = [(AVMessageParser *)self lineSeparator];
+  lineSeparatorData = [(AVMessageParser *)self lineSeparatorData];
+  headerBodySeparator = [(AVMessageParser *)self headerBodySeparator];
+  headerBodySeparatorData = [(AVMessageParser *)self headerBodySeparatorData];
+  bodyLengthKey = [(AVMessageParser *)self bodyLengthKey];
+  v10 = [AVAirMessageParts messagePartsWithData:dataCopy lineSeparator:lineSeparator data:lineSeparatorData headerBodySeparator:headerBodySeparator data:headerBodySeparatorData bodyLengthKey:bodyLengthKey];
 
-  v11 = [(AVMessageParser *)self compressionMethodKey];
-  v12 = [v11 length];
+  compressionMethodKey = [(AVMessageParser *)self compressionMethodKey];
+  v12 = [compressionMethodKey length];
 
   if (v12)
   {
-    v13 = [v10 uniqueHeaders];
-    v14 = [(AVMessageParser *)self compressionMethodKey];
-    v15 = [v13 objectForKeyedSubscript:v14];
+    uniqueHeaders = [v10 uniqueHeaders];
+    compressionMethodKey2 = [(AVMessageParser *)self compressionMethodKey];
+    v15 = [uniqueHeaders objectForKeyedSubscript:compressionMethodKey2];
 
     if ([v15 length])
     {
@@ -38,31 +38,31 @@
   return v10;
 }
 
-- (void)setHeaderBodySeparator:(id)a3
+- (void)setHeaderBodySeparator:(id)separator
 {
-  if (self->_headerBodySeparator != a3)
+  if (self->_headerBodySeparator != separator)
   {
-    v5 = a3;
-    v6 = [v5 copy];
+    separatorCopy = separator;
+    v6 = [separatorCopy copy];
     headerBodySeparator = self->_headerBodySeparator;
     self->_headerBodySeparator = v6;
 
-    v8 = [v5 dataUsingEncoding:1];
+    v8 = [separatorCopy dataUsingEncoding:1];
 
     [(AVMessageParser *)self setHeaderBodySeparatorData:v8];
   }
 }
 
-- (void)setLineSeparator:(id)a3
+- (void)setLineSeparator:(id)separator
 {
-  if (self->_lineSeparator != a3)
+  if (self->_lineSeparator != separator)
   {
-    v5 = a3;
-    v6 = [v5 copy];
+    separatorCopy = separator;
+    v6 = [separatorCopy copy];
     lineSeparator = self->_lineSeparator;
     self->_lineSeparator = v6;
 
-    v8 = [v5 dataUsingEncoding:1];
+    v8 = [separatorCopy dataUsingEncoding:1];
 
     [(AVMessageParser *)self setLineSeparatorData:v8];
   }
@@ -83,22 +83,22 @@
   return v3;
 }
 
-- (AVMessageParser)initWithLineSeparator:(id)a3 headerBodySeparator:(id)a4 bodyLengthKey:(id)a5 compressionMethodKey:(id)a6
+- (AVMessageParser)initWithLineSeparator:(id)separator headerBodySeparator:(id)bodySeparator bodyLengthKey:(id)key compressionMethodKey:(id)methodKey
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  separatorCopy = separator;
+  bodySeparatorCopy = bodySeparator;
+  keyCopy = key;
+  methodKeyCopy = methodKey;
   v17.receiver = self;
   v17.super_class = AVMessageParser;
   v14 = [(AVMessageParser *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    [(AVMessageParser *)v14 setLineSeparator:v10];
-    [(AVMessageParser *)v15 setHeaderBodySeparator:v11];
-    [(AVMessageParser *)v15 setBodyLengthKey:v12];
-    [(AVMessageParser *)v15 setCompressionMethodKey:v13];
+    [(AVMessageParser *)v14 setLineSeparator:separatorCopy];
+    [(AVMessageParser *)v15 setHeaderBodySeparator:bodySeparatorCopy];
+    [(AVMessageParser *)v15 setBodyLengthKey:keyCopy];
+    [(AVMessageParser *)v15 setCompressionMethodKey:methodKeyCopy];
   }
 
   return v15;

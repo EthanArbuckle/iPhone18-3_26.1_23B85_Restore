@@ -1,17 +1,17 @@
 @interface DOCProgressCollectionIndicatorButtonItem
 - (BOOL)isActivePopoverSource;
 - (_TtC26DocumentManagerExecutables40DOCProgressCollectionIndicatorButtonItem)init;
-- (void)progressIndicatorViewDidReceiveTap:(id)a3;
-- (void)setIsActivePopoverSource:(BOOL)a3;
+- (void)progressIndicatorViewDidReceiveTap:(id)tap;
+- (void)setIsActivePopoverSource:(BOOL)source;
 @end
 
 @implementation DOCProgressCollectionIndicatorButtonItem
 
-- (void)progressIndicatorViewDidReceiveTap:(id)a3
+- (void)progressIndicatorViewDidReceiveTap:(id)tap
 {
-  v4 = a3;
-  v5 = self;
-  DOCProgressCollectionIndicatorButtonItem.progressIndicatorViewDidReceiveTap(_:)(v4);
+  tapCopy = tap;
+  selfCopy = self;
+  DOCProgressCollectionIndicatorButtonItem.progressIndicatorViewDidReceiveTap(_:)(tapCopy);
 }
 
 - (BOOL)isActivePopoverSource
@@ -21,13 +21,13 @@
   return *(&self->super.super.super.super.isa + v3);
 }
 
-- (void)setIsActivePopoverSource:(BOOL)a3
+- (void)setIsActivePopoverSource:(BOOL)source
 {
   v5 = OBJC_IVAR____TtC26DocumentManagerExecutables40DOCProgressCollectionIndicatorButtonItem_isActivePopoverSource;
   swift_beginAccess();
-  *(&self->super.super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.super.isa + v5) = source;
   v6 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables40DOCProgressCollectionIndicatorButtonItem_containerView);
-  v6[OBJC_IVAR____TtCC26DocumentManagerExecutables40DOCProgressCollectionIndicatorButtonItemP33_B63CAF900B351F60B6673B49E171E6A025ProgressItemContainerView_isActivePopoverSource] = a3;
+  v6[OBJC_IVAR____TtCC26DocumentManagerExecutables40DOCProgressCollectionIndicatorButtonItemP33_B63CAF900B351F60B6673B49E171E6A025ProgressItemContainerView_isActivePopoverSource] = source;
   [v6 setNeedsLayout];
 }
 

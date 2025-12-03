@@ -1,9 +1,9 @@
 @interface SearchTimerIntentResponse
 - (SearchTimerIntentResponse)init;
-- (SearchTimerIntentResponse)initWithCode:(int64_t)a3 userActivity:(id)a4;
-- (SearchTimerIntentResponse)initWithPropertiesByName:(id)a3;
+- (SearchTimerIntentResponse)initWithCode:(int64_t)code userActivity:(id)activity;
+- (SearchTimerIntentResponse)initWithPropertiesByName:(id)name;
 - (int64_t)code;
-- (void)setCode:(int64_t)a3;
+- (void)setCode:(int64_t)code;
 @end
 
 @implementation SearchTimerIntentResponse
@@ -15,22 +15,22 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setCode:(int64_t)a3
+- (void)setCode:(int64_t)code
 {
   v5 = OBJC_IVAR___SearchTimerIntentResponse_code;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = code;
 }
 
-- (SearchTimerIntentResponse)initWithCode:(int64_t)a3 userActivity:(id)a4
+- (SearchTimerIntentResponse)initWithCode:(int64_t)code userActivity:(id)activity
 {
-  v6 = a4;
+  activityCopy = activity;
   v7 = [(SearchTimerIntentResponse *)self init];
   v8 = OBJC_IVAR___SearchTimerIntentResponse_code;
   swift_beginAccess();
-  *(&v7->super.super.isa + v8) = a3;
+  *(&v7->super.super.isa + v8) = code;
   v9 = v7;
-  [(SearchTimerIntentResponse *)v9 setUserActivity:v6];
+  [(SearchTimerIntentResponse *)v9 setUserActivity:activityCopy];
 
   return v9;
 }
@@ -43,9 +43,9 @@
   return [(SearchTimerIntentResponse *)&v3 init];
 }
 
-- (SearchTimerIntentResponse)initWithPropertiesByName:(id)a3
+- (SearchTimerIntentResponse)initWithPropertiesByName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v3 = sub_2693B3720();
   }

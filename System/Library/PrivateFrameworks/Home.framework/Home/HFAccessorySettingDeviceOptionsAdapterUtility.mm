@@ -1,17 +1,17 @@
 @interface HFAccessorySettingDeviceOptionsAdapterUtility
-- (HFAccessorySettingDeviceOptionsAdapterUtility)initWithHomeKitSettingsVendor:(id)a3 mode:(unint64_t)a4 groupedAccessory:(BOOL)a5 delegate:(id)a6;
+- (HFAccessorySettingDeviceOptionsAdapterUtility)initWithHomeKitSettingsVendor:(id)vendor mode:(unint64_t)mode groupedAccessory:(BOOL)accessory delegate:(id)delegate;
 - (HFAccessorySettingDeviceOptionsAdapterUtilityDelegate)delegate;
-- (id)_reachableDevices:(id)a3;
-- (id)_sendRapportMessageToAccessoriesWithRequestID:(id)a3 request:(id)a4 options:(id)a5;
-- (id)_sendRapportMessageToAccessoryWithRequestID:(id)a3 request:(id)a4 options:(id)a5;
-- (id)_sendRapportMessageToDevice:(id)a3 requestID:(id)a4 request:(id)a5 options:(id)a6;
+- (id)_reachableDevices:(id)devices;
+- (id)_sendRapportMessageToAccessoriesWithRequestID:(id)d request:(id)request options:(id)options;
+- (id)_sendRapportMessageToAccessoryWithRequestID:(id)d request:(id)request options:(id)options;
+- (id)_sendRapportMessageToDevice:(id)device requestID:(id)d request:(id)request options:(id)options;
 - (id)extractWiFiInfo;
 - (id)identifyAccessory;
-- (id)requestAirDrop:(id)a3;
+- (id)requestAirDrop:(id)drop;
 - (id)resetAccessory;
 - (id)restartAccessories;
 - (id)restartAccessory;
-- (void)_resetRapportClientWithInvalidation:(BOOL)a3;
+- (void)_resetRapportClientWithInvalidation:(BOOL)invalidation;
 - (void)_setupRapportClient;
 - (void)_updateRapportReachable;
 - (void)dealloc;
@@ -19,14 +19,14 @@
 
 @implementation HFAccessorySettingDeviceOptionsAdapterUtility
 
-- (HFAccessorySettingDeviceOptionsAdapterUtility)initWithHomeKitSettingsVendor:(id)a3 mode:(unint64_t)a4 groupedAccessory:(BOOL)a5 delegate:(id)a6
+- (HFAccessorySettingDeviceOptionsAdapterUtility)initWithHomeKitSettingsVendor:(id)vendor mode:(unint64_t)mode groupedAccessory:(BOOL)accessory delegate:(id)delegate
 {
   v28 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a6;
-  if (a4)
+  vendorCopy = vendor;
+  delegateCopy = delegate;
+  if (mode)
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -36,7 +36,7 @@
     v12 = [(HFAccessorySettingDeviceOptionsAdapterUtility *)&v21 init];
     if (v12)
     {
-      v13 = v9;
+      v13 = vendorCopy;
       v14 = &unk_282584A38;
       if ([v13 conformsToProtocol:v14])
       {
@@ -53,7 +53,7 @@
       mediaProfileContainer = v12->_mediaProfileContainer;
       v12->_mediaProfileContainer = v16;
 
-      objc_storeWeak(&v12->_delegate, v10);
+      objc_storeWeak(&v12->_delegate, delegateCopy);
       v18 = HFLogForCategory(0x3CuLL);
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
@@ -70,33 +70,33 @@
     }
 
     self = v12;
-    v11 = self;
+    selfCopy = self;
   }
 
   v19 = *MEMORY[0x277D85DE8];
-  return v11;
+  return selfCopy;
 }
 
 - (void)dealloc
 {
-  v3 = [(HFAccessorySettingDeviceOptionsAdapterUtility *)self discoveryLink];
+  discoveryLink = [(HFAccessorySettingDeviceOptionsAdapterUtility *)self discoveryLink];
 
-  if (v3)
+  if (discoveryLink)
   {
-    v4 = [(HFAccessorySettingDeviceOptionsAdapterUtility *)self discoveryLink];
-    [v4 setDeviceFoundHandler:0];
+    discoveryLink2 = [(HFAccessorySettingDeviceOptionsAdapterUtility *)self discoveryLink];
+    [discoveryLink2 setDeviceFoundHandler:0];
 
-    v5 = [(HFAccessorySettingDeviceOptionsAdapterUtility *)self discoveryLink];
-    [v5 setDeviceLostHandler:0];
+    discoveryLink3 = [(HFAccessorySettingDeviceOptionsAdapterUtility *)self discoveryLink];
+    [discoveryLink3 setDeviceLostHandler:0];
 
-    v6 = [(HFAccessorySettingDeviceOptionsAdapterUtility *)self discoveryLink];
-    [v6 setInterruptionHandler:0];
+    discoveryLink4 = [(HFAccessorySettingDeviceOptionsAdapterUtility *)self discoveryLink];
+    [discoveryLink4 setInterruptionHandler:0];
 
-    v7 = [(HFAccessorySettingDeviceOptionsAdapterUtility *)self discoveryLink];
-    [v7 setInvalidationHandler:0];
+    discoveryLink5 = [(HFAccessorySettingDeviceOptionsAdapterUtility *)self discoveryLink];
+    [discoveryLink5 setInvalidationHandler:0];
 
-    v8 = [(HFAccessorySettingDeviceOptionsAdapterUtility *)self discoveryLink];
-    [v8 invalidate];
+    discoveryLink6 = [(HFAccessorySettingDeviceOptionsAdapterUtility *)self discoveryLink];
+    [discoveryLink6 invalidate];
   }
 
   v9.receiver = self;
@@ -172,19 +172,19 @@
   return v4;
 }
 
-- (id)requestAirDrop:(id)a3
+- (id)requestAirDrop:(id)drop
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dropCopy = drop;
   v5 = HFLogForCategory(0x3CuLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v23 = v4;
+    v23 = dropCopy;
     _os_log_impl(&dword_20D9BF000, v5, OS_LOG_TYPE_DEFAULT, "Sending AirDrop request for results: %@", buf, 0xCu);
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"sysdiagnosePath"];
+  v6 = [dropCopy objectForKeyedSubscript:@"sysdiagnosePath"];
   if ([v6 length])
   {
     v7 = +[HFUtilities deviceAirDropIdentifier];
@@ -192,8 +192,8 @@
     {
       v21[0] = v7;
       v8 = MEMORY[0x277CCABB0];
-      v9 = [MEMORY[0x277CBEAA8] date];
-      [v9 timeIntervalSince1970];
+      date = [MEMORY[0x277CBEAA8] date];
+      [date timeIntervalSince1970];
       v10 = [v8 numberWithDouble:?];
       v20[2] = @"sysdiagnosePath";
       v21[1] = v10;
@@ -258,9 +258,9 @@
 
 - (void)_setupRapportClient
 {
-  v3 = [(HFAccessorySettingDeviceOptionsAdapterUtility *)self discoveryLink];
+  discoveryLink = [(HFAccessorySettingDeviceOptionsAdapterUtility *)self discoveryLink];
 
-  if (!v3)
+  if (!discoveryLink)
   {
     objc_initWeak(&location, self);
     v4 = objc_alloc_init(MEMORY[0x277D44160]);
@@ -425,26 +425,26 @@ void __68__HFAccessorySettingDeviceOptionsAdapterUtility__setupRapportClient__bl
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_resetRapportClientWithInvalidation:(BOOL)a3
+- (void)_resetRapportClientWithInvalidation:(BOOL)invalidation
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (invalidation)
   {
-    v4 = [(HFAccessorySettingDeviceOptionsAdapterUtility *)self discoveryLink];
-    [v4 invalidate];
+    discoveryLink = [(HFAccessorySettingDeviceOptionsAdapterUtility *)self discoveryLink];
+    [discoveryLink invalidate];
   }
 
-  v5 = [(HFAccessorySettingDeviceOptionsAdapterUtility *)self discoveryLink];
-  [v5 setDeviceFoundHandler:0];
+  discoveryLink2 = [(HFAccessorySettingDeviceOptionsAdapterUtility *)self discoveryLink];
+  [discoveryLink2 setDeviceFoundHandler:0];
 
-  v6 = [(HFAccessorySettingDeviceOptionsAdapterUtility *)self discoveryLink];
-  [v6 setDeviceLostHandler:0];
+  discoveryLink3 = [(HFAccessorySettingDeviceOptionsAdapterUtility *)self discoveryLink];
+  [discoveryLink3 setDeviceLostHandler:0];
 
-  v7 = [(HFAccessorySettingDeviceOptionsAdapterUtility *)self discoveryLink];
-  [v7 setInterruptionHandler:0];
+  discoveryLink4 = [(HFAccessorySettingDeviceOptionsAdapterUtility *)self discoveryLink];
+  [discoveryLink4 setInterruptionHandler:0];
 
-  v8 = [(HFAccessorySettingDeviceOptionsAdapterUtility *)self discoveryLink];
-  [v8 setInvalidationHandler:0];
+  discoveryLink5 = [(HFAccessorySettingDeviceOptionsAdapterUtility *)self discoveryLink];
+  [discoveryLink5 setInvalidationHandler:0];
 
   [(HFAccessorySettingDeviceOptionsAdapterUtility *)self setDiscoveryLink:0];
   if ([(HFAccessorySettingDeviceOptionsAdapterUtility *)self rapportClientActivationFailCount]> 2)
@@ -470,42 +470,42 @@ void __68__HFAccessorySettingDeviceOptionsAdapterUtility__setupRapportClient__bl
 
 - (void)_updateRapportReachable
 {
-  v3 = [(HFAccessorySettingDeviceOptionsAdapterUtility *)self mediaProfileContainer];
-  v4 = [v3 accessories];
-  v5 = [v4 allObjects];
+  mediaProfileContainer = [(HFAccessorySettingDeviceOptionsAdapterUtility *)self mediaProfileContainer];
+  accessories = [mediaProfileContainer accessories];
+  allObjects = [accessories allObjects];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __72__HFAccessorySettingDeviceOptionsAdapterUtility__updateRapportReachable__block_invoke;
   v8[3] = &unk_277DFADE8;
   v8[4] = self;
-  v6 = [v5 na_flatMap:v8];
+  v6 = [allObjects na_flatMap:v8];
 
-  v7 = [(HFAccessorySettingDeviceOptionsAdapterUtility *)self delegate];
-  [v7 accessoryReachableOverRapport:{objc_msgSend(v6, "count") != 0}];
+  delegate = [(HFAccessorySettingDeviceOptionsAdapterUtility *)self delegate];
+  [delegate accessoryReachableOverRapport:{objc_msgSend(v6, "count") != 0}];
 }
 
-- (id)_reachableDevices:(id)a3
+- (id)_reachableDevices:(id)devices
 {
-  v4 = a3;
-  v5 = [(HFAccessorySettingDeviceOptionsAdapterUtility *)self discoveryLink];
-  v6 = [v5 activeDevices];
+  devicesCopy = devices;
+  discoveryLink = [(HFAccessorySettingDeviceOptionsAdapterUtility *)self discoveryLink];
+  activeDevices = [discoveryLink activeDevices];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __67__HFAccessorySettingDeviceOptionsAdapterUtility__reachableDevices___block_invoke;
   v20[3] = &unk_277DFAE10;
-  v7 = v4;
+  v7 = devicesCopy;
   v21 = v7;
-  v8 = [v6 na_filter:v20];
+  v8 = [activeDevices na_filter:v20];
 
-  v9 = [(HFAccessorySettingDeviceOptionsAdapterUtility *)self discoveryLink];
-  v10 = [v9 activeDevices];
+  discoveryLink2 = [(HFAccessorySettingDeviceOptionsAdapterUtility *)self discoveryLink];
+  activeDevices2 = [discoveryLink2 activeDevices];
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
   v17 = __67__HFAccessorySettingDeviceOptionsAdapterUtility__reachableDevices___block_invoke_2;
   v18 = &unk_277DFAE10;
   v19 = v7;
   v11 = v7;
-  v12 = [v10 na_filter:&v15];
+  v12 = [activeDevices2 na_filter:&v15];
   v13 = [v8 arrayByAddingObjectsFromArray:{v12, v15, v16, v17, v18}];
 
   return v13;
@@ -539,52 +539,52 @@ uint64_t __67__HFAccessorySettingDeviceOptionsAdapterUtility__reachableDevices__
   return v4;
 }
 
-- (id)_sendRapportMessageToAccessoryWithRequestID:(id)a3 request:(id)a4 options:(id)a5
+- (id)_sendRapportMessageToAccessoryWithRequestID:(id)d request:(id)request options:(id)options
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(HFAccessorySettingDeviceOptionsAdapterUtility *)self mediaProfileContainer];
-  v12 = [v11 accessories];
-  v13 = [v12 anyObject];
-  v14 = [(HFAccessorySettingDeviceOptionsAdapterUtility *)self _reachableDevices:v13];
+  optionsCopy = options;
+  requestCopy = request;
+  dCopy = d;
+  mediaProfileContainer = [(HFAccessorySettingDeviceOptionsAdapterUtility *)self mediaProfileContainer];
+  accessories = [mediaProfileContainer accessories];
+  anyObject = [accessories anyObject];
+  v14 = [(HFAccessorySettingDeviceOptionsAdapterUtility *)self _reachableDevices:anyObject];
 
-  v15 = [v14 firstObject];
-  v16 = [(HFAccessorySettingDeviceOptionsAdapterUtility *)self _sendRapportMessageToDevice:v15 requestID:v10 request:v9 options:v8];
+  firstObject = [v14 firstObject];
+  v16 = [(HFAccessorySettingDeviceOptionsAdapterUtility *)self _sendRapportMessageToDevice:firstObject requestID:dCopy request:requestCopy options:optionsCopy];
 
   return v16;
 }
 
-- (id)_sendRapportMessageToAccessoriesWithRequestID:(id)a3 request:(id)a4 options:(id)a5
+- (id)_sendRapportMessageToAccessoriesWithRequestID:(id)d request:(id)request options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HFAccessorySettingDeviceOptionsAdapterUtility *)self mediaProfileContainer];
-  v12 = [v11 accessories];
-  v13 = [v12 allObjects];
+  dCopy = d;
+  requestCopy = request;
+  optionsCopy = options;
+  mediaProfileContainer = [(HFAccessorySettingDeviceOptionsAdapterUtility *)self mediaProfileContainer];
+  accessories = [mediaProfileContainer accessories];
+  allObjects = [accessories allObjects];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __111__HFAccessorySettingDeviceOptionsAdapterUtility__sendRapportMessageToAccessoriesWithRequestID_request_options___block_invoke;
   v27[3] = &unk_277DFADE8;
   v27[4] = self;
-  v14 = [v13 na_map:v27];
+  v14 = [allObjects na_map:v27];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __111__HFAccessorySettingDeviceOptionsAdapterUtility__sendRapportMessageToAccessoriesWithRequestID_request_options___block_invoke_2;
   v23[3] = &unk_277DFAE38;
   v23[4] = self;
-  v24 = v8;
-  v25 = v9;
-  v26 = v10;
-  v15 = v10;
-  v16 = v9;
-  v17 = v8;
+  v24 = dCopy;
+  v25 = requestCopy;
+  v26 = optionsCopy;
+  v15 = optionsCopy;
+  v16 = requestCopy;
+  v17 = dCopy;
   v18 = [v14 na_map:v23];
 
   v19 = [MEMORY[0x277D2C900] combineAllFutures:v18];
-  v20 = [MEMORY[0x277D2C938] mainThreadScheduler];
-  v21 = [v19 reschedule:v20];
+  mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
+  v21 = [v19 reschedule:mainThreadScheduler];
 
   return v21;
 }
@@ -598,28 +598,28 @@ id __111__HFAccessorySettingDeviceOptionsAdapterUtility__sendRapportMessageToAcc
   return v5;
 }
 
-- (id)_sendRapportMessageToDevice:(id)a3 requestID:(id)a4 request:(id)a5 options:(id)a6
+- (id)_sendRapportMessageToDevice:(id)device requestID:(id)d request:(id)request options:(id)options
 {
   v51 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [MEMORY[0x277CCAD78] UUID];
+  deviceCopy = device;
+  dCopy = d;
+  requestCopy = request;
+  optionsCopy = options;
+  uUID = [MEMORY[0x277CCAD78] UUID];
   v14 = HFLogForCategory(0x3CuLL);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v48 = v13;
+    v48 = uUID;
     v49 = 2112;
-    v50 = v9;
+    v50 = deviceCopy;
     _os_log_impl(&dword_20D9BF000, v14, OS_LOG_TYPE_DEFAULT, "(Request %@) Preparing to send rapport message to '%@'", buf, 0x16u);
   }
 
   v15 = objc_alloc_init(MEMORY[0x277D44160]);
-  [v15 setDestinationDevice:v9];
+  [v15 setDestinationDevice:deviceCopy];
   v16 = objc_opt_new();
-  v17 = [MEMORY[0x277D2C938] mainThreadScheduler];
+  mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
   v43[0] = MEMORY[0x277D85DD0];
   v43[1] = 3221225472;
   v43[2] = __103__HFAccessorySettingDeviceOptionsAdapterUtility__sendRapportMessageToDevice_requestID_request_options___block_invoke;
@@ -628,9 +628,9 @@ id __111__HFAccessorySettingDeviceOptionsAdapterUtility__sendRapportMessageToAcc
   v44 = v18;
   v19 = v15;
   v45 = v19;
-  v20 = v13;
+  v20 = uUID;
   v46 = v20;
-  v21 = [v17 afterDelay:v43 performBlock:10.0];
+  v21 = [mainThreadScheduler afterDelay:v43 performBlock:10.0];
 
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
@@ -641,14 +641,14 @@ id __111__HFAccessorySettingDeviceOptionsAdapterUtility__sendRapportMessageToAcc
   v22 = v18;
   v37 = v22;
   v38 = v19;
-  v39 = v12;
-  v40 = v11;
-  v41 = v10;
-  v42 = v9;
-  v23 = v9;
-  v24 = v10;
-  v25 = v11;
-  v26 = v12;
+  v39 = optionsCopy;
+  v40 = requestCopy;
+  v41 = dCopy;
+  v42 = deviceCopy;
+  v23 = deviceCopy;
+  v24 = dCopy;
+  v25 = requestCopy;
+  v26 = optionsCopy;
   v27 = v19;
   v28 = v20;
   v29 = v21;

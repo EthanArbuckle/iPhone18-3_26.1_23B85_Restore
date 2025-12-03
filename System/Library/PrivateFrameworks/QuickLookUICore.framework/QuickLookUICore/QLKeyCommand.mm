@@ -1,44 +1,44 @@
 @interface QLKeyCommand
-+ (id)keyCommandWithKeyCommand:(id)a3 identifier:(unint64_t)a4;
-- (QLKeyCommand)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)keyCommandWithKeyCommand:(id)command identifier:(unint64_t)identifier;
+- (QLKeyCommand)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation QLKeyCommand
 
-+ (id)keyCommandWithKeyCommand:(id)a3 identifier:(unint64_t)a4
++ (id)keyCommandWithKeyCommand:(id)command identifier:(unint64_t)identifier
 {
-  v5 = a3;
+  commandCopy = command;
   v6 = objc_opt_new();
-  [v6 setKeyCommand:v5];
+  [v6 setKeyCommand:commandCopy];
 
-  [v6 setKeyCommandIdentifier:a4];
+  [v6 setKeyCommandIdentifier:identifier];
 
   return v6;
 }
 
-- (QLKeyCommand)initWithCoder:(id)a3
+- (QLKeyCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(QLKeyCommand *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"keyCommand"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"keyCommand"];
     keyCommand = v5->_keyCommand;
     v5->_keyCommand = v6;
 
-    v5->_keyCommandIdentifier = [v4 decodeIntegerForKey:@"keyCommandIdentifier"];
+    v5->_keyCommandIdentifier = [coderCopy decodeIntegerForKey:@"keyCommandIdentifier"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   keyCommand = self->_keyCommand;
-  v5 = a3;
-  [v5 encodeObject:keyCommand forKey:@"keyCommand"];
-  [v5 encodeInteger:self->_keyCommandIdentifier forKey:@"keyCommandIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:keyCommand forKey:@"keyCommand"];
+  [coderCopy encodeInteger:self->_keyCommandIdentifier forKey:@"keyCommandIdentifier"];
 }
 
 @end

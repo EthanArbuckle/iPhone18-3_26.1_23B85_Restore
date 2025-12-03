@@ -1,23 +1,23 @@
 @interface SHMusicalFeaturesConfiguration
-- (SHMusicalFeaturesConfiguration)initWithCoder:(id)a3;
-- (SHMusicalFeaturesConfiguration)initWithCremaModelURL:(id)a3 crepeModelURL:(id)a4 minimumDuration:(double)a5;
-- (SHMusicalFeaturesConfiguration)initWithCremaModelURL:(id)a3 crepeModelURL:(id)a4 minimumDuration:(double)a5 error:(id *)p_isa;
-- (SHMusicalFeaturesConfiguration)initWithCremaModelURL:(id)a3 minimumDuration:(double)a4 error:(id *)p_isa;
-- (SHMusicalFeaturesConfiguration)initWithCrepeModelURL:(id)a3 minimumDuration:(double)a4 error:(id *)p_isa;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SHMusicalFeaturesConfiguration)initWithCoder:(id)coder;
+- (SHMusicalFeaturesConfiguration)initWithCremaModelURL:(id)l crepeModelURL:(id)rL minimumDuration:(double)duration;
+- (SHMusicalFeaturesConfiguration)initWithCremaModelURL:(id)l crepeModelURL:(id)rL minimumDuration:(double)duration error:(id *)p_isa;
+- (SHMusicalFeaturesConfiguration)initWithCremaModelURL:(id)l minimumDuration:(double)duration error:(id *)p_isa;
+- (SHMusicalFeaturesConfiguration)initWithCrepeModelURL:(id)l minimumDuration:(double)duration error:(id *)p_isa;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SHMusicalFeaturesConfiguration
 
-- (SHMusicalFeaturesConfiguration)initWithCremaModelURL:(id)a3 minimumDuration:(double)a4 error:(id *)p_isa
+- (SHMusicalFeaturesConfiguration)initWithCremaModelURL:(id)l minimumDuration:(double)duration error:(id *)p_isa
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if ([v8 isFileURL])
+  lCopy = l;
+  if ([lCopy isFileURL])
   {
-    self = [(SHMusicalFeaturesConfiguration *)self initWithCremaModelURL:v8 crepeModelURL:0 minimumDuration:a4];
+    self = [(SHMusicalFeaturesConfiguration *)self initWithCremaModelURL:lCopy crepeModelURL:0 minimumDuration:duration];
     p_isa = &self->super.isa;
   }
 
@@ -37,13 +37,13 @@
   return p_isa;
 }
 
-- (SHMusicalFeaturesConfiguration)initWithCrepeModelURL:(id)a3 minimumDuration:(double)a4 error:(id *)p_isa
+- (SHMusicalFeaturesConfiguration)initWithCrepeModelURL:(id)l minimumDuration:(double)duration error:(id *)p_isa
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if ([v8 isFileURL])
+  lCopy = l;
+  if ([lCopy isFileURL])
   {
-    self = [(SHMusicalFeaturesConfiguration *)self initWithCremaModelURL:0 crepeModelURL:v8 minimumDuration:a4];
+    self = [(SHMusicalFeaturesConfiguration *)self initWithCremaModelURL:0 crepeModelURL:lCopy minimumDuration:duration];
     p_isa = &self->super.isa;
   }
 
@@ -63,14 +63,14 @@
   return p_isa;
 }
 
-- (SHMusicalFeaturesConfiguration)initWithCremaModelURL:(id)a3 crepeModelURL:(id)a4 minimumDuration:(double)a5 error:(id *)p_isa
+- (SHMusicalFeaturesConfiguration)initWithCremaModelURL:(id)l crepeModelURL:(id)rL minimumDuration:(double)duration error:(id *)p_isa
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  if ([v10 isFileURL] && (objc_msgSend(v11, "isFileURL") & 1) != 0)
+  lCopy = l;
+  rLCopy = rL;
+  if ([lCopy isFileURL] && (objc_msgSend(rLCopy, "isFileURL") & 1) != 0)
   {
-    self = [(SHMusicalFeaturesConfiguration *)self initWithCremaModelURL:v10 crepeModelURL:v11 minimumDuration:a5];
+    self = [(SHMusicalFeaturesConfiguration *)self initWithCremaModelURL:lCopy crepeModelURL:rLCopy minimumDuration:duration];
     p_isa = &self->super.isa;
   }
 
@@ -90,19 +90,19 @@
   return p_isa;
 }
 
-- (SHMusicalFeaturesConfiguration)initWithCremaModelURL:(id)a3 crepeModelURL:(id)a4 minimumDuration:(double)a5
+- (SHMusicalFeaturesConfiguration)initWithCremaModelURL:(id)l crepeModelURL:(id)rL minimumDuration:(double)duration
 {
-  v9 = a3;
-  v10 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v14.receiver = self;
   v14.super_class = SHMusicalFeaturesConfiguration;
   v11 = [(SHMusicalFeaturesConfiguration *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_cremaModelURL, a3);
-    objc_storeStrong(&v12->_crepeModelURL, a4);
-    v12->_minimumDuration = a5;
+    objc_storeStrong(&v11->_cremaModelURL, l);
+    objc_storeStrong(&v12->_crepeModelURL, rL);
+    v12->_minimumDuration = duration;
   }
 
   return v12;
@@ -112,46 +112,46 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(SHMusicalFeaturesConfiguration *)self cremaModelURL];
-  v6 = [(SHMusicalFeaturesConfiguration *)self crepeModelURL];
+  cremaModelURL = [(SHMusicalFeaturesConfiguration *)self cremaModelURL];
+  crepeModelURL = [(SHMusicalFeaturesConfiguration *)self crepeModelURL];
   [(SHMusicalFeaturesConfiguration *)self minimumDuration];
-  v8 = [v3 stringWithFormat:@"<%@: %p>\n\tCREMA URL: %@\n\tCREPE URL: %@\n\tMinimum duration: %f", v4, self, v5, v6, v7];
+  v8 = [v3 stringWithFormat:@"<%@: %p>\n\tCREMA URL: %@\n\tCREPE URL: %@\n\tMinimum duration: %f", v4, self, cremaModelURL, crepeModelURL, v7];
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [SHMusicalFeaturesConfiguration alloc];
-  v6 = [(SHMusicalFeaturesConfiguration *)self cremaModelURL];
-  v7 = [v6 copyWithZone:a3];
-  v8 = [(SHMusicalFeaturesConfiguration *)self crepeModelURL];
-  v9 = [v8 copyWithZone:a3];
+  cremaModelURL = [(SHMusicalFeaturesConfiguration *)self cremaModelURL];
+  v7 = [cremaModelURL copyWithZone:zone];
+  crepeModelURL = [(SHMusicalFeaturesConfiguration *)self crepeModelURL];
+  v9 = [crepeModelURL copyWithZone:zone];
   [(SHMusicalFeaturesConfiguration *)self minimumDuration];
   v10 = [(SHMusicalFeaturesConfiguration *)v5 initWithCremaModelURL:v7 crepeModelURL:v9 minimumDuration:?];
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(SHMusicalFeaturesConfiguration *)self cremaModelURL];
-  [v6 encodeObject:v4 forKey:@"SHMusicalFeaturesConfigurationCremaModelURLKey"];
+  coderCopy = coder;
+  cremaModelURL = [(SHMusicalFeaturesConfiguration *)self cremaModelURL];
+  [coderCopy encodeObject:cremaModelURL forKey:@"SHMusicalFeaturesConfigurationCremaModelURLKey"];
 
-  v5 = [(SHMusicalFeaturesConfiguration *)self crepeModelURL];
-  [v6 encodeObject:v5 forKey:@"SHMusicalFeaturesConfigurationCrepeModelURLKey"];
+  crepeModelURL = [(SHMusicalFeaturesConfiguration *)self crepeModelURL];
+  [coderCopy encodeObject:crepeModelURL forKey:@"SHMusicalFeaturesConfigurationCrepeModelURLKey"];
 
   [(SHMusicalFeaturesConfiguration *)self minimumDuration];
-  [v6 encodeDouble:@"SHMusicalFeaturesConfigurationMinimumDurationKey" forKey:?];
+  [coderCopy encodeDouble:@"SHMusicalFeaturesConfigurationMinimumDurationKey" forKey:?];
 }
 
-- (SHMusicalFeaturesConfiguration)initWithCoder:(id)a3
+- (SHMusicalFeaturesConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SHMusicalFeaturesConfigurationCremaModelURLKey"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SHMusicalFeaturesConfigurationCrepeModelURLKey"];
-  [v4 decodeDoubleForKey:@"SHMusicalFeaturesConfigurationMinimumDurationKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SHMusicalFeaturesConfigurationCremaModelURLKey"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SHMusicalFeaturesConfigurationCrepeModelURLKey"];
+  [coderCopy decodeDoubleForKey:@"SHMusicalFeaturesConfigurationMinimumDurationKey"];
   v8 = v7;
 
   v9 = [(SHMusicalFeaturesConfiguration *)self initWithCremaModelURL:v5 crepeModelURL:v6 minimumDuration:v8];

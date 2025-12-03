@@ -1,15 +1,15 @@
 @interface AVTAvatarRecordRendering
-+ (id)avatarDescriptorForRecord:(id)a3;
-+ (id)avatarForRecord:(id)a3 usageIntent:(unint64_t)a4;
++ (id)avatarDescriptorForRecord:(id)record;
++ (id)avatarForRecord:(id)record usageIntent:(unint64_t)intent;
 + (id)log;
-+ (id)memojiDescriptorForRecord:(id)a3;
-+ (id)memojiForRecord:(id)a3 usageIntent:(unint64_t)a4;
-+ (void)_castRecord:(id)a3 andDoRecordHandlingBlock:(id)a4 puppetHandlingBlock:(id)a5;
-+ (void)preloadAllAvatarsWithStore:(id)a3 completionHandler:(id)a4;
-+ (void)preloadAllAvatarsWithStore:(id)a3 environment:(id)a4 completionHandler:(id)a5;
-+ (void)preloadAvatarsWithFetchRequests:(id)a3 store:(id)a4 environment:(id)a5 completionHandler:(id)a6;
-+ (void)preloadAvatarsWithIdentifiers:(id)a3 store:(id)a4 completionHandler:(id)a5;
-+ (void)preloadAvatarsWithIdentifiers:(id)a3 store:(id)a4 environment:(id)a5 completionHandler:(id)a6;
++ (id)memojiDescriptorForRecord:(id)record;
++ (id)memojiForRecord:(id)record usageIntent:(unint64_t)intent;
++ (void)_castRecord:(id)record andDoRecordHandlingBlock:(id)block puppetHandlingBlock:(id)handlingBlock;
++ (void)preloadAllAvatarsWithStore:(id)store completionHandler:(id)handler;
++ (void)preloadAllAvatarsWithStore:(id)store environment:(id)environment completionHandler:(id)handler;
++ (void)preloadAvatarsWithFetchRequests:(id)requests store:(id)store environment:(id)environment completionHandler:(id)handler;
++ (void)preloadAvatarsWithIdentifiers:(id)identifiers store:(id)store completionHandler:(id)handler;
++ (void)preloadAvatarsWithIdentifiers:(id)identifiers store:(id)store environment:(id)environment completionHandler:(id)handler;
 @end
 
 @implementation AVTAvatarRecordRendering
@@ -33,35 +33,35 @@ uint64_t __31__AVTAvatarRecordRendering_log__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)memojiDescriptorForRecord:(id)a3
++ (id)memojiDescriptorForRecord:(id)record
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  recordCopy = record;
+  v5 = recordCopy;
+  if (!recordCopy)
   {
     goto LABEL_9;
   }
 
-  v6 = [v4 avatarData];
-  if (!v6)
+  avatarData = [recordCopy avatarData];
+  if (!avatarData)
   {
     goto LABEL_10;
   }
 
-  v7 = [v5 avatarData];
-  v8 = [v7 length];
+  avatarData2 = [v5 avatarData];
+  v8 = [avatarData2 length];
 
   if (v8)
   {
     v9 = MEMORY[0x277CF04E8];
-    v10 = [v5 avatarData];
+    avatarData3 = [v5 avatarData];
     v14 = 0;
-    v6 = [v9 descriptorWithDataRepresentation:v10 error:&v14];
+    avatarData = [v9 descriptorWithDataRepresentation:avatarData3 error:&v14];
     v11 = v14;
 
-    if (!v6)
+    if (!avatarData)
     {
-      v12 = [a1 log];
+      v12 = [self log];
       if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
       {
         [(AVTAvatarRecordRendering *)v11 memojiDescriptorForRecord:v12];
@@ -72,18 +72,18 @@ uint64_t __31__AVTAvatarRecordRendering_log__block_invoke()
   else
   {
 LABEL_9:
-    v6 = 0;
+    avatarData = 0;
   }
 
 LABEL_10:
 
-  return v6;
+  return avatarData;
 }
 
-+ (id)avatarDescriptorForRecord:(id)a3
++ (id)avatarDescriptorForRecord:(id)record
 {
-  v4 = a3;
-  if (v4)
+  recordCopy = record;
+  if (recordCopy)
   {
     v9 = 0;
     v10 = &v9;
@@ -96,13 +96,13 @@ LABEL_10:
     v8[2] = __54__AVTAvatarRecordRendering_avatarDescriptorForRecord___block_invoke;
     v8[3] = &unk_278CFA368;
     v8[4] = &v9;
-    v8[5] = a1;
+    v8[5] = self;
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __54__AVTAvatarRecordRendering_avatarDescriptorForRecord___block_invoke_2;
     v7[3] = &unk_278CFA390;
     v7[4] = &v9;
-    [a1 _castRecord:v4 andDoRecordHandlingBlock:v8 puppetHandlingBlock:v7];
+    [self _castRecord:recordCopy andDoRecordHandlingBlock:v8 puppetHandlingBlock:v7];
     v5 = v10[5];
     _Block_object_dispose(&v9, 8);
   }
@@ -138,12 +138,12 @@ void __54__AVTAvatarRecordRendering_avatarDescriptorForRecord___block_invoke_2(u
   *(v7 + 40) = v6;
 }
 
-+ (id)avatarForRecord:(id)a3 usageIntent:(unint64_t)a4
++ (id)avatarForRecord:(id)record usageIntent:(unint64_t)intent
 {
-  if (a3)
+  if (record)
   {
-    v5 = [a1 avatarDescriptorForRecord:?];
-    v6 = [MEMORY[0x277CF04C0] avatarWithDescriptor:v5 usageIntent:a4 error:0];
+    v5 = [self avatarDescriptorForRecord:?];
+    v6 = [MEMORY[0x277CF04C0] avatarWithDescriptor:v5 usageIntent:intent error:0];
   }
 
   else
@@ -154,9 +154,9 @@ void __54__AVTAvatarRecordRendering_avatarDescriptorForRecord___block_invoke_2(u
   return v6;
 }
 
-+ (id)memojiForRecord:(id)a3 usageIntent:(unint64_t)a4
++ (id)memojiForRecord:(id)record usageIntent:(unint64_t)intent
 {
-  v4 = [a1 avatarForRecord:a3 usageIntent:a4];
+  v4 = [self avatarForRecord:record usageIntent:intent];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -166,21 +166,21 @@ void __54__AVTAvatarRecordRendering_avatarDescriptorForRecord___block_invoke_2(u
   return v4;
 }
 
-+ (void)_castRecord:(id)a3 andDoRecordHandlingBlock:(id)a4 puppetHandlingBlock:(id)a5
++ (void)_castRecord:(id)record andDoRecordHandlingBlock:(id)block puppetHandlingBlock:(id)handlingBlock
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (([v7 conformsToProtocol:&unk_2853947B8] & 1) == 0)
+  recordCopy = record;
+  blockCopy = block;
+  handlingBlockCopy = handlingBlock;
+  if (([recordCopy conformsToProtocol:&unk_2853947B8] & 1) == 0)
   {
-    [MEMORY[0x277CBEAD8] raise:@"AVTTypeMismatchException" format:{@"Unexpected object protocol for %@", v7}];
+    [MEMORY[0x277CBEAD8] raise:@"AVTTypeMismatchException" format:{@"Unexpected object protocol for %@", recordCopy}];
   }
 
-  v11 = v7;
+  v11 = recordCopy;
   if (![v11 isPuppet])
   {
     objc_opt_class();
-    v10 = v8;
+    v10 = blockCopy;
     if (objc_opt_isKindOfClass())
     {
       goto LABEL_8;
@@ -190,7 +190,7 @@ void __54__AVTAvatarRecordRendering_avatarDescriptorForRecord___block_invoke_2(u
   }
 
   objc_opt_class();
-  v10 = v9;
+  v10 = handlingBlockCopy;
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
 LABEL_7:
@@ -201,36 +201,36 @@ LABEL_8:
   v10[2](v10, v11);
 }
 
-+ (void)preloadAvatarsWithIdentifiers:(id)a3 store:(id)a4 completionHandler:(id)a5
++ (void)preloadAvatarsWithIdentifiers:(id)identifiers store:(id)store completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  storeCopy = store;
+  identifiersCopy = identifiers;
   v11 = +[AVTCoreEnvironment defaultEnvironment];
-  [a1 preloadAvatarsWithIdentifiers:v10 store:v9 environment:v11 completionHandler:v8];
+  [self preloadAvatarsWithIdentifiers:identifiersCopy store:storeCopy environment:v11 completionHandler:handlerCopy];
 }
 
-+ (void)preloadAllAvatarsWithStore:(id)a3 completionHandler:(id)a4
++ (void)preloadAllAvatarsWithStore:(id)store completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  storeCopy = store;
   v8 = +[AVTCoreEnvironment defaultEnvironment];
-  [a1 preloadAllAvatarsWithStore:v7 environment:v8 completionHandler:v6];
+  [self preloadAllAvatarsWithStore:storeCopy environment:v8 completionHandler:handlerCopy];
 }
 
-+ (void)preloadAvatarsWithIdentifiers:(id)a3 store:(id)a4 environment:(id)a5 completionHandler:(id)a6
++ (void)preloadAvatarsWithIdentifiers:(id)identifiers store:(id)store environment:(id)environment completionHandler:(id)handler
 {
   v27 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [MEMORY[0x277CBEB18] array];
+  identifiersCopy = identifiers;
+  storeCopy = store;
+  environmentCopy = environment;
+  handlerCopy = handler;
+  array = [MEMORY[0x277CBEB18] array];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v14 = v9;
+  v14 = identifiersCopy;
   v15 = [v14 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v15)
   {
@@ -247,7 +247,7 @@ LABEL_8:
         }
 
         v19 = [AVTAvatarFetchRequest requestForAvatarWithIdentifier:*(*(&v22 + 1) + 8 * v18)];
-        [v13 addObject:v19];
+        [array addObject:v19];
 
         ++v18;
       }
@@ -259,48 +259,48 @@ LABEL_8:
     while (v16);
   }
 
-  [a1 preloadAvatarsWithFetchRequests:v13 store:v10 environment:v11 completionHandler:v12];
+  [self preloadAvatarsWithFetchRequests:array store:storeCopy environment:environmentCopy completionHandler:handlerCopy];
   v20 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)preloadAllAvatarsWithStore:(id)a3 environment:(id)a4 completionHandler:(id)a5
++ (void)preloadAllAvatarsWithStore:(id)store environment:(id)environment completionHandler:(id)handler
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  environmentCopy = environment;
+  storeCopy = store;
   v11 = +[AVTAvatarFetchRequest requestForAllAvatars];
   v14[0] = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
-  [a1 preloadAvatarsWithFetchRequests:v12 store:v10 environment:v9 completionHandler:v8];
+  [self preloadAvatarsWithFetchRequests:v12 store:storeCopy environment:environmentCopy completionHandler:handlerCopy];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)preloadAvatarsWithFetchRequests:(id)a3 store:(id)a4 environment:(id)a5 completionHandler:(id)a6
++ (void)preloadAvatarsWithFetchRequests:(id)requests store:(id)store environment:(id)environment completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v12 backgroundQueue];
-  v15 = [v12 logger];
+  requestsCopy = requests;
+  storeCopy = store;
+  environmentCopy = environment;
+  handlerCopy = handler;
+  backgroundQueue = [environmentCopy backgroundQueue];
+  logger = [environmentCopy logger];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __96__AVTAvatarRecordRendering_preloadAvatarsWithFetchRequests_store_environment_completionHandler___block_invoke;
   v21[3] = &unk_278CFA3B8;
-  v22 = v10;
-  v23 = v11;
-  v24 = v12;
-  v25 = v15;
-  v26 = v13;
-  v27 = a1;
-  v16 = v13;
-  v17 = v15;
-  v18 = v12;
-  v19 = v11;
-  v20 = v10;
-  dispatch_async(v14, v21);
+  v22 = requestsCopy;
+  v23 = storeCopy;
+  v24 = environmentCopy;
+  v25 = logger;
+  v26 = handlerCopy;
+  selfCopy = self;
+  v16 = handlerCopy;
+  v17 = logger;
+  v18 = environmentCopy;
+  v19 = storeCopy;
+  v20 = requestsCopy;
+  dispatch_async(backgroundQueue, v21);
 }
 
 uint64_t __96__AVTAvatarRecordRendering_preloadAvatarsWithFetchRequests_store_environment_completionHandler___block_invoke(uint64_t a1)

@@ -1,32 +1,32 @@
 @interface TSCHStyleSwapUndoTuple
-+ (id)convertedSwapTuplesForSwapTuples:(id)a3 chartInfo:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isSwappingSameStyleObject:(id)a3;
-- (BOOL)isSwappingSameStyleValues:(id)a3;
++ (id)convertedSwapTuplesForSwapTuples:(id)tuples chartInfo:(id)info;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isSwappingSameStyleObject:(id)object;
+- (BOOL)isSwappingSameStyleValues:(id)values;
 - (TSCHStyleOwnerReference)styleOwnerReference;
 - (TSCHStyleSemanticTag)semanticTag;
-- (TSCHStyleSwapUndoTuple)initWithArchive:(const void *)a3 unarchiver:(id)a4;
-- (TSCHStyleSwapUndoTuple)initWithChartInfo:(id)a3 swapType:(int)a4 index:(unint64_t)a5 oldValue:(id)a6 newValue:(id)a7;
-- (TSCHStyleSwapUndoTuple)initWithChartInfo:(id)a3 swapType:(int)a4 index:(unint64_t)a5 oldValue:(id)a6 newValue:(id)a7 refLineUUID:(id)a8;
-- (TSCHStyleSwapUndoTuple)initWithChartStylePreset:(id)a3 swapType:(int)a4 index:(unint64_t)a5 oldValue:(id)a6 newValue:(id)a7;
-- (TSCHStyleSwapUndoTuple)initWithPersistentStyleSwapSupporting:(id)a3 swapType:(int)a4 index:(unint64_t)a5 oldValue:(id)a6 newValue:(id)a7 refLineUUID:(id)a8;
+- (TSCHStyleSwapUndoTuple)initWithArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (TSCHStyleSwapUndoTuple)initWithChartInfo:(id)info swapType:(int)type index:(unint64_t)index oldValue:(id)value newValue:(id)newValue;
+- (TSCHStyleSwapUndoTuple)initWithChartInfo:(id)info swapType:(int)type index:(unint64_t)index oldValue:(id)value newValue:(id)newValue refLineUUID:(id)d;
+- (TSCHStyleSwapUndoTuple)initWithChartStylePreset:(id)preset swapType:(int)type index:(unint64_t)index oldValue:(id)value newValue:(id)newValue;
+- (TSCHStyleSwapUndoTuple)initWithPersistentStyleSwapSupporting:(id)supporting swapType:(int)type index:(unint64_t)index oldValue:(id)value newValue:(id)newValue refLineUUID:(id)d;
 - (TSSPropertySet)mutatedProperties;
-- (id)convertedSwapTupleForChartInfo:(id)a3;
+- (id)convertedSwapTupleForChartInfo:(id)info;
 - (id)description;
 - (id)inverse;
-- (id)migratedStyleForStyle:(id)a3 documentRoot:(id)a4;
-- (id)migratedSwapTupleForDocumentRoot:(id)a3;
-- (id)p_nonequalPropertiesFromMap:(id)a3 toMap:(id)a4;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
+- (id)migratedStyleForStyle:(id)style documentRoot:(id)root;
+- (id)migratedSwapTupleForDocumentRoot:(id)root;
+- (id)p_nonequalPropertiesFromMap:(id)map toMap:(id)toMap;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
 @end
 
 @implementation TSCHStyleSwapUndoTuple
 
-+ (id)convertedSwapTuplesForSwapTuples:(id)a3 chartInfo:(id)a4
++ (id)convertedSwapTuplesForSwapTuples:(id)tuples chartInfo:(id)info
 {
-  v5 = a3;
-  v7 = a4;
-  if (!v7)
+  tuplesCopy = tuples;
+  infoCopy = info;
+  if (!infoCopy)
   {
     v11 = MEMORY[0x277D81150];
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, v8, v9, v10, "+[TSCHStyleSwapUndoTuple convertedSwapTuplesForSwapTuples:chartInfo:]");
@@ -40,21 +40,21 @@
   v33[1] = 3221225472;
   v33[2] = sub_276310BE4;
   v33[3] = &unk_27A6B9950;
-  v26 = v7;
+  v26 = infoCopy;
   v34 = v26;
-  v31 = objc_msgSend_tsu_arrayByTransformingWithBlock_(v5, v27, v28, v29, v30, v33);
+  v31 = objc_msgSend_tsu_arrayByTransformingWithBlock_(tuplesCopy, v27, v28, v29, v30, v33);
 
   return v31;
 }
 
-- (TSCHStyleSwapUndoTuple)initWithPersistentStyleSwapSupporting:(id)a3 swapType:(int)a4 index:(unint64_t)a5 oldValue:(id)a6 newValue:(id)a7 refLineUUID:(id)a8
+- (TSCHStyleSwapUndoTuple)initWithPersistentStyleSwapSupporting:(id)supporting swapType:(int)type index:(unint64_t)index oldValue:(id)value newValue:(id)newValue refLineUUID:(id)d
 {
-  v46 = a5;
-  v47 = a3;
-  v13 = a6;
-  v14 = a7;
-  v16 = a8;
-  if (!(v13 | v14))
+  indexCopy = index;
+  supportingCopy = supporting;
+  valueCopy = value;
+  newValueCopy = newValue;
+  dCopy = d;
+  if (!(valueCopy | newValueCopy))
   {
     v20 = MEMORY[0x277D81150];
     v21 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, v17, v18, v19, "[TSCHStyleSwapUndoTuple initWithPersistentStyleSwapSupporting:swapType:index:oldValue:newValue:refLineUUID:]");
@@ -70,15 +70,15 @@
   v36 = v35;
   if (v35)
   {
-    v35->_swapType = a4;
-    v35->_index = v46;
-    objc_storeStrong(&v35->_styleSwapSupporting, a3);
-    objc_storeStrong(&v36->_oldValue, a6);
-    objc_storeStrong(&v36->_newValue, a7);
+    v35->_swapType = type;
+    v35->_index = indexCopy;
+    objc_storeStrong(&v35->_styleSwapSupporting, supporting);
+    objc_storeStrong(&v36->_oldValue, value);
+    objc_storeStrong(&v36->_newValue, newValue);
     mutatedProperties = v36->_mutatedProperties;
     v36->_mutatedProperties = 0;
 
-    v42 = objc_msgSend_copy(v16, v38, v39, v40, v41);
+    v42 = objc_msgSend_copy(dCopy, v38, v39, v40, v41);
     refLineUUID = v36->_refLineUUID;
     v36->_refLineUUID = v42;
   }
@@ -86,14 +86,14 @@
   return v36;
 }
 
-- (TSCHStyleSwapUndoTuple)initWithChartInfo:(id)a3 swapType:(int)a4 index:(unint64_t)a5 oldValue:(id)a6 newValue:(id)a7 refLineUUID:(id)a8
+- (TSCHStyleSwapUndoTuple)initWithChartInfo:(id)info swapType:(int)type index:(unint64_t)index oldValue:(id)value newValue:(id)newValue refLineUUID:(id)d
 {
-  v12 = *&a4;
-  v14 = a3;
-  v15 = a6;
-  v16 = a7;
-  v18 = a8;
-  if (!v14)
+  v12 = *&type;
+  infoCopy = info;
+  valueCopy = value;
+  newValueCopy = newValue;
+  dCopy = d;
+  if (!infoCopy)
   {
     v22 = MEMORY[0x277D81150];
     v23 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v17, v19, v20, v21, "[TSCHStyleSwapUndoTuple initWithChartInfo:swapType:index:oldValue:newValue:refLineUUID:]");
@@ -103,19 +103,19 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v33, v34, v35, v36);
   }
 
-  v37 = objc_msgSend_drawableInfo(v14, v17, v19, v20, v21);
-  v42 = objc_msgSend_initWithPersistentStyleSwapSupporting_swapType_index_oldValue_newValue_refLineUUID_(self, v38, v39, v40, v41, v37, v12, a5, v15, v16, v18);
+  v37 = objc_msgSend_drawableInfo(infoCopy, v17, v19, v20, v21);
+  v42 = objc_msgSend_initWithPersistentStyleSwapSupporting_swapType_index_oldValue_newValue_refLineUUID_(self, v38, v39, v40, v41, v37, v12, index, valueCopy, newValueCopy, dCopy);
 
   return v42;
 }
 
-- (TSCHStyleSwapUndoTuple)initWithChartInfo:(id)a3 swapType:(int)a4 index:(unint64_t)a5 oldValue:(id)a6 newValue:(id)a7
+- (TSCHStyleSwapUndoTuple)initWithChartInfo:(id)info swapType:(int)type index:(unint64_t)index oldValue:(id)value newValue:(id)newValue
 {
-  v10 = *&a4;
-  v12 = a3;
-  v13 = a6;
-  v15 = a7;
-  if (!v12)
+  v10 = *&type;
+  infoCopy = info;
+  valueCopy = value;
+  newValueCopy = newValue;
+  if (!infoCopy)
   {
     v19 = MEMORY[0x277D81150];
     v20 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, v16, v17, v18, "[TSCHStyleSwapUndoTuple initWithChartInfo:swapType:index:oldValue:newValue:]");
@@ -125,18 +125,18 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v30, v31, v32, v33);
   }
 
-  v34 = objc_msgSend_initWithChartInfo_swapType_index_oldValue_newValue_refLineUUID_(self, v14, v16, v17, v18, v12, v10, a5, v13, v15, 0);
+  v34 = objc_msgSend_initWithChartInfo_swapType_index_oldValue_newValue_refLineUUID_(self, v14, v16, v17, v18, infoCopy, v10, index, valueCopy, newValueCopy, 0);
 
   return v34;
 }
 
-- (TSCHStyleSwapUndoTuple)initWithChartStylePreset:(id)a3 swapType:(int)a4 index:(unint64_t)a5 oldValue:(id)a6 newValue:(id)a7
+- (TSCHStyleSwapUndoTuple)initWithChartStylePreset:(id)preset swapType:(int)type index:(unint64_t)index oldValue:(id)value newValue:(id)newValue
 {
-  v10 = *&a4;
-  v12 = a3;
-  v13 = a6;
-  v15 = a7;
-  if (!v12)
+  v10 = *&type;
+  presetCopy = preset;
+  valueCopy = value;
+  newValueCopy = newValue;
+  if (!presetCopy)
   {
     v19 = MEMORY[0x277D81150];
     v20 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, v16, v17, v18, "[TSCHStyleSwapUndoTuple initWithChartStylePreset:swapType:index:oldValue:newValue:]");
@@ -146,7 +146,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v30, v31, v32, v33);
   }
 
-  v34 = objc_msgSend_initWithPersistentStyleSwapSupporting_swapType_index_oldValue_newValue_refLineUUID_(self, v14, v16, v17, v18, v12, v10, a5, v13, v15, 0);
+  v34 = objc_msgSend_initWithPersistentStyleSwapSupporting_swapType_index_oldValue_newValue_refLineUUID_(self, v14, v16, v17, v18, presetCopy, v10, index, valueCopy, newValueCopy, 0);
 
   return v34;
 }
@@ -164,16 +164,16 @@
   return v29;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     isEqual = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = objc_opt_class();
     if (objc_msgSend_isMemberOfClass_(v5, v7, v8, v9, v10, v6))
@@ -205,19 +205,19 @@
   return isEqual;
 }
 
-- (BOOL)isSwappingSameStyleObject:(id)a3
+- (BOOL)isSwappingSameStyleObject:(id)object
 {
-  v4 = a3;
-  v5 = v4 && self->_index == v4[7] && self->_swapType == v4[6];
+  objectCopy = object;
+  v5 = objectCopy && self->_index == objectCopy[7] && self->_swapType == objectCopy[6];
 
   return v5;
 }
 
-- (BOOL)isSwappingSameStyleValues:(id)a3
+- (BOOL)isSwappingSameStyleValues:(id)values
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ((v6 = v4[1], v7 = self->_oldValue, v8 = v6, !(v7 | v8)) || (v13 = v8, v14 = objc_msgSend_isEqual_(v7, v9, v10, v11, v12, v8), v13, v7, v14)))
+  valuesCopy = values;
+  v5 = valuesCopy;
+  if (valuesCopy && ((v6 = valuesCopy[1], v7 = self->_oldValue, v8 = v6, !(v7 | v8)) || (v13 = v8, v14 = objc_msgSend_isEqual_(v7, v9, v10, v11, v12, v8), v13, v7, v14)))
   {
     v15 = v5[2];
     v16 = self->_newValue;
@@ -241,13 +241,13 @@
   return isEqual;
 }
 
-- (id)p_nonequalPropertiesFromMap:(id)a3 toMap:(id)a4
+- (id)p_nonequalPropertiesFromMap:(id)map toMap:(id)toMap
 {
-  v5 = a3;
-  v6 = a4;
+  mapCopy = map;
+  toMapCopy = toMap;
   v7 = objc_alloc(MEMORY[0x277D80AB8]);
-  v12 = objc_msgSend_initWithPropertyMap_(v7, v8, v9, v10, v11, v5);
-  objc_msgSend_minusPropertyMap_(v12, v13, v14, v15, v16, v6);
+  v12 = objc_msgSend_initWithPropertyMap_(v7, v8, v9, v10, v11, mapCopy);
+  objc_msgSend_minusPropertyMap_(v12, v13, v14, v15, v16, toMapCopy);
   v21 = objc_msgSend_allProperties(v12, v17, v18, v19, v20);
 
   return v21;
@@ -420,11 +420,11 @@ LABEL_13:
   return objc_msgSend_styleOwnerReferenceWithType_index_(TSCHStyleOwnerReference, v12, v14, v15, v16, v7, v13);
 }
 
-- (id)migratedStyleForStyle:(id)a3 documentRoot:(id)a4
+- (id)migratedStyleForStyle:(id)style documentRoot:(id)root
 {
-  v6 = a3;
-  v8 = a4;
-  if (!v8)
+  styleCopy = style;
+  rootCopy = root;
+  if (!rootCopy)
   {
     v12 = MEMORY[0x277D81150];
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, v9, v10, v11, "[TSCHStyleSwapUndoTuple migratedStyleForStyle:documentRoot:]");
@@ -434,13 +434,13 @@ LABEL_13:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v23, v24, v25, v26);
   }
 
-  v28 = v6;
+  v28 = styleCopy;
   if (v28)
   {
     v32 = objc_msgSend_swapType(self, v27, v29, v30, v31);
     if (v32 > 0xE || (v37 = v28, ((1 << v32) & 0x4954) == 0))
     {
-      v37 = objc_msgSend_migratedStyleForStyle_(v8, v33, v34, v35, v36, v28);
+      v37 = objc_msgSend_migratedStyleForStyle_(rootCopy, v33, v34, v35, v36, v28);
     }
   }
 
@@ -452,10 +452,10 @@ LABEL_13:
   return v37;
 }
 
-- (id)migratedSwapTupleForDocumentRoot:(id)a3
+- (id)migratedSwapTupleForDocumentRoot:(id)root
 {
-  v74 = a3;
-  if (!v74)
+  rootCopy = root;
+  if (!rootCopy)
   {
     v8 = MEMORY[0x277D81150];
     v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v4, v5, v6, v7, "[TSCHStyleSwapUndoTuple migratedSwapTupleForDocumentRoot:]");
@@ -466,10 +466,10 @@ LABEL_13:
   }
 
   v23 = objc_msgSend_beforeValue(self, v4, v5, v6, v7);
-  v28 = objc_msgSend_migratedStyleForStyle_documentRoot_(self, v24, v25, v26, v27, v23, v74);
+  v28 = objc_msgSend_migratedStyleForStyle_documentRoot_(self, v24, v25, v26, v27, v23, rootCopy);
 
   v33 = objc_msgSend_afterValue(self, v29, v30, v31, v32);
-  v38 = objc_msgSend_migratedStyleForStyle_documentRoot_(self, v34, v35, v36, v37, v33, v74);
+  v38 = objc_msgSend_migratedStyleForStyle_documentRoot_(self, v34, v35, v36, v37, v33, rootCopy);
 
   if (v28)
   {
@@ -503,10 +503,10 @@ LABEL_13:
   return v72;
 }
 
-- (id)convertedSwapTupleForChartInfo:(id)a3
+- (id)convertedSwapTupleForChartInfo:(id)info
 {
-  v5 = a3;
-  if (!v5)
+  infoCopy = info;
+  if (!infoCopy)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v4, v6, v7, v8, "[TSCHStyleSwapUndoTuple convertedSwapTupleForChartInfo:]");
@@ -518,9 +518,9 @@ LABEL_13:
 
   v24 = objc_msgSend_styleSwapSupporting(self, v4, v6, v7, v8);
 
-  if (v24 == v5)
+  if (v24 == infoCopy)
   {
-    v55 = self;
+    selfCopy = self;
   }
 
   else
@@ -531,15 +531,15 @@ LABEL_13:
     v40 = objc_msgSend_beforeValue(self, v36, v37, v38, v39);
     v45 = objc_msgSend_afterValue(self, v41, v42, v43, v44);
     v50 = objc_msgSend_refLineUUID(self, v46, v47, v48, v49);
-    v55 = objc_msgSend_initWithPersistentStyleSwapSupporting_swapType_index_oldValue_newValue_refLineUUID_(v25, v51, v52, v53, v54, v5, v30, v35, v40, v45, v50);
+    selfCopy = objc_msgSend_initWithPersistentStyleSwapSupporting_swapType_index_oldValue_newValue_refLineUUID_(v25, v51, v52, v53, v54, infoCopy, v30, v35, v40, v45, v50);
   }
 
-  return v55;
+  return selfCopy;
 }
 
-- (TSCHStyleSwapUndoTuple)initWithArchive:(const void *)a3 unarchiver:(id)a4
+- (TSCHStyleSwapUndoTuple)initWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
+  unarchiverCopy = unarchiver;
   v76.receiver = self;
   v76.super_class = TSCHStyleSwapUndoTuple;
   v8 = [(TSCHStyleSwapUndoTuple *)&v76 init];
@@ -550,10 +550,10 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v12 = *(a3 + 4);
+  v12 = *(archive + 4);
   if ((v12 & 1) != 0 && (~v12 & 0x30) == 0 && ((v12 & 2) != 0 || (v12 & 4) != 0))
   {
-    v29 = *(a3 + 15);
+    v29 = *(archive + 15);
     if ((v29 - 1) >= 0xF)
     {
       v30 = MEMORY[0x277D81150];
@@ -565,59 +565,59 @@ LABEL_20:
       v29 = 1;
     }
 
-    v45 = *(a3 + 14);
+    v45 = *(archive + 14);
     v8->_swapType = v29;
     v8->_index = v45;
-    v46 = *(a3 + 4);
+    v46 = *(archive + 4);
     if (v46)
     {
-      v47 = *(a3 + 3);
+      v47 = *(archive + 3);
       v74[0] = MEMORY[0x277D85DD0];
       v74[1] = 3221225472;
       v74[2] = sub_276312908;
       v74[3] = &unk_27A6B9978;
       v75 = v8;
-      sub_27631285C(v6, v47, &unk_2885A4498, v74);
+      sub_27631285C(unarchiverCopy, v47, &unk_2885A4498, v74);
 
-      v46 = *(a3 + 4);
+      v46 = *(archive + 4);
     }
 
     if ((v46 & 2) != 0)
     {
-      v48 = *(a3 + 4);
+      v48 = *(archive + 4);
       v72[0] = MEMORY[0x277D85DD0];
       v72[1] = 3221225472;
       v72[2] = sub_276312914;
       v72[3] = &unk_27A6B99A0;
       v73 = v8;
-      v49 = v6;
+      v49 = unarchiverCopy;
       v50 = objc_opt_class();
       objc_msgSend_readReferenceMessage_class_protocol_completion_(v49, v51, v52, v53, v54, v48, v50, 0, v72);
 
-      v46 = *(a3 + 4);
+      v46 = *(archive + 4);
     }
 
     if ((v46 & 4) != 0)
     {
-      v55 = *(a3 + 5);
+      v55 = *(archive + 5);
       v70[0] = MEMORY[0x277D85DD0];
       v70[1] = 3221225472;
       v70[2] = sub_276312920;
       v70[3] = &unk_27A6B99A0;
       v71 = v8;
-      v56 = v6;
+      v56 = unarchiverCopy;
       v57 = objc_opt_class();
       objc_msgSend_readReferenceMessage_class_protocol_completion_(v56, v58, v59, v60, v61, v55, v57, 0, v70);
 
-      v46 = *(a3 + 4);
+      v46 = *(archive + 4);
     }
 
     if ((v46 & 8) != 0)
     {
       v62 = objc_alloc(MEMORY[0x277CCAD78]);
-      if (*(a3 + 6))
+      if (*(archive + 6))
       {
-        v67 = objc_msgSend_tsp_initWithMessage_(v62, v63, v64, v65, v66, *(a3 + 6));
+        v67 = objc_msgSend_tsp_initWithMessage_(v62, v63, v64, v65, v66, *(archive + 6));
       }
 
       else
@@ -644,9 +644,9 @@ LABEL_21:
   return v28;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v63 = a4;
+  archiverCopy = archiver;
   v11 = objc_msgSend_styleSwapSupporting(self, v6, v7, v8, v9);
   if (!v11)
   {
@@ -658,21 +658,21 @@ LABEL_21:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v26, v27, v28, v29);
   }
 
-  *(a3 + 4) |= 1u;
-  v30 = *(a3 + 3);
+  *(archive + 4) |= 1u;
+  v30 = *(archive + 3);
   if (!v30)
   {
-    v31 = *(a3 + 1);
+    v31 = *(archive + 1);
     if (v31)
     {
       v31 = *(v31 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v30 = MEMORY[0x277C97B90](v31);
-    *(a3 + 3) = v30;
+    *(archive + 3) = v30;
   }
 
-  objc_msgSend_setStrongReference_message_(v63, v10, v12, v13, v14, v11, v30);
+  objc_msgSend_setStrongReference_message_(archiverCopy, v10, v12, v13, v14, v11, v30);
   swapType = self->_swapType;
   if ((swapType - 1) >= 0xF)
   {
@@ -685,67 +685,67 @@ LABEL_21:
     swapType = 1;
   }
 
-  v52 = *(a3 + 4);
-  *(a3 + 4) = v52 | 0x20;
-  *(a3 + 15) = swapType;
+  v52 = *(archive + 4);
+  *(archive + 4) = v52 | 0x20;
+  *(archive + 15) = swapType;
   index = self->_index;
-  *(a3 + 4) = v52 | 0x30;
-  *(a3 + 14) = index;
+  *(archive + 4) = v52 | 0x30;
+  *(archive + 14) = index;
   oldValue = self->_oldValue;
   if (oldValue)
   {
-    *(a3 + 4) = v52 | 0x32;
-    v55 = *(a3 + 4);
+    *(archive + 4) = v52 | 0x32;
+    v55 = *(archive + 4);
     if (!v55)
     {
-      v56 = *(a3 + 1);
+      v56 = *(archive + 1);
       if (v56)
       {
         v56 = *(v56 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v55 = MEMORY[0x277C97B90](v56);
-      *(a3 + 4) = v55;
+      *(archive + 4) = v55;
     }
 
-    objc_msgSend_setStrongReference_message_(v63, v32, v33, v34, v35, oldValue, v55);
+    objc_msgSend_setStrongReference_message_(archiverCopy, v32, v33, v34, v35, oldValue, v55);
   }
 
   newValue = self->_newValue;
   if (newValue)
   {
-    *(a3 + 4) |= 4u;
-    v58 = *(a3 + 5);
+    *(archive + 4) |= 4u;
+    v58 = *(archive + 5);
     if (!v58)
     {
-      v59 = *(a3 + 1);
+      v59 = *(archive + 1);
       if (v59)
       {
         v59 = *(v59 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v58 = MEMORY[0x277C97B90](v59);
-      *(a3 + 5) = v58;
+      *(archive + 5) = v58;
     }
 
-    objc_msgSend_setStrongReference_message_(v63, v32, v33, v34, v35, newValue, v58);
+    objc_msgSend_setStrongReference_message_(archiverCopy, v32, v33, v34, v35, newValue, v58);
   }
 
   refLineUUID = self->_refLineUUID;
   if (refLineUUID)
   {
-    *(a3 + 4) |= 8u;
-    v61 = *(a3 + 6);
+    *(archive + 4) |= 8u;
+    v61 = *(archive + 6);
     if (!v61)
     {
-      v62 = *(a3 + 1);
+      v62 = *(archive + 1);
       if (v62)
       {
         v62 = *(v62 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v61 = MEMORY[0x277C97B40](v62);
-      *(a3 + 6) = v61;
+      *(archive + 6) = v61;
     }
 
     objc_msgSend_tsp_saveToMessage_(refLineUUID, v32, v33, v34, v35, v61);

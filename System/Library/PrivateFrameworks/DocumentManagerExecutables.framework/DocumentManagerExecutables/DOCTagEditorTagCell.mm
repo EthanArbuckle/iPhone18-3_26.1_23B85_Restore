@@ -3,9 +3,9 @@
 - (DOCTag)tagValue;
 - (DOCTagDotView)tagDotView;
 - (UIButton)tagDotButton;
-- (_TtC26DocumentManagerExecutables19DOCTagEditorTagCell)initWithCoder:(id)a3;
-- (void)setMixedSelection:(BOOL)a3;
-- (void)setTagValue:(id)a3;
+- (_TtC26DocumentManagerExecutables19DOCTagEditorTagCell)initWithCoder:(id)coder;
+- (void)setMixedSelection:(BOOL)selection;
+- (void)setTagValue:(id)value;
 - (void)updateContentConfiguration;
 - (void)updateTagDotAccessoryViewForCurrentMode;
 - (void)updateTagDotImageForCurrentSelectionState;
@@ -20,11 +20,11 @@
   return *(&self->super.super.super.super.super.super.isa + v3);
 }
 
-- (void)setTagValue:(id)a3
+- (void)setTagValue:(id)value
 {
-  v6 = a3;
-  v5 = self;
-  specialized DOCTagEditorTagCell.tagValue.setter(a3);
+  valueCopy = value;
+  selfCopy = self;
+  specialized DOCTagEditorTagCell.tagValue.setter(value);
 }
 
 - (UIButton)tagDotButton
@@ -48,17 +48,17 @@
   return *(&self->super.super.super.super.super.super.isa + v3);
 }
 
-- (void)setMixedSelection:(BOOL)a3
+- (void)setMixedSelection:(BOOL)selection
 {
   v5 = OBJC_IVAR____TtC26DocumentManagerExecutables19DOCTagEditorTagCell_mixedSelection;
   swift_beginAccess();
-  *(&self->super.super.super.super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.super.super.super.isa + v5) = selection;
   v6 = *((*MEMORY[0x277D85000] & self->super.super.super.super.super.super.isa) + 0xD0);
-  v7 = self;
+  selfCopy = self;
   v6();
 }
 
-- (_TtC26DocumentManagerExecutables19DOCTagEditorTagCell)initWithCoder:(id)a3
+- (_TtC26DocumentManagerExecutables19DOCTagEditorTagCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables19DOCTagEditorTagCell_tagValue) = 0;
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables19DOCTagEditorTagCell_tagDotButton) = 0;
@@ -71,19 +71,19 @@
 
 - (void)updateTagDotImageForCurrentSelectionState
 {
-  v2 = self;
+  selfCopy = self;
   DOCTagEditorTagCell.updateTagDotImageForCurrentSelectionState()();
 }
 
 - (void)updateTagDotAccessoryViewForCurrentMode
 {
-  v2 = self;
+  selfCopy = self;
   DOCTagEditorTagCell.updateTagDotAccessoryViewForCurrentMode()();
 }
 
 - (void)updateContentConfiguration
 {
-  v2 = self;
+  selfCopy = self;
   DOCTagEditorTagCell.updateContentConfiguration()();
 }
 

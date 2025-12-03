@@ -1,23 +1,23 @@
 @interface _SBUIWallpaperInstructionView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_SBUIWallpaperInstructionView)initWithImage:(id)a3 text:(id)a4 font:(id)a5;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_SBUIWallpaperInstructionView)initWithImage:(id)image text:(id)text font:(id)font;
 - (void)layoutSubviews;
-- (void)setTintColor:(id)a3;
+- (void)setTintColor:(id)color;
 @end
 
 @implementation _SBUIWallpaperInstructionView
 
-- (_SBUIWallpaperInstructionView)initWithImage:(id)a3 text:(id)a4 font:(id)a5
+- (_SBUIWallpaperInstructionView)initWithImage:(id)image text:(id)text font:(id)font
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  imageCopy = image;
+  textCopy = text;
+  fontCopy = font;
   v17.receiver = self;
   v17.super_class = _SBUIWallpaperInstructionView;
   v11 = [(_SBUIWallpaperInstructionView *)&v17 init];
   if (v11)
   {
-    v12 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v8];
+    v12 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:imageCopy];
     imageView = v11->_imageView;
     v11->_imageView = v12;
 
@@ -26,8 +26,8 @@
     textLabel = v11->_textLabel;
     v11->_textLabel = v14;
 
-    [(UILabel *)v11->_textLabel setText:v9];
-    [(UILabel *)v11->_textLabel setFont:v10];
+    [(UILabel *)v11->_textLabel setText:textCopy];
+    [(UILabel *)v11->_textLabel setFont:fontCopy];
     [(UILabel *)v11->_textLabel setNumberOfLines:0];
     [(_SBUIWallpaperInstructionView *)v11 addSubview:v11->_textLabel];
   }
@@ -35,10 +35,10 @@
   return v11;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(UIImageView *)self->_imageView sizeThatFits:?];
   v7 = v6;
   v9 = v8 + 5.0;
@@ -54,13 +54,13 @@
   return result;
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
   v5.receiver = self;
   v5.super_class = _SBUIWallpaperInstructionView;
-  v4 = a3;
-  [(_SBUIWallpaperInstructionView *)&v5 setTintColor:v4];
-  [(UILabel *)self->_textLabel setTextColor:v4, v5.receiver, v5.super_class];
+  colorCopy = color;
+  [(_SBUIWallpaperInstructionView *)&v5 setTintColor:colorCopy];
+  [(UILabel *)self->_textLabel setTextColor:colorCopy, v5.receiver, v5.super_class];
 }
 
 - (void)layoutSubviews

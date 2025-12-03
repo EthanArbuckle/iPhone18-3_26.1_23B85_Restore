@@ -1,5 +1,5 @@
 @interface BWDeferredContainerPixelBufferPoolWrapper
-- (BWDeferredContainerPixelBufferPoolWrapper)initWithVideoFormat:(id)a3 capacity:(unint64_t)a4 name:(id)a5;
+- (BWDeferredContainerPixelBufferPoolWrapper)initWithVideoFormat:(id)format capacity:(unint64_t)capacity name:(id)name;
 - (void)dealloc;
 - (void)newPixelBuffer;
 - (void)signal;
@@ -7,14 +7,14 @@
 
 @implementation BWDeferredContainerPixelBufferPoolWrapper
 
-- (BWDeferredContainerPixelBufferPoolWrapper)initWithVideoFormat:(id)a3 capacity:(unint64_t)a4 name:(id)a5
+- (BWDeferredContainerPixelBufferPoolWrapper)initWithVideoFormat:(id)format capacity:(unint64_t)capacity name:(id)name
 {
   v11.receiver = self;
   v11.super_class = BWDeferredContainerPixelBufferPoolWrapper;
   v8 = [(BWDeferredContainerPixelBufferPoolWrapper *)&v11 init];
   if (v8)
   {
-    v9 = [[BWPixelBufferPool alloc] initWithVideoFormat:a3 capacity:a4 name:a5 memoryPool:+[BWMemoryPool sharedMemoryPool]];
+    v9 = [[BWPixelBufferPool alloc] initWithVideoFormat:format capacity:capacity name:name memoryPool:+[BWMemoryPool sharedMemoryPool]];
     v8->_pool = v9;
     v8->_semaphore = dispatch_semaphore_create([(BWPixelBufferPool *)v9 capacity]);
   }

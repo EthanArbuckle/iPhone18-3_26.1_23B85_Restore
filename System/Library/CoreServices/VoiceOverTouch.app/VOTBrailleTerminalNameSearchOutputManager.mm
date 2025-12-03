@@ -1,14 +1,14 @@
 @interface VOTBrailleTerminalNameSearchOutputManager
-- (VOTBrailleTerminalNameSearchOutputManager)initWithItemSource:(id)a3 filter:(id)a4;
-- (void)itemSource:(id)a3 didFilter:(id)a4 didSwitchFocus:(id)a5 focusedValue:(id)a6;
+- (VOTBrailleTerminalNameSearchOutputManager)initWithItemSource:(id)source filter:(id)filter;
+- (void)itemSource:(id)source didFilter:(id)filter didSwitchFocus:(id)focus focusedValue:(id)value;
 @end
 
 @implementation VOTBrailleTerminalNameSearchOutputManager
 
-- (VOTBrailleTerminalNameSearchOutputManager)initWithItemSource:(id)a3 filter:(id)a4
+- (VOTBrailleTerminalNameSearchOutputManager)initWithItemSource:(id)source filter:(id)filter
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  filterCopy = filter;
   v14.receiver = self;
   v14.super_class = VOTBrailleTerminalNameSearchOutputManager;
   v8 = [(VOTBrailleTerminalNameSearchOutputManager *)&v14 init];
@@ -16,7 +16,7 @@
   if (v8)
   {
     v8->_active = 0;
-    v10 = [[VOTNameSearcher alloc] initWithDelegate:v8 itemSource:v6 filter:v7];
+    v10 = [[VOTNameSearcher alloc] initWithDelegate:v8 itemSource:sourceCopy filter:filterCopy];
     nameSearcher = v9->_nameSearcher;
     v9->_nameSearcher = v10;
 
@@ -27,28 +27,28 @@
   return v9;
 }
 
-- (void)itemSource:(id)a3 didFilter:(id)a4 didSwitchFocus:(id)a5 focusedValue:(id)a6
+- (void)itemSource:(id)source didFilter:(id)filter didSwitchFocus:(id)focus focusedValue:(id)value
 {
-  v15 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  sourceCopy = source;
+  filterCopy = filter;
+  focusCopy = focus;
+  valueCopy = value;
   if (self->_active)
   {
-    if (v10 && ![v10 integerValue])
+    if (filterCopy && ![filterCopy integerValue])
     {
       self->_noMatch = 1;
-      if (v11)
+      if (focusCopy)
       {
         goto LABEL_5;
       }
     }
 
-    else if (v11)
+    else if (focusCopy)
     {
 LABEL_5:
       v13 = +[VOTBrailleManager manager];
-      [v13 refreshBrailleForTerminalOutput:v11];
+      [v13 refreshBrailleForTerminalOutput:focusCopy];
 LABEL_9:
 
       goto LABEL_10;

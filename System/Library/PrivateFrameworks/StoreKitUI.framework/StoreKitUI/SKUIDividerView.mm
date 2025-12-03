@@ -1,9 +1,9 @@
 @interface SKUIDividerView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIColor)dividerColor;
 - (void)dividerColor;
-- (void)setBackgroundColor:(id)a3;
-- (void)setDividerColor:(id)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setDividerColor:(id)color;
 @end
 
 @implementation SKUIDividerView
@@ -15,14 +15,14 @@
     [SKUIDividerView dividerColor];
   }
 
-  v3 = [(SKUIDividerView *)self backgroundColor];
+  backgroundColor = [(SKUIDividerView *)self backgroundColor];
 
-  return v3;
+  return backgroundColor;
 }
 
-- (void)setDividerColor:(id)a3
+- (void)setDividerColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUIDividerView setDividerColor:];
@@ -30,10 +30,10 @@
 
   v5.receiver = self;
   v5.super_class = SKUIDividerView;
-  [(SKUIDividerView *)&v5 setBackgroundColor:v4];
+  [(SKUIDividerView *)&v5 setBackgroundColor:colorCopy];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
@@ -41,10 +41,10 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIDividerView sizeThatFits:];
@@ -52,8 +52,8 @@
 
   dividerOrientation = self->_dividerOrientation;
   dividerSize = self->_dividerSize;
-  v8 = [MEMORY[0x277D759A0] mainScreen];
-  [v8 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v10 = 1.0 / v9;
 
   if (dividerSize >= 0.00000011920929)

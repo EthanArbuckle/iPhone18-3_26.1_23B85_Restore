@@ -1,6 +1,6 @@
 @interface NRLaunchNotificationController
 - (id)prefs;
-- (void)_setLaunchEvent:(id)a3 enable:(BOOL)a4;
+- (void)_setLaunchEvent:(id)event enable:(BOOL)enable;
 @end
 
 @implementation NRLaunchNotificationController
@@ -17,14 +17,14 @@
   return v3;
 }
 
-- (void)_setLaunchEvent:(id)a3 enable:(BOOL)a4
+- (void)_setLaunchEvent:(id)event enable:(BOOL)enable
 {
-  v4 = a4;
-  v5 = a3;
-  if (v4)
+  enableCopy = enable;
+  eventCopy = event;
+  if (enableCopy)
   {
     v6 = xpc_dictionary_create(0, 0, 0);
-    xpc_dictionary_set_string(v6, "Notification", [v5 UTF8String]);
+    xpc_dictionary_set_string(v6, "Notification", [eventCopy UTF8String]);
   }
 
   else
@@ -41,7 +41,7 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = @"disabling";
-      if (v4)
+      if (enableCopy)
       {
         v10 = @"enabling";
       }
@@ -49,12 +49,12 @@
       v11 = 138412546;
       v12 = v10;
       v13 = 2112;
-      v14 = v5;
+      v14 = eventCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "NRLaunchNotificationController: %@ launch notification %@", &v11, 0x16u);
     }
   }
 
-  [v5 UTF8String];
+  [eventCopy UTF8String];
   xpc_set_event();
 }
 

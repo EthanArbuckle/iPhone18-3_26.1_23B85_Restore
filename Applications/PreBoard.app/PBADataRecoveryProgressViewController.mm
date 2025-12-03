@@ -1,8 +1,8 @@
 @interface PBADataRecoveryProgressViewController
 - (void)didReceiveMemoryWarning;
 - (void)loadView;
-- (void)setProgress:(double)a3;
-- (void)setStatusText:(id)a3;
+- (void)setProgress:(double)progress;
+- (void)setStatusText:(id)text;
 - (void)viewDidLoad;
 @end
 
@@ -21,21 +21,21 @@
 
   [(SBUIAppleLogoView *)self->_appleLogoView setTranslatesAutoresizingMaskIntoConstraints:0];
   [v7 addSubview:self->_appleLogoView];
-  v22 = [v7 leadingAnchor];
-  v21 = [(SBUIAppleLogoView *)self->_appleLogoView leadingAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21];
+  leadingAnchor = [v7 leadingAnchor];
+  leadingAnchor2 = [(SBUIAppleLogoView *)self->_appleLogoView leadingAnchor];
+  v20 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v23[0] = v20;
-  v19 = [v7 trailingAnchor];
-  v18 = [(SBUIAppleLogoView *)self->_appleLogoView trailingAnchor];
-  v10 = [v19 constraintEqualToAnchor:v18];
+  trailingAnchor = [v7 trailingAnchor];
+  trailingAnchor2 = [(SBUIAppleLogoView *)self->_appleLogoView trailingAnchor];
+  v10 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v23[1] = v10;
-  v11 = [v7 topAnchor];
-  v12 = [(SBUIAppleLogoView *)self->_appleLogoView topAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  topAnchor = [v7 topAnchor];
+  topAnchor2 = [(SBUIAppleLogoView *)self->_appleLogoView topAnchor];
+  v13 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v23[2] = v13;
-  v14 = [v7 bottomAnchor];
-  v15 = [(SBUIAppleLogoView *)self->_appleLogoView bottomAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15];
+  bottomAnchor = [v7 bottomAnchor];
+  bottomAnchor2 = [(SBUIAppleLogoView *)self->_appleLogoView bottomAnchor];
+  v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v23[3] = v16;
   v17 = [NSArray arrayWithObjects:v23 count:4];
   [NSLayoutConstraint activateConstraints:v17];
@@ -61,18 +61,18 @@
   [(PBADataRecoveryProgressViewController *)&v2 didReceiveMemoryWarning];
 }
 
-- (void)setProgress:(double)a3
+- (void)setProgress:(double)progress
 {
-  self->_progress = a3;
-  *&a3 = a3;
-  [(SBUIAppleLogoView *)self->_appleLogoView setProgress:a3];
+  self->_progress = progress;
+  *&progress = progress;
+  [(SBUIAppleLogoView *)self->_appleLogoView setProgress:progress];
 }
 
-- (void)setStatusText:(id)a3
+- (void)setStatusText:(id)text
 {
-  objc_storeStrong(&self->_statusText, a3);
-  v5 = a3;
-  [(SBUIAppleLogoView *)self->_appleLogoView setStatusText:v5];
+  objc_storeStrong(&self->_statusText, text);
+  textCopy = text;
+  [(SBUIAppleLogoView *)self->_appleLogoView setStatusText:textCopy];
 }
 
 @end

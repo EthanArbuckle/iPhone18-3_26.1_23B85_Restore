@@ -1,25 +1,25 @@
 @interface CloudGeniusHasValueTransform
-- (id)geniusValueForMLValue:(id)a3;
+- (id)geniusValueForMLValue:(id)value;
 @end
 
 @implementation CloudGeniusHasValueTransform
 
-- (id)geniusValueForMLValue:(id)a3
+- (id)geniusValueForMLValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [valueCopy BOOLValue];
 LABEL_6:
-    v5 = [NSNumber numberWithBool:v4];
+    v5 = [NSNumber numberWithBool:bOOLValue];
     goto LABEL_7;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v4 = [v3 length] != 0;
+    bOOLValue = [valueCopy length] != 0;
     goto LABEL_6;
   }
 

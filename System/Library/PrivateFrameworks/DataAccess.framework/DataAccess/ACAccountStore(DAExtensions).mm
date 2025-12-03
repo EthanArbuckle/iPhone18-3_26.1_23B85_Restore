@@ -24,23 +24,23 @@
         [ACAccountStore(DAExtensions) _daAccountsWithAccountTypeIdentifiers:enabledForDADataclasses:filterOnDataclasses:withCompletion:];
       }
 
-      v10 = [MEMORY[0x277D03928] sharedConnection];
-      [v10 registerForInterrogationWithBlock:&__block_literal_global_33];
+      mEMORY[0x277D03928] = [MEMORY[0x277D03928] sharedConnection];
+      [mEMORY[0x277D03928] registerForInterrogationWithBlock:&__block_literal_global_33];
     }
   }
 
   if (a5)
   {
     v11 = acDataclassesForDADataclasses(a4);
-    v12 = [v11 allObjects];
+    allObjects = [v11 allObjects];
     v41[0] = MEMORY[0x277D85DD0];
     v41[1] = 3221225472;
     v41[2] = __129__ACAccountStore_DAExtensions___daAccountsWithAccountTypeIdentifiers_enabledForDADataclasses_filterOnDataclasses_withCompletion___block_invoke_4;
     v41[3] = &unk_278F13748;
-    v41[4] = a1;
+    v41[4] = self;
     v42 = v24;
     v13 = v24;
-    [a1 accountIdentifiersEnabledForDataclasses:v12 withAccountTypeIdentifiers:v25 completion:v41];
+    [self accountIdentifiersEnabledForDataclasses:allObjects withAccountTypeIdentifiers:v25 completion:v41];
   }
 
   else
@@ -51,7 +51,7 @@
     v39[3] = __Block_byref_object_copy__3;
     v39[4] = __Block_byref_object_dispose__3;
     v40 = 0;
-    v14 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v15 = dispatch_group_create();
     v35 = 0u;
     v36 = 0u;
@@ -77,11 +77,11 @@
           v31[1] = 3221225472;
           v31[2] = __129__ACAccountStore_DAExtensions___daAccountsWithAccountTypeIdentifiers_enabledForDADataclasses_filterOnDataclasses_withCompletion___block_invoke_3_41;
           v31[3] = &unk_278F13798;
-          v31[4] = a1;
+          v31[4] = self;
           v34 = v39;
-          v32 = v14;
+          v32 = array;
           v33 = v15;
-          [a1 accountTypeWithIdentifier:v19 completion:v31];
+          [self accountTypeWithIdentifier:v19 completion:v31];
         }
 
         v16 = [obj countByEnumeratingWithState:&v35 objects:v43 count:16];
@@ -95,10 +95,10 @@
     block[1] = 3221225472;
     block[2] = __129__ACAccountStore_DAExtensions___daAccountsWithAccountTypeIdentifiers_enabledForDADataclasses_filterOnDataclasses_withCompletion___block_invoke_5;
     block[3] = &unk_278F13720;
-    v28 = v14;
+    v28 = array;
     v29 = v24;
     v30 = v39;
-    v21 = v14;
+    v21 = array;
     v22 = v24;
     dispatch_group_notify(v15, v20, block);
 
@@ -112,9 +112,9 @@
 {
   v4 = MEMORY[0x277D03970];
   v5 = a3;
-  v7 = [v4 leafAccountTypes];
-  v6 = [v7 allObjects];
-  [a1 _daAccountsWithAccountTypeIdentifiers:v6 enabledForDADataclasses:0 filterOnDataclasses:0 withCompletion:v5];
+  leafAccountTypes = [v4 leafAccountTypes];
+  allObjects = [leafAccountTypes allObjects];
+  [self _daAccountsWithAccountTypeIdentifiers:allObjects enabledForDADataclasses:0 filterOnDataclasses:0 withCompletion:v5];
 }
 
 - (id)da_accounts
@@ -133,7 +133,7 @@
   v8 = &v9;
   v3 = v2;
   v7 = v3;
-  [a1 da_loadDAAccountsWithCompletion:v6];
+  [self da_loadDAAccountsWithCompletion:v6];
   dispatch_semaphore_wait(v3, 0xFFFFFFFFFFFFFFFFLL);
   v4 = v10[5];
 
@@ -159,7 +159,7 @@
   v11 = &v12;
   v6 = v5;
   v10 = v6;
-  [a1 da_loadDAAccountsWithAccountTypeIdentifiers:v4 withCompletion:v9];
+  [self da_loadDAAccountsWithAccountTypeIdentifiers:v4 withCompletion:v9];
   dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
   v7 = v13[5];
 
@@ -194,7 +194,7 @@
         v13 = *(*(&v33 + 1) + 8 * i);
         if (([v13 isEqualToString:v10] & 1) == 0 && (objc_msgSend(v13, "isEqualToString:", v11) & 1) == 0)
         {
-          [ACAccountStore(DAExtensions) da_accountsWithAccountTypeIdentifiers:a2 outError:a1];
+          [ACAccountStore(DAExtensions) da_accountsWithAccountTypeIdentifiers:a2 outError:self];
         }
       }
 
@@ -204,7 +204,7 @@
     while (v8);
   }
 
-  v27 = [a1 accountsWithAccountTypeIdentifiers:v7 error:a4];
+  v27 = [self accountsWithAccountTypeIdentifiers:v7 error:a4];
   if (v27)
   {
     v28 = objc_opt_new();
@@ -314,7 +314,7 @@ LABEL_22:
   v13 = &v14;
   v8 = v7;
   v12 = v8;
-  [a1 da_loadDAAccountsWithAccountTypeIdentifiers:v6 enabledForDADataclasses:a4 withCompletion:v11];
+  [self da_loadDAAccountsWithAccountTypeIdentifiers:v6 enabledForDADataclasses:a4 withCompletion:v11];
   dispatch_semaphore_wait(v8, 0xFFFFFFFFFFFFFFFFLL);
   v9 = v15[5];
 

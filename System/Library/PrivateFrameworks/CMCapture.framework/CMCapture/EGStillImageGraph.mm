@@ -1,23 +1,23 @@
 @interface EGStillImageGraph
-- (EGStillImageGraph)initWithName:(id)a3 stillImageSettings:(id)a4 delegate:(id)a5;
-- (int)enqueueSampleBuffer:(opaqueCMSampleBuffer *)a3;
+- (EGStillImageGraph)initWithName:(id)name stillImageSettings:(id)settings delegate:(id)delegate;
+- (int)enqueueSampleBuffer:(opaqueCMSampleBuffer *)buffer;
 - (void)captureComplete;
 - (void)dealloc;
-- (void)didEncounterError:(int)a3 description:(id)a4 element:(id)a5;
-- (void)didFinishProcessingSampleBuffer:(opaqueCMSampleBuffer *)a3 description:(id)a4;
+- (void)didEncounterError:(int)error description:(id)description element:(id)element;
+- (void)didFinishProcessingSampleBuffer:(opaqueCMSampleBuffer *)buffer description:(id)description;
 @end
 
 @implementation EGStillImageGraph
 
-- (EGStillImageGraph)initWithName:(id)a3 stillImageSettings:(id)a4 delegate:(id)a5
+- (EGStillImageGraph)initWithName:(id)name stillImageSettings:(id)settings delegate:(id)delegate
 {
   v9.receiver = self;
   v9.super_class = EGStillImageGraph;
-  v7 = [(EGGraph *)&v9 initWithName:a3];
+  v7 = [(EGGraph *)&v9 initWithName:name];
   if (v7)
   {
-    v7->_stillImageSettings = a4;
-    objc_storeWeak(&v7->_weakDelegate, a5);
+    v7->_stillImageSettings = settings;
+    objc_storeWeak(&v7->_weakDelegate, delegate);
   }
 
   return v7;
@@ -30,12 +30,12 @@
   [(EGGraph *)&v3 dealloc];
 }
 
-- (int)enqueueSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (int)enqueueSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   sampleBufferEntryPoint = self->_sampleBufferEntryPoint;
   if (sampleBufferEntryPoint)
   {
-    return [(EGStillImageGraphSampleBufferEntryPoint *)sampleBufferEntryPoint enqueueSampleBuffer:a3];
+    return [(EGStillImageGraphSampleBufferEntryPoint *)sampleBufferEntryPoint enqueueSampleBuffer:buffer];
   }
 
   else
@@ -44,24 +44,24 @@
   }
 }
 
-- (void)didFinishProcessingSampleBuffer:(opaqueCMSampleBuffer *)a3 description:(id)a4
+- (void)didFinishProcessingSampleBuffer:(opaqueCMSampleBuffer *)buffer description:(id)description
 {
   WeakRetained = objc_loadWeakRetained(&self->_weakDelegate);
   if (WeakRetained)
   {
     v8 = WeakRetained;
-    [WeakRetained processingCoordinator:self didFinishProcessingSampleBuffer:a3 description:a4];
+    [WeakRetained processingCoordinator:self didFinishProcessingSampleBuffer:buffer description:description];
   }
 }
 
-- (void)didEncounterError:(int)a3 description:(id)a4 element:(id)a5
+- (void)didEncounterError:(int)error description:(id)description element:(id)element
 {
-  v6 = *&a3;
+  v6 = *&error;
   WeakRetained = objc_loadWeakRetained(&self->_weakDelegate);
   if (WeakRetained)
   {
     v9 = WeakRetained;
-    [WeakRetained processingCoordinator:self didEncounterError:v6 stillImageSettings:self->_stillImageSettings description:a4];
+    [WeakRetained processingCoordinator:self didEncounterError:v6 stillImageSettings:self->_stillImageSettings description:description];
   }
 }
 

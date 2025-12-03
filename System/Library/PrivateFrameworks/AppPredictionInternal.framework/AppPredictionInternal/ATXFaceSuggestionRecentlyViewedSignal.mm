@@ -1,6 +1,6 @@
 @interface ATXFaceSuggestionRecentlyViewedSignal
 - (ATXFaceSuggestionRecentlyViewedSignal)init;
-- (double)valueForDescriptor:(id)a3;
+- (double)valueForDescriptor:(id)descriptor;
 @end
 
 @implementation ATXFaceSuggestionRecentlyViewedSignal
@@ -17,9 +17,9 @@
     recentlyViewedFeaturedDescriptorKeys = v2->_recentlyViewedFeaturedDescriptorKeys;
     v2->_recentlyViewedFeaturedDescriptorKeys = v3;
 
-    v5 = [MEMORY[0x277CBEA80] currentCalendar];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
     v6 = objc_opt_new();
-    v7 = [v5 dateByAddingUnit:16 value:-7 toDate:v6 options:0];
+    v7 = [currentCalendar dateByAddingUnit:16 value:-7 toDate:v6 options:0];
 
     v8 = objc_opt_new();
     [v7 timeIntervalSinceReferenceDate];
@@ -138,13 +138,13 @@ void __45__ATXFaceSuggestionRecentlyViewedSignal_init__block_invoke_20(uint64_t 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (double)valueForDescriptor:(id)a3
+- (double)valueForDescriptor:(id)descriptor
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 extensionBundleIdentifier];
-  v6 = [v4 identifier];
-  v7 = descriptorKey(v5, v6);
+  descriptorCopy = descriptor;
+  extensionBundleIdentifier = [descriptorCopy extensionBundleIdentifier];
+  identifier = [descriptorCopy identifier];
+  v7 = descriptorKey(extensionBundleIdentifier, identifier);
 
   v8 = [(NSCountedSet *)self->_recentlyViewedFeaturedDescriptorKeys countForObject:v7];
   v18 = 0u;

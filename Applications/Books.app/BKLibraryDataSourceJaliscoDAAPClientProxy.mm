@@ -1,10 +1,10 @@
 @interface BKLibraryDataSourceJaliscoDAAPClientProxy
 + (id)sharedproxy;
 - (BKLibraryDataSourceJaliscoDAAPClientProxy)init;
-- (void)clientDetectedPredicateChange:(id)a3;
-- (void)clientDetectedStoreChange:(id)a3;
-- (void)registerDataSource:(id)a3;
-- (void)unregisterDataSource:(id)a3;
+- (void)clientDetectedPredicateChange:(id)change;
+- (void)clientDetectedStoreChange:(id)change;
+- (void)registerDataSource:(id)source;
+- (void)unregisterDataSource:(id)source;
 @end
 
 @implementation BKLibraryDataSourceJaliscoDAAPClientProxy
@@ -36,29 +36,29 @@
   return v2;
 }
 
-- (void)registerDataSource:(id)a3
+- (void)registerDataSource:(id)source
 {
-  v4 = a3;
-  v5 = [(BKLibraryDataSourceJaliscoDAAPClientProxy *)self dataSources];
-  [v5 addObject:v4];
+  sourceCopy = source;
+  dataSources = [(BKLibraryDataSourceJaliscoDAAPClientProxy *)self dataSources];
+  [dataSources addObject:sourceCopy];
 }
 
-- (void)unregisterDataSource:(id)a3
+- (void)unregisterDataSource:(id)source
 {
-  v4 = a3;
-  v5 = [(BKLibraryDataSourceJaliscoDAAPClientProxy *)self dataSources];
-  [v5 removeObject:v4];
+  sourceCopy = source;
+  dataSources = [(BKLibraryDataSourceJaliscoDAAPClientProxy *)self dataSources];
+  [dataSources removeObject:sourceCopy];
 }
 
-- (void)clientDetectedStoreChange:(id)a3
+- (void)clientDetectedStoreChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(BKLibraryDataSourceJaliscoDAAPClientProxy *)self dataSources];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  dataSources = [(BKLibraryDataSourceJaliscoDAAPClientProxy *)self dataSources];
+  v6 = [dataSources countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -70,30 +70,30 @@
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(dataSources);
         }
 
-        [*(*(&v10 + 1) + 8 * v9) clientDetectedStoreChange:v4];
+        [*(*(&v10 + 1) + 8 * v9) clientDetectedStoreChange:changeCopy];
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [dataSources countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)clientDetectedPredicateChange:(id)a3
+- (void)clientDetectedPredicateChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(BKLibraryDataSourceJaliscoDAAPClientProxy *)self dataSources];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  dataSources = [(BKLibraryDataSourceJaliscoDAAPClientProxy *)self dataSources];
+  v6 = [dataSources countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -105,15 +105,15 @@
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(dataSources);
         }
 
-        [*(*(&v10 + 1) + 8 * v9) clientDetectedPredicateChange:v4];
+        [*(*(&v10 + 1) + 8 * v9) clientDetectedPredicateChange:changeCopy];
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [dataSources countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);

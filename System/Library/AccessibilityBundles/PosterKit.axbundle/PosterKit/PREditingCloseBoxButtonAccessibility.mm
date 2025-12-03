@@ -1,24 +1,24 @@
 @interface PREditingCloseBoxButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation PREditingCloseBoxButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PREditingCheckMarkButton"];
-  [v3 validateClass:@"PREditingHideButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PREditingCheckMarkButton"];
+  [validationsCopy validateClass:@"PREditingHideButton"];
 }
 
 - (id)accessibilityLabel
 {
-  v2 = [(PREditingCloseBoxButtonAccessibility *)self accessibilityUserDefinedLabel];
-  v3 = v2;
-  if (v2)
+  accessibilityUserDefinedLabel = [(PREditingCloseBoxButtonAccessibility *)self accessibilityUserDefinedLabel];
+  v3 = accessibilityUserDefinedLabel;
+  if (accessibilityUserDefinedLabel)
   {
-    v4 = v2;
+    v4 = accessibilityUserDefinedLabel;
   }
 
   else

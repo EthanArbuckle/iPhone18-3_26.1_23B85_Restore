@@ -7,18 +7,18 @@
 - (NSArray)maneuverGuidanceInfos;
 - (PedestrianARVKFeatureMapEntry)arrivalEntry;
 - (PedestrianARVKMapViewMapDelegate)mapViewDelegate;
-- (PedestrianARVKRenderer)initWithMapView:(id)a3 navigationService:(id)a4 mapViewDelegate:(id)a5 guidanceObserver:(id)a6;
+- (PedestrianARVKRenderer)initWithMapView:(id)view navigationService:(id)service mapViewDelegate:(id)delegate guidanceObserver:(id)observer;
 - (void)clearAnchors;
 - (void)dealloc;
-- (void)navigationService:(id)a3 didUpdateMatchedLocation:(id)a4;
-- (void)navigationService:(id)a3 didUpdateStepIndex:(unint64_t)a4 segmentIndex:(unint64_t)a5;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)navigationService:(id)service didUpdateMatchedLocation:(id)location;
+- (void)navigationService:(id)service didUpdateStepIndex:(unint64_t)index segmentIndex:(unint64_t)segmentIndex;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)rebuildAnchors;
-- (void)setGuidanceInfos:(id)a3;
-- (void)setRoute:(id)a3;
-- (void)setShouldGenerateFeatures:(BOOL)a3;
-- (void)setShouldShowFeatures:(BOOL)a3;
-- (void)updateARSigns:(id)a3;
+- (void)setGuidanceInfos:(id)infos;
+- (void)setRoute:(id)route;
+- (void)setShouldGenerateFeatures:(BOOL)features;
+- (void)setShouldShowFeatures:(BOOL)features;
+- (void)updateARSigns:(id)signs;
 @end
 
 @implementation PedestrianARVKRenderer
@@ -30,40 +30,40 @@
   return WeakRetained;
 }
 
-- (void)updateARSigns:(id)a3
+- (void)updateARSigns:(id)signs
 {
-  v4 = a3;
+  signsCopy = signs;
   v5 = sub_100B603DC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 134349314;
-    v7 = self;
+    selfCopy = self;
     v8 = 2112;
-    v9 = v4;
+    v9 = signsCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] Got updated AR guidance infos: %@", &v6, 0x16u);
   }
 
-  [(PedestrianARVKRenderer *)self setGuidanceInfos:v4];
+  [(PedestrianARVKRenderer *)self setGuidanceInfos:signsCopy];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   v13 = +[NSUserDefaults standardUserDefaults];
   v14 = v13;
-  if (v13 != v11)
+  if (v13 != objectCopy)
   {
 
 LABEL_9:
     v21.receiver = self;
     v21.super_class = PedestrianARVKRenderer;
-    [(PedestrianARVKRenderer *)&v21 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(PedestrianARVKRenderer *)&v21 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
     goto LABEL_10;
   }
 
-  v15 = [v10 isEqualToString:@"PedestrianARInjectFakeStorefrontArrivalDataKey"];
+  v15 = [pathCopy isEqualToString:@"PedestrianARInjectFakeStorefrontArrivalDataKey"];
 
   if (!v15)
   {
@@ -73,7 +73,7 @@ LABEL_9:
   v16 = sub_100B603DC();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
-    v17 = [v12 objectForKeyedSubscript:NSKeyValueChangeNewKey];
+    v17 = [changeCopy objectForKeyedSubscript:NSKeyValueChangeNewKey];
     v18 = @"YES";
     if (!v17)
     {
@@ -82,7 +82,7 @@ LABEL_9:
 
     v19 = v18;
     *buf = 134349314;
-    v23 = self;
+    selfCopy = self;
     v24 = 2112;
     v25 = v19;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "[%{public}p] Debug force show arrival key was toggled: %@", buf, 0x16u);
@@ -95,9 +95,9 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)navigationService:(id)a3 didUpdateStepIndex:(unint64_t)a4 segmentIndex:(unint64_t)a5
+- (void)navigationService:(id)service didUpdateStepIndex:(unint64_t)index segmentIndex:(unint64_t)segmentIndex
 {
-  v7 = a3;
+  serviceCopy = service;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v9 = dispatch_queue_get_label(0);
   if (label != v9)
@@ -109,7 +109,7 @@ LABEL_10:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
         v18 = 136316418;
-        v19 = "[PedestrianARVKRenderer navigationService:didUpdateStepIndex:segmentIndex:]";
+        selfCopy = "[PedestrianARVKRenderer navigationService:didUpdateStepIndex:segmentIndex:]";
         v20 = 2080;
         v21 = "PedestrianARVKRenderer.m";
         v22 = 1024;
@@ -130,29 +130,29 @@ LABEL_10:
         {
           v17 = +[NSThread callStackSymbols];
           v18 = 138412290;
-          v19 = v17;
+          selfCopy = v17;
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "%@", &v18, 0xCu);
         }
       }
     }
   }
 
-  if ([(PedestrianARVKRenderer *)self lastManeuverStepIndex]!= a4)
+  if ([(PedestrianARVKRenderer *)self lastManeuverStepIndex]!= index)
   {
     v11 = sub_100B603DC();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
-      v12 = [(PedestrianARVKRenderer *)self lastManeuverStepIndex];
+      lastManeuverStepIndex = [(PedestrianARVKRenderer *)self lastManeuverStepIndex];
       v18 = 134349568;
-      v19 = self;
+      selfCopy = self;
       v20 = 2048;
-      v21 = v12;
+      v21 = lastManeuverStepIndex;
       v22 = 2048;
-      *v23 = a4;
+      *v23 = index;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "[%{public}p] Maneuver step index changed; previous: %lu, current: %lu", &v18, 0x20u);
     }
 
-    [(PedestrianARVKRenderer *)self setLastManeuverStepIndex:a4];
+    [(PedestrianARVKRenderer *)self setLastManeuverStepIndex:index];
     maneuverEntries = self->_maneuverEntries;
     self->_maneuverEntries = 0;
 
@@ -163,10 +163,10 @@ LABEL_10:
   }
 }
 
-- (void)navigationService:(id)a3 didUpdateMatchedLocation:(id)a4
+- (void)navigationService:(id)service didUpdateMatchedLocation:(id)location
 {
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  locationCopy = location;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v9 = dispatch_queue_get_label(0);
   if (label != v9)
@@ -178,7 +178,7 @@ LABEL_10:
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
         v26 = 136316418;
-        v27 = "[PedestrianARVKRenderer navigationService:didUpdateMatchedLocation:]";
+        selfCopy2 = "[PedestrianARVKRenderer navigationService:didUpdateMatchedLocation:]";
         v28 = 2080;
         v29 = "PedestrianARVKRenderer.m";
         v30 = 1024;
@@ -199,74 +199,74 @@ LABEL_10:
         {
           v25 = +[NSThread callStackSymbols];
           v26 = 138412290;
-          v27 = v25;
+          selfCopy2 = v25;
           _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "%@", &v26, 0xCu);
         }
       }
     }
   }
 
-  v11 = [v7 routeMatch];
+  routeMatch = [locationCopy routeMatch];
 
-  v12 = sub_100B603DC();
-  v13 = os_log_type_enabled(v12, OS_LOG_TYPE_INFO);
-  if (v11)
+  mapView2 = sub_100B603DC();
+  v13 = os_log_type_enabled(mapView2, OS_LOG_TYPE_INFO);
+  if (routeMatch)
   {
     if (v13)
     {
-      [v7 coordinate];
+      [locationCopy coordinate];
       v15 = v14;
-      [v7 coordinate];
+      [locationCopy coordinate];
       v17 = v16;
-      [v7 altitude];
+      [locationCopy altitude];
       v26 = 134349825;
-      v27 = self;
+      selfCopy2 = self;
       v28 = 2049;
       v29 = v15;
       v30 = 2049;
       *v31 = v17;
       *&v31[8] = 2049;
       *&v31[10] = v18;
-      _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "[%{public}p] Got location update: %{private}0.6f, %{private}0.6f, %{private}0.6f", &v26, 0x2Au);
+      _os_log_impl(&_mh_execute_header, mapView2, OS_LOG_TYPE_INFO, "[%{public}p] Got location update: %{private}0.6f, %{private}0.6f, %{private}0.6f", &v26, 0x2Au);
     }
 
-    v19 = [(PedestrianARVKRenderer *)self mapView];
-    v20 = [v7 routeMatch];
-    [v19 setRouteUserOffset:{objc_msgSend(v20, "routeCoordinate")}];
+    mapView = [(PedestrianARVKRenderer *)self mapView];
+    routeMatch2 = [locationCopy routeMatch];
+    [mapView setRouteUserOffset:{objc_msgSend(routeMatch2, "routeCoordinate")}];
 
-    v12 = [(PedestrianARVKRenderer *)self mapView];
-    v21 = [v12 userLocationAnimator];
-    v22 = [v7 routeMatch];
-    [v21 updateLocation:v7 routeMatch:v22];
+    mapView2 = [(PedestrianARVKRenderer *)self mapView];
+    userLocationAnimator = [mapView2 userLocationAnimator];
+    routeMatch3 = [locationCopy routeMatch];
+    [userLocationAnimator updateLocation:locationCopy routeMatch:routeMatch3];
   }
 
   else if (v13)
   {
     v26 = 134349056;
-    v27 = self;
-    _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "[%{public}p] Location update had no route match; ignoring", &v26, 0xCu);
+    selfCopy2 = self;
+    _os_log_impl(&_mh_execute_header, mapView2, OS_LOG_TYPE_INFO, "[%{public}p] Location update had no route match; ignoring", &v26, 0xCu);
   }
 }
 
-- (void)setGuidanceInfos:(id)a3
+- (void)setGuidanceInfos:(id)infos
 {
-  v5 = a3;
+  infosCopy = infos;
   v6 = sub_100B603DC();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     guidanceInfos = self->_guidanceInfos;
     *buf = 134349570;
-    v107 = self;
+    selfCopy9 = self;
     v108 = 2112;
     v109 = guidanceInfos;
     v110 = 2112;
-    v111 = v5;
+    v111 = infosCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}p] Updating guidance info; old: %@, new: %@", buf, 0x20u);
   }
 
-  objc_storeStrong(&self->_guidanceInfos, a3);
-  v8 = [(PedestrianARVKRenderer *)self continueGuidanceInfos];
-  v9 = [v8 sortedArrayUsingComparator:&stru_10163AC18];
+  objc_storeStrong(&self->_guidanceInfos, infos);
+  continueGuidanceInfos = [(PedestrianARVKRenderer *)self continueGuidanceInfos];
+  v9 = [continueGuidanceInfos sortedArrayUsingComparator:&stru_10163AC18];
 
   v10 = sub_100021DB0(self->_continueEntries, &stru_10163AC58);
   v11 = [v10 sortedArrayUsingComparator:&stru_10163AC78];
@@ -282,7 +282,7 @@ LABEL_10:
       v29 = sub_100021DB0(v13, &stru_10163ACB8);
       v30 = sub_100021DB0(v12, &stru_10163ACD8);
       *buf = 134349570;
-      v107 = self;
+      selfCopy9 = self;
       v108 = 2112;
       v109 = v29;
       v110 = 2112;
@@ -299,7 +299,7 @@ LABEL_10:
       v16 = sub_100021DB0(v13, &stru_10163ACF8);
       v17 = sub_100021DB0(v12, &stru_10163AD18);
       *buf = 134349570;
-      v107 = self;
+      selfCopy9 = self;
       v108 = 2112;
       v109 = v16;
       v110 = 2112;
@@ -310,27 +310,27 @@ LABEL_10:
     v18 = 0;
   }
 
-  v19 = [(PedestrianARVKRenderer *)self arrivalGuidanceInfo];
-  v20 = [(PedestrianARVKFeatureMapEntry *)self->_arrivalEntry guidanceInfo];
-  v21 = v19;
-  v22 = v20;
+  arrivalGuidanceInfo = [(PedestrianARVKRenderer *)self arrivalGuidanceInfo];
+  guidanceInfo = [(PedestrianARVKFeatureMapEntry *)self->_arrivalEntry guidanceInfo];
+  v21 = arrivalGuidanceInfo;
+  v22 = guidanceInfo;
   v23 = v21;
   v24 = v22;
   v87 = v22;
-  v88 = v5;
+  v88 = infosCopy;
   if (v21 | v22 && (v25 = [v21 isEqual:v22], v24, v21, (v25 & 1) == 0))
   {
     v31 = sub_100B603DC();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
     {
-      v32 = [v24 mapsShortDescription];
-      v33 = [v21 mapsShortDescription];
+      mapsShortDescription = [v24 mapsShortDescription];
+      mapsShortDescription2 = [v21 mapsShortDescription];
       *buf = 134349570;
-      v107 = self;
+      selfCopy9 = self;
       v108 = 2112;
-      v109 = v32;
+      v109 = mapsShortDescription;
       v110 = 2112;
-      v111 = v33;
+      v111 = mapsShortDescription2;
       _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_INFO, "[%{public}p] Arrival entries: existing: %@, new: %@", buf, 0x20u);
 
       v24 = v87;
@@ -355,29 +355,29 @@ LABEL_10:
     v26 = sub_100B603DC();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
     {
-      v27 = [v24 mapsShortDescription];
-      v28 = [v21 mapsShortDescription];
+      mapsShortDescription3 = [v24 mapsShortDescription];
+      mapsShortDescription4 = [v21 mapsShortDescription];
       *buf = 134349570;
-      v107 = self;
+      selfCopy9 = self;
       v108 = 2112;
-      v109 = v27;
+      v109 = mapsShortDescription3;
       v110 = 2112;
-      v111 = v28;
+      v111 = mapsShortDescription4;
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "[%{public}p] Arrival entries are both nil or equal: existing: %@, new: %@", buf, 0x20u);
     }
 
     v89 = 0;
   }
 
-  v36 = [(PedestrianARVKRenderer *)self maneuverGuidanceInfos];
-  v37 = [v36 sortedArrayUsingComparator:&stru_10163AD38];
+  maneuverGuidanceInfos = [(PedestrianARVKRenderer *)self maneuverGuidanceInfos];
+  v37 = [maneuverGuidanceInfos sortedArrayUsingComparator:&stru_10163AD38];
 
   v38 = sub_100021DB0(self->_maneuverEntries, &stru_10163AD58);
   v39 = [v38 sortedArrayUsingComparator:&stru_10163AD78];
 
   v40 = v37;
   v41 = v39;
-  v93 = self;
+  selfCopy6 = self;
   if (v40 | v41 && (v42 = [v40 isEqual:v41], v41, v40, (v42 & 1) == 0))
   {
     v43 = sub_100B603DC();
@@ -387,7 +387,7 @@ LABEL_10:
       v59 = sub_100021DB0(v41, &stru_10163AD98);
       v60 = sub_100021DB0(v40, &stru_10163ADB8);
       *buf = 134349570;
-      v107 = v93;
+      selfCopy9 = selfCopy6;
       v108 = 2112;
       v109 = v59;
       v110 = 2112;
@@ -395,7 +395,7 @@ LABEL_10:
       _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_INFO, "[%{public}p] Maneuver entries are different: existing: %@, new: %@", buf, 0x20u);
 
       v46 = 1;
-      self = v93;
+      self = selfCopy6;
     }
   }
 
@@ -407,14 +407,14 @@ LABEL_10:
       v44 = sub_100021DB0(v41, &stru_10163ADD8);
       v45 = sub_100021DB0(v40, &stru_10163ADF8);
       *buf = 134349570;
-      v107 = v93;
+      selfCopy9 = selfCopy6;
       v108 = 2112;
       v109 = v44;
       v110 = 2112;
       v111 = v45;
       _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_INFO, "[%{public}p] Maneuver entries are both nil or equal: existing: %@, new: %@", buf, 0x20u);
 
-      self = v93;
+      self = selfCopy6;
     }
 
     v46 = 0;
@@ -438,7 +438,7 @@ LABEL_10:
     if (os_log_type_enabled(v48, OS_LOG_TYPE_INFO))
     {
       *buf = 134349056;
-      v107 = self;
+      selfCopy9 = self;
       _os_log_impl(&_mh_execute_header, v48, OS_LOG_TYPE_INFO, "[%{public}p] Updating continue entries mapping", buf, 0xCu);
     }
 
@@ -467,17 +467,17 @@ LABEL_10:
           }
 
           v54 = *(*(&v100 + 1) + 8 * i);
-          v55 = [v54 feature];
-          v56 = [(PedestrianARVKRenderer *)v93 continueGuidanceInfos];
+          feature = [v54 feature];
+          continueGuidanceInfos2 = [(PedestrianARVKRenderer *)selfCopy6 continueGuidanceInfos];
           v99[0] = _NSConcreteStackBlock;
           v99[1] = 3221225472;
           v99[2] = sub_100B61714;
           v99[3] = &unk_10163AE20;
           v99[4] = v54;
-          v57 = sub_100030774(v56, v99);
+          v57 = sub_100030774(continueGuidanceInfos2, v99);
 
-          v58 = [(PedestrianARVKRenderer *)v93 mapViewDelegate];
-          [v58 updateGuidanceInfo:v57 forFeature:v55];
+          mapViewDelegate = [(PedestrianARVKRenderer *)selfCopy6 mapViewDelegate];
+          [mapViewDelegate updateGuidanceInfo:v57 forFeature:feature];
         }
 
         continueEntries = v52;
@@ -485,7 +485,7 @@ LABEL_10:
       }
 
       while (v50);
-      self = v93;
+      self = selfCopy6;
       v13 = v82;
       v18 = 0;
       v40 = v79;
@@ -495,7 +495,7 @@ LABEL_10:
 
     else
     {
-      self = v93;
+      self = selfCopy6;
     }
 
     v46 = obj;
@@ -523,14 +523,14 @@ LABEL_47:
     if (os_log_type_enabled(v64, OS_LOG_TYPE_INFO))
     {
       *buf = 134349056;
-      v107 = self;
+      selfCopy9 = self;
       _os_log_impl(&_mh_execute_header, v64, OS_LOG_TYPE_INFO, "[%{public}p] Updating arrival entry mapping", buf, 0xCu);
     }
 
     arrivalEntry = [(PedestrianARVKRenderer *)self mapViewDelegate];
-    v65 = [(PedestrianARVKRenderer *)self arrivalGuidanceInfo];
-    v66 = [(PedestrianARVKFeatureMapEntry *)self->_arrivalEntry feature];
-    [arrivalEntry updateGuidanceInfo:v65 forFeature:v66];
+    arrivalGuidanceInfo2 = [(PedestrianARVKRenderer *)self arrivalGuidanceInfo];
+    feature2 = [(PedestrianARVKFeatureMapEntry *)self->_arrivalEntry feature];
+    [arrivalEntry updateGuidanceInfo:arrivalGuidanceInfo2 forFeature:feature2];
 
     v18 = v63;
     v23 = v62;
@@ -562,7 +562,7 @@ LABEL_68:
     if (os_log_type_enabled(v69, OS_LOG_TYPE_INFO))
     {
       *buf = 134349056;
-      v107 = self;
+      selfCopy9 = self;
       _os_log_impl(&_mh_execute_header, v69, OS_LOG_TYPE_INFO, "[%{public}p] Updating maneuver entries mapping", buf, 0xCu);
     }
 
@@ -586,17 +586,17 @@ LABEL_68:
           }
 
           v74 = *(*(&v95 + 1) + 8 * j);
-          v75 = [v74 feature];
-          v76 = [(PedestrianARVKRenderer *)v93 maneuverGuidanceInfos];
+          feature3 = [v74 feature];
+          maneuverGuidanceInfos2 = [(PedestrianARVKRenderer *)selfCopy6 maneuverGuidanceInfos];
           v94[0] = _NSConcreteStackBlock;
           v94[1] = 3221225472;
           v94[2] = sub_100B61764;
           v94[3] = &unk_10163AE20;
           v94[4] = v74;
-          v77 = sub_100030774(v76, v94);
+          v77 = sub_100030774(maneuverGuidanceInfos2, v94);
 
-          v78 = [(PedestrianARVKRenderer *)v93 mapViewDelegate];
-          [v78 updateGuidanceInfo:v77 forFeature:v75];
+          mapViewDelegate2 = [(PedestrianARVKRenderer *)selfCopy6 mapViewDelegate];
+          [mapViewDelegate2 updateGuidanceInfo:v77 forFeature:feature3];
         }
 
         v71 = [(NSArray *)objb countByEnumeratingWithState:&v95 objects:v104 count:16];
@@ -606,7 +606,7 @@ LABEL_68:
     }
 
     v68 = v88;
-    self = v93;
+    self = selfCopy6;
     v13 = v83;
     v12 = v84;
     v18 = v81;
@@ -624,51 +624,51 @@ LABEL_69:
 
 - (NSArray)continueGuidanceInfos
 {
-  v2 = [(PedestrianARVKRenderer *)self guidanceInfos];
-  v3 = sub_1000282CC(v2, &stru_10163ABD8);
+  guidanceInfos = [(PedestrianARVKRenderer *)self guidanceInfos];
+  v3 = sub_1000282CC(guidanceInfos, &stru_10163ABD8);
 
   return v3;
 }
 
 - (NSArray)maneuverGuidanceInfos
 {
-  v2 = [(PedestrianARVKRenderer *)self guidanceInfos];
-  v3 = sub_1000282CC(v2, &stru_10163ABB8);
+  guidanceInfos = [(PedestrianARVKRenderer *)self guidanceInfos];
+  v3 = sub_1000282CC(guidanceInfos, &stru_10163ABB8);
 
   return v3;
 }
 
 - (MNGuidanceARInfo)arrivalGuidanceInfo
 {
-  v2 = [(PedestrianARVKRenderer *)self guidanceInfos];
-  v3 = sub_100030774(v2, &stru_10163AB98);
+  guidanceInfos = [(PedestrianARVKRenderer *)self guidanceInfos];
+  v3 = sub_100030774(guidanceInfos, &stru_10163AB98);
 
   return v3;
 }
 
 - (NSArray)continueEntries
 {
-  v2 = self;
+  selfCopy = self;
   continueEntries = self->_continueEntries;
   if (!continueEntries)
   {
-    v4 = [(PedestrianARVKRenderer *)v2 continueGuidanceInfos];
+    continueGuidanceInfos = [(PedestrianARVKRenderer *)selfCopy continueGuidanceInfos];
     v5 = sub_100B603DC();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134349314;
-      v38 = v2;
+      v38 = selfCopy;
       v39 = 2112;
-      v40 = v4;
+      v40 = continueGuidanceInfos;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[%{public}p] Generating continue entries with continue infos: %@", buf, 0x16u);
     }
 
-    v31 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count]);
+    v31 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [continueGuidanceInfos count]);
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    obj = v4;
+    obj = continueGuidanceInfos;
     v6 = [obj countByEnumeratingWithState:&v32 objects:v36 count:16];
     if (v6)
     {
@@ -685,12 +685,12 @@ LABEL_69:
 
           v9 = *(*(&v32 + 1) + 8 * i);
           v10 = [VKARWalkingContinueFeature alloc];
-          v11 = v2;
-          v12 = [(PedestrianARVKRenderer *)v2 route];
-          v13 = [v9 locationCoordinateRange];
+          v11 = selfCopy;
+          route = [(PedestrianARVKRenderer *)selfCopy route];
+          locationCoordinateRange = [v9 locationCoordinateRange];
           v15 = v14;
-          v16 = [v9 arrowLabel];
-          v17 = [v10 initWithRoute:v12 range:v13 displayText:v15 continuePriority:{v16, objc_msgSend(v9, "priority")}];
+          arrowLabel = [v9 arrowLabel];
+          v17 = [v10 initWithRoute:route range:locationCoordinateRange displayText:v15 continuePriority:{arrowLabel, objc_msgSend(v9, "priority")}];
 
           v18 = sub_100B603DC();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
@@ -699,8 +699,8 @@ LABEL_69:
             v20 = NSStringFromClass(v19);
             [v9 locationCoordinateRange];
             v21 = GEOPolylineCoordinateRangeAsString();
-            v22 = [v9 arrowLabel];
-            v23 = [NSString stringWithFormat:@"<%@ %p, range: %@, text: %@>", v20, v17, v21, v22];
+            arrowLabel2 = [v9 arrowLabel];
+            v23 = [NSString stringWithFormat:@"<%@ %p, range: %@, text: %@>", v20, v17, v21, arrowLabel2];
             *buf = 134349314;
             v38 = v11;
             v39 = 2112;
@@ -711,7 +711,7 @@ LABEL_69:
           v24 = [[PedestrianARVKFeatureMapEntry alloc] initWithFeature:v17 guidanceInfo:v9];
           [v31 addObject:v24];
 
-          v2 = v11;
+          selfCopy = v11;
         }
 
         v7 = [obj countByEnumeratingWithState:&v32 objects:v36 count:16];
@@ -724,17 +724,17 @@ LABEL_69:
     if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
     {
       *buf = 134349314;
-      v38 = v2;
+      v38 = selfCopy;
       v39 = 2112;
       v40 = v31;
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "[%{public}p] Generated continue entries: %@", buf, 0x16u);
     }
 
     v26 = [v31 copy];
-    v27 = v2->_continueEntries;
-    v2->_continueEntries = v26;
+    v27 = selfCopy->_continueEntries;
+    selfCopy->_continueEntries = v26;
 
-    continueEntries = v2->_continueEntries;
+    continueEntries = selfCopy->_continueEntries;
   }
 
   return continueEntries;
@@ -754,37 +754,37 @@ LABEL_25:
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134349056;
-    v58 = self;
+    selfCopy6 = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "[%{public}p] Generating arrival entry", buf, 0xCu);
   }
 
-  v5 = [(PedestrianARVKRenderer *)self arrivalGuidanceInfo];
-  if (v5)
+  arrivalGuidanceInfo = [(PedestrianARVKRenderer *)self arrivalGuidanceInfo];
+  if (arrivalGuidanceInfo)
   {
-    v6 = v5;
-    v7 = [(PedestrianARVKRenderer *)self route];
-    v8 = [v7 steps];
-    v9 = [v8 lastObject];
+    v6 = arrivalGuidanceInfo;
+    route = [(PedestrianARVKRenderer *)self route];
+    steps = [route steps];
+    lastObject = [steps lastObject];
 
-    [v9 endGeoCoordinate];
+    [lastObject endGeoCoordinate];
     v11 = v10;
     v13 = v12;
     v15 = v14;
-    v16 = [(PedestrianARVKRenderer *)self route];
-    v17 = [v16 legs];
-    v18 = [v17 lastObject];
+    route2 = [(PedestrianARVKRenderer *)self route];
+    legs = [route2 legs];
+    lastObject2 = [legs lastObject];
 
-    v19 = [v18 destinationDisplayInfo];
-    v20 = [v19 arInfo];
+    destinationDisplayInfo = [lastObject2 destinationDisplayInfo];
+    arInfo = [destinationDisplayInfo arInfo];
 
-    v21 = [(PedestrianARVKRenderer *)self route];
-    v22 = [v21 destination];
-    v23 = [v22 geoMapItem];
-    v24 = [v23 _styleAttributes];
-    v25 = v24;
-    if (v24)
+    route3 = [(PedestrianARVKRenderer *)self route];
+    destination = [route3 destination];
+    geoMapItem = [destination geoMapItem];
+    _styleAttributes = [geoMapItem _styleAttributes];
+    v25 = _styleAttributes;
+    if (_styleAttributes)
     {
-      v26 = v24;
+      v26 = _styleAttributes;
     }
 
     else
@@ -794,8 +794,8 @@ LABEL_25:
 
     v30 = v26;
 
-    v31 = [v20 storefrontFaceGeometrys];
-    v32 = [v31 count];
+    storefrontFaceGeometrys = [arInfo storefrontFaceGeometrys];
+    v32 = [storefrontFaceGeometrys count];
 
     if (v32)
     {
@@ -803,11 +803,11 @@ LABEL_25:
       if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
       {
         *buf = 134349056;
-        v58 = self;
+        selfCopy6 = self;
         _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_INFO, "[%{public}p] Generating arrival anchor with real look-around storefront data", buf, 0xCu);
       }
 
-      v34 = [[VKARWalkingArrivalFeature alloc] initWithARInfo:v20 iconStyleAttributes:v30];
+      v34 = [[VKARWalkingArrivalFeature alloc] initWithARInfo:arInfo iconStyleAttributes:v30];
     }
 
     else
@@ -822,7 +822,7 @@ LABEL_25:
         if (v38)
         {
           *buf = 134349056;
-          v58 = self;
+          selfCopy6 = self;
           _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_INFO, "[%{public}p] Generating arrival anchor with fake look-around storefront data", buf, 0xCu);
         }
 
@@ -841,7 +841,7 @@ LABEL_25:
         [v45 addStorefrontFaceGeometry:v44];
         v34 = [[VKARWalkingArrivalFeature alloc] initWithARInfo:v45 iconStyleAttributes:v30];
 
-        v20 = v45;
+        arInfo = v45;
       }
 
       else
@@ -849,16 +849,16 @@ LABEL_25:
         if (v38)
         {
           *buf = 134349056;
-          v58 = self;
+          selfCopy6 = self;
           _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_INFO, "[%{public}p] Generating arrival anchor without look-around storefront data", buf, 0xCu);
         }
 
-        v46 = [(PedestrianARVKRenderer *)self route];
-        v47 = [v46 steps];
-        v48 = [v47 lastObject];
+        route4 = [(PedestrianARVKRenderer *)self route];
+        steps2 = [route4 steps];
+        lastObject3 = [steps2 lastObject];
 
         v49 = [VKARWalkingArrivalFeature alloc];
-        [v48 endGeoCoordinate];
+        [lastObject3 endGeoCoordinate];
         v34 = [v49 initWithPosition:v30 iconStyleAttributes:?];
       }
     }
@@ -868,9 +868,9 @@ LABEL_25:
     {
       v51 = objc_opt_class();
       v52 = NSStringFromClass(v51);
-      v53 = [NSString stringWithFormat:@"<%@ %p, location: {%f, %f, %f}, arInfo: %@, styleAttributes: %@>", v52, v34, *&v11, *&v13, *&v15, v20, v30];
+      v53 = [NSString stringWithFormat:@"<%@ %p, location: {%f, %f, %f}, arInfo: %@, styleAttributes: %@>", v52, v34, *&v11, *&v13, *&v15, arInfo, v30];
       *buf = 134349314;
-      v58 = self;
+      selfCopy6 = self;
       v59 = 2112;
       v60 = v53;
       _os_log_impl(&_mh_execute_header, v50, OS_LOG_TYPE_INFO, "[%{public}p] Generated arrival feature: %@", buf, 0x16u);
@@ -887,11 +887,11 @@ LABEL_25:
   v27 = sub_100B603DC();
   if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
   {
-    v28 = [(PedestrianARVKRenderer *)self guidanceInfos];
+    guidanceInfos = [(PedestrianARVKRenderer *)self guidanceInfos];
     *buf = 134349314;
-    v58 = self;
+    selfCopy6 = self;
     v59 = 2112;
-    v60 = v28;
+    v60 = guidanceInfos;
     _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_INFO, "[%{public}p] There is no arrival guidance info; cannot generate arrival entry: %@", buf, 0x16u);
   }
 
@@ -906,23 +906,23 @@ LABEL_26:
   maneuverEntries = self->_maneuverEntries;
   if (!maneuverEntries)
   {
-    v4 = [(PedestrianARVKRenderer *)self maneuverGuidanceInfos];
+    maneuverGuidanceInfos = [(PedestrianARVKRenderer *)self maneuverGuidanceInfos];
     v5 = sub_100B603DC();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134349314;
-      v52 = self;
+      selfCopy3 = self;
       v53 = 2112;
-      v54 = v4;
+      v54 = maneuverGuidanceInfos;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[%{public}p] Generating maneuver entries from guidance infos: %@", buf, 0x16u);
     }
 
-    v45 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count]);
+    v45 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [maneuverGuidanceInfos count]);
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
-    obj = v4;
+    obj = maneuverGuidanceInfos;
     v6 = [obj countByEnumeratingWithState:&v46 objects:v50 count:16];
     if (v6)
     {
@@ -938,20 +938,20 @@ LABEL_26:
           }
 
           v9 = *(*(&v46 + 1) + 8 * i);
-          v10 = [(PedestrianARVKRenderer *)self route];
-          v11 = [v10 stepAtIndex:{objc_msgSend(v9, "stepIndex")}];
+          route = [(PedestrianARVKRenderer *)self route];
+          v11 = [route stepAtIndex:{objc_msgSend(v9, "stepIndex")}];
 
           v12 = [VKARWalkingManeuverFeature alloc];
           [v9 locationCoordinate];
           v14 = v13;
           v16 = v15;
           v18 = v17;
-          v19 = [v11 endRouteCoordinate];
+          endRouteCoordinate = [v11 endRouteCoordinate];
           [v9 heading];
           v21 = v20;
-          v22 = [v9 arrowLabel];
-          v23 = [(PedestrianARVKRenderer *)self route];
-          v24 = [v12 initWithDisplayLocation:v19 routeCoordinate:v22 maneuverHeading:objc_msgSend(v23 displayText:"elevationModel") elevationModel:{v14, v16, v18, v21}];
+          arrowLabel = [v9 arrowLabel];
+          route2 = [(PedestrianARVKRenderer *)self route];
+          v24 = [v12 initWithDisplayLocation:endRouteCoordinate routeCoordinate:arrowLabel maneuverHeading:objc_msgSend(route2 displayText:"elevationModel") elevationModel:{v14, v16, v18, v21}];
 
           v25 = sub_100B603DC();
           if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
@@ -966,10 +966,10 @@ LABEL_26:
             v33 = v32;
             [v9 heading];
             v35 = v34;
-            v36 = [v9 arrowLabel];
-            v37 = [NSString stringWithFormat:@"<%@ %p, location: {%f, %f, %f}, heading: %f, text: %@>", v27, v24, v29, v31, v33, v35, v36];
+            arrowLabel2 = [v9 arrowLabel];
+            v37 = [NSString stringWithFormat:@"<%@ %p, location: {%f, %f, %f}, heading: %f, text: %@>", v27, v24, v29, v31, v33, v35, arrowLabel2];
             *buf = 134349314;
-            v52 = self;
+            selfCopy3 = self;
             v53 = 2112;
             v54 = v37;
             _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEBUG, "[%{public}p] Generated maneuver feature: %@", buf, 0x16u);
@@ -989,7 +989,7 @@ LABEL_26:
     if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
     {
       *buf = 134349314;
-      v52 = self;
+      selfCopy3 = self;
       v53 = 2112;
       v54 = v45;
       _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_INFO, "[%{public}p] Generated maneuver entries: %@", buf, 0x16u);
@@ -1011,7 +1011,7 @@ LABEL_26:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v8 = 134349056;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Clearing anchors", &v8, 0xCu);
   }
 
@@ -1024,64 +1024,64 @@ LABEL_26:
   continueEntries = self->_continueEntries;
   self->_continueEntries = 0;
 
-  v7 = [(PedestrianARVKRenderer *)self mapViewDelegate];
-  [v7 updateFeatureMapping:0];
+  mapViewDelegate = [(PedestrianARVKRenderer *)self mapViewDelegate];
+  [mapViewDelegate updateFeatureMapping:0];
 }
 
 - (void)rebuildAnchors
 {
-  v3 = [(PedestrianARVKRenderer *)self route];
+  route = [(PedestrianARVKRenderer *)self route];
 
-  if (!v3)
+  if (!route)
   {
-    v12 = sub_100B603DC();
-    if (!os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
+    maneuverEntries = sub_100B603DC();
+    if (!os_log_type_enabled(maneuverEntries, OS_LOG_TYPE_INFO))
     {
       goto LABEL_24;
     }
 
     v24 = 134349056;
-    v25 = self;
+    selfCopy6 = self;
     v20 = "[%{public}p] Cannot rebuild anchors without a route";
 LABEL_23:
-    _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, v20, &v24, 0xCu);
+    _os_log_impl(&_mh_execute_header, maneuverEntries, OS_LOG_TYPE_INFO, v20, &v24, 0xCu);
     goto LABEL_24;
   }
 
   if (![(PedestrianARVKRenderer *)self shouldGenerateFeatures])
   {
-    v12 = sub_100B603DC();
-    if (!os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
+    maneuverEntries = sub_100B603DC();
+    if (!os_log_type_enabled(maneuverEntries, OS_LOG_TYPE_INFO))
     {
       goto LABEL_24;
     }
 
     v24 = 134349056;
-    v25 = self;
+    selfCopy6 = self;
     v20 = "[%{public}p] Cannot rebuild anchors while shouldGenerateFeatures is false";
     goto LABEL_23;
   }
 
-  v4 = [(PedestrianARVKRenderer *)self guidanceInfos];
-  v5 = [v4 count];
+  guidanceInfos = [(PedestrianARVKRenderer *)self guidanceInfos];
+  v5 = [guidanceInfos count];
 
   if (!v5)
   {
-    v12 = sub_100B603DC();
-    if (!os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
+    maneuverEntries = sub_100B603DC();
+    if (!os_log_type_enabled(maneuverEntries, OS_LOG_TYPE_INFO))
     {
       goto LABEL_24;
     }
 
     v24 = 134349056;
-    v25 = self;
+    selfCopy6 = self;
     v20 = "[%{public}p] Cannot rebuild anchors without first AR guidance info callback";
     goto LABEL_23;
   }
 
-  v6 = [(PedestrianARVKRenderer *)self route];
-  v7 = [v6 steps];
-  v8 = [v7 count];
+  route2 = [(PedestrianARVKRenderer *)self route];
+  steps = [route2 steps];
+  v8 = [steps count];
 
   if (!v8)
   {
@@ -1089,7 +1089,7 @@ LABEL_23:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       v24 = 136315906;
-      v25 = "[PedestrianARVKRenderer rebuildAnchors]";
+      selfCopy6 = "[PedestrianARVKRenderer rebuildAnchors]";
       v26 = 2080;
       v27 = "PedestrianARVKRenderer.m";
       v28 = 1024;
@@ -1106,18 +1106,18 @@ LABEL_23:
       {
         v23 = +[NSThread callStackSymbols];
         v24 = 138412290;
-        v25 = v23;
+        selfCopy6 = v23;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "%@", &v24, 0xCu);
       }
     }
   }
 
-  v9 = [(PedestrianARVKRenderer *)self route];
-  v10 = [v9 steps];
-  v11 = [v10 count];
+  route3 = [(PedestrianARVKRenderer *)self route];
+  steps2 = [route3 steps];
+  v11 = [steps2 count];
 
-  v12 = sub_100B603DC();
-  v13 = os_log_type_enabled(v12, OS_LOG_TYPE_INFO);
+  maneuverEntries = sub_100B603DC();
+  v13 = os_log_type_enabled(maneuverEntries, OS_LOG_TYPE_INFO);
   if (!v11)
   {
     if (!v13)
@@ -1126,7 +1126,7 @@ LABEL_23:
     }
 
     v24 = 134349056;
-    v25 = self;
+    selfCopy6 = self;
     v20 = "[%{public}p] Current route has no steps. Cannot rebuild anchors.";
     goto LABEL_23;
   }
@@ -1134,105 +1134,105 @@ LABEL_23:
   if (v13)
   {
     v24 = 134349056;
-    v25 = self;
-    _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "[%{public}p] Rebuilding anchors", &v24, 0xCu);
+    selfCopy6 = self;
+    _os_log_impl(&_mh_execute_header, maneuverEntries, OS_LOG_TYPE_INFO, "[%{public}p] Rebuilding anchors", &v24, 0xCu);
   }
 
-  v12 = [(PedestrianARVKRenderer *)self maneuverEntries];
-  v14 = [(PedestrianARVKRenderer *)self arrivalEntry];
-  if (v14)
+  maneuverEntries = [(PedestrianARVKRenderer *)self maneuverEntries];
+  arrivalEntry = [(PedestrianARVKRenderer *)self arrivalEntry];
+  if (arrivalEntry)
   {
-    v15 = [v12 arrayByAddingObject:v14];
+    v15 = [maneuverEntries arrayByAddingObject:arrivalEntry];
 
-    v12 = v15;
+    maneuverEntries = v15;
   }
 
-  v16 = [(PedestrianARVKRenderer *)self continueEntries];
-  if ([v16 count])
+  continueEntries = [(PedestrianARVKRenderer *)self continueEntries];
+  if ([continueEntries count])
   {
-    v17 = [v12 arrayByAddingObjectsFromArray:v16];
+    v17 = [maneuverEntries arrayByAddingObjectsFromArray:continueEntries];
 
-    v12 = v17;
+    maneuverEntries = v17;
   }
 
   v18 = sub_100B603DC();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
     v24 = 134349314;
-    v25 = self;
+    selfCopy6 = self;
     v26 = 2112;
-    v27 = v12;
+    v27 = maneuverEntries;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "[%{public}p] Rebuilt anchors: %@", &v24, 0x16u);
   }
 
-  v19 = [(PedestrianARVKRenderer *)self mapViewDelegate];
-  [v19 updateFeatureMapping:v12];
+  mapViewDelegate = [(PedestrianARVKRenderer *)self mapViewDelegate];
+  [mapViewDelegate updateFeatureMapping:maneuverEntries];
 
 LABEL_24:
 }
 
 - (BOOL)shouldShowFeatures
 {
-  v2 = [(PedestrianARVKRenderer *)self mapView];
-  v3 = [v2 showsRoadLabels];
+  mapView = [(PedestrianARVKRenderer *)self mapView];
+  showsRoadLabels = [mapView showsRoadLabels];
 
-  return v3;
+  return showsRoadLabels;
 }
 
-- (void)setShouldShowFeatures:(BOOL)a3
+- (void)setShouldShowFeatures:(BOOL)features
 {
-  v3 = a3;
-  v5 = [(PedestrianARVKRenderer *)self mapView];
-  v6 = [v5 showsRoadLabels];
+  featuresCopy = features;
+  mapView = [(PedestrianARVKRenderer *)self mapView];
+  showsRoadLabels = [mapView showsRoadLabels];
 
-  if (v6 != v3)
+  if (showsRoadLabels != featuresCopy)
   {
     v7 = sub_100B603DC();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v8 = @"NO";
-      if (v3)
+      if (featuresCopy)
       {
         v8 = @"YES";
       }
 
       v9 = v8;
       v11 = 134349314;
-      v12 = self;
+      selfCopy = self;
       v13 = 2112;
       v14 = v9;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}p] Setting shouldShowFeatures: %@", &v11, 0x16u);
     }
 
-    v10 = [(PedestrianARVKRenderer *)self mapView];
-    [v10 setShowsRoadLabels:v3];
+    mapView2 = [(PedestrianARVKRenderer *)self mapView];
+    [mapView2 setShowsRoadLabels:featuresCopy];
   }
 }
 
-- (void)setShouldGenerateFeatures:(BOOL)a3
+- (void)setShouldGenerateFeatures:(BOOL)features
 {
-  if (self->_shouldGenerateFeatures != a3)
+  if (self->_shouldGenerateFeatures != features)
   {
-    v3 = a3;
+    featuresCopy = features;
     v5 = sub_100B603DC();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = @"NO";
-      if (v3)
+      if (featuresCopy)
       {
         v6 = @"YES";
       }
 
       v7 = v6;
       v8 = 134349314;
-      v9 = self;
+      selfCopy = self;
       v10 = 2112;
       v11 = v7;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] Setting shouldGenerateFeatures: %@", &v8, 0x16u);
     }
 
-    self->_shouldGenerateFeatures = v3;
-    if (v3)
+    self->_shouldGenerateFeatures = featuresCopy;
+    if (featuresCopy)
     {
       [(PedestrianARVKRenderer *)self rebuildAnchors];
     }
@@ -1244,25 +1244,25 @@ LABEL_24:
   }
 }
 
-- (void)setRoute:(id)a3
+- (void)setRoute:(id)route
 {
-  v5 = a3;
-  if (self->_route != v5)
+  routeCopy = route;
+  if (self->_route != routeCopy)
   {
-    objc_storeStrong(&self->_route, a3);
+    objc_storeStrong(&self->_route, route);
     v6 = sub_100B603DC();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v9 = 134349314;
-      v10 = self;
+      selfCopy = self;
       v11 = 2112;
-      v12 = v5;
+      v12 = routeCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}p] Got a new route: %@", &v9, 0x16u);
     }
 
-    v7 = [[VKRouteContext alloc] initWithComposedRoute:v5 useType:1];
-    v8 = [(PedestrianARVKRenderer *)self mapView];
-    [v8 setRouteContext:v7];
+    v7 = [[VKRouteContext alloc] initWithComposedRoute:routeCopy useType:1];
+    mapView = [(PedestrianARVKRenderer *)self mapView];
+    [mapView setRouteContext:v7];
 
     [(PedestrianARVKRenderer *)self clearAnchors];
     [(PedestrianARVKRenderer *)self setGuidanceInfos:0];
@@ -1275,7 +1275,7 @@ LABEL_24:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Deallocing", buf, 0xCu);
   }
 
@@ -1289,13 +1289,13 @@ LABEL_24:
   [(PedestrianARVKRenderer *)&v5 dealloc];
 }
 
-- (PedestrianARVKRenderer)initWithMapView:(id)a3 navigationService:(id)a4 mapViewDelegate:(id)a5 guidanceObserver:(id)a6
+- (PedestrianARVKRenderer)initWithMapView:(id)view navigationService:(id)service mapViewDelegate:(id)delegate guidanceObserver:(id)observer
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v11)
+  viewCopy = view;
+  serviceCopy = service;
+  delegateCopy = delegate;
+  observerCopy = observer;
+  if (!viewCopy)
   {
     v19 = sub_10006D178();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -1324,7 +1324,7 @@ LABEL_24:
     }
   }
 
-  if (!v12)
+  if (!serviceCopy)
   {
     v22 = sub_10006D178();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -1353,7 +1353,7 @@ LABEL_24:
     }
   }
 
-  if (!v13)
+  if (!delegateCopy)
   {
     v25 = sub_10006D178();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -1382,7 +1382,7 @@ LABEL_24:
     }
   }
 
-  if (!v14)
+  if (!observerCopy)
   {
     v28 = sub_10006D178();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -1424,10 +1424,10 @@ LABEL_24:
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "[%{public}p] Initializing", buf, 0xCu);
     }
 
-    objc_storeStrong(&v15->_mapView, a3);
-    objc_storeStrong(&v15->_navigationService, a4);
-    objc_storeWeak(&v15->_mapViewDelegate, v13);
-    objc_storeStrong(&v15->_guidanceObserver, a6);
+    objc_storeStrong(&v15->_mapView, view);
+    objc_storeStrong(&v15->_navigationService, service);
+    objc_storeWeak(&v15->_mapViewDelegate, delegateCopy);
+    objc_storeStrong(&v15->_guidanceObserver, observer);
     v15->_lastManeuverStepIndex = -1;
     [(MNNavigationService *)v15->_navigationService registerObserver:v15];
     [(GuidanceObserver *)v15->_guidanceObserver addOutlet:v15];

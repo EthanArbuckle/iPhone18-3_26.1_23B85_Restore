@@ -1,37 +1,37 @@
 @interface SBSAKeyLinePreferencesProvider
-- (id)behaviorSettingsForProperty:(id)a3;
-- (id)preferencesFromContext:(id)a3;
+- (id)behaviorSettingsForProperty:(id)property;
+- (id)preferencesFromContext:(id)context;
 @end
 
 @implementation SBSAKeyLinePreferencesProvider
 
-- (id)behaviorSettingsForProperty:(id)a3
+- (id)behaviorSettingsForProperty:(id)property
 {
-  v4 = a3;
+  propertyCopy = property;
   if ((BSEqualStrings() & 1) != 0 || BSEqualStrings())
   {
-    v5 = [objc_opt_class() settings];
-    v6 = [v5 keyLineStyleTransition];
+    settings = [objc_opt_class() settings];
+    keyLineStyleTransition = [settings keyLineStyleTransition];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = SBSAKeyLinePreferencesProvider;
-    v6 = [(SBSABasePreferencesProvider *)&v8 behaviorSettingsForProperty:v4];
+    keyLineStyleTransition = [(SBSABasePreferencesProvider *)&v8 behaviorSettingsForProperty:propertyCopy];
   }
 
-  return v6;
+  return keyLineStyleTransition;
 }
 
-- (id)preferencesFromContext:(id)a3
+- (id)preferencesFromContext:(id)context
 {
   v175 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  contextCopy = context;
+  if (contextCopy)
   {
     v5 = objc_opt_self();
-    v6 = v4;
+    v6 = contextCopy;
     if (v5)
     {
       if (objc_opt_isKindOfClass())
@@ -63,9 +63,9 @@
     v8 = 0;
   }
 
-  v9 = [v8 preferences];
+  preferences = [v8 preferences];
   v10 = objc_opt_class();
-  v11 = v9;
+  v11 = preferences;
   if (v10)
   {
     if (objc_opt_isKindOfClass())
@@ -86,13 +86,13 @@
 
   v122 = v12;
 
-  v13 = [v8 elementContexts];
-  v14 = [MEMORY[0x277CBEB38] dictionary];
+  elementContexts = [v8 elementContexts];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v162 = 0u;
   v163 = 0u;
   v164 = 0u;
   v165 = 0u;
-  v15 = v13;
+  v15 = elementContexts;
   v16 = [v15 countByEnumeratingWithState:&v162 objects:v174 count:16];
   if (v16)
   {
@@ -108,11 +108,11 @@
         }
 
         v20 = *(*(&v162 + 1) + 8 * i);
-        v21 = [v20 elementIdentifier];
-        v22 = [v20 keyColor];
-        if (v22)
+        elementIdentifier = [v20 elementIdentifier];
+        keyColor = [v20 keyColor];
+        if (keyColor)
         {
-          [v14 setObject:v22 forKey:v21];
+          [dictionary setObject:keyColor forKey:elementIdentifier];
         }
       }
 
@@ -122,13 +122,13 @@
     while (v17);
   }
 
-  v23 = [v122 isBlobEnabled];
+  isBlobEnabled = [v122 isBlobEnabled];
   v24 = [v8 containsAnyOfSignals:1];
-  v25 = [v8 preferences];
-  v26 = [v25 lastChangingElementLayoutTransition];
+  preferences2 = [v8 preferences];
+  lastChangingElementLayoutTransition = [preferences2 lastChangingElementLayoutTransition];
 
-  v118 = v26;
-  v119 = v4;
+  v118 = lastChangingElementLayoutTransition;
+  v119 = contextCopy;
   if (BSEqualObjects())
   {
     v27 = 0;
@@ -136,26 +136,26 @@
 
   else
   {
-    objc_storeStrong(&self->_lastChangingElementLayoutTransition, v26);
-    v28 = [v26 initialElementContexts];
-    if ([v28 count] > 1)
+    objc_storeStrong(&self->_lastChangingElementLayoutTransition, lastChangingElementLayoutTransition);
+    initialElementContexts = [lastChangingElementLayoutTransition initialElementContexts];
+    if ([initialElementContexts count] > 1)
     {
       v27 = 0;
     }
 
     else
     {
-      v29 = [v26 targetElementContexts];
-      v27 = [v29 count] == 2;
+      targetElementContexts = [lastChangingElementLayoutTransition targetElementContexts];
+      v27 = [targetElementContexts count] == 2;
     }
   }
 
   mitosisSuppressionState = self->_mitosisSuppressionState;
-  v124 = self;
+  selfCopy = self;
   v125 = v8;
-  v121 = v14;
+  v121 = dictionary;
   v128 = v15;
-  if (!v23)
+  if (!isBlobEnabled)
   {
     if (mitosisSuppressionState == 2)
     {
@@ -188,11 +188,11 @@
     v32 = !mitosisSuppressionState && v27;
     if (mitosisSuppressionState == 1 || v32)
     {
-      v33 = [v122 containerViewDescriptions];
-      v34 = [v33 lastObject];
-      v35 = [v34 interfaceElementIdentifier];
+      containerViewDescriptions = [v122 containerViewDescriptions];
+      lastObject = [containerViewDescriptions lastObject];
+      interfaceElementIdentifier = [lastObject interfaceElementIdentifier];
 
-      v36 = [[SBSAInterfaceElementPropertyIdentity alloc] initWithAssociatedInterfaceElementIdentifier:v35 andProperty:@"bounds"];
+      v36 = [[SBSAInterfaceElementPropertyIdentity alloc] initWithAssociatedInterfaceElementIdentifier:interfaceElementIdentifier andProperty:@"bounds"];
       v37 = self->_pendingMitosisKeyLineSuppressionUnhidePropertyIdentity;
       self->_pendingMitosisKeyLineSuppressionUnhidePropertyIdentity = v36;
 
@@ -232,17 +232,17 @@
           }
 
           v44 = *(*(&v157 + 1) + 8 * j);
-          v45 = [v44 associatedInterfaceElementPropertyIdentity];
-          v46 = [v45 isEqual:self->_pendingMitosisKeyLineSuppressionUnhidePropertyIdentity];
+          associatedInterfaceElementPropertyIdentity = [v44 associatedInterfaceElementPropertyIdentity];
+          v46 = [associatedInterfaceElementPropertyIdentity isEqual:self->_pendingMitosisKeyLineSuppressionUnhidePropertyIdentity];
 
           if (v46)
           {
             [v44 targetedMilestone];
-            self = v124;
+            self = selfCopy;
             if (v47 >= 0.7)
             {
-              v48 = v124->_pendingMitosisKeyLineSuppressionUnhidePropertyIdentity;
-              v124->_pendingMitosisKeyLineSuppressionUnhidePropertyIdentity = 0;
+              v48 = selfCopy->_pendingMitosisKeyLineSuppressionUnhidePropertyIdentity;
+              selfCopy->_pendingMitosisKeyLineSuppressionUnhidePropertyIdentity = 0;
 
               v31 = 3;
             }
@@ -250,7 +250,7 @@
 
           else
           {
-            self = v124;
+            self = selfCopy;
           }
         }
 
@@ -299,14 +299,14 @@ LABEL_60:
     self->_mitosisSuppressionState = v31;
   }
 
-  v129 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   v54 = self->_mitosisSuppressionState;
   v153 = 0u;
   v154 = 0u;
   v155 = 0u;
   v156 = 0u;
-  v55 = [v122 containerViewDescriptions];
-  v56 = [v55 countByEnumeratingWithState:&v153 objects:v168 count:16];
+  containerViewDescriptions2 = [v122 containerViewDescriptions];
+  v56 = [containerViewDescriptions2 countByEnumeratingWithState:&v153 objects:v168 count:16];
   if (v56)
   {
     v57 = v56;
@@ -318,12 +318,12 @@ LABEL_60:
       {
         if (*v154 != v59)
         {
-          objc_enumerationMutation(v55);
+          objc_enumerationMutation(containerViewDescriptions2);
         }
 
         v61 = *(*(&v153 + 1) + 8 * k);
-        v62 = [v61 associatedSystemApertureElementIdentity];
-        v63 = [v62 elementIdentifier];
+        associatedSystemApertureElementIdentity = [v61 associatedSystemApertureElementIdentity];
+        elementIdentifier2 = [associatedSystemApertureElementIdentity elementIdentifier];
 
         v64 = SBSAElementContextAssociatedWithContainerViewDescription(v61, v128, 0);
         if (v64)
@@ -333,11 +333,11 @@ LABEL_60:
           SBUnintegralizedRectCenteredAboutPoint();
           [v8 inertContainerFrame];
           v65 = [MEMORY[0x277CCABB0] numberWithInteger:{(v58 < 0xFFFFFFFFFFFFFFFELL) & (SBSARectApproximatelyEqualToRect() ^ 1), 0x3F847AE147AE147BLL}];
-          [v129 setObject:v65 forKey:v63];
+          [dictionary2 setObject:v65 forKey:elementIdentifier2];
         }
       }
 
-      v57 = [v55 countByEnumeratingWithState:&v153 objects:v168 count:16];
+      v57 = [containerViewDescriptions2 countByEnumeratingWithState:&v153 objects:v168 count:16];
     }
 
     while (v57);
@@ -368,25 +368,25 @@ LABEL_60:
         }
 
         v72 = *(*(&v149 + 1) + 8 * v70);
-        v73 = [v72 associatedSystemApertureElementIdentity];
-        v74 = [v73 elementIdentifier];
+        associatedSystemApertureElementIdentity2 = [v72 associatedSystemApertureElementIdentity];
+        elementIdentifier3 = [associatedSystemApertureElementIdentity2 elementIdentifier];
 
         if (v71 == v70)
         {
-          v75 = [v125 isKeyLineRequiredForTransition];
+          isKeyLineRequiredForTransition = [v125 isKeyLineRequiredForTransition];
         }
 
         else
         {
-          v75 = 0;
+          isKeyLineRequiredForTransition = 0;
         }
 
-        v76 = [v129 objectForKey:v74];
+        v76 = [dictionary2 objectForKey:elementIdentifier3];
         v77 = [v76 isEqualToNumber:&unk_283370310];
 
         if (v77)
         {
-          v78 = v75 == 0;
+          v78 = isKeyLineRequiredForTransition == 0;
         }
 
         else
@@ -396,9 +396,9 @@ LABEL_60:
 
         if (!v78)
         {
-          v79 = [v72 sampledBackgroundLuminanceLevel];
+          sampledBackgroundLuminanceLevel = [v72 sampledBackgroundLuminanceLevel];
           v80 = v127;
-          if (v79 == 1)
+          if (sampledBackgroundLuminanceLevel == 1)
           {
             v80 = 1;
           }
@@ -423,12 +423,12 @@ LABEL_60:
   }
 
   v81 = v128;
-  if (v124->_lastKnownConsensusBackgroundLuma != v127)
+  if (selfCopy->_lastKnownConsensusBackgroundLuma != v127)
   {
     v82 = SBLogSystemApertureController();
     if (os_log_type_enabled(v82, OS_LOG_TYPE_DEFAULT))
     {
-      v83 = SBStringFromSystemApertureBackgroundLuminanceLevel(v124->_lastKnownConsensusBackgroundLuma);
+      v83 = SBStringFromSystemApertureBackgroundLuminanceLevel(selfCopy->_lastKnownConsensusBackgroundLuma);
       v84 = SBStringFromSystemApertureBackgroundLuminanceLevel(v127);
       *buf = 138543618;
       v170 = v83;
@@ -437,7 +437,7 @@ LABEL_60:
       _os_log_impl(&dword_21ED4E000, v82, OS_LOG_TYPE_DEFAULT, "Key Line: Updating consensus background luma (%{public}@) -> (%{public}@)", buf, 0x16u);
     }
 
-    v124->_lastKnownConsensusBackgroundLuma = v127;
+    selfCopy->_lastKnownConsensusBackgroundLuma = v127;
   }
 
   if (v127 == 2)
@@ -446,7 +446,7 @@ LABEL_60:
     v148 = 0u;
     v145 = 0u;
     v146 = 0u;
-    v85 = [v129 copy];
+    v85 = [dictionary2 copy];
     v86 = [v85 countByEnumeratingWithState:&v145 objects:v166 count:16];
     if (v86)
     {
@@ -462,12 +462,12 @@ LABEL_60:
           }
 
           v90 = *(*(&v145 + 1) + 8 * m);
-          v91 = [v129 objectForKey:v90];
-          v92 = [v91 integerValue];
+          v91 = [dictionary2 objectForKey:v90];
+          integerValue = [v91 integerValue];
 
-          if (v92 == 1)
+          if (integerValue == 1)
           {
-            [v129 setObject:&unk_283370328 forKey:v90];
+            [dictionary2 setObject:&unk_283370328 forKey:v90];
           }
         }
 
@@ -478,8 +478,8 @@ LABEL_60:
     }
   }
 
-  v93 = [v122 containerViewDescriptions];
-  v94 = [v93 mutableCopy];
+  containerViewDescriptions3 = [v122 containerViewDescriptions];
+  v94 = [containerViewDescriptions3 mutableCopy];
 
   if ([v128 count])
   {
@@ -487,7 +487,7 @@ LABEL_60:
     do
     {
       v96 = [v81 objectAtIndex:v95];
-      v97 = [v96 elementIdentifier];
+      elementIdentifier4 = [v96 elementIdentifier];
       v143[0] = MEMORY[0x277D85DD0];
       v143[1] = 3221225472;
       v143[2] = __57__SBSAKeyLinePreferencesProvider_preferencesFromContext___block_invoke_30;
@@ -507,9 +507,9 @@ LABEL_60:
           v138[2] = __57__SBSAKeyLinePreferencesProvider_preferencesFromContext___block_invoke_2;
           v138[3] = &unk_2783AE068;
           v142 = a2;
-          v138[4] = v124;
-          v139 = v129;
-          v140 = v97;
+          v138[4] = selfCopy;
+          v139 = dictionary2;
+          v140 = elementIdentifier4;
           v141 = v121;
           v103 = [v102 copyWithBlock:v138];
 
@@ -520,7 +520,7 @@ LABEL_60:
           v136 = v103;
           v137 = a2;
           v81 = v128;
-          v135[4] = v124;
+          v135[4] = selfCopy;
           v104 = v103;
           v105 = [v122 copyWithBlock:v135];
 
@@ -535,33 +535,33 @@ LABEL_60:
     while (v95 < [v81 count]);
   }
 
-  v106 = [v94 firstObject];
+  firstObject = [v94 firstObject];
   if ([v125 isKeyLineRequiredForTransition])
   {
     v107 = v119;
-    v108 = v124;
-    if (![v106 keyLineMode] && v106)
+    v108 = selfCopy;
+    if (![firstObject keyLineMode] && firstObject)
     {
       v134[0] = MEMORY[0x277D85DD0];
       v134[1] = 3221225472;
       v134[2] = __57__SBSAKeyLinePreferencesProvider_preferencesFromContext___block_invoke_4;
       v134[3] = &unk_2783ACD90;
-      v134[4] = v124;
+      v134[4] = selfCopy;
       v134[5] = a2;
       v134[6] = v127;
-      v109 = [v106 copyWithBlock:v134];
+      v109 = [firstObject copyWithBlock:v134];
 
       v131[0] = MEMORY[0x277D85DD0];
       v131[1] = 3221225472;
       v131[2] = __57__SBSAKeyLinePreferencesProvider_preferencesFromContext___block_invoke_5;
       v131[3] = &unk_2783AD750;
       v133 = a2;
-      v131[4] = v124;
-      v106 = v109;
-      v132 = v106;
+      v131[4] = selfCopy;
+      firstObject = v109;
+      v132 = firstObject;
       v110 = [v122 copyWithBlock:v131];
 
-      [v94 replaceObjectAtIndex:0 withObject:v106];
+      [v94 replaceObjectAtIndex:0 withObject:firstObject];
       v122 = v110;
     }
   }
@@ -569,7 +569,7 @@ LABEL_60:
   else
   {
     v107 = v119;
-    v108 = v124;
+    v108 = selfCopy;
   }
 
   v111 = [v122 copyByUpdatingContainerViewDescriptions:v94];

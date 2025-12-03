@@ -1,21 +1,21 @@
 @interface RKMessageClassifier
-+ (BOOL)questionClassification:(id)a3 withLanguageIdentifier:(id)a4;
-+ (id)messageClassification:(id)a3 withLanguageIdentifier:(id)a4 conversationTurns:(id)a5;
++ (BOOL)questionClassification:(id)classification withLanguageIdentifier:(id)identifier;
++ (id)messageClassification:(id)classification withLanguageIdentifier:(id)identifier conversationTurns:(id)turns;
 @end
 
 @implementation RKMessageClassifier
 
-+ (id)messageClassification:(id)a3 withLanguageIdentifier:(id)a4 conversationTurns:(id)a5
++ (id)messageClassification:(id)classification withLanguageIdentifier:(id)identifier conversationTurns:(id)turns
 {
   v80[2] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v55 = a4;
-  v54 = a5;
-  v59 = v7;
-  if ([v7 length])
+  classificationCopy = classification;
+  identifierCopy = identifier;
+  turnsCopy = turns;
+  v59 = classificationCopy;
+  if ([classificationCopy length])
   {
     v56 = objc_opt_new();
-    v8 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     context = objc_autoreleasePoolPush();
     v9 = +[RKUtilities getDeviceModel];
     v10 = [RKUtilities isDeviceSupportedForLSTMBasedLanguageIdentification:v9];
@@ -39,41 +39,41 @@
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:? count:?];
     v16 = [v11 initWithTagSchemes:v15 options:v14];
 
-    [v16 setString:v7];
-    v17 = [v16 string];
-    v18 = [v17 length];
+    [v16 setString:classificationCopy];
+    string = [v16 string];
+    v18 = [string length];
     v70[0] = MEMORY[0x277D85DD0];
     v70[1] = 3221225472;
     v70[2] = __86__RKMessageClassifier_messageClassification_withLanguageIdentifier_conversationTurns___block_invoke;
     v70[3] = &unk_279B10BE8;
-    v19 = v8;
+    v19 = array;
     v71 = v19;
     [v16 enumerateTagsInRange:0 scheme:v18 options:v12 usingBlock:{4, v70}];
 
-    if ([RKUtilities isLanguageSupportedByNSLinguisticTaggerForLanguageIdentification:v55])
+    if ([RKUtilities isLanguageSupportedByNSLinguisticTaggerForLanguageIdentification:identifierCopy])
     {
       v20 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v21 = objc_alloc_init(MEMORY[0x277CBEB58]);
-      [v21 addObject:v7];
+      [v21 addObject:classificationCopy];
       *buf = 0;
       v74 = buf;
       v75 = 0x3032000000;
       v76 = __Block_byref_object_copy__5;
       v77 = __Block_byref_object_dispose__5;
       v78 = 0;
-      if ([v54 count])
+      if ([turnsCopy count])
       {
-        v22 = [v54 objectAtIndexedSubscript:0];
-        v23 = [v22 timestamp];
+        v22 = [turnsCopy objectAtIndexedSubscript:0];
+        timestamp = [v22 timestamp];
         v24 = *(v74 + 5);
-        *(v74 + 5) = v23;
+        *(v74 + 5) = timestamp;
       }
 
       else
       {
-        v26 = [MEMORY[0x277CBEAA8] date];
+        date = [MEMORY[0x277CBEAA8] date];
         v22 = *(v74 + 5);
-        *(v74 + 5) = v26;
+        *(v74 + 5) = date;
       }
 
       v69[0] = 0;
@@ -90,10 +90,10 @@
       v65 = v27;
       v28 = v20;
       v66 = v28;
-      [v54 enumerateObjectsWithOptions:0 usingBlock:v64];
+      [turnsCopy enumerateObjectsWithOptions:0 usingBlock:v64];
       v29 = [v28 componentsJoinedByString:@" "];
-      v30 = [v7 length];
-      if ([v7 isEqualToString:&stru_2874A9C90])
+      v30 = [classificationCopy length];
+      if ([classificationCopy isEqualToString:&stru_2874A9C90])
       {
         v25 = @"und";
       }
@@ -117,9 +117,9 @@
     v52 = v31;
     if (v31)
     {
-      if (([(__CFString *)v31 isEqualToString:@"und"]& 1) != 0 || ([RKUtilities canonicalLanguageAndScriptCodeIdentifierForIdentifier:v55], v32 = objc_claimAutoreleasedReturnValue(), v33 = [(__CFString *)v52 isEqualToString:v32], v32, v34 = v52, v33))
+      if (([(__CFString *)v31 isEqualToString:@"und"]& 1) != 0 || ([RKUtilities canonicalLanguageAndScriptCodeIdentifierForIdentifier:identifierCopy], v32 = objc_claimAutoreleasedReturnValue(), v33 = [(__CFString *)v52 isEqualToString:v32], v32, v34 = v52, v33))
       {
-        v34 = v55;
+        v34 = identifierCopy;
       }
     }
 
@@ -128,7 +128,7 @@
       v34 = 0;
     }
 
-    v35 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     v62 = 0u;
     v63 = 0u;
     v60 = 0u;
@@ -147,14 +147,14 @@
             objc_enumerationMutation(contexta);
           }
 
-          v39 = [*(*(&v60 + 1) + 8 * i) rangeValue];
-          v41 = [v59 substringWithRange:{v39, v40}];
+          rangeValue = [*(*(&v60 + 1) + 8 * i) rangeValue];
+          v41 = [v59 substringWithRange:{rangeValue, v40}];
           if (v41)
           {
             v42 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:v34];
             v43 = [RKSentenceClassifier preProcessTextMessageForLinguisticTagger:v41 withLocale:v42];
             v44 = [RKSentenceClassifier sentenceClassification:v43 withLanguageIdentifier:v34 options:1];
-            [v35 addObject:v44];
+            [array2 addObject:v44];
           }
 
           else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
@@ -169,7 +169,7 @@
       while (v36);
     }
 
-    v45 = [v35 sortedArrayUsingComparator:&__block_literal_global_10];
+    v45 = [array2 sortedArrayUsingComparator:&__block_literal_global_10];
     if ([v45 count])
     {
       v46 = [v45 objectAtIndexedSubscript:0];
@@ -177,11 +177,11 @@
       v56 = v46;
     }
 
-    v47 = [v35 valueForKeyPath:@"@unionOfObjects.taggedText"];
+    v47 = [array2 valueForKeyPath:@"@unionOfObjects.taggedText"];
     v48 = [v47 componentsJoinedByString:@" "];
     [v56 setTaggedText:v48];
 
-    v49 = [v35 valueForKeyPath:@"@max.isSensitive"];
+    v49 = [array2 valueForKeyPath:@"@max.isSensitive"];
     [v56 setSensitive:{objc_msgSend(v49, "BOOLValue")}];
   }
 
@@ -338,20 +338,20 @@ LABEL_9:
   }
 }
 
-+ (BOOL)questionClassification:(id)a3 withLanguageIdentifier:(id)a4
++ (BOOL)questionClassification:(id)classification withLanguageIdentifier:(id)identifier
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  classificationCopy = classification;
+  identifierCopy = identifier;
   v7 = objc_autoreleasePoolPush();
-  v8 = [RKMessageClassifier messageClassification:v5 withLanguageIdentifier:v6];
-  v9 = [v8 language];
-  v10 = [RKUtilities isLanguageSupportedBySmartPunctuation:v9];
+  v8 = [RKMessageClassifier messageClassification:classificationCopy withLanguageIdentifier:identifierCopy];
+  language = [v8 language];
+  v10 = [RKUtilities isLanguageSupportedBySmartPunctuation:language];
 
   if (v10 && ((v11 = [v8 sentenceType], (v11 - 7) < 0x18) || (v11 - 2) <= 2))
   {
-    v12 = [v8 matchedRanges];
-    v13 = [v12 count];
+    matchedRanges = [v8 matchedRanges];
+    v13 = [matchedRanges count];
 
     if (v13)
     {
@@ -359,8 +359,8 @@ LABEL_9:
       v22 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v14 = [v8 matchedRanges];
-      v13 = [v14 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      matchedRanges2 = [v8 matchedRanges];
+      v13 = [matchedRanges2 countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v13)
       {
         v15 = *v20;
@@ -370,7 +370,7 @@ LABEL_9:
           {
             if (*v20 != v15)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(matchedRanges2);
             }
 
             if (![*(*(&v19 + 1) + 8 * i) range])
@@ -380,7 +380,7 @@ LABEL_9:
             }
           }
 
-          v13 = [v14 countByEnumeratingWithState:&v19 objects:v23 count:16];
+          v13 = [matchedRanges2 countByEnumeratingWithState:&v19 objects:v23 count:16];
           if (v13)
           {
             continue;

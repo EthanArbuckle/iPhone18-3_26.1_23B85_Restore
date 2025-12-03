@@ -1,29 +1,29 @@
 @interface CDMSELFLoggingPolicy
 + (BOOL)isDiagnosticsSubmissionAllowed;
-+ (BOOL)isSELFLoggingAllowed:(int)a3;
-+ (int)getSELFCDMLoggingPolicyType:(id)a3;
++ (BOOL)isSELFLoggingAllowed:(int)allowed;
++ (int)getSELFCDMLoggingPolicyType:(id)type;
 @end
 
 @implementation CDMSELFLoggingPolicy
 
-+ (BOOL)isSELFLoggingAllowed:(int)a3
++ (BOOL)isSELFLoggingAllowed:(int)allowed
 {
-  if (a3 == 2)
+  if (allowed == 2)
   {
     return +[CDMSELFLoggingPolicy isDiagnosticsSubmissionAllowed];
   }
 
   else
   {
-    return a3 == 1;
+    return allowed == 1;
   }
 }
 
-+ (int)getSELFCDMLoggingPolicyType:(id)a3
++ (int)getSELFCDMLoggingPolicyType:(id)type
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (!v3)
+  typeCopy = type;
+  if (!typeCopy)
   {
     v4 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -41,7 +41,7 @@
     dispatch_once(&getSELFCDMLoggingPolicyType__onceToken, &__block_literal_global_10674);
   }
 
-  v4 = [getSELFCDMLoggingPolicyType__bundleIdStringToCDMPolicyTypeDict objectForKey:v3];
+  v4 = [getSELFCDMLoggingPolicyType__bundleIdStringToCDMPolicyTypeDict objectForKey:typeCopy];
   v5 = CDMOSLoggerForCategory(0);
   v6 = v5;
   if (!v4)
@@ -51,13 +51,13 @@
       v10 = 136315394;
       v11 = "+[CDMSELFLoggingPolicy getSELFCDMLoggingPolicyType:]";
       v12 = 2112;
-      v13 = v3;
+      v13 = typeCopy;
       _os_log_impl(&dword_1DC287000, v6, OS_LOG_TYPE_INFO, "%s [WARN]: Unknown calling bundle id, setting logging policy to NO_LOGGING: %@", &v10, 0x16u);
     }
 
     v4 = 0;
 LABEL_13:
-    v7 = 0;
+    intValue = 0;
     goto LABEL_14;
   }
 
@@ -66,17 +66,17 @@ LABEL_13:
     v10 = 136315650;
     v11 = "+[CDMSELFLoggingPolicy getSELFCDMLoggingPolicyType:]";
     v12 = 2112;
-    v13 = v3;
+    v13 = typeCopy;
     v14 = 2112;
     v15 = v4;
     _os_log_debug_impl(&dword_1DC287000, v6, OS_LOG_TYPE_DEBUG, "%s Calling bundle id - %@, Logging Policy - %@", &v10, 0x20u);
   }
 
-  v7 = [v4 intValue];
+  intValue = [v4 intValue];
 LABEL_14:
 
   v8 = *MEMORY[0x1E69E9840];
-  return v7;
+  return intValue;
 }
 
 void __52__CDMSELFLoggingPolicy_getSELFCDMLoggingPolicyType___block_invoke()
@@ -142,8 +142,8 @@ void __52__CDMSELFLoggingPolicy_getSELFCDMLoggingPolicyType___block_invoke()
 
 + (BOOL)isDiagnosticsSubmissionAllowed
 {
-  v2 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  v3 = [v2 effectiveBoolValueForSetting:*MEMORY[0x1E69ADE40]] == 1;
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  v3 = [mEMORY[0x1E69ADFB8] effectiveBoolValueForSetting:*MEMORY[0x1E69ADE40]] == 1;
 
   return v3;
 }

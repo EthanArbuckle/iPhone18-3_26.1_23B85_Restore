@@ -1,25 +1,25 @@
 @interface _SWCPattern
-+ (id)_debug:(BOOL)a3 descriptionOfStorage:(const SWCPatternStorage *)a4 forObject:(id)a5 redacted:(BOOL)a6;
-+ (id)_normalizedURLPath:(id)a3;
++ (id)_debug:(BOOL)_debug descriptionOfStorage:(const SWCPatternStorage *)storage forObject:(id)object redacted:(BOOL)redacted;
++ (id)_normalizedURLPath:(id)path;
 - (BOOL)isBlocking;
 - (BOOL)isCaseSensitive;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isPercentEncoded;
 - (NSString)requiredEntitlement;
-- (_SWCPattern)initWithDictionary:(id)a3 defaults:(id)a4;
-- (_SWCPattern)initWithPathPattern:(id)a3 defaults:(id)a4;
-- (id)_initWithPatternStorageNoCopy:(const SWCPatternStorage *)a3 freeWhenDone:(BOOL)a4;
+- (_SWCPattern)initWithDictionary:(id)dictionary defaults:(id)defaults;
+- (_SWCPattern)initWithPathPattern:(id)pattern defaults:(id)defaults;
+- (id)_initWithPatternStorageNoCopy:(const SWCPatternStorage *)copy freeWhenDone:(BOOL)done;
 - (id)debugDescription;
 - (id)description;
 - (id)redactedDescription;
-- (unint64_t)evaluateWithURLComponents:(id)a3 substitutionVariables:(id)a4 auditToken:(id *)a5;
+- (unint64_t)evaluateWithURLComponents:(id)components substitutionVariables:(id)variables auditToken:(id *)token;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
 
 @implementation _SWCPattern
 
-- (_SWCPattern)initWithDictionary:(id)a3 defaults:(id)a4
+- (_SWCPattern)initWithDictionary:(id)dictionary defaults:(id)defaults
 {
   v52 = *MEMORY[0x277D85DE8];
   v7 = objc_autoreleasePoolPush();
@@ -30,10 +30,10 @@
     goto LABEL_65;
   }
 
-  v9 = [a3 objectForKeyedSubscript:@"/"];
+  v9 = [dictionary objectForKeyedSubscript:@"/"];
   if (!v9)
   {
-    v9 = [a4 objectForKeyedSubscript:@"/"];
+    v9 = [defaults objectForKeyedSubscript:@"/"];
     if (!v9)
     {
       v10 = 0;
@@ -63,7 +63,7 @@ LABEL_10:
   v11 = 2;
 LABEL_11:
 
-  v12 = [a3 objectForKeyedSubscript:@"#"];
+  v12 = [dictionary objectForKeyedSubscript:@"#"];
   v13 = v12;
   if (v12)
   {
@@ -72,7 +72,7 @@ LABEL_11:
 
   else
   {
-    v14 = [a4 objectForKeyedSubscript:@"#"];
+    v14 = [defaults objectForKeyedSubscript:@"#"];
   }
 
   v15 = v14;
@@ -91,7 +91,7 @@ LABEL_11:
     }
   }
 
-  v16 = [a3 objectForKeyedSubscript:@"?"];
+  v16 = [dictionary objectForKeyedSubscript:@"?"];
   v17 = v16;
   if (v16)
   {
@@ -100,7 +100,7 @@ LABEL_11:
 
   else
   {
-    v18 = [a4 objectForKeyedSubscript:@"?"];
+    v18 = [defaults objectForKeyedSubscript:@"?"];
   }
 
   v19 = v18;
@@ -138,7 +138,7 @@ LABEL_11:
     }
   }
 
-  v23 = [a3 objectForKeyedSubscript:@"requiredEntitlement"];
+  v23 = [dictionary objectForKeyedSubscript:@"requiredEntitlement"];
   v24 = v23;
   if (v23)
   {
@@ -147,7 +147,7 @@ LABEL_11:
 
   else
   {
-    v25 = [a4 objectForKeyedSubscript:@"requiredEntitlement"];
+    v25 = [defaults objectForKeyedSubscript:@"requiredEntitlement"];
   }
 
   v26 = v25;
@@ -166,7 +166,7 @@ LABEL_11:
     }
   }
 
-  v27 = [a3 objectForKeyedSubscript:@"exclude"];
+  v27 = [dictionary objectForKeyedSubscript:@"exclude"];
   v28 = v27;
   if (v27)
   {
@@ -175,7 +175,7 @@ LABEL_11:
 
   else
   {
-    v29 = [a4 objectForKeyedSubscript:@"exclude"];
+    v29 = [defaults objectForKeyedSubscript:@"exclude"];
   }
 
   v30 = v29;
@@ -184,18 +184,18 @@ LABEL_11:
   {
     if (objc_opt_respondsToSelector())
     {
-      v31 = [v30 BOOLValue];
+      bOOLValue = [v30 BOOLValue];
     }
 
     else
     {
-      v31 = 0;
+      bOOLValue = 0;
     }
 
-    v11 = v11 & 0xFE | v31;
+    v11 = v11 & 0xFE | bOOLValue;
   }
 
-  v32 = [a3 objectForKeyedSubscript:@"caseSensitive"];
+  v32 = [dictionary objectForKeyedSubscript:@"caseSensitive"];
   v33 = v32;
   if (v32)
   {
@@ -204,7 +204,7 @@ LABEL_11:
 
   else
   {
-    v34 = [a4 objectForKeyedSubscript:@"caseSensitive"];
+    v34 = [defaults objectForKeyedSubscript:@"caseSensitive"];
   }
 
   v35 = v34;
@@ -232,7 +232,7 @@ LABEL_11:
     v11 = v36 | v11 & 0xDF;
   }
 
-  v37 = [a3 objectForKeyedSubscript:@"percentEncoded"];
+  v37 = [dictionary objectForKeyedSubscript:@"percentEncoded"];
   v38 = v37;
   if (v37)
   {
@@ -241,7 +241,7 @@ LABEL_11:
 
   else
   {
-    v39 = [a4 objectForKeyedSubscript:@"percentEncoded"];
+    v39 = [defaults objectForKeyedSubscript:@"percentEncoded"];
   }
 
   v40 = v39;
@@ -294,28 +294,28 @@ LABEL_65:
   return result;
 }
 
-- (_SWCPattern)initWithPathPattern:(id)a3 defaults:(id)a4
+- (_SWCPattern)initWithPathPattern:(id)pattern defaults:(id)defaults
 {
-  v6 = a3;
+  patternCopy = pattern;
   v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
   if (_NSIsNSString())
   {
-    v8 = [v6 uppercaseString];
-    v9 = [v8 hasPrefix:@"NOT "];
+    uppercaseString = [patternCopy uppercaseString];
+    v9 = [uppercaseString hasPrefix:@"NOT "];
 
     if (v9)
     {
       [v7 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"exclude"];
       [v7 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"caseSensitive"];
-      v10 = [v6 substringFromIndex:{objc_msgSend(@"NOT ", "length")}];
+      v10 = [patternCopy substringFromIndex:{objc_msgSend(@"NOT ", "length")}];
 
-      v6 = v10;
+      patternCopy = v10;
     }
 
-    [v7 setObject:v6 forKeyedSubscript:@"/"];
+    [v7 setObject:patternCopy forKeyedSubscript:@"/"];
   }
 
-  v11 = [(_SWCPattern *)self initWithDictionary:v7 defaults:a4];
+  v11 = [(_SWCPattern *)self initWithDictionary:v7 defaults:defaults];
 
   return v11;
 }
@@ -334,10 +334,10 @@ LABEL_65:
 
 - (BOOL)isBlocking
 {
-  v2 = [(_SWCPattern *)self storage];
-  if (v2)
+  storage = [(_SWCPattern *)self storage];
+  if (storage)
   {
-    v3 = *v2;
+    v3 = *storage;
   }
 
   else
@@ -350,36 +350,36 @@ LABEL_65:
 
 - (BOOL)isCaseSensitive
 {
-  v2 = [(_SWCPattern *)self storage];
-  if (v2)
+  storage = [(_SWCPattern *)self storage];
+  if (storage)
   {
-    LOBYTE(v2) = (*v2 & 0x20) == 0;
+    LOBYTE(storage) = (*storage & 0x20) == 0;
   }
 
-  return v2;
+  return storage;
 }
 
 - (BOOL)isPercentEncoded
 {
-  v2 = [(_SWCPattern *)self storage];
-  if (v2)
+  storage = [(_SWCPattern *)self storage];
+  if (storage)
   {
-    LOBYTE(v2) = (*v2 & 0x40) == 0;
+    LOBYTE(storage) = (*storage & 0x40) == 0;
   }
 
-  return v2;
+  return storage;
 }
 
 - (NSString)requiredEntitlement
 {
-  v2 = [(_SWCPattern *)self storage];
-  if (v2)
+  storage = [(_SWCPattern *)self storage];
+  if (storage)
   {
-    cStrings = v2->cStrings;
-    v4 = *v2;
+    cStrings = storage->cStrings;
+    v4 = *storage;
     if ((v4 & 2) != 0)
     {
-      cStrings += strlen(v2->cStrings) + 1;
+      cStrings += strlen(storage->cStrings) + 1;
     }
 
     if ((v4 & 4) != 0)
@@ -413,47 +413,47 @@ LABEL_65:
   return v6;
 }
 
-- (unint64_t)evaluateWithURLComponents:(id)a3 substitutionVariables:(id)a4 auditToken:(id *)a5
+- (unint64_t)evaluateWithURLComponents:(id)components substitutionVariables:(id)variables auditToken:(id *)token
 {
-  v8 = [(_SWCPattern *)self storage];
-  if (!v8)
+  storage = [(_SWCPattern *)self storage];
+  if (!storage)
   {
     return 200;
   }
 
-  v9 = v8;
+  v9 = storage;
   v12[0] = 0;
   v13 = 0;
   v14 = 0;
-  v15 = a4;
+  variablesCopy = variables;
   v16 = 0;
   memset(v17, 0, sizeof(v17));
   v18 = 1065353216;
   v19 = 0;
   ++_SWCDiagnosticStorage;
-  v10 = SWCPatternStorage::evaluate(v9, a3, v12, a5);
+  v10 = SWCPatternStorage::evaluate(v9, components, v12, token);
   std::__hash_table<std::__hash_value_type<std::string_view,SWCSubstitutionVariable const*>,std::__unordered_map_hasher<std::string_view,std::__hash_value_type<std::string_view,SWCSubstitutionVariable const*>,std::hash<std::string_view>,std::equal_to<std::string_view>,true>,std::__unordered_map_equal<std::string_view,std::__hash_value_type<std::string_view,SWCSubstitutionVariable const*>,std::equal_to<std::string_view>,std::hash<std::string_view>,true>,std::allocator<std::__hash_value_type<std::string_view,SWCSubstitutionVariable const*>>>::~__hash_table(v17);
 
   return v10;
 }
 
-- (id)_initWithPatternStorageNoCopy:(const SWCPatternStorage *)a3 freeWhenDone:(BOOL)a4
+- (id)_initWithPatternStorageNoCopy:(const SWCPatternStorage *)copy freeWhenDone:(BOOL)done
 {
   v7.receiver = self;
   v7.super_class = _SWCPattern;
   result = [(_SWCPattern *)&v7 init];
   if (result)
   {
-    *(result + 2) = a3;
-    *(result + 8) = a4;
+    *(result + 2) = copy;
+    *(result + 8) = done;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -464,18 +464,18 @@ LABEL_65:
     return 0;
   }
 
-  v5 = [(_SWCPattern *)self storage];
-  v6 = [a3 storage];
-  v7 = (v5 | v6) == 0;
-  if (v5)
+  storage = [(_SWCPattern *)self storage];
+  storage2 = [equal storage];
+  v7 = (storage | storage2) == 0;
+  if (storage)
   {
-    v8 = v6;
-    if (v6)
+    v8 = storage2;
+    if (storage2)
     {
-      Size = SWCPatternStorage::getSize(v5);
+      Size = SWCPatternStorage::getSize(storage);
       if (Size == SWCPatternStorage::getSize(v8))
       {
-        return memcmp(v5, v8, Size) == 0;
+        return memcmp(storage, v8, Size) == 0;
       }
     }
   }
@@ -518,16 +518,16 @@ LABEL_65:
   return v2;
 }
 
-+ (id)_normalizedURLPath:(id)a3
++ (id)_normalizedURLPath:(id)path
 {
-  v6 = [a3 mutableCopy];
+  v6 = [path mutableCopy];
   if (!v6)
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:a1 file:@"SWCPattern.mm" lineNumber:979 description:{@"Invalid parameter not satisfying: %@", @"result != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SWCPattern.mm" lineNumber:979 description:{@"Invalid parameter not satisfying: %@", @"result != nil"}];
   }
 
-  v7 = [a3 length];
+  v7 = [path length];
   if (!v7)
   {
     [v6 setString:@"/"];
@@ -624,12 +624,12 @@ LABEL_22:
   return v6;
 }
 
-+ (id)_debug:(BOOL)a3 descriptionOfStorage:(const SWCPatternStorage *)a4 forObject:(id)a5 redacted:(BOOL)a6
++ (id)_debug:(BOOL)_debug descriptionOfStorage:(const SWCPatternStorage *)storage forObject:(id)object redacted:(BOOL)redacted
 {
-  v6 = a6;
-  v9 = a3;
+  redactedCopy = redacted;
+  _debugCopy = _debug;
   v10 = objc_autoreleasePoolPush();
-  if (!a4)
+  if (!storage)
   {
     v16 = @"(null)";
     goto LABEL_40;
@@ -637,14 +637,14 @@ LABEL_22:
 
   v11 = objc_autoreleasePoolPush();
   v12 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  cStrings = a4->cStrings;
-  v14 = *a4;
+  cStrings = storage->cStrings;
+  v14 = *storage;
   LOBYTE(v45) = 0;
   v47 = 0;
   if ((v14 & 2) != 0)
   {
-    v45 = a4->cStrings;
-    v46 = strlen(a4->cStrings);
+    v45 = storage->cStrings;
+    v46 = strlen(storage->cStrings);
     v47 = 1;
     cStrings += v46 + 1;
   }
@@ -710,7 +710,7 @@ LABEL_15:
 LABEL_16:
   if (v15 <= 1)
   {
-    v19 = (*a4 >> 3) & 3;
+    v19 = (*storage >> 3) & 3;
     if (v19 == 1)
     {
       v20 = SWCGetNSStringFromStringViewNoCopy(&v39);
@@ -739,17 +739,17 @@ LABEL_23:
     [v12 setObject:v21 forKeyedSubscript:@"requiredEntitlement"];
   }
 
-  v22 = *a4;
-  if (*a4)
+  v22 = *storage;
+  if (*storage)
   {
     [v12 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"exclude"];
-    v22 = *a4;
+    v22 = *storage;
   }
 
   if ((v22 & 0x20) != 0)
   {
     [v12 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"caseSensitive"];
-    v22 = *a4;
+    v22 = *storage;
   }
 
   if ((v22 & 0x40) != 0)
@@ -760,7 +760,7 @@ LABEL_23:
   v23 = [v12 copy];
 
   objc_autoreleasePoolPop(v11);
-  if (v6)
+  if (redactedCopy)
   {
     v24 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v23, "count")}];
     v35[0] = MEMORY[0x277D85DD0];
@@ -775,7 +775,7 @@ LABEL_23:
     v23 = v26;
   }
 
-  if (v9)
+  if (_debugCopy)
   {
     v27 = 11;
   }
@@ -799,7 +799,7 @@ LABEL_23:
 LABEL_40:
   objc_autoreleasePoolPop(v10);
   v29 = objc_autoreleasePoolPush();
-  if (!v9)
+  if (!_debugCopy)
   {
 LABEL_44:
     v31 = v16;
@@ -809,13 +809,13 @@ LABEL_44:
 
   v30 = [(__CFString *)v16 stringByReplacingOccurrencesOfString:@"\n" withString:@"\n  "];
 
-  if (!a5)
+  if (!object)
   {
     v16 = v30;
     goto LABEL_44;
   }
 
-  v31 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"<%@ %p> %@", objc_opt_class(), a5, v30];
+  v31 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"<%@ %p> %@", objc_opt_class(), object, v30];
   v32 = v30;
 LABEL_45:
   v33 = v31;

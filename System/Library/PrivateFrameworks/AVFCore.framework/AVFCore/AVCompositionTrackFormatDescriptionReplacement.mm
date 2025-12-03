@@ -1,21 +1,21 @@
 @interface AVCompositionTrackFormatDescriptionReplacement
-- (AVCompositionTrackFormatDescriptionReplacement)initWithCoder:(id)a3;
-- (AVCompositionTrackFormatDescriptionReplacement)initWithOriginalFormatDescription:(opaqueCMFormatDescription *)a3 andReplacementFormatDescription:(opaqueCMFormatDescription *)a4;
+- (AVCompositionTrackFormatDescriptionReplacement)initWithCoder:(id)coder;
+- (AVCompositionTrackFormatDescriptionReplacement)initWithOriginalFormatDescription:(opaqueCMFormatDescription *)description andReplacementFormatDescription:(opaqueCMFormatDescription *)formatDescription;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AVCompositionTrackFormatDescriptionReplacement
 
-- (AVCompositionTrackFormatDescriptionReplacement)initWithOriginalFormatDescription:(opaqueCMFormatDescription *)a3 andReplacementFormatDescription:(opaqueCMFormatDescription *)a4
+- (AVCompositionTrackFormatDescriptionReplacement)initWithOriginalFormatDescription:(opaqueCMFormatDescription *)description andReplacementFormatDescription:(opaqueCMFormatDescription *)formatDescription
 {
   v8.receiver = self;
   v8.super_class = AVCompositionTrackFormatDescriptionReplacement;
   v6 = [(AVCompositionTrackFormatDescriptionReplacement *)&v8 init];
   if (v6)
   {
-    v6->_originalFormatDescription = CFRetain(a3);
-    v6->_replacementFormatDescription = CFRetain(a4);
+    v6->_originalFormatDescription = CFRetain(description);
+    v6->_replacementFormatDescription = CFRetain(formatDescription);
   }
 
   return v6;
@@ -40,10 +40,10 @@
   [(AVCompositionTrackFormatDescriptionReplacement *)&v5 dealloc];
 }
 
-- (AVCompositionTrackFormatDescriptionReplacement)initWithCoder:(id)a3
+- (AVCompositionTrackFormatDescriptionReplacement)initWithCoder:(id)coder
 {
   v14 = [[AVTelemetryInterval alloc] initAndStartWith:32];
-  v5 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"originalFormatDescription"];
+  v5 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"originalFormatDescription"];
   if (v5)
   {
     v6 = AVFormatDescriptionFromSerializedAtomData(v5);
@@ -54,7 +54,7 @@
     v6 = 0;
   }
 
-  v7 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"replacementFormatDescription"];
+  v7 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"replacementFormatDescription"];
   if (!v7)
   {
     v9 = 0;
@@ -94,19 +94,19 @@ LABEL_11:
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7 = [[AVTelemetryInterval alloc] initAndStartWith:33];
   v5 = AVSerializedAtomDataFromFormatDescription(self->_originalFormatDescription);
   if (v5)
   {
-    [a3 encodeObject:v5 forKey:@"originalFormatDescription"];
+    [coder encodeObject:v5 forKey:@"originalFormatDescription"];
   }
 
   v6 = AVSerializedAtomDataFromFormatDescription(self->_replacementFormatDescription);
   if (v6)
   {
-    [a3 encodeObject:v6 forKey:@"replacementFormatDescription"];
+    [coder encodeObject:v6 forKey:@"replacementFormatDescription"];
   }
 
   AVTelemetryIntervalEnd(&v7);

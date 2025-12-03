@@ -2,21 +2,21 @@
 - (BOOL)allowsMultipleSelectionDuringEditing;
 - (BOOL)hasSectionHeaders;
 - (BOOL)isMalformed;
-- (SKUIDynamicGridViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
+- (SKUIDynamicGridViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
 - (id)_templateDefinitionTypeToModeValueMap;
-- (id)applyUpdatesWithElement:(id)a3;
-- (id)bestTemplateDefinitionViewElementFromTemplateDefinitionViewElements:(id)a3 entityValueProvider:(id)a4;
-- (id)templateDefinitionViewElementsForType:(id)a3 mode:(id)a4;
-- (void)_unfilteredEnumerateChildrenUsingBlock:(id)a3;
+- (id)applyUpdatesWithElement:(id)element;
+- (id)bestTemplateDefinitionViewElementFromTemplateDefinitionViewElements:(id)elements entityValueProvider:(id)provider;
+- (id)templateDefinitionViewElementsForType:(id)type mode:(id)mode;
+- (void)_unfilteredEnumerateChildrenUsingBlock:(id)block;
 @end
 
 @implementation SKUIDynamicGridViewElement
 
-- (SKUIDynamicGridViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SKUIDynamicGridViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  factoryCopy = factory;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIDynamicGridViewElement initWithDOMElement:parent:elementFactory:];
@@ -24,10 +24,10 @@
 
   v15.receiver = self;
   v15.super_class = SKUIDynamicGridViewElement;
-  v11 = [(SKUIGridViewElement *)&v15 initWithDOMElement:v8 parent:v9 elementFactory:v10];
+  v11 = [(SKUIGridViewElement *)&v15 initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
   if (v11)
   {
-    v12 = [v8 getAttribute:@"minimumEntityCountForSections"];
+    v12 = [elementCopy getAttribute:@"minimumEntityCountForSections"];
     v13 = v12;
     if (v12)
     {
@@ -38,20 +38,20 @@
   return v11;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v9.receiver = self;
   v9.super_class = SKUIDynamicGridViewElement;
-  v5 = [(SKUIGridViewElement *)&v9 applyUpdatesWithElement:v4];
+  v5 = [(SKUIGridViewElement *)&v9 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self || [v5 updateType])
+  if (elementCopy != self || [v5 updateType])
   {
     self->_hasValidTemplateDefinitionMap = 0;
     templateDefinitionTypeToModeValueMap = self->_templateDefinitionTypeToModeValueMap;
     self->_templateDefinitionTypeToModeValueMap = 0;
 
-    self->_minimumEntityCountForSections = [(SKUIDynamicGridViewElement *)v4 minimumEntityCountForSections];
+    self->_minimumEntityCountForSections = [(SKUIDynamicGridViewElement *)elementCopy minimumEntityCountForSections];
   }
 
   return v6;
@@ -81,8 +81,8 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) contentViewElement];
-        v11 = [(SKUIGridViewElement *)self _countOfInputCheckboxesWithBaseElement:v10 limit:1];
+        contentViewElement = [*(*(&v13 + 1) + 8 * i) contentViewElement];
+        v11 = [(SKUIGridViewElement *)self _countOfInputCheckboxesWithBaseElement:contentViewElement limit:1];
 
         if (!v11)
         {
@@ -122,16 +122,16 @@ LABEL_11:
   return v3;
 }
 
-- (id)bestTemplateDefinitionViewElementFromTemplateDefinitionViewElements:(id)a3 entityValueProvider:(id)a4
+- (id)bestTemplateDefinitionViewElementFromTemplateDefinitionViewElements:(id)elements entityValueProvider:(id)provider
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  elementsCopy = elements;
+  providerCopy = provider;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = v5;
+  v7 = elementsCopy;
   v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
@@ -147,12 +147,12 @@ LABEL_11:
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        v13 = [v12 predicateListViewElement];
-        v14 = [v13 compoundEntityValuePredicate];
-        v15 = v14;
-        if (v13)
+        predicateListViewElement = [v12 predicateListViewElement];
+        compoundEntityValuePredicate = [predicateListViewElement compoundEntityValuePredicate];
+        v15 = compoundEntityValuePredicate;
+        if (predicateListViewElement)
         {
-          v16 = v14 == 0;
+          v16 = compoundEntityValuePredicate == 0;
         }
 
         else
@@ -160,7 +160,7 @@ LABEL_11:
           v16 = 1;
         }
 
-        if (v16 || [v14 evaluateWithObject:v6])
+        if (v16 || [compoundEntityValuePredicate evaluateWithObject:providerCopy])
         {
           v17 = v12;
 
@@ -189,26 +189,26 @@ LABEL_16:
   return v17;
 }
 
-- (id)templateDefinitionViewElementsForType:(id)a3 mode:(id)a4
+- (id)templateDefinitionViewElementsForType:(id)type mode:(id)mode
 {
-  v6 = [(SKUIDynamicGridViewElement *)self _templateDefinitionTypeToModeValueMap];
-  if ([a3 length])
+  _templateDefinitionTypeToModeValueMap = [(SKUIDynamicGridViewElement *)self _templateDefinitionTypeToModeValueMap];
+  if ([type length])
   {
-    v7 = [v6 objectForKey:a3];
+    firstObject = [_templateDefinitionTypeToModeValueMap objectForKey:type];
   }
 
   else
   {
-    v7 = 0;
+    firstObject = 0;
   }
 
-  if (![a3 length] && !v7)
+  if (![type length] && !firstObject)
   {
-    v8 = [v6 allValues];
-    v7 = [v8 firstObject];
+    allValues = [_templateDefinitionTypeToModeValueMap allValues];
+    firstObject = [allValues firstObject];
   }
 
-  return [v7 templateDefinitionViewElementsForMode:a4];
+  return [firstObject templateDefinitionViewElementsForMode:mode];
 }
 
 - (id)_templateDefinitionTypeToModeValueMap
@@ -266,15 +266,15 @@ void __67__SKUIDynamicGridViewElement__templateDefinitionTypeToModeValueMap__blo
   }
 }
 
-- (void)_unfilteredEnumerateChildrenUsingBlock:(id)a3
+- (void)_unfilteredEnumerateChildrenUsingBlock:(id)block
 {
-  v7 = a3;
+  blockCopy = block;
   v4 = objc_opt_class();
   InstanceMethod = class_getInstanceMethod(v4, sel_enumerateChildrenUsingBlock_);
   Implementation = method_getImplementation(InstanceMethod);
   if (Implementation)
   {
-    (Implementation)(self, sel_enumerateChildrenUsingBlock_, v7);
+    (Implementation)(self, sel_enumerateChildrenUsingBlock_, blockCopy);
   }
 }
 

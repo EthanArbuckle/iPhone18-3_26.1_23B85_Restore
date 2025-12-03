@@ -1,10 +1,10 @@
 @interface BMStream
 - (id)pruner;
-- (id)prunerForDevice:(id)a3;
+- (id)prunerForDevice:(id)device;
 - (id)publisher;
-- (id)publisherWithOptions:(id)a3;
-- (id)publisherWithUseCase:(id)a3;
-- (id)publisherWithUseCase:(id)a3 options:(id)a4;
+- (id)publisherWithOptions:(id)options;
+- (id)publisherWithUseCase:(id)case;
+- (id)publisherWithUseCase:(id)case options:(id)options;
 - (id)source;
 @end
 
@@ -14,61 +14,61 @@
 {
   v4.receiver = self;
   v4.super_class = BMStream;
-  v2 = [(BMStreamBase *)&v4 source];
+  source = [(BMStreamBase *)&v4 source];
 
-  return v2;
+  return source;
 }
 
 - (id)publisher
 {
   v4.receiver = self;
   v4.super_class = BMStream;
-  v2 = [(BMStreamBase *)&v4 publisher];
+  publisher = [(BMStreamBase *)&v4 publisher];
 
-  return v2;
+  return publisher;
 }
 
 - (id)pruner
 {
   v4.receiver = self;
   v4.super_class = BMStream;
-  v2 = [(BMStreamBase *)&v4 pruner];
+  pruner = [(BMStreamBase *)&v4 pruner];
 
-  return v2;
+  return pruner;
 }
 
-- (id)publisherWithUseCase:(id)a3
+- (id)publisherWithUseCase:(id)case
 {
   v5.receiver = self;
   v5.super_class = BMStream;
-  v3 = [(BMStreamBase *)&v5 publisherWithUseCase:a3];
+  v3 = [(BMStreamBase *)&v5 publisherWithUseCase:case];
 
   return v3;
 }
 
-- (id)publisherWithOptions:(id)a3
+- (id)publisherWithOptions:(id)options
 {
   v5.receiver = self;
   v5.super_class = BMStream;
-  v3 = [(BMStreamBase *)&v5 publisherWithOptions:a3];
+  v3 = [(BMStreamBase *)&v5 publisherWithOptions:options];
 
   return v3;
 }
 
-- (id)publisherWithUseCase:(id)a3 options:(id)a4
+- (id)publisherWithUseCase:(id)case options:(id)options
 {
   v6.receiver = self;
   v6.super_class = BMStream;
-  v4 = [(BMStreamBase *)&v6 publisherWithUseCase:a3 options:a4];
+  v4 = [(BMStreamBase *)&v6 publisherWithUseCase:case options:options];
 
   return v4;
 }
 
-- (id)prunerForDevice:(id)a3
+- (id)prunerForDevice:(id)device
 {
   v5.receiver = self;
   v5.super_class = BMStream;
-  v3 = [(BMStreamBase *)&v5 prunerForDevice:a3];
+  v3 = [(BMStreamBase *)&v5 prunerForDevice:device];
 
   return v3;
 }

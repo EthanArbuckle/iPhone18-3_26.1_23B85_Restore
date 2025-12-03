@@ -1,19 +1,19 @@
 @interface SABundleManager
-+ (id)approvedBundleIdsForService:(__CFString *)a3;
-+ (id)bundleURLForAuditToken:(id *)a3;
++ (id)approvedBundleIdsForService:(__CFString *)service;
++ (id)bundleURLForAuditToken:(id *)token;
 + (id)bundleURLForCurrentConnection;
 + (id)crashDetectionManager;
 + (id)locationBundle;
-+ (id)reasonToAttributeName:(int64_t)a3;
-+ (id)remoteApplicationWithBundleId:(id)a3 error:(id *)a4;
-+ (void)getRemoteApplicationNameWithBundleId:(id)a3 withCompletion:(id)a4;
-- (SABundleManager)initWithServiceName:(__CFString *)a3;
++ (id)reasonToAttributeName:(int64_t)name;
++ (id)remoteApplicationWithBundleId:(id)id error:(id *)error;
++ (void)getRemoteApplicationNameWithBundleId:(id)id withCompletion:(id)completion;
+- (SABundleManager)initWithServiceName:(__CFString *)name;
 - (id)approvedApps;
-- (id)pairedDeviceBundleIdForId:(id)a3;
+- (id)pairedDeviceBundleIdForId:(id)id;
 - (void)approvedApps;
-- (void)openApplicationInBackgroundWithBundleId:(id)a3 withReason:(int64_t)a4 completion:(id)a5;
-- (void)openApplicationInForegroundWithBundleId:(id)a3 withReason:(int64_t)a4 completion:(id)a5;
-- (void)wakeApprovedAppsWithReason:(int64_t)a3 completion:(id)a4;
+- (void)openApplicationInBackgroundWithBundleId:(id)id withReason:(int64_t)reason completion:(id)completion;
+- (void)openApplicationInForegroundWithBundleId:(id)id withReason:(int64_t)reason completion:(id)completion;
+- (void)wakeApprovedAppsWithReason:(int64_t)reason completion:(id)completion;
 @end
 
 @implementation SABundleManager
@@ -32,12 +32,12 @@
 
 - (id)approvedApps
 {
-  v33 = self;
+  selfCopy = self;
   v62 = *MEMORY[0x277D85DE8];
   v2 = sa_default_log();
   if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
   {
-    [(SABundleManager *)v33 approvedApps];
+    [(SABundleManager *)selfCopy approvedApps];
   }
 
   v49 = 0;
@@ -46,9 +46,9 @@
   v52 = __Block_byref_object_copy_;
   v53 = __Block_byref_object_dispose_;
   v54 = objc_opt_new();
-  service = v33->_service;
-  options = v33->_options;
-  server = v33->_server;
+  service = selfCopy->_service;
+  options = selfCopy->_options;
+  server = selfCopy->_server;
   v44 = MEMORY[0x277D85DD0];
   v45 = 3221225472;
   v46 = __31__SABundleManager_approvedApps__block_invoke;
@@ -94,21 +94,21 @@
         continue;
       }
 
-      v14 = [*(*(&v40 + 1) + 8 * i) bundleId];
-      if ([v14 isEqualToString:v35])
+      bundleId = [*(*(&v40 + 1) + 8 * i) bundleId];
+      if ([bundleId isEqualToString:v35])
       {
 
 LABEL_14:
-        [v8 addObject:{v9, v33}];
+        [v8 addObject:{v9, selfCopy}];
         v18 = v13;
 
         v9 = v18;
         continue;
       }
 
-      v15 = [v13 bundleId];
-      v16 = [(SABundleManager *)v33 pairedDeviceBundleIdForId:v35];
-      v17 = [v15 isEqualToString:v16];
+      bundleId2 = [v13 bundleId];
+      v16 = [(SABundleManager *)selfCopy pairedDeviceBundleIdForId:v35];
+      v17 = [bundleId2 isEqualToString:v16];
 
       if (v17)
       {
@@ -147,15 +147,15 @@ LABEL_18:
         v24 = sa_default_log();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_FAULT))
         {
-          v28 = [v23 bundleId];
+          bundleId3 = [v23 bundleId];
           *buf = 136315394;
           v57 = "[SABundleManager approvedApps]";
           v58 = 2112;
-          v59 = v28;
+          v59 = bundleId3;
           _os_log_fault_impl(&dword_23AA4D000, v24, OS_LOG_TYPE_FAULT, "%s - Found more than one approved app for service, revoking access for duplicate app, bundleId: %@", buf, 0x16u);
         }
 
-        v25 = [v23 bundleId];
+        bundleId4 = [v23 bundleId];
         v26 = TCCAccessSetForBundleId() == 0;
 
         if (v26)
@@ -163,11 +163,11 @@ LABEL_18:
           v27 = sa_default_log();
           if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
           {
-            v29 = [v23 bundleId];
+            bundleId5 = [v23 bundleId];
             *buf = 136315394;
             v57 = "[SABundleManager approvedApps]";
             v58 = 2112;
-            v59 = v29;
+            v59 = bundleId5;
             _os_log_error_impl(&dword_23AA4D000, v27, OS_LOG_TYPE_ERROR, "%s - Unable to revoke access for duplicate app, bundleId: %@", buf, 0x16u);
           }
         }
@@ -223,7 +223,7 @@ uint64_t __40__SABundleManager_crashDetectionManager__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (SABundleManager)initWithServiceName:(__CFString *)a3
+- (SABundleManager)initWithServiceName:(__CFString *)name
 {
   v15.receiver = self;
   v15.super_class = SABundleManager;
@@ -255,7 +255,7 @@ uint64_t __40__SABundleManager_crashDetectionManager__block_invoke()
   return v3;
 }
 
-+ (id)approvedBundleIdsForService:(__CFString *)a3
++ (id)approvedBundleIdsForService:(__CFString *)service
 {
   v26 = *MEMORY[0x277D85DE8];
   v3 = sa_default_log();
@@ -296,9 +296,9 @@ uint64_t __40__SABundleManager_crashDetectionManager__block_invoke()
           {
             v15 = CFBundleGetIdentifier(v14);
             v16 = [v13 objectForKeyedSubscript:*v11];
-            v17 = [v16 BOOLValue];
+            bOOLValue = [v16 BOOLValue];
 
-            if (v17)
+            if (bOOLValue)
             {
               [v4 addObject:v15];
             }
@@ -312,11 +312,11 @@ uint64_t __40__SABundleManager_crashDetectionManager__block_invoke()
     }
   }
 
-  v18 = [v4 allObjects];
+  allObjects = [v4 allObjects];
 
   v19 = *MEMORY[0x277D85DE8];
 
-  return v18;
+  return allObjects;
 }
 
 uint64_t __31__SABundleManager_approvedApps__block_invoke_2(uint64_t a1, void *a2, void *a3)
@@ -331,13 +331,13 @@ uint64_t __31__SABundleManager_approvedApps__block_invoke_2(uint64_t a1, void *a
 
 + (id)bundleURLForCurrentConnection
 {
-  v2 = [MEMORY[0x277CCAE80] currentConnection];
-  v3 = v2;
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+  v3 = currentConnection;
   v7 = 0u;
   v8 = 0u;
-  if (v2)
+  if (currentConnection)
   {
-    [v2 auditToken];
+    [currentConnection auditToken];
   }
 
   v6[0] = v7;
@@ -347,11 +347,11 @@ uint64_t __31__SABundleManager_approvedApps__block_invoke_2(uint64_t a1, void *a
   return v4;
 }
 
-+ (id)bundleURLForAuditToken:(id *)a3
++ (id)bundleURLForAuditToken:(id *)token
 {
   v13 = 0;
-  v3 = *&a3->var0[4];
-  v12[0] = *a3->var0;
+  v3 = *&token->var0[4];
+  v12[0] = *token->var0;
   v12[1] = v3;
   v4 = [MEMORY[0x277CC1E90] bundleRecordForAuditToken:v12 error:&v13];
   v5 = v13;
@@ -385,25 +385,25 @@ uint64_t __31__SABundleManager_approvedApps__block_invoke_2(uint64_t a1, void *a
   return v9;
 }
 
-- (void)wakeApprovedAppsWithReason:(int64_t)a3 completion:(id)a4
+- (void)wakeApprovedAppsWithReason:(int64_t)reason completion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   v7 = sa_default_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [(SABundleManager *)self wakeApprovedAppsWithReason:a3 completion:v7];
+    [(SABundleManager *)self wakeApprovedAppsWithReason:reason completion:v7];
   }
 
-  v8 = [(SABundleManager *)self approvedApps];
-  if ([v8 count])
+  approvedApps = [(SABundleManager *)self approvedApps];
+  if ([approvedApps count])
   {
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v19 = v8;
-    v9 = v8;
+    v19 = approvedApps;
+    v9 = approvedApps;
     v10 = [v9 countByEnumeratingWithState:&v20 objects:v28 count:16];
     if (!v10)
     {
@@ -426,29 +426,29 @@ uint64_t __31__SABundleManager_approvedApps__block_invoke_2(uint64_t a1, void *a
         v15 = sa_default_log();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
         {
-          v17 = [v14 bundleId];
+          bundleId = [v14 bundleId];
           *buf = 136315394;
           v25 = "[SABundleManager wakeApprovedAppsWithReason:completion:]";
           v26 = 2112;
-          v27 = v17;
+          v27 = bundleId;
           _os_log_debug_impl(&dword_23AA4D000, v15, OS_LOG_TYPE_DEBUG, "%s - Need to wake app, app: %@", buf, 0x16u);
         }
 
-        if (a3 >= 2)
+        if (reason >= 2)
         {
-          if (a3 != 2)
+          if (reason != 2)
           {
             goto LABEL_16;
           }
 
-          v16 = [v14 bundleId];
-          [(SABundleManager *)self openApplicationInForegroundWithBundleId:v16 withReason:2 completion:v6];
+          bundleId2 = [v14 bundleId];
+          [(SABundleManager *)self openApplicationInForegroundWithBundleId:bundleId2 withReason:2 completion:completionCopy];
         }
 
         else
         {
-          v16 = [v14 bundleId];
-          [(SABundleManager *)self openApplicationInBackgroundWithBundleId:v16 withReason:a3 completion:v6];
+          bundleId2 = [v14 bundleId];
+          [(SABundleManager *)self openApplicationInBackgroundWithBundleId:bundleId2 withReason:reason completion:completionCopy];
         }
 
 LABEL_16:
@@ -461,15 +461,15 @@ LABEL_16:
       {
 LABEL_18:
 
-        v8 = v19;
+        approvedApps = v19;
         goto LABEL_21;
       }
     }
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    (*(v6 + 2))(v6, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
 LABEL_21:
@@ -477,30 +477,30 @@ LABEL_21:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)openApplicationInBackgroundWithBundleId:(id)a3 withReason:(int64_t)a4 completion:(id)a5
+- (void)openApplicationInBackgroundWithBundleId:(id)id withReason:(int64_t)reason completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  idCopy = id;
+  completionCopy = completion;
   v10 = sa_default_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     [SABundleManager openApplicationInBackgroundWithBundleId:withReason:completion:];
   }
 
-  [(SAApplicationLauncher *)self->_applicationLauncher openApplicationInBackgroundWithBundleId:v8 withReason:a4 completion:v9];
+  [(SAApplicationLauncher *)self->_applicationLauncher openApplicationInBackgroundWithBundleId:idCopy withReason:reason completion:completionCopy];
 }
 
-- (void)openApplicationInForegroundWithBundleId:(id)a3 withReason:(int64_t)a4 completion:(id)a5
+- (void)openApplicationInForegroundWithBundleId:(id)id withReason:(int64_t)reason completion:(id)completion
 {
   v18[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  idCopy = id;
   v7 = sa_default_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     [SABundleManager openApplicationInForegroundWithBundleId:withReason:completion:];
   }
 
-  v8 = [objc_opt_class() reasonToAttributeName:a4];
+  v8 = [objc_opt_class() reasonToAttributeName:reason];
   v9 = objc_opt_new();
   v17[0] = @"__LaunchOrigin";
   v17[1] = @"__PromptUnlockDevice";
@@ -511,15 +511,15 @@ LABEL_21:
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:3];
   [v9 setFrontBoardOptions:v10];
 
-  v11 = [MEMORY[0x277CC1E80] defaultWorkspace];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __81__SABundleManager_openApplicationInForegroundWithBundleId_withReason_completion___block_invoke;
   v14[3] = &unk_278B67E00;
-  v15 = v6;
-  v16 = a4;
-  v12 = v6;
-  [v11 openApplicationWithBundleIdentifier:v12 usingConfiguration:v9 completionHandler:v14];
+  v15 = idCopy;
+  reasonCopy = reason;
+  v12 = idCopy;
+  [defaultWorkspace openApplicationWithBundleIdentifier:v12 usingConfiguration:v9 completionHandler:v14];
 
   v13 = *MEMORY[0x277D85DE8];
 }
@@ -554,28 +554,28 @@ void __81__SABundleManager_openApplicationInForegroundWithBundleId_withReason_co
   v10 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)getRemoteApplicationNameWithBundleId:(id)a3 withCompletion:(id)a4
++ (void)getRemoteApplicationNameWithBundleId:(id)id withCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277D2BCF8] sharedInstance];
-  v8 = [v7 getActivePairedDevice];
+  idCopy = id;
+  completionCopy = completion;
+  mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+  getActivePairedDevice = [mEMORY[0x277D2BCF8] getActivePairedDevice];
 
-  if (v8)
+  if (getActivePairedDevice)
   {
-    v9 = [MEMORY[0x277CEAF80] sharedDeviceConnection];
+    mEMORY[0x277CEAF80] = [MEMORY[0x277CEAF80] sharedDeviceConnection];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __71__SABundleManager_getRemoteApplicationNameWithBundleId_withCompletion___block_invoke;
     v10[3] = &unk_278B67E28;
-    v11 = v5;
-    v12 = v6;
-    [v9 fetchApplicationOnPairedDevice:v8 withBundleID:v11 completion:v10];
+    v11 = idCopy;
+    v12 = completionCopy;
+    [mEMORY[0x277CEAF80] fetchApplicationOnPairedDevice:getActivePairedDevice withBundleID:v11 completion:v10];
   }
 
   else
   {
-    (*(v6 + 2))(v6, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -597,17 +597,17 @@ void __71__SABundleManager_getRemoteApplicationNameWithBundleId_withCompletion__
   (*(v8 + 16))(v8, v9);
 }
 
-+ (id)remoteApplicationWithBundleId:(id)a3 error:(id *)a4
++ (id)remoteApplicationWithBundleId:(id)id error:(id *)error
 {
-  v5 = a3;
-  v6 = [MEMORY[0x277D2BCF8] sharedInstance];
-  v7 = [v6 getActivePairedDevice];
+  idCopy = id;
+  mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+  getActivePairedDevice = [mEMORY[0x277D2BCF8] getActivePairedDevice];
 
-  if (v7)
+  if (getActivePairedDevice)
   {
-    v8 = [MEMORY[0x277CEAF80] sharedDeviceConnection];
+    mEMORY[0x277CEAF80] = [MEMORY[0x277CEAF80] sharedDeviceConnection];
     v18 = 0;
-    v9 = [v8 applicationOnPairedDevice:v7 withBundleID:v5 error:&v18];
+    v9 = [mEMORY[0x277CEAF80] applicationOnPairedDevice:getActivePairedDevice withBundleID:idCopy error:&v18];
     v10 = v18;
     v11 = v18;
 
@@ -619,14 +619,14 @@ void __71__SABundleManager_getRemoteApplicationNameWithBundleId_withCompletion__
         +[SABundleManager remoteApplicationWithBundleId:error:];
       }
 
-      objc_storeStrong(a4, v10);
+      objc_storeStrong(error, v10);
     }
 
     if (v9)
     {
-      v13 = [[SABundleManagerApp alloc] initWithBundleId:v5 deviceType:1];
-      v14 = [v9 companionAppBundleID];
-      [(SABundleManagerApp *)v13 setPairedBundleId:v14];
+      v13 = [[SABundleManagerApp alloc] initWithBundleId:idCopy deviceType:1];
+      companionAppBundleID = [v9 companionAppBundleID];
+      [(SABundleManagerApp *)v13 setPairedBundleId:companionAppBundleID];
     }
 
     else
@@ -638,8 +638,8 @@ void __71__SABundleManager_getRemoteApplicationNameWithBundleId_withCompletion__
   else
   {
     v15 = [SAError errorWithCode:4];
-    v16 = *a4;
-    *a4 = v15;
+    v16 = *error;
+    *error = v15;
 
     v13 = 0;
   }
@@ -672,31 +672,31 @@ void __33__SABundleManager_locationBundle__block_invoke()
   locationBundle___bundle = v4;
 }
 
-+ (id)reasonToAttributeName:(int64_t)a3
++ (id)reasonToAttributeName:(int64_t)name
 {
-  if (a3 > 2)
+  if (name > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_278B67E48[a3];
+    return off_278B67E48[name];
   }
 }
 
-- (id)pairedDeviceBundleIdForId:(id)a3
+- (id)pairedDeviceBundleIdForId:(id)id
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D2BCF8] sharedInstance];
-  v5 = [v4 getActivePairedDevice];
+  idCopy = id;
+  mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+  getActivePairedDevice = [mEMORY[0x277D2BCF8] getActivePairedDevice];
 
-  v6 = [MEMORY[0x277CEAF80] sharedDeviceConnection];
+  mEMORY[0x277CEAF80] = [MEMORY[0x277CEAF80] sharedDeviceConnection];
   v12 = 0;
-  v7 = [v6 locallyAvailableApplicationWithBundleID:v3 forPairedDevice:v5 error:&v12];
+  v7 = [mEMORY[0x277CEAF80] locallyAvailableApplicationWithBundleID:idCopy forPairedDevice:getActivePairedDevice error:&v12];
   v8 = v12;
 
-  v9 = [v7 bundleIdentifier];
+  bundleIdentifier = [v7 bundleIdentifier];
   if (v8)
   {
     v10 = sa_default_log();
@@ -706,7 +706,7 @@ void __33__SABundleManager_locationBundle__block_invoke()
     }
   }
 
-  return v9;
+  return bundleIdentifier;
 }
 
 + (void)approvedBundleIdsForService:.cold.1()
@@ -720,7 +720,7 @@ void __33__SABundleManager_locationBundle__block_invoke()
 - (void)approvedApps
 {
   v6 = *MEMORY[0x277D85DE8];
-  v3 = *(a1 + 24);
+  v3 = *(self + 24);
   tcc_service_get_CF_name();
   v5[0] = 136315394;
   OUTLINED_FUNCTION_0();

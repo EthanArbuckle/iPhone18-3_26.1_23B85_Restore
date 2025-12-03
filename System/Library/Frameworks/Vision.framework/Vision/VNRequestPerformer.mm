@@ -1,20 +1,20 @@
 @interface VNRequestPerformer
 + (id)_requestPerformingQueuePriorityGroup1;
 + (id)_requestPerformingQueuePriorityGroup2;
-- (BOOL)_performOrderedRequests:(id)a3 inContext:(id)a4 error:(id *)a5;
-- (BOOL)_performRequests:(id)a3 onBehalfOfRequest:(id)a4 inContext:(id)a5 error:(id *)a6;
-- (BOOL)_validateAndPrepareRequests:(id)a3 error:(id *)a4;
-- (BOOL)performDependentRequests:(id)a3 onBehalfOfRequest:(id)a4 inContext:(id)a5 error:(id *)a6;
+- (BOOL)_performOrderedRequests:(id)requests inContext:(id)context error:(id *)error;
+- (BOOL)_performRequests:(id)requests onBehalfOfRequest:(id)request inContext:(id)context error:(id *)error;
+- (BOOL)_validateAndPrepareRequests:(id)requests error:(id *)error;
+- (BOOL)performDependentRequests:(id)requests onBehalfOfRequest:(id)request inContext:(id)context error:(id *)error;
 - (VNRequestPerformer)init;
-- (id)dependencyAnalyzedRequestsForRequests:(id)a3 withPerformingContext:(id)a4 error:(id *)a5;
+- (id)dependencyAnalyzedRequestsForRequests:(id)requests withPerformingContext:(id)context error:(id *)error;
 - (id)getCurrentTrackersAndReset;
-- (id)orderedRequestsForRequests:(id)a3;
-- (id)previousSequencedObservationsForRequest:(id)a3;
-- (void)_groupOrderedRequests:(id)a3 ordinality:(id)a4 ordinalityAndPriorityGroups:(id)a5;
-- (void)_groupsRequestsWithTheSameOrdinality:(id)a3 priorityGroup1:(id)a4 priorityGroup2:(id)a5;
+- (id)orderedRequestsForRequests:(id)requests;
+- (id)previousSequencedObservationsForRequest:(id)request;
+- (void)_groupOrderedRequests:(id)requests ordinality:(id)ordinality ordinalityAndPriorityGroups:(id)groups;
+- (void)_groupsRequestsWithTheSameOrdinality:(id)ordinality priorityGroup1:(id)group1 priorityGroup2:(id)group2;
 - (void)cancelAllRequests;
-- (void)recordSequencedObservationsForRequest:(id)a3;
-- (void)recordTracker:(id)a3;
+- (void)recordSequencedObservationsForRequest:(id)request;
+- (void)recordTracker:(id)tracker;
 @end
 
 @implementation VNRequestPerformer
@@ -107,52 +107,52 @@
   return v3;
 }
 
-- (void)recordTracker:(id)a3
+- (void)recordTracker:(id)tracker
 {
-  v5 = a3;
+  trackerCopy = tracker;
   os_unfair_lock_lock(&self->_trackersInFlightLock);
-  v4 = [[VNWeakTypeWrapper alloc] initWithObject:v5];
+  v4 = [[VNWeakTypeWrapper alloc] initWithObject:trackerCopy];
   [(NSMutableSet *)self->_trackersInFlight addObject:v4];
   os_unfair_lock_unlock(&self->_trackersInFlightLock);
 }
 
-- (id)previousSequencedObservationsForRequest:(id)a3
+- (id)previousSequencedObservationsForRequest:(id)request
 {
-  v4 = [a3 sequencedRequestPreviousObservationsKey];
-  v5 = [(NSMutableDictionary *)self->_sequencedRequestObservations objectForKey:v4];
+  sequencedRequestPreviousObservationsKey = [request sequencedRequestPreviousObservationsKey];
+  v5 = [(NSMutableDictionary *)self->_sequencedRequestObservations objectForKey:sequencedRequestPreviousObservationsKey];
 
   return v5;
 }
 
-- (void)recordSequencedObservationsForRequest:(id)a3
+- (void)recordSequencedObservationsForRequest:(id)request
 {
-  v7 = a3;
-  if ([v7 wantsSequencedRequestObservationsRecording])
+  requestCopy = request;
+  if ([requestCopy wantsSequencedRequestObservationsRecording])
   {
-    v4 = [v7 sequencedRequestPreviousObservationsKey];
-    if (v4)
+    sequencedRequestPreviousObservationsKey = [requestCopy sequencedRequestPreviousObservationsKey];
+    if (sequencedRequestPreviousObservationsKey)
     {
       sequencedRequestObservations = self->_sequencedRequestObservations;
-      v6 = [v7 results];
-      [(NSMutableDictionary *)sequencedRequestObservations setObject:v6 forKey:v4];
+      results = [requestCopy results];
+      [(NSMutableDictionary *)sequencedRequestObservations setObject:results forKey:sequencedRequestPreviousObservationsKey];
     }
   }
 }
 
-- (BOOL)performDependentRequests:(id)a3 onBehalfOfRequest:(id)a4 inContext:(id)a5 error:(id *)a6
+- (BOOL)performDependentRequests:(id)requests onBehalfOfRequest:(id)request inContext:(id)context error:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v19 = v10;
-  v12 = [(VNRequestPerformer *)self _performRequests:v10 onBehalfOfRequest:v11 inContext:a5 error:a6];
+  requestsCopy = requests;
+  requestCopy = request;
+  v19 = requestsCopy;
+  v12 = [(VNRequestPerformer *)self _performRequests:requestsCopy onBehalfOfRequest:requestCopy inContext:context error:error];
   if (v12)
   {
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v13 = v10;
+    v13 = requestsCopy;
     v14 = [v13 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v14)
     {
@@ -166,13 +166,13 @@
             objc_enumerationMutation(v13);
           }
 
-          v17 = [*(*(&v22 + 1) + 8 * i) warnings];
+          warnings = [*(*(&v22 + 1) + 8 * i) warnings];
           v20[0] = MEMORY[0x1E69E9820];
           v20[1] = 3221225472;
           v20[2] = __81__VNRequestPerformer_performDependentRequests_onBehalfOfRequest_inContext_error___block_invoke;
           v20[3] = &unk_1E77B64E8;
-          v21 = v11;
-          [v17 enumerateKeysAndObjectsUsingBlock:v20];
+          v21 = requestCopy;
+          [warnings enumerateKeysAndObjectsUsingBlock:v20];
         }
 
         v14 = [v13 countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -185,9 +185,9 @@
   return v12;
 }
 
-- (id)orderedRequestsForRequests:(id)a3
+- (id)orderedRequestsForRequests:(id)requests
 {
-  v3 = [a3 sortedArrayWithOptions:16 usingComparator:&__block_literal_global_80];
+  v3 = [requests sortedArrayWithOptions:16 usingComparator:&__block_literal_global_80];
 
   return v3;
 }
@@ -211,30 +211,30 @@ uint64_t __49__VNRequestPerformer_orderedRequestsForRequests___block_invoke(uint
   return v8;
 }
 
-- (id)dependencyAnalyzedRequestsForRequests:(id)a3 withPerformingContext:(id)a4 error:(id *)a5
+- (id)dependencyAnalyzedRequestsForRequests:(id)requests withPerformingContext:(id)context error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  requestsCopy = requests;
+  contextCopy = context;
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __88__VNRequestPerformer_dependencyAnalyzedRequestsForRequests_withPerformingContext_error___block_invoke;
   v29[3] = &unk_1E77B5950;
-  v9 = v8;
+  v9 = contextCopy;
   v30 = v9;
-  v10 = [v7 indexesOfObjectsPassingTest:v29];
+  v10 = [requestsCopy indexesOfObjectsPassingTest:v29];
   if ([v10 count])
   {
-    v11 = [v7 objectsAtIndexes:v10];
+    v11 = [requestsCopy objectsAtIndexes:v10];
     v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v13 = objc_opt_class();
     v14 = v12;
-    v15 = [v13 compoundRequestsForOriginalRequests:v11 withPerformingContext:v9 error:a5];
+    v15 = [v13 compoundRequestsForOriginalRequests:v11 withPerformingContext:v9 error:error];
     v16 = v14;
-    if (v15 && ([v14 addObjectsFromArray:v15], v15, v14, v17 = objc_opt_class(), v16 = v14, objc_msgSend(v17, "compoundRequestsForOriginalRequests:withPerformingContext:error:", v11, v9, a5), (v18 = objc_claimAutoreleasedReturnValue()) != 0) && (objc_msgSend(v16, "addObjectsFromArray:", v18), v18, v16, v19 = objc_opt_class(), v16 = v16, objc_msgSend(v19, "compoundRequestsForOriginalRequests:withPerformingContext:error:", v11, v9, a5), (v20 = objc_claimAutoreleasedReturnValue()) != 0) && (objc_msgSend(v16, "addObjectsFromArray:", v20), v20, v16, v21 = objc_opt_class(), v16 = v16, objc_msgSend(v21, "compoundRequestsForOriginalRequests:withPerformingContext:error:", v11, v9, a5), (v22 = objc_claimAutoreleasedReturnValue()) != 0) && (objc_msgSend(v16, "addObjectsFromArray:", v22), v22, v16, v23 = objc_opt_class(), v16 = v16, objc_msgSend(v23, "compoundRequestsForOriginalRequests:withPerformingContext:error:", v11, v9, a5), (v24 = objc_claimAutoreleasedReturnValue()) != 0) && (objc_msgSend(v16, "addObjectsFromArray:", v24), v24, v16, v25 = objc_opt_class(), v16 = v16, objc_msgSend(v25, "compoundRequestsForOriginalRequests:withPerformingContext:error:", v11, v9, a5), (v26 = objc_claimAutoreleasedReturnValue()) != 0))
+    if (v15 && ([v14 addObjectsFromArray:v15], v15, v14, v17 = objc_opt_class(), v16 = v14, objc_msgSend(v17, "compoundRequestsForOriginalRequests:withPerformingContext:error:", v11, v9, error), (v18 = objc_claimAutoreleasedReturnValue()) != 0) && (objc_msgSend(v16, "addObjectsFromArray:", v18), v18, v16, v19 = objc_opt_class(), v16 = v16, objc_msgSend(v19, "compoundRequestsForOriginalRequests:withPerformingContext:error:", v11, v9, error), (v20 = objc_claimAutoreleasedReturnValue()) != 0) && (objc_msgSend(v16, "addObjectsFromArray:", v20), v20, v16, v21 = objc_opt_class(), v16 = v16, objc_msgSend(v21, "compoundRequestsForOriginalRequests:withPerformingContext:error:", v11, v9, error), (v22 = objc_claimAutoreleasedReturnValue()) != 0) && (objc_msgSend(v16, "addObjectsFromArray:", v22), v22, v16, v23 = objc_opt_class(), v16 = v16, objc_msgSend(v23, "compoundRequestsForOriginalRequests:withPerformingContext:error:", v11, v9, error), (v24 = objc_claimAutoreleasedReturnValue()) != 0) && (objc_msgSend(v16, "addObjectsFromArray:", v24), v24, v16, v25 = objc_opt_class(), v16 = v16, objc_msgSend(v25, "compoundRequestsForOriginalRequests:withPerformingContext:error:", v11, v9, error), (v26 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       [v16 addObjectsFromArray:v26];
 
-      v27 = [v7 arrayByAddingObjectsFromArray:v16];
+      v27 = [requestsCopy arrayByAddingObjectsFromArray:v16];
     }
 
     else
@@ -246,7 +246,7 @@ uint64_t __49__VNRequestPerformer_orderedRequestsForRequests___block_invoke(uint
 
   else
   {
-    v27 = v7;
+    v27 = requestsCopy;
   }
 
   return v27;
@@ -260,39 +260,39 @@ BOOL __88__VNRequestPerformer_dependencyAnalyzedRequestsForRequests_withPerformi
   return v3;
 }
 
-- (BOOL)_performOrderedRequests:(id)a3 inContext:(id)a4 error:(id *)a5
+- (BOOL)_performOrderedRequests:(id)requests inContext:(id)context error:(id *)error
 {
   v75 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v44 = v8;
-  v45 = v7;
-  [v8 qosClass];
+  requestsCopy = requests;
+  contextCopy = context;
+  v44 = contextCopy;
+  v45 = requestsCopy;
+  [contextCopy qosClass];
   os_unfair_lock_lock(&self->_requestLock);
-  [(NSMutableArray *)self->_requestsPending addObjectsFromArray:v7];
+  [(NSMutableArray *)self->_requestsPending addObjectsFromArray:requestsCopy];
   os_unfair_lock_unlock(&self->_requestLock);
-  v9 = [v8 requestForensics];
-  if ([v7 count] == 1)
+  requestForensics = [contextCopy requestForensics];
+  if ([requestsCopy count] == 1)
   {
-    v10 = [v7 firstObject];
+    firstObject = [requestsCopy firstObject];
     os_unfair_lock_lock(&self->_requestLock);
-    [(NSMutableArray *)self->_requestsPending removeObjectIdenticalTo:v10];
-    [(NSMutableArray *)self->_requestsInFlight addObject:v10];
+    [(NSMutableArray *)self->_requestsPending removeObjectIdenticalTo:firstObject];
+    [(NSMutableArray *)self->_requestsInFlight addObject:firstObject];
     os_unfair_lock_unlock(&self->_requestLock);
-    if (v9)
+    if (requestForensics)
     {
-      [v9 performingRequest:v10];
+      [requestForensics performingRequest:firstObject];
     }
 
-    v11 = [v10 performInContext:v8 error:a5];
+    v11 = [firstObject performInContext:contextCopy error:error];
     if (v11)
     {
       os_unfair_lock_lock(&self->_requestLock);
-      [(NSMutableArray *)self->_requestsInFlight removeObjectIdenticalTo:v10];
+      [(NSMutableArray *)self->_requestsInFlight removeObjectIdenticalTo:firstObject];
       os_unfair_lock_unlock(&self->_requestLock);
-      if (v9)
+      if (requestForensics)
       {
-        [v9 performedRequest:v10 withError:*a5];
+        [requestForensics performedRequest:firstObject withError:*error];
       }
     }
 
@@ -301,17 +301,17 @@ BOOL __88__VNRequestPerformer_dependencyAnalyzedRequestsForRequests_withPerformi
 
   v50 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v49 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  [(VNRequestPerformer *)self _groupOrderedRequests:v7 ordinality:v50 ordinalityAndPriorityGroups:?];
-  v12 = [v50 allKeys];
-  v13 = [v12 sortedArrayUsingComparator:&__block_literal_global_50];
+  [(VNRequestPerformer *)self _groupOrderedRequests:requestsCopy ordinality:v50 ordinalityAndPriorityGroups:?];
+  allKeys = [v50 allKeys];
+  v13 = [allKeys sortedArrayUsingComparator:&__block_literal_global_50];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __62__VNRequestPerformer__performOrderedRequests_inContext_error___block_invoke_2;
   aBlock[3] = &unk_1E77B5928;
-  v52 = v8;
+  v52 = contextCopy;
   v71 = v52;
-  v72 = self;
+  selfCopy = self;
   v53 = _Block_copy(aBlock);
   v68 = 0u;
   v69 = 0u;
@@ -345,9 +345,9 @@ BOOL __88__VNRequestPerformer_dependencyAnalyzedRequestsForRequests_withPerformi
       v59 = [v57 objectForKeyedSubscript:@"VNRequestPerformer_SameOrdinalityRequestsPriorityGroup1Key"];
       [VNError VNAssert:v59 != 0 log:@"Unexpected internal error"];
       v17 = dispatch_group_create();
-      v58 = [objc_opt_class() _requestPerformingQueuePriorityGroup1];
+      _requestPerformingQueuePriorityGroup1 = [objc_opt_class() _requestPerformingQueuePriorityGroup1];
       v53[2](v53, v59, v52);
-      LOBYTE(v16) = [v58 dispatchGroupWait:v17 error:a5];
+      LOBYTE(v16) = [_requestPerformingQueuePriorityGroup1 dispatchGroupWait:v17 error:error];
 
       if ((v16 & 1) == 0)
       {
@@ -361,9 +361,9 @@ LABEL_36:
       v55 = [v57 objectForKeyedSubscript:@"VNRequestPerformer_SameOrdinalityRequestsPriorityGroup2Key"];
       [VNError VNAssert:v55 != 0 log:@"Unexpected internal error"];
       v24 = dispatch_group_create();
-      v51 = [objc_opt_class() _requestPerformingQueuePriorityGroup2];
+      _requestPerformingQueuePriorityGroup2 = [objc_opt_class() _requestPerformingQueuePriorityGroup2];
       v53[2](v53, v55, v52);
-      v25 = [v51 dispatchGroupWait:v24 error:a5];
+      v25 = [_requestPerformingQueuePriorityGroup2 dispatchGroupWait:v24 error:error];
 
       if ((v25 & 1) == 0)
       {
@@ -392,43 +392,43 @@ LABEL_36:
             }
 
             v35 = *(*(&v62 + 1) + 8 * i);
-            if (v9)
+            if (requestForensics)
             {
-              [v9 performingRequest:*(*(&v62 + 1) + 8 * i)];
+              [requestForensics performingRequest:*(*(&v62 + 1) + 8 * i)];
             }
 
             os_unfair_lock_lock(&self->_requestLock);
             [(NSMutableArray *)self->_requestsInFlight removeObjectIdenticalTo:v35];
             os_unfair_lock_unlock(&self->_requestLock);
-            v36 = [v35 asyncStatus];
-            v37 = v36;
-            if (v9)
+            asyncStatus = [v35 asyncStatus];
+            v37 = asyncStatus;
+            if (requestForensics)
             {
-              v38 = [v36 completed];
-              if (v38)
+              completed = [asyncStatus completed];
+              if (completed)
               {
                 v39 = 0;
               }
 
               else
               {
-                v8 = [v37 error];
-                v39 = v8;
+                contextCopy = [v37 error];
+                v39 = contextCopy;
               }
 
-              [v9 performedRequest:v35 withError:v39];
-              if ((v38 & 1) == 0)
+              [requestForensics performedRequest:v35 withError:v39];
+              if ((completed & 1) == 0)
               {
               }
             }
 
-            v40 = [v37 completed];
-            v41 = v40 | ~v11;
-            v11 &= v40;
-            if ((v41 & 1) == 0 && a5)
+            completed2 = [v37 completed];
+            v41 = completed2 | ~v11;
+            v11 &= completed2;
+            if ((v41 & 1) == 0 && error)
             {
               [v37 error];
-              *a5 = v11 = 0;
+              *error = v11 = 0;
             }
 
             [v35 resetAsyncStatus];
@@ -537,18 +537,18 @@ uint64_t __62__VNRequestPerformer__performOrderedRequests_inContext_error___bloc
   return v7;
 }
 
-- (void)_groupsRequestsWithTheSameOrdinality:(id)a3 priorityGroup1:(id)a4 priorityGroup2:(id)a5
+- (void)_groupsRequestsWithTheSameOrdinality:(id)ordinality priorityGroup1:(id)group1 priorityGroup2:(id)group2
 {
   v30 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v20 = a4;
-  v8 = a5;
+  ordinalityCopy = ordinality;
+  group1Copy = group1;
+  group2Copy = group2;
   v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v10 = v7;
+  v10 = ordinalityCopy;
   v11 = [v10 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v11)
   {
@@ -590,9 +590,9 @@ uint64_t __62__VNRequestPerformer__performOrderedRequests_inContext_error___bloc
   v21[2] = __89__VNRequestPerformer__groupsRequestsWithTheSameOrdinality_priorityGroup1_priorityGroup2___block_invoke_3;
   v21[3] = &unk_1E77B58E0;
   v24 = &__block_literal_global_30873;
-  v18 = v20;
+  v18 = group1Copy;
   v22 = v18;
-  v19 = v8;
+  v19 = group2Copy;
   v23 = v19;
   [v9 enumerateKeysAndObjectsUsingBlock:v21];
 }
@@ -747,17 +747,17 @@ void __89__VNRequestPerformer__groupsRequestsWithTheSameOrdinality_priorityGroup
   }
 }
 
-- (void)_groupOrderedRequests:(id)a3 ordinality:(id)a4 ordinalityAndPriorityGroups:(id)a5
+- (void)_groupOrderedRequests:(id)requests ordinality:(id)ordinality ordinalityAndPriorityGroups:(id)groups
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v22 = a4;
-  v23 = a5;
-  v9 = [v8 firstObject];
-  v10 = [v9 dependencyProcessingOrdinality];
+  requestsCopy = requests;
+  ordinalityCopy = ordinality;
+  groupsCopy = groups;
+  firstObject = [requestsCopy firstObject];
+  dependencyProcessingOrdinality = [firstObject dependencyProcessingOrdinality];
 
   v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v25 = [v8 count];
+  v25 = [requestsCopy count];
   v12 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v25];
   v13 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v25];
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -770,7 +770,7 @@ void __89__VNRequestPerformer__groupsRequestsWithTheSameOrdinality_priorityGroup
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v8;
+  obj = requestsCopy;
   v14 = [obj countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v14)
   {
@@ -785,15 +785,15 @@ void __89__VNRequestPerformer__groupsRequestsWithTheSameOrdinality_priorityGroup
         }
 
         v17 = *(*(&v26 + 1) + 8 * i);
-        if ([v17 dependencyProcessingOrdinality] == v10)
+        if ([v17 dependencyProcessingOrdinality] == dependencyProcessingOrdinality)
         {
           [v11 addObject:v17];
         }
 
         else
         {
-          v21[2](v21, v11, v22, v23, v12, v13, v10);
-          v10 = [v17 dependencyProcessingOrdinality];
+          v21[2](v21, v11, ordinalityCopy, groupsCopy, v12, v13, dependencyProcessingOrdinality);
+          dependencyProcessingOrdinality = [v17 dependencyProcessingOrdinality];
           v18 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v17, 0}];
 
           v19 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v25];
@@ -811,7 +811,7 @@ void __89__VNRequestPerformer__groupsRequestsWithTheSameOrdinality_priorityGroup
     while (v14);
   }
 
-  v21[2](v21, v11, v22, v23, v12, v13, v10);
+  v21[2](v21, v11, ordinalityCopy, groupsCopy, v12, v13, dependencyProcessingOrdinality);
 }
 
 void __83__VNRequestPerformer__groupOrderedRequests_ordinality_ordinalityAndPriorityGroups___block_invoke(uint64_t a1, void *a2, void *a3, void *a4, void *a5, void *a6, uint64_t a7)
@@ -835,43 +835,43 @@ void __83__VNRequestPerformer__groupOrderedRequests_ordinality_ordinalityAndPrio
   [v15 setObject:v19 forKey:v20];
 }
 
-- (BOOL)_performRequests:(id)a3 onBehalfOfRequest:(id)a4 inContext:(id)a5 error:(id *)a6
+- (BOOL)_performRequests:(id)requests onBehalfOfRequest:(id)request inContext:(id)context error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  [v12 qosClass];
-  if ([v10 count])
+  requestsCopy = requests;
+  requestCopy = request;
+  contextCopy = context;
+  [contextCopy qosClass];
+  if ([requestsCopy count])
   {
-    [v12 serialNumber];
-    if (v11)
+    [contextCopy serialNumber];
+    if (requestCopy)
     {
       [objc_opt_class() VNClassCode];
     }
 
     kdebug_trace();
-    v14 = [(VNRequestPerformer *)self dependencyAnalyzedRequestsForRequests:v10 withPerformingContext:v12 error:a6];
-    if (v14 && [(VNRequestPerformer *)self _validateAndPrepareRequests:v14 error:a6])
+    v14 = [(VNRequestPerformer *)self dependencyAnalyzedRequestsForRequests:requestsCopy withPerformingContext:contextCopy error:error];
+    if (v14 && [(VNRequestPerformer *)self _validateAndPrepareRequests:v14 error:error])
     {
       v19 = [(VNRequestPerformer *)self orderedRequestsForRequests:v14];
-      v15 = [v12 requestForensics];
-      v16 = v15;
+      requestForensics = [contextCopy requestForensics];
+      v16 = requestForensics;
       v17 = v19;
-      if (v15)
+      if (requestForensics)
       {
         v17 = v19;
-        if (v11)
+        if (requestCopy)
         {
-          [v15 performingOrderedDependentRequests:v19 onBehalfOfRequest:v11];
+          [requestForensics performingOrderedDependentRequests:v19 onBehalfOfRequest:requestCopy];
         }
 
         else
         {
-          [v15 setOrderedRequests:v19];
+          [requestForensics setOrderedRequests:v19];
         }
       }
 
-      v13 = [(VNRequestPerformer *)self _performOrderedRequests:v17 inContext:v12 error:a6];
+      v13 = [(VNRequestPerformer *)self _performOrderedRequests:v17 inContext:contextCopy error:error];
     }
 
     else
@@ -890,15 +890,15 @@ void __83__VNRequestPerformer__groupOrderedRequests_ordinality_ordinalityAndPrio
   return v13;
 }
 
-- (BOOL)_validateAndPrepareRequests:(id)a3 error:(id *)a4
+- (BOOL)_validateAndPrepareRequests:(id)requests error:(id *)error
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = a3;
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  requestsCopy = requests;
+  v6 = [requestsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = *v13;
@@ -908,19 +908,19 @@ void __83__VNRequestPerformer__groupOrderedRequests_ordinality_ordinalityAndPrio
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(requestsCopy);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
         [v9 setResults:{0, v12}];
-        if (([v9 validateConfigurationAndReturnError:a4] & 1) == 0)
+        if (([v9 validateConfigurationAndReturnError:error] & 1) == 0)
         {
           v10 = 0;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [requestsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -974,7 +974,7 @@ LABEL_11:
   block[1] = 3221225472;
   block[2] = __59__VNRequestPerformer__requestPerformingQueuePriorityGroup2__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[VNRequestPerformer _requestPerformingQueuePriorityGroup2]::onceToken != -1)
   {
     dispatch_once(&+[VNRequestPerformer _requestPerformingQueuePriorityGroup2]::onceToken, block);
@@ -999,7 +999,7 @@ uint64_t __59__VNRequestPerformer__requestPerformingQueuePriorityGroup2__block_i
   block[1] = 3221225472;
   block[2] = __59__VNRequestPerformer__requestPerformingQueuePriorityGroup1__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[VNRequestPerformer _requestPerformingQueuePriorityGroup1]::onceToken != -1)
   {
     dispatch_once(&+[VNRequestPerformer _requestPerformingQueuePriorityGroup1]::onceToken, block);

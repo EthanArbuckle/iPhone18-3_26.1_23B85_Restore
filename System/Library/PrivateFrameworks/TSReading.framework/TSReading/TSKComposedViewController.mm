@@ -1,26 +1,26 @@
 @interface TSKComposedViewController
-- (TSKComposedViewController)initWithViewController:(id)a3;
+- (TSKComposedViewController)initWithViewController:(id)controller;
 - (void)dealloc;
 - (void)p_loadChildView;
 - (void)p_unloadChildView;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation TSKComposedViewController
 
-- (TSKComposedViewController)initWithViewController:(id)a3
+- (TSKComposedViewController)initWithViewController:(id)controller
 {
   v6.receiver = self;
   v6.super_class = TSKComposedViewController;
   v4 = [(TSKPopoverBasedViewController *)&v6 initWithNibName:0 bundle:0];
   if (v4)
   {
-    v4->mComposedViewController = a3;
+    v4->mComposedViewController = controller;
   }
 
   return v4;
@@ -42,10 +42,10 @@
   {
     [-[TSKComposedViewController view](self "view")];
     [[(UIViewController *)self->mComposedViewController view] setFrame:v3, v4, v5, v6];
-    v7 = [(TSKComposedViewController *)self view];
-    v8 = [(UIViewController *)self->mComposedViewController view];
+    view = [(TSKComposedViewController *)self view];
+    view2 = [(UIViewController *)self->mComposedViewController view];
 
-    [v7 addSubview:v8];
+    [view addSubview:view2];
   }
 }
 
@@ -67,63 +67,63 @@
   [(TSKComposedViewController *)self p_loadChildView];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [MEMORY[0x277D75128] sharedApplication];
+  appearCopy = appear;
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
   v6 = [objc_msgSend(objc_msgSend(objc_msgSend(objc_msgSend(MEMORY[0x277D75128] "sharedApplication")];
   v7.receiver = self;
   v7.super_class = TSKComposedViewController;
-  [(TSKPopoverBasedViewController *)&v7 viewWillAppear:v3];
-  [(UIViewController *)self->mComposedViewController viewWillAppear:v3];
-  [v5 setStatusBarHidden:v6];
+  [(TSKPopoverBasedViewController *)&v7 viewWillAppear:appearCopy];
+  [(UIViewController *)self->mComposedViewController viewWillAppear:appearCopy];
+  [mEMORY[0x277D75128] setStatusBarHidden:v6];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [MEMORY[0x277D75128] sharedApplication];
+  appearCopy = appear;
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
   v6 = [objc_msgSend(objc_msgSend(objc_msgSend(objc_msgSend(MEMORY[0x277D75128] "sharedApplication")];
   v7.receiver = self;
   v7.super_class = TSKComposedViewController;
-  [(TSKComposedViewController *)&v7 viewDidAppear:v3];
-  [(UIViewController *)self->mComposedViewController viewDidAppear:v3];
-  [v5 setStatusBarHidden:v6];
+  [(TSKComposedViewController *)&v7 viewDidAppear:appearCopy];
+  [(UIViewController *)self->mComposedViewController viewDidAppear:appearCopy];
+  [mEMORY[0x277D75128] setStatusBarHidden:v6];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v5 = [MEMORY[0x277D75128] sharedApplication];
-  v6 = [objc_msgSend(objc_msgSend(objc_msgSend(v5 "keyWindow")];
+  disappearCopy = disappear;
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  v6 = [objc_msgSend(objc_msgSend(objc_msgSend(mEMORY[0x277D75128] "keyWindow")];
   v7.receiver = self;
   v7.super_class = TSKComposedViewController;
-  [(TSKComposedViewController *)&v7 viewWillDisappear:v3];
-  [(UIViewController *)self->mComposedViewController viewWillDisappear:v3];
-  [v5 setStatusBarHidden:v6];
+  [(TSKComposedViewController *)&v7 viewWillDisappear:disappearCopy];
+  [(UIViewController *)self->mComposedViewController viewWillDisappear:disappearCopy];
+  [mEMORY[0x277D75128] setStatusBarHidden:v6];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v5 = [MEMORY[0x277D75128] sharedApplication];
-  v6 = [objc_msgSend(objc_msgSend(objc_msgSend(v5 "keyWindow")];
-  [(UIViewController *)self->mComposedViewController viewDidDisappear:v3];
+  disappearCopy = disappear;
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  v6 = [objc_msgSend(objc_msgSend(objc_msgSend(mEMORY[0x277D75128] "keyWindow")];
+  [(UIViewController *)self->mComposedViewController viewDidDisappear:disappearCopy];
   v7.receiver = self;
   v7.super_class = TSKComposedViewController;
-  [(TSKPopoverBasedViewController *)&v7 viewDidDisappear:v3];
+  [(TSKPopoverBasedViewController *)&v7 viewDidDisappear:disappearCopy];
   [(TSKComposedViewController *)self p_unloadChildView];
-  [v5 setStatusBarHidden:v6];
+  [mEMORY[0x277D75128] setStatusBarHidden:v6];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v8.receiver = self;
   v8.super_class = TSKComposedViewController;
   [TSKComposedViewController viewWillTransitionToSize:sel_viewWillTransitionToSize_withTransitionCoordinator_ withTransitionCoordinator:?];
-  [(UIViewController *)self->mComposedViewController viewWillTransitionToSize:a4 withTransitionCoordinator:width, height];
+  [(UIViewController *)self->mComposedViewController viewWillTransitionToSize:coordinator withTransitionCoordinator:width, height];
 }
 
 @end

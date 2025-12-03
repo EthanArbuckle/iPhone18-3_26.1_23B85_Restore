@@ -45,7 +45,7 @@ void __24__NRBypassQueue_suspend__block_invoke(uint64_t a1)
   v4[2] = __24__NRBypassQueue_suspend__block_invoke;
   v4[3] = &unk_1E86DAE98;
   v4[4] = self;
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock_with_options();
   __24__NRBypassQueue_suspend__block_invoke(v4);
   os_unfair_lock_unlock(&self->_lock);
@@ -58,7 +58,7 @@ void __24__NRBypassQueue_suspend__block_invoke(uint64_t a1)
   v4[2] = __23__NRBypassQueue_resume__block_invoke;
   v4[3] = &unk_1E86DAE98;
   v4[4] = self;
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock_with_options();
   __23__NRBypassQueue_resume__block_invoke(v4);
   os_unfair_lock_unlock(&self->_lock);

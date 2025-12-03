@@ -1,22 +1,22 @@
 @interface CNACAccountProvider
-+ (id)providerWithAccounts:(id)a3;
-+ (id)providerWithStore:(id)a3;
++ (id)providerWithAccounts:(id)accounts;
++ (id)providerWithStore:(id)store;
 @end
 
 @implementation CNACAccountProvider
 
-+ (id)providerWithStore:(id)a3
++ (id)providerWithStore:(id)store
 {
-  v3 = a3;
-  v4 = [[_CNACAccountStoreBasedProvider alloc] initWithAccountStore:v3];
+  storeCopy = store;
+  v4 = [[_CNACAccountStoreBasedProvider alloc] initWithAccountStore:storeCopy];
 
   return v4;
 }
 
-+ (id)providerWithAccounts:(id)a3
++ (id)providerWithAccounts:(id)accounts
 {
-  v3 = a3;
-  v4 = [[_CNACAccountStaticProvider alloc] initWithAccounts:v3];
+  accountsCopy = accounts;
+  v4 = [[_CNACAccountStaticProvider alloc] initWithAccounts:accountsCopy];
 
   return v4;
 }

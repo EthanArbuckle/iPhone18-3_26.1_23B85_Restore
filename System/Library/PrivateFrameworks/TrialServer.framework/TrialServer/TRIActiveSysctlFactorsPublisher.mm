@@ -1,23 +1,23 @@
 @interface TRIActiveSysctlFactorsPublisher
 - (BOOL)publishSysctlFactors;
-- (TRIActiveSysctlFactorsPublisher)initWithServerContext:(id)a3;
-- (TRIActiveSysctlFactorsPublisher)initWithSysctlFactorsProvider:(id)a3 sysctlWriter:(id)a4;
+- (TRIActiveSysctlFactorsPublisher)initWithServerContext:(id)context;
+- (TRIActiveSysctlFactorsPublisher)initWithSysctlFactorsProvider:(id)provider sysctlWriter:(id)writer;
 @end
 
 @implementation TRIActiveSysctlFactorsPublisher
 
-- (TRIActiveSysctlFactorsPublisher)initWithSysctlFactorsProvider:(id)a3 sysctlWriter:(id)a4
+- (TRIActiveSysctlFactorsPublisher)initWithSysctlFactorsProvider:(id)provider sysctlWriter:(id)writer
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  writerCopy = writer;
   v12.receiver = self;
   v12.super_class = TRIActiveSysctlFactorsPublisher;
   v9 = [(TRIActiveSysctlFactorsPublisher *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_factorsProvider, a3);
-    objc_storeStrong(&v10->_sysctlWriter, a4);
+    objc_storeStrong(&v9->_factorsProvider, provider);
+    objc_storeStrong(&v10->_sysctlWriter, writer);
   }
 
   return v10;
@@ -26,12 +26,12 @@
 - (BOOL)publishSysctlFactors
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(TRIActiveSysctlFactorsProviding *)self->_factorsProvider activeSysctlFactorLevels];
+  activeSysctlFactorLevels = [(TRIActiveSysctlFactorsProviding *)self->_factorsProvider activeSysctlFactorLevels];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v4 = [activeSysctlFactorLevels countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -43,16 +43,16 @@
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(activeSysctlFactorLevels);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
         sysctlWriter = self->_sysctlWriter;
-        v11 = [v9 sysctlName];
-        v7 &= -[TRISysctlWriting writeSysctlWithName:intValue:](sysctlWriter, "writeSysctlWithName:intValue:", v11, [v9 level]);
+        sysctlName = [v9 sysctlName];
+        v7 &= -[TRISysctlWriting writeSysctlWithName:intValue:](sysctlWriter, "writeSysctlWithName:intValue:", sysctlName, [v9 level]);
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [activeSysctlFactorLevels countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);
@@ -67,13 +67,13 @@
   return v7;
 }
 
-- (TRIActiveSysctlFactorsPublisher)initWithServerContext:(id)a3
+- (TRIActiveSysctlFactorsPublisher)initWithServerContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_opt_new();
-  v6 = [v4 experimentDatabase];
+  experimentDatabase = [contextCopy experimentDatabase];
 
-  v7 = [[TRIActiveSysctlFactorsProvider alloc] initWithActiveNamespacesProvider:v6 factorLevelsRetriever:v5];
+  v7 = [[TRIActiveSysctlFactorsProvider alloc] initWithActiveNamespacesProvider:experimentDatabase factorLevelsRetriever:v5];
   v8 = objc_opt_new();
   v9 = [(TRIActiveSysctlFactorsPublisher *)self initWithSysctlFactorsProvider:v7 sysctlWriter:v8];
 

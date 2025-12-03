@@ -1,27 +1,27 @@
 @interface PLGlyphControl
-+ (id)dismissControlWithMaterialRecipe:(int64_t)a3;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PLGlyphControl)initWithMaterialRecipe:(int64_t)a3;
++ (id)dismissControlWithMaterialRecipe:(int64_t)recipe;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PLGlyphControl)initWithMaterialRecipe:(int64_t)recipe;
 - (void)_configureBackgroundMaterialViewIfNecessary;
-- (void)_configureGlyphViewIfNecessaryWithImage:(id)a3;
-- (void)_configureMaterialViewIfNecessary:(id *)a3 positioningAtIndex:(unint64_t)a4;
-- (void)_sendActionsForEvents:(unint64_t)a3 withEvent:(id)a4;
-- (void)_updateVisualStylingOfView:(id)a3;
+- (void)_configureGlyphViewIfNecessaryWithImage:(id)image;
+- (void)_configureMaterialViewIfNecessary:(id *)necessary positioningAtIndex:(unint64_t)index;
+- (void)_sendActionsForEvents:(unint64_t)events withEvent:(id)event;
+- (void)_updateVisualStylingOfView:(id)view;
 - (void)layoutSubviews;
-- (void)setBlurEnabled:(BOOL)a3;
-- (void)setGlyph:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setMaterialGroupNameBase:(id)a3;
-- (void)setVisualStyle:(int64_t)a3;
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4;
+- (void)setBlurEnabled:(BOOL)enabled;
+- (void)setGlyph:(id)glyph;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setMaterialGroupNameBase:(id)base;
+- (void)setVisualStyle:(int64_t)style;
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category;
 @end
 
 @implementation PLGlyphControl
 
-+ (id)dismissControlWithMaterialRecipe:(int64_t)a3
++ (id)dismissControlWithMaterialRecipe:(int64_t)recipe
 {
-  v3 = [[a1 alloc] initWithMaterialRecipe:a3];
+  v3 = [[self alloc] initWithMaterialRecipe:recipe];
   v4 = MEMORY[0x277D755B8];
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v6 = [v4 imageNamed:@"x" inBundle:v5 compatibleWithTraitCollection:0];
@@ -33,7 +33,7 @@
   return v3;
 }
 
-- (PLGlyphControl)initWithMaterialRecipe:(int64_t)a3
+- (PLGlyphControl)initWithMaterialRecipe:(int64_t)recipe
 {
   v8.receiver = self;
   v8.super_class = PLGlyphControl;
@@ -41,67 +41,67 @@
   v5 = v4;
   if (v4)
   {
-    v4->_materialRecipe = a3;
+    v4->_materialRecipe = recipe;
     v4->_visualStyle = -1;
     v4->_blurEnabled = 1;
-    v6 = [(PLGlyphControl *)v4 layer];
-    [v6 setAllowsGroupBlending:0];
+    layer = [(PLGlyphControl *)v4 layer];
+    [layer setAllowsGroupBlending:0];
   }
 
   return v5;
 }
 
-- (void)setGlyph:(id)a3
+- (void)setGlyph:(id)glyph
 {
-  v6 = a3;
-  v4 = [(PLGlyphControl *)self glyph];
-  v5 = [v4 isEqual:v6];
+  glyphCopy = glyph;
+  glyph = [(PLGlyphControl *)self glyph];
+  v5 = [glyph isEqual:glyphCopy];
 
   if ((v5 & 1) == 0)
   {
-    [(PLGlyphControl *)self _configureGlyphViewIfNecessaryWithImage:v6];
+    [(PLGlyphControl *)self _configureGlyphViewIfNecessaryWithImage:glyphCopy];
   }
 }
 
-- (void)setVisualStyle:(int64_t)a3
+- (void)setVisualStyle:(int64_t)style
 {
-  if (self->_visualStyle != a3)
+  if (self->_visualStyle != style)
   {
     [(PLGlyphControl *)self _removeAllVisualStyling];
-    self->_visualStyle = a3;
+    self->_visualStyle = style;
 
     [(PLGlyphControl *)self _updateAllVisualStyling];
   }
 }
 
-- (void)setBlurEnabled:(BOOL)a3
+- (void)setBlurEnabled:(BOOL)enabled
 {
-  if (self->_blurEnabled != a3)
+  if (self->_blurEnabled != enabled)
   {
-    self->_blurEnabled = a3;
+    self->_blurEnabled = enabled;
     [(MTMaterialView *)self->_backgroundMaterialView setBlurEnabled:?];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v17.receiver = self;
   v17.super_class = PLGlyphControl;
-  v5 = [(PLGlyphControl *)&v17 isHighlighted];
+  isHighlighted = [(PLGlyphControl *)&v17 isHighlighted];
   v16.receiver = self;
   v16.super_class = PLGlyphControl;
-  [(PLGlyphControl *)&v16 setHighlighted:v3];
+  [(PLGlyphControl *)&v16 setHighlighted:highlightedCopy];
   v15.receiver = self;
   v15.super_class = PLGlyphControl;
-  v6 = [(PLGlyphControl *)&v15 isHighlighted];
-  if (v5 != v6)
+  isHighlighted2 = [(PLGlyphControl *)&v15 isHighlighted];
+  if (isHighlighted != isHighlighted2)
   {
-    v7 = v6;
+    v7 = isHighlighted2;
     [(PLGlyphControl *)self _configureBackgroundMaterialViewIfNecessary];
     backgroundMaterialView = self->_backgroundMaterialView;
     v9 = objc_initWeak(&location, backgroundMaterialView);
-    v10 = [objc_opt_class() newDefaultHighlightAnimator];
+    newDefaultHighlightAnimator = [objc_opt_class() newDefaultHighlightAnimator];
 
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
@@ -109,8 +109,8 @@
     v11[3] = &unk_278425050;
     objc_copyWeak(&v12, &location);
     v13 = v7;
-    [v10 addAnimations:v11];
-    [v10 startAnimation];
+    [newDefaultHighlightAnimator addAnimations:v11];
+    [newDefaultHighlightAnimator startAnimation];
     objc_destroyWeak(&v12);
 
     objc_destroyWeak(&location);
@@ -123,28 +123,28 @@ void __33__PLGlyphControl_setHighlighted___block_invoke(uint64_t a1)
   [WeakRetained setHighlighted:*(a1 + 40)];
 }
 
-- (void)_sendActionsForEvents:(unint64_t)a3 withEvent:(id)a4
+- (void)_sendActionsForEvents:(unint64_t)events withEvent:(id)event
 {
-  v6 = a4;
+  eventCopy = event;
   v7.receiver = self;
   v7.super_class = PLGlyphControl;
-  [(PLGlyphControl *)&v7 _sendActionsForEvents:a3 withEvent:v6];
-  if ((a3 & 0x40) != 0)
+  [(PLGlyphControl *)&v7 _sendActionsForEvents:events withEvent:eventCopy];
+  if ((events & 0x40) != 0)
   {
-    [(PLGlyphControl *)self _handleTouchUpInsideWithEvent:v6];
+    [(PLGlyphControl *)self _handleTouchUpInsideWithEvent:eventCopy];
   }
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [v4 view];
-  v6 = v5 == self || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || [v4 numberOfTouchesRequired] != 1 || objc_msgSend(v4, "numberOfTapsRequired") != 1;
+  beginCopy = begin;
+  view = [beginCopy view];
+  v6 = view == self || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || [beginCopy numberOfTouchesRequired] != 1 || objc_msgSend(beginCopy, "numberOfTapsRequired") != 1;
 
   return v6;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v3 = 34.0;
   v4 = 34.0;
@@ -163,8 +163,8 @@ void __33__PLGlyphControl_setHighlighted___block_invoke(uint64_t a1)
   [(MTMaterialView *)self->_backgroundMaterialView _setContinuousCornerRadius:?];
   [(PLGlyphControl *)self bounds];
   [(MTMaterialView *)self->_backgroundMaterialView setFrame:?];
-  v3 = [(UIImageView *)self->_glyphView image];
-  [v3 size];
+  image = [(UIImageView *)self->_glyphView image];
+  [image size];
   BSRectWithSize();
   v12 = PLMainScreenScale();
   UIRectCenteredIntegralRectScale();
@@ -176,39 +176,39 @@ void __33__PLGlyphControl_setHighlighted___block_invoke(uint64_t a1)
   [(UIImageView *)self->_glyphView setFrame:v5, v7, v9, v11, *&v12];
 }
 
-- (void)setMaterialGroupNameBase:(id)a3
+- (void)setMaterialGroupNameBase:(id)base
 {
-  v6 = a3;
-  v4 = [(PLGlyphControl *)self materialGroupNameBase];
-  v5 = [v4 isEqualToString:v6];
+  baseCopy = base;
+  materialGroupNameBase = [(PLGlyphControl *)self materialGroupNameBase];
+  v5 = [materialGroupNameBase isEqualToString:baseCopy];
 
   if ((v5 & 1) == 0)
   {
     [(PLGlyphControl *)self _configureBackgroundMaterialViewIfNecessary];
-    [(MTMaterialView *)self->_backgroundMaterialView setGroupNameBase:v6];
+    [(MTMaterialView *)self->_backgroundMaterialView setGroupNameBase:baseCopy];
   }
 }
 
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category
 {
-  v6 = a3;
-  if (self->_visualStylingProvider != v6)
+  providerCopy = provider;
+  if (self->_visualStylingProvider != providerCopy)
   {
-    v7 = v6;
+    v7 = providerCopy;
     [(PLGlyphControl *)self _removeAllVisualStyling];
-    objc_storeStrong(&self->_visualStylingProvider, a3);
+    objc_storeStrong(&self->_visualStylingProvider, provider);
     [(PLGlyphControl *)self _updateAllVisualStyling];
-    v6 = v7;
+    providerCopy = v7;
   }
 }
 
-- (void)_configureGlyphViewIfNecessaryWithImage:(id)a3
+- (void)_configureGlyphViewIfNecessaryWithImage:(id)image
 {
-  if (a3 && !self->_glyphView)
+  if (image && !self->_glyphView)
   {
     v4 = MEMORY[0x277D755E8];
-    v5 = a3;
-    v6 = [[v4 alloc] initWithImage:v5];
+    imageCopy = image;
+    v6 = [[v4 alloc] initWithImage:imageCopy];
 
     glyphView = self->_glyphView;
     self->_glyphView = v6;
@@ -221,13 +221,13 @@ void __33__PLGlyphControl_setHighlighted___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_configureMaterialViewIfNecessary:(id *)a3 positioningAtIndex:(unint64_t)a4
+- (void)_configureMaterialViewIfNecessary:(id *)necessary positioningAtIndex:(unint64_t)index
 {
-  if (a3 && !*a3 && self->_materialRecipe)
+  if (necessary && !*necessary && self->_materialRecipe)
   {
     v7 = [MEMORY[0x277D26718] materialViewWithRecipe:?];
-    *a3 = v7;
-    [(PLGlyphControl *)self insertSubview:v7 atIndex:a4];
+    *necessary = v7;
+    [(PLGlyphControl *)self insertSubview:v7 atIndex:index];
 
     [(PLGlyphControl *)self setNeedsLayout];
   }
@@ -245,12 +245,12 @@ void __33__PLGlyphControl_setHighlighted___block_invoke(uint64_t a1)
   self->_backgroundMaterialView = v4;
 }
 
-- (void)_updateVisualStylingOfView:(id)a3
+- (void)_updateVisualStylingOfView:(id)view
 {
-  v4 = a3;
-  if (v4 && self->_materialRecipe)
+  viewCopy = view;
+  if (viewCopy && self->_materialRecipe)
   {
-    v9 = v4;
+    v9 = viewCopy;
     [(PLGlyphControl *)self _configureBackgroundMaterialViewIfNecessary];
     visualStylingProvider = self->_visualStylingProvider;
     if (visualStylingProvider)
@@ -276,7 +276,7 @@ void __33__PLGlyphControl_setHighlighted___block_invoke(uint64_t a1)
 
     [(MTVisualStylingProvider *)v6 automaticallyUpdateView:v9 withStyle:visualStyle andObserverBlock:&__block_literal_global];
 
-    v4 = v9;
+    viewCopy = v9;
   }
 }
 

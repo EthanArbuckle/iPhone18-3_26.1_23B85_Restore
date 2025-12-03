@@ -1,32 +1,32 @@
 @interface MRUCAPackageConfigurator
-+ (MRUCAPackageConfigurator)configuratorWithIdentifier:(id)a3 configurationBlock:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (MRUCAPackageConfigurator)initWithIdentifier:(id)a3 configurationBlock:(id)a4;
++ (MRUCAPackageConfigurator)configuratorWithIdentifier:(id)identifier configurationBlock:(id)block;
+- (BOOL)isEqual:(id)equal;
+- (MRUCAPackageConfigurator)initWithIdentifier:(id)identifier configurationBlock:(id)block;
 @end
 
 @implementation MRUCAPackageConfigurator
 
-+ (MRUCAPackageConfigurator)configuratorWithIdentifier:(id)a3 configurationBlock:(id)a4
++ (MRUCAPackageConfigurator)configuratorWithIdentifier:(id)identifier configurationBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithIdentifier:v7 configurationBlock:v6];
+  blockCopy = block;
+  identifierCopy = identifier;
+  v8 = [[self alloc] initWithIdentifier:identifierCopy configurationBlock:blockCopy];
 
   return v8;
 }
 
-- (MRUCAPackageConfigurator)initWithIdentifier:(id)a3 configurationBlock:(id)a4
+- (MRUCAPackageConfigurator)initWithIdentifier:(id)identifier configurationBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  blockCopy = block;
   v14.receiver = self;
   v14.super_class = MRUCAPackageConfigurator;
   v9 = [(MRUCAPackageConfigurator *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identifier, a3);
-    v11 = _Block_copy(v8);
+    objc_storeStrong(&v9->_identifier, identifier);
+    v11 = _Block_copy(blockCopy);
     block = v10->_block;
     v10->_block = v11;
   }
@@ -34,10 +34,10 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -47,8 +47,8 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(MRUCAPackageConfigurator *)v4 identifier];
-      v6 = [v5 isEqualToString:self->_identifier];
+      identifier = [(MRUCAPackageConfigurator *)equalCopy identifier];
+      v6 = [identifier isEqualToString:self->_identifier];
     }
 
     else

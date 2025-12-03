@@ -1,22 +1,22 @@
 @interface ENRegionMonitor
-+ (id)locationAuthorizationStatusToString:(int)a3;
-+ (id)regionMonitorAuthorizationStateToString:(unint64_t)a3;
-+ (id)regionMonitorMonitoringModeToString:(unint64_t)a3;
-+ (unint64_t)regionMonitorStateFromAuthorizationStatus:(int)a3;
-- (BOOL)_purgeAllRegionHistoryWithError:(id *)a3;
-- (BOOL)_purgeRegionsOlderThanDate:(id)a3 error:(id *)a4;
-- (BOOL)purgeAllRegionHistoryWithError:(id *)a3;
-- (BOOL)purgeRegionsOlderThanDate:(id)a3 error:(id *)a4;
++ (id)locationAuthorizationStatusToString:(int)string;
++ (id)regionMonitorAuthorizationStateToString:(unint64_t)string;
++ (id)regionMonitorMonitoringModeToString:(unint64_t)string;
++ (unint64_t)regionMonitorStateFromAuthorizationStatus:(int)status;
+- (BOOL)_purgeAllRegionHistoryWithError:(id *)error;
+- (BOOL)_purgeRegionsOlderThanDate:(id)date error:(id *)error;
+- (BOOL)purgeAllRegionHistoryWithError:(id *)error;
+- (BOOL)purgeRegionsOlderThanDate:(id)date error:(id *)error;
 - (ENRegionMonitor)init;
 - (ENRegionMonitorDelegate)delegate;
 - (ENRegionVisit)currentRegionVisit;
-- (id)_getAllRegionVisitsWithError:(id *)a3;
-- (id)_getAllRegionsWithError:(id *)a3;
-- (id)_getCurrentRegionVisitWithError:(id *)a3;
-- (id)getAllRegionVisitsWithError:(id *)a3;
-- (id)getAllRegionsWithError:(id *)a3;
+- (id)_getAllRegionVisitsWithError:(id *)error;
+- (id)_getAllRegionsWithError:(id *)error;
+- (id)_getCurrentRegionVisitWithError:(id *)error;
+- (id)getAllRegionVisitsWithError:(id *)error;
+- (id)getAllRegionsWithError:(id *)error;
 - (id)getCurrentRegionVisit;
-- (id)getCurrentRegionVisitWithError:(id *)a3;
+- (id)getCurrentRegionVisitWithError:(id *)error;
 - (unint64_t)getAuthorizationState;
 - (unint64_t)getMonitoringMode;
 - (unint64_t)monitoringMode;
@@ -25,84 +25,84 @@
 - (void)_createSubdivisionDataSource;
 - (void)_createTestDataSource;
 - (void)_notifyDelegateOfCurrentRegion;
-- (void)_regionDataSource:(id)a3 updatedWithVisit:(id)a4;
+- (void)_regionDataSource:(id)source updatedWithVisit:(id)visit;
 - (void)_resetRegionMonitor;
 - (void)_setup;
 - (void)_stopAllDataSources;
 - (void)_updateRegionHistoryFileStatus;
-- (void)currentRegionVisitDidChange:(id)a3;
+- (void)currentRegionVisitDidChange:(id)change;
 - (void)disableRegionMonitor;
 - (void)enableRegionMonitor;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
-- (void)regionDataSource:(id)a3 updatedWithVisit:(id)a4;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
+- (void)regionDataSource:(id)source updatedWithVisit:(id)visit;
 - (void)resetRegionMonitor;
-- (void)setAuthorizationState:(unint64_t)a3;
-- (void)setCurrentRegionVisit:(id)a3;
-- (void)setExposureNotificationAuthorizationState:(unint64_t)a3;
-- (void)setMonitoringEnabled:(BOOL)a3;
-- (void)setMonitoringMode:(unint64_t)a3;
-- (void)setSignificantLocationsAuthorizationState:(unint64_t)a3;
+- (void)setAuthorizationState:(unint64_t)state;
+- (void)setCurrentRegionVisit:(id)visit;
+- (void)setExposureNotificationAuthorizationState:(unint64_t)state;
+- (void)setMonitoringEnabled:(BOOL)enabled;
+- (void)setMonitoringMode:(unint64_t)mode;
+- (void)setSignificantLocationsAuthorizationState:(unint64_t)state;
 - (void)setup;
 - (void)updateAuthorizationState;
 - (void)updateRegionHistoryFileStatus;
-- (void)updateRegionMonitorMonitoringMode:(unint64_t)a3;
+- (void)updateRegionMonitorMonitoringMode:(unint64_t)mode;
 @end
 
 @implementation ENRegionMonitor
 
 - (void)_updateRegionHistoryFileStatus
 {
-  v3 = [(ENRegionMonitor *)self regionMonitorQueue];
-  dispatch_assert_queue_V2(v3);
+  regionMonitorQueue = [(ENRegionMonitor *)self regionMonitorQueue];
+  dispatch_assert_queue_V2(regionMonitorQueue);
 
-  v4 = [(ENRegionMonitor *)self regionHistoryManager];
-  [v4 updateFileStatus];
+  regionHistoryManager = [(ENRegionMonitor *)self regionHistoryManager];
+  [regionHistoryManager updateFileStatus];
 }
 
 - (void)enableRegionMonitor
 {
-  v3 = [(ENRegionMonitor *)self regionMonitorQueue];
+  regionMonitorQueue = [(ENRegionMonitor *)self regionMonitorQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __38__ENRegionMonitor_enableRegionMonitor__block_invoke;
   block[3] = &unk_278FD0F90;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(regionMonitorQueue, block);
 }
 
 - (void)updateRegionHistoryFileStatus
 {
-  v3 = [(ENRegionMonitor *)self regionMonitorQueue];
+  regionMonitorQueue = [(ENRegionMonitor *)self regionMonitorQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__ENRegionMonitor_updateRegionHistoryFileStatus__block_invoke;
   block[3] = &unk_278FD0F90;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(regionMonitorQueue, block);
 }
 
-+ (unint64_t)regionMonitorStateFromAuthorizationStatus:(int)a3
++ (unint64_t)regionMonitorStateFromAuthorizationStatus:(int)status
 {
-  if (a3 == 2)
+  if (status == 2)
   {
     return 1;
   }
 
   else
   {
-    return 2 * (a3 == 3);
+    return 2 * (status == 3);
   }
 }
 
-+ (id)regionMonitorAuthorizationStateToString:(unint64_t)a3
++ (id)regionMonitorAuthorizationStateToString:(unint64_t)string
 {
   v3 = @"Unknown";
-  if (a3 == 1)
+  if (string == 1)
   {
     v3 = @"Disabled";
   }
 
-  if (a3 == 2)
+  if (string == 2)
   {
     return @"Enabled";
   }
@@ -113,29 +113,29 @@
   }
 }
 
-+ (id)locationAuthorizationStatusToString:(int)a3
++ (id)locationAuthorizationStatusToString:(int)string
 {
-  if ((a3 - 1) > 3)
+  if ((string - 1) > 3)
   {
     return @"NotDetermined";
   }
 
   else
   {
-    return off_278FD23E0[a3 - 1];
+    return off_278FD23E0[string - 1];
   }
 }
 
-+ (id)regionMonitorMonitoringModeToString:(unint64_t)a3
++ (id)regionMonitorMonitoringModeToString:(unint64_t)string
 {
-  if (a3 - 1 > 2)
+  if (string - 1 > 2)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_278FD2400[a3 - 1];
+    return off_278FD2400[string - 1];
   }
 }
 
@@ -160,12 +160,12 @@
 
 - (void)_setup
 {
-  v3 = [(ENRegionMonitor *)self regionMonitorQueue];
-  dispatch_assert_queue_V2(v3);
+  regionMonitorQueue = [(ENRegionMonitor *)self regionMonitorQueue];
+  dispatch_assert_queue_V2(regionMonitorQueue);
 
   v4 = [ENRegionHistoryManager alloc];
-  v5 = [(ENRegionMonitor *)self regionMonitorQueue];
-  v6 = [(ENRegionHistoryManager *)v4 initWithDelegate:self queue:v5];
+  regionMonitorQueue2 = [(ENRegionMonitor *)self regionMonitorQueue];
+  v6 = [(ENRegionHistoryManager *)v4 initWithDelegate:self queue:regionMonitorQueue2];
   regionHistoryManager = self->_regionHistoryManager;
   self->_regionHistoryManager = v6;
 
@@ -177,50 +177,50 @@
 
 - (void)setup
 {
-  v3 = [(ENRegionMonitor *)self regionMonitorQueue];
+  regionMonitorQueue = [(ENRegionMonitor *)self regionMonitorQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __24__ENRegionMonitor_setup__block_invoke;
   block[3] = &unk_278FD0F90;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(regionMonitorQueue, block);
 }
 
 - (void)_notifyDelegateOfCurrentRegion
 {
-  v1 = [a1 currentRegionVisit];
+  currentRegionVisit = [self currentRegionVisit];
   LogPrintF_safe();
 }
 
-- (void)updateRegionMonitorMonitoringMode:(unint64_t)a3
+- (void)updateRegionMonitorMonitoringMode:(unint64_t)mode
 {
-  v5 = [(ENRegionMonitor *)self regionMonitorQueue];
+  regionMonitorQueue = [(ENRegionMonitor *)self regionMonitorQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __53__ENRegionMonitor_updateRegionMonitorMonitoringMode___block_invoke;
   v6[3] = &unk_278FD11C8;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_async(v5, v6);
+  v6[5] = mode;
+  dispatch_async(regionMonitorQueue, v6);
 }
 
 - (unint64_t)getMonitoringMode
 {
-  v3 = [(ENRegionMonitor *)self regionMonitorQueue];
-  dispatch_assert_queue_not_V2(v3);
+  regionMonitorQueue = [(ENRegionMonitor *)self regionMonitorQueue];
+  dispatch_assert_queue_not_V2(regionMonitorQueue);
 
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v4 = [(ENRegionMonitor *)self regionMonitorQueue];
+  regionMonitorQueue2 = [(ENRegionMonitor *)self regionMonitorQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __36__ENRegionMonitor_getMonitoringMode__block_invoke;
   v7[3] = &unk_278FD2370;
   v7[4] = self;
   v7[5] = &v8;
-  dispatch_sync(v4, v7);
+  dispatch_sync(regionMonitorQueue2, v7);
 
   v5 = v9[3];
   _Block_object_dispose(&v8, 8);
@@ -236,25 +236,25 @@ uint64_t __36__ENRegionMonitor_getMonitoringMode__block_invoke(uint64_t a1)
 
 - (unint64_t)monitoringMode
 {
-  v3 = [(ENRegionMonitor *)self regionMonitorQueue];
-  dispatch_assert_queue_V2(v3);
+  regionMonitorQueue = [(ENRegionMonitor *)self regionMonitorQueue];
+  dispatch_assert_queue_V2(regionMonitorQueue);
 
   return self->_monitoringMode;
 }
 
-- (void)setMonitoringMode:(unint64_t)a3
+- (void)setMonitoringMode:(unint64_t)mode
 {
-  v5 = [(ENRegionMonitor *)self regionMonitorQueue];
-  dispatch_assert_queue_V2(v5);
+  regionMonitorQueue = [(ENRegionMonitor *)self regionMonitorQueue];
+  dispatch_assert_queue_V2(regionMonitorQueue);
 
-  if (self->_monitoringMode != a3)
+  if (self->_monitoringMode != mode)
   {
     if (gLogCategory_ENRegionMonitor <= 30 && (gLogCategory_ENRegionMonitor != -1 || _LogCategory_Initialize()))
     {
       [ENRegionMonitor setMonitoringMode:];
     }
 
-    self->_monitoringMode = a3;
+    self->_monitoringMode = mode;
 
     [(ENRegionMonitor *)self _resetRegionMonitor];
   }
@@ -262,30 +262,30 @@ uint64_t __36__ENRegionMonitor_getMonitoringMode__block_invoke(uint64_t a1)
 
 - (void)disableRegionMonitor
 {
-  v3 = [(ENRegionMonitor *)self regionMonitorQueue];
+  regionMonitorQueue = [(ENRegionMonitor *)self regionMonitorQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __39__ENRegionMonitor_disableRegionMonitor__block_invoke;
   block[3] = &unk_278FD0F90;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(regionMonitorQueue, block);
 }
 
-- (void)setMonitoringEnabled:(BOOL)a3
+- (void)setMonitoringEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v6 = [(ENRegionMonitor *)self regionMonitorQueue];
-  dispatch_assert_queue_V2(v6);
+  enabledCopy = enabled;
+  regionMonitorQueue = [(ENRegionMonitor *)self regionMonitorQueue];
+  dispatch_assert_queue_V2(regionMonitorQueue);
 
-  if (self->_monitoringEnabled != v3)
+  if (self->_monitoringEnabled != enabledCopy)
   {
     if (gLogCategory_ENRegionMonitor <= 30 && (gLogCategory_ENRegionMonitor != -1 || _LogCategory_Initialize()))
     {
       [(ENRegionMonitor *)a2 setMonitoringEnabled:?];
     }
 
-    self->_monitoringEnabled = v3;
-    if (v3)
+    self->_monitoringEnabled = enabledCopy;
+    if (enabledCopy)
     {
       v7 = 2;
     }
@@ -303,18 +303,18 @@ uint64_t __36__ENRegionMonitor_getMonitoringMode__block_invoke(uint64_t a1)
 
 - (void)resetRegionMonitor
 {
-  v3 = [(ENRegionMonitor *)self regionMonitorQueue];
+  regionMonitorQueue = [(ENRegionMonitor *)self regionMonitorQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __37__ENRegionMonitor_resetRegionMonitor__block_invoke;
   block[3] = &unk_278FD0F90;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(regionMonitorQueue, block);
 }
 
 - (void)_resetRegionMonitor
 {
-  v7 = NSStringFromSelector(a1);
+  v7 = NSStringFromSelector(self);
   v4 = [objc_opt_class() regionMonitorAuthorizationStateToString:{objc_msgSend(a2, "exposureNotificationAuthorizationState")}];
   objc_opt_class();
   [v2 regionMonitorAuthorizationStateToString:{objc_msgSend(OUTLINED_FUNCTION_4(), "significantLocationsAuthorizationState")}];
@@ -328,8 +328,8 @@ uint64_t __36__ENRegionMonitor_getMonitoringMode__block_invoke(uint64_t a1)
 
 - (void)_createTestDataSource
 {
-  v3 = [(ENRegionMonitor *)self regionMonitorQueue];
-  dispatch_assert_queue_V2(v3);
+  regionMonitorQueue = [(ENRegionMonitor *)self regionMonitorQueue];
+  dispatch_assert_queue_V2(regionMonitorQueue);
 
   v4 = [[ENRegionTestDataSource alloc] initWithDelegate:self];
   [(ENRegionMonitor *)self setTestRegionDataSource:v4];
@@ -337,8 +337,8 @@ uint64_t __36__ENRegionMonitor_getMonitoringMode__block_invoke(uint64_t a1)
 
 - (void)_createCountryDataSource
 {
-  v3 = [(ENRegionMonitor *)self regionMonitorQueue];
-  dispatch_assert_queue_V2(v3);
+  regionMonitorQueue = [(ENRegionMonitor *)self regionMonitorQueue];
+  dispatch_assert_queue_V2(regionMonitorQueue);
 
   v4 = [[ENRegionMonitorTelephonyDataSource alloc] initWithDelegate:self];
   [(ENRegionMonitor *)self setTelephonyDataSource:v4];
@@ -346,8 +346,8 @@ uint64_t __36__ENRegionMonitor_getMonitoringMode__block_invoke(uint64_t a1)
 
 - (void)_createSubdivisionDataSource
 {
-  v3 = [(ENRegionMonitor *)self regionMonitorQueue];
-  dispatch_assert_queue_V2(v3);
+  regionMonitorQueue = [(ENRegionMonitor *)self regionMonitorQueue];
+  dispatch_assert_queue_V2(regionMonitorQueue);
 
   Int64 = CFPrefs_GetInt64();
   if (gLogCategory_ENRegionMonitor <= 30 && (gLogCategory_ENRegionMonitor != -1 || _LogCategory_Initialize()))
@@ -364,50 +364,50 @@ uint64_t __36__ENRegionMonitor_getMonitoringMode__block_invoke(uint64_t a1)
 
 - (void)_stopAllDataSources
 {
-  v3 = [(ENRegionMonitor *)self regionMonitorQueue];
-  dispatch_assert_queue_V2(v3);
+  regionMonitorQueue = [(ENRegionMonitor *)self regionMonitorQueue];
+  dispatch_assert_queue_V2(regionMonitorQueue);
 
-  v4 = [(ENRegionMonitor *)self testRegionDataSource];
-  [v4 stopMonitoring];
+  testRegionDataSource = [(ENRegionMonitor *)self testRegionDataSource];
+  [testRegionDataSource stopMonitoring];
 
-  v5 = [(ENRegionMonitor *)self telephonyDataSource];
-  [v5 stopMonitoring];
+  telephonyDataSource = [(ENRegionMonitor *)self telephonyDataSource];
+  [telephonyDataSource stopMonitoring];
 
-  v6 = [(ENRegionMonitor *)self coreLocationDataSource];
-  [v6 stopMonitoring];
+  coreLocationDataSource = [(ENRegionMonitor *)self coreLocationDataSource];
+  [coreLocationDataSource stopMonitoring];
 }
 
-- (void)setExposureNotificationAuthorizationState:(unint64_t)a3
+- (void)setExposureNotificationAuthorizationState:(unint64_t)state
 {
-  v5 = [(ENRegionMonitor *)self regionMonitorQueue];
-  dispatch_assert_queue_V2(v5);
+  regionMonitorQueue = [(ENRegionMonitor *)self regionMonitorQueue];
+  dispatch_assert_queue_V2(regionMonitorQueue);
 
-  if (self->_exposureNotificationAuthorizationState != a3)
+  if (self->_exposureNotificationAuthorizationState != state)
   {
     if (gLogCategory_ENRegionMonitor <= 30 && (gLogCategory_ENRegionMonitor != -1 || _LogCategory_Initialize()))
     {
       [ENRegionMonitor setExposureNotificationAuthorizationState:];
     }
 
-    self->_exposureNotificationAuthorizationState = a3;
+    self->_exposureNotificationAuthorizationState = state;
 
     [(ENRegionMonitor *)self updateAuthorizationState];
   }
 }
 
-- (void)setSignificantLocationsAuthorizationState:(unint64_t)a3
+- (void)setSignificantLocationsAuthorizationState:(unint64_t)state
 {
-  v5 = [(ENRegionMonitor *)self regionMonitorQueue];
-  dispatch_assert_queue_V2(v5);
+  regionMonitorQueue = [(ENRegionMonitor *)self regionMonitorQueue];
+  dispatch_assert_queue_V2(regionMonitorQueue);
 
-  if (self->_significantLocationsAuthorizationState != a3)
+  if (self->_significantLocationsAuthorizationState != state)
   {
     if (gLogCategory_ENRegionMonitor <= 30 && (gLogCategory_ENRegionMonitor != -1 || _LogCategory_Initialize()))
     {
       [ENRegionMonitor setSignificantLocationsAuthorizationState:];
     }
 
-    self->_significantLocationsAuthorizationState = a3;
+    self->_significantLocationsAuthorizationState = state;
 
     [(ENRegionMonitor *)self updateAuthorizationState];
   }
@@ -415,21 +415,21 @@ uint64_t __36__ENRegionMonitor_getMonitoringMode__block_invoke(uint64_t a1)
 
 - (unint64_t)getAuthorizationState
 {
-  v4 = [(ENRegionMonitor *)self regionMonitorQueue];
-  dispatch_assert_queue_not_V2(v4);
+  regionMonitorQueue = [(ENRegionMonitor *)self regionMonitorQueue];
+  dispatch_assert_queue_not_V2(regionMonitorQueue);
 
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(ENRegionMonitor *)self regionMonitorQueue];
+  regionMonitorQueue2 = [(ENRegionMonitor *)self regionMonitorQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __40__ENRegionMonitor_getAuthorizationState__block_invoke;
   block[3] = &unk_278FD2370;
   block[4] = self;
   block[5] = &v11;
-  dispatch_sync(v5, block);
+  dispatch_sync(regionMonitorQueue2, block);
 
   if (gLogCategory_ENRegionMonitor <= 30 && (gLogCategory_ENRegionMonitor != -1 || _LogCategory_Initialize()))
   {
@@ -458,21 +458,21 @@ uint64_t __36__ENRegionMonitor_getMonitoringMode__block_invoke(uint64_t a1)
   [(ENRegionMonitor *)self setAuthorizationState:v3];
 }
 
-- (void)setAuthorizationState:(unint64_t)a3
+- (void)setAuthorizationState:(unint64_t)state
 {
-  v5 = [(ENRegionMonitor *)self regionMonitorQueue];
-  dispatch_assert_queue_V2(v5);
+  regionMonitorQueue = [(ENRegionMonitor *)self regionMonitorQueue];
+  dispatch_assert_queue_V2(regionMonitorQueue);
 
-  if (self->_authorizationState != a3)
+  if (self->_authorizationState != state)
   {
     if (gLogCategory_ENRegionMonitor <= 30 && (gLogCategory_ENRegionMonitor != -1 || _LogCategory_Initialize()))
     {
       [ENRegionMonitor setAuthorizationState:];
     }
 
-    self->_authorizationState = a3;
-    v6 = [(ENRegionMonitor *)self delegate];
-    [v6 regionMonitor:self authorizationStateDidChange:self->_authorizationState];
+    self->_authorizationState = state;
+    delegate = [(ENRegionMonitor *)self delegate];
+    [delegate regionMonitor:self authorizationStateDidChange:self->_authorizationState];
 
     [(ENRegionMonitor *)self _notifyDelegateOfCurrentRegion];
 
@@ -482,8 +482,8 @@ uint64_t __36__ENRegionMonitor_getMonitoringMode__block_invoke(uint64_t a1)
 
 - (void)_createLocationManager
 {
-  v3 = [(ENRegionMonitor *)self regionMonitorQueue];
-  dispatch_assert_queue_V2(v3);
+  regionMonitorQueue = [(ENRegionMonitor *)self regionMonitorQueue];
+  dispatch_assert_queue_V2(regionMonitorQueue);
 
   Int64 = CFPrefs_GetInt64();
   if (gLogCategory_ENRegionMonitor <= 30 && (gLogCategory_ENRegionMonitor != -1 || _LogCategory_Initialize()))
@@ -493,25 +493,25 @@ uint64_t __36__ENRegionMonitor_getMonitoringMode__block_invoke(uint64_t a1)
 
   if (Int64)
   {
-    v5 = [(ENRegionMonitor *)self exposureNotificationLocationManager];
+    exposureNotificationLocationManager = [(ENRegionMonitor *)self exposureNotificationLocationManager];
 
-    if (!v5)
+    if (!exposureNotificationLocationManager)
     {
       v6 = objc_alloc(MEMORY[0x277CBFC18]);
       v7 = [MEMORY[0x277CCA8D0] bundleWithPath:@"/System/Library/LocationBundles/ExposureNotificationBundle.bundle"];
-      v8 = [(ENRegionMonitor *)self regionMonitorQueue];
-      v9 = [v6 initWithEffectiveBundle:v7 delegate:self onQueue:v8];
+      regionMonitorQueue2 = [(ENRegionMonitor *)self regionMonitorQueue];
+      v9 = [v6 initWithEffectiveBundle:v7 delegate:self onQueue:regionMonitorQueue2];
       [(ENRegionMonitor *)self setExposureNotificationLocationManager:v9];
     }
 
-    v10 = [(ENRegionMonitor *)self significantLocationsLocationManager];
+    significantLocationsLocationManager = [(ENRegionMonitor *)self significantLocationsLocationManager];
 
-    if (!v10)
+    if (!significantLocationsLocationManager)
     {
       v11 = objc_alloc(MEMORY[0x277CBFC18]);
       v12 = [MEMORY[0x277CCA8D0] bundleWithPath:@"/System/Library/LocationBundles/Routine.bundle"];
-      v13 = [(ENRegionMonitor *)self regionMonitorQueue];
-      v14 = [v11 initWithEffectiveBundle:v12 delegate:self onQueue:v13];
+      regionMonitorQueue3 = [(ENRegionMonitor *)self regionMonitorQueue];
+      v14 = [v11 initWithEffectiveBundle:v12 delegate:self onQueue:regionMonitorQueue3];
       [(ENRegionMonitor *)self setSignificantLocationsLocationManager:v14];
     }
   }
@@ -525,8 +525,8 @@ uint64_t __36__ENRegionMonitor_getMonitoringMode__block_invoke(uint64_t a1)
 
 - (id)getCurrentRegionVisit
 {
-  v3 = [(ENRegionMonitor *)self regionMonitorQueue];
-  dispatch_assert_queue_not_V2(v3);
+  regionMonitorQueue = [(ENRegionMonitor *)self regionMonitorQueue];
+  dispatch_assert_queue_not_V2(regionMonitorQueue);
 
   v8 = 0;
   v9 = &v8;
@@ -534,14 +534,14 @@ uint64_t __36__ENRegionMonitor_getMonitoringMode__block_invoke(uint64_t a1)
   v11 = __Block_byref_object_copy__4;
   v12 = __Block_byref_object_dispose__4;
   v13 = 0;
-  v4 = [(ENRegionMonitor *)self regionMonitorQueue];
+  regionMonitorQueue2 = [(ENRegionMonitor *)self regionMonitorQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __40__ENRegionMonitor_getCurrentRegionVisit__block_invoke;
   v7[3] = &unk_278FD2370;
   v7[4] = self;
   v7[5] = &v8;
-  dispatch_sync(v4, v7);
+  dispatch_sync(regionMonitorQueue2, v7);
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -560,27 +560,27 @@ void __40__ENRegionMonitor_getCurrentRegionVisit__block_invoke(uint64_t a1)
 
 - (ENRegionVisit)currentRegionVisit
 {
-  v3 = [(ENRegionMonitor *)self regionMonitorQueue];
-  dispatch_assert_queue_V2(v3);
+  regionMonitorQueue = [(ENRegionMonitor *)self regionMonitorQueue];
+  dispatch_assert_queue_V2(regionMonitorQueue);
 
   currentRegionVisit = self->_currentRegionVisit;
 
   return currentRegionVisit;
 }
 
-- (void)setCurrentRegionVisit:(id)a3
+- (void)setCurrentRegionVisit:(id)visit
 {
-  v5 = a3;
-  v6 = [(ENRegionMonitor *)self regionMonitorQueue];
-  dispatch_assert_queue_V2(v6);
+  visitCopy = visit;
+  regionMonitorQueue = [(ENRegionMonitor *)self regionMonitorQueue];
+  dispatch_assert_queue_V2(regionMonitorQueue);
 
   p_currentRegionVisit = &self->_currentRegionVisit;
-  v8 = [(ENRegionVisit *)self->_currentRegionVisit date];
-  v26 = v5;
-  v9 = [v26 date];
-  v10 = [(ENRegionVisit *)self->_currentRegionVisit region];
-  v11 = [v26 region];
-  v12 = [v10 isCountryCodeEqualToRegion:v11];
+  date = [(ENRegionVisit *)self->_currentRegionVisit date];
+  v26 = visitCopy;
+  date2 = [v26 date];
+  region = [(ENRegionVisit *)self->_currentRegionVisit region];
+  region2 = [v26 region];
+  v12 = [region isCountryCodeEqualToRegion:region2];
 
   if ((v12 & 1) == 0)
   {
@@ -593,9 +593,9 @@ LABEL_26:
     [ENRegionMonitor setCurrentRegionVisit:];
 LABEL_27:
     v22 = +[ENLoggingPrefs sharedENLoggingPrefs];
-    v23 = [v22 isSensitiveLoggingAllowed];
+    isSensitiveLoggingAllowed = [v22 isSensitiveLoggingAllowed];
 
-    if (v23 && gLogCategory_ENRegionMonitor <= 30 && (gLogCategory_ENRegionMonitor != -1 || _LogCategory_Initialize()))
+    if (isSensitiveLoggingAllowed && gLogCategory_ENRegionMonitor <= 30 && (gLogCategory_ENRegionMonitor != -1 || _LogCategory_Initialize()))
     {
       [(ENRegionMonitor *)a2 setCurrentRegionVisit:?];
     }
@@ -613,11 +613,11 @@ LABEL_27:
     goto LABEL_33;
   }
 
-  v13 = [v26 region];
-  if ([v13 validSubdivisionCode])
+  region3 = [v26 region];
+  if ([region3 validSubdivisionCode])
   {
-    v14 = [*p_currentRegionVisit region];
-    if (([v14 validSubdivisionCode] & 1) == 0)
+    region4 = [*p_currentRegionVisit region];
+    if (([region4 validSubdivisionCode] & 1) == 0)
     {
 
 LABEL_23:
@@ -629,9 +629,9 @@ LABEL_23:
       goto LABEL_26;
     }
 
-    v15 = [*p_currentRegionVisit region];
-    v16 = [v26 region];
-    v17 = [v15 isSubdivisionCodeEqualToRegion:v16];
+    region5 = [*p_currentRegionVisit region];
+    region6 = [v26 region];
+    v17 = [region5 isSubdivisionCodeEqualToRegion:region6];
 
     if ((v17 & 1) == 0)
     {
@@ -643,11 +643,11 @@ LABEL_23:
   {
   }
 
-  v18 = [*p_currentRegionVisit region];
-  v19 = [v26 region];
-  if ([v18 isEqual:v19])
+  region7 = [*p_currentRegionVisit region];
+  region8 = [v26 region];
+  if ([region7 isEqual:region8])
   {
-    [v9 timeIntervalSinceDate:v8];
+    [date2 timeIntervalSinceDate:date];
     v21 = v20;
 
     if (v21 > 43200.0)
@@ -673,34 +673,34 @@ LABEL_23:
 LABEL_33:
 }
 
-- (void)_regionDataSource:(id)a3 updatedWithVisit:(id)a4
+- (void)_regionDataSource:(id)source updatedWithVisit:(id)visit
 {
-  v11 = a3;
-  v6 = a4;
+  sourceCopy = source;
+  visitCopy = visit;
   dispatch_assert_queue_V2(self->_regionMonitorQueue);
   v7 = +[ENLoggingPrefs sharedENLoggingPrefs];
-  v8 = [v7 isSensitiveLoggingAllowed];
+  isSensitiveLoggingAllowed = [v7 isSensitiveLoggingAllowed];
 
-  if (v8 && gLogCategory_ENRegionMonitor <= 30 && (gLogCategory_ENRegionMonitor != -1 || _LogCategory_Initialize()))
+  if (isSensitiveLoggingAllowed && gLogCategory_ENRegionMonitor <= 30 && (gLogCategory_ENRegionMonitor != -1 || _LogCategory_Initialize()))
   {
     [ENRegionMonitor _regionDataSource:updatedWithVisit:];
-    if (!v6)
+    if (!visitCopy)
     {
       goto LABEL_9;
     }
   }
 
-  else if (!v6)
+  else if (!visitCopy)
   {
     goto LABEL_9;
   }
 
-  v9 = [v6 region];
-  v10 = [v9 countryCode];
+  region = [visitCopy region];
+  countryCode = [region countryCode];
 
-  if (v10)
+  if (countryCode)
   {
-    [(ENRegionMonitor *)self setCurrentRegionVisit:v6];
+    [(ENRegionMonitor *)self setCurrentRegionVisit:visitCopy];
     goto LABEL_12;
   }
 
@@ -713,27 +713,27 @@ LABEL_9:
 LABEL_12:
 }
 
-- (void)regionDataSource:(id)a3 updatedWithVisit:(id)a4
+- (void)regionDataSource:(id)source updatedWithVisit:(id)visit
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ENRegionMonitor *)self regionMonitorQueue];
+  sourceCopy = source;
+  visitCopy = visit;
+  regionMonitorQueue = [(ENRegionMonitor *)self regionMonitorQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__ENRegionMonitor_regionDataSource_updatedWithVisit___block_invoke;
   block[3] = &unk_278FD1240;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = sourceCopy;
+  v13 = visitCopy;
+  v9 = visitCopy;
+  v10 = sourceCopy;
+  dispatch_async(regionMonitorQueue, block);
 }
 
-- (BOOL)purgeAllRegionHistoryWithError:(id *)a3
+- (BOOL)purgeAllRegionHistoryWithError:(id *)error
 {
-  v5 = [(ENRegionMonitor *)self regionMonitorQueue];
-  dispatch_assert_queue_not_V2(v5);
+  regionMonitorQueue = [(ENRegionMonitor *)self regionMonitorQueue];
+  dispatch_assert_queue_not_V2(regionMonitorQueue);
 
   v14 = 0;
   v15 = &v14;
@@ -745,7 +745,7 @@ LABEL_12:
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  v6 = [(ENRegionMonitor *)self regionMonitorQueue];
+  regionMonitorQueue2 = [(ENRegionMonitor *)self regionMonitorQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__ENRegionMonitor_purgeAllRegionHistoryWithError___block_invoke;
@@ -753,11 +753,11 @@ LABEL_12:
   block[4] = self;
   block[5] = &v10;
   block[6] = &v14;
-  dispatch_sync(v6, block);
+  dispatch_sync(regionMonitorQueue2, block);
 
-  if (a3)
+  if (error)
   {
-    *a3 = v15[5];
+    *error = v15[5];
   }
 
   v7 = *(v11 + 24);
@@ -777,10 +777,10 @@ void __50__ENRegionMonitor_purgeAllRegionHistoryWithError___block_invoke(void *a
   *(*(a1[5] + 8) + 24) = v4;
 }
 
-- (BOOL)_purgeAllRegionHistoryWithError:(id *)a3
+- (BOOL)_purgeAllRegionHistoryWithError:(id *)error
 {
-  v5 = [(ENRegionMonitor *)self regionMonitorQueue];
-  dispatch_assert_queue_V2(v5);
+  regionMonitorQueue = [(ENRegionMonitor *)self regionMonitorQueue];
+  dispatch_assert_queue_V2(regionMonitorQueue);
 
   if (gLogCategory_ENRegionMonitor <= 30 && (gLogCategory_ENRegionMonitor != -1 || _LogCategory_Initialize()))
   {
@@ -790,14 +790,14 @@ void __50__ENRegionMonitor_purgeAllRegionHistoryWithError___block_invoke(void *a
   [(ENRegionMonitor *)self setCurrentRegionVisit:0];
   regionHistoryManager = self->_regionHistoryManager;
 
-  return [(ENRegionHistoryManager *)regionHistoryManager purgeAllRegionHistoryWithError:a3];
+  return [(ENRegionHistoryManager *)regionHistoryManager purgeAllRegionHistoryWithError:error];
 }
 
-- (BOOL)purgeRegionsOlderThanDate:(id)a3 error:(id *)a4
+- (BOOL)purgeRegionsOlderThanDate:(id)date error:(id *)error
 {
-  v6 = a3;
-  v7 = [(ENRegionMonitor *)self regionMonitorQueue];
-  dispatch_assert_queue_not_V2(v7);
+  dateCopy = date;
+  regionMonitorQueue = [(ENRegionMonitor *)self regionMonitorQueue];
+  dispatch_assert_queue_not_V2(regionMonitorQueue);
 
   v20 = 0;
   v21 = &v20;
@@ -809,21 +809,21 @@ void __50__ENRegionMonitor_purgeAllRegionHistoryWithError___block_invoke(void *a
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  v8 = [(ENRegionMonitor *)self regionMonitorQueue];
+  regionMonitorQueue2 = [(ENRegionMonitor *)self regionMonitorQueue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __51__ENRegionMonitor_purgeRegionsOlderThanDate_error___block_invoke;
   v12[3] = &unk_278FD23C0;
   v14 = &v16;
   v12[4] = self;
-  v9 = v6;
+  v9 = dateCopy;
   v13 = v9;
   v15 = &v20;
-  dispatch_sync(v8, v12);
+  dispatch_sync(regionMonitorQueue2, v12);
 
-  if (a4)
+  if (error)
   {
-    *a4 = v21[5];
+    *error = v21[5];
   }
 
   v10 = *(v17 + 24);
@@ -856,37 +856,37 @@ void __51__ENRegionMonitor_purgeRegionsOlderThanDate_error___block_invoke(uint64
   }
 }
 
-- (BOOL)_purgeRegionsOlderThanDate:(id)a3 error:(id *)a4
+- (BOOL)_purgeRegionsOlderThanDate:(id)date error:(id *)error
 {
-  v6 = a3;
-  v7 = [(ENRegionMonitor *)self regionMonitorQueue];
-  dispatch_assert_queue_V2(v7);
+  dateCopy = date;
+  regionMonitorQueue = [(ENRegionMonitor *)self regionMonitorQueue];
+  dispatch_assert_queue_V2(regionMonitorQueue);
 
   if (gLogCategory_ENRegionMonitor <= 30 && (gLogCategory_ENRegionMonitor != -1 || _LogCategory_Initialize()))
   {
     [ENRegionMonitor _purgeRegionsOlderThanDate:error:];
   }
 
-  v8 = [(ENRegionHistoryManager *)self->_regionHistoryManager purgeRegionsOlderThanDate:v6 error:a4];
+  v8 = [(ENRegionHistoryManager *)self->_regionHistoryManager purgeRegionsOlderThanDate:dateCopy error:error];
 
   return v8;
 }
 
-- (id)_getAllRegionsWithError:(id *)a3
+- (id)_getAllRegionsWithError:(id *)error
 {
-  v5 = [(ENRegionMonitor *)self regionMonitorQueue];
-  dispatch_assert_queue_V2(v5);
+  regionMonitorQueue = [(ENRegionMonitor *)self regionMonitorQueue];
+  dispatch_assert_queue_V2(regionMonitorQueue);
 
   if ([(ENRegionMonitor *)self authorizationState]== 2)
   {
-    v6 = [(ENRegionHistoryManager *)self->_regionHistoryManager getAllRegions];
+    getAllRegions = [(ENRegionHistoryManager *)self->_regionHistoryManager getAllRegions];
   }
 
   else
   {
-    if (a3)
+    if (error)
     {
-      *a3 = ENErrorF();
+      *error = ENErrorF();
     }
 
     if (gLogCategory__ENRegionMonitor <= 90 && (gLogCategory__ENRegionMonitor != -1 || _LogCategory_Initialize()))
@@ -894,16 +894,16 @@ void __51__ENRegionMonitor_purgeRegionsOlderThanDate_error___block_invoke(uint64
       [ENRegionMonitor _getAllRegionsWithError:];
     }
 
-    v6 = 0;
+    getAllRegions = 0;
   }
 
-  return v6;
+  return getAllRegions;
 }
 
-- (id)getAllRegionsWithError:(id *)a3
+- (id)getAllRegionsWithError:(id *)error
 {
-  v5 = [(ENRegionMonitor *)self regionMonitorQueue];
-  dispatch_assert_queue_not_V2(v5);
+  regionMonitorQueue = [(ENRegionMonitor *)self regionMonitorQueue];
+  dispatch_assert_queue_not_V2(regionMonitorQueue);
 
   v16 = 0;
   v17 = &v16;
@@ -917,7 +917,7 @@ void __51__ENRegionMonitor_purgeRegionsOlderThanDate_error___block_invoke(uint64
   v13 = __Block_byref_object_copy__4;
   v14 = __Block_byref_object_dispose__4;
   v15 = 0;
-  v6 = [(ENRegionMonitor *)self regionMonitorQueue];
+  regionMonitorQueue2 = [(ENRegionMonitor *)self regionMonitorQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __42__ENRegionMonitor_getAllRegionsWithError___block_invoke;
@@ -925,11 +925,11 @@ void __51__ENRegionMonitor_purgeRegionsOlderThanDate_error___block_invoke(uint64
   block[4] = self;
   block[5] = &v16;
   block[6] = &v10;
-  dispatch_sync(v6, block);
+  dispatch_sync(regionMonitorQueue2, block);
 
-  if (a3)
+  if (error)
   {
-    *a3 = v11[5];
+    *error = v11[5];
   }
 
   v7 = v17[5];
@@ -952,41 +952,41 @@ void __42__ENRegionMonitor_getAllRegionsWithError___block_invoke(void *a1)
   *(v5 + 40) = v4;
 }
 
-- (id)_getCurrentRegionVisitWithError:(id *)a3
+- (id)_getCurrentRegionVisitWithError:(id *)error
 {
-  v5 = [(ENRegionMonitor *)self regionMonitorQueue];
-  dispatch_assert_queue_V2(v5);
+  regionMonitorQueue = [(ENRegionMonitor *)self regionMonitorQueue];
+  dispatch_assert_queue_V2(regionMonitorQueue);
 
   if ([(ENRegionMonitor *)self authorizationState]== 2)
   {
-    v6 = [(ENRegionMonitor *)self currentRegionVisit];
+    currentRegionVisit = [(ENRegionMonitor *)self currentRegionVisit];
   }
 
   else
   {
-    if (a3)
+    if (error)
     {
-      *a3 = ENErrorF();
+      *error = ENErrorF();
     }
 
     v7 = +[ENLoggingPrefs sharedENLoggingPrefs];
-    v8 = [v7 isSensitiveLoggingAllowed];
+    isSensitiveLoggingAllowed = [v7 isSensitiveLoggingAllowed];
 
-    if (v8 && gLogCategory_ENRegionMonitor <= 90 && (gLogCategory_ENRegionMonitor != -1 || _LogCategory_Initialize()))
+    if (isSensitiveLoggingAllowed && gLogCategory_ENRegionMonitor <= 90 && (gLogCategory_ENRegionMonitor != -1 || _LogCategory_Initialize()))
     {
       [ENRegionMonitor _getCurrentRegionVisitWithError:];
     }
 
-    v6 = 0;
+    currentRegionVisit = 0;
   }
 
-  return v6;
+  return currentRegionVisit;
 }
 
-- (id)getCurrentRegionVisitWithError:(id *)a3
+- (id)getCurrentRegionVisitWithError:(id *)error
 {
-  v5 = [(ENRegionMonitor *)self regionMonitorQueue];
-  dispatch_assert_queue_not_V2(v5);
+  regionMonitorQueue = [(ENRegionMonitor *)self regionMonitorQueue];
+  dispatch_assert_queue_not_V2(regionMonitorQueue);
 
   v16 = 0;
   v17 = &v16;
@@ -1000,7 +1000,7 @@ void __42__ENRegionMonitor_getAllRegionsWithError___block_invoke(void *a1)
   v13 = __Block_byref_object_copy__4;
   v14 = __Block_byref_object_dispose__4;
   v15 = 0;
-  v6 = [(ENRegionMonitor *)self regionMonitorQueue];
+  regionMonitorQueue2 = [(ENRegionMonitor *)self regionMonitorQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__ENRegionMonitor_getCurrentRegionVisitWithError___block_invoke;
@@ -1008,11 +1008,11 @@ void __42__ENRegionMonitor_getAllRegionsWithError___block_invoke(void *a1)
   block[4] = self;
   block[5] = &v16;
   block[6] = &v10;
-  dispatch_sync(v6, block);
+  dispatch_sync(regionMonitorQueue2, block);
 
-  if (a3)
+  if (error)
   {
-    *a3 = v11[5];
+    *error = v11[5];
   }
 
   v7 = v17[5];
@@ -1035,10 +1035,10 @@ void __50__ENRegionMonitor_getCurrentRegionVisitWithError___block_invoke(void *a
   *(v5 + 40) = v4;
 }
 
-- (id)getAllRegionVisitsWithError:(id *)a3
+- (id)getAllRegionVisitsWithError:(id *)error
 {
-  v5 = [(ENRegionMonitor *)self regionMonitorQueue];
-  dispatch_assert_queue_not_V2(v5);
+  regionMonitorQueue = [(ENRegionMonitor *)self regionMonitorQueue];
+  dispatch_assert_queue_not_V2(regionMonitorQueue);
 
   v16 = 0;
   v17 = &v16;
@@ -1052,7 +1052,7 @@ void __50__ENRegionMonitor_getCurrentRegionVisitWithError___block_invoke(void *a
   v13 = __Block_byref_object_copy__4;
   v14 = __Block_byref_object_dispose__4;
   v15 = 0;
-  v6 = [(ENRegionMonitor *)self regionMonitorQueue];
+  regionMonitorQueue2 = [(ENRegionMonitor *)self regionMonitorQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__ENRegionMonitor_getAllRegionVisitsWithError___block_invoke;
@@ -1060,11 +1060,11 @@ void __50__ENRegionMonitor_getCurrentRegionVisitWithError___block_invoke(void *a
   block[4] = self;
   block[5] = &v16;
   block[6] = &v10;
-  dispatch_sync(v6, block);
+  dispatch_sync(regionMonitorQueue2, block);
 
-  if (a3)
+  if (error)
   {
-    *a3 = v11[5];
+    *error = v11[5];
   }
 
   v7 = v17[5];
@@ -1087,21 +1087,21 @@ void __47__ENRegionMonitor_getAllRegionVisitsWithError___block_invoke(void *a1)
   *(v5 + 40) = v4;
 }
 
-- (id)_getAllRegionVisitsWithError:(id *)a3
+- (id)_getAllRegionVisitsWithError:(id *)error
 {
-  v5 = [(ENRegionMonitor *)self regionMonitorQueue];
-  dispatch_assert_queue_V2(v5);
+  regionMonitorQueue = [(ENRegionMonitor *)self regionMonitorQueue];
+  dispatch_assert_queue_V2(regionMonitorQueue);
 
   if ([(ENRegionMonitor *)self authorizationState]== 2)
   {
-    v6 = [(ENRegionHistoryManager *)self->_regionHistoryManager getAllRegionVisits];
+    getAllRegionVisits = [(ENRegionHistoryManager *)self->_regionHistoryManager getAllRegionVisits];
   }
 
   else
   {
-    if (a3)
+    if (error)
     {
-      *a3 = ENErrorF();
+      *error = ENErrorF();
     }
 
     if (gLogCategory__ENRegionMonitor <= 90 && (gLogCategory__ENRegionMonitor != -1 || _LogCategory_Initialize()))
@@ -1109,56 +1109,56 @@ void __47__ENRegionMonitor_getAllRegionVisitsWithError___block_invoke(void *a1)
       [ENRegionMonitor _getAllRegionVisitsWithError:];
     }
 
-    v6 = 0;
+    getAllRegionVisits = 0;
   }
 
-  return v6;
+  return getAllRegionVisits;
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
-  v7 = a3;
-  v4 = [(ENRegionMonitor *)self regionMonitorQueue];
-  dispatch_assert_queue_V2(v4);
+  authorizationCopy = authorization;
+  regionMonitorQueue = [(ENRegionMonitor *)self regionMonitorQueue];
+  dispatch_assert_queue_V2(regionMonitorQueue);
 
-  v5 = [(ENRegionMonitor *)self exposureNotificationLocationManager];
+  exposureNotificationLocationManager = [(ENRegionMonitor *)self exposureNotificationLocationManager];
 
-  if (v5 == v7)
+  if (exposureNotificationLocationManager == authorizationCopy)
   {
-    -[ENRegionMonitor setExposureNotificationAuthorizationState:](self, "setExposureNotificationAuthorizationState:", [objc_opt_class() regionMonitorStateFromAuthorizationStatus:{objc_msgSend(v7, "authorizationStatus")}]);
+    -[ENRegionMonitor setExposureNotificationAuthorizationState:](self, "setExposureNotificationAuthorizationState:", [objc_opt_class() regionMonitorStateFromAuthorizationStatus:{objc_msgSend(authorizationCopy, "authorizationStatus")}]);
   }
 
   else
   {
-    v6 = [(ENRegionMonitor *)self significantLocationsLocationManager];
+    significantLocationsLocationManager = [(ENRegionMonitor *)self significantLocationsLocationManager];
 
-    if (v6 == v7)
+    if (significantLocationsLocationManager == authorizationCopy)
     {
-      -[ENRegionMonitor setSignificantLocationsAuthorizationState:](self, "setSignificantLocationsAuthorizationState:", [objc_opt_class() regionMonitorStateFromAuthorizationStatus:{objc_msgSend(v7, "authorizationStatus")}]);
+      -[ENRegionMonitor setSignificantLocationsAuthorizationState:](self, "setSignificantLocationsAuthorizationState:", [objc_opt_class() regionMonitorStateFromAuthorizationStatus:{objc_msgSend(authorizationCopy, "authorizationStatus")}]);
     }
   }
 
   if (gLogCategory_ENRegionMonitor <= 30 && (gLogCategory_ENRegionMonitor != -1 || _LogCategory_Initialize()))
   {
-    [(ENRegionMonitor *)self locationManagerDidChangeAuthorization:v7];
+    [(ENRegionMonitor *)self locationManagerDidChangeAuthorization:authorizationCopy];
   }
 }
 
-- (void)currentRegionVisitDidChange:(id)a3
+- (void)currentRegionVisitDidChange:(id)change
 {
-  v7 = a3;
-  v4 = [(ENRegionMonitor *)self regionMonitorQueue];
-  dispatch_assert_queue_V2(v4);
+  changeCopy = change;
+  regionMonitorQueue = [(ENRegionMonitor *)self regionMonitorQueue];
+  dispatch_assert_queue_V2(regionMonitorQueue);
 
   v5 = +[ENLoggingPrefs sharedENLoggingPrefs];
-  v6 = [v5 isSensitiveLoggingAllowed];
+  isSensitiveLoggingAllowed = [v5 isSensitiveLoggingAllowed];
 
-  if (v6 && gLogCategory_ENRegionMonitor <= 30 && (gLogCategory_ENRegionMonitor != -1 || _LogCategory_Initialize()))
+  if (isSensitiveLoggingAllowed && gLogCategory_ENRegionMonitor <= 30 && (gLogCategory_ENRegionMonitor != -1 || _LogCategory_Initialize()))
   {
     [ENRegionMonitor currentRegionVisitDidChange:];
   }
 
-  [(ENRegionMonitor *)self setCurrentRegionVisit:v7];
+  [(ENRegionMonitor *)self setCurrentRegionVisit:changeCopy];
 }
 
 - (ENRegionMonitorDelegate)delegate

@@ -1,21 +1,21 @@
 @interface RCCloudRecording
-- (BOOL)_overwriteFileAtURL:(id)a3 withFileAtURL:(id)a4 error:(id *)a5;
-- (int)_checkErrorDomainAndCode:(id)a3;
-- (int)_getRecoveryStrategyForFile:(id)a3 withError:(id)a4;
-- (void)_copyResourceFromLocation:(id)a3 toDirectory:(id)a4 usingName:(id)a5 andExtension:(id)a6 completion:(id)a7;
-- (void)_removeTitleMetadata:(id)a3 completion:(id)a4;
-- (void)_rewriteFileAtURL:(id)a3 withAsset:(id)a4 andMetadata:(id)a5 completion:(id)a6;
-- (void)copyResourcesForSharingIntoDirectory:(id)a3 completion:(id)a4;
+- (BOOL)_overwriteFileAtURL:(id)l withFileAtURL:(id)rL error:(id *)error;
+- (int)_checkErrorDomainAndCode:(id)code;
+- (int)_getRecoveryStrategyForFile:(id)file withError:(id)error;
+- (void)_copyResourceFromLocation:(id)location toDirectory:(id)directory usingName:(id)name andExtension:(id)extension completion:(id)completion;
+- (void)_removeTitleMetadata:(id)metadata completion:(id)completion;
+- (void)_rewriteFileAtURL:(id)l withAsset:(id)asset andMetadata:(id)metadata completion:(id)completion;
+- (void)copyResourcesForSharingIntoDirectory:(id)directory completion:(id)completion;
 @end
 
 @implementation RCCloudRecording
 
-- (void)copyResourcesForSharingIntoDirectory:(id)a3 completion:(id)a4
+- (void)copyResourcesForSharingIntoDirectory:(id)directory completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  directoryCopy = directory;
+  completionCopy = completion;
   v8 = [(RCCloudRecording *)self url];
-  v9 = [v8 pathExtension];
+  pathExtension = [v8 pathExtension];
   if (([(RCCloudRecording *)self composedAssetHasMultipleTracks]& 1) != 0)
   {
     v10 = 0;
@@ -27,7 +27,7 @@
   }
 
   v11 = RCAudioFileExtensionQTA;
-  v12 = [v9 isEqualToString:RCAudioFileExtensionQTA];
+  v12 = [pathExtension isEqualToString:RCAudioFileExtensionQTA];
   if ((v10 & 1) == 0 && (v12 & 1) == 0)
   {
     v13 = OSLogForCategory();
@@ -37,13 +37,13 @@
     }
 
     v14 = v11;
-    v9 = v14;
+    pathExtension = v14;
   }
 
-  v15 = [(RCCloudRecording *)self fileNameForSharing];
-  if (v15)
+  fileNameForSharing = [(RCCloudRecording *)self fileNameForSharing];
+  if (fileNameForSharing)
   {
-    [(RCCloudRecording *)self _copyResourceFromLocation:v8 toDirectory:v6 usingName:v15 andExtension:v9 completion:v7];
+    [(RCCloudRecording *)self _copyResourceFromLocation:v8 toDirectory:directoryCopy usingName:fileNameForSharing andExtension:pathExtension completion:completionCopy];
   }
 
   else
@@ -60,24 +60,24 @@
     v25 = [NSDictionary dictionaryWithObjects:&v28 forKeys:&v27 count:1];
     v26 = [NSError errorWithDomain:v24 code:1 userInfo:v25];
 
-    v7[2](v7, 0, v26);
+    completionCopy[2](completionCopy, 0, v26);
   }
 }
 
-- (void)_copyResourceFromLocation:(id)a3 toDirectory:(id)a4 usingName:(id)a5 andExtension:(id)a6 completion:(id)a7
+- (void)_copyResourceFromLocation:(id)location toDirectory:(id)directory usingName:(id)name andExtension:(id)extension completion:(id)completion
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
+  completionCopy = completion;
+  extensionCopy = extension;
+  nameCopy = name;
+  directoryCopy = directory;
+  locationCopy = location;
   v17 = +[NSFileManager defaultManager];
-  v18 = [v15 URLByAppendingPathComponent:v14];
+  v18 = [directoryCopy URLByAppendingPathComponent:nameCopy];
 
-  v19 = [v18 URLByAppendingPathExtension:v13];
+  v19 = [v18 URLByAppendingPathExtension:extensionCopy];
 
   v25 = 0;
-  LOBYTE(v18) = [v17 copyItemAtURL:v16 toURL:v19 error:&v25];
+  LOBYTE(v18) = [v17 copyItemAtURL:locationCopy toURL:v19 error:&v25];
 
   v20 = v25;
   if (v18)
@@ -86,7 +86,7 @@
     v22[1] = 3221225472;
     v22[2] = sub_100007D90;
     v22[3] = &unk_1000554D0;
-    v24 = v12;
+    v24 = completionCopy;
     v23 = v19;
     [(RCCloudRecording *)self _removeTitleMetadata:v23 completion:v22];
   }
@@ -99,30 +99,30 @@
       sub_100034C34();
     }
 
-    (*(v12 + 2))(v12, 0, v20);
+    (*(completionCopy + 2))(completionCopy, 0, v20);
   }
 }
 
-- (void)_removeTitleMetadata:(id)a3 completion:(id)a4
+- (void)_removeTitleMetadata:(id)metadata completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [AVURLAsset assetWithURL:v6];
-  v9 = [v8 rc_recordingMetadata];
-  v10 = [v9 mutableCopy];
+  metadataCopy = metadata;
+  completionCopy = completion;
+  v8 = [AVURLAsset assetWithURL:metadataCopy];
+  rc_recordingMetadata = [v8 rc_recordingMetadata];
+  v10 = [rc_recordingMetadata mutableCopy];
 
   [v10 setObject:0 forKeyedSubscript:@"title"];
   v21 = 0;
-  v11 = [AVAsset rc_updateMetadataInFile:v6 withRecordingMetadata:v10 error:&v21];
+  v11 = [AVAsset rc_updateMetadataInFile:metadataCopy withRecordingMetadata:v10 error:&v21];
   v12 = v21;
   if (v11)
   {
-    v7[2](v7, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 
   else
   {
-    v13 = [(RCCloudRecording *)self _getRecoveryStrategyForFile:v6 withError:v12];
+    v13 = [(RCCloudRecording *)self _getRecoveryStrategyForFile:metadataCopy withError:v12];
     v14 = OSLogForCategory();
     v15 = v14;
     if (v13 == 2)
@@ -133,7 +133,7 @@
       }
 
       v20 = v12;
-      v17 = [FragmentConsolidator consolidateMovieFragmentsForFileAt:v6 error:&v20];
+      v17 = [FragmentConsolidator consolidateMovieFragmentsForFileAt:metadataCopy error:&v20];
       v18 = v20;
 
       if ((v17 & 1) == 0)
@@ -145,7 +145,7 @@
         }
       }
 
-      (v7)[2](v7, v17, v18);
+      (completionCopy)[2](completionCopy, v17, v18);
       v12 = v18;
     }
 
@@ -157,7 +157,7 @@
       }
 
       v16 = [RCCaptureFormat AVAssetAuthoringMetadataWithRecordingMetadata:v10];
-      [(RCCloudRecording *)self _rewriteFileAtURL:v6 withAsset:v8 andMetadata:v16 completion:v7];
+      [(RCCloudRecording *)self _rewriteFileAtURL:metadataCopy withAsset:v8 andMetadata:v16 completion:completionCopy];
     }
 
     else
@@ -167,20 +167,20 @@
         sub_100034E78();
       }
 
-      (v7)[2](v7, 0, v12);
+      (completionCopy)[2](completionCopy, 0, v12);
     }
   }
 }
 
-- (int)_getRecoveryStrategyForFile:(id)a3 withError:(id)a4
+- (int)_getRecoveryStrategyForFile:(id)file withError:(id)error
 {
-  v6 = a4;
-  v7 = [a3 pathExtension];
-  v8 = [v7 isEqual:RCAudioFileExtensionM4A];
+  errorCopy = error;
+  pathExtension = [file pathExtension];
+  v8 = [pathExtension isEqual:RCAudioFileExtensionM4A];
 
   if (v8)
   {
-    v9 = v6;
+    v9 = errorCopy;
     v10 = [(RCCloudRecording *)self _checkErrorDomainAndCode:v9];
     if (v10)
     {
@@ -191,16 +191,16 @@
     {
       while (1)
       {
-        v12 = [v9 userInfo];
-        v13 = [v12 objectForKeyedSubscript:NSUnderlyingErrorKey];
+        userInfo = [v9 userInfo];
+        v13 = [userInfo objectForKeyedSubscript:NSUnderlyingErrorKey];
 
         if (!v13)
         {
           break;
         }
 
-        v14 = [v9 userInfo];
-        v15 = [v14 objectForKeyedSubscript:NSUnderlyingErrorKey];
+        userInfo2 = [v9 userInfo];
+        v15 = [userInfo2 objectForKeyedSubscript:NSUnderlyingErrorKey];
 
         v16 = [(RCCloudRecording *)self _checkErrorDomainAndCode:v15];
         v9 = v15;
@@ -226,15 +226,15 @@ LABEL_9:
   return v11;
 }
 
-- (int)_checkErrorDomainAndCode:(id)a3
+- (int)_checkErrorDomainAndCode:(id)code
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqual:NSOSStatusErrorDomain])
+  codeCopy = code;
+  domain = [codeCopy domain];
+  if ([domain isEqual:NSOSStatusErrorDomain])
   {
-    v5 = [v3 code];
+    code = [codeCopy code];
 
-    if (v5 == -16430)
+    if (code == -16430)
     {
       goto LABEL_7;
     }
@@ -244,17 +244,17 @@ LABEL_9:
   {
   }
 
-  v6 = [v3 domain];
-  if (![v6 isEqual:NSOSStatusErrorDomain])
+  domain2 = [codeCopy domain];
+  if (![domain2 isEqual:NSOSStatusErrorDomain])
   {
 
 LABEL_9:
-    v9 = [v3 domain];
-    if ([v9 isEqual:NSOSStatusErrorDomain])
+    domain3 = [codeCopy domain];
+    if ([domain3 isEqual:NSOSStatusErrorDomain])
     {
-      v10 = [v3 code];
+      code2 = [codeCopy code];
 
-      if (v10 == -12894)
+      if (code2 == -12894)
       {
         goto LABEL_17;
       }
@@ -264,12 +264,12 @@ LABEL_9:
     {
     }
 
-    v11 = [v3 domain];
-    if ([v11 isEqual:RCVoiceMemosErrorDomain])
+    domain4 = [codeCopy domain];
+    if ([domain4 isEqual:RCVoiceMemosErrorDomain])
     {
-      v12 = [v3 code];
+      code3 = [codeCopy code];
 
-      if (v12 == 2)
+      if (code3 == 2)
       {
         v8 = 2;
         goto LABEL_18;
@@ -285,9 +285,9 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v7 = [v3 code];
+  code4 = [codeCopy code];
 
-  if (v7 != -16438)
+  if (code4 != -16438)
   {
     goto LABEL_9;
   }
@@ -299,39 +299,39 @@ LABEL_18:
   return v8;
 }
 
-- (void)_rewriteFileAtURL:(id)a3 withAsset:(id)a4 andMetadata:(id)a5 completion:(id)a6
+- (void)_rewriteFileAtURL:(id)l withAsset:(id)asset andMetadata:(id)metadata completion:(id)completion
 {
-  v10 = a3;
+  lCopy = l;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100008404;
   v14[3] = &unk_100055520;
-  v15 = a5;
-  v16 = self;
-  v17 = v10;
-  v18 = a6;
-  v11 = v10;
-  v12 = v15;
-  v13 = v18;
-  [_TtC10voicememod34RCExportSessionComposedAssetWriter createForAsset:a4 completionHandler:v14];
+  metadataCopy = metadata;
+  selfCopy = self;
+  v17 = lCopy;
+  completionCopy = completion;
+  v11 = lCopy;
+  v12 = metadataCopy;
+  v13 = completionCopy;
+  [_TtC10voicememod34RCExportSessionComposedAssetWriter createForAsset:asset completionHandler:v14];
 }
 
-- (BOOL)_overwriteFileAtURL:(id)a3 withFileAtURL:(id)a4 error:(id *)a5
+- (BOOL)_overwriteFileAtURL:(id)l withFileAtURL:(id)rL error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v9 = +[NSFileManager defaultManager];
-  v10 = [v7 path];
-  v11 = [v9 fileExistsAtPath:v10];
+  path = [lCopy path];
+  v11 = [v9 fileExistsAtPath:path];
 
-  if (v11 && ![v9 removeItemAtURL:v7 error:a5])
+  if (v11 && ![v9 removeItemAtURL:lCopy error:error])
   {
     v12 = 0;
   }
 
   else
   {
-    v12 = [v9 copyItemAtURL:v8 toURL:v7 error:a5];
+    v12 = [v9 copyItemAtURL:rLCopy toURL:lCopy error:error];
   }
 
   return v12;

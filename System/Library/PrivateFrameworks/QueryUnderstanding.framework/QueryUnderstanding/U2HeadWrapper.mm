@@ -2,13 +2,13 @@
 + (id)log;
 + (id)signpostLog;
 - (NSDictionary)metadata;
-- (U2HeadWrapper)initWithLocale:(id)a3;
-- (id)argmaxWithIndex:(id)a3;
+- (U2HeadWrapper)initWithLocale:(id)locale;
+- (id)argmaxWithIndex:(id)index;
 - (id)assetURL;
-- (id)getU2PredictionsForEmbedding:(id)a3 queryString:(id)a4 queryID:(int64_t)a5 spans:(id)a6 tokens:(id)a7 tokenRanges:(id)a8 subtokenLenForTokens:(id)a9 subtokens:(id)a10 intentHint:(id)a11 error:(id *)a12;
-- (id)mapLogitsToLabels:(id)a3 queryString:(id)a4 queryID:(int64_t)a5 intentHint:(id)a6 tokens:(id)a7 subtokenLenForTokens:(id)a8 subtokens:(id)a9;
-- (vector<float,)getTokenScoresfromScoreTensor:(U2HeadWrapper *)self intentIndex:(SEL)a3 tokens:(id)a4 subtokenLenForTokens:(int)a5 subtokens:(id)a6 scoreFromSubtokenScores:(id)a7;
-- (void)loadWithCompletionHandler:(id)a3;
+- (id)getU2PredictionsForEmbedding:(id)embedding queryString:(id)string queryID:(int64_t)d spans:(id)spans tokens:(id)tokens tokenRanges:(id)ranges subtokenLenForTokens:(id)forTokens subtokens:(id)self0 intentHint:(id)self1 error:(id *)self2;
+- (id)mapLogitsToLabels:(id)labels queryString:(id)string queryID:(int64_t)d intentHint:(id)hint tokens:(id)tokens subtokenLenForTokens:(id)forTokens subtokens:(id)subtokens;
+- (vector<float,)getTokenScoresfromScoreTensor:(U2HeadWrapper *)self intentIndex:(SEL)index tokens:(id)tokens subtokenLenForTokens:(int)forTokens subtokens:(id)subtokens scoreFromSubtokenScores:(id)scores;
+- (void)loadWithCompletionHandler:(id)handler;
 @end
 
 @implementation U2HeadWrapper
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = __20__U2HeadWrapper_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[U2HeadWrapper log]::onceToken != -1)
   {
     dispatch_once(&+[U2HeadWrapper log]::onceToken, block);
@@ -44,7 +44,7 @@ void __20__U2HeadWrapper_log__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __28__U2HeadWrapper_signpostLog__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[U2HeadWrapper signpostLog]::onceToken != -1)
   {
     dispatch_once(&+[U2HeadWrapper signpostLog]::onceToken, block);
@@ -63,16 +63,16 @@ void __28__U2HeadWrapper_signpostLog__block_invoke(uint64_t a1)
   +[U2HeadWrapper signpostLog]::log = v1;
 }
 
-- (U2HeadWrapper)initWithLocale:(id)a3
+- (U2HeadWrapper)initWithLocale:(id)locale
 {
-  v5 = a3;
+  localeCopy = locale;
   v9.receiver = self;
   v9.super_class = U2HeadWrapper;
   v6 = [(U2HeadWrapper *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_locale, a3);
+    objc_storeStrong(&v6->_locale, locale);
   }
 
   return v7;
@@ -80,11 +80,11 @@ void __28__U2HeadWrapper_signpostLog__block_invoke(uint64_t a1)
 
 - (NSDictionary)metadata
 {
-  v2 = [(U2Head *)self->_u2Head model];
-  v3 = [v2 modelDescription];
-  v4 = [v3 metadata];
+  model = [(U2Head *)self->_u2Head model];
+  modelDescription = [model modelDescription];
+  metadata = [modelDescription metadata];
 
-  return v4;
+  return metadata;
 }
 
 - (id)assetURL
@@ -92,9 +92,9 @@ void __28__U2HeadWrapper_signpostLog__block_invoke(uint64_t a1)
   v30[1] = *MEMORY[0x277D85DE8];
   if (gUseSpotlightResources == 1)
   {
-    v3 = [MEMORY[0x277D657E8] sharedResourcesManager];
-    v4 = [(NSLocale *)self->_locale localeIdentifier];
-    v5 = [v4 isEqualToString:@"en-IN"];
+    mEMORY[0x277D657E8] = [MEMORY[0x277D657E8] sharedResourcesManager];
+    localeIdentifier = [(NSLocale *)self->_locale localeIdentifier];
+    v5 = [localeIdentifier isEqualToString:@"en-IN"];
 
     if (v5)
     {
@@ -102,27 +102,27 @@ void __28__U2HeadWrapper_signpostLog__block_invoke(uint64_t a1)
       goto LABEL_12;
     }
 
-    v12 = [(NSLocale *)self->_locale localeIdentifier];
-    if ([v12 isEqualToString:@"zh-Hant-TW"])
+    localeIdentifier2 = [(NSLocale *)self->_locale localeIdentifier];
+    if ([localeIdentifier2 isEqualToString:@"zh-Hant-TW"])
     {
     }
 
     else
     {
-      v13 = [(NSLocale *)self->_locale localeIdentifier];
-      v14 = [v13 isEqualToString:@"zh-TW"];
+      localeIdentifier3 = [(NSLocale *)self->_locale localeIdentifier];
+      v14 = [localeIdentifier3 isEqualToString:@"zh-TW"];
 
       if ((v14 & 1) == 0)
       {
-        v23 = [(NSLocale *)self->_locale localeIdentifier];
-        if ([v23 isEqualToString:@"zh-Hant-HK"])
+        localeIdentifier4 = [(NSLocale *)self->_locale localeIdentifier];
+        if ([localeIdentifier4 isEqualToString:@"zh-Hant-HK"])
         {
         }
 
         else
         {
-          v24 = [(NSLocale *)self->_locale localeIdentifier];
-          v25 = [v24 isEqualToString:@"zh-HK"];
+          localeIdentifier5 = [(NSLocale *)self->_locale localeIdentifier];
+          v25 = [localeIdentifier5 isEqualToString:@"zh-HK"];
 
           if (!v25)
           {
@@ -136,7 +136,7 @@ LABEL_12:
         v29 = @"SRResourcesOwner";
         v30[0] = v6;
         v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:&v29 count:1];
-        v16 = [v3 resourcesForClient:@"Parser" locale:self->_locale options:v15];
+        v16 = [mEMORY[0x277D657E8] resourcesForClient:@"Parser" locale:self->_locale options:v15];
         v26 = 0;
         v17 = [v16 filePathArrayForKey:v6 didFailWithError:&v26];
         v18 = v26;
@@ -151,10 +151,10 @@ LABEL_12:
           }
         }
 
-        v20 = [v17 firstObject];
-        if (v20)
+        firstObject = [v17 firstObject];
+        if (firstObject)
         {
-          v9 = [MEMORY[0x277CBEBC0] fileURLWithPath:v20];
+          v9 = [MEMORY[0x277CBEBC0] fileURLWithPath:firstObject];
         }
 
         else
@@ -171,8 +171,8 @@ LABEL_12:
   }
 
   v7 = gU2HeadBundle;
-  v8 = [(NSLocale *)self->_locale localeIdentifier];
-  v9 = [v7 URLForResource:@"U2Head" withExtension:@"mlmodelc" subdirectory:0 localization:v8];
+  localeIdentifier6 = [(NSLocale *)self->_locale localeIdentifier];
+  v9 = [v7 URLForResource:@"U2Head" withExtension:@"mlmodelc" subdirectory:0 localization:localeIdentifier6];
 
   if (v9)
   {
@@ -188,8 +188,8 @@ LABEL_12:
   }
 
   v11 = gU2HeadBundle;
-  v3 = [(NSLocale *)self->_locale languageCode];
-  v9 = [v11 URLForResource:@"U2Head" withExtension:@"mlmodelc" subdirectory:0 localization:v3];
+  mEMORY[0x277D657E8] = [(NSLocale *)self->_locale languageCode];
+  v9 = [v11 URLForResource:@"U2Head" withExtension:@"mlmodelc" subdirectory:0 localization:mEMORY[0x277D657E8]];
 LABEL_20:
 
 LABEL_21:
@@ -198,30 +198,30 @@ LABEL_21:
   return v9;
 }
 
-- (void)loadWithCompletionHandler:(id)a3
+- (void)loadWithCompletionHandler:(id)handler
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [objc_opt_class() signpostLog];
-  v6 = [objc_opt_class() signpostLog];
-  v7 = os_signpost_id_make_with_pointer(v6, self);
+  handlerCopy = handler;
+  signpostLog = [objc_opt_class() signpostLog];
+  signpostLog2 = [objc_opt_class() signpostLog];
+  v7 = os_signpost_id_make_with_pointer(signpostLog2, self);
 
-  if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
+  if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(signpostLog))
   {
     *buf = 0;
-    _os_signpost_emit_with_name_impl(&dword_2615A2000, v5, OS_SIGNPOST_INTERVAL_BEGIN, v7, "U2Head initialization", &unk_2615AA725, buf, 2u);
+    _os_signpost_emit_with_name_impl(&dword_2615A2000, signpostLog, OS_SIGNPOST_INTERVAL_BEGIN, v7, "U2Head initialization", &unk_2615AA725, buf, 2u);
   }
 
   v8 = objc_alloc_init(MEMORY[0x277CBFF38]);
   [v8 setComputeUnits:0];
   [v8 setExperimentalMLE5EngineUsage:0];
-  v9 = [(U2HeadWrapper *)self assetURL];
+  assetURL = [(U2HeadWrapper *)self assetURL];
   v10 = [objc_opt_class() log];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v9 path];
+    path = [assetURL path];
     *buf = 138412290;
-    v17 = v11;
+    v17 = path;
     _os_log_impl(&dword_2615A2000, v10, OS_LOG_TYPE_DEFAULT, "[QPNLU] Loading U2Head from %@", buf, 0xCu);
   }
 
@@ -230,9 +230,9 @@ LABEL_21:
   v14[2] = __43__U2HeadWrapper_loadWithCompletionHandler___block_invoke;
   v14[3] = &unk_279ADA248;
   v14[4] = self;
-  v12 = v4;
+  v12 = handlerCopy;
   v15 = v12;
-  [U2Head loadContentsOfURL:v9 configuration:v8 completionHandler:v14];
+  [U2Head loadContentsOfURL:assetURL configuration:v8 completionHandler:v14];
 
   v13 = *MEMORY[0x277D85DE8];
 }
@@ -314,16 +314,16 @@ void __43__U2HeadWrapper_loadWithCompletionHandler___block_invoke(uint64_t a1, v
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (id)argmaxWithIndex:(id)a3
+- (id)argmaxWithIndex:(id)index
 {
   v16[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  indexCopy = index;
   v4 = 0;
   v5 = 0;
   v6 = 0.0;
-  while ([v3 count] > v4)
+  while ([indexCopy count] > v4)
   {
-    v7 = [v3 objectAtIndexedSubscript:v4];
+    v7 = [indexCopy objectAtIndexedSubscript:v4];
     [v7 floatValue];
     v9 = v8;
 
@@ -357,25 +357,25 @@ void __43__U2HeadWrapper_loadWithCompletionHandler___block_invoke(uint64_t a1, v
   return v13;
 }
 
-- (vector<float,)getTokenScoresfromScoreTensor:(U2HeadWrapper *)self intentIndex:(SEL)a3 tokens:(id)a4 subtokenLenForTokens:(int)a5 subtokens:(id)a6 scoreFromSubtokenScores:(id)a7
+- (vector<float,)getTokenScoresfromScoreTensor:(U2HeadWrapper *)self intentIndex:(SEL)index tokens:(id)tokens subtokenLenForTokens:(int)forTokens subtokens:(id)subtokens scoreFromSubtokenScores:(id)scores
 {
-  v13 = a4;
-  v14 = a6;
-  v42 = a7;
+  tokensCopy = tokens;
+  subtokensCopy = subtokens;
+  scoresCopy = scores;
   v46 = a8;
   v15 = a9;
-  v45 = v14;
-  v48 = v13;
-  v44 = [v14 count];
-  v16 = [v13 shape];
-  v17 = [v16 objectAtIndexedSubscript:3];
-  LODWORD(v13) = [v17 intValue];
+  v45 = subtokensCopy;
+  v48 = tokensCopy;
+  v44 = [subtokensCopy count];
+  shape = [tokensCopy shape];
+  v17 = [shape objectAtIndexedSubscript:3];
+  LODWORD(tokensCopy) = [v17 intValue];
 
   retstr->var0 = 0;
   retstr->var1 = 0;
   retstr->var2 = 0;
-  v41 = v13;
-  std::vector<float>::vector[abi:ne200100](retstr, v44 * v13);
+  v41 = tokensCopy;
+  std::vector<float>::vector[abi:ne200100](retstr, v44 * tokensCopy);
   v56 = 0;
   v57 = 0;
   v58 = 0;
@@ -387,10 +387,10 @@ void __43__U2HeadWrapper_loadWithCompletionHandler___block_invoke(uint64_t a1, v
     v43 = 0;
     do
     {
-      v19 = [v42 objectAtIndexedSubscript:v18];
-      v20 = [v19 intValue];
+      v19 = [scoresCopy objectAtIndexedSubscript:v18];
+      intValue = [v19 intValue];
 
-      if (v20 >= 2)
+      if (intValue >= 2)
       {
         v21 = 0;
         v22 = v43;
@@ -406,10 +406,10 @@ void __43__U2HeadWrapper_loadWithCompletionHandler___block_invoke(uint64_t a1, v
           ++v22;
         }
 
-        while (-v20 != v21);
+        while (-intValue != v21);
       }
 
-      v43 += v20;
+      v43 += intValue;
       ++v18;
     }
 
@@ -427,8 +427,8 @@ void __43__U2HeadWrapper_loadWithCompletionHandler___block_invoke(uint64_t a1, v
     v29 = 0;
     do
     {
-      v30 = [v42 objectAtIndexedSubscript:v28];
-      v31 = [v30 intValue];
+      v30 = [scoresCopy objectAtIndexedSubscript:v28];
+      intValue2 = [v30 intValue];
 
       if (v41 >= 1)
       {
@@ -440,7 +440,7 @@ void __43__U2HeadWrapper_loadWithCompletionHandler___block_invoke(uint64_t a1, v
           v51 = 0;
           v52 = 0;
           std::vector<float>::__init_with_size[abi:ne200100]<float *,float *>(&__p, v56, v57, (v57 - v56) >> 2);
-          v34 = v15[2](v15, v48, a5, v32, v29, v31, &__p);
+          v34 = v15[2](v15, v48, forTokens, v32, v29, intValue2, &__p);
           if (__p)
           {
             v51 = __p;
@@ -456,7 +456,7 @@ void __43__U2HeadWrapper_loadWithCompletionHandler___block_invoke(uint64_t a1, v
         while (v41 != v32);
       }
 
-      v29 = (v31 + v29);
+      v29 = (intValue2 + v29);
       ++v28;
       v27 += 4 * v41;
     }
@@ -512,47 +512,47 @@ LABEL_20:
   return result;
 }
 
-- (id)mapLogitsToLabels:(id)a3 queryString:(id)a4 queryID:(int64_t)a5 intentHint:(id)a6 tokens:(id)a7 subtokenLenForTokens:(id)a8 subtokens:(id)a9
+- (id)mapLogitsToLabels:(id)labels queryString:(id)string queryID:(int64_t)d intentHint:(id)hint tokens:(id)tokens subtokenLenForTokens:(id)forTokens subtokens:(id)subtokens
 {
   v76 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v46 = a4;
-  v55 = a6;
-  v60 = a7;
-  v50 = a8;
-  v51 = a9;
-  v45 = v15;
-  v47 = [v15 top_arg_ids];
-  v52 = [v15 intent_scores];
-  v56 = [v15 arg_conf_scores];
-  v48 = [v15 safety_head_scores];
+  labelsCopy = labels;
+  stringCopy = string;
+  hintCopy = hint;
+  tokensCopy = tokens;
+  forTokensCopy = forTokens;
+  subtokensCopy = subtokens;
+  v45 = labelsCopy;
+  top_arg_ids = [labelsCopy top_arg_ids];
+  intent_scores = [labelsCopy intent_scores];
+  arg_conf_scores = [labelsCopy arg_conf_scores];
+  safety_head_scores = [labelsCopy safety_head_scores];
   v16 = [objc_opt_class() log];
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218754;
-    *&buf[4] = a5;
+    *&buf[4] = d;
     *&buf[12] = 2112;
-    *&buf[14] = v52;
+    *&buf[14] = intent_scores;
     *&buf[22] = 2112;
-    v73 = v47;
+    v73 = top_arg_ids;
     v74 = 2112;
-    v75 = v56;
+    v75 = arg_conf_scores;
     _os_log_impl(&dword_2615A2000, v16, OS_LOG_TYPE_DEBUG, "[QPNLU][qid=%ld] got U2output-> intentScores: %@; topArgIds: %@; argConfidenceScores: %@", buf, 0x2Au);
   }
 
-  v53 = [(U2HeadWrapper *)self argmaxWithIndex:v52];
-  if ([v55 intValue] == -1)
+  v53 = [(U2HeadWrapper *)self argmaxWithIndex:intent_scores];
+  if ([hintCopy intValue] == -1)
   {
     goto LABEL_9;
   }
 
-  if ([v55 intValue] < -1 || objc_msgSend(v55, "intValue") >= 25)
+  if ([hintCopy intValue] < -1 || objc_msgSend(hintCopy, "intValue") >= 25)
   {
     v17 = [objc_opt_class() log];
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      *&buf[4] = a5;
+      *&buf[4] = d;
       _os_log_impl(&dword_2615A2000, v17, OS_LOG_TYPE_ERROR, "[QPNLU][qid=%ld] the supplied intent hint value is out of range and doesnt represent a valid intent. Defaulting back to model predicted intent", buf, 0xCu);
     }
 
@@ -564,35 +564,35 @@ LABEL_9:
   v43 = [objc_opt_class() log];
   if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
   {
-    v44 = [v55 intValue];
+    intValue = [hintCopy intValue];
     *buf = 134218240;
-    *&buf[4] = a5;
+    *&buf[4] = d;
     *&buf[12] = 1024;
-    *&buf[14] = v44;
+    *&buf[14] = intValue;
     _os_log_impl(&dword_2615A2000, v43, OS_LOG_TYPE_INFO, "[QPNLU][qid=%ld] Intent Hint Value was supplied as %d", buf, 0x12u);
   }
 
-  v54 = v55;
+  v54 = hintCopy;
 LABEL_10:
   v49 = [v53 objectAtIndexedSubscript:1];
   v69 = 0;
   v70 = 0;
   v71 = 0;
-  -[U2HeadWrapper getTokenScoresfromScoreTensor:intentIndex:tokens:subtokenLenForTokens:subtokens:scoreFromSubtokenScores:](self, "getTokenScoresfromScoreTensor:intentIndex:tokens:subtokenLenForTokens:subtokens:scoreFromSubtokenScores:", v56, [v54 intValue], v60, v50, v51, &__block_literal_global_175);
-  v59 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v60, "count")}];
-  v58 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v60, "count")}];
-  v18 = [v56 shape];
-  v19 = [v18 objectAtIndexedSubscript:3];
-  v57 = [v19 intValue];
+  -[U2HeadWrapper getTokenScoresfromScoreTensor:intentIndex:tokens:subtokenLenForTokens:subtokens:scoreFromSubtokenScores:](self, "getTokenScoresfromScoreTensor:intentIndex:tokens:subtokenLenForTokens:subtokens:scoreFromSubtokenScores:", arg_conf_scores, [v54 intValue], tokensCopy, forTokensCopy, subtokensCopy, &__block_literal_global_175);
+  v59 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(tokensCopy, "count")}];
+  v58 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(tokensCopy, "count")}];
+  shape = [arg_conf_scores shape];
+  v19 = [shape objectAtIndexedSubscript:3];
+  intValue2 = [v19 intValue];
 
   v61 = 0;
   v20 = 0;
-  while ([v60 count] > v20)
+  while ([tokensCopy count] > v20)
   {
-    v21 = [MEMORY[0x277CBEB18] array];
-    v22 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     v62 = v20;
-    if (v57 < 1)
+    if (intValue2 < 1)
     {
       v24 = 0;
     }
@@ -616,9 +616,9 @@ LABEL_10:
           v63[2] = __104__U2HeadWrapper_mapLogitsToLabels_queryString_queryID_intentHint_tokens_subtokenLenForTokens_subtokens___block_invoke;
           v63[3] = &unk_279ADA290;
           v67 = v26;
-          v27 = v22;
+          v27 = array2;
           v64 = v27;
-          v28 = v21;
+          v28 = array;
           v68 = v23;
           v65 = v28;
           v66 = buf;
@@ -636,7 +636,7 @@ LABEL_10:
           _Block_object_dispose(buf, 8);
         }
 
-        else if (v26 > v69[v24 + v62 * v57])
+        else if (v26 > v69[v24 + v62 * intValue2])
         {
           v24 = v23;
         }
@@ -645,34 +645,34 @@ LABEL_10:
         v25 += 4;
       }
 
-      while (v57 != v23);
+      while (intValue2 != v23);
     }
 
-    if (![v22 count])
+    if (![array2 count])
     {
       v32 = [MEMORY[0x277CCABB0] numberWithInt:v24];
-      [v21 addObject:v32];
+      [array addObject:v32];
 
-      *&v33 = v69[v62 * v57 + v24];
+      *&v33 = v69[v62 * intValue2 + v24];
       v34 = [MEMORY[0x277CCABB0] numberWithFloat:v33];
-      [v22 addObject:v34];
+      [array2 addObject:v34];
     }
 
-    v35 = [v21 copy];
+    v35 = [array copy];
     [v59 addObject:v35];
 
-    v36 = [v22 copy];
+    v36 = [array2 copy];
     [v58 addObject:v36];
 
     v20 = v62 + 1;
-    v61 += 4 * v57;
+    v61 += 4 * intValue2;
   }
 
   v37 = objc_alloc_init(U2Output);
   [(U2Output *)v37 setIntentId:v54];
   [(U2Output *)v37 setConfidenceScore:v49];
-  [(U2Output *)v37 setTokens:v60];
-  v38 = [v48 objectAtIndexedSubscript:0];
+  [(U2Output *)v37 setTokens:tokensCopy];
+  v38 = [safety_head_scores objectAtIndexedSubscript:0];
   [(U2Output *)v37 setSafetyScore:v38];
 
   v39 = [v59 copy];
@@ -714,34 +714,34 @@ void __104__U2HeadWrapper_mapLogitsToLabels_queryString_queryID_intentHint_token
   }
 }
 
-- (id)getU2PredictionsForEmbedding:(id)a3 queryString:(id)a4 queryID:(int64_t)a5 spans:(id)a6 tokens:(id)a7 tokenRanges:(id)a8 subtokenLenForTokens:(id)a9 subtokens:(id)a10 intentHint:(id)a11 error:(id *)a12
+- (id)getU2PredictionsForEmbedding:(id)embedding queryString:(id)string queryID:(int64_t)d spans:(id)spans tokens:(id)tokens tokenRanges:(id)ranges subtokenLenForTokens:(id)forTokens subtokens:(id)self0 intentHint:(id)self1 error:(id *)self2
 {
   v85[3] = *MEMORY[0x277D85DE8];
-  v59 = a3;
-  v57 = a4;
-  v55 = a6;
-  v60 = a7;
-  v56 = a8;
-  v61 = a9;
-  v62 = a10;
-  v58 = a11;
-  v17 = [objc_opt_class() signpostLog];
-  v18 = [objc_opt_class() signpostLog];
-  v19 = os_signpost_id_make_with_pointer(v18, self);
+  embeddingCopy = embedding;
+  stringCopy = string;
+  spansCopy = spans;
+  tokensCopy = tokens;
+  rangesCopy = ranges;
+  forTokensCopy = forTokens;
+  subtokensCopy = subtokens;
+  hintCopy = hint;
+  signpostLog = [objc_opt_class() signpostLog];
+  signpostLog2 = [objc_opt_class() signpostLog];
+  v19 = os_signpost_id_make_with_pointer(signpostLog2, self);
 
-  if (v19 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v17))
+  if (v19 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(signpostLog))
   {
     *buf = 0;
-    _os_signpost_emit_with_name_impl(&dword_2615A2000, v17, OS_SIGNPOST_INTERVAL_BEGIN, v19, "U2Head prediction", &unk_2615AA725, buf, 2u);
+    _os_signpost_emit_with_name_impl(&dword_2615A2000, signpostLog, OS_SIGNPOST_INTERVAL_BEGIN, v19, "U2Head prediction", &unk_2615AA725, buf, 2u);
   }
 
-  v49 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v62, "count")}];
-  v20 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v62, "count")}];
+  v49 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(subtokensCopy, "count")}];
+  v20 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(subtokensCopy, "count")}];
   *buf = 0;
   v77 = buf;
   v78 = 0x2020000000;
   v79 = 0;
-  v21 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v60, "count")}];
+  v21 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(tokensCopy, "count")}];
   v69[0] = MEMORY[0x277D85DD0];
   v69[1] = 3221225472;
   v69[2] = __139__U2HeadWrapper_getU2PredictionsForEmbedding_queryString_queryID_spans_tokens_tokenRanges_subtokenLenForTokens_subtokens_intentHint_error___block_invoke;
@@ -749,15 +749,15 @@ void __104__U2HeadWrapper_mapLogitsToLabels_queryString_queryID_intentHint_token
   v53 = v21;
   v70 = v53;
   v75 = buf;
-  v52 = v56;
+  v52 = rangesCopy;
   v71 = v52;
-  v51 = v55;
+  v51 = spansCopy;
   v72 = v51;
   v64 = v49;
   v73 = v64;
   v63 = v20;
   v74 = v63;
-  [v61 enumerateObjectsUsingBlock:v69];
+  [forTokensCopy enumerateObjectsUsingBlock:v69];
   v68 = 0;
   v65 = [objc_alloc(MEMORY[0x277CBFF48]) initWithShape:&unk_2873DCE08 dataType:131104 error:&v68];
   v22 = v68;
@@ -786,34 +786,34 @@ void __104__U2HeadWrapper_mapLogitsToLabels_queryString_queryID_intentHint_token
     {
       if (j - 1 >= [v64 count])
       {
-        v28 = 0;
+        bOOLValue = 0;
       }
 
       else
       {
         v27 = [v64 objectAtIndexedSubscript:j - 1];
-        v28 = [v27 BOOLValue];
+        bOOLValue = [v27 BOOLValue];
       }
 
       if (j - 1 >= [v63 count])
       {
-        v29 = 0;
+        bOOLValue2 = 0;
       }
 
       else
       {
         v30 = [v63 objectAtIndexedSubscript:j - 1];
-        v29 = [v30 BOOLValue];
+        bOOLValue2 = [v30 BOOLValue];
       }
     }
 
     else
     {
-      v29 = 0;
-      v28 = 0;
+      bOOLValue2 = 0;
+      bOOLValue = 0;
     }
 
-    v31 = [MEMORY[0x277CCABB0] numberWithBool:v28];
+    v31 = [MEMORY[0x277CCABB0] numberWithBool:bOOLValue];
     v85[0] = &unk_2873DCE38;
     v32 = [MEMORY[0x277CCABB0] numberWithInteger:j];
     v85[1] = v32;
@@ -821,7 +821,7 @@ void __104__U2HeadWrapper_mapLogitsToLabels_queryString_queryID_intentHint_token
     v33 = [MEMORY[0x277CBEA60] arrayWithObjects:v85 count:3];
     [v25 setObject:v31 forKeyedSubscript:v33];
 
-    v34 = [MEMORY[0x277CCABB0] numberWithBool:v29];
+    v34 = [MEMORY[0x277CCABB0] numberWithBool:bOOLValue2];
     v84[0] = &unk_2873DCE38;
     v35 = [MEMORY[0x277CCABB0] numberWithInteger:j];
     v84[1] = v35;
@@ -830,7 +830,7 @@ void __104__U2HeadWrapper_mapLogitsToLabels_queryString_queryID_intentHint_token
     [v25 setObject:v34 forKeyedSubscript:v36];
   }
 
-  v37 = [[U2HeadInput alloc] initWithInput_mask:v65 input_span_features:v25 sequence_output:v59];
+  v37 = [[U2HeadInput alloc] initWithInput_mask:v65 input_span_features:v25 sequence_output:embeddingCopy];
   u2Head = self->_u2Head;
   v66 = v54;
   v39 = [(U2Head *)u2Head predictionFromFeatures:v37 error:&v66];
@@ -838,15 +838,15 @@ void __104__U2HeadWrapper_mapLogitsToLabels_queryString_queryID_intentHint_token
 
   if (v39)
   {
-    v41 = [(U2HeadWrapper *)self mapLogitsToLabels:v39 queryString:v57 queryID:a5 intentHint:v58 tokens:v60 subtokenLenForTokens:v61 subtokens:v62];
-    v42 = [objc_opt_class() signpostLog];
-    v43 = [objc_opt_class() signpostLog];
-    v44 = os_signpost_id_make_with_pointer(v43, self);
+    v41 = [(U2HeadWrapper *)self mapLogitsToLabels:v39 queryString:stringCopy queryID:d intentHint:hintCopy tokens:tokensCopy subtokenLenForTokens:forTokensCopy subtokens:subtokensCopy];
+    signpostLog3 = [objc_opt_class() signpostLog];
+    signpostLog4 = [objc_opt_class() signpostLog];
+    v44 = os_signpost_id_make_with_pointer(signpostLog4, self);
 
-    if (v44 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v42))
+    if (v44 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(signpostLog3))
     {
       *v80 = 0;
-      _os_signpost_emit_with_name_impl(&dword_2615A2000, v42, OS_SIGNPOST_INTERVAL_END, v44, "U2Head prediction", &unk_2615AA725, v80, 2u);
+      _os_signpost_emit_with_name_impl(&dword_2615A2000, signpostLog3, OS_SIGNPOST_INTERVAL_END, v44, "U2Head prediction", &unk_2615AA725, v80, 2u);
     }
   }
 
@@ -856,17 +856,17 @@ void __104__U2HeadWrapper_mapLogitsToLabels_queryString_queryID_intentHint_token
     if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
     {
       *v80 = 134218242;
-      v81 = a5;
+      dCopy = d;
       v82 = 2112;
       v83 = v40;
       _os_log_impl(&dword_2615A2000, v45, OS_LOG_TYPE_ERROR, "[QPNLU][qid=%ld] U2Head prediction error: %@", v80, 0x16u);
     }
 
-    if (a12)
+    if (error)
     {
       v46 = v40;
       v41 = 0;
-      *a12 = v40;
+      *error = v40;
     }
 
     else

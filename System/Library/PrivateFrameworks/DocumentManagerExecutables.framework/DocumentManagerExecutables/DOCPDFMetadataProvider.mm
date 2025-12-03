@@ -1,30 +1,30 @@
 @interface DOCPDFMetadataProvider
-+ (id)pdfMetadataProviderWithNode:(id)a3 levelOfDetail:(int64_t)a4 URL:(id)a5;
++ (id)pdfMetadataProviderWithNode:(id)node levelOfDetail:(int64_t)detail URL:(id)l;
 - (NSDictionary)metadataValues;
 - (id)fullMetadataValues;
-- (void)addPagesToDictionary:(id)a3;
-- (void)addSecureToDictionary:(id)a3;
-- (void)addSizeToDictionary:(id)a3;
-- (void)addVersionToDictionary:(id)a3;
+- (void)addPagesToDictionary:(id)dictionary;
+- (void)addSecureToDictionary:(id)dictionary;
+- (void)addSizeToDictionary:(id)dictionary;
+- (void)addVersionToDictionary:(id)dictionary;
 - (void)dealloc;
 @end
 
 @implementation DOCPDFMetadataProvider
 
-+ (id)pdfMetadataProviderWithNode:(id)a3 levelOfDetail:(int64_t)a4 URL:(id)a5
++ (id)pdfMetadataProviderWithNode:(id)node levelOfDetail:(int64_t)detail URL:(id)l
 {
-  v7 = a3;
-  v8 = a5;
-  if (v8)
+  nodeCopy = node;
+  lCopy = l;
+  if (lCopy)
   {
-    v9 = [v7 contentType];
-    v10 = [v9 identifier];
-    v11 = [*MEMORY[0x277CE1E08] identifier];
-    v12 = [v10 isEqualToString:v11];
+    contentType = [nodeCopy contentType];
+    identifier = [contentType identifier];
+    identifier2 = [*MEMORY[0x277CE1E08] identifier];
+    v12 = [identifier isEqualToString:identifier2];
 
     if (v12)
     {
-      v13 = CGPDFDocumentCreateWithURL(v8);
+      v13 = CGPDFDocumentCreateWithURL(lCopy);
       if (v13)
       {
         v14 = v13;
@@ -34,7 +34,7 @@
           v16 = Info;
           v17 = objc_opt_new();
           v17[2] = v16;
-          v17[3] = a4;
+          v17[3] = detail;
           v17[1] = v14;
           goto LABEL_8;
         }
@@ -57,22 +57,22 @@ LABEL_8:
   {
     if (levelOfDetail == 1)
     {
-      v4 = [(DOCPDFMetadataProvider *)self fullMetadataValues];
+      fullMetadataValues = [(DOCPDFMetadataProvider *)self fullMetadataValues];
     }
 
     else
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
-      [v6 handleFailureInMethod:a2 object:self file:@"DOCPDFMetadataProvider.m" lineNumber:78 description:{@"Unhandled DOCMetadataLevelOfDetail %lu", self->_levelOfDetail}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"DOCPDFMetadataProvider.m" lineNumber:78 description:{@"Unhandled DOCMetadataLevelOfDetail %lu", self->_levelOfDetail}];
     }
   }
 
   else
   {
-    v4 = [(DOCPDFMetadataProvider *)self compactMetadataValues];
+    fullMetadataValues = [(DOCPDFMetadataProvider *)self compactMetadataValues];
   }
 
-  return v4;
+  return fullMetadataValues;
 }
 
 - (id)fullMetadataValues
@@ -124,21 +124,21 @@ BOOL __44__DOCPDFMetadataProvider_fullMetadataValues__block_invoke(uint64_t a1, 
   return v7;
 }
 
-- (void)addPagesToDictionary:(id)a3
+- (void)addPagesToDictionary:(id)dictionary
 {
   v3 = MEMORY[0x277CCABB8];
   v4 = MEMORY[0x277CCABB0];
   pdfDocument = self->_pdfDocument;
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v8 = [v4 numberWithUnsignedLong:CGPDFDocumentGetNumberOfPages(pdfDocument)];
   v7 = [v3 localizedStringFromNumber:v8 numberStyle:0];
-  [v6 setObject:v7 forKeyedSubscript:@"Pages"];
+  [dictionaryCopy setObject:v7 forKeyedSubscript:@"Pages"];
 }
 
-- (void)addSecureToDictionary:(id)a3
+- (void)addSecureToDictionary:(id)dictionary
 {
   pdfDocument = self->_pdfDocument;
-  v4 = a3;
+  dictionaryCopy = dictionary;
   IsEncrypted = CGPDFDocumentIsEncrypted(pdfDocument);
   v6 = _DocumentManagerBundle();
   v7 = v6;
@@ -156,25 +156,25 @@ BOOL __44__DOCPDFMetadataProvider_fullMetadataValues__block_invoke(uint64_t a1, 
 
   v10 = [v6 localizedStringForKey:v8 value:v9 table:@"Localizable"];
 
-  [v4 setObject:v10 forKeyedSubscript:@"Security"];
+  [dictionaryCopy setObject:v10 forKeyedSubscript:@"Security"];
 }
 
-- (void)addVersionToDictionary:(id)a3
+- (void)addVersionToDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   majorVersion = 0;
   minorVersion = 0;
   CGPDFDocumentGetVersion(self->_pdfDocument, &majorVersion, &minorVersion);
   if (majorVersion >= 1)
   {
-    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d.%d", majorVersion, minorVersion];
-    [v4 setObject:v5 forKeyedSubscript:@"Version"];
+    minorVersion = [MEMORY[0x277CCACA8] stringWithFormat:@"%d.%d", majorVersion, minorVersion];
+    [dictionaryCopy setObject:minorVersion forKeyedSubscript:@"Version"];
   }
 }
 
-- (void)addSizeToDictionary:(id)a3
+- (void)addSizeToDictionary:(id)dictionary
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   if (CGPDFDocumentGetNumberOfPages(self->_pdfDocument))
   {
     Page = CGPDFDocumentGetPage(self->_pdfDocument, 1uLL);
@@ -182,7 +182,7 @@ BOOL __44__DOCPDFMetadataProvider_fullMetadataValues__block_invoke(uint64_t a1, 
     {
       BoxRect = CGPDFPageGetBoxRect(Page, kCGPDFCropBox);
       v5 = DOCLocalizedMetadataStringForWidthByHeight(BoxRect.size.width, BoxRect.size.height);
-      [v6 setObject:v5 forKeyedSubscript:@"Resolution"];
+      [dictionaryCopy setObject:v5 forKeyedSubscript:@"Resolution"];
     }
   }
 }

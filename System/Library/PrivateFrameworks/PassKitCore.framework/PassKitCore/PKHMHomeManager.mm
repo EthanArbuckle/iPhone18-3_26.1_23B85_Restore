@@ -1,12 +1,12 @@
 @interface PKHMHomeManager
 - (PKHMHomeManager)init;
 - (void)dealloc;
-- (void)fetchHomeIdentifierForPassSerialNumber:(id)a3 withCompletion:(id)a4;
-- (void)fetchHomesWithCompletion:(id)a3;
-- (void)fetchLockAccessoryWithTerminalReaderIdentifier:(id)a3 withCompletion:(id)a4;
-- (void)hasHomeAccessScheduleForPassSerialNumber:(id)a3 withCompletion:(id)a4;
-- (void)isHomeAccessRestrictedForPassSerialNumber:(id)a3 withCompletion:(id)a4;
-- (void)setLockStateToSecuredForLockAccessory:(id)a3 withCompletion:(id)a4;
+- (void)fetchHomeIdentifierForPassSerialNumber:(id)number withCompletion:(id)completion;
+- (void)fetchHomesWithCompletion:(id)completion;
+- (void)fetchLockAccessoryWithTerminalReaderIdentifier:(id)identifier withCompletion:(id)completion;
+- (void)hasHomeAccessScheduleForPassSerialNumber:(id)number withCompletion:(id)completion;
+- (void)isHomeAccessRestrictedForPassSerialNumber:(id)number withCompletion:(id)completion;
+- (void)setLockStateToSecuredForLockAccessory:(id)accessory withCompletion:(id)completion;
 @end
 
 @implementation PKHMHomeManager
@@ -35,16 +35,16 @@
   [(PKHMHomeManager *)&v4 dealloc];
 }
 
-- (void)fetchHomesWithCompletion:(id)a3
+- (void)fetchHomesWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[_SharedPKHMHomeManager sharedInstance];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __44__PKHMHomeManager_fetchHomesWithCompletion___block_invoke;
   v6[3] = &unk_1E79DDC50;
-  v7 = v3;
-  v5 = v3;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [v4 _performOperationWithHomes:v6];
 }
 
@@ -57,26 +57,26 @@ void __44__PKHMHomeManager_fetchHomesWithCompletion___block_invoke(uint64_t a1, 
   v6[2]();
 }
 
-- (void)fetchHomeIdentifierForPassSerialNumber:(id)a3 withCompletion:(id)a4
+- (void)fetchHomeIdentifierForPassSerialNumber:(id)number withCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  numberCopy = number;
+  completionCopy = completion;
+  v7 = completionCopy;
+  if (numberCopy)
   {
     v8 = +[_SharedPKHMHomeManager sharedInstance];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __73__PKHMHomeManager_fetchHomeIdentifierForPassSerialNumber_withCompletion___block_invoke;
     v9[3] = &unk_1E79DDC78;
-    v10 = v5;
+    v10 = numberCopy;
     v11 = v7;
     [v8 _performOperationWithHomes:v9];
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    (*(v6 + 2))(v6, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -173,19 +173,19 @@ LABEL_18:
   v6[2](v6);
 }
 
-- (void)fetchLockAccessoryWithTerminalReaderIdentifier:(id)a3 withCompletion:(id)a4
+- (void)fetchLockAccessoryWithTerminalReaderIdentifier:(id)identifier withCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v7 = +[_SharedPKHMHomeManager sharedInstance];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __81__PKHMHomeManager_fetchLockAccessoryWithTerminalReaderIdentifier_withCompletion___block_invoke;
   v10[3] = &unk_1E79DDC78;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = identifierCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = identifierCopy;
   [v7 _performOperationWithHomes:v10];
 }
 
@@ -337,20 +337,20 @@ LABEL_24:
   v31[2](v31);
 }
 
-- (void)setLockStateToSecuredForLockAccessory:(id)a3 withCompletion:(id)a4
+- (void)setLockStateToSecuredForLockAccessory:(id)accessory withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  accessoryCopy = accessory;
+  completionCopy = completion;
   v8 = +[_SharedPKHMHomeManager sharedInstance];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __72__PKHMHomeManager_setLockStateToSecuredForLockAccessory_withCompletion___block_invoke;
   v11[3] = &unk_1E79DDCF0;
-  v12 = v6;
-  v13 = v7;
+  v12 = accessoryCopy;
+  v13 = completionCopy;
   v11[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = accessoryCopy;
+  v10 = completionCopy;
   [v8 _performOperationWithHomes:v11];
 }
 
@@ -572,28 +572,28 @@ void __72__PKHMHomeManager_setLockStateToSecuredForLockAccessory_withCompletion_
   }
 }
 
-- (void)hasHomeAccessScheduleForPassSerialNumber:(id)a3 withCompletion:(id)a4
+- (void)hasHomeAccessScheduleForPassSerialNumber:(id)number withCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  numberCopy = number;
+  completionCopy = completion;
+  v7 = completionCopy;
+  if (completionCopy)
   {
-    if (v5)
+    if (numberCopy)
     {
       v8 = +[_SharedPKHMHomeManager sharedInstance];
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __75__PKHMHomeManager_hasHomeAccessScheduleForPassSerialNumber_withCompletion___block_invoke;
       v9[3] = &unk_1E79DDC78;
-      v10 = v5;
+      v10 = numberCopy;
       v11 = v7;
       [v8 _performOperationWithHomes:v9];
     }
 
     else
     {
-      (*(v6 + 2))(v6, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0);
     }
   }
 }
@@ -729,28 +729,28 @@ LABEL_18:
   (*(*(v2 + 40) + 16))();
 }
 
-- (void)isHomeAccessRestrictedForPassSerialNumber:(id)a3 withCompletion:(id)a4
+- (void)isHomeAccessRestrictedForPassSerialNumber:(id)number withCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  numberCopy = number;
+  completionCopy = completion;
+  v7 = completionCopy;
+  if (completionCopy)
   {
-    if (v5)
+    if (numberCopy)
     {
       v8 = +[_SharedPKHMHomeManager sharedInstance];
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __76__PKHMHomeManager_isHomeAccessRestrictedForPassSerialNumber_withCompletion___block_invoke;
       v9[3] = &unk_1E79DDC78;
-      v10 = v5;
+      v10 = numberCopy;
       v11 = v7;
       [v8 _performOperationWithHomes:v9];
     }
 
     else
     {
-      (*(v6 + 2))(v6, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }

@@ -4,7 +4,7 @@
 - (COSTinkerHealthSharingSetupDelegate)init;
 - (FAFamilyMember)guardianMember;
 - (FAFamilyMember)tinkerMember;
-- (void)sharingSetupDidFailWithError:(id)a3;
+- (void)sharingSetupDidFailWithError:(id)error;
 - (void)sharingSetupDidSucceed;
 - (void)tinkerDevice;
 @end
@@ -16,9 +16,9 @@
   v0 = +[NRPairedDeviceRegistry sharedInstance];
   v1 = +[NRPairedDeviceRegistry activeDeviceSelectorBlock];
   v2 = [v0 getAllDevicesWithArchivedAltAccountDevicesMatching:v1];
-  v3 = [v2 firstObject];
+  firstObject = [v2 firstObject];
 
-  v4 = [v3 valueForProperty:NRDevicePropertyIsArchived];
+  v4 = [firstObject valueForProperty:NRDevicePropertyIsArchived];
   if ([v4 BOOLValue])
   {
     v5 = 0;
@@ -26,7 +26,7 @@
 
   else
   {
-    v5 = v3;
+    v5 = firstObject;
   }
 
   v6 = v5;
@@ -41,8 +41,8 @@
   v2 = [(COSTinkerHealthSharingSetupDelegate *)&v5 init];
   if (v2)
   {
-    v3 = [UIApp setupController];
-    objc_storeWeak(&v2->_setupController, v3);
+    setupController = [UIApp setupController];
+    objc_storeWeak(&v2->_setupController, setupController);
   }
 
   return v2;
@@ -51,20 +51,20 @@
 - (FAFamilyMember)tinkerMember
 {
   WeakRetained = objc_loadWeakRetained(&self->_setupController);
-  v3 = [WeakRetained tinkerFamilyMember];
+  tinkerFamilyMember = [WeakRetained tinkerFamilyMember];
 
-  return v3;
+  return tinkerFamilyMember;
 }
 
 - (FAFamilyMember)guardianMember
 {
   WeakRetained = objc_loadWeakRetained(&self->_setupController);
-  v3 = [WeakRetained pairingParentFamilyMember];
+  pairingParentFamilyMember = [WeakRetained pairingParentFamilyMember];
 
-  return v3;
+  return pairingParentFamilyMember;
 }
 
-- (void)sharingSetupDidFailWithError:(id)a3
+- (void)sharingSetupDidFailWithError:(id)error
 {
   v4 = [NSBundle bundleWithIdentifier:@"com.apple.HealthUI"];
   v12 = [v4 localizedStringForKey:@"TINKER_HEALTH_SETUP_FAILED_TITLE" value:&stru_10026E598 table:@"HealthUI-Localizable-tinker"];

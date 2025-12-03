@@ -1,11 +1,11 @@
 @interface FCFileAccessToken
 - (FCFileAccessToken)init;
-- (FCFileAccessToken)initWithCoder:(id)a3;
-- (FCFileAccessToken)initWithType:(int64_t)a3 fileURL:(id)a4 fileCoordinator:(id)a5 retainedAccess:(id)a6;
-- (id)initForReadingURL:(id)a3 error:(id *)a4;
-- (id)initForWritingURL:(id)a3 error:(id *)a4;
+- (FCFileAccessToken)initWithCoder:(id)coder;
+- (FCFileAccessToken)initWithType:(int64_t)type fileURL:(id)l fileCoordinator:(id)coordinator retainedAccess:(id)access;
+- (id)initForReadingURL:(id)l error:(id *)error;
+- (id)initForWritingURL:(id)l error:(id *)error;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FCFileAccessToken
@@ -36,29 +36,29 @@
   objc_exception_throw(v6);
 }
 
-- (FCFileAccessToken)initWithType:(int64_t)a3 fileURL:(id)a4 fileCoordinator:(id)a5 retainedAccess:(id)a6
+- (FCFileAccessToken)initWithType:(int64_t)type fileURL:(id)l fileCoordinator:(id)coordinator retainedAccess:(id)access
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  lCopy = l;
+  coordinatorCopy = coordinator;
+  accessCopy = access;
   v17.receiver = self;
   v17.super_class = FCFileAccessToken;
   v14 = [(FCFileAccessToken *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    v14->_type = a3;
-    objc_storeStrong(&v14->_fileURL, a4);
-    objc_storeStrong(&v15->_fileCoordinator, a5);
-    objc_storeStrong(&v15->_retainedAccess, a6);
+    v14->_type = type;
+    objc_storeStrong(&v14->_fileURL, l);
+    objc_storeStrong(&v15->_fileCoordinator, coordinator);
+    objc_storeStrong(&v15->_retainedAccess, access);
   }
 
   return v15;
 }
 
-- (id)initForReadingURL:(id)a3 error:(id *)a4
+- (id)initForReadingURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -74,19 +74,19 @@
   v20 = 0;
   v8 = v7;
   v18 = v8;
-  [v8 coordinateReadingItemAtURL:v6 options:0 error:&v20 byAccessor:v17];
+  [v8 coordinateReadingItemAtURL:lCopy options:0 error:&v20 byAccessor:v17];
   v9 = v20;
   v10 = v9;
-  if (a4)
+  if (error)
   {
     v11 = v9;
-    *a4 = v10;
+    *error = v10;
   }
 
   if (v22[5])
   {
-    self = [(FCFileAccessToken *)self initWithType:0 fileURL:v6 fileCoordinator:v8 retainedAccess:?];
-    v12 = self;
+    self = [(FCFileAccessToken *)self initWithType:0 fileURL:lCopy fileCoordinator:v8 retainedAccess:?];
+    selfCopy = self;
   }
 
   else
@@ -95,13 +95,13 @@
     v14[1] = 3221225472;
     v14[2] = __45__FCFileAccessToken_initForReadingURL_error___block_invoke_2;
     v14[3] = &unk_1E7C397D0;
-    v15 = v6;
+    v15 = lCopy;
     v16 = v10;
-    v12 = __45__FCFileAccessToken_initForReadingURL_error___block_invoke_2(v14);
+    selfCopy = __45__FCFileAccessToken_initForReadingURL_error___block_invoke_2(v14);
   }
 
   _Block_object_dispose(&v21, 8);
-  return v12;
+  return selfCopy;
 }
 
 uint64_t __45__FCFileAccessToken_initForReadingURL_error___block_invoke(uint64_t a1)
@@ -133,9 +133,9 @@ uint64_t __45__FCFileAccessToken_initForReadingURL_error___block_invoke_2(uint64
   return 0;
 }
 
-- (id)initForWritingURL:(id)a3 error:(id *)a4
+- (id)initForWritingURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -151,19 +151,19 @@ uint64_t __45__FCFileAccessToken_initForReadingURL_error___block_invoke_2(uint64
   v20 = 0;
   v8 = v7;
   v18 = v8;
-  [v8 coordinateWritingItemAtURL:v6 options:4 error:&v20 byAccessor:v17];
+  [v8 coordinateWritingItemAtURL:lCopy options:4 error:&v20 byAccessor:v17];
   v9 = v20;
   v10 = v9;
-  if (a4)
+  if (error)
   {
     v11 = v9;
-    *a4 = v10;
+    *error = v10;
   }
 
   if (v22[5])
   {
-    self = [(FCFileAccessToken *)self initWithType:1 fileURL:v6 fileCoordinator:v8 retainedAccess:?];
-    v12 = self;
+    self = [(FCFileAccessToken *)self initWithType:1 fileURL:lCopy fileCoordinator:v8 retainedAccess:?];
+    selfCopy = self;
   }
 
   else
@@ -172,13 +172,13 @@ uint64_t __45__FCFileAccessToken_initForReadingURL_error___block_invoke_2(uint64
     v14[1] = 3221225472;
     v14[2] = __45__FCFileAccessToken_initForWritingURL_error___block_invoke_2;
     v14[3] = &unk_1E7C397D0;
-    v15 = v6;
+    v15 = lCopy;
     v16 = v10;
-    v12 = __45__FCFileAccessToken_initForWritingURL_error___block_invoke_2(v14);
+    selfCopy = __45__FCFileAccessToken_initForWritingURL_error___block_invoke_2(v14);
   }
 
   _Block_object_dispose(&v21, 8);
-  return v12;
+  return selfCopy;
 }
 
 uint64_t __45__FCFileAccessToken_initForWritingURL_error___block_invoke(uint64_t a1)
@@ -218,11 +218,11 @@ uint64_t __45__FCFileAccessToken_initForWritingURL_error___block_invoke_2(uint64
   [(FCFileAccessToken *)&v3 dealloc];
 }
 
-- (FCFileAccessToken)initWithCoder:(id)a3
+- (FCFileAccessToken)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"type"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fileURL"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"type"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fileURL"];
 
   if (v6)
   {
@@ -238,7 +238,7 @@ uint64_t __45__FCFileAccessToken_initForWritingURL_error___block_invoke_2(uint64
       {
 LABEL_10:
 
-        v10 = self;
+        selfCopy = self;
         goto LABEL_11;
       }
 
@@ -256,18 +256,18 @@ LABEL_10:
     _os_log_error_impl(&dword_1B63EF000, v9, OS_LOG_TYPE_ERROR, "failed to decode file access token due to missing fileURL", v12, 2u);
   }
 
-  v10 = 0;
+  selfCopy = 0;
 LABEL_11:
 
-  return v10;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[FCFileAccessToken type](self forKey:{"type"), @"type"}];
-  v5 = [(FCFileAccessToken *)self fileURL];
-  [v4 encodeObject:v5 forKey:@"fileURL"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[FCFileAccessToken type](self forKey:{"type"), @"type"}];
+  fileURL = [(FCFileAccessToken *)self fileURL];
+  [coderCopy encodeObject:fileURL forKey:@"fileURL"];
 }
 
 @end

@@ -1,46 +1,46 @@
 @interface EGStillImageDeepFusionNode
-- (EGStillImageDeepFusionNode)initWithName:(id)a3 stillImageSettings:(id)a4 nodeConfiguration:(id)a5 resourceCoordinator:(id)a6 numSbufInputs:(int)a7 processSmartStyleRenderingInput:(BOOL)a8 processQuadraForEnhancedResolution:(BOOL)a9 processInferenceInputImage:(BOOL)a10 portType:(id)a11 delegate:(id)a12;
+- (EGStillImageDeepFusionNode)initWithName:(id)name stillImageSettings:(id)settings nodeConfiguration:(id)configuration resourceCoordinator:(id)coordinator numSbufInputs:(int)inputs processSmartStyleRenderingInput:(BOOL)input processQuadraForEnhancedResolution:(BOOL)resolution processInferenceInputImage:(BOOL)self0 portType:(id)self1 delegate:(id)self2;
 - (void)dealloc;
-- (void)processorController:(id)a3 didFinishProcessingInput:(id)a4 err:(int)a5;
-- (void)processorController:(id)a3 didFinishProcessingSampleBuffer:(opaqueCMSampleBuffer *)a4 type:(unint64_t)a5 processorInput:(id)a6 err:(int)a7;
-- (void)processorController:(id)a3 willAddBuffer:(__CVBuffer *)a4 metadata:(id)a5 bufferType:(unint64_t)a6 processorInput:(id)a7;
-- (void)queueManagedReceiveData:(id)a3 fromInput:(id)a4;
+- (void)processorController:(id)controller didFinishProcessingInput:(id)input err:(int)err;
+- (void)processorController:(id)controller didFinishProcessingSampleBuffer:(opaqueCMSampleBuffer *)buffer type:(unint64_t)type processorInput:(id)input err:(int)err;
+- (void)processorController:(id)controller willAddBuffer:(__CVBuffer *)buffer metadata:(id)metadata bufferType:(unint64_t)type processorInput:(id)input;
+- (void)queueManagedReceiveData:(id)data fromInput:(id)input;
 @end
 
 @implementation EGStillImageDeepFusionNode
 
-- (EGStillImageDeepFusionNode)initWithName:(id)a3 stillImageSettings:(id)a4 nodeConfiguration:(id)a5 resourceCoordinator:(id)a6 numSbufInputs:(int)a7 processSmartStyleRenderingInput:(BOOL)a8 processQuadraForEnhancedResolution:(BOOL)a9 processInferenceInputImage:(BOOL)a10 portType:(id)a11 delegate:(id)a12
+- (EGStillImageDeepFusionNode)initWithName:(id)name stillImageSettings:(id)settings nodeConfiguration:(id)configuration resourceCoordinator:(id)coordinator numSbufInputs:(int)inputs processSmartStyleRenderingInput:(BOOL)input processQuadraForEnhancedResolution:(BOOL)resolution processInferenceInputImage:(BOOL)self0 portType:(id)self1 delegate:(id)self2
 {
-  v12 = a8;
+  inputCopy = input;
   v31.receiver = self;
   v31.super_class = EGStillImageDeepFusionNode;
-  v17 = [(EGStillImageProcessorControllerDelegateNode *)&v31 initWithName:a3 delegate:a12];
+  v17 = [(EGStillImageProcessorControllerDelegateNode *)&v31 initWithName:name delegate:delegate];
   if (v17)
   {
     v29 = 176;
-    v17->_stillImageSettings = a4;
-    v17->_nodeConfiguration = a5;
-    v17->_resourceCoordinator = a6;
-    v17->_portType = a11;
+    v17->_stillImageSettings = settings;
+    v17->_nodeConfiguration = configuration;
+    v17->_resourceCoordinator = coordinator;
+    v17->_portType = type;
     v18 = +[EGStillImageProcessorControllerDelegateNode newProcessorControllerInput];
     v17->_processorInput = v18;
     [(EGNode *)v17 installInput:v18];
-    v19 = [MEMORY[0x1E695DF70] array];
-    if (a7 >= 1)
+    array = [MEMORY[0x1E695DF70] array];
+    if (inputs >= 1)
     {
       v20 = 0;
       do
       {
         v21 = [EGStillImageProcessorControllerDelegateNode newSbufInputWithIndex:v20, v29];
         [(EGNode *)v17 installInput:v21];
-        [v19 addObject:v21];
+        [array addObject:v21];
         v20 = (v20 + 1);
       }
 
-      while (a7 != v20);
+      while (inputs != v20);
     }
 
-    v17->_sbufInputs = [v19 copy];
+    v17->_sbufInputs = [array copy];
     v22 = [[EGInput alloc] initWithName:@"inferencesDelivered"];
     v17->_inferencesDeliveredInput = v22;
     [(EGNode *)v17 installInput:v22];
@@ -50,28 +50,28 @@
     v24 = +[EGStillImageProcessorControllerDelegateNode newSbufOutput];
     v17->_sbufOutput = v24;
     [(EGNode *)v17 installOutput:v24];
-    if (a9)
+    if (resolution)
     {
       v25 = [(EGOutput *)[EGStillImageOutput alloc] initWithName:@"quadraForEnhancedResInferenceInputImage"];
       v17->_quadraForEnhancedResolutionInferenceInputImageOutput = v25;
       [(EGNode *)v17 installOutput:v25];
     }
 
-    if (a10)
+    if (image)
     {
       v26 = [(EGOutput *)[EGStillImageOutput alloc] initWithName:@"inferenceInputImage"];
       v17->_inferenceInputImageOutput = v26;
       [(EGNode *)v17 installOutput:v26];
     }
 
-    if ([a5 optimizedEnhancedResolutionDepthPipelineEnabled] && (objc_msgSend(objc_msgSend(a4, "captureSettings"), "captureFlags") & 0x800) != 0)
+    if ([configuration optimizedEnhancedResolutionDepthPipelineEnabled] && (objc_msgSend(objc_msgSend(settings, "captureSettings"), "captureFlags") & 0x800) != 0)
     {
       v27 = [(EGOutput *)[EGStillImageOutput alloc] initWithName:@"sbufForEarlyEmission"];
       v17->_sbufForEarlyEmissionOutput = v27;
       [(EGNode *)v17 installOutput:v27];
     }
 
-    v17->_deepFusionProcessorInput = [[BWDeepFusionProcessorInput alloc] initWithSettings:*(&v17->super.super.super.super.isa + v30) portType:v17->_portType processInferenceInputImage:a10 processQuadraForEnhancedResolutionInferenceInputImage:a9 processSmartStyleRenderingInput:v12];
+    v17->_deepFusionProcessorInput = [[BWDeepFusionProcessorInput alloc] initWithSettings:*(&v17->super.super.super.super.isa + v30) portType:v17->_portType processInferenceInputImage:image processQuadraForEnhancedResolutionInferenceInputImage:resolution processSmartStyleRenderingInput:inputCopy];
   }
 
   return v17;
@@ -84,27 +84,27 @@
   [(EGQueueManagementNode *)&v3 dealloc];
 }
 
-- (void)processorController:(id)a3 didFinishProcessingSampleBuffer:(opaqueCMSampleBuffer *)a4 type:(unint64_t)a5 processorInput:(id)a6 err:(int)a7
+- (void)processorController:(id)controller didFinishProcessingSampleBuffer:(opaqueCMSampleBuffer *)buffer type:(unint64_t)type processorInput:(id)input err:(int)err
 {
-  if (a7)
+  if (err)
   {
     goto LABEL_17;
   }
 
-  if (!a4)
+  if (!buffer)
   {
     goto LABEL_16;
   }
 
-  BWPhotonicEngineUtilitiesSetDeferredPhotoProcessedImageFlags(a4);
-  if (a5 == 15)
+  BWPhotonicEngineUtilitiesSetDeferredPhotoProcessedImageFlags(buffer);
+  if (type == 15)
   {
     v10 = 160;
   }
 
   else
   {
-    if (a5 != 36)
+    if (type != 36)
     {
       sbufOutput = self->_sbufOutput;
       if (!self->_sbufForEarlyEmissionOutput)
@@ -113,7 +113,7 @@
       }
 
       target = 0;
-      CopyIncludingMetadata = BWCMSampleBufferCreateCopyIncludingMetadata(a4, &target);
+      CopyIncludingMetadata = BWCMSampleBufferCreateCopyIncludingMetadata(buffer, &target);
       if (!CopyIncludingMetadata)
       {
         BWSampleBufferRemoveAttachedMedia(target, 0x1F219EC90);
@@ -136,9 +136,9 @@
         goto LABEL_8;
       }
 
-      *&a7 = CopyIncludingMetadata;
+      *&err = CopyIncludingMetadata;
 LABEL_17:
-      [EGStillImageDeepFusionNode processorController:*&a7 didFinishProcessingSampleBuffer:? type:? processorInput:? err:?];
+      [EGStillImageDeepFusionNode processorController:*&err didFinishProcessingSampleBuffer:? type:? processorInput:? err:?];
       return;
     }
 
@@ -149,18 +149,18 @@ LABEL_17:
   if (!sbufOutput)
   {
 LABEL_16:
-    *&a7 = 4294954516;
+    *&err = 4294954516;
     goto LABEL_17;
   }
 
 LABEL_8:
-  v12 = [[EGStillImageGraphPayload alloc] initWithSampleBuffer:a4];
+  v12 = [[EGStillImageGraphPayload alloc] initWithSampleBuffer:buffer];
   [(EGStillImageOutput *)sbufOutput emitPayload:v12];
 }
 
-- (void)processorController:(id)a3 didFinishProcessingInput:(id)a4 err:(int)a5
+- (void)processorController:(id)controller didFinishProcessingInput:(id)input err:(int)err
 {
-  v5 = *&a5;
+  v5 = *&err;
 
   self->_deepFusionProcessorInput = 0;
   if (v5)
@@ -172,19 +172,19 @@ LABEL_8:
   }
 }
 
-- (void)queueManagedReceiveData:(id)a3 fromInput:(id)a4
+- (void)queueManagedReceiveData:(id)data fromInput:(id)input
 {
-  if (self->_processorInput == a4)
+  if (self->_processorInput == input)
   {
-    v24 = [a3 processorController];
-    if (!v24)
+    processorController = [data processorController];
+    if (!processorController)
     {
 LABEL_28:
       v25 = 4294954516;
       goto LABEL_14;
     }
 
-    v25 = [v24 enqueueInputForProcessing:self->_deepFusionProcessorInput delegate:self];
+    v25 = [processorController enqueueInputForProcessing:self->_deepFusionProcessorInput delegate:self];
     if (v25)
     {
 LABEL_14:
@@ -201,13 +201,13 @@ LABEL_27:
     return;
   }
 
-  if ([(NSArray *)self->_sbufInputs containsObject:a4])
+  if ([(NSArray *)self->_sbufInputs containsObject:input])
   {
-    v7 = [a3 sampleBuffer];
-    if (v7)
+    sampleBuffer = [data sampleBuffer];
+    if (sampleBuffer)
     {
-      v8 = v7;
-      ImageBuffer = CMSampleBufferGetImageBuffer(v7);
+      v8 = sampleBuffer;
+      ImageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
       v10 = CMGetAttachment(v8, *off_1E798A3C8, 0);
       v11 = BWStillImageCaptureFrameFlagsForSampleBuffer(v8);
       v12 = BWPhotonicEngineUtilitiesDetermineBufferTypeForDeepFusionInputBuffer(v10, v11, [(BWStillImageCaptureSettings *)[(BWStillImageSettings *)self->_stillImageSettings captureSettings] captureFlags]);
@@ -254,7 +254,7 @@ LABEL_27:
       }
 
       [(BWDeepFusionProcessorInput *)self->_deepFusionProcessorInput addBuffer:ImageBuffer metadata:v10 bufferType:v12 captureFrameFlags:v11 lscGainMap:v22 lscGainMapParameters:v23];
-      if ([(NSArray *)self->_sbufInputs lastObject]== a4)
+      if ([(NSArray *)self->_sbufInputs lastObject]== input)
       {
         [(BWDeepFusionProcessorInput *)self->_deepFusionProcessorInput beginProcessingCachedBuffersIfWaiting];
       }
@@ -263,16 +263,16 @@ LABEL_27:
     goto LABEL_27;
   }
 
-  if (self->_inferencesDeliveredInput != a4)
+  if (self->_inferencesDeliveredInput != input)
   {
-    if (self->_referenceFrameInput == a4)
+    if (self->_referenceFrameInput == input)
     {
-      v28 = [a3 sampleBuffer];
-      if (v28)
+      sampleBuffer2 = [data sampleBuffer];
+      if (sampleBuffer2)
       {
-        v29 = v28;
+        v29 = sampleBuffer2;
         memset(&v33, 0, sizeof(v33));
-        CMSampleBufferGetPresentationTimeStamp(&v33, v28);
+        CMSampleBufferGetPresentationTimeStamp(&v33, sampleBuffer2);
         [(BWDeepFusionProcessorInput *)self->_deepFusionProcessorInput setEvZeroReferenceFrameAttachments:CMCopyDictionaryOfAttachments(*MEMORY[0x1E695E480], v29, 1u)];
         v32 = v33;
         [(BWDeepFusionProcessorInput *)self->_deepFusionProcessorInput setEvZeroReferenceFramePTS:&v32];
@@ -291,17 +291,17 @@ LABEL_27:
   [v30 allInferencesDelivered];
 }
 
-- (void)processorController:(id)a3 willAddBuffer:(__CVBuffer *)a4 metadata:(id)a5 bufferType:(unint64_t)a6 processorInput:(id)a7
+- (void)processorController:(id)controller willAddBuffer:(__CVBuffer *)buffer metadata:(id)metadata bufferType:(unint64_t)type processorInput:(id)input
 {
-  if (a5)
+  if (metadata)
   {
-    if (a7)
+    if (input)
     {
-      if (a4)
+      if (buffer)
       {
-        if (a3)
+        if (controller)
         {
-          if (self->_deepZoomEnabled && ([objc_msgSend(a7 "captureStreamSettings")] & 0x4200000000) == 0 && a6 <= 0x1B && ((1 << a6) & 0x9C00000) != 0)
+          if (self->_deepZoomEnabled && ([objc_msgSend(input "captureStreamSettings")] & 0x4200000000) == 0 && type <= 0x1B && ((1 << type) & 0x9C00000) != 0)
           {
             v11 = *(MEMORY[0x1E695F050] + 16);
             v15.origin = *MEMORY[0x1E695F050];
@@ -309,8 +309,8 @@ LABEL_27:
             v14.origin = v15.origin;
             v14.size = v11;
             v12 = [-[BWPhotonicEngineNodeConfiguration sensorConfigurationsByPortType](self->_nodeConfiguration) objectForKeyedSubscript:self->_portType];
-            Width = CVPixelBufferGetWidth(a4);
-            if ([BWDeepZoomProcessorControllerConfiguration doDeepZoomStandardOrLiteForType:1 sensorConfiguration:v12 dimensions:Width | (CVPixelBufferGetHeight(a4) << 32) metadata:a5 stillImageSettings:self->_stillImageSettings intermediateZoomSrcRectOut:&v15 intermediateZoomDstRectOut:&v14])
+            Width = CVPixelBufferGetWidth(buffer);
+            if ([BWDeepZoomProcessorControllerConfiguration doDeepZoomStandardOrLiteForType:1 sensorConfiguration:v12 dimensions:Width | (CVPixelBufferGetHeight(buffer) << 32) metadata:metadata stillImageSettings:self->_stillImageSettings intermediateZoomSrcRectOut:&v15 intermediateZoomDstRectOut:&v14])
             {
               if (!CGRectIsNull(v15) && !CGRectIsNull(v14))
               {

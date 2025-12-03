@@ -1,15 +1,15 @@
 @interface TrendsPregnancyDisclaimerCell
-- (_TtC10FitnessApp29TrendsPregnancyDisclaimerCell)initWithCoder:(id)a3;
-- (_TtC10FitnessApp29TrendsPregnancyDisclaimerCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC10FitnessApp29TrendsPregnancyDisclaimerCell)initWithCoder:(id)coder;
+- (_TtC10FitnessApp29TrendsPregnancyDisclaimerCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation TrendsPregnancyDisclaimerCell
 
-- (_TtC10FitnessApp29TrendsPregnancyDisclaimerCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC10FitnessApp29TrendsPregnancyDisclaimerCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    identifier = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
   }
 
@@ -18,10 +18,10 @@
     v6 = 0;
   }
 
-  return sub_10053CF94(a3, a4, v6);
+  return sub_10053CF94(style, identifier, v6);
 }
 
-- (_TtC10FitnessApp29TrendsPregnancyDisclaimerCell)initWithCoder:(id)a3
+- (_TtC10FitnessApp29TrendsPregnancyDisclaimerCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC10FitnessApp29TrendsPregnancyDisclaimerCell_textView;
   sub_1000059F8(0, &qword_1008E2D40);

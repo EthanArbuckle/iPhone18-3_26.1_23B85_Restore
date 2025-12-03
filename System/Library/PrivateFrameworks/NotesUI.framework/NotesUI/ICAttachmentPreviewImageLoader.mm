@@ -1,8 +1,8 @@
 @interface ICAttachmentPreviewImageLoader
-+ (id)orientedImage:(id)a3 withBackground:(int)a4;
-+ (id)orientedImage:(id)a3 withTransform:(CGAffineTransform *)a4 background:(int)a5 backgroundTransform:(CGAffineTransform *)a6;
++ (id)orientedImage:(id)image withBackground:(int)background;
++ (id)orientedImage:(id)image withTransform:(CGAffineTransform *)transform background:(int)background backgroundTransform:(CGAffineTransform *)backgroundTransform;
 - (BOOL)canLoadImage;
-- (ICAttachmentPreviewImageLoader)initWithOriginalImage:(id)a3 orientedImage:(id)a4 data:(id)a5 scale:(double)a6 previewImageURLs:(id)a7 delayLoadingURLs:(BOOL)a8;
+- (ICAttachmentPreviewImageLoader)initWithOriginalImage:(id)image orientedImage:(id)orientedImage data:(id)data scale:(double)scale previewImageURLs:(id)ls delayLoadingURLs:(BOOL)rLs;
 - (id)loadImage;
 - (id)loadOrientedImage;
 - (void)loadData;
@@ -11,7 +11,7 @@
 
 @implementation ICAttachmentPreviewImageLoader
 
-+ (id)orientedImage:(id)a3 withBackground:(int)a4
++ (id)orientedImage:(id)image withBackground:(int)background
 {
   v4 = *(MEMORY[0x1E695EFD0] + 16);
   v8[0] = *MEMORY[0x1E695EFD0];
@@ -20,45 +20,45 @@
   v7[0] = v8[0];
   v7[1] = v4;
   v7[2] = v9;
-  v5 = [a1 orientedImage:a3 withTransform:v8 background:*&a4 backgroundTransform:v7];
+  v5 = [self orientedImage:image withTransform:v8 background:*&background backgroundTransform:v7];
 
   return v5;
 }
 
-+ (id)orientedImage:(id)a3 withTransform:(CGAffineTransform *)a4 background:(int)a5 backgroundTransform:(CGAffineTransform *)a6
++ (id)orientedImage:(id)image withTransform:(CGAffineTransform *)transform background:(int)background backgroundTransform:(CGAffineTransform *)backgroundTransform
 {
   v39 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if (v8)
+  imageCopy = image;
+  if (imageCopy)
   {
-    v9 = *&a4->c;
-    *&transform.a = *&a4->a;
+    v9 = *&transform->c;
+    *&transform.a = *&transform->a;
     *&transform.c = v9;
-    *&transform.tx = *&a4->tx;
+    *&transform.tx = *&transform->tx;
     IsIdentity = CGAffineTransformIsIdentity(&transform);
-    if (a5 || !IsIdentity)
+    if (background || !IsIdentity)
     {
-      v11 = [v8 ic_CGImage];
-      if (v11)
+      ic_CGImage = [imageCopy ic_CGImage];
+      if (ic_CGImage)
       {
-        v12 = v11;
-        v13 = *&a4->c;
-        *&v37.a = *&a4->a;
+        v12 = ic_CGImage;
+        v13 = *&transform->c;
+        *&v37.a = *&transform->a;
         *&v37.c = v13;
-        *&v37.tx = *&a4->tx;
+        *&v37.tx = *&transform->tx;
         CGAffineTransformInvert(&transform, &v37);
         v14 = *&transform.c;
-        *&a4->a = *&transform.a;
-        *&a4->c = v14;
-        *&a4->tx = *&transform.tx;
+        *&transform->a = *&transform.a;
+        *&transform->c = v14;
+        *&transform->tx = *&transform.tx;
         v15 = *MEMORY[0x1E695EFF8];
         v16 = *(MEMORY[0x1E695EFF8] + 8);
         Width = CGImageGetWidth(v12);
         Height = CGImageGetHeight(v12);
-        v19 = *&a4->c;
-        *&transform.a = *&a4->a;
+        v19 = *&transform->c;
+        *&transform.a = *&transform->a;
         *&transform.c = v19;
-        *&transform.tx = *&a4->tx;
+        *&transform.tx = *&transform->tx;
         v20 = v15;
         *&v19 = v16;
         v21 = Width;
@@ -72,10 +72,10 @@
         if (v27)
         {
           v28 = v27;
-          if (a5 == 2)
+          if (background == 2)
           {
-            v31 = [MEMORY[0x1E69DC888] ic_attachmentBackgroundColor];
-            CGContextSetFillColorWithColor(v28, [v31 CGColor]);
+            ic_attachmentBackgroundColor = [MEMORY[0x1E69DC888] ic_attachmentBackgroundColor];
+            CGContextSetFillColorWithColor(v28, [ic_attachmentBackgroundColor CGColor]);
             v43.origin.x = 0.0;
             v43.origin.y = 0.0;
             v43.size.width = v25;
@@ -83,7 +83,7 @@
             CGContextFillRect(v28, v43);
           }
 
-          else if (a5 == 1)
+          else if (background == 1)
           {
             *&transform.a = xmmword_1D4434848;
             *&transform.c = unk_1D4434858;
@@ -99,17 +99,17 @@
           }
 
           CGContextTranslateCTM(v28, -x, -y);
-          v32 = *&a4->c;
-          *&transform.a = *&a4->a;
+          v32 = *&transform->c;
+          *&transform.a = *&transform->a;
           *&transform.c = v32;
-          *&transform.tx = *&a4->tx;
+          *&transform.tx = *&transform->tx;
           CGContextConcatCTM(v28, &transform);
-          v33 = [v8 ic_CGImage];
+          ic_CGImage2 = [imageCopy ic_CGImage];
           v44.origin.x = v15;
           v44.origin.y = v16;
           v44.size.width = Width;
           v44.size.height = Height;
-          CGContextDrawImage(v28, v44, v33);
+          CGContextDrawImage(v28, v44, ic_CGImage2);
           Image = CGBitmapContextCreateImage(v28);
           CGContextRelease(v28);
           if (Image)
@@ -117,40 +117,40 @@
             v35 = [objc_alloc(MEMORY[0x1E69DCAB8]) initWithCGImage:Image];
             CGImageRelease(Image);
 
-            v8 = v35;
+            imageCopy = v35;
           }
         }
       }
     }
   }
 
-  return v8;
+  return imageCopy;
 }
 
-- (ICAttachmentPreviewImageLoader)initWithOriginalImage:(id)a3 orientedImage:(id)a4 data:(id)a5 scale:(double)a6 previewImageURLs:(id)a7 delayLoadingURLs:(BOOL)a8
+- (ICAttachmentPreviewImageLoader)initWithOriginalImage:(id)image orientedImage:(id)orientedImage data:(id)data scale:(double)scale previewImageURLs:(id)ls delayLoadingURLs:(BOOL)rLs
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
+  imageCopy = image;
+  orientedImageCopy = orientedImage;
+  dataCopy = data;
+  lsCopy = ls;
   v23.receiver = self;
   v23.super_class = ICAttachmentPreviewImageLoader;
   v19 = [(ICAttachmentPreviewImageLoader *)&v23 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_image, a3);
-    objc_storeStrong(&v20->_originalImage, a3);
-    objc_storeStrong(&v20->_orientedImage, a4);
-    objc_storeStrong(&v20->_data, a5);
-    v20->_scale = a6;
-    objc_storeStrong(&v20->_previewImageURLs, a7);
-    v20->_delayLoadingURLs = a8;
-    if (!a8)
+    objc_storeStrong(&v19->_image, image);
+    objc_storeStrong(&v20->_originalImage, image);
+    objc_storeStrong(&v20->_orientedImage, orientedImage);
+    objc_storeStrong(&v20->_data, data);
+    v20->_scale = scale;
+    objc_storeStrong(&v20->_previewImageURLs, ls);
+    v20->_delayLoadingURLs = rLs;
+    if (!rLs)
     {
-      v21 = [(ICAttachmentPreviewImageLoader *)v20 data];
+      data = [(ICAttachmentPreviewImageLoader *)v20 data];
 
-      if (!v21)
+      if (!data)
       {
         [(ICAttachmentPreviewImageLoader *)v20 loadData];
       }
@@ -167,8 +167,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(ICAttachmentPreviewImageLoader *)self previewImageURLs];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  previewImageURLs = [(ICAttachmentPreviewImageLoader *)self previewImageURLs];
+  v4 = [previewImageURLs countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -179,22 +179,22 @@ LABEL_3:
     {
       if (*v11 != v6)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(previewImageURLs);
       }
 
       v8 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:*(*(&v10 + 1) + 8 * v7)];
       [(ICAttachmentPreviewImageLoader *)self setData:v8];
 
-      v9 = [(ICAttachmentPreviewImageLoader *)self data];
+      data = [(ICAttachmentPreviewImageLoader *)self data];
 
-      if (v9)
+      if (data)
       {
         break;
       }
 
       if (v5 == ++v7)
       {
-        v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v5 = [previewImageURLs countByEnumeratingWithState:&v10 objects:v14 count:16];
         if (v5)
         {
           goto LABEL_3;
@@ -209,16 +209,16 @@ LABEL_3:
 - (BOOL)canLoadImage
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(ICAttachmentPreviewImageLoader *)self originalImage];
-  if (v3)
+  originalImage = [(ICAttachmentPreviewImageLoader *)self originalImage];
+  if (originalImage)
   {
 
     return 1;
   }
 
-  v4 = [(ICAttachmentPreviewImageLoader *)self data];
+  data = [(ICAttachmentPreviewImageLoader *)self data];
 
-  if (v4)
+  if (data)
   {
     return 1;
   }
@@ -227,8 +227,8 @@ LABEL_3:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(ICAttachmentPreviewImageLoader *)self previewImageURLs];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  previewImageURLs = [(ICAttachmentPreviewImageLoader *)self previewImageURLs];
+  v6 = [previewImageURLs countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -240,13 +240,13 @@ LABEL_3:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(previewImageURLs);
         }
 
         v10 = *(*(&v15 + 1) + 8 * v9);
-        v11 = [MEMORY[0x1E696AC08] defaultManager];
-        v12 = [v10 path];
-        v13 = [v11 fileExistsAtPath:v12];
+        defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+        path = [v10 path];
+        v13 = [defaultManager fileExistsAtPath:path];
 
         if (v13)
         {
@@ -258,7 +258,7 @@ LABEL_3:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [previewImageURLs countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
         continue;
@@ -273,35 +273,35 @@ LABEL_3:
 
 - (id)loadImage
 {
-  v3 = [(ICAttachmentPreviewImageLoader *)self image];
+  image = [(ICAttachmentPreviewImageLoader *)self image];
 
-  if (!v3)
+  if (!image)
   {
     if ([(ICAttachmentPreviewImageLoader *)self delayLoadingURLs])
     {
-      v6 = [(ICAttachmentPreviewImageLoader *)self data];
+      data = [(ICAttachmentPreviewImageLoader *)self data];
 
-      if (!v6)
+      if (!data)
       {
         [(ICAttachmentPreviewImageLoader *)self loadData];
       }
     }
 
-    v7 = [(ICAttachmentPreviewImageLoader *)self data];
+    data2 = [(ICAttachmentPreviewImageLoader *)self data];
 
-    if (!v7)
+    if (!data2)
     {
       [MEMORY[0x1E69B7A38] handleFailedAssertWithCondition:"self.data" functionName:"-[ICAttachmentPreviewImageLoader loadImage]" simulateCrash:1 showAlert:0 format:@"No preview image data to load"];
     }
 
-    v8 = [(ICAttachmentPreviewImageLoader *)self data];
+    data3 = [(ICAttachmentPreviewImageLoader *)self data];
 
-    if (v8)
+    if (data3)
     {
       v9 = MEMORY[0x1E69DCAB8];
-      v10 = [(ICAttachmentPreviewImageLoader *)self data];
+      data4 = [(ICAttachmentPreviewImageLoader *)self data];
       [(ICAttachmentPreviewImageLoader *)self scale];
-      v11 = [v9 imageWithData:v10 scale:?];
+      v11 = [v9 imageWithData:data4 scale:?];
       [(ICAttachmentPreviewImageLoader *)self setImage:v11];
     }
 
@@ -317,60 +317,60 @@ LABEL_3:
       [(ICAttachmentPreviewImageLoader *)self setImage:v13];
     }
 
-    v14 = [(ICAttachmentPreviewImageLoader *)self image];
+    image2 = [(ICAttachmentPreviewImageLoader *)self image];
 
-    if (v14)
+    if (image2)
     {
-      v15 = [(ICAttachmentPreviewImageLoader *)self imageDidLoadBlock];
+      imageDidLoadBlock = [(ICAttachmentPreviewImageLoader *)self imageDidLoadBlock];
 
-      if (v15)
+      if (imageDidLoadBlock)
       {
-        v16 = [(ICAttachmentPreviewImageLoader *)self imageDidLoadBlock];
-        v17 = [(ICAttachmentPreviewImageLoader *)self image];
-        (v16)[2](v16, v17, 0);
+        imageDidLoadBlock2 = [(ICAttachmentPreviewImageLoader *)self imageDidLoadBlock];
+        image3 = [(ICAttachmentPreviewImageLoader *)self image];
+        (imageDidLoadBlock2)[2](imageDidLoadBlock2, image3, 0);
       }
     }
   }
 
-  v4 = [(ICAttachmentPreviewImageLoader *)self image];
+  image4 = [(ICAttachmentPreviewImageLoader *)self image];
 
-  return v4;
+  return image4;
 }
 
 - (id)loadOrientedImage
 {
-  v3 = [(ICAttachmentPreviewImageLoader *)self orientedImage];
+  orientedImage = [(ICAttachmentPreviewImageLoader *)self orientedImage];
 
-  if (!v3)
+  if (!orientedImage)
   {
-    v4 = [(ICAttachmentPreviewImageLoader *)self loadImage];
-    if (v4)
+    loadImage = [(ICAttachmentPreviewImageLoader *)self loadImage];
+    if (loadImage)
     {
-      v5 = [(ICAttachmentPreviewImageLoader *)self imageOrientation];
-      if (v5)
+      imageOrientation = [(ICAttachmentPreviewImageLoader *)self imageOrientation];
+      if (imageOrientation)
       {
-        v6 = v5;
+        v6 = imageOrientation;
         v7 = objc_alloc(MEMORY[0x1E69DCAB8]);
-        v8 = [v4 ic_CGImage];
-        [v4 scale];
-        v9 = [v7 initWithCGImage:v8 scale:v6 orientation:?];
+        ic_CGImage = [loadImage ic_CGImage];
+        [loadImage scale];
+        v9 = [v7 initWithCGImage:ic_CGImage scale:v6 orientation:?];
 
-        v4 = v9;
+        loadImage = v9;
       }
     }
 
-    [(ICAttachmentPreviewImageLoader *)self setOrientedImage:v4];
-    v10 = [(ICAttachmentPreviewImageLoader *)self orientedImage];
+    [(ICAttachmentPreviewImageLoader *)self setOrientedImage:loadImage];
+    orientedImage2 = [(ICAttachmentPreviewImageLoader *)self orientedImage];
 
-    if (v10)
+    if (orientedImage2)
     {
-      v11 = [(ICAttachmentPreviewImageLoader *)self imageDidLoadBlock];
+      imageDidLoadBlock = [(ICAttachmentPreviewImageLoader *)self imageDidLoadBlock];
 
-      if (v11)
+      if (imageDidLoadBlock)
       {
-        v12 = [(ICAttachmentPreviewImageLoader *)self imageDidLoadBlock];
-        v13 = [(ICAttachmentPreviewImageLoader *)self orientedImage];
-        (v12)[2](v12, v13, 1);
+        imageDidLoadBlock2 = [(ICAttachmentPreviewImageLoader *)self imageDidLoadBlock];
+        orientedImage3 = [(ICAttachmentPreviewImageLoader *)self orientedImage];
+        (imageDidLoadBlock2)[2](imageDidLoadBlock2, orientedImage3, 1);
       }
     }
   }
@@ -381,9 +381,9 @@ LABEL_3:
 - (void)loadImage
 {
   v6 = *MEMORY[0x1E69E9840];
-  v3 = [a1 previewImageURLs];
+  previewImageURLs = [self previewImageURLs];
   v4 = 138412290;
-  v5 = v3;
+  v5 = previewImageURLs;
   _os_log_error_impl(&dword_1D4171000, a2, OS_LOG_TYPE_ERROR, "unable to retrieve preview image %@", &v4, 0xCu);
 }
 

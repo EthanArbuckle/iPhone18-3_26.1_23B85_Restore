@@ -1,7 +1,7 @@
 @interface PUEditingExtensionHostContext
 + (id)_extensionAuxiliaryHostProtocol;
 + (id)_extensionAuxiliaryVendorProtocol;
-- (void)commitContentEditingOutput:(id)a3 withCompletionHandler:(id)a4;
+- (void)commitContentEditingOutput:(id)output withCompletionHandler:(id)handler;
 @end
 
 @implementation PUEditingExtensionHostContext
@@ -48,12 +48,12 @@ uint64_t __66__PUEditingExtensionHostContext__extensionAuxiliaryVendorProtocol__
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (void)commitContentEditingOutput:(id)a3 withCompletionHandler:(id)a4
+- (void)commitContentEditingOutput:(id)output withCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PUEditingExtensionHostContext *)self contentEditingOutputCommitHandler];
-  v8[2](v8, v7, v6);
+  handlerCopy = handler;
+  outputCopy = output;
+  contentEditingOutputCommitHandler = [(PUEditingExtensionHostContext *)self contentEditingOutputCommitHandler];
+  contentEditingOutputCommitHandler[2](contentEditingOutputCommitHandler, outputCopy, handlerCopy);
 }
 
 @end

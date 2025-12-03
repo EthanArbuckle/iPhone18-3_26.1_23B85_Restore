@@ -1,16 +1,16 @@
 @interface GTBulkDataService
-- (BOOL)uploadChunk:(id)a3 forHandle:(unint64_t)a4 isFinalChunk:(BOOL)a5 error:(id *)a6;
-- (GTBulkDataService)initWithDownloadHighWaterMark:(unint64_t)a3;
-- (id)takeDownloadDataForHandle:(unint64_t)a3;
-- (id)takeUploadedDataForHandle:(unint64_t)a3;
-- (unint64_t)handoverDataForDownload:(id)a3;
-- (unint64_t)newUploadWithDescriptor:(id)a3 error:(id *)a4;
-- (void)downloadData:(unint64_t)a3 usingTransferOptions:(id)a4 chunkHandler:(id)a5;
+- (BOOL)uploadChunk:(id)chunk forHandle:(unint64_t)handle isFinalChunk:(BOOL)finalChunk error:(id *)error;
+- (GTBulkDataService)initWithDownloadHighWaterMark:(unint64_t)mark;
+- (id)takeDownloadDataForHandle:(unint64_t)handle;
+- (id)takeUploadedDataForHandle:(unint64_t)handle;
+- (unint64_t)handoverDataForDownload:(id)download;
+- (unint64_t)newUploadWithDescriptor:(id)descriptor error:(id *)error;
+- (void)downloadData:(unint64_t)data usingTransferOptions:(id)options chunkHandler:(id)handler;
 @end
 
 @implementation GTBulkDataService
 
-- (GTBulkDataService)initWithDownloadHighWaterMark:(unint64_t)a3
+- (GTBulkDataService)initWithDownloadHighWaterMark:(unint64_t)mark
 {
   v21.receiver = self;
   v21.super_class = GTBulkDataService;
@@ -36,7 +36,7 @@
     dataUploadCompressionAlgorithm = v5->_dataUploadCompressionAlgorithm;
     v5->_dataUploadCompressionAlgorithm = v12;
 
-    v5->_downloadHighWaterMarkBytes = a3;
+    v5->_downloadHighWaterMarkBytes = mark;
     v5->_downloadStoreBytes = 0;
     v5->_downloadTransmitState = 1;
     v14 = dispatch_group_create();
@@ -55,7 +55,7 @@
   return v5;
 }
 
-- (id)takeDownloadDataForHandle:(unint64_t)a3
+- (id)takeDownloadDataForHandle:(unint64_t)handle
 {
   v7 = 0;
   v8 = &v7;
@@ -70,7 +70,7 @@
   block[3] = &unk_2796612D8;
   block[4] = self;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = handle;
   dispatch_sync(dataAccessQueue, block);
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -102,21 +102,21 @@ void __47__GTBulkDataService_takeDownloadDataForHandle___block_invoke(void *a1)
   }
 }
 
-- (void)downloadData:(unint64_t)a3 usingTransferOptions:(id)a4 chunkHandler:(id)a5
+- (void)downloadData:(unint64_t)data usingTransferOptions:(id)options chunkHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  optionsCopy = options;
+  handlerCopy = handler;
   dataTransferQueue = self->_dataTransferQueue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __68__GTBulkDataService_downloadData_usingTransferOptions_chunkHandler___block_invoke;
   v13[3] = &unk_279661300;
-  v14 = v8;
-  v15 = self;
-  v16 = v9;
-  v17 = a3;
-  v11 = v9;
-  v12 = v8;
+  v14 = optionsCopy;
+  selfCopy = self;
+  v16 = handlerCopy;
+  dataCopy = data;
+  v11 = handlerCopy;
+  v12 = optionsCopy;
   dispatch_async(dataTransferQueue, v13);
 }
 
@@ -262,9 +262,9 @@ LABEL_21:
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)handoverDataForDownload:(id)a3
+- (unint64_t)handoverDataForDownload:(id)download
 {
-  v4 = a3;
+  downloadCopy = download;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -274,10 +274,10 @@ LABEL_21:
   block[1] = 3221225472;
   block[2] = __45__GTBulkDataService_handoverDataForDownload___block_invoke;
   block[3] = &unk_279661288;
-  v10 = v4;
+  v10 = downloadCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = downloadCopy;
   dispatch_sync(dataAccessQueue, block);
   v7 = v13[3];
 
@@ -307,12 +307,12 @@ void __45__GTBulkDataService_handoverDataForDownload___block_invoke(void *a1)
   }
 }
 
-- (unint64_t)newUploadWithDescriptor:(id)a3 error:(id *)a4
+- (unint64_t)newUploadWithDescriptor:(id)descriptor error:(id *)error
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (v6 && [v6 compressionAlgorithm] < 5)
+  descriptorCopy = descriptor;
+  v7 = descriptorCopy;
+  if (descriptorCopy && [descriptorCopy compressionAlgorithm] < 5)
   {
     v19 = 0;
     v20 = &v19;
@@ -327,12 +327,12 @@ void __45__GTBulkDataService_handoverDataForDownload___block_invoke(void *a1)
     block[4] = self;
     v17 = v7;
     dispatch_sync(dataAccessQueue, block);
-    a4 = v20[3];
+    error = v20[3];
 
     _Block_object_dispose(&v19, 8);
   }
 
-  else if (a4)
+  else if (error)
   {
     v9 = MEMORY[0x277CCA9B8];
     v23 = *MEMORY[0x277CCA450];
@@ -341,13 +341,13 @@ void __45__GTBulkDataService_handoverDataForDownload___block_invoke(void *a1)
     v12 = [v10 stringWithFormat:@"Invalid upload descriptor: %@", v11];
     v24[0] = v12;
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:&v23 count:1];
-    *a4 = [v9 errorWithDomain:@"com.apple.gputools.bulkdataservice" code:1 userInfo:v13];
+    *error = [v9 errorWithDomain:@"com.apple.gputools.bulkdataservice" code:1 userInfo:v13];
 
-    a4 = 0;
+    error = 0;
   }
 
   v14 = *MEMORY[0x277D85DE8];
-  return a4;
+  return error;
 }
 
 void __51__GTBulkDataService_newUploadWithDescriptor_error___block_invoke(uint64_t a1)
@@ -377,9 +377,9 @@ void __51__GTBulkDataService_newUploadWithDescriptor_error___block_invoke(uint64
   [v8 setObject:v10 forKeyedSubscript:v9];
 }
 
-- (BOOL)uploadChunk:(id)a3 forHandle:(unint64_t)a4 isFinalChunk:(BOOL)a5 error:(id *)a6
+- (BOOL)uploadChunk:(id)chunk forHandle:(unint64_t)handle isFinalChunk:(BOOL)finalChunk error:(id *)error
 {
-  v10 = a3;
+  chunkCopy = chunk;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -389,13 +389,13 @@ void __51__GTBulkDataService_newUploadWithDescriptor_error___block_invoke(uint64
   v15[1] = 3221225472;
   v15[2] = __62__GTBulkDataService_uploadChunk_forHandle_isFinalChunk_error___block_invoke;
   v15[3] = &unk_279661328;
-  v18 = a4;
-  v19 = a6;
+  handleCopy = handle;
+  errorCopy = error;
   v15[4] = self;
-  v16 = v10;
-  v20 = a5;
+  v16 = chunkCopy;
+  finalChunkCopy = finalChunk;
   v17 = &v21;
-  v12 = v10;
+  v12 = chunkCopy;
   dispatch_sync(dataAccessQueue, v15);
   v13 = *(v22 + 24);
 
@@ -480,7 +480,7 @@ LABEL_13:
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (id)takeUploadedDataForHandle:(unint64_t)a3
+- (id)takeUploadedDataForHandle:(unint64_t)handle
 {
   v16 = 0;
   v17 = &v16;
@@ -495,24 +495,24 @@ LABEL_13:
   block[3] = &unk_2796612D8;
   block[4] = self;
   block[5] = &v16;
-  block[6] = a3;
+  block[6] = handle;
   dispatch_sync(dataAccessQueue, block);
   if (!v17[5])
   {
     if (GTCoreLogUseOsLog())
     {
-      v5 = gt_tagged_log(0x10u);
-      if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+      handle = gt_tagged_log(0x10u);
+      if (os_log_type_enabled(handle, OS_LOG_TYPE_ERROR))
       {
-        [(GTBulkDataService *)a3 takeUploadedDataForHandle:v5, v6, v7, v8, v9, v10, v11];
+        [(GTBulkDataService *)handle takeUploadedDataForHandle:handle, v6, v7, v8, v9, v10, v11];
       }
     }
 
     else
     {
       v12 = *MEMORY[0x277D85DF8];
-      v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"takeUploadedDataForHandle Invalid Handle: %llu", a3];
-      fprintf(v12, "%s\n", [v5 UTF8String]);
+      handle = [MEMORY[0x277CCACA8] stringWithFormat:@"takeUploadedDataForHandle Invalid Handle: %llu", handle];
+      fprintf(v12, "%s\n", [handle UTF8String]);
     }
   }
 

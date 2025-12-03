@@ -1,10 +1,10 @@
 @interface APSymbolBadgedAppIconView
 + (APSymbolBadgedAppIconViewMetrics)metricsForEducation;
 + (APSymbolBadgedAppIconViewMetrics)metricsForExtensionShield;
-- (APSymbolBadgedAppIconView)initWithCoder:(id)a3;
-- (APSymbolBadgedAppIconView)initWithFrame:(CGRect)a3;
+- (APSymbolBadgedAppIconView)initWithCoder:(id)coder;
+- (APSymbolBadgedAppIconView)initWithFrame:(CGRect)frame;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
 @end
 
@@ -30,18 +30,18 @@
   return result;
 }
 
-- (APSymbolBadgedAppIconView)initWithCoder:(id)a3
+- (APSymbolBadgedAppIconView)initWithCoder:(id)coder
 {
   result = sub_1AEA32664();
   __break(1u);
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v6 = APSymbolBadgedAppIconView.sizeThatFits(_:)(__PAIR128__(*&height, *&width));
 
   v7 = v6.width;
@@ -61,11 +61,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   APSymbolBadgedAppIconView.layoutSubviews()();
 }
 
-- (APSymbolBadgedAppIconView)initWithFrame:(CGRect)a3
+- (APSymbolBadgedAppIconView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

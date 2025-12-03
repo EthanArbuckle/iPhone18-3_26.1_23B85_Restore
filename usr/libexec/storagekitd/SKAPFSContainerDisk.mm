@@ -1,10 +1,10 @@
 @interface SKAPFSContainerDisk
-+ (id)copyExtendedSpaceInfoWithDiskIdentifier:(id)a3 containerBSDName:(id)a4;
-+ (id)copyPhysicalStoresMediaWithDADisk:(id)a3;
++ (id)copyExtendedSpaceInfoWithDiskIdentifier:(id)identifier containerBSDName:(id)name;
++ (id)copyPhysicalStoresMediaWithDADisk:(id)disk;
 - (BOOL)_cacheInfo;
-- (BOOL)_cacheSpacesWithPurgeable:(BOOL)a3;
-- (BOOL)cleanupWithError:(id *)a3;
-- (SKAPFSContainerDisk)initWithPhysicalStoreDisk:(id)a3;
+- (BOOL)_cacheSpacesWithPurgeable:(BOOL)purgeable;
+- (BOOL)cleanupWithError:(id *)error;
+- (SKAPFSContainerDisk)initWithPhysicalStoreDisk:(id)disk;
 - (id)copyDesignatedPhysicalStoreUUID;
 - (id)copyPhysicalStoresIOMedia;
 - (id)copyPhysicalStoresUUIDs;
@@ -14,9 +14,9 @@
 
 - (BOOL)_cacheInfo
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v10.receiver = v2;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v10.receiver = selfCopy;
   v10.super_class = SKAPFSContainerDisk;
   if (![(SKAPFSContainerDisk *)&v10 _cacheInfo])
   {
@@ -25,21 +25,21 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (([(SKAPFSContainerDisk *)v2 isLiveFSAPFSDisk]& 1) == 0)
+  if (([(SKAPFSContainerDisk *)selfCopy isLiveFSAPFSDisk]& 1) == 0)
   {
-    v3 = [(SKAPFSContainerDisk *)v2 mediaUUID];
-    v4 = v3 == 0;
+    mediaUUID = [(SKAPFSContainerDisk *)selfCopy mediaUUID];
+    v4 = mediaUUID == 0;
 
     if (v4)
     {
       v7 = sub_10000BFD0();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
-        v8 = [(SKAPFSContainerDisk *)v2 diskIdentifier];
+        diskIdentifier = [(SKAPFSContainerDisk *)selfCopy diskIdentifier];
         *buf = 136315394;
         v12 = "[SKAPFSContainerDisk(Daemon) _cacheInfo]";
         v13 = 2114;
-        v14 = v8;
+        v14 = diskIdentifier;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "%s: APFS container %{public}@ has no UUID", buf, 0x16u);
       }
 
@@ -47,36 +47,36 @@ LABEL_8:
     }
   }
 
-  v5 = [(SKAPFSContainerDisk *)v2 copyDesignatedPhysicalStoreUUID];
-  [(SKAPFSContainerDisk *)v2 setDesignatedPSUUID:v5];
+  copyDesignatedPhysicalStoreUUID = [(SKAPFSContainerDisk *)selfCopy copyDesignatedPhysicalStoreUUID];
+  [(SKAPFSContainerDisk *)selfCopy setDesignatedPSUUID:copyDesignatedPhysicalStoreUUID];
 
-  [(SKAPFSContainerDisk *)v2 setRole:kSKDiskRoleStorageImplementation];
-  [(SKAPFSContainerDisk *)v2 setType:kSKDiskTypeAPFSContainer];
-  [(SKAPFSContainerDisk *)v2 setSupportsVerify:1];
-  [(SKAPFSContainerDisk *)v2 setSupportsRepair:1];
-  [(SKAPFSContainerDisk *)v2 setFilesystem:0];
-  [(SKAPFSContainerDisk *)v2 setFilesystemType:kSKDiskFileSystemUndefined];
-  [(SKAPFSContainerDisk *)v2 setVolumeName:0];
-  [(SKAPFSContainerDisk *)v2 setVolumeUUID:0];
+  [(SKAPFSContainerDisk *)selfCopy setRole:kSKDiskRoleStorageImplementation];
+  [(SKAPFSContainerDisk *)selfCopy setType:kSKDiskTypeAPFSContainer];
+  [(SKAPFSContainerDisk *)selfCopy setSupportsVerify:1];
+  [(SKAPFSContainerDisk *)selfCopy setSupportsRepair:1];
+  [(SKAPFSContainerDisk *)selfCopy setFilesystem:0];
+  [(SKAPFSContainerDisk *)selfCopy setFilesystemType:kSKDiskFileSystemUndefined];
+  [(SKAPFSContainerDisk *)selfCopy setVolumeName:0];
+  [(SKAPFSContainerDisk *)selfCopy setVolumeUUID:0];
   v6 = 1;
 LABEL_9:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (BOOL)_cacheSpacesWithPurgeable:(BOOL)a3
+- (BOOL)_cacheSpacesWithPurgeable:(BOOL)purgeable
 {
-  v3 = self;
-  objc_sync_enter(v3);
-  if (([(SKAPFSContainerDisk *)v3 isLiveFSAPFSDisk]& 1) == 0)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (([(SKAPFSContainerDisk *)selfCopy isLiveFSAPFSDisk]& 1) == 0)
   {
-    v4 = [(SKAPFSContainerDisk *)v3 diskIdentifier];
-    v5 = [(SKAPFSContainerDisk *)v3 diskIdentifier];
-    v6 = [SKAPFSContainerDisk copyExtendedSpaceInfoWithDiskIdentifier:v4 containerBSDName:v5];
+    diskIdentifier = [(SKAPFSContainerDisk *)selfCopy diskIdentifier];
+    diskIdentifier2 = [(SKAPFSContainerDisk *)selfCopy diskIdentifier];
+    v6 = [SKAPFSContainerDisk copyExtendedSpaceInfoWithDiskIdentifier:diskIdentifier containerBSDName:diskIdentifier2];
 
     v7 = [v6 objectForKeyedSubscript:@"size"];
-    [(SKAPFSContainerDisk *)v3 setTotalSpace:sub_100010370(v7)];
+    [(SKAPFSContainerDisk *)selfCopy setTotalSpace:sub_100010370(v7)];
 
     v8 = [v6 objectForKeyedSubscript:@"used"];
     v9 = sub_100010370(v8);
@@ -85,38 +85,38 @@ LABEL_9:
     v11 = sub_100010370(v10);
 
     v12 = v9 + v11;
-    if ([(SKAPFSContainerDisk *)v3 totalSpace]<= v12)
+    if ([(SKAPFSContainerDisk *)selfCopy totalSpace]<= v12)
     {
       v13 = 0;
     }
 
     else
     {
-      v13 = [(SKAPFSContainerDisk *)v3 totalSpace]- v12;
+      v13 = [(SKAPFSContainerDisk *)selfCopy totalSpace]- v12;
     }
 
-    [(SKAPFSContainerDisk *)v3 setAvailableSpace:v13];
-    [(SKAPFSContainerDisk *)v3 setFreeSpace:v13];
+    [(SKAPFSContainerDisk *)selfCopy setAvailableSpace:v13];
+    [(SKAPFSContainerDisk *)selfCopy setFreeSpace:v13];
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 
   return 1;
 }
 
-+ (id)copyPhysicalStoresMediaWithDADisk:(id)a3
++ (id)copyPhysicalStoresMediaWithDADisk:(id)disk
 {
-  v3 = a3;
+  diskCopy = disk;
   v4 = +[NSMutableArray array];
-  v5 = [[SKIOMedia alloc] initWithDADisk:v3];
+  v5 = [[SKIOMedia alloc] initWithDADisk:diskCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [(SKIOObject *)v5 copyParent];
-    v8 = v7;
-    if (v7)
+    copyParent = [(SKIOObject *)v5 copyParent];
+    v8 = copyParent;
+    if (copyParent)
     {
-      v9 = [v7 newIteratorWithOptions:2];
+      v9 = [copyParent newIteratorWithOptions:2];
       v10 = [(SKIOObject *)[SKIOMedia alloc] initWithIteratorNext:v9];
       if (v10)
       {
@@ -163,8 +163,8 @@ LABEL_9:
   if ([(SKAPFSContainerDisk *)self isLiveFSAPFSDisk])
   {
     v3 = [SKIOMedia alloc];
-    v4 = [(SKAPFSContainerDisk *)self daDisk];
-    v5 = [(SKIOMedia *)v3 initWithDADisk:v4];
+    daDisk = [(SKAPFSContainerDisk *)self daDisk];
+    v5 = [(SKIOMedia *)v3 initWithDADisk:daDisk];
 
     if (v5)
     {
@@ -182,8 +182,8 @@ LABEL_9:
 
   else
   {
-    v7 = [(SKAPFSContainerDisk *)self daDisk];
-    v8 = [SKAPFSContainerDisk copyPhysicalStoresMediaWithDADisk:v7];
+    daDisk2 = [(SKAPFSContainerDisk *)self daDisk];
+    v8 = [SKAPFSContainerDisk copyPhysicalStoresMediaWithDADisk:daDisk2];
 
     return v8;
   }
@@ -191,13 +191,13 @@ LABEL_9:
 
 - (id)copyPhysicalStoresUUIDs
 {
-  v2 = [(SKAPFSContainerDisk *)self copyPhysicalStoresIOMedia];
+  copyPhysicalStoresIOMedia = [(SKAPFSContainerDisk *)self copyPhysicalStoresIOMedia];
   v3 = +[NSMutableArray array];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = v2;
+  v4 = copyPhysicalStoresIOMedia;
   v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
@@ -238,8 +238,8 @@ LABEL_9:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v2 = [(SKAPFSContainerDisk *)self copyPhysicalStoresIOMedia];
-  v3 = [v2 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  copyPhysicalStoresIOMedia = [(SKAPFSContainerDisk *)self copyPhysicalStoresIOMedia];
+  v3 = [copyPhysicalStoresIOMedia countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v3)
   {
     v4 = v3;
@@ -251,7 +251,7 @@ LABEL_9:
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(copyPhysicalStoresIOMedia);
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
@@ -277,7 +277,7 @@ LABEL_9:
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v4 = [copyPhysicalStoresIOMedia countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v4)
       {
         continue;
@@ -299,16 +299,16 @@ LABEL_18:
   return v10;
 }
 
-+ (id)copyExtendedSpaceInfoWithDiskIdentifier:(id)a3 containerBSDName:(id)a4
++ (id)copyExtendedSpaceInfoWithDiskIdentifier:(id)identifier containerBSDName:(id)name
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  nameCopy = name;
   v7 = +[SKDaemonManager sharedManager];
-  v8 = [v7 copyExtendedDiskInfoWithDiskIdentifier:v5];
+  v8 = [v7 copyExtendedDiskInfoWithDiskIdentifier:identifierCopy];
 
   if (!v8)
   {
-    if (v6)
+    if (nameCopy)
     {
       v9 = sub_10000BFD0();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -316,13 +316,13 @@ LABEL_18:
         *buf = 136315650;
         v14 = "+[SKAPFSContainerDisk(Daemon) copyExtendedSpaceInfoWithDiskIdentifier:containerBSDName:]";
         v15 = 2114;
-        v16 = v6;
+        v16 = nameCopy;
         v17 = 2114;
-        v18 = v5;
+        v18 = identifierCopy;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s: Caching APFS extended info for %{public}@, asked by %{public}@", buf, 0x20u);
       }
 
-      [v6 fileSystemRepresentation];
+      [nameCopy fileSystemRepresentation];
       v10 = APFSExtendedSpaceInfo();
       v11 = sub_10000BFD0();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -330,7 +330,7 @@ LABEL_18:
         *buf = 136315650;
         v14 = "+[SKAPFSContainerDisk(Daemon) copyExtendedSpaceInfoWithDiskIdentifier:containerBSDName:]";
         v15 = 2114;
-        v16 = v6;
+        v16 = nameCopy;
         v17 = 1024;
         LODWORD(v18) = v10;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "%s: APFSExtendedSpaceInfo failed for %{public}@ with error %d", buf, 0x1Cu);
@@ -348,9 +348,9 @@ LABEL_18:
   return v8;
 }
 
-- (SKAPFSContainerDisk)initWithPhysicalStoreDisk:(id)a3
+- (SKAPFSContainerDisk)initWithPhysicalStoreDisk:(id)disk
 {
-  v4 = a3;
+  diskCopy = disk;
   v5 = [(SKAPFSContainerDisk *)self init];
   v6 = v5;
   if (!v5)
@@ -358,13 +358,13 @@ LABEL_18:
     goto LABEL_6;
   }
 
-  if (!v4)
+  if (!diskCopy)
   {
     goto LABEL_10;
   }
 
-  [(SKAPFSContainerDisk *)v5 setDaDisk:v4];
-  BSDName = DADiskGetBSDName(v4);
+  [(SKAPFSContainerDisk *)v5 setDaDisk:diskCopy];
+  BSDName = DADiskGetBSDName(diskCopy);
   if (!BSDName)
   {
     v15 = sub_10000BFD0();
@@ -373,7 +373,7 @@ LABEL_18:
       *buf = 136315394;
       v18 = "[SKAPFSContainerDisk(Daemon) initWithPhysicalStoreDisk:]";
       v19 = 2112;
-      v20 = v4;
+      v20 = diskCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "%s: Failed to get BSD name of %@", buf, 0x16u);
     }
 
@@ -381,13 +381,13 @@ LABEL_18:
   }
 
   v8 = [[NSString alloc] initWithUTF8String:BSDName];
-  v9 = [(SKAPFSContainerDisk *)v6 privateCache];
-  [v9 setLiveDiskIdentifier:v8];
+  privateCache = [(SKAPFSContainerDisk *)v6 privateCache];
+  [privateCache setLiveDiskIdentifier:v8];
 
   v10 = [NSString alloc];
-  v11 = [(SKAPFSContainerDisk *)v6 privateCache];
-  v12 = [v11 liveDiskIdentifier];
-  v13 = [v10 initWithFormat:@"apfs://%@", v12];
+  privateCache2 = [(SKAPFSContainerDisk *)v6 privateCache];
+  liveDiskIdentifier = [privateCache2 liveDiskIdentifier];
+  v13 = [v10 initWithFormat:@"apfs://%@", liveDiskIdentifier];
   [(SKAPFSContainerDisk *)v6 setDiskIdentifier:v13];
 
   if (![(SKAPFSContainerDisk *)v6 _cacheInfo])
@@ -405,14 +405,14 @@ LABEL_11:
   return v14;
 }
 
-- (BOOL)cleanupWithError:(id *)a3
+- (BOOL)cleanupWithError:(id *)error
 {
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(SKAPFSContainerDisk *)self volumes];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  volumes = [(SKAPFSContainerDisk *)self volumes];
+  v6 = [volumes countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -423,17 +423,17 @@ LABEL_11:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(volumes);
         }
 
-        if (![*(*(&v16 + 1) + 8 * i) cleanupWithError:a3])
+        if (![*(*(&v16 + 1) + 8 * i) cleanupWithError:error])
         {
           v14 = 0;
           goto LABEL_12;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [volumes countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v7)
       {
         continue;
@@ -448,14 +448,14 @@ LABEL_11:
     return 1;
   }
 
-  v10 = [(SKAPFSContainerDisk *)self diskIdentifier];
-  v5 = [NSString stringWithFormat:@"/dev/%@", v10];
+  diskIdentifier = [(SKAPFSContainerDisk *)self diskIdentifier];
+  volumes = [NSString stringWithFormat:@"/dev/%@", diskIdentifier];
 
-  [v5 UTF8String];
+  [volumes UTF8String];
   APFSContainerWipeVolumeKeys();
   v11 = [SKIOMedia alloc];
-  v12 = [(SKAPFSContainerDisk *)self diskIdentifier];
-  v13 = [(SKIOMedia *)v11 initWithDevName:v12];
+  diskIdentifier2 = [(SKAPFSContainerDisk *)self diskIdentifier];
+  v13 = [(SKIOMedia *)v11 initWithDevName:diskIdentifier2];
 
   [(SKIOObject *)v13 waitIOKitQuiet];
   v14 = 1;

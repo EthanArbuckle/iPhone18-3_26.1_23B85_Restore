@@ -1,124 +1,124 @@
 @interface IDSLegacyDeviceMessageProtectionCypher
-+ (id)cypherWithEndpoint:(id)a3 error:(id *)a4;
-- (IDSLegacyDeviceMessageProtectionCypher)initWithCoder:(id)a3;
-- (IDSLegacyDeviceMessageProtectionCypher)initWithPublicIdentity:(id)a3;
-- (id)_fullIdentityFromAccountIdentity:(id)a3 error:(id *)a4;
-- (id)cypherData:(id)a3 withAccountIdentity:(id)a4 identifier:(id *)a5 error:(id *)a6;
-- (id)decypherData:(id)a3 withAccountIdentity:(id)a4 signingDevicePublicKey:(id)a5 identifier:(id)a6 error:(id *)a7;
-- (void)encodeWithCoder:(id)a3;
++ (id)cypherWithEndpoint:(id)endpoint error:(id *)error;
+- (IDSLegacyDeviceMessageProtectionCypher)initWithCoder:(id)coder;
+- (IDSLegacyDeviceMessageProtectionCypher)initWithPublicIdentity:(id)identity;
+- (id)_fullIdentityFromAccountIdentity:(id)identity error:(id *)error;
+- (id)cypherData:(id)data withAccountIdentity:(id)identity identifier:(id *)identifier error:(id *)error;
+- (id)decypherData:(id)data withAccountIdentity:(id)identity signingDevicePublicKey:(id)key identifier:(id)identifier error:(id *)error;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSLegacyDeviceMessageProtectionCypher
 
-- (IDSLegacyDeviceMessageProtectionCypher)initWithPublicIdentity:(id)a3
+- (IDSLegacyDeviceMessageProtectionCypher)initWithPublicIdentity:(id)identity
 {
-  v5 = a3;
+  identityCopy = identity;
   v9.receiver = self;
   v9.super_class = IDSLegacyDeviceMessageProtectionCypher;
   v6 = [(IDSLegacyDeviceMessageProtectionCypher *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_publicIdentity, a3);
+    objc_storeStrong(&v6->_publicIdentity, identity);
   }
 
   return v7;
 }
 
-+ (id)cypherWithEndpoint:(id)a3 error:(id *)a4
++ (id)cypherWithEndpoint:(id)endpoint error:(id *)error
 {
-  v5 = a3;
-  v6 = [a1 alloc];
-  v7 = [v5 publicDeviceIdentityContainer];
+  endpointCopy = endpoint;
+  v6 = [self alloc];
+  publicDeviceIdentityContainer = [endpointCopy publicDeviceIdentityContainer];
 
-  v8 = [v7 legacyPublicIdentity];
-  v9 = [v6 initWithPublicIdentity:v8];
+  legacyPublicIdentity = [publicDeviceIdentityContainer legacyPublicIdentity];
+  v9 = [v6 initWithPublicIdentity:legacyPublicIdentity];
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(IDSLegacyDeviceMessageProtectionCypher *)self publicIdentity];
-  [v4 encodeObject:v5 forKey:@"kIDSLegacyDeviceMessageProtectionCypherPublicIdentity"];
+  coderCopy = coder;
+  publicIdentity = [(IDSLegacyDeviceMessageProtectionCypher *)self publicIdentity];
+  [coderCopy encodeObject:publicIdentity forKey:@"kIDSLegacyDeviceMessageProtectionCypherPublicIdentity"];
 }
 
-- (IDSLegacyDeviceMessageProtectionCypher)initWithCoder:(id)a3
+- (IDSLegacyDeviceMessageProtectionCypher)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kIDSLegacyDeviceMessageProtectionCypherPublicIdentity"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kIDSLegacyDeviceMessageProtectionCypherPublicIdentity"];
 
   if (v5)
   {
     self = [(IDSLegacyDeviceMessageProtectionCypher *)self initWithPublicIdentity:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = [MEMORY[0x1E69A6138] registration];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    registration = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
     {
       *v9 = 0;
-      _os_log_impl(&dword_1A7AD9000, v7, OS_LOG_TYPE_DEFAULT, "Failed to initWithCoder MPLegacy cypher", v9, 2u);
+      _os_log_impl(&dword_1A7AD9000, registration, OS_LOG_TYPE_DEFAULT, "Failed to initWithCoder MPLegacy cypher", v9, 2u);
     }
 
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (id)cypherData:(id)a3 withAccountIdentity:(id)a4 identifier:(id *)a5 error:(id *)a6
+- (id)cypherData:(id)data withAccountIdentity:(id)identity identifier:(id *)identifier error:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  dataCopy = data;
   v10 = MEMORY[0x1E69A6138];
-  v11 = a4;
-  v12 = [v10 registration];
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
+  identityCopy = identity;
+  registration = [v10 registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_INFO))
   {
     LOWORD(v25) = 0;
-    _os_log_impl(&dword_1A7AD9000, v12, OS_LOG_TYPE_INFO, "LegacyMP cypher data - Begin", &v25, 2u);
+    _os_log_impl(&dword_1A7AD9000, registration, OS_LOG_TYPE_INFO, "LegacyMP cypher data - Begin", &v25, 2u);
   }
 
-  v13 = [MEMORY[0x1E69A6138] registration];
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
+  registration2 = [MEMORY[0x1E69A6138] registration];
+  if (os_log_type_enabled(registration2, OS_LOG_TYPE_DEBUG))
   {
-    sub_1A7E1C348(v9, v13);
+    sub_1A7E1C348(dataCopy, registration2);
   }
 
-  v14 = [(IDSLegacyDeviceMessageProtectionCypher *)self _fullIdentityFromAccountIdentity:v11 error:a6];
+  v14 = [(IDSLegacyDeviceMessageProtectionCypher *)self _fullIdentityFromAccountIdentity:identityCopy error:error];
 
   if (v14)
   {
-    v15 = [(IDSLegacyDeviceMessageProtectionCypher *)self publicIdentity];
-    v16 = [v15 signAndProtectData:v9 withSigner:v14 error:a6];
+    publicIdentity = [(IDSLegacyDeviceMessageProtectionCypher *)self publicIdentity];
+    registration4 = [publicIdentity signAndProtectData:dataCopy withSigner:v14 error:error];
 
-    v17 = [MEMORY[0x1E69A6138] registration];
-    v18 = v17;
-    if (v16)
+    registration3 = [MEMORY[0x1E69A6138] registration];
+    v18 = registration3;
+    if (registration4)
     {
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
+      if (os_log_type_enabled(registration3, OS_LOG_TYPE_INFO))
       {
         LOWORD(v25) = 0;
         _os_log_impl(&dword_1A7AD9000, v18, OS_LOG_TYPE_INFO, "LegacyMP cypher data - encryption success - Done", &v25, 2u);
       }
 
-      v16 = v16;
-      v19 = v16;
+      registration4 = registration4;
+      v19 = registration4;
     }
 
     else
     {
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(registration3, OS_LOG_TYPE_DEFAULT))
       {
-        v21 = [(IDSLegacyDeviceMessageProtectionCypher *)self publicIdentity];
-        v22 = v21;
-        if (a6)
+        publicIdentity2 = [(IDSLegacyDeviceMessageProtectionCypher *)self publicIdentity];
+        v22 = publicIdentity2;
+        if (error)
         {
-          v23 = *a6;
+          v23 = *error;
         }
 
         else
@@ -127,11 +127,11 @@
         }
 
         v25 = 138478595;
-        v26 = v9;
+        v26 = dataCopy;
         v27 = 2113;
         v28 = v14;
         v29 = 2113;
-        v30 = v21;
+        v30 = publicIdentity2;
         v31 = 2114;
         v32 = v23;
         _os_log_impl(&dword_1A7AD9000, v18, OS_LOG_TYPE_DEFAULT, "LegacyMP cypher data - missing decryption failed - Fail {data: %{private}@, fullIdentity: %{private}@, publicIdentity: %{private}@, error: %{public}@}", &v25, 0x2Au);
@@ -143,15 +143,15 @@
 
   else
   {
-    v16 = [MEMORY[0x1E69A6138] registration];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    registration4 = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(registration4, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [(IDSLegacyDeviceMessageProtectionCypher *)self publicIdentity];
+      publicIdentity3 = [(IDSLegacyDeviceMessageProtectionCypher *)self publicIdentity];
       v25 = 138478083;
-      v26 = v9;
+      v26 = dataCopy;
       v27 = 2114;
-      v28 = v20;
-      _os_log_impl(&dword_1A7AD9000, v16, OS_LOG_TYPE_DEFAULT, "LegacyMP cypher data - missing full identity - Fail {data: %{private}@, publicIdentity: %{public}@}", &v25, 0x16u);
+      v28 = publicIdentity3;
+      _os_log_impl(&dword_1A7AD9000, registration4, OS_LOG_TYPE_DEFAULT, "LegacyMP cypher data - missing full identity - Fail {data: %{private}@, publicIdentity: %{public}@}", &v25, 0x16u);
     }
 
     v19 = 0;
@@ -160,55 +160,55 @@
   return v19;
 }
 
-- (id)decypherData:(id)a3 withAccountIdentity:(id)a4 signingDevicePublicKey:(id)a5 identifier:(id)a6 error:(id *)a7
+- (id)decypherData:(id)data withAccountIdentity:(id)identity signingDevicePublicKey:(id)key identifier:(id)identifier error:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  dataCopy = data;
   v11 = MEMORY[0x1E69A6138];
-  v12 = a4;
-  v13 = [v11 registration];
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
+  identityCopy = identity;
+  registration = [v11 registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_INFO))
   {
     LOWORD(v26) = 0;
-    _os_log_impl(&dword_1A7AD9000, v13, OS_LOG_TYPE_INFO, "LegacyMP decypher data - Begin", &v26, 2u);
+    _os_log_impl(&dword_1A7AD9000, registration, OS_LOG_TYPE_INFO, "LegacyMP decypher data - Begin", &v26, 2u);
   }
 
-  v14 = [(IDSLegacyDeviceMessageProtectionCypher *)self _fullIdentityFromAccountIdentity:v12 error:a7];
+  v14 = [(IDSLegacyDeviceMessageProtectionCypher *)self _fullIdentityFromAccountIdentity:identityCopy error:error];
 
   if (v14)
   {
-    v15 = [(IDSLegacyDeviceMessageProtectionCypher *)self publicIdentity];
-    v16 = [v14 verifyAndExposeData:v10 withSigner:v15 error:a7];
+    publicIdentity = [(IDSLegacyDeviceMessageProtectionCypher *)self publicIdentity];
+    registration4 = [v14 verifyAndExposeData:dataCopy withSigner:publicIdentity error:error];
 
-    v17 = [MEMORY[0x1E69A6138] registration];
-    v18 = v17;
-    if (v16)
+    registration2 = [MEMORY[0x1E69A6138] registration];
+    v18 = registration2;
+    if (registration4)
     {
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
+      if (os_log_type_enabled(registration2, OS_LOG_TYPE_INFO))
       {
         LOWORD(v26) = 0;
         _os_log_impl(&dword_1A7AD9000, v18, OS_LOG_TYPE_INFO, "LegacyMP decypher data - decryption success - Done", &v26, 2u);
       }
 
-      v19 = [MEMORY[0x1E69A6138] registration];
-      if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
+      registration3 = [MEMORY[0x1E69A6138] registration];
+      if (os_log_type_enabled(registration3, OS_LOG_TYPE_DEBUG))
       {
-        sub_1A7E1C3C0(v16, v19);
+        sub_1A7E1C3C0(registration4, registration3);
       }
 
-      v16 = v16;
-      v20 = v16;
+      registration4 = registration4;
+      v20 = registration4;
     }
 
     else
     {
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(registration2, OS_LOG_TYPE_DEFAULT))
       {
-        v22 = [(IDSLegacyDeviceMessageProtectionCypher *)self publicIdentity];
-        v23 = v22;
-        if (a7)
+        publicIdentity2 = [(IDSLegacyDeviceMessageProtectionCypher *)self publicIdentity];
+        v23 = publicIdentity2;
+        if (error)
         {
-          v24 = *a7;
+          v24 = *error;
         }
 
         else
@@ -217,9 +217,9 @@
         }
 
         v26 = 138478595;
-        v27 = v10;
+        v27 = dataCopy;
         v28 = 2114;
-        v29 = v22;
+        v29 = publicIdentity2;
         v30 = 2113;
         v31 = v14;
         v32 = 2114;
@@ -233,15 +233,15 @@
 
   else
   {
-    v16 = [MEMORY[0x1E69A6138] registration];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    registration4 = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(registration4, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [(IDSLegacyDeviceMessageProtectionCypher *)self publicIdentity];
+      publicIdentity3 = [(IDSLegacyDeviceMessageProtectionCypher *)self publicIdentity];
       v26 = 138543618;
-      v27 = v10;
+      v27 = dataCopy;
       v28 = 2114;
-      v29 = v21;
-      _os_log_impl(&dword_1A7AD9000, v16, OS_LOG_TYPE_DEFAULT, "LegacyMP decypher data - missing full identity - Fail {data: %{public}@, publicIdentity: %{public}@", &v26, 0x16u);
+      v29 = publicIdentity3;
+      _os_log_impl(&dword_1A7AD9000, registration4, OS_LOG_TYPE_DEFAULT, "LegacyMP decypher data - missing full identity - Fail {data: %{public}@, publicIdentity: %{public}@", &v26, 0x16u);
     }
 
     v20 = 0;
@@ -250,30 +250,30 @@
   return v20;
 }
 
-- (id)_fullIdentityFromAccountIdentity:(id)a3 error:(id *)a4
+- (id)_fullIdentityFromAccountIdentity:(id)identity error:(id *)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 deviceKey];
+  identityCopy = identity;
+  deviceKey = [identityCopy deviceKey];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 legacyIdentity];
-    v8 = v7;
-    if (v7)
+    legacyIdentity = [deviceKey legacyIdentity];
+    v8 = legacyIdentity;
+    if (legacyIdentity)
     {
-      v8 = v7;
+      v8 = legacyIdentity;
       v9 = v8;
     }
 
     else
     {
-      v13 = [MEMORY[0x1E69A6138] registration];
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+      registration = [MEMORY[0x1E69A6138] registration];
+      if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138477827;
-        v18 = v5;
-        _os_log_impl(&dword_1A7AD9000, v13, OS_LOG_TYPE_DEFAULT, "Failed ot create full identity from account identity {accountIdentity: %{private}@}", buf, 0xCu);
+        v18 = identityCopy;
+        _os_log_impl(&dword_1A7AD9000, registration, OS_LOG_TYPE_DEFAULT, "Failed ot create full identity from account identity {accountIdentity: %{private}@}", buf, 0xCu);
       }
 
       v9 = 0;
@@ -282,15 +282,15 @@
     goto LABEL_11;
   }
 
-  v10 = [MEMORY[0x1E69A6138] registration];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  registration2 = [MEMORY[0x1E69A6138] registration];
+  if (os_log_type_enabled(registration2, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138477827;
-    v18 = v5;
-    _os_log_impl(&dword_1A7AD9000, v10, OS_LOG_TYPE_DEFAULT, "Failed to create full identity from account identity - class mismatch {accountIdentity: %{private}@}", buf, 0xCu);
+    v18 = identityCopy;
+    _os_log_impl(&dword_1A7AD9000, registration2, OS_LOG_TYPE_DEFAULT, "Failed to create full identity from account identity - class mismatch {accountIdentity: %{private}@}", buf, 0xCu);
   }
 
-  if (a4)
+  if (error)
   {
     v11 = MEMORY[0x1E696ABC0];
     v12 = *MEMORY[0x1E699BB58];
@@ -298,7 +298,7 @@
     v16 = @"Device Identity class mismatch expected IDSDeviceIdentity";
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v16 forKeys:&v15 count:1];
     [v11 errorWithDomain:v12 code:-2000 userInfo:v8];
-    *a4 = v9 = 0;
+    *error = v9 = 0;
 LABEL_11:
 
     goto LABEL_12;

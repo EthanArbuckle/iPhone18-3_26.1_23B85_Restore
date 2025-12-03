@@ -1,24 +1,24 @@
 @interface RemoteAccountCreationControllerBase
-- (BOOL)_hasAccountWithDescription:(id)a3;
-- (BOOL)_isAccountUsernameUnique:(id)a3 typeIdentifer:(id)a4;
+- (BOOL)_hasAccountWithDescription:(id)description;
+- (BOOL)_isAccountUsernameUnique:(id)unique typeIdentifer:(id)identifer;
 - (Class)accountClass;
-- (void)_displayAlertWithTitle:(id)a3 message:(id)a4 completion:(id)a5;
-- (void)_showDuplicateAccountAlertWithCompletion:(id)a3;
+- (void)_displayAlertWithTitle:(id)title message:(id)message completion:(id)completion;
+- (void)_showDuplicateAccountAlertWithCompletion:(id)completion;
 - (void)beginAccountCreation;
-- (void)beginAccountCreationWithSpecifier:(id)a3 fromViewController:(id)a4 completion:(id)a5;
-- (void)validateUniquenessAndAddAccountWithUsername:(id)a3 fullUserName:(id)a4 token:(id)a5 refreshToken:(id)a6 completion:(id)a7;
+- (void)beginAccountCreationWithSpecifier:(id)specifier fromViewController:(id)controller completion:(id)completion;
+- (void)validateUniquenessAndAddAccountWithUsername:(id)username fullUserName:(id)name token:(id)token refreshToken:(id)refreshToken completion:(id)completion;
 @end
 
 @implementation RemoteAccountCreationControllerBase
 
-- (void)beginAccountCreationWithSpecifier:(id)a3 fromViewController:(id)a4 completion:(id)a5
+- (void)beginAccountCreationWithSpecifier:(id)specifier fromViewController:(id)controller completion:(id)completion
 {
-  v15 = a3;
-  v9 = a4;
-  objc_storeStrong(&self->_specifier, a3);
-  v10 = a5;
-  objc_storeStrong(&self->_viewController, a4);
-  v11 = objc_retainBlock(v10);
+  specifierCopy = specifier;
+  controllerCopy = controller;
+  objc_storeStrong(&self->_specifier, specifier);
+  completionCopy = completion;
+  objc_storeStrong(&self->_viewController, controller);
+  v11 = objc_retainBlock(completionCopy);
 
   completion = self->_completion;
   self->_completion = v11;
@@ -30,14 +30,14 @@
   [(RemoteAccountCreationControllerBase *)self beginAccountCreation];
 }
 
-- (void)validateUniquenessAndAddAccountWithUsername:(id)a3 fullUserName:(id)a4 token:(id)a5 refreshToken:(id)a6 completion:(id)a7
+- (void)validateUniquenessAndAddAccountWithUsername:(id)username fullUserName:(id)name token:(id)token refreshToken:(id)refreshToken completion:(id)completion
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  if (!v17)
+  usernameCopy = username;
+  nameCopy = name;
+  tokenCopy = token;
+  refreshTokenCopy = refreshToken;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     v23 = +[NSAssertionHandler currentHandler];
     [v23 handleFailureInMethod:a2 object:self file:@"RemoteAccountCreationControllerBase.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
@@ -48,31 +48,31 @@
   block[2] = sub_75F68;
   block[3] = &unk_B8CA8;
   block[4] = self;
-  v25 = v13;
-  v26 = v15;
-  v27 = v16;
-  v28 = v14;
-  v29 = v17;
-  v18 = v14;
-  v19 = v16;
-  v20 = v15;
-  v21 = v17;
-  v22 = v13;
+  v25 = usernameCopy;
+  v26 = tokenCopy;
+  v27 = refreshTokenCopy;
+  v28 = nameCopy;
+  v29 = completionCopy;
+  v18 = nameCopy;
+  v19 = refreshTokenCopy;
+  v20 = tokenCopy;
+  v21 = completionCopy;
+  v22 = usernameCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (BOOL)_isAccountUsernameUnique:(id)a3 typeIdentifer:(id)a4
+- (BOOL)_isAccountUsernameUnique:(id)unique typeIdentifer:(id)identifer
 {
-  v6 = a3;
-  v7 = a4;
+  uniqueCopy = unique;
+  identiferCopy = identifer;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = [(RemoteAccountCreationControllerBase *)self host];
-  v9 = [v8 accounts];
+  host = [(RemoteAccountCreationControllerBase *)self host];
+  accounts = [host accounts];
 
-  v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v10 = [accounts countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v10)
   {
     v11 = *v21;
@@ -82,16 +82,16 @@
       {
         if (*v21 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(accounts);
         }
 
         v13 = *(*(&v20 + 1) + 8 * i);
-        v14 = [v13 username];
-        if ([v14 isEqualToString:v6])
+        username = [v13 username];
+        if ([username isEqualToString:uniqueCopy])
         {
-          v15 = [v13 accountType];
-          v16 = [v15 identifier];
-          v17 = [v16 isEqualToString:v7];
+          accountType = [v13 accountType];
+          identifier = [accountType identifier];
+          v17 = [identifier isEqualToString:identiferCopy];
 
           if (v17)
           {
@@ -105,7 +105,7 @@
         }
       }
 
-      v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v10 = [accounts countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v10);
@@ -117,17 +117,17 @@ LABEL_13:
   return v18;
 }
 
-- (BOOL)_hasAccountWithDescription:(id)a3
+- (BOOL)_hasAccountWithDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(RemoteAccountCreationControllerBase *)self host];
-  v6 = [v5 accounts];
+  host = [(RemoteAccountCreationControllerBase *)self host];
+  accounts = [host accounts];
 
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v7 = [accounts countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = *v14;
@@ -137,11 +137,11 @@ LABEL_13:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(accounts);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) accountDescription];
-        v11 = [v10 isEqualToString:v4];
+        accountDescription = [*(*(&v13 + 1) + 8 * i) accountDescription];
+        v11 = [accountDescription isEqualToString:descriptionCopy];
 
         if (v11)
         {
@@ -150,7 +150,7 @@ LABEL_13:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [accounts countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v7)
       {
         continue;
@@ -165,26 +165,26 @@ LABEL_11:
   return v7;
 }
 
-- (void)_showDuplicateAccountAlertWithCompletion:(id)a3
+- (void)_showDuplicateAccountAlertWithCompletion:(id)completion
 {
-  v6 = self;
-  v3 = a3;
-  v7 = v3;
+  selfCopy = self;
+  completionCopy = completion;
+  v7 = completionCopy;
   v4 = [EFScheduler mainThreadScheduler:_NSConcreteStackBlock];
   [v4 performSyncBlock:&v5];
 }
 
-- (void)_displayAlertWithTitle:(id)a3 message:(id)a4 completion:(id)a5
+- (void)_displayAlertWithTitle:(id)title message:(id)message completion:(id)completion
 {
-  v13 = a5;
-  v8 = [UIAlertController alertControllerWithTitle:a3 message:a4 preferredStyle:1];
+  completionCopy = completion;
+  v8 = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:1];
   v9 = [NSBundle bundleForClass:objc_opt_class()];
   v10 = [v9 localizedStringForKey:@"OK" value:&stru_B9FC8 table:@"AccountPreferences"];
   v11 = [UIAlertAction actionWithTitle:v10 style:0 handler:0];
   [v8 addAction:v11];
 
-  v12 = [(RemoteAccountCreationControllerBase *)self viewController];
-  [v12 presentViewController:v8 animated:1 completion:v13];
+  viewController = [(RemoteAccountCreationControllerBase *)self viewController];
+  [viewController presentViewController:v8 animated:1 completion:completionCopy];
 }
 
 - (void)beginAccountCreation

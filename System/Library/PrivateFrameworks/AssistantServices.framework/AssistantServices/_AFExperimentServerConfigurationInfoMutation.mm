@@ -1,5 +1,5 @@
 @interface _AFExperimentServerConfigurationInfoMutation
-- (_AFExperimentServerConfigurationInfoMutation)initWithBase:(id)a3;
+- (_AFExperimentServerConfigurationInfoMutation)initWithBase:(id)base;
 - (double)getMaxTimeToSync;
 - (id)getConfigurationIdentifier;
 - (id)getConfigurationURL;
@@ -22,42 +22,42 @@
 {
   if ((*&self->_mutationFlags & 4) != 0)
   {
-    v2 = self->_configurationURL;
+    configurationURL = self->_configurationURL;
   }
 
   else
   {
-    v2 = [(AFExperimentServerConfigurationInfo *)self->_base configurationURL];
+    configurationURL = [(AFExperimentServerConfigurationInfo *)self->_base configurationURL];
   }
 
-  return v2;
+  return configurationURL;
 }
 
 - (id)getConfigurationIdentifier
 {
   if ((*&self->_mutationFlags & 2) != 0)
   {
-    v2 = self->_configurationIdentifier;
+    configurationIdentifier = self->_configurationIdentifier;
   }
 
   else
   {
-    v2 = [(AFExperimentServerConfigurationInfo *)self->_base configurationIdentifier];
+    configurationIdentifier = [(AFExperimentServerConfigurationInfo *)self->_base configurationIdentifier];
   }
 
-  return v2;
+  return configurationIdentifier;
 }
 
-- (_AFExperimentServerConfigurationInfoMutation)initWithBase:(id)a3
+- (_AFExperimentServerConfigurationInfoMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFExperimentServerConfigurationInfoMutation;
   v6 = [(_AFExperimentServerConfigurationInfoMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

@@ -1,21 +1,21 @@
 @interface NSDiffableDataSourceSnapshot
-+ (id)_maps_singleSectionSnapshotWithIdentifiersForItems:(id)a3 reloadingChangesFromPreviousItems:(id)a4;
-- (id)_maps_appendIdentifiersForSection:(id)a3 items:(id)a4 reloadingChangesFromPreviousItems:(id)a5;
++ (id)_maps_singleSectionSnapshotWithIdentifiersForItems:(id)items reloadingChangesFromPreviousItems:(id)previousItems;
+- (id)_maps_appendIdentifiersForSection:(id)section items:(id)items reloadingChangesFromPreviousItems:(id)previousItems;
 @end
 
 @implementation NSDiffableDataSourceSnapshot
 
-- (id)_maps_appendIdentifiersForSection:(id)a3 items:(id)a4 reloadingChangesFromPreviousItems:(id)a5
+- (id)_maps_appendIdentifiersForSection:(id)section items:(id)items reloadingChangesFromPreviousItems:(id)previousItems
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (![v9 count])
+  sectionCopy = section;
+  itemsCopy = items;
+  previousItemsCopy = previousItems;
+  if (![itemsCopy count])
   {
     v63 = [MapsUIDiffableDataSourceSnapshotDifference alloc];
-    if (v10)
+    if (previousItemsCopy)
     {
-      v64 = v10;
+      v64 = previousItemsCopy;
     }
 
     else
@@ -27,23 +27,23 @@
     goto LABEL_72;
   }
 
-  v70 = v10;
-  v73 = sub_10009B2BC(v8);
+  v70 = previousItemsCopy;
+  v73 = sub_10009B2BC(sectionCopy);
   v106 = v73;
   v11 = [NSArray arrayWithObjects:&v106 count:1];
   [(NSDiffableDataSourceSnapshot *)self appendSectionsWithIdentifiers:v11];
 
-  v69 = self;
-  v12 = [(NSDiffableDataSourceSnapshot *)self itemIdentifiers];
-  v74 = [NSSet setWithArray:v12];
+  selfCopy = self;
+  itemIdentifiers = [(NSDiffableDataSourceSnapshot *)self itemIdentifiers];
+  v74 = [NSSet setWithArray:itemIdentifiers];
 
   v75 = +[NSMutableOrderedSet orderedSet];
   v93 = 0u;
   v94 = 0u;
   v95 = 0u;
   v96 = 0u;
-  v68 = v9;
-  v13 = v9;
+  v68 = itemsCopy;
+  v13 = itemsCopy;
   v14 = [v13 countByEnumeratingWithState:&v93 objects:v105 count:16];
   if (!v14)
   {
@@ -134,12 +134,12 @@ LABEL_19:
   while (v24);
 LABEL_23:
 
-  v25 = [v75 array];
-  [(NSDiffableDataSourceSnapshot *)v69 appendItemsWithIdentifiers:v25 intoSectionWithIdentifier:v73];
-  v10 = v70;
+  array = [v75 array];
+  [(NSDiffableDataSourceSnapshot *)selfCopy appendItemsWithIdentifiers:array intoSectionWithIdentifier:v73];
+  previousItemsCopy = v70;
   if (v70)
   {
-    v67 = v8;
+    v67 = sectionCopy;
     v76 = +[NSMutableArray array];
     v89 = 0u;
     v90 = 0u;
@@ -191,8 +191,8 @@ LABEL_23:
     v86 = 0u;
     v87 = 0u;
     v88 = 0u;
-    v66 = v25;
-    v34 = v25;
+    v66 = array;
+    v34 = array;
     v35 = [v34 countByEnumeratingWithState:&v85 objects:v99 count:16];
     if (v35)
     {
@@ -229,15 +229,15 @@ LABEL_23:
       while (v36);
     }
 
-    [(NSDiffableDataSourceSnapshot *)v69 reconfigureItemsWithIdentifiers:v72];
+    [(NSDiffableDataSourceSnapshot *)selfCopy reconfigureItemsWithIdentifiers:v72];
     v46 = [v34 differenceFromArray:v76];
     v47 = +[NSMutableArray array];
     v81 = 0u;
     v82 = 0u;
     v83 = 0u;
     v84 = 0u;
-    v48 = [v46 insertions];
-    v49 = [v48 countByEnumeratingWithState:&v81 objects:v98 count:16];
+    insertions = [v46 insertions];
+    v49 = [insertions countByEnumeratingWithState:&v81 objects:v98 count:16];
     if (v49)
     {
       v50 = v49;
@@ -248,14 +248,14 @@ LABEL_23:
         {
           if (*v82 != v51)
           {
-            objc_enumerationMutation(v48);
+            objc_enumerationMutation(insertions);
           }
 
           v53 = [v13 objectAtIndexedSubscript:{objc_msgSend(*(*(&v81 + 1) + 8 * k), "index", v66)}];
           [v47 addObject:v53];
         }
 
-        v50 = [v48 countByEnumeratingWithState:&v81 objects:v98 count:16];
+        v50 = [insertions countByEnumeratingWithState:&v81 objects:v98 count:16];
       }
 
       while (v50);
@@ -267,9 +267,9 @@ LABEL_23:
     v79 = 0u;
     v80 = 0u;
     v55 = v46;
-    v56 = [v46 removals];
-    v57 = [v56 countByEnumeratingWithState:&v77 objects:v97 count:16];
-    v25 = v66;
+    removals = [v46 removals];
+    v57 = [removals countByEnumeratingWithState:&v77 objects:v97 count:16];
+    array = v66;
     if (v57)
     {
       v58 = v57;
@@ -280,22 +280,22 @@ LABEL_23:
         {
           if (*v78 != v59)
           {
-            objc_enumerationMutation(v56);
+            objc_enumerationMutation(removals);
           }
 
           v61 = [v26 objectAtIndexedSubscript:{objc_msgSend(*(*(&v77 + 1) + 8 * m), "index", v66)}];
           [v54 addObject:v61];
         }
 
-        v58 = [v56 countByEnumeratingWithState:&v77 objects:v97 count:16];
+        v58 = [removals countByEnumeratingWithState:&v77 objects:v97 count:16];
       }
 
       while (v58);
     }
 
     v62 = [[MapsUIDiffableDataSourceSnapshotDifference alloc] initWithReloadedItems:v71 insertedItems:v47 deletedItems:v54];
-    v10 = v70;
-    v8 = v67;
+    previousItemsCopy = v70;
+    sectionCopy = v67;
   }
 
   else
@@ -303,19 +303,19 @@ LABEL_23:
     v62 = [[MapsUIDiffableDataSourceSnapshotDifference alloc] initWithReloadedItems:&__NSArray0__struct insertedItems:v13 deletedItems:&__NSArray0__struct];
   }
 
-  v9 = v68;
+  itemsCopy = v68;
 LABEL_72:
 
   return v62;
 }
 
-+ (id)_maps_singleSectionSnapshotWithIdentifiersForItems:(id)a3 reloadingChangesFromPreviousItems:(id)a4
++ (id)_maps_singleSectionSnapshotWithIdentifiersForItems:(id)items reloadingChangesFromPreviousItems:(id)previousItems
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = objc_alloc_init(a1);
+  itemsCopy = items;
+  previousItemsCopy = previousItems;
+  v8 = objc_alloc_init(self);
   v9 = objc_opt_new();
-  v10 = [v8 _maps_appendIdentifiersForSection:v9 items:v6 reloadingChangesFromPreviousItems:v7];
+  v10 = [v8 _maps_appendIdentifiersForSection:v9 items:itemsCopy reloadingChangesFromPreviousItems:previousItemsCopy];
 
   return v8;
 }

@@ -57,8 +57,8 @@
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:4];
   v16 = [v2 sectionWithRows:v15 title:@"Settings"];
   v39[0] = v16;
-  v17 = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
-  v39[1] = v17;
+  px_restoreDefaultsSection = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
+  v39[1] = px_restoreDefaultsSection;
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:2];
   v19 = [v2 moduleWithTitle:@"Chapters" contents:v18];
 

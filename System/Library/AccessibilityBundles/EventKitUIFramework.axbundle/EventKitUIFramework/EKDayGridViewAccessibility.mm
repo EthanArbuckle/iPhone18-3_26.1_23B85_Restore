@@ -1,5 +1,5 @@
 @interface EKDayGridViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityHideEmptyHours;
 - (id)accessibilityElements;
 - (void)_axResetChildren;
@@ -8,15 +8,15 @@
 
 @implementation EKDayGridViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"EKDayViewController"];
-  [v3 validateClass:@"EKDayView"];
-  [v3 validateClass:@"EKDayViewContent"];
-  [v3 validateClass:@"EKDayViewController" hasInstanceMethod:@"currentDayView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"EKDayView" hasInstanceMethod:@"dayContent" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"EKDayViewContent" hasInstanceMethod:@"grid" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"EKDayViewController"];
+  [validationsCopy validateClass:@"EKDayView"];
+  [validationsCopy validateClass:@"EKDayViewContent"];
+  [validationsCopy validateClass:@"EKDayViewController" hasInstanceMethod:@"currentDayView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"EKDayView" hasInstanceMethod:@"dayContent" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"EKDayViewContent" hasInstanceMethod:@"grid" withFullSignature:{"@", 0}];
 }
 
 - (void)_axResetChildren
@@ -55,12 +55,12 @@
         if (objc_opt_isKindOfClass())
         {
           [v6 setDayGrid:0];
-          v7 = [v6 children];
+          children = [v6 children];
           v17 = 0u;
           v18 = 0u;
           v19 = 0u;
           v20 = 0u;
-          v8 = [v7 countByEnumeratingWithState:&v17 objects:v25 count:16];
+          v8 = [children countByEnumeratingWithState:&v17 objects:v25 count:16];
           if (v8)
           {
             v9 = v8;
@@ -71,7 +71,7 @@
               {
                 if (*v18 != v10)
                 {
-                  objc_enumerationMutation(v7);
+                  objc_enumerationMutation(children);
                 }
 
                 v12 = *(*(&v17 + 1) + 8 * i);
@@ -82,7 +82,7 @@
                 }
               }
 
-              v9 = [v7 countByEnumeratingWithState:&v17 objects:v25 count:16];
+              v9 = [children countByEnumeratingWithState:&v17 objects:v25 count:16];
             }
 
             while (v9);
@@ -117,11 +117,11 @@
 {
   v127 = *MEMORY[0x29EDCA608];
   v3 = [(EKDayGridViewAccessibility *)self _accessibilityFindAncestor:&__block_literal_global_1 startWithSelf:0];
-  v4 = [v3 _accessibilityViewController];
+  _accessibilityViewController = [v3 _accessibilityViewController];
 
-  v5 = [v4 safeValueForKeyPath:@"currentDayView.dayContent.grid"];
+  v5 = [_accessibilityViewController safeValueForKeyPath:@"currentDayView.dayContent.grid"];
   v6 = v5;
-  if (v4)
+  if (_accessibilityViewController)
   {
     v7 = v5 == self;
   }
@@ -133,7 +133,7 @@
 
   if (!v7)
   {
-    v11 = 0;
+    date = 0;
     goto LABEL_78;
   }
 
@@ -150,7 +150,7 @@
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         _AXAssert();
-        v11 = 0;
+        date = 0;
 LABEL_76:
 
         goto LABEL_77;
@@ -174,7 +174,7 @@ LABEL_76:
         v18 = [v17 objectForKey:@"startDate"];
         v19 = __UIAccessibilityCastAsClass();
 
-        v11 = [v19 date];
+        date = [v19 date];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -185,14 +185,14 @@ LABEL_76:
 
         _AXAssert();
 
-        v11 = 0;
+        date = 0;
         v12 = v16;
       }
 
       else
       {
         _AXAssert();
-        v11 = 0;
+        date = 0;
       }
 
 LABEL_75:
@@ -205,22 +205,22 @@ LABEL_75:
     v20 = [v12 safeValueForKey:@"_startDate"];
     v21 = __UIAccessibilityCastAsClass();
 
-    v11 = [v21 date];
+    date = [v21 date];
 
 LABEL_16:
-    if (v11)
+    if (date)
     {
       v102 = v10;
       v93 = v6;
-      v94 = v4;
-      v22 = [MEMORY[0x29EDB8D98] currentCalendar];
-      v23 = [v22 components:62 fromDate:v11];
+      v94 = _accessibilityViewController;
+      currentCalendar = [MEMORY[0x29EDB8D98] currentCalendar];
+      v23 = [currentCalendar components:62 fromDate:date];
       [v23 setHour:0];
-      v98 = v22;
+      v98 = currentCalendar;
       v91 = v23;
-      v99 = [v22 dateFromComponents:v23];
+      v99 = [currentCalendar dateFromComponents:v23];
 
-      v24 = [(EKDayGridViewAccessibility *)self _accessibilityHideEmptyHours];
+      _accessibilityHideEmptyHours = [(EKDayGridViewAccessibility *)self _accessibilityHideEmptyHours];
       v25 = [v95 count];
       v92 = v12;
       v104 = [v12 safeValueForKey:@"occurrenceViews"];
@@ -254,9 +254,9 @@ LABEL_16:
           [v27 setIndexInArray:v26];
           [v27 setDayGrid:self];
           [v102 addObject:v27];
-          v31 = [MEMORY[0x29EDB8D98] currentCalendar];
+          currentCalendar2 = [MEMORY[0x29EDB8D98] currentCalendar];
           v108 = v29;
-          v32 = [v31 components:62 fromDate:v29];
+          v32 = [currentCalendar2 components:62 fromDate:v29];
 
           v33 = [objc_allocWithZone(MEMORY[0x29EDB8DE8]) initWithCapacity:24];
           v34 = 0;
@@ -264,14 +264,14 @@ LABEL_16:
           do
           {
             [v32 setHour:v34];
-            v36 = [MEMORY[0x29EDB8D98] currentCalendar];
-            v37 = [v36 dateFromComponents:v32];
+            currentCalendar3 = [MEMORY[0x29EDB8D98] currentCalendar];
+            v37 = [currentCalendar3 dateFromComponents:v32];
 
             if (([v37 isEqualToDate:v35] & 1) == 0)
             {
               v38 = [[MobileCalHourAccessibilityElement alloc] initWithAccessibilityContainer:v27];
               [(MobileCalHourAccessibilityElement *)v38 setHourDate:v37];
-              [(MobileCalHourAccessibilityElement *)v38 setIsAccessibilityElement:!v24];
+              [(MobileCalHourAccessibilityElement *)v38 setIsAccessibilityElement:!_accessibilityHideEmptyHours];
               [(MobileCalHourAccessibilityElement *)v38 setDayGridView:self];
               [v33 addObject:v38];
             }
@@ -282,7 +282,7 @@ LABEL_16:
 
           while (v34 != 24);
           [v27 setChildren:v33];
-          if (v24 && ![v104 count])
+          if (_accessibilityHideEmptyHours && ![v104 count])
           {
             v39 = [[MobileCalDayPlaceholderElement alloc] initWithAccessibilityContainer:v27];
             v40 = accessibilityLocalizedString(@"no.events.today");
@@ -331,22 +331,22 @@ LABEL_16:
               v50 = v49;
               if (v49)
               {
-                v51 = [v49 startDate];
-                if (v51)
+                startDate = [v49 startDate];
+                if (startDate)
                 {
                   v107 = v50;
-                  v52 = [MEMORY[0x29EDB8D98] currentCalendar];
-                  v109 = v51;
-                  v53 = [v52 components:62 fromDate:v51];
+                  currentCalendar4 = [MEMORY[0x29EDB8D98] currentCalendar];
+                  v109 = startDate;
+                  v53 = [currentCalendar4 components:62 fromDate:startDate];
 
                   v111 = v53;
                   v54 = [v53 copyWithZone:0];
                   [v54 setHour:0];
                   [v54 setMinute:0];
                   [v54 setSecond:0];
-                  v55 = [MEMORY[0x29EDB8D98] currentCalendar];
+                  currentCalendar5 = [MEMORY[0x29EDB8D98] currentCalendar];
                   v105 = v54;
-                  v56 = [v55 dateFromComponents:v54];
+                  v56 = [currentCalendar5 dateFromComponents:v54];
 
                   v114 = 0u;
                   v115 = 0u;
@@ -372,8 +372,8 @@ LABEL_41:
                     }
 
                     v62 = *(*(&v112 + 1) + 8 * v61);
-                    v63 = [v62 date];
-                    v64 = [v56 isEqualToDate:v63];
+                    date2 = [v62 date];
+                    v64 = [v56 isEqualToDate:date2];
 
                     if (v64)
                     {
@@ -403,18 +403,18 @@ LABEL_41:
                   v10 = v102;
                   v43 = v100;
                   v45 = v103;
-                  v51 = v109;
+                  startDate = v109;
                   if (v65)
                   {
-                    v66 = [v65 children];
-                    if (v66)
+                    children = [v65 children];
+                    if (children)
                     {
-                      v67 = [v111 hour];
-                      v68 = v67 >= [v66 count];
+                      hour = [v111 hour];
+                      v68 = hour >= [children count];
                       v45 = v103;
                       if (!v68)
                       {
-                        v69 = [v66 objectAtIndex:{objc_msgSend(v111, "hour")}];
+                        v69 = [children objectAtIndex:{objc_msgSend(v111, "hour")}];
                         objc_opt_class();
                         if (objc_opt_isKindOfClass())
                         {
@@ -430,7 +430,7 @@ LABEL_41:
                           v71 = v70;
                           [v70 _axSetDropPointDescriptorsProvider:v69];
 
-                          [v66 replaceObjectAtIndex:objc_msgSend(v111 withObject:{"hour"), v48}];
+                          [children replaceObjectAtIndex:objc_msgSend(v111 withObject:{"hour"), v48}];
                         }
 
                         else
@@ -443,8 +443,8 @@ LABEL_41:
                             [v48 setAccessibilityContainer:v69];
                             buf[0] = 0;
                             objc_opt_class();
-                            v73 = [v69 children];
-                            v74 = [v73 firstObject];
+                            children2 = [v69 children];
+                            firstObject = [children2 firstObject];
                             v75 = __UIAccessibilityCastAsSafeCategory();
 
                             if (buf[0] == 1)
@@ -452,7 +452,7 @@ LABEL_41:
                               goto LABEL_81;
                             }
 
-                            v76 = [v75 _axDropPointDescriptorsProvider];
+                            _axDropPointDescriptorsProvider = [v75 _axDropPointDescriptorsProvider];
                             buf[0] = 0;
                             objc_opt_class();
                             v77 = __UIAccessibilityCastAsSafeCategory();
@@ -462,11 +462,11 @@ LABEL_41:
                             }
 
                             v78 = v77;
-                            [v77 _axSetDropPointDescriptorsProvider:v76];
+                            [v77 _axSetDropPointDescriptorsProvider:_axDropPointDescriptorsProvider];
 
                             v69 = v97;
-                            v79 = [v97 children];
-                            [v79 addObject:v48];
+                            children3 = [v97 children];
+                            [children3 addObject:v48];
 
                             v45 = v103;
                           }
@@ -474,12 +474,12 @@ LABEL_41:
                           else
                           {
                             v80 = [objc_allocWithZone(MobileCalOccurrencyContainerAccessibilityElement) initWithAccessibilityContainer:v65];
-                            v81 = [MEMORY[0x29EDB8DE8] array];
-                            [v80 setChildren:v81];
+                            array = [MEMORY[0x29EDB8DE8] array];
+                            [v80 setChildren:array];
 
                             [v72 setAccessibilityContainer:v80];
-                            v82 = [v80 children];
-                            [v82 addObject:v72];
+                            children4 = [v80 children];
+                            [children4 addObject:v72];
 
                             v96 = v80;
                             [v48 setAccessibilityContainer:v80];
@@ -495,10 +495,10 @@ LABEL_81:
                             v87 = v86;
                             [v86 _axSetDropPointDescriptorsProvider:v85];
 
-                            v88 = [v96 children];
-                            [v88 addObject:v48];
+                            children5 = [v96 children];
+                            [children5 addObject:v48];
 
-                            [v66 replaceObjectAtIndex:objc_msgSend(v111 withObject:{"hour"), v96}];
+                            [children replaceObjectAtIndex:objc_msgSend(v111 withObject:{"hour"), v96}];
                             v45 = v103;
                             v69 = v97;
                           }
@@ -509,7 +509,7 @@ LABEL_81:
                     }
 
 LABEL_65:
-                    v51 = v109;
+                    startDate = v109;
                   }
 
                   v50 = v107;
@@ -532,9 +532,9 @@ LABEL_65:
         while (v45);
       }
 
-      v11 = v10;
+      date = v10;
       v6 = v93;
-      v4 = v94;
+      _accessibilityViewController = v94;
       v12 = v92;
     }
 
@@ -547,13 +547,13 @@ LABEL_65:
   }
 
   v10 = v9;
-  v11 = v10;
+  date = v10;
 LABEL_77:
 
 LABEL_78:
   v89 = *MEMORY[0x29EDCA608];
 
-  return v11;
+  return date;
 }
 
 uint64_t __51__EKDayGridViewAccessibility_accessibilityElements__block_invoke(uint64_t a1, void *a2)
@@ -567,8 +567,8 @@ uint64_t __51__EKDayGridViewAccessibility_accessibilityElements__block_invoke(ui
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(EKDayGridViewAccessibility *)self _axResetChildren];
   v4.receiver = self;

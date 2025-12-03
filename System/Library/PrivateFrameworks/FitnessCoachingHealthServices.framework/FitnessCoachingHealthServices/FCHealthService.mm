@@ -1,23 +1,23 @@
 @interface FCHealthService
-- (FCHealthService)initWithProfile:(id)a3;
-- (void)_appInstallationChanged:(id)a3;
+- (FCHealthService)initWithProfile:(id)profile;
+- (void)_appInstallationChanged:(id)changed;
 - (void)_onqueue_registerForAppInstallationChange;
 - (void)_onqueue_registerForStandalonePhoneModeChange;
 - (void)_onqueue_updateService;
 - (void)_postSampleNotification;
-- (void)coordinator:(id)a3 eventFiredWithContent:(id)a4;
-- (void)coordinator:(id)a3 postGoalCompletionNotification:(id)a4;
-- (void)coordinator:(id)a3 postMoveModeNotification:(id)a4;
+- (void)coordinator:(id)coordinator eventFiredWithContent:(id)content;
+- (void)coordinator:(id)coordinator postGoalCompletionNotification:(id)notification;
+- (void)coordinator:(id)coordinator postMoveModeNotification:(id)notification;
 - (void)dealloc;
-- (void)profileDidBecomeReady:(id)a3;
-- (void)registerGoalProgressConfiguration:(id)a3 completion:(id)a4;
+- (void)profileDidBecomeReady:(id)ready;
+- (void)registerGoalProgressConfiguration:(id)configuration completion:(id)completion;
 @end
 
 @implementation FCHealthService
 
-- (FCHealthService)initWithProfile:(id)a3
+- (FCHealthService)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v19.receiver = self;
   v19.super_class = FCHealthService;
   v5 = [(FCHealthService *)&v19 init];
@@ -35,12 +35,12 @@
     serviceQueue = v5->_serviceQueue;
     v5->_serviceQueue = v7;
 
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v9 = objc_alloc_init(FCAppInstallationObserver);
     appInstallationObserver = v5->_appInstallationObserver;
     v5->_appInstallationObserver = v9;
 
-    v11 = [[FCPauseRingsSampleObserver alloc] initWithProfile:v4];
+    v11 = [[FCPauseRingsSampleObserver alloc] initWithProfile:profileCopy];
     pauseRingsSampleObserver = v5->_pauseRingsSampleObserver;
     v5->_pauseRingsSampleObserver = v11;
 
@@ -87,9 +87,9 @@ uint64_t __35__FCHealthService_initWithProfile___block_invoke(uint64_t a1)
   [(FCHealthService *)&v3 dealloc];
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
-  v4 = a3;
+  readyCopy = ready;
   p_sampleNotificationToken = &self->_sampleNotificationToken;
   if (!notify_is_valid_token(self->_sampleNotificationToken))
   {
@@ -139,37 +139,37 @@ void __42__FCHealthService__postSampleNotification__block_invoke(uint64_t a1, vo
   }
 }
 
-- (void)registerGoalProgressConfiguration:(id)a3 completion:(id)a4
+- (void)registerGoalProgressConfiguration:(id)configuration completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  completionCopy = completion;
   serviceQueue = self->_serviceQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64__FCHealthService_registerGoalProgressConfiguration_completion___block_invoke;
   block[3] = &unk_27900B478;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = configurationCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = configurationCopy;
   dispatch_async(serviceQueue, block);
 }
 
-- (void)coordinator:(id)a3 postGoalCompletionNotification:(id)a4
+- (void)coordinator:(id)coordinator postGoalCompletionNotification:(id)notification
 {
-  v5 = a4;
+  notificationCopy = notification;
   v6 = MEMORY[0x277D09C98];
-  v7 = a3;
+  coordinatorCopy = coordinator;
   v8 = objc_alloc_init(v6);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __62__FCHealthService_coordinator_postGoalCompletionNotification___block_invoke;
   v10[3] = &unk_27900B5F0;
-  v11 = v5;
-  v9 = v5;
+  v11 = notificationCopy;
+  v9 = notificationCopy;
   [v8 postGoalCompletionNotification:v9 completion:v10];
-  [v7 notificationPosted:v9];
+  [coordinatorCopy notificationPosted:v9];
 }
 
 void __62__FCHealthService_coordinator_postGoalCompletionNotification___block_invoke(uint64_t a1, void *a2)
@@ -191,16 +191,16 @@ void __62__FCHealthService_coordinator_postGoalCompletionNotification___block_in
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)coordinator:(id)a3 eventFiredWithContent:(id)a4
+- (void)coordinator:(id)coordinator eventFiredWithContent:(id)content
 {
-  v4 = a4;
+  contentCopy = content;
   v5 = objc_alloc_init(MEMORY[0x277D09CA8]);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__FCHealthService_coordinator_eventFiredWithContent___block_invoke;
   v7[3] = &unk_27900B5F0;
-  v8 = v4;
-  v6 = v4;
+  v8 = contentCopy;
+  v6 = contentCopy;
   [v5 postGoalProgressNotification:v6 completion:v7];
 }
 
@@ -223,19 +223,19 @@ void __53__FCHealthService_coordinator_eventFiredWithContent___block_invoke(uint
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)coordinator:(id)a3 postMoveModeNotification:(id)a4
+- (void)coordinator:(id)coordinator postMoveModeNotification:(id)notification
 {
-  v5 = a3;
-  v6 = a4;
+  coordinatorCopy = coordinator;
+  notificationCopy = notification;
   v7 = objc_alloc_init(MEMORY[0x277D09CC0]);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __56__FCHealthService_coordinator_postMoveModeNotification___block_invoke;
   v10[3] = &unk_27900B618;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = coordinatorCopy;
+  v12 = notificationCopy;
+  v8 = notificationCopy;
+  v9 = coordinatorCopy;
   [v7 postMoveModeNotification:v8 completion:v10];
 }
 
@@ -262,11 +262,11 @@ void __64__FCHealthService__onqueue_registerForStandalonePhoneModeChange__block_
 
 - (void)_onqueue_registerForAppInstallationChange
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel__appInstallationChanged_ name:@"FCFitnessInstallStateChangedNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__appInstallationChanged_ name:@"FCFitnessInstallStateChangedNotification" object:0];
 }
 
-- (void)_appInstallationChanged:(id)a3
+- (void)_appInstallationChanged:(id)changed
 {
   serviceQueue = self->_serviceQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -288,23 +288,23 @@ void __64__FCHealthService__onqueue_registerForStandalonePhoneModeChange__block_
   {
     v5 = MEMORY[0x277CCDD30];
     v6 = v4;
-    v7 = [v5 sharedBehavior];
-    v8 = [v7 isStandalonePhoneFitnessMode];
-    v9 = [(FCAppInstallationObserver *)self->_appInstallationObserver fitnessAppInstalled];
+    sharedBehavior = [v5 sharedBehavior];
+    isStandalonePhoneFitnessMode = [sharedBehavior isStandalonePhoneFitnessMode];
+    fitnessAppInstalled = [(FCAppInstallationObserver *)self->_appInstallationObserver fitnessAppInstalled];
     *buf = 67109376;
-    v65 = v8;
+    v65 = isStandalonePhoneFitnessMode;
     v66 = 1024;
-    v67 = v9;
+    v67 = fitnessAppInstalled;
     _os_log_impl(&dword_24B55B000, v6, OS_LOG_TYPE_DEFAULT, "FCHealthService updating with standalone %{BOOL}d, app installed %{BOOL}d", buf, 0xEu);
   }
 
-  v10 = [MEMORY[0x277CCDD30] sharedBehavior];
-  if ([v10 isStandalonePhoneFitnessMode])
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  if ([mEMORY[0x277CCDD30] isStandalonePhoneFitnessMode])
   {
-    v11 = [(FCAppInstallationObserver *)self->_appInstallationObserver fitnessAppInstalled];
+    fitnessAppInstalled2 = [(FCAppInstallationObserver *)self->_appInstallationObserver fitnessAppInstalled];
 
     serviceEnabled = self->_serviceEnabled;
-    if (!serviceEnabled && v11)
+    if (!serviceEnabled && fitnessAppInstalled2)
     {
       v13 = [FCGoalCompletionStore alloc];
       WeakRetained = objc_loadWeakRetained(&self->_profile);
@@ -389,11 +389,11 @@ LABEL_13:
   else
   {
 
-    LOBYTE(v11) = 0;
+    LOBYTE(fitnessAppInstalled2) = 0;
     serviceEnabled = self->_serviceEnabled;
   }
 
-  if (serviceEnabled && !v11)
+  if (serviceEnabled && !fitnessAppInstalled2)
   {
     v53 = self->_dateProvider;
     self->_dateProvider = 0;

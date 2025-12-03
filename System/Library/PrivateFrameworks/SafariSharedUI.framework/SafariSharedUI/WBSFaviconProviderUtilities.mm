@@ -1,20 +1,20 @@
 @interface WBSFaviconProviderUtilities
-+ (BOOL)isFaviconSize:(CGSize)a3 morePreferrableThanFaviconSize:(CGSize)a4 givenDesiredSize:(CGSize)a5;
-+ (id)imageWithURL:(id)a3 closetToPreferredSize:(CGSize)a4;
-+ (int64_t)computeRelativeSize:(CGSize)a3 referenceSize:(CGSize)a4;
++ (BOOL)isFaviconSize:(CGSize)size morePreferrableThanFaviconSize:(CGSize)faviconSize givenDesiredSize:(CGSize)desiredSize;
++ (id)imageWithURL:(id)l closetToPreferredSize:(CGSize)size;
++ (int64_t)computeRelativeSize:(CGSize)size referenceSize:(CGSize)referenceSize;
 @end
 
 @implementation WBSFaviconProviderUtilities
 
-+ (BOOL)isFaviconSize:(CGSize)a3 morePreferrableThanFaviconSize:(CGSize)a4 givenDesiredSize:(CGSize)a5
++ (BOOL)isFaviconSize:(CGSize)size morePreferrableThanFaviconSize:(CGSize)faviconSize givenDesiredSize:(CGSize)desiredSize
 {
-  height = a5.height;
-  width = a5.width;
-  v7 = a4.height;
-  v8 = a4.width;
-  v9 = a3.height;
-  v10 = a3.width;
-  if ([a1 computeRelativeSize:? referenceSize:?] == 6)
+  height = desiredSize.height;
+  width = desiredSize.width;
+  v7 = faviconSize.height;
+  v8 = faviconSize.width;
+  v9 = size.height;
+  v10 = size.width;
+  if ([self computeRelativeSize:? referenceSize:?] == 6)
   {
     return 0;
   }
@@ -30,8 +30,8 @@
     return 1;
   }
 
-  v15 = [a1 computeRelativeSize:v10 referenceSize:{v9, width, height}];
-  v16 = [a1 computeRelativeSize:v8 referenceSize:{v7, width, height}];
+  v15 = [self computeRelativeSize:v10 referenceSize:{v9, width, height}];
+  v16 = [self computeRelativeSize:v8 referenceSize:{v7, width, height}];
   if (v15 > v16)
   {
     return 1;
@@ -66,34 +66,34 @@
   }
 }
 
-+ (int64_t)computeRelativeSize:(CGSize)a3 referenceSize:(CGSize)a4
++ (int64_t)computeRelativeSize:(CGSize)size referenceSize:(CGSize)referenceSize
 {
-  if (a3.width == a4.width && a3.height == a4.height)
+  if (size.width == referenceSize.width && size.height == referenceSize.height)
   {
     return 6;
   }
 
-  if (a3.width == a4.width + a4.width && a3.height == a4.height + a4.height)
+  if (size.width == referenceSize.width + referenceSize.width && size.height == referenceSize.height + referenceSize.height)
   {
     return 3;
   }
 
-  if (a3.width == a4.width * 4.0 && a3.height == a4.height * 4.0)
+  if (size.width == referenceSize.width * 4.0 && size.height == referenceSize.height * 4.0)
   {
     return 2;
   }
 
-  if (a3.width == a4.width * 8.0 && a3.height == a4.height * 8.0)
+  if (size.width == referenceSize.width * 8.0 && size.height == referenceSize.height * 8.0)
   {
     return 1;
   }
 
-  if (a3.width < a4.width && a3.height < a4.height)
+  if (size.width < referenceSize.width && size.height < referenceSize.height)
   {
     return 5;
   }
 
-  if (a3.height <= a4.height || a3.width <= a4.width)
+  if (size.height <= referenceSize.height || size.width <= referenceSize.width)
   {
     return 0;
   }
@@ -104,21 +104,21 @@
   }
 }
 
-+ (id)imageWithURL:(id)a3 closetToPreferredSize:(CGSize)a4
++ (id)imageWithURL:(id)l closetToPreferredSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = size.height;
+  width = size.width;
+  lCopy = l;
   v8 = MEMORY[0x1E695F060];
   v9 = *MEMORY[0x1E695F060];
   v10 = *(MEMORY[0x1E695F060] + 8);
-  v11 = CGImageSourceCreateWithURL(v7, 0);
+  v11 = CGImageSourceCreateWithURL(lCopy, 0);
   if (!v11)
   {
     goto LABEL_18;
   }
 
-  v31 = v7;
+  v31 = lCopy;
   v12 = 0;
   v13 = 0;
   v14 = *MEMORY[0x1E696DED8];
@@ -154,7 +154,7 @@
       v13 = v12;
     }
 
-    else if ([a1 isFaviconSize:v22 morePreferrableThanFaviconSize:v24 givenDesiredSize:{v9, v10, width, height}])
+    else if ([self isFaviconSize:v22 morePreferrableThanFaviconSize:v24 givenDesiredSize:{v9, v10, width, height}])
     {
       v13 = v12;
     }
@@ -172,7 +172,7 @@
 
   ImageAtIndex = CGImageSourceCreateImageAtIndex(v11, v13, 0);
   CFRelease(v11);
-  v7 = v31;
+  lCopy = v31;
   if (ImageAtIndex)
   {
     v29 = [objc_alloc(MEMORY[0x1E69DCAB8]) initWithCGImage:ImageAtIndex];

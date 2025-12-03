@@ -1,7 +1,7 @@
 @interface TIStatusBarStyleOverrideLoggingCapture
 + (int64_t)_decrementLoggingCaptureOverride;
 + (int64_t)_incrementLoggingCaptureOverride;
-+ (void)_statusBarStyleOverrideLoggingCapture:(BOOL)a3;
++ (void)_statusBarStyleOverrideLoggingCapture:(BOOL)capture;
 - (TIStatusBarStyleOverrideLoggingCapture)init;
 - (void)dealloc;
 @end
@@ -55,15 +55,15 @@ uint64_t __71__TIStatusBarStyleOverrideLoggingCapture_acquireLoggingCaptureOverr
   return result;
 }
 
-+ (void)_statusBarStyleOverrideLoggingCapture:(BOOL)a3
++ (void)_statusBarStyleOverrideLoggingCapture:(BOOL)capture
 {
-  v3 = a3;
+  captureCopy = capture;
   *&v19[5] = *MEMORY[0x277D85DE8];
   v4 = _sbsOverrideLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = "Release";
-    if (v3)
+    if (captureCopy)
     {
       v5 = "Acquire";
     }
@@ -83,8 +83,8 @@ uint64_t __71__TIStatusBarStyleOverrideLoggingCapture_acquireLoggingCaptureOverr
   v7 = _statusBarStyleOverrideLoggingCapture__assertion;
   if (v6 && !_statusBarStyleOverrideLoggingCapture__assertion)
   {
-    v8 = [MEMORY[0x277D6F470] sharedPreferencesController];
-    v9 = [v8 BOOLForKey:54];
+    mEMORY[0x277D6F470] = [MEMORY[0x277D6F470] sharedPreferencesController];
+    v9 = [mEMORY[0x277D6F470] BOOLForKey:54];
 
     if (v9)
     {
@@ -106,7 +106,7 @@ uint64_t __71__TIStatusBarStyleOverrideLoggingCapture_acquireLoggingCaptureOverr
 
   if (v6 && v7)
   {
-    if (v3)
+    if (captureCopy)
     {
       if (_statusBarStyleOverrideLoggingCapture__timer)
       {
@@ -188,26 +188,26 @@ void __80__TIStatusBarStyleOverrideLoggingCapture__statusBarStyleOverrideLogging
 
 + (int64_t)_decrementLoggingCaptureOverride
 {
-  v3 = [a1 _loggingCaptureOverrideCountPtr];
-  v4 = *v3;
-  if (*v3 <= 1)
+  _loggingCaptureOverrideCountPtr = [self _loggingCaptureOverrideCountPtr];
+  v4 = *_loggingCaptureOverrideCountPtr;
+  if (*_loggingCaptureOverrideCountPtr <= 1)
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = *v3;
+    v5 = *_loggingCaptureOverrideCountPtr;
   }
 
-  *[a1 _loggingCaptureOverrideCountPtr] = v5 - 1;
+  *[self _loggingCaptureOverrideCountPtr] = v5 - 1;
   return v4;
 }
 
 + (int64_t)_incrementLoggingCaptureOverride
 {
-  v3 = *[a1 _loggingCaptureOverrideCountPtr];
-  *[a1 _loggingCaptureOverrideCountPtr] = v3 + 1;
+  v3 = *[self _loggingCaptureOverrideCountPtr];
+  *[self _loggingCaptureOverrideCountPtr] = v3 + 1;
   return v3;
 }
 

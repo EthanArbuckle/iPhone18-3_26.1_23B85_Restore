@@ -1,126 +1,126 @@
 @interface AVTViewUpdater
-- (AVTViewUpdater)initWithAVTView:(id)a3 callbackQueue:(id)a4 logger:(id)a5;
-- (BOOL)willUpdateViewForRecord:(id)a3 avatar:(id)a4;
-- (void)addAvatarPresentedOnScreenCallbackWithQueue:(id)a3 forTimestamp:(double)a4;
-- (void)setAvatarRecord:(id)a3 avatar:(id)a4 completionHandler:(id)a5;
-- (void)setStickerConfiguration:(id)a3 completionHandler:(id)a4;
+- (AVTViewUpdater)initWithAVTView:(id)view callbackQueue:(id)queue logger:(id)logger;
+- (BOOL)willUpdateViewForRecord:(id)record avatar:(id)avatar;
+- (void)addAvatarPresentedOnScreenCallbackWithQueue:(id)queue forTimestamp:(double)timestamp;
+- (void)setAvatarRecord:(id)record avatar:(id)avatar completionHandler:(id)handler;
+- (void)setStickerConfiguration:(id)configuration completionHandler:(id)handler;
 @end
 
 @implementation AVTViewUpdater
 
-- (AVTViewUpdater)initWithAVTView:(id)a3 callbackQueue:(id)a4 logger:(id)a5
+- (AVTViewUpdater)initWithAVTView:(id)view callbackQueue:(id)queue logger:(id)logger
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  viewCopy = view;
+  queueCopy = queue;
+  loggerCopy = logger;
   v15.receiver = self;
   v15.super_class = AVTViewUpdater;
   v12 = [(AVTViewUpdater *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_logger, a5);
-    objc_storeStrong(&v13->_avtView, a3);
-    objc_storeStrong(&v13->_callbackQueue, a4);
+    objc_storeStrong(&v12->_logger, logger);
+    objc_storeStrong(&v13->_avtView, view);
+    objc_storeStrong(&v13->_callbackQueue, queue);
     v13->_lock._os_unfair_lock_opaque = 0;
   }
 
   return v13;
 }
 
-- (void)setStickerConfiguration:(id)a3 completionHandler:(id)a4
+- (void)setStickerConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v9 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  configurationCopy = configuration;
   os_unfair_lock_lock(&self->_lock);
   v7 = CACurrentMediaTime();
   self->_lastUpdateTimestamp = v7;
   os_unfair_lock_unlock(&self->_lock);
-  v8 = [(AVTViewUpdater *)self avtView];
-  [v8 transitionToStickerConfiguration:v6 duration:0 completionHandler:0.0];
+  avtView = [(AVTViewUpdater *)self avtView];
+  [avtView transitionToStickerConfiguration:configurationCopy duration:0 completionHandler:0.0];
 
-  [(AVTViewUpdater *)self addAvatarPresentedOnScreenCallbackWithQueue:v9 forTimestamp:v7];
+  [(AVTViewUpdater *)self addAvatarPresentedOnScreenCallbackWithQueue:handlerCopy forTimestamp:v7];
 }
 
-- (void)setAvatarRecord:(id)a3 avatar:(id)a4 completionHandler:(id)a5
+- (void)setAvatarRecord:(id)record avatar:(id)avatar completionHandler:(id)handler
 {
-  v23 = a3;
-  v8 = a4;
-  v9 = a5;
+  recordCopy = record;
+  avatarCopy = avatar;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_lock);
   v10 = CACurrentMediaTime();
   self->_lastUpdateTimestamp = v10;
   os_unfair_lock_unlock(&self->_lock);
-  v11 = [(AVTViewUpdater *)self willUpdateViewForRecord:v23 avatar:v8];
-  [(AVTViewUpdater *)self setAvatarRecord:v23];
+  v11 = [(AVTViewUpdater *)self willUpdateViewForRecord:recordCopy avatar:avatarCopy];
+  [(AVTViewUpdater *)self setAvatarRecord:recordCopy];
   if (v11)
   {
-    v12 = v8;
+    v12 = avatarCopy;
     if (!v12)
     {
-      v12 = [MEMORY[0x1E698E328] avatarForRecord:v23];
+      v12 = [MEMORY[0x1E698E328] avatarForRecord:recordCopy];
     }
 
     [(AVTViewUpdater *)self setCurrentAvatar:v12];
-    v13 = [(AVTViewUpdater *)self logger];
+    logger = [(AVTViewUpdater *)self logger];
     v14 = [v12 description];
-    [v13 logAVTViewSetAvatar:v14];
+    [logger logAVTViewSetAvatar:v14];
 
-    v15 = [(AVTViewUpdater *)self avtView];
-    v16 = [v15 avatar];
-    v17 = [v16 pose];
+    avtView = [(AVTViewUpdater *)self avtView];
+    avatar = [avtView avatar];
+    pose = [avatar pose];
 
-    v18 = [(AVTViewUpdater *)self avtView];
-    LOBYTE(v16) = [v18 enableFaceTracking];
+    avtView2 = [(AVTViewUpdater *)self avtView];
+    LOBYTE(avatar) = [avtView2 enableFaceTracking];
 
-    if ((v16 & 1) == 0 && !v17)
+    if ((avatar & 1) == 0 && !pose)
     {
-      v17 = [MEMORY[0x1E698E288] friendlyPose];
+      pose = [MEMORY[0x1E698E288] friendlyPose];
     }
 
-    v19 = [(AVTViewUpdater *)self avtView];
-    [v19 setAvatar:v12];
+    avtView3 = [(AVTViewUpdater *)self avtView];
+    [avtView3 setAvatar:v12];
 
-    v20 = [(AVTViewUpdater *)self avtView];
-    v21 = [v20 enableFaceTracking];
+    avtView4 = [(AVTViewUpdater *)self avtView];
+    enableFaceTracking = [avtView4 enableFaceTracking];
 
-    if ((v21 & 1) == 0)
+    if ((enableFaceTracking & 1) == 0)
     {
-      v22 = [(AVTViewUpdater *)self avtView];
-      [v22 transitionToPose:v17 duration:0 completionHandler:0.0];
+      avtView5 = [(AVTViewUpdater *)self avtView];
+      [avtView5 transitionToPose:pose duration:0 completionHandler:0.0];
     }
   }
 
-  [(AVTViewUpdater *)self addAvatarPresentedOnScreenCallbackWithQueue:v9 forTimestamp:v10];
+  [(AVTViewUpdater *)self addAvatarPresentedOnScreenCallbackWithQueue:handlerCopy forTimestamp:v10];
 }
 
-- (BOOL)willUpdateViewForRecord:(id)a3 avatar:(id)a4
+- (BOOL)willUpdateViewForRecord:(id)record avatar:(id)avatar
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(AVTViewUpdater *)self avatarRecord];
-  if (v7 | v9)
+  recordCopy = record;
+  avatarCopy = avatar;
+  avatarRecord = [(AVTViewUpdater *)self avatarRecord];
+  if (recordCopy | avatarRecord)
   {
-    v4 = [(AVTViewUpdater *)self avatarRecord];
-    v10 = [v4 isEqual:v7];
+    avatarRecord2 = [(AVTViewUpdater *)self avatarRecord];
+    v10 = [avatarRecord2 isEqual:recordCopy];
     LOBYTE(v11) = v10 ^ 1;
-    if (!v8 || (v10 & 1) == 0)
+    if (!avatarCopy || (v10 & 1) == 0)
     {
       goto LABEL_7;
     }
   }
 
-  else if (!v8)
+  else if (!avatarCopy)
   {
     LOBYTE(v11) = 0;
     goto LABEL_9;
   }
 
-  v12 = [(AVTViewUpdater *)self currentAvatar];
-  v13 = [(AVTViewUpdater *)self currentAvatar];
-  v11 = [v13 isEqual:v8] ^ 1;
+  currentAvatar = [(AVTViewUpdater *)self currentAvatar];
+  currentAvatar2 = [(AVTViewUpdater *)self currentAvatar];
+  v11 = [currentAvatar2 isEqual:avatarCopy] ^ 1;
 
-  if (v7 | v9)
+  if (recordCopy | avatarRecord)
   {
 LABEL_7:
   }
@@ -130,22 +130,22 @@ LABEL_9:
   return v11;
 }
 
-- (void)addAvatarPresentedOnScreenCallbackWithQueue:(id)a3 forTimestamp:(double)a4
+- (void)addAvatarPresentedOnScreenCallbackWithQueue:(id)queue forTimestamp:(double)timestamp
 {
-  v6 = a3;
-  if (v6)
+  queueCopy = queue;
+  if (queueCopy)
   {
     objc_initWeak(&location, self);
-    v7 = [(AVTViewUpdater *)self avtView];
-    v8 = [(AVTViewUpdater *)self callbackQueue];
+    avtView = [(AVTViewUpdater *)self avtView];
+    callbackQueue = [(AVTViewUpdater *)self callbackQueue];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __75__AVTViewUpdater_addAvatarPresentedOnScreenCallbackWithQueue_forTimestamp___block_invoke;
     v9[3] = &unk_1E7F3AD38;
     objc_copyWeak(v11, &location);
-    v11[1] = *&a4;
-    v10 = v6;
-    [v7 addAvatarPresentedOnScreenCallbackWithQueue:v8 block:v9];
+    v11[1] = *&timestamp;
+    v10 = queueCopy;
+    [avtView addAvatarPresentedOnScreenCallbackWithQueue:callbackQueue block:v9];
 
     objc_destroyWeak(v11);
     objc_destroyWeak(&location);

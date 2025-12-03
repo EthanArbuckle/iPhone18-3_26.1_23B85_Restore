@@ -6,7 +6,7 @@
 
 - (id)ef_onScheduler:()EFScheduler
 {
-  v3 = [a3 performWithObject:a1];
+  v3 = [a3 performWithObject:self];
 
   return v3;
 }

@@ -1,18 +1,18 @@
 @interface PHOrientationMonitor_OBJC
 - (_TtC11MobilePhone25PHOrientationMonitor_OBJC)init;
-- (int64_t)makeInterfaceOrientationFrom:(int64_t)a3 whenFailing:(int64_t)a4;
+- (int64_t)makeInterfaceOrientationFrom:(int64_t)from whenFailing:(int64_t)failing;
 @end
 
 @implementation PHOrientationMonitor_OBJC
 
-- (int64_t)makeInterfaceOrientationFrom:(int64_t)a3 whenFailing:(int64_t)a4
+- (int64_t)makeInterfaceOrientationFrom:(int64_t)from whenFailing:(int64_t)failing
 {
-  if (UIDeviceOrientationIsValidInterfaceOrientation(a3) && a3 <= 4 && (a3 - 1) < 4)
+  if (UIDeviceOrientationIsValidInterfaceOrientation(from) && from <= 4 && (from - 1) < 4)
   {
-    return a3;
+    return from;
   }
 
-  return a4;
+  return failing;
 }
 
 - (_TtC11MobilePhone25PHOrientationMonitor_OBJC)init

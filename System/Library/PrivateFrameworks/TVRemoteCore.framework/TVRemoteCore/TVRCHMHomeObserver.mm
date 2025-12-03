@@ -1,19 +1,19 @@
 @interface TVRCHMHomeObserver
 + (id)sharedInstance;
-- (BOOL)_checkErrorForLocallySuspendedAccessory:(id)a3;
+- (BOOL)_checkErrorForLocallySuspendedAccessory:(id)accessory;
 - (TVRCHMHomeObserver)init;
-- (void)_checkAccessoryReachabilityAndFetchTVServices:(id)a3 withCompletion:(id)a4;
-- (void)_readCharacteristic:(id)a3 completion:(id)a4;
-- (void)_updateAccessoriesForHome:(id)a3;
-- (void)_updateServicesForAccessory:(id)a3;
-- (void)accessory:(id)a3 didUpdateNameForService:(id)a4;
-- (void)accessory:(id)a3 service:(id)a4 didUpdateValueForCharacteristic:(id)a5;
-- (void)accessoryDidUpdateReachability:(id)a3;
-- (void)accessoryDidUpdateReachableTransports:(id)a3;
-- (void)accessoryDidUpdateServices:(id)a3;
-- (void)home:(id)a3 didAddAccessory:(id)a4;
-- (void)home:(id)a3 didRemoveAccessory:(id)a4;
-- (void)setCurrentHome:(id)a3;
+- (void)_checkAccessoryReachabilityAndFetchTVServices:(id)services withCompletion:(id)completion;
+- (void)_readCharacteristic:(id)characteristic completion:(id)completion;
+- (void)_updateAccessoriesForHome:(id)home;
+- (void)_updateServicesForAccessory:(id)accessory;
+- (void)accessory:(id)accessory didUpdateNameForService:(id)service;
+- (void)accessory:(id)accessory service:(id)service didUpdateValueForCharacteristic:(id)characteristic;
+- (void)accessoryDidUpdateReachability:(id)reachability;
+- (void)accessoryDidUpdateReachableTransports:(id)transports;
+- (void)accessoryDidUpdateServices:(id)services;
+- (void)home:(id)home didAddAccessory:(id)accessory;
+- (void)home:(id)home didRemoveAccessory:(id)accessory;
+- (void)setCurrentHome:(id)home;
 @end
 
 @implementation TVRCHMHomeObserver
@@ -52,28 +52,28 @@ uint64_t __36__TVRCHMHomeObserver_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)setCurrentHome:(id)a3
+- (void)setCurrentHome:(id)home
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  homeCopy = home;
   v6 = _TVRCHomeKitLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     currentHome = self->_currentHome;
     v10 = 138543618;
-    v11 = v5;
+    v11 = homeCopy;
     v12 = 2114;
     v13 = currentHome;
     _os_log_impl(&dword_26CF7F000, v6, OS_LOG_TYPE_DEFAULT, "Setting home to be observed as %{public}@. Previous home - %{public}@", &v10, 0x16u);
   }
 
   v8 = self->_currentHome;
-  if (v8 != v5)
+  if (v8 != homeCopy)
   {
     [(NSMutableDictionary *)self->_serviceToAccessoryIDMapping removeAllObjects];
-    [(HMHome *)v5 setDelegate:self];
+    [(HMHome *)homeCopy setDelegate:self];
     [(HMHome *)self->_currentHome setDelegate:0];
-    objc_storeStrong(&self->_currentHome, a3);
+    objc_storeStrong(&self->_currentHome, home);
     v8 = self->_currentHome;
   }
 
@@ -85,43 +85,43 @@ uint64_t __36__TVRCHMHomeObserver_sharedInstance__block_invoke()
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)home:(id)a3 didAddAccessory:(id)a4
+- (void)home:(id)home didAddAccessory:(id)accessory
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  homeCopy = home;
+  accessoryCopy = accessory;
   v8 = _TVRCHomeKitLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543618;
-    v11 = v7;
+    v11 = accessoryCopy;
     v12 = 2114;
-    v13 = v6;
+    v13 = homeCopy;
     _os_log_impl(&dword_26CF7F000, v8, OS_LOG_TYPE_DEFAULT, "HomeKit informed us that it added accessory %{public}@, for home %{public}@", &v10, 0x16u);
   }
 
-  [(TVRCHMHomeObserver *)self _updateServicesForAccessory:v7];
+  [(TVRCHMHomeObserver *)self _updateServicesForAccessory:accessoryCopy];
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)home:(id)a3 didRemoveAccessory:(id)a4
+- (void)home:(id)home didRemoveAccessory:(id)accessory
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  homeCopy = home;
+  accessoryCopy = accessory;
   v8 = _TVRCHomeKitLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138543618;
-    v17 = v7;
+    v17 = accessoryCopy;
     v18 = 2114;
-    v19 = v6;
+    v19 = homeCopy;
     _os_log_impl(&dword_26CF7F000, v8, OS_LOG_TYPE_DEFAULT, "HomeKit informed us that it removed accessory %{public}@ from home %{public}@", &v16, 0x16u);
   }
 
-  v9 = [v7 deviceIdentifier];
-  v10 = [(TVRCHMHomeObserver *)self serviceToAccessoryIDMapping];
-  v11 = [v10 objectForKey:v9];
+  deviceIdentifier = [accessoryCopy deviceIdentifier];
+  serviceToAccessoryIDMapping = [(TVRCHMHomeObserver *)self serviceToAccessoryIDMapping];
+  v11 = [serviceToAccessoryIDMapping objectForKey:deviceIdentifier];
 
   if (v11)
   {
@@ -129,153 +129,153 @@ uint64_t __36__TVRCHMHomeObserver_sharedInstance__block_invoke()
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138543362;
-      v17 = v7;
+      v17 = accessoryCopy;
       _os_log_impl(&dword_26CF7F000, v12, OS_LOG_TYPE_DEFAULT, "Removing accessory %{public}@ from device list because it was removed from the Home", &v16, 0xCu);
     }
 
-    [v7 setDelegate:0];
-    v13 = [(TVRCHMHomeObserver *)self serviceToAccessoryIDMapping];
-    [v13 removeObjectForKey:v9];
+    [accessoryCopy setDelegate:0];
+    serviceToAccessoryIDMapping2 = [(TVRCHMHomeObserver *)self serviceToAccessoryIDMapping];
+    [serviceToAccessoryIDMapping2 removeObjectForKey:deviceIdentifier];
 
-    v14 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v14 postNotificationName:@"TVRCMatchPointServiceRemovedNotification" object:v11];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"TVRCMatchPointServiceRemovedNotification" object:v11];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accessoryDidUpdateReachability:(id)a3
+- (void)accessoryDidUpdateReachability:(id)reachability
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reachabilityCopy = reachability;
   v5 = _TVRCHomeKitLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543618;
-    v8 = v4;
+    v8 = reachabilityCopy;
     v9 = 1024;
-    v10 = [v4 isReachable];
+    isReachable = [reachabilityCopy isReachable];
     _os_log_impl(&dword_26CF7F000, v5, OS_LOG_TYPE_DEFAULT, "HomeKit informed us that it updated reachability for accessory %{public}@. Reachable %{BOOL}d", &v7, 0x12u);
   }
 
-  [(TVRCHMHomeObserver *)self _updateServicesForAccessory:v4];
+  [(TVRCHMHomeObserver *)self _updateServicesForAccessory:reachabilityCopy];
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accessoryDidUpdateReachableTransports:(id)a3
+- (void)accessoryDidUpdateReachableTransports:(id)transports
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 reachableTransports];
+  transportsCopy = transports;
+  reachableTransports = [transportsCopy reachableTransports];
   v6 = _TVRCHomeKitLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543618;
-    v9 = v4;
+    v9 = transportsCopy;
     v10 = 1024;
-    v11 = v5 & 1;
+    v11 = reachableTransports & 1;
     _os_log_impl(&dword_26CF7F000, v6, OS_LOG_TYPE_DEFAULT, "HomeKit informed us that it updated Reachable Transports for accessory %{public}@. Has IP Transport - %{BOOL}d", &v8, 0x12u);
   }
 
-  [(TVRCHMHomeObserver *)self _updateServicesForAccessory:v4];
+  [(TVRCHMHomeObserver *)self _updateServicesForAccessory:transportsCopy];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accessory:(id)a3 didUpdateNameForService:(id)a4
+- (void)accessory:(id)accessory didUpdateNameForService:(id)service
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  accessoryCopy = accessory;
+  serviceCopy = service;
   v7 = _TVRCHomeKitLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543618;
-    v11 = v6;
+    v11 = serviceCopy;
     v12 = 2114;
-    v13 = v5;
+    v13 = accessoryCopy;
     _os_log_impl(&dword_26CF7F000, v7, OS_LOG_TYPE_DEFAULT, "HomeKit informed us that it updated service name for service %{public}@, of accessory %{public}@", &v10, 0x16u);
   }
 
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v8 postNotificationName:@"TVRCMatchPointServiceNameChangedNotification" object:v6];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"TVRCMatchPointServiceNameChangedNotification" object:serviceCopy];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accessoryDidUpdateServices:(id)a3
+- (void)accessoryDidUpdateServices:(id)services
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  servicesCopy = services;
   v5 = _TVRCHomeKitLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = v4;
+    v8 = servicesCopy;
     _os_log_impl(&dword_26CF7F000, v5, OS_LOG_TYPE_DEFAULT, "HomeKit informed us that it updated services for accessory %{public}@", &v7, 0xCu);
   }
 
-  [(TVRCHMHomeObserver *)self _updateServicesForAccessory:v4];
+  [(TVRCHMHomeObserver *)self _updateServicesForAccessory:servicesCopy];
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accessory:(id)a3 service:(id)a4 didUpdateValueForCharacteristic:(id)a5
+- (void)accessory:(id)accessory service:(id)service didUpdateValueForCharacteristic:(id)characteristic
 {
   v30 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  accessoryCopy = accessory;
+  serviceCopy = service;
+  characteristicCopy = characteristic;
   v10 = _TVRCHomeKitLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v9 characteristicType];
-    v12 = [v9 localizedDescription];
+    characteristicType = [characteristicCopy characteristicType];
+    localizedDescription = [characteristicCopy localizedDescription];
     *buf = 138543874;
-    v25 = v11;
+    v25 = characteristicType;
     v26 = 2112;
-    v27 = v12;
+    v27 = localizedDescription;
     v28 = 2114;
-    v29 = v7;
+    v29 = accessoryCopy;
     _os_log_impl(&dword_26CF7F000, v10, OS_LOG_TYPE_DEFAULT, "HomeKit informed us that it updated characteristic: %{public}@ desc: %@ for accessory %{public}@", buf, 0x20u);
   }
 
-  v13 = [v9 characteristicType];
-  v14 = [v13 isEqualToString:*MEMORY[0x277CCF748]];
+  characteristicType2 = [characteristicCopy characteristicType];
+  v14 = [characteristicType2 isEqualToString:*MEMORY[0x277CCF748]];
 
   if (v14)
   {
     v15 = _TVRCHomeKitLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [v9 value];
+      value = [characteristicCopy value];
       *buf = 138543362;
-      v25 = v16;
+      v25 = value;
       _os_log_impl(&dword_26CF7F000, v15, OS_LOG_TYPE_DEFAULT, "Active characteristic updated to: %{public}@", buf, 0xCu);
     }
 
-    v17 = [v9 value];
+    value2 = [characteristicCopy value];
 
-    if (v17)
+    if (value2)
     {
-      v18 = [MEMORY[0x277CCAB98] defaultCenter];
-      v19 = [v9 value];
-      v23 = v19;
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      value3 = [characteristicCopy value];
+      v23 = value3;
       v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v23 forKeys:&v22 count:1];
-      [v18 postNotificationName:@"TVRCMatchPointServiceActiveStateChangedNotification" object:v8 userInfo:v20];
+      [defaultCenter postNotificationName:@"TVRCMatchPointServiceActiveStateChangedNotification" object:serviceCopy userInfo:v20];
     }
   }
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateAccessoriesForHome:(id)a3
+- (void)_updateAccessoriesForHome:(id)home
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  homeCopy = home;
   v5 = _TVRCHomeKitLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v18 = v4;
+    v18 = homeCopy;
     _os_log_impl(&dword_26CF7F000, v5, OS_LOG_TYPE_DEFAULT, "Updating accessories for home %{public}@", buf, 0xCu);
   }
 
@@ -283,8 +283,8 @@ uint64_t __36__TVRCHMHomeObserver_sharedInstance__block_invoke()
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [v4 accessories];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  accessories = [homeCopy accessories];
+  v7 = [accessories countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -296,14 +296,14 @@ uint64_t __36__TVRCHMHomeObserver_sharedInstance__block_invoke()
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(accessories);
         }
 
         [(TVRCHMHomeObserver *)self _updateServicesForAccessory:*(*(&v12 + 1) + 8 * v10++)];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [accessories countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
@@ -312,16 +312,16 @@ uint64_t __36__TVRCHMHomeObserver_sharedInstance__block_invoke()
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateServicesForAccessory:(id)a3
+- (void)_updateServicesForAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __50__TVRCHMHomeObserver__updateServicesForAccessory___block_invoke;
   v6[3] = &unk_279D82C98;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = accessoryCopy;
+  selfCopy = self;
+  v5 = accessoryCopy;
   [(TVRCHMHomeObserver *)self _checkAccessoryReachabilityAndFetchTVServices:v5 withCompletion:v6];
 }
 
@@ -397,20 +397,20 @@ void __50__TVRCHMHomeObserver__updateServicesForAccessory___block_invoke(uint64_
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_checkAccessoryReachabilityAndFetchTVServices:(id)a3 withCompletion:(id)a4
+- (void)_checkAccessoryReachabilityAndFetchTVServices:(id)services withCompletion:(id)completion
 {
-  v38 = self;
+  selfCopy = self;
   v62 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v39 = a4;
-  v40 = v5;
+  servicesCopy = services;
+  completionCopy = completion;
+  v40 = servicesCopy;
   v41 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v6 = [v5 services];
-  v7 = [v6 countByEnumeratingWithState:&v50 objects:v61 count:16];
+  services = [servicesCopy services];
+  v7 = [services countByEnumeratingWithState:&v50 objects:v61 count:16];
   if (v7)
   {
     v8 = v7;
@@ -422,12 +422,12 @@ void __50__TVRCHMHomeObserver__updateServicesForAccessory___block_invoke(uint64_
       {
         if (*v51 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(services);
         }
 
         v12 = *(*(&v50 + 1) + 8 * i);
-        v13 = [v12 serviceType];
-        v14 = [v13 isEqualToString:v10];
+        serviceType = [v12 serviceType];
+        v14 = [serviceType isEqualToString:v10];
 
         if (v14)
         {
@@ -445,7 +445,7 @@ void __50__TVRCHMHomeObserver__updateServicesForAccessory___block_invoke(uint64_
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v50 objects:v61 count:16];
+      v8 = [services countByEnumeratingWithState:&v50 objects:v61 count:16];
     }
 
     while (v8);
@@ -465,8 +465,8 @@ void __50__TVRCHMHomeObserver__updateServicesForAccessory___block_invoke(uint64_
     goto LABEL_39;
   }
 
-  v16 = [v40 isReachable];
-  v17 = [v40 suspendedState];
+  isReachable = [v40 isReachable];
+  suspendedState = [v40 suspendedState];
   v18 = [v40 reachableTransports] & 1;
   v19 = _TVRCHomeKitLog();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -474,26 +474,26 @@ void __50__TVRCHMHomeObserver__updateServicesForAccessory___block_invoke(uint64_
     *buf = 138544130;
     v56 = v40;
     v57 = 1024;
-    *v58 = v16;
+    *v58 = isReachable;
     *&v58[4] = 1024;
     *&v58[6] = v18;
     v59 = 1024;
-    v60 = v17 == 3;
+    v60 = suspendedState == 3;
     _os_log_impl(&dword_26CF7F000, v19, OS_LOG_TYPE_DEFAULT, "Accessory %{public}@ reachable: %{BOOL}d | locally reachable: %{BOOL}d | suspended: %{BOOL}d", buf, 0x1Eu);
   }
 
-  if (v17 == 3 || (v18 ? (v20 = v16) : (v20 = 0), v20 == 1))
+  if (suspendedState == 3 || (v18 ? (v20 = isReachable) : (v20 = 0), v20 == 1))
   {
-    v21 = v39;
-    if (v39)
+    v21 = completionCopy;
+    if (completionCopy)
     {
-      (*(v39 + 2))(v39, 1, v41);
+      (*(completionCopy + 2))(completionCopy, 1, v41);
     }
 
     goto LABEL_42;
   }
 
-  if (v16 && !v18)
+  if (isReachable && !v18)
   {
     v24 = _TVRCHomeKitLog();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -503,13 +503,13 @@ void __50__TVRCHMHomeObserver__updateServicesForAccessory___block_invoke(uint64_
       _os_log_impl(&dword_26CF7F000, v24, OS_LOG_TYPE_DEFAULT, "Accessory %{public}@ is reachable but does NOT contain ReachableTransportIP. Checking for BLE wake support...", buf, 0xCu);
     }
 
-    v25 = [v41 lastObject];
+    lastObject = [v41 lastObject];
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v26 = [v25 characteristics];
-    v27 = [v26 countByEnumeratingWithState:&v46 objects:v54 count:16];
+    characteristics = [lastObject characteristics];
+    v27 = [characteristics countByEnumeratingWithState:&v46 objects:v54 count:16];
     if (v27)
     {
       v28 = v27;
@@ -521,12 +521,12 @@ void __50__TVRCHMHomeObserver__updateServicesForAccessory___block_invoke(uint64_
         {
           if (*v47 != v29)
           {
-            objc_enumerationMutation(v26);
+            objc_enumerationMutation(characteristics);
           }
 
           v32 = *(*(&v46 + 1) + 8 * j);
-          v33 = [v32 characteristicType];
-          v34 = [v33 isEqualToString:v30];
+          characteristicType = [v32 characteristicType];
+          v34 = [characteristicType isEqualToString:v30];
 
           if (v34)
           {
@@ -536,7 +536,7 @@ void __50__TVRCHMHomeObserver__updateServicesForAccessory___block_invoke(uint64_
               *buf = 138543618;
               v56 = v32;
               v57 = 2114;
-              *v58 = v25;
+              *v58 = lastObject;
               _os_log_impl(&dword_26CF7F000, v36, OS_LOG_TYPE_DEFAULT, "Found characteristic of type HMCharacteristicTypeActiveIdentifier, %{public}@ for service %{public}@. Reading value...", buf, 0x16u);
             }
 
@@ -544,18 +544,18 @@ void __50__TVRCHMHomeObserver__updateServicesForAccessory___block_invoke(uint64_
             v42[1] = 3221225472;
             v42[2] = __83__TVRCHMHomeObserver__checkAccessoryReachabilityAndFetchTVServices_withCompletion___block_invoke;
             v42[3] = &unk_279D82CC0;
-            v43 = v25;
-            v21 = v39;
-            v45 = v39;
+            v43 = lastObject;
+            v21 = completionCopy;
+            v45 = completionCopy;
             v44 = v41;
-            v37 = v25;
-            [(TVRCHMHomeObserver *)v38 _readCharacteristic:v32 completion:v42];
+            v37 = lastObject;
+            [(TVRCHMHomeObserver *)selfCopy _readCharacteristic:v32 completion:v42];
 
             goto LABEL_42;
           }
         }
 
-        v28 = [v26 countByEnumeratingWithState:&v46 objects:v54 count:16];
+        v28 = [characteristics countByEnumeratingWithState:&v46 objects:v54 count:16];
         if (v28)
         {
           continue;
@@ -578,10 +578,10 @@ LABEL_39:
 
 LABEL_40:
 
-  v21 = v39;
-  if (v39)
+  v21 = completionCopy;
+  if (completionCopy)
   {
-    (*(v39 + 2))(v39, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
 LABEL_42:
@@ -613,12 +613,12 @@ uint64_t __83__TVRCHMHomeObserver__checkAccessoryReachabilityAndFetchTVServices_
   return result;
 }
 
-- (void)_readCharacteristic:(id)a3 completion:(id)a4
+- (void)_readCharacteristic:(id)characteristic completion:(id)completion
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CD1988] readRequestWithCharacteristic:v6];
+  characteristicCopy = characteristic;
+  completionCopy = completion;
+  v8 = [MEMORY[0x277CD1988] readRequestWithCharacteristic:characteristicCopy];
   v9 = MEMORY[0x277CD1978];
   v33[0] = v8;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:1];
@@ -632,11 +632,11 @@ uint64_t __83__TVRCHMHomeObserver__checkAccessoryReachabilityAndFetchTVServices_
   v22[1] = 3221225472;
   v22[2] = __53__TVRCHMHomeObserver__readCharacteristic_completion___block_invoke;
   v22[3] = &unk_279D82CE8;
-  v12 = v6;
+  v12 = characteristicCopy;
   v26 = v27;
   v23 = v12;
-  v24 = self;
-  v13 = v7;
+  selfCopy = self;
+  v13 = completionCopy;
   v25 = v13;
   [v11 setCompletionHandler:v22];
   v19[0] = MEMORY[0x277D85DD0];
@@ -800,22 +800,22 @@ LABEL_16:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_checkErrorForLocallySuspendedAccessory:(id)a3
+- (BOOL)_checkErrorForLocallySuspendedAccessory:(id)accessory
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  accessoryCopy = accessory;
+  if (accessoryCopy)
   {
     v4 = _TVRCHomeKitLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138543362;
-      v14 = v3;
+      v14 = accessoryCopy;
       _os_log_impl(&dword_26CF7F000, v4, OS_LOG_TYPE_DEFAULT, "Checking error for locally suspended accessory %{public}@", &v13, 0xCu);
     }
 
-    v5 = [v3 userInfo];
-    v6 = [v5 valueForKey:*MEMORY[0x277CCA7E8]];
+    userInfo = [accessoryCopy userInfo];
+    v6 = [userInfo valueForKey:*MEMORY[0x277CCA7E8]];
 
     v7 = _TVRCHomeKitLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -823,22 +823,22 @@ LABEL_16:
       [(TVRCHMHomeObserver *)v6 _checkErrorForLocallySuspendedAccessory:v7];
     }
 
-    v8 = [v6 domain];
-    v9 = [v8 isEqualToString:*MEMORY[0x277CCFD28]];
+    domain = [v6 domain];
+    v9 = [domain isEqualToString:*MEMORY[0x277CCFD28]];
     if (v9)
     {
-      v10 = [v6 code];
+      code = [v6 code];
 
-      if (v10 != 2401)
+      if (code != 2401)
       {
         LOBYTE(v9) = 0;
         goto LABEL_13;
       }
 
-      v8 = _TVRCHomeKitLog();
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+      domain = _TVRCHomeKitLog();
+      if (os_log_type_enabled(domain, OS_LOG_TYPE_ERROR))
       {
-        [TVRCHMHomeObserver _checkErrorForLocallySuspendedAccessory:v8];
+        [TVRCHMHomeObserver _checkErrorForLocallySuspendedAccessory:domain];
       }
     }
 

@@ -1,36 +1,36 @@
 @interface VUIProgressView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIEdgeInsets)padding;
-- (VUIProgressView)initWithFrame:(CGRect)a3;
+- (VUIProgressView)initWithFrame:(CGRect)frame;
 - (id)_maskImageForProgressBar;
 - (void)_layoutMaterialView;
 - (void)_updateForStyleChange;
 - (void)layoutSubviews;
-- (void)setCompleteTintColor:(id)a3;
-- (void)setCornerRadius:(double)a3;
-- (void)setGradientEndColor:(id)a3;
-- (void)setGradientStartColor:(id)a3;
-- (void)setMaterialView:(id)a3;
-- (void)setPadding:(UIEdgeInsets)a3;
-- (void)setProgress:(double)a3;
-- (void)setProgressTintColor:(id)a3;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
-- (void)setShouldProgressBarUseRoundCorner:(BOOL)a3;
-- (void)setStyle:(unint64_t)a3;
-- (void)setUseMaterial:(BOOL)a3;
+- (void)setCompleteTintColor:(id)color;
+- (void)setCornerRadius:(double)radius;
+- (void)setGradientEndColor:(id)color;
+- (void)setGradientStartColor:(id)color;
+- (void)setMaterialView:(id)view;
+- (void)setPadding:(UIEdgeInsets)padding;
+- (void)setProgress:(double)progress;
+- (void)setProgressTintColor:(id)color;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
+- (void)setShouldProgressBarUseRoundCorner:(BOOL)corner;
+- (void)setStyle:(unint64_t)style;
+- (void)setUseMaterial:(BOOL)material;
 @end
 
 @implementation VUIProgressView
 
-- (VUIProgressView)initWithFrame:(CGRect)a3
+- (VUIProgressView)initWithFrame:(CGRect)frame
 {
   v16.receiver = self;
   v16.super_class = VUIProgressView;
-  v3 = [(VUIProgressView *)&v16 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VUIProgressView *)&v16 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] clearColor];
-    [v3 setBackgroundColor:v4];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [v3 setBackgroundColor:clearColor];
 
     [v3 setClipsToBounds:0];
     *(v3 + 55) = 0x4000000000000000;
@@ -56,8 +56,8 @@
     *(v3 + 51) = v11;
 
     v13 = *(v3 + 51);
-    v14 = [MEMORY[0x1E69DC888] clearColor];
-    [v13 setBackgroundColor:v14];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    [v13 setBackgroundColor:clearColor2];
 
     [*(v3 + 51) setAutoresizingMask:18];
     [*(v3 + 51) setCornerRadius:*(v3 + 54)];
@@ -86,8 +86,8 @@
     v6 = v5 + -2.0;
     v8 = v7 + 12.0;
     v10 = v9 + 10.0;
-    v11 = [(VUIProgressView *)self shadowImageView];
-    [v11 setFrame:{v4, v6, v8, v10}];
+    shadowImageView = [(VUIProgressView *)self shadowImageView];
+    [shadowImageView setFrame:{v4, v6, v8, v10}];
 
     if (self->_materialView)
     {
@@ -96,21 +96,21 @@
       materialView = self->_materialView;
       if (isKindOfClass)
       {
-        v14 = [(VUIProgressView *)self _maskImageForProgressBar];
-        [(UIView *)materialView _setMaskImage:v14];
+        _maskImageForProgressBar = [(VUIProgressView *)self _maskImageForProgressBar];
+        [(UIView *)materialView _setMaskImage:_maskImageForProgressBar];
       }
 
       else
       {
-        v14 = [(UIView *)materialView layer];
+        _maskImageForProgressBar = [(UIView *)materialView layer];
         [(VUIProgressView *)self bounds];
-        [v14 setFrame:?];
-        v15 = [v14 sublayers];
+        [_maskImageForProgressBar setFrame:?];
+        sublayers = [_maskImageForProgressBar sublayers];
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
         v24 = 0u;
-        v16 = [v15 countByEnumeratingWithState:&v21 objects:v26 count:16];
+        v16 = [sublayers countByEnumeratingWithState:&v21 objects:v26 count:16];
         if (v16)
         {
           v17 = v16;
@@ -122,7 +122,7 @@
             {
               if (*v22 != v18)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(sublayers);
               }
 
               v20 = *(*(&v21 + 1) + 8 * v19);
@@ -132,7 +132,7 @@
             }
 
             while (v17 != v19);
-            v17 = [v15 countByEnumeratingWithState:&v21 objects:v26 count:16];
+            v17 = [sublayers countByEnumeratingWithState:&v21 objects:v26 count:16];
           }
 
           while (v17);
@@ -142,10 +142,10 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(VUIProgressView *)self height:a3.width];
+  width = fits.width;
+  [(VUIProgressView *)self height:fits.width];
   v5 = v4;
   v6 = width;
   result.height = v5;
@@ -153,82 +153,82 @@
   return result;
 }
 
-- (void)setCompleteTintColor:(id)a3
+- (void)setCompleteTintColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if (([(UIColor *)self->_completeTintColor isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_completeTintColor, a3);
-    [(VUIProgressBarView *)self->_progressBarView setCompleteTintColor:v5];
+    objc_storeStrong(&self->_completeTintColor, color);
+    [(VUIProgressBarView *)self->_progressBarView setCompleteTintColor:colorCopy];
   }
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  if (vabdd_f64(self->_cornerRadius, a3) > 0.00000011920929)
+  if (vabdd_f64(self->_cornerRadius, radius) > 0.00000011920929)
   {
-    self->_cornerRadius = a3;
+    self->_cornerRadius = radius;
     [(VUIProgressBarView *)self->_progressBarView setCornerRadius:?];
   }
 }
 
-- (void)setProgress:(double)a3
+- (void)setProgress:(double)progress
 {
-  if (vabdd_f64(self->_progress, a3) > 0.00000011920929)
+  if (vabdd_f64(self->_progress, progress) > 0.00000011920929)
   {
-    self->_progress = a3;
+    self->_progress = progress;
     [(VUIProgressBarView *)self->_progressBarView setProgress:?];
   }
 }
 
-- (void)setProgressTintColor:(id)a3
+- (void)setProgressTintColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if (([(UIColor *)self->_progressTintColor isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_progressTintColor, a3);
-    [(VUIProgressBarView *)self->_progressBarView setProgressTintColor:v5];
+    objc_storeStrong(&self->_progressTintColor, color);
+    [(VUIProgressBarView *)self->_progressBarView setProgressTintColor:colorCopy];
   }
 }
 
-- (void)setGradientStartColor:(id)a3
+- (void)setGradientStartColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if (([(UIColor *)self->_gradientStartColor isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_gradientStartColor, a3);
-    [(VUIProgressBarView *)self->_progressBarView setGradientStartColor:v5];
+    objc_storeStrong(&self->_gradientStartColor, color);
+    [(VUIProgressBarView *)self->_progressBarView setGradientStartColor:colorCopy];
   }
 }
 
-- (void)setGradientEndColor:(id)a3
+- (void)setGradientEndColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if (([(UIColor *)self->_gradientEndColor isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_gradientEndColor, a3);
-    [(VUIProgressBarView *)self->_progressBarView setGradientEndColor:v5];
+    objc_storeStrong(&self->_gradientEndColor, color);
+    [(VUIProgressBarView *)self->_progressBarView setGradientEndColor:colorCopy];
   }
 }
 
-- (void)setPadding:(UIEdgeInsets)a3
+- (void)setPadding:(UIEdgeInsets)padding
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = padding.top;
+  v3.f64[1] = padding.left;
+  v4.f64[0] = padding.bottom;
+  v4.f64[1] = padding.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_padding.top), vceqq_f64(v4, *&self->_padding.bottom)))) & 1) == 0)
   {
-    self->_padding = a3;
+    self->_padding = padding;
     [(VUIProgressBarView *)self->_progressBarView setPadding:?];
   }
 }
 
-- (void)setShouldProgressBarUseRoundCorner:(BOOL)a3
+- (void)setShouldProgressBarUseRoundCorner:(BOOL)corner
 {
-  if (self->_shouldProgressBarUseRoundCorner != a3)
+  if (self->_shouldProgressBarUseRoundCorner != corner)
   {
-    self->_shouldProgressBarUseRoundCorner = a3;
+    self->_shouldProgressBarUseRoundCorner = corner;
     [(VUIProgressBarView *)self->_progressBarView setShouldProgressBarUseRoundCorner:?];
     [(VUIProgressView *)self setNeedsLayout];
 
@@ -236,31 +236,31 @@
   }
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
-  v4 = a3;
-  v6 = [(VUIProgressView *)self layer:a3];
-  [v6 setAllowsEdgeAntialiasing:v4];
+  selectedCopy = selected;
+  v6 = [(VUIProgressView *)self layer:selected];
+  [v6 setAllowsEdgeAntialiasing:selectedCopy];
 
-  v7 = [(VUIProgressBarView *)self->_progressBarView layer];
-  [v7 setAllowsEdgeAntialiasing:v4];
+  layer = [(VUIProgressBarView *)self->_progressBarView layer];
+  [layer setAllowsEdgeAntialiasing:selectedCopy];
 }
 
-- (void)setStyle:(unint64_t)a3
+- (void)setStyle:(unint64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
+    self->_style = style;
     [(VUIProgressView *)self _updateForStyleChange];
   }
 }
 
-- (void)setUseMaterial:(BOOL)a3
+- (void)setUseMaterial:(BOOL)material
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  if (self->_useMaterial != a3)
+  if (self->_useMaterial != material)
   {
-    self->_useMaterial = a3;
+    self->_useMaterial = material;
     [(VUIProgressBarView *)self->_progressBarView setUseMaterial:?];
     if (!self->_useMaterial)
     {
@@ -319,8 +319,8 @@ LABEL_8:
       v11[0] = v8;
       v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
       [v5 setFilters:v9];
-      v10 = [v6 layer];
-      [v10 addSublayer:v5];
+      layer = [v6 layer];
+      [layer addSublayer:v5];
     }
 
     [(VUIProgressView *)self bounds];
@@ -333,17 +333,17 @@ LABEL_8:
   }
 }
 
-- (void)setMaterialView:(id)a3
+- (void)setMaterialView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   materialView = self->_materialView;
-  if (materialView != v5)
+  if (materialView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)materialView removeFromSuperview];
-    objc_storeStrong(&self->_materialView, a3);
+    objc_storeStrong(&self->_materialView, view);
     [(VUIProgressView *)self _layoutMaterialView];
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
@@ -375,15 +375,15 @@ LABEL_8:
   [(UIView *)self->_materialView bounds];
   v4 = v3;
   v6 = v5;
-  v7 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v7 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v9 = v8;
   v17.width = v4;
   v17.height = v6;
   UIGraphicsBeginImageContextWithOptions(v17, 0, v9);
 
-  v10 = [MEMORY[0x1E69DC888] blackColor];
-  [v10 setFill];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  [blackColor setFill];
 
   v11 = MEMORY[0x1E69DC728];
   materialView = self->_materialView;
@@ -422,8 +422,8 @@ LABEL_8:
     }
 
     v6 = MEMORY[0x1E69DCAB8];
-    v7 = [MEMORY[0x1E696AAE8] vui_videosUIBundle];
-    v8 = [v6 imageNamed:@"ProgressBarShadow" inBundle:v7];
+    vui_videosUIBundle = [MEMORY[0x1E696AAE8] vui_videosUIBundle];
+    v8 = [v6 imageNamed:@"ProgressBarShadow" inBundle:vui_videosUIBundle];
     v11 = [v8 resizableImageWithCapInsets:{7.0, 11.0, 7.0, 11.0}];
 
     v9 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v11];

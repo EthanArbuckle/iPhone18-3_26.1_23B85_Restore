@@ -1,7 +1,7 @@
 @interface PKInkKey
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
-- (void)initWithIdentifier:(uint64_t)a3 version:(void *)a4 variant:;
+- (void)initWithIdentifier:(uint64_t)identifier version:(void *)version variant:;
 @end
 
 @implementation PKInkKey
@@ -13,36 +13,36 @@
   return [(NSString *)self->_variant hash]^ v3 ^ ((0x94D049BB133111EBLL * (v4 ^ (v4 >> 27))) >> 31) ^ (0x94D049BB133111EBLL * (v4 ^ (v4 >> 27)));
 }
 
-- (void)initWithIdentifier:(uint64_t)a3 version:(void *)a4 variant:
+- (void)initWithIdentifier:(uint64_t)identifier version:(void *)version variant:
 {
   v8 = a2;
-  v9 = a4;
-  if (a1)
+  versionCopy = version;
+  if (self)
   {
-    v14.receiver = a1;
+    v14.receiver = self;
     v14.super_class = PKInkKey;
     v10 = objc_msgSendSuper2(&v14, sel_init);
-    a1 = v10;
+    self = v10;
     if (v10)
     {
       objc_storeStrong(v10 + 1, a2);
-      a1[2] = a3;
-      v11 = [v9 copy];
-      v12 = a1[3];
-      a1[3] = v11;
+      self[2] = identifier;
+      v11 = [versionCopy copy];
+      v12 = self[3];
+      self[3] = v11;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (self)
     {
       identifier = self->_identifier;

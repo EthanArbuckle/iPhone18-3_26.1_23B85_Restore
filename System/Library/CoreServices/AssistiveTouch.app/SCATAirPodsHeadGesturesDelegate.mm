@@ -1,22 +1,22 @@
 @interface SCATAirPodsHeadGesturesDelegate
 - (void)didDetectedError;
-- (void)didDetectedWithHeadGesture:(id)a3;
-- (void)didStartStreamingWithIsStreaming:(BOOL)a3;
+- (void)didDetectedWithHeadGesture:(id)gesture;
+- (void)didStartStreamingWithIsStreaming:(BOOL)streaming;
 @end
 
 @implementation SCATAirPodsHeadGesturesDelegate
 
-- (void)didDetectedWithHeadGesture:(id)a3
+- (void)didDetectedWithHeadGesture:(id)gesture
 {
-  v3 = a3;
+  gestureCopy = gesture;
 
-  sub_1001229B4(v3);
+  sub_1001229B4(gestureCopy);
 }
 
-- (void)didStartStreamingWithIsStreaming:(BOOL)a3
+- (void)didStartStreamingWithIsStreaming:(BOOL)streaming
 {
 
-  sub_100122C0C(a3);
+  sub_100122C0C(streaming);
 }
 
 - (void)didDetectedError

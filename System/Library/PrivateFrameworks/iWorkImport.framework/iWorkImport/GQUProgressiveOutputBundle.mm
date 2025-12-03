@@ -1,27 +1,27 @@
 @interface GQUProgressiveOutputBundle
-- (BOOL)appendData:(__CFData *)a3 mimeType:(__CFString *)a4 resourceName:(__CFString *)a5;
-- (BOOL)setData:(__CFData *)a3 mimeType:(__CFString *)a4 forNamedResource:(__CFString *)a5;
-- (GQUProgressiveOutputBundle)initWithHandler:(id)a3;
-- (__CFString)createUriForResource:(__CFString *)a3;
-- (__CFURL)getAttachmentURL:(__CFString *)a3 mimeType:(__CFString *)a4;
-- (void)closeAttachment:(__CFString *)a3;
+- (BOOL)appendData:(__CFData *)data mimeType:(__CFString *)type resourceName:(__CFString *)name;
+- (BOOL)setData:(__CFData *)data mimeType:(__CFString *)type forNamedResource:(__CFString *)resource;
+- (GQUProgressiveOutputBundle)initWithHandler:(id)handler;
+- (__CFString)createUriForResource:(__CFString *)resource;
+- (__CFURL)getAttachmentURL:(__CFString *)l mimeType:(__CFString *)type;
+- (void)closeAttachment:(__CFString *)attachment;
 - (void)dealloc;
-- (void)setDocumentSize:(CGSize)a3;
+- (void)setDocumentSize:(CGSize)size;
 - (void)startProgressiveData;
 @end
 
 @implementation GQUProgressiveOutputBundle
 
-- (GQUProgressiveOutputBundle)initWithHandler:(id)a3
+- (GQUProgressiveOutputBundle)initWithHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
     v8.receiver = self;
     v8.super_class = GQUProgressiveOutputBundle;
     v4 = [(GQUProgressiveOutputBundle *)&v8 init];
     if (v4)
     {
-      v4->mHelper = a3;
+      v4->mHelper = handler;
       v4->mAttachmentsURLs = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
       Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
       v4->mQuickLookProperties = Mutable;
@@ -84,29 +84,29 @@
   [(GQUProgressiveOutputBundle *)&v8 dealloc];
 }
 
-- (__CFString)createUriForResource:(__CFString *)a3
+- (__CFString)createUriForResource:(__CFString *)resource
 {
-  v3 = CFURLGetString([(GQUProgressiveOutputBundle *)self getAttachmentURL:a3 mimeType:0]);
+  v3 = CFURLGetString([(GQUProgressiveOutputBundle *)self getAttachmentURL:resource mimeType:0]);
 
   return CFRetain(v3);
 }
 
-- (BOOL)appendData:(__CFData *)a3 mimeType:(__CFString *)a4 resourceName:(__CFString *)a5
+- (BOOL)appendData:(__CFData *)data mimeType:(__CFString *)type resourceName:(__CFString *)name
 {
   if (self->mPreviewStarted)
   {
-    [(GQUProgressiveHelper *)self->mHelper appendDataToAttachment:[(GQUProgressiveOutputBundle *)self getAttachmentURL:a5 mimeType:a4] chunk:a3];
+    [(GQUProgressiveHelper *)self->mHelper appendDataToAttachment:[(GQUProgressiveOutputBundle *)self getAttachmentURL:name mimeType:type] chunk:data];
   }
 
   return 1;
 }
 
-- (BOOL)setData:(__CFData *)a3 mimeType:(__CFString *)a4 forNamedResource:(__CFString *)a5
+- (BOOL)setData:(__CFData *)data mimeType:(__CFString *)type forNamedResource:(__CFString *)resource
 {
   if (self->mPreviewStarted)
   {
-    v9 = [(GQUProgressiveOutputBundle *)self getAttachmentURL:a5 mimeType:a4];
-    [(GQUProgressiveHelper *)self->mHelper appendDataToAttachment:v9 chunk:a3];
+    v9 = [(GQUProgressiveOutputBundle *)self getAttachmentURL:resource mimeType:type];
+    [(GQUProgressiveHelper *)self->mHelper appendDataToAttachment:v9 chunk:data];
     [(GQUProgressiveHelper *)self->mHelper closeAttachment:v9];
   }
 
@@ -121,14 +121,14 @@
 
     v11 = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
     v12 = v11;
-    if (a4)
+    if (type)
     {
-      CFDictionarySetValue(v11, kQLPreviewPropertyMIMETypeKey, a4);
+      CFDictionarySetValue(v11, kQLPreviewPropertyMIMETypeKey, type);
     }
 
     CFDictionarySetValue(v12, kQLPreviewPropertyTextEncodingNameKey, @"UTF-8");
-    CFDictionarySetValue(v12, kQLPreviewPropertyAttachmentDataKey, a3);
-    v13 = CFStringCreateWithFormat(0, 0, @"%@-%@", self->mUuidStr, a5);
+    CFDictionarySetValue(v12, kQLPreviewPropertyAttachmentDataKey, data);
+    v13 = CFStringCreateWithFormat(0, 0, @"%@-%@", self->mUuidStr, resource);
     CFDictionarySetValue(self->mComputedAttachments, v13, v12);
     CFRelease(v13);
     CFRelease(v12);
@@ -137,10 +137,10 @@
   return 1;
 }
 
-- (void)setDocumentSize:(CGSize)a3
+- (void)setDocumentSize:(CGSize)size
 {
-  height = a3.height;
-  valuePtr = a3.width;
+  height = size.height;
+  valuePtr = size.width;
   v5 = CFNumberCreate(0, kCFNumberCGFloatType, &valuePtr);
   v9 = height;
   v6 = CFNumberCreate(0, kCFNumberCGFloatType, &v9);
@@ -210,40 +210,40 @@
   }
 }
 
-- (void)closeAttachment:(__CFString *)a3
+- (void)closeAttachment:(__CFString *)attachment
 {
-  v4 = [(GQUProgressiveOutputBundle *)self getAttachmentURL:a3 mimeType:0];
+  v4 = [(GQUProgressiveOutputBundle *)self getAttachmentURL:attachment mimeType:0];
   mHelper = self->mHelper;
 
   [(GQUProgressiveHelper *)mHelper closeAttachment:v4];
 }
 
-- (__CFURL)getAttachmentURL:(__CFString *)a3 mimeType:(__CFString *)a4
+- (__CFURL)getAttachmentURL:(__CFString *)l mimeType:(__CFString *)type
 {
-  Value = CFDictionaryGetValue(self->mAttachmentsURLs, a3);
+  Value = CFDictionaryGetValue(self->mAttachmentsURLs, l);
   if (!Value)
   {
-    if (CFStringCompare(a3, @"index.html", 0))
+    if (CFStringCompare(l, @"index.html", 0))
     {
-      Copy = CFStringCreateWithFormat(0, 0, @"%@-%@", self->mUuidStr, a3);
+      Copy = CFStringCreateWithFormat(0, 0, @"%@-%@", self->mUuidStr, l);
     }
 
     else
     {
-      Copy = CFStringCreateCopy(0, a3);
+      Copy = CFStringCreateCopy(0, l);
     }
 
     v9 = Copy;
     Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
     v11 = Mutable;
-    if (a4)
+    if (type)
     {
-      CFDictionarySetValue(Mutable, kQLPreviewPropertyMIMETypeKey, a4);
+      CFDictionarySetValue(Mutable, kQLPreviewPropertyMIMETypeKey, type);
     }
 
     CFDictionarySetValue(v11, kQLPreviewPropertyTextEncodingNameKey, @"UTF-8");
     Value = [(GQUProgressiveHelper *)self->mHelper createAttachment:v9 options:v11];
-    CFDictionarySetValue(self->mAttachmentsURLs, a3, Value);
+    CFDictionarySetValue(self->mAttachmentsURLs, l, Value);
     CFRelease(Value);
     CFRelease(v11);
     CFRelease(v9);

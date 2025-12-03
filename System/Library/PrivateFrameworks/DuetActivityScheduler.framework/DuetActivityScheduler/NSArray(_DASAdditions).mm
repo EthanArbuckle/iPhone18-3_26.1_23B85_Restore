@@ -19,7 +19,7 @@
   v5 = a3;
   v6 = a4;
   v7 = objc_autoreleasePoolPush();
-  v8 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -42,7 +42,7 @@
         v14 = *(*(&v18 + 1) + 8 * i);
         if ([v6 containsObject:{v14, v18}])
         {
-          [v8 addObject:v14];
+          [array addObject:v14];
         }
       }
 
@@ -52,7 +52,7 @@
     while (v11);
   }
 
-  v15 = [v8 copy];
+  v15 = [array copy];
   objc_autoreleasePoolPop(v7);
 
   v16 = *MEMORY[0x1E69E9840];
@@ -66,7 +66,7 @@
   v5 = a3;
   v6 = a4;
   v7 = objc_autoreleasePoolPush();
-  v8 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
@@ -87,9 +87,9 @@
         }
 
         v14 = *(*(&v28 + 1) + 8 * i);
-        if (([v8 containsObject:v14] & 1) == 0)
+        if (([array containsObject:v14] & 1) == 0)
         {
-          [v8 addObject:v14];
+          [array addObject:v14];
         }
       }
 
@@ -119,9 +119,9 @@
         }
 
         v20 = *(*(&v24 + 1) + 8 * j);
-        if (([v8 containsObject:{v20, v24}] & 1) == 0)
+        if (([array containsObject:{v20, v24}] & 1) == 0)
         {
-          [v8 addObject:v20];
+          [array addObject:v20];
         }
       }
 
@@ -131,7 +131,7 @@
     while (v17);
   }
 
-  v21 = [v8 copy];
+  v21 = [array copy];
   objc_autoreleasePoolPop(v7);
 
   v22 = *MEMORY[0x1E69E9840];
@@ -151,7 +151,7 @@
     {
       v8 = v5;
       v9 = objc_autoreleasePoolPush();
-      v10 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v21 = 0u;
       v22 = 0u;
       v23 = 0u;
@@ -174,7 +174,7 @@
             v16 = *(*(&v21 + 1) + 8 * i);
             if ([v7 containsObject:{v16, v21}])
             {
-              [v10 addObject:v16];
+              [array addObject:v16];
             }
           }
 
@@ -184,10 +184,10 @@
         while (v13);
       }
 
-      v17 = [v10 count];
+      v17 = [array count];
       if (v17 != [v11 count])
       {
-        v18 = [v10 copy];
+        v18 = [array copy];
 
         v11 = v18;
       }
@@ -338,7 +338,7 @@ LABEL_5:
             objc_enumerationMutation(v6);
           }
 
-          if ([a1 containsObject:{*(*(&v14 + 1) + 8 * i), v14}])
+          if ([self containsObject:{*(*(&v14 + 1) + 8 * i), v14}])
           {
             v11 = 1;
             goto LABEL_12;
@@ -372,9 +372,9 @@ LABEL_12:
 {
   v18 = *MEMORY[0x1E69E9840];
   v2 = 0.0;
-  if ([a1 count])
+  if ([self count])
   {
-    v3 = [a1 firstObject];
+    firstObject = [self firstObject];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -384,8 +384,8 @@ LABEL_12:
       v16 = 0u;
       v13 = 0u;
       v14 = 0u;
-      v5 = a1;
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      selfCopy = self;
+      v6 = [selfCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         v7 = v6;
@@ -397,7 +397,7 @@ LABEL_12:
           {
             if (*v14 != v8)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(selfCopy);
             }
 
             [*(*(&v13 + 1) + 8 * v9) doubleValue];
@@ -406,13 +406,13 @@ LABEL_12:
           }
 
           while (v7 != v9);
-          v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+          v7 = [selfCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
         }
 
         while (v7);
       }
 
-      v2 = v2 / [v5 count];
+      v2 = v2 / [selfCopy count];
     }
   }
 
@@ -427,8 +427,8 @@ LABEL_12:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = a1;
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  selfCopy = self;
+  v4 = [selfCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -440,14 +440,14 @@ LABEL_12:
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(selfCopy);
         }
 
         [*(*(&v13 + 1) + 8 * i) doubleValue];
         v7 = v7 + (v9 - a2) * (v9 - a2);
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [selfCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -458,19 +458,19 @@ LABEL_12:
     v7 = 0.0;
   }
 
-  v10 = [v3 count];
+  v10 = [selfCopy count];
   v11 = *MEMORY[0x1E69E9840];
   return sqrt(v7 / (v10 - 1));
 }
 
 - (double)standardDeviation
 {
-  if ([a1 count] < 2)
+  if ([self count] < 2)
   {
     return 0.0;
   }
 
-  v2 = [a1 firstObject];
+  firstObject = [self firstObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -479,16 +479,16 @@ LABEL_12:
     return 0.0;
   }
 
-  [a1 mean];
+  [self mean];
 
-  [a1 standardDeviationWithMean:?];
+  [self standardDeviationWithMean:?];
   return result;
 }
 
 - (double)cooccurrencesWith:()_DASAdditions
 {
   v4 = a3;
-  v5 = [a1 firstObject];
+  firstObject = [self firstObject];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -498,7 +498,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v6 = [v4 firstObject];
+  firstObject2 = [v4 firstObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -508,18 +508,18 @@ LABEL_11:
   }
 
   v8 = [v4 count];
-  if (v8 != [a1 count])
+  if (v8 != [self count])
   {
     goto LABEL_11;
   }
 
-  if ([a1 count])
+  if ([self count])
   {
     v9 = 0;
     v10 = 0.0;
     do
     {
-      v11 = [a1 objectAtIndexedSubscript:v9];
+      v11 = [self objectAtIndexedSubscript:v9];
       v12 = [v4 objectAtIndexedSubscript:v9];
       v13 = [v11 isEqual:v12];
 
@@ -531,7 +531,7 @@ LABEL_11:
       ++v9;
     }
 
-    while (v9 < [a1 count]);
+    while (v9 < [self count]);
   }
 
   else
@@ -539,7 +539,7 @@ LABEL_11:
     v10 = 0.0;
   }
 
-  v14 = v10 / [a1 count];
+  v14 = v10 / [self count];
 LABEL_12:
 
   return v14;
@@ -548,7 +548,7 @@ LABEL_12:
 - (double)correlationWith:()_DASAdditions
 {
   v4 = a3;
-  v5 = [a1 firstObject];
+  firstObject = [self firstObject];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -558,7 +558,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v6 = [v4 firstObject];
+  firstObject2 = [v4 firstObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -568,21 +568,21 @@ LABEL_11:
   }
 
   v8 = [v4 count];
-  if (v8 != [a1 count])
+  if (v8 != [self count])
   {
     goto LABEL_11;
   }
 
-  v9 = [a1 count];
+  v9 = [self count];
   if (v9 < 2)
   {
     goto LABEL_11;
   }
 
   v10 = v9;
-  [a1 mean];
+  [self mean];
   v12 = v11;
-  [a1 standardDeviationWithMean:?];
+  [self standardDeviationWithMean:?];
   v14 = 0.0;
   if (v13 != 0.0)
   {
@@ -595,7 +595,7 @@ LABEL_11:
       v19 = v18;
       for (i = 0; i != v10; ++i)
       {
-        v21 = [a1 objectAtIndexedSubscript:i];
+        v21 = [self objectAtIndexedSubscript:i];
         [v21 doubleValue];
         v23 = v22 - v12;
         v24 = [v4 objectAtIndexedSubscript:i];

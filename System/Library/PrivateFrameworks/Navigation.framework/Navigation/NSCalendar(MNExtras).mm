@@ -13,17 +13,17 @@
 {
   v10 = a3;
   v11 = a5;
-  v12 = [a1 _navigation_relativeDateStringForDate:v10 context:a4 inTimeZone:v11];
+  v12 = [self _navigation_relativeDateStringForDate:v10 context:a4 inTimeZone:v11];
   v13 = v12;
   if (!v12)
   {
-    v15 = [MEMORY[0x1E695DF00] date];
-    v16 = [a1 components:28 fromDate:v15];
-    v17 = [a1 dateFromComponents:v16];
+    date = [MEMORY[0x1E695DF00] date];
+    v16 = [self components:28 fromDate:date];
+    v17 = [self dateFromComponents:v16];
 
-    v18 = [a1 dateByAddingUnit:16 value:5 toDate:v17 options:0];
-    v19 = [a1 _navigation_offsetDate:v10 toTimeZone:v11];
-    v20 = [a1 components:16 fromDate:v19 toDate:v18 options:0];
+    v18 = [self dateByAddingUnit:16 value:5 toDate:v17 options:0];
+    v19 = [self _navigation_offsetDate:v10 toTimeZone:v11];
+    v20 = [self components:16 fromDate:v19 toDate:v18 options:0];
     if ([v20 day] < 0 || objc_msgSend(v20, "day") > 5)
     {
       if (_navigation_transitRelativeDateStringForDate_context_inTimeZone_outUsedFormat__onceToken_14 != -1)
@@ -84,7 +84,7 @@ LABEL_17:
     dispatch_once(&_navigation_relativeDateStringForDate_context_inTimeZone__onceToken, &__block_literal_global_7);
   }
 
-  v11 = [a1 _navigation_offsetDate:v10 toTimeZone:v9];
+  v11 = [self _navigation_offsetDate:v10 toTimeZone:v9];
 
   [_navigation_relativeDateStringForDate_context_inTimeZone__dateFormatter setFormattingContext:a4];
   [_navigation_relativeDateStringForDate_context_inTimeZone__dateFormatter setDoesRelativeDateFormatting:0];
@@ -119,7 +119,7 @@ LABEL_17:
   [_navigation_dateStringForDate_withStyle_useRelativeFormatting_inTimeZone__dateFormatter setDateStyle:a4];
   [_navigation_dateStringForDate_withStyle_useRelativeFormatting_inTimeZone__dateFormatter setDoesRelativeDateFormatting:a5];
   v13 = _navigation_dateStringForDate_withStyle_useRelativeFormatting_inTimeZone__dateFormatter;
-  v14 = [a1 _navigation_offsetDate:v12 toTimeZone:v11];
+  v14 = [self _navigation_offsetDate:v12 toTimeZone:v11];
 
   v15 = [v13 stringFromDate:v14];
 
@@ -128,16 +128,16 @@ LABEL_17:
 
 - (uint64_t)_navigation_isDateInTomorrow:()MNExtras inTimeZone:
 {
-  v2 = [a1 _navigation_offsetDate:? toTimeZone:?];
-  v3 = [a1 isDateInTomorrow:v2];
+  v2 = [self _navigation_offsetDate:? toTimeZone:?];
+  v3 = [self isDateInTomorrow:v2];
 
   return v3;
 }
 
 - (uint64_t)_navigation_isDateInToday:()MNExtras inTimeZone:
 {
-  v2 = [a1 _navigation_offsetDate:? toTimeZone:?];
-  v3 = [a1 isDateInToday:v2];
+  v2 = [self _navigation_offsetDate:? toTimeZone:?];
+  v3 = [self isDateInToday:v2];
 
   return v3;
 }
@@ -148,11 +148,11 @@ LABEL_17:
   v7 = v6;
   if (a4)
   {
-    v8 = [a1 componentsInTimeZone:a4 fromDate:v6];
-    v9 = [a1 timeZone];
-    [v8 setTimeZone:v9];
+    v8 = [self componentsInTimeZone:a4 fromDate:v6];
+    timeZone = [self timeZone];
+    [v8 setTimeZone:timeZone];
 
-    v10 = [a1 dateFromComponents:v8];
+    v10 = [self dateFromComponents:v8];
   }
 
   else

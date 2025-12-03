@@ -1,15 +1,15 @@
 @interface StocksAssistantChartView
 + (CGGradient)LineBackgroundGradient;
-- (StocksAssistantChartView)initWithFrame:(CGRect)a3;
+- (StocksAssistantChartView)initWithFrame:(CGRect)frame;
 - (void)_prepareXAxisLabelsAndPositions;
-- (void)_prepareXAxisLabelsForLabelInfoArray:(id)a3;
+- (void)_prepareXAxisLabelsForLabelInfoArray:(id)array;
 - (void)_prepareYAxisLabelsAndPositions;
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 - (void)layoutSubviews;
-- (void)setChartData:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)stockGraphViewReadyForDisplay:(id)a3;
+- (void)setChartData:(id)data;
+- (void)setFrame:(CGRect)frame;
+- (void)stockGraphViewReadyForDisplay:(id)display;
 @end
 
 @implementation StocksAssistantChartView
@@ -21,9 +21,9 @@
   {
     DeviceRGB = CGColorSpaceCreateDeviceRGB();
     v4 = [UIColor colorWithWhite:0.08 alpha:0.2];
-    v5 = [v4 CGColor];
+    cGColor = [v4 CGColor];
     v6 = [UIColor colorWithWhite:0.08 alpha:0.5];
-    v7 = +[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", v5, [v6 CGColor], 0);
+    v7 = +[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", cGColor, [v6 CGColor], 0);
 
     qword_11BE8 = CGGradientCreateWithColors(DeviceRGB, v7, 0);
     CGColorSpaceRelease(DeviceRGB);
@@ -33,11 +33,11 @@
   return result;
 }
 
-- (StocksAssistantChartView)initWithFrame:(CGRect)a3
+- (StocksAssistantChartView)initWithFrame:(CGRect)frame
 {
   v20.receiver = self;
   v20.super_class = StocksAssistantChartView;
-  v3 = [(StocksAssistantChartView *)&v20 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(StocksAssistantChartView *)&v20 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [[StockGraphView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
@@ -93,7 +93,7 @@
   [(StocksAssistantChartView *)&v3 dealloc];
 }
 
-- (void)stockGraphViewReadyForDisplay:(id)a3
+- (void)stockGraphViewReadyForDisplay:(id)display
 {
   xAxisLabels = self->_xAxisLabels;
   v7[0] = _NSConcreteStackBlock;
@@ -114,15 +114,15 @@
   [(StocksAssistantChartView *)self setNeedsLayout];
 }
 
-- (void)setChartData:(id)a3
+- (void)setChartData:(id)data
 {
-  v8 = a3;
-  if (self->_chartData != v8)
+  dataCopy = data;
+  if (self->_chartData != dataCopy)
   {
-    objc_storeStrong(&self->_chartData, a3);
+    objc_storeStrong(&self->_chartData, data);
     if (self->_chartData)
     {
-      [(StockGraphView *)self->_graph loadStockChartData:v8];
+      [(StockGraphView *)self->_graph loadStockChartData:dataCopy];
       [(StockGraphView *)self->_graph bounds];
       if (v5 != CGSizeZero.width || v6 != CGSizeZero.height)
       {
@@ -134,12 +134,12 @@
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(StocksAssistantChartView *)self frame];
   v23.origin.x = v8;
   v23.origin.y = v9;
@@ -152,9 +152,9 @@
   if (!CGRectEqualToRect(v22, v23))
   {
     v12 = +[UIDevice currentDevice];
-    v13 = [v12 userInterfaceIdiom];
+    userInterfaceIdiom = [v12 userInterfaceIdiom];
 
-    if (v13 == &dword_0 + 1)
+    if (userInterfaceIdiom == &dword_0 + 1)
     {
       RoundToPixel();
       v15 = v14;
@@ -219,8 +219,8 @@
         v45.size.width = v15;
         v45.size.height = v17;
         CGRectGetMaxY(v45);
-        v26 = [v8 font];
-        [v26 ascender];
+        font = [v8 font];
+        [font ascender];
         RoundToPixel();
         v28 = v27;
 
@@ -251,12 +251,12 @@
   }
 }
 
-- (void)_prepareXAxisLabelsForLabelInfoArray:(id)a3
+- (void)_prepareXAxisLabelsForLabelInfoArray:(id)array
 {
-  v16 = a3;
+  arrayCopy = array;
   [(NSMutableArray *)self->_xAxisLabels enumerateObjectsUsingBlock:&stru_C420];
   [(NSMutableArray *)self->_xAxisLabels removeAllObjects];
-  v4 = [v16 count];
+  v4 = [arrayCopy count];
   if (v4)
   {
     v5 = v4;
@@ -266,10 +266,10 @@
     height = CGRectZero.size.height;
     do
     {
-      v10 = [v16 objectAtIndex:v6];
+      v10 = [arrayCopy objectAtIndex:v6];
       v11 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
-      v12 = [v10 string];
-      [v11 setText:v12];
+      string = [v10 string];
+      [v11 setText:string];
 
       [v11 setTextAlignment:2];
       v13 = +[UIColor blackColor];
@@ -296,23 +296,23 @@
   v3 = +[NSCalendar currentCalendar];
   j = [v3 copy];
 
-  v5 = [(StockChartData *)self->_chartData marketTimeZone];
-  [j setTimeZone:v5];
+  marketTimeZone = [(StockChartData *)self->_chartData marketTimeZone];
+  [j setTimeZone:marketTimeZone];
 
-  v6 = [(StockChartData *)self->_chartData marketOpenDate];
-  v7 = [(StockChartData *)self->_chartData marketCloseDate];
-  v8 = [j components:96 fromDate:v6 toDate:v7 options:0];
+  marketOpenDate = [(StockChartData *)self->_chartData marketOpenDate];
+  marketCloseDate = [(StockChartData *)self->_chartData marketCloseDate];
+  v8 = [j components:96 fromDate:marketOpenDate toDate:marketCloseDate options:0];
 
-  v9 = [(StockChartData *)self->_chartData marketOpenDate];
-  v10 = [j components:96 fromDate:v9];
+  marketOpenDate2 = [(StockChartData *)self->_chartData marketOpenDate];
+  v10 = [j components:96 fromDate:marketOpenDate2];
 
-  v11 = [(StockChartData *)self->_chartData marketCloseDate];
-  v12 = [j components:96 fromDate:v11];
+  marketCloseDate2 = [(StockChartData *)self->_chartData marketCloseDate];
+  v12 = [j components:96 fromDate:marketCloseDate2];
 
-  v13 = [v10 minute];
-  if (v13)
+  minute = [v10 minute];
+  if (minute)
   {
-    v14 = 1.0 - (v13 / 60.0);
+    v14 = 1.0 - (minute / 60.0);
   }
 
   else
@@ -340,18 +340,18 @@
     v48 = v10;
     v49 = v8;
     v50 = j;
-    v22 = [v12 hour];
-    v23 = -v22;
+    hour = [v12 hour];
+    v23 = -hour;
     v47 = v17;
     v24 = v17;
     do
     {
       v25 = v20;
-      v26 = (v22 & ~(v22 >> 63)) + v23;
+      v26 = (hour & ~(hour >> 63)) + v23;
       v27 = v26 != 0;
       v28 = ((v26 - v27) * 0xAAAAAAAAAAAAAAABLL) >> 64;
       v29 = (v26 - v27) / 0x18uLL;
-      if ((v22 & ~(v22 >> 63)) + v23)
+      if ((hour & ~(hour >> 63)) + v23)
       {
         v30 = v29 + 1;
       }
@@ -363,12 +363,12 @@
 
       if (([(ChartLabelInfoManager *)self->_labelInfoManager use24hrTime]& 1) != 0)
       {
-        v31 = v22 + 24 * v30;
+        v31 = hour + 24 * v30;
       }
 
-      else if (v22 + 24 * (v27 + (v28 >> 4)) - 12 * ((v22 + 24 * (v27 + (v28 >> 4))) / 0xC))
+      else if (hour + 24 * (v27 + (v28 >> 4)) - 12 * ((hour + 24 * (v27 + (v28 >> 4))) / 0xC))
       {
-        v31 = v22 + 24 * (v27 + (v28 >> 4)) - 12 * ((v22 + 24 * (v27 + (v28 >> 4))) / 0xC);
+        v31 = hour + 24 * (v27 + (v28 >> 4)) - 12 * ((hour + 24 * (v27 + (v28 >> 4))) / 0xC);
       }
 
       else
@@ -381,7 +381,7 @@
       v20 = v25;
       [v25 addObject:v33];
 
-      --v22;
+      --hour;
       ++v23;
       --v24;
     }
@@ -420,7 +420,7 @@
 
     if (v47 < 13)
     {
-      v44 = 0;
+      integerValue = 0;
       j = v50;
     }
 
@@ -428,9 +428,9 @@
     {
       v41 = objc_alloc_init(NSMutableIndexSet);
       v42 = [v34 objectAtIndex:0];
-      v43 = [v42 string];
-      v44 = [v43 integerValue];
-      v45 = (v44 & 1) == 0;
+      string = [v42 string];
+      integerValue = [string integerValue];
+      v45 = (integerValue & 1) == 0;
 
       for (j = v50; [v34 count] > v45; v45 += 2)
       {
@@ -440,10 +440,10 @@
       [v34 removeObjectsAtIndexes:v41];
     }
 
-    if (v15 > 0.0 || (v44 & 1) != 0)
+    if (v15 > 0.0 || (integerValue & 1) != 0)
     {
-      v46 = [(ChartLabelInfoManager *)self->_labelInfoManager labelInfoForYAxis];
-      [v34 insertObject:v46 atIndex:0];
+      labelInfoForYAxis = [(ChartLabelInfoManager *)self->_labelInfoManager labelInfoForYAxis];
+      [v34 insertObject:labelInfoForYAxis atIndex:0];
     }
 
     [(StocksAssistantChartView *)self _prepareXAxisLabelsForLabelInfoArray:v34];
@@ -454,8 +454,8 @@
 
   else
   {
-    v21 = [(ChartLabelInfoManager *)self->_labelInfoManager labelInfoForYAxis];
-    [v20 addObject:v21];
+    labelInfoForYAxis2 = [(ChartLabelInfoManager *)self->_labelInfoManager labelInfoForYAxis];
+    [v20 addObject:labelInfoForYAxis2];
 
     [(StocksAssistantChartView *)self _prepareXAxisLabelsForLabelInfoArray:v20];
     [(StockChartData *)self->_chartData setXAxisLabelInfoArray:v20 forDisplayMode:self->_displayMode];
@@ -495,10 +495,10 @@
 
     else
     {
-      v18 = [(Stock *)self->_stock pricePrecision];
-      if (v14 <= v18)
+      pricePrecision = [(Stock *)self->_stock pricePrecision];
+      if (v14 <= pricePrecision)
       {
-        v20 = v18;
+        v20 = pricePrecision;
       }
 
       else
@@ -538,8 +538,8 @@
     {
       v29 = [v10 objectAtIndex:v25];
       v30 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
-      v31 = [v29 string];
-      [v30 setText:v31];
+      string = [v29 string];
+      [v30 setText:string];
 
       [v30 setTextAlignment:1];
       v32 = +[UIColor blackColor];
@@ -553,8 +553,8 @@
 
       [v30 setAdjustsFontSizeToFitWidth:1];
       [v30 setBaselineAdjustment:1];
-      v35 = [v30 font];
-      [v35 pointSize];
+      font = [v30 font];
+      [font pointSize];
       [v30 setMinimumScaleFactor:8.0 / v36];
 
       [v30 sizeToFit];
@@ -569,12 +569,12 @@
   [(StockChartData *)self->_chartData setYAxisLabelInfoArray:v10 forDisplayMode:self->_displayMode];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   if (self->_chartData)
   {
-    width = a3.size.width;
-    if ([(StockGraphView *)self->_graph isRendered:a3.origin.x])
+    width = rect.size.width;
+    if ([(StockGraphView *)self->_graph isRendered:rect.origin.x])
     {
       v5 = [(StockChartData *)self->_chartData xAxisLabelInfoArrayForMode:self->_displayMode];
       RoundToPixel();

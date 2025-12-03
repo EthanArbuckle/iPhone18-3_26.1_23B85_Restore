@@ -1,30 +1,30 @@
 @interface _UICalendarRangeSelection
-- (BOOL)canSelectDate:(id)a3;
-- (_UICalendarRangeSelection)initWithDelegate:(id)a3;
+- (BOOL)canSelectDate:(id)date;
+- (_UICalendarRangeSelection)initWithDelegate:(id)delegate;
 - (_UICalendarRangeSelectionDelegate)delegate;
-- (id)_sanitizedDateRange:(id)a3 calendar:(id)a4;
-- (void)_deselectDatesInRange:(id)a3 animated:(BOOL)a4;
-- (void)didChangeAvailableDateRange:(id)a3;
-- (void)didChangeCalendar:(id)a3;
-- (void)didDeselectDate:(id)a3;
+- (id)_sanitizedDateRange:(id)range calendar:(id)calendar;
+- (void)_deselectDatesInRange:(id)range animated:(BOOL)animated;
+- (void)didChangeAvailableDateRange:(id)range;
+- (void)didChangeCalendar:(id)calendar;
+- (void)didDeselectDate:(id)date;
 - (void)didMoveToCalendarView;
-- (void)didSelectDate:(id)a3;
-- (void)selectAllDatesAnimated:(BOOL)a3;
-- (void)setDateRange:(id)a3 animated:(BOOL)a4;
+- (void)didSelectDate:(id)date;
+- (void)selectAllDatesAnimated:(BOOL)animated;
+- (void)setDateRange:(id)range animated:(BOOL)animated;
 @end
 
 @implementation _UICalendarRangeSelection
 
-- (_UICalendarRangeSelection)initWithDelegate:(id)a3
+- (_UICalendarRangeSelection)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v11.receiver = self;
   v11.super_class = _UICalendarRangeSelection;
-  v5 = [(UICalendarSelection *)&v11 _init];
-  v6 = v5;
-  if (v5)
+  _init = [(UICalendarSelection *)&v11 _init];
+  v6 = _init;
+  if (_init)
   {
-    objc_storeWeak(v5 + 5, v4);
+    objc_storeWeak(_init + 5, delegateCopy);
     *(v6 + 16) = v6[2] & 0xFE | objc_opt_respondsToSelector() & 1;
     if (objc_opt_respondsToSelector())
     {
@@ -64,18 +64,18 @@
   return v6;
 }
 
-- (void)setDateRange:(id)a3 animated:(BOOL)a4
+- (void)setDateRange:(id)range animated:(BOOL)animated
 {
-  v4 = a4;
-  v30 = a3;
-  v6 = [(UICalendarSelection *)self view];
+  animatedCopy = animated;
+  rangeCopy = range;
+  view = [(UICalendarSelection *)self view];
 
-  if (v6)
+  if (view)
   {
     dateRange = self->_dateRange;
-    v8 = [(UICalendarSelection *)self view];
-    v9 = [v8 calendar];
-    v10 = [(_UICalendarDateRange *)dateRange allDatesInRangeForCalendar:v9];
+    view2 = [(UICalendarSelection *)self view];
+    calendar = [view2 calendar];
+    v10 = [(_UICalendarDateRange *)dateRange allDatesInRangeForCalendar:calendar];
     v11 = v10;
     v12 = MEMORY[0x1E695E0F0];
     if (v10)
@@ -85,14 +85,14 @@
 
     v13 = v12;
 
-    v14 = [MEMORY[0x1E695DFA8] setWithArray:v13];
-    v15 = [(UICalendarSelection *)self view];
-    v16 = [v15 calendar];
-    v17 = [(_UICalendarRangeSelection *)self _sanitizedDateRange:v30 calendar:v16];
+    currentCalendar = [MEMORY[0x1E695DFA8] setWithArray:v13];
+    view3 = [(UICalendarSelection *)self view];
+    calendar2 = [view3 calendar];
+    v17 = [(_UICalendarRangeSelection *)self _sanitizedDateRange:rangeCopy calendar:calendar2];
 
-    v18 = [(UICalendarSelection *)self view];
-    v19 = [v18 calendar];
-    v20 = [v17 allDatesInRangeForCalendar:v19];
+    view4 = [(UICalendarSelection *)self view];
+    calendar3 = [view4 calendar];
+    v20 = [v17 allDatesInRangeForCalendar:calendar3];
     v21 = v20;
     v22 = MEMORY[0x1E695E0F0];
     if (v20)
@@ -103,26 +103,26 @@
     v23 = v22;
 
     v24 = [MEMORY[0x1E695DFD8] setWithArray:v23];
-    [v14 minusSet:v24];
+    [currentCalendar minusSet:v24];
 
-    v25 = [(UICalendarSelection *)self view];
-    v26 = [v14 allObjects];
-    [v25 _deselectDates:v26 animated:v4];
+    view5 = [(UICalendarSelection *)self view];
+    allObjects = [currentCalendar allObjects];
+    [view5 _deselectDates:allObjects animated:animatedCopy];
 
     objc_storeStrong(&self->_dateRange, v17);
     pendingStartDate = self->_pendingStartDate;
     self->_pendingStartDate = 0;
 
-    v28 = [(UICalendarSelection *)self view];
-    [v28 _selectDates:v23 animated:v4];
+    view6 = [(UICalendarSelection *)self view];
+    [view6 _selectDates:v23 animated:animatedCopy];
 
-    v30 = v17;
+    rangeCopy = v17;
   }
 
   else
   {
-    v14 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v29 = [(_UICalendarRangeSelection *)self _sanitizedDateRange:v30 calendar:v14];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    v29 = [(_UICalendarRangeSelection *)self _sanitizedDateRange:rangeCopy calendar:currentCalendar];
     v13 = self->_dateRange;
     self->_dateRange = v29;
   }
@@ -130,78 +130,78 @@
 
 - (void)didMoveToCalendarView
 {
-  v3 = [(UICalendarSelection *)self view];
-  if (v3)
+  view = [(UICalendarSelection *)self view];
+  if (view)
   {
     dateRange = self->_dateRange;
 
     if (dateRange)
     {
       v5 = self->_dateRange;
-      v6 = [(UICalendarSelection *)self view];
-      v7 = [v6 calendar];
-      v8 = [(_UICalendarRangeSelection *)self _sanitizedDateRange:v5 calendar:v7];
+      view2 = [(UICalendarSelection *)self view];
+      calendar = [view2 calendar];
+      v8 = [(_UICalendarRangeSelection *)self _sanitizedDateRange:v5 calendar:calendar];
       v9 = self->_dateRange;
       self->_dateRange = v8;
     }
   }
 
-  v10 = [(UICalendarSelection *)self view];
-  [v10 setAllowsMultipleSelection:1];
+  view3 = [(UICalendarSelection *)self view];
+  [view3 setAllowsMultipleSelection:1];
 
   [(_UICalendarRangeSelection *)self selectAllDatesAnimated:0];
 }
 
-- (id)_sanitizedDateRange:(id)a3 calendar:(id)a4
+- (id)_sanitizedDateRange:(id)range calendar:(id)calendar
 {
-  v4 = a3;
-  if (a3)
+  rangeCopy = range;
+  if (range)
   {
-    v5 = a4;
-    v6 = v4;
-    v7 = [(_UICalendarDateRange *)v6 startDate];
-    v8 = _UICalendarSanitizeWithCalendar(v7, v5);
+    calendarCopy = calendar;
+    v6 = rangeCopy;
+    startDate = [(_UICalendarDateRange *)v6 startDate];
+    v8 = _UICalendarSanitizeWithCalendar(startDate, calendarCopy);
 
-    v9 = [(_UICalendarDateRange *)v6 endDate];
+    endDate = [(_UICalendarDateRange *)v6 endDate];
 
-    v10 = _UICalendarSanitizeWithCalendar(v9, v5);
+    v10 = _UICalendarSanitizeWithCalendar(endDate, calendarCopy);
 
-    v4 = [[_UICalendarDateRange alloc] initWithStartDate:v8 endDate:v10];
+    rangeCopy = [[_UICalendarDateRange alloc] initWithStartDate:v8 endDate:v10];
   }
 
-  return v4;
+  return rangeCopy;
 }
 
-- (BOOL)canSelectDate:(id)a3
+- (BOOL)canSelectDate:(id)date
 {
   if ((*&self->_delegateImplements & 1) == 0)
   {
     return 1;
   }
 
-  v4 = self;
-  v5 = a3;
-  v6 = [(_UICalendarRangeSelection *)v4 delegate];
-  LOBYTE(v4) = [v6 _calendarSelection:v4 canSelectDate:v5];
+  selfCopy = self;
+  dateCopy = date;
+  delegate = [(_UICalendarRangeSelection *)selfCopy delegate];
+  LOBYTE(selfCopy) = [delegate _calendarSelection:selfCopy canSelectDate:dateCopy];
 
-  return v4;
+  return selfCopy;
 }
 
-- (void)didSelectDate:(id)a3
+- (void)didSelectDate:(id)date
 {
-  v26 = a3;
+  dateCopy = date;
   if (self->_pendingStartDate)
   {
-    v5 = [(UICalendarSelection *)self view];
-    v6 = [v5 calendar];
-    v7 = [v6 dateFromComponents:self->_pendingStartDate];
+    view = [(UICalendarSelection *)self view];
+    calendar = [view calendar];
+    delegate4 = [calendar dateFromComponents:self->_pendingStartDate];
 
-    v8 = [(UICalendarSelection *)self view];
-    v9 = [v8 calendar];
-    v10 = [v9 dateFromComponents:v26];
+    view2 = [(UICalendarSelection *)self view];
+    calendar2 = [view2 calendar];
+    v10 = [calendar2 dateFromComponents:dateCopy];
 
-    v11 = v26;
-    v12 = [v7 compare:v10];
+    v11 = dateCopy;
+    v12 = [delegate4 compare:v10];
     v13 = [_UICalendarDateRange alloc];
     if (v12 == 1)
     {
@@ -216,8 +216,8 @@
       [(_UICalendarRangeSelection *)self selectAllDatesAnimated:0];
       if (v11 && (*&self->_delegateImplements & 2) != 0)
       {
-        v18 = [(_UICalendarRangeSelection *)self delegate];
-        [v18 _calendarRangeSelection:self didBeginSelectionWithDate:v11];
+        delegate = [(_UICalendarRangeSelection *)self delegate];
+        [delegate _calendarRangeSelection:self didBeginSelectionWithDate:v11];
       }
     }
 
@@ -238,16 +238,16 @@
     delegateImplements = self->_delegateImplements;
     if ((delegateImplements & 4) != 0)
     {
-      v24 = [(_UICalendarRangeSelection *)self delegate];
-      [v24 _calendarRangeSelection:self didEndSelectionWithDate:v17];
+      delegate2 = [(_UICalendarRangeSelection *)self delegate];
+      [delegate2 _calendarRangeSelection:self didEndSelectionWithDate:v17];
 
       delegateImplements = self->_delegateImplements;
     }
 
     if ((delegateImplements & 8) != 0)
     {
-      v25 = [(_UICalendarRangeSelection *)self delegate];
-      [v25 _calendarRangeSelection:self didSelectDateRange:self->_dateRange];
+      delegate3 = [(_UICalendarRangeSelection *)self delegate];
+      [delegate3 _calendarRangeSelection:self didSelectDateRange:self->_dateRange];
     }
   }
 
@@ -257,28 +257,28 @@
     v19 = self->_dateRange;
     self->_dateRange = 0;
 
-    objc_storeStrong(&self->_pendingStartDate, a3);
+    objc_storeStrong(&self->_pendingStartDate, date);
     [(_UICalendarRangeSelection *)self selectAllDatesAnimated:0];
     if ((*&self->_delegateImplements & 2) == 0)
     {
       goto LABEL_15;
     }
 
-    v7 = [(_UICalendarRangeSelection *)self delegate];
-    [v7 _calendarRangeSelection:self didBeginSelectionWithDate:v26];
+    delegate4 = [(_UICalendarRangeSelection *)self delegate];
+    [delegate4 _calendarRangeSelection:self didBeginSelectionWithDate:dateCopy];
   }
 
 LABEL_15:
 }
 
-- (void)didDeselectDate:(id)a3
+- (void)didDeselectDate:(id)date
 {
-  v14 = a3;
+  dateCopy = date;
   pendingStartDate = self->_pendingStartDate;
   if (pendingStartDate)
   {
-    v6 = pendingStartDate;
-    v7 = [[_UICalendarDateRange alloc] initWithStartDate:v6 endDate:v6];
+    delegate3 = pendingStartDate;
+    v7 = [[_UICalendarDateRange alloc] initWithStartDate:delegate3 endDate:delegate3];
     dateRange = self->_dateRange;
     self->_dateRange = v7;
 
@@ -289,16 +289,16 @@ LABEL_15:
     delegateImplements = self->_delegateImplements;
     if ((delegateImplements & 4) != 0)
     {
-      v11 = [(_UICalendarRangeSelection *)self delegate];
-      [v11 _calendarRangeSelection:self didEndSelectionWithDate:v6];
+      delegate = [(_UICalendarRangeSelection *)self delegate];
+      [delegate _calendarRangeSelection:self didEndSelectionWithDate:delegate3];
 
       delegateImplements = self->_delegateImplements;
     }
 
     if ((delegateImplements & 8) != 0)
     {
-      v12 = [(_UICalendarRangeSelection *)self delegate];
-      [v12 _calendarRangeSelection:self didSelectDateRange:self->_dateRange];
+      delegate2 = [(_UICalendarRangeSelection *)self delegate];
+      [delegate2 _calendarRangeSelection:self didSelectDateRange:self->_dateRange];
     }
   }
 
@@ -308,34 +308,34 @@ LABEL_15:
     v13 = self->_dateRange;
     self->_dateRange = 0;
 
-    objc_storeStrong(&self->_pendingStartDate, a3);
+    objc_storeStrong(&self->_pendingStartDate, date);
     [(_UICalendarRangeSelection *)self selectAllDatesAnimated:0];
     if ((*&self->_delegateImplements & 2) == 0)
     {
       goto LABEL_9;
     }
 
-    v6 = [(_UICalendarRangeSelection *)self delegate];
-    [(NSDateComponents *)v6 _calendarRangeSelection:self didBeginSelectionWithDate:v14];
+    delegate3 = [(_UICalendarRangeSelection *)self delegate];
+    [(NSDateComponents *)delegate3 _calendarRangeSelection:self didBeginSelectionWithDate:dateCopy];
   }
 
 LABEL_9:
 }
 
-- (void)selectAllDatesAnimated:(BOOL)a3
+- (void)selectAllDatesAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(UICalendarSelection *)self view];
+  animatedCopy = animated;
+  view = [(UICalendarSelection *)self view];
 
-  if (v5)
+  if (view)
   {
     v11 = objc_opt_new();
     dateRange = self->_dateRange;
     if (dateRange)
     {
-      v7 = [(UICalendarSelection *)self view];
-      v8 = [v7 calendar];
-      v9 = [(_UICalendarDateRange *)dateRange allDatesInRangeForCalendar:v8];
+      view2 = [(UICalendarSelection *)self view];
+      calendar = [view2 calendar];
+      v9 = [(_UICalendarDateRange *)dateRange allDatesInRangeForCalendar:calendar];
       [v11 addObjectsFromArray:v9];
     }
 
@@ -344,92 +344,92 @@ LABEL_9:
       [v11 addObject:?];
     }
 
-    v10 = [(UICalendarSelection *)self view];
-    [v10 _selectDates:v11 animated:v3];
+    view3 = [(UICalendarSelection *)self view];
+    [view3 _selectDates:v11 animated:animatedCopy];
   }
 }
 
-- (void)didChangeCalendar:(id)a3
+- (void)didChangeCalendar:(id)calendar
 {
-  v4 = [(_UICalendarRangeSelection *)self _sanitizedDateRange:self->_dateRange calendar:a3];
+  v4 = [(_UICalendarRangeSelection *)self _sanitizedDateRange:self->_dateRange calendar:calendar];
   dateRange = self->_dateRange;
   self->_dateRange = v4;
 }
 
-- (void)didChangeAvailableDateRange:(id)a3
+- (void)didChangeAvailableDateRange:(id)range
 {
-  v4 = a3;
+  rangeCopy = range;
   if (self->_dateRange)
   {
-    v37 = v4;
-    v5 = [(UICalendarSelection *)self view];
-    v6 = [v5 calendar];
+    v37 = rangeCopy;
+    view = [(UICalendarSelection *)self view];
+    calendar = [view calendar];
 
-    v7 = [(_UICalendarDateRange *)self->_dateRange startDate];
-    v8 = [v7 date];
-    v9 = [v37 startDate];
-    v10 = [v8 compare:v9];
+    startDate = [(_UICalendarDateRange *)self->_dateRange startDate];
+    date = [startDate date];
+    startDate2 = [v37 startDate];
+    v10 = [date compare:startDate2];
 
     if (v10 == -1)
     {
-      v11 = [(UICalendarSelection *)self view];
-      v12 = [v11 calendar];
-      v13 = [v37 startDate];
-      v14 = [v12 components:1048606 fromDate:v13];
+      view2 = [(UICalendarSelection *)self view];
+      calendar2 = [view2 calendar];
+      startDate3 = [v37 startDate];
+      v14 = [calendar2 components:1048606 fromDate:startDate3];
 
       v15 = [_UICalendarDateRange alloc];
-      v16 = [(_UICalendarDateRange *)self->_dateRange startDate];
-      v17 = [(_UICalendarDateRange *)v15 initWithStartDate:v16 endDate:v14];
+      startDate4 = [(_UICalendarDateRange *)self->_dateRange startDate];
+      v17 = [(_UICalendarDateRange *)v15 initWithStartDate:startDate4 endDate:v14];
 
       [(_UICalendarRangeSelection *)self _deselectDatesInRange:v17 animated:0];
       v18 = [_UICalendarDateRange alloc];
-      v19 = [(_UICalendarDateRange *)self->_dateRange endDate];
-      v20 = [(_UICalendarDateRange *)v18 initWithStartDate:v14 endDate:v19];
+      endDate = [(_UICalendarDateRange *)self->_dateRange endDate];
+      v20 = [(_UICalendarDateRange *)v18 initWithStartDate:v14 endDate:endDate];
       dateRange = self->_dateRange;
       self->_dateRange = v20;
     }
 
-    v22 = [(_UICalendarDateRange *)self->_dateRange startDate];
-    v23 = [v22 date];
-    v24 = [v37 endDate];
-    v25 = [v23 compare:v24];
+    startDate5 = [(_UICalendarDateRange *)self->_dateRange startDate];
+    date2 = [startDate5 date];
+    endDate2 = [v37 endDate];
+    v25 = [date2 compare:endDate2];
 
     if (v25 == 1)
     {
-      v26 = [(UICalendarSelection *)self view];
-      v27 = [v26 calendar];
-      v28 = [v37 endDate];
-      v29 = [v27 components:1048606 fromDate:v28];
+      view3 = [(UICalendarSelection *)self view];
+      calendar3 = [view3 calendar];
+      endDate3 = [v37 endDate];
+      v29 = [calendar3 components:1048606 fromDate:endDate3];
 
       v30 = [_UICalendarDateRange alloc];
-      v31 = [(_UICalendarDateRange *)self->_dateRange endDate];
-      v32 = [(_UICalendarDateRange *)v30 initWithStartDate:v29 endDate:v31];
+      endDate4 = [(_UICalendarDateRange *)self->_dateRange endDate];
+      v32 = [(_UICalendarDateRange *)v30 initWithStartDate:v29 endDate:endDate4];
 
       [(_UICalendarRangeSelection *)self _deselectDatesInRange:v32 animated:0];
       v33 = [_UICalendarDateRange alloc];
-      v34 = [(_UICalendarDateRange *)self->_dateRange startDate];
-      v35 = [(_UICalendarDateRange *)v33 initWithStartDate:v34 endDate:v29];
+      startDate6 = [(_UICalendarDateRange *)self->_dateRange startDate];
+      v35 = [(_UICalendarDateRange *)v33 initWithStartDate:startDate6 endDate:v29];
       v36 = self->_dateRange;
       self->_dateRange = v35;
     }
 
-    v4 = v37;
+    rangeCopy = v37;
   }
 }
 
-- (void)_deselectDatesInRange:(id)a3 animated:(BOOL)a4
+- (void)_deselectDatesInRange:(id)range animated:(BOOL)animated
 {
-  v10 = a3;
-  v5 = [(UICalendarSelection *)self view];
+  rangeCopy = range;
+  view = [(UICalendarSelection *)self view];
 
-  if (v10 && v5)
+  if (rangeCopy && view)
   {
-    v6 = [(UICalendarSelection *)self view];
-    v7 = [v6 calendar];
-    v8 = [v10 allDatesInRangeForCalendar:v7];
+    view2 = [(UICalendarSelection *)self view];
+    calendar = [view2 calendar];
+    v8 = [rangeCopy allDatesInRangeForCalendar:calendar];
 
-    v9 = [(UICalendarSelection *)self view];
-    [v9 _deselectDates:v8 animated:0];
+    view3 = [(UICalendarSelection *)self view];
+    [view3 _deselectDates:v8 animated:0];
   }
 }
 

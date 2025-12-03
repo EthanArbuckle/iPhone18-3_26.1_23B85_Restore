@@ -1,14 +1,14 @@
 @interface PHAssetResourceUploadJobConfigurationDeleteRequest
-- (void)deleteManagedObject:(id)a3 photoLibrary:(id)a4;
+- (void)deleteManagedObject:(id)object photoLibrary:(id)library;
 @end
 
 @implementation PHAssetResourceUploadJobConfigurationDeleteRequest
 
-- (void)deleteManagedObject:(id)a3 photoLibrary:(id)a4
+- (void)deleteManagedObject:(id)object photoLibrary:(id)library
 {
-  v5 = a3;
-  v6 = [a4 managedObjectContext];
-  [v6 deleteObject:v5];
+  objectCopy = object;
+  managedObjectContext = [library managedObjectContext];
+  [managedObjectContext deleteObject:objectCopy];
 }
 
 @end

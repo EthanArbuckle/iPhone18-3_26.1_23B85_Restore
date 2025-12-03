@@ -1,16 +1,16 @@
 @interface OnboardingLandingPageCloseActionHandler
 - (_TtC7NewsUI239OnboardingLandingPageCloseActionHandler)init;
-- (void)handleCloseActionOnPresenter:(id)a3;
+- (void)handleCloseActionOnPresenter:(id)presenter;
 @end
 
 @implementation OnboardingLandingPageCloseActionHandler
 
-- (void)handleCloseActionOnPresenter:(id)a3
+- (void)handleCloseActionOnPresenter:(id)presenter
 {
   if (swift_unknownObjectWeakLoadStrong())
   {
     swift_getObjectType();
-    v4 = self;
+    selfCopy = self;
     sub_219BE4734();
     swift_unknownObjectRelease();
   }

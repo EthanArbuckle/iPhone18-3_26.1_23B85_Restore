@@ -1,22 +1,22 @@
 @interface HUPCSetupAccessoryContentController
 - (HFServiceLikeItem)item;
-- (HUPCSetupAccessoryContentController)initWithTitle:(id)a3 detailText:(id)a4 item:(id)a5;
+- (HUPCSetupAccessoryContentController)initWithTitle:(id)title detailText:(id)text item:(id)item;
 - (double)_contentAspectRatio;
 @end
 
 @implementation HUPCSetupAccessoryContentController
 
-- (HUPCSetupAccessoryContentController)initWithTitle:(id)a3 detailText:(id)a4 item:(id)a5
+- (HUPCSetupAccessoryContentController)initWithTitle:(id)title detailText:(id)text item:(id)item
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  itemCopy = item;
+  textCopy = text;
+  titleCopy = title;
   v11 = [HUHomeAccessoryTileView alloc];
-  v12 = [(HUHomeAccessoryTileView *)v11 initWithFrame:v8 item:0 iconOnlyTile:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
+  v12 = [(HUHomeAccessoryTileView *)v11 initWithFrame:itemCopy item:0 iconOnlyTile:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
 
   v15.receiver = self;
   v15.super_class = HUPCSetupAccessoryContentController;
-  v13 = [(HUPCCenterFillContentController *)&v15 initWithTitle:v10 detailText:v9 contentView:v12];
+  v13 = [(HUPCCenterFillContentController *)&v15 initWithTitle:titleCopy detailText:textCopy contentView:v12];
 
   if (v13)
   {
@@ -29,16 +29,16 @@
 
 - (HFServiceLikeItem)item
 {
-  v2 = [(HUPCSetupAccessoryContentController *)self homeAccessoryTileView];
-  v3 = [v2 item];
+  homeAccessoryTileView = [(HUPCSetupAccessoryContentController *)self homeAccessoryTileView];
+  item = [homeAccessoryTileView item];
 
-  return v3;
+  return item;
 }
 
 - (double)_contentAspectRatio
 {
-  v2 = [(HUPCSetupAccessoryContentController *)self homeAccessoryTileView];
-  [v2 aspectRatio];
+  homeAccessoryTileView = [(HUPCSetupAccessoryContentController *)self homeAccessoryTileView];
+  [homeAccessoryTileView aspectRatio];
   v4 = v3;
 
   return v4;

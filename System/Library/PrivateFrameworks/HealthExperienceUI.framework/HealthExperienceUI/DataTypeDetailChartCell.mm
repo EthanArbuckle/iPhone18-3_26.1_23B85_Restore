@@ -1,8 +1,8 @@
 @interface DataTypeDetailChartCell
 - (NSString)chartOverlayVersion;
 - (NSString)description;
-- (_TtC18HealthExperienceUI23DataTypeDetailChartCell)initWithCoder:(id)a3;
-- (_TtC18HealthExperienceUI23DataTypeDetailChartCell)initWithFrame:(CGRect)a3;
+- (_TtC18HealthExperienceUI23DataTypeDetailChartCell)initWithCoder:(id)coder;
+- (_TtC18HealthExperienceUI23DataTypeDetailChartCell)initWithFrame:(CGRect)frame;
 @end
 
 @implementation DataTypeDetailChartCell
@@ -10,7 +10,7 @@
 - (NSString)description
 {
   swift_getObjectType();
-  v3 = self;
+  selfCopy = self;
   v4 = sub_1BA4A85D8();
   MEMORY[0x1BFAF1350](v4);
 
@@ -22,12 +22,12 @@
   return v5;
 }
 
-- (_TtC18HealthExperienceUI23DataTypeDetailChartCell)initWithFrame:(CGRect)a3
+- (_TtC18HealthExperienceUI23DataTypeDetailChartCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   swift_unknownObjectWeakInit();
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC18HealthExperienceUI23DataTypeDetailChartCell_chartViewController) = 0;
   v8 = self + OBJC_IVAR____TtC18HealthExperienceUI23DataTypeDetailChartCell_item;
@@ -40,7 +40,7 @@
   return [(DataTypeDetailChartCell *)&v11 initWithFrame:x, y, width, height];
 }
 
-- (_TtC18HealthExperienceUI23DataTypeDetailChartCell)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUI23DataTypeDetailChartCell)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC18HealthExperienceUI23DataTypeDetailChartCell_chartViewController) = 0;
@@ -50,8 +50,8 @@
   *(v5 + 4) = 0;
   v9.receiver = self;
   v9.super_class = type metadata accessor for DataTypeDetailChartCell();
-  v6 = a3;
-  v7 = [(DataTypeDetailChartCell *)&v9 initWithCoder:v6];
+  coderCopy = coder;
+  v7 = [(DataTypeDetailChartCell *)&v9 initWithCoder:coderCopy];
 
   if (v7)
   {
@@ -62,7 +62,7 @@
 
 - (NSString)chartOverlayVersion
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DataTypeDetailChartCell.chartOverlayVersion.getter();
 
   return v3;

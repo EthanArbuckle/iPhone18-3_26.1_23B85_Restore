@@ -1,31 +1,31 @@
 @interface CATSharingBroadcastTerminal
-- (CATSharingBroadcastTerminal)initWithBroadcastPrimitives:(id)a3 delegate:(id)a4 delegationQueue:(id)a5;
+- (CATSharingBroadcastTerminal)initWithBroadcastPrimitives:(id)primitives delegate:(id)delegate delegationQueue:(id)queue;
 - (void)_activate;
-- (void)_invalidateWithError:(id)a3 removePrimitiveHandlers:(BOOL)a4 deactivatePrimitives:(BOOL)a5;
+- (void)_invalidateWithError:(id)error removePrimitiveHandlers:(BOOL)handlers deactivatePrimitives:(BOOL)primitives;
 - (void)activate;
 - (void)addPrimitiveHandlers;
 - (void)invalidate;
 - (void)removePrimitiveHandlers;
 - (void)sessionHasPaired;
-- (void)sessionNeedsToDisplayPin:(id)a3;
+- (void)sessionNeedsToDisplayPin:(id)pin;
 @end
 
 @implementation CATSharingBroadcastTerminal
 
-- (CATSharingBroadcastTerminal)initWithBroadcastPrimitives:(id)a3 delegate:(id)a4 delegationQueue:(id)a5
+- (CATSharingBroadcastTerminal)initWithBroadcastPrimitives:(id)primitives delegate:(id)delegate delegationQueue:(id)queue
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  primitivesCopy = primitives;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v15.receiver = self;
   v15.super_class = CATSharingBroadcastTerminal;
   v12 = [(CATSharingBroadcastTerminal *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->mBroadcastPrimitive, a3);
-    objc_storeWeak(&v13->mDelegate, v10);
-    objc_storeStrong(&v13->mDelegationQueue, a5);
+    objc_storeStrong(&v12->mBroadcastPrimitive, primitives);
+    objc_storeWeak(&v13->mDelegate, delegateCopy);
+    objc_storeStrong(&v13->mDelegationQueue, queue);
   }
 
   return v13;
@@ -88,8 +88,8 @@ void __41__CATSharingBroadcastTerminal_invalidate__block_invoke(uint64_t a1)
 
 - (void)_activate
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"CATSharingBroadcastTerminal.m" lineNumber:91 description:@"Terminal must not be invalidated"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"CATSharingBroadcastTerminal.m" lineNumber:91 description:@"Terminal must not be invalidated"];
 }
 
 void __40__CATSharingBroadcastTerminal__activate__block_invoke(uint64_t a1, void *a2)
@@ -145,11 +145,11 @@ void __40__CATSharingBroadcastTerminal__activate__block_invoke_3(uint64_t a1)
   [WeakRetained broadcastTerminal:*(a1 + 32) didActivateWithError:*(a1 + 40)];
 }
 
-- (void)_invalidateWithError:(id)a3 removePrimitiveHandlers:(BOOL)a4 deactivatePrimitives:(BOOL)a5
+- (void)_invalidateWithError:(id)error removePrimitiveHandlers:(BOOL)handlers deactivatePrimitives:(BOOL)primitives
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
+  primitivesCopy = primitives;
+  handlersCopy = handlers;
+  errorCopy = error;
   v9 = CATGetCatalystQueue();
   CATAssertIsQueue(v9);
 
@@ -157,12 +157,12 @@ void __40__CATSharingBroadcastTerminal__activate__block_invoke_3(uint64_t a1)
   {
     self->mInvalidated = 1;
     [(CATSharingBroadcastTerminal *)self setBroadcasting:0];
-    if (v6)
+    if (handlersCopy)
     {
       [(CATSharingBroadcastTerminal *)self removePrimitiveHandlers];
     }
 
-    if (v5)
+    if (primitivesCopy)
     {
       [(CATSharingBroadcastPrimitives *)self->mBroadcastPrimitive deactivate];
     }
@@ -188,7 +188,7 @@ void __40__CATSharingBroadcastTerminal__activate__block_invoke_3(uint64_t a1)
     v13[1] = 3221225472;
     v13[2] = __97__CATSharingBroadcastTerminal__invalidateWithError_removePrimitiveHandlers_deactivatePrimitives___block_invoke_2;
     v13[3] = &unk_278DA75A8;
-    v14 = v8;
+    v14 = errorCopy;
     objc_copyWeak(&v15, &location);
     [(CATOperationQueue *)v12 addOperationWithBlock:v13];
     objc_destroyWeak(&v15);
@@ -385,9 +385,9 @@ void __51__CATSharingBroadcastTerminal_addPrimitiveHandlers__block_invoke_8(uint
   [(CATSharingBroadcastPrimitives *)mBroadcastPrimitive setSessionPairedHandler:0];
 }
 
-- (void)sessionNeedsToDisplayPin:(id)a3
+- (void)sessionNeedsToDisplayPin:(id)pin
 {
-  v4 = a3;
+  pinCopy = pin;
   v5 = CATGetCatalystQueue();
   CATAssertIsQueue(v5);
 
@@ -401,7 +401,7 @@ void __51__CATSharingBroadcastTerminal_addPrimitiveHandlers__block_invoke_8(uint
     v7[2] = __56__CATSharingBroadcastTerminal_sessionNeedsToDisplayPin___block_invoke;
     v7[3] = &unk_278DA7530;
     objc_copyWeak(&v9, &location);
-    v8 = v4;
+    v8 = pinCopy;
     [(CATOperationQueue *)mDelegationQueue addOperationWithBlock:v7];
 
     objc_destroyWeak(&v9);

@@ -3,34 +3,34 @@
 - (MTVisualStylingProvider)visualStylingProvider;
 - (NSString)identifier;
 - (NSString)title;
-- (SBHAddWidgetSheetIconListCell)initWithCoder:(id)a3;
-- (SBHAddWidgetSheetIconListCell)initWithFrame:(CGRect)a3;
+- (SBHAddWidgetSheetIconListCell)initWithCoder:(id)coder;
+- (SBHAddWidgetSheetIconListCell)initWithFrame:(CGRect)frame;
 - (SBIconImageInfo)iconImageInfo;
 - (UIColor)iconBackgroundColor;
 - (UIImage)iconImage;
 - (int64_t)labelNumberOfLines;
-- (void)iconListView:(id)a3 didAddIconView:(id)a4;
-- (void)iconListView:(id)a3 didRemoveIconView:(id)a4;
+- (void)iconListView:(id)view didAddIconView:(id)iconView;
+- (void)iconListView:(id)view didRemoveIconView:(id)iconView;
 - (void)prepareForReuse;
-- (void)setIconBackgroundColor:(id)a3;
-- (void)setIconImage:(id)a3;
-- (void)setIconImageInfo:(SBIconImageInfo *)a3;
-- (void)setIconListView:(id)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setSeparatorVisible:(BOOL)a3;
-- (void)setTitle:(id)a3;
-- (void)setVisualStylingProvider:(id)a3;
-- (void)setWantsHeaderView:(BOOL)a3;
+- (void)setIconBackgroundColor:(id)color;
+- (void)setIconImage:(id)image;
+- (void)setIconImageInfo:(SBIconImageInfo *)info;
+- (void)setIconListView:(id)view;
+- (void)setIdentifier:(id)identifier;
+- (void)setSeparatorVisible:(BOOL)visible;
+- (void)setTitle:(id)title;
+- (void)setVisualStylingProvider:(id)provider;
+- (void)setWantsHeaderView:(BOOL)view;
 @end
 
 @implementation SBHAddWidgetSheetIconListCell
 
-- (SBHAddWidgetSheetIconListCell)initWithFrame:(CGRect)a3
+- (SBHAddWidgetSheetIconListCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   sub_1BEE4720C();
   sub_1BEE471FC();
   sub_1BEE471EC();
@@ -44,7 +44,7 @@
   return v7;
 }
 
-- (SBHAddWidgetSheetIconListCell)initWithCoder:(id)a3
+- (SBHAddWidgetSheetIconListCell)initWithCoder:(id)coder
 {
   sub_1BEE4720C();
   sub_1BEE471FC();
@@ -54,7 +54,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = a3;
+  coderCopy = coder;
   _sSo29SBHAddWidgetSheetIconListCellC15SpringBoardHomeE5coderABSgSo7NSCoderC_tcfc_0();
 }
 
@@ -69,7 +69,7 @@
   }
 }
 
-- (void)setIconImageInfo:(SBIconImageInfo *)a3
+- (void)setIconImageInfo:(SBIconImageInfo *)info
 {
   v7 = v6;
   v8 = v5;
@@ -92,7 +92,7 @@
   v12[1] = v9;
   v12[2] = v8;
   v12[3] = v7;
-  v17 = self;
+  selfCopy = self;
   sub_1BEDC7C04(v13, v14, v15, v16);
 }
 
@@ -121,7 +121,7 @@
   return v3;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
   sub_1BEE4720C();
   sub_1BEE471FC();
@@ -131,7 +131,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a3)
+  if (identifier)
   {
     v5 = sub_1BEE4708C();
   }
@@ -157,11 +157,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
-  v4 = [(SBHAddWidgetSheetIconListCell *)v3 textLabel];
-  v5 = [(UILabel *)v4 text];
+  selfCopy = self;
+  textLabel = [(SBHAddWidgetSheetIconListCell *)selfCopy textLabel];
+  text = [(UILabel *)textLabel text];
 
-  if (v5)
+  if (text)
   {
     sub_1BEE4708C();
 
@@ -177,7 +177,7 @@
   return v6;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   sub_1BEE4720C();
   sub_1BEE471FC();
@@ -187,15 +187,15 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a3)
+  if (title)
   {
     sub_1BEE4708C();
-    a3 = v5;
+    title = v5;
   }
 
-  v8 = self;
-  v6 = [(SBHAddWidgetSheetIconListCell *)v8 textLabel];
-  if (a3)
+  selfCopy = self;
+  textLabel = [(SBHAddWidgetSheetIconListCell *)selfCopy textLabel];
+  if (title)
   {
     v7 = sub_1BEE4705C();
   }
@@ -205,7 +205,7 @@
     v7 = 0;
   }
 
-  [(UILabel *)v6 setText:v7];
+  [(UILabel *)textLabel setText:v7];
 }
 
 - (UIImage)iconImage
@@ -218,24 +218,24 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
-  v4 = [(SBHAddWidgetSheetIconListCell *)v3 imageView];
-  v5 = [(UIImageView *)v4 image];
+  selfCopy = self;
+  imageView = [(SBHAddWidgetSheetIconListCell *)selfCopy imageView];
+  image = [(UIImageView *)imageView image];
 
-  if (v5)
+  if (image)
   {
   }
 
   else
   {
-    v6 = [(SBHAddWidgetSheetIconListCell *)v3 symbolImageView];
-    v5 = [(UIImageView *)v6 image];
+    symbolImageView = [(SBHAddWidgetSheetIconListCell *)selfCopy symbolImageView];
+    image = [(UIImageView *)symbolImageView image];
   }
 
-  return v5;
+  return image;
 }
 
-- (void)setIconImage:(id)a3
+- (void)setIconImage:(id)image
 {
   sub_1BEE4720C();
   sub_1BEE471FC();
@@ -245,9 +245,9 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v6 = a3;
-  v5 = self;
-  sub_1BEDCA914(a3);
+  imageCopy = image;
+  selfCopy = self;
+  sub_1BEDCA914(image);
 }
 
 - (UIColor)iconBackgroundColor
@@ -260,14 +260,14 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
-  v4 = [(SBHAddWidgetSheetIconListCell *)v3 imageView];
-  v5 = [(UIImageView *)v4 backgroundColor];
+  selfCopy = self;
+  imageView = [(SBHAddWidgetSheetIconListCell *)selfCopy imageView];
+  backgroundColor = [(UIImageView *)imageView backgroundColor];
 
-  return v5;
+  return backgroundColor;
 }
 
-- (void)setIconBackgroundColor:(id)a3
+- (void)setIconBackgroundColor:(id)color
 {
   sub_1BEE4720C();
   sub_1BEE471FC();
@@ -277,13 +277,13 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v7 = self;
-  v6 = [(SBHAddWidgetSheetIconListCell *)v7 imageView];
-  [(UIImageView *)v6 setBackgroundColor:v5];
+  colorCopy = color;
+  selfCopy = self;
+  imageView = [(SBHAddWidgetSheetIconListCell *)selfCopy imageView];
+  [(UIImageView *)imageView setBackgroundColor:colorCopy];
 }
 
-- (void)setIconListView:(id)a3
+- (void)setIconListView:(id)view
 {
   sub_1BEE4720C();
   sub_1BEE471FC();
@@ -294,13 +294,13 @@
   }
 
   v7 = *(self + OBJC_IVAR___SBHAddWidgetSheetIconListCell_iconListView);
-  *(self + OBJC_IVAR___SBHAddWidgetSheetIconListCell_iconListView) = a3;
-  v5 = a3;
-  v6 = self;
+  *(self + OBJC_IVAR___SBHAddWidgetSheetIconListCell_iconListView) = view;
+  viewCopy = view;
+  selfCopy = self;
   sub_1BEDC85E8(v7);
 }
 
-- (void)setSeparatorVisible:(BOOL)a3
+- (void)setSeparatorVisible:(BOOL)visible
 {
   sub_1BEE4720C();
   sub_1BEE471FC();
@@ -311,13 +311,13 @@
   }
 
   v5 = OBJC_IVAR___SBHAddWidgetSheetIconListCell_separatorVisible;
-  *(self + OBJC_IVAR___SBHAddWidgetSheetIconListCell_separatorVisible) = a3;
-  v7 = self;
-  v6 = [(SBHAddWidgetSheetIconListCell *)v7 separatorView];
-  [(UIView *)v6 setHidden:(*(self + v5) & 1) == 0];
+  *(self + OBJC_IVAR___SBHAddWidgetSheetIconListCell_separatorVisible) = visible;
+  selfCopy = self;
+  separatorView = [(SBHAddWidgetSheetIconListCell *)selfCopy separatorView];
+  [(UIView *)separatorView setHidden:(*(self + v5) & 1) == 0];
 }
 
-- (void)setWantsHeaderView:(BOOL)a3
+- (void)setWantsHeaderView:(BOOL)view
 {
   sub_1BEE4720C();
   sub_1BEE471FC();
@@ -327,8 +327,8 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  *(self + OBJC_IVAR___SBHAddWidgetSheetIconListCell_wantsHeaderView) = a3;
-  v5 = self;
+  *(self + OBJC_IVAR___SBHAddWidgetSheetIconListCell_wantsHeaderView) = view;
+  selfCopy = self;
   sub_1BEDC90BC();
 }
 
@@ -347,7 +347,7 @@
   return Strong;
 }
 
-- (void)setVisualStylingProvider:(id)a3
+- (void)setVisualStylingProvider:(id)provider
 {
   sub_1BEE4720C();
   sub_1BEE471FC();
@@ -359,8 +359,8 @@
 
   Strong = swift_unknownObjectWeakLoadStrong();
   swift_unknownObjectWeakAssign();
-  v6 = a3;
-  v7 = self;
+  providerCopy = provider;
+  selfCopy = self;
   sub_1BEDC9358(Strong);
 }
 
@@ -374,7 +374,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   SBHAddWidgetSheetIconListCell.prepareForReuse()();
 }
 
@@ -406,7 +406,7 @@
   return v3;
 }
 
-- (void)iconListView:(id)a3 didAddIconView:(id)a4
+- (void)iconListView:(id)view didAddIconView:(id)iconView
 {
   sub_1BEE4720C();
   sub_1BEE471FC();
@@ -416,13 +416,13 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_1BEDC8B58(v8, v7);
+  viewCopy = view;
+  iconViewCopy = iconView;
+  selfCopy = self;
+  sub_1BEDC8B58(iconViewCopy, viewCopy);
 }
 
-- (void)iconListView:(id)a3 didRemoveIconView:(id)a4
+- (void)iconListView:(id)view didRemoveIconView:(id)iconView
 {
   sub_1BEE4720C();
   sub_1BEE471FC();
@@ -432,10 +432,10 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_1BEDCAA10(v8);
+  viewCopy = view;
+  iconViewCopy = iconView;
+  selfCopy = self;
+  sub_1BEDCAA10(iconViewCopy);
 }
 
 @end

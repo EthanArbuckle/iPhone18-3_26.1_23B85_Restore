@@ -7,14 +7,14 @@
 - (uint64_t)copyDeep_MC
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v2 = [a1 count];
+  v2 = [self count];
   v3 = (v9 - ((8 * v2 + 15) & 0xFFFFFFFFFFFFFFF0));
   if (v2)
   {
     v4 = 0;
     do
     {
-      v3[v4] = [objc_msgSend(a1 objectAtIndex:{v4), "copy"}];
+      v3[v4] = [objc_msgSend(self objectAtIndex:{v4), "copy"}];
       ++v4;
     }
 

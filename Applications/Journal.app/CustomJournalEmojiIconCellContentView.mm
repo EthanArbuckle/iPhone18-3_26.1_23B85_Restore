@@ -1,13 +1,13 @@
 @interface CustomJournalEmojiIconCellContentView
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (_TtC7Journal37CustomJournalEmojiIconCellContentView)initWithCoder:(id)a3;
-- (_TtC7Journal37CustomJournalEmojiIconCellContentView)initWithFrame:(CGRect)a3;
-- (void)textFieldDidEndEditing:(id)a3 reason:(int64_t)a4;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (_TtC7Journal37CustomJournalEmojiIconCellContentView)initWithCoder:(id)coder;
+- (_TtC7Journal37CustomJournalEmojiIconCellContentView)initWithFrame:(CGRect)frame;
+- (void)textFieldDidEndEditing:(id)editing reason:(int64_t)reason;
 @end
 
 @implementation CustomJournalEmojiIconCellContentView
 
-- (_TtC7Journal37CustomJournalEmojiIconCellContentView)initWithCoder:(id)a3
+- (_TtC7Journal37CustomJournalEmojiIconCellContentView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC7Journal37CustomJournalEmojiIconCellContentView_placeholderImageView;
   *(&self->super.super.super.isa + v4) = sub_1006A2FC8();
@@ -18,25 +18,25 @@
   return result;
 }
 
-- (_TtC7Journal37CustomJournalEmojiIconCellContentView)initWithFrame:(CGRect)a3
+- (_TtC7Journal37CustomJournalEmojiIconCellContentView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
   v7 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = v8;
-  v10 = a3;
-  v11 = self;
+  fieldCopy = field;
+  selfCopy = self;
   v12 = String._bridgeToObjectiveC()();
   IsSingleEmoji = CEMStringIsSingleEmoji();
 
   if (IsSingleEmoji)
   {
-    v14 = *&v11->appliedConfiguration[OBJC_IVAR____TtC7Journal37CustomJournalEmojiIconCellContentView_appliedConfiguration];
+    v14 = *&selfCopy->appliedConfiguration[OBJC_IVAR____TtC7Journal37CustomJournalEmojiIconCellContentView_appliedConfiguration];
     if (v14)
     {
 
@@ -48,11 +48,11 @@
   return 1;
 }
 
-- (void)textFieldDidEndEditing:(id)a3 reason:(int64_t)a4
+- (void)textFieldDidEndEditing:(id)editing reason:(int64_t)reason
 {
-  v6 = self;
+  selfCopy = self;
   sub_1006A3B90();
-  v4 = *&v6->appliedConfiguration[OBJC_IVAR____TtC7Journal37CustomJournalEmojiIconCellContentView_appliedConfiguration + 16];
+  v4 = *&selfCopy->appliedConfiguration[OBJC_IVAR____TtC7Journal37CustomJournalEmojiIconCellContentView_appliedConfiguration + 16];
   if (v4)
   {
 

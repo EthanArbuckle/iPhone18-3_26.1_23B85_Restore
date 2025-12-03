@@ -1,22 +1,22 @@
 @interface PBUIPosterFloatingView
 - (BOOL)floatingLayerHasStandin;
-- (PBUIPosterFloatingView)initWithFrame:(CGRect)a3;
+- (PBUIPosterFloatingView)initWithFrame:(CGRect)frame;
 - (UIView)defaultFloatingLayerStandin;
-- (id)acquireSourceUsageAssertionForView:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)acquireSourceUsageAssertionForView:(id)view;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (void)dealloc;
-- (void)setFloatingLayerHasStandin:(BOOL)a3;
+- (void)setFloatingLayerHasStandin:(BOOL)standin;
 @end
 
 @implementation PBUIPosterFloatingView
 
-- (PBUIPosterFloatingView)initWithFrame:(CGRect)a3
+- (PBUIPosterFloatingView)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = PBUIPosterFloatingView;
-  v3 = [(PBUIPosterFloatingView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PBUIPosterFloatingView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     objc_initWeak(&location, v3);
@@ -61,23 +61,23 @@ void __40__PBUIPosterFloatingView_initWithFrame___block_invoke(uint64_t a1, void
 - (BOOL)floatingLayerHasStandin
 {
   WeakRetained = objc_loadWeakRetained(&self->_defaultFloatingLayerStandin);
-  v3 = [WeakRetained isHidden];
+  isHidden = [WeakRetained isHidden];
 
-  return v3;
+  return isHidden;
 }
 
-- (void)setFloatingLayerHasStandin:(BOOL)a3
+- (void)setFloatingLayerHasStandin:(BOOL)standin
 {
-  v3 = a3;
+  standinCopy = standin;
   WeakRetained = objc_loadWeakRetained(&self->_defaultFloatingLayerStandin);
-  [WeakRetained setHidden:v3];
+  [WeakRetained setHidden:standinCopy];
 }
 
-- (id)acquireSourceUsageAssertionForView:(id)a3
+- (id)acquireSourceUsageAssertionForView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   NSClassFromString(&cfstr_Pbuiposterfloa.isa);
-  if (!v5)
+  if (!viewCopy)
   {
     [PBUIPosterFloatingView acquireSourceUsageAssertionForView:a2];
   }
@@ -88,38 +88,38 @@ void __40__PBUIPosterFloatingView_initWithFrame___block_invoke(uint64_t a1, void
   }
 
   v6 = MEMORY[0x277CF0C00];
-  v7 = v5;
+  v7 = viewCopy;
   v8 = [v6 succinctDescriptionForObject:v7];
   v9 = [(BSCompoundAssertion *)self->_currentUsers acquireForReason:v8 withContext:v7];
 
   return v9;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(PBUIPosterFloatingView *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(PBUIPosterFloatingView *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = [MEMORY[0x277CF0C00] builderWithObject:self];
   v5 = [v4 appendBool:-[PBUIPosterFloatingView floatingLayerHasStandin](self withName:{"floatingLayerHasStandin"), @"floatingLayerHasStandin"}];
-  v6 = [(PBUIPosterFloatingView *)self cacheIdentifier];
-  [v4 appendString:v6 withName:@"cacheIdentifier"];
+  cacheIdentifier = [(PBUIPosterFloatingView *)self cacheIdentifier];
+  [v4 appendString:cacheIdentifier withName:@"cacheIdentifier"];
 
   v7 = [v4 appendBool:-[PBUIPosterFloatingView effectsAreBakedIn](self withName:{"effectsAreBakedIn"), @"effectsAreBakedIn"}];
   WeakRetained = objc_loadWeakRetained(&self->_defaultFloatingLayerStandin);
   v9 = [v4 appendObject:WeakRetained withName:@"defaultFloatingLayerStandin"];
 
-  v10 = [(BSCompoundAssertion *)self->_currentUsers context];
-  if (v10)
+  context = [(BSCompoundAssertion *)self->_currentUsers context];
+  if (context)
   {
-    v11 = [(BSCompoundAssertion *)self->_currentUsers context];
-    v12 = [v11 allObjects];
-    [v4 appendArraySection:v12 withName:@"currentUsers" skipIfEmpty:0];
+    context2 = [(BSCompoundAssertion *)self->_currentUsers context];
+    allObjects = [context2 allObjects];
+    [v4 appendArraySection:allObjects withName:@"currentUsers" skipIfEmpty:0];
   }
 
   else
@@ -132,10 +132,10 @@ void __40__PBUIPosterFloatingView_initWithFrame___block_invoke(uint64_t a1, void
 
 - (id)succinctDescription
 {
-  v2 = [(PBUIPosterFloatingView *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(PBUIPosterFloatingView *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (UIView)defaultFloatingLayerStandin

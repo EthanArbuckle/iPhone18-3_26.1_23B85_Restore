@@ -8,16 +8,16 @@
 {
   if ([MEMORY[0x277D0ACD8] isEmulatedDevice])
   {
-    v2 = [a1 deviceContext];
-    v5 = [v2 mutableCopy];
+    deviceContext = [self deviceContext];
+    v5 = [deviceContext mutableCopy];
 
     [v5 sb_configureForDeviceEmulation];
-    [a1 setDeviceContext:v5];
-    v3 = [a1 displayContext];
-    v4 = [v3 mutableCopy];
+    [self setDeviceContext:v5];
+    displayContext = [self displayContext];
+    v4 = [displayContext mutableCopy];
 
     [v4 sb_configureForDeviceEmulation];
-    [a1 setDisplayContext:v4];
+    [self setDisplayContext:v4];
   }
 }
 

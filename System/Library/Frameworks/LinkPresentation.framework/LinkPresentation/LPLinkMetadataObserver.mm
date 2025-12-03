@@ -1,24 +1,24 @@
 @interface LPLinkMetadataObserver
-- (LPLinkMetadataObserver)initWithMetadata:(id)a3 callback:(id)a4;
+- (LPLinkMetadataObserver)initWithMetadata:(id)metadata callback:(id)callback;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)stopObserving;
 @end
 
 @implementation LPLinkMetadataObserver
 
-- (LPLinkMetadataObserver)initWithMetadata:(id)a3 callback:(id)a4
+- (LPLinkMetadataObserver)initWithMetadata:(id)metadata callback:(id)callback
 {
-  v7 = a3;
-  v8 = a4;
+  metadataCopy = metadata;
+  callbackCopy = callback;
   v15.receiver = self;
   v15.super_class = LPLinkMetadataObserver;
   v9 = [(LPLinkMetadataObserver *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_metadata, a3);
-    v11 = _Block_copy(v8);
+    objc_storeStrong(&v9->_metadata, metadata);
+    v11 = _Block_copy(callbackCopy);
     callback = v10->_callback;
     v10->_callback = v11;
 
@@ -47,12 +47,12 @@
   self->_callback = 0;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (observerContext == a6 && !self->_hasScheduledCallback)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (observerContext == context && !self->_hasScheduledCallback)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;

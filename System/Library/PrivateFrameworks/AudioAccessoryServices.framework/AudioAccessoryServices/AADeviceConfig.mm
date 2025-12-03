@@ -1,9 +1,9 @@
 @interface AADeviceConfig
 - (AADeviceConfig)init;
-- (AADeviceConfig)initWithCoder:(id)a3;
+- (AADeviceConfig)initWithCoder:(id)coder;
 - (BOOL)needsUpdateToAAController;
-- (id)descriptionWithLevel:(int)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)descriptionWithLevel:(int)level;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AADeviceConfig
@@ -23,9 +23,9 @@
   return v3;
 }
 
-- (AADeviceConfig)initWithCoder:(id)a3
+- (AADeviceConfig)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(AADeviceConfig *)self init];
 
   if (v5)
@@ -60,7 +60,7 @@
       v5->_audioRouteHidden = 0;
     }
 
-    v6 = v4;
+    v6 = coderCopy;
     objc_opt_class();
     NSDecodeObjectIfPresent();
 
@@ -254,282 +254,282 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v11 = v4;
+  coderCopy = coder;
+  v11 = coderCopy;
   if (self->_acceptReplyPlayPauseConfig)
   {
-    [v4 encodeInteger:? forKey:?];
-    v4 = v11;
+    [coderCopy encodeInteger:? forKey:?];
+    coderCopy = v11;
   }
 
   if (self->_aclPriority)
   {
     [v11 encodeInteger:? forKey:?];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   if (self->_adaptiveVolumeConfig)
   {
     [v11 encodeInteger:? forKey:?];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   if (self->_allowsAutoRoute)
   {
     [v11 encodeInteger:? forKey:?];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   if (self->_allowTemporaryManagedPairing)
   {
     [v11 encodeInteger:? forKey:?];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   if (self->_audioRouteHidden)
   {
     [v11 encodeInteger:? forKey:?];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   audiogramEnrolledTimestamp = self->_audiogramEnrolledTimestamp;
   if (audiogramEnrolledTimestamp)
   {
     [v11 encodeObject:audiogramEnrolledTimestamp forKey:@"agET"];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   autoANCStrength = self->_autoANCStrength;
   if (autoANCStrength)
   {
     [v11 encodeInt64:autoANCStrength forKey:@"aaS"];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   if (self->_changeDynamicEndOfChargeState)
   {
     [v11 encodeInteger:? forKey:?];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   if (self->_changeOptimizedBatteryChargingState)
   {
     [v11 encodeInteger:? forKey:?];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   if (self->_clickHoldModeLeft)
   {
     [v11 encodeInteger:? forKey:?];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   if (self->_clickHoldModeRight)
   {
     [v11 encodeInteger:? forKey:?];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   if (self->_conversationDetectConfig)
   {
     [v11 encodeInteger:? forKey:?];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   if (self->_crownRotationDirection)
   {
     [v11 encodeInteger:? forKey:?];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   if (self->_declineDismissSkipConfig)
   {
     [v11 encodeInteger:? forKey:?];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   if (self->_doubleTapActionLeft)
   {
     [v11 encodeInteger:? forKey:?];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   if (self->_doubleTapActionRight)
   {
     [v11 encodeInteger:? forKey:?];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   if (self->_enableChargingReminder)
   {
     [v11 encodeInteger:? forKey:?];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   if (self->_enableHearingAidGainSwipe)
   {
     [v11 encodeInteger:? forKey:?];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   if (self->_enableHearingAssist)
   {
     [v11 encodeInteger:? forKey:?];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   if (self->_enableHearingProtectionPPE)
   {
     [v11 encodeInteger:? forKey:?];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   if (self->_enableSiriMultitone)
   {
     [v11 encodeInteger:? forKey:?];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   if (self->_enableSleepDetection)
   {
     [v11 encodeInteger:? forKey:?];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   if (self->_endCallConfig)
   {
     [v11 encodeInteger:? forKey:?];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   if (self->_headGestureToggle)
   {
     [v11 encodeInteger:? forKey:?];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   if (self->_allowHealthKitDataWrite)
   {
     [v11 encodeInteger:? forKey:?];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   if (self->_hearingAidEnrolled)
   {
     [v11 encodeInteger:? forKey:?];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   if (self->_hearingAidToggle)
   {
     [v11 encodeInteger:? forKey:?];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   if (self->_hearingAidV2SourceRegionSupport)
   {
     [v11 encodeInteger:? forKey:?];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   if (self->_enableHeartRateMonitor)
   {
     [v11 encodeInteger:? forKey:?];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   listeningMode = self->_listeningMode;
   if (listeningMode)
   {
     [v11 encodeInteger:listeningMode forKey:@"lsmd"];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   listeningModeConfigs = self->_listeningModeConfigs;
   if (listeningModeConfigs)
   {
     [v11 encodeInt64:listeningModeConfigs forKey:@"lsmc"];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   if (self->_listeningModeOffAllowed)
   {
     [v11 encodeInteger:? forKey:?];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   if (self->_microphoneMode)
   {
     [v11 encodeInteger:? forKey:?];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   if (self->_muteControlConfig)
   {
     [v11 encodeInteger:? forKey:?];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   name = self->_name;
   if (name)
   {
     [v11 encodeObject:name forKey:@"name"];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   if (self->_placementMode)
   {
     [v11 encodeInteger:? forKey:?];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   if (self->_rawGesturesConfigFlags)
   {
     [v11 encodeInteger:? forKey:?];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   if (self->_relinquishAudioRoute)
   {
     [v11 encodeInteger:? forKey:?];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   if (self->_remoteCameraControlConfig)
   {
     [v11 encodeInteger:? forKey:?];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   if (self->_selectiveSpeechListeningConfig)
   {
     [v11 encodeInteger:? forKey:?];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   if (self->_smartRoutingMode)
   {
     [v11 encodeInteger:? forKey:?];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   if (self->_spatialAudioAllowed)
   {
     [v11 encodeInteger:? forKey:?];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   spatialAudioMode = self->_spatialAudioMode;
   if (spatialAudioMode && spatialAudioMode != 255)
   {
     [v11 encodeInteger:spatialAudioMode forKey:@"samd"];
-    v4 = v11;
+    coderCopy = v11;
   }
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   v93 = [objc_opt_class() description];
   NSAppendPrintF_safe();

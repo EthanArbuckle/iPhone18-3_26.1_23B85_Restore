@@ -1,39 +1,39 @@
 @interface IMCTRCSUtilitiesManagerLiveDelegate
-- (BOOL)enabledByDefaultForContext:(id)a3;
+- (BOOL)enabledByDefaultForContext:(id)context;
 - (void)activeSubscriptionsDidChange;
-- (void)requiresResiliencyChanged:(id)a3 val:(BOOL)a4;
-- (void)systemConfigurationChanged:(id)a3 withConfiguration:(id)a4;
+- (void)requiresResiliencyChanged:(id)changed val:(BOOL)val;
+- (void)systemConfigurationChanged:(id)changed withConfiguration:(id)configuration;
 @end
 
 @implementation IMCTRCSUtilitiesManagerLiveDelegate
 
-- (BOOL)enabledByDefaultForContext:(id)a3
+- (BOOL)enabledByDefaultForContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_1A87F0A04(v4);
+  contextCopy = context;
+  selfCopy = self;
+  LOBYTE(self) = sub_1A87F0A04(contextCopy);
 
   return self & 1;
 }
 
 - (void)activeSubscriptionsDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A87EE9BC(sub_1A87F22B0, 0, &unk_1F1BB17B0, sub_1A87F3578, &unk_1F1BB17C8);
 }
 
-- (void)systemConfigurationChanged:(id)a3 withConfiguration:(id)a4
+- (void)systemConfigurationChanged:(id)changed withConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
-  v11 = self;
-  v8 = [v6 labelID];
-  if (v8)
+  changedCopy = changed;
+  configurationCopy = configuration;
+  selfCopy = self;
+  labelID = [changedCopy labelID];
+  if (labelID)
   {
-    v9 = v8;
+    v9 = labelID;
     sub_1A88C82E8();
 
-    v10 = MEMORY[0x1EEE9AC00](v11);
+    v10 = MEMORY[0x1EEE9AC00](selfCopy);
     MEMORY[0x1EEE9AC00](v10);
     sub_1A88C8A58();
   }
@@ -43,11 +43,11 @@
   }
 }
 
-- (void)requiresResiliencyChanged:(id)a3 val:(BOOL)a4
+- (void)requiresResiliencyChanged:(id)changed val:(BOOL)val
 {
-  v7 = a3;
-  v8 = self;
-  sub_1A87F27BC(a3, a4);
+  changedCopy = changed;
+  selfCopy = self;
+  sub_1A87F27BC(changed, val);
 }
 
 @end

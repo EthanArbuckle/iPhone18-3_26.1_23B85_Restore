@@ -1,37 +1,37 @@
 @interface SGMISaliencyInference
-+ (id)evaluate:(id)a3 enablePreFiltering:(BOOL)a4 config:(id)a5 error:(id *)a6;
-+ (id)read:(id)a3 fromStore:(id)a4;
++ (id)evaluate:(id)evaluate enablePreFiltering:(BOOL)filtering config:(id)config error:(id *)error;
++ (id)read:(id)read fromStore:(id)store;
 @end
 
 @implementation SGMISaliencyInference
 
-+ (id)read:(id)a3 fromStore:(id)a4
++ (id)read:(id)read fromStore:(id)store
 {
-  v5 = a4;
-  v6 = [a3 messageId];
-  v7 = [v5 saliencyForMessageId:v6];
+  storeCopy = store;
+  messageId = [read messageId];
+  v7 = [storeCopy saliencyForMessageId:messageId];
 
   return v7;
 }
 
-+ (id)evaluate:(id)a3 enablePreFiltering:(BOOL)a4 config:(id)a5 error:(id *)a6
++ (id)evaluate:(id)evaluate enablePreFiltering:(BOOL)filtering config:(id)config error:(id *)error
 {
-  v8 = a4;
+  filteringCopy = filtering;
   v31 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = [v9 mailMessage];
-  if ([v10 isSent])
+  evaluateCopy = evaluate;
+  mailMessage = [evaluateCopy mailMessage];
+  if ([mailMessage isSent])
   {
     v11 = sgMailIntelligenceLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v10 messageId];
+      messageId = [mailMessage messageId];
       v29 = 138412290;
-      v30 = v12;
+      v30 = messageId;
       _os_log_impl(&dword_231E60000, v11, OS_LOG_TYPE_DEFAULT, "SGMISaliencyInference: Mail %@ is a sent mail", &v29, 0xCu);
     }
 
-    if (!a6)
+    if (!error)
     {
       goto LABEL_17;
     }
@@ -39,13 +39,13 @@
     v13 = MEMORY[0x277CCA9B8];
     v14 = 1;
 LABEL_16:
-    *a6 = [v13 errorWithDomain:@"SGMIError" code:v14 userInfo:0];
+    *error = [v13 errorWithDomain:@"SGMIError" code:v14 userInfo:0];
 LABEL_17:
-    v20 = [v9 defaultSaliencyOnError];
+    defaultSaliencyOnError = [evaluateCopy defaultSaliencyOnError];
     goto LABEL_18;
   }
 
-  if (!a5)
+  if (!config)
   {
     v19 = sgMailIntelligenceLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -54,7 +54,7 @@ LABEL_17:
       _os_log_error_impl(&dword_231E60000, v19, OS_LOG_TYPE_ERROR, "SGMISaliencyInference: Error - config shouldn't be nil when inferencing saliency", &v29, 2u);
     }
 
-    if (!a6)
+    if (!error)
     {
       goto LABEL_17;
     }
@@ -64,21 +64,21 @@ LABEL_17:
     goto LABEL_16;
   }
 
-  v15 = [v9 store];
-  v16 = [v15 areSubModelsEmpty];
+  store = [evaluateCopy store];
+  areSubModelsEmpty = [store areSubModelsEmpty];
 
-  if (v16)
+  if (areSubModelsEmpty)
   {
     v17 = sgMailIntelligenceLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [v10 messageId];
+      messageId2 = [mailMessage messageId];
       v29 = 138412290;
-      v30 = v18;
+      v30 = messageId2;
       _os_log_impl(&dword_231E60000, v17, OS_LOG_TYPE_DEFAULT, "SGMISaliencyInference: No submodels for message ID: %@", &v29, 0xCu);
     }
 
-    if (!a6)
+    if (!error)
     {
       goto LABEL_17;
     }
@@ -88,19 +88,19 @@ LABEL_17:
     goto LABEL_16;
   }
 
-  if (v8 && (v24 = [SGMISaliencyModel ruleBasedInferenceFor:v9], v24 != 2))
+  if (filteringCopy && (v24 = [SGMISaliencyModel ruleBasedInferenceFor:evaluateCopy], v24 != 2))
   {
     v26 = v24;
     v27 = sgMailIntelligenceLogHandle();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
-      v28 = [v10 messageId];
+      messageId3 = [mailMessage messageId];
       v29 = 138412290;
-      v30 = v28;
+      v30 = messageId3;
       _os_log_impl(&dword_231E60000, v27, OS_LOG_TYPE_DEFAULT, "SGMISaliencyInference: rule based inference for message ID: %@", &v29, 0xCu);
     }
 
-    v20 = [v9 defaultSaliencyOnOverrideFor:v26];
+    defaultSaliencyOnError = [evaluateCopy defaultSaliencyOnOverrideFor:v26];
   }
 
   else
@@ -112,11 +112,11 @@ LABEL_17:
       _os_log_debug_impl(&dword_231E60000, v25, OS_LOG_TYPE_DEBUG, "SGMISaliencyInference: Performing saliency inference for e-mail message.", &v29, 2u);
     }
 
-    v20 = [SGMISaliencyModel saliencyForFeatureVector:v9];
+    defaultSaliencyOnError = [SGMISaliencyModel saliencyForFeatureVector:evaluateCopy];
   }
 
 LABEL_18:
-  v21 = v20;
+  v21 = defaultSaliencyOnError;
 
   v22 = *MEMORY[0x277D85DE8];
 

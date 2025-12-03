@@ -1,39 +1,39 @@
 @interface _INPBAnnouncementRecord
-- (BOOL)isEqual:(id)a3;
-- (_INPBAnnouncementRecord)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBAnnouncementRecord)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setIdentifier:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setIdentifier:(id)identifier;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBAnnouncementRecord
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBAnnouncementRecord *)self hasDuration])
   {
     v4 = MEMORY[0x1E696AD98];
     [(_INPBAnnouncementRecord *)self duration];
     v5 = [v4 numberWithDouble:?];
-    [v3 setObject:v5 forKeyedSubscript:@"duration"];
+    [dictionary setObject:v5 forKeyedSubscript:@"duration"];
   }
 
   if (self->_identifier)
   {
-    v6 = [(_INPBAnnouncementRecord *)self identifier];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"identifier"];
+    identifier = [(_INPBAnnouncementRecord *)self identifier];
+    v7 = [identifier copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"identifier"];
   }
 
-  v8 = [(_INPBAnnouncementRecord *)self originator];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"originator"];
+  originator = [(_INPBAnnouncementRecord *)self originator];
+  dictionaryRepresentation = [originator dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"originator"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -75,26 +75,26 @@
   return v9 ^ [(_INPBHomeFilter *)self->_originator hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
-  v5 = [(_INPBAnnouncementRecord *)self hasDuration];
-  if (v5 != [v4 hasDuration])
+  hasDuration = [(_INPBAnnouncementRecord *)self hasDuration];
+  if (hasDuration != [equalCopy hasDuration])
   {
     goto LABEL_16;
   }
 
   if ([(_INPBAnnouncementRecord *)self hasDuration])
   {
-    if ([v4 hasDuration])
+    if ([equalCopy hasDuration])
     {
       duration = self->_duration;
-      [v4 duration];
+      [equalCopy duration];
       if (duration != v7)
       {
         goto LABEL_16;
@@ -102,20 +102,20 @@
     }
   }
 
-  v8 = [(_INPBAnnouncementRecord *)self identifier];
-  v9 = [v4 identifier];
-  if ((v8 != 0) == (v9 == 0))
+  identifier = [(_INPBAnnouncementRecord *)self identifier];
+  identifier2 = [equalCopy identifier];
+  if ((identifier != 0) == (identifier2 == 0))
   {
     goto LABEL_15;
   }
 
-  v10 = [(_INPBAnnouncementRecord *)self identifier];
-  if (v10)
+  identifier3 = [(_INPBAnnouncementRecord *)self identifier];
+  if (identifier3)
   {
-    v11 = v10;
-    v12 = [(_INPBAnnouncementRecord *)self identifier];
-    v13 = [v4 identifier];
-    v14 = [v12 isEqual:v13];
+    v11 = identifier3;
+    identifier4 = [(_INPBAnnouncementRecord *)self identifier];
+    identifier5 = [equalCopy identifier];
+    v14 = [identifier4 isEqual:identifier5];
 
     if (!v14)
     {
@@ -127,12 +127,12 @@
   {
   }
 
-  v8 = [(_INPBAnnouncementRecord *)self originator];
-  v9 = [v4 originator];
-  if ((v8 != 0) != (v9 == 0))
+  identifier = [(_INPBAnnouncementRecord *)self originator];
+  identifier2 = [equalCopy originator];
+  if ((identifier != 0) != (identifier2 == 0))
   {
-    v15 = [(_INPBAnnouncementRecord *)self originator];
-    if (!v15)
+    originator = [(_INPBAnnouncementRecord *)self originator];
+    if (!originator)
     {
 
 LABEL_19:
@@ -140,10 +140,10 @@ LABEL_19:
       goto LABEL_17;
     }
 
-    v16 = v15;
-    v17 = [(_INPBAnnouncementRecord *)self originator];
-    v18 = [v4 originator];
-    v19 = [v17 isEqual:v18];
+    v16 = originator;
+    originator2 = [(_INPBAnnouncementRecord *)self originator];
+    originator3 = [equalCopy originator];
+    v19 = [originator2 isEqual:originator3];
 
     if (v19)
     {
@@ -163,7 +163,7 @@ LABEL_17:
   return v20;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBAnnouncementRecord allocWithZone:](_INPBAnnouncementRecord init];
   if ([(_INPBAnnouncementRecord *)self hasDuration])
@@ -172,71 +172,71 @@ LABEL_17:
     [(_INPBAnnouncementRecord *)v5 setDuration:?];
   }
 
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   [(_INPBAnnouncementRecord *)v5 setIdentifier:v6];
 
-  v7 = [(_INPBHomeFilter *)self->_originator copyWithZone:a3];
+  v7 = [(_INPBHomeFilter *)self->_originator copyWithZone:zone];
   [(_INPBAnnouncementRecord *)v5 setOriginator:v7];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBAnnouncementRecord *)self data];
+  coderCopy = coder;
+  data = [(_INPBAnnouncementRecord *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBAnnouncementRecord)initWithCoder:(id)a3
+- (_INPBAnnouncementRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBAnnouncementRecord *)self initWithData:v6];
+    self = [(_INPBAnnouncementRecord *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   if ([(_INPBAnnouncementRecord *)self hasDuration])
   {
     duration = self->_duration;
     PBDataWriterWriteDoubleField();
   }
 
-  v5 = [(_INPBAnnouncementRecord *)self identifier];
+  identifier = [(_INPBAnnouncementRecord *)self identifier];
 
-  if (v5)
+  if (identifier)
   {
     identifier = self->_identifier;
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(_INPBAnnouncementRecord *)self originator];
+  originator = [(_INPBAnnouncementRecord *)self originator];
 
-  v8 = v10;
-  if (v7)
+  v8 = toCopy;
+  if (originator)
   {
-    v9 = [(_INPBAnnouncementRecord *)self originator];
+    originator2 = [(_INPBAnnouncementRecord *)self originator];
     PBDataWriterWriteSubmessage();
 
-    v8 = v10;
+    v8 = toCopy;
   }
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   identifier = self->_identifier;
   self->_identifier = v4;
 

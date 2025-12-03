@@ -1,16 +1,16 @@
 @interface CKRequiredFeatureSet
-- (CKRequiredFeatureSet)initWithZoneFeatures:(id)a3 recordFeatures:(id)a4 fieldFeatures:(id)a5;
-- (id)copyWithZone:(void *)a3;
+- (CKRequiredFeatureSet)initWithZoneFeatures:(id)features recordFeatures:(id)recordFeatures fieldFeatures:(id)fieldFeatures;
+- (id)copyWithZone:(void *)zone;
 - (id)fieldFeatures;
 - (id)recordFeatures;
 - (id)zoneFeatures;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKRequiredFeatureSet
 
-- (CKRequiredFeatureSet)initWithZoneFeatures:(id)a3 recordFeatures:(id)a4 fieldFeatures:(id)a5
+- (CKRequiredFeatureSet)initWithZoneFeatures:(id)features recordFeatures:(id)recordFeatures fieldFeatures:(id)fieldFeatures
 {
   type metadata accessor for CKZoneFeature(self);
   v5 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -23,7 +23,7 @@
 
 - (id)zoneFeatures
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CKRequiredFeatureSet.zoneFeatures.getter();
 
   return v3;
@@ -31,7 +31,7 @@
 
 - (id)recordFeatures
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CKRequiredFeatureSet.recordFeatures.getter();
 
   return v3;
@@ -39,23 +39,23 @@
 
 - (id)fieldFeatures
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CKRequiredFeatureSet.fieldFeatures.getter();
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  CKRequiredFeatureSet.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  CKRequiredFeatureSet.encode(with:)(coderCopy);
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
-  CKRequiredFeatureSet.copy(with:)(v3, v6);
+  selfCopy = self;
+  CKRequiredFeatureSet.copy(with:)(selfCopy, v6);
 
   sub_188400B68(v6, v6[3]);
   v4 = _bridgeAnythingToObjectiveC<A>(_:)();
@@ -65,7 +65,7 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CKRequiredFeatureSet.hash.getter();
 
   return v3;

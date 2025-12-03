@@ -1,21 +1,21 @@
 @interface PKPaymentTransactionViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation PKPaymentTransactionViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKPaymentTransactionView" hasInstanceVariable:@"_primaryLabel" withType:"UILabel"];
-  [v3 validateClass:@"PKPaymentTransactionView" hasInstanceVariable:@"_secondaryLabel" withType:"UILabel"];
-  [v3 validateClass:@"PKPaymentTransactionView" hasInstanceVariable:@"_tertiaryLabel" withType:"UILabel"];
-  [v3 validateClass:@"PKPaymentTransactionView" hasInstanceVariable:@"_transactionValueLabel" withType:"UILabel"];
-  [v3 validateClass:@"PKPaymentTransactionView" hasInstanceMethod:@"transactionValueAttributedText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PKPaymentTransactionView" hasInstanceVariable:@"_bonusImageView" withType:"UIImageView"];
-  [v3 validateClass:@"PKPaymentTransactionView" hasInstanceVariable:@"_badgeLabel" withType:"UILabel"];
-  [v3 validateClass:@"PKPaymentTransactionView" hasInstanceMethod:@"transactionValueAttributedText" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKPaymentTransactionView" hasInstanceVariable:@"_primaryLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"PKPaymentTransactionView" hasInstanceVariable:@"_secondaryLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"PKPaymentTransactionView" hasInstanceVariable:@"_tertiaryLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"PKPaymentTransactionView" hasInstanceVariable:@"_transactionValueLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"PKPaymentTransactionView" hasInstanceMethod:@"transactionValueAttributedText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PKPaymentTransactionView" hasInstanceVariable:@"_bonusImageView" withType:"UIImageView"];
+  [validationsCopy validateClass:@"PKPaymentTransactionView" hasInstanceVariable:@"_badgeLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"PKPaymentTransactionView" hasInstanceMethod:@"transactionValueAttributedText" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -29,12 +29,12 @@
   v7 = __UIAccessibilityCastAsClass();
 
   v8 = [objc_alloc(MEMORY[0x29EDBD7E8]) initWithStringOrAttributedString:v7];
-  v9 = [v8 coalescedAttributes];
-  v10 = [v9 objectForKeyedSubscript:*MEMORY[0x29EDC7660]];
-  v11 = [v10 BOOLValue];
+  coalescedAttributes = [v8 coalescedAttributes];
+  v10 = [coalescedAttributes objectForKeyedSubscript:*MEMORY[0x29EDC7660]];
+  bOOLValue = [v10 BOOLValue];
 
-  v12 = [v7 string];
-  if (v11)
+  string = [v7 string];
+  if (bOOLValue)
   {
     v13 = accessibilityLocalizedString(@"cancelled");
   }
@@ -46,28 +46,28 @@
 
   v14 = __UIAXStringForVariables();
 
-  if (v11)
+  if (bOOLValue)
   {
   }
 
-  v15 = [(PKPaymentTransactionViewAccessibility *)self safeUIViewForKey:@"_badgeLabel", v12, v13, @"__AXStringForVariablesSentinel"];
-  v16 = [v15 accessibilityLabel];
+  v15 = [(PKPaymentTransactionViewAccessibility *)self safeUIViewForKey:@"_badgeLabel", string, v13, @"__AXStringForVariablesSentinel"];
+  accessibilityLabel = [v15 accessibilityLabel];
 
-  if ([v16 length])
+  if ([accessibilityLabel length])
   {
     v17 = MEMORY[0x29EDBA0F8];
     v18 = accessibilityLocalizedString(@"cash.back.format");
-    v19 = [v17 stringWithFormat:v18, v16];
+    v19 = [v17 stringWithFormat:v18, accessibilityLabel];
 
-    v16 = v19;
+    accessibilityLabel = v19;
   }
 
   v20 = __UIAXStringForVariables();
 
-  v21 = [(PKPaymentTransactionViewAccessibility *)self safeUIViewForKey:@"_bonusImageView", v16, @"__AXStringForVariablesSentinel"];
-  v22 = [v21 _accessibilityViewIsVisible];
+  v21 = [(PKPaymentTransactionViewAccessibility *)self safeUIViewForKey:@"_bonusImageView", accessibilityLabel, @"__AXStringForVariablesSentinel"];
+  _accessibilityViewIsVisible = [v21 _accessibilityViewIsVisible];
 
-  if (v22)
+  if (_accessibilityViewIsVisible)
   {
     v25 = accessibilityLocalizedString(@"transaction.bonus");
     v23 = __UIAXStringForVariables();

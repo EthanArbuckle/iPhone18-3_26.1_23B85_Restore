@@ -1,22 +1,22 @@
 @interface HMDCameraProfileSettingsQuotaCoordinator
-+ (id)clientErrorFromCanUpdateAccessModeError:(id)a3;
++ (id)clientErrorFromCanUpdateAccessModeError:(id)error;
 + (id)logCategory;
-- (BOOL)_requiresDisablingCloudStorageForAccessMode:(unint64_t)a3 cameraHomePresence:(unint64_t)a4;
-- (BOOL)_requiresEnablingCloudStorageForAccessMode:(unint64_t)a3;
-- (HMDCameraProfileSettingsQuotaCoordinator)initWithWorkQueue:(id)a3 accessory:(id)a4;
-- (HMDCameraProfileSettingsQuotaCoordinator)initWithWorkQueue:(id)a3 accessory:(id)a4 quotaManager:(id)a5;
+- (BOOL)_requiresDisablingCloudStorageForAccessMode:(unint64_t)mode cameraHomePresence:(unint64_t)presence;
+- (BOOL)_requiresEnablingCloudStorageForAccessMode:(unint64_t)mode;
+- (HMDCameraProfileSettingsQuotaCoordinator)initWithWorkQueue:(id)queue accessory:(id)accessory;
+- (HMDCameraProfileSettingsQuotaCoordinator)initWithWorkQueue:(id)queue accessory:(id)accessory quotaManager:(id)manager;
 - (HMDCameraProfileSettingsQuotaCoordinatorDelegate)delegate;
 - (HMDHAPAccessory)accessory;
 - (id)cameraClipsZoneName;
 - (id)logIdentifier;
-- (void)_disableRecordingAccessModesWithCompletion:(id)a3;
-- (void)_performOperationWithBlock:(id)a3;
-- (void)_synchronizeCloudStorageWithCurrentCamerasWithCompletion:(id)a3;
-- (void)_synchronizeCloudStorageWithRecordingAccessModesWithCompletion:(id)a3;
-- (void)_updateCloudStorageAndSettingsWithAccessMode:(unint64_t)a3 forCameraHomePresence:(unint64_t)a4 completion:(id)a5;
+- (void)_disableRecordingAccessModesWithCompletion:(id)completion;
+- (void)_performOperationWithBlock:(id)block;
+- (void)_synchronizeCloudStorageWithCurrentCamerasWithCompletion:(id)completion;
+- (void)_synchronizeCloudStorageWithRecordingAccessModesWithCompletion:(id)completion;
+- (void)_updateCloudStorageAndSettingsWithAccessMode:(unint64_t)mode forCameraHomePresence:(unint64_t)presence completion:(id)completion;
 - (void)disableRecordingAccessModes;
 - (void)synchronizeCloudStorageWithRecordingAccessModes;
-- (void)updateCloudStorageAndSettingsWithAccessMode:(unint64_t)a3 forCameraHomePresence:(unint64_t)a4 completion:(id)a5;
+- (void)updateCloudStorageAndSettingsWithAccessMode:(unint64_t)mode forCameraHomePresence:(unint64_t)presence completion:(id)completion;
 @end
 
 @implementation HMDCameraProfileSettingsQuotaCoordinator
@@ -37,25 +37,25 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDCameraProfileSettingsQuotaCoordinator *)self accessory];
-  v3 = [v2 logIdentifier];
+  accessory = [(HMDCameraProfileSettingsQuotaCoordinator *)self accessory];
+  logIdentifier = [accessory logIdentifier];
 
-  return v3;
+  return logIdentifier;
 }
 
-- (void)_disableRecordingAccessModesWithCompletion:(id)a3
+- (void)_disableRecordingAccessModesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HMDCameraProfileSettingsQuotaCoordinator *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  completionCopy = completion;
+  workQueue = [(HMDCameraProfileSettingsQuotaCoordinator *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HMDCameraProfileSettingsQuotaCoordinator *)self delegate];
+  delegate = [(HMDCameraProfileSettingsQuotaCoordinator *)self delegate];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __87__HMDCameraProfileSettingsQuotaCoordinator__disableRecordingAccessModesWithCompletion___block_invoke;
   v7[3] = &unk_2797279F8;
   v7[4] = self;
-  [v6 updateSettingsModelUsingBlock:v7 completion:v4];
+  [delegate updateSettingsModelUsingBlock:v7 completion:completionCopy];
 }
 
 void __87__HMDCameraProfileSettingsQuotaCoordinator__disableRecordingAccessModesWithCompletion___block_invoke(uint64_t a1, void *a2)
@@ -129,15 +129,15 @@ void __87__HMDCameraProfileSettingsQuotaCoordinator__disableRecordingAccessModes
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_synchronizeCloudStorageWithCurrentCamerasWithCompletion:(id)a3
+- (void)_synchronizeCloudStorageWithCurrentCamerasWithCompletion:(id)completion
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCameraProfileSettingsQuotaCoordinator *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  completionCopy = completion;
+  workQueue = [(HMDCameraProfileSettingsQuotaCoordinator *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -148,32 +148,32 @@ void __87__HMDCameraProfileSettingsQuotaCoordinator__disableRecordingAccessModes
   }
 
   objc_autoreleasePoolPop(v6);
-  v10 = [(HMDCameraProfileSettingsQuotaCoordinator *)v7 accessory];
-  v11 = [v10 home];
-  v12 = [v11 homeManager];
+  accessory = [(HMDCameraProfileSettingsQuotaCoordinator *)selfCopy accessory];
+  home = [accessory home];
+  homeManager = [home homeManager];
 
-  if (v12)
+  if (homeManager)
   {
-    v13 = [(HMDCameraProfileSettingsQuotaCoordinator *)v7 quotaManager];
-    v14 = [v13 fetchNamesForZonesWithEnabledCloudStorage];
+    quotaManager = [(HMDCameraProfileSettingsQuotaCoordinator *)selfCopy quotaManager];
+    fetchNamesForZonesWithEnabledCloudStorage = [quotaManager fetchNamesForZonesWithEnabledCloudStorage];
     v15 = MEMORY[0x277D2C938];
-    v16 = [(HMDCameraProfileSettingsQuotaCoordinator *)v7 workQueue];
-    v17 = [v15 schedulerWithDispatchQueue:v16];
-    v18 = [v14 reschedule:v17];
+    workQueue2 = [(HMDCameraProfileSettingsQuotaCoordinator *)selfCopy workQueue];
+    v17 = [v15 schedulerWithDispatchQueue:workQueue2];
+    v18 = [fetchNamesForZonesWithEnabledCloudStorage reschedule:v17];
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __101__HMDCameraProfileSettingsQuotaCoordinator__synchronizeCloudStorageWithCurrentCamerasWithCompletion___block_invoke;
     v29[3] = &unk_27972F948;
-    v29[4] = v7;
-    v30 = v12;
-    v19 = v4;
+    v29[4] = selfCopy;
+    v30 = homeManager;
+    v19 = completionCopy;
     v31 = v19;
     v20 = [v18 addSuccessBlock:v29];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __101__HMDCameraProfileSettingsQuotaCoordinator__synchronizeCloudStorageWithCurrentCamerasWithCompletion___block_invoke_21;
     v27[3] = &unk_279733F30;
-    v27[4] = v7;
+    v27[4] = selfCopy;
     v28 = v19;
     v21 = [v20 addFailureBlock:v27];
   }
@@ -181,7 +181,7 @@ void __87__HMDCameraProfileSettingsQuotaCoordinator__disableRecordingAccessModes
   else
   {
     v22 = objc_autoreleasePoolPush();
-    v23 = v7;
+    v23 = selfCopy;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
@@ -192,7 +192,7 @@ void __87__HMDCameraProfileSettingsQuotaCoordinator__disableRecordingAccessModes
     }
 
     objc_autoreleasePoolPop(v22);
-    (*(v4 + 2))(v4, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
   v26 = *MEMORY[0x277D85DE8];
@@ -455,15 +455,15 @@ LABEL_6:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_synchronizeCloudStorageWithRecordingAccessModesWithCompletion:(id)a3
+- (void)_synchronizeCloudStorageWithRecordingAccessModesWithCompletion:(id)completion
 {
   v47 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCameraProfileSettingsQuotaCoordinator *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  completionCopy = completion;
+  workQueue = [(HMDCameraProfileSettingsQuotaCoordinator *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -474,40 +474,40 @@ LABEL_6:
   }
 
   objc_autoreleasePoolPop(v6);
-  v10 = [(HMDCameraProfileSettingsQuotaCoordinator *)v7 cameraClipsZoneName];
-  if (v10)
+  cameraClipsZoneName = [(HMDCameraProfileSettingsQuotaCoordinator *)selfCopy cameraClipsZoneName];
+  if (cameraClipsZoneName)
   {
-    v11 = [(HMDCameraProfileSettingsQuotaCoordinator *)v7 delegate];
-    v12 = [v11 currentSettings];
+    delegate = [(HMDCameraProfileSettingsQuotaCoordinator *)selfCopy delegate];
+    currentSettings = [delegate currentSettings];
 
-    [v12 accessModeAtHome];
+    [currentSettings accessModeAtHome];
     v13 = HMIsRecordingAllowedForCameraAccessMode();
-    [v12 accessModeNotAtHome];
+    [currentSettings accessModeNotAtHome];
     v14 = HMIsRecordingAllowedForCameraAccessMode();
-    v15 = [(HMDCameraProfileSettingsQuotaCoordinator *)v7 quotaManager];
-    v36 = v15;
+    quotaManager = [(HMDCameraProfileSettingsQuotaCoordinator *)selfCopy quotaManager];
+    v36 = quotaManager;
     if ((v13 & 1) != 0 || v14)
     {
-      v16 = [v15 enableCloudStorageForZoneWithName:v10];
+      v16 = [quotaManager enableCloudStorageForZoneWithName:cameraClipsZoneName];
       v30 = MEMORY[0x277D2C938];
-      v18 = [(HMDCameraProfileSettingsQuotaCoordinator *)v7 workQueue];
-      v19 = [v30 schedulerWithDispatchQueue:v18];
+      workQueue2 = [(HMDCameraProfileSettingsQuotaCoordinator *)selfCopy workQueue];
+      v19 = [v30 schedulerWithDispatchQueue:workQueue2];
       v20 = [v16 reschedule:v19];
       v43[0] = MEMORY[0x277D85DD0];
       v43[1] = 3221225472;
       v43[2] = __107__HMDCameraProfileSettingsQuotaCoordinator__synchronizeCloudStorageWithRecordingAccessModesWithCompletion___block_invoke;
       v43[3] = &unk_2797279D0;
-      v43[4] = v7;
+      v43[4] = selfCopy;
       v34 = &v44;
-      v21 = v4;
-      v31 = v4;
+      v21 = completionCopy;
+      v31 = completionCopy;
       v44 = v31;
       v23 = [v20 addSuccessBlock:v43];
       v41[0] = MEMORY[0x277D85DD0];
       v41[1] = 3221225472;
       v41[2] = __107__HMDCameraProfileSettingsQuotaCoordinator__synchronizeCloudStorageWithRecordingAccessModesWithCompletion___block_invoke_13;
       v41[3] = &unk_279733F30;
-      v41[4] = v7;
+      v41[4] = selfCopy;
       v24 = &v42;
       v42 = v31;
       v25 = v41;
@@ -515,26 +515,26 @@ LABEL_6:
 
     else
     {
-      v16 = [v15 disableCloudStorageForZoneWithName:v10];
+      v16 = [quotaManager disableCloudStorageForZoneWithName:cameraClipsZoneName];
       v17 = MEMORY[0x277D2C938];
-      v18 = [(HMDCameraProfileSettingsQuotaCoordinator *)v7 workQueue];
-      v19 = [v17 schedulerWithDispatchQueue:v18];
+      workQueue2 = [(HMDCameraProfileSettingsQuotaCoordinator *)selfCopy workQueue];
+      v19 = [v17 schedulerWithDispatchQueue:workQueue2];
       v20 = [v16 reschedule:v19];
       v39[0] = MEMORY[0x277D85DD0];
       v39[1] = 3221225472;
       v39[2] = __107__HMDCameraProfileSettingsQuotaCoordinator__synchronizeCloudStorageWithRecordingAccessModesWithCompletion___block_invoke_14;
       v39[3] = &unk_2797279D0;
-      v39[4] = v7;
+      v39[4] = selfCopy;
       v34 = &v40;
-      v21 = v4;
-      v22 = v4;
+      v21 = completionCopy;
+      v22 = completionCopy;
       v40 = v22;
       v23 = [v20 addSuccessBlock:v39];
       v37[0] = MEMORY[0x277D85DD0];
       v37[1] = 3221225472;
       v37[2] = __107__HMDCameraProfileSettingsQuotaCoordinator__synchronizeCloudStorageWithRecordingAccessModesWithCompletion___block_invoke_15;
       v37[3] = &unk_279733F30;
-      v37[4] = v7;
+      v37[4] = selfCopy;
       v24 = &v38;
       v38 = v22;
       v25 = v37;
@@ -542,13 +542,13 @@ LABEL_6:
 
     v32 = [v23 addFailureBlock:{v25, v34}];
 
-    v4 = v21;
+    completionCopy = v21;
   }
 
   else
   {
     v26 = objc_autoreleasePoolPush();
-    v27 = v7;
+    v27 = selfCopy;
     v28 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
@@ -559,8 +559,8 @@ LABEL_6:
     }
 
     objc_autoreleasePoolPop(v26);
-    v12 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-    (*(v4 + 2))(v4, v12);
+    currentSettings = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
+    (*(completionCopy + 2))(completionCopy, currentSettings);
   }
 
   v33 = *MEMORY[0x277D85DE8];
@@ -677,17 +677,17 @@ void __107__HMDCameraProfileSettingsQuotaCoordinator__synchronizeCloudStorageWit
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_requiresEnablingCloudStorageForAccessMode:(unint64_t)a3
+- (BOOL)_requiresEnablingCloudStorageForAccessMode:(unint64_t)mode
 {
-  v4 = [(HMDCameraProfileSettingsQuotaCoordinator *)self workQueue];
-  dispatch_assert_queue_V2(v4);
+  workQueue = [(HMDCameraProfileSettingsQuotaCoordinator *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   if (HMIsRecordingAllowedForCameraAccessMode())
   {
-    v5 = [(HMDCameraProfileSettingsQuotaCoordinator *)self delegate];
-    v6 = [v5 currentSettings];
+    delegate = [(HMDCameraProfileSettingsQuotaCoordinator *)self delegate];
+    currentSettings = [delegate currentSettings];
 
-    [v6 accessModeAtHome];
+    [currentSettings accessModeAtHome];
     if (HMIsRecordingAllowedForCameraAccessMode())
     {
       LOBYTE(v7) = 0;
@@ -695,7 +695,7 @@ void __107__HMDCameraProfileSettingsQuotaCoordinator__synchronizeCloudStorageWit
 
     else
     {
-      [v6 accessModeNotAtHome];
+      [currentSettings accessModeNotAtHome];
       v7 = HMIsRecordingAllowedForCameraAccessMode() ^ 1;
     }
   }
@@ -708,11 +708,11 @@ void __107__HMDCameraProfileSettingsQuotaCoordinator__synchronizeCloudStorageWit
   return v7;
 }
 
-- (void)_performOperationWithBlock:(id)a3
+- (void)_performOperationWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(HMDCameraProfileSettingsQuotaCoordinator *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  blockCopy = block;
+  workQueue = [(HMDCameraProfileSettingsQuotaCoordinator *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = objc_alloc_init(MEMORY[0x277D0F780]);
   objc_initWeak(&location, v6);
@@ -721,8 +721,8 @@ void __107__HMDCameraProfileSettingsQuotaCoordinator__synchronizeCloudStorageWit
   v11 = __71__HMDCameraProfileSettingsQuotaCoordinator__performOperationWithBlock___block_invoke;
   v12 = &unk_279730E50;
   objc_copyWeak(&v15, &location);
-  v13 = self;
-  v7 = v4;
+  selfCopy = self;
+  v7 = blockCopy;
   v14 = v7;
   [v6 addExecutionBlock:&v9];
   v8 = [(HMDCameraProfileSettingsQuotaCoordinator *)self operationQueue:v9];
@@ -775,19 +775,19 @@ uint64_t __71__HMDCameraProfileSettingsQuotaCoordinator__performOperationWithBlo
 
 - (id)cameraClipsZoneName
 {
-  v2 = [(HMDCameraProfileSettingsQuotaCoordinator *)self accessory];
-  v3 = [v2 cameraProfiles];
-  v4 = [v3 anyObject];
-  v5 = [v4 clipManager];
-  v6 = [v5 zoneName];
+  accessory = [(HMDCameraProfileSettingsQuotaCoordinator *)self accessory];
+  cameraProfiles = [accessory cameraProfiles];
+  anyObject = [cameraProfiles anyObject];
+  clipManager = [anyObject clipManager];
+  zoneName = [clipManager zoneName];
 
-  return v6;
+  return zoneName;
 }
 
 - (void)disableRecordingAccessModes
 {
-  v3 = [(HMDCameraProfileSettingsQuotaCoordinator *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDCameraProfileSettingsQuotaCoordinator *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
@@ -799,8 +799,8 @@ uint64_t __71__HMDCameraProfileSettingsQuotaCoordinator__performOperationWithBlo
 
 - (void)synchronizeCloudStorageWithRecordingAccessModes
 {
-  v3 = [(HMDCameraProfileSettingsQuotaCoordinator *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDCameraProfileSettingsQuotaCoordinator *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
@@ -810,62 +810,62 @@ uint64_t __71__HMDCameraProfileSettingsQuotaCoordinator__performOperationWithBlo
   [(HMDCameraProfileSettingsQuotaCoordinator *)self _performOperationWithBlock:v4];
 }
 
-- (BOOL)_requiresDisablingCloudStorageForAccessMode:(unint64_t)a3 cameraHomePresence:(unint64_t)a4
+- (BOOL)_requiresDisablingCloudStorageForAccessMode:(unint64_t)mode cameraHomePresence:(unint64_t)presence
 {
-  v6 = [(HMDCameraProfileSettingsQuotaCoordinator *)self workQueue];
-  dispatch_assert_queue_V2(v6);
+  workQueue = [(HMDCameraProfileSettingsQuotaCoordinator *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   if ((HMIsRecordingAllowedForCameraAccessMode() & 1) == 0)
   {
-    v7 = [(HMDCameraProfileSettingsQuotaCoordinator *)self delegate];
-    v8 = [v7 currentSettings];
+    delegate = [(HMDCameraProfileSettingsQuotaCoordinator *)self delegate];
+    currentSettings = [delegate currentSettings];
 
-    if (a4 == 4)
+    if (presence == 4)
     {
-      [v8 accessModeAtHome];
+      [currentSettings accessModeAtHome];
       if ((HMIsRecordingAllowedForCameraAccessMode() & 1) == 0)
       {
-        [v8 accessModeNotAtHome];
-        LOBYTE(v7) = HMIsRecordingAllowedForCameraAccessMode();
+        [currentSettings accessModeNotAtHome];
+        LOBYTE(delegate) = HMIsRecordingAllowedForCameraAccessMode();
         goto LABEL_10;
       }
     }
 
     else
     {
-      if (a4 != 3)
+      if (presence != 3)
       {
 LABEL_10:
 
-        return v7 & 1;
+        return delegate & 1;
       }
 
-      [v8 accessModeAtHome];
+      [currentSettings accessModeAtHome];
       if (HMIsRecordingAllowedForCameraAccessMode())
       {
-        [v8 accessModeNotAtHome];
-        LOBYTE(v7) = HMIsRecordingAllowedForCameraAccessMode() ^ 1;
+        [currentSettings accessModeNotAtHome];
+        LOBYTE(delegate) = HMIsRecordingAllowedForCameraAccessMode() ^ 1;
         goto LABEL_10;
       }
     }
 
-    LOBYTE(v7) = 0;
+    LOBYTE(delegate) = 0;
     goto LABEL_10;
   }
 
-  LOBYTE(v7) = 0;
-  return v7 & 1;
+  LOBYTE(delegate) = 0;
+  return delegate & 1;
 }
 
-- (void)_updateCloudStorageAndSettingsWithAccessMode:(unint64_t)a3 forCameraHomePresence:(unint64_t)a4 completion:(id)a5
+- (void)_updateCloudStorageAndSettingsWithAccessMode:(unint64_t)mode forCameraHomePresence:(unint64_t)presence completion:(id)completion
 {
   v53 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = [(HMDCameraProfileSettingsQuotaCoordinator *)self workQueue];
-  dispatch_assert_queue_V2(v9);
+  completionCopy = completion;
+  workQueue = [(HMDCameraProfileSettingsQuotaCoordinator *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
@@ -882,25 +882,25 @@ LABEL_10:
   }
 
   objc_autoreleasePoolPop(v10);
-  v16 = [(HMDCameraProfileSettingsQuotaCoordinator *)v11 cameraClipsZoneName];
-  if (v16)
+  cameraClipsZoneName = [(HMDCameraProfileSettingsQuotaCoordinator *)selfCopy cameraClipsZoneName];
+  if (cameraClipsZoneName)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __122__HMDCameraProfileSettingsQuotaCoordinator__updateCloudStorageAndSettingsWithAccessMode_forCameraHomePresence_completion___block_invoke;
     aBlock[3] = &unk_2797279A8;
-    aBlock[4] = v11;
-    v44 = v8;
-    v45 = a3;
-    v46 = a4;
+    aBlock[4] = selfCopy;
+    v44 = completionCopy;
+    modeCopy = mode;
+    presenceCopy = presence;
     v17 = _Block_copy(aBlock);
-    if ([(HMDCameraProfileSettingsQuotaCoordinator *)v11 _requiresEnablingCloudStorageForAccessMode:a3])
+    if ([(HMDCameraProfileSettingsQuotaCoordinator *)selfCopy _requiresEnablingCloudStorageForAccessMode:mode])
     {
-      v18 = [(HMDCameraProfileSettingsQuotaCoordinator *)v11 quotaManager];
-      v19 = [v18 enableCloudStorageForZoneWithName:v16];
+      quotaManager = [(HMDCameraProfileSettingsQuotaCoordinator *)selfCopy quotaManager];
+      v19 = [quotaManager enableCloudStorageForZoneWithName:cameraClipsZoneName];
       v20 = MEMORY[0x277D2C938];
-      v21 = [(HMDCameraProfileSettingsQuotaCoordinator *)v11 workQueue];
-      v22 = [v20 schedulerWithDispatchQueue:v21];
+      workQueue2 = [(HMDCameraProfileSettingsQuotaCoordinator *)selfCopy workQueue];
+      v22 = [v20 schedulerWithDispatchQueue:workQueue2];
       v23 = [v19 reschedule:v22];
       v41[0] = MEMORY[0x277D85DD0];
       v41[1] = 3221225472;
@@ -914,17 +914,17 @@ LABEL_10:
 
     else
     {
-      if (![(HMDCameraProfileSettingsQuotaCoordinator *)v11 _requiresDisablingCloudStorageForAccessMode:a3 cameraHomePresence:a4])
+      if (![(HMDCameraProfileSettingsQuotaCoordinator *)selfCopy _requiresDisablingCloudStorageForAccessMode:mode cameraHomePresence:presence])
       {
         (*(v17 + 2))(v17, 0);
         goto LABEL_13;
       }
 
-      v31 = [(HMDCameraProfileSettingsQuotaCoordinator *)v11 quotaManager];
-      v32 = [v31 disableCloudStorageForZoneWithName:v16];
+      quotaManager2 = [(HMDCameraProfileSettingsQuotaCoordinator *)selfCopy quotaManager];
+      v32 = [quotaManager2 disableCloudStorageForZoneWithName:cameraClipsZoneName];
       v33 = MEMORY[0x277D2C938];
-      v34 = [(HMDCameraProfileSettingsQuotaCoordinator *)v11 workQueue];
-      v35 = [v33 schedulerWithDispatchQueue:v34];
+      workQueue3 = [(HMDCameraProfileSettingsQuotaCoordinator *)selfCopy workQueue];
+      v35 = [v33 schedulerWithDispatchQueue:workQueue3];
       v36 = [v32 reschedule:v35];
       v39[0] = MEMORY[0x277D85DD0];
       v39[1] = 3221225472;
@@ -941,7 +941,7 @@ LABEL_13:
   }
 
   v26 = objc_autoreleasePoolPush();
-  v27 = v11;
+  v27 = selfCopy;
   v28 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
   {
@@ -953,7 +953,7 @@ LABEL_13:
 
   objc_autoreleasePoolPop(v26);
   v30 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-  (*(v8 + 2))(v8, v30);
+  (*(completionCopy + 2))(completionCopy, v30);
 
 LABEL_14:
   v38 = *MEMORY[0x277D85DE8];
@@ -1097,21 +1097,21 @@ void __122__HMDCameraProfileSettingsQuotaCoordinator__updateCloudStorageAndSetti
 LABEL_6:
 }
 
-- (void)updateCloudStorageAndSettingsWithAccessMode:(unint64_t)a3 forCameraHomePresence:(unint64_t)a4 completion:(id)a5
+- (void)updateCloudStorageAndSettingsWithAccessMode:(unint64_t)mode forCameraHomePresence:(unint64_t)presence completion:(id)completion
 {
-  v8 = a5;
-  v9 = [(HMDCameraProfileSettingsQuotaCoordinator *)self workQueue];
-  dispatch_assert_queue_V2(v9);
+  completionCopy = completion;
+  workQueue = [(HMDCameraProfileSettingsQuotaCoordinator *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __121__HMDCameraProfileSettingsQuotaCoordinator_updateCloudStorageAndSettingsWithAccessMode_forCameraHomePresence_completion___block_invoke;
   v11[3] = &unk_279727938;
-  v13 = a3;
-  v14 = a4;
+  modeCopy = mode;
+  presenceCopy = presence;
   v11[4] = self;
-  v12 = v8;
-  v10 = v8;
+  v12 = completionCopy;
+  v10 = completionCopy;
   [(HMDCameraProfileSettingsQuotaCoordinator *)self _performOperationWithBlock:v11];
 }
 
@@ -1140,20 +1140,20 @@ void __121__HMDCameraProfileSettingsQuotaCoordinator_updateCloudStorageAndSettin
   (*(*(a1 + 40) + 16))();
 }
 
-- (HMDCameraProfileSettingsQuotaCoordinator)initWithWorkQueue:(id)a3 accessory:(id)a4 quotaManager:(id)a5
+- (HMDCameraProfileSettingsQuotaCoordinator)initWithWorkQueue:(id)queue accessory:(id)accessory quotaManager:(id)manager
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  queueCopy = queue;
+  accessoryCopy = accessory;
+  managerCopy = manager;
   v17.receiver = self;
   v17.super_class = HMDCameraProfileSettingsQuotaCoordinator;
   v12 = [(HMDCameraProfileSettingsQuotaCoordinator *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_workQueue, a3);
-    objc_storeWeak(&v13->_accessory, v10);
-    objc_storeStrong(&v13->_quotaManager, a5);
+    objc_storeStrong(&v12->_workQueue, queue);
+    objc_storeWeak(&v13->_accessory, accessoryCopy);
+    objc_storeStrong(&v13->_quotaManager, manager);
     v14 = objc_alloc_init(MEMORY[0x277CCABD8]);
     operationQueue = v13->_operationQueue;
     v13->_operationQueue = v14;
@@ -1165,12 +1165,12 @@ void __121__HMDCameraProfileSettingsQuotaCoordinator_updateCloudStorageAndSettin
   return v13;
 }
 
-- (HMDCameraProfileSettingsQuotaCoordinator)initWithWorkQueue:(id)a3 accessory:(id)a4
+- (HMDCameraProfileSettingsQuotaCoordinator)initWithWorkQueue:(id)queue accessory:(id)accessory
 {
-  v6 = a4;
-  v7 = a3;
+  accessoryCopy = accessory;
+  queueCopy = queue;
   v8 = +[HMDCameraClipsQuotaManager defaultManager];
-  v9 = [(HMDCameraProfileSettingsQuotaCoordinator *)self initWithWorkQueue:v7 accessory:v6 quotaManager:v8];
+  v9 = [(HMDCameraProfileSettingsQuotaCoordinator *)self initWithWorkQueue:queueCopy accessory:accessoryCopy quotaManager:v8];
 
   return v9;
 }
@@ -1197,17 +1197,17 @@ uint64_t __55__HMDCameraProfileSettingsQuotaCoordinator_logCategory__block_invok
   return MEMORY[0x2821F96F8](v1, v2);
 }
 
-+ (id)clientErrorFromCanUpdateAccessModeError:(id)a3
++ (id)clientErrorFromCanUpdateAccessModeError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  v5 = [v4 isEqualToString:@"HMDCameraClipsQuotaErrorDomain"];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v5 = [domain isEqualToString:@"HMDCameraClipsQuotaErrorDomain"];
 
   if (v5)
   {
-    v6 = [v3 code];
+    code = [errorCopy code];
     v7 = MEMORY[0x277CCA9B8];
-    if (v6 == 1)
+    if (code == 1)
     {
       v8 = [MEMORY[0x277CCA9B8] hmPrivateErrorWithCode:2006];
       goto LABEL_6;

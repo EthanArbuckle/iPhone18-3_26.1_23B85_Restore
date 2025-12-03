@@ -1,12 +1,12 @@
 @interface ACRemoteDeviceProxy
 - (ACRemoteDeviceProxy)init;
-- (BOOL)_isValidCommandForOutgoingMessage:(id)a3;
-- (int64_t)_priorityForMessageCarryingCommand:(id)a3;
-- (void)_dequeueCompletionHandlersForMessageWithInternalID:(id)a3 success:(BOOL)a4 result:(id)a5 error:(id)a6;
-- (void)_enqueueCompletionHandler:(id)a3 forMessageWithInternalID:(id)a4 transportID:(id)a5;
-- (void)sendCommand:(id)a3 withAccount:(id)a4 options:(id)a5 completion:(id)a6;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7;
+- (BOOL)_isValidCommandForOutgoingMessage:(id)message;
+- (int64_t)_priorityForMessageCarryingCommand:(id)command;
+- (void)_dequeueCompletionHandlersForMessageWithInternalID:(id)d success:(BOOL)success result:(id)result error:(id)error;
+- (void)_enqueueCompletionHandler:(id)handler forMessageWithInternalID:(id)d transportID:(id)iD;
+- (void)sendCommand:(id)command withAccount:(id)account options:(id)options completion:(id)completion;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context;
 @end
 
 @implementation ACRemoteDeviceProxy
@@ -60,13 +60,13 @@
   return v2;
 }
 
-- (void)sendCommand:(id)a3 withAccount:(id)a4 options:(id)a5 completion:(id)a6
+- (void)sendCommand:(id)command withAccount:(id)account options:(id)options completion:(id)completion
 {
   v52 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  commandCopy = command;
+  accountCopy = account;
+  optionsCopy = options;
+  completionCopy = completion;
   v14 = _ACLogSystem();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
@@ -82,9 +82,9 @@
   if (v16 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v19))
   {
     *buf = 138412546;
-    v47 = v11;
+    v47 = accountCopy;
     v48 = 2112;
-    v49 = v12;
+    v49 = optionsCopy;
     _os_signpost_emit_with_name_impl(&dword_221D2F000, v20, OS_SIGNPOST_INTERVAL_BEGIN, v16, "SendRemoteCommand", "%@: %@", buf, 0x16u);
   }
 
@@ -94,9 +94,9 @@
     *buf = 134218498;
     v47 = v16;
     v48 = 2112;
-    v49 = v11;
+    v49 = accountCopy;
     v50 = 2112;
-    v51 = v12;
+    v51 = optionsCopy;
     _os_log_debug_impl(&dword_221D2F000, v21, OS_LOG_TYPE_DEBUG, "BEGIN [%lld]: SendRemoteCommand %@: %@", buf, 0x20u);
   }
 
@@ -106,19 +106,19 @@
   aBlock[3] = &unk_27848CAA8;
   v44 = v16;
   v45 = v18;
-  v22 = v13;
+  v22 = completionCopy;
   v43 = v22;
   v23 = _Block_copy(aBlock);
-  if ([(ACRemoteDeviceProxy *)self _isValidCommandForOutgoingMessage:v10])
+  if ([(ACRemoteDeviceProxy *)self _isValidCommandForOutgoingMessage:commandCopy])
   {
-    v24 = [ACRemoteDeviceMessage actionMessageWithCommand:v10 account:v11 options:v12];
-    v25 = [v12 objectForKeyedSubscript:*MEMORY[0x277CB8EE8]];
+    v24 = [ACRemoteDeviceMessage actionMessageWithCommand:commandCopy account:accountCopy options:optionsCopy];
+    v25 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x277CB8EE8]];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v26 = [v25 BOOLValue];
+      bOOLValue = [v25 BOOLValue];
 
-      if (v26)
+      if (bOOLValue)
       {
         goto LABEL_21;
       }
@@ -128,7 +128,7 @@
     {
     }
 
-    if (([v10 isEqual:*MEMORY[0x277CB8EA0]] & 1) == 0 && (objc_msgSend(v10, "isEqual:", *MEMORY[0x277CB8EC8]) & 1) == 0 && (objc_msgSend(v10, "isEqual:", *MEMORY[0x277CB8ED0]) & 1) == 0 && (objc_msgSend(v10, "isEqual:", *MEMORY[0x277CB8ED8]) & 1) == 0 && !objc_msgSend(v10, "isEqual:", *MEMORY[0x277CB8EB8]))
+    if (([commandCopy isEqual:*MEMORY[0x277CB8EA0]] & 1) == 0 && (objc_msgSend(commandCopy, "isEqual:", *MEMORY[0x277CB8EC8]) & 1) == 0 && (objc_msgSend(commandCopy, "isEqual:", *MEMORY[0x277CB8ED0]) & 1) == 0 && (objc_msgSend(commandCopy, "isEqual:", *MEMORY[0x277CB8ED8]) & 1) == 0 && !objc_msgSend(commandCopy, "isEqual:", *MEMORY[0x277CB8EB8]))
     {
       v28 = 0;
       goto LABEL_22;
@@ -138,20 +138,20 @@ LABEL_21:
     v28 = 1;
     [v24 setNeedsReply:1];
 LABEL_22:
-    v29 = [v24 data];
-    if (v29)
+    data = [v24 data];
+    if (data)
     {
       messageSendingQueue = self->_messageSendingQueue;
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __66__ACRemoteDeviceProxy_sendCommand_withAccount_options_completion___block_invoke_18;
       block[3] = &unk_27848CAD0;
-      v34 = v12;
-      v35 = self;
+      v34 = optionsCopy;
+      selfCopy = self;
       v39 = v23;
-      v36 = v10;
+      v36 = commandCopy;
       v37 = v24;
-      v38 = v29;
+      v38 = data;
       v41 = v28;
       v40 = v22;
       dispatch_async(messageSendingQueue, block);
@@ -172,7 +172,7 @@ LABEL_22:
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v47 = v10;
+    v47 = commandCopy;
     _os_log_impl(&dword_221D2F000, v27, OS_LOG_TYPE_DEFAULT, "Command %@ cannot be sent from this platform.", buf, 0xCu);
   }
 
@@ -470,16 +470,16 @@ LABEL_52:
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  serviceCopy = service;
+  accountCopy = account;
+  identifierCopy = identifier;
+  errorCopy = error;
   v16 = _ACLogSystem();
   v17 = v16;
-  if (!v14)
+  if (!identifierCopy)
   {
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
@@ -489,12 +489,12 @@ LABEL_52:
     goto LABEL_7;
   }
 
-  if (a6)
+  if (success)
   {
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 138412290;
-      v20 = v14;
+      v20 = identifierCopy;
       _os_log_impl(&dword_221D2F000, v17, OS_LOG_TYPE_DEFAULT, "Success for message with Transport ID %@!", &v19, 0xCu);
     }
 
@@ -508,32 +508,32 @@ LABEL_7:
     [ACRemoteDeviceProxy service:account:identifier:didSendWithSuccess:error:];
   }
 
-  [(ACRemoteDeviceProxy *)self _dequeueCompletionHandlersForMessageWithTransportID:v14 success:0 result:0 error:v15];
+  [(ACRemoteDeviceProxy *)self _dequeueCompletionHandlersForMessageWithTransportID:identifierCopy success:0 result:0 error:errorCopy];
 LABEL_11:
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context
 {
   v29 = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  v10 = a6;
+  dataCopy = data;
+  dCopy = d;
   v11 = _ACLogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     [ACRemoteDeviceProxy service:account:incomingData:fromID:context:];
   }
 
-  if (v9)
+  if (dataCopy)
   {
-    v12 = [[ACRemoteDeviceMessage alloc] initWithData:v9];
+    v12 = [[ACRemoteDeviceMessage alloc] initWithData:dataCopy];
     if ([(ACRemoteDeviceMessage *)v12 isReply])
     {
-      v13 = [(ACRemoteDeviceMessage *)v12 sentMessageIdentifier];
+      sentMessageIdentifier = [(ACRemoteDeviceMessage *)v12 sentMessageIdentifier];
       v14 = _ACLogSystem();
       p_super = v14;
-      if (v13)
+      if (sentMessageIdentifier)
       {
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
@@ -542,10 +542,10 @@ LABEL_11:
           _os_log_impl(&dword_221D2F000, p_super, OS_LOG_TYPE_DEFAULT, "Reply message succesfully received. %@", buf, 0xCu);
         }
 
-        v16 = [(ACRemoteDeviceMessage *)v12 success];
+        success = [(ACRemoteDeviceMessage *)v12 success];
         p_super = [(ACRemoteDeviceMessage *)v12 result];
-        v17 = [(ACRemoteDeviceMessage *)v12 error];
-        [(ACRemoteDeviceProxy *)self _dequeueCompletionHandlersForMessageWithInternalID:v13 success:v16 result:p_super error:v17];
+        error = [(ACRemoteDeviceMessage *)v12 error];
+        [(ACRemoteDeviceProxy *)self _dequeueCompletionHandlersForMessageWithInternalID:sentMessageIdentifier success:success result:p_super error:error];
       }
 
       else if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -571,10 +571,10 @@ LABEL_11:
       v22[2] = __67__ACRemoteDeviceProxy_service_account_incomingData_fromID_context___block_invoke;
       v22[3] = &unk_27848CB20;
       v23 = v12;
-      v24 = self;
-      v25 = v10;
+      selfCopy = self;
+      v25 = dCopy;
       v26 = v19;
-      v13 = v19;
+      sentMessageIdentifier = v19;
       dispatch_async(commandProcessingQueue, v22);
 
       p_super = &v23->super;
@@ -673,11 +673,11 @@ void __67__ACRemoteDeviceProxy_service_account_incomingData_fromID_context___blo
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_enqueueCompletionHandler:(id)a3 forMessageWithInternalID:(id)a4 transportID:(id)a5
+- (void)_enqueueCompletionHandler:(id)handler forMessageWithInternalID:(id)d transportID:(id)iD
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  handlerCopy = handler;
+  dCopy = d;
+  iDCopy = iD;
   v11 = _ACLogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -685,30 +685,30 @@ void __67__ACRemoteDeviceProxy_service_account_incomingData_fromID_context___blo
   }
 
   [(NSLock *)self->_completionHandlersLock lock];
-  [(NSMutableDictionary *)self->_internalMessageIDsByTransportID setObject:v9 forKeyedSubscript:v10];
+  [(NSMutableDictionary *)self->_internalMessageIDsByTransportID setObject:dCopy forKeyedSubscript:iDCopy];
 
-  v12 = [(NSMutableDictionary *)self->_completionHandlersByInternalMessageID objectForKey:v9];
+  v12 = [(NSMutableDictionary *)self->_completionHandlersByInternalMessageID objectForKey:dCopy];
   if (!v12)
   {
     v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
   }
 
-  v13 = _Block_copy(v8);
+  v13 = _Block_copy(handlerCopy);
   [v12 addObject:v13];
 
-  [(NSMutableDictionary *)self->_completionHandlersByInternalMessageID setObject:v12 forKey:v9];
+  [(NSMutableDictionary *)self->_completionHandlersByInternalMessageID setObject:v12 forKey:dCopy];
   [(NSLock *)self->_completionHandlersLock unlock];
 }
 
-- (void)_dequeueCompletionHandlersForMessageWithInternalID:(id)a3 success:(BOOL)a4 result:(id)a5 error:(id)a6
+- (void)_dequeueCompletionHandlersForMessageWithInternalID:(id)d success:(BOOL)success result:(id)result error:(id)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  dCopy = d;
+  resultCopy = result;
+  errorCopy = error;
   [(NSLock *)self->_completionHandlersLock lock];
-  v12 = [(NSMutableDictionary *)self->_completionHandlersByInternalMessageID objectForKey:v9];
-  [(NSMutableDictionary *)self->_completionHandlersByInternalMessageID removeObjectForKey:v9];
+  v12 = [(NSMutableDictionary *)self->_completionHandlersByInternalMessageID objectForKey:dCopy];
+  [(NSMutableDictionary *)self->_completionHandlersByInternalMessageID removeObjectForKey:dCopy];
   [(NSLock *)self->_completionHandlersLock unlock];
   v13 = _ACLogSystem();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -717,7 +717,7 @@ void __67__ACRemoteDeviceProxy_service_account_incomingData_fromID_context___blo
     *buf = 138412546;
     v27 = v14;
     v28 = 2112;
-    v29 = v9;
+    v29 = dCopy;
     _os_log_impl(&dword_221D2F000, v13, OS_LOG_TYPE_DEFAULT, "Calling out to %@ pending completions about message with ID %@", buf, 0x16u);
   }
 
@@ -755,7 +755,7 @@ void __67__ACRemoteDeviceProxy_service_account_incomingData_fromID_context___blo
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_isValidCommandForOutgoingMessage:(id)a3
+- (BOOL)_isValidCommandForOutgoingMessage:(id)message
 {
   v3 = MEMORY[0x277CBEB98];
   v4 = *MEMORY[0x277CB8EC8];
@@ -766,22 +766,22 @@ void __67__ACRemoteDeviceProxy_service_account_incomingData_fromID_context___blo
   v9 = *MEMORY[0x277CB8ED8];
   v10 = *MEMORY[0x277CB8EB0];
   v11 = *MEMORY[0x277CB8EC0];
-  v12 = a3;
+  messageCopy = message;
   v13 = [v3 setWithObjects:{v4, v5, v6, v7, v8, v9, v10, v11, 0}];
-  LOBYTE(v4) = [v13 containsObject:v12];
+  LOBYTE(v4) = [v13 containsObject:messageCopy];
 
   return v4;
 }
 
-- (int64_t)_priorityForMessageCarryingCommand:(id)a3
+- (int64_t)_priorityForMessageCarryingCommand:(id)command
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x277CB8EC8]] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x277CB8EA0]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x277CB8EB0]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x277CB8EA8]))
+  commandCopy = command;
+  if ([commandCopy isEqualToString:*MEMORY[0x277CB8EC8]] & 1) != 0 || (objc_msgSend(commandCopy, "isEqualToString:", *MEMORY[0x277CB8EA0]) & 1) != 0 || (objc_msgSend(commandCopy, "isEqualToString:", *MEMORY[0x277CB8EB0]) & 1) != 0 || (objc_msgSend(commandCopy, "isEqualToString:", *MEMORY[0x277CB8EA8]))
   {
     v4 = 200;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277CB8EB8]])
+  else if ([commandCopy isEqualToString:*MEMORY[0x277CB8EB8]])
   {
     v4 = 200;
   }

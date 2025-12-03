@@ -1,28 +1,28 @@
 @interface UIDictationMultilingualResults
-- (BOOL)isEqual:(id)a3;
-- (UIDictationMultilingualResults)initWithCoder:(id)a3;
-- (UIDictationMultilingualResults)initWithPhrases:(id)a3 dominantLanguage:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (UIDictationMultilingualResults)initWithCoder:(id)coder;
+- (UIDictationMultilingualResults)initWithPhrases:(id)phrases dominantLanguage:(id)language;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UIDictationMultilingualResults
 
-- (UIDictationMultilingualResults)initWithPhrases:(id)a3 dominantLanguage:(id)a4
+- (UIDictationMultilingualResults)initWithPhrases:(id)phrases dominantLanguage:(id)language
 {
-  v6 = a3;
-  v7 = a4;
+  phrasesCopy = phrases;
+  languageCopy = language;
   v14.receiver = self;
   v14.super_class = UIDictationMultilingualResults;
   v8 = [(UIDictationMultilingualResults *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [phrasesCopy copy];
     phrases = v8->_phrases;
     v8->_phrases = v9;
 
-    v11 = [v7 copy];
+    v11 = [languageCopy copy];
     dominantLanguage = v8->_dominantLanguage;
     v8->_dominantLanguage = v11;
   }
@@ -30,9 +30,9 @@
   return v8;
 }
 
-- (UIDictationMultilingualResults)initWithCoder:(id)a3
+- (UIDictationMultilingualResults)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = UIDictationMultilingualResults;
   v5 = [(UIDictationMultilingualResults *)&v15 init];
@@ -41,11 +41,11 @@
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"phrases"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"phrases"];
     phrases = v5->_phrases;
     v5->_phrases = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dominantLanguage"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dominantLanguage"];
     dominantLanguage = v5->_dominantLanguage;
     v5->_dominantLanguage = v11;
 
@@ -55,24 +55,24 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   phrases = self->_phrases;
-  v5 = a3;
-  [v5 encodeObject:phrases forKey:@"phrases"];
-  [v5 encodeObject:self->_dominantLanguage forKey:@"dominantLanguage"];
+  coderCopy = coder;
+  [coderCopy encodeObject:phrases forKey:@"phrases"];
+  [coderCopy encodeObject:self->_dominantLanguage forKey:@"dominantLanguage"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(UIDictationMultilingualResults *)self dominantLanguage];
-  v6 = [v4 dominantLanguage];
-  if ([v5 isEqualToString:v6])
+  equalCopy = equal;
+  dominantLanguage = [(UIDictationMultilingualResults *)self dominantLanguage];
+  dominantLanguage2 = [equalCopy dominantLanguage];
+  if ([dominantLanguage isEqualToString:dominantLanguage2])
   {
-    v7 = [(UIDictationMultilingualResults *)self phrases];
-    v8 = [v4 phrases];
-    v9 = [v7 isEqual:v8];
+    phrases = [(UIDictationMultilingualResults *)self phrases];
+    phrases2 = [equalCopy phrases];
+    v9 = [phrases isEqual:phrases2];
   }
 
   else
@@ -85,15 +85,15 @@
 
 - (unint64_t)hash
 {
-  v3 = [(UIDictationMultilingualResults *)self dominantLanguage];
-  v4 = [v3 hash];
-  v5 = [(UIDictationMultilingualResults *)self phrases];
-  v6 = [v5 hash];
+  dominantLanguage = [(UIDictationMultilingualResults *)self dominantLanguage];
+  v4 = [dominantLanguage hash];
+  phrases = [(UIDictationMultilingualResults *)self phrases];
+  v6 = [phrases hash];
 
   return v6 ^ v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(UIDictationMultilingualResults);
   v5 = [(NSArray *)self->_phrases copy];

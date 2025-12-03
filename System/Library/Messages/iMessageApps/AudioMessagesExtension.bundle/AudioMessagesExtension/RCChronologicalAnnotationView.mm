@@ -2,34 +2,34 @@
 - ($F24F406B2B787EFB06265DBA3D28CBD5)markerClippingRange;
 - ($F24F406B2B787EFB06265DBA3D28CBD5)visibleTimeRange;
 - (CGSize)labelsSize;
-- (RCChronologicalAnnotationView)initWithFrame:(CGRect)a3;
+- (RCChronologicalAnnotationView)initWithFrame:(CGRect)frame;
 - (double)timeLabelsMajorInterval;
-- (id)_timeLabelAttributesWithFont:(id)a3;
+- (id)_timeLabelAttributesWithFont:(id)font;
 - (id)description;
-- (int64_t)tickMarksForMajorInterval:(double)a3;
-- (void)drawRect:(CGRect)a3;
-- (void)setContentDuration:(double)a3;
-- (void)setVisibleTimeRange:(id)a3;
+- (int64_t)tickMarksForMajorInterval:(double)interval;
+- (void)drawRect:(CGRect)rect;
+- (void)setContentDuration:(double)duration;
+- (void)setVisibleTimeRange:(id)range;
 @end
 
 @implementation RCChronologicalAnnotationView
 
-- (RCChronologicalAnnotationView)initWithFrame:(CGRect)a3
+- (RCChronologicalAnnotationView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = RCChronologicalAnnotationView;
-  v3 = [(RCChronologicalAnnotationView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(RCChronologicalAnnotationView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     *(v3 + 56) = RCTimeRangeZero;
     v5 = +[RCRecorderStyleProvider sharedStyleProvider];
-    v6 = [v5 timeLineLabelFont];
+    timeLineLabelFont = [v5 timeLineLabelFont];
     timeLabelFont = v4->_timeLabelFont;
-    v4->_timeLabelFont = v6;
+    v4->_timeLabelFont = timeLineLabelFont;
 
-    v8 = [(RCChronologicalAnnotationView *)v4 layer];
-    [v8 removeAllAnimations];
+    layer = [(RCChronologicalAnnotationView *)v4 layer];
+    [layer removeAllAnimations];
   }
 
   return v4;
@@ -48,32 +48,32 @@
   return v6;
 }
 
-- (void)setVisibleTimeRange:(id)a3
+- (void)setVisibleTimeRange:(id)range
 {
-  self->_visibleTimeRange = a3;
+  self->_visibleTimeRange = range;
   v7 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v4 = [(RCChronologicalAnnotationView *)self traitCollection];
-  v5 = [v4 isUserInterfaceStyleDark];
+  traitCollection = [(RCChronologicalAnnotationView *)self traitCollection];
+  isUserInterfaceStyleDark = [traitCollection isUserInterfaceStyleDark];
 
-  v6 = [v7 timelinePlaybackBackgroundColor:v5];
+  v6 = [v7 timelinePlaybackBackgroundColor:isUserInterfaceStyleDark];
   [(RCChronologicalAnnotationView *)self setBackgroundColor:v6];
 
   [(RCChronologicalAnnotationView *)self setNeedsDisplay];
 }
 
-- (void)setContentDuration:(double)a3
+- (void)setContentDuration:(double)duration
 {
-  if (self->_contentDuration != a3)
+  if (self->_contentDuration != duration)
   {
-    self->_contentDuration = a3;
+    self->_contentDuration = duration;
   }
 }
 
 - (CGSize)labelsSize
 {
   v3 = RCLocalizedDurationWithStyle(1, 0.0);
-  v4 = [(RCChronologicalAnnotationView *)self _timeLabelAttributes];
-  [v3 sizeWithAttributes:v4];
+  _timeLabelAttributes = [(RCChronologicalAnnotationView *)self _timeLabelAttributes];
+  [v3 sizeWithAttributes:_timeLabelAttributes];
   v6 = v5;
   v8 = v7;
 
@@ -123,9 +123,9 @@
   }
 }
 
-- (int64_t)tickMarksForMajorInterval:(double)a3
+- (int64_t)tickMarksForMajorInterval:(double)interval
 {
-  if (a3 == 60.0 || a3 == 1.0)
+  if (interval == 60.0 || interval == 1.0)
   {
     return 4;
   }
@@ -136,16 +136,16 @@
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(RCChronologicalAnnotationView *)self superview];
-  v9 = [v8 isHidden];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  superview = [(RCChronologicalAnnotationView *)self superview];
+  isHidden = [superview isHidden];
 
-  if ((v9 & 1) == 0)
+  if ((isHidden & 1) == 0)
   {
     p_visibleTimeRange = &self->_visibleTimeRange;
     v11 = RCTimeRangeDeltaWithExactPrecision(self->_visibleTimeRange.beginTime, self->_visibleTimeRange.endTime);
@@ -159,8 +159,8 @@
         v16 = [(RCChronologicalAnnotationView *)self tickMarksForMajorInterval:?];
         v17 = &OBJC_IVAR___RCWaveformSelectionOverlay__enablePlayBarTracking;
         v78 = +[RCRecorderStyleProvider sharedStyleProvider];
-        v18 = [(RCChronologicalAnnotationView *)self traitCollection];
-        v19 = [v18 isUserInterfaceStyleDark];
+        traitCollection = [(RCChronologicalAnnotationView *)self traitCollection];
+        isUserInterfaceStyleDark = [traitCollection isUserInterfaceStyleDark];
 
         v75 = +[UIApplication shouldMakeUIForDefaultPNG];
         v81.origin.x = x;
@@ -193,7 +193,7 @@
           v26 = -__y[0];
         }
 
-        v74 = [(RCChronologicalAnnotationView *)self _timeLabelAttributes];
+        _timeLabelAttributes = [(RCChronologicalAnnotationView *)self _timeLabelAttributes];
         CurrentContext = UIGraphicsGetCurrentContext();
         v82.origin.x = x;
         v82.origin.y = y;
@@ -201,7 +201,7 @@
         v82.size.height = height;
         CGContextClearRect(CurrentContext, v82);
         CGContextSetLineWidth(CurrentContext, v23);
-        v28 = [v78 timelinePlaybackBackgroundColor:v19];
+        v28 = [v78 timelinePlaybackBackgroundColor:isUserInterfaceStyleDark];
         CGContextSetFillColorWithColor(CurrentContext, [v28 CGColor]);
 
         v83.origin.x = x;
@@ -239,10 +239,10 @@
               v39 = RCRoundCoord(v38 - v33);
               if ((v32 + v35) % v16)
               {
-                v40 = [v78 timeLineMinorPlaybackMarkerColor];
+                timeLineMinorPlaybackMarkerColor = [v78 timeLineMinorPlaybackMarkerColor];
                 [v78 timeLineMinorTickHeight];
                 v42 = v41;
-                CGContextSetFillColorWithColor(CurrentContext, [v40 CGColor]);
+                CGContextSetFillColorWithColor(CurrentContext, [timeLineMinorPlaybackMarkerColor CGColor]);
                 v84.origin.y = 0.0;
                 v84.origin.x = v39;
                 v84.size.width = v23;
@@ -252,12 +252,12 @@
 
               else
               {
-                v40 = [v78 timeLineMajorPlaybackMarkerColor];
-                v43 = [v17 + 480 sharedStyleProvider];
-                [v43 timeLineMajorTickHeight];
+                timeLineMinorPlaybackMarkerColor = [v78 timeLineMajorPlaybackMarkerColor];
+                sharedStyleProvider = [v17 + 480 sharedStyleProvider];
+                [sharedStyleProvider timeLineMajorTickHeight];
                 v45 = v44;
 
-                CGContextSetFillColorWithColor(CurrentContext, [v40 CGColor]);
+                CGContextSetFillColorWithColor(CurrentContext, [timeLineMinorPlaybackMarkerColor CGColor]);
                 v85.origin.y = 0.0;
                 v85.origin.x = v39;
                 v85.size.width = v23;
@@ -266,19 +266,19 @@
                 if (!((v36 < 0.0) | v75 & 1))
                 {
                   v46 = RCRoundCoord(v38 - v65);
-                  v47 = [v17 + 480 sharedStyleProvider];
-                  [v47 timeLineMajorTickHeight];
+                  sharedStyleProvider2 = [v17 + 480 sharedStyleProvider];
+                  [sharedStyleProvider2 timeLineMajorTickHeight];
                   v49 = v48;
 
-                  v50 = [(RCChronologicalAnnotationView *)self window];
+                  window = [(RCChronologicalAnnotationView *)self window];
                   v71 = v46;
-                  [(RCChronologicalAnnotationView *)self convertRect:v50 toView:v46, v49, v64, 1.0];
+                  [(RCChronologicalAnnotationView *)self convertRect:window toView:v46, v49, v64, 1.0];
                   v51 = v29;
                   v53 = v52;
                   v55 = v54;
                   v57 = v56;
                   v59 = v58;
-                  [v50 bounds];
+                  [window bounds];
                   v87.origin.x = v53;
                   v29 = v51;
                   v87.origin.y = v55;
@@ -299,7 +299,7 @@
                       RCLocalizedDurationWithStyle(1, v62);
                     }
                     v63 = ;
-                    [v63 drawAtPoint:v74 withAttributes:{v71, v49, *&v64}];
+                    [v63 drawAtPoint:_timeLabelAttributes withAttributes:{v71, v49, *&v64}];
                   }
 
                   v17 = &OBJC_IVAR___RCWaveformSelectionOverlay__enablePlayBarTracking;
@@ -322,12 +322,12 @@
   }
 }
 
-- (id)_timeLabelAttributesWithFont:(id)a3
+- (id)_timeLabelAttributesWithFont:(id)font
 {
-  v3 = a3;
+  fontCopy = font;
   v4 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v5 = [v4 timelinePlaybackTimeColor];
-  v6 = [NSDictionary dictionaryWithObjectsAndKeys:v3, NSFontAttributeName, v5, NSForegroundColorAttributeName, 0];
+  timelinePlaybackTimeColor = [v4 timelinePlaybackTimeColor];
+  v6 = [NSDictionary dictionaryWithObjectsAndKeys:fontCopy, NSFontAttributeName, timelinePlaybackTimeColor, NSForegroundColorAttributeName, 0];
 
   return v6;
 }

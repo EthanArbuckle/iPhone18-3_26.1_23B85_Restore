@@ -1,19 +1,19 @@
 @interface _CDMailIntelligencePETDataCollectionUtilities
-+ (id)prepareContactEventFromEventDic:(id)a3;
++ (id)prepareContactEventFromEventDic:(id)dic;
 @end
 
 @implementation _CDMailIntelligencePETDataCollectionUtilities
 
-+ (id)prepareContactEventFromEventDic:(id)a3
++ (id)prepareContactEventFromEventDic:(id)dic
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dicCopy = dic;
   v4 = objc_alloc_init(MailIntelligencePETContactEvent);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = dicCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {

@@ -1,53 +1,53 @@
 @interface RMConnectionClient
-- (id)initWithQueue:(void *)a3 serviceName:(void *)a4 messageHandler:;
+- (id)initWithQueue:(void *)queue serviceName:(void *)name messageHandler:;
 - (uint64_t)connectionTimerDelay;
 - (uint64_t)setConnectionTimerDelay:(uint64_t)result;
 - (void)connect;
-- (void)endpoint:(id)a3 didReceiveMessage:(id)a4 withData:(id)a5 replyBlock:(id)a6;
-- (void)endpoint:(id)a3 didReceiveStreamedData:(id)a4;
-- (void)endpointWasInterrupted:(id)a3;
-- (void)endpointWasInvalidated:(id)a3;
+- (void)endpoint:(id)endpoint didReceiveMessage:(id)message withData:(id)data replyBlock:(id)block;
+- (void)endpoint:(id)endpoint didReceiveStreamedData:(id)data;
+- (void)endpointWasInterrupted:(id)interrupted;
+- (void)endpointWasInvalidated:(id)invalidated;
 - (void)handleDaemonStart;
 - (void)invalidate;
 - (void)replayCache;
-- (void)requestStreamingWithMessage:(void *)a3 data:(void *)a4 callback:;
-- (void)sendCachedMessage:(void *)a3 withData:;
-- (void)sendMessage:(void *)a3 withData:(void *)a4 reply:;
-- (void)setEndpoint:(uint64_t)a1;
-- (void)setMessageHandler:(void *)a1;
-- (void)setStreamingDataCallback:(void *)a1;
+- (void)requestStreamingWithMessage:(void *)message data:(void *)data callback:;
+- (void)sendCachedMessage:(void *)message withData:;
+- (void)sendMessage:(void *)message withData:(void *)data reply:;
+- (void)setEndpoint:(uint64_t)endpoint;
+- (void)setMessageHandler:(void *)handler;
+- (void)setStreamingDataCallback:(void *)callback;
 - (void)stopStreaming;
 - (void)stopStreamingInternal;
 @end
 
 @implementation RMConnectionClient
 
-- (void)requestStreamingWithMessage:(void *)a3 data:(void *)a4 callback:
+- (void)requestStreamingWithMessage:(void *)message data:(void *)data callback:
 {
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (!a1)
+  messageCopy = message;
+  dataCopy = data;
+  if (!self)
   {
     goto LABEL_4;
   }
 
-  dispatch_assert_queue_V2(*(a1 + 32));
-  if (!*(a1 + 40))
+  dispatch_assert_queue_V2(*(self + 32));
+  if (!*(self + 40))
   {
-    objc_setProperty_nonatomic_copy(a1, v10, v9, 40);
-    v11 = *(a1 + 16);
+    objc_setProperty_nonatomic_copy(self, v10, dataCopy, 40);
+    v11 = *(self + 16);
     v17 = MEMORY[0x277D85DD0];
     v18 = 3221225472;
     v19 = __64__RMConnectionClient_requestStreamingWithMessage_data_callback___block_invoke;
     v20 = &unk_279AF5480;
-    v21 = a1;
-    v12 = v9;
+    selfCopy = self;
+    v12 = dataCopy;
     v22 = v12;
-    [(RMConnectionEndpoint *)v11 requestStreamWithMessage:v7 data:v8 errorHandler:&v17];
-    v13 = *(a1 + 56);
-    v14 = [[RMConnectionClientCachedMessage alloc] initWithName:v7 data:v8 streamingCallback:v12];
-    [v13 addObject:{v14, v17, v18, v19, v20, v21}];
+    [(RMConnectionEndpoint *)v11 requestStreamWithMessage:v7 data:messageCopy errorHandler:&v17];
+    v13 = *(self + 56);
+    v14 = [[RMConnectionClientCachedMessage alloc] initWithName:v7 data:messageCopy streamingCallback:v12];
+    [v13 addObject:{v14, v17, v18, v19, v20, selfCopy}];
 
 LABEL_4:
     return;
@@ -67,16 +67,16 @@ void __64__RMConnectionClient_requestStreamingWithMessage_data_callback___block_
   }
 }
 
-- (void)endpointWasInterrupted:(id)a3
+- (void)endpointWasInterrupted:(id)interrupted
 {
-  v5 = a3;
+  interruptedCopy = interrupted;
   if (!self)
   {
     goto LABEL_8;
   }
 
   dispatch_assert_queue_V2(self->_queue);
-  for (i = self->_endpoint; i != v5; i = 0)
+  for (i = self->_endpoint; i != interruptedCopy; i = 0)
   {
     [RMConnectionClient endpointWasInterrupted:];
 LABEL_8:
@@ -87,9 +87,9 @@ LABEL_8:
   [(RMConnectionClient *)self replayCache];
 }
 
-- (void)endpointWasInvalidated:(id)a3
+- (void)endpointWasInvalidated:(id)invalidated
 {
-  v4 = a3;
+  invalidatedCopy = invalidated;
   if (self)
   {
     dispatch_assert_queue_V2(self->_queue);
@@ -102,7 +102,7 @@ LABEL_8:
     endpoint = 0;
   }
 
-  if (endpoint != v4)
+  if (endpoint != invalidatedCopy)
   {
     [RMConnectionClient endpointWasInvalidated:];
 LABEL_13:
@@ -111,8 +111,8 @@ LABEL_13:
   }
 
   [(RMConnectionClient *)self stopStreamingInternal];
-  [(RMConnectionEndpoint *)v4 setDataDelegate:?];
-  [(RMConnectionEndpoint *)v4 setConnectionDelegate:?];
+  [(RMConnectionEndpoint *)invalidatedCopy setDataDelegate:?];
+  [(RMConnectionEndpoint *)invalidatedCopy setConnectionDelegate:?];
   [(RMConnectionClient *)self setEndpoint:?];
   if (!self || !self->_valid || self->_connectionTimer)
   {
@@ -152,47 +152,47 @@ LABEL_9:
 LABEL_7:
 }
 
-- (id)initWithQueue:(void *)a3 serviceName:(void *)a4 messageHandler:
+- (id)initWithQueue:(void *)queue serviceName:(void *)name messageHandler:
 {
   v8 = a2;
-  v9 = a3;
-  v10 = a4;
-  if (a1)
+  queueCopy = queue;
+  nameCopy = name;
+  if (self)
   {
-    v16.receiver = a1;
+    v16.receiver = self;
     v16.super_class = RMConnectionClient;
     v11 = objc_msgSendSuper2(&v16, sel_init);
-    a1 = v11;
+    self = v11;
     if (v11)
     {
       objc_storeStrong(v11 + 4, a2);
-      objc_storeStrong(a1 + 3, a3);
-      objc_setProperty_nonatomic_copy(a1, v12, v10, 48);
+      objc_storeStrong(self + 3, queue);
+      objc_setProperty_nonatomic_copy(self, v12, nameCopy, 48);
       v13 = objc_opt_new();
-      v14 = a1[7];
-      a1[7] = v13;
+      v14 = self[7];
+      self[7] = v13;
 
-      *(a1 + 8) = 1;
+      *(self + 8) = 1;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (void)setMessageHandler:(void *)a1
+- (void)setMessageHandler:(void *)handler
 {
-  if (a1)
+  if (handler)
   {
-    objc_setProperty_nonatomic_copy(a1, newValue, newValue, 48);
+    objc_setProperty_nonatomic_copy(handler, newValue, newValue, 48);
   }
 }
 
 - (void)replayCache
 {
   v31 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_5_1(a1);
+    OUTLINED_FUNCTION_5_1(self);
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
@@ -311,9 +311,9 @@ LABEL_32:
 
 - (void)connect
 {
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_5_1(a1);
+    OUTLINED_FUNCTION_5_1(self);
     if (*(v1 + 8))
     {
       if (*(v1 + 16))
@@ -356,39 +356,39 @@ LABEL_32:
   }
 }
 
-- (void)setEndpoint:(uint64_t)a1
+- (void)setEndpoint:(uint64_t)endpoint
 {
-  if (a1)
+  if (endpoint)
   {
-    objc_storeStrong((a1 + 16), a2);
+    objc_storeStrong((endpoint + 16), a2);
   }
 }
 
-- (void)sendMessage:(void *)a3 withData:(void *)a4 reply:
+- (void)sendMessage:(void *)message withData:(void *)data reply:
 {
   v27 = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  messageCopy = message;
+  dataCopy = data;
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 32));
-    v10 = *(a1 + 16);
-    if (v9)
+    dispatch_assert_queue_V2(*(self + 32));
+    v10 = *(self + 16);
+    if (dataCopy)
     {
-      [(RMConnectionEndpoint *)v10 sendMessage:v7 withData:v8 reply:v9];
+      [(RMConnectionEndpoint *)v10 sendMessage:v7 withData:messageCopy reply:dataCopy];
     }
 
     else
     {
-      [(RMConnectionEndpoint *)v10 sendMessage:v7 withData:v8];
+      [(RMConnectionEndpoint *)v10 sendMessage:v7 withData:messageCopy];
     }
 
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v11 = *(a1 + 56);
+    v11 = *(self + 56);
     v12 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v12)
     {
@@ -421,7 +421,7 @@ LABEL_32:
           if ([v19 isEqualToString:{v7, v22}])
           {
 
-            [*(a1 + 56) removeObjectAtIndex:v17];
+            [*(self + 56) removeObjectAtIndex:v17];
             goto LABEL_19;
           }
 
@@ -443,33 +443,33 @@ LABEL_19:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendCachedMessage:(void *)a3 withData:
+- (void)sendCachedMessage:(void *)message withData:
 {
-  if (a1)
+  if (self)
   {
-    v5 = a3;
+    messageCopy = message;
     v6 = a2;
-    [(RMConnectionClient *)a1 sendMessage:v6 withData:v5 reply:0];
-    v7 = *(a1 + 56);
-    v8 = [[RMConnectionClientCachedMessage alloc] initWithName:v6 data:v5];
+    [(RMConnectionClient *)self sendMessage:v6 withData:messageCopy reply:0];
+    v7 = *(self + 56);
+    v8 = [[RMConnectionClientCachedMessage alloc] initWithName:v6 data:messageCopy];
 
     [v7 addObject:v8];
   }
 }
 
-- (void)setStreamingDataCallback:(void *)a1
+- (void)setStreamingDataCallback:(void *)callback
 {
-  if (a1)
+  if (callback)
   {
-    objc_setProperty_nonatomic_copy(a1, newValue, newValue, 40);
+    objc_setProperty_nonatomic_copy(callback, newValue, newValue, 40);
   }
 }
 
 - (void)stopStreamingInternal
 {
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_5_1(a1);
+    OUTLINED_FUNCTION_5_1(self);
     if (onceToken_ConnectionClient_Default != -1)
     {
       dispatch_once(&onceToken_ConnectionClient_Default, &__block_literal_global_3);
@@ -490,14 +490,14 @@ LABEL_19:
 - (void)stopStreaming
 {
   v16 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    [(RMConnectionClient *)a1 stopStreamingInternal];
+    [(RMConnectionClient *)self stopStreamingInternal];
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v2 = *(a1 + 56);
+    v2 = *(self + 56);
     v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v3)
     {
@@ -525,7 +525,7 @@ LABEL_19:
           if (v9)
           {
 
-            [*(a1 + 56) removeObjectAtIndex:{v8, v11}];
+            [*(self + 56) removeObjectAtIndex:{v8, v11}];
             goto LABEL_14;
           }
 
@@ -551,9 +551,9 @@ LABEL_14:
 
 - (void)invalidate
 {
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_5_1(a1);
+    OUTLINED_FUNCTION_5_1(self);
     *(v1 + 8) = 0;
     if (*(v1 + 64))
     {
@@ -573,7 +573,7 @@ LABEL_14:
 
 - (void)handleDaemonStart
 {
-  if (a1)
+  if (self)
   {
     if (onceToken_ConnectionClient_Default != -1)
     {
@@ -587,17 +587,17 @@ LABEL_14:
       _os_log_impl(&dword_261A9A000, v2, OS_LOG_TYPE_DEBUG, "Reconnection attempt", buf, 2u);
     }
 
-    if (!*(a1 + 16))
+    if (!*(self + 16))
     {
-      [(RMConnectionClient *)a1 connect];
-      [(RMConnectionClient *)a1 replayCache];
-      v3 = [(RMConnectionEndpoint *)*(a1 + 16) connection];
+      [(RMConnectionClient *)self connect];
+      [(RMConnectionClient *)self replayCache];
+      connection = [(RMConnectionEndpoint *)*(self + 16) connection];
       barrier[0] = MEMORY[0x277D85DD0];
       barrier[1] = 3221225472;
       barrier[2] = __39__RMConnectionClient_handleDaemonStart__block_invoke;
       barrier[3] = &unk_279AF5258;
-      barrier[4] = a1;
-      xpc_connection_send_barrier(v3, barrier);
+      barrier[4] = self;
+      xpc_connection_send_barrier(connection, barrier);
     }
   }
 }
@@ -728,28 +728,28 @@ void __39__RMConnectionClient_handleDaemonStart__block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (void)endpoint:(id)a3 didReceiveStreamedData:(id)a4
+- (void)endpoint:(id)endpoint didReceiveStreamedData:(id)data
 {
-  v5 = a4;
-  v6 = v5;
+  dataCopy = data;
+  v6 = dataCopy;
   if (self && self->_streamingDataCallback)
   {
-    v7 = v5;
-    v5 = (*(self->_streamingDataCallback + 2))();
+    v7 = dataCopy;
+    dataCopy = (*(self->_streamingDataCallback + 2))();
     v6 = v7;
   }
 
-  MEMORY[0x2821F96F8](v5, v6);
+  MEMORY[0x2821F96F8](dataCopy, v6);
 }
 
-- (void)endpoint:(id)a3 didReceiveMessage:(id)a4 withData:(id)a5 replyBlock:(id)a6
+- (void)endpoint:(id)endpoint didReceiveMessage:(id)message withData:(id)data replyBlock:(id)block
 {
-  v11 = a4;
-  v9 = a5;
-  v10 = a6;
+  messageCopy = message;
+  dataCopy = data;
+  blockCopy = block;
   if (self && self->_messageHandler)
   {
-    (*(self->_messageHandler + 2))(self->_messageHandler, v11, v9, v10);
+    (*(self->_messageHandler + 2))(self->_messageHandler, messageCopy, dataCopy, blockCopy);
   }
 }
 

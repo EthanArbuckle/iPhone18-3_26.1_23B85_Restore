@@ -1,14 +1,14 @@
 @interface WBParticipantPresenceCoordinator
 - (WBParticipantPresenceCoordinator)init;
 - (WBParticipantPresenceCoordinatorDelegate)delegate;
-- (void)getActiveParticipantsInTabGroupWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)getActiveParticipantsInTabWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)getCurrentConnectionStateWithCompletionHandler:(id)a3;
-- (void)getCurrentLocationIdentifiersForParticipantIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)getTabGroupIdentifierForParticipantIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)getTabIdentifierForParticipantIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)participantPresenceCoordinator:(id)a3 didUpdateActiveParticipants:(id)a4 inTabGroupWithIdentifier:(id)a5;
-- (void)participantPresenceCoordinator:(id)a3 didUpdateActiveParticipants:(id)a4 inTabWithIdentifier:(id)a5;
+- (void)getActiveParticipantsInTabGroupWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)getActiveParticipantsInTabWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)getCurrentConnectionStateWithCompletionHandler:(id)handler;
+- (void)getCurrentLocationIdentifiersForParticipantIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)getTabGroupIdentifierForParticipantIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)getTabIdentifierForParticipantIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)participantPresenceCoordinator:(id)coordinator didUpdateActiveParticipants:(id)participants inTabGroupWithIdentifier:(id)identifier;
+- (void)participantPresenceCoordinator:(id)coordinator didUpdateActiveParticipants:(id)participants inTabWithIdentifier:(id)identifier;
 @end
 
 @implementation WBParticipantPresenceCoordinator
@@ -31,24 +31,24 @@
   return v2;
 }
 
-- (void)getTabGroupIdentifierForParticipantIdentifier:(id)a3 completionHandler:(id)a4
+- (void)getTabGroupIdentifierForParticipantIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length])
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if ([identifierCopy length])
   {
     internalCoordinator = self->_internalCoordinator;
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __100__WBParticipantPresenceCoordinator_getTabGroupIdentifierForParticipantIdentifier_completionHandler___block_invoke;
     v9[3] = &unk_279E7D6C0;
-    v10 = v7;
-    [(_WBParticipantPresenceCoordinator *)internalCoordinator getTabGroupIdentifierForParticipantIdentifier:v6 completionHandler:v9];
+    v10 = handlerCopy;
+    [(_WBParticipantPresenceCoordinator *)internalCoordinator getTabGroupIdentifierForParticipantIdentifier:identifierCopy completionHandler:v9];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -66,24 +66,24 @@ void __100__WBParticipantPresenceCoordinator_getTabGroupIdentifierForParticipant
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
-- (void)getTabIdentifierForParticipantIdentifier:(id)a3 completionHandler:(id)a4
+- (void)getTabIdentifierForParticipantIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length])
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if ([identifierCopy length])
   {
     internalCoordinator = self->_internalCoordinator;
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __95__WBParticipantPresenceCoordinator_getTabIdentifierForParticipantIdentifier_completionHandler___block_invoke;
     v9[3] = &unk_279E7D6C0;
-    v10 = v7;
-    [(_WBParticipantPresenceCoordinator *)internalCoordinator getTabIdentifierForParticipantIdentifier:v6 completionHandler:v9];
+    v10 = handlerCopy;
+    [(_WBParticipantPresenceCoordinator *)internalCoordinator getTabIdentifierForParticipantIdentifier:identifierCopy completionHandler:v9];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -101,24 +101,24 @@ void __95__WBParticipantPresenceCoordinator_getTabIdentifierForParticipantIdenti
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
-- (void)getCurrentLocationIdentifiersForParticipantIdentifier:(id)a3 completionHandler:(id)a4
+- (void)getCurrentLocationIdentifiersForParticipantIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length])
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if ([identifierCopy length])
   {
     internalCoordinator = self->_internalCoordinator;
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __108__WBParticipantPresenceCoordinator_getCurrentLocationIdentifiersForParticipantIdentifier_completionHandler___block_invoke;
     v9[3] = &unk_279E7D710;
-    v10 = v7;
-    [(_WBParticipantPresenceCoordinator *)internalCoordinator getCurrentLocationIdentifiersForParticipantIdentifier:v6 completionHandler:v9];
+    v10 = handlerCopy;
+    [(_WBParticipantPresenceCoordinator *)internalCoordinator getCurrentLocationIdentifiersForParticipantIdentifier:identifierCopy completionHandler:v9];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
@@ -139,17 +139,17 @@ void __108__WBParticipantPresenceCoordinator_getCurrentLocationIdentifiersForPar
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)getActiveParticipantsInTabGroupWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)getActiveParticipantsInTabGroupWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   internalCoordinator = self->_internalCoordinator;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __100__WBParticipantPresenceCoordinator_getActiveParticipantsInTabGroupWithIdentifier_completionHandler___block_invoke;
   v9[3] = &unk_279E7D738;
-  v10 = v6;
-  v8 = v6;
-  [(_WBParticipantPresenceCoordinator *)internalCoordinator getActiveParticipantsInTabGroupWithIdentifier:a3 completionHandler:v9];
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  [(_WBParticipantPresenceCoordinator *)internalCoordinator getActiveParticipantsInTabGroupWithIdentifier:identifier completionHandler:v9];
 }
 
 void __100__WBParticipantPresenceCoordinator_getActiveParticipantsInTabGroupWithIdentifier_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -166,17 +166,17 @@ void __100__WBParticipantPresenceCoordinator_getActiveParticipantsInTabGroupWith
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
-- (void)getActiveParticipantsInTabWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)getActiveParticipantsInTabWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   internalCoordinator = self->_internalCoordinator;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __95__WBParticipantPresenceCoordinator_getActiveParticipantsInTabWithIdentifier_completionHandler___block_invoke;
   v9[3] = &unk_279E7D738;
-  v10 = v6;
-  v8 = v6;
-  [(_WBParticipantPresenceCoordinator *)internalCoordinator getActiveParticipantsInTabWithIdentifier:a3 completionHandler:v9];
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  [(_WBParticipantPresenceCoordinator *)internalCoordinator getActiveParticipantsInTabWithIdentifier:identifier completionHandler:v9];
 }
 
 void __95__WBParticipantPresenceCoordinator_getActiveParticipantsInTabWithIdentifier_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -193,16 +193,16 @@ void __95__WBParticipantPresenceCoordinator_getActiveParticipantsInTabWithIdenti
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
-- (void)getCurrentConnectionStateWithCompletionHandler:(id)a3
+- (void)getCurrentConnectionStateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   internalCoordinator = self->_internalCoordinator;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __83__WBParticipantPresenceCoordinator_getCurrentConnectionStateWithCompletionHandler___block_invoke;
   v7[3] = &unk_279E7D760;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(_WBParticipantPresenceCoordinator *)internalCoordinator getCurrentConnectionStateWithCompletionHandler:v7];
 }
 
@@ -220,25 +220,25 @@ void __83__WBParticipantPresenceCoordinator_getCurrentConnectionStateWithComplet
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
-- (void)participantPresenceCoordinator:(id)a3 didUpdateActiveParticipants:(id)a4 inTabGroupWithIdentifier:(id)a5
+- (void)participantPresenceCoordinator:(id)coordinator didUpdateActiveParticipants:(id)participants inTabGroupWithIdentifier:(id)identifier
 {
-  v9 = a4;
-  v7 = a5;
+  participantsCopy = participants;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained participantPresenceCoordinator:self didUpdateActiveParticipants:v9 inTabGroupWithIdentifier:v7];
+    [WeakRetained participantPresenceCoordinator:self didUpdateActiveParticipants:participantsCopy inTabGroupWithIdentifier:identifierCopy];
   }
 }
 
-- (void)participantPresenceCoordinator:(id)a3 didUpdateActiveParticipants:(id)a4 inTabWithIdentifier:(id)a5
+- (void)participantPresenceCoordinator:(id)coordinator didUpdateActiveParticipants:(id)participants inTabWithIdentifier:(id)identifier
 {
-  v9 = a4;
-  v7 = a5;
+  participantsCopy = participants;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained participantPresenceCoordinator:self didUpdateActiveParticipants:v9 inTabWithIdentifier:v7];
+    [WeakRetained participantPresenceCoordinator:self didUpdateActiveParticipants:participantsCopy inTabWithIdentifier:identifierCopy];
   }
 }
 

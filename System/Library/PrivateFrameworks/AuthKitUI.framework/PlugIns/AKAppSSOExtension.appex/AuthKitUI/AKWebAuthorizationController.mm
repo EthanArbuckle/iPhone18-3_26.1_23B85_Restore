@@ -1,28 +1,28 @@
 @interface AKWebAuthorizationController
 + (id)_acceptedResponseModes;
-- (BOOL)_canProcessRequestURLParams:(id)a3;
+- (BOOL)_canProcessRequestURLParams:(id)params;
 - (id)_activeStoreAccount;
-- (id)_appProvidedDataFromParams:(id)a3;
-- (id)_appSSOProvidedInformationForBundleIDFromParams:(id)a3;
+- (id)_appProvidedDataFromParams:(id)params;
+- (id)_appSSOProvidedInformationForBundleIDFromParams:(id)params;
 - (id)_authorizationController;
-- (id)_fetchPrimaryApplicationInformationForContext:(id)a3 requestParameters:(id)a4;
-- (id)_getIconNameForHostName:(id)a3;
-- (id)_getIconTypeIDForHostName:(id)a3;
-- (id)_parseURLQueryParams:(id)a3;
-- (id)_requestedScopesFromString:(id)a3;
-- (id)_responseDictWithCredential:(id)a3 requestParams:(id)a4;
-- (void)_sendAuthorizationResponseToRequest:(id)a3 usingTemplate:(id)a4 withCredential:(id)a5 requestParams:(id)a6;
-- (void)beginAuthorizationWithRequest:(id)a3;
+- (id)_fetchPrimaryApplicationInformationForContext:(id)context requestParameters:(id)parameters;
+- (id)_getIconNameForHostName:(id)name;
+- (id)_getIconTypeIDForHostName:(id)name;
+- (id)_parseURLQueryParams:(id)params;
+- (id)_requestedScopesFromString:(id)string;
+- (id)_responseDictWithCredential:(id)credential requestParams:(id)params;
+- (void)_sendAuthorizationResponseToRequest:(id)request usingTemplate:(id)template withCredential:(id)credential requestParams:(id)params;
+- (void)beginAuthorizationWithRequest:(id)request;
 @end
 
 @implementation AKWebAuthorizationController
 
-- (void)beginAuthorizationWithRequest:(id)a3
+- (void)beginAuthorizationWithRequest:(id)request
 {
-  v146 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v144 = [location[0] url];
   v143 = _AKLogSystem();
   v142 = OS_LOG_TYPE_DEFAULT;
@@ -33,28 +33,28 @@
   }
 
   objc_storeStrong(&v143, 0);
-  v141 = [(AKWebAuthorizationController *)v146 _parseURLQueryParams:v144];
-  v140 = [location[0] authorizationOptions];
+  v141 = [(AKWebAuthorizationController *)selfCopy _parseURLQueryParams:v144];
+  authorizationOptions = [location[0] authorizationOptions];
   v139 = _AKLogSystem();
   v138 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v139, OS_LOG_TYPE_DEBUG))
   {
-    sub_100007B1C(v149, v140);
+    sub_100007B1C(v149, authorizationOptions);
     _os_log_debug_impl(&_mh_execute_header, v139, v138, "authorizationOptions %@", v149, 0xCu);
   }
 
   objc_storeStrong(&v139, 0);
-  v61 = [v140 objectForKeyedSubscript:SOAuthorizationOptionInitiatorOrigin];
+  v61 = [authorizationOptions objectForKeyedSubscript:SOAuthorizationOptionInitiatorOrigin];
 
   if (v61)
   {
-    v60 = [v140 objectForKeyedSubscript:SOAuthorizationOptionInitiatorOrigin];
+    v60 = [authorizationOptions objectForKeyedSubscript:SOAuthorizationOptionInitiatorOrigin];
     [v141 setObject:? forKeyedSubscript:?];
   }
 
-  if ([(AKWebAuthorizationController *)v146 _canProcessRequestURLParams:v141])
+  if ([(AKWebAuthorizationController *)selfCopy _canProcessRequestURLParams:v141])
   {
-    v133 = [(AKWebAuthorizationController *)v146 _authorizationController];
+    _authorizationController = [(AKWebAuthorizationController *)selfCopy _authorizationController];
     v132 = dispatch_group_create();
     dispatch_group_enter(v132);
     v126[0] = 0;
@@ -64,7 +64,7 @@
     v129 = sub_100007B78;
     v130 = sub_100007BD0;
     v131 = 0;
-    v57 = v133;
+    v57 = _authorizationController;
     v120 = _NSConcreteStackBlock;
     v121 = -1073741824;
     v122 = 0;
@@ -75,10 +75,10 @@
     [v57 fetchAppleIDAuthorizeHTMLResponseTemplateWithCompletion:&v120];
     v119 = objc_alloc_init(AKCredentialRequestContext);
     v55 = +[AKConfiguration sharedConfiguration];
-    v56 = [v55 shouldAutocycleAppsInWebTakeover];
+    shouldAutocycleAppsInWebTakeover = [v55 shouldAutocycleAppsInWebTakeover];
 
-    v118[1] = v56;
-    if (v56 == 1)
+    v118[1] = shouldAutocycleAppsInWebTakeover;
+    if (shouldAutocycleAppsInWebTakeover == 1)
     {
       v54 = +[AKTestData testTiburonWebBundleIdentifier];
       [v119 set_proxiedClientBundleID:?];
@@ -89,15 +89,15 @@
 
     else
     {
-      v118[0] = [(AKWebAuthorizationController *)v146 _fetchPrimaryApplicationInformationForContext:v119 requestParameters:v141];
+      v118[0] = [(AKWebAuthorizationController *)selfCopy _fetchPrimaryApplicationInformationForContext:v119 requestParameters:v141];
       v116 = 0;
       v114 = 0;
       v52 = 0;
       if (v118[0])
       {
-        v117 = [v118[0] userInfo];
+        userInfo = [v118[0] userInfo];
         v116 = 1;
-        v115 = [v117 objectForKeyedSubscript:AKErrorStatusCodeKey];
+        v115 = [userInfo objectForKeyedSubscript:AKErrorStatusCodeKey];
         v114 = 1;
         v52 = [v115 integerValue] == -24002;
       }
@@ -141,7 +141,7 @@
 
     [v119 set_shouldForceUI:1];
     [v119 set_isWebLogin:1];
-    v49 = [location[0] callerBundleIdentifier];
+    callerBundleIdentifier = [location[0] callerBundleIdentifier];
     [v119 set_callerBundleID:?];
 
     v48 = [v141 objectForKeyedSubscript:@"client_id"];
@@ -154,8 +154,8 @@
     if (v109)
     {
       [v119 set_isFirstPartyLogin:1];
-      v46 = v146;
-      v45 = [v110 host];
+      v46 = selfCopy;
+      host = [v110 host];
       v108 = [(AKWebAuthorizationController *)v46 _getIconTypeIDForHostName:?];
 
       if (v108)
@@ -165,8 +165,8 @@
 
       else
       {
-        v44 = v146;
-        v43 = [v110 host];
+        v44 = selfCopy;
+        host2 = [v110 host];
         v107 = [(AKWebAuthorizationController *)v44 _getIconNameForHostName:?];
 
         [v119 set_iconName:v107];
@@ -201,10 +201,10 @@
     v40 = [v141 objectForKeyedSubscript:@"client_id"];
     [v106[0] setClientID:?];
 
-    v39 = [(AKWebAuthorizationController *)v146 _appProvidedDataFromParams:v141];
+    v39 = [(AKWebAuthorizationController *)selfCopy _appProvidedDataFromParams:v141];
     [v106[0] setAppProvidedData:?];
 
-    v38 = v146;
+    v38 = selfCopy;
     v37 = [v141 objectForKeyedSubscript:@"scope"];
     v36 = [(AKWebAuthorizationController *)v38 _requestedScopesFromString:?];
     [v106[0] setRequestedScopes:?];
@@ -228,15 +228,15 @@
 
       objc_storeStrong(&v104, 0);
       [v119 set_isItunesLogin:1];
-      v101 = [(AKWebAuthorizationController *)v146 _activeStoreAccount];
-      if (v101)
+      _activeStoreAccount = [(AKWebAuthorizationController *)selfCopy _activeStoreAccount];
+      if (_activeStoreAccount)
       {
         v100 = _AKLogSystem();
         v99 = OS_LOG_TYPE_DEBUG;
         if (os_log_type_enabled(v100, OS_LOG_TYPE_DEBUG))
         {
           v31 = +[AKAccountManager sharedInstance];
-          v30 = [(AKAccountManager *)v31 primaryEmailAddressForAccount:v101];
+          v30 = [(AKAccountManager *)v31 primaryEmailAddressForAccount:_activeStoreAccount];
           v98 = v30;
           sub_100007B1C(v148, v98);
           _os_log_debug_impl(&_mh_execute_header, v100, v99, "Found a store account with handle: %@", v148, 0xCu);
@@ -245,7 +245,7 @@
         }
 
         objc_storeStrong(&v100, 0);
-        v97 = [v105 altDSIDForAccount:v101];
+        v97 = [v105 altDSIDForAccount:_activeStoreAccount];
         v96 = [v105 authKitAccountWithAltDSID:v97 error:0];
         v95 = _AKLogSystem();
         v94 = OS_LOG_TYPE_DEFAULT;
@@ -261,8 +261,8 @@
         if (v96)
         {
           v27 = v96;
-          v26 = [v119 authorizationRequest];
-          [v26 setAuthkitAccount:v27];
+          authorizationRequest = [v119 authorizationRequest];
+          [authorizationRequest setAuthkitAccount:v27];
         }
 
         else
@@ -278,9 +278,9 @@
           }
 
           objc_storeStrong(&v92, 0);
-          v23 = [v105 primaryAuthKitAccount];
-          v22 = [v119 authorizationRequest];
-          [v22 setAuthkitAccount:v23];
+          primaryAuthKitAccount = [v105 primaryAuthKitAccount];
+          authorizationRequest2 = [v119 authorizationRequest];
+          [authorizationRequest2 setAuthkitAccount:primaryAuthKitAccount];
         }
 
         objc_storeStrong(&v96, 0);
@@ -300,12 +300,12 @@
         }
 
         objc_storeStrong(&v89, 0);
-        v19 = [v105 primaryAuthKitAccount];
-        v18 = [v119 authorizationRequest];
-        [v18 setAuthkitAccount:v19];
+        primaryAuthKitAccount2 = [v105 primaryAuthKitAccount];
+        authorizationRequest3 = [v119 authorizationRequest];
+        [authorizationRequest3 setAuthkitAccount:primaryAuthKitAccount2];
       }
 
-      objc_storeStrong(&v101, 0);
+      objc_storeStrong(&_activeStoreAccount, 0);
     }
 
     else
@@ -321,9 +321,9 @@
       }
 
       objc_storeStrong(&v86, 0);
-      v15 = [v105 primaryAuthKitAccount];
-      v14 = [v119 authorizationRequest];
-      [v14 setAuthkitAccount:v15];
+      primaryAuthKitAccount3 = [v105 primaryAuthKitAccount];
+      authorizationRequest4 = [v119 authorizationRequest];
+      [authorizationRequest4 setAuthkitAccount:primaryAuthKitAccount3];
     }
 
     v83 = 0;
@@ -339,12 +339,12 @@
       v66 = &unk_1000186E8;
       v67 = v132;
       v70[1] = v126;
-      v68 = v146;
+      v68 = selfCopy;
       v69 = location[0];
       v70[0] = v141;
       v71 = v109 & 1;
       v72 = objc_retainBlock(&v62);
-      [v133 performAuthorizationWithContext:v119 completion:v72];
+      [_authorizationController performAuthorizationWithContext:v119 completion:v72];
       objc_storeStrong(&v72, 0);
       objc_storeStrong(v70, 0);
       objc_storeStrong(&v69, 0);
@@ -399,7 +399,7 @@ LABEL_61:
     _Block_object_dispose(v126, 8);
     objc_storeStrong(&v131, 0);
     objc_storeStrong(&v132, 0);
-    objc_storeStrong(&v133, 0);
+    objc_storeStrong(&_authorizationController, 0);
     goto LABEL_62;
   }
 
@@ -417,24 +417,24 @@ LABEL_61:
   [location[0] doNotHandle];
   v134 = 1;
 LABEL_62:
-  objc_storeStrong(&v140, 0);
+  objc_storeStrong(&authorizationOptions, 0);
   objc_storeStrong(&v141, 0);
   objc_storeStrong(&v144, 0);
   objc_storeStrong(location, 0);
 }
 
-- (id)_fetchPrimaryApplicationInformationForContext:(id)a3 requestParameters:(id)a4
+- (id)_fetchPrimaryApplicationInformationForContext:(id)context requestParameters:(id)parameters
 {
-  v30 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v28 = 0;
-  objc_storeStrong(&v28, a4);
+  objc_storeStrong(&v28, parameters);
   v27 = 0;
-  v18 = [(AKWebAuthorizationController *)v30 _authorizationController];
+  _authorizationController = [(AKWebAuthorizationController *)selfCopy _authorizationController];
   v25 = v27;
-  v17 = [v18 primaryApplicationInformationForWebServiceWithInfo:v28 error:&v25];
+  v17 = [_authorizationController primaryApplicationInformationForWebServiceWithInfo:v28 error:&v25];
   objc_storeStrong(&v27, v25);
   v26 = v17;
 
@@ -485,9 +485,9 @@ LABEL_62:
 
   else
   {
-    v20 = [v21 _lp_simplifiedDisplayString];
+    _lp_simplifiedDisplayString = [v21 _lp_simplifiedDisplayString];
     v19 = 1;
-    v8 = v20;
+    v8 = _lp_simplifiedDisplayString;
   }
 
   [location[0] set_proxiedClientAppName:v8];
@@ -513,13 +513,13 @@ LABEL_62:
   return v2;
 }
 
-- (id)_appSSOProvidedInformationForBundleIDFromParams:(id)a3
+- (id)_appSSOProvidedInformationForBundleIDFromParams:(id)params
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [(AKWebAuthorizationController *)v9 _appProvidedDataFromParams:location[0]];
+  objc_storeStrong(location, params);
+  v4 = [(AKWebAuthorizationController *)selfCopy _appProvidedDataFromParams:location[0]];
   v7 = [v4 mutableCopy];
 
   v5 = [location[0] objectForKeyedSubscript:?];
@@ -532,16 +532,16 @@ LABEL_62:
   return v6;
 }
 
-- (id)_parseURLQueryParams:(id)a3
+- (id)_parseURLQueryParams:(id)params
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, params);
   v19 = +[NSMutableDictionary dictionary];
   v18 = [NSURLComponents componentsWithURL:location[0] resolvingAgainstBaseURL:0];
-  v13 = [v18 percentEncodedQuery];
-  v12 = [v13 stringByReplacingOccurrencesOfString:@"+" withString:@"%20"];
+  percentEncodedQuery = [v18 percentEncodedQuery];
+  v12 = [percentEncodedQuery stringByReplacingOccurrencesOfString:@"+" withString:@"%20"];
   [v18 setPercentEncodedQuery:?];
 
   memset(__b, 0, sizeof(__b));
@@ -561,10 +561,10 @@ LABEL_62:
       }
 
       v17 = *(__b[1] + 8 * v10);
-      v7 = [v17 value];
+      value = [v17 value];
       v5 = v19;
-      v6 = [v17 name];
-      [v5 setObject:v7 forKeyedSubscript:?];
+      name = [v17 name];
+      [v5 setObject:value forKeyedSubscript:?];
 
       ++v10;
       if (v8 + 1 >= v11)
@@ -587,12 +587,12 @@ LABEL_62:
   return v4;
 }
 
-- (BOOL)_canProcessRequestURLParams:(id)a3
+- (BOOL)_canProcessRequestURLParams:(id)params
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, params);
   v42 = _AKLogSystem();
   v41 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v42, OS_LOG_TYPE_DEBUG))
@@ -751,12 +751,12 @@ LABEL_26:
   return v44 & 1;
 }
 
-- (id)_appProvidedDataFromParams:(id)a3
+- (id)_appProvidedDataFromParams:(id)params
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, params);
   v19 = +[NSMutableDictionary dictionary];
   v18 = [location[0] objectForKeyedSubscript:@"originURL"];
 
@@ -821,12 +821,12 @@ LABEL_26:
   return v4;
 }
 
-- (id)_requestedScopesFromString:(id)a3
+- (id)_requestedScopesFromString:(id)string
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, string);
   v14 = +[NSMutableArray array];
   if ([location[0] length])
   {
@@ -872,12 +872,12 @@ LABEL_26:
   return v4;
 }
 
-- (id)_getIconTypeIDForHostName:(id)a3
+- (id)_getIconTypeIDForHostName:(id)name
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, name);
   if ([location[0] containsString:@"icloud"])
   {
     v6 = @"com.apple.application-icon.icloud";
@@ -894,12 +894,12 @@ LABEL_26:
   return v3;
 }
 
-- (id)_getIconNameForHostName:(id)a3
+- (id)_getIconNameForHostName:(id)name
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, name);
   if ([location[0] containsString:@"icloud"])
   {
     v6 = @"iCloudLogo";
@@ -938,14 +938,14 @@ LABEL_26:
   return v3;
 }
 
-- (id)_responseDictWithCredential:(id)a3 requestParams:(id)a4
+- (id)_responseDictWithCredential:(id)credential requestParams:(id)params
 {
-  v49 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, credential);
   v47 = 0;
-  objc_storeStrong(&v47, a4);
+  objc_storeStrong(&v47, params);
   v46 = +[NSMutableDictionary dictionary];
   v23 = [v47 objectForKeyedSubscript:?];
   [v46 setObject:? forKeyedSubscript:?];
@@ -956,12 +956,12 @@ LABEL_26:
   [v46 setObject:@"AppSSOTakeoverDidComplete" forKeyedSubscript:@"event"];
   v45 = +[NSMutableDictionary dictionary];
   v25 = [NSString alloc];
-  v27 = [location[0] identityToken];
+  identityToken = [location[0] identityToken];
   v26 = [v25 initWithData:? encoding:?];
   [v45 setObject:? forKeyedSubscript:?];
 
   v28 = [NSString alloc];
-  v30 = [location[0] authorizationCode];
+  authorizationCode = [location[0] authorizationCode];
   v29 = [v28 initWithData:? encoding:?];
   [v45 setObject:? forKeyedSubscript:?];
 
@@ -975,11 +975,11 @@ LABEL_26:
   v43 = [AKAuthorizationController isURLFromAllowListDomainsForSharingKey:v44];
   if (v43)
   {
-    v42 = [(AKWebAuthorizationController *)v49 _authorizationController];
-    v41 = [v42 _sharedKeyInfo];
+    _authorizationController = [(AKWebAuthorizationController *)selfCopy _authorizationController];
+    _sharedKeyInfo = [_authorizationController _sharedKeyInfo];
     v40 = +[NSMutableDictionary dictionary];
     v20 = objc_opt_class();
-    v21 = [v41 objectForKeyedSubscript:@"sharing_key"];
+    v21 = [_sharedKeyInfo objectForKeyedSubscript:@"sharing_key"];
     v39 = sub_10000A510(v20, v21);
 
     if (v39)
@@ -988,7 +988,7 @@ LABEL_26:
     }
 
     v18 = objc_opt_class();
-    v19 = [v41 objectForKeyedSubscript:@"mid"];
+    v19 = [_sharedKeyInfo objectForKeyedSubscript:@"mid"];
     v38 = sub_10000A510(v18, v19);
 
     if (v38)
@@ -1004,27 +1004,27 @@ LABEL_26:
     objc_storeStrong(&v38, 0);
     objc_storeStrong(&v39, 0);
     objc_storeStrong(&v40, 0);
-    objc_storeStrong(&v41, 0);
-    objc_storeStrong(&v42, 0);
+    objc_storeStrong(&_sharedKeyInfo, 0);
+    objc_storeStrong(&_authorizationController, 0);
   }
 
   v37 = +[NSMutableDictionary dictionary];
-  v14 = [location[0] userInformation];
-  v13 = [v14 selectedEmail];
+  userInformation = [location[0] userInformation];
+  selectedEmail = [userInformation selectedEmail];
   [v37 setObject:? forKeyedSubscript:?];
 
-  v15 = [location[0] userInformation];
-  v16 = [v15 givenName];
+  userInformation2 = [location[0] userInformation];
+  givenName = [userInformation2 givenName];
   v35 = 0;
   v33 = 0;
   v17 = 1;
-  if (!v16)
+  if (!givenName)
   {
-    v36 = [location[0] userInformation];
+    userInformation3 = [location[0] userInformation];
     v35 = 1;
-    v34 = [v36 familyName];
+    familyName = [userInformation3 familyName];
     v33 = 1;
-    v17 = v34 != 0;
+    v17 = familyName != 0;
   }
 
   if (v33)
@@ -1038,11 +1038,11 @@ LABEL_26:
   if (v17)
   {
     v50[0] = @"firstName";
-    v11 = [location[0] userInformation];
-    v12 = [v11 givenName];
-    if (v12)
+    userInformation4 = [location[0] userInformation];
+    givenName2 = [userInformation4 givenName];
+    if (givenName2)
     {
-      v10 = v12;
+      v10 = givenName2;
     }
 
     else
@@ -1052,11 +1052,11 @@ LABEL_26:
 
     v51[0] = v10;
     v50[1] = @"lastName";
-    v8 = [location[0] userInformation];
-    v9 = [v8 familyName];
-    if (v9)
+    userInformation5 = [location[0] userInformation];
+    familyName2 = [userInformation5 familyName];
+    if (familyName2)
     {
-      v7 = v9;
+      v7 = familyName2;
     }
 
     else
@@ -1081,21 +1081,21 @@ LABEL_26:
   return v5;
 }
 
-- (void)_sendAuthorizationResponseToRequest:(id)a3 usingTemplate:(id)a4 withCredential:(id)a5 requestParams:(id)a6
+- (void)_sendAuthorizationResponseToRequest:(id)request usingTemplate:(id)template withCredential:(id)credential requestParams:(id)params
 {
-  v29 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v27 = 0;
-  objc_storeStrong(&v27, a4);
+  objc_storeStrong(&v27, template);
   v26 = 0;
-  objc_storeStrong(&v26, a5);
+  objc_storeStrong(&v26, credential);
   v25 = 0;
-  objc_storeStrong(&v25, a6);
+  objc_storeStrong(&v25, params);
   if (v27)
   {
-    v20 = [(AKWebAuthorizationController *)v29 _responseDictWithCredential:v26 requestParams:v25];
+    v20 = [(AKWebAuthorizationController *)selfCopy _responseDictWithCredential:v26 requestParams:v25];
     v6 = [AAFSerialization ofType:@"application/json"];
     v19 = [v6 stringFromDictionary:v20];
 

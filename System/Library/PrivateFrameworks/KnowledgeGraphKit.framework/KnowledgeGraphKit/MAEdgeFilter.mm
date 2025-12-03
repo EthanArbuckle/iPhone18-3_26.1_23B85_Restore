@@ -1,20 +1,20 @@
 @interface MAEdgeFilter
-+ (BOOL)scanInstance:(id *)a3 withScanner:(id)a4;
-+ (id)edgeFilterWithVisualString:(id)a3;
-- (BOOL)matchesEdge:(id)a3;
++ (BOOL)scanInstance:(id *)instance withScanner:(id)scanner;
++ (id)edgeFilterWithVisualString:(id)string;
+- (BOOL)matchesEdge:(id)edge;
 - (KGEdgeFilter)kgEdgeFilter;
 - (MARelation)anyDirectionRelation;
 - (MARelation)inRelation;
 - (MARelation)outRelation;
-- (id)relationWithType:(unint64_t)a3;
-- (void)appendVisualStringToString:(id)a3;
+- (id)relationWithType:(unint64_t)type;
+- (void)appendVisualStringToString:(id)string;
 @end
 
 @implementation MAEdgeFilter
 
-- (id)relationWithType:(unint64_t)a3
+- (id)relationWithType:(unint64_t)type
 {
-  v3 = [[MANeighborRelation alloc] initWithEdgeType:a3 edgeFilter:self];
+  v3 = [[MANeighborRelation alloc] initWithEdgeType:type edgeFilter:self];
 
   return v3;
 }
@@ -40,51 +40,51 @@
   return v2;
 }
 
-- (void)appendVisualStringToString:(id)a3
+- (void)appendVisualStringToString:(id)string
 {
-  v4 = a3;
-  [v4 appendString:@"["];
+  stringCopy = string;
+  [stringCopy appendString:@"["];
   v5.receiver = self;
   v5.super_class = MAEdgeFilter;
-  [(MAElementFilter *)&v5 appendVisualStringToString:v4];
-  [v4 appendString:@"]"];
+  [(MAElementFilter *)&v5 appendVisualStringToString:stringCopy];
+  [stringCopy appendString:@"]"];
 }
 
 - (KGEdgeFilter)kgEdgeFilter
 {
   v3 = [KGEdgeFilter alloc];
-  v4 = [(MAElementFilter *)self kgRequiredLabels];
-  v5 = [(MAElementFilter *)self kgOptionalLabels];
-  v6 = [(MAElementFilter *)self properties];
-  v7 = [(KGElementFilter *)v3 initWithRequiredLabels:v4 optionalLabels:v5 properties:v6];
+  kgRequiredLabels = [(MAElementFilter *)self kgRequiredLabels];
+  kgOptionalLabels = [(MAElementFilter *)self kgOptionalLabels];
+  properties = [(MAElementFilter *)self properties];
+  v7 = [(KGElementFilter *)v3 initWithRequiredLabels:kgRequiredLabels optionalLabels:kgOptionalLabels properties:properties];
 
   return v7;
 }
 
-- (BOOL)matchesEdge:(id)a3
+- (BOOL)matchesEdge:(id)edge
 {
   v4.receiver = self;
   v4.super_class = MAEdgeFilter;
-  return [(MAElementFilter *)&v4 matchesElement:a3];
+  return [(MAElementFilter *)&v4 matchesElement:edge];
 }
 
-+ (id)edgeFilterWithVisualString:(id)a3
++ (id)edgeFilterWithVisualString:(id)string
 {
   v4 = MEMORY[0x277CCAC80];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithString:v5];
+  stringCopy = string;
+  v6 = [[v4 alloc] initWithString:stringCopy];
 
-  v7 = [a1 scanFilterWithScanner:v6];
+  v7 = [self scanFilterWithScanner:v6];
 
   return v7;
 }
 
-+ (BOOL)scanInstance:(id *)a3 withScanner:(id)a4
++ (BOOL)scanInstance:(id *)instance withScanner:(id)scanner
 {
-  v6 = a4;
-  if ([v6 scanString:@"[" intoString:0] && (v9.receiver = a1, v9.super_class = &OBJC_METACLASS___MAEdgeFilter, objc_msgSendSuper2(&v9, sel_scanInstance_withScanner_, a3, v6)))
+  scannerCopy = scanner;
+  if ([scannerCopy scanString:@"[" intoString:0] && (v9.receiver = self, v9.super_class = &OBJC_METACLASS___MAEdgeFilter, objc_msgSendSuper2(&v9, sel_scanInstance_withScanner_, instance, scannerCopy)))
   {
-    v7 = [v6 scanString:@"]" intoString:0];
+    v7 = [scannerCopy scanString:@"]" intoString:0];
   }
 
   else

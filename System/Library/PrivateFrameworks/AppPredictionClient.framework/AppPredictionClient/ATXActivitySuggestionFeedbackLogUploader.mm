@@ -1,68 +1,68 @@
 @interface ATXActivitySuggestionFeedbackLogUploader
-+ (id)_arrayToStringOfClasses:(id)a3;
-+ (id)_generateCADictionaryForEvent:(id)a3;
-+ (void)sendActivitySuggestionEventToCoreAnalytics:(id)a3;
++ (id)_arrayToStringOfClasses:(id)classes;
++ (id)_generateCADictionaryForEvent:(id)event;
++ (void)sendActivitySuggestionEventToCoreAnalytics:(id)analytics;
 @end
 
 @implementation ATXActivitySuggestionFeedbackLogUploader
 
-+ (void)sendActivitySuggestionEventToCoreAnalytics:(id)a3
++ (void)sendActivitySuggestionEventToCoreAnalytics:(id)analytics
 {
-  v3 = [a1 _generateCADictionaryForEvent:a3];
+  v3 = [self _generateCADictionaryForEvent:analytics];
   AnalyticsSendEvent();
 }
 
-+ (id)_generateCADictionaryForEvent:(id)a3
++ (id)_generateCADictionaryForEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = objc_opt_new();
-  v6 = [v4 acceptedTriggers];
-  v7 = [a1 _arrayToStringOfClasses:v6];
+  acceptedTriggers = [eventCopy acceptedTriggers];
+  v7 = [self _arrayToStringOfClasses:acceptedTriggers];
   [v5 setObject:v7 forKeyedSubscript:@"acceptedTriggerClasses"];
 
   v8 = MEMORY[0x1E696AD98];
-  v9 = [v4 activity];
-  v10 = [v8 numberWithUnsignedInteger:{objc_msgSend(v9, "activityType")}];
+  activity = [eventCopy activity];
+  v10 = [v8 numberWithUnsignedInteger:{objc_msgSend(activity, "activityType")}];
   [v5 setObject:v10 forKeyedSubscript:@"activityType"];
 
-  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v4, "eventType")}];
+  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(eventCopy, "eventType")}];
   [v5 setObject:v11 forKeyedSubscript:@"feedbackEventType"];
 
   v12 = MEMORY[0x1E696AD98];
-  v13 = [v4 activity];
-  v14 = [v12 numberWithInteger:{objc_msgSend(v13, "origin")}];
+  activity2 = [eventCopy activity];
+  v14 = [v12 numberWithInteger:{objc_msgSend(activity2, "origin")}];
   [v5 setObject:v14 forKeyedSubscript:@"origin"];
 
-  v15 = [v4 activity];
-  v16 = [v15 originAnchorType];
-  [v5 setObject:v16 forKeyedSubscript:@"originAnchorType"];
+  activity3 = [eventCopy activity];
+  originAnchorType = [activity3 originAnchorType];
+  [v5 setObject:originAnchorType forKeyedSubscript:@"originAnchorType"];
 
-  v17 = [v4 activity];
-  v18 = [v17 triggers];
-  v19 = [a1 _arrayToStringOfClasses:v18];
+  activity4 = [eventCopy activity];
+  triggers = [activity4 triggers];
+  v19 = [self _arrayToStringOfClasses:triggers];
   [v5 setObject:v19 forKeyedSubscript:@"suggestedTriggerClasses"];
 
-  v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v4, "suggestionType")}];
+  v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(eventCopy, "suggestionType")}];
   [v5 setObject:v20 forKeyedSubscript:@"suggestionType"];
 
-  v21 = [v4 activity];
-  v22 = [v21 suggestionUUID];
-  [v5 setObject:v22 forKeyedSubscript:@"suggestionUUID"];
+  activity5 = [eventCopy activity];
+  suggestionUUID = [activity5 suggestionUUID];
+  [v5 setObject:suggestionUUID forKeyedSubscript:@"suggestionUUID"];
 
   v23 = MEMORY[0x1E696AD98];
-  v24 = [v4 location];
+  location = [eventCopy location];
 
-  v25 = [v23 numberWithUnsignedInteger:v24];
+  v25 = [v23 numberWithUnsignedInteger:location];
   [v5 setObject:v25 forKeyedSubscript:@"uiLocation"];
 
   return v5;
 }
 
-+ (id)_arrayToStringOfClasses:(id)a3
++ (id)_arrayToStringOfClasses:(id)classes
 {
-  if (a3)
+  if (classes)
   {
-    v3 = [a3 _pas_mappedArrayWithTransform:&__block_literal_global_85];
+    v3 = [classes _pas_mappedArrayWithTransform:&__block_literal_global_85];
     v4 = [v3 componentsJoinedByString:@":"];
   }
 

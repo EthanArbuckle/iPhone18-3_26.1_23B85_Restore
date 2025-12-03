@@ -1,24 +1,24 @@
 @interface SEEndPointAuthorizeResponse
-+ (id)responseWithEndPointAttestationData:(id)a3 encryptionPublicKeyData:(id)a4 encryptedData:(id)a5;
-- (SEEndPointAuthorizeResponse)initWithCoder:(id)a3;
++ (id)responseWithEndPointAttestationData:(id)data encryptionPublicKeyData:(id)keyData encryptedData:(id)encryptedData;
+- (SEEndPointAuthorizeResponse)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SEEndPointAuthorizeResponse
 
-+ (id)responseWithEndPointAttestationData:(id)a3 encryptionPublicKeyData:(id)a4 encryptedData:(id)a5
++ (id)responseWithEndPointAttestationData:(id)data encryptionPublicKeyData:(id)keyData encryptedData:(id)encryptedData
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dataCopy = data;
+  keyDataCopy = keyData;
+  encryptedDataCopy = encryptedData;
   v10 = objc_opt_new();
   v11 = v10;
   if (v10)
   {
-    [v10 setEndPointAttestationData:v7];
-    [v11 setEncryptionPublicKeyData:v8];
-    [v11 setEncryptedData:v9];
+    [v10 setEndPointAttestationData:dataCopy];
+    [v11 setEncryptionPublicKeyData:keyDataCopy];
+    [v11 setEncryptedData:encryptedDataCopy];
   }
 
   return v11;
@@ -27,51 +27,51 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(SEEndPointAuthorizeResponse *)self endPointAttestationData];
-  v5 = [v4 asHexString];
-  v6 = [(SEEndPointAuthorizeResponse *)self encryptionPublicKeyData];
-  v7 = [v6 asHexString];
-  v8 = [(SEEndPointAuthorizeResponse *)self encryptedData];
-  v9 = [v8 asHexString];
-  v10 = [v3 stringWithFormat:@"{\n\tendPointAttestation : %@, \n\tencryptionPublicKey : %@, \n\tencryptedData : %@\n}", v5, v7, v9];
+  endPointAttestationData = [(SEEndPointAuthorizeResponse *)self endPointAttestationData];
+  asHexString = [endPointAttestationData asHexString];
+  encryptionPublicKeyData = [(SEEndPointAuthorizeResponse *)self encryptionPublicKeyData];
+  asHexString2 = [encryptionPublicKeyData asHexString];
+  encryptedData = [(SEEndPointAuthorizeResponse *)self encryptedData];
+  asHexString3 = [encryptedData asHexString];
+  v10 = [v3 stringWithFormat:@"{\n\tendPointAttestation : %@, \n\tencryptionPublicKey : %@, \n\tencryptedData : %@\n}", asHexString, asHexString2, asHexString3];
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SEEndPointAuthorizeResponse *)self endPointAttestationData];
-  [v4 encodeObject:v5 forKey:@"endPointAttestationData"];
+  coderCopy = coder;
+  endPointAttestationData = [(SEEndPointAuthorizeResponse *)self endPointAttestationData];
+  [coderCopy encodeObject:endPointAttestationData forKey:@"endPointAttestationData"];
 
-  v6 = [(SEEndPointAuthorizeResponse *)self encryptionPublicKeyData];
-  [v4 encodeObject:v6 forKey:@"encryptionPublicKeyData"];
+  encryptionPublicKeyData = [(SEEndPointAuthorizeResponse *)self encryptionPublicKeyData];
+  [coderCopy encodeObject:encryptionPublicKeyData forKey:@"encryptionPublicKeyData"];
 
-  v7 = [(SEEndPointAuthorizeResponse *)self encryptedData];
-  [v4 encodeObject:v7 forKey:@"encryptedData"];
+  encryptedData = [(SEEndPointAuthorizeResponse *)self encryptedData];
+  [coderCopy encodeObject:encryptedData forKey:@"encryptedData"];
 }
 
-- (SEEndPointAuthorizeResponse)initWithCoder:(id)a3
+- (SEEndPointAuthorizeResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = SEEndPointAuthorizeResponse;
   v5 = [(SEEndPointAuthorizeResponse *)&v17 init];
   v6 = v5;
   if (v5)
   {
-    v7 = [(SEEndPointAuthorizeResponse *)v5 endPointAttestationData];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endPointAttestationData"];
+    endPointAttestationData = [(SEEndPointAuthorizeResponse *)v5 endPointAttestationData];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endPointAttestationData"];
     endPointAttestationData = v6->_endPointAttestationData;
     v6->_endPointAttestationData = v8;
 
-    v10 = [(SEEndPointAuthorizeResponse *)v6 encryptionPublicKeyData];
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"encryptionPublicKeyData"];
+    encryptionPublicKeyData = [(SEEndPointAuthorizeResponse *)v6 encryptionPublicKeyData];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"encryptionPublicKeyData"];
     encryptionPublicKeyData = v6->_encryptionPublicKeyData;
     v6->_encryptionPublicKeyData = v11;
 
-    v13 = [(SEEndPointAuthorizeResponse *)v6 encryptedData];
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"encryptedData"];
+    encryptedData = [(SEEndPointAuthorizeResponse *)v6 encryptedData];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"encryptedData"];
     encryptedData = v6->_encryptedData;
     v6->_encryptedData = v14;
   }

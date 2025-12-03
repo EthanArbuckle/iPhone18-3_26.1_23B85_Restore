@@ -1,9 +1,9 @@
 @interface RTAuthorizedLocationConfirmationStatusEnumerationOptions
 - (RTAuthorizedLocationConfirmationStatusEnumerationOptions)init;
-- (RTAuthorizedLocationConfirmationStatusEnumerationOptions)initWithCoder:(id)a3;
-- (RTAuthorizedLocationConfirmationStatusEnumerationOptions)initWithOptions:(unint64_t)a3 startDate:(id)a4 endDate:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (RTAuthorizedLocationConfirmationStatusEnumerationOptions)initWithCoder:(id)coder;
+- (RTAuthorizedLocationConfirmationStatusEnumerationOptions)initWithOptions:(unint64_t)options startDate:(id)date endDate:(id)endDate;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTAuthorizedLocationConfirmationStatusEnumerationOptions
@@ -15,46 +15,46 @@
   return [(RTAuthorizedLocationConfirmationStatusEnumerationOptions *)&v3 init];
 }
 
-- (RTAuthorizedLocationConfirmationStatusEnumerationOptions)initWithOptions:(unint64_t)a3 startDate:(id)a4 endDate:(id)a5
+- (RTAuthorizedLocationConfirmationStatusEnumerationOptions)initWithOptions:(unint64_t)options startDate:(id)date endDate:(id)endDate
 {
-  v9 = a4;
-  v10 = a5;
+  dateCopy = date;
+  endDateCopy = endDate;
   v14.receiver = self;
   v14.super_class = RTAuthorizedLocationConfirmationStatusEnumerationOptions;
   v11 = [(RTAuthorizedLocationConfirmationStatusEnumerationOptions *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_batchSize = a3;
-    objc_storeStrong(&v11->_startDate, a4);
-    objc_storeStrong(&v12->_endDate, a5);
+    v11->_batchSize = options;
+    objc_storeStrong(&v11->_startDate, date);
+    objc_storeStrong(&v12->_endDate, endDate);
   }
 
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = self;
+  selfCopy = self;
 
-  return [(RTAuthorizedLocationConfirmationStatusEnumerationOptions *)v3 init];
+  return [(RTAuthorizedLocationConfirmationStatusEnumerationOptions *)selfCopy init];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   batchSize = self->_batchSize;
-  v5 = a3;
-  [v5 encodeInteger:batchSize forKey:@"batchSize"];
-  [v5 encodeObject:self->_startDate forKey:@"startDate"];
-  [v5 encodeObject:self->_endDate forKey:@"endDate"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:batchSize forKey:@"batchSize"];
+  [coderCopy encodeObject:self->_startDate forKey:@"startDate"];
+  [coderCopy encodeObject:self->_endDate forKey:@"endDate"];
 }
 
-- (RTAuthorizedLocationConfirmationStatusEnumerationOptions)initWithCoder:(id)a3
+- (RTAuthorizedLocationConfirmationStatusEnumerationOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"batchSize"];
-  v6 = [v4 decodeObjectForKey:@"startDate"];
-  v7 = [v4 decodeObjectForKey:@"endDate"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"batchSize"];
+  v6 = [coderCopy decodeObjectForKey:@"startDate"];
+  v7 = [coderCopy decodeObjectForKey:@"endDate"];
 
   v8 = [(RTAuthorizedLocationConfirmationStatusEnumerationOptions *)self initWithOptions:v5 startDate:v6 endDate:v7];
   return v8;

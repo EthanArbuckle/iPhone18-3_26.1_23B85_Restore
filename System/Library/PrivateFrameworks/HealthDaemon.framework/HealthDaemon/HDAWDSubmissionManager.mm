@@ -1,55 +1,55 @@
 @interface HDAWDSubmissionManager
-- (BOOL)_setInt64:(int64_t)a3 keyPrefix:(id)a4 profile:(id)a5 date:(id)a6 error:(id *)a7;
-- (BOOL)aggregateDatabaseSizeStats:(id)a3;
-- (BOOL)runTask:(id)a3 error:(id *)a4;
-- (HDAWDSubmissionManager)initWithProfile:(id)a3;
+- (BOOL)_setInt64:(int64_t)int64 keyPrefix:(id)prefix profile:(id)profile date:(id)date error:(id *)error;
+- (BOOL)aggregateDatabaseSizeStats:(id)stats;
+- (BOOL)runTask:(id)task error:(id *)error;
+- (HDAWDSubmissionManager)initWithProfile:(id)profile;
 - (HDProfile)profile;
 - (id)_actions;
-- (id)_activitySummaryForActivityCacheIndex:(int64_t)a3 error:(id *)a4;
-- (id)_updateDeltaToInt64:(int64_t)a3 forKey:(id)a4 profile:(id)a5 currentDate:(id)a6 timeInterval:(double)a7 error:(id *)a8;
+- (id)_activitySummaryForActivityCacheIndex:(int64_t)index error:(id *)error;
+- (id)_updateDeltaToInt64:(int64_t)int64 forKey:(id)key profile:(id)profile currentDate:(id)date timeInterval:(double)interval error:(id *)error;
 - (id)diagnosticDescription;
-- (int64_t)_int64ForKeyPrefix:(id)a3 profile:(id)a4 date:(id *)a5 error:(id *)a6;
-- (int64_t)_manuallyEnteredTypesCountWithTransaction:(id)a3 error:(id *)a4;
-- (int64_t)_nonAppleSourcesWithDataSince:(id)a3 transaction:(id)a4 error:(id *)a5;
-- (uint64_t)_countOfObjectsWithSQLQuery:(uint64_t)a1 database:(void *)a2 error:(void *)a3 bindingHandler:(uint64_t)a4;
+- (int64_t)_int64ForKeyPrefix:(id)prefix profile:(id)profile date:(id *)date error:(id *)error;
+- (int64_t)_manuallyEnteredTypesCountWithTransaction:(id)transaction error:(id *)error;
+- (int64_t)_nonAppleSourcesWithDataSince:(id)since transaction:(id)transaction error:(id *)error;
+- (uint64_t)_countOfObjectsWithSQLQuery:(uint64_t)query database:(void *)database error:(void *)error bindingHandler:(uint64_t)handler;
 - (void)dealloc;
-- (void)profileDidBecomeReady:(id)a3;
-- (void)reportDailyAnalyticsWithCoordinator:(id)a3 completion:(id)a4;
-- (void)resetTask:(id)a3;
+- (void)profileDidBecomeReady:(id)ready;
+- (void)reportDailyAnalyticsWithCoordinator:(id)coordinator completion:(id)completion;
+- (void)resetTask:(id)task;
 @end
 
 @implementation HDAWDSubmissionManager
 
-- (HDAWDSubmissionManager)initWithProfile:(id)a3
+- (HDAWDSubmissionManager)initWithProfile:(id)profile
 {
-  v5 = a3;
+  profileCopy = profile;
   v51.receiver = self;
   v51.super_class = HDAWDSubmissionManager;
   v6 = [(HDAWDSubmissionManager *)&v51 init];
   if (v6)
   {
-    if (!v5)
+    if (!profileCopy)
     {
-      v47 = [MEMORY[0x277CCA890] currentHandler];
-      [v47 handleFailureInMethod:a2 object:v6 file:@"HDAWDSubmissionManager.m" lineNumber:448 description:{@"Invalid parameter not satisfying: %@", @"profile"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v6 file:@"HDAWDSubmissionManager.m" lineNumber:448 description:{@"Invalid parameter not satisfying: %@", @"profile"}];
     }
 
     v7 = HKCreateSerialDispatchQueue();
     queue = v6->_queue;
     v6->_queue = v7;
 
-    objc_storeWeak(&v6->_profile, v5);
+    objc_storeWeak(&v6->_profile, profileCopy);
     v6->_fitnessDailyCollectionEnabledNotifyToken = -1;
-    v9 = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
-    [v9 addObject:v6];
+    mEMORY[0x277D10AF8] = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
+    [mEMORY[0x277D10AF8] addObject:v6];
 
-    v10 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     WeakRetained = objc_loadWeakRetained(&v6->_profile);
-    v12 = [WeakRetained daemon];
-    v13 = [v12 behavior];
-    v14 = [v13 supportsAWDMetricSubmission];
+    daemon = [WeakRetained daemon];
+    behavior = [daemon behavior];
+    supportsAWDMetricSubmission = [behavior supportsAWDMetricSubmission];
 
-    if (v14)
+    if (supportsAWDMetricSubmission)
     {
       objc_initWeak(&location, v6);
       v15 = [_HDAWDPeriodicAction alloc];
@@ -60,7 +60,7 @@
       objc_copyWeak(&v49, &location);
       v16 = @"com.apple.healthd.awd-submission-manager.heart-daily-analytics";
       v17 = @"HDAWDSubmissionManager.HeartDailyAnalytics";
-      v18 = v5;
+      v18 = profileCopy;
       v19 = v48;
       if (v15)
       {
@@ -105,14 +105,14 @@
           v36 = *&v20[1]._started;
           *&v20[1]._started = v35;
 
-          v37 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-          v20[2].super.isa = [v37 integerForKey:v20->_profile];
+          standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+          v20[2].super.isa = [standardUserDefaults integerForKey:v20->_profile];
 
-          v38 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-          v20[2]._serverConnectionsByComponentId = [v38 integerForKey:v20->_actions];
+          standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+          v20[2]._serverConnectionsByComponentId = [standardUserDefaults2 integerForKey:v20->_actions];
 
-          v39 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-          v40 = [v39 objectForKey:v20->_serverConnectionsByComponentId];
+          standardUserDefaults3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+          v40 = [standardUserDefaults3 objectForKey:v20->_serverConnectionsByComponentId];
 
           objc_opt_class();
           if (objc_opt_isKindOfClass())
@@ -120,8 +120,8 @@
             objc_storeStrong(&v20[2]._profile, v40);
           }
 
-          v41 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-          v42 = [v41 objectForKey:v20->_queue];
+          standardUserDefaults4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+          v42 = [standardUserDefaults4 objectForKey:v20->_queue];
 
           objc_opt_class();
           if (objc_opt_isKindOfClass())
@@ -136,8 +136,8 @@
         v20 = 0;
       }
 
-      [(NSMutableArray *)v10 addObject:v20];
-      objc_storeStrong(&v6->_actions, v10);
+      [(NSMutableArray *)array addObject:v20];
+      objc_storeStrong(&v6->_actions, array);
       v43 = objc_loadWeakRetained(&v6->_profile);
       [v43 registerProfileReadyObserver:v6 queue:v6->_queue];
 
@@ -148,11 +148,11 @@
     else
     {
       v44 = v6->_actions;
-      v6->_actions = v10;
-      v45 = v10;
+      v6->_actions = array;
+      v45 = array;
 
-      v10 = objc_loadWeakRetained(&v6->_profile);
-      [(NSMutableArray *)v10 registerProfileReadyObserver:v6 queue:v6->_queue];
+      array = objc_loadWeakRetained(&v6->_profile);
+      [(NSMutableArray *)array registerProfileReadyObserver:v6 queue:v6->_queue];
     }
   }
 
@@ -338,9 +338,9 @@ LABEL_23:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v5 = [WeakRetained daemon];
-  v6 = [v5 analyticsSubmissionCoordinator];
-  [v6 removeObserver:self];
+  daemon = [WeakRetained daemon];
+  analyticsSubmissionCoordinator = [daemon analyticsSubmissionCoordinator];
+  [analyticsSubmissionCoordinator removeObserver:self];
 
   v7.receiver = self;
   v7.super_class = HDAWDSubmissionManager;
@@ -349,7 +349,7 @@ LABEL_23:
 
 - (id)_actions
 {
-  if (a1)
+  if (self)
   {
     v5 = 0;
     v6 = &v5;
@@ -357,12 +357,12 @@ LABEL_23:
     v8 = __Block_byref_object_copy__97;
     v9 = __Block_byref_object_dispose__97;
     v10 = 0;
-    v1 = *(a1 + 32);
+    v1 = *(self + 32);
     v4[0] = MEMORY[0x277D85DD0];
     v4[1] = 3221225472;
     v4[2] = __34__HDAWDSubmissionManager__actions__block_invoke;
     v4[3] = &unk_278613990;
-    v4[4] = a1;
+    v4[4] = self;
     v4[5] = &v5;
     dispatch_sync(v1, v4);
     v2 = v6[5];
@@ -387,7 +387,7 @@ uint64_t __34__HDAWDSubmissionManager__actions__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
   v29 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
@@ -446,9 +446,9 @@ uint64_t __34__HDAWDSubmissionManager__actions__block_invoke(uint64_t a1)
   self->_started = 1;
 
   obja = objc_loadWeakRetained(&self->_profile);
-  v14 = [obja daemon];
-  v15 = [v14 analyticsSubmissionCoordinator];
-  [v15 addObserver:self queue:self->_queue];
+  daemon = [obja daemon];
+  analyticsSubmissionCoordinator = [daemon analyticsSubmissionCoordinator];
+  [analyticsSubmissionCoordinator addObserver:self queue:self->_queue];
 
   v16 = *MEMORY[0x277D85DE8];
 }
@@ -523,8 +523,8 @@ uint64_t __34__HDAWDSubmissionManager__actions__block_invoke(uint64_t a1)
           v13 = 0;
         }
 
-        v14 = [(_HDAWDPeriodicAction *)v7 lastProcessedDate];
-        [v20 appendFormat:@"%@: counter:%ld waiting:%ld last:%@ processed:%@\n", v8, v10, v11, v13, v14];
+        lastProcessedDate = [(_HDAWDPeriodicAction *)v7 lastProcessedDate];
+        [v20 appendFormat:@"%@: counter:%ld waiting:%ld last:%@ processed:%@\n", v8, v10, v11, v13, lastProcessedDate];
 
         ++v5;
       }
@@ -542,10 +542,10 @@ uint64_t __34__HDAWDSubmissionManager__actions__block_invoke(uint64_t a1)
   return v20;
 }
 
-- (BOOL)runTask:(id)a3 error:(id *)a4
+- (BOOL)runTask:(id)task error:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  taskCopy = task;
   [(HDAWDSubmissionManager *)self _actions];
   v25 = 0u;
   v26 = 0u;
@@ -577,7 +577,7 @@ uint64_t __34__HDAWDSubmissionManager__actions__block_invoke(uint64_t a1)
           v14 = 0;
         }
 
-        if ([v14 isEqualToString:v7])
+        if ([v14 isEqualToString:taskCopy])
         {
           v16 = v13;
 
@@ -598,10 +598,10 @@ uint64_t __34__HDAWDSubmissionManager__actions__block_invoke(uint64_t a1)
           v21 = [MEMORY[0x277CCA9B8] hk_error:100 description:v20];
 
           [*(v16 + 15) didPerformActivityWithResult:2 minimumRetryInterval:0 activityStartDate:v21 error:v16[10]];
-          v17 = [MEMORY[0x277CCA9B8] hk_error:100 format:{@"Failed to complete task %@", v7}];
+          v17 = [MEMORY[0x277CCA9B8] hk_error:100 format:{@"Failed to complete task %@", taskCopy}];
           if (v17)
           {
-            if (a4)
+            if (error)
             {
               v22 = v17;
               goto LABEL_23;
@@ -629,13 +629,13 @@ uint64_t __34__HDAWDSubmissionManager__actions__block_invoke(uint64_t a1)
   }
 
 LABEL_17:
-  v17 = [MEMORY[0x277CCA9B8] hk_errorForInvalidArgument:@"@" class:objc_opt_class() selector:a2 format:{@"AWD task '%@' not found", v7}];
+  v17 = [MEMORY[0x277CCA9B8] hk_errorForInvalidArgument:@"@" class:objc_opt_class() selector:a2 format:{@"AWD task '%@' not found", taskCopy}];
   if (!v17)
   {
     goto LABEL_25;
   }
 
-  if (!a4)
+  if (!error)
   {
     _HKLogDroppedError();
 LABEL_25:
@@ -646,7 +646,7 @@ LABEL_25:
   v19 = v17;
   v16 = 0;
 LABEL_23:
-  *a4 = v17;
+  *error = v17;
 LABEL_26:
 
   v18 = 0;
@@ -656,10 +656,10 @@ LABEL_27:
   return v18;
 }
 
-- (void)resetTask:(id)a3
+- (void)resetTask:(id)task
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  taskCopy = task;
   [(HDAWDSubmissionManager *)self _actions];
   v14 = 0u;
   v15 = 0u;
@@ -683,7 +683,7 @@ LABEL_27:
         v10 = *(*(&v14 + 1) + 8 * v9);
         if (v10)
         {
-          if ([*(v10 + 160) isEqualToString:v4])
+          if ([*(v10 + 160) isEqualToString:taskCopy])
           {
             v12 = *(v10 + 96);
             block[0] = MEMORY[0x277D85DD0];
@@ -696,7 +696,7 @@ LABEL_27:
           }
         }
 
-        else if ([0 isEqualToString:{v4, v14}])
+        else if ([0 isEqualToString:{taskCopy, v14}])
         {
           goto LABEL_15;
         }
@@ -717,12 +717,12 @@ LABEL_15:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (uint64_t)_countOfObjectsWithSQLQuery:(uint64_t)a1 database:(void *)a2 error:(void *)a3 bindingHandler:(uint64_t)a4
+- (uint64_t)_countOfObjectsWithSQLQuery:(uint64_t)query database:(void *)database error:(void *)error bindingHandler:(uint64_t)handler
 {
-  v7 = a2;
-  v8 = a3;
-  v9 = v8;
-  if (a1)
+  databaseCopy = database;
+  errorCopy = error;
+  v9 = errorCopy;
+  if (query)
   {
     v13 = 0;
     v14 = &v13;
@@ -733,7 +733,7 @@ LABEL_15:
     v12[2] = __84__HDAWDSubmissionManager__countOfObjectsWithSQLQuery_database_error_bindingHandler___block_invoke;
     v12[3] = &unk_278614620;
     v12[4] = &v13;
-    if ([v8 executeSQL:v7 error:a4 bindingHandler:0 enumerationHandler:v12])
+    if ([errorCopy executeSQL:databaseCopy error:handler bindingHandler:0 enumerationHandler:v12])
     {
       v10 = v14[3];
     }
@@ -755,12 +755,12 @@ LABEL_15:
   return v10;
 }
 
-- (int64_t)_manuallyEnteredTypesCountWithTransaction:(id)a3 error:(id *)a4
+- (int64_t)_manuallyEnteredTypesCountWithTransaction:(id)transaction error:(id *)error
 {
-  v6 = a3;
+  transactionCopy = transaction;
   v7 = HDSourceEntityPredicateForSourceWithBundleIdentifier(@"com.apple.Health");
-  v8 = [v6 unprotectedDatabase];
-  v9 = [HDSourceEntity sourcesWithPredicate:v7 includeDeleted:0 database:v8 error:a4];
+  unprotectedDatabase = [transactionCopy unprotectedDatabase];
+  v9 = [HDSourceEntity sourcesWithPredicate:v7 includeDeleted:0 database:unprotectedDatabase error:error];
 
   if (v9)
   {
@@ -770,7 +770,7 @@ LABEL_15:
     v22 = MEMORY[0x277CCACA8];
     v21 = +[(HDSQLiteSchemaEntity *)HDSampleEntity];
     +[(HDSQLiteSchemaEntity *)HDDataEntity];
-    v12 = v23 = v6;
+    v12 = v23 = transactionCopy;
     v24 = v7;
     v13 = +[(HDSQLiteSchemaEntity *)HDDataProvenanceEntity];
     v14 = +[(HDSQLiteSchemaEntity *)HDDataProvenanceEntity];
@@ -778,9 +778,9 @@ LABEL_15:
     v16 = +[(HDSQLiteSchemaEntity *)HDMetadataKeyEntity];
     v17 = [v22 stringWithFormat:@"SELECT COUNT(DISTINCT %@) FROM %@ s INNER JOIN %@ o USING (%@) INNER JOIN %@ ON (o.%@ = %@.rowid) INNER JOIN %@ mv ON (mv.%@ = o.%@) INNER JOIN %@ mk ON (mk.rowid = mv.%@) WHERE (%@ in (%@)) AND mk.%@='%@' AND mv.%@ > 0", @"data_type", v21, v12, @"data_id", v13, @"provenance", v14, v15, @"object_id", @"data_id", v16, @"key_id", @"data_provenances.source_id", v11, @"key", *MEMORY[0x277CCC548], @"numerical_value"];
 
-    v6 = v23;
-    v18 = [v23 protectedDatabase];
-    v19 = [HDAWDSubmissionManager _countOfObjectsWithSQLQuery:v17 database:v18 error:a4 bindingHandler:?];
+    transactionCopy = v23;
+    protectedDatabase = [v23 protectedDatabase];
+    v19 = [HDAWDSubmissionManager _countOfObjectsWithSQLQuery:v17 database:protectedDatabase error:error bindingHandler:?];
 
     v7 = v24;
   }
@@ -801,19 +801,19 @@ uint64_t __74__HDAWDSubmissionManager__manuallyEnteredTypesCountWithTransaction_
   return [v2 numberWithLongLong:v3];
 }
 
-- (int64_t)_nonAppleSourcesWithDataSince:(id)a3 transaction:(id)a4 error:(id *)a5
+- (int64_t)_nonAppleSourcesWithDataSince:(id)since transaction:(id)transaction error:(id *)error
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  sinceCopy = since;
+  transactionCopy = transaction;
   v10 = MEMORY[0x277D10B90];
   v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"(%@ & %llu) == 0", @"source_options", 2];
   v30[0] = @"source_options";
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:1];
   v13 = [v10 predicateWithSQL:v11 overProperties:v12 values:MEMORY[0x277CBEBF8]];
 
-  v14 = [v9 unprotectedDatabase];
-  v15 = [HDSourceEntity sourcesWithPredicate:v13 includeDeleted:0 database:v14 error:a5];
+  unprotectedDatabase = [transactionCopy unprotectedDatabase];
+  v15 = [HDSourceEntity sourcesWithPredicate:v13 includeDeleted:0 database:unprotectedDatabase error:error];
 
   if (v15)
   {
@@ -825,12 +825,12 @@ uint64_t __74__HDAWDSubmissionManager__manuallyEnteredTypesCountWithTransaction_
     v18 = +[(HDSQLiteSchemaEntity *)HDDataEntity];
     v19 = +[(HDSQLiteSchemaEntity *)HDDataProvenanceEntity];
     v20 = +[(HDSQLiteSchemaEntity *)HDDataProvenanceEntity];
-    [v8 timeIntervalSinceReferenceDate];
+    [sinceCopy timeIntervalSinceReferenceDate];
     v21 = v17;
     v23 = [v28 stringWithFormat:@"SELECT COUNT(*) FROM(SELECT %@, COUNT(*) AS rows FROM %@ o  INNER JOIN %@ ON (o.%@ = %@.rowid)  WHERE (%@ in (%@))  AND o.%@ > %.0lf GROUP BY %@) WHERE rows > 0", @"data_provenances.source_id", v18, v19, @"provenance", v20, @"data_provenances.source_id", v17, @"creation_date", v22, @"data_provenances.source_id"];
 
-    v24 = [v9 protectedDatabase];
-    v25 = [HDAWDSubmissionManager _countOfObjectsWithSQLQuery:v29 database:v23 error:v24 bindingHandler:a5];
+    protectedDatabase = [transactionCopy protectedDatabase];
+    v25 = [HDAWDSubmissionManager _countOfObjectsWithSQLQuery:v29 database:v23 error:protectedDatabase bindingHandler:error];
   }
 
   else
@@ -850,14 +850,14 @@ uint64_t __74__HDAWDSubmissionManager__nonAppleSourcesWithDataSince_transaction_
   return [v2 numberWithLongLong:v3];
 }
 
-- (int64_t)_int64ForKeyPrefix:(id)a3 profile:(id)a4 date:(id *)a5 error:(id *)a6
+- (int64_t)_int64ForKeyPrefix:(id)prefix profile:(id)profile date:(id *)date error:(id *)error
 {
   v29[2] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  if (a5)
+  prefixCopy = prefix;
+  profileCopy = profile;
+  if (date)
   {
-    if (a6)
+    if (error)
     {
       goto LABEL_3;
     }
@@ -865,25 +865,25 @@ uint64_t __74__HDAWDSubmissionManager__nonAppleSourcesWithDataSince_transaction_
 
   else
   {
-    v27 = [MEMORY[0x277CCA890] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"HDAWDSubmissionManager.m" lineNumber:749 description:{@"Invalid parameter not satisfying: %@", @"date != NULL"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDAWDSubmissionManager.m" lineNumber:749 description:{@"Invalid parameter not satisfying: %@", @"date != NULL"}];
 
-    if (a6)
+    if (error)
     {
       goto LABEL_3;
     }
   }
 
-  v28 = [MEMORY[0x277CCA890] currentHandler];
-  [v28 handleFailureInMethod:a2 object:self file:@"HDAWDSubmissionManager.m" lineNumber:750 description:{@"Invalid parameter not satisfying: %@", @"error != NULL"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"HDAWDSubmissionManager.m" lineNumber:750 description:{@"Invalid parameter not satisfying: %@", @"error != NULL"}];
 
 LABEL_3:
-  v13 = v11;
+  v13 = prefixCopy;
   v14 = [v13 stringByAppendingString:@"_DATE"];
   v29[0] = v13;
   v29[1] = v14;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:2];
-  v16 = [(HDKeyValueEntity *)HDUnprotectedKeyValueEntity valuesForKeys:v15 domain:@"DATABASE_SIZE" category:0 profile:v12 error:a6];
+  v16 = [(HDKeyValueEntity *)HDUnprotectedKeyValueEntity valuesForKeys:v15 domain:@"DATABASE_SIZE" category:0 profile:profileCopy error:error];
 
   if (v16)
   {
@@ -891,12 +891,12 @@ LABEL_3:
     v18 = v17;
     if (v17)
     {
-      v19 = [v17 longLongValue];
+      longLongValue = [v17 longLongValue];
     }
 
     else
     {
-      v19 = -1;
+      longLongValue = -1;
     }
 
     v21 = [v16 objectForKeyedSubscript:v14];
@@ -917,58 +917,58 @@ LABEL_3:
   else
   {
     v20 = 0;
-    v19 = -1;
+    longLongValue = -1;
   }
 
   v24 = v20;
-  *a5 = v20;
+  *date = v20;
 
   v25 = *MEMORY[0x277D85DE8];
-  return v19;
+  return longLongValue;
 }
 
-- (BOOL)_setInt64:(int64_t)a3 keyPrefix:(id)a4 profile:(id)a5 date:(id)a6 error:(id *)a7
+- (BOOL)_setInt64:(int64_t)int64 keyPrefix:(id)prefix profile:(id)profile date:(id)date error:(id *)error
 {
   v25[2] = *MEMORY[0x277D85DE8];
-  v24[0] = a4;
+  v24[0] = prefix;
   v11 = MEMORY[0x277CCABB0];
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = [v11 numberWithLongLong:a3];
+  dateCopy = date;
+  profileCopy = profile;
+  prefixCopy = prefix;
+  v15 = [v11 numberWithLongLong:int64];
   v25[0] = v15;
-  v16 = [v14 stringByAppendingString:@"_DATE"];
+  v16 = [prefixCopy stringByAppendingString:@"_DATE"];
   v24[1] = v16;
   v17 = MEMORY[0x277CCABB0];
-  [v12 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   v19 = v18;
 
   v20 = [v17 numberWithDouble:v19];
   v25[1] = v20;
   v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:2];
-  LOBYTE(a7) = [(HDKeyValueEntity *)HDUnprotectedKeyValueEntity setValuesWithDictionary:v21 domain:@"DATABASE_SIZE" category:0 profile:v13 error:a7];
+  LOBYTE(error) = [(HDKeyValueEntity *)HDUnprotectedKeyValueEntity setValuesWithDictionary:v21 domain:@"DATABASE_SIZE" category:0 profile:profileCopy error:error];
 
   v22 = *MEMORY[0x277D85DE8];
-  return a7;
+  return error;
 }
 
-- (id)_updateDeltaToInt64:(int64_t)a3 forKey:(id)a4 profile:(id)a5 currentDate:(id)a6 timeInterval:(double)a7 error:(id *)a8
+- (id)_updateDeltaToInt64:(int64_t)int64 forKey:(id)key profile:(id)profile currentDate:(id)date timeInterval:(double)interval error:(id *)error
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  keyCopy = key;
+  profileCopy = profile;
+  dateCopy = date;
   v28 = 0;
-  v17 = [(HDAWDSubmissionManager *)self _int64ForKeyPrefix:v14 profile:v15 date:&v28 error:a8];
+  v17 = [(HDAWDSubmissionManager *)self _int64ForKeyPrefix:keyCopy profile:profileCopy date:&v28 error:error];
   v18 = v28;
   v19 = v18;
   v20 = 0;
   if ((v17 & 0x8000000000000000) == 0 && v18)
   {
-    [v16 timeIntervalSinceDate:v18];
-    if (v21 <= a7 + -43200.0)
+    [dateCopy timeIntervalSinceDate:v18];
+    if (v21 <= interval + -43200.0)
     {
       v20 = 0;
-      if (v21 < a7 && v21 >= 0.0)
+      if (v21 < interval && v21 >= 0.0)
       {
         v20 = &unk_283CB2460;
         goto LABEL_8;
@@ -977,17 +977,17 @@ LABEL_3:
 
     else
     {
-      v20 = [MEMORY[0x277CCABB0] numberWithDouble:(a3 - v17) * a7 / v21];
+      v20 = [MEMORY[0x277CCABB0] numberWithDouble:(int64 - v17) * interval / v21];
     }
   }
 
   v27 = 0;
-  v22 = [(HDAWDSubmissionManager *)self _setInt64:a3 keyPrefix:v14 profile:v15 date:v16 error:&v27];
+  v22 = [(HDAWDSubmissionManager *)self _setInt64:int64 keyPrefix:keyCopy profile:profileCopy date:dateCopy error:&v27];
   v23 = v27;
   if (!v22)
   {
     v24 = *MEMORY[0x277CCC2B0];
-    v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"Saving new 'last' value for %@", v14];
+    keyCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Saving new 'last' value for %@", keyCopy];
     _HKLogDroppedErrorWithReason();
   }
 
@@ -996,44 +996,44 @@ LABEL_8:
   return v20;
 }
 
-- (BOOL)aggregateDatabaseSizeStats:(id)a3
+- (BOOL)aggregateDatabaseSizeStats:(id)stats
 {
-  v4 = a3;
+  statsCopy = stats;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
   v6 = HDDatabaseSizeInMB(WeakRetained);
 
   v7 = [MEMORY[0x277CCABB0] numberWithInteger:HDBucketedDatabaseSizeInMB(v6)];
-  [v4 setObject:v7 forKeyedSubscript:@"totalDatabaseSize"];
+  [statsCopy setObject:v7 forKeyedSubscript:@"totalDatabaseSize"];
 
   v8 = MEMORY[0x277CCABB0];
   v9 = objc_loadWeakRetained(&self->_profile);
   v10 = [v8 numberWithLongLong:{HDDatabaseBucketedSizeInMBForDatabaseType(v9, 1, 0)}];
-  [v4 setObject:v10 forKeyedSubscript:@"unprotectedDatabaseSize"];
+  [statsCopy setObject:v10 forKeyedSubscript:@"unprotectedDatabaseSize"];
 
   v11 = MEMORY[0x277CCABB0];
   v12 = objc_loadWeakRetained(&self->_profile);
   v13 = [v11 numberWithLongLong:{HDDatabaseBucketedSizeInMBForDatabaseType(v12, 1, 1)}];
-  [v4 setObject:v13 forKeyedSubscript:@"unprotectedDatabaseWALSize"];
+  [statsCopy setObject:v13 forKeyedSubscript:@"unprotectedDatabaseWALSize"];
 
   v14 = MEMORY[0x277CCABB0];
   v15 = objc_loadWeakRetained(&self->_profile);
   v16 = [v14 numberWithLongLong:{HDDatabaseBucketedSizeInMBForDatabaseType(v15, 0, 0)}];
-  [v4 setObject:v16 forKeyedSubscript:@"protectedDatabaseSize"];
+  [statsCopy setObject:v16 forKeyedSubscript:@"protectedDatabaseSize"];
 
   v17 = MEMORY[0x277CCABB0];
   v18 = objc_loadWeakRetained(&self->_profile);
   v19 = [v17 numberWithLongLong:{HDDatabaseBucketedSizeInMBForDatabaseType(v18, 0, 1)}];
-  [v4 setObject:v19 forKeyedSubscript:@"protectedDatabaseWALSize"];
+  [statsCopy setObject:v19 forKeyedSubscript:@"protectedDatabaseWALSize"];
 
   v20 = objc_loadWeakRetained(&self->_profile);
-  v21 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v32 = 0;
-  v22 = [(HDAWDSubmissionManager *)self _updateDeltaToInt64:v6 forKey:@"LAST_MONTH_DATABASE_SIZE" profile:v20 currentDate:v21 timeInterval:&v32 error:2592000.0];
+  v22 = [(HDAWDSubmissionManager *)self _updateDeltaToInt64:v6 forKey:@"LAST_MONTH_DATABASE_SIZE" profile:v20 currentDate:date timeInterval:&v32 error:2592000.0];
   v23 = v32;
 
   if (v22)
   {
-    [v4 setObject:v22 forKeyedSubscript:@"lastMonthDatabaseSizeIncreaseMB"];
+    [statsCopy setObject:v22 forKeyedSubscript:@"lastMonthDatabaseSizeIncreaseMB"];
   }
 
   else if (v23)
@@ -1043,14 +1043,14 @@ LABEL_8:
   }
 
   v25 = objc_loadWeakRetained(&self->_profile);
-  v26 = [MEMORY[0x277CBEAA8] date];
+  date2 = [MEMORY[0x277CBEAA8] date];
   v31 = v23;
-  v27 = [(HDAWDSubmissionManager *)self _updateDeltaToInt64:v6 forKey:@"LAST_WEEK_DATABASE_SIZE" profile:v25 currentDate:v26 timeInterval:&v31 error:604800.0];
+  v27 = [(HDAWDSubmissionManager *)self _updateDeltaToInt64:v6 forKey:@"LAST_WEEK_DATABASE_SIZE" profile:v25 currentDate:date2 timeInterval:&v31 error:604800.0];
   v28 = v31;
 
   if (v27)
   {
-    [v4 setObject:v27 forKeyedSubscript:@"lastWeekDatabaseSizeIncreaseMB"];
+    [statsCopy setObject:v27 forKeyedSubscript:@"lastWeekDatabaseSizeIncreaseMB"];
   }
 
   else if (v28)
@@ -1062,22 +1062,22 @@ LABEL_8:
   return 1;
 }
 
-- (void)reportDailyAnalyticsWithCoordinator:(id)a3 completion:(id)a4
+- (void)reportDailyAnalyticsWithCoordinator:(id)coordinator completion:(id)completion
 {
   v44 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  completionCopy = completion;
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v8 = [WeakRetained database];
+  database = [WeakRetained database];
 
   v9 = [(HDAWDSubmissionManager *)self aggregateDatabaseSizeStats:v6];
   v10 = v6;
   if (self)
   {
     v11 = objc_loadWeakRetained(&self->_profile);
-    v12 = [v11 deviceContextManager];
+    deviceContextManager = [v11 deviceContextManager];
     v39 = 0;
-    v13 = [v12 numberOfDeviceContextsPerDeviceType:&v39];
+    v13 = [deviceContextManager numberOfDeviceContextsPerDeviceType:&v39];
     v14 = v39;
 
     if (v14)
@@ -1087,7 +1087,7 @@ LABEL_8:
       if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v41 = self;
+        selfCopy4 = self;
         v42 = 2114;
         v43 = v14;
         _os_log_error_impl(&dword_228986000, v15, OS_LOG_TYPE_ERROR, "%{public}@: Failed to get device contexts dictionary for healthd daily analytics: %{public}@", buf, 0x16u);
@@ -1149,29 +1149,29 @@ LABEL_8:
   v33 = 3221225472;
   v34 = __73__HDAWDSubmissionManager_reportDailyAnalyticsWithCoordinator_completion___block_invoke;
   v35 = &unk_278613218;
-  v36 = self;
+  selfCopy2 = self;
   v25 = v10;
   v37 = v25;
-  v26 = [v8 performTransactionWithContext:v24 error:&v38 block:&v32 inaccessibilityHandler:0];
+  v26 = [database performTransactionWithContext:v24 error:&v38 block:&v32 inaccessibilityHandler:0];
   v27 = v38;
 
   if (self && (v26 & v9 & 1) != 0)
   {
-    (*(v5 + 2))(v5, v25, 0, 0);
+    (*(completionCopy + 2))(completionCopy, v25, 0, 0);
   }
 
   else
   {
-    v28 = [v27 hk_isDatabaseAccessibilityError];
+    hk_isDatabaseAccessibilityError = [v27 hk_isDatabaseAccessibilityError];
     _HKInitializeLogging();
     v29 = *MEMORY[0x277CCC2B0];
     v30 = *MEMORY[0x277CCC2B0];
-    if (v28)
+    if (hk_isDatabaseAccessibilityError)
     {
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v41 = self;
+        selfCopy4 = self;
         v42 = 2114;
         v43 = v27;
         _os_log_impl(&dword_228986000, v29, OS_LOG_TYPE_DEFAULT, "%{public}@: Database inaccessible while computing usage metric, will retry: %{public}@", buf, 0x16u);
@@ -1181,13 +1181,13 @@ LABEL_8:
     else if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v41 = self;
+      selfCopy4 = self;
       v42 = 2114;
       v43 = v27;
       _os_log_error_impl(&dword_228986000, v29, OS_LOG_TYPE_ERROR, "%{public}@: Failed queries for daily healthd metrics, will retry: %{public}@", buf, 0x16u);
     }
 
-    (*(v5 + 2))(v5, 0, 2, v27);
+    (*(completionCopy + 2))(completionCopy, 0, 2, v27);
   }
 
   v31 = *MEMORY[0x277D85DE8];
@@ -1320,7 +1320,7 @@ LABEL_24:
   return v30;
 }
 
-- (id)_activitySummaryForActivityCacheIndex:(int64_t)a3 error:(id *)a4
+- (id)_activitySummaryForActivityCacheIndex:(int64_t)index error:(id *)error
 {
   v7 = [HDActivitySummaryBuilder alloc];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
@@ -1336,13 +1336,13 @@ LABEL_24:
   v18 = __Block_byref_object_copy__97;
   v19 = __Block_byref_object_dispose__97;
   v20 = 0;
-  v10 = HDActivityCacheEntityPredicateForCacheIndex(a3, 1);
+  v10 = HDActivityCacheEntityPredicateForCacheIndex(index, 1);
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __70__HDAWDSubmissionManager__activitySummaryForActivityCacheIndex_error___block_invoke;
   v14[3] = &unk_278621670;
   v14[4] = &v15;
-  if ([(HDActivitySummaryBuilder *)v9 enumerateActivitySummariesWithPredicate:v10 error:a4 handler:v14])
+  if ([(HDActivitySummaryBuilder *)v9 enumerateActivitySummariesWithPredicate:v10 error:error handler:v14])
   {
     v11 = v16[5];
   }

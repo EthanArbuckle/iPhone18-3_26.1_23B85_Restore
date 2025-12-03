@@ -1,23 +1,23 @@
 @interface PFCloudKitImporterOptions
-- (PFCloudKitImporterOptions)initWithOptions:(id)a3 monitor:(id)a4 assetStorageURL:(id)a5 workQueue:(id)a6 andDatabase:(id)a7;
+- (PFCloudKitImporterOptions)initWithOptions:(id)options monitor:(id)monitor assetStorageURL:(id)l workQueue:(id)queue andDatabase:(id)database;
 - (id)copy;
 - (void)dealloc;
 @end
 
 @implementation PFCloudKitImporterOptions
 
-- (PFCloudKitImporterOptions)initWithOptions:(id)a3 monitor:(id)a4 assetStorageURL:(id)a5 workQueue:(id)a6 andDatabase:(id)a7
+- (PFCloudKitImporterOptions)initWithOptions:(id)options monitor:(id)monitor assetStorageURL:(id)l workQueue:(id)queue andDatabase:(id)database
 {
   v15.receiver = self;
   v15.super_class = PFCloudKitImporterOptions;
   v12 = [(PFCloudKitImporterOptions *)&v15 init];
   if (v12)
   {
-    v12->_options = [a3 copy];
-    v12->_database = a7;
-    v12->_monitor = a4;
-    v12->_workQueue = a6;
-    v12->_assetStorageURL = a5;
+    v12->_options = [options copy];
+    v12->_database = database;
+    v12->_monitor = monitor;
+    v12->_workQueue = queue;
+    v12->_assetStorageURL = l;
     workQueue = v12->_workQueue;
     if (workQueue)
     {

@@ -3,9 +3,9 @@
 - (BOOL)setupH264Rules;
 - (BOOL)setupHEVCRules;
 - (BOOL)setupRules;
-- (VCVideoRuleCollectionsScreenSecondaryEmbedded)initWithHardwareSettings:(id)a3;
+- (VCVideoRuleCollectionsScreenSecondaryEmbedded)initWithHardwareSettings:(id)settings;
 - (void)initSupportedPayloads;
-- (void)selectPreferredRule:(id)a3 screenSize:(CGSize)a4;
+- (void)selectPreferredRule:(id)rule screenSize:(CGSize)size;
 - (void)setupH264Rules;
 - (void)setupHEVCRules;
 @end
@@ -29,7 +29,7 @@ VCVideoRuleCollectionsScreenSecondaryEmbedded *__63__VCVideoRuleCollectionsScree
   return result;
 }
 
-- (VCVideoRuleCollectionsScreenSecondaryEmbedded)initWithHardwareSettings:(id)a3
+- (VCVideoRuleCollectionsScreenSecondaryEmbedded)initWithHardwareSettings:(id)settings
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
@@ -38,7 +38,7 @@ VCVideoRuleCollectionsScreenSecondaryEmbedded *__63__VCVideoRuleCollectionsScree
   v5 = v4;
   if (v4)
   {
-    v4->_hardwareSettings = a3;
+    v4->_hardwareSettings = settings;
     [(VCVideoRuleCollectionsScreenSecondaryEmbedded *)v4 initSupportedPayloads];
     if (![(VCVideoRuleCollectionsScreenSecondaryEmbedded *)v5 setupRules]|| ([(VCHardwareSettingsEmbeddedProtocol *)v5->_hardwareSettings isPixelFormatAvailable]& 1) == 0)
     {
@@ -60,8 +60,8 @@ VCVideoRuleCollectionsScreenSecondaryEmbedded *__63__VCVideoRuleCollectionsScree
 
 - (void)initSupportedPayloads
 {
-  v3 = [(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings deviceClass];
-  if (v3 == 8 || v3 == 3)
+  deviceClass = [(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings deviceClass];
+  if (deviceClass == 8 || deviceClass == 3)
   {
     [(VCVideoRuleCollections *)self addSupportedPayload:123];
 
@@ -69,16 +69,16 @@ VCVideoRuleCollectionsScreenSecondaryEmbedded *__63__VCVideoRuleCollectionsScree
   }
 }
 
-- (void)selectPreferredRule:(id)a3 screenSize:(CGSize)a4
+- (void)selectPreferredRule:(id)rule screenSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v31 = *MEMORY[0x1E69E9840];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v27 objects:v26 count:16];
+  v7 = [rule countByEnumeratingWithState:&v27 objects:v26 count:16];
   if (v7)
   {
     v8 = v7;
@@ -91,16 +91,16 @@ VCVideoRuleCollectionsScreenSecondaryEmbedded *__63__VCVideoRuleCollectionsScree
       {
         if (*v28 != v10)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(rule);
         }
 
         v13 = *(*(&v27 + 1) + 8 * i);
         if (width == [v13 iWidth])
         {
-          v14 = [v13 iHeight];
-          if (height == v14)
+          iHeight = [v13 iHeight];
+          if (height == iHeight)
           {
-            LODWORD(v14) = 1.0;
+            LODWORD(iHeight) = 1.0;
             v17 = v13;
             goto LABEL_22;
           }
@@ -121,7 +121,7 @@ VCVideoRuleCollectionsScreenSecondaryEmbedded *__63__VCVideoRuleCollectionsScree
         }
       }
 
-      v8 = [a3 countByEnumeratingWithState:&v27 objects:v26 count:16];
+      v8 = [rule countByEnumeratingWithState:&v27 objects:v26 count:16];
       if (v8)
       {
         continue;
@@ -132,10 +132,10 @@ VCVideoRuleCollectionsScreenSecondaryEmbedded *__63__VCVideoRuleCollectionsScree
 
     if (v9)
     {
-      LODWORD(v14) = 1.0;
+      LODWORD(iHeight) = 1.0;
       v17 = v9;
 LABEL_22:
-      [v17 setFPref:v14];
+      [v17 setFPref:iHeight];
       return;
     }
   }
@@ -159,14 +159,14 @@ LABEL_22:
 
 - (BOOL)setupRules
 {
-  v3 = [(VCVideoRuleCollectionsScreenSecondaryEmbedded *)self setupH264Rules];
-  if (v3)
+  setupH264Rules = [(VCVideoRuleCollectionsScreenSecondaryEmbedded *)self setupH264Rules];
+  if (setupH264Rules)
   {
 
-    LOBYTE(v3) = [(VCVideoRuleCollectionsScreenSecondaryEmbedded *)self setupHEVCRules];
+    LOBYTE(setupH264Rules) = [(VCVideoRuleCollectionsScreenSecondaryEmbedded *)self setupHEVCRules];
   }
 
-  return v3;
+  return setupH264Rules;
 }
 
 - (BOOL)setupH264Rules
@@ -178,22 +178,22 @@ LABEL_22:
     goto LABEL_38;
   }
 
-  v3 = [(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings screenWidth];
-  if (!v3)
+  screenWidth = [(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings screenWidth];
+  if (!screenWidth)
   {
     [VCVideoRuleCollectionsScreenSecondaryEmbedded setupH264Rules];
     goto LABEL_38;
   }
 
-  v4 = v3;
-  v5 = [(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings screenHeight];
-  if (!v5)
+  v4 = screenWidth;
+  screenHeight = [(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings screenHeight];
+  if (!screenHeight)
   {
     [VCVideoRuleCollectionsScreenSecondaryEmbedded setupH264Rules];
     goto LABEL_38;
   }
 
-  v6 = v5;
+  v6 = screenHeight;
   if ([(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings videoEncoderType]== -1)
   {
     [VCVideoRuleCollectionsScreenSecondaryEmbedded setupH264Rules];
@@ -202,8 +202,8 @@ LABEL_22:
 
   v7 = v4;
   v8 = v6;
-  v9 = [(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings deviceClass];
-  if (v9 == 8)
+  deviceClass = [(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings deviceClass];
+  if (deviceClass == 8)
   {
     v11 = videoRulesForFormatList_2(&g_EncodingDecodingFormat_3K_AND_4K, 2u, 123);
     v12 = videoRulesForFormatList_2(&g_EncodingDecodingFormat_3K_AND_4K, 2u, 123);
@@ -229,7 +229,7 @@ LABEL_38:
     goto LABEL_31;
   }
 
-  if (v9 == 3)
+  if (deviceClass == 3)
   {
     if (v4 == 2732 && v6 == 2048)
     {
@@ -303,22 +303,22 @@ LABEL_38:
   v5 = 1;
   if (v3 && v4)
   {
-    v6 = [(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings screenWidth];
-    if (!v6)
+    screenWidth = [(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings screenWidth];
+    if (!screenWidth)
     {
       [VCVideoRuleCollectionsScreenSecondaryEmbedded setupHEVCRules];
       goto LABEL_22;
     }
 
-    v7 = v6;
-    v8 = [(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings screenHeight];
-    if (!v8)
+    v7 = screenWidth;
+    screenHeight = [(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings screenHeight];
+    if (!screenHeight)
     {
       [VCVideoRuleCollectionsScreenSecondaryEmbedded setupHEVCRules];
       goto LABEL_22;
     }
 
-    v9 = v8;
+    v9 = screenHeight;
     if ([(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings videoEncoderType]== -1)
     {
       [VCVideoRuleCollectionsScreenSecondaryEmbedded setupHEVCRules];
@@ -326,14 +326,14 @@ LABEL_38:
     }
 
     v10 = v7;
-    v11 = [(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings deviceClass];
-    if (v11 == 8)
+    deviceClass = [(VCHardwareSettingsEmbeddedProtocol *)self->_hardwareSettings deviceClass];
+    if (deviceClass == 8)
     {
       v12 = videoRulesForFormatList_2(&g_EncodingDecodingFormat_3K_AND_4K, 2u, 100);
       goto LABEL_10;
     }
 
-    if (v11 == 3)
+    if (deviceClass == 3)
     {
       v12 = iPadWiFiScreenDecodingRules(100, v7, v9);
 LABEL_10:

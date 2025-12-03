@@ -1,8 +1,8 @@
 @interface CCToolKitToolTypedValuePrimitiveValue
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
 - (CCToolKitToolTimestamp)date;
-- (CCToolKitToolTypedValuePrimitiveValue)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCToolKitToolTypedValuePrimitiveValue)initWithPrimitiveValue_kind:(id)a3 primitiveValue_kindType:(unsigned int)a4 error:(id *)a5;
+- (CCToolKitToolTypedValuePrimitiveValue)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCToolKitToolTypedValuePrimitiveValue)initWithPrimitiveValue_kind:(id)value_kind primitiveValue_kindType:(unsigned int)type error:(id *)error;
 - (CCToolKitToolTypedValuePrimitiveValueApp)app;
 - (CCToolKitToolTypedValuePrimitiveValueCurrencyAmount)currencyAmount;
 - (CCToolKitToolTypedValuePrimitiveValueDateComponents)encodedDateComponents;
@@ -23,25 +23,25 @@
 - (NSString)string;
 - (NSString)url;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCToolKitToolTypedValuePrimitiveValue
 
-- (CCToolKitToolTypedValuePrimitiveValue)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCToolKitToolTypedValuePrimitiveValue)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   v196[1] = 0;
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"noneVariant"];
-    v10 = [v6 objectForKeyedSubscript:@"BOOLType"];
-    v181 = [v6 objectForKeyedSubscript:@"intType"];
-    v180 = [v6 objectForKeyedSubscript:@"number"];
-    v11 = [v6 objectForKeyedSubscript:@"decimal"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"noneVariant"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"BOOLType"];
+    v181 = [dictionaryCopy objectForKeyedSubscript:@"intType"];
+    v180 = [dictionaryCopy objectForKeyedSubscript:@"number"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"decimal"];
     if (v11)
     {
       v196[0] = 0;
@@ -62,8 +62,8 @@ LABEL_167:
       v11 = v15;
     }
 
-    v14 = [v6 objectForKeyedSubscript:@"string"];
-    v12 = [v6 objectForKeyedSubscript:@"date"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"string"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"date"];
     v179 = v10;
     if (v12)
     {
@@ -93,7 +93,7 @@ LABEL_167:
       v177 = v9;
     }
 
-    v19 = [v6 objectForKeyedSubscript:@"dateComponents"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"dateComponents"];
     if (!v19)
     {
       goto LABEL_16;
@@ -112,14 +112,14 @@ LABEL_167:
       v8 = v23;
       v10 = v179;
 LABEL_16:
-      v176 = [v6 objectForKeyedSubscript:@"url"];
-      v25 = [v6 objectForKeyedSubscript:@"attributedString"];
+      v176 = [dictionaryCopy objectForKeyedSubscript:@"url"];
+      v25 = [dictionaryCopy objectForKeyedSubscript:@"attributedString"];
       if (v25)
       {
         v173 = v12;
         v26 = v11;
         v27 = v19;
-        v28 = self;
+        selfCopy = self;
         v29 = v14;
         v30 = v25;
         objc_opt_class();
@@ -136,7 +136,7 @@ LABEL_16:
           v9 = v177;
           v10 = v179;
           v14 = v29;
-          self = v28;
+          self = selfCopy;
           v19 = v27;
           v11 = v26;
           v12 = v173;
@@ -151,7 +151,7 @@ LABEL_165:
         v8 = v32;
         v10 = v179;
         v14 = v29;
-        self = v28;
+        self = selfCopy;
         v19 = v27;
         v11 = v26;
         v12 = v173;
@@ -162,7 +162,7 @@ LABEL_165:
         v175 = 0;
       }
 
-      v34 = [v6 objectForKeyedSubscript:@"measurement"];
+      v34 = [dictionaryCopy objectForKeyedSubscript:@"measurement"];
       if (v34)
       {
         v35 = v34;
@@ -191,12 +191,12 @@ LABEL_165:
         v174 = 0;
       }
 
-      v40 = [v6 objectForKeyedSubscript:@"currencyAmount"];
+      v40 = [dictionaryCopy objectForKeyedSubscript:@"currencyAmount"];
       if (!v40)
       {
         v172 = 0;
 LABEL_34:
-        v46 = [v6 objectForKeyedSubscript:@"paymentMethod"];
+        v46 = [dictionaryCopy objectForKeyedSubscript:@"paymentMethod"];
         if (v46)
         {
           v47 = [CCToolKitToolTypedValuePrimitiveValuePaymentMethod alloc];
@@ -220,7 +220,7 @@ LABEL_163:
         }
 
         v171 = v46;
-        v50 = [v6 objectForKeyedSubscript:@"placemark"];
+        v50 = [dictionaryCopy objectForKeyedSubscript:@"placemark"];
         if (v50)
         {
           v51 = [CCToolKitToolTypedValuePrimitiveValuePlacemark alloc];
@@ -244,7 +244,7 @@ LABEL_162:
         }
 
         v169 = v50;
-        v54 = [v6 objectForKeyedSubscript:@"person"];
+        v54 = [dictionaryCopy objectForKeyedSubscript:@"person"];
         if (v54)
         {
           v55 = [CCToolKitToolTypedValuePrimitiveValuePerson alloc];
@@ -268,7 +268,7 @@ LABEL_161:
         }
 
         v167 = v54;
-        v58 = [v6 objectForKeyedSubscript:@"file"];
+        v58 = [dictionaryCopy objectForKeyedSubscript:@"file"];
         if (v58)
         {
           v59 = [CCToolKitToolTypedValuePrimitiveValueFile alloc];
@@ -287,7 +287,7 @@ LABEL_161:
         }
 
         v165 = v58;
-        v62 = [v6 objectForKeyedSubscript:@"app"];
+        v62 = [dictionaryCopy objectForKeyedSubscript:@"app"];
         if (v62)
         {
           v63 = [CCToolKitToolTypedValuePrimitiveValueApp alloc];
@@ -314,13 +314,13 @@ LABEL_160:
         }
 
         v163 = v62;
-        v66 = [v6 objectForKeyedSubscript:@"searchableItem"];
+        v66 = [dictionaryCopy objectForKeyedSubscript:@"searchableItem"];
         if (!v66)
         {
           v69 = 0;
 LABEL_64:
           v161 = v69;
-          v70 = [v6 objectForKeyedSubscript:@"encodedDateComponents"];
+          v70 = [dictionaryCopy objectForKeyedSubscript:@"encodedDateComponents"];
           if (v70)
           {
             v71 = [CCToolKitToolTypedValuePrimitiveValueDateComponents alloc];
@@ -344,7 +344,7 @@ LABEL_158:
           }
 
           v160 = v70;
-          v74 = [v6 objectForKeyedSubscript:@"shortcut"];
+          v74 = [dictionaryCopy objectForKeyedSubscript:@"shortcut"];
           if (v74)
           {
             v75 = v74;
@@ -376,7 +376,7 @@ LABEL_157:
           }
 
           v9 = v177;
-          v80 = [v6 objectForKeyedSubscript:@"recurrenceRule"];
+          v80 = [dictionaryCopy objectForKeyedSubscript:@"recurrenceRule"];
           if (v80)
           {
             v158 = v80;
@@ -406,7 +406,7 @@ LABEL_156:
             v158 = 0;
           }
 
-          v84 = [v6 objectForKeyedSubscript:@"dateInterval"];
+          v84 = [dictionaryCopy objectForKeyedSubscript:@"dateInterval"];
           if (v84)
           {
             v156 = v84;
@@ -437,7 +437,7 @@ LABEL_155:
             v156 = 0;
           }
 
-          v89 = [v6 objectForKeyedSubscript:@"personNameComponents"];
+          v89 = [dictionaryCopy objectForKeyedSubscript:@"personNameComponents"];
           if (v89)
           {
             v155 = v89;
@@ -468,7 +468,7 @@ LABEL_154:
             v155 = 0;
           }
 
-          v94 = [v6 objectForKeyedSubscript:@"duration"];
+          v94 = [dictionaryCopy objectForKeyedSubscript:@"duration"];
           if (v94)
           {
             v95 = v94;
@@ -734,7 +734,7 @@ LABEL_153:
             v153 = v105;
           }
 
-          v21 = [[CCToolKitToolTypedValuePrimitiveValue alloc] initWithPrimitiveValue_kind:v153 primitiveValue_kindType:v109 error:a4];
+          v21 = [[CCToolKitToolTypedValuePrimitiveValue alloc] initWithPrimitiveValue_kind:v153 primitiveValue_kindType:v109 error:error];
           goto LABEL_153;
         }
 
@@ -865,9 +865,9 @@ LABEL_168:
       goto LABEL_72;
     }
 
-    v10 = [(CCToolKitToolTypedValuePrimitiveValue *)self decimal];
-    v11 = [v10 jsonDictionary];
-    [v3 setObject:v11 forKeyedSubscript:@"decimal"];
+    decimal = [(CCToolKitToolTypedValuePrimitiveValue *)self decimal];
+    jsonDictionary = [decimal jsonDictionary];
+    [v3 setObject:jsonDictionary forKeyedSubscript:@"decimal"];
 
     primitiveValue_kindType = self->_primitiveValue_kindType;
   }
@@ -879,8 +879,8 @@ LABEL_168:
       goto LABEL_72;
     }
 
-    v12 = [(CCToolKitToolTypedValuePrimitiveValue *)self string];
-    [v3 setObject:v12 forKeyedSubscript:@"string"];
+    string = [(CCToolKitToolTypedValuePrimitiveValue *)self string];
+    [v3 setObject:string forKeyedSubscript:@"string"];
 
     primitiveValue_kindType = self->_primitiveValue_kindType;
   }
@@ -892,9 +892,9 @@ LABEL_168:
       goto LABEL_72;
     }
 
-    v13 = [(CCToolKitToolTypedValuePrimitiveValue *)self date];
-    v14 = [v13 jsonDictionary];
-    [v3 setObject:v14 forKeyedSubscript:@"date"];
+    date = [(CCToolKitToolTypedValuePrimitiveValue *)self date];
+    jsonDictionary2 = [date jsonDictionary];
+    [v3 setObject:jsonDictionary2 forKeyedSubscript:@"date"];
 
     primitiveValue_kindType = self->_primitiveValue_kindType;
   }
@@ -906,8 +906,8 @@ LABEL_168:
       goto LABEL_72;
     }
 
-    v15 = [(CCToolKitToolTypedValuePrimitiveValue *)self dateComponents];
-    v16 = [v15 base64EncodedStringWithOptions:0];
+    dateComponents = [(CCToolKitToolTypedValuePrimitiveValue *)self dateComponents];
+    v16 = [dateComponents base64EncodedStringWithOptions:0];
     [v3 setObject:v16 forKeyedSubscript:@"dateComponents"];
 
     primitiveValue_kindType = self->_primitiveValue_kindType;
@@ -933,8 +933,8 @@ LABEL_168:
       goto LABEL_72;
     }
 
-    v18 = [(CCToolKitToolTypedValuePrimitiveValue *)self attributedString];
-    v19 = [v18 base64EncodedStringWithOptions:0];
+    attributedString = [(CCToolKitToolTypedValuePrimitiveValue *)self attributedString];
+    v19 = [attributedString base64EncodedStringWithOptions:0];
     [v3 setObject:v19 forKeyedSubscript:@"attributedString"];
 
     primitiveValue_kindType = self->_primitiveValue_kindType;
@@ -947,9 +947,9 @@ LABEL_168:
       goto LABEL_72;
     }
 
-    v20 = [(CCToolKitToolTypedValuePrimitiveValue *)self measurement];
-    v21 = [v20 jsonDictionary];
-    [v3 setObject:v21 forKeyedSubscript:@"measurement"];
+    measurement = [(CCToolKitToolTypedValuePrimitiveValue *)self measurement];
+    jsonDictionary3 = [measurement jsonDictionary];
+    [v3 setObject:jsonDictionary3 forKeyedSubscript:@"measurement"];
 
     primitiveValue_kindType = self->_primitiveValue_kindType;
   }
@@ -961,9 +961,9 @@ LABEL_168:
       goto LABEL_72;
     }
 
-    v22 = [(CCToolKitToolTypedValuePrimitiveValue *)self currencyAmount];
-    v23 = [v22 jsonDictionary];
-    [v3 setObject:v23 forKeyedSubscript:@"currencyAmount"];
+    currencyAmount = [(CCToolKitToolTypedValuePrimitiveValue *)self currencyAmount];
+    jsonDictionary4 = [currencyAmount jsonDictionary];
+    [v3 setObject:jsonDictionary4 forKeyedSubscript:@"currencyAmount"];
 
     primitiveValue_kindType = self->_primitiveValue_kindType;
   }
@@ -975,9 +975,9 @@ LABEL_168:
       goto LABEL_72;
     }
 
-    v24 = [(CCToolKitToolTypedValuePrimitiveValue *)self paymentMethod];
-    v25 = [v24 jsonDictionary];
-    [v3 setObject:v25 forKeyedSubscript:@"paymentMethod"];
+    paymentMethod = [(CCToolKitToolTypedValuePrimitiveValue *)self paymentMethod];
+    jsonDictionary5 = [paymentMethod jsonDictionary];
+    [v3 setObject:jsonDictionary5 forKeyedSubscript:@"paymentMethod"];
 
     primitiveValue_kindType = self->_primitiveValue_kindType;
   }
@@ -989,9 +989,9 @@ LABEL_168:
       goto LABEL_72;
     }
 
-    v26 = [(CCToolKitToolTypedValuePrimitiveValue *)self placemark];
-    v27 = [v26 jsonDictionary];
-    [v3 setObject:v27 forKeyedSubscript:@"placemark"];
+    placemark = [(CCToolKitToolTypedValuePrimitiveValue *)self placemark];
+    jsonDictionary6 = [placemark jsonDictionary];
+    [v3 setObject:jsonDictionary6 forKeyedSubscript:@"placemark"];
 
     primitiveValue_kindType = self->_primitiveValue_kindType;
   }
@@ -1003,9 +1003,9 @@ LABEL_168:
       goto LABEL_72;
     }
 
-    v28 = [(CCToolKitToolTypedValuePrimitiveValue *)self person];
-    v29 = [v28 jsonDictionary];
-    [v3 setObject:v29 forKeyedSubscript:@"person"];
+    person = [(CCToolKitToolTypedValuePrimitiveValue *)self person];
+    jsonDictionary7 = [person jsonDictionary];
+    [v3 setObject:jsonDictionary7 forKeyedSubscript:@"person"];
 
     primitiveValue_kindType = self->_primitiveValue_kindType;
   }
@@ -1017,9 +1017,9 @@ LABEL_168:
       goto LABEL_72;
     }
 
-    v30 = [(CCToolKitToolTypedValuePrimitiveValue *)self file];
-    v31 = [v30 jsonDictionary];
-    [v3 setObject:v31 forKeyedSubscript:@"file"];
+    file = [(CCToolKitToolTypedValuePrimitiveValue *)self file];
+    jsonDictionary8 = [file jsonDictionary];
+    [v3 setObject:jsonDictionary8 forKeyedSubscript:@"file"];
 
     primitiveValue_kindType = self->_primitiveValue_kindType;
   }
@@ -1032,8 +1032,8 @@ LABEL_168:
     }
 
     v32 = [(CCToolKitToolTypedValuePrimitiveValue *)self app];
-    v33 = [v32 jsonDictionary];
-    [v3 setObject:v33 forKeyedSubscript:@"app"];
+    jsonDictionary9 = [v32 jsonDictionary];
+    [v3 setObject:jsonDictionary9 forKeyedSubscript:@"app"];
 
     primitiveValue_kindType = self->_primitiveValue_kindType;
   }
@@ -1045,8 +1045,8 @@ LABEL_168:
       goto LABEL_72;
     }
 
-    v34 = [(CCToolKitToolTypedValuePrimitiveValue *)self searchableItem];
-    v35 = [v34 base64EncodedStringWithOptions:0];
+    searchableItem = [(CCToolKitToolTypedValuePrimitiveValue *)self searchableItem];
+    v35 = [searchableItem base64EncodedStringWithOptions:0];
     [v3 setObject:v35 forKeyedSubscript:@"searchableItem"];
 
     primitiveValue_kindType = self->_primitiveValue_kindType;
@@ -1059,9 +1059,9 @@ LABEL_168:
       goto LABEL_72;
     }
 
-    v36 = [(CCToolKitToolTypedValuePrimitiveValue *)self encodedDateComponents];
-    v37 = [v36 jsonDictionary];
-    [v3 setObject:v37 forKeyedSubscript:@"encodedDateComponents"];
+    encodedDateComponents = [(CCToolKitToolTypedValuePrimitiveValue *)self encodedDateComponents];
+    jsonDictionary10 = [encodedDateComponents jsonDictionary];
+    [v3 setObject:jsonDictionary10 forKeyedSubscript:@"encodedDateComponents"];
 
     primitiveValue_kindType = self->_primitiveValue_kindType;
   }
@@ -1073,9 +1073,9 @@ LABEL_168:
       goto LABEL_72;
     }
 
-    v38 = [(CCToolKitToolTypedValuePrimitiveValue *)self shortcut];
-    v39 = [v38 jsonDictionary];
-    [v3 setObject:v39 forKeyedSubscript:@"shortcut"];
+    shortcut = [(CCToolKitToolTypedValuePrimitiveValue *)self shortcut];
+    jsonDictionary11 = [shortcut jsonDictionary];
+    [v3 setObject:jsonDictionary11 forKeyedSubscript:@"shortcut"];
 
     primitiveValue_kindType = self->_primitiveValue_kindType;
   }
@@ -1087,9 +1087,9 @@ LABEL_168:
       goto LABEL_72;
     }
 
-    v40 = [(CCToolKitToolTypedValuePrimitiveValue *)self recurrenceRule];
-    v41 = [v40 jsonDictionary];
-    [v3 setObject:v41 forKeyedSubscript:@"recurrenceRule"];
+    recurrenceRule = [(CCToolKitToolTypedValuePrimitiveValue *)self recurrenceRule];
+    jsonDictionary12 = [recurrenceRule jsonDictionary];
+    [v3 setObject:jsonDictionary12 forKeyedSubscript:@"recurrenceRule"];
 
     primitiveValue_kindType = self->_primitiveValue_kindType;
   }
@@ -1101,9 +1101,9 @@ LABEL_168:
       goto LABEL_72;
     }
 
-    v42 = [(CCToolKitToolTypedValuePrimitiveValue *)self dateInterval];
-    v43 = [v42 jsonDictionary];
-    [v3 setObject:v43 forKeyedSubscript:@"dateInterval"];
+    dateInterval = [(CCToolKitToolTypedValuePrimitiveValue *)self dateInterval];
+    jsonDictionary13 = [dateInterval jsonDictionary];
+    [v3 setObject:jsonDictionary13 forKeyedSubscript:@"dateInterval"];
 
     primitiveValue_kindType = self->_primitiveValue_kindType;
   }
@@ -1115,18 +1115,18 @@ LABEL_168:
       goto LABEL_72;
     }
 
-    v44 = [(CCToolKitToolTypedValuePrimitiveValue *)self personNameComponents];
-    v45 = [v44 jsonDictionary];
-    [v3 setObject:v45 forKeyedSubscript:@"personNameComponents"];
+    personNameComponents = [(CCToolKitToolTypedValuePrimitiveValue *)self personNameComponents];
+    jsonDictionary14 = [personNameComponents jsonDictionary];
+    [v3 setObject:jsonDictionary14 forKeyedSubscript:@"personNameComponents"];
 
     primitiveValue_kindType = self->_primitiveValue_kindType;
   }
 
   if (primitiveValue_kindType == 25 && self->_duration)
   {
-    v46 = [(CCToolKitToolTypedValuePrimitiveValue *)self duration];
-    v47 = [v46 jsonDictionary];
-    [v3 setObject:v47 forKeyedSubscript:@"duration"];
+    duration = [(CCToolKitToolTypedValuePrimitiveValue *)self duration];
+    jsonDictionary15 = [duration jsonDictionary];
+    [v3 setObject:jsonDictionary15 forKeyedSubscript:@"duration"];
   }
 
 LABEL_72:
@@ -1135,153 +1135,153 @@ LABEL_72:
   return v48;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v32 = a3;
+  blockCopy = block;
   v5 = objc_alloc(MEMORY[0x1E69939F0]);
   v6 = *MEMORY[0x1E69939A8];
   v7 = [v5 initWithFieldType:v6 enumValue:self->_noneVariant];
-  v32[2](v32, v7);
+  blockCopy[2](blockCopy, v7);
 
   if (self->_hasBoolType)
   {
     v8 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 BOOLValue:self->_BOOLType];
-    v32[2](v32, v8);
+    blockCopy[2](blockCopy, v8);
   }
 
   if (self->_hasIntType)
   {
     v9 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 int64Value:self->_intType];
-    v32[2](v32, v9);
+    blockCopy[2](blockCopy, v9);
   }
 
   if (self->_hasNumber)
   {
     v10 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 doubleValue:self->_number];
-    v32[2](v32, v10);
+    blockCopy[2](blockCopy, v10);
   }
 
   if (self->_decimal)
   {
     v11 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 subMessageValue:self->_decimal];
-    v32[2](v32, v11);
+    blockCopy[2](blockCopy, v11);
   }
 
   if (self->_string)
   {
     v12 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 stringValue:self->_string];
-    v32[2](v32, v12);
+    blockCopy[2](blockCopy, v12);
   }
 
   if (self->_date)
   {
     v13 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 subMessageValue:self->_date];
-    v32[2](v32, v13);
+    blockCopy[2](blockCopy, v13);
   }
 
   if (self->_dateComponents)
   {
     v14 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 bytesValue:self->_dateComponents];
-    v32[2](v32, v14);
+    blockCopy[2](blockCopy, v14);
   }
 
   if (self->_url)
   {
     v15 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 stringValue:self->_url];
-    v32[2](v32, v15);
+    blockCopy[2](blockCopy, v15);
   }
 
   if (self->_attributedString)
   {
     v16 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 bytesValue:self->_attributedString];
-    v32[2](v32, v16);
+    blockCopy[2](blockCopy, v16);
   }
 
   if (self->_measurement)
   {
     v17 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 subMessageValue:self->_measurement];
-    v32[2](v32, v17);
+    blockCopy[2](blockCopy, v17);
   }
 
   if (self->_currencyAmount)
   {
     v18 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 subMessageValue:self->_currencyAmount];
-    v32[2](v32, v18);
+    blockCopy[2](blockCopy, v18);
   }
 
   if (self->_paymentMethod)
   {
     v19 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 subMessageValue:self->_paymentMethod];
-    v32[2](v32, v19);
+    blockCopy[2](blockCopy, v19);
   }
 
   if (self->_placemark)
   {
     v20 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 subMessageValue:self->_placemark];
-    v32[2](v32, v20);
+    blockCopy[2](blockCopy, v20);
   }
 
   if (self->_person)
   {
     v21 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 subMessageValue:self->_person];
-    v32[2](v32, v21);
+    blockCopy[2](blockCopy, v21);
   }
 
   if (self->_file)
   {
     v22 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 subMessageValue:self->_file];
-    v32[2](v32, v22);
+    blockCopy[2](blockCopy, v22);
   }
 
   if (self->_app)
   {
     v23 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 subMessageValue:self->_app];
-    v32[2](v32, v23);
+    blockCopy[2](blockCopy, v23);
   }
 
   if (self->_searchableItem)
   {
     v24 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 bytesValue:self->_searchableItem];
-    v32[2](v32, v24);
+    blockCopy[2](blockCopy, v24);
   }
 
   if (self->_encodedDateComponents)
   {
     v25 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 subMessageValue:self->_encodedDateComponents];
-    v32[2](v32, v25);
+    blockCopy[2](blockCopy, v25);
   }
 
   if (self->_shortcut)
   {
     v26 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 subMessageValue:self->_shortcut];
-    v32[2](v32, v26);
+    blockCopy[2](blockCopy, v26);
   }
 
   if (self->_recurrenceRule)
   {
     v27 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 subMessageValue:self->_recurrenceRule];
-    v32[2](v32, v27);
+    blockCopy[2](blockCopy, v27);
   }
 
   if (self->_dateInterval)
   {
     v28 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 subMessageValue:self->_dateInterval];
-    v32[2](v32, v28);
+    blockCopy[2](blockCopy, v28);
   }
 
   if (self->_personNameComponents)
   {
     v29 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 subMessageValue:self->_personNameComponents];
-    v32[2](v32, v29);
+    blockCopy[2](blockCopy, v29);
   }
 
-  v30 = v32;
+  v30 = blockCopy;
   if (self->_duration)
   {
     v31 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 subMessageValue:self->_duration];
-    v32[2](v32, v31);
+    blockCopy[2](blockCopy, v31);
 
-    v30 = v32;
+    v30 = blockCopy;
   }
 }
 
@@ -1425,10 +1425,10 @@ LABEL_72:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -2791,60 +2791,60 @@ LABEL_130:
   return v356;
 }
 
-- (CCToolKitToolTypedValuePrimitiveValue)initWithPrimitiveValue_kind:(id)a3 primitiveValue_kindType:(unsigned int)a4 error:(id *)a5
+- (CCToolKitToolTypedValuePrimitiveValue)initWithPrimitiveValue_kind:(id)value_kind primitiveValue_kindType:(unsigned int)type error:(id *)error
 {
-  v8 = a3;
+  value_kindCopy = value_kind;
   v9 = objc_opt_new();
-  if (!v8 || a4 != 1)
+  if (!value_kindCopy || type != 1)
   {
-    if (v8 && a4 == 2)
+    if (value_kindCopy && type == 2)
     {
       objc_opt_class();
       IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
       v13 = 0;
       if (IsInstanceOfExpectedClass)
       {
-        [v8 BOOLValue];
+        [value_kindCopy BOOLValue];
         CCPBDataWriterWriteBOOLField();
 LABEL_35:
-        v23 = [v9 immutableData];
-        self = [(CCItemMessage *)self initWithData:v23 error:a5];
+        immutableData = [v9 immutableData];
+        self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
         v11 = v13;
-        v16 = self;
+        selfCopy = self;
         goto LABEL_100;
       }
 
       goto LABEL_99;
     }
 
-    if (v8 && a4 == 3)
+    if (value_kindCopy && type == 3)
     {
       objc_opt_class();
       v15 = CCValidateIsInstanceOfExpectedClass();
       v13 = 0;
       if (v15)
       {
-        [v8 longLongValue];
+        [value_kindCopy longLongValue];
         CCPBDataWriterWriteInt64Field();
         goto LABEL_35;
       }
 
 LABEL_99:
       CCSetError();
-      v16 = 0;
+      selfCopy = 0;
       v11 = v13;
       goto LABEL_100;
     }
 
-    if (v8 && a4 == 4)
+    if (value_kindCopy && type == 4)
     {
       objc_opt_class();
       v17 = CCValidateIsInstanceOfExpectedClass();
       v13 = 0;
       if (v17)
       {
-        [v8 doubleValue];
+        [value_kindCopy doubleValue];
         CCPBDataWriterWriteDoubleField();
         goto LABEL_35;
       }
@@ -2852,7 +2852,7 @@ LABEL_99:
       goto LABEL_99;
     }
 
-    if (v8 && a4 == 5)
+    if (value_kindCopy && type == 5)
     {
       objc_opt_class();
       v18 = CCValidateIsInstanceOfExpectedClass();
@@ -2865,7 +2865,7 @@ LABEL_99:
       goto LABEL_22;
     }
 
-    if (v8 && a4 == 6)
+    if (value_kindCopy && type == 6)
     {
       objc_opt_class();
       v20 = CCValidateIsInstanceOfExpectedClass();
@@ -2880,7 +2880,7 @@ LABEL_26:
       goto LABEL_35;
     }
 
-    if (v8 && a4 == 7)
+    if (value_kindCopy && type == 7)
     {
       objc_opt_class();
       v21 = CCValidateIsInstanceOfExpectedClass();
@@ -2893,7 +2893,7 @@ LABEL_26:
       goto LABEL_22;
     }
 
-    if (v8 && a4 == 8)
+    if (value_kindCopy && type == 8)
     {
       objc_opt_class();
       v22 = CCValidateIsInstanceOfExpectedClass();
@@ -2906,7 +2906,7 @@ LABEL_26:
 
     else
     {
-      if (v8 && a4 == 9)
+      if (value_kindCopy && type == 9)
       {
         objc_opt_class();
         v24 = CCValidateIsInstanceOfExpectedClass();
@@ -2919,7 +2919,7 @@ LABEL_26:
         goto LABEL_26;
       }
 
-      if (v8 && a4 == 10)
+      if (value_kindCopy && type == 10)
       {
         objc_opt_class();
         v25 = CCValidateIsInstanceOfExpectedClass();
@@ -2932,7 +2932,7 @@ LABEL_26:
 
       else
       {
-        if (v8 && a4 == 11)
+        if (value_kindCopy && type == 11)
         {
           objc_opt_class();
           v26 = CCValidateIsInstanceOfExpectedClass();
@@ -2945,7 +2945,7 @@ LABEL_26:
           goto LABEL_22;
         }
 
-        if (v8 && a4 == 12)
+        if (value_kindCopy && type == 12)
         {
           objc_opt_class();
           v27 = CCValidateIsInstanceOfExpectedClass();
@@ -2958,7 +2958,7 @@ LABEL_26:
           goto LABEL_22;
         }
 
-        if (v8 && a4 == 13)
+        if (value_kindCopy && type == 13)
         {
           objc_opt_class();
           v28 = CCValidateIsInstanceOfExpectedClass();
@@ -2971,7 +2971,7 @@ LABEL_26:
           goto LABEL_22;
         }
 
-        if (v8 && a4 == 14)
+        if (value_kindCopy && type == 14)
         {
           objc_opt_class();
           v29 = CCValidateIsInstanceOfExpectedClass();
@@ -2984,7 +2984,7 @@ LABEL_26:
           goto LABEL_22;
         }
 
-        if (v8 && a4 == 15)
+        if (value_kindCopy && type == 15)
         {
           objc_opt_class();
           v30 = CCValidateIsInstanceOfExpectedClass();
@@ -2997,8 +2997,8 @@ LABEL_26:
           goto LABEL_22;
         }
 
-        v31 = a4;
-        if (v8 && a4 == 16)
+        typeCopy = type;
+        if (value_kindCopy && type == 16)
         {
           objc_opt_class();
           v32 = CCValidateIsInstanceOfExpectedClass();
@@ -3011,7 +3011,7 @@ LABEL_26:
           goto LABEL_22;
         }
 
-        if (v8 && a4 == 17)
+        if (value_kindCopy && type == 17)
         {
           objc_opt_class();
           v33 = CCValidateIsInstanceOfExpectedClass();
@@ -3024,9 +3024,9 @@ LABEL_26:
           goto LABEL_22;
         }
 
-        if (!v8 || a4 != 18)
+        if (!value_kindCopy || type != 18)
         {
-          if (v8 && a4 == 19)
+          if (value_kindCopy && type == 19)
           {
             objc_opt_class();
             v35 = CCValidateIsInstanceOfExpectedClass();
@@ -3037,7 +3037,7 @@ LABEL_26:
             }
           }
 
-          else if (v8 && a4 == 20)
+          else if (value_kindCopy && type == 20)
           {
             objc_opt_class();
             v36 = CCValidateIsInstanceOfExpectedClass();
@@ -3048,7 +3048,7 @@ LABEL_26:
             }
           }
 
-          else if (v8 && a4 == 22)
+          else if (value_kindCopy && type == 22)
           {
             objc_opt_class();
             v37 = CCValidateIsInstanceOfExpectedClass();
@@ -3059,7 +3059,7 @@ LABEL_26:
             }
           }
 
-          else if (v8 && a4 == 23)
+          else if (value_kindCopy && type == 23)
           {
             objc_opt_class();
             v38 = CCValidateIsInstanceOfExpectedClass();
@@ -3070,7 +3070,7 @@ LABEL_26:
             }
           }
 
-          else if (v8 && a4 == 24)
+          else if (value_kindCopy && type == 24)
           {
             objc_opt_class();
             v39 = CCValidateIsInstanceOfExpectedClass();
@@ -3084,7 +3084,7 @@ LABEL_26:
           else
           {
             v13 = 0;
-            if (!v8 || v31 != 25)
+            if (!value_kindCopy || typeCopy != 25)
             {
               goto LABEL_35;
             }
@@ -3099,7 +3099,7 @@ LABEL_26:
           }
 
 LABEL_22:
-          v19 = [v8 data];
+          data = [value_kindCopy data];
           CCPBDataWriterWriteDataField();
 
           goto LABEL_35;
@@ -3124,7 +3124,7 @@ LABEL_22:
   v11 = 0;
   if (v10)
   {
-    [v8 unsignedIntegerValue];
+    [value_kindCopy unsignedIntegerValue];
     v12 = CCValidateEnumField();
     v13 = v11;
 
@@ -3137,10 +3137,10 @@ LABEL_22:
   }
 
   CCSetError();
-  v16 = 0;
+  selfCopy = 0;
 LABEL_100:
 
-  return v16;
+  return selfCopy;
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface MSHistoryPlaceItem
-- (void)ifSearch:(id)a3 ifRoute:(id)a4 ifPlaceDisplay:(id)a5 ifTransitLineItem:(id)a6;
+- (void)ifSearch:(id)search ifRoute:(id)route ifPlaceDisplay:(id)display ifTransitLineItem:(id)item;
 @end
 
 @implementation MSHistoryPlaceItem
 
-- (void)ifSearch:(id)a3 ifRoute:(id)a4 ifPlaceDisplay:(id)a5 ifTransitLineItem:(id)a6
+- (void)ifSearch:(id)search ifRoute:(id)route ifPlaceDisplay:(id)display ifTransitLineItem:(id)item
 {
-  if (a5)
+  if (display)
   {
-    (*(a5 + 2))(a5, self);
+    (*(display + 2))(display, self);
   }
 }
 

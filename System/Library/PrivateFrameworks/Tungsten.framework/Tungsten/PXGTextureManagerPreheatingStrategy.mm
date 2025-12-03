@@ -2,14 +2,14 @@
 + (id)defaultPreheatingStrategy;
 + (id)lowMemoryPreheatingStrategy;
 + (id)noPreheatingStrategy;
-- (CGRect)preheatingRectForLayout:(id)a3 interactionState:(id *)a4;
+- (CGRect)preheatingRectForLayout:(id)layout interactionState:(id *)state;
 @end
 
 @implementation PXGTextureManagerPreheatingStrategy
 
 + (id)defaultPreheatingStrategy
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   [v2 setStoppedOffset:400.0];
   [v2 setSlowOffset:300.0];
   [v2 setMediumOffset:200.0];
@@ -20,14 +20,14 @@
 
 + (id)noPreheatingStrategy
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
 + (id)lowMemoryPreheatingStrategy
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   [v2 setStoppedOffset:100.0];
   [v2 setSlowOffset:100.0];
   [v2 setMediumOffset:100.0];
@@ -36,14 +36,14 @@
   return v2;
 }
 
-- (CGRect)preheatingRectForLayout:(id)a3 interactionState:(id *)a4
+- (CGRect)preheatingRectForLayout:(id)layout interactionState:(id *)state
 {
-  v6 = a3;
-  [v6 visibleRect];
-  [v6 contentSize];
+  layoutCopy = layout;
+  [layoutCopy visibleRect];
+  [layoutCopy contentSize];
 
-  var0 = a4->var0;
-  if (a4->var0 > 1)
+  var0 = state->var0;
+  if (state->var0 > 1)
   {
     if (var0 == 2)
     {
@@ -78,7 +78,7 @@ LABEL_9:
 
 LABEL_10:
   self->_previousRegime = var0;
-  if (!a4->var6 && a4->var4 - 2 < 2)
+  if (!state->var6 && state->var4 - 2 < 2)
   {
     [(PXGTextureManagerPreheatingStrategy *)self maxPreheatingDistance];
     [(PXGTextureManagerPreheatingStrategy *)self maxPreheatingDistance];

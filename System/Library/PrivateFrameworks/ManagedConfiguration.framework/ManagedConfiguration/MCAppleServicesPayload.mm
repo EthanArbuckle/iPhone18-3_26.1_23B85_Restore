@@ -1,6 +1,6 @@
 @interface MCAppleServicesPayload
 + (id)typeStrings;
-- (MCAppleServicesPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5;
+- (MCAppleServicesPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error;
 - (id)stubDictionary;
 - (id)subtitle1Label;
 - (id)verboseDescription;
@@ -18,21 +18,21 @@
   return v2;
 }
 
-- (MCAppleServicesPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5
+- (MCAppleServicesPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error
 {
   v60 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v52.receiver = self;
   v52.super_class = MCAppleServicesPayload;
-  v9 = [(MCPayload *)&v52 initWithDictionary:v8 profile:a4 outError:a5];
+  v9 = [(MCPayload *)&v52 initWithDictionary:dictionaryCopy profile:profile outError:error];
   if (!v9)
   {
     goto LABEL_40;
   }
 
-  v10 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v51 = 0;
-  v11 = [v8 MCValidateAndRemoveArrayOfClass:objc_opt_class() withKey:@"PinningAdditions" isRequired:0 outError:&v51];
+  v11 = [dictionaryCopy MCValidateAndRemoveArrayOfClass:objc_opt_class() withKey:@"PinningAdditions" isRequired:0 outError:&v51];
   v12 = v51;
   if (v12)
   {
@@ -105,7 +105,7 @@ LABEL_24:
             v21 = v19;
             v22 = [v20 dictionaryWithObjects:v54 forKeys:v53 count:2];
 
-            [v10 addObject:v22];
+            [array addObject:v22];
             goto LABEL_17;
           }
 
@@ -128,9 +128,9 @@ LABEL_28:
       if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_DEFAULT))
       {
         v24 = v23;
-        v25 = [(MCPayload *)v9 friendlyName];
+        friendlyName = [(MCPayload *)v9 friendlyName];
         *buf = 138412546;
-        v56 = v25;
+        v56 = friendlyName;
         v57 = 2112;
         v58 = v18;
         _os_log_impl(&dword_1A795B000, v24, OS_LOG_TYPE_DEFAULT, "Payload %@ has an unsupported hash algorithm %@. The hash will be ignored.", buf, 0x16u);
@@ -153,50 +153,50 @@ LABEL_17:
 LABEL_29:
 
 LABEL_30:
-  objc_storeStrong(&v9->_hashDictionaries, v10);
+  objc_storeStrong(&v9->_hashDictionaries, array);
   if (v12)
   {
 LABEL_31:
     v28 = [(MCPayload *)v9 malformedPayloadErrorWithError:v12];
     v29 = v28;
-    if (a5)
+    if (error)
     {
       v30 = v28;
-      *a5 = v29;
+      *error = v29;
     }
 
     v31 = _MCLogObjects;
     if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_ERROR))
     {
       v32 = v31;
-      v33 = v10;
+      v33 = array;
       v34 = v11;
       v35 = objc_opt_class();
       obja = v35;
-      v36 = [v29 MCVerboseDescription];
+      mCVerboseDescription = [v29 MCVerboseDescription];
       *buf = 138412546;
       v56 = v35;
       v11 = v34;
-      v10 = v33;
+      array = v33;
       v57 = 2112;
-      v58 = v36;
+      v58 = mCVerboseDescription;
       _os_log_impl(&dword_1A795B000, v32, OS_LOG_TYPE_ERROR, "%@ Can't parse payload: %@", buf, 0x16u);
     }
 
     v9 = 0;
   }
 
-  if ([v8 count])
+  if ([dictionaryCopy count])
   {
     v37 = _MCLogObjects;
     if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_INFO))
     {
       v38 = v37;
-      v39 = [(MCPayload *)v9 friendlyName];
+      friendlyName2 = [(MCPayload *)v9 friendlyName];
       *buf = 138412546;
-      v56 = v39;
+      v56 = friendlyName2;
       v57 = 2112;
-      v58 = v8;
+      v58 = dictionaryCopy;
       _os_log_impl(&dword_1A795B000, v38, OS_LOG_TYPE_INFO, "Payload “%@” contains ignored fields. They are: %@", buf, 0x16u);
     }
   }
@@ -211,7 +211,7 @@ LABEL_40:
   v26 = *MEMORY[0x1E69E9840];
   v22.receiver = self;
   v22.super_class = MCAppleServicesPayload;
-  v16 = [(MCPayload *)&v22 stubDictionary];
+  stubDictionary = [(MCPayload *)&v22 stubDictionary];
   v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[NSArray count](self->_hashDictionaries, "count")}];
   v18 = 0u;
   v19 = 0u;
@@ -251,18 +251,18 @@ LABEL_40:
     while (v5);
   }
 
-  [v16 setObject:v3 forKeyedSubscript:@"PinningAdditions"];
+  [stubDictionary setObject:v3 forKeyedSubscript:@"PinningAdditions"];
   v14 = *MEMORY[0x1E69E9840];
 
-  return v16;
+  return stubDictionary;
 }
 
 - (id)verboseDescription
 {
   v6.receiver = self;
   v6.super_class = MCAppleServicesPayload;
-  v3 = [(MCPayload *)&v6 verboseDescription];
-  v4 = [v3 mutableCopy];
+  verboseDescription = [(MCPayload *)&v6 verboseDescription];
+  v4 = [verboseDescription mutableCopy];
 
   if (self->_hashDictionaries)
   {

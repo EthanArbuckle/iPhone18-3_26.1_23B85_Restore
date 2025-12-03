@@ -1,10 +1,10 @@
 @interface NLParsecDataManager
-+ (void)enumerateEntriesForSerializedData:(id)a3 withBlock:(id)a4;
++ (void)enumerateEntriesForSerializedData:(id)data withBlock:(id)block;
 + (void)notifyStoredSerializedDataChanged;
 - (NSData)serializableData;
-- (void)addEntry:(id)a3 domain:(id)a4 metaData:(id)a5;
+- (void)addEntry:(id)entry domain:(id)domain metaData:(id)data;
 - (void)dealloc;
-- (void)insertEntry:(id)a3;
+- (void)insertEntry:(id)entry;
 - (void)serializableData;
 @end
 
@@ -22,7 +22,7 @@
   [(NLParsecDataManager *)&v4 dealloc];
 }
 
-- (void)addEntry:(id)a3 domain:(id)a4 metaData:(id)a5
+- (void)addEntry:(id)entry domain:(id)domain metaData:(id)data
 {
   if (!self->m_entries)
   {
@@ -30,10 +30,10 @@
   }
 
   v12 = objc_alloc_init(NLPOIEntryImpl);
-  [(NLPOIEntryImpl *)v12 setName:a3];
-  [(NLPOIEntryImpl *)v12 setDomain:a4];
-  -[NLPOIEntryImpl setCategory:](v12, "setCategory:", [a5 valueForKey:@"c"]);
-  [objc_msgSend(a5 valueForKey:{@"p", "floatValue"}];
+  [(NLPOIEntryImpl *)v12 setName:entry];
+  [(NLPOIEntryImpl *)v12 setDomain:domain];
+  -[NLPOIEntryImpl setCategory:](v12, "setCategory:", [data valueForKey:@"c"]);
+  [objc_msgSend(data valueForKey:{@"p", "floatValue"}];
   [(NLPOIEntryImpl *)v12 setScore:?];
   if ([(NSMutableArray *)self->m_entries count]>= 0x64)
   {
@@ -52,22 +52,22 @@
 LABEL_7:
 }
 
-- (void)insertEntry:(id)a3
+- (void)insertEntry:(id)entry
 {
   v5 = [(NSMutableArray *)self->m_entries count];
   m_entries = self->m_entries;
   if (v5)
   {
-    v7 = [(NSMutableArray *)self->m_entries indexOfObject:a3 inSortedRange:0 options:[(NSMutableArray *)m_entries count] usingComparator:1024, &__block_literal_global_3];
+    v7 = [(NSMutableArray *)self->m_entries indexOfObject:entry inSortedRange:0 options:[(NSMutableArray *)m_entries count] usingComparator:1024, &__block_literal_global_3];
     v8 = self->m_entries;
 
-    [(NSMutableArray *)v8 insertObject:a3 atIndex:v7];
+    [(NSMutableArray *)v8 insertObject:entry atIndex:v7];
   }
 
   else
   {
 
-    [(NSMutableArray *)m_entries addObject:a3];
+    [(NSMutableArray *)m_entries addObject:entry];
   }
 }
 
@@ -88,9 +88,9 @@ uint64_t __35__NLParsecDataManager_insertEntry___block_invoke(uint64_t a1, void 
   v20 = *MEMORY[0x277D85DE8];
   if (self->m_entries)
   {
-    v3 = [MEMORY[0x277CBEB78] outputStreamToMemory];
-    [v3 open];
-    v4 = [objc_alloc(MEMORY[0x277D43188]) initWithOutputStream:v3];
+    outputStreamToMemory = [MEMORY[0x277CBEB78] outputStreamToMemory];
+    [outputStreamToMemory open];
+    v4 = [objc_alloc(MEMORY[0x277D43188]) initWithOutputStream:outputStreamToMemory];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
@@ -132,7 +132,7 @@ uint64_t __35__NLParsecDataManager_insertEntry___block_invoke(uint64_t a1, void 
         break;
       }
 
-      v11 = [v3 propertyForKey:*MEMORY[0x277CBE740]];
+      v11 = [outputStreamToMemory propertyForKey:*MEMORY[0x277CBE740]];
     }
 
     else
@@ -141,7 +141,7 @@ LABEL_13:
       v11 = 0;
     }
 
-    [v3 close];
+    [outputStreamToMemory close];
   }
 
   else
@@ -153,28 +153,28 @@ LABEL_13:
   return v11;
 }
 
-+ (void)enumerateEntriesForSerializedData:(id)a3 withBlock:(id)a4
++ (void)enumerateEntriesForSerializedData:(id)data withBlock:(id)block
 {
-  v5 = [MEMORY[0x277CBEAE0] inputStreamWithData:a3];
+  v5 = [MEMORY[0x277CBEAE0] inputStreamWithData:data];
   [v5 open];
   v10 = [objc_alloc(MEMORY[0x277D43180]) initWithStream:v5];
   [v10 setClassOfNextMessage:objc_opt_class()];
   v6 = objc_autoreleasePoolPush();
-  v7 = [v10 nextMessage];
-  if (v7)
+  nextMessage = [v10 nextMessage];
+  if (nextMessage)
   {
-    v8 = v7;
+    nextMessage2 = nextMessage;
     do
     {
-      v9 = [[NLPOIEntry alloc] initWithProtoBuf:v8];
+      v9 = [[NLPOIEntry alloc] initWithProtoBuf:nextMessage2];
 
-      (*(a4 + 2))(a4, v9);
+      (*(block + 2))(block, v9);
       objc_autoreleasePoolPop(v6);
       v6 = objc_autoreleasePoolPush();
-      v8 = [v10 nextMessage];
+      nextMessage2 = [v10 nextMessage];
     }
 
-    while (v8);
+    while (nextMessage2);
   }
 
   objc_autoreleasePoolPop(v6);
@@ -183,16 +183,16 @@ LABEL_13:
 
 + (void)notifyStoredSerializedDataChanged
 {
-  v2 = [MEMORY[0x277CCA9A0] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
 
-  [v2 postNotificationName:@"NLParsecDataChangedNotification" object:0];
+  [defaultCenter postNotificationName:@"NLParsecDataChangedNotification" object:0];
 }
 
 - (void)serializableData
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_22CD0B000, a2, OS_LOG_TYPE_ERROR, "Failed to serialize hints data: %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

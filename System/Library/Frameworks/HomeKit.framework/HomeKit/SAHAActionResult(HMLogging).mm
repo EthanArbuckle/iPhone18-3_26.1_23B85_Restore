@@ -6,18 +6,18 @@
 
 - (id)hm_shortDescription
 {
-  v2 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v3 = *MEMORY[0x1E69C7D08];
-  v4 = [a1 outcome];
-  appendToShortDescription(v2, v3, v4);
+  outcome = [self outcome];
+  appendToShortDescription(string, v3, outcome);
 
   v5 = *MEMORY[0x1E69C7D00];
-  v6 = [a1 entity];
-  v7 = [v6 hm_shortDescription];
-  v8 = v7;
+  entity = [self entity];
+  hm_shortDescription = [entity hm_shortDescription];
+  v8 = hm_shortDescription;
   if (v5)
   {
-    v9 = v7 == 0;
+    v9 = hm_shortDescription == 0;
   }
 
   else
@@ -27,26 +27,26 @@
 
   if (!v9)
   {
-    [v2 appendFormat:@"  %@:%@;", v5, v7];
+    [string appendFormat:@"  %@:%@;", v5, hm_shortDescription];
   }
 
-  [v2 appendString:@"  "];
+  [string appendString:@"  "];
   v10 = *MEMORY[0x1E69C7D18];
-  v11 = [a1 resultAttribute];
-  appendToShortDescription(v2, v10, v11);
+  resultAttribute = [self resultAttribute];
+  appendToShortDescription(string, v10, resultAttribute);
 
-  [v2 appendString:@"  "];
+  [string appendString:@"  "];
   v12 = *MEMORY[0x1E69C7D20];
-  v13 = [a1 resultValue];
-  v14 = [v13 hm_shortDescription];
-  appendToShortDescription(v2, v12, v14);
+  resultValue = [self resultValue];
+  hm_shortDescription2 = [resultValue hm_shortDescription];
+  appendToShortDescription(string, v12, hm_shortDescription2);
 
-  [v2 appendString:@"  "];
+  [string appendString:@"  "];
   v15 = *MEMORY[0x1E69C7D10];
-  v16 = [a1 requestActionId];
-  appendToShortDescription(v2, v15, v16);
+  requestActionId = [self requestActionId];
+  appendToShortDescription(string, v15, requestActionId);
 
-  return v2;
+  return string;
 }
 
 @end

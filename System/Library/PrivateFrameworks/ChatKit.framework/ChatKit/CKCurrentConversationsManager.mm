@@ -1,17 +1,17 @@
 @interface CKCurrentConversationsManager
 + (id)sharedInstance;
-- (BOOL)_canDumpConversationFromCache:(id)a3;
+- (BOOL)_canDumpConversationFromCache:(id)cache;
 - (IMDoubleLinkedList)orderedKeys;
 - (NSCountedSet)currentConversations;
 - (NSMutableDictionary)idToNodeDictionary;
 - (unint64_t)cacheSize;
-- (void)_prepareToDumpCachedConversation:(id)a3;
-- (void)addConversation:(id)a3;
-- (void)loadHistoryForConversation:(id)a3 keepAllCurrentlyLoadedMessages:(BOOL)a4;
-- (void)pruneCacheToSize:(unint64_t)a3;
-- (void)purgeConversation:(id)a3;
-- (void)purgeConversations:(id)a3;
-- (void)removeConversation:(id)a3;
+- (void)_prepareToDumpCachedConversation:(id)conversation;
+- (void)addConversation:(id)conversation;
+- (void)loadHistoryForConversation:(id)conversation keepAllCurrentlyLoadedMessages:(BOOL)messages;
+- (void)pruneCacheToSize:(unint64_t)size;
+- (void)purgeConversation:(id)conversation;
+- (void)purgeConversations:(id)conversations;
+- (void)removeConversation:(id)conversation;
 @end
 
 @implementation CKCurrentConversationsManager
@@ -50,53 +50,53 @@ void __47__CKCurrentConversationsManager_sharedInstance__block_invoke()
   return currentConversations;
 }
 
-- (void)addConversation:(id)a3
+- (void)addConversation:(id)conversation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  conversationCopy = conversation;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v5 = [v4 deviceIndependentID];
-    if (v5)
+    deviceIndependentID = [conversationCopy deviceIndependentID];
+    if (deviceIndependentID)
     {
       if (IMOSLoggingEnabled())
       {
         v7 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
         {
-          v8 = [v4 shortDescription];
+          shortDescription = [conversationCopy shortDescription];
           v18 = 138412290;
-          v19 = v8;
+          v19 = shortDescription;
           _os_log_impl(&dword_19020E000, v7, OS_LOG_TYPE_INFO, "Adding/incrementing conversation count in cache: %@", &v18, 0xCu);
         }
       }
 
-      v9 = [(CKCurrentConversationsManager *)self currentConversations];
-      [v9 addObject:v5];
+      currentConversations = [(CKCurrentConversationsManager *)self currentConversations];
+      [currentConversations addObject:deviceIndependentID];
 
-      v10 = [(CKCurrentConversationsManager *)self idToNodeDictionary];
-      v11 = [v10 objectForKeyedSubscript:v5];
+      idToNodeDictionary = [(CKCurrentConversationsManager *)self idToNodeDictionary];
+      v11 = [idToNodeDictionary objectForKeyedSubscript:deviceIndependentID];
 
       if (v11)
       {
-        v12 = [(CKCurrentConversationsManager *)self orderedKeys];
-        [v12 removeLinkedListNode:v11];
+        orderedKeys = [(CKCurrentConversationsManager *)self orderedKeys];
+        [orderedKeys removeLinkedListNode:v11];
       }
 
       else
       {
-        v11 = [(IMDoubleLinkedListNode *)[CKCurrentConversationsManagerOrderedNode alloc] initWithObject:v4];
-        [(CKCurrentConversationsManagerOrderedNode *)v11 setKey:v5];
-        v12 = [(CKCurrentConversationsManager *)self idToNodeDictionary];
-        [v12 setObject:v11 forKeyedSubscript:v5];
+        v11 = [(IMDoubleLinkedListNode *)[CKCurrentConversationsManagerOrderedNode alloc] initWithObject:conversationCopy];
+        [(CKCurrentConversationsManagerOrderedNode *)v11 setKey:deviceIndependentID];
+        orderedKeys = [(CKCurrentConversationsManager *)self idToNodeDictionary];
+        [orderedKeys setObject:v11 forKeyedSubscript:deviceIndependentID];
       }
 
-      v15 = [(CKCurrentConversationsManager *)self orderedKeys];
-      [v15 appendLinkedListNode:v11];
+      orderedKeys2 = [(CKCurrentConversationsManager *)self orderedKeys];
+      [orderedKeys2 appendLinkedListNode:v11];
 
-      v16 = [(CKCurrentConversationsManager *)self orderedKeys];
-      v17 = [v16 count];
+      orderedKeys3 = [(CKCurrentConversationsManager *)self orderedKeys];
+      v17 = [orderedKeys3 count];
       LODWORD(v17) = v17 > [(CKCurrentConversationsManager *)self cacheSize];
 
       if (v17)
@@ -105,14 +105,14 @@ void __47__CKCurrentConversationsManager_sharedInstance__block_invoke()
       }
     }
 
-    else if (v4 && IMOSLoggingEnabled())
+    else if (conversationCopy && IMOSLoggingEnabled())
     {
       v13 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
-        v14 = [v4 shortDescription];
+        shortDescription2 = [conversationCopy shortDescription];
         v18 = 138412290;
-        v19 = v14;
+        v19 = shortDescription2;
         _os_log_impl(&dword_19020E000, v13, OS_LOG_TYPE_INFO, "CKCurrentConversationsManager: Not caching conversation with no deviceIndependentID: %@", &v18, 0xCu);
       }
     }
@@ -122,89 +122,89 @@ void __47__CKCurrentConversationsManager_sharedInstance__block_invoke()
 
   if (IMOSLoggingEnabled())
   {
-    v5 = OSLogHandleForIMFoundationCategory();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+    deviceIndependentID = OSLogHandleForIMFoundationCategory();
+    if (os_log_type_enabled(deviceIndependentID, OS_LOG_TYPE_INFO))
     {
-      v6 = [v4 shortDescription];
+      shortDescription3 = [conversationCopy shortDescription];
       v18 = 138412290;
-      v19 = v6;
-      _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_INFO, "Not caching pending conversation: %@", &v18, 0xCu);
+      v19 = shortDescription3;
+      _os_log_impl(&dword_19020E000, deviceIndependentID, OS_LOG_TYPE_INFO, "Not caching pending conversation: %@", &v18, 0xCu);
     }
 
 LABEL_22:
   }
 }
 
-- (void)removeConversation:(id)a3
+- (void)removeConversation:(id)conversation
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 chat];
-  v6 = [v5 guid];
+  conversationCopy = conversation;
+  chat = [conversationCopy chat];
+  guid = [chat guid];
 
-  if (v6)
+  if (guid)
   {
-    v7 = [v4 chat];
-    v8 = [v7 guid];
-    [CKConversationUserInteractionManager exitedConversation:v8];
+    chat2 = [conversationCopy chat];
+    guid2 = [chat2 guid];
+    [CKConversationUserInteractionManager exitedConversation:guid2];
   }
 
-  v9 = [v4 deviceIndependentID];
-  if (v9)
+  deviceIndependentID = [conversationCopy deviceIndependentID];
+  if (deviceIndependentID)
   {
     if (IMOSLoggingEnabled())
     {
       v10 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
-        v11 = [v4 shortDescription];
+        shortDescription = [conversationCopy shortDescription];
         v13 = 138412290;
-        v14 = v11;
+        v14 = shortDescription;
         _os_log_impl(&dword_19020E000, v10, OS_LOG_TYPE_INFO, "Decrementing conversation count in cache: %@", &v13, 0xCu);
       }
     }
 
-    v12 = [(CKCurrentConversationsManager *)self currentConversations];
-    [v12 removeObject:v9];
+    currentConversations = [(CKCurrentConversationsManager *)self currentConversations];
+    [currentConversations removeObject:deviceIndependentID];
   }
 }
 
-- (void)purgeConversation:(id)a3
+- (void)purgeConversation:(id)conversation
 {
-  v12 = a3;
-  v4 = [v12 deviceIndependentID];
-  if (v4)
+  conversationCopy = conversation;
+  deviceIndependentID = [conversationCopy deviceIndependentID];
+  if (deviceIndependentID)
   {
-    v5 = [(CKCurrentConversationsManager *)self currentConversations];
-    v6 = [v5 countForObject:v4];
+    currentConversations = [(CKCurrentConversationsManager *)self currentConversations];
+    v6 = [currentConversations countForObject:deviceIndependentID];
 
     for (; v6; --v6)
     {
-      v7 = [(CKCurrentConversationsManager *)self currentConversations];
-      [v7 removeObject:v4];
+      currentConversations2 = [(CKCurrentConversationsManager *)self currentConversations];
+      [currentConversations2 removeObject:deviceIndependentID];
     }
 
-    v8 = [(CKCurrentConversationsManager *)self idToNodeDictionary];
-    v9 = [v8 objectForKeyedSubscript:v4];
+    idToNodeDictionary = [(CKCurrentConversationsManager *)self idToNodeDictionary];
+    v9 = [idToNodeDictionary objectForKeyedSubscript:deviceIndependentID];
 
-    [(CKCurrentConversationsManager *)self _prepareToDumpCachedConversation:v12];
-    v10 = [(CKCurrentConversationsManager *)self orderedKeys];
-    [v10 removeLinkedListNode:v9];
+    [(CKCurrentConversationsManager *)self _prepareToDumpCachedConversation:conversationCopy];
+    orderedKeys = [(CKCurrentConversationsManager *)self orderedKeys];
+    [orderedKeys removeLinkedListNode:v9];
 
-    v11 = [(CKCurrentConversationsManager *)self idToNodeDictionary];
-    [v11 removeObjectForKey:v4];
+    idToNodeDictionary2 = [(CKCurrentConversationsManager *)self idToNodeDictionary];
+    [idToNodeDictionary2 removeObjectForKey:deviceIndependentID];
   }
 }
 
-- (void)purgeConversations:(id)a3
+- (void)purgeConversations:(id)conversations
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  conversationsCopy = conversations;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [conversationsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -216,21 +216,21 @@ LABEL_22:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(conversationsCopy);
         }
 
         [(CKCurrentConversationsManager *)self purgeConversation:*(*(&v9 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [conversationsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)pruneCacheToSize:(unint64_t)a3
+- (void)pruneCacheToSize:(unint64_t)size
 {
   v19 = *MEMORY[0x1E69E9840];
   if (IMOSLoggingEnabled())
@@ -239,20 +239,20 @@ LABEL_22:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v17 = 134217984;
-      v18 = a3;
+      sizeCopy = size;
       _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_INFO, "Pruning conversation cache to size %ld", &v17, 0xCu);
     }
   }
 
-  v6 = [(CKCurrentConversationsManager *)self orderedKeys];
-  v7 = [v6 first];
+  orderedKeys = [(CKCurrentConversationsManager *)self orderedKeys];
+  first = [orderedKeys first];
 
-  if (v7)
+  if (first)
   {
     while (1)
     {
-      v8 = [(CKCurrentConversationsManager *)self orderedKeys];
-      v9 = [v8 count] > a3;
+      orderedKeys2 = [(CKCurrentConversationsManager *)self orderedKeys];
+      v9 = [orderedKeys2 count] > size;
 
       if (!v9)
       {
@@ -261,94 +261,94 @@ LABEL_13:
         return;
       }
 
-      v10 = [v7 next];
-      v11 = [v7 object];
-      v12 = [v11 deviceIndependentID];
-      v13 = [v7 key];
-      if (!v12)
+      next = [first next];
+      object = [first object];
+      deviceIndependentID = [object deviceIndependentID];
+      v13 = [first key];
+      if (!deviceIndependentID)
       {
         break;
       }
 
-      if ([(CKCurrentConversationsManager *)self _canDumpConversationFromCache:v11])
+      if ([(CKCurrentConversationsManager *)self _canDumpConversationFromCache:object])
       {
-        [(CKCurrentConversationsManager *)self _prepareToDumpCachedConversation:v11];
-        v14 = [(CKCurrentConversationsManager *)self orderedKeys];
-        [v14 removeLinkedListNode:v7];
+        [(CKCurrentConversationsManager *)self _prepareToDumpCachedConversation:object];
+        orderedKeys3 = [(CKCurrentConversationsManager *)self orderedKeys];
+        [orderedKeys3 removeLinkedListNode:first];
 
-        v15 = [(CKCurrentConversationsManager *)self idToNodeDictionary];
-        [v15 removeObjectForKey:v12];
+        idToNodeDictionary = [(CKCurrentConversationsManager *)self idToNodeDictionary];
+        [idToNodeDictionary removeObjectForKey:deviceIndependentID];
 LABEL_11:
       }
 
-      v7 = v10;
-      if (!v10)
+      first = next;
+      if (!next)
       {
         goto LABEL_13;
       }
     }
 
-    v16 = [(CKCurrentConversationsManager *)self orderedKeys];
-    [v16 removeLinkedListNode:v7];
+    orderedKeys4 = [(CKCurrentConversationsManager *)self orderedKeys];
+    [orderedKeys4 removeLinkedListNode:first];
 
-    v15 = [(CKCurrentConversationsManager *)self idToNodeDictionary];
-    [v15 removeObjectForKey:v13];
+    idToNodeDictionary = [(CKCurrentConversationsManager *)self idToNodeDictionary];
+    [idToNodeDictionary removeObjectForKey:v13];
     goto LABEL_11;
   }
 }
 
-- (void)loadHistoryForConversation:(id)a3 keepAllCurrentlyLoadedMessages:(BOOL)a4
+- (void)loadHistoryForConversation:(id)conversation keepAllCurrentlyLoadedMessages:(BOOL)messages
 {
-  v4 = a4;
-  v12 = a3;
-  v5 = [v12 limitToLoad];
+  messagesCopy = messages;
+  conversationCopy = conversation;
+  limitToLoad = [conversationCopy limitToLoad];
   v6 = +[CKUIBehavior sharedBehaviors];
-  v7 = [v6 defaultConversationViewingMessageCount];
+  defaultConversationViewingMessageCount = [v6 defaultConversationViewingMessageCount];
 
-  if (v7 >= v5)
+  if (defaultConversationViewingMessageCount >= limitToLoad)
   {
-    v7 = v5;
+    defaultConversationViewingMessageCount = limitToLoad;
   }
 
   v8 = +[CKUIBehavior sharedBehaviors];
-  v9 = [v8 initialConversationViewingMessageCount];
+  initialConversationViewingMessageCount = [v8 initialConversationViewingMessageCount];
 
-  if (v7 <= v9)
+  if (defaultConversationViewingMessageCount <= initialConversationViewingMessageCount)
   {
-    v10 = v9;
+    v10 = initialConversationViewingMessageCount;
   }
 
   else
   {
-    v10 = v7;
+    v10 = defaultConversationViewingMessageCount;
   }
 
-  if (v4)
+  if (messagesCopy)
   {
-    v11 = [v12 limitToLoad];
-    if (v10 <= v11)
+    limitToLoad2 = [conversationCopy limitToLoad];
+    if (v10 <= limitToLoad2)
     {
-      v10 = v11;
+      v10 = limitToLoad2;
     }
   }
 
   else
   {
-    [v12 clearConversationLoadFromSpotlight];
+    [conversationCopy clearConversationLoadFromSpotlight];
   }
 
-  [v12 setLoadedMessageCount:v10];
+  [conversationCopy setLoadedMessageCount:v10];
 }
 
-- (BOOL)_canDumpConversationFromCache:(id)a3
+- (BOOL)_canDumpConversationFromCache:(id)cache
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 deviceIndependentID];
-  if (v5)
+  cacheCopy = cache;
+  deviceIndependentID = [cacheCopy deviceIndependentID];
+  if (deviceIndependentID)
   {
-    v6 = [(CKCurrentConversationsManager *)self currentConversations];
-    v7 = [v6 countForObject:v5] == 0;
+    currentConversations = [(CKCurrentConversationsManager *)self currentConversations];
+    v7 = [currentConversations countForObject:deviceIndependentID] == 0;
   }
 
   else
@@ -358,9 +358,9 @@ LABEL_11:
       v8 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
-        v9 = [v4 shortDescription];
+        shortDescription = [cacheCopy shortDescription];
         v11 = 138412290;
-        v12 = v9;
+        v12 = shortDescription;
         _os_log_impl(&dword_19020E000, v8, OS_LOG_TYPE_INFO, "CKCurrentConversationsManager: asking to dump conversation with no deviceIndependentID: %@", &v11, 0xCu);
       }
     }
@@ -371,26 +371,26 @@ LABEL_11:
   return v7;
 }
 
-- (void)_prepareToDumpCachedConversation:(id)a3
+- (void)_prepareToDumpCachedConversation:(id)conversation
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  conversationCopy = conversation;
   if (IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
-      v5 = [v3 shortDescription];
+      shortDescription = [conversationCopy shortDescription];
       v8 = 138412290;
-      v9 = v5;
+      v9 = shortDescription;
       _os_log_impl(&dword_19020E000, v4, OS_LOG_TYPE_INFO, "  => Preparing to dump conversation from cache: %@", &v8, 0xCu);
     }
   }
 
   v6 = +[CKUIBehavior sharedBehaviors];
-  v7 = [v6 defaultConversationSummaryMessageCount];
+  defaultConversationSummaryMessageCount = [v6 defaultConversationSummaryMessageCount];
 
-  [v3 setLoadedMessageCount:v7];
+  [conversationCopy setLoadedMessageCount:defaultConversationSummaryMessageCount];
 }
 
 - (IMDoubleLinkedList)orderedKeys
@@ -426,9 +426,9 @@ LABEL_11:
 - (unint64_t)cacheSize
 {
   v2 = +[CKUIBehavior sharedBehaviors];
-  v3 = [v2 conversationCacheSize];
+  conversationCacheSize = [v2 conversationCacheSize];
 
-  if (!v3 && IMOSLoggingEnabled())
+  if (!conversationCacheSize && IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -438,7 +438,7 @@ LABEL_11:
     }
   }
 
-  return v3;
+  return conversationCacheSize;
 }
 
 @end

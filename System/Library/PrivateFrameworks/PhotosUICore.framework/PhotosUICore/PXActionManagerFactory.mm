@@ -1,18 +1,18 @@
 @interface PXActionManagerFactory
-+ (id)actionManagerForObject:(id)a3;
-+ (id)actionManagerForObjects:(id)a3;
++ (id)actionManagerForObject:(id)object;
++ (id)actionManagerForObjects:(id)objects;
 @end
 
 @implementation PXActionManagerFactory
 
-+ (id)actionManagerForObjects:(id)a3
++ (id)actionManagerForObjects:(id)objects
 {
-  v3 = a3;
-  v4 = [v3 firstObject];
+  objectsCopy = objects;
+  firstObject = [objectsCopy firstObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [[PXPhotoKitAssetActionManager alloc] initWithSuggestion:v4];
+    v5 = [[PXPhotoKitAssetActionManager alloc] initWithSuggestion:firstObject];
 LABEL_5:
     v6 = v5;
     goto LABEL_6;
@@ -21,14 +21,14 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [[PXPhotoKitAssetCollectionActionManager alloc] initWithAssetCollection:v4 displayTitleInfo:0];
+    v5 = [[PXPhotoKitAssetCollectionActionManager alloc] initWithAssetCollection:firstObject displayTitleInfo:0];
     goto LABEL_5;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v4;
+    v8 = firstObject;
     if ([v8 px_isMediaTypesFolder])
     {
       v9 = off_1E771ED48;
@@ -51,18 +51,18 @@ LABEL_5:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [[PXPhotoKitPersonActionManager alloc] initWithPeople:v3];
+      v5 = [[PXPhotoKitPersonActionManager alloc] initWithPeople:objectsCopy];
       goto LABEL_5;
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = v3;
+      v10 = objectsCopy;
       v11 = [PXPhotoKitSocialGroupActionManager alloc];
-      v12 = [v10 firstObject];
-      v13 = [v12 photoLibrary];
-      v6 = [(PXPhotoKitSocialGroupActionManager *)v11 initWithSocialGroups:v10 photoLibrary:v13];
+      firstObject2 = [v10 firstObject];
+      photoLibrary = [firstObject2 photoLibrary];
+      v6 = [(PXPhotoKitSocialGroupActionManager *)v11 initWithSocialGroups:v10 photoLibrary:photoLibrary];
     }
 
     else
@@ -70,14 +70,14 @@ LABEL_5:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v5 = [[PXPhotoKitAssetActionManager alloc] initWithAsset:v4];
+        v5 = [[PXPhotoKitAssetActionManager alloc] initWithAsset:firstObject];
         goto LABEL_5;
       }
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v5 = [[PXPhotoKitPhotoLibraryActionManager alloc] initWithPhotoLibrary:v4];
+        v5 = [[PXPhotoKitPhotoLibraryActionManager alloc] initWithPhotoLibrary:firstObject];
         goto LABEL_5;
       }
 
@@ -90,15 +90,15 @@ LABEL_6:
   return v6;
 }
 
-+ (id)actionManagerForObject:(id)a3
++ (id)actionManagerForObject:(id)object
 {
   v10 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  objectCopy = object;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v9 count:1];
+  objectCopy2 = object;
+  v6 = [v4 arrayWithObjects:&objectCopy count:1];
 
-  v7 = [a1 actionManagerForObjects:{v6, v9, v10}];
+  v7 = [self actionManagerForObjects:{v6, objectCopy, v10}];
 
   return v7;
 }

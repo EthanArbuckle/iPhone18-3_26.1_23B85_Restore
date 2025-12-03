@@ -1,22 +1,22 @@
 @interface OrgApacheLuceneStoreRateLimiter_SimpleRateLimiter
-- (OrgApacheLuceneStoreRateLimiter_SimpleRateLimiter)initWithDouble:(double)a3;
-- (int64_t)pauseWithLong:(int64_t)a3;
-- (void)setMBPerSecWithDouble:(double)a3;
+- (OrgApacheLuceneStoreRateLimiter_SimpleRateLimiter)initWithDouble:(double)double;
+- (int64_t)pauseWithLong:(int64_t)long;
+- (void)setMBPerSecWithDouble:(double)double;
 @end
 
 @implementation OrgApacheLuceneStoreRateLimiter_SimpleRateLimiter
 
-- (OrgApacheLuceneStoreRateLimiter_SimpleRateLimiter)initWithDouble:(double)a3
+- (OrgApacheLuceneStoreRateLimiter_SimpleRateLimiter)initWithDouble:(double)double
 {
-  [(OrgApacheLuceneStoreRateLimiter_SimpleRateLimiter *)self setMBPerSecWithDouble:a3];
+  [(OrgApacheLuceneStoreRateLimiter_SimpleRateLimiter *)self setMBPerSecWithDouble:double];
   self->lastNS_ = JavaLangSystem_nanoTime();
   return self;
 }
 
-- (void)setMBPerSecWithDouble:(double)a3
+- (void)setMBPerSecWithDouble:(double)double
 {
-  atomic_store(*&a3, &self->mbPerSec_);
-  v3 = a3 * 0.005 * 1024.0;
+  atomic_store(*&double, &self->mbPerSec_);
+  v3 = double * 0.005 * 1024.0;
   v4 = vcvtd_n_s64_f64(v3, 0xAuLL);
   v5 = 0x7FFFFFFFFFFFFFFFLL;
   if (v3 * 1024.0 < 0.0)
@@ -32,11 +32,11 @@
   atomic_store(v4, &self->minPauseCheckBytes_);
 }
 
-- (int64_t)pauseWithLong:(int64_t)a3
+- (int64_t)pauseWithLong:(int64_t)long
 {
   v5 = JavaLangSystem_nanoTime();
   v6 = COERCE_DOUBLE(atomic_load(&self->mbPerSec_));
-  v7 = vcvtd_n_f64_s64(a3, 0xAuLL) * 0.0009765625 / v6;
+  v7 = vcvtd_n_f64_s64(long, 0xAuLL) * 0.0009765625 / v6;
   objc_sync_enter(self);
   lastNS = self->lastNS_;
   v9 = (v7 * 1000000000.0);

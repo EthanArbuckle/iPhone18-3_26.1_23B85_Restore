@@ -1,18 +1,18 @@
 @interface NSFileWrapper
-+ (BOOL)_canSafelyMapFilesAtPath:(id)a3;
-+ (BOOL)_finishWritingToURL:(id)a3 byMovingItemAtURL:(id)a4 addingAttributes:(id)a5 error:(id *)a6;
-+ (BOOL)_finishWritingToURL:(id)a3 byTakingContentsFromItemAtURL:(id)a4 addingAttributes:(id)a5 usingTemporaryDirectoryAtURL:(id)a6 backupFileName:(id)a7 error:(id *)a8;
-+ (BOOL)_forPath:(id)a3 getItemKind:(id *)a4 modificationDate:(id *)a5;
-+ (id)_newContentsAtURL:(id)a3 path:(id)a4 itemKind:(id)a5 oldChildrenByUniqueFileName:(id)a6 options:(unint64_t)a7 error:(id *)a8;
-+ (id)_pathForURL:(id)a3 reading:(BOOL)a4 error:(id *)a5;
-+ (id)_temporaryDirectoryURLForWritingToURL:(id)a3 error:(id *)a4;
-+ (void)_removeTemporaryDirectoryAtURL:(id)a3;
-+ (void)_writeAttributes:(id)a3 toURL:(id)a4;
++ (BOOL)_canSafelyMapFilesAtPath:(id)path;
++ (BOOL)_finishWritingToURL:(id)l byMovingItemAtURL:(id)rL addingAttributes:(id)attributes error:(id *)error;
++ (BOOL)_finishWritingToURL:(id)l byTakingContentsFromItemAtURL:(id)rL addingAttributes:(id)attributes usingTemporaryDirectoryAtURL:(id)uRL backupFileName:(id)name error:(id *)error;
++ (BOOL)_forPath:(id)path getItemKind:(id *)kind modificationDate:(id *)date;
++ (id)_newContentsAtURL:(id)l path:(id)path itemKind:(id)kind oldChildrenByUniqueFileName:(id)name options:(unint64_t)options error:(id *)error;
++ (id)_pathForURL:(id)l reading:(BOOL)reading error:(id *)error;
++ (id)_temporaryDirectoryURLForWritingToURL:(id)l error:(id *)error;
++ (void)_removeTemporaryDirectoryAtURL:(id)l;
++ (void)_writeAttributes:(id)attributes toURL:(id)l;
 + (void)initialize;
-- (BOOL)_forWritingToURL:(id)a3 returnContentsLazyReadingError:(id *)a4;
-- (BOOL)_matchesItemKind:(id)a3 modificationDate:(id)a4;
-- (BOOL)_readContentsFromURL:(id)a3 path:(id)a4 itemKind:(id)a5 options:(unint64_t)a6 error:(id *)a7;
-- (BOOL)_writeContentsToURL:(id)a3 path:(id)a4 originalContentsURL:(id)a5 tryHardLinking:(BOOL)a6 didHardLinking:(BOOL *)a7 error:(id *)a8;
+- (BOOL)_forWritingToURL:(id)l returnContentsLazyReadingError:(id *)error;
+- (BOOL)_matchesItemKind:(id)kind modificationDate:(id)date;
+- (BOOL)_readContentsFromURL:(id)l path:(id)path itemKind:(id)kind options:(unint64_t)options error:(id *)error;
+- (BOOL)_writeContentsToURL:(id)l path:(id)path originalContentsURL:(id)rL tryHardLinking:(BOOL)linking didHardLinking:(BOOL *)hardLinking error:(id *)error;
 - (BOOL)isDirectory;
 - (BOOL)isRegularFile;
 - (BOOL)isSymbolicLink;
@@ -35,21 +35,21 @@
 - (NSString)keyForFileWrapper:(NSFileWrapper *)child;
 - (NSString)preferredFilename;
 - (NSURL)symbolicLinkDestinationURL;
-- (id)_addChild:(id)a3 forUniqueFileName:(id)a4;
+- (id)_addChild:(id)child forUniqueFileName:(id)name;
 - (id)_attributesToWrite;
-- (id)_fullDescription:(BOOL)a3;
-- (id)_initWithImpl:(id)a3 preferredFileName:(id)a4 uniqueFileName:(id)a5 docInfo:(id)a6 iconData:(id)a7;
+- (id)_fullDescription:(BOOL)description;
+- (id)_initWithImpl:(id)impl preferredFileName:(id)name uniqueFileName:(id)fileName docInfo:(id)info iconData:(id)data;
 - (id)_newImpl;
-- (id)_uniqueFileNameOfChild:(id)a3;
-- (void)_addParent:(id)a3;
+- (id)_uniqueFileNameOfChild:(id)child;
+- (void)_addParent:(id)parent;
 - (void)_initDirectoryContents;
-- (void)_observePreferredFileNameOfChild:(id)a3;
-- (void)_removeChild:(id)a3 forUniqueFileName:(id)a4;
-- (void)_removeParent:(id)a3;
+- (void)_observePreferredFileNameOfChild:(id)child;
+- (void)_removeChild:(id)child forUniqueFileName:(id)name;
+- (void)_removeParent:(id)parent;
 - (void)_resetFileModificationDate;
 - (void)_updateDescendantFileNames;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)removeFileWrapper:(NSFileWrapper *)child;
 - (void)setFileAttributes:(NSDictionary *)fileAttributes;
 - (void)setFilename:(NSString *)filename;
@@ -67,8 +67,8 @@
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v3 = [self->_contents objectEnumerator];
-    v4 = [v3 countByEnumeratingWithState:&v10 objects:v9 count:16];
+    objectEnumerator = [self->_contents objectEnumerator];
+    v4 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v9 count:16];
     if (v4)
     {
       v5 = v4;
@@ -80,14 +80,14 @@
         {
           if (*v11 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(objectEnumerator);
           }
 
           [*(*(&v10 + 1) + 8 * v7++) _removeParent:self];
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v10 objects:v9 count:16];
+        v5 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v9 count:16];
       }
 
       while (v5);
@@ -101,10 +101,10 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    [a1 setVersion:46];
+    [self setVersion:46];
   }
 }
 
@@ -362,7 +362,7 @@ LABEL_15:
 LABEL_8:
   if ([(NSRTFD *)v5 isPackage])
   {
-    v12 = self;
+    selfCopy2 = self;
     v13 = v5;
     v14 = v11;
     v15 = 0;
@@ -374,56 +374,56 @@ LABEL_8:
     v17 = [(NSRTFD *)v5 objectForKey:0x1EEF10430];
     v18 = [(NSRTFD *)v5 _getDocInfoForKey:0x1EEF10430];
     v16 = -[NSRTFD objectForKey:](v5, "objectForKey:", [@".." stringByAppendingPathExtension:@"tiff"]);
-    v12 = self;
+    selfCopy2 = self;
     v13 = v17;
     v14 = v11;
     v15 = v18;
   }
 
-  v19 = [(NSFileWrapper *)v12 _initWithImpl:v13 preferredFileName:v14 uniqueFileName:0 docInfo:v15 iconData:v16];
+  v19 = [(NSFileWrapper *)selfCopy2 _initWithImpl:v13 preferredFileName:v14 uniqueFileName:0 docInfo:v15 iconData:v16];
 
   return v19;
 }
 
 - (BOOL)isDirectory
 {
-  v2 = [(NSDictionary *)[(NSFileWrapper *)self fileAttributes] fileType];
+  fileType = [(NSDictionary *)[(NSFileWrapper *)self fileAttributes] fileType];
 
-  return [v2 isEqualToString:@"NSFileTypeDirectory"];
+  return [fileType isEqualToString:@"NSFileTypeDirectory"];
 }
 
 - (BOOL)isRegularFile
 {
-  v2 = [(NSDictionary *)[(NSFileWrapper *)self fileAttributes] fileType];
+  fileType = [(NSDictionary *)[(NSFileWrapper *)self fileAttributes] fileType];
 
-  return [v2 isEqualToString:@"NSFileTypeRegular"];
+  return [fileType isEqualToString:@"NSFileTypeRegular"];
 }
 
 - (BOOL)isSymbolicLink
 {
-  v2 = [(NSDictionary *)[(NSFileWrapper *)self fileAttributes] fileType];
+  fileType = [(NSDictionary *)[(NSFileWrapper *)self fileAttributes] fileType];
 
-  return [v2 isEqualToString:@"NSFileTypeSymbolicLink"];
+  return [fileType isEqualToString:@"NSFileTypeSymbolicLink"];
 }
 
-- (void)_observePreferredFileNameOfChild:(id)a3
+- (void)_observePreferredFileNameOfChild:(id)child
 {
-  v4 = a3;
-  v5 = [(NSArray *)[(NSDictionary *)[(NSFileWrapper *)self fileWrappers] allKeysForObject:a3] count];
+  childCopy = child;
+  v5 = [(NSArray *)[(NSDictionary *)[(NSFileWrapper *)self fileWrappers] allKeysForObject:child] count];
   if (v5)
   {
     v6 = v5;
     v7 = v5;
     do
     {
-      [(NSFileWrapper *)self removeFileWrapper:a3];
+      [(NSFileWrapper *)self removeFileWrapper:child];
       --v7;
     }
 
     while (v7);
     do
     {
-      [(NSFileWrapper *)self addFileWrapper:a3];
+      [(NSFileWrapper *)self addFileWrapper:child];
       --v6;
     }
 
@@ -548,14 +548,14 @@ LABEL_8:
   return v3;
 }
 
-+ (BOOL)_forPath:(id)a3 getItemKind:(id *)a4 modificationDate:(id *)a5
++ (BOOL)_forPath:(id)path getItemKind:(id *)kind modificationDate:(id *)date
 {
   v12 = *MEMORY[0x1E69E9840];
   memset(&v11.st_mtimespec, 0, 96);
-  v7 = lstat([a3 fileSystemRepresentation], &v11);
+  v7 = lstat([path fileSystemRepresentation], &v11);
   if (!v7)
   {
-    if (a4)
+    if (kind)
     {
       if ((v11.st_mode & 0x1000) != 0 || (v8 = (v11.st_mode >> 13) - 1, v8 > 5))
       {
@@ -567,28 +567,28 @@ LABEL_8:
         v9 = off_1E69F7660[v8];
       }
 
-      *a4 = *v9;
+      *kind = *v9;
     }
 
-    if (a5)
+    if (date)
     {
-      *a5 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:v11.st_mtimespec.tv_sec];
+      *date = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:v11.st_mtimespec.tv_sec];
     }
   }
 
   return v7 == 0;
 }
 
-- (BOOL)_matchesItemKind:(id)a3 modificationDate:(id)a4
+- (BOOL)_matchesItemKind:(id)kind modificationDate:(id)date
 {
-  v7 = [(NSDictionary *)[(NSFileWrapper *)self fileAttributes] fileModificationDate];
+  fileModificationDate = [(NSDictionary *)[(NSFileWrapper *)self fileAttributes] fileModificationDate];
   result = 0;
-  if (a4 && v7)
+  if (date && fileModificationDate)
   {
-    [a4 timeIntervalSinceReferenceDate];
+    [date timeIntervalSinceReferenceDate];
     v10 = v9;
-    [v7 timeIntervalSinceReferenceDate];
-    return vabdd_f64(v10, v11) < 1.0 && ([a3 isEqualToString:@"NSFileTypeDirectory"] && -[NSFileWrapper isDirectory](self, "isDirectory") || objc_msgSend(a3, "isEqualToString:", @"NSFileTypeRegular") && -[NSFileWrapper isRegularFile](self, "isRegularFile") || objc_msgSend(a3, "isEqualToString:", @"NSFileTypeSymbolicLink") && -[NSFileWrapper isSymbolicLink](self, "isSymbolicLink"));
+    [fileModificationDate timeIntervalSinceReferenceDate];
+    return vabdd_f64(v10, v11) < 1.0 && ([kind isEqualToString:@"NSFileTypeDirectory"] && -[NSFileWrapper isDirectory](self, "isDirectory") || objc_msgSend(kind, "isEqualToString:", @"NSFileTypeRegular") && -[NSFileWrapper isRegularFile](self, "isRegularFile") || objc_msgSend(kind, "isEqualToString:", @"NSFileTypeSymbolicLink") && -[NSFileWrapper isSymbolicLink](self, "isSymbolicLink"));
   }
 
   return result;
@@ -658,10 +658,10 @@ LABEL_8:
   return v4;
 }
 
-+ (BOOL)_canSafelyMapFilesAtPath:(id)a3
++ (BOOL)_canSafelyMapFilesAtPath:(id)path
 {
   v12 = *MEMORY[0x1E69E9840];
-  IsSafeForMapping = [a3 getFileSystemRepresentation:v11 maxLength:1024];
+  IsSafeForMapping = [path getFileSystemRepresentation:v11 maxLength:1024];
   if (IsSafeForMapping)
   {
     v10 = 0;
@@ -697,13 +697,13 @@ LABEL_8:
   return IsSafeForMapping;
 }
 
-+ (id)_newContentsAtURL:(id)a3 path:(id)a4 itemKind:(id)a5 oldChildrenByUniqueFileName:(id)a6 options:(unint64_t)a7 error:(id *)a8
++ (id)_newContentsAtURL:(id)l path:(id)path itemKind:(id)kind oldChildrenByUniqueFileName:(id)name options:(unint64_t)options error:(id *)error
 {
   v55 = *MEMORY[0x1E69E9840];
   v13 = +[NSFileManager defaultManager];
-  if ([a5 isEqualToString:@"NSFileTypeDirectory"])
+  if ([kind isEqualToString:@"NSFileTypeDirectory"])
   {
-    v14 = [(NSFileManager *)v13 contentsOfDirectoryAtURL:a3 includingPropertiesForKeys:0 options:0 error:a8];
+    v14 = [(NSFileManager *)v13 contentsOfDirectoryAtURL:l includingPropertiesForKeys:0 options:0 error:error];
     if (v14)
     {
       v15 = v14;
@@ -718,8 +718,8 @@ LABEL_8:
         v18 = v17;
         v19 = 0;
         v44 = *v52;
-        v39 = a7;
-        v40 = a8;
+        optionsCopy = options;
+        errorCopy = error;
         v41 = v16;
         while (2)
         {
@@ -732,8 +732,8 @@ LABEL_8:
 
             v21 = *(*(&v51 + 1) + 8 * i);
             v22 = objc_alloc_init(NSAutoreleasePool);
-            v23 = [v21 lastPathComponent];
-            if (![objc_msgSend(v23 "pathExtension")])
+            lastPathComponent = [v21 lastPathComponent];
+            if (![objc_msgSend(lastPathComponent "pathExtension")])
             {
               goto LABEL_51;
             }
@@ -759,10 +759,10 @@ LABEL_8:
                       objc_enumerationMutation(v15);
                     }
 
-                    v28 = [*(*(&v46 + 1) + 8 * j) lastPathComponent];
-                    if (v28)
+                    lastPathComponent2 = [*(*(&v46 + 1) + 8 * j) lastPathComponent];
+                    if (lastPathComponent2)
                     {
-                      [v19 addObject:v28];
+                      [v19 addObject:lastPathComponent2];
                     }
                   }
 
@@ -770,37 +770,37 @@ LABEL_8:
                 }
 
                 while (v25);
-                a7 = v39;
-                a8 = v40;
+                options = optionsCopy;
+                error = errorCopy;
               }
 
               v16 = v41;
             }
 
-            if (([v19 containsObject:{objc_msgSend(v23, "stringByDeletingPathExtension", v39, v40)}] & 1) == 0)
+            if (([v19 containsObject:{objc_msgSend(lastPathComponent, "stringByDeletingPathExtension", optionsCopy, errorCopy)}] & 1) == 0)
             {
 LABEL_51:
-              if (v23 && (v29 = [a6 objectForKey:v23]) != 0)
+              if (lastPathComponent && (v29 = [name objectForKey:lastPathComponent]) != 0)
               {
-                if (![v29 readFromURL:v21 options:a7 | 0x100 error:a8])
+                if (![v29 readFromURL:v21 options:options | 0x100 error:error])
                 {
                   goto LABEL_40;
                 }
 
-                [a6 removeObjectForKey:v23];
+                [name removeObjectForKey:lastPathComponent];
               }
 
               else
               {
-                v30 = [[a1 alloc] initWithURL:v21 options:a7 | 0x100 error:a8];
+                v30 = [[self alloc] initWithURL:v21 options:options | 0x100 error:error];
                 if (!v30)
                 {
 LABEL_40:
-                  if (a8)
+                  if (error)
                   {
-                    v37 = *a8;
+                    v37 = *error;
                     [(NSAutoreleasePool *)v22 drain];
-                    v38 = *a8;
+                    v38 = *error;
                   }
 
                   else
@@ -816,7 +816,7 @@ LABEL_40:
               }
             }
 
-            [(NSAutoreleasePool *)v22 drain:v39];
+            [(NSAutoreleasePool *)v22 drain:optionsCopy];
           }
 
           v18 = [v15 countByEnumeratingWithState:&v51 objects:v50 count:16];
@@ -835,26 +835,26 @@ LABEL_40:
     return 0;
   }
 
-  if ([a5 isEqualToString:@"NSFileTypeRegular"])
+  if ([kind isEqualToString:@"NSFileTypeRegular"])
   {
     v32 = objc_alloc(MEMORY[0x1E695DEF0]);
 
-    return [v32 initWithContentsOfURL:a3 options:~(a7 >> 1) & 1 error:a8];
+    return [v32 initWithContentsOfURL:l options:~(options >> 1) & 1 error:error];
   }
 
-  if (![a5 isEqualToString:@"NSFileTypeSymbolicLink"])
+  if (![kind isEqualToString:@"NSFileTypeSymbolicLink"])
   {
-    if (a8)
+    if (error)
     {
       v16 = 0;
-      *a8 = _NSErrorWithFilePathErrnoVariantAndExtraUserInfo(5, a3, 1, 0, 0);
+      *error = _NSErrorWithFilePathErrnoVariantAndExtraUserInfo(5, l, 1, 0, 0);
       return v16;
     }
 
     return 0;
   }
 
-  v34 = [(NSFileManager *)v13 destinationOfSymbolicLinkAtPath:a4 error:a8];
+  v34 = [(NSFileManager *)v13 destinationOfSymbolicLinkAtPath:path error:error];
   if (!v34)
   {
     return 0;
@@ -866,17 +866,17 @@ LABEL_40:
   return [v36 initFileURLWithPath:v35];
 }
 
-- (BOOL)_readContentsFromURL:(id)a3 path:(id)a4 itemKind:(id)a5 options:(unint64_t)a6 error:(id *)a7
+- (BOOL)_readContentsFromURL:(id)l path:(id)path itemKind:(id)kind options:(unint64_t)options error:(id *)error
 {
   v40 = *MEMORY[0x1E69E9840];
-  v13 = [a3 startAccessingSecurityScopedResource];
-  if (!a4)
+  startAccessingSecurityScopedResource = [l startAccessingSecurityScopedResource];
+  if (!path)
   {
-    a4 = [objc_opt_class() _pathForURL:a3 reading:1 error:a7];
-    if (!a4)
+    path = [objc_opt_class() _pathForURL:l reading:1 error:error];
+    if (!path)
     {
       v27 = 0;
-      if (!v13)
+      if (!startAccessingSecurityScopedResource)
       {
         return v27;
       }
@@ -895,16 +895,16 @@ LABEL_40:
     v14 = 0;
   }
 
-  v15 = [objc_opt_class() _newContentsAtURL:a3 path:a4 itemKind:a5 oldChildrenByUniqueFileName:v14 options:a6 error:a7];
-  v16 = a6 & 0x100 | v15;
+  v15 = [objc_opt_class() _newContentsAtURL:l path:path itemKind:kind oldChildrenByUniqueFileName:v14 options:options error:error];
+  v16 = options & 0x100 | v15;
   v17 = v16 == 0;
   if (v16)
   {
     v18 = v15;
-    v29 = v13;
-    if (a7 && !v15)
+    v29 = startAccessingSecurityScopedResource;
+    if (error && !v15)
     {
-      *a7 = 0;
+      *error = 0;
     }
 
     v38 = 0u;
@@ -934,7 +934,7 @@ LABEL_40:
       while (v20);
     }
 
-    if ([a5 isEqualToString:@"NSFileTypeDirectory"])
+    if ([kind isEqualToString:@"NSFileTypeDirectory"])
     {
       v33 = 0u;
       v34 = 0u;
@@ -963,7 +963,7 @@ LABEL_40:
         while (v24);
       }
 
-      v13 = v29;
+      startAccessingSecurityScopedResource = v29;
       if (v18 && !self->_contents)
       {
         [(NSFileWrapper *)self _initDirectoryContents];
@@ -974,16 +974,16 @@ LABEL_40:
     {
 
       self->_contents = v18;
-      v13 = v29;
+      startAccessingSecurityScopedResource = v29;
     }
   }
 
   v27 = !v17;
 
-  if (v13)
+  if (startAccessingSecurityScopedResource)
   {
 LABEL_30:
-    [a3 stopAccessingSecurityScopedResource];
+    [l stopAccessingSecurityScopedResource];
   }
 
   return v27;
@@ -1082,9 +1082,9 @@ LABEL_25:
   return v9;
 }
 
-- (BOOL)_forWritingToURL:(id)a3 returnContentsLazyReadingError:(id *)a4
+- (BOOL)_forWritingToURL:(id)l returnContentsLazyReadingError:(id *)error
 {
-  if (a4)
+  if (error)
   {
     contentsLazyReadingError = self->_contentsLazyReadingError;
     if (contentsLazyReadingError)
@@ -1094,26 +1094,26 @@ LABEL_25:
 
     else
     {
-      v7 = _NSErrorWithFilePathErrnoVariantAndExtraUserInfo(9, a3, 0, 0, 0);
+      v7 = _NSErrorWithFilePathErrnoVariantAndExtraUserInfo(9, l, 0, 0, 0);
     }
 
-    *a4 = v7;
+    *error = v7;
   }
 
   self->_contentsLazyReadingError = 0;
   return 0;
 }
 
-- (BOOL)_writeContentsToURL:(id)a3 path:(id)a4 originalContentsURL:(id)a5 tryHardLinking:(BOOL)a6 didHardLinking:(BOOL *)a7 error:(id *)a8
+- (BOOL)_writeContentsToURL:(id)l path:(id)path originalContentsURL:(id)rL tryHardLinking:(BOOL)linking didHardLinking:(BOOL *)hardLinking error:(id *)error
 {
-  v10 = a6;
+  linkingCopy = linking;
   v61 = *MEMORY[0x1E69E9840];
   v14 = objc_opt_class();
   v15 = v14;
-  if (a5)
+  if (rL)
   {
-    v16 = [v14 _pathForURL:a5 reading:1 error:0];
-    if (!a7)
+    v16 = [v14 _pathForURL:rL reading:1 error:0];
+    if (!hardLinking)
     {
       goto LABEL_4;
     }
@@ -1122,10 +1122,10 @@ LABEL_25:
   }
 
   v16 = 0;
-  if (a7)
+  if (hardLinking)
   {
 LABEL_3:
-    *a7 = 0;
+    *hardLinking = 0;
   }
 
 LABEL_4:
@@ -1136,7 +1136,7 @@ LABEL_4:
     {
       if (v16)
       {
-        if (v10 && !self->_attributesMustBeWrittenSoNoHardLinking)
+        if (linkingCopy && !self->_attributesMustBeWrittenSoNoHardLinking)
         {
           v54 = 0;
           v55 = 0;
@@ -1144,11 +1144,11 @@ LABEL_4:
           {
             if ([(NSFileWrapper *)self _matchesItemKind:v55 modificationDate:v54])
             {
-              v37 = link([v16 fileSystemRepresentation], objc_msgSend(a4, "fileSystemRepresentation"));
-              if (a7 && !v37)
+              v37 = link([v16 fileSystemRepresentation], objc_msgSend(path, "fileSystemRepresentation"));
+              if (hardLinking && !v37)
               {
                 result = 1;
-                *a7 = 1;
+                *hardLinking = 1;
                 return result;
               }
 
@@ -1162,10 +1162,10 @@ LABEL_4:
       }
 
       self->_contentsLazyReadingError = 0;
-      v49 = [(NSFileWrapper *)self regularFileContents];
-      if (v49)
+      regularFileContents = [(NSFileWrapper *)self regularFileContents];
+      if (regularFileContents)
       {
-        return [(NSData *)v49 writeToURL:a3 options:0 error:a8];
+        return [(NSData *)regularFileContents writeToURL:l options:0 error:error];
       }
     }
 
@@ -1173,11 +1173,11 @@ LABEL_4:
     {
       if (![(NSFileWrapper *)self isSymbolicLink])
       {
-        if (a8)
+        if (error)
         {
-          v40 = _NSErrorWithFilePathErrnoVariantAndExtraUserInfo(5, a3, 1, 0, 0);
+          v40 = _NSErrorWithFilePathErrnoVariantAndExtraUserInfo(5, l, 1, 0, 0);
           result = 0;
-          *a8 = v40;
+          *error = v40;
           return result;
         }
 
@@ -1185,41 +1185,41 @@ LABEL_4:
       }
 
       self->_contentsLazyReadingError = 0;
-      v38 = [(NSFileWrapper *)self symbolicLinkDestinationURL];
-      if (v38)
+      symbolicLinkDestinationURL = [(NSFileWrapper *)self symbolicLinkDestinationURL];
+      if (symbolicLinkDestinationURL)
       {
-        v39 = [(NSURL *)v38 relativePath];
+        relativePath = [(NSURL *)symbolicLinkDestinationURL relativePath];
 
-        return [(NSFileManager *)v17 createSymbolicLinkAtPath:a4 withDestinationPath:v39 error:a8];
+        return [(NSFileManager *)v17 createSymbolicLinkAtPath:path withDestinationPath:relativePath error:error];
       }
     }
 
-    [(NSFileWrapper *)self _forWritingToURL:a3 returnContentsLazyReadingError:a8];
+    [(NSFileWrapper *)self _forWritingToURL:l returnContentsLazyReadingError:error];
     return 0;
   }
 
   v51 = v17;
-  if (![(NSFileManager *)v17 createDirectoryAtPath:a4 withIntermediateDirectories:0 attributes:0 error:a8])
+  if (![(NSFileManager *)v17 createDirectoryAtPath:path withIntermediateDirectories:0 attributes:0 error:error])
   {
 LABEL_47:
-    [(NSFileManager *)v51 removeItemAtPath:a4 error:0];
+    [(NSFileManager *)v51 removeItemAtPath:path error:0];
     return 0;
   }
 
   self->_contentsLazyReadingError = 0;
-  v18 = [(NSFileWrapper *)self fileWrappers];
-  if (!v18)
+  fileWrappers = [(NSFileWrapper *)self fileWrappers];
+  if (!fileWrappers)
   {
-    [(NSFileWrapper *)self _forWritingToURL:a3 returnContentsLazyReadingError:a8];
+    [(NSFileWrapper *)self _forWritingToURL:l returnContentsLazyReadingError:error];
     goto LABEL_47;
   }
 
-  v19 = v18;
+  v19 = fileWrappers;
   v59 = 0u;
   v60 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v52 = [(NSDictionary *)v18 countByEnumeratingWithState:&v57 objects:v56 count:16];
+  v52 = [(NSDictionary *)fileWrappers countByEnumeratingWithState:&v57 objects:v56 count:16];
   if (!v52)
   {
     return 1;
@@ -1240,18 +1240,18 @@ LABEL_47:
       v22 = *(*(&v57 + 1) + 8 * v21);
       v23 = objc_alloc_init(NSAutoreleasePool);
       v24 = [(NSDictionary *)v19 objectForKey:v22];
-      v25 = [v24 isDirectory];
-      v26 = [objc_alloc(MEMORY[0x1E695DFF8]) initFileURLWithPath:objc_msgSend(a4 isDirectory:{"stringByAppendingPathComponent:", v22), v25}];
+      isDirectory = [v24 isDirectory];
+      v26 = [objc_alloc(MEMORY[0x1E695DFF8]) initFileURLWithPath:objc_msgSend(path isDirectory:{"stringByAppendingPathComponent:", v22), isDirectory}];
       if (v16 && (v27 = [v24 filename]) != 0)
       {
         v28 = v27;
-        v29 = a8;
+        errorCopy = error;
         v30 = objc_alloc(MEMORY[0x1E695DFF8]);
         v31 = [v16 stringByAppendingPathComponent:v28];
         v32 = v30;
-        a8 = v29;
+        error = errorCopy;
         v20 = v50;
-        v33 = [v32 initFileURLWithPath:v31 isDirectory:v25];
+        v33 = [v32 initFileURLWithPath:v31 isDirectory:isDirectory];
       }
 
       else
@@ -1259,32 +1259,32 @@ LABEL_47:
         v33 = 0;
       }
 
-      v34 = [v24 writeToURL:v26 options:256 originalContentsURL:v33 error:a8];
+      v34 = [v24 writeToURL:v26 options:256 originalContentsURL:v33 error:error];
 
-      if (a8 && (v34 & 1) == 0)
+      if (error && (v34 & 1) == 0)
       {
-        if (*a8)
+        if (*error)
         {
-          v41 = [*a8 domain];
-          v42 = [*a8 code];
-          if ([v41 isEqualToString:@"NSCocoaErrorDomain"] && v42 == 640)
+          domain = [*error domain];
+          code = [*error code];
+          if ([domain isEqualToString:@"NSCocoaErrorDomain"] && code == 640)
           {
-            v43 = a8;
+            errorCopy2 = error;
             v44 = [NSError alloc];
-            v45 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{a4, @"NSFilePath", *v43, @"NSUnderlyingError", 0}];
+            v45 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{path, @"NSFilePath", *errorCopy2, @"NSUnderlyingError", 0}];
             v46 = v44;
-            a8 = v43;
-            *v43 = [(NSError *)v46 initWithDomain:v41 code:640 userInfo:v45];
+            error = errorCopy2;
+            *errorCopy2 = [(NSError *)v46 initWithDomain:domain code:640 userInfo:v45];
           }
 
           else
           {
-            v47 = *a8;
+            v47 = *error;
           }
         }
 
         [(NSAutoreleasePool *)v23 drain];
-        v48 = *a8;
+        v48 = *error;
         goto LABEL_47;
       }
 
@@ -1313,53 +1313,53 @@ LABEL_47:
 - (id)_attributesToWrite
 {
   v13[5] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(NSFileWrapper *)self fileAttributes];
-  if (([-[NSDictionary fileType](v4 "fileType")] & 1) == 0)
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  fileAttributes = [(NSFileWrapper *)self fileAttributes];
+  if (([-[NSDictionary fileType](fileAttributes "fileType")] & 1) == 0)
   {
-    v5 = [(NSDictionary *)v4 objectForKey:@"NSFileCreationDate"];
+    v5 = [(NSDictionary *)fileAttributes objectForKey:@"NSFileCreationDate"];
     if (v5)
     {
-      [v3 setObject:v5 forKey:@"NSFileCreationDate"];
+      [dictionary setObject:v5 forKey:@"NSFileCreationDate"];
     }
 
-    v6 = [(NSDictionary *)v4 objectForKey:@"NSFileModificationDate"];
+    v6 = [(NSDictionary *)fileAttributes objectForKey:@"NSFileModificationDate"];
     if (v6)
     {
-      [v3 setObject:v6 forKey:@"NSFileModificationDate"];
+      [dictionary setObject:v6 forKey:@"NSFileModificationDate"];
     }
 
-    v7 = [(NSDictionary *)v4 objectForKey:@"NSFileExtensionHidden"];
+    v7 = [(NSDictionary *)fileAttributes objectForKey:@"NSFileExtensionHidden"];
     if (v7)
     {
-      [v3 setObject:v7 forKey:@"NSFileExtensionHidden"];
+      [dictionary setObject:v7 forKey:@"NSFileExtensionHidden"];
     }
 
-    v8 = [(NSDictionary *)v4 objectForKey:@"NSFilePosixPermissions"];
+    v8 = [(NSDictionary *)fileAttributes objectForKey:@"NSFilePosixPermissions"];
     if (v8)
     {
-      [v3 setObject:+[NSNumber numberWithUnsignedLong:](NSNumber forKey:{"numberWithUnsignedLong:", objc_msgSend(v8, "unsignedLongValue") & ~+[NSPageData _umask](NSPageData, "_umask")), @"NSFilePosixPermissions"}];
+      [dictionary setObject:+[NSNumber numberWithUnsignedLong:](NSNumber forKey:{"numberWithUnsignedLong:", objc_msgSend(v8, "unsignedLongValue") & ~+[NSPageData _umask](NSPageData, "_umask")), @"NSFilePosixPermissions"}];
     }
 
-    v9 = [(NSDictionary *)v4 objectForKey:@"NSFileExtendedAttributes"];
+    v9 = [(NSDictionary *)fileAttributes objectForKey:@"NSFileExtendedAttributes"];
     if (v9)
     {
-      [v3 setObject:v9 forKey:@"NSFileExtendedAttributes"];
+      [dictionary setObject:v9 forKey:@"NSFileExtendedAttributes"];
     }
   }
 
-  if ([-[NSDictionary fileType](v4 "fileType")])
+  if ([-[NSDictionary fileType](fileAttributes "fileType")])
   {
-    v10 = [(NSDictionary *)v4 objectForKey:@"NSFileHFSCreatorCode"];
+    v10 = [(NSDictionary *)fileAttributes objectForKey:@"NSFileHFSCreatorCode"];
     if ([v10 unsignedIntValue])
     {
-      [v3 setObject:v10 forKey:@"NSFileHFSCreatorCode"];
+      [dictionary setObject:v10 forKey:@"NSFileHFSCreatorCode"];
     }
 
-    v11 = [(NSDictionary *)v4 objectForKey:@"NSFileHFSTypeCode"];
+    v11 = [(NSDictionary *)fileAttributes objectForKey:@"NSFileHFSTypeCode"];
     if ([v11 unsignedIntValue])
     {
-      [v3 setObject:v11 forKey:@"NSFileHFSTypeCode"];
+      [dictionary setObject:v11 forKey:@"NSFileHFSTypeCode"];
     }
   }
 
@@ -1367,9 +1367,9 @@ LABEL_47:
   v13[1] = 3221225472;
   v13[2] = __35__NSFileWrapper__attributesToWrite__block_invoke;
   v13[3] = &unk_1E69F67F8;
-  v13[4] = v3;
-  [(NSDictionary *)v4 enumerateKeysAndObjectsUsingBlock:v13];
-  return v3;
+  v13[4] = dictionary;
+  [(NSDictionary *)fileAttributes enumerateKeysAndObjectsUsingBlock:v13];
+  return dictionary;
 }
 
 uint64_t __35__NSFileWrapper__attributesToWrite__block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -1390,12 +1390,12 @@ uint64_t __35__NSFileWrapper__attributesToWrite__block_invoke(uint64_t a1, void 
   v15 = *MEMORY[0x1E69E9840];
   if ([(NSFileWrapper *)self isDirectory])
   {
-    v3 = [(NSFileWrapper *)self fileWrappers];
+    fileWrappers = [(NSFileWrapper *)self fileWrappers];
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v4 = [(NSDictionary *)v3 countByEnumeratingWithState:&v11 objects:v10 count:16];
+    v4 = [(NSDictionary *)fileWrappers countByEnumeratingWithState:&v11 objects:v10 count:16];
     if (v4)
     {
       v5 = v4;
@@ -1406,16 +1406,16 @@ uint64_t __35__NSFileWrapper__attributesToWrite__block_invoke(uint64_t a1, void 
         {
           if (*v12 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(fileWrappers);
           }
 
           v8 = *(*(&v11 + 1) + 8 * i);
-          v9 = [(NSDictionary *)v3 objectForKey:v8];
+          v9 = [(NSDictionary *)fileWrappers objectForKey:v8];
           [v9 setFilename:v8];
           [v9 _updateDescendantFileNames];
         }
 
-        v5 = [(NSDictionary *)v3 countByEnumeratingWithState:&v11 objects:v10 count:16];
+        v5 = [(NSDictionary *)fileWrappers countByEnumeratingWithState:&v11 objects:v10 count:16];
       }
 
       while (v5);
@@ -1456,17 +1456,17 @@ LABEL_22:
 
     if (v22 == 1)
     {
-      v18 = [MEMORY[0x1E695DF20] dictionary];
+      dictionary = [MEMORY[0x1E695DF20] dictionary];
     }
 
     else
     {
-      v18 = [(NSFileWrapper *)self _attributesToWrite];
+      dictionary = [(NSFileWrapper *)self _attributesToWrite];
     }
 
     if (v15)
     {
-      if (([v13 _finishWritingToURL:url byTakingContentsFromItemAtURL:v17 addingAttributes:v18 usingTemporaryDirectoryAtURL:v16 backupFileName:0 error:outError] & 1) == 0)
+      if (([v13 _finishWritingToURL:url byTakingContentsFromItemAtURL:v17 addingAttributes:dictionary usingTemporaryDirectoryAtURL:v16 backupFileName:0 error:outError] & 1) == 0)
       {
 LABEL_19:
         if (![+[NSFileManager removeItemAtURL:0]error:"removeItemAtURL:error:", v17, &v21])
@@ -1486,7 +1486,7 @@ LABEL_19:
       }
     }
 
-    else if (([v13 _finishWritingToURL:url byMovingItemAtURL:v17 addingAttributes:v18 error:outError] & 1) == 0)
+    else if (([v13 _finishWritingToURL:url byMovingItemAtURL:v17 addingAttributes:dictionary error:outError] & 1) == 0)
     {
       goto LABEL_19;
     }
@@ -1509,15 +1509,15 @@ LABEL_19:
 
   if (buf[0] == 1)
   {
-    v14 = [MEMORY[0x1E695DF20] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF20] dictionary];
   }
 
   else
   {
-    v14 = [(NSFileWrapper *)self _attributesToWrite];
+    dictionary2 = [(NSFileWrapper *)self _attributesToWrite];
   }
 
-  [v13 _writeAttributes:v14 toURL:url];
+  [v13 _writeAttributes:dictionary2 toURL:url];
   if (!originalContentsURL)
   {
     goto LABEL_13;
@@ -1535,18 +1535,18 @@ LABEL_13:
   return v11;
 }
 
-- (id)_initWithImpl:(id)a3 preferredFileName:(id)a4 uniqueFileName:(id)a5 docInfo:(id)a6 iconData:(id)a7
+- (id)_initWithImpl:(id)impl preferredFileName:(id)name uniqueFileName:(id)fileName docInfo:(id)info iconData:(id)data
 {
   v43 = *MEMORY[0x1E69E9840];
   v40.receiver = self;
   v40.super_class = NSFileWrapper;
-  v11 = [(NSFileWrapper *)&v40 init:a3];
+  v11 = [(NSFileWrapper *)&v40 init:impl];
   if (!v11)
   {
     return v11;
   }
 
-  if (!a6)
+  if (!info)
   {
     isKindOfClass = objc_opt_isKindOfClass();
     v17 = objc_alloc(MEMORY[0x1E695DF20]);
@@ -1563,29 +1563,29 @@ LABEL_13:
     }
 
     v11->_fileAttributes = [v17 initWithObjectsAndKeys:{v18, @"NSFileType", +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", v19), @"NSFilePosixPermissions", 0}];
-    if (a4)
+    if (name)
     {
       goto LABEL_11;
     }
 
 LABEL_14:
-    v21 = [a5 rangeOfString:@"__#$!@%!#__"];
+    v21 = [fileName rangeOfString:@"__#$!@%!#__"];
     if (v22)
     {
-      v20 = [a5 substringFromIndex:v21 + v22];
+      nameCopy = [fileName substringFromIndex:v21 + v22];
     }
 
     else
     {
-      v20 = a5;
+      nameCopy = fileName;
     }
 
     goto LABEL_17;
   }
 
   v12 = objc_alloc(MEMORY[0x1E695DF20]);
-  v13 = [NSNumber numberWithUnsignedShort:*(a6 + 8)];
-  v14 = *(a6 + 9);
+  v13 = [NSNumber numberWithUnsignedShort:*(info + 8)];
+  v14 = *(info + 9);
   if ((v14 & 4) != 0)
   {
     v15 = &NSFileTypeSymbolicLink;
@@ -1601,35 +1601,35 @@ LABEL_14:
     v15 = &NSFileTypeRegular;
   }
 
-  v11->_fileAttributes = [v12 initWithObjectsAndKeys:{v13, @"NSFilePosixPermissions", *v15, @"NSFileType", objc_msgSend(MEMORY[0x1E695DF00], "dateWithTimeIntervalSince1970:", *(a6 + 1)), @"NSFileModificationDate", 0}];
-  if (!a4)
+  v11->_fileAttributes = [v12 initWithObjectsAndKeys:{v13, @"NSFilePosixPermissions", *v15, @"NSFileType", objc_msgSend(MEMORY[0x1E695DF00], "dateWithTimeIntervalSince1970:", *(info + 1)), @"NSFileModificationDate", 0}];
+  if (!name)
   {
     goto LABEL_14;
   }
 
 LABEL_11:
-  v20 = a4;
+  nameCopy = name;
 LABEL_17:
-  v11->_preferredFileName = [v20 copy];
-  v11->_fileName = [a5 copy];
-  v23 = [(NSDictionary *)v11->_fileAttributes fileType];
-  if (![v23 isEqualToString:@"NSFileTypeDirectory"])
+  v11->_preferredFileName = [nameCopy copy];
+  v11->_fileName = [fileName copy];
+  fileType = [(NSDictionary *)v11->_fileAttributes fileType];
+  if (![fileType isEqualToString:@"NSFileTypeDirectory"])
   {
-    if ([v23 isEqualToString:@"NSFileTypeRegular"])
+    if ([fileType isEqualToString:@"NSFileTypeRegular"])
     {
-      v11->_contents = [a3 data];
+      v11->_contents = [impl data];
     }
 
-    else if ([v23 isEqualToString:@"NSFileTypeSymbolicLink"])
+    else if ([fileType isEqualToString:@"NSFileTypeSymbolicLink"])
     {
-      v37 = [[NSString alloc] initWithData:a3 encoding:4];
+      v37 = [[NSString alloc] initWithData:impl encoding:4];
       v11->_contents = [objc_alloc(MEMORY[0x1E695DFF8]) initFileURLWithPath:v37];
     }
 
     return v11;
   }
 
-  v24 = [objc_msgSend(a3 "allKeys")];
+  v24 = [objc_msgSend(impl "allKeys")];
   if (![v24 count])
   {
 LABEL_31:
@@ -1658,7 +1658,7 @@ LABEL_31:
     if ([objc_msgSend(v25 "pathExtension")] && (v26 = objc_msgSend(v25, "stringByDeletingPathExtension"), v27 = objc_msgSend(v24, "indexOfObject:", v26), v27 != 0x7FFFFFFFFFFFFFFFLL))
     {
       v34 = v27;
-      v35 = [objc_alloc(objc_opt_class()) _initWithImpl:objc_msgSend(a3 preferredFileName:"objectForKey:" uniqueFileName:v26) docInfo:0 iconData:{v26, objc_msgSend(a3, "_getDocInfoForKey:", v26), objc_msgSend(a3, "objectForKey:", v25)}];
+      v35 = [objc_alloc(objc_opt_class()) _initWithImpl:objc_msgSend(impl preferredFileName:"objectForKey:" uniqueFileName:v26) docInfo:0 iconData:{v26, objc_msgSend(impl, "_getDocInfoForKey:", v26), objc_msgSend(impl, "objectForKey:", v25)}];
       if (!v35)
       {
         goto LABEL_39;
@@ -1682,11 +1682,11 @@ LABEL_31:
       else
       {
         v31 = v29;
-        v30 = [a3 objectForKey:v28];
+        v30 = [impl objectForKey:v28];
         [v24 removeObjectAtIndex:v31];
       }
 
-      v32 = [objc_alloc(objc_opt_class()) _initWithImpl:objc_msgSend(a3 preferredFileName:"objectForKey:" uniqueFileName:v25) docInfo:0 iconData:{v25, objc_msgSend(a3, "_getDocInfoForKey:", v25), v30}];
+      v32 = [objc_alloc(objc_opt_class()) _initWithImpl:objc_msgSend(impl preferredFileName:"objectForKey:" uniqueFileName:v25) docInfo:0 iconData:{v25, objc_msgSend(impl, "_getDocInfoForKey:", v25), v30}];
       if (!v32)
       {
         goto LABEL_39;
@@ -1722,13 +1722,13 @@ LABEL_39:
   v24 = *MEMORY[0x1E69E9840];
   if ([(NSFileWrapper *)self isDirectory])
   {
-    v3 = objc_alloc_init(NSRTFD);
-    v4 = [(NSFileWrapper *)self fileWrappers];
+    regularFileContents = objc_alloc_init(NSRTFD);
+    fileWrappers = [(NSFileWrapper *)self fileWrappers];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v5 = [(NSDictionary *)v4 countByEnumeratingWithState:&v20 objects:v19 count:16];
+    v5 = [(NSDictionary *)fileWrappers countByEnumeratingWithState:&v20 objects:v19 count:16];
     if (v5)
     {
       v6 = v5;
@@ -1739,40 +1739,40 @@ LABEL_39:
         {
           if (*v21 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(fileWrappers);
           }
 
           v9 = *(*(&v20 + 1) + 8 * i);
-          v10 = [(NSDictionary *)v4 objectForKey:v9];
-          v11 = [v10 _newImpl];
+          v10 = [(NSDictionary *)fileWrappers objectForKey:v9];
+          _newImpl = [v10 _newImpl];
           v12 = _NSDocInfoFromFileAttributes([v10 fileAttributes], 1);
-          [(NSRTFD *)v3 setObject:v11 forKey:v9];
+          [(NSRTFD *)regularFileContents setObject:_newImpl forKey:v9];
           if (v12)
           {
-            [-[NSRTFD getDirInfo:](v3 getDirInfo:{1), "setObject:forKey:", v12, v9}];
+            [-[NSRTFD getDirInfo:](regularFileContents getDirInfo:{1), "setObject:forKey:", v12, v9}];
           }
         }
 
-        v6 = [(NSDictionary *)v4 countByEnumeratingWithState:&v20 objects:v19 count:16];
+        v6 = [(NSDictionary *)fileWrappers countByEnumeratingWithState:&v20 objects:v19 count:16];
       }
 
       while (v6);
     }
 
-    return v3;
+    return regularFileContents;
   }
 
   if ([(NSFileWrapper *)self isRegularFile])
   {
-    v3 = [(NSFileWrapper *)self regularFileContents];
-    if (v3)
+    regularFileContents = [(NSFileWrapper *)self regularFileContents];
+    if (regularFileContents)
     {
       v13 = [NSPageData alloc];
 
-      return [(NSPageData *)v13 initWithDataNoCopy:v3];
+      return [(NSPageData *)v13 initWithDataNoCopy:regularFileContents];
     }
 
-    return v3;
+    return regularFileContents;
   }
 
   if (![(NSFileWrapper *)self isSymbolicLink])
@@ -1780,13 +1780,13 @@ LABEL_39:
     return 0;
   }
 
-  v15 = [(NSFileWrapper *)self symbolicLinkDestinationURL];
-  if (!v15)
+  symbolicLinkDestinationURL = [(NSFileWrapper *)self symbolicLinkDestinationURL];
+  if (!symbolicLinkDestinationURL)
   {
     return 0;
   }
 
-  v16 = v15;
+  v16 = symbolicLinkDestinationURL;
   v17 = [NSPageData alloc];
   v18 = [-[NSURL relativePath](v16 "relativePath")];
 
@@ -1795,15 +1795,15 @@ LABEL_39:
 
 - (NSData)serializedRepresentation
 {
-  v3 = [(NSFileWrapper *)self _newImpl];
-  v4 = [(NSFileWrapper *)self isDirectory];
-  v5 = v3;
-  if (!v4)
+  _newImpl = [(NSFileWrapper *)self _newImpl];
+  isDirectory = [(NSFileWrapper *)self isDirectory];
+  v5 = _newImpl;
+  if (!isDirectory)
   {
     v6 = [(NSFileWrapper *)self zone];
     v7 = _NSDocInfoFromFileAttributes(self->_fileAttributes, 0);
     v5 = [[NSRTFD allocWithZone:?]];
-    [(NSRTFD *)v5 setObject:v3 forKey:0x1EEF10430];
+    [(NSRTFD *)v5 setObject:_newImpl forKey:0x1EEF10430];
     if (v7)
     {
       *(&v7->mode + 1) |= 2u;
@@ -1820,21 +1820,21 @@ LABEL_39:
     [(NSRTFD *)v5 setObject:v9 forKey:@"__@UTF8PreferredName@__"];
   }
 
-  v10 = [(NSRTFD *)v5 dataRepresentation];
+  dataRepresentation = [(NSRTFD *)v5 dataRepresentation];
   if (self->_preferredFileName)
   {
     [(NSRTFD *)v5 removeObjectForKey:@"__@PreferredName@__"];
     [(NSRTFD *)v5 removeObjectForKey:@"__@UTF8PreferredName@__"];
   }
 
-  if (!v4)
+  if (!isDirectory)
   {
   }
 
-  return v10;
+  return dataRepresentation;
 }
 
-- (void)_addParent:(id)a3
+- (void)_addParent:(id)parent
 {
   os_unfair_lock_lock(&NSFileWrapperLock);
   parents = self->_parents;
@@ -1844,15 +1844,15 @@ LABEL_39:
     self->_parents = parents;
   }
 
-  [(NSHashTable *)parents addObject:a3];
+  [(NSHashTable *)parents addObject:parent];
 
   os_unfair_lock_unlock(&NSFileWrapperLock);
 }
 
-- (void)_removeParent:(id)a3
+- (void)_removeParent:(id)parent
 {
   os_unfair_lock_lock(&NSFileWrapperLock);
-  [(NSHashTable *)self->_parents removeObject:a3];
+  [(NSHashTable *)self->_parents removeObject:parent];
 
   os_unfair_lock_unlock(&NSFileWrapperLock);
 }
@@ -1868,22 +1868,22 @@ LABEL_39:
   self->_contents = CFDictionaryCreateMutable(0, 0, &v3, MEMORY[0x1E695E9E8]);
 }
 
-- (id)_addChild:(id)a3 forUniqueFileName:(id)a4
+- (id)_addChild:(id)child forUniqueFileName:(id)name
 {
-  v4 = a4;
-  if (!a4)
+  nameCopy = name;
+  if (!name)
   {
-    v4 = [a3 preferredFilename];
-    v7 = [self->_contents objectForKey:v4];
-    if (!v4 || v7)
+    nameCopy = [child preferredFilename];
+    v7 = [self->_contents objectForKey:nameCopy];
+    if (!nameCopy || v7)
     {
       v8 = 1;
       do
       {
         v9 = v8 + 1;
-        v10 = [NSString stringWithFormat:@"%lu%@%@", v8, @"__#$!@%!#__", v4];
-        v11 = [self->_contents objectForKey:v10];
-        if (v10)
+        nameCopy = [NSString stringWithFormat:@"%lu%@%@", v8, @"__#$!@%!#__", nameCopy];
+        v11 = [self->_contents objectForKey:nameCopy];
+        if (nameCopy)
         {
           v12 = v11 == 0;
         }
@@ -1897,7 +1897,7 @@ LABEL_39:
       }
 
       while (!v12);
-      v4 = v10;
+      nameCopy = nameCopy;
     }
   }
 
@@ -1908,17 +1908,17 @@ LABEL_39:
     contents = self->_contents;
   }
 
-  [contents setObject:a3 forKey:v4];
-  [a3 _addParent:self];
-  return v4;
+  [contents setObject:child forKey:nameCopy];
+  [child _addParent:self];
+  return nameCopy;
 }
 
 - (void)_resetFileModificationDate
 {
-  v3 = [(NSFileWrapper *)self fileAttributes];
-  if ([(NSDictionary *)v3 objectForKey:@"NSFileModificationDate"])
+  fileAttributes = [(NSFileWrapper *)self fileAttributes];
+  if ([(NSDictionary *)fileAttributes objectForKey:@"NSFileModificationDate"])
   {
-    v4 = [(NSDictionary *)v3 mutableCopy];
+    v4 = [(NSDictionary *)fileAttributes mutableCopy];
     [v4 removeObjectForKey:@"NSFileModificationDate"];
     [(NSFileWrapper *)self setFileAttributes:v4];
   }
@@ -1927,7 +1927,7 @@ LABEL_39:
 - (NSString)addFileWrapper:(NSFileWrapper *)child
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = [(NSFileWrapper *)child preferredFilename];
+  preferredFilename = [(NSFileWrapper *)child preferredFilename];
   if (![(NSFileWrapper *)self isDirectory])
   {
     v12 = [NSString stringWithFormat:@"%@ *** this method is only for directory type NSFileWrappers.", _NSFullMethodName(self, a2)];
@@ -1937,7 +1937,7 @@ LABEL_16:
     objc_exception_throw([v13 exceptionWithName:*v14 reason:v12 userInfo:0]);
   }
 
-  if (!v6 || [(NSString *)v6 isEqualToString:&stru_1EEEFDF90])
+  if (!preferredFilename || [(NSString *)preferredFilename isEqualToString:&stru_1EEEFDF90])
   {
     v12 = [NSString stringWithFormat:@"%@ *** a document must have a preferredFilename before it can be added as the subdocument of another document.", _NSFullMethodName(self, a2)];
     v13 = MEMORY[0x1E695DF30];
@@ -1956,11 +1956,11 @@ LABEL_16:
         if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
         {
           v10 = _NSFullMethodName(self, a2);
-          v11 = [0 localizedDescription];
+          localizedDescription = [0 localizedDescription];
           *buf = 138412546;
           v16 = v10;
           v17 = 2112;
-          v18 = v11;
+          v18 = localizedDescription;
           _os_log_error_impl(&dword_18075C000, v9, OS_LOG_TYPE_ERROR, "%@ tried to read the file wrapper's contents lazily but an error occurred: %@", buf, 0x16u);
         }
       }
@@ -1999,7 +1999,7 @@ LABEL_16:
   return result;
 }
 
-- (id)_uniqueFileNameOfChild:(id)a3
+- (id)_uniqueFileNameOfChild:(id)child
 {
   v17 = *MEMORY[0x1E69E9840];
   v13 = 0u;
@@ -2025,7 +2025,7 @@ LABEL_3:
     }
 
     v10 = *(*(&v13 + 1) + 8 * v9);
-    if ([self->_contents objectForKey:v10] == a3)
+    if ([self->_contents objectForKey:v10] == child)
     {
       return v10;
     }
@@ -2043,12 +2043,12 @@ LABEL_3:
   }
 }
 
-- (void)_removeChild:(id)a3 forUniqueFileName:(id)a4
+- (void)_removeChild:(id)child forUniqueFileName:(id)name
 {
-  [a3 _removeParent:self];
+  [child _removeParent:self];
   contents = self->_contents;
 
-  [contents removeObjectForKey:a4];
+  [contents removeObjectForKey:name];
 }
 
 - (void)removeFileWrapper:(NSFileWrapper *)child
@@ -2093,11 +2093,11 @@ LABEL_3:
           if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
           {
             v6 = _NSFullMethodName(self, a2);
-            v7 = [0 localizedDescription];
+            localizedDescription = [0 localizedDescription];
             *buf = 138412546;
             v10 = v6;
             v11 = 2112;
-            v12 = v7;
+            v12 = localizedDescription;
             _os_log_error_impl(&dword_18075C000, v5, OS_LOG_TYPE_ERROR, "%@ tried to read the file wrapper's contents lazily but an error occurred: %@", buf, 0x16u);
           }
         }
@@ -2151,11 +2151,11 @@ LABEL_3:
           if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
           {
             v7 = _NSFullMethodName(self, a2);
-            v8 = [0 localizedDescription];
+            localizedDescription = [0 localizedDescription];
             *buf = 138412546;
             v11 = v7;
             v12 = 2112;
-            v13 = v8;
+            v13 = localizedDescription;
             _os_log_error_impl(&dword_18075C000, v5, OS_LOG_TYPE_ERROR, "%@ tried to read the file wrapper's contents lazily but an error occurred: %@", buf, 0x16u);
           }
         }
@@ -2198,11 +2198,11 @@ LABEL_3:
           if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
           {
             v7 = _NSFullMethodName(self, a2);
-            v8 = [0 localizedDescription];
+            localizedDescription = [0 localizedDescription];
             *buf = 138412546;
             v11 = v7;
             v12 = 2112;
-            v13 = v8;
+            v13 = localizedDescription;
             _os_log_error_impl(&dword_18075C000, v5, OS_LOG_TYPE_ERROR, "%@ tried to read the file wrapper's contents lazily but an error occurred: %@", buf, 0x16u);
           }
         }
@@ -2220,19 +2220,19 @@ LABEL_3:
   return contents;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = [(NSFileWrapper *)self serializedRepresentation];
-  if ([a3 allowsKeyedCoding])
+  serializedRepresentation = [(NSFileWrapper *)self serializedRepresentation];
+  if ([coder allowsKeyedCoding])
   {
 
-    [a3 encodeObject:v4 forKey:@"NSFileWrapperData"];
+    [coder encodeObject:serializedRepresentation forKey:@"NSFileWrapperData"];
   }
 
   else
   {
 
-    [a3 encodeObject:v4];
+    [coder encodeObject:serializedRepresentation];
   }
 }
 
@@ -2240,18 +2240,18 @@ LABEL_3:
 {
   if ([(NSCoder *)inCoder allowsKeyedCoding])
   {
-    v5 = [(NSCoder *)inCoder decodeObjectOfClass:objc_opt_class() forKey:@"NSFileWrapperData"];
+    decodeObject = [(NSCoder *)inCoder decodeObjectOfClass:objc_opt_class() forKey:@"NSFileWrapperData"];
   }
 
   else
   {
-    v5 = [(NSCoder *)inCoder decodeObject];
+    decodeObject = [(NSCoder *)inCoder decodeObject];
   }
 
-  if (v5)
+  if (decodeObject)
   {
 
-    return [(NSFileWrapper *)self initWithSerializedRepresentation:v5];
+    return [(NSFileWrapper *)self initWithSerializedRepresentation:decodeObject];
   }
 
   else
@@ -2261,19 +2261,19 @@ LABEL_3:
   }
 }
 
-+ (id)_pathForURL:(id)a3 reading:(BOOL)a4 error:(id *)a5
++ (id)_pathForURL:(id)l reading:(BOOL)reading error:(id *)error
 {
-  v6 = a4;
-  if (![a3 isFileURL])
+  readingCopy = reading;
+  if (![l isFileURL])
   {
-    if (!a5)
+    if (!error)
     {
       return 0;
     }
 
-    if (a3)
+    if (l)
     {
-      v10 = [MEMORY[0x1E695DF20] dictionaryWithObject:a3 forKey:@"NSURL"];
+      v10 = [MEMORY[0x1E695DF20] dictionaryWithObject:l forKey:@"NSURL"];
     }
 
     else
@@ -2281,7 +2281,7 @@ LABEL_3:
       v10 = 0;
     }
 
-    if (v6)
+    if (readingCopy)
     {
       v11 = 262;
     }
@@ -2294,10 +2294,10 @@ LABEL_3:
     goto LABEL_16;
   }
 
-  result = [a3 path];
-  if (a5 && !result)
+  result = [l path];
+  if (error && !result)
   {
-    if (v6)
+    if (readingCopy)
     {
       v9 = 260;
     }
@@ -2307,47 +2307,47 @@ LABEL_3:
       v9 = 4;
     }
 
-    v10 = [MEMORY[0x1E695DF20] dictionaryWithObject:a3 forKey:@"NSURL"];
+    v10 = [MEMORY[0x1E695DF20] dictionaryWithObject:l forKey:@"NSURL"];
     v11 = v9;
 LABEL_16:
     v12 = [NSError errorWithDomain:@"NSCocoaErrorDomain" code:v11 userInfo:v10];
     result = 0;
-    *a5 = v12;
+    *error = v12;
   }
 
   return result;
 }
 
-+ (id)_temporaryDirectoryURLForWritingToURL:(id)a3 error:(id *)a4
++ (id)_temporaryDirectoryURLForWritingToURL:(id)l error:(id *)error
 {
   v6 = +[NSFileManager defaultManager];
 
-  return [(NSFileManager *)v6 URLForDirectory:99 inDomain:1 appropriateForURL:a3 create:1 error:a4];
+  return [(NSFileManager *)v6 URLForDirectory:99 inDomain:1 appropriateForURL:l create:1 error:error];
 }
 
-+ (void)_writeAttributes:(id)a3 toURL:(id)a4
++ (void)_writeAttributes:(id)attributes toURL:(id)l
 {
   v10[6] = *MEMORY[0x1E69E9840];
-  v6 = [MEMORY[0x1E695DF90] dictionary];
-  v7 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __61__NSFileWrapper_NSInternalForAppKit___writeAttributes_toURL___block_invoke;
   v10[3] = &unk_1E69F7640;
-  v10[4] = v6;
-  v10[5] = v7;
-  [a3 enumerateKeysAndObjectsUsingBlock:v10];
-  v8 = [v6 objectForKey:@"NSFileExtensionHidden"];
-  if ([v6 count] != (v8 != 0) || objc_msgSend(v8, "BOOLValue"))
+  v10[4] = dictionary;
+  v10[5] = dictionary2;
+  [attributes enumerateKeysAndObjectsUsingBlock:v10];
+  v8 = [dictionary objectForKey:@"NSFileExtensionHidden"];
+  if ([dictionary count] != (v8 != 0) || objc_msgSend(v8, "BOOLValue"))
   {
-    v9 = [a4 path];
-    if (v9)
+    path = [l path];
+    if (path)
     {
-      [+[NSFileManager defaultManager](NSFileManager setAttributes:"setAttributes:ofItemAtPath:error:" ofItemAtPath:v6 error:v9, 0];
+      [+[NSFileManager defaultManager](NSFileManager setAttributes:"setAttributes:ofItemAtPath:error:" ofItemAtPath:dictionary error:path, 0];
     }
   }
 
-  [a4 setResourceValues:v7 error:0];
+  [l setResourceValues:dictionary2 error:0];
 }
 
 uint64_t __61__NSFileWrapper_NSInternalForAppKit___writeAttributes_toURL___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -2370,40 +2370,40 @@ uint64_t __61__NSFileWrapper_NSInternalForAppKit___writeAttributes_toURL___block
   return result;
 }
 
-+ (BOOL)_finishWritingToURL:(id)a3 byMovingItemAtURL:(id)a4 addingAttributes:(id)a5 error:(id *)a6
++ (BOOL)_finishWritingToURL:(id)l byMovingItemAtURL:(id)rL addingAttributes:(id)attributes error:(id *)error
 {
   v11 = +[NSFileManager defaultManager];
-  v12 = [a3 path];
-  if (![(NSFileManager *)v11 fileExistsAtPath:v12]|| (v13 = [(NSFileManager *)v11 removeItemAtPath:v12 error:a6]))
+  path = [l path];
+  if (![(NSFileManager *)v11 fileExistsAtPath:path]|| (v13 = [(NSFileManager *)v11 removeItemAtPath:path error:error]))
   {
-    [a1 _writeAttributes:a5 toURL:a4];
-    v14 = [a4 path];
+    [self _writeAttributes:attributes toURL:rL];
+    path2 = [rL path];
 
-    LOBYTE(v13) = [(NSFileManager *)v11 moveItemAtPath:v14 toPath:v12 error:a6];
+    LOBYTE(v13) = [(NSFileManager *)v11 moveItemAtPath:path2 toPath:path error:error];
   }
 
   return v13;
 }
 
-+ (BOOL)_finishWritingToURL:(id)a3 byTakingContentsFromItemAtURL:(id)a4 addingAttributes:(id)a5 usingTemporaryDirectoryAtURL:(id)a6 backupFileName:(id)a7 error:(id *)a8
++ (BOOL)_finishWritingToURL:(id)l byTakingContentsFromItemAtURL:(id)rL addingAttributes:(id)attributes usingTemporaryDirectoryAtURL:(id)uRL backupFileName:(id)name error:(id *)error
 {
-  v11 = [+[NSFileManager replaceItemAtURL:a3]resultingItemURL:"replaceItemAtURL:withItemAtURL:backupItemName:options:resultingItemURL:error:" error:a3, a4, a7, 2 * (a7 != 0), 0, a8];
-  if (v11)
+  error = [+[NSFileManager replaceItemAtURL:l]resultingItemURL:"replaceItemAtURL:withItemAtURL:backupItemName:options:resultingItemURL:error:" error:l, rL, name, 2 * (name != 0), 0, error];
+  if (error)
   {
-    [a1 _writeAttributes:a5 toURL:a3];
+    [self _writeAttributes:attributes toURL:l];
   }
 
-  return v11;
+  return error;
 }
 
-+ (void)_removeTemporaryDirectoryAtURL:(id)a3
++ (void)_removeTemporaryDirectoryAtURL:(id)l
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = [a3 path];
-  if (v4)
+  path = [l path];
+  if (path)
   {
-    v5 = v4;
-    if (!rmdir([v4 fileSystemRepresentation]))
+    v5 = path;
+    if (!rmdir([path fileSystemRepresentation]))
     {
       return;
     }
@@ -2420,14 +2420,14 @@ uint64_t __61__NSFileWrapper_NSInternalForAppKit___writeAttributes_toURL___block
     }
   }
 
-  [+[NSFileManager defaultManager](NSFileManager removeItemAtURL:"removeItemAtURL:error:" error:a3, 0];
+  [+[NSFileManager defaultManager](NSFileManager removeItemAtURL:"removeItemAtURL:error:" error:l, 0];
 }
 
-- (id)_fullDescription:(BOOL)a3
+- (id)_fullDescription:(BOOL)description
 {
-  v3 = a3;
+  descriptionCopy = description;
   v5 = [NSMutableString stringWithCapacity:50];
-  _NSDescribeFileContentsInstance(v5, &self->super.isa, 0, 0, v3);
+  _NSDescribeFileContentsInstance(v5, &self->super.isa, 0, 0, descriptionCopy);
   return v5;
 }
 

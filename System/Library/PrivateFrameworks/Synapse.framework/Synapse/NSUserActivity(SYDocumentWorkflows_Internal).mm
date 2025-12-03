@@ -7,8 +7,8 @@
 - (void)loadDocumentWithHandler:()SYDocumentWorkflows_Internal
 {
   v8 = a3;
-  v4 = [(NSUserActivity *)a1 _syDocument];
-  if (!v4)
+  _syDocument = [(NSUserActivity *)self _syDocument];
+  if (!_syDocument)
   {
     v6 = os_log_create("com.apple.synapse", "DocumentWorkflows");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
@@ -20,8 +20,8 @@
     objc_exception_throw(v7);
   }
 
-  v5 = v4;
-  v8[2](v8, v4);
+  v5 = _syDocument;
+  v8[2](v8, _syDocument);
 }
 
 @end

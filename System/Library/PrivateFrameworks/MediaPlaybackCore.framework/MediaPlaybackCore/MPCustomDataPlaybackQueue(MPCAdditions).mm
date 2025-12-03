@@ -8,13 +8,13 @@
 {
   v394 = *MEMORY[0x1E69E9840];
   v342 = a4;
-  v341 = [a1 identifier];
-  if ([v341 isEqualToString:@"InProcess-com.apple.mediaplayer.playbackcontext"])
+  identifier = [self identifier];
+  if ([identifier isEqualToString:@"InProcess-com.apple.mediaplayer.playbackcontext"])
   {
-    v6 = [a1 mediaRemoteOptions];
-    v7 = [v6 objectForKeyedSubscript:@"playbackContext"];
+    mediaRemoteOptions = [self mediaRemoteOptions];
+    data5 = [mediaRemoteOptions objectForKeyedSubscript:@"playbackContext"];
 
-    if (v7)
+    if (data5)
     {
       v8 = 0;
     }
@@ -32,10 +32,10 @@ LABEL_25:
     goto LABEL_430;
   }
 
-  if ([v341 isEqualToString:@"com.apple.music.playbackqueue.tracklist"])
+  if ([identifier isEqualToString:@"com.apple.music.playbackqueue.tracklist"])
   {
-    v338 = [a1 data];
-    if (!v338)
+    data = [self data];
+    if (!data)
     {
       v49 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCError" code:5 debugDescription:@"Missing tracklist data in playback queue."];
       (v342[2])(v342, 0, v49);
@@ -44,19 +44,19 @@ LABEL_413:
       goto LABEL_430;
     }
 
-    v9 = [[_MPCProtoTracklist alloc] initWithData:v338];
+    v9 = [[_MPCProtoTracklist alloc] initWithData:data];
     *v373 = 0;
     *&v373[8] = v373;
     *&v373[16] = 0x3032000000;
     v374 = __Block_byref_object_copy__19581;
     v375 = __Block_byref_object_dispose__19582;
-    v376 = [a1 featureName];
+    featureName = [self featureName];
     v362[0] = 0;
     v362[1] = v362;
     v362[2] = 0x3032000000;
     v362[3] = __Block_byref_object_copy__19581;
     v362[4] = __Block_byref_object_dispose__19582;
-    v363 = [a1 queueGroupingID];
+    queueGroupingID = [self queueGroupingID];
     v10 = objc_alloc_init(MEMORY[0x1E6970818]);
     v371[0] = 0;
     v371[1] = v371;
@@ -77,7 +77,7 @@ LABEL_413:
     }
 
     v326 = accountInfos;
-    v13 = [(NSMutableArray *)v326 firstObject];
+    firstObject = [(NSMutableArray *)v326 firstObject];
     v351[0] = MEMORY[0x1E69E9820];
     v351[1] = 3221225472;
     v352 = __89__MPCustomDataPlaybackQueue_MPCAdditions__getMusicPlaybackContextWithOptions_completion___block_invoke;
@@ -92,15 +92,15 @@ LABEL_413:
     v361 = v371;
     v325 = v11;
     v356 = v325;
-    v357 = a1;
-    v330 = v13;
+    selfCopy = self;
+    v330 = firstObject;
     v328 = v351;
     v14 = +[MPCPlaybackAccountManager sharedManager];
-    v332 = [v14 fallbackAccount];
+    fallbackAccount = [v14 fallbackAccount];
 
-    if (v332)
+    if (fallbackAccount)
     {
-      if ([v332 hasCatalogPlaybackCapability])
+      if ([fallbackAccount hasCatalogPlaybackCapability])
       {
         if (!v330)
         {
@@ -110,14 +110,14 @@ LABEL_413:
             *buf = 134218242;
             *&buf[4] = 0;
             *&buf[12] = 2114;
-            *&buf[14] = v332;
+            *&buf[14] = fallbackAccount;
             _os_log_impl(&dword_1C5C61000, v66, OS_LOG_TYPE_DEFAULT, "[MPRQ:MPC:%p] __MPCPlaybackRequestEnvironmentFromProtoAccountInfo | using device fallback account [empty accountInfo] account=%{public}@", buf, 0x16u);
           }
 
-          v67 = v332;
+          v67 = fallbackAccount;
           v68 = [MPCPlaybackRequestEnvironment alloc];
-          v69 = [v67 userIdentity];
-          v70 = [(MPCPlaybackRequestEnvironment *)v68 initWithUserIdentity:v69];
+          userIdentity = [v67 userIdentity];
+          v70 = [(MPCPlaybackRequestEnvironment *)v68 initWithUserIdentity:userIdentity];
 
           v352(v328, v70, 0, 0);
           goto LABEL_412;
@@ -283,12 +283,12 @@ LABEL_148:
 LABEL_151:
 
         v111 = +[MPCPlaybackAccountManager sharedManager];
-        v112 = [v111 fallbackAccount];
+        fallbackAccount2 = [v111 fallbackAccount];
 
         v113 = v16[4];
         if (v113)
         {
-          v114 = v112;
+          v114 = fallbackAccount2;
           v115 = &buf[25];
           quot = v16[4];
           do
@@ -318,7 +318,7 @@ LABEL_151:
           }
 
           v120 = CFStringCreateWithBytes(0, v119, &buf[24] - v119, 0x8000100u, 0);
-          v112 = v114;
+          fallbackAccount2 = v114;
         }
 
         else
@@ -333,10 +333,10 @@ LABEL_151:
         {
           if (([v122 isDelegated] & 1) == 0)
           {
-            v128 = [v122 hasCatalogPlaybackCapability];
+            hasCatalogPlaybackCapability = [v122 hasCatalogPlaybackCapability];
             if ((a3 & 2) != 0)
             {
-              v129 = v128;
+              v129 = hasCatalogPlaybackCapability;
             }
 
             else
@@ -365,12 +365,12 @@ LABEL_151:
               *buf = 134218242;
               *&buf[4] = v16;
               *&buf[12] = 2114;
-              *&buf[14] = v112;
+              *&buf[14] = fallbackAccount2;
               _os_log_impl(&dword_1C5C61000, v123, OS_LOG_TYPE_DEFAULT, "[MPRQ:MPC:%p] __MPCPlaybackRequestEnvironmentFromProtoAccountInfo | using device fallback account [matching non-delegate account, non-sub, fallback allowed] account=%{public}@", buf, 0x16u);
             }
 
 LABEL_242:
-            v126 = v112;
+            v126 = fallbackAccount2;
             v127 = 0;
             v316 = 1;
             goto LABEL_243;
@@ -411,8 +411,8 @@ LABEL_411:
             if (([v138 isDelegated] & 1) == 0 && !v127)
             {
               v189 = [MPCPlaybackRequestEnvironment alloc];
-              v190 = [v138 userIdentity];
-              v191 = [(MPCPlaybackRequestEnvironment *)v189 initWithUserIdentity:v190];
+              userIdentity2 = [v138 userIdentity];
+              v191 = [(MPCPlaybackRequestEnvironment *)v189 initWithUserIdentity:userIdentity2];
               v192 = v365[5];
               v365[5] = v191;
 
@@ -435,7 +435,7 @@ LABEL_364:
 
             v170 = v16;
             v313 = v138;
-            v312 = [MEMORY[0x1E69E4688] defaultIdentityStore];
+            defaultIdentityStore = [MEMORY[0x1E69E4688] defaultIdentityStore];
             v314 = *(v170 + 14);
             v171 = *(v170 + 4);
             v172 = _MPCLogCategoryDelegation();
@@ -452,7 +452,7 @@ LABEL_364:
 
             if (!v314 || !v171)
             {
-              v173 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCError" code:7 debugDescription:{@"Invalid delegation info: %@", v170}];
+              userIdentity3 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCError" code:7 debugDescription:{@"Invalid delegation info: %@", v170}];
               v186 = _MPCLogCategoryDelegation();
               if (os_log_type_enabled(v186, OS_LOG_TYPE_ERROR))
               {
@@ -461,23 +461,23 @@ LABEL_364:
                 _os_log_impl(&dword_1C5C61000, v186, OS_LOG_TYPE_ERROR, "_MPCProtoDelegateInfo %p - Getting delegated playback request environment failed [no valid delegation info]", buf, 0xCu);
               }
 
-              v187 = v173;
+              v187 = userIdentity3;
               v178 = 0;
-              v188 = v173;
+              v188 = userIdentity3;
               goto LABEL_346;
             }
 
             if (v313)
             {
-              v173 = [v313 userIdentity];
-              v174 = _MPCLogCategoryDelegation();
-              if (os_log_type_enabled(v174, OS_LOG_TYPE_DEFAULT))
+              userIdentity3 = [v313 userIdentity];
+              anyDelegationHostingAccount = _MPCLogCategoryDelegation();
+              if (os_log_type_enabled(anyDelegationHostingAccount, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 134218242;
                 *&buf[4] = v170;
                 *&buf[12] = 2114;
                 *&buf[14] = v313;
-                _os_log_impl(&dword_1C5C61000, v174, OS_LOG_TYPE_DEFAULT, "_MPCProtoDelegateInfo %p - delegation supported [found existing account] account=%{public}@", buf, 0x16u);
+                _os_log_impl(&dword_1C5C61000, anyDelegationHostingAccount, OS_LOG_TYPE_DEFAULT, "_MPCProtoDelegateInfo %p - delegation supported [found existing account] account=%{public}@", buf, 0x16u);
               }
             }
 
@@ -486,7 +486,7 @@ LABEL_364:
               v194 = MEMORY[0x1E69E4680];
               v195 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v171];
               v196 = [v194 specificAccountWithDSID:v195];
-              v173 = [v196 identityAllowingDelegation:1];
+              userIdentity3 = [v196 identityAllowingDelegation:1];
 
               v197 = _MPCLogCategoryDelegation();
               if (os_log_type_enabled(v197, OS_LOG_TYPE_DEFAULT))
@@ -494,14 +494,14 @@ LABEL_364:
                 *buf = 134218242;
                 *&buf[4] = v170;
                 *&buf[12] = 2114;
-                *&buf[14] = v173;
+                *&buf[14] = userIdentity3;
                 _os_log_impl(&dword_1C5C61000, v197, OS_LOG_TYPE_DEFAULT, "_MPCProtoDelegateInfo %p - Creating delegated identity [] userIdentity=%{public}@", buf, 0x16u);
               }
 
               v370 = 0;
-              v198 = [v312 insertPropertiesForUserIdentity:v173 usingBlock:&__block_literal_global_227 error:&v370];
+              v198 = [defaultIdentityStore insertPropertiesForUserIdentity:userIdentity3 usingBlock:&__block_literal_global_227 error:&v370];
               v199 = v370;
-              v174 = v199;
+              anyDelegationHostingAccount = v199;
               if ((v198 & 1) == 0)
               {
                 if (v199)
@@ -545,7 +545,7 @@ LABEL_364:
               v393 = buf;
               v202 = v200;
               v392 = v202;
-              [v312 addDelegationUUIDs:v201 forUserIdentity:v173 completionHandler:&v388];
+              [defaultIdentityStore addDelegationUUIDs:v201 forUserIdentity:userIdentity3 completionHandler:&v388];
 
               dispatch_semaphore_wait(v202, 0xFFFFFFFFFFFFFFFFLL);
               if (*(*&buf[8] + 40))
@@ -572,13 +572,13 @@ LABEL_364:
             }
 
             v175 = +[MPCPlaybackAccountManager sharedManager];
-            v174 = [v175 anyDelegationHostingAccount];
+            anyDelegationHostingAccount = [v175 anyDelegationHostingAccount];
 
-            if (v174)
+            if (anyDelegationHostingAccount)
             {
               v176 = [MPCMutablePlaybackRequestEnvironment alloc];
-              v177 = [v174 userIdentity];
-              v178 = [(MPCPlaybackRequestEnvironment *)v176 initWithUserIdentity:v177];
+              userIdentity4 = [anyDelegationHostingAccount userIdentity];
+              v178 = [(MPCPlaybackRequestEnvironment *)v176 initWithUserIdentity:userIdentity4];
 
               v179 = [MPCMutablePlaybackDelegationProperties alloc];
               v180 = *(v170 + 6);
@@ -654,7 +654,7 @@ LABEL_364:
 
             v188 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCError" code:73 debugDescription:{@"No host for delegated account: %@", v170}];
             v232 = v188;
-            v174 = 0;
+            anyDelegationHostingAccount = 0;
 LABEL_344:
             v178 = 0;
 LABEL_345:
@@ -682,24 +682,24 @@ LABEL_346:
 
             if (v334)
             {
-              v263 = [MEMORY[0x1E69E4688] defaultIdentityStore];
-              v264 = [v313 userIdentity];
+              defaultIdentityStore2 = [MEMORY[0x1E69E4688] defaultIdentityStore];
+              userIdentity5 = [v313 userIdentity];
               *v384 = 0;
-              v265 = [v263 getPropertiesForUserIdentity:v264 error:v384];
+              v265 = [defaultIdentityStore2 getPropertiesForUserIdentity:userIdentity5 error:v384];
               v266 = *v384;
 
               if (v266)
               {
                 v352(v328, 0, 0, v266);
-                v267 = v265;
+                delegateToken = v265;
 LABEL_409:
 
 LABEL_410:
                 goto LABEL_411;
               }
 
-              v267 = [v265 delegateToken];
-              if ([v267 type] != 1 || (objc_msgSend(MEMORY[0x1E695DF00], "dateWithTimeIntervalSinceNow:", 604800.0), v268 = objc_claimAutoreleasedReturnValue(), v269 = objc_msgSend(v267, "expiresBeforeDate:", v268), v268, v269))
+              delegateToken = [v265 delegateToken];
+              if ([delegateToken type] != 1 || (objc_msgSend(MEMORY[0x1E695DF00], "dateWithTimeIntervalSinceNow:", 604800.0), v268 = objc_claimAutoreleasedReturnValue(), v269 = objc_msgSend(delegateToken, "expiresBeforeDate:", v268), v268, v269))
               {
                 v270 = *(v170 + 13);
                 if (v270)
@@ -737,8 +737,8 @@ LABEL_410:
                     {
                       v388 = @"MPCErrorUserInfoKeyRemoteCommandStatusCode";
                       *buf = &unk_1F4599430;
-                      v277 = [MEMORY[0x1E695DF20] dictionaryWithObjects:buf forKeys:&v388 count:1];
-                      v278 = [v276 msv_errorByWrappingWithDomain:@"MPCError" code:74 userInfo:v277 debugDescription:@"Failed to get tokenB"];
+                      data2 = [MEMORY[0x1E695DF20] dictionaryWithObjects:buf forKeys:&v388 count:1];
+                      v278 = [v276 msv_errorByWrappingWithDomain:@"MPCError" code:74 userInfo:data2 debugDescription:@"Failed to get tokenB"];
                     }
 
                     else
@@ -749,8 +749,8 @@ LABEL_410:
                       *buf = &unk_1F4599430;
                       *&buf[8] = @"com.apple.music/wha-delegation/b";
                       v390 = @"MPCErrorUserInfoKeyCustomData";
-                      v277 = [v336 data];
-                      *&buf[16] = v277;
+                      data2 = [v336 data];
+                      *&buf[16] = data2;
                       v318 = [MEMORY[0x1E695DF20] dictionaryWithObjects:buf forKeys:&v388 count:3];
                       v278 = [v304 msv_errorWithDomain:@"MPCError" code:74 userInfo:v318 debugDescription:{@"Delegation token missing or expired for %@", v365[5]}];
                     }
@@ -790,9 +790,9 @@ LABEL_410:
 
               if (!v365[5])
               {
-                v308 = [MEMORY[0x1E696AAA8] currentHandler];
+                currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
                 v309 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void __MPCPlaybackRequestEnvironmentFromProtoAccountInfo(_MPCProtoDelegateInfo *__strong, MPRemotePlaybackQueuePlaybackContextOptions, void (^__strong)(MPCPlaybackRequestEnvironment * _Nullable __strong, NSNumber * _Nullable __strong, NSError * _Nullable __strong))"}];
-                [v308 handleFailureInFunction:v309 file:@"MPRemotePlaybackQueue+MPCAdditions.m" lineNumber:392 description:{@"Failed to produce playback request environment for accountInfo: %@, desiredAccount: %@", v170, v313}];
+                [currentHandler handleFailureInFunction:v309 file:@"MPRemotePlaybackQueue+MPCAdditions.m" lineNumber:392 description:{@"Failed to produce playback request environment for accountInfo: %@, desiredAccount: %@", v170, v313}];
               }
 
               (v352)(v328);
@@ -852,7 +852,7 @@ LABEL_185:
             *buf = 134218242;
             *&buf[4] = v16;
             *&buf[12] = 2114;
-            *&buf[14] = v112;
+            *&buf[14] = fallbackAccount2;
             _os_log_impl(&dword_1C5C61000, v132, OS_LOG_TYPE_DEFAULT, "[MPRQ:MPC:%p] __MPCPlaybackRequestEnvironmentFromProtoAccountInfo | using device fallback account [delegate account match, delegate not allowed, fallback allowed] account=%{public}@", buf, 0x16u);
           }
         }
@@ -906,7 +906,7 @@ LABEL_185:
             *buf = 134218242;
             *&buf[4] = v16;
             *&buf[12] = 2114;
-            *&buf[14] = v112;
+            *&buf[14] = fallbackAccount2;
             _os_log_impl(&dword_1C5C61000, v132, OS_LOG_TYPE_DEFAULT, "[MPRQ:MPC:%p] __MPCPlaybackRequestEnvironmentFromProtoAccountInfo | using device fallback account [no match, fallback allowed] account=%{public}@", buf, 0x16u);
           }
         }
@@ -914,7 +914,7 @@ LABEL_185:
         goto LABEL_242;
       }
 
-      v62 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCError" code:27 debugDescription:{@"Subscription required for shared queue, and user doesn't have playback capability: %@", v332}];
+      v62 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCError" code:27 debugDescription:{@"Subscription required for shared queue, and user doesn't have playback capability: %@", fallbackAccount}];
       v352(v328, 0, 0, v62);
     }
 
@@ -933,10 +933,10 @@ LABEL_412:
     goto LABEL_413;
   }
 
-  if ([v341 isEqualToString:@"com.apple.music.playbackqueue.radio"])
+  if ([identifier isEqualToString:@"com.apple.music.playbackqueue.radio"])
   {
-    v339 = [a1 data];
-    if (!v339)
+    data3 = [self data];
+    if (!data3)
     {
       v63 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCError" code:8 debugDescription:@"Missing creation properties data in playback queue."];
       (v342[2])(v342, 0, v63);
@@ -945,7 +945,7 @@ LABEL_429:
       goto LABEL_430;
     }
 
-    v19 = [[_MPCProtoRadioCreationProperties alloc] initWithData:v339];
+    v19 = [[_MPCProtoRadioCreationProperties alloc] initWithData:data3];
     v20 = v19;
     if (v19)
     {
@@ -963,17 +963,17 @@ LABEL_429:
     v346 = __89__MPCustomDataPlaybackQueue_MPCAdditions__getMusicPlaybackContextWithOptions_completion___block_invoke_6;
     v347 = &unk_1E8236218;
     v350 = v342;
-    v348 = a1;
+    selfCopy2 = self;
     v327 = v20;
     v349 = v327;
     v331 = v22;
     v329 = v345;
     v23 = +[MPCPlaybackAccountManager sharedManager];
-    v333 = [v23 fallbackAccount];
+    fallbackAccount3 = [v23 fallbackAccount];
 
-    if (v333)
+    if (fallbackAccount3)
     {
-      if ([v333 hasCatalogPlaybackCapability])
+      if ([fallbackAccount3 hasCatalogPlaybackCapability])
       {
         if (!v331)
         {
@@ -983,15 +983,15 @@ LABEL_429:
             *buf = 134218242;
             *&buf[4] = 0;
             *&buf[12] = 2114;
-            *&buf[14] = v333;
+            *&buf[14] = fallbackAccount3;
             _os_log_impl(&dword_1C5C61000, v82, OS_LOG_TYPE_DEFAULT, "[MPRQ:MPC:%p] __MPCPlaybackRequestEnvironmentFromProtoAccountInfo | using device fallback account [empty accountInfo] account=%{public}@", buf, 0x16u);
           }
 
-          v83 = v333;
+          v83 = fallbackAccount3;
           v84 = [MPCPlaybackRequestEnvironment alloc];
-          v85 = [v83 userIdentity];
+          userIdentity6 = [v83 userIdentity];
 
-          v86 = [(MPCPlaybackRequestEnvironment *)v84 initWithUserIdentity:v85];
+          v86 = [(MPCPlaybackRequestEnvironment *)v84 initWithUserIdentity:userIdentity6];
           v346(v329, v86, 0, 0);
 
           goto LABEL_428;
@@ -1157,12 +1157,12 @@ LABEL_198:
 LABEL_201:
 
         v142 = +[MPCPlaybackAccountManager sharedManager];
-        v143 = [v142 fallbackAccount];
+        fallbackAccount4 = [v142 fallbackAccount];
 
         v144 = p_isa[4];
         if (v144)
         {
-          v145 = v143;
+          v145 = fallbackAccount4;
           v146 = &buf[25];
           v147 = p_isa[4];
           do
@@ -1192,7 +1192,7 @@ LABEL_201:
           }
 
           v151 = CFStringCreateWithBytes(0, v150, &buf[24] - v150, 0x8000100u, 0);
-          v143 = v145;
+          fallbackAccount4 = v145;
         }
 
         else
@@ -1207,10 +1207,10 @@ LABEL_201:
         {
           if (([v153 isDelegated] & 1) == 0)
           {
-            v158 = [v153 hasCatalogPlaybackCapability];
+            hasCatalogPlaybackCapability2 = [v153 hasCatalogPlaybackCapability];
             if ((a3 & 2) != 0)
             {
-              v159 = v158;
+              v159 = hasCatalogPlaybackCapability2;
             }
 
             else
@@ -1239,12 +1239,12 @@ LABEL_201:
               *buf = 134218242;
               *&buf[4] = p_isa;
               *&buf[12] = 2114;
-              *&buf[14] = v143;
+              *&buf[14] = fallbackAccount4;
               _os_log_impl(&dword_1C5C61000, v154, OS_LOG_TYPE_DEFAULT, "[MPRQ:MPC:%p] __MPCPlaybackRequestEnvironmentFromProtoAccountInfo | using device fallback account [matching non-delegate account, non-sub, fallback allowed] account=%{public}@", buf, 0x16u);
             }
 
 LABEL_281:
-            v157 = v143;
+            v157 = fallbackAccount4;
             v324 = 0;
             v322 = 1;
             goto LABEL_282;
@@ -1285,8 +1285,8 @@ LABEL_427:
             if (([v168 isDelegated] & 1) == 0 && !v324)
             {
               v226 = [MPCPlaybackRequestEnvironment alloc];
-              v227 = [v168 userIdentity];
-              v228 = [(MPCPlaybackRequestEnvironment *)v226 initWithUserIdentity:v227];
+              userIdentity7 = [v168 userIdentity];
+              v228 = [(MPCPlaybackRequestEnvironment *)v226 initWithUserIdentity:userIdentity7];
               v229 = v365[5];
               v365[5] = v228;
 
@@ -1309,7 +1309,7 @@ LABEL_393:
 
             v207 = p_isa;
             v317 = v168;
-            v315 = [MEMORY[0x1E69E4688] defaultIdentityStore];
+            defaultIdentityStore3 = [MEMORY[0x1E69E4688] defaultIdentityStore];
             v319 = *(v207 + 14);
             v208 = *(v207 + 4);
             v209 = _MPCLogCategoryDelegation();
@@ -1326,7 +1326,7 @@ LABEL_393:
 
             if (!v319 || !v208)
             {
-              v210 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCError" code:7 debugDescription:{@"Invalid delegation info: %@", v207}];
+              userIdentity8 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCError" code:7 debugDescription:{@"Invalid delegation info: %@", v207}];
               v223 = _MPCLogCategoryDelegation();
               if (os_log_type_enabled(v223, OS_LOG_TYPE_ERROR))
               {
@@ -1335,23 +1335,23 @@ LABEL_393:
                 _os_log_impl(&dword_1C5C61000, v223, OS_LOG_TYPE_ERROR, "_MPCProtoDelegateInfo %p - Getting delegated playback request environment failed [no valid delegation info]", buf, 0xCu);
               }
 
-              v224 = v210;
+              v224 = userIdentity8;
               v215 = 0;
-              v225 = v210;
+              v225 = userIdentity8;
               goto LABEL_375;
             }
 
             if (v317)
             {
-              v210 = [v317 userIdentity];
-              v211 = _MPCLogCategoryDelegation();
-              if (os_log_type_enabled(v211, OS_LOG_TYPE_DEFAULT))
+              userIdentity8 = [v317 userIdentity];
+              anyDelegationHostingAccount2 = _MPCLogCategoryDelegation();
+              if (os_log_type_enabled(anyDelegationHostingAccount2, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 134218242;
                 *&buf[4] = v207;
                 *&buf[12] = 2114;
                 *&buf[14] = v317;
-                _os_log_impl(&dword_1C5C61000, v211, OS_LOG_TYPE_DEFAULT, "_MPCProtoDelegateInfo %p - delegation supported [found existing account] account=%{public}@", buf, 0x16u);
+                _os_log_impl(&dword_1C5C61000, anyDelegationHostingAccount2, OS_LOG_TYPE_DEFAULT, "_MPCProtoDelegateInfo %p - delegation supported [found existing account] account=%{public}@", buf, 0x16u);
               }
             }
 
@@ -1360,7 +1360,7 @@ LABEL_393:
               v237 = MEMORY[0x1E69E4680];
               v238 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v208];
               v239 = [v237 specificAccountWithDSID:v238];
-              v210 = [v239 identityAllowingDelegation:1];
+              userIdentity8 = [v239 identityAllowingDelegation:1];
 
               v240 = _MPCLogCategoryDelegation();
               if (os_log_type_enabled(v240, OS_LOG_TYPE_DEFAULT))
@@ -1368,14 +1368,14 @@ LABEL_393:
                 *buf = 134218242;
                 *&buf[4] = v207;
                 *&buf[12] = 2114;
-                *&buf[14] = v210;
+                *&buf[14] = userIdentity8;
                 _os_log_impl(&dword_1C5C61000, v240, OS_LOG_TYPE_DEFAULT, "_MPCProtoDelegateInfo %p - Creating delegated identity [] userIdentity=%{public}@", buf, 0x16u);
               }
 
               v362[0] = 0;
-              v241 = [v315 insertPropertiesForUserIdentity:v210 usingBlock:&__block_literal_global_227 error:v362];
+              v241 = [defaultIdentityStore3 insertPropertiesForUserIdentity:userIdentity8 usingBlock:&__block_literal_global_227 error:v362];
               v242 = v362[0];
-              v211 = v242;
+              anyDelegationHostingAccount2 = v242;
               if ((v241 & 1) == 0)
               {
                 if (v242)
@@ -1419,7 +1419,7 @@ LABEL_393:
               v393 = buf;
               v245 = v243;
               v392 = v245;
-              [v315 addDelegationUUIDs:v244 forUserIdentity:v210 completionHandler:&v388];
+              [defaultIdentityStore3 addDelegationUUIDs:v244 forUserIdentity:userIdentity8 completionHandler:&v388];
 
               dispatch_semaphore_wait(v245, 0xFFFFFFFFFFFFFFFFLL);
               if (*(*&buf[8] + 40))
@@ -1446,13 +1446,13 @@ LABEL_393:
             }
 
             v212 = +[MPCPlaybackAccountManager sharedManager];
-            v211 = [v212 anyDelegationHostingAccount];
+            anyDelegationHostingAccount2 = [v212 anyDelegationHostingAccount];
 
-            if (v211)
+            if (anyDelegationHostingAccount2)
             {
               v213 = [MPCMutablePlaybackRequestEnvironment alloc];
-              v214 = [v211 userIdentity];
-              v215 = [(MPCPlaybackRequestEnvironment *)v213 initWithUserIdentity:v214];
+              userIdentity9 = [anyDelegationHostingAccount2 userIdentity];
+              v215 = [(MPCPlaybackRequestEnvironment *)v213 initWithUserIdentity:userIdentity9];
 
               v216 = [MPCMutablePlaybackDelegationProperties alloc];
               v217 = *(v207 + 6);
@@ -1531,7 +1531,7 @@ LABEL_393:
 
             v225 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCError" code:73 debugDescription:{@"No host for delegated account: %@", v207}];
             v251 = v225;
-            v211 = 0;
+            anyDelegationHostingAccount2 = 0;
 LABEL_373:
             v215 = 0;
 LABEL_374:
@@ -1559,24 +1559,24 @@ LABEL_375:
 
             if (v335)
             {
-              v284 = [MEMORY[0x1E69E4688] defaultIdentityStore];
-              v285 = [v317 userIdentity];
+              defaultIdentityStore4 = [MEMORY[0x1E69E4688] defaultIdentityStore];
+              userIdentity10 = [v317 userIdentity];
               *v373 = 0;
-              v286 = [v284 getPropertiesForUserIdentity:v285 error:v373];
+              v286 = [defaultIdentityStore4 getPropertiesForUserIdentity:userIdentity10 error:v373];
               v287 = *v373;
 
               if (v287)
               {
                 v346(v329, 0, 0, v287);
-                v288 = v286;
+                delegateToken2 = v286;
 LABEL_425:
 
 LABEL_426:
                 goto LABEL_427;
               }
 
-              v288 = [v286 delegateToken];
-              if ([v288 type] != 1 || (objc_msgSend(MEMORY[0x1E695DF00], "dateWithTimeIntervalSinceNow:", 604800.0), v289 = objc_claimAutoreleasedReturnValue(), v290 = objc_msgSend(v288, "expiresBeforeDate:", v289), v289, v290))
+              delegateToken2 = [v286 delegateToken];
+              if ([delegateToken2 type] != 1 || (objc_msgSend(MEMORY[0x1E695DF00], "dateWithTimeIntervalSinceNow:", 604800.0), v289 = objc_claimAutoreleasedReturnValue(), v290 = objc_msgSend(delegateToken2, "expiresBeforeDate:", v289), v289, v290))
               {
                 v291 = *(v207 + 13);
                 v320 = v291;
@@ -1616,8 +1616,8 @@ LABEL_426:
                     {
                       v388 = @"MPCErrorUserInfoKeyRemoteCommandStatusCode";
                       *buf = &unk_1F4599430;
-                      v300 = [MEMORY[0x1E695DF20] dictionaryWithObjects:buf forKeys:&v388 count:1];
-                      v301 = [v299 msv_errorByWrappingWithDomain:@"MPCError" code:74 userInfo:v300 debugDescription:@"Failed to get tokenB"];
+                      data4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:buf forKeys:&v388 count:1];
+                      v301 = [v299 msv_errorByWrappingWithDomain:@"MPCError" code:74 userInfo:data4 debugDescription:@"Failed to get tokenB"];
                     }
 
                     else
@@ -1628,8 +1628,8 @@ LABEL_426:
                       *buf = &unk_1F4599430;
                       *&buf[8] = @"com.apple.music/wha-delegation/b";
                       v390 = @"MPCErrorUserInfoKeyCustomData";
-                      v300 = [v337 data];
-                      *&buf[16] = v300;
+                      data4 = [v337 data];
+                      *&buf[16] = data4;
                       v307 = [MEMORY[0x1E695DF20] dictionaryWithObjects:buf forKeys:&v388 count:3];
                       v301 = [v306 msv_errorWithDomain:@"MPCError" code:74 userInfo:v307 debugDescription:{@"Delegation token missing or expired for %@", v365[5]}];
                     }
@@ -1669,9 +1669,9 @@ LABEL_426:
 
               if (!v365[5])
               {
-                v310 = [MEMORY[0x1E696AAA8] currentHandler];
+                currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
                 v311 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void __MPCPlaybackRequestEnvironmentFromProtoAccountInfo(_MPCProtoDelegateInfo *__strong, MPRemotePlaybackQueuePlaybackContextOptions, void (^__strong)(MPCPlaybackRequestEnvironment * _Nullable __strong, NSNumber * _Nullable __strong, NSError * _Nullable __strong))"}];
-                [v310 handleFailureInFunction:v311 file:@"MPRemotePlaybackQueue+MPCAdditions.m" lineNumber:392 description:{@"Failed to produce playback request environment for accountInfo: %@, desiredAccount: %@", v207, v317}];
+                [currentHandler2 handleFailureInFunction:v311 file:@"MPRemotePlaybackQueue+MPCAdditions.m" lineNumber:392 description:{@"Failed to produce playback request environment for accountInfo: %@, desiredAccount: %@", v207, v317}];
               }
 
               (v346)(v329);
@@ -1731,7 +1731,7 @@ LABEL_235:
             *buf = 134218242;
             *&buf[4] = p_isa;
             *&buf[12] = 2114;
-            *&buf[14] = v143;
+            *&buf[14] = fallbackAccount4;
             _os_log_impl(&dword_1C5C61000, v162, OS_LOG_TYPE_DEFAULT, "[MPRQ:MPC:%p] __MPCPlaybackRequestEnvironmentFromProtoAccountInfo | using device fallback account [delegate account match, delegate not allowed, fallback allowed] account=%{public}@", buf, 0x16u);
           }
         }
@@ -1785,7 +1785,7 @@ LABEL_235:
             *buf = 134218242;
             *&buf[4] = p_isa;
             *&buf[12] = 2114;
-            *&buf[14] = v143;
+            *&buf[14] = fallbackAccount4;
             _os_log_impl(&dword_1C5C61000, v162, OS_LOG_TYPE_DEFAULT, "[MPRQ:MPC:%p] __MPCPlaybackRequestEnvironmentFromProtoAccountInfo | using device fallback account [no match, fallback allowed] account=%{public}@", buf, 0x16u);
           }
         }
@@ -1793,7 +1793,7 @@ LABEL_235:
         goto LABEL_281;
       }
 
-      v65 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCError" code:27 debugDescription:{@"Subscription required for shared queue, and user doesn't have playback capability: %@", v333}];
+      v65 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCError" code:27 debugDescription:{@"Subscription required for shared queue, and user doesn't have playback capability: %@", fallbackAccount3}];
       v346(v329, 0, 0, v65);
     }
 
@@ -1808,79 +1808,79 @@ LABEL_428:
     goto LABEL_429;
   }
 
-  if ([v341 isEqualToString:@"com.apple.mediaplayer.playbackcontext"])
+  if ([identifier isEqualToString:@"com.apple.mediaplayer.playbackcontext"])
   {
-    v7 = [a1 data];
+    data5 = [self data];
     objc_opt_class();
     v8 = MSVUnarchivedObjectOfClass();
-    v29 = a1;
-    v30 = [v29 featureName];
+    selfCopy3 = self;
+    featureName2 = [selfCopy3 featureName];
 
-    if (v30)
+    if (featureName2)
     {
-      v31 = [v29 featureName];
-      [v8 setPlayActivityFeatureName:v31];
+      featureName3 = [selfCopy3 featureName];
+      [v8 setPlayActivityFeatureName:featureName3];
     }
 
-    v32 = [v29 queueGroupingID];
+    queueGroupingID2 = [selfCopy3 queueGroupingID];
 
-    if (v32)
+    if (queueGroupingID2)
     {
-      v33 = [v29 queueGroupingID];
-      [v8 setPlayActivityQueueGroupingID:v33];
+      queueGroupingID3 = [selfCopy3 queueGroupingID];
+      [v8 setPlayActivityQueueGroupingID:queueGroupingID3];
     }
 
-    v34 = [v29 siriRecommendationIdentifier];
-    v35 = [v34 dataUsingEncoding:4];
+    siriRecommendationIdentifier = [selfCopy3 siriRecommendationIdentifier];
+    v35 = [siriRecommendationIdentifier dataUsingEncoding:4];
 
     if (v35)
     {
-      v36 = [v29 siriRecommendationIdentifier];
-      v37 = [v36 dataUsingEncoding:4];
+      siriRecommendationIdentifier2 = [selfCopy3 siriRecommendationIdentifier];
+      v37 = [siriRecommendationIdentifier2 dataUsingEncoding:4];
       [v8 setPlayActivityRecommendationData:v37];
     }
 
-    v38 = [v29 siriAssetInfo];
+    siriAssetInfo = [selfCopy3 siriAssetInfo];
 
-    if (v38)
+    if (siriAssetInfo)
     {
-      v39 = [v29 siriAssetInfo];
-      [v8 setSiriAssetInfo:v39];
+      siriAssetInfo2 = [selfCopy3 siriAssetInfo];
+      [v8 setSiriAssetInfo:siriAssetInfo2];
     }
 
-    v40 = [v29 siriReferenceIdentifier];
+    siriReferenceIdentifier = [selfCopy3 siriReferenceIdentifier];
 
-    if (v40)
+    if (siriReferenceIdentifier)
     {
-      v41 = [v29 siriReferenceIdentifier];
-      [v8 setSiriReferenceIdentifier:v41];
+      siriReferenceIdentifier2 = [selfCopy3 siriReferenceIdentifier];
+      [v8 setSiriReferenceIdentifier:siriReferenceIdentifier2];
     }
 
-    v42 = [v29 siriWHAMetricsInfo];
+    siriWHAMetricsInfo = [selfCopy3 siriWHAMetricsInfo];
 
-    if (v42)
+    if (siriWHAMetricsInfo)
     {
-      v43 = [v29 siriWHAMetricsInfo];
-      [v8 setSiriWHAMetricsInfo:v43];
+      siriWHAMetricsInfo2 = [selfCopy3 siriWHAMetricsInfo];
+      [v8 setSiriWHAMetricsInfo:siriWHAMetricsInfo2];
     }
 
-    v44 = [v29 privateListeningOverride];
+    privateListeningOverride = [selfCopy3 privateListeningOverride];
 
-    if (v44)
+    if (privateListeningOverride)
     {
-      v45 = [v29 privateListeningOverride];
-      [v8 setPrivateListeningOverride:v45];
+      privateListeningOverride2 = [selfCopy3 privateListeningOverride];
+      [v8 setPrivateListeningOverride:privateListeningOverride2];
     }
 
-    v46 = [v29 userIdentity];
+    userIdentity11 = [selfCopy3 userIdentity];
 
-    if (v46)
+    if (userIdentity11)
     {
-      v47 = [v29 userIdentity];
-      [v8 setUserIdentity:v47];
+      userIdentity12 = [selfCopy3 userIdentity];
+      [v8 setUserIdentity:userIdentity12];
     }
 
-    if ([v29 isRequestingImmediatePlayback])
+    if ([selfCopy3 isRequestingImmediatePlayback])
     {
       v48 = 20;
     }
@@ -1896,30 +1896,30 @@ LABEL_428:
     goto LABEL_24;
   }
 
-  if (![v341 isEqualToString:@"com.apple.MediaPlaybackCore.playbackContextArchive-v1.opack"])
+  if (![identifier isEqualToString:@"com.apple.MediaPlaybackCore.playbackContextArchive-v1.opack"])
   {
-    if ([v341 isEqualToString:@"com.apple.music.playbackqueue.sharedlistening"])
+    if ([identifier isEqualToString:@"com.apple.music.playbackqueue.sharedlistening"])
     {
       [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCError" code:58 debugDescription:@"Sharedlistening playback context cannot be used for remote set queue."];
     }
 
     else
     {
-      [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCError" code:4 debugDescription:{@"Unknown queue identifier: %@", v341}];
+      [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MPCError" code:4 debugDescription:{@"Unknown queue identifier: %@", identifier}];
     }
-    v7 = ;
-    (v342[2])(v342, 0, v7);
+    data5 = ;
+    (v342[2])(v342, 0, data5);
     goto LABEL_25;
   }
 
-  v50 = [a1 data];
+  data6 = [self data];
   v51 = MEMORY[0x1E69B1460];
   v52 = MEMORY[0x1E695DFD8];
   v53 = objc_opt_class();
   v54 = objc_opt_class();
   v55 = [v52 setWithObjects:{v53, v54, objc_opt_class(), 0}];
   v344 = 0;
-  v56 = [v51 decodedObjectOfClasses:v55 fromData:v50 error:&v344];
+  v56 = [v51 decodedObjectOfClasses:v55 fromData:data6 error:&v344];
   v57 = v344;
 
   v58 = [v56 objectForKeyedSubscript:@"original"];
@@ -1994,9 +1994,9 @@ LABEL_133:
     if ([v58 conformsToProtocol:&unk_1F45B4200])
     {
       v103 = v58;
-      v104 = [v103 playbackRequestEnvironment];
+      playbackRequestEnvironment = [v103 playbackRequestEnvironment];
       v343 = 0;
-      v105 = [v104 rectifiedPlaybackRequestEnvironmentWithReasons:&v343];
+      v105 = [playbackRequestEnvironment rectifiedPlaybackRequestEnvironmentWithReasons:&v343];
       v340 = v343;
 
       if (v105)
@@ -2017,8 +2017,8 @@ LABEL_133:
       }
     }
 
-    v109 = [a1 mediaRemoteOptions];
-    v110 = [v109 objectForKeyedSubscript:*MEMORY[0x1E69B11E8]];
+    mediaRemoteOptions2 = [self mediaRemoteOptions];
+    v110 = [mediaRemoteOptions2 objectForKeyedSubscript:*MEMORY[0x1E69B11E8]];
 
     if (v110)
     {

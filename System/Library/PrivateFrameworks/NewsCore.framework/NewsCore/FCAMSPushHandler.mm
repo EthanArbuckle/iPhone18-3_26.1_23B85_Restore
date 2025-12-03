@@ -1,8 +1,8 @@
 @interface FCAMSPushHandler
-- (BOOL)shouldHandleNotification:(id)a3;
+- (BOOL)shouldHandleNotification:(id)notification;
 - (FCAMSPushHandler)init;
-- (void)handleNotification:(id)a3;
-- (void)handleNotificationResponse:(id)a3;
+- (void)handleNotification:(id)notification;
+- (void)handleNotificationResponse:(id)response;
 @end
 
 @implementation FCAMSPushHandler
@@ -33,30 +33,30 @@ id __24__FCAMSPushHandler_init__block_invoke()
   return v3;
 }
 
-- (BOOL)shouldHandleNotification:(id)a3
+- (BOOL)shouldHandleNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(FCAMSPushHandler *)self lazyHandler];
-  v6 = [v5 value];
-  v7 = [v6 shouldHandleNotification:v4];
+  notificationCopy = notification;
+  lazyHandler = [(FCAMSPushHandler *)self lazyHandler];
+  value = [lazyHandler value];
+  v7 = [value shouldHandleNotification:notificationCopy];
 
   return v7;
 }
 
-- (void)handleNotification:(id)a3
+- (void)handleNotification:(id)notification
 {
-  v4 = a3;
-  v6 = [(FCAMSPushHandler *)self lazyHandler];
-  v5 = [v6 value];
-  [v5 handleNotification:v4];
+  notificationCopy = notification;
+  lazyHandler = [(FCAMSPushHandler *)self lazyHandler];
+  value = [lazyHandler value];
+  [value handleNotification:notificationCopy];
 }
 
-- (void)handleNotificationResponse:(id)a3
+- (void)handleNotificationResponse:(id)response
 {
-  v6 = a3;
+  responseCopy = response;
   v3 = MEMORY[0x1E698CBC0];
   v4 = +[FCAMSBag bag];
-  v5 = [v3 handleNotificationResponse:v6 bag:v4];
+  v5 = [v3 handleNotificationResponse:responseCopy bag:v4];
 }
 
 @end

@@ -2,7 +2,7 @@
 - (BOOL)isDirty;
 - (BOOL)needsFirstSync;
 - (NSArray)clientRecords;
-- (SCWZone)initWithSchema:(id)a3 store:(id)a4;
+- (SCWZone)initWithSchema:(id)schema store:(id)store;
 - (SCWZoneDiff)clientDiff;
 @end
 
@@ -10,12 +10,12 @@
 
 - (NSArray)clientRecords
 {
-  v3 = [(SCWZone *)self schema];
-  v4 = [(SCWZone *)self clientDiff];
-  v5 = [(SCWZone *)self store];
-  v6 = [v5 serverRecords];
-  v7 = [v4 applyToRecords:v6];
-  v8 = [v3 validateRecords:v7];
+  schema = [(SCWZone *)self schema];
+  clientDiff = [(SCWZone *)self clientDiff];
+  store = [(SCWZone *)self store];
+  serverRecords = [store serverRecords];
+  v7 = [clientDiff applyToRecords:serverRecords];
+  v8 = [schema validateRecords:v7];
 
   return v8;
 }
@@ -24,19 +24,19 @@
 {
   v22 = *MEMORY[0x1E69E9840];
   v3 = [SCWZoneModificationSilo alloc];
-  v4 = [(SCWZone *)self schema];
-  v5 = [(SCWZone *)self store];
-  v6 = [v5 serverRecords];
-  v7 = [(SCWZoneModificationSilo *)v3 initWithZoneSchema:v4 contents:v6];
+  schema = [(SCWZone *)self schema];
+  store = [(SCWZone *)self store];
+  serverRecords = [store serverRecords];
+  v7 = [(SCWZoneModificationSilo *)v3 initWithZoneSchema:schema contents:serverRecords];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [(SCWZone *)self store];
-  v9 = [v8 pendingCommands];
+  store2 = [(SCWZone *)self store];
+  pendingCommands = [store2 pendingCommands];
 
-  v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v10 = [pendingCommands countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
     v11 = v10;
@@ -47,47 +47,47 @@
       {
         if (*v18 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(pendingCommands);
         }
 
         [*(*(&v17 + 1) + 8 * i) executeWithZone:v7];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v11 = [pendingCommands countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v11);
   }
 
-  v14 = [(SCWZoneModificationSilo *)v7 diff];
+  diff = [(SCWZoneModificationSilo *)v7 diff];
 
   v15 = *MEMORY[0x1E69E9840];
 
-  return v14;
+  return diff;
 }
 
 - (BOOL)needsFirstSync
 {
-  v2 = [(SCWZone *)self store];
-  v3 = [v2 lastSyncDate];
-  v4 = v3 == 0;
+  store = [(SCWZone *)self store];
+  lastSyncDate = [store lastSyncDate];
+  v4 = lastSyncDate == 0;
 
   return v4;
 }
 
 - (BOOL)isDirty
 {
-  v3 = [(SCWZone *)self store];
-  v4 = [v3 lastSyncDate];
+  store = [(SCWZone *)self store];
+  lastSyncDate = [store lastSyncDate];
 
-  v5 = [(SCWZone *)self store];
-  v6 = [v5 lastDirtyDate];
+  store2 = [(SCWZone *)self store];
+  lastDirtyDate = [store2 lastDirtyDate];
 
-  if (v4)
+  if (lastSyncDate)
   {
-    if (v6)
+    if (lastDirtyDate)
     {
-      v7 = [v6 compare:v4] == 1;
+      v7 = [lastDirtyDate compare:lastSyncDate] == 1;
     }
 
     else
@@ -104,18 +104,18 @@
   return v7;
 }
 
-- (SCWZone)initWithSchema:(id)a3 store:(id)a4
+- (SCWZone)initWithSchema:(id)schema store:(id)store
 {
-  v7 = a3;
-  v8 = a4;
+  schemaCopy = schema;
+  storeCopy = store;
   v12.receiver = self;
   v12.super_class = SCWZone;
   v9 = [(SCWZone *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_schema, a3);
-    objc_storeStrong(&v10->_store, a4);
+    objc_storeStrong(&v9->_schema, schema);
+    objc_storeStrong(&v10->_store, store);
   }
 
   return v10;

@@ -1,13 +1,13 @@
 @interface _SFECDHKeySource
-- (_SFECDHKeySource)initWithLocalKeyPair:(id)a3 remotePublickKey:(id)a4;
+- (_SFECDHKeySource)initWithLocalKeyPair:(id)pair remotePublickKey:(id)key;
 @end
 
 @implementation _SFECDHKeySource
 
-- (_SFECDHKeySource)initWithLocalKeyPair:(id)a3 remotePublickKey:(id)a4
+- (_SFECDHKeySource)initWithLocalKeyPair:(id)pair remotePublickKey:(id)key
 {
-  v7 = a3;
-  v8 = a4;
+  pairCopy = pair;
+  keyCopy = key;
   v13.receiver = self;
   v13.super_class = _SFECDHKeySource;
   v9 = [(_SFECDHKeySource *)&v13 init];
@@ -17,8 +17,8 @@
     ecdhKeySourceInternal = v9->_ecdhKeySourceInternal;
     v9->_ecdhKeySourceInternal = v10;
 
-    objc_storeStrong(v9->_ecdhKeySourceInternal + 1, a3);
-    objc_storeStrong(v9->_ecdhKeySourceInternal + 2, a4);
+    objc_storeStrong(v9->_ecdhKeySourceInternal + 1, pair);
+    objc_storeStrong(v9->_ecdhKeySourceInternal + 2, key);
   }
 
   return v9;

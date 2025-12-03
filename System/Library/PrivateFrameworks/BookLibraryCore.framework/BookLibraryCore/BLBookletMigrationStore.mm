@@ -1,10 +1,10 @@
 @interface BLBookletMigrationStore
 - (BLBookletMigrationStore)init;
-- (BOOL)removeAllMigrationInfosExcludingStates:(id)a3 error:(id *)a4;
-- (BOOL)setMigrationState:(int64_t)a3 forStoreIDs:(id)a4 error:(id *)a5;
-- (void)migrationInfosWithState:(int64_t)a3 completion:(id)a4;
-- (void)migrationInfosWithStates:(id)a3 completion:(id)a4;
-- (void)migrationInfosWithStoreIDs:(id)a3 completion:(id)a4;
+- (BOOL)removeAllMigrationInfosExcludingStates:(id)states error:(id *)error;
+- (BOOL)setMigrationState:(int64_t)state forStoreIDs:(id)ds error:(id *)error;
+- (void)migrationInfosWithState:(int64_t)state completion:(id)completion;
+- (void)migrationInfosWithStates:(id)states completion:(id)completion;
+- (void)migrationInfosWithStoreIDs:(id)ds completion:(id)completion;
 @end
 
 @implementation BLBookletMigrationStore
@@ -41,9 +41,9 @@
   return v2;
 }
 
-- (BOOL)setMigrationState:(int64_t)a3 forStoreIDs:(id)a4 error:(id *)a5
+- (BOOL)setMigrationState:(int64_t)state forStoreIDs:(id)ds error:(id *)error
 {
-  v8 = a4;
+  dsCopy = ds;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -56,11 +56,11 @@
   v13[2] = sub_241D45C8C;
   v13[3] = &unk_278D176F8;
   v13[4] = &v14;
-  [(BLServiceProxy *)serviceProxy setMigrationState:a3 forStoreIDs:v8 withReply:v13];
+  [(BLServiceProxy *)serviceProxy setMigrationState:state forStoreIDs:dsCopy withReply:v13];
   v10 = v15[5];
-  if (a5 && v10)
+  if (error && v10)
   {
-    *a5 = v10;
+    *error = v10;
     v10 = v15[5];
   }
 
@@ -70,10 +70,10 @@
   return v11;
 }
 
-- (void)migrationInfosWithStoreIDs:(id)a3 completion:(id)a4
+- (void)migrationInfosWithStoreIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  completionCopy = completion;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -93,8 +93,8 @@
   v11[3] = &unk_278D17720;
   v11[4] = &v12;
   v11[5] = &v18;
-  [(BLServiceProxy *)serviceProxy migrationInfosWithStoreIDs:v6 withReply:v11];
-  v9 = MEMORY[0x245CFF560](v7);
+  [(BLServiceProxy *)serviceProxy migrationInfosWithStoreIDs:dsCopy withReply:v11];
+  v9 = MEMORY[0x245CFF560](completionCopy);
   v10 = v9;
   if (v9)
   {
@@ -105,21 +105,21 @@
   _Block_object_dispose(&v18, 8);
 }
 
-- (void)migrationInfosWithState:(int64_t)a3 completion:(id)a4
+- (void)migrationInfosWithState:(int64_t)state completion:(id)completion
 {
   v6 = MEMORY[0x277CBEB98];
   v7 = MEMORY[0x277CCABB0];
-  v8 = a4;
-  v9 = [v7 numberWithInteger:a3];
+  completionCopy = completion;
+  v9 = [v7 numberWithInteger:state];
   v10 = [v6 setWithObject:v9];
 
-  [(BLBookletMigrationStore *)self migrationInfosWithStates:v10 completion:v8];
+  [(BLBookletMigrationStore *)self migrationInfosWithStates:v10 completion:completionCopy];
 }
 
-- (void)migrationInfosWithStates:(id)a3 completion:(id)a4
+- (void)migrationInfosWithStates:(id)states completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  statesCopy = states;
+  completionCopy = completion;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -139,8 +139,8 @@
   v11[3] = &unk_278D17720;
   v11[4] = &v12;
   v11[5] = &v18;
-  [(BLServiceProxy *)serviceProxy migrationInfosWithStates:v6 withReply:v11];
-  v9 = MEMORY[0x245CFF560](v7);
+  [(BLServiceProxy *)serviceProxy migrationInfosWithStates:statesCopy withReply:v11];
+  v9 = MEMORY[0x245CFF560](completionCopy);
   v10 = v9;
   if (v9)
   {
@@ -151,9 +151,9 @@
   _Block_object_dispose(&v18, 8);
 }
 
-- (BOOL)removeAllMigrationInfosExcludingStates:(id)a3 error:(id *)a4
+- (BOOL)removeAllMigrationInfosExcludingStates:(id)states error:(id *)error
 {
-  v6 = a3;
+  statesCopy = states;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -166,11 +166,11 @@
   v11[2] = sub_241D462B0;
   v11[3] = &unk_278D176F8;
   v11[4] = &v12;
-  [(BLServiceProxy *)serviceProxy removeAllMigrationInfosExcludingStates:v6 withReply:v11];
+  [(BLServiceProxy *)serviceProxy removeAllMigrationInfosExcludingStates:statesCopy withReply:v11];
   v8 = v13[5];
-  if (a4 && v8)
+  if (error && v8)
   {
-    *a4 = v8;
+    *error = v8;
     v8 = v13[5];
   }
 

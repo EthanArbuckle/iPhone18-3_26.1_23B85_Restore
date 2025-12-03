@@ -1,6 +1,6 @@
 @interface AVConcreteMutableValueTiming
 - ($F24F406B2B787EFB06265DBA3D28CBD5)_timing;
-- (AVConcreteMutableValueTiming)initWithAnchorValue:(double)a3 anchorTimeStamp:(double)a4 rate:(double)a5;
+- (AVConcreteMutableValueTiming)initWithAnchorValue:(double)value anchorTimeStamp:(double)stamp rate:(double)rate;
 @end
 
 @implementation AVConcreteMutableValueTiming
@@ -21,11 +21,11 @@
   return result;
 }
 
-- (AVConcreteMutableValueTiming)initWithAnchorValue:(double)a3 anchorTimeStamp:(double)a4 rate:(double)a5
+- (AVConcreteMutableValueTiming)initWithAnchorValue:(double)value anchorTimeStamp:(double)stamp rate:(double)rate
 {
-  self->_value = a3;
-  self->_timeStamp = a4;
-  self->_rate = a5;
+  self->_value = value;
+  self->_timeStamp = stamp;
+  self->_rate = rate;
   return self;
 }
 

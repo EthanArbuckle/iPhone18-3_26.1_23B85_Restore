@@ -1,12 +1,12 @@
 @interface OSIMediaPlaybackMonitor
-- (BOOL)hasPlaybackStateChangeRecently:(double)a3;
-- (BOOL)isEventNextSongPlaying:(id)a3 fromPreviousEvent:(id)a4;
-- (double)playbackDurationOverDuration:(double)a3 currentlyPlaying:(BOOL *)a4;
+- (BOOL)hasPlaybackStateChangeRecently:(double)recently;
+- (BOOL)isEventNextSongPlaying:(id)playing fromPreviousEvent:(id)event;
+- (double)playbackDurationOverDuration:(double)duration currentlyPlaying:(BOOL *)playing;
 @end
 
 @implementation OSIMediaPlaybackMonitor
 
-- (double)playbackDurationOverDuration:(double)a3 currentlyPlaying:(BOOL *)a4
+- (double)playbackDurationOverDuration:(double)duration currentlyPlaying:(BOOL *)playing
 {
   v6 = os_transaction_create();
   v7 = objc_autoreleasePoolPush();
@@ -27,15 +27,15 @@
   v36 = 0;
   v9 = os_log_create("com.apple.osintelligence", "inactivity.playbackmonitor");
   v10 = [BMPublisherOptions alloc];
-  v11 = [NSDate dateWithTimeIntervalSinceNow:a3 * -20.0];
+  v11 = [NSDate dateWithTimeIntervalSinceNow:duration * -20.0];
   v12 = +[NSDate distantFuture];
   v13 = [v10 initWithStartDate:v11 endDate:v12 maxEvents:0 lastN:0 reversed:0];
 
   v14 = BiomeLibrary();
-  v15 = [v14 Media];
-  v16 = [v15 NowPlaying];
-  v17 = [v16 publisherWithOptions:v13];
-  v18 = Current - a3;
+  media = [v14 Media];
+  nowPlaying = [media NowPlaying];
+  v17 = [nowPlaying publisherWithOptions:v13];
+  v18 = Current - duration;
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = sub_10001F2F0;
@@ -48,9 +48,9 @@
   v31 = &v43;
   v20 = [v17 sinkWithCompletion:&stru_100094EF0 receiveInput:v27];
 
-  if (a4)
+  if (playing)
   {
-    *a4 = *(v34 + 24);
+    *playing = *(v34 + 24);
   }
 
   if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
@@ -92,7 +92,7 @@
   return v25;
 }
 
-- (BOOL)hasPlaybackStateChangeRecently:(double)a3
+- (BOOL)hasPlaybackStateChangeRecently:(double)recently
 {
   v5 = os_transaction_create();
   v6 = objc_autoreleasePoolPush();
@@ -109,14 +109,14 @@
   v22 = 0;
   v7 = os_log_create("com.apple.osintelligence", "inactivity.playbackmonitor");
   v8 = [BMPublisherOptions alloc];
-  v9 = [NSDate dateWithTimeIntervalSinceNow:-a3];
+  v9 = [NSDate dateWithTimeIntervalSinceNow:-recently];
   v10 = +[NSDate distantFuture];
   v11 = [v8 initWithStartDate:v9 endDate:v10 maxEvents:0 lastN:0 reversed:0];
 
   v12 = BiomeLibrary();
-  v13 = [v12 Media];
-  v14 = [v13 NowPlaying];
-  v15 = [v14 publisherWithOptions:v11];
+  media = [v12 Media];
+  nowPlaying = [media NowPlaying];
+  v15 = [nowPlaying publisherWithOptions:v11];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_10001F7C8;
@@ -132,7 +132,7 @@
     *buf = 134218240;
     v28 = v17;
     v29 = 2048;
-    v30 = a3 / 60.0;
+    v30 = recently / 60.0;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Counted %ld unique play/pause state(s) in the last %.1f minutes", buf, 0x16u);
   }
 
@@ -145,19 +145,19 @@
   return v18;
 }
 
-- (BOOL)isEventNextSongPlaying:(id)a3 fromPreviousEvent:(id)a4
+- (BOOL)isEventNextSongPlaying:(id)playing fromPreviousEvent:(id)event
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 playbackState];
+  playingCopy = playing;
+  eventCopy = event;
+  playbackState = [playingCopy playbackState];
   v8 = 0;
-  if (v6 && v7 == 1)
+  if (eventCopy && playbackState == 1)
   {
-    if ([v6 playbackState] == 3)
+    if ([eventCopy playbackState] == 3)
     {
-      [v5 absoluteTimestamp];
+      [playingCopy absoluteTimestamp];
       v10 = v9;
-      [v6 absoluteTimestamp];
+      [eventCopy absoluteTimestamp];
       v8 = v10 - v11 < 0.01;
     }
 

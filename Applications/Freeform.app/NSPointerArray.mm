@@ -1,13 +1,13 @@
 @interface NSPointerArray
-- (unint64_t)crl_indexOfPointer:(void *)a3;
-- (void)crl_enumerateNonNullPointersUsingBlock:(id)a3;
+- (unint64_t)crl_indexOfPointer:(void *)pointer;
+- (void)crl_enumerateNonNullPointersUsingBlock:(id)block;
 @end
 
 @implementation NSPointerArray
 
-- (void)crl_enumerateNonNullPointersUsingBlock:(id)a3
+- (void)crl_enumerateNonNullPointersUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9 = 0;
   v5 = [(NSPointerArray *)self count];
   if (v5)
@@ -19,7 +19,7 @@
       v8 = [(NSPointerArray *)self pointerAtIndex:v7 - 1];
       if (v8)
       {
-        v4[2](v4, v8, v7 - 1, &v9);
+        blockCopy[2](blockCopy, v8, v7 - 1, &v9);
       }
 
       if (v7 >= v6)
@@ -34,7 +34,7 @@
   }
 }
 
-- (unint64_t)crl_indexOfPointer:(void *)a3
+- (unint64_t)crl_indexOfPointer:(void *)pointer
 {
   v6 = 0;
   v7 = &v6;
@@ -45,7 +45,7 @@
   v5[2] = sub_1001CABBC;
   v5[3] = &unk_101846258;
   v5[4] = &v6;
-  v5[5] = a3;
+  v5[5] = pointer;
   [(NSPointerArray *)self crl_enumerateNonNullPointersUsingBlock:v5];
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);

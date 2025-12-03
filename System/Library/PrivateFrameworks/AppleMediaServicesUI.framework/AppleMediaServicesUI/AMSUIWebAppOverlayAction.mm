@@ -1,31 +1,31 @@
 @interface AMSUIWebAppOverlayAction
-- (AMSUIWebAppOverlayAction)initWithJSObject:(id)a3 context:(id)a4;
+- (AMSUIWebAppOverlayAction)initWithJSObject:(id)object context:(id)context;
 - (BOOL)_shouldUseStoreKit;
 - (id)_determineScene;
 - (id)_dismissOverlay;
 - (id)_dismissStoreKitOverlay;
-- (id)_presentOverlayWithAppIdentifier:(id)a3;
-- (id)_presentStoreKitOverlayWithAppIdentifier:(id)a3;
+- (id)_presentOverlayWithAppIdentifier:(id)identifier;
+- (id)_presentStoreKitOverlayWithAppIdentifier:(id)identifier;
 - (id)runAction;
-- (void)storeOverlay:(id)a3 didFailToLoadWithError:(id)a4;
-- (void)storeOverlay:(id)a3 didFinishDismissal:(id)a4;
-- (void)storeOverlay:(id)a3 didFinishPresentation:(id)a4;
+- (void)storeOverlay:(id)overlay didFailToLoadWithError:(id)error;
+- (void)storeOverlay:(id)overlay didFinishDismissal:(id)dismissal;
+- (void)storeOverlay:(id)overlay didFinishPresentation:(id)presentation;
 @end
 
 @implementation AMSUIWebAppOverlayAction
 
-- (AMSUIWebAppOverlayAction)initWithJSObject:(id)a3 context:(id)a4
+- (AMSUIWebAppOverlayAction)initWithJSObject:(id)object context:(id)context
 {
-  v6 = a3;
+  objectCopy = object;
   v26.receiver = self;
   v26.super_class = AMSUIWebAppOverlayAction;
-  v7 = [(AMSUIWebAction *)&v26 initWithJSObject:v6 context:a4];
+  v7 = [(AMSUIWebAction *)&v26 initWithJSObject:objectCopy context:context];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"dismiss"];
+    v8 = [objectCopy objectForKeyedSubscript:@"dismiss"];
     if (objc_opt_respondsToSelector())
     {
-      v9 = [v6 objectForKeyedSubscript:@"dismiss"];
+      v9 = [objectCopy objectForKeyedSubscript:@"dismiss"];
       v7->_dismiss = [v9 BOOLValue];
     }
 
@@ -34,7 +34,7 @@
       v7->_dismiss = 0;
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"appIdentifier"];
+    v10 = [objectCopy objectForKeyedSubscript:@"appIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,7 +49,7 @@
     appIdentifier = v7->_appIdentifier;
     v7->_appIdentifier = v11;
 
-    v13 = [v6 objectForKeyedSubscript:@"campaignToken"];
+    v13 = [objectCopy objectForKeyedSubscript:@"campaignToken"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -64,7 +64,7 @@
     campaignToken = v7->_campaignToken;
     v7->_campaignToken = v14;
 
-    v16 = [v6 objectForKeyedSubscript:@"providerToken"];
+    v16 = [objectCopy objectForKeyedSubscript:@"providerToken"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -79,7 +79,7 @@
     providerToken = v7->_providerToken;
     v7->_providerToken = v17;
 
-    v19 = [v6 objectForKeyedSubscript:@"customProductPageIdentifier"];
+    v19 = [objectCopy objectForKeyedSubscript:@"customProductPageIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -94,7 +94,7 @@
     customProductPageIdentifier = v7->_customProductPageIdentifier;
     v7->_customProductPageIdentifier = v20;
 
-    v22 = [v6 objectForKeyedSubscript:@"latestReleaseID"];
+    v22 = [objectCopy objectForKeyedSubscript:@"latestReleaseID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -131,17 +131,17 @@
 
   else
   {
-    v3 = [(AMSUIWebAppOverlayAction *)self appIdentifier];
-    if ([v3 length])
+    appIdentifier = [(AMSUIWebAppOverlayAction *)self appIdentifier];
+    if ([appIdentifier length])
     {
       if ([(AMSUIWebAppOverlayAction *)self _shouldUseStoreKit])
       {
-        [(AMSUIWebAppOverlayAction *)self _presentStoreKitOverlayWithAppIdentifier:v3];
+        [(AMSUIWebAppOverlayAction *)self _presentStoreKitOverlayWithAppIdentifier:appIdentifier];
       }
 
       else
       {
-        [(AMSUIWebAppOverlayAction *)self _presentOverlayWithAppIdentifier:v3];
+        [(AMSUIWebAppOverlayAction *)self _presentOverlayWithAppIdentifier:appIdentifier];
       }
       v4 = ;
     }
@@ -159,18 +159,18 @@
   v10[2] = 0x3032000000;
   v10[3] = __Block_byref_object_copy__3;
   v10[4] = __Block_byref_object_dispose__3;
-  v11 = self;
+  selfCopy = self;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __37__AMSUIWebAppOverlayAction_runAction__block_invoke;
   v9[3] = &unk_1E7F25A60;
-  v9[4] = v11;
+  v9[4] = selfCopy;
   v9[5] = v10;
   [v4 addFinishBlock:v9];
-  v7 = [v4 promiseAdapter];
+  promiseAdapter = [v4 promiseAdapter];
   _Block_object_dispose(v10, 8);
 
-  return v7;
+  return promiseAdapter;
 }
 
 void __37__AMSUIWebAppOverlayAction_runAction__block_invoke(uint64_t a1)
@@ -181,48 +181,48 @@ void __37__AMSUIWebAppOverlayAction_runAction__block_invoke(uint64_t a1)
   *(v2 + 40) = 0;
 }
 
-- (void)storeOverlay:(id)a3 didFailToLoadWithError:(id)a4
+- (void)storeOverlay:(id)overlay didFailToLoadWithError:(id)error
 {
-  v5 = a4;
-  v6 = [(AMSUIWebAppOverlayAction *)self storeKitOverlayPromise];
-  [v6 finishWithError:v5];
+  errorCopy = error;
+  storeKitOverlayPromise = [(AMSUIWebAppOverlayAction *)self storeKitOverlayPromise];
+  [storeKitOverlayPromise finishWithError:errorCopy];
 }
 
-- (void)storeOverlay:(id)a3 didFinishPresentation:(id)a4
+- (void)storeOverlay:(id)overlay didFinishPresentation:(id)presentation
 {
-  v4 = [(AMSUIWebAppOverlayAction *)self storeKitOverlayPromise:a3];
+  v4 = [(AMSUIWebAppOverlayAction *)self storeKitOverlayPromise:overlay];
   [v4 finishWithSuccess];
 }
 
-- (void)storeOverlay:(id)a3 didFinishDismissal:(id)a4
+- (void)storeOverlay:(id)overlay didFinishDismissal:(id)dismissal
 {
-  v4 = [(AMSUIWebAppOverlayAction *)self storeKitOverlayPromise:a3];
+  v4 = [(AMSUIWebAppOverlayAction *)self storeKitOverlayPromise:overlay];
   [v4 finishWithSuccess];
 }
 
 - (id)_determineScene
 {
-  v2 = [(AMSUIWebAction *)self context];
-  v3 = [v2 flowController];
-  v4 = [v3 currentContainer];
-  v5 = [v4 view];
-  v6 = [v5 window];
-  v7 = [v6 windowScene];
+  context = [(AMSUIWebAction *)self context];
+  flowController = [context flowController];
+  currentContainer = [flowController currentContainer];
+  view = [currentContainer view];
+  window = [view window];
+  windowScene = [window windowScene];
 
-  return v7;
+  return windowScene;
 }
 
 - (id)_dismissOverlay
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-  if (!v3)
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v3 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v4 = [v3 OSLogObject];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v5 = objc_opt_class();
     v6 = AMSLogKey();
@@ -230,29 +230,29 @@ void __37__AMSUIWebAppOverlayAction_runAction__block_invoke(uint64_t a1)
     v13 = v5;
     v14 = 2114;
     v15 = v6;
-    _os_log_impl(&dword_1BB036000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Dismissing app overlay", &v12, 0x16u);
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Dismissing app overlay", &v12, 0x16u);
   }
 
-  v7 = [(AMSUIWebAction *)self context];
-  v8 = [v7 webPage];
-  v9 = [v8 dismissAppOverlay];
+  context = [(AMSUIWebAction *)self context];
+  webPage = [context webPage];
+  dismissAppOverlay = [webPage dismissAppOverlay];
 
   v10 = *MEMORY[0x1E69E9840];
 
-  return v9;
+  return dismissAppOverlay;
 }
 
 - (id)_dismissStoreKitOverlay
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-  if (!v3)
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v3 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v4 = [v3 OSLogObject];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v5 = objc_opt_class();
     v6 = AMSLogKey();
@@ -260,32 +260,32 @@ void __37__AMSUIWebAppOverlayAction_runAction__block_invoke(uint64_t a1)
     v13 = v5;
     v14 = 2114;
     v15 = v6;
-    _os_log_impl(&dword_1BB036000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Dismissing app overlay using StoreKit", &v12, 0x16u);
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Dismissing app overlay using StoreKit", &v12, 0x16u);
   }
 
   v7 = objc_opt_new();
   [(AMSUIWebAppOverlayAction *)self setStoreKitOverlayPromise:v7];
   v8 = getSKOverlayClass[0]();
-  v9 = [(AMSUIWebAppOverlayAction *)self _determineScene];
-  [(objc_class *)v8 dismissOverlayInScene:v9];
+  _determineScene = [(AMSUIWebAppOverlayAction *)self _determineScene];
+  [(objc_class *)v8 dismissOverlayInScene:_determineScene];
 
   v10 = *MEMORY[0x1E69E9840];
 
   return v7;
 }
 
-- (id)_presentOverlayWithAppIdentifier:(id)a3
+- (id)_presentOverlayWithAppIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-  if (!v5)
+  identifierCopy = identifier;
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v5 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
     v8 = AMSLogKey();
@@ -294,31 +294,31 @@ void __37__AMSUIWebAppOverlayAction_runAction__block_invoke(uint64_t a1)
     v16 = 2114;
     v17 = v8;
     v18 = 2114;
-    v19 = v4;
-    _os_log_impl(&dword_1BB036000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Presenting app overlay: %{public}@", &v14, 0x20u);
+    v19 = identifierCopy;
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Presenting app overlay: %{public}@", &v14, 0x20u);
   }
 
-  v9 = [(AMSUIWebAction *)self context];
-  v10 = [v9 webPage];
-  v11 = [v10 presentAppOverlayWithAdamID:v4];
+  context = [(AMSUIWebAction *)self context];
+  webPage = [context webPage];
+  v11 = [webPage presentAppOverlayWithAdamID:identifierCopy];
 
   v12 = *MEMORY[0x1E69E9840];
 
   return v11;
 }
 
-- (id)_presentStoreKitOverlayWithAppIdentifier:(id)a3
+- (id)_presentStoreKitOverlayWithAppIdentifier:(id)identifier
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-  if (!v5)
+  identifierCopy = identifier;
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v5 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
     v8 = AMSLogKey();
@@ -327,30 +327,30 @@ void __37__AMSUIWebAppOverlayAction_runAction__block_invoke(uint64_t a1)
     v21 = 2114;
     v22 = v8;
     v23 = 2114;
-    v24 = v4;
-    _os_log_impl(&dword_1BB036000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Presenting app overlay using StoreKit: %{public}@", &v19, 0x20u);
+    v24 = identifierCopy;
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Presenting app overlay using StoreKit: %{public}@", &v19, 0x20u);
   }
 
   v9 = objc_opt_new();
   [(AMSUIWebAppOverlayAction *)self setStoreKitOverlayPromise:v9];
-  v10 = [objc_alloc(getSKOverlayAppConfigurationClass()) initWithAppIdentifier:v4 position:0];
-  v11 = [(AMSUIWebAppOverlayAction *)self campaignToken];
-  [v10 setCampaignToken:v11];
+  v10 = [objc_alloc(getSKOverlayAppConfigurationClass()) initWithAppIdentifier:identifierCopy position:0];
+  campaignToken = [(AMSUIWebAppOverlayAction *)self campaignToken];
+  [v10 setCampaignToken:campaignToken];
 
-  v12 = [(AMSUIWebAppOverlayAction *)self providerToken];
-  [v10 setProviderToken:v12];
+  providerToken = [(AMSUIWebAppOverlayAction *)self providerToken];
+  [v10 setProviderToken:providerToken];
 
-  v13 = [(AMSUIWebAppOverlayAction *)self customProductPageIdentifier];
-  [v10 setCustomProductPageIdentifier:v13];
+  customProductPageIdentifier = [(AMSUIWebAppOverlayAction *)self customProductPageIdentifier];
+  [v10 setCustomProductPageIdentifier:customProductPageIdentifier];
 
-  v14 = [(AMSUIWebAppOverlayAction *)self latestReleaseID];
-  [v10 setLatestReleaseID:v14];
+  latestReleaseID = [(AMSUIWebAppOverlayAction *)self latestReleaseID];
+  [v10 setLatestReleaseID:latestReleaseID];
 
   [v10 setUserDismissible:1];
   v15 = [objc_alloc(getSKOverlayClass[0]()) initWithConfiguration:v10];
   [v15 setDelegate:self];
-  v16 = [(AMSUIWebAppOverlayAction *)self _determineScene];
-  [v15 presentInScene:v16];
+  _determineScene = [(AMSUIWebAppOverlayAction *)self _determineScene];
+  [v15 presentInScene:_determineScene];
 
   [(AMSUIWebAppOverlayAction *)self setPresentationOverlay:v15];
   v17 = *MEMORY[0x1E69E9840];
@@ -360,9 +360,9 @@ void __37__AMSUIWebAppOverlayAction_runAction__block_invoke(uint64_t a1)
 
 - (BOOL)_shouldUseStoreKit
 {
-  v2 = [MEMORY[0x1E69DC668] sharedApplication];
-  v3 = [v2 connectedScenes];
-  v4 = [v3 count] != 0;
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  connectedScenes = [mEMORY[0x1E69DC668] connectedScenes];
+  v4 = [connectedScenes count] != 0;
 
   return v4;
 }

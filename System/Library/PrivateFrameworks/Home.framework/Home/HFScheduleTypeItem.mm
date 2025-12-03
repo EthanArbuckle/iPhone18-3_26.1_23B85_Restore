@@ -1,29 +1,29 @@
 @interface HFScheduleTypeItem
-+ (unint64_t)sortOrderForType:(unint64_t)a3;
-- (HFScheduleTypeItem)initWithScheduleType:(unint64_t)a3 scheduleBuilder:(id)a4;
-- (id)_subclass_updateWithOptions:(id)a3;
++ (unint64_t)sortOrderForType:(unint64_t)type;
+- (HFScheduleTypeItem)initWithScheduleType:(unint64_t)type scheduleBuilder:(id)builder;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HFScheduleTypeItem
 
-- (HFScheduleTypeItem)initWithScheduleType:(unint64_t)a3 scheduleBuilder:(id)a4
+- (HFScheduleTypeItem)initWithScheduleType:(unint64_t)type scheduleBuilder:(id)builder
 {
-  v7 = a4;
+  builderCopy = builder;
   v11.receiver = self;
   v11.super_class = HFScheduleTypeItem;
   v8 = [(HFScheduleTypeItem *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_type = a3;
-    objc_storeStrong(&v8->_scheduleBuilder, a4);
-    v9->_selected = [v7 estimatedScheduleType] == a3;
+    v8->_type = type;
+    objc_storeStrong(&v8->_scheduleBuilder, builder);
+    v9->_selected = [builderCopy estimatedScheduleType] == type;
   }
 
   return v9;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v16[5] = *MEMORY[0x277D85DE8];
   v4 = [HFScheduleTypeItem sortOrderForType:[(HFScheduleTypeItem *)self type]];
@@ -52,19 +52,19 @@
   return v12;
 }
 
-+ (unint64_t)sortOrderForType:(unint64_t)a3
++ (unint64_t)sortOrderForType:(unint64_t)type
 {
-  v3 = a3;
-  if (a3 >= 3)
+  typeCopy = type;
+  if (type >= 3)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v3];
-    [v6 handleFailureInMethod:a2 object:a1 file:@"HFScheduleTypeItemProvider.m" lineNumber:53 description:{@"Unknown schedule type [%@]", v7}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:typeCopy];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFScheduleTypeItemProvider.m" lineNumber:53 description:{@"Unknown schedule type [%@]", v7}];
 
     return 0;
   }
 
-  return v3;
+  return typeCopy;
 }
 
 @end

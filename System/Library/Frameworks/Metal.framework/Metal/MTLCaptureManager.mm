@@ -3,7 +3,7 @@
 - (BOOL)startCaptureWithDescriptor:(MTLCaptureDescriptor *)descriptor error:(NSError *)error;
 - (id)newCaptureScopeWithCommandQueue:(id)commandQueue;
 - (id)newCaptureScopeWithDevice:(id)device;
-- (id)newCaptureScopeWithMTL4CommandQueue:(id)a3;
+- (id)newCaptureScopeWithMTL4CommandQueue:(id)queue;
 - (void)dealloc;
 - (void)startCaptureWithCommandQueue:(id)commandQueue;
 - (void)startCaptureWithDevice:(id)device;
@@ -46,17 +46,17 @@ id __41__MTLCaptureManager_sharedCaptureManager__block_invoke()
 - (id)newCaptureScopeWithCommandQueue:(id)commandQueue
 {
   v4 = [MTLCaptureScope alloc];
-  v5 = [commandQueue device];
+  device = [commandQueue device];
 
-  return [(MTLCaptureScope *)v4 initWithDevice:v5 commandQueue:commandQueue];
+  return [(MTLCaptureScope *)v4 initWithDevice:device commandQueue:commandQueue];
 }
 
-- (id)newCaptureScopeWithMTL4CommandQueue:(id)a3
+- (id)newCaptureScopeWithMTL4CommandQueue:(id)queue
 {
   v4 = [MTLCaptureScope alloc];
-  v5 = [a3 device];
+  device = [queue device];
 
-  return [(MTLCaptureScope *)v4 initWithDevice:v5 mtl4CommandQueue:a3];
+  return [(MTLCaptureScope *)v4 initWithDevice:device mtl4CommandQueue:queue];
 }
 
 - (BOOL)startCaptureWithDescriptor:(MTLCaptureDescriptor *)descriptor error:(NSError *)error

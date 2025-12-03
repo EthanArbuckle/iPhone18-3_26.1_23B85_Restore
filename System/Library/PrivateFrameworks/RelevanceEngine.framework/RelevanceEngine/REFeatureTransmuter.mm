@@ -1,53 +1,53 @@
 @interface REFeatureTransmuter
-- (BOOL)_supportedFeature:(id)a3;
-- (REFeatureTransmuter)initWithInputFeatures:(id)a3 outputFeatures:(id)a4 outputFeatureMapGenerator:(id)a5;
+- (BOOL)_supportedFeature:(id)feature;
+- (REFeatureTransmuter)initWithInputFeatures:(id)features outputFeatures:(id)outputFeatures outputFeatureMapGenerator:(id)generator;
 - (id)_buildGraph;
-- (id)transformFeatureMaps:(id)a3;
+- (id)transformFeatureMaps:(id)maps;
 - (void)dealloc;
 @end
 
 @implementation REFeatureTransmuter
 
-- (REFeatureTransmuter)initWithInputFeatures:(id)a3 outputFeatures:(id)a4 outputFeatureMapGenerator:(id)a5
+- (REFeatureTransmuter)initWithInputFeatures:(id)features outputFeatures:(id)outputFeatures outputFeatureMapGenerator:(id)generator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  featuresCopy = features;
+  outputFeaturesCopy = outputFeatures;
+  generatorCopy = generator;
   v28.receiver = self;
   v28.super_class = REFeatureTransmuter;
   v11 = [(REFeatureTransmuter *)&v28 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_outputFeatureMapGenerator, a5);
-    v13 = [v8 copy];
+    objc_storeStrong(&v11->_outputFeatureMapGenerator, generator);
+    v13 = [featuresCopy copy];
     inputSet = v12->_inputSet;
     v12->_inputSet = v13;
 
-    v15 = [v9 copy];
+    v15 = [outputFeaturesCopy copy];
     outputSet = v12->_outputSet;
     v12->_outputSet = v15;
 
     REOptimizeFeatureSetGraph(v12->_outputSet);
-    v17 = [(REFeatureTransmuter *)v12 _buildGraph];
+    _buildGraph = [(REFeatureTransmuter *)v12 _buildGraph];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __86__REFeatureTransmuter_initWithInputFeatures_outputFeatures_outputFeatureMapGenerator___block_invoke;
     v26[3] = &unk_2785FB818;
     v18 = v12;
     v27 = v18;
-    [v17 enumerateObjectsUsingBlock:v26];
-    v19 = [v17 topologicalSortedItems];
+    [_buildGraph enumerateObjectsUsingBlock:v26];
+    topologicalSortedItems = [_buildGraph topologicalSortedItems];
     orderedFeatures = v18->_orderedFeatures;
-    v18->_orderedFeatures = v19;
+    v18->_orderedFeatures = topologicalSortedItems;
 
     v21 = [[REFeatureMapGenerator alloc] initWithFeatureList:v18->_orderedFeatures];
     orderedFeatureMapGenerator = v18->_orderedFeatureMapGenerator;
     v18->_orderedFeatureMapGenerator = v21;
 
-    v23 = [(REFeatureMapGenerator *)v18->_orderedFeatureMapGenerator createFeatureMap];
+    createFeatureMap = [(REFeatureMapGenerator *)v18->_orderedFeatureMapGenerator createFeatureMap];
     scratchValues = v18->_scratchValues;
-    v18->_scratchValues = v23;
+    v18->_scratchValues = createFeatureMap;
 
     v18->_scratchTaggedValues = malloc_type_calloc([(REFeatureMap *)v18->_scratchValues featureCount], 8uLL, 0x100004000313F17uLL);
   }
@@ -72,7 +72,7 @@ void __86__REFeatureTransmuter_initWithInputFeatures_outputFeatures_outputFeatur
   [(REFeatureTransmuter *)&v3 dealloc];
 }
 
-- (BOOL)_supportedFeature:(id)a3
+- (BOOL)_supportedFeature:(id)feature
 {
   v3 = objc_opt_class();
   if ([v3 isSubclassOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isSubclassOfClass:", objc_opt_class()))
@@ -89,29 +89,29 @@ void __86__REFeatureTransmuter_initWithInputFeatures_outputFeatures_outputFeatur
 {
   v22 = *MEMORY[0x277D85DE8];
   v3 = [[REDependencyGraph alloc] initWithPointerFunctions:0];
-  v4 = [(REFeatureSet *)self->_outputSet allFeatures];
-  v5 = [v4 mutableCopy];
+  allFeatures = [(REFeatureSet *)self->_outputSet allFeatures];
+  v5 = [allFeatures mutableCopy];
 
   v6 = [MEMORY[0x277CBEB58] set];
   while ([v5 count])
   {
-    v7 = [v5 lastObject];
+    lastObject = [v5 lastObject];
     [v5 removeLastObject];
-    v8 = [v6 member:v7];
+    v8 = [v6 member:lastObject];
 
-    if (v8 != v7)
+    if (v8 != lastObject)
     {
-      if (![(REDependencyGraph *)v3 containsItem:v7])
+      if (![(REDependencyGraph *)v3 containsItem:lastObject])
       {
-        [(REDependencyGraph *)v3 addItem:v7];
+        [(REDependencyGraph *)v3 addItem:lastObject];
       }
 
       v19 = 0u;
       v20 = 0u;
       v17 = 0u;
       v18 = 0u;
-      v9 = [v7 _dependentFeatures];
-      v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      _dependentFeatures = [lastObject _dependentFeatures];
+      v10 = [_dependentFeatures countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v10)
       {
         v11 = v10;
@@ -122,7 +122,7 @@ void __86__REFeatureTransmuter_initWithInputFeatures_outputFeatures_outputFeatur
           {
             if (*v18 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(_dependentFeatures);
             }
 
             v14 = *(*(&v17 + 1) + 8 * i);
@@ -131,11 +131,11 @@ void __86__REFeatureTransmuter_initWithInputFeatures_outputFeatures_outputFeatur
               [(REDependencyGraph *)v3 addItem:v14];
             }
 
-            [(REDependencyGraph *)v3 markItem:v7 dependentOnItem:v14];
+            [(REDependencyGraph *)v3 markItem:lastObject dependentOnItem:v14];
             [v5 addObject:v14];
           }
 
-          v11 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+          v11 = [_dependentFeatures countByEnumeratingWithState:&v17 objects:v21 count:16];
         }
 
         while (v11);
@@ -148,20 +148,20 @@ void __86__REFeatureTransmuter_initWithInputFeatures_outputFeatures_outputFeatur
   return v3;
 }
 
-- (id)transformFeatureMaps:(id)a3
+- (id)transformFeatureMaps:(id)maps
 {
   v67 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(REFeatureMapGenerator *)self->_outputFeatureMapGenerator createFeatureMap];
+  mapsCopy = maps;
+  createFeatureMap = [(REFeatureMapGenerator *)self->_outputFeatureMapGenerator createFeatureMap];
   [(REFeatureMap *)self->_scratchValues removeAllValues];
   v61[0] = MEMORY[0x277D85DD0];
   v61[1] = 3221225472;
   v61[2] = __44__REFeatureTransmuter_transformFeatureMaps___block_invoke;
   v61[3] = &unk_2785FB840;
   v61[4] = self;
-  v38 = v4;
+  v38 = mapsCopy;
   v62 = v38;
-  v6 = v5;
+  v6 = createFeatureMap;
   v63 = v6;
   v7 = MEMORY[0x22AABC5E0](v61);
   v59[0] = MEMORY[0x277D85DD0];
@@ -181,7 +181,7 @@ void __86__REFeatureTransmuter_initWithInputFeatures_outputFeatures_outputFeatur
   if (v43)
   {
     v42 = *v56;
-    v46 = self;
+    selfCopy = self;
     do
     {
       for (i = 0; i != v43; ++i)
@@ -195,14 +195,14 @@ void __86__REFeatureTransmuter_initWithInputFeatures_outputFeatures_outputFeatur
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v10 = [v9 transformer];
+          transformer = [v9 transformer];
           v44 = v9;
-          v11 = [v9 _dependentFeatures];
+          _dependentFeatures = [v9 _dependentFeatures];
           v51 = 0u;
           v52 = 0u;
           v53 = 0u;
           v54 = 0u;
-          v12 = v11;
+          v12 = _dependentFeatures;
           v13 = [v12 countByEnumeratingWithState:&v51 objects:v65 count:16];
           if (v13)
           {
@@ -243,7 +243,7 @@ void __86__REFeatureTransmuter_initWithInputFeatures_outputFeatures_outputFeatur
             v15 = 0;
           }
 
-          v33 = [v10 _createTransformFromValues:self->_scratchTaggedValues count:v15];
+          v33 = [transformer _createTransformFromValues:self->_scratchTaggedValues count:v15];
           (v41)[2](v41, v44, v33);
           REReleaseFeatureValueTaggedPointer(v33);
 LABEL_30:
@@ -256,13 +256,13 @@ LABEL_30:
           {
             v39 = i;
             v45 = v9;
-            v19 = [v9 features];
-            v20 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v19, "count")}];
+            features = [v9 features];
+            v20 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(features, "count")}];
             v47 = 0u;
             v48 = 0u;
             v49 = 0u;
             v50 = 0u;
-            v21 = v19;
+            v21 = features;
             v22 = [v21 countByEnumeratingWithState:&v47 objects:v64 count:16];
             if (v22)
             {
@@ -286,7 +286,7 @@ LABEL_30:
                     goto LABEL_32;
                   }
 
-                  v46->_scratchTaggedValues[v24++] = v28;
+                  selfCopy->_scratchTaggedValues[v24++] = v28;
                   v29 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v27, "_bitCount")}];
                   [v20 addObject:v29];
                 }
@@ -301,14 +301,14 @@ LABEL_30:
               }
             }
 
-            v30 = RECrossFeatureValues(v46->_scratchTaggedValues, v20);
+            v30 = RECrossFeatureValues(selfCopy->_scratchTaggedValues, v20);
             v31 = RECreateIntegerFeatureValueTaggedPointer(v30);
             (v41)[2](v41, v45, v31);
             REReleaseFeatureValueTaggedPointer(v31);
 LABEL_32:
 
             i = v39;
-            self = v46;
+            self = selfCopy;
           }
 
           else

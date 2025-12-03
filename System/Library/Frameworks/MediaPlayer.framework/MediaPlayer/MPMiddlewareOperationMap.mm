@@ -1,5 +1,5 @@
 @interface MPMiddlewareOperationMap
-+ (id)mapForRequest:(id)a3;
++ (id)mapForRequest:(id)request;
 - (id)_init;
 @end
 
@@ -12,38 +12,38 @@
   return [(MPMiddlewareOperationMap *)&v3 init];
 }
 
-+ (id)mapForRequest:(id)a3
++ (id)mapForRequest:(id)request
 {
   v100 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [[a1 alloc] _init];
+  requestCopy = request;
+  _init = [[self alloc] _init];
   v6 = [MEMORY[0x1E696AD18] mapTableWithKeyOptions:512 valueOptions:0];
-  v7 = v5[1];
-  v5[1] = v6;
+  v7 = _init[1];
+  _init[1] = v6;
 
   v8 = MEMORY[0x1E695DF70];
-  v9 = [v4 middlewareClasses];
-  v10 = [v8 arrayWithCapacity:{objc_msgSend(v9, "count")}];
-  v11 = v5[2];
-  v5[2] = v10;
+  middlewareClasses = [requestCopy middlewareClasses];
+  v10 = [v8 arrayWithCapacity:{objc_msgSend(middlewareClasses, "count")}];
+  v11 = _init[2];
+  _init[2] = v10;
 
   v12 = MEMORY[0x1E695DF70];
-  v13 = [v4 middlewareClasses];
-  v14 = [v12 arrayWithCapacity:{objc_msgSend(v13, "count")}];
-  v15 = v5[3];
-  v58 = v5;
-  v5[3] = v14;
+  middlewareClasses2 = [requestCopy middlewareClasses];
+  v14 = [v12 arrayWithCapacity:{objc_msgSend(middlewareClasses2, "count")}];
+  v15 = _init[3];
+  v58 = _init;
+  _init[3] = v14;
 
   v16 = objc_alloc(MEMORY[0x1E696AD18]);
-  v17 = [v4 middlewareClasses];
-  v18 = [v16 initWithKeyOptions:512 valueOptions:0 capacity:{objc_msgSend(v17, "count")}];
+  middlewareClasses3 = [requestCopy middlewareClasses];
+  v18 = [v16 initWithKeyOptions:512 valueOptions:0 capacity:{objc_msgSend(middlewareClasses3, "count")}];
 
   v92 = 0u;
   v93 = 0u;
   v90 = 0u;
   v91 = 0u;
-  v57 = v4;
-  obj = [v4 middlewareClasses];
+  v57 = requestCopy;
+  obj = [requestCopy middlewareClasses];
   v59 = [obj countByEnumeratingWithState:&v90 objects:v99 count:16];
   if (v59)
   {
@@ -95,8 +95,8 @@
                 v83 = 0u;
                 v84 = 0u;
                 v85 = 0u;
-                v28 = [v27 outputProtocols];
-                v29 = [v28 countByEnumeratingWithState:&v82 objects:v97 count:16];
+                outputProtocols = [v27 outputProtocols];
+                v29 = [outputProtocols countByEnumeratingWithState:&v82 objects:v97 count:16];
                 if (v29)
                 {
                   v30 = v29;
@@ -107,21 +107,21 @@
                     {
                       if (*v83 != v31)
                       {
-                        objc_enumerationMutation(v28);
+                        objc_enumerationMutation(outputProtocols);
                       }
 
                       v33 = *(*(&v82 + 1) + 8 * i);
-                      v34 = [v18 objectForKey:v33];
-                      if (!v34)
+                      array = [v18 objectForKey:v33];
+                      if (!array)
                       {
-                        v34 = [MEMORY[0x1E695DF70] array];
-                        [v18 setObject:v34 forKey:v33];
+                        array = [MEMORY[0x1E695DF70] array];
+                        [v18 setObject:array forKey:v33];
                       }
 
-                      [v34 addObject:v27];
+                      [array addObject:v27];
                     }
 
-                    v30 = [v28 countByEnumeratingWithState:&v82 objects:v97 count:16];
+                    v30 = [outputProtocols countByEnumeratingWithState:&v82 objects:v97 count:16];
                   }
 
                   while (v30);
@@ -186,8 +186,8 @@
             v75 = 0u;
             v76 = 0u;
             v77 = 0u;
-            v67 = [v41 inputProtocols];
-            v43 = [v67 countByEnumeratingWithState:&v74 objects:v95 count:16];
+            inputProtocols = [v41 inputProtocols];
+            v43 = [inputProtocols countByEnumeratingWithState:&v74 objects:v95 count:16];
             if (v43)
             {
               v44 = v43;
@@ -198,7 +198,7 @@
                 {
                   if (*v75 != v69)
                   {
-                    objc_enumerationMutation(v67);
+                    objc_enumerationMutation(inputProtocols);
                   }
 
                   v46 = *(*(&v74 + 1) + 8 * j);
@@ -238,7 +238,7 @@
                   }
                 }
 
-                v44 = [v67 countByEnumeratingWithState:&v74 objects:v95 count:16];
+                v44 = [inputProtocols countByEnumeratingWithState:&v74 objects:v95 count:16];
               }
 
               while (v44);

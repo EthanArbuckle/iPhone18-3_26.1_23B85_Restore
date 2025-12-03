@@ -1,26 +1,26 @@
 @interface THWGalleryCaptionLayout
-- (CGRect)autosizedFrameForTextLayout:(id)a3 textSize:(CGSize)a4;
-- (CGRect)nonAutosizedFrameForTextLayout:(id)a3;
+- (CGRect)autosizedFrameForTextLayout:(id)layout textSize:(CGSize)size;
+- (CGRect)nonAutosizedFrameForTextLayout:(id)layout;
 - (CGSize)adjustedInsets;
-- (THWGalleryCaptionLayout)initWithDelegate:(id)a3;
-- (double)positionForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4 outWidth:(double *)a5 outGap:(double *)a6;
+- (THWGalleryCaptionLayout)initWithDelegate:(id)delegate;
+- (double)positionForColumnIndex:(unint64_t)index bodyWidth:(double)width outWidth:(double *)outWidth outGap:(double *)gap;
 - (id)childInfosForLayout;
 - (id)computeLayoutGeometry;
 - (id)p_wpLayoutParent;
-- (id)styleProviderForLayout:(id)a3;
+- (id)styleProviderForLayout:(id)layout;
 - (void)captionStorageUpdated;
 @end
 
 @implementation THWGalleryCaptionLayout
 
-- (THWGalleryCaptionLayout)initWithDelegate:(id)a3
+- (THWGalleryCaptionLayout)initWithDelegate:(id)delegate
 {
   v5.receiver = self;
   v5.super_class = THWGalleryCaptionLayout;
   result = [(THWGalleryCaptionLayout *)&v5 initWithInfo:0];
   if (result)
   {
-    result->_delegate = a3;
+    result->_delegate = delegate;
   }
 
   return result;
@@ -70,7 +70,7 @@
   [(THWGalleryCaptionLayout *)self invalidateChildren];
 }
 
-- (CGRect)nonAutosizedFrameForTextLayout:(id)a3
+- (CGRect)nonAutosizedFrameForTextLayout:(id)layout
 {
   x = CGRectZero.origin.x;
   y = CGRectZero.origin.y;
@@ -83,10 +83,10 @@
   return result;
 }
 
-- (CGRect)autosizedFrameForTextLayout:(id)a3 textSize:(CGSize)a4
+- (CGRect)autosizedFrameForTextLayout:(id)layout textSize:(CGSize)size
 {
-  height = a4.height;
-  [(THWGalleryCaptionLayoutDelegate *)self->_delegate galleryCaptionMargin:a3];
+  height = size.height;
+  [(THWGalleryCaptionLayoutDelegate *)self->_delegate galleryCaptionMargin:layout];
   v7 = v6;
   [(THWGalleryCaptionLayoutDelegate *)self->_delegate galleryCaptionWidth];
   v9 = v8 + v7 * -2.0;
@@ -100,11 +100,11 @@
   return result;
 }
 
-- (id)styleProviderForLayout:(id)a3
+- (id)styleProviderForLayout:(id)layout
 {
-  v4 = [(THWGalleryCaptionLayout *)self p_wpLayoutParent];
+  p_wpLayoutParent = [(THWGalleryCaptionLayout *)self p_wpLayoutParent];
 
-  return [v4 styleProviderForLayout:a3];
+  return [p_wpLayoutParent styleProviderForLayout:layout];
 }
 
 - (CGSize)adjustedInsets
@@ -116,21 +116,21 @@
   return result;
 }
 
-- (double)positionForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4 outWidth:(double *)a5 outGap:(double *)a6
+- (double)positionForColumnIndex:(unint64_t)index bodyWidth:(double)width outWidth:(double *)outWidth outGap:(double *)gap
 {
-  if (a3)
+  if (index)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  if (a5)
+  if (outWidth)
   {
-    *a5 = a4;
+    *outWidth = width;
   }
 
-  if (a6)
+  if (gap)
   {
-    *a6 = 0.0;
+    *gap = 0.0;
   }
 
   return 0.0;

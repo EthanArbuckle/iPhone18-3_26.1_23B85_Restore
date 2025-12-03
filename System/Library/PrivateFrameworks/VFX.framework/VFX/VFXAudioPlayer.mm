@@ -1,18 +1,18 @@
 @interface VFXAudioPlayer
-+ (id)audioPlayerWithAVAudioNode:(id)a3;
-+ (id)audioPlayerWithSource:(id)a3;
-- (VFXAudioPlayer)initWithAVAudioNode:(id)a3;
-- (VFXAudioPlayer)initWithSource:(id)a3;
++ (id)audioPlayerWithAVAudioNode:(id)node;
++ (id)audioPlayerWithSource:(id)source;
+- (VFXAudioPlayer)initWithAVAudioNode:(id)node;
+- (VFXAudioPlayer)initWithSource:(id)source;
 - (void)dealloc;
 - (void)play;
 - (void)recycle;
 - (void)reset;
-- (void)setNodeRef:(__CFXNode *)a3;
+- (void)setNodeRef:(__CFXNode *)ref;
 @end
 
 @implementation VFXAudioPlayer
 
-- (VFXAudioPlayer)initWithSource:(id)a3
+- (VFXAudioPlayer)initWithSource:(id)source
 {
   v33.receiver = self;
   v33.super_class = VFXAudioPlayer;
@@ -23,10 +23,10 @@
     v4->_audioNode = &v5->super;
     v4->_audioPlayer = v5;
     v4->_customAudioNode = 0;
-    v6 = a3;
-    v4->_audioSource = v6;
+    sourceCopy = source;
+    v4->_audioSource = sourceCopy;
     audioPlayer = v4->_audioPlayer;
-    v11 = objc_msgSend_renderingAlgorithm(v6, v8, v9, v10);
+    v11 = objc_msgSend_renderingAlgorithm(sourceCopy, v8, v9, v10);
     objc_msgSend_setRenderingAlgorithm_(audioPlayer, v12, v11, v13);
     objc_msgSend_rate(v4->_audioSource, v14, v15, v16);
     objc_msgSend_setRate_(v4->_audioPlayer, v17, v18, v19);
@@ -39,27 +39,27 @@
   return v4;
 }
 
-- (VFXAudioPlayer)initWithAVAudioNode:(id)a3
+- (VFXAudioPlayer)initWithAVAudioNode:(id)node
 {
   v7.receiver = self;
   v7.super_class = VFXAudioPlayer;
   v4 = [(VFXAudioPlayer *)&v7 init];
   if (v4)
   {
-    v5 = a3;
+    nodeCopy = node;
     v4->_customAudioNode = 1;
     v4->_audioPlayer = 0;
     v4->_audioSource = 0;
-    v4->_audioNode = v5;
+    v4->_audioNode = nodeCopy;
   }
 
   return v4;
 }
 
-+ (id)audioPlayerWithAVAudioNode:(id)a3
++ (id)audioPlayerWithAVAudioNode:(id)node
 {
   v4 = [VFXAudioPlayer alloc];
-  result = objc_msgSend_initWithAVAudioNode_(v4, v5, a3, v6);
+  result = objc_msgSend_initWithAVAudioNode_(v4, v5, node, v6);
   *(result + 50) = 1;
   return result;
 }
@@ -74,17 +74,17 @@
   self->_audioSource = 0;
 }
 
-+ (id)audioPlayerWithSource:(id)a3
++ (id)audioPlayerWithSource:(id)source
 {
-  if (qword_1EB658840 && objc_msgSend_count(qword_1EB658840, a2, a3, v3))
+  if (qword_1EB658840 && objc_msgSend_count(qword_1EB658840, a2, source, v3))
   {
     v8 = objc_msgSend_anyObject(qword_1EB658840, v5, v6, v7);
     v9 = v8;
     objc_msgSend_removeObject_(qword_1EB658840, v10, v8, v11);
-    v12 = a3;
-    v8[3] = v12;
+    sourceCopy = source;
+    v8[3] = sourceCopy;
     v13 = v8[2];
-    v17 = objc_msgSend_renderingAlgorithm(v12, v14, v15, v16);
+    v17 = objc_msgSend_renderingAlgorithm(sourceCopy, v14, v15, v16);
     objc_msgSend_setRenderingAlgorithm_(v13, v18, v17, v19);
     objc_msgSend_rate(v8[3], v20, v21, v22);
     objc_msgSend_setRate_(v8[2], v23, v24, v25);
@@ -99,7 +99,7 @@
   else
   {
     v39 = [VFXAudioPlayer alloc];
-    result = objc_msgSend_initWithSource_(v39, v40, a3, v41);
+    result = objc_msgSend_initWithSource_(v39, v40, source, v41);
     *(result + 50) = 1;
   }
 
@@ -113,12 +113,12 @@
   [(VFXAudioPlayer *)&v3 dealloc];
 }
 
-- (void)setNodeRef:(__CFXNode *)a3
+- (void)setNodeRef:(__CFXNode *)ref
 {
-  self->_nodeRef = a3;
-  if (a3)
+  self->_nodeRef = ref;
+  if (ref)
   {
-    self->_world = sub_1AF1C3FAC(a3);
+    self->_world = sub_1AF1C3FAC(ref);
   }
 }
 

@@ -1,37 +1,37 @@
 @interface SongsViewController
-- (BOOL)collectionView:(id)a3 canPerformPrimaryActionForItemAtIndexPath:(id)a4;
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
-- (_TtC16MusicApplication19SongsViewController)initWithCollectionViewLayout:(id)a3;
-- (_TtC16MusicApplication19SongsViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)_collectionView:(id)a3 indexPathForSectionIndexTitle:(id)a4 atIndex:(int64_t)a5;
-- (id)_sectionIndexTitlesForCollectionView:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInCollectionView:(id)a3;
-- (void)collectionView:(id)a3 performPrimaryActionForItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (BOOL)collectionView:(id)view canPerformPrimaryActionForItemAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
+- (_TtC16MusicApplication19SongsViewController)initWithCollectionViewLayout:(id)layout;
+- (_TtC16MusicApplication19SongsViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)_collectionView:(id)view indexPathForSectionIndexTitle:(id)title atIndex:(int64_t)index;
+- (id)_sectionIndexTitlesForCollectionView:(id)view;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInCollectionView:(id)view;
+- (void)collectionView:(id)view performPrimaryActionForItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SongsViewController
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5 = type metadata accessor for MetricsEvent.Page(0);
   __chkstk_darwin(v5 - 8);
   v7 = &v12 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   v8 = type metadata accessor for SongsViewController();
   v12.receiver = self;
   v12.super_class = v8;
-  v9 = self;
-  [(SongsViewController *)&v12 viewDidAppear:v3];
+  selfCopy = self;
+  [(SongsViewController *)&v12 viewDidAppear:appearCopy];
   v10 = *MetricsReportingController.shared.unsafeMutableAddressor();
   v11 = MetricsEvent.Page.librarySongsList.unsafeMutableAddressor();
   sub_21B7EC(v11, v7, type metadata accessor for MetricsEvent.Page);
@@ -41,26 +41,26 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_2146D0();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_215E30(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_215E30(change);
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v12.receiver = self;
   v12.super_class = type metadata accessor for SongsViewController();
   swift_unknownObjectRetain();
   v7 = v12.receiver;
-  [(SongsViewController *)&v12 viewWillTransitionToSize:a4 withTransitionCoordinator:width, height];
+  [(SongsViewController *)&v12 viewWillTransitionToSize:coordinator withTransitionCoordinator:width, height];
   v8 = swift_allocObject();
   *(v8 + 16) = v7;
   v11[4] = sub_21B770;
@@ -72,7 +72,7 @@
   v9 = _Block_copy(v11);
   v10 = v7;
 
-  [a4 animateAlongsideTransition:v9 completion:0];
+  [coordinator animateAlongsideTransition:v9 completion:0];
   _Block_release(v9);
   swift_unknownObjectRelease();
 }
@@ -83,11 +83,11 @@
   v14.super_class = type metadata accessor for SongsViewController();
   v2 = v14.receiver;
   [(SongsViewController *)&v14 viewDidLayoutSubviews];
-  v3 = [v2 view];
-  if (v3)
+  view = [v2 view];
+  if (view)
   {
-    v4 = v3;
-    [v3 bounds];
+    v4 = view;
+    [view bounds];
     v5 = &v2[OBJC_IVAR____TtC16MusicApplication19SongsViewController_lastKnownViewBounds];
     v6 = *&v2[OBJC_IVAR____TtC16MusicApplication19SongsViewController_lastKnownViewBounds];
     v7 = *&v2[OBJC_IVAR____TtC16MusicApplication19SongsViewController_lastKnownViewBounds + 8];
@@ -106,36 +106,36 @@
   }
 }
 
-- (int64_t)numberOfSectionsInCollectionView:(id)a3
+- (int64_t)numberOfSectionsInCollectionView:(id)view
 {
-  v4 = a3;
-  v5 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_21AB04();
   v7 = v6;
 
   return v7;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self;
-  sub_21AB98(a4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_21AB98(section);
   v9 = v8;
 
   return v9;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v7 = sub_AB3820();
   v8 = *(v7 - 8);
   __chkstk_darwin(v7);
   v10 = &v17 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_AB3790();
-  v11 = a3;
-  v12 = a4;
-  v13 = self;
+  viewCopy = view;
+  pathCopy = path;
+  selfCopy = self;
   sub_216990();
   v15 = v14;
 
@@ -144,7 +144,7 @@
   return v15;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
   v9 = sub_AB3820();
   v10 = *(v9 - 8);
@@ -153,11 +153,11 @@
   v13 = sub_AB92A0();
   v15 = v14;
   sub_AB3790();
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = self;
-  sub_217080(v16, v13, v15);
+  viewCopy = view;
+  kindCopy = kind;
+  pathCopy = path;
+  selfCopy = self;
+  sub_217080(viewCopy, v13, v15);
   v21 = v20;
 
   (*(v10 + 8))(v12, v9);
@@ -165,10 +165,10 @@
   return v21;
 }
 
-- (id)_sectionIndexTitlesForCollectionView:(id)a3
+- (id)_sectionIndexTitlesForCollectionView:(id)view
 {
-  v4 = self;
-  v5 = a3;
+  selfCopy = self;
+  viewCopy = view;
   v6 = sub_21AC44();
 
   if (v6)
@@ -184,20 +184,20 @@
   return v7.super.isa;
 }
 
-- (id)_collectionView:(id)a3 indexPathForSectionIndexTitle:(id)a4 atIndex:(int64_t)a5
+- (id)_collectionView:(id)view indexPathForSectionIndexTitle:(id)title atIndex:(int64_t)index
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_DE8E20);
   __chkstk_darwin(v9 - 8);
   v11 = &v21 - v10;
-  if (a4)
+  if (title)
   {
     sub_AB92A0();
-    a4 = v12;
+    title = v12;
   }
 
-  v13 = a3;
-  v14 = self;
-  sub_218364(a4, a5, v11);
+  viewCopy = view;
+  selfCopy = self;
+  sub_218364(title, index, v11);
 
   v15 = sub_AB3820();
   v16 = *(v15 - 8);
@@ -213,88 +213,88 @@
   return v18;
 }
 
-- (void)collectionView:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5
+- (void)collectionView:(id)view willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator
 {
-  v8 = a3;
-  v9 = a4;
+  viewCopy = view;
+  configurationCopy = configuration;
   swift_unknownObjectRetain();
-  v10 = self;
-  sub_21ACB8(v9, a5);
+  selfCopy = self;
+  sub_21ACB8(configurationCopy, animator);
 
   swift_unknownObjectRelease();
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
   v9 = sub_AB3820();
   v10 = *(v9 - 8);
   __chkstk_darwin(v9);
   v12 = &v17 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_AB3790();
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = self;
-  sub_21AFEC(v14, v12);
+  viewCopy = view;
+  cellCopy = cell;
+  pathCopy = path;
+  selfCopy = self;
+  sub_21AFEC(cellCopy, v12);
 
   (*(v10 + 8))(v12, v9);
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
   v6 = sub_AB3820();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_AB3790();
-  v10 = a3;
-  v11 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v12 = UICollectionView.isDraggingCell(at:)();
   (*(v7 + 8))(v9, v6);
 
   return (v12 & 1) == 0;
 }
 
-- (BOOL)collectionView:(id)a3 canPerformPrimaryActionForItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view canPerformPrimaryActionForItemAtIndexPath:(id)path
 {
   v7 = sub_AB3820();
   v8 = *(v7 - 8);
   __chkstk_darwin(v7);
   v10 = &v17 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_AB3790();
-  v11 = a3;
-  v12 = a4;
-  v13 = self;
+  viewCopy = view;
+  pathCopy = path;
+  selfCopy = self;
   isa = sub_AB3770().super.isa;
-  v15 = [(SongsViewController *)v13 collectionView:v11 shouldSelectItemAtIndexPath:isa];
+  v15 = [(SongsViewController *)selfCopy collectionView:viewCopy shouldSelectItemAtIndexPath:isa];
   (*(v8 + 8))(v10, v7);
 
   return v15;
 }
 
-- (void)collectionView:(id)a3 performPrimaryActionForItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view performPrimaryActionForItemAtIndexPath:(id)path
 {
   v7 = sub_AB3820();
   v8 = *(v7 - 8);
   __chkstk_darwin(v7);
   v10 = &v14 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_AB3790();
-  v11 = a3;
-  v12 = a4;
-  v13 = self;
-  sub_218FF8(v11, v10);
+  viewCopy = view;
+  pathCopy = path;
+  selfCopy = self;
+  sub_218FF8(viewCopy, v10);
 
   (*(v8 + 8))(v10, v7);
 }
 
-- (_TtC16MusicApplication19SongsViewController)initWithCollectionViewLayout:(id)a3
+- (_TtC16MusicApplication19SongsViewController)initWithCollectionViewLayout:(id)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC16MusicApplication19SongsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC16MusicApplication19SongsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

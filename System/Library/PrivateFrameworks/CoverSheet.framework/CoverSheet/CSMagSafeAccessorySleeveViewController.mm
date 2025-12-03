@@ -1,29 +1,29 @@
 @interface CSMagSafeAccessorySleeveViewController
-- (BOOL)handleEvent:(id)a3;
+- (BOOL)handleEvent:(id)event;
 - (CGRect)visibleBounds;
-- (CSMagSafeAccessorySleeveViewController)initWithAccessory:(id)a3;
-- (id)_legibilitySettingsForAccessory:(id)a3;
+- (CSMagSafeAccessorySleeveViewController)initWithAccessory:(id)accessory;
+- (id)_legibilitySettingsForAccessory:(id)accessory;
 - (void)_removeOverrideFloor;
 - (void)_updateOverrideFloor;
-- (void)connectedDevicesDidChange:(id)a3;
-- (void)setDateProvider:(id)a3;
-- (void)setLegibilitySettings:(id)a3;
-- (void)setVisibleBounds:(CGRect)a3;
-- (void)updateFont:(id)a3 textColor:(id)a4 vibrancyConfiguration:(id)a5 numberingSystem:(id)a6;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)connectedDevicesDidChange:(id)change;
+- (void)setDateProvider:(id)provider;
+- (void)setLegibilitySettings:(id)settings;
+- (void)setVisibleBounds:(CGRect)bounds;
+- (void)updateFont:(id)font textColor:(id)color vibrancyConfiguration:(id)configuration numberingSystem:(id)system;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CSMagSafeAccessorySleeveViewController
 
-- (CSMagSafeAccessorySleeveViewController)initWithAccessory:(id)a3
+- (CSMagSafeAccessorySleeveViewController)initWithAccessory:(id)accessory
 {
   v12.receiver = self;
   v12.super_class = CSMagSafeAccessorySleeveViewController;
-  v3 = [(CSMagSafeAccessoryViewController *)&v12 initWithAccessory:a3];
+  v3 = [(CSMagSafeAccessoryViewController *)&v12 initWithAccessory:accessory];
   if (v3)
   {
     v4 = [CSMagSafeAccessorySleeveView alloc];
@@ -49,18 +49,18 @@
   v19.receiver = self;
   v19.super_class = CSMagSafeAccessorySleeveViewController;
   [(CSCoverSheetViewControllerBase *)&v19 viewDidLoad];
-  v3 = [(CSMagSafeAccessoryViewController *)self accessory];
-  v4 = [(CSMagSafeAccessorySleeveViewController *)self _legibilitySettingsForAccessory:v3];
+  accessory = [(CSMagSafeAccessoryViewController *)self accessory];
+  v4 = [(CSMagSafeAccessorySleeveViewController *)self _legibilitySettingsForAccessory:accessory];
 
-  v5 = [(CSMagSafeAccessorySleeveViewController *)self view];
-  [v5 addSubview:self->_sleeveView];
+  view = [(CSMagSafeAccessorySleeveViewController *)self view];
+  [view addSubview:self->_sleeveView];
 
-  v6 = [(SBFLockScreenDateViewController *)self->_dateViewController dateView];
-  [v6 setLegibilitySettings:self->_legibilitySettings];
+  dateView = [(SBFLockScreenDateViewController *)self->_dateViewController dateView];
+  [dateView setLegibilitySettings:self->_legibilitySettings];
 
   [(SBFLockScreenDateViewController *)self->_dateViewController setRestrictsVibrancy:1];
-  v7 = [(SBFLockScreenDateViewController *)self->_secondaryDateViewController dateView];
-  [v7 setLegibilitySettings:v4];
+  dateView2 = [(SBFLockScreenDateViewController *)self->_secondaryDateViewController dateView];
+  [dateView2 setLegibilitySettings:v4];
 
   [(SBFLockScreenDateViewController *)self->_secondaryDateViewController setRestrictsVibrancy:1];
   objc_initWeak(&location, self);
@@ -126,26 +126,26 @@ void __53__CSMagSafeAccessorySleeveViewController_viewDidLoad__block_invoke_2(ui
   v3[2](v3);
 }
 
-- (id)_legibilitySettingsForAccessory:(id)a3
+- (id)_legibilitySettingsForAccessory:(id)accessory
 {
   v3 = MEMORY[0x277D760A8];
-  v4 = a3;
+  accessoryCopy = accessory;
   v5 = [v3 alloc];
-  v6 = [v4 primaryColor];
-  v7 = [v4 secondaryColor];
+  primaryColor = [accessoryCopy primaryColor];
+  secondaryColor = [accessoryCopy secondaryColor];
 
-  v8 = [v5 initWithStyle:1 primaryColor:v6 secondaryColor:v7 shadowColor:0];
+  v8 = [v5 initWithStyle:1 primaryColor:primaryColor secondaryColor:secondaryColor shadowColor:0];
 
   return v8;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v7.receiver = self;
   v7.super_class = CSMagSafeAccessorySleeveViewController;
   [(CSCoverSheetViewControllerBase *)&v7 viewWillAppear:?];
-  [(CSMagSafeAccessorySleeveViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_dateViewController toVisible:1 animated:v3];
+  [(CSMagSafeAccessorySleeveViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_dateViewController toVisible:1 animated:appearCopy];
   if (!self->_batteryDeviceController)
   {
     v5 = objc_alloc_init(MEMORY[0x277CF0DB0]);
@@ -155,15 +155,15 @@ void __53__CSMagSafeAccessorySleeveViewController_viewDidLoad__block_invoke_2(ui
     [(BCBatteryDeviceController *)self->_batteryDeviceController addBatteryDeviceObserver:self queue:MEMORY[0x277D85CD0]];
   }
 
-  [(CSMagSafeAccessorySleeveViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_secondaryDateViewController toVisible:1 animated:v3];
+  [(CSMagSafeAccessorySleeveViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_secondaryDateViewController toVisible:1 animated:appearCopy];
   [(CSMagSafeAccessorySleeveViewController *)self _updateOverrideFloor];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = CSMagSafeAccessorySleeveViewController;
-  [(CSCoverSheetViewControllerBase *)&v6 viewDidAppear:a3];
+  [(CSCoverSheetViewControllerBase *)&v6 viewDidAppear:appear];
   [(CSMagSafeAccessorySleeveViewController *)self bs_endAppearanceTransitionForChildViewController:self->_dateViewController];
   [(CSMagSafeAccessorySleeveViewController *)self bs_endAppearanceTransitionForChildViewController:self->_secondaryDateViewController];
   sleeveView = self->_sleeveView;
@@ -182,21 +182,21 @@ void __56__CSMagSafeAccessorySleeveViewController_viewDidAppear___block_invoke(u
   [v1 sendAction:v2];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = CSMagSafeAccessorySleeveViewController;
   [(CSCoverSheetViewControllerBase *)&v5 viewWillDisappear:?];
-  [(CSMagSafeAccessorySleeveViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_dateViewController toVisible:0 animated:v3];
-  [(CSMagSafeAccessorySleeveViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_secondaryDateViewController toVisible:0 animated:v3];
+  [(CSMagSafeAccessorySleeveViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_dateViewController toVisible:0 animated:disappearCopy];
+  [(CSMagSafeAccessorySleeveViewController *)self bs_beginAppearanceTransitionForChildViewController:self->_secondaryDateViewController toVisible:0 animated:disappearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = CSMagSafeAccessorySleeveViewController;
-  [(CSCoverSheetViewControllerBase *)&v6 viewDidDisappear:a3];
+  [(CSCoverSheetViewControllerBase *)&v6 viewDidDisappear:disappear];
   [(CSMagSafeAccessorySleeveViewController *)self bs_endAppearanceTransitionForChildViewController:self->_dateViewController];
   [(CSMagSafeAccessorySleeveViewController *)self bs_endAppearanceTransitionForChildViewController:self->_secondaryDateViewController];
   batteryDeviceController = self->_batteryDeviceController;
@@ -210,20 +210,20 @@ void __56__CSMagSafeAccessorySleeveViewController_viewDidAppear___block_invoke(u
   [(CSMagSafeAccessorySleeveViewController *)self _removeOverrideFloor];
 }
 
-- (void)setDateProvider:(id)a3
+- (void)setDateProvider:(id)provider
 {
   dateViewController = self->_dateViewController;
-  v5 = a3;
-  [(SBFLockScreenDateViewController *)dateViewController setDateProvider:v5];
-  [(SBFLockScreenDateViewController *)self->_secondaryDateViewController setDateProvider:v5];
+  providerCopy = provider;
+  [(SBFLockScreenDateViewController *)dateViewController setDateProvider:providerCopy];
+  [(SBFLockScreenDateViewController *)self->_secondaryDateViewController setDateProvider:providerCopy];
 }
 
-- (void)setVisibleBounds:(CGRect)a3
+- (void)setVisibleBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(CSMagSafeAccessorySleeveView *)self->_sleeveView visibleWindowFrame];
   v11.origin.x = x;
   v11.origin.y = y;
@@ -241,73 +241,73 @@ void __56__CSMagSafeAccessorySleeveViewController_viewDidAppear___block_invoke(u
   }
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
-  v5 = a3;
-  if (self->_legibilitySettings != v5)
+  settingsCopy = settings;
+  if (self->_legibilitySettings != settingsCopy)
   {
-    v11 = v5;
-    objc_storeStrong(&self->_legibilitySettings, a3);
-    v6 = [(SBFLockScreenDateViewController *)self->_dateViewController dateViewIfExists];
-    [v6 setLegibilitySettings:self->_legibilitySettings];
+    v11 = settingsCopy;
+    objc_storeStrong(&self->_legibilitySettings, settings);
+    dateViewIfExists = [(SBFLockScreenDateViewController *)self->_dateViewController dateViewIfExists];
+    [dateViewIfExists setLegibilitySettings:self->_legibilitySettings];
 
-    v7 = [(CSMagSafeAccessoryViewController *)self accessory];
-    v8 = [(CSMagSafeAccessorySleeveViewController *)self _legibilitySettingsForAccessory:v7];
+    accessory = [(CSMagSafeAccessoryViewController *)self accessory];
+    v8 = [(CSMagSafeAccessorySleeveViewController *)self _legibilitySettingsForAccessory:accessory];
 
-    v9 = [(SBFLockScreenDateViewController *)self->_secondaryDateViewController dateViewIfExists];
-    [v9 setLegibilitySettings:v8];
+    dateViewIfExists2 = [(SBFLockScreenDateViewController *)self->_secondaryDateViewController dateViewIfExists];
+    [dateViewIfExists2 setLegibilitySettings:v8];
 
-    v10 = [(CSMagSafeAccessorySleeveViewController *)self sleeveView];
-    [v10 setLegibilitySettings:v8];
+    sleeveView = [(CSMagSafeAccessorySleeveViewController *)self sleeveView];
+    [sleeveView setLegibilitySettings:v8];
 
-    v5 = v11;
+    settingsCopy = v11;
   }
 }
 
-- (void)updateFont:(id)a3 textColor:(id)a4 vibrancyConfiguration:(id)a5 numberingSystem:(id)a6
+- (void)updateFont:(id)font textColor:(id)color vibrancyConfiguration:(id)configuration numberingSystem:(id)system
 {
   dateViewController = self->_dateViewController;
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [(SBFLockScreenDateViewController *)dateViewController dateView];
-  [v15 setVibrancyConfiguration:v12];
+  systemCopy = system;
+  configurationCopy = configuration;
+  colorCopy = color;
+  fontCopy = font;
+  dateView = [(SBFLockScreenDateViewController *)dateViewController dateView];
+  [dateView setVibrancyConfiguration:configurationCopy];
 
-  v16 = [(SBFLockScreenDateViewController *)self->_dateViewController dateView];
-  [v16 setTextColor:v13];
+  dateView2 = [(SBFLockScreenDateViewController *)self->_dateViewController dateView];
+  [dateView2 setTextColor:colorCopy];
 
-  v17 = [(SBFLockScreenDateViewController *)self->_dateViewController dateView];
-  [v17 setCustomTimeFont:v14];
+  dateView3 = [(SBFLockScreenDateViewController *)self->_dateViewController dateView];
+  [dateView3 setCustomTimeFont:fontCopy];
 
-  v18 = [(SBFLockScreenDateViewController *)self->_dateViewController dateView];
-  [v18 setCustomTimeNumberingSystem:v11];
+  dateView4 = [(SBFLockScreenDateViewController *)self->_dateViewController dateView];
+  [dateView4 setCustomTimeNumberingSystem:systemCopy];
 
-  v19 = [(SBFLockScreenDateViewController *)self->_secondaryDateViewController dateView];
-  [v19 setVibrancyConfiguration:v12];
+  dateView5 = [(SBFLockScreenDateViewController *)self->_secondaryDateViewController dateView];
+  [dateView5 setVibrancyConfiguration:configurationCopy];
 
-  v20 = [(SBFLockScreenDateViewController *)self->_secondaryDateViewController dateView];
-  [v20 setCustomTimeFont:v14];
+  dateView6 = [(SBFLockScreenDateViewController *)self->_secondaryDateViewController dateView];
+  [dateView6 setCustomTimeFont:fontCopy];
 
-  v21 = [(SBFLockScreenDateViewController *)self->_secondaryDateViewController dateView];
-  [v21 setCustomTimeNumberingSystem:v11];
+  dateView7 = [(SBFLockScreenDateViewController *)self->_secondaryDateViewController dateView];
+  [dateView7 setCustomTimeNumberingSystem:systemCopy];
 }
 
-- (BOOL)handleEvent:(id)a3
+- (BOOL)handleEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = CSMagSafeAccessorySleeveViewController;
-  v4 = a3;
-  [(CSMagSafeAccessoryViewController *)&v7 handleEvent:v4];
-  v5 = [v4 type];
+  eventCopy = event;
+  [(CSMagSafeAccessoryViewController *)&v7 handleEvent:eventCopy];
+  type = [eventCopy type];
 
-  if (v5 == 24)
+  if (type == 24)
   {
     [(CSMagSafeAccessorySleeveViewController *)self _updateOverrideFloor];
     return 1;
   }
 
-  if (v5 == 25)
+  if (type == 25)
   {
     [(CSMagSafeAccessorySleeveViewController *)self _removeOverrideFloor];
     return 1;
@@ -316,15 +316,15 @@ void __56__CSMagSafeAccessorySleeveViewController_viewDidAppear___block_invoke(u
   return 0;
 }
 
-- (void)connectedDevicesDidChange:(id)a3
+- (void)connectedDevicesDidChange:(id)change
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [changeCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -335,7 +335,7 @@ void __56__CSMagSafeAccessorySleeveViewController_viewDidAppear___block_invoke(u
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(changeCopy);
         }
 
         v9 = *(*(&v10 + 1) + 8 * i);
@@ -345,7 +345,7 @@ void __56__CSMagSafeAccessorySleeveViewController_viewDidAppear___block_invoke(u
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [changeCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -356,9 +356,9 @@ void __56__CSMagSafeAccessorySleeveViewController_viewDidAppear___block_invoke(u
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v3 = +[CSLockScreenDomain rootSettings];
-  v4 = [v3 chargingSettings];
+  chargingSettings = [v3 chargingSettings];
 
-  if ([v4 shouldUseBrightnessFloor])
+  if ([chargingSettings shouldUseBrightnessFloor])
   {
     if (!self->_brightnessClient)
     {
@@ -367,7 +367,7 @@ void __56__CSMagSafeAccessorySleeveViewController_viewDidAppear___block_invoke(u
       self->_brightnessClient = v5;
     }
 
-    [v4 brightnessFloor];
+    [chargingSettings brightnessFloor];
     v7 = self->_brightnessClient;
     *&v8 = v8;
     v11[0] = @"nits";

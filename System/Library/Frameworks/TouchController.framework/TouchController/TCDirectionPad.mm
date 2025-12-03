@@ -1,93 +1,93 @@
 @interface TCDirectionPad
-+ (id)descriptorForJsonDictionary:(id)a3;
++ (id)descriptorForJsonDictionary:(id)dictionary;
 - (CGPoint)offset;
 - (CGPoint)position;
 - (CGSize)size;
 - (GCSJSONObject)jsonObject;
-- (TCDirectionPad)initWithDescriptor:(id)a3 touchController:(id)a4;
+- (TCDirectionPad)initWithDescriptor:(id)descriptor touchController:(id)controller;
 - (TCTouchController)touchController;
 - (void)_calculatePosition;
-- (void)collectQuadDataInto:(id)a3;
-- (void)handleTouchBeganAtPoint:(CGPoint)a3;
-- (void)handleTouchEndedAtPoint:(CGPoint)a3;
-- (void)handleTouchMovedAtPoint:(CGPoint)a3;
-- (void)processTouch:(CGPoint)a3;
-- (void)setThumbstickPos:(CGPoint)a3 center:(CGPoint)a4;
+- (void)collectQuadDataInto:(id)into;
+- (void)handleTouchBeganAtPoint:(CGPoint)point;
+- (void)handleTouchEndedAtPoint:(CGPoint)point;
+- (void)handleTouchMovedAtPoint:(CGPoint)point;
+- (void)processTouch:(CGPoint)touch;
+- (void)setThumbstickPos:(CGPoint)pos center:(CGPoint)center;
 @end
 
 @implementation TCDirectionPad
 
-- (TCDirectionPad)initWithDescriptor:(id)a3 touchController:(id)a4
+- (TCDirectionPad)initWithDescriptor:(id)descriptor touchController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  descriptorCopy = descriptor;
+  controllerCopy = controller;
   v38.receiver = self;
   v38.super_class = TCDirectionPad;
   v8 = [(TCDirectionPad *)&v38 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_touchController, v7);
+    objc_storeWeak(&v8->_touchController, controllerCopy);
     v9->_enabled = 1;
-    v10 = [v6 upContents];
+    upContents = [descriptorCopy upContents];
     upContents = v9->_upContents;
-    v9->_upContents = v10;
+    v9->_upContents = upContents;
 
-    v12 = [v6 downContents];
+    downContents = [descriptorCopy downContents];
     downContents = v9->_downContents;
-    v9->_downContents = v12;
+    v9->_downContents = downContents;
 
-    v14 = [v6 leftContents];
+    leftContents = [descriptorCopy leftContents];
     leftContents = v9->_leftContents;
-    v9->_leftContents = v14;
+    v9->_leftContents = leftContents;
 
-    v16 = [v6 rightContents];
+    rightContents = [descriptorCopy rightContents];
     rightContents = v9->_rightContents;
-    v9->_rightContents = v16;
+    v9->_rightContents = rightContents;
 
-    v18 = [v6 compositeLabel];
+    compositeLabel = [descriptorCopy compositeLabel];
     compositeLabel = v9->_compositeLabel;
-    v9->_compositeLabel = v18;
+    v9->_compositeLabel = compositeLabel;
 
-    v20 = [v6 upLabel];
+    upLabel = [descriptorCopy upLabel];
     upLabel = v9->_upLabel;
-    v9->_upLabel = v20;
+    v9->_upLabel = upLabel;
 
-    v22 = [v6 downLabel];
+    downLabel = [descriptorCopy downLabel];
     downLabel = v9->_downLabel;
-    v9->_downLabel = v22;
+    v9->_downLabel = downLabel;
 
-    v24 = [v6 leftLabel];
+    leftLabel = [descriptorCopy leftLabel];
     leftLabel = v9->_leftLabel;
-    v9->_leftLabel = v24;
+    v9->_leftLabel = leftLabel;
 
-    v26 = [v6 rightLabel];
+    rightLabel = [descriptorCopy rightLabel];
     rightLabel = v9->_rightLabel;
-    v9->_rightLabel = v26;
+    v9->_rightLabel = rightLabel;
 
     v9->_usingIndividualButtons = v9->_compositeLabel == 0;
-    v9->_anchor = [v6 anchor];
-    v9->_anchorCoordinateSystem = [v6 anchorCoordinateSystem];
-    [v6 offset];
+    v9->_anchor = [descriptorCopy anchor];
+    v9->_anchorCoordinateSystem = [descriptorCopy anchorCoordinateSystem];
+    [descriptorCopy offset];
     v9->_offset.x = v28;
     v9->_offset.y = v29;
-    v9->_zIndex = [v6 zIndex];
-    [v6 size];
+    v9->_zIndex = [descriptorCopy zIndex];
+    [descriptorCopy size];
     v9->_size.width = v30;
     v9->_size.height = v31;
-    [v6 highlightDuration];
+    [descriptorCopy highlightDuration];
     v9->_highlightDuration = v32;
-    v9->_mutuallyExclusiveInput = [v6 inputIsMutuallyExclusive];
-    v9->_radial = [v6 isRadial];
-    v9->_digital = [v6 isDigital];
+    v9->_mutuallyExclusiveInput = [descriptorCopy inputIsMutuallyExclusive];
+    v9->_radial = [descriptorCopy isRadial];
+    v9->_digital = [descriptorCopy isDigital];
     width = v9->_size.width;
     v9->_thumbstickDiameter = width;
     v9->_thumbstickInnerDiameter = width * 0.25;
     v9->_thumbstickWorkZone = ((width * 0.25) * -0.5) + (width * 0.5);
     v9->_thumbstickDeadZone = 0.25;
-    if ([v6 colliderShape])
+    if ([descriptorCopy colliderShape])
     {
-      if ([v6 colliderShape] != 1)
+      if ([descriptorCopy colliderShape] != 1)
       {
 LABEL_7:
         [(TCDirectionPad *)v9 _calculatePosition];
@@ -126,19 +126,19 @@ LABEL_8:
   self->_position = vaddq_f64(v6, self->_offset);
 }
 
-- (void)processTouch:(CGPoint)a3
+- (void)processTouch:(CGPoint)touch
 {
   x = self->_position.x;
   y = self->_position.y;
   if (self->_radial)
   {
-    a3.x = x + a3.x - self->_touchStartPos.x;
-    a3.y = y + a3.y - self->_touchStartPos.y;
+    touch.x = x + touch.x - self->_touchStartPos.x;
+    touch.y = y + touch.y - self->_touchStartPos.y;
   }
 
   thumbstickWorkZone = self->_thumbstickWorkZone;
-  v6 = a3.x - x;
-  v7 = a3.y - y;
+  v6 = touch.x - x;
+  v7 = touch.y - y;
   v8 = v7 * v7 + v6 * v6;
   v9 = sqrtf(v8);
   if (v9 > thumbstickWorkZone)
@@ -146,19 +146,19 @@ LABEL_8:
     v10 = (thumbstickWorkZone / v9);
     v11 = v6 * v10;
     v12 = v7 * v10;
-    a3.x = x + v11;
-    a3.y = y + v12;
+    touch.x = x + v11;
+    touch.y = y + v12;
   }
 
-  [(TCDirectionPad *)self setThumbstickPos:a3.x center:a3.y];
+  [(TCDirectionPad *)self setThumbstickPos:touch.x center:touch.y];
 }
 
-- (void)setThumbstickPos:(CGPoint)a3 center:(CGPoint)a4
+- (void)setThumbstickPos:(CGPoint)pos center:(CGPoint)center
 {
-  v5 = a3.x - a4.x;
+  v5 = pos.x - center.x;
   thumbstickWorkZone = self->_thumbstickWorkZone;
   v7 = v5 / thumbstickWorkZone;
-  v8 = -(a3.y - a4.y) / thumbstickWorkZone;
+  v8 = -(pos.y - center.y) / thumbstickWorkZone;
   self->_deltaX = v7;
   self->_deltaY = v8;
   if (!self->_mutuallyExclusiveInput)
@@ -351,35 +351,35 @@ LABEL_43:
 LABEL_48:
 }
 
-- (void)handleTouchBeganAtPoint:(CGPoint)a3
+- (void)handleTouchBeganAtPoint:(CGPoint)point
 {
   if (!self->pressed)
   {
     self->pressed = 1;
     self->highlightIntensity = 1.0;
-    self->_touchStartPos = a3;
+    self->_touchStartPos = point;
     self->_touchPrevPos = self->_touchStartPos;
     self->_prevThumbstickMagnitude = 0.0;
     [(TCDirectionPad *)self processTouch:?];
   }
 }
 
-- (void)handleTouchMovedAtPoint:(CGPoint)a3
+- (void)handleTouchMovedAtPoint:(CGPoint)point
 {
   if (self->pressed)
   {
-    [(TCDirectionPad *)self processTouch:a3.x, a3.y];
+    [(TCDirectionPad *)self processTouch:point.x, point.y];
   }
 }
 
-- (void)handleTouchEndedAtPoint:(CGPoint)a3
+- (void)handleTouchEndedAtPoint:(CGPoint)point
 {
   if (self->pressed)
   {
     self->pressed = 0;
     self->_deltaX = 0.0;
     self->_deltaY = 0.0;
-    [(TCDirectionPad *)self resetDirectionLocked:a3.x];
+    [(TCDirectionPad *)self resetDirectionLocked:point.x];
     usingIndividualButtons = self->_usingIndividualButtons;
     WeakRetained = objc_loadWeakRetained(&self->_touchController);
     v9 = WeakRetained;
@@ -404,18 +404,18 @@ LABEL_48:
   }
 }
 
-- (void)collectQuadDataInto:(id)a3
+- (void)collectQuadDataInto:(id)into
 {
   v138 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  intoCopy = into;
   if (self->_enabled)
   {
     v132 = 0u;
     v133 = 0u;
     v130 = 0u;
     v131 = 0u;
-    v5 = [(TCControlContents *)self->_upContents images];
-    v6 = [v5 countByEnumeratingWithState:&v130 objects:v137 count:16];
+    images = [(TCControlContents *)self->_upContents images];
+    v6 = [images countByEnumeratingWithState:&v130 objects:v137 count:16];
     if (v6)
     {
       v7 = v6;
@@ -426,7 +426,7 @@ LABEL_48:
         {
           if (*v131 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(images);
           }
 
           v10 = *(*(&v130 + 1) + 8 * i);
@@ -468,16 +468,16 @@ LABEL_48:
 
           LODWORD(v30) = v19;
           [v18 setHighlightIntensity:v30];
-          v31 = [v10 texture];
-          [v18 setTexture:v31];
+          texture = [v10 texture];
+          [v18 setTexture:texture];
 
-          v32 = [v10 highlightTexture];
-          [v18 setHighlightTexture:v32];
+          highlightTexture = [v10 highlightTexture];
+          [v18 setHighlightTexture:highlightTexture];
 
-          [v4 addObject:v18];
+          [intoCopy addObject:v18];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v130 objects:v137 count:16];
+        v7 = [images countByEnumeratingWithState:&v130 objects:v137 count:16];
       }
 
       while (v7);
@@ -487,8 +487,8 @@ LABEL_48:
     v129 = 0u;
     v126 = 0u;
     v127 = 0u;
-    v33 = [(TCControlContents *)self->_downContents images];
-    v34 = [v33 countByEnumeratingWithState:&v126 objects:v136 count:16];
+    images2 = [(TCControlContents *)self->_downContents images];
+    v34 = [images2 countByEnumeratingWithState:&v126 objects:v136 count:16];
     if (v34)
     {
       v35 = v34;
@@ -499,7 +499,7 @@ LABEL_48:
         {
           if (*v127 != v36)
           {
-            objc_enumerationMutation(v33);
+            objc_enumerationMutation(images2);
           }
 
           v38 = *(*(&v126 + 1) + 8 * j);
@@ -551,16 +551,16 @@ LABEL_48:
 
           LODWORD(v59) = v50;
           [v46 setHighlightIntensity:v59];
-          v60 = [v38 texture];
-          [v46 setTexture:v60];
+          texture2 = [v38 texture];
+          [v46 setTexture:texture2];
 
-          v61 = [v38 highlightTexture];
-          [v46 setHighlightTexture:v61];
+          highlightTexture2 = [v38 highlightTexture];
+          [v46 setHighlightTexture:highlightTexture2];
 
-          [v4 addObject:v46];
+          [intoCopy addObject:v46];
         }
 
-        v35 = [v33 countByEnumeratingWithState:&v126 objects:v136 count:16];
+        v35 = [images2 countByEnumeratingWithState:&v126 objects:v136 count:16];
       }
 
       while (v35);
@@ -570,8 +570,8 @@ LABEL_48:
     v125 = 0u;
     v122 = 0u;
     v123 = 0u;
-    v62 = [(TCControlContents *)self->_leftContents images];
-    v63 = [v62 countByEnumeratingWithState:&v122 objects:v135 count:16];
+    images3 = [(TCControlContents *)self->_leftContents images];
+    v63 = [images3 countByEnumeratingWithState:&v122 objects:v135 count:16];
     if (v63)
     {
       v64 = v63;
@@ -582,7 +582,7 @@ LABEL_48:
         {
           if (*v123 != v65)
           {
-            objc_enumerationMutation(v62);
+            objc_enumerationMutation(images3);
           }
 
           v67 = *(*(&v122 + 1) + 8 * k);
@@ -634,16 +634,16 @@ LABEL_48:
 
           LODWORD(v87) = v79;
           [v75 setHighlightIntensity:v87];
-          v88 = [v67 texture];
-          [v75 setTexture:v88];
+          texture3 = [v67 texture];
+          [v75 setTexture:texture3];
 
-          v89 = [v67 highlightTexture];
-          [v75 setHighlightTexture:v89];
+          highlightTexture3 = [v67 highlightTexture];
+          [v75 setHighlightTexture:highlightTexture3];
 
-          [v4 addObject:v75];
+          [intoCopy addObject:v75];
         }
 
-        v64 = [v62 countByEnumeratingWithState:&v122 objects:v135 count:16];
+        v64 = [images3 countByEnumeratingWithState:&v122 objects:v135 count:16];
       }
 
       while (v64);
@@ -653,8 +653,8 @@ LABEL_48:
     v121 = 0u;
     v118 = 0u;
     v119 = 0u;
-    v90 = [(TCControlContents *)self->_rightContents images];
-    v91 = [v90 countByEnumeratingWithState:&v118 objects:v134 count:16];
+    images4 = [(TCControlContents *)self->_rightContents images];
+    v91 = [images4 countByEnumeratingWithState:&v118 objects:v134 count:16];
     if (v91)
     {
       v92 = v91;
@@ -665,7 +665,7 @@ LABEL_48:
         {
           if (*v119 != v93)
           {
-            objc_enumerationMutation(v90);
+            objc_enumerationMutation(images4);
           }
 
           v95 = *(*(&v118 + 1) + 8 * m);
@@ -707,16 +707,16 @@ LABEL_48:
 
           LODWORD(v114) = v104;
           [v103 setHighlightIntensity:v114];
-          v115 = [v95 texture];
-          [v103 setTexture:v115];
+          texture4 = [v95 texture];
+          [v103 setTexture:texture4];
 
-          v116 = [v95 highlightTexture];
-          [v103 setHighlightTexture:v116];
+          highlightTexture4 = [v95 highlightTexture];
+          [v103 setHighlightTexture:highlightTexture4];
 
-          [v4 addObject:v103];
+          [intoCopy addObject:v103];
         }
 
-        v92 = [v90 countByEnumeratingWithState:&v118 objects:v134 count:16];
+        v92 = [images4 countByEnumeratingWithState:&v118 objects:v134 count:16];
       }
 
       while (v92);
@@ -760,26 +760,26 @@ LABEL_48:
   return WeakRetained;
 }
 
-+ (id)descriptorForJsonDictionary:(id)a3
++ (id)descriptorForJsonDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_opt_new();
-  v5 = [v3 objectForKeyedSubscript:@"size"];
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"size"];
   [v4 setSize:CGSizeFromJSONDictionary(v5)];
 
-  v6 = [v3 objectForKeyedSubscript:@"offset"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"offset"];
   [v4 setOffset:CGPointFromJSONDictionary(v6)];
 
   v7 = [TCControlLabel alloc];
-  v8 = [v3 objectForKey:@"compositeLabel"];
+  v8 = [dictionaryCopy objectForKey:@"compositeLabel"];
   v9 = [(TCControlLabel *)v7 initWithJSONObject:v8];
   [v4 setCompositeLabel:v9];
 
-  v10 = [v3 objectForKey:@"anchor"];
+  v10 = [dictionaryCopy objectForKey:@"anchor"];
   [v4 setAnchor:{objc_msgSend(v10, "unsignedIntValue")}];
-  v11 = [v3 objectForKey:@"layer"];
+  v11 = [dictionaryCopy objectForKey:@"layer"];
   [v4 setZIndex:{objc_msgSend(v11, "unsignedIntValue")}];
-  v12 = [v3 objectForKey:@"colliderShape"];
+  v12 = [dictionaryCopy objectForKey:@"colliderShape"];
 
   [v4 setColliderShape:{objc_msgSend(v12, "unsignedIntValue")}];
 
@@ -799,8 +799,8 @@ LABEL_48:
   v5 = [MEMORY[0x277CCABB0] numberWithBool:self->_enabled];
   v14[2] = v5;
   v13[3] = @"compositeLabel";
-  v6 = [(TCControlLabel *)self->_compositeLabel jsonObject];
-  v14[3] = v6;
+  jsonObject = [(TCControlLabel *)self->_compositeLabel jsonObject];
+  v14[3] = jsonObject;
   v13[4] = @"anchor";
   v7 = [MEMORY[0x277CCABB0] numberWithInteger:self->_anchor];
   v14[4] = v7;

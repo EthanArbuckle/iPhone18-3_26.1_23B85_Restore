@@ -1,10 +1,10 @@
 @interface PopoverTip.PopoverBridge
-- (void)prepareForPopoverPresentation:(id)a3;
+- (void)prepareForPopoverPresentation:(id)presentation;
 @end
 
 @implementation PopoverTip.PopoverBridge
 
-- (void)prepareForPopoverPresentation:(id)a3
+- (void)prepareForPopoverPresentation:(id)presentation
 {
   sub_1A3622E3C();
   sub_1A3622E2C();
@@ -14,9 +14,9 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
-  sub_1A360E844(v5);
+  presentationCopy = presentation;
+  selfCopy = self;
+  sub_1A360E844(presentationCopy);
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface MCDMediaRemoteSerialQueueManager
 + (MCDMediaRemoteSerialQueueManager)sharedInstance;
 - (MCDMediaRemoteSerialQueueManager)init;
-- (void)addOperation:(id)a3 cancelAllOperations:(BOOL)a4;
+- (void)addOperation:(id)operation cancelAllOperations:(BOOL)operations;
 - (void)cancelAllOperations;
 @end
 
@@ -53,13 +53,13 @@ uint64_t __50__MCDMediaRemoteSerialQueueManager_sharedInstance__block_invoke()
     _os_log_impl(&dword_25AD8E000, v3, OS_LOG_TYPE_DEFAULT, "Cancelling all operations on MCDMediaRemoteSerialQueueManager", v5, 2u);
   }
 
-  v4 = [(MCDMediaRemoteSerialQueueManager *)self mediaRemoteSerialQueue];
-  [v4 cancelAllOperations];
+  mediaRemoteSerialQueue = [(MCDMediaRemoteSerialQueueManager *)self mediaRemoteSerialQueue];
+  [mediaRemoteSerialQueue cancelAllOperations];
 }
 
-- (void)addOperation:(id)a3 cancelAllOperations:(BOOL)a4
+- (void)addOperation:(id)operation cancelAllOperations:(BOOL)operations
 {
-  v6 = a3;
+  operationCopy = operation;
   v7 = objc_alloc_init(MEMORY[0x277CCA8C8]);
   objc_initWeak(&location, v7);
   v10[0] = MEMORY[0x277D85DD0];
@@ -67,13 +67,13 @@ uint64_t __50__MCDMediaRemoteSerialQueueManager_sharedInstance__block_invoke()
   v10[2] = __69__MCDMediaRemoteSerialQueueManager_addOperation_cancelAllOperations___block_invoke;
   v10[3] = &unk_279924170;
   objc_copyWeak(&v12, &location);
-  v13 = a4;
+  operationsCopy = operations;
   v10[4] = self;
-  v8 = v6;
+  v8 = operationCopy;
   v11 = v8;
   [v7 addExecutionBlock:v10];
-  v9 = [(MCDMediaRemoteSerialQueueManager *)self mediaRemoteSerialQueue];
-  [v9 addOperation:v7];
+  mediaRemoteSerialQueue = [(MCDMediaRemoteSerialQueueManager *)self mediaRemoteSerialQueue];
+  [mediaRemoteSerialQueue addOperation:v7];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);

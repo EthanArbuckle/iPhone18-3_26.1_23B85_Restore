@@ -1,38 +1,38 @@
 @interface HKMCViewModelProviderDataSource
-- (HKMCViewModelProviderDataSource)initWithHealthStore:(id)a3 calendarCache:(id)a4 queue:(id)a5;
+- (HKMCViewModelProviderDataSource)initWithHealthStore:(id)store calendarCache:(id)cache queue:(id)queue;
 - (HKMCViewModelProviderDataSourceDelegate)delegate;
-- (void)_handleDaySummaryObserverUpdateWithError:(id)a3;
+- (void)_handleDaySummaryObserverUpdateWithError:(id)error;
 - (void)_startObservingDaySummaryUpdates;
-- (void)cancelFetchForDaySummariesInDayIndexRange:(id)a3;
+- (void)cancelFetchForDaySummariesInDayIndexRange:(id)range;
 - (void)dealloc;
-- (void)fetchDaySummariesInDayIndexRange:(id)a3;
+- (void)fetchDaySummariesInDayIndexRange:(id)range;
 @end
 
 @implementation HKMCViewModelProviderDataSource
 
-- (HKMCViewModelProviderDataSource)initWithHealthStore:(id)a3 calendarCache:(id)a4 queue:(id)a5
+- (HKMCViewModelProviderDataSource)initWithHealthStore:(id)store calendarCache:(id)cache queue:(id)queue
 {
   v29 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  storeCopy = store;
+  cacheCopy = cache;
+  queueCopy = queue;
   v24.receiver = self;
   v24.super_class = HKMCViewModelProviderDataSource;
   v12 = [(HKMCViewModelProviderDataSource *)&v24 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_healthStore, a3);
-    objc_storeStrong(&v13->_queue, a5);
+    objc_storeStrong(&v12->_healthStore, store);
+    objc_storeStrong(&v13->_queue, queue);
     v14 = [MEMORY[0x277CBEB58] set];
     summaryQueries = v13->_summaryQueries;
     v13->_summaryQueries = v14;
 
-    v16 = [MEMORY[0x277CCAB58] indexSet];
+    indexSet = [MEMORY[0x277CCAB58] indexSet];
     canceledDayIndexes = v13->_canceledDayIndexes;
-    v13->_canceledDayIndexes = v16;
+    v13->_canceledDayIndexes = indexSet;
 
-    objc_storeStrong(&v13->_calendarCache, a4);
+    objc_storeStrong(&v13->_calendarCache, cache);
     [(HKMCViewModelProviderDataSource *)v13 _startObservingDaySummaryUpdates];
   }
 
@@ -54,10 +54,10 @@
   return v13;
 }
 
-- (void)fetchDaySummariesInDayIndexRange:(id)a3
+- (void)fetchDaySummariesInDayIndexRange:(id)range
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   v23 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
   _HKInitializeLogging();
@@ -71,7 +71,7 @@
     *buf = 138543874;
     v18 = v8;
     v19 = 2048;
-    v20 = self;
+    selfCopy = self;
     v21 = 2114;
     v22 = v10;
     _os_log_impl(&dword_2518FC000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@:%p] Fetching summaries in range %{public}@", buf, 0x20u);
@@ -148,10 +148,10 @@ uint64_t __68__HKMCViewModelProviderDataSource_fetchDaySummariesInDayIndexRange_
   return [*(a1[5] + 32) removeObject:a1[8]];
 }
 
-- (void)cancelFetchForDaySummariesInDayIndexRange:(id)a3
+- (void)cancelFetchForDaySummariesInDayIndexRange:(id)range
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   v48 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
   _HKInitializeLogging();
@@ -166,7 +166,7 @@ uint64_t __68__HKMCViewModelProviderDataSource_fetchDaySummariesInDayIndexRange_
     *buf = 138543874;
     v43 = v9;
     v44 = 2048;
-    v45 = self;
+    selfCopy3 = self;
     v46 = 2114;
     v47 = v11;
     _os_log_impl(&dword_2518FC000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@:%p] Cancelling fetch for summaries in range %{public}@", buf, 0x20u);
@@ -204,14 +204,14 @@ uint64_t __68__HKMCViewModelProviderDataSource_fetchDaySummariesInDayIndexRange_
         }
 
         v19 = *(*(&v37 + 1) + 8 * i);
-        v20 = [v19 dayIndexRange];
+        dayIndexRange = [v19 dayIndexRange];
         v22 = v21;
-        if (v20 < 0)
+        if (dayIndexRange < 0)
         {
           [HKMCViewModelProviderDataSource fetchDaySummariesInDayIndexRange:];
         }
 
-        v23 = [(NSMutableIndexSet *)self->_canceledDayIndexes containsIndexesInRange:v20, v22];
+        v23 = [(NSMutableIndexSet *)self->_canceledDayIndexes containsIndexesInRange:dayIndexRange, v22];
         _HKInitializeLogging();
         v24 = *v6;
         v25 = *v6;
@@ -227,7 +227,7 @@ uint64_t __68__HKMCViewModelProviderDataSource_fetchDaySummariesInDayIndexRange_
             *buf = v35;
             v43 = v27;
             v44 = 2048;
-            v45 = self;
+            selfCopy3 = self;
             v46 = 2114;
             v47 = v29;
             _os_log_impl(&dword_2518FC000, v26, OS_LOG_TYPE_DEFAULT, "[%{public}@:%p] Cancelling query for summaries in range %{public}@", buf, 0x20u);
@@ -255,7 +255,7 @@ uint64_t __68__HKMCViewModelProviderDataSource_fetchDaySummariesInDayIndexRange_
           v43 = v31;
           v6 = MEMORY[0x277CCC2E8];
           v44 = 2048;
-          v45 = self;
+          selfCopy3 = self;
           v46 = 2114;
           v47 = v33;
           _os_log_debug_impl(&dword_2518FC000, v30, OS_LOG_TYPE_DEBUG, "[%{public}@:%p] Not cancelling query for summaries in range %{public}@", buf, 0x20u);
@@ -305,16 +305,16 @@ void __67__HKMCViewModelProviderDataSource__startObservingDaySummaryUpdates__blo
   [WeakRetained _handleDaySummaryObserverUpdateWithError:v4];
 }
 
-- (void)_handleDaySummaryObserverUpdateWithError:(id)a3
+- (void)_handleDaySummaryObserverUpdateWithError:(id)error
 {
-  v4 = a3;
-  if (v4)
+  errorCopy = error;
+  if (errorCopy)
   {
     _HKInitializeLogging();
     v5 = *MEMORY[0x277CCC2E8];
     if (os_log_type_enabled(*MEMORY[0x277CCC2E8], OS_LOG_TYPE_ERROR))
     {
-      [(HKMCViewModelProviderDataSource *)v5 _handleDaySummaryObserverUpdateWithError:v4];
+      [(HKMCViewModelProviderDataSource *)v5 _handleDaySummaryObserverUpdateWithError:errorCopy];
     }
   }
 
@@ -347,7 +347,7 @@ void __76__HKMCViewModelProviderDataSource__handleDaySummaryObserverUpdateWithEr
     *buf = 138543618;
     v19 = objc_opt_class();
     v20 = 2048;
-    v21 = self;
+    selfCopy = self;
     v5 = v19;
     _os_log_impl(&dword_2518FC000, v4, OS_LOG_TYPE_DEFAULT, "[%{public}@:%p] Dealloc", buf, 0x16u);
   }

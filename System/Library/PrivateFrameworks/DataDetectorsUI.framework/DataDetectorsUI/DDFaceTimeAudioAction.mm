@@ -1,5 +1,5 @@
 @interface DDFaceTimeAudioAction
-- (DDFaceTimeAudioAction)initWithURL:(id)a3 result:(__DDResult *)a4 context:(id)a5;
+- (DDFaceTimeAudioAction)initWithURL:(id)l result:(__DDResult *)result context:(id)context;
 - (id)callProvider;
 - (id)dialRequest;
 - (id)notificationTitle;
@@ -7,19 +7,19 @@
 
 @implementation DDFaceTimeAudioAction
 
-- (DDFaceTimeAudioAction)initWithURL:(id)a3 result:(__DDResult *)a4 context:(id)a5
+- (DDFaceTimeAudioAction)initWithURL:(id)l result:(__DDResult *)result context:(id)context
 {
   v10.receiver = self;
   v10.super_class = DDFaceTimeAudioAction;
-  result = [(DDTelephoneNumberAction *)&v10 initWithURL:a3 result:a4 context:a5];
-  if (a3 && result && !result->super.super._phoneNumber)
+  result = [(DDTelephoneNumberAction *)&v10 initWithURL:l result:result context:context];
+  if (l && result && !result->super.super._phoneNumber)
   {
-    v7 = result;
+    resultCopy = result;
     v8 = dd_emailFromMailtoScheme(result->super.super.super._url);
-    phoneNumber = v7->super.super._phoneNumber;
-    v7->super.super._phoneNumber = v8;
+    phoneNumber = resultCopy->super.super._phoneNumber;
+    resultCopy->super.super._phoneNumber = v8;
 
-    return v7;
+    return resultCopy;
   }
 
   return result;
@@ -28,15 +28,15 @@
 - (id)callProvider
 {
   v2 = objc_alloc_init(MEMORY[0x277D6EE28]);
-  v3 = [v2 faceTimeProvider];
+  faceTimeProvider = [v2 faceTimeProvider];
 
-  return v3;
+  return faceTimeProvider;
 }
 
 - (id)dialRequest
 {
-  v3 = [(DDFaceTimeAudioAction *)self callProvider];
-  v4 = [(DDCallAction *)self dialRequestWithProvider:v3];
+  callProvider = [(DDFaceTimeAudioAction *)self callProvider];
+  v4 = [(DDCallAction *)self dialRequestWithProvider:callProvider];
 
   return v4;
 }
@@ -45,8 +45,8 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = DDLocalizedString(@"FaceTime Audio %@");
-  v5 = [(DDCallAction *)self notificationTitleTargetString];
-  v6 = [v3 stringWithFormat:v4, v5];
+  notificationTitleTargetString = [(DDCallAction *)self notificationTitleTargetString];
+  v6 = [v3 stringWithFormat:v4, notificationTitleTargetString];
 
   return v6;
 }

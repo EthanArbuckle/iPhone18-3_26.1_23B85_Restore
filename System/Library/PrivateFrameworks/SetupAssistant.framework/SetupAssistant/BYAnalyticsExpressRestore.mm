@@ -1,13 +1,13 @@
 @interface BYAnalyticsExpressRestore
-- (BYAnalyticsExpressRestore)initWithAnalyticsManager:(id)a3;
+- (BYAnalyticsExpressRestore)initWithAnalyticsManager:(id)manager;
 - (id)eventPayload;
 @end
 
 @implementation BYAnalyticsExpressRestore
 
-- (BYAnalyticsExpressRestore)initWithAnalyticsManager:(id)a3
+- (BYAnalyticsExpressRestore)initWithAnalyticsManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v10.receiver = self;
   v10.super_class = BYAnalyticsExpressRestore;
   v5 = [(BYAnalyticsExpressRestore *)&v10 init];
@@ -19,7 +19,7 @@
     v8[2] = __54__BYAnalyticsExpressRestore_initWithAnalyticsManager___block_invoke;
     v8[3] = &unk_1E7D036A0;
     v9 = v5;
-    [v4 addEvent:@"com.apple.setupassistant.ios.expressRestore.pane" withPayloadBlock:v8 persist:0];
+    [managerCopy addEvent:@"com.apple.setupassistant.ios.expressRestore.pane" withPayloadBlock:v8 persist:0];
   }
 
   return v6;
@@ -28,15 +28,15 @@
 - (id)eventPayload
 {
   v11[3] = *MEMORY[0x1E69E9840];
-  v3 = [(BYAnalyticsExpressRestore *)self restoreChoice];
-  if (v3 > 3)
+  restoreChoice = [(BYAnalyticsExpressRestore *)self restoreChoice];
+  if (restoreChoice > 3)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = off_1E7D03DF0[v3];
+    v4 = off_1E7D03DF0[restoreChoice];
   }
 
   v10[0] = @"paneShown";

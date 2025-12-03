@@ -1,6 +1,6 @@
 @interface PUImportOneUpViewControllerSpec
 - (CGSize)selectionBadgeSize;
-- (PUImportOneUpViewControllerSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4 style:(unint64_t)a5;
+- (PUImportOneUpViewControllerSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options style:(unint64_t)style;
 - (UIOffset)selectionBadgeOffset;
 @end
 
@@ -24,17 +24,17 @@
   return result;
 }
 
-- (PUImportOneUpViewControllerSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4 style:(unint64_t)a5
+- (PUImportOneUpViewControllerSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options style:(unint64_t)style
 {
   v19.receiver = self;
   v19.super_class = PUImportOneUpViewControllerSpec;
-  v6 = [(PUImportOneUpViewControllerSpec *)&v19 initWithExtendedTraitCollection:a3 options:a4];
+  v6 = [(PUImportOneUpViewControllerSpec *)&v19 initWithExtendedTraitCollection:collection options:options];
   v7 = v6;
   if (v6)
   {
-    v6->_style = a5;
+    v6->_style = style;
     v8 = 0.0;
-    if (!a5)
+    if (!style)
     {
       v9 = PLIsTallScreen();
       v8 = 15.0;

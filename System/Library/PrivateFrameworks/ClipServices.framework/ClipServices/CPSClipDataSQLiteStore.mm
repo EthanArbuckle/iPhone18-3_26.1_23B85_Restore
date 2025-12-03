@@ -1,10 +1,10 @@
 @interface CPSClipDataSQLiteStore
 + (CPSClipDataSQLiteStore)defaultStore;
 - (BOOL)_checkDatabaseIntegrity;
-- (BOOL)_insertAppClipRecord:(id)a3;
-- (BOOL)_insertOrReplaceEntryPointRecord:(id)a3;
-- (BOOL)_updateAppClipRecord:(id)a3;
-- (CPSClipDataSQLiteStore)initWithDatabaseURL:(id)a3;
+- (BOOL)_insertAppClipRecord:(id)record;
+- (BOOL)_insertOrReplaceEntryPointRecord:(id)record;
+- (BOOL)_updateAppClipRecord:(id)record;
+- (CPSClipDataSQLiteStore)initWithDatabaseURL:(id)l;
 - (int)_createClipEntryPointsTable;
 - (int)_createFreshDatabaseSchema;
 - (int)_migrateToCurrentSchemaVersionIfNeeded;
@@ -26,12 +26,12 @@
 - (void)_migrateToSchemaVersion_6;
 - (void)_migrateToSchemaVersion_7;
 - (void)_migrateToSchemeVersion_8;
-- (void)_openDatabaseAndCheckIntegrity:(BOOL)a3;
-- (void)getAppClipRecordWithBundleID:(id)a3 completion:(id)a4;
-- (void)getEntryPointRecordWithWebClipIdentifier:(id)a3 completion:(id)a4;
-- (void)removeRecordWithBundleID:(id)a3;
-- (void)saveAppClipRecord:(id)a3 completion:(id)a4;
-- (void)saveClipEntryPointRecord:(id)a3 completion:(id)a4;
+- (void)_openDatabaseAndCheckIntegrity:(BOOL)integrity;
+- (void)getAppClipRecordWithBundleID:(id)d completion:(id)completion;
+- (void)getEntryPointRecordWithWebClipIdentifier:(id)identifier completion:(id)completion;
+- (void)removeRecordWithBundleID:(id)d;
+- (void)saveAppClipRecord:(id)record completion:(id)completion;
+- (void)saveClipEntryPointRecord:(id)record completion:(id)completion;
 @end
 
 @implementation CPSClipDataSQLiteStore
@@ -68,26 +68,26 @@ void __38__CPSClipDataSQLiteStore_defaultStore__block_invoke()
   +[CPSClipDataSQLiteStore defaultStore]::store = v6;
 }
 
-- (CPSClipDataSQLiteStore)initWithDatabaseURL:(id)a3
+- (CPSClipDataSQLiteStore)initWithDatabaseURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v22.receiver = self;
   v22.super_class = CPSClipDataSQLiteStore;
   v5 = [(CPSClipDataSQLiteStore *)&v22 init];
   if (v5)
   {
-    if (v4)
+    if (lCopy)
     {
-      v6 = v4;
+      inMemoryDatabaseURL = lCopy;
     }
 
     else
     {
-      v6 = [MEMORY[0x277D49B00] inMemoryDatabaseURL];
+      inMemoryDatabaseURL = [MEMORY[0x277D49B00] inMemoryDatabaseURL];
     }
 
     databaseURL = v5->_databaseURL;
-    v5->_databaseURL = v6;
+    v5->_databaseURL = inMemoryDatabaseURL;
 
     v9 = dispatch_queue_create("com.apple.ClipService.CPSClipDataSQLiteStore", 0);
     databaseQueue = v5->_databaseQueue;
@@ -140,12 +140,12 @@ uint64_t __46__CPSClipDataSQLiteStore_initWithDatabaseURL___block_invoke(uint64_
 - (BOOL)_checkDatabaseIntegrity
 {
   v2 = [(WBSSQLiteDatabase *)self->_database fetchQuery:@"PRAGMA integrity_check(1)"];
-  v3 = [v2 nextObject];
-  v4 = [v3 stringAtIndex:0];
-  v5 = [v2 statement];
-  [v5 invalidate];
+  nextObject = [v2 nextObject];
+  v4 = [nextObject stringAtIndex:0];
+  statement = [v2 statement];
+  [statement invalidate];
 
-  if (!v3)
+  if (!nextObject)
   {
     v7 = CPS_LOG_CHANNEL_PREFIXClipServices();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -175,16 +175,16 @@ LABEL_9:
   return v6;
 }
 
-- (void)_openDatabaseAndCheckIntegrity:(BOOL)a3
+- (void)_openDatabaseAndCheckIntegrity:(BOOL)integrity
 {
-  v3 = a3;
+  integrityCopy = integrity;
   v5 = [objc_alloc(MEMORY[0x277D49B00]) initWithURL:self->_databaseURL queue:self->_databaseQueue];
   database = self->_database;
   self->_database = v5;
 
   if (([(WBSSQLiteDatabase *)self->_database openWithAccessType:3 error:0]& 1) != 0)
   {
-    if (v3 && ![(CPSClipDataSQLiteStore *)self _checkDatabaseIntegrity])
+    if (integrityCopy && ![(CPSClipDataSQLiteStore *)self _checkDatabaseIntegrity])
     {
 
       goto LABEL_17;
@@ -200,10 +200,10 @@ LABEL_9:
     }
 
     SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<>(self->_database, 0, @"PRAGMA foreign_keys = ON");
-    v8 = [(CPSClipDataSQLiteStore *)self _migrateToCurrentSchemaVersionIfNeeded];
-    if (v8 != 8)
+    _migrateToCurrentSchemaVersionIfNeeded = [(CPSClipDataSQLiteStore *)self _migrateToCurrentSchemaVersionIfNeeded];
+    if (_migrateToCurrentSchemaVersionIfNeeded != 8)
     {
-      v9 = v8;
+      v9 = _migrateToCurrentSchemaVersionIfNeeded;
       v10 = CPS_LOG_CHANNEL_PREFIXClipServices();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
@@ -238,24 +238,24 @@ LABEL_17:
 - (int)_schemaVersion
 {
   v2 = SafariShared::WBSSQLiteDatabaseFetch<>(self->_database, @"PRAGMA user_version");
-  v3 = [v2 nextObject];
-  v4 = [v3 intAtIndex:0];
+  nextObject = [v2 nextObject];
+  v4 = [nextObject intAtIndex:0];
 
-  v5 = [v2 statement];
-  [v5 invalidate];
+  statement = [v2 statement];
+  [statement invalidate];
 
   return v4;
 }
 
 - (int)_migrateToCurrentSchemaVersionIfNeeded
 {
-  v3 = [(CPSClipDataSQLiteStore *)self _schemaVersion];
-  v4 = v3;
-  if (v3 <= 7)
+  _schemaVersion = [(CPSClipDataSQLiteStore *)self _schemaVersion];
+  v4 = _schemaVersion;
+  if (_schemaVersion <= 7)
   {
-    if (v3)
+    if (_schemaVersion)
     {
-      v5 = v3 + 1;
+      v5 = _schemaVersion + 1;
       while (v5 != 9)
       {
         v6 = [(CPSClipDataSQLiteStore *)self _migrateToSchemaVersion:v5];
@@ -296,12 +296,12 @@ LABEL_17:
       }
     }
 
-    v5 = [(CPSClipDataSQLiteStore *)self _createClipEntryPointsTable];
+    _createClipEntryPointsTable = [(CPSClipDataSQLiteStore *)self _createClipEntryPointsTable];
   }
 
   else
   {
-    v5 = v3;
+    _createClipEntryPointsTable = v3;
     v6 = CPS_LOG_CHANNEL_PREFIXClipServices();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
@@ -312,7 +312,7 @@ LABEL_17:
   }
 
   v7 = *MEMORY[0x277D85DE8];
-  return v5;
+  return _createClipEntryPointsTable;
 }
 
 - (int)_createClipEntryPointsTable
@@ -483,7 +483,7 @@ LABEL_7:
   v3 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<>(self->_database, 0, @"ALTER TABLE clip_entry_points RENAME TO clip_entry_points_old");
   if (v3 != 101)
   {
-    v4 = v3;
+    _createClipEntryPointsTable = v3;
     v6 = CPS_LOG_CHANNEL_PREFIXClipServices();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
@@ -495,8 +495,8 @@ LABEL_7:
     goto LABEL_12;
   }
 
-  v4 = [(CPSClipDataSQLiteStore *)self _createClipEntryPointsTable];
-  if (v4 == 101)
+  _createClipEntryPointsTable = [(CPSClipDataSQLiteStore *)self _createClipEntryPointsTable];
+  if (_createClipEntryPointsTable == 101)
   {
     if (SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<>(self->_database, 0, @"INSERT INTO clip_entry_points (id, app_clip_bundle_id, web_clip_id, last_abr_fetch_time)SELECT clip_entry_points_old.id, clip_entry_points_old.app_clip_bundle_id, clip_entry_points_old.web_clip_id, clip_entry_points_old.last_abr_fetch_time FROM clip_entry_points_old") != 101)
     {
@@ -509,8 +509,8 @@ LABEL_7:
       }
     }
 
-    v4 = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<>(self->_database, 0, @"DROP TABLE clip_entry_points_old");
-    if (v4 != 101)
+    _createClipEntryPointsTable = SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<>(self->_database, 0, @"DROP TABLE clip_entry_points_old");
+    if (_createClipEntryPointsTable != 101)
     {
       v6 = CPS_LOG_CHANNEL_PREFIXClipServices();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -525,15 +525,15 @@ LABEL_12:
   }
 
   v7 = *MEMORY[0x277D85DE8];
-  return v4;
+  return _createClipEntryPointsTable;
 }
 
-- (void)saveAppClipRecord:(id)a3 completion:(id)a4
+- (void)saveAppClipRecord:(id)record completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 bundleID];
-  v9 = [v8 length];
+  recordCopy = record;
+  completionCopy = completion;
+  bundleID = [recordCopy bundleID];
+  v9 = [bundleID length];
 
   if (v9)
   {
@@ -543,8 +543,8 @@ LABEL_12:
     block[2] = __55__CPSClipDataSQLiteStore_saveAppClipRecord_completion___block_invoke;
     block[3] = &unk_278DCF238;
     block[4] = self;
-    v13 = v6;
-    v14 = v7;
+    v13 = recordCopy;
+    v14 = completionCopy;
     dispatch_async(databaseQueue, block);
   }
 
@@ -557,9 +557,9 @@ LABEL_12:
       _os_log_impl(&dword_2436ED000, v11, OS_LOG_TYPE_DEFAULT, "Not saving app clip record because bundle ID is nil", buf, 2u);
     }
 
-    if (v7)
+    if (completionCopy)
     {
-      (*(v7 + 2))(v7, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
@@ -613,19 +613,19 @@ void __55__CPSClipDataSQLiteStore_saveAppClipRecord_completion___block_invoke(ui
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_updateAppClipRecord:(id)a3
+- (BOOL)_updateAppClipRecord:(id)record
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  recordCopy = record;
+  if (recordCopy)
   {
     v5 = [objc_alloc(MEMORY[0x277D49B08]) initWithDatabase:self->_database query:{@"UPDATE app_clips SET user_notification_consent = ?, location_confirmation_consent = ?, allows_location_confirmation_after_launch = ?, last_user_notification_request_time = ?, last_version_check_time = ?, last_install_time = ?, parent_app_name = ?, parent_app_caption = ?, parent_app_store_url = ? WHERE bundle_id = ?"}];
-    v6 = [v4 userNotificationGranted];
+    userNotificationGranted = [recordCopy userNotificationGranted];
 
-    if (v6)
+    if (userNotificationGranted)
     {
-      v7 = [v4 userNotificationGranted];
-      [v5 bindInt64:objc_msgSend(v7 atParameterIndex:{"BOOLValue"), 1}];
+      userNotificationGranted2 = [recordCopy userNotificationGranted];
+      [v5 bindInt64:objc_msgSend(userNotificationGranted2 atParameterIndex:{"BOOLValue"), 1}];
     }
 
     else
@@ -633,12 +633,12 @@ void __55__CPSClipDataSQLiteStore_saveAppClipRecord_completion___block_invoke(ui
       [v5 bindNullAtParameterIndex:1];
     }
 
-    v9 = [v4 locationConfirmationGranted];
+    locationConfirmationGranted = [recordCopy locationConfirmationGranted];
 
-    if (v9)
+    if (locationConfirmationGranted)
     {
-      v10 = [v4 locationConfirmationGranted];
-      [v5 bindInt64:objc_msgSend(v10 atParameterIndex:{"BOOLValue"), 2}];
+      locationConfirmationGranted2 = [recordCopy locationConfirmationGranted];
+      [v5 bindInt64:objc_msgSend(locationConfirmationGranted2 atParameterIndex:{"BOOLValue"), 2}];
     }
 
     else
@@ -646,28 +646,28 @@ void __55__CPSClipDataSQLiteStore_saveAppClipRecord_completion___block_invoke(ui
       [v5 bindNullAtParameterIndex:2];
     }
 
-    [v5 bindInt64:objc_msgSend(v4 atParameterIndex:{"locationConfirmationState"), 3}];
-    [v4 lastProxCardLaunchTime];
+    [v5 bindInt64:objc_msgSend(recordCopy atParameterIndex:{"locationConfirmationState"), 3}];
+    [recordCopy lastProxCardLaunchTime];
     [v5 bindDouble:4 atParameterIndex:?];
-    [v4 lastVersionCheckTime];
+    [recordCopy lastVersionCheckTime];
     [v5 bindDouble:5 atParameterIndex:?];
-    [v4 lastInstallTime];
+    [recordCopy lastInstallTime];
     [v5 bindDouble:6 atParameterIndex:?];
-    v11 = [v4 fullApplicationName];
-    [v5 bindString:v11 atParameterIndex:7];
+    fullApplicationName = [recordCopy fullApplicationName];
+    [v5 bindString:fullApplicationName atParameterIndex:7];
 
-    v12 = [v4 fullApplicationCaption];
-    [v5 bindString:v12 atParameterIndex:8];
+    fullApplicationCaption = [recordCopy fullApplicationCaption];
+    [v5 bindString:fullApplicationCaption atParameterIndex:8];
 
-    v13 = [v4 fullApplicationStoreURL];
-    v14 = [v13 absoluteString];
-    [v5 bindString:v14 atParameterIndex:9];
+    fullApplicationStoreURL = [recordCopy fullApplicationStoreURL];
+    absoluteString = [fullApplicationStoreURL absoluteString];
+    [v5 bindString:absoluteString atParameterIndex:9];
 
-    v15 = [v4 bundleID];
-    [v5 bindString:v15 atParameterIndex:10];
+    bundleID = [recordCopy bundleID];
+    [v5 bindString:bundleID atParameterIndex:10];
 
-    v16 = [v5 execute];
-    if (v16 != 101)
+    execute = [v5 execute];
+    if (execute != 101)
     {
       v17 = CPS_LOG_CHANNEL_PREFIXClipServices();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -679,7 +679,7 @@ void __55__CPSClipDataSQLiteStore_saveAppClipRecord_completion___block_invoke(ui
     }
 
     [v5 invalidate];
-    v8 = v16 == 101 && [(WBSSQLiteDatabase *)self->_database changedRowCount]!= 0;
+    v8 = execute == 101 && [(WBSSQLiteDatabase *)self->_database changedRowCount]!= 0;
   }
 
   else
@@ -691,20 +691,20 @@ void __55__CPSClipDataSQLiteStore_saveAppClipRecord_completion___block_invoke(ui
   return v8;
 }
 
-- (BOOL)_insertAppClipRecord:(id)a3
+- (BOOL)_insertAppClipRecord:(id)record
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recordCopy = record;
   v5 = [objc_alloc(MEMORY[0x277D49B08]) initWithDatabase:self->_database query:{@"INSERT INTO app_clips (bundle_id, user_notification_consent, location_confirmation_consent, allows_location_confirmation_after_launch, last_user_notification_request_time, last_version_check_time, last_install_time, parent_app_name, parent_app_caption, parent_app_store_url) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"}];
-  v6 = [v4 bundleID];
-  [v5 bindString:v6 atParameterIndex:1];
+  bundleID = [recordCopy bundleID];
+  [v5 bindString:bundleID atParameterIndex:1];
 
-  v7 = [v4 userNotificationGranted];
+  userNotificationGranted = [recordCopy userNotificationGranted];
 
-  if (v7)
+  if (userNotificationGranted)
   {
-    v8 = [v4 userNotificationGranted];
-    [v5 bindInt64:objc_msgSend(v8 atParameterIndex:{"BOOLValue"), 2}];
+    userNotificationGranted2 = [recordCopy userNotificationGranted];
+    [v5 bindInt64:objc_msgSend(userNotificationGranted2 atParameterIndex:{"BOOLValue"), 2}];
   }
 
   else
@@ -712,12 +712,12 @@ void __55__CPSClipDataSQLiteStore_saveAppClipRecord_completion___block_invoke(ui
     [v5 bindNullAtParameterIndex:2];
   }
 
-  v9 = [v4 locationConfirmationGranted];
+  locationConfirmationGranted = [recordCopy locationConfirmationGranted];
 
-  if (v9)
+  if (locationConfirmationGranted)
   {
-    v10 = [v4 locationConfirmationGranted];
-    [v5 bindInt64:objc_msgSend(v10 atParameterIndex:{"BOOLValue"), 3}];
+    locationConfirmationGranted2 = [recordCopy locationConfirmationGranted];
+    [v5 bindInt64:objc_msgSend(locationConfirmationGranted2 atParameterIndex:{"BOOLValue"), 3}];
   }
 
   else
@@ -725,25 +725,25 @@ void __55__CPSClipDataSQLiteStore_saveAppClipRecord_completion___block_invoke(ui
     [v5 bindNullAtParameterIndex:3];
   }
 
-  [v5 bindInt64:objc_msgSend(v4 atParameterIndex:{"locationConfirmationState"), 4}];
-  [v4 lastProxCardLaunchTime];
+  [v5 bindInt64:objc_msgSend(recordCopy atParameterIndex:{"locationConfirmationState"), 4}];
+  [recordCopy lastProxCardLaunchTime];
   [v5 bindDouble:5 atParameterIndex:?];
-  [v4 lastVersionCheckTime];
+  [recordCopy lastVersionCheckTime];
   [v5 bindDouble:6 atParameterIndex:?];
-  [v4 lastInstallTime];
+  [recordCopy lastInstallTime];
   [v5 bindDouble:7 atParameterIndex:?];
-  v11 = [v4 fullApplicationName];
-  [v5 bindString:v11 atParameterIndex:8];
+  fullApplicationName = [recordCopy fullApplicationName];
+  [v5 bindString:fullApplicationName atParameterIndex:8];
 
-  v12 = [v4 fullApplicationCaption];
-  [v5 bindString:v12 atParameterIndex:9];
+  fullApplicationCaption = [recordCopy fullApplicationCaption];
+  [v5 bindString:fullApplicationCaption atParameterIndex:9];
 
-  v13 = [v4 fullApplicationStoreURL];
-  v14 = [v13 absoluteString];
-  [v5 bindString:v14 atParameterIndex:10];
+  fullApplicationStoreURL = [recordCopy fullApplicationStoreURL];
+  absoluteString = [fullApplicationStoreURL absoluteString];
+  [v5 bindString:absoluteString atParameterIndex:10];
 
-  v15 = [v5 execute];
-  if (v15 != 101)
+  execute = [v5 execute];
+  if (execute != 101)
   {
     v16 = CPS_LOG_CHANNEL_PREFIXClipServices();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -755,26 +755,26 @@ void __55__CPSClipDataSQLiteStore_saveAppClipRecord_completion___block_invoke(ui
   }
 
   [v5 invalidate];
-  v17 = v15 == 101 && [(WBSSQLiteDatabase *)self->_database changedRowCount]!= 0;
+  v17 = execute == 101 && [(WBSSQLiteDatabase *)self->_database changedRowCount]!= 0;
 
   v18 = *MEMORY[0x277D85DE8];
   return v17;
 }
 
-- (void)getAppClipRecordWithBundleID:(id)a3 completion:(id)a4
+- (void)getAppClipRecordWithBundleID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   databaseQueue = self->_databaseQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66__CPSClipDataSQLiteStore_getAppClipRecordWithBundleID_completion___block_invoke;
   block[3] = &unk_278DCF238;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = dCopy;
   dispatch_async(databaseQueue, block);
 }
 
@@ -830,20 +830,20 @@ void __66__CPSClipDataSQLiteStore_getAppClipRecordWithBundleID_completion___bloc
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)saveClipEntryPointRecord:(id)a3 completion:(id)a4
+- (void)saveClipEntryPointRecord:(id)record completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  completionCopy = completion;
   databaseQueue = self->_databaseQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__CPSClipDataSQLiteStore_saveClipEntryPointRecord_completion___block_invoke;
   block[3] = &unk_278DCF238;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = recordCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = recordCopy;
   dispatch_async(databaseQueue, block);
 }
 
@@ -861,19 +861,19 @@ uint64_t __62__CPSClipDataSQLiteStore_saveClipEntryPointRecord_completion___bloc
   return result;
 }
 
-- (BOOL)_insertOrReplaceEntryPointRecord:(id)a3
+- (BOOL)_insertOrReplaceEntryPointRecord:(id)record
 {
   v13[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recordCopy = record;
   v5 = [objc_alloc(MEMORY[0x277D49B08]) initWithDatabase:self->_database query:{@"INSERT OR REPLACE INTO clip_entry_points (app_clip_bundle_id, web_clip_id, last_abr_fetch_time) VALUES (?, ?, ?)"}];
-  v12 = [v4 appClipBundleID];
-  v11 = [v4 webClipIdentifier];
-  [v4 lastABRFetchTime];
+  appClipBundleID = [recordCopy appClipBundleID];
+  webClipIdentifier = [recordCopy webClipIdentifier];
+  [recordCopy lastABRFetchTime];
   v13[0] = v6;
-  SafariShared::_WBSSQLiteStatementBindAllParameters<1,NSString * {__strong},NSString * {__strong},double>(v5, &v12, &v11, v13);
+  SafariShared::_WBSSQLiteStatementBindAllParameters<1,NSString * {__strong},NSString * {__strong},double>(v5, &appClipBundleID, &webClipIdentifier, v13);
 
-  v7 = [v5 execute];
-  if (v7 != 101)
+  execute = [v5 execute];
+  if (execute != 101)
   {
     v8 = CPS_LOG_CHANNEL_PREFIXClipServices();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -887,23 +887,23 @@ uint64_t __62__CPSClipDataSQLiteStore_saveClipEntryPointRecord_completion___bloc
   [v5 invalidate];
 
   v9 = *MEMORY[0x277D85DE8];
-  return v7 == 101;
+  return execute == 101;
 }
 
-- (void)getEntryPointRecordWithWebClipIdentifier:(id)a3 completion:(id)a4
+- (void)getEntryPointRecordWithWebClipIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   databaseQueue = self->_databaseQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __78__CPSClipDataSQLiteStore_getEntryPointRecordWithWebClipIdentifier_completion___block_invoke;
   block[3] = &unk_278DCF238;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = identifierCopy;
   dispatch_async(databaseQueue, block);
 }
 
@@ -927,17 +927,17 @@ void __78__CPSClipDataSQLiteStore_getEntryPointRecordWithWebClipIdentifier_compl
   (*(a1[6] + 16))();
 }
 
-- (void)removeRecordWithBundleID:(id)a3
+- (void)removeRecordWithBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   databaseQueue = self->_databaseQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__CPSClipDataSQLiteStore_removeRecordWithBundleID___block_invoke;
   v7[3] = &unk_278DCF260;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_async(databaseQueue, v7);
 }
 

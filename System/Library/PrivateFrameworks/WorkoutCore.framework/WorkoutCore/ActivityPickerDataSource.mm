@@ -1,12 +1,12 @@
 @interface ActivityPickerDataSource
-- (void)handleHKUserPreferenceDidChangeWithNotification:(id)a3;
+- (void)handleHKUserPreferenceDidChangeWithNotification:(id)notification;
 @end
 
 @implementation ActivityPickerDataSource
 
-- (void)handleHKUserPreferenceDidChangeWithNotification:(id)a3
+- (void)handleHKUserPreferenceDidChangeWithNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
 
   specialized ActivityPickerDataSource.handleHKUserPreferenceDidChange(notification:)();
 }

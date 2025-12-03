@@ -7,8 +7,8 @@
 - (id)sbh_systemImage
 {
   v1 = MEMORY[0x1E69DCAB8];
-  v2 = [a1 systemImageName];
-  v3 = [v1 _systemImageNamed:v2];
+  systemImageName = [self systemImageName];
+  v3 = [v1 _systemImageNamed:systemImageName];
 
   return v3;
 }

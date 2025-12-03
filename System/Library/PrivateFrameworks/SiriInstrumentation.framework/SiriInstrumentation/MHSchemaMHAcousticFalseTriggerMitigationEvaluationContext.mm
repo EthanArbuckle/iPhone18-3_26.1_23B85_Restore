@@ -1,35 +1,35 @@
 @interface MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext
-- (BOOL)isEqual:(id)a3;
-- (MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext)initWithDictionary:(id)a3;
-- (MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext)initWithDictionary:(id)dictionary;
+- (MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext)initWithJSON:(id)n;
 - (MHSchemaMHAcousticFalseTriggerMitigationFailed)failed;
 - (MHSchemaMHAcousticFalseTriggerMitigationScoreGenerated)scoreGenerated;
 - (MHSchemaMHAcousticFalseTriggerMitigationStarted)startedOrChanged;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
 - (void)deleteFailed;
 - (void)deleteScoreGenerated;
 - (void)deleteStartedOrChanged;
-- (void)setFailed:(id)a3;
-- (void)setScoreGenerated:(id)a3;
-- (void)setStartedOrChanged:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setFailed:(id)failed;
+- (void)setScoreGenerated:(id)generated;
+- (void)setStartedOrChanged:(id)changed;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext
 
-- (MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext)initWithDictionary:(id)a3
+- (MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext;
   v5 = [(MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"startedOrChanged"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"startedOrChanged"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -37,7 +37,7 @@
       [(MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext *)v5 setStartedOrChanged:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"scoreGenerated"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"scoreGenerated"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -45,7 +45,7 @@
       [(MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext *)v5 setScoreGenerated:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"failed"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"failed"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -59,30 +59,30 @@
   return v5;
 }
 
-- (MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext)initWithJSON:(id)a3
+- (MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -95,58 +95,58 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_failed)
   {
-    v4 = [(MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext *)self failed];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    failed = [(MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext *)self failed];
+    dictionaryRepresentation = [failed dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"failed"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"failed"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"failed"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"failed"];
     }
   }
 
   if (self->_scoreGenerated)
   {
-    v7 = [(MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext *)self scoreGenerated];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    scoreGenerated = [(MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext *)self scoreGenerated];
+    dictionaryRepresentation2 = [scoreGenerated dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"scoreGenerated"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"scoreGenerated"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"scoreGenerated"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"scoreGenerated"];
     }
   }
 
   if (self->_startedOrChanged)
   {
-    v10 = [(MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext *)self startedOrChanged];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    startedOrChanged = [(MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext *)self startedOrChanged];
+    dictionaryRepresentation3 = [startedOrChanged dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"startedOrChanged"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"startedOrChanged"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"startedOrChanged"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"startedOrChanged"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -156,34 +156,34 @@
   return v4 ^ [(MHSchemaMHAcousticFalseTriggerMitigationFailed *)self->_failed hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   whichContextevent = self->_whichContextevent;
-  if (whichContextevent != [v4 whichContextevent])
+  if (whichContextevent != [equalCopy whichContextevent])
   {
     goto LABEL_18;
   }
 
-  v6 = [(MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext *)self startedOrChanged];
-  v7 = [v4 startedOrChanged];
-  if ((v6 != 0) == (v7 == 0))
+  startedOrChanged = [(MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext *)self startedOrChanged];
+  startedOrChanged2 = [equalCopy startedOrChanged];
+  if ((startedOrChanged != 0) == (startedOrChanged2 == 0))
   {
     goto LABEL_17;
   }
 
-  v8 = [(MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext *)self startedOrChanged];
-  if (v8)
+  startedOrChanged3 = [(MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext *)self startedOrChanged];
+  if (startedOrChanged3)
   {
-    v9 = v8;
-    v10 = [(MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext *)self startedOrChanged];
-    v11 = [v4 startedOrChanged];
-    v12 = [v10 isEqual:v11];
+    v9 = startedOrChanged3;
+    startedOrChanged4 = [(MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext *)self startedOrChanged];
+    startedOrChanged5 = [equalCopy startedOrChanged];
+    v12 = [startedOrChanged4 isEqual:startedOrChanged5];
 
     if (!v12)
     {
@@ -195,20 +195,20 @@
   {
   }
 
-  v6 = [(MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext *)self scoreGenerated];
-  v7 = [v4 scoreGenerated];
-  if ((v6 != 0) == (v7 == 0))
+  startedOrChanged = [(MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext *)self scoreGenerated];
+  startedOrChanged2 = [equalCopy scoreGenerated];
+  if ((startedOrChanged != 0) == (startedOrChanged2 == 0))
   {
     goto LABEL_17;
   }
 
-  v13 = [(MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext *)self scoreGenerated];
-  if (v13)
+  scoreGenerated = [(MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext *)self scoreGenerated];
+  if (scoreGenerated)
   {
-    v14 = v13;
-    v15 = [(MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext *)self scoreGenerated];
-    v16 = [v4 scoreGenerated];
-    v17 = [v15 isEqual:v16];
+    v14 = scoreGenerated;
+    scoreGenerated2 = [(MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext *)self scoreGenerated];
+    scoreGenerated3 = [equalCopy scoreGenerated];
+    v17 = [scoreGenerated2 isEqual:scoreGenerated3];
 
     if (!v17)
     {
@@ -220,12 +220,12 @@
   {
   }
 
-  v6 = [(MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext *)self failed];
-  v7 = [v4 failed];
-  if ((v6 != 0) != (v7 == 0))
+  startedOrChanged = [(MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext *)self failed];
+  startedOrChanged2 = [equalCopy failed];
+  if ((startedOrChanged != 0) != (startedOrChanged2 == 0))
   {
-    v18 = [(MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext *)self failed];
-    if (!v18)
+    failed = [(MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext *)self failed];
+    if (!failed)
     {
 
 LABEL_21:
@@ -233,10 +233,10 @@ LABEL_21:
       goto LABEL_19;
     }
 
-    v19 = v18;
-    v20 = [(MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext *)self failed];
-    v21 = [v4 failed];
-    v22 = [v20 isEqual:v21];
+    v19 = failed;
+    failed2 = [(MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext *)self failed];
+    failed3 = [equalCopy failed];
+    v22 = [failed2 isEqual:failed3];
 
     if (v22)
     {
@@ -256,34 +256,34 @@ LABEL_19:
   return v23;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
-  v4 = [(MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext *)self startedOrChanged];
+  toCopy = to;
+  startedOrChanged = [(MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext *)self startedOrChanged];
 
-  if (v4)
+  if (startedOrChanged)
   {
-    v5 = [(MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext *)self startedOrChanged];
+    startedOrChanged2 = [(MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext *)self startedOrChanged];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext *)self scoreGenerated];
+  scoreGenerated = [(MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext *)self scoreGenerated];
 
-  if (v6)
+  if (scoreGenerated)
   {
-    v7 = [(MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext *)self scoreGenerated];
+    scoreGenerated2 = [(MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext *)self scoreGenerated];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext *)self failed];
+  failed = [(MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext *)self failed];
 
-  v9 = v11;
-  if (v8)
+  v9 = toCopy;
+  if (failed)
   {
-    v10 = [(MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext *)self failed];
+    failed2 = [(MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext *)self failed];
     PBDataWriterWriteSubmessage();
 
-    v9 = v11;
+    v9 = toCopy;
   }
 }
 
@@ -312,9 +312,9 @@ LABEL_19:
   return v3;
 }
 
-- (void)setFailed:(id)a3
+- (void)setFailed:(id)failed
 {
-  v4 = a3;
+  failedCopy = failed;
   startedOrChanged = self->_startedOrChanged;
   self->_startedOrChanged = 0;
 
@@ -322,14 +322,14 @@ LABEL_19:
   self->_scoreGenerated = 0;
 
   v7 = 3;
-  if (!v4)
+  if (!failedCopy)
   {
     v7 = 0;
   }
 
   self->_whichContextevent = v7;
   failed = self->_failed;
-  self->_failed = v4;
+  self->_failed = failedCopy;
 }
 
 - (void)deleteScoreGenerated
@@ -357,18 +357,18 @@ LABEL_19:
   return v3;
 }
 
-- (void)setScoreGenerated:(id)a3
+- (void)setScoreGenerated:(id)generated
 {
-  v4 = a3;
+  generatedCopy = generated;
   startedOrChanged = self->_startedOrChanged;
   self->_startedOrChanged = 0;
 
   failed = self->_failed;
   self->_failed = 0;
 
-  self->_whichContextevent = 2 * (v4 != 0);
+  self->_whichContextevent = 2 * (generatedCopy != 0);
   scoreGenerated = self->_scoreGenerated;
-  self->_scoreGenerated = v4;
+  self->_scoreGenerated = generatedCopy;
 }
 
 - (void)deleteStartedOrChanged
@@ -396,49 +396,49 @@ LABEL_19:
   return v3;
 }
 
-- (void)setStartedOrChanged:(id)a3
+- (void)setStartedOrChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   scoreGenerated = self->_scoreGenerated;
   self->_scoreGenerated = 0;
 
   failed = self->_failed;
   self->_failed = 0;
 
-  self->_whichContextevent = v4 != 0;
+  self->_whichContextevent = changedCopy != 0;
   startedOrChanged = self->_startedOrChanged;
-  self->_startedOrChanged = v4;
+  self->_startedOrChanged = changedCopy;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v16.receiver = self;
   v16.super_class = MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext;
-  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:v4];
-  v6 = [(MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext *)self startedOrChanged];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:policyCopy];
+  startedOrChanged = [(MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext *)self startedOrChanged];
+  v7 = [startedOrChanged applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext *)self deleteStartedOrChanged];
   }
 
-  v9 = [(MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext *)self scoreGenerated];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  scoreGenerated = [(MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext *)self scoreGenerated];
+  v10 = [scoreGenerated applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext *)self deleteScoreGenerated];
   }
 
-  v12 = [(MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext *)self failed];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  failed = [(MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext *)self failed];
+  v13 = [failed applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(MHSchemaMHAcousticFalseTriggerMitigationEvaluationContext *)self deleteFailed];
   }

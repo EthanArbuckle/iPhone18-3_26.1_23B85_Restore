@@ -1,16 +1,16 @@
 @interface HUMatterConnectedServicesListItem
-- (HUMatterConnectedServicesListItem)initWithAccessory:(id)a3 home:(id)a4 itemProvider:(id)a5;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (HUMatterConnectedServicesListItem)initWithAccessory:(id)accessory home:(id)home itemProvider:(id)provider;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HUMatterConnectedServicesListItem
 
-- (HUMatterConnectedServicesListItem)initWithAccessory:(id)a3 home:(id)a4 itemProvider:(id)a5
+- (HUMatterConnectedServicesListItem)initWithAccessory:(id)accessory home:(id)home itemProvider:(id)provider
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if ((v9 != 0) == (v10 != 0))
+  accessoryCopy = accessory;
+  homeCopy = home;
+  providerCopy = provider;
+  if ((accessoryCopy != 0) == (homeCopy != 0))
   {
     NSLog(&cfstr_ExactlyOneShou.isa);
   }
@@ -21,22 +21,22 @@
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_accessory, a3);
-    objc_storeStrong(&v13->_home, a4);
-    objc_storeStrong(&v13->_itemProvider, a5);
+    objc_storeStrong(&v12->_accessory, accessory);
+    objc_storeStrong(&v13->_home, home);
+    objc_storeStrong(&v13->_itemProvider, provider);
   }
 
   return v13;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v21[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D13BB0]];
-  v6 = [v5 BOOLValue];
+  optionsCopy = options;
+  v5 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x277D13BB0]];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
     v20[0] = *MEMORY[0x277D13F60];
     v7 = _HULocalizedStringWithDefaultValue(@"HUMatterConnectedServicesTitle", @"HUMatterConnectedServicesTitle", 1);
@@ -59,14 +59,14 @@
   else
   {
     objc_initWeak(&location, self);
-    v14 = [(HUMatterConnectedServicesListItem *)self itemProvider];
-    v15 = [v14 reloadItems];
+    itemProvider = [(HUMatterConnectedServicesListItem *)self itemProvider];
+    reloadItems = [itemProvider reloadItems];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __65__HUMatterConnectedServicesListItem__subclass_updateWithOptions___block_invoke;
     v17[3] = &unk_277DB84D8;
     objc_copyWeak(&v18, &location);
-    v13 = [v15 flatMap:v17];
+    v13 = [reloadItems flatMap:v17];
     objc_destroyWeak(&v18);
 
     objc_destroyWeak(&location);

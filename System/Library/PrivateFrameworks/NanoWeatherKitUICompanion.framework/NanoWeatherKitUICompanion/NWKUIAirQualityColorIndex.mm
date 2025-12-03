@@ -1,44 +1,44 @@
 @interface NWKUIAirQualityColorIndex
-+ (id)colorForIndex:(unint64_t)a3;
-+ (id)colorIndexWithIndex:(double)a3 color:(id)a4;
++ (id)colorForIndex:(unint64_t)index;
++ (id)colorIndexWithIndex:(double)index color:(id)color;
 + (unint64_t)lastIndex;
-- (NWKUIAirQualityColorIndex)initWithIndex:(double)a3 color:(id)a4;
+- (NWKUIAirQualityColorIndex)initWithIndex:(double)index color:(id)color;
 @end
 
 @implementation NWKUIAirQualityColorIndex
 
 + (unint64_t)lastIndex
 {
-  v2 = [a1 allIndices];
-  v3 = [v2 lastObject];
-  [v3 value];
+  allIndices = [self allIndices];
+  lastObject = [allIndices lastObject];
+  [lastObject value];
   v5 = v4;
 
   return v5;
 }
 
-+ (id)colorForIndex:(unint64_t)a3
++ (id)colorForIndex:(unint64_t)index
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___NWKUIAirQualityColorIndex;
-  v3 = objc_msgSendSuper2(&v5, sel_colorForValue_, a3);
+  v3 = objc_msgSendSuper2(&v5, sel_colorForValue_, index);
 
   return v3;
 }
 
-+ (id)colorIndexWithIndex:(double)a3 color:(id)a4
++ (id)colorIndexWithIndex:(double)index color:(id)color
 {
-  v6 = a4;
-  v7 = [[a1 alloc] initWithIndex:v6 color:a3];
+  colorCopy = color;
+  v7 = [[self alloc] initWithIndex:colorCopy color:index];
 
   return v7;
 }
 
-- (NWKUIAirQualityColorIndex)initWithIndex:(double)a3 color:(id)a4
+- (NWKUIAirQualityColorIndex)initWithIndex:(double)index color:(id)color
 {
   v5.receiver = self;
   v5.super_class = NWKUIAirQualityColorIndex;
-  return [(NWKUIColorIndex *)&v5 initWithValue:a4 color:a3];
+  return [(NWKUIColorIndex *)&v5 initWithValue:color color:index];
 }
 
 @end

@@ -23,7 +23,7 @@
   v4 = 0.0;
   v5 = 0;
   v3 = 0.0;
-  [a1 getHue:&v6 saturation:&v5 brightness:&v4 alpha:&v3];
+  [self getHue:&v6 saturation:&v5 brightness:&v4 alpha:&v3];
   v1 = [MEMORY[0x1E69DC888] colorWithHue:v6 saturation:1.0 brightness:v4 alpha:v3];
 
   return v1;
@@ -32,9 +32,9 @@
 - (uint64_t)vk_resolvedColor
 {
   v1 = MEMORY[0x1E69DC888];
-  v2 = [a1 CGColor];
+  cGColor = [self CGColor];
 
-  return [v1 colorWithCGColor:v2];
+  return [v1 colorWithCGColor:cGColor];
 }
 
 - (id)vk_resolvedColorWithAppearance:()Utilities
@@ -50,7 +50,7 @@
   }
 
   v5 = [MEMORY[0x1E69DD1B8] traitCollectionWithUserInterfaceStyle:v4];
-  v6 = [a1 resolvedColorWithTraitCollection:v5];
+  v6 = [self resolvedColorWithTraitCollection:v5];
 
   return v6;
 }

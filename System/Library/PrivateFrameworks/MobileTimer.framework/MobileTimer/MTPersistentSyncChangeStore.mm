@@ -1,16 +1,16 @@
 @interface MTPersistentSyncChangeStore
-- (MTPersistentSyncChangeStore)initWithDataModel:(id)a3;
+- (MTPersistentSyncChangeStore)initWithDataModel:(id)model;
 - (id)loadChanges;
 - (void)_removeSyncDataFile;
-- (void)persistChanges:(id)a3;
-- (void)setupSyncDataFileForDataModel:(id)a3;
+- (void)persistChanges:(id)changes;
+- (void)setupSyncDataFileForDataModel:(id)model;
 @end
 
 @implementation MTPersistentSyncChangeStore
 
-- (MTPersistentSyncChangeStore)initWithDataModel:(id)a3
+- (MTPersistentSyncChangeStore)initWithDataModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v12.receiver = self;
   v12.super_class = MTPersistentSyncChangeStore;
   v5 = [(MTPersistentSyncChangeStore *)&v12 init];
@@ -23,41 +23,41 @@
     archiverScheduler = v5->_archiverScheduler;
     v5->_archiverScheduler = v9;
 
-    [(MTPersistentSyncChangeStore *)v5 setupSyncDataFileForDataModel:v4];
+    [(MTPersistentSyncChangeStore *)v5 setupSyncDataFileForDataModel:modelCopy];
   }
 
   return v5;
 }
 
-- (void)setupSyncDataFileForDataModel:(id)a3
+- (void)setupSyncDataFileForDataModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v5 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
-  v6 = [v5 firstObject];
-  v7 = [MEMORY[0x1E696AAE8] mainBundle];
-  v8 = [v7 bundleIdentifier];
-  v9 = [v6 stringByAppendingPathComponent:v8];
+  firstObject = [v5 firstObject];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v9 = [firstObject stringByAppendingPathComponent:bundleIdentifier];
   [(MTPersistentSyncChangeStore *)self setSyncDataPath:v9];
 
-  v12 = [v4 dataFileName];
+  dataFileName = [modelCopy dataFileName];
 
-  v10 = [(MTPersistentSyncChangeStore *)self syncDataPath];
-  v11 = [v10 stringByAppendingPathComponent:v12];
+  syncDataPath = [(MTPersistentSyncChangeStore *)self syncDataPath];
+  v11 = [syncDataPath stringByAppendingPathComponent:dataFileName];
   [(MTPersistentSyncChangeStore *)self setSyncDataFile:v11];
 }
 
-- (void)persistChanges:(id)a3
+- (void)persistChanges:(id)changes
 {
-  v4 = a3;
-  v5 = [(MTPersistentSyncChangeStore *)self archiverScheduler];
+  changesCopy = changes;
+  archiverScheduler = [(MTPersistentSyncChangeStore *)self archiverScheduler];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__MTPersistentSyncChangeStore_persistChanges___block_invoke;
   v7[3] = &unk_1E7B0C928;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performBlock:v7];
+  v8 = changesCopy;
+  v6 = changesCopy;
+  [archiverScheduler performBlock:v7];
 }
 
 void __46__MTPersistentSyncChangeStore_persistChanges___block_invoke(uint64_t a1)
@@ -143,7 +143,7 @@ LABEL_7:
 - (id)loadChanges
 {
   v3 = objc_opt_new();
-  v4 = [(MTPersistentSyncChangeStore *)self archiverScheduler];
+  archiverScheduler = [(MTPersistentSyncChangeStore *)self archiverScheduler];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __42__MTPersistentSyncChangeStore_loadChanges__block_invoke;
@@ -151,7 +151,7 @@ LABEL_7:
   v9[4] = self;
   v5 = v3;
   v10 = v5;
-  [v4 performBlock:v9];
+  [archiverScheduler performBlock:v9];
 
   v6 = v10;
   v7 = v5;
@@ -281,7 +281,7 @@ void __42__MTPersistentSyncChangeStore_loadChanges__block_invoke(uint64_t a1)
 {
   v5 = *MEMORY[0x1E69E9840];
   LODWORD(v4) = 138543618;
-  *(&v4 + 4) = a1;
+  *(&v4 + 4) = self;
   OUTLINED_FUNCTION_1_3();
   OUTLINED_FUNCTION_2(&dword_1B1F9F000, v1, v2, "%{public}@ failed to remove bogus pending changes with error %{public}@", v4, DWORD2(v4));
   v3 = *MEMORY[0x1E69E9840];

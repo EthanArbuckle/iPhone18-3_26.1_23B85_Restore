@@ -74,11 +74,11 @@ void __39__PXAssetsSceneSettings_sharedInstance__block_invoke()
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:7];
   v16 = [v7 sectionWithRows:v15 title:@"Animated Content"];
 
-  v17 = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
+  px_restoreDefaultsSection = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
   v18 = MEMORY[0x1E69C6638];
   v25[0] = v24;
   v25[1] = v16;
-  v25[2] = v17;
+  v25[2] = px_restoreDefaultsSection;
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:3];
   v20 = [v18 moduleWithTitle:@"Assets Scene" contents:v19];
 

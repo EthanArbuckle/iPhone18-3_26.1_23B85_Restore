@@ -1,17 +1,17 @@
 @interface SiriHintViewController
-- (double)desiredHeightForWidth:(double)a3;
+- (double)desiredHeightForWidth:(double)width;
 - (id)_attributedString;
-- (id)_attributedStringForText:(id)a3 regions:(id)a4;
-- (void)_handleHintViewTap:(id)a3;
+- (id)_attributedStringForText:(id)text regions:(id)regions;
+- (void)_handleHintViewTap:(id)tap;
 - (void)loadView;
 @end
 
 @implementation SiriHintViewController
 
-- (id)_attributedStringForText:(id)a3 regions:(id)a4
+- (id)_attributedStringForText:(id)text regions:(id)regions
 {
-  v5 = a3;
-  v6 = a4;
+  textCopy = text;
+  regionsCopy = regions;
   v39 = NSFontAttributeName;
   v7 = &FBSOpenApplicationErrorCodeToString_ptr;
   v8 = +[UIFont siriui_thinWeightBodySizeFont];
@@ -19,13 +19,13 @@
   v9 = [NSDictionary dictionaryWithObjects:&v40 forKeys:&v39 count:1];
 
   v28 = v9;
-  v29 = v5;
-  v30 = [[NSMutableAttributedString alloc] initWithString:v5 attributes:v9];
+  v29 = textCopy;
+  v30 = [[NSMutableAttributedString alloc] initWithString:textCopy attributes:v9];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = v6;
+  obj = regionsCopy;
   v10 = [obj countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v10)
   {
@@ -43,28 +43,28 @@
         }
 
         v15 = *(*(&v34 + 1) + 8 * i);
-        v16 = [v15 property];
-        if (([v16 isEqualToString:v13] & 1) != 0 || objc_msgSend(v16, "isEqualToString:", v31))
+        property = [v15 property];
+        if (([property isEqualToString:v13] & 1) != 0 || objc_msgSend(property, "isEqualToString:", v31))
         {
           v17 = NSFontAttributeName;
-          v18 = [v7[127] siriui_mediumWeightBodySizeFont];
-          v19 = v18;
-          if (NSFontAttributeName && v18)
+          siriui_mediumWeightBodySizeFont = [v7[127] siriui_mediumWeightBodySizeFont];
+          v19 = siriui_mediumWeightBodySizeFont;
+          if (NSFontAttributeName && siriui_mediumWeightBodySizeFont)
           {
             [v15 start];
             v21 = v20 = v12;
-            v33 = [v21 unsignedIntegerValue];
+            unsignedIntegerValue = [v21 unsignedIntegerValue];
             v22 = [v15 length];
             v23 = v11;
             v24 = v13;
-            v25 = [v22 unsignedIntegerValue];
+            unsignedIntegerValue2 = [v22 unsignedIntegerValue];
 
             v12 = v20;
             v7 = &FBSOpenApplicationErrorCodeToString_ptr;
-            v26 = v25;
+            v26 = unsignedIntegerValue2;
             v13 = v24;
             v11 = v23;
-            [v30 addAttribute:v17 value:v19 range:{v33, v26}];
+            [v30 addAttribute:v17 value:v19 range:{unsignedIntegerValue, v26}];
           }
         }
 
@@ -86,21 +86,21 @@
 
 - (id)_attributedString
 {
-  v3 = [(SiriHintViewController *)self aceObject];
-  v4 = [v3 text];
-  v5 = [v3 regions];
-  v6 = [(SiriHintViewController *)self _attributedStringForText:v4 regions:v5];
+  aceObject = [(SiriHintViewController *)self aceObject];
+  text = [aceObject text];
+  regions = [aceObject regions];
+  v6 = [(SiriHintViewController *)self _attributedStringForText:text regions:regions];
 
   return v6;
 }
 
-- (double)desiredHeightForWidth:(double)a3
+- (double)desiredHeightForWidth:(double)width
 {
   v5 = 0.0;
   if (([(SiriHintViewController *)self isVirgin]& 1) == 0)
   {
-    v6 = [(SiriHintViewController *)self _attributedString];
-    [SiriHintView sizeThatFitsString:v6 forWidth:a3];
+    _attributedString = [(SiriHintViewController *)self _attributedString];
+    [SiriHintView sizeThatFitsString:_attributedString forWidth:width];
     v5 = v7;
   }
 
@@ -117,8 +117,8 @@
   else
   {
     v5 = [[SiriHintView alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
-    v3 = [(SiriHintViewController *)self _attributedString];
-    [(SiriHintView *)v5 setAttributedText:v3];
+    _attributedString = [(SiriHintViewController *)self _attributedString];
+    [(SiriHintView *)v5 setAttributedText:_attributedString];
 
     v4 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"_handleHintViewTap:"];
     [(SiriHintView *)v5 addGestureRecognizer:v4];
@@ -127,15 +127,15 @@
   [(SiriHintViewController *)self setView:v5];
 }
 
-- (void)_handleHintViewTap:(id)a3
+- (void)_handleHintViewTap:(id)tap
 {
-  v4 = [(SiriHintViewController *)self aceObject];
-  v6 = [v4 commands];
+  aceObject = [(SiriHintViewController *)self aceObject];
+  commands = [aceObject commands];
 
-  if ([v6 count])
+  if ([commands count])
   {
-    v5 = [(SiriHintViewController *)self delegate];
-    [v5 siriViewController:self performAceCommands:v6];
+    delegate = [(SiriHintViewController *)self delegate];
+    [delegate siriViewController:self performAceCommands:commands];
   }
 }
 

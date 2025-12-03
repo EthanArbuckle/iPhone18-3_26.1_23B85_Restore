@@ -1,38 +1,38 @@
 @interface AVTAttributeValueViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation AVTAttributeValueViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AVTAttributeValueView" hasInstanceMethod:@"selectionLayer" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CALayer" hasInstanceMethod:@"opacity" withFullSignature:{"f", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AVTAttributeValueView" hasInstanceMethod:@"selectionLayer" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CALayer" hasInstanceMethod:@"opacity" withFullSignature:{"f", 0}];
 }
 
 - (id)accessibilityLabel
 {
   v5.receiver = self;
   v5.super_class = AVTAttributeValueViewAccessibility;
-  v2 = [(AVTAttributeValueViewAccessibility *)&v5 accessibilityLabel];
-  if (![v2 rangeOfString:@"EARRINGS_"])
+  accessibilityLabel = [(AVTAttributeValueViewAccessibility *)&v5 accessibilityLabel];
+  if (![accessibilityLabel rangeOfString:@"EARRINGS_"])
   {
-    v3 = accessibilityLocalizedString(v2);
+    v3 = accessibilityLocalizedString(accessibilityLabel);
 
-    v2 = v3;
+    accessibilityLabel = v3;
   }
 
-  return v2;
+  return accessibilityLabel;
 }
 
 - (unint64_t)accessibilityTraits
 {
   v8.receiver = self;
   v8.super_class = AVTAttributeValueViewAccessibility;
-  v3 = [(AVTAttributeValueViewAccessibility *)&v8 accessibilityTraits];
+  accessibilityTraits = [(AVTAttributeValueViewAccessibility *)&v8 accessibilityTraits];
   v4 = [(AVTAttributeValueViewAccessibility *)self safeValueForKey:@"selectionLayer"];
   [v4 safeFloatForKey:@"opacity"];
   if (v5 <= 0.0)
@@ -45,7 +45,7 @@
     v6 = *MEMORY[0x29EDC7FC0];
   }
 
-  return v6 | v3;
+  return v6 | accessibilityTraits;
 }
 
 @end

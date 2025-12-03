@@ -1,8 +1,8 @@
 @interface MPAVOutputDeviceRoute
-+ (void)logicalLeaderFromOutputDevices:(id)a3;
-- (BOOL)_anyOutputDeviceObjPassesTest:(id)a3;
-- (BOOL)_anyOutputDevicePassesMRFunction:(void *)a3;
-- (BOOL)_anyOutputDevicePassesTest:(id)a3;
++ (void)logicalLeaderFromOutputDevices:(id)devices;
+- (BOOL)_anyOutputDeviceObjPassesTest:(id)test;
+- (BOOL)_anyOutputDevicePassesMRFunction:(void *)function;
+- (BOOL)_anyOutputDevicePassesTest:(id)test;
 - (BOOL)canAccessRemoteAssets;
 - (BOOL)canFetchMediaDataFromSender;
 - (BOOL)canPlayEncryptedProgressiveDownloadAssets;
@@ -31,8 +31,8 @@
 - (BOOL)supportsHeadTrackedSpatialAudio;
 - (BOOL)supportsRemoteControl;
 - (BOOL)supportsWirelessDisplay;
-- (MPAVOutputDeviceRoute)initWithOutputDevices:(id)a3;
-- (MPAVOutputDeviceRoute)initWithOutputDevices:(id)a3 parentRoute:(id)a4;
+- (MPAVOutputDeviceRoute)initWithOutputDevices:(id)devices;
+- (MPAVOutputDeviceRoute)initWithOutputDevices:(id)devices parentRoute:(id)route;
 - (NSArray)clusterMemberRoutes;
 - (NSArray)dnsNames;
 - (NSArray)roomRoutes;
@@ -59,17 +59,17 @@
   WeakRetained = objc_loadWeakRetained(&self->super._parentRoute);
   if ([WeakRetained isPicked])
   {
-    v4 = 1;
+    isPicked = 1;
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = MPAVOutputDeviceRoute;
-    v4 = [(MPAVRoute *)&v6 isPicked];
+    isPicked = [(MPAVRoute *)&v6 isPicked];
   }
 
-  return v4;
+  return isPicked;
 }
 
 - (id)routeName
@@ -103,15 +103,15 @@
   {
     v11.receiver = self;
     v11.super_class = MPAVOutputDeviceRoute;
-    v9 = [(MPAVRoute *)&v11 routeName];
+    routeName = [(MPAVRoute *)&v11 routeName];
   }
 
   else
   {
-    v9 = MRAVOutputDeviceCopyLocalDeviceLocalizedName();
+    routeName = MRAVOutputDeviceCopyLocalDeviceLocalizedName();
   }
 
-  return v9;
+  return routeName;
 }
 
 - (id)productIdentifier
@@ -172,8 +172,8 @@
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(MPAVOutputDeviceRoute *)self outputDevices];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  outputDevices = [(MPAVOutputDeviceRoute *)self outputDevices];
+  v3 = [outputDevices countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -183,7 +183,7 @@
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(outputDevices);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) isKnown])
@@ -193,7 +193,7 @@
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [outputDevices countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -215,8 +215,8 @@ LABEL_11:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(MPAVOutputDeviceRoute *)self outputDevices];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  outputDevices = [(MPAVOutputDeviceRoute *)self outputDevices];
+  v3 = [outputDevices countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -226,7 +226,7 @@ LABEL_11:
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(outputDevices);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) isNearby])
@@ -236,7 +236,7 @@ LABEL_11:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [outputDevices countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -251,10 +251,10 @@ LABEL_11:
   return v3;
 }
 
-- (BOOL)_anyOutputDeviceObjPassesTest:(id)a3
+- (BOOL)_anyOutputDeviceObjPassesTest:(id)test
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  testCopy = test;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -273,7 +273,7 @@ LABEL_11:
           objc_enumerationMutation(v5);
         }
 
-        if (v4[2](v4, *(*(&v10 + 1) + 8 * i)))
+        if (testCopy[2](testCopy, *(*(&v10 + 1) + 8 * i)))
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
@@ -295,36 +295,36 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)_anyOutputDevicePassesTest:(id)a3
+- (BOOL)_anyOutputDevicePassesTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52__MPAVOutputDeviceRoute__anyOutputDevicePassesTest___block_invoke;
   v7[3] = &unk_1E76769E0;
-  v8 = v4;
-  v5 = v4;
+  v8 = testCopy;
+  v5 = testCopy;
   LOBYTE(self) = [(MPAVOutputDeviceRoute *)self _anyOutputDeviceObjPassesTest:v7];
 
   return self;
 }
 
-- (BOOL)_anyOutputDevicePassesMRFunction:(void *)a3
+- (BOOL)_anyOutputDevicePassesMRFunction:(void *)function
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __58__MPAVOutputDeviceRoute__anyOutputDevicePassesMRFunction___block_invoke;
   v4[3] = &__block_descriptor_40_e26_B16__0__MRAVOutputDevice_8l;
-  v4[4] = a3;
+  v4[4] = function;
   return [(MPAVOutputDeviceRoute *)self _anyOutputDeviceObjPassesTest:v4];
 }
 
 - (BOOL)isPickable
 {
-  v2 = [(MPAVOutputDeviceRoute *)self outputDevice];
-  v3 = [v2 isPickable];
+  outputDevice = [(MPAVOutputDeviceRoute *)self outputDevice];
+  isPickable = [outputDevice isPickable];
 
-  return v3;
+  return isPickable;
 }
 
 - (NSArray)dnsNames
@@ -337,24 +337,24 @@ LABEL_11:
 
 - (BOOL)isLowFidelityRoute
 {
-  v2 = [(MPAVOutputDeviceRoute *)self logicalLeaderOutputDevice];
-  v3 = [v2 producesLowFidelityAudio];
+  logicalLeaderOutputDevice = [(MPAVOutputDeviceRoute *)self logicalLeaderOutputDevice];
+  producesLowFidelityAudio = [logicalLeaderOutputDevice producesLowFidelityAudio];
 
-  return v3;
+  return producesLowFidelityAudio;
 }
 
 - (int64_t)clusterType
 {
-  v2 = [(MPAVOutputDeviceRoute *)self logicalLeaderOutputDevice];
-  v3 = [objc_opt_class() clusterTypeForMRClusterType:{objc_msgSend(v2, "clusterType")}];
+  logicalLeaderOutputDevice = [(MPAVOutputDeviceRoute *)self logicalLeaderOutputDevice];
+  v3 = [objc_opt_class() clusterTypeForMRClusterType:{objc_msgSend(logicalLeaderOutputDevice, "clusterType")}];
 
   return v3;
 }
 
 - (id)subRoutes
 {
-  v3 = [MEMORY[0x1E69B0B08] currentSettings];
-  if ([v3 showMembersInsteadOfRooms])
+  currentSettings = [MEMORY[0x1E69B0B08] currentSettings];
+  if ([currentSettings showMembersInsteadOfRooms])
   {
     [(MPAVOutputDeviceRoute *)self clusterMemberRoutes];
   }
@@ -367,10 +367,10 @@ LABEL_11:
 
   if ([v4 count] == 1)
   {
-    v5 = [MEMORY[0x1E69B0B08] currentSettings];
-    v6 = [v5 allowSingleRoomExpandedRows];
+    currentSettings2 = [MEMORY[0x1E69B0B08] currentSettings];
+    allowSingleRoomExpandedRows = [currentSettings2 allowSingleRoomExpandedRows];
 
-    if ((v6 & 1) == 0)
+    if ((allowSingleRoomExpandedRows & 1) == 0)
     {
 
       v4 = 0;
@@ -382,15 +382,15 @@ LABEL_11:
 
 - (id)clusterComposition
 {
-  v3 = [(MPAVOutputDeviceRoute *)self outputDevices];
-  v4 = [v3 count];
+  outputDevices = [(MPAVOutputDeviceRoute *)self outputDevices];
+  v4 = [outputDevices count];
 
   if (v4 <= 1 && ([(MPAVOutputDeviceRoute *)self logicalLeaderOutputDevice], MRAVOutputDeviceGetSubtype() == 15))
   {
-    v5 = [(MPAVOutputDeviceRoute *)self outputDevices];
-    v6 = [v5 firstObject];
+    outputDevices2 = [(MPAVOutputDeviceRoute *)self outputDevices];
+    firstObject = [outputDevices2 firstObject];
 
-    v7 = [objc_opt_class() clusterCompositionForOutputDevice:v6];
+    v7 = [objc_opt_class() clusterCompositionForOutputDevice:firstObject];
   }
 
   else
@@ -403,10 +403,10 @@ LABEL_11:
 
 - (BOOL)isAppleAccessory
 {
-  v2 = [(MPAVOutputDeviceRoute *)self logicalLeaderOutputDevice];
-  v3 = [v2 isAppleAccessory];
+  logicalLeaderOutputDevice = [(MPAVOutputDeviceRoute *)self logicalLeaderOutputDevice];
+  isAppleAccessory = [logicalLeaderOutputDevice isAppleAccessory];
 
-  return v3;
+  return isAppleAccessory;
 }
 
 - (BOOL)isLowLatencyRoute
@@ -435,58 +435,58 @@ LABEL_11:
 
 - (BOOL)headTrackedSpatialAudioEnabled
 {
-  v2 = [(MPAVOutputDeviceRoute *)self logicalLeaderOutputDevice];
+  logicalLeaderOutputDevice = [(MPAVOutputDeviceRoute *)self logicalLeaderOutputDevice];
 
-  return MEMORY[0x1EEE1C738](v2);
+  return MEMORY[0x1EEE1C738](logicalLeaderOutputDevice);
 }
 
 - (BOOL)supportsHeadTrackedSpatialAudio
 {
-  v2 = [(MPAVOutputDeviceRoute *)self logicalLeaderOutputDevice];
+  logicalLeaderOutputDevice = [(MPAVOutputDeviceRoute *)self logicalLeaderOutputDevice];
 
-  return MEMORY[0x1EEE1C830](v2);
+  return MEMORY[0x1EEE1C830](logicalLeaderOutputDevice);
 }
 
 - (BOOL)isMacRoute
 {
-  v2 = [(MPAVOutputDeviceRoute *)self logicalLeaderOutputDevice];
-  v3 = [v2 deviceSubtype] == 18;
+  logicalLeaderOutputDevice = [(MPAVOutputDeviceRoute *)self logicalLeaderOutputDevice];
+  v3 = [logicalLeaderOutputDevice deviceSubtype] == 18;
 
   return v3;
 }
 
 - (BOOL)isPhoneLocalRoute
 {
-  v2 = [(MPAVOutputDeviceRoute *)self logicalLeaderOutputDevice];
-  v3 = [v2 hostDeviceClass] == 1;
+  logicalLeaderOutputDevice = [(MPAVOutputDeviceRoute *)self logicalLeaderOutputDevice];
+  v3 = [logicalLeaderOutputDevice hostDeviceClass] == 1;
 
   return v3;
 }
 
 - (BOOL)isPhoneRoute
 {
-  v2 = [(MPAVOutputDeviceRoute *)self logicalLeaderOutputDevice];
-  v3 = [v2 hostDeviceClass] == 1 && objc_msgSend(v2, "deviceType") == 4;
+  logicalLeaderOutputDevice = [(MPAVOutputDeviceRoute *)self logicalLeaderOutputDevice];
+  v3 = [logicalLeaderOutputDevice hostDeviceClass] == 1 && objc_msgSend(logicalLeaderOutputDevice, "deviceType") == 4;
 
   return v3;
 }
 
 - (BOOL)isHomeTheaterRoute
 {
-  v2 = [(MPAVOutputDeviceRoute *)self logicalLeaderOutputDevice];
-  v3 = [v2 clusterType] == 2;
+  logicalLeaderOutputDevice = [(MPAVOutputDeviceRoute *)self logicalLeaderOutputDevice];
+  v3 = [logicalLeaderOutputDevice clusterType] == 2;
 
   return v3;
 }
 
 - (BOOL)isClusterRoute
 {
-  v3 = [(MPAVOutputDeviceRoute *)self outputDevices];
-  if ([v3 count] == 1)
+  outputDevices = [(MPAVOutputDeviceRoute *)self outputDevices];
+  if ([outputDevices count] == 1)
   {
-    v4 = [(MPAVOutputDeviceRoute *)self outputDevices];
-    v5 = [v4 firstObject];
-    v6 = [v5 deviceSubtype] == 15;
+    outputDevices2 = [(MPAVOutputDeviceRoute *)self outputDevices];
+    firstObject = [outputDevices2 firstObject];
+    v6 = [firstObject deviceSubtype] == 15;
   }
 
   else
@@ -502,8 +502,8 @@ LABEL_11:
   v15 = *MEMORY[0x1E69E9840];
   if ([(MPAVOutputDeviceRoute *)self isClusterRoute])
   {
-    v3 = [(MPAVOutputDeviceRoute *)self logicalLeaderOutputDevice];
-    v4 = [(NSArray *)v3 clusterType]== 1;
+    logicalLeaderOutputDevice = [(MPAVOutputDeviceRoute *)self logicalLeaderOutputDevice];
+    v4 = [(NSArray *)logicalLeaderOutputDevice clusterType]== 1;
   }
 
   else
@@ -513,8 +513,8 @@ LABEL_11:
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v3 = self->_outputDevices;
-    v5 = [(NSArray *)v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    logicalLeaderOutputDevice = self->_outputDevices;
+    v5 = [(NSArray *)logicalLeaderOutputDevice countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
       v6 = v5;
@@ -525,13 +525,13 @@ LABEL_11:
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(logicalLeaderOutputDevice);
           }
 
           v4 = v4 && MRAVOutputDeviceGetSubtype() == 12;
         }
 
-        v6 = [(NSArray *)v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [(NSArray *)logicalLeaderOutputDevice countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v6);
@@ -543,32 +543,32 @@ LABEL_11:
 
 - (BOOL)requiresPassword
 {
-  v2 = [(MPAVOutputDeviceRoute *)self logicalLeaderOutputDevice];
+  logicalLeaderOutputDevice = [(MPAVOutputDeviceRoute *)self logicalLeaderOutputDevice];
 
-  return MEMORY[0x1EEE1C810](v2);
+  return MEMORY[0x1EEE1C810](logicalLeaderOutputDevice);
 }
 
 - (BOOL)supportsRemoteControl
 {
-  v2 = [(MPAVOutputDeviceRoute *)self outputDevice];
-  v3 = [v2 isRemoteControllable];
+  outputDevice = [(MPAVOutputDeviceRoute *)self outputDevice];
+  isRemoteControllable = [outputDevice isRemoteControllable];
 
-  return v3;
+  return isRemoteControllable;
 }
 
 - (BOOL)supportsWirelessDisplay
 {
-  v2 = [(MPAVOutputDeviceRoute *)self logicalLeaderOutputDevice];
+  logicalLeaderOutputDevice = [(MPAVOutputDeviceRoute *)self logicalLeaderOutputDevice];
 
-  return MEMORY[0x1EEE1C828](v2);
+  return MEMORY[0x1EEE1C828](logicalLeaderOutputDevice);
 }
 
 - (int64_t)pickableRouteType
 {
   v3 = objc_opt_class();
-  v4 = [(MPAVOutputDeviceRoute *)self logicalLeaderOutputDevice];
+  logicalLeaderOutputDevice = [(MPAVOutputDeviceRoute *)self logicalLeaderOutputDevice];
 
-  return [v3 pickableRouteTypeForOutputDevice:v4];
+  return [v3 pickableRouteTypeForOutputDevice:logicalLeaderOutputDevice];
 }
 
 - (int64_t)originalRouteSubtype
@@ -600,16 +600,16 @@ LABEL_11:
 
 - (BOOL)isPickedOnPairedDevice
 {
-  v2 = [(MPAVOutputDeviceRoute *)self logicalLeaderOutputDevice];
+  logicalLeaderOutputDevice = [(MPAVOutputDeviceRoute *)self logicalLeaderOutputDevice];
 
-  return MEMORY[0x1EEE1C7F0](v2);
+  return MEMORY[0x1EEE1C7F0](logicalLeaderOutputDevice);
 }
 
 - (BOOL)isVolumeControlAvailable
 {
-  v2 = [(MPAVOutputDeviceRoute *)self logicalLeaderOutputDevice];
+  logicalLeaderOutputDevice = [(MPAVOutputDeviceRoute *)self logicalLeaderOutputDevice];
 
-  return MEMORY[0x1EEE1C800](v2);
+  return MEMORY[0x1EEE1C800](logicalLeaderOutputDevice);
 }
 
 uint64_t __50__MPAVOutputDeviceRoute_isDeviceSpeakerPhoneRoute__block_invoke(uint64_t a1, void *a2)
@@ -667,30 +667,30 @@ uint64_t __50__MPAVOutputDeviceRoute_isDeviceSpeakerPhoneRoute__block_invoke(uin
 
 - (BOOL)presentsOptimizedUserInterfaceWhenPlayingFetchedAudioOnlyAssets
 {
-  v2 = [(MPAVOutputDeviceRoute *)self logicalLeaderOutputDevice];
+  logicalLeaderOutputDevice = [(MPAVOutputDeviceRoute *)self logicalLeaderOutputDevice];
 
-  return MEMORY[0x1EEE1C808](v2);
+  return MEMORY[0x1EEE1C808](logicalLeaderOutputDevice);
 }
 
 - (BOOL)canFetchMediaDataFromSender
 {
-  v2 = [(MPAVOutputDeviceRoute *)self logicalLeaderOutputDevice];
+  logicalLeaderOutputDevice = [(MPAVOutputDeviceRoute *)self logicalLeaderOutputDevice];
 
-  return MEMORY[0x1EEE1C750](v2);
+  return MEMORY[0x1EEE1C750](logicalLeaderOutputDevice);
 }
 
 - (BOOL)canPlayEncryptedProgressiveDownloadAssets
 {
-  v2 = [(MPAVOutputDeviceRoute *)self logicalLeaderOutputDevice];
+  logicalLeaderOutputDevice = [(MPAVOutputDeviceRoute *)self logicalLeaderOutputDevice];
 
-  return MEMORY[0x1EEE1C758](v2);
+  return MEMORY[0x1EEE1C758](logicalLeaderOutputDevice);
 }
 
 - (BOOL)canAccessRemoteAssets
 {
-  v2 = [(MPAVOutputDeviceRoute *)self logicalLeaderOutputDevice];
+  logicalLeaderOutputDevice = [(MPAVOutputDeviceRoute *)self logicalLeaderOutputDevice];
 
-  return MEMORY[0x1EEE1C748](v2);
+  return MEMORY[0x1EEE1C748](logicalLeaderOutputDevice);
 }
 
 - (id)clusterCompositionRoutes
@@ -698,13 +698,13 @@ uint64_t __50__MPAVOutputDeviceRoute_isDeviceSpeakerPhoneRoute__block_invoke(uin
   clusterCompositionMembers = self->_clusterCompositionMembers;
   if (!clusterCompositionMembers)
   {
-    v4 = [(MPAVOutputDeviceRoute *)self outputDevices];
+    outputDevices = [(MPAVOutputDeviceRoute *)self outputDevices];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __49__MPAVOutputDeviceRoute_clusterCompositionRoutes__block_invoke;
     v8[3] = &unk_1E7676958;
     v8[4] = self;
-    v5 = [v4 msv_flatMap:v8];
+    v5 = [outputDevices msv_flatMap:v8];
     v6 = self->_clusterCompositionMembers;
     self->_clusterCompositionMembers = v5;
 
@@ -744,13 +744,13 @@ MPAVOutputDeviceRoute *__49__MPAVOutputDeviceRoute_clusterCompositionRoutes__blo
   clusterMemberRoutes = self->_clusterMemberRoutes;
   if (!clusterMemberRoutes)
   {
-    v4 = [(MPAVOutputDeviceRoute *)self outputDevices];
+    outputDevices = [(MPAVOutputDeviceRoute *)self outputDevices];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __44__MPAVOutputDeviceRoute_clusterMemberRoutes__block_invoke;
     v8[3] = &unk_1E7676958;
     v8[4] = self;
-    v5 = [v4 msv_flatMap:v8];
+    v5 = [outputDevices msv_flatMap:v8];
     v6 = self->_clusterMemberRoutes;
     self->_clusterMemberRoutes = v5;
 
@@ -790,13 +790,13 @@ MPAVOutputDeviceRoute *__44__MPAVOutputDeviceRoute_clusterMemberRoutes__block_in
   roomRoutes = self->_roomRoutes;
   if (!roomRoutes)
   {
-    v4 = [(MPAVOutputDeviceRoute *)self outputDevices];
+    outputDevices = [(MPAVOutputDeviceRoute *)self outputDevices];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __35__MPAVOutputDeviceRoute_roomRoutes__block_invoke;
     v8[3] = &unk_1E7676958;
     v8[4] = self;
-    v5 = [v4 msv_flatMap:v8];
+    v5 = [outputDevices msv_flatMap:v8];
     v6 = self->_roomRoutes;
     self->_roomRoutes = v5;
 
@@ -831,38 +831,38 @@ MPAVOutputDeviceRoute *__35__MPAVOutputDeviceRoute_roomRoutes__block_invoke_2(ui
   return v6;
 }
 
-- (MPAVOutputDeviceRoute)initWithOutputDevices:(id)a3 parentRoute:(id)a4
+- (MPAVOutputDeviceRoute)initWithOutputDevices:(id)devices parentRoute:(id)route
 {
-  v6 = a4;
-  v7 = [(MPAVOutputDeviceRoute *)self initWithOutputDevices:a3];
+  routeCopy = route;
+  v7 = [(MPAVOutputDeviceRoute *)self initWithOutputDevices:devices];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->super._parentRoute, v6);
+    objc_storeWeak(&v7->super._parentRoute, routeCopy);
   }
 
   return v8;
 }
 
-- (MPAVOutputDeviceRoute)initWithOutputDevices:(id)a3
+- (MPAVOutputDeviceRoute)initWithOutputDevices:(id)devices
 {
-  v5 = a3;
+  devicesCopy = devices;
   v17.receiver = self;
   v17.super_class = MPAVOutputDeviceRoute;
   v6 = [(MPAVOutputDeviceRoute *)&v17 init];
   if (v6)
   {
-    if (!v5)
+    if (!devicesCopy)
     {
-      v16 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v16 handleFailureInMethod:a2 object:v6 file:@"MPAVOutputDeviceRoute.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"outputDevices"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v6 file:@"MPAVOutputDeviceRoute.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"outputDevices"}];
     }
 
-    v7 = [v5 copy];
+    v7 = [devicesCopy copy];
     outputDevices = v6->_outputDevices;
     v6->_outputDevices = v7;
 
-    v6->_logicalLeaderOutputDevice = [objc_opt_class() logicalLeaderFromOutputDevices:v5];
+    v6->_logicalLeaderOutputDevice = [objc_opt_class() logicalLeaderFromOutputDevices:devicesCopy];
     v9 = MRAVOutputDeviceCopyName();
     routeName = v6->super._routeName;
     v6->super._routeName = v9;
@@ -883,12 +883,12 @@ MPAVOutputDeviceRoute *__35__MPAVOutputDeviceRoute_roomRoutes__block_invoke_2(ui
   return v6;
 }
 
-+ (void)logicalLeaderFromOutputDevices:(id)a3
++ (void)logicalLeaderFromOutputDevices:(id)devices
 {
-  v3 = [a3 sortedArrayUsingComparator:&__block_literal_global_35];
-  v4 = [v3 firstObject];
+  v3 = [devices sortedArrayUsingComparator:&__block_literal_global_35];
+  firstObject = [v3 firstObject];
 
-  return v4;
+  return firstObject;
 }
 
 uint64_t __56__MPAVOutputDeviceRoute_logicalLeaderFromOutputDevices___block_invoke(uint64_t a1, void *a2, void *a3)

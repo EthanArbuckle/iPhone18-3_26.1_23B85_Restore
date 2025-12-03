@@ -14,19 +14,19 @@
 - (int)_runWaitForGuestHeadphones;
 - (int)_runWaitForGuestHeadphonesPairingMode;
 - (int)_runWaitForProxTrigger;
-- (void)_bleScannerNearbyInfoDeviceFound:(id)a3;
-- (void)_bleScannerProxPairingDeviceFound:(id)a3;
+- (void)_bleScannerNearbyInfoDeviceFound:(id)found;
+- (void)_bleScannerProxPairingDeviceFound:(id)found;
 - (void)_cleanup;
 - (void)_invalidate;
 - (void)_pickableRoutesChanged;
-- (void)_pickableRoutesChanged:(id)a3;
-- (void)_reportError:(id)a3;
+- (void)_pickableRoutesChanged:(id)changed;
+- (void)_reportError:(id)error;
 - (void)_run;
-- (void)_runGuestiOSShareAudioProcessResponse:(id)a3 error:(id)a4;
+- (void)_runGuestiOSShareAudioProcessResponse:(id)response error:(id)error;
 - (void)_runGuestiOSShareAudioSendRequest;
 - (void)activate;
 - (void)invalidate;
-- (void)proximityDeviceDidTrigger:(id)a3;
+- (void)proximityDeviceDidTrigger:(id)trigger;
 - (void)userConfirmed;
 @end
 
@@ -608,12 +608,12 @@
   }
 }
 
-- (void)_runGuestiOSShareAudioProcessResponse:(id)a3 error:(id)a4
+- (void)_runGuestiOSShareAudioProcessResponse:(id)response error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
-  v9 = v7;
+  responseCopy = response;
+  errorCopy = error;
+  v8 = responseCopy;
+  v9 = errorCopy;
   if (v9)
   {
     if (dword_100970AB0 <= 90 && (dword_100970AB0 != -1 || _LogCategory_Initialize()))
@@ -763,17 +763,17 @@
 
       self->_guestiOSWaitForRouteState = 1;
       [(SFShareAudioSessionDaemon *)self _reportProgress:320];
-      v5 = [off_100970B20[0]() sharedAVSystemController];
+      sharedAVSystemController = [off_100970B20[0]() sharedAVSystemController];
       v6 = off_100970B28();
       v13 = v6;
       v7 = [NSArray arrayWithObjects:&v13 count:1];
 
       v8 = off_100970B30();
-      [v5 setAttribute:v7 forKey:v8 error:0];
+      [sharedAVSystemController setAttribute:v7 forKey:v8 error:0];
 
       v9 = +[NSNotificationCenter defaultCenter];
       v10 = off_100970B28();
-      [v9 addObserver:self selector:"_pickableRoutesChanged:" name:v10 object:v5];
+      [v9 addObserver:self selector:"_pickableRoutesChanged:" name:v10 object:sharedAVSystemController];
 
       self->_observingPickableRoutes = 1;
       [(SFShareAudioSessionDaemon *)self _pickableRoutesChanged];
@@ -871,13 +871,13 @@
   [(SDProximityController *)proximityController clearDeviceList];
 }
 
-- (void)_bleScannerNearbyInfoDeviceFound:(id)a3
+- (void)_bleScannerNearbyInfoDeviceFound:(id)found
 {
-  v5 = a3;
+  foundCopy = found;
   if (!self->_triggeredDevice)
   {
-    v8 = v5;
-    if ([v5 paired])
+    v8 = foundCopy;
+    if ([foundCopy paired])
     {
       sub_100104B90();
       goto LABEL_23;
@@ -889,8 +889,8 @@
       goto LABEL_23;
     }
 
-    v6 = [v8 bleDevice];
-    v7 = [v6 rssiEstimate];
+    bleDevice = [v8 bleDevice];
+    rssiEstimate = [bleDevice rssiEstimate];
     [(SDProximityController *)self->_proximityController sender:self notifyBluetoothSample:v8];
     if ([(SDProximityController *)self->_proximityController checkDeviceRegion:v8]== 2)
     {
@@ -915,13 +915,13 @@
       goto LABEL_22;
     }
 
-    if ((v7 & 0x80000000) == 0 || v7 < self->_prefRSSIThreshold)
+    if ((rssiEstimate & 0x80000000) == 0 || rssiEstimate < self->_prefRSSIThreshold)
     {
       sub_100104A84(self);
 LABEL_22:
 
 LABEL_23:
-      v5 = v8;
+      foundCopy = v8;
       goto LABEL_24;
     }
 
@@ -931,7 +931,7 @@ LABEL_17:
       LogPrintF();
     }
 
-    objc_storeStrong(&self->_triggeredDevice, a3);
+    objc_storeStrong(&self->_triggeredDevice, found);
     self->_triggerediOS = 1;
     [(SFShareAudioSessionDaemon *)self _run];
     goto LABEL_22;
@@ -940,21 +940,21 @@ LABEL_17:
 LABEL_24:
 }
 
-- (void)_bleScannerProxPairingDeviceFound:(id)a3
+- (void)_bleScannerProxPairingDeviceFound:(id)found
 {
-  v3 = a3;
-  v5 = a3;
-  v6 = v5;
+  foundCopy = found;
+  foundCopy2 = found;
+  v6 = foundCopy2;
   p_triggeredNeedsSetupDevice = &self->_triggeredNeedsSetupDevice;
   if (!self->_triggeredNeedsSetupDevice)
   {
-    v8 = [v5 needsSetup];
-    if ((v8 & 1) != 0 || !self->_triggeredDevice)
+    needsSetup = [foundCopy2 needsSetup];
+    if ((needsSetup & 1) != 0 || !self->_triggeredDevice)
     {
-      v9 = [v6 bleDevice];
-      v10 = [v9 advertisementFields];
+      bleDevice = [v6 bleDevice];
+      advertisementFields = [bleDevice advertisementFields];
 
-      if ((v8 & 1) == 0 && self->_prefRespectDeviceSupport && ([v6 deviceFlags] & 0x800) == 0)
+      if ((needsSetup & 1) == 0 && self->_prefRespectDeviceSupport && ([v6 deviceFlags] & 0x800) == 0)
       {
         sub_100104C08();
         goto LABEL_55;
@@ -972,15 +972,15 @@ LABEL_24:
         goto LABEL_55;
       }
 
-      v11 = [v6 bleDevice];
-      v12 = [v11 smoothedRSSI];
-      if ((v12 & 0x80000000) == 0)
+      bleDevice2 = [v6 bleDevice];
+      smoothedRSSI = [bleDevice2 smoothedRSSI];
+      if ((smoothedRSSI & 0x80000000) == 0)
       {
         sub_100104FD0();
         goto LABEL_54;
       }
 
-      if (v8)
+      if (needsSetup)
       {
         v13 = -60;
       }
@@ -990,7 +990,7 @@ LABEL_24:
         v13 = -45;
       }
 
-      if ((v8 & 1) == 0)
+      if ((needsSetup & 1) == 0)
       {
         [(SDProximityController *)self->_proximityController sender:self notifyBluetoothSample:v6];
         if ([(SDProximityController *)self->_proximityController checkDeviceRegion:v6]== 2)
@@ -1011,29 +1011,29 @@ LABEL_24:
       }
 
       v14 = _os_feature_enabled_impl();
-      if (v13 > v12 && (v14 & 1) == 0)
+      if (v13 > smoothedRSSI && (v14 & 1) == 0)
       {
         sub_100104E04();
         goto LABEL_54;
       }
 
       Int64Ranged = CFDictionaryGetInt64Ranged();
-      v16 = [v11 bluetoothAddress];
-      v17 = v16;
-      if (Int64Ranged && [v16 length] == 6)
+      bluetoothAddress = [bleDevice2 bluetoothAddress];
+      v17 = bluetoothAddress;
+      if (Int64Ranged && [bluetoothAddress length] == 6)
       {
-        v35 = v12;
-        v36 = v8;
-        v37 = v3;
-        v40 = v11;
+        v35 = smoothedRSSI;
+        v36 = needsSetup;
+        v37 = foundCopy;
+        v40 = bleDevice2;
         v41 = v6;
         v39 = v17;
-        v33 = [v17 bytes];
+        bytes = [v17 bytes];
         v18 = NSPrintF();
-        v19 = [off_100970B20[0]() sharedAVSystemController];
+        sharedAVSystemController = [off_100970B20[0]() sharedAVSystemController];
         v20 = off_100970B38();
-        v38 = v19;
-        v21 = [v19 attributeForKey:v20];
+        v38 = sharedAVSystemController;
+        v21 = [sharedAVSystemController attributeForKey:v20];
 
         v44 = 0u;
         v45 = 0u;
@@ -1069,7 +1069,7 @@ LABEL_24:
                     sub_100104E94();
                   }
 
-                  v11 = v40;
+                  bleDevice2 = v40;
                   v17 = v39;
                   goto LABEL_53;
                 }
@@ -1087,15 +1087,15 @@ LABEL_24:
         }
 
         v6 = v41;
-        v3 = v37;
+        foundCopy = v37;
         v17 = v39;
-        v11 = v40;
+        bleDevice2 = v40;
         p_triggeredNeedsSetupDevice = &self->_triggeredNeedsSetupDevice;
-        v8 = v36;
-        v12 = v35;
+        needsSetup = v36;
+        smoothedRSSI = v35;
       }
 
-      if ((v8 & 1) == 0 && ![v6 paired])
+      if ((needsSetup & 1) == 0 && ![v6 paired])
       {
         goto LABEL_43;
       }
@@ -1104,16 +1104,16 @@ LABEL_24:
       {
         if ([v17 length] == 6)
         {
-          v32 = [v17 bytes];
+          bytes2 = [v17 bytes];
           v30 = NSPrintF();
           guestHeadphonesAddress = self->_guestHeadphonesAddress;
           self->_guestHeadphonesAddress = v30;
 
-          if (v8)
+          if (needsSetup)
           {
             if (!self->_triggeredDevice)
             {
-              objc_storeStrong(&self->_triggeredDevice, v3);
+              objc_storeStrong(&self->_triggeredDevice, foundCopy);
             }
 
             goto LABEL_44;
@@ -1122,16 +1122,16 @@ LABEL_24:
 LABEL_43:
           p_triggeredNeedsSetupDevice = &self->_triggeredDevice;
 LABEL_44:
-          objc_storeStrong(p_triggeredNeedsSetupDevice, v3);
+          objc_storeStrong(p_triggeredNeedsSetupDevice, foundCopy);
           if (dword_100970AB0 <= 30 && (dword_100970AB0 != -1 || _LogCategory_Initialize()))
           {
             LogPrintF();
-            [(SFShareAudioSessionDaemon *)self _run:v12];
+            [(SFShareAudioSessionDaemon *)self _run:smoothedRSSI];
           }
 
           else
           {
-            [(SFShareAudioSessionDaemon *)self _run:v32];
+            [(SFShareAudioSessionDaemon *)self _run:bytes2];
           }
 
           goto LABEL_53;
@@ -1153,7 +1153,7 @@ LABEL_55:
   }
 }
 
-- (void)_pickableRoutesChanged:(id)a3
+- (void)_pickableRoutesChanged:(id)changed
 {
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
@@ -1171,10 +1171,10 @@ LABEL_55:
     v3 = self->_guestHeadphonesAddress;
     if (v3)
     {
-      v4 = [off_100970B20[0]() sharedAVSystemController];
+      sharedAVSystemController = [off_100970B20[0]() sharedAVSystemController];
       v5 = off_100970B38();
-      v16 = v4;
-      v6 = [v4 attributeForKey:v5];
+      v16 = sharedAVSystemController;
+      v6 = [sharedAVSystemController attributeForKey:v5];
 
       v19 = 0u;
       v20 = 0u;
@@ -1230,16 +1230,16 @@ LABEL_16:
   }
 }
 
-- (void)_reportError:(id)a3
+- (void)_reportError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (dword_100970AB0 <= 90 && (dword_100970AB0 != -1 || _LogCategory_Initialize()))
   {
     sub_1001050AC();
   }
 
   v8 = @"error";
-  v9 = v4;
+  v9 = errorCopy;
   v5 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
   v6 = objc_retainBlock(self->_progressHandler);
   v7 = v6;
@@ -1249,13 +1249,13 @@ LABEL_16:
   }
 }
 
-- (void)proximityDeviceDidTrigger:(id)a3
+- (void)proximityDeviceDidTrigger:(id)trigger
 {
-  v3 = a3;
-  v4 = v3;
+  triggerCopy = trigger;
+  v4 = triggerCopy;
   if (dword_100970AB0 <= 50)
   {
-    v6 = v3;
+    v6 = triggerCopy;
     if (dword_100970AB0 != -1 || (v5 = _LogCategory_Initialize(), v4 = v6, v5))
     {
       sub_100105248();
@@ -1279,40 +1279,40 @@ LABEL_16:
 {
   if (!self->_invalidateCalled)
   {
-    v3 = [(SFShareAudioSessionDaemon *)self _runInit];
-    if (v3 == 4 || v3 == 2)
+    _runInit = [(SFShareAudioSessionDaemon *)self _runInit];
+    if (_runInit == 4 || _runInit == 2)
     {
-      v5 = [(SFShareAudioSessionDaemon *)self _runScannerNearbyInfo];
-      if (v5 == 4 || v5 == 2)
+      _runScannerNearbyInfo = [(SFShareAudioSessionDaemon *)self _runScannerNearbyInfo];
+      if (_runScannerNearbyInfo == 4 || _runScannerNearbyInfo == 2)
       {
-        v7 = [(SFShareAudioSessionDaemon *)self _runScannerProxPairing];
-        if (v7 == 4 || v7 == 2)
+        _runScannerProxPairing = [(SFShareAudioSessionDaemon *)self _runScannerProxPairing];
+        if (_runScannerProxPairing == 4 || _runScannerProxPairing == 2)
         {
-          v9 = [(SFShareAudioSessionDaemon *)self _runAdvertiser];
-          if (v9 == 4 || v9 == 2)
+          _runAdvertiser = [(SFShareAudioSessionDaemon *)self _runAdvertiser];
+          if (_runAdvertiser == 4 || _runAdvertiser == 2)
           {
-            v11 = [(SFShareAudioSessionDaemon *)self _runWaitForProxTrigger];
-            if (v11 == 4 || v11 == 2)
+            _runWaitForProxTrigger = [(SFShareAudioSessionDaemon *)self _runWaitForProxTrigger];
+            if (_runWaitForProxTrigger == 4 || _runWaitForProxTrigger == 2)
             {
-              v13 = [(SFShareAudioSessionDaemon *)self _runConfirm];
-              if (v13 == 4 || v13 == 2)
+              _runConfirm = [(SFShareAudioSessionDaemon *)self _runConfirm];
+              if (_runConfirm == 4 || _runConfirm == 2)
               {
                 if (self->_triggerediOS)
                 {
-                  v15 = [(SFShareAudioSessionDaemon *)self _runGuestiOSConnect];
-                  if (v15 != 4 && v15 != 2)
+                  _runGuestiOSConnect = [(SFShareAudioSessionDaemon *)self _runGuestiOSConnect];
+                  if (_runGuestiOSConnect != 4 && _runGuestiOSConnect != 2)
                   {
                     return;
                   }
 
-                  v17 = [(SFShareAudioSessionDaemon *)self _runGuestiOSPairSetupPublic];
-                  if (v17 != 4 && v17 != 2)
+                  _runGuestiOSPairSetupPublic = [(SFShareAudioSessionDaemon *)self _runGuestiOSPairSetupPublic];
+                  if (_runGuestiOSPairSetupPublic != 4 && _runGuestiOSPairSetupPublic != 2)
                   {
                     return;
                   }
 
-                  v19 = [(SFShareAudioSessionDaemon *)self _runGuestiOSShareAudio];
-                  if (v19 != 2 && v19 != 4)
+                  _runGuestiOSShareAudio = [(SFShareAudioSessionDaemon *)self _runGuestiOSShareAudio];
+                  if (_runGuestiOSShareAudio != 2 && _runGuestiOSShareAudio != 4)
                   {
                     return;
                   }
@@ -1320,24 +1320,24 @@ LABEL_16:
 
                 else if (([(SFDevice *)self->_triggeredDevice paired]& 1) == 0)
                 {
-                  v21 = [(SFShareAudioSessionDaemon *)self _runShowHeadphonesPairingInstructions];
-                  if (v21 != 4 && v21 != 2)
+                  _runShowHeadphonesPairingInstructions = [(SFShareAudioSessionDaemon *)self _runShowHeadphonesPairingInstructions];
+                  if (_runShowHeadphonesPairingInstructions != 4 && _runShowHeadphonesPairingInstructions != 2)
                   {
                     return;
                   }
 
-                  v23 = [(SFShareAudioSessionDaemon *)self _runWaitForGuestHeadphonesPairingMode];
-                  if (v23 != 4 && v23 != 2)
+                  _runWaitForGuestHeadphonesPairingMode = [(SFShareAudioSessionDaemon *)self _runWaitForGuestHeadphonesPairingMode];
+                  if (_runWaitForGuestHeadphonesPairingMode != 4 && _runWaitForGuestHeadphonesPairingMode != 2)
                   {
                     return;
                   }
                 }
 
-                v25 = [(SFShareAudioSessionDaemon *)self _runConnectGuestHeadphones];
-                if (v25 == 4 || v25 == 2)
+                _runConnectGuestHeadphones = [(SFShareAudioSessionDaemon *)self _runConnectGuestHeadphones];
+                if (_runConnectGuestHeadphones == 4 || _runConnectGuestHeadphones == 2)
                 {
-                  v27 = [(SFShareAudioSessionDaemon *)self _runWaitForGuestHeadphones];
-                  if (v27 == 4 || v27 == 2)
+                  _runWaitForGuestHeadphones = [(SFShareAudioSessionDaemon *)self _runWaitForGuestHeadphones];
+                  if (_runWaitForGuestHeadphones == 4 || _runWaitForGuestHeadphones == 2)
                   {
 
                     [(SFShareAudioSessionDaemon *)self _runFinish];

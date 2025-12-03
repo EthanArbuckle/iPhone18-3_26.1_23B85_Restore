@@ -1,12 +1,12 @@
 @interface PKDynamicLayerEmitterConfiguration
-- (PKDynamicLayerEmitterConfiguration)initWithCoder:(id)a3;
-- (PKDynamicLayerEmitterConfiguration)initWithDictionary:(id)a3;
+- (PKDynamicLayerEmitterConfiguration)initWithCoder:(id)coder;
+- (PKDynamicLayerEmitterConfiguration)initWithDictionary:(id)dictionary;
 - (float)_emitterBirthrate;
-- (float)_emitterScaleWithPixelSize:(CGSize)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)configureEmitterLayer:(id)a3 withBounds:(CGRect)a4;
-- (void)configureEmitterLayer:(id)a3 withImage:(CGImage *)a4;
-- (void)encodeWithCoder:(id)a3;
+- (float)_emitterScaleWithPixelSize:(CGSize)size;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)configureEmitterLayer:(id)layer withBounds:(CGRect)bounds;
+- (void)configureEmitterLayer:(id)layer withImage:(CGImage *)image;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKDynamicLayerEmitterConfiguration
@@ -23,10 +23,10 @@
   return result;
 }
 
-- (PKDynamicLayerEmitterConfiguration)initWithDictionary:(id)a3
+- (PKDynamicLayerEmitterConfiguration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     v42.receiver = self;
     v42.super_class = PKDynamicLayerEmitterConfiguration;
@@ -35,11 +35,11 @@
     {
 LABEL_35:
       self = v5;
-      v10 = self;
+      selfCopy = self;
       goto LABEL_36;
     }
 
-    v6 = [v4 PKStringForKey:@"style"];
+    v6 = [dictionaryCopy PKStringForKey:@"style"];
     v7 = v6;
     if (v6 == @"twinkling")
     {
@@ -96,7 +96,7 @@ LABEL_20:
 LABEL_21:
 
     v5->_style = v9;
-    v23 = [v4 PKStringForKey:@"density"];
+    v23 = [dictionaryCopy PKStringForKey:@"density"];
     v24 = v23;
     if (v23 == @"low" || v23 == 0)
     {
@@ -138,7 +138,7 @@ LABEL_26:
 LABEL_27:
 
     v5->_density = v27;
-    v28 = [v4 PKStringForKey:@"physicsEffect"];
+    v28 = [dictionaryCopy PKStringForKey:@"physicsEffect"];
     v29 = v28;
     v30 = 0;
     if (v28 != @"off" && v28)
@@ -160,30 +160,30 @@ LABEL_27:
     goto LABEL_35;
   }
 
-  v10 = 0;
+  selfCopy = 0;
 LABEL_36:
 
-  return v10;
+  return selfCopy;
 }
 
-- (void)configureEmitterLayer:(id)a3 withImage:(CGImage *)a4
+- (void)configureEmitterLayer:(id)layer withImage:(CGImage *)image
 {
   v46[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!a4)
+  layerCopy = layer;
+  if (!image)
   {
     goto LABEL_20;
   }
 
-  v7 = [MEMORY[0x1E6979360] emitterCell];
-  [v7 setContents:a4];
+  emitterCell = [MEMORY[0x1E6979360] emitterCell];
+  [emitterCell setContents:image];
   [(PKDynamicLayerEmitterConfiguration *)self _emitterBirthrate];
-  [v7 setBirthRate:?];
-  Width = CGImageGetWidth(a4);
-  [(PKDynamicLayerEmitterConfiguration *)self _emitterScaleWithPixelSize:Width, CGImageGetHeight(a4)];
-  [v7 setScale:v9];
-  [v6 setEmitterMode:*MEMORY[0x1E69797C8]];
-  [v6 setEmitterShape:*MEMORY[0x1E69797B0]];
+  [emitterCell setBirthRate:?];
+  Width = CGImageGetWidth(image);
+  [(PKDynamicLayerEmitterConfiguration *)self _emitterScaleWithPixelSize:Width, CGImageGetHeight(image)];
+  [emitterCell setScale:v9];
+  [layerCopy setEmitterMode:*MEMORY[0x1E69797C8]];
+  [layerCopy setEmitterShape:*MEMORY[0x1E69797B0]];
   v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
   style = self->_style;
   if (style <= 1)
@@ -192,15 +192,15 @@ LABEL_36:
     {
       if (style == 1)
       {
-        [v7 setParticleType:*MEMORY[0x1E6979770]];
+        [emitterCell setParticleType:*MEMORY[0x1E6979770]];
         LODWORD(v22) = 10.0;
-        [v7 setLifetime:v22];
+        [emitterCell setLifetime:v22];
         LODWORD(v23) = 2.0;
-        [v7 setLifetimeRange:v23];
-        [v7 setYAcceleration:5.0];
-        [v7 setOrientationRange:180.0];
-        [v7 setSpin:4.0];
-        [v7 setSpinRange:2.0];
+        [emitterCell setLifetimeRange:v23];
+        [emitterCell setYAcceleration:5.0];
+        [emitterCell setOrientationRange:180.0];
+        [emitterCell setSpin:4.0];
+        [emitterCell setSpinRange:2.0];
         v17 = PKCreateDynamicLayerOpacityBehavior(&unk_1F23B44C0);
         [v10 addObject:v17];
 LABEL_16:
@@ -212,15 +212,15 @@ LABEL_16:
     }
 
     LODWORD(v11) = 3.0;
-    [v7 setLifetime:v11];
+    [emitterCell setLifetime:v11];
     LODWORD(v33) = 3.0;
-    [v7 setLifetimeRange:v33];
+    [emitterCell setLifetimeRange:v33];
     v34 = PKCreateDynamicLayerOpacityBehavior(&unk_1F23B44A8);
     [v10 addObject:v34];
 
     v46[0] = &unk_1F23B7090;
     v35 = MEMORY[0x1E696AD98];
-    [v7 scale];
+    [emitterCell scale];
     v17 = [v35 numberWithDouble:?];
     v46[1] = v17;
     v46[2] = &unk_1F23B7090;
@@ -238,15 +238,15 @@ LABEL_14:
   {
     case 2:
       LODWORD(v11) = 4.0;
-      [v7 setLifetime:v11];
+      [emitterCell setLifetime:v11];
       LODWORD(v24) = 1.0;
-      [v7 setLifetimeRange:v24];
+      [emitterCell setLifetimeRange:v24];
       v25 = PKCreateDynamicLayerOpacityBehavior(&unk_1F23B44D8);
       [v10 addObject:v25];
 
       v45[0] = &unk_1F23B7090;
       v26 = MEMORY[0x1E696AD98];
-      [v7 scale];
+      [emitterCell scale];
       v17 = [v26 numberWithDouble:?];
       v45[1] = v17;
       v27 = MEMORY[0x1E695DEC8];
@@ -256,16 +256,16 @@ LABEL_12:
       goto LABEL_14;
     case 3:
       LODWORD(v11) = 4.0;
-      [v7 setLifetime:v11];
+      [emitterCell setLifetime:v11];
       LODWORD(v29) = 4.0;
-      [v7 setLifetimeRange:v29];
-      [v7 setYAcceleration:-10.0];
+      [emitterCell setLifetimeRange:v29];
+      [emitterCell setYAcceleration:-10.0];
       v30 = PKCreateDynamicLayerOpacityBehavior(&unk_1F23B44F0);
       [v10 addObject:v30];
 
       v44[0] = &unk_1F23B7090;
       v31 = MEMORY[0x1E696AD98];
-      [v7 scale];
+      [emitterCell scale];
       v17 = [v31 numberWithDouble:?];
       v44[1] = v17;
       v27 = MEMORY[0x1E695DEC8];
@@ -273,21 +273,21 @@ LABEL_12:
       goto LABEL_12;
     case 4:
       LODWORD(v11) = 5.0;
-      [v7 setLifetime:v11];
+      [emitterCell setLifetime:v11];
       LODWORD(v13) = 5.0;
-      [v7 setLifetimeRange:v13];
-      [v7 setEmissionRange:3.14159265];
-      [v7 setVelocity:100.0];
-      [v7 setSpinRange:4.0];
+      [emitterCell setLifetimeRange:v13];
+      [emitterCell setEmissionRange:3.14159265];
+      [emitterCell setVelocity:100.0];
+      [emitterCell setSpinRange:4.0];
       v14 = PKCreateDynamicLayerOpacityBehavior(&unk_1F23B4508);
       [v10 addObject:v14];
 
       v15 = MEMORY[0x1E696AD98];
-      [v7 scale];
+      [emitterCell scale];
       v17 = [v15 numberWithDouble:v16 * 0.5];
       v43[0] = v17;
       v18 = MEMORY[0x1E696AD98];
-      [v7 scale];
+      [emitterCell scale];
       v19 = [v18 numberWithDouble:?];
       v43[1] = v19;
       v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v43 count:2];
@@ -312,23 +312,23 @@ LABEL_17:
     [v10 addObject:v36];
   }
 
-  v42 = v7;
+  v42 = emitterCell;
   v40 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v42 count:1];
-  [v6 setEmitterCells:v40];
+  [layerCopy setEmitterCells:v40];
 
   v41 = [v10 copy];
-  [v6 setEmitterBehaviors:v41];
+  [layerCopy setEmitterBehaviors:v41];
 
 LABEL_20:
 }
 
-- (void)configureEmitterLayer:(id)a3 withBounds:(CGRect)a4
+- (void)configureEmitterLayer:(id)layer withBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  layerCopy = layer;
   style = self->_style;
   if (style - 2 < 3 || style == 0)
   {
@@ -336,7 +336,7 @@ LABEL_20:
     v15.origin.y = y;
     v15.size.width = width;
     v15.size.height = height;
-    v13 = v9;
+    v13 = layerCopy;
     MidX = CGRectGetMidX(v15);
     v16.origin.x = x;
     v16.origin.y = y;
@@ -345,7 +345,7 @@ LABEL_20:
     [v13 setEmitterPosition:{MidX, CGRectGetMidY(v16)}];
 LABEL_7:
     [v13 setEmitterSize:{width, height}];
-    v9 = v13;
+    layerCopy = v13;
     goto LABEL_8;
   }
 
@@ -355,8 +355,8 @@ LABEL_7:
     v17.origin.y = y;
     v17.size.width = width;
     v17.size.height = height;
-    v13 = v9;
-    [v9 setEmitterPosition:{CGRectGetMidX(v17), height * -0.2}];
+    v13 = layerCopy;
+    [layerCopy setEmitterPosition:{CGRectGetMidX(v17), height * -0.2}];
     height = height * 0.4;
     goto LABEL_7;
   }
@@ -364,7 +364,7 @@ LABEL_7:
 LABEL_8:
 }
 
-- (float)_emitterScaleWithPixelSize:(CGSize)a3
+- (float)_emitterScaleWithPixelSize:(CGSize)size
 {
   density = self->_density;
   v4 = 0.0;
@@ -373,35 +373,35 @@ LABEL_8:
     v4 = dbl_1ADB9B3D8[density];
   }
 
-  return v4 / fmax(a3.width, a3.height);
+  return v4 / fmax(size.width, size.height);
 }
 
-- (PKDynamicLayerEmitterConfiguration)initWithCoder:(id)a3
+- (PKDynamicLayerEmitterConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = PKDynamicLayerEmitterConfiguration;
   v5 = [(PKDynamicLayerEmitterConfiguration *)&v7 init];
   if (v5)
   {
-    -[PKDynamicLayerEmitterConfiguration setStyle:](v5, "setStyle:", [v4 decodeIntegerForKey:@"emitterStyle"]);
-    -[PKDynamicLayerEmitterConfiguration setDensity:](v5, "setDensity:", [v4 decodeIntegerForKey:@"emitterDensity"]);
-    -[PKDynamicLayerEmitterConfiguration setPhysicsEffect:](v5, "setPhysicsEffect:", [v4 decodeIntegerForKey:@"emitterPhysicsEffect"]);
+    -[PKDynamicLayerEmitterConfiguration setStyle:](v5, "setStyle:", [coderCopy decodeIntegerForKey:@"emitterStyle"]);
+    -[PKDynamicLayerEmitterConfiguration setDensity:](v5, "setDensity:", [coderCopy decodeIntegerForKey:@"emitterDensity"]);
+    -[PKDynamicLayerEmitterConfiguration setPhysicsEffect:](v5, "setPhysicsEffect:", [coderCopy decodeIntegerForKey:@"emitterPhysicsEffect"]);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   style = self->_style;
-  v5 = a3;
-  [v5 encodeInteger:style forKey:@"emitterStyle"];
-  [v5 encodeInteger:self->_density forKey:@"emitterDensity"];
-  [v5 encodeInteger:self->_physicsEffect forKey:@"emitterPhysicsEffect"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:style forKey:@"emitterStyle"];
+  [coderCopy encodeInteger:self->_density forKey:@"emitterDensity"];
+  [coderCopy encodeInteger:self->_physicsEffect forKey:@"emitterPhysicsEffect"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = [[PKDynamicLayerEmitterConfiguration allocWithZone:?]];
   *(result + 2) = self->_style;

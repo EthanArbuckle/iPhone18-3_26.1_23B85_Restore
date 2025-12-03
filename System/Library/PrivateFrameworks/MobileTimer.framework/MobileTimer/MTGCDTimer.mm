@@ -1,7 +1,7 @@
 @interface MTGCDTimer
 - (void)cancelTimer;
 - (void)dealloc;
-- (void)startTimer:(double)a3 block:(id)a4;
+- (void)startTimer:(double)timer block:(id)block;
 @end
 
 @implementation MTGCDTimer
@@ -14,9 +14,9 @@
   [(MTGCDTimer *)&v3 dealloc];
 }
 
-- (void)startTimer:(double)a3 block:(id)a4
+- (void)startTimer:(double)timer block:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   if (self->_timer)
   {
     [(MTGCDTimer *)self cancelTimer];
@@ -28,21 +28,21 @@
   self->_timer = v8;
 
   v10 = self->_timer;
-  v11 = dispatch_time(0, (a3 * 1000000000.0));
+  v11 = dispatch_time(0, (timer * 1000000000.0));
   dispatch_source_set_timer(v10, v11, 0xFFFFFFFFFFFFFFFFLL, 0);
   v12 = self->_timer;
   v17 = MEMORY[0x1E69E9820];
   v18 = 3221225472;
   v19 = __31__MTGCDTimer_startTimer_block___block_invoke;
   v20 = &unk_1E7B0EE90;
-  v21 = self;
-  v22 = v6;
-  v13 = v6;
+  selfCopy = self;
+  v22 = blockCopy;
+  v13 = blockCopy;
   dispatch_source_set_event_handler(v12, &v17);
   v14 = [MTPowerAssertion alloc];
-  v15 = [(MTPowerAssertion *)v14 initWithName:@"com.apple.MTGCDTimer" assertionTimeout:20.0, v17, v18, v19, v20, v21];
+  selfCopy = [(MTPowerAssertion *)v14 initWithName:@"com.apple.MTGCDTimer" assertionTimeout:20.0, v17, v18, v19, v20, selfCopy];
   powerAssertion = self->_powerAssertion;
-  self->_powerAssertion = v15;
+  self->_powerAssertion = selfCopy;
 
   [(MTPowerAssertion *)self->_powerAssertion takeAssertion];
   dispatch_resume(self->_timer);

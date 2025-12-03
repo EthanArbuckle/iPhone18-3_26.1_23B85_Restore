@@ -2,52 +2,52 @@
 - (BOOL)_canPresentComposeRecipientViewController;
 - (BOOL)_shouldShowActionMenu;
 - (BOOL)_shouldShowDismissButton;
-- (BOOL)shouldShowAddMoreButtonForAssetsViewController:(id)a3;
+- (BOOL)shouldShowAddMoreButtonForAssetsViewController:(id)controller;
 - (PXCMMActionControllerDelegate)actionDelegate;
-- (PXCMMViewController)initWithCoder:(id)a3;
-- (PXCMMViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (PXCMMViewController)initWithSession:(id)a3;
+- (PXCMMViewController)initWithCoder:(id)coder;
+- (PXCMMViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (PXCMMViewController)initWithSession:(id)session;
 - (PXCMMViewControllerDelegate)delegate;
 - (id)_actionMenu;
 - (id)_localizedSelectionTitle;
 - (id)_menuController;
-- (id)_shareCMMMenuItemForMomentShareURL:(id)a3 title:(id)a4;
-- (id)completeMyMomentViewController:(id)a3 performActionForSession:(id)a4;
+- (id)_shareCMMMenuItemForMomentShareURL:(id)l title:(id)title;
+- (id)completeMyMomentViewController:(id)controller performActionForSession:(id)session;
 - (id)effectiveNavigationItem;
 - (void)_activateNotificationSuppressionIfNecessary;
 - (void)_completePeopleSuggestionsLoading;
 - (void)_deactivateNotificationSuppressionIfNecessary;
 - (void)_handleActionButton;
 - (void)_performCancel;
-- (void)_presentCMMShareSheetForMomentShareURL:(id)a3 withTitle:(id)a4 fromBarButtonItem:(id)a5;
+- (void)_presentCMMShareSheetForMomentShareURL:(id)l withTitle:(id)title fromBarButtonItem:(id)item;
 - (void)_presentComposeRecipientViewController;
-- (void)_presentViewController:(id)a3;
+- (void)_presentViewController:(id)controller;
 - (void)_setNeedsUpdate;
 - (void)_setupNavigationItem;
 - (void)_startPreloadingTasksIfNeeded;
 - (void)_updateActionProgress;
-- (void)_updateComponentViewController:(id)a3 frame:(CGRect)a4;
+- (void)_updateComponentViewController:(id)controller frame:(CGRect)frame;
 - (void)_updateComponentsViewControllerLayout;
 - (void)_updateStyle;
 - (void)_updateTitle;
-- (void)actionMenu:(id)a3 actionPerformer:(id)a4 didChangeState:(unint64_t)a5;
-- (void)actionMenu:(id)a3 assetCollectionActionPerformer:(id)a4 playMovieForAssetCollection:(id)a5;
+- (void)actionMenu:(id)menu actionPerformer:(id)performer didChangeState:(unint64_t)state;
+- (void)actionMenu:(id)menu assetCollectionActionPerformer:(id)performer playMovieForAssetCollection:(id)collection;
 - (void)dealloc;
-- (void)didMoveToParentViewController:(id)a3;
-- (void)didPerformDeletionActionForAssetsViewController:(id)a3;
-- (void)didTapAddMoreButtonForAssetsViewController:(id)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)ppt_setSelecting:(BOOL)a3;
-- (void)setActionProgress:(id)a3;
-- (void)setLoadingPeopleSuggestions:(BOOL)a3;
+- (void)didMoveToParentViewController:(id)controller;
+- (void)didPerformDeletionActionForAssetsViewController:(id)controller;
+- (void)didTapAddMoreButtonForAssetsViewController:(id)controller;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)ppt_setSelecting:(BOOL)selecting;
+- (void)setActionProgress:(id)progress;
+- (void)setLoadingPeopleSuggestions:(BOOL)suggestions;
 - (void)updateViewConstraints;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PXCMMViewController
@@ -66,25 +66,25 @@
   return WeakRetained;
 }
 
-- (void)ppt_setSelecting:(BOOL)a3
+- (void)ppt_setSelecting:(BOOL)selecting
 {
-  v4 = [(PXCMMViewController *)self session];
-  v5 = [v4 viewModel];
+  session = [(PXCMMViewController *)self session];
+  viewModel = [session viewModel];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __40__PXCMMViewController_ppt_setSelecting___block_invoke;
   v6[3] = &__block_descriptor_33_e33_v16__0___PXCMMMutableViewModel__8l;
-  v7 = a3;
-  [v5 performChanges:v6];
+  selectingCopy = selecting;
+  [viewModel performChanges:v6];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   objc_initWeak(&location, self);
-  if (PXProgressFinishedObservationContext_84986 == a6 || PXProgressCancelledObservationContext_84987 == a6)
+  if (PXProgressFinishedObservationContext_84986 == context || PXProgressCancelledObservationContext_84987 == context)
   {
     v19[1] = MEMORY[0x1E69E9820];
     v19[2] = 3221225472;
@@ -94,7 +94,7 @@
     px_dispatch_on_main_queue();
   }
 
-  if (PXProgressFractionCompletedObservationContext_84988 == a6)
+  if (PXProgressFractionCompletedObservationContext_84988 == context)
   {
     v15 = MEMORY[0x1E69E9820];
     v16 = 3221225472;
@@ -106,7 +106,7 @@
 
   v14.receiver = self;
   v14.super_class = PXCMMViewController;
-  [(PXCMMViewController *)&v14 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+  [(PXCMMViewController *)&v14 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   objc_destroyWeak(&location);
 }
 
@@ -124,19 +124,19 @@ void __70__PXCMMViewController_observeValueForKeyPath_ofObject_change_context___
   [v1 setNeedsUpdateOf:sel__updateActionProgress];
 }
 
-- (void)actionMenu:(id)a3 assetCollectionActionPerformer:(id)a4 playMovieForAssetCollection:(id)a5
+- (void)actionMenu:(id)menu assetCollectionActionPerformer:(id)performer playMovieForAssetCollection:(id)collection
 {
   v16[2] = *MEMORY[0x1E69E9840];
-  v6 = a5;
-  v7 = [(PXCMMViewController *)self moviePresenter];
-  v8 = v6;
-  if (!v7)
+  collectionCopy = collection;
+  moviePresenter = [(PXCMMViewController *)self moviePresenter];
+  v8 = collectionCopy;
+  if (!moviePresenter)
   {
-    v7 = [PXMoviePresenter moviePresenterWithPresentingViewController:self];
-    [(PXCMMViewController *)self setMoviePresenter:v7];
+    moviePresenter = [PXMoviePresenter moviePresenterWithPresentingViewController:self];
+    [(PXCMMViewController *)self setMoviePresenter:moviePresenter];
   }
 
-  [v7 presentMovieViewControllerForAssetCollection:v8 keyAssetFetchResult:0 preferredTransitionType:1];
+  [moviePresenter presentMovieViewControllerForAssetCollection:v8 keyAssetFetchResult:0 preferredTransitionType:1];
   v9 = MEMORY[0x1E6991F28];
   v10 = *MEMORY[0x1E6991E08];
   v16[0] = v8;
@@ -150,33 +150,33 @@ void __70__PXCMMViewController_observeValueForKeyPath_ofObject_change_context___
   [v9 sendEvent:@"com.apple.photos.CPAnalytics.assetCollectionMoviePlayed" withPayload:v14];
 }
 
-- (void)actionMenu:(id)a3 actionPerformer:(id)a4 didChangeState:(unint64_t)a5
+- (void)actionMenu:(id)menu actionPerformer:(id)performer didChangeState:(unint64_t)state
 {
-  if (a5 == 20)
+  if (state == 20)
   {
     v19 = v5;
     v20 = v6;
-    v8 = [a4 actionType];
-    if ([v8 isEqualToString:*off_1E7721DF0])
+    actionType = [performer actionType];
+    if ([actionType isEqualToString:*off_1E7721DF0])
     {
-      v9 = [(PXCMMViewController *)self delegate];
+      delegate = [(PXCMMViewController *)self delegate];
       if (objc_opt_respondsToSelector())
       {
-        [v9 didCancelCompleteMyMomentViewController:self];
+        [delegate didCancelCompleteMyMomentViewController:self];
       }
     }
 
     else
     {
       v10 = *off_1E7721CC0;
-      if ([v8 isEqualToString:*off_1E7721CC0])
+      if ([actionType isEqualToString:*off_1E7721CC0])
       {
-        v11 = [(PXCMMViewController *)self session];
-        v12 = [v11 viewModel];
+        session = [(PXCMMViewController *)self session];
+        viewModel = [session viewModel];
 
         v13 = MEMORY[0x1E695DFA8];
-        v14 = [v12 disabledActionTypes];
-        v15 = [v13 setWithSet:v14];
+        disabledActionTypes = [viewModel disabledActionTypes];
+        v15 = [v13 setWithSet:disabledActionTypes];
 
         [v15 addObject:v10];
         v17[0] = MEMORY[0x1E69E9820];
@@ -185,78 +185,78 @@ void __70__PXCMMViewController_observeValueForKeyPath_ofObject_change_context___
         v17[3] = &unk_1E7746A48;
         v18 = v15;
         v16 = v15;
-        [v12 performChanges:v17];
+        [viewModel performChanges:v17];
       }
     }
   }
 }
 
-- (void)_presentViewController:(id)a3
+- (void)_presentViewController:(id)controller
 {
-  v6 = a3;
-  v4 = [v6 popoverPresentationController];
-  if (v4)
+  controllerCopy = controller;
+  popoverPresentationController = [controllerCopy popoverPresentationController];
+  if (popoverPresentationController)
   {
-    v5 = [(PXCMMViewController *)self actionMenuButtonItem];
-    if (v5)
+    actionMenuButtonItem = [(PXCMMViewController *)self actionMenuButtonItem];
+    if (actionMenuButtonItem)
     {
-      [v4 setBarButtonItem:v5];
+      [popoverPresentationController setBarButtonItem:actionMenuButtonItem];
     }
 
-    [v4 setDelegate:self];
+    [popoverPresentationController setDelegate:self];
   }
 
-  [(PXCMMViewController *)self presentViewController:v6 animated:1 completion:0];
+  [(PXCMMViewController *)self presentViewController:controllerCopy animated:1 completion:0];
 }
 
-- (id)completeMyMomentViewController:(id)a3 performActionForSession:(id)a4
+- (id)completeMyMomentViewController:(id)controller performActionForSession:(id)session
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PXCMMViewController *)self actionDelegate];
-  v9 = [v8 completeMyMomentViewController:v7 performActionForSession:v6];
+  sessionCopy = session;
+  controllerCopy = controller;
+  actionDelegate = [(PXCMMViewController *)self actionDelegate];
+  v9 = [actionDelegate completeMyMomentViewController:controllerCopy performActionForSession:sessionCopy];
 
   return v9;
 }
 
-- (void)didPerformDeletionActionForAssetsViewController:(id)a3
+- (void)didPerformDeletionActionForAssetsViewController:(id)controller
 {
-  v4 = [(PXCMMViewController *)self delegate];
+  delegate = [(PXCMMViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 didCancelCompleteMyMomentViewController:self];
+    [delegate didCancelCompleteMyMomentViewController:self];
   }
 }
 
-- (void)didTapAddMoreButtonForAssetsViewController:(id)a3
+- (void)didTapAddMoreButtonForAssetsViewController:(id)controller
 {
-  v5 = [(PXCMMViewController *)self delegate];
+  delegate = [(PXCMMViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(PXCMMViewController *)self session];
-    [v5 completeMyMomentViewController:self showPhotoPickerForSession:v4];
+    session = [(PXCMMViewController *)self session];
+    [delegate completeMyMomentViewController:self showPhotoPickerForSession:session];
   }
 }
 
-- (BOOL)shouldShowAddMoreButtonForAssetsViewController:(id)a3
+- (BOOL)shouldShowAddMoreButtonForAssetsViewController:(id)controller
 {
-  v4 = [(PXCMMViewController *)self delegate];
+  delegate = [(PXCMMViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
-  v6 = [(PXCMMViewController *)self session];
-  v7 = [v6 activityType];
+  session = [(PXCMMViewController *)self session];
+  activityType = [session activityType];
 
-  return v5 & (v7 == 1);
+  return v5 & (activityType == 1);
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
+  changeCopy = change;
+  observableCopy = observable;
   objc_initWeak(&location, self);
-  if (PXSpecManagerObservationContext_84997 == a5)
+  if (PXSpecManagerObservationContext_84997 == context)
   {
-    if (v6)
+    if (changeCopy)
     {
       v16[1] = MEMORY[0x1E69E9820];
       v16[2] = 3221225472;
@@ -267,9 +267,9 @@ void __70__PXCMMViewController_observeValueForKeyPath_ofObject_change_context___
     }
   }
 
-  else if (PXViewModelObservationContext_84998 == a5)
+  else if (PXViewModelObservationContext_84998 == context)
   {
-    if ((*&v6 & 0x10600) != 0)
+    if ((*&changeCopy & 0x10600) != 0)
     {
       v15[1] = MEMORY[0x1E69E9820];
       v15[2] = 3221225472;
@@ -280,9 +280,9 @@ void __70__PXCMMViewController_observeValueForKeyPath_ofObject_change_context___
     }
   }
 
-  else if (PXMomentShareStatusPresentationObservationContext_84999 == a5)
+  else if (PXMomentShareStatusPresentationObservationContext_84999 == context)
   {
-    if ((v6 & 0x3000) != 0)
+    if ((changeCopy & 0x3000) != 0)
     {
       v14[1] = MEMORY[0x1E69E9820];
       v14[2] = 3221225472;
@@ -295,19 +295,19 @@ void __70__PXCMMViewController_observeValueForKeyPath_ofObject_change_context___
 
   else
   {
-    if (PXPeopleSuggestionManagerObservationContext_85000 == a5)
+    if (PXPeopleSuggestionManagerObservationContext_85000 == context)
     {
       objc_copyWeak(v14, &location);
       px_dispatch_on_main_queue();
     }
 
-    if (PXDataSourceManagerObservationContext_85001 == a5)
+    if (PXDataSourceManagerObservationContext_85001 == context)
     {
-      v11 = [(PXCMMViewController *)self session];
-      v12 = [v11 dataSourceManager];
-      v13 = [v12 dataSource];
+      session = [(PXCMMViewController *)self session];
+      dataSourceManager = [session dataSourceManager];
+      dataSource = [dataSourceManager dataSource];
 
-      if ([v13 numberOfSections] <= 0)
+      if ([dataSource numberOfSections] <= 0)
       {
         px_dispatch_on_main_queue();
       }
@@ -315,8 +315,8 @@ void __70__PXCMMViewController_observeValueForKeyPath_ofObject_change_context___
 
     else
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"PXCMMViewController.m" lineNumber:716 description:@"unknown observation context"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMViewController.m" lineNumber:716 description:@"unknown observation context"];
     }
   }
 
@@ -371,13 +371,13 @@ void __52__PXCMMViewController_observable_didChange_context___block_invoke_5(uin
   v22 = *MEMORY[0x1E69E9840];
   if ([(PXCMMViewController *)self _canPresentComposeRecipientViewController])
   {
-    v4 = [(PXCMMViewController *)self session];
-    v5 = [v4 peopleSuggestionsDataSourceManager];
+    session = [(PXCMMViewController *)self session];
+    peopleSuggestionsDataSourceManager = [session peopleSuggestionsDataSourceManager];
 
-    if ([v5 isLoading])
+    if ([peopleSuggestionsDataSourceManager isLoading])
     {
-      [v5 boostLoading];
-      [v5 registerChangeObserver:self context:PXPeopleSuggestionManagerObservationContext_85000];
+      [peopleSuggestionsDataSourceManager boostLoading];
+      [peopleSuggestionsDataSourceManager registerChangeObserver:self context:PXPeopleSuggestionManagerObservationContext_85000];
       [(PXCMMViewController *)self setLoadingPeopleSuggestions:1];
       v6 = +[PXCompleteMyMomentSettings sharedInstance];
       [v6 peopleSuggestionsTimeout];
@@ -411,19 +411,19 @@ void __52__PXCMMViewController_observable_didChange_context___block_invoke_5(uin
 
   else
   {
-    v11 = [(PXCMMViewController *)self actionDelegate];
+    actionDelegate = [(PXCMMViewController *)self actionDelegate];
 
-    if (!v11)
+    if (!actionDelegate)
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v15 = objc_opt_class();
       v16 = NSStringFromClass(v15);
-      [v14 handleFailureInMethod:a2 object:self file:@"PXCMMViewController.m" lineNumber:664 description:{@"actionDelegate in %@ is nil, save action will not work.", v16}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMViewController.m" lineNumber:664 description:{@"actionDelegate in %@ is nil, save action will not work.", v16}];
     }
 
-    v12 = [(PXCMMViewController *)self actionDelegate];
-    v13 = [(PXCMMViewController *)self session];
-    v17 = [v12 completeMyMomentViewController:self performActionForSession:v13];
+    actionDelegate2 = [(PXCMMViewController *)self actionDelegate];
+    session2 = [(PXCMMViewController *)self session];
+    v17 = [actionDelegate2 completeMyMomentViewController:self performActionForSession:session2];
 
     [(PXCMMViewController *)self setActionProgress:v17];
   }
@@ -435,32 +435,32 @@ void __42__PXCMMViewController__handleActionButton__block_invoke(uint64_t a1)
   [WeakRetained _completePeopleSuggestionsLoading];
 }
 
-- (void)setLoadingPeopleSuggestions:(BOOL)a3
+- (void)setLoadingPeopleSuggestions:(BOOL)suggestions
 {
-  if (self->_loadingPeopleSuggestions != a3)
+  if (self->_loadingPeopleSuggestions != suggestions)
   {
     v10 = v3;
     v11 = v4;
-    self->_loadingPeopleSuggestions = a3;
-    v6 = [(PXCMMViewController *)self session];
-    v7 = [v6 viewModel];
+    self->_loadingPeopleSuggestions = suggestions;
+    session = [(PXCMMViewController *)self session];
+    viewModel = [session viewModel];
 
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __51__PXCMMViewController_setLoadingPeopleSuggestions___block_invoke;
     v8[3] = &__block_descriptor_33_e33_v16__0___PXCMMMutableViewModel__8l;
-    v9 = a3;
-    [v7 performChanges:v8];
+    suggestionsCopy = suggestions;
+    [viewModel performChanges:v8];
   }
 }
 
 - (void)_completePeopleSuggestionsLoading
 {
   [(PXCMMViewController *)self setLoadingPeopleSuggestions:0];
-  v3 = [(PXCMMViewController *)self session];
-  v4 = [v3 peopleSuggestionsDataSourceManager];
+  session = [(PXCMMViewController *)self session];
+  peopleSuggestionsDataSourceManager = [session peopleSuggestionsDataSourceManager];
 
-  [v4 unregisterChangeObserver:self context:PXPeopleSuggestionManagerObservationContext_85000];
+  [peopleSuggestionsDataSourceManager unregisterChangeObserver:self context:PXPeopleSuggestionManagerObservationContext_85000];
   [(PXCMMViewController *)self _presentComposeRecipientViewController];
 }
 
@@ -468,16 +468,16 @@ void __42__PXCMMViewController__handleActionButton__block_invoke(uint64_t a1)
 {
   v16[1] = *MEMORY[0x1E69E9840];
   v3 = [PXCMMComposeRecipientViewController alloc];
-  v4 = [(PXCMMViewController *)self session];
-  v5 = [(PXCMMComposeRecipientViewController *)v3 initWithSession:v4];
+  session = [(PXCMMViewController *)self session];
+  v5 = [(PXCMMComposeRecipientViewController *)v3 initWithSession:session];
 
   [(PXCMMComposeRecipientViewController *)v5 setActionDelegate:self];
   v6 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v5];
   v7 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel__handleComposeRecipientCancelButton_];
-  v8 = [v6 viewControllers];
-  v9 = [v8 firstObject];
-  v10 = [v9 navigationItem];
-  [v10 setLeftBarButtonItem:v7];
+  viewControllers = [v6 viewControllers];
+  firstObject = [viewControllers firstObject];
+  navigationItem = [firstObject navigationItem];
+  [navigationItem setLeftBarButtonItem:v7];
 
   [v6 setModalPresentationStyle:2];
   [(PXCMMViewController *)self presentViewController:v6 animated:1 completion:0];
@@ -492,16 +492,16 @@ void __42__PXCMMViewController__handleActionButton__block_invoke(uint64_t a1)
 
 - (BOOL)_canPresentComposeRecipientViewController
 {
-  v2 = [(PXCMMViewController *)self session];
-  v3 = [v2 activityType];
-  if ([v2 sourceType])
+  session = [(PXCMMViewController *)self session];
+  activityType = [session activityType];
+  if ([session sourceType])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = v3 == 1;
+    v4 = activityType == 1;
   }
 
   v5 = v4;
@@ -511,53 +511,53 @@ void __42__PXCMMViewController__handleActionButton__block_invoke(uint64_t a1)
 
 - (void)_updateStyle
 {
-  v6 = [(PXCMMViewController *)self specManager];
-  v3 = [v6 spec];
-  v4 = [v3 reviewBackgroundColor];
-  v5 = [(PXCMMViewController *)self viewIfLoaded];
-  [v5 setBackgroundColor:v4];
+  specManager = [(PXCMMViewController *)self specManager];
+  spec = [specManager spec];
+  reviewBackgroundColor = [spec reviewBackgroundColor];
+  viewIfLoaded = [(PXCMMViewController *)self viewIfLoaded];
+  [viewIfLoaded setBackgroundColor:reviewBackgroundColor];
 }
 
 - (void)_updateActionProgress
 {
-  v17 = [(PXCMMViewController *)self actionProgress];
-  if (v17)
+  actionProgress = [(PXCMMViewController *)self actionProgress];
+  if (actionProgress)
   {
-    v3 = [(PXCMMViewController *)self effectiveNavigationItem];
-    if ([v17 isFinished] & 1) != 0 || (objc_msgSend(v17, "isCancelled"))
+    effectiveNavigationItem = [(PXCMMViewController *)self effectiveNavigationItem];
+    if ([actionProgress isFinished] & 1) != 0 || (objc_msgSend(actionProgress, "isCancelled"))
     {
-      v4 = [(PXCMMViewController *)self activityIndicatorView];
-      [v4 stopAnimating];
+      activityIndicatorView = [(PXCMMViewController *)self activityIndicatorView];
+      [activityIndicatorView stopAnimating];
 
-      [v3 setRightBarButtonItem:0];
+      [effectiveNavigationItem setRightBarButtonItem:0];
       v5 = 0;
     }
 
     else
     {
-      v9 = [(PXCMMViewController *)self activityIndicatorView];
+      activityIndicatorView2 = [(PXCMMViewController *)self activityIndicatorView];
 
-      if (!v9)
+      if (!activityIndicatorView2)
       {
         v10 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
         [(PXCMMViewController *)self setActivityIndicatorView:v10];
       }
 
-      v11 = [(PXCMMViewController *)self progressButton];
+      progressButton = [(PXCMMViewController *)self progressButton];
 
-      if (!v11)
+      if (!progressButton)
       {
         v12 = objc_alloc(MEMORY[0x1E69DC708]);
-        v13 = [(PXCMMViewController *)self activityIndicatorView];
-        v14 = [v12 initWithCustomView:v13];
+        activityIndicatorView3 = [(PXCMMViewController *)self activityIndicatorView];
+        v14 = [v12 initWithCustomView:activityIndicatorView3];
         [(PXCMMViewController *)self setProgressButton:v14];
       }
 
-      v15 = [(PXCMMViewController *)self activityIndicatorView];
-      [v15 startAnimating];
+      activityIndicatorView4 = [(PXCMMViewController *)self activityIndicatorView];
+      [activityIndicatorView4 startAnimating];
 
-      v16 = [(PXCMMViewController *)self progressButton];
-      [v3 setRightBarButtonItem:v16];
+      progressButton2 = [(PXCMMViewController *)self progressButton];
+      [effectiveNavigationItem setRightBarButtonItem:progressButton2];
 
       v5 = 1;
     }
@@ -567,13 +567,13 @@ void __42__PXCMMViewController__handleActionButton__block_invoke(uint64_t a1)
 
   else
   {
-    v6 = [(PXCMMViewController *)self activityIndicatorView];
-    [v6 stopAnimating];
+    activityIndicatorView5 = [(PXCMMViewController *)self activityIndicatorView];
+    [activityIndicatorView5 stopAnimating];
 
-    v7 = [(PXCMMViewController *)self session];
-    v8 = [v7 activityType];
+    session = [(PXCMMViewController *)self session];
+    activityType = [session activityType];
 
-    if (v8 == 2)
+    if (activityType == 2)
     {
       [(PXCMMAssetsViewController *)self->_assetsViewController setActionInProgress:([(PXMomentShareStatusPresentation *)self->_momentShareStatusPresentation state]- 3) < 2];
     }
@@ -582,48 +582,48 @@ void __42__PXCMMViewController__handleActionButton__block_invoke(uint64_t a1)
 
 - (void)_updateTitle
 {
-  v3 = [(PXCMMViewController *)self session];
-  v4 = [v3 viewModel];
+  session = [(PXCMMViewController *)self session];
+  viewModel = [session viewModel];
 
-  if ([v4 isSelecting])
+  if ([viewModel isSelecting])
   {
-    v6 = [(PXCMMViewController *)self _localizedSelectionTitle];
+    _localizedSelectionTitle = [(PXCMMViewController *)self _localizedSelectionTitle];
   }
 
   else
   {
-    v6 = 0;
+    _localizedSelectionTitle = 0;
   }
 
-  v5 = [(PXCMMViewController *)self effectiveNavigationItem];
-  [v5 setTitle:v6];
+  effectiveNavigationItem = [(PXCMMViewController *)self effectiveNavigationItem];
+  [effectiveNavigationItem setTitle:_localizedSelectionTitle];
 }
 
 - (id)_localizedSelectionTitle
 {
-  v2 = [(PXCMMViewController *)self session];
-  v3 = [v2 viewModel];
-  v4 = [v3 selectionManager];
-  v5 = [v4 selectionSnapshot];
+  session = [(PXCMMViewController *)self session];
+  viewModel = [session viewModel];
+  selectionManager = [viewModel selectionManager];
+  selectionSnapshot = [selectionManager selectionSnapshot];
 
-  v6 = [v5 dataSource];
+  dataSource = [selectionSnapshot dataSource];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v5 dataSource];
-    v8 = [v7 photosDataSource];
+    dataSource2 = [selectionSnapshot dataSource];
+    photosDataSource = [dataSource2 photosDataSource];
   }
 
   else
   {
-    v8 = 0;
+    photosDataSource = 0;
   }
 
-  v9 = [v5 selectedIndexPaths];
-  v10 = v9;
-  if (v8 && [v9 count] >= 1)
+  selectedIndexPaths = [selectionSnapshot selectedIndexPaths];
+  v10 = selectedIndexPaths;
+  if (photosDataSource && [selectedIndexPaths count] >= 1)
   {
-    v11 = [v8 assetsAtIndexPaths:v10];
+    v11 = [photosDataSource assetsAtIndexPaths:v10];
     PXLocalizedSelectionMessageForAssets(v11);
   }
 
@@ -634,14 +634,14 @@ void __42__PXCMMViewController__handleActionButton__block_invoke(uint64_t a1)
 
 - (void)_updateComponentsViewControllerLayout
 {
-  v3 = [(PXCMMViewController *)self view];
-  [v3 bounds];
+  view = [(PXCMMViewController *)self view];
+  [view bounds];
 
-  v4 = [(PXCMMViewController *)self standaloneNavigationBar];
-  [v4 bounds];
+  standaloneNavigationBar = [(PXCMMViewController *)self standaloneNavigationBar];
+  [standaloneNavigationBar bounds];
 
-  v5 = [(PXCMMViewController *)self standaloneNavigationBar];
-  [v5 bounds];
+  standaloneNavigationBar2 = [(PXCMMViewController *)self standaloneNavigationBar];
+  [standaloneNavigationBar2 bounds];
 
   [(PXCMMViewController *)self assetsViewController];
   objc_claimAutoreleasedReturnValue();
@@ -654,63 +654,63 @@ void __42__PXCMMViewController__handleActionButton__block_invoke(uint64_t a1)
 {
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PXCMMViewController.m" lineNumber:507 description:{@"%s must be called on the main thread", "-[PXCMMViewController _setNeedsUpdate]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMViewController.m" lineNumber:507 description:{@"%s must be called on the main thread", "-[PXCMMViewController _setNeedsUpdate]"}];
   }
 
-  v5 = [(PXCMMViewController *)self viewIfLoaded];
-  [v5 setNeedsLayout];
+  viewIfLoaded = [(PXCMMViewController *)self viewIfLoaded];
+  [viewIfLoaded setNeedsLayout];
 }
 
-- (void)_updateComponentViewController:(id)a3 frame:(CGRect)a4
+- (void)_updateComponentViewController:(id)controller frame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  if (v9)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  controllerCopy = controller;
+  if (controllerCopy)
   {
-    v14 = v9;
-    v10 = [v9 parentViewController];
+    v14 = controllerCopy;
+    parentViewController = [controllerCopy parentViewController];
 
-    if (!v10)
+    if (!parentViewController)
     {
       [(PXCMMViewController *)self addChildViewController:v14];
-      v11 = [(PXCMMViewController *)self view];
-      v12 = [v14 view];
-      [v11 addSubview:v12];
+      view = [(PXCMMViewController *)self view];
+      view2 = [v14 view];
+      [view addSubview:view2];
 
       [v14 didMoveToParentViewController:self];
     }
 
-    v13 = [v14 view];
-    [v13 setFrame:{x, y, width, height}];
+    view3 = [v14 view];
+    [view3 setFrame:{x, y, width, height}];
 
-    v9 = v14;
+    controllerCopy = v14;
   }
 }
 
-- (void)_presentCMMShareSheetForMomentShareURL:(id)a3 withTitle:(id)a4 fromBarButtonItem:(id)a5
+- (void)_presentCMMShareSheetForMomentShareURL:(id)l withTitle:(id)title fromBarButtonItem:(id)item
 {
   v26[1] = *MEMORY[0x1E69E9840];
   v8 = MEMORY[0x1E69CD9F8];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  itemCopy = item;
+  titleCopy = title;
+  lCopy = l;
   v12 = [v8 alloc];
-  v26[0] = v11;
+  v26[0] = lCopy;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
   v14 = [v12 initWithActivityItems:v13 applicationActivities:0];
 
-  v15 = [v14 popoverPresentationController];
-  [v15 setBarButtonItem:v9];
+  popoverPresentationController = [v14 popoverPresentationController];
+  [popoverPresentationController setBarButtonItem:itemCopy];
 
   v16 = objc_alloc_init(MEMORY[0x1E696EC28]);
   v17 = objc_alloc_init(MEMORY[0x1E696ECA0]);
-  [v17 setTitle:v10];
+  [v17 setTitle:titleCopy];
 
-  [v17 setOriginalURL:v11];
+  [v17 setOriginalURL:lCopy];
   v18 = PXLocalizedStringFromTable(@"PXCMMSharingHeaderSubtitleCloudLink", @"PhotosUICore");
   v19 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v18];
   [v16 setStatus:v19];
@@ -729,10 +729,10 @@ void __42__PXCMMViewController__handleActionButton__block_invoke(uint64_t a1)
   [(PXCMMViewController *)self presentViewController:v14 animated:1 completion:0];
 }
 
-- (id)_shareCMMMenuItemForMomentShareURL:(id)a3 title:(id)a4
+- (id)_shareCMMMenuItemForMomentShareURL:(id)l title:(id)title
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  titleCopy = title;
   v9 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"square.and.arrow.up"];
   objc_initWeak(&location, self);
   v10 = MEMORY[0x1E69DC628];
@@ -742,12 +742,12 @@ void __42__PXCMMViewController__handleActionButton__block_invoke(uint64_t a1)
   v16[2] = __64__PXCMMViewController__shareCMMMenuItemForMomentShareURL_title___block_invoke;
   v16[3] = &unk_1E77363E0;
   objc_copyWeak(v20, &location);
-  v12 = v7;
+  v12 = lCopy;
   v17 = v12;
-  v13 = v8;
+  v13 = titleCopy;
   v20[1] = a2;
   v18 = v13;
-  v19 = self;
+  selfCopy = self;
   v14 = [v10 actionWithTitle:v11 image:v9 identifier:0 handler:v16];
 
   objc_destroyWeak(v20);
@@ -770,23 +770,23 @@ void __64__PXCMMViewController__shareCMMMenuItemForMomentShareURL_title___block_
 - (id)_actionMenu
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = [(PXCMMViewController *)self session];
-  v5 = [v4 activityType];
-  if ((v5 & 0xFFFFFFFFFFFFFFFELL) != 2)
+  session = [(PXCMMViewController *)self session];
+  activityType = [session activityType];
+  if ((activityType & 0xFFFFFFFFFFFFFFFELL) != 2)
   {
-    v9 = 0;
+    shareURL = 0;
     v19 = 0;
     goto LABEL_15;
   }
 
-  v6 = v5;
-  v7 = v4;
-  if (!v7)
+  v6 = activityType;
+  _menuController = session;
+  if (!_menuController)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v22 = objc_opt_class();
     v23 = NSStringFromClass(v22);
-    [v21 handleFailureInMethod:a2 object:self file:@"PXCMMViewController.m" lineNumber:425 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"session", v23}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMViewController.m" lineNumber:425 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"session", v23}];
 LABEL_20:
 
     goto LABEL_4;
@@ -795,42 +795,42 @@ LABEL_20:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v24 = objc_opt_class();
     v23 = NSStringFromClass(v24);
-    v25 = [v7 px_descriptionForAssertionMessage];
-    [v21 handleFailureInMethod:a2 object:self file:@"PXCMMViewController.m" lineNumber:425 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"session", v23, v25}];
+    px_descriptionForAssertionMessage = [_menuController px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMViewController.m" lineNumber:425 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"session", v23, px_descriptionForAssertionMessage}];
 
     goto LABEL_20;
   }
 
 LABEL_4:
-  v8 = [v7 momentShare];
-  v9 = [v8 shareURL];
+  momentShare = [_menuController momentShare];
+  shareURL = [momentShare shareURL];
   v10 = PLSharingGetLog();
   v11 = v10;
-  if (v9)
+  if (shareURL)
   {
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v9 pl_redactedShareURL];
+      pl_redactedShareURL = [shareURL pl_redactedShareURL];
       *buf = 134218242;
       v28 = v6;
       v29 = 2114;
-      v30 = v12;
+      v30 = pl_redactedShareURL;
       _os_log_impl(&dword_1A3C1C000, v11, OS_LOG_TYPE_DEFAULT, "CMM activity type is %ld, which means we are sharing an existing CMM link: %{public}@", buf, 0x16u);
     }
 
-    v7 = [(PXCMMViewController *)self _menuController];
-    v13 = [(PXCMMViewController *)self session];
-    v14 = [v13 viewModel];
-    v8 = [v14 title];
+    _menuController = [(PXCMMViewController *)self _menuController];
+    session2 = [(PXCMMViewController *)self session];
+    viewModel = [session2 viewModel];
+    momentShare = [viewModel title];
 
-    v11 = [(PXCMMViewController *)self _shareCMMMenuItemForMomentShareURL:v9 title:v8];
+    v11 = [(PXCMMViewController *)self _shareCMMMenuItemForMomentShareURL:shareURL title:momentShare];
     v26 = v11;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v26 count:1];
-    v16 = [v7 actions];
-    v17 = [v15 arrayByAddingObjectsFromArray:v16];
+    actions = [_menuController actions];
+    v17 = [v15 arrayByAddingObjectsFromArray:actions];
 
     v18 = PLSharingGetLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -851,7 +851,7 @@ LABEL_4:
       _os_log_impl(&dword_1A3C1C000, v11, OS_LOG_TYPE_ERROR, "CMM activity type is %ld, which means we should have an existing CMM link, but it is nil.", buf, 0xCu);
     }
 
-    v9 = 0;
+    shareURL = 0;
     v19 = 0;
   }
 
@@ -862,29 +862,29 @@ LABEL_15:
 
 - (id)_menuController
 {
-  v3 = [(PXCMMViewController *)self activeActionMenuController];
+  activeActionMenuController = [(PXCMMViewController *)self activeActionMenuController];
 
-  if (!v3)
+  if (!activeActionMenuController)
   {
-    v4 = [(PXCMMViewController *)self session];
-    v5 = [v4 viewModel];
-    v6 = [v5 selectionManager];
-    v7 = v6;
-    if (v6)
+    session = [(PXCMMViewController *)self session];
+    viewModel = [session viewModel];
+    selectionManager = [viewModel selectionManager];
+    v7 = selectionManager;
+    if (selectionManager)
     {
-      v8 = v6;
+      v8 = selectionManager;
     }
 
     else
     {
       v9 = [off_1E77218C8 alloc];
-      v10 = [v4 dataSourceManager];
-      v8 = [v9 initWithDataSourceManager:v10];
+      dataSourceManager = [session dataSourceManager];
+      v8 = [v9 initWithDataSourceManager:dataSourceManager];
     }
 
     v11 = [[PXPhotoDetailsActionMenuController alloc] initWithSelectionManager:v8 displayTitleInfo:0 blockActionManager:0];
-    v12 = [v5 disabledActionTypes];
-    [(PXActionMenuController *)v11 setDisabledActionTypes:v12];
+    disabledActionTypes = [viewModel disabledActionTypes];
+    [(PXActionMenuController *)v11 setDisabledActionTypes:disabledActionTypes];
 
     v13 = [MEMORY[0x1E695DFD8] setWithObjects:{*off_1E7721D30, *off_1E7721D08, *off_1E7721CF8, 0}];
     [(PXActionMenuController *)v11 setExcludedActionTypes:v13];
@@ -897,14 +897,14 @@ LABEL_15:
 
 - (void)_performCancel
 {
-  v4 = [(PXCMMViewController *)self actionProgress];
-  v7 = v4;
-  if (v4)
+  actionProgress = [(PXCMMViewController *)self actionProgress];
+  v7 = actionProgress;
+  if (actionProgress)
   {
-    if (([v4 isCancellable] & 1) == 0)
+    if (([actionProgress isCancellable] & 1) == 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v6 handleFailureInMethod:a2 object:self file:@"PXCMMViewController.m" lineNumber:390 description:{@"Invalid parameter not satisfying: %@", @"actionProgress.isCancellable"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMViewController.m" lineNumber:390 description:{@"Invalid parameter not satisfying: %@", @"actionProgress.isCancellable"}];
     }
 
     [v7 cancel];
@@ -912,46 +912,46 @@ LABEL_15:
     [(PXCMMViewController *)self setProgressButton:0];
   }
 
-  v5 = [(PXCMMViewController *)self delegate];
+  delegate = [(PXCMMViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 didCancelCompleteMyMomentViewController:self];
+    [delegate didCancelCompleteMyMomentViewController:self];
   }
 }
 
 - (BOOL)_shouldShowDismissButton
 {
-  v2 = [(PXCMMViewController *)self presentingViewController];
-  v3 = v2 != 0;
+  presentingViewController = [(PXCMMViewController *)self presentingViewController];
+  v3 = presentingViewController != 0;
 
   return v3;
 }
 
 - (BOOL)_shouldShowActionMenu
 {
-  v2 = [(PXCMMViewController *)self session];
-  v3 = [v2 hideActionMenu];
+  session = [(PXCMMViewController *)self session];
+  hideActionMenu = [session hideActionMenu];
 
-  return v3 ^ 1;
+  return hideActionMenu ^ 1;
 }
 
 - (id)effectiveNavigationItem
 {
-  v3 = [(PXCMMViewController *)self presentingViewController];
+  presentingViewController = [(PXCMMViewController *)self presentingViewController];
 
-  if (v3)
+  if (presentingViewController)
   {
-    v4 = [(PXCMMViewController *)self navigationController];
-    v5 = [v4 topViewController];
-    v6 = [v5 navigationItem];
+    navigationController = [(PXCMMViewController *)self navigationController];
+    topViewController = [navigationController topViewController];
+    navigationItem = [topViewController navigationItem];
   }
 
   else
   {
-    v6 = [(PXCMMViewController *)self navigationItem];
+    navigationItem = [(PXCMMViewController *)self navigationItem];
   }
 
-  return v6;
+  return navigationItem;
 }
 
 - (void)_setupNavigationItem
@@ -960,25 +960,25 @@ LABEL_15:
   if (![(PXCMMViewController *)self didSetUpNavigationItem])
   {
     [(PXCMMViewController *)self setDidSetUpNavigationItem:1];
-    v3 = [(PXCMMViewController *)self effectiveNavigationItem];
-    [v3 setLargeTitleDisplayMode:2];
-    [v3 px_setBackButtonDisplayMode:2];
-    v4 = [(PXCMMViewController *)self session];
-    v5 = [v4 viewModel];
-    v6 = [v5 title];
-    [v3 setBackButtonTitle:v6];
+    effectiveNavigationItem = [(PXCMMViewController *)self effectiveNavigationItem];
+    [effectiveNavigationItem setLargeTitleDisplayMode:2];
+    [effectiveNavigationItem px_setBackButtonDisplayMode:2];
+    session = [(PXCMMViewController *)self session];
+    viewModel = [session viewModel];
+    title = [viewModel title];
+    [effectiveNavigationItem setBackButtonTitle:title];
 
     v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:2];
     if ([(PXCMMViewController *)self _shouldShowActionMenu])
     {
-      v8 = [(PXCMMViewController *)self _actionMenu];
-      if (v8)
+      _actionMenu = [(PXCMMViewController *)self _actionMenu];
+      if (_actionMenu)
       {
         v9 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"ellipsis.circle.fill"];
         v10 = [MEMORY[0x1E69DCAD8] configurationWithScale:3];
         v11 = [v9 imageWithSymbolConfiguration:v10];
 
-        v12 = [objc_alloc(MEMORY[0x1E69DC708]) initWithImage:v11 menu:v8];
+        v12 = [objc_alloc(MEMORY[0x1E69DC708]) initWithImage:v11 menu:_actionMenu];
         actionMenuButtonItem = self->_actionMenuButtonItem;
         self->_actionMenuButtonItem = v12;
 
@@ -987,10 +987,10 @@ LABEL_15:
 
       else
       {
-        v14 = [(PXCMMViewController *)self session];
+        session2 = [(PXCMMViewController *)self session];
         if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
         {
-          v15 = v14;
+          v15 = session2;
         }
 
         else
@@ -998,12 +998,12 @@ LABEL_15:
           v15 = 0;
         }
 
-        v16 = [v15 momentShare];
+        momentShare = [v15 momentShare];
         v17 = PLSharingGetLog();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
         {
           v19 = 138412290;
-          v20 = v16;
+          v20 = momentShare;
           _os_log_impl(&dword_1A3C1C000, v17, OS_LOG_TYPE_ERROR, "Could not create a menu of actions for CMM: %@. Skipping the ••• action menu", &v19, 0xCu);
         }
       }
@@ -1015,7 +1015,7 @@ LABEL_15:
       [v7 insertObject:v18 atIndex:0];
     }
 
-    [v3 setRightBarButtonItems:v7];
+    [effectiveNavigationItem setRightBarButtonItems:v7];
     [(PXCMMViewController *)self _updateTitle];
   }
 }
@@ -1023,35 +1023,35 @@ LABEL_15:
 - (void)updateViewConstraints
 {
   v22[3] = *MEMORY[0x1E69E9840];
-  v3 = [(PXCMMViewController *)self standaloneNavigationBar];
+  standaloneNavigationBar = [(PXCMMViewController *)self standaloneNavigationBar];
 
-  if (v3)
+  if (standaloneNavigationBar)
   {
-    v4 = [(PXCMMViewController *)self layoutConstraints];
+    layoutConstraints = [(PXCMMViewController *)self layoutConstraints];
 
-    if (v4)
+    if (layoutConstraints)
     {
       v5 = MEMORY[0x1E696ACD8];
-      v6 = [(PXCMMViewController *)self layoutConstraints];
-      [v5 deactivateConstraints:v6];
+      layoutConstraints2 = [(PXCMMViewController *)self layoutConstraints];
+      [v5 deactivateConstraints:layoutConstraints2];
     }
 
-    v7 = [(PXCMMViewController *)self standaloneNavigationBar];
-    v19 = [v7 topAnchor];
-    v20 = [(PXCMMViewController *)self view];
-    v18 = [v20 topAnchor];
+    standaloneNavigationBar2 = [(PXCMMViewController *)self standaloneNavigationBar];
+    topAnchor = [standaloneNavigationBar2 topAnchor];
+    view = [(PXCMMViewController *)self view];
+    topAnchor2 = [view topAnchor];
     [(PXCMMViewController *)self px_safeAreaInsets];
-    v17 = [v19 constraintEqualToAnchor:v18 constant:?];
+    v17 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:?];
     v22[0] = v17;
-    v16 = [v7 leftAnchor];
-    v8 = [(PXCMMViewController *)self view];
-    v9 = [v8 leftAnchor];
-    v10 = [v16 constraintEqualToAnchor:v9];
+    leftAnchor = [standaloneNavigationBar2 leftAnchor];
+    view2 = [(PXCMMViewController *)self view];
+    leftAnchor2 = [view2 leftAnchor];
+    v10 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     v22[1] = v10;
-    v11 = [v7 rightAnchor];
-    v12 = [(PXCMMViewController *)self view];
-    v13 = [v12 rightAnchor];
-    v14 = [v11 constraintEqualToAnchor:v13];
+    rightAnchor = [standaloneNavigationBar2 rightAnchor];
+    view3 = [(PXCMMViewController *)self view];
+    rightAnchor2 = [view3 rightAnchor];
+    v14 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     v22[2] = v14;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:3];
 
@@ -1064,24 +1064,24 @@ LABEL_15:
   [(PXCMMViewController *)&v21 updateViewConstraints];
 }
 
-- (void)setActionProgress:(id)a3
+- (void)setActionProgress:(id)progress
 {
-  v5 = a3;
+  progressCopy = progress;
   actionProgress = self->_actionProgress;
-  if (actionProgress != v5)
+  if (actionProgress != progressCopy)
   {
-    v8 = v5;
+    v8 = progressCopy;
     [(NSProgress *)actionProgress removeObserver:self forKeyPath:@"finished" context:PXProgressFinishedObservationContext_84986];
     [(NSProgress *)self->_actionProgress removeObserver:self forKeyPath:@"fractionCompleted" context:PXProgressFractionCompletedObservationContext_84988];
     [(NSProgress *)self->_actionProgress removeObserver:self forKeyPath:@"cancelled" context:PXProgressCancelledObservationContext_84987];
-    objc_storeStrong(&self->_actionProgress, a3);
+    objc_storeStrong(&self->_actionProgress, progress);
     [(NSProgress *)self->_actionProgress addObserver:self forKeyPath:@"finished" options:1 context:PXProgressFinishedObservationContext_84986];
     [(NSProgress *)self->_actionProgress addObserver:self forKeyPath:@"fractionCompleted" options:1 context:PXProgressFractionCompletedObservationContext_84988];
     [(NSProgress *)self->_actionProgress addObserver:self forKeyPath:@"cancelled" options:1 context:PXProgressCancelledObservationContext_84987];
-    v7 = [(PXCMMViewController *)self updater];
-    [v7 setNeedsUpdateOf:sel__updateActionProgress];
+    updater = [(PXCMMViewController *)self updater];
+    [updater setNeedsUpdateOf:sel__updateActionProgress];
 
-    v5 = v8;
+    progressCopy = v8;
   }
 }
 
@@ -1090,14 +1090,14 @@ LABEL_15:
   if (!self->_hasStartedPreloadingTasks)
   {
     self->_hasStartedPreloadingTasks = 1;
-    v6 = [(PXCMMViewController *)self session];
-    v4 = [v6 peopleSuggestionsDataSourceManager];
-    [v4 startLoading];
+    session = [(PXCMMViewController *)self session];
+    peopleSuggestionsDataSourceManager = [session peopleSuggestionsDataSourceManager];
+    [peopleSuggestionsDataSourceManager startLoading];
 
-    v5 = [(PXCMMViewController *)self delegate];
+    delegate = [(PXCMMViewController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v5 startPreloadingTasksForCompleteMyMomentViewController:self];
+      [delegate startPreloadingTasksForCompleteMyMomentViewController:self];
     }
   }
 }
@@ -1106,74 +1106,74 @@ LABEL_15:
 {
   v9 = *MEMORY[0x1E69E9840];
   v2 = MEMORY[0x1E69DDA98];
-  v3 = [*MEMORY[0x1E69DDA98] notificationSuppressionContextManager];
-  v4 = [v3 notificationSuppressionContexts];
+  notificationSuppressionContextManager = [*MEMORY[0x1E69DDA98] notificationSuppressionContextManager];
+  notificationSuppressionContexts = [notificationSuppressionContextManager notificationSuppressionContexts];
 
-  if ([v4 count])
+  if ([notificationSuppressionContexts count])
   {
     v5 = PLSharingGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138412290;
-      v8 = v4;
+      v8 = notificationSuppressionContexts;
       _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_DEFAULT, "Clearing CMM suppression contexts %@", &v7, 0xCu);
     }
 
-    v6 = [*v2 notificationSuppressionContextManager];
-    [v6 setNotificationSuppressionContexts:0];
+    notificationSuppressionContextManager2 = [*v2 notificationSuppressionContextManager];
+    [notificationSuppressionContextManager2 setNotificationSuppressionContexts:0];
   }
 }
 
 - (void)_activateNotificationSuppressionIfNecessary
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = [(PXCMMViewController *)self session];
-  if ([v3 sourceType] != 1)
+  session = [(PXCMMViewController *)self session];
+  if ([session sourceType] != 1)
   {
-    v4 = [(PXCMMViewController *)self session];
-    v5 = [v4 notificationSuppressionContexts];
+    session2 = [(PXCMMViewController *)self session];
+    notificationSuppressionContexts = [session2 notificationSuppressionContexts];
 
-    if ([v5 count])
+    if ([notificationSuppressionContexts count])
     {
       v6 = PLSharingGetLog();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         v8 = 138412290;
-        v9 = v5;
+        v9 = notificationSuppressionContexts;
         _os_log_impl(&dword_1A3C1C000, v6, OS_LOG_TYPE_DEFAULT, "Adding CMM suppression contexts %@", &v8, 0xCu);
       }
 
-      v7 = [*MEMORY[0x1E69DDA98] notificationSuppressionContextManager];
-      [v7 setNotificationSuppressionContexts:v5];
+      notificationSuppressionContextManager = [*MEMORY[0x1E69DDA98] notificationSuppressionContextManager];
+      [notificationSuppressionContextManager setNotificationSuppressionContexts:notificationSuppressionContexts];
     }
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PXCMMViewController;
-  [(PXCMMViewController *)&v4 viewDidDisappear:a3];
+  [(PXCMMViewController *)&v4 viewDidDisappear:disappear];
   [(PXCMMViewController *)self _deactivateNotificationSuppressionIfNecessary];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = PXCMMViewController;
-  [(PXCMMViewController *)&v9 viewDidAppear:a3];
-  v4 = [(PXCMMViewController *)self session];
-  if (![v4 ppt_presentComposeRecipientView])
+  [(PXCMMViewController *)&v9 viewDidAppear:appear];
+  session = [(PXCMMViewController *)self session];
+  if (![session ppt_presentComposeRecipientView])
   {
     goto LABEL_4;
   }
 
-  v5 = [(PXCMMViewController *)self _canPresentComposeRecipientViewController];
+  _canPresentComposeRecipientViewController = [(PXCMMViewController *)self _canPresentComposeRecipientViewController];
 
-  if (v5)
+  if (_canPresentComposeRecipientViewController)
   {
-    v4 = [(PXCMMViewController *)self session];
-    [v4 ppt_delay];
+    session = [(PXCMMViewController *)self session];
+    [session ppt_delay];
     v7 = dispatch_time(0, (v6 * 1000000000.0));
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -1188,11 +1188,11 @@ LABEL_4:
   [(PXCMMViewController *)self _activateNotificationSuppressionIfNecessary];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PXCMMViewController;
-  [(PXCMMViewController *)&v4 viewWillAppear:a3];
+  [(PXCMMViewController *)&v4 viewWillAppear:appear];
   [(PXCMMViewController *)self _setupNavigationItem];
 }
 
@@ -1201,20 +1201,20 @@ LABEL_4:
   v4.receiver = self;
   v4.super_class = PXCMMViewController;
   [(PXCMMViewController *)&v4 viewDidLayoutSubviews];
-  v3 = [(PXCMMViewController *)self updater];
-  [v3 updateIfNeeded];
+  updater = [(PXCMMViewController *)self updater];
+  [updater updateIfNeeded];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v7.receiver = self;
   v7.super_class = PXCMMViewController;
-  [(PXCMMViewController *)&v7 viewWillTransitionToSize:a4 withTransitionCoordinator:a3.width, a3.height];
-  v5 = [(PXCMMViewController *)self view];
-  [v5 setNeedsUpdateConstraints];
+  [(PXCMMViewController *)&v7 viewWillTransitionToSize:coordinator withTransitionCoordinator:size.width, size.height];
+  view = [(PXCMMViewController *)self view];
+  [view setNeedsUpdateConstraints];
 
-  v6 = [(PXCMMViewController *)self updater];
-  [v6 setNeedsUpdateOf:sel__updateComponentsViewControllerLayout];
+  updater = [(PXCMMViewController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateComponentsViewControllerLayout];
 }
 
 - (void)viewDidLoad
@@ -1223,36 +1223,36 @@ LABEL_4:
   v17.super_class = PXCMMViewController;
   [(PXCMMViewController *)&v17 viewDidLoad];
   [(PXCMMViewController *)self px_enableExtendedTraitCollection];
-  v3 = [(PXCMMViewController *)self session];
-  v4 = [v3 sourceType];
+  session = [(PXCMMViewController *)self session];
+  sourceType = [session sourceType];
 
   [(UIViewController *)self px_enableBarAppearance];
-  v5 = [(UIViewController *)self px_barAppearance];
+  px_barAppearance = [(UIViewController *)self px_barAppearance];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __34__PXCMMViewController_viewDidLoad__block_invoke;
   v15[3] = &__block_descriptor_33_e34_v16__0___PXMutableBarAppearance__8l;
-  v16 = v4 == 0;
-  [v5 performChangesWithAnimationOptions:0 changes:v15];
+  v16 = sourceType == 0;
+  [px_barAppearance performChangesWithAnimationOptions:0 changes:v15];
 
   [(UIViewController *)self px_enableOneUpPresentation];
-  v6 = [(UIViewController *)self px_oneUpPresentation];
+  px_oneUpPresentation = [(UIViewController *)self px_oneUpPresentation];
   oneUpPresentation = self->_oneUpPresentation;
-  self->_oneUpPresentation = v6;
+  self->_oneUpPresentation = px_oneUpPresentation;
 
-  v8 = [(PXCMMViewController *)self px_extendedTraitCollection];
-  v9 = [[PXCMMSpecManager alloc] initWithExtendedTraitCollection:v8 activityType:[(PXCMMSession *)self->_session activityType]];
+  px_extendedTraitCollection = [(PXCMMViewController *)self px_extendedTraitCollection];
+  v9 = [[PXCMMSpecManager alloc] initWithExtendedTraitCollection:px_extendedTraitCollection activityType:[(PXCMMSession *)self->_session activityType]];
   specManager = self->_specManager;
   self->_specManager = v9;
 
   [(PXCMMSpecManager *)self->_specManager registerChangeObserver:self context:PXSpecManagerObservationContext_84997];
-  v11 = [(PXFeatureSpecManager *)self->_specManager spec];
-  v12 = [v11 reviewBackgroundColor];
-  v13 = [(PXCMMViewController *)self view];
-  [v13 setBackgroundColor:v12];
+  spec = [(PXFeatureSpecManager *)self->_specManager spec];
+  reviewBackgroundColor = [spec reviewBackgroundColor];
+  view = [(PXCMMViewController *)self view];
+  [view setBackgroundColor:reviewBackgroundColor];
 
-  v14 = [(PXCMMViewController *)self updater];
-  [v14 setNeedsUpdateOf:sel__updateComponentsViewControllerLayout];
+  updater = [(PXCMMViewController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateComponentsViewControllerLayout];
 }
 
 void __34__PXCMMViewController_viewDidLoad__block_invoke(uint64_t a1, void *a2)
@@ -1263,12 +1263,12 @@ void __34__PXCMMViewController_viewDidLoad__block_invoke(uint64_t a1, void *a2)
   [v3 setPrefersTabBarVisible:*(a1 + 32)];
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = PXCMMViewController;
   [(PXCMMViewController *)&v5 didMoveToParentViewController:?];
-  if (!a3)
+  if (!controller)
   {
     [(PXCMMViewController *)self _performCancel];
   }
@@ -1284,13 +1284,13 @@ void __34__PXCMMViewController_viewDidLoad__block_invoke(uint64_t a1, void *a2)
   [(PXCMMViewController *)&v3 dealloc];
 }
 
-- (PXCMMViewController)initWithSession:(id)a3
+- (PXCMMViewController)initWithSession:(id)session
 {
-  v6 = a3;
-  if (!v6)
+  sessionCopy = session;
+  if (!sessionCopy)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"PXCMMViewController.m" lineNumber:123 description:{@"Invalid parameter not satisfying: %@", @"session"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMViewController.m" lineNumber:123 description:{@"Invalid parameter not satisfying: %@", @"session"}];
   }
 
   v19.receiver = self;
@@ -1299,14 +1299,14 @@ void __34__PXCMMViewController_viewDidLoad__block_invoke(uint64_t a1, void *a2)
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_session, a3);
-    v9 = [v6 viewModel];
-    [v9 registerChangeObserver:v8 context:PXViewModelObservationContext_84998];
+    objc_storeStrong(&v7->_session, session);
+    viewModel = [sessionCopy viewModel];
+    [viewModel registerChangeObserver:v8 context:PXViewModelObservationContext_84998];
 
-    v10 = [v6 dataSourceManager];
-    [v10 registerChangeObserver:v8 context:PXDataSourceManagerObservationContext_85001];
+    dataSourceManager = [sessionCopy dataSourceManager];
+    [dataSourceManager registerChangeObserver:v8 context:PXDataSourceManagerObservationContext_85001];
 
-    v11 = [v6 momentShareStatusPresentationWithPresentationStyle:2];
+    v11 = [sessionCopy momentShareStatusPresentationWithPresentationStyle:2];
     momentShareStatusPresentation = v8->_momentShareStatusPresentation;
     v8->_momentShareStatusPresentation = v11;
 
@@ -1319,7 +1319,7 @@ void __34__PXCMMViewController_viewDidLoad__block_invoke(uint64_t a1, void *a2)
     [(PXUpdater *)v8->_updater addUpdateSelector:sel__updateActionProgress];
     [(PXUpdater *)v8->_updater addUpdateSelector:sel__updateTitle];
     [(PXUpdater *)v8->_updater setNeedsUpdateSelector:sel__setNeedsUpdate];
-    v15 = [[PXCMMAssetsViewController alloc] initWithSession:v6];
+    v15 = [[PXCMMAssetsViewController alloc] initWithSession:sessionCopy];
     assetsViewController = v8->_assetsViewController;
     v8->_assetsViewController = v15;
 
@@ -1329,21 +1329,21 @@ void __34__PXCMMViewController_viewDidLoad__block_invoke(uint64_t a1, void *a2)
   return v8;
 }
 
-- (PXCMMViewController)initWithCoder:(id)a3
+- (PXCMMViewController)initWithCoder:(id)coder
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXCMMViewController.m" lineNumber:119 description:{@"%s is not available as initializer", "-[PXCMMViewController initWithCoder:]"}];
+  coderCopy = coder;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMViewController.m" lineNumber:119 description:{@"%s is not available as initializer", "-[PXCMMViewController initWithCoder:]"}];
 
   abort();
 }
 
-- (PXCMMViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PXCMMViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v9 handleFailureInMethod:a2 object:self file:@"PXCMMViewController.m" lineNumber:115 description:{@"%s is not available as initializer", "-[PXCMMViewController initWithNibName:bundle:]"}];
+  nameCopy = name;
+  bundleCopy = bundle;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMViewController.m" lineNumber:115 description:{@"%s is not available as initializer", "-[PXCMMViewController initWithNibName:bundle:]"}];
 
   abort();
 }

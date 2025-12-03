@@ -1,20 +1,20 @@
 @interface COCapabilityUpdateNotification
-- (COCapabilityUpdateNotification)initWithCapabilities:(id)a3;
-- (COCapabilityUpdateNotification)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (COCapabilityUpdateNotification)initWithCapabilities:(id)capabilities;
+- (COCapabilityUpdateNotification)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation COCapabilityUpdateNotification
 
-- (COCapabilityUpdateNotification)initWithCapabilities:(id)a3
+- (COCapabilityUpdateNotification)initWithCapabilities:(id)capabilities
 {
-  v4 = a3;
+  capabilitiesCopy = capabilities;
   v9.receiver = self;
   v9.super_class = COCapabilityUpdateNotification;
   v5 = [(COMeshCommand *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [capabilitiesCopy copy];
     capabilities = v5->_capabilities;
     v5->_capabilities = v6;
   }
@@ -22,20 +22,20 @@
   return v5;
 }
 
-- (COCapabilityUpdateNotification)initWithCoder:(id)a3
+- (COCapabilityUpdateNotification)initWithCoder:(id)coder
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v26.receiver = self;
   v26.super_class = COCapabilityUpdateNotification;
-  v5 = [(COMeshCommand *)&v26 initWithCoder:v4];
+  v5 = [(COMeshCommand *)&v26 initWithCoder:coderCopy];
   if (v5)
   {
     p_isa = &v5->super.super.super.isa;
     v7 = MEMORY[0x277CBEB98];
     v8 = objc_opt_class();
     v9 = [v7 setWithObjects:{v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"capabilities"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"capabilities"];
     v11 = p_isa[1];
     p_isa[1] = v10;
 
@@ -107,14 +107,14 @@ LABEL_15:
   return v19;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = COCapabilityUpdateNotification;
-  v4 = a3;
-  [(COMeshCommand *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(COMeshCommand *)&v6 encodeWithCoder:coderCopy];
   v5 = [(COCapabilityUpdateNotification *)self capabilities:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"capabilities"];
+  [coderCopy encodeObject:v5 forKey:@"capabilities"];
 }
 
 @end

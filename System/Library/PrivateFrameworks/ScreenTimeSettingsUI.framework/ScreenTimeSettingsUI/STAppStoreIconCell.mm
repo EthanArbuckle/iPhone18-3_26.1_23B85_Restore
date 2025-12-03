@@ -1,30 +1,30 @@
 @interface STAppStoreIconCell
-- (STAppStoreIconCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (STAppStoreIconCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (id)value;
-- (void)_didFetchAppInfoOrIcon:(id)a3;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
-- (void)setValue:(id)a3;
+- (void)_didFetchAppInfoOrIcon:(id)icon;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
+- (void)setValue:(id)value;
 @end
 
 @implementation STAppStoreIconCell
 
-- (STAppStoreIconCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (STAppStoreIconCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v46[9] = *MEMORY[0x277D85DE8];
   v45.receiver = self;
   v45.super_class = STAppStoreIconCell;
-  v5 = [(STTableCell *)&v45 initWithStyle:a3 reuseIdentifier:a4 specifier:a5];
+  v5 = [(STTableCell *)&v45 initWithStyle:style reuseIdentifier:identifier specifier:specifier];
   v6 = v5;
   if (v5)
   {
-    v7 = [(STAppStoreIconCell *)v5 contentView];
+    contentView = [(STAppStoreIconCell *)v5 contentView];
     v8 = objc_opt_new();
     appIconView = v6->_appIconView;
     v6->_appIconView = v8;
 
     [(UIImageView *)v6->_appIconView setContentMode:1];
     [(UIImageView *)v6->_appIconView setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v7 addSubview:v6->_appIconView];
+    [contentView addSubview:v6->_appIconView];
     v10 = objc_opt_new();
     nameLabel = v6->_nameLabel;
     v6->_nameLabel = v10;
@@ -33,47 +33,47 @@
     v12 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76988]];
     [(UILabel *)v6->_nameLabel setFont:v12];
 
-    [v7 addSubview:v6->_nameLabel];
-    v13 = [(UIImageView *)v6->_appIconView heightAnchor];
-    v44 = [v13 constraintEqualToConstant:44.0];
+    [contentView addSubview:v6->_nameLabel];
+    heightAnchor = [(UIImageView *)v6->_appIconView heightAnchor];
+    v44 = [heightAnchor constraintEqualToConstant:44.0];
 
     LODWORD(v14) = 1144750080;
     [v44 setPriority:v14];
-    v41 = [(STTableCell *)v6 contentLayoutGuide];
+    contentLayoutGuide = [(STTableCell *)v6 contentLayoutGuide];
     v33 = MEMORY[0x277CCAAD0];
     v46[0] = v44;
-    v43 = [(UIImageView *)v6->_appIconView topAnchor];
-    v42 = [v7 topAnchor];
-    v40 = [v43 constraintEqualToSystemSpacingBelowAnchor:v42 multiplier:1.0];
+    topAnchor = [(UIImageView *)v6->_appIconView topAnchor];
+    topAnchor2 = [contentView topAnchor];
+    v40 = [topAnchor constraintEqualToSystemSpacingBelowAnchor:topAnchor2 multiplier:1.0];
     v46[1] = v40;
-    v39 = [(UIImageView *)v6->_appIconView leadingAnchor];
-    v38 = [v41 leadingAnchor];
-    v37 = [v39 constraintEqualToAnchor:v38];
+    leadingAnchor = [(UIImageView *)v6->_appIconView leadingAnchor];
+    leadingAnchor2 = [contentLayoutGuide leadingAnchor];
+    v37 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v46[2] = v37;
-    v36 = [v7 bottomAnchor];
-    v35 = [(UIImageView *)v6->_appIconView bottomAnchor];
-    v34 = [v36 constraintEqualToSystemSpacingBelowAnchor:v35 multiplier:1.0];
+    bottomAnchor = [contentView bottomAnchor];
+    bottomAnchor2 = [(UIImageView *)v6->_appIconView bottomAnchor];
+    v34 = [bottomAnchor constraintEqualToSystemSpacingBelowAnchor:bottomAnchor2 multiplier:1.0];
     v46[3] = v34;
-    v32 = [(UIImageView *)v6->_appIconView widthAnchor];
-    v31 = [(UIImageView *)v6->_appIconView heightAnchor];
-    v30 = [v32 constraintEqualToAnchor:v31];
+    widthAnchor = [(UIImageView *)v6->_appIconView widthAnchor];
+    heightAnchor2 = [(UIImageView *)v6->_appIconView heightAnchor];
+    v30 = [widthAnchor constraintEqualToAnchor:heightAnchor2];
     v46[4] = v30;
-    v28 = [(UIImageView *)v6->_appIconView centerYAnchor];
-    v29 = v7;
-    v27 = [v7 centerYAnchor];
-    v26 = [v28 constraintEqualToAnchor:v27];
+    centerYAnchor = [(UIImageView *)v6->_appIconView centerYAnchor];
+    v29 = contentView;
+    centerYAnchor2 = [contentView centerYAnchor];
+    v26 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v46[5] = v26;
-    v25 = [(UILabel *)v6->_nameLabel leadingAnchor];
-    v15 = [(UIImageView *)v6->_appIconView trailingAnchor];
-    v16 = [v25 constraintEqualToSystemSpacingAfterAnchor:v15 multiplier:2.0];
+    leadingAnchor3 = [(UILabel *)v6->_nameLabel leadingAnchor];
+    trailingAnchor = [(UIImageView *)v6->_appIconView trailingAnchor];
+    v16 = [leadingAnchor3 constraintEqualToSystemSpacingAfterAnchor:trailingAnchor multiplier:2.0];
     v46[6] = v16;
-    v17 = [(UILabel *)v6->_nameLabel centerYAnchor];
-    v18 = [(UIImageView *)v6->_appIconView centerYAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    centerYAnchor3 = [(UILabel *)v6->_nameLabel centerYAnchor];
+    centerYAnchor4 = [(UIImageView *)v6->_appIconView centerYAnchor];
+    v19 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v46[7] = v19;
-    v20 = [(UILabel *)v6->_nameLabel trailingAnchor];
-    v21 = [v7 trailingAnchor];
-    v22 = [v20 constraintLessThanOrEqualToAnchor:v21];
+    trailingAnchor2 = [(UILabel *)v6->_nameLabel trailingAnchor];
+    trailingAnchor3 = [contentView trailingAnchor];
+    v22 = [trailingAnchor2 constraintLessThanOrEqualToAnchor:trailingAnchor3];
     v46[8] = v22;
     v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v46 count:9];
     [v33 activateConstraints:v23];
@@ -86,39 +86,39 @@
 {
   v4.receiver = self;
   v4.super_class = STAppStoreIconCell;
-  v2 = [(PSTableCell *)&v4 value];
+  value = [(PSTableCell *)&v4 value];
 
-  return v2;
+  return value;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v5 = a3;
-  if (!v5 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  valueCopy = value;
+  if (!valueCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [v5 itemType];
-    if (v6 > 6 || ((1 << v6) & 0x54) == 0)
+    itemType = [valueCopy itemType];
+    if (itemType > 6 || ((1 << itemType) & 0x54) == 0)
     {
-      v8 = [MEMORY[0x277CCA890] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"STAppStoreIconCell.m" lineNumber:77 description:{@"Invalid parameter not satisfying: %@", @"isAppItem || (itemType == STUsageItemTypeWebsite)"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"STAppStoreIconCell.m" lineNumber:77 description:{@"Invalid parameter not satisfying: %@", @"isAppItem || (itemType == STUsageItemTypeWebsite)"}];
     }
 
-    v9 = [(STAppStoreIconCell *)self value];
+    value = [(STAppStoreIconCell *)self value];
     v14.receiver = self;
     v14.super_class = STAppStoreIconCell;
-    [(PSTableCell *)&v14 setValue:v5];
-    v10 = [v5 budgetItemIdentifier];
-    v11 = [v9 budgetItemIdentifier];
-    if (v10 == v11)
+    [(PSTableCell *)&v14 setValue:valueCopy];
+    budgetItemIdentifier = [valueCopy budgetItemIdentifier];
+    budgetItemIdentifier2 = [value budgetItemIdentifier];
+    if (budgetItemIdentifier == budgetItemIdentifier2)
     {
       goto LABEL_16;
     }
 
-    v12 = [MEMORY[0x277D4BD98] sharedCache];
-    v13 = [MEMORY[0x277D4B8C0] sharedCache];
-    if (([v9 itemType] & 0xFFFFFFFFFFFFFFFBLL) == 2)
+    mEMORY[0x277D4BD98] = [MEMORY[0x277D4BD98] sharedCache];
+    mEMORY[0x277D4B8C0] = [MEMORY[0x277D4B8C0] sharedCache];
+    if (([value itemType] & 0xFFFFFFFFFFFFFFFBLL) == 2)
     {
-      if ([v10 isEqualToString:v11])
+      if ([budgetItemIdentifier isEqualToString:budgetItemIdentifier2])
       {
 LABEL_15:
 
@@ -126,14 +126,14 @@ LABEL_16:
         goto LABEL_17;
       }
 
-      [v12 removeObserver:self bundleIdentifier:v11];
-      [v13 removeObserver:self bundleIdentifier:v11];
+      [mEMORY[0x277D4BD98] removeObserver:self bundleIdentifier:budgetItemIdentifier2];
+      [mEMORY[0x277D4B8C0] removeObserver:self bundleIdentifier:budgetItemIdentifier2];
     }
 
-    if ((v6 & 0xFFFFFFFFFFFFFFFBLL) == 2)
+    if ((itemType & 0xFFFFFFFFFFFFFFFBLL) == 2)
     {
-      [v12 addObserver:self selector:sel__didFetchAppInfoOrIcon_ bundleIdentifier:v10];
-      [v13 addObserver:self selector:sel__didFetchAppInfoOrIcon_ bundleIdentifier:v10];
+      [mEMORY[0x277D4BD98] addObserver:self selector:sel__didFetchAppInfoOrIcon_ bundleIdentifier:budgetItemIdentifier];
+      [mEMORY[0x277D4B8C0] addObserver:self selector:sel__didFetchAppInfoOrIcon_ bundleIdentifier:budgetItemIdentifier];
     }
 
     goto LABEL_15;
@@ -142,59 +142,59 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v13.receiver = self;
   v13.super_class = STAppStoreIconCell;
-  [(PSTableCell *)&v13 refreshCellContentsWithSpecifier:a3];
-  v4 = [(STAppStoreIconCell *)self value];
-  v5 = [v4 budgetItemIdentifier];
-  if (v5)
+  [(PSTableCell *)&v13 refreshCellContentsWithSpecifier:specifier];
+  value = [(STAppStoreIconCell *)self value];
+  budgetItemIdentifier = [value budgetItemIdentifier];
+  if (budgetItemIdentifier)
   {
-    if ([v4 itemType] == 4)
+    if ([value itemType] == 4)
     {
-      v6 = [v4 displayName];
-      v7 = [v4 image];
+      displayName = [value displayName];
+      image = [value image];
     }
 
     else
     {
-      v8 = [MEMORY[0x277D4B8C0] sharedCache];
-      v9 = [v8 appInfoForBundleIdentifier:v5];
-      v6 = [v9 displayName];
+      mEMORY[0x277D4B8C0] = [MEMORY[0x277D4B8C0] sharedCache];
+      v9 = [mEMORY[0x277D4B8C0] appInfoForBundleIdentifier:budgetItemIdentifier];
+      displayName = [v9 displayName];
 
-      v10 = [MEMORY[0x277D4BD98] sharedCache];
-      v7 = [v10 imageForBundleIdentifier:v5];
+      mEMORY[0x277D4BD98] = [MEMORY[0x277D4BD98] sharedCache];
+      image = [mEMORY[0x277D4BD98] imageForBundleIdentifier:budgetItemIdentifier];
     }
   }
 
   else
   {
-    v7 = 0;
-    v6 = 0;
+    image = 0;
+    displayName = 0;
   }
 
-  v11 = [(STAppStoreIconCell *)self nameLabel];
-  [v11 setText:v6];
+  nameLabel = [(STAppStoreIconCell *)self nameLabel];
+  [nameLabel setText:displayName];
 
-  v12 = [(STAppStoreIconCell *)self appIconView];
-  [v12 setImage:v7];
+  appIconView = [(STAppStoreIconCell *)self appIconView];
+  [appIconView setImage:image];
 
   [(STAppStoreIconCell *)self setNeedsLayout];
 }
 
-- (void)_didFetchAppInfoOrIcon:(id)a3
+- (void)_didFetchAppInfoOrIcon:(id)icon
 {
-  v4 = [(PSTableCell *)self specifier];
-  v5 = v4;
-  if (v4)
+  specifier = [(PSTableCell *)self specifier];
+  v5 = specifier;
+  if (specifier)
   {
-    v6 = v4;
-    v4 = [(STAppStoreIconCell *)self refreshCellContentsWithSpecifier:v4];
+    v6 = specifier;
+    specifier = [(STAppStoreIconCell *)self refreshCellContentsWithSpecifier:specifier];
     v5 = v6;
   }
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](specifier, v5);
 }
 
 @end

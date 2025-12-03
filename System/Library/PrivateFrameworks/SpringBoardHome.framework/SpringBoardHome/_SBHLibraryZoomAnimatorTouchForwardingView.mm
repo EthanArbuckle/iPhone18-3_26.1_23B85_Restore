@@ -1,27 +1,27 @@
 @interface _SBHLibraryZoomAnimatorTouchForwardingView
 - (UIView)touchForwardingTargetView;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation _SBHLibraryZoomAnimatorTouchForwardingView
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(_SBHLibraryZoomAnimatorTouchForwardingView *)self touchForwardingTargetView];
-  v9 = v8;
-  if (v8)
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  touchForwardingTargetView = [(_SBHLibraryZoomAnimatorTouchForwardingView *)self touchForwardingTargetView];
+  v9 = touchForwardingTargetView;
+  if (touchForwardingTargetView)
   {
-    v10 = [v8 hitTest:v7 withEvent:{x, y}];
+    v10 = [touchForwardingTargetView hitTest:eventCopy withEvent:{x, y}];
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = _SBHLibraryZoomAnimatorTouchForwardingView;
-    v10 = [(_SBHLibraryZoomAnimatorTouchForwardingView *)&v13 hitTest:v7 withEvent:x, y];
+    v10 = [(_SBHLibraryZoomAnimatorTouchForwardingView *)&v13 hitTest:eventCopy withEvent:x, y];
   }
 
   v11 = v10;

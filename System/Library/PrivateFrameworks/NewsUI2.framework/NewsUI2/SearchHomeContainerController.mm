@@ -1,27 +1,27 @@
 @interface SearchHomeContainerController
-- (_TtC7NewsUI229SearchHomeContainerController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)contentScrollViewForEdge:(unint64_t)a3;
+- (_TtC7NewsUI229SearchHomeContainerController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)contentScrollViewForEdge:(unint64_t)edge;
 - (void)dealloc;
-- (void)didDismissSearchController:(id)a3;
-- (void)didPresentSearchController:(id)a3;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)searchBarTextDidBeginEditing:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)didDismissSearchController:(id)controller;
+- (void)didPresentSearchController:(id)controller;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)searchBarTextDidBeginEditing:(id)editing;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)willDismissSearchController:(id)a3;
-- (void)willPresentSearchController:(id)a3;
+- (void)willDismissSearchController:(id)controller;
+- (void)willPresentSearchController:(id)controller;
 @end
 
 @implementation SearchHomeContainerController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_219B5F708();
 }
 
@@ -31,61 +31,61 @@
   v4 = *(&self->super.super._responderFlags + OBJC_IVAR____TtC7NewsUI229SearchHomeContainerController_filterProvider);
   v5 = swift_getObjectType();
   v6 = *(v4 + 32);
-  v7 = self;
+  selfCopy = self;
   swift_unknownObjectRetain();
-  v6(v7, &off_282AA0698, v5, v4);
+  v6(selfCopy, &off_282AA0698, v5, v4);
   swift_unknownObjectRelease();
 
-  v8.receiver = v7;
+  v8.receiver = selfCopy;
   v8.super_class = ObjectType;
   [(SearchHomeContainerController *)&v8 dealloc];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_219B60300(a3);
+  selfCopy = self;
+  sub_219B60300(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_219B605D4(a3);
+  selfCopy = self;
+  sub_219B605D4(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_219B608D0(a3);
+  selfCopy = self;
+  sub_219B608D0(disappear);
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_219B60B68();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_219B60D24();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v9.receiver = self;
   v9.super_class = swift_getObjectType();
   v4 = v9.receiver;
-  v5 = a3;
-  [(SearchHomeContainerController *)&v9 traitCollectionDidChange:v5];
-  v6 = [v4 traitCollection];
-  sub_219B5FDC8(v6);
+  changeCopy = change;
+  [(SearchHomeContainerController *)&v9 traitCollectionDidChange:changeCopy];
+  traitCollection = [v4 traitCollection];
+  sub_219B5FDC8(traitCollection);
 
-  v7 = [v4 view];
-  if (v7)
+  view = [v4 view];
+  if (view)
   {
-    v8 = v7;
-    [v7 setNeedsLayout];
+    v8 = view;
+    [view setNeedsLayout];
   }
 
   else
@@ -94,22 +94,22 @@
   }
 }
 
-- (id)contentScrollViewForEdge:(unint64_t)a3
+- (id)contentScrollViewForEdge:(unint64_t)edge
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_219B61F1C();
 
   return v4;
 }
 
-- (_TtC7NewsUI229SearchHomeContainerController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7NewsUI229SearchHomeContainerController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)willPresentSearchController:(id)a3
+- (void)willPresentSearchController:(id)controller
 {
   v5 = self + OBJC_IVAR____TtC7NewsUI229SearchHomeContainerController_delegate;
   if (swift_unknownObjectWeakLoadStrong())
@@ -117,14 +117,14 @@
     v6 = *(v5 + 1);
     swift_getObjectType();
     v7 = *(v6 + 8);
-    v8 = a3;
-    v9 = self;
+    controllerCopy = controller;
+    selfCopy = self;
     v7();
     swift_unknownObjectRelease();
   }
 }
 
-- (void)didPresentSearchController:(id)a3
+- (void)didPresentSearchController:(id)controller
 {
   v5 = self + OBJC_IVAR____TtC7NewsUI229SearchHomeContainerController_delegate;
   if (swift_unknownObjectWeakLoadStrong())
@@ -132,28 +132,28 @@
     v6 = *(v5 + 1);
     swift_getObjectType();
     v7 = *(v6 + 16);
-    v8 = a3;
-    v9 = self;
+    controllerCopy = controller;
+    selfCopy = self;
     v7();
     swift_unknownObjectRelease();
   }
 }
 
-- (void)willDismissSearchController:(id)a3
+- (void)willDismissSearchController:(id)controller
 {
   v4 = self + OBJC_IVAR____TtC7NewsUI229SearchHomeContainerController_delegate;
   if (swift_unknownObjectWeakLoadStrong())
   {
     v5 = *(v4 + 1);
     ObjectType = swift_getObjectType();
-    (*(v5 + 24))(self, a3, ObjectType, v5);
+    (*(v5 + 24))(self, controller, ObjectType, v5);
     swift_unknownObjectRelease();
   }
 
   else
   {
-    v7 = a3;
-    v8 = self;
+    controllerCopy = controller;
+    selfCopy = self;
   }
 
   v9 = *(&self->super.super._responderFlags + OBJC_IVAR____TtC7NewsUI229SearchHomeContainerController_filterProvider);
@@ -161,36 +161,36 @@
   (*(v9 + 48))(v10, v9);
 }
 
-- (void)didDismissSearchController:(id)a3
+- (void)didDismissSearchController:(id)controller
 {
   v4 = self + OBJC_IVAR____TtC7NewsUI229SearchHomeContainerController_delegate;
   if (swift_unknownObjectWeakLoadStrong())
   {
     v5 = *(v4 + 1);
     ObjectType = swift_getObjectType();
-    (*(v5 + 32))(self, a3, ObjectType, v5);
+    (*(v5 + 32))(self, controller, ObjectType, v5);
     swift_unknownObjectRelease();
   }
 
   else
   {
-    v7 = a3;
-    v8 = self;
+    controllerCopy = controller;
+    selfCopy = self;
   }
 
   sub_219B5F1FC(0, 0xE000000000000000, 0, *(&self->super.super.super.isa + OBJC_IVAR____TtC7NewsUI229SearchHomeContainerController_searchOrigination));
 }
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
   v6 = sub_219BF5414();
   v8 = v7;
-  v9 = a3;
-  v10 = self;
+  barCopy = bar;
+  selfCopy = self;
   sub_219B62014(v6, v8);
 }
 
-- (void)searchBarTextDidBeginEditing:(id)a3
+- (void)searchBarTextDidBeginEditing:(id)editing
 {
   v4 = self + OBJC_IVAR____TtC7NewsUI229SearchHomeContainerController_delegate;
   if (swift_unknownObjectWeakLoadStrong())
@@ -198,7 +198,7 @@
     v5 = *(v4 + 1);
     swift_getObjectType();
     v6 = *(v5 + 40);
-    v7 = self;
+    selfCopy = self;
     v6();
     swift_unknownObjectRelease();
   }

@@ -1,8 +1,8 @@
 @interface HVPowerBudgetThrottlingState
-- (HVPowerBudgetThrottlingState)initWithPath:(id)a3 log:(id)a4;
+- (HVPowerBudgetThrottlingState)initWithPath:(id)path log:(id)log;
 - (id)state;
 - (uint64_t)_updateOperationProgress;
-- (unsigned)canDoDiscretionaryWork:(unsigned int *)a3;
+- (unsigned)canDoDiscretionaryWork:(unsigned int *)work;
 - (unsigned)canDoExtraDiscretionaryWork;
 - (void)_writeThrottleStateLocked;
 - (void)checkBatteryStateForRefill;
@@ -11,7 +11,7 @@
 - (void)endWork;
 - (void)refillState;
 - (void)startWork;
-- (void)updateState:(unsigned int)a3;
+- (void)updateState:(unsigned int)state;
 @end
 
 @implementation HVPowerBudgetThrottlingState
@@ -38,25 +38,25 @@
 - (void)_writeThrottleStateLocked
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 72);
+    v2 = *(self + 72);
     if (os_log_type_enabled(v2, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
       _os_log_impl(&dword_2321EC000, v2, OS_LOG_TYPE_INFO, "Writing throttle state", buf, 2u);
     }
 
-    if ((*(a1 + 136) & 1) == 0)
+    if ((*(self + 136) & 1) == 0)
     {
-      v10 = [MEMORY[0x277CCA890] currentHandler];
-      [v10 handleFailureInMethod:sel__writeThrottleStateLocked object:a1 file:@"HVPowerBudget.m" lineNumber:532 description:{@"Invalid parameter not satisfying: %@", @"_hasClassCUnlock"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:sel__writeThrottleStateLocked object:self file:@"HVPowerBudget.m" lineNumber:532 description:{@"Invalid parameter not satisfying: %@", @"_hasClassCUnlock"}];
     }
 
-    v3 = *(a1 + 128);
-    if ((v3 & 0x80000000) == 0 && pwrite(v3, (a1 + 80), 0x20uLL, 0) != 32)
+    v3 = *(self + 128);
+    if ((v3 & 0x80000000) == 0 && pwrite(v3, (self + 80), 0x20uLL, 0) != 32)
     {
-      v4 = *(a1 + 72);
+      v4 = *(self + 72);
       if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
       {
         v6 = v4;
@@ -87,8 +87,8 @@
   pthread_mutex_lock(&self->_lock);
   if (self->_opInProgress)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"HVPowerBudget.m" lineNumber:711 description:@"Work already in progress!"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HVPowerBudget.m" lineNumber:711 description:@"Work already in progress!"];
   }
 
   if (self->_hasClassCUnlock)
@@ -120,8 +120,8 @@
     v1 = result;
     if ((*(result + 136) & 1) == 0)
     {
-      v3 = [MEMORY[0x277CCA890] currentHandler];
-      [v3 handleFailureInMethod:sel__updateOperationProgress object:v1 file:@"HVPowerBudget.m" lineNumber:543 description:{@"Invalid parameter not satisfying: %@", @"_hasClassCUnlock"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:sel__updateOperationProgress object:v1 file:@"HVPowerBudget.m" lineNumber:543 description:{@"Invalid parameter not satisfying: %@", @"_hasClassCUnlock"}];
     }
 
     v2 = mach_absolute_time() - *(v1 + 112);
@@ -220,11 +220,11 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateState:(unsigned int)a3
+- (void)updateState:(unsigned int)state
 {
   v24 = *MEMORY[0x277D85DE8];
   pthread_mutex_lock(&self->_lock);
-  if (!self->_hasClassCUnlock || self->_state.magic == -1804290770 && self->_state.budgetState == a3)
+  if (!self->_hasClassCUnlock || self->_state.magic == -1804290770 && self->_state.budgetState == state)
   {
     v5 = *MEMORY[0x277D85DE8];
 
@@ -233,22 +233,22 @@
 
   else
   {
-    v6 = [MEMORY[0x277CBEAA8] date];
-    [v6 timeIntervalSinceReferenceDate];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSinceReferenceDate];
     v8 = v7;
 
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
       v10 = log;
-      if (a3 > 7)
+      if (state > 7)
       {
         v11 = @"Unknown reason";
       }
 
       else
       {
-        v11 = off_278968BB0[a3];
+        v11 = off_278968BB0[state];
       }
 
       v12 = v11;
@@ -275,7 +275,7 @@
     }
 
     self->_state.magic = -1804290770;
-    self->_state.budgetState = a3;
+    self->_state.budgetState = state;
     self->_state.timeOfLastChange = v8;
     [(HVPowerBudgetThrottlingState *)self _writeThrottleStateLocked];
     pthread_mutex_unlock(&self->_lock);
@@ -444,7 +444,7 @@
   return v5;
 }
 
-- (unsigned)canDoDiscretionaryWork:(unsigned int *)a3
+- (unsigned)canDoDiscretionaryWork:(unsigned int *)work
 {
   v57 = *MEMORY[0x277D85DE8];
   pthread_mutex_lock(&self->_lock);
@@ -563,7 +563,7 @@
       _os_log_impl(&dword_2321EC000, v22, OS_LOG_TYPE_DEFAULT, "Throttle check: %i ops left (%{public}@), %lli ns left (%{public}@), connectedToPower %d, disabled %d, canProcess %{public}@, opInProgress %d :(wasOnBattery %d, wasEnabled %d, timeSinceOpStart %lld)", v36, 0x58u);
     }
 
-    if (a3)
+    if (work)
     {
       if (v17)
       {
@@ -599,11 +599,11 @@
     }
 
     LOBYTE(v21) = 0;
-    if (a3)
+    if (work)
     {
       v32 = 7;
 LABEL_41:
-      *a3 = v32;
+      *work = v32;
     }
   }
 
@@ -630,11 +630,11 @@ LABEL_41:
   [(HVPowerBudgetThrottlingState *)&v4 dealloc];
 }
 
-- (HVPowerBudgetThrottlingState)initWithPath:(id)a3 log:(id)a4
+- (HVPowerBudgetThrottlingState)initWithPath:(id)path log:(id)log
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  logCopy = log;
   v26.receiver = self;
   v26.super_class = HVPowerBudgetThrottlingState;
   v8 = [(HVPowerBudgetThrottlingState *)&v26 init];
@@ -642,9 +642,9 @@ LABEL_41:
   if (v8)
   {
     pthread_mutex_init(&v8->_lock, 0);
-    if (v7)
+    if (logCopy)
     {
-      v10 = v7;
+      v10 = logCopy;
     }
 
     else
@@ -665,7 +665,7 @@ LABEL_41:
     v16[2] = __49__HVPowerBudgetThrottlingState_initWithPath_log___block_invoke;
     v16[3] = &unk_278968B90;
     objc_copyWeak(&v19, &location);
-    v12 = v6;
+    v12 = pathCopy;
     v17 = v12;
     v18 = &v20;
     [v11 runBlockWhenDeviceIsClassCUnlocked:v16];

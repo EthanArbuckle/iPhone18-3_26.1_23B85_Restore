@@ -1,6 +1,6 @@
 @interface MSDApplicationFileDownloadOperation
 - (BOOL)_downloadAppArchiveFile;
-- (id)_downloadAppArchiveFile:(id)a3 ofHash:(id)a4 ofAppUID:(id)a5 currenntAppUID:(id)a6 toFolder:(id)a7;
+- (id)_downloadAppArchiveFile:(id)file ofHash:(id)hash ofAppUID:(id)d currenntAppUID:(id)iD toFolder:(id)folder;
 - (id)methodSelectors;
 @end
 
@@ -17,34 +17,34 @@
 - (BOOL)_downloadAppArchiveFile
 {
   v3 = +[MSDContentCacheManager sharedInstance];
-  v4 = [(MSDOperation *)self context];
-  v5 = [v4 identifier];
+  context = [(MSDOperation *)self context];
+  identifier = [context identifier];
 
-  v6 = [(MSDOperation *)self context];
-  v7 = [v6 uniqueIdentifier];
+  context2 = [(MSDOperation *)self context];
+  uniqueIdentifier = [context2 uniqueIdentifier];
 
-  v8 = [(MSDOperation *)self context];
-  v9 = [v8 currentUniqueIdentifier];
+  context3 = [(MSDOperation *)self context];
+  currentUniqueIdentifier = [context3 currentUniqueIdentifier];
 
-  v10 = [(MSDOperation *)self context];
-  v11 = [v10 fileHash];
+  context4 = [(MSDOperation *)self context];
+  fileHash = [context4 fileHash];
 
   v12 = +[MSDOperationContext downloadOnly];
-  if (v9)
+  if (currentUniqueIdentifier)
   {
-    v13 = [v3 appDiffPatchFileForSourceAppUID:v9 targetAppUID:v7];
+    v13 = [v3 appDiffPatchFileForSourceAppUID:currentUniqueIdentifier targetAppUID:uniqueIdentifier];
     if (v13)
     {
       v14 = v13;
-      v15 = [(MSDOperation *)self context];
-      [v15 setUseDiffPatch:1];
+      context5 = [(MSDOperation *)self context];
+      [context5 setUseDiffPatch:1];
 
 LABEL_5:
       v16 = sub_100063BEC();
-      v17 = [(MSDOperation *)self signpostId];
-      if (v17 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+      signpostId = [(MSDOperation *)self signpostId];
+      if (signpostId - 1 <= 0xFFFFFFFFFFFFFFFDLL)
       {
-        v18 = v17;
+        v18 = signpostId;
         if (os_signpost_enabled(v16))
         {
           *v35 = 138412290;
@@ -60,7 +60,7 @@ LABEL_23:
     }
   }
 
-  v14 = [v3 findFileInCache:v11];
+  v14 = [v3 findFileInCache:fileHash];
   if (v14)
   {
     goto LABEL_5;
@@ -68,24 +68,24 @@ LABEL_23:
 
   v14 = [v3 fileCachePathFromSourcePath:0 forBackgroundDownload:v12];
   v19 = sub_100063BEC();
-  v20 = [(MSDOperation *)self signpostId];
-  if (v20 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  signpostId2 = [(MSDOperation *)self signpostId];
+  if (signpostId2 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v21 = v20;
+    v21 = signpostId2;
     if (os_signpost_enabled(v19))
     {
       *v35 = 138412290;
-      *&v35[4] = v5;
+      *&v35[4] = identifier;
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v19, OS_SIGNPOST_INTERVAL_BEGIN, v21, "Download App", "App identifier: %{xcode:string}@", v35, 0xCu);
     }
   }
 
-  v16 = [(MSDApplicationFileDownloadOperation *)self _downloadAppArchiveFile:v5 ofHash:v11 ofAppUID:v7 currenntAppUID:v9 toFolder:v14];
+  v16 = [(MSDApplicationFileDownloadOperation *)self _downloadAppArchiveFile:identifier ofHash:fileHash ofAppUID:uniqueIdentifier currenntAppUID:currentUniqueIdentifier toFolder:v14];
   v22 = sub_100063BEC();
-  v23 = [(MSDOperation *)self signpostId];
-  if (v23 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  signpostId3 = [(MSDOperation *)self signpostId];
+  if (signpostId3 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v24 = v23;
+    v24 = signpostId3;
     if (os_signpost_enabled(v22))
     {
       *v35 = 67109120;
@@ -96,26 +96,26 @@ LABEL_23:
 
   if (v16)
   {
-    v25 = [(MSDOperation *)self context];
-    v26 = [v25 useDiffPatch];
+    context6 = [(MSDOperation *)self context];
+    useDiffPatch = [context6 useDiffPatch];
 
-    if (v26)
+    if (useDiffPatch)
     {
-      [v3 addAppDiffPatchFile:v16 sourceAppUID:v9 targetAppUID:v7];
+      [v3 addAppDiffPatchFile:v16 sourceAppUID:currentUniqueIdentifier targetAppUID:uniqueIdentifier];
     }
 
-    else if (([v11 isEqualToString:v16] & 1) == 0)
+    else if (([fileHash isEqualToString:v16] & 1) == 0)
     {
-      v27 = [(MSDOperation *)self context];
-      [v27 setFileHash:v16];
+      context7 = [(MSDOperation *)self context];
+      [context7 setFileHash:v16];
     }
 
     v28 = [v3 fileSizeInCache:v16];
     v29 = sub_100063BEC();
-    v30 = [(MSDOperation *)self signpostId];
-    if (v30 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+    signpostId4 = [(MSDOperation *)self signpostId];
+    if (signpostId4 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
     {
-      v31 = v30;
+      v31 = signpostId4;
       if (os_signpost_enabled(v29))
       {
         *v35 = 134217984;
@@ -141,46 +141,46 @@ LABEL_25:
   return v32;
 }
 
-- (id)_downloadAppArchiveFile:(id)a3 ofHash:(id)a4 ofAppUID:(id)a5 currenntAppUID:(id)a6 toFolder:(id)a7
+- (id)_downloadAppArchiveFile:(id)file ofHash:(id)hash ofAppUID:(id)d currenntAppUID:(id)iD toFolder:(id)folder
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
+  folderCopy = folder;
+  iDCopy = iD;
+  dCopy = d;
+  hashCopy = hash;
+  fileCopy = file;
   v17 = objc_alloc_init(MSDDownloadIPARequest);
-  [(MSDDownloadIPARequest *)v17 setAppID:v16];
+  [(MSDDownloadIPARequest *)v17 setAppID:fileCopy];
 
-  [(MSDDownloadIPARequest *)v17 setFileHash:v15];
-  [(MSDDownloadIPARequest *)v17 setUid:v14];
+  [(MSDDownloadIPARequest *)v17 setFileHash:hashCopy];
+  [(MSDDownloadIPARequest *)v17 setUid:dCopy];
 
-  [(MSDDownloadIPARequest *)v17 setCurrentUID:v13];
-  [(MSDServerRequest *)v17 setSavePath:v12];
+  [(MSDDownloadIPARequest *)v17 setCurrentUID:iDCopy];
+  [(MSDServerRequest *)v17 setSavePath:folderCopy];
 
-  v18 = [(MSDOperation *)self context];
-  v19 = [v18 originServer];
-  [(MSDDownloadIPARequest *)v17 setOriginServer:v19];
+  context = [(MSDOperation *)self context];
+  originServer = [context originServer];
+  [(MSDDownloadIPARequest *)v17 setOriginServer:originServer];
 
   v20 = +[MSDServerRequestHandler sharedInstance];
   v21 = [v20 handleRequestSync:v17];
 
-  v22 = [v21 error];
-  if (v22)
+  error = [v21 error];
+  if (error)
   {
-    [(MSDOperation *)self setError:v22];
-    v25 = 0;
+    [(MSDOperation *)self setError:error];
+    fileName = 0;
   }
 
   else
   {
-    v23 = [v21 isDiffPatch];
-    v24 = [(MSDOperation *)self context];
-    [v24 setUseDiffPatch:v23];
+    isDiffPatch = [v21 isDiffPatch];
+    context2 = [(MSDOperation *)self context];
+    [context2 setUseDiffPatch:isDiffPatch];
 
-    v25 = [v21 fileName];
+    fileName = [v21 fileName];
   }
 
-  return v25;
+  return fileName;
 }
 
 @end

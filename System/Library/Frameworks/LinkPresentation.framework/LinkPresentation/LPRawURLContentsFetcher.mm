@@ -1,39 +1,39 @@
 @interface LPRawURLContentsFetcher
-- (void)_completedWithData:(id)a3 MIMEType:(id)a4 error:(id)a5;
-- (void)_failedWithErrorCode:(int64_t)a3 underlyingError:(id)a4;
+- (void)_completedWithData:(id)data MIMEType:(id)type error:(id)error;
+- (void)_failedWithErrorCode:(int64_t)code underlyingError:(id)error;
 - (void)cancel;
-- (void)dataTask:(id)a3 didCompleteWithError:(id)a4;
-- (void)dataTask:(id)a3 didReceiveData:(id)a4;
-- (void)dataTask:(id)a3 didReceiveResponse:(id)a4 decisionHandler:(id)a5;
-- (void)fetchWithConfiguration:(id)a3 completionHandler:(id)a4;
+- (void)dataTask:(id)task didCompleteWithError:(id)error;
+- (void)dataTask:(id)task didReceiveData:(id)data;
+- (void)dataTask:(id)task didReceiveResponse:(id)response decisionHandler:(id)handler;
+- (void)fetchWithConfiguration:(id)configuration completionHandler:(id)handler;
 @end
 
 @implementation LPRawURLContentsFetcher
 
-- (void)fetchWithConfiguration:(id)a3 completionHandler:(id)a4
+- (void)fetchWithConfiguration:(id)configuration completionHandler:(id)handler
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 fetchIsNotUserInitiated])
+  configurationCopy = configuration;
+  handlerCopy = handler;
+  if ([configurationCopy fetchIsNotUserInitiated])
   {
     v8 = [LPFetcherErrorResponse alloc];
     v9 = makeLPError(5, 0);
     v10 = [(LPFetcherErrorResponse *)v8 initWithError:v9 fetcher:self];
-    v7[2](v7, v10);
+    handlerCopy[2](handlerCopy, v10);
   }
 
   else
   {
-    v11 = [v6 rootEvent];
-    v12 = [v11 childWithType:2 subtitle:0];
+    rootEvent = [configurationCopy rootEvent];
+    v12 = [rootEvent childWithType:2 subtitle:0];
     [(LPFetcher *)self set_event:v12];
 
     URL = self->_URL;
-    v14 = [(LPFetcher *)self _event];
-    [v14 setURL:URL];
+    _event = [(LPFetcher *)self _event];
+    [_event setURL:URL];
 
-    v15 = _Block_copy(v7);
+    v15 = _Block_copy(handlerCopy);
     completionHandler = self->_completionHandler;
     self->_completionHandler = v15;
 
@@ -44,7 +44,7 @@
     }
 
     v18 = [(LPRawURLContentsFetcher *)self URL];
-    v19 = [v18 _lp_requestWithAttribution:{objc_msgSend(v6, "loadingIsNonAppInitiated")}];
+    v19 = [v18 _lp_requestWithAttribution:{objc_msgSend(configurationCopy, "loadingIsNonAppInitiated")}];
 
     v20 = LPLogChannelFetching();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -52,8 +52,8 @@
       [LPRawURLContentsFetcher fetchWithConfiguration:v30 completionHandler:[(LPFetcher *)self _loggingID]];
     }
 
-    v21 = [v6 webViewForProcessSharing];
-    if (!v21)
+    webViewForProcessSharing = [configurationCopy webViewForProcessSharing];
+    if (!webViewForProcessSharing)
     {
       v22 = LPLogChannelFetching();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
@@ -70,7 +70,7 @@
       v27 = +[LPMetadataProvider _defaultUserAgent];
       [(WKWebView *)self->_webView setCustomUserAgent:v27];
 
-      v21 = self->_webView;
+      webViewForProcessSharing = self->_webView;
     }
 
     v28[0] = MEMORY[0x1E69E9820];
@@ -78,19 +78,19 @@
     v28[2] = __68__LPRawURLContentsFetcher_fetchWithConfiguration_completionHandler___block_invoke;
     v28[3] = &unk_1E7A37130;
     v28[4] = self;
-    [(WKWebView *)v21 _dataTaskWithRequest:v19 runAtForegroundPriority:1 completionHandler:v28];
+    [(WKWebView *)webViewForProcessSharing _dataTaskWithRequest:v19 runAtForegroundPriority:1 completionHandler:v28];
   }
 }
 
-- (void)dataTask:(id)a3 didReceiveResponse:(id)a4 decisionHandler:(id)a5
+- (void)dataTask:(id)task didReceiveResponse:(id)response decisionHandler:(id)handler
 {
   v22[3] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
+  responseCopy = response;
+  handlerCopy = handler;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v7;
+    v9 = responseCopy;
     if ([MEMORY[0x1E695AC08] isErrorStatusCode:{objc_msgSend(v9, "statusCode")}])
     {
       v10 = LPLogChannelFetching();
@@ -99,28 +99,28 @@
         -[LPRawURLContentsFetcher dataTask:didReceiveResponse:decisionHandler:].cold.3(v22, -[LPFetcher _loggingID](self, "_loggingID"), [v9 statusCode]);
       }
 
-      v8[2](v8, 0);
+      handlerCopy[2](handlerCopy, 0);
       [(LPRawURLContentsFetcher *)self _failedWithErrorCode:2 underlyingError:0];
 
       goto LABEL_19;
     }
   }
 
-  v11 = [(LPFetcher *)self responseClass];
-  v12 = [v7 MIMEType];
-  LOBYTE(v11) = [(objc_class *)v11 isValidMIMEType:v12];
+  responseClass = [(LPFetcher *)self responseClass];
+  mIMEType = [responseCopy MIMEType];
+  LOBYTE(responseClass) = [(objc_class *)responseClass isValidMIMEType:mIMEType];
 
-  if (v11)
+  if (responseClass)
   {
-    v13 = [v7 expectedContentLength];
-    if (v13 == -1)
+    expectedContentLength = [responseCopy expectedContentLength];
+    if (expectedContentLength == -1)
     {
       v14 = 0;
     }
 
     else
     {
-      v14 = v13;
+      v14 = expectedContentLength;
     }
 
     if (v14 <= 10485760)
@@ -129,18 +129,18 @@
       data = self->_data;
       self->_data = v18;
 
-      v20 = [v7 MIMEType];
+      mIMEType2 = [responseCopy MIMEType];
       MIMEType = self->_MIMEType;
-      self->_MIMEType = v20;
+      self->_MIMEType = mIMEType2;
 
-      v8[2](v8, 1);
+      handlerCopy[2](handlerCopy, 1);
       goto LABEL_19;
     }
 
     v15 = LPLogChannelFetching();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
-      -[LPRawURLContentsFetcher dataTask:didReceiveResponse:decisionHandler:].cold.2(v22, -[LPFetcher _loggingID](self, "_loggingID"), [v7 expectedContentLength]);
+      -[LPRawURLContentsFetcher dataTask:didReceiveResponse:decisionHandler:].cold.2(v22, -[LPFetcher _loggingID](self, "_loggingID"), [responseCopy expectedContentLength]);
     }
   }
 
@@ -149,27 +149,27 @@
     v15 = LPLogChannelFetching();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
-      v16 = [(LPFetcher *)self _loggingID];
-      v17 = [v7 MIMEType];
-      [(LPRawURLContentsFetcher *)v17 dataTask:v22 didReceiveResponse:v16 decisionHandler:v15];
+      _loggingID = [(LPFetcher *)self _loggingID];
+      mIMEType3 = [responseCopy MIMEType];
+      [(LPRawURLContentsFetcher *)mIMEType3 dataTask:v22 didReceiveResponse:_loggingID decisionHandler:v15];
     }
   }
 
-  v8[2](v8, 0);
+  handlerCopy[2](handlerCopy, 0);
   [(LPRawURLContentsFetcher *)self _failedWithErrorCode:2 underlyingError:0];
 LABEL_19:
 }
 
-- (void)dataTask:(id)a3 didReceiveData:(id)a4
+- (void)dataTask:(id)task didReceiveData:(id)data
 {
   v11[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  dataCopy = data;
   v8 = [(NSMutableData *)self->_data length];
-  v9 = [v7 length] + v8;
+  v9 = [dataCopy length] + v8;
   if (v9 <= 0xA00000)
   {
-    [(NSMutableData *)self->_data appendData:v7];
+    [(NSMutableData *)self->_data appendData:dataCopy];
   }
 
   else
@@ -180,35 +180,35 @@ LABEL_19:
       [(LPRawURLContentsFetcher *)v11 dataTask:v9 didReceiveData:?];
     }
 
-    [v6 cancel];
+    [taskCopy cancel];
     [(LPRawURLContentsFetcher *)self _failedWithErrorCode:2 underlyingError:0];
   }
 }
 
-- (void)dataTask:(id)a3 didCompleteWithError:(id)a4
+- (void)dataTask:(id)task didCompleteWithError:(id)error
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  taskCopy = task;
+  errorCopy = error;
+  if (errorCopy)
   {
     v8 = LPLogChannelFetching();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v9 = [(LPFetcher *)self _loggingID];
-      v10 = [v7 domain];
+      _loggingID = [(LPFetcher *)self _loggingID];
+      domain = [errorCopy domain];
       v11[0] = 67109891;
-      v11[1] = v9;
+      v11[1] = _loggingID;
       v12 = 2112;
-      v13 = v10;
+      v13 = domain;
       v14 = 2048;
-      v15 = [v7 code];
+      code = [errorCopy code];
       v16 = 2117;
-      v17 = v7;
+      v17 = errorCopy;
       _os_log_error_impl(&dword_1AE886000, v8, OS_LOG_TYPE_ERROR, "LPRawURLContentsFetcher<%d>: subresource load completed with error: Domain=%@ Code=%ld Error=%{sensitive}@", v11, 0x26u);
     }
 
-    [(LPRawURLContentsFetcher *)self _failedWithErrorCode:2 underlyingError:v7];
+    [(LPRawURLContentsFetcher *)self _failedWithErrorCode:2 underlyingError:errorCopy];
   }
 
   else
@@ -232,42 +232,42 @@ LABEL_19:
   }
 }
 
-- (void)_failedWithErrorCode:(int64_t)a3 underlyingError:(id)a4
+- (void)_failedWithErrorCode:(int64_t)code underlyingError:(id)error
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  errorCopy = error;
   if (self->_completionHandler)
   {
-    if (a3 != 3)
+    if (code != 3)
     {
       v7 = LPLogChannelFetching();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
-        v9 = [(LPFetcher *)self _loggingID];
-        v10 = [v6 domain];
+        _loggingID = [(LPFetcher *)self _loggingID];
+        domain = [errorCopy domain];
         v11[0] = 67109891;
-        v11[1] = v9;
+        v11[1] = _loggingID;
         v12 = 2112;
-        v13 = v10;
+        v13 = domain;
         v14 = 2048;
-        v15 = [v6 code];
+        code = [errorCopy code];
         v16 = 2117;
-        v17 = v6;
+        v17 = errorCopy;
         _os_log_error_impl(&dword_1AE886000, v7, OS_LOG_TYPE_ERROR, "LPRawURLContentsFetcher<%d>: failed subresource load: Domain=%@ Code=%ld Error=%{sensitive}@", v11, 0x26u);
       }
     }
 
-    v8 = makeLPError(a3, v6);
+    v8 = makeLPError(code, errorCopy);
     [(LPRawURLContentsFetcher *)self _completedWithData:0 MIMEType:0 error:v8];
   }
 }
 
-- (void)_completedWithData:(id)a3 MIMEType:(id)a4 error:(id)a5
+- (void)_completedWithData:(id)data MIMEType:(id)type error:(id)error
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  typeCopy = type;
+  errorCopy = error;
   completionHandler = self->_completionHandler;
   if (completionHandler)
   {
@@ -275,7 +275,7 @@ LABEL_19:
     v13 = self->_completionHandler;
     self->_completionHandler = 0;
 
-    if (!v8)
+    if (!dataCopy)
     {
       goto LABEL_6;
     }
@@ -286,11 +286,11 @@ LABEL_19:
       [LPRawURLContentsFetcher _completedWithData:v21 MIMEType:[(LPFetcher *)self _loggingID] error:?];
     }
 
-    v15 = [(objc_class *)[(LPFetcher *)self responseClass] responseForFetcher:self withData:v8 MIMEType:v9];
+    v15 = [(objc_class *)[(LPFetcher *)self responseClass] responseForFetcher:self withData:dataCopy MIMEType:typeCopy];
     if (!v15)
     {
 LABEL_6:
-      v15 = [[LPFetcherErrorResponse alloc] initWithError:v10 fetcher:self];
+      v15 = [[LPFetcherErrorResponse alloc] initWithError:errorCopy fetcher:self];
     }
 
     [(WKWebView *)self->_webView _close];
@@ -309,8 +309,8 @@ LABEL_6:
     block[3] = &unk_1E7A35518;
     block[4] = v19;
     dispatch_async(MEMORY[0x1E69E96A0], block);
-    v17 = [(LPFetcher *)self _event];
-    [v17 didCompleteWithErrorCode:{objc_msgSend(v10, "code")}];
+    _event = [(LPFetcher *)self _event];
+    [_event didCompleteWithErrorCode:{objc_msgSend(errorCopy, "code")}];
 
     v12[2](v12, v15);
     _Block_object_dispose(v19, 8);

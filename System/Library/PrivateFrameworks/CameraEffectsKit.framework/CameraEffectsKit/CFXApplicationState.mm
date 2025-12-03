@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = __54__CFXApplicationState_beginMonitoringApplicationState__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -25,7 +25,7 @@
   block[1] = 3221225472;
   block[2] = __37__CFXApplicationState_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_0 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_0, block);
@@ -70,23 +70,23 @@ uint64_t __37__CFXApplicationState_sharedInstance__block_invoke(uint64_t a1)
 {
   if (![(CFXApplicationState *)self isRegisteredForEvents])
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:self selector:sel_applicationWillResignActive_ name:*MEMORY[0x277D76768] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_applicationWillResignActive_ name:*MEMORY[0x277D76768] object:0];
 
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:self selector:sel_applicationDidBecomeActive_ name:*MEMORY[0x277D76648] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel_applicationDidBecomeActive_ name:*MEMORY[0x277D76648] object:0];
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:self selector:sel_applicationDidEnterBackground_ name:*MEMORY[0x277D76660] object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:self selector:sel_applicationDidEnterBackground_ name:*MEMORY[0x277D76660] object:0];
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:self selector:sel_applicationWillResignActive_ name:*MEMORY[0x277CCA0D8] object:0];
+    defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter4 addObserver:self selector:sel_applicationWillResignActive_ name:*MEMORY[0x277CCA0D8] object:0];
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:self selector:sel_applicationDidBecomeActive_ name:*MEMORY[0x277CCA0C0] object:0];
+    defaultCenter5 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter5 addObserver:self selector:sel_applicationDidBecomeActive_ name:*MEMORY[0x277CCA0C0] object:0];
 
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:self selector:sel_applicationDidEnterBackground_ name:*MEMORY[0x277CCA0C8] object:0];
+    defaultCenter6 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter6 addObserver:self selector:sel_applicationDidEnterBackground_ name:*MEMORY[0x277CCA0C8] object:0];
 
     [(CFXApplicationState *)self setIsRegisteredForEvents:1];
   }
@@ -96,8 +96,8 @@ uint64_t __37__CFXApplicationState_sharedInstance__block_invoke(uint64_t a1)
 {
   if ([(CFXApplicationState *)self isRegisteredForEvents])
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 removeObserver:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self];
 
     [(CFXApplicationState *)self setIsRegisteredForEvents:0];
   }

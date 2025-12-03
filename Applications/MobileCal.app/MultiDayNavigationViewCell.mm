@@ -1,30 +1,30 @@
 @interface MultiDayNavigationViewCell
-+ (double)heightRequiredWithSizeClass:(int64_t)a3;
++ (double)heightRequiredWithSizeClass:(int64_t)class;
 + (id)_dayOfWeekLabelFont;
 + (id)_overlayFont;
 - (CGRect)contentFrame;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MultiDayNavigationViewCell)initWithFrame:(CGRect)a3;
-- (double)_heightIncludingAscenderDescenderForLabel:(id)a3 outAscenderYOffset:(double *)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MultiDayNavigationViewCell)initWithFrame:(CGRect)frame;
+- (double)_heightIncludingAscenderDescenderForLabel:(id)label outAscenderYOffset:(double *)offset;
 - (id)preferredPointerShape;
 - (void)_createSubviews;
 - (void)_updateDisplayedStrings;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setDate:(id)a3 forceStringUpdate:(BOOL)a4;
-- (void)setIsToday:(BOOL)a3;
-- (void)setIsWeekend:(BOOL)a3;
-- (void)setLabelElementsVisible:(BOOL)a3;
+- (void)setDate:(id)date forceStringUpdate:(BOOL)update;
+- (void)setIsToday:(BOOL)today;
+- (void)setIsWeekend:(BOOL)weekend;
+- (void)setLabelElementsVisible:(BOOL)visible;
 - (void)updateOverlay;
 @end
 
 @implementation MultiDayNavigationViewCell
 
-- (MultiDayNavigationViewCell)initWithFrame:(CGRect)a3
+- (MultiDayNavigationViewCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MultiDayNavigationViewCell;
-  v3 = [(DayNavigationViewCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(DayNavigationViewCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -62,8 +62,8 @@
   v9 = +[UIColor clearColor];
   [(UILabel *)self->_dayOfWeekLabel setBackgroundColor:v9];
 
-  v10 = [objc_opt_class() _dayOfWeekLabelFont];
-  [(UILabel *)self->_dayOfWeekLabel setFont:v10];
+  _dayOfWeekLabelFont = [objc_opt_class() _dayOfWeekLabelFont];
+  [(UILabel *)self->_dayOfWeekLabel setFont:_dayOfWeekLabelFont];
 
   [(UILabel *)self->_dayOfWeekLabel setTextAlignment:1];
   [(UILabel *)self->_dayOfWeekLabel setAdjustsFontSizeToFitWidth:1];
@@ -87,22 +87,22 @@
   return [UIFont systemFontOfSize:"systemFontOfSize:weight:" weight:?];
 }
 
-- (double)_heightIncludingAscenderDescenderForLabel:(id)a3 outAscenderYOffset:(double *)a4
+- (double)_heightIncludingAscenderDescenderForLabel:(id)label outAscenderYOffset:(double *)offset
 {
-  v5 = a3;
-  [v5 sizeThatFits:{1.79769313e308, 1.79769313e308}];
+  labelCopy = label;
+  [labelCopy sizeThatFits:{1.79769313e308, 1.79769313e308}];
   v7 = v6;
   v8 = [NSMutableAttributedString alloc];
-  v9 = [v5 text];
-  v10 = [v8 initWithString:v9];
+  text = [labelCopy text];
+  v10 = [v8 initWithString:text];
 
-  v11 = [v5 font];
+  font = [labelCopy font];
 
-  [v10 addAttribute:NSFontAttributeName value:v11 range:{0, objc_msgSend(v10, "length")}];
+  [v10 addAttribute:NSFontAttributeName value:font range:{0, objc_msgSend(v10, "length")}];
   [v10 boundingRectWithSize:8 options:0 context:{1.79769313e308, 1.79769313e308}];
-  if (a4)
+  if (offset)
   {
-    *a4 = v12;
+    *offset = v12;
   }
 
   v14 = fmax(v7, v13 - v12);
@@ -156,10 +156,10 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(UILabel *)self->_dayOfWeekLabel sizeThatFits:?];
   v7 = v6;
   [(UILabel *)self->_overlayLabel sizeThatFits:width, height];
@@ -204,11 +204,11 @@
       v6 = self->_overlayLabel;
       self->_overlayLabel = v5;
 
-      v7 = [(UILabel *)self->_overlayLabel layer];
-      [v7 setMasksToBounds:0];
+      layer = [(UILabel *)self->_overlayLabel layer];
+      [layer setMasksToBounds:0];
 
-      v8 = [objc_opt_class() _overlayFont];
-      [(UILabel *)self->_overlayLabel setFont:v8];
+      _overlayFont = [objc_opt_class() _overlayFont];
+      [(UILabel *)self->_overlayLabel setFont:_overlayFont];
 
       [(MultiDayNavigationViewCell *)self addSubview:self->_overlayLabel];
     }
@@ -228,14 +228,14 @@
   if (self->_hasOverlay)
   {
     v21 = CUIKGetOverlayCalendar();
-    v11 = [(DayNavigationViewCell *)self date];
-    v12 = [CUIKDateStrings monthDayStringForDate:v11 inCalendar:v21];
+    date = [(DayNavigationViewCell *)self date];
+    v12 = [CUIKDateStrings monthDayStringForDate:date inCalendar:v21];
     [(UILabel *)self->_overlayLabel setText:v12];
 
     v13 = WeekendTextColor();
     [(UILabel *)self->_overlayLabel setTextColor:v13];
 
-    v14 = [v21 components:24 fromDate:v11];
+    v14 = [v21 components:24 fromDate:date];
     if ([v14 day] == 1)
     {
       v15 = 1.0;
@@ -280,35 +280,35 @@
   }
 }
 
-- (void)setIsToday:(BOOL)a3
+- (void)setIsToday:(BOOL)today
 {
   v4.receiver = self;
   v4.super_class = MultiDayNavigationViewCell;
-  [(DayNavigationViewCell *)&v4 setIsToday:a3];
+  [(DayNavigationViewCell *)&v4 setIsToday:today];
   [(MultiDayNavigationViewCell *)self _updateDisplayedStrings];
 }
 
-- (void)setIsWeekend:(BOOL)a3
+- (void)setIsWeekend:(BOOL)weekend
 {
   v4.receiver = self;
   v4.super_class = MultiDayNavigationViewCell;
-  [(DayNavigationViewCell *)&v4 setIsWeekend:a3];
+  [(DayNavigationViewCell *)&v4 setIsWeekend:weekend];
   [(MultiDayNavigationViewCell *)self _updateDisplayedStrings];
 }
 
-- (void)setDate:(id)a3 forceStringUpdate:(BOOL)a4
+- (void)setDate:(id)date forceStringUpdate:(BOOL)update
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(DayNavigationViewCell *)self date];
-  v8 = [v6 isEqualToDate:v7];
+  updateCopy = update;
+  dateCopy = date;
+  date = [(DayNavigationViewCell *)self date];
+  v8 = [dateCopy isEqualToDate:date];
 
-  if (!v8 || v4)
+  if (!v8 || updateCopy)
   {
     v11.receiver = self;
     v11.super_class = MultiDayNavigationViewCell;
-    [(DayNavigationViewCell *)&v11 setDate:v6];
-    v9 = [(MultiDayNavigationViewCell *)self dayOfWeekStringForDate:v6];
+    [(DayNavigationViewCell *)&v11 setDate:dateCopy];
+    v9 = [(MultiDayNavigationViewCell *)self dayOfWeekStringForDate:dateCopy];
     dayOfWeekString = self->_dayOfWeekString;
     self->_dayOfWeekString = v9;
 
@@ -435,15 +435,15 @@
   return result;
 }
 
-- (void)setLabelElementsVisible:(BOOL)a3
+- (void)setLabelElementsVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   v5.receiver = self;
   v5.super_class = MultiDayNavigationViewCell;
   [(DayNavigationViewCell *)&v5 setLabelElementsVisible:?];
-  [(UILabel *)self->_dayOfWeekLabel setHidden:!v3];
-  [(UILabel *)self->_overlayLabel setHidden:!v3];
-  [(UIView *)self->_overlayUnderline setHidden:!v3];
+  [(UILabel *)self->_dayOfWeekLabel setHidden:!visibleCopy];
+  [(UILabel *)self->_overlayLabel setHidden:!visibleCopy];
+  [(UIView *)self->_overlayUnderline setHidden:!visibleCopy];
 }
 
 - (id)preferredPointerShape
@@ -484,16 +484,16 @@
   [(MultiDayNavigationViewCell *)self setNeedsLayout];
 }
 
-+ (double)heightRequiredWithSizeClass:(int64_t)a3
++ (double)heightRequiredWithSizeClass:(int64_t)class
 {
-  v3 = [objc_opt_class() _normalFont];
-  [v3 pointSize];
+  _normalFont = [objc_opt_class() _normalFont];
+  [_normalFont pointSize];
   v5 = v4;
   v6 = CUIKGetOverlayCalendar();
 
   if (v6)
   {
-    [v3 pointSize];
+    [_normalFont pointSize];
     v8 = v7 * 2.0 + 20.0 + 4.0;
   }
 

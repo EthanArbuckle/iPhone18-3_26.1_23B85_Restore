@@ -1,11 +1,11 @@
 @interface ILMessageFilterExtensionContext
-- (id)remoteObjectProxyWithErrorHandler:(id)a3;
+- (id)remoteObjectProxyWithErrorHandler:(id)handler;
 - (void)deferQueryRequestToNetworkWithCompletion:(void *)completion;
-- (void)deferReportRequestToNetworkWithCompletion:(id)a3;
+- (void)deferReportRequestToNetworkWithCompletion:(id)completion;
 - (void)finish;
-- (void)handleCapabilitiesQueryRequest:(id)a3 reply:(id)a4;
-- (void)handleQueryRequest:(id)a3 reply:(id)a4;
-- (void)handleReportRequest:(id)a3 reply:(id)a4;
+- (void)handleCapabilitiesQueryRequest:(id)request reply:(id)reply;
+- (void)handleQueryRequest:(id)request reply:(id)reply;
+- (void)handleReportRequest:(id)request reply:(id)reply;
 @end
 
 @implementation ILMessageFilterExtensionContext
@@ -67,14 +67,14 @@ void __76__ILMessageFilterExtensionContext_deferQueryRequestToNetworkWithComplet
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deferReportRequestToNetworkWithCompletion:(id)a3
+- (void)deferReportRequestToNetworkWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __77__ILMessageFilterExtensionContext_deferReportRequestToNetworkWithCompletion___block_invoke;
   v10[3] = &unk_278A5E3D0;
-  v5 = v4;
+  v5 = completionCopy;
   v11 = v5;
   v6 = [(ILMessageFilterExtensionContext *)self remoteObjectProxyWithErrorHandler:v10];
   v8[0] = MEMORY[0x277D85DD0];
@@ -136,17 +136,17 @@ void __77__ILMessageFilterExtensionContext_deferReportRequestToNetworkWithComple
   [(ILMessageFilterExtensionContext *)self completeRequestReturningItems:0 completionHandler:0];
 }
 
-- (void)handleQueryRequest:(id)a3 reply:(id)a4
+- (void)handleQueryRequest:(id)request reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ILMessageFilterExtensionContext *)self extension];
-  v9 = [v8 conformsToProtocol:&unk_284B62D50];
+  requestCopy = request;
+  replyCopy = reply;
+  extension = [(ILMessageFilterExtensionContext *)self extension];
+  v9 = [extension conformsToProtocol:&unk_284B62D50];
 
   if (v9)
   {
-    v10 = [(ILMessageFilterExtensionContext *)self extension];
-    [v10 handleQueryRequest:v6 context:self completion:v7];
+    extension2 = [(ILMessageFilterExtensionContext *)self extension];
+    [extension2 handleQueryRequest:requestCopy context:self completion:replyCopy];
   }
 
   else
@@ -157,21 +157,21 @@ void __77__ILMessageFilterExtensionContext_deferReportRequestToNetworkWithComple
       [ILMessageFilterExtensionContext handleQueryRequest:? reply:?];
     }
 
-    (*(v7 + 2))(v7, 0);
+    (*(replyCopy + 2))(replyCopy, 0);
   }
 }
 
-- (void)handleReportRequest:(id)a3 reply:(id)a4
+- (void)handleReportRequest:(id)request reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ILMessageFilterExtensionContext *)self extension];
-  v9 = [v8 conformsToProtocol:&unk_284B62DB0];
+  requestCopy = request;
+  replyCopy = reply;
+  extension = [(ILMessageFilterExtensionContext *)self extension];
+  v9 = [extension conformsToProtocol:&unk_284B62DB0];
 
   if (v9)
   {
-    v10 = [(ILMessageFilterExtensionContext *)self extension];
-    [v10 handleReportRequest:v6 context:self completion:v7];
+    extension2 = [(ILMessageFilterExtensionContext *)self extension];
+    [extension2 handleReportRequest:requestCopy context:self completion:replyCopy];
   }
 
   else
@@ -182,21 +182,21 @@ void __77__ILMessageFilterExtensionContext_deferReportRequestToNetworkWithComple
       [ILMessageFilterExtensionContext handleReportRequest:? reply:?];
     }
 
-    v7[2](v7);
+    replyCopy[2](replyCopy);
   }
 }
 
-- (void)handleCapabilitiesQueryRequest:(id)a3 reply:(id)a4
+- (void)handleCapabilitiesQueryRequest:(id)request reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ILMessageFilterExtensionContext *)self extension];
-  v9 = [v8 conformsToProtocol:&unk_284B62E10];
+  requestCopy = request;
+  replyCopy = reply;
+  extension = [(ILMessageFilterExtensionContext *)self extension];
+  v9 = [extension conformsToProtocol:&unk_284B62E10];
 
   if (v9)
   {
-    v10 = [(ILMessageFilterExtensionContext *)self extension];
-    [v10 handleCapabilitiesQueryRequest:v6 context:self completion:v7];
+    extension2 = [(ILMessageFilterExtensionContext *)self extension];
+    [extension2 handleCapabilitiesQueryRequest:requestCopy context:self completion:replyCopy];
   }
 
   else
@@ -207,15 +207,15 @@ void __77__ILMessageFilterExtensionContext_deferReportRequestToNetworkWithComple
       [ILMessageFilterExtensionContext handleCapabilitiesQueryRequest:? reply:?];
     }
 
-    (*(v7 + 2))(v7, 0);
+    (*(replyCopy + 2))(replyCopy, 0);
   }
 }
 
-- (id)remoteObjectProxyWithErrorHandler:(id)a3
+- (id)remoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(ILMessageFilterExtensionContext *)self _auxiliaryConnection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  _auxiliaryConnection = [(ILMessageFilterExtensionContext *)self _auxiliaryConnection];
+  v6 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }

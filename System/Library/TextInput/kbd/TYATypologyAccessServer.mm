@@ -1,7 +1,7 @@
 @interface TYATypologyAccessServer
 + (id)sharedServer;
-- (BOOL)_checkEntitlementForAddEntryStringWithAuditToken:(id *)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)_checkEntitlementForAddEntryStringWithAuditToken:(id *)token;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (TYATypologyAccessServer)init;
 - (void)dealloc;
 @end
@@ -55,14 +55,14 @@
   [(TYATypologyAccessServer *)&v3 dealloc];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v8 = connectionCopy;
+  if (connectionCopy)
   {
-    [v7 auditToken];
+    [connectionCopy auditToken];
   }
 
   else
@@ -77,9 +77,9 @@
     v10 = TYALog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v11 = [v8 processIdentifier];
+      processIdentifier = [v8 processIdentifier];
       LODWORD(v16) = 67109120;
-      DWORD1(v16) = v11;
+      DWORD1(v16) = processIdentifier;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Server is accepting new connection to client (pid=%d).", &v16, 8u);
     }
 
@@ -116,10 +116,10 @@
   return v9;
 }
 
-- (BOOL)_checkEntitlementForAddEntryStringWithAuditToken:(id *)a3
+- (BOOL)_checkEntitlementForAddEntryStringWithAuditToken:(id *)token
 {
-  v3 = *&a3->var0[4];
-  *cf.val = *a3->var0;
+  v3 = *&token->var0[4];
+  *cf.val = *token->var0;
   *&cf.val[4] = v3;
   v4 = SecTaskCreateWithAuditToken(0, &cf);
   if (!v4)

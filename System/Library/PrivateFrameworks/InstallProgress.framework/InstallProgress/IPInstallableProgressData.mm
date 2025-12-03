@@ -1,22 +1,22 @@
 @interface IPInstallableProgressData
 - (IPInstallableProgressData)init;
-- (IPInstallableProgressData)initWithCoder:(id)a3;
-- (id)_findOrCreatePhaseState:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (IPInstallableProgressData)initWithCoder:(id)coder;
+- (id)_findOrCreatePhaseState:(unint64_t)state;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (unint64_t)completedUnitCountForPhase:(unint64_t)a3;
-- (unint64_t)totalUnitCountForPhase:(unint64_t)a3;
+- (unint64_t)completedUnitCountForPhase:(unint64_t)phase;
+- (unint64_t)totalUnitCountForPhase:(unint64_t)phase;
 - (void)_recalculateCurrentFractionCompleted;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCompletedUnitCount:(unint64_t)a3 forPhase:(unint64_t)a4;
-- (void)setInstallPhase:(unint64_t)a3;
-- (void)setTotalUnitCount:(unint64_t)a3 forPhase:(unint64_t)a4;
-- (void)setTotalUnitCountsForPhases:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCompletedUnitCount:(unint64_t)count forPhase:(unint64_t)phase;
+- (void)setInstallPhase:(unint64_t)phase;
+- (void)setTotalUnitCount:(unint64_t)count forPhase:(unint64_t)phase;
+- (void)setTotalUnitCountsForPhases:(id)phases;
 @end
 
 @implementation IPInstallableProgressData
 
-- (id)_findOrCreatePhaseState:(unint64_t)a3
+- (id)_findOrCreatePhaseState:(unint64_t)state
 {
   phaseStates = self->_phaseStates;
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:?];
@@ -26,7 +26,7 @@
   {
     v7 = objc_alloc_init(IPPhaseState);
     v8 = self->_phaseStates;
-    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:state];
     [(NSMutableDictionary *)v8 setObject:v7 forKey:v9];
   }
 
@@ -136,12 +136,12 @@ LABEL_19:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setTotalUnitCount:(unint64_t)a3 forPhase:(unint64_t)a4
+- (void)setTotalUnitCount:(unint64_t)count forPhase:(unint64_t)phase
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:phase];
   v10 = v6;
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:count];
   v11[0] = v7;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   [(IPInstallableProgressData *)self setTotalUnitCountsForPhases:v8];
@@ -149,15 +149,15 @@ LABEL_19:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setTotalUnitCountsForPhases:(id)a3
+- (void)setTotalUnitCountsForPhases:(id)phases
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  phasesCopy = phases;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [phasesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -168,20 +168,20 @@ LABEL_19:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(phasesCopy);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v4 objectForKeyedSubscript:v9];
+        v10 = [phasesCopy objectForKeyedSubscript:v9];
         v11 = -[IPInstallableProgressData _findOrCreatePhaseState:](self, "_findOrCreatePhaseState:", [v9 unsignedIntegerValue]);
-        v12 = [v10 unsignedLongLongValue];
+        unsignedLongLongValue = [v10 unsignedLongLongValue];
         if (v11)
         {
-          v11[1] = v12;
+          v11[1] = unsignedLongLongValue;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [phasesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -192,11 +192,11 @@ LABEL_19:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setInstallPhase:(unint64_t)a3
+- (void)setInstallPhase:(unint64_t)phase
 {
   v4 = 0;
-  self->_installPhase = a3;
-  while (orderedPhases[v4] != a3)
+  self->_installPhase = phase;
+  while (orderedPhases[v4] != phase)
   {
     if (++v4 == 5)
     {
@@ -221,19 +221,19 @@ LABEL_7:
   return v2;
 }
 
-- (IPInstallableProgressData)initWithCoder:(id)a3
+- (IPInstallableProgressData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = IPInstallableProgressData;
   v5 = [(IPInstallableProgressData *)&v12 init];
   if (v5)
   {
-    v5->_installPhase = [v4 decodeIntegerForKey:@"installPhase"];
-    v5->_finalPhase = [v4 decodeIntegerForKey:@"finalPhase"];
+    v5->_installPhase = [coderCopy decodeIntegerForKey:@"installPhase"];
+    v5->_finalPhase = [coderCopy decodeIntegerForKey:@"finalPhase"];
     v6 = objc_opt_class();
     v7 = objc_opt_class();
-    v8 = IPDecodeDictionaryWithKeyClassAndValueClass(v4, @"phaseStates", v6, v7);
+    v8 = IPDecodeDictionaryWithKeyClassAndValueClass(coderCopy, @"phaseStates", v6, v7);
     v9 = [v8 mutableCopy];
     phaseStates = v5->_phaseStates;
     v5->_phaseStates = v9;
@@ -253,16 +253,16 @@ LABEL_7:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   installPhase = self->_installPhase;
-  v5 = a3;
-  [v5 encodeInteger:installPhase forKey:@"installPhase"];
-  [v5 encodeInteger:self->_finalPhase forKey:@"finalPhase"];
-  [v5 encodeObject:self->_phaseStates forKey:@"phaseStates"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:installPhase forKey:@"installPhase"];
+  [coderCopy encodeInteger:self->_finalPhase forKey:@"finalPhase"];
+  [coderCopy encodeObject:self->_phaseStates forKey:@"phaseStates"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(IPInstallableProgressData);
   v4->_installPhase = self->_installPhase;
@@ -275,9 +275,9 @@ LABEL_7:
   return v4;
 }
 
-- (unint64_t)completedUnitCountForPhase:(unint64_t)a3
+- (unint64_t)completedUnitCountForPhase:(unint64_t)phase
 {
-  v3 = [(IPInstallableProgressData *)self _findOrCreatePhaseState:a3];
+  v3 = [(IPInstallableProgressData *)self _findOrCreatePhaseState:phase];
   if (v3)
   {
     v4 = v3[2];
@@ -291,20 +291,20 @@ LABEL_7:
   return v4;
 }
 
-- (void)setCompletedUnitCount:(unint64_t)a3 forPhase:(unint64_t)a4
+- (void)setCompletedUnitCount:(unint64_t)count forPhase:(unint64_t)phase
 {
-  v6 = [(IPInstallableProgressData *)self _findOrCreatePhaseState:a4];
+  v6 = [(IPInstallableProgressData *)self _findOrCreatePhaseState:phase];
   if (v6)
   {
-    v6[2] = a3;
+    v6[2] = count;
   }
 
   [(IPInstallableProgressData *)self _recalculateCurrentFractionCompleted];
 }
 
-- (unint64_t)totalUnitCountForPhase:(unint64_t)a3
+- (unint64_t)totalUnitCountForPhase:(unint64_t)phase
 {
-  v3 = [(IPInstallableProgressData *)self _findOrCreatePhaseState:a3];
+  v3 = [(IPInstallableProgressData *)self _findOrCreatePhaseState:phase];
   if (v3)
   {
     v4 = v3[1];

@@ -3,26 +3,26 @@
 - (CLSimulationXPCServerInterface)daemonProxy;
 - (id)availableScenarios;
 - (id)scenariosPath;
-- (void)appendSimulatedLocation:(id)a3;
+- (void)appendSimulatedLocation:(id)location;
 - (void)clearSimulatedCells;
 - (void)clearSimulatedLocations;
 - (void)flush;
-- (void)getFencesForBundleID:(id)a3 withHandler:(id)a4;
-- (void)loadScenarioFromURL:(id)a3;
-- (void)selectScenario:(id)a3;
-- (void)setLocationDeliveryBehavior:(unsigned __int8)a3;
-- (void)setLocationDistance:(double)a3;
-- (void)setLocationInterval:(double)a3;
-- (void)setLocationRepeatBehavior:(unsigned __int8)a3;
-- (void)setLocationSpeed:(double)a3;
-- (void)setSimulatedCell:(id)a3;
-- (void)setSimulatedCellRegistrationStatus:(BOOL)a3;
-- (void)setSimulatedWifiPower:(BOOL)a3;
-- (void)setWifiScanResults:(id)a3;
-- (void)simulateBeaconWithProximityUUID:(id)a3 major:(int64_t)a4 minor:(int64_t)a5 eventType:(unsigned __int8)a6;
-- (void)simulateFenceWithBundleID:(id)a3 andFenceID:(id)a4 eventType:(unsigned __int8)a5 atLocation:(id)a6;
-- (void)simulateSignificantLocationChange:(id)a3;
-- (void)simulateVisit:(id)a3;
+- (void)getFencesForBundleID:(id)d withHandler:(id)handler;
+- (void)loadScenarioFromURL:(id)l;
+- (void)selectScenario:(id)scenario;
+- (void)setLocationDeliveryBehavior:(unsigned __int8)behavior;
+- (void)setLocationDistance:(double)distance;
+- (void)setLocationInterval:(double)interval;
+- (void)setLocationRepeatBehavior:(unsigned __int8)behavior;
+- (void)setLocationSpeed:(double)speed;
+- (void)setSimulatedCell:(id)cell;
+- (void)setSimulatedCellRegistrationStatus:(BOOL)status;
+- (void)setSimulatedWifiPower:(BOOL)power;
+- (void)setWifiScanResults:(id)results;
+- (void)simulateBeaconWithProximityUUID:(id)d major:(int64_t)major minor:(int64_t)minor eventType:(unsigned __int8)type;
+- (void)simulateFenceWithBundleID:(id)d andFenceID:(id)iD eventType:(unsigned __int8)type atLocation:(id)location;
+- (void)simulateSignificantLocationChange:(id)change;
+- (void)simulateVisit:(id)visit;
 - (void)startCellSimulation;
 - (void)startLocationSimulation;
 - (void)startWifiSimulation;
@@ -80,7 +80,7 @@
   if (v2)
   {
     v3 = v2;
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
@@ -99,7 +99,7 @@
             objc_enumerationMutation(v3);
           }
 
-          [v4 addObject:{objc_msgSend(*(*(&v11 + 1) + 8 * i), "stringByDeletingPathExtension")}];
+          [array addObject:{objc_msgSend(*(*(&v11 + 1) + 8 * i), "stringByDeletingPathExtension")}];
         }
 
         v6 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -112,14 +112,14 @@
   else
   {
     NSLog(&cfstr_CouldnTGetList.isa);
-    v4 = 0;
+    array = 0;
   }
 
   v9 = *MEMORY[0x1E69E9840];
-  return v4;
+  return array;
 }
 
-- (void)selectScenario:(id)a3
+- (void)selectScenario:(id)scenario
 {
   v4 = [-[CLSimulationManager scenariosPath](self "scenariosPath")];
   [MEMORY[0x1E695DFF8] fileURLWithPath:v4];
@@ -127,17 +127,17 @@
   MEMORY[0x1EEE66B58](self, sel_loadScenarioFromURL_);
 }
 
-- (void)loadScenarioFromURL:(id)a3
+- (void)loadScenarioFromURL:(id)l
 {
-  if ([a3 isFileURL])
+  if ([l isFileURL])
   {
     if ([objc_msgSend(MEMORY[0x1E696AC08] "defaultManager")])
     {
-      if ([objc_msgSend(a3 "pathExtension")])
+      if ([objc_msgSend(l "pathExtension")])
       {
-        v5 = [(CLSimulationManager *)self daemonProxy];
+        daemonProxy = [(CLSimulationManager *)self daemonProxy];
 
-        MEMORY[0x1EEE66B58](v5, sel_setSimulationScenario_);
+        MEMORY[0x1EEE66B58](daemonProxy, sel_setSimulationScenario_);
       }
 
       else
@@ -158,56 +158,56 @@
   }
 }
 
-- (void)setLocationDeliveryBehavior:(unsigned __int8)a3
+- (void)setLocationDeliveryBehavior:(unsigned __int8)behavior
 {
-  self->_locationDeliveryBehavior = a3;
-  v3 = [(CLSimulationManager *)self daemonProxy];
+  self->_locationDeliveryBehavior = behavior;
+  daemonProxy = [(CLSimulationManager *)self daemonProxy];
 
-  MEMORY[0x1EEE66B58](v3, sel_setLocationDeliveryBehavior_);
+  MEMORY[0x1EEE66B58](daemonProxy, sel_setLocationDeliveryBehavior_);
 }
 
-- (void)setLocationDistance:(double)a3
+- (void)setLocationDistance:(double)distance
 {
-  self->_locationDistance = a3;
-  v3 = [(CLSimulationManager *)self daemonProxy];
+  self->_locationDistance = distance;
+  daemonProxy = [(CLSimulationManager *)self daemonProxy];
 
-  MEMORY[0x1EEE66B58](v3, sel_setIntermediateLocationDistance_);
+  MEMORY[0x1EEE66B58](daemonProxy, sel_setIntermediateLocationDistance_);
 }
 
-- (void)setLocationInterval:(double)a3
+- (void)setLocationInterval:(double)interval
 {
-  self->_locationInterval = a3;
-  v3 = [(CLSimulationManager *)self daemonProxy];
+  self->_locationInterval = interval;
+  daemonProxy = [(CLSimulationManager *)self daemonProxy];
 
-  MEMORY[0x1EEE66B58](v3, sel_setLocationInterval_);
+  MEMORY[0x1EEE66B58](daemonProxy, sel_setLocationInterval_);
 }
 
-- (void)setLocationSpeed:(double)a3
+- (void)setLocationSpeed:(double)speed
 {
-  self->_locationSpeed = a3;
-  v3 = [(CLSimulationManager *)self daemonProxy];
+  self->_locationSpeed = speed;
+  daemonProxy = [(CLSimulationManager *)self daemonProxy];
 
-  MEMORY[0x1EEE66B58](v3, sel_setLocationTravellingSpeed_);
+  MEMORY[0x1EEE66B58](daemonProxy, sel_setLocationTravellingSpeed_);
 }
 
-- (void)setLocationRepeatBehavior:(unsigned __int8)a3
+- (void)setLocationRepeatBehavior:(unsigned __int8)behavior
 {
-  self->_locationRepeatBehavior = a3;
-  v3 = [(CLSimulationManager *)self daemonProxy];
+  self->_locationRepeatBehavior = behavior;
+  daemonProxy = [(CLSimulationManager *)self daemonProxy];
 
-  MEMORY[0x1EEE66B58](v3, sel_setLocationRepeatBehavior_);
+  MEMORY[0x1EEE66B58](daemonProxy, sel_setLocationRepeatBehavior_);
 }
 
 - (void)clearSimulatedLocations
 {
-  v2 = [(CLSimulationManager *)self daemonProxy];
+  daemonProxy = [(CLSimulationManager *)self daemonProxy];
 
-  MEMORY[0x1EEE66B58](v2, sel_clearSimulatedLocations);
+  MEMORY[0x1EEE66B58](daemonProxy, sel_clearSimulatedLocations);
 }
 
-- (void)appendSimulatedLocation:(id)a3
+- (void)appendSimulatedLocation:(id)location
 {
-  if (a3)
+  if (location)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -220,7 +220,7 @@
       v11 = 0u;
       v12 = 0u;
       v10 = 0u;
-      [a3 clientLocation];
+      [location clientLocation];
       LODWORD(v15) = 1;
       if (*(v14 + 12) <= 0.0)
       {
@@ -249,8 +249,8 @@
       v8[0] = v10;
       v8[1] = v11;
       v6 = [v5 initWithClientLocation:v8];
-      v7 = [(CLSimulationManager *)self daemonProxy];
-      -[CLSimulationXPCServerInterface appendSimulatedLocations:](v7, "appendSimulatedLocations:", [MEMORY[0x1E695DEC8] arrayWithObject:v6]);
+      daemonProxy = [(CLSimulationManager *)self daemonProxy];
+      -[CLSimulationXPCServerInterface appendSimulatedLocations:](daemonProxy, "appendSimulatedLocations:", [MEMORY[0x1E695DEC8] arrayWithObject:v6]);
     }
 
     else
@@ -262,51 +262,51 @@
 
 - (void)startLocationSimulation
 {
-  v2 = [(CLSimulationManager *)self daemonProxy];
+  daemonProxy = [(CLSimulationManager *)self daemonProxy];
 
-  MEMORY[0x1EEE66B58](v2, sel_startLocationSimulation);
+  MEMORY[0x1EEE66B58](daemonProxy, sel_startLocationSimulation);
 }
 
 - (void)stopLocationSimulation
 {
-  v2 = [(CLSimulationManager *)self daemonProxy];
+  daemonProxy = [(CLSimulationManager *)self daemonProxy];
 
-  MEMORY[0x1EEE66B58](v2, sel_stopLocationSimulation);
+  MEMORY[0x1EEE66B58](daemonProxy, sel_stopLocationSimulation);
 }
 
-- (void)simulateVisit:(id)a3
+- (void)simulateVisit:(id)visit
 {
-  v3 = [(CLSimulationManager *)self daemonProxy];
+  daemonProxy = [(CLSimulationManager *)self daemonProxy];
 
-  MEMORY[0x1EEE66B58](v3, sel_simulateVisit_);
+  MEMORY[0x1EEE66B58](daemonProxy, sel_simulateVisit_);
 }
 
-- (void)simulateSignificantLocationChange:(id)a3
+- (void)simulateSignificantLocationChange:(id)change
 {
-  v3 = [(CLSimulationManager *)self daemonProxy];
+  daemonProxy = [(CLSimulationManager *)self daemonProxy];
 
-  MEMORY[0x1EEE66B58](v3, sel_simulateSignificantLocationChange_);
+  MEMORY[0x1EEE66B58](daemonProxy, sel_simulateSignificantLocationChange_);
 }
 
-- (void)getFencesForBundleID:(id)a3 withHandler:(id)a4
+- (void)getFencesForBundleID:(id)d withHandler:(id)handler
 {
-  v4 = [(CLSimulationManager *)self daemonProxy];
+  daemonProxy = [(CLSimulationManager *)self daemonProxy];
 
-  MEMORY[0x1EEE66B58](v4, sel_getFencesForBundleID_withReply_);
+  MEMORY[0x1EEE66B58](daemonProxy, sel_getFencesForBundleID_withReply_);
 }
 
-- (void)simulateFenceWithBundleID:(id)a3 andFenceID:(id)a4 eventType:(unsigned __int8)a5 atLocation:(id)a6
+- (void)simulateFenceWithBundleID:(id)d andFenceID:(id)iD eventType:(unsigned __int8)type atLocation:(id)location
 {
-  v6 = [(CLSimulationManager *)self daemonProxy];
+  daemonProxy = [(CLSimulationManager *)self daemonProxy];
 
-  MEMORY[0x1EEE66B58](v6, sel_simulateFenceWithBundleID_andFenceID_eventType_atLocation_);
+  MEMORY[0x1EEE66B58](daemonProxy, sel_simulateFenceWithBundleID_andFenceID_eventType_atLocation_);
 }
 
-- (void)simulateBeaconWithProximityUUID:(id)a3 major:(int64_t)a4 minor:(int64_t)a5 eventType:(unsigned __int8)a6
+- (void)simulateBeaconWithProximityUUID:(id)d major:(int64_t)major minor:(int64_t)minor eventType:(unsigned __int8)type
 {
-  v6 = [(CLSimulationManager *)self daemonProxy];
+  daemonProxy = [(CLSimulationManager *)self daemonProxy];
 
-  MEMORY[0x1EEE66B58](v6, sel_simulateBeaconWithProximityUUID_major_minor_eventType_);
+  MEMORY[0x1EEE66B58](daemonProxy, sel_simulateBeaconWithProximityUUID_major_minor_eventType_);
 }
 
 - (void)clearSimulatedCells
@@ -344,7 +344,7 @@
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setSimulatedCell:(id)a3
+- (void)setSimulatedCell:(id)cell
 {
   v8 = *MEMORY[0x1E69E9840];
   if (qword_1ED519088 != -1)
@@ -449,7 +449,7 @@
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setSimulatedCellRegistrationStatus:(BOOL)a3
+- (void)setSimulatedCellRegistrationStatus:(BOOL)status
 {
   v8 = *MEMORY[0x1E69E9840];
   if (qword_1ED519088 != -1)
@@ -484,7 +484,7 @@
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setWifiScanResults:(id)a3
+- (void)setWifiScanResults:(id)results
 {
   v8 = *MEMORY[0x1E69E9840];
   if (qword_1ED519088 != -1)
@@ -589,7 +589,7 @@
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setSimulatedWifiPower:(BOOL)a3
+- (void)setSimulatedWifiPower:(BOOL)power
 {
   v8 = *MEMORY[0x1E69E9840];
   if (qword_1ED519088 != -1)
@@ -695,22 +695,22 @@
     }
 
     -[CLSimulationManager setConnection:](self, "setConnection:", [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:@"com.apple.locationd.simulation" options:4096]);
-    v5 = [(CLSimulationManager *)self connection];
-    -[NSXPCConnection setRemoteObjectInterface:](v5, "setRemoteObjectInterface:", [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F0EAC988]);
+    connection = [(CLSimulationManager *)self connection];
+    -[NSXPCConnection setRemoteObjectInterface:](connection, "setRemoteObjectInterface:", [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F0EAC988]);
     [(NSXPCConnection *)[(CLSimulationManager *)self connection] setInterruptionHandler:&unk_1F0E6D9C8];
     *buf = 0;
     *v14 = buf;
     *&v14[8] = 0x3052000000;
     *&v14[16] = sub_19B98C5C4;
     *&v14[24] = sub_19B98C5D4;
-    v15 = self;
-    v6 = [(CLSimulationManager *)self connection];
+    selfCopy = self;
+    connection2 = [(CLSimulationManager *)self connection];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = sub_19B98C5E0;
     v12[3] = &unk_1E753CDF8;
     v12[4] = buf;
-    [(NSXPCConnection *)v6 setInvalidationHandler:v12];
+    [(NSXPCConnection *)connection2 setInvalidationHandler:v12];
     [(NSXPCConnection *)[(CLSimulationManager *)self connection] resume];
     _Block_object_dispose(buf, 8);
   }
@@ -724,7 +724,7 @@
   v8 = qword_1EAFE46F0;
   if (os_log_type_enabled(qword_1EAFE46F0, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(CLSimulationManager *)self connection];
+    connection3 = [(CLSimulationManager *)self connection];
     *buf = 68289538;
     *&buf[4] = 0;
     *v14 = 2082;
@@ -732,7 +732,7 @@
     *&v14[10] = 2114;
     *&v14[12] = v7;
     *&v14[20] = 2114;
-    *&v14[22] = v9;
+    *&v14[22] = connection3;
     _os_log_impl(&dword_19B873000, v8, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:Do we have a proxy?, proxy:%{public, location:escape_only}@, connection:%{public, location:escape_only}@}", buf, 0x26u);
   }
 

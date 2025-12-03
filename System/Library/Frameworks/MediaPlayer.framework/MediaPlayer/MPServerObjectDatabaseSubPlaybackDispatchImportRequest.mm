@@ -1,69 +1,69 @@
 @interface MPServerObjectDatabaseSubPlaybackDispatchImportRequest
-- (BOOL)performWithDatabaseOperations:(id)a3 error:(id *)a4;
-- (MPServerObjectDatabaseSubPlaybackDispatchImportRequest)initWithIdentifiers:(id)a3 playbackResponse:(id)a4;
+- (BOOL)performWithDatabaseOperations:(id)operations error:(id *)error;
+- (MPServerObjectDatabaseSubPlaybackDispatchImportRequest)initWithIdentifiers:(id)identifiers playbackResponse:(id)response;
 @end
 
 @implementation MPServerObjectDatabaseSubPlaybackDispatchImportRequest
 
-- (BOOL)performWithDatabaseOperations:(id)a3 error:(id *)a4
+- (BOOL)performWithDatabaseOperations:(id)operations error:(id *)error
 {
-  v5 = a3;
-  v6 = [(MPServerObjectDatabaseImportRequest *)self payload];
-  v7 = [v6 hlsAssetInfo];
-  v8 = v7;
-  if (v7)
+  operationsCopy = operations;
+  payload = [(MPServerObjectDatabaseImportRequest *)self payload];
+  hlsAssetInfo = [payload hlsAssetInfo];
+  v8 = hlsAssetInfo;
+  if (hlsAssetInfo)
   {
-    v26 = [v7 playlistURL];
-    v25 = [v26 absoluteString];
-    v9 = [v8 alternateKeyCertificateURL];
-    v10 = v9;
-    if (!v9)
+    playlistURL = [hlsAssetInfo playlistURL];
+    absoluteString = [playlistURL absoluteString];
+    alternateKeyCertificateURL = [v8 alternateKeyCertificateURL];
+    keyCertificateURL = alternateKeyCertificateURL;
+    if (!alternateKeyCertificateURL)
     {
-      v10 = [v8 keyCertificateURL];
+      keyCertificateURL = [v8 keyCertificateURL];
     }
 
-    v29 = v6;
-    v27 = v5;
-    v11 = [v8 alternateKeyServerURL];
-    v28 = v11;
-    if (!v11)
+    v29 = payload;
+    v27 = operationsCopy;
+    alternateKeyServerURL = [v8 alternateKeyServerURL];
+    keyServerURL = alternateKeyServerURL;
+    if (!alternateKeyServerURL)
     {
-      v28 = [v8 keyServerURL];
+      keyServerURL = [v8 keyServerURL];
     }
 
-    v12 = [v8 keyServerAdamID];
-    v24 = [v12 longLongValue];
-    v13 = [v8 keyServerProtocolType];
-    v14 = [v8 isiTunesStoreStream];
+    keyServerAdamID = [v8 keyServerAdamID];
+    longLongValue = [keyServerAdamID longLongValue];
+    keyServerProtocolType = [v8 keyServerProtocolType];
+    isiTunesStoreStream = [v8 isiTunesStoreStream];
     identifiers = self->_identifiers;
-    v16 = [v29 expirationDate];
-    v17 = v16;
-    if (v16)
+    expirationDate = [v29 expirationDate];
+    v17 = expirationDate;
+    if (expirationDate)
     {
       v21 = identifiers;
-      v5 = v27;
-      v18 = v25;
-      [v27 importHLSAssetURLString:v25 keyCertificateURL:v10 keyServerURL:v28 redeliveryId:v24 protocolType:v13 isiTunesStoreStream:v14 forIdentifiers:v21 expirationDate:v16];
+      operationsCopy = v27;
+      v18 = absoluteString;
+      [v27 importHLSAssetURLString:absoluteString keyCertificateURL:keyCertificateURL keyServerURL:keyServerURL redeliveryId:longLongValue protocolType:keyServerProtocolType isiTunesStoreStream:isiTunesStoreStream forIdentifiers:v21 expirationDate:expirationDate];
     }
 
     else
     {
       [(MPServerObjectDatabaseImportRequest *)self assetURLExpirationDate];
-      v19 = v23 = v10;
+      v19 = v23 = keyCertificateURL;
       v22 = identifiers;
-      v5 = v27;
-      v18 = v25;
-      [v27 importHLSAssetURLString:v25 keyCertificateURL:v23 keyServerURL:v28 redeliveryId:v24 protocolType:v13 isiTunesStoreStream:v14 forIdentifiers:v22 expirationDate:v19];
+      operationsCopy = v27;
+      v18 = absoluteString;
+      [v27 importHLSAssetURLString:absoluteString keyCertificateURL:v23 keyServerURL:keyServerURL redeliveryId:longLongValue protocolType:keyServerProtocolType isiTunesStoreStream:isiTunesStoreStream forIdentifiers:v22 expirationDate:v19];
 
-      v10 = v23;
+      keyCertificateURL = v23;
     }
 
-    if (!v11)
+    if (!alternateKeyServerURL)
     {
     }
 
-    v6 = v29;
-    if (!v9)
+    payload = v29;
+    if (!alternateKeyCertificateURL)
     {
     }
   }
@@ -71,16 +71,16 @@
   return v8 != 0;
 }
 
-- (MPServerObjectDatabaseSubPlaybackDispatchImportRequest)initWithIdentifiers:(id)a3 playbackResponse:(id)a4
+- (MPServerObjectDatabaseSubPlaybackDispatchImportRequest)initWithIdentifiers:(id)identifiers playbackResponse:(id)response
 {
-  v7 = a3;
+  identifiersCopy = identifiers;
   v11.receiver = self;
   v11.super_class = MPServerObjectDatabaseSubPlaybackDispatchImportRequest;
-  v8 = [(MPServerObjectDatabaseImportRequest *)&v11 _initWithPayload:a4];
+  v8 = [(MPServerObjectDatabaseImportRequest *)&v11 _initWithPayload:response];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(v8 + 5, a3);
+    objc_storeStrong(v8 + 5, identifiers);
   }
 
   return v9;

@@ -1,29 +1,29 @@
 @interface MBServiceSettingsContext
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)volumeMountPoint;
 @end
 
 @implementation MBServiceSettingsContext
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v11.receiver = self;
   v11.super_class = MBServiceSettingsContext;
   v5 = [(MBSettingsContext *)&v11 copyWithZone:?];
   [v5 setAccount:self->_account];
   [v5 setLockManager:self->_lockManager];
-  v6 = [(NSString *)self->_backupUDID copyWithZone:a3];
+  v6 = [(NSString *)self->_backupUDID copyWithZone:zone];
   [v5 setBackupUDID:v6];
 
   [v5 setSnapshotID:self->_snapshotID];
-  v7 = [(NSString *)self->_snapshotUUID copyWithZone:a3];
+  v7 = [(NSString *)self->_snapshotUUID copyWithZone:zone];
   [v5 setSnapshotUUID:v7];
 
-  v8 = [(NSString *)self->_cacheDir copyWithZone:a3];
+  v8 = [(NSString *)self->_cacheDir copyWithZone:zone];
   [v5 setCacheDir:v8];
 
   [v5 setRestoreMode:self->_restoreMode];
-  v9 = [(NSNumber *)self->_qos copyWithZone:a3];
+  v9 = [(NSNumber *)self->_qos copyWithZone:zone];
   [v5 setQos:v9];
 
   [v5 setWatchdog:self->_watchdog];
@@ -33,11 +33,11 @@
 
 - (id)volumeMountPoint
 {
-  v2 = [(MBServiceSettingsContext *)self account];
-  v3 = [v2 persona];
-  v4 = [v3 volumeMountPoint];
+  account = [(MBServiceSettingsContext *)self account];
+  persona = [account persona];
+  volumeMountPoint = [persona volumeMountPoint];
 
-  return v4;
+  return volumeMountPoint;
 }
 
 @end

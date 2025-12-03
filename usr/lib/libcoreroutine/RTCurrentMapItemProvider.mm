@@ -1,31 +1,31 @@
 @interface RTCurrentMapItemProvider
-+ (id)convertMapItemsToPredictedLocationsOfInterest:(id)a3;
-+ (void)logMapItems:(id)a3 prestring:(id)a4;
-+ (void)logPredictedLocationsOfInterest:(id)a3 prestring:(id)a4;
-- (RTCurrentMapItemProvider)initWithFingerprintManager:(id)a3 locationManager:(id)a4 mapServiceManager:(id)a5 wifiManager:(id)a6;
-- (id)_pickMinimumHorizontalUncertainty:(id)a3;
-- (void)_fetchCurrentMapItemsLookingBack:(double)a3 lookingAhead:(double)a4 handler:(id)a5;
-- (void)_performBluePOIQueryLookingBack:(double)a3 lookingAhead:(double)a4 handler:(id)a5;
-- (void)fetchCurrentMapItemsLookingBack:(double)a3 lookingAhead:(double)a4 handler:(id)a5;
-- (void)onLocationNotification:(id)a3;
-- (void)onWiFiScanNotification:(id)a3;
-- (void)performBluePOIQueryLookingBack:(double)a3 lookingAhead:(double)a4 handler:(id)a5;
-- (void)setRegisteredForNotifications:(BOOL)a3;
++ (id)convertMapItemsToPredictedLocationsOfInterest:(id)interest;
++ (void)logMapItems:(id)items prestring:(id)prestring;
++ (void)logPredictedLocationsOfInterest:(id)interest prestring:(id)prestring;
+- (RTCurrentMapItemProvider)initWithFingerprintManager:(id)manager locationManager:(id)locationManager mapServiceManager:(id)serviceManager wifiManager:(id)wifiManager;
+- (id)_pickMinimumHorizontalUncertainty:(id)uncertainty;
+- (void)_fetchCurrentMapItemsLookingBack:(double)back lookingAhead:(double)ahead handler:(id)handler;
+- (void)_performBluePOIQueryLookingBack:(double)back lookingAhead:(double)ahead handler:(id)handler;
+- (void)fetchCurrentMapItemsLookingBack:(double)back lookingAhead:(double)ahead handler:(id)handler;
+- (void)onLocationNotification:(id)notification;
+- (void)onWiFiScanNotification:(id)notification;
+- (void)performBluePOIQueryLookingBack:(double)back lookingAhead:(double)ahead handler:(id)handler;
+- (void)setRegisteredForNotifications:(BOOL)notifications;
 - (void)shutdown;
 @end
 
 @implementation RTCurrentMapItemProvider
 
-- (RTCurrentMapItemProvider)initWithFingerprintManager:(id)a3 locationManager:(id)a4 mapServiceManager:(id)a5 wifiManager:(id)a6
+- (RTCurrentMapItemProvider)initWithFingerprintManager:(id)manager locationManager:(id)locationManager mapServiceManager:(id)serviceManager wifiManager:(id)wifiManager
 {
   v34 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v11)
+  managerCopy = manager;
+  locationManagerCopy = locationManager;
+  serviceManagerCopy = serviceManager;
+  wifiManagerCopy = wifiManager;
+  if (managerCopy)
   {
-    if (v12)
+    if (locationManagerCopy)
     {
       goto LABEL_3;
     }
@@ -43,10 +43,10 @@
       _os_log_error_impl(&dword_2304B3000, v22, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: fingerprintManager (in %s:%d)", buf, 0x12u);
     }
 
-    if (v12)
+    if (locationManagerCopy)
     {
 LABEL_3:
-      if (v13)
+      if (serviceManagerCopy)
       {
         goto LABEL_4;
       }
@@ -62,7 +62,7 @@ LABEL_17:
         _os_log_error_impl(&dword_2304B3000, v24, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: mapServiceManager (in %s:%d)", buf, 0x12u);
       }
 
-      if (v14)
+      if (wifiManagerCopy)
       {
         goto LABEL_5;
       }
@@ -81,17 +81,17 @@ LABEL_17:
     _os_log_error_impl(&dword_2304B3000, v23, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: locationManager (in %s:%d)", buf, 0x12u);
   }
 
-  if (!v13)
+  if (!serviceManagerCopy)
   {
     goto LABEL_17;
   }
 
 LABEL_4:
-  if (v14)
+  if (wifiManagerCopy)
   {
 LABEL_5:
-    v15 = 0;
-    if (v11 && v12 && v13)
+    selfCopy = 0;
+    if (managerCopy && locationManagerCopy && serviceManagerCopy)
     {
       v29.receiver = self;
       v29.super_class = RTCurrentMapItemProvider;
@@ -99,22 +99,22 @@ LABEL_5:
       if (v16)
       {
         v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%p", objc_opt_class(), v16];
-        v28 = a6;
-        v18 = [v17 UTF8String];
+        wifiManagerCopy2 = wifiManager;
+        uTF8String = [v17 UTF8String];
         dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-        v19 = obj = a5;
-        v20 = dispatch_queue_create(v18, v19);
+        v19 = obj = serviceManager;
+        v20 = dispatch_queue_create(uTF8String, v19);
         queue = v16->_queue;
         v16->_queue = v20;
 
-        objc_storeStrong(&v16->_fingerprintManager, a3);
-        objc_storeStrong(&v16->_locationManager, a4);
+        objc_storeStrong(&v16->_fingerprintManager, manager);
+        objc_storeStrong(&v16->_locationManager, locationManager);
         objc_storeStrong(&v16->_mapServiceManager, obj);
-        objc_storeStrong(&v16->_wifiManager, v28);
+        objc_storeStrong(&v16->_wifiManager, wifiManagerCopy2);
       }
 
       self = v16;
-      v15 = self;
+      selfCopy = self;
     }
 
     goto LABEL_23;
@@ -131,22 +131,22 @@ LABEL_20:
     _os_log_error_impl(&dword_2304B3000, v25, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: wifiManager (in %s:%d)", buf, 0x12u);
   }
 
-  v15 = 0;
+  selfCopy = 0;
 LABEL_23:
 
-  return v15;
+  return selfCopy;
 }
 
-+ (id)convertMapItemsToPredictedLocationsOfInterest:(id)a3
++ (id)convertMapItemsToPredictedLocationsOfInterest:(id)interest
 {
   v35 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v29 = [MEMORY[0x277CBEB18] array];
+  interestCopy = interest;
+  array = [MEMORY[0x277CBEB18] array];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v3;
+  obj = interestCopy;
   v4 = [obj countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v4)
   {
@@ -163,27 +163,27 @@ LABEL_23:
 
         v8 = *(*(&v30 + 1) + 8 * i);
         v9 = [RTLearnedPlace alloc];
-        v10 = [MEMORY[0x277CCAD78] UUID];
-        v11 = [MEMORY[0x277CBEAA8] date];
-        v12 = [MEMORY[0x277CBEAA8] date];
-        v13 = [(RTLearnedPlace *)v9 initWithIdentifier:v10 type:0 typeSource:0 mapItem:v8 customLabel:0 creationDate:v11 expirationDate:v12];
+        uUID = [MEMORY[0x277CCAD78] UUID];
+        date = [MEMORY[0x277CBEAA8] date];
+        date2 = [MEMORY[0x277CBEAA8] date];
+        v13 = [(RTLearnedPlace *)v9 initWithIdentifier:uUID type:0 typeSource:0 mapItem:v8 customLabel:0 creationDate:date expirationDate:date2];
 
         v14 = objc_alloc(MEMORY[0x277D01160]);
-        v15 = [v8 location];
-        [v15 latitude];
+        location = [v8 location];
+        [location latitude];
         v17 = v16;
-        v18 = [v8 location];
-        [v18 longitude];
+        location2 = [v8 location];
+        [location2 longitude];
         v20 = [v14 initWithLatitude:0 longitude:v17 horizontalUncertainty:v19 date:100.0];
 
         v21 = [[RTLearnedLocation alloc] initWithLocation:v20 dataPointCount:0 type:2];
         v22 = [RTLearnedLocationOfInterest alloc];
-        v23 = [MEMORY[0x277CCAD78] UUID];
-        v24 = [(RTLearnedLocationOfInterest *)v22 initWithIdentifier:v23 location:v21 place:v13 visits:0 transitions:0];
+        uUID2 = [MEMORY[0x277CCAD78] UUID];
+        v24 = [(RTLearnedLocationOfInterest *)v22 initWithIdentifier:uUID2 location:v21 place:v13 visits:0 transitions:0];
 
         v25 = [objc_alloc(MEMORY[0x277D01170]) initWithLearnedLocationOfInterest:v24];
         v26 = [objc_alloc(MEMORY[0x277D01270]) initWithLocationOfInterest:v25 confidence:0 nextEntryTime:0 modeOfTransportation:0 sources:0.0];
-        [v29 addObject:v26];
+        [array addObject:v26];
       }
 
       v5 = [obj countByEnumeratingWithState:&v30 objects:v34 count:16];
@@ -192,34 +192,34 @@ LABEL_23:
     while (v5);
   }
 
-  return v29;
+  return array;
 }
 
-+ (void)logMapItems:(id)a3 prestring:(id)a4
++ (void)logMapItems:(id)items prestring:(id)prestring
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  itemsCopy = items;
+  prestringCopy = prestring;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v7 = _rt_log_facility_get_os_log(RTLogFacilityCurrentMapItem);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 138740227;
-      v25 = v6;
+      v25 = prestringCopy;
       v26 = 2048;
-      v27 = [v5 count];
+      v27 = [itemsCopy count];
       _os_log_impl(&dword_2304B3000, v7, OS_LOG_TYPE_INFO, "%{sensitive}@ %lu RTMapItems", buf, 0x16u);
     }
 
-    v17 = v6;
+    v17 = prestringCopy;
 
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v18 = v5;
-    v8 = v5;
+    v18 = itemsCopy;
+    v8 = itemsCopy;
     v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v9)
     {
@@ -258,36 +258,36 @@ LABEL_23:
       while (v10);
     }
 
-    v6 = v17;
-    v5 = v18;
+    prestringCopy = v17;
+    itemsCopy = v18;
   }
 }
 
-+ (void)logPredictedLocationsOfInterest:(id)a3 prestring:(id)a4
++ (void)logPredictedLocationsOfInterest:(id)interest prestring:(id)prestring
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  interestCopy = interest;
+  prestringCopy = prestring;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v7 = _rt_log_facility_get_os_log(RTLogFacilityCurrentMapItem);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v25 = v6;
+      v25 = prestringCopy;
       v26 = 2048;
-      v27 = [v5 count];
+      v27 = [interestCopy count];
       _os_log_impl(&dword_2304B3000, v7, OS_LOG_TYPE_INFO, "%@ %lu RTPredictedLocationsOfInterest", buf, 0x16u);
     }
 
-    v17 = v6;
+    v17 = prestringCopy;
 
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v18 = v5;
-    v8 = v5;
+    v18 = interestCopy;
+    v8 = interestCopy;
     v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v9)
     {
@@ -326,18 +326,18 @@ LABEL_23:
       while (v10);
     }
 
-    v6 = v17;
-    v5 = v18;
+    prestringCopy = v17;
+    interestCopy = v18;
   }
 }
 
-- (void)setRegisteredForNotifications:(BOOL)a3
+- (void)setRegisteredForNotifications:(BOOL)notifications
 {
-  if (self->_registeredForNotifications != a3)
+  if (self->_registeredForNotifications != notifications)
   {
-    self->_registeredForNotifications = a3;
+    self->_registeredForNotifications = notifications;
     locationManager = self->_locationManager;
-    if (a3)
+    if (notifications)
     {
       v6 = +[(RTNotification *)RTLocationManagerNotificationLocationsAccuracyBest];
       [(RTNotifier *)locationManager addObserver:self selector:sel_onLocationNotification_ name:v6];
@@ -359,15 +359,15 @@ LABEL_23:
   }
 }
 
-- (id)_pickMinimumHorizontalUncertainty:(id)a3
+- (id)_pickMinimumHorizontalUncertainty:(id)uncertainty
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  uncertaintyCopy = uncertainty;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v4 = [uncertaintyCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v4)
   {
     v5 = v4;
@@ -379,7 +379,7 @@ LABEL_23:
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(uncertaintyCopy);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
@@ -406,7 +406,7 @@ LABEL_23:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v5 = [uncertaintyCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v5);
@@ -420,35 +420,35 @@ LABEL_23:
   return v6;
 }
 
-- (void)_fetchCurrentMapItemsLookingBack:(double)a3 lookingAhead:(double)a4 handler:(id)a5
+- (void)_fetchCurrentMapItemsLookingBack:(double)back lookingAhead:(double)ahead handler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __82__RTCurrentMapItemProvider__fetchCurrentMapItemsLookingBack_lookingAhead_handler___block_invoke;
   aBlock[3] = &unk_2788CC378;
-  v12 = v8;
-  v9 = v8;
+  v12 = handlerCopy;
+  v9 = handlerCopy;
   v10 = _Block_copy(aBlock);
-  [(RTCurrentMapItemProvider *)self _performBluePOIQueryLookingBack:v10 lookingAhead:a3 handler:a4];
+  [(RTCurrentMapItemProvider *)self _performBluePOIQueryLookingBack:v10 lookingAhead:back handler:ahead];
 }
 
-- (void)fetchCurrentMapItemsLookingBack:(double)a3 lookingAhead:(double)a4 handler:(id)a5
+- (void)fetchCurrentMapItemsLookingBack:(double)back lookingAhead:(double)ahead handler:(id)handler
 {
   v19 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  if (v8)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v9 = [(RTCurrentMapItemProvider *)self queue];
+    queue = [(RTCurrentMapItemProvider *)self queue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __81__RTCurrentMapItemProvider_fetchCurrentMapItemsLookingBack_lookingAhead_handler___block_invoke;
     v11[3] = &unk_2788C6710;
     v11[4] = self;
-    v13 = a3;
-    v14 = a4;
-    v12 = v8;
-    dispatch_async(v9, v11);
+    backCopy = back;
+    aheadCopy = ahead;
+    v12 = handlerCopy;
+    dispatch_async(queue, v11);
   }
 
   else
@@ -465,13 +465,13 @@ LABEL_23:
   }
 }
 
-- (void)_performBluePOIQueryLookingBack:(double)a3 lookingAhead:(double)a4 handler:(id)a5
+- (void)_performBluePOIQueryLookingBack:(double)back lookingAhead:(double)ahead handler:(id)handler
 {
   v59[1] = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  if (v8)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if (a3 < 0.0 || a4 < 0.0)
+    if (back < 0.0 || ahead < 0.0)
     {
       v14 = MEMORY[0x277CCA9B8];
       v58 = *MEMORY[0x277CCA450];
@@ -479,7 +479,7 @@ LABEL_23:
       v59[0] = v15;
       v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v59 forKeys:&v58 count:1];
       v17 = [v14 errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v16];
-      (*(v8 + 2))(v8, 0, 0, 0, v17);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, v17);
     }
 
     else if ([(RTCurrentMapItemProvider *)self registeredForNotifications])
@@ -490,20 +490,20 @@ LABEL_23:
       v57 = v10;
       v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v57 forKeys:&v56 count:1];
       v12 = [v9 errorWithDomain:*MEMORY[0x277D01448] code:0 userInfo:v11];
-      (*(v8 + 2))(v8, 0, 0, 0, v12);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, v12);
     }
 
     else
     {
-      v18 = [MEMORY[0x277CBEAA8] date];
-      v19 = [v18 dateByAddingTimeInterval:-a3];
-      v20 = [MEMORY[0x277CBEB18] array];
+      date = [MEMORY[0x277CBEAA8] date];
+      v19 = [date dateByAddingTimeInterval:-back];
+      array = [MEMORY[0x277CBEB18] array];
       futureLocations = self->_futureLocations;
-      self->_futureLocations = v20;
+      self->_futureLocations = array;
 
-      v22 = [MEMORY[0x277CBEB18] array];
+      array2 = [MEMORY[0x277CBEB18] array];
       futureAccessPoints = self->_futureAccessPoints;
-      self->_futureAccessPoints = v22;
+      self->_futureAccessPoints = array2;
 
       [(RTCurrentMapItemProvider *)self setRegisteredForNotifications:1];
       *buf = 0;
@@ -520,7 +520,7 @@ LABEL_23:
       v51 = 0;
       v24 = dispatch_group_create();
       dispatch_group_enter(v24);
-      v25 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v19 endDate:v18];
+      v25 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v19 endDate:date];
       v26 = [objc_alloc(MEMORY[0x277D01320]) initWithDateInterval:v25 horizontalAccuracy:199 batchSize:0 boundingBoxLocation:199.0];
       locationManager = self->_locationManager;
       v47[0] = MEMORY[0x277D85DD0];
@@ -542,24 +542,24 @@ LABEL_23:
       v46 = v50;
       v30 = v28;
       v45 = v30;
-      [(RTFingerprintManager *)fingerprintManager fetchFingerprintsBetweenStartDate:v19 endDate:v18 filteredBySettledState:2 handler:v44];
-      v31 = dispatch_time(0, (a4 * 1000000000.0));
-      v32 = [(RTCurrentMapItemProvider *)self queue];
+      [(RTFingerprintManager *)fingerprintManager fetchFingerprintsBetweenStartDate:v19 endDate:date filteredBySettledState:2 handler:v44];
+      v31 = dispatch_time(0, (ahead * 1000000000.0));
+      queue = [(RTCurrentMapItemProvider *)self queue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __81__RTCurrentMapItemProvider__performBluePOIQueryLookingBack_lookingAhead_handler___block_invoke_5;
       block[3] = &unk_2788CC418;
       v37 = v30;
-      v38 = self;
+      selfCopy = self;
       v42 = buf;
       v43 = v50;
       v39 = v19;
-      v40 = v18;
-      v41 = v8;
-      v33 = v18;
+      v40 = date;
+      v41 = handlerCopy;
+      v33 = date;
       v34 = v19;
       v35 = v30;
-      dispatch_after(v31, v32, block);
+      dispatch_after(v31, queue, block);
 
       _Block_object_dispose(v50, 8);
       _Block_object_dispose(buf, 8);
@@ -901,22 +901,22 @@ void __81__RTCurrentMapItemProvider__performBluePOIQueryLookingBack_lookingAhead
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)performBluePOIQueryLookingBack:(double)a3 lookingAhead:(double)a4 handler:(id)a5
+- (void)performBluePOIQueryLookingBack:(double)back lookingAhead:(double)ahead handler:(id)handler
 {
   v19 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  if (v8)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v9 = [(RTCurrentMapItemProvider *)self queue];
+    queue = [(RTCurrentMapItemProvider *)self queue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __80__RTCurrentMapItemProvider_performBluePOIQueryLookingBack_lookingAhead_handler___block_invoke;
     v11[3] = &unk_2788C6710;
     v11[4] = self;
-    v13 = a3;
-    v14 = a4;
-    v12 = v8;
-    dispatch_async(v9, v11);
+    backCopy = back;
+    aheadCopy = ahead;
+    v12 = handlerCopy;
+    dispatch_async(queue, v11);
   }
 
   else
@@ -933,18 +933,18 @@ void __81__RTCurrentMapItemProvider__performBluePOIQueryLookingBack_lookingAhead
   }
 }
 
-- (void)onLocationNotification:(id)a3
+- (void)onLocationNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTCurrentMapItemProvider *)self queue];
+  notificationCopy = notification;
+  queue = [(RTCurrentMapItemProvider *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__RTCurrentMapItemProvider_onLocationNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
 void __51__RTCurrentMapItemProvider_onLocationNotification___block_invoke(uint64_t a1)
@@ -1005,18 +1005,18 @@ void __51__RTCurrentMapItemProvider_onLocationNotification___block_invoke(uint64
   }
 }
 
-- (void)onWiFiScanNotification:(id)a3
+- (void)onWiFiScanNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTCurrentMapItemProvider *)self queue];
+  notificationCopy = notification;
+  queue = [(RTCurrentMapItemProvider *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__RTCurrentMapItemProvider_onWiFiScanNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
 void __51__RTCurrentMapItemProvider_onWiFiScanNotification___block_invoke(uint64_t a1)
@@ -1081,14 +1081,14 @@ void __51__RTCurrentMapItemProvider_onWiFiScanNotification___block_invoke(uint64
     }
   }
 
-  v11 = [(RTCurrentMapItemProvider *)self queue];
+  queue = [(RTCurrentMapItemProvider *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __36__RTCurrentMapItemProvider_shutdown__block_invoke;
   block[3] = &unk_2788C4FD8;
   block[4] = self;
   block[5] = v16;
-  dispatch_async(v11, block);
+  dispatch_async(queue, block);
 
   _Block_object_dispose(v16, 8);
 }

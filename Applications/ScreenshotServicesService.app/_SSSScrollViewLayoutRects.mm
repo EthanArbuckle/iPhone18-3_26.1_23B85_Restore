@@ -2,25 +2,25 @@
 - (CGRect)contentInsetRect;
 - (CGRect)scrollViewRect;
 - (CGRect)visibleRect;
-- (_SSSScrollViewLayoutRects)initWithScrollView:(id)a3 visibleRectInScrollView:(CGRect)a4;
-- (double)initWithScrollViewRect:(double)a3 contentInsetRect:(double)a4 visibleRect:(double)a5;
-- (id)layoutRectsByApplyingTransform:(CGAffineTransform *)a3;
-- (id)layoutRectsByConvertingFromView:(id)a3 toView:(id)a4;
+- (_SSSScrollViewLayoutRects)initWithScrollView:(id)view visibleRectInScrollView:(CGRect)scrollView;
+- (double)initWithScrollViewRect:(double)rect contentInsetRect:(double)insetRect visibleRect:(double)visibleRect;
+- (id)layoutRectsByApplyingTransform:(CGAffineTransform *)transform;
+- (id)layoutRectsByConvertingFromView:(id)view toView:(id)toView;
 @end
 
 @implementation _SSSScrollViewLayoutRects
 
-- (_SSSScrollViewLayoutRects)initWithScrollView:(id)a3 visibleRectInScrollView:(CGRect)a4
+- (_SSSScrollViewLayoutRects)initWithScrollView:(id)view visibleRectInScrollView:(CGRect)scrollView
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = scrollView.size.height;
+  width = scrollView.size.width;
+  y = scrollView.origin.y;
+  x = scrollView.origin.x;
   v40.receiver = self;
   v40.super_class = _SSSScrollViewLayoutRects;
-  v8 = a3;
+  viewCopy = view;
   v9 = [(_SSSScrollViewLayoutRects *)&v40 init];
-  [v8 bounds];
+  [viewCopy bounds];
   v9->_scrollViewRect.origin.x = v10;
   v9->_scrollViewRect.origin.y = v11;
   v9->_scrollViewRect.size.width = v12;
@@ -29,18 +29,18 @@
   v9->_visibleRect.origin.y = y;
   v9->_visibleRect.size.width = width;
   v9->_visibleRect.size.height = height;
-  [v8 frame];
+  [viewCopy frame];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
-  [v8 contentInset];
+  [viewCopy contentInset];
   v23 = v15 + v22;
   v25 = v17 + v24;
   v27 = v19 - (v22 + v26);
   v29 = v21 - (v24 + v28);
-  v30 = [v8 superview];
-  [v8 convertRect:v30 fromView:{v23, v25, v27, v29}];
+  superview = [viewCopy superview];
+  [viewCopy convertRect:superview fromView:{v23, v25, v27, v29}];
   v32 = v31;
   v34 = v33;
   v36 = v35;
@@ -54,15 +54,15 @@
   return v9;
 }
 
-- (double)initWithScrollViewRect:(double)a3 contentInsetRect:(double)a4 visibleRect:(double)a5
+- (double)initWithScrollViewRect:(double)rect contentInsetRect:(double)insetRect visibleRect:(double)visibleRect
 {
-  v29.receiver = a1;
+  v29.receiver = self;
   v29.super_class = _SSSScrollViewLayoutRects;
   v25 = objc_msgSendSuper2(&v29, "init");
   *(v25 + 1) = a2;
-  *(v25 + 2) = a3;
-  *(v25 + 3) = a4;
-  *(v25 + 4) = a5;
+  *(v25 + 2) = rect;
+  *(v25 + 3) = insetRect;
+  *(v25 + 4) = visibleRect;
   *(v25 + 40) = a17;
   *(v25 + 7) = a18;
   *(v25 + 8) = a19;
@@ -74,57 +74,57 @@
   return result;
 }
 
-- (id)layoutRectsByApplyingTransform:(CGAffineTransform *)a3
+- (id)layoutRectsByApplyingTransform:(CGAffineTransform *)transform
 {
   [(_SSSScrollViewLayoutRects *)self scrollViewRect];
-  v5 = *&a3->c;
-  *&v18.a = *&a3->a;
+  v5 = *&transform->c;
+  *&v18.a = *&transform->a;
   *&v18.c = v5;
-  *&v18.tx = *&a3->tx;
+  *&v18.tx = *&transform->tx;
   v21 = CGRectApplyAffineTransform(v20, &v18);
   y = v21.origin.y;
   x = v21.origin.x;
   height = v21.size.height;
   width = v21.size.width;
   [(_SSSScrollViewLayoutRects *)self visibleRect];
-  v6 = *&a3->c;
-  *&v18.a = *&a3->a;
+  v6 = *&transform->c;
+  *&v18.a = *&transform->a;
   *&v18.c = v6;
-  *&v18.tx = *&a3->tx;
+  *&v18.tx = *&transform->tx;
   v23 = CGRectApplyAffineTransform(v22, &v18);
   v7 = v23.origin.x;
   v8 = v23.origin.y;
   v9 = v23.size.width;
   v10 = v23.size.height;
   [(_SSSScrollViewLayoutRects *)self contentInsetRect];
-  v11 = *&a3->c;
-  *&v18.a = *&a3->a;
+  v11 = *&transform->c;
+  *&v18.a = *&transform->a;
   *&v18.c = v11;
-  *&v18.tx = *&a3->tx;
+  *&v18.tx = *&transform->tx;
   v25 = CGRectApplyAffineTransform(v24, &v18);
   v12 = [[_SSSScrollViewLayoutRects alloc] initWithScrollViewRect:x contentInsetRect:y visibleRect:width, height, v25.origin.x, v25.origin.y, v25.size.width, v25.size.height, *&v7, *&v8, *&v9, *&v10];
 
   return v12;
 }
 
-- (id)layoutRectsByConvertingFromView:(id)a3 toView:(id)a4
+- (id)layoutRectsByConvertingFromView:(id)view toView:(id)toView
 {
-  v6 = a4;
-  v7 = a3;
+  toViewCopy = toView;
+  viewCopy = view;
   [(_SSSScrollViewLayoutRects *)self scrollViewRect];
-  [v7 convertRect:v6 toView:?];
+  [viewCopy convertRect:toViewCopy toView:?];
   v32 = v9;
   v33 = v8;
   v30 = v11;
   v31 = v10;
   [(_SSSScrollViewLayoutRects *)self visibleRect];
-  [v7 convertRect:v6 toView:?];
+  [viewCopy convertRect:toViewCopy toView:?];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
   [(_SSSScrollViewLayoutRects *)self contentInsetRect];
-  [v7 convertRect:v6 toView:?];
+  [viewCopy convertRect:toViewCopy toView:?];
   v21 = v20;
   v23 = v22;
   v25 = v24;

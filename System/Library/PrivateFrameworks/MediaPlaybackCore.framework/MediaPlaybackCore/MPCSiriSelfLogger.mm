@@ -1,16 +1,16 @@
 @interface MPCSiriSelfLogger
-+ (void)sendMetrics:(id)a3;
++ (void)sendMetrics:(id)metrics;
 @end
 
 @implementation MPCSiriSelfLogger
 
-+ (void)sendMetrics:(id)a3
++ (void)sendMetrics:(id)metrics
 {
   v135 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 siriRefId];
+  metricsCopy = metrics;
+  siriRefId = [metricsCopy siriRefId];
   v7 = os_log_create("com.apple.amp.mediaplaybackcore", "Assistant");
-  v8 = os_signpost_id_make_with_pointer(v7, v6);
+  v8 = os_signpost_id_make_with_pointer(v7, siriRefId);
 
   v9 = os_log_create("com.apple.amp.mediaplaybackcore", "Assistant");
   v10 = v9;
@@ -39,124 +39,124 @@
   v12 = v11;
   _Block_object_dispose(&v128, 8);
   v13 = objc_alloc_init(v11);
-  v14 = [v13 getSiriRequestUUIDFor:v6];
+  v14 = [v13 getSiriRequestUUIDFor:siriRefId];
   if (!v14)
   {
-    v126 = [MEMORY[0x1E696AAA8] currentHandler];
-    v127 = [v5 siriRefId];
-    [v126 handleFailureInMethod:a2 object:a1 file:@"MPCSiriSelfLogger.m" lineNumber:233 description:{@"MPCSiriSelfLogger: siriReferenceIdentifier is not recognized by SASelfLogger: %@", v127}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    siriRefId2 = [metricsCopy siriRefId];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCSiriSelfLogger.m" lineNumber:233 description:{@"MPCSiriSelfLogger: siriReferenceIdentifier is not recognized by SASelfLogger: %@", siriRefId2}];
   }
 
   [v13 emitVMCPUStatsWithStage:5 requestId:v14];
-  v15 = [v5 checkpointMRSetQueueBegin];
-  v16 = v15 == 0;
+  checkpointMRSetQueueBegin = [metricsCopy checkpointMRSetQueueBegin];
+  v16 = checkpointMRSetQueueBegin == 0;
 
   if (!v16)
   {
-    v17 = [v5 checkpointMRSetQueueBegin];
-    [v13 emitMWTCheckPointWithMwtCheckpoint:3 requestId:v14 timeStamp:{objc_msgSend(v17, "longLongValue")}];
+    checkpointMRSetQueueBegin2 = [metricsCopy checkpointMRSetQueueBegin];
+    [v13 emitMWTCheckPointWithMwtCheckpoint:3 requestId:v14 timeStamp:{objc_msgSend(checkpointMRSetQueueBegin2, "longLongValue")}];
   }
 
-  v18 = [v5 checkpointRateZero];
-  v19 = v18 == 0;
+  checkpointRateZero = [metricsCopy checkpointRateZero];
+  v19 = checkpointRateZero == 0;
 
   if (!v19)
   {
-    v20 = [v5 checkpointRateZero];
-    [v13 emitMWTCheckPointWithMwtCheckpoint:4 requestId:v14 timeStamp:{objc_msgSend(v20, "longLongValue")}];
+    checkpointRateZero2 = [metricsCopy checkpointRateZero];
+    [v13 emitMWTCheckPointWithMwtCheckpoint:4 requestId:v14 timeStamp:{objc_msgSend(checkpointRateZero2, "longLongValue")}];
   }
 
-  v21 = [v5 checkpointSetQueueBegin];
-  v22 = v21 == 0;
+  checkpointSetQueueBegin = [metricsCopy checkpointSetQueueBegin];
+  v22 = checkpointSetQueueBegin == 0;
 
   if (!v22)
   {
-    v23 = [v5 checkpointSetQueueBegin];
-    [v13 emitMWTCheckPointWithMwtCheckpoint:26 requestId:v14 timeStamp:{objc_msgSend(v23, "longLongValue")}];
+    checkpointSetQueueBegin2 = [metricsCopy checkpointSetQueueBegin];
+    [v13 emitMWTCheckPointWithMwtCheckpoint:26 requestId:v14 timeStamp:{objc_msgSend(checkpointSetQueueBegin2, "longLongValue")}];
   }
 
-  v24 = [v5 checkpointSetQueueEnd];
-  v25 = v24 == 0;
+  checkpointSetQueueEnd = [metricsCopy checkpointSetQueueEnd];
+  v25 = checkpointSetQueueEnd == 0;
 
   if (!v25)
   {
-    v26 = [v5 checkpointSetQueueEnd];
-    [v13 emitMWTCheckPointWithMwtCheckpoint:6 requestId:v14 timeStamp:{objc_msgSend(v26, "longLongValue")}];
+    checkpointSetQueueEnd2 = [metricsCopy checkpointSetQueueEnd];
+    [v13 emitMWTCheckPointWithMwtCheckpoint:6 requestId:v14 timeStamp:{objc_msgSend(checkpointSetQueueEnd2, "longLongValue")}];
   }
 
-  v27 = [v5 checkpointMRPlay];
-  v28 = v27 == 0;
+  checkpointMRPlay = [metricsCopy checkpointMRPlay];
+  v28 = checkpointMRPlay == 0;
 
   if (!v28)
   {
-    v29 = [v5 checkpointMRPlay];
-    [v13 emitMWTCheckPointWithMwtCheckpoint:19 requestId:v14 timeStamp:{objc_msgSend(v29, "longLongValue")}];
+    checkpointMRPlay2 = [metricsCopy checkpointMRPlay];
+    [v13 emitMWTCheckPointWithMwtCheckpoint:19 requestId:v14 timeStamp:{objc_msgSend(checkpointMRPlay2, "longLongValue")}];
   }
 
-  v30 = [v5 checkpointAssetLoadBegin];
-  v31 = v30 == 0;
+  checkpointAssetLoadBegin = [metricsCopy checkpointAssetLoadBegin];
+  v31 = checkpointAssetLoadBegin == 0;
 
   if (!v31)
   {
-    v32 = [v5 checkpointAssetLoadBegin];
-    [v13 emitMWTCheckPointWithMwtCheckpoint:7 requestId:v14 timeStamp:{objc_msgSend(v32, "longLongValue")}];
+    checkpointAssetLoadBegin2 = [metricsCopy checkpointAssetLoadBegin];
+    [v13 emitMWTCheckPointWithMwtCheckpoint:7 requestId:v14 timeStamp:{objc_msgSend(checkpointAssetLoadBegin2, "longLongValue")}];
   }
 
-  v33 = [v5 checkpointAssetLoadEnd];
-  v34 = v33 == 0;
+  checkpointAssetLoadEnd = [metricsCopy checkpointAssetLoadEnd];
+  v34 = checkpointAssetLoadEnd == 0;
 
   if (!v34)
   {
-    v35 = [v5 checkpointAssetLoadEnd];
-    [v13 emitMWTCheckPointWithMwtCheckpoint:8 requestId:v14 timeStamp:{objc_msgSend(v35, "longLongValue")}];
+    checkpointAssetLoadEnd2 = [metricsCopy checkpointAssetLoadEnd];
+    [v13 emitMWTCheckPointWithMwtCheckpoint:8 requestId:v14 timeStamp:{objc_msgSend(checkpointAssetLoadEnd2, "longLongValue")}];
   }
 
-  v36 = [v5 checkpointLikelyToKeepUp];
-  v37 = v36 == 0;
+  checkpointLikelyToKeepUp = [metricsCopy checkpointLikelyToKeepUp];
+  v37 = checkpointLikelyToKeepUp == 0;
 
   if (!v37)
   {
-    v38 = [v5 checkpointLikelyToKeepUp];
-    [v13 emitMWTCheckPointWithMwtCheckpoint:14 requestId:v14 timeStamp:{objc_msgSend(v38, "longLongValue")}];
+    checkpointLikelyToKeepUp2 = [metricsCopy checkpointLikelyToKeepUp];
+    [v13 emitMWTCheckPointWithMwtCheckpoint:14 requestId:v14 timeStamp:{objc_msgSend(checkpointLikelyToKeepUp2, "longLongValue")}];
   }
 
-  v39 = [v5 checkpointReadyToPlay];
-  v40 = v39 == 0;
+  checkpointReadyToPlay = [metricsCopy checkpointReadyToPlay];
+  v40 = checkpointReadyToPlay == 0;
 
   if (!v40)
   {
-    v41 = [v5 checkpointReadyToPlay];
-    [v13 emitMWTCheckPointWithMwtCheckpoint:15 requestId:v14 timeStamp:{objc_msgSend(v41, "longLongValue")}];
+    checkpointReadyToPlay2 = [metricsCopy checkpointReadyToPlay];
+    [v13 emitMWTCheckPointWithMwtCheckpoint:15 requestId:v14 timeStamp:{objc_msgSend(checkpointReadyToPlay2, "longLongValue")}];
   }
 
-  v42 = [v5 checkpointPlay];
-  v43 = v42 == 0;
+  checkpointPlay = [metricsCopy checkpointPlay];
+  v43 = checkpointPlay == 0;
 
   if (!v43)
   {
-    v44 = [v5 checkpointPlay];
-    [v13 emitMWTCheckPointWithMwtCheckpoint:27 requestId:v14 timeStamp:{objc_msgSend(v44, "longLongValue")}];
+    checkpointPlay2 = [metricsCopy checkpointPlay];
+    [v13 emitMWTCheckPointWithMwtCheckpoint:27 requestId:v14 timeStamp:{objc_msgSend(checkpointPlay2, "longLongValue")}];
   }
 
-  v45 = [v5 checkpointRateOne];
-  v46 = v45 == 0;
+  checkpointRateOne = [metricsCopy checkpointRateOne];
+  v46 = checkpointRateOne == 0;
 
   if (!v46)
   {
-    v47 = [v5 checkpointRateOne];
-    [v13 emitMWTCheckPointWithMwtCheckpoint:20 requestId:v14 timeStamp:{objc_msgSend(v47, "longLongValue")}];
+    checkpointRateOne2 = [metricsCopy checkpointRateOne];
+    [v13 emitMWTCheckPointWithMwtCheckpoint:20 requestId:v14 timeStamp:{objc_msgSend(checkpointRateOne2, "longLongValue")}];
   }
 
-  v48 = [v5 checkpointFirstAudioFrame];
-  v49 = v48 == 0;
+  checkpointFirstAudioFrame = [metricsCopy checkpointFirstAudioFrame];
+  v49 = checkpointFirstAudioFrame == 0;
 
   if (!v49)
   {
-    v50 = [v5 checkpointFirstAudioFrame];
-    [v13 emitMWTCheckPointWithMwtCheckpoint:28 requestId:v14 timeStamp:{objc_msgSend(v50, "longLongValue")}];
+    checkpointFirstAudioFrame2 = [metricsCopy checkpointFirstAudioFrame];
+    [v13 emitMWTCheckPointWithMwtCheckpoint:28 requestId:v14 timeStamp:{objc_msgSend(checkpointFirstAudioFrame2, "longLongValue")}];
 
-    v51 = [v5 checkpointFirstAudioFrame];
-    [v13 emitMWTCheckPointWithMwtCheckpoint:25 requestId:v14 timeStamp:{objc_msgSend(v51, "longLongValue")}];
+    checkpointFirstAudioFrame3 = [metricsCopy checkpointFirstAudioFrame];
+    [v13 emitMWTCheckPointWithMwtCheckpoint:25 requestId:v14 timeStamp:{objc_msgSend(checkpointFirstAudioFrame3, "longLongValue")}];
   }
 
   v128 = 0;
@@ -178,44 +178,44 @@
   v53 = v52;
   _Block_object_dispose(&v128, 8);
   v54 = objc_alloc_init(v52);
-  v55 = [v5 isShuffled];
-  [v54 setIsShuffled:{objc_msgSend(v55, "BOOLValue")}];
+  isShuffled = [metricsCopy isShuffled];
+  [v54 setIsShuffled:{objc_msgSend(isShuffled, "BOOLValue")}];
 
-  v56 = v5;
-  v57 = [v56 assetType];
-  v58 = [v57 integerValue];
+  v56 = metricsCopy;
+  assetType = [v56 assetType];
+  integerValue = [assetType integerValue];
 
-  if ((v58 - 1) > 4)
+  if ((integerValue - 1) > 4)
   {
     v59 = 0;
   }
 
   else
   {
-    v59 = dword_1C6045268[v58 - 1];
+    v59 = dword_1C6045268[integerValue - 1];
   }
 
   [v54 setStreamingContentType:v59];
   v60 = v56;
-  v61 = [v60 formatInfo];
-  v62 = [v61 objectForKeyedSubscript:@"codec"];
-  v63 = [v62 integerValue];
+  formatInfo = [v60 formatInfo];
+  v62 = [formatInfo objectForKeyedSubscript:@"codec"];
+  integerValue2 = [v62 integerValue];
 
-  if (v63 > 1634492790)
+  if (integerValue2 > 1634492790)
   {
-    if (v63 > 1835623528)
+    if (integerValue2 > 1835623528)
     {
-      if (v63 > 1935767393)
+      if (integerValue2 > 1935767393)
       {
-        if (v63 <= 1953986160)
+        if (integerValue2 <= 1953986160)
         {
-          if (v63 == 1935767394)
+          if (integerValue2 == 1935767394)
           {
             v64 = 32;
             goto LABEL_132;
           }
 
-          if (v63 == 1953066341)
+          if (integerValue2 == 1953066341)
           {
             v64 = 19;
             goto LABEL_132;
@@ -224,7 +224,7 @@
 
         else
         {
-          switch(v63)
+          switch(integerValue2)
           {
             case 1953986161:
               v64 = 8;
@@ -239,15 +239,15 @@
         }
       }
 
-      else if (v63 <= 1836253232)
+      else if (integerValue2 <= 1836253232)
       {
-        if (v63 == 1835623529)
+        if (integerValue2 == 1835623529)
         {
           v64 = 20;
           goto LABEL_132;
         }
 
-        if (v63 == 1836253201)
+        if (integerValue2 == 1836253201)
         {
           v64 = 35;
           goto LABEL_132;
@@ -256,7 +256,7 @@
 
       else
       {
-        switch(v63)
+        switch(integerValue2)
         {
           case 1836253233:
             v64 = 36;
@@ -271,17 +271,17 @@
       }
     }
 
-    else if (v63 > 1718378850)
+    else if (integerValue2 > 1718378850)
     {
-      if (v63 <= 1768710754)
+      if (integerValue2 <= 1768710754)
       {
-        if (v63 == 1718378851)
+        if (integerValue2 == 1718378851)
         {
           v64 = 39;
           goto LABEL_132;
         }
 
-        if (v63 == 1752594531)
+        if (integerValue2 == 1752594531)
         {
           v64 = 7;
           goto LABEL_132;
@@ -290,7 +290,7 @@
 
       else
       {
-        switch(v63)
+        switch(integerValue2)
         {
           case 1768710755:
             v64 = 34;
@@ -305,15 +305,15 @@
       }
     }
 
-    else if (v63 <= 1667326770)
+    else if (integerValue2 <= 1667326770)
     {
-      if (v63 == 1634492791)
+      if (integerValue2 == 1634492791)
       {
         v64 = 12;
         goto LABEL_132;
       }
 
-      if (v63 == 1634760307)
+      if (integerValue2 == 1634760307)
       {
         v64 = 21;
         goto LABEL_132;
@@ -322,7 +322,7 @@
 
     else
     {
-      switch(v63)
+      switch(integerValue2)
       {
         case 1667326771:
           v64 = 3;
@@ -337,19 +337,19 @@
     }
   }
 
-  else if (v63 > 1633772388)
+  else if (integerValue2 > 1633772388)
   {
-    if (v63 > 1633772399)
+    if (integerValue2 > 1633772399)
     {
-      if (v63 <= 1633889586)
+      if (integerValue2 <= 1633889586)
       {
-        if (v63 == 1633772400)
+        if (integerValue2 == 1633772400)
         {
           v64 = 28;
           goto LABEL_132;
         }
 
-        if (v63 == 1633772403)
+        if (integerValue2 == 1633772403)
         {
           v64 = 29;
           goto LABEL_132;
@@ -358,7 +358,7 @@
 
       else
       {
-        switch(v63)
+        switch(integerValue2)
         {
           case 1633889587:
             v64 = 2;
@@ -375,9 +375,9 @@
 
     else
     {
-      if (v63 <= 1633772390)
+      if (integerValue2 <= 1633772390)
       {
-        if (v63 == 1633772389)
+        if (integerValue2 == 1633772389)
         {
           v64 = 25;
         }
@@ -390,7 +390,7 @@
         goto LABEL_132;
       }
 
-      switch(v63)
+      switch(integerValue2)
       {
         case 1633772391:
           v64 = 27;
@@ -405,17 +405,17 @@
     }
   }
 
-  else if (v63 > 1296122677)
+  else if (integerValue2 > 1296122677)
   {
-    if (v63 <= 1363430722)
+    if (integerValue2 <= 1363430722)
     {
-      if (v63 == 1296122678)
+      if (integerValue2 == 1296122678)
       {
         v64 = 10;
         goto LABEL_132;
       }
 
-      if (v63 == 1363430706)
+      if (integerValue2 == 1363430706)
       {
         v64 = 14;
         goto LABEL_132;
@@ -424,7 +424,7 @@
 
     else
     {
-      switch(v63)
+      switch(integerValue2)
       {
         case 1363430723:
           v64 = 13;
@@ -439,15 +439,15 @@
     }
   }
 
-  else if (v63 <= 778924082)
+  else if (integerValue2 <= 778924082)
   {
-    if (v63 == 778924081)
+    if (integerValue2 == 778924081)
     {
       v64 = 16;
       goto LABEL_132;
     }
 
-    if (v63 == 778924082)
+    if (integerValue2 == 778924082)
     {
       v64 = 17;
       goto LABEL_132;
@@ -456,7 +456,7 @@
 
   else
   {
-    switch(v63)
+    switch(integerValue2)
     {
       case 778924083:
         v64 = 18;
@@ -474,30 +474,30 @@
 LABEL_132:
 
   [v54 setFormatCodec:v64];
-  v65 = [v60 formatInfo];
-  v66 = [v65 objectForKeyedSubscript:@"bitrate"];
+  formatInfo2 = [v60 formatInfo];
+  v66 = [formatInfo2 objectForKeyedSubscript:@"bitrate"];
   [v54 setFormatBitrate:{objc_msgSend(v66, "integerValue")}];
 
-  v67 = [v60 formatInfo];
-  v68 = [v67 objectForKeyedSubscript:@"bitDepth"];
+  formatInfo3 = [v60 formatInfo];
+  v68 = [formatInfo3 objectForKeyedSubscript:@"bitDepth"];
   [v54 setFormatBitDepth:{objc_msgSend(v68, "integerValue")}];
 
-  v69 = [v60 formatInfo];
-  v70 = [v69 objectForKeyedSubscript:@"channelLayout"];
+  formatInfo4 = [v60 formatInfo];
+  v70 = [formatInfo4 objectForKeyedSubscript:@"channelLayout"];
   [v54 setFormatChannels:{objc_msgSend(v70, "integerValue")}];
 
-  v71 = [v60 formatInfo];
-  v72 = [v71 objectForKeyedSubscript:@"sampleRate"];
+  formatInfo5 = [v60 formatInfo];
+  v72 = [formatInfo5 objectForKeyedSubscript:@"sampleRate"];
   [v54 setFormatSampleRate:{objc_msgSend(v72, "integerValue")}];
 
   v73 = v60;
-  v74 = [v73 formatInfo];
-  v75 = [v74 objectForKeyedSubscript:@"tier"];
-  v76 = [v75 integerValue];
+  formatInfo6 = [v73 formatInfo];
+  v75 = [formatInfo6 objectForKeyedSubscript:@"tier"];
+  integerValue3 = [v75 integerValue];
 
-  if (v76 < 5)
+  if (integerValue3 < 5)
   {
-    v77 = (v76 + 1);
+    v77 = (integerValue3 + 1);
   }
 
   else
@@ -506,44 +506,44 @@ LABEL_132:
   }
 
   [v54 setFormatTier:v77];
-  v78 = [v73 hasAccountInfo];
-  [v54 setIsAccountDataReady:{objc_msgSend(v78, "BOOLValue")}];
+  hasAccountInfo = [v73 hasAccountInfo];
+  [v54 setIsAccountDataReady:{objc_msgSend(hasAccountInfo, "BOOLValue")}];
 
-  v79 = [v73 hasOnlinePlaybackKeys];
-  [v54 setIsOnlineKeyReady:{objc_msgSend(v79, "BOOLValue")}];
+  hasOnlinePlaybackKeys = [v73 hasOnlinePlaybackKeys];
+  [v54 setIsOnlineKeyReady:{objc_msgSend(hasOnlinePlaybackKeys, "BOOLValue")}];
 
-  v80 = [v73 hasOfflinePlaybackKeys];
-  [v54 setIsOfflineKeyReady:{objc_msgSend(v80, "BOOLValue")}];
+  hasOfflinePlaybackKeys = [v73 hasOfflinePlaybackKeys];
+  [v54 setIsOfflineKeyReady:{objc_msgSend(hasOfflinePlaybackKeys, "BOOLValue")}];
 
-  v81 = [v73 isReplacingPlayback];
-  [v54 setIsInterruptingPlayback:{objc_msgSend(v81, "BOOLValue")}];
+  isReplacingPlayback = [v73 isReplacingPlayback];
+  [v54 setIsInterruptingPlayback:{objc_msgSend(isReplacingPlayback, "BOOLValue")}];
 
-  v82 = [v73 isRemoteSetQueue];
-  [v54 setIsRemoteSetQueue:{objc_msgSend(v82, "BOOLValue")}];
+  isRemoteSetQueue = [v73 isRemoteSetQueue];
+  [v54 setIsRemoteSetQueue:{objc_msgSend(isRemoteSetQueue, "BOOLValue")}];
 
-  v83 = [v73 isDelegatedPlayback];
-  [v54 setIsDelegatedPlayback:{objc_msgSend(v83, "BOOLValue")}];
+  isDelegatedPlayback = [v73 isDelegatedPlayback];
+  [v54 setIsDelegatedPlayback:{objc_msgSend(isDelegatedPlayback, "BOOLValue")}];
 
-  v84 = [v73 isAutoPlayEnabled];
-  [v54 setIsAutoPlay:{objc_msgSend(v84, "BOOLValue")}];
+  isAutoPlayEnabled = [v73 isAutoPlayEnabled];
+  [v54 setIsAutoPlay:{objc_msgSend(isAutoPlayEnabled, "BOOLValue")}];
 
-  v85 = [v73 isFirstPlay];
-  [v54 setIsFirstPlayAfterAppLaunch:{objc_msgSend(v85, "BOOLValue")}];
+  isFirstPlay = [v73 isFirstPlay];
+  [v54 setIsFirstPlayAfterAppLaunch:{objc_msgSend(isFirstPlay, "BOOLValue")}];
 
-  v86 = [v73 isSharePlay];
-  [v54 setIsSharePlayPlayback:{objc_msgSend(v86, "BOOLValue")}];
+  isSharePlay = [v73 isSharePlay];
+  [v54 setIsSharePlayPlayback:{objc_msgSend(isSharePlay, "BOOLValue")}];
 
   v87 = v73;
-  v88 = [v87 networkType];
-  v89 = [v88 integerValue];
+  networkType = [v87 networkType];
+  integerValue4 = [networkType integerValue];
 
-  if (v89 > 6)
+  if (integerValue4 > 6)
   {
-    if (v89 > 999)
+    if (integerValue4 > 999)
     {
-      if (v89 > 1999)
+      if (integerValue4 > 1999)
       {
-        if (v89 == 2000)
+        if (integerValue4 == 2000)
         {
           v90 = 14;
           goto LABEL_168;
@@ -552,13 +552,13 @@ LABEL_132:
 
       else
       {
-        if (v89 == 1000)
+        if (integerValue4 == 1000)
         {
           v90 = 12;
           goto LABEL_168;
         }
 
-        if (v89 == 1001)
+        if (integerValue4 == 1001)
         {
           v90 = 13;
           goto LABEL_168;
@@ -566,15 +566,15 @@ LABEL_132:
       }
     }
 
-    else if (v89 > 99)
+    else if (integerValue4 > 99)
     {
-      if (v89 == 100)
+      if (integerValue4 == 100)
       {
         v90 = 10;
         goto LABEL_168;
       }
 
-      if (v89 == 500)
+      if (integerValue4 == 500)
       {
         v90 = 11;
         goto LABEL_168;
@@ -583,13 +583,13 @@ LABEL_132:
 
     else
     {
-      if (v89 == 7)
+      if (integerValue4 == 7)
       {
         v90 = 8;
         goto LABEL_168;
       }
 
-      if (v89 == 8)
+      if (integerValue4 == 8)
       {
         v90 = 9;
         goto LABEL_168;
@@ -601,9 +601,9 @@ LABEL_159:
     goto LABEL_168;
   }
 
-  if (v89 <= 2)
+  if (integerValue4 <= 2)
   {
-    switch(v89)
+    switch(integerValue4)
     {
       case 0:
         v90 = 1;
@@ -619,9 +619,9 @@ LABEL_159:
     goto LABEL_159;
   }
 
-  if (v89 > 4)
+  if (integerValue4 > 4)
   {
-    if (v89 == 5)
+    if (integerValue4 == 5)
     {
       v90 = 6;
     }
@@ -632,7 +632,7 @@ LABEL_159:
     }
   }
 
-  else if (v89 == 3)
+  else if (integerValue4 == 3)
   {
     v90 = 4;
   }
@@ -645,65 +645,65 @@ LABEL_159:
 LABEL_168:
 
   [v54 setNetworkConnectionType:v90];
-  v91 = [v87 isActiveAccount];
-  [v54 setIsPrimaryUser:{objc_msgSend(v91, "BOOLValue")}];
+  isActiveAccount = [v87 isActiveAccount];
+  [v54 setIsPrimaryUser:{objc_msgSend(isActiveAccount, "BOOLValue")}];
 
-  v92 = [v87 errorSignature];
-  [v54 setErrorResolutionType:v92];
+  errorSignature = [v87 errorSignature];
+  [v54 setErrorResolutionType:errorSignature];
 
   v93 = v87;
-  v94 = [v93 assetSource];
-  v95 = [v94 integerValue];
+  assetSource = [v93 assetSource];
+  integerValue5 = [assetSource integerValue];
 
-  [v54 setAssetSource:v95];
+  [v54 setAssetSource:integerValue5];
   v96 = v93;
-  v97 = [v96 assetLocation];
-  v98 = [v97 integerValue];
+  assetLocation = [v96 assetLocation];
+  integerValue6 = [assetLocation integerValue];
 
-  [v54 setAssetLocation:v98];
-  v99 = [v96 queueType];
-  [v54 setAudioQueueType:v99];
+  [v54 setAssetLocation:integerValue6];
+  queueType = [v96 queueType];
+  [v54 setAudioQueueType:queueType];
 
   v100 = v96;
-  v101 = [v100 endpointType];
-  v102 = [v101 integerValue];
+  endpointType = [v100 endpointType];
+  integerValue7 = [endpointType integerValue];
 
-  [v54 setEndPointType:v102];
-  v103 = [v100 bagWaitTime];
-  [v103 doubleValue];
+  [v54 setEndPointType:integerValue7];
+  bagWaitTime = [v100 bagWaitTime];
+  [bagWaitTime doubleValue];
   [v54 setHasBagWaitTime:v104 > 0.0];
 
-  v105 = [v100 leaseWaitTime];
-  [v105 doubleValue];
+  leaseWaitTime = [v100 leaseWaitTime];
+  [leaseWaitTime doubleValue];
   [v54 setHasLeaseWaitTime:v106 > 0.0];
 
-  v107 = [v100 lookupWaitTime];
-  [v107 doubleValue];
+  lookupWaitTime = [v100 lookupWaitTime];
+  [lookupWaitTime doubleValue];
   [v54 setHasLookupWaitTime:v108 > 0.0];
 
-  v109 = [v100 mediaRedownloadWaitTime];
-  [v109 doubleValue];
+  mediaRedownloadWaitTime = [v100 mediaRedownloadWaitTime];
+  [mediaRedownloadWaitTime doubleValue];
   [v54 setHasMediaRedownloadWaitTime:v110 > 0.0];
 
-  v111 = [v100 subscriptionAssetLoadWaitTime];
-  [v111 doubleValue];
+  subscriptionAssetLoadWaitTime = [v100 subscriptionAssetLoadWaitTime];
+  [subscriptionAssetLoadWaitTime doubleValue];
   [v54 setHasSubscriptionAssetLoadWaitTime:v112 > 0.0];
 
-  v113 = [v100 suzeLeaseWaitTime];
-  [v113 doubleValue];
+  suzeLeaseWaitTime = [v100 suzeLeaseWaitTime];
+  [suzeLeaseWaitTime doubleValue];
   [v54 setHasSuzeLeaseWaitTime:v114 > 0.0];
 
   v115 = v100;
-  v116 = [v115 routeInfo];
-  v117 = [v116 objectForKeyedSubscript:@"type"];
-  v118 = [v117 integerValue];
+  routeInfo = [v115 routeInfo];
+  v117 = [routeInfo objectForKeyedSubscript:@"type"];
+  integerValue8 = [v117 integerValue];
 
-  [v54 setRouteType:v118];
+  [v54 setRouteType:integerValue8];
   v119 = v115;
-  v120 = [v119 subscriptionType];
-  v121 = [v120 integerValue];
+  subscriptionType = [v119 subscriptionType];
+  integerValue9 = [subscriptionType integerValue];
 
-  [v54 setSubscriptionType:v121];
+  [v54 setSubscriptionType:integerValue9];
   [v13 emitMWTMusicMetadata:v54 requestId:v14];
   v122 = os_log_create("com.apple.amp.mediaplaybackcore", "Assistant");
   v123 = v122;
@@ -716,11 +716,11 @@ LABEL_168:
   v124 = os_log_create("com.apple.amp.mediaplaybackcore", "Analytics");
   if (os_log_type_enabled(v124, OS_LOG_TYPE_DEFAULT))
   {
-    v125 = [v119 checkpointFirstAudioFrame];
+    checkpointFirstAudioFrame4 = [v119 checkpointFirstAudioFrame];
     *buf = 138543618;
     *&buf[4] = v14;
     *&buf[12] = 2112;
-    *&buf[14] = v125;
+    *&buf[14] = checkpointFirstAudioFrame4;
     _os_log_impl(&dword_1C5C61000, v124, OS_LOG_TYPE_DEFAULT, "Finished sending SELF checkpoints and metadata with siriReferenceIdentifier=%{public}@ firstAudioFrameTimeStamp=%@", buf, 0x16u);
   }
 }

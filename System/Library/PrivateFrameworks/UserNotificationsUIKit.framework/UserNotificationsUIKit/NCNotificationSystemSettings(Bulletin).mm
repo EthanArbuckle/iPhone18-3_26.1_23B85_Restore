@@ -15,13 +15,13 @@
   [v5 setScheduledDeliveryEnabled:{objc_msgSend(v4, "globalScheduledDeliverySetting") == 2}];
   [v5 setScheduledDeliveryUninitialized:{objc_msgSend(v4, "globalScheduledDeliverySetting") == -1}];
   [v5 setScheduledDeliveryShowNextSummary:{objc_msgSend(v4, "globalScheduledDeliveryShowNextSummarySetting") == 2}];
-  v6 = [v4 globalScheduledDeliveryTimes];
-  [v5 setScheduledDeliveryTimes:v6];
+  globalScheduledDeliveryTimes = [v4 globalScheduledDeliveryTimes];
+  [v5 setScheduledDeliveryTimes:globalScheduledDeliveryTimes];
 
   [v5 setListDisplayStyleSetting:{objc_msgSend(MEMORY[0x277D77E68], "listDisplayStyleSettingForBBNotificationListDisplayStyleSetting:", objc_msgSend(v4, "globalNotificationListDisplayStyleSetting"))}];
-  v7 = [v4 globalHighlightsSetting];
+  globalHighlightsSetting = [v4 globalHighlightsSetting];
 
-  [v5 setHighlightsEnabled:v7 == 2];
+  [v5 setHighlightsEnabled:globalHighlightsSetting == 2];
 
   return v5;
 }

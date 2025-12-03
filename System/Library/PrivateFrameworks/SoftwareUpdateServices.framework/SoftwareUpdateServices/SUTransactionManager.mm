@@ -1,18 +1,18 @@
 @interface SUTransactionManager
 + (id)sharedInstance;
-- (BOOL)_hasOpenTransactionForName:(id)a3;
-- (BOOL)_isKeepAliveEnabled:(id *)a3;
-- (BOOL)hasOpenTransactionForName:(id)a3;
+- (BOOL)_hasOpenTransactionForName:(id)name;
+- (BOOL)_isKeepAliveEnabled:(id *)enabled;
+- (BOOL)hasOpenTransactionForName:(id)name;
 - (BOOL)isKeepAliveEnabled;
 - (SUTransactionManager)init;
 - (id)copyTransactions;
-- (void)_setKeepAlive:(BOOL)a3;
+- (void)_setKeepAlive:(BOOL)alive;
 - (void)_toggleKeepAliveStatus;
-- (void)beginTransaction:(id)a3 keepAlive:(BOOL)a4;
-- (void)clearKeepAliveIfNecessary:(BOOL)a3;
+- (void)beginTransaction:(id)transaction keepAlive:(BOOL)alive;
+- (void)clearKeepAliveIfNecessary:(BOOL)necessary;
 - (void)dealloc;
-- (void)endTransaction:(id)a3;
-- (void)setKeepAliveClearable:(BOOL)a3;
+- (void)endTransaction:(id)transaction;
+- (void)setKeepAliveClearable:(BOOL)clearable;
 @end
 
 @implementation SUTransactionManager
@@ -68,8 +68,8 @@ uint64_t __40__SUTransactionManager_copyTransactions__block_invoke(uint64_t a1)
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(NSMutableDictionary *)self->_openTransactions allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allKeys = [(NSMutableDictionary *)self->_openTransactions allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -81,14 +81,14 @@ uint64_t __40__SUTransactionManager_copyTransactions__block_invoke(uint64_t a1)
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         [(SUTransactionManager *)self endTransaction:*(*(&v10 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -132,18 +132,18 @@ uint64_t __38__SUTransactionManager_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)beginTransaction:(id)a3 keepAlive:(BOOL)a4
+- (void)beginTransaction:(id)transaction keepAlive:(BOOL)alive
 {
-  v6 = a3;
+  transactionCopy = transaction;
   workQueue = self->_workQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__SUTransactionManager_beginTransaction_keepAlive___block_invoke;
   block[3] = &unk_279CAAE40;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = transactionCopy;
+  aliveCopy = alive;
+  v8 = transactionCopy;
   dispatch_sync(workQueue, block);
 }
 
@@ -176,17 +176,17 @@ void __51__SUTransactionManager_beginTransaction_keepAlive___block_invoke(uint64
   }
 }
 
-- (void)endTransaction:(id)a3
+- (void)endTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   workQueue = self->_workQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __39__SUTransactionManager_endTransaction___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = transactionCopy;
+  v6 = transactionCopy;
   dispatch_sync(workQueue, v7);
 }
 
@@ -213,9 +213,9 @@ void __39__SUTransactionManager_endTransaction___block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)hasOpenTransactionForName:(id)a3
+- (BOOL)hasOpenTransactionForName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -225,10 +225,10 @@ void __39__SUTransactionManager_endTransaction___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __50__SUTransactionManager_hasOpenTransactionForName___block_invoke;
   block[3] = &unk_279CAB740;
-  v9 = v4;
+  v9 = nameCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = nameCopy;
   dispatch_sync(workQueue, block);
   LOBYTE(workQueue) = *(v12 + 24);
 
@@ -243,7 +243,7 @@ uint64_t __50__SUTransactionManager_hasOpenTransactionForName___block_invoke(uin
   return result;
 }
 
-- (void)setKeepAliveClearable:(BOOL)a3
+- (void)setKeepAliveClearable:(BOOL)clearable
 {
   workQueue = self->_workQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -251,7 +251,7 @@ uint64_t __50__SUTransactionManager_hasOpenTransactionForName___block_invoke(uin
   v4[2] = __46__SUTransactionManager_setKeepAliveClearable___block_invoke;
   v4[3] = &unk_279CAAD00;
   v4[4] = self;
-  v5 = a3;
+  clearableCopy = clearable;
   dispatch_sync(workQueue, v4);
 }
 
@@ -281,14 +281,14 @@ uint64_t __42__SUTransactionManager_isKeepAliveEnabled__block_invoke(uint64_t a1
   return result;
 }
 
-- (void)clearKeepAliveIfNecessary:(BOOL)a3
+- (void)clearKeepAliveIfNecessary:(BOOL)necessary
 {
   workQueue = self->_workQueue;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __50__SUTransactionManager_clearKeepAliveIfNecessary___block_invoke;
   v4[3] = &unk_279CAAD00;
-  v5 = a3;
+  necessaryCopy = necessary;
   v4[4] = self;
   dispatch_sync(workQueue, v4);
 }
@@ -305,9 +305,9 @@ uint64_t __50__SUTransactionManager_clearKeepAliveIfNecessary___block_invoke(uin
   return result;
 }
 
-- (BOOL)_hasOpenTransactionForName:(id)a3
+- (BOOL)_hasOpenTransactionForName:(id)name
 {
-  v3 = [(NSMutableDictionary *)self->_openTransactions objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_openTransactions objectForKey:name];
   v4 = v3 != 0;
 
   return v4;
@@ -320,13 +320,13 @@ uint64_t __50__SUTransactionManager_clearKeepAliveIfNecessary___block_invoke(uin
   [(SUTransactionManager *)self _setKeepAlive:v3];
 }
 
-- (void)_setKeepAlive:(BOOL)a3
+- (void)_setKeepAlive:(BOOL)alive
 {
-  v3 = a3;
-  if (a3 || self->_keepAliveClearable)
+  aliveCopy = alive;
+  if (alive || self->_keepAliveClearable)
   {
     v14 = 0;
-    v4 = [(SUTransactionManager *)self _isKeepAliveEnabled:&v14]^ a3;
+    v4 = [(SUTransactionManager *)self _isKeepAliveEnabled:&v14]^ alive;
     if (v14 || v4 != 0)
     {
       if (vproc_swap_integer())
@@ -337,7 +337,7 @@ uint64_t __50__SUTransactionManager_clearKeepAliveIfNecessary___block_invoke(uin
       else
       {
         v13 = @"Disabled";
-        if (v3)
+        if (aliveCopy)
         {
           v13 = @"Enabled";
         }
@@ -348,12 +348,12 @@ uint64_t __50__SUTransactionManager_clearKeepAliveIfNecessary___block_invoke(uin
   }
 }
 
-- (BOOL)_isKeepAliveEnabled:(id *)a3
+- (BOOL)_isKeepAliveEnabled:(id *)enabled
 {
   if (vproc_swap_integer())
   {
     NSLog(&cfstr_Softwareupdate_3.isa);
-    [SUUtility assignError:a3 withCode:-1];
+    [SUUtility assignError:enabled withCode:-1];
   }
 
   return 1;

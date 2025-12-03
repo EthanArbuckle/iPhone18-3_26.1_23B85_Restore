@@ -1,32 +1,32 @@
 @interface LiveLinkHandler
-+ (id)configureClass:(id)a3;
++ (id)configureClass:(id)class;
 + (id)sharedInstance;
-- (BOOL)excludeLocalFlowsTrackingOnInterface:(id)a3;
-- (BOOL)includeLocalFlowsTrackingOnInterface:(id)a3;
-- (BOOL)noteSymptom:(id)a3;
-- (BOOL)startTrackingLiveLinkOnInterface:(id)a3;
-- (BOOL)stopTrackingLiveLinkOnInterface:(id)a3;
+- (BOOL)excludeLocalFlowsTrackingOnInterface:(id)interface;
+- (BOOL)includeLocalFlowsTrackingOnInterface:(id)interface;
+- (BOOL)noteSymptom:(id)symptom;
+- (BOOL)startTrackingLiveLinkOnInterface:(id)interface;
+- (BOOL)stopTrackingLiveLinkOnInterface:(id)interface;
 @end
 
 @implementation LiveLinkHandler
 
-- (BOOL)startTrackingLiveLinkOnInterface:(id)a3
+- (BOOL)startTrackingLiveLinkOnInterface:(id)interface
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 length])
+  interfaceCopy = interface;
+  if ([interfaceCopy length])
   {
     v4 = liveLinkObservers;
     if (!liveLinkObservers)
     {
-      v5 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       v6 = liveLinkObservers;
-      liveLinkObservers = v5;
+      liveLinkObservers = dictionary;
 
       v4 = liveLinkObservers;
     }
 
-    v7 = [v4 objectForKeyedSubscript:v3];
+    v7 = [v4 objectForKeyedSubscript:interfaceCopy];
     if (v7)
     {
       v8 = v7;
@@ -34,55 +34,55 @@
       if (os_log_type_enabled(liveLinkLogHandle, OS_LOG_TYPE_DEFAULT))
       {
         v13 = 138412290;
-        v14 = v3;
+        v14 = interfaceCopy;
         _os_log_impl(&dword_23255B000, v9, OS_LOG_TYPE_DEFAULT, "Already observing health of interface %@", &v13, 0xCu);
       }
 
-      v10 = 0;
+      startTracking = 0;
     }
 
     else
     {
-      v8 = [[LiveLinkObserver alloc] initWithInterfaceName:v3];
-      v10 = [(LiveLinkObserver *)v8 startTracking];
-      [liveLinkObservers setObject:v8 forKeyedSubscript:v3];
+      v8 = [[LiveLinkObserver alloc] initWithInterfaceName:interfaceCopy];
+      startTracking = [(LiveLinkObserver *)v8 startTracking];
+      [liveLinkObservers setObject:v8 forKeyedSubscript:interfaceCopy];
     }
   }
 
   else
   {
-    v10 = 0;
+    startTracking = 0;
   }
 
   v11 = *MEMORY[0x277D85DE8];
-  return v10;
+  return startTracking;
 }
 
-- (BOOL)stopTrackingLiveLinkOnInterface:(id)a3
+- (BOOL)stopTrackingLiveLinkOnInterface:(id)interface
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = 0;
-  if ([v3 length] && liveLinkObservers)
+  interfaceCopy = interface;
+  stopTracking = 0;
+  if ([interfaceCopy length] && liveLinkObservers)
   {
-    v5 = [liveLinkObservers objectForKeyedSubscript:v3];
+    v5 = [liveLinkObservers objectForKeyedSubscript:interfaceCopy];
     v6 = v5;
     if (v5)
     {
-      v4 = [v5 stopTracking];
-      [liveLinkObservers setObject:0 forKeyedSubscript:v3];
+      stopTracking = [v5 stopTracking];
+      [liveLinkObservers setObject:0 forKeyedSubscript:interfaceCopy];
     }
 
     else
     {
       v7 = liveLinkLogHandle;
-      v4 = 0;
+      stopTracking = 0;
       if (os_log_type_enabled(liveLinkLogHandle, OS_LOG_TYPE_DEFAULT))
       {
         v11 = 138412290;
-        v12 = v3;
+        v12 = interfaceCopy;
         _os_log_impl(&dword_23255B000, v7, OS_LOG_TYPE_DEFAULT, "Not currently observing health of interface %@", &v11, 0xCu);
-        v4 = 0;
+        stopTracking = 0;
       }
     }
 
@@ -94,20 +94,20 @@
   }
 
   v9 = *MEMORY[0x277D85DE8];
-  return v4;
+  return stopTracking;
 }
 
-- (BOOL)includeLocalFlowsTrackingOnInterface:(id)a3
+- (BOOL)includeLocalFlowsTrackingOnInterface:(id)interface
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 length])
+  interfaceCopy = interface;
+  if ([interfaceCopy length])
   {
-    v4 = [liveLinkObservers objectForKeyedSubscript:v3];
+    v4 = [liveLinkObservers objectForKeyedSubscript:interfaceCopy];
     v5 = v4;
     if (v4)
     {
-      v6 = [v4 enableLocalFlowsTracking];
+      enableLocalFlowsTracking = [v4 enableLocalFlowsTracking];
     }
 
     else
@@ -116,34 +116,34 @@
       if (os_log_type_enabled(liveLinkLogHandle, OS_LOG_TYPE_ERROR))
       {
         v10 = 138412290;
-        v11 = v3;
+        v11 = interfaceCopy;
         _os_log_impl(&dword_23255B000, v7, OS_LOG_TYPE_ERROR, "Not currently observing health of interface %@", &v10, 0xCu);
       }
 
-      v6 = 0;
+      enableLocalFlowsTracking = 0;
     }
   }
 
   else
   {
-    v6 = 0;
+    enableLocalFlowsTracking = 0;
   }
 
   v8 = *MEMORY[0x277D85DE8];
-  return v6;
+  return enableLocalFlowsTracking;
 }
 
-- (BOOL)excludeLocalFlowsTrackingOnInterface:(id)a3
+- (BOOL)excludeLocalFlowsTrackingOnInterface:(id)interface
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 length])
+  interfaceCopy = interface;
+  if ([interfaceCopy length])
   {
-    v4 = [liveLinkObservers objectForKeyedSubscript:v3];
+    v4 = [liveLinkObservers objectForKeyedSubscript:interfaceCopy];
     v5 = v4;
     if (v4)
     {
-      v6 = [v4 disableLocalFlowsTracking];
+      disableLocalFlowsTracking = [v4 disableLocalFlowsTracking];
     }
 
     else
@@ -152,34 +152,34 @@
       if (os_log_type_enabled(liveLinkLogHandle, OS_LOG_TYPE_ERROR))
       {
         v10 = 138412290;
-        v11 = v3;
+        v11 = interfaceCopy;
         _os_log_impl(&dword_23255B000, v7, OS_LOG_TYPE_ERROR, "Not currently observing health of interface %@", &v10, 0xCu);
       }
 
-      v6 = 0;
+      disableLocalFlowsTracking = 0;
     }
   }
 
   else
   {
-    v6 = 0;
+    disableLocalFlowsTracking = 0;
   }
 
   v8 = *MEMORY[0x277D85DE8];
-  return v6;
+  return disableLocalFlowsTracking;
 }
 
-- (BOOL)noteSymptom:(id)a3
+- (BOOL)noteSymptom:(id)symptom
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 eventKey];
+  symptomCopy = symptom;
+  eventKey = [symptomCopy eventKey];
   v6 = [SymptomStore keyFromSymptomName:@"SYMPTOM_START_TRACKING_LIVE_LINK"];
-  v7 = [v5 isEqualToString:v6];
+  v7 = [eventKey isEqualToString:v6];
 
   if (v7)
   {
-    v8 = [v4 eventQualifierStringForKey:@"0"];
+    v8 = [symptomCopy eventQualifierStringForKey:@"0"];
     v9 = [(LiveLinkHandler *)self startTrackingLiveLinkOnInterface:v8];
     v10 = liveLinkLogHandle;
     if (os_log_type_enabled(liveLinkLogHandle, OS_LOG_TYPE_DEFAULT))
@@ -198,11 +198,11 @@ LABEL_7:
   }
 
   v12 = [SymptomStore keyFromSymptomName:@"SYMPTOM_STOP_TRACKING_LIVE_LINK"];
-  v13 = [v5 isEqualToString:v12];
+  v13 = [eventKey isEqualToString:v12];
 
   if (v13)
   {
-    v8 = [v4 eventQualifierStringForKey:@"0"];
+    v8 = [symptomCopy eventQualifierStringForKey:@"0"];
     v14 = [(LiveLinkHandler *)self stopTrackingLiveLinkOnInterface:v8];
     v10 = liveLinkLogHandle;
     if (os_log_type_enabled(liveLinkLogHandle, OS_LOG_TYPE_DEFAULT))
@@ -228,7 +228,7 @@ LABEL_8:
   block[1] = 3221225472;
   block[2] = __33__LiveLinkHandler_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_pred_19 != -1)
   {
     dispatch_once(&sharedInstance_pred_19, block);
@@ -251,11 +251,11 @@ void __33__LiveLinkHandler_sharedInstance__block_invoke(uint64_t a1)
   [ConfigurationHandler setConfigurationObject:v3 forName:v5];
 }
 
-+ (id)configureClass:(id)a3
++ (id)configureClass:(id)class
 {
-  v3 = a3;
+  classCopy = class;
   v4 = +[LiveLinkHandler sharedInstance];
-  [v4 configureInstance:v3];
+  [v4 configureInstance:classCopy];
 
   return v4;
 }

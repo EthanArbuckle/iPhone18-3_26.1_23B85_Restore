@@ -1,12 +1,12 @@
 @interface WFUserFocusActivityTrigger
-+ (id)localizedDisplayNameWithContext:(id)a3;
++ (id)localizedDisplayNameWithContext:(id)context;
 + (id)tintColor;
 - (BOOL)hasValidConfiguration;
 - (NSString)description;
 - (WFUserFocusActivityTrigger)init;
-- (WFUserFocusActivityTrigger)initWithActivity:(id)a3;
-- (WFUserFocusActivityTrigger)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (WFUserFocusActivityTrigger)initWithActivity:(id)activity;
+- (WFUserFocusActivityTrigger)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)displayGlyph;
 - (id)displayGlyphTintColor;
 - (id)localizedDescriptionWithConfigurationSummary;
@@ -16,32 +16,32 @@
 - (id)onIcon;
 - (id)suggestedActions;
 - (id)uniqueIdentifier;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFUserFocusActivityTrigger
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v11.receiver = self;
   v11.super_class = WFUserFocusActivityTrigger;
-  v4 = [(WFTrigger *)&v11 copyWithZone:a3];
+  v4 = [(WFTrigger *)&v11 copyWithZone:zone];
   [v4 setOnEnable:{-[WFUserFocusActivityTrigger onEnable](self, "onEnable")}];
   [v4 setOnDisable:{-[WFUserFocusActivityTrigger onDisable](self, "onDisable")}];
-  v5 = [(WFUserFocusActivityTrigger *)self activityName];
-  [v4 setActivityName:v5];
+  activityName = [(WFUserFocusActivityTrigger *)self activityName];
+  [v4 setActivityName:activityName];
 
-  v6 = [(WFUserFocusActivityTrigger *)self activityUniqueIdentifier];
-  [v4 setActivityUniqueIdentifier:v6];
+  activityUniqueIdentifier = [(WFUserFocusActivityTrigger *)self activityUniqueIdentifier];
+  [v4 setActivityUniqueIdentifier:activityUniqueIdentifier];
 
-  v7 = [(WFUserFocusActivityTrigger *)self activitySemanticIdentifier];
-  [v4 setActivitySemanticIdentifier:v7];
+  activitySemanticIdentifier = [(WFUserFocusActivityTrigger *)self activitySemanticIdentifier];
+  [v4 setActivitySemanticIdentifier:activitySemanticIdentifier];
 
-  v8 = [(WFUserFocusActivityTrigger *)self activityGlyphName];
-  [v4 setActivityGlyphName:v8];
+  activityGlyphName = [(WFUserFocusActivityTrigger *)self activityGlyphName];
+  [v4 setActivityGlyphName:activityGlyphName];
 
-  v9 = [(WFUserFocusActivityTrigger *)self activityTintColor];
-  [v4 setActivityTintColor:v9];
+  activityTintColor = [(WFUserFocusActivityTrigger *)self activityTintColor];
+  [v4 setActivityTintColor:activityTintColor];
 
   return v4;
 }
@@ -54,50 +54,50 @@
   return v3;
 }
 
-- (WFUserFocusActivityTrigger)initWithCoder:(id)a3
+- (WFUserFocusActivityTrigger)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = WFUserFocusActivityTrigger;
-  v5 = [(WFTrigger *)&v24 initWithCoder:v4];
+  v5 = [(WFTrigger *)&v24 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"onEnable"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"onEnable"];
     v5->_onEnable = [v6 BOOLValue];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"onDisable"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"onDisable"];
     v5->_onDisable = [v7 BOOLValue];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"activityGlyphName"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"activityGlyphName"];
     activityGlyphName = v5->_activityGlyphName;
     v5->_activityGlyphName = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"activityTintColor"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"activityTintColor"];
     activityTintColor = v5->_activityTintColor;
     v5->_activityTintColor = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"activitySemanticIdentifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"activitySemanticIdentifier"];
     activitySemanticIdentifier = v5->_activitySemanticIdentifier;
     v5->_activitySemanticIdentifier = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"activityName"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"activityName"];
     activityName = v5->_activityName;
     v5->_activityName = v14;
 
     if (![(NSString *)v5->_activityName length])
     {
-      v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"selectedMode"];
+      v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"selectedMode"];
       v17 = v5->_activityName;
       v5->_activityName = v16;
     }
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"activityIdentifier"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"activityIdentifier"];
     activityUniqueIdentifier = v5->_activityUniqueIdentifier;
     v5->_activityUniqueIdentifier = v18;
 
     if (![(NSString *)v5->_activityUniqueIdentifier length])
     {
-      v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"selectedModeIdentifier"];
+      v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"selectedModeIdentifier"];
       v21 = v5->_activityUniqueIdentifier;
       v5->_activityUniqueIdentifier = v20;
     }
@@ -108,32 +108,32 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v12.receiver = self;
   v12.super_class = WFUserFocusActivityTrigger;
-  v4 = a3;
-  [(WFTrigger *)&v12 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(WFTrigger *)&v12 encodeWithCoder:coderCopy];
   v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[WFUserFocusActivityTrigger onEnable](self, "onEnable", v12.receiver, v12.super_class)}];
-  [v4 encodeObject:v5 forKey:@"onEnable"];
+  [coderCopy encodeObject:v5 forKey:@"onEnable"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[WFUserFocusActivityTrigger onDisable](self, "onDisable")}];
-  [v4 encodeObject:v6 forKey:@"onDisable"];
+  [coderCopy encodeObject:v6 forKey:@"onDisable"];
 
-  v7 = [(WFUserFocusActivityTrigger *)self activityName];
-  [v4 encodeObject:v7 forKey:@"activityName"];
+  activityName = [(WFUserFocusActivityTrigger *)self activityName];
+  [coderCopy encodeObject:activityName forKey:@"activityName"];
 
-  v8 = [(WFUserFocusActivityTrigger *)self activitySemanticIdentifier];
-  [v4 encodeObject:v8 forKey:@"activitySemanticIdentifier"];
+  activitySemanticIdentifier = [(WFUserFocusActivityTrigger *)self activitySemanticIdentifier];
+  [coderCopy encodeObject:activitySemanticIdentifier forKey:@"activitySemanticIdentifier"];
 
-  v9 = [(WFUserFocusActivityTrigger *)self activityUniqueIdentifier];
-  [v4 encodeObject:v9 forKey:@"activityIdentifier"];
+  activityUniqueIdentifier = [(WFUserFocusActivityTrigger *)self activityUniqueIdentifier];
+  [coderCopy encodeObject:activityUniqueIdentifier forKey:@"activityIdentifier"];
 
-  v10 = [(WFUserFocusActivityTrigger *)self activityGlyphName];
-  [v4 encodeObject:v10 forKey:@"activityGlyphName"];
+  activityGlyphName = [(WFUserFocusActivityTrigger *)self activityGlyphName];
+  [coderCopy encodeObject:activityGlyphName forKey:@"activityGlyphName"];
 
-  v11 = [(WFUserFocusActivityTrigger *)self activityTintColor];
-  [v4 encodeObject:v11 forKey:@"activityTintColor"];
+  activityTintColor = [(WFUserFocusActivityTrigger *)self activityTintColor];
+  [coderCopy encodeObject:activityTintColor forKey:@"activityTintColor"];
 }
 
 - (id)localizedPastTenseDescription
@@ -145,8 +145,8 @@
     v4 = @"Turned %@ on or off";
 LABEL_8:
     v5 = WFLocalizedString(v4);
-    v6 = [(WFUserFocusActivityTrigger *)self activityName];
-    v7 = [v3 localizedStringWithFormat:v5, v6];
+    activityName = [(WFUserFocusActivityTrigger *)self activityName];
+    v7 = [v3 localizedStringWithFormat:v5, activityName];
 
     goto LABEL_9;
   }
@@ -171,7 +171,7 @@ LABEL_8:
     *buf = 136315394;
     v12 = "[WFUserFocusActivityTrigger localizedPastTenseDescription]";
     v13 = 2114;
-    v14 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1CA256000, v10, OS_LOG_TYPE_FAULT, "%s Invalid config for %{public}@", buf, 0x16u);
   }
 
@@ -191,8 +191,8 @@ LABEL_9:
     v4 = @"When %@  is turned on or off";
 LABEL_8:
     v5 = WFLocalizedString(v4);
-    v6 = [(WFUserFocusActivityTrigger *)self activityName];
-    v7 = [v3 localizedStringWithFormat:v5, v6];
+    activityName = [(WFUserFocusActivityTrigger *)self activityName];
+    v7 = [v3 localizedStringWithFormat:v5, activityName];
 
     goto LABEL_9;
   }
@@ -217,7 +217,7 @@ LABEL_8:
     *buf = 136315394;
     v12 = "[WFUserFocusActivityTrigger localizedDescriptionWithConfigurationSummary]";
     v13 = 2114;
-    v14 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1CA256000, v10, OS_LOG_TYPE_FAULT, "%s Invalid config for %{public}@", buf, 0x16u);
   }
 
@@ -235,8 +235,8 @@ LABEL_9:
     return 0;
   }
 
-  v3 = [(WFUserFocusActivityTrigger *)self activityName];
-  v4 = v3 != 0;
+  activityName = [(WFUserFocusActivityTrigger *)self activityName];
+  v4 = activityName != 0;
 
   return v4;
 }
@@ -263,18 +263,18 @@ LABEL_9:
   v10.receiver = self;
   v10.super_class = WFUserFocusActivityTrigger;
   v4 = [(WFTrigger *)&v10 description];
-  v5 = [(WFUserFocusActivityTrigger *)self activityName];
-  v6 = [(WFUserFocusActivityTrigger *)self activitySemanticIdentifier];
-  v7 = [(WFUserFocusActivityTrigger *)self activityUniqueIdentifier];
-  v8 = [v3 stringWithFormat:@"<%@, name: %@, id: %@, unique id: %@, onEnable: %i, onDisable: %i>", v4, v5, v6, v7, -[WFUserFocusActivityTrigger onEnable](self, "onEnable"), -[WFUserFocusActivityTrigger onDisable](self, "onDisable")];
+  activityName = [(WFUserFocusActivityTrigger *)self activityName];
+  activitySemanticIdentifier = [(WFUserFocusActivityTrigger *)self activitySemanticIdentifier];
+  activityUniqueIdentifier = [(WFUserFocusActivityTrigger *)self activityUniqueIdentifier];
+  v8 = [v3 stringWithFormat:@"<%@, name: %@, id: %@, unique id: %@, onEnable: %i, onDisable: %i>", v4, activityName, activitySemanticIdentifier, activityUniqueIdentifier, -[WFUserFocusActivityTrigger onEnable](self, "onEnable"), -[WFUserFocusActivityTrigger onDisable](self, "onDisable")];
 
   return v8;
 }
 
 - (id)offIcon
 {
-  v2 = [(WFUserFocusActivityTrigger *)self activityGlyphName];
-  v3 = [WFFocusModesManager exitingSymbolForSymbolName:v2];
+  activityGlyphName = [(WFUserFocusActivityTrigger *)self activityGlyphName];
+  v3 = [WFFocusModesManager exitingSymbolForSymbolName:activityGlyphName];
 
   v4 = [MEMORY[0x1E69E0B58] triggerConfigurationSymbolNamed:v3 renderingMode:2];
 
@@ -283,8 +283,8 @@ LABEL_9:
 
 - (id)onIcon
 {
-  v2 = [(WFUserFocusActivityTrigger *)self activityGlyphName];
-  v3 = [WFFocusModesManager enteringSymbolForSymbolName:v2];
+  activityGlyphName = [(WFUserFocusActivityTrigger *)self activityGlyphName];
+  v3 = [WFFocusModesManager enteringSymbolForSymbolName:activityGlyphName];
 
   v4 = [MEMORY[0x1E69E0B58] triggerConfigurationSymbolNamed:v3 renderingMode:2];
 
@@ -296,20 +296,20 @@ LABEL_9:
   v3 = MEMORY[0x1E696AEC0];
   v8.receiver = self;
   v8.super_class = WFUserFocusActivityTrigger;
-  v4 = [(WFTrigger *)&v8 uniqueIdentifier];
-  v5 = [(WFUserFocusActivityTrigger *)self activitySemanticIdentifier];
-  v6 = [v3 stringWithFormat:@"%@.%@", v4, v5];
+  uniqueIdentifier = [(WFTrigger *)&v8 uniqueIdentifier];
+  activitySemanticIdentifier = [(WFUserFocusActivityTrigger *)self activitySemanticIdentifier];
+  v6 = [v3 stringWithFormat:@"%@.%@", uniqueIdentifier, activitySemanticIdentifier];
 
   return v6;
 }
 
 - (id)displayGlyphTintColor
 {
-  v2 = [(WFUserFocusActivityTrigger *)self activityTintColor];
-  v3 = v2;
-  if (v2)
+  activityTintColor = [(WFUserFocusActivityTrigger *)self activityTintColor];
+  v3 = activityTintColor;
+  if (activityTintColor)
   {
-    v4 = v2;
+    v4 = activityTintColor;
   }
 
   else
@@ -333,8 +333,8 @@ LABEL_9:
 
     v7 = v6;
     _Block_object_dispose(&v11, 8);
-    v8 = [v6 systemIndigoColor];
-    v4 = [v5 initWithPlatformColor:v8];
+    systemIndigoColor = [v6 systemIndigoColor];
+    v4 = [v5 initWithPlatformColor:systemIndigoColor];
   }
 
   return v4;
@@ -343,8 +343,8 @@ LABEL_9:
 - (id)displayGlyph
 {
   v2 = MEMORY[0x1E69E0B58];
-  v3 = [(WFUserFocusActivityTrigger *)self displayGlyphName];
-  v4 = [v2 triggerDisplaySymbolNamed:v3 renderingMode:2];
+  displayGlyphName = [(WFUserFocusActivityTrigger *)self displayGlyphName];
+  v4 = [v2 triggerDisplaySymbolNamed:displayGlyphName renderingMode:2];
 
   return v4;
 }
@@ -353,42 +353,42 @@ LABEL_9:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = WFLocalizedString(@"“When turning %@ on”");
-  v5 = [(WFUserFocusActivityTrigger *)self activityName];
-  v6 = [v3 localizedStringWithFormat:v4, v5];
+  activityName = [(WFUserFocusActivityTrigger *)self activityName];
+  v6 = [v3 localizedStringWithFormat:v4, activityName];
 
   return v6;
 }
 
-- (WFUserFocusActivityTrigger)initWithActivity:(id)a3
+- (WFUserFocusActivityTrigger)initWithActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v21.receiver = self;
   v21.super_class = WFUserFocusActivityTrigger;
   v5 = [(WFTrigger *)&v21 init];
   if (v5)
   {
-    v6 = [v4 activityDisplayName];
+    activityDisplayName = [activityCopy activityDisplayName];
     activityName = v5->_activityName;
-    v5->_activityName = v6;
+    v5->_activityName = activityDisplayName;
 
-    v8 = [v4 activityUniqueIdentifier];
-    v9 = [v8 UUIDString];
+    activityUniqueIdentifier = [activityCopy activityUniqueIdentifier];
+    uUIDString = [activityUniqueIdentifier UUIDString];
     activityUniqueIdentifier = v5->_activityUniqueIdentifier;
-    v5->_activityUniqueIdentifier = v9;
+    v5->_activityUniqueIdentifier = uUIDString;
 
-    v11 = [v4 activityIdentifier];
+    activityIdentifier = [activityCopy activityIdentifier];
     activitySemanticIdentifier = v5->_activitySemanticIdentifier;
-    v5->_activitySemanticIdentifier = v11;
+    v5->_activitySemanticIdentifier = activityIdentifier;
 
-    v13 = [v4 activitySymbolImageName];
+    activitySymbolImageName = [activityCopy activitySymbolImageName];
     activityGlyphName = v5->_activityGlyphName;
-    v5->_activityGlyphName = v13;
+    v5->_activityGlyphName = activitySymbolImageName;
 
     v5->_onEnable = 1;
     v5->_onDisable = 0;
     v15 = MEMORY[0x1E69E09E0];
-    v16 = [v4 activityColorName];
-    v17 = [v15 colorWithFocusColorName:v16];
+    activityColorName = [activityCopy activityColorName];
+    v17 = [v15 colorWithFocusColorName:activityColorName];
     activityTintColor = v5->_activityTintColor;
     v5->_activityTintColor = v17;
 
@@ -405,11 +405,11 @@ LABEL_9:
   return v2;
 }
 
-+ (id)localizedDisplayNameWithContext:(id)a3
++ (id)localizedDisplayNameWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Focus", @"Focus");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }

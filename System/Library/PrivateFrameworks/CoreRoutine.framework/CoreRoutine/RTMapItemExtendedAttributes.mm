@@ -1,22 +1,22 @@
 @interface RTMapItemExtendedAttributes
-+ (id)fingerprintLabelTypeToString:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToMapItemExtendedAttributes:(id)a3;
-- (RTMapItemExtendedAttributes)initWithCoder:(id)a3;
-- (RTMapItemExtendedAttributes)initWithExtendedAttributesMO:(id)a3;
-- (RTMapItemExtendedAttributes)initWithIdentifier:(id)a3 addressIdentifier:(id)a4 isMe:(BOOL)a5 wifiConfidence:(double)a6 wifiFingerprintLabelType:(int64_t)a7;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)fingerprintLabelTypeToString:(int64_t)string;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToMapItemExtendedAttributes:(id)attributes;
+- (RTMapItemExtendedAttributes)initWithCoder:(id)coder;
+- (RTMapItemExtendedAttributes)initWithExtendedAttributesMO:(id)o;
+- (RTMapItemExtendedAttributes)initWithIdentifier:(id)identifier addressIdentifier:(id)addressIdentifier isMe:(BOOL)me wifiConfidence:(double)confidence wifiFingerprintLabelType:(int64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTMapItemExtendedAttributes
 
-+ (id)fingerprintLabelTypeToString:(int64_t)a3
++ (id)fingerprintLabelTypeToString:(int64_t)string
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (a3 >= 3)
+  if (string >= 3)
   {
     v4 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -33,45 +33,45 @@
 
   else
   {
-    result = off_1E80B4C38[a3];
+    result = off_1E80B4C38[string];
   }
 
   v5 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (RTMapItemExtendedAttributes)initWithExtendedAttributesMO:(id)a3
+- (RTMapItemExtendedAttributes)initWithExtendedAttributesMO:(id)o
 {
-  if (a3)
+  if (o)
   {
-    v4 = a3;
-    v5 = [v4 identifier];
-    v6 = [v4 addressIdentifier];
-    v7 = [v4 isMe];
-    v8 = [v7 BOOLValue];
-    v9 = [v4 wifiConfidence];
-    [v9 doubleValue];
+    oCopy = o;
+    identifier = [oCopy identifier];
+    addressIdentifier = [oCopy addressIdentifier];
+    isMe = [oCopy isMe];
+    bOOLValue = [isMe BOOLValue];
+    wifiConfidence = [oCopy wifiConfidence];
+    [wifiConfidence doubleValue];
     v11 = v10;
-    v12 = [v4 wifiFingerprintLabelType];
+    wifiFingerprintLabelType = [oCopy wifiFingerprintLabelType];
 
-    self = -[RTMapItemExtendedAttributes initWithIdentifier:addressIdentifier:isMe:wifiConfidence:wifiFingerprintLabelType:](self, "initWithIdentifier:addressIdentifier:isMe:wifiConfidence:wifiFingerprintLabelType:", v5, v6, v8, [v12 integerValue], v11);
-    v13 = self;
+    self = -[RTMapItemExtendedAttributes initWithIdentifier:addressIdentifier:isMe:wifiConfidence:wifiFingerprintLabelType:](self, "initWithIdentifier:addressIdentifier:isMe:wifiConfidence:wifiFingerprintLabelType:", identifier, addressIdentifier, bOOLValue, [wifiFingerprintLabelType integerValue], v11);
+    selfCopy = self;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (RTMapItemExtendedAttributes)initWithIdentifier:(id)a3 addressIdentifier:(id)a4 isMe:(BOOL)a5 wifiConfidence:(double)a6 wifiFingerprintLabelType:(int64_t)a7
+- (RTMapItemExtendedAttributes)initWithIdentifier:(id)identifier addressIdentifier:(id)addressIdentifier isMe:(BOOL)me wifiConfidence:(double)confidence wifiFingerprintLabelType:(int64_t)type
 {
   v28 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  if (!v13)
+  identifierCopy = identifier;
+  addressIdentifierCopy = addressIdentifier;
+  if (!identifierCopy)
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -84,7 +84,7 @@
     }
   }
 
-  if (a7 >= 3)
+  if (type >= 3)
   {
     v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -97,7 +97,7 @@
     }
   }
 
-  if (a6 < 0.0 || a6 > 1.0)
+  if (confidence < 0.0 || confidence > 1.0)
   {
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -110,8 +110,8 @@
     }
   }
 
-  v18 = 0;
-  if (v13 && a6 <= 1.0 && a6 >= 0.0 && a7 <= 2)
+  selfCopy = 0;
+  if (identifierCopy && confidence <= 1.0 && confidence >= 0.0 && type <= 2)
   {
     v23.receiver = self;
     v23.super_class = RTMapItemExtendedAttributes;
@@ -119,19 +119,19 @@
     v20 = v19;
     if (v19)
     {
-      objc_storeStrong(&v19->_identifier, a3);
-      objc_storeStrong(&v20->_addressIdentifier, a4);
-      v20->_isMe = a5;
-      v20->_wifiConfidence = a6;
-      v20->_wifiFingerprintLabelType = a7;
+      objc_storeStrong(&v19->_identifier, identifier);
+      objc_storeStrong(&v20->_addressIdentifier, addressIdentifier);
+      v20->_isMe = me;
+      v20->_wifiConfidence = confidence;
+      v20->_wifiFingerprintLabelType = type;
     }
 
     self = v20;
-    v18 = self;
+    selfCopy = self;
   }
 
   v21 = *MEMORY[0x1E69E9840];
-  return v18;
+  return selfCopy;
 }
 
 - (id)description
@@ -156,18 +156,18 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(RTMapItemExtendedAttributes *)self isEqualToMapItemExtendedAttributes:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(RTMapItemExtendedAttributes *)self isEqualToMapItemExtendedAttributes:v5];
   }
 
   return v6;
@@ -187,17 +187,17 @@
   return v6 ^ v10;
 }
 
-- (BOOL)isEqualToMapItemExtendedAttributes:(id)a3
+- (BOOL)isEqualToMapItemExtendedAttributes:(id)attributes
 {
-  v6 = a3;
-  v7 = v6;
+  attributesCopy = attributes;
+  v7 = attributesCopy;
   identifier = self->_identifier;
   v9 = identifier;
   if (identifier)
   {
 LABEL_4:
-    v4 = [v7 identifier];
-    v10 = [(NSUUID *)v9 isEqual:v4];
+    identifier = [v7 identifier];
+    v10 = [(NSUUID *)v9 isEqual:identifier];
 
     if (identifier)
     {
@@ -207,8 +207,8 @@ LABEL_4:
     goto LABEL_7;
   }
 
-  v3 = [v6 identifier];
-  if (v3)
+  identifier2 = [attributesCopy identifier];
+  if (identifier2)
   {
     v9 = self->_identifier;
     goto LABEL_4;
@@ -225,13 +225,13 @@ LABEL_8:
     goto LABEL_11;
   }
 
-  v4 = [v7 addressIdentifier];
-  if (v4)
+  identifier = [v7 addressIdentifier];
+  if (identifier)
   {
     v12 = self->_addressIdentifier;
 LABEL_11:
-    v13 = [v7 addressIdentifier];
-    v14 = [(NSString *)v12 isEqual:v13];
+    addressIdentifier = [v7 addressIdentifier];
+    v14 = [(NSString *)v12 isEqual:addressIdentifier];
 
     if (addressIdentifier)
     {
@@ -251,7 +251,7 @@ LABEL_15:
   [v7 wifiConfidence];
   v19 = v18;
   wifiFingerprintLabelType = self->_wifiFingerprintLabelType;
-  v21 = [v7 wifiFingerprintLabelType];
+  wifiFingerprintLabelType = [v7 wifiFingerprintLabelType];
   v22 = v10 & v14;
   if (v16 != isMe)
   {
@@ -263,7 +263,7 @@ LABEL_15:
     v22 = 0;
   }
 
-  if (wifiFingerprintLabelType == v21)
+  if (wifiFingerprintLabelType == wifiFingerprintLabelType)
   {
     v23 = v22;
   }
@@ -276,34 +276,34 @@ LABEL_15:
   return v23;
 }
 
-- (RTMapItemExtendedAttributes)initWithCoder:(id)a3
+- (RTMapItemExtendedAttributes)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"addressIdentifier"];
-  v7 = [v4 decodeBoolForKey:@"isMe"];
-  [v4 decodeDoubleForKey:@"wifiConfidence"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"addressIdentifier"];
+  v7 = [coderCopy decodeBoolForKey:@"isMe"];
+  [coderCopy decodeDoubleForKey:@"wifiConfidence"];
   v9 = v8;
-  v10 = [v4 decodeIntegerForKey:@"wifiFingerprintLabelType"];
+  v10 = [coderCopy decodeIntegerForKey:@"wifiFingerprintLabelType"];
 
   v11 = [(RTMapItemExtendedAttributes *)self initWithIdentifier:v5 addressIdentifier:v6 isMe:v7 wifiConfidence:v10 wifiFingerprintLabelType:v9];
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_addressIdentifier forKey:@"addressIdentifier"];
-  [v5 encodeBool:self->_isMe forKey:@"isMe"];
-  [v5 encodeDouble:@"wifiConfidence" forKey:self->_wifiConfidence];
-  [v5 encodeInteger:self->_wifiFingerprintLabelType forKey:@"wifiFingerprintLabelType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_addressIdentifier forKey:@"addressIdentifier"];
+  [coderCopy encodeBool:self->_isMe forKey:@"isMe"];
+  [coderCopy encodeDouble:@"wifiConfidence" forKey:self->_wifiConfidence];
+  [coderCopy encodeInteger:self->_wifiFingerprintLabelType forKey:@"wifiFingerprintLabelType"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   addressIdentifier = self->_addressIdentifier;
   isMe = self->_isMe;
   wifiConfidence = self->_wifiConfidence;

@@ -3,8 +3,8 @@
 - (NSString)loggingDescription;
 - (id)sessionConfig;
 - (id)validateInput;
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7;
-- (void)performRequestWithHandler:(id)a3;
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler;
+- (void)performRequestWithHandler:(id)handler;
 @end
 
 @implementation LakituRequest
@@ -60,8 +60,8 @@
 - (NSMutableURLRequest)urlRequest
 {
   v3 = [NSURL alloc];
-  v4 = [(LakituRequest *)self urlString];
-  v5 = [v3 initWithString:v4];
+  urlString = [(LakituRequest *)self urlString];
+  v5 = [v3 initWithString:urlString];
 
   if (v5)
   {
@@ -78,26 +78,26 @@
   return v6;
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = [(LakituRequest *)self activity];
+  taskCopy = task;
+  redirectionCopy = redirection;
+  requestCopy = request;
+  handlerCopy = handler;
+  activity = [(LakituRequest *)self activity];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_100032F08;
   v20[3] = &unk_100075A40;
-  v21 = v11;
-  v22 = v13;
-  v23 = v12;
-  v24 = v14;
-  v16 = v14;
-  v17 = v12;
-  v18 = v13;
-  v19 = v11;
-  os_activity_apply(v15, v20);
+  v21 = taskCopy;
+  v22 = requestCopy;
+  v23 = redirectionCopy;
+  v24 = handlerCopy;
+  v16 = handlerCopy;
+  v17 = redirectionCopy;
+  v18 = requestCopy;
+  v19 = taskCopy;
+  os_activity_apply(activity, v20);
 }
 
 - (id)sessionConfig
@@ -109,31 +109,31 @@
   [v3 set_tlsTrustPinningPolicyName:kSecPolicyNameAppleEscrowProxyService];
   v5 = objc_alloc_init(NSMutableDictionary);
   [v5 setObject:@"application/x-apple-plist" forKeyedSubscript:@"Content-Type"];
-  v6 = [(LakituRequest *)self authorizationHeader];
-  [v5 setObject:v6 forKeyedSubscript:@"Authorization"];
+  authorizationHeader = [(LakituRequest *)self authorizationHeader];
+  [v5 setObject:authorizationHeader forKeyedSubscript:@"Authorization"];
 
-  v7 = [(LakituRequest *)self additionalHeaders];
-  [v5 addEntriesFromDictionary:v7];
+  additionalHeaders = [(LakituRequest *)self additionalHeaders];
+  [v5 addEntriesFromDictionary:additionalHeaders];
 
   [v3 setHTTPAdditionalHeaders:v5];
 
   return v3;
 }
 
-- (void)performRequestWithHandler:(id)a3
+- (void)performRequestWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(LakituRequest *)self validateInput];
-  if (v5)
+  handlerCopy = handler;
+  validateInput = [(LakituRequest *)self validateInput];
+  if (validateInput)
   {
-    v4[2](v4, 0, v5);
+    handlerCopy[2](handlerCopy, 0, validateInput);
   }
 
   else
   {
-    v6 = [(LakituRequest *)self sessionConfig];
-    v7 = [NSURLSession sessionWithConfiguration:v6 delegate:self delegateQueue:0];
-    v8 = [(LakituRequest *)self urlRequest];
+    sessionConfig = [(LakituRequest *)self sessionConfig];
+    v7 = [NSURLSession sessionWithConfiguration:sessionConfig delegate:self delegateQueue:0];
+    urlRequest = [(LakituRequest *)self urlRequest];
     v9 = _os_activity_create(&_mh_execute_header, "start data task", &_os_activity_current, OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
     [(LakituRequest *)self setActivity:v9];
     v14[0] = _NSConcreteStackBlock;
@@ -141,16 +141,16 @@
     v14[2] = sub_1000333DC;
     v14[3] = &unk_100075AB8;
     v15 = v9;
-    v16 = self;
-    v17 = v4;
+    selfCopy = self;
+    v17 = handlerCopy;
     v10 = v9;
-    v11 = [v7 dataTaskWithRequest:v8 completionHandler:v14];
+    v11 = [v7 dataTaskWithRequest:urlRequest completionHandler:v14];
     v12 = CloudServicesLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(LakituRequest *)self loggingDescription];
+      loggingDescription = [(LakituRequest *)self loggingDescription];
       *buf = 138412546;
-      v19 = v13;
+      v19 = loggingDescription;
       v20 = 2112;
       v21 = v11;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%@: starting escrow proxy request (%@)", buf, 0x16u);

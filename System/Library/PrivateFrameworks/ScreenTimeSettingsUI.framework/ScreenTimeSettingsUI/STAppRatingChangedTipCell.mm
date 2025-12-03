@@ -1,21 +1,21 @@
 @interface STAppRatingChangedTipCell
-- (_TtC20ScreenTimeSettingsUI25STAppRatingChangedTipCell)initWithCoder:(id)a3;
-- (_TtC20ScreenTimeSettingsUI25STAppRatingChangedTipCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (_TtC20ScreenTimeSettingsUI25STAppRatingChangedTipCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (_TtC20ScreenTimeSettingsUI25STAppRatingChangedTipCell)initWithCoder:(id)coder;
+- (_TtC20ScreenTimeSettingsUI25STAppRatingChangedTipCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (_TtC20ScreenTimeSettingsUI25STAppRatingChangedTipCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation STAppRatingChangedTipCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27FFA9330);
   v6 = *(v5 - 8);
   MEMORY[0x28223BE20](v5);
   v8 = &v11[-v7];
-  v12 = a3;
-  v9 = a3;
-  v10 = self;
+  specifierCopy = specifier;
+  specifierCopy2 = specifier;
+  selfCopy = self;
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27FFA9338);
   sub_264C6B724();
   sub_264CC3DFC();
@@ -28,9 +28,9 @@
   MEMORY[0x26674B4D0](v13);
 }
 
-- (_TtC20ScreenTimeSettingsUI25STAppRatingChangedTipCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (_TtC20ScreenTimeSettingsUI25STAppRatingChangedTipCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  if (a4)
+  if (identifier)
   {
     v7 = sub_264CC45DC();
     v9 = v8;
@@ -42,32 +42,32 @@
     v9 = 0;
   }
 
-  v10 = a5;
-  return sub_264C6B490(a3, v7, v9, a5);
+  specifierCopy = specifier;
+  return sub_264C6B490(style, v7, v9, specifier);
 }
 
-- (_TtC20ScreenTimeSettingsUI25STAppRatingChangedTipCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC20ScreenTimeSettingsUI25STAppRatingChangedTipCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   ObjectType = swift_getObjectType();
-  if (a4)
+  if (identifier)
   {
     sub_264CC45DC();
-    a4 = sub_264CC459C();
+    identifier = sub_264CC459C();
   }
 
   v10.receiver = self;
   v10.super_class = ObjectType;
-  v8 = [(PSTableCell *)&v10 initWithStyle:a3 reuseIdentifier:a4];
+  v8 = [(PSTableCell *)&v10 initWithStyle:style reuseIdentifier:identifier];
 
   return v8;
 }
 
-- (_TtC20ScreenTimeSettingsUI25STAppRatingChangedTipCell)initWithCoder:(id)a3
+- (_TtC20ScreenTimeSettingsUI25STAppRatingChangedTipCell)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
-  v5 = [(STAppRatingChangedTipCell *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(STAppRatingChangedTipCell *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

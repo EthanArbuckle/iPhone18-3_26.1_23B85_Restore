@@ -1,8 +1,8 @@
 @interface AntBlockPowerLimitPolicyClientGnssImd
 - (AntBlockPowerLimitPolicyClientGnssImd)init;
-- (void)addPolicy:(id)a3;
-- (void)extractPolicy:(id)a3;
-- (void)setParameter:(BOOL)a3 lqmThreshold:(unsigned int)a4 MitigationTimer:(unsigned int)a5 ProtectGnssLowPriority:(BOOL)a6 L5TunerLqmThreshod:(unsigned int)a7;
+- (void)addPolicy:(id)policy;
+- (void)extractPolicy:(id)policy;
+- (void)setParameter:(BOOL)parameter lqmThreshold:(unsigned int)threshold MitigationTimer:(unsigned int)timer ProtectGnssLowPriority:(BOOL)priority L5TunerLqmThreshod:(unsigned int)threshod;
 @end
 
 @implementation AntBlockPowerLimitPolicyClientGnssImd
@@ -23,18 +23,18 @@
   return v2;
 }
 
-- (void)setParameter:(BOOL)a3 lqmThreshold:(unsigned int)a4 MitigationTimer:(unsigned int)a5 ProtectGnssLowPriority:(BOOL)a6 L5TunerLqmThreshod:(unsigned int)a7
+- (void)setParameter:(BOOL)parameter lqmThreshold:(unsigned int)threshold MitigationTimer:(unsigned int)timer ProtectGnssLowPriority:(BOOL)priority L5TunerLqmThreshod:(unsigned int)threshod
 {
-  self->_mDenyVoiceProtect = a3;
-  self->_mL5TunerLqmThreshold = a7;
-  self->_mMitigationTimer_ms = a5;
-  self->_mProtectGnssLowPriority = a6;
-  self->_mLqmThreshold = a4;
+  self->_mDenyVoiceProtect = parameter;
+  self->_mL5TunerLqmThreshold = threshod;
+  self->_mMitigationTimer_ms = timer;
+  self->_mProtectGnssLowPriority = priority;
+  self->_mLqmThreshold = threshold;
 }
 
-- (void)addPolicy:(id)a3
+- (void)addPolicy:(id)policy
 {
-  if (a3)
+  if (policy)
   {
     mPolicy = self->_mPolicy;
     if (mPolicy)
@@ -44,23 +44,23 @@
   }
 }
 
-- (void)extractPolicy:(id)a3
+- (void)extractPolicy:(id)policy
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  policyCopy = policy;
+  v5 = policyCopy;
+  if (policyCopy)
   {
-    v6 = [v4 objectForKey:@"Deny_Voice_Protect"];
-    v36 = [v6 BOOLValue];
+    v6 = [policyCopy objectForKey:@"Deny_Voice_Protect"];
+    bOOLValue = [v6 BOOLValue];
     v7 = [v5 objectForKey:@"LQM_Threshold"];
-    v8 = [v7 integerValue];
+    integerValue = [v7 integerValue];
     v9 = [v5 objectForKey:@"Mitigation_Timer_ms"];
-    v10 = [v9 integerValue];
+    integerValue2 = [v9 integerValue];
     v11 = [v5 objectForKey:@"Protect_GNSS_Low_Priority"];
-    v12 = [v11 BOOLValue];
+    bOOLValue2 = [v11 BOOLValue];
     v13 = [v5 objectForKey:@"L5_Tuner_LQM_Threshold"];
-    v31 = self;
-    -[AntBlockPowerLimitPolicyClientGnssImd setParameter:lqmThreshold:MitigationTimer:ProtectGnssLowPriority:L5TunerLqmThreshod:](self, "setParameter:lqmThreshold:MitigationTimer:ProtectGnssLowPriority:L5TunerLqmThreshod:", v36, v8, v10, v12, [v13 integerValue]);
+    selfCopy = self;
+    -[AntBlockPowerLimitPolicyClientGnssImd setParameter:lqmThreshold:MitigationTimer:ProtectGnssLowPriority:L5TunerLqmThreshod:](self, "setParameter:lqmThreshold:MitigationTimer:ProtectGnssLowPriority:L5TunerLqmThreshod:", bOOLValue, integerValue, integerValue2, bOOLValue2, [v13 integerValue]);
 
     v28 = v5;
     obj = [v5 objectForKey:@"Policy"];
@@ -87,17 +87,17 @@
             v15 = *(*(&v38 + 1) + 8 * v14);
             v16 = objc_alloc_init(AntBlockPowerLimitGnssImdBasePolicy);
             v37 = [v15 objectForKey:@"Enable"];
-            v34 = [v37 BOOLValue];
+            bOOLValue3 = [v37 BOOLValue];
             v35 = [v15 objectForKey:@"GNSS_IMD_Type"];
-            v33 = [v35 integerValue];
+            integerValue3 = [v35 integerValue];
             v17 = [v15 objectForKey:@"GNSS_L5_Tuner_Allowed"];
-            v18 = [v17 BOOLValue];
+            bOOLValue4 = [v17 BOOLValue];
             v19 = [v15 objectForKey:@"GNSS_IMD_Parallel_Mitigation_Allowed"];
-            v20 = [v19 BOOLValue];
+            bOOLValue5 = [v19 BOOLValue];
             v21 = [v15 objectForKey:@"GNSS_Victim_Center_Frequency_KHz"];
-            v22 = [v21 integerValue];
+            integerValue4 = [v21 integerValue];
             v23 = [v15 objectForKey:@"GNSS_Victim_Bandwidth_KHz"];
-            -[AntBlockPowerLimitGnssImdBasePolicy setParameter:ImdType:GnssL5TunerAllowed:ParallelMitigationAllowed:GnssVictimFreq_KHz:GnssVictimBw_KHz:](v16, "setParameter:ImdType:GnssL5TunerAllowed:ParallelMitigationAllowed:GnssVictimFreq_KHz:GnssVictimBw_KHz:", v34, v33, v18, v20, v22, [v23 integerValue]);
+            -[AntBlockPowerLimitGnssImdBasePolicy setParameter:ImdType:GnssL5TunerAllowed:ParallelMitigationAllowed:GnssVictimFreq_KHz:GnssVictimBw_KHz:](v16, "setParameter:ImdType:GnssL5TunerAllowed:ParallelMitigationAllowed:GnssVictimFreq_KHz:GnssVictimBw_KHz:", bOOLValue3, integerValue3, bOOLValue4, bOOLValue5, integerValue4, [v23 integerValue]);
 
             v24 = [v15 objectForKey:@"Cell_Band_1"];
             v25 = [v15 objectForKey:@"Cell_Band_2"];
@@ -107,7 +107,7 @@
             [(AntBlockPowerLimitGnssImdAggressorPolicy *)v27 extractPolicy:v25];
             [(AntBlockPowerLimitGnssImdBasePolicy *)v16 setCellAggressor1:v26];
             [(AntBlockPowerLimitGnssImdBasePolicy *)v16 setCellAggressor2:v27];
-            [(AntBlockPowerLimitPolicyClientGnssImd *)v31 addPolicy:v16];
+            [(AntBlockPowerLimitPolicyClientGnssImd *)selfCopy addPolicy:v16];
 
             v14 = v14 + 1;
           }

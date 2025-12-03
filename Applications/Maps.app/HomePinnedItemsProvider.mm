@@ -1,13 +1,13 @@
 @interface HomePinnedItemsProvider
 - (_TtC4Maps23HomePinnedItemsProvider)init;
-- (void)homeDataProvidingObjectDidUpdate:(id)a3;
+- (void)homeDataProvidingObjectDidUpdate:(id)update;
 @end
 
 @implementation HomePinnedItemsProvider
 
-- (void)homeDataProvidingObjectDidUpdate:(id)a3
+- (void)homeDataProvidingObjectDidUpdate:(id)update
 {
-  v4 = self;
+  selfCopy = self;
   v3 = sub_1002E31F0();
   sub_100246B98(v3);
 }

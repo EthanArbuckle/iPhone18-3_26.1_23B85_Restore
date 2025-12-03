@@ -1,33 +1,33 @@
 @interface SISchemaHardwareButtonInvocationContext
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaHardwareButtonInvocationContext)initWithDictionary:(id)a3;
-- (SISchemaHardwareButtonInvocationContext)initWithJSON:(id)a3;
+- (SISchemaHardwareButtonInvocationContext)initWithDictionary:(id)dictionary;
+- (SISchemaHardwareButtonInvocationContext)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasHardwareButtonActivationThresholdInSec:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasHardwareButtonActivationThresholdInSec:(BOOL)sec;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaHardwareButtonInvocationContext
 
-- (SISchemaHardwareButtonInvocationContext)initWithDictionary:(id)a3
+- (SISchemaHardwareButtonInvocationContext)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = SISchemaHardwareButtonInvocationContext;
   v5 = [(SISchemaHardwareButtonInvocationContext *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"hardwareButtonLongPressBehavior"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"hardwareButtonLongPressBehavior"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaHardwareButtonInvocationContext setHardwareButtonLongPressBehavior:](v5, "setHardwareButtonLongPressBehavior:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"hardwareButtonActivationThresholdInSec"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"hardwareButtonActivationThresholdInSec"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (SISchemaHardwareButtonInvocationContext)initWithJSON:(id)a3
+- (SISchemaHardwareButtonInvocationContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaHardwareButtonInvocationContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaHardwareButtonInvocationContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaHardwareButtonInvocationContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,14 +77,14 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v5 = MEMORY[0x1E696AD98];
     [(SISchemaHardwareButtonInvocationContext *)self hardwareButtonActivationThresholdInSec];
     v6 = [v5 numberWithFloat:?];
-    [v3 setObject:v6 forKeyedSubscript:@"hardwareButtonActivationThresholdInSec"];
+    [dictionary setObject:v6 forKeyedSubscript:@"hardwareButtonActivationThresholdInSec"];
 
     has = self->_has;
   }
@@ -102,12 +102,12 @@
       v8 = off_1E78E4C58[v7];
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"hardwareButtonLongPressBehavior"];
+    [dictionary setObject:v8 forKeyedSubscript:@"hardwareButtonLongPressBehavior"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -165,16 +165,16 @@ LABEL_3:
   return v9 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
   has = self->_has;
-  v6 = v4[16];
+  v6 = equalCopy[16];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_9;
@@ -183,19 +183,19 @@ LABEL_3:
   if (*&has)
   {
     hardwareButtonLongPressBehavior = self->_hardwareButtonLongPressBehavior;
-    if (hardwareButtonLongPressBehavior != [v4 hardwareButtonLongPressBehavior])
+    if (hardwareButtonLongPressBehavior != [equalCopy hardwareButtonLongPressBehavior])
     {
       goto LABEL_9;
     }
 
     has = self->_has;
-    v6 = v4[16];
+    v6 = equalCopy[16];
   }
 
   v8 = (*&has >> 1) & 1;
   if (v8 == ((v6 >> 1) & 1))
   {
-    if (!v8 || (hardwareButtonActivationThresholdInSec = self->_hardwareButtonActivationThresholdInSec, [v4 hardwareButtonActivationThresholdInSec], hardwareButtonActivationThresholdInSec == v10))
+    if (!v8 || (hardwareButtonActivationThresholdInSec = self->_hardwareButtonActivationThresholdInSec, [equalCopy hardwareButtonActivationThresholdInSec], hardwareButtonActivationThresholdInSec == v10))
     {
       v11 = 1;
       goto LABEL_10;
@@ -209,28 +209,28 @@ LABEL_10:
   return v11;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v6 = v4;
+  v6 = toCopy;
   if (has)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
     PBDataWriterWriteFloatField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)setHasHardwareButtonActivationThresholdInSec:(BOOL)a3
+- (void)setHasHardwareButtonActivationThresholdInSec:(BOOL)sec
 {
-  if (a3)
+  if (sec)
   {
     v3 = 2;
   }

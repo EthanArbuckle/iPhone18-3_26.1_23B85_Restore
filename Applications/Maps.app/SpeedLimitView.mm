@@ -1,24 +1,24 @@
 @interface SpeedLimitView
 - (BOOL)hasContent;
 - (CGSize)intrinsicContentSize;
-- (SpeedLimitView)initWithCoder:(id)a3;
-- (SpeedLimitView)initWithFrame:(CGRect)a3;
+- (SpeedLimitView)initWithCoder:(id)coder;
+- (SpeedLimitView)initWithFrame:(CGRect)frame;
 - (UIImageView)speedLimitImageView;
-- (id)_stringWithSpeedLimit:(unint64_t)a3;
+- (id)_stringWithSpeedLimit:(unint64_t)limit;
 - (void)_maps_commonInit;
 - (void)_updateShield;
 - (void)didMoveToWindow;
-- (void)setSpeedLimit:(unint64_t)a3 shieldType:(int64_t)a4;
-- (void)setUseNightMode:(BOOL)a3;
+- (void)setSpeedLimit:(unint64_t)limit shieldType:(int64_t)type;
+- (void)setUseNightMode:(BOOL)mode;
 @end
 
 @implementation SpeedLimitView
 
 - (BOOL)hasContent
 {
-  v2 = [(SpeedLimitView *)self speedLimitImageView];
-  v3 = [v2 image];
-  v4 = v3 != 0;
+  speedLimitImageView = [(SpeedLimitView *)self speedLimitImageView];
+  image = [speedLimitImageView image];
+  v4 = image != 0;
 
   return v4;
 }
@@ -44,7 +44,7 @@
   return speedLimitImageView;
 }
 
-- (id)_stringWithSpeedLimit:(unint64_t)a3
+- (id)_stringWithSpeedLimit:(unint64_t)limit
 {
   if (qword_10195E270 != -1)
   {
@@ -52,7 +52,7 @@
   }
 
   v4 = qword_10195E268;
-  v5 = [NSNumber numberWithUnsignedInteger:a3];
+  v5 = [NSNumber numberWithUnsignedInteger:limit];
   v6 = [v4 stringFromNumber:v5];
 
   return v6;
@@ -60,9 +60,9 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(SpeedLimitView *)self speedLimitImageView];
-  v3 = [v2 image];
-  [v3 size];
+  speedLimitImageView = [(SpeedLimitView *)self speedLimitImageView];
+  image = [speedLimitImageView image];
+  [image size];
   v5 = v4;
   v7 = v6;
 
@@ -78,33 +78,33 @@
   if ([(SpeedLimitView *)self speedLimit]&& [(SpeedLimitView *)self shieldType])
   {
     v3 = [(SpeedLimitView *)self _stringWithSpeedLimit:[(SpeedLimitView *)self speedLimit]];
-    v4 = [(SpeedLimitView *)self _screen];
-    [v4 scale];
+    _screen = [(SpeedLimitView *)self _screen];
+    [_screen scale];
     v6 = v5;
 
     v7 = objc_alloc_init(VKIconModifiers);
     [v7 setNewInterfaceEnabled:_UISolariumEnabled()];
     [v7 setText:v3];
     v8 = +[VKIconManager sharedManager];
-    v9 = [(SpeedLimitView *)self shieldType];
-    v10 = [(SpeedLimitView *)self shieldSize];
+    shieldType = [(SpeedLimitView *)self shieldType];
+    shieldSize = [(SpeedLimitView *)self shieldSize];
     *&v11 = v6;
-    v12 = [v8 imageForDataID:v9 text:v3 contentScale:v10 sizeGroup:v7 modifiers:v11];
+    v12 = [v8 imageForDataID:shieldType text:v3 contentScale:shieldSize sizeGroup:v7 modifiers:v11];
 
     v13 = +[VKIconManager sharedManager];
     [v7 setVariant:{objc_msgSend(v13, "darkVariant")}];
 
     v14 = +[VKIconManager sharedManager];
-    v15 = [(SpeedLimitView *)self shieldType];
-    v16 = [(SpeedLimitView *)self shieldSize];
+    shieldType2 = [(SpeedLimitView *)self shieldType];
+    shieldSize2 = [(SpeedLimitView *)self shieldSize];
     *&v17 = v6;
-    v18 = [v14 imageForDataID:v15 text:v3 contentScale:v16 sizeGroup:v7 modifiers:v17];
+    v18 = [v14 imageForDataID:shieldType2 text:v3 contentScale:shieldSize2 sizeGroup:v7 modifiers:v17];
 
     if (v12)
     {
-      v19 = [v12 image];
+      image = [v12 image];
       [(SpeedLimitView *)self dynamicScale];
-      v21 = [UIImage imageWithCGImage:v19 scale:0 orientation:v6 / v20];
+      v21 = [UIImage imageWithCGImage:image scale:0 orientation:v6 / v20];
     }
 
     else
@@ -119,9 +119,9 @@
 
     if (v18)
     {
-      v30 = [v18 image];
+      image2 = [v18 image];
       [(SpeedLimitView *)self dynamicScale];
-      v32 = [UIImage imageWithCGImage:v30 scale:0 orientation:v6 / v31];
+      v32 = [UIImage imageWithCGImage:image2 scale:0 orientation:v6 / v31];
     }
 
     else
@@ -145,30 +145,30 @@
     }
 
     v34 = *p_dimmedSpeedLimitImage;
-    v35 = [(SpeedLimitView *)self speedLimitImageView];
-    [v35 setImage:v34];
+    speedLimitImageView = [(SpeedLimitView *)self speedLimitImageView];
+    [speedLimitImageView setImage:v34];
 
-    v36 = [(SpeedLimitView *)self speedLimitImageView];
-    [v36 sizeToFit];
+    speedLimitImageView2 = [(SpeedLimitView *)self speedLimitImageView];
+    [speedLimitImageView2 sizeToFit];
 
     v37 = sub_100090D58();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
     {
-      v43 = [(SpeedLimitView *)self speedLimitImageView];
-      v38 = [v43 image];
+      speedLimitImageView3 = [(SpeedLimitView *)self speedLimitImageView];
+      image3 = [speedLimitImageView3 image];
       v39 = v12;
-      v40 = [(SpeedLimitView *)self speedLimit];
-      v41 = [(SpeedLimitView *)self shieldType];
-      v42 = [(SpeedLimitView *)self window];
+      speedLimit = [(SpeedLimitView *)self speedLimit];
+      shieldType3 = [(SpeedLimitView *)self shieldType];
+      window = [(SpeedLimitView *)self window];
       *buf = 138544130;
-      v45 = v38;
+      v45 = image3;
       v46 = 2048;
-      v47 = v40;
+      v47 = speedLimit;
       v12 = v39;
       v48 = 2048;
-      v49 = v41;
+      v49 = shieldType3;
       v50 = 2114;
-      v51 = v42;
+      v51 = window;
       _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_INFO, "Got image %{public}@ for speed limit %lu, shield type %lld, in window %{public}@", buf, 0x2Au);
     }
 
@@ -176,10 +176,10 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  v22 = [(SpeedLimitView *)self speedLimitImageView];
-  v23 = [v22 image];
+  speedLimitImageView4 = [(SpeedLimitView *)self speedLimitImageView];
+  image4 = [speedLimitImageView4 image];
 
-  if (v23)
+  if (image4)
   {
     speedLimitImage = self->_speedLimitImage;
     self->_speedLimitImage = 0;
@@ -187,21 +187,21 @@ LABEL_22:
     dimmedSpeedLimitImage = self->_dimmedSpeedLimitImage;
     self->_dimmedSpeedLimitImage = 0;
 
-    v26 = [(SpeedLimitView *)self speedLimitImageView];
-    [v26 setImage:0];
+    speedLimitImageView5 = [(SpeedLimitView *)self speedLimitImageView];
+    [speedLimitImageView5 setImage:0];
 
     v3 = sub_100090D58();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
-      v27 = [(SpeedLimitView *)self speedLimit];
-      v28 = [(SpeedLimitView *)self shieldType];
-      v29 = [(SpeedLimitView *)self window];
+      speedLimit2 = [(SpeedLimitView *)self speedLimit];
+      shieldType4 = [(SpeedLimitView *)self shieldType];
+      window2 = [(SpeedLimitView *)self window];
       *buf = 134218498;
-      v45 = v27;
+      v45 = speedLimit2;
       v46 = 2048;
-      v47 = v28;
+      v47 = shieldType4;
       v48 = 2114;
-      v49 = v29;
+      v49 = window2;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Removing speed limit %lu, shield type %lld, in window %{public}@", buf, 0x20u);
     }
 
@@ -212,33 +212,33 @@ LABEL_23:
   [(SpeedLimitView *)self invalidateIntrinsicContentSize];
 }
 
-- (void)setUseNightMode:(BOOL)a3
+- (void)setUseNightMode:(BOOL)mode
 {
-  if (self->_useNightMode != a3)
+  if (self->_useNightMode != mode)
   {
-    self->_useNightMode = a3;
-    v5 = [(SpeedLimitView *)self useNightMode];
+    self->_useNightMode = mode;
+    useNightMode = [(SpeedLimitView *)self useNightMode];
     v6 = &OBJC_IVAR___SpeedLimitView__speedLimitImage;
-    if (v5)
+    if (useNightMode)
     {
       v6 = &OBJC_IVAR___SpeedLimitView__dimmedSpeedLimitImage;
     }
 
     v7 = *(&self->super.super.super.isa + *v6);
-    v8 = [(SpeedLimitView *)self speedLimitImageView];
-    [v8 setImage:v7];
+    speedLimitImageView = [(SpeedLimitView *)self speedLimitImageView];
+    [speedLimitImageView setImage:v7];
 
-    v9 = [(SpeedLimitView *)self speedLimitImageView];
-    [v9 sizeToFit];
+    speedLimitImageView2 = [(SpeedLimitView *)self speedLimitImageView];
+    [speedLimitImageView2 sizeToFit];
   }
 }
 
-- (void)setSpeedLimit:(unint64_t)a3 shieldType:(int64_t)a4
+- (void)setSpeedLimit:(unint64_t)limit shieldType:(int64_t)type
 {
-  if (self->_speedLimit != a3 || self->_shieldType != a4)
+  if (self->_speedLimit != limit || self->_shieldType != type)
   {
-    self->_speedLimit = a3;
-    self->_shieldType = a4;
+    self->_speedLimit = limit;
+    self->_shieldType = type;
     [(SpeedLimitView *)self _updateShield];
   }
 }
@@ -253,38 +253,38 @@ LABEL_23:
 
 - (void)_maps_commonInit
 {
-  v3 = [(SpeedLimitView *)self speedLimitImageView];
-  [(SpeedLimitView *)self addSubview:v3];
+  speedLimitImageView = [(SpeedLimitView *)self speedLimitImageView];
+  [(SpeedLimitView *)self addSubview:speedLimitImageView];
 
-  v20 = [(SpeedLimitView *)self speedLimitImageView];
-  v19 = [v20 leadingAnchor];
-  v18 = [(SpeedLimitView *)self leadingAnchor];
-  v17 = [v19 constraintEqualToAnchor:v18];
+  speedLimitImageView2 = [(SpeedLimitView *)self speedLimitImageView];
+  leadingAnchor = [speedLimitImageView2 leadingAnchor];
+  leadingAnchor2 = [(SpeedLimitView *)self leadingAnchor];
+  v17 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v21[0] = v17;
-  v16 = [(SpeedLimitView *)self speedLimitImageView];
-  v15 = [v16 trailingAnchor];
-  v14 = [(SpeedLimitView *)self trailingAnchor];
-  v4 = [v15 constraintEqualToAnchor:v14];
+  speedLimitImageView3 = [(SpeedLimitView *)self speedLimitImageView];
+  trailingAnchor = [speedLimitImageView3 trailingAnchor];
+  trailingAnchor2 = [(SpeedLimitView *)self trailingAnchor];
+  v4 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v21[1] = v4;
-  v5 = [(SpeedLimitView *)self speedLimitImageView];
-  v6 = [v5 topAnchor];
-  v7 = [(SpeedLimitView *)self topAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7];
+  speedLimitImageView4 = [(SpeedLimitView *)self speedLimitImageView];
+  topAnchor = [speedLimitImageView4 topAnchor];
+  topAnchor2 = [(SpeedLimitView *)self topAnchor];
+  v8 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v21[2] = v8;
-  v9 = [(SpeedLimitView *)self speedLimitImageView];
-  v10 = [v9 bottomAnchor];
-  v11 = [(SpeedLimitView *)self bottomAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  speedLimitImageView5 = [(SpeedLimitView *)self speedLimitImageView];
+  bottomAnchor = [speedLimitImageView5 bottomAnchor];
+  bottomAnchor2 = [(SpeedLimitView *)self bottomAnchor];
+  v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v21[3] = v12;
   v13 = [NSArray arrayWithObjects:v21 count:4];
   [NSLayoutConstraint activateConstraints:v13];
 }
 
-- (SpeedLimitView)initWithFrame:(CGRect)a3
+- (SpeedLimitView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = SpeedLimitView;
-  v3 = [(SpeedLimitView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SpeedLimitView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -294,11 +294,11 @@ LABEL_23:
   return v4;
 }
 
-- (SpeedLimitView)initWithCoder:(id)a3
+- (SpeedLimitView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = SpeedLimitView;
-  v3 = [(SpeedLimitView *)&v6 initWithCoder:a3];
+  v3 = [(SpeedLimitView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {

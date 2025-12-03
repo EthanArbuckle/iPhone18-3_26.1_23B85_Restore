@@ -1,29 +1,29 @@
 @interface HUListenerHelper
-+ (id)listenerHelperWithListener:(id)a3 andDelegate:(id)a4;
-- (HUListenerHelper)initWithListener:(id)a3 andDelegate:(id)a4;
++ (id)listenerHelperWithListener:(id)listener andDelegate:(id)delegate;
+- (HUListenerHelper)initWithListener:(id)listener andDelegate:(id)delegate;
 - (void)dealloc;
 @end
 
 @implementation HUListenerHelper
 
-+ (id)listenerHelperWithListener:(id)a3 andDelegate:(id)a4
++ (id)listenerHelperWithListener:(id)listener andDelegate:(id)delegate
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = objc_getAssociatedObject(v5, &HUListenerHelperKey);
+  listenerCopy = listener;
+  delegateCopy = delegate;
+  v7 = objc_getAssociatedObject(listenerCopy, &HUListenerHelperKey);
   if (!v7)
   {
-    v7 = [[HUListenerHelper alloc] initWithListener:v5 andDelegate:v6];
-    objc_setAssociatedObject(v5, &HUListenerHelperKey, v7, 1);
+    v7 = [[HUListenerHelper alloc] initWithListener:listenerCopy andDelegate:delegateCopy];
+    objc_setAssociatedObject(listenerCopy, &HUListenerHelperKey, v7, 1);
   }
 
   return v7;
 }
 
-- (HUListenerHelper)initWithListener:(id)a3 andDelegate:(id)a4
+- (HUListenerHelper)initWithListener:(id)listener andDelegate:(id)delegate
 {
-  objc_initWeak(&location, a3);
-  objc_initWeak(&v11, a4);
+  objc_initWeak(&location, listener);
+  objc_initWeak(&v11, delegate);
   v10.receiver = self;
   v10.super_class = HUListenerHelper;
   v6 = [(HUListenerHelper *)&v10 init];

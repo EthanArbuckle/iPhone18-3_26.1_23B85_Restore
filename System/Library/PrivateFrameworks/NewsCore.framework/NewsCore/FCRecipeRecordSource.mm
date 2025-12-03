@@ -1,145 +1,145 @@
 @interface FCRecipeRecordSource
 - (id)alwaysLocalizedKeys;
-- (id)articleTopicsFromCKRecord:(id)a3 topicIDs:(id)a4 topicFlags:(id)a5;
+- (id)articleTopicsFromCKRecord:(id)record topicIDs:(id)ds topicFlags:(id)flags;
 - (id)nonLocalizableKeys;
-- (id)recordFromCKRecord:(id)a3 base:(id)a4;
+- (id)recordFromCKRecord:(id)record base:(id)base;
 @end
 
 @implementation FCRecipeRecordSource
 
-- (id)recordFromCKRecord:(id)a3 base:(id)a4
+- (id)recordFromCKRecord:(id)record base:(id)base
 {
   v6 = MEMORY[0x1E69B6F90];
-  v7 = a4;
-  v8 = a3;
+  baseCopy = base;
+  recordCopy = record;
   v9 = objc_alloc_init(v6);
-  [v9 setBase:v7];
+  [v9 setBase:baseCopy];
 
-  v10 = [(FCRecordSource *)self localizedLanguageSpecificKeysByOriginalKey];
-  v11 = [(FCRecordSource *)self localizedKeysByOriginalKey];
-  v12 = [v8 objectForKeyedSubscript:@"minimumNewsVersion"];
+  localizedLanguageSpecificKeysByOriginalKey = [(FCRecordSource *)self localizedLanguageSpecificKeysByOriginalKey];
+  localizedKeysByOriginalKey = [(FCRecordSource *)self localizedKeysByOriginalKey];
+  v12 = [recordCopy objectForKeyedSubscript:@"minimumNewsVersion"];
   [v9 setMinimumNewsVersion:{+[FCRestrictions integerRepresentationOfShortVersionString:](FCRestrictions, "integerRepresentationOfShortVersionString:", v12)}];
 
-  v13 = [v8 objectForKey:@"blockedStorefrontIDs"];
+  v13 = [recordCopy objectForKey:@"blockedStorefrontIDs"];
   v14 = [v13 mutableCopy];
   [v9 setBlockedStorefrontIDs:v14];
 
-  v15 = [v8 objectForKey:@"allowedStorefrontIDs"];
+  v15 = [recordCopy objectForKey:@"allowedStorefrontIDs"];
   v16 = [v15 mutableCopy];
   [v9 setAllowedStorefrontIDs:v16];
 
-  v17 = [v8 objectForKey:@"isPaid"];
+  v17 = [recordCopy objectForKey:@"isPaid"];
   [v9 setIsPaid:{objc_msgSend(v17, "BOOLValue")}];
 
-  v18 = [v8 objectForKey:@"language"];
+  v18 = [recordCopy objectForKey:@"language"];
   [v9 setLanguage:v18];
 
-  v19 = [v8 objectForKey:@"iAdCategories"];
+  v19 = [recordCopy objectForKey:@"iAdCategories"];
   v20 = [v19 mutableCopy];
   [v9 setIAdCategories:v20];
 
-  v21 = [v8 objectForKey:@"iAdKeywords"];
+  v21 = [recordCopy objectForKey:@"iAdKeywords"];
   v22 = [v21 mutableCopy];
   [v9 setIAdKeywords:v22];
 
-  v23 = [v8 objectForKey:@"iAdSectionTagIDs"];
+  v23 = [recordCopy objectForKey:@"iAdSectionTagIDs"];
   v24 = [v23 mutableCopy];
   [v9 setIAdSectionTagIDs:v24];
 
-  v25 = [v8 objectForKey:@"lastReferenceDate"];
-  v26 = [v25 pbDate];
-  [v9 setLastReferenceDate:v26];
+  v25 = [recordCopy objectForKey:@"lastReferenceDate"];
+  pbDate = [v25 pbDate];
+  [v9 setLastReferenceDate:pbDate];
 
-  v27 = [v8 objectForKey:@"isDraft"];
+  v27 = [recordCopy objectForKey:@"isDraft"];
   [v9 setIsDraft:{objc_msgSend(v27, "BOOLValue")}];
 
-  v28 = [v8 objectForKey:@"title"];
+  v28 = [recordCopy objectForKey:@"title"];
   [v9 setTitle:v28];
 
-  v29 = [v8 objectForKey:@"sourceChannelTagID"];
+  v29 = [recordCopy objectForKey:@"sourceChannelTagID"];
   [v9 setSourceChannelTagID:v29];
 
-  v30 = [v8 objectForKey:@"publishDate"];
-  v31 = [v30 pbDate];
-  [v9 setPublishDate:v31];
+  v30 = [recordCopy objectForKey:@"publishDate"];
+  pbDate2 = [v30 pbDate];
+  [v9 setPublishDate:pbDate2];
 
-  v32 = [v8 objectForKey:@"thumbnailFocalFrame"];
+  v32 = [recordCopy objectForKey:@"thumbnailFocalFrame"];
   [v9 setThumbnailFocalFrame:{objc_msgSend(v32, "unsignedLongLongValue")}];
 
-  v33 = [v8 objectForKey:@"thumbnailPerceptualHash"];
+  v33 = [recordCopy objectForKey:@"thumbnailPerceptualHash"];
   [v9 setThumbnailPerceptualHash:v33];
 
-  v34 = [v8 objectForKey:@"thumbnailSmall"];
+  v34 = [recordCopy objectForKey:@"thumbnailSmall"];
   [v9 setThumbnailSmallURL:v34];
 
-  v35 = [v8 objectForKey:@"thumbnailMedium"];
+  v35 = [recordCopy objectForKey:@"thumbnailMedium"];
   [v9 setThumbnailMediumURL:v35];
 
-  v36 = [v8 objectForKey:@"thumbnailLarge"];
+  v36 = [recordCopy objectForKey:@"thumbnailLarge"];
   [v9 setThumbnailLargeURL:v36];
 
-  v37 = [v8 objectForKey:@"thumbnailExtraLarge"];
+  v37 = [recordCopy objectForKey:@"thumbnailExtraLarge"];
   [v9 setThumbnailExtraLargeURL:v37];
 
-  v38 = [v8 objectForKey:@"thumbnailSmallMetadata"];
+  v38 = [recordCopy objectForKey:@"thumbnailSmallMetadata"];
   [v9 setThumbnailSmallMetadata:{objc_msgSend(v38, "unsignedLongLongValue")}];
 
-  v39 = [v8 objectForKey:@"thumbnailMediumMetadata"];
+  v39 = [recordCopy objectForKey:@"thumbnailMediumMetadata"];
   [v9 setThumbnailMediumMetadata:{objc_msgSend(v39, "unsignedLongLongValue")}];
 
-  v40 = [v8 objectForKey:@"thumbnailLargeMetadata"];
+  v40 = [recordCopy objectForKey:@"thumbnailLargeMetadata"];
   [v9 setThumbnailLargeMetadata:{objc_msgSend(v40, "unsignedLongLongValue")}];
 
-  v41 = [v8 objectForKey:@"thumbnailExtraLargeMetadata"];
+  v41 = [recordCopy objectForKey:@"thumbnailExtraLargeMetadata"];
   [v9 setThumbnailExtraLargeMetadata:{objc_msgSend(v41, "unsignedLongLongValue")}];
 
-  v42 = [v8 objectForKey:@"thumbnailPrimaryColor"];
+  v42 = [recordCopy objectForKey:@"thumbnailPrimaryColor"];
   [v9 setThumbnailPrimaryColor:v42];
 
-  v43 = [v8 objectForKey:@"thumbnailBackgroundColor"];
+  v43 = [recordCopy objectForKey:@"thumbnailBackgroundColor"];
   [v9 setThumbnailBackgroundColor:v43];
 
-  v44 = [v8 objectForKey:@"thumbnailTextColor"];
+  v44 = [recordCopy objectForKey:@"thumbnailTextColor"];
   [v9 setThumbnailTextColor:v44];
 
-  v45 = [v8 objectForKey:@"thumbnailAccentColor"];
+  v45 = [recordCopy objectForKey:@"thumbnailAccentColor"];
   [v9 setThumbnailAccentColor:v45];
 
-  v46 = [v8 objectForKey:@"shortExcerpt"];
+  v46 = [recordCopy objectForKey:@"shortExcerpt"];
   [v9 setShortExcerpt:v46];
 
-  v47 = [v8 objectForKey:@"content"];
+  v47 = [recordCopy objectForKey:@"content"];
   [v9 setContentURL:v47];
 
-  v48 = [v8 objectForKey:@"contentType"];
+  v48 = [recordCopy objectForKey:@"contentType"];
   [v9 setContentType:v48];
 
-  v49 = [v8 objectForKey:@"articleIDs"];
+  v49 = [recordCopy objectForKey:@"articleIDs"];
   v50 = [v49 mutableCopy];
   [v9 setArticleIDs:v50];
 
-  v51 = [v8 objectForKey:@"totalTime"];
+  v51 = [recordCopy objectForKey:@"totalTime"];
   [v9 setTotalTime:v51];
 
-  v52 = [v8 objectForKey:@"authors"];
+  v52 = [recordCopy objectForKey:@"authors"];
   v53 = [v52 mutableCopy];
   [v9 setAuthors:v53];
 
-  v54 = [(FCRecordSource *)self valueFromCKRecord:v8 baseKey:@"recipesRecirculationData" localizedKeys:v11 localizedLanguageSpecificKeys:v10];
+  v54 = [(FCRecordSource *)self valueFromCKRecord:recordCopy baseKey:@"recipesRecirculationData" localizedKeys:localizedKeysByOriginalKey localizedLanguageSpecificKeys:localizedLanguageSpecificKeysByOriginalKey];
   [v9 setRecipesRecirculationDataURL:v54];
 
-  v55 = [v8 objectForKey:@"topicTagIDs"];
-  v56 = [(FCRecordSource *)self valueFromCKRecord:v8 baseKey:@"topicFlags" localizedKeys:v11 localizedLanguageSpecificKeys:v10];
-  v57 = [(FCRecipeRecordSource *)self articleTopicsFromCKRecord:v8 topicIDs:v55 topicFlags:v56];
+  v55 = [recordCopy objectForKey:@"topicTagIDs"];
+  v56 = [(FCRecordSource *)self valueFromCKRecord:recordCopy baseKey:@"topicFlags" localizedKeys:localizedKeysByOriginalKey localizedLanguageSpecificKeys:localizedLanguageSpecificKeysByOriginalKey];
+  v57 = [(FCRecipeRecordSource *)self articleTopicsFromCKRecord:recordCopy topicIDs:v55 topicFlags:v56];
   [v9 setTopics:v57];
 
-  v58 = [(FCRecordSource *)self valueFromCKRecord:v8 baseKey:@"personalizationData" localizedKeys:v11 localizedLanguageSpecificKeys:v10];
+  v58 = [(FCRecordSource *)self valueFromCKRecord:recordCopy baseKey:@"personalizationData" localizedKeys:localizedKeysByOriginalKey localizedLanguageSpecificKeys:localizedLanguageSpecificKeysByOriginalKey];
   [v9 setPersonalizationData:v58];
 
-  v59 = [(FCRecordSource *)self valueFromCKRecord:v8 baseKey:@"rapidUpdatePersonalizationData" localizedKeys:v11 localizedLanguageSpecificKeys:v10];
+  v59 = [(FCRecordSource *)self valueFromCKRecord:recordCopy baseKey:@"rapidUpdatePersonalizationData" localizedKeys:localizedKeysByOriginalKey localizedLanguageSpecificKeys:localizedLanguageSpecificKeysByOriginalKey];
   [v9 setRapidUpdatePersonalizationData:v59];
 
-  v60 = [(FCRecordSource *)self valueFromCKRecord:v8 baseKey:@"eventAggregationPersonalizationData" localizedKeys:v11 localizedLanguageSpecificKeys:v10];
+  v60 = [(FCRecordSource *)self valueFromCKRecord:recordCopy baseKey:@"eventAggregationPersonalizationData" localizedKeys:localizedKeysByOriginalKey localizedLanguageSpecificKeys:localizedLanguageSpecificKeysByOriginalKey];
 
   [v9 setEventAggregationPersonalizationData:v60];
 
@@ -203,21 +203,21 @@
   return v2;
 }
 
-- (id)articleTopicsFromCKRecord:(id)a3 topicIDs:(id)a4 topicFlags:(id)a5
+- (id)articleTopicsFromCKRecord:(id)record topicIDs:(id)ds topicFlags:(id)flags
 {
-  v6 = a5;
+  flagsCopy = flags;
   v7 = MEMORY[0x1E695DF70];
-  v8 = a4;
-  v9 = [v7 arrayWithCapacity:{objc_msgSend(v8, "count")}];
+  dsCopy = ds;
+  v9 = [v7 arrayWithCapacity:{objc_msgSend(dsCopy, "count")}];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __70__FCRecipeRecordSource_articleTopicsFromCKRecord_topicIDs_topicFlags___block_invoke;
   v15[3] = &unk_1E7C36FE8;
-  v16 = v6;
+  v16 = flagsCopy;
   v10 = v9;
   v17 = v10;
-  v11 = v6;
-  [v8 enumerateObjectsUsingBlock:v15];
+  v11 = flagsCopy;
+  [dsCopy enumerateObjectsUsingBlock:v15];
 
   v12 = v17;
   v13 = v10;

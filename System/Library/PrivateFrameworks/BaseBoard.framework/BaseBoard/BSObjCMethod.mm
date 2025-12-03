@@ -1,11 +1,11 @@
 @interface BSObjCMethod
-+ (id)methodWithSelector:(uint64_t)a3 typeEncoding:(void *)a4 outParsingError:;
-+ (void)_propertyGetterForValue:(const char *)a3 withSelector:;
-+ (void)_propertySetterForValue:(const char *)a3 withSelector:;
-- (BOOL)isEqual:(id)a3;
++ (id)methodWithSelector:(uint64_t)selector typeEncoding:(void *)encoding outParsingError:;
++ (void)_propertyGetterForValue:(const char *)value withSelector:;
++ (void)_propertySetterForValue:(const char *)value withSelector:;
+- (BOOL)isEqual:(id)equal;
 - (id)copyAsOnewayVoid;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 @end
 
@@ -27,7 +27,7 @@
       v14 = 2114;
       v15 = v9;
       v16 = 2048;
-      v17 = self;
+      selfCopy = self;
       v18 = 2114;
       v19 = @"BSObjCRuntime.m";
       v20 = 1024;
@@ -58,7 +58,7 @@
   }
 }
 
-+ (void)_propertyGetterForValue:(const char *)a3 withSelector:
++ (void)_propertyGetterForValue:(const char *)value withSelector:
 {
   v40 = *MEMORY[0x1E69E9840];
   v4 = a2;
@@ -93,7 +93,7 @@
     JUMPOUT(0x18FF3D4ACLL);
   }
 
-  if (!a3)
+  if (!value)
   {
     v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"selector"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -123,15 +123,15 @@
   }
 
   v7 = objc_alloc_init(v5);
-  v7[4] = a3;
-  v8 = NSStringFromSelector(a3);
+  v7[4] = value;
+  v8 = NSStringFromSelector(value);
   v9 = [v8 copy];
   v10 = v7[2];
   v7[2] = v9;
 
   v11 = MEMORY[0x1E696AEC0];
-  v12 = [v4 encoding];
-  v13 = [v11 stringWithFormat:@"%@@:", v12];
+  encoding = [v4 encoding];
+  v13 = [v11 stringWithFormat:@"%@@:", encoding];
   v14 = v7[3];
   v7[3] = v13;
 
@@ -144,7 +144,7 @@
   return v7;
 }
 
-+ (void)_propertySetterForValue:(const char *)a3 withSelector:
++ (void)_propertySetterForValue:(const char *)value withSelector:
 {
   v43 = *MEMORY[0x1E69E9840];
   v4 = a2;
@@ -179,7 +179,7 @@
     JUMPOUT(0x18FF3D894);
   }
 
-  if (!a3)
+  if (!value)
   {
     v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"selector"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -209,15 +209,15 @@
   }
 
   v7 = objc_alloc_init(v5);
-  v7[4] = a3;
-  v8 = NSStringFromSelector(a3);
+  v7[4] = value;
+  v8 = NSStringFromSelector(value);
   v9 = [v8 copy];
   v10 = v7[2];
   v7[2] = v9;
 
   v11 = MEMORY[0x1E696AEC0];
-  v12 = [v4 encoding];
-  v13 = [v11 stringWithFormat:@"v@:%@", v12];
+  encoding = [v4 encoding];
+  v13 = [v11 stringWithFormat:@"v@:%@", encoding];
   v14 = v7[3];
   v7[3] = v13;
 
@@ -233,21 +233,21 @@
   return v7;
 }
 
-+ (id)methodWithSelector:(uint64_t)a3 typeEncoding:(void *)a4 outParsingError:
++ (id)methodWithSelector:(uint64_t)selector typeEncoding:(void *)encoding outParsingError:
 {
   v44 = *MEMORY[0x1E69E9840];
   v37 = objc_opt_self();
-  if (!a3)
+  if (!selector)
   {
-    v36 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v36 handleFailureInMethod:sel_methodWithSelector_typeEncoding_outParsingError_ object:v37 file:@"BSObjCRuntime.m" lineNumber:896 description:{@"Invalid parameter not satisfying: %@", @"cEncoding != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:sel_methodWithSelector_typeEncoding_outParsingError_ object:v37 file:@"BSObjCRuntime.m" lineNumber:896 description:{@"Invalid parameter not satisfying: %@", @"cEncoding != nil"}];
   }
 
   v6 = NSStringFromSelector(a2);
   obj = [v6 copy];
 
-  v7 = [MEMORY[0x1E696AEC0] bs_stringWithUTF8String:a3];
-  v8 = [MEMORY[0x1E695DF68] signatureWithObjCTypes:a3];
+  v7 = [MEMORY[0x1E696AEC0] bs_stringWithUTF8String:selector];
+  v8 = [MEMORY[0x1E695DF68] signatureWithObjCTypes:selector];
   if (v7 && [v7 rangeOfString:@"("]
   {
     v19 = BSLogCommon();
@@ -259,18 +259,18 @@
       _os_log_error_impl(&dword_18FEF6000, v19, OS_LOG_TYPE_ERROR, "Ignoring @selector(%{public}@) because it contains a union.", buf, 0xCu);
     }
 
-    if (a4)
+    if (encoding)
     {
       v20 = MEMORY[0x1E696AEC0];
       v21 = NSStringFromSelector(a2);
-      *a4 = [v20 stringWithFormat:@"ignoring @selector(%@) because it contains a union", v21];
+      *encoding = [v20 stringWithFormat:@"ignoring @selector(%@) because it contains a union", v21];
     }
 
     goto LABEL_23;
   }
 
-  v9 = [v8 numberOfArguments];
-  if (v9 < 2 || *[v8 getArgumentTypeAtIndex:0] != 64 || *objc_msgSend(v8, "getArgumentTypeAtIndex:", 1) != 58)
+  numberOfArguments = [v8 numberOfArguments];
+  if (numberOfArguments < 2 || *[v8 getArgumentTypeAtIndex:0] != 64 || *objc_msgSend(v8, "getArgumentTypeAtIndex:", 1) != 58)
   {
     v22 = BSLogCommon();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -281,11 +281,11 @@
       _os_log_error_impl(&dword_18FEF6000, v22, OS_LOG_TYPE_ERROR, "Ignoring @selector(%{public}@) because the first two arguments are not 'self' and '_cmd'.", buf, 0xCu);
     }
 
-    if (a4)
+    if (encoding)
     {
       v23 = MEMORY[0x1E696AEC0];
       v24 = NSStringFromSelector(a2);
-      *a4 = [v23 stringWithFormat:@"ignoring @selector(%@) because the first two arguments are not 'self' and '_cmd'", v24];
+      *encoding = [v23 stringWithFormat:@"ignoring @selector(%@) because the first two arguments are not 'self' and '_cmd'", v24];
     }
 
 LABEL_23:
@@ -293,7 +293,7 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  v38 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v10 = [MEMORY[0x1E696AE88] scannerWithString:obj];
   for (i = 2; i < [v8 numberOfArguments]; ++i)
   {
@@ -315,17 +315,17 @@ LABEL_23:
       v18 = v15[7];
       v15[7] = v17;
 
-      [v38 addObject:v15];
+      [array addObject:v15];
     }
   }
 
-  if (v9 == [v38 count] + 2)
+  if (numberOfArguments == [array count] + 2)
   {
     v25 = objc_alloc_init(v37);
     *(v25 + 4) = a2;
     objc_storeStrong(v25 + 2, obj);
     objc_storeStrong(v25 + 3, v7);
-    v27 = [v38 copy];
+    v27 = [array copy];
     v28 = *(v25 + 5);
     *(v25 + 5) = v27;
 
@@ -345,7 +345,7 @@ LABEL_23:
       _os_log_error_impl(&dword_18FEF6000, v31, OS_LOG_TYPE_ERROR, "Ignoring @selector(%{public}@) because the argument count does not match the encoding.", buf, 0xCu);
     }
 
-    if (!a4)
+    if (!encoding)
     {
       v25 = 0;
       goto LABEL_34;
@@ -354,7 +354,7 @@ LABEL_23:
     v32 = MEMORY[0x1E696AEC0];
     v30 = NSStringFromSelector(a2);
     [v32 stringWithFormat:@"ignoring @selector(%@) because the argument count does not match the encoding", v30];
-    *a4 = v25 = 0;
+    *encoding = v25 = 0;
   }
 
 LABEL_34:
@@ -363,10 +363,10 @@ LABEL_24:
   return v25;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -376,8 +376,8 @@ LABEL_24:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(BSObjCMethod *)self selector];
-      v6 = v5 == [(BSObjCMethod *)v4 selector];
+      selector = [(BSObjCMethod *)self selector];
+      v6 = selector == [(BSObjCMethod *)equalCopy selector];
     }
 
     else
@@ -391,27 +391,27 @@ LABEL_24:
 
 - (id)succinctDescription
 {
-  v2 = [(BSObjCMethod *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(BSObjCMethod *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BSObjCMethod *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(BSObjCMethod *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(BSObjCMethod *)self succinctDescriptionBuilder];
-  v5 = v4;
+  succinctDescriptionBuilder = [(BSObjCMethod *)self succinctDescriptionBuilder];
+  v5 = succinctDescriptionBuilder;
   if (!self->_required)
   {
-    v6 = [v4 appendObject:@"optional" withName:0];
+    v6 = [succinctDescriptionBuilder appendObject:@"optional" withName:0];
   }
 
   v17 = 0;
@@ -432,16 +432,16 @@ LABEL_24:
   returnValue = self->_returnValue;
   if (v8)
   {
-    v11 = [(BSObjCValue *)returnValue _prettyTypeString];
-    v12 = [(BSObjCMethod *)self name];
-    [v9 stringWithFormat:@"-(%@)%@(%@)", v11, v12, v18[5]];
+    _prettyTypeString = [(BSObjCValue *)returnValue _prettyTypeString];
+    name = [(BSObjCMethod *)self name];
+    [v9 stringWithFormat:@"-(%@)%@(%@)", _prettyTypeString, name, v18[5]];
   }
 
   else
   {
-    v11 = [(BSObjCValue *)returnValue _prettyTypeString];
-    v12 = [(BSObjCMethod *)self name];
-    [v9 stringWithFormat:@"-(%@)%@", v11, v12];
+    _prettyTypeString = [(BSObjCValue *)returnValue _prettyTypeString];
+    name = [(BSObjCMethod *)self name];
+    [v9 stringWithFormat:@"-(%@)%@", _prettyTypeString, name];
   }
   v13 = ;
 

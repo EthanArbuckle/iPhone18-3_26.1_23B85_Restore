@@ -1,44 +1,44 @@
 @interface REMSharedToMeReminderPlaceholder
 + (id)newObjectID;
-+ (id)objectIDWithUUID:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSharedToMeReminderPlaceholder:(id)a3;
++ (id)objectIDWithUUID:(id)d;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSharedToMeReminderPlaceholder:(id)placeholder;
 - (NSString)description;
-- (REMSharedToMeReminderPlaceholder)initWithCoder:(id)a3;
-- (REMSharedToMeReminderPlaceholder)initWithObjectID:(id)a3 accountID:(id)a4;
+- (REMSharedToMeReminderPlaceholder)initWithCoder:(id)coder;
+- (REMSharedToMeReminderPlaceholder)initWithObjectID:(id)d accountID:(id)iD;
 - (id)objectIdentifier;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMSharedToMeReminderPlaceholder
 
-- (REMSharedToMeReminderPlaceholder)initWithObjectID:(id)a3 accountID:(id)a4
+- (REMSharedToMeReminderPlaceholder)initWithObjectID:(id)d accountID:(id)iD
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v12.receiver = self;
   v12.super_class = REMSharedToMeReminderPlaceholder;
   v9 = [(REMSharedToMeReminderPlaceholder *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_objectID, a3);
-    objc_storeStrong(&v10->_accountID, a4);
+    objc_storeStrong(&v9->_objectID, d);
+    objc_storeStrong(&v10->_accountID, iD);
   }
 
   return v10;
 }
 
-- (REMSharedToMeReminderPlaceholder)initWithCoder:(id)a3
+- (REMSharedToMeReminderPlaceholder)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = REMSharedToMeReminderPlaceholder;
   v5 = [(REMSharedToMeReminderPlaceholder *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"objectID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"objectID"];
     objectID = v5->_objectID;
     v5->_objectID = v6;
   }
@@ -46,18 +46,18 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(REMSharedToMeReminderPlaceholder *)self objectID];
-  [v4 encodeObject:v5 forKey:@"objectID"];
+  coderCopy = coder;
+  objectID = [(REMSharedToMeReminderPlaceholder *)self objectID];
+  [coderCopy encodeObject:objectID forKey:@"objectID"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = REMDynamicCast(v5, v4);
+  v6 = REMDynamicCast(v5, equalCopy);
 
   if (v6)
   {
@@ -72,33 +72,33 @@
   return v7;
 }
 
-- (BOOL)isEqualToSharedToMeReminderPlaceholder:(id)a3
+- (BOOL)isEqualToSharedToMeReminderPlaceholder:(id)placeholder
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  placeholderCopy = placeholder;
+  v5 = placeholderCopy;
+  if (placeholderCopy == self)
   {
     v11 = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = placeholderCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(REMSharedToMeReminderPlaceholder *)self objectID];
-      v8 = [(REMSharedToMeReminderPlaceholder *)v6 objectID];
-      if (v7 == v8)
+      objectID = [(REMSharedToMeReminderPlaceholder *)self objectID];
+      objectID2 = [(REMSharedToMeReminderPlaceholder *)v6 objectID];
+      if (objectID == objectID2)
       {
         v11 = 1;
       }
 
       else
       {
-        v9 = [(REMSharedToMeReminderPlaceholder *)self objectID];
-        v10 = [(REMSharedToMeReminderPlaceholder *)v6 objectID];
-        v11 = [v9 isEqual:v10];
+        objectID3 = [(REMSharedToMeReminderPlaceholder *)self objectID];
+        objectID4 = [(REMSharedToMeReminderPlaceholder *)v6 objectID];
+        v11 = [objectID3 isEqual:objectID4];
       }
     }
 
@@ -113,8 +113,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(REMSharedToMeReminderPlaceholder *)self objectID];
-  v3 = [v2 hash];
+  objectID = [(REMSharedToMeReminderPlaceholder *)self objectID];
+  v3 = [objectID hash];
 
   return v3;
 }
@@ -123,34 +123,34 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(REMSharedToMeReminderPlaceholder *)self objectID];
-  v6 = [v3 stringWithFormat:@"<%@: %p objectID: %@>", v4, self, v5];
+  objectID = [(REMSharedToMeReminderPlaceholder *)self objectID];
+  v6 = [v3 stringWithFormat:@"<%@: %p objectID: %@>", v4, self, objectID];
 
   return v6;
 }
 
 - (id)objectIdentifier
 {
-  v2 = [(REMSharedToMeReminderPlaceholder *)self objectID];
-  v3 = [v2 uuid];
-  v4 = [v3 UUIDString];
+  objectID = [(REMSharedToMeReminderPlaceholder *)self objectID];
+  uuid = [objectID uuid];
+  uUIDString = [uuid UUIDString];
 
-  return v4;
+  return uUIDString;
 }
 
 + (id)newObjectID
 {
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  v4 = [a1 objectIDWithUUID:v3];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v4 = [self objectIDWithUUID:uUID];
 
   return v4;
 }
 
-+ (id)objectIDWithUUID:(id)a3
++ (id)objectIDWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [a1 cdEntityName];
-  v6 = [REMObjectID objectIDWithUUID:v4 entityName:v5];
+  dCopy = d;
+  cdEntityName = [self cdEntityName];
+  v6 = [REMObjectID objectIDWithUUID:dCopy entityName:cdEntityName];
 
   return v6;
 }

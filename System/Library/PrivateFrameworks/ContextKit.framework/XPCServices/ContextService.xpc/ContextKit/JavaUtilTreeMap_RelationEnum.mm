@@ -1,20 +1,20 @@
 @interface JavaUtilTreeMap_RelationEnum
 + (void)initialize;
-- (id)forOrderWithBoolean:(BOOL)a3;
+- (id)forOrderWithBoolean:(BOOL)boolean;
 @end
 
 @implementation JavaUtilTreeMap_RelationEnum
 
-- (id)forOrderWithBoolean:(BOOL)a3
+- (id)forOrderWithBoolean:(BOOL)boolean
 {
-  if (!a3)
+  if (!boolean)
   {
-    v3 = [self ordinal];
-    if (v3 <= 1)
+    ordinal = [self ordinal];
+    if (ordinal <= 1)
     {
-      if (v3)
+      if (ordinal)
       {
-        if (v3 != 1)
+        if (ordinal != 1)
         {
           goto LABEL_13;
         }
@@ -30,7 +30,7 @@
 
     else
     {
-      switch(v3)
+      switch(ordinal)
       {
         case 2:
           return qword_100558070;
@@ -51,7 +51,7 @@ LABEL_13:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [JavaUtilTreeMap_RelationEnum alloc];
     JavaLangEnum_initWithNSString_withInt_(v2, @"LOWER", 0);

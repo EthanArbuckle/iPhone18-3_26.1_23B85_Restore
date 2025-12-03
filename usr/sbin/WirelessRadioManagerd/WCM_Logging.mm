@@ -1,12 +1,12 @@
 @interface WCM_Logging
-+ (id)stringFromXPCObjectWithPrefix:(id)a3 prefix:(id)a4;
-+ (int)getNumberOfSavedLogFiles:(int *)a3 new:(int *)a4;
++ (id)stringFromXPCObjectWithPrefix:(id)prefix prefix:(id)a4;
++ (int)getNumberOfSavedLogFiles:(int *)files new:(int *)new;
 + (void)initSettingsFromPreferences;
-+ (void)logToFile:(id)a3;
++ (void)logToFile:(id)file;
 + (void)reloadLogSettingsFromPreferences;
 + (void)reloadiRATSettingsFromPreferences;
 + (void)setLogSettingsToPreferences;
-+ (void)setiRATSettingsToPreferences:(BOOL)a3;
++ (void)setiRATSettingsToPreferences:(BOOL)preferences;
 @end
 
 @implementation WCM_Logging
@@ -179,7 +179,7 @@ LABEL_16:
   }
 }
 
-+ (int)getNumberOfSavedLogFiles:(int *)a3 new:(int *)a4
++ (int)getNumberOfSavedLogFiles:(int *)files new:(int *)new
 {
   v30 = 0;
   v6 = +[NSDate distantFuture];
@@ -188,8 +188,8 @@ LABEL_16:
   v9 = [(NSFileManager *)v8 contentsOfDirectoryAtPath:qword_1002B80D0 error:0];
   if (v9)
   {
-    v26 = a3;
-    v27 = a4;
+    filesCopy = files;
+    newCopy = new;
     v10 = [(NSArray *)v9 filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF like %@", @"WirelessRadioManager-????.log"]];
     v11 = [(NSArray *)v10 count];
     v25 = v11;
@@ -279,8 +279,8 @@ LABEL_12:
     v28 = -1;
     v29 = -1;
 LABEL_23:
-    *v26 = v29;
-    *v27 = v28;
+    *filesCopy = v29;
+    *newCopy = v28;
     return v25;
   }
 
@@ -291,7 +291,7 @@ LABEL_23:
   }
 }
 
-+ (void)logToFile:(id)a3
++ (void)logToFile:(id)file
 {
   v5 = +[NSFileManager defaultManager];
   if ([(NSFileManager *)v5 fileExistsAtPath:qword_1002B80D8])
@@ -326,11 +326,11 @@ LABEL_23:
   v9 = v8;
   v6 = qword_1002B80E8;
 LABEL_8:
-  [v6 writeData:{objc_msgSend(a3, "dataUsingEncoding:", 4)}];
+  [v6 writeData:{objc_msgSend(file, "dataUsingEncoding:", 4)}];
   if ([qword_1002B80E8 seekToEndOfFile] >= 0x989681)
   {
     v14 = 0;
-    v10 = [a1 getNumberOfSavedLogFiles:&v14 + 4 new:&v14];
+    v10 = [self getNumberOfSavedLogFiles:&v14 + 4 new:&v14];
     if ((v10 & 0x80000000) != 0)
     {
       NSLog(@"Just return because of numberOfSavedLogFiles(%d)", v10);
@@ -475,10 +475,10 @@ LABEL_25:
   }
 }
 
-+ (void)setiRATSettingsToPreferences:(BOOL)a3
++ (void)setiRATSettingsToPreferences:(BOOL)preferences
 {
   v3 = "FALSE";
-  if (a3)
+  if (preferences)
   {
     v3 = "TRUE";
   }
@@ -499,14 +499,14 @@ LABEL_25:
   }
 }
 
-+ (id)stringFromXPCObjectWithPrefix:(id)a3 prefix:(id)a4
++ (id)stringFromXPCObjectWithPrefix:(id)prefix prefix:(id)a4
 {
   v4 = 0;
-  if (a3)
+  if (prefix)
   {
     if (a4)
     {
-      v4 = xpc_copy_description(a3);
+      v4 = xpc_copy_description(prefix);
       if (v4)
       {
         v6 = [NSString stringWithUTF8String:v4];

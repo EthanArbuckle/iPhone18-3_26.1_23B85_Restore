@@ -1,37 +1,37 @@
 @interface NWKUIAQIModel
-- (NWKUIAQIModel)initWithName:(id)a3 label:(id)a4 categoryDescription:(id)a5 color:(id)a6 date:(id)a7 expiration:(id)a8;
+- (NWKUIAQIModel)initWithName:(id)name label:(id)label categoryDescription:(id)description color:(id)color date:(id)date expiration:(id)expiration;
 @end
 
 @implementation NWKUIAQIModel
 
-- (NWKUIAQIModel)initWithName:(id)a3 label:(id)a4 categoryDescription:(id)a5 color:(id)a6 date:(id)a7 expiration:(id)a8
+- (NWKUIAQIModel)initWithName:(id)name label:(id)label categoryDescription:(id)description color:(id)color date:(id)date expiration:(id)expiration
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  nameCopy = name;
+  labelCopy = label;
+  descriptionCopy = description;
+  colorCopy = color;
+  dateCopy = date;
+  expirationCopy = expiration;
   v28.receiver = self;
   v28.super_class = NWKUIAQIModel;
   v20 = [(NWKUIAQIModel *)&v28 init];
   if (v20)
   {
-    v21 = [v14 copy];
+    v21 = [nameCopy copy];
     name = v20->_name;
     v20->_name = v21;
 
-    v23 = [v15 copy];
+    v23 = [labelCopy copy];
     label = v20->_label;
     v20->_label = v23;
 
-    v25 = [v16 copy];
+    v25 = [descriptionCopy copy];
     categoryDescription = v20->_categoryDescription;
     v20->_categoryDescription = v25;
 
-    objc_storeStrong(&v20->_color, a6);
-    objc_storeStrong(&v20->_date, a7);
-    objc_storeStrong(&v20->_expiration, a8);
+    objc_storeStrong(&v20->_color, color);
+    objc_storeStrong(&v20->_date, date);
+    objc_storeStrong(&v20->_expiration, expiration);
   }
 
   return v20;

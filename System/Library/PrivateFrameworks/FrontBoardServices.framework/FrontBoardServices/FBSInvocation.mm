@@ -1,21 +1,21 @@
 @interface FBSInvocation
 + (void)initialize;
-- (BOOL)compatibleWithTarget:(id)a3;
+- (BOOL)compatibleWithTarget:(id)target;
 - (Class)extension;
-- (id)_createReplyBlockWithSignature:(void *)a3 arguments:(void *)a4 handler:;
-- (id)debugDescriptionWithMultilinePrefix:(uint64_t)a1;
-- (id)descriptionWithMultilinePrefix:(uint64_t)a1;
+- (id)_createReplyBlockWithSignature:(void *)signature arguments:(void *)arguments handler:;
+- (id)debugDescriptionWithMultilinePrefix:(uint64_t)prefix;
+- (id)descriptionWithMultilinePrefix:(uint64_t)prefix;
 - (id)membersForCoder;
 - (id)resolve;
 - (id)succinctDescriptionBuilder;
-- (void)_invokeWithTarget:(void *)a3 loggingID:(void *)a4 replyHandler:;
-- (void)cannotResolveForReason:(id)a3;
+- (void)_invokeWithTarget:(void *)target loggingID:(void *)d replyHandler:;
+- (void)cannotResolveForReason:(id)reason;
 - (void)dealloc;
-- (void)decodeWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)initWithInvocation:(void *)a3 interface:;
-- (void)invokeWithReceiver:(id)a3 replyHandler:(id)a4;
-- (void)invokeWithTarget:(id)a3 replyHandler:(id)a4;
+- (void)decodeWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
+- (void)initWithInvocation:(void *)invocation interface:;
+- (void)invokeWithReceiver:(id)receiver replyHandler:(id)handler;
+- (void)invokeWithTarget:(id)target replyHandler:(id)handler;
 - (void)resolve;
 @end
 
@@ -37,8 +37,8 @@ void __27__FBSInvocation_initialize__block_invoke(uint64_t a1, void *a2)
 
 - (Class)extension
 {
-  v2 = [(FBSInvocation *)self context];
-  v3 = [v2 decodeStringForKey:@"extension"];
+  context = [(FBSInvocation *)self context];
+  v3 = [context decodeStringForKey:@"extension"];
 
   v4 = NSClassFromString(v3);
   v5 = v4;
@@ -56,14 +56,14 @@ void __27__FBSInvocation_initialize__block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-- (void)initWithInvocation:(void *)a3 interface:
+- (void)initWithInvocation:(void *)invocation interface:
 {
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  if (a1)
+  invocationCopy = invocation;
+  v7 = invocationCopy;
+  if (self)
   {
-    if (!v6)
+    if (!invocationCopy)
     {
       [FBSInvocation initWithInvocation:? interface:?];
     }
@@ -73,24 +73,24 @@ void __27__FBSInvocation_initialize__block_invoke(uint64_t a1, void *a2)
       [FBSInvocation initWithInvocation:? interface:?];
     }
 
-    v8 = [v5 selector];
-    v9 = [v5 methodSignature];
-    v10 = [v7 methodForSelector:v8];
+    selector = [v5 selector];
+    methodSignature = [v5 methodSignature];
+    v10 = [v7 methodForSelector:selector];
     if (!v10)
     {
-      [FBSInvocation initWithInvocation:v8 interface:sel_initWithInvocation_interface_];
+      [FBSInvocation initWithInvocation:selector interface:sel_initWithInvocation_interface_];
     }
 
     v11 = v10;
-    v12 = [v10 returnValue];
-    v13 = [v12 isVoid];
+    returnValue = [v10 returnValue];
+    isVoid = [returnValue isVoid];
 
-    if ((v13 & 1) == 0)
+    if ((isVoid & 1) == 0)
     {
       v47 = MEMORY[0x1E696AEC0];
-      v48 = NSStringFromSelector(v8);
-      v49 = [v7 name];
-      v50 = [v47 stringWithFormat:@"return value is not void for @selector(%@) in <%@>", v48, v49];
+      v48 = NSStringFromSelector(selector);
+      name = [v7 name];
+      v50 = [v47 stringWithFormat:@"return value is not void for @selector(%@) in <%@>", v48, name];
 
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
@@ -103,15 +103,15 @@ void __27__FBSInvocation_initialize__block_invoke(uint64_t a1, void *a2)
 
     v62 = 0;
     v14 = objc_opt_new();
-    v15 = [v11 arguments];
-    if ([v15 count])
+    arguments = [v11 arguments];
+    if ([arguments count])
     {
-      v52 = v8;
-      v53 = v9;
+      v52 = selector;
+      v53 = methodSignature;
       v16 = 0;
       while (1)
       {
-        v17 = [v15 objectAtIndex:v16];
+        v17 = [arguments objectAtIndex:v16];
         if ([v17 isBlock])
         {
           break;
@@ -120,30 +120,30 @@ void __27__FBSInvocation_initialize__block_invoke(uint64_t a1, void *a2)
         v18 = [v5 fbs_getObjectForValue:v17 atIndex:v16 + 2];
         [v14 setObject:v18 forSetting:v16];
 
-        if (++v16 >= [v15 count])
+        if (++v16 >= [arguments count])
         {
           v54 = 0;
           v19 = 0;
 LABEL_18:
-          v9 = v53;
+          methodSignature = v53;
           goto LABEL_19;
         }
       }
 
       v20 = v17;
       v19 = [v53 _signatureForBlockAtArgumentIndex:v16 + 2];
-      v21 = [v15 lastObject];
+      lastObject = [arguments lastObject];
 
-      if (v20 != v21)
+      if (v20 != lastObject)
       {
         [FBSInvocation initWithInvocation:? interface:?];
       }
 
       v54 = v20;
-      v22 = [v20 blockReturnValue];
-      v23 = [v22 isVoid];
+      blockReturnValue = [v20 blockReturnValue];
+      isVoid2 = [blockReturnValue isVoid];
 
-      if ((v23 & 1) == 0)
+      if ((isVoid2 & 1) == 0)
       {
         [FBSInvocation initWithInvocation:? interface:?];
       }
@@ -163,10 +163,10 @@ LABEL_18:
         goto LABEL_18;
       }
 
-      v26 = [v54 blockArguments];
-      v51 = [v19 numberOfArguments];
-      v9 = v53;
-      if ([v26 count] != v51 - 1)
+      blockArguments = [v54 blockArguments];
+      numberOfArguments = [v19 numberOfArguments];
+      methodSignature = v53;
+      if ([blockArguments count] != numberOfArguments - 1)
       {
         [FBSInvocation initWithInvocation:? interface:?];
       }
@@ -180,17 +180,17 @@ LABEL_18:
       v60 = v52;
       v19 = v19;
       v57 = v19;
-      v58 = v26;
-      v61 = v51;
+      v58 = blockArguments;
+      v61 = numberOfArguments;
       v59 = v62;
-      v28 = v26;
+      v28 = blockArguments;
       v29 = v27;
       v30 = [v55 copy];
-      v31 = a1[7];
-      a1[7] = v30;
+      v31 = self[7];
+      self[7] = v30;
 
 LABEL_19:
-      v8 = v52;
+      selector = v52;
     }
 
     else
@@ -199,40 +199,40 @@ LABEL_19:
       v19 = 0;
     }
 
-    v32 = [v7 name];
-    v33 = a1[1];
-    a1[1] = v32;
+    name2 = [v7 name];
+    v33 = self[1];
+    self[1] = name2;
 
-    v34 = NSStringFromSelector(v8);
-    v35 = a1[2];
-    a1[2] = v34;
+    v34 = NSStringFromSelector(selector);
+    v35 = self[2];
+    self[2] = v34;
 
-    v36 = [v11 encoding];
-    v37 = a1[3];
-    a1[3] = v36;
+    encoding = [v11 encoding];
+    v37 = self[3];
+    self[3] = encoding;
 
-    v38 = [off_1E76BCA80 coder];
-    v39 = a1[4];
-    a1[4] = v38;
+    coder = [off_1E76BCA80 coder];
+    v39 = self[4];
+    self[4] = coder;
 
-    v40 = a1[5];
-    a1[5] = v14;
+    v40 = self[5];
+    self[5] = v14;
     v41 = v14;
 
     v42 = objc_opt_new();
-    v43 = a1[6];
-    a1[6] = v42;
+    v43 = self[6];
+    self[6] = v42;
 
     v44 = FBLogSceneInvocation();
     if (os_log_type_enabled(v44, OS_LOG_TYPE_DEBUG))
     {
-      [FBSInvocation initWithInvocation:a1 interface:v44];
+      [FBSInvocation initWithInvocation:self interface:v44];
     }
 
-    v45 = a1;
+    selfCopy = self;
   }
 
-  return a1;
+  return self;
 }
 
 void __46__FBSInvocation_initWithInvocation_interface___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -451,7 +451,7 @@ void __46__FBSInvocation_initWithInvocation_interface___block_invoke_2(uint64_t 
   v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"deallocation of un-resolved invocation"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    NSStringFromSelector(a1);
+    NSStringFromSelector(self);
     objc_claimAutoreleasedReturnValue();
     v3 = OUTLINED_FUNCTION_12();
     v4 = NSStringFromClass(v3);
@@ -464,10 +464,10 @@ void __46__FBSInvocation_initWithInvocation_interface___block_invoke_2(uint64_t 
   _bs_set_crash_log_message();
 }
 
-- (BOOL)compatibleWithTarget:(id)a3
+- (BOOL)compatibleWithTarget:(id)target
 {
-  v4 = a3;
-  if (v4 && ([(BSAtomicSignal *)self->_invoked hasBeenSignalled]& 1) == 0)
+  targetCopy = target;
+  if (targetCopy && ([(BSAtomicSignal *)self->_invoked hasBeenSignalled]& 1) == 0)
   {
     if (objc_opt_respondsToSelector())
     {
@@ -489,42 +489,42 @@ void __46__FBSInvocation_initWithInvocation_interface___block_invoke_2(uint64_t 
   return v5 & 1;
 }
 
-- (void)invokeWithTarget:(id)a3 replyHandler:(id)a4
+- (void)invokeWithTarget:(id)target replyHandler:(id)handler
 {
-  v8 = a3;
-  v6 = a4;
+  targetCopy = target;
+  handlerCopy = handler;
   v7 = objc_autoreleasePoolPush();
-  [(FBSInvocation *)self _invokeWithTarget:v8 loggingID:0 replyHandler:v6];
+  [(FBSInvocation *)self _invokeWithTarget:targetCopy loggingID:0 replyHandler:handlerCopy];
   objc_autoreleasePoolPop(v7);
 }
 
-- (void)_invokeWithTarget:(void *)a3 loggingID:(void *)a4 replyHandler:
+- (void)_invokeWithTarget:(void *)target loggingID:(void *)d replyHandler:
 {
   v100 = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a3;
-  v72 = a4;
-  if (!a1)
+  targetCopy = target;
+  dCopy = d;
+  if (!self)
   {
-    v69 = v8;
+    v69 = targetCopy;
     goto LABEL_71;
   }
 
-  if (([*(a1 + 48) signal] & 1) == 0)
+  if (([*(self + 48) signal] & 1) == 0)
   {
     [FBSInvocation _invokeWithTarget:? loggingID:? replyHandler:?];
   }
 
   v9 = &stru_1F1595B30;
-  if (v8)
+  if (targetCopy)
   {
-    v9 = v8;
+    v9 = targetCopy;
   }
 
   v69 = v9;
 
-  v10 = [a1 selector];
-  if (!v7 || (v11 = v10, (objc_opt_respondsToSelector() & 1) == 0))
+  selector = [self selector];
+  if (!v7 || (v11 = selector, (objc_opt_respondsToSelector() & 1) == 0))
   {
     v43 = MEMORY[0x1E696ABC0];
     v78[0] = MEMORY[0x1E69E9820];
@@ -532,37 +532,37 @@ void __46__FBSInvocation_initWithInvocation_interface___block_invoke_2(uint64_t 
     v78[2] = __58__FBSInvocation__invokeWithTarget_loggingID_replyHandler___block_invoke;
     v78[3] = &unk_1E76BE2F8;
     v79 = v7;
-    v80 = a1;
+    selfCopy = self;
     v44 = [v43 bs_errorWithDomain:@"FBSInvocation" code:1 configuration:v78];
-    v72[2](v72, 0, v44);
+    dCopy[2](dCopy, 0, v44);
 
     v45 = v79;
     goto LABEL_70;
   }
 
-  v68 = [MEMORY[0x1E695DF68] signatureWithObjCTypes:{objc_msgSend(*(a1 + 24), "UTF8String")}];
+  v68 = [MEMORY[0x1E695DF68] signatureWithObjCTypes:{objc_msgSend(*(self + 24), "UTF8String")}];
   v12 = [MEMORY[0x1E695DF50] invocationWithMethodSignature:v68];
   [v12 setSelector:v11];
   v73 = v12;
-  v13 = NSProtocolFromString(*(a1 + 8));
+  v13 = NSProtocolFromString(*(self + 8));
   v14 = _interfaceFromProtocol(v13);
   v15 = [v14 methodForSelector:v11];
 
   if (!v15)
   {
-    v63 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v63 handleFailureInMethod:sel__invokeWithTarget_loggingID_replyHandler_ object:a1 file:@"FBSInvocation.m" lineNumber:382 description:{@"no method found for %@ in %@", *(a1 + 16), *(a1 + 8)}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:sel__invokeWithTarget_loggingID_replyHandler_ object:self file:@"FBSInvocation.m" lineNumber:382 description:{@"no method found for %@ in %@", *(self + 16), *(self + 8)}];
   }
 
   v67 = v15;
-  v16 = [v15 arguments];
+  arguments = [v15 arguments];
   v70 = 0;
   v71 = 0;
-  for (i = 2; i - 2 < [v16 count]; ++i)
+  for (i = 2; i - 2 < [arguments count]; ++i)
   {
-    v18 = [v16 objectAtIndex:i - 2];
-    v19 = [v18 type];
-    v20 = [*(a1 + 40) objectForSetting:i - 2];
+    v18 = [arguments objectAtIndex:i - 2];
+    type = [v18 type];
+    v20 = [*(self + 40) objectForSetting:i - 2];
     v21 = v20;
     v98 = 0u;
     v99 = 0u;
@@ -571,21 +571,21 @@ void __46__FBSInvocation_initWithInvocation_interface___block_invoke_2(uint64_t 
     v94 = 0u;
     v95 = 0u;
     memset(v93, 0, sizeof(v93));
-    if (v19 > 0x3Fu)
+    if (type > 0x3Fu)
     {
-      if (v19 == 66)
+      if (type == 66)
       {
-        v31 = [v20 BOOLValue];
+        bOOLValue = [v20 BOOLValue];
 LABEL_29:
-        v93[0] = v31;
+        v93[0] = bOOLValue;
         goto LABEL_34;
       }
 
-      if (v19 == 64)
+      if (type == 64)
       {
         if ([v18 isBlock])
         {
-          if (!v72)
+          if (!dCopy)
           {
             v49 = [MEMORY[0x1E696AEC0] stringWithFormat:@"reply handler is expected"];
             v50 = MEMORY[0x1E69E9C10];
@@ -600,7 +600,7 @@ LABEL_29:
               v83 = 2114;
               v84 = v54;
               v85 = 2048;
-              v86 = a1;
+              selfCopy3 = self;
               v87 = 2114;
               v88 = @"FBSInvocation.m";
               v89 = 1024;
@@ -615,8 +615,8 @@ LABEL_29:
             _bs_set_crash_log_message();
           }
 
-          v23 = [v16 lastObject];
-          v24 = v18 == v23;
+          lastObject = [arguments lastObject];
+          v24 = v18 == lastObject;
 
           if (!v24)
           {
@@ -633,7 +633,7 @@ LABEL_29:
               v83 = 2114;
               v84 = v61;
               v85 = 2048;
-              v86 = a1;
+              selfCopy3 = self;
               v87 = 2114;
               v88 = @"FBSInvocation.m";
               v89 = 1024;
@@ -653,22 +653,22 @@ LABEL_29:
           v76[1] = 3221225472;
           v76[2] = __58__FBSInvocation__invokeWithTarget_loggingID_replyHandler___block_invoke_146;
           v76[3] = &unk_1E76BE370;
-          v76[4] = a1;
-          v26 = v72;
+          v76[4] = self;
+          v26 = dCopy;
           v77 = v26;
           v27 = [off_1E76BC9A0 sentinelWithCompletion:v76];
 
-          v28 = [v18 blockArguments];
+          blockArguments = [v18 blockArguments];
           v74[0] = MEMORY[0x1E69E9820];
           v74[1] = 3221225472;
           v74[2] = __58__FBSInvocation__invokeWithTarget_loggingID_replyHandler___block_invoke_3;
           v74[3] = &unk_1E76BE398;
           v71 = v27;
           v75 = v71;
-          v29 = [(FBSInvocation *)a1 _createReplyBlockWithSignature:v25 arguments:v28 handler:v74];
+          v29 = [(FBSInvocation *)self _createReplyBlockWithSignature:v25 arguments:blockArguments handler:v74];
 
           *v93 = v29;
-          v72 = 0;
+          dCopy = 0;
           v70 = v29;
         }
 
@@ -683,27 +683,27 @@ LABEL_29:
 
     else
     {
-      if (v19 == 35)
+      if (type == 35)
       {
-        v22 = NSClassFromString(v20);
+        longValue = NSClassFromString(v20);
         goto LABEL_27;
       }
 
-      if (v19 == 58)
+      if (type == 58)
       {
-        v22 = NSSelectorFromString(v20);
+        longValue = NSSelectorFromString(v20);
 LABEL_27:
-        *v93 = v22;
+        *v93 = longValue;
         goto LABEL_34;
       }
     }
 
-    v30 = v19 & 0xDF;
+    v30 = type & 0xDF;
     if (v30 <= 0x4B)
     {
       if (v30 == 67)
       {
-        v31 = [v20 charValue];
+        bOOLValue = [v20 charValue];
         goto LABEL_29;
       }
 
@@ -719,10 +719,10 @@ LABEL_27:
       switch(v30)
       {
         case 'L':
-          v22 = [v20 longValue];
+          longValue = [v20 longValue];
           goto LABEL_27;
         case 'Q':
-          v22 = [v20 longLongValue];
+          longValue = [v20 longLongValue];
           goto LABEL_27;
         case 'S':
           *v93 = [v20 shortValue];
@@ -730,16 +730,16 @@ LABEL_27:
       }
     }
 
-    if (v19 <= 0x65u)
+    if (type <= 0x65u)
     {
-      if (v19 == 42)
+      if (type == 42)
       {
         v37 = v20;
-        v22 = [v21 UTF8String];
+        longValue = [v21 UTF8String];
         goto LABEL_27;
       }
 
-      if (v19 == 100)
+      if (type == 100)
       {
         [v20 doubleValue];
         *v93 = v32;
@@ -755,16 +755,16 @@ LABEL_45:
         _os_log_error_impl(&dword_1A2DBB000, v34, OS_LOG_TYPE_ERROR, "Parameter is not supported: %@", buf, 0xCu);
       }
 
-      v35 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
       v36 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[FBSInvocation _invokeWithTarget:loggingID:replyHandler:]"];
-      [v35 handleFailureInFunction:v36 file:@"FBSInvocation.m" lineNumber:455 description:{@"Unsupported parameter: %@", v18}];
+      [currentHandler2 handleFailureInFunction:v36 file:@"FBSInvocation.m" lineNumber:455 description:{@"Unsupported parameter: %@", v18}];
 
       goto LABEL_34;
     }
 
-    if (v19 != 123)
+    if (type != 123)
     {
-      if (v19 == 102)
+      if (type == 102)
       {
         [v20 floatValue];
         *v93 = v33;
@@ -777,16 +777,16 @@ LABEL_45:
     v38 = [v18 size];
     if (v38 >= 0x81)
     {
-      v41 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
       v42 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[FBSInvocation _invokeWithTarget:loggingID:replyHandler:]"];
-      [v41 handleFailureInFunction:v42 file:@"FBSInvocation.m" lineNumber:451 description:@"struct is too large"];
+      [currentHandler3 handleFailureInFunction:v42 file:@"FBSInvocation.m" lineNumber:451 description:@"struct is too large"];
     }
 
     if (([v21 bs_getValue:v93 ofSize:v38] & 1) == 0)
     {
-      v39 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
       v40 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[FBSInvocation _invokeWithTarget:loggingID:replyHandler:]"];
-      [v39 handleFailureInFunction:v40 file:@"FBSInvocation.m" lineNumber:452 description:{@"Unable to decode struct: %@", v18}];
+      [currentHandler4 handleFailureInFunction:v40 file:@"FBSInvocation.m" lineNumber:452 description:{@"Unable to decode struct: %@", v18}];
     }
 
 LABEL_34:
@@ -798,7 +798,7 @@ LABEL_34:
     v46 = FBLogSceneInvocation();
     if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
     {
-      v47 = *(a1 + 16);
+      v47 = *(self + 16);
       v48 = [off_1E76BC9B0 succinctDescriptionForObject:v7];
       *v93 = 138543874;
       *&v93[4] = v69;
@@ -812,18 +812,18 @@ LABEL_34:
     [v73 invokeWithTarget:v7];
   }
 
-  if (v72)
+  if (dCopy)
   {
-    (v72[2])();
+    (dCopy[2])();
   }
 
   else
   {
-    v72 = 0;
+    dCopy = 0;
   }
 
-  v65 = *(a1 + 40);
-  v64 = (a1 + 40);
+  v65 = *(self + 40);
+  v64 = (self + 40);
   [v65 removeAllSettings];
   v66 = *v64;
   *v64 = 0;
@@ -834,11 +834,11 @@ LABEL_70:
 LABEL_71:
 }
 
-- (void)invokeWithReceiver:(id)a3 replyHandler:(id)a4
+- (void)invokeWithReceiver:(id)receiver replyHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v11 = v6;
+  receiverCopy = receiver;
+  handlerCopy = handler;
+  v11 = receiverCopy;
   v8 = v11;
   if (objc_opt_respondsToSelector())
   {
@@ -847,16 +847,16 @@ LABEL_71:
 
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v11 loggingIdentifier];
+    loggingIdentifier = [v11 loggingIdentifier];
   }
 
   else
   {
-    v9 = 0;
+    loggingIdentifier = 0;
   }
 
   v10 = objc_autoreleasePoolPush();
-  [(FBSInvocation *)self _invokeWithTarget:v8 loggingID:v9 replyHandler:v7];
+  [(FBSInvocation *)self _invokeWithTarget:v8 loggingID:loggingIdentifier replyHandler:handlerCopy];
   objc_autoreleasePoolPop(v10);
 }
 
@@ -877,10 +877,10 @@ LABEL_71:
   return v5;
 }
 
-- (void)cannotResolveForReason:(id)a3
+- (void)cannotResolveForReason:(id)reason
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  reasonCopy = reason;
   if (self->_resolved)
   {
     [FBSInvocation cannotResolveForReason:a2];
@@ -891,9 +891,9 @@ LABEL_71:
   v14 = 3221225472;
   v15 = __40__FBSInvocation_cannotResolveForReason___block_invoke;
   v16 = &unk_1E76BE2F8;
-  v7 = v5;
+  v7 = reasonCopy;
   v17 = v7;
-  v18 = self;
+  selfCopy = self;
   v8 = [v6 bs_errorWithDomain:@"FBSInvocation" code:1 configuration:&v13];
   v9 = FBLogSceneInvocation();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -923,37 +923,37 @@ void __40__FBSInvocation_cannotResolveForReason___block_invoke(uint64_t a1, void
   [v3 setUserInfoValue:v4 forKey:@"selector"];
 }
 
-- (id)_createReplyBlockWithSignature:(void *)a3 arguments:(void *)a4 handler:
+- (id)_createReplyBlockWithSignature:(void *)signature arguments:(void *)arguments handler:
 {
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (a1)
+  signatureCopy = signature;
+  argumentsCopy = arguments;
+  v10 = argumentsCopy;
+  if (self)
   {
     if (!v7)
     {
       [FBSInvocation _createReplyBlockWithSignature:? arguments:? handler:?];
     }
 
-    if (!v8)
+    if (!signatureCopy)
     {
       [FBSInvocation _createReplyBlockWithSignature:? arguments:? handler:?];
     }
 
-    if (!v9)
+    if (!argumentsCopy)
     {
       [FBSInvocation _createReplyBlockWithSignature:? arguments:? handler:?];
     }
 
     [v7 _cTypeString];
-    v12 = v8;
+    v12 = signatureCopy;
     v13 = v7;
     v14 = v10;
-    a1 = __NSMakeSpecialForwardingCaptureBlock();
+    self = __NSMakeSpecialForwardingCaptureBlock();
   }
 
-  return a1;
+  return self;
 }
 
 void __66__FBSInvocation__createReplyBlockWithSignature_arguments_handler___block_invoke(uint64_t a1, void *a2)
@@ -1128,16 +1128,16 @@ void __53__FBSInvocation_debugDescriptionWithMultilinePrefix___block_invoke_2(ui
   _BSAutoMember();
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   objects = self->_objects;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __33__FBSInvocation_encodeWithCoder___block_invoke;
   v8[3] = &unk_1E76BE408;
-  v9 = v4;
-  v6 = v4;
+  v9 = coderCopy;
+  v6 = coderCopy;
   [(BSMutableSettings *)objects enumerateObjectsWithBlock:v8];
   [(BSMutableSettings *)self->_objects removeAllSettings];
   v7 = self->_objects;
@@ -1154,9 +1154,9 @@ void __33__FBSInvocation_encodeWithCoder___block_invoke(uint64_t a1, uint64_t a2
   [v4 encodeObject:v6 forKey:v7];
 }
 
-- (void)decodeWithCoder:(id)a3
+- (void)decodeWithCoder:(id)coder
 {
-  v38 = a3;
+  coderCopy = coder;
   v5 = NSProtocolFromString(self->_protocolName);
   v6 = NSSelectorFromString(self->_selectorName);
   v7 = v6;
@@ -1186,18 +1186,18 @@ LABEL_3:
     [(FBSInvocation *)&self->_selectorName decodeWithCoder:?];
   }
 
-  v9 = [v8 encoding];
-  v10 = [v9 isEqualToString:self->_encoding];
+  encoding = [v8 encoding];
+  v10 = [encoding isEqualToString:self->_encoding];
 
   if ((v10 & 1) == 0)
   {
     [FBSInvocation decodeWithCoder:];
   }
 
-  v11 = [v8 returnValue];
-  v12 = [v11 isVoid];
+  returnValue = [v8 returnValue];
+  isVoid = [returnValue isVoid];
 
-  if ((v12 & 1) == 0)
+  if ((isVoid & 1) == 0)
   {
     [FBSInvocation decodeWithCoder:];
   }
@@ -1205,13 +1205,13 @@ LABEL_3:
   v34 = a2;
   v13 = objc_opt_new();
   v37 = v8;
-  v14 = [v8 arguments];
-  if ([v14 count])
+  arguments = [v8 arguments];
+  if ([arguments count])
   {
     v15 = 0;
     while (1)
     {
-      v16 = [v14 objectAtIndex:{v15, v34}];
+      v16 = [arguments objectAtIndex:{v15, v34}];
       if (([v16 isBlock] & 1) == 0)
       {
         break;
@@ -1219,19 +1219,19 @@ LABEL_3:
 
 LABEL_22:
 
-      if (++v15 >= [v14 count])
+      if (++v15 >= [arguments count])
       {
         goto LABEL_43;
       }
     }
 
     v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v15];
-    v18 = [v17 stringValue];
+    stringValue = [v17 stringValue];
 
-    v19 = [v16 type];
-    if (v19 <= 0x39)
+    type = [v16 type];
+    if (type <= 0x39)
     {
-      if (v19 != 35 && v19 != 42)
+      if (type != 35 && type != 42)
       {
         goto LABEL_15;
       }
@@ -1239,17 +1239,17 @@ LABEL_22:
       goto LABEL_18;
     }
 
-    if (v19 != 64)
+    if (type != 64)
     {
-      if (v19 != 58)
+      if (type != 58)
       {
 LABEL_15:
-        v20 = [v38 decodeObjectOfClass:objc_opt_class() forKey:v18];
+        v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:stringValue];
         goto LABEL_19;
       }
 
 LABEL_18:
-      v20 = [v38 decodeStringForKey:v18];
+      v20 = [coderCopy decodeStringForKey:stringValue];
 LABEL_19:
       v21 = v20;
       if (!v20)
@@ -1264,31 +1264,31 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    v22 = [v16 objectClass];
-    v23 = [v16 objectContainedClasses];
-    if (![v23 count])
+    objectClass = [v16 objectClass];
+    objectContainedClasses = [v16 objectContainedClasses];
+    if (![objectContainedClasses count])
     {
-      v21 = [v38 decodeObjectOfClass:v22 forKey:v18];
+      v21 = [coderCopy decodeObjectOfClass:objectClass forKey:stringValue];
       goto LABEL_40;
     }
 
-    if (![v23 containsObject:objc_opt_class()])
+    if (![objectContainedClasses containsObject:objc_opt_class()])
     {
-      if ([v22 isSubclassOfClass:objc_opt_class()])
+      if ([objectClass isSubclassOfClass:objc_opt_class()])
       {
-        if ([v23 count] <= 1)
+        if ([objectContainedClasses count] <= 1)
         {
           [FBSInvocation decodeWithCoder:];
         }
 
-        v28 = [v23 objectAtIndex:1];
-        v29 = [v38 decodeDictionaryOfClass:v28 forKey:v18];
+        firstObject = [objectContainedClasses objectAtIndex:1];
+        v29 = [coderCopy decodeDictionaryOfClass:firstObject forKey:stringValue];
       }
 
       else
       {
-        v28 = [v23 firstObject];
-        v29 = [v38 decodeCollectionOfClass:v22 containingClass:v28 forKey:v18];
+        firstObject = [objectContainedClasses firstObject];
+        v29 = [coderCopy decodeCollectionOfClass:objectClass containingClass:firstObject forKey:stringValue];
       }
 
       v21 = v29;
@@ -1303,7 +1303,7 @@ LABEL_40:
     }
 
     v35 = v5;
-    v24 = [v38 decodeXPCObjectOfType:MEMORY[0x1E69E9E50] forKey:v18];
+    v24 = [coderCopy decodeXPCObjectOfType:MEMORY[0x1E69E9E50] forKey:stringValue];
     v25 = _CFXPCCreateCFObjectFromXPCObject();
     v26 = v25;
     if (v24 && !v25)
@@ -1311,9 +1311,9 @@ LABEL_40:
       [FBSInvocation decodeWithCoder:];
     }
 
-    else if (v25 && ([v22 isSubclassOfClass:objc_opt_class()] & 1) == 0)
+    else if (v25 && ([objectClass isSubclassOfClass:objc_opt_class()] & 1) == 0)
     {
-      v27 = [[v22 alloc] initWithArray:v26];
+      v27 = [[objectClass alloc] initWithArray:v26];
       goto LABEL_39;
     }
 
@@ -1335,63 +1335,63 @@ LABEL_43:
   self->_invoked = v32;
 }
 
-- (id)descriptionWithMultilinePrefix:(uint64_t)a1
+- (id)descriptionWithMultilinePrefix:(uint64_t)prefix
 {
-  if (a1)
+  if (prefix)
   {
-    v1 = [(FBSInvocation *)a1 succinctDescriptionBuilder];
-    v2 = [v1 build];
+    succinctDescriptionBuilder = [(FBSInvocation *)prefix succinctDescriptionBuilder];
+    build = [succinctDescriptionBuilder build];
   }
 
   else
   {
-    v2 = 0;
+    build = 0;
   }
 
-  return v2;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(uint64_t)a1
+- (id)debugDescriptionWithMultilinePrefix:(uint64_t)prefix
 {
-  if (a1)
+  if (prefix)
   {
     OUTLINED_FUNCTION_8_1();
     v4 = *(v3 + 40);
     v5 = *(v2 + 16);
     v6 = v1;
     v7 = [v5 componentsSeparatedByString:@":"];
-    v8 = [(FBSInvocation *)v2 succinctDescriptionBuilder];
+    succinctDescriptionBuilder = [(FBSInvocation *)v2 succinctDescriptionBuilder];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __53__FBSInvocation_debugDescriptionWithMultilinePrefix___block_invoke;
     v14[3] = &unk_1E76BE100;
     v15 = v4;
-    v16 = v8;
+    v16 = succinctDescriptionBuilder;
     v17 = v7;
     v9 = v7;
-    v10 = v8;
+    v10 = succinctDescriptionBuilder;
     v11 = v4;
     [v10 appendBodySectionWithName:0 multilinePrefix:v6 block:v14];
 
-    v12 = [v10 build];
+    build = [v10 build];
   }
 
   else
   {
-    v12 = 0;
+    build = 0;
   }
 
-  return v12;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
-  if (a1)
+  if (self)
   {
-    v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"-[<%@> %@]", *(a1 + 8), *(a1 + 16)];
-    v3 = [off_1E76BC9B0 builderWithObject:a1];
+    v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"-[<%@> %@]", *(self + 8), *(self + 16)];
+    v3 = [off_1E76BC9B0 builderWithObject:self];
     v4 = [v3 appendObject:v2 withName:0];
-    if ([*(a1 + 48) hasBeenSignalled])
+    if ([*(self + 48) hasBeenSignalled])
     {
       v5 = [v3 appendObject:@"(invoked)" withName:0];
     }
@@ -1591,7 +1591,7 @@ void __46__FBSInvocation_initWithInvocation_interface___block_invoke_cold_1(void
   v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invocation has already been resolved"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    NSStringFromSelector(a1);
+    NSStringFromSelector(self);
     objc_claimAutoreleasedReturnValue();
     v3 = OUTLINED_FUNCTION_12();
     v4 = NSStringFromClass(v3);

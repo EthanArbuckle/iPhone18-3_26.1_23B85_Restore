@@ -1,9 +1,9 @@
 @interface PrivilegedTasks
-+ (id)copyIAPProductAtPath:(id)a3 toPath:(id)a4;
-+ (id)removeIAPProductAtPath:(id)a3;
++ (id)copyIAPProductAtPath:(id)path toPath:(id)toPath;
++ (id)removeIAPProductAtPath:(id)path;
 + (id)sharedInstance;
-- (id)_copyIAPProductAtPath:(id)a3 toPath:(id)a4;
-- (id)_removeIAPProductAtPath:(id)a3;
+- (id)_copyIAPProductAtPath:(id)path toPath:(id)toPath;
+- (id)_removeIAPProductAtPath:(id)path;
 - (id)_serviceConnection;
 @end
 
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = sub_10007C0CC;
   block[3] = &unk_10037F9B0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1003D4BE0[0] != -1)
   {
     dispatch_once(qword_1003D4BE0, block);
@@ -26,21 +26,21 @@
   return v2;
 }
 
-+ (id)copyIAPProductAtPath:(id)a3 toPath:(id)a4
++ (id)copyIAPProductAtPath:(id)path toPath:(id)toPath
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 sharedInstance];
-  v9 = [v8 _copyIAPProductAtPath:v7 toPath:v6];
+  toPathCopy = toPath;
+  pathCopy = path;
+  sharedInstance = [self sharedInstance];
+  v9 = [sharedInstance _copyIAPProductAtPath:pathCopy toPath:toPathCopy];
 
   return v9;
 }
 
-+ (id)removeIAPProductAtPath:(id)a3
++ (id)removeIAPProductAtPath:(id)path
 {
-  v4 = a3;
-  v5 = [a1 sharedInstance];
-  v6 = [v5 _removeIAPProductAtPath:v4];
+  pathCopy = path;
+  sharedInstance = [self sharedInstance];
+  v6 = [sharedInstance _removeIAPProductAtPath:pathCopy];
 
   return v6;
 }
@@ -64,59 +64,59 @@
   return connection;
 }
 
-- (id)_copyIAPProductAtPath:(id)a3 toPath:(id)a4
+- (id)_copyIAPProductAtPath:(id)path toPath:(id)toPath
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  toPathCopy = toPath;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = sub_10007C414;
   v18 = sub_10007C424;
   v19 = 0;
-  v8 = [(PrivilegedTasks *)self _serviceConnection];
+  _serviceConnection = [(PrivilegedTasks *)self _serviceConnection];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10007C42C;
   v13[3] = &unk_100383248;
   v13[4] = &v14;
-  v9 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v13];
+  v9 = [_serviceConnection synchronousRemoteObjectProxyWithErrorHandler:v13];
 
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10007C43C;
   v12[3] = &unk_100383248;
   v12[4] = &v14;
-  [v9 copyIAPProductAtPath:v6 toPath:v7 withReplyHandler:v12];
+  [v9 copyIAPProductAtPath:pathCopy toPath:toPathCopy withReplyHandler:v12];
   v10 = v15[5];
 
   _Block_object_dispose(&v14, 8);
   return v10;
 }
 
-- (id)_removeIAPProductAtPath:(id)a3
+- (id)_removeIAPProductAtPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = sub_10007C414;
   v15 = sub_10007C424;
   v16 = 0;
-  v5 = [(PrivilegedTasks *)self _serviceConnection];
+  _serviceConnection = [(PrivilegedTasks *)self _serviceConnection];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10007C5E0;
   v10[3] = &unk_100383248;
   v10[4] = &v11;
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v10];
+  v6 = [_serviceConnection synchronousRemoteObjectProxyWithErrorHandler:v10];
 
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10007C5F0;
   v9[3] = &unk_100383248;
   v9[4] = &v11;
-  [v6 removeIAPProductAtPath:v4 withReplyHandler:v9];
+  [v6 removeIAPProductAtPath:pathCopy withReplyHandler:v9];
   v7 = v12[5];
 
   _Block_object_dispose(&v11, 8);

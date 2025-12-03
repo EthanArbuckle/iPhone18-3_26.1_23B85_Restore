@@ -1,9 +1,9 @@
 @interface CSDConversationParticipant
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToParticipant:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToParticipant:(id)participant;
 - (BOOL)isPseudonym;
-- (CSDConversationParticipant)initWithIDSDictionaryRepresentation:(id)a3;
-- (CSDConversationParticipant)initWithIdentifier:(unint64_t)a3 handle:(id)a4 avcData:(id)a5 senderCorrelationIdentifier:(id)a6;
+- (CSDConversationParticipant)initWithIDSDictionaryRepresentation:(id)representation;
+- (CSDConversationParticipant)initWithIdentifier:(unint64_t)identifier handle:(id)handle avcData:(id)data senderCorrelationIdentifier:(id)correlationIdentifier;
 - (NSDictionary)idsDictionaryRepresentation;
 - (TUConversationParticipant)tuConversationParticipant;
 - (id)description;
@@ -12,25 +12,25 @@
 
 @implementation CSDConversationParticipant
 
-- (CSDConversationParticipant)initWithIdentifier:(unint64_t)a3 handle:(id)a4 avcData:(id)a5 senderCorrelationIdentifier:(id)a6
+- (CSDConversationParticipant)initWithIdentifier:(unint64_t)identifier handle:(id)handle avcData:(id)data senderCorrelationIdentifier:(id)correlationIdentifier
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  handleCopy = handle;
+  dataCopy = data;
+  correlationIdentifierCopy = correlationIdentifier;
   v26.receiver = self;
   v26.super_class = CSDConversationParticipant;
   v13 = [(CSDConversationParticipant *)&v26 init];
   v14 = v13;
   if (v13)
   {
-    v13->_identifier = a3;
-    objc_storeStrong(&v13->_avcData, a5);
-    v15 = [v10 normalizedValue];
-    v16 = [v15 length];
+    v13->_identifier = identifier;
+    objc_storeStrong(&v13->_avcData, data);
+    normalizedValue = [handleCopy normalizedValue];
+    v16 = [normalizedValue length];
 
     if (v16)
     {
-      v17 = [v10 copy];
+      v17 = [handleCopy copy];
       handle = v14->_handle;
       v14->_handle = v17;
     }
@@ -47,7 +47,7 @@
     capabilities = v14->_capabilities;
     v14->_capabilities = v21;
 
-    v23 = [v12 copy];
+    v23 = [correlationIdentifierCopy copy];
     senderCorrelationIdentifier = v14->_senderCorrelationIdentifier;
     v14->_senderCorrelationIdentifier = v23;
   }
@@ -55,49 +55,49 @@
   return v14;
 }
 
-- (CSDConversationParticipant)initWithIDSDictionaryRepresentation:(id)a3
+- (CSDConversationParticipant)initWithIDSDictionaryRepresentation:(id)representation
 {
   v4 = IDSSessionParticipantIDKey;
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:v4];
-  v7 = [v6 unsignedLongLongValue];
+  representationCopy = representation;
+  v6 = [representationCopy objectForKeyedSubscript:v4];
+  unsignedLongLongValue = [v6 unsignedLongLongValue];
 
-  v8 = [v5 objectForKeyedSubscript:IDSSessionParticipantDataKey];
+  v8 = [representationCopy objectForKeyedSubscript:IDSSessionParticipantDataKey];
 
   v9 = [[CSDMessagingConversationParticipant alloc] initWithData:v8];
   v10 = v9;
-  if (v7)
+  if (unsignedLongLongValue)
   {
-    v11 = [(CSDMessagingConversationParticipant *)v9 handle];
-    if (v11 && (v12 = v11, [(CSDMessagingConversationParticipant *)v10 avcData], v13 = objc_claimAutoreleasedReturnValue(), v13, v12, v13))
+    handle = [(CSDMessagingConversationParticipant *)v9 handle];
+    if (handle && (v12 = handle, [(CSDMessagingConversationParticipant *)v10 avcData], v13 = objc_claimAutoreleasedReturnValue(), v13, v12, v13))
     {
-      v14 = [(CSDMessagingConversationParticipant *)v10 csdConversationParticipant];
-      v15 = [(CSDConversationParticipant *)v14 handle];
-      v16 = [(CSDMessagingConversationParticipant *)v10 avcData];
-      v7 = [(CSDConversationParticipant *)self initWithIdentifier:v7 handle:v15 avcData:v16 senderCorrelationIdentifier:0];
+      csdConversationParticipant = [(CSDMessagingConversationParticipant *)v10 csdConversationParticipant];
+      handle2 = [(CSDConversationParticipant *)csdConversationParticipant handle];
+      avcData = [(CSDMessagingConversationParticipant *)v10 avcData];
+      unsignedLongLongValue = [(CSDConversationParticipant *)self initWithIdentifier:unsignedLongLongValue handle:handle2 avcData:avcData senderCorrelationIdentifier:0];
 
-      self = v14;
+      self = csdConversationParticipant;
     }
 
     else
     {
-      v7 = 0;
+      unsignedLongLongValue = 0;
     }
   }
 
-  return v7;
+  return unsignedLongLongValue;
 }
 
 - (id)description
 {
   v3 = [NSMutableString stringWithFormat:@"<%@ %p", objc_opt_class(), self];
   [v3 appendFormat:@" identifier=%llu", -[CSDConversationParticipant identifier](self, "identifier")];
-  v4 = [(CSDConversationParticipant *)self handle];
-  [v3 appendFormat:@" handle=%@", v4];
+  handle = [(CSDConversationParticipant *)self handle];
+  [v3 appendFormat:@" handle=%@", handle];
 
-  v5 = [(CSDConversationParticipant *)self avcData];
+  avcData = [(CSDConversationParticipant *)self avcData];
   v6 = @"YES";
-  if (!v5)
+  if (!avcData)
   {
     v6 = @"NO";
   }
@@ -111,30 +111,30 @@
   [v3 appendFormat:@" streamToken=%ld", -[CSDConversationParticipant streamToken](self, "streamToken")];
   [v3 appendFormat:@" screenToken=%ld", -[CSDConversationParticipant screenToken](self, "screenToken")];
   [v3 appendFormat:@" captionsToken=%ld", -[CSDConversationParticipant captionsToken](self, "captionsToken")];
-  v7 = [(CSDConversationParticipant *)self avcIdentifier];
-  [v3 appendFormat:@" avcIdentifier=%@", v7];
+  avcIdentifier = [(CSDConversationParticipant *)self avcIdentifier];
+  [v3 appendFormat:@" avcIdentifier=%@", avcIdentifier];
 
-  v8 = [(CSDConversationParticipant *)self capabilities];
-  [v3 appendFormat:@" capabilities=%@", v8];
+  capabilities = [(CSDConversationParticipant *)self capabilities];
+  [v3 appendFormat:@" capabilities=%@", capabilities];
 
   [v3 appendFormat:@" isAudioPaused=%d", -[CSDConversationParticipant isAudioPaused](self, "isAudioPaused")];
   [v3 appendFormat:@" isLightweight=%d", -[CSDConversationParticipant isLightweight](self, "isLightweight")];
   [v3 appendFormat:@" isLocalAccountHandle=%d", -[CSDConversationParticipant isLocalAccountHandle](self, "isLocalAccountHandle")];
-  v9 = [(CSDConversationParticipant *)self association];
+  association = [(CSDConversationParticipant *)self association];
 
-  if (v9)
+  if (association)
   {
-    v10 = [(CSDConversationParticipant *)self association];
-    [v3 appendFormat:@" association=%@", v10];
+    association2 = [(CSDConversationParticipant *)self association];
+    [v3 appendFormat:@" association=%@", association2];
   }
 
   [v3 appendFormat:@" isGuestModeEnabled=%d", -[CSDConversationParticipant isGuestModeEnabled](self, "isGuestModeEnabled")];
-  v11 = [(CSDConversationParticipant *)self senderCorrelationIdentifier];
+  senderCorrelationIdentifier = [(CSDConversationParticipant *)self senderCorrelationIdentifier];
 
-  if (v11)
+  if (senderCorrelationIdentifier)
   {
-    v12 = [(CSDConversationParticipant *)self senderCorrelationIdentifier];
-    [v3 appendFormat:@" senderCorrelationIdentifier=%@", v12];
+    senderCorrelationIdentifier2 = [(CSDConversationParticipant *)self senderCorrelationIdentifier];
+    [v3 appendFormat:@" senderCorrelationIdentifier=%@", senderCorrelationIdentifier2];
   }
 
   [v3 appendFormat:@" audioPriority=%lu", -[CSDConversationParticipant audioPriority](self, "audioPriority")];
@@ -145,12 +145,12 @@
     [v3 appendFormat:@" isCameraMixedWithScreen=%d", -[CSDConversationParticipant isCameraMixedWithScreen](self, "isCameraMixedWithScreen")];
   }
 
-  v13 = [(CSDConversationParticipant *)self cluster];
+  cluster = [(CSDConversationParticipant *)self cluster];
 
-  if (v13)
+  if (cluster)
   {
-    v14 = [(CSDConversationParticipant *)self cluster];
-    [v3 appendFormat:@" cluster=%@", v14];
+    cluster2 = [(CSDConversationParticipant *)self cluster];
+    [v3 appendFormat:@" cluster=%@", cluster2];
   }
 
   if ([(CSDConversationParticipant *)self isNearbySharePlay])
@@ -167,10 +167,10 @@
 - (TUConversationParticipant)tuConversationParticipant
 {
   v3 = [TUConversationParticipant alloc];
-  v4 = [(CSDConversationParticipant *)self identifier];
-  v5 = [(CSDConversationParticipant *)self handle];
-  v6 = [(CSDConversationParticipant *)self senderCorrelationIdentifier];
-  v7 = [v3 initWithIdentifier:v4 handle:v5 senderCorrelationIdentifier:v6];
+  identifier = [(CSDConversationParticipant *)self identifier];
+  handle = [(CSDConversationParticipant *)self handle];
+  senderCorrelationIdentifier = [(CSDConversationParticipant *)self senderCorrelationIdentifier];
+  v7 = [v3 initWithIdentifier:identifier handle:handle senderCorrelationIdentifier:senderCorrelationIdentifier];
 
   [v7 setMuted:{-[CSDConversationParticipant isMuted](self, "isMuted")}];
   [v7 setAudioEnabled:{-[CSDConversationParticipant isAudioEnabled](self, "isAudioEnabled")}];
@@ -182,27 +182,27 @@
   [v7 setCaptionsToken:{-[CSDConversationParticipant captionsToken](self, "captionsToken")}];
   [v7 setAudioPriority:{-[CSDConversationParticipant audioPriority](self, "audioPriority")}];
   [v7 setVideoPriority:{-[CSDConversationParticipant videoPriority](self, "videoPriority")}];
-  v8 = [(CSDConversationParticipant *)self avcIdentifier];
-  [v7 setAvcIdentifier:v8];
+  avcIdentifier = [(CSDConversationParticipant *)self avcIdentifier];
+  [v7 setAvcIdentifier:avcIdentifier];
 
-  v9 = [(CSDConversationParticipant *)self activeIDSDestination];
-  [v7 setActiveIDSDestination:v9];
+  activeIDSDestination = [(CSDConversationParticipant *)self activeIDSDestination];
+  [v7 setActiveIDSDestination:activeIDSDestination];
 
-  v10 = [(CSDConversationParticipant *)self capabilities];
-  [v7 setCapabilities:v10];
+  capabilities = [(CSDConversationParticipant *)self capabilities];
+  [v7 setCapabilities:capabilities];
 
   [v7 setLightweight:{-[CSDConversationParticipant isLightweight](self, "isLightweight")}];
   [v7 setLocalAccountHandle:{-[CSDConversationParticipant isLocalAccountHandle](self, "isLocalAccountHandle")}];
-  v11 = [(CSDConversationParticipant *)self association];
-  [v7 setAssociation:v11];
+  association = [(CSDConversationParticipant *)self association];
+  [v7 setAssociation:association];
 
   [v7 setGuestModeEnabled:{-[CSDConversationParticipant isGuestModeEnabled](self, "isGuestModeEnabled")}];
   [v7 setAudioVideoMode:{-[CSDConversationParticipant audioVideoMode](self, "audioVideoMode")}];
   [v7 setPresentationMode:{-[CSDConversationParticipant presentationMode](self, "presentationMode")}];
   [v7 setSpatialPersonaEnabled:{-[CSDConversationParticipant isSpatialPersonaEnabled](self, "isSpatialPersonaEnabled")}];
   [v7 setCameraMixedWithScreen:{-[CSDConversationParticipant isCameraMixedWithScreen](self, "isCameraMixedWithScreen")}];
-  v12 = [(CSDConversationParticipant *)self cluster];
-  [v7 setCluster:v12];
+  cluster = [(CSDConversationParticipant *)self cluster];
+  [v7 setCluster:cluster];
 
   [v7 setIsNearbySharePlay:{-[CSDConversationParticipant isNearbySharePlay](self, "isNearbySharePlay")}];
 
@@ -216,10 +216,10 @@
   v4 = [NSNumber numberWithUnsignedLongLong:[(CSDConversationParticipant *)self identifier]];
   v11[0] = v4;
   v10[1] = IDSSessionParticipantDataKey;
-  v5 = [v3 data];
-  v11[1] = v5;
+  data = [v3 data];
+  v11[1] = data;
   v10[2] = IDSGroupSessionMessagesLocalMemberIDKey;
-  v6 = [(CSDConversationParticipant *)self handle];
+  handle = [(CSDConversationParticipant *)self handle];
   v7 = TUCopyIDSCanonicalAddressForHandle();
   v11[2] = v7;
   v8 = [NSDictionary dictionaryWithObjects:v11 forKeys:v10 count:3];
@@ -229,20 +229,20 @@
 
 - (BOOL)isPseudonym
 {
-  v2 = [(CSDConversationParticipant *)self handle];
-  v3 = [v2 value];
-  v4 = [v3 destinationIdIsPseudonym];
+  handle = [(CSDConversationParticipant *)self handle];
+  value = [handle value];
+  destinationIdIsPseudonym = [value destinationIdIsPseudonym];
 
-  return v4;
+  return destinationIdIsPseudonym;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(CSDConversationParticipant *)self isEqualToParticipant:v4];
+    v5 = [(CSDConversationParticipant *)self isEqualToParticipant:equalCopy];
   }
 
   else
@@ -253,51 +253,51 @@
   return v5;
 }
 
-- (BOOL)isEqualToParticipant:(id)a3
+- (BOOL)isEqualToParticipant:(id)participant
 {
-  v4 = a3;
-  v5 = [(CSDConversationParticipant *)self identifier];
-  if (v5 == [v4 identifier])
+  participantCopy = participant;
+  identifier = [(CSDConversationParticipant *)self identifier];
+  if (identifier == [participantCopy identifier])
   {
-    v6 = [(CSDConversationParticipant *)self handle];
-    v7 = [v4 handle];
-    if ([v6 isEqualToHandle:v7])
+    handle = [(CSDConversationParticipant *)self handle];
+    handle2 = [participantCopy handle];
+    if ([handle isEqualToHandle:handle2])
     {
-      v8 = [(CSDConversationParticipant *)self avcData];
-      v9 = [v4 avcData];
-      if ([v8 isEqualToData:v9] && (v10 = -[CSDConversationParticipant isMuted](self, "isMuted"), v10 == objc_msgSend(v4, "isMuted")) && (v11 = -[CSDConversationParticipant isAudioEnabled](self, "isAudioEnabled"), v11 == objc_msgSend(v4, "isAudioEnabled")) && (v12 = -[CSDConversationParticipant isVideoEnabled](self, "isVideoEnabled"), v12 == objc_msgSend(v4, "isVideoEnabled")) && (v13 = -[CSDConversationParticipant isScreenEnabled](self, "isScreenEnabled"), v13 == objc_msgSend(v4, "isScreenEnabled")) && (v14 = -[CSDConversationParticipant streamToken](self, "streamToken"), v14 == objc_msgSend(v4, "streamToken")) && (v15 = -[CSDConversationParticipant screenToken](self, "screenToken"), v15 == objc_msgSend(v4, "screenToken")) && (v16 = -[CSDConversationParticipant captionsToken](self, "captionsToken"), v16 == objc_msgSend(v4, "captionsToken")))
+      avcData = [(CSDConversationParticipant *)self avcData];
+      avcData2 = [participantCopy avcData];
+      if ([avcData isEqualToData:avcData2] && (v10 = -[CSDConversationParticipant isMuted](self, "isMuted"), v10 == objc_msgSend(participantCopy, "isMuted")) && (v11 = -[CSDConversationParticipant isAudioEnabled](self, "isAudioEnabled"), v11 == objc_msgSend(participantCopy, "isAudioEnabled")) && (v12 = -[CSDConversationParticipant isVideoEnabled](self, "isVideoEnabled"), v12 == objc_msgSend(participantCopy, "isVideoEnabled")) && (v13 = -[CSDConversationParticipant isScreenEnabled](self, "isScreenEnabled"), v13 == objc_msgSend(participantCopy, "isScreenEnabled")) && (v14 = -[CSDConversationParticipant streamToken](self, "streamToken"), v14 == objc_msgSend(participantCopy, "streamToken")) && (v15 = -[CSDConversationParticipant screenToken](self, "screenToken"), v15 == objc_msgSend(participantCopy, "screenToken")) && (v16 = -[CSDConversationParticipant captionsToken](self, "captionsToken"), v16 == objc_msgSend(participantCopy, "captionsToken")))
       {
-        v17 = [(CSDConversationParticipant *)self avcIdentifier];
-        v18 = [v4 avcIdentifier];
-        if (v17 == v18)
+        avcIdentifier = [(CSDConversationParticipant *)self avcIdentifier];
+        avcIdentifier2 = [participantCopy avcIdentifier];
+        if (avcIdentifier == avcIdentifier2)
         {
-          v21 = [(CSDConversationParticipant *)self activeIDSDestination];
-          v22 = [v4 activeIDSDestination];
+          activeIDSDestination = [(CSDConversationParticipant *)self activeIDSDestination];
+          activeIDSDestination2 = [participantCopy activeIDSDestination];
           if (TUStringsAreEqualOrNil())
           {
-            v42 = v22;
-            v23 = [(CSDConversationParticipant *)self capabilities];
-            v24 = [v4 capabilities];
-            v43 = v23;
-            v25 = v23;
-            v26 = v24;
-            if ([v25 isEqualToCapabilities:v24])
+            v42 = activeIDSDestination2;
+            capabilities = [(CSDConversationParticipant *)self capabilities];
+            capabilities2 = [participantCopy capabilities];
+            v43 = capabilities;
+            v25 = capabilities;
+            v26 = capabilities2;
+            if ([v25 isEqualToCapabilities:capabilities2])
             {
-              v41 = v21;
-              v27 = [(CSDConversationParticipant *)self isAudioPaused];
-              if (v27 == [v4 isAudioPaused] && (v28 = -[CSDConversationParticipant isLocalAccountHandle](self, "isLocalAccountHandle"), v28 == objc_msgSend(v4, "isLocalAccountHandle")) && (v29 = -[CSDConversationParticipant isLightweight](self, "isLightweight"), v29 == objc_msgSend(v4, "isLightweight")))
+              v41 = activeIDSDestination;
+              isAudioPaused = [(CSDConversationParticipant *)self isAudioPaused];
+              if (isAudioPaused == [participantCopy isAudioPaused] && (v28 = -[CSDConversationParticipant isLocalAccountHandle](self, "isLocalAccountHandle"), v28 == objc_msgSend(participantCopy, "isLocalAccountHandle")) && (v29 = -[CSDConversationParticipant isLightweight](self, "isLightweight"), v29 == objc_msgSend(participantCopy, "isLightweight")))
               {
-                v30 = [(CSDConversationParticipant *)self association];
-                v39 = [v4 association];
-                v40 = v30;
-                if (TUObjectsAreEqualOrNil() && (v31 = -[CSDConversationParticipant presentationMode](self, "presentationMode"), v31 == [v4 presentationMode]) && (v32 = -[CSDConversationParticipant isGuestModeEnabled](self, "isGuestModeEnabled"), v32 == objc_msgSend(v4, "isGuestModeEnabled")) && (v33 = -[CSDConversationParticipant isSpatialPersonaEnabled](self, "isSpatialPersonaEnabled"), v33 == objc_msgSend(v4, "isSpatialPersonaEnabled")) && (v34 = -[CSDConversationParticipant spatialPersonaGenerationCounter](self, "spatialPersonaGenerationCounter"), v34 == objc_msgSend(v4, "spatialPersonaGenerationCounter")) && (v35 = -[CSDConversationParticipant isCameraMixedWithScreen](self, "isCameraMixedWithScreen"), v35 == objc_msgSend(v4, "isCameraMixedWithScreen")))
+                association = [(CSDConversationParticipant *)self association];
+                association2 = [participantCopy association];
+                v40 = association;
+                if (TUObjectsAreEqualOrNil() && (v31 = -[CSDConversationParticipant presentationMode](self, "presentationMode"), v31 == [participantCopy presentationMode]) && (v32 = -[CSDConversationParticipant isGuestModeEnabled](self, "isGuestModeEnabled"), v32 == objc_msgSend(participantCopy, "isGuestModeEnabled")) && (v33 = -[CSDConversationParticipant isSpatialPersonaEnabled](self, "isSpatialPersonaEnabled"), v33 == objc_msgSend(participantCopy, "isSpatialPersonaEnabled")) && (v34 = -[CSDConversationParticipant spatialPersonaGenerationCounter](self, "spatialPersonaGenerationCounter"), v34 == objc_msgSend(participantCopy, "spatialPersonaGenerationCounter")) && (v35 = -[CSDConversationParticipant isCameraMixedWithScreen](self, "isCameraMixedWithScreen"), v35 == objc_msgSend(participantCopy, "isCameraMixedWithScreen")))
                 {
-                  v36 = [(CSDConversationParticipant *)self cluster];
-                  v38 = [v4 cluster];
+                  cluster = [(CSDConversationParticipant *)self cluster];
+                  cluster2 = [participantCopy cluster];
                   if (TUObjectsAreEqualOrNil())
                   {
-                    v37 = [(CSDConversationParticipant *)self isNearbySharePlay:v38];
-                    v19 = v37 ^ [v4 isNearbySharePlay] ^ 1;
+                    v37 = [(CSDConversationParticipant *)self isNearbySharePlay:cluster2];
+                    v19 = v37 ^ [participantCopy isNearbySharePlay] ^ 1;
                   }
 
                   else
@@ -317,7 +317,7 @@
                 LOBYTE(v19) = 0;
               }
 
-              v21 = v41;
+              activeIDSDestination = v41;
             }
 
             else
@@ -325,7 +325,7 @@
               LOBYTE(v19) = 0;
             }
 
-            v22 = v42;
+            activeIDSDestination2 = v42;
           }
 
           else
@@ -364,10 +364,10 @@
 {
   v42 = [NSNumber numberWithUnsignedLongLong:[(CSDConversationParticipant *)self identifier]];
   v3 = [v42 hash];
-  v41 = [(CSDConversationParticipant *)self handle];
-  v4 = [v41 hash];
-  v40 = [(CSDConversationParticipant *)self avcData];
-  v5 = v4 ^ [v40 hash];
+  handle = [(CSDConversationParticipant *)self handle];
+  v4 = [handle hash];
+  avcData = [(CSDConversationParticipant *)self avcData];
+  v5 = v4 ^ [avcData hash];
   v6 = 1231;
   if ([(CSDConversationParticipant *)self isMuted])
   {
@@ -413,15 +413,15 @@
   }
 
   v14 = v12 ^ v13 ^ v3;
-  v15 = [(CSDConversationParticipant *)self streamToken];
-  v16 = v15 ^ [(CSDConversationParticipant *)self screenToken];
+  streamToken = [(CSDConversationParticipant *)self streamToken];
+  v16 = streamToken ^ [(CSDConversationParticipant *)self screenToken];
   v17 = v16 ^ [(CSDConversationParticipant *)self captionsToken];
-  v18 = [(CSDConversationParticipant *)self avcIdentifier];
-  v19 = v17 ^ [v18 hash];
-  v20 = [(CSDConversationParticipant *)self activeIDSDestination];
-  v21 = v19 ^ [v20 hash];
-  v22 = [(CSDConversationParticipant *)self capabilities];
-  v23 = v21 ^ [v22 hash];
+  avcIdentifier = [(CSDConversationParticipant *)self avcIdentifier];
+  v19 = v17 ^ [avcIdentifier hash];
+  activeIDSDestination = [(CSDConversationParticipant *)self activeIDSDestination];
+  v21 = v19 ^ [activeIDSDestination hash];
+  capabilities = [(CSDConversationParticipant *)self capabilities];
+  v23 = v21 ^ [capabilities hash];
   if ([(CSDConversationParticipant *)self isAudioPaused])
   {
     v24 = 1231;
@@ -454,8 +454,8 @@
     v28 = 1237;
   }
 
-  v29 = [(CSDConversationParticipant *)self association];
-  v30 = v28 ^ [v29 hash];
+  association = [(CSDConversationParticipant *)self association];
+  v30 = v28 ^ [association hash];
   if ([(CSDConversationParticipant *)self isGuestModeEnabled])
   {
     v31 = 1231;
@@ -489,8 +489,8 @@
   }
 
   v36 = v34 ^ v35 ^ [(CSDConversationParticipant *)self presentationMode];
-  v37 = [(CSDConversationParticipant *)self cluster];
-  v38 = v27 ^ v36 ^ [v37 hash];
+  cluster = [(CSDConversationParticipant *)self cluster];
+  v38 = v27 ^ v36 ^ [cluster hash];
   if (![(CSDConversationParticipant *)self isNearbySharePlay])
   {
     v6 = 1237;

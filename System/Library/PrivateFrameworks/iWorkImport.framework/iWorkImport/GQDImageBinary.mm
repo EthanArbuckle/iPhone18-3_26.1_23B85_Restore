@@ -1,7 +1,7 @@
 @interface GQDImageBinary
 - (CGSize)size;
-- (__CFURL)createAbsoluteUrlForState:(id)a3;
-- (int)readDataAttributesFromReader:(_xmlTextReader *)a3;
+- (__CFURL)createAbsoluteUrlForState:(id)state;
+- (int)readDataAttributesFromReader:(_xmlTextReader *)reader;
 - (void)dealloc;
 @end
 
@@ -35,7 +35,7 @@
   return result;
 }
 
-- (__CFURL)createAbsoluteUrlForState:(id)a3
+- (__CFURL)createAbsoluteUrlForState:(id)state
 {
   mAbsoluteUrl = self->mAbsoluteUrl;
   if (!mAbsoluteUrl)
@@ -46,7 +46,7 @@
       mResourceType = self->mResourceType;
       if (mResourceType == 1)
       {
-        mAbsoluteUrl = [a3 createUrlToAppBundleResource:mPath processorBundle:objc_msgSend(objc_msgSend(a3 skipCachingPDFAndNoExtentionResources:{"processor"), "bundle"), 0}];
+        mAbsoluteUrl = [state createUrlToAppBundleResource:mPath processorBundle:objc_msgSend(objc_msgSend(state skipCachingPDFAndNoExtentionResources:{"processor"), "bundle"), 0}];
       }
 
       else
@@ -56,7 +56,7 @@
           return 0;
         }
 
-        mAbsoluteUrl = [a3 createUriToDocumentBundleResource:self->mPath];
+        mAbsoluteUrl = [state createUriToDocumentBundleResource:self->mPath];
       }
 
       self->mAbsoluteUrl = mAbsoluteUrl;
@@ -74,10 +74,10 @@ LABEL_2:
   return CFRetain(mAbsoluteUrl);
 }
 
-- (int)readDataAttributesFromReader:(_xmlTextReader *)a3
+- (int)readDataAttributesFromReader:(_xmlTextReader *)reader
 {
-  self->mPath = sub_4294C(a3, qword_A35E8, "path");
-  self->mResourceType = sub_42468(a3, qword_A35E8, "resource-type", 0);
+  self->mPath = sub_4294C(reader, qword_A35E8, "path");
+  self->mResourceType = sub_42468(reader, qword_A35E8, "resource-type", 0);
   return 1;
 }
 

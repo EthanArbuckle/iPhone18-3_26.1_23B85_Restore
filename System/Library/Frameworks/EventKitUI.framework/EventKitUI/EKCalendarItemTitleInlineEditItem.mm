@@ -1,19 +1,19 @@
 @interface EKCalendarItemTitleInlineEditItem
-- (BOOL)editor:(id)a3 canSelectSubitem:(unint64_t)a4;
-- (BOOL)focusTitleAndSelectTitle:(BOOL)a3;
+- (BOOL)editor:(id)editor canSelectSubitem:(unint64_t)subitem;
+- (BOOL)focusTitleAndSelectTitle:(BOOL)title;
 - (BOOL)isSaveable;
-- (BOOL)saveAndDismissWithForce:(BOOL)a3;
+- (BOOL)saveAndDismissWithForce:(BOOL)force;
 - (BOOL)titleShouldReturn;
 - (EKCalendarItemTitleInlineEditItem)init;
-- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)a3 forWidth:(double)a4;
+- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)index forWidth:(double)width;
 - (id)_makeCell;
-- (id)cellForSubitemAtIndex:(unint64_t)a3;
-- (void)_setDrawsOwnRowSeparatorsForCell:(id)a3;
+- (id)cellForSubitemAtIndex:(unint64_t)index;
+- (void)_setDrawsOwnRowSeparatorsForCell:(id)cell;
 - (void)dealloc;
 - (void)refreshFromCalendarItemAndStore;
 - (void)reset;
-- (void)setDrawsOwnRowSeparators:(BOOL)a3;
-- (void)titleDidBeginEditing:(id)a3;
+- (void)setDrawsOwnRowSeparators:(BOOL)separators;
+- (void)titleDidBeginEditing:(id)editing;
 - (void)titleDidChange;
 - (void)titleDidEndEditing;
 @end
@@ -29,8 +29,8 @@
   if (v2)
   {
     [(EKCalendarItemTitleInlineEditItem *)v2 setDrawsOwnRowSeparators:0];
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:v3 selector:sel__contentSizeCategoryChanged_ name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__contentSizeCategoryChanged_ name:*MEMORY[0x1E69DDC48] object:0];
   }
 
   return v3;
@@ -38,20 +38,20 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
 
   v4.receiver = self;
   v4.super_class = EKCalendarItemTitleInlineEditItem;
   [(EKCalendarItemTitleInlineEditItem *)&v4 dealloc];
 }
 
-- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)a3 forWidth:(double)a4
+- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)index forWidth:(double)width
 {
   [objc_opt_class() scaledHeightOfSystemTableViewCell];
   v7 = v6;
   v8 = v6 * 3.0;
-  [(EKUITitleTableViewCell *)self->_titleCell idealHeightForWidth:a4];
+  [(EKUITitleTableViewCell *)self->_titleCell idealHeightForWidth:width];
   return fmax(v7, fmin(v9 + 22.0, v8));
 }
 
@@ -62,8 +62,8 @@
   if (WeakRetained)
   {
     v5 = objc_loadWeakRetained(&self->super._calendarItem);
-    v4 = [v5 title];
-    [(EKUITitleTableViewCell *)self->_titleCell setTitle:v4];
+    title = [v5 title];
+    [(EKUITitleTableViewCell *)self->_titleCell setTitle:title];
   }
 }
 
@@ -80,9 +80,9 @@
   return v2;
 }
 
-- (BOOL)focusTitleAndSelectTitle:(BOOL)a3
+- (BOOL)focusTitleAndSelectTitle:(BOOL)title
 {
-  v3 = a3;
+  titleCopy = title;
   titleCell = self->_titleCell;
   if (!titleCell)
   {
@@ -90,32 +90,32 @@
     titleCell = self->_titleCell;
   }
 
-  [(EKUITitleTableViewCell *)titleCell focusTitleAndSelectTitle:v3];
+  [(EKUITitleTableViewCell *)titleCell focusTitleAndSelectTitle:titleCopy];
   return 1;
 }
 
-- (id)cellForSubitemAtIndex:(unint64_t)a3
+- (id)cellForSubitemAtIndex:(unint64_t)index
 {
   titleCell = self->_titleCell;
   if (!titleCell)
   {
-    v5 = [(EKCalendarItemTitleInlineEditItem *)self _makeCell];
+    _makeCell = [(EKCalendarItemTitleInlineEditItem *)self _makeCell];
     v6 = self->_titleCell;
-    self->_titleCell = v5;
+    self->_titleCell = _makeCell;
 
     titleCell = self->_titleCell;
   }
 
   v7 = titleCell;
-  v8 = [(EKCalendarItemEditItem *)self calendarItem];
-  v9 = [v8 title];
-  v10 = [v9 length];
+  calendarItem = [(EKCalendarItemEditItem *)self calendarItem];
+  title = [calendarItem title];
+  v10 = [title length];
 
   if (v10)
   {
-    v11 = [(EKCalendarItemEditItem *)self calendarItem];
-    v12 = [v11 title];
-    v13 = _StringWithLineEndingsRemoved(v12);
+    calendarItem2 = [(EKCalendarItemEditItem *)self calendarItem];
+    title2 = [calendarItem2 title];
+    v13 = _StringWithLineEndingsRemoved(title2);
     [(EKUITitleTableViewCell *)v7 setTitle:v13];
   }
 
@@ -124,32 +124,32 @@
   return v7;
 }
 
-- (BOOL)saveAndDismissWithForce:(BOOL)a3
+- (BOOL)saveAndDismissWithForce:(BOOL)force
 {
   titleCell = self->_titleCell;
   if (titleCell)
   {
-    v5 = [(EKUITitleTableViewCell *)titleCell title];
-    v6 = _StringWithLineEndingsRemoved(v5);
-    v7 = [(EKCalendarItemEditItem *)self calendarItem];
-    [v7 setTitle:v6];
+    title = [(EKUITitleTableViewCell *)titleCell title];
+    v6 = _StringWithLineEndingsRemoved(title);
+    calendarItem = [(EKCalendarItemEditItem *)self calendarItem];
+    [calendarItem setTitle:v6];
   }
 
   [(EKCalendarItemEditItem *)self notifySubitemDidSave:0];
   return 1;
 }
 
-- (BOOL)editor:(id)a3 canSelectSubitem:(unint64_t)a4
+- (BOOL)editor:(id)editor canSelectSubitem:(unint64_t)subitem
 {
-  v4 = [(EKCalendarItemEditItem *)self selectedResponder:a3];
+  v4 = [(EKCalendarItemEditItem *)self selectedResponder:editor];
   v5 = v4 == 0;
 
   return v5;
 }
 
-- (void)titleDidBeginEditing:(id)a3
+- (void)titleDidBeginEditing:(id)editing
 {
-  [(EKCalendarItemEditItem *)self setSelectedResponder:a3];
+  [(EKCalendarItemEditItem *)self setSelectedResponder:editing];
 
   [(EKCalendarItemEditItem *)self notifyDidStartEditing];
 }
@@ -170,60 +170,60 @@
 
 - (BOOL)titleShouldReturn
 {
-  v2 = [(EKCalendarItemEditItem *)self selectedResponder];
-  [v2 resignFirstResponder];
+  selectedResponder = [(EKCalendarItemEditItem *)self selectedResponder];
+  [selectedResponder resignFirstResponder];
 
   return 0;
 }
 
 - (BOOL)isSaveable
 {
-  v3 = [(EKUITitleTableViewCell *)self->_titleCell title];
-  v4 = [(EKCalendarItemEditItem *)self calendarItem];
-  v5 = [v4 title];
-  if ([v3 isEqualToString:v5])
+  title = [(EKUITitleTableViewCell *)self->_titleCell title];
+  calendarItem = [(EKCalendarItemEditItem *)self calendarItem];
+  title2 = [calendarItem title];
+  if ([title isEqualToString:title2])
   {
     v6 = 0;
   }
 
   else
   {
-    v7 = [(EKUITitleTableViewCell *)self->_titleCell title];
-    v6 = [v7 length] != 0;
+    title3 = [(EKUITitleTableViewCell *)self->_titleCell title];
+    v6 = [title3 length] != 0;
   }
 
   return v6;
 }
 
-- (void)setDrawsOwnRowSeparators:(BOOL)a3
+- (void)setDrawsOwnRowSeparators:(BOOL)separators
 {
-  if (self->_drawsOwnRowSeparators != a3)
+  if (self->_drawsOwnRowSeparators != separators)
   {
     v9[9] = v3;
     v9[10] = v4;
-    self->_drawsOwnRowSeparators = a3;
-    v6 = [(EKCalendarItemEditItem *)self delegate];
+    self->_drawsOwnRowSeparators = separators;
+    delegate = [(EKCalendarItemEditItem *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(EKCalendarItemEditItem *)self delegate];
+      delegate2 = [(EKCalendarItemEditItem *)self delegate];
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __62__EKCalendarItemTitleInlineEditItem_setDrawsOwnRowSeparators___block_invoke;
       v9[3] = &unk_1E843EBC0;
       v9[4] = self;
-      [v8 editItem:self performActionsOnCellAtSubitem:0 actions:v9];
+      [delegate2 editItem:self performActionsOnCellAtSubitem:0 actions:v9];
     }
   }
 }
 
-- (void)_setDrawsOwnRowSeparatorsForCell:(id)a3
+- (void)_setDrawsOwnRowSeparatorsForCell:(id)cell
 {
-  v9 = a3;
-  [v9 setDrawsOwnRowSeparators:{-[EKCalendarItemTitleInlineEditItem drawsOwnRowSeparators](self, "drawsOwnRowSeparators")}];
-  v4 = [MEMORY[0x1E69DC888] separatorColor];
-  [v9 setRowSeparatorColor:v4];
+  cellCopy = cell;
+  [cellCopy setDrawsOwnRowSeparators:{-[EKCalendarItemTitleInlineEditItem drawsOwnRowSeparators](self, "drawsOwnRowSeparators")}];
+  separatorColor = [MEMORY[0x1E69DC888] separatorColor];
+  [cellCopy setRowSeparatorColor:separatorColor];
 
   if ([(EKCalendarItemTitleInlineEditItem *)self drawsOwnRowSeparators])
   {
@@ -241,7 +241,7 @@
     v8 = *MEMORY[0x1E69DE3D0];
   }
 
-  [v9 setSeparatorInset:{v5, v6, v7, v8}];
+  [cellCopy setSeparatorInset:{v5, v6, v7, v8}];
 }
 
 @end

@@ -1,34 +1,34 @@
 @interface TSDGroupInfo
-+ (id)groupGeometryFromChildrenInfos:(id)a3;
-+ (id)p_drawablesToInsertForGroup:(id)a3 filteredWithTarget:(id)a4 action:(SEL)a5 didUngroup:(BOOL *)a6;
++ (id)groupGeometryFromChildrenInfos:(id)infos;
++ (id)p_drawablesToInsertForGroup:(id)group filteredWithTarget:(id)target action:(SEL)action didUngroup:(BOOL *)ungroup;
 - (id)allNestedChildrenInfos;
 - (id)allNestedChildrenInfosIncludingGroups;
-- (id)copyWithContext:(id)a3;
-- (id)groupedGeometryForChildInfo:(id)a3;
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4;
+- (id)copyWithContext:(id)context;
+- (id)groupedGeometryForChildInfo:(id)info;
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object;
 - (id)onlyChild;
-- (id)ungroupedGeometryForChildInfo:(id)a3;
-- (int64_t)mixingTypeWithObject:(id)a3;
-- (void)addChildInfo:(id)a3;
-- (void)adoptStylesheet:(id)a3 withMapper:(id)a4;
+- (id)ungroupedGeometryForChildInfo:(id)info;
+- (int64_t)mixingTypeWithObject:(id)object;
+- (void)addChildInfo:(id)info;
+- (void)adoptStylesheet:(id)stylesheet withMapper:(id)mapper;
 - (void)dealloc;
 - (void)didCopy;
 - (void)ensureGeometryFitsChildren;
-- (void)insertChildInfo:(id)a3 above:(id)a4;
-- (void)insertChildInfo:(id)a3 atIndex:(unint64_t)a4;
-- (void)insertChildInfo:(id)a3 below:(id)a4;
+- (void)insertChildInfo:(id)info above:(id)above;
+- (void)insertChildInfo:(id)info atIndex:(unint64_t)index;
+- (void)insertChildInfo:(id)info below:(id)below;
 - (void)makeChildGeometriesRelativeAndComputeOwnAbsoluteGeometry;
-- (void)moveChildren:(id)a3 toIndexes:(id)a4;
-- (void)processSelectedStoragesWithStatisticsController:(id)a3;
-- (void)removeAllChildrenInDocument:(BOOL)a3;
-- (void)replaceChildInfo:(id)a3 with:(id)a4;
-- (void)setChildInfos:(id)a3;
-- (void)setGeometry:(id)a3;
-- (void)wasAddedToDocumentRoot:(id)a3 context:(id)a4;
-- (void)wasRemovedFromDocumentRoot:(id)a3;
-- (void)willBeAddedToDocumentRoot:(id)a3 context:(id)a4;
-- (void)willBeRemovedFromDocumentRoot:(id)a3;
-- (void)willCopyWithOtherDrawables:(id)a3;
+- (void)moveChildren:(id)children toIndexes:(id)indexes;
+- (void)processSelectedStoragesWithStatisticsController:(id)controller;
+- (void)removeAllChildrenInDocument:(BOOL)document;
+- (void)replaceChildInfo:(id)info with:(id)with;
+- (void)setChildInfos:(id)infos;
+- (void)setGeometry:(id)geometry;
+- (void)wasAddedToDocumentRoot:(id)root context:(id)context;
+- (void)wasRemovedFromDocumentRoot:(id)root;
+- (void)willBeAddedToDocumentRoot:(id)root context:(id)context;
+- (void)willBeRemovedFromDocumentRoot:(id)root;
+- (void)willCopyWithOtherDrawables:(id)drawables;
 @end
 
 @implementation TSDGroupInfo
@@ -69,19 +69,19 @@
   [(TSDDrawableInfo *)&v8 dealloc];
 }
 
-- (void)setGeometry:(id)a3
+- (void)setGeometry:(id)geometry
 {
-  if (!a3)
+  if (!geometry)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDGroupInfo setGeometry:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGroupInfo.m"), 94, @"invalid nil value for '%s'", "newGeometry"}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGroupInfo.m"), 94, @"invalid nil value for '%s'", "newGeometry"}];
   }
 
-  if (([a3 isEqual:self->super.mGeometry] & 1) == 0)
+  if (([geometry isEqual:self->super.mGeometry] & 1) == 0)
   {
     [(TSPObject *)self willModify];
-    if ([a3 isEqualExceptForPosition:self->super.mGeometry])
+    if ([geometry isEqualExceptForPosition:self->super.mGeometry])
     {
       v7 = 513;
     }
@@ -93,11 +93,11 @@
 
     [(TSDDrawableInfo *)self willChangeProperty:v7];
 
-    self->super.mGeometry = a3;
+    self->super.mGeometry = geometry;
   }
 }
 
-- (id)copyWithContext:(id)a3
+- (id)copyWithContext:(id)context
 {
   v19 = *MEMORY[0x277D85DE8];
   v17.receiver = self;
@@ -127,7 +127,7 @@
               objc_enumerationMutation(mChildInfos);
             }
 
-            v11 = [*(*(&v13 + 1) + 8 * i) copyWithContext:a3];
+            v11 = [*(*(&v13 + 1) + 8 * i) copyWithContext:context];
             [v11 setParentInfo:v5];
             [*(v5 + 18) addObject:v11];
           }
@@ -148,13 +148,13 @@
 - (id)allNestedChildrenInfos
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(TSDGroupInfo *)self childInfos];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  childInfos = [(TSDGroupInfo *)self childInfos];
+  v5 = [childInfos countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -166,32 +166,32 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(childInfos);
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v3 addObjectsFromArray:{objc_msgSend(v9, "allNestedChildrenInfos")}];
+          [array addObjectsFromArray:{objc_msgSend(v9, "allNestedChildrenInfos")}];
         }
 
         else
         {
-          [v3 addObject:v9];
+          [array addObject:v9];
         }
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [childInfos countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
 - (id)onlyChild
@@ -209,14 +209,14 @@
 - (id)allNestedChildrenInfosIncludingGroups
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
-  [v3 addObject:self];
+  array = [MEMORY[0x277CBEB18] array];
+  [array addObject:self];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(TSDGroupInfo *)self childInfos];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  childInfos = [(TSDGroupInfo *)self childInfos];
+  v5 = [childInfos countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -228,42 +228,42 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(childInfos);
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v3 addObjectsFromArray:{objc_msgSend(v9, "allNestedChildrenInfosIncludingGroups")}];
+          [array addObjectsFromArray:{objc_msgSend(v9, "allNestedChildrenInfosIncludingGroups")}];
         }
 
-        [v3 addObject:v9];
+        [array addObject:v9];
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [childInfos countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
-- (void)setChildInfos:(id)a3
+- (void)setChildInfos:(id)infos
 {
-  v3 = self;
+  selfCopy = self;
   v65 = *MEMORY[0x277D85DE8];
   mChildInfos = self->mChildInfos;
-  if (mChildInfos != a3 && ([(NSMutableArray *)mChildInfos isEqual:?]& 1) == 0)
+  if (mChildInfos != infos && ([(NSMutableArray *)mChildInfos isEqual:?]& 1) == 0)
   {
-    [(TSPObject *)v3 willModify];
-    [(TSDDrawableInfo *)v3 willChangeProperty:514];
-    if (a3)
+    [(TSPObject *)selfCopy willModify];
+    [(TSDDrawableInfo *)selfCopy willChangeProperty:514];
+    if (infos)
     {
-      v6 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:a3];
+      v6 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:infos];
     }
 
     else
@@ -271,16 +271,16 @@
       v6 = 0;
     }
 
-    if (v3->mIsInDocument)
+    if (selfCopy->mIsInDocument)
     {
       v7 = objc_alloc_init(MEMORY[0x277CBEB58]);
       v43 = objc_alloc_init(MEMORY[0x277CBEB58]);
-      v8 = [(TSPObject *)v3 documentRoot];
+      documentRoot = [(TSPObject *)selfCopy documentRoot];
     }
 
     else
     {
-      v8 = 0;
+      documentRoot = 0;
       v43 = 0;
       v7 = 0;
     }
@@ -289,7 +289,7 @@
     v60 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v9 = v3->mChildInfos;
+    v9 = selfCopy->mChildInfos;
     v10 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v57 objects:v64 count:16];
     if (v10)
     {
@@ -307,10 +307,10 @@
           v14 = *(*(&v57 + 1) + 8 * i);
           if (([v6 containsObject:v14] & 1) == 0)
           {
-            if (v3->mIsInDocument)
+            if (selfCopy->mIsInDocument)
             {
               [v7 addObject:v14];
-              [v14 willBeRemovedFromDocumentRoot:v8];
+              [v14 willBeRemovedFromDocumentRoot:documentRoot];
             }
 
             [v14 setParentInfo:0];
@@ -324,9 +324,9 @@
     }
 
     v42 = v7;
-    if (v3->mChildInfos)
+    if (selfCopy->mChildInfos)
     {
-      v15 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:v3->mChildInfos];
+      v15 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:selfCopy->mChildInfos];
     }
 
     else
@@ -334,12 +334,12 @@
       v15 = 0;
     }
 
-    v16 = a3;
+    infosCopy = infos;
     v55 = 0u;
     v56 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v17 = [a3 countByEnumeratingWithState:&v53 objects:v63 count:16];
+    v17 = [infos countByEnumeratingWithState:&v53 objects:v63 count:16];
     if (v17)
     {
       v18 = v17;
@@ -351,57 +351,57 @@
         {
           if (*v54 != v20)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(infosCopy);
           }
 
           v22 = *(*(&v53 + 1) + 8 * j);
           objc_opt_class();
           if (!TSUDynamicCast())
           {
-            v44 = [MEMORY[0x277D6C290] currentHandler];
+            currentHandler = [MEMORY[0x277D6C290] currentHandler];
             v23 = v18;
             v24 = v20;
             v25 = v15;
-            v26 = v3;
-            v27 = v8;
+            v26 = selfCopy;
+            v27 = documentRoot;
             v28 = v19;
-            v29 = v16;
+            v29 = infosCopy;
             v30 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDGroupInfo setChildInfos:]"];
             v31 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGroupInfo.m"];
             v32 = v30;
-            v16 = v29;
+            infosCopy = v29;
             v19 = v28;
-            v8 = v27;
-            v3 = v26;
+            documentRoot = v27;
+            selfCopy = v26;
             v15 = v25;
             v20 = v24;
             v18 = v23;
-            [v44 handleFailureInFunction:v32 file:v31 lineNumber:231 description:@"Group children must be TSDDrawableInfos."];
+            [currentHandler handleFailureInFunction:v32 file:v31 lineNumber:231 description:@"Group children must be TSDDrawableInfos."];
           }
 
           if (([v15 containsObject:v22] & 1) == 0)
           {
             [v22 parentInfo];
             [TSUProtocolCast() removeChildInfo:v22];
-            if (v3->mIsInDocument)
+            if (selfCopy->mIsInDocument)
             {
               [v43 addObject:v22];
-              [v22 willBeAddedToDocumentRoot:v8 context:0];
+              [v22 willBeAddedToDocumentRoot:documentRoot context:0];
             }
 
-            [v22 setParentInfo:v3];
+            [v22 setParentInfo:selfCopy];
           }
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v53 objects:v63 count:16];
+        v18 = [infosCopy countByEnumeratingWithState:&v53 objects:v63 count:16];
       }
 
       while (v18);
     }
 
-    v33 = [v16 mutableCopy];
-    v3->mChildInfos = v33;
-    if (v3->mIsInDocument)
+    v33 = [infosCopy mutableCopy];
+    selfCopy->mChildInfos = v33;
+    if (selfCopy->mIsInDocument)
     {
       v51 = 0u;
       v52 = 0u;
@@ -421,7 +421,7 @@
               objc_enumerationMutation(v42);
             }
 
-            [*(*(&v49 + 1) + 8 * k) wasRemovedFromDocumentRoot:v8];
+            [*(*(&v49 + 1) + 8 * k) wasRemovedFromDocumentRoot:documentRoot];
           }
 
           v35 = [v42 countByEnumeratingWithState:&v49 objects:v62 count:16];
@@ -448,7 +448,7 @@
               objc_enumerationMutation(v43);
             }
 
-            [*(*(&v45 + 1) + 8 * m) wasAddedToDocumentRoot:v8 context:0];
+            [*(*(&v45 + 1) + 8 * m) wasAddedToDocumentRoot:documentRoot context:0];
           }
 
           v39 = [v43 countByEnumeratingWithState:&v45 objects:v61 count:16];
@@ -460,7 +460,7 @@
   }
 }
 
-- (void)addChildInfo:(id)a3
+- (void)addChildInfo:(id)info
 {
   mChildInfos = self->mChildInfos;
   if (mChildInfos)
@@ -473,29 +473,29 @@
     v6 = 0;
   }
 
-  [(TSDGroupInfo *)self insertChildInfo:a3 atIndex:v6];
+  [(TSDGroupInfo *)self insertChildInfo:info atIndex:v6];
 }
 
-- (void)insertChildInfo:(id)a3 atIndex:(unint64_t)a4
+- (void)insertChildInfo:(id)info atIndex:(unint64_t)index
 {
-  if (a3)
+  if (info)
   {
     objc_opt_class();
     if (!TSUDynamicCast())
     {
-      v6 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDGroupInfo insertChildInfo:atIndex:]"];
-      [v6 handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGroupInfo.m"), 276, @"Group children must be TSDDrawableInfos."}];
+      [currentHandler handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGroupInfo.m"), 276, @"Group children must be TSDDrawableInfos."}];
     }
 
     [(TSPObject *)self willModify];
     [(TSDDrawableInfo *)self willChangeProperty:514];
-    [a3 parentInfo];
+    [info parentInfo];
     v8 = TSUProtocolCast();
     if (v8)
     {
-      v9 = a3;
-      [v8 removeChildInfo:a3];
+      infoCopy = info;
+      [v8 removeChildInfo:info];
     }
 
     if (!self->mChildInfos)
@@ -503,16 +503,16 @@
       self->mChildInfos = objc_alloc_init(MEMORY[0x277CBEB18]);
     }
 
-    [a3 setParentInfo:self];
+    [info setParentInfo:self];
     if (self->mIsInDocument)
     {
-      [a3 willBeAddedToDocumentRoot:-[TSPObject documentRoot](self context:{"documentRoot"), 0}];
+      [info willBeAddedToDocumentRoot:-[TSPObject documentRoot](self context:{"documentRoot"), 0}];
     }
 
-    [(NSMutableArray *)self->mChildInfos insertObject:a3 atIndex:a4];
+    [(NSMutableArray *)self->mChildInfos insertObject:info atIndex:index];
     if (self->mIsInDocument)
     {
-      [a3 wasAddedToDocumentRoot:-[TSPObject documentRoot](self context:{"documentRoot"), 0}];
+      [info wasAddedToDocumentRoot:-[TSPObject documentRoot](self context:{"documentRoot"), 0}];
     }
 
     if (v8)
@@ -521,58 +521,58 @@
   }
 }
 
-- (void)insertChildInfo:(id)a3 below:(id)a4
+- (void)insertChildInfo:(id)info below:(id)below
 {
   mChildInfos = self->mChildInfos;
   if (mChildInfos)
   {
-    v7 = [(NSMutableArray *)mChildInfos indexOfObjectIdenticalTo:a4];
+    v7 = [(NSMutableArray *)mChildInfos indexOfObjectIdenticalTo:below];
     if (v7 != 0x7FFFFFFFFFFFFFFFLL)
     {
 
-      [(TSDGroupInfo *)self insertChildInfo:a3 atIndex:v7];
+      [(TSDGroupInfo *)self insertChildInfo:info atIndex:v7];
     }
   }
 }
 
-- (void)insertChildInfo:(id)a3 above:(id)a4
+- (void)insertChildInfo:(id)info above:(id)above
 {
   mChildInfos = self->mChildInfos;
   if (mChildInfos)
   {
-    v7 = [(NSMutableArray *)mChildInfos indexOfObjectIdenticalTo:a4];
+    v7 = [(NSMutableArray *)mChildInfos indexOfObjectIdenticalTo:above];
     if (v7 != 0x7FFFFFFFFFFFFFFFLL)
     {
 
-      [(TSDGroupInfo *)self insertChildInfo:a3 atIndex:v7 + 1];
+      [(TSDGroupInfo *)self insertChildInfo:info atIndex:v7 + 1];
     }
   }
 }
 
-- (void)moveChildren:(id)a3 toIndexes:(id)a4
+- (void)moveChildren:(id)children toIndexes:(id)indexes
 {
-  v7 = [a3 count];
-  v8 = [a4 count];
-  v9 = [a4 lastIndex];
+  v7 = [children count];
+  v8 = [indexes count];
+  lastIndex = [indexes lastIndex];
   v10 = [(NSMutableArray *)self->mChildInfos count];
   v11 = v10;
   if (v7 == v8)
   {
-    if (v9 < v10)
+    if (lastIndex < v10)
     {
       v20 = [(NSMutableArray *)self->mChildInfos mutableCopy];
-      [v20 removeObjectsInArray:a3];
+      [v20 removeObjectsInArray:children];
       v12 = v11 - v7;
       if ([v20 count] != v12)
       {
-        v13 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler = [MEMORY[0x277D6C290] currentHandler];
         v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDGroupInfo moveChildren:toIndexes:]"];
-        [v13 handleFailureInFunction:v14 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGroupInfo.m"), 345, @"Can't move drawables to indexes, not all drawables are in this group."}];
+        [currentHandler handleFailureInFunction:v14 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGroupInfo.m"), 345, @"Can't move drawables to indexes, not all drawables are in this group."}];
       }
 
       if ([v20 count] == v12)
       {
-        [v20 insertObjects:a3 atIndexes:a4];
+        [v20 insertObjects:children atIndexes:indexes];
         [(TSDGroupInfo *)self setChildInfos:v20];
       }
 
@@ -582,25 +582,25 @@
 
   else
   {
-    v15 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDGroupInfo moveChildren:toIndexes:]"];
-    [v15 handleFailureInFunction:v16 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGroupInfo.m"), 338, @"Can't move drawables to indexes, counts don't match."}];
-    if (v9 < v11)
+    [currentHandler2 handleFailureInFunction:v16 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGroupInfo.m"), 338, @"Can't move drawables to indexes, counts don't match."}];
+    if (lastIndex < v11)
     {
       return;
     }
   }
 
-  v17 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler3 = [MEMORY[0x277D6C290] currentHandler];
   v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDGroupInfo moveChildren:toIndexes:]"];
   v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGroupInfo.m"];
 
-  [v17 handleFailureInFunction:v18 file:v19 lineNumber:339 description:{@"Can't move drawables to indexes, one or more indexes out of range."}];
+  [currentHandler3 handleFailureInFunction:v18 file:v19 lineNumber:339 description:{@"Can't move drawables to indexes, one or more indexes out of range."}];
 }
 
-- (void)removeAllChildrenInDocument:(BOOL)a3
+- (void)removeAllChildrenInDocument:(BOOL)document
 {
-  v3 = a3;
+  documentCopy = document;
   v25 = *MEMORY[0x277D85DE8];
   [(TSPObject *)self willModify];
   mChildInfos = self->mChildInfos;
@@ -624,7 +624,7 @@
         }
 
         v10 = *(*(&v19 + 1) + 8 * v9);
-        if (v3)
+        if (documentCopy)
         {
           [v10 willBeRemovedFromDocumentRoot:{-[TSPObject documentRoot](self, "documentRoot")}];
         }
@@ -641,7 +641,7 @@
   }
 
   self->mChildInfos = 0;
-  if (v3)
+  if (documentCopy)
   {
     v17 = 0u;
     v18 = 0u;
@@ -674,30 +674,30 @@
   }
 }
 
-- (id)groupedGeometryForChildInfo:(id)a3
+- (id)groupedGeometryForChildInfo:(id)info
 {
-  v4 = [a3 geometry];
-  v5 = [(TSDGroupInfo *)self geometry];
+  geometry = [info geometry];
+  geometry2 = [(TSDGroupInfo *)self geometry];
 
-  return [v4 geometryRelativeToGeometry:v5];
+  return [geometry geometryRelativeToGeometry:geometry2];
 }
 
-- (id)ungroupedGeometryForChildInfo:(id)a3
+- (id)ungroupedGeometryForChildInfo:(id)info
 {
   if (([(NSMutableArray *)self->mChildInfos containsObject:?]& 1) == 0)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDGroupInfo ungroupedGeometryForChildInfo:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGroupInfo.m"), 385, @"Can't get ungrouped geometry for a drawable which isn't a child of the group."}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGroupInfo.m"), 385, @"Can't get ungrouped geometry for a drawable which isn't a child of the group."}];
   }
 
-  v7 = [a3 geometry];
-  v8 = [(TSDGroupInfo *)self geometry];
+  geometry = [info geometry];
+  geometry2 = [(TSDGroupInfo *)self geometry];
 
-  return [v7 geometryWithParentGeometry:v8];
+  return [geometry geometryWithParentGeometry:geometry2];
 }
 
-+ (id)groupGeometryFromChildrenInfos:(id)a3
++ (id)groupGeometryFromChildrenInfos:(id)infos
 {
   v20 = *MEMORY[0x277D85DE8];
   x = *MEMORY[0x277CBF398];
@@ -708,7 +708,7 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [a3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v8 = [infos countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -720,7 +720,7 @@
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(infos);
         }
 
         v12 = *(*(&v15 + 1) + 8 * v11);
@@ -752,7 +752,7 @@
       }
 
       while (v9 != v11);
-      v9 = [a3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [infos countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v9);
@@ -794,7 +794,7 @@
   }
 }
 
-- (void)replaceChildInfo:(id)a3 with:(id)a4
+- (void)replaceChildInfo:(id)info with:(id)with
 {
   mChildInfos = self->mChildInfos;
   if (mChildInfos)
@@ -805,21 +805,21 @@
       v9 = v8;
       [(TSPObject *)self willModify];
       [(TSDDrawableInfo *)self willChangeProperty:514];
-      v10 = a3;
+      infoCopy = info;
       if (self->mIsInDocument)
       {
-        [a3 willBeRemovedFromDocumentRoot:{-[TSPObject documentRoot](self, "documentRoot")}];
+        [info willBeRemovedFromDocumentRoot:{-[TSPObject documentRoot](self, "documentRoot")}];
       }
 
       [(NSMutableArray *)self->mChildInfos removeObjectAtIndex:v9];
-      [a3 setParentInfo:0];
+      [info setParentInfo:0];
 
       if (self->mIsInDocument)
       {
-        [a3 wasRemovedFromDocumentRoot:{-[TSPObject documentRoot](self, "documentRoot")}];
+        [info wasRemovedFromDocumentRoot:{-[TSPObject documentRoot](self, "documentRoot")}];
       }
 
-      [(TSDGroupInfo *)self insertChildInfo:a4 atIndex:v9];
+      [(TSDGroupInfo *)self insertChildInfo:with atIndex:v9];
     }
   }
 }
@@ -837,8 +837,8 @@
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v7 = [(TSDGroupInfo *)self childInfos];
-    v8 = [v7 countByEnumeratingWithState:&v33 objects:v38 count:16];
+    childInfos = [(TSDGroupInfo *)self childInfos];
+    v8 = [childInfos countByEnumeratingWithState:&v33 objects:v38 count:16];
     if (v8)
     {
       v9 = v8;
@@ -849,7 +849,7 @@
         {
           if (*v34 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(childInfos);
           }
 
           v12 = *(*(&v33 + 1) + 8 * i);
@@ -879,7 +879,7 @@
           height = v42.size.height;
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v33 objects:v38 count:16];
+        v9 = [childInfos countByEnumeratingWithState:&v33 objects:v38 count:16];
       }
 
       while (v9);
@@ -894,10 +894,10 @@
     t1 = v32;
     CGAffineTransformConcat(&v31, &t1, &t2);
     v32 = v31;
-    v17 = [(TSDGroupInfo *)self geometry];
-    if (v17)
+    geometry = [(TSDGroupInfo *)self geometry];
+    if (geometry)
     {
-      [(TSDInfoGeometry *)v17 fullTransform];
+      [(TSDInfoGeometry *)geometry fullTransform];
     }
 
     else
@@ -914,8 +914,8 @@
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v18 = [(TSDGroupInfo *)self childInfos];
-    v19 = [v18 countByEnumeratingWithState:&v25 objects:v37 count:16];
+    childInfos2 = [(TSDGroupInfo *)self childInfos];
+    v19 = [childInfos2 countByEnumeratingWithState:&v25 objects:v37 count:16];
     if (v19)
     {
       v20 = v19;
@@ -926,16 +926,16 @@
         {
           if (*v26 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(childInfos2);
           }
 
           v23 = *(*(&v25 + 1) + 8 * j);
-          v24 = [v23 geometry];
+          geometry2 = [v23 geometry];
           v31 = v32;
-          [v23 setGeometry:{objc_msgSend(v24, "geometryByAppendingTransform:", &v31)}];
+          [v23 setGeometry:{objc_msgSend(geometry2, "geometryByAppendingTransform:", &v31)}];
         }
 
-        v20 = [v18 countByEnumeratingWithState:&v25 objects:v37 count:16];
+        v20 = [childInfos2 countByEnumeratingWithState:&v25 objects:v37 count:16];
       }
 
       while (v20);
@@ -943,27 +943,27 @@
   }
 }
 
-- (void)willCopyWithOtherDrawables:(id)a3
+- (void)willCopyWithOtherDrawables:(id)drawables
 {
-  v5 = [(TSDGroupInfo *)self childInfos];
+  childInfos = [(TSDGroupInfo *)self childInfos];
 
-  [v5 makeObjectsPerformSelector:a2 withObject:a3];
+  [childInfos makeObjectsPerformSelector:a2 withObject:drawables];
 }
 
 - (void)didCopy
 {
-  v3 = [(TSDGroupInfo *)self childInfos];
+  childInfos = [(TSDGroupInfo *)self childInfos];
 
-  [v3 makeObjectsPerformSelector:a2];
+  [childInfos makeObjectsPerformSelector:a2];
 }
 
-- (void)willBeAddedToDocumentRoot:(id)a3 context:(id)a4
+- (void)willBeAddedToDocumentRoot:(id)root context:(id)context
 {
   v18 = *MEMORY[0x277D85DE8];
   v16.receiver = self;
   v16.super_class = TSDGroupInfo;
   [TSDDrawableInfo willBeAddedToDocumentRoot:sel_willBeAddedToDocumentRoot_context_ context:?];
-  if (([a4 wasUnarchived] & 1) == 0)
+  if (([context wasUnarchived] & 1) == 0)
   {
     v14 = 0u;
     v15 = 0u;
@@ -985,7 +985,7 @@
             objc_enumerationMutation(mChildInfos);
           }
 
-          [*(*(&v12 + 1) + 8 * v11++) willBeAddedToDocumentRoot:a3 context:a4];
+          [*(*(&v12 + 1) + 8 * v11++) willBeAddedToDocumentRoot:root context:context];
         }
 
         while (v9 != v11);
@@ -997,14 +997,14 @@
   }
 }
 
-- (void)wasAddedToDocumentRoot:(id)a3 context:(id)a4
+- (void)wasAddedToDocumentRoot:(id)root context:(id)context
 {
   v18 = *MEMORY[0x277D85DE8];
   v16.receiver = self;
   v16.super_class = TSDGroupInfo;
   [TSDDrawableInfo wasAddedToDocumentRoot:sel_wasAddedToDocumentRoot_context_ context:?];
   self->mIsInDocument = 1;
-  if (([a4 wasUnarchived] & 1) == 0)
+  if (([context wasUnarchived] & 1) == 0)
   {
     v14 = 0u;
     v15 = 0u;
@@ -1026,7 +1026,7 @@
             objc_enumerationMutation(mChildInfos);
           }
 
-          [*(*(&v12 + 1) + 8 * v11++) wasAddedToDocumentRoot:a3 context:a4];
+          [*(*(&v12 + 1) + 8 * v11++) wasAddedToDocumentRoot:root context:context];
         }
 
         while (v9 != v11);
@@ -1038,7 +1038,7 @@
   }
 }
 
-- (void)willBeRemovedFromDocumentRoot:(id)a3
+- (void)willBeRemovedFromDocumentRoot:(id)root
 {
   v16 = *MEMORY[0x277D85DE8];
   v14.receiver = self;
@@ -1063,7 +1063,7 @@
           objc_enumerationMutation(mChildInfos);
         }
 
-        [*(*(&v10 + 1) + 8 * i) willBeRemovedFromDocumentRoot:a3];
+        [*(*(&v10 + 1) + 8 * i) willBeRemovedFromDocumentRoot:root];
       }
 
       v7 = [(NSMutableArray *)mChildInfos countByEnumeratingWithState:&v10 objects:v15 count:16];
@@ -1075,7 +1075,7 @@
   self->mIsInDocument = 0;
 }
 
-- (void)wasRemovedFromDocumentRoot:(id)a3
+- (void)wasRemovedFromDocumentRoot:(id)root
 {
   v16 = *MEMORY[0x277D85DE8];
   v14.receiver = self;
@@ -1101,7 +1101,7 @@
           objc_enumerationMutation(mChildInfos);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) wasRemovedFromDocumentRoot:a3];
+        [*(*(&v10 + 1) + 8 * v9++) wasRemovedFromDocumentRoot:root];
       }
 
       while (v7 != v9);
@@ -1112,7 +1112,7 @@
   }
 }
 
-- (void)adoptStylesheet:(id)a3 withMapper:(id)a4
+- (void)adoptStylesheet:(id)stylesheet withMapper:(id)mapper
 {
   v18 = *MEMORY[0x277D85DE8];
   v16.receiver = self;
@@ -1138,7 +1138,7 @@
           objc_enumerationMutation(mChildInfos);
         }
 
-        [*(*(&v12 + 1) + 8 * v11++) adoptStylesheet:a3 withMapper:a4];
+        [*(*(&v12 + 1) + 8 * v11++) adoptStylesheet:stylesheet withMapper:mapper];
       }
 
       while (v9 != v11);
@@ -1149,15 +1149,15 @@
   }
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3
+- (int64_t)mixingTypeWithObject:(id)object
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __37__TSDGroupInfo_mixingTypeWithObject___block_invoke;
   v4[3] = &unk_279D48738;
-  v4[4] = a3;
+  v4[4] = object;
   v4[5] = self;
-  return TSDMixingTypeWithObject(self, a3, v4);
+  return TSDMixingTypeWithObject(self, object, v4);
 }
 
 uint64_t __37__TSDGroupInfo_mixingTypeWithObject___block_invoke(uint64_t a1)
@@ -1200,26 +1200,26 @@ uint64_t __37__TSDGroupInfo_mixingTypeWithObject___block_invoke(uint64_t a1)
   return 1;
 }
 
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object
 {
-  v4 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDGroupInfo mixedObjectWithFraction:ofObject:]"];
-  [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGroupInfo.m"), 667, @"TSDGroupInfo does not implement TSDMixing!"}];
+  [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGroupInfo.m"), 667, @"TSDGroupInfo does not implement TSDMixing!"}];
   return 0;
 }
 
-+ (id)p_drawablesToInsertForGroup:(id)a3 filteredWithTarget:(id)a4 action:(SEL)a5 didUngroup:(BOOL *)a6
++ (id)p_drawablesToInsertForGroup:(id)group filteredWithTarget:(id)target action:(SEL)action didUngroup:(BOOL *)ungroup
 {
   v49 = *MEMORY[0x277D85DE8];
-  v9 = [objc_msgSend(a3 "childInfos")] < 2;
-  v10 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(objc_msgSend(a3, "childInfos"), "count")}];
+  v9 = [objc_msgSend(group "childInfos")] < 2;
+  v10 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(objc_msgSend(group, "childInfos"), "count")}];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v30 = a3;
-  v11 = [a3 childInfos];
-  v12 = [v11 countByEnumeratingWithState:&v42 objects:v48 count:16];
+  groupCopy = group;
+  childInfos = [group childInfos];
+  v12 = [childInfos countByEnumeratingWithState:&v42 objects:v48 count:16];
   if (v12)
   {
     v13 = v12;
@@ -1230,7 +1230,7 @@ uint64_t __37__TSDGroupInfo_mixingTypeWithObject___block_invoke(uint64_t a1)
       {
         if (*v43 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(childInfos);
         }
 
         v16 = *(*(&v42 + 1) + 8 * i);
@@ -1239,7 +1239,7 @@ uint64_t __37__TSDGroupInfo_mixingTypeWithObject___block_invoke(uint64_t a1)
         v41 = 0;
         if (v17)
         {
-          [v10 addObjectsFromArray:{objc_msgSend(a1, "p_drawablesToInsertForGroup:filteredWithTarget:action:didUngroup:", v17, a4, a5, &v41)}];
+          [v10 addObjectsFromArray:{objc_msgSend(self, "p_drawablesToInsertForGroup:filteredWithTarget:action:didUngroup:", v17, target, action, &v41)}];
           v9 |= v41;
         }
 
@@ -1249,7 +1249,7 @@ uint64_t __37__TSDGroupInfo_mixingTypeWithObject___block_invoke(uint64_t a1)
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v42 objects:v48 count:16];
+      v13 = [childInfos countByEnumeratingWithState:&v42 objects:v48 count:16];
     }
 
     while (v13);
@@ -1265,11 +1265,11 @@ uint64_t __37__TSDGroupInfo_mixingTypeWithObject___block_invoke(uint64_t a1)
     if (!v26)
     {
 LABEL_30:
-      v18 = [MEMORY[0x277CBEA60] arrayWithObject:v30];
+      v18 = [MEMORY[0x277CBEA60] arrayWithObject:groupCopy];
 
       v24 = 0;
-      v20 = a6;
-      if (!a6)
+      ungroupCopy2 = ungroup;
+      if (!ungroup)
       {
         return v18;
       }
@@ -1289,7 +1289,7 @@ LABEL_24:
       }
 
       objc_opt_class();
-      if (![a4 a5])
+      if (![target action])
       {
         break;
       }
@@ -1313,7 +1313,7 @@ LABEL_24:
   v35 = 0u;
   v36 = 0u;
   v19 = [v18 countByEnumeratingWithState:&v33 objects:v46 count:16];
-  v20 = a6;
+  ungroupCopy2 = ungroup;
   if (v19)
   {
     v21 = v19;
@@ -1327,7 +1327,7 @@ LABEL_24:
           objc_enumerationMutation(v18);
         }
 
-        [*(*(&v33 + 1) + 8 * j) setGeometry:{objc_msgSend(objc_msgSend(*(*(&v33 + 1) + 8 * j), "geometry"), "geometryWithParentGeometry:", objc_msgSend(v30, "geometry"))}];
+        [*(*(&v33 + 1) + 8 * j) setGeometry:{objc_msgSend(objc_msgSend(*(*(&v33 + 1) + 8 * j), "geometry"), "geometryWithParentGeometry:", objc_msgSend(groupCopy, "geometry"))}];
       }
 
       v21 = [v18 countByEnumeratingWithState:&v33 objects:v46 count:16];
@@ -1336,26 +1336,26 @@ LABEL_24:
     while (v21);
   }
 
-  [v30 removeAllChildrenInDocument:0];
+  [groupCopy removeAllChildrenInDocument:0];
   v24 = 1;
-  if (a6)
+  if (ungroup)
   {
 LABEL_20:
-    *v20 = v24;
+    *ungroupCopy2 = v24;
   }
 
   return v18;
 }
 
-- (void)processSelectedStoragesWithStatisticsController:(id)a3
+- (void)processSelectedStoragesWithStatisticsController:(id)controller
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = [(TSDGroupInfo *)self allNestedChildrenInfos];
+  allNestedChildrenInfos = [(TSDGroupInfo *)self allNestedChildrenInfos];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [allNestedChildrenInfos countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1367,19 +1367,19 @@ LABEL_20:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allNestedChildrenInfos);
         }
 
         if ([*(*(&v9 + 1) + 8 * v8) conformsToProtocol:&unk_287E453E8])
         {
-          [TSUProtocolCast() processSelectedStoragesWithStatisticsController:a3];
+          [TSUProtocolCast() processSelectedStoragesWithStatisticsController:controller];
         }
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [allNestedChildrenInfos countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);

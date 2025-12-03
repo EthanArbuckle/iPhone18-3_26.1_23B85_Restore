@@ -1,25 +1,25 @@
 @interface SEProxy
-+ (id)withEndpoint:(id)a3;
-+ (id)withSession:(id)a3 seid:(id)a4;
++ (id)withEndpoint:(id)endpoint;
++ (id)withSession:(id)session seid:(id)seid;
 @end
 
 @implementation SEProxy
 
-+ (id)withSession:(id)a3 seid:(id)a4
++ (id)withSession:(id)session seid:(id)seid
 {
-  v5 = a4;
-  v6 = a3;
+  seidCopy = seid;
+  sessionCopy = session;
   v7 = objc_alloc_init(SEProxyWithManagerSession);
-  [(SEProxyWithManagerSession *)v7 setSession:v6 seid:v5];
+  [(SEProxyWithManagerSession *)v7 setSession:sessionCopy seid:seidCopy];
 
   return v7;
 }
 
-+ (id)withEndpoint:(id)a3
++ (id)withEndpoint:(id)endpoint
 {
-  v3 = a3;
+  endpointCopy = endpoint;
   v4 = objc_alloc_init(SEProxyWithRemoteTransceiver);
-  v5 = [objc_alloc(MEMORY[0x1E69C8760]) initWithListenerEndpoint:v3];
+  v5 = [objc_alloc(MEMORY[0x1E69C8760]) initWithListenerEndpoint:endpointCopy];
 
   if (v5)
   {

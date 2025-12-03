@@ -1,26 +1,26 @@
 @interface AXVisualAlertSBNCScreenController
-- (void)turnOnScreenForNotificationRequest:(id)a3;
+- (void)turnOnScreenForNotificationRequest:(id)request;
 @end
 
 @implementation AXVisualAlertSBNCScreenController
 
-- (void)turnOnScreenForNotificationRequest:(id)a3
+- (void)turnOnScreenForNotificationRequest:(id)request
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CE6998] sharedInstance];
-  v6 = [v5 ignoreLogging];
+  requestCopy = request;
+  mEMORY[0x277CE6998] = [MEMORY[0x277CE6998] sharedInstance];
+  ignoreLogging = [mEMORY[0x277CE6998] ignoreLogging];
 
-  if ((v6 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
-    v7 = [MEMORY[0x277CE6998] identifier];
+    identifier = [MEMORY[0x277CE6998] identifier];
     v8 = AXLoggerForFacility();
 
     v9 = AXOSLogLevelFromAXLogLevel();
     if (os_log_type_enabled(v8, v9))
     {
       v10 = AXColorizeFormatLog();
-      v14 = v4;
+      v14 = requestCopy;
       v11 = _AXStringForArgs();
       if (os_log_type_enabled(v8, v9))
       {
@@ -31,13 +31,13 @@
     }
   }
 
-  [v4 _accessibilitySetBoolValue:1 forKey:{@"AXTurnedOnScreen", v14}];
+  [requestCopy _accessibilitySetBoolValue:1 forKey:{@"AXTurnedOnScreen", v14}];
   v12 = +[AXVisualAlertManager sharedVisualAlertManager];
-  [v12 addBulletin:v4];
+  [v12 addBulletin:requestCopy];
 
   v15.receiver = self;
   v15.super_class = AXVisualAlertSBNCScreenController;
-  [(AXVisualAlertSBNCScreenController *)&v15 turnOnScreenForNotificationRequest:v4];
+  [(AXVisualAlertSBNCScreenController *)&v15 turnOnScreenForNotificationRequest:requestCopy];
 
   v13 = *MEMORY[0x277D85DE8];
 }

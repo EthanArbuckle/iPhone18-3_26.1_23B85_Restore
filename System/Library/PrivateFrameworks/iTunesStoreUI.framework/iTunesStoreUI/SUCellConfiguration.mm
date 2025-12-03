@@ -1,12 +1,12 @@
 @interface SUCellConfiguration
-- (BOOL)getShadowColor:(id *)a3 offset:(CGSize *)a4 forLabelAtIndex:(unint64_t)a5 withModifiers:(unint64_t)a6;
-- (CGRect)frameForImageAtIndex:(unint64_t)a3;
-- (CGRect)frameForLabelAtIndex:(unint64_t)a3;
+- (BOOL)getShadowColor:(id *)color offset:(CGSize *)offset forLabelAtIndex:(unint64_t)index withModifiers:(unint64_t)modifiers;
+- (CGRect)frameForImageAtIndex:(unint64_t)index;
+- (CGRect)frameForLabelAtIndex:(unint64_t)index;
 - (CGSize)layoutSize;
 - (void)dealloc;
-- (void)setContext:(id)a3;
-- (void)setIsDeleteConfirmationVisible:(BOOL)a3;
-- (void)setRepresentedObject:(id)a3;
+- (void)setContext:(id)context;
+- (void)setIsDeleteConfirmationVisible:(BOOL)visible;
+- (void)setRepresentedObject:(id)object;
 @end
 
 @implementation SUCellConfiguration
@@ -21,7 +21,7 @@
   [(SUCellConfiguration *)&v3 dealloc];
 }
 
-- (CGRect)frameForImageAtIndex:(unint64_t)a3
+- (CGRect)frameForImageAtIndex:(unint64_t)index
 {
   [objc_msgSend(MEMORY[0x1E696AAA8] currentHandler];
   v3 = *MEMORY[0x1E695F058];
@@ -35,7 +35,7 @@
   return result;
 }
 
-- (CGRect)frameForLabelAtIndex:(unint64_t)a3
+- (CGRect)frameForLabelAtIndex:(unint64_t)index
 {
   [objc_msgSend(MEMORY[0x1E696AAA8] currentHandler];
   v3 = *MEMORY[0x1E695F058];
@@ -49,16 +49,16 @@
   return result;
 }
 
-- (BOOL)getShadowColor:(id *)a3 offset:(CGSize *)a4 forLabelAtIndex:(unint64_t)a5 withModifiers:(unint64_t)a6
+- (BOOL)getShadowColor:(id *)color offset:(CGSize *)offset forLabelAtIndex:(unint64_t)index withModifiers:(unint64_t)modifiers
 {
-  if (a3)
+  if (color)
   {
-    *a3 = 0;
+    *color = 0;
   }
 
-  if (a4)
+  if (offset)
   {
-    *a4 = *MEMORY[0x1E695F060];
+    *offset = *MEMORY[0x1E695F060];
   }
 
   return 0;
@@ -85,36 +85,36 @@
   return result;
 }
 
-- (void)setContext:(id)a3
+- (void)setContext:(id)context
 {
   context = self->_context;
-  if (context != a3)
+  if (context != context)
   {
 
-    self->_context = a3;
+    self->_context = context;
 
     [(SUCellConfiguration *)self setNeedsDisplay:1];
   }
 }
 
-- (void)setRepresentedObject:(id)a3
+- (void)setRepresentedObject:(id)object
 {
   representedObject = self->_representedObject;
-  if (representedObject != a3)
+  if (representedObject != object)
   {
 
-    self->_representedObject = a3;
+    self->_representedObject = object;
 
     [(SUCellConfiguration *)self setNeedsDisplay:1];
   }
 }
 
-- (void)setIsDeleteConfirmationVisible:(BOOL)a3
+- (void)setIsDeleteConfirmationVisible:(BOOL)visible
 {
   v3 = *(self + 16);
-  if ((v3 & 1) != a3)
+  if ((v3 & 1) != visible)
   {
-    *(self + 16) = v3 & 0xFE | a3;
+    *(self + 16) = v3 & 0xFE | visible;
   }
 }
 

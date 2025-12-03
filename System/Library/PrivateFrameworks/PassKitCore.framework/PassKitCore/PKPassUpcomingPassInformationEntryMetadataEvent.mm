@@ -1,41 +1,41 @@
 @interface PKPassUpcomingPassInformationEntryMetadataEvent
-- (BOOL)isEqualToMetadata:(id)a3;
-- (BOOL)populateFromDictionary:(id)a3 bundle:(id)a4 semantics:(id)a5;
-- (PKPassUpcomingPassInformationEntryMetadataEvent)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqualToMetadata:(id)metadata;
+- (BOOL)populateFromDictionary:(id)dictionary bundle:(id)bundle semantics:(id)semantics;
+- (PKPassUpcomingPassInformationEntryMetadataEvent)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassUpcomingPassInformationEntryMetadataEvent
 
-- (BOOL)populateFromDictionary:(id)a3 bundle:(id)a4 semantics:(id)a5
+- (BOOL)populateFromDictionary:(id)dictionary bundle:(id)bundle semantics:(id)semantics
 {
-  v8 = a3;
-  v9 = a5;
+  dictionaryCopy = dictionary;
+  semanticsCopy = semantics;
   v25.receiver = self;
   v25.super_class = PKPassUpcomingPassInformationEntryMetadataEvent;
-  v10 = [(PKPassUpcomingPassInformationEntryMetadata *)&v25 populateFromDictionary:v8 bundle:a4 semantics:v9];
+  v10 = [(PKPassUpcomingPassInformationEntryMetadata *)&v25 populateFromDictionary:dictionaryCopy bundle:bundle semantics:semanticsCopy];
   if (v10)
   {
-    v11 = [v8 PKDictionaryForKey:@"dateInformation"];
+    v11 = [dictionaryCopy PKDictionaryForKey:@"dateInformation"];
     self->_unannounced = [v11 PKBoolForKey:@"isUnannounced"];
     self->_undetermined = [v11 PKBoolForKey:@"isUndetermined"];
     self->_allDay = [v11 PKBoolForKey:@"isAllDay"];
-    v12 = [v9 objectForKeyedSubscript:@"venueName"];
-    v13 = [v12 stringValue];
+    v12 = [semanticsCopy objectForKeyedSubscript:@"venueName"];
+    stringValue = [v12 stringValue];
     venueName = self->_venueName;
-    self->_venueName = v13;
+    self->_venueName = stringValue;
 
-    v15 = [v9 objectForKeyedSubscript:@"venueRegionName"];
-    v16 = [v15 stringValue];
+    v15 = [semanticsCopy objectForKeyedSubscript:@"venueRegionName"];
+    stringValue2 = [v15 stringValue];
     venueRegionName = self->_venueRegionName;
-    self->_venueRegionName = v16;
+    self->_venueRegionName = stringValue2;
 
-    v18 = [v9 objectForKeyedSubscript:@"venueLocation"];
-    v19 = [v18 locationValue];
+    v18 = [semanticsCopy objectForKeyedSubscript:@"venueLocation"];
+    locationValue = [v18 locationValue];
     venueLocation = self->_venueLocation;
-    self->_venueLocation = v19;
+    self->_venueLocation = locationValue;
 
-    v21 = [v9 objectForKeyedSubscript:@"seats"];
+    v21 = [semanticsCopy objectForKeyedSubscript:@"seats"];
     v22 = [[PKSeatingInformation alloc] initFromSemantic:v21];
     seatingInformation = self->_seatingInformation;
     self->_seatingInformation = v22;
@@ -44,14 +44,14 @@
   return v10;
 }
 
-- (BOOL)isEqualToMetadata:(id)a3
+- (BOOL)isEqualToMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v19.receiver = self;
   v19.super_class = PKPassUpcomingPassInformationEntryMetadataEvent;
-  if ([(PKPassUpcomingPassInformationEntryMetadata *)&v19 isEqualToMetadata:v4])
+  if ([(PKPassUpcomingPassInformationEntryMetadata *)&v19 isEqualToMetadata:metadataCopy])
   {
-    v5 = v4;
+    v5 = metadataCopy;
     v6 = v5;
     if (self->_unannounced != *(v5 + 64) || self->_undetermined != *(v5 + 65) || self->_allDay != *(v5 + 66))
     {
@@ -133,30 +133,30 @@ LABEL_24:
   return v12;
 }
 
-- (PKPassUpcomingPassInformationEntryMetadataEvent)initWithCoder:(id)a3
+- (PKPassUpcomingPassInformationEntryMetadataEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = PKPassUpcomingPassInformationEntryMetadataEvent;
-  v5 = [(PKPassUpcomingPassInformationEntryMetadata *)&v15 initWithCoder:v4];
+  v5 = [(PKPassUpcomingPassInformationEntryMetadata *)&v15 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_unannounced = [v4 decodeBoolForKey:@"isUnannounced"];
-    v5->_undetermined = [v4 decodeBoolForKey:@"isUndetermined"];
-    v5->_allDay = [v4 decodeBoolForKey:@"isAllDay"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"venueName"];
+    v5->_unannounced = [coderCopy decodeBoolForKey:@"isUnannounced"];
+    v5->_undetermined = [coderCopy decodeBoolForKey:@"isUndetermined"];
+    v5->_allDay = [coderCopy decodeBoolForKey:@"isAllDay"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"venueName"];
     venueName = v5->_venueName;
     v5->_venueName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"venueRegionName"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"venueRegionName"];
     venueRegionName = v5->_venueRegionName;
     v5->_venueRegionName = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"venueLocation"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"venueLocation"];
     venueLocation = v5->_venueLocation;
     v5->_venueLocation = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"seatingInformation"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"seatingInformation"];
     seatingInformation = v5->_seatingInformation;
     v5->_seatingInformation = v12;
   }
@@ -164,19 +164,19 @@ LABEL_24:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKPassUpcomingPassInformationEntryMetadataEvent;
-  v4 = a3;
-  [(PKPassUpcomingPassInformationEntryMetadata *)&v5 encodeWithCoder:v4];
-  [v4 encodeBool:self->_unannounced forKey:{@"isUnannounced", v5.receiver, v5.super_class}];
-  [v4 encodeBool:self->_undetermined forKey:@"isUndetermined"];
-  [v4 encodeBool:self->_allDay forKey:@"isAllDay"];
-  [v4 encodeObject:self->_venueName forKey:@"venueName"];
-  [v4 encodeObject:self->_venueRegionName forKey:@"venueRegionName"];
-  [v4 encodeObject:self->_venueLocation forKey:@"venueLocation"];
-  [v4 encodeObject:self->_seatingInformation forKey:@"seatingInformation"];
+  coderCopy = coder;
+  [(PKPassUpcomingPassInformationEntryMetadata *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:self->_unannounced forKey:{@"isUnannounced", v5.receiver, v5.super_class}];
+  [coderCopy encodeBool:self->_undetermined forKey:@"isUndetermined"];
+  [coderCopy encodeBool:self->_allDay forKey:@"isAllDay"];
+  [coderCopy encodeObject:self->_venueName forKey:@"venueName"];
+  [coderCopy encodeObject:self->_venueRegionName forKey:@"venueRegionName"];
+  [coderCopy encodeObject:self->_venueLocation forKey:@"venueLocation"];
+  [coderCopy encodeObject:self->_seatingInformation forKey:@"seatingInformation"];
 }
 
 @end

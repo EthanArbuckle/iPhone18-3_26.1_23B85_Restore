@@ -2,53 +2,53 @@
 - (BOOL)hasRenderableObjects;
 - (MTLTexture)depthTexture;
 - (MTLTexture)texture;
-- (_TtC3VFX17VFXRendererLegacy)initWithCommandQueue:(id)a3;
+- (_TtC3VFX17VFXRendererLegacy)initWithCommandQueue:(id)queue;
 - (id)postRenderCallback;
-- (id)snapshotImageWithSize:(CGSize)a3 deltaTime:(double)a4;
-- (id)snapshotWithSize:(CGSize)a3 deltaTime:(double)a4;
-- (void)encodeWithCommandBuffer:(id)a3;
+- (id)snapshotImageWithSize:(CGSize)size deltaTime:(double)time;
+- (id)snapshotWithSize:(CGSize)size deltaTime:(double)time;
+- (void)encodeWithCommandBuffer:(id)buffer;
 - (void)finalizeEncoding;
-- (void)setBackgroundColor:(id)a3;
-- (void)setDepthTexture:(id)a3;
-- (void)setEffect:(id)a3;
-- (void)setEnableDeferredRendering:(BOOL)a3;
-- (void)setPointOfView:(id)a3;
-- (void)setPostRenderCallback:(id)a3;
-- (void)setScene:(id)a3;
-- (void)setTexture:(id)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setDepthTexture:(id)texture;
+- (void)setEffect:(id)effect;
+- (void)setEnableDeferredRendering:(BOOL)rendering;
+- (void)setPointOfView:(id)view;
+- (void)setPostRenderCallback:(id)callback;
+- (void)setScene:(id)scene;
+- (void)setTexture:(id)texture;
 @end
 
 @implementation VFXRendererLegacy
 
-- (_TtC3VFX17VFXRendererLegacy)initWithCommandQueue:(id)a3
+- (_TtC3VFX17VFXRendererLegacy)initWithCommandQueue:(id)queue
 {
   swift_unknownObjectRetain();
-  v4 = sub_1AF0D113C(a3);
+  v4 = sub_1AF0D113C(queue);
   swift_unknownObjectRelease();
   return v4;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v4 = *(self + OBJC_IVAR____TtC3VFX17VFXRendererLegacy_backgroundColor);
-  *(self + OBJC_IVAR____TtC3VFX17VFXRendererLegacy_backgroundColor) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC3VFX17VFXRendererLegacy_backgroundColor) = color;
+  colorCopy = color;
 }
 
-- (void)setScene:(id)a3
+- (void)setScene:(id)scene
 {
   v4 = *(self + OBJC_IVAR____TtC3VFX17VFXRendererLegacy_scene);
-  *(self + OBJC_IVAR____TtC3VFX17VFXRendererLegacy_scene) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC3VFX17VFXRendererLegacy_scene) = scene;
+  sceneCopy = scene;
 }
 
-- (void)setEffect:(id)a3
+- (void)setEffect:(id)effect
 {
   v5 = OBJC_IVAR____TtC3VFX17VFXRendererLegacy_effect;
   v6 = *(self + OBJC_IVAR____TtC3VFX17VFXRendererLegacy_effect);
-  *(self + OBJC_IVAR____TtC3VFX17VFXRendererLegacy_effect) = a3;
-  v7 = self;
-  v8 = a3;
+  *(self + OBJC_IVAR____TtC3VFX17VFXRendererLegacy_effect) = effect;
+  selfCopy = self;
+  effectCopy = effect;
 
   if (*(self + v5))
   {
@@ -60,8 +60,8 @@
     Strong = 0;
   }
 
-  v10 = *(v7 + OBJC_IVAR____TtC3VFX17VFXRendererLegacy_scene);
-  *(v7 + OBJC_IVAR____TtC3VFX17VFXRendererLegacy_scene) = Strong;
+  v10 = *(selfCopy + OBJC_IVAR____TtC3VFX17VFXRendererLegacy_scene);
+  *(selfCopy + OBJC_IVAR____TtC3VFX17VFXRendererLegacy_scene) = Strong;
 }
 
 - (MTLTexture)texture
@@ -71,9 +71,9 @@
   return v2;
 }
 
-- (void)setTexture:(id)a3
+- (void)setTexture:(id)texture
 {
-  *(self + OBJC_IVAR____TtC3VFX17VFXRendererLegacy_texture) = a3;
+  *(self + OBJC_IVAR____TtC3VFX17VFXRendererLegacy_texture) = texture;
   swift_unknownObjectRetain();
 
   swift_unknownObjectRelease();
@@ -86,41 +86,41 @@
   return v2;
 }
 
-- (void)setDepthTexture:(id)a3
+- (void)setDepthTexture:(id)texture
 {
-  *(self + OBJC_IVAR____TtC3VFX17VFXRendererLegacy_depthTexture) = a3;
+  *(self + OBJC_IVAR____TtC3VFX17VFXRendererLegacy_depthTexture) = texture;
   swift_unknownObjectRetain_n();
-  v6 = self;
+  selfCopy = self;
   swift_unknownObjectRelease();
-  if (a3)
+  if (texture)
   {
-    v5 = *(v6 + OBJC_IVAR____TtC3VFX17VFXRendererLegacy_renderer);
-    *(v5 + 448) = [a3 pixelFormat];
+    v5 = *(selfCopy + OBJC_IVAR____TtC3VFX17VFXRendererLegacy_renderer);
+    *(v5 + 448) = [texture pixelFormat];
     sub_1AF0D8E28();
     swift_unknownObjectRelease();
   }
 }
 
-- (void)setPointOfView:(id)a3
+- (void)setPointOfView:(id)view
 {
   v4 = *(self + OBJC_IVAR____TtC3VFX17VFXRendererLegacy_pointOfView);
-  *(self + OBJC_IVAR____TtC3VFX17VFXRendererLegacy_pointOfView) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC3VFX17VFXRendererLegacy_pointOfView) = view;
+  viewCopy = view;
 }
 
 - (BOOL)hasRenderableObjects
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1AFCBAFD0();
 
   return v3 & 1;
 }
 
-- (void)encodeWithCommandBuffer:(id)a3
+- (void)encodeWithCommandBuffer:(id)buffer
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1AFCBB128(a3);
+  selfCopy = self;
+  sub_1AFCBB128(buffer);
   swift_unknownObjectRelease();
 }
 
@@ -130,37 +130,37 @@
   if (v2)
   {
     v4 = v2;
-    v7 = self;
+    selfCopy = self;
     v5 = v4;
 
-    sub_1AF664A64(v6, v5, v7);
+    sub_1AF664A64(v6, v5, selfCopy);
   }
 }
 
-- (void)setEnableDeferredRendering:(BOOL)a3
+- (void)setEnableDeferredRendering:(BOOL)rendering
 {
-  *(*(self + OBJC_IVAR____TtC3VFX17VFXRendererLegacy_renderer) + 392) = !a3;
-  v3 = self;
+  *(*(self + OBJC_IVAR____TtC3VFX17VFXRendererLegacy_renderer) + 392) = !rendering;
+  selfCopy = self;
   sub_1AF0D8E28();
   sub_1AF0D8E28();
 }
 
-- (id)snapshotWithSize:(CGSize)a3 deltaTime:(double)a4
+- (id)snapshotWithSize:(CGSize)size deltaTime:(double)time
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = self;
-  v8 = sub_1AFCBB68C(width, height, a4);
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
+  v8 = sub_1AFCBB68C(width, height, time);
 
   return v8;
 }
 
-- (id)snapshotImageWithSize:(CGSize)a3 deltaTime:(double)a4
+- (id)snapshotImageWithSize:(CGSize)size deltaTime:(double)time
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = self;
-  sub_1AFCBB68C(width, height, a4);
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
+  sub_1AFCBB68C(width, height, time);
   swift_getObjectType();
   MTLTexture.toImage()(v8);
   v10 = v9;
@@ -192,9 +192,9 @@
   return v3;
 }
 
-- (void)setPostRenderCallback:(id)a3
+- (void)setPostRenderCallback:(id)callback
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(callback);
   if (v4)
   {
     v5 = v4;

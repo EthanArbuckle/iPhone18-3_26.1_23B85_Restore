@@ -1,16 +1,16 @@
 @interface OBTextSectionViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (OBTextSectionViewAccessibility)initWithHeader:(id)a3 content:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (OBTextSectionViewAccessibility)initWithHeader:(id)header content:(id)content;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation OBTextSectionViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"OBTextSectionView" hasInstanceMethod:@"headerLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"OBTextSectionView" hasInstanceMethod:@"initWithHeader:content:" withFullSignature:{"@", "@", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"OBTextSectionView" hasInstanceMethod:@"headerLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"OBTextSectionView" hasInstanceMethod:@"initWithHeader:content:" withFullSignature:{"@", "@", "@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -24,11 +24,11 @@
   [v5 setAccessibilityTraits:v4 | v3];
 }
 
-- (OBTextSectionViewAccessibility)initWithHeader:(id)a3 content:(id)a4
+- (OBTextSectionViewAccessibility)initWithHeader:(id)header content:(id)content
 {
   v6.receiver = self;
   v6.super_class = OBTextSectionViewAccessibility;
-  v4 = [(OBTextSectionViewAccessibility *)&v6 initWithHeader:a3 content:a4];
+  v4 = [(OBTextSectionViewAccessibility *)&v6 initWithHeader:header content:content];
   [(OBTextSectionViewAccessibility *)v4 _accessibilityLoadAccessibilityInformation];
 
   return v4;

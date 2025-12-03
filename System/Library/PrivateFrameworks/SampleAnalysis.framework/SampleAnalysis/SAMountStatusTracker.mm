@@ -1,16 +1,16 @@
 @interface SAMountStatusTracker
-+ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)a3 bufferLength:(unint64_t)a4;
-- (BOOL)addSelfToBuffer:(id *)a3 bufferLength:(unint64_t)a4 withCompletedSerializationDictionary:(id)a5;
++ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)buffer bufferLength:(unint64_t)length;
+- (BOOL)addSelfToBuffer:(id *)buffer bufferLength:(unint64_t)length withCompletedSerializationDictionary:(id)dictionary;
 - (SAMountStatusTracker)init;
 - (uint64_t)hasUnresponsiveMountsForThreadID:(uint64_t)result;
 - (uint64_t)iterateAllTimestamps:(uint64_t)result;
-- (uint64_t)populateReferencesUsingPAStyleSerializedMountStatusTracker:(void *)a3 andDeserializationDictionary:(void *)a4 andDataBufferDictionary:;
-- (void)addMountStatus:(void *)a3 forTimestamp:;
-- (void)addSelfToSerializationDictionary:(id)a3;
-- (void)enumerateMountsBlockingThread:(uint64_t)a3 betweenStartTime:(void *)a4 endTime:(uint64_t)a5 block:;
-- (void)enumerateUnresponsiveMountsBetweenStartTime:(void *)a3 endTime:(uint64_t)a4 block:;
+- (uint64_t)populateReferencesUsingPAStyleSerializedMountStatusTracker:(void *)tracker andDeserializationDictionary:(void *)dictionary andDataBufferDictionary:;
+- (void)addMountStatus:(void *)status forTimestamp:;
+- (void)addSelfToSerializationDictionary:(id)dictionary;
+- (void)enumerateMountsBlockingThread:(uint64_t)thread betweenStartTime:(void *)time endTime:(uint64_t)endTime block:;
+- (void)enumerateUnresponsiveMountsBetweenStartTime:(void *)time endTime:(uint64_t)endTime block:;
 - (void)fillInThreadsSeen;
-- (void)populateReferencesUsingBuffer:(const void *)a3 bufferLength:(unint64_t)a4 andDeserializationDictionary:(id)a5 andDataBufferDictionary:(id)a6;
+- (void)populateReferencesUsingBuffer:(const void *)buffer bufferLength:(unint64_t)length andDeserializationDictionary:(id)dictionary andDataBufferDictionary:(id)bufferDictionary;
 @end
 
 @implementation SAMountStatusTracker
@@ -34,10 +34,10 @@
   return v2;
 }
 
-- (void)addMountStatus:(void *)a3 forTimestamp:
+- (void)addMountStatus:(void *)status forTimestamp:
 {
   v71 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v63 = 0u;
     v64 = 0u;
@@ -69,7 +69,7 @@
         v9 = *([v8 mount] + 48);
         v10 = *([v8 mount] + 52) + (v9 << 32);
         v11 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedLongLong:v10];
-        v12 = [*(a1 + 16) objectForKey:v11];
+        v12 = [*(self + 16) objectForKey:v11];
         if (v12)
         {
           v13 = v12;
@@ -101,7 +101,7 @@
             *__error() = v14;
           }
 
-          v16 = [v8 status];
+          status = [v8 status];
           goto LABEL_30;
         }
 
@@ -175,17 +175,17 @@
           v13 = 0;
         }
 
-        [*(a1 + 16) setObject:v13 forKey:v11];
+        [*(self + 16) setObject:v13 forKey:v11];
 
-        v28 = [v8 status];
+        status2 = [v8 status];
         if (v13)
         {
-          v16 = v28;
+          status = status2;
           v7 = v59;
 LABEL_30:
           v29 = *(v13 + 1);
           v30 = [SAMountSnapshot alloc];
-          if (v30 && v16)
+          if (v30 && status)
           {
             v60 = v7;
             *v65 = v30;
@@ -195,17 +195,17 @@ LABEL_30:
             if (v31)
             {
               v55 = v29;
-              objc_storeStrong(v31 + 1, a3);
-              [a3 machAbsTimeSeconds];
-              LODWORD(v33) = *(v16 + 516);
+              objc_storeStrong(v31 + 1, status);
+              [status machAbsTimeSeconds];
+              LODWORD(v33) = *(status + 516);
               v32[2] = v34 - v33;
               v35 = objc_alloc_init(MEMORY[0x1E695DF70]);
-              if (*(v16 + 520))
+              if (*(status + 520))
               {
                 v36 = 0;
                 do
                 {
-                  v37 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedLongLong:*(v16 + 528 + 8 * v36)];
+                  v37 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedLongLong:*(status + 528 + 8 * v36)];
                   if (([v35 containsObject:v37] & 1) == 0)
                   {
                     [v35 addObject:v37];
@@ -214,7 +214,7 @@ LABEL_30:
                   ++v36;
                 }
 
-                while (v36 < *(v16 + 520));
+                while (v36 < *(status + 520));
               }
 
               v38 = *(v32 + 3);
@@ -245,9 +245,9 @@ LABEL_42:
           v40 = 0;
           do
           {
-            v41 = [v8 status];
-            v42 = *(a1 + 8);
-            v43 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:*(v41 + 8 * v40 + 528)];
+            status3 = [v8 status];
+            v42 = *(self + 8);
+            v43 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:*(status3 + 8 * v40 + 528)];
             [v42 addObject:v43];
 
             ++v40;
@@ -289,13 +289,13 @@ LABEL_50:
   return result;
 }
 
-- (void)enumerateMountsBlockingThread:(uint64_t)a3 betweenStartTime:(void *)a4 endTime:(uint64_t)a5 block:
+- (void)enumerateMountsBlockingThread:(uint64_t)thread betweenStartTime:(void *)time endTime:(uint64_t)endTime block:
 {
   v34 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v9 = [*(a1 + 16) allKeys];
-    v10 = [v9 sortedArrayUsingComparator:&__block_literal_global_12];
+    allKeys = [*(self + 16) allKeys];
+    v10 = [allKeys sortedArrayUsingComparator:&__block_literal_global_12];
 
     v29 = 0;
     v30 = &v29;
@@ -319,17 +319,17 @@ LABEL_4:
           objc_enumerationMutation(obj);
         }
 
-        v14 = [*(a1 + 16) objectForKeyedSubscript:*(*(&v25 + 1) + 8 * v13)];
+        v14 = [*(self + 16) objectForKeyedSubscript:*(*(&v25 + 1) + 8 * v13)];
         v20[0] = MEMORY[0x1E69E9820];
         v20[1] = 3221225472;
         v20[2] = __85__SAMountStatusTracker_enumerateMountsBlockingThread_betweenStartTime_endTime_block___block_invoke_2;
         v20[3] = &unk_1E86F8548;
         v24 = a2;
-        v22 = a5;
+        endTimeCopy = endTime;
         v15 = v14;
         v21 = v15;
         v23 = &v29;
-        [(SAMountStatus *)v15 enumerateSnapshotsBetweenStartTime:a3 endTime:a4 block:v20];
+        [(SAMountStatus *)v15 enumerateSnapshotsBetweenStartTime:thread endTime:time block:v20];
         v16 = *(v30 + 24);
 
         if (v16)
@@ -392,13 +392,13 @@ void __85__SAMountStatusTracker_enumerateMountsBlockingThread_betweenStartTime_e
   }
 }
 
-- (void)enumerateUnresponsiveMountsBetweenStartTime:(void *)a3 endTime:(uint64_t)a4 block:
+- (void)enumerateUnresponsiveMountsBetweenStartTime:(void *)time endTime:(uint64_t)endTime block:
 {
   v40 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v5 = [*(a1 + 16) allKeys];
-    v6 = [v5 sortedArrayUsingComparator:&__block_literal_global_37];
+    allKeys = [*(self + 16) allKeys];
+    v6 = [allKeys sortedArrayUsingComparator:&__block_literal_global_37];
 
     v37 = 0u;
     v38 = 0u;
@@ -409,7 +409,7 @@ void __85__SAMountStatusTracker_enumerateMountsBlockingThread_betweenStartTime_e
     if (v7)
     {
       v8 = *v36;
-      v18 = a4 + 16;
+      v18 = endTime + 16;
       do
       {
         v9 = 0;
@@ -420,7 +420,7 @@ void __85__SAMountStatusTracker_enumerateMountsBlockingThread_betweenStartTime_e
             objc_enumerationMutation(obj);
           }
 
-          v10 = [*(a1 + 16) objectForKeyedSubscript:{*(*(&v35 + 1) + 8 * v9), v18}];
+          v10 = [*(self + 16) objectForKeyedSubscript:{*(*(&v35 + 1) + 8 * v9), v18}];
           v29 = 0;
           v30 = &v29;
           v31 = 0x3032000000;
@@ -437,7 +437,7 @@ void __85__SAMountStatusTracker_enumerateMountsBlockingThread_betweenStartTime_e
           v24[3] = &unk_1E86F8570;
           v24[4] = &v25;
           v24[5] = &v29;
-          [(SAMountStatus *)v10 enumerateSnapshotsBetweenStartTime:a2 endTime:a3 block:v24];
+          [(SAMountStatus *)v10 enumerateSnapshotsBetweenStartTime:a2 endTime:time block:v24];
           if (*(v26 + 24) == 1)
           {
             v23 = 0;
@@ -454,7 +454,7 @@ void __85__SAMountStatusTracker_enumerateMountsBlockingThread_betweenStartTime_e
             }
 
             v15 = Property;
-            (*(a4 + 16))(a4, v12, v15, v30[5], &v23);
+            (*(endTime + 16))(endTime, v12, v15, v30[5], &v23);
 
             if (v23)
             {
@@ -535,10 +535,10 @@ void __82__SAMountStatusTracker_enumerateUnresponsiveMountsBetweenStartTime_endT
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)addSelfToBuffer:(id *)a3 bufferLength:(unint64_t)a4 withCompletedSerializationDictionary:(id)a5
+- (BOOL)addSelfToBuffer:(id *)buffer bufferLength:(unint64_t)length withCompletedSerializationDictionary:(id)dictionary
 {
   v44 = *MEMORY[0x1E69E9840];
-  if ([(SAMountStatusTracker *)self sizeInBytesForSerializedVersion]!= a4)
+  if ([(SAMountStatusTracker *)self sizeInBytesForSerializedVersion]!= length)
   {
     v12 = *__error();
     v13 = _sa_logt();
@@ -546,19 +546,19 @@ void __82__SAMountStatusTracker_enumerateUnresponsiveMountsBetweenStartTime_endT
     {
       v14 = [(SAMountStatusTracker *)self debugDescription];
       *buf = 136315650;
-      v39 = [v14 UTF8String];
+      uTF8String = [v14 UTF8String];
       v40 = 2048;
-      v41 = [(SAMountStatusTracker *)self sizeInBytesForSerializedVersion];
+      sizeInBytesForSerializedVersion = [(SAMountStatusTracker *)self sizeInBytesForSerializedVersion];
       v42 = 2048;
-      v43 = a4;
+      lengthCopy = length;
       _os_log_error_impl(&dword_1E0E2F000, v13, OS_LOG_TYPE_ERROR, "%s: size %lu != buffer length %lu", buf, 0x20u);
     }
 
     *__error() = v12;
     v15 = [(SAMountStatusTracker *)self debugDescription];
-    v16 = [v15 UTF8String];
+    uTF8String2 = [v15 UTF8String];
     [(SAMountStatusTracker *)self sizeInBytesForSerializedVersion];
-    _SASetCrashLogMessage(456, "%s: size %lu != buffer length %lu", v17, v18, v19, v20, v21, v22, v16);
+    _SASetCrashLogMessage(456, "%s: size %lu != buffer length %lu", v17, v18, v19, v20, v21, v22, uTF8String2);
 
     _os_crash();
     __break(1u);
@@ -568,40 +568,40 @@ LABEL_7:
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
       v25 = [(SAMountStatusTracker *)self debugDescription];
-      v26 = [v25 UTF8String];
+      uTF8String3 = [v25 UTF8String];
       v27 = [(NSMutableDictionary *)self->_mountStatusDict count];
       *buf = 136315394;
-      v39 = v26;
+      uTF8String = uTF8String3;
       v40 = 2048;
-      v41 = v27;
+      sizeInBytesForSerializedVersion = v27;
       _os_log_error_impl(&dword_1E0E2F000, v24, OS_LOG_TYPE_ERROR, "%s: %lu mountStatuDicts", buf, 0x16u);
     }
 
     *__error() = v23;
     v28 = [(SAMountStatusTracker *)self debugDescription];
-    v29 = [v28 UTF8String];
+    uTF8String4 = [v28 UTF8String];
     [(NSMutableDictionary *)self->_mountStatusDict count];
-    _SASetCrashLogMessage(461, "%s: %lu mountStatuDicts", v30, v31, v32, v33, v34, v35, v29);
+    _SASetCrashLogMessage(461, "%s: %lu mountStatuDicts", v30, v31, v32, v33, v34, v35, uTF8String4);
 
     _os_crash();
     __break(1u);
   }
 
-  *&a3->var0 = 257;
+  *&buffer->var0 = 257;
   if ([(NSMutableDictionary *)self->_mountStatusDict count]>= 0xFFFF)
   {
     goto LABEL_7;
   }
 
-  a3->var2 = [(NSMutableDictionary *)self->_mountStatusDict count];
+  buffer->var2 = [(NSMutableDictionary *)self->_mountStatusDict count];
   mountStatusDict = self->_mountStatusDict;
   v36[0] = MEMORY[0x1E69E9820];
   v36[1] = 3221225472;
   v36[2] = __105__SAMountStatusTracker_Serialization__addSelfToBuffer_bufferLength_withCompletedSerializationDictionary___block_invoke;
   v36[3] = &unk_1E86F8598;
   v37 = 0;
-  v36[4] = a5;
-  v36[5] = a3 + 1;
+  v36[4] = dictionary;
+  v36[5] = buffer + 1;
   [(NSMutableDictionary *)mountStatusDict enumerateKeysAndObjectsUsingBlock:v36];
   v10 = *MEMORY[0x1E69E9840];
   return 1;
@@ -615,10 +615,10 @@ uint64_t __105__SAMountStatusTracker_Serialization__addSelfToBuffer_bufferLength
   return result;
 }
 
-- (void)addSelfToSerializationDictionary:(id)a3
+- (void)addSelfToSerializationDictionary:(id)dictionary
 {
-  v5 = [objc_opt_class() classDictionaryKey];
-  v6 = SASerializableAddInstanceToSerializationDictionaryWithClassKey(a3, self, v5);
+  classDictionaryKey = [objc_opt_class() classDictionaryKey];
+  v6 = SASerializableAddInstanceToSerializationDictionaryWithClassKey(dictionary, self, classDictionaryKey);
 
   if (v6)
   {
@@ -627,58 +627,58 @@ uint64_t __105__SAMountStatusTracker_Serialization__addSelfToBuffer_bufferLength
     v8[1] = 3221225472;
     v8[2] = __72__SAMountStatusTracker_Serialization__addSelfToSerializationDictionary___block_invoke;
     v8[3] = &unk_1E86F85C0;
-    v8[4] = a3;
+    v8[4] = dictionary;
     [(NSMutableDictionary *)mountStatusDict enumerateKeysAndObjectsUsingBlock:v8];
   }
 }
 
-+ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)a3 bufferLength:(unint64_t)a4
++ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)buffer bufferLength:(unint64_t)length
 {
   v30 = *MEMORY[0x1E69E9840];
-  if (*a3 >= 2u)
+  if (*buffer >= 2u)
   {
     goto LABEL_13;
   }
 
-  if (a4 <= 3)
+  if (length <= 3)
   {
     v8 = *__error();
-    v5 = _sa_logt();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    bufferCopy = _sa_logt();
+    if (os_log_type_enabled(bufferCopy, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218240;
-      v27 = a4;
+      lengthCopy2 = length;
       v28 = 2048;
       v29 = 4;
-      _os_log_error_impl(&dword_1E0E2F000, v5, OS_LOG_TYPE_ERROR, "bufferLength %lu < serialized SAMountStatusTracker struct %lu", buf, 0x16u);
+      _os_log_error_impl(&dword_1E0E2F000, bufferCopy, OS_LOG_TYPE_ERROR, "bufferLength %lu < serialized SAMountStatusTracker struct %lu", buf, 0x16u);
     }
 
     *__error() = v8;
-    _SASetCrashLogMessage(494, "bufferLength %lu < serialized SAMountStatusTracker struct %lu", v9, v10, v11, v12, v13, v14, a4);
+    _SASetCrashLogMessage(494, "bufferLength %lu < serialized SAMountStatusTracker struct %lu", v9, v10, v11, v12, v13, v14, length);
     _os_crash();
     __break(1u);
     goto LABEL_10;
   }
 
-  v5 = a3;
-  if (((8 * *(a3 + 1)) | 4uLL) > a4)
+  bufferCopy = buffer;
+  if (((8 * *(buffer + 1)) | 4uLL) > length)
   {
 LABEL_10:
     v15 = *__error();
     v16 = _sa_logt();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      v17 = *(v5 + 2);
+      v17 = *(bufferCopy + 2);
       *buf = 134218240;
-      v27 = a4;
+      lengthCopy2 = length;
       v28 = 2048;
       v29 = v17;
       _os_log_error_impl(&dword_1E0E2F000, v16, OS_LOG_TYPE_ERROR, "bufferLength %lu < serialized SAMountStatusTracker struct with %lu mounts", buf, 0x16u);
     }
 
     *__error() = v15;
-    v25 = *(v5 + 2);
-    _SASetCrashLogMessage(495, "bufferLength %lu < serialized SAMountStatusTracker struct with %lu mounts", v18, v19, v20, v21, v22, v23, a4);
+    v25 = *(bufferCopy + 2);
+    _SASetCrashLogMessage(495, "bufferLength %lu < serialized SAMountStatusTracker struct with %lu mounts", v18, v19, v20, v21, v22, v23, length);
     _os_crash();
     __break(1u);
 LABEL_13:
@@ -788,53 +788,53 @@ void __56__SAMountStatusTracker_Serialization__fillInThreadsSeen__block_invoke(u
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)populateReferencesUsingBuffer:(const void *)a3 bufferLength:(unint64_t)a4 andDeserializationDictionary:(id)a5 andDataBufferDictionary:(id)a6
+- (void)populateReferencesUsingBuffer:(const void *)buffer bufferLength:(unint64_t)length andDeserializationDictionary:(id)dictionary andDataBufferDictionary:(id)bufferDictionary
 {
   v43 = *MEMORY[0x1E69E9840];
-  if (*a3 >= 2u)
+  if (*buffer >= 2u)
   {
     goto LABEL_16;
   }
 
-  if (a4 <= 3)
+  if (length <= 3)
   {
     v21 = *__error();
-    v7 = _sa_logt();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    bufferCopy = _sa_logt();
+    if (os_log_type_enabled(bufferCopy, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218240;
-      v40 = a4;
+      lengthCopy2 = length;
       v41 = 2048;
       v42 = 4;
-      _os_log_error_impl(&dword_1E0E2F000, v7, OS_LOG_TYPE_ERROR, "bufferLength %lu < serialized SAMountStatusTracker struct %lu", buf, 0x16u);
+      _os_log_error_impl(&dword_1E0E2F000, bufferCopy, OS_LOG_TYPE_ERROR, "bufferLength %lu < serialized SAMountStatusTracker struct %lu", buf, 0x16u);
     }
 
     *__error() = v21;
-    _SASetCrashLogMessage(518, "bufferLength %lu < serialized SAMountStatusTracker struct %lu", v22, v23, v24, v25, v26, v27, a4);
+    _SASetCrashLogMessage(518, "bufferLength %lu < serialized SAMountStatusTracker struct %lu", v22, v23, v24, v25, v26, v27, length);
     _os_crash();
     __break(1u);
     goto LABEL_13;
   }
 
-  v7 = a3;
-  if (((8 * *(a3 + 1)) | 4uLL) > a4)
+  bufferCopy = buffer;
+  if (((8 * *(buffer + 1)) | 4uLL) > length)
   {
 LABEL_13:
     v28 = *__error();
     v29 = _sa_logt();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
-      v30 = *(v7 + 2);
+      v30 = *(bufferCopy + 2);
       *buf = 134218240;
-      v40 = a4;
+      lengthCopy2 = length;
       v41 = 2048;
       v42 = v30;
       _os_log_error_impl(&dword_1E0E2F000, v29, OS_LOG_TYPE_ERROR, "bufferLength %lu < serialized SAMountStatusTracker struct with %lu mounts", buf, 0x16u);
     }
 
     *__error() = v28;
-    v38 = *(v7 + 2);
-    _SASetCrashLogMessage(519, "bufferLength %lu < serialized SAMountStatusTracker struct with %lu mounts", v31, v32, v33, v34, v35, v36, a4);
+    v38 = *(bufferCopy + 2);
+    _SASetCrashLogMessage(519, "bufferLength %lu < serialized SAMountStatusTracker struct with %lu mounts", v31, v32, v33, v34, v35, v36, length);
     _os_crash();
     __break(1u);
 LABEL_16:
@@ -842,19 +842,19 @@ LABEL_16:
     objc_exception_throw(v37);
   }
 
-  v11 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:*(a3 + 1)];
+  v11 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:*(buffer + 1)];
   mountStatusDict = self->_mountStatusDict;
   self->_mountStatusDict = v11;
 
-  if (*(v7 + 2))
+  if (*(bufferCopy + 2))
   {
     v13 = 0;
-    v14 = (v7 + 12);
+    v14 = (bufferCopy + 12);
     do
     {
       v15 = *v14;
       v16 = objc_opt_class();
-      v17 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v15, a5, a6, v16, 0);
+      v17 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v15, dictionary, bufferDictionary, v16, 0);
       v18 = self->_mountStatusDict;
       v19 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:*(v14 - 1)];
       [(NSMutableDictionary *)v18 setObject:v17 forKeyedSubscript:v19];
@@ -863,7 +863,7 @@ LABEL_16:
       v14 += 2;
     }
 
-    while (v13 < *(v7 + 2));
+    while (v13 < *(bufferCopy + 2));
   }
 
   v20 = *MEMORY[0x1E69E9840];
@@ -871,7 +871,7 @@ LABEL_16:
   [(SAMountStatusTracker *)self fillInThreadsSeen];
 }
 
-- (uint64_t)populateReferencesUsingPAStyleSerializedMountStatusTracker:(void *)a3 andDeserializationDictionary:(void *)a4 andDataBufferDictionary:
+- (uint64_t)populateReferencesUsingPAStyleSerializedMountStatusTracker:(void *)tracker andDeserializationDictionary:(void *)dictionary andDataBufferDictionary:
 {
   v40 = *MEMORY[0x1E69E9840];
   if (!result)
@@ -889,10 +889,10 @@ LABEL_14:
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
       v23 = [v5 debugDescription];
-      v24 = [v23 UTF8String];
+      uTF8String = [v23 UTF8String];
       v25 = *(a2 + 8);
       *buf = 136315394;
-      v37 = v24;
+      v37 = uTF8String;
       v38 = 1024;
       v39 = v25;
       _os_log_error_impl(&dword_1E0E2F000, v22, OS_LOG_TYPE_ERROR, "%s: %u mounts", buf, 0x12u);
@@ -900,9 +900,9 @@ LABEL_14:
 
     *__error() = v21;
     v26 = [v5 debugDescription];
-    v27 = [v26 UTF8String];
+    uTF8String2 = [v26 UTF8String];
     v35 = *(a2 + 8);
-    _SASetCrashLogMessage(532, "%s: %u mounts", v28, v29, v30, v31, v32, v33, v27);
+    _SASetCrashLogMessage(532, "%s: %u mounts", v28, v29, v30, v31, v32, v33, uTF8String2);
 
     result = _os_crash();
     __break(1u);
@@ -921,7 +921,7 @@ LABEL_14:
       v11 = (a2 + 12 + 16 * v10);
       v12 = v11[1];
       v13 = objc_opt_class();
-      Property = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v12, a3, a4, v13, 0);
+      Property = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v12, tracker, dictionary, v13, 0);
       v16 = Property;
       if (Property)
       {

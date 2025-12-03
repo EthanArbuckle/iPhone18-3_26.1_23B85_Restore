@@ -5,21 +5,21 @@
 - (BOOL)orderTasksBySampleCount;
 - (BOOL)verbose;
 - (SASamplePrintOptions)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (uint64_t)callTreeAggregationResolved;
-- (void)setAggregateProcessesByExecutable:(BOOL)a3;
-- (void)setAggregateStacksByProcess:(BOOL)a3;
-- (void)setAggregateStacksByThread:(BOOL)a3;
-- (void)setDisplayAllHIDEvents:(BOOL)a3;
-- (void)setDisplayTimestampsInCallTrees:(BOOL)a3;
-- (void)setMicrostackshotsFormat:(BOOL)a3;
-- (void)setOmitFramesBelowPercentOfStackSamples:(char)a3;
-- (void)setOmitStacksBelowPercentOfTaskSamples:(char)a3;
-- (void)setOmitTasksBelowPercentOfTotalSamples:(char)a3;
-- (void)setOrderTasksBySampleCount:(BOOL)a3;
-- (void)setPrintTargetHIDEvent:(BOOL)a3;
-- (void)setSystemstatsFormat:(BOOL)a3;
+- (void)setAggregateProcessesByExecutable:(BOOL)executable;
+- (void)setAggregateStacksByProcess:(BOOL)process;
+- (void)setAggregateStacksByThread:(BOOL)thread;
+- (void)setDisplayAllHIDEvents:(BOOL)events;
+- (void)setDisplayTimestampsInCallTrees:(BOOL)trees;
+- (void)setMicrostackshotsFormat:(BOOL)format;
+- (void)setOmitFramesBelowPercentOfStackSamples:(char)samples;
+- (void)setOmitStacksBelowPercentOfTaskSamples:(char)samples;
+- (void)setOmitTasksBelowPercentOfTotalSamples:(char)samples;
+- (void)setOrderTasksBySampleCount:(BOOL)count;
+- (void)setPrintTargetHIDEvent:(BOOL)event;
+- (void)setSystemstatsFormat:(BOOL)format;
 @end
 
 @implementation SASamplePrintOptions
@@ -104,20 +104,20 @@
 
 - (BOOL)orderTasksBySampleCount
 {
-  v2 = [(NSMutableArray *)self->_processSortAttributes firstObject];
-  v3 = [v2 unsignedLongLongValue] == 11;
+  firstObject = [(NSMutableArray *)self->_processSortAttributes firstObject];
+  v3 = [firstObject unsignedLongLongValue] == 11;
 
   return v3;
 }
 
-- (void)setOrderTasksBySampleCount:(BOOL)a3
+- (void)setOrderTasksBySampleCount:(BOOL)count
 {
-  v5 = [(NSMutableArray *)self->_processSortAttributes firstObject];
-  v6 = [v5 unsignedLongLongValue];
+  firstObject = [(NSMutableArray *)self->_processSortAttributes firstObject];
+  unsignedLongLongValue = [firstObject unsignedLongLongValue];
 
-  if (a3)
+  if (count)
   {
-    if (v6 != 11)
+    if (unsignedLongLongValue != 11)
     {
       processSortAttributes = self->_processSortAttributes;
 
@@ -125,23 +125,23 @@
     }
   }
 
-  else if (v6 == 11)
+  else if (unsignedLongLongValue == 11)
   {
     do
     {
       [(NSMutableArray *)self->_processSortAttributes removeObjectAtIndex:0];
-      v8 = [(NSMutableArray *)self->_processSortAttributes firstObject];
-      v9 = [v8 unsignedLongLongValue];
+      firstObject2 = [(NSMutableArray *)self->_processSortAttributes firstObject];
+      unsignedLongLongValue2 = [firstObject2 unsignedLongLongValue];
     }
 
-    while (v9 == 11);
+    while (unsignedLongLongValue2 == 11);
   }
 }
 
-- (void)setPrintTargetHIDEvent:(BOOL)a3
+- (void)setPrintTargetHIDEvent:(BOOL)event
 {
   v3 = 4;
-  if (!a3)
+  if (!event)
   {
     v3 = 0;
   }
@@ -149,12 +149,12 @@
   self->_hidEventDisplayOptions = self->_hidEventDisplayOptions & 0xFFFFFFFFFFFFFFFBLL | v3;
 }
 
-- (void)setDisplayAllHIDEvents:(BOOL)a3
+- (void)setDisplayAllHIDEvents:(BOOL)events
 {
   hidEventDisplayOptions = self->_hidEventDisplayOptions;
   v4 = hidEventDisplayOptions & 0xFFFFFFFFFFFFFFE7 | 8;
   v5 = hidEventDisplayOptions | 0x10;
-  if (!a3)
+  if (!events)
   {
     v5 = v4;
   }
@@ -162,9 +162,9 @@
   self->_hidEventDisplayOptions = v5;
 }
 
-- (void)setDisplayTimestampsInCallTrees:(BOOL)a3
+- (void)setDisplayTimestampsInCallTrees:(BOOL)trees
 {
-  if (!a3)
+  if (!trees)
   {
     v3 = 0;
 LABEL_6:
@@ -202,9 +202,9 @@ LABEL_6:
   return callTreeAggregation == 2;
 }
 
-- (void)setAggregateStacksByThread:(BOOL)a3
+- (void)setAggregateStacksByThread:(BOOL)thread
 {
-  if (a3)
+  if (thread)
   {
     v3 = 2;
   }
@@ -245,9 +245,9 @@ LABEL_6:
   return callTreeAggregation == 3;
 }
 
-- (void)setAggregateStacksByProcess:(BOOL)a3
+- (void)setAggregateStacksByProcess:(BOOL)process
 {
-  if (a3)
+  if (process)
   {
     v3 = 3;
   }
@@ -288,10 +288,10 @@ LABEL_6:
   return taskAggregation == 2;
 }
 
-- (void)setAggregateProcessesByExecutable:(BOOL)a3
+- (void)setAggregateProcessesByExecutable:(BOOL)executable
 {
   v3 = 1;
-  if (a3)
+  if (executable)
   {
     v3 = 2;
   }
@@ -314,9 +314,9 @@ LABEL_6:
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setDisplayHeader:self->_displayHeader];
   [v4 setDisplayBody:self->_displayBody];
   [v4 setDisplayFooter:self->_displayFooter];
@@ -329,11 +329,11 @@ LABEL_6:
   [v4 setForceOneBasedTimeIndexes:self->_forceOneBasedTimeIndexes];
   [v4 setShowThreadStateAsLeafFrame:self->_showThreadStateAsLeafFrame];
   [v4 setPatchTruncatedStacks:self->_patchTruncatedStacks];
-  v5 = [v4 processSortAttributes];
-  [v5 addObjectsFromArray:self->_processSortAttributes];
+  processSortAttributes = [v4 processSortAttributes];
+  [processSortAttributes addObjectsFromArray:self->_processSortAttributes];
 
-  v6 = [v4 callTreeSortAttributes];
-  [v6 addObjectsFromArray:self->_callTreeSortAttributes];
+  callTreeSortAttributes = [v4 callTreeSortAttributes];
+  [callTreeSortAttributes addObjectsFromArray:self->_callTreeSortAttributes];
 
   [v4 setOmitTasksBelowPercentOfTotalSamples:self->_omitTasksBelowPercentOfTotalSamples];
   [v4 setOmitStacksBelowPercentOfTaskSamples:self->_omitStacksBelowPercentOfTaskSamples];
@@ -414,85 +414,85 @@ LABEL_6:
   return v4;
 }
 
-- (void)setOmitTasksBelowPercentOfTotalSamples:(char)a3
+- (void)setOmitTasksBelowPercentOfTotalSamples:(char)samples
 {
-  v3 = a3;
+  samplesCopy = samples;
   v15 = *MEMORY[0x1E69E9840];
-  if (a3 >= 0x65)
+  if (samples >= 0x65)
   {
     v5 = *__error();
     v6 = _sa_logt();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       *buf = 67109120;
-      v14 = v3;
+      v14 = samplesCopy;
       _os_log_error_impl(&dword_1E0E2F000, v6, OS_LOG_TYPE_ERROR, "omitTasksBelowPercentOfTotalSamples %d", buf, 8u);
     }
 
     *__error() = v5;
-    _SASetCrashLogMessage(15502, "omitTasksBelowPercentOfTotalSamples %d", v7, v8, v9, v10, v11, v12, v3);
+    _SASetCrashLogMessage(15502, "omitTasksBelowPercentOfTotalSamples %d", v7, v8, v9, v10, v11, v12, samplesCopy);
     _os_crash();
     __break(1u);
   }
 
-  self->_omitTasksBelowPercentOfTotalSamples = a3;
+  self->_omitTasksBelowPercentOfTotalSamples = samples;
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setOmitStacksBelowPercentOfTaskSamples:(char)a3
+- (void)setOmitStacksBelowPercentOfTaskSamples:(char)samples
 {
-  v3 = a3;
+  samplesCopy = samples;
   v15 = *MEMORY[0x1E69E9840];
-  if (a3 >= 0x65)
+  if (samples >= 0x65)
   {
     v5 = *__error();
     v6 = _sa_logt();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       *buf = 67109120;
-      v14 = v3;
+      v14 = samplesCopy;
       _os_log_error_impl(&dword_1E0E2F000, v6, OS_LOG_TYPE_ERROR, "omitStacksBelowPercentOfTaskSamples %d", buf, 8u);
     }
 
     *__error() = v5;
-    _SASetCrashLogMessage(15511, "omitStacksBelowPercentOfTaskSamples %d", v7, v8, v9, v10, v11, v12, v3);
+    _SASetCrashLogMessage(15511, "omitStacksBelowPercentOfTaskSamples %d", v7, v8, v9, v10, v11, v12, samplesCopy);
     _os_crash();
     __break(1u);
   }
 
-  self->_omitStacksBelowPercentOfTaskSamples = a3;
+  self->_omitStacksBelowPercentOfTaskSamples = samples;
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setOmitFramesBelowPercentOfStackSamples:(char)a3
+- (void)setOmitFramesBelowPercentOfStackSamples:(char)samples
 {
-  v3 = a3;
+  samplesCopy = samples;
   v15 = *MEMORY[0x1E69E9840];
-  if (a3 >= 0x65)
+  if (samples >= 0x65)
   {
     v5 = *__error();
     v6 = _sa_logt();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       *buf = 67109120;
-      v14 = v3;
+      v14 = samplesCopy;
       _os_log_error_impl(&dword_1E0E2F000, v6, OS_LOG_TYPE_ERROR, "omitFramesBelowPercentOfStackSamples %d", buf, 8u);
     }
 
     *__error() = v5;
-    _SASetCrashLogMessage(15520, "omitFramesBelowPercentOfStackSamples %d", v7, v8, v9, v10, v11, v12, v3);
+    _SASetCrashLogMessage(15520, "omitFramesBelowPercentOfStackSamples %d", v7, v8, v9, v10, v11, v12, samplesCopy);
     _os_crash();
     __break(1u);
   }
 
-  self->_omitFramesBelowPercentOfStackSamples = a3;
+  self->_omitFramesBelowPercentOfStackSamples = samples;
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setMicrostackshotsFormat:(BOOL)a3
+- (void)setMicrostackshotsFormat:(BOOL)format
 {
-  self->_microstackshotsFormat = a3;
-  if (a3)
+  self->_microstackshotsFormat = format;
+  if (format)
   {
     self->_aggregateFramesByOffsetIntoBinary = 1;
     self->_displayThreadRunningState = 0;
@@ -502,16 +502,16 @@ LABEL_6:
   }
 }
 
-- (void)setSystemstatsFormat:(BOOL)a3
+- (void)setSystemstatsFormat:(BOOL)format
 {
-  if (a3)
+  if (format)
   {
     [(SASamplePrintOptions *)self setMicrostackshotsFormat:1];
     self->_displayIOInCallTrees = 0;
     self->_displayOnBehalfOfInCallTrees = 0;
   }
 
-  self->_systemstatsFormat = a3;
+  self->_systemstatsFormat = format;
 }
 
 - (id)debugDescription

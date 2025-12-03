@@ -7,7 +7,7 @@
 
 - (void)beginTransaction
 {
-  OUTLINED_FUNCTION_6(a1, *MEMORY[0x277D85DE8]);
+  OUTLINED_FUNCTION_6(self, *MEMORY[0x277D85DE8]);
   OUTLINED_FUNCTION_1_0();
   OUTLINED_FUNCTION_5(&dword_2615D3000, v1, v2, "Begin transaction error: %s (%i)", v4, v5);
   v3 = *MEMORY[0x277D85DE8];
@@ -15,7 +15,7 @@
 
 - (void)endTransaction
 {
-  OUTLINED_FUNCTION_6(a1, *MEMORY[0x277D85DE8]);
+  OUTLINED_FUNCTION_6(self, *MEMORY[0x277D85DE8]);
   OUTLINED_FUNCTION_1_0();
   OUTLINED_FUNCTION_5(&dword_2615D3000, v1, v2, "End transaction error: %s (%i)", v4, v5);
   v3 = *MEMORY[0x277D85DE8];

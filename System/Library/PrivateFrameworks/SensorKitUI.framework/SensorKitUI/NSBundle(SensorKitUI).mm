@@ -106,15 +106,15 @@ LABEL_20:
 
 - (uint64_t)srui_localizedPrivacyPolicyLinkTitle
 {
-  v1 = [a1 sr_bundleType];
-  if (v1 == 1)
+  sr_bundleType = [self sr_bundleType];
+  if (sr_bundleType == 1)
   {
     v2 = 35;
   }
 
   else
   {
-    if (v1 != 2)
+    if (sr_bundleType != 2)
     {
       return 0;
     }
@@ -129,15 +129,15 @@ LABEL_20:
 
 - (uint64_t)srui_localizedResearchPurpose
 {
-  v1 = [a1 sr_bundleType];
-  if (v1 == 1)
+  sr_bundleType = [self sr_bundleType];
+  if (sr_bundleType == 1)
   {
     v2 = 76;
   }
 
   else
   {
-    if (v1 != 2)
+    if (sr_bundleType != 2)
     {
       return 0;
     }
@@ -153,12 +153,12 @@ LABEL_20:
 - (uint64_t)srui_localizedStudyDataAlertTitleWithAuthGroupName:()SensorKitUI
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = [a1 sr_bundleType];
-  if (v5 == 2)
+  sr_bundleType = [self sr_bundleType];
+  if (sr_bundleType == 2)
   {
     v12 = 0;
     v9 = [MEMORY[0x277CCACA8] srui_localizedStringForCode:38];
-    v7 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v9 validFormatSpecifiers:@"%@%@" error:&v12, objc_msgSend(a1, "sk_appName"), a3];
+    v7 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v9 validFormatSpecifiers:@"%@%@" error:&v12, objc_msgSend(self, "sk_appName"), a3];
     if (!v7)
     {
       if (_MergedGlobals_9 != -1)
@@ -178,7 +178,7 @@ LABEL_20:
 
   else
   {
-    if (v5 != 1)
+    if (sr_bundleType != 1)
     {
       v7 = 0;
       goto LABEL_15;
@@ -212,15 +212,15 @@ LABEL_15:
 
 - (uint64_t)srui_localizedAuthorizationConfirmationDetail
 {
-  v1 = [a1 sr_bundleType];
-  if (v1 == 1)
+  sr_bundleType = [self sr_bundleType];
+  if (sr_bundleType == 1)
   {
     v2 = 53;
   }
 
   else
   {
-    if (v1 != 2)
+    if (sr_bundleType != 2)
     {
       return 0;
     }

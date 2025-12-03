@@ -1,12 +1,12 @@
 @interface WOWorkoutAlertTimingConstants
-+ (double)alertHoldoffTimeWithLiveWorkoutConfiguration:(id)a3;
-+ (double)alertHoldoffTimeWithWorkoutConfiguration:(id)a3;
++ (double)alertHoldoffTimeWithLiveWorkoutConfiguration:(id)configuration;
++ (double)alertHoldoffTimeWithWorkoutConfiguration:(id)configuration;
 - (WOWorkoutAlertTimingConstants)init;
 @end
 
 @implementation WOWorkoutAlertTimingConstants
 
-+ (double)alertHoldoffTimeWithWorkoutConfiguration:(id)a3
++ (double)alertHoldoffTimeWithWorkoutConfiguration:(id)configuration
 {
   type metadata accessor for IntervalWorkoutConfiguration();
   v3 = swift_dynamicCastClass();
@@ -19,9 +19,9 @@
   return result;
 }
 
-+ (double)alertHoldoffTimeWithLiveWorkoutConfiguration:(id)a3
++ (double)alertHoldoffTimeWithLiveWorkoutConfiguration:(id)configuration
 {
-  v3 = *(a3 + OBJC_IVAR___WOCoreLiveWorkoutConfiguration_configuration);
+  v3 = *(configuration + OBJC_IVAR___WOCoreLiveWorkoutConfiguration_configuration);
   type metadata accessor for IntervalWorkoutConfiguration();
   v4 = swift_dynamicCastClass();
   result = 60.0;

@@ -1,7 +1,7 @@
 @interface MTExponentialBackOffTimer
-+ (id)timerWithInitialTime:(double)a3 backoffFactor:(unint64_t)a4 fireBlock:(id)a5;
-+ (id)timerWithInitialTime:(double)a3 backoffFactor:(unint64_t)a4 fireBlock:(id)a5 queue:(id)a6;
-- (MTExponentialBackOffTimer)initWithInitialTime:(double)a3 backoffFactor:(unint64_t)a4 fireBlock:(id)a5 queue:(id)a6;
++ (id)timerWithInitialTime:(double)time backoffFactor:(unint64_t)factor fireBlock:(id)block;
++ (id)timerWithInitialTime:(double)time backoffFactor:(unint64_t)factor fireBlock:(id)block queue:(id)queue;
+- (MTExponentialBackOffTimer)initWithInitialTime:(double)time backoffFactor:(unint64_t)factor fireBlock:(id)block queue:(id)queue;
 - (void)_cancel;
 - (void)reset;
 - (void)start;
@@ -11,41 +11,41 @@
 
 @implementation MTExponentialBackOffTimer
 
-+ (id)timerWithInitialTime:(double)a3 backoffFactor:(unint64_t)a4 fireBlock:(id)a5
++ (id)timerWithInitialTime:(double)time backoffFactor:(unint64_t)factor fireBlock:(id)block
 {
-  v8 = a5;
+  blockCopy = block;
   v9 = dispatch_queue_create("com.apple.MTExponentialBackOffTimer.serial", 0);
-  v10 = [a1 timerWithInitialTime:a4 backoffFactor:v8 fireBlock:v9 queue:a3];
+  v10 = [self timerWithInitialTime:factor backoffFactor:blockCopy fireBlock:v9 queue:time];
 
   return v10;
 }
 
-+ (id)timerWithInitialTime:(double)a3 backoffFactor:(unint64_t)a4 fireBlock:(id)a5 queue:(id)a6
++ (id)timerWithInitialTime:(double)time backoffFactor:(unint64_t)factor fireBlock:(id)block queue:(id)queue
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = [[a1 alloc] initWithInitialTime:a4 backoffFactor:v11 fireBlock:v10 queue:a3];
+  queueCopy = queue;
+  blockCopy = block;
+  v12 = [[self alloc] initWithInitialTime:factor backoffFactor:blockCopy fireBlock:queueCopy queue:time];
 
   return v12;
 }
 
-- (MTExponentialBackOffTimer)initWithInitialTime:(double)a3 backoffFactor:(unint64_t)a4 fireBlock:(id)a5 queue:(id)a6
+- (MTExponentialBackOffTimer)initWithInitialTime:(double)time backoffFactor:(unint64_t)factor fireBlock:(id)block queue:(id)queue
 {
-  v10 = a5;
-  v11 = a6;
+  blockCopy = block;
+  queueCopy = queue;
   v16.receiver = self;
   v16.super_class = MTExponentialBackOffTimer;
   v12 = [(MTExponentialBackOffTimer *)&v16 init];
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [blockCopy copy];
     block = v12->_block;
     v12->_block = v13;
 
     v12->_currentBackoff = 1;
-    v12->_backoffFactor = a4;
-    v12->_initialTime = a3;
-    objc_storeStrong(&v12->_queue, a6);
+    v12->_backoffFactor = factor;
+    v12->_initialTime = time;
+    objc_storeStrong(&v12->_queue, queue);
   }
 
   return v12;

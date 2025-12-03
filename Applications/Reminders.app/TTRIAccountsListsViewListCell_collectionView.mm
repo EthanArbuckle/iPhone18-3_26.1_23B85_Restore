@@ -1,18 +1,18 @@
 @interface TTRIAccountsListsViewListCell_collectionView
 - (NSArray)accessibilityCustomActions;
-- (_TtC9Reminders44TTRIAccountsListsViewListCell_collectionView)initWithCoder:(id)a3;
-- (_TtC9Reminders44TTRIAccountsListsViewListCell_collectionView)initWithFrame:(CGRect)a3;
+- (_TtC9Reminders44TTRIAccountsListsViewListCell_collectionView)initWithCoder:(id)coder;
+- (_TtC9Reminders44TTRIAccountsListsViewListCell_collectionView)initWithFrame:(CGRect)frame;
 - (void)setAccessibilityCustomActions:(id)isa;
 @end
 
 @implementation TTRIAccountsListsViewListCell_collectionView
 
-- (_TtC9Reminders44TTRIAccountsListsViewListCell_collectionView)initWithFrame:(CGRect)a3
+- (_TtC9Reminders44TTRIAccountsListsViewListCell_collectionView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   *&self->super.super.viewModelObserver[OBJC_IVAR____TtC9Reminders44TTRIAccountsListsViewListCell_collectionView_delegate] = 0;
   swift_unknownObjectWeakInit();
@@ -26,7 +26,7 @@
 
 - (NSArray)accessibilityCustomActions
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100329108();
 
   if (v3)
@@ -50,13 +50,13 @@
   {
     sub_100003540(0, &qword_10076BCE0);
     static Array._unconditionallyBridgeFromObjectiveC(_:)();
-    v6 = self;
+    selfCopy = self;
     isa = Array._bridgeToObjectiveC()().super.isa;
   }
 
   else
   {
-    v7 = self;
+    selfCopy2 = self;
   }
 
   v8.receiver = self;
@@ -64,7 +64,7 @@
   [(TTRIAccountsListsViewListCell_collectionView *)&v8 setAccessibilityCustomActions:isa];
 }
 
-- (_TtC9Reminders44TTRIAccountsListsViewListCell_collectionView)initWithCoder:(id)a3
+- (_TtC9Reminders44TTRIAccountsListsViewListCell_collectionView)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   *&self->super.super.viewModelObserver[OBJC_IVAR____TtC9Reminders44TTRIAccountsListsViewListCell_collectionView_delegate] = 0;
@@ -74,8 +74,8 @@
   (*(*(v7 - 8) + 56))(self + v6, 1, 1, v7);
   v11.receiver = self;
   v11.super_class = ObjectType;
-  v8 = a3;
-  v9 = [(TTRIAccountsListsBaseCell_collectionView *)&v11 initWithCoder:v8];
+  coderCopy = coder;
+  v9 = [(TTRIAccountsListsBaseCell_collectionView *)&v11 initWithCoder:coderCopy];
 
   if (v9)
   {

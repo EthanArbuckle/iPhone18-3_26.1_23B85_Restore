@@ -3,7 +3,7 @@
 - (CSSystemUserActivityMonitor)init;
 - (int64_t)systemUserActivityState;
 - (void)_fetchSystemUserActivityState;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
 - (void)dealloc;
 @end
@@ -96,17 +96,17 @@ LABEL_9:
   [(CSSystemUserActivityMonitor *)self enumerateObserversInQueue:v11];
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   workQueue = self->_workQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100017E5C;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = queueCopy;
+  v6 = queueCopy;
   dispatch_async(workQueue, v7);
 }
 

@@ -1,26 +1,26 @@
 @interface UIGestureRecognizer
-- (CGPoint)unscaledLocationForICC:(id)a3;
+- (CGPoint)unscaledLocationForICC:(id)c;
 - (CRLGestureDelegate)gestureDelegate;
 - (NSString)gestureKind;
-- (UIGestureRecognizer)initWithGestureDispatcher:(id)a3 gestureKind:(id)a4;
+- (UIGestureRecognizer)initWithGestureDispatcher:(id)dispatcher gestureKind:(id)kind;
 - (id)cachedGestureTarget;
-- (void)setCachedGestureTarget:(id)a3;
-- (void)setGestureDelegate:(id)a3;
+- (void)setCachedGestureTarget:(id)target;
+- (void)setGestureDelegate:(id)delegate;
 @end
 
 @implementation UIGestureRecognizer
 
-- (UIGestureRecognizer)initWithGestureDispatcher:(id)a3 gestureKind:(id)a4
+- (UIGestureRecognizer)initWithGestureDispatcher:(id)dispatcher gestureKind:(id)kind
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UIGestureRecognizer *)self initWithTarget:v6 action:"handleGesture:"];
+  dispatcherCopy = dispatcher;
+  kindCopy = kind;
+  v8 = [(UIGestureRecognizer *)self initWithTarget:dispatcherCopy action:"handleGesture:"];
   v9 = v8;
   if (v8)
   {
-    [(UIGestureRecognizer *)v8 setGestureDelegate:v6];
-    [(UIGestureRecognizer *)v9 setGestureKind:v7];
-    [(UIGestureRecognizer *)v9 setName:v7];
+    [(UIGestureRecognizer *)v8 setGestureDelegate:dispatcherCopy];
+    [(UIGestureRecognizer *)v9 setGestureKind:kindCopy];
+    [(UIGestureRecognizer *)v9 setName:kindCopy];
   }
 
   return v9;
@@ -45,10 +45,10 @@
   return &v4->isa;
 }
 
-- (void)setCachedGestureTarget:(id)a3
+- (void)setCachedGestureTarget:(id)target
 {
-  v4 = a3;
-  value = [[TSDCachedGestureTargetHolder alloc] initWithTarget:v4];
+  targetCopy = target;
+  value = [[TSDCachedGestureTargetHolder alloc] initWithTarget:targetCopy];
 
   objc_setAssociatedObject(self, &unk_101A34791, value, 0x301);
 }
@@ -56,17 +56,17 @@
 - (id)cachedGestureTarget
 {
   v2 = objc_getAssociatedObject(self, &unk_101A34791);
-  v3 = [v2 weakCachedGestureTarget];
+  weakCachedGestureTarget = [v2 weakCachedGestureTarget];
 
-  return v3;
+  return weakCachedGestureTarget;
 }
 
-- (CGPoint)unscaledLocationForICC:(id)a3
+- (CGPoint)unscaledLocationForICC:(id)c
 {
-  v4 = a3;
-  v5 = [v4 canvasView];
-  [(UIGestureRecognizer *)self locationInView:v5];
-  [v4 convertBoundsToUnscaledPoint:?];
+  cCopy = c;
+  canvasView = [cCopy canvasView];
+  [(UIGestureRecognizer *)self locationInView:canvasView];
+  [cCopy convertBoundsToUnscaledPoint:?];
   v7 = v6;
   v9 = v8;
 
@@ -79,15 +79,15 @@
 
 - (CRLGestureDelegate)gestureDelegate
 {
-  v2 = [(UIGestureRecognizer *)self delegate];
-  v9 = sub_1003035DC(v2, 1, v3, v4, v5, v6, v7, v8, &OBJC_PROTOCOL___CRLGestureDelegate);
+  delegate = [(UIGestureRecognizer *)self delegate];
+  v9 = sub_1003035DC(delegate, 1, v3, v4, v5, v6, v7, v8, &OBJC_PROTOCOL___CRLGestureDelegate);
 
   return v9;
 }
 
-- (void)setGestureDelegate:(id)a3
+- (void)setGestureDelegate:(id)delegate
 {
-  v9 = sub_1003035DC(a3, 1, a3, v3, v4, v5, v6, v7, &OBJC_PROTOCOL___UIGestureRecognizerDelegate);
+  v9 = sub_1003035DC(delegate, 1, delegate, v3, v4, v5, v6, v7, &OBJC_PROTOCOL___UIGestureRecognizerDelegate);
   if (!v9)
   {
     v10 = +[CRLAssertionHandler _atomicIncrementAssertCount];

@@ -1,21 +1,21 @@
 @interface AWDVisualVoicemailCustomGreetingUpdated
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasResult:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasResult:(BOOL)result;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDVisualVoicemailCustomGreetingUpdated
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 4;
   }
@@ -28,9 +28,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasResult:(BOOL)a3
+- (void)setHasResult:(BOOL)result
 {
-  if (a3)
+  if (result)
   {
     v3 = 2;
   }
@@ -48,8 +48,8 @@
   v7.receiver = self;
   v7.super_class = AWDVisualVoicemailCustomGreetingUpdated;
   v3 = [(AWDVisualVoicemailCustomGreetingUpdated *)&v7 description];
-  v4 = [(AWDVisualVoicemailCustomGreetingUpdated *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(AWDVisualVoicemailCustomGreetingUpdated *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -96,16 +96,16 @@ LABEL_5:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v9 = v4;
+  v9 = toCopy;
   if ((has & 4) != 0)
   {
     timestamp = self->_timestamp;
     PBDataWriterWriteUint64Field();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -126,26 +126,26 @@ LABEL_3:
 
   result = self->_result;
   PBDataWriterWriteUint64Field();
-  v4 = v9;
+  toCopy = v9;
   if (*&self->_has)
   {
 LABEL_4:
     failureReason = self->_failureReason;
     PBDataWriterWriteUint64Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_5:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
-    v4[3] = self->_timestamp;
-    *(v4 + 32) |= 4u;
+    toCopy[3] = self->_timestamp;
+    *(toCopy + 32) |= 4u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -164,21 +164,21 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[2] = self->_result;
-  *(v4 + 32) |= 2u;
+  toCopy[2] = self->_result;
+  *(toCopy + 32) |= 2u;
   if (*&self->_has)
   {
 LABEL_4:
-    v4[1] = self->_failureReason;
-    *(v4 + 32) |= 1u;
+    toCopy[1] = self->_failureReason;
+    *(toCopy + 32) |= 1u;
   }
 
 LABEL_5:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -215,23 +215,23 @@ LABEL_4:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 32) & 4) == 0 || self->_timestamp != *(v4 + 3))
+    if ((*(equalCopy + 32) & 4) == 0 || self->_timestamp != *(equalCopy + 3))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 32) & 4) != 0)
+  else if ((*(equalCopy + 32) & 4) != 0)
   {
 LABEL_16:
     v5 = 0;
@@ -240,21 +240,21 @@ LABEL_16:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0 || self->_result != *(v4 + 2))
+    if ((*(equalCopy + 32) & 2) == 0 || self->_result != *(equalCopy + 2))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 32) & 2) != 0)
+  else if ((*(equalCopy + 32) & 2) != 0)
   {
     goto LABEL_16;
   }
 
-  v5 = (*(v4 + 32) & 1) == 0;
+  v5 = (*(equalCopy + 32) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_failureReason != *(v4 + 1))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_failureReason != *(equalCopy + 1))
     {
       goto LABEL_16;
     }
@@ -307,15 +307,15 @@ LABEL_4:
   return v3 ^ v2 ^ v4;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 32);
+  fromCopy = from;
+  v5 = *(fromCopy + 32);
   if ((v5 & 4) != 0)
   {
-    self->_timestamp = *(v4 + 3);
+    self->_timestamp = *(fromCopy + 3);
     *&self->_has |= 4u;
-    v5 = *(v4 + 32);
+    v5 = *(fromCopy + 32);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -328,17 +328,17 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 32) & 2) == 0)
+  else if ((*(fromCopy + 32) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_result = *(v4 + 2);
+  self->_result = *(fromCopy + 2);
   *&self->_has |= 2u;
-  if (*(v4 + 32))
+  if (*(fromCopy + 32))
   {
 LABEL_4:
-    self->_failureReason = *(v4 + 1);
+    self->_failureReason = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 

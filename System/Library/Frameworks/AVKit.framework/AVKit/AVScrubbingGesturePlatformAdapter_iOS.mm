@@ -1,18 +1,18 @@
 @interface AVScrubbingGesturePlatformAdapter_iOS
-- (AVScrubbingGesturePlatformAdapter_iOS)initWithView:(id)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (AVScrubbingGesturePlatformAdapter_iOS)initWithView:(id)view;
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (CGPoint)translation;
-- (void)_panGestureAction:(id)a3;
+- (void)_panGestureAction:(id)action;
 - (void)_scrubGestureDidBegin;
 - (void)_scrubGestureDidEnd;
-- (void)_touchGestureAction:(id)a3;
+- (void)_touchGestureAction:(id)action;
 - (void)_updateGestureState;
-- (void)setGestureEnabled:(BOOL)a3;
-- (void)setScrubbingWidth:(double)a3;
+- (void)setGestureEnabled:(BOOL)enabled;
+- (void)setScrubbingWidth:(double)width;
 @end
 
 @implementation AVScrubbingGesturePlatformAdapter_iOS
@@ -26,14 +26,14 @@
   return result;
 }
 
-- (void)_touchGestureAction:(id)a3
+- (void)_touchGestureAction:(id)action
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = [(AVTouchGestureRecognizer *)self->_touchGestureRecognizer state];
-  v5 = v4;
-  if (v4 > 2)
+  state = [(AVTouchGestureRecognizer *)self->_touchGestureRecognizer state];
+  v5 = state;
+  if (state > 2)
   {
-    if ((v4 - 3) < 2)
+    if ((state - 3) < 2)
     {
       v6 = self->_gestureActiveCount - 1;
       self->_gestureActiveCount = v6;
@@ -46,7 +46,7 @@
       return;
     }
 
-    if (v4 == 5)
+    if (state == 5)
     {
       return;
     }
@@ -54,9 +54,9 @@
     goto LABEL_11;
   }
 
-  if (v4 != 1)
+  if (state != 1)
   {
-    if (v4 == 2)
+    if (state == 2)
     {
       return;
     }
@@ -84,28 +84,28 @@ LABEL_11:
 
 - (void)_scrubGestureDidBegin
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 64);
+    v2 = *(self + 64);
     if (!v2)
     {
-      v3 = [a1 delegate];
+      delegate = [self delegate];
       if (objc_opt_respondsToSelector())
       {
-        v4 = [a1 delegate];
-        v5 = [v4 configurationForScrubbingGesturePlatformAdapter:a1];
-        v6 = *(a1 + 64);
-        *(a1 + 64) = v5;
+        delegate2 = [self delegate];
+        v5 = [delegate2 configurationForScrubbingGesturePlatformAdapter:self];
+        v6 = *(self + 64);
+        *(self + 64) = v5;
       }
 
-      v2 = *(a1 + 64);
+      v2 = *(self + 64);
       if (!v2)
       {
         v7 = +[AVScrubbingGesturePlatformConfiguration defaultConfiguration];
-        v8 = *(a1 + 64);
-        *(a1 + 64) = v7;
+        v8 = *(self + 64);
+        *(self + 64) = v7;
 
-        v2 = *(a1 + 64);
+        v2 = *(self + 64);
       }
     }
 
@@ -114,43 +114,43 @@ LABEL_11:
     v11 = __exp10(v9);
     v12 = pow(20000.0, v10);
     v13 = 19990.0 / (v12 - v11);
-    *(a1 + 72) = (v13 * v11) + -10.0;
-    *(a1 + 76) = v13;
-    v14 = [a1 delegate];
+    *(self + 72) = (v13 * v11) + -10.0;
+    *(self + 76) = v13;
+    delegate3 = [self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v14 scrubbingGesturePlatformAdapterDidBeginScrubbing:a1];
+      [delegate3 scrubbingGesturePlatformAdapterDidBeginScrubbing:self];
     }
   }
 }
 
 - (void)_scrubGestureDidEnd
 {
-  if (a1)
+  if (self)
   {
-    *(a1 + 96) = *MEMORY[0x1E695EFF8];
-    *(a1 + 48) = 0;
-    v2 = *(a1 + 64);
-    *(a1 + 64) = 0;
+    *(self + 96) = *MEMORY[0x1E695EFF8];
+    *(self + 48) = 0;
+    v2 = *(self + 64);
+    *(self + 64) = 0;
 
-    *(a1 + 76) = 0;
-    *(a1 + 72) = 0;
-    v3 = [a1 delegate];
+    *(self + 76) = 0;
+    *(self + 72) = 0;
+    delegate = [self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v3 scrubbingGesturePlatformAdapterDidEndScrubbing:a1];
+      [delegate scrubbingGesturePlatformAdapterDidEndScrubbing:self];
     }
   }
 }
 
-- (void)_panGestureAction:(id)a3
+- (void)_panGestureAction:(id)action
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = [(AVScrubbingPanGestureRecognizer *)self->_panGestureRecognizer state];
-  v5 = v4;
-  if (v4 <= 2)
+  state = [(AVScrubbingPanGestureRecognizer *)self->_panGestureRecognizer state];
+  v5 = state;
+  if (state <= 2)
   {
-    if (v4 == 1)
+    if (state == 1)
     {
       gestureActiveCount = self->_gestureActiveCount;
       self->_gestureActiveCount = gestureActiveCount + 1;
@@ -160,7 +160,7 @@ LABEL_11:
       }
     }
 
-    else if (v4 != 2)
+    else if (state != 2)
     {
 LABEL_8:
       v6 = _AVLog();
@@ -179,9 +179,9 @@ LABEL_8:
 
   else
   {
-    if (v4 != 3 && v4 != 4)
+    if (state != 3 && state != 4)
     {
-      if (v4 == 5)
+      if (state == 5)
       {
         return;
       }
@@ -201,58 +201,58 @@ LABEL_8:
 
 - (void)_updateGestureState
 {
-  if (a1)
+  if (self)
   {
-    [*(a1 + 32) velocity];
+    [*(self + 32) velocity];
     v3 = v2;
-    [*(a1 + 64) nonLinearity];
-    v5 = *(a1 + 76);
+    [*(self + 64) nonLinearity];
+    v5 = *(self + 76);
     if (v3 < 0.0)
     {
       v5 = -v5;
     }
 
-    v6 = -(*(a1 + 72) - v5 * pow(fabs(v3), v4));
-    v7 = *(a1 + 80);
-    [*(a1 + 64) magnitude];
+    v6 = -(*(self + 72) - v5 * pow(fabs(v3), v4));
+    v7 = *(self + 80);
+    [*(self + 64) magnitude];
     v9 = v6 * (v7 * v8);
-    [*(a1 + 32) translation];
+    [*(self + 32) translation];
     v12 = v11;
     v13 = v10;
     if (v11 == 0.0 && v10 == 0.0 || (UIPointIsDiscrete() & 1) == 0)
     {
-      v14 = *(a1 + 40);
-      WeakRetained = objc_loadWeakRetained((a1 + 24));
+      v14 = *(self + 40);
+      WeakRetained = objc_loadWeakRetained((self + 24));
       [v14 locationInView:WeakRetained];
       v12 = v16;
       v13 = v17;
     }
 
-    v18 = *(a1 + 88);
-    v19 = objc_loadWeakRetained((a1 + 24));
+    v18 = *(self + 88);
+    v19 = objc_loadWeakRetained((self + 24));
     [v19 frame];
     v21 = v20;
 
-    *(a1 + 96) = v12 / v18;
-    *(a1 + 104) = v13 / v21;
-    *(a1 + 48) = v9;
-    v22 = [a1 delegate];
+    *(self + 96) = v12 / v18;
+    *(self + 104) = v13 / v21;
+    *(self + 48) = v9;
+    delegate = [self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v22 scrubbingGesturePlatformAdapterDidContinueScrubbing:a1];
+      [delegate scrubbingGesturePlatformAdapterDidContinueScrubbing:self];
     }
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a4;
-  v7 = v6;
+  gestureRecognizerCopy = gestureRecognizer;
+  v7 = gestureRecognizerCopy;
   touchGestureRecognizer = self->_touchGestureRecognizer;
-  if (touchGestureRecognizer == a3)
+  if (touchGestureRecognizer == recognizer)
   {
-    v11 = [(AVScrubbingGesturePlatformAdapter *)self delegate];
-    v12 = [v11 scrubbingGesturePlatformAdapterIsActivelyScrubbing:self];
+    delegate = [(AVScrubbingGesturePlatformAdapter *)self delegate];
+    v12 = [delegate scrubbingGesturePlatformAdapterIsActivelyScrubbing:self];
 
     objc_opt_class();
     v10 = (self->_panGestureRecognizer == v7) | objc_opt_isKindOfClass() & v12;
@@ -260,25 +260,25 @@ LABEL_8:
 
   else
   {
-    v10 = touchGestureRecognizer == v6 && self->_panGestureRecognizer == a3;
+    v10 = touchGestureRecognizer == gestureRecognizerCopy && self->_panGestureRecognizer == recognizer;
   }
 
   return v10 & 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  if (self->_touchGestureRecognizer == a3)
+  if (self->_touchGestureRecognizer == recognizer)
   {
-    v5 = self;
-    v6 = a4;
-    v7 = [(AVScrubbingGesturePlatformAdapter *)v5 delegate];
-    LOBYTE(v5) = [v7 scrubbingGesturePlatformAdapterIsActivelyScrubbing:v5];
+    selfCopy = self;
+    gestureRecognizerCopy = gestureRecognizer;
+    delegate = [(AVScrubbingGesturePlatformAdapter *)selfCopy delegate];
+    LOBYTE(selfCopy) = [delegate scrubbingGesturePlatformAdapterIsActivelyScrubbing:selfCopy];
 
     objc_opt_class();
-    LOBYTE(v7) = objc_opt_isKindOfClass();
+    LOBYTE(delegate) = objc_opt_isKindOfClass();
 
-    v4 = v7 & (v5 ^ 1);
+    v4 = delegate & (selfCopy ^ 1);
   }
 
   else
@@ -289,11 +289,11 @@ LABEL_8:
   return v4 & 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  if (self->_touchGestureRecognizer != v6 && self->_panGestureRecognizer == v6)
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  if (self->_touchGestureRecognizer != recognizerCopy && self->_panGestureRecognizer == recognizerCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
@@ -316,11 +316,11 @@ LABEL_8:
   return isKindOfClass & 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  if (self->_touchGestureRecognizer == a3)
+  if (self->_touchGestureRecognizer == recognizer)
   {
-    v5 = [a4 view];
+    view = [touch view];
     objc_opt_class();
     v4 = objc_opt_isKindOfClass() ^ 1;
   }
@@ -333,83 +333,83 @@ LABEL_8:
   return v4 & 1;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  if (self->_touchGestureRecognizer != a3)
+  if (self->_touchGestureRecognizer != begin)
   {
     return 1;
   }
 
-  v4 = self;
-  v5 = [(AVScrubbingGesturePlatformAdapter *)self delegate];
-  LOBYTE(v4) = [v5 scrubbingGesturePlatformAdapterIsActivelyScrubbing:v4];
+  selfCopy = self;
+  delegate = [(AVScrubbingGesturePlatformAdapter *)self delegate];
+  LOBYTE(selfCopy) = [delegate scrubbingGesturePlatformAdapterIsActivelyScrubbing:selfCopy];
 
-  return v4;
+  return selfCopy;
 }
 
-- (void)setScrubbingWidth:(double)a3
+- (void)setScrubbingWidth:(double)width
 {
-  if (self->_scrubbingWidth != a3)
+  if (self->_scrubbingWidth != width)
   {
-    self->_scrubbingWidth = a3;
+    self->_scrubbingWidth = width;
   }
 }
 
-- (void)setGestureEnabled:(BOOL)a3
+- (void)setGestureEnabled:(BOOL)enabled
 {
-  if (self->_gestureEnabled != a3)
+  if (self->_gestureEnabled != enabled)
   {
-    self->_gestureEnabled = a3;
-    v5 = [(AVScrubbingGesturePlatformAdapter_iOS *)self gestureEnabled];
-    [(AVScrubbingPanGestureRecognizer *)self->_panGestureRecognizer setEnabled:v5];
+    self->_gestureEnabled = enabled;
+    gestureEnabled = [(AVScrubbingGesturePlatformAdapter_iOS *)self gestureEnabled];
+    [(AVScrubbingPanGestureRecognizer *)self->_panGestureRecognizer setEnabled:gestureEnabled];
     touchGestureRecognizer = self->_touchGestureRecognizer;
 
-    [(AVTouchGestureRecognizer *)touchGestureRecognizer setEnabled:v5];
+    [(AVTouchGestureRecognizer *)touchGestureRecognizer setEnabled:gestureEnabled];
   }
 }
 
-- (AVScrubbingGesturePlatformAdapter_iOS)initWithView:(id)a3
+- (AVScrubbingGesturePlatformAdapter_iOS)initWithView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v16.receiver = self;
   v16.super_class = AVScrubbingGesturePlatformAdapter_iOS;
-  v5 = [(AVScrubbingGesturePlatformAdapter *)&v16 _abstractInit];
+  _abstractInit = [(AVScrubbingGesturePlatformAdapter *)&v16 _abstractInit];
 
-  if (v5)
+  if (_abstractInit)
   {
-    v6 = [[AVScrubbingPanGestureRecognizer alloc] initWithTarget:v5 action:sel__panGestureAction_];
+    v6 = [[AVScrubbingPanGestureRecognizer alloc] initWithTarget:_abstractInit action:sel__panGestureAction_];
     [(AVScrubbingPanGestureRecognizer *)v6 setEnabled:0];
-    [(AVScrubbingPanGestureRecognizer *)v6 setDelegate:v5];
+    [(AVScrubbingPanGestureRecognizer *)v6 setDelegate:_abstractInit];
     [(AVScrubbingPanGestureRecognizer *)v6 setAllowedTouchTypes:&unk_1EFF130A0];
     [(AVScrubbingPanGestureRecognizer *)v6 _setRequiresSystemGesturesToFail:1];
-    [v4 addGestureRecognizer:v6];
-    v7 = [[AVTouchGestureRecognizer alloc] initWithTarget:v5 action:sel__touchGestureAction_];
+    [viewCopy addGestureRecognizer:v6];
+    v7 = [[AVTouchGestureRecognizer alloc] initWithTarget:_abstractInit action:sel__touchGestureAction_];
     [(AVTouchGestureRecognizer *)v7 setEnabled:0];
-    [(AVTouchGestureRecognizer *)v7 setDelegate:v5];
+    [(AVTouchGestureRecognizer *)v7 setDelegate:_abstractInit];
     [(AVTouchGestureRecognizer *)v7 setAllowedTouchTypes:&unk_1EFF130B8];
-    [v4 addGestureRecognizer:v7];
-    objc_storeWeak(&v5->_view, v4);
-    panGestureRecognizer = v5->_panGestureRecognizer;
-    v5->_panGestureRecognizer = v6;
+    [viewCopy addGestureRecognizer:v7];
+    objc_storeWeak(&_abstractInit->_view, viewCopy);
+    panGestureRecognizer = _abstractInit->_panGestureRecognizer;
+    _abstractInit->_panGestureRecognizer = v6;
     v9 = v6;
 
-    touchGestureRecognizer = v5->_touchGestureRecognizer;
-    v5->_touchGestureRecognizer = v7;
+    touchGestureRecognizer = _abstractInit->_touchGestureRecognizer;
+    _abstractInit->_touchGestureRecognizer = v7;
     v11 = v7;
 
-    v12 = [MEMORY[0x1E69DC938] currentDevice];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
 
-    v13 = [v12 userInterfaceIdiom];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
     v14 = 0.125;
-    if (!v13)
+    if (!userInterfaceIdiom)
     {
       v14 = 0.25;
     }
 
-    v5->_deviceCoordinateVelocityScaleFactor = v14;
+    _abstractInit->_deviceCoordinateVelocityScaleFactor = v14;
   }
 
-  return v5;
+  return _abstractInit;
 }
 
 @end

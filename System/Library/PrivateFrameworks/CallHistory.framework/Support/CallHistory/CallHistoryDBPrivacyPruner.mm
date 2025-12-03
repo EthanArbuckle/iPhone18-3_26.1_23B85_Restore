@@ -1,8 +1,8 @@
 @interface CallHistoryDBPrivacyPruner
-- (CallHistoryDBPrivacyPruner)initWithDBHandle:(id)a3 interactionManager:(id)a4;
-- (CallHistoryDBPrivacyPruner)initWithDBHandle:(id)a3 interactionManager:(id)a4 spotlightIndexManager:(id)a5;
+- (CallHistoryDBPrivacyPruner)initWithDBHandle:(id)handle interactionManager:(id)manager;
+- (CallHistoryDBPrivacyPruner)initWithDBHandle:(id)handle interactionManager:(id)manager spotlightIndexManager:(id)indexManager;
 - (int64_t)callHistoryDBFetchLimit;
-- (unint64_t)pruneCallsWithPredicate:(id)a3;
+- (unint64_t)pruneCallsWithPredicate:(id)predicate;
 - (void)prune;
 - (void)pruneSync;
 - (void)registerForNotifications;
@@ -10,22 +10,22 @@
 
 @implementation CallHistoryDBPrivacyPruner
 
-- (CallHistoryDBPrivacyPruner)initWithDBHandle:(id)a3 interactionManager:(id)a4
+- (CallHistoryDBPrivacyPruner)initWithDBHandle:(id)handle interactionManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  handleCopy = handle;
+  managerCopy = manager;
   v16.receiver = self;
   v16.super_class = CallHistoryDBPrivacyPruner;
   v9 = [(CallHistoryDBPrivacyPruner *)&v16 initWithName:"CallHistoryDBPrivacyPruner"];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_dbHandle, a3);
+    objc_storeStrong(&v9->_dbHandle, handle);
     v11 = objc_alloc_init(CHFeatureFlags);
     featureFlags = v10->_featureFlags;
     v10->_featureFlags = v11;
 
-    objc_storeStrong(&v10->_interactionManager, a4);
+    objc_storeStrong(&v10->_interactionManager, manager);
     v13 = +[CHSpotlightIndexManager sharedInstance];
     spotlightIndexManager = v10->_spotlightIndexManager;
     v10->_spotlightIndexManager = v13;
@@ -36,31 +36,31 @@
   return v10;
 }
 
-- (CallHistoryDBPrivacyPruner)initWithDBHandle:(id)a3 interactionManager:(id)a4 spotlightIndexManager:(id)a5
+- (CallHistoryDBPrivacyPruner)initWithDBHandle:(id)handle interactionManager:(id)manager spotlightIndexManager:(id)indexManager
 {
-  v9 = a5;
-  v10 = [(CallHistoryDBPrivacyPruner *)self initWithDBHandle:a3 interactionManager:a4];
+  indexManagerCopy = indexManager;
+  v10 = [(CallHistoryDBPrivacyPruner *)self initWithDBHandle:handle interactionManager:manager];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_spotlightIndexManager, a5);
+    objc_storeStrong(&v10->_spotlightIndexManager, indexManager);
   }
 
   return v11;
 }
 
-- (unint64_t)pruneCallsWithPredicate:(id)a3
+- (unint64_t)pruneCallsWithPredicate:(id)predicate
 {
-  if (a3)
+  if (predicate)
   {
-    v4 = a3;
-    v5 = [(CallHistoryDBPrivacyPruner *)self dbHandle];
-    v6 = [v5 deleteCallsWithPredicate:v4];
+    predicateCopy = predicate;
+    dbHandle = [(CallHistoryDBPrivacyPruner *)self dbHandle];
+    v6 = [dbHandle deleteCallsWithPredicate:predicateCopy];
 
     if (v6)
     {
       v12 = 0;
-      v7 = [v5 saveDatabase:&v12];
+      v7 = [dbHandle saveDatabase:&v12];
       v8 = v12;
       v9 = v8;
       if (v6 == 0x7FFFFFFFFFFFFFFFLL || !v7)
@@ -71,10 +71,10 @@
           goto LABEL_14;
         }
 
-        v10 = [(CallHistoryDBPrivacyPruner *)self logHandle];
-        if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+        logHandle = [(CallHistoryDBPrivacyPruner *)self logHandle];
+        if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
         {
-          sub_100034BA8(v9, v10);
+          sub_100034BA8(v9, logHandle);
         }
 
         v6 = 0x7FFFFFFFFFFFFFFFLL;
@@ -90,12 +90,12 @@ LABEL_14:
       v9 = 0;
     }
 
-    v10 = [(CallHistoryDBPrivacyPruner *)self logHandle];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    logHandle = [(CallHistoryDBPrivacyPruner *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
       v14 = v6;
-      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Pruned %ld calls from the data store.", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Pruned %ld calls from the data store.", buf, 0xCu);
     }
 
     goto LABEL_13;
@@ -135,17 +135,17 @@ LABEL_14:
   v3 = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:0];
   v4 = objc_autoreleasePoolPush();
   v5 = [NSPredicate predicateWithFormat:@"service_provider == %@", @"com.apple.FaceTime"];
-  v6 = [(CallHistoryDBPrivacyPruner *)self dbHandle];
+  dbHandle = [(CallHistoryDBPrivacyPruner *)self dbHandle];
   v34 = v3;
   v7 = [NSArray arrayWithObjects:&v34 count:1];
-  v8 = [v6 fetchCallIdentifiersWithPredicate:v5 sortDescriptors:v7 limit:0 offset:-[CallHistoryDBPrivacyPruner callHistoryDBFetchLimit](self batchSize:{"callHistoryDBFetchLimit"), 0}];
+  v8 = [dbHandle fetchCallIdentifiersWithPredicate:v5 sortDescriptors:v7 limit:0 offset:-[CallHistoryDBPrivacyPruner callHistoryDBFetchLimit](self batchSize:{"callHistoryDBFetchLimit"), 0}];
 
-  v9 = [(CallHistoryDBPrivacyPruner *)self logHandle];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  logHandle = [(CallHistoryDBPrivacyPruner *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
     v33 = [v8 count];
-    _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "FT calls not visible to user: %lu", buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "FT calls not visible to user: %lu", buf, 0xCu);
   }
 
   if ([v8 count])
@@ -153,25 +153,25 @@ LABEL_14:
     v10 = [CHRecentCall predicateForCallsWithAnyUniqueIDs:v8];
 
     [(CallHistoryDBPrivacyPruner *)self pruneCallsWithPredicate:v10];
-    v11 = [(CallHistoryDBPrivacyPruner *)self interactionManager];
-    [v11 deleteInteractionWithCalls:v8];
+    interactionManager = [(CallHistoryDBPrivacyPruner *)self interactionManager];
+    [interactionManager deleteInteractionWithCalls:v8];
 
-    v12 = [(CallHistoryDBPrivacyPruner *)self featureFlags];
-    v13 = [v12 callHistorySearchEnabled];
+    featureFlags = [(CallHistoryDBPrivacyPruner *)self featureFlags];
+    callHistorySearchEnabled = [featureFlags callHistorySearchEnabled];
 
-    if (v13)
+    if (callHistorySearchEnabled)
     {
-      v14 = [(CallHistoryDBPrivacyPruner *)self logHandle];
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+      logHandle2 = [(CallHistoryDBPrivacyPruner *)self logHandle];
+      if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEFAULT))
       {
         v15 = [v8 count];
         *buf = 134217984;
         v33 = v15;
-        _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Pruned %lu FT calls. Removing them from index", buf, 0xCu);
+        _os_log_impl(&_mh_execute_header, logHandle2, OS_LOG_TYPE_DEFAULT, "Pruned %lu FT calls. Removing them from index", buf, 0xCu);
       }
 
-      v16 = [(CallHistoryDBPrivacyPruner *)self spotlightIndexManager];
-      [v16 removeDeletedCalls:v8];
+      spotlightIndexManager = [(CallHistoryDBPrivacyPruner *)self spotlightIndexManager];
+      [spotlightIndexManager removeDeletedCalls:v8];
     }
   }
 
@@ -184,18 +184,18 @@ LABEL_14:
   v17 = objc_autoreleasePoolPush();
   v18 = [NSPredicate predicateWithFormat:@"service_provider != %@", @"com.apple.FaceTime"];
 
-  v19 = [(CallHistoryDBPrivacyPruner *)self dbHandle];
+  dbHandle2 = [(CallHistoryDBPrivacyPruner *)self dbHandle];
   v31 = v3;
   v20 = [NSArray arrayWithObjects:&v31 count:1];
-  v21 = [v19 fetchCallIdentifiersWithPredicate:v18 sortDescriptors:v20 limit:0 offset:-[CallHistoryDBPrivacyPruner callHistoryDBFetchLimit](self batchSize:{"callHistoryDBFetchLimit"), 0}];
+  v21 = [dbHandle2 fetchCallIdentifiersWithPredicate:v18 sortDescriptors:v20 limit:0 offset:-[CallHistoryDBPrivacyPruner callHistoryDBFetchLimit](self batchSize:{"callHistoryDBFetchLimit"), 0}];
 
-  v22 = [(CallHistoryDBPrivacyPruner *)self logHandle];
-  if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+  logHandle3 = [(CallHistoryDBPrivacyPruner *)self logHandle];
+  if (os_log_type_enabled(logHandle3, OS_LOG_TYPE_DEFAULT))
   {
     v23 = [v21 count];
     *buf = 134217984;
     v33 = v23;
-    _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Non FT calls not visible to user: %lu", buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, logHandle3, OS_LOG_TYPE_DEFAULT, "Non FT calls not visible to user: %lu", buf, 0xCu);
   }
 
   if ([v21 count])
@@ -203,25 +203,25 @@ LABEL_14:
     v24 = [CHRecentCall predicateForCallsWithAnyUniqueIDs:v21];
 
     [(CallHistoryDBPrivacyPruner *)self pruneCallsWithPredicate:v24];
-    v25 = [(CallHistoryDBPrivacyPruner *)self interactionManager];
-    [v25 deleteInteractionWithCalls:v21];
+    interactionManager2 = [(CallHistoryDBPrivacyPruner *)self interactionManager];
+    [interactionManager2 deleteInteractionWithCalls:v21];
 
-    v26 = [(CallHistoryDBPrivacyPruner *)self featureFlags];
-    v27 = [v26 callHistorySearchEnabled];
+    featureFlags2 = [(CallHistoryDBPrivacyPruner *)self featureFlags];
+    callHistorySearchEnabled2 = [featureFlags2 callHistorySearchEnabled];
 
-    if (v27)
+    if (callHistorySearchEnabled2)
     {
-      v28 = [(CallHistoryDBPrivacyPruner *)self logHandle];
-      if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
+      logHandle4 = [(CallHistoryDBPrivacyPruner *)self logHandle];
+      if (os_log_type_enabled(logHandle4, OS_LOG_TYPE_DEFAULT))
       {
         v29 = [v21 count];
         *buf = 134217984;
         v33 = v29;
-        _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "Pruned %lu non FT calls. Removing them from index", buf, 0xCu);
+        _os_log_impl(&_mh_execute_header, logHandle4, OS_LOG_TYPE_DEFAULT, "Pruned %lu non FT calls. Removing them from index", buf, 0xCu);
       }
 
-      v30 = [(CallHistoryDBPrivacyPruner *)self spotlightIndexManager];
-      [v30 removeDeletedCalls:v21];
+      spotlightIndexManager2 = [(CallHistoryDBPrivacyPruner *)self spotlightIndexManager];
+      [spotlightIndexManager2 removeDeletedCalls:v21];
     }
   }
 
@@ -235,18 +235,18 @@ LABEL_14:
 
 - (int64_t)callHistoryDBFetchLimit
 {
-  v3 = [(CallHistoryDBPrivacyPruner *)self featureFlags];
-  v4 = [v3 increaseCallHistoryEnabled];
+  featureFlags = [(CallHistoryDBPrivacyPruner *)self featureFlags];
+  increaseCallHistoryEnabled = [featureFlags increaseCallHistoryEnabled];
 
-  if (!v4)
+  if (!increaseCallHistoryEnabled)
   {
     return 200;
   }
 
-  v5 = [(CallHistoryDBPrivacyPruner *)self featureFlags];
-  v6 = [v5 keepCallsEnabled];
+  featureFlags2 = [(CallHistoryDBPrivacyPruner *)self featureFlags];
+  keepCallsEnabled = [featureFlags2 keepCallsEnabled];
   v7 = &unk_1000482D0;
-  if (!v6)
+  if (!keepCallsEnabled)
   {
     v7 = &unk_1000482C0;
   }

@@ -1,40 +1,40 @@
 @interface SXOfferUpsellScenarioConditionValidator
-- (BOOL)validateCondition:(id)a3 context:(id)a4;
+- (BOOL)validateCondition:(id)condition context:(id)context;
 @end
 
 @implementation SXOfferUpsellScenarioConditionValidator
 
-- (BOOL)validateCondition:(id)a3 context:(id)a4
+- (BOOL)validateCondition:(id)condition context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 offerUpsellScenario] == 1)
+  conditionCopy = condition;
+  contextCopy = context;
+  if ([conditionCopy offerUpsellScenario] == 1)
   {
     v7 = 0;
     goto LABEL_14;
   }
 
-  if (![v5 offerUpsellScenario])
+  if (![conditionCopy offerUpsellScenario])
   {
 LABEL_9:
     v7 = 1;
     goto LABEL_14;
   }
 
-  if ([v5 offerUpsellScenario] == 4)
+  if ([conditionCopy offerUpsellScenario] == 4)
   {
-    if ([v6 offerUpsellScenario] == 5 || objc_msgSend(v6, "offerUpsellScenario") == 6 || objc_msgSend(v6, "offerUpsellScenario") == 9 || objc_msgSend(v6, "offerUpsellScenario") == 8)
+    if ([contextCopy offerUpsellScenario] == 5 || objc_msgSend(contextCopy, "offerUpsellScenario") == 6 || objc_msgSend(contextCopy, "offerUpsellScenario") == 9 || objc_msgSend(contextCopy, "offerUpsellScenario") == 8)
     {
       goto LABEL_9;
     }
 
-    v9 = [v6 offerUpsellScenario] == 7;
+    v9 = [contextCopy offerUpsellScenario] == 7;
   }
 
   else
   {
-    v8 = [v5 offerUpsellScenario];
-    v9 = v8 == [v6 offerUpsellScenario];
+    offerUpsellScenario = [conditionCopy offerUpsellScenario];
+    v9 = offerUpsellScenario == [contextCopy offerUpsellScenario];
   }
 
   v7 = v9;

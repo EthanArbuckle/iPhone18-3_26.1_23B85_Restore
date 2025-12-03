@@ -1,40 +1,40 @@
 @interface _TVSpinnerView
-- (_TVSpinnerView)initWithFrame:(CGRect)a3 color:(id)a4;
-- (id)_spinnerImageForTraitCollection:(id)a3 size:(CGSize)a4 alpha:(double)a5;
+- (_TVSpinnerView)initWithFrame:(CGRect)frame color:(id)color;
+- (id)_spinnerImageForTraitCollection:(id)collection size:(CGSize)size alpha:(double)alpha;
 - (void)_addAnimations;
-- (void)_applicationDidBecomeActiveNotification:(id)a3;
-- (void)_applicationWillResignActiveNotification:(id)a3;
+- (void)_applicationDidBecomeActiveNotification:(id)notification;
+- (void)_applicationWillResignActiveNotification:(id)notification;
 - (void)_removeAnimations;
-- (void)_updateImagesForTraitCollection:(id)a3;
+- (void)_updateImagesForTraitCollection:(id)collection;
 - (void)dealloc;
 - (void)didMoveToWindow;
 - (void)startAnimating;
 - (void)stopAnimating;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation _TVSpinnerView
 
-- (_TVSpinnerView)initWithFrame:(CGRect)a3 color:(id)a4
+- (_TVSpinnerView)initWithFrame:(CGRect)frame color:(id)color
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  colorCopy = color;
   v37.receiver = self;
   v37.super_class = _TVSpinnerView;
-  v11 = [(_TVSpinnerView *)&v37 initWithFrame:x, y, width, height];
-  v12 = v11;
-  if (!v11)
+  height = [(_TVSpinnerView *)&v37 initWithFrame:x, y, width, height];
+  v12 = height;
+  if (!height)
   {
     goto LABEL_14;
   }
 
-  objc_storeStrong(&v11->_color, a4);
-  v13 = [MEMORY[0x277D75418] currentDevice];
-  if ([v13 _graphicsQuality] != 10)
+  objc_storeStrong(&height->_color, color);
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice _graphicsQuality] != 10)
   {
     goto LABEL_5;
   }
@@ -44,7 +44,7 @@
   if (!color)
   {
     v15 = [MEMORY[0x277D75348] colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.6];
-    v13 = v12->_color;
+    currentDevice = v12->_color;
     v12->_color = v15;
 LABEL_5:
   }
@@ -75,21 +75,21 @@ LABEL_5:
       v21 = v20;
     }
 
-    v22 = _TVCreateSpinnerImage(v10, v21);
-    v23 = [(UIView *)v12->_spinnerContainer layer];
-    [v23 setContents:{objc_msgSend(v22, "CGImage")}];
+    layer5 = _TVCreateSpinnerImage(colorCopy, v21);
+    layer = [(UIView *)v12->_spinnerContainer layer];
+    [layer setContents:{objc_msgSend(layer5, "CGImage")}];
 
-    v24 = [(UIView *)v12->_spinnerContainer layer];
-    [v22 scale];
-    [v24 setContentsScale:?];
+    layer2 = [(UIView *)v12->_spinnerContainer layer];
+    [layer5 scale];
+    [layer2 setContentsScale:?];
 
     [(_TVSpinnerView *)v12 addSubview:v12->_spinnerContainer];
   }
 
   else
   {
-    v25 = [(UIView *)v12->_spinnerContainer layer];
-    [v25 setCompositingFilter:*MEMORY[0x277CDA5D0]];
+    layer3 = [(UIView *)v12->_spinnerContainer layer];
+    [layer3 setCompositingFilter:*MEMORY[0x277CDA5D0]];
 
     [(_TVSpinnerView *)v12 addSubview:v12->_spinnerContainer];
     v26 = objc_alloc(MEMORY[0x277D75D18]);
@@ -100,29 +100,29 @@ LABEL_5:
 
     [(UIView *)v12->_spinnerOverlayContainer setAutoresizingMask:18];
     [(UIView *)v12->_spinnerOverlayContainer setContentMode:1];
-    v29 = [(_TVSpinnerView *)v12 traitCollection];
-    v30 = [v29 userInterfaceStyle];
+    traitCollection = [(_TVSpinnerView *)v12 traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
     v31 = MEMORY[0x277CDA5E8];
-    if (v30 != 2)
+    if (userInterfaceStyle != 2)
     {
       v31 = MEMORY[0x277CDA5D8];
     }
 
     v32 = *v31;
 
-    v33 = [(UIView *)v12->_spinnerOverlayContainer layer];
-    [v33 setCompositingFilter:v32];
+    layer4 = [(UIView *)v12->_spinnerOverlayContainer layer];
+    [layer4 setCompositingFilter:v32];
 
     [(_TVSpinnerView *)v12 addSubview:v12->_spinnerOverlayContainer];
-    v34 = [(_TVSpinnerView *)v12 traitCollection];
-    [(_TVSpinnerView *)v12 _updateImagesForTraitCollection:v34];
+    traitCollection2 = [(_TVSpinnerView *)v12 traitCollection];
+    [(_TVSpinnerView *)v12 _updateImagesForTraitCollection:traitCollection2];
 
-    v22 = [(_TVSpinnerView *)v12 layer];
-    [v22 setAllowsGroupOpacity:0];
-    [v22 setAllowsGroupBlending:0];
-    v35 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v35 addObserver:v12 selector:sel__applicationDidBecomeActiveNotification_ name:*MEMORY[0x277D76648] object:0];
-    [v35 addObserver:v12 selector:sel__applicationWillResignActiveNotification_ name:*MEMORY[0x277D76768] object:0];
+    layer5 = [(_TVSpinnerView *)v12 layer];
+    [layer5 setAllowsGroupOpacity:0];
+    [layer5 setAllowsGroupBlending:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v12 selector:sel__applicationDidBecomeActiveNotification_ name:*MEMORY[0x277D76648] object:0];
+    [defaultCenter addObserver:v12 selector:sel__applicationWillResignActiveNotification_ name:*MEMORY[0x277D76768] object:0];
   }
 
 LABEL_14:
@@ -131,21 +131,21 @@ LABEL_14:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D76648] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D76768] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76648] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76768] object:0];
 
   v4.receiver = self;
   v4.super_class = _TVSpinnerView;
   [(_TVSpinnerView *)&v4 dealloc];
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
   v5.receiver = self;
   v5.super_class = _TVSpinnerView;
   [(_TVSpinnerView *)&v5 willMoveToWindow:?];
-  if (!a3)
+  if (!window)
   {
     self->_shouldResumeAnimation = self->_animating;
     [(_TVSpinnerView *)self stopAnimating];
@@ -157,8 +157,8 @@ LABEL_14:
   v5.receiver = self;
   v5.super_class = _TVSpinnerView;
   [(_TVSpinnerView *)&v5 didMoveToWindow];
-  v3 = [(_TVSpinnerView *)self window];
-  if (v3)
+  window = [(_TVSpinnerView *)self window];
+  if (window)
   {
     shouldResumeAnimation = self->_shouldResumeAnimation;
 
@@ -169,41 +169,41 @@ LABEL_14:
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v14.receiver = self;
   v14.super_class = _TVSpinnerView;
-  [(_TVSpinnerView *)&v14 traitCollectionDidChange:v4];
-  v5 = [(_TVSpinnerView *)self traitCollection];
-  if (![v5 userInterfaceStyle])
+  [(_TVSpinnerView *)&v14 traitCollectionDidChange:changeCopy];
+  traitCollection = [(_TVSpinnerView *)self traitCollection];
+  if (![traitCollection userInterfaceStyle])
   {
 LABEL_6:
 
     goto LABEL_7;
   }
 
-  v6 = [v4 userInterfaceStyle];
-  v7 = [(_TVSpinnerView *)self traitCollection];
-  v8 = [v7 userInterfaceStyle];
+  userInterfaceStyle = [changeCopy userInterfaceStyle];
+  traitCollection2 = [(_TVSpinnerView *)self traitCollection];
+  userInterfaceStyle2 = [traitCollection2 userInterfaceStyle];
 
-  if (v6 != v8)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
-    v9 = [(_TVSpinnerView *)self traitCollection];
-    [(_TVSpinnerView *)self _updateImagesForTraitCollection:v9];
+    traitCollection3 = [(_TVSpinnerView *)self traitCollection];
+    [(_TVSpinnerView *)self _updateImagesForTraitCollection:traitCollection3];
 
-    v10 = [(_TVSpinnerView *)self traitCollection];
-    v11 = [v10 userInterfaceStyle];
+    traitCollection4 = [(_TVSpinnerView *)self traitCollection];
+    userInterfaceStyle3 = [traitCollection4 userInterfaceStyle];
     v12 = MEMORY[0x277CDA5E8];
-    if (v11 != 2)
+    if (userInterfaceStyle3 != 2)
     {
       v12 = MEMORY[0x277CDA5D8];
     }
 
     v13 = *v12;
 
-    v5 = [(UIView *)self->_spinnerOverlayContainer layer];
-    [v5 setCompositingFilter:v13];
+    traitCollection = [(UIView *)self->_spinnerOverlayContainer layer];
+    [traitCollection setCompositingFilter:v13];
 
     goto LABEL_6;
   }
@@ -211,10 +211,10 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)_applicationDidBecomeActiveNotification:(id)a3
+- (void)_applicationDidBecomeActiveNotification:(id)notification
 {
-  v4 = [(_TVSpinnerView *)self window];
-  if (v4)
+  window = [(_TVSpinnerView *)self window];
+  if (window)
   {
     shouldResumeAnimation = self->_shouldResumeAnimation;
 
@@ -226,11 +226,11 @@ LABEL_7:
   }
 }
 
-- (void)_applicationWillResignActiveNotification:(id)a3
+- (void)_applicationWillResignActiveNotification:(id)notification
 {
-  v4 = [(_TVSpinnerView *)self window];
+  window = [(_TVSpinnerView *)self window];
 
-  if (v4)
+  if (window)
   {
     self->_shouldResumeAnimation = self->_animating;
 
@@ -242,9 +242,9 @@ LABEL_7:
 {
   if (!self->_animating)
   {
-    v3 = [(_TVSpinnerView *)self window];
+    window = [(_TVSpinnerView *)self window];
 
-    if (v3)
+    if (window)
     {
       self->_animating = 1;
 
@@ -267,12 +267,12 @@ LABEL_7:
   }
 }
 
-- (id)_spinnerImageForTraitCollection:(id)a3 size:(CGSize)a4 alpha:(double)a5
+- (id)_spinnerImageForTraitCollection:(id)collection size:(CGSize)size alpha:(double)alpha
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a3;
-  if ([v8 userInterfaceStyle] == 2 || (v9 = objc_msgSend(v8, "userInterfaceStyle"), v10 = 0.0, v9 == 1000))
+  height = size.height;
+  width = size.width;
+  collectionCopy = collection;
+  if ([collectionCopy userInterfaceStyle] == 2 || (v9 = objc_msgSend(collectionCopy, "userInterfaceStyle"), v10 = 0.0, v9 == 1000))
   {
     v10 = 1.0;
   }
@@ -282,41 +282,41 @@ LABEL_7:
     height = width;
   }
 
-  v11 = [MEMORY[0x277D75348] colorWithWhite:v10 alpha:a5];
+  v11 = [MEMORY[0x277D75348] colorWithWhite:v10 alpha:alpha];
   v12 = _TVCreateSpinnerImage(v11, height);
 
   return v12;
 }
 
-- (void)_updateImagesForTraitCollection:(id)a3
+- (void)_updateImagesForTraitCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   [(_TVSpinnerView *)self frame];
-  v15 = [(_TVSpinnerView *)self _spinnerImageForTraitCollection:v4 size:v5 alpha:v6, 0.75];
-  v7 = [(UIView *)self->_spinnerContainer layer];
+  v15 = [(_TVSpinnerView *)self _spinnerImageForTraitCollection:collectionCopy size:v5 alpha:v6, 0.75];
+  layer = [(UIView *)self->_spinnerContainer layer];
   v8 = v15;
-  [v7 setContents:{objc_msgSend(v15, "CGImage")}];
+  [layer setContents:{objc_msgSend(v15, "CGImage")}];
 
-  v9 = [(UIView *)self->_spinnerContainer layer];
+  layer2 = [(UIView *)self->_spinnerContainer layer];
   [v15 scale];
-  [v9 setContentsScale:?];
+  [layer2 setContentsScale:?];
 
   [(_TVSpinnerView *)self frame];
-  v12 = [(_TVSpinnerView *)self _spinnerImageForTraitCollection:v4 size:v10 alpha:v11, 0.3];
+  v12 = [(_TVSpinnerView *)self _spinnerImageForTraitCollection:collectionCopy size:v10 alpha:v11, 0.3];
 
-  v13 = [(UIView *)self->_spinnerOverlayContainer layer];
-  [v13 setContents:{objc_msgSend(v12, "CGImage")}];
+  layer3 = [(UIView *)self->_spinnerOverlayContainer layer];
+  [layer3 setContents:{objc_msgSend(v12, "CGImage")}];
 
-  v14 = [(UIView *)self->_spinnerOverlayContainer layer];
+  layer4 = [(UIView *)self->_spinnerOverlayContainer layer];
   [v12 scale];
-  [v14 setContentsScale:?];
+  [layer4 setContentsScale:?];
 }
 
 - (void)_addAnimations
 {
   v18[2] = *MEMORY[0x277D85DE8];
-  v3 = [(_TVSpinnerView *)self layer];
-  v4 = [v3 animationForKey:@"repeatingGroupAnimation"];
+  layer = [(_TVSpinnerView *)self layer];
+  v4 = [layer animationForKey:@"repeatingGroupAnimation"];
 
   if (!v4)
   {
@@ -327,17 +327,17 @@ LABEL_7:
     v17[3] = &unk_279D6E7F8;
     v17[4] = self;
     [MEMORY[0x277D75D18] animateWithDuration:4 delay:v17 options:&__block_literal_global_25 animations:0.5 completion:0.0];
-    v5 = [MEMORY[0x277CD9E10] animation];
-    [v5 setKeyPath:@"opacity"];
-    [v5 setDuration:0.0833333333];
+    animation = [MEMORY[0x277CD9E10] animation];
+    [animation setKeyPath:@"opacity"];
+    [animation setDuration:0.0833333333];
     LODWORD(v6) = 2139095040;
-    [v5 setRepeatCount:v6];
+    [animation setRepeatCount:v6];
     v7 = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7B8]];
-    [v5 setTimingFunction:v7];
+    [animation setTimingFunction:v7];
 
-    [v5 setFromValue:&unk_287E48818];
-    [v5 setToValue:&unk_287E48828];
-    v8 = [MEMORY[0x277CD9EC8] animation];
+    [animation setFromValue:&unk_287E48818];
+    [animation setToValue:&unk_287E48828];
+    animation2 = [MEMORY[0x277CD9EC8] animation];
     v9 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:12];
     v10 = -30;
     do
@@ -348,25 +348,25 @@ LABEL_7:
     }
 
     while (v10 < 0x14A);
-    [v8 setKeyPath:@"transform.rotation.z"];
-    [v8 setValues:v9];
-    [v8 setCalculationMode:@"discrete"];
+    [animation2 setKeyPath:@"transform.rotation.z"];
+    [animation2 setValues:v9];
+    [animation2 setCalculationMode:@"discrete"];
     LODWORD(v12) = 2139095040;
-    [v8 setRepeatCount:v12];
-    [v8 setDuration:1.0];
-    v13 = [MEMORY[0x277CD9E00] animation];
-    v18[0] = v5;
-    v18[1] = v8;
+    [animation2 setRepeatCount:v12];
+    [animation2 setDuration:1.0];
+    animation3 = [MEMORY[0x277CD9E00] animation];
+    v18[0] = animation;
+    v18[1] = animation2;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:2];
-    [v13 setAnimations:v14];
+    [animation3 setAnimations:v14];
 
-    [v13 setDuration:1.0e100];
+    [animation3 setDuration:1.0e100];
     [MEMORY[0x277CD9FF0] begin];
-    v15 = [(UIView *)self->_spinnerContainer layer];
-    [v15 addAnimation:v13 forKey:@"repeatingGroupAnimation"];
+    layer2 = [(UIView *)self->_spinnerContainer layer];
+    [layer2 addAnimation:animation3 forKey:@"repeatingGroupAnimation"];
 
-    v16 = [(UIView *)self->_spinnerOverlayContainer layer];
-    [v16 addAnimation:v13 forKey:@"repeatingGroupAnimation"];
+    layer3 = [(UIView *)self->_spinnerOverlayContainer layer];
+    [layer3 addAnimation:animation3 forKey:@"repeatingGroupAnimation"];
 
     [MEMORY[0x277CD9FF0] commit];
   }

@@ -1,48 +1,48 @@
 @interface MOEventBundleRanking
 + (void)defineClassCollections;
-- (MOEventBundleRanking)initWithCoder:(id)a3;
-- (MOEventBundleRanking)initWithConfigurationManager:(id)a3;
-- (MOEventBundleRanking)initWithUniverse:(id)a3;
-- (double)_calculateNormSquare:(double *)a3;
-- (double)_computeBPROptForPairs:(double *)a3 withTotalBundleCountsForInterfaceTypesHigherTier:(id)a4 WithTotalBundleCountsForInterfaceTypesLowerTier:(id)a5 bprOpt:(double)a6 pairWiseMult:(float)a7;
-- (double)_generateBPROptUsing:(double *)a3 initialParams:(double *)a4;
-- (id)_checkAndUpdateNumericLimits:(id)a3;
-- (id)_fetchBundleInforForRanking:(id)a3;
+- (MOEventBundleRanking)initWithCoder:(id)coder;
+- (MOEventBundleRanking)initWithConfigurationManager:(id)manager;
+- (MOEventBundleRanking)initWithUniverse:(id)universe;
+- (double)_calculateNormSquare:(double *)square;
+- (double)_computeBPROptForPairs:(double *)pairs withTotalBundleCountsForInterfaceTypesHigherTier:(id)tier WithTotalBundleCountsForInterfaceTypesLowerTier:(id)lowerTier bprOpt:(double)opt pairWiseMult:(float)mult;
+- (double)_generateBPROptUsing:(double *)using initialParams:(double *)params;
+- (id)_checkAndUpdateNumericLimits:(id)limits;
+- (id)_fetchBundleInforForRanking:(id)ranking;
 - (id)_getDefaultFallbackFactorDict;
 - (id)_getDefaultRichnessWeightDict;
-- (id)_getRichnessScoreWeightFromConfigurationManager:(id)a3 withDefaultWeightDict:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_getRichnessScoreWeightFromConfigurationManager:(id)manager withDefaultWeightDict:(id)dict;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionary;
-- (id)generateRankingInput:(id)a3;
+- (id)generateRankingInput:(id)input;
 - (id)loadHolidayTuningParameterJSONFromFilePath;
-- (void)_computeGradient:(double *)a3 initialParams:(double *)a4 Update:(double *)a5;
-- (void)_fillCurationInfoForRanking:(id)a3 forBundle:(id)a4;
-- (void)_fillDistincnessInfoForRanking:(id)a3 forBundle:(id)a4;
-- (void)_fillEngagementInfoForRanking:(id)a3 forBundle:(id)a4;
-- (void)_fillHeuristicsInfoForRanking:(id)a3 forBundle:(id)a4;
-- (void)_fillQualityInfoForRanking:(id)a3 forBundle:(id)a4;
-- (void)_fillRecencyInfoForRanking:(id)a3 forBundle:(id)a4;
-- (void)_fillRichnessInfoForRanking:(id)a3 forBundle:(id)a4;
-- (void)_lineSearch:(double *)a3 initialParams:(double *)a4 With:(double *)a5 And:(double *)a6 handler:(id)a7;
-- (void)_mergeScoresToBundles:(id)a3 usingScore:(id)a4;
-- (void)_setToIdentityMatrix:(double *)a3 forNumRows:(unint64_t)a4;
-- (void)_submitEventBundleRankingAnalytics:(id)a3 withRankingInput:(id)a4 andSubmissionDate:(id)a5;
-- (void)encodeWithCoder:(id)a3;
-- (void)generateBundleRanking:(id)a3 withMinRecommendedBundleCountRequirement:(BOOL)a4;
-- (void)identifyRepetitiveSignificantContactBundlesFromBundles:(id)a3 precedingSignificantContactBundles:(id)a4;
+- (void)_computeGradient:(double *)gradient initialParams:(double *)params Update:(double *)update;
+- (void)_fillCurationInfoForRanking:(id)ranking forBundle:(id)bundle;
+- (void)_fillDistincnessInfoForRanking:(id)ranking forBundle:(id)bundle;
+- (void)_fillEngagementInfoForRanking:(id)ranking forBundle:(id)bundle;
+- (void)_fillHeuristicsInfoForRanking:(id)ranking forBundle:(id)bundle;
+- (void)_fillQualityInfoForRanking:(id)ranking forBundle:(id)bundle;
+- (void)_fillRecencyInfoForRanking:(id)ranking forBundle:(id)bundle;
+- (void)_fillRichnessInfoForRanking:(id)ranking forBundle:(id)bundle;
+- (void)_lineSearch:(double *)search initialParams:(double *)params With:(double *)with And:(double *)and handler:(id)handler;
+- (void)_mergeScoresToBundles:(id)bundles usingScore:(id)score;
+- (void)_setToIdentityMatrix:(double *)matrix forNumRows:(unint64_t)rows;
+- (void)_submitEventBundleRankingAnalytics:(id)analytics withRankingInput:(id)input andSubmissionDate:(id)date;
+- (void)encodeWithCoder:(id)coder;
+- (void)generateBundleRanking:(id)ranking withMinRecommendedBundleCountRequirement:(BOOL)requirement;
+- (void)identifyRepetitiveSignificantContactBundlesFromBundles:(id)bundles precedingSignificantContactBundles:(id)contactBundles;
 - (void)loadHolidayTuningParameterJSONFromFilePath;
-- (void)safeSavePropertyToDictionary:(id)a3 withKey:(id)a4 andValue:(id)a5;
+- (void)safeSavePropertyToDictionary:(id)dictionary withKey:(id)key andValue:(id)value;
 - (void)setHolidayTuningParameters;
-- (void)setRankingParamsFromRankingParamsMO:(id)a3;
+- (void)setRankingParamsFromRankingParamsMO:(id)o;
 - (void)updateEngagementScoreParamsUsingBFGS;
-- (void)updateTripMetaDataForRank:(id)a3;
+- (void)updateTripMetaDataForRank:(id)rank;
 @end
 
 @implementation MOEventBundleRanking
 
-- (void)setRankingParamsFromRankingParamsMO:(id)a3
+- (void)setRankingParamsFromRankingParamsMO:(id)o
 {
-  v5 = a3;
+  oCopy = o;
   if (!self)
   {
     v6 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
@@ -55,70 +55,70 @@
     [v7 handleFailureInMethod:a2 object:0 file:@"MORankingParams+CoreDataTransformable.m" lineNumber:23 description:{@"MOEventBundleRanking was not initialized (in %s:%d)", "-[MOEventBundleRanking(MORankingParamsMO) setRankingParamsFromRankingParamsMO:]", 23}];
   }
 
-  if (v5)
+  if (oCopy)
   {
     v8 = objc_alloc_init(NSMutableDictionary);
-    [v5 activityInterfaceTypeEngagementWeight];
+    [oCopy activityInterfaceTypeEngagementWeight];
     v9 = [NSNumber numberWithFloat:?];
     [v8 setObject:v9 forKeyedSubscript:&off_100369538];
 
-    [v5 outingInterfaceTypeEngagementWeight];
+    [oCopy outingInterfaceTypeEngagementWeight];
     v10 = [NSNumber numberWithFloat:?];
     [v8 setObject:v10 forKeyedSubscript:&off_100369550];
 
-    [v5 photoMomentInterfaceTypeEngagementWeight];
+    [oCopy photoMomentInterfaceTypeEngagementWeight];
     v11 = [NSNumber numberWithFloat:?];
     [v8 setObject:v11 forKeyedSubscript:&off_100369568];
 
-    [v5 significantContactInterfaceTypeEngagementWeight];
+    [oCopy significantContactInterfaceTypeEngagementWeight];
     v12 = [NSNumber numberWithFloat:?];
     [v8 setObject:v12 forKeyedSubscript:&off_100369580];
 
-    [v5 yourMediaInterfaceTypeEngagementWeight];
+    [oCopy yourMediaInterfaceTypeEngagementWeight];
     v13 = [NSNumber numberWithFloat:?];
     [v8 setObject:v13 forKeyedSubscript:&off_100369598];
 
-    [v5 yourTimeAtHomeInterfaceTypeEngagementWeight];
+    [oCopy yourTimeAtHomeInterfaceTypeEngagementWeight];
     v14 = [NSNumber numberWithFloat:?];
     [v8 setObject:v14 forKeyedSubscript:&off_1003695B0];
 
-    [v5 yourSharedContentInterfaceTypeEngagementWeight];
+    [oCopy yourSharedContentInterfaceTypeEngagementWeight];
     v15 = [NSNumber numberWithFloat:?];
     [v8 setObject:v15 forKeyedSubscript:&off_1003695C8];
 
-    [v5 topicsOfInterestInterfaceTypeEngagementWeight];
+    [oCopy topicsOfInterestInterfaceTypeEngagementWeight];
     v16 = [NSNumber numberWithFloat:?];
     [v8 setObject:v16 forKeyedSubscript:&off_1003695E0];
 
-    [v5 trendInterfaceTypeEngagementWeight];
+    [oCopy trendInterfaceTypeEngagementWeight];
     v17 = [NSNumber numberWithFloat:?];
     [v8 setObject:v17 forKeyedSubscript:&off_1003695F8];
 
-    [v5 photoMemoryInterfaceTypeEngagementWeight];
+    [oCopy photoMemoryInterfaceTypeEngagementWeight];
     v18 = [NSNumber numberWithFloat:?];
     [v8 setObject:v18 forKeyedSubscript:&off_100369610];
 
-    [v5 evergreenInterfaceTypeEngagementWeight];
+    [oCopy evergreenInterfaceTypeEngagementWeight];
     v19 = [NSNumber numberWithFloat:?];
     [v8 setObject:v19 forKeyedSubscript:&off_100369628];
 
-    [v5 timeContextInterfaceTypeEngagementWeight];
+    [oCopy timeContextInterfaceTypeEngagementWeight];
     v20 = [NSNumber numberWithFloat:?];
     [v8 setObject:v20 forKeyedSubscript:&off_100369640];
 
-    [v5 tripInterfaceTypeEngagementWeight];
+    [oCopy tripInterfaceTypeEngagementWeight];
     v21 = [NSNumber numberWithFloat:?];
     [v8 setObject:v21 forKeyedSubscript:&off_100369658];
 
-    [v5 stateOfMindInterfaceTypeEngagementWeight];
+    [oCopy stateOfMindInterfaceTypeEngagementWeight];
     v22 = [NSNumber numberWithFloat:?];
     [v8 setObject:v22 forKeyedSubscript:&off_100369670];
 
-    [v5 clusteringInterfaceTypeEngagementWeight];
+    [oCopy clusteringInterfaceTypeEngagementWeight];
     v23 = [NSNumber numberWithFloat:?];
     [v8 setObject:v23 forKeyedSubscript:&off_100369688];
 
-    [v5 thematicSummaryInterfaceTypeEngagementWeight];
+    [oCopy thematicSummaryInterfaceTypeEngagementWeight];
     v24 = [NSNumber numberWithFloat:?];
     [v8 setObject:v24 forKeyedSubscript:&off_1003696A0];
 
@@ -135,27 +135,27 @@
     }
 
     v27 = objc_alloc_init(NSMutableDictionary);
-    [v5 wisdomEvergreenTypeEngagementWeight];
+    [oCopy wisdomEvergreenTypeEngagementWeight];
     v28 = [NSNumber numberWithFloat:?];
     [v27 setObject:v28 forKeyedSubscript:@"WISDOM"];
 
-    [v5 gratitudeEvergreenTypeEngagementWeight];
+    [oCopy gratitudeEvergreenTypeEngagementWeight];
     v29 = [NSNumber numberWithFloat:?];
     [v27 setObject:v29 forKeyedSubscript:@"GRATITUDE"];
 
-    [v5 kindnessEvergreenTypeEngagementWeight];
+    [oCopy kindnessEvergreenTypeEngagementWeight];
     v30 = [NSNumber numberWithFloat:?];
     [v27 setObject:v30 forKeyedSubscript:@"KINDNESS"];
 
-    [v5 purposeEvergreenTypeEngagementWeight];
+    [oCopy purposeEvergreenTypeEngagementWeight];
     v31 = [NSNumber numberWithFloat:?];
     [v27 setObject:v31 forKeyedSubscript:@"PURPOSE"];
 
-    [v5 resilienceEvergreenTypeEngagementWeight];
+    [oCopy resilienceEvergreenTypeEngagementWeight];
     v32 = [NSNumber numberWithFloat:?];
     [v27 setObject:v32 forKeyedSubscript:@"RESILIENCE"];
 
-    [v5 creativityEvergreenTypeEngagementWeight];
+    [oCopy creativityEvergreenTypeEngagementWeight];
     v33 = [NSNumber numberWithFloat:?];
     [v27 setObject:v33 forKeyedSubscript:@"CREATIVITY"];
 
@@ -316,15 +316,15 @@ void __46__MOEventBundleRanking_defineClassCollections__block_invoke(id a1)
   emptyStringSet = v19;
 }
 
-- (id)generateRankingInput:(id)a3
+- (id)generateRankingInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   v5 = objc_opt_new();
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = inputCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -352,64 +352,64 @@ void __46__MOEventBundleRanking_defineClassCollections__block_invoke(id a1)
   return v5;
 }
 
-- (id)_fetchBundleInforForRanking:(id)a3
+- (id)_fetchBundleInforForRanking:(id)ranking
 {
-  v4 = a3;
+  rankingCopy = ranking;
   v5 = objc_autoreleasePoolPush();
   v6 = objc_opt_new();
-  v7 = [v4 bundleIdentifier];
-  [v6 setBundleIdentifier:v7];
+  bundleIdentifier = [rankingCopy bundleIdentifier];
+  [v6 setBundleIdentifier:bundleIdentifier];
 
-  v8 = [v4 suggestionID];
-  [v6 setSuggestionIdentifier:v8];
+  suggestionID = [rankingCopy suggestionID];
+  [v6 setSuggestionIdentifier:suggestionID];
 
-  v9 = [v4 events];
-  [v6 setEvents:v9];
+  events = [rankingCopy events];
+  [v6 setEvents:events];
 
-  v10 = [v4 subSuggestionIDs];
-  [v6 setSubSuggestionIDs:v10];
+  subSuggestionIDs = [rankingCopy subSuggestionIDs];
+  [v6 setSubSuggestionIDs:subSuggestionIDs];
 
-  [(MOEventBundleRanking *)self _fillRecencyInfoForRanking:v6 forBundle:v4];
-  [(MOEventBundleRanking *)self _fillRichnessInfoForRanking:v6 forBundle:v4];
-  [(MOEventBundleRanking *)self _fillDistincnessInfoForRanking:v6 forBundle:v4];
-  [(MOEventBundleRanking *)self _fillHeuristicsInfoForRanking:v6 forBundle:v4];
-  [(MOEventBundleRanking *)self _fillQualityInfoForRanking:v6 forBundle:v4];
-  [(MOEventBundleRanking *)self _fillEngagementInfoForRanking:v6 forBundle:v4];
-  [(MOEventBundleRanking *)self _fillCurationInfoForRanking:v6 forBundle:v4];
+  [(MOEventBundleRanking *)self _fillRecencyInfoForRanking:v6 forBundle:rankingCopy];
+  [(MOEventBundleRanking *)self _fillRichnessInfoForRanking:v6 forBundle:rankingCopy];
+  [(MOEventBundleRanking *)self _fillDistincnessInfoForRanking:v6 forBundle:rankingCopy];
+  [(MOEventBundleRanking *)self _fillHeuristicsInfoForRanking:v6 forBundle:rankingCopy];
+  [(MOEventBundleRanking *)self _fillQualityInfoForRanking:v6 forBundle:rankingCopy];
+  [(MOEventBundleRanking *)self _fillEngagementInfoForRanking:v6 forBundle:rankingCopy];
+  [(MOEventBundleRanking *)self _fillCurationInfoForRanking:v6 forBundle:rankingCopy];
   objc_autoreleasePoolPop(v5);
 
   return v6;
 }
 
-- (void)_fillRecencyInfoForRanking:(id)a3 forBundle:(id)a4
+- (void)_fillRecencyInfoForRanking:(id)ranking forBundle:(id)bundle
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 endDate];
+  bundleCopy = bundle;
+  rankingCopy = ranking;
+  endDate = [bundleCopy endDate];
   v8 = +[NSDate date];
-  [v7 timeIntervalSinceDate:v8];
+  [endDate timeIntervalSinceDate:v8];
   v10 = v9 / -86400.0;
   *&v10 = v10;
-  [v6 setBundleRecencyDaysElapsed:v10];
+  [rankingCopy setBundleRecencyDaysElapsed:v10];
 
-  v11 = [v5 startDate];
-  [v6 setBundleStartDate:v11];
+  startDate = [bundleCopy startDate];
+  [rankingCopy setBundleStartDate:startDate];
 
-  v12 = [v5 endDate];
+  endDate2 = [bundleCopy endDate];
 
-  [v6 setBundleEndDate:v12];
+  [rankingCopy setBundleEndDate:endDate2];
 }
 
-- (void)_fillCurationInfoForRanking:(id)a3 forBundle:(id)a4
+- (void)_fillCurationInfoForRanking:(id)ranking forBundle:(id)bundle
 {
   v6 = visitSubtypeVariants;
-  v7 = a4;
-  v8 = a3;
-  v9 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v8 bundleSubType]);
+  bundleCopy = bundle;
+  rankingCopy = ranking;
+  v9 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [rankingCopy bundleSubType]);
   v10 = [v6 containsObject:v9];
 
-  v11 = [v7 place];
-  if ([v11 placeUserType] == 2)
+  place = [bundleCopy place];
+  if ([place placeUserType] == 2)
   {
     v12 = v10;
   }
@@ -419,11 +419,11 @@ void __46__MOEventBundleRanking_defineClassCollections__block_invoke(id a1)
     v12 = 0;
   }
 
-  [v8 setIsWorkVisit:v12];
+  [rankingCopy setIsWorkVisit:v12];
 
-  v13 = [v7 metaDataForRank];
+  metaDataForRank = [bundleCopy metaDataForRank];
 
-  v14 = [v13 objectForKeyedSubscript:@"VisitDuration"];
+  v14 = [metaDataForRank objectForKeyedSubscript:@"VisitDuration"];
   [v14 floatValue];
   v16 = v15;
 
@@ -439,37 +439,37 @@ void __46__MOEventBundleRanking_defineClassCollections__block_invoke(id a1)
     v18 = 0;
   }
 
-  [v8 setIsShortVisit:v18];
+  [rankingCopy setIsShortVisit:v18];
 }
 
-- (void)_fillQualityInfoForRanking:(id)a3 forBundle:(id)a4
+- (void)_fillQualityInfoForRanking:(id)ranking forBundle:(id)bundle
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 action];
-  v8 = [v7 actionType];
+  rankingCopy = ranking;
+  bundleCopy = bundle;
+  action = [bundleCopy action];
+  actionType = [action actionType];
   v9 = 0.0;
-  if (v8)
+  if (actionType)
   {
     *&v9 = 0.5;
   }
 
-  [v5 setIsBundleActionSpecific:v9];
+  [rankingCopy setIsBundleActionSpecific:v9];
 
   v10 = enrichedActionTags;
-  v11 = [v6 action];
-  v12 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v11 actionType]);
+  action2 = [bundleCopy action];
+  v12 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [action2 actionType]);
   LODWORD(v10) = [v10 containsObject:v12];
 
   if (v10)
   {
-    [v5 isBundleActionSpecific];
+    [rankingCopy isBundleActionSpecific];
     if ((*&v13 + 0.5) > 1.0)
     {
       LODWORD(v13) = 1.0;
-      [v5 setIsBundleActionSpecific:v13];
-      v14 = _mo_log_facility_get_os_log(&MOLogFacilityRanking);
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+      [rankingCopy setIsBundleActionSpecific:v13];
+      action3 = _mo_log_facility_get_os_log(&MOLogFacilityRanking);
+      if (os_log_type_enabled(action3, OS_LOG_TYPE_ERROR))
       {
         goto LABEL_11;
       }
@@ -480,27 +480,27 @@ void __46__MOEventBundleRanking_defineClassCollections__block_invoke(id a1)
 
   else
   {
-    v14 = [v6 action];
-    if ([v14 actionType]!= 1)
+    action3 = [bundleCopy action];
+    if ([action3 actionType]!= 1)
     {
       goto LABEL_12;
     }
 
-    v15 = [v6 action];
-    v16 = [v15 actionSubtype];
+    action4 = [bundleCopy action];
+    actionSubtype = [action4 actionSubtype];
 
-    if (v16 != 4)
+    if (actionSubtype != 4)
     {
       goto LABEL_14;
     }
 
-    [v5 isBundleActionSpecific];
+    [rankingCopy isBundleActionSpecific];
     if ((*&v17 + 0.5) > 1.0)
     {
       LODWORD(v17) = 1.0;
-      [v5 setIsBundleActionSpecific:v17];
-      v14 = _mo_log_facility_get_os_log(&MOLogFacilityRanking);
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+      [rankingCopy setIsBundleActionSpecific:v17];
+      action3 = _mo_log_facility_get_os_log(&MOLogFacilityRanking);
+      if (os_log_type_enabled(action3, OS_LOG_TYPE_ERROR))
       {
 LABEL_11:
         [MOEventBundleRanking _fillQualityInfoForRanking:forBundle:];
@@ -512,13 +512,13 @@ LABEL_12:
     }
   }
 
-  [v5 isBundleActionSpecific];
+  [rankingCopy isBundleActionSpecific];
   *&v19 = v18 + 0.5;
-  [v5 setIsBundleActionSpecific:v19];
+  [rankingCopy setIsBundleActionSpecific:v19];
 LABEL_14:
-  v20 = [v6 time];
+  time = [bundleCopy time];
   v22 = 0.0;
-  if ([v20 timeTag])
+  if ([time timeTag])
   {
     *&v21 = 0.5;
   }
@@ -528,27 +528,27 @@ LABEL_14:
     *&v21 = 0.0;
   }
 
-  [v5 setIsBundleTimeTagSpecific:v21];
+  [rankingCopy setIsBundleTimeTagSpecific:v21];
 
   v23 = interestingTimeTags;
-  v24 = [v6 time];
-  v25 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v24 timeTag]);
+  time2 = [bundleCopy time];
+  v25 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [time2 timeTag]);
   LODWORD(v23) = [v23 containsObject:v25];
 
   if (v23)
   {
-    [v5 isBundleTimeTagSpecific];
+    [rankingCopy isBundleTimeTagSpecific];
     if ((*&v26 + 0.5) <= 1.0)
     {
-      [v5 isBundleTimeTagSpecific];
+      [rankingCopy isBundleTimeTagSpecific];
       *&v29 = v28 + 0.5;
-      [v5 setIsBundleTimeTagSpecific:v29];
+      [rankingCopy setIsBundleTimeTagSpecific:v29];
     }
 
     else
     {
       LODWORD(v26) = 1.0;
-      [v5 setIsBundleTimeTagSpecific:v26];
+      [rankingCopy setIsBundleTimeTagSpecific:v26];
       v27 = _mo_log_facility_get_os_log(&MOLogFacilityRanking);
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
       {
@@ -557,26 +557,26 @@ LABEL_14:
     }
   }
 
-  v30 = [v6 place];
-  v31 = [v30 placeType];
+  place = [bundleCopy place];
+  placeType = [place placeType];
 
-  if (v31 > 4)
+  if (placeType > 4)
   {
-    if (v31 <= 99)
+    if (placeType <= 99)
     {
-      if (v31 == 5)
+      if (placeType == 5)
       {
         v22 = 0.2;
         goto LABEL_38;
       }
 
-      if (v31 != 6)
+      if (placeType != 6)
       {
         goto LABEL_39;
       }
     }
 
-    else if (v31 != 100 && v31 != 101 && v31 != 102)
+    else if (placeType != 100 && placeType != 101 && placeType != 102)
     {
       goto LABEL_39;
     }
@@ -586,9 +586,9 @@ LABEL_37:
     goto LABEL_38;
   }
 
-  if (v31 > 2)
+  if (placeType > 2)
   {
-    if (v31 != 3)
+    if (placeType != 3)
     {
       v22 = 0.4;
       goto LABEL_38;
@@ -597,67 +597,67 @@ LABEL_37:
     goto LABEL_37;
   }
 
-  if (v31 < 2)
+  if (placeType < 2)
   {
 LABEL_38:
     *&v32 = v22;
-    [v5 setIsBundlePlaceTypeSpecific:v32];
+    [rankingCopy setIsBundlePlaceTypeSpecific:v32];
     goto LABEL_39;
   }
 
-  if (v31 == 2)
+  if (placeType == 2)
   {
     v22 = 0.8;
     goto LABEL_38;
   }
 
 LABEL_39:
-  v33 = [v6 place];
-  v34 = [v33 placeUserType];
+  place2 = [bundleCopy place];
+  placeUserType = [place2 placeUserType];
 
-  if ((v34 - 1) < 4)
+  if ((placeUserType - 1) < 4)
   {
     goto LABEL_40;
   }
 
-  if (!v34)
+  if (!placeUserType)
   {
     v35 = 0.0;
     goto LABEL_41;
   }
 
-  if (v34 == 100)
+  if (placeUserType == 100)
   {
 LABEL_40:
     LODWORD(v35) = 1.0;
 LABEL_41:
-    [v5 setIsBundlePlaceTypeSpecific:v35];
+    [rankingCopy setIsBundlePlaceTypeSpecific:v35];
   }
 
-  [v5 isBundlePlaceTypeSpecific];
+  [rankingCopy isBundlePlaceTypeSpecific];
   v37 = v36;
-  [v5 isBundleTimeTagSpecific];
+  [rankingCopy isBundleTimeTagSpecific];
   v39 = v37 + v38;
-  [v5 isBundleActionSpecific];
+  [rankingCopy isBundleActionSpecific];
   *&v41 = v39 + v40;
-  [v5 setLabelSpecificityNormalized:v41];
-  v42 = [v6 persons];
-  v43 = [v42 count];
+  [rankingCopy setLabelSpecificityNormalized:v41];
+  persons = [bundleCopy persons];
+  v43 = [persons count];
 
   if (v43)
   {
-    [v5 labelSpecificityNormalized];
+    [rankingCopy labelSpecificityNormalized];
     if ((*&v44 + 0.5) <= 4.0)
     {
-      [v5 labelSpecificityNormalized];
+      [rankingCopy labelSpecificityNormalized];
       *&v47 = v46 + 0.5;
-      [v5 setLabelSpecificityNormalized:v47];
+      [rankingCopy setLabelSpecificityNormalized:v47];
     }
 
     else
     {
       LODWORD(v44) = 4.0;
-      [v5 setLabelSpecificityNormalized:v44];
+      [rankingCopy setLabelSpecificityNormalized:v44];
       v45 = _mo_log_facility_get_os_log(&MOLogFacilityRanking);
       if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
       {
@@ -666,81 +666,81 @@ LABEL_41:
     }
   }
 
-  [v5 labelSpecificityNormalized];
+  [rankingCopy labelSpecificityNormalized];
   *&v49 = v48 * 0.25;
-  [v5 setLabelSpecificityNormalized:v49];
-  [v5 labelSpecificityNormalized];
+  [rankingCopy setLabelSpecificityNormalized:v49];
+  [rankingCopy labelSpecificityNormalized];
   v51 = v50;
-  v52 = [v6 metaDataForRank];
-  v53 = [v52 objectForKey:@"LabelConfidence"];
+  metaDataForRank = [bundleCopy metaDataForRank];
+  v53 = [metaDataForRank objectForKey:@"LabelConfidence"];
   [v53 floatValue];
   *&v55 = v51 * v54;
-  [v5 setLabelQualityScore:v55];
+  [rankingCopy setLabelQualityScore:v55];
 
-  v56 = [v6 metaDataForRank];
-  v57 = [v56 objectForKey:@"TimeCorrelationScore"];
+  metaDataForRank2 = [bundleCopy metaDataForRank];
+  v57 = [metaDataForRank2 objectForKey:@"TimeCorrelationScore"];
 
   if (v57)
   {
-    v58 = [v6 metaDataForRank];
-    v59 = [v58 objectForKey:@"TimeCorrelationScore"];
+    metaDataForRank3 = [bundleCopy metaDataForRank];
+    v59 = [metaDataForRank3 objectForKey:@"TimeCorrelationScore"];
     [v59 floatValue];
-    [v5 setTimeCorrelationScoreFeature:?];
+    [rankingCopy setTimeCorrelationScoreFeature:?];
   }
 
   else
   {
-    [v5 setTimeCorrelationScoreFeature:0.0];
+    [rankingCopy setTimeCorrelationScoreFeature:0.0];
   }
 }
 
-- (void)_fillHeuristicsInfoForRanking:(id)a3 forBundle:(id)a4
+- (void)_fillHeuristicsInfoForRanking:(id)ranking forBundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 photoTraits];
-  v9 = [MOMetaDataCurationUtility selectHolidayFromPhotoTraits:v8];
+  rankingCopy = ranking;
+  bundleCopy = bundle;
+  photoTraits = [bundleCopy photoTraits];
+  v9 = [MOMetaDataCurationUtility selectHolidayFromPhotoTraits:photoTraits];
 
-  v280 = v7;
+  v280 = bundleCopy;
   v281 = v9;
-  v279 = self;
+  selfCopy = self;
   if (v9)
   {
     v288 = 0u;
     v289 = 0u;
     v286 = 0u;
     v287 = 0u;
-    v10 = [(MOEventBundleRanking *)self holidayTuningParameters];
-    v11 = [v10 allValues];
+    holidayTuningParameters = [(MOEventBundleRanking *)self holidayTuningParameters];
+    allValues = [holidayTuningParameters allValues];
 
-    v12 = [v11 countByEnumeratingWithState:&v286 objects:v291 count:16];
+    v12 = [allValues countByEnumeratingWithState:&v286 objects:v291 count:16];
     if (v12)
     {
       v13 = v12;
       v14 = *v287;
 LABEL_4:
-      v15 = v11;
+      relevantAssetUUIDs2 = allValues;
       v16 = 0;
       while (1)
       {
         if (*v287 != v14)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(relevantAssetUUIDs2);
         }
 
         v17 = *(*(&v286 + 1) + 8 * v16);
-        v18 = [v281 holidayIdentifier];
+        holidayIdentifier = [v281 holidayIdentifier];
         v19 = [v17 objectForKeyedSubscript:@"holidayIdentifier"];
-        v20 = [v18 isEqualToString:v19];
+        v20 = [holidayIdentifier isEqualToString:v19];
 
         if (v20)
         {
-          v21 = [v281 relevantAssetUUIDs];
-          v22 = [v21 count];
+          relevantAssetUUIDs = [v281 relevantAssetUUIDs];
+          v22 = [relevantAssetUUIDs count];
           v23 = [v17 objectForKeyedSubscript:@"minPhotoCount"];
-          v24 = [v23 intValue];
+          intValue = [v23 intValue];
 
-          if (v22 < v24)
+          if (v22 < intValue)
           {
             break;
           }
@@ -748,8 +748,8 @@ LABEL_4:
 
         if (v13 == ++v16)
         {
-          v11 = v15;
-          v13 = [v15 countByEnumeratingWithState:&v286 objects:v291 count:16];
+          allValues = relevantAssetUUIDs2;
+          v13 = [relevantAssetUUIDs2 countByEnumeratingWithState:&v286 objects:v291 count:16];
           if (v13)
           {
             goto LABEL_4;
@@ -764,60 +764,60 @@ LABEL_4:
     {
 LABEL_11:
 
-      v15 = [v281 relevantAssetUUIDs];
-      [v6 setNumHolidayAssets:{objc_msgSend(v15, "count")}];
+      relevantAssetUUIDs2 = [v281 relevantAssetUUIDs];
+      [rankingCopy setNumHolidayAssets:{objc_msgSend(relevantAssetUUIDs2, "count")}];
     }
 
-    self = v279;
-    v7 = v280;
+    self = selfCopy;
+    bundleCopy = v280;
   }
 
-  v25 = [v7 photoTraits];
-  v26 = [MOMetaDataCurationUtility selectBirthdayFromPhotoTraits:v25];
+  photoTraits2 = [bundleCopy photoTraits];
+  v26 = [MOMetaDataCurationUtility selectBirthdayFromPhotoTraits:photoTraits2];
 
   if (v26)
   {
-    v27 = [MOMetaDataCurationUtility getPersonFromBirthdayPhotoTrait:v26 eventBundle:v7];
+    v27 = [MOMetaDataCurationUtility getPersonFromBirthdayPhotoTrait:v26 eventBundle:bundleCopy];
     if (v27)
     {
-      v28 = [v26 relevantAssetUUIDs];
-      [v6 setNumBirthdayAssets:{objc_msgSend(v28, "count")}];
+      relevantAssetUUIDs3 = [v26 relevantAssetUUIDs];
+      [rankingCopy setNumBirthdayAssets:{objc_msgSend(relevantAssetUUIDs3, "count")}];
     }
   }
 
   v278 = v26;
-  v29 = [v7 resources];
-  if (v29)
+  resources = [bundleCopy resources];
+  if (resources)
   {
-    v30 = v29;
-    v31 = [v7 resources];
-    v32 = [v31 count];
+    v30 = resources;
+    resources2 = [bundleCopy resources];
+    v32 = [resources2 count];
 
     if (v32)
     {
       v33 = [NSPredicate predicateWithFormat:@"type == %lu", 17];
-      v34 = [v7 resources];
-      v35 = [v34 filteredArrayUsingPredicate:v33];
+      resources3 = [bundleCopy resources];
+      v35 = [resources3 filteredArrayUsingPredicate:v33];
 
       if ([v35 count])
       {
-        [v6 setNumInviteEvents:{objc_msgSend(v35, "count")}];
+        [rankingCopy setNumInviteEvents:{objc_msgSend(v35, "count")}];
       }
     }
   }
 
-  if ([v7 interfaceType] == 13)
+  if ([bundleCopy interfaceType] == 13)
   {
-    [(MOEventBundleRanking *)self updateTripMetaDataForRank:v7];
+    [(MOEventBundleRanking *)self updateTripMetaDataForRank:bundleCopy];
     v36 = _mo_log_facility_get_os_log(&MOLogFacilityRanking);
     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
     {
-      [MOEventBundleRanking _fillHeuristicsInfoForRanking:v7 forBundle:?];
+      [MOEventBundleRanking _fillHeuristicsInfoForRanking:bundleCopy forBundle:?];
     }
   }
 
-  v37 = [v7 metaDataForRank];
-  v38 = [v37 objectForKeyedSubscript:@"PoiCategory"];
+  metaDataForRank = [bundleCopy metaDataForRank];
+  v38 = [metaDataForRank objectForKeyedSubscript:@"PoiCategory"];
 
   v39 = +[NSNull null];
   v277 = v38;
@@ -825,46 +825,46 @@ LABEL_11:
   {
 
 LABEL_29:
-    [v6 setInterestingPOIFeature:0.0];
+    [rankingCopy setInterestingPOIFeature:0.0];
     goto LABEL_31;
   }
 
-  v40 = [v7 isSensitive];
+  isSensitive = [bundleCopy isSensitive];
 
-  if (v40)
+  if (isSensitive)
   {
     goto LABEL_29;
   }
 
-  v41 = [v7 metaDataForRank];
-  v42 = [v41 objectForKeyedSubscript:@"PoiCategory"];
+  metaDataForRank2 = [bundleCopy metaDataForRank];
+  v42 = [metaDataForRank2 objectForKeyedSubscript:@"PoiCategory"];
   [v42 floatValue];
-  [v6 setInterestingPOIFeature:?];
+  [rankingCopy setInterestingPOIFeature:?];
 
 LABEL_31:
-  [v6 setFamiliarityIndexFeature:0.0];
-  [v6 setDistanceToHomeFeatureNormalized:0.0];
-  v43 = [v7 metaDataForRank];
-  v44 = [v43 objectForKey:@"FamiliarityIndex"];
+  [rankingCopy setFamiliarityIndexFeature:0.0];
+  [rankingCopy setDistanceToHomeFeatureNormalized:0.0];
+  metaDataForRank3 = [bundleCopy metaDataForRank];
+  v44 = [metaDataForRank3 objectForKey:@"FamiliarityIndex"];
 
   if (!v44)
   {
     goto LABEL_56;
   }
 
-  v45 = [v7 metaDataForRank];
-  v46 = [v45 objectForKey:@"FamiliarityIndex"];
+  metaDataForRank4 = [bundleCopy metaDataForRank];
+  v46 = [metaDataForRank4 objectForKey:@"FamiliarityIndex"];
   [v46 floatValue];
   v48 = v47;
 
-  v49 = [(MOEventBundleRanking *)self rankingScoreThresholdDict];
-  v50 = [v49 objectForKeyedSubscript:@"FIDownRankThreshold"];
+  rankingScoreThresholdDict = [(MOEventBundleRanking *)self rankingScoreThresholdDict];
+  v50 = [rankingScoreThresholdDict objectForKeyedSubscript:@"FIDownRankThreshold"];
   [v50 floatValue];
   v52 = v51;
 
-  if (v48 != 0.0 || ([v6 interestingPOIFeature], v54 = 1.0, *&v53 != 1.0) && (objc_msgSend(v6, "numPhotoAssetsResourcesNormalized"), *&v53 <= 0.0))
+  if (v48 != 0.0 || ([rankingCopy interestingPOIFeature], v54 = 1.0, *&v53 != 1.0) && (objc_msgSend(rankingCopy, "numPhotoAssetsResourcesNormalized"), *&v53 <= 0.0))
   {
-    if (v48 > 0.0 && v48 <= v52 && (([v6 interestingPOIFeature], *&v53 == 1.0) || (objc_msgSend(v6, "numPhotoAssetsResourcesNormalized"), *&v53 > 0.0)))
+    if (v48 > 0.0 && v48 <= v52 && (([rankingCopy interestingPOIFeature], *&v53 == 1.0) || (objc_msgSend(rankingCopy, "numPhotoAssetsResourcesNormalized"), *&v53 > 0.0)))
     {
       v54 = (v48 * -4.0) + 3.0;
     }
@@ -872,7 +872,7 @@ LABEL_31:
     else
     {
       v55 = v48;
-      if (v48 > v52 && self->_recommendedTabVisitFIThreshold >= v55 && ([v6 numPhotoAssetsResourcesNormalized], *&v53 == 0.0))
+      if (v48 > v52 && self->_recommendedTabVisitFIThreshold >= v55 && ([rankingCopy numPhotoAssetsResourcesNormalized], *&v53 == 0.0))
       {
         v54 = (v48 * -6.67) + 5.0;
       }
@@ -889,7 +889,7 @@ LABEL_31:
           goto LABEL_48;
         }
 
-        [v6 numPhotoAssetsResourcesNormalized];
+        [rankingCopy numPhotoAssetsResourcesNormalized];
         v54 = -1.0;
         if (*&v53 != 0.0)
         {
@@ -900,46 +900,46 @@ LABEL_31:
   }
 
   *&v53 = v54;
-  [v6 setFamiliarityIndexFeature:v53];
+  [rankingCopy setFamiliarityIndexFeature:v53];
 LABEL_48:
-  [v6 familiarityIndexFeature];
+  [rankingCopy familiarityIndexFeature];
   if (*&v56 > 1.0)
   {
     LODWORD(v56) = 1.0;
-    [v6 setFamiliarityIndexFeature:v56];
+    [rankingCopy setFamiliarityIndexFeature:v56];
   }
 
-  v57 = [v7 metaDataForRank];
-  v58 = [v57 objectForKeyedSubscript:@"DistanceToHome"];
+  metaDataForRank5 = [bundleCopy metaDataForRank];
+  v58 = [metaDataForRank5 objectForKeyedSubscript:@"DistanceToHome"];
   [v58 floatValue];
   v60 = v59;
 
-  v61 = [(MOEventBundleRanking *)self rankingScoreThresholdDict];
-  v62 = [v61 objectForKeyedSubscript:@"distanceToHomeThreshold"];
+  rankingScoreThresholdDict2 = [(MOEventBundleRanking *)self rankingScoreThresholdDict];
+  v62 = [rankingScoreThresholdDict2 objectForKeyedSubscript:@"distanceToHomeThreshold"];
   [v62 floatValue];
   v64 = v63;
 
-  [v6 interestingPOIFeature];
+  [rankingCopy interestingPOIFeature];
   if (*&v65 != -1.0 && v48 >= 0.0 && v48 <= v52 && v60 > 0.0)
   {
     *&v65 = v60 / v64;
-    [v6 setDistanceToHomeFeatureNormalized:v65];
+    [rankingCopy setDistanceToHomeFeatureNormalized:v65];
     if (v60 > v64)
     {
       LODWORD(v66) = 1.0;
-      [v6 setDistanceToHomeFeatureNormalized:v66];
+      [rankingCopy setDistanceToHomeFeatureNormalized:v66];
     }
   }
 
 LABEL_56:
-  [v6 setNumFamilyNormalized:0.0];
-  [v6 setNumKidsNormalized:0.0];
-  [v6 setNumFriendsNormalized:0.0];
-  [v6 setNumCoworkersNormalized:0.0];
-  [v6 setNumPetsNormalized:0.0];
-  [v6 setNumOtherPersonsNormalized:0.0];
-  v67 = [v7 persons];
-  v68 = [v67 count];
+  [rankingCopy setNumFamilyNormalized:0.0];
+  [rankingCopy setNumKidsNormalized:0.0];
+  [rankingCopy setNumFriendsNormalized:0.0];
+  [rankingCopy setNumCoworkersNormalized:0.0];
+  [rankingCopy setNumPetsNormalized:0.0];
+  [rankingCopy setNumOtherPersonsNormalized:0.0];
+  persons = [bundleCopy persons];
+  v68 = [persons count];
 
   if (v68)
   {
@@ -947,8 +947,8 @@ LABEL_56:
     v285 = 0u;
     v282 = 0u;
     v283 = 0u;
-    v69 = [v7 persons];
-    v70 = [v69 countByEnumeratingWithState:&v282 objects:v290 count:16];
+    persons2 = [bundleCopy persons];
+    v70 = [persons2 countByEnumeratingWithState:&v282 objects:v290 count:16];
     if (v70)
     {
       v71 = v70;
@@ -960,7 +960,7 @@ LABEL_56:
         {
           if (*v283 != v72)
           {
-            objc_enumerationMutation(v69);
+            objc_enumerationMutation(persons2);
           }
 
           v74 = *(*(&v282 + 1) + 8 * v73);
@@ -972,19 +972,19 @@ LABEL_56:
               switch(v75)
               {
                 case 21:
-                  [v6 numFriendsNormalized];
+                  [rankingCopy numFriendsNormalized];
                   *&v83 = v82 + 1.0;
-                  [v6 setNumFriendsNormalized:v83];
+                  [rankingCopy setNumFriendsNormalized:v83];
                   break;
                 case 22:
-                  [v6 numCoworkersNormalized];
+                  [rankingCopy numCoworkersNormalized];
                   *&v87 = v86 + 1.0;
-                  [v6 setNumCoworkersNormalized:v87];
+                  [rankingCopy setNumCoworkersNormalized:v87];
                   break;
                 case 27:
-                  [v6 numPetsNormalized];
+                  [rankingCopy numPetsNormalized];
                   *&v79 = v78 + 1.0;
-                  [v6 setNumPetsNormalized:v79];
+                  [rankingCopy setNumPetsNormalized:v79];
                   break;
               }
             }
@@ -994,19 +994,19 @@ LABEL_56:
               switch(v75)
               {
                 case 1:
-                  [v6 numOtherPersonsNormalized];
+                  [rankingCopy numOtherPersonsNormalized];
                   *&v81 = v80 + 1.0;
-                  [v6 setNumOtherPersonsNormalized:v81];
+                  [rankingCopy setNumOtherPersonsNormalized:v81];
                   break;
                 case 4:
-                  [v6 numFamilyNormalized];
+                  [rankingCopy numFamilyNormalized];
                   *&v85 = v84 + 1.0;
-                  [v6 setNumFamilyNormalized:v85];
+                  [rankingCopy setNumFamilyNormalized:v85];
                   break;
                 case 15:
-                  [v6 numKidsNormalized];
+                  [rankingCopy numKidsNormalized];
                   *&v77 = v76 + 1.0;
-                  [v6 setNumKidsNormalized:v77];
+                  [rankingCopy setNumKidsNormalized:v77];
                   break;
               }
             }
@@ -1016,98 +1016,98 @@ LABEL_56:
         }
 
         while (v71 != v73);
-        v88 = [v69 countByEnumeratingWithState:&v282 objects:v290 count:16];
+        v88 = [persons2 countByEnumeratingWithState:&v282 objects:v290 count:16];
         v71 = v88;
       }
 
       while (v88);
     }
 
-    v7 = v280;
+    bundleCopy = v280;
   }
 
   v89 = _mo_log_facility_get_os_log(&MOLogFacilityRanking);
   if (os_log_type_enabled(v89, OS_LOG_TYPE_DEBUG))
   {
-    [MOEventBundleRanking _fillHeuristicsInfoForRanking:v6 forBundle:?];
+    [MOEventBundleRanking _fillHeuristicsInfoForRanking:rankingCopy forBundle:?];
   }
 
-  [v6 numFamilyNormalized];
+  [rankingCopy numFamilyNormalized];
   v90 = 1.0;
   v91 = *&v92 < 2.0;
   LODWORD(v92) = 1.0;
   if (v91)
   {
-    [v6 numFamilyNormalized];
+    [rankingCopy numFamilyNormalized];
     *&v92 = *&v92 * 0.5;
   }
 
-  [v6 setNumFamilyNormalized:v92];
-  [v6 numKidsNormalized];
+  [rankingCopy setNumFamilyNormalized:v92];
+  [rankingCopy numKidsNormalized];
   if (*&v93 < 2.0)
   {
-    [v6 numKidsNormalized];
+    [rankingCopy numKidsNormalized];
     v90 = *&v93 * 0.5;
   }
 
   *&v93 = v90;
-  [v6 setNumKidsNormalized:v93];
-  [v6 numFriendsNormalized];
+  [rankingCopy setNumKidsNormalized:v93];
+  [rankingCopy numFriendsNormalized];
   v94 = 1.0;
   v91 = *&v95 < 2.0;
   LODWORD(v95) = 1.0;
   if (v91)
   {
-    [v6 numFriendsNormalized];
+    [rankingCopy numFriendsNormalized];
     *&v95 = *&v95 * 0.5;
   }
 
-  [v6 setNumFriendsNormalized:v95];
-  [v6 numCoworkersNormalized];
+  [rankingCopy setNumFriendsNormalized:v95];
+  [rankingCopy numCoworkersNormalized];
   if (*&v96 < 2.0)
   {
-    [v6 numCoworkersNormalized];
+    [rankingCopy numCoworkersNormalized];
     v94 = *&v96 * 0.5;
   }
 
   *&v96 = v94;
-  [v6 setNumCoworkersNormalized:v96];
-  [v6 numPetsNormalized];
+  [rankingCopy setNumCoworkersNormalized:v96];
+  [rankingCopy numPetsNormalized];
   v97 = 1.0;
   v91 = *&v98 < 2.0;
   LODWORD(v98) = 1.0;
   if (v91)
   {
-    [v6 numPetsNormalized];
+    [rankingCopy numPetsNormalized];
     *&v98 = *&v98 * 0.5;
   }
 
-  [v6 setNumPetsNormalized:v98];
-  [v6 numOtherPersonsNormalized];
+  [rankingCopy setNumPetsNormalized:v98];
+  [rankingCopy numOtherPersonsNormalized];
   if (*&v99 < 2.0)
   {
-    [v6 numOtherPersonsNormalized];
+    [rankingCopy numOtherPersonsNormalized];
     v97 = *&v99 * 0.5;
   }
 
   *&v99 = v97;
-  [v6 setNumOtherPersonsNormalized:v99];
-  [v6 setCallDurationFeatureNormalized:0.0];
-  v100 = [(MOEventBundleRanking *)self rankingScoreThresholdDict];
-  v101 = [v100 objectForKeyedSubscript:@"callDurationThreshold"];
+  [rankingCopy setNumOtherPersonsNormalized:v99];
+  [rankingCopy setCallDurationFeatureNormalized:0.0];
+  rankingScoreThresholdDict3 = [(MOEventBundleRanking *)self rankingScoreThresholdDict];
+  v101 = [rankingScoreThresholdDict3 objectForKeyedSubscript:@"callDurationThreshold"];
   [v101 floatValue];
   v103 = v102;
 
-  v104 = [v7 metaDataForRank];
-  v105 = [v104 objectForKey:@"callDuration"];
+  metaDataForRank6 = [bundleCopy metaDataForRank];
+  v105 = [metaDataForRank6 objectForKey:@"callDuration"];
   [v105 doubleValue];
   v107 = v106;
 
-  v108 = [v7 metaDataForRank];
-  v109 = v108;
+  metaDataForRank7 = [bundleCopy metaDataForRank];
+  v109 = metaDataForRank7;
   if (v107 <= 0.0)
   {
-    v114 = [v108 objectForKey:@"dailyAggregateCallDuration"];
+    v114 = [metaDataForRank7 objectForKey:@"dailyAggregateCallDuration"];
     [v114 floatValue];
     v116 = v115;
 
@@ -1116,110 +1116,110 @@ LABEL_56:
       goto LABEL_103;
     }
 
-    v117 = [v7 metaDataForRank];
-    v118 = [v117 objectForKey:@"dailyAggregateCallDuration"];
+    metaDataForRank8 = [bundleCopy metaDataForRank];
+    v118 = [metaDataForRank8 objectForKey:@"dailyAggregateCallDuration"];
     [v118 floatValue];
     v112 = v119;
   }
 
   else
   {
-    v110 = [v108 objectForKey:@"callDuration"];
+    v110 = [metaDataForRank7 objectForKey:@"callDuration"];
     [v110 floatValue];
     v112 = v111;
   }
 
   *&v113 = v112 / v103;
-  [v6 setCallDurationFeatureNormalized:v113];
+  [rankingCopy setCallDurationFeatureNormalized:v113];
   if (v112 > v103)
   {
     LODWORD(v120) = 1.0;
-    [v6 setCallDurationFeatureNormalized:v120];
+    [rankingCopy setCallDurationFeatureNormalized:v120];
   }
 
 LABEL_103:
-  [v6 setBurstyInteractionCountFeatureNormalized:0.0];
-  v121 = [v7 metaDataForRank];
-  v122 = [v121 objectForKey:@"burstyInteractionCount"];
+  [rankingCopy setBurstyInteractionCountFeatureNormalized:0.0];
+  metaDataForRank9 = [bundleCopy metaDataForRank];
+  v122 = [metaDataForRank9 objectForKey:@"burstyInteractionCount"];
   [v122 doubleValue];
   v124 = v123;
 
   if (v124 > 0.0)
   {
-    v125 = [v7 metaDataForRank];
-    v126 = [v125 objectForKey:@"burstyInteractionCount"];
+    metaDataForRank10 = [bundleCopy metaDataForRank];
+    v126 = [metaDataForRank10 objectForKey:@"burstyInteractionCount"];
     [v126 floatValue];
     v128 = v127;
 
-    v129 = [(MOEventBundleRanking *)self rankingScoreThresholdDict];
-    v130 = [v129 objectForKeyedSubscript:@"burstyInteractionCountThreshold"];
+    rankingScoreThresholdDict4 = [(MOEventBundleRanking *)self rankingScoreThresholdDict];
+    v130 = [rankingScoreThresholdDict4 objectForKeyedSubscript:@"burstyInteractionCountThreshold"];
     *&v131 = v128 / [v130 intValue];
-    [v6 setBurstyInteractionCountFeatureNormalized:v131];
+    [rankingCopy setBurstyInteractionCountFeatureNormalized:v131];
 
-    v132 = [(MOEventBundleRanking *)self rankingScoreThresholdDict];
-    v133 = [v132 objectForKeyedSubscript:@"burstyInteractionCountThreshold"];
-    v134 = [v133 intValue];
+    rankingScoreThresholdDict5 = [(MOEventBundleRanking *)self rankingScoreThresholdDict];
+    v133 = [rankingScoreThresholdDict5 objectForKeyedSubscript:@"burstyInteractionCountThreshold"];
+    intValue2 = [v133 intValue];
 
-    if (v128 > v134)
+    if (v128 > intValue2)
     {
       LODWORD(v135) = 1.0;
-      [v6 setBurstyInteractionCountFeatureNormalized:v135];
+      [rankingCopy setBurstyInteractionCountFeatureNormalized:v135];
     }
   }
 
-  [v6 setMultipleInteractionTypesFeature:0];
-  v136 = [v7 metaDataForRank];
-  v137 = [v136 objectForKey:@"multipleInteractionTypes"];
-  v138 = [v137 BOOLValue];
+  [rankingCopy setMultipleInteractionTypesFeature:0];
+  metaDataForRank11 = [bundleCopy metaDataForRank];
+  v137 = [metaDataForRank11 objectForKey:@"multipleInteractionTypes"];
+  bOOLValue = [v137 BOOLValue];
 
-  if (v138)
+  if (bOOLValue)
   {
-    [v6 setMultipleInteractionTypesFeature:1];
+    [rankingCopy setMultipleInteractionTypesFeature:1];
   }
 
-  [v6 setContactLocationWorkFeature:0];
-  v139 = [v7 metaDataForRank];
-  v140 = [v139 objectForKey:@"contactLocationWork"];
-  v141 = [v140 BOOLValue];
+  [rankingCopy setContactLocationWorkFeature:0];
+  metaDataForRank12 = [bundleCopy metaDataForRank];
+  v140 = [metaDataForRank12 objectForKey:@"contactLocationWork"];
+  bOOLValue2 = [v140 BOOLValue];
 
-  if (v141)
+  if (bOOLValue2)
   {
-    [v6 setContactLocationWorkFeature:0xFFFFFFFFLL];
+    [rankingCopy setContactLocationWorkFeature:0xFFFFFFFFLL];
   }
 
-  v142 = [v7 metaDataForRank];
-  v143 = [v142 objectForKeyedSubscript:@"isFamilyContact"];
+  metaDataForRank13 = [bundleCopy metaDataForRank];
+  v143 = [metaDataForRank13 objectForKeyedSubscript:@"isFamilyContact"];
   [v143 floatValue];
-  [v6 setIsFamilyContact:?];
+  [rankingCopy setIsFamilyContact:?];
 
-  v144 = [v7 metaDataForRank];
-  v145 = [v144 objectForKeyedSubscript:@"isCoworkerContact"];
+  metaDataForRank14 = [bundleCopy metaDataForRank];
+  v145 = [metaDataForRank14 objectForKeyedSubscript:@"isCoworkerContact"];
   [v145 floatValue];
-  [v6 setIsCoworkerContact:?];
+  [rankingCopy setIsCoworkerContact:?];
 
-  v146 = [v7 metaDataForRank];
-  v147 = [v146 objectForKeyedSubscript:@"isRepetitiveContact"];
-  [v6 setIsRepetitiveContact:{objc_msgSend(v147, "BOOLValue")}];
+  metaDataForRank15 = [bundleCopy metaDataForRank];
+  v147 = [metaDataForRank15 objectForKeyedSubscript:@"isRepetitiveContact"];
+  [rankingCopy setIsRepetitiveContact:{objc_msgSend(v147, "BOOLValue")}];
 
-  v148 = [v7 metaDataForRank];
-  v149 = [v148 objectForKeyedSubscript:@"isGroupConversation"];
-  [v6 setGroupConversationFeature:{objc_msgSend(v149, "BOOLValue")}];
+  metaDataForRank16 = [bundleCopy metaDataForRank];
+  v149 = [metaDataForRank16 objectForKeyedSubscript:@"isGroupConversation"];
+  [rankingCopy setGroupConversationFeature:{objc_msgSend(v149, "BOOLValue")}];
 
-  [v6 setWorkoutDurationFeatureNormalized:0.0];
-  v150 = [v7 metaDataForRank];
-  v151 = [v150 objectForKey:@"WorkoutDuration"];
+  [rankingCopy setWorkoutDurationFeatureNormalized:0.0];
+  metaDataForRank17 = [bundleCopy metaDataForRank];
+  v151 = [metaDataForRank17 objectForKey:@"WorkoutDuration"];
   [v151 floatValue];
   v153 = v152;
 
-  v154 = [(MOEventBundleRanking *)self rankingScoreThresholdDict];
-  v155 = [v154 objectForKeyedSubscript:@"workoutDurationThreshold"];
+  rankingScoreThresholdDict6 = [(MOEventBundleRanking *)self rankingScoreThresholdDict];
+  v155 = [rankingScoreThresholdDict6 objectForKeyedSubscript:@"workoutDurationThreshold"];
   [v155 floatValue];
   v157 = v156;
 
-  if ([v6 bundleSubType] == 202)
+  if ([rankingCopy bundleSubType] == 202)
   {
-    v159 = [(MOEventBundleRanking *)self rankingScoreThresholdDict];
-    v160 = [v159 objectForKeyedSubscript:@"WeeklySummaryWorkoutDurationThreshold"];
+    rankingScoreThresholdDict7 = [(MOEventBundleRanking *)self rankingScoreThresholdDict];
+    v160 = [rankingScoreThresholdDict7 objectForKeyedSubscript:@"WeeklySummaryWorkoutDurationThreshold"];
     [v160 floatValue];
     v157 = v161;
   }
@@ -1232,39 +1232,39 @@ LABEL_103:
       *&v158 = 1.0;
     }
 
-    [v6 setWorkoutDurationFeatureNormalized:v158];
+    [rankingCopy setWorkoutDurationFeatureNormalized:v158];
   }
 
-  v162 = [(MOEventBundleRanking *)self rankingScoreThresholdDict];
-  v163 = [v162 objectForKeyedSubscript:@"mediaPlayTimeThreshold"];
+  rankingScoreThresholdDict8 = [(MOEventBundleRanking *)self rankingScoreThresholdDict];
+  v163 = [rankingScoreThresholdDict8 objectForKeyedSubscript:@"mediaPlayTimeThreshold"];
   [v163 floatValue];
   v165 = v164;
 
   v166 = MediaWeeklySummarySubtypeVariants;
-  v167 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v6 bundleSubType]);
+  v167 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [rankingCopy bundleSubType]);
   LODWORD(v166) = [v166 containsObject:v167];
 
   if (v166)
   {
-    v168 = [(MOEventBundleRanking *)self rankingScoreThresholdDict];
-    v169 = [v168 objectForKeyedSubscript:@"weeklySummaryMediaPlayTimeThreshold"];
+    rankingScoreThresholdDict9 = [(MOEventBundleRanking *)self rankingScoreThresholdDict];
+    v169 = [rankingScoreThresholdDict9 objectForKeyedSubscript:@"weeklySummaryMediaPlayTimeThreshold"];
     [v169 floatValue];
     v165 = v170;
   }
 
-  v171 = [v7 metaDataForRank];
-  v172 = [v171 objectForKey:@"MediaActionIsRepeat"];
+  metaDataForRank18 = [bundleCopy metaDataForRank];
+  v172 = [metaDataForRank18 objectForKey:@"MediaActionIsRepeat"];
   [v172 floatValue];
-  [v6 setMediaScoreFeatureNormalized:?];
+  [rankingCopy setMediaScoreFeatureNormalized:?];
 
-  v173 = [v7 metaDataForRank];
-  v174 = [v173 objectForKey:@"MediaTotalPlayTime"];
+  metaDataForRank19 = [bundleCopy metaDataForRank];
+  v174 = [metaDataForRank19 objectForKey:@"MediaTotalPlayTime"];
   [v174 floatValue];
   v176 = v175;
 
   if (v176 > 0.0)
   {
-    [v6 mediaScoreFeatureNormalized];
+    [rankingCopy mediaScoreFeatureNormalized];
     if (v176 >= v165)
     {
       *&v177 = *&v177 + 0.5;
@@ -1276,69 +1276,69 @@ LABEL_103:
       *&v177 = v177;
     }
 
-    [v6 setMediaScoreFeatureNormalized:v177];
+    [rankingCopy setMediaScoreFeatureNormalized:v177];
   }
 
-  [v6 setItemFromMeFeature:0];
-  v178 = [v7 metaDataForRank];
-  v179 = [v178 objectForKey:@"ItemShareDirection"];
+  [rankingCopy setItemFromMeFeature:0];
+  metaDataForRank20 = [bundleCopy metaDataForRank];
+  v179 = [metaDataForRank20 objectForKey:@"ItemShareDirection"];
   if ([v179 intValue] == 1)
   {
 
 LABEL_126:
-    [v6 setItemFromMeFeature:1];
+    [rankingCopy setItemFromMeFeature:1];
     goto LABEL_127;
   }
 
-  v180 = [v7 metaDataForRank];
-  v181 = [v180 objectForKey:@"ItemShareDirection"];
-  v182 = [v181 intValue];
+  metaDataForRank21 = [bundleCopy metaDataForRank];
+  v181 = [metaDataForRank21 objectForKey:@"ItemShareDirection"];
+  intValue3 = [v181 intValue];
 
-  if (v182 == 3)
+  if (intValue3 == 3)
   {
     goto LABEL_126;
   }
 
 LABEL_127:
   v183 = 0.0;
-  [v6 setShareCountFeatureNormalized:0.0];
+  [rankingCopy setShareCountFeatureNormalized:0.0];
   v184 = v280;
-  v185 = [v280 metaDataForRank];
-  v186 = [v185 objectForKey:@"ItemAttributionsCount"];
-  v187 = [v186 intValue];
+  metaDataForRank22 = [v280 metaDataForRank];
+  v186 = [metaDataForRank22 objectForKey:@"ItemAttributionsCount"];
+  intValue4 = [v186 intValue];
 
-  if (v187 >= 1)
+  if (intValue4 >= 1)
   {
-    v188 = [v280 metaDataForRank];
-    v189 = [v188 objectForKey:@"ItemAttributionsCount"];
+    metaDataForRank23 = [v280 metaDataForRank];
+    v189 = [metaDataForRank23 objectForKey:@"ItemAttributionsCount"];
     [v189 floatValue];
     v191 = v190;
 
-    v192 = [(MOEventBundleRanking *)self rankingScoreThresholdDict];
-    v193 = [v192 objectForKeyedSubscript:@"shareCountThreshold"];
+    rankingScoreThresholdDict10 = [(MOEventBundleRanking *)self rankingScoreThresholdDict];
+    v193 = [rankingScoreThresholdDict10 objectForKeyedSubscript:@"shareCountThreshold"];
     [v193 floatValue];
     *&v195 = v191 / v194;
-    [v6 setShareCountFeatureNormalized:v195];
+    [rankingCopy setShareCountFeatureNormalized:v195];
 
-    v196 = [(MOEventBundleRanking *)self rankingScoreThresholdDict];
-    v197 = [v196 objectForKeyedSubscript:@"shareCountThreshold"];
+    rankingScoreThresholdDict11 = [(MOEventBundleRanking *)self rankingScoreThresholdDict];
+    v197 = [rankingScoreThresholdDict11 objectForKeyedSubscript:@"shareCountThreshold"];
     [v197 floatValue];
     v199 = v198;
 
     if (v191 > v199)
     {
       LODWORD(v200) = 1.0;
-      [v6 setShareCountFeatureNormalized:v200];
+      [rankingCopy setShareCountFeatureNormalized:v200];
     }
   }
 
-  v201 = [(MOEventBundleRanking *)self rankingScoreThresholdDict];
-  v202 = [v201 objectForKeyedSubscript:@"maxPeopleCountFromSocialContext"];
+  rankingScoreThresholdDict12 = [(MOEventBundleRanking *)self rankingScoreThresholdDict];
+  v202 = [rankingScoreThresholdDict12 objectForKeyedSubscript:@"maxPeopleCountFromSocialContext"];
   [v202 floatValue];
   v204 = v203;
 
-  v205 = [v280 metaDataForRank];
-  v206 = [v205 objectForKey:@"PeopleCountWeightedAverage"];
+  metaDataForRank24 = [v280 metaDataForRank];
+  v206 = [metaDataForRank24 objectForKey:@"PeopleCountWeightedAverage"];
 
   if (v206)
   {
@@ -1347,16 +1347,16 @@ LABEL_127:
   }
 
   *&v207 = v183;
-  [v6 setPeopleCountWeightedAverageNormalized:v207];
-  [v6 peopleCountWeightedAverageNormalized];
+  [rankingCopy setPeopleCountWeightedAverageNormalized:v207];
+  [rankingCopy peopleCountWeightedAverageNormalized];
   if (*&v208 > 1.0)
   {
     LODWORD(v208) = 1.0;
-    [v6 setPeopleCountWeightedAverageNormalized:v208];
+    [rankingCopy setPeopleCountWeightedAverageNormalized:v208];
   }
 
-  v209 = [v280 metaDataForRank];
-  v210 = [v209 objectForKey:@"PeopleCountMax"];
+  metaDataForRank25 = [v280 metaDataForRank];
+  v210 = [metaDataForRank25 objectForKey:@"PeopleCountMax"];
 
   if (v210)
   {
@@ -1370,33 +1370,33 @@ LABEL_127:
   }
 
   v276 = v206;
-  [v6 setPeopleCountMaxNormalized:v211];
-  [v6 peopleCountMaxNormalized];
+  [rankingCopy setPeopleCountMaxNormalized:v211];
+  [rankingCopy peopleCountMaxNormalized];
   if (*&v212 > 1.0)
   {
     LODWORD(v212) = 1.0;
-    [v6 setPeopleCountMaxNormalized:v212];
+    [rankingCopy setPeopleCountMaxNormalized:v212];
   }
 
-  v213 = [v280 endDate];
-  v214 = [v280 startDate];
-  [v213 timeIntervalSinceDate:v214];
+  endDate = [v280 endDate];
+  startDate = [v280 startDate];
+  [endDate timeIntervalSinceDate:startDate];
   v216 = v215;
 
   if (v216 <= 0.0)
   {
-    [v6 setPeopleCountWeightedSumNormalized:0.0];
+    [rankingCopy setPeopleCountWeightedSumNormalized:0.0];
   }
 
   else
   {
-    v217 = [v280 endDate];
-    v218 = [v280 startDate];
-    [v217 timeIntervalSinceDate:v218];
+    endDate2 = [v280 endDate];
+    startDate2 = [v280 startDate];
+    [endDate2 timeIntervalSinceDate:startDate2];
     v220 = v219;
 
-    v221 = [v280 metaDataForRank];
-    v222 = [v221 objectForKey:@"PeopleCountWeightedSum"];
+    metaDataForRank26 = [v280 metaDataForRank];
+    v222 = [metaDataForRank26 objectForKey:@"PeopleCountWeightedSum"];
 
     if (v222)
     {
@@ -1410,22 +1410,22 @@ LABEL_127:
       v224 = 0.0;
     }
 
-    [v6 setPeopleCountWeightedSumNormalized:v224];
-    [v6 peopleCountWeightedSumNormalized];
+    [rankingCopy setPeopleCountWeightedSumNormalized:v224];
+    [rankingCopy peopleCountWeightedSumNormalized];
     if (*&v225 > 1.0)
     {
       LODWORD(v225) = 1.0;
-      [v6 setPeopleCountWeightedSumNormalized:v225];
+      [rankingCopy setPeopleCountWeightedSumNormalized:v225];
     }
   }
 
-  v226 = [v280 metaDataForRank];
-  v227 = [v226 objectForKey:@"PeopleDensityWeightedAverage"];
+  metaDataForRank27 = [v280 metaDataForRank];
+  v227 = [metaDataForRank27 objectForKey:@"PeopleDensityWeightedAverage"];
 
   v229 = 0.0;
   if (v227)
   {
-    [v6 interestingPOIFeature];
+    [rankingCopy interestingPOIFeature];
     if (v230 > 0.0 || [v280 interfaceType] == 1)
     {
       [v227 floatValue];
@@ -1434,16 +1434,16 @@ LABEL_127:
   }
 
   *&v228 = v229;
-  [v6 setPeopleDensityWeightedAverageNormalized:v228];
-  [v6 peopleDensityWeightedAverageNormalized];
+  [rankingCopy setPeopleDensityWeightedAverageNormalized:v228];
+  [rankingCopy peopleDensityWeightedAverageNormalized];
   if (*&v231 > 1.0)
   {
     LODWORD(v231) = 1.0;
-    [v6 setPeopleDensityWeightedAverageNormalized:v231];
+    [rankingCopy setPeopleDensityWeightedAverageNormalized:v231];
   }
 
-  v232 = [v280 metaDataForRank];
-  v233 = [v232 objectForKey:@"PeopleDensityMax"];
+  metaDataForRank28 = [v280 metaDataForRank];
+  v233 = [metaDataForRank28 objectForKey:@"PeopleDensityMax"];
 
   if (v233)
   {
@@ -1456,30 +1456,30 @@ LABEL_127:
     v234 = 0.0;
   }
 
-  [v6 setPeopleDensityMaxNormalized:v234];
-  [v6 peopleDensityMaxNormalized];
+  [rankingCopy setPeopleDensityMaxNormalized:v234];
+  [rankingCopy peopleDensityMaxNormalized];
   v236 = 1.0;
   if (*&v235 > 1.0)
   {
     LODWORD(v235) = 1.0;
-    [v6 setPeopleDensityMaxNormalized:v235];
+    [rankingCopy setPeopleDensityMaxNormalized:v235];
   }
 
-  v237 = [v280 metaDataForRank];
-  v238 = [v237 objectForKeyedSubscript:@"TimeAtHomeDuration"];
+  metaDataForRank29 = [v280 metaDataForRank];
+  v238 = [metaDataForRank29 objectForKeyedSubscript:@"TimeAtHomeDuration"];
   [v238 floatValue];
   v240 = v239;
-  v241 = [(MOEventBundleRanking *)v279 rankingScoreThresholdDict];
-  v242 = [v241 objectForKeyedSubscript:@"timeAtHomeDurationThreshold"];
+  rankingScoreThresholdDict13 = [(MOEventBundleRanking *)selfCopy rankingScoreThresholdDict];
+  v242 = [rankingScoreThresholdDict13 objectForKeyedSubscript:@"timeAtHomeDurationThreshold"];
   [v242 floatValue];
   *&v244 = v240 / v243;
-  [v6 setTimeAtHomeDuration:v244];
+  [rankingCopy setTimeAtHomeDuration:v244];
 
-  v245 = [v280 metaDataForRank];
-  v246 = [v245 objectForKey:@"StateOfMindLabels"];
+  metaDataForRank30 = [v280 metaDataForRank];
+  v246 = [metaDataForRank30 objectForKey:@"StateOfMindLabels"];
 
-  v247 = [(MOEventBundleRanking *)v279 rankingScoreThresholdDict];
-  v248 = [v247 objectForKeyedSubscript:@"stateOfMindLabelCountThreshold"];
+  rankingScoreThresholdDict14 = [(MOEventBundleRanking *)selfCopy rankingScoreThresholdDict];
+  v248 = [rankingScoreThresholdDict14 objectForKeyedSubscript:@"stateOfMindLabelCountThreshold"];
   [v248 doubleValue];
   v250 = v249;
 
@@ -1491,12 +1491,12 @@ LABEL_127:
   }
 
   *&v251 = v236;
-  [v6 setStateOfMindLabelCountNormalized:v251];
-  v252 = [v280 metaDataForRank];
-  v253 = [v252 objectForKey:@"StateOfMindDomains"];
+  [rankingCopy setStateOfMindLabelCountNormalized:v251];
+  metaDataForRank31 = [v280 metaDataForRank];
+  v253 = [metaDataForRank31 objectForKey:@"StateOfMindDomains"];
 
-  v254 = [(MOEventBundleRanking *)v279 rankingScoreThresholdDict];
-  v255 = [v254 objectForKeyedSubscript:@"stateOfMindDomainCountThreshold"];
+  rankingScoreThresholdDict15 = [(MOEventBundleRanking *)selfCopy rankingScoreThresholdDict];
+  v255 = [rankingScoreThresholdDict15 objectForKeyedSubscript:@"stateOfMindDomainCountThreshold"];
   [v255 doubleValue];
   v257 = v256;
 
@@ -1508,81 +1508,81 @@ LABEL_127:
     *&v259 = v259;
   }
 
-  [v6 setStateOfMindDomainCountNormalized:v259];
-  v260 = [v280 metaDataForRank];
-  v261 = [v260 objectForKey:@"StateOfMindLoggedIn3pApp"];
+  [rankingCopy setStateOfMindDomainCountNormalized:v259];
+  metaDataForRank32 = [v280 metaDataForRank];
+  v261 = [metaDataForRank32 objectForKey:@"StateOfMindLoggedIn3pApp"];
   *&v262 = [v261 BOOLValue];
-  [v6 setStateOfMindLoggedIn3pApp:v262];
+  [rankingCopy setStateOfMindLoggedIn3pApp:v262];
 
-  v263 = [v280 metaDataForRank];
-  v264 = [v263 objectForKey:@"StateOfMindLoggedInJournalApp"];
+  metaDataForRank33 = [v280 metaDataForRank];
+  v264 = [metaDataForRank33 objectForKey:@"StateOfMindLoggedInJournalApp"];
   *&v265 = [v264 BOOLValue];
-  [v6 setStateOfMindLoggedInJournalApp:v265];
+  [rankingCopy setStateOfMindLoggedInJournalApp:v265];
 
-  [v6 setIsBundleAggregated:{objc_msgSend(v280, "isAggregatedAndSuppressed")}];
-  [v6 setSummarizationGranularity:{objc_msgSend(v280, "summarizationGranularity")}];
-  [v6 setAvgSubBundleGoodnessScores:0.0];
+  [rankingCopy setIsBundleAggregated:{objc_msgSend(v280, "isAggregatedAndSuppressed")}];
+  [rankingCopy setSummarizationGranularity:{objc_msgSend(v280, "summarizationGranularity")}];
+  [rankingCopy setAvgSubBundleGoodnessScores:0.0];
   if ([v280 interfaceType] == 15 || objc_msgSend(v280, "interfaceType") == 16)
   {
-    v266 = [v280 clusterMetadata];
-    v267 = [v266 subBundleGoodnessScores];
-    v268 = [v267 valueForKeyPath:@"@avg.self"];
+    clusterMetadata = [v280 clusterMetadata];
+    subBundleGoodnessScores = [clusterMetadata subBundleGoodnessScores];
+    v268 = [subBundleGoodnessScores valueForKeyPath:@"@avg.self"];
     [v268 floatValue];
-    [v6 setAvgSubBundleGoodnessScores:?];
+    [rankingCopy setAvgSubBundleGoodnessScores:?];
 
-    v269 = [v280 clusterMetadata];
-    v270 = [v269 subBundleGoodnessScores];
-    v271 = [v270 valueForKeyPath:@"@max.self"];
+    clusterMetadata2 = [v280 clusterMetadata];
+    subBundleGoodnessScores2 = [clusterMetadata2 subBundleGoodnessScores];
+    v271 = [subBundleGoodnessScores2 valueForKeyPath:@"@max.self"];
     [v271 floatValue];
-    [v6 setMaxSubBundleGoodnessScores:?];
+    [rankingCopy setMaxSubBundleGoodnessScores:?];
 
     v184 = v280;
-    v272 = [v280 clusterMetadata];
-    v273 = [v272 subBundleGoodnessScores];
-    [v6 setSubBundleCount:{objc_msgSend(v273, "count")}];
+    clusterMetadata3 = [v280 clusterMetadata];
+    subBundleGoodnessScores3 = [clusterMetadata3 subBundleGoodnessScores];
+    [rankingCopy setSubBundleCount:{objc_msgSend(subBundleGoodnessScores3, "count")}];
   }
 
-  [v6 setIsSensitiveLocation:{objc_msgSend(v184, "isSensitive")}];
-  v274 = [v184 metaDataForRank];
-  v275 = [v274 objectForKey:@"BusinessContact"];
+  [rankingCopy setIsSensitiveLocation:{objc_msgSend(v184, "isSensitive")}];
+  metaDataForRank34 = [v184 metaDataForRank];
+  v275 = [metaDataForRank34 objectForKey:@"BusinessContact"];
 
-  [v6 setIsBusinessContact:{objc_msgSend(v275, "isEqualToNumber:", &off_10036BC50)}];
+  [rankingCopy setIsBusinessContact:{objc_msgSend(v275, "isEqualToNumber:", &off_10036BC50)}];
 }
 
-- (void)_fillRichnessInfoForRanking:(id)a3 forBundle:(id)a4
+- (void)_fillRichnessInfoForRanking:(id)ranking forBundle:(id)bundle
 {
-  v5 = a3;
-  v6 = a4;
-  [v5 setBundleInterfaceType:{objc_msgSend(v6, "interfaceType")}];
-  [v5 setBundleSubType:{objc_msgSend(v6, "bundleSubType")}];
-  [v5 setBundleSuperType:{objc_msgSend(v6, "bundleSuperType")}];
-  [v5 setEvergreenType:0];
-  [v5 setEvergreenPromptExists:0];
-  if ([v6 interfaceType] == 11)
+  rankingCopy = ranking;
+  bundleCopy = bundle;
+  [rankingCopy setBundleInterfaceType:{objc_msgSend(bundleCopy, "interfaceType")}];
+  [rankingCopy setBundleSubType:{objc_msgSend(bundleCopy, "bundleSubType")}];
+  [rankingCopy setBundleSuperType:{objc_msgSend(bundleCopy, "bundleSuperType")}];
+  [rankingCopy setEvergreenType:0];
+  [rankingCopy setEvergreenPromptExists:0];
+  if ([bundleCopy interfaceType] == 11)
   {
-    v7 = [v6 resources];
-    v8 = [v7 count];
+    resources = [bundleCopy resources];
+    v8 = [resources count];
 
     if (v8)
     {
-      v9 = [v6 resources];
-      v10 = [v9 firstObject];
+      resources2 = [bundleCopy resources];
+      firstObject = [resources2 firstObject];
 
-      v11 = [v10 name];
-      [v5 setEvergreenType:v11];
+      name = [firstObject name];
+      [rankingCopy setEvergreenType:name];
 
       v12 = _mo_log_facility_get_os_log(&MOLogFacilityRanking);
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
       {
-        [MOEventBundleRanking _fillRichnessInfoForRanking:v5 forBundle:?];
+        [MOEventBundleRanking _fillRichnessInfoForRanking:rankingCopy forBundle:?];
       }
 
-      v13 = [v10 promptIndexes];
-      v14 = [v13 count] == 0;
+      promptIndexes = [firstObject promptIndexes];
+      v14 = [promptIndexes count] == 0;
 
       if (!v14)
       {
-        [v5 setEvergreenPromptExists:1];
+        [rankingCopy setEvergreenPromptExists:1];
         v15 = _mo_log_facility_get_os_log(&MOLogFacilityRanking);
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
         {
@@ -1593,8 +1593,8 @@ LABEL_127:
   }
 
   v16 = visitSubtypeVariants;
-  v17 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v6 bundleSubType]);
-  if (([v16 containsObject:v17] & 1) != 0 || objc_msgSend(v6, "bundleSubType") == 105)
+  v17 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [bundleCopy bundleSubType]);
+  if (([v16 containsObject:v17] & 1) != 0 || objc_msgSend(bundleCopy, "bundleSubType") == 105)
   {
     v18 = 0;
   }
@@ -1602,20 +1602,20 @@ LABEL_127:
   else
   {
     v37 = phoneSensedWalkingVariants;
-    v16 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v6 bundleSubType]);
-    if (([v37 containsObject:v16] & 1) == 0 && objc_msgSend(v6, "bundleSuperType") != 10)
+    v16 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [bundleCopy bundleSubType]);
+    if (([v37 containsObject:v16] & 1) == 0 && objc_msgSend(bundleCopy, "bundleSuperType") != 10)
     {
 
 LABEL_92:
-      [v5 setAllPlaceNames:emptyStringSet];
+      [rankingCopy setAllPlaceNames:emptyStringSet];
       goto LABEL_30;
     }
 
     v18 = 1;
   }
 
-  v19 = [v6 place];
-  if (v19)
+  place = [bundleCopy place];
+  if (place)
   {
 
     if (v18)
@@ -1625,12 +1625,12 @@ LABEL_92:
     goto LABEL_17;
   }
 
-  v31 = [v6 places];
+  places = [bundleCopy places];
 
   if (v18)
   {
 
-    if (!v31)
+    if (!places)
     {
       goto LABEL_92;
     }
@@ -1639,7 +1639,7 @@ LABEL_92:
   else
   {
 
-    if (!v31)
+    if (!places)
     {
       goto LABEL_92;
     }
@@ -1652,30 +1652,30 @@ LABEL_17:
   v109 = __Block_byref_object_copy__35;
   v110 = __Block_byref_object_dispose__35;
   v111 = objc_opt_new();
-  v20 = [v6 place];
-  v21 = [v20 placeName];
-  v22 = v21 == 0;
+  place2 = [bundleCopy place];
+  placeName = [place2 placeName];
+  v22 = placeName == 0;
 
   if (!v22)
   {
     v23 = v107[5];
-    v24 = [v6 place];
-    v25 = [v24 placeName];
-    [v23 addObject:v25];
+    place3 = [bundleCopy place];
+    placeName2 = [place3 placeName];
+    [v23 addObject:placeName2];
   }
 
-  v26 = [v6 places];
-  v27 = v26 == 0;
+  places2 = [bundleCopy places];
+  v27 = places2 == 0;
 
   if (!v27)
   {
-    v28 = [v6 places];
+    places3 = [bundleCopy places];
     v105[0] = _NSConcreteStackBlock;
     v105[1] = 3221225472;
     v105[2] = __62__MOEventBundleRanking__fillRichnessInfoForRanking_forBundle___block_invoke;
     v105[3] = &unk_10033E668;
     v105[4] = &v106;
-    [v28 enumerateObjectsUsingBlock:v105];
+    [places3 enumerateObjectsUsingBlock:v105];
   }
 
   v29 = [v107[5] count];
@@ -1689,7 +1689,7 @@ LABEL_17:
     v30 = emptyStringSet;
   }
 
-  [v5 setAllPlaceNames:v30];
+  [rankingCopy setAllPlaceNames:v30];
   if (v29)
   {
   }
@@ -1697,9 +1697,9 @@ LABEL_17:
   _Block_object_dispose(&v106, 8);
 
 LABEL_30:
-  if ([v6 bundleSuperType] != 3 || (objc_msgSend(v6, "persons"), v32 = objc_claimAutoreleasedReturnValue(), v33 = v32 == 0, v32, v33))
+  if ([bundleCopy bundleSuperType] != 3 || (objc_msgSend(bundleCopy, "persons"), v32 = objc_claimAutoreleasedReturnValue(), v33 = v32 == 0, v32, v33))
   {
-    [v5 setAllContactIdentifiers:emptyStringSet];
+    [rankingCopy setAllContactIdentifiers:emptyStringSet];
   }
 
   else
@@ -1710,13 +1710,13 @@ LABEL_30:
     v109 = __Block_byref_object_copy__35;
     v110 = __Block_byref_object_dispose__35;
     v111 = objc_opt_new();
-    v34 = [v6 persons];
+    persons = [bundleCopy persons];
     v104[0] = _NSConcreteStackBlock;
     v104[1] = 3221225472;
     v104[2] = __62__MOEventBundleRanking__fillRichnessInfoForRanking_forBundle___block_invoke_2;
     v104[3] = &unk_10033E690;
     v104[4] = &v106;
-    [v34 enumerateObjectsUsingBlock:v104];
+    [persons enumerateObjectsUsingBlock:v104];
 
     v35 = [v107[5] count];
     if (v35)
@@ -1729,7 +1729,7 @@ LABEL_30:
       v36 = emptyStringSet;
     }
 
-    [v5 setAllContactIdentifiers:v36];
+    [rankingCopy setAllContactIdentifiers:v36];
     if (v35)
     {
     }
@@ -1738,26 +1738,26 @@ LABEL_30:
   }
 
   v38 = workoutSubtypeVariants;
-  v39 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v6 bundleSubType]);
+  v39 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [bundleCopy bundleSubType]);
   if ([v38 containsObject:v39])
   {
     goto LABEL_48;
   }
 
   v40 = phoneSensedWalkingVariants;
-  v41 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v6 bundleSubType]);
-  if (([v40 containsObject:v41] & 1) != 0 || objc_msgSend(v6, "bundleSubType") == 203)
+  v41 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [bundleCopy bundleSubType]);
+  if (([v40 containsObject:v41] & 1) != 0 || objc_msgSend(bundleCopy, "bundleSubType") == 203)
   {
 
 LABEL_48:
     goto LABEL_49;
   }
 
-  v83 = [v6 bundleSubType] == 202;
+  v83 = [bundleCopy bundleSubType] == 202;
 
   if (!v83)
   {
-    [v5 setWorkoutTypes:emptyStringSet];
+    [rankingCopy setWorkoutTypes:emptyStringSet];
     goto LABEL_61;
   }
 
@@ -1768,40 +1768,40 @@ LABEL_49:
   v109 = __Block_byref_object_copy__35;
   v110 = __Block_byref_object_dispose__35;
   v111 = objc_opt_new();
-  v42 = [v6 action];
-  v43 = [v42 actionName];
-  if (!v43)
+  action = [bundleCopy action];
+  actionName = [action actionName];
+  if (!actionName)
   {
 LABEL_52:
 
     goto LABEL_53;
   }
 
-  v44 = [v6 bundleSubType] == 202;
+  v44 = [bundleCopy bundleSubType] == 202;
 
   if (!v44)
   {
     v45 = v107[5];
-    v42 = [v6 action];
-    v46 = [v42 actionName];
-    [v45 addObject:v46];
+    action = [bundleCopy action];
+    actionName2 = [action actionName];
+    [v45 addObject:actionName2];
 
     goto LABEL_52;
   }
 
 LABEL_53:
-  v47 = [v6 actions];
-  v48 = v47 == 0;
+  actions = [bundleCopy actions];
+  v48 = actions == 0;
 
   if (!v48)
   {
-    v49 = [v6 actions];
+    actions2 = [bundleCopy actions];
     v103[0] = _NSConcreteStackBlock;
     v103[1] = 3221225472;
     v103[2] = __62__MOEventBundleRanking__fillRichnessInfoForRanking_forBundle___block_invoke_3;
     v103[3] = &unk_10033E6B8;
     v103[4] = &v106;
-    [v49 enumerateObjectsUsingBlock:v103];
+    [actions2 enumerateObjectsUsingBlock:v103];
   }
 
   v50 = [v107[5] count];
@@ -1815,7 +1815,7 @@ LABEL_53:
     v51 = emptyStringSet;
   }
 
-  [v5 setWorkoutTypes:v51];
+  [rankingCopy setWorkoutTypes:v51];
   if (v50)
   {
   }
@@ -1829,7 +1829,7 @@ LABEL_61:
   v101[3] = &unk_10033AA48;
   v52 = objc_alloc_init(NSCountedSet);
   v102 = v52;
-  [v6 withResourcesUsingBlock:v101];
+  [bundleCopy withResourcesUsingBlock:v101];
   v99 = 0u;
   v100 = 0u;
   v97 = 0u;
@@ -1875,27 +1875,27 @@ LABEL_61:
 
   [v86 setObject:&off_10036E8E0 forKey:@"RankingRichnessSecondaryPriorityScoreKey"];
   [v86 setObject:&off_10036E8E0 forKey:@"RankingRichnessAuxiliaryPriorityScoreKey"];
-  [v5 setNumPhotoAssetsResourcesNormalized:0.0];
-  [v5 setNumMediaTypeResourcesNormalized:0.0];
+  [rankingCopy setNumPhotoAssetsResourcesNormalized:0.0];
+  [rankingCopy setNumMediaTypeResourcesNormalized:0.0];
   v61 = objc_opt_new();
   [v61 setObject:v86 forKey:@"NumUniqueResourceTypesNormalizedKey"];
   v93[0] = _NSConcreteStackBlock;
   v93[1] = 3221225472;
   v93[2] = __62__MOEventBundleRanking__fillRichnessInfoForRanking_forBundle___block_invoke_526;
   v93[3] = &unk_10033E6E0;
-  v85 = v5;
+  v85 = rankingCopy;
   v94 = v85;
   v87 = v61;
   v95 = v87;
-  v96 = v6;
+  v96 = bundleCopy;
   v84 = v96;
   [v96 withResourcesUsingBlock:v93];
   v91 = 0u;
   v92 = 0u;
   v89 = 0u;
   v90 = 0u;
-  v62 = [v87 allKeys];
-  v63 = [v62 countByEnumeratingWithState:&v89 objects:v112 count:16];
+  allKeys = [v87 allKeys];
+  v63 = [allKeys countByEnumeratingWithState:&v89 objects:v112 count:16];
   if (v63)
   {
     v64 = *v90;
@@ -1905,7 +1905,7 @@ LABEL_61:
       {
         if (*v90 != v64)
         {
-          objc_enumerationMutation(v62);
+          objc_enumerationMutation(allKeys);
         }
 
         v66 = *(*(&v89 + 1) + 8 * j);
@@ -1953,7 +1953,7 @@ LABEL_61:
         }
       }
 
-      v63 = [v62 countByEnumeratingWithState:&v89 objects:v112 count:16];
+      v63 = [allKeys countByEnumeratingWithState:&v89 objects:v112 count:16];
     }
 
     while (v63);
@@ -2186,20 +2186,20 @@ LABEL_36:
   [*(a1 + 40) setObject:v8 forKey:v6];
 }
 
-- (void)_fillDistincnessInfoForRanking:(id)a3 forBundle:(id)a4
+- (void)_fillDistincnessInfoForRanking:(id)ranking forBundle:(id)bundle
 {
-  v5 = a3;
-  v6 = a4;
-  [v5 setNumAnomalyEventsNormalized:0.0];
-  [v5 setNumTrendEventsNormalized:0.0];
-  [v5 setNumRoutineEventsNormalized:0.0];
-  [v5 setNumStateOfMindEventsNormalized:0.0];
+  rankingCopy = ranking;
+  bundleCopy = bundle;
+  [rankingCopy setNumAnomalyEventsNormalized:0.0];
+  [rankingCopy setNumTrendEventsNormalized:0.0];
+  [rankingCopy setNumRoutineEventsNormalized:0.0];
+  [rankingCopy setNumStateOfMindEventsNormalized:0.0];
   v47 = objc_opt_new();
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
-  obj = [v6 events];
+  obj = [bundleCopy events];
   v7 = [obj countByEnumeratingWithState:&v54 objects:v58 count:16];
   if (v7)
   {
@@ -2216,8 +2216,8 @@ LABEL_36:
         v10 = *(*(&v54 + 1) + 8 * i);
         if ([v10 provider] == 5)
         {
-          v11 = [v10 patterns];
-          v12 = [v11 objectForKeyedSubscript:@"kEventPatternAnomalyFeatureType"];
+          patterns = [v10 patterns];
+          v12 = [patterns objectForKeyedSubscript:@"kEventPatternAnomalyFeatureType"];
           v13 = [v12 isEqual:&off_10036BC68];
 
           if (v13)
@@ -2225,26 +2225,26 @@ LABEL_36:
             continue;
           }
 
-          v14 = [v10 patterns];
-          v15 = [v14 objectForKeyedSubscript:@"kEventPatternType"];
-          v16 = [v15 intValue];
+          patterns2 = [v10 patterns];
+          v15 = [patterns2 objectForKeyedSubscript:@"kEventPatternType"];
+          intValue = [v15 intValue];
 
-          switch(v16)
+          switch(intValue)
           {
             case 2u:
-              [v5 numRoutineEventsNormalized];
+              [rankingCopy numRoutineEventsNormalized];
               *&v22 = v21 + 1.0;
-              [v5 setNumRoutineEventsNormalized:v22];
+              [rankingCopy setNumRoutineEventsNormalized:v22];
               break;
             case 1u:
-              [v5 numTrendEventsNormalized];
+              [rankingCopy numTrendEventsNormalized];
               *&v20 = v19 + 1.0;
-              [v5 setNumTrendEventsNormalized:v20];
+              [rankingCopy setNumTrendEventsNormalized:v20];
               break;
             case 0u:
-              [v5 numAnomalyEventsNormalized];
+              [rankingCopy numAnomalyEventsNormalized];
               *&v18 = v17 + 1.0;
-              [v5 setNumAnomalyEventsNormalized:v18];
+              [rankingCopy setNumAnomalyEventsNormalized:v18];
               break;
           }
         }
@@ -2258,14 +2258,14 @@ LABEL_36:
         v49[2] = __65__MOEventBundleRanking__fillDistincnessInfoForRanking_forBundle___block_invoke;
         v49[3] = &unk_10033C2A0;
         v49[4] = &v50;
-        [v6 withResourcesUsingBlock:v49];
+        [bundleCopy withResourcesUsingBlock:v49];
         if ([v10 category] == 24 && objc_msgSend(v10, "provider") != 5 && *(v51 + 24) == 1)
         {
-          [v5 numStateOfMindEventsNormalized];
+          [rankingCopy numStateOfMindEventsNormalized];
           *&v24 = v23 + 1.0;
-          [v5 setNumStateOfMindEventsNormalized:v24];
-          v25 = [v10 identifierFromProvider];
-          [v47 addObject:v25];
+          [rankingCopy setNumStateOfMindEventsNormalized:v24];
+          identifierFromProvider = [v10 identifierFromProvider];
+          [v47 addObject:identifierFromProvider];
         }
 
         _Block_object_dispose(&v50, 8);
@@ -2277,39 +2277,39 @@ LABEL_36:
     while (v7);
   }
 
-  [v5 numAnomalyEventsNormalized];
+  [rankingCopy numAnomalyEventsNormalized];
   *&v27 = v26 * 0.25;
-  [v5 setNumAnomalyEventsNormalized:v27];
-  [v5 numAnomalyEventsNormalized];
+  [rankingCopy setNumAnomalyEventsNormalized:v27];
+  [rankingCopy numAnomalyEventsNormalized];
   if (*&v28 > 1.0)
   {
     LODWORD(v28) = 1.0;
-    [v5 setNumAnomalyEventsNormalized:v28];
+    [rankingCopy setNumAnomalyEventsNormalized:v28];
   }
 
-  [v5 numTrendEventsNormalized];
+  [rankingCopy numTrendEventsNormalized];
   *&v30 = v29 * 0.25;
-  [v5 setNumTrendEventsNormalized:v30];
-  [v5 numTrendEventsNormalized];
+  [rankingCopy setNumTrendEventsNormalized:v30];
+  [rankingCopy numTrendEventsNormalized];
   if (*&v31 > 1.0)
   {
     LODWORD(v31) = 1.0;
-    [v5 setNumTrendEventsNormalized:v31];
+    [rankingCopy setNumTrendEventsNormalized:v31];
   }
 
-  [v5 numRoutineEventsNormalized];
+  [rankingCopy numRoutineEventsNormalized];
   *&v33 = v32 * 0.25;
-  [v5 setNumRoutineEventsNormalized:v33];
-  [v5 numRoutineEventsNormalized];
+  [rankingCopy setNumRoutineEventsNormalized:v33];
+  [rankingCopy numRoutineEventsNormalized];
   if (*&v34 > 1.0)
   {
     LODWORD(v34) = 1.0;
-    [v5 setNumRoutineEventsNormalized:v34];
+    [rankingCopy setNumRoutineEventsNormalized:v34];
   }
 
-  if ([v5 bundleInterfaceType] == 4)
+  if ([rankingCopy bundleInterfaceType] == 4)
   {
-    [v5 numAnomalyEventsNormalized];
+    [rankingCopy numAnomalyEventsNormalized];
     v36 = v35 <= 0.0;
     v37 = 0.0;
     if (!v36)
@@ -2317,8 +2317,8 @@ LABEL_36:
       *&v37 = 1.0;
     }
 
-    [v5 setNumAnomalyEventsNormalized:v37];
-    [v5 numTrendEventsNormalized];
+    [rankingCopy setNumAnomalyEventsNormalized:v37];
+    [rankingCopy numTrendEventsNormalized];
     v36 = v38 <= 0.0;
     v39 = 0.0;
     if (!v36)
@@ -2326,8 +2326,8 @@ LABEL_36:
       *&v39 = 1.0;
     }
 
-    [v5 setNumTrendEventsNormalized:v39];
-    [v5 numRoutineEventsNormalized];
+    [rankingCopy setNumTrendEventsNormalized:v39];
+    [rankingCopy numRoutineEventsNormalized];
     v36 = v40 <= 0.0;
     v41 = 0.0;
     if (!v36)
@@ -2335,10 +2335,10 @@ LABEL_36:
       *&v41 = 1.0;
     }
 
-    [v5 setNumRoutineEventsNormalized:v41];
+    [rankingCopy setNumRoutineEventsNormalized:v41];
   }
 
-  [v5 numStateOfMindEventsNormalized];
+  [rankingCopy numStateOfMindEventsNormalized];
   if (v42 <= 0.0)
   {
     v46 = emptyStringSet;
@@ -2346,20 +2346,20 @@ LABEL_36:
 
   else
   {
-    [v5 numStateOfMindEventsNormalized];
+    [rankingCopy numStateOfMindEventsNormalized];
     *&v44 = v43 * 0.25;
-    [v5 setNumStateOfMindEventsNormalized:v44];
-    [v5 numStateOfMindEventsNormalized];
+    [rankingCopy setNumStateOfMindEventsNormalized:v44];
+    [rankingCopy numStateOfMindEventsNormalized];
     v46 = v47;
     if (*&v45 > 1.0)
     {
       LODWORD(v45) = 1.0;
-      [v5 setNumStateOfMindEventsNormalized:{v47, v45}];
+      [rankingCopy setNumStateOfMindEventsNormalized:{v47, v45}];
       v46 = v47;
     }
   }
 
-  [v5 setAllStateOfMindIdentifiers:v46];
+  [rankingCopy setAllStateOfMindIdentifiers:v46];
 }
 
 id __65__MOEventBundleRanking__fillDistincnessInfoForRanking_forBundle___block_invoke(uint64_t a1, void *a2, _BYTE *a3)
@@ -2374,69 +2374,69 @@ id __65__MOEventBundleRanking__fillDistincnessInfoForRanking_forBundle___block_i
   return result;
 }
 
-- (void)_fillEngagementInfoForRanking:(id)a3 forBundle:(id)a4
+- (void)_fillEngagementInfoForRanking:(id)ranking forBundle:(id)bundle
 {
-  v25 = a3;
-  v6 = a4;
-  [v25 setSuggestionIsDeleted:{objc_msgSend(v6, "hasSuggestionEngagementEvent:", @"suggestionsDeleted"}];
-  [v25 setSuggestionIsSelected:{objc_msgSend(v6, "hasSuggestionEngagementEvent:", @"suggestionsSelected"}];
-  [v25 setSuggestionQuickAddEntry:{objc_msgSend(v6, "hasSuggestionEngagementEvent:", @"suggestionsQuickAddEntry"}];
-  [v25 setJournalEntryIsEdited:{objc_msgSend(v6, "hasAppEntryEngagementEvent:", @"appEntryEdited"}];
-  [v25 setJournalEntryIsCreated:{objc_msgSend(v6, "hasAppEntryEngagementEvent:", @"appEntryCreated"}];
-  [v25 setJournalEntryIsCancelled:{objc_msgSend(v6, "hasAppEntryEngagementEvent:", @"appEntryCancelled"}];
-  [v25 setJournalEntryIsDeleted:{objc_msgSend(v6, "hasAppEntryEngagementEvent:", @"appEntryDeleted"}];
-  *&v7 = [v6 suggestionEngagementViewCount];
-  [v25 setViewCount:v7];
-  [v25 setViewCountNormalized:0.0];
-  v8 = [(MOEventBundleRanking *)self viewCountBasedAdjustmentParameterDict];
-  v9 = [v8 objectForKeyedSubscript:@"minDaysElapsedForAdjustment"];
+  rankingCopy = ranking;
+  bundleCopy = bundle;
+  [rankingCopy setSuggestionIsDeleted:{objc_msgSend(bundleCopy, "hasSuggestionEngagementEvent:", @"suggestionsDeleted"}];
+  [rankingCopy setSuggestionIsSelected:{objc_msgSend(bundleCopy, "hasSuggestionEngagementEvent:", @"suggestionsSelected"}];
+  [rankingCopy setSuggestionQuickAddEntry:{objc_msgSend(bundleCopy, "hasSuggestionEngagementEvent:", @"suggestionsQuickAddEntry"}];
+  [rankingCopy setJournalEntryIsEdited:{objc_msgSend(bundleCopy, "hasAppEntryEngagementEvent:", @"appEntryEdited"}];
+  [rankingCopy setJournalEntryIsCreated:{objc_msgSend(bundleCopy, "hasAppEntryEngagementEvent:", @"appEntryCreated"}];
+  [rankingCopy setJournalEntryIsCancelled:{objc_msgSend(bundleCopy, "hasAppEntryEngagementEvent:", @"appEntryCancelled"}];
+  [rankingCopy setJournalEntryIsDeleted:{objc_msgSend(bundleCopy, "hasAppEntryEngagementEvent:", @"appEntryDeleted"}];
+  *&v7 = [bundleCopy suggestionEngagementViewCount];
+  [rankingCopy setViewCount:v7];
+  [rankingCopy setViewCountNormalized:0.0];
+  viewCountBasedAdjustmentParameterDict = [(MOEventBundleRanking *)self viewCountBasedAdjustmentParameterDict];
+  v9 = [viewCountBasedAdjustmentParameterDict objectForKeyedSubscript:@"minDaysElapsedForAdjustment"];
   [v9 floatValue];
   v11 = v10;
 
-  v12 = [(MOEventBundleRanking *)self viewCountBasedAdjustmentParameterDict];
-  v13 = [v12 objectForKeyedSubscript:@"minViewCountForAdjustment"];
+  viewCountBasedAdjustmentParameterDict2 = [(MOEventBundleRanking *)self viewCountBasedAdjustmentParameterDict];
+  v13 = [viewCountBasedAdjustmentParameterDict2 objectForKeyedSubscript:@"minViewCountForAdjustment"];
   [v13 floatValue];
   v15 = v14;
 
-  v16 = [(MOEventBundleRanking *)self viewCountBasedAdjustmentParameterDict];
-  v17 = [v16 objectForKeyedSubscript:@"maxViewCountForAdjustment"];
+  viewCountBasedAdjustmentParameterDict3 = [(MOEventBundleRanking *)self viewCountBasedAdjustmentParameterDict];
+  v17 = [viewCountBasedAdjustmentParameterDict3 objectForKeyedSubscript:@"maxViewCountForAdjustment"];
   [v17 floatValue];
   v19 = v18;
 
-  if ([v6 suggestionEngagementViewCount])
+  if ([bundleCopy suggestionEngagementViewCount])
   {
-    if (([v6 hasSuggestionEngagementEvent:@"suggestionsSelected"] & 1) == 0 && (objc_msgSend(v6, "hasSuggestionEngagementEvent:", @"suggestionsQuickAddEntry") & 1) == 0 && (objc_msgSend(v6, "hasSuggestionEngagementEvent:", @"suggestionsDeleted") & 1) == 0)
+    if (([bundleCopy hasSuggestionEngagementEvent:@"suggestionsSelected"] & 1) == 0 && (objc_msgSend(bundleCopy, "hasSuggestionEngagementEvent:", @"suggestionsQuickAddEntry") & 1) == 0 && (objc_msgSend(bundleCopy, "hasSuggestionEngagementEvent:", @"suggestionsDeleted") & 1) == 0)
     {
-      [v25 bundleRecencyDaysElapsed];
+      [rankingCopy bundleRecencyDaysElapsed];
       if (v20 > v11)
       {
-        v21 = fmax(([v6 suggestionEngagementViewCount] - v15), 0.0);
+        v21 = fmax(([bundleCopy suggestionEngagementViewCount] - v15), 0.0);
         *&v21 = v21;
-        [v25 setViewCountNormalized:v21];
-        [v25 viewCountNormalized];
+        [rankingCopy setViewCountNormalized:v21];
+        [rankingCopy viewCountNormalized];
         *&v23 = v22 / (v19 - v15);
-        [v25 setViewCountNormalized:v23];
-        [v25 viewCountNormalized];
+        [rankingCopy setViewCountNormalized:v23];
+        [rankingCopy viewCountNormalized];
         if (*&v24 > 1.0)
         {
           LODWORD(v24) = 1.0;
-          [v25 setViewCountNormalized:v24];
+          [rankingCopy setViewCountNormalized:v24];
         }
       }
     }
   }
 }
 
-- (MOEventBundleRanking)initWithUniverse:(id)a3
+- (MOEventBundleRanking)initWithUniverse:(id)universe
 {
-  if (a3)
+  if (universe)
   {
-    v4 = [a3 getService:@"MOConfigurationManager"];
+    v4 = [universe getService:@"MOConfigurationManager"];
     v5 = [(MOEventBundleRanking *)self initWithConfigurationManager:v4];
     [(MOEventBundleRanking *)v5 setHolidayTuningParameters];
     self = v5;
 
-    v6 = self;
+    selfCopy = self;
   }
 
   else
@@ -2450,29 +2450,29 @@ id __65__MOEventBundleRanking__fillDistincnessInfoForRanking_forBundle___block_i
     v9 = +[NSAssertionHandler currentHandler];
     [v9 handleFailureInMethod:a2 object:self file:@"MOEventBundleRanking.m" lineNumber:917 description:@"Invalid parameter not satisfying: universe"];
 
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (MOEventBundleRanking)initWithConfigurationManager:(id)a3
+- (MOEventBundleRanking)initWithConfigurationManager:(id)manager
 {
-  v6 = a3;
-  if (v6)
+  managerCopy = manager;
+  if (managerCopy)
   {
     v585.receiver = self;
     v585.super_class = MOEventBundleRanking;
     v7 = [(MOEventBundleRanking *)&v585 init];
     if (v7)
     {
-      v566 = v6;
+      v566 = managerCopy;
       +[MOEventBundleRanking defineClassCollections];
       [(MOEventBundleRanking *)v7 setHolidayTuningParameters];
       rankingAlgorithmVersion = v7->_rankingAlgorithmVersion;
       v7->_rankingAlgorithmVersion = @"17.2.0";
 
-      objc_storeStrong(&v7->_configurationManager, a3);
+      objc_storeStrong(&v7->_configurationManager, manager);
       v7->_isInternalBuild = +[MOPlatformInfo isInternalBuild];
       configurationManager = v7->_configurationManager;
       v10 = [NSString stringWithFormat:@"%@_%@", @"rankingParams", @"diversityCoefficientAlpha"];
@@ -3122,8 +3122,8 @@ id __65__MOEventBundleRanking__fillDistincnessInfoForRanking_forBundle___block_i
       [(NSDictionary *)v367 setObject:v380 forKeyedSubscript:@"minDaysElapsedForAdjustment"];
 
       v381 = v580;
-      v382 = [(MOConfigurationManagerBase *)v580->_configurationManager fDefaultsManager];
-      v383 = [v382 objectForKey:@"OnboardingDate"];
+      fDefaultsManager = [(MOConfigurationManagerBase *)v580->_configurationManager fDefaultsManager];
+      v383 = [fDefaultsManager objectForKey:@"OnboardingDate"];
 
       if (v383 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
@@ -3179,9 +3179,9 @@ id __65__MOEventBundleRanking__fillDistincnessInfoForRanking_forBundle___block_i
             v406 = [NSNumber numberWithInt:1];
             [(NSDictionary *)v573 setObject:v405 forKeyedSubscript:v406];
 
-            v407 = [(MOEventBundleRanking *)v381 _getDefaultFallbackFactorDict];
+            _getDefaultFallbackFactorDict = [(MOEventBundleRanking *)v381 _getDefaultFallbackFactorDict];
 
-            [v407 setObject:&off_10036E8F0 forKeyedSubscript:@"weightForNumRoutineEventsNormalized"];
+            [_getDefaultFallbackFactorDict setObject:&off_10036E8F0 forKeyedSubscript:@"weightForNumRoutineEventsNormalized"];
             v408 = @"%@_ActivityInterfaceType";
             goto LABEL_31;
           case 2:
@@ -3196,9 +3196,9 @@ id __65__MOEventBundleRanking__fillDistincnessInfoForRanking_forBundle___block_i
             v456 = [NSNumber numberWithInt:2];
             [(NSDictionary *)v573 setObject:v455 forKeyedSubscript:v456];
 
-            v407 = [(MOEventBundleRanking *)v381 _getDefaultFallbackFactorDict];
+            _getDefaultFallbackFactorDict = [(MOEventBundleRanking *)v381 _getDefaultFallbackFactorDict];
 
-            [v407 setObject:&off_10036E900 forKeyedSubscript:@"weightForNumAnamolyEventsNormalized"];
+            [_getDefaultFallbackFactorDict setObject:&off_10036E900 forKeyedSubscript:@"weightForNumAnamolyEventsNormalized"];
             v408 = @"%@_OutingInterfaceType";
             goto LABEL_31;
           case 3:
@@ -3213,7 +3213,7 @@ id __65__MOEventBundleRanking__fillDistincnessInfoForRanking_forBundle___block_i
             v438 = [NSNumber numberWithInt:3];
             [(NSDictionary *)v573 setObject:v437 forKeyedSubscript:v438];
 
-            v407 = [(MOEventBundleRanking *)v381 _getDefaultFallbackFactorDict];
+            _getDefaultFallbackFactorDict = [(MOEventBundleRanking *)v381 _getDefaultFallbackFactorDict];
 
             v408 = @"%@_PhotoMomentInterfaceType";
             goto LABEL_31;
@@ -3229,12 +3229,12 @@ id __65__MOEventBundleRanking__fillDistincnessInfoForRanking_forBundle___block_i
             v444 = [NSNumber numberWithInt:4];
             [(NSDictionary *)v573 setObject:v443 forKeyedSubscript:v444];
 
-            v407 = [(MOEventBundleRanking *)v381 _getDefaultFallbackFactorDict];
+            _getDefaultFallbackFactorDict = [(MOEventBundleRanking *)v381 _getDefaultFallbackFactorDict];
 
-            [v407 setObject:&off_10036E910 forKeyedSubscript:@"weightForNumAnamolyEventsNormalized"];
-            [v407 setObject:&off_10036E910 forKeyedSubscript:@"weightForNumTrendEventsNormalized"];
-            [v407 setObject:&off_10036E920 forKeyedSubscript:@"richnessScoreScalingParameter"];
-            [v407 setObject:&off_10036E930 forKeyedSubscript:@"bundleScoreConstant"];
+            [_getDefaultFallbackFactorDict setObject:&off_10036E910 forKeyedSubscript:@"weightForNumAnamolyEventsNormalized"];
+            [_getDefaultFallbackFactorDict setObject:&off_10036E910 forKeyedSubscript:@"weightForNumTrendEventsNormalized"];
+            [_getDefaultFallbackFactorDict setObject:&off_10036E920 forKeyedSubscript:@"richnessScoreScalingParameter"];
+            [_getDefaultFallbackFactorDict setObject:&off_10036E930 forKeyedSubscript:@"bundleScoreConstant"];
             v408 = @"%@_SignificantContactInterfaceType";
             goto LABEL_31;
           case 5:
@@ -3249,7 +3249,7 @@ id __65__MOEventBundleRanking__fillDistincnessInfoForRanking_forBundle___block_i
             v420 = [NSNumber numberWithInt:5];
             [(NSDictionary *)v573 setObject:v419 forKeyedSubscript:v420];
 
-            v407 = [(MOEventBundleRanking *)v381 _getDefaultFallbackFactorDict];
+            _getDefaultFallbackFactorDict = [(MOEventBundleRanking *)v381 _getDefaultFallbackFactorDict];
 
             v408 = @"%@_YourMediaInterfaceType";
             goto LABEL_31;
@@ -3265,9 +3265,9 @@ id __65__MOEventBundleRanking__fillDistincnessInfoForRanking_forBundle___block_i
             v462 = [NSNumber numberWithInt:6];
             [(NSDictionary *)v573 setObject:v461 forKeyedSubscript:v462];
 
-            v407 = [(MOEventBundleRanking *)v381 _getDefaultFallbackFactorDict];
+            _getDefaultFallbackFactorDict = [(MOEventBundleRanking *)v381 _getDefaultFallbackFactorDict];
 
-            [v407 setObject:&off_10036E940 forKeyedSubscript:@"bundleScoreConstant"];
+            [_getDefaultFallbackFactorDict setObject:&off_10036E940 forKeyedSubscript:@"bundleScoreConstant"];
             v408 = @"%@_YourSharedContentInterfaceType";
             goto LABEL_31;
           case 7:
@@ -3282,10 +3282,10 @@ id __65__MOEventBundleRanking__fillDistincnessInfoForRanking_forBundle___block_i
             v474 = [NSNumber numberWithInt:7];
             [(NSDictionary *)v573 setObject:v473 forKeyedSubscript:v474];
 
-            v407 = [(MOEventBundleRanking *)v381 _getDefaultFallbackFactorDict];
+            _getDefaultFallbackFactorDict = [(MOEventBundleRanking *)v381 _getDefaultFallbackFactorDict];
 
-            [v407 setObject:&off_10036E950 forKeyedSubscript:@"bundleScoreConstant"];
-            [v407 setObject:&off_10036E960 forKeyedSubscript:@"bundleScoreScalingParameter"];
+            [_getDefaultFallbackFactorDict setObject:&off_10036E950 forKeyedSubscript:@"bundleScoreConstant"];
+            [_getDefaultFallbackFactorDict setObject:&off_10036E960 forKeyedSubscript:@"bundleScoreScalingParameter"];
             v408 = @"%@_YourTimeAtHomeInterfaceType";
             goto LABEL_31;
           case 8:
@@ -3300,7 +3300,7 @@ id __65__MOEventBundleRanking__fillDistincnessInfoForRanking_forBundle___block_i
             v450 = [NSNumber numberWithInt:8];
             [(NSDictionary *)v573 setObject:v449 forKeyedSubscript:v450];
 
-            v407 = [(MOEventBundleRanking *)v381 _getDefaultFallbackFactorDict];
+            _getDefaultFallbackFactorDict = [(MOEventBundleRanking *)v381 _getDefaultFallbackFactorDict];
 
             v408 = @"%@_TopicsOfInterestInterfaceType";
             goto LABEL_31;
@@ -3309,14 +3309,14 @@ id __65__MOEventBundleRanking__fillDistincnessInfoForRanking_forBundle___block_i
             [(NSDictionary *)v571 setObject:&off_10036E8E0 forKeyedSubscript:v481];
 
             v482 = v381->_configurationManager;
-            v483 = [NSString stringWithFormat:@"%@_TrendInterfaceType_%@", @"rankingParams", @"BPRRegularizationWeight", v562];
+            v562 = [NSString stringWithFormat:@"%@_TrendInterfaceType_%@", @"rankingParams", @"BPRRegularizationWeight", v562];
             LODWORD(v484) = 1120403456;
-            [(MOConfigurationManagerBase *)v482 getFloatSettingForKey:v483 withFallback:v484];
+            [(MOConfigurationManagerBase *)v482 getFloatSettingForKey:v562 withFallback:v484];
             v485 = [NSNumber numberWithFloat:?];
             v486 = [NSNumber numberWithInt:9];
             [(NSDictionary *)v573 setObject:v485 forKeyedSubscript:v486];
 
-            v407 = [(MOEventBundleRanking *)v381 _getDefaultFallbackFactorDict];
+            _getDefaultFallbackFactorDict = [(MOEventBundleRanking *)v381 _getDefaultFallbackFactorDict];
 
             v408 = @"%@_TrendInterfaceType";
             goto LABEL_31;
@@ -3332,10 +3332,10 @@ id __65__MOEventBundleRanking__fillDistincnessInfoForRanking_forBundle___block_i
             v432 = [NSNumber numberWithInt:10];
             [(NSDictionary *)v573 setObject:v431 forKeyedSubscript:v432];
 
-            v407 = [(MOEventBundleRanking *)v381 _getDefaultFallbackFactorDict];
+            _getDefaultFallbackFactorDict = [(MOEventBundleRanking *)v381 _getDefaultFallbackFactorDict];
 
-            [v407 setObject:&off_10036E970 forKeyedSubscript:@"decayRate"];
-            [v407 setObject:&off_10036E970 forKeyedSubscript:@"decayRateAfterViewed"];
+            [_getDefaultFallbackFactorDict setObject:&off_10036E970 forKeyedSubscript:@"decayRate"];
+            [_getDefaultFallbackFactorDict setObject:&off_10036E970 forKeyedSubscript:@"decayRateAfterViewed"];
             v408 = @"%@_PhotoMemoryInterfaceType";
             goto LABEL_31;
           case 11:
@@ -3356,10 +3356,10 @@ id __65__MOEventBundleRanking__fillDistincnessInfoForRanking_forBundle___block_i
             [(NSDictionary *)v568 setObject:&off_10036E8E0 forKeyedSubscript:@"PURPOSE"];
             [(NSDictionary *)v568 setObject:&off_10036E8E0 forKeyedSubscript:@"RESILIENCE"];
             [(NSDictionary *)v568 setObject:&off_10036E8E0 forKeyedSubscript:@"CREATIVITY"];
-            v407 = [(MOEventBundleRanking *)v381 _getDefaultFallbackFactorDict];
+            _getDefaultFallbackFactorDict = [(MOEventBundleRanking *)v381 _getDefaultFallbackFactorDict];
 
-            [v407 setObject:&off_10036E8E0 forKeyedSubscript:@"decayRate"];
-            [v407 setObject:&off_10036E8E0 forKeyedSubscript:@"weightForLabelQualityScore"];
+            [_getDefaultFallbackFactorDict setObject:&off_10036E8E0 forKeyedSubscript:@"decayRate"];
+            [_getDefaultFallbackFactorDict setObject:&off_10036E8E0 forKeyedSubscript:@"weightForLabelQualityScore"];
             v408 = @"%@_EvergreenInterfaceType";
             goto LABEL_31;
           case 12:
@@ -3374,9 +3374,9 @@ id __65__MOEventBundleRanking__fillDistincnessInfoForRanking_forBundle___block_i
             v414 = [NSNumber numberWithInt:12];
             [(NSDictionary *)v573 setObject:v413 forKeyedSubscript:v414];
 
-            v407 = [(MOEventBundleRanking *)v381 _getDefaultFallbackFactorDict];
+            _getDefaultFallbackFactorDict = [(MOEventBundleRanking *)v381 _getDefaultFallbackFactorDict];
 
-            [v407 setObject:&off_10036E8F0 forKeyedSubscript:@"weightForNumRoutineEventsNormalized"];
+            [_getDefaultFallbackFactorDict setObject:&off_10036E8F0 forKeyedSubscript:@"weightForNumRoutineEventsNormalized"];
             v408 = @"%@_TimeContextInterfaceType";
             goto LABEL_31;
           case 13:
@@ -3391,7 +3391,7 @@ id __65__MOEventBundleRanking__fillDistincnessInfoForRanking_forBundle___block_i
             v426 = [NSNumber numberWithInt:13];
             [(NSDictionary *)v573 setObject:v425 forKeyedSubscript:v426];
 
-            v407 = [(MOEventBundleRanking *)v381 _getDefaultFallbackFactorDict];
+            _getDefaultFallbackFactorDict = [(MOEventBundleRanking *)v381 _getDefaultFallbackFactorDict];
 
             v408 = @"%@_TripInterfaceType";
             goto LABEL_31;
@@ -3407,13 +3407,13 @@ id __65__MOEventBundleRanking__fillDistincnessInfoForRanking_forBundle___block_i
             v468 = [NSNumber numberWithInt:14];
             [(NSDictionary *)v573 setObject:v467 forKeyedSubscript:v468];
 
-            v407 = [(MOEventBundleRanking *)v381 _getDefaultFallbackFactorDict];
+            _getDefaultFallbackFactorDict = [(MOEventBundleRanking *)v381 _getDefaultFallbackFactorDict];
 
-            [v407 setObject:&off_10036E920 forKeyedSubscript:@"bundleScoreConstant"];
-            [v407 setObject:&off_10036E980 forKeyedSubscript:@"decayRate"];
+            [_getDefaultFallbackFactorDict setObject:&off_10036E920 forKeyedSubscript:@"bundleScoreConstant"];
+            [_getDefaultFallbackFactorDict setObject:&off_10036E980 forKeyedSubscript:@"decayRate"];
             v408 = @"%@_StateOfMindInterfaceType";
 LABEL_31:
-            v399 = v407;
+            v399 = _getDefaultFallbackFactorDict;
             v487 = [NSString stringWithFormat:v408, @"rankingParams"];
 
             v579 = v487;
@@ -3444,10 +3444,10 @@ LABEL_31:
 
               v493 = *(*(&v581 + 1) + 8 * i);
               v494 = v580->_configurationManager;
-              v495 = [NSString stringWithFormat:@"%@_%@", v579, v493];
+              v493 = [NSString stringWithFormat:@"%@_%@", v579, v493];
               v496 = [v399 objectForKeyedSubscript:v493];
               [v496 floatValue];
-              [(MOConfigurationManagerBase *)v494 getFloatSettingForKey:v495 withFallback:?];
+              [(MOConfigurationManagerBase *)v494 getFloatSettingForKey:v493 withFallback:?];
               v497 = [NSNumber numberWithFloat:?];
               [v488 setObject:v497 forKeyedSubscript:v493];
 
@@ -3526,22 +3526,22 @@ LABEL_31:
       [(NSMutableDictionary *)v521 setObject:v533 forKeyedSubscript:@"pairWiseFar"];
 
       v534 = objc_opt_new();
-      v535 = [(MOEventBundleRanking *)v381 _getDefaultRichnessWeightDict];
+      _getDefaultRichnessWeightDict = [(MOEventBundleRanking *)v381 _getDefaultRichnessWeightDict];
       for (j = 0; j != 18; ++j)
       {
         v537 = [MOResource getStringTypeForResources:j];
-        v538 = [v535 objectForKeyedSubscript:v537];
+        v538 = [_getDefaultRichnessWeightDict objectForKeyedSubscript:v537];
         v539 = [(MOEventBundleRanking *)v381 _getRichnessScoreWeightFromConfigurationManager:v537 withDefaultWeightDict:v538];
         [(NSDictionary *)v534 setObject:v539 forKey:v537];
 
         v381 = v580;
       }
 
-      v540 = [v535 objectForKeyedSubscript:@"NumUniqueResourceTypesNormalizedKey"];
+      v540 = [_getDefaultRichnessWeightDict objectForKeyedSubscript:@"NumUniqueResourceTypesNormalizedKey"];
       v541 = [(MOEventBundleRanking *)v580 _getRichnessScoreWeightFromConfigurationManager:@"NumUniqueResourceTypesNormalizedKey" withDefaultWeightDict:v540];
       [(NSDictionary *)v534 setObject:v541 forKey:@"NumUniqueResourceTypesNormalizedKey"];
 
-      v574 = [v535 objectForKeyedSubscript:@"NumWorkoutRouteMapAssets"];
+      v574 = [_getDefaultRichnessWeightDict objectForKeyedSubscript:@"NumWorkoutRouteMapAssets"];
 
       v542 = [(MOEventBundleRanking *)v580 _getRichnessScoreWeightFromConfigurationManager:@"NumWorkoutRouteMapAssets" withDefaultWeightDict:v574];
       [(NSDictionary *)v534 setObject:v542 forKey:@"NumWorkoutRouteMapAssets"];
@@ -3592,11 +3592,11 @@ LABEL_31:
       v560 = v567;
 
       v7 = v580;
-      v6 = v566;
+      managerCopy = v566;
     }
 
     self = v7;
-    v390 = self;
+    selfCopy = self;
   }
 
   else
@@ -3610,38 +3610,38 @@ LABEL_31:
     v389 = +[NSAssertionHandler currentHandler];
     [v389 handleFailureInMethod:a2 object:self file:@"MOEventBundleRanking.m" lineNumber:928 description:@"Invalid parameter not satisfying: configurationManager"];
 
-    v390 = 0;
+    selfCopy = 0;
   }
 
-  return v390;
+  return selfCopy;
 }
 
-- (id)_getRichnessScoreWeightFromConfigurationManager:(id)a3 withDefaultWeightDict:(id)a4
+- (id)_getRichnessScoreWeightFromConfigurationManager:(id)manager withDefaultWeightDict:(id)dict
 {
-  v6 = a4;
-  v24 = a3;
+  dictCopy = dict;
+  managerCopy = manager;
   v25 = objc_opt_new();
-  v23 = [v24 stringByAppendingString:@"_Resource_PrimaryWeight"];
+  v23 = [managerCopy stringByAppendingString:@"_Resource_PrimaryWeight"];
   configurationManager = self->_configurationManager;
   v8 = [NSString stringWithFormat:@"%@_%@", @"rankingParams", v23];
-  v9 = [v6 objectForKeyedSubscript:@"RankingRichnessPrimaryPriorityScoreKey"];
+  v9 = [dictCopy objectForKeyedSubscript:@"RankingRichnessPrimaryPriorityScoreKey"];
   [v9 floatValue];
   [(MOConfigurationManagerBase *)configurationManager getFloatSettingForKey:v8 withFallback:?];
   v10 = [NSNumber numberWithFloat:?];
 
   [v25 setObject:v10 forKey:@"RankingRichnessPrimaryPriorityScoreKey"];
-  v11 = [v24 stringByAppendingString:@"_Resource_SecondaryWeight"];
+  v11 = [managerCopy stringByAppendingString:@"_Resource_SecondaryWeight"];
 
   v12 = self->_configurationManager;
   v13 = [NSString stringWithFormat:@"%@_%@", @"rankingParams", v11];
-  v14 = v6;
-  v15 = [v6 objectForKeyedSubscript:@"RankingRichnessPrimaryPriorityScoreKey"];
+  v14 = dictCopy;
+  v15 = [dictCopy objectForKeyedSubscript:@"RankingRichnessPrimaryPriorityScoreKey"];
   [v15 floatValue];
   [(MOConfigurationManagerBase *)v12 getFloatSettingForKey:v13 withFallback:?];
   v16 = [NSNumber numberWithFloat:?];
 
   [v25 setObject:v16 forKey:@"RankingRichnessSecondaryPriorityScoreKey"];
-  v17 = [v24 stringByAppendingString:@"_Resource_AuxiliaryWeight"];
+  v17 = [managerCopy stringByAppendingString:@"_Resource_AuxiliaryWeight"];
 
   v18 = self->_configurationManager;
   v19 = [NSString stringWithFormat:@"%@_%@", @"rankingParams", v17];
@@ -3656,29 +3656,29 @@ LABEL_31:
   return v25;
 }
 
-- (void)generateBundleRanking:(id)a3 withMinRecommendedBundleCountRequirement:(BOOL)a4
+- (void)generateBundleRanking:(id)ranking withMinRecommendedBundleCountRequirement:(BOOL)requirement
 {
-  v4 = a4;
-  v5 = a3;
+  requirementCopy = requirement;
+  rankingCopy = ranking;
   context = objc_autoreleasePoolPush();
   v6 = _mo_log_facility_get_os_log(&MOLogFacilityRanking);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 134218240;
-    v36 = [v5 count];
+    v36 = [rankingCopy count];
     v37 = 1024;
-    LODWORD(v38) = v4;
+    LODWORD(v38) = requirementCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Input bundle count: %lu, minimumRecommendedBundleRequired:%d", buf, 0x12u);
   }
 
-  v28 = v4;
+  v28 = requirementCopy;
 
   v7 = +[NSMutableIndexSet indexSet];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v8 = v5;
+  v8 = rankingCopy;
   v9 = [v8 countByEnumeratingWithState:&v31 objects:v39 count:16];
   if (v9)
   {
@@ -3695,19 +3695,19 @@ LABEL_31:
         }
 
         v14 = *(*(&v31 + 1) + 8 * i);
-        v15 = [v14 bundleIdentifier];
-        if (!v15 || (v16 = v15, [v14 suggestionID], v17 = objc_claimAutoreleasedReturnValue(), v17, v16, !v17))
+        bundleIdentifier = [v14 bundleIdentifier];
+        if (!bundleIdentifier || (v16 = bundleIdentifier, [v14 suggestionID], v17 = objc_claimAutoreleasedReturnValue(), v17, v16, !v17))
         {
           [v7 addIndex:v11];
           v18 = _mo_log_facility_get_os_log(&MOLogFacilityRanking);
           if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
           {
-            v19 = [v14 bundleIdentifier];
-            v20 = [v14 suggestionID];
+            bundleIdentifier2 = [v14 bundleIdentifier];
+            suggestionID = [v14 suggestionID];
             *buf = 138412546;
-            v36 = v19;
+            v36 = bundleIdentifier2;
             v37 = 2112;
-            v38 = v20;
+            v38 = suggestionID;
             _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "bundle with nil bundleID or nil suggestionID was filtered out: bundleID %@ suggestionID %@", buf, 0x16u);
           }
         }
@@ -5349,28 +5349,28 @@ void __88__MOEventBundleRanking__calculateRankingScore_withMinRecommendedBundleC
   }
 }
 
-- (void)_mergeScoresToBundles:(id)a3 usingScore:(id)a4
+- (void)_mergeScoresToBundles:(id)bundles usingScore:(id)score
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 count];
-  if (v9 != [v8 count])
+  bundlesCopy = bundles;
+  scoreCopy = score;
+  v9 = [bundlesCopy count];
+  if (v9 != [scoreCopy count])
   {
     v10 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [(MOEventBundleRanking *)v7 _mergeScoresToBundles:v8 usingScore:v10];
+      [(MOEventBundleRanking *)bundlesCopy _mergeScoresToBundles:scoreCopy usingScore:v10];
     }
 
     v11 = +[NSAssertionHandler currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"MOEventBundleRanking.m" lineNumber:2569 description:{@"Mismatch between bundle count %lu and score array count %lu (in %s:%d)", objc_msgSend(v7, "count"), objc_msgSend(v8, "count"), "-[MOEventBundleRanking _mergeScoresToBundles:usingScore:]", 2569}];
+    [v11 handleFailureInMethod:a2 object:self file:@"MOEventBundleRanking.m" lineNumber:2569 description:{@"Mismatch between bundle count %lu and score array count %lu (in %s:%d)", objc_msgSend(bundlesCopy, "count"), objc_msgSend(scoreCopy, "count"), "-[MOEventBundleRanking _mergeScoresToBundles:usingScore:]", 2569}];
   }
 
   v41 = 0u;
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  obj = v7;
+  obj = bundlesCopy;
   v38 = [obj countByEnumeratingWithState:&v39 objects:v55 count:16];
   if (v38)
   {
@@ -5381,8 +5381,8 @@ void __88__MOEventBundleRanking__calculateRankingScore_withMinRecommendedBundleC
     v32 = 0;
     v12 = 0;
     v36 = *v40;
-    v29 = self;
-    v30 = v8;
+    selfCopy = self;
+    v30 = scoreCopy;
     do
     {
       v13 = 0;
@@ -5394,13 +5394,13 @@ void __88__MOEventBundleRanking__calculateRankingScore_withMinRecommendedBundleC
         }
 
         v14 = *(*(&v39 + 1) + 8 * v13);
-        v15 = [v8 objectAtIndexedSubscript:v12];
+        v15 = [scoreCopy objectAtIndexedSubscript:v12];
         v16 = [v15 mutableCopy];
 
         v17 = [v16 objectForKeyedSubscript:@"bundleInterfaceType"];
-        v18 = [v17 intValue];
+        intValue = [v17 intValue];
 
-        if (v18 == 11)
+        if (intValue == 11)
         {
           ++v37;
         }
@@ -5408,27 +5408,27 @@ void __88__MOEventBundleRanking__calculateRankingScore_withMinRecommendedBundleC
         else
         {
           v22 = [v16 objectForKeyedSubscript:@"visibilityCategoryForUI"];
-          v23 = [v22 intValue];
+          intValue2 = [v22 intValue];
 
-          if (v23 > 2)
+          if (intValue2 > 2)
           {
-            if (v23 == 3)
+            if (intValue2 == 3)
             {
               ++v33;
             }
 
-            else if (v23 == 4)
+            else if (intValue2 == 4)
             {
               ++v34;
             }
           }
 
-          else if (v23 == 1)
+          else if (intValue2 == 1)
           {
             ++v31;
           }
 
-          else if (v23 == 2)
+          else if (intValue2 == 2)
           {
             ++v32;
           }
@@ -5457,18 +5457,18 @@ void __88__MOEventBundleRanking__calculateRankingScore_withMinRecommendedBundleC
         v20 = _mo_log_facility_get_os_log(&MOLogFacilityRanking);
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
         {
-          v24 = [v14 bundleIdentifier];
-          v25 = [v14 suggestionID];
+          bundleIdentifier = [v14 bundleIdentifier];
+          suggestionID = [v14 suggestionID];
           *buf = 134218498;
           v44 = v12;
           v45 = 2112;
-          v46 = v24;
+          v46 = bundleIdentifier;
           v47 = 2112;
-          v48 = v25;
+          v48 = suggestionID;
           _os_log_debug_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEBUG, "Bundle index %lu, BundleID %@, suggestionID %@", buf, 0x20u);
 
-          self = v29;
-          v8 = v30;
+          self = selfCopy;
+          scoreCopy = v30;
         }
 
         v21 = _mo_log_facility_get_os_log(&MOLogFacilityRanking);
@@ -5521,13 +5521,13 @@ void __88__MOEventBundleRanking__calculateRankingScore_withMinRecommendedBundleC
   }
 }
 
-- (void)_submitEventBundleRankingAnalytics:(id)a3 withRankingInput:(id)a4 andSubmissionDate:(id)a5
+- (void)_submitEventBundleRankingAnalytics:(id)analytics withRankingInput:(id)input andSubmissionDate:(id)date
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v9 count];
-  if (v12 != [v10 count])
+  analyticsCopy = analytics;
+  inputCopy = input;
+  dateCopy = date;
+  v12 = [analyticsCopy count];
+  if (v12 != [inputCopy count])
   {
     v13 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -5543,27 +5543,27 @@ void __88__MOEventBundleRanking__calculateRankingScore_withMinRecommendedBundleC
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v304[0] = [v9 count];
+    v304[0] = [analyticsCopy count];
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%lu bundle rankings and inputs are set to be submitted to CoreAnalytics.", buf, 0xCu);
   }
 
   v260 = +[NSCalendar currentCalendar];
-  v261 = v11;
-  v16 = [v260 components:764 fromDate:v11];
-  v276 = [v16 year];
-  v278 = [v16 month];
+  v261 = dateCopy;
+  v16 = [v260 components:764 fromDate:dateCopy];
+  year = [v16 year];
+  month = [v16 month];
   v282 = [v16 day];
-  v283 = [v16 hour];
+  hour = [v16 hour];
   v259 = v16;
-  v284 = [v16 minute];
-  v17 = [(MOConfigurationManagerBase *)self->_configurationManager getTrialExperimentIdentifiers];
+  minute = [v16 minute];
+  getTrialExperimentIdentifiers = [(MOConfigurationManagerBase *)self->_configurationManager getTrialExperimentIdentifiers];
   v298 = 0u;
   v299 = 0u;
   v300 = 0u;
   v301 = 0u;
-  obj = v10;
+  obj = inputCopy;
   v286 = [obj countByEnumeratingWithState:&v298 objects:v302 count:16];
-  v288 = v17;
+  v288 = getTrialExperimentIdentifiers;
   if (v286)
   {
     v18 = 0;
@@ -5580,45 +5580,45 @@ void __88__MOEventBundleRanking__calculateRankingScore_withMinRecommendedBundleC
 
         v20 = *(*(&v298 + 1) + 8 * v19);
         v21 = objc_autoreleasePoolPush();
-        v22 = [v9 objectAtIndexedSubscript:v18];
+        v22 = [analyticsCopy objectAtIndexedSubscript:v18];
         v23 = objc_opt_new();
-        v24 = [NSNumber numberWithInteger:v276];
+        v24 = [NSNumber numberWithInteger:year];
         [(MOEventBundleRanking *)self safeSavePropertyToDictionary:v23 withKey:@"submissionTimeYear" andValue:v24];
 
-        v25 = [NSNumber numberWithInteger:v278];
+        v25 = [NSNumber numberWithInteger:month];
         [(MOEventBundleRanking *)self safeSavePropertyToDictionary:v23 withKey:@"submissionTimeMonth" andValue:v25];
 
         v26 = [NSNumber numberWithInteger:v282];
         [(MOEventBundleRanking *)self safeSavePropertyToDictionary:v23 withKey:@"submissionTimeDay" andValue:v26];
 
-        v27 = [NSNumber numberWithInteger:v283];
+        v27 = [NSNumber numberWithInteger:hour];
         [(MOEventBundleRanking *)self safeSavePropertyToDictionary:v23 withKey:@"submissionTimeHour" andValue:v27];
 
-        v28 = [NSNumber numberWithInteger:v284];
+        v28 = [NSNumber numberWithInteger:minute];
         [(MOEventBundleRanking *)self safeSavePropertyToDictionary:v23 withKey:@"submissionTimeMinute" andValue:v28];
 
         [(MOEventBundleRanking *)self safeSavePropertyToDictionary:v23 withKey:@"scalingFactorForAnalytics" andValue:&off_10036E9E0];
-        v29 = [v20 bundleIdentifier];
-        v30 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v29 hash]);
+        bundleIdentifier = [v20 bundleIdentifier];
+        v30 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [bundleIdentifier hash]);
         [(MOEventBundleRanking *)self safeSavePropertyToDictionary:v23 withKey:@"bundleId" andValue:v30];
 
-        v31 = [v20 suggestionIdentifier];
-        v32 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v31 hash]);
+        suggestionIdentifier = [v20 suggestionIdentifier];
+        v32 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [suggestionIdentifier hash]);
         [(MOEventBundleRanking *)self safeSavePropertyToDictionary:v23 withKey:@"suggestionId" andValue:v32];
 
-        v17 = v288;
+        getTrialExperimentIdentifiers = v288;
         if (v288)
         {
-          v33 = [v288 experimentId];
-          [(MOEventBundleRanking *)self safeSavePropertyToDictionary:v23 withKey:@"trialExperimentId" andValue:v33];
+          experimentId = [v288 experimentId];
+          [(MOEventBundleRanking *)self safeSavePropertyToDictionary:v23 withKey:@"trialExperimentId" andValue:experimentId];
 
           v34 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v288 deploymentId]);
-          v35 = [v34 stringValue];
-          [(MOEventBundleRanking *)self safeSavePropertyToDictionary:v23 withKey:@"trialDeploymentId" andValue:v35];
+          stringValue = [v34 stringValue];
+          [(MOEventBundleRanking *)self safeSavePropertyToDictionary:v23 withKey:@"trialDeploymentId" andValue:stringValue];
 
-          v17 = v288;
-          v36 = [v288 treatmentId];
-          [(MOEventBundleRanking *)self safeSavePropertyToDictionary:v23 withKey:@"trialTreatmentId" andValue:v36];
+          getTrialExperimentIdentifiers = v288;
+          treatmentId = [v288 treatmentId];
+          [(MOEventBundleRanking *)self safeSavePropertyToDictionary:v23 withKey:@"trialTreatmentId" andValue:treatmentId];
         }
 
         v37 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v20 suggestionIsDeleted]);
@@ -5892,41 +5892,41 @@ void __88__MOEventBundleRanking__calculateRankingScore_withMinRecommendedBundleC
   }
 
   v166 = objc_opt_new();
-  v167 = [NSNumber numberWithInteger:v276];
+  v167 = [NSNumber numberWithInteger:year];
   [(MOEventBundleRanking *)self safeSavePropertyToDictionary:v166 withKey:@"submissionTimeYear" andValue:v167];
 
-  v168 = [NSNumber numberWithInteger:v278];
+  v168 = [NSNumber numberWithInteger:month];
   [(MOEventBundleRanking *)self safeSavePropertyToDictionary:v166 withKey:@"submissionTimeMonth" andValue:v168];
 
   v169 = [NSNumber numberWithInteger:v282];
   [(MOEventBundleRanking *)self safeSavePropertyToDictionary:v166 withKey:@"submissionTimeDay" andValue:v169];
 
-  v170 = [NSNumber numberWithInteger:v283];
+  v170 = [NSNumber numberWithInteger:hour];
   [(MOEventBundleRanking *)self safeSavePropertyToDictionary:v166 withKey:@"submissionTimeHour" andValue:v170];
 
-  v171 = [NSNumber numberWithInteger:v284];
+  v171 = [NSNumber numberWithInteger:minute];
   [(MOEventBundleRanking *)self safeSavePropertyToDictionary:v166 withKey:@"submissionTimeMinute" andValue:v171];
 
   [(MOEventBundleRanking *)self safeSavePropertyToDictionary:v166 withKey:@"scalingFactorForAnalytics" andValue:&off_10036E9E0];
-  if (v17)
+  if (getTrialExperimentIdentifiers)
   {
-    v172 = [v17 experimentId];
-    [(MOEventBundleRanking *)self safeSavePropertyToDictionary:v166 withKey:@"trialExperimentId" andValue:v172];
+    experimentId2 = [getTrialExperimentIdentifiers experimentId];
+    [(MOEventBundleRanking *)self safeSavePropertyToDictionary:v166 withKey:@"trialExperimentId" andValue:experimentId2];
 
-    v173 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v17 deploymentId]);
-    v174 = [v173 stringValue];
-    [(MOEventBundleRanking *)self safeSavePropertyToDictionary:v166 withKey:@"trialDeploymentId" andValue:v174];
+    v173 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [getTrialExperimentIdentifiers deploymentId]);
+    stringValue2 = [v173 stringValue];
+    [(MOEventBundleRanking *)self safeSavePropertyToDictionary:v166 withKey:@"trialDeploymentId" andValue:stringValue2];
 
-    v175 = [v17 treatmentId];
-    [(MOEventBundleRanking *)self safeSavePropertyToDictionary:v166 withKey:@"trialTreatmentId" andValue:v175];
+    treatmentId2 = [getTrialExperimentIdentifiers treatmentId];
+    [(MOEventBundleRanking *)self safeSavePropertyToDictionary:v166 withKey:@"trialTreatmentId" andValue:treatmentId2];
   }
 
-  v176 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v9 count]);
+  v176 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [analyticsCopy count]);
   [(MOEventBundleRanking *)self safeSavePropertyToDictionary:v166 withKey:@"totalBundleCount" andValue:v176];
 
   v271 = [NSSortDescriptor sortDescriptorWithKey:@"ordinalRankInRecommendedTab" ascending:1];
   v270 = [NSArray arrayWithObject:?];
-  v177 = [v9 sortedArrayUsingDescriptors:?];
+  v177 = [analyticsCopy sortedArrayUsingDescriptors:?];
   v178 = [NSPredicate predicateWithFormat:@"%K IN %@", @"visibilityCategoryForUI", &off_10036E190];
   v287 = [v177 filteredArrayUsingPredicate:v178];
 
@@ -5935,19 +5935,19 @@ void __88__MOEventBundleRanking__calculateRankingScore_withMinRecommendedBundleC
 
   v180 = [NSPredicate predicateWithFormat:@"%K == %lu", @"bundleInterfaceType", 11];
 
-  v269 = [v9 filteredArrayUsingPredicate:v180];
+  v269 = [analyticsCopy filteredArrayUsingPredicate:v180];
   v181 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v269 count]);
   [(MOEventBundleRanking *)self safeSavePropertyToDictionary:v166 withKey:@"evergreenBundleCount" andValue:v181];
 
   v182 = [NSPredicate predicateWithFormat:@"%K == %lu", @"bundleInterfaceType", 10];
 
-  v268 = [v9 filteredArrayUsingPredicate:v182];
+  v268 = [analyticsCopy filteredArrayUsingPredicate:v182];
   v183 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v268 count]);
   [(MOEventBundleRanking *)self safeSavePropertyToDictionary:v166 withKey:@"photoMemoryBundleCount" andValue:v183];
 
   v184 = [NSPredicate predicateWithFormat:@"%K IN %@", @"visibilityCategoryForUI", &off_10036E1A8];
 
-  v185 = [v9 filteredArrayUsingPredicate:v184];
+  v185 = [analyticsCopy filteredArrayUsingPredicate:v184];
   v186 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v185 count]);
   [(MOEventBundleRanking *)self safeSavePropertyToDictionary:v166 withKey:@"suggestionCountInRecentTab" andValue:v186];
 
@@ -6410,28 +6410,28 @@ uint64_t __60__MOEventBundleRanking_updateEngagementScoreParamsUsingBFGS__block_
   return result;
 }
 
-- (void)_computeGradient:(double *)a3 initialParams:(double *)a4 Update:(double *)a5
+- (void)_computeGradient:(double *)gradient initialParams:(double *)params Update:(double *)update
 {
   v9 = 0;
-  v10 = *(a3 + 5);
-  v11 = *(a3 + 3);
-  v34 = *(a3 + 4);
+  v10 = *(gradient + 5);
+  v11 = *(gradient + 3);
+  v34 = *(gradient + 4);
   v35 = v10;
-  v12 = *(a3 + 5);
-  v13 = *(a3 + 7);
-  v36 = *(a3 + 6);
+  v12 = *(gradient + 5);
+  v13 = *(gradient + 7);
+  v36 = *(gradient + 6);
   v37 = v13;
-  v14 = *(a3 + 1);
-  v31[0] = *a3;
+  v14 = *(gradient + 1);
+  v31[0] = *gradient;
   v31[1] = v14;
-  v15 = *(a3 + 3);
-  v17 = *a3;
-  v16 = *(a3 + 1);
-  v32 = *(a3 + 2);
+  v15 = *(gradient + 3);
+  v17 = *gradient;
+  v16 = *(gradient + 1);
+  v32 = *(gradient + 2);
   v33 = v15;
   v27 = v34;
   v28 = v12;
-  v18 = *(a3 + 7);
+  v18 = *(gradient + 7);
   v29 = v36;
   v30 = v18;
   v23 = v17;
@@ -6442,11 +6442,11 @@ uint64_t __60__MOEventBundleRanking_updateEngagementScoreParamsUsingBFGS__block_
   {
     *(v31 + v9) = *(v31 + v9) + 0.000001;
     *(&v23 + v9) = *(&v23 + v9) + -0.000001;
-    [(MOEventBundleRanking *)self _generateBPROptUsing:v31 initialParams:a4, v23, v24, v25, v26, v27, v28, v29, v30];
+    [(MOEventBundleRanking *)self _generateBPROptUsing:v31 initialParams:params, v23, v24, v25, v26, v27, v28, v29, v30];
     v20 = v19;
-    [(MOEventBundleRanking *)self _generateBPROptUsing:&v23 initialParams:a4];
-    a5[v9 / 8] = (v20 - v21) / 0.000002;
-    v22 = a3[v9 / 8];
+    [(MOEventBundleRanking *)self _generateBPROptUsing:&v23 initialParams:params];
+    update[v9 / 8] = (v20 - v21) / 0.000002;
+    v22 = gradient[v9 / 8];
     *(v31 + v9) = v22;
     *(&v23 + v9) = v22;
     v9 += 8;
@@ -6455,22 +6455,22 @@ uint64_t __60__MOEventBundleRanking_updateEngagementScoreParamsUsingBFGS__block_
   while (v9 != 128);
 }
 
-- (double)_computeBPROptForPairs:(double *)a3 withTotalBundleCountsForInterfaceTypesHigherTier:(id)a4 WithTotalBundleCountsForInterfaceTypesLowerTier:(id)a5 bprOpt:(double)a6 pairWiseMult:(float)a7
+- (double)_computeBPROptForPairs:(double *)pairs withTotalBundleCountsForInterfaceTypesHigherTier:(id)tier WithTotalBundleCountsForInterfaceTypesLowerTier:(id)lowerTier bprOpt:(double)opt pairWiseMult:(float)mult
 {
-  v11 = a4;
-  v12 = a5;
-  if ([v11 count] && objc_msgSend(v12, "count"))
+  tierCopy = tier;
+  lowerTierCopy = lowerTier;
+  if ([tierCopy count] && objc_msgSend(lowerTierCopy, "count"))
   {
-    v51 = a3;
-    v52 = v12;
+    pairsCopy = pairs;
+    v52 = lowerTierCopy;
     v13 = objc_opt_new();
     v14 = objc_opt_new();
     v70 = 0u;
     v71 = 0u;
     v72 = 0u;
     v73 = 0u;
-    v50 = v11;
-    v15 = v11;
+    v50 = tierCopy;
+    v15 = tierCopy;
     obj = [v15 countByEnumeratingWithState:&v70 objects:v77 count:16];
     if (obj)
     {
@@ -6486,22 +6486,22 @@ uint64_t __60__MOEventBundleRanking_updateEngagementScoreParamsUsingBFGS__block_
 
           v17 = *(*(&v70 + 1) + 8 * i);
           v18 = [v15 objectForKeyedSubscript:v17];
-          v19 = [v18 intValue];
+          intValue = [v18 intValue];
 
-          if (v19 >= 1)
+          if (intValue >= 1)
           {
             v20 = 0;
             do
             {
-              v21 = +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", v51[[v17 intValue] - 1]);
+              v21 = +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", pairsCopy[[v17 intValue] - 1]);
               [v13 addObject:v21];
 
               ++v20;
               v22 = [v15 objectForKeyedSubscript:v17];
-              v23 = [v22 intValue];
+              intValue2 = [v22 intValue];
             }
 
-            while (v20 < v23);
+            while (v20 < intValue2);
           }
         }
 
@@ -6531,22 +6531,22 @@ uint64_t __60__MOEventBundleRanking_updateEngagementScoreParamsUsingBFGS__block_
 
           v26 = *(*(&v66 + 1) + 8 * j);
           v27 = [v24 objectForKeyedSubscript:v26];
-          v28 = [v27 intValue];
+          intValue3 = [v27 intValue];
 
-          if (v28 >= 1)
+          if (intValue3 >= 1)
           {
             v29 = 0;
             do
             {
-              v30 = +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", v51[[v26 intValue] - 1]);
+              v30 = +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", pairsCopy[[v26 intValue] - 1]);
               [v14 addObject:v30];
 
               ++v29;
               v31 = [v24 objectForKeyedSubscript:v26];
-              v32 = [v31 intValue];
+              intValue4 = [v31 intValue];
             }
 
-            while (v29 < v32);
+            while (v29 < intValue4);
           }
         }
 
@@ -6566,7 +6566,7 @@ uint64_t __60__MOEventBundleRanking_updateEngagementScoreParamsUsingBFGS__block_
     {
       v34 = v33;
       v35 = *v63;
-      v36 = a7;
+      multCopy = mult;
       do
       {
         for (k = 0; k != v34; k = k + 1)
@@ -6601,7 +6601,7 @@ uint64_t __60__MOEventBundleRanking_updateEngagementScoreParamsUsingBFGS__block_
                 v46 = v45;
                 [v44 doubleValue];
                 v48 = exp(-(v46 - v47));
-                a6 = a6 + log(1.0 / (v48 + 1.0)) * v36;
+                opt = opt + log(1.0 / (v48 + 1.0)) * multCopy;
               }
 
               v41 = [v39 countByEnumeratingWithState:&v58 objects:v74 count:16];
@@ -6617,14 +6617,14 @@ uint64_t __60__MOEventBundleRanking_updateEngagementScoreParamsUsingBFGS__block_
       while (v34);
     }
 
-    v11 = v50;
-    v12 = v52;
+    tierCopy = v50;
+    lowerTierCopy = v52;
   }
 
-  return a6;
+  return opt;
 }
 
-- (double)_generateBPROptUsing:(double *)a3 initialParams:(double *)a4
+- (double)_generateBPROptUsing:(double *)using initialParams:(double *)params
 {
   v7 = 0;
   v8 = 0.0;
@@ -6634,7 +6634,7 @@ uint64_t __60__MOEventBundleRanking_updateEngagementScoreParamsUsingBFGS__block_
     v10 = [NSNumber numberWithUnsignedInteger:v7 + 1];
     v11 = [(NSDictionary *)bprRegularizationFactor objectForKeyedSubscript:v10];
     [v11 floatValue];
-    v13 = a3[v7] - a4[v7];
+    v13 = using[v7] - params[v7];
     v8 = v8 + -(v13 * v12) * v13;
 
     ++v7;
@@ -6648,58 +6648,58 @@ uint64_t __60__MOEventBundleRanking_updateEngagementScoreParamsUsingBFGS__block_
   v18 = [(NSMutableDictionary *)self->_pairWiseWeights objectForKeyedSubscript:@"pairWiseFarthest"];
   [v18 floatValue];
   LODWORD(v20) = v19;
-  [(MOEventBundleRanking *)self _computeBPROptForPairs:a3 withTotalBundleCountsForInterfaceTypesHigherTier:v14 WithTotalBundleCountsForInterfaceTypesLowerTier:v17 bprOpt:v8 pairWiseMult:v20];
+  [(MOEventBundleRanking *)self _computeBPROptForPairs:using withTotalBundleCountsForInterfaceTypesHigherTier:v14 WithTotalBundleCountsForInterfaceTypesLowerTier:v17 bprOpt:v8 pairWiseMult:v20];
   v22 = v21;
 
   v23 = [(NSMutableDictionary *)self->_pairWiseWeights objectForKeyedSubscript:@"pairWiseFarther"];
   [v23 floatValue];
   LODWORD(v25) = v24;
-  [(MOEventBundleRanking *)self _computeBPROptForPairs:a3 withTotalBundleCountsForInterfaceTypesHigherTier:v14 WithTotalBundleCountsForInterfaceTypesLowerTier:v16 bprOpt:v22 pairWiseMult:v25];
+  [(MOEventBundleRanking *)self _computeBPROptForPairs:using withTotalBundleCountsForInterfaceTypesHigherTier:v14 WithTotalBundleCountsForInterfaceTypesLowerTier:v16 bprOpt:v22 pairWiseMult:v25];
   v27 = v26;
 
   v28 = [(NSMutableDictionary *)self->_pairWiseWeights objectForKeyedSubscript:@"pairWiseFarther"];
   [v28 floatValue];
   LODWORD(v30) = v29;
-  [(MOEventBundleRanking *)self _computeBPROptForPairs:a3 withTotalBundleCountsForInterfaceTypesHigherTier:v15 WithTotalBundleCountsForInterfaceTypesLowerTier:v17 bprOpt:v27 pairWiseMult:v30];
+  [(MOEventBundleRanking *)self _computeBPROptForPairs:using withTotalBundleCountsForInterfaceTypesHigherTier:v15 WithTotalBundleCountsForInterfaceTypesLowerTier:v17 bprOpt:v27 pairWiseMult:v30];
   v32 = v31;
 
   v33 = [(NSDictionary *)self->_engagementScoreParameterDict objectForKeyedSubscript:@"pairWiseFar"];
   [v33 floatValue];
   LODWORD(v35) = v34;
-  [(MOEventBundleRanking *)self _computeBPROptForPairs:a3 withTotalBundleCountsForInterfaceTypesHigherTier:v14 WithTotalBundleCountsForInterfaceTypesLowerTier:v15 bprOpt:v32 pairWiseMult:v35];
+  [(MOEventBundleRanking *)self _computeBPROptForPairs:using withTotalBundleCountsForInterfaceTypesHigherTier:v14 WithTotalBundleCountsForInterfaceTypesLowerTier:v15 bprOpt:v32 pairWiseMult:v35];
   v37 = v36;
 
   v38 = [(NSMutableDictionary *)self->_pairWiseWeights objectForKeyedSubscript:@"pairWiseFar"];
   [v38 floatValue];
   LODWORD(v40) = v39;
-  [(MOEventBundleRanking *)self _computeBPROptForPairs:a3 withTotalBundleCountsForInterfaceTypesHigherTier:v15 WithTotalBundleCountsForInterfaceTypesLowerTier:v16 bprOpt:v37 pairWiseMult:v40];
+  [(MOEventBundleRanking *)self _computeBPROptForPairs:using withTotalBundleCountsForInterfaceTypesHigherTier:v15 WithTotalBundleCountsForInterfaceTypesLowerTier:v16 bprOpt:v37 pairWiseMult:v40];
   v42 = v41;
 
   v43 = [(NSMutableDictionary *)self->_pairWiseWeights objectForKeyedSubscript:@"pairWiseFar"];
   [v43 floatValue];
   LODWORD(v45) = v44;
-  [(MOEventBundleRanking *)self _computeBPROptForPairs:a3 withTotalBundleCountsForInterfaceTypesHigherTier:v16 WithTotalBundleCountsForInterfaceTypesLowerTier:v17 bprOpt:v42 pairWiseMult:v45];
+  [(MOEventBundleRanking *)self _computeBPROptForPairs:using withTotalBundleCountsForInterfaceTypesHigherTier:v16 WithTotalBundleCountsForInterfaceTypesLowerTier:v17 bprOpt:v42 pairWiseMult:v45];
   v47 = v46;
 
   return -v47;
 }
 
-- (double)_calculateNormSquare:(double *)a3
+- (double)_calculateNormSquare:(double *)square
 {
   __C = 0.0;
-  vDSP_dotprD(a3, 1, a3, 1, &__C, 0x10uLL);
+  vDSP_dotprD(square, 1, square, 1, &__C, 0x10uLL);
   return __C;
 }
 
-- (void)_setToIdentityMatrix:(double *)a3 forNumRows:(unint64_t)a4
+- (void)_setToIdentityMatrix:(double *)matrix forNumRows:(unint64_t)rows
 {
-  if (a4)
+  if (rows)
   {
     v4 = 0;
     v5 = 0;
     do
     {
-      for (i = 0; i != a4; ++i)
+      for (i = 0; i != rows; ++i)
       {
         if (v4 == i)
         {
@@ -6711,46 +6711,46 @@ uint64_t __60__MOEventBundleRanking_updateEngagementScoreParamsUsingBFGS__block_
           v7 = 0.0;
         }
 
-        a3[v5 + i] = v7;
+        matrix[v5 + i] = v7;
       }
 
       ++v4;
       v5 += i;
     }
 
-    while (v4 != a4);
+    while (v4 != rows);
   }
 }
 
-- (void)_lineSearch:(double *)a3 initialParams:(double *)a4 With:(double *)a5 And:(double *)a6 handler:(id)a7
+- (void)_lineSearch:(double *)search initialParams:(double *)params With:(double *)with And:(double *)and handler:(id)handler
 {
-  v12 = a7;
+  handlerCopy = handler;
   __B = 1.0;
-  [(MOEventBundleRanking *)self _generateBPROptUsing:a3 initialParams:a4];
+  [(MOEventBundleRanking *)self _generateBPROptUsing:search initialParams:params];
   v14 = v13;
   v15 = 1;
-  vDSP_vsmulD(a5, 1, &__B, __C, 1, 0x10uLL);
-  vDSP_vaddD(a3, 1, __C, 1, v26, 1, 0x10uLL);
-  [(MOEventBundleRanking *)self _computeGradient:v26 initialParams:a4 Update:__A];
+  vDSP_vsmulD(with, 1, &__B, __C, 1, 0x10uLL);
+  vDSP_vaddD(search, 1, __C, 1, v26, 1, 0x10uLL);
+  [(MOEventBundleRanking *)self _computeGradient:v26 initialParams:params Update:__A];
   v16 = 0;
   while (1)
   {
-    [(MOEventBundleRanking *)self _generateBPROptUsing:v26 initialParams:a4];
+    [(MOEventBundleRanking *)self _generateBPROptUsing:v26 initialParams:params];
     v18 = v17;
     v23 = 0.0;
-    vDSP_mmulD(a6, 1, a5, 1, &v23, 1, 1uLL, 1uLL, 0x10uLL);
+    vDSP_mmulD(and, 1, with, 1, &v23, 1, 1uLL, 1uLL, 0x10uLL);
     v19 = v14 + v23 * 0.0001 * __B;
     v22 = 0.0;
-    vDSP_mmulD(__A, 1, a5, 1, &v22, 1, 1uLL, 1uLL, 0x10uLL);
+    vDSP_mmulD(__A, 1, with, 1, &v22, 1, 1uLL, 1uLL, 0x10uLL);
     if (v18 <= v19 && v22 > v23 * 0.9)
     {
       break;
     }
 
     __B = __B * 0.5;
-    vDSP_vsmulD(a5, 1, &__B, __C, 1, 0x10uLL);
-    vDSP_vaddD(a3, 1, __C, 1, v26, 1, 0x10uLL);
-    [(MOEventBundleRanking *)self _computeGradient:v26 initialParams:a4 Update:__A];
+    vDSP_vsmulD(with, 1, &__B, __C, 1, 0x10uLL);
+    vDSP_vaddD(search, 1, __C, 1, v26, 1, 0x10uLL);
+    [(MOEventBundleRanking *)self _computeGradient:v26 initialParams:params Update:__A];
     v16 = v15++ > 0x63;
     if (v15 == 101)
     {
@@ -6771,7 +6771,7 @@ uint64_t __60__MOEventBundleRanking_updateEngagementScoreParamsUsingBFGS__block_
     [MOEventBundleRanking _lineSearch:initialParams:With:And:handler:];
   }
 
-  (v12)[2](v12, v16, __B);
+  (handlerCopy)[2](handlerCopy, v16, __B);
 }
 
 - (id)_getDefaultFallbackFactorDict
@@ -6804,11 +6804,11 @@ uint64_t __60__MOEventBundleRanking_updateEngagementScoreParamsUsingBFGS__block_
   return v3;
 }
 
-- (void)identifyRepetitiveSignificantContactBundlesFromBundles:(id)a3 precedingSignificantContactBundles:(id)a4
+- (void)identifyRepetitiveSignificantContactBundlesFromBundles:(id)bundles precedingSignificantContactBundles:(id)contactBundles
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  bundlesCopy = bundles;
+  contactBundlesCopy = contactBundles;
+  if ([bundlesCopy count])
   {
     v132[0] = _NSConcreteStackBlock;
     v132[1] = 3221225472;
@@ -6816,15 +6816,15 @@ uint64_t __60__MOEventBundleRanking_updateEngagementScoreParamsUsingBFGS__block_
     v132[3] = &unk_10033ADB0;
     v8 = objc_opt_new();
     v133 = v8;
-    [v6 enumerateObjectsUsingBlock:v132];
+    [bundlesCopy enumerateObjectsUsingBlock:v132];
     v9 = _mo_log_facility_get_os_log(&MOLogFacilityRanking);
     v101 = v8;
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v10 = NSStringFromSelector(a2);
-      v11 = [v6 count];
+      v11 = [bundlesCopy count];
       v12 = [v101 count];
-      v13 = [v7 count];
+      v13 = [contactBundlesCopy count];
       *buf = 138413058;
       v138 = v10;
       v139 = 2048;
@@ -6838,16 +6838,16 @@ uint64_t __60__MOEventBundleRanking_updateEngagementScoreParamsUsingBFGS__block_
       v8 = v101;
     }
 
-    v102 = v6;
+    v102 = bundlesCopy;
 
-    if ([v7 count])
+    if ([contactBundlesCopy count])
     {
-      [v8 addObjectsFromArray:v7];
+      [v8 addObjectsFromArray:contactBundlesCopy];
     }
 
-    v100 = v7;
-    v14 = [v8 allObjects];
-    v15 = [NSMutableArray arrayWithArray:v14];
+    v100 = contactBundlesCopy;
+    allObjects = [v8 allObjects];
+    v15 = [NSMutableArray arrayWithArray:allObjects];
 
     v99 = [[NSSortDescriptor alloc] initWithKey:@"startDate" ascending:1];
     v150 = v99;
@@ -6860,18 +6860,18 @@ uint64_t __60__MOEventBundleRanking_updateEngagementScoreParamsUsingBFGS__block_
     {
       v18 = NSStringFromSelector(a2);
       v19 = [v15 count];
-      v20 = [v102 firstObject];
-      v21 = [v20 startDate];
-      v22 = [v102 lastObject];
-      v23 = [v22 startDate];
+      firstObject = [v102 firstObject];
+      startDate = [firstObject startDate];
+      lastObject = [v102 lastObject];
+      startDate2 = [lastObject startDate];
       *buf = 138413058;
       v138 = v18;
       v139 = 2048;
       v140 = v19;
       v141 = 2112;
-      v142 = v21;
+      v142 = startDate;
       v143 = 2112;
-      v144 = v23;
+      v144 = startDate2;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "%@, merged contact bundle count, %lu, first bundle start date, %@, last bundle start date, %@", buf, 0x2Au);
 
       a2 = v104;
@@ -6883,15 +6883,15 @@ uint64_t __60__MOEventBundleRanking_updateEngagementScoreParamsUsingBFGS__block_
     v131[3] = &__block_descriptor_40_e30_v32__0__MOEventBundle_8Q16_B24l;
     v131[4] = a2;
     [v15 enumerateObjectsUsingBlock:v131];
-    v24 = [v15 firstObject];
-    v25 = [v24 startDate];
-    v26 = [NSDate firstSaturdayBeforeReferenceDate:v25];
+    firstObject2 = [v15 firstObject];
+    startDate3 = [firstObject2 startDate];
+    v26 = [NSDate firstSaturdayBeforeReferenceDate:startDate3];
 
     v27 = objc_opt_new();
-    v28 = [v15 lastObject];
-    v29 = [v28 endDate];
+    lastObject2 = [v15 lastObject];
+    endDate = [lastObject2 endDate];
     v30 = v26;
-    LODWORD(v26) = [v26 isBeforeDate:v29];
+    LODWORD(v26) = [v26 isBeforeDate:endDate];
 
     if (v26)
     {
@@ -6922,9 +6922,9 @@ uint64_t __60__MOEventBundleRanking_updateEngagementScoreParamsUsingBFGS__block_
         v30 = v34;
 
         objc_autoreleasePoolPop(v32);
-        v39 = [v15 lastObject];
-        v40 = [v39 endDate];
-        v41 = [v30 isBeforeDate:v40];
+        lastObject3 = [v15 lastObject];
+        endDate2 = [lastObject3 endDate];
+        v41 = [v30 isBeforeDate:endDate2];
       }
 
       while ((v41 & 1) != 0);
@@ -6958,14 +6958,14 @@ uint64_t __60__MOEventBundleRanking_updateEngagementScoreParamsUsingBFGS__block_
           if (os_log_type_enabled(v44, OS_LOG_TYPE_DEBUG))
           {
             v86 = NSStringFromSelector(a2);
-            v87 = [v112 startDate];
-            v88 = [v112 endDate];
+            startDate4 = [v112 startDate];
+            endDate3 = [v112 endDate];
             *buf = 138412802;
             v138 = v86;
             v139 = 2112;
-            v140 = v87;
+            v140 = startDate4;
             v141 = 2112;
-            v142 = v88;
+            v142 = endDate3;
             _os_log_debug_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEBUG, "%@, interval startDate, %@, interval endDate, %@", buf, 0x20u);
           }
 
@@ -6979,22 +6979,22 @@ uint64_t __60__MOEventBundleRanking_updateEngagementScoreParamsUsingBFGS__block_
             {
               v107 = NSStringFromSelector(a2);
               v108 = [v15 objectAtIndexedSubscript:v42];
-              v75 = [v108 bundleIdentifier];
+              bundleIdentifier = [v108 bundleIdentifier];
               v76 = [v15 objectAtIndexedSubscript:v42];
-              v77 = [v76 startDate];
+              startDate5 = [v76 startDate];
               v78 = [v15 objectAtIndexedSubscript:v42];
-              v79 = [v78 summarizationGranularity];
+              summarizationGranularity = [v78 summarizationGranularity];
               v80 = [v45 count];
               *buf = 138413570;
               v138 = v107;
               v139 = 2048;
               v140 = v42;
               v141 = 2112;
-              v142 = v75;
+              v142 = bundleIdentifier;
               v143 = 2112;
-              v144 = v77;
+              v144 = startDate5;
               v145 = 2048;
-              v146 = v79;
+              v146 = summarizationGranularity;
               v147 = 2048;
               v148 = v80;
               _os_log_debug_impl(&_mh_execute_header, v46, OS_LOG_TYPE_DEBUG, "%@, bundle idx, %lu, identifier, %@, startDate, %@, summarizationGranularity, %lu, contactIdentifierList count, %lu", buf, 0x3Eu);
@@ -7010,14 +7010,14 @@ uint64_t __60__MOEventBundleRanking_updateEngagementScoreParamsUsingBFGS__block_
             v126[5] = v42;
             [v45 enumerateObjectsUsingBlock:v126];
             v47 = [v15 objectAtIndexedSubscript:v42];
-            v48 = [v47 summarizationGranularity];
+            summarizationGranularity2 = [v47 summarizationGranularity];
 
-            if (v48 == 1)
+            if (summarizationGranularity2 == 1)
             {
               v49 = [v15 objectAtIndexedSubscript:v42];
-              v50 = [v49 startDate];
-              v51 = [v112 endDate];
-              v52 = [v50 isAfterDate:v51];
+              startDate6 = [v49 startDate];
+              endDate4 = [v112 endDate];
+              v52 = [startDate6 isAfterDate:endDate4];
 
               if (v52)
               {
@@ -7029,9 +7029,9 @@ uint64_t __60__MOEventBundleRanking_updateEngagementScoreParamsUsingBFGS__block_
               v122 = 0u;
               v123 = 0u;
               v53 = [v15 objectAtIndexedSubscript:v42];
-              v54 = [v53 persons];
+              persons = [v53 persons];
 
-              v55 = [v54 countByEnumeratingWithState:&v122 objects:v136 count:16];
+              v55 = [persons countByEnumeratingWithState:&v122 objects:v136 count:16];
               if (v55)
               {
                 v56 = v55;
@@ -7042,25 +7042,25 @@ uint64_t __60__MOEventBundleRanking_updateEngagementScoreParamsUsingBFGS__block_
                   {
                     if (*v123 != v57)
                     {
-                      objc_enumerationMutation(v54);
+                      objc_enumerationMutation(persons);
                     }
 
-                    v59 = [*(*(&v122 + 1) + 8 * i) contactIdentifier];
-                    v60 = [v45 containsObject:v59];
+                    contactIdentifier = [*(*(&v122 + 1) + 8 * i) contactIdentifier];
+                    v60 = [v45 containsObject:contactIdentifier];
 
                     if (v60)
                     {
                       v62 = [v15 objectAtIndexedSubscript:v42];
-                      v63 = [v62 bundleIdentifier];
-                      v64 = [v63 UUIDString];
-                      [v111 addObject:v64];
+                      bundleIdentifier2 = [v62 bundleIdentifier];
+                      uUIDString = [bundleIdentifier2 UUIDString];
+                      [v111 addObject:uUIDString];
 
                       v61 = 1;
                       goto LABEL_38;
                     }
                   }
 
-                  v56 = [v54 countByEnumeratingWithState:&v122 objects:v136 count:16];
+                  v56 = [persons countByEnumeratingWithState:&v122 objects:v136 count:16];
                   if (v56)
                   {
                     continue;
@@ -7084,8 +7084,8 @@ LABEL_38:
               {
                 v81 = NSStringFromSelector(a2);
                 v82 = [v15 objectAtIndexedSubscript:v42];
-                v83 = [v82 bundleIdentifier];
-                v84 = v83;
+                bundleIdentifier3 = [v82 bundleIdentifier];
+                v84 = bundleIdentifier3;
                 *buf = 138413058;
                 v85 = @"NO";
                 if (v61)
@@ -7097,7 +7097,7 @@ LABEL_38:
                 v139 = 2048;
                 v140 = v42;
                 v141 = 2112;
-                v142 = v83;
+                v142 = bundleIdentifier3;
                 v143 = 2112;
                 v144 = v85;
                 _os_log_debug_impl(&_mh_execute_header, v65, OS_LOG_TYPE_DEBUG, "%@, bundle idx, %lu, identifier, %@, repetitiveBundle, %@", buf, 0x2Au);
@@ -7110,9 +7110,9 @@ LABEL_38:
                 v118 = 0u;
                 v119 = 0u;
                 v66 = [v15 objectAtIndexedSubscript:v42];
-                v67 = [v66 persons];
+                persons2 = [v66 persons];
 
-                v68 = [v67 countByEnumeratingWithState:&v118 objects:v135 count:16];
+                v68 = [persons2 countByEnumeratingWithState:&v118 objects:v135 count:16];
                 if (v68)
                 {
                   v69 = v68;
@@ -7123,20 +7123,20 @@ LABEL_38:
                     {
                       if (*v119 != v70)
                       {
-                        objc_enumerationMutation(v67);
+                        objc_enumerationMutation(persons2);
                       }
 
                       v72 = *(*(&v118 + 1) + 8 * j);
-                      v73 = [v72 contactIdentifier];
+                      contactIdentifier2 = [v72 contactIdentifier];
 
-                      if (v73)
+                      if (contactIdentifier2)
                       {
-                        v74 = [v72 contactIdentifier];
-                        [v45 addObject:v74];
+                        contactIdentifier3 = [v72 contactIdentifier];
+                        [v45 addObject:contactIdentifier3];
                       }
                     }
 
-                    v69 = [v67 countByEnumeratingWithState:&v118 objects:v135 count:16];
+                    v69 = [persons2 countByEnumeratingWithState:&v118 objects:v135 count:16];
                   }
 
                   while (v69);
@@ -7178,9 +7178,9 @@ LABEL_38:
           }
 
           v93 = *(*(&v114 + 1) + 8 * k);
-          v94 = [v93 bundleIdentifier];
-          v95 = [v94 UUIDString];
-          v96 = [v111 containsObject:v95];
+          bundleIdentifier4 = [v93 bundleIdentifier];
+          uUIDString2 = [bundleIdentifier4 UUIDString];
+          v96 = [v111 containsObject:uUIDString2];
 
           if (v96)
           {
@@ -7201,8 +7201,8 @@ LABEL_38:
       while (v90);
     }
 
-    v6 = v102;
-    v7 = v100;
+    bundlesCopy = v102;
+    contactBundlesCopy = v100;
   }
 }
 
@@ -7283,16 +7283,16 @@ void __114__MOEventBundleRanking_identifyRepetitiveSignificantContactBundlesFrom
   return v11;
 }
 
-- (id)_checkAndUpdateNumericLimits:(id)a3
+- (id)_checkAndUpdateNumericLimits:(id)limits
 {
-  v3 = a3;
+  limitsCopy = limits;
   v4 = objc_opt_new();
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [v3 allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v18 objects:v24 count:16];
+  allKeys = [limitsCopy allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v18 objects:v24 count:16];
   if (v6)
   {
     v8 = v6;
@@ -7305,11 +7305,11 @@ void __114__MOEventBundleRanking_identifyRepetitiveSignificantContactBundlesFrom
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v3 objectForKeyedSubscript:{v11, v17}];
+        v12 = [limitsCopy objectForKeyedSubscript:{v11, v17}];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
@@ -7321,7 +7321,7 @@ void __114__MOEventBundleRanking_identifyRepetitiveSignificantContactBundlesFrom
         {
           [v12 doubleValue];
 LABEL_12:
-          v15 = [v3 objectForKeyedSubscript:v11];
+          v15 = [limitsCopy objectForKeyedSubscript:v11];
           [v4 setObject:v15 forKeyedSubscript:v11];
 
           goto LABEL_13;
@@ -7339,7 +7339,7 @@ LABEL_12:
 LABEL_13:
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v18 objects:v24 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v18 objects:v24 count:16];
     }
 
     while (v8);
@@ -7351,8 +7351,8 @@ LABEL_13:
 - (id)dictionary
 {
   v3 = objc_opt_new();
-  v4 = [(MOEventBundleRanking *)self rankingAlgorithmVersion];
-  [(MOEventBundleRanking *)self safeSavePropertyToDictionary:v3 withKey:@"kMORankingAlgorithmVersion" andValue:v4];
+  rankingAlgorithmVersion = [(MOEventBundleRanking *)self rankingAlgorithmVersion];
+  [(MOEventBundleRanking *)self safeSavePropertyToDictionary:v3 withKey:@"kMORankingAlgorithmVersion" andValue:rankingAlgorithmVersion];
 
   v5 = objc_opt_new();
   v36[0] = 0;
@@ -7361,7 +7361,7 @@ LABEL_13:
   v36[3] = __Block_byref_object_copy__35;
   v36[4] = __Block_byref_object_dispose__35;
   v37 = 0;
-  v6 = [(MOEventBundleRanking *)self staticModelParameterMatrix];
+  staticModelParameterMatrix = [(MOEventBundleRanking *)self staticModelParameterMatrix];
   v33[0] = _NSConcreteStackBlock;
   v33[1] = 3221225472;
   v33[2] = __34__MOEventBundleRanking_dictionary__block_invoke;
@@ -7369,11 +7369,11 @@ LABEL_13:
   v35 = v36;
   v7 = v5;
   v34 = v7;
-  [v6 enumerateKeysAndObjectsUsingBlock:v33];
+  [staticModelParameterMatrix enumerateKeysAndObjectsUsingBlock:v33];
 
   [(MOEventBundleRanking *)self safeSavePropertyToDictionary:v3 withKey:@"staticModelParameterMatrix" andValue:v7];
   v8 = objc_opt_new();
-  v9 = [(MOEventBundleRanking *)self dynamicModelParameterDict];
+  dynamicModelParameterDict = [(MOEventBundleRanking *)self dynamicModelParameterDict];
   v30[0] = _NSConcreteStackBlock;
   v30[1] = 3221225472;
   v30[2] = __34__MOEventBundleRanking_dictionary__block_invoke_2;
@@ -7381,37 +7381,37 @@ LABEL_13:
   v32 = v36;
   v10 = v8;
   v31 = v10;
-  [v9 enumerateKeysAndObjectsUsingBlock:v30];
+  [dynamicModelParameterDict enumerateKeysAndObjectsUsingBlock:v30];
 
   [(MOEventBundleRanking *)self safeSavePropertyToDictionary:v3 withKey:@"dynamicModelParameterDict" andValue:v10];
-  v11 = [(MOEventBundleRanking *)self heuristicsParameterDict];
-  [(MOEventBundleRanking *)self safeSavePropertyToDictionary:v3 withKey:@"heuristicsParameterDict" andValue:v11];
+  heuristicsParameterDict = [(MOEventBundleRanking *)self heuristicsParameterDict];
+  [(MOEventBundleRanking *)self safeSavePropertyToDictionary:v3 withKey:@"heuristicsParameterDict" andValue:heuristicsParameterDict];
 
-  v12 = [(MOEventBundleRanking *)self engagementScoreParameterDict];
-  [(MOEventBundleRanking *)self safeSavePropertyToDictionary:v3 withKey:@"engagementScoreParameterDict" andValue:v12];
+  engagementScoreParameterDict = [(MOEventBundleRanking *)self engagementScoreParameterDict];
+  [(MOEventBundleRanking *)self safeSavePropertyToDictionary:v3 withKey:@"engagementScoreParameterDict" andValue:engagementScoreParameterDict];
 
   [(MOEventBundleRanking *)self engagementScoreWeight];
   v13 = [NSNumber numberWithFloat:?];
   [(MOEventBundleRanking *)self safeSavePropertyToDictionary:v3 withKey:@"engagementScoreWeight" andValue:v13];
 
-  v14 = [(MOEventBundleRanking *)self rankingScoreThresholdDict];
-  [(MOEventBundleRanking *)self safeSavePropertyToDictionary:v3 withKey:@"rankingScoreThresholdDict" andValue:v14];
+  rankingScoreThresholdDict = [(MOEventBundleRanking *)self rankingScoreThresholdDict];
+  [(MOEventBundleRanking *)self safeSavePropertyToDictionary:v3 withKey:@"rankingScoreThresholdDict" andValue:rankingScoreThresholdDict];
 
   [(MOEventBundleRanking *)self frequencyPenalty];
   v15 = [NSNumber numberWithFloat:?];
   [(MOEventBundleRanking *)self safeSavePropertyToDictionary:v3 withKey:@"frequencyPenaltyCoefficient" andValue:v15];
 
-  v16 = [(MOEventBundleRanking *)self curationParameterDict];
-  [(MOEventBundleRanking *)self safeSavePropertyToDictionary:v3 withKey:@"curationParameterDict" andValue:v16];
+  curationParameterDict = [(MOEventBundleRanking *)self curationParameterDict];
+  [(MOEventBundleRanking *)self safeSavePropertyToDictionary:v3 withKey:@"curationParameterDict" andValue:curationParameterDict];
 
-  v17 = [(MOEventBundleRanking *)self evergreenEngagementScoreParameterDict];
-  [(MOEventBundleRanking *)self safeSavePropertyToDictionary:v3 withKey:@"evergreenEngagementScoreParameterDict" andValue:v17];
+  evergreenEngagementScoreParameterDict = [(MOEventBundleRanking *)self evergreenEngagementScoreParameterDict];
+  [(MOEventBundleRanking *)self safeSavePropertyToDictionary:v3 withKey:@"evergreenEngagementScoreParameterDict" andValue:evergreenEngagementScoreParameterDict];
 
-  v18 = [(MOEventBundleRanking *)self viewCountBasedAdjustmentParameterDict];
-  [(MOEventBundleRanking *)self safeSavePropertyToDictionary:v3 withKey:@"viewCountBasedAdjustmentParameterDict" andValue:v18];
+  viewCountBasedAdjustmentParameterDict = [(MOEventBundleRanking *)self viewCountBasedAdjustmentParameterDict];
+  [(MOEventBundleRanking *)self safeSavePropertyToDictionary:v3 withKey:@"viewCountBasedAdjustmentParameterDict" andValue:viewCountBasedAdjustmentParameterDict];
 
   v19 = objc_opt_new();
-  v20 = [(MOEventBundleRanking *)self bprRegularizationFactor];
+  bprRegularizationFactor = [(MOEventBundleRanking *)self bprRegularizationFactor];
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = __34__MOEventBundleRanking_dictionary__block_invoke_3;
@@ -7420,14 +7420,14 @@ LABEL_13:
   v27[4] = self;
   v21 = v3;
   v28 = v21;
-  [v20 enumerateKeysAndObjectsUsingBlock:v27];
+  [bprRegularizationFactor enumerateKeysAndObjectsUsingBlock:v27];
 
   [(MOEventBundleRanking *)self safeSavePropertyToDictionary:v21 withKey:@"bprRegularizationFactor" andValue:v19];
-  v22 = [(MOEventBundleRanking *)self pairWiseWeights];
-  [(MOEventBundleRanking *)self safeSavePropertyToDictionary:v21 withKey:@"pairWiseWeights" andValue:v22];
+  pairWiseWeights = [(MOEventBundleRanking *)self pairWiseWeights];
+  [(MOEventBundleRanking *)self safeSavePropertyToDictionary:v21 withKey:@"pairWiseWeights" andValue:pairWiseWeights];
 
-  v23 = [(MOEventBundleRanking *)self richnessWeightsDict];
-  [(MOEventBundleRanking *)self safeSavePropertyToDictionary:v21 withKey:@"richnessWeightsDict" andValue:v23];
+  richnessWeightsDict = [(MOEventBundleRanking *)self richnessWeightsDict];
+  [(MOEventBundleRanking *)self safeSavePropertyToDictionary:v21 withKey:@"richnessWeightsDict" andValue:richnessWeightsDict];
 
   v24 = v28;
   v25 = v21;
@@ -7470,14 +7470,14 @@ void __34__MOEventBundleRanking_dictionary__block_invoke_3(uint64_t a1, void *a2
   [*(a1 + 32) safeSavePropertyToDictionary:*(a1 + 40) withKey:*(*(*(a1 + 48) + 8) + 40) andValue:v8];
 }
 
-- (void)safeSavePropertyToDictionary:(id)a3 withKey:(id)a4 andValue:(id)a5
+- (void)safeSavePropertyToDictionary:(id)dictionary withKey:(id)key andValue:(id)value
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = v8;
-  if (v7 && v8)
+  keyCopy = key;
+  valueCopy = value;
+  v9 = valueCopy;
+  if (keyCopy && valueCopy)
   {
-    [a3 setObject:v8 forKey:v7];
+    [dictionary setObject:valueCopy forKey:keyCopy];
   }
 
   else
@@ -7490,128 +7490,128 @@ void __34__MOEventBundleRanking_dictionary__block_invoke_3(uint64_t a1, void *a2
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   frequencyPenalty = self->_frequencyPenalty;
-  v8 = a3;
+  coderCopy = coder;
   *&v5 = frequencyPenalty;
   v6 = [NSNumber numberWithFloat:v5];
-  [v8 encodeObject:v6 forKey:@"frequencyPenaltyCoefficient"];
+  [coderCopy encodeObject:v6 forKey:@"frequencyPenaltyCoefficient"];
 
   v7 = [NSNumber numberWithDouble:self->_recommendedTabVisitFIThreshold];
-  [v8 encodeObject:v7 forKey:@"recommendedTabVisitFIThreshold"];
+  [coderCopy encodeObject:v7 forKey:@"recommendedTabVisitFIThreshold"];
 
-  [v8 encodeObject:self->_richnessWeightsDict forKey:@"richnessWeightsDict"];
-  [v8 encodeObject:self->_staticModelParameterMatrix forKey:@"staticModelParameterMatrix"];
-  [v8 encodeObject:self->_dynamicModelParameterDict forKey:@"dynamicModelParameterDict"];
-  [v8 encodeObject:self->_heuristicsParameterDict forKey:@"heuristicsParameterDict"];
-  [v8 encodeObject:self->_engagementScoreParameterDict forKey:@"engagementScoreParameterDict"];
-  [v8 encodeObject:self->_rankingScoreThresholdDict forKey:@"rankingScoreThresholdDict"];
-  [v8 encodeObject:self->_viewCountBasedAdjustmentParameterDict forKey:@"viewCountBasedAdjustmentParameterDict"];
-  [v8 encodeObject:self->_interfaceTypeCountFromSuggestionEngagementDict forKey:@"interfaceTypeCountFromSuggestionEngagement"];
-  [v8 encodeObject:self->_bprRegularizationFactor forKey:@"bprRegularizationFactor"];
-  [v8 encodeObject:self->_pairWiseWeights forKey:@"pairWiseWeights"];
-  [v8 encodeObject:self->_evergreenEngagementScoreParameterDict forKey:@"evergreenEngagementScoreParameterDict"];
-  [v8 encodeObject:self->_curationParameterDict forKey:@"curationParameterDict"];
+  [coderCopy encodeObject:self->_richnessWeightsDict forKey:@"richnessWeightsDict"];
+  [coderCopy encodeObject:self->_staticModelParameterMatrix forKey:@"staticModelParameterMatrix"];
+  [coderCopy encodeObject:self->_dynamicModelParameterDict forKey:@"dynamicModelParameterDict"];
+  [coderCopy encodeObject:self->_heuristicsParameterDict forKey:@"heuristicsParameterDict"];
+  [coderCopy encodeObject:self->_engagementScoreParameterDict forKey:@"engagementScoreParameterDict"];
+  [coderCopy encodeObject:self->_rankingScoreThresholdDict forKey:@"rankingScoreThresholdDict"];
+  [coderCopy encodeObject:self->_viewCountBasedAdjustmentParameterDict forKey:@"viewCountBasedAdjustmentParameterDict"];
+  [coderCopy encodeObject:self->_interfaceTypeCountFromSuggestionEngagementDict forKey:@"interfaceTypeCountFromSuggestionEngagement"];
+  [coderCopy encodeObject:self->_bprRegularizationFactor forKey:@"bprRegularizationFactor"];
+  [coderCopy encodeObject:self->_pairWiseWeights forKey:@"pairWiseWeights"];
+  [coderCopy encodeObject:self->_evergreenEngagementScoreParameterDict forKey:@"evergreenEngagementScoreParameterDict"];
+  [coderCopy encodeObject:self->_curationParameterDict forKey:@"curationParameterDict"];
 }
 
-- (MOEventBundleRanking)initWithCoder:(id)a3
+- (MOEventBundleRanking)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_alloc_init(MOConfigurationManagerBase);
   v6 = [(MOEventBundleRanking *)self initWithConfigurationManager:v5];
 
   if (v6)
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"frequencyPenaltyCoefficient"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"frequencyPenaltyCoefficient"];
     [v7 floatValue];
     v6->_frequencyPenalty = v8;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recommendedTabVisitFIThreshold"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recommendedTabVisitFIThreshold"];
     [v9 doubleValue];
     v6->_recommendedTabVisitFIThreshold = v10;
 
     v11 = objc_opt_class();
     v12 = objc_opt_class();
     v13 = [NSSet setWithObjects:v11, v12, objc_opt_class(), 0];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"richnessWeightsDict"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"richnessWeightsDict"];
     richnessWeightsDict = v6->_richnessWeightsDict;
     v6->_richnessWeightsDict = v14;
 
     v16 = objc_opt_class();
     v17 = objc_opt_class();
     v18 = [NSSet setWithObjects:v16, v17, objc_opt_class(), 0];
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"staticModelParameterMatrix"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"staticModelParameterMatrix"];
     staticModelParameterMatrix = v6->_staticModelParameterMatrix;
     v6->_staticModelParameterMatrix = v19;
 
     v21 = objc_opt_class();
     v22 = objc_opt_class();
     v23 = [NSSet setWithObjects:v21, v22, objc_opt_class(), 0];
-    v24 = [v4 decodeObjectOfClasses:v23 forKey:@"dynamicModelParameterDict"];
+    v24 = [coderCopy decodeObjectOfClasses:v23 forKey:@"dynamicModelParameterDict"];
     dynamicModelParameterDict = v6->_dynamicModelParameterDict;
     v6->_dynamicModelParameterDict = v24;
 
     v26 = objc_opt_class();
     v27 = objc_opt_class();
     v28 = [NSSet setWithObjects:v26, v27, objc_opt_class(), 0];
-    v29 = [v4 decodeObjectOfClasses:v28 forKey:@"heuristicsParameterDict"];
+    v29 = [coderCopy decodeObjectOfClasses:v28 forKey:@"heuristicsParameterDict"];
     heuristicsParameterDict = v6->_heuristicsParameterDict;
     v6->_heuristicsParameterDict = v29;
 
     v31 = objc_opt_class();
     v32 = objc_opt_class();
     v33 = [NSSet setWithObjects:v31, v32, objc_opt_class(), 0];
-    v34 = [v4 decodeObjectOfClasses:v33 forKey:@"engagementScoreParameterDict"];
+    v34 = [coderCopy decodeObjectOfClasses:v33 forKey:@"engagementScoreParameterDict"];
     engagementScoreParameterDict = v6->_engagementScoreParameterDict;
     v6->_engagementScoreParameterDict = v34;
 
     v36 = objc_opt_class();
     v37 = objc_opt_class();
     v38 = [NSSet setWithObjects:v36, v37, objc_opt_class(), 0];
-    v39 = [v4 decodeObjectOfClasses:v38 forKey:@"rankingScoreThresholdDict"];
+    v39 = [coderCopy decodeObjectOfClasses:v38 forKey:@"rankingScoreThresholdDict"];
     rankingScoreThresholdDict = v6->_rankingScoreThresholdDict;
     v6->_rankingScoreThresholdDict = v39;
 
     v41 = objc_opt_class();
     v42 = objc_opt_class();
     v43 = [NSSet setWithObjects:v41, v42, objc_opt_class(), 0];
-    v44 = [v4 decodeObjectOfClasses:v43 forKey:@"viewCountBasedAdjustmentParameterDict"];
+    v44 = [coderCopy decodeObjectOfClasses:v43 forKey:@"viewCountBasedAdjustmentParameterDict"];
     viewCountBasedAdjustmentParameterDict = v6->_viewCountBasedAdjustmentParameterDict;
     v6->_viewCountBasedAdjustmentParameterDict = v44;
 
     v46 = objc_opt_class();
     v47 = objc_opt_class();
     v48 = [NSSet setWithObjects:v46, v47, objc_opt_class(), 0];
-    v49 = [v4 decodeObjectOfClasses:v48 forKey:@"interfaceTypeCountFromSuggestionEngagement"];
+    v49 = [coderCopy decodeObjectOfClasses:v48 forKey:@"interfaceTypeCountFromSuggestionEngagement"];
     interfaceTypeCountFromSuggestionEngagementDict = v6->_interfaceTypeCountFromSuggestionEngagementDict;
     v6->_interfaceTypeCountFromSuggestionEngagementDict = v49;
 
     v51 = objc_opt_class();
     v52 = objc_opt_class();
     v53 = [NSSet setWithObjects:v51, v52, objc_opt_class(), 0];
-    v54 = [v4 decodeObjectOfClasses:v53 forKey:@"bprRegularizationFactor"];
+    v54 = [coderCopy decodeObjectOfClasses:v53 forKey:@"bprRegularizationFactor"];
     bprRegularizationFactor = v6->_bprRegularizationFactor;
     v6->_bprRegularizationFactor = v54;
 
     v56 = objc_opt_class();
     v57 = objc_opt_class();
     v58 = [NSSet setWithObjects:v56, v57, objc_opt_class(), 0];
-    v59 = [v4 decodeObjectOfClasses:v58 forKey:@"pairWiseWeights"];
+    v59 = [coderCopy decodeObjectOfClasses:v58 forKey:@"pairWiseWeights"];
     pairWiseWeights = v6->_pairWiseWeights;
     v6->_pairWiseWeights = v59;
 
     v61 = objc_opt_class();
     v62 = objc_opt_class();
     v63 = [NSSet setWithObjects:v61, v62, objc_opt_class(), 0];
-    v64 = [v4 decodeObjectOfClasses:v63 forKey:@"evergreenEngagementScoreParameterDict"];
+    v64 = [coderCopy decodeObjectOfClasses:v63 forKey:@"evergreenEngagementScoreParameterDict"];
     evergreenEngagementScoreParameterDict = v6->_evergreenEngagementScoreParameterDict;
     v6->_evergreenEngagementScoreParameterDict = v64;
 
     v66 = objc_opt_class();
     v67 = objc_opt_class();
     v68 = [NSSet setWithObjects:v66, v67, objc_opt_class(), 0];
-    v69 = [v4 decodeObjectOfClasses:v68 forKey:@"curationParameterDict"];
+    v69 = [coderCopy decodeObjectOfClasses:v68 forKey:@"curationParameterDict"];
     curationParameterDict = v6->_curationParameterDict;
     v6->_curationParameterDict = v69;
   }
@@ -7619,11 +7619,11 @@ void __34__MOEventBundleRanking_dictionary__block_invoke_3(uint64_t a1, void *a2
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [MOEventBundleRanking alloc];
-  v5 = [(MOEventBundleRanking *)self configurationManager];
-  v6 = [(MOEventBundleRanking *)v4 initWithConfigurationManager:v5];
+  configurationManager = [(MOEventBundleRanking *)self configurationManager];
+  v6 = [(MOEventBundleRanking *)v4 initWithConfigurationManager:configurationManager];
 
   if (v6)
   {
@@ -7631,63 +7631,63 @@ void __34__MOEventBundleRanking_dictionary__block_invoke_3(uint64_t a1, void *a2
     [(MOEventBundleRanking *)v6 setFrequencyPenalty:?];
     [(MOEventBundleRanking *)self recommendedTabVisitFIThreshold];
     [(MOEventBundleRanking *)v6 setRecommendedTabVisitFIThreshold:?];
-    v7 = [(MOEventBundleRanking *)self richnessWeightsDict];
-    v8 = [v7 copy];
+    richnessWeightsDict = [(MOEventBundleRanking *)self richnessWeightsDict];
+    v8 = [richnessWeightsDict copy];
     [(MOEventBundleRanking *)v6 setRichnessWeightsDict:v8];
 
-    v9 = [(MOEventBundleRanking *)self staticModelParameterMatrix];
-    v10 = [v9 copy];
+    staticModelParameterMatrix = [(MOEventBundleRanking *)self staticModelParameterMatrix];
+    v10 = [staticModelParameterMatrix copy];
     [(MOEventBundleRanking *)v6 setStaticModelParameterMatrix:v10];
 
-    v11 = [(MOEventBundleRanking *)self dynamicModelParameterDict];
-    v12 = [v11 copy];
+    dynamicModelParameterDict = [(MOEventBundleRanking *)self dynamicModelParameterDict];
+    v12 = [dynamicModelParameterDict copy];
     [(MOEventBundleRanking *)v6 setDynamicModelParameterDict:v12];
 
-    v13 = [(MOEventBundleRanking *)self heuristicsParameterDict];
-    v14 = [v13 copy];
+    heuristicsParameterDict = [(MOEventBundleRanking *)self heuristicsParameterDict];
+    v14 = [heuristicsParameterDict copy];
     [(MOEventBundleRanking *)v6 setHeuristicsParameterDict:v14];
 
-    v15 = [(MOEventBundleRanking *)self engagementScoreParameterDict];
-    v16 = [v15 copy];
+    engagementScoreParameterDict = [(MOEventBundleRanking *)self engagementScoreParameterDict];
+    v16 = [engagementScoreParameterDict copy];
     [(MOEventBundleRanking *)v6 setEngagementScoreParameterDict:v16];
 
-    v17 = [(MOEventBundleRanking *)self rankingScoreThresholdDict];
-    v18 = [v17 copy];
+    rankingScoreThresholdDict = [(MOEventBundleRanking *)self rankingScoreThresholdDict];
+    v18 = [rankingScoreThresholdDict copy];
     [(MOEventBundleRanking *)v6 setRankingScoreThresholdDict:v18];
 
-    v19 = [(MOEventBundleRanking *)self viewCountBasedAdjustmentParameterDict];
-    v20 = [v19 copy];
+    viewCountBasedAdjustmentParameterDict = [(MOEventBundleRanking *)self viewCountBasedAdjustmentParameterDict];
+    v20 = [viewCountBasedAdjustmentParameterDict copy];
     [(MOEventBundleRanking *)v6 setViewCountBasedAdjustmentParameterDict:v20];
 
-    v21 = [(MOEventBundleRanking *)self interfaceTypeCountFromSuggestionEngagementDict];
-    v22 = [v21 copy];
+    interfaceTypeCountFromSuggestionEngagementDict = [(MOEventBundleRanking *)self interfaceTypeCountFromSuggestionEngagementDict];
+    v22 = [interfaceTypeCountFromSuggestionEngagementDict copy];
     [(MOEventBundleRanking *)v6 setInterfaceTypeCountFromSuggestionEngagementDict:v22];
 
-    v23 = [(MOEventBundleRanking *)self bprRegularizationFactor];
-    v24 = [v23 copy];
+    bprRegularizationFactor = [(MOEventBundleRanking *)self bprRegularizationFactor];
+    v24 = [bprRegularizationFactor copy];
     [(MOEventBundleRanking *)v6 setBprRegularizationFactor:v24];
 
-    v25 = [(MOEventBundleRanking *)self pairWiseWeights];
-    v26 = [v25 copy];
+    pairWiseWeights = [(MOEventBundleRanking *)self pairWiseWeights];
+    v26 = [pairWiseWeights copy];
     [(MOEventBundleRanking *)v6 setPairWiseWeights:v26];
 
-    v27 = [(MOEventBundleRanking *)self evergreenEngagementScoreParameterDict];
-    v28 = [v27 copy];
+    evergreenEngagementScoreParameterDict = [(MOEventBundleRanking *)self evergreenEngagementScoreParameterDict];
+    v28 = [evergreenEngagementScoreParameterDict copy];
     [(MOEventBundleRanking *)v6 setEvergreenEngagementScoreParameterDict:v28];
 
-    v29 = [(MOEventBundleRanking *)self curationParameterDict];
-    v30 = [v29 copy];
+    curationParameterDict = [(MOEventBundleRanking *)self curationParameterDict];
+    v30 = [curationParameterDict copy];
     [(MOEventBundleRanking *)v6 setCurationParameterDict:v30];
   }
 
   return v6;
 }
 
-- (void)updateTripMetaDataForRank:(id)a3
+- (void)updateTripMetaDataForRank:(id)rank
 {
-  v5 = a3;
-  v6 = [v5 places];
-  v7 = [v6 count];
+  rankCopy = rank;
+  places = [rankCopy places];
+  v7 = [places count];
 
   if (v7)
   {
@@ -7695,8 +7695,8 @@ void __34__MOEventBundleRanking_dictionary__block_invoke_3(uint64_t a1, void *a2
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v8 = [v5 places];
-    v9 = [v8 countByEnumeratingWithState:&v40 objects:v48 count:16];
+    places2 = [rankCopy places];
+    v9 = [places2 countByEnumeratingWithState:&v40 objects:v48 count:16];
     if (!v9)
     {
 LABEL_24:
@@ -7705,7 +7705,7 @@ LABEL_24:
     }
 
     v10 = v9;
-    v37 = v5;
+    v37 = rankCopy;
     v11 = *v41;
     v12 = 0.0;
     v13 = 0.0;
@@ -7716,21 +7716,21 @@ LABEL_24:
       {
         if (*v41 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(places2);
         }
 
         v16 = *(*(&v40 + 1) + 8 * i);
-        v17 = [v16 endDate];
-        if (v17)
+        endDate = [v16 endDate];
+        if (endDate)
         {
-          v18 = v17;
-          v19 = [v16 startDate];
+          v18 = endDate;
+          startDate = [v16 startDate];
 
-          if (v19)
+          if (startDate)
           {
-            v20 = [v16 endDate];
-            v21 = [v16 startDate];
-            [v20 timeIntervalSinceDate:v21];
+            endDate2 = [v16 endDate];
+            startDate2 = [v16 startDate];
+            [endDate2 timeIntervalSinceDate:startDate2];
             v23 = v22;
 
             [v16 distanceToHomeInMiles];
@@ -7783,12 +7783,12 @@ LABEL_24:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v40 objects:v48 count:16];
+      v10 = [places2 countByEnumeratingWithState:&v40 objects:v48 count:16];
     }
 
     while (v10);
 
-    v5 = v37;
+    rankCopy = v37;
     if (v12 > 0.0)
     {
       *&v32 = v14 / v12;
@@ -7800,8 +7800,8 @@ LABEL_24:
       [v37 addMetaDataForRankForKey:@"VisitDuration" value:v35];
 
       *&v36 = v13 / v12;
-      v8 = [NSNumber numberWithFloat:v36];
-      [v37 addMetaDataForRankForKey:@"FamiliarityIndex" value:v8];
+      places2 = [NSNumber numberWithFloat:v36];
+      [v37 addMetaDataForRankForKey:@"FamiliarityIndex" value:places2];
       goto LABEL_24;
     }
   }
@@ -7811,8 +7811,8 @@ LABEL_25:
 
 - (void)setHolidayTuningParameters
 {
-  v3 = [(MOEventBundleRanking *)self loadHolidayTuningParameterJSONFromFilePath];
-  [(MOEventBundleRanking *)self setHolidayTuningParameters:v3];
+  loadHolidayTuningParameterJSONFromFilePath = [(MOEventBundleRanking *)self loadHolidayTuningParameterJSONFromFilePath];
+  [(MOEventBundleRanking *)self setHolidayTuningParameters:loadHolidayTuningParameterJSONFromFilePath];
 }
 
 - (id)loadHolidayTuningParameterJSONFromFilePath

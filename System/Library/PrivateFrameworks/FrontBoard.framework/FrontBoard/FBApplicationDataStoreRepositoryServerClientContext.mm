@@ -1,33 +1,33 @@
 @interface FBApplicationDataStoreRepositoryServerClientContext
-- (FBApplicationDataStoreRepositoryServerClientContext)initWithDataStore:(id)a3;
+- (FBApplicationDataStoreRepositoryServerClientContext)initWithDataStore:(id)store;
 - (FBApplicationDataStoreRepositoryServerClientContextDelegate)delegate;
 - (FBSServiceFacilityClientHandle)clientHandle;
 - (void)_queue_updateObservers;
-- (void)_repositoryInvalidated:(id)a3;
-- (void)_valueChanged:(id)a3;
+- (void)_repositoryInvalidated:(id)invalidated;
+- (void)_valueChanged:(id)changed;
 - (void)dealloc;
-- (void)setInterestedInAllChanges:(BOOL)a3;
-- (void)setPrefetchedKeys:(id)a3;
+- (void)setInterestedInAllChanges:(BOOL)changes;
+- (void)setPrefetchedKeys:(id)keys;
 @end
 
 @implementation FBApplicationDataStoreRepositoryServerClientContext
 
-- (FBApplicationDataStoreRepositoryServerClientContext)initWithDataStore:(id)a3
+- (FBApplicationDataStoreRepositoryServerClientContext)initWithDataStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v12.receiver = self;
   v12.super_class = FBApplicationDataStoreRepositoryServerClientContext;
   v6 = [(FBApplicationDataStoreRepositoryServerClientContext *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataStore, a3);
+    objc_storeStrong(&v6->_dataStore, store);
     Serial = BSDispatchQueueCreateSerial();
     queue = v7->_queue;
     v7->_queue = Serial;
 
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 addObserver:v7 selector:sel__repositoryInvalidated_ name:@"FBApplicationStoreRepositoryInvalidatedNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__repositoryInvalidated_ name:@"FBApplicationStoreRepositoryInvalidatedNotification" object:0];
   }
 
   return v7;
@@ -35,15 +35,15 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = FBApplicationDataStoreRepositoryServerClientContext;
   [(FBApplicationDataStoreRepositoryServerClientContext *)&v4 dealloc];
 }
 
-- (void)setInterestedInAllChanges:(BOOL)a3
+- (void)setInterestedInAllChanges:(BOOL)changes
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -51,7 +51,7 @@
   v4[2] = __81__FBApplicationDataStoreRepositoryServerClientContext_setInterestedInAllChanges___block_invoke;
   v4[3] = &unk_1E783B948;
   v4[4] = self;
-  v5 = a3;
+  changesCopy = changes;
   dispatch_sync(queue, v4);
 }
 
@@ -68,17 +68,17 @@ uint64_t __81__FBApplicationDataStoreRepositoryServerClientContext_setInterested
   return result;
 }
 
-- (void)setPrefetchedKeys:(id)a3
+- (void)setPrefetchedKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __73__FBApplicationDataStoreRepositoryServerClientContext_setPrefetchedKeys___block_invoke;
   v7[3] = &unk_1E783B240;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = keysCopy;
+  v6 = keysCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -110,41 +110,41 @@ uint64_t __73__FBApplicationDataStoreRepositoryServerClientContext_setPrefetched
   if (self->_observingChanges != v4)
   {
     self->_observingChanges = v4;
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    v6 = v5;
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    v6 = defaultCenter;
     if (self->_observingChanges)
     {
-      [v5 addObserver:self selector:sel__valueChanged_ name:@"FBApplicationStoreRepositoryChangeNotification" object:0];
+      [defaultCenter addObserver:self selector:sel__valueChanged_ name:@"FBApplicationStoreRepositoryChangeNotification" object:0];
     }
 
     else
     {
-      [v5 removeObserver:self name:@"FBApplicationStoreRepositoryChangeNotification" object:0];
+      [defaultCenter removeObserver:self name:@"FBApplicationStoreRepositoryChangeNotification" object:0];
     }
   }
 }
 
-- (void)_valueChanged:(id)a3
+- (void)_valueChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v11 = [v5 objectForKey:@"FBApplicationStoreRepositoryChangeApp"];
+  changedCopy = changed;
+  userInfo = [changedCopy userInfo];
+  v11 = [userInfo objectForKey:@"FBApplicationStoreRepositoryChangeApp"];
 
-  v6 = [v4 userInfo];
-  v7 = [v6 objectForKey:@"FBApplicationStoreRepositoryChangeKey"];
+  userInfo2 = [changedCopy userInfo];
+  v7 = [userInfo2 objectForKey:@"FBApplicationStoreRepositoryChangeKey"];
 
-  v8 = [v4 userInfo];
+  userInfo3 = [changedCopy userInfo];
 
-  v9 = [v8 objectForKey:@"FBApplicationStoreRepositoryChangeValue"];
+  v9 = [userInfo3 objectForKey:@"FBApplicationStoreRepositoryChangeValue"];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained applicationDataStoreRepositoryClientContext:self valueChangedForObject:v9 key:v7 appID:v11];
 }
 
-- (void)_repositoryInvalidated:(id)a3
+- (void)_repositoryInvalidated:(id)invalidated
 {
-  v4 = [a3 userInfo];
-  v6 = [v4 objectForKey:@"FBApplicationStoreRepositoryChangeApp"];
+  userInfo = [invalidated userInfo];
+  v6 = [userInfo objectForKey:@"FBApplicationStoreRepositoryChangeApp"];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained applicationDataStoreRepositoryClientContext:self repositoryInvalidatedForAppID:v6];

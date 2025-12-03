@@ -1,34 +1,34 @@
 @interface CCUIC2AnimationParameters
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CAFrameRateRange)frameRateRange;
 - (NSString)description;
-- (id)_initWithAnimationParameters:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)_initWithAnimationParameters:(id)parameters;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation CCUIC2AnimationParameters
 
-- (id)_initWithAnimationParameters:(id)a3
+- (id)_initWithAnimationParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v13.receiver = self;
   v13.super_class = CCUIC2AnimationParameters;
   v5 = [(CCUIC2AnimationParameters *)&v13 init];
   if (v5)
   {
-    v5->_interactive = [v4 isInteractive];
-    [v4 tension];
+    v5->_interactive = [parametersCopy isInteractive];
+    [parametersCopy tension];
     v5->_tension = v6;
-    [v4 friction];
+    [parametersCopy friction];
     v5->_friction = v7;
-    if (v4)
+    if (parametersCopy)
     {
-      [v4 frameRateRange];
+      [parametersCopy frameRateRange];
       v5->_frameRateRange.minimum = v8;
       v5->_frameRateRange.maximum = v9;
       v5->_frameRateRange.preferred = v10;
-      v5->_highFrameRateReason = [v4 highFrameRateReason];
+      v5->_highFrameRateReason = [parametersCopy highFrameRateReason];
     }
 
     else
@@ -55,37 +55,37 @@
   [v3 appendString:v10 withName:@"FrameRateRange"];
 
   v11 = [v3 appendInteger:-[CCUIC2AnimationParameters highFrameRateReason](self withName:{"highFrameRateReason"), @"highFrameRateReason"}];
-  v12 = [v3 build];
+  build = [v3 build];
 
-  return v12;
+  return build;
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendBool:{-[CCUIC2AnimationParameters isInteractive](self, "isInteractive")}];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendBool:{-[CCUIC2AnimationParameters isInteractive](self, "isInteractive")}];
   [(CCUIC2AnimationParameters *)self tension];
-  v5 = [v3 appendCGFloat:?];
+  v5 = [builder appendCGFloat:?];
   [(CCUIC2AnimationParameters *)self friction];
-  v6 = [v3 appendCGFloat:?];
+  v6 = [builder appendCGFloat:?];
   [(CCUIC2AnimationParameters *)self frameRateRange];
   v8 = v7;
   v10 = v9;
-  v11 = [v3 appendFloat:?];
+  v11 = [builder appendFloat:?];
   LODWORD(v12) = v8;
-  v13 = [v3 appendFloat:v12];
+  v13 = [builder appendFloat:v12];
   LODWORD(v14) = v10;
-  v15 = [v3 appendFloat:v14];
-  v16 = [v3 appendInteger:{-[CCUIC2AnimationParameters highFrameRateReason](self, "highFrameRateReason")}];
-  v17 = [v3 hash];
+  v15 = [builder appendFloat:v14];
+  v16 = [builder appendInteger:{-[CCUIC2AnimationParameters highFrameRateReason](self, "highFrameRateReason")}];
+  v17 = [builder hash];
 
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v17 = 1;
   }
@@ -95,17 +95,17 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      v5 = v4;
-      v6 = [(CCUIC2AnimationParameters *)self isInteractive];
-      if (v6 != [(CCUIC2AnimationParameters *)v5 isInteractive]|| ([(CCUIC2AnimationParameters *)self tension], [(CCUIC2AnimationParameters *)v5 tension], BSCompareFloats()) || ([(CCUIC2AnimationParameters *)self friction], [(CCUIC2AnimationParameters *)v5 friction], BSCompareFloats()) || ([(CCUIC2AnimationParameters *)self frameRateRange], v8 = v7, v10 = v9, v12 = v11, [(CCUIC2AnimationParameters *)v5 frameRateRange], v20.minimum = v13, v20.maximum = v14, v20.preferred = v15, v19.minimum = v8, v19.maximum = v10, v19.preferred = v12, !CAFrameRateRangeIsEqualToRange(v19, v20)))
+      v5 = equalCopy;
+      isInteractive = [(CCUIC2AnimationParameters *)self isInteractive];
+      if (isInteractive != [(CCUIC2AnimationParameters *)v5 isInteractive]|| ([(CCUIC2AnimationParameters *)self tension], [(CCUIC2AnimationParameters *)v5 tension], BSCompareFloats()) || ([(CCUIC2AnimationParameters *)self friction], [(CCUIC2AnimationParameters *)v5 friction], BSCompareFloats()) || ([(CCUIC2AnimationParameters *)self frameRateRange], v8 = v7, v10 = v9, v12 = v11, [(CCUIC2AnimationParameters *)v5 frameRateRange], v20.minimum = v13, v20.maximum = v14, v20.preferred = v15, v19.minimum = v8, v19.maximum = v10, v19.preferred = v12, !CAFrameRateRangeIsEqualToRange(v19, v20)))
       {
         v17 = 0;
       }
 
       else
       {
-        v16 = [(CCUIC2AnimationParameters *)self highFrameRateReason];
-        v17 = v16 == [(CCUIC2AnimationParameters *)v5 highFrameRateReason];
+        highFrameRateReason = [(CCUIC2AnimationParameters *)self highFrameRateReason];
+        v17 = highFrameRateReason == [(CCUIC2AnimationParameters *)v5 highFrameRateReason];
       }
     }
 
@@ -118,7 +118,7 @@
   return v17;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [CCUIMutableC2AnimationParameters alloc];
 

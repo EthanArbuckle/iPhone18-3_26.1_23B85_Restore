@@ -8,7 +8,7 @@
 {
   v60 = *MEMORY[0x1E69E9840];
   v6 = a3;
-  v46 = [a4 _shouldMarkAllInputContextHistoryEntriesAsJunk];
+  _shouldMarkAllInputContextHistoryEntriesAsJunk = [a4 _shouldMarkAllInputContextHistoryEntriesAsJunk];
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
@@ -25,7 +25,7 @@
   v44 = 0;
   v9 = *v53;
   v43 = *MEMORY[0x1E69A5FF0];
-  v49 = a1;
+  selfCopy = self;
   v45 = *v53;
   do
   {
@@ -43,26 +43,26 @@
       if (objc_opt_isKindOfClass())
       {
         v12 = v11;
-        v13 = [v12 messageItem];
-        v14 = [v13 guid];
-        v15 = [v12 index];
-        v51 = [MEMORY[0x1E69A5BF8] chatItemGUIDForMessageGUID:v14 partIndex:v15];
-        v50 = [v13 time];
-        v16 = [v13 sender];
+        messageItem = [v12 messageItem];
+        guid = [messageItem guid];
+        index = [v12 index];
+        v51 = [MEMORY[0x1E69A5BF8] chatItemGUIDForMessageGUID:guid partIndex:index];
+        time = [messageItem time];
+        sender = [messageItem sender];
         v17 = MEMORY[0x193AF5D70]();
 
-        if (![v17 length] && objc_msgSend(v13, "isFromMe"))
+        if (![v17 length] && objc_msgSend(messageItem, "isFromMe"))
         {
-          v18 = [v13 destinationCallerID];
+          destinationCallerID = [messageItem destinationCallerID];
           v19 = MEMORY[0x193AF5D70]();
 
           v17 = v19;
         }
 
-        v20 = [v13 threadIdentifier];
-        if (v46)
+        threadIdentifier = [messageItem threadIdentifier];
+        if (_shouldMarkAllInputContextHistoryEntriesAsJunk)
         {
-          v21 = 0;
+          string = 0;
           v22 = 3;
         }
 
@@ -71,8 +71,8 @@
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v32 = [v12 text];
-            if ([v32 attribute:v43 existsInRange:{0, objc_msgSend(v32, "length")}])
+            text = [v12 text];
+            if ([text attribute:v43 existsInRange:{0, objc_msgSend(text, "length")}])
             {
               v22 = 2;
             }
@@ -82,7 +82,7 @@
               v22 = 0;
             }
 
-            v21 = [v32 string];
+            string = [text string];
           }
 
           else
@@ -90,7 +90,7 @@
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v21 = 0;
+              string = 0;
               v22 = 1;
             }
 
@@ -99,12 +99,12 @@
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v33 = [v12 message];
-                v34 = [v33 balloonBundleID];
+                message = [v12 message];
+                balloonBundleID = [message balloonBundleID];
                 v35 = IMBalloonExtensionIDWithSuffix();
-                v42 = [v34 isEqualToString:v35];
+                v42 = [balloonBundleID isEqualToString:v35];
 
-                v21 = 0;
+                string = 0;
                 if (v42)
                 {
                   v22 = 5;
@@ -118,7 +118,7 @@
 
               else
               {
-                v21 = 0;
+                string = 0;
                 v22 = 4;
               }
             }
@@ -129,9 +129,9 @@
         {
           v36 = objc_alloc_init(MEMORY[0x1E69D9678]);
           v37 = v36;
-          if (v21)
+          if (string)
           {
-            v38 = v21;
+            v38 = string;
           }
 
           else
@@ -141,19 +141,19 @@
 
           [v36 setText:v38];
           [v37 setSenderIdentifier:v17];
-          [v37 setTimestamp:v50];
+          [v37 setTimestamp:time];
           [v37 setEntryIdentifier:v51];
           [v37 setEntryType:v22];
-          [v37 setThreadIdentifier:v20];
-          [v37 setSpotlightCacheKey:v14];
+          [v37 setThreadIdentifier:threadIdentifier];
+          [v37 setSpotlightCacheKey:guid];
           if (objc_opt_respondsToSelector())
           {
-            -[NSObject setIsFromMe:](v37, "setIsFromMe:", [v13 isFromMe]);
+            -[NSObject setIsFromMe:](v37, "setIsFromMe:", [messageItem isFromMe]);
           }
 
           v39 = [v37 copy];
-          a1 = v49;
-          [v49 addEntry:v39];
+          self = selfCopy;
+          [selfCopy addEntry:v39];
 
           v44 = 1;
         }
@@ -166,12 +166,12 @@
             [(UIInputContextHistory(ChatKit) *)v57 addChatItems:v12 withConversation:&v58, v37];
           }
 
-          a1 = v49;
+          self = selfCopy;
         }
 
         v8 = v47;
         v9 = v45;
-        v31 = v50;
+        v31 = time;
         goto LABEL_41;
       }
 
@@ -184,36 +184,36 @@
       v23 = v11;
       if (objc_opt_respondsToSelector())
       {
-        v13 = [v23 handle];
-        v24 = [v13 ID];
-        v14 = MEMORY[0x193AF5D70]();
+        messageItem = [v23 handle];
+        v24 = [messageItem ID];
+        guid = MEMORY[0x193AF5D70]();
 
-        v25 = [a1 recipientIdentifiers];
-        v26 = [v25 containsObject:v14];
+        recipientIdentifiers = [self recipientIdentifiers];
+        v26 = [recipientIdentifiers containsObject:guid];
 
         if ((v26 & 1) == 0)
         {
-          v27 = [MEMORY[0x1E696ADF0] descriptorForUsedKeys];
-          v56 = v27;
+          descriptorForUsedKeys = [MEMORY[0x1E696ADF0] descriptorForUsedKeys];
+          v56 = descriptorForUsedKeys;
           v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v56 count:1];
-          v29 = [v13 cnContactWithKeys:v28];
+          v29 = [messageItem cnContactWithKeys:v28];
 
           v51 = v29;
           v30 = [MEMORY[0x1E696ADF0] componentsForContact:v29];
           v31 = v30;
-          if (v14)
+          if (guid)
           {
-            a1 = v49;
+            self = selfCopy;
             if (v30)
             {
-              [v49 addNewParticipantWithIdentifier:v14 name:v30];
+              [selfCopy addNewParticipantWithIdentifier:guid name:v30];
               v44 = 1;
             }
           }
 
           else
           {
-            a1 = v49;
+            self = selfCopy;
           }
 
 LABEL_41:

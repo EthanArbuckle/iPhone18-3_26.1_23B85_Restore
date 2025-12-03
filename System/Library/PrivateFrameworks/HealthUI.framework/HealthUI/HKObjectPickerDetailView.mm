@@ -1,15 +1,15 @@
 @interface HKObjectPickerDetailView
-- (HKObjectPickerDetailView)initWithFrame:(CGRect)a3;
+- (HKObjectPickerDetailView)initWithFrame:(CGRect)frame;
 - (void)_setUpSubviews;
 @end
 
 @implementation HKObjectPickerDetailView
 
-- (HKObjectPickerDetailView)initWithFrame:(CGRect)a3
+- (HKObjectPickerDetailView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = HKObjectPickerDetailView;
-  v3 = [(HKObjectPickerDetailView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HKObjectPickerDetailView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -37,8 +37,8 @@
   [(UILabel *)self->_primaryLabel setFont:v11];
 
   [(UILabel *)self->_primaryLabel setNumberOfLines:0];
-  v12 = [MEMORY[0x1E69DC888] labelColor];
-  [(UILabel *)self->_primaryLabel setTextColor:v12];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [(UILabel *)self->_primaryLabel setTextColor:labelColor];
 
   [(UILabel *)self->_primaryLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   [(HKObjectPickerDetailView *)self addSubview:self->_primaryLabel];
@@ -51,39 +51,39 @@
   [(UILabel *)self->_secondaryLabel setFont:v15];
 
   [(UILabel *)self->_secondaryLabel setNumberOfLines:0];
-  v16 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [(UILabel *)self->_secondaryLabel setTextColor:v16];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [(UILabel *)self->_secondaryLabel setTextColor:secondaryLabelColor];
 
   [(UILabel *)self->_secondaryLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   [(HKObjectPickerDetailView *)self addSubview:self->_secondaryLabel];
   v30 = MEMORY[0x1E696ACD8];
-  v39 = [(UILabel *)self->_primaryLabel topAnchor];
-  v38 = [(HKObjectPickerDetailView *)self topAnchor];
-  v37 = [v39 constraintEqualToAnchor:v38];
+  topAnchor = [(UILabel *)self->_primaryLabel topAnchor];
+  topAnchor2 = [(HKObjectPickerDetailView *)self topAnchor];
+  v37 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v40[0] = v37;
-  v36 = [(UILabel *)self->_primaryLabel leadingAnchor];
-  v35 = [(HKObjectPickerDetailView *)self leadingAnchor];
-  v34 = [v36 constraintEqualToAnchor:v35];
+  leadingAnchor = [(UILabel *)self->_primaryLabel leadingAnchor];
+  leadingAnchor2 = [(HKObjectPickerDetailView *)self leadingAnchor];
+  v34 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v40[1] = v34;
-  v33 = [(HKObjectPickerDetailView *)self trailingAnchor];
-  v32 = [(UILabel *)self->_primaryLabel trailingAnchor];
-  v31 = [v33 constraintEqualToAnchor:v32];
+  trailingAnchor = [(HKObjectPickerDetailView *)self trailingAnchor];
+  trailingAnchor2 = [(UILabel *)self->_primaryLabel trailingAnchor];
+  v31 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v40[2] = v31;
-  v29 = [(UILabel *)self->_secondaryLabel topAnchor];
-  v28 = [(UILabel *)self->_primaryLabel bottomAnchor];
-  v27 = [v29 constraintEqualToAnchor:v28];
+  topAnchor3 = [(UILabel *)self->_secondaryLabel topAnchor];
+  bottomAnchor = [(UILabel *)self->_primaryLabel bottomAnchor];
+  v27 = [topAnchor3 constraintEqualToAnchor:bottomAnchor];
   v40[3] = v27;
-  v17 = [(UILabel *)self->_secondaryLabel leadingAnchor];
-  v18 = [(UILabel *)self->_primaryLabel leadingAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18];
+  leadingAnchor3 = [(UILabel *)self->_secondaryLabel leadingAnchor];
+  leadingAnchor4 = [(UILabel *)self->_primaryLabel leadingAnchor];
+  v19 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v40[4] = v19;
-  v20 = [(HKObjectPickerDetailView *)self trailingAnchor];
-  v21 = [(UILabel *)self->_secondaryLabel trailingAnchor];
-  v22 = [v20 constraintEqualToAnchor:v21];
+  trailingAnchor3 = [(HKObjectPickerDetailView *)self trailingAnchor];
+  trailingAnchor4 = [(UILabel *)self->_secondaryLabel trailingAnchor];
+  v22 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v40[5] = v22;
-  v23 = [(HKObjectPickerDetailView *)self bottomAnchor];
-  v24 = [(UILabel *)self->_secondaryLabel bottomAnchor];
-  v25 = [v23 constraintEqualToAnchor:v24];
+  bottomAnchor2 = [(HKObjectPickerDetailView *)self bottomAnchor];
+  bottomAnchor3 = [(UILabel *)self->_secondaryLabel bottomAnchor];
+  v25 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   v40[6] = v25;
   v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:7];
   [v30 activateConstraints:v26];

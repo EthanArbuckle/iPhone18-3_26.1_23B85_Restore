@@ -1,29 +1,29 @@
 @interface BWMultiCamClientCompositingNode
 - (BOOL)_attemptMovieFileBufferPairing;
-- (BWMultiCamClientCompositingNode)initWithIndexOfInputProvidingOutputSampleBuffer:(unsigned int)a3 compositingStrategy:(signed __int16)a4 gainMapSupported:(BOOL)a5 clientCompositingCallback:(id)a6;
-- (CMSampleBufferRef)_copyCompositionPictureInPictureRectMetadataSampleBuffer:(CMSampleBufferRef)result pts:(CMTime *)a2;
+- (BWMultiCamClientCompositingNode)initWithIndexOfInputProvidingOutputSampleBuffer:(unsigned int)buffer compositingStrategy:(signed __int16)strategy gainMapSupported:(BOOL)supported clientCompositingCallback:(id)callback;
+- (CMSampleBufferRef)_copyCompositionPictureInPictureRectMetadataSampleBuffer:(CMSampleBufferRef)result pts:(CMTime *)pts;
 - (CMSampleBufferRef)_newSampleBufferWithOriginalPresentationTimesStamp:(CMSampleBufferRef)result;
-- (double)_compositionPictureInPictureRectFromClientCompositingMetadata:(uint64_t)a1;
-- (double)_normalizedCompositionPictureInPictureRect:(uint64_t)a1;
-- (uint64_t)_compressionPictureInPictureRegionFromRect:(uint64_t)a1;
-- (void)_handleMovieFileSampleBuffer:(void *)a3 forInput:;
-- (void)_handleStillImageSampleBuffer:(void *)a3 forInput:;
-- (void)_invokeClientCompositingCallbackForSettingsID:(void *)a3 primarySampleBuffer:(void *)a4 secondarySampleBuffer:(void *)a5 outputSampleBufferOut:(void *)a6 compositingMetadataOut:;
-- (void)_updateOutputSampleBufferDetectedFaces:(opaqueCMSampleBuffer *)a3 withSecondarySampleBufferDetectedFaces:(double)a4 compositionPictureInPictureRect:(double)a5;
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5;
+- (double)_compositionPictureInPictureRectFromClientCompositingMetadata:(uint64_t)metadata;
+- (double)_normalizedCompositionPictureInPictureRect:(uint64_t)rect;
+- (uint64_t)_compressionPictureInPictureRegionFromRect:(uint64_t)rect;
+- (void)_handleMovieFileSampleBuffer:(void *)buffer forInput:;
+- (void)_handleStillImageSampleBuffer:(void *)buffer forInput:;
+- (void)_invokeClientCompositingCallbackForSettingsID:(void *)d primarySampleBuffer:(void *)buffer secondarySampleBuffer:(void *)sampleBuffer outputSampleBufferOut:(void *)out compositingMetadataOut:;
+- (void)_updateOutputSampleBufferDetectedFaces:(opaqueCMSampleBuffer *)faces withSecondarySampleBufferDetectedFaces:(double)detectedFaces compositionPictureInPictureRect:(double)rect;
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input;
 - (void)dealloc;
-- (void)didReachEndOfDataForInput:(id)a3;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4 forAttachedMediaKey:(id)a5;
-- (void)handleDroppedSample:(id)a3 forInput:(id)a4;
-- (void)handleNodeError:(id)a3 forInput:(id)a4;
-- (void)handleStillImagePrewarmWithSettings:(id)a3 resourceConfig:(id)a4 forInput:(id)a5;
-- (void)handleStillImageReferenceFrameBracketedCaptureSequenceNumber:(int)a3 forInput:(id)a4;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)didReachEndOfDataForInput:(id)input;
+- (void)didSelectFormat:(id)format forInput:(id)input forAttachedMediaKey:(id)key;
+- (void)handleDroppedSample:(id)sample forInput:(id)input;
+- (void)handleNodeError:(id)error forInput:(id)input;
+- (void)handleStillImagePrewarmWithSettings:(id)settings resourceConfig:(id)config forInput:(id)input;
+- (void)handleStillImageReferenceFrameBracketedCaptureSequenceNumber:(int)number forInput:(id)input;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWMultiCamClientCompositingNode
 
-- (BWMultiCamClientCompositingNode)initWithIndexOfInputProvidingOutputSampleBuffer:(unsigned int)a3 compositingStrategy:(signed __int16)a4 gainMapSupported:(BOOL)a5 clientCompositingCallback:(id)a6
+- (BWMultiCamClientCompositingNode)initWithIndexOfInputProvidingOutputSampleBuffer:(unsigned int)buffer compositingStrategy:(signed __int16)strategy gainMapSupported:(BOOL)supported clientCompositingCallback:(id)callback
 {
   v37.receiver = self;
   v37.super_class = BWMultiCamClientCompositingNode;
@@ -41,10 +41,10 @@
       v12 = 50;
     }
 
-    v10->_indexOfInputProvidingOutputSampleBuffer = a3;
-    v10->_compositingStrategy = a4;
-    v10->_gainMapSupported = a5;
-    v10->_clientCompositingCallback = [a6 copy];
+    v10->_indexOfInputProvidingOutputSampleBuffer = buffer;
+    v10->_compositingStrategy = strategy;
+    v10->_gainMapSupported = supported;
+    v10->_clientCompositingCallback = [callback copy];
     v11->_stillsInputLock._os_unfair_lock_opaque = 0;
     compositingStrategy = v11->_compositingStrategy;
     if (compositingStrategy != 1 && v11->_gainMapSupported)
@@ -54,16 +54,16 @@
 
     v14 = 0;
     v15 = 1;
-    v31 = a3;
-    v16 = a3;
+    bufferCopy = buffer;
+    bufferCopy2 = buffer;
     do
     {
       v17 = v15;
-      v18 = v14 == v16;
+      v18 = v14 == bufferCopy2;
       v19 = [[BWNodeInput alloc] initWithMediaType:1986618469 node:v11 index:v14];
-      v20 = [(BWNodeInput *)v19 primaryMediaConfiguration];
-      [(BWNodeInputMediaConfiguration *)v20 setFormatRequirements:objc_alloc_init(BWVideoFormatRequirements)];
-      [(BWNodeInputMediaConfiguration *)v20 setPassthroughMode:v18];
+      primaryMediaConfiguration = [(BWNodeInput *)v19 primaryMediaConfiguration];
+      [(BWNodeInputMediaConfiguration *)primaryMediaConfiguration setFormatRequirements:objc_alloc_init(BWVideoFormatRequirements)];
+      [(BWNodeInputMediaConfiguration *)primaryMediaConfiguration setPassthroughMode:v18];
       v21 = objc_alloc_init(BWNodeInputMediaConfiguration);
       [(BWNodeInputMediaConfiguration *)v21 setFormatRequirements:objc_alloc_init(BWVideoFormatRequirements)];
       [(BWNodeInputMediaConfiguration *)v21 setPassthroughMode:1];
@@ -79,7 +79,7 @@
     v22 = [[BWNodeOutput alloc] initWithMediaType:1986618469 node:v11];
     [(BWNodeOutput *)v22 setFormatRequirements:objc_alloc_init(BWVideoFormatRequirements)];
     [(BWNodeOutput *)v22 setPassthroughMode:1];
-    [(BWNodeOutput *)v22 setIndexOfInputWhichDrivesThisOutput:v31];
+    [(BWNodeOutput *)v22 setIndexOfInputWhichDrivesThisOutput:bufferCopy];
     [(BWNode *)v11 addOutput:v22];
 
     if (!v11->_compositingStrategy)
@@ -150,28 +150,28 @@
   [(BWNode *)&v6 dealloc];
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4 forAttachedMediaKey:(id)a5
+- (void)didSelectFormat:(id)format forInput:(id)input forAttachedMediaKey:(id)key
 {
   v11.receiver = self;
   v11.super_class = BWMultiCamClientCompositingNode;
   [BWNode didSelectFormat:sel_didSelectFormat_forInput_forAttachedMediaKey_ forInput:? forAttachedMediaKey:?];
-  if ([a4 index] == self->_indexOfInputProvidingOutputSampleBuffer)
+  if ([input index] == self->_indexOfInputProvidingOutputSampleBuffer)
   {
-    if ([a5 isEqualToString:@"PrimaryFormat"])
+    if ([key isEqualToString:@"PrimaryFormat"])
     {
-      [(BWNodeOutput *)self->super._output setFormat:a3];
-      v9 = -[BWPixelBufferPool initWithVideoFormat:capacity:name:]([BWPixelBufferPool alloc], "initWithVideoFormat:capacity:name:", a3, [a4 delayedBufferCount], @"Multi Cam Client Compositing Output");
+      [(BWNodeOutput *)self->super._output setFormat:format];
+      v9 = -[BWPixelBufferPool initWithVideoFormat:capacity:name:]([BWPixelBufferPool alloc], "initWithVideoFormat:capacity:name:", format, [input delayedBufferCount], @"Multi Cam Client Compositing Output");
       v10 = &OBJC_IVAR___BWMultiCamClientCompositingNode__outputPixelBufferPool;
     }
 
     else
     {
-      if (![a5 isEqualToString:0x1F217BF50])
+      if (![key isEqualToString:0x1F217BF50])
       {
         return;
       }
 
-      v9 = [[BWPixelBufferPool alloc] initWithVideoFormat:a3 capacity:1 name:@"Multi Cam Client Compositing Gain Map Output"];
+      v9 = [[BWPixelBufferPool alloc] initWithVideoFormat:format capacity:1 name:@"Multi Cam Client Compositing Gain Map Output"];
       v10 = &OBJC_IVAR___BWMultiCamClientCompositingNode__outputGainMapPixelBufferPool;
     }
 
@@ -179,11 +179,11 @@
   }
 }
 
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input
 {
-  if ([a5 index] == self->_indexOfInputProvidingOutputSampleBuffer)
+  if ([input index] == self->_indexOfInputProvidingOutputSampleBuffer)
   {
-    [(BWNodeOutput *)self->super._output setFormat:a4];
+    [(BWNodeOutput *)self->super._output setFormat:format];
   }
 
   if ([(BWNode *)self allInputsHaveReachedState:1])
@@ -195,11 +195,11 @@
   }
 }
 
-- (void)didReachEndOfDataForInput:(id)a3
+- (void)didReachEndOfDataForInput:(id)input
 {
-  v4 = [a3 index];
+  index = [input index];
   compositingStrategy = self->_compositingStrategy;
-  if (v4 != self->_indexOfInputProvidingOutputSampleBuffer && compositingStrategy == 0)
+  if (index != self->_indexOfInputProvidingOutputSampleBuffer && compositingStrategy == 0)
   {
     [(BWPairedBufferSynchronizer *)self->_bufferSynchronizer setSecondaryStreamComplete:1];
   }
@@ -236,7 +236,7 @@
   }
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
   if (!self->_clientCompositingCallback)
   {
@@ -247,30 +247,30 @@
   if (self->_compositingStrategy == 1)
   {
 
-    [(BWMultiCamClientCompositingNode *)self _handleStillImageSampleBuffer:a3 forInput:a4];
+    [(BWMultiCamClientCompositingNode *)self _handleStillImageSampleBuffer:buffer forInput:input];
   }
 
   else if (!self->_compositingStrategy)
   {
 
-    [(BWMultiCamClientCompositingNode *)self _handleMovieFileSampleBuffer:a3 forInput:a4];
+    [(BWMultiCamClientCompositingNode *)self _handleMovieFileSampleBuffer:buffer forInput:input];
   }
 }
 
-- (void)handleDroppedSample:(id)a3 forInput:(id)a4
+- (void)handleDroppedSample:(id)sample forInput:(id)input
 {
-  if ([a4 index] == self->_indexOfInputProvidingOutputSampleBuffer)
+  if ([input index] == self->_indexOfInputProvidingOutputSampleBuffer)
   {
     output = self->super._output;
 
-    [(BWNodeOutput *)output emitDroppedSample:a3];
+    [(BWNodeOutput *)output emitDroppedSample:sample];
   }
 }
 
-- (void)handleStillImageReferenceFrameBracketedCaptureSequenceNumber:(int)a3 forInput:(id)a4
+- (void)handleStillImageReferenceFrameBracketedCaptureSequenceNumber:(int)number forInput:(id)input
 {
-  v4 = *&a3;
-  if ([a4 index] == self->_indexOfInputProvidingOutputSampleBuffer)
+  v4 = *&number;
+  if ([input index] == self->_indexOfInputProvidingOutputSampleBuffer)
   {
     output = self->super._output;
 
@@ -278,29 +278,29 @@
   }
 }
 
-- (void)handleStillImagePrewarmWithSettings:(id)a3 resourceConfig:(id)a4 forInput:(id)a5
+- (void)handleStillImagePrewarmWithSettings:(id)settings resourceConfig:(id)config forInput:(id)input
 {
-  if ([a5 index] == self->_indexOfInputProvidingOutputSampleBuffer)
+  if ([input index] == self->_indexOfInputProvidingOutputSampleBuffer)
   {
 
-    self->_stillImageSettings = a3;
+    self->_stillImageSettings = settings;
     output = self->super._output;
 
-    [(BWNodeOutput *)output emitStillImagePrewarmMessageWithSettings:a3 resourceConfig:a4];
+    [(BWNodeOutput *)output emitStillImagePrewarmMessageWithSettings:settings resourceConfig:config];
   }
 }
 
-- (void)_handleMovieFileSampleBuffer:(void *)a3 forInput:
+- (void)_handleMovieFileSampleBuffer:(void *)buffer forInput:
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  v5 = [a3 index];
-  v6 = *(a1 + 128);
+  index = [buffer index];
+  v6 = *(self + 128);
   IsMarkerBuffer = BWSampleBufferIsMarkerBuffer(a2);
-  if (v5 == v6)
+  if (index == v6)
   {
     if (IsMarkerBuffer)
     {
@@ -309,7 +309,7 @@
       {
         v9 = v8;
 
-        *(a1 + 152) = v9;
+        *(self + 152) = v9;
       }
 
       if (a2)
@@ -327,14 +327,14 @@
       v13 = CMGetAttachment(a2, @"FileWriterAction", 0);
       if (CFEqual(v13, @"Stop") || CFEqual(v13, @"Pause") || CFEqual(v13, @"Terminate"))
       {
-        if ([(BWMultiCamClientCompositingNode *)a1 _attemptMovieFileBufferPairing])
+        if ([(BWMultiCamClientCompositingNode *)self _attemptMovieFileBufferPairing])
         {
           do
           {
             v14 = 1;
           }
 
-          while ([(BWMultiCamClientCompositingNode *)a1 _attemptMovieFileBufferPairing]);
+          while ([(BWMultiCamClientCompositingNode *)self _attemptMovieFileBufferPairing]);
         }
 
         else
@@ -350,12 +350,12 @@
 
       if (v10)
       {
-        [*(a1 + 16) emitSampleBuffer:v10];
+        [*(self + 16) emitSampleBuffer:v10];
       }
 
       if (v11)
       {
-        [*(a1 + 232) emitSampleBuffer:v11];
+        [*(self + 232) emitSampleBuffer:v11];
         if ((v14 & 1) == 0)
         {
 LABEL_23:
@@ -379,11 +379,11 @@ LABEL_23:
         goto LABEL_23;
       }
 
-      [*(a1 + 160) flush];
+      [*(self + 160) flush];
       goto LABEL_23;
     }
 
-    [*(a1 + 160) addPrimaryBuffer:a2];
+    [*(self + 160) addPrimaryBuffer:a2];
   }
 
   else if (IsMarkerBuffer)
@@ -394,27 +394,27 @@ LABEL_23:
       return;
     }
 
-    [*(a1 + 160) setSecondaryStreamComplete:1];
+    [*(self + 160) setSecondaryStreamComplete:1];
   }
 
   else
   {
-    [*(a1 + 160) addSecondaryBuffer:a2];
+    [*(self + 160) addSecondaryBuffer:a2];
   }
 
-  [(BWMultiCamClientCompositingNode *)a1 _attemptMovieFileBufferPairing];
+  [(BWMultiCamClientCompositingNode *)self _attemptMovieFileBufferPairing];
 }
 
-- (void)_handleStillImageSampleBuffer:(void *)a3 forInput:
+- (void)_handleStillImageSampleBuffer:(void *)buffer forInput:
 {
-  if (a1)
+  if (self)
   {
     cf = 0;
     v30 = 0;
-    os_unfair_lock_lock((a1 + 168));
-    v6 = [a3 index];
-    v7 = *(a1 + 128);
-    if (v6 == v7)
+    os_unfair_lock_lock((self + 168));
+    index = [buffer index];
+    v7 = *(self + 128);
+    if (index == v7)
     {
       if (a2)
       {
@@ -426,7 +426,7 @@ LABEL_23:
         v8 = 0;
       }
 
-      *(a1 + 176) = v8;
+      *(self + 176) = v8;
     }
 
     else
@@ -441,13 +441,13 @@ LABEL_23:
         v9 = 0;
       }
 
-      *(a1 + 184) = v9;
-      v8 = *(a1 + 176);
+      *(self + 184) = v9;
+      v8 = *(self + 176);
     }
 
     if (v8)
     {
-      v10 = *(a1 + 184) == 0;
+      v10 = *(self + 184) == 0;
     }
 
     else
@@ -455,10 +455,10 @@ LABEL_23:
       v10 = 1;
     }
 
-    v11 = *(a1 + 192);
+    v11 = *(self + 192);
     if (v11)
     {
-      if (v6 == v7)
+      if (index == v7)
       {
         if (v8)
         {
@@ -474,7 +474,7 @@ LABEL_23:
         v12 = v11;
       }
 
-      *(a1 + 192) = 0;
+      *(self + 192) = 0;
     }
 
     else
@@ -482,11 +482,11 @@ LABEL_23:
       v12 = 0;
     }
 
-    os_unfair_lock_unlock((a1 + 168));
+    os_unfair_lock_unlock((self + 168));
     if (!v10)
     {
-      -[BWMultiCamClientCompositingNode _invokeClientCompositingCallbackForSettingsID:primarySampleBuffer:secondarySampleBuffer:outputSampleBufferOut:compositingMetadataOut:](a1, [*(a1 + 144) settingsID], *(a1 + 176), *(a1 + 184), &cf, &v30);
-      [(BWMultiCamClientCompositingNode *)a1 _compositionPictureInPictureRectFromClientCompositingMetadata:v30];
+      -[BWMultiCamClientCompositingNode _invokeClientCompositingCallbackForSettingsID:primarySampleBuffer:secondarySampleBuffer:outputSampleBufferOut:compositingMetadataOut:](self, [*(self + 144) settingsID], *(self + 176), *(self + 184), &cf, &v30);
+      [(BWMultiCamClientCompositingNode *)self _compositionPictureInPictureRectFromClientCompositingMetadata:v30];
       OUTLINED_FUNCTION_2_3();
       if (!CGRectIsNull(v31))
       {
@@ -505,12 +505,12 @@ LABEL_23:
       if (v13)
       {
         v14 = v13;
-        v15 = [MEMORY[0x1E695DF90] dictionary];
-        [v15 setObject:objc_msgSend(v14 forKeyedSubscript:{"objectForKeyedSubscript:", *MEMORY[0x1E695FA00]), *off_1E798A608}];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
+        [dictionary setObject:objc_msgSend(v14 forKeyedSubscript:{"objectForKeyedSubscript:", *MEMORY[0x1E695FA00]), *off_1E798A608}];
         v16 = *MEMORY[0x1E695FA20];
-        [v15 setObject:objc_msgSend(v14 forKeyedSubscript:{"objectForKeyedSubscript:", *MEMORY[0x1E695FA20]), *off_1E798A610}];
-        [v15 setObject:objc_msgSend(v14 forKeyedSubscript:{"objectForKeyedSubscript:", *MEMORY[0x1E695FA08]), *off_1E798A618}];
-        [v15 setObject:objc_msgSend(v14 forKeyedSubscript:{"objectForKeyedSubscript:", v16), *off_1E798A620}];
+        [dictionary setObject:objc_msgSend(v14 forKeyedSubscript:{"objectForKeyedSubscript:", *MEMORY[0x1E695FA20]), *off_1E798A610}];
+        [dictionary setObject:objc_msgSend(v14 forKeyedSubscript:{"objectForKeyedSubscript:", *MEMORY[0x1E695FA08]), *off_1E798A618}];
+        [dictionary setObject:objc_msgSend(v14 forKeyedSubscript:{"objectForKeyedSubscript:", v16), *off_1E798A620}];
         v17 = [v14 objectForKeyedSubscript:@"kCIImageRepresentationISOGainMapGamma"];
         if (v17)
         {
@@ -522,16 +522,16 @@ LABEL_23:
           v18 = &unk_1F224CBE0;
         }
 
-        [v15 setObject:v18 forKeyedSubscript:*off_1E798A628];
-        [v15 setObject:objc_msgSend(v14 forKeyedSubscript:{"objectForKeyedSubscript:", *MEMORY[0x1E695FA10]), *off_1E798A638}];
-        [v15 setObject:objc_msgSend(v14 forKeyedSubscript:{"objectForKeyedSubscript:", *MEMORY[0x1E695FA18]), *off_1E798A648}];
+        [dictionary setObject:v18 forKeyedSubscript:*off_1E798A628];
+        [dictionary setObject:objc_msgSend(v14 forKeyedSubscript:{"objectForKeyedSubscript:", *MEMORY[0x1E695FA10]), *off_1E798A638}];
+        [dictionary setObject:objc_msgSend(v14 forKeyedSubscript:{"objectForKeyedSubscript:", *MEMORY[0x1E695FA18]), *off_1E798A648}];
         AttachedMedia = BWSampleBufferGetAttachedMedia(cf, 0x1F217BF50);
         v20 = *off_1E798A3C8;
         v21 = CMGetAttachment(AttachedMedia, *off_1E798A3C8, 0);
         v22 = [v21 mutableCopy];
         v23 = *off_1E798A640;
         v24 = [objc_msgSend(v21 objectForKeyedSubscript:{*off_1E798A640), "mutableCopy"}];
-        [v24 addEntriesFromDictionary:v15];
+        [v24 addEntriesFromDictionary:dictionary];
         [v22 setObject:v24 forKeyedSubscript:v23];
         CMSetAttachment(AttachedMedia, v20, v22, 1u);
       }
@@ -541,7 +541,7 @@ LABEL_23:
     {
       if (cf)
       {
-        [*(a1 + 16) emitSampleBuffer:?];
+        [*(self + 16) emitSampleBuffer:?];
         if (v12)
         {
           OUTLINED_FUNCTION_1_9();
@@ -551,24 +551,24 @@ LABEL_23:
 
       else if (v12)
       {
-        [*(a1 + 16) emitNodeError:v12];
+        [*(self + 16) emitNodeError:v12];
       }
 
-      v25 = *(a1 + 176);
+      v25 = *(self + 176);
       if (v25)
       {
         CFRelease(v25);
-        *(a1 + 176) = 0;
+        *(self + 176) = 0;
       }
 
-      v26 = *(a1 + 184);
+      v26 = *(self + 184);
       if (v26)
       {
         CFRelease(v26);
-        *(a1 + 184) = 0;
+        *(self + 184) = 0;
       }
 
-      *(a1 + 144) = 0;
+      *(self + 144) = 0;
     }
 
     if (cf)
@@ -578,9 +578,9 @@ LABEL_23:
   }
 }
 
-- (void)handleNodeError:(id)a3 forInput:(id)a4
+- (void)handleNodeError:(id)error forInput:(id)input
 {
-  v6 = [a4 index];
+  index = [input index];
   indexOfInputProvidingOutputSampleBuffer = self->_indexOfInputProvidingOutputSampleBuffer;
   os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
   os_log_type_enabled(os_log_and_send_and_compose_flags_and_os_log_type, OS_LOG_TYPE_DEFAULT);
@@ -594,16 +594,16 @@ LABEL_23:
     if (receivedNodeError)
     {
 
-      v11 = 0;
+      errorCopy = 0;
     }
 
     else
     {
-      v11 = a3;
+      errorCopy = error;
     }
 
-    self->_receivedNodeError = v11;
-    if (v6 == indexOfInputProvidingOutputSampleBuffer && self->_secondaryStillSampleBuffer)
+    self->_receivedNodeError = errorCopy;
+    if (index == indexOfInputProvidingOutputSampleBuffer && self->_secondaryStillSampleBuffer)
     {
       v12 = 0;
       v10 = 1;
@@ -652,7 +652,7 @@ LABEL_23:
 
       else if (v10)
       {
-        [(BWNodeOutput *)self->super._output emitNodeError:a3];
+        [(BWNodeOutput *)self->super._output emitNodeError:error];
       }
 
       self->_stillImageSettings = 0;
@@ -666,7 +666,7 @@ LABEL_23:
 
 - (BOOL)_attemptMovieFileBufferPairing
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -674,13 +674,13 @@ LABEL_23:
   cf = 0;
   v17 = **&MEMORY[0x1E6960C70];
   v16 = 0;
-  v2 = [a1[20] getSynchronizedBufferPair];
-  v4 = v2;
+  getSynchronizedBufferPair = [self[20] getSynchronizedBufferPair];
+  v4 = getSynchronizedBufferPair;
   v5 = v3;
-  if (v2 && v3)
+  if (getSynchronizedBufferPair && v3)
   {
-    -[BWMultiCamClientCompositingNode _invokeClientCompositingCallbackForSettingsID:primarySampleBuffer:secondarySampleBuffer:outputSampleBufferOut:compositingMetadataOut:](a1, [a1[19] settingsID], v2, v3, &cf, &v16);
-    [(BWMultiCamClientCompositingNode *)a1 _compositionPictureInPictureRectFromClientCompositingMetadata:v16];
+    -[BWMultiCamClientCompositingNode _invokeClientCompositingCallbackForSettingsID:primarySampleBuffer:secondarySampleBuffer:outputSampleBufferOut:compositingMetadataOut:](self, [self[19] settingsID], getSynchronizedBufferPair, v3, &cf, &v16);
+    [(BWMultiCamClientCompositingNode *)self _compositionPictureInPictureRectFromClientCompositingMetadata:v16];
     OUTLINED_FUNCTION_2_3();
     CMSampleBufferGetPresentationTimeStamp(&v17, cf);
     v15 = *&v17.value;
@@ -691,9 +691,9 @@ LABEL_23:
     goto LABEL_14;
   }
 
-  if (v2)
+  if (getSynchronizedBufferPair)
   {
-    v12 = CFRetain(v2);
+    v12 = CFRetain(getSynchronizedBufferPair);
     cf = v12;
     CMSampleBufferGetPresentationTimeStamp(&v17, v12);
     v15 = *&v17.value;
@@ -703,13 +703,13 @@ LABEL_14:
     v6 = v12 != 0;
     if (v12)
     {
-      [a1[2] emitSampleBuffer:{v12, v15}];
+      [self[2] emitSampleBuffer:{v12, v15}];
     }
 
     v8 = v7 == 0;
     if (v7)
     {
-      [a1[29] emitSampleBuffer:v7];
+      [self[29] emitSampleBuffer:v7];
     }
 
     CFRelease(v4);
@@ -744,27 +744,27 @@ LABEL_7:
   return v6;
 }
 
-- (void)_invokeClientCompositingCallbackForSettingsID:(void *)a3 primarySampleBuffer:(void *)a4 secondarySampleBuffer:(void *)a5 outputSampleBufferOut:(void *)a6 compositingMetadataOut:
+- (void)_invokeClientCompositingCallbackForSettingsID:(void *)d primarySampleBuffer:(void *)buffer secondarySampleBuffer:(void *)sampleBuffer outputSampleBufferOut:(void *)out compositingMetadataOut:
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
   v39 = 0;
   v40 = 0;
-  cf = [(BWMultiCamClientCompositingNode *)a1 _newSampleBufferWithOriginalPresentationTimesStamp:a3];
+  cf = [(BWMultiCamClientCompositingNode *)self _newSampleBufferWithOriginalPresentationTimesStamp:d];
   if (cf)
   {
-    v11 = [(BWMultiCamClientCompositingNode *)a1 _newSampleBufferWithOriginalPresentationTimesStamp:a4];
+    v11 = [(BWMultiCamClientCompositingNode *)self _newSampleBufferWithOriginalPresentationTimesStamp:buffer];
     if (v11)
     {
       v12 = v11;
-      ImageBuffer = CMSampleBufferGetImageBuffer(a3);
-      v14 = [*(a1 + 200) newPixelBuffer];
-      if (v14)
+      ImageBuffer = CMSampleBufferGetImageBuffer(d);
+      newPixelBuffer = [*(self + 200) newPixelBuffer];
+      if (newPixelBuffer)
       {
-        v37 = a6;
+        outCopy = out;
         v15 = *off_1E798A3C8;
         v16 = CVBufferCopyAttachment(ImageBuffer, *off_1E798A3C8, 0);
         if (v16)
@@ -777,29 +777,29 @@ LABEL_7:
           v17 = 0;
         }
 
-        CVBufferSetAttachment(v14, v15, v17, kCVAttachmentMode_ShouldPropagate);
-        BWPropagatePixelBufferAmbientViewingEnvironment(ImageBuffer, v14);
-        BWPropagatePixelBufferDolbyVisionRPUData(ImageBuffer, v14);
-        AttachedMedia = BWSampleBufferGetAttachedMedia(a3, 0x1F217BF50);
-        v19 = BWSampleBufferGetAttachedMedia(a4, 0x1F217BF50);
-        v20 = 0;
+        CVBufferSetAttachment(newPixelBuffer, v15, v17, kCVAttachmentMode_ShouldPropagate);
+        BWPropagatePixelBufferAmbientViewingEnvironment(ImageBuffer, newPixelBuffer);
+        BWPropagatePixelBufferDolbyVisionRPUData(ImageBuffer, newPixelBuffer);
+        AttachedMedia = BWSampleBufferGetAttachedMedia(d, 0x1F217BF50);
+        v19 = BWSampleBufferGetAttachedMedia(buffer, 0x1F217BF50);
+        newPixelBuffer2 = 0;
         if (AttachedMedia && v19)
         {
-          v20 = [*(a1 + 216) newPixelBuffer];
-          BWCMSampleBufferCreateCopyWithNewPixelBuffer(AttachedMedia, v20, (a1 + 224), &v39);
+          newPixelBuffer2 = [*(self + 216) newPixelBuffer];
+          BWCMSampleBufferCreateCopyWithNewPixelBuffer(AttachedMedia, newPixelBuffer2, (self + 224), &v39);
         }
 
-        BWCMSampleBufferCreateCopyWithNewPixelBuffer(a3, v14, (a1 + 208), &v40);
-        if ((*(*(a1 + 136) + 16))(*(a1 + 136)))
+        BWCMSampleBufferCreateCopyWithNewPixelBuffer(d, newPixelBuffer, (self + 208), &v40);
+        if ((*(*(self + 136) + 16))(*(self + 136)))
         {
           if (v40)
           {
             CFRelease(v40);
           }
 
-          if (a3)
+          if (d)
           {
-            v21 = CFRetain(a3);
+            v21 = CFRetain(d);
           }
 
           else
@@ -810,7 +810,7 @@ LABEL_7:
           v40 = v21;
           os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
           os_log_type_enabled(os_log_and_send_and_compose_flags_and_os_log_type, OS_LOG_TYPE_DEFAULT);
-          a6 = v37;
+          out = outCopy;
           OUTLINED_FUNCTION_1_4();
           fig_log_call_emit_and_clean_up_after_send_and_compose();
         }
@@ -819,16 +819,16 @@ LABEL_7:
         {
           v24 = [0 objectForKeyedSubscript:FigCaptureClientCompositingMetadataCoreImageGainMapPropertiesKey];
           v25 = v39;
-          a6 = v37;
+          out = outCopy;
           if (!v39 || !v24)
           {
             v25 = 0;
           }
 
           BWSampleBufferSetAttachedMedia(v40, 0x1F217BF50, v25);
-          [(BWMultiCamClientCompositingNode *)a1 _compositionPictureInPictureRectFromClientCompositingMetadata:?];
+          [(BWMultiCamClientCompositingNode *)self _compositionPictureInPictureRectFromClientCompositingMetadata:?];
           OUTLINED_FUNCTION_2_3();
-          v26 = [BWMultiCamClientCompositingNode _compressionPictureInPictureRegionFromRect:a1];
+          v26 = [BWMultiCamClientCompositingNode _compressionPictureInPictureRegionFromRect:self];
           CMSetAttachment(v40, *MEMORY[0x1E6983788], v26, 1u);
           v27 = OUTLINED_FUNCTION_3();
           [(BWMultiCamClientCompositingNode *)v28 _updateOutputSampleBufferDetectedFaces:v29 withSecondarySampleBufferDetectedFaces:v30 compositionPictureInPictureRect:v27, v31, v32, v33];
@@ -837,9 +837,9 @@ LABEL_7:
 
       else
       {
-        if (a3)
+        if (d)
         {
-          v36 = CFRetain(a3);
+          v36 = CFRetain(d);
         }
 
         else
@@ -847,30 +847,30 @@ LABEL_7:
           v36 = 0;
         }
 
-        v20 = 0;
+        newPixelBuffer2 = 0;
         v40 = v36;
       }
 
       CFRelease(cf);
       CFRelease(v12);
-      if (v14)
+      if (newPixelBuffer)
       {
-        CFRelease(v14);
+        CFRelease(newPixelBuffer);
       }
 
-      if (!v20)
+      if (!newPixelBuffer2)
       {
         goto LABEL_23;
       }
 
-      v23 = v20;
+      v23 = newPixelBuffer2;
     }
 
     else
     {
-      if (a3)
+      if (d)
       {
-        v35 = CFRetain(a3);
+        v35 = CFRetain(d);
       }
 
       else
@@ -887,9 +887,9 @@ LABEL_7:
 
   else
   {
-    if (a3)
+    if (d)
     {
-      v34 = CFRetain(a3);
+      v34 = CFRetain(d);
     }
 
     else
@@ -906,20 +906,20 @@ LABEL_23:
     CFRelease(v39);
   }
 
-  if (a5)
+  if (sampleBuffer)
   {
-    *a5 = v40;
+    *sampleBuffer = v40;
   }
 
-  if (a6)
+  if (out)
   {
-    *a6 = 0;
+    *out = 0;
   }
 }
 
-- (double)_compositionPictureInPictureRectFromClientCompositingMetadata:(uint64_t)a1
+- (double)_compositionPictureInPictureRectFromClientCompositingMetadata:(uint64_t)metadata
 {
-  if (!a1)
+  if (!metadata)
   {
     return OUTLINED_FUNCTION_21_9();
   }
@@ -931,7 +931,7 @@ LABEL_23:
   return v4.origin.x;
 }
 
-- (CMSampleBufferRef)_copyCompositionPictureInPictureRectMetadataSampleBuffer:(CMSampleBufferRef)result pts:(CMTime *)a2
+- (CMSampleBufferRef)_copyCompositionPictureInPictureRectMetadataSampleBuffer:(CMSampleBufferRef)result pts:(CMTime *)pts
 {
   if (result)
   {
@@ -948,7 +948,7 @@ LABEL_23:
       {
         BlockBuffer = FigBoxedMetadataGetBlockBuffer();
         memcpy(&__dst, MEMORY[0x1E6960CF0], sizeof(__dst));
-        __dst.presentationTimeStamp = *a2;
+        __dst.presentationTimeStamp = *pts;
         DataLength = CMBlockBufferGetDataLength(BlockBuffer);
         v7 = *(v3 + 30);
         v8 = DataLength;
@@ -967,9 +967,9 @@ LABEL_23:
   return result;
 }
 
-- (double)_normalizedCompositionPictureInPictureRect:(uint64_t)a1
+- (double)_normalizedCompositionPictureInPictureRect:(uint64_t)rect
 {
-  if (!a1)
+  if (!rect)
   {
     return OUTLINED_FUNCTION_21_9();
   }
@@ -1012,9 +1012,9 @@ LABEL_23:
   return result;
 }
 
-- (uint64_t)_compressionPictureInPictureRegionFromRect:(uint64_t)a1
+- (uint64_t)_compressionPictureInPictureRegionFromRect:(uint64_t)rect
 {
-  if (!a1)
+  if (!rect)
   {
     return 0;
   }
@@ -1050,18 +1050,18 @@ LABEL_23:
   return v4;
 }
 
-- (void)_updateOutputSampleBufferDetectedFaces:(opaqueCMSampleBuffer *)a3 withSecondarySampleBufferDetectedFaces:(double)a4 compositionPictureInPictureRect:(double)a5
+- (void)_updateOutputSampleBufferDetectedFaces:(opaqueCMSampleBuffer *)faces withSecondarySampleBufferDetectedFaces:(double)detectedFaces compositionPictureInPictureRect:(double)rect
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
   v14 = BWPixelBufferDimensionsFromSampleBuffer(a2);
-  v15 = BWPixelBufferDimensionsFromSampleBuffer(a3) >> 32;
+  v15 = BWPixelBufferDimensionsFromSampleBuffer(faces) >> 32;
   v16 = *off_1E798A3C8;
   v17 = CMGetAttachment(a2, *off_1E798A3C8, 0);
-  v18 = CMGetAttachment(a3, v16, 0);
+  v18 = CMGetAttachment(faces, v16, 0);
   v19 = *off_1E798B218;
   v20 = [v17 objectForKeyedSubscript:*off_1E798B218];
   v21 = [v18 objectForKeyedSubscript:v19];
@@ -1079,17 +1079,17 @@ LABEL_23:
   v101[2] = __145__BWMultiCamClientCompositingNode__updateOutputSampleBufferDetectedFaces_withSecondarySampleBufferDetectedFaces_compositionPictureInPictureRect___block_invoke;
   v101[3] = &unk_1E799E0C8;
   v101[9] = v14;
-  *&v101[5] = a4;
-  *&v101[6] = a5;
+  *&v101[5] = detectedFaces;
+  *&v101[6] = rect;
   *&v101[7] = a6;
   *&v101[8] = a7;
-  v101[4] = a1;
+  v101[4] = self;
   v24 = [v23 filterUsingPredicate:{objc_msgSend(MEMORY[0x1E696AE18], "predicateWithBlock:", v101)}];
   v99 = 0u;
   v100 = 0u;
   v97 = 0u;
   v98 = 0u;
-  v32 = OUTLINED_FUNCTION_8_66(v24, v25, v26, v27, v28, v29, v30, v31, v19, v17, a3, a2, v69, v71, v72, v74, v75, v77, *&v78.a, *&v78.b, *&v78.c, *&v78.d, *&v78.tx, *&v78.ty, v79, *(&v79 + 1), v80, *(&v80 + 1), v81, v82, v83, v84, v85, v86, v87, v88, v89, v90, v91, v92, v93, v94, v95, v96, 0);
+  v32 = OUTLINED_FUNCTION_8_66(v24, v25, v26, v27, v28, v29, v30, v31, v19, v17, faces, a2, v69, v71, v72, v74, v75, v77, *&v78.a, *&v78.b, *&v78.c, *&v78.d, *&v78.tx, *&v78.ty, v79, *(&v79 + 1), v80, *(&v80 + 1), v81, v82, v83, v84, v85, v86, v87, v88, v89, v90, v91, v92, v93, v94, v95, v96, 0);
   if (!v32)
   {
     goto LABEL_17;
@@ -1152,9 +1152,9 @@ LABEL_13:
         FigCaptureMetadataUtilitiesNormalizeCropRect(v49, v50, v51, v52);
         *&v80 = v54;
         *(&v80 + 1) = v55;
-        *&v79 = a4 + v56;
-        *(&v79 + 1) = a5 + v57;
-        FigCaptureNormalizeCropRect(a4 + v56, a5 + v57, v54, v55);
+        *&v79 = detectedFaces + v56;
+        *(&v79 + 1) = rect + v57;
+        FigCaptureNormalizeCropRect(detectedFaces + v56, rect + v57, v54, v55);
         *&v79 = v58;
         *(&v79 + 1) = v59;
         *&v80 = v60;

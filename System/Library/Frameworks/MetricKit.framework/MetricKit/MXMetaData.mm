@@ -1,25 +1,25 @@
 @interface MXMetaData
-- (MXMetaData)initWithCoder:(id)a3;
-- (MXMetaData)initWithRegionFormat:(id)a3 osVersion:(id)a4 deviceType:(id)a5 appBuildVersion:(id)a6;
-- (MXMetaData)initWithRegionFormat:(id)a3 osVersion:(id)a4 deviceType:(id)a5 appBuildVersion:(id)a6 bundleID:(id)a7;
-- (MXMetaData)initWithRegionFormat:(id)a3 osVersion:(id)a4 deviceType:(id)a5 appBuildVersion:(id)a6 platformArchitecture:(id)a7;
-- (MXMetaData)initWithRegionFormat:(id)a3 osVersion:(id)a4 deviceType:(id)a5 appBuildVersion:(id)a6 platformArchitecture:(id)a7 bundleID:(id)a8;
-- (MXMetaData)initWithRegionFormat:(id)a3 osVersion:(id)a4 deviceType:(id)a5 appBuildVersion:(id)a6 platformArchitecture:(id)a7 bundleID:(id)a8 pid:(int)a9 isTestFlightApp:(BOOL)a10;
+- (MXMetaData)initWithCoder:(id)coder;
+- (MXMetaData)initWithRegionFormat:(id)format osVersion:(id)version deviceType:(id)type appBuildVersion:(id)buildVersion;
+- (MXMetaData)initWithRegionFormat:(id)format osVersion:(id)version deviceType:(id)type appBuildVersion:(id)buildVersion bundleID:(id)d;
+- (MXMetaData)initWithRegionFormat:(id)format osVersion:(id)version deviceType:(id)type appBuildVersion:(id)buildVersion platformArchitecture:(id)architecture;
+- (MXMetaData)initWithRegionFormat:(id)format osVersion:(id)version deviceType:(id)type appBuildVersion:(id)buildVersion platformArchitecture:(id)architecture bundleID:(id)d;
+- (MXMetaData)initWithRegionFormat:(id)format osVersion:(id)version deviceType:(id)type appBuildVersion:(id)buildVersion platformArchitecture:(id)architecture bundleID:(id)d pid:(int)pid isTestFlightApp:(BOOL)self0;
 - (NSData)JSONRepresentation;
 - (NSDictionary)DictionaryRepresentation;
 - (NSDictionary)dictionaryRepresentation;
 - (id)toDictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MXMetaData
 
-- (MXMetaData)initWithRegionFormat:(id)a3 osVersion:(id)a4 deviceType:(id)a5 appBuildVersion:(id)a6
+- (MXMetaData)initWithRegionFormat:(id)format osVersion:(id)version deviceType:(id)type appBuildVersion:(id)buildVersion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  formatCopy = format;
+  versionCopy = version;
+  typeCopy = type;
+  buildVersionCopy = buildVersion;
   v20.receiver = self;
   v20.super_class = MXMetaData;
   v15 = [(MXMetaData *)&v20 init];
@@ -30,14 +30,14 @@
   }
 
   v17 = 0;
-  if (v11 && v12 && v13 && v14)
+  if (formatCopy && versionCopy && typeCopy && buildVersionCopy)
   {
-    objc_storeStrong(&v15->_regionFormat, a3);
-    objc_storeStrong(&v16->_osVersion, a4);
-    objc_storeStrong(&v16->_deviceType, a5);
-    objc_storeStrong(&v16->_applicationBuildVersion, a6);
-    v18 = [MEMORY[0x277CCAC38] processInfo];
-    v16->_lowPowerModeEnabled = [v18 isLowPowerModeEnabled];
+    objc_storeStrong(&v15->_regionFormat, format);
+    objc_storeStrong(&v16->_osVersion, version);
+    objc_storeStrong(&v16->_deviceType, type);
+    objc_storeStrong(&v16->_applicationBuildVersion, buildVersion);
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    v16->_lowPowerModeEnabled = [processInfo isLowPowerModeEnabled];
 
     v16->_pid = -1;
 LABEL_7:
@@ -47,13 +47,13 @@ LABEL_7:
   return v17;
 }
 
-- (MXMetaData)initWithRegionFormat:(id)a3 osVersion:(id)a4 deviceType:(id)a5 appBuildVersion:(id)a6 platformArchitecture:(id)a7
+- (MXMetaData)initWithRegionFormat:(id)format osVersion:(id)version deviceType:(id)type appBuildVersion:(id)buildVersion platformArchitecture:(id)architecture
 {
-  v22 = a3;
-  v21 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  formatCopy = format;
+  versionCopy = version;
+  typeCopy = type;
+  buildVersionCopy = buildVersion;
+  architectureCopy = architecture;
   v23.receiver = self;
   v23.super_class = MXMetaData;
   v16 = [(MXMetaData *)&v23 init];
@@ -64,15 +64,15 @@ LABEL_7:
   }
 
   v18 = 0;
-  if (v22 && v21 && v13 && v14 && v15)
+  if (formatCopy && versionCopy && typeCopy && buildVersionCopy && architectureCopy)
   {
-    objc_storeStrong(&v16->_regionFormat, a3);
-    objc_storeStrong(&v17->_osVersion, a4);
-    objc_storeStrong(&v17->_deviceType, a5);
-    objc_storeStrong(&v17->_applicationBuildVersion, a6);
-    objc_storeStrong(&v17->_platformArchitecture, a7);
-    v19 = [MEMORY[0x277CCAC38] processInfo];
-    v17->_lowPowerModeEnabled = [v19 isLowPowerModeEnabled];
+    objc_storeStrong(&v16->_regionFormat, format);
+    objc_storeStrong(&v17->_osVersion, version);
+    objc_storeStrong(&v17->_deviceType, type);
+    objc_storeStrong(&v17->_applicationBuildVersion, buildVersion);
+    objc_storeStrong(&v17->_platformArchitecture, architecture);
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    v17->_lowPowerModeEnabled = [processInfo isLowPowerModeEnabled];
 
     v17->_pid = -1;
 LABEL_8:
@@ -82,14 +82,14 @@ LABEL_8:
   return v18;
 }
 
-- (MXMetaData)initWithRegionFormat:(id)a3 osVersion:(id)a4 deviceType:(id)a5 appBuildVersion:(id)a6 platformArchitecture:(id)a7 bundleID:(id)a8
+- (MXMetaData)initWithRegionFormat:(id)format osVersion:(id)version deviceType:(id)type appBuildVersion:(id)buildVersion platformArchitecture:(id)architecture bundleID:(id)d
 {
-  v25 = a3;
-  v24 = a4;
-  v23 = a5;
-  v15 = a6;
-  v16 = a7;
-  v22 = a8;
+  formatCopy = format;
+  versionCopy = version;
+  typeCopy = type;
+  buildVersionCopy = buildVersion;
+  architectureCopy = architecture;
+  dCopy = d;
   v26.receiver = self;
   v26.super_class = MXMetaData;
   v17 = [(MXMetaData *)&v26 init];
@@ -100,16 +100,16 @@ LABEL_8:
   }
 
   v19 = 0;
-  if (v25 && v24 && v23 && v15 && v16)
+  if (formatCopy && versionCopy && typeCopy && buildVersionCopy && architectureCopy)
   {
-    objc_storeStrong(&v17->_regionFormat, a3);
-    objc_storeStrong(&v18->_osVersion, a4);
-    objc_storeStrong(&v18->_deviceType, a5);
-    objc_storeStrong(&v18->_applicationBuildVersion, a6);
-    objc_storeStrong(&v18->_platformArchitecture, a7);
-    objc_storeStrong(&v18->_bundleIdentifier, a8);
-    v20 = [MEMORY[0x277CCAC38] processInfo];
-    v18->_lowPowerModeEnabled = [v20 isLowPowerModeEnabled];
+    objc_storeStrong(&v17->_regionFormat, format);
+    objc_storeStrong(&v18->_osVersion, version);
+    objc_storeStrong(&v18->_deviceType, type);
+    objc_storeStrong(&v18->_applicationBuildVersion, buildVersion);
+    objc_storeStrong(&v18->_platformArchitecture, architecture);
+    objc_storeStrong(&v18->_bundleIdentifier, d);
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    v18->_lowPowerModeEnabled = [processInfo isLowPowerModeEnabled];
 
     v18->_pid = -1;
 LABEL_8:
@@ -119,14 +119,14 @@ LABEL_8:
   return v19;
 }
 
-- (MXMetaData)initWithRegionFormat:(id)a3 osVersion:(id)a4 deviceType:(id)a5 appBuildVersion:(id)a6 platformArchitecture:(id)a7 bundleID:(id)a8 pid:(int)a9 isTestFlightApp:(BOOL)a10
+- (MXMetaData)initWithRegionFormat:(id)format osVersion:(id)version deviceType:(id)type appBuildVersion:(id)buildVersion platformArchitecture:(id)architecture bundleID:(id)d pid:(int)pid isTestFlightApp:(BOOL)self0
 {
-  v27 = a3;
-  v26 = a4;
-  v25 = a5;
-  v17 = a6;
-  v18 = a7;
-  v24 = a8;
+  formatCopy = format;
+  versionCopy = version;
+  typeCopy = type;
+  buildVersionCopy = buildVersion;
+  architectureCopy = architecture;
+  dCopy = d;
   v28.receiver = self;
   v28.super_class = MXMetaData;
   v19 = [(MXMetaData *)&v28 init];
@@ -137,19 +137,19 @@ LABEL_8:
   }
 
   v21 = 0;
-  if (v27 && v26 && v25 && v17 && v18)
+  if (formatCopy && versionCopy && typeCopy && buildVersionCopy && architectureCopy)
   {
-    objc_storeStrong(&v19->_regionFormat, a3);
-    objc_storeStrong(&v20->_osVersion, a4);
-    objc_storeStrong(&v20->_deviceType, a5);
-    objc_storeStrong(&v20->_applicationBuildVersion, a6);
-    objc_storeStrong(&v20->_platformArchitecture, a7);
-    objc_storeStrong(&v20->_bundleIdentifier, a8);
-    v22 = [MEMORY[0x277CCAC38] processInfo];
-    v20->_lowPowerModeEnabled = [v22 isLowPowerModeEnabled];
+    objc_storeStrong(&v19->_regionFormat, format);
+    objc_storeStrong(&v20->_osVersion, version);
+    objc_storeStrong(&v20->_deviceType, type);
+    objc_storeStrong(&v20->_applicationBuildVersion, buildVersion);
+    objc_storeStrong(&v20->_platformArchitecture, architecture);
+    objc_storeStrong(&v20->_bundleIdentifier, d);
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    v20->_lowPowerModeEnabled = [processInfo isLowPowerModeEnabled];
 
-    v20->_pid = a9;
-    v20->_isTestFlightApp = a10;
+    v20->_pid = pid;
+    v20->_isTestFlightApp = app;
 LABEL_8:
     v21 = v20;
   }
@@ -157,13 +157,13 @@ LABEL_8:
   return v21;
 }
 
-- (MXMetaData)initWithRegionFormat:(id)a3 osVersion:(id)a4 deviceType:(id)a5 appBuildVersion:(id)a6 bundleID:(id)a7
+- (MXMetaData)initWithRegionFormat:(id)format osVersion:(id)version deviceType:(id)type appBuildVersion:(id)buildVersion bundleID:(id)d
 {
-  v22 = a3;
-  v21 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  formatCopy = format;
+  versionCopy = version;
+  typeCopy = type;
+  buildVersionCopy = buildVersion;
+  dCopy = d;
   v23.receiver = self;
   v23.super_class = MXMetaData;
   v16 = [(MXMetaData *)&v23 init];
@@ -174,16 +174,16 @@ LABEL_8:
   }
 
   v18 = 0;
-  if (v22 && v21 && v13 && v14 && v15)
+  if (formatCopy && versionCopy && typeCopy && buildVersionCopy && dCopy)
   {
-    objc_storeStrong(&v16->_regionFormat, a3);
-    objc_storeStrong(&v17->_osVersion, a4);
-    objc_storeStrong(&v17->_deviceType, a5);
-    objc_storeStrong(&v17->_applicationBuildVersion, a6);
-    v19 = [MEMORY[0x277CCAC38] processInfo];
-    v17->_lowPowerModeEnabled = [v19 isLowPowerModeEnabled];
+    objc_storeStrong(&v16->_regionFormat, format);
+    objc_storeStrong(&v17->_osVersion, version);
+    objc_storeStrong(&v17->_deviceType, type);
+    objc_storeStrong(&v17->_applicationBuildVersion, buildVersion);
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    v17->_lowPowerModeEnabled = [processInfo isLowPowerModeEnabled];
 
-    objc_storeStrong(&v17->_bundleIdentifier, a7);
+    objc_storeStrong(&v17->_bundleIdentifier, d);
     v17->_pid = -1;
 LABEL_8:
     v18 = v17;
@@ -192,57 +192,57 @@ LABEL_8:
   return v18;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   regionFormat = self->_regionFormat;
-  v5 = a3;
-  [v5 encodeObject:regionFormat forKey:@"regionFormat"];
-  [v5 encodeObject:self->_osVersion forKey:@"osVersion"];
-  [v5 encodeObject:self->_deviceType forKey:@"deviceType"];
-  [v5 encodeObject:self->_applicationBuildVersion forKey:@"appBuildVersion"];
-  [v5 encodeObject:self->_platformArchitecture forKey:@"platformArchitecture"];
-  [v5 encodeBool:self->_lowPowerModeEnabled forKey:@"lowPowerModeEnabled"];
-  [v5 encodeBool:self->_isTestFlightApp forKey:@"isTestFlightApp"];
-  [v5 encodeObject:self->_bundleIdentifier forKey:@"bundleIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:regionFormat forKey:@"regionFormat"];
+  [coderCopy encodeObject:self->_osVersion forKey:@"osVersion"];
+  [coderCopy encodeObject:self->_deviceType forKey:@"deviceType"];
+  [coderCopy encodeObject:self->_applicationBuildVersion forKey:@"appBuildVersion"];
+  [coderCopy encodeObject:self->_platformArchitecture forKey:@"platformArchitecture"];
+  [coderCopy encodeBool:self->_lowPowerModeEnabled forKey:@"lowPowerModeEnabled"];
+  [coderCopy encodeBool:self->_isTestFlightApp forKey:@"isTestFlightApp"];
+  [coderCopy encodeObject:self->_bundleIdentifier forKey:@"bundleIdentifier"];
   v6 = [MEMORY[0x277CCABB0] numberWithInt:self->_pid];
-  [v5 encodeObject:v6 forKey:@"pid"];
+  [coderCopy encodeObject:v6 forKey:@"pid"];
 }
 
-- (MXMetaData)initWithCoder:(id)a3
+- (MXMetaData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = MXMetaData;
   v5 = [(MXMetaData *)&v20 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"regionFormat"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"regionFormat"];
     regionFormat = v5->_regionFormat;
     v5->_regionFormat = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"osVersion"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"osVersion"];
     osVersion = v5->_osVersion;
     v5->_osVersion = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceType"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceType"];
     deviceType = v5->_deviceType;
     v5->_deviceType = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appBuildVersion"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appBuildVersion"];
     applicationBuildVersion = v5->_applicationBuildVersion;
     v5->_applicationBuildVersion = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"platformArchitecture"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"platformArchitecture"];
     platformArchitecture = v5->_platformArchitecture;
     v5->_platformArchitecture = v14;
 
-    v5->_lowPowerModeEnabled = [v4 decodeBoolForKey:@"lowPowerModeEnabled"];
-    v5->_isTestFlightApp = [v4 decodeBoolForKey:@"isTestFlightApp"];
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+    v5->_lowPowerModeEnabled = [coderCopy decodeBoolForKey:@"lowPowerModeEnabled"];
+    v5->_isTestFlightApp = [coderCopy decodeBoolForKey:@"isTestFlightApp"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pid"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pid"];
     v5->_pid = [v18 intValue];
   }
 
@@ -261,14 +261,14 @@ LABEL_8:
 
   else
   {
-    v6 = [MEMORY[0x277CCA8D8] mainBundle];
-    v7 = [v6 bundleIdentifier];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
 
-    if (v7)
+    if (bundleIdentifier)
     {
-      v8 = [MEMORY[0x277CCA8D8] mainBundle];
-      v9 = [v8 bundleIdentifier];
-      [v4 setObject:v9 forKey:@"bundleIdentifier"];
+      mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+      bundleIdentifier2 = [mainBundle2 bundleIdentifier];
+      [v4 setObject:bundleIdentifier2 forKey:@"bundleIdentifier"];
     }
   }
 
@@ -321,11 +321,11 @@ LABEL_8:
     AnalyticsSendEventLazy();
   }
 
-  v3 = [(MXMetaData *)self toDictionary];
-  if ([MEMORY[0x277CCAAA0] isValidJSONObject:v3])
+  toDictionary = [(MXMetaData *)self toDictionary];
+  if ([MEMORY[0x277CCAAA0] isValidJSONObject:toDictionary])
   {
     v6 = 0;
-    v4 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v3 options:1 error:&v6];
+    v4 = [MEMORY[0x277CCAAA0] dataWithJSONObject:toDictionary options:1 error:&v6];
   }
 
   else
